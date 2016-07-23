@@ -1,6 +1,9 @@
 # Configuration flags
 
-TiDB is configurable through command-line flags and environment variables.
+TiDB/TiKV/PD are configurable through command-line flags and environment variables.
+
+
+##TiDB
 
 The official TiDB ports are 4000 for client requests and 10080 for status report.
 
