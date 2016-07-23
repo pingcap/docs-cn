@@ -33,7 +33,7 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 + This is used to get server status.
 
 ### --lease
-+ The schema lease time in second.
++ The schema lease time in seconds.
 + default: "1"
 + This is the schema lease time that is used in online schema changes. The value will affect the DDL statement running time. You cannot change it unless you understand the internal mechanism.
 
@@ -48,5 +48,5 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 + The value can be (1) or (0). (1) is to enable and (0) is to disable. If the value is set to be (1), the performance will be affected.
 
 ### $TIDB_PPROF environment variable
-+ An environment variable that is used to enable or disable the runtime profiling data via the HTTP server. . Address is at client URL + "/debug/pprof/".
++ An environment variable that is used to enable or disable the runtime profiling data via the HTTP server. The Address is at client URL + "/debug/pprof/".
 + If set $TIDB_PPROF to 0, TiDB will disable pprof. Otherwise TiDB will enable pprof.
