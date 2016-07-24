@@ -2,7 +2,7 @@
 
 ## Supported platforms
 
-The following table lists TiDB support for common architectures and operations. 
+The following table lists TiDB support for common architectures and operating systems. 
 
 |Architecture|Operating System|Status|
 |------------|----------------|------|
@@ -14,8 +14,53 @@ The following table lists TiDB support for common architectures and operations.
 
 + Go [1.5+](https://golang.org/doc/install)
 + Rust [nightly version](https://www.rust-lang.org/downloads.html)
-+ GCC 4.8+
-+ Git 1.8+
++ GCC 4.8+ with static library
+
+### Install GO
+
+#### Linux
+
+```bash
+curl -L https://storage.googleapis.com/golang/go1.6.3.linux-amd64.tar.gz -o golang.tar.gz
+tar -C /usr/local -xzf golang.tar.gz
+```
+
+#### Mac OS X
+
+```bash
+curl -L https://storage.googleapis.com/golang/go1.6.3.darwin-amd64.tar.gz -o golang.tar.gz
+tar -C /usr/local -xzf golang.tar.gz
+```
+
+### Install Rust
+
+```bash
+curl -sSf https://static.rust-lang.org/rustup.sh | sh -s -- --channel=nightly
+```
+
+### Install GCC
+
+#### Linux Ubuntu
+
+```bash
+apt-get update
+apt-get install -y gcc g++
+```
+
+#### Linux CentOS
+
+```bash
+yum install -y gcc-c++ glibc-static libstdc++-static
+```
+
+#### Mac OS X
+
+```bash
+xcode-select --install
+brew update
+brew tap homebrew/versions
+brew install gcc48 --use-llvm
+```
 
 ## Build TiDB project
 
@@ -23,7 +68,7 @@ The following table lists TiDB support for common architectures and operations.
 # Create a root path for building and installing TiDB. 
 mkdir -p /Users/tidb
 export TIDB_PATH=/Users/tidb
-# All the binary executions are installed in `bin` directory. 
+# All the binaries are installed in the `bin` directory. 
 mkdir -p $TIDB_PATH/bin
 ```
 
@@ -75,7 +120,7 @@ cd $TIDB_PATH
 
 ## Build Portable TiDB project
 
-You can copy the binary executions to other machines and run it directly, but `tikv-server` may fail to start, you may meet following conditions:
+You can copy the binary executions to other machines and run them directly, but `tikv-server` may fail to start, you may meet following conditions:
 
 + Missing `stdc++` library. You can install g++ in your machine or link static c++ library directly when building TiKV, for example:
 
