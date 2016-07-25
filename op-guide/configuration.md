@@ -45,7 +45,7 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 ### --perfschema
 + enable(1) or disable(0) the performance schema
 + default: "0"
-+ The value can be (1) or (0). (1) is to enable and (0) is to disable. The Performance Schema provides a way to inspect internal execution of the server at runtime. See [performance schema](http://dev.mysql.com/doc/refman/5.7/en/performance-schema.html) for more information. If enable performance schema, the performance will be affected.
++ The value can be (1) or (0). (1) is to enable and (0) is to disable. The Performance Schema provides a way to inspect internal execution of the server at runtime. See [performance schema](http://dev.mysql.com/doc/refman/5.7/en/performance-schema.html) for more information. If you enable the performance schema, the performance will be affected.
 
 ### $TIDB_PPROF environment variable
 + An environment variable that is used to enable or disable the runtime profiling data via the HTTP server. The Address is at client URL + "/debug/pprof/".
