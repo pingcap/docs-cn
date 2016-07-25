@@ -8,7 +8,7 @@ TiDB/TiKV/PD are configurable through command-line flags and environment variabl
 The default TiDB ports are 4000 for client requests and 10080 for status report.
 
 ### --store
-+ Storage engine type
++ the storage engine type
 + Human-readable name for this member.
 + default: "goleveldb"
 + You can choose from "memory", "goleveldb", "BoltDB" or "TiKV". The first three are all local storage engines. TiKV is a distributed storage engine.
@@ -18,34 +18,34 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 + default: "/tmp/tidb"
 
 ### -L
-+ The log level
++ the log level
 + default: "debug"
 + You can choose from debug, info, warn, error, or fatal.
 
 ### -P
-+ The listening port for TiDB server.
++ the listening port for TiDB server
 + default: "4000"
 + TiDB server will accept MySQL client request from this port.
 
 ### --status
-+ The status report port for TiDB server
++ the status report port for TiDB server
 + default: "10080"
 + This is used to get server status.
 
 ### --lease
-+ The schema lease time in seconds.
++ the schema lease time in seconds
 + default: "1"
 + This is the schema lease time that is used in online schema changes. The value will affect the DDL statement running time. You cannot change it unless you understand the internal mechanism.
 
 ### --socket
-+ The socket file for connection.
++ the socket file for connection
 + default: ""
 + You can use the "/tmp/tidb.sock" file.
 
 ### --perfschema
-+ Enable(1) or disable(0) the performance schema.
++ enable(1) or disable(0) the performance schema
 + default: "0"
-+ The value can be (1) or (0). (1) is to enable and (0) is to disable. If the value is set to be (1), the performance will be affected.
++ The value can be (1) or (0). (1) is to enable and (0) is to disable. The Performance Schema provides a way to inspect internal execution of the server at runtime. See [performance schema](http://dev.mysql.com/doc/refman/5.7/en/performance-schema.html) for more information. If enable performance schema, the performance will be affected.
 
 ### $TIDB_PPROF environment variable
 + An environment variable that is used to enable or disable the runtime profiling data via the HTTP server. The Address is at client URL + "/debug/pprof/".
