@@ -28,6 +28,9 @@ export TIDB_PATH=/Users/tidb
 # All the binaries are installed in the `bin` directory. 
 mkdir -p $TIDB_PATH/bin
 
+# Assume we install go in /usr/local/go
+export PATH=$PATH:/usr/local/go/bin
+
 # go is required
 go version
 # go version go1.6 darwin/amd64
@@ -53,6 +56,7 @@ cd $GOPATH/src/github.com/pingcap/pd
 
 make build
 cp -f ./bin/pd-server $TIDB_PATH/bin
+cp -rf ./templates $TIDB_PATH/bin/templates
 cd $TIDB_PATH
 
 # build TiKV
