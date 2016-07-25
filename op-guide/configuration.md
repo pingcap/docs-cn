@@ -35,7 +35,7 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 ### --lease
 + the schema lease time in seconds
 + default: "1"
-+ This is the schema lease time that is used in online schema changes. The value will affect the DDL statement running time. You cannot change it unless you understand the internal mechanism.
++ This is the schema lease time that is used in online schema changes. The value will affect the DDL statement running time. Do not change it unless you understand the internal mechanism.
 
 ### --socket
 + the socket file for connection
