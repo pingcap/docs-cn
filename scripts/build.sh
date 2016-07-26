@@ -25,28 +25,28 @@ rustc -V
 # GOPATH should be set correctly.
 export GOPATH=$TIDB_PATH/deps/go
 
-# build TiDB
-# echo "building TiDB..."
-# rm -rf $GOPATH/src/github.com/pingcap/tidb
-# git clone --depth=1 https://github.com/pingcap/tidb.git $GOPATH/src/github.com/pingcap/tidb
-# cd $GOPATH/src/github.com/pingcap/tidb
+build TiDB
+echo "building TiDB..."
+rm -rf $GOPATH/src/github.com/pingcap/tidb
+git clone --depth=1 https://github.com/pingcap/tidb.git $GOPATH/src/github.com/pingcap/tidb
+cd $GOPATH/src/github.com/pingcap/tidb
 
-# make server
-# cp -f ./tidb-server/tidb-server $TIDB_PATH/bin
-# cd $TIDB_PATH
-# echo "build TiDB OK"
+make server
+cp -f ./tidb-server/tidb-server $TIDB_PATH/bin
+cd $TIDB_PATH
+echo "build TiDB OK"
 
-# # build PD
-# echo "building PD..."
-# rm -rf $GOPATH/src/github.com/pingcap/pd
-# git clone --depth=1 https://github.com/pingcap/pd.git $GOPATH/src/github.com/pingcap/pd
-# cd $GOPATH/src/github.com/pingcap/pd
+# build PD
+echo "building PD..."
+rm -rf $GOPATH/src/github.com/pingcap/pd
+git clone --depth=1 https://github.com/pingcap/pd.git $GOPATH/src/github.com/pingcap/pd
+cd $GOPATH/src/github.com/pingcap/pd
 
-# make build
-# cp -f ./bin/pd-server $TIDB_PATH/bin
-# cp -rf ./templates $TIDB_PATH/bin/templates
-# cd $TIDB_PATH
-# echo "build PD OK"
+make build
+cp -f ./bin/pd-server $TIDB_PATH/bin
+cp -rf ./templates $TIDB_PATH/bin/templates
+cd $TIDB_PATH
+echo "build PD OK"
 
 # build TiKV
 echo "building TiKV..."
