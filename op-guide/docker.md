@@ -44,8 +44,6 @@ docker run -d --name tidb-server \
   -p 10080:10080 \
   pingcap/tidb:latest \
   -L info --path /tmp/tidb
-
-docker run -d --name tidb-server -v /etc/localtime:/etc/localtime:ro -p 4000:4000 -p 10080:10080 pingcap/tidb:latest -L info --path /tmp/tidb
 ```
 
 这样就在 4000 端口上启动了 tidb-server，可以使用 mysql client 连接 tidb-server:
