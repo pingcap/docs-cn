@@ -21,5 +21,5 @@ install the missing ones automatically.
 
 ## Building and installing TiDB components
 
-You can use the  [build script](../scripts/build.sh) script to build and install TiDB components in the bin` directory.
+You can use the [build script](../scripts/build.sh) to build and install TiDB components in the bin` directory.
 
