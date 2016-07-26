@@ -5,13 +5,13 @@
 ## Docker 安装和环境准备
 
 #### 安装 Docker
-使用 Docker 可以非常快速搭建起一套 TiDB 环境。Docker 可以方便地在 Linux / Mac OS X / Windows 环境上安装，安装过程可参考 Docker 官网 https://docs.docker.com/linux/
+使用 Docker 可以非常快速搭建起一套 TiDB 环境。Docker 可以方便地在 Linux / Mac OS X / Windows 环境上安装，安装过程可参考 Docker 官网 https://docs.docker.com/ 。
 
 #### 准备环境
 完整的 TiDB 运行需要三个组件，TiDB, TiKV 和 PD。
 * tidb-server 是 TiDB 的执行进程，负责客户端的接入，对用户的 SQL 进行解析、优化和执行，分解成下层的 KV 操作，并将执行结果进行聚合返回给客户端。TiDB 对外兼容 MySQL 协议，可以直接使用 MySQL Client 进行测试
-* tikv-server，作为 TiDB 的分布式 KV 存储引擎，可以在网络互通的多机环境部署，使用 Raft 协议实现强一致性的数据复制，因此推荐 tikv-server 的部署节点为奇数个，当多数派节点存活 TiKV 保持可用状态
-* pd-server，负责 TiKV 的 region 路由信息的维护，依托于 etcd 作为元数据的存储。并协调处理 region 的 rebalance 以及 merge 和 split 等操作
+* tikv-server，作为 TiDB 的分布式 KV 存储引擎，可以在网络互通的多机环境部署，使用 Raft 协议实现强一致性的数据复制，因此推荐设置 Region 的最大复本数（max-peer-count）为奇数，当多数派节点存活时 TiKV 保持可用状态
+* pd-server，负责 TiKV 的 Region 路由信息的维护和存储，并协调处理 Region 的 rebalance 以及 merge 和 split 等操作。每个集群需要部署奇数个 PD 实例。
 
 获取 TiDB, TiKV, PD 的 Docker 镜像可以直接拉 Docker Hub 发布的 latest 镜像。
 
@@ -54,8 +54,7 @@ mysql -h 127.0.0.1 -P 4000 -u root -D test
 ```
 
 ## 使用 TiKV 存储引擎
-使用 TiKV 作为存储引擎可以构建分布式数据库。
-集群环境下多机部署 TiDB，可以使用端口映射，例如在三台机器上部署 1个 PD，3个 TiKV，1个 TiDB
+使用 TiKV 作为存储引擎可以构建分布式数据库。集群环境下多机部署 TiDB，可以使用端口映射，例如在三台机器上部署 1个 PD，3个 TiKV，1个 TiDB：
 
 #### 定义 host 机器 ip
 ```
