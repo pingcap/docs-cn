@@ -19,7 +19,7 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 
 ### -L
 + the log level
-+ default: "debug"
++ default: "info"
 + You can choose from debug, info, warn, error, or fatal.
 
 ### -P
