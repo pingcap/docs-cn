@@ -1,6 +1,6 @@
 # 使用 Docker 构建和运行 TiDB
 
-本文档用于说明如何使用 Docker 部署 TiDB 服务
+本文档用于说明如何使用 Docker 部署 TiDB 服务。
 
 ## Docker 安装和环境准备
 
@@ -9,8 +9,8 @@
 
 #### 准备环境
 完整的 TiDB 运行需要三个组件，TiDB, TiKV 和 PD。
-* tidb-server 是 TiDB 的执行进程，负责客户端的接入，对用户的 SQL 进行解析、优化和执行，分解成下层的 KV 操作，并将执行结果进行聚合返回给客户端。TiDB 对外兼容 MySQL 协议，可以直接使用 MySQL Client 进行测试
-* tikv-server，作为 TiDB 的分布式 KV 存储引擎，可以在网络互通的多机环境部署，使用 Raft 协议实现强一致性的数据复制，因此推荐设置 Region 的最大复本数（max-peer-count）为奇数，当多数派节点存活时 TiKV 保持可用状态
+* tidb-server 是 TiDB 的执行进程，负责客户端的接入，对用户的 SQL 进行解析、优化和执行，分解成下层的 KV 操作，并将执行结果进行聚合返回给客户端。TiDB 对外兼容 MySQL 协议，可以直接使用 MySQL Client 进行测试。
+* tikv-server，作为 TiDB 的分布式 KV 存储引擎，可以在网络互通的多机环境部署，使用 Raft 协议实现强一致性的数据复制，因此推荐设置 Region 的最大复本数（max-peer-count）为奇数，当多数派节点存活时 TiKV 保持可用状态。
 * pd-server，负责 TiKV 的 Region 路由信息的维护和存储，并协调处理 Region 的 rebalance 以及 merge 和 split 等操作。每个集群需要部署奇数个 PD 实例。
 
 获取 TiDB, TiKV, PD 的 Docker 镜像可以直接拉 Docker Hub 发布的 latest 镜像。
