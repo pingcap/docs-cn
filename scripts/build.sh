@@ -31,8 +31,8 @@ rm -rf $GOPATH/src/github.com/pingcap/tidb
 git clone --depth=1 https://github.com/pingcap/tidb.git $GOPATH/src/github.com/pingcap/tidb
 cd $GOPATH/src/github.com/pingcap/tidb
 
-make server
-cp -f ./tidb-server/tidb-server $TIDB_PATH/bin
+make
+cp -f ./bin/tidb-server $TIDB_PATH/bin
 cd $TIDB_PATH
 echo "build TiDB OK"
 
