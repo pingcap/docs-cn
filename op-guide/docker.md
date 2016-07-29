@@ -83,16 +83,15 @@ docker run -d --name pd \
   --addr=0.0.0.0:1234 \
   --advertise-addr=${host_ip1}:1234 \
   --http-addr=0.0.0.0:9090 \
-  --etcd-name=etcd \
-  --etcd-data-dir=/ti­data/etcd \
-  --etcd-advertise-client-url=http://${host_ip1}:2379 \
-  --etcd-advertise-peer-url=http://${host_ip1}:2380 \
-  --etcd-initial-cluster=etcd=http://${host_ip1}:2380 \
-  --etcd-listen-peer-url=http://0.0.0.0:2380 \
-  --etcd-listen-client-url=http://0.0.0.0:2379 \
+  --name=pd \
+  --data-dir=/ti­data/pd \
+  --advertise-client-urls=http://${host_ip1}:2379 \
+  --advertise-peer-urls=http://${host_ip1}:2380 \
+  --initial-cluster=pd=http://${host_ip1}:2380 \
+  --peer-urls=http://0.0.0.0:2380 \
+  --client-urls=http://0.0.0.0:2379 \
   -L info \
-  --cluster-id=1 \
-  --max-peer-count=3
+  --cluster-id=1
 ```
 
 #### 启动 tikv-server
@@ -107,7 +106,7 @@ docker run -d --name tikv1 \
     -S raftkv \
     --addr=0.0.0.0:20160 \
     --advertise-addr=${host_ip1}:20160\
-    --etcd=${host_ip1}:2379 \
+    --pd=${host_ip1}:2379 \
     --store=/ti-data/tikv \
     --cluster-id=1
 
@@ -120,7 +119,7 @@ docker run -d --name tikv1 \
     -S raftkv \
     --addr=0.0.0.0:20160 \
     --advertise-addr=${host_ip2}:20160\
-    --etcd=${host_ip1}:2379 \
+    --pd=${host_ip1}:2379 \
     --store=/ti-data/tikv \
     --cluster-id=1
 
@@ -133,7 +132,7 @@ docker run -d --name tikv1 \
     -S raftkv \
     --addr=0.0.0.0:20160 \
     --advertise-addr=${host_ip3}:20160\
-    --etcd=${host_ip1}:2379 \
+    --pd=${host_ip1}:2379 \
     --store=/ti-data/tikv \
     --cluster-id=1
 ```
@@ -146,6 +145,6 @@ docker run -d --name tidb \
     pingcap/tidb:latest \
     -L info \
     --store=tikv \
-    --path="${host_ip1}:2379/pd?cluster=1" \
+    --path="${host_ip1}:2379?cluster=1" \
     -P 4000
 ```
