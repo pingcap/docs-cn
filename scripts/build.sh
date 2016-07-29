@@ -31,8 +31,8 @@ rm -rf $GOPATH/src/github.com/pingcap/tidb
 git clone --depth=1 https://github.com/pingcap/tidb.git $GOPATH/src/github.com/pingcap/tidb
 cd $GOPATH/src/github.com/pingcap/tidb
 
-make server
-cp -f ./tidb-server/tidb-server $TIDB_PATH/bin
+make
+cp -f ./bin/tidb-server $TIDB_PATH/bin
 cd $TIDB_PATH
 echo "build TiDB OK"
 
@@ -42,7 +42,7 @@ rm -rf $GOPATH/src/github.com/pingcap/pd
 git clone --depth=1 https://github.com/pingcap/pd.git $GOPATH/src/github.com/pingcap/pd
 cd $GOPATH/src/github.com/pingcap/pd
 
-make build
+make
 cp -f ./bin/pd-server $TIDB_PATH/bin
 cp -rf ./templates $TIDB_PATH/bin/templates
 cd $TIDB_PATH
@@ -54,8 +54,8 @@ rm -rf $TIDB_PATH/deps/tikv
 git clone --depth=1 https://github.com/pingcap/tikv.git $TIDB_PATH/deps/tikv
 cd $TIDB_PATH/deps/tikv
 
-ROCKSDB_SYS_STATIC=1 make release
+ROCKSDB_SYS_STATIC=1 make
 
-cp -f ./target/release/tikv-server $TIDB_PATH/bin
+cp -f ./bin/tikv-server $TIDB_PATH/bin
 cd $TIDB_PATH
 echo "build TiKV OK"
