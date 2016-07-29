@@ -3,7 +3,7 @@
 set -e 
 
 # Use current path for building and installing TiDB. 
-TIDB_PATH=`PWD`
+TIDB_PATH=`pwd`
 echo "building TiDB components in $TIDB_PATH"
 
 # All the binaries are installed in the `bin` directory. 
@@ -25,7 +25,7 @@ rustc -V
 # GOPATH should be set correctly.
 export GOPATH=$TIDB_PATH/deps/go
 
-build TiDB
+# build TiDB
 echo "building TiDB..."
 rm -rf $GOPATH/src/github.com/pingcap/tidb
 git clone --depth=1 https://github.com/pingcap/tidb.git $GOPATH/src/github.com/pingcap/tidb
