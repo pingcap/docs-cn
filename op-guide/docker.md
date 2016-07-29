@@ -102,39 +102,39 @@ docker run -d --name tikv1 \
   -p 20160:20160 \
   -v /etc/localtime:/etc/localtime:ro \
   --volumes-from ti-storage \
-    pingcap/tikv:latest \
-    -S raftkv \
-    --addr=0.0.0.0:20160 \
-    --advertise-addr=${host_ip1}:20160\
-    --pd=${host_ip1}:2379 \
-    --store=/ti-data/tikv \
-    --cluster-id=1
+  pingcap/tikv:latest \
+  -S raftkv \
+  --addr=0.0.0.0:20160 \
+  --advertise-addr=${host_ip1}:20160\
+  --pd=${host_ip1}:2379 \
+  --store=/ti-data/tikv \
+  --cluster-id=1
 
 # 机器2
-  docker run -d --name tikv2 \
-    -p 20160:20160 \
-    -v /etc/localtime:/etc/localtime:ro \
-    --volumes-from ti-storage \
-    pingcap/tikv:latest \
-    -S raftkv \
-    --addr=0.0.0.0:20160 \
-    --advertise-addr=${host_ip2}:20160\
-    --pd=${host_ip1}:2379 \
-    --store=/ti-data/tikv \
-    --cluster-id=1
+docker run -d --name tikv2 \
+  -p 20160:20160 \
+  -v /etc/localtime:/etc/localtime:ro \
+  --volumes-from ti-storage \
+  pingcap/tikv:latest \
+  -S raftkv \
+  --addr=0.0.0.0:20160 \
+  --advertise-addr=${host_ip2}:20160\
+  --pd=${host_ip1}:2379 \
+  --store=/ti-data/tikv \
+  --cluster-id=1
 
 # 机器3
-  docker run -d --name tikv3 \
-    -p 20160:20160 \
-    -v /etc/localtime:/etc/localtime:ro \
-    --volumes-from ti-storage \
-    pingcap/tikv:latest \
-    -S raftkv \
-    --addr=0.0.0.0:20160 \
-    --advertise-addr=${host_ip3}:20160\
-    --pd=${host_ip1}:2379 \
-    --store=/ti-data/tikv \
-    --cluster-id=1
+docker run -d --name tikv3 \
+  -p 20160:20160 \
+  -v /etc/localtime:/etc/localtime:ro \
+  --volumes-from ti-storage \
+  pingcap/tikv:latest \
+  -S raftkv \
+  --addr=0.0.0.0:20160 \
+  --advertise-addr=${host_ip3}:20160\
+  --pd=${host_ip1}:2379 \
+  --store=/ti-data/tikv \
+  --cluster-id=1
 ```
 
 #### 启动 tidb-server
