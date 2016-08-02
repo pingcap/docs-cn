@@ -109,3 +109,35 @@ We run PD and TiKV on every node and TiDB on node1 only.
     ```sh
     mysql -h 192.168.199.113 -P 4000 -u root -D test
     ```
+    
+## Add/Remove node dynamically
+
+### PD
+
+You can use `join` to start a new PD server and add it to an existing PD cluster. . For example, we have started three PD servers within Cluster ID 1:
+
+|Name|ClientUrls|PeerUrls|
+|----|----------|--------|
+|pd1|http://host1:2379|http://host1:2380|
+|pd2|http://host2:2379|http://host2:2380|
+|pd3|http://host3:2379|http://host3:2380|
+
+If you want to add `pd4`, you can use `join` to do it:
+
+```
+pd-server --cluster-id=1 \
+          --name=pd4 \
+          --client-urls="http://host4:2379"
+          --peer-urls="http://host4:2380"
+          --join="http://host1:2379"
+```
+
+### TiKV
+
+Adding a new TiKV server is very simple. After you start a new Store, PD will automatically balance all the TiKV Stores. If PD finds that the new Store has no data, it will try to move some regions from other Stores to the new Store.
+
+You can tell PD to remove a Store explicitly. Then, PD will treat this Store as dead and rebalance the Region whose replicas are in this Store through Region heartbeats.
+
+### TiDB
+
+TiDB server is stateless, and you can add or remove a TiDB server directly. Note that if you put all TiDB servers behind a proxy like HAProxy, you must update the proxy configuration and reload it.
