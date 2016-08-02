@@ -22,6 +22,11 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 + default: "info"
 + You can choose from debug, info, warn, error, or fatal.
 
+### --host
++ the listening address for TiDB server
++ default: "0.0.0.0"
++ TiDB server will listen on this address.
+
 ### -P
 + the listening port for TiDB server
 + default: "4000"
@@ -30,7 +35,9 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 ### --status
 + the status report port for TiDB server
 + default: "10080"
-+ This is used to get server status.
++ This is used to get server internal data. The data includes [prometheus metrics](https://golang.org/pkg/net/http/pprof/) and [pprof](https://golang.org/pkg/net/http/pprof/).
++ Prometheus metrics can be get through "http://host:status_port/metrics".
++ Pprof data can be get through "http://host:status_port/debug/pprof".
 
 ### --lease
 + the schema lease time in seconds
@@ -43,13 +50,14 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 + You can use the "/tmp/tidb.sock" file.
 
 ### --perfschema
-+ enable(1) or disable(0) the performance schema
-+ default: "0"
-+ the value can be (1) or (0). (1) is to enable and (0) is to disable. The Performance Schema provides a way to inspect internal execution of the server at runtime. See [performance schema](http://dev.mysql.com/doc/refman/5.7/en/performance-schema.html) for more information. If you enable the performance schema, the performance will be affected.
++ enable(true) or disable(false) the performance schema
++ default: false
++ the value can be (true) or (false). (true) is to enable and (false) is to disable. The Performance Schema provides a way to inspect internal execution of the server at runtime. See [performance schema](http://dev.mysql.com/doc/refman/5.7/en/performance-schema.html) for more information. If you enable the performance schema, the performance will be affected.
 
-### $TIDB_PPROF environment variable
-+ An environment variable that is used to enable or disable the runtime profiling data via the HTTP server. The Address is at client URL + "/debug/pprof/".
-+ If set $TIDB_PPROF to 0, TiDB will disable pprof. Otherwise TiDB will enable pprof.
+### --report-status
++ enable(true) or disable(false) the status report and pprof tool.
++ default: true
++ the value can be (true) or (false). (true) is to enable metrics and pprof. (false) is to disable metrics and pprof.
 
 ## Placement Driver (PD)
 
@@ -67,9 +75,9 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 
 ### --cluster-id
 
-+ the cluster ID to identify unique cluster 
++ the cluster ID to identify unique cluster
 + default: 0
-+ You must use a unique ID to distinguish different clusters. 
++ You must use a unique ID to distinguish different clusters.
 
 ### --name
 
@@ -106,7 +114,7 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 
 ### --initial-cluster
 
-+ the initial cluster configuration for bootstrapping 
++ the initial cluster configuration for bootstrapping
 + default: "{name}=http://{advertise-peer-url}"
 + For example, if `name` is "pd", and `advertise-peer-urls` is "http://127.0.0.1:2380,http://127.0.0.1:2381", the `initial-cluster` is "pd=http://127.0.0.1:2380,pd=http://127.0.0.1:2381".
 
