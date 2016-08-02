@@ -110,6 +110,12 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 + default: "{name}=http://{advertise-peer-url}"
 + For example, if `name` is "pd", and `advertise-peer-urls` is "http://127.0.0.1:2380,http://127.0.0.1:2381", the `initial-cluster` is "pd=http://127.0.0.1:2380,pd=http://127.0.0.1:2381".
 
+### --join
+
++ join the cluster dynamically
++ default: ""
++ If you want to join an existing cluster, you can use `--join="${advertise-client-urls}"`, the `advertise-client-url` is any existing PD's, multiply advertise client urls are separated by comma.
+
 ### --addr
 
 + the listening address for client traffic
@@ -121,12 +127,6 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 + the server advertise address for client traffic
 + default: ${addr}
 + If the client cannot connect to PD through the default listening address, you must manually set the advertise address explicitly.
-+ Note: this flag will be deprecated later.
-
-### --http-addr
-
-+ the server http address
-+ default: "0.0.0.0:9090"
 + Note: this flag will be deprecated later.
 
 ## TiKV
