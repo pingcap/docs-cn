@@ -36,8 +36,8 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 + the status report port for TiDB server
 + default: "10080"
 + This is used to get server internal data. The data includes [prometheus metrics](https://golang.org/pkg/net/http/pprof/) and [pprof](https://golang.org/pkg/net/http/pprof/).
-+ Prometheus metrics can be get through "http://host:status_port/metrics".
-+ Pprof data can be get through "http://host:status_port/debug/pprof".
++ Prometheus metrics can be got through "http://host:status_port/metrics".
++ Pprof data can be got through "http://host:status_port/debug/pprof".
 
 ### --lease
 + the schema lease time in seconds
@@ -52,12 +52,12 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 ### --perfschema
 + enable(true) or disable(false) the performance schema
 + default: false
-+ the value can be (true) or (false). (true) is to enable and (false) is to disable. The Performance Schema provides a way to inspect internal execution of the server at runtime. See [performance schema](http://dev.mysql.com/doc/refman/5.7/en/performance-schema.html) for more information. If you enable the performance schema, the performance will be affected.
++ The value can be (true) or (false). (true) is to enable and (false) is to disable. The Performance Schema provides a way to inspect internal execution of the server at runtime. See [performance schema](http://dev.mysql.com/doc/refman/5.7/en/performance-schema.html) for more information. If you enable the performance schema, the performance will be affected.
 
 ### --report-status
 + enable(true) or disable(false) the status report and pprof tool.
 + default: true
-+ the value can be (true) or (false). (true) is to enable metrics and pprof. (false) is to disable metrics and pprof.
++ The value can be (true) or (false). (true) is to enable metrics and pprof. (false) is to disable metrics and pprof.
 
 ## Placement Driver (PD)
 
