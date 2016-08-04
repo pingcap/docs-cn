@@ -3,7 +3,7 @@
 TiDB/TiKV/PD are configurable through command-line flags and environment variables.
 
 
-##TiDB
+## TiDB
 
 The default TiDB ports are 4000 for client requests and 10080 for status report.
 
@@ -59,7 +59,7 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 + default: "info"
 + You can choose from debug, info, warn, error, or fatal.
 
-### -c 
+### --config
 
 + the config file
 + default: ""
@@ -116,19 +116,6 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 + default: ""
 + If you want to join an existing cluster, you can use `--join="${advertise-client-urls}"`, the `advertise-client-url` is any existing PD's, multiply advertise client urls are separated by comma.
 
-### --addr
-
-+ the listening address for client traffic
-+ default: "127.0.0.1:1234"
-+ Note: this flag will be deprecated later.
-
-### --advertise-addr
-
-+ the server advertise address for client traffic
-+ default: ${addr}
-+ If the client cannot connect to PD through the default listening address, you must manually set the advertise address explicitly.
-+ Note: this flag will be deprecated later.
-
 ## TiKV
 
 ### -A, --addr
@@ -180,5 +167,5 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 ### --pd
 
 + the pd endpoints
-+ default: "127.0.0.1:2379"
-+ You must set this flag to let TiKV connect to PD. Multiple endpoints are separated by comma, for example, "pd1:2379,pd2:2379".
++ default: ""
++ You must set this flag to let TiKV connect to PD. Multiple endpoints are separated by comma, for example, "http://pd1:2379,http://pd2:2379".
