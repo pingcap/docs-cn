@@ -13,7 +13,13 @@
 
 每台机器已经安装最新版本 Docker, 并且拉取了最新的 TiDB/TiKV/PD 的镜像。
 
-## 在每台主机上启动一个 `busybox` 作为数据存储容器
+``bash
+docker pull pingcap/tidb:latest
+docker pull pingcap/tikv:latest
+docker pull pingcap/pd:latest
+```
+
+## 1. 在每台主机上启动一个 `busybox` 作为数据存储容器
 
 ```bash
 export host1=192.168.1.100
@@ -25,13 +31,11 @@ docker run -d --name ti-storage \
   busybox
 ```
 
-## 每台机器上启动 PD
+## 2. 每台机器上启动 PD
 
 **host1:**
 ```bash
 docker run -d --name pd1 \
-  -p 1234:1234 \
-  -p 9090:9090 \
   -p 2379:2379 \
   -p 2380:2380 \
   -v /usr/share/ca­certificates/:/etc/ssl/certs \
@@ -46,15 +50,11 @@ docker run -d --name pd1 \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://${host1}:2380" \
   --initial-cluster="pd1=http://${host1}:2380,pd2=http://${host2}:2380,pd3=http://${host3}:2380" \
-  --addr="0.0.0.0:1234" \
-  --advertise-addr="${host1}:1234"
 ```
 
 **host2:**
 ```bash
 docker run -d --name pd2 \
-  -p 1234:1234 \
-  -p 9090:9090 \
   -p 2379:2379 \
   -p 2380:2380 \
   -v /usr/share/ca­certificates/:/etc/ssl/certs \
@@ -69,15 +69,11 @@ docker run -d --name pd2 \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://${host2}:2380" \
   --initial-cluster="pd1=http://${host1}:2380,pd2=http://${host2}:2380,pd3=http://${host3}:2380" \
-  --addr="0.0.0.0:1234" \
-  --advertise-addr="${host2}:1234"
 ```
 
 **host3:**
 ```bash
 docker run -d --name pd3 \
-  -p 1234:1234 \
-  -p 9090:9090 \
   -p 2379:2379 \
   -p 2380:2380 \
   -v /usr/share/ca­certificates/:/etc/ssl/certs \
@@ -92,11 +88,9 @@ docker run -d --name pd3 \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://${host3}:2380" \
   --initial-cluster="pd1=http://${host1}:2380,pd2=http://${host2}:2380,pd3=http://${host3}:2380" \
-  --addr="0.0.0.0:1234" \
-  --advertise-addr="${host3}:1234"
 ```
 
-## 每台机器上启动 TiKV
+## 3. 每台机器上启动 TiKV
 
 **host1:**
 ```bash
@@ -143,7 +137,7 @@ docker run -d --name tikv3 \
   --cluster-id=1
 ```
 
-## 任意一台主机上启动 TiKV
+## 4. **host1** 上启动 TiDB
 
 ```bash
 docker run -d --name tidb \
@@ -156,7 +150,7 @@ docker run -d --name tidb \
   -L warn
 ```
 
-## 使用 MySQL 客户端连接 TiDB 进行测试
+## 5. 在 **host1** 上使用 MySQL 客户端连接 TiDB 进行测试
 
 ```bash
 mysql -h ${host1} -P 4000 -u root -D test

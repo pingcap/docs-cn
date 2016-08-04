@@ -44,7 +44,7 @@ mysql -h 127.0.0.1 -P 4000 -u root -D test
 ## 运行一个基于分布式 TiKV 的 TiDB 集群
 接下来是一个例子, 在单机环境下, 使用 Docker 构建一个基于分布式 TiKV 引擎的 TiDB 集群。
 
-#### 创建一个 docker bridge network
+#### 1. 创建一个 docker bridge network
 
 ```bash
 net="isolated_nw"
@@ -56,7 +56,7 @@ docker network create --driver bridge ${net}
 加入这个网络的 docker 容器之间可以用名字代替真实 IP 相互访问。
 此外, 上面的网络名字可以自由替换。
 
-#### 启动一个仅用于数据存储的 docker 容器
+#### 2. 启动一个仅用于数据存储的 docker 容器
 
 ```bash
 docker run -d --name ti-storage \
@@ -64,7 +64,7 @@ docker run -d --name ti-storage \
   busybox
 ```
 
-#### 启动 PD 服务
+#### 3. 启动 PD 服务
 首先我们启动 3 个 pd-server, 分别命名为: **pd1**, **pd2**, **pd3**
 
 **pd1:** 
@@ -83,8 +83,6 @@ docker run --net ${net} -d --name pd1 \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://pd1:2380" \
   --initial-cluster="pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380" \
-  --addr="0.0.0.0:1234" \
-  --advertise-addr="pd1:1234"
 ```
 
 **pd2:**
@@ -103,8 +101,6 @@ docker run --net ${net} -d --name pd2 \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://pd2:2380" \
   --initial-cluster="pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380" \
-  --addr="0.0.0.0:1234" \
-  --advertise-addr="pd2:1234"
 ```
 
 **pd3:**
@@ -123,12 +119,9 @@ docker run --net ${net} -d --name pd3 \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://pd3:2380" \
   --initial-cluster="pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380" \
-  --addr="0.0.0.0:1234" \
-  --advertise-addr="pd3:1234"
 ```
 
-之后, 当如果需要加入 **pd4** 到集群, 只需要用 --join 参数, 并指定上面一个可用的 advertise-client-urls。
-注意这里并非 advertise-peer-urls。
+之后, 当如果需要加入两个新的 PD 节点到集群, 只需要用 --join 参数, 并指定上面任何一个可用的 advertise-client-urls。
 
 **pd4:**
 
@@ -146,11 +139,27 @@ docker run --net ${net} -d --name pd4 \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://pd4:2380" \
   --join="http://pd1:2379" \
-  --addr="0.0.0.0:1234" \
-  --advertise-addr="pd4:1234"
 ```
 
-#### 启动 TiKV 服务
+**pd5:**
+
+``bash
+docker run --net ${net} -d --name pd5 \
+  -v /usr/share/ca­certificates/:/etc/ssl/certs \
+  -v /etc/localtime:/etc/localtime:ro \
+  --volumes-from ti-storage \
+  pingcap/pd \
+  --cluster-id=1 \
+  --name="pd5" \
+  --data-dir="/tidata/pd5" \
+  --client-urls="http://0.0.0.0:2379" \
+  --advertise-client-urls="http://pd5:2379" \
+  --peer-urls="http://0.0.0.0:2380" \
+  --advertise-peer-urls="http://pd5:2380" \
+  --join="http://pd4:2379" \
+```
+
+#### 4. 启动 TiKV 服务
 接下来你可以启动任意数量的 TiKV 实例
 
 **tikv1:**
@@ -199,7 +208,7 @@ docker run --net ${net} -d --name tikv3 \
 ```
 
 
-#### 启动 TiDB 服务
+#### 5. 启动 TiDB 服务
 
 ```bash
 docker run --net ${net} -d --name tidb \
@@ -211,7 +220,7 @@ docker run --net ${net} -d --name tidb \
   -L warn
 ```
 
-#### 使用客户端记性测试
+#### 6. 使用客户端进行测试
 
 ```bash
 mysql -h 127.0.0.1 -P 4000 -u root -D test
@@ -228,8 +237,6 @@ services:
   pd1:
     image: pingcap/pd
     ports:
-      - "1234"
-      - "9090"
       - "2379"
       - "2380"
 
@@ -241,16 +248,12 @@ services:
       - --advertise-client-urls=http://pd1:2379
       - --advertise-peer-urls=http://pd1:2380
       - --initial-cluster=pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380
-      - --addr=0.0.0.0:1234
-      - --advertise-addr=pd1:1234
       
     privileged: true
 
   pd2:
     image: pingcap/pd
     ports:
-      - "1234"
-      - "9090"
       - "2379"
       - "2380"
 
@@ -262,16 +265,12 @@ services:
       - --advertise-client-urls=http://pd2:2379
       - --advertise-peer-urls=http://pd2:2380
       - --initial-cluster=pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380
-      - --addr=0.0.0.0:1234
-      - --advertise-addr=pd2:1234
       
     privileged: true
 
   pd3:
     image: pingcap/pd
     ports:
-      - "1234"
-      - "9090"
       - "2379"
       - "2380"
 
@@ -283,8 +282,6 @@ services:
       - --advertise-client-urls=http://pd3:2379
       - --advertise-peer-urls=http://pd3:2380
       - --initial-cluster=pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380 
-      - --addr=0.0.0.0:1234
-      - --advertise-addr=pd3:1234
       
     privileged: true
 
