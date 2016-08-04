@@ -168,4 +168,4 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 
 + the pd endpoints
 + default: ""
-+ You must set this flag to let TiKV connect to PD. Multiple endpoints are separated by comma, for example, "http://pd1:2379,http://pd2:2379".
++ You must set this flag to let TiKV connect to PD. Multiple endpoints are separated by comma, for example, "pd1:2379,pd2:2379".
