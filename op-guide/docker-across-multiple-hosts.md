@@ -39,8 +39,6 @@ docker run -d --name ti-storage \
 **host1:**
 ```bash
 docker run -d --name pd1 \
-  -p 1234:1234 \
-  -p 9090:9090 \
   -p 2379:2379 \
   -p 2380:2380 \
   -v /usr/share/ca­certificates/:/etc/ssl/certs \
@@ -55,15 +53,11 @@ docker run -d --name pd1 \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://${host1}:2380" \
   --initial-cluster="pd1=http://${host1}:2380,pd2=http://${host2}:2380,pd3=http://${host3}:2380" \
-  --addr="0.0.0.0:1234" \
-  --advertise-addr="${host1}:1234"
 ```
 
 **host2:**
 ```bash
 docker run -d --name pd2 \
-  -p 1234:1234 \
-  -p 9090:9090 \
   -p 2379:2379 \
   -p 2380:2380 \
   -v /usr/share/ca­certificates/:/etc/ssl/certs \
@@ -78,15 +72,11 @@ docker run -d --name pd2 \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://${host2}:2380" \
   --initial-cluster="pd1=http://${host1}:2380,pd2=http://${host2}:2380,pd3=http://${host3}:2380" \
-  --addr="0.0.0.0:1234" \
-  --advertise-addr="${host2}:1234"
 ```
 
 **host3:**
 ```bash
 docker run -d --name pd3 \
-  -p 1234:1234 \
-  -p 9090:9090 \
   -p 2379:2379 \
   -p 2380:2380 \
   -v /usr/share/ca­certificates/:/etc/ssl/certs \
@@ -101,8 +91,6 @@ docker run -d --name pd3 \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://${host3}:2380" \
   --initial-cluster="pd1=http://${host1}:2380,pd2=http://${host2}:2380,pd3=http://${host3}:2380" \
-  --addr="0.0.0.0:1234" \
-  --advertise-addr="${host3}:1234"
 ```
 
 ## Step 3. Start TiKV on each host

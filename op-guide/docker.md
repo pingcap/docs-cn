@@ -55,8 +55,6 @@ docker run --net ${net} -d --name pd1 \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://pd1:2380" \
   --initial-cluster="pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380" \
-  --addr="0.0.0.0:1234" \
-  --advertise-addr="pd1:1234"
 ```
 
 **pd2:**
@@ -75,8 +73,6 @@ docker run --net ${net} -d --name pd2 \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://pd2:2380" \
   --initial-cluster="pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380" \
-  --addr="0.0.0.0:1234" \
-  --advertise-addr="pd2:1234"
 ```
 
 **pd3:**
@@ -95,8 +91,6 @@ docker run --net ${net} -d --name pd3 \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://pd3:2380" \
   --initial-cluster="pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380" \
-  --addr="0.0.0.0:1234" \
-  --advertise-addr="pd3:1234"
 ```
 
 After that, if you need to add new PD servers into the existing cluster, use the `--join` flag, and specify any one of the available **advertise-client-urls** above.
@@ -117,8 +111,6 @@ docker run --net ${net} -d --name pd4 \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://pd4:2380" \
   --join="http://pd1:2379" \
-  --addr="0.0.0.0:1234" \
-  --advertise-addr="pd4:1234"
 ```
 
 **pd5:**
@@ -137,8 +129,6 @@ docker run --net ${net} -d --name pd5 \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://pd5:2380" \
   --join="http://pd4:2379" \
-  --addr="0.0.0.0:1234" \
-  --advertise-addr="pd5:1234"
 ```
 
 ## Step 4. Start the TiKV service
@@ -251,8 +241,6 @@ services:
   pd1:
     image: pingcap/pd
     ports:
-      - "1234"
-      - "9090"
       - "2379"
       - "2380"
 
@@ -264,16 +252,12 @@ services:
       - --advertise-client-urls=http://pd1:2379
       - --advertise-peer-urls=http://pd1:2380
       - --initial-cluster=pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380
-      - --addr=0.0.0.0:1234
-      - --advertise-addr=pd1:1234
       
     privileged: true
 
   pd2:
     image: pingcap/pd
     ports:
-      - "1234"
-      - "9090"
       - "2379"
       - "2380"
 
@@ -285,16 +269,12 @@ services:
       - --advertise-client-urls=http://pd2:2379
       - --advertise-peer-urls=http://pd2:2380
       - --initial-cluster=pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380
-      - --addr=0.0.0.0:1234
-      - --advertise-addr=pd2:1234
       
     privileged: true
 
   pd3:
     image: pingcap/pd
     ports:
-      - "1234"
-      - "9090"
       - "2379"
       - "2380"
 
@@ -306,8 +286,6 @@ services:
       - --advertise-client-urls=http://pd3:2379
       - --advertise-peer-urls=http://pd3:2380
       - --initial-cluster=pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380 
-      - --addr=0.0.0.0:1234
-      - --advertise-addr=pd3:1234
       
     privileged: true
 
