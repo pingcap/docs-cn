@@ -35,7 +35,7 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 ### --status
 + the status report port for TiDB server
 + default: "10080"
-+ This is used to get server internal data. The data includes [prometheus metrics](https://golang.org/pkg/net/http/pprof/) and [pprof](https://golang.org/pkg/net/http/pprof/).
++ This is used to get server internal data. The data includes [prometheus metrics](https://prometheus.io/) and [pprof](https://golang.org/pkg/net/http/pprof/).
 + Prometheus metrics can be got through "http://host:status_port/metrics".
 + Pprof data can be got through "http://host:status_port/debug/pprof".
 
