@@ -53,7 +53,6 @@ We run PD and TiKV on every node and TiDB on node1 only.
     pd-server --cluster-id=1 \
               --name=pd1 \
               --data-dir=pd1 \
-              --addr="192.168.199.113:1234" \
               --client-urls="http://192.168.199.113:2379" \
               --peer-urls="http://192.168.199.113:2380" \
               --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
@@ -61,7 +60,6 @@ We run PD and TiKV on every node and TiDB on node1 only.
     pd-server --cluster-id=1 \
               --name=pd2 \
               --data-dir=pd2 \
-              --addr="192.168.199.114:1234" \
               --client-urls="http://192.168.199.114:2379" \
               --peer-urls="http://192.168.199.114:2380" \
               --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
@@ -69,7 +67,6 @@ We run PD and TiKV on every node and TiDB on node1 only.
     pd-server --cluster-id=1 \
               --name=pd3 \
               --data-dir=pd3 \
-              --addr="192.168.199.115:1234" \
               --client-urls="http://192.168.199.115:2379" \
               --peer-urls="http://192.168.199.115:2380" \
               --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
