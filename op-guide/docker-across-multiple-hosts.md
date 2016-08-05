@@ -13,7 +13,7 @@
 
 每台机器已经安装最新版本 Docker, 并且拉取了最新的 TiDB/TiKV/PD 的镜像。
 
-``bash
+```bash
 docker pull pingcap/tidb:latest
 docker pull pingcap/tikv:latest
 docker pull pingcap/pd:latest
@@ -137,7 +137,7 @@ docker run -d --name tikv3 \
   --cluster-id=1
 ```
 
-## 4. **host1** 上启动 TiDB
+## 4. 在 **host1** 上启动 TiDB
 
 ```bash
 docker run -d --name tidb \
