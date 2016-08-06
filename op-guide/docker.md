@@ -71,7 +71,6 @@ docker run -d --name ti-storage \
 
 ```bash
 docker run --net ${net} -d --name pd1 \
-  -v /usr/share/ca­certificates/:/etc/ssl/certs \
   -v /etc/localtime:/etc/localtime:ro \
   --volumes-from ti-storage \
   pingcap/pd \
@@ -89,7 +88,6 @@ docker run --net ${net} -d --name pd1 \
 
 ```bash
 docker run --net ${net} -d --name pd2 \
-  -v /usr/share/ca­certificates/:/etc/ssl/certs \
   -v /etc/localtime:/etc/localtime:ro \
   --volumes-from ti-storage \
   pingcap/pd \
@@ -107,7 +105,6 @@ docker run --net ${net} -d --name pd2 \
 
 ```bash
 docker run --net ${net} -d --name pd3 \
-  -v /usr/share/ca­certificates/:/etc/ssl/certs \
   -v /etc/localtime:/etc/localtime:ro \
   --volumes-from ti-storage \
   pingcap/pd \
@@ -127,7 +124,6 @@ docker run --net ${net} -d --name pd3 \
 
 ```bash
 docker run --net ${net} -d --name pd4 \
-  -v /usr/share/ca­certificates/:/etc/ssl/certs \
   -v /etc/localtime:/etc/localtime:ro \
   --volumes-from ti-storage \
   pingcap/pd \
@@ -145,7 +141,6 @@ docker run --net ${net} -d --name pd4 \
 
 ``bash
 docker run --net ${net} -d --name pd5 \
-  -v /usr/share/ca­certificates/:/etc/ssl/certs \
   -v /etc/localtime:/etc/localtime:ro \
   --volumes-from ti-storage \
   pingcap/pd \
@@ -239,6 +234,8 @@ services:
     ports:
       - "2379"
       - "2380"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
 
     command:
       - --cluster-id=1 
@@ -256,6 +253,8 @@ services:
     ports:
       - "2379"
       - "2380"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
 
     command:
       - --cluster-id=1 
@@ -273,6 +272,8 @@ services:
     ports:
       - "2379"
       - "2380"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
 
     command:
       - --cluster-id=1 
@@ -289,6 +290,8 @@ services:
     image: pingcap/tikv
     ports:
       - "20160"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
 
     command:
       - --cluster-id=1
@@ -311,6 +314,8 @@ services:
     image: pingcap/tikv
     ports:
       - "20160"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
 
     command:
       - --cluster-id=1
@@ -333,6 +338,8 @@ services:
     image: pingcap/tikv
     ports:
       - "20160"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
 
     command:
       - --cluster-id=1
@@ -356,6 +363,8 @@ services:
     ports:
       - "4000"
       - "10080"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
 
     command:
       - --store=tikv 
