@@ -41,7 +41,6 @@ docker run -d --name ti-storage \
 docker run -d --name pd1 \
   -p 2379:2379 \
   -p 2380:2380 \
-  -v /usr/share/ca­certificates/:/etc/ssl/certs \
   -v /etc/localtime:/etc/localtime:ro \
   --volumes-from ti-storage \
   pingcap/pd \
@@ -60,7 +59,6 @@ docker run -d --name pd1 \
 docker run -d --name pd2 \
   -p 2379:2379 \
   -p 2380:2380 \
-  -v /usr/share/ca­certificates/:/etc/ssl/certs \
   -v /etc/localtime:/etc/localtime:ro \
   --volumes-from ti-storage \
   pingcap/pd \
@@ -79,7 +77,6 @@ docker run -d --name pd2 \
 docker run -d --name pd3 \
   -p 2379:2379 \
   -p 2380:2380 \
-  -v /usr/share/ca­certificates/:/etc/ssl/certs \
   -v /etc/localtime:/etc/localtime:ro \
   --volumes-from ti-storage \
   pingcap/pd \
