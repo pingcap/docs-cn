@@ -25,7 +25,7 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 ### --log-file
 + the log file
 + default: ""
-+ If this flag is not set, logs will be written to stdout. Otherwise, logs will be stored in the log file which will be automatically rotated every day.
++ If this flag is not set, logs will be written to stderr. Otherwise, logs will be stored in the log file which will be automatically rotated every day.
 
 ### --host
 + the listening address for TiDB server
@@ -71,6 +71,11 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 + the log level
 + default: "info"
 + You can choose from debug, info, warn, error, or fatal.
+
+### --log-file
++ the log file
++ default: ""
++ If this flag is not set, logs will be written to stderr. Otherwise, logs will be stored in the log file which will be automatically rotated every day.
 
 ### --config
 
