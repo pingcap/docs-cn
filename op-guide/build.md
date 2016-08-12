@@ -23,3 +23,4 @@ install the missing ones automatically.
 
 You can use the [build script](../scripts/build.sh) to build and install TiDB components in the `bin` directory.
 
+You can use the [update script](../scripts/update.sh) to update all the TiDB components to the latest version.

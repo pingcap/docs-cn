@@ -4,7 +4,7 @@ set -e
 
 # Use current path for building and installing TiDB. 
 TIDB_PATH=`pwd`
-echo "building TiDB components in $TIDB_PATH"
+echo "updating and building TiDB components in $TIDB_PATH"
 
 # All the binaries are installed in the `bin` directory. 
 mkdir -p $TIDB_PATH/bin
@@ -26,10 +26,9 @@ rustc -V
 export GOPATH=$TIDB_PATH/deps/go
 
 # Build TiDB
-echo "building TiDB..."
-rm -rf $GOPATH/src/github.com/pingcap/tidb
-git clone --depth=1 https://github.com/pingcap/tidb.git $GOPATH/src/github.com/pingcap/tidb
+echo "updating and building TiDB..."
 cd $GOPATH/src/github.com/pingcap/tidb
+git pull
 
 make
 cp -f ./bin/tidb-server $TIDB_PATH/bin
@@ -37,10 +36,9 @@ cd $TIDB_PATH
 echo "TiDB is built"
 
 # Build PD
-echo "building PD..."
-rm -rf $GOPATH/src/github.com/pingcap/pd
-git clone --depth=1 https://github.com/pingcap/pd.git $GOPATH/src/github.com/pingcap/pd
+echo "updating and building PD..."
 cd $GOPATH/src/github.com/pingcap/pd
+git pull
 
 make
 cp -f ./bin/pd-server $TIDB_PATH/bin
@@ -49,10 +47,9 @@ cd $TIDB_PATH
 echo "PD is built"
 
 # Build TiKV
-echo "building TiKV..."
-rm -rf $TIDB_PATH/deps/tikv
-git clone --depth=1 https://github.com/pingcap/tikv.git $TIDB_PATH/deps/tikv
+echo "updating and building TiKV..."
 cd $TIDB_PATH/deps/tikv
+git pull
 
 ROCKSDB_SYS_STATIC=1 ROCSDB_SYS_PORTABLE=1 make
 
