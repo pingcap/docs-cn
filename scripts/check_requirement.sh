@@ -103,11 +103,11 @@ fi
 
 # Check g++
 if which g++ &>/dev/null; then
-    # Check g++ version, RocksDB requires >= 4.7
+    # Check g++ version, RocksDB requires >= 4.8
     G_VER_1=`g++ -dumpversion | awk '{split($0, n, "."); print n[1];}'`
     G_VER_2=`g++ -dumpversion | awk '{split($0, n, "."); print n[2];}'`
-    if [[ (($G_VER_1 -eq 4 && $G_VER_2 -lt 7)) || (($G_VER_1 -lt 4)) ]]; then
-        echo "Please upgrade g++ to 4.7 or later."
+    if [[ (($G_VER_1 -eq 4 && $G_VER_2 -lt 8)) || (($G_VER_1 -lt 4)) ]]; then
+        echo "Please upgrade g++ to 4.8 or later."
         exit 1
     fi
 else
