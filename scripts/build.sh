@@ -54,7 +54,7 @@ rm -rf $TIDB_PATH/deps/tikv
 git clone --depth=1 https://github.com/pingcap/tikv.git $TIDB_PATH/deps/tikv
 cd $TIDB_PATH/deps/tikv
 
-ROCKSDB_SYS_STATIC=1 ROCSDB_SYS_PORTABLE=1 make
+ROCKSDB_SYS_STATIC=1 ROCKSDB_SYS_PORTABLE=1 make
 
 cp -f ./bin/tikv-server $TIDB_PATH/bin
 cd $TIDB_PATH
