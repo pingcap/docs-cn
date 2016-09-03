@@ -78,8 +78,8 @@ function install_gpp {
 }
 
 # Check rust
-if which cargo &>/dev/null; then
-    if ! cargo --version | grep nightly &>/dev/null; then
+if which rustc &>/dev/null; then
+    if ! rustc --version | grep nightly &>/dev/null; then
         echo "Please upgrade Rust to nightly."
         exit 1
     fi
