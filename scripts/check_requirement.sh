@@ -80,7 +80,8 @@ function install_gpp {
 # Check rust
 if which rustc &>/dev/null; then
     if ! rustc --version | grep nightly &>/dev/null; then
-        echo "Please upgrade Rust to nightly."
+        printf "Please run following command to upgrade Rust to nightly: \n\
+\t curl -sSf https://static.rust-lang.org/rustup.sh | sh -s -- --channel=nightly\n"
         exit 1
     fi
 else
