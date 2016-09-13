@@ -44,7 +44,6 @@ cd $GOPATH/src/github.com/pingcap/pd
 
 make
 cp -f ./bin/pd-server $TIDB_PATH/bin
-cp -rf ./templates $TIDB_PATH/bin/templates
 cd $TIDB_PATH
 echo "PD is built"
 
