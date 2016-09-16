@@ -10,7 +10,7 @@ echo "building RocksDB in $DEPS_PATH"
 mkdir -p ${DEPS_PATH}
 cd $DEPS_PATH
 
-ROCKSDB_VER=4.9
+ROCKSDB_VER=4.12.fb
 
 SUDO=
 if which sudo; then 
@@ -31,14 +31,14 @@ function get_linux_platform {
 
 function install_in_ubuntu {
     echo "building RocksDB in Ubuntu..."
-    if [ ! -d rocksdb-rocksdb-${ROCKSDB_VER} ]; then
+    if [ ! -d rocksdb-${ROCKSDB_VER} ]; then
         ${SUDO} apt-get update 
         ${SUDO} apt-get install -y --no-install-recommends zlib1g-dev libbz2-dev libsnappy-dev libgflags-dev liblz4-dev 
-        curl -L https://github.com/facebook/rocksdb/archive/rocksdb-${ROCKSDB_VER}.tar.gz -o rocksdb.tar.gz 
+        curl -L https://github.com/facebook/rocksdb/archive/$ROCKSDB_VER.tar.gz -o rocksdb.tar.gz 
         tar xf rocksdb.tar.gz 
     fi
     
-    cd rocksdb-rocksdb-${ROCKSDB_VER} 
+    cd rocksdb-${ROCKSDB_VER} 
     make shared_lib 
     ${SUDO} make install-shared 
     # guarantee tikv can find rocksdb.
@@ -47,14 +47,14 @@ function install_in_ubuntu {
 
 function install_in_centos {
     echo "building RocksDB in CentOS..."
-    if [ ! -d rocksdb-rocksdb-${ROCKSDB_VER} ]; then
+    if [ ! -d rocksdb-${ROCKSDB_VER} ]; then
         ${SUDO} yum install -y epel-release
         ${SUDO} yum install -y snappy-devel zlib-devel bzip2-devel lz4-devel
-        curl -L https://github.com/facebook/rocksdb/archive/rocksdb-${ROCKSDB_VER}.tar.gz -o rocksdb.tar.gz 
+        curl -L https://github.com/facebook/rocksdb/archive/$ROCKSDB_VER.tar.gz -o rocksdb.tar.gz 
         tar xf rocksdb.tar.gz 
     fi
     
-    cd rocksdb-rocksdb-${ROCKSDB_VER} 
+    cd rocksdb-${ROCKSDB_VER} 
     make shared_lib 
     ${SUDO} make install-shared 
     # guarantee tikv can find rocksdb.
@@ -63,15 +63,15 @@ function install_in_centos {
 
 function install_in_macosx {
     echo "building RocksDB in Mac OS X..."
-    if [ ! -d rocksdb-rocksdb-${ROCKSDB_VER} ]; then
+    if [ ! -d rocksdb-${ROCKSDB_VER} ]; then
         brew update 
         brew install lz4 || true 
         brew install snappy || true
-        curl -L https://github.com/facebook/rocksdb/archive/rocksdb-${ROCKSDB_VER}.tar.gz -o rocksdb.tar.gz 
+        curl -L https://github.com/facebook/rocksdb/archive/$ROCKSDB_VER.tar.gz -o rocksdb.tar.gz 
         tar xf rocksdb.tar.gz 
     fi
     
-    cd rocksdb-rocksdb-${ROCKSDB_VER} 
+    cd rocksdb-${ROCKSDB_VER} 
     make shared_lib 
     ${SUDO} make install-shared
 }
