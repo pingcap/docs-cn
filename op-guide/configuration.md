@@ -136,6 +136,11 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 
 ## TiKV
 
+TiKV supports some human readable conversion.
+
+ - File size (based on byte): KB, MB, GB, TB, PB (or lowercase)
+ - Time (based on ms): ms, s, m, h
+
 ### -A, --addr
 
 + the server listening address
@@ -173,7 +178,7 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 
 + the store capacity
 + default: 0 (unlimited)
-+ PD uses this flag to determine how to balance this TiKV.
++ PD uses this flag to determine how to balance the TiKV servers. (Tip: you can use 10GB instead of 1073741824)
 
 ### -S, --dsn
 
