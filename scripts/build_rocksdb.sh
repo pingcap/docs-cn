@@ -34,7 +34,7 @@ function install_in_ubuntu {
     if [ ! -d rocksdb-${ROCKSDB_VER} ]; then
         ${SUDO} apt-get update 
         ${SUDO} apt-get install -y --no-install-recommends zlib1g-dev libbz2-dev libsnappy-dev libgflags-dev liblz4-dev 
-        curl -L https://github.com/facebook/rocksdb/archive/$ROCKSDB_VER.tar.gz -o rocksdb.tar.gz 
+        curl -L https://github.com/facebook/rocksdb/archive/${ROCKSDB_VER}.tar.gz -o rocksdb.tar.gz 
         tar xf rocksdb.tar.gz 
     fi
     
@@ -50,7 +50,7 @@ function install_in_centos {
     if [ ! -d rocksdb-${ROCKSDB_VER} ]; then
         ${SUDO} yum install -y epel-release
         ${SUDO} yum install -y snappy-devel zlib-devel bzip2-devel lz4-devel
-        curl -L https://github.com/facebook/rocksdb/archive/$ROCKSDB_VER.tar.gz -o rocksdb.tar.gz 
+        curl -L https://github.com/facebook/rocksdb/archive/${ROCKSDB_VER}.tar.gz -o rocksdb.tar.gz 
         tar xf rocksdb.tar.gz 
     fi
     
@@ -67,7 +67,7 @@ function install_in_macosx {
         brew update 
         brew install lz4 || true 
         brew install snappy || true
-        curl -L https://github.com/facebook/rocksdb/archive/$ROCKSDB_VER.tar.gz -o rocksdb.tar.gz 
+        curl -L https://github.com/facebook/rocksdb/archive/${ROCKSDB_VER}.tar.gz -o rocksdb.tar.gz 
         tar xf rocksdb.tar.gz 
     fi
     
