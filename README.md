@@ -8,11 +8,11 @@ TiDB is a distributed SQL database. Inspired by the design of Google F1, TiDB su
 
 ## Operating TiDB clusters
  - [Deployment overview](op-guide/overview.md)
- - [Supported platform](op-guide/build.md#supported-platforms)
+ - [Supported platform](dev-guide/requirements.md#supported-platforms)
  - [Configuration](op-guide/configuration.md)
  - [Setting up clusters](op-guide/clustering.md)
  - [Running the TiDB clusters inside containers](op-guide/docker.md)
 
 ## Developing with TiDB
- - [Building requirements](op-guide/build.md)
+ - [Build Requirements](dev-guide/requirements.md)
  - [Building TiDB](dev-guide/build.md)
