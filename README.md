@@ -13,7 +13,7 @@ TiDB is a distributed SQL database. Inspired by the design of Google F1, TiDB su
  - [Configuration](op-guide/configuration.md)
  - [Setting up clusters](op-guide/clustering.md)
  - [Running the TiDB clusters inside containers](op-guide/docker.md)
- - [Getting the TiDB clusters status from the Placement Driver (PD)](http://htmlpreview.github.io/?https://raw.githubusercontent.com/pingcap/docs/master/op-guide/pd-api-v1.html)
+ - [Getting the TiDB clusters status from the Placement Driver (PD)](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html)
 
 ## Developing with TiDB
  - [Building TiDB](dev-guide/build.md)
