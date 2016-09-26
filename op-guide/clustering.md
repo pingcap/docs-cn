@@ -47,6 +47,8 @@ Assume we have three machines with the following details:
 
 We run PD and TiKV on every node and TiDB on node1 only.
 
+**Note: This is just a demonstration here, please follow [Recommendations](./overview.md#deploying-recommendations) to deploy the cluster in production.**
+
 1. Start PD on every node.
 
     ```bash
