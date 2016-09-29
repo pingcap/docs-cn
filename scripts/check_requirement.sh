@@ -25,13 +25,13 @@ function install_go {
     echo "Intall go ..."
     case "$OSTYPE" in 
         linux*) 
-            curl -L https://storage.googleapis.com/golang/go1.6.3.linux-amd64.tar.gz -o golang.tar.gz
+            curl -L https://storage.googleapis.com/golang/go1.7.1.linux-amd64.tar.gz -o golang.tar.gz
             ${SUDO} tar -C /usr/local -xzf golang.tar.gz
             rm golang.tar.gz
         ;;
 
         darwin*)
-            curl -L https://storage.googleapis.com/golang/go1.6.3.darwin-amd64.tar.gz -o golang.tar.gz
+            curl -L https://storage.googleapis.com/golang/go1.7.1.darwin-amd64.tar.gz -o golang.tar.gz
             ${SUDO} tar -C /usr/local -xzf golang.tar.gz
             rm golang.tar.gz
         ;;
