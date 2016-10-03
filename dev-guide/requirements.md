@@ -19,8 +19,3 @@ The following table lists TiDB support for common architectures and operating sy
 The [check requirement script](../scripts/check_requirement.sh) can help you check prerequisites and 
 install the missing ones automatically.
 
-## Building and installing TiDB components
-
-You can use the [build script](../scripts/build.sh) to build and install TiDB components in the `bin` directory.
-
-You can use the [update script](../scripts/update.sh) to update all the TiDB components to the latest version.

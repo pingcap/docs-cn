@@ -1,10 +1,10 @@
-# Build
+# Build For Development
 
 ## Overview
 
-You can follow this guide to build the TiDB project.
+If you want to develop the TiDB project, you can follow this guide.
 
-Before your begin, check the [supported platforms](../op-guide/build.md#supported-platforms) and [prerequisites](../op-guide/build.md#prerequisites) first.
+Before you begin, check the [supported platforms](./requirements.md#supported-platforms) and [prerequisites](./requirements.md#prerequisites) first.
 
 ## Install RocksDB
 
