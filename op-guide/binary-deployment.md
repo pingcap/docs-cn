@@ -6,9 +6,9 @@
 
 了解 TiDB 整体架构，请参考[ TiDB 总览](../README.md#tidb-总览)。
 
-快速了解和试用 TiDB，推荐使用[单节点方式快速部署](#单节点集群)。
+快速了解和试用 TiDB，推荐使用[单节点方式快速部署](#单节点方式快速部署)。
 
-生产环境使用 TiDB，推荐使用[多节点集群模式部署](#多节点集群)。
+生产环境使用 TiDB，推荐使用[多节点集群模式部署](#多节点集群模式部署)。
 
 ## 下载官方 Binary
 
@@ -20,7 +20,7 @@ tar -xzf tidb-latest-linux-amd64.tar.gz
 cd tidb-latest-linux-amd64
 ```
 
-## 单节点集群
+## 单节点方式快速部署
 
 我们可以在单机上面，运行和测试 TiDB 集群，请按如下步骤**依次启动** PD，TiKV，TiDB：
 
@@ -53,7 +53,7 @@ cd tidb-latest-linux-amd64
     mysql -h 127.0.0.1 -P 4000 -u root -D test
     ```
 
-## 多节点集群
+## 多节点集群模式部署
 
 在生产环境中，我们推荐多节点部署 TiDB 集群，首先请参考[部署建议](./recommendation.md)。
 
