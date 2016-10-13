@@ -4,7 +4,7 @@
 
 一个完整的 TiDB 集群包括 PD，TiKV 以及 TiDB。启动顺序依次是 PD，TiKV 以及 TiDB。
 
-了解 TiDB 整体架构，请参考[TiDB 总览](../README.md#tidb-总览)。
+了解 TiDB 整体架构，请参考[ TiDB 总览](../README.md#tidb-总览)。
 
 快速了解和试用 TiDB，推荐使用[单节点方式快速部署](#单节点集群)。
 
