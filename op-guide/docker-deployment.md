@@ -1,6 +1,8 @@
 # TiDB Docker 部署方案
 
-本篇将展示如何在多台主机上使用 Docker 部署一个 TiDB 集群
+本篇将展示如何在多台主机上使用 Docker 部署一个 TiDB 集群。
+
+了解 TiDB 整体架构，请参考[TiDB 总览](../README.md#tidb-总览)。
 
 ## 环境准备
 

@@ -5,7 +5,7 @@ TiDB 是一个可以无限水平扩展和高可用的 NewSQL 数据库，本文�
 ## TiDB 架构
 
 要深入了解 TiDB 的水平扩展和高可用特点，首先需要了解 TiDB 的整体架构。
-![architecture](./architecture.png)
+![architecture](./op-guide/architecture.png)
 TiDB 集群主要分为三个组件：
 ### TiDB Server 
 TiDB Server 负责接收 SQL 请求，处理 SQL 相关的逻辑，并通过 PD 找到存储计算所需数据的 TiKV 地址，与 TiKV 交互获取数据，最终返回结果。

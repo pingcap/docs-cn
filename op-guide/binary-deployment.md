@@ -4,20 +4,20 @@
 
 一个完整的 TiDB 集群包括 PD，TiKV 以及 TiDB。启动顺序依次是 PD，TiKV 以及 TiDB。
 
-了解 TiDB 整体架构，请参考[]()。
+了解 TiDB 整体架构，请参考[TiDB 总览](../README.md#tidb-总览)。
 
-快速了解和试用 TiDB，推荐使用[单节点方式快速部署]()。
+快速了解和试用 TiDB，推荐使用[单节点方式快速部署](#单节点集群)。
 
-生产环境使用 TiDB，推荐使用[多节点集群模式部署]()。
+生产环境使用 TiDB，推荐使用[多节点集群模式部署](#多节点集群)。
 
 ## 下载官方 Binary
 
 ### Linux 
 
 ```bash
-wgets ...
-tar -xzf ...
-cd ...
+wget http://oevlfb0z8.bkt.clouddn.com/tidb-latest-linux-amd64.tar.gz
+tar -xzf tidb-latest-linux-amd64.tar.gz
+cd tidb-latest-linux-amd64
 ```
 
 ## 单节点集群
