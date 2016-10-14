@@ -7,7 +7,7 @@ TiDB is a distributed SQL database. Inspired by the design of Google F1, TiDB su
 
 ## Building TiDB
 
- - [Supported platform](dev-guide/requirements.md#supported-platforms)
+ - [Supported platforms](dev-guide/requirements.md#supported-platforms)
  - [Prerequisites](dev-guide/requirements.md#prerequisites)
  - [For Deployment](dev-guide/deployment.md)
  - [For Development](dev-guide/development.md)
