@@ -27,24 +27,24 @@ cd tidb-latest-linux-amd64
 1. 启动 PD.
 
     ```bash
-    pd-server --cluster-id=1 \
-              --data-dir=pd
+    ./bin/pd-server --cluster-id=1 \
+                    --data-dir=pd
     ```
     
 2. 启动 TiKV.
 
     ```bash
-    tikv-server -I 1 \
-                -S raftkv \
-                --pd 127.0.0.1:2379 \
-                -s tikv
+    ./bin/tikv-server -I 1 \
+                      -S raftkv \
+                      --pd 127.0.0.1:2379 \
+                      -s tikv
     ```
 
 3. 启动 TiDB.
 
     ```bash
-    tidb-server --store=tikv \
-                --path="127.0.0.1:2379?cluster=1" 
+    ./bin/tidb-server --store=tikv \
+                      --path="127.0.0.1:2379?cluster=1" 
     ```
 
 4. 使用官方的 `mysql` 客户端连接 TiDB. 
@@ -70,55 +70,55 @@ cd tidb-latest-linux-amd64
 1. 在每个节点启动 PD.
 
     ```bash
-    pd-server --cluster-id=1 \
-              --name=pd1 \
-              --data-dir=pd1 \
-              --client-urls="http://192.168.199.113:2379" \
-              --peer-urls="http://192.168.199.113:2380" \
-              --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
+    ./bin/pd-server --cluster-id=1 \
+                    --name=pd1 \
+                    --data-dir=pd1 \
+                    --client-urls="http://192.168.199.113:2379" \
+                    --peer-urls="http://192.168.199.113:2380" \
+                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
               
-    pd-server --cluster-id=1 \
-              --name=pd2 \
-              --data-dir=pd2 \
-              --client-urls="http://192.168.199.114:2379" \
-              --peer-urls="http://192.168.199.114:2380" \
-              --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
+    ./bin/pd-server --cluster-id=1 \
+                    --name=pd2 \
+                    --data-dir=pd2 \
+                    --client-urls="http://192.168.199.114:2379" \
+                    --peer-urls="http://192.168.199.114:2380" \
+                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
               
-    pd-server --cluster-id=1 \
-              --name=pd3 \
-              --data-dir=pd3 \
-              --client-urls="http://192.168.199.115:2379" \
-              --peer-urls="http://192.168.199.115:2380" \
-              --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
+    ./bin/pd-server --cluster-id=1 \
+                    --name=pd3 \
+                    --data-dir=pd3 \
+                    --client-urls="http://192.168.199.115:2379" \
+                    --peer-urls="http://192.168.199.115:2380" \
+                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
     ```
 
 2. 在每个节点启动 TiKV.
 
     ```bash
-    tikv-server -S raftkv \
-                -I 1 \
-                --pd 192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379 \
-                --addr 192.168.199.113:20160 \
-                -s tikv1
+    ./bin/tikv-server -S raftkv \
+                      -I 1 \
+                      --pd 192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379 \
+                      --addr 192.168.199.113:20160 \
+                      -s tikv1
     
-    tikv-server -S raftkv \
-                -I 1 \
-                --pd 192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379 \
-                --addr 192.168.199.114:20160 \
-                -s tikv2
+    ./bin/tikv-server -S raftkv \
+                      -I 1 \
+                      --pd 192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379 \
+                      --addr 192.168.199.114:20160 \
+                      -s tikv2
                 
-    tikv-server -S raftkv \
-                -I 1 \
-                --pd 192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379 \
-                --addr 192.168.199.115:20160 \
-                -s tikv3
+    ./bin/tikv-server -S raftkv \
+                      -I 1 \
+                      --pd 192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379 \
+                      --addr 192.168.199.115:20160 \
+                      -s tikv3
     ```
 
 3. 在 node1 启动 TiDB.
 
     ```bash
-    tidb-server --store=tikv \
-                --path="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379?cluster=1"
+    ./bin/tidb-server --store=tikv \
+                      --path="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379?cluster=1"
     ```
 
 4. 使用官方 `mysql` 客户端连接 TiDB. 
@@ -142,11 +142,11 @@ cd tidb-latest-linux-amd64
 如果我们需要添加 `pd4`，只需要在 `join` 参数里面填入当前 PD 集群某一个 PD 服务的 `ClientUrls` 就可以了，如下：
 
 ```
-pd-server --cluster-id=1 \
-          --name=pd4 \
-          --client-urls="http://host4:2379"
-          --peer-urls="http://host4:2380"
-          --join="http://host1:2379"
+./bin/pd-server --cluster-id=1 \
+                --name=pd4 \
+                --client-urls="http://host4:2379"
+                --peer-urls="http://host4:2380"
+                --join="http://host1:2379"
 ```
 
 ### TiKV
