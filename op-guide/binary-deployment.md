@@ -15,7 +15,7 @@
 ### Linux 
 
 ```bash
-wget http://oevlfb0z8.bkt.clouddn.com/tidb-latest-linux-amd64.tar.gz
+wget http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz
 tar -xzf tidb-latest-linux-amd64.tar.gz
 cd tidb-latest-linux-amd64
 ```
