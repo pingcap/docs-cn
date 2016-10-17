@@ -12,7 +12,7 @@ TiDB 是一个分布式 NewSQL 数据库。支持水平扩展、高可用、ACID
 
 TiDB 是 SQL 层，主要负责 SQL 的解析、制定查询计划、生成执行器；TiKV 是分布式 Key-Value 存储引擎，用来存储真正的数据。简而言之，TiKV 是 TiDB 的存储引擎。
 
-* PD 是做什么的?
+* Placement Driver (PD) 是做什么的?
 
 PD 是 TiDB 集群的管理组件，负责存储 TiKV 的数据 Meta Data，同时也负责分配时间戳以及对 TiKV 做负载均衡调度。
 
@@ -22,7 +22,7 @@ PD 是 TiDB 集群的管理组件，负责存储 TiKV 的数据 Meta Data，同�
 
 * TiDB 适用的场景是？
 
-如果你的应用对数据库系统有如下的要求的任何一种，那么可以考虑使用 TiDB
+如果你的应用对数据库系统有如下任何一种需求，那么可以考虑使用 TiDB
  * 吞吐，存储，或计算能力的水平扩展
  * 水平伸缩时不停服务
  * 强一致性
@@ -42,7 +42,7 @@ TiDB 遵循 MySQL 的权限管理体系，可以创建用户并授予权限。
 
 **请注意**，在创建用户和授权时，TiDB 有几个和 MySQL 有区别：
  * 创建用户时，用户标识采用 user@hostname 这种语法，其中 hostname 支持精确匹配和全匹配，不支持前缀匹配，也就是只支持 "192.168.199.1" 以及 “%”，而不支持 “192.168.%”
- * TiDB 支持对用户授权，这里只是支持授权语法，并且记录在系统表中，但是实际上只对 DropTable 语句执行时做了权限检查，其他的语句并没有做权限检查。实现用户授权主要是为了兼容用于已有的 MySQL 业务。	
+ * TiDB 支持对用户授权，这里只是支持授权语法，并且记录在系统表中。但是实际上只对 DropTable 语句进行权限检查，对其他的语句并不会做权限检查。实现用户授权主要是为了兼容已有的 MySQL 业务。	
 
 * 如何对 TiDB 进行水平扩展？
 
@@ -72,11 +72,11 @@ TiDB 支持分布式事务。事务模型是以 Google 的 Percolator 模型为�
 
 * TiDB 的 lease 参数应该如何设置？
 
-TiDB 的 lease 参数的值会影响 DDL 的速度（只会影响当前执行 DDL 的 session，其他的 session 不会受影响）。在测试阶段，lease 的值可以设为 1s，加快测试进度；在生产环境下，我们推荐这个值设为分钟级（一般可以设为 300s），这样可以保证 DDL 操作的安全。
+启动 TiDB Server 时，需要通过命令行参数设置 lease 参数（--lease=300），其值会影响 DDL 的速度（只会影响当前执行 DDL 的 session，其他的 session 不会受影响）。在测试阶段，lease 的值可以设为 1s，加快测试进度；在生产环境下，我们推荐这个值设为分钟级（一般可以设为 300s），这样可以保证 DDL 操作的安全。
 
 * 在使用 TiDB 时，DDL 语句为什么这么慢？
 
-TiDB 实现了 Google F1 的在线 Schema 变更算法（具体参见 [F1 论文](http://research.google.com/pubs/pub41376.html) 和[我们的一篇 Blog](https://github.com/ngaut/builddatabase/blob/master/f1/schema-change.md)）。 一般情况下，DDL 并不是一个频繁的操作，我们首先要保证的是数据的一致性以及线上业务不 block。一个完整的 DDL 过程会有 2 到 5 个阶段（取决于语句类型），每个阶段至少会执行 2*lease 时间，假设 lease 设为 5分钟，对于 Drop Table 语句（需要两个阶段），会执行 2*2*5 = 20分钟。我们也了解过 Google 内部在 F1 上是如何做 DDL，一般是提交给 DBA，DBA 再通过专用的工具执行，执行的时间会很长，一般是天级别。
+TiDB 实现了 Google F1 的在线 Schema 变更算法（具体参见 [F1 论文](http://research.google.com/pubs/pub41376.html) 和[我们的一篇 Blog](https://github.com/ngaut/builddatabase/blob/master/f1/schema-change.md)）。 一般情况下，DDL 并不是一个频繁的操作，我们首先要保证的是数据的一致性以及线上业务不受影响。一个完整的 DDL 过程会有 2 到 5 个阶段（取决于语句类型），每个阶段至少会执行 2*lease 时间，假设 lease 设为 5分钟，对于 Drop Table 语句（需要两个阶段），会执行 2*2*5 = 20分钟。我们也了解过 Google 内部在 F1 上是如何做 DDL，一般是提交给 DBA，DBA 再通过专用的工具执行，执行的时间会很长，一般是天级别。
 
 * 和 MySQL/Oracle 等传统关系型数据库相比，TiDB 有什么优势？
 
@@ -88,8 +88,8 @@ TiDB 在提供水平扩展特性的同时，还能提供 SQL 以及分布式事�
 
 * 如何将一个运行在 MySQL 上的应用迁移到 TiDB 上?
 
-TiDB 支持绝大多数 MySQL 语法一般不需要修改代码。我们提供了一个[检查工具](https://github.com/pingcap/tidb-tools/tree/master/checker)，用于检查 MySQL 中的 Schema 是否和 TiDB 兼容。
+TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提供了一个[检查工具](https://github.com/pingcap/tidb-tools/tree/master/checker)，用于检查 MySQL 中的 Schema 是否和 TiDB 兼容。
 
 * TiDB 是否支持其他存储引擎?
 
-是的。除了 TiKV 之外，TiDB 还支持一些流行的存储引擎，比如 GolevelDB, RocksDB,  BoltDB 等。TiDB 要求存储引擎是一个支持事务的 KV 引擎，并且能提供一个满足 TiDB 的接口要求的 Client，即可接入 TiDB。
+是的。除了 TiKV 之外，TiDB 还支持一些流行的存储引擎，比如 GolevelDB, RocksDB,  BoltDB 等。如果一个存储引擎是支持事务的 KV 引擎，并且能提供一个满足 TiDB 接口要求的 Client，即可接入 TiDB。
