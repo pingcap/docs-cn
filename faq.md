@@ -14,7 +14,7 @@ TiDB 是 SQL 层，主要负责 SQL 的解析、制定查询计划、生成执�
 
 ### Placement Driver (PD) 是做什么的?
 
-PD 是 TiDB 集群的管理组件，负责存储 TiKV 的数据 Meta Data，同时也负责分配时间戳以及对 TiKV 做负载均衡调度。
+PD 是 TiDB 集群的管理组件，负责存储 TiKV 的元数据，同时也负责分配时间戳以及对 TiKV 做负载均衡调度。
 
 ### TiDB 用起来简单吗？
 
@@ -22,11 +22,11 @@ PD 是 TiDB 集群的管理组件，负责存储 TiKV 的数据 Meta Data，同�
 
 ### TiDB 适用的场景是？
 
-如果你的应用对数据库系统有如下任何一种需求，那么可以考虑使用 TiDB
- + 吞吐，存储，或计算能力的水平扩展
+原业务的 MySQL 的业务遇到单机容量或者性能瓶颈时，可以考虑使用 TiDB 无缝替换 MySQL。TiDB 可以提供如下特性：
+ + 吞吐、存储和计算能力的水平扩展
  + 水平伸缩时不停服务
  + 强一致性
- + 分布式事务
+ + 分布式 ACID 事务
 
 ### TiDB 不适用于哪些场景?
 
@@ -56,7 +56,7 @@ TiDB 遵循 MySQL 的权限管理体系，可以创建用户并授予权限。
 
 ### TiDB 高可用的特性是怎么样的？
 
-高可用是 TiDB 的另一大特点，TiDB/TiKV/PD 这三个组件都能容忍部分实例失效，不影响整个集群的可用性。具体见 [ TiDB 高可用性](https://github.com/pingcap/docs-cn#高可用)
+高可用是 TiDB 的另一大特点，TiDB/TiKV/PD 这三个组件都能容忍部分实例失效，不影响整个集群的可用性。具体见 [TiDB 高可用性](https://github.com/pingcap/docs-cn#高可用)
 
 ### TiDB 的强一致特性是什么样的？
 
@@ -64,7 +64,7 @@ TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强
 
 ### TiDB 支持分布式事务吗？
 
-TiDB 支持分布式事务。事务模型是以 Google 的 Percolator 模型为基础，并做了一些优化。这个模型需要一个时间戳分配器，分配唯一且递增的时间戳。在 TiDB 集群中，PD 承担时间戳分配器的角色。
+TiDB 支持 ACID 分布式事务。事务模型是以 Google 的 Percolator 模型为基础，并做了一些优化。这个模型需要一个时间戳分配器，分配唯一且递增的时间戳。在 TiDB 集群中，PD 承担时间戳分配器的角色。
 
 ### 在使用 TiDB 时，我需要用什么编程语言？
 
@@ -92,4 +92,4 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提�
 
 ### TiDB 是否支持其他存储引擎?
 
-是的。除了 TiKV 之外，TiDB 还支持一些流行的存储引擎，比如 GolevelDB, RocksDB,  BoltDB 等。如果一个存储引擎是支持事务的 KV 引擎，并且能提供一个满足 TiDB 接口要求的 Client，即可接入 TiDB。
+是的。除了 TiKV 之外，TiDB 还支持一些流行的单机存储引擎，比如 GolevelDB, RocksDB,  BoltDB 等。如果一个存储引擎是支持事务的 KV 引擎，并且能提供一个满足 TiDB 接口要求的 Client，即可接入 TiDB。
