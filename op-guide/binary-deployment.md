@@ -15,9 +15,30 @@
 ### Linux 
 
 ```bash
+# 下载压缩包
 wget http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz
+wget http://download.pingcap.org/tidb-latest-linux-amd64.sha256
+
+# 检查文件完整性，返回 ok 则正确
+sha256sum -c tidb-latest-linux-amd64.sha256
+
+# 解开压缩包
 tar -xzf tidb-latest-linux-amd64.tar.gz
 cd tidb-latest-linux-amd64
+```
+#### CentOS6
+
+```bash
+# 下载 CentOS6 压缩包
+wget http://download.pingcap.org/tidb-latest-linux-amd64-centos6.tar.gz
+wget http://download.pingcap.org/tidb-latest-linux-amd64-centos6.sha256
+
+# 检查文件完整性，返回 ok 则正确
+sha256sum -c tidb-latest-linux-amd64-centos6.sha256
+
+# 解开压缩包
+tar -xzf tidb-latest-linux-amd64-centos6.tar.gz
+cd tidb-latest-linux-amd64-centos6
 ```
 
 ## 单节点方式快速部署
