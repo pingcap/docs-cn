@@ -55,10 +55,9 @@ cd tidb-latest-linux-amd64-centos6
 2. 启动 TiKV.
 
     ```bash
-    ./bin/tikv-server -I 1 \
-                      -S raftkv \
-                      --pd 127.0.0.1:2379 \
-                      -s tikv
+    ./bin/tikv-server --cluster-id=1 \
+                      --pd="127.0.0.1:2379" \
+                      --store=tikv
     ```
 
 3. 启动 TiDB.
@@ -116,23 +115,20 @@ cd tidb-latest-linux-amd64-centos6
 2. 在每个节点启动 TiKV.
 
     ```bash
-    ./bin/tikv-server -S raftkv \
-                      -I 1 \
-                      --pd 192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379 \
-                      --addr 192.168.199.113:20160 \
-                      -s tikv1
+    ./bin/tikv-server --cluster-id=1 \
+                      --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
+                      --addr="192.168.199.113:20160" \
+                      --store=tikv1
     
-    ./bin/tikv-server -S raftkv \
-                      -I 1 \
-                      --pd 192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379 \
-                      --addr 192.168.199.114:20160 \
-                      -s tikv2
+    ./bin/tikv-server --cluster-id=1 \
+                      --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
+                      --addr="192.168.199.114:20160" \
+                      --store=tikv2
                 
-    ./bin/tikv-server -S raftkv \
-                      -I 1 \
-                      --pd 192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379 \
-                      --addr 192.168.199.115:20160 \
-                      -s tikv3
+    ./bin/tikv-server --cluster-id=1 \
+                      --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
+                      --addr="192.168.199.115:20160" \
+                      --store=tikv3
     ```
 
 3. 在 node1 启动 TiDB.
