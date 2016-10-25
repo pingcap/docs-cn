@@ -8,7 +8,8 @@ TiDB 集群状态监控目前有两种接口，第一种是通过 HTTP 接口对
 
 ### TiDB Server
 TiDB 对外暴露的 HTTP 接口是 http://host:port/status，默认的端口号是 10080 （可以通过 --status 参数设置），可以通过访问这个接口获取当前 TiDB Server 的状态，以及判断是否存活。返回结果是 **Json** 格式：
-```
+```bash
+curl http://127.0.0.1:10080/status
 {
 connections: 0,
 version: "5.5.31-TiDB-1.0",
@@ -23,10 +24,10 @@ git_hash: "b99521846ff6f71f06e2d49a3f98fa1c1d93d91b"
 PD API 地址： http://${host}:${port}/pd/api/v1/${api_name}
 其中 port 默认为 2379，各类 api_name 详细信息参见 [PD API Doc](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html)
 通过这个接口可以获取当前所有 TiKV 的状态以及负载均衡信息。其中最重要也是最常用的接口获取 TiKV 集群所有节点状态的接口，下面以一个单个 TiKV 构成的集群为例，说明一些用户需要了解的信息：
-```
+```bash
 curl http://127.0.0.1:2379/pd/api/v1/stores
 {
-  "count": 1, // TiKV 节点数量
+  "count": 1,  TiKV 节点数量
   "stores": [  // TiKV 节点的列表
    // 下面列出的是这个集群中单个 TiKV 节点的信息 
    {
@@ -105,7 +106,7 @@ Grafana
 设置 --metrics-addr 和 --metrics-interval 两个参数，其中 metrics-addr 设为 push gateway 的地址，metrics-interval 为 push 的频率，单位为秒，默认值为15
 + PD
 修改 toml 配置文件，填写 push gateway 的地址和推送频率
-```
+```toml
 [metric]
 # prometheus client push interval, set "0s" to disable prometheus.
 interval = "15s"
@@ -115,7 +116,7 @@ address = "host:port"
 
 + TiKV
 修改 toml 配置文件，填写 push gateway 的地址和推送频率，job 字段一般设为“tikv”
-```
+```toml
 [metric]
 # the Prometheus client push interval. Setting the value to 0s stops Prometheus client from pushing.
 interval = "15s"
@@ -130,7 +131,7 @@ job = "tikv"
  
 + Prometheus 配置
 在 yaml 配置文件中添加 pushgateway 地址：
-```
+```yaml
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
   - job_name: 'TiDB'
