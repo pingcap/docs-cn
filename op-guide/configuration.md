@@ -192,9 +192,9 @@ TiKV supports some human readable conversion.
 
 ### -S, --dsn
 
-+ the DSN to use, "rocksdb" or "raftkv"
-+ default: "rocksdb"
-+ You must set the value to "raftkv" in production, because "rocksdb" is for local test only.
++ the DSN to use
++ default: "raftkv"
++ The flag is deprecated now. 
 
 ### -I, --cluster-id
 

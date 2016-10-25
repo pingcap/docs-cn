@@ -140,7 +140,6 @@ docker run --net ${net} -d --name tikv1 \
   --addr="0.0.0.0:20160" \
   --advertise-addr="tikv1:20160" \
   --store="/tidata/tikv1" \
-  --dsn=raftkv \
   --pd="pd1:2379,pd2:2379,pd3:2379" \
   --cluster-id=1
 ```
@@ -155,7 +154,6 @@ docker run --net ${net} -d --name tikv2 \
   --addr="0.0.0.0:20160" \
   --advertise-addr="tikv2:20160" \
   --store="/tidata/tikv2" \
-  --dsn=raftkv \
   --pd="pd1:2379,pd2:2379,pd3:2379" \
   --cluster-id=1
 ```
@@ -170,7 +168,6 @@ docker run --net ${net} -d --name tikv3 \
   --addr="0.0.0.0:20160" \
   --advertise-addr="tikv3:20160" \
   --store="/tidata/tikv3" \
-  --dsn=raftkv \
   --pd="pd1:2379,pd2:2379,pd3:2379" \
   --cluster-id=1
 ```
@@ -301,7 +298,6 @@ services:
       - --cluster-id=1
       - --addr=0.0.0.0:20160
       - --advertise-addr=tikv1:20160
-      - --dsn=raftkv
       - --store=/var/tikv
       - --pd=pd1:2379,pd2:2379,pd3:2379
 
@@ -325,7 +321,6 @@ services:
       - --cluster-id=1
       - --addr=0.0.0.0:20160
       - --advertise-addr=tikv2:20160
-      - --dsn=raftkv
       - --store=/var/tikv
       - --pd=pd1:2379,pd2:2379,pd3:2379
 
@@ -349,7 +344,6 @@ services:
       - --cluster-id=1
       - --addr=0.0.0.0:20160
       - --advertise-addr=tikv3:20160
-      - --dsn=raftkv
       - --store=/var/tikv
       - --pd=pd1:2379,pd2:2379,pd3:2379
 

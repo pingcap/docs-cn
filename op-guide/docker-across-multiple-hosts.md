@@ -102,7 +102,6 @@ docker run -d --name tikv1 \
   --addr="0.0.0.0:20160" \
   --advertise-addr="${host1}:20160" \
   --store="/tidata/tikv1" \
-  --dsn=raftkv \
   --pd="${host1}:2379,${host2}:2379,${host3}:2379" \
   --cluster-id=1
 ```
@@ -117,7 +116,6 @@ docker run -d --name tikv2 \
   --addr="0.0.0.0:20160" \
   --advertise-addr="${host2}:20160" \
   --store="/tidata/tikv2" \
-  --dsn=raftkv \
   --pd="${host1}:2379,${host2}:2379,${host3}:2379" \
   --cluster-id=1
 ```
@@ -132,7 +130,6 @@ docker run -d --name tikv3 \
   --addr="0.0.0.0:20160" \
   --advertise-addr="${host3}:20160" \
   --store="/tidata/tikv3" \
-  --dsn=raftkv \
   --pd="${host1}:2379,${host2}:2379,${host3}:2379" \
   --cluster-id=1
 ```
