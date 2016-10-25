@@ -7,7 +7,7 @@ TiDB 集群状态监控目前有两种接口，第一种是通过 HTTP 接口对
 这类接口可以获取组件的一些基本信息，并且可以作为 keepalive 监测接口。另外 PD 的接口可以看到整个 TiKV 集群的详细信息。
 
 ### TiDB Server
-TiDB 对外暴露的 HTTP 接口是 http://host:port/status，默认的端口号是 10080 （可以通过 --status 参数设置），可以通过访问这个接口获取当前 TiDB Server 的状态，以及判断是否存活。返回结果是 Json 格式：
+TiDB 对外暴露的 HTTP 接口是 http://host:port/status，默认的端口号是 10080 （可以通过 --status 参数设置），可以通过访问这个接口获取当前 TiDB Server 的状态，以及判断是否存活。返回结果是 **Json** 格式：
 ```
 {
 connections: 0,
@@ -104,7 +104,7 @@ Grafana
 + TiDB
 设置 --metrics-addr 和 --metrics-interval 两个参数，其中 metrics-addr 设为 push gateway 的地址，metrics-interval 为 push 的频率，单位为秒，默认值为15
 + PD
-修改配置文件，填写 push gateway 的地址和推送频率
+修改 toml 配置文件，填写 push gateway 的地址和推送频率
 ```
 [metric]
 # prometheus client push interval, set "0s" to disable prometheus.
@@ -114,7 +114,7 @@ address = "host:port"
 ```
 
 + TiKV
-修改配置文件，填写 push gateway 的地址和推送频率，job 字段一般设为“tikv”
+修改 toml 配置文件，填写 push gateway 的地址和推送频率，job 字段一般设为“tikv”
 ```
 [metric]
 # the Prometheus client push interval. Setting the value to 0s stops Prometheus client from pushing.
@@ -129,29 +129,26 @@ job = "tikv"
 一般无需特殊配置，使用默认端口 9091 即可
  
 + Prometheus 配置
-在配置文件中添加 pushgateway 地址：
+在 yaml 配置文件中添加 pushgateway 地址：
 ```
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
   - job_name: 'TiDB'
 
-
     # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 5s
-
-
+    
+    honor_labels:true
+    
     static_configs:
       - targets: ['host:port'] # 这里填写 pushgateway 地址
         labels:
                 group: 'production'
 ```
 #### Grafana 配置
-```
-进入 grafana Web 界面 ，默认3000端口
-    添加 datasource:
-  图标 Logo -> Data Sources -> Add data source
-            Type 选择 Promethus，url 填 promethus address，Access 选择 direct
-             将 Default 勾选上
-　导入 dashboard 配置文件：
-　　　 图标 Logo -> Dashboards -> Import -> Upload 
-```
+
++ 进入 grafana Web 界面（默认3000端口），添加 datasource
+图标 Logo -> Data Sources -> Add data source。
+Type 选择 Promethus，url 填 promethus address，Access 选择 direct，将 Default 勾选上
++ 导入 dashboard 配置文件
+图标 Logo -> Dashboards -> Import -> Upload 
