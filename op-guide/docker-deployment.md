@@ -1,9 +1,22 @@
-# Run a TiDB cluster in Docker across multiple hosts
+# TiDB Docker Deployment 
 
-This page shows you an example of how to manually deploy a TiDB cluster using Docker across multiple machines.
-
+To learn the TiDB architecture, see [TiDB Architecture](../README.md#TiDB-Architecture).
 
 ## Preparation
+
+Before you start, make sure that you have:
+
++ Installed the latest version of [Docker](https://www.docker.com/products/docker) 
++ Pulled the TiDB, TiKV and PD docker images. If not, pull the images using the following commands:
+
+```bash
+docker pull pingcap/tidb:latest
+docker pull pingcap/tikv:latest
+docker pull pingcap/pd:latest
+```
+
+## Multi Nodes Deployment
+
 Assume we have 3 machines with the following details:
 
 |Name|Host IP|
@@ -12,17 +25,9 @@ Assume we have 3 machines with the following details:
 |**host2**|192.168.1.101|
 |**host3**|192.168.1.102|
 
-On each host, we have installed Docker with the latest version and pulled the latest Docker images of TiDB, TiKV and PD.
+### 1. Start the `busybox` container as the storage volume for each host
 
-```bash
-docker pull pingcap/tidb:latest
-docker pull pingcap/tikv:latest
-docker pull pingcap/pd:latest
-```
-
-## Step 1. Start the `busybox` container as the storage volume for each host
-
-Run the following command on **host1**, **host2**, **host3** respectively:
+Run the following commands on **host1**, **host2**, **host3** respectively:
 
 ```bash
 export host1=192.168.1.100
@@ -34,7 +39,7 @@ docker run -d --name ti-storage \
   busybox
 ```
 
-## Step 2. Start PD on each host
+### 2. Start PD on each host
 
 **host1:**
 ```bash
@@ -90,7 +95,7 @@ docker run -d --name pd3 \
   --initial-cluster="pd1=http://${host1}:2380,pd2=http://${host2}:2380,pd3=http://${host3}:2380" \
 ```
 
-## Step 3. Start TiKV on each host
+### 3. Start TiKV on each host
 
 **host1:**
 ```bash
@@ -134,7 +139,7 @@ docker run -d --name tikv3 \
   --cluster-id=1
 ```
 
-## Step 4. Start TiDB on **host1**
+### 4. Start TiDB on **host1**
 
 ```bash
 docker run -d --name tidb \
@@ -147,7 +152,7 @@ docker run -d --name tidb \
   -L warn
 ```
 
-## Step 5. Use the official MySQL client to connect to TiDB and enjoy it.
+### 5. Use the official MySQL client to connect to TiDB and enjoy it.
 
 ```bash
 mysql -h 127.0.0.1 -P 4000 -u root -D test

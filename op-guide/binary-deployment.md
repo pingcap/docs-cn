@@ -1,10 +1,50 @@
-# Clustering
+# TiDB Binary Deployment
 
 ## Overview
 
 A complete TiDB project contains PD, TiKV, TiDB. The start-up sequence is PD -> TiKV -> TiDB.
 
-## A standalone cluster
+To learn the TiDB architecture, see [TiDB Architecture](../README.md#TiDB-Architecture).
+
+To quickly understand and try TiDB, follow [Standalone Cluster Deployment](#standalone-cluster-deployment).
+
+To deploy and use TiDB in production, follow [Multi Nodes Deployment](#multi-nodes-deployment).
+
+## Download and Decompress the Official Binary Package
+
+### Linux
+
+Note: The Linux package does not support the CentOS 6 platform. See [CentOS 6](#centos-6) to download and decompress the CentOS 6 package.
+
+```bash
+# Download package
+wget http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz
+wget http://download.pingcap.org/tidb-latest-linux-amd64.sha256
+
+# Verify the integrity
+sha256sum -c tidb-latest-linux-amd64.sha256
+
+# Decompress the package
+tar -xzf tidb-latest-linux-amd64.tar.gz
+cd tidb-latest-linux-amd64
+```
+
+#### CentOS 6
+
+```bash
+# Download CentOS 6 package
+wget http://download.pingcap.org/tidb-latest-linux-amd64-centos6.tar.gz
+wget http://download.pingcap.org/tidb-latest-linux-amd64-centos6.sha256
+
+# Verify the integrity
+sha256sum -c tidb-latest-linux-amd64-centos6.sha256
+
+# Decompress the package
+tar -xzf tidb-latest-linux-amd64-centos6.tar.gz
+cd tidb-latest-linux-amd64-centos6
+```
+
+## Standalone Cluster Deployment
 
 1. Start PD.
 
@@ -34,7 +74,7 @@ A complete TiDB project contains PD, TiKV, TiDB. The start-up sequence is PD -> 
     mysql -h 127.0.0.1 -P 4000 -u root -D test
     ```
 
-## A 3-node multi-machine cluster
+## Multi Nodes Deployment
 
 Assume we have three machines with the following details:
 
@@ -46,7 +86,7 @@ Assume we have three machines with the following details:
 
 We run PD and TiKV on every node and TiDB on node1 only.
 
-**Note: This is just a demonstration here, please follow [Recommendations](./overview.md#deploying-recommendations) to deploy the cluster in production.**
+**Note: This is just for demonstration, follow [Recommendation](./recommendation.md) to deploy the cluster in production.**
 
 1. Start PD on every node.
 
@@ -119,7 +159,7 @@ You can use `join` to start a new PD server and add it to an existing PD cluster
 
 If you want to add `pd4`, you can use `join` to do it:
 
-```
+```bash
 ./bin/pd-server --cluster-id=1 \
                 --name=pd4 \
                 --client-urls="http://host4:2379"
