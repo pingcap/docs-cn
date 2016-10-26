@@ -148,17 +148,10 @@ scrape_configs:
 ```
 #### Grafana 配置
 
-进入 Grafana Web 界面（默认地址: http://localhost:3000，默认账号: admin 密码: admin）
++ 进入 Grafana Web 界面（默认地址: http://localhost:3000，默认账号: admin 密码: admin）
 
-1. 点击 grafana Logo 
-2. 点击 Data Sources
-3. 点击 Add data source
-4. 填写 data source 信息。注: Type 选Prometheus，Url 为 Prometheus 地址，其他根据实际情况填写
+  点击 grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息 ( 注: Type 选 Prometheus，Url 为 Prometheus 地址，其他根据实际情况填写 ）
 
-导入 dashboard 配置文件
++ 导入 dashboard 配置文件
 
-1. 点击 grafana Logo 
-2. 点击 Data Sources
-3. 点击 Import　
-4. 选择需要的 dashboard 配置文件上传
-5. 选择对应的 data source
+  点击 grafana Logo -> 点击 Data Sources -> 点击 Import -> 选择需要的 dashboard 配置文件上传 -> 选择对应的 data source
