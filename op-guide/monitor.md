@@ -59,7 +59,7 @@ curl http://127.0.0.1:2379/pd/api/v1/stores
 ```
 
 ## Metrics 监控
-这部分主要对整个集群的状态、性能做监控，通过 prometheus+grafana 展现 metrics 数据，在下面一节会介绍如何搭建监控系统。
+这部分主要对整个集群的状态、性能做监控，通过 Prometheus+Grafana 展现 metrics 数据，在下面一节会介绍如何搭建监控系统。
 
 ### TiDB Server
 + query 处理时间，可以看到延迟和吞吐
@@ -103,9 +103,9 @@ Grafana
 ### 配置
 #### TiDB/PD/TiKV 配置
 + TiDB
-设置 --metrics-addr 和 --metrics-interval 两个参数，其中 metrics-addr 设为 push gateway 的地址，metrics-interval 为 push 的频率，单位为秒，默认值为15
+设置 --metrics-addr 和 --metrics-interval 两个参数，其中 metrics-addr 设为 Push Gateway 的地址，metrics-interval 为 push 的频率，单位为秒，默认值为15
 + PD
-修改 toml 配置文件，填写 push gateway 的地址和推送频率
+修改 toml 配置文件，填写 Push Gateway 的地址和推送频率
 ```toml
 [metric]
 # prometheus client push interval, set "0s" to disable prometheus.
@@ -115,7 +115,7 @@ address = "host:port"
 ```
 
 + TiKV
-修改 toml 配置文件，填写 push gateway 的地址和推送频率，job 字段一般设为“tikv”
+修改 toml 配置文件，填写 Push Gateway 的地址和推送频率，job 字段一般设为“tikv”
 ```toml
 [metric]
 # the Prometheus client push interval. Setting the value to 0s stops Prometheus client from pushing.
@@ -130,7 +130,7 @@ job = "tikv"
 一般无需特殊配置，使用默认端口 9091 即可
  
 + Prometheus 配置
-在 yaml 配置文件中添加 pushgateway 地址：
+在 yaml 配置文件中添加 Push Gateway  地址：
 ```yaml
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
@@ -148,7 +148,7 @@ scrape_configs:
 ```
 #### Grafana 配置
 
-+ 进入 grafana Web 界面（默认3000端口），添加 datasource
++ 进入 Grafana Web 界面（默认3000端口），添加 datasource
 图标 Logo -> Data Sources -> Add data source。
 Type 选择 Promethus，url 填 promethus address，Access 选择 direct，将 Default 勾选上
 + 导入 dashboard 配置文件
