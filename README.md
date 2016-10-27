@@ -49,4 +49,5 @@ TiKV 是一个集群，通过 Raft 协议保持数据的一致性（副本数量
 - [部署建议](op-guide/recommendation.md)
 - [Binary 部署方案（推荐）](op-guide/binary-deployment.md)
 - [Docker 部署方案](op-guide/docker-deployment.md)
+- [组件状态 API & 监控](op-guide/monitor.md)
 - [数据迁移](op-guide/migration.md)
