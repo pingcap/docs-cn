@@ -183,7 +183,7 @@ mysql> select * from t2;
 
 TiDB 提供 `syncer` 工具能方便的将 MySQL 的数据增量的导入到 TiDB 里面。
 
-`syncer` 也属于 TiDB 工具集，如何获取可以参考 [下载 TiDB 工具集](#下载-TiDB-工具集)。
+`syncer` 也属于 TiDB 工具集，如何获取可以参考 [下载 TiDB 工具集](#下载-tidb-工具集)。
 
 假设我们之前已经使用 `mydumper`/`myloader` 导入了 `t1` 和 `t2` 两张表的一些数据，现在我们希望这两张表的任何更新，都是实时的同步到 TiDB 上面。
 
