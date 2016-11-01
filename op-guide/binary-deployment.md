@@ -12,7 +12,7 @@
 
 ## 下载官方 Binary
 
-### Linux 
+### Linux (CentOS7+, Ubuntu14.04+)
 
 ```bash
 # 下载压缩包
@@ -26,7 +26,7 @@ sha256sum -c tidb-latest-linux-amd64.sha256
 tar -xzf tidb-latest-linux-amd64.tar.gz
 cd tidb-latest-linux-amd64
 ```
-#### CentOS6
+#### CentOS6（不推荐）
 
 ```bash
 # 下载 CentOS6 压缩包
