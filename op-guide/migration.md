@@ -13,9 +13,9 @@
 
 ## 使用 checker 进行 Schema 检查
 
-在迁移之前，我们可以使用 TiDB 的 checker 工具，来预先检查 TiDB 是否能支持需要迁移的 table schema。如果 check 某个 table schema 失败，表明 TiDB 当前并不支持，我们不能对该 table 里面的数据进行迁移。
+在迁移之前，我们可以使用 TiDB 的 `checker` 工具，来预先检查 TiDB 是否能支持需要迁移的 table schema。如果 check 某个 table schema 失败，表明 TiDB 当前并不支持，我们不能对该 table 里面的数据进行迁移。`checker` 包含在 TiDB 工具集里面，我们可以直接下载。
 
-### 下载官方 Binary
+### 下载 TiDB 工具集
 
 #### Linux
 
@@ -31,7 +31,7 @@ tar -xzf tidb-tools-latest-linux-amd64.tar.gz
 cd tidb-tools-latest-linux-amd64
 ```
 
-### 使用 `checker` 检查
+### 使用 `checker` 检查的一个示范
 
 + 在 MySQL 的 test database 里面创建几张表，并插入数据:
 
@@ -101,11 +101,11 @@ github.com/pingcap/tidb/parser/yy_parser.go:124:
 
 我们使用 `mydumper` 从 MySQL 导出数据，然后用 `myloader` 将其导入到 TiDB 里面。
 
-注意，虽然我们也支持使用 MySQL 官方的  `mysqldump` 工具来进行数据的迁移工作，但相比于 `mydumper`/`myloader`，性能会慢很多，对于大量数据的迁移会花费很多时间，这里我们并不推荐。
+**注意，虽然我们也支持使用 MySQL 官方的  `mysqldump` 工具来进行数据的迁移工作，但相比于 `mydumper`/`myloader`，性能会慢很多，对于大量数据的迁移会花费很多时间，这里我们并不推荐。**
 
-`mydumper`/`myloader` 是一个 更强大的数据迁移工具，具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)，你可以自行下载代码编译按照，但这里推荐我们已经编译好的二进制版本，直接使用。
+`mydumper`/`myloader` 是一个更强大的数据迁移工具，具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)。
 
-### 下载官方 Binary
+### 下载 Binary
 
 #### Linux
 
@@ -143,7 +143,7 @@ cd mydumper-linux-amd64
 ./bin/myloader -h 127.0.0.1 -P 4000 -u root -t 16 -q 1 -d ./var/test
 ```
 
-这里 `-q 1` 表明每个事物包含多少个 query，默认是 1000，我们这里使用 1 就可以了。
+这里 `-q 1` 表明每个事务包含多少个 query，默认是 1000，我们这里使用 1 就可以了。
 
 导入成功之后，我们可以用 MySQL 官方客户端进入 TiDB，查看:
 
@@ -181,9 +181,9 @@ mysql> select * from t2;
 
 上面我们介绍了如何使用 `mydumper`/`myloader` 将 MySQL 的数据全量导入到 TiDB，但如果后续 MySQL 的数据有更新，我们仍然希望快速导入，使用全量的方式就不合适了。
 
-TiDB 提供 `syncer` 工具能方便的将 MySQL 的数据增量的导入到 TiDB 里面。`syncer` 工具。
+TiDB 提供 `syncer` 工具能方便的将 MySQL 的数据增量的导入到 TiDB 里面。
 
-`syncer` 的可执行文件跟 `checker` 都放在 TiDB tool 下面，如何获取可以参考 [使用 checker 进行 Schema 检查](#使用-check-进行-Schema-检查)。
+`syncer` 也属于 TiDB 工具集，如何获取可以参考 [下载 TiDB 工具集](#下载-TiDB-工具集)。
 
 假设我们之前已经使用 `mydumper`/`myloader` 导入了 `t1` 和 `t2` 两张表的一些数据，现在我们希望这两张表的任何更新，都是实时的同步到 TiDB 上面。
 
