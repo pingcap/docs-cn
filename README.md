@@ -4,7 +4,7 @@
 
 + TiDB 简介 & 整体架构
   - [TiDB 简介及核心 NewSQL 特性](#tidb-简介)
-  - [TiDB 整体架构](#tidb-架构)
+  - [TiDB 整体架构](#tidb-架构)
 + 安装 & 部署
   - [部署建议](op-guide/recommendation.md)
   - [Binary 下载](op-guide/binary-deployment.md#下载官方-binary)
