@@ -10,27 +10,35 @@
   - [Binary 下载](op-guide/binary-deployment.md#下载官方-binary)
   - [Binary 部署方案（推荐）](op-guide/binary-deployment.md)
   - [Docker 部署方案](op-guide/docker-deployment.md)
-  - 配置 & 参数解释(TODO)
+  - 配置 & 参数解释
 + 运维 & 监控
- - 整体监控框架概述(TODO)
+ - 整体监控框架概述
  - [组件状态 API & 监控](op-guide/monitor.md)
 + SQL 兼容及对比
  - [TiDB SQL 文法](https://pingcap.github.io/sqlgram/)
- - [与 MySQL 兼容性对比]()(TODO)
+ - 与 MySQL 兼容性对比
 + [常用工具](https://github.com/pingcap/tidb-tools)
 + [常见问题与解答](./faq.md)
-+ 故障诊断(TODO)
-+ 使用示例(TODO)
++ 故障诊断
++ 使用示例
 + 高级功能
-  - 数据迁移方法(TODO)
-  - 性能调优(TODO)
+  - 数据迁移方法
+  - 性能调优
   - [读取历史版本数据](op-guide/history-read.md)
 + 更多资源
   - [PingCAP 团队技术博客](http://www.pingcap.com/bloglist.html)
 
 ## TiDB 简介
 
-TiDB 是一个可以无限水平扩展和高可用的 NewSQL 数据库，本文档用于帮助技术人员（特别是运维人员）理解 TiDB 的整体架构，水平扩展和高可用特性。
+TiDB 是 PingCAP 公司基于 Google Spanner / F1 论文实现的分布式 NewSQL 数据库。
+
+TiDB 具备如下 NewSQL 核心特性
+ * SQL支持 （TiDB 是 MySQL 兼容的）
+ * 水平线性弹性扩展（容量、并发、吞吐量）
+ * 分布式事务，数据强一致性保证
+ * 故障自恢复的高可用 （auto failover）
+
+TiDB 是传统的数据库中间件、数据库分库分表等 Sharding 方案非常优雅而理想的替换和解决方案。
 
 ### TiDB 架构
 
