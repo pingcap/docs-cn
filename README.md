@@ -12,7 +12,7 @@
   - [Docker 部署方案](op-guide/docker-deployment.md)
   - 配置 & 参数解释
 + 运维 & 监控
- - 整体监控框架概述
+ - [整体监控框架概述](op-guide/monitor-overview.md)
  - [组件状态 API & 监控](op-guide/monitor.md)
 + SQL 兼容及对比
  - [TiDB SQL 文法](https://pingcap.github.io/sqlgram/)
