@@ -12,7 +12,7 @@
 
 ## 下载官方 Binary
 
-### Linux 
+### Linux (CentOS 7+, Ubuntu 14.04+)
 
 ```bash
 # 下载压缩包
@@ -26,7 +26,7 @@ sha256sum -c tidb-latest-linux-amd64.sha256
 tar -xzf tidb-latest-linux-amd64.tar.gz
 cd tidb-latest-linux-amd64
 ```
-#### CentOS6
+#### CentOS 6（不推荐）
 
 ```bash
 # 下载 CentOS6 压缩包
@@ -171,8 +171,27 @@ cd tidb-latest-linux-amd64-centos6
 动态新加入一个新的 TiKV 服务是非常容易的，我们可以直接启动一个 TiKV 服务，PD 会自动检测到，
 并开始做整个集群的 balance，将其他 TiKV 的数据移动到新加入的 TiKV 里面。
 
-我们也能够显示的告诉 PD 去删除某个 TiKV。PD 会认为这个 TiKV 已经是 dead 了，如果某一个 region 
-原先有数据属于这个 TiKV，PD 就会选择一个新的 TIKV 给这个 region，重新做 balance。
+我们也能够显式的告诉 PD 去删除某个 TiKV。PD 会先把这个 TiKV 标记为正在下线的状态，
+然后把这个 TiKV 上的数据均匀地迁移到其他 TiKV 上面。当这个 TiKV 上的数据已经迁移
+完了，PD 会把这个 TiKV 标记为完成下线的状态，这时候就可以安全地把这个 TiKV 从集
+群中去掉。
+
+假设我们要删除一个 store id 为 1 的 TiKV，可以调用 PD 的 HTTP API 来操作：
+
+```
+curl -X DELETE http://host:port/pd/api/v1/store/1
+```
+
+然后可以查看这个 TiKV 的当前状态：
+
+```
+curl http://host:port/pd/api/v1/store/1
+```
+
+如果这个 TiKV 正在下线，对应的 state=1，如果这个 TiKV 完成下线，对应的 state=2，
+否则 state=0。
+
+更详细的 API 文档可以参考 [PD APIv1](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html)。
 
 ### TiDB
 
