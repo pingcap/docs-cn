@@ -3,8 +3,8 @@
 ## 目录
 
 + TiDB 简介 & 整体架构
-  - [TiDB 简介及核心 NewSQL 特性](#TiDB-简介)
-  - [TiDB 整体架构](#TiDB-架构)
+  - [TiDB 简介及核心 NewSQL 特性](#tidb-简介)
+  - [TiDB 整体架构](#tidb-架构)
 + 安装 & 部署
   - [部署建议](op-guide/recommendation.md)
   - [Binary 下载](op-guide/binary-deployment.md#下载官方-binary)
@@ -18,14 +18,16 @@
  - [TiDB SQL 文法](https://pingcap.github.io/sqlgram/)
  - [与 MySQL 兼容性对比]()(TODO)
 + [常用工具](https://github.com/pingcap/tidb-tools)
-+ 数据迁移方法(TODO)
-+ 性能调优(TODO)
 + [常见问题与解答](./faq.md)
 + 故障诊断(TODO)
 + 使用示例(TODO)
++ 高级功能
+  - 数据迁移方法(TODO)
+  - 性能调优(TODO)
+  - [读取历史版本数据](op-guide/history-read.md)
+    
 + 更多资源
   - [PingCAP 团队技术博客](http://www.pingcap.com/bloglist.html)
-  - [读取历史版本数据](op-guide/history-read.md)
 
 ## TiDB 简介
 
