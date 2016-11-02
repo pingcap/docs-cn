@@ -22,10 +22,9 @@
 + 故障诊断(TODO)
 + 使用示例(TODO)
 + 高级功能
-  - 数据迁移方法(TODO)
-  - 性能调优(TODO)
+  - 数据迁移方法(TODO)
+  - 性能调优(TODO)
   - [读取历史版本数据](op-guide/history-read.md)
-    
 + 更多资源
   - [PingCAP 团队技术博客](http://www.pingcap.com/bloglist.html)
 
