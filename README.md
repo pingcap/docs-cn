@@ -16,7 +16,7 @@
  - [组件状态 API & 监控](op-guide/monitor.md)
 + SQL 兼容及对比
  - [TiDB SQL 文法](https://pingcap.github.io/sqlgram/)
- - 与 MySQL 兼容性对比
+ - [与 MySQL 兼容性对比](op-guide/mysql-compatibility.md)
 + [常用工具](https://github.com/pingcap/tidb-tools)
 + [常见问题与解答](./faq.md)
 + 故障诊断
