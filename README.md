@@ -40,7 +40,7 @@ TiDB 具备如下 NewSQL 核心特性
 
 TiDB 是传统的数据库中间件、数据库分库分表等 Sharding 方案非常优雅而理想的替换和解决方案。
 
-### TiDB 架构
+## TiDB 整体架构
 
 要深入了解 TiDB 的水平扩展和高可用特点，首先需要了解 TiDB 的整体架构。
 ![architecture](./op-guide/architecture.png)
