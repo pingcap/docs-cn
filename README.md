@@ -22,7 +22,7 @@
 + 故障诊断
 + 使用示例
 + 高级功能
-  - 数据迁移方法
+  - [数据迁移方法](op-guide/migration.md)
   - 性能调优
   - [读取历史版本数据](op-guide/history-read.md)
 + 更多资源
