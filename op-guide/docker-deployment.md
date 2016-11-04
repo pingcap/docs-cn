@@ -58,7 +58,6 @@ docker run -d --name pd1 \
   -v /etc/localtime:/etc/localtime:ro \
   --volumes-from ti-storage \
   pingcap/pd \
-  --cluster-id=1 \
   --name="pd1" \
   --data-dir="/tidata/pd1" \
   --client-urls="http://0.0.0.0:2379" \
@@ -76,7 +75,6 @@ docker run -d --name pd2 \
   -v /etc/localtime:/etc/localtime:ro \
   --volumes-from ti-storage \
   pingcap/pd \
-  --cluster-id=1 \
   --name="pd2" \
   --data-dir="/tidata/pd2" \
   --client-urls="http://0.0.0.0:2379" \
@@ -94,7 +92,6 @@ docker run -d --name pd3 \
   -v /etc/localtime:/etc/localtime:ro \
   --volumes-from ti-storage \
   pingcap/pd \
-  --cluster-id=1 \
   --name="pd3" \
   --data-dir="/tidata/pd3" \
   --client-urls="http://0.0.0.0:2379" \
@@ -116,8 +113,7 @@ docker run -d --name tikv1 \
   --addr="0.0.0.0:20160" \
   --advertise-addr="${host1}:20160" \
   --store="/tidata/tikv1" \
-  --pd="${host1}:2379,${host2}:2379,${host3}:2379" \
-  --cluster-id=1
+  --pd="${host1}:2379,${host2}:2379,${host3}:2379" 
 ```
 
 **host2:**
@@ -130,8 +126,7 @@ docker run -d --name tikv2 \
   --addr="0.0.0.0:20160" \
   --advertise-addr="${host2}:20160" \
   --store="/tidata/tikv2" \
-  --pd="${host1}:2379,${host2}:2379,${host3}:2379" \
-  --cluster-id=1
+  --pd="${host1}:2379,${host2}:2379,${host3}:2379" 
 ```
 
 **host3:**
@@ -144,8 +139,7 @@ docker run -d --name tikv3 \
   --addr="0.0.0.0:20160" \
   --advertise-addr="${host3}:20160" \
   --store="/tidata/tikv3" \
-  --pd="${host1}:2379,${host2}:2379,${host3}:2379" \
-  --cluster-id=1
+  --pd="${host1}:2379,${host2}:2379,${host3}:2379" 
 ```
 
 ## 4. 在 **host1** 上启动 TiDB
@@ -157,7 +151,7 @@ docker run -d --name tidb \
   -v /etc/localtime:/etc/localtime:ro \
   pingcap/tidb \
   --store=tikv \
-  --path="${host1}:2379,${host2}:2379,${host3}:2379?cluster=1" \
+  --path="${host1}:2379,${host2}:2379,${host3}:2379" \
   -L warn
 ```
 
