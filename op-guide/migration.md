@@ -25,7 +25,7 @@ wget http://download.pingcap.org/tidb-tools-latest-linux-amd64.tar.gz
 wget http://download.pingcap.org/tidb-tools-latest-linux-amd64.sha256
 
 # 检查文件完整性，返回 ok 则正确
-sha256sum -c tidb-tools-latest-linux-amd64.sha256 
+sha256sum -c tidb-tools-latest-linux-amd64.sha256
 # 解开压缩包
 tar -xzf tidb-tools-latest-linux-amd64.tar.gz
 cd tidb-tools-latest-linux-amd64
@@ -115,7 +115,7 @@ wget http://download.pingcap.org/mydumper-linux-amd64.tar.gz
 wget http://download.pingcap.org/mydumper-linux-amd64.sha256
 
 # 检查文件完整性，返回 ok 则正确
-sha256sum -c mydumper-linux-amd64.sha256 
+sha256sum -c mydumper-linux-amd64.sha256
 # 解开压缩包
 tar -xzf mydumper-linux-amd64.tar.gz
 cd mydumper-linux-amd64
