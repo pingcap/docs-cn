@@ -15,7 +15,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
     command:
-      - --cluster-id=1 
       - --name=pd1 
       - --client-urls=http://0.0.0.0:2379
       - --peer-urls=http://0.0.0.0:2380
@@ -34,7 +33,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
     command:
-      - --cluster-id=1 
       - --name=pd2 
       - --client-urls=http://0.0.0.0:2379
       - --peer-urls=http://0.0.0.0:2380
@@ -53,7 +51,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
     command:
-      - --cluster-id=1 
       - --name=pd3 
       - --client-urls=http://0.0.0.0:2379
       - --peer-urls=http://0.0.0.0:2380
@@ -71,7 +68,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
     command:
-      - --cluster-id=1
       - --addr=0.0.0.0:20160
       - --advertise-addr=tikv1:20160
       - --store=/var/tikv
@@ -94,7 +90,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
     command:
-      - --cluster-id=1
       - --addr=0.0.0.0:20160
       - --advertise-addr=tikv2:20160
       - --store=/var/tikv
@@ -117,7 +112,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
     command:
-      - --cluster-id=1
       - --addr=0.0.0.0:20160
       - --advertise-addr=tikv3:20160
       - --store=/var/tikv
@@ -142,7 +136,7 @@ services:
 
     command:
       - --store=tikv 
-      - --path=pd1:2379,pd2:2379,pd3:2379?cluster=1
+      - --path=pd1:2379,pd2:2379,pd3:2379
       - -L=warn
 
     depends_on:
