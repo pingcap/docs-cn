@@ -14,7 +14,7 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 + You can choose from "memory", "goleveldb", "BoltDB" or "TiKV". The first three are all local storage engines. TiKV is a distributed storage engine.
 
 ### --path
-+ the path to the data directory for local storage engines like goleveldb, BoltDB, or memory or the DSN for the distributed storage engine like TiKV. If you use TiKV, specify the path in the following format: $Host:$Port?cluster=$ClusterID.
++ the path to the data directory for local storage engines like goleveldb, BoltDB, or memory or the DSN for the distributed storage engine like TiKV. If you use TiKV, specify the path in the following format: $Host:$Port.
 + default: "/tmp/tidb"
 
 ### -L
@@ -92,12 +92,6 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 + the config file
 + default: ""
 + If you set the configuration using the command line, the same setting in the config file will be overwritten.
-
-### --cluster-id
-
-+ the cluster ID to identify unique cluster
-+ default: 0
-+ You must use a unique ID to distinguish different clusters.
 
 ### --name
 
@@ -195,12 +189,6 @@ TiKV supports some human readable conversion.
 + the DSN to use
 + default: "raftkv"
 + The flag is deprecated now. 
-
-### -I, --cluster-id
-
-+ the unique ID to distinguish cluster
-+ default: 0
-+ The cluster ID must be the same as PD's.
 
 ### --pd
 

@@ -49,15 +49,13 @@ cd tidb-latest-linux-amd64-centos6
 1. Start PD.
 
     ```bash
-    ./bin/pd-server --cluster-id=1 \
-                    --data-dir=pd
+    ./bin/pd-server --data-dir=pd
     ```
     
 2. Start TiKV.
 
     ```bash
-    ./bin/tikv-server --cluster-id=1 \
-                      --pd="127.0.0.1:2379" \
+    ./bin/tikv-server --pd="127.0.0.1:2379" \
                       --store=tikv
     ```
 
@@ -65,7 +63,7 @@ cd tidb-latest-linux-amd64-centos6
 
     ```bash
     ./bin/tidb-server --store=tikv \
-                      --path="127.0.0.1:2379?cluster=1" 
+                      --path="127.0.0.1:2379" 
     ```
 
 4. Use the official `mysql` client to connect to TiDB and enjoy it. 
@@ -91,22 +89,19 @@ We run PD and TiKV on every node and TiDB on node1 only.
 1. Start PD on every node.
 
     ```bash
-    ./bin/pd-server --cluster-id=1 \
-                    --name=pd1 \
+    ./bin/pd-server --name=pd1 \
                     --data-dir=pd1 \
                     --client-urls="http://192.168.199.113:2379" \
                     --peer-urls="http://192.168.199.113:2380" \
                     --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
               
-    ./bin/pd-server --cluster-id=1 \
-                    --name=pd2 \
+    ./bin/pd-server --name=pd2 \
                     --data-dir=pd2 \
                     --client-urls="http://192.168.199.114:2379" \
                     --peer-urls="http://192.168.199.114:2380" \
                     --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
               
-    ./bin/pd-server --cluster-id=1 \
-                    --name=pd3 \
+    ./bin/pd-server --name=pd3 \
                     --data-dir=pd3 \
                     --client-urls="http://192.168.199.115:2379" \
                     --peer-urls="http://192.168.199.115:2380" \
@@ -116,18 +111,15 @@ We run PD and TiKV on every node and TiDB on node1 only.
 2. Start TiKV on every node.
 
     ```bash
-    ./bin/tikv-server --cluster-id=1 \
-                      --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
+    ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
                       --addr="192.168.199.113:20160" \
                       --store=tikv1
     
-    ./bin/tikv-server --cluster-id=1 \
-                      --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
+    ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
                       --addr="192.168.199.114:20160" \
                       --store=tikv2
                 
-    ./bin/tikv-server --cluster-id=1 \
-                      --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
+    ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
                       --addr="192.168.199.115:20160" \
                       --store=tikv3
     ```
@@ -136,7 +128,7 @@ We run PD and TiKV on every node and TiDB on node1 only.
 
     ```bash
     ./bin/tidb-server --store=tikv \
-                      --path="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379?cluster=1"
+                      --path="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379"
     ```
 
 4. Use the official `mysql` client to connect to TiDB and enjoy it. 
@@ -149,7 +141,7 @@ We run PD and TiKV on every node and TiDB on node1 only.
 
 ### PD
 
-You can use `join` to start a new PD server and add it to an existing PD cluster. . For example, we have started three PD servers within Cluster ID 1:
+You can use `join` to start a new PD server and add it to an existing PD cluster. . For example, we have started three PD servers:
 
 |Name|ClientUrls|PeerUrls|
 |----|----------|--------|
@@ -160,8 +152,7 @@ You can use `join` to start a new PD server and add it to an existing PD cluster
 If you want to add `pd4`, you can use `join` to do it:
 
 ```bash
-./bin/pd-server --cluster-id=1 \
-                --name=pd4 \
+./bin/pd-server --name=pd4 \
                 --client-urls="http://host4:2379"
                 --peer-urls="http://host4:2380"
                 --join="http://host1:2379"
