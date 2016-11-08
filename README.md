@@ -1,6 +1,61 @@
 # TiDB Documentation
 
-TiDB is a NewSQL database that is horizontally scalable and highly available. This document aims to help the technical engineers especially the operations engineers understand its horizontal scalability and high availability. 
+## TiDB Document list
++ TiDB Introduction and Architecture
+	+ [TiDB introduction and features](#tidb-introduction)
+	+ [TiDB architecture](#tidb-architecture)
++ Installation and Deployment
+	+ [Deployment Recommendation](op-guide/recommendation.md)
+	+ [Downloading the Binary](op-guide/binary-deployment.md#download-and-decompress-the-official-binary-package)
+	+ [Binary Deployment (Recommended)](op-guide/binary-deployment.md)
+	+ [Docker Deployment](op-guide/docker-deployment.md)
+	+ Configuration and options
++ Operation and Monitoring
+	+ Overview of the monitoring framework
+	+ Component state API and monitoring
++ Compatibility and comparison with MySQL
+	+ [TiDB SQL Grammar](https://pingcap.github.io/sqlgram/)
+	+ Comparing with MySQL
++ [Frequently Used Tools](https://github.com/pingcap/tidb-tools)
++ [Frequently Asked Questions (FAQ)](./TiDB_FAQ.md)
++ Troubleshooting
++ Use Cases
++ Advanced Usage
+	+ [Data migration from MySQL to TiDB](op-guide/migration.md)
+	+ Performance tuning
+	+ Reading data from history versions
++ More resources
+	+ [PingCAP weekly update](http://weekly.pingcap.com/)
+	+ PingCAP blog
+
+
+## TiDB Introduction
+
+TiDB (The pronunciation is: /'taɪdiːbi:/ tai-D-B, etymology: titanium) is a distributed SQL database. Inspired by the design of Google [F1](http://research.google.com/pubs/pub41344.html), TiDB supports the best features of both traditional RDBMS and NoSQL.
+
+### Horizontal scalability
+Grow TiDB as your business grows. You can increase the capacity simply by adding more machines.
+
+### Consistent distributed transactions
+Think of TiDB as a single-machine RDBMS. You can start a transaction that crosses multiple machines without worrying about consistency. TiDB makes your application code simple and robust.
+
+### Auto failover
+TiDB is stateless. TiKV and PD can tolerate failures of some of their instances. Whether it’s data machine failures or even downtime of an entire data center, your data can be recovered automatically.  With its strong consistency guarantee, your data will be safe and up-to-date.
+
+### Asynchronous schema changes
+Evolve TiDB schemas as your requirement evolves. You can add new columns and indices without stopping or affecting the on-going operations.
+
+### Compatible with MySQL protocol
+Use TiDB as MySQL. You can replace MySQL with TiDB to power your application without changing a single line of code in most cases.
+
+### Written in Go
+Enjoy TiDB as much as we love Go. We believe Go code is both easy and enjoyable to work with. Go makes us improve TiDB fast and makes it easy to dive into the codebase.
+
+### NewSQL over TiKV
+Turn [TiKV](https://github.com/pingcap/tikv) into a NewSQL database.
+
+## Multiple storage engine support
+Power TiDB with your most favorite engines. TiDB supports many popular storage engines in single-machine mode. You can choose from GolevelDB, LevelDB, RocksDB, LMDB, BoltDB and even more to come.
 
 ## TiDB Architecture
 
@@ -61,29 +116,3 @@ PD is a cluster and the data consistency is ensured using the Raft protocol. If 
 ### TiKV
 
 TiKV is a cluster and the data consistency is ensured using the Raft protocol. The number of the replicas can be configurable and the default is 3 replicas. The load of TiKV servers are balanced through PD. If one of the node is down, all the Regions in the node will be impacted. If the failed node is the Leader of the Region, the service will be interrupted and a new election will be initiated. If the failed node is a Follower of the Region, the service will not be impacted. If a TiKV node is down for a period of time (the default value is 10 minutes), PD will move the data to another TiKV node.
-
-## FAQ
-
-- [TiDB FAQ](./TiDB_FAQ.md)
- 
-## Getting started
-
-- [Quick Start Guide for TiDB](https://github.com/pingcap/tidb/blob/master/docs/QUICKSTART.md)
-
-## Deployment
-
-- [Deployment Recommendation](op-guide/recommendation.md)
-- [Binary Deployment (Recommended)](op-guide/binary-deployment.md)
-- [Docker Deployment](op-guide/docker-deployment.md)
-
-## Building TiDB
-
-- [Supported platforms](dev-guide/requirements.md#supported-platforms)
-- [Prerequisites](dev-guide/requirements.md#prerequisites)
-- [For Deployment](dev-guide/deployment.md)
-- [For Development](dev-guide/development.md)
-
-## Operating TiDB clusters
-- [Configuration](op-guide/configuration.md)
-- [Getting the TiDB clusters status from the Placement Driver (PD)](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html)
-- [Migrating data from MySQL to TiDB](op-guide/migration.md)
