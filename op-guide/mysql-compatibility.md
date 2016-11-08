@@ -18,7 +18,7 @@ TiDB 支持包括跨行事务，JOIN 及子查询在内的绝大多数 MySQL 的
 
 ## 与 MySQL 有差异的特性
 ### 自增 ID
-TiDB 的自增 ID (Auto Increament ID) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。
+TiDB 的自增 ID (Auto Increment ID) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。
 
 ### 内建函数
 TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经支持，具体请参考[语法文档](https://pingcap.github.io/sqlgram/#FunctionCallKeyword)。
