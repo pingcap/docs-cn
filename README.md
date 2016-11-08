@@ -9,7 +9,7 @@
 	+ [Downloading the Binary](op-guide/binary-deployment.md#download-and-decompress-the-official-binary-package)
 	+ [Binary Deployment (Recommended)](op-guide/binary-deployment.md)
 	+ [Docker Deployment](op-guide/docker-deployment.md)
-	+ Configuration and options
+	+ [Configuration and options](op-guide/configuration.md)
 + Operation and Monitoring
 	+ Overview of the monitoring framework
 	+ Component state API and monitoring
