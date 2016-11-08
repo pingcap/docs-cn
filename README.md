@@ -86,3 +86,4 @@ TiKV is a cluster and the data consistency is ensured using the Raft protocol. T
 ## Operating TiDB clusters
 - [Configuration](op-guide/configuration.md)
 - [Getting the TiDB clusters status from the Placement Driver (PD)](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html)
+- [Migrating data from MySQL to TiDB](op-guide/migration.md)
