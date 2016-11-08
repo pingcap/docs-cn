@@ -90,7 +90,7 @@ cd tidb-latest-linux-amd64-centos6
 
 请按如下步骤**依次启动** PD 集群，TiKV 集群以及 TiDB：
 
-1. 在每个节点启动 PD.
+1. 在 node1，node2，node3 启动 PD.
 
     ```bash
     ./bin/pd-server --name=pd1 \
@@ -112,7 +112,7 @@ cd tidb-latest-linux-amd64-centos6
                     --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
     ```
 
-2. 在每个节点启动 TiKV.
+2. 在 node4，node5，node6 启动 TiKV.
 
     ```bash
     ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
@@ -150,14 +150,14 @@ cd tidb-latest-linux-amd64-centos6
 |Name|Host IP|Services|
 |----|-------|--------|
 |node1|192.168.199.113|PD1, TiDB|
-|node4|192.168.199.116|TiKV1|
-|node5|192.168.199.117|TiKV2|
-|node6|192.168.199.118|TiKV3|
+|node2|192.168.199.114|TiKV1|
+|node3|192.168.199.115|TiKV2|
+|node4|192.168.199.116|TiKV3|
 
 
 请按如下步骤**依次启动** PD 集群，TiKV 集群以及 TiDB：
 
-1. 在每个节点启动 PD.
+1. 在 node1 启动 PD.
 
     ```bash
     ./bin/pd-server --name=pd1 \
@@ -167,19 +167,19 @@ cd tidb-latest-linux-amd64-centos6
                     --initial-cluster="pd1=http://192.168.199.113:2380"  
      ```
 
-2. 在每个节点启动 TiKV.
+2. 在 node2，node3，node4 启动 TiKV.
 
     ```bash
     ./bin/tikv-server --pd="192.168.199.113:2379" \
-                      --addr="192.168.199.116:20160" \
+                      --addr="192.168.199.114:20160" \
                       --store=tikv1
     
     ./bin/tikv-server --pd="192.168.199.113:2379" \
-                      --addr="192.168.199.117:20160" \
+                      --addr="192.168.199.115:20160" \
                       --store=tikv2
                 
     ./bin/tikv-server --pd="192.168.199.113:2379" \
-                      --addr="192.168.199.118:20160" \
+                      --addr="192.168.199.116:20160" \
                       --store=tikv3
     ```
 
