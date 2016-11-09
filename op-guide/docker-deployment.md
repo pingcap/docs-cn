@@ -27,28 +27,34 @@ docker pull pingcap/pd
 
 ## 多节点部署
 
-假设我们有三台机器:
+假设我们有六台机器:
 
-|Name|Host IP|
-|----|-------|
-|**host1**|192.168.1.100|
-|**host2**|192.168.1.101|
-|**host3**|192.168.1.102|
+|Name|Host IP|Services|
+|----|-------|----|
+|**host1**|192.168.1.101|PD1, TiDB|
+|**host2**|192.168.1.102|PD2|
+|**host3**|192.168.1.103|PD3|
+|**host4**|192.168.1.104|TiKV1|
+|**host5**|192.168.1.105|TiKV2|
+|**host6**|192.168.1.106|TiKV3|
 
 
 ## 1. 在每台主机上启动一个 `busybox` 作为数据存储容器
 
 ```bash
-export host1=192.168.1.100
-export host2=192.168.1.101
-export host3=192.168.1.102
+export host1=192.168.1.101
+export host2=192.168.1.102
+export host3=192.168.1.103
+export host4=192.168.1.104
+export host5=192.168.1.105
+export host6=192.168.1.106
 
 docker run -d --name ti-storage \
   -v /tidata \
   busybox
 ```
 
-## 2. 每台机器上启动 PD
+## 2. 在 **host1**，**host2**，**host3** 机器上启动 PD
 
 **host1:**
 ```bash
@@ -101,9 +107,9 @@ docker run -d --name pd3 \
   --initial-cluster="pd1=http://${host1}:2380,pd2=http://${host2}:2380,pd3=http://${host3}:2380" \
 ```
 
-## 3. 每台机器上启动 TiKV
+## 3. 在 **host4**，**host5**，**host6** 机器上启动 TiKV
 
-**host1:**
+**host4:**
 ```bash
 docker run -d --name tikv1 \
   -p 20160:20160
@@ -111,12 +117,12 @@ docker run -d --name tikv1 \
   --volumes-from ti-storage \
   pingcap/tikv \
   --addr="0.0.0.0:20160" \
-  --advertise-addr="${host1}:20160" \
+  --advertise-addr="${host4}:20160" \
   --store="/tidata/tikv1" \
   --pd="${host1}:2379,${host2}:2379,${host3}:2379" 
 ```
 
-**host2:**
+**host5:**
 ```bash
 docker run -d --name tikv2 \
   -p 20160:20160
@@ -124,12 +130,12 @@ docker run -d --name tikv2 \
   --volumes-from ti-storage \
   pingcap/tikv \
   --addr="0.0.0.0:20160" \
-  --advertise-addr="${host2}:20160" \
+  --advertise-addr="${host5}:20160" \
   --store="/tidata/tikv2" \
   --pd="${host1}:2379,${host2}:2379,${host3}:2379" 
 ```
 
-**host3:**
+**host6:**
 ```bash
 docker run -d --name tikv3 \
   -p 20160:20160
@@ -137,7 +143,7 @@ docker run -d --name tikv3 \
   --volumes-from ti-storage \
   pingcap/tikv \
   --addr="0.0.0.0:20160" \
-  --advertise-addr="${host3}:20160" \
+  --advertise-addr="${host6}:20160" \
   --store="/tidata/tikv3" \
   --pd="${host1}:2379,${host2}:2379,${host3}:2379" 
 ```
