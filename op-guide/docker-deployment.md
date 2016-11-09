@@ -2,7 +2,7 @@
 
 本篇将展示如何在多台主机上使用 Docker 部署一个 TiDB 集群。
 
-了解 TiDB 整体架构，请参考[ TiDB 总览](../README.md#tidb-总览)。
+阅读本章前，请先确保阅读 [ TiDB 整体架构](../README.md#tidb-总览) 及 [部署建议](../op-guide/recommendation.md)
 
 ## 环境准备
 
