@@ -10,7 +10,7 @@
   - [Binary 下载](op-guide/binary-deployment.md#下载官方-binary)
   - [Binary 部署方案（推荐）](op-guide/binary-deployment.md)
   - [Docker 部署方案](op-guide/docker-deployment.md)
-  - [参数解释](op-guide/configuration.md)
+  - [命令行参数](op-guide/configuration.md)
 + 运维 & 监控
  - [整体监控框架概述](op-guide/monitor-overview.md)
  - [组件状态 API & 监控](op-guide/monitor.md)
