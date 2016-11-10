@@ -11,7 +11,7 @@
 	+ [Docker Deployment](op-guide/docker-deployment.md)
 	+ [Configuration and options](op-guide/configuration.md)
 + Operation and Monitoring
-	+ [Overview of the monitoring framework](op-guide/monitoring-overview.md)
+	+ [Overview of the monitoring framework](op-guide/monitor-overview.md)
 	+ [Monitoring a TiDB cluster](op-guide/monitoring-tidb.md)
 + Compatibility and comparison with MySQL
 	+ [TiDB SQL Grammar](https://pingcap.github.io/sqlgram/)
