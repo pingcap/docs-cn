@@ -6,16 +6,16 @@
 首先请确认集群的各项服务是否已经启动，包括 tidb-server、pd-server、tikv-server。请用 ps 命令查看所有进程是否在。如果某个组件的进程已经不在了，请参考对应的章节排查错误。
 
 如果所有的进程都在，请查看 tidb-server 的日志，看是否有报错？常见的错误包括：
-+ InforSchema out of date
++ InfomationSchema is out of date.
 
-无法连接 tikv-server，请检查 tikv-server 的状态和日志
+无法连接 tikv-server，请检查 pd-server 以及 tikv-server 的状态和日志
 + panic
 
 程序有错误，请将具体的报错信息发给我们
 
 ### tidb-server 启动报错
 tidb-server 无法启动的常见情况包括：
-+ 端口被占用
++ 端口被占用：`lsof -i:port`
 
 请确保 tidb-server 启动所需要的端口未被占用
 + 无法连接 pd-server
@@ -25,9 +25,9 @@ tidb-server 无法启动的常见情况包括：
 如果网络没问题检查 pd-server 的进程状态和日志。
 
 ### tikv-server 启动报错
-+ 端口被占用
++ 端口被占用：`lsof -i:port`
 
-请确保 tikv-server 启动所需要的端口未被占用
+请确保 tikv-server 启动所需要的端口未被占用： `lsof -i:port`
 + 无法连接 pd-server
 
 请确保 tikv 和 pd 之间的网络畅通，包括是否能 ping 通，防火墙配置是否有问题。
@@ -41,7 +41,7 @@ tidb-server 无法启动的常见情况包括：
 ### TiDB/TiKV/PD 进程异常退出
 + 进程是否是启动在前台
 终端退出导致进程退出。
-+ 是否是在命令行用过 nohup+& 方式运行
++ 是否是在命令行用过 `nohup+&` 方式运行
 这样依然可能导致进程收到 hup 信号并退出，推荐将启动命令写在脚本中，通过脚本运行
 
 
@@ -69,5 +69,5 @@ tidb-server 无法启动的常见情况包括：
 + 机器上除了 TiDB 集群之外是否还有其他服务
 + pd-server 和 tikv-server 是否分开部署
 + 目前正在进行什么操作
-+ 用 top -H 命令查看当前占用 CPU 的线程名
++ 用 `top -H` 命令查看当前占用 CPU 的线程名
 + 最近一段时间的网络/IO 监控数据是否有异常
