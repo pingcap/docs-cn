@@ -19,7 +19,7 @@
  - [与 MySQL 兼容性对比](op-guide/mysql-compatibility.md)
 + [常用工具](https://github.com/pingcap/tidb-tools)
 + [常见问题与解答](./faq.md)
-+ 故障诊断
++ [故障诊断](./trouble-shooting.md)
 + 使用示例
 + 高级功能
   - [数据迁移方法](op-guide/migration.md)
