@@ -3,11 +3,13 @@
 当试用 TiDB 遇到问题时，请先参考本篇文档。如果问题未解决，请按文档要求提供对应的信息给 TiDB 开发者。
 
 ## 如何给 TiDB 开发者报告错误
-当使用 TiDB 遇到问题并且通过下面的信息解决的话，请收集以下信息并报给开发者：
+当使用 TiDB 遇到问题并且通过后面所列信息无法解决时，请收集以下信息并[创建新 Issue](https://github.com/pingcap/tidb/issues/new):
 + 具体的出错信息以及正在执行的操作
 + 当前所有组件的状态
-+ 出问题组件 log 中的 Error 信息
++ 出问题组件 log 中的 error/fatal/panic 信息
 + 机器配置以及部署拓扑
++ dmesg 中 TiDB 组件相关的问题
+
 
 ## 数据库连接不上
 首先请确认集群的各项服务是否已经启动，包括 tidb-server、pd-server、tikv-server。请用 ps 命令查看所有进程是否在。如果某个组件的进程已经不在了，请参考对应的章节排查错误。
@@ -23,7 +25,7 @@
 ## tidb-server 启动报错
 tidb-server 无法启动的常见情况包括：
 + 启动参数错误
-  
+
   请参考[TiDB 命令行参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#tidb)文档
 + 端口被占用：`lsof -i:port`
 
@@ -51,7 +53,7 @@ tidb-server 无法启动的常见情况包括：
 
 ## pd-server 启动报错
 + 启动参数错误
-  
+
   请参考[PD 命令行参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#placement-driver-pd)文档
 + 端口被占用：`lsof -i:port`
 
@@ -59,10 +61,10 @@ tidb-server 无法启动的常见情况包括：
 
 ## TiDB/TiKV/PD 进程异常退出
 + 进程是否是启动在前台
-  
+
   终端退出导致进程退出。
 + 是否是在命令行用过 `nohup+&` 方式运行
-  
+
   这样依然可能导致进程收到 hup 信号并退出，推荐将启动命令写在脚本中，通过脚本运行。
 
 
