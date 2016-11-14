@@ -15,7 +15,7 @@
 	+ [Monitoring a TiDB cluster](op-guide/monitoring-tidb.md)
 + Compatibility and comparison with MySQL
 	+ [TiDB SQL Grammar](https://pingcap.github.io/sqlgram/)
-	+ Comparing with MySQL
+	+ [Compatibility with MySQL](op-guide/mysql-compatibility.md)
 + [Frequently Used Tools](https://github.com/pingcap/tidb-tools)
 + [Frequently Asked Questions (FAQ)](./TiDB_FAQ.md)
 + Troubleshooting
