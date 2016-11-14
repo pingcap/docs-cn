@@ -1,6 +1,6 @@
 # TiDB 集群故障诊断
 
-当试用 TiDB 遇到问题时，请先参考本篇文档。如果问题未解决，请按文档要求提供对应的信息给 TiDB 开发者。
+当试用 TiDB 遇到问题时，请先参考本篇文档。如果问题未解决，请按文档要求收集必要的信息通过票[提供给 TiDB 开发者](https://github.com/pingcap/tidb/issues/new)。
 
 ## 如何给 TiDB 开发者报告错误
 当使用 TiDB 遇到问题并且通过后面所列信息无法解决时，请收集以下信息并[创建新 Issue](https://github.com/pingcap/tidb/issues/new):
@@ -20,7 +20,7 @@
   无法连接 tikv-server，请检查 pd-server 以及 tikv-server 的状态和日志
 + panic
 
-  程序有错误，请将具体的报错信息发给我们
+  程序有错误，请将具体的 panic log [提供给 TiDB 开发者](https://github.com/pingcap/tidb/issues/new)
 
 ## tidb-server 启动报错
 tidb-server 无法启动的常见情况包括：
