@@ -32,7 +32,7 @@ tidb-server 无法启动的常见情况包括：
   请确保 tidb-server 启动所需要的端口未被占用
 + 无法连接 pd-server
 
-  请确保 tidb 和 pd 之间的网络畅通，包括是否能 ping 通，防火墙配置是否有问题。
+  请确保 tidb 和 pd 之间的网络畅通，tidb 需要访问 pd 对应的端口，端口号应添加到防火墙白名单，可通过 curl 或 nc 工具检查连通性。
 
   如果网络没问题检查 pd-server 的进程状态和日志。
 
@@ -45,7 +45,8 @@ tidb-server 无法启动的常见情况包括：
   请确保 tikv-server 启动所需要的端口未被占用： `lsof -i:port`
 + 无法连接 pd-server
 
-  请确保 tikv 和 pd 之间的网络畅通，包括是否能 ping 通，防火墙配置是否有问题。
+  请确保 tikv 和 pd 之间的网络畅通，tikv 需要访问 pd 对应的端口，端口号应添加到防火墙白名单，可通过 curl 或 nc 工具检查连通性。
+  
   如果网络没问题检查 pd-server 的进程状态和日志。
 
 + 文件被占用
