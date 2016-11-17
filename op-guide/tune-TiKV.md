@@ -76,3 +76,93 @@ scheduler-worker-pool-size = 4
 
 2）TiKV 在处理大的查询的时候（例如 `select * from ...`）会读取数据然后在内存中生成对应的数据结构返回给 TiDB，这个过程中 TiKV 会占用一部分内存。
 
+## 3.导数据推荐配置
+###1）磁盘IO能力比较好的情况（>=200MB/sec），CPU能力有限（<=8核）
+如果磁盘IO能力比较好，CPU能力有限可以选择不对数据进行压缩，减少CPU的压力。block-cache-size的大小根据机器的内存情况进行调整。
+```toml
+[raftstore]
+# 该参数的含义是如果一个region的写入超过配置的值就会检查是否需要分裂，在导数据的情况因为只有insert操作，所有为了减少检查一般配置和region-split-size相同。
+region-split-check-diff = "64MB"
+
+[rocksdb]
+# 如果CPU的核数小于等于8核，建议将该参数调成4
+max-background-compactions = 6
+
+[rocksdb.defaultcf]
+compression-per-level = "no:no:no:no:no:no:no"
+block-size = "16KB"
+write-buffer-size = "64MB"
+max-write-buffer-number = 5
+min-write-buffer-number-to-merge = 1
+max-bytes-for-level-base = "256MB"
+target-file-size-base = "32MB"
+block-cache-size = "1GB"
+
+[rocksdb.writecf]
+compression-per-level = "no:no:no:no:no:no:no"
+block-size = "16KB"
+write-buffer-size = "64MB"
+max-write-buffer-number = 5
+min-write-buffer-number-to-merge = 1
+max-bytes-for-level-base = "256MB"
+target-file-size-base = "32MB"
+block-cache-size = "256MB"
+
+[rocksdb.raftcf]
+compression-per-level = "no:no:no:no:no:no:no"
+block-size = "16KB"
+write-buffer-size = "64MB"
+max-write-buffer-number = 5
+min-write-buffer-number-to-merge = 1
+max-bytes-for-level-base = "256MB"
+target-file-size-base = "32MB"
+block-cache-size = "256MB"
+
+[storage]
+scheduler-concurrency = 1024000
+# 如果CPU核数大于8，建议修改该参数为8
+scheduler-worker-pool-size = 4
+```
+###2）CPU能力比较好的情况（>=12核），或者CPU，IO比较均衡的情况下
+在CPU能力比较好的情况下建议开启压缩，减少数据占用的磁盘空间。block-cache-size的大小根据机器的内存情况进行调整。
+```toml
+[rocksdb]
+# 如果CPU的核数小于等于8核，建议将该参数调成4
+max-background-compactions = 6
+
+[rocksdb.defaultcf]
+compression-per-level = "no:no:no:lz4:lz4:lz4:lz4"
+block-size = "16KB"
+write-buffer-size = "64MB"
+max-write-buffer-number = 5
+min-write-buffer-number-to-merge = 1
+max-bytes-for-level-base = "256MB"
+target-file-size-base = "32MB"
+block-cache-size = "1GB"
+
+[rocksdb.writecf]
+compression-per-level = "no:no:no:lz4:lz4:lz4:lz4"
+block-size = "16KB"
+write-buffer-size = "64MB"
+max-write-buffer-number = 5
+min-write-buffer-number-to-merge = 1
+max-bytes-for-level-base = "256MB"
+target-file-size-base = "32MB"
+block-cache-size = "256MB"
+
+[rocksdb.raftcf]
+compression-per-level = "no:no:no:lz4:lz4:lz4:lz4"
+block-size = "16KB"
+write-buffer-size = "64MB"
+max-write-buffer-number = 5
+min-write-buffer-number-to-merge = 1
+max-bytes-for-level-base = "256MB"
+target-file-size-base = "32MB"
+block-cache-size = "256MB"
+
+[storage]
+scheduler-concurrency = 1024000
+# 如果CPU核数大于8，建议修改该参数为8
+scheduler-worker-pool-size = 4
+```
+
