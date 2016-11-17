@@ -23,10 +23,10 @@
 + Advanced Usage
 	+ [Data migration from MySQL to TiDB](op-guide/migration.md)
 	+ Performance tuning
-	+ Reading data from history versions
+	+ [Reading data from history versions](op-guide/history-read.md)
 + More resources
 	+ [PingCAP weekly update](http://weekly.pingcap.com/)
-	+ PingCAP blog
+	+ [PingCAP blog](https://pingcap.github.io/blog/)
 
 
 ## TiDB Introduction
