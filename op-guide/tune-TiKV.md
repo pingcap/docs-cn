@@ -106,7 +106,7 @@ max-write-buffer-number = 5
 min-write-buffer-number-to-merge = 1
 max-bytes-for-level-base = "256MB"
 target-file-size-base = "32MB"
-# 通常配置在 256MB 到 2GB 之间，通常情况下使用默认值就可以了，但如果系统资源比较充足可以适当调大点。
+# 通常为 defaultcf.block-cache-size 的 1/n。如果一行数据很大，n 通常比较大，如果一行数据比较短，n 比较小。n 通常在 4 到 16 之间。
 block-cache-size = "256MB"
 
 [rocksdb.raftcf]
