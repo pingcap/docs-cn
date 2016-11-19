@@ -27,44 +27,44 @@ region-split-size = "64MB"
 region-split-check-diff = "8MB"
 
 [rocksdb]
-# 通常情况下使用默认值就可以了。
+# 通常情况下使用默认值就可以了，应小于CPU的核数。
 max-background-compactions = 6
 max-open-files = 40960
 
 [rocksdb.defaultcf]
 block-size = "64KB"
-compression-per-level = "lz4:lz4:lz4:lz4:lz4:lz4:lz4"
+compression-per-level = "no:no:no:lz4:lz4:lz4:lz4"
 write-buffer-size = "64MB"
 max-write-buffer-number = 5
 min-write-buffer-number-to-merge = 1
-max-bytes-for-level-base = "64MB"
-target-file-size-base = "16MB"
+max-bytes-for-level-base = "256MB"
+target-file-size-base = "32MB"
 # 通常配置为系统内存的30-40%左右。
 block-cache-size = "1GB"
 
 [rocksdb.writecf]
-compression-per-level = "lz4:lz4:lz4:lz4:lz4:lz4:lz4"
+compression-per-level = "no:no:no:lz4:lz4:lz4:lz4"
 write-buffer-size = "64MB"
 max-write-buffer-number = 5
 min-write-buffer-number-to-merge = 1
-max-bytes-for-level-base = "64MB"
-target-file-size-base = "16MB"
+max-bytes-for-level-base = "256MB"
+target-file-size-base = "32MB"
 # 通常为 defaultcf.block-cache-size 的 1/n。如果一行数据很大，n 通常比较大，如果一行数据比较短，n 比较小。n 通常在 4 到 16 之间。
 block-cache-size = "256MB"
 
 [rocksdb.raftcf]
-compression-per-level = "lz4:lz4:lz4:lz4:lz4:lz4:lz4"
+compression-per-level = "no:no:no:lz4:lz4:lz4:lz4"
 write-buffer-size = "64MB"
 max-write-buffer-number = 5
 min-write-buffer-number-to-merge = 1
-max-bytes-for-level-base = "64MB"
-target-file-size-base = "16MB"
+max-bytes-for-level-base = "256MB"
+target-file-size-base = "32MB"
 # 通常配置在 256MB 到 2GB 之间，通常情况下使用默认值就可以了，但如果系统资源比较充足可以适当调大点。
 block-cache-size = "256MB"
 
 [storage]
 # 使用默认值就可以了。
-scheduler-concurrency = 10240
+scheduler-concurrency = 102400
 # 通常情况下使用默认值就可以了。如果写入操作基本是批量写入的或者写入的行比较大，可以适当调大点。
 scheduler-worker-pool-size = 4
 ```
@@ -77,57 +77,14 @@ scheduler-worker-pool-size = 4
 2）TiKV 在处理大的查询的时候（例如 `select * from ...`）会读取数据然后在内存中生成对应的数据结构返回给 TiDB，这个过程中 TiKV 会占用一部分内存。
 
 ## 3.导数据推荐配置
-###1）磁盘IO能力比较好的情况（>=200MB/sec），CPU能力有限（<=8核）
-如果磁盘IO能力比较好，CPU能力有限可以选择不对数据进行压缩，减少CPU的压力。block-cache-size的大小根据机器的内存情况进行调整。
+block-cache-size的大小根据机器的内存情况进行调整。
 ```toml
 [raftstore]
-# 该参数的含义是如果一个region的写入超过配置的值就会检查是否需要分裂，在导数据的情况因为只有insert操作，所有为了减少检查一般配置和region-split-size相同。
+# 该参数的含义是如果一个region的写入超过该值就会检查是否需要分裂，在导数据的情况因为只有insert操作，所有为了减少检查一般配置和region-split-size相同。
 region-split-check-diff = "64MB"
 
 [rocksdb]
-# 如果CPU的核数小于等于8核，建议将该参数调成4
-max-background-compactions = 6
-
-[rocksdb.defaultcf]
-compression-per-level = "no:no:no:no:no:no:no"
-block-size = "16KB"
-write-buffer-size = "64MB"
-max-write-buffer-number = 5
-min-write-buffer-number-to-merge = 1
-max-bytes-for-level-base = "256MB"
-target-file-size-base = "32MB"
-block-cache-size = "1GB"
-
-[rocksdb.writecf]
-compression-per-level = "no:no:no:no:no:no:no"
-block-size = "16KB"
-write-buffer-size = "64MB"
-max-write-buffer-number = 5
-min-write-buffer-number-to-merge = 1
-max-bytes-for-level-base = "256MB"
-target-file-size-base = "32MB"
-block-cache-size = "256MB"
-
-[rocksdb.raftcf]
-compression-per-level = "no:no:no:no:no:no:no"
-block-size = "16KB"
-write-buffer-size = "64MB"
-max-write-buffer-number = 5
-min-write-buffer-number-to-merge = 1
-max-bytes-for-level-base = "256MB"
-target-file-size-base = "32MB"
-block-cache-size = "256MB"
-
-[storage]
-scheduler-concurrency = 1024000
-# 如果CPU核数大于8，建议修改该参数为8
-scheduler-worker-pool-size = 4
-```
-###2）CPU能力比较好的情况（>=12核），或者CPU，IO比较均衡的情况下
-在CPU能力比较好的情况下建议开启压缩，减少数据占用的磁盘空间。block-cache-size的大小根据机器的内存情况进行调整。
-```toml
-[rocksdb]
-# 如果CPU的核数小于等于8核，建议将该参数调成4
+# 该参数主要影响rocksdb compaction的线程数，在导数据的情况下因为有大量的写入，所以应该开大点，但应小于CPU的核数。
 max-background-compactions = 6
 
 [rocksdb.defaultcf]
@@ -138,6 +95,7 @@ max-write-buffer-number = 5
 min-write-buffer-number-to-merge = 1
 max-bytes-for-level-base = "256MB"
 target-file-size-base = "32MB"
+# 通常配置为系统内存的30-40%左右。
 block-cache-size = "1GB"
 
 [rocksdb.writecf]
@@ -148,6 +106,7 @@ max-write-buffer-number = 5
 min-write-buffer-number-to-merge = 1
 max-bytes-for-level-base = "256MB"
 target-file-size-base = "32MB"
+# 通常配置在 256MB 到 2GB 之间，通常情况下使用默认值就可以了，但如果系统资源比较充足可以适当调大点。
 block-cache-size = "256MB"
 
 [rocksdb.raftcf]
@@ -158,11 +117,14 @@ max-write-buffer-number = 5
 min-write-buffer-number-to-merge = 1
 max-bytes-for-level-base = "256MB"
 target-file-size-base = "32MB"
+# 如果系统内存比较充足，建议配置为2GB。
 block-cache-size = "256MB"
 
 [storage]
+# 由于导数据过程中每次都是insert一批数据，为了同时能够处理更多的请求，配置为默认配置的10倍。
 scheduler-concurrency = 1024000
 # 如果CPU核数大于8，建议修改该参数为8
 scheduler-worker-pool-size = 4
 ```
+
 
