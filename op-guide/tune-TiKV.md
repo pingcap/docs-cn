@@ -80,7 +80,7 @@ scheduler-worker-pool-size = 4
 block-cache-size的大小根据机器的内存情况进行调整。
 ```toml
 [raftstore]
-# 该参数的含义是如果一个region的写入超过该值就会检查是否需要分裂，在导数据的情况因为只有insert操作，所有为了减少检查一般配大点，一般为region-split-size的一半。
+# 该参数的含义是如果一个region的写入超过该值就会检查是否需要分裂，在导数据的情况因为只有insert操作，所以为了减少检查一般配大点，一般为region-split-size的一半。
 region-split-check-diff = "32MB"
 
 [rocksdb]
@@ -126,5 +126,4 @@ scheduler-concurrency = 1024000
 # 如果CPU核数大于8，建议修改该参数为8
 scheduler-worker-pool-size = 4
 ```
-
 
