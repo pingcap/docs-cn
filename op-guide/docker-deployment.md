@@ -29,7 +29,7 @@ docker pull pingcap/pd:latest
 
 假设我们打算在 6 台主机上部署一个 TiDB 集群:
 
-| 主机名       | IP            | 部署服务       | 数据目录  |
+| 主机名       | IP            | 部署服务       | 数据盘挂载 |
 | --------- | ------------- | ---------- | ----- |
 | **host1** | 192.168.1.101 | PD1 & TiDB | /data |
 | **host2** | 192.168.1.102 | PD2        | /data |
@@ -169,16 +169,38 @@ mysql> show databases;
 
 TiKV 和 PD 可以通过指定配置文件的方式来加载更加丰富的启动参数，用于性能调优
 
-假定配置文件在宿主机上的存放路径 `/path/to/config/pd.toml` 和 `／path/to/config/tikm.toml`
+假定配置文件在宿主机上的存放路径 `/path/to/config/pd.toml` 和 `／path/to/config/tikv.toml`
 
-那么只需要稍微调整下  Docker 的启动参数，以 TiKV 为例
+启动 Docker 时需要调整相应的启动参数，以 tikv1 和 pd1 为例：
 
 ```bash
 docker run -d --name tikv1 \
-...
+  -p 20160:20160 \
+  -v /etc/localtime:/etc/localtime:ro \
+  -v /data:/data \
   -v /path/to/config/tikv.toml:/tikv.toml:ro \
   pingcap/tikv:latest \
-...
+  --addr="0.0.0.0:20160" \
+  --advertise-addr="192.168.1.104:20160" \
+  --store="/data/tikv1" \
+  --pd="192.168.1.101:2379,192.168.1.102:2379,192.168.1.103:2379" \
   --config="/tikv.toml"
 ```
 
+```bash
+docker run -d --name pd1 \
+  -p 2379:2379 \
+  -p 2380:2380 \
+  -v /etc/localtime:/etc/localtime:ro \
+  -v /data:/data \
+  -v /path/to/config/pd.toml:/pd.toml:ro \
+  pingcap/pd:latest \
+  --name="pd1" \
+  --data-dir="/data/pd1" \
+  --client-urls="http://0.0.0.0:2379" \
+  --advertise-client-urls="http://192.168.1.101:2379" \
+  --peer-urls="http://0.0.0.0:2380" \
+  --advertise-peer-urls="http://192.168.1.101:2380" \
+  --initial-cluster="pd1=http://192.168.1.101:2380,pd2=http://192.168.1.102:2380,pd3=http://192.168.1.103:2380" \
+  --config="/pd.toml"
+```
