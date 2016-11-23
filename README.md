@@ -18,7 +18,7 @@
 	+ [Compatibility with MySQL](op-guide/mysql-compatibility.md)
 + [Frequently Used Tools](https://github.com/pingcap/tidb-tools)
 + [Frequently Asked Questions (FAQ)](./TiDB_FAQ.md)
-+ Troubleshooting
++ [Troubleshooting](./trouble-shooting.md)
 + Use Cases
 + Advanced Usage
 	+ [Data migration from MySQL to TiDB](op-guide/migration.md)
