@@ -1,6 +1,7 @@
 # TiDB Documentation
 
 ## TiDB Document list
++ [Quick Start Guide](https://github.com/pingcap/tidb/blob/master/docs/QUICKSTART.md)
 + TiDB Introduction and Architecture
 	+ [TiDB introduction and features](#tidb-introduction)
 	+ [TiDB architecture](#tidb-architecture)
@@ -22,7 +23,7 @@
 + Use Cases
 + Advanced Usage
 	+ [Data migration from MySQL to TiDB](op-guide/migration.md)
-	+ Performance tuning
+	+ [Performance tuning](op-guide/tune-TiKV.md)
 	+ [Reading data from history versions](op-guide/history-read.md)
 + More resources
 	+ [PingCAP weekly update](http://weekly.pingcap.com/)
