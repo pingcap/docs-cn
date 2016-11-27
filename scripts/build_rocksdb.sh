@@ -64,9 +64,20 @@ function install_in_centos {
 function install_in_macosx {
     echo "building RocksDB in Mac OS X..."
     if [ ! -d rocksdb-${ROCKSDB_VER} ]; then
-        brew update 
-        brew install lz4 || true 
-        brew install snappy || true
+        brew=$(which brew 2>/dev/null) || true
+        if [ -n "$brew" ]; then
+            brew update
+            brew install lz4 || true
+            brew install snappy || true
+        else
+            # note: macports do allow you to do port install rocksdb
+            port=$(which port 2>/dev/null) || true
+            if [ -n "$port" ]; then
+                $SUDO port selfupdate
+                $SUDO port install lz4 || true
+                $SUDO port install snappy || true
+            fi
+        fi
         curl -L https://github.com/facebook/rocksdb/archive/${ROCKSDB_VER}.tar.gz -o rocksdb.tar.gz 
         tar xf rocksdb.tar.gz 
     fi
