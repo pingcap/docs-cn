@@ -30,15 +30,18 @@
 
 ## TiDB 简介
 
-TiDB 是 PingCAP 公司基于 Google Spanner / F1 论文实现的分布式 NewSQL 数据库。
+TiDB 是 PingCAP 公司基于 Google [Spanner](http://research.google.com/archive/spanner.html) / [F1](http://research.google.com/pubs/pub41344.html) 论文实现的开源分布式 NewSQL 数据库。
 
 TiDB 具备如下 NewSQL 核心特性
  * SQL支持 （TiDB 是 MySQL 兼容的）
- * 水平线性弹性扩展（容量、并发、吞吐量）
- * 分布式事务，数据强一致性保证
- * 故障自恢复的高可用 （auto failover）
+ * 水平线性弹性扩展
+ * 分布式事务
+ * 跨数据中心数据强一致性保证
+ * 故障自恢复的高可用 
 
-TiDB 是传统的数据库中间件、数据库分库分表等 Sharding 方案非常优雅而理想的替换和解决方案。
+TiDB 的设计目标是 100% 的 OLTP 场景和 80% 的 OLAP 场景。
+
+TiDB 对业务没有任何侵入性，能极大的提升研发的生产力，是传统的数据库中间件、数据库分库分表等 Sharding 方案非常优雅而理想的替换和解决方案。
 
 ## TiDB 整体架构
 
@@ -76,3 +79,4 @@ PD 是一个集群，通过 Raft 协议保持数据的一致性，单个实例�
 
 #### TiKV
 TiKV 是一个集群，通过 Raft 协议保持数据的一致性（副本数量可配置，默认保存三副本），并通过 PD 做负载均衡调度。单个节点失效时，会影响这个节点上存储的所有 Region。对于 Region 中的 Leader 结点，会中断服务，等待重新选举；对于 Region 中的 Follower 节点，不会影响服务。当某个 TiKV 节点失效，并且在一段时间内（默认 10 分钟）无法恢复，PD 会将其上的数据迁移到其他的 TiKV 节点上。
+
