@@ -141,7 +141,7 @@ We run PD and TiKV on every node and TiDB on node1 only.
 
 ### PD
 
-You can use `join` to start a new PD server and add it to an existing PD cluster. . For example, we have started three PD servers:
+You can use `join` to start a new PD server and add it to an existing PD cluster. For example, we have started three PD servers:
 
 |Name|ClientUrls|PeerUrls|
 |----|----------|--------|
@@ -159,10 +159,30 @@ If you want to add `pd4`, you can use `join` to do it:
 ```
 
 ### TiKV
+It is very simple to add a new TiKV server (which is also called a TiKV Store) to a TiKV cluster dynamically. You can directly start a TiKV Store and PD will automatically detect it. After you start the new Store, PD will automatically balance all the TiKV Stores in the cluster. If PD finds that the new Store has no data, it will try to move some regions from other Stores to the newly added Store.
 
-Adding a new TiKV server is very simple. After you start a new Store, PD will automatically balance all the TiKV Stores. If PD finds that the new Store has no data, it will try to move some regions from other Stores to the new Store.
+You can also ask PD to remove a Store explicitly. To remove the Store:
 
-You can tell PD to remove a Store explicitly. Then, PD will treat this Store as dead and rebalance the Region whose replicas are in this Store through Region heartbeats.
+1. PD marks the Store as `offline`.
+2. PD migrates the data from the Store to other Stores.
+3. After all the data are migrated, PD marks the Store as `tombstone`.
+4. The Store can be safely removed from the cluster.
+
+You can use the following command to call the HTTP API of PD to remove a TiKV Store whose store ID is `1`:
+
+```
+curl -X DELETE http://host:port/pd/api/v1/store/1
+```
+You can check the state of the Store by using the following command:
+
+```
+curl http://host:port/pd/api/v1/store/1
+```
++ If the result is `state = 1`, the Store is `offline`.
++ If the result is `state = 2`, the Store is `tombstone`.
++ If the result is `state = 0`, the Store is `up`.
+
+For detailed API documents, see [PD API v1](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html).
 
 ### TiDB
 
