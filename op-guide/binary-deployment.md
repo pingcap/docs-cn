@@ -149,13 +149,24 @@ You can use `join` to start a new PD server and add it to an existing PD cluster
 |pd2|http://host2:2379|http://host2:2380|
 |pd3|http://host3:2379|http://host3:2380|
 
-If you want to add `pd4`, you can use `join` to do it:
+If you want to add `pd4`, you can add the corresponding `client-urls` of the PD service in the current PD cluster to the `join` parameters. For example:
 
 ```bash
 ./bin/pd-server --name=pd4 \
                 --client-urls="http://host4:2379"
                 --peer-urls="http://host4:2380"
                 --join="http://host1:2379"
+```
+If you want to remove `pd4`, you can call the HTTP API of PD. For example:
+
+```
+curl -X DELETE http://host1:2379/pd/api/v1/members/pd4
+```
+
+You can check all the PD nodes to see if the PD server is added or removed:
+
+```
+curl http://host1:2379/pd/api/v1/members
 ```
 
 ### TiKV
