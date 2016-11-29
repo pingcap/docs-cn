@@ -12,9 +12,7 @@ To deploy and use TiDB in production, follow [Multi Nodes Deployment](#multi-nod
 
 ## Download and Decompress the Official Binary Package
 
-### Linux
-
-Note: The Linux package does not support the CentOS 6 platform. See [CentOS 6](#centos-6) to download and decompress the CentOS 6 package.
+### Linux (CentOS 7+, Ubuntu 14.04+)
 
 ```bash
 # Download package
@@ -29,7 +27,7 @@ tar -xzf tidb-latest-linux-amd64.tar.gz
 cd tidb-latest-linux-amd64
 ```
 
-#### CentOS 6
+#### CentOS 6 (Not Recommended)
 
 ```bash
 # Download CentOS 6 package
@@ -72,21 +70,20 @@ cd tidb-latest-linux-amd64-centos6
     mysql -h 127.0.0.1 -P 4000 -u root -D test
     ```
 
-## Multi Nodes Deployment
+## Multi Nodes Deployment In Production
 
-Assume we have three machines with the following details:
+Assume we have six machines with the following details:
 
 |Name|Host IP|Services|
 |----|-------|--------|
-|node1|192.168.199.113|PD1, TiKV1, TiDB|
-|node2|192.168.199.114|PD2, TiKV2|
-|node3|192.168.199.115|PD3, TiKV3|
+|node1|192.168.199.113|PD1, TiDB|
+|node2|192.168.199.114|PD2|
+|node3|192.168.199.115|PD3|
+|node4|192.168.199.116|TiKV1|
+|node5|192.168.199.117|TiKV2|
+|node6|192.168.199.118|TiKV3|
 
-We run PD and TiKV on every node and TiDB on node1 only.
-
-**Note: This is just for demonstration, follow [Recommendation](./recommendation.md) to deploy the cluster in production.**
-
-1. Start PD on every node.
+1. Start PD on node1, node2 and node3.
 
     ```bash
     ./bin/pd-server --name=pd1 \
@@ -108,19 +105,19 @@ We run PD and TiKV on every node and TiDB on node1 only.
                     --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
     ```
 
-2. Start TiKV on every node.
+2. Start TiKV on node4, node5 and node6.
 
     ```bash
     ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
-                      --addr="192.168.199.113:20160" \
+                      --addr="192.168.199.116:20160" \
                       --store=tikv1
     
     ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
-                      --addr="192.168.199.114:20160" \
+                      --addr="192.168.199.117:20160" \
                       --store=tikv2
                 
     ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
-                      --addr="192.168.199.115:20160" \
+                      --addr="192.168.199.118:20160" \
                       --store=tikv3
     ```
 
@@ -136,7 +133,57 @@ We run PD and TiKV on every node and TiDB on node1 only.
     ```sh
     mysql -h 192.168.199.113 -P 4000 -u root -D test
     ```
+
+## Multi Nodes Deployment In Testing
+
+Assume we have four machines with the following details:
+
+|Name|Host IP|Services|
+|----|-------|--------|
+|node1|192.168.199.113|PD1, TiDB|
+|node2|192.168.199.114|TiKV1|
+|node3|192.168.199.115|TiKV2|
+|node4|192.168.199.116|TiKV3|
+
+1. Start PD on node1.
+
+    ```bash
+    ./bin/pd-server --name=pd1 \
+                    --data-dir=pd1 \
+                    --client-urls="http://192.168.199.113:2379" \
+                    --peer-urls="http://192.168.199.113:2380" \
+                    --initial-cluster="pd1=http://192.168.199.113:2380"
+    ```
+
+2. Start TiKV on node2, node3 and node4.
+
+    ```bash
+    ./bin/tikv-server --pd="192.168.199.113:2379" \
+                      --addr="192.168.199.114:20160" \
+                      --store=tikv1
     
+    ./bin/tikv-server --pd="192.168.199.113:2379" \
+                      --addr="192.168.199.115:20160" \
+                      --store=tikv2
+                
+    ./bin/tikv-server --pd="192.168.199.113:2379" \
+                      --addr="192.168.199.116:20160" \
+                      --store=tikv3
+    ```
+
+3. Start TiDB on node1.
+
+    ```bash
+    ./bin/tidb-server --store=tikv \
+                      --path="192.168.199.113:2379"
+    ```
+
+4. Use the official `mysql` client to connect to TiDB and enjoy it. 
+
+    ```sh
+    mysql -h 192.168.199.113 -P 4000 -u root -D test
+    ```
+
 ## Add/Remove node dynamically
 
 ### PD
