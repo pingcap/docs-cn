@@ -217,6 +217,18 @@ cd tidb-latest-linux-amd64-centos6
                 --join="http://host1:2379"
 ```
 
+如果我们需要删除 `pd4`，可以通过 PD 的 HTTP API 来完成：
+
+```
+curl -X DELETE http://host1:2379/pd/api/v1/members/pd4
+```
+
+最后我们可以查看当前 PD 的所有节点来确定是否添加或者删除成功：
+
+```
+curl http://host1:2379/pd/api/v1/members
+```
+
 ### TiKV
 
 动态新加入一个新的 TiKV 服务是非常容易的，我们可以直接启动一个 TiKV 服务，PD 会自动检测到，
