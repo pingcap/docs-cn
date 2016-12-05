@@ -15,12 +15,12 @@
 首先请确认集群的各项服务是否已经启动，包括 tidb-server、pd-server、tikv-server。请用 ps 命令查看所有进程是否在。如果某个组件的进程已经不在了，请参考对应的章节排查错误。
 
 如果所有的进程都在，请查看 tidb-server 的日志，看是否有报错？常见的错误包括：
-+ InfomationSchema is out of date.
++ InfomationSchema is out of date
 
-  无法连接 tikv-server，请检查 pd-server 以及 tikv-server 的状态和日志
+  无法连接 tikv-server，请检查 pd-server 以及 tikv-server 的状态和日志。
 + panic
 
-  程序有错误，请将具体的 panic log [提供给 TiDB 开发者](https://github.com/pingcap/tidb/issues/new)
+  程序有错误，请将具体的 panic log [提供给 TiDB 开发者](https://github.com/pingcap/tidb/issues/new)。
 
 如果是清空数据并重新部署服务，请确认以下信息：
 + pd-server、tikv-server 数据都已清空
@@ -34,48 +34,51 @@
 tidb-server 无法启动的常见情况包括：
 + 启动参数错误
 
-  请参考[TiDB 命令行参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#tidb)文档
+  请参考[TiDB 命令行参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#tidb)文档。
 + 端口被占用：`lsof -i:port`
 
-  请确保 tidb-server 启动所需要的端口未被占用
+  请确保 tidb-server 启动所需要的端口未被占用。
 + 无法连接 pd-server
 
-  请确保 tidb 和 pd 之间的网络畅通，tidb 需要访问 pd 对应的端口，端口号应添加到防火墙白名单，可通过 curl 或 nc 工具检查连通性。
+  首先检查 pd-server 的进程状态和日志，确保 pd-server 成功启动，对应端口已打开：`lsof -i:port`。
 
-  如果网络没问题检查 pd-server 的进程状态和日志。
+  若 pd-server 正常，则需要检查 tidb-server 机器和 pd-server 对应端口之间的连通性，确保网段连通且对应服务端口已添加到防火墙白名单中，可通过 nc 或 curl 工具检查。
+
+  例如，假设 tidb 服务位于 `192.168.1.100`，无法连接的 pd 位于 `192.168.1.101`，且 2379 为其 client port，则可以在 tidb 机器上执行
+  `nc -v -z 192.168.1.101 2379`，测试是否可以访问端口。或使用 `curl -v 192.168.1.101:2379/pd/api/v1/events` 直接检查 pd 是否正常服务。
 
 ## tikv-server 启动报错
 + 启动参数错误
-  请参考[TiKV 启动参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#tikv)文档
+  请参考[TiKV 启动参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#tikv)文档。
 
 + 端口被占用：`lsof -i:port`
 
-  请确保 tikv-server 启动所需要的端口未被占用： `lsof -i:port`
+  请确保 tikv-server 启动所需要的端口未被占用： `lsof -i:port`。
 + 无法连接 pd-server
 
-  请确保 tikv 和 pd 之间的网络畅通，tikv 需要访问 pd 对应的端口，端口号应添加到防火墙白名单，可通过 curl 或 nc 工具检查连通性。
-  
-  如果网络没问题检查 pd-server 的进程状态和日志。
+  首先检查 pd-server 的进程状态和日志。确保 pd-server 成功启动，对应端口已打开：`lsof -i:port`。
+
+  若 pd-server 正常，则需要检查 tikv-server 机器和 pd-server 对应端口之间的连通性，确保网段连通且对应服务端口已添加到防火墙白名单中，可通过 nc 或 curl 工具检查。具体命令参考上一节。
 
 + 文件被占用
-  不要在一个数据库文件目录上打开两个 tikv
+  不要在一个数据库文件目录上打开两个 tikv。
 
 ## pd-server 启动报错
 + 启动参数错误
 
-  请参考[PD 命令行参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#placement-driver-pd)文档
+  请参考[PD 命令行参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#placement-driver-pd)文档。
 + 端口被占用：`lsof -i:port`
 
-  请确保 pd-server 启动所需要的端口未被占用： `lsof -i:port`
+  请确保 pd-server 启动所需要的端口未被占用： `lsof -i:port`。
 
 ## TiDB/TiKV/PD 进程异常退出
 + 进程是否是启动在前台
 
-  终端退出导致进程退出。
-+ 是否是在命令行用过 `nohup+&` 方式运行
+  当前终端退出给其所有子进程发送 HUP 信号，从而导致进程退出。
++ 是否是在命令行用过 `nohup+&` 方式直接运行
 
-  这样依然可能导致进程收到 hup 信号并退出，推荐将启动命令写在脚本中，通过脚本运行。
-
+  这样依然可能导致进程因终端连接突然中断，作为终端 SHELL 的子进程被杀掉。
+  推荐将启动命令写在脚本中，通过脚本运行（相当于二次 fork 启动）。
 
 ## TiDB panic
 请提供 panic 的 log
@@ -85,8 +88,8 @@ tidb-server 无法启动的常见情况包括：
 + 连接字符串中的端口和 tidb-server 启动的端口是否一致
 + 请保证防火墙的配置正确
 
-## Open too many files
-在启动进程之前，请确保 ulimit -n 的结果足够大，推荐设为 unlimited 或者是大于 1000000
+## Too many open files
+在启动进程之前，请确保 ulimit -n 的结果足够大，推荐设为 unlimited 或者是大于 1000000。
 
 ## 数据库访问超时，系统负载高
 首先请提供如下信息
@@ -96,7 +99,7 @@ tidb-server 无法启动的常见情况包括：
 + 机器的硬件配置
   - CPU 核数
   - 内存大小
-  - 硬盘类型（SSD还是机械硬盘）
+  - 硬盘类型（SSD 还是机械硬盘）
   - 是实体机还是虚拟机
 + 机器上除了 TiDB 集群之外是否还有其他服务
 + pd-server 和 tikv-server 是否分开部署
