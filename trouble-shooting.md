@@ -22,6 +22,14 @@
 
   程序有错误，请将具体的 panic log [提供给 TiDB 开发者](https://github.com/pingcap/tidb/issues/new)
 
+如果是清空数据并重新部署服务，请确认以下信息：
++ pd-server、tikv-server 数据都已清空
+
+  tikv-server 存储具体的数据，pd-server 存储 tikv-server 中数据的的元信息。如果只清空 pd-server 或只清空 tikv-server 的数据，会导致两边数据不匹配。
++ 清空 pd-server 和 tikv-server 的数据并重启后，也需要重启 tidb-server
+
+  集群 ID 是由 pd-server 在集群初始化时随机分配，所以重新部署集群后，集群 ID 会发生变化。tidb-server 业务需要重启以获取新的集群 ID。
+
 ## tidb-server 启动报错
 tidb-server 无法启动的常见情况包括：
 + 启动参数错误
@@ -58,7 +66,7 @@ tidb-server 无法启动的常见情况包括：
   请参考[PD 命令行参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#placement-driver-pd)文档
 + 端口被占用：`lsof -i:port`
 
-  请确保 tikv-server 启动所需要的端口未被占用： `lsof -i:port`
+  请确保 pd-server 启动所需要的端口未被占用： `lsof -i:port`
 
 ## TiDB/TiKV/PD 进程异常退出
 + 进程是否是启动在前台
@@ -84,7 +92,7 @@ tidb-server 无法启动的常见情况包括：
 首先请提供如下信息
 + 部署的拓扑结构
   - tidb-server/pd-server/tikv-server 部署了几个实例
-  - 这些实例机器上
+  - 这些实例在机器上是如何分布的
 + 机器的硬件配置
   - CPU 核数
   - 内存大小
