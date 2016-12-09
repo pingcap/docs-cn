@@ -33,7 +33,7 @@ max-open-files = 40960
 
 [rocksdb.defaultcf]
 block-size = "64KB"
-compression-per-level = "no:no:no:lz4:lz4:lz4:lz4"
+compression-per-level = "no:no:lz4:lz4:lz4:lz4:lz4"
 write-buffer-size = "64MB"
 max-write-buffer-number = 5
 min-write-buffer-number-to-merge = 1
@@ -43,7 +43,7 @@ target-file-size-base = "32MB"
 block-cache-size = "1GB"
 
 [rocksdb.writecf]
-compression-per-level = "no:no:no:lz4:lz4:lz4:lz4"
+compression-per-level = "no:no:lz4:lz4:lz4:lz4:lz4"
 write-buffer-size = "64MB"
 max-write-buffer-number = 5
 min-write-buffer-number-to-merge = 1
@@ -53,7 +53,7 @@ target-file-size-base = "32MB"
 block-cache-size = "256MB"
 
 [rocksdb.raftcf]
-compression-per-level = "no:no:no:lz4:lz4:lz4:lz4"
+compression-per-level = "no:no:lz4:lz4:lz4:lz4:lz4"
 write-buffer-size = "64MB"
 max-write-buffer-number = 5
 min-write-buffer-number-to-merge = 1
@@ -82,7 +82,7 @@ block-cache-size的大小根据机器的内存情况进行调整。
 [raftstore]
 # 该参数的含义是如果一个region的写入超过该值就会检查是否需要分裂，在导数据的情况因为只有insert操作，所以为了减少检查一般配大点，一般为region-split-size的一半。
 region-split-check-diff = "32MB"
-# 把 region-compact-check-interval 和 lock-cf-compact-interval 配置大点是为了减少导数据过程中触发的 manual compaction 对 rocksdb compaciton 的干扰。
+# 把 region-compact-check-interval 和 lock-cf-compact-interval 配置大点是为了减少导数据过程中触发的 manual compaction 对 rocksdb compaciton 的干扰。导数据结束之后将其还原成默认值。
 region-compact-check-interval = "600m"
 lock-cf-compact-interval = "600m"
 
@@ -92,7 +92,7 @@ max-background-compactions = 6
 max-background-flushes ＝ 6
 
 [rocksdb.defaultcf]
-compression-per-level = "no:no:no:lz4:lz4:lz4:lz4"
+compression-per-level = "no:no:lz4:lz4:lz4:lz4:lz4"
 block-size = "16KB"
 write-buffer-size = "64MB"
 max-write-buffer-number = 5
@@ -102,7 +102,7 @@ target-file-size-base = "32MB"
 block-cache-size = "256MB"
 
 [rocksdb.writecf]
-compression-per-level = "no:no:no:lz4:lz4:lz4:lz4"
+compression-per-level = "no:no:lz4:lz4:lz4:lz4:lz4"
 block-size = "16KB"
 write-buffer-size = "64MB"
 max-write-buffer-number = 5
@@ -113,7 +113,7 @@ target-file-size-base = "32MB"
 block-cache-size = "1GB"
 
 [rocksdb.raftcf]
-compression-per-level = "no:no:no:lz4:lz4:lz4:lz4"
+compression-per-level = "no:no:lz4:lz4:lz4:lz4:lz4"
 block-size = "16KB"
 write-buffer-size = "64MB"
 max-write-buffer-number = 5
