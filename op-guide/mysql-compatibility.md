@@ -29,7 +29,7 @@ TiDB 实现了 F1 的异步 Schema 变更算法，DDL 执行过程中不会阻�
 + Create Database
 + Drop Database
 + Create Table
-+ Drop Database
++ Drop Table
 + Add Index
 + Drop Index
 + Add Column
