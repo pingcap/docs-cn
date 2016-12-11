@@ -93,3 +93,9 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提�
 ### TiDB 是否支持其他存储引擎?
 
 是的。除了 TiKV 之外，TiDB 还支持一些流行的单机存储引擎，比如 GolevelDB, RocksDB,  BoltDB 等。如果一个存储引擎是支持事务的 KV 引擎，并且能提供一个满足 TiDB 接口要求的 Client，即可接入 TiDB。
+
+### 使用go get方式安装TiDB为什么报错了?
+
+请手动将TiDB克隆到GOPATH目录，然后运行`make`命令。TiDB是一个项目而不是一个库，它的依赖比较复杂，并且parser也是根据`parser.y`生成的，我们不支持`go get`方式，而是使用Makefile来管理。
+
+如果你是开发者并且熟习Go语言，你可以尝试在TiDB项目的根目录运行`make parser; ln -s _vendor/src vendor`，之后就可以使用`go run`, `go test` `go install`等命令，但是并不推荐这种做法。
