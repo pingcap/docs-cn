@@ -97,13 +97,13 @@ github.com/pingcap/tidb/parser/yy_parser.go:124:
 2016/10/27 13:19:28 main.go:68: [error] Check database test with 1 errors and 0 warnings.
 ```
 
-## 使用 `mydumper`/`myloader` 全量导入数据
+## 使用 `mydumper`/`loader` 全量导入数据
 
-我们使用 `mydumper` 从 MySQL 导出数据，然后用 `myloader` 将其导入到 TiDB 里面。
+我们使用 `mydumper` 从 MySQL 导出数据，然后用 `loader` 将其导入到 TiDB 里面。
 
-**注意，虽然我们也支持使用 MySQL 官方的  `mysqldump` 工具来进行数据的迁移工作，但相比于 `mydumper`/`myloader`，性能会慢很多，对于大量数据的迁移会花费很多时间，这里我们并不推荐。**
+**注意，虽然我们也支持使用 MySQL 官方的  `mysqldump` 工具来进行数据的迁移工作，但相比于 `mydumper`/`loader`，性能会慢很多，对于大量数据的迁移会花费很多时间，这里我们并不推荐。**
 
-`mydumper`/`myloader` 是一个更强大的数据迁移工具，具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)。
+`mydumper`/`loader` 是一个更强大的数据迁移工具，具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)。
 
 ### 下载 Binary
 
@@ -137,13 +137,13 @@ cd mydumper-linux-amd64
 
 ### 给 TiDB 导入数据
 
-我们使用 `myloader` 将之前导出的数据导入到 TiDB。
+我们使用 `loader` 将之前导出的数据导入到 TiDB。Loader 的下载和具体的使用方法见 [Loader 使用文档](../tools/loader.md)
 
 ```bash
-./bin/myloader -h 127.0.0.1 -P 4000 -u root -t 16 -q 1 -d ./var/test
+./bin/loader -h 127.0.0.1 -u root -P 4000 -t 4 -q 1 -d ./var/test
 ```
 
-这里 `-q 1` 表明每个事务包含多少个 query，默认是 1000，我们这里使用 1 就可以了。
+这里 `-q 1` 表明每个事务包含多少个 query，默认是 1，在像 TiDB 中导入数据时，推荐用默认值。
 
 导入成功之后，我们可以用 MySQL 官方客户端进入 TiDB，查看:
 
