@@ -22,8 +22,8 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 使用环境变量:
 
 ``` 
-    export PD_ADDR=http://127.0.0.1:2379
-    ./pd-ctl
+export PD_ADDR=http://127.0.0.1:2379
+./pd-ctl
 ```
 
 ### 标志(flags)
@@ -92,7 +92,7 @@ Success!
 
 #### Region <region_id>
 用于显示 Region 信息
-#### 示例
+##### 示例
 ```
 >> region                               //　显示所有 region 信息
 {
