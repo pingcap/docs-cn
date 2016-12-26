@@ -14,6 +14,7 @@
 + 运维 & 监控
  - [整体监控框架概述](op-guide/monitor-overview.md)
  - [组件状态 API & 监控](op-guide/monitor.md)
+ - [PD 命令行工具](op-guide/pd-control.md)
 + SQL 兼容及对比
  - [TiDB SQL 文法](./sql)
  - [与 MySQL 兼容性对比](op-guide/mysql-compatibility.md)
