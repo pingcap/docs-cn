@@ -103,11 +103,12 @@ github.com/pingcap/tidb/parser/yy_parser.go:124:
 
 **注意，虽然我们也支持使用 MySQL 官方的  `mysqldump` 工具来进行数据的迁移工作，但相比于 `mydumper`/`loader`，性能会慢很多，对于大量数据的迁移会花费很多时间，这里我们并不推荐。**
 
-`mydumper`/`loader` 是一个更强大的数据迁移工具，具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)。
+### 从 MySQL 导出数据
+`mydumper` 是一个更强大的数据迁移工具，具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)。
 
-### 下载 Binary
+#### 下载 Binary
 
-#### Linux
+##### Linux
 
 ```bash
 # 下载 mydumper 压缩包
@@ -121,7 +122,7 @@ tar -xzf mydumper-linux-amd64.tar.gz
 cd mydumper-linux-amd64
 ```
 
-### 从 MySQL 导出数据
+#### 从 MySQL 导出数据
 
 我们使用 `mydumper` 从 MySQL 导出数据，如下:
 
@@ -135,7 +136,7 @@ cd mydumper-linux-amd64
 
 **注意：在阿里云一些需要 `super privilege` 的云上面，`mydumper` 需要加上 `--no-locks` 参数，否则会提示没有权限操作。**
 
-### 给 TiDB 导入数据
+### 向 TiDB 导入数据
 
 我们使用 `loader` 将之前导出的数据导入到 TiDB。Loader 的下载和具体的使用方法见 [Loader 使用文档](../tools/loader.md)
 
