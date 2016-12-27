@@ -17,11 +17,63 @@
   "editable": true,
   "hideControls": false,
   "sharedCrosshair": false,
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "instance",
+        "options": [],
+        "query": "label_values(pd_cluster_status, instance)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": null,
+        "tagsQuery": null,
+        "type": "query"
+      }
+    ]
+  },
+  "annotations": {
+    "list": []
+  },
+  "refresh": "5m",
+  "schemaVersion": 13,
+  "version": 4,
+  "links": [],
+  "gnetId": null,
   "rows": [
     {
-      "collapse": false,
-      "editable": true,
-      "height": "300px",
+      "title": "cluster status",
       "panels": [
         {
           "cacheTimeout": null,
@@ -46,7 +98,6 @@
           },
           "id": 10,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -85,7 +136,7 @@
               "expr": "max(pd_cluster_status{instance=\"$instance\",type=\"storage_capacity\"})",
               "intervalFactor": 2,
               "refId": "A",
-              "step": 240
+              "step": 60
             }
           ],
           "thresholds": "",
@@ -123,7 +174,6 @@
           },
           "id": 20,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -162,7 +212,7 @@
               "expr": "pd_cluster_status{instance=\"$instance\",type=\"region_total_count\"}",
               "intervalFactor": 2,
               "refId": "A",
-              "step": 240
+              "step": 60
             }
           ],
           "thresholds": "",
@@ -200,7 +250,6 @@
           },
           "id": 11,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -239,7 +288,7 @@
               "expr": "pd_cluster_status{instance=\"$instance\",type=\"store_up_count\"}",
               "intervalFactor": 2,
               "refId": "A",
-              "step": 240
+              "step": 60
             }
           ],
           "thresholds": "",
@@ -277,7 +326,6 @@
           },
           "id": 12,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -316,7 +364,7 @@
               "expr": "pd_cluster_status{instance=\"$instance\",type=\"store_down_count\"}",
               "intervalFactor": 2,
               "refId": "A",
-              "step": 240
+              "step": 60
             }
           ],
           "thresholds": "",
@@ -354,7 +402,6 @@
           },
           "id": 13,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -393,7 +440,7 @@
               "expr": "pd_cluster_status{instance=\"$instance\",type=\"store_offline_count\"}",
               "intervalFactor": 2,
               "refId": "A",
-              "step": 240
+              "step": 60
             }
           ],
           "thresholds": "",
@@ -431,7 +478,6 @@
           },
           "id": 14,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -470,7 +516,7 @@
               "expr": "pd_cluster_status{instance=\"$instance\",type=\"store_tombstone_count\"}",
               "intervalFactor": 2,
               "refId": "A",
-              "step": 240
+              "step": 60
             }
           ],
           "thresholds": "",
@@ -493,15 +539,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)",
-            "thresholdLine": false
-          },
+          "grid": {},
           "id": 9,
-          "isNew": true,
           "legend": {
             "avg": false,
             "current": false,
@@ -529,9 +568,10 @@
               "intervalFactor": 2,
               "legendFormat": "",
               "refId": "A",
-              "step": 40
+              "step": 4
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Current Storage Size",
@@ -543,7 +583,10 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -572,14 +615,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 18,
-          "isNew": true,
           "legend": {
             "avg": false,
             "current": false,
@@ -606,9 +643,10 @@
               "expr": "pd_cluster_status{instance=\"$instance\",type=\"region_total_count\"}",
               "intervalFactor": 2,
               "refId": "A",
-              "step": 40
+              "step": 4
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Current Regions Count",
@@ -620,7 +658,10 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -648,14 +689,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 16,
-          "isNew": true,
           "legend": {
             "avg": false,
             "current": false,
@@ -679,12 +714,13 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "pd_cluster_status{instance=\"$instance\",type=\"store_max_diff_used_ratio\"}",
+              "expr": "pd_cluster_status{instance=\"$instance\",type=\"store_max_diff_storage_ratio\"}",
               "intervalFactor": 2,
               "refId": "A",
-              "step": 40
+              "step": 4
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Storage Balance Ratio",
@@ -696,7 +732,10 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -724,14 +763,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 17,
-          "isNew": true,
           "legend": {
             "avg": false,
             "current": false,
@@ -758,9 +791,10 @@
               "expr": "pd_cluster_status{instance=\"$instance\",type=\"store_max_diff_leader_ratio\"}",
               "intervalFactor": 2,
               "refId": "A",
-              "step": 40
+              "step": 4
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Leader Balance Ratio",
@@ -772,7 +806,10 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -800,14 +837,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 27,
-          "isNew": true,
           "legend": {
             "alignAsTable": true,
             "avg": false,
@@ -834,16 +865,17 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(pd_balancer_balancers_count{instance=\"$instance\"}[5m])) by (type)",
+              "expr": "sum(rate(pd_schedule_operators_count{instance=\"$instance\"}[5m])) by (type)",
               "intervalFactor": 2,
               "legendFormat": "{{type}}",
               "refId": "A",
-              "step": 20
+              "step": 4
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "balance_operators_count",
+          "title": "schedule_operators_count",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -852,7 +884,10 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -875,12 +910,15 @@
         }
       ],
       "showTitle": true,
-      "title": "cluster status"
+      "titleSize": "h6",
+      "height": "300px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "300px",
+      "title": "PD - commands",
       "panels": [
         {
           "aliasColors": {},
@@ -890,14 +928,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 1,
-          "isNew": true,
           "legend": {
             "alignAsTable": true,
             "avg": false,
@@ -928,9 +960,10 @@
               "intervalFactor": 2,
               "legendFormat": "{{type}}",
               "refId": "A",
-              "step": 20
+              "step": 4
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "completed_cmds_count",
@@ -942,7 +975,10 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -970,14 +1006,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 2,
-          "isNew": true,
           "legend": {
             "alignAsTable": true,
             "avg": false,
@@ -1009,9 +1039,10 @@
               "intervalFactor": 2,
               "legendFormat": "{{type}}",
               "refId": "A",
-              "step": 40
+              "step": 4
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "99% completed_cmds_duration_seconds",
@@ -1023,7 +1054,10 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1051,14 +1085,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 23,
-          "isNew": true,
           "legend": {
             "alignAsTable": true,
             "avg": false,
@@ -1090,9 +1118,10 @@
               "intervalFactor": 2,
               "legendFormat": "{{type}}",
               "refId": "A",
-              "step": 40
+              "step": 4
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "99.999% completed_cmds_duration_seconds",
@@ -1104,7 +1133,10 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1127,12 +1159,15 @@
         }
       ],
       "showTitle": true,
-      "title": "PD - commands"
+      "titleSize": "h6",
+      "height": "300px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "300px",
+      "title": "etcd - transactions",
       "panels": [
         {
           "aliasColors": {},
@@ -1141,14 +1176,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 5,
-          "isNew": true,
           "legend": {
             "alignAsTable": true,
             "avg": false,
@@ -1179,9 +1208,10 @@
               "intervalFactor": 2,
               "legendFormat": "{{instance}} : {{result}}",
               "refId": "A",
-              "step": 20
+              "step": 4
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "handle_txns_count",
@@ -1193,7 +1223,10 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1221,14 +1254,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 6,
-          "isNew": true,
           "legend": {
             "alignAsTable": true,
             "avg": false,
@@ -1259,9 +1286,10 @@
               "intervalFactor": 2,
               "legendFormat": "{{instance}} : {{result}}",
               "refId": "A",
-              "step": 40
+              "step": 4
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "99% handle_txns_duration_seconds",
@@ -1273,7 +1301,10 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1301,14 +1332,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 24,
-          "isNew": true,
           "legend": {
             "alignAsTable": true,
             "avg": false,
@@ -1339,9 +1364,10 @@
               "intervalFactor": 2,
               "legendFormat": "{{instance}} : {{result}}",
               "refId": "A",
-              "step": 40
+              "step": 4
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "99.999% handle_txns_duration_seconds",
@@ -1353,7 +1379,10 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1381,14 +1410,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 7,
-          "isNew": true,
           "legend": {
             "alignAsTable": true,
             "avg": false,
@@ -1420,9 +1443,10 @@
               "legendFormat": "{{instance}}",
               "metric": "",
               "refId": "A",
-              "step": 40
+              "step": 4
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "99% wal_fsync_duration_seconds",
@@ -1435,7 +1459,10 @@
           "transparent": false,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1463,14 +1490,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 25,
-          "isNew": true,
           "legend": {
             "alignAsTable": true,
             "avg": false,
@@ -1502,9 +1523,10 @@
               "legendFormat": "{{instance}}",
               "metric": "",
               "refId": "A",
-              "step": 40
+              "step": 4
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "99.999% wal_fsync_duration_seconds",
@@ -1517,7 +1539,10 @@
           "transparent": false,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1540,58 +1565,12 @@
         }
       ],
       "showTitle": true,
-      "title": "etcd - transactions"
+      "titleSize": "h6",
+      "height": "300px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     }
-  ],
-  "time": {
-    "from": "now-3h",
-    "to": "now"
-  },
-  "timepicker": {
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ]
-  },
-  "templating": {
-    "list": [
-      {
-        "datasource": "${DS_PROMETHEUS}",
-        "hide": 0,
-        "includeAll": false,
-        "multi": false,
-        "name": "instance",
-        "query": "label_values(pd_cluster_status, instance)",
-        "refresh": 1,
-        "type": "query"
-      }
-    ]
-  },
-  "annotations": {
-    "list": []
-  },
-  "refresh": "5m",
-  "schemaVersion": 12,
-  "version": 13,
-  "links": [],
-  "gnetId": null
+  ]
 }
