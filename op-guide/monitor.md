@@ -154,4 +154,4 @@ scrape_configs:
 
 + 导入 dashboard 配置文件
 
-  点击 Grafana Logo -> 点击 Data Sources -> 点击 Import -> 选择需要的 dashboard 配置文件上传 -> 选择对应的 data source
+  点击 Grafana Logo -> 点击 Data Sources -> 点击 Import -> 选择需要的 dashboard [配置文件](https://github.com/pingcap/docs/tree/master/etc)上传 -> 选择对应的 data source
