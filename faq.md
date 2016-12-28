@@ -36,9 +36,11 @@ PD 是 TiDB 集群的管理组件，负责存储 TiKV 的元数据，同时也�
 
 TiDB 遵循 MySQL 的权限管理体系，可以创建用户并授予权限。
 
-在创建用户时，可以使用 MySQL 语法，如 "CREATE USER 'test'@'localhost' identified by '123';”，这样就添加了一个用户名为 test，密码为 123 的用户，这个用户只能从 localhost 登录。
+在创建用户时，可以使用 MySQL 语法，如 `CREATE USER 'test'@'localhost' identified by '123';`，这样就添加了一个用户名为 test，密码为 123 的用户，这个用户只能从 localhost 登录。
 
-在进行授权时，也可以使用 MySQL 语法，如 "GRANT SELECT ON *.* TO  'test'@'localhost';"，将读权限授予 test 用户。
+修改用户密码时，可以使用 Set Password 语句，例如给 TiDB 的默认 root 用户增加密码：`SET PASSWORD FOR 'root'@'%' = '123';`。
+
+在进行授权时，也可以使用 MySQL 语法，如 `GRANT SELECT ON *.* TO  'test'@'localhost';`，将读权限授予 test 用户。
 
 **请注意**，在创建用户和授权时，TiDB 有几个和 MySQL 有区别：
  * 创建用户时，用户标识采用 user@hostname 这种语法，其中 hostname 支持精确匹配和全匹配，不支持前缀匹配，也就是只支持 "192.168.199.1" 以及 “%”，而不支持 “192.168.%”
@@ -99,3 +101,11 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提�
 请手动将TiDB克隆到GOPATH目录，然后运行`make`命令。TiDB是一个项目而不是一个库，它的依赖比较复杂，并且parser也是根据`parser.y`生成的，我们不支持`go get`方式，而是使用Makefile来管理。
 
 如果你是开发者并且熟习Go语言，你可以尝试在TiDB项目的根目录运行`make parser; ln -s _vendor/src vendor`，之后就可以使用`go run`, `go test` `go install`等命令，但是并不推荐这种做法。
+
+### 为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？
+
+如果要使用配置文件，请设置 TiKV/PD 的 --config 参数，TiKV/PD 默认情况下不会读取配置文件。
+
+### 为什么 TiKV 数据目录不见了
+
+TiKV 的 --store 参数默认值为 `/tmp/tikv/store`，在某些虚拟机中，重启操作系统会删除 /tmp 目录下的数据，推荐通过 --store 参数显式设置 TiKV 数据目录。
