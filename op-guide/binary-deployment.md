@@ -49,29 +49,29 @@ cd tidb-latest-linux-amd64-centos6
 
 1. 启动 PD.
 
-    ```bash
-    ./bin/pd-server --data-dir=pd
-    ```
-    
+```bash
+./bin/pd-server --data-dir=pd
+```
+
 2. 启动 TiKV.
 
-    ```bash
-    ./bin/tikv-server --pd="127.0.0.1:2379" \
-                      --store=tikv
-    ```
+```bash
+./bin/tikv-server --pd="127.0.0.1:2379" \
+                  --store=tikv
+```
 
 3. 启动 TiDB.
 
-    ```bash
-    ./bin/tidb-server --store=tikv \
-                      --path="127.0.0.1:2379" 
-    ```
+```bash
+./bin/tidb-server --store=tikv \
+                  --path="127.0.0.1:2379"
+```
 
-4. 使用官方的 `mysql` 客户端连接 TiDB. 
+4. 使用官方的 `mysql` 客户端连接 TiDB.
 
-    ```sh
-    mysql -h 127.0.0.1 -P 4000 -u root -D test
-    ```
+```bash
+mysql -h 127.0.0.1 -P 4000 -u root -D test
+```
 
 ## 多节点集群模式部署
 
@@ -92,57 +92,57 @@ cd tidb-latest-linux-amd64-centos6
 
 1. 在 node1，node2，node3 启动 PD.
 
-    ```bash
-    ./bin/pd-server --name=pd1 \
-                    --data-dir=pd1 \
-                    --client-urls="http://192.168.199.113:2379" \
-                    --peer-urls="http://192.168.199.113:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
-              
-    ./bin/pd-server --name=pd2 \
-                    --data-dir=pd2 \
-                    --client-urls="http://192.168.199.114:2379" \
-                    --peer-urls="http://192.168.199.114:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
-              
-    ./bin/pd-server --name=pd3 \
-                    --data-dir=pd3 \
-                    --client-urls="http://192.168.199.115:2379" \
-                    --peer-urls="http://192.168.199.115:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
-    ```
+```bash
+./bin/pd-server --name=pd1 \
+                --data-dir=pd1 \
+                --client-urls="http://192.168.199.113:2379" \
+                --peer-urls="http://192.168.199.113:2380" \
+                --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
+
+./bin/pd-server --name=pd2 \
+                --data-dir=pd2 \
+                --client-urls="http://192.168.199.114:2379" \
+                --peer-urls="http://192.168.199.114:2380" \
+                --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
+
+./bin/pd-server --name=pd3 \
+                --data-dir=pd3 \
+                --client-urls="http://192.168.199.115:2379" \
+                --peer-urls="http://192.168.199.115:2380" \
+                --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
+```
 
 2. 在 node4，node5，node6 启动 TiKV.
 
-    ```bash
-    ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
-                      --addr="192.168.199.116:20160" \
-                      --store=tikv1
-    
-    ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
-                      --addr="192.168.199.117:20160" \
-                      --store=tikv2
-                
-    ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
-                      --addr="192.168.199.118:20160" \
-                      --store=tikv3
-    ```
+```bash
+./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
+                    --addr="192.168.199.116:20160" \
+                    --store=tikv1
+
+./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
+                    --addr="192.168.199.117:20160" \
+                    --store=tikv2
+
+./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
+                    --addr="192.168.199.118:20160" \
+                    --store=tikv3
+```
 
 3. 在 node1 启动 TiDB.
 
-    ```bash
-    ./bin/tidb-server --store=tikv \
-                      --path="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379"
-    ```
+```bash
+./bin/tidb-server --store=tikv \
+                    --path="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379"
+```
 
-4. 使用官方 `mysql` 客户端连接 TiDB. 
+4. 使用官方 `mysql` 客户端连接 TiDB.
 
     ```sh
     mysql -h 192.168.199.113 -P 4000 -u root -D test
     ```
 
 **注意：在生产环境中启动 TiKV 时，建议使用 [--config](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#-c---config) 参数指定配置文件路径，如果不设置这个参数，TiKV 不会读取配置文件。同样，在生产环境中部署 PD 时，也建议使用 [--config](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#--config) 参数指定配置文件路径。**
-    
+
 ## 功能性测试部署
 
 如果只是对 TiDB 进行测试，并且机器数量有限，我们可以只启动一台 PD 测试 整个集群。
@@ -161,42 +161,42 @@ cd tidb-latest-linux-amd64-centos6
 
 1. 在 node1 启动 PD.
 
-    ```bash
-    ./bin/pd-server --name=pd1 \
-                    --data-dir=pd1 \
-                    --client-urls="http://192.168.199.113:2379" \
-                    --peer-urls="http://192.168.199.113:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380"  
-     ```
+```bash
+./bin/pd-server --name=pd1 \
+                --data-dir=pd1 \
+                --client-urls="http://192.168.199.113:2379" \
+                --peer-urls="http://192.168.199.113:2380" \
+                --initial-cluster="pd1=http://192.168.199.113:2380"
+    ```
 
 2. 在 node2，node3，node4 启动 TiKV.
 
-    ```bash
-    ./bin/tikv-server --pd="192.168.199.113:2379" \
-                      --addr="192.168.199.114:20160" \
-                      --store=tikv1
-    
-    ./bin/tikv-server --pd="192.168.199.113:2379" \
-                      --addr="192.168.199.115:20160" \
-                      --store=tikv2
-                
-    ./bin/tikv-server --pd="192.168.199.113:2379" \
-                      --addr="192.168.199.116:20160" \
-                      --store=tikv3
-    ```
+```bash
+./bin/tikv-server --pd="192.168.199.113:2379" \
+                    --addr="192.168.199.114:20160" \
+                    --store=tikv1
+
+./bin/tikv-server --pd="192.168.199.113:2379" \
+                    --addr="192.168.199.115:20160" \
+                    --store=tikv2
+
+./bin/tikv-server --pd="192.168.199.113:2379" \
+                    --addr="192.168.199.116:20160" \
+                    --store=tikv3
+```
 
 3. 在 node1 启动 TiDB.
 
-    ```bash
-    ./bin/tidb-server --store=tikv \
-                      --path="192.168.199.113:2379"
-    ```
+```bash
+./bin/tidb-server --store=tikv \
+                    --path="192.168.199.113:2379"
+```
 
-4. 使用官方 `mysql` 客户端连接 TiDB. 
+4. 使用官方 `mysql` 客户端连接 TiDB.
 
-    ```sh
-    mysql -h 192.168.199.113 -P 4000 -u root -D test
-    ```
+```bash
+mysql -h 192.168.199.113 -P 4000 -u root -D test
+```
 
 ## 动态添加节点
 
@@ -212,7 +212,7 @@ cd tidb-latest-linux-amd64-centos6
 
 如果我们需要添加 `pd4`，只需要在 `join` 参数里面填入当前 PD 集群某一个 PD 服务的 `ClientUrls` 就可以了，如下：
 
-```
+```bash
 ./bin/pd-server --name=pd4 \
                 --client-urls="http://host4:2379"
                 --peer-urls="http://host4:2380"
@@ -221,13 +221,13 @@ cd tidb-latest-linux-amd64-centos6
 
 如果我们需要删除 `pd4`，可以通过 PD 的 HTTP API 来完成：
 
-```
+```bash
 curl -X DELETE http://host1:2379/pd/api/v1/members/pd4
 ```
 
 最后我们可以查看当前 PD 的所有节点来确定是否添加或者删除成功：
 
-```
+```bash
 curl http://host1:2379/pd/api/v1/members
 ```
 
@@ -243,13 +243,13 @@ curl http://host1:2379/pd/api/v1/members
 
 假设我们要删除一个 store id 为 1 的 TiKV，可以调用 PD 的 HTTP API 来操作：
 
-```
+```bash
 curl -X DELETE http://host:port/pd/api/v1/store/1
 ```
 
 然后可以查看这个 TiKV 的当前状态：
 
-```
+```bash
 curl http://host:port/pd/api/v1/store/1
 ```
 

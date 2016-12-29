@@ -73,7 +73,7 @@ Check database succ!
 
 我们在 MySQL 里面创建如下表：
 
-```bash
+```sql
 CREATE TABLE t_error (
   c timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -148,7 +148,7 @@ cd mydumper-linux-amd64
 
 导入成功之后，我们可以用 MySQL 官方客户端进入 TiDB，查看:
 
-```bash
+```sql
 mysql -h127.0.0.1 -P4000 -uroot
 
 mysql> show tables;
@@ -195,15 +195,15 @@ TiDB 提供 `syncer` 工具能方便的将 MySQL 的数据增量的导入到 TiD
 + MySQL 开启 binlog 功能，参考 [Setting the Replication Master Configuration](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
 + Binlog 格式必须使用 `row` format，这也是 MySQL 5.7 之后推荐的 binlog 格式，可以使用如下语句打开:
 
-    ```bash
-    SET GLOBAL binlog_format = ROW;
-    ``` 
+```sql
+SET GLOBAL binlog_format = ROW;
+```
 
 ### 获取同步 position
 
 我们通过 `show master status` 得到当前 binlog 的 position，`syncer` 的初始同步位置就是从这个地方开始。
 
-```bash
+```s q l
 show master status;
 +------------------+----------+--------------+------------------+-------------------+
 | File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
@@ -264,7 +264,7 @@ port = 4000
 
 ### 在 MySQL 插入新的数据
 
-```bash
+```sql
 INSERT INTO t1 VALUES (4, 4), (5, 5);
 ```
 

@@ -3,39 +3,46 @@
 ## TiDB
 
 ### --store
+
 + 用来指定 TiDB 底层使用的存储引擎
 + 默认: "goleveldb"
 + 你可以选择 "memory", "goleveldb", "BoltDB" 或者 "TiKV"。前面三个是本地存储引擎，而 TiKV 是一个分布式存储引擎。
 + 例如，如果我们可以通过 `tidb-server --store=memory` 来启动一个纯内存引擎的 TiDB。
 
 ### --path
+
 + 对于本地存储引擎 "goleveldb", "BoltDB" 来说，path 指定的是实际的数据存放路径。
 + 对于 "memory" 存储引擎来说，path 不用设置。
 + 对于 "TiKV" 存储引擎来说，path 指定的是实际的 PD 地址。假设我们在 192.168.100.113:2379, 192.168.100.114:2379 和 192.168.100.115:2379 上面部署了 PD，那么 path 为 "192.168.100.113:2379,192.168.100.114:2379,192.168.100.115:2379"。
 + 默认: "/tmp/tidb"
 
 ### -L
+
 + Log 级别
 + 默认: "info"
 + 我们能选择 debug, info, warn, error 或者 fatal.
 
 ### --log-file
+
 + Log 文件
 + 默认: ""
 + 如果没设置这个参数，log 会默认输出到 "stderr"，如果设置了，log 就会输出到对应的文件里面，在每天凌晨，log 会自动轮转使用一个新的文件，并且将以前的文件改名备份。
 
 ### --host
+
 + TiDB 服务监听 host。
 + 默认: "0.0.0.0"
 + TiDB 服务会监听这个 host。
 + 0.0.0.0 默认会监听所有的网卡 address。如果有多块网卡，可以指定对外提供服务的网卡，譬如192.168.100.113。
 
 ### -P
+
 + TiDB 服务监听端口。
 + 默认: "4000"
 + TiDB 服务将会使用这个端口接受 MySQL 客户端发过来的请求。
 
 ### --status
+
 + TiDB 服务状态监听端口。
 + 默认: "10080"
 + 这个端口是为了展示 TiDB 内部数据用的。包括 [prometheus 统计](https://prometheus.io/) 以及 [pprof](https://golang.org/pkg/net/http/pprof/)。
@@ -43,31 +50,37 @@
 + Pprof 数据可以通过 "http://host:status_port/debug/pprof" 访问。
 
 ### --lease
+
 + Schema 的租约时间，单位：秒。
 + 默认: "1"
 + Schema 的 lease 主要用在 online schema changes 上面。这个值会影响到实际的 DDL 语句的执行时间。千万不要随便改动这个值，除非你能知道相关的内部机制。
 
 ### --socket
+
 + TiDB 服务使用 unix socket file 方式接受外部连接。
 + 默认: ""
 + 譬如我们可以使用 "/tmp/tidb.sock" 来打开 unix socket file。
 
 ### --perfschema
+
 + 使用 true/false 来打开或者关闭性能 schema。
 + 默认: false
 + 值可以是 (true) or (false)。性能 Schema 可以帮助我们在运行时检测内部的执行情况。可以通过 [performance schema](http://dev.mysql.com/doc/refman/5.7/en/performance-schema.html) 获取更多信息。但需要注意，开启性能 Schema，会影响 TiDB 的性能。
 
 ### --report-status
+
 + 打开 (true) 或者关闭 (false) 服务状态监听端口.
 + 默认: true
 + 值可以为 (true) 或者 (false). (true) 表明我们开启状态监听端口。 (false) 表明关闭。
 
 ### --metrics-addr
+
 + Prometheus Push Gateway 地址。
 + 默认: ""
 + 如果为空，TiDB 不会将统计信息推送给 Push Gateway。
 
 ### --metrics-intervel
+
 + 推送统计信息到 Prometheus Push Gateway 的时间间隔。
 + 默认: 15s
 + 设置为 0 表明不推送统计信息给 Push Gateway。
@@ -75,11 +88,13 @@
 ## Placement Driver (PD)
 
 ### -L
+
 + Log 级别
 + 默认: "info"
 + 我们能选择 debug, info, warn, error 或者 fatal.
 
 ### --log-file
+
 + Log 文件
 + 默认: ""
 + 如果没设置这个参数，log 会默认输出到 "stderr"，如果设置了，log 就会输出到对应的文件里面，在每天凌晨，log 会自动轮转使用一个新的文件，并且将以前的文件改名备份。
@@ -144,8 +159,8 @@
 
 TiKV 在命令行参数上面支持一些可读性好的单位转换.
 
- - 文件大小（以 bytes 为单位）: KB, MB, GB, TB, PB（也可以全小写）。
- - 时间（以毫秒为单位）: ms, s, m, h。
++ 文件大小（以 bytes 为单位）: KB, MB, GB, TB, PB（也可以全小写）。
++ 时间（以毫秒为单位）: ms, s, m, h。
 
 ### -A, --addr
 

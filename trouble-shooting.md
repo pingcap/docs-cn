@@ -34,7 +34,7 @@
 tidb-server 无法启动的常见情况包括：
 + 启动参数错误
 
-  请参考[TiDB 命令行参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#tidb)文档。
+  请参考[TiDB 命令行参数](op-guide/configuration.md#tidb)文档。
 + 端口被占用：`lsof -i:port`
 
   请确保 tidb-server 启动所需要的端口未被占用。
@@ -49,7 +49,7 @@ tidb-server 无法启动的常见情况包括：
 
 ## tikv-server 启动报错
 + 启动参数错误
-  请参考[TiKV 启动参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#tikv)文档。
+  请参考[TiKV 启动参数](op-guide/configuration.md#tikv)文档。
 
 + 端口被占用：`lsof -i:port`
 
@@ -66,7 +66,7 @@ tidb-server 无法启动的常见情况包括：
 ## pd-server 启动报错
 + 启动参数错误
 
-  请参考[PD 命令行参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#placement-driver-pd)文档。
+  请参考[PD 命令行参数](op-guide/configuration.md#placement-driver-pd)文档。
 + 端口被占用：`lsof -i:port`
 
   请确保 pd-server 启动所需要的端口未被占用： `lsof -i:port`。
