@@ -110,6 +110,6 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提�
 
 TiKV 的 --store 参数默认值为 `/tmp/tikv/store`，在某些虚拟机中，重启操作系统会删除 /tmp 目录下的数据，推荐通过 --store 参数显式设置 TiKV 数据目录。
 
-### 为什么 TiKV 启动报错：cluster id mismatch?
+### TiKV 启动报错：cluster id mismatch
 
 TiKV 本地存储的 cluster id 和指定的 PD 的 cluster id 不一致。在部署新的 PD 集群的时候，PD 会随机生成一个 cluster id，TiKV 第一次初始化的时候会从 PD 获取 cluster id 存储在本地，下次启动的时候会检查本地的 cluster id 与 PD 的 cluster id 是否一致，如果不一致则会报错并退出。出现这个错误一个常见的原因是，用户原先部署了一个集群，后来把 PD 的数据删除了并且重新部署了新的 PD，但是 TiKV 还是使用旧的数据重启连到新的 PD 上，就会报这个错误。
