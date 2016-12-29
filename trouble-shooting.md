@@ -4,6 +4,7 @@
 
 ## 如何给 TiDB 开发者报告错误
 当使用 TiDB 遇到问题并且通过后面所列信息无法解决时，请收集以下信息并[创建新 Issue](https://github.com/pingcap/tidb/issues/new):
+
 + 具体的出错信息以及正在执行的操作
 + 当前所有组件的状态
 + 出问题组件 log 中的 error/fatal/panic 信息
@@ -15,6 +16,7 @@
 首先请确认集群的各项服务是否已经启动，包括 tidb-server、pd-server、tikv-server。请用 ps 命令查看所有进程是否在。如果某个组件的进程已经不在了，请参考对应的章节排查错误。
 
 如果所有的进程都在，请查看 tidb-server 的日志，看是否有报错？常见的错误包括：
+
 + InfomationSchema is out of date
 
   无法连接 tikv-server，请检查 pd-server 以及 tikv-server 的状态和日志。
@@ -32,9 +34,10 @@
 
 ## tidb-server 启动报错
 tidb-server 无法启动的常见情况包括：
+
 + 启动参数错误
 
-  请参考[TiDB 命令行参数](op-guide/configuration.md#tidb)文档。
+  请参考[TiDB 命令行参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#tidb)文档。
 + 端口被占用：`lsof -i:port`
 
   请确保 tidb-server 启动所需要的端口未被占用。
@@ -48,8 +51,9 @@ tidb-server 无法启动的常见情况包括：
   `nc -v -z 192.168.1.101 2379`，测试是否可以访问端口。或使用 `curl -v 192.168.1.101:2379/pd/api/v1/leader` 直接检查 pd 是否正常服务。
 
 ## tikv-server 启动报错
+
 + 启动参数错误
-  请参考[TiKV 启动参数](op-guide/configuration.md#tikv)文档。
+  请参考[TiKV 启动参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#tikv)文档。
 
 + 端口被占用：`lsof -i:port`
 
@@ -64,14 +68,16 @@ tidb-server 无法启动的常见情况包括：
   不要在一个数据库文件目录上打开两个 tikv。
 
 ## pd-server 启动报错
+
 + 启动参数错误
 
-  请参考[PD 命令行参数](op-guide/configuration.md#placement-driver-pd)文档。
+  请参考[PD 命令行参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#placement-driver-pd)文档。
 + 端口被占用：`lsof -i:port`
 
   请确保 pd-server 启动所需要的端口未被占用： `lsof -i:port`。
 
 ## TiDB/TiKV/PD 进程异常退出
+
 + 进程是否是启动在前台
 
   当前终端退出给其所有子进程发送 HUP 信号，从而导致进程退出。
@@ -81,18 +87,23 @@ tidb-server 无法启动的常见情况包括：
   推荐将启动命令写在脚本中，通过脚本运行（相当于二次 fork 启动）。
 
 ## TiDB panic
+
 请提供 panic 的 log
 
 ## 连接被拒绝
+
 + 请确保操作系统的网络参数正确，包括但不限于
 + 连接字符串中的端口和 tidb-server 启动的端口是否一致
 + 请保证防火墙的配置正确
 
 ## Too many open files
+
 在启动进程之前，请确保 ulimit -n 的结果足够大，推荐设为 unlimited 或者是大于 1000000。
 
 ## 数据库访问超时，系统负载高
+
 首先请提供如下信息
+
 + 部署的拓扑结构
   - tidb-server/pd-server/tikv-server 部署了几个实例
   - 这些实例在机器上是如何分布的

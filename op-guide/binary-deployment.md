@@ -137,9 +137,9 @@ mysql -h 127.0.0.1 -P 4000 -u root -D test
 
 4. 使用官方 `mysql` 客户端连接 TiDB.
 
-    ```sh
-    mysql -h 192.168.199.113 -P 4000 -u root -D test
-    ```
+```bash
+mysql -h 192.168.199.113 -P 4000 -u root -D test
+```
 
 **注意：在生产环境中启动 TiKV 时，建议使用 [--config](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#-c---config) 参数指定配置文件路径，如果不设置这个参数，TiKV 不会读取配置文件。同样，在生产环境中部署 PD 时，也建议使用 [--config](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#--config) 参数指定配置文件路径。**
 
@@ -167,7 +167,7 @@ mysql -h 127.0.0.1 -P 4000 -u root -D test
                 --client-urls="http://192.168.199.113:2379" \
                 --peer-urls="http://192.168.199.113:2380" \
                 --initial-cluster="pd1=http://192.168.199.113:2380"
-    ```
+```
 
 2. 在 node2，node3，node4 启动 TiKV.
 

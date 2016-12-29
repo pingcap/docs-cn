@@ -3,6 +3,7 @@
 PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整集群
 
 ## 源码编译
+
 1. [*Go*](https://golang.org/) Version 1.7 以上
 2. 在 PD 项目根目录使用 `make` 命令进行编译，生成 bin/pd-ctl
 
@@ -26,20 +27,26 @@ export PD_ADDR=http://127.0.0.1:2379
 ```
 
 ### 标志(flags)
+
 #### --pd,-u
+
 + 指定 PD 的地址
 + 默认地址: http://127.0.0.1:2379
 + 环境变量: PD_ADDR
 
 #### --detach,-d
+
 + 使用单命令行模式(不进入 readline )
 + 默认值: false
 
 ### 命令(command)
+
 #### store [delete] <store_id>
+
 用于显示 store 信息或者删除指定 store
 
 ##### 示例
+
 ```
 >> store            // 显示所有 store 信息
 {
@@ -53,8 +60,11 @@ export PD_ADDR=http://127.0.0.1:2379
 ```
 
 #### config [show | set  \<option\> \<value\>]
+
 用于调整配置信息
+
 ##### 示例
+
 ```
 >> config show                             //　显示 config 的信息
 {
@@ -71,9 +81,13 @@ export PD_ADDR=http://127.0.0.1:2379
 >> config set leader-schedule-interval 20s  // 设置 leader-schedule-interval 为 20 s
 Success!
 ```
+
 #### Member [leader | delete]
+
 用于显示 PD 成员信息或删除指定成员
+
 ##### 示例
+
 ```
 >> member                              // 显示所有成员的信息
 {
@@ -90,8 +104,11 @@ Success!
 ```
 
 #### Region <region_id>
+
 用于显示 Region 信息
+
 ##### 示例
+
 ```
 >> region                               //　显示所有 region 信息
 {
