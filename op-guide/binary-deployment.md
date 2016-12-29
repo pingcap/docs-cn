@@ -134,6 +134,8 @@ Assume we have six machines with the following details:
     mysql -h 192.168.199.113 -P 4000 -u root -D test
     ```
 
+**Note:** If you are starting TiKV or deploying PD in the production environment, it is highly recommended to specify the path for the configuration file using the `--config` parameter. If the parameter is not set, TiKV or PD does not read the configuration file.
+
 ## Multi Nodes Deployment In Testing
 
 Assume we have four machines with the following details:
