@@ -203,7 +203,7 @@ SET GLOBAL binlog_format = ROW;
 
 我们通过 `show master status` 得到当前 binlog 的 position，`syncer` 的初始同步位置就是从这个地方开始。
 
-```s q l
+```sql
 show master status;
 +------------------+----------+--------------+------------------+-------------------+
 | File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
