@@ -38,15 +38,23 @@ TiDB is not a good choice if the number of the rows in your database table is le
 
 TiDB follows MySQL user authentication mechanism. You can create user accounts and authorize them. 
 
-You can use MySQL grammar to create user accounts. For example, you can create a user account by using the following statement:
++ You can use MySQL grammar to create user accounts. For example, you can create a user account by using the following statement:
+  ```
+  CREATE USER 'test'@'localhost' identified by '123';
+  ```
+  The user name of this account is "test"; the password is “123" and this user can login from localhost only.
 
-CREATE USER 'test'@'localhost' identified by '123';
+  You can use the `Set Password` statement to set and change the password. For example, to set the password for the default "root" account, you can use the following statement:
 
-The user name of this account is "test"; the password is “123" and this user can login from localhost only.
+  ```
+  SET PASSWORD FOR 'root'@'%' = '123';
+  ```
 
-You can also use MySQL grammar to authorize this user. For example, you can grant the read privilege to the "test" user by using the following statement:
++ You can also use MySQL grammar to authorize this user. For example, you can grant the read privilege to the "test" user by using the following statement:
 
-GRANT SELECT ON \*.\* TO  'test'@'localhost';
+  ```
+  GRANT SELECT ON \*.\* TO  'test'@'localhost';
+  ```
 
 Note: There are following differences between TiDB and MySQL in user account creating and authorizing:
 
@@ -137,3 +145,10 @@ Yes. Your applications can be migrated to TiDB without changing a single line of
 ## Can I use other key-value storage engines with TiDB?
 
 Yes. TiDB supports many popular storage engines, such as goleveldb and TiKV.
+
+## Why the modified `toml` configuration for TiKV/PD does not take effect?
+You need to set the `--config` parameter in TiKV/PD to make the `toml` configuration effective. TiKV/PD does not read the configuration by default.
+
+## Why the TiKV data directory is gone?
+
+For TiKV, the default value of the `--store` parameter is `/tmp/tikv/store`. In some virtual machines, restarting the operating system results in removing all the data under the `/tmp` directory. It is recommended to set the TiKV data directory explicitly by setting the `--store` parameter.
