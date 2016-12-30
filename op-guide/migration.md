@@ -288,17 +288,10 @@ mysql> select * from t1;
 
 `syncer` 每隔 30s 会输出当前的同步统计，如下
 
-<<<<<<< HEAD
-```
+
+```bash
 2016/10/27 15:22:31 syncer.go:668: [info] [syncer]total events = 1, insert = 1, update = 0, delete = 0, total tps = 0, recent tps = 0, binlog name = mysql-bin.000003, binlog pos = 1280.
 2016/10/27 15:23:01 syncer.go:668: [info] [syncer]total events = 2, insert = 2, update = 0, delete = 0, total tps = 0, recent tps = 0, binlog name = mysql-bin.000003, binlog pos = 1538.
-=======
-```bash
-2016/10/27 15:22:31 syncer.go:668: [info] [syncer]total events = 1, insert = 1, update = 0, \
-delete = 0, total tps = 0, recent tps = 0, binlog name = mysql-bin.000003, binlog pos = 1280.
-2016/10/27 15:23:01 syncer.go:668: [info] [syncer]total events = 2, insert = 2, update = 0,  \
-delete = 0, total tps = 0, recent tps = 0, binlog name = mysql-bin.000003, binlog pos = 1538.
->>>>>>> upstream/queenypdf
 ```
 
 可以看到，使用 `syncer`，我们就能自动的将 MySQL 的更新同步到 TiDB。

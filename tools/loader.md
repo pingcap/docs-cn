@@ -27,7 +27,7 @@
 ## 使用方法
 
 ### 参数说明
-```go
+```
   -L string
         log 级别设置，可以设置为 debug, info, warn, error, fatal (默认为 "info")
   -P int
@@ -52,9 +52,10 @@
         TiDB/MySQL 的用户名 (默认为 "root")
 ```
 
-### 配置文件        
+### 配置文件
 
 除了使用命令行参数外，还可以使用配置文件来配置，配置文件的格式如下：
+
 ```toml
 # Loader log level
 log-level = "info"
@@ -92,12 +93,12 @@ port = 4000
 
 通过命令行参数：
 
-./bin/loader -d ./test -h 127.0.0.1 -u root -P 4000
+    ./bin/loader -d ./test -h 127.0.0.1 -u root -P 4000
 
 或者使用配置文件 "config.toml":
 
-./bin/loader -c=config.toml
+    ./bin/loader -c=config.toml
 
 ### 注意事项
 
- 如果使用默认的 checkpoint 文件，在导完一个 database 数据后，请删除 loader.checkpoint 后再开始导入下一个 database。推荐每个数据库导入的时候，明确指定 checkpoint 文件名。
+如果使用默认的 checkpoint 文件，在导完一个 database 数据后，请删除 loader.checkpoint 后再开始导入下一个 database。推荐每个数据库导入的时候，明确指定 checkpoint 文件名。

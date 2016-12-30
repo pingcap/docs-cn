@@ -2,12 +2,12 @@
 
 本篇将展示如何在多台主机上使用 Docker 部署一个 TiDB 集群。
 
-阅读本章前，请先确保阅读 [TiDB 整体架构](../README.md#tidb-整体架构) 及 [部署建议](../op-guide/recommendation.md)
+阅读本章前，请先确保阅读 [TiDB 整体架构](../overview.md#tidb-整体架构) 及 [部署建议](../op-guide/recommendation.md)。
 
 ## 环境准备
 
 ### 安装 Docker
-Docker 可以方便地在 Linux / Mac OS / Windows 平台安装，安装方法请参考 [Docker 官方文档](https://www.docker.com/products/docker)
+Docker 可以方便地在 Linux / Mac OS / Windows 平台安装，安装方法请参考 [Docker 官方文档](https://www.docker.com/products/docker)。
 
 ### 拉取 TiDB 的 Docker 镜像
 
@@ -17,7 +17,7 @@ Docker 可以方便地在 Linux / Mac OS / Windows 平台安装，安装方法�
 - TiKV
 - PD
 
-对应的最新 Docker 镜像可以通过 [Docker 官方镜像仓库](https://hub.docker.com) 获取
+对应的最新 Docker 镜像可以通过 [Docker 官方镜像仓库](https://hub.docker.com) 获取：
 
 ```bash
 docker pull pingcap/tidb:latest
@@ -31,15 +31,15 @@ docker pull pingcap/pd:latest
 
 | 主机名       | IP            | 部署服务       | 数据盘挂载 |
 | --------- | ------------- | ---------- | ----- |
-| **host1** | 192.168.1.101 | PD1 & TiDB | /data |
-| **host2** | 192.168.1.102 | PD2        | /data |
-| **host3** | 192.168.1.103 | PD3        | /data |
-| **host4** | 192.168.1.104 | TiKV1      | /data |
-| **host5** | 192.168.1.105 | TiKV2      | /data |
-| **host6** | 192.168.1.106 | TiKV3      | /data |
+| host1 | 192.168.1.101 | PD1 & TiDB | /data |
+| host2 | 192.168.1.102 | PD2        | /data |
+| host3 | 192.168.1.103 | PD3        | /data |
+| host4 | 192.168.1.104 | TiKV1      | /data |
+| host5 | 192.168.1.105 | TiKV2      | /data |
+| host6 | 192.168.1.106 | TiKV3      | /data |
 
 
-### 1. 启动 PD
+### 启动 PD
 
 登录 **host1** 执行：
 
@@ -56,9 +56,7 @@ docker run -d --name pd1 \
   --advertise-client-urls="http://192.168.1.101:2379" \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://192.168.1.101:2380" \
-  --initial-cluster="pd1=http://192.168.1.101:2380, \
-                     pd2=http://192.168.1.102:2380, \
-                     pd3=http://192.168.1.103:2380"
+  --initial-cluster="pd1=http://192.168.1.101:2380,pd2=http://192.168.1.102:2380,pd3=http://192.168.1.103:2380"
 ```
 
 登录 **host2** 执行：
@@ -76,9 +74,7 @@ docker run -d --name pd2 \
   --advertise-client-urls="http://192.168.1.102:2379" \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://192.168.1.102:2380" \
-  --initial-cluster="pd1=http://192.168.1.101:2380, \
-                     pd2=http://192.168.1.102:2380, \
-                     pd3=http://192.168.1.103:2380"
+  --initial-cluster="pd1=http://192.168.1.101:2380,pd2=http://192.168.1.102:2380,pd3=http://192.168.1.103:2380"
 ```
 
 登录 **host3** 执行：
@@ -96,12 +92,10 @@ docker run -d --name pd3 \
   --advertise-client-urls="http://192.168.1.103:2379" \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://192.168.1.103:2380" \
-  --initial-cluster="pd1=http://192.168.1.101:2380, \
-                     pd2=http://192.168.1.102:2380, \
-                     pd3=http://192.168.1.103:2380"
+  --initial-cluster="pd1=http://192.168.1.101:2380,pd2=http://192.168.1.102:2380,pd3=http://192.168.1.103:2380"
 ```
 
-### 2. 启动 TiKV
+### 启动 TiKV
 
 登录 **host4** 执行：
 
@@ -145,7 +139,7 @@ docker run -d --name tikv3 \
   --pd="192.168.1.101:2379,192.168.1.102:2379,192.168.1.103:2379"
 ```
 
-### 3. 启动 TiDB
+### 启动 TiDB
 
 登录 **host1** 执行：
 
@@ -159,7 +153,7 @@ docker run -d --name tidb \
   --path="192.168.1.101:2379,192.168.1.102:2379,192.168.1.103:2379"
 ```
 
-### 4. 使用 MySQL 标准客户端连接 TiDB 测试
+### 使用 MySQL 标准客户端连接 TiDB 测试
 
 登录 **host1** 并确保已安装 [MySQL 命令行客户端](http://dev.mysql.com/downloads/mysql/)，执行：
 
@@ -179,11 +173,9 @@ mysql> show databases;
 
 ### 如何自定义配置文件
 
-TiKV 和 PD 可以通过指定配置文件的方式来加载更加丰富的启动参数，用于性能调优
+TiKV 和 PD 可以通过指定配置文件的方式来加载更加丰富的启动参数，用于性能调优。
 
-假定配置文件在宿主机上的存放路径 `/path/to/config/pd.toml` 和 `/path/to/config/tikv.toml`
-
-启动 Docker 时需要调整相应的启动参数，以 tikv1 和 pd1 为例：
+假定配置文件在宿主机上的存放路径 `/path/to/config/pd.toml` 和 `/path/to/config/tikv.toml`。启动 Docker 时需要调整相应的启动参数，以 tikv1 和 pd1 为例：
 
 ```bash
 docker run -d --name tikv1 \
@@ -213,8 +205,6 @@ docker run -d --name pd1 \
   --advertise-client-urls="http://192.168.1.101:2379" \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://192.168.1.101:2380" \
-  --initial-cluster="pd1=http://192.168.1.101:2380, \
-                     pd2=http://192.168.1.102:2380, \
-                     pd3=http://192.168.1.103:2380" \
+  --initial-cluster="pd1=http://192.168.1.101:2380,pd2=http://192.168.1.102:2380,pd3=http://192.168.1.103:2380" \
   --config="/pd.toml"
 ```

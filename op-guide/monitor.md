@@ -23,9 +23,9 @@ curl http://127.0.0.1:10080/status
 + git_hash: TiDB 当前代码的 Git Hash
 
 ### PD Server
-PD API 地址： ``http://${host}:${port}/pd/api/v1/${api_name}``
+PD API 地址： ``http://${host}:${port}/pd/api/v1/${api_name}``。
 
-其中 port 默认为 2379，各类 api_name 详细信息参见 [PD API Doc](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html)
+其中 port 默认为 2379，各类 api_name 详细信息参见 [PD API Doc](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html)。
 
 通过这个接口可以获取当前所有 TiKV 的状态以及负载均衡信息。其中最重要也是最常用的接口获取 TiKV 集群所有节点状态的接口，下面以一个单个 TiKV 构成的集群为例，说明一些用户需要了解的信息：
 
@@ -110,83 +110,65 @@ Grafana
 ### 配置
 #### TiDB/PD/TiKV 配置
 
-+ TiDB
++   TiDB
 
-  设置 --metrics-addr 和 --metrics-interval 两个参数，其中 metrics-addr 设为 Push Gateway 的地址，metrics-interval 为 push 的频率，单位为秒，默认值为 15
+    设置 \-\-metrics-addr 和 \-\-metrics-interval 两个参数，其中 metrics-addr 设为 Push Gateway 的地址，metrics-interval 为 push 的频率，单位为秒，默认值为 15
 
-+ PD
++   PD
 
-  修改 toml 配置文件，填写 Push Gateway 的地址和推送频率
+    修改 toml 配置文件，填写 Push Gateway 的地址和推送频率
 
-  ```toml
-  [metric]
-  # prometheus client push interval, set "0s" to disable prometheus.
-  interval = "15s"
-  # prometheus pushgateway address, leaves it empty will disable prometheus.
-  address = "host:port"
-  ```
+    ```toml
+    [metric]
+    # prometheus client push interval, set "0s" to disable prometheus.
+    interval = "15s"
+    # prometheus pushgateway address, leaves it empty will disable prometheus.
+    address = "host:port"
+    ```
 
-+ TiKV
++   TiKV
 
-  修改 toml 配置文件，填写 Push Gateway 的地址和推送频率，job 字段一般设为“tikv”
+    修改 toml 配置文件，填写 Push Gateway 的地址和推送频率，job 字段一般设为“tikv”。
 
-  ```toml
-  [metric]
-  # the Prometheus client push interval. Setting the value to 0s stops Prometheus client from pushing.
-  interval = "15s"
-  # the Prometheus pushgateway address. Leaving it empty stops Prometheus client from pushing.
-  address = "host:port"
-  # the Prometheus client push job name. Note: A node id will automatically append, e.g., "tikv_1".
-  job = "tikv"
-  ```
+    ```toml
+    [metric]
+    # the Prometheus client push interval. Setting the value to 0s stops Prometheus client from pushing.
+    interval = "15s"
+    # the Prometheus pushgateway address. Leaving it empty stops Prometheus client from pushing.
+    address = "host:port"
+    # the Prometheus client push job name. Note: A node id will automatically append, e.g., "tikv_1".
+    job = "tikv"
+    ```
 
 #### PushServer 配置
 一般无需特殊配置，使用默认端口 9091 即可
 
-+ Prometheus 配置
-<<<<<<< HEAD
++   Prometheus 配置
 
-  在 yaml 配置文件中添加 Push Gateway  地址：
+    在 yaml 配置文件中添加 Push Gateway 地址：
 
-  ```yaml
-  scrape_configs:
-    # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-    - job_name: 'TiDB'
+    ```yaml
+    scrape_configs:
+      # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+      - job_name: 'TiDB'
 
-      # Override the global default and scrape targets from this job every 5 seconds.
-      scrape_interval: 5s
+        # Override the global default and scrape targets from this job every 5 seconds.
+        scrape_interval: 5s
 
-      honor_labels:true
+        honor_labels:true
 
-      static_configs:
-        - targets: ['host:port'] # 这里填写 pushgateway 地址
-          labels:
-            group: 'production'
-  ```
+        static_configs:
+          - targets: ['host:port'] # 这里填写 pushgateway 地址
+            labels:
+              group: 'production'
+    ```
 
-=======
-在 yaml 配置文件中添加 Push Gateway  地址：
-```yaml
-scrape_configs:
-  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: 'TiDB'
-  # Override the global default and scrape targets from this job every 5 seconds.
-    scrape_interval: 5s
-
-    honor_labels:true
-
-    static_configs:
-      - targets: ['host:port'] # 这里填写 pushgateway 地址
-        labels:
-                group: 'production'
-```
->>>>>>> upstream/queenypdf
 #### Grafana 配置
 
-+ 进入 Grafana Web 界面（默认地址: http://localhost:3000，默认账号: admin 密码: admin）
++   进入 Grafana Web 界面（默认地址: http://localhost:3000，默认账号: admin 密码: admin）
 
-  点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息 ( 注: Type 选 Prometheus，Url 为 Prometheus 地址，其他根据实际情况填写 ）
+    点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息 ( 注: Type 选 Prometheus，Url 为 Prometheus 地址，其他根据实际情况填写 ）
 
-+ 导入 dashboard 配置文件
++   导入 dashboard 配置文件
 
-  点击 Grafana Logo -> 点击 Data Sources -> 点击 Import -> 选择需要的 Dashboard [配置文件](https://github.com/pingcap/docs/tree/master/etc)上传 -> 选择对应的 data source
+    点击 Grafana Logo -> 点击 Data Sources -> 点击 Import -> 选择需要的 Dashboard [配置文件](https://github.com/pingcap/docs/tree/master/etc)上传 -> 选择对应的 data source

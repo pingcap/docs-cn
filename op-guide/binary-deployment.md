@@ -4,7 +4,7 @@
 
 一个完整的 TiDB 集群包括 PD，TiKV 以及 TiDB。启动顺序依次是 PD，TiKV 以及 TiDB。
 
-阅读本章前，请先确保阅读 [TiDB 整体架构](../README.md#tidb-整体架构) 及 [部署建议](../op-guide/recommendation.md)
+阅读本章前，请先确保阅读 [TiDB 整体架构](../overview.md#tidb-整体架构) 及 [部署建议](../op-guide/recommendation.md)
 
 快速了解和试用 TiDB，推荐使用[单节点方式快速部署](#单节点方式快速部署)。
 
@@ -47,27 +47,27 @@ cd tidb-latest-linux-amd64-centos6
 
 我们可以在单机上面，运行和测试 TiDB 集群，请按如下步骤**依次启动** PD，TiKV，TiDB：
 
-1. 启动 PD.
+1. 启动 PD
 
     ```bash
     ./bin/pd-server --data-dir=pd
     ```
 
-2. 启动 TiKV.
+2. 启动 TiKV
 
     ```bash
     ./bin/tikv-server --pd="127.0.0.1:2379" \
                       --store=tikv
     ```
 
-3. 启动 TiDB.
+3. 启动 TiDB
 
     ```bash
     ./bin/tidb-server --store=tikv \
                       --path="127.0.0.1:2379"
     ```
 
-4. 使用官方的 `mysql` 客户端连接 TiDB.
+4. 使用官方的 `mysql` 客户端连接 TiDB
 
     ```bash
     mysql -h 127.0.0.1 -P 4000 -u root -D test
@@ -89,7 +89,7 @@ cd tidb-latest-linux-amd64-centos6
 
 请按如下步骤**依次启动** PD 集群，TiKV 集群以及 TiDB：
 
-1. 在 node1，node2，node3 启动 PD.
+1. 在 node1，node2，node3 启动 PD
 
     ```bash
     ./bin/pd-server --name=pd1 \
@@ -111,7 +111,7 @@ cd tidb-latest-linux-amd64-centos6
                     --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
     ```
 
-2. 在 node4，node5，node6 启动 TiKV.
+2. 在 node4，node5，node6 启动 TiKV
 
     ```bash
     ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
@@ -127,20 +127,20 @@ cd tidb-latest-linux-amd64-centos6
                       --store=tikv3
     ```
 
-3. 在 node1 启动 TiDB.
+3. 在 node1 启动 TiDB
 
     ```bash
     ./bin/tidb-server --store=tikv \
                       --path="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379"
     ```
 
-4. 使用官方 `mysql` 客户端连接 TiDB.
+4. 使用官方 `mysql` 客户端连接 TiDB
 
     ```bash
     mysql -h 192.168.199.113 -P 4000 -u root -D test
     ```
 
-**注意：在生产环境中启动 TiKV 时，建议使用 [--config](op-guide/configuration.md#-c---config) 参数指定配置文件路径，如果不设置这个参数，TiKV 不会读取配置文件。同样，在生产环境中部署 PD 时，也建议使用 [--config](op-guide/configuration.md#--config) 参数指定配置文件路径。**
+**注意：在生产环境中启动 TiKV 时，建议使用 [\-\-config](op-guide/configuration.md#-c---config) 参数指定配置文件路径，如果不设置这个参数，TiKV 不会读取配置文件。同样，在生产环境中部署 PD 时，也建议使用 [\-\-config](op-guide/configuration.md#--config) 参数指定配置文件路径。**
 
 ## 功能性测试部署
 
@@ -156,9 +156,9 @@ cd tidb-latest-linux-amd64-centos6
 |node4|192.168.199.116|TiKV3|
 
 
-请按如下步骤**依次启动** PD 集群，TiKV 集群以及 TiDB：
+请按如下步骤 **依次启动** PD 集群，TiKV 集群以及 TiDB：
 
-1. 在 node1 启动 PD.
+1. 在 node1 启动 PD
 
     ```bash
     ./bin/pd-server --name=pd1 \
@@ -168,7 +168,7 @@ cd tidb-latest-linux-amd64-centos6
                     --initial-cluster="pd1=http://192.168.199.113:2380"
     ```
 
-2. 在 node2，node3，node4 启动 TiKV.
+2. 在 node2，node3，node4 启动 TiKV
 
     ```bash
     ./bin/tikv-server --pd="192.168.199.113:2379" \
@@ -184,14 +184,14 @@ cd tidb-latest-linux-amd64-centos6
                       --store=tikv3
     ```
 
-3. 在 node1 启动 TiDB.
+3. 在 node1 启动 TiDB
 
     ```bash
     ./bin/tidb-server --store=tikv \
                       --path="192.168.199.113:2379"
     ```
 
-4. 使用官方 `mysql` 客户端连接 TiDB.
+4. 使用官方 `mysql` 客户端连接 TiDB
 
     ```bash
     mysql -h 192.168.199.113 -P 4000 -u root -D test
@@ -234,10 +234,7 @@ curl http://host1:2379/pd/api/v1/members
 
 动态新加入一个新的 TiKV 服务是非常容易的，我们可以直接启动一个 TiKV 服务，PD 会自动检测到，并开始做整个集群的 balance，将其他 TiKV 的数据移动到新加入的 TiKV 里面。
 
-我们也能够显式的告诉 PD 去删除某个 TiKV。PD 会先把这个 TiKV 标记为正在下线的状态，
-然后把这个 TiKV 上的数据均匀地迁移到其他 TiKV 上面。当这个 TiKV 上的数据已经迁移
-完了，PD 会把这个 TiKV 标记为完成下线的状态，这时候就可以安全地把这个 TiKV 从集
-群中去掉。
+我们也能够显式的告诉 PD 去删除某个 TiKV。PD 会先把这个 TiKV 标记为正在下线的状态，然后把这个 TiKV 上的数据均匀地迁移到其他 TiKV 上面。当这个 TiKV 上的数据已经迁移完了，PD 会把这个 TiKV 标记为完成下线的状态，这时候就可以安全地把这个 TiKV 从集群中去掉。
 
 假设我们要删除一个 store id 为 1 的 TiKV，可以调用 PD 的 HTTP API 来操作：
 
