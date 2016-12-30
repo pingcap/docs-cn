@@ -8,6 +8,7 @@ TiDB 集群状态监控目前有两种接口，第一种是通过 HTTP 接口对
 
 ### TiDB Server
 TiDB 对外暴露的 HTTP 接口是 http://host:port/status，默认的端口号是 10080 （可以通过 --status 参数设置），可以通过访问这个接口获取当前 TiDB Server 的状态，以及判断是否存活。返回结果是 **Json** 格式：
+
 ```bash
 curl http://127.0.0.1:10080/status
 {
@@ -85,9 +86,12 @@ curl http://127.0.0.1:2379/pd/api/v1/stores
 + Raft 处理 ready 状态的总次数
 
 ## 使用 Prometheus+Grafana
+
 ### 部署架构
-整个架构如下图所示，在 TiDB/PD/TiKV 三个组件的启动参数中添加 Prometheus Pushgateway 地址
-![architecture](./monitor.png)
+
+整个架构如下图所示，在 TiDB/PD/TiKV 三个组件的启动参数中添加 Prometheus Pushgateway 地址:
+
+![Deployment Architecture](op-guide/monitor.png)
 
 ### 搭建监控系统
 Prometheus Push Gateway
@@ -135,8 +139,7 @@ job = "tikv"
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
   - job_name: 'TiDB'
-
-    # Override the global default and scrape targets from this job every 5 seconds.
+  # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 5s
     
     honor_labels:true
