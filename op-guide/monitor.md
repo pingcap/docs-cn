@@ -90,10 +90,12 @@ curl http://127.0.0.1:2379/pd/api/v1/stores
 + Raft 处理 ready 状态的总次数
 
 ## 使用 Prometheus+Grafana
-### 部署架构
-整个架构如下图所示，在 TiDB/PD/TiKV 三个组件的启动参数中添加 Prometheus Pushgateway 地址
 
-![architecture](./monitor.png)
+### 部署架构
+
+整个架构如下图所示，在 TiDB/PD/TiKV 三个组件的启动参数中添加 Prometheus Pushgateway 地址:
+
+![Deployment Architecture](./monitor.png)
 
 ### 搭建监控系统
 Prometheus Push Gateway
@@ -142,6 +144,7 @@ Grafana
 一般无需特殊配置，使用默认端口 9091 即可
 
 + Prometheus 配置
+<<<<<<< HEAD
 
   在 yaml 配置文件中添加 Push Gateway  地址：
 
@@ -161,6 +164,23 @@ Grafana
             group: 'production'
   ```
 
+=======
+在 yaml 配置文件中添加 Push Gateway  地址：
+```yaml
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'TiDB'
+  # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+
+    honor_labels:true
+
+    static_configs:
+      - targets: ['host:port'] # 这里填写 pushgateway 地址
+        labels:
+                group: 'production'
+```
+>>>>>>> upstream/queenypdf
 #### Grafana 配置
 
 + 进入 Grafana Web 界面（默认地址: http://localhost:3000，默认账号: admin 密码: admin）

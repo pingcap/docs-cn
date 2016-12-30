@@ -232,8 +232,7 @@ curl http://host1:2379/pd/api/v1/members
 
 ### TiKV
 
-动态新加入一个新的 TiKV 服务是非常容易的，我们可以直接启动一个 TiKV 服务，PD 会自动检测到，
-并开始做整个集群的 balance，将其他 TiKV 的数据移动到新加入的 TiKV 里面。
+动态新加入一个新的 TiKV 服务是非常容易的，我们可以直接启动一个 TiKV 服务，PD 会自动检测到，并开始做整个集群的 balance，将其他 TiKV 的数据移动到新加入的 TiKV 里面。
 
 我们也能够显式的告诉 PD 去删除某个 TiKV。PD 会先把这个 TiKV 标记为正在下线的状态，
 然后把这个 TiKV 上的数据均匀地迁移到其他 TiKV 上面。当这个 TiKV 上的数据已经迁移

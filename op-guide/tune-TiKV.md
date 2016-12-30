@@ -19,7 +19,8 @@ TiKV 使用了 RocksDB 的 `Column Falimies` 特性，数据最终存储在 Rock
 
 ```toml
 [server]
-# 通常情况下使用默认值。在复杂的查询比较多的情况下，例如 join 操作，聚合操作等等，可以稍微调大点，但应比系统的 CPU 核数小。
+# 通常情况下使用默认值。在复杂的查询比较多的情况下，例如 join 操作，聚合操作等等，
+# 可以稍微调大点，但应比系统的 CPU 核数小。
 end-point-concurrency = 8
 
 [raftstore]
@@ -51,7 +52,8 @@ max-write-buffer-number = 5
 min-write-buffer-number-to-merge = 1
 max-bytes-for-level-base = "256MB"
 target-file-size-base = "32MB"
-# 通常为 defaultcf.block-cache-size 的 1/n。如果一行数据很大，n 通常比较大，如果一行数据比较短，n 比较小。n 通常在 4 到 16 之间。
+# 通常为 defaultcf.block-cache-size 的 1/n。如果一行数据很大，
+# n 通常比较大，如果一行数据比较短，n 比较小。n 通常在 4 到 16 之间。
 block-cache-size = "256MB"
 
 [rocksdb.raftcf]
@@ -61,13 +63,15 @@ max-write-buffer-number = 5
 min-write-buffer-number-to-merge = 1
 max-bytes-for-level-base = "256MB"
 target-file-size-base = "32MB"
-# 通常配置在 256MB 到 2GB 之间，通常情况下使用默认值就可以了，但如果系统资源比较充足可以适当调大点。
+# 通常配置在 256MB 到 2GB 之间，通常情况下使用默认值就可以了，
+# 但如果系统资源比较充足可以适当调大点。
 block-cache-size = "256MB"
 
 [storage]
 # 使用默认值就可以了。
 scheduler-concurrency = 102400
-# 通常情况下使用默认值就可以了。如果写入操作基本是批量写入的或者写入的行比较大，可以适当调大点。
+# 通常情况下使用默认值就可以了。如果写入操作基本是批量写入的或者写入的行比较大，
+# 可以适当调大点。
 scheduler-worker-pool-size = 4
 ```
 ## 2.TiKV 内存使用情况
