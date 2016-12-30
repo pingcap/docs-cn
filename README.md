@@ -1,34 +1,3 @@
-# TiDB 中文技术文档
-
-## 目录
-
-+ TiDB 简介 & 整体架构
-  - [TiDB 简介及核心 NewSQL 特性](#tidb-简介)
-  - [TiDB 整体架构](#tidb-架构)
-+ 安装 & 部署
-  - [部署建议](op-guide/recommendation.md)
-  - [Binary 下载](op-guide/binary-deployment.md#下载官方-binary)
-  - [Binary 部署方案（推荐）](op-guide/binary-deployment.md)
-  - [Docker 部署方案](op-guide/docker-deployment.md)
-  - [命令行参数](op-guide/configuration.md)
-+ 运维 & 监控
- - [整体监控框架概述](op-guide/monitor-overview.md)
- - [组件状态 API & 监控](op-guide/monitor.md)
- - [PD 命令行工具](op-guide/pd-control.md)
-+ SQL 兼容及对比
- - [TiDB SQL 文法](./sql)
- - [与 MySQL 兼容性对比](op-guide/mysql-compatibility.md)
-+ [常用工具](https://github.com/pingcap/tidb-tools)
-+ [常见问题与解答](./faq.md)
-+ [故障诊断](./trouble-shooting.md)
-+ 使用示例
-+ 高级功能
-  - [数据迁移方法](op-guide/migration.md)
-  - [性能调优](op-guide/tune-TiKV.md)
-  - [读取历史版本数据](op-guide/history-read.md)
-+ 更多资源
-  - [PingCAP 团队技术博客](http://www.pingcap.com/bloglist.html)
-
 ## TiDB 简介
 
 TiDB 是 PingCAP 公司基于 Google [Spanner](http://research.google.com/archive/spanner.html) / [F1](http://research.google.com/pubs/pub41344.html) 论文实现的开源分布式 NewSQL 数据库。
@@ -48,7 +17,9 @@ TiDB 对业务没有任何侵入性，能优雅的替换传统的数据库中间
 ## TiDB 整体架构
 
 要深入了解 TiDB 的水平扩展和高可用特点，首先需要了解 TiDB 的整体架构。
-![architecture](./op-guide/architecture.png)
+
+![TiDB architecture](op-guide/architecture.png)
+
 TiDB 集群主要分为三个组件：
 #### TiDB Server
 TiDB Server 负责接收 SQL 请求，处理 SQL 相关的逻辑，并通过 PD 找到存储计算所需数据的 TiKV 地址，与 TiKV 交互获取数据，最终返回结果。
@@ -81,4 +52,9 @@ PD 是一个集群，通过 Raft 协议保持数据的一致性，单个实例�
 
 #### TiKV
 TiKV 是一个集群，通过 Raft 协议保持数据的一致性（副本数量可配置，默认保存三副本），并通过 PD 做负载均衡调度。单个节点失效时，会影响这个节点上存储的所有 Region。对于 Region 中的 Leader 结点，会中断服务，等待重新选举；对于 Region 中的 Follower 节点，不会影响服务。当某个 TiKV 节点失效，并且在一段时间内（默认 10 分钟）无法恢复，PD 会将其上的数据迁移到其他的 TiKV 节点上。
+
+#### 更多资源
+  - [PingCAP 团队技术博客](http://www.pingcap.com/bloglist.html)
+  - [常用工具](https://github.com/pingcap/tidb-tools)
+
 

@@ -86,8 +86,9 @@ curl http://127.0.0.1:2379/pd/api/v1/stores
 
 ## 使用 Prometheus+Grafana
 ### 部署架构
-整个架构如下图所示，在 TiDB/PD/TiKV 三个组件的启动参数中添加 Prometheus Pushgateway 地址
-![architecture](./monitor.png)
+整个架构如下图所示，在 TiDB/PD/TiKV 三个组件的启动参数中添加 Prometheus Pushgateway 地址:
+
+![Deployment Architecture](op-guide/monitor.png)
 
 ### 搭建监控系统
 Prometheus Push Gateway

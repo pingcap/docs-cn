@@ -86,14 +86,17 @@ CREATE TABLE t_error (
 2016/10/27 13:19:28 checker.go:48: [info] Checking database test
 2016/10/27 13:19:28 main.go:37: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
 2016/10/27 13:19:28 checker.go:63: [info] Checking table t_error
-2016/10/27 13:19:28 checker.go:67: [error] Check table t_error failed with err: line 1 column 56 near ") ON UPDATE CURRENT_TIMESTAMP(3)
+2016/10/27 13:19:28 checker.go:67: [error] 
+Check table t_error failed with err: line 1 column 56 near ") ON UPDATE CURRENT_TIMESTAMP(3)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1"
 github.com/pingcap/tidb/parser/yy_parser.go:111:
 github.com/pingcap/tidb/parser/yy_parser.go:124:
-/home/jenkins/workspace/WORKFLOW_TOOLS_BUILDING/go/src/github.com/pingcap/tidb-tools/checker/checker.go:122:  parse CREATE TABLE `t_error` (
+/home/jenkins/workspace/WORKFLOW_TOOLS_BUILDING/go/src/ \
+github.com/pingcap/tidb-tools/checker/checker.go:122:  parse CREATE TABLE `t_error` (
   `c` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 error
-/home/jenkins/workspace/WORKFLOW_TOOLS_BUILDING/go/src/github.com/pingcap/tidb-tools/checker/checker.go:114:
+/home/jenkins/workspace/WORKFLOW_TOOLS_BUILDING/go/src/ \
+github.com/pingcap/tidb-tools/checker/checker.go:114:
 2016/10/27 13:19:28 main.go:68: [error] Check database test with 1 errors and 0 warnings.
 ```
 
@@ -256,7 +259,8 @@ port = 4000
 ```bash
 ./bin/syncer -config config.toml
 
-2016/10/27 15:22:01 binlogsyncer.go:226: [info] begin to sync binlog from position (mysql-bin.000003, 1280)
+2016/10/27 15:22:01 binlogsyncer.go:226: [info] begin to sync \
+binlog from position (mysql-bin.000003, 1280)
 2016/10/27 15:22:01 binlogsyncer.go:130: [info] register slave for master server 127.0.0.1:3306
 2016/10/27 15:22:01 binlogsyncer.go:552: [info] rotate to (mysql-bin.000003, 1280)
 2016/10/27 15:22:01 syncer.go:549: [info] rotate binlog to (mysql-bin.000003, 1280)
@@ -287,8 +291,10 @@ mysql> select * from t1;
 `syncer` 每隔 30s 会输出当前的同步统计，如下
 
 ```bash
-2016/10/27 15:22:31 syncer.go:668: [info] [syncer]total events = 1, insert = 1, update = 0, delete = 0, total tps = 0, recent tps = 0, binlog name = mysql-bin.000003, binlog pos = 1280.
-2016/10/27 15:23:01 syncer.go:668: [info] [syncer]total events = 2, insert = 2, update = 0, delete = 0, total tps = 0, recent tps = 0, binlog name = mysql-bin.000003, binlog pos = 1538.
+2016/10/27 15:22:31 syncer.go:668: [info] [syncer]total events = 1, insert = 1, update = 0, \
+delete = 0, total tps = 0, recent tps = 0, binlog name = mysql-bin.000003, binlog pos = 1280.
+2016/10/27 15:23:01 syncer.go:668: [info] [syncer]total events = 2, insert = 2, update = 0,  \
+delete = 0, total tps = 0, recent tps = 0, binlog name = mysql-bin.000003, binlog pos = 1538.
 ```
 
 可以看到，使用 `syncer`，我们就能自动的将 MySQL 的更新同步到 TiDB。

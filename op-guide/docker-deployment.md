@@ -55,7 +55,9 @@ docker run -d --name pd1 \
   --advertise-client-urls="http://192.168.1.101:2379" \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://192.168.1.101:2380" \
-  --initial-cluster="pd1=http://192.168.1.101:2380,pd2=http://192.168.1.102:2380,pd3=http://192.168.1.103:2380"
+  --initial-cluster="pd1=http://192.168.1.101:2380, \
+                     pd2=http://192.168.1.102:2380, \
+                     pd3=http://192.168.1.103:2380"
 ```
 
 登录 **host2** 执行：
@@ -72,7 +74,9 @@ docker run -d --name pd2 \
   --advertise-client-urls="http://192.168.1.102:2379" \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://192.168.1.102:2380" \
-  --initial-cluster="pd1=http://192.168.1.101:2380,pd2=http://192.168.1.102:2380,pd3=http://192.168.1.103:2380"
+  --initial-cluster="pd1=http://192.168.1.101:2380, \
+                     pd2=http://192.168.1.102:2380, \
+                     pd3=http://192.168.1.103:2380"
 ```
 
 登录 **host3** 执行：
@@ -89,7 +93,9 @@ docker run -d --name pd3 \
   --advertise-client-urls="http://192.168.1.103:2379" \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://192.168.1.103:2380" \
-  --initial-cluster="pd1=http://192.168.1.101:2380,pd2=http://192.168.1.102:2380,pd3=http://192.168.1.103:2380"
+  --initial-cluster="pd1=http://192.168.1.101:2380, \
+                     pd2=http://192.168.1.102:2380, \
+                     pd3=http://192.168.1.103:2380"
 ```
 
 ### 2. 启动 TiKV
@@ -201,6 +207,8 @@ docker run -d --name pd1 \
   --advertise-client-urls="http://192.168.1.101:2379" \
   --peer-urls="http://0.0.0.0:2380" \
   --advertise-peer-urls="http://192.168.1.101:2380" \
-  --initial-cluster="pd1=http://192.168.1.101:2380,pd2=http://192.168.1.102:2380,pd3=http://192.168.1.103:2380" \
+  --initial-cluster="pd1=http://192.168.1.101:2380, \
+                     pd2=http://192.168.1.102:2380, \
+                     pd3=http://192.168.1.103:2380" \
   --config="/pd.toml"
 ```
