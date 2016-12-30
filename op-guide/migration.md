@@ -255,7 +255,6 @@ port = 4000
 
 ```bash
 ./bin/syncer -config config.toml
-
 2016/10/27 15:22:01 binlogsyncer.go:226: [info] begin to sync binlog from position (mysql-bin.000003, 1280)
 2016/10/27 15:22:01 binlogsyncer.go:130: [info] register slave for master server 127.0.0.1:3306
 2016/10/27 15:22:01 binlogsyncer.go:552: [info] rotate to (mysql-bin.000003, 1280)
@@ -270,7 +269,7 @@ INSERT INTO t1 VALUES (4, 4), (5, 5);
 
 登录到 TiDB 查看：
 
-```bash
+```sql
 mysql -h127.0.0.1 -P4000 -uroot -p
 mysql> select * from t1;
 +----+------+
@@ -286,7 +285,7 @@ mysql> select * from t1;
 
 `syncer` 每隔 30s 会输出当前的同步统计，如下
 
-```bash
+```
 2016/10/27 15:22:31 syncer.go:668: [info] [syncer]total events = 1, insert = 1, update = 0, delete = 0, total tps = 0, recent tps = 0, binlog name = mysql-bin.000003, binlog pos = 1280.
 2016/10/27 15:23:01 syncer.go:668: [info] [syncer]total events = 2, insert = 2, update = 0, delete = 0, total tps = 0, recent tps = 0, binlog name = mysql-bin.000003, binlog pos = 1538.
 ```

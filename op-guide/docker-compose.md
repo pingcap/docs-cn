@@ -2,7 +2,7 @@
 
 只需要一个简单的 `docker-compose.yml`:
 
-```bash
+```yaml
 version: '2'
 
 services:
@@ -15,13 +15,13 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
     command:
-      - --name=pd1 
+      - --name=pd1
       - --client-urls=http://0.0.0.0:2379
       - --peer-urls=http://0.0.0.0:2380
       - --advertise-client-urls=http://pd1:2379
       - --advertise-peer-urls=http://pd1:2380
       - --initial-cluster=pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380
-      
+
     privileged: true
 
   pd2:
@@ -33,13 +33,13 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
     command:
-      - --name=pd2 
+      - --name=pd2
       - --client-urls=http://0.0.0.0:2379
       - --peer-urls=http://0.0.0.0:2380
       - --advertise-client-urls=http://pd2:2379
       - --advertise-peer-urls=http://pd2:2380
       - --initial-cluster=pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380
-      
+
     privileged: true
 
   pd3:
@@ -51,13 +51,13 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
     command:
-      - --name=pd3 
+      - --name=pd3
       - --client-urls=http://0.0.0.0:2379
       - --peer-urls=http://0.0.0.0:2380
       - --advertise-client-urls=http://pd3:2379
       - --advertise-peer-urls=http://pd3:2380
-      - --initial-cluster=pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380 
-      
+      - --initial-cluster=pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380
+
     privileged: true
 
   tikv1:
@@ -135,7 +135,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
     command:
-      - --store=tikv 
+      - --store=tikv
       - --path=pd1:2379,pd2:2379,pd3:2379
       - -L=warn
 

@@ -4,7 +4,7 @@
 
 一个完整的 TiDB 集群包括 PD，TiKV 以及 TiDB。启动顺序依次是 PD，TiKV 以及 TiDB。
 
-阅读本章前，请先确保阅读 [TiDB 整体架构](../README.md#tidb-总览) 及 [部署建议](../op-guide/recommendation.md)
+阅读本章前，请先确保阅读 [TiDB 整体架构](../README.md#tidb-整体架构) 及 [部署建议](../op-guide/recommendation.md)
 
 快速了解和试用 TiDB，推荐使用[单节点方式快速部署](#单节点方式快速部署)。
 
@@ -28,7 +28,7 @@ sha256sum -c tidb-latest-linux-amd64.sha256
 tar -xzf tidb-latest-linux-amd64.tar.gz
 cd tidb-latest-linux-amd64
 ```
-#### CentOS 6（不推荐）
+### CentOS 6（不推荐）
 
 ```bash
 # 下载 CentOS6 压缩包
@@ -49,32 +49,31 @@ cd tidb-latest-linux-amd64-centos6
 
 1. 启动 PD.
 
-```bash
-./bin/pd-server --data-dir=pd
-```
+    ```bash
+    ./bin/pd-server --data-dir=pd
+    ```
 
 2. 启动 TiKV.
 
-```bash
-./bin/tikv-server --pd="127.0.0.1:2379" \
-                  --store=tikv
-```
+    ```bash
+    ./bin/tikv-server --pd="127.0.0.1:2379" \
+                      --store=tikv
+    ```
 
 3. 启动 TiDB.
 
-```bash
-./bin/tidb-server --store=tikv \
-                  --path="127.0.0.1:2379"
-```
+    ```bash
+    ./bin/tidb-server --store=tikv \
+                      --path="127.0.0.1:2379"
+    ```
 
 4. 使用官方的 `mysql` 客户端连接 TiDB.
 
-```bash
-mysql -h 127.0.0.1 -P 4000 -u root -D test
-```
+    ```bash
+    mysql -h 127.0.0.1 -P 4000 -u root -D test
+    ```
 
 ## 多节点集群模式部署
-
 在生产环境中，我们推荐多节点部署 TiDB 集群，首先请参考[部署建议](./recommendation.md)。
 
 这里我们使用六个节点，部署三个 PD，三个 TiKV，以及一个 TiDB，各个节点以及所运行服务信息如下：
@@ -92,56 +91,56 @@ mysql -h 127.0.0.1 -P 4000 -u root -D test
 
 1. 在 node1，node2，node3 启动 PD.
 
-```bash
-./bin/pd-server --name=pd1 \
-                --data-dir=pd1 \
-                --client-urls="http://192.168.199.113:2379" \
-                --peer-urls="http://192.168.199.113:2380" \
-                --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
+    ```bash
+    ./bin/pd-server --name=pd1 \
+                    --data-dir=pd1 \
+                    --client-urls="http://192.168.199.113:2379" \
+                    --peer-urls="http://192.168.199.113:2380" \
+                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
 
-./bin/pd-server --name=pd2 \
-                --data-dir=pd2 \
-                --client-urls="http://192.168.199.114:2379" \
-                --peer-urls="http://192.168.199.114:2380" \
-                --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
+    ./bin/pd-server --name=pd2 \
+                    --data-dir=pd2 \
+                    --client-urls="http://192.168.199.114:2379" \
+                    --peer-urls="http://192.168.199.114:2380" \
+                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
 
-./bin/pd-server --name=pd3 \
-                --data-dir=pd3 \
-                --client-urls="http://192.168.199.115:2379" \
-                --peer-urls="http://192.168.199.115:2380" \
-                --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
-```
+    ./bin/pd-server --name=pd3 \
+                    --data-dir=pd3 \
+                    --client-urls="http://192.168.199.115:2379" \
+                    --peer-urls="http://192.168.199.115:2380" \
+                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
+    ```
 
 2. 在 node4，node5，node6 启动 TiKV.
 
-```bash
-./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
-                    --addr="192.168.199.116:20160" \
-                    --store=tikv1
+    ```bash
+    ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
+                      --addr="192.168.199.116:20160" \
+                      --store=tikv1
 
-./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
-                    --addr="192.168.199.117:20160" \
-                    --store=tikv2
+    ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
+                      --addr="192.168.199.117:20160" \
+                      --store=tikv2
 
-./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
-                    --addr="192.168.199.118:20160" \
-                    --store=tikv3
-```
+    ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
+                      --addr="192.168.199.118:20160" \
+                      --store=tikv3
+    ```
 
 3. 在 node1 启动 TiDB.
 
-```bash
-./bin/tidb-server --store=tikv \
-                    --path="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379"
-```
+    ```bash
+    ./bin/tidb-server --store=tikv \
+                      --path="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379"
+    ```
 
 4. 使用官方 `mysql` 客户端连接 TiDB.
 
-```bash
-mysql -h 192.168.199.113 -P 4000 -u root -D test
-```
+    ```bash
+    mysql -h 192.168.199.113 -P 4000 -u root -D test
+    ```
 
-**注意：在生产环境中启动 TiKV 时，建议使用 [--config](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#-c---config) 参数指定配置文件路径，如果不设置这个参数，TiKV 不会读取配置文件。同样，在生产环境中部署 PD 时，也建议使用 [--config](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#--config) 参数指定配置文件路径。**
+**注意：在生产环境中启动 TiKV 时，建议使用 [--config](op-guide/configuration.md#-c---config) 参数指定配置文件路径，如果不设置这个参数，TiKV 不会读取配置文件。同样，在生产环境中部署 PD 时，也建议使用 [--config](op-guide/configuration.md#--config) 参数指定配置文件路径。**
 
 ## 功能性测试部署
 
@@ -161,42 +160,42 @@ mysql -h 192.168.199.113 -P 4000 -u root -D test
 
 1. 在 node1 启动 PD.
 
-```bash
-./bin/pd-server --name=pd1 \
-                --data-dir=pd1 \
-                --client-urls="http://192.168.199.113:2379" \
-                --peer-urls="http://192.168.199.113:2380" \
-                --initial-cluster="pd1=http://192.168.199.113:2380"
-```
+    ```bash
+    ./bin/pd-server --name=pd1 \
+                    --data-dir=pd1 \
+                    --client-urls="http://192.168.199.113:2379" \
+                    --peer-urls="http://192.168.199.113:2380" \
+                    --initial-cluster="pd1=http://192.168.199.113:2380"
+    ```
 
 2. 在 node2，node3，node4 启动 TiKV.
 
-```bash
-./bin/tikv-server --pd="192.168.199.113:2379" \
+    ```bash
+    ./bin/tikv-server --pd="192.168.199.113:2379" \
                     --addr="192.168.199.114:20160" \
                     --store=tikv1
 
-./bin/tikv-server --pd="192.168.199.113:2379" \
-                    --addr="192.168.199.115:20160" \
-                    --store=tikv2
+    ./bin/tikv-server --pd="192.168.199.113:2379" \
+                      --addr="192.168.199.115:20160" \
+                      --store=tikv2
 
-./bin/tikv-server --pd="192.168.199.113:2379" \
-                    --addr="192.168.199.116:20160" \
-                    --store=tikv3
-```
+    ./bin/tikv-server --pd="192.168.199.113:2379" \
+                      --addr="192.168.199.116:20160" \
+                      --store=tikv3
+    ```
 
 3. 在 node1 启动 TiDB.
 
-```bash
-./bin/tidb-server --store=tikv \
-                    --path="192.168.199.113:2379"
-```
+    ```bash
+    ./bin/tidb-server --store=tikv \
+                      --path="192.168.199.113:2379"
+    ```
 
 4. 使用官方 `mysql` 客户端连接 TiDB.
 
-```bash
-mysql -h 192.168.199.113 -P 4000 -u root -D test
-```
+    ```bash
+    mysql -h 192.168.199.113 -P 4000 -u root -D test
+    ```
 
 ## 动态添加节点
 
@@ -210,12 +209,12 @@ mysql -h 192.168.199.113 -P 4000 -u root -D test
 |pd2|http://host2:2379|http://host2:2380|
 |pd3|http://host3:2379|http://host3:2380|
 
-如果我们需要添加 `pd4`，只需要在 `join` 参数里面填入当前 PD 集群某一个 PD 服务的 `ClientUrls` 就可以了，如下：
+如果我们需要添加 `pd4`，只需要在 `--join` 参数里面填入当前 PD 集群某一个 PD 服务的 client url 就可以了，如下：
 
 ```bash
 ./bin/pd-server --name=pd4 \
-                --client-urls="http://host4:2379"
-                --peer-urls="http://host4:2380"
+                --client-urls="http://host4:2379" \
+                --peer-urls="http://host4:2380" \
                 --join="http://host1:2379"
 ```
 
@@ -253,11 +252,10 @@ curl -X DELETE http://host:port/pd/api/v1/store/1
 curl http://host:port/pd/api/v1/store/1
 ```
 
-如果这个 TiKV 正在下线，对应的 state=1，如果这个 TiKV 完成下线，对应的 state=2，
-否则 state=0。
+如果这个 TiKV 正在下线，对应的 state=1，如果这个 TiKV 完成下线，对应的 state=2，否则 state=0。
 
-更详细的 API 文档可以参考 [PD APIv1](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html)。
+更详细的 API 文档可以参考 [PD API v1](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html)。
 
 ### TiDB
 
-TiDB 是一个无状态的服务，这也就意味着我们能直接添加和删除 TiDB。需要注意的是如果我们在 TiDB 的服务的前面搭建了一个 proxy（譬如 HAProxy），我们需要更新 proxy 的配置并重新载入。
+TiDB 是一个无状态的服务，这也就意味着我们能直接添加和删除 TiDB。需要注意的是如果我们在 TiDB 的服务的前面搭建了一个 proxy（譬如 HAProxy），则需要更新 proxy 的配置并重新载入。

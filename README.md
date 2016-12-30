@@ -46,11 +46,12 @@ TiDB 的设计目标是 100% 的 OLTP 场景和 80% 的 OLAP 场景。
 
 TiDB 对业务没有任何侵入性，能优雅的替换传统的数据库中间件、数据库分库分表等 Sharding 方案。同时它也让开发运维人员不用关注数据库 Scale 的细节问题，专注于业务开发，极大的提升研发的生产力。
 
-
 ## TiDB 整体架构
 
 要深入了解 TiDB 的水平扩展和高可用特点，首先需要了解 TiDB 的整体架构。
+
 ![architecture](./op-guide/architecture.png)
+
 TiDB 集群主要分为三个组件：
 
 #### TiDB Server

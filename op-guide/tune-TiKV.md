@@ -84,11 +84,13 @@ block-cache-size的大小根据机器的内存情况进行调整。
 
 ```toml
 [raftstore]
-# 该参数的含义是如果一个region的写入超过该值就会检查是否需要分裂，在导数据的情况因为只有insert操作，所以为了减少检查一般配大点，一般为region-split-size的一半。
+# 该参数的含义是如果一个region的写入超过该值就会检查是否需要分裂，在导数据的情况因为只有insert操作，
+# 所以为了减少检查一般配大点，一般为region-split-size的一半。
 region-split-check-diff = "32MB"
 
 [rocksdb]
-# 该参数主要影响rocksdb compaction的线程数，在导数据的情况下因为有大量的写入，所以应该开大点，但应小于CPU的核数。
+# 该参数主要影响rocksdb compaction的线程数，在导数据的情况下因为有大量的写入，
+# 所以应该开大点，但应小于CPU的核数。
 max-background-compactions = 6
 
 [rocksdb.defaultcf]
@@ -110,7 +112,8 @@ max-write-buffer-number = 5
 min-write-buffer-number-to-merge = 1
 max-bytes-for-level-base = "256MB"
 target-file-size-base = "32MB"
-# 通常为 defaultcf.block-cache-size 的 1/n。如果一行数据很大，n 通常比较大，如果一行数据比较短，n 比较小。n 通常在 4 到 16 之间。
+# 通常为 defaultcf.block-cache-size 的 1/n。如果一行数据很大，n 通常比较大，
+# 如果一行数据比较短，n 比较小。n 通常在 4 到 16 之间。
 block-cache-size = "256MB"
 
 [rocksdb.raftcf]

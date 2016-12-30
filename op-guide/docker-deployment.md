@@ -2,7 +2,7 @@
 
 本篇将展示如何在多台主机上使用 Docker 部署一个 TiDB 集群。
 
-阅读本章前，请先确保阅读 [TiDB 整体架构](../README.md#tidb-总览) 及 [部署建议](../op-guide/recommendation.md)
+阅读本章前，请先确保阅读 [TiDB 整体架构](../README.md#tidb-整体架构) 及 [部署建议](../op-guide/recommendation.md)
 
 ## 环境准备
 
@@ -11,7 +11,7 @@ Docker 可以方便地在 Linux / Mac OS / Windows 平台安装，安装方法�
 
 ### 拉取 TiDB 的 Docker 镜像
 
-部署 TiDB 集群主要包括 3 个服务组件: 
+部署 TiDB 集群主要包括 3 个服务组件:
 
 - TiDB
 - TiKV
@@ -42,6 +42,7 @@ docker pull pingcap/pd:latest
 ### 1. 启动 PD
 
 登录 **host1** 执行：
+
 ```bash
 docker run -d --name pd1 \
   -p 2379:2379 \
@@ -59,6 +60,7 @@ docker run -d --name pd1 \
 ```
 
 登录 **host2** 执行：
+
 ```bash
 docker run -d --name pd2 \
   -p 2379:2379 \
@@ -76,6 +78,7 @@ docker run -d --name pd2 \
 ```
 
 登录 **host3** 执行：
+
 ```bash
 docker run -d --name pd3 \
   -p 2379:2379 \
@@ -95,6 +98,7 @@ docker run -d --name pd3 \
 ### 2. 启动 TiKV
 
 登录 **host4** 执行：
+
 ```bash
 docker run -d --name tikv1 \
   -p 20160:20160 \
@@ -108,6 +112,7 @@ docker run -d --name tikv1 \
 ```
 
 登录 **host5** 执行：
+
 ```bash
 docker run -d --name tikv2 \
   -p 20160:20160 \
@@ -121,6 +126,7 @@ docker run -d --name tikv2 \
 ```
 
 登录 **host6** 执行：
+
 ```bash
 docker run -d --name tikv3 \
   -p 20160:20160 \
@@ -130,7 +136,7 @@ docker run -d --name tikv3 \
   --addr="0.0.0.0:20160" \
   --advertise-addr="192.168.1.106:20160" \
   --store="/data/tikv3" \
-  --pd="192.168.1.101:2379,192.168.1.102:2379,192.168.1.103:2379" 
+  --pd="192.168.1.101:2379,192.168.1.102:2379,192.168.1.103:2379"
 ```
 
 ### 3. 启动 TiDB
@@ -149,7 +155,7 @@ docker run -d --name tidb \
 
 ### 4. 使用 MySQL 标准客户端连接 TiDB 测试
 
-登录 **host1** 并确保已安装 [mysql 命令行客户端](http://dev.mysql.com/downloads/mysql/)，执行：
+登录 **host1** 并确保已安装 [MySQL 命令行客户端](http://dev.mysql.com/downloads/mysql/)，执行：
 
 ```bash
 $ mysql -h 127.0.0.1 -P 4000 -u root -D test
@@ -169,7 +175,7 @@ mysql> show databases;
 
 TiKV 和 PD 可以通过指定配置文件的方式来加载更加丰富的启动参数，用于性能调优
 
-假定配置文件在宿主机上的存放路径 `/path/to/config/pd.toml` 和 `／path/to/config/tikv.toml`
+假定配置文件在宿主机上的存放路径 `/path/to/config/pd.toml` 和 `/path/to/config/tikv.toml`
 
 启动 Docker 时需要调整相应的启动参数，以 tikv1 和 pd1 为例：
 
