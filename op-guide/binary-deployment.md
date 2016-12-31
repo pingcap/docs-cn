@@ -87,7 +87,7 @@ cd tidb-latest-linux-amd64-centos6
 |node5|192.168.199.117|TiKV2|
 |node6|192.168.199.118|TiKV3|
 
-请按如下步骤**依次启动** PD 集群，TiKV 集群以及 TiDB：
+请按如下步骤 **依次启动** PD 集群，TiKV 集群以及 TiDB：
 
 1. 在 node1，node2，node3 启动 PD
 
@@ -140,7 +140,7 @@ cd tidb-latest-linux-amd64-centos6
     mysql -h 192.168.199.113 -P 4000 -u root -D test
     ```
 
-**注意：在生产环境中启动 TiKV 时，建议使用 [\-\-config](op-guide/configuration.md#-c---config) 参数指定配置文件路径，如果不设置这个参数，TiKV 不会读取配置文件。同样，在生产环境中部署 PD 时，也建议使用 [\-\-config](op-guide/configuration.md#--config) 参数指定配置文件路径。**
+> 注意：在生产环境中启动 TiKV 时，建议使用 [\-\-config](op-guide/configuration.md#-c---config) 参数指定配置文件路径，如果不设置这个参数，TiKV 不会读取配置文件。同样，在生产环境中部署 PD 时，也建议使用 [\-\-config](op-guide/configuration.md#--config) 参数指定配置文件路径。
 
 ## 功能性测试部署
 
@@ -172,8 +172,8 @@ cd tidb-latest-linux-amd64-centos6
 
     ```bash
     ./bin/tikv-server --pd="192.168.199.113:2379" \
-                    --addr="192.168.199.114:20160" \
-                    --store=tikv1
+                      --addr="192.168.199.114:20160" \
+                      --store=tikv1
 
     ./bin/tikv-server --pd="192.168.199.113:2379" \
                       --addr="192.168.199.115:20160" \

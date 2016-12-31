@@ -14,7 +14,7 @@ TiDB 实现了通过标准 SQL 接口读取历史数据功能，无需特殊的 
 “2016-10-08 16:45:26.999”，一般来说可以只写到秒，比如”2016-10-08 16:45:26”。
 当这个变量被设置时，TiDB 会用这个时间戳建立 Snapshot（没有开销，只是创建数据结构），随后所有的 Select 操作都会在这个 Snapshot 上读取数据。
 
-注意 TiDB 的事务是通过 PD 进行全局授时，所以存储的数据版本也是以 PD 所授时间戳作为版本号。在生成 Snapshot ·时，是以 tidb_snapshot 变量的值作为版本号，如果 TiDB Server 所在机器和 PD Server 所在机器的本地时间相差较大，需要以 PD 的时间为准。
+> 注意 TiDB 的事务是通过 PD 进行全局授时，所以存储的数据版本也是以 PD 所授时间戳作为版本号。在生成 Snapshot ·时，是以 tidb_snapshot 变量的值作为版本号，如果 TiDB Server 所在机器和 PD Server 所在机器的本地时间相差较大，需要以 PD 的时间为准。
 
 当读取历史版本操作结束后，可以结束当前 Session 或者是通过 Set 语句将 tidb_snapshot 变量的值设为 ”“，即可读取最新版本的数据。
 
@@ -67,7 +67,8 @@ mysql> insert into t values (1), (2), (3);
 Query OK, 3 rows affected (0.00 sec)
 ```
 
-查看表中的数据
+查看表中的数据：
+
 ```
 mysql> select * from t;
 +------+
@@ -113,15 +114,14 @@ mysql> select * from t;
 3 rows in set (0.00 sec)
 ```
 
-设置一个特殊的环境变量，这个是一个 session scope 的变量，其意义为读取这个时间之前的最新的一个版本
-注意这里的时间设置的是 update 语句之前的那个时间
+设置一个特殊的环境变量，这个是一个 session scope 的变量，其意义为读取这个时间之前的最新的一个版本。注意这里的时间设置的是 update 语句之前的那个时间：
 
 ```sql
 mysql> set @@tidb_snapshot="2016-10-08 16:45:26";
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-这里读取到的内容即为 update 之前的内容，也就是历史版本
+这里读取到的内容即为 update 之前的内容，也就是历史版本：
 
 ```sql
 mysql> select * from t;
@@ -135,7 +135,7 @@ mysql> select * from t;
 3 rows in set (0.00 sec)
 ```
 
-清空这个变量后，即可读取最新版本数据
+清空这个变量后，即可读取最新版本数据：
 
 ```sql
 mysql> set @@tidb_snapshot="";

@@ -35,7 +35,7 @@
 |TiKV1|TiKV2|TiKV3|PD1|PD2|PD3|
 |-|-|-|TiDB1|TiDB2|-|
 
-其中 TiDB1 和 TiDB2 通过负载均衡组件对外统一提供 SQL 接口
+其中 TiDB1 和 TiDB2 通过负载均衡组件对外统一提供 SQL 接口。
 
 ### 举例：测试验证环境部署（推荐至少 4 台机器）
 
