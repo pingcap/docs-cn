@@ -6,8 +6,8 @@ set -e
 MAINFONT="WenQuanYi Micro Hei"
 MONOFONT="WenQuanYi Micro Hei Mono"
 
-MAINFONT="Tsentsiu Sans HG"
-MONOFONT="Tsentsiu Sans Console HG"
+# MAINFONT="Tsentsiu Sans HG"
+# MONOFONT="Tsentsiu Sans Console HG"
 
 _version_tag="$(date '+%Y%m%d').$(git rev-parse --short HEAD)"
 

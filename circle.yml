@@ -20,3 +20,4 @@ deployment:
     branch: master
     commands:
       - echo ok
+
