@@ -6,7 +6,8 @@ TiDB 支持包括跨行事务，JOIN 及子查询在内的绝大多数 MySQL 的
 
 不过一些特性由于在分布式环境下没法很好的实现，目前暂时不支持或者是表现与 MySQL 有差异。
 
-##　不支持的特性  
+## 不支持的特性
+
 * 存储过程
 * 视图
 * 触发器
@@ -26,6 +27,7 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 
 ### DDL
 TiDB 实现了 F1 的异步 Schema 变更算法，DDL 执行过程中不会阻塞线上的 DML 操作。目前已经支持的 DDL 包括：
+
 + Create Database
 + Drop Database
 + Create Table

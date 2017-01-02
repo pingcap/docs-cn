@@ -1,4 +1,5 @@
 # TiKV 性能参数调优
+
 本文档用于描述如何根据机器配置情况来调整 TiKV 的参数，使 TiKV 的性能达到最优。
 
 TiKV 最底层使用的是 RocksDB 做为持久化存储，所以 TiKV 的很多性能相关的参数都是与 RocksDB 相关的。
@@ -14,7 +15,8 @@ TiKV 使用了 RocksDB 的 `Column Falimies` 特性，数据最终存储在 Rock
 
 每个 CF 有各自的 `write-buffer`，大小通过 `write-buffer-size` 控制。
 
-## 1.参数说明
+## 参数说明
+
 ```toml
 [server]
 # 通常情况下使用默认值。在复杂的查询比较多的情况下，例如 join 操作，聚合操作等等，可以稍微调大点，但应比系统的 CPU 核数小。
@@ -68,7 +70,7 @@ scheduler-concurrency = 102400
 # 通常情况下使用默认值就可以了。如果写入操作基本是批量写入的或者写入的行比较大，可以适当调大点。
 scheduler-worker-pool-size = 4
 ```
-## 2.TiKV 内存使用情况
+## TiKV 内存使用情况
 
 除了以上列出的 `block-cache` 以及 `write-buffer` 会占用系统内存外：
 
@@ -76,8 +78,10 @@ scheduler-worker-pool-size = 4
 
 2）TiKV 在处理大的查询的时候（例如 `select * from ...`）会读取数据然后在内存中生成对应的数据结构返回给 TiDB，这个过程中 TiKV 会占用一部分内存。
 
-## 3.导数据推荐配置
+## 导数据推荐配置
+
 block-cache-size的大小根据机器的内存情况进行调整。
+
 ```toml
 [raftstore]
 # 该参数的含义是如果一个region的写入超过该值就会检查是否需要分裂，在导数据的情况因为只有insert操作，所以为了减少检查一般配大点，一般为region-split-size的一半。

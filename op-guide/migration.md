@@ -4,7 +4,7 @@
 
 该文档详细介绍了如何将 MySQL 的数据迁移到 TiDB。
 
-这里我们假定 MySQL 以及 TiDB 服务信息如下:
+这里我们假定 MySQL 以及 TiDB 服务信息如下：
 
 |Name|Address|Port|User|Password|
 |----|-------|----|----|--------|
@@ -15,9 +15,7 @@
 
 在迁移之前，我们可以使用 TiDB 的 `checker` 工具，来预先检查 TiDB 是否能支持需要迁移的 table schema。如果 check 某个 table schema 失败，表明 TiDB 当前并不支持，我们不能对该 table 里面的数据进行迁移。`checker` 包含在 TiDB 工具集里面，我们可以直接下载。
 
-### 下载 TiDB 工具集
-
-#### Linux
+### 下载 TiDB 工具集 (Linux)
 
 ```bash
 # 下载 tool 压缩包
@@ -33,47 +31,47 @@ cd tidb-tools-latest-linux-amd64
 
 ### 使用 `checker` 检查的一个示范
 
-+ 在 MySQL 的 test database 里面创建几张表，并插入数据:
++   在 MySQL 的 test database 里面创建几张表，并插入数据:
 
-```bash
-USE test;
-CREATE TABLE t1 (id INT, age INT, PRIMARY KEY(id)) ENGINE=InnoDB;
-CREATE TABLE t2 (id INT, name VARCHAR(256), PRIMARY KEY(id)) ENGINE=InnoDB;
+    ```sql
+    USE test;
+    CREATE TABLE t1 (id INT, age INT, PRIMARY KEY(id)) ENGINE=InnoDB;
+    CREATE TABLE t2 (id INT, name VARCHAR(256), PRIMARY KEY(id)) ENGINE=InnoDB;
 
-INSERT INTO t1 VALUES (1, 1), (2, 2), (3, 3);
-INSERT INTO t2 VALUES (1, "a"), (2, "b"), (3, "c");
-```
+    INSERT INTO t1 VALUES (1, 1), (2, 2), (3, 3);
+    INSERT INTO t2 VALUES (1, "a"), (2, "b"), (3, "c");
+    ```
 
-+ 使用 `checker` 检查 test database 里面所有的 table
++   使用 `checker` 检查 test database 里面所有的 table
 
-```bash
-./bin/checker -host 127.0.0.1 -port 3306 -user root test
-2016/10/27 13:11:49 checker.go:48: [info] Checking database test
-2016/10/27 13:11:49 main.go:37: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
-2016/10/27 13:11:49 checker.go:63: [info] Checking table t1
-2016/10/27 13:11:49 checker.go:69: [info] Check table t1 succ
-2016/10/27 13:11:49 checker.go:63: [info] Checking table t2
-2016/10/27 13:11:49 checker.go:69: [info] Check table t2 succ
-```
+    ```bash
+    ./bin/checker -host 127.0.0.1 -port 3306 -user root test
+    2016/10/27 13:11:49 checker.go:48: [info] Checking database test
+    2016/10/27 13:11:49 main.go:37: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
+    2016/10/27 13:11:49 checker.go:63: [info] Checking table t1
+    2016/10/27 13:11:49 checker.go:69: [info] Check table t1 succ
+    2016/10/27 13:11:49 checker.go:63: [info] Checking table t2
+    2016/10/27 13:11:49 checker.go:69: [info] Check table t2 succ
+    ```
 
-+ 使用 `checker` 检查 test database 里面某一个 table
++   使用 `checker` 检查 test database 里面某一个 table
 
-这里，假设我们只需要迁移 table `t1`。
+    这里，假设我们只需要迁移 table `t1`。
 
-```bash
-./bin/checker -host 127.0.0.1 -port 3306 -user root test t1
-2016/10/27 13:13:56 checker.go:48: [info] Checking database test
-2016/10/27 13:13:56 main.go:37: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
-2016/10/27 13:13:56 checker.go:63: [info] Checking table t1
-2016/10/27 13:13:56 checker.go:69: [info] Check table t1 succ
-Check database succ!
-```
+    ```bash
+    ./bin/checker -host 127.0.0.1 -port 3306 -user root test t1
+    2016/10/27 13:13:56 checker.go:48: [info] Checking database test
+    2016/10/27 13:13:56 main.go:37: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
+    2016/10/27 13:13:56 checker.go:63: [info] Checking table t1
+    2016/10/27 13:13:56 checker.go:69: [info] Check table t1 succ
+    Check database succ!
+    ```
 
 ### 一个无法迁移的 table 例子
 
 我们在 MySQL 里面创建如下表：
 
-```bash
+```sql
 CREATE TABLE t_error (
   c timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -86,29 +84,30 @@ CREATE TABLE t_error (
 2016/10/27 13:19:28 checker.go:48: [info] Checking database test
 2016/10/27 13:19:28 main.go:37: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
 2016/10/27 13:19:28 checker.go:63: [info] Checking table t_error
-2016/10/27 13:19:28 checker.go:67: [error] Check table t_error failed with err: line 1 column 56 near ") ON UPDATE CURRENT_TIMESTAMP(3)
+2016/10/27 13:19:28 checker.go:67: [error]
+Check table t_error failed with err: line 1 column 56 near ") ON UPDATE CURRENT_TIMESTAMP(3)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1"
 github.com/pingcap/tidb/parser/yy_parser.go:111:
 github.com/pingcap/tidb/parser/yy_parser.go:124:
-/home/jenkins/workspace/WORKFLOW_TOOLS_BUILDING/go/src/github.com/pingcap/tidb-tools/checker/checker.go:122:  parse CREATE TABLE `t_error` (
+/home/jenkins/workspace/WORKFLOW_TOOLS_BUILDING/go/src/ \
+github.com/pingcap/tidb-tools/checker/checker.go:122:  parse CREATE TABLE `t_error` (
   `c` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 error
-/home/jenkins/workspace/WORKFLOW_TOOLS_BUILDING/go/src/github.com/pingcap/tidb-tools/checker/checker.go:114:
+/home/jenkins/workspace/WORKFLOW_TOOLS_BUILDING/go/src/ \
+github.com/pingcap/tidb-tools/checker/checker.go:114:
 2016/10/27 13:19:28 main.go:68: [error] Check database test with 1 errors and 0 warnings.
 ```
 
 ## 使用 `mydumper`/`loader` 全量导入数据
 
-我们使用 `mydumper` 从 MySQL 导出数据，然后用 `loader` 将其导入到 TiDB 里面。
-
-**注意，虽然我们也支持使用 MySQL 官方的  `mysqldump` 工具来进行数据的迁移工作，但相比于 `mydumper`/`loader`，性能会慢很多，对于大量数据的迁移会花费很多时间，这里我们并不推荐。**
-
-### 从 MySQL 导出数据
 `mydumper` 是一个更强大的数据迁移工具，具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)。
 
-#### 下载 Binary
+我们使用 `mydumper` 从 MySQL 导出数据，然后用 `loader` 将其导入到 TiDB 里面。
 
-##### Linux
+> 注意：虽然 TiDB 也支持使用 MySQL 官方的 `mysqldump` 工具来进行数据的迁移工作，但相比于 `mydumper` / `myloader`，性能会慢很多，大量数据的迁移会花费很多时间，这里我们并不推荐。
+
+
+### 下载 Binary (Linux)
 
 ```bash
 # 下载 mydumper 压缩包
@@ -122,7 +121,7 @@ tar -xzf mydumper-linux-amd64.tar.gz
 cd mydumper-linux-amd64
 ```
 
-#### 从 MySQL 导出数据
+### 从 MySQL 导出数据
 
 我们使用 `mydumper` 从 MySQL 导出数据，如下:
 
@@ -134,7 +133,7 @@ cd mydumper-linux-amd64
 
 `-t 16` 表明使用 16 个线程去导出数据。`-F 128` 是将实际的 table 切分成多大的 chunk，这里就是 128MB 一个 chunk。
 
-**注意：在阿里云一些需要 `super privilege` 的云上面，`mydumper` 需要加上 `--no-locks` 参数，否则会提示没有权限操作。**
+> 注意：在阿里云等一些需要 `super privilege` 的云上面，`mydumper` 需要加上 `--no-locks` 参数，否则会提示没有权限操作。
 
 ### 向 TiDB 导入数据
 
@@ -148,7 +147,7 @@ cd mydumper-linux-amd64
 
 导入成功之后，我们可以用 MySQL 官方客户端进入 TiDB，查看:
 
-```bash
+```sql
 mysql -h127.0.0.1 -P4000 -uroot
 
 mysql> show tables;
@@ -192,18 +191,18 @@ TiDB 提供 `syncer` 工具能方便的将 MySQL 的数据增量的导入到 TiD
 
 在使用 `syncer` 之前，我们必须保证：
 
-+ MySQL 开启 binlog 功能，参考 [Setting the Replication Master Configuration](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
-+ Binlog 格式必须使用 `row` format，这也是 MySQL 5.7 之后推荐的 binlog 格式，可以使用如下语句打开:
++   MySQL 开启 binlog 功能，参考 [Setting the Replication Master Configuration](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
++   Binlog 格式必须使用 `row` format，这也是 MySQL 5.7 之后推荐的 binlog 格式，可以使用如下语句打开:
 
-    ```bash
+    ```sql
     SET GLOBAL binlog_format = ROW;
-    ``` 
+    ```
 
 ### 获取同步 position
 
 我们通过 `show master status` 得到当前 binlog 的 position，`syncer` 的初始同步位置就是从这个地方开始。
 
-```bash
+```sql
 show master status;
 +------------------+----------+--------------+------------------+-------------------+
 | File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
@@ -255,7 +254,6 @@ port = 4000
 
 ```bash
 ./bin/syncer -config config.toml
-
 2016/10/27 15:22:01 binlogsyncer.go:226: [info] begin to sync binlog from position (mysql-bin.000003, 1280)
 2016/10/27 15:22:01 binlogsyncer.go:130: [info] register slave for master server 127.0.0.1:3306
 2016/10/27 15:22:01 binlogsyncer.go:552: [info] rotate to (mysql-bin.000003, 1280)
@@ -264,13 +262,13 @@ port = 4000
 
 ### 在 MySQL 插入新的数据
 
-```bash
+```sql
 INSERT INTO t1 VALUES (4, 4), (5, 5);
 ```
 
 登录到 TiDB 查看：
 
-```bash
+```sql
 mysql -h127.0.0.1 -P4000 -uroot -p
 mysql> select * from t1;
 +----+------+
@@ -285,6 +283,7 @@ mysql> select * from t1;
 ```
 
 `syncer` 每隔 30s 会输出当前的同步统计，如下
+
 
 ```bash
 2016/10/27 15:22:31 syncer.go:668: [info] [syncer]total events = 1, insert = 1, update = 0, delete = 0, total tps = 0, recent tps = 0, binlog name = mysql-bin.000003, binlog pos = 1280.
