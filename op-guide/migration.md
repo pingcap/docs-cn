@@ -8,8 +8,8 @@
 
 |Name|Address|Port|User|Password|
 |----|-------|----|----|--------|
-|MySQL|127.0.0.1|3306|root||
-|TiDB|127.0.0.1|4000|root||
+|MySQL|127.0.0.1|3306|root|*|
+|TiDB|127.0.0.1|4000|root|*|
 
 ## 使用 checker 进行 Schema 检查
 
