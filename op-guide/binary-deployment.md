@@ -28,7 +28,8 @@ sha256sum -c tidb-latest-linux-amd64.sha256
 tar -xzf tidb-latest-linux-amd64.tar.gz
 cd tidb-latest-linux-amd64
 ```
-### CentOS 6（不推荐）
+### CentOS 6
+> 注意：我们大部分开发和测试都是在 CentOS 7+, Ubuntu 14.04+ 上进行，CentOS 6 上面并没有经过严格测试，所以不推荐在 CentOS 6 上部署 TiDB 集群
 
 ```bash
 # 下载 CentOS6 压缩包
