@@ -158,3 +158,7 @@ For TiKV, the default value of the `--store` parameter is `/tmp/tikv/store`. In 
 This is because the cluster ID stored in local TiKV is different from the cluster ID specified by PD. When a new PD cluster is deployed, PD generates random cluster IDs. TiKV gets the cluster ID from PD and stores the cluster ID locally when it is initialized. The next time when TiKV is started, it checks the local cluster ID with the cluster ID in PD. If the cluster IDs don't match, the `cluster ID mismatch` message is displayed and TiKV exits.
 
 If you previously deploy a PD cluster, but then you remove the PD data and deploy a new PD cluster, this error occurs because TiKV uses the old data to connect to the new PD cluster.
+
+## The `TiKV cluster is not bootstrapped` message is displayed when accessing PD.
+Most of the APIs of PD are available only when the TiKV cluster is initialized. This message is displayed if PD is accessed when PD is started while TiKV is not started when a new cluster is deployed.
+If this message is displayed, start the TiKV cluster. When TiKV is initialized, PD is accessible.
