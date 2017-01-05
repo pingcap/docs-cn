@@ -281,7 +281,7 @@ curl http://host:port/pd/api/v1/store/1
 
 更详细的 API 文档可以参考 [PD API v1](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html)。
 
-更详细的 pd-ctl 文档可以参考 https://github.com/pingcap/docs-cn/blob/master/op-guide/pd-control.md
+更详细的 pd-ctl 文档可以参考 [pd-control](./pd-control.md)。
 
 ### TiDB
 
