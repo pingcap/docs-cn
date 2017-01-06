@@ -248,6 +248,22 @@ host = "127.0.0.1"
 user = "root"
 password = ""
 port = 4000
+
+
+# 白名单设置
+# 库的优先级大于表的优先级
+# 支持正则，以~开头表示使用正则，如: replicate-do-db = ["~^test.*"]
+
+replicate-do-db = ["test","test2"]
+
+[[replicate-do-table]]
+db-name ="test"
+tbl-name = "log"
+
+[[replicate-do-table]]
+db-name ="test1"
+tbl-name = "log"
+
 ```
 
 启动 `syncer`:
