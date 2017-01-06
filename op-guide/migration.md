@@ -249,20 +249,24 @@ user = "root"
 password = ""
 port = 4000
 
-# 支持白名单过滤, 指定只同步的库和表
+# 支持白名单过滤, 指定只同步的某些库和某些表, 例如:
+
+# 指定同步 db1 和 db2 下的所有表
+replicate-do-db = ["db1","db2"]
+
+# 指定同步 db1.table1
+[[replicate-do-table]]
+db-name ="db1"
+tbl-name = "table1"
+
+# 指定同步 db3.table2
+[[replicate-do-table]]
+db-name ="db3"
+tbl-name = "table2"
+
 # 支持正则，以~开头表示使用正则
-# 如: replicate-do-db = ["~^test.*"], 表示同步所有以 test 开头的库
-
-# 库的优先级大于表的优先级
-replicate-do-db = ["test","test2"]
-
-[[replicate-do-table]]
-db-name ="test"
-tbl-name = "log"
-
-[[replicate-do-table]]
-db-name ="test1"
-tbl-name = "log"
+# 同步所有以 test 开头的库
+replicate-do-db = ["~^test.*"]
 ```
 
 启动 `syncer`:
