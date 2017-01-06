@@ -29,7 +29,7 @@ TiDB Server 是无状态的，其本身并不存储数据，只负责计算，�
 
 ### PD Server
 
-Placement Driver (简称 PD) 是整个集群的管理模块，其主要工作有三个： 一是存储集群的原信息（某个 Key 存储在哪个 TiKV 节点）；二是对 TiKV 集群进行调度和负载均衡（如数据的迁移、Raft group leader 的迁移等）；三是分配全局唯一且递增的事务 ID。
+Placement Driver (简称 PD) 是整个集群的管理模块，其主要工作有三个： 一是存储集群的元信息（某个 Key 存储在哪个 TiKV 节点）；二是对 TiKV 集群进行调度和负载均衡（如数据的迁移、Raft group leader 的迁移等）；三是分配全局唯一且递增的事务 ID。
 
 PD 是一个集群，需要部署奇数个节点，一般线上推荐至少部署 3 个节点。
 
