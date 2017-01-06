@@ -249,10 +249,11 @@ user = "root"
 password = ""
 port = 4000
 
-# 白名单设置
-# 库的优先级大于表的优先级
-# 支持正则，以~开头表示使用正则，如: replicate-do-db = ["~^test.*"]
+# 支持白名单过滤, 指定只同步的库和表
+# 支持正则，以~开头表示使用正则
+# 如: replicate-do-db = ["~^test.*"], 表示同步所有以 test 开头的库
 
+# 库的优先级大于表的优先级
 replicate-do-db = ["test","test2"]
 
 [[replicate-do-table]]
