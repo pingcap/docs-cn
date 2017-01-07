@@ -28,7 +28,8 @@ sha256sum -c tidb-latest-linux-amd64.sha256
 tar -xzf tidb-latest-linux-amd64.tar.gz
 cd tidb-latest-linux-amd64
 ```
-### CentOS 6（不推荐）
+### CentOS 6
+> 注意：我们大部分开发和测试都是在 CentOS 7+, Ubuntu 14.04+ 上进行，CentOS 6 上面并没有经过严格测试，所以不推荐在 CentOS 6 上部署 TiDB 集群
 
 ```bash
 # 下载 CentOS6 压缩包
@@ -224,10 +225,24 @@ cd tidb-latest-linux-amd64-centos6
 curl -X DELETE http://host1:2379/pd/api/v1/members/pd4
 ```
 
+或者使用 pd-ctl ：
+
+```bash
+./pd-ctl -u http://host1:2379
+>> member delete pd4
+```
+
 最后我们可以查看当前 PD 的所有节点来确定是否添加或者删除成功：
 
 ```bash
 curl http://host1:2379/pd/api/v1/members
+```
+
+或者：
+
+```bash
+./pd-ctl -u http://host1:2379
+>> member
 ```
 
 ### TiKV
@@ -242,15 +257,31 @@ curl http://host1:2379/pd/api/v1/members
 curl -X DELETE http://host:port/pd/api/v1/store/1
 ```
 
+或者使用 pd-ctl ：
+
+```bash
+./pd-ctl -u http://host:port
+>> store delete 1
+```
+
 然后可以查看这个 TiKV 的当前状态：
 
 ```bash
 curl http://host:port/pd/api/v1/store/1
 ```
 
+或者：
+
+```bash
+./pd-ctl -u http://host:port
+>> store 1
+```
+
 如果这个 TiKV 正在下线，对应的 state=1，如果这个 TiKV 完成下线，对应的 state=2，否则 state=0。
 
 更详细的 API 文档可以参考 [PD API v1](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html)。
+
+更详细的 pd-ctl 文档可以参考 [pd-control](./pd-control.md)。
 
 ### TiDB
 
