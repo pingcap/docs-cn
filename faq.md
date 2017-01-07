@@ -119,3 +119,7 @@ TiKV 本地存储的 cluster ID 和指定的 PD 的 cluster ID 不一致。在�
 ## 访问 PD 报错：TiKV cluster is not bootstrapped
 
 PD 的大部分 API 需要在初始化 TiKV 集群以后才能使用，如果在部署新集群的时候只启动了 PD，还没有启动 TiKV，这时候访问 PD 就会报这个错误。遇到这个错误应该先把要部署的 TiKV 启动起来，TiKV 会自动完成初始化工作，然后就可以正常访问 PD 。
+
+## PD 启动报错：Etcd cluster ID mismatch
+
+PD 启动参数中的 \-initial\-cluster 包含了某个不属于该集群的成员。遇到这个错误时请检查各个成员的所属集群，剔除错误的成员后即可正常启动。
