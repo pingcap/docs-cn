@@ -16,7 +16,7 @@ test:
 
 deployment:
   development:
-    branch: pdf-fixture
+    branch: master
     commands:
       - pip3 install qiniu
       - python3 scripts/upload.py output.pdf tidb-manual-cn.pdf
