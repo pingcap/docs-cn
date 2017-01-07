@@ -76,7 +76,7 @@ TiDB 支持 ACID 分布式事务。事务模型是以 Google 的 Percolator 模�
 
 ## TiDB 的 lease 参数应该如何设置？
 
-启动 TiDB Server 时，需要通过命令行参数设置 lease 参数（\-\-lease=60），其值会影响 DDL 的速度（只会影响当前执行 DDL 的 session，其他的 session 不会受影响）。在测试阶段，lease 的值可以设为 1s，加快测试进度；在生产环境下，我们推荐这个值设为分钟级（一般可以设为 60），这样可以保证 DDL 操作的安全。
+启动 TiDB Server 时，需要通过命令行参数设置 lease 参数（`--lease=60`），其值会影响 DDL 的速度（只会影响当前执行 DDL 的 session，其他的 session 不会受影响）。在测试阶段，lease 的值可以设为 1s，加快测试进度；在生产环境下，我们推荐这个值设为分钟级（一般可以设为 60），这样可以保证 DDL 操作的安全。
 
 ## 在使用 TiDB 时，DDL 语句为什么这么慢？
 
@@ -110,7 +110,7 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提�
 
 ## 为什么 TiKV 数据目录不见了
 
-TiKV 的 \-\-store 参数默认值为 `/tmp/tikv/store`，在某些虚拟机中，重启操作系统会删除 /tmp 目录下的数据，推荐通过 --store 参数显式设置 TiKV 数据目录。
+TiKV 的 `--store` 参数默认值为 `/tmp/tikv/store`，在某些虚拟机中，重启操作系统会删除 /tmp 目录下的数据，推荐通过 --store 参数显式设置 TiKV 数据目录。
 
 ## TiKV 启动报错：cluster ID mismatch
 
@@ -122,4 +122,4 @@ PD 的大部分 API 需要在初始化 TiKV 集群以后才能使用，如果在
 
 ## PD 启动报错：Etcd cluster ID mismatch
 
-PD 启动参数中的 \-\-initial\-cluster 包含了某个不属于该集群的成员。遇到这个错误时请检查各个成员的所属集群，剔除错误的成员后即可正常启动。
+PD 启动参数中的 `--initial-cluster` 包含了某个不属于该集群的成员。遇到这个错误时请检查各个成员的所属集群，剔除错误的成员后即可正常启动。
