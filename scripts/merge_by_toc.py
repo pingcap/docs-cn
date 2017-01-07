@@ -37,6 +37,8 @@ for f in followup_files:
     tag = open(f).read().strip().split('\n')[0]
     if tag.startswith('# '):
         tag = tag[2:]
+    elif tag.startswith('## '):
+        tag = tag[3:]
     file_link_name[f] = tag.lower().replace(' ', '-')
 
 print(file_link_name)
@@ -56,9 +58,8 @@ def replace_link(match):
         return '[%s](%s)' % (link_name, frag)
     elif link.endswith('.png'):
         # special handing for pic
-        # FIXME: better add media or static dir
         fname = os.path.basename(link)
-        return '[%s](./op-guide/%s)' % (link_name, fname)
+        return '[%s](./media/%s)' % (link_name, fname)
     else:
         return full
 
@@ -69,6 +70,7 @@ for fname in followup_files:
         chapter = fp.read()
         chapter = hyper_link_pattern.sub(replace_link, chapter)
         contents.append(chapter)
+        contents.append('') # add an empty line
 
 with open("doc.md", 'w') as fp:
     fp.write('\n'.join(contents))
