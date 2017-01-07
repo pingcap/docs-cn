@@ -9,7 +9,8 @@ MONOFONT="WenQuanYi Micro Hei Mono"
 # MAINFONT="Tsentsiu Sans HG"
 # MONOFONT="Tsentsiu Sans Console HG"
 
-_version_tag="$(date '+%Y%m%d').$(git rev-parse --short HEAD)"
+#_version_tag="$(date '+%Y%m%d').$(git rev-parse --short HEAD)"
+_version_tag="$(date '+%Y%m%d')"
 
 pandoc -N --toc --smart --latex-engine=xelatex \
     --template=templates/template.tex \
@@ -22,4 +23,5 @@ pandoc -N --toc --smart --latex-engine=xelatex \
     -V sansfont="${MAINFONT}" \
     -V monofont="${MONOFONT}" \
     -V geometry:margin=1in \
+    -V include-after="\\input{templates/copyright.tex}" \
     doc.md -o output.pdf
