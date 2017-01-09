@@ -25,7 +25,7 @@
 + 高级功能
   - [数据迁移方法](op-guide/migration.md)
   - [Loader 使用文档](tools/loader.md)
-  - [性能调优](op-guide/tune-TiKV.md)
+  - [性能调优](op-guide/tune-tikv.md)
   - [读取历史版本数据](op-guide/history-read.md)
 + 更多资源
   - [PingCAP 团队技术博客](http://www.pingcap.com/bloglist.html)
