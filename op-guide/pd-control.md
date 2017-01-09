@@ -39,7 +39,7 @@ export PD_ADDR=http://127.0.0.1:2379
 
 ## 命令(command)
 
-### `store [delete] <store_id>`
+### store [delete] \<store_id\>
 
 用于显示 store 信息或者删除指定 store。
 
@@ -57,9 +57,9 @@ export PD_ADDR=http://127.0.0.1:2379
   ......
 ```
 
-### `region <region_id>`
+### region \<region_id\>
 
-用于显示 Region 信息。
+用于显示 region 信息。
 
 示例：
 
@@ -82,7 +82,7 @@ export PD_ADDR=http://127.0.0.1:2379
 }
 ```
 
-### `member [leader | delete]`
+### member [leader | delete]
 
 用于显示 PD 成员信息或删除指定成员。
 
@@ -103,7 +103,7 @@ export PD_ADDR=http://127.0.0.1:2379
 Success!
 ```
 
-### `config [show | set <option> <value>]`
+### config [show | set \<option\> \<value\>]
 
 用于显示或调整配置信息。
 
