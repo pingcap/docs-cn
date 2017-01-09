@@ -13,11 +13,11 @@ test:
   override:
     - python3 scripts/merge_by_toc.py
     - ./scripts/generate_pdf.sh
-    - curl --upload-file output.pdf https://transfer.sh/TiDB-Doc-CN.pdf
 
 deployment:
   development:
     branch: master
     commands:
-      - echo ok
+      - pip3 install qiniu
+      - python3 scripts/upload.py output.pdf tidb-manual-cn.pdf
 

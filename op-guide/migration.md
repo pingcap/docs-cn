@@ -13,7 +13,7 @@
 
 ## 使用 checker 进行 Schema 检查
 
-在迁移之前，我们可以使用 TiDB 的 `checker` 工具，来预先检查 TiDB 是否能支持需要迁移的 table schema。如果 check 某个 table schema 失败，表明 TiDB 当前并不支持，我们不能对该 table 里面的数据进行迁移。`checker` 包含在 TiDB 工具集里面，我们可以直接下载。
+在迁移之前，我们可以使用 TiDB 的 checker 工具，来预先检查 TiDB 是否能支持需要迁移的 table schema。如果 check 某个 table schema 失败，表明 TiDB 当前并不支持，我们不能对该 table 里面的数据进行迁移。checker 包含在 TiDB 工具集里面，我们可以直接下载。
 
 ### 下载 TiDB 工具集 (Linux)
 
@@ -29,7 +29,7 @@ tar -xzf tidb-tools-latest-linux-amd64.tar.gz
 cd tidb-tools-latest-linux-amd64
 ```
 
-### 使用 `checker` 检查的一个示范
+### 使用 checker 检查的一个示范
 
 +   在 MySQL 的 test database 里面创建几张表，并插入数据:
 
@@ -42,7 +42,7 @@ cd tidb-tools-latest-linux-amd64
     INSERT INTO t2 VALUES (1, "a"), (2, "b"), (3, "c");
     ```
 
-+   使用 `checker` 检查 test database 里面所有的 table
++   使用 checker 检查 test database 里面所有的 table
 
     ```bash
     ./bin/checker -host 127.0.0.1 -port 3306 -user root test
@@ -54,7 +54,7 @@ cd tidb-tools-latest-linux-amd64
     2016/10/27 13:11:49 checker.go:69: [info] Check table t2 succ
     ```
 
-+   使用 `checker` 检查 test database 里面某一个 table
++   使用 checker 检查 test database 里面某一个 table
 
     这里，假设我们只需要迁移 table `t1`。
 
