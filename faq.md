@@ -110,7 +110,7 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提�
 
 ## 为什么 TiKV 数据目录不见了
 
-TiKV 的 `--store` 参数默认值为 `/tmp/tikv/store`，在某些虚拟机中，重启操作系统会删除 /tmp 目录下的数据，推荐通过 --store 参数显式设置 TiKV 数据目录。
+TiKV 的 `--store` 参数默认值为 `/tmp/tikv/store`，在某些虚拟机中，重启操作系统会删除 /tmp 目录下的数据，推荐通过 `--store` 参数显式设置 TiKV 数据目录。
 
 ## TiKV 启动报错：cluster ID mismatch
 
@@ -120,6 +120,6 @@ TiKV 本地存储的 cluster ID 和指定的 PD 的 cluster ID 不一致。在�
 
 PD 的大部分 API 需要在初始化 TiKV 集群以后才能使用，如果在部署新集群的时候只启动了 PD，还没有启动 TiKV，这时候访问 PD 就会报这个错误。遇到这个错误应该先把要部署的 TiKV 启动起来，TiKV 会自动完成初始化工作，然后就可以正常访问 PD 。
 
-## PD 启动报错：Etcd cluster ID mismatch
+## PD 启动报错：etcd cluster ID mismatch
 
 PD 启动参数中的 `--initial-cluster` 包含了某个不属于该集群的成员。遇到这个错误时请检查各个成员的所属集群，剔除错误的成员后即可正常启动。
