@@ -118,7 +118,7 @@ TiKV 本地存储的 cluster ID 和指定的 PD 的 cluster ID 不一致。在�
 
 ## TiKV 启动报错：duplicated store address
 
-当 TiKV `--store` 指定的路径没有数据文件夹时，用之前参数重新启动就会报这个错误。请尝试用 pdctl 的 [store 删除](https://github.com/pingcap/pd/tree/master/pdctl#store-delete-)功能，删除之前的 store, 然后重新启动 TiKV 即可。
+当 TiKV `--store` 指定的路径下没有数据文件夹时（删除或移动后没有更新 `--store`），用之前参数重新启动就会报这个错误。请尝试用 pdctl 的 [store 删除](https://github.com/pingcap/pd/tree/master/pdctl#store-delete-)功能，删除之前的 store, 然后重新启动 TiKV 即可。
 
 ## 访问 PD 报错：TiKV cluster is not bootstrapped
 
