@@ -82,6 +82,34 @@ export PD_ADDR=http://127.0.0.1:2379
 }
 ```
 
+### region key [--format=raw|pb|proto|protobuf] \<key\>
+
+用于查询某个 key 在哪个 region 上，支持 raw 和 protobuf 格式。
+
+Raw 格式（默认）示例：
+
+```bash
+>> region key abc
+{
+  "region": {
+    "id": 2,
+    ......
+  }
+}
+```
+
+Protobuf 格式示例：
+
+```bash
+>> region key --format=pb t\200\000\000\000\000\000\000\377\035_r\200\000\000\000\000\377\017U\320\000\000\000\000\000\372
+{
+  "region": {
+    "id": 2,
+    ......
+  }
+}
+```
+
 ### member [leader | delete]
 
 用于显示 PD 成员信息或删除指定成员。
