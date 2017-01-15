@@ -82,21 +82,29 @@ export PD_ADDR=http://127.0.0.1:2379
 }
 ```
 
-### region key \<key\>
+### region key [--format=raw|pb|proto|protobuf] \<key\>
 
-用于查询某个 key 在哪个 region 上。
+用于查询某个 key 在哪个 region 上，支持 raw 和 protobuf 格式。
 
-示例：
+Raw 格式（默认）示例：
 
 ```bash
-# 注意参数不要加上 ""
->> region key t\200\000\000\000\000\000\000\377\035_r\200\000\000\000\000\377\017U\320\000\000\000\000\000\372
+>> region key abc
 {
   "region": {
     "id": 2,
     ......
   }
-  "leader": {
+}
+```
+
+Protobuf 格式示例：
+
+```bash
+>> region key --format=pb t\200\000\000\000\000\000\000\377\035_r\200\000\000\000\000\377\017U\320\000\000\000\000\000\372
+{
+  "region": {
+    "id": 2,
     ......
   }
 }
