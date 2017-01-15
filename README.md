@@ -12,6 +12,7 @@
   - [Docker 部署方案](op-guide/docker-deployment.md)
   - [命令行参数](op-guide/configuration.md)
 + 运维 & 监控
+  - [集群扩容缩容方案](op-guide/horizontal-scale.md)
   - [整体监控框架概述](op-guide/monitor-overview.md)
   - [组件状态 API & 监控](op-guide/monitor.md)
   - [PD 命令行工具](op-guide/pd-control.md)
@@ -25,7 +26,7 @@
 + 高级功能
   - [数据迁移方法](op-guide/migration.md)
   - [Loader 使用文档](tools/loader.md)
-  - [性能调优](op-guide/tune-TiKV.md)
+  - [性能调优](op-guide/tune-tikv.md)
   - [读取历史版本数据](op-guide/history-read.md)
 + 更多资源
   - [PingCAP 团队技术博客](http://www.pingcap.com/bloglist.html)
@@ -50,7 +51,7 @@ TiDB 对业务没有任何侵入性，能优雅的替换传统的数据库中间
 
 要深入了解 TiDB 的水平扩展和高可用特点，首先需要了解 TiDB 的整体架构。
 
-![TiDB Architecture](op-guide/architecture.png)
+![TiDB Architecture](media/tidb-architecture.png)
 
 TiDB 集群主要分为三个组件：
 

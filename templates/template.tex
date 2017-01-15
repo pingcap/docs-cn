@@ -188,7 +188,6 @@ $endfor$
 % http://blog.csdn.net/golden1314521/article/details/39926135
 \usepackage{titlesec}
 \usepackage{titletoc}
-
 % \titlecontents{标题名}[左间距]{标题格式}{标题标志}{无序号标题}{指引线与页码}[下间距]
 % fix overlap
 \titlecontents{subsection}
@@ -205,7 +204,16 @@ $endfor$
               {}%
               {\titlerule*[0.5pc]{$$\cdot$$}\contentspage\hspace*{0em}}%
 
+\usepackage[all]{background}
+% \backgroundsetup{contents=PingCAP Inc.,color=blue,opacity=0.2}
+\backgroundsetup{contents=\includegraphics{media/pingcap-logo},
+  placement=top,scale=0.2,hshift=1000pt,vshift=-150pt,
+  opacity=0.9,angle=0}
+
 \begin{document}
+
+% no bg at title page
+\NoBgThispage
 $if(title)$
 \maketitle
 $endif$

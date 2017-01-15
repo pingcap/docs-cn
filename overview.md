@@ -18,7 +18,7 @@ TiDB 对业务没有任何侵入性，能优雅的替换传统的数据库中间
 
 要深入了解 TiDB 的水平扩展和高可用特点，首先需要了解 TiDB 的整体架构。
 
-![TiDB Architecture](op-guide/architecture.png)
+![TiDB Architecture](media/tidb-architecture.png)
 
 TiDB 集群主要分为三个组件：
 
