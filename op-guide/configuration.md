@@ -74,6 +74,11 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 + default: 0
 + Setting the value to 0 stops the Prometheus client from pushing.
 
+### --cross-join
++ enable(true) or disable(false) the cross join without any equal condition
++ default: true
++ The value can be (true) or (false). (true) is to enable join without any equal conditions. (false) is to disable it.
+
 ## Placement Driver (PD)
 
 ### -L
