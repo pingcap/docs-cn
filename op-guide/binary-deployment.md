@@ -142,6 +142,8 @@ cd tidb-latest-linux-amd64-centos6
     ```
 
 > 注意：在生产环境中启动 TiKV 时，建议使用 [\-\-config](op-guide/configuration.md#-c---config) 参数指定配置文件路径，如果不设置这个参数，TiKV 不会读取配置文件。同样，在生产环境中部署 PD 时，也建议使用 [\-\-config](op-guide/configuration.md#--config) 参数指定配置文件路径。
+> 
+> 注意：如果使用 `nohup` 在生产环境中启动集群，需要将启动命令放到一个脚本文件里面执行，否则会出现因为 Shell 退出导致 `nohup` 启动的进程也收到异常信号退出的问题，具体参考[进程异常退出](../trouble-shooting.md#tidbtikvpd-进程异常退出)。
 
 ## 功能性测试部署
 
