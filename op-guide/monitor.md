@@ -155,7 +155,7 @@ Grafana
         # Override the global default and scrape targets from this job every 5 seconds.
         scrape_interval: 5s
 
-        honor_labels:true
+        honor_labels: true
 
         static_configs:
           - targets: ['host:port'] # 这里填写 pushgateway 地址
