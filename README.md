@@ -10,6 +10,7 @@
   - [Binary 下载](op-guide/binary-deployment.md#下载官方-binary)
   - [Binary 部署方案（推荐）](op-guide/binary-deployment.md)
   - [Docker 部署方案](op-guide/docker-deployment.md)
+  - [跨机房部署方案](op-guide/location-awareness.md)
   - [命令行参数](op-guide/configuration.md)
 + 运维 & 监控
   - [集群扩容缩容方案](op-guide/horizontal-scale.md)
