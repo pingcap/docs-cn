@@ -67,6 +67,12 @@
 + 默认: false
 + 值可以是 (true) or (false)。性能 Schema 可以帮助我们在运行时检测内部的执行情况。可以通过 [performance schema](http://dev.mysql.com/doc/refman/5.7/en/performance-schema.html) 获取更多信息。但需要注意，开启性能 Schema，会影响 TiDB 的性能
 
+### \-\-privilege
+
++ 使用 true/false 来打开或者关闭权限功能
++ 默认: false
++ 值可以是(true) or (false)。权限在当前版本是没有做严格检查的，可以通过设置此参数来启用该功能，将来会默认打开。
+
 ### \-\-report-status
 
 + 打开 (true) 或者关闭 (false) 服务状态监听端口
