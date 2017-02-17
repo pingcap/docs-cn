@@ -41,6 +41,7 @@ TiDB 实现了 F1 的异步 Schema 变更算法，DDL 执行过程中不会阻�
 + Modify Column
 + Truncate Table
 + Rename Table
+
 其中 Change/Modify Column 操作在修改类型时，目前只支持修改整数类型和字符串类型，且不能使原类型长度变短。
 
 ### 事务
