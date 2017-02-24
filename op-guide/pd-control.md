@@ -140,24 +140,12 @@ Success!
 ```bash
 >> config show                             //　显示 config 的信息
 {
-  "min-region-count": 10,
-  "min-leader-count": 10,
   "max-snapshot-count": 3,
-  "min-balance-diff-ratio": 0.01,
-  "max-store-down-duration": "30m0s",
+  "max-store-down-time": "1h",
   "leader-schedule-limit": 8,
-  "leader-schedule-interval": "1s",
-  "storage-schedule-limit": 4,
-  "storage-schedule-interval": "1s",
+  "region-schedule-limit": 4,
   "replica-schedule-limit": 8,
-  "replica-schedule-interval": "1s",
 }
-```
-
-通过调整 `min-balance-diff-ratio` 可以控制什么时候开始调度。
-
-```bash
->> config set min-balance-diff-ratio 0.1    // 磁盘使用率相差 10% 的时候开始调度
 ```
 
 通过调整 `leader-schedule-limit` 可以控制同时进行 leader 调度的任务个数。
@@ -168,12 +156,12 @@ Leader 调度的开销较小，需要的时候可以适当调大。
 >> config set leader-schedule-limit 4       // 最多同时进行 4 个 leader 调度
 ```
 
-通过调整 `storage-schedule-limit` 可以控制同时进行 storage 调度的任务个数。
-这个值主要影响 *storage balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。
-Storage 调度的开销较大，所以这个值不宜调得太大。
+通过调整 `region-schedule-limit` 可以控制同时进行 region 调度的任务个数。
+这个值主要影响 *region balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。
+Region 调度的开销较大，所以这个值不宜调得太大。
 
 ```bash
->> config set storage-schedule-limit 2      // 最多同时进行 2 个 storage 调度
+>> config set region-schedule-limit 2       // 最多同时进行 2 个 region 调度
 ```
 
 通过调整 `replica-schedule-limit` 可以控制同时进行 replica 调度的任务个数。
@@ -182,4 +170,36 @@ Replica 调度的开销较大，所以这个值不宜调得太大。
 
 ```bash
 >> config set replica-schedule-limit 4      // 最多同时进行 4 个 replica 调度
+```
+
+### operator [show | add | remove]
+
+用于显示和控制调度操作。
+
+示例：
+
+```bash
+>> operator show                            // 显示所有的 operators
+>> operator show admin                      // 显示所有的 admin operators
+>> operator show leader                     // 显示所有的 leader operators
+>> operator show region                     // 显示所有的 region operators
+>> operator add transfer-leader 1 2         // 把 region 1 的 leader 调度到 store 2
+>> operator add transfer-region 1 2 3 4     // 把 region 1 调度到 store 2,3,4
+>> operator add transfer-peer 1 2 3         // 把 region 1 在 store 2 上的副本调度到 store 3
+>> operator remove 1                        // 把 region 1 的调度操作删掉
+```
+
+### scheduler [show | add | remove]
+
+用于显示和控制调度策略。
+
+示例：
+
+```bash
+>> scheduler show                             // 显示所有的 schedulers
+>> scheduler add grant-leader-scheduler 1     // 把 store 1 上的所有 region 的 leader 调度到 store 1
+>> scheduler add evict-leader-scheduler 1     // 把 store 1 上的所有 region 的 leader 从 store 1 调度出去
+>> scheduler add shuffle-leader-scheduler     // 随机交换不同 store 上的 leader
+>> scheduler add shuffle-region-scheduler     // 随机调度不同 store 上的 region
+>> scheduler remove grant-leader-scheduler-1  // 把对应的 scheduler 删掉
 ```
