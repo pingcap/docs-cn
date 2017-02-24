@@ -183,3 +183,25 @@ Replica 调度的开销较大，所以这个值不宜调得太大。
 ```bash
 >> config set replica-schedule-limit 4      // 最多同时进行 4 个 replica 调度
 ```
+
+### schedule [command]
+
+#### schedule transfer\_leader \<region\_id\> \<store\_id\>
+
+把某个 region 的 leader 迁移到某个 store 上。
+
+示例：
+
+```bash
+>> schedule transfer_leader 1 2         # 把 region 1 的 leader 迁移到 store 2 上
+```
+
+#### schedule transfer\_region \<region\_id\> \<store\_id\>...
+
+把某个 region 的 peers 迁移到某些 stores 上。
+
+示例：
+
+```bash
+>> schedule transfer_region 1 2 3 4     # 把 region 1 的 peers 迁移到 store 2, 3, 4 上
+```
