@@ -45,10 +45,10 @@ TiDB 实现了 F1 的异步 Schema 变更算法，DDL 执行过程中不会阻�
 
 以上语句还有一些支持不完善的地方，具体包括如下：
 + Add Index/Column 操作不支持同时创建多个索引或列。
-+ Drop Column 操作不支持删除的列为主键列。
++ Drop Column 操作不支持删除的列为主键列或索引列。
 + Add Column 操作不支持同时将新添加的列设为主键或唯一索引，也不支持将此列设成 auto_increment 属性。
 + Change/Modify Column 操作目前支持部分语法，细节如下：
-	- 在修改类型方面，只支持修改整数类型和字符串类型，且不能使原类型长度变短。
+	- 在修改类型方面，只支持修改整数类型和字符串类型，且不能使原类型长度变短。此外，不能改变列的 unsigned 属性。
 	- 在修改类型定义方面，支持的包括 default value，comment，null，not null 和 OnUpdate，但是不支持从 null 到 not null 的修改。
 	- 在关键字方面，不支持 First/After 关键字。
 
