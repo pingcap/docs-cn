@@ -41,8 +41,19 @@ TiDB 实现了 F1 的异步 Schema 变更算法，DDL 执行过程中不会阻�
 + Modify Column
 + Truncate Table
 + Rename Table
++ Crete Table Like
 
-其中 Change/Modify Column 操作在修改类型时，目前只支持修改整数类型和字符串类型，且不能使原类型长度变短。
+以上语句还有一些支持不完善的地方，具体包括如下：
++ Add Index/Column 操作不支持同时创建多个索引或列。
++ Drop Column 操作不支持删除的列为主键列或索引列。
++ Add Column 操作不支持同时将新添加的列设为主键或唯一索引，也不支持将此列设成 auto_increment 属性。
++ Change/Modify Column 操作目前支持部分语法，细节如下：
+	- 在修改类型方面，只支持整数类型之间修改，字符串类型之间修改和 Blob 类型之间的修改，且只能使原类型长度变长。此外，不能改变列的 unsigned/charset/collate 属性。这里的类型分类如下：
+	    * 具体支持的整型类型有：TinyInt，SmallInt，MediumInt，Int，BigInt。
+	    * 具体支持的字符串类型有：Char，Varchar，Text，TinyText，MediumText，LongText。
+	    * 具体支持的 Blob 类型有：Blob，TinyBlob，MediumBlob，LongBlob。
+	- 在修改类型定义方面，支持的包括 default value，comment，null，not null 和 OnUpdate，但是不支持从 null 到 not null 的修改。
+	- 在关键字方面，不支持 First/After 关键字。
 
 ### 事务
 TiDB 使用乐观事务模型，在执行 Update、Insert、Delete 等语句时，只有在提交过程中才会检查写写冲突，而不是像 MySQL 一样使用行锁来避免写写冲突。所以业务端在执行 SQL 语句后，需要注意检查 commit 的返回值，即使执行时没有出错，commit的时候也可能会出错。
