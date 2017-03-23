@@ -109,7 +109,7 @@ level0-stop-writes-trigger = 36
 max-bytes-for-level-base = "512MB"
 # sst 文件的大小。level0 的 sst 文件的大小受 write-buffer-size 和 level0 采用的压缩算法的影响，target-file-size-base 参数用于控制 level1-level6 单个 sst 文件的大小。
 target-file-size-base = "32MB"
-# 在不配置该参数的情况下，TiKV 会将该值设置为系统总内存量的 40%。如果需要在单个物理机上部署多个 TiKV 节点，需要显示配置该参数，否则 TiKV 容易出现 OOM 的问题。
+# 在不配置该参数的情况下，TiKV 会将该值设置为系统总内存量的 40%。如果需要在单个物理机上部署多个 TiKV 节点，需要显式配置该参数，否则 TiKV 容易出现 OOM 的问题。
 # block-cache-size = "1GB"
 
 [rocksdb.writecf]
