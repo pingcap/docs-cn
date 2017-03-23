@@ -134,3 +134,9 @@ PD 启动参数中的 `--initial-cluster` 包含了某个不属于该集群的�
 
  - 之前的启动参数中有 `--advertise-peer-url`，但只想更新 `--peer-url`：用更新后的参数重启即可。
  - 之前的启动参数中没有 `--advertise-peer-url`：先[用 etcdctl 更新该 PD 的信息](https://coreos.com/etcd/docs/latest/op-guide/runtime-configuration.html#update-a-member)，之后再用更新后的参数重启即可。
+
+## 如何用"/var/lib/mysql/mysql.sock"方式连接tidb
+
+tidb-server启动时加参数 --socket="/var/lib/mysql/mysql.sock"。
+
+注意目前tidb用--socket方式启动后就无法从远程连接了。
