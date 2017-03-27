@@ -20,16 +20,16 @@
 + SQL 兼容及对比
   - [TiDB SQL 文法](sql/README.md)
   - [与 MySQL 兼容性对比](op-guide/mysql-compatibility.md)
-+ [常用工具](https://github.com/pingcap/tidb-tools)
-+ [常见问题与解答](faq.md)
-+ [故障诊断](trouble-shooting.md)
 + 高级功能
   - [数据迁移方法](op-guide/migration.md)
   - [Loader 使用文档](tools/loader.md)
   - [性能调优](op-guide/tune-tikv.md)
   - [读取历史版本数据](op-guide/history-read.md)
 + 更多资源
+  - [常用工具](https://github.com/pingcap/tidb-tools)
+  - [故障诊断](trouble-shooting.md)
   - [PingCAP 团队技术博客](http://www.pingcap.com/bloglist.html)
++ [常见问题与解答](faq.md)
 
 ## TiDB 简介
 

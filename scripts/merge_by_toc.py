@@ -104,7 +104,6 @@ def replace_link(match):
 def replace_heading_func(diff_level=0):
 
     def replace_heading(match):
-        print("change")
         if diff_level == 0:
             return match.group(0)
         else:
