@@ -210,6 +210,13 @@ $endfor$
   placement=top,scale=0.2,hshift=1000pt,vshift=-150pt,
   opacity=0.9,angle=0}
 
+% avoid level-4, 5 heading to be connected with following content
+% https://github.com/jgm/pandoc/issues/1658
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+
 \begin{document}
 
 % no bg at title page

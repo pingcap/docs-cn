@@ -1,39 +1,77 @@
 #!/usr/bin/env python3
+# coding: utf8
 #
 # Generate all-in-one Markdown file for ``doc-cn``
 #
+
+from __future__ import print_function, unicode_literals
 
 import re
 import os
 
 
-entry_file = "TOC.md"
-
-hyper_link_pattern = re.compile(r'\[(.*?)\]\((.*?)(#.*?)?\)')
-
-followup_files = []
-
+entry_file = "README.md"
+followups = []
 in_toc = False
+contents = []
 
+hyper_link_pattern = re.compile(r'([\-\+]+)\s\[(.*?)\]\((.*?)(#.*?)?\)')
+level_pattern = re.compile(r'(\s*[\-\+]+)\s')
+# match all headings
+heading_patthern = re.compile(r'(^#+|\n#+)\s')
+
+# stage 1, parse toc
 with open(entry_file) as fp:
+    level = 0
+    current_level = ""
     for line in fp:
         if line.startswith("## 目录"):
             in_toc = True
-        elif in_toc:
-            if line.startswith('#'):
-                in_toc = False
-                continue
+        elif in_toc and line.startswith('## '):
+            # yes, toc processing done
+            # contents.append(line[1:]) # skip 1 level TOC
+            break
+        elif in_toc and not line.startswith('#') and line.strip():
+            level_str = level_pattern.findall(line)[0]
+            if len(level_str) > len(current_level):
+                level += 1
+            elif len(level_str) < len(current_level):
+                level -= 1
+            current_level = level_str
+
             matches = hyper_link_pattern.findall(line)
-            for match in matches:
-                fpath = match[1]
-                if fpath.endswith('.md'):
-                    if fpath not in followup_files:
-                        followup_files.append(fpath)
+            if matches:
+                for match in matches:
+                    fpath = match[2]
+                    if fpath.endswith('.md'):
+                        key = ('FILE', level, fpath)
+                        if key not in followups:
+                            print(key)
+                            followups.append(key)
+                #    else:
+                #        followups.append(('RAW', level, line.strip()))
+            else:
+                name = line.strip().split(None, 1)[-1]
+                key = ('TOC', level, name)
+                if key not in followups:
+                    print(key)
+                    followups.append(key)
 
-print(followup_files)
 
+        else:
+            pass
+
+    # overview part in README.md
+    followups.insert(1, ("RAW", 0, fp.read()))
+
+for k in followups:
+    print(k)
+
+# stage 2, get file heading
 file_link_name = {}
-for f in followup_files:
+for tp, lv, f in followups:
+    if tp != 'FILE':
+        continue
     tag = open(f).read().strip().split('\n')[0]
     if tag.startswith('# '):
         tag = tag[2:]
@@ -63,14 +101,38 @@ def replace_link(match):
     else:
         return full
 
-contents = []
+def replace_heading_func(diff_level=0):
 
-for fname in followup_files:
-    with open(fname) as fp:
-        chapter = fp.read()
-        chapter = hyper_link_pattern.sub(replace_link, chapter)
-        contents.append(chapter)
-        contents.append('') # add an empty line
+    def replace_heading(match):
+        print("change")
+        if diff_level == 0:
+            return match.group(0)
+        else:
+            return '\n' + '#' * (match.group(0).count('#') + diff_level) + ' '
 
+
+    return replace_heading
+
+
+# stage 3, concat files
+for type_, level, name in followups:
+    if type_ == 'TOC':
+        contents.append("{} {}".format('#' * level, name))
+    elif type_ == 'RAW':
+        contents.append(name)
+    elif type_ == 'FILE':
+        with open(name) as fp:
+            chapter = fp.read()
+            chapter = hyper_link_pattern.sub(replace_link, chapter)
+
+            # fix heading level
+            diff_level = level - heading_patthern.findall(chapter)[0].count('#')
+
+            print(name, type_, level, diff_level)
+            chapter = heading_patthern.sub(replace_heading_func(diff_level), chapter)
+            contents.append(chapter)
+            contents.append('') # add an empty line
+
+# stage 4, generage final doc.md
 with open("doc.md", 'w') as fp:
     fp.write('\n'.join(contents))

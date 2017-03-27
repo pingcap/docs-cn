@@ -23,7 +23,6 @@
 + [常用工具](https://github.com/pingcap/tidb-tools)
 + [常见问题与解答](faq.md)
 + [故障诊断](trouble-shooting.md)
-+ 使用示例
 + 高级功能
   - [数据迁移方法](op-guide/migration.md)
   - [Loader 使用文档](tools/loader.md)
@@ -59,7 +58,7 @@ TiDB 集群主要分为三个组件：
 ### TiDB Server
 
 TiDB Server 负责接收 SQL 请求，处理 SQL 相关的逻辑，并通过 PD 找到存储计算所需数据的 TiKV 地址，与 TiKV 交互获取数据，最终返回结果。
-TiDB Server 是无状态的，其本身并不存储数据，只负责计算，可以无限水平扩展，可以通过负载均衡组件（如LVS、HAProxy 或 F5）对外提供统一的接入地址。
+TiDB Server 是无状态的，其本身并不存储数据，只负责计算，可以无限水平扩展，可以通过负载均衡组件（如 LVS、HAProxy 或 F5）对外提供统一的接入地址。
 
 ### PD Server
 
