@@ -45,7 +45,7 @@ mysql> select variable_name, variable_value from mysql.tidb;
 
 其中需要重点关注的是 `tikv_gc_life_time` 和 `tikv_gc_safe_point` 这两行。
 
-`tikv_gc_life_time` 用于配置历史版本保留时间（默认值为 10m），用户可以使用 SQL 进行配置。比如我们需要一天内的所有历史版本都可读，那么可以将此行设置为 24h。
+`tikv_gc_life_time` 用于配置历史版本保留时间（默认值为 10m），用户可以使用 SQL 进行配置。比如我们需要一天内的所有历史版本都可读，那么可以使用 SQL `update mysql.tidb set variable_value='24h' where variable_name='tikv_gc_life_time'` 将此行设置为 24 小时。时长字符串的形式是数字后接时间单位的序列，如 `24h`、`2h30m`、`2.5h`。可以使用的时间单位包括 "h"、"m"、"s"。
 
 `tikv_gc_safe_point` 记录了当前的 safePoint，用户可以安全地使用大于 safePoint 的时间戳创建 snapshot 读取历史版本。safePoint 在每次 GC 开始运行时自动更新。
 
