@@ -1,5 +1,7 @@
 # 权限管理
 
+TiDB的权限管理系统是按照MySQL的权限管理进行实现，大部分的MySQL的语法和权限类型都是支持的。如果发现行为跟MySQL不一致的地方，欢迎报告issue。
+
 > 注意：当前版本的权限功能并没有默认开启，需要添加启动参数指定： 
 > ./tidb-server -privilege=true
 > 如果不指定参数，权限检查不会生效。将来去掉这个参数(预计RC3)并默认启用权限检查。
@@ -15,8 +17,16 @@ set password for 'root'@'%' = 'xxx';
 ### 添加用户
 
 ```sql
-create user 'test'@'%' indentified by 'xxx';
+create user 'test'@'127.0.0.1' indentified by 'xxx';
 ```
+
+用户名是大小写敏感的。host则支持模糊匹配，比如：
+
+```sql
+create user 'test'@'192.168.10.%';
+```
+
+允许`test`用户从`192.168.10`子网的任何一个主机登陆。
 
 如果没有指定host，则默认是所有IP均可登陆。如果没有指定密码，默认为空：
 
@@ -156,15 +166,15 @@ ERROR 1141 (42000): There is no such grant defined for user 'genius' on host '%'
 > manual that corresponds to your MySQL server version for the right
 > syntax to use near ''test'.* to 'genius'@'localhost'' at line 1
 > 
-> mysql> grant all privileges on `test`.* to 'genius'@'localhost'; Query
-> OK, 0 rows affected (0.00 sec) 
+> mysql> grant all privileges on `test`.* to 'genius'@'localhost';
+> Query OK, 0 rows affected (0.00 sec)
 > ```
 > 
 > 如果一些特殊的关键字想做为表名，可以用反引号包含起来。比如：
 > 
 > ```
-> mysql> create table `select` (id int); Query OK, 0 rows affected
-> (0.27 sec) 
+> mysql> create table `select` (id int);
+> Query OK, 0 rows affected (0.27 sec)
 > ```
 
 ### 查看为用户分配的权限
@@ -198,7 +208,6 @@ select tables_priv from mysql.tables_priv where user='test' and host='%' and db=
 ## 3. 权限系统的实现
 
 ### 授权表
-
 有几张系统表是非常特殊的表，权限相关的数据全部存储在这几张表内。
 
  - mysql.user 用户账户，全局权限
@@ -254,7 +263,7 @@ User+Host可能会匹配`user`表里面多行，为了处理这种情况，`user
 
 ### 生效时机
 
-TiDB启动时，将一些权限检查的表加载到内存，之后使用缓存的数据来判断权限。系统会周期性的将授权表从数据库同步到缓存，生效则是由同步的周期决定。
+TiDB启动时，将一些权限检查的表加载到内存，之后使用缓存的数据来验证权限。系统会周期性的将授权表从数据库同步到缓存，生效则是由同步的周期决定，目前这个值设定的是5分钟。
 
 修改了授权表，如果需要立即生效，可以手动调用：
 
