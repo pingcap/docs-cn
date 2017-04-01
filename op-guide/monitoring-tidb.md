@@ -21,11 +21,12 @@ The interface can be used to get the current TiDB server state and to determine 
 ```bash
 curl http://127.0.0.1:10080/status
 {
-connections: 0,
-version: "5.5.31-TiDB-1.0",
-git_hash: "b99521846ff6f71f06e2d49a3f98fa1c1d93d91b"
+    connections: 0,
+    version: "5.5.31-TiDB-1.0",
+    git_hash: "b99521846ff6f71f06e2d49a3f98fa1c1d93d91b"
 }
 ```
+
 In this example, 
 * connection: the current number of clients connected to the TiDB server
 
@@ -41,7 +42,7 @@ The default port number is: 2379.
 
 See [PD API doc](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html) for detailed information about various API names.
 
-The interface can be used to get the state of all the TiKV servers and the information about load balancing. It is the most important and common interface to get the state information of all the TiKV nodes. See the following example for the the information about a single-node TiKV cluster:
+The interface can be used to get the state of all the TiKV servers and the information about load balancing. It is the most important and frequently-used interface to get the state information of all the TiKV nodes. See the following example for the the information about a single-node TiKV cluster:
 
 ```bash
 curl http://127.0.0.1:2379/pd/api/v1/stores
@@ -180,21 +181,21 @@ Generally, it does not need to be configured. You can use the default port: 9091
 
 Add the Push Gateway address to the yaml configuration file:
 
-```yaml
-	scrape_configs:
-	  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-	  - job_name: 'TiDB'
-	
-	    # Override the global default and scrape targets from this job every 5 seconds.
-	    scrape_interval: 5s
-	
-	    honor_labels: true
-	
-	    static_configs:
-	      - targets: ['host:port'] # use the Push Gateway address
-	        labels:
-	                group: 'production'
-```
+    ```yaml
+    scrape_configs:
+      # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+      - job_name: 'TiDB'
+
+        # Override the global default and scrape targets from this job every 5 seconds.
+        scrape_interval: 5s
+
+        honor_labels: true
+
+        static_configs:
+          - targets: ['host:port'] # use the Push Gateway address
+            labels:
+              group: 'production'
+    ```
 
 #### Configuring Grafana
 
