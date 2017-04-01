@@ -45,7 +45,7 @@ See the following for the situations when the `tidb-server` cannot be started:
 	+ If there is no issue with the network, check the state and log of the `pd-server` process.
 
 ## Cannot start `tikv-server`
-See the following for the situations when the `tidb-server` cannot be started: 
+See the following for the situations when the `tikv-server` cannot be started: 
 + Error in the startup parameters.
 	See the [TiKV configuration and options](op-guide/configuration.md#tikv).
 + The port is occupied.
