@@ -145,7 +145,7 @@ cd mydumper-linux-amd64
 ./bin/loader -h 127.0.0.1 -u root -P 4000 -t 4 -q 1 -d ./var/test
 ```
 
-这里 `-q 1` 表明每个事务包含多少个 query，默认是 1，在像 TiDB 中导入数据时，推荐用默认值。
+这里 `-q 1` 表明每个事务包含多少个 query，默认是 1，在向 TiDB 中导入数据时，推荐用默认值。
 
 导入成功之后，我们可以用 MySQL 官方客户端进入 TiDB，查看:
 
