@@ -30,3 +30,4 @@ TiDB 支持 SQL92 标准并兼容 MySQL 语法，目前已经实现了大多数�
 + [权限管理](privilege.md)
 + 其他
     - SQL 模式
++ [TiDB 专用系统变量和语法](tidb-specific.md)
