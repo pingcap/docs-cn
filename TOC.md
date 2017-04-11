@@ -12,20 +12,20 @@
   - [Docker 部署方案](op-guide/docker-deployment.md)
   - [命令行参数](op-guide/configuration.md)
 + 运维 & 监控
+  - [集群扩容缩容方案](op-guide/horizontal-scale.md)
   - [整体监控框架概述](op-guide/monitor-overview.md)
   - [组件状态 API & 监控](op-guide/monitor.md)
+  - [PD 命令行工具](op-guide/pd-control.md)
 + SQL 兼容及对比
   - [TiDB SQL 文法](sql/README.md)
-  - [与 MySQL 兼容性对比](op-guide/mysql-compatibility.md)
-+ [常用工具](https://github.com/pingcap/tidb-tools)
-+ [常见问题与解答](faq.md)
-+ [故障诊断](trouble-shooting.md)
-+ 使用示例
+  - [与 MySQL 兼容性对比](sql/mysql-compatibility.md)
 + 高级功能
   - [数据迁移方法](op-guide/migration.md)
-  - [PD 命令行工具](op-guide/pd-control.md)
   - [Loader 使用文档](tools/loader.md)
   - [性能调优](op-guide/tune-tikv.md)
   - [读取历史版本数据](op-guide/history-read.md)
+  - [故障诊断](trouble-shooting.md)
 + 更多资源
-  - [PingCAP 团队技术博客](http://www.pingcap.com/bloglist.html)
+  - [常用工具](https://github.com/pingcap/tidb-tools)
+  - [PingCAP 团队技术博客](https://www.pingcap.com/bloglist-zh.html)
+- [常见问题与解答](faq.md)

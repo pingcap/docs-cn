@@ -1,3 +1,8 @@
+---
+title: TiDB 监控框架概述
+category: 运维 & 监控
+---
+
 # TiDB 监控框架概述
 
 TiDB 使用开源时序数据库 Prometheus 作为监控和性能指标信息存储方案，使用 Grafana 作为可视化组件进行展示。

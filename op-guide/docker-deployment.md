@@ -1,3 +1,8 @@
+---
+title: TiDB Docker 部署方案
+category: 安装 & 部署
+---
+
 # TiDB Docker 部署方案
 
 本篇将展示如何在多台主机上使用 Docker 部署一个 TiDB 集群。

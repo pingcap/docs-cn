@@ -1,3 +1,8 @@
+---
+title: 使用 Docke Compose 构建集群
+category: 安装 & 部署
+---
+
 ## 使用 Docke Compose 构建集群
 
 只需要一个简单的 `docker-compose.yml`:

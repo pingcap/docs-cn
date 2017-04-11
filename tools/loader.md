@@ -1,3 +1,8 @@
+---
+title: Loader 使用文档
+category: 高级功能
+---
+
 # Loader 使用文档
 
 ## Loader 是什么
