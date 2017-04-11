@@ -18,7 +18,7 @@
   - [PD 命令行工具](op-guide/pd-control.md)
 + SQL 兼容及对比
   - [TiDB SQL 文法](sql/README.md)
-  - [与 MySQL 兼容性对比](sql/mysql-compatibility.md)
+  - [与 MySQL 兼容性对比](op-guide/mysql-compatibility.md)
 + 高级功能
   - [数据迁移方法](op-guide/migration.md)
   - [Loader 使用文档](tools/loader.md)
