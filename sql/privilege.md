@@ -138,7 +138,7 @@ mysql> select user,host,db from mysql.db where user='genius';
 revoke语句与grant对应：
 
 ```sql
-grant all privileges on `test`.* from 'genius'@'localhost';
+revoke all privileges on `test`.* from 'genius'@'localhost';
 ```
 
 注意revoke收回权限时只做精确匹配，若找不到记录则报错。而grant授予权限时可以使用模糊匹配。
