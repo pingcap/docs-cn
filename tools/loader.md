@@ -16,6 +16,10 @@
 
 * 多线程导入
 
+* 支持表级别的并发导入，分散写入热点
+
+* 支持对单个大表并发导入，分散写入热点
+
 * 支持 mydumper 数据格式
 
 * 出错重试
@@ -44,10 +48,12 @@
         TiDB/MySQL 账户密码
   -pprof-addr string
         Loader 的 pprof 地址，用于对 Loader 进行性能调试 (默认为 ":10084")
-  -q int
-        导入过程中，每个事务包含的 insert 语句条数 (默认为 1，默认情况下mydumer导出的sql中每条insert语句的大小为1MB，其中包含了多行数据)
   -t int
-        线程数 (默认为 4)
+        单个线程池的线程数 (默认为 4)，一个线程池同一时刻只能对一个表进行导入
+  -pc int
+        线程池的个数（默认值 8），启动多个线程池可以支持表级别的并发，分散写入的热点问题，能够充分利用整个集群的所有 TiKV 节点的资源，提升导入数据的速度
+  -file-num-per-block int
+        一个逻辑块包含的数据文件个数（默认值 64），如果导入的是一个比较大的表（例如 100GB），Loader 支持将该表分成多个逻辑块，然后将不同逻辑块分给不同的线程池进行并发导入，分散写入热点，充分利用整个集群的所有 TiKV 节点的资源，提升导入数据的速度。
   -u string
         TiDB/MySQL 的用户名 (默认为 "root")
 ```
@@ -72,11 +78,11 @@ checkpoint = "loader.checkpoint"
 # Loader pprof addr
 pprof-addr = ":10084"
 
-# Number of threads to use
-worker = 4
+# Number of threads for each pool
+pool-size = 4
 
-# Number of queries per transcation
-batch = 1
+# Number of pools
+pool-count = 8
 
 # Skip unique index check 注意如果不是向 TiDB 中导入数据，请将这个设为 0
 skip-unique-check = 1
@@ -102,3 +108,5 @@ port = 4000
 ### 注意事项
 
 如果使用默认的 checkpoint 文件，在导完一个 database 数据后，请删除 loader.checkpoint 后再开始导入下一个 database。推荐每个数据库导入的时候，明确指定 checkpoint 文件名。
+
+
