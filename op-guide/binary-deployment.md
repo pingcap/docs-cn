@@ -1,5 +1,5 @@
 ---
-title: TiDB Binary 部署方案
+title: TiDB Binary 部署方案详解
 category: 安装 & 部署
 ---
 
