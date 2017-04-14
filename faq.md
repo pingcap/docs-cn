@@ -7,7 +7,7 @@ category: 常见问题与解答
 
 ## TiDB 是什么？
 
-Go Go Go Test
+Go Go Go Test2
 TiDB 是一个分布式 NewSQL 数据库。支持水平扩展、高可用、ACID 事务、SQL 等特性。同时 TiDB 还支持 MySQL 语法和 MySQL 协议。
 
 ## TiDB 是基于 MySQL 开发的吗？
