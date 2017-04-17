@@ -3,7 +3,7 @@
 ## 目录
 
 + TiDB 简介 & 整体架构
-  - [TiDB 简介及核心 NewSQL 特性](#tidb-简介)
+  - [TiDB 简介](#tidb-简介)
   - [TiDB 整体架构](#tidb-整体架构)
 + 安装 & 部署
   - [部署建议](op-guide/recommendation.md)
