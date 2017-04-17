@@ -171,4 +171,4 @@ Grafana
 
 +   导入 dashboard 配置文件
 
-    点击 Grafana Logo -> 点击 Data Sources -> 点击 Import -> 选择需要的 Dashboard [配置文件](https://grafana.com/users/tennix)上传 -> 选择对应的 data source
+    点击 Grafana Logo -> 点击 Data Sources -> 点击 Import -> 选择需要的 Dashboard [配置文件](https://grafana.com/tidb)上传 -> 选择对应的 data source
