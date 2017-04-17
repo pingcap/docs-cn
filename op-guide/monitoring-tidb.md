@@ -233,7 +233,7 @@ Add the Push Gateway address to the yaml configuration file:
 
 2. On the sidebar menu, click "Dashboards" -> "Import" to open the "Import Dashboard" window.
 
-3. Click "Upload .json File" to upload a JSON file ( Download [TiDB Grafana Config](https://github.com/pingcap/docs/tree/master/etc) ). 
+3. Click "Upload .json File" to upload a JSON file ( Download [TiDB Grafana Config](https://grafana.com/tidb) ). 
 
 4. Click "Save & Open". 
 
