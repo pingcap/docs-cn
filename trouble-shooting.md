@@ -1,3 +1,8 @@
+---
+title: TiDB Cluster Troubleshooting Guide
+category: advanced
+---
+
 # TiDB Cluster Troubleshooting Guide
 
 You can use this guide to help you diagnose and solve basic problems while using TiDB. If your problem is not resolved, please collect the following information and [create an issue](https://github.com/pingcap/tidb/issues/new):

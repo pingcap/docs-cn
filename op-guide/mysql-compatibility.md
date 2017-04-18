@@ -1,3 +1,8 @@
+---
+title: Compatibility with MySQL
+category: compatibility
+---
+
 # Compatibility with MySQL
 
 TiDB supports the majority of the MySQL grammar, including cross-row transactions, JOIN, subquery, and so on. You can connect to TiDB directly using your own MySQL client. If your existing business is developed based on MySQL, you can replace MySQL with TiDB to power your application without changing a single line of code in most cases.

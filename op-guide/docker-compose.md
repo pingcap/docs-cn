@@ -1,3 +1,10 @@
+---
+title: TiDB Docker Compose
+category: deployment
+---
+
+# TiDB Docker Compose
+
 ## Use `docker-compose`
 
 Note: If you are using `docker-compose`, you don't need to create a Docker network and start TiDB,TiKV and PD containers separately. 

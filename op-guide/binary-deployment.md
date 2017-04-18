@@ -1,3 +1,8 @@
+---
+title: TiDB Binary Deployment
+category: deployment
+---
+
 # TiDB Binary Deployment
 
 ## Overview

@@ -1,3 +1,8 @@
+---
+title: Deploying Recommendations
+category: deployment
+---
+
 ## Deploying Recommendations
 
 To learn the TiDB architecture, see [TiDB Architecture](../README.md#TiDB-Architecture).

@@ -1,4 +1,9 @@
-# Migrating data from MySQL to TiDB
+---
+title: Migrating Data from MySQL to TiDB
+category: advanced
+---
+
+# Migrating Data from MySQL to TiDB
 
 ## Overview
 
