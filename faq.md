@@ -1,3 +1,8 @@
+---
+title: 常见问题与解答
+category: faq
+---
+
 # TiDB 中文 FAQ
 
 ## TiDB 是什么？

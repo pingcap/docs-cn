@@ -1,3 +1,8 @@
+---
+title: TiDB SQL 语法文档
+category: compatibility
+---
+
 # TiDB SQL 语法文档
 
 TiDB 支持 SQL92 标准并兼容 MySQL 语法，目前已经实现了大多数常用的 MySQL 语法。

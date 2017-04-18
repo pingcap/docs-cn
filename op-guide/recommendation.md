@@ -1,3 +1,8 @@
+---
+title: 部署建议
+category: deployment
+---
+
 # 部署建议
 
 阅读本章前，请先阅读 [TiDB 整体架构](../overview.md#tidb-整体架构)。

@@ -1,3 +1,8 @@
+---
+title: 跨机房部署方案
+category: deployment
+---
+
 # 跨机房部署方案
 
 ## 概述

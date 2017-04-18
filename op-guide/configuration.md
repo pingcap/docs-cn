@@ -1,3 +1,8 @@
+---
+title: 参数解释
+category: deployment
+---
+
 # 参数解释
 
 ## TiDB

@@ -1,38 +1,9 @@
-# TiDB 中文技术文档
+---
+title: TiDB 简介
+category: introduction
+---
 
-## 目录
-
-+ TiDB 简介 & 整体架构
-  - [TiDB 简介](overview.md#tidb-简介)
-  - [TiDB 整体架构](overview.md#tidb-整体架构)
-+ 安装 & 部署
-  - [部署建议](op-guide/recommendation.md)
-  - [Binary 下载](op-guide/binary-deployment.md#下载官方-binary)
-  - [Binary 部署方案（推荐）](op-guide/binary-deployment.md)
-  - [Docker 部署方案](op-guide/docker-deployment.md)
-  - [跨机房部署方案](op-guide/location-awareness.md)
-  - [命令行参数](op-guide/configuration.md)
-+ 运维 & 监控
-  - [集群扩容缩容方案](op-guide/horizontal-scale.md)
-  - [整体监控框架概述](op-guide/monitor-overview.md)
-  - [组件状态 API & 监控](op-guide/monitor.md)
-  - [PD 命令行工具](op-guide/pd-control.md)
-+ SQL 兼容及对比
-  - [TiDB SQL 文法](sql/README.md)
-  - [与 MySQL 兼容性对比](op-guide/mysql-compatibility.md)
-+ 高级功能
-  - [数据迁移方法](op-guide/migration.md)
-  - [Loader 使用文档](tools/loader.md)
-  - [性能调优](op-guide/tune-tikv.md)
-  - [读取历史版本数据](op-guide/history-read.md)
-  - [故障诊断](trouble-shooting.md)
-+ 更多资源
-  - [常用工具](https://github.com/pingcap/tidb-tools)
-  - [故障诊断](trouble-shooting.md)
-  - [PingCAP 团队技术博客](http://www.pingcap.com/bloglist.html)
-+ [常见问题与解答](faq.md)
-
-## TiDB 简介
+# TiDB 简介
 
 TiDB 是 PingCAP 公司基于 Google [Spanner](http://research.google.com/archive/spanner.html) / [F1](http://research.google.com/pubs/pub41344.html) 论文实现的开源分布式 NewSQL 数据库。
 
@@ -59,7 +30,7 @@ TiDB 集群主要分为三个组件：
 ### TiDB Server
 
 TiDB Server 负责接收 SQL 请求，处理 SQL 相关的逻辑，并通过 PD 找到存储计算所需数据的 TiKV 地址，与 TiKV 交互获取数据，最终返回结果。
-TiDB Server 是无状态的，其本身并不存储数据，只负责计算，可以无限水平扩展，可以通过负载均衡组件（如 LVS、HAProxy 或 F5）对外提供统一的接入地址。
+TiDB Server 是无状态的，其本身并不存储数据，只负责计算，可以无限水平扩展，可以通过负载均衡组件（如LVS、HAProxy 或 F5）对外提供统一的接入地址。
 
 ### PD Server
 

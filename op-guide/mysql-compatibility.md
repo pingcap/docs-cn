@@ -1,3 +1,8 @@
+---
+title: 与 MySQL 兼容性对比
+category: compatibility
+---
+
 # 与 MySQL 兼容性对比
 
 TiDB 支持包括跨行事务，JOIN 及子查询在内的绝大多数 MySQL 的语法，用户可以直接使用现有的 MySQL 客户端连接。如果现有的业务已经基于 MySQL 开发，大多数情况不需要修改代码即可直接替换单机的 MySQL。
