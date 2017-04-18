@@ -29,7 +29,7 @@
 + 更多资源
   - [常用工具](https://github.com/pingcap/tidb-tools)
   - [PingCAP 团队技术博客](https://www.pingcap.com/bloglist-zh.html)
-+ [常见问题与解答](faq.md)
+- [常见问题与解答](faq.md)
 
 ## TiDB 简介
 
