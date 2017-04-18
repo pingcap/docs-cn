@@ -1,6 +1,6 @@
 ---
 title: TiDB 集群故障诊断
-category: Advanced Usage
+category: advanced
 ---
 
 # TiDB 集群故障诊断
