@@ -1,6 +1,6 @@
 ---
 title: TiDB 监控框架概述
-category: Operation and Monitoring
+category: monitoring
 ---
 
 # TiDB 监控框架概述

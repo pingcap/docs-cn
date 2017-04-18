@@ -1,6 +1,6 @@
 ---
 title: TiDB 读取历史版本数据
-category: Advanced Usage
+category: advanced
 ---
 
 # TiDB 读取历史版本数据

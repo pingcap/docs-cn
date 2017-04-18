@@ -1,6 +1,6 @@
 ---
 title: 参数解释
-category: Installation and Deployment
+category: deployment
 ---
 
 # 参数解释

@@ -1,6 +1,6 @@
 ---
 title: PD Control 使用说明
-category: Operation and Monitoring
+category: monitoring
 ---
 
 # PD Control 使用说明

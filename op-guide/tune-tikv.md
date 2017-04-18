@@ -1,6 +1,6 @@
 ---
 title: TiKV 性能参数调优
-category: Advanced Usage
+category: advanced
 ---
 
 # TiKV 性能参数调优

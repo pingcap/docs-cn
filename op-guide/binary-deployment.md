@@ -1,6 +1,6 @@
 ---
 title: TiDB Binary 部署方案详解
-category: Installation and Deployment
+category: deployment
 ---
 
 # TiDB Binary 部署方案

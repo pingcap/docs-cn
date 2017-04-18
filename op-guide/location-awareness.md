@@ -1,6 +1,6 @@
 ---
 title: 跨机房部署方案
-category: Installation and Deployment
+category: deployment
 ---
 
 # 跨机房部署方案

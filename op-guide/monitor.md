@@ -1,6 +1,6 @@
 ---
 title: TiDB 集群监控
-category: Operation and Monitoring
+category: monitoring
 ---
 
 # TiDB 集群监控

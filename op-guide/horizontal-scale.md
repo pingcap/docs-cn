@@ -1,6 +1,6 @@
 ---
 title: TiDB 集群扩容缩容方案
-category: Installation and Deployment
+category: deployment
 ---
 
 # TiDB 集群扩容缩容方案
