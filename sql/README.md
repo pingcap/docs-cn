@@ -1,6 +1,6 @@
 ---
 title: TiDB SQL 语法文档
-category: SQL 兼容及对比
+category: Compatibility and Comparison with MySQL
 ---
 
 # TiDB SQL 语法文档

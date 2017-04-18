@@ -1,6 +1,6 @@
 ---
 title: 部署建议
-category: 安装 & 部署
+category: Installation and Deployment
 ---
 
 # 部署建议

@@ -1,6 +1,6 @@
 ---
 title: TiDB 专用系统变量和语法
-category: SQL 兼容及对比
+category: Compatibility and Comparison with MySQL
 ---
 
 # TiDB 专用系统变量和语法

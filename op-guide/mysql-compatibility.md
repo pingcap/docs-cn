@@ -1,6 +1,6 @@
 ---
 title: 与 MySQL 兼容性对比
-category: SQL 兼容及对比
+category: Compatibility and Comparison with MySQL
 ---
 
 # 与 MySQL 兼容性对比

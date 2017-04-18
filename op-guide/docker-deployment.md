@@ -1,6 +1,6 @@
 ---
 title: TiDB Docker 部署方案
-category: 安装 & 部署
+category: Installation and Deployment
 ---
 
 # TiDB Docker 部署方案

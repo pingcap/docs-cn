@@ -1,6 +1,6 @@
 ---
 title: TiDB 简介
-category: TiDB 简介 & 整体架构
+category: TiDB Introduction and Architecture
 ---
 
 # TiDB 简介

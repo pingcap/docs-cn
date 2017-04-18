@@ -1,6 +1,6 @@
 ---
 title: 使用 Docke Compose 构建集群
-category: 安装 & 部署
+category: Installation and Deployment
 ---
 
 ## 使用 Docke Compose 构建集群

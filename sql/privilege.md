@@ -1,6 +1,6 @@
 ---
 title: 权限管理
-category: SQL 兼容及对比
+category: Compatibility and Comparison with MySQL
 ---
 
 # 权限管理

@@ -1,6 +1,6 @@
 ---
 title: 数据迁移
-category: 高级功能
+category: Advanced Usage
 ---
 
 # 数据迁移

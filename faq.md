@@ -1,6 +1,6 @@
 ---
 title: 常见问题与解答
-category: 常见问题与解答
+category: FAQ
 ---
 
 # TiDB 中文 FAQ
