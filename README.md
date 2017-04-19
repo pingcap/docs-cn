@@ -27,7 +27,7 @@
 + More Resources
   - [Frequently Used Tools](https://github.com/pingcap/tidb-tools)
   - [PingCAP Blog](https://pingcap.github.io/blog/)
-- [Frequently Asked Questions (FAQ)](./TiDB_FAQ.md)
+- [Frequently Asked Questions (FAQ)](./FAQ.md)
 
 
 ## TiDB Introduction
