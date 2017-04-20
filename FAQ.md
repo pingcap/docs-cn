@@ -139,3 +139,7 @@ PD 启动参数中的 `--initial-cluster` 包含了某个不属于该集群的�
 
  - 之前的启动参数中有 `--advertise-peer-url`，但只想更新 `--peer-url`：用更新后的参数重启即可。
  - 之前的启动参数中没有 `--advertise-peer-url`：先[用 etcdctl 更新该 PD 的信息](https://coreos.com/etcd/docs/latest/op-guide/runtime-configuration.html#update-a-member)，之后再用更新后的参数重启即可。
+
+## TiDB/PD/TiKV 的日志在哪里
+
+这三个组件默认情况下会将日志输出到标准错误，如果启动的时候通过 `--log-file` 参数指定了日志文件，那么日志会输出到指定的文件中，并且按天做 rotation。

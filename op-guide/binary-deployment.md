@@ -56,21 +56,23 @@ cd tidb-latest-linux-amd64-centos6
 1. 启动 PD
 
     ```bash
-    ./bin/pd-server --data-dir=pd
+    ./bin/pd-server --data-dir=pd --log-file=pd.log
     ```
 
 2. 启动 TiKV
 
     ```bash
     ./bin/tikv-server --pd="127.0.0.1:2379" \
-                      --store=tikv
+                      --store=tikv \
+                      --log-file=tikv.log
     ```
 
 3. 启动 TiDB
 
     ```bash
     ./bin/tidb-server --store=tikv \
-                      --path="127.0.0.1:2379"
+                      --path="127.0.0.1:2379" \
+                      --log-file=tidb.log
     ```
 
 4. 使用官方的 `mysql` 客户端连接 TiDB
@@ -102,19 +104,22 @@ cd tidb-latest-linux-amd64-centos6
                     --data-dir=pd1 \
                     --client-urls="http://192.168.199.113:2379" \
                     --peer-urls="http://192.168.199.113:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
+                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380" \
+                    --log-file=pd.log
 
     ./bin/pd-server --name=pd2 \
                     --data-dir=pd2 \
                     --client-urls="http://192.168.199.114:2379" \
                     --peer-urls="http://192.168.199.114:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
+                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380" \
+                    --log-file=pd.log
 
     ./bin/pd-server --name=pd3 \
                     --data-dir=pd3 \
                     --client-urls="http://192.168.199.115:2379" \
                     --peer-urls="http://192.168.199.115:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
+                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380" \
+                    --log-file=pd.log
     ```
 
 2. 在 node4，node5，node6 启动 TiKV
@@ -122,22 +127,26 @@ cd tidb-latest-linux-amd64-centos6
     ```bash
     ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
                       --addr="192.168.199.116:20160" \
-                      --store=tikv1
+                      --store=tikv1 \
+                      --log-file=tikv.log
 
     ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
                       --addr="192.168.199.117:20160" \
-                      --store=tikv2
+                      --store=tikv2 \
+                      --log-file=tikv.log
 
     ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
                       --addr="192.168.199.118:20160" \
-                      --store=tikv3
+                      --store=tikv3 \
+                      --log-file=tikv.log
     ```
 
 3. 在 node1 启动 TiDB
 
     ```bash
     ./bin/tidb-server --store=tikv \
-                      --path="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379"
+                      --path="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
+                      --log-file=tidb.log
     ```
 
 4. 使用官方 `mysql` 客户端连接 TiDB
@@ -173,7 +182,8 @@ cd tidb-latest-linux-amd64-centos6
                     --data-dir=pd1 \
                     --client-urls="http://192.168.199.113:2379" \
                     --peer-urls="http://192.168.199.113:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380"
+                    --initial-cluster="pd1=http://192.168.199.113:2380" \
+                    --log-file=pd.log
     ```
 
 2. 在 node2，node3，node4 启动 TiKV
@@ -181,22 +191,26 @@ cd tidb-latest-linux-amd64-centos6
     ```bash
     ./bin/tikv-server --pd="192.168.199.113:2379" \
                       --addr="192.168.199.114:20160" \
-                      --store=tikv1
+                      --store=tikv1 \
+                      --log-file=tikv.log
 
     ./bin/tikv-server --pd="192.168.199.113:2379" \
                       --addr="192.168.199.115:20160" \
-                      --store=tikv2
+                      --store=tikv2 \
+                      --log-file=tikv.log
 
     ./bin/tikv-server --pd="192.168.199.113:2379" \
                       --addr="192.168.199.116:20160" \
-                      --store=tikv3
+                      --store=tikv3 \
+                      --log-file=tikv.log
     ```
 
 3. 在 node1 启动 TiDB
 
     ```bash
     ./bin/tidb-server --store=tikv \
-                      --path="192.168.199.113:2379"
+                      --path="192.168.199.113:2379" \
+                      --log-file=tidb.log
     ```
 
 4. 使用官方 `mysql` 客户端连接 TiDB
