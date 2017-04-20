@@ -56,7 +56,8 @@ cd tidb-latest-linux-amd64-centos6
 1. 启动 PD
 
     ```bash
-    ./bin/pd-server --data-dir=pd --log-file=pd.log
+    ./bin/pd-server --data-dir=pd \
+                    --log-file=pd.log
     ```
 
 2. 启动 TiKV
