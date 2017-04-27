@@ -5,6 +5,11 @@ category: faq
 
 # TiDB FAQ
 
+
+## What is NewSQL?
+
+NewSQL is a class of modern relational database management systems that seek to provide the same scalable performance of NoSQL systems for online transaction processing (OLTP) read-write workloads while still maintaining the ACID guarantees of a traditional database system. (From Wikipedia)
+
 ## What is TiDB?
 
 TiDB is a distributed SQL database that features in horizontal scalability, high availability and consistent distributed transactions. It also enables you to use MySQL’s SQL syntax and protocol to manage and retrieve data.
