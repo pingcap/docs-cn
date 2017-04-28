@@ -112,7 +112,7 @@ docker run -d --name tikv1 \
   pingcap/tikv:latest \
   --addr="0.0.0.0:20160" \
   --advertise-addr="192.168.1.104:20160" \
-  --store="/data/tikv1" \
+  --data-dir="/data/tikv1" \
   --pd="192.168.1.101:2379,192.168.1.102:2379,192.168.1.103:2379"
 ```
 
@@ -126,7 +126,7 @@ docker run -d --name tikv2 \
   pingcap/tikv:latest \
   --addr="0.0.0.0:20160" \
   --advertise-addr="192.168.1.105:20160" \
-  --store="/data/tikv2" \
+  --data-dir="/data/tikv2" \
   --pd="192.168.1.101:2379,192.168.1.102:2379,192.168.1.103:2379"
 ```
 
@@ -140,7 +140,7 @@ docker run -d --name tikv3 \
   pingcap/tikv:latest \
   --addr="0.0.0.0:20160" \
   --advertise-addr="192.168.1.106:20160" \
-  --store="/data/tikv3" \
+  --data-dir="/data/tikv3" \
   --pd="192.168.1.101:2379,192.168.1.102:2379,192.168.1.103:2379"
 ```
 
@@ -191,7 +191,7 @@ docker run -d --name tikv1 \
   pingcap/tikv:latest \
   --addr="0.0.0.0:20160" \
   --advertise-addr="192.168.1.104:20160" \
-  --store="/data/tikv1" \
+  --data-dir="/data/tikv1" \
   --pd="192.168.1.101:2379,192.168.1.102:2379,192.168.1.103:2379" \
   --config="/tikv.toml"
 ```

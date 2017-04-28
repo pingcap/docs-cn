@@ -64,7 +64,7 @@ cd tidb-latest-linux-amd64-centos6
 
     ```bash
     ./bin/tikv-server --pd="127.0.0.1:2379" \
-                      --store=tikv \
+                      --data-dir=tikv \
                       --log-file=tikv.log
     ```
 
@@ -128,17 +128,17 @@ cd tidb-latest-linux-amd64-centos6
     ```bash
     ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
                       --addr="192.168.199.116:20160" \
-                      --store=tikv1 \
+                      --data-dir=tikv1 \
                       --log-file=tikv.log
 
     ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
                       --addr="192.168.199.117:20160" \
-                      --store=tikv2 \
+                      --data-dir=tikv2 \
                       --log-file=tikv.log
 
     ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
                       --addr="192.168.199.118:20160" \
-                      --store=tikv3 \
+                      --data-dir=tikv3 \
                       --log-file=tikv.log
     ```
 
@@ -157,7 +157,7 @@ cd tidb-latest-linux-amd64-centos6
     ```
 
 > 注意：在生产环境中启动 TiKV 时，建议使用 [\-\-config](configuration.md#-c---config) 参数指定配置文件路径，如果不设置这个参数，TiKV 不会读取配置文件。同样，在生产环境中部署 PD 时，也建议使用 [\-\-config](configuration.md#--config) 参数指定配置文件路径。
-> 
+>
 > 注意：如果使用 `nohup` 在生产环境中启动集群，需要将启动命令放到一个脚本文件里面执行，否则会出现因为 Shell 退出导致 `nohup` 启动的进程也收到异常信号退出的问题，具体参考[进程异常退出](../trouble-shooting.md#tidbtikvpd-进程异常退出)。
 
 ## 功能性测试部署
@@ -192,17 +192,17 @@ cd tidb-latest-linux-amd64-centos6
     ```bash
     ./bin/tikv-server --pd="192.168.199.113:2379" \
                       --addr="192.168.199.114:20160" \
-                      --store=tikv1 \
+                      --data-dir=tikv1 \
                       --log-file=tikv.log
 
     ./bin/tikv-server --pd="192.168.199.113:2379" \
                       --addr="192.168.199.115:20160" \
-                      --store=tikv2 \
+                      --data-dir=tikv2 \
                       --log-file=tikv.log
 
     ./bin/tikv-server --pd="192.168.199.113:2379" \
                       --addr="192.168.199.116:20160" \
-                      --store=tikv3 \
+                      --data-dir=tikv3 \
                       --log-file=tikv.log
     ```
 
