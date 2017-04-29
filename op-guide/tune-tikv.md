@@ -28,7 +28,7 @@ TiKV 使用了 RocksDB 的 `Column Falimies` 特性，数据最终存储在 Rock
 # addr = "127.0.0.1:20160"
 
 # 数据目录
-# store = "/tmp/tikv/store"
+# store-dir = "/tmp/tikv/store"
 
 # 可以给 TiKV 实例打标签，用于副本的调度
 # labels = "zone=cn-east-1,host=118"
@@ -44,8 +44,8 @@ log-level = "info"
 # send-buffer-size = "128KB"
 # recv-buffer-size = "128KB"
 
-# TiDB 过来的大部分读请求都会发送到 TiKV 的 coprocessor 进行处理，该参数用于设置 
-# coprocessor 线程的个数，如果业务是读请求比较多，增加 coprocessor 的线程数，但应比系统的 
+# TiDB 过来的大部分读请求都会发送到 TiKV 的 coprocessor 进行处理，该参数用于设置
+# coprocessor 线程的个数，如果业务是读请求比较多，增加 coprocessor 的线程数，但应比系统的
 # CPU 核数小。例如：TiKV 所在的机器有 32 core，在重读的场景下甚至可以将该参数设置为 30。在没有
 # 设置该参数的情况下，TiKV 会自动将该值设置为 CPU 总核数乘以 0.8。
 # end-point-concurrency = 8
@@ -55,7 +55,7 @@ log-level = "info"
 interval = "15s"
 # Prometheus pushgateway 的地址
 address = ""
-job = "TiKV"
+job = "tikv"
 
 [raftstore]
 region-max-size = "80MB"
@@ -70,9 +70,9 @@ region-split-check-diff = "8MB"
 # endpoints = "127.0.0.1:2379"
 
 [rocksdb]
-# RocksDB 进行 compaction 的最大线程数。具体 RocksDB 为什么需要进行 compaction，请参考 
+# RocksDB 进行 compaction 的最大线程数。具体 RocksDB 为什么需要进行 compaction，请参考
 # RocksDB 的相关资料。在写流量比较大的时候（例如导数据），建议开启更多的 compaction 线程，但应
-# 小于CPU的核数。例如在导数据的时候，32 核 CPU 的机器，可以把 max-background-compactions 
+# 小于CPU的核数。例如在导数据的时候，32 核 CPU 的机器，可以把 max-background-compactions
 # 和 max-background-flushes 设置成 28。
 max-background-compactions = 6
 max-background-flushes = 2
@@ -102,7 +102,7 @@ max-manifest-file-size = "20MB"
 # compaction-readahead-size = "2MB"
 
 [rocksdb.defaultcf]
-# 数据块大小。RocksDB 是按照 block 为单元对数据进行压缩的，同时 block 也是缓存在 block-cache 
+# 数据块大小。RocksDB 是按照 block 为单元对数据进行压缩的，同时 block 也是缓存在 block-cache
 # 中的最小单元（类似其他数据库的 page 概念）。
 block-size = "64KB"
 # RocksDB 每一层数据的压缩方式，可选的值为：no,snappy,zlib,bzip2,lz4,lz4hc。
@@ -111,22 +111,22 @@ block-size = "64KB"
 # 好，但是压缩速度比较慢，压缩的时候需要占用较多的 CPU 资源。不同的机器需要根据 CPU 以及 IO 资
 # 源情况来配置怎样的压缩方式。例如：如果采用的压缩方式为"no:no:lz4:lz4:lz4:lz4:lz4"，在大量
 # 写入数据的情况下（导数据），发现系统的 IO 压力很大（使用 iostat 发现 %util 持续 100% 或者使
-# 用 top 命令发现 iowait 特别多），而 CPU 的资源还比较充裕，这个时候可以考虑将 level0 和 
+# 用 top 命令发现 iowait 特别多），而 CPU 的资源还比较充裕，这个时候可以考虑将 level0 和
 # level1 开启压缩，用 CPU 资源换取 IO 资源。如果采用的压缩方式
-# 为"no:no:lz4:lz4:lz4:lz4:lz4"，在大量写入数据的情况下，发现系统的 IO 压力不大，但是 CPU 
+# 为"no:no:lz4:lz4:lz4:lz4:lz4"，在大量写入数据的情况下，发现系统的 IO 压力不大，但是 CPU
 # 资源已经吃光了，top -H 发现有大量的 bg 开头的线程（RocksDB 的 compaction 线程）在运行，这
 # 个时候可以考虑用 IO 资源换取 CPU 资源，将压缩方式改成"no:no:no:lz4:lz4:lz4:lz4"。总之，目
 # 的是为了最大限度地利用系统的现有资源，使 TiKV 的性能在现有的资源情况下充分发挥。
 compression-per-level = "no:no:lz4:lz4:lz4:lz4:lz4"
 # RocksDB memtable 的大小。
 write-buffer-size = "128MB"
-# 最多允许几个 memtable 存在。写入到 RocksDB 的数据首先会记录到 WAL 日志里面，然后会插入到 
-# memtable 里面，当 memtable 的大小到达了 write-buffer-size 限定的大小的时候，当前的 
-# memtable 会变成只读的，然后生成一个新的 memtable 接收新的写入。只读的 memtable 会被 
-# RocksDB 的 flush 线程（max-background-flushes 参数能够控制 flush 线程的最大个数） 
-# flush 到磁盘，成为 level0 的一个 sst 文件。当 flush 线程忙不过来，导致等待 flush 到磁盘的 
-# memtable 的数量到达 max-write-buffer-number 限定的个数的时候，RocksDB 会将新的写入 
-# stall 住，stall 是 RocksDB 的一种流控机制。在导数据的时候可以将 max-write-buffer-number 
+# 最多允许几个 memtable 存在。写入到 RocksDB 的数据首先会记录到 WAL 日志里面，然后会插入到
+# memtable 里面，当 memtable 的大小到达了 write-buffer-size 限定的大小的时候，当前的
+# memtable 会变成只读的，然后生成一个新的 memtable 接收新的写入。只读的 memtable 会被
+# RocksDB 的 flush 线程（max-background-flushes 参数能够控制 flush 线程的最大个数）
+# flush 到磁盘，成为 level0 的一个 sst 文件。当 flush 线程忙不过来，导致等待 flush 到磁盘的
+# memtable 的数量到达 max-write-buffer-number 限定的个数的时候，RocksDB 会将新的写入
+# stall 住，stall 是 RocksDB 的一种流控机制。在导数据的时候可以将 max-write-buffer-number
 # 的值设置的更大一点，例如 10。
 max-write-buffer-number = 5
 
@@ -139,12 +139,12 @@ level0-slowdown-writes-trigger = 20
 # 当 level0 的 sst 文件个数到达 level0-stop-writes-trigger 指定的限度的时候，RocksDB 会
 # stall 住新的写入。
 level0-stop-writes-trigger = 36
-# 当 level1 的数据量大小达到 max-bytes-for-level-base 限定的值的时候，会触发 level1 的 
+# 当 level1 的数据量大小达到 max-bytes-for-level-base 限定的值的时候，会触发 level1 的
 # sst 和 level2 种有 overlap 的 sst 进行 compaction。
 # 黄金定律：max-bytes-for-level-base 的设置的第一参考原则就是保证和 level0 的数据量大致相
-# 等，这样能够减少不必要的 compaction。例如压缩方式为"no:no:lz4:lz4:lz4:lz4:lz4"，那么 
-# max-bytes-for-level-base 的值应该是 write-buffer-size 的大小乘以 4，因为 level0 和 
-# level1 都没有压缩，而且 level0 触发 compaction 的条件是 sst 的个数到达 4（默认值）。在 
+# 等，这样能够减少不必要的 compaction。例如压缩方式为"no:no:lz4:lz4:lz4:lz4:lz4"，那么
+# max-bytes-for-level-base 的值应该是 write-buffer-size 的大小乘以 4，因为 level0 和
+# level1 都没有压缩，而且 level0 触发 compaction 的条件是 sst 的个数到达 4（默认值）。在
 # level0 和 level1 都采取了压缩的情况下，就需要分析下 RocksDB 的日志，看一个 memtable 的压
 # 缩成一个 sst 文件的大小大概是多少，例如 32MB，那么 max-bytes-for-level-base 的建议值就应
 # 该是 32MB * 4 = 128MB。
@@ -152,7 +152,7 @@ max-bytes-for-level-base = "512MB"
 # sst 文件的大小。level0 的 sst 文件的大小受 write-buffer-size 和 level0 采用的压缩算法的
 # 影响，target-file-size-base 参数用于控制 level1-level6 单个 sst 文件的大小。
 target-file-size-base = "32MB"
-# 在不配置该参数的情况下，TiKV 会将该值设置为系统总内存量的 40%。如果需要在单个物理机上部署多个 
+# 在不配置该参数的情况下，TiKV 会将该值设置为系统总内存量的 40%。如果需要在单个物理机上部署多个
 # TiKV 节点，需要显式配置该参数，否则 TiKV 容易出现 OOM 的问题。
 # block-cache-size = "1GB"
 
@@ -166,7 +166,7 @@ min-write-buffer-number-to-merge = 1
 # 保持和 rocksdb.defaultcf.max-bytes-for-level-base 一致。
 max-bytes-for-level-base = "512MB"
 target-file-size-base = "32MB"
-# 在不配置该参数的情况下，TiKV 会将该值设置为系统总内存量的 15%。如果需要在单个物理机上部署多个 
+# 在不配置该参数的情况下，TiKV 会将该值设置为系统总内存量的 15%。如果需要在单个物理机上部署多个
 # TiKV 节点，需要显式配置该参数。版本信息（MVCC）相关的数据以及索引相关的数据都记录在 write 这
 # 个 cf 里面，如果业务的场景下单表索引较多，可以将该参数设置的更大一点。
 # block-cache-size = "256MB"
@@ -187,8 +187,8 @@ block-cache-size = "256MB"
 [storage]
 # 通常情况下使用默认值就可以了。在导数据的情况下建议将改参数设置为 1024000。
 # scheduler-concurrency = 102400
-# 该参数控制写入线程的个数，当写入操作比较频繁的时候，需要把该参数调大。使用 top -H -p tikv-pid 
-# 发现名称为 sched-worker-pool 的线程都特别忙，这个时候就需要将 scheduler-worker-pool-size 
+# 该参数控制写入线程的个数，当写入操作比较频繁的时候，需要把该参数调大。使用 top -H -p tikv-pid
+# 发现名称为 sched-worker-pool 的线程都特别忙，这个时候就需要将 scheduler-worker-pool-size
 # 参数调大，增加写线程的个数。
 # scheduler-worker-pool-size = 4
 ```
