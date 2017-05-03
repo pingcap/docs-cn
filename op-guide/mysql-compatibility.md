@@ -50,6 +50,7 @@ TiDB 实现了 F1 的异步 Schema 变更算法，DDL 执行过程中不会阻�
 
 以上语句还有一些支持不完善的地方，具体包括如下：
 
++ Add/Drop primary key 操作目前不支持。
 + Add Index/Column 操作不支持同时创建多个索引或列。
 + Drop Column 操作不支持删除的列为主键列或索引列。
 + Add Column 操作不支持同时将新添加的列设为主键或唯一索引，也不支持将此列设成 auto_increment 属性。
