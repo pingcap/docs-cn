@@ -16,22 +16,25 @@ category: advanced
 |MySQL|127.0.0.1|3306|root|*|
 |TiDB|127.0.0.1|4000|root|*|
 
+在这个数据迁移过程中，我们会用到下面四个工具:
+
+- checker 检查 schema 能否被 TiDB 兼容
+- mydumper 从 MySQL 导出数据
+- loader 导入数据到 TiDB
+- syncer 增量同步 MySQL 数据到 TiDB
+
 ## 两种迁移场景
 
-- 第一种场景：只需要全量导入数据，后续不会有更新的数据或者更新的数据不用理会；
-- 第二种场景：不仅需要全量导入数据，而且后续更新的数据也需要增量同步到 TiDB, 第二种场景可能更常见，更符合现实需求。
+- 第一种场景：只全量导入历史数据 （需要 checker + mydumper + loader）；
+- 第二种场景：全量导入历史数据后，通过增量的方式同步新的数据 （需要 checker + mydumper + loader + syncer）。该场景需要提前开启 binlog 且格式必须为 ROW。
 
-这两种场景对我们而言，就是使用不同工具组合的区别。
-
-前者是需要 checker + mydumper + loader， 而后者还需要再 dump 数据之前先开启 binlog，而且必须是 `ROW` 格式的， 其工具组合是 
-checker + mydumper + loader + syncer。之所以需要在 dump 数据之前就开启 binlog，是因为开启了 binlog 后， mydumper 会在 dump 目录生成一个 `metadata` 文件，里面告知了 binlog 当前的 position，也就是说这个 position 之前的数据已经被全量 dump 出来，使用loader 导入即可，这个 position 之后的数据就需要我们使用 syncer 来增量同步啦。之所以必须 `ROW` 格式，是因为我们的 syncer 目前只支持这种格式的 binlog。
 
 ## MySQL 开启 binlog
 
 **注意： 只有上文提到的第二种场景才需要在 dump 数据之前先开启 binlog**
 
 +   MySQL 开启 binlog 功能，参考 [Setting the Replication Master Configuration](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
-+   Binlog 格式必须使用 `row` format，这也是 MySQL 5.7 之后推荐的 binlog 格式，可以使用如下语句打开:
++   Binlog 格式必须使用 `ROW` format，这也是 MySQL 5.7 之后推荐的 binlog 格式，可以使用如下语句打开:
 
     ```sql
     SET GLOBAL binlog_format = ROW;
