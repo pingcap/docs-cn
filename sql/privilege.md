@@ -22,7 +22,7 @@ set password for 'root'@'%' = 'xxx';
 ### 添加用户
 
 ```sql
-create user 'test'@'127.0.0.1' indentified by 'xxx';
+create user 'test'@'127.0.0.1' identified by 'xxx';
 ```
 
 用户名是大小写敏感的。host则支持模糊匹配，比如：
