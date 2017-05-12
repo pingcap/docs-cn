@@ -172,7 +172,7 @@ cd mydumper-linux-amd64
 我们使用 `loader` 将之前导出的数据导入到 TiDB。Loader 的下载和具体的使用方法见 [Loader 使用文档](../tools/loader.md)
 
 ```bash
-./bin/loader -h 127.0.0.1 -u root -P 4000 -t 4 -d ./var/test
+./bin/loader -h 127.0.0.1 -u root -P 4000 -t 4 -q 1 -d ./var/test
 ```
 
 这里 `-q 1` 表明每个事务包含多少个 query，默认是 1，在向 TiDB 中导入数据时，推荐用默认值。
