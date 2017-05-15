@@ -1,3 +1,8 @@
+---
+title: PD Control 使用说明
+category: monitoring
+---
+
 # PD Control 使用说明
 
 PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整集群。
@@ -11,11 +16,11 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 单命令模式：
 
-    ./pd-ctl store -d -u 127.0.0.1:2379
+    ./pd-ctl store -d -u http://127.0.0.1:2379
 
 交互模式：
 
-    ./pd-ctl -u 127.0.0.1:2379
+    ./pd-ctl -u http://127.0.0.1:2379
 
 使用环境变量：
 

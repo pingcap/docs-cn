@@ -1,3 +1,8 @@
+---
+title: TiDB 集群监控
+category: monitoring
+---
+
 # TiDB 集群监控
 
 TiDB 集群状态监控目前有两种接口，第一种是通过 HTTP 接口对外汇报组件的信息，我们称之为组件的状态接口；第二种是使用 prometheus 记录组件中各种操作的详细信息，我们称之为 Metrics 接口。
@@ -171,4 +176,4 @@ Grafana
 
 +   导入 dashboard 配置文件
 
-    点击 Grafana Logo -> 点击 Data Sources -> 点击 Import -> 选择需要的 Dashboard [配置文件](https://github.com/pingcap/docs/tree/master/etc)上传 -> 选择对应的 data source
+    点击 Grafana Logo -> 点击 Data Sources -> 点击 Import -> 选择需要的 Dashboard [配置文件](https://grafana.com/tidb)上传 -> 选择对应的 data source

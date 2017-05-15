@@ -1,3 +1,8 @@
+---
+title: 常见问题与解答
+category: faq
+---
+
 # TiDB 中文 FAQ
 
 ## TiDB 是什么？
@@ -110,7 +115,7 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提�
 
 ## 为什么 TiKV 数据目录不见了
 
-TiKV 的 `--store` 参数默认值为 `/tmp/tikv/store`，在某些虚拟机中，重启操作系统会删除 /tmp 目录下的数据，推荐通过 `--store` 参数显式设置 TiKV 数据目录。
+TiKV 的 `--data-dir` 参数默认值为 `/tmp/tikv/store`，在某些虚拟机中，重启操作系统会删除 /tmp 目录下的数据，推荐通过 `--data-dir` 参数显式设置 TiKV 数据目录。
 
 ## TiKV 启动报错：cluster ID mismatch
 
@@ -118,7 +123,7 @@ TiKV 本地存储的 cluster ID 和指定的 PD 的 cluster ID 不一致。在�
 
 ## TiKV 启动报错：duplicated store address
 
-启动参数中的地址已经被其他的 TiKV 注册在 PD 集群中了。造成该错误的常见情况：TiKV `--store` 指定的路径下没有数据文件夹时（删除或移动后没有更新 `--store`），用之前参数重新启动该 TiKV。请尝试用 pdctl 的 [store 删除](https://github.com/pingcap/pd/tree/master/pdctl#store-delete-)功能，删除之前的 store, 然后重新启动 TiKV 即可。
+启动参数中的地址已经被其他的 TiKV 注册在 PD 集群中了。造成该错误的常见情况：TiKV `--data-dir` 指定的路径下没有数据文件夹时（删除或移动后没有更新 `--data-dir`），用之前参数重新启动该 TiKV。请尝试用 pdctl 的 [store 删除](https://github.com/pingcap/pd/tree/master/pdctl#store-delete-)功能，删除之前的 store, 然后重新启动 TiKV 即可。
 
 ## 访问 PD 报错：TiKV cluster is not bootstrapped
 
@@ -135,8 +140,12 @@ PD 启动参数中的 `--initial-cluster` 包含了某个不属于该集群的�
  - 之前的启动参数中有 `--advertise-peer-url`，但只想更新 `--peer-url`：用更新后的参数重启即可。
  - 之前的启动参数中没有 `--advertise-peer-url`：先[用 etcdctl 更新该 PD 的信息](https://coreos.com/etcd/docs/latest/op-guide/runtime-configuration.html#update-a-member)，之后再用更新后的参数重启即可。
 
-## 如何用"/var/lib/mysql/mysql.sock"方式连接tidb
+## 如何用 "Unix Domain Socket" 方式连接tidb
 
-tidb-server启动时加参数 --socket="/var/lib/mysql/mysql.sock"。
+tidb-server 启动时加参数 --socket="/var/lib/mysql/mysql.sock" 。
 
-注意目前tidb用--socket方式启动后就无法从远程连接了。
+注意目前 tidb 用 --socket 方式启动后就无法从远程连接了。
+
+## TiDB/PD/TiKV 的日志在哪里
+
+这三个组件默认情况下会将日志输出到标准错误，如果启动的时候通过 `--log-file` 参数指定了日志文件，那么日志会输出到指定的文件中，并且按天做 rotation。

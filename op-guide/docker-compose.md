@@ -1,4 +1,9 @@
-## 使用 Docke Compose 构建集群
+---
+title: 使用 Docker Compose 构建集群
+category: deployment
+---
+
+## 使用 Docker Compose 构建集群
 
 只需要一个简单的 `docker-compose.yml`:
 
@@ -70,7 +75,7 @@ services:
     command:
       - --addr=0.0.0.0:20160
       - --advertise-addr=tikv1:20160
-      - --store=/var/tikv
+      - --data-dir=/var/tikv
       - --pd=pd1:2379,pd2:2379,pd3:2379
 
     depends_on:
@@ -92,7 +97,7 @@ services:
     command:
       - --addr=0.0.0.0:20160
       - --advertise-addr=tikv2:20160
-      - --store=/var/tikv
+      - --data-dir=/var/tikv
       - --pd=pd1:2379,pd2:2379,pd3:2379
 
     depends_on:
@@ -114,7 +119,7 @@ services:
     command:
       - --addr=0.0.0.0:20160
       - --advertise-addr=tikv3:20160
-      - --store=/var/tikv
+      - --data-dir=/var/tikv
       - --pd=pd1:2379,pd2:2379,pd3:2379
 
     depends_on:

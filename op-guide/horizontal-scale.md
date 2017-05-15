@@ -1,3 +1,8 @@
+---
+title: TiDB 集群扩容缩容方案
+category: deployment
+---
+
 # TiDB 集群扩容缩容方案
 
 ## 概述

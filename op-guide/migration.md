@@ -1,3 +1,8 @@
+---
+title: 数据迁移
+category: advanced
+---
+
 # 数据迁移
 
 ## 概述
@@ -10,6 +15,31 @@
 |----|-------|----|----|--------|
 |MySQL|127.0.0.1|3306|root|*|
 |TiDB|127.0.0.1|4000|root|*|
+
+在这个数据迁移过程中，我们会用到下面四个工具:
+
+- checker 检查 schema 能否被 TiDB 兼容
+- mydumper 从 MySQL 导出数据
+- loader 导入数据到 TiDB
+- syncer 增量同步 MySQL 数据到 TiDB
+
+## 两种迁移场景
+
+- 第一种场景：只全量导入历史数据 （需要 checker + mydumper + loader）；
+- 第二种场景：全量导入历史数据后，通过增量的方式同步新的数据 （需要 checker + mydumper + loader + syncer）。该场景需要提前开启 binlog 且格式必须为 ROW。
+
+
+## MySQL 开启 binlog
+
+**注意： 只有上文提到的第二种场景才需要在 dump 数据之前先开启 binlog**
+
++   MySQL 开启 binlog 功能，参考 [Setting the Replication Master Configuration](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
++   Binlog 格式必须使用 `ROW` format，这也是 MySQL 5.7 之后推荐的 binlog 格式，可以使用如下语句打开:
+
+    ```sql
+    SET GLOBAL binlog_format = ROW;
+    ```
+
 
 ## 使用 checker 进行 Schema 检查
 
@@ -142,10 +172,10 @@ cd mydumper-linux-amd64
 我们使用 `loader` 将之前导出的数据导入到 TiDB。Loader 的下载和具体的使用方法见 [Loader 使用文档](../tools/loader.md)
 
 ```bash
-./bin/loader -h 127.0.0.1 -u root -P 4000 -t 4 -q 1 -d ./var/test
+./bin/loader -h 127.0.0.1 -u root -P 4000 -t 4 -d ./var/test
 ```
 
-这里 `-q 1` 表明每个事务包含多少个 query，默认是 1，在像 TiDB 中导入数据时，推荐用默认值。
+这里 `-q 1` 表明每个事务包含多少个 query，默认是 1，在向 TiDB 中导入数据时，推荐用默认值。
 
 导入成功之后，我们可以用 MySQL 官方客户端进入 TiDB，查看:
 
@@ -189,28 +219,21 @@ TiDB 提供 `syncer` 工具能方便的将 MySQL 的数据增量的导入到 TiD
 
 假设我们之前已经使用 `mydumper`/`myloader` 导入了 `t1` 和 `t2` 两张表的一些数据，现在我们希望这两张表的任何更新，都是实时的同步到 TiDB 上面。
 
-### MySQL 开启 binlog
-
-在使用 `syncer` 之前，我们必须保证：
-
-+   MySQL 开启 binlog 功能，参考 [Setting the Replication Master Configuration](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
-+   Binlog 格式必须使用 `row` format，这也是 MySQL 5.7 之后推荐的 binlog 格式，可以使用如下语句打开:
-
-    ```sql
-    SET GLOBAL binlog_format = ROW;
-    ```
 
 ### 获取同步 position
 
-我们通过 `show master status` 得到当前 binlog 的 position，`syncer` 的初始同步位置就是从这个地方开始。
+如上文所提，mydumper 导出的数据目录里面有一个 `metadata` 文件，里面就包含了我们所需的 position 信息。
 
-```sql
-show master status;
-+------------------+----------+--------------+------------------+-------------------+
-| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
-+------------------+----------+--------------+------------------+-------------------+
-| mysql-bin.000003 |     1280 |              |                  |                   |
-+------------------+----------+--------------+------------------+-------------------+
+medadata 文件信息内容举例：
+
+```
+Started dump at: 2017-04-28 10:48:10
+SHOW MASTER STATUS:
+	Log: mysql-bin.000003
+	Pos: 930143241
+	GTID:
+
+Finished dump at: 2017-04-28 10:48:11
 ```
 
 我们将 position 相关的信息保存到一个 `syncer.meta` 文件里面，用于 `syncer` 的同步:
@@ -218,7 +241,7 @@ show master status;
 ```bash
 # cat syncer.meta
 binlog-name = "mysql-bin.000003"
-binlog-pos = 1280
+binlog-pos = 930143241
 ```
 
 注意：`syncer.meta` 只需要第一次使用的时候配置，后续 `syncer` 同步新的 binlog 之后会自动将其更新到最新的 position。

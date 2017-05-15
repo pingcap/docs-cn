@@ -1,3 +1,8 @@
+---
+title: TiDB Binary 部署方案详解
+category: deployment
+---
+
 # TiDB Binary 部署方案
 
 ## 概述
@@ -51,21 +56,24 @@ cd tidb-latest-linux-amd64-centos6
 1. 启动 PD
 
     ```bash
-    ./bin/pd-server --data-dir=pd
+    ./bin/pd-server --data-dir=pd \
+                    --log-file=pd.log
     ```
 
 2. 启动 TiKV
 
     ```bash
     ./bin/tikv-server --pd="127.0.0.1:2379" \
-                      --store=tikv
+                      --data-dir=tikv \
+                      --log-file=tikv.log
     ```
 
 3. 启动 TiDB
 
     ```bash
     ./bin/tidb-server --store=tikv \
-                      --path="127.0.0.1:2379"
+                      --path="127.0.0.1:2379" \
+                      --log-file=tidb.log
     ```
 
 4. 使用官方的 `mysql` 客户端连接 TiDB
@@ -97,19 +105,22 @@ cd tidb-latest-linux-amd64-centos6
                     --data-dir=pd1 \
                     --client-urls="http://192.168.199.113:2379" \
                     --peer-urls="http://192.168.199.113:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
+                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380" \
+                    --log-file=pd.log
 
     ./bin/pd-server --name=pd2 \
                     --data-dir=pd2 \
                     --client-urls="http://192.168.199.114:2379" \
                     --peer-urls="http://192.168.199.114:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
+                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380" \
+                    --log-file=pd.log
 
     ./bin/pd-server --name=pd3 \
                     --data-dir=pd3 \
                     --client-urls="http://192.168.199.115:2379" \
                     --peer-urls="http://192.168.199.115:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
+                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380" \
+                    --log-file=pd.log
     ```
 
 2. 在 node4，node5，node6 启动 TiKV
@@ -117,22 +128,26 @@ cd tidb-latest-linux-amd64-centos6
     ```bash
     ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
                       --addr="192.168.199.116:20160" \
-                      --store=tikv1
+                      --data-dir=tikv1 \
+                      --log-file=tikv.log
 
     ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
                       --addr="192.168.199.117:20160" \
-                      --store=tikv2
+                      --data-dir=tikv2 \
+                      --log-file=tikv.log
 
     ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
                       --addr="192.168.199.118:20160" \
-                      --store=tikv3
+                      --data-dir=tikv3 \
+                      --log-file=tikv.log
     ```
 
 3. 在 node1 启动 TiDB
 
     ```bash
     ./bin/tidb-server --store=tikv \
-                      --path="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379"
+                      --path="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
+                      --log-file=tidb.log
     ```
 
 4. 使用官方 `mysql` 客户端连接 TiDB
@@ -142,7 +157,7 @@ cd tidb-latest-linux-amd64-centos6
     ```
 
 > 注意：在生产环境中启动 TiKV 时，建议使用 [\-\-config](configuration.md#-c---config) 参数指定配置文件路径，如果不设置这个参数，TiKV 不会读取配置文件。同样，在生产环境中部署 PD 时，也建议使用 [\-\-config](configuration.md#--config) 参数指定配置文件路径。
-> 
+>
 > 注意：如果使用 `nohup` 在生产环境中启动集群，需要将启动命令放到一个脚本文件里面执行，否则会出现因为 Shell 退出导致 `nohup` 启动的进程也收到异常信号退出的问题，具体参考[进程异常退出](../trouble-shooting.md#tidbtikvpd-进程异常退出)。
 
 ## 功能性测试部署
@@ -168,7 +183,8 @@ cd tidb-latest-linux-amd64-centos6
                     --data-dir=pd1 \
                     --client-urls="http://192.168.199.113:2379" \
                     --peer-urls="http://192.168.199.113:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380"
+                    --initial-cluster="pd1=http://192.168.199.113:2380" \
+                    --log-file=pd.log
     ```
 
 2. 在 node2，node3，node4 启动 TiKV
@@ -176,22 +192,26 @@ cd tidb-latest-linux-amd64-centos6
     ```bash
     ./bin/tikv-server --pd="192.168.199.113:2379" \
                       --addr="192.168.199.114:20160" \
-                      --store=tikv1
+                      --data-dir=tikv1 \
+                      --log-file=tikv.log
 
     ./bin/tikv-server --pd="192.168.199.113:2379" \
                       --addr="192.168.199.115:20160" \
-                      --store=tikv2
+                      --data-dir=tikv2 \
+                      --log-file=tikv.log
 
     ./bin/tikv-server --pd="192.168.199.113:2379" \
                       --addr="192.168.199.116:20160" \
-                      --store=tikv3
+                      --data-dir=tikv3 \
+                      --log-file=tikv.log
     ```
 
 3. 在 node1 启动 TiDB
 
     ```bash
     ./bin/tidb-server --store=tikv \
-                      --path="192.168.199.113:2379"
+                      --path="192.168.199.113:2379" \
+                      --log-file=tidb.log
     ```
 
 4. 使用官方 `mysql` 客户端连接 TiDB

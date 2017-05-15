@@ -1,3 +1,8 @@
+---
+title: 与 MySQL 兼容性对比
+category: compatibility
+---
+
 # 与 MySQL 兼容性对比
 
 TiDB 支持包括跨行事务，JOIN 及子查询在内的绝大多数 MySQL 的语法，用户可以直接使用现有的 MySQL 客户端连接。如果现有的业务已经基于 MySQL 开发，大多数情况不需要修改代码即可直接替换单机的 MySQL。
@@ -44,6 +49,8 @@ TiDB 实现了 F1 的异步 Schema 变更算法，DDL 执行过程中不会阻�
 + Crete Table Like
 
 以上语句还有一些支持不完善的地方，具体包括如下：
+
++ Add/Drop primary key 操作目前不支持。
 + Add Index/Column 操作不支持同时创建多个索引或列。
 + Drop Column 操作不支持删除的列为主键列或索引列。
 + Add Column 操作不支持同时将新添加的列设为主键或唯一索引，也不支持将此列设成 auto_increment 属性。
@@ -54,6 +61,7 @@ TiDB 实现了 F1 的异步 Schema 变更算法，DDL 执行过程中不会阻�
 	    * 具体支持的 Blob 类型有：Blob，TinyBlob，MediumBlob，LongBlob。
 	- 在修改类型定义方面，支持的包括 default value，comment，null，not null 和 OnUpdate，但是不支持从 null 到 not null 的修改。
 	- 在关键字方面，不支持 First/After 关键字。
+	- 支持 LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE} 语法，但是不做任何事情（pass through）。
 
 ### 事务
 TiDB 使用乐观事务模型，在执行 Update、Insert、Delete 等语句时，只有在提交过程中才会检查写写冲突，而不是像 MySQL 一样使用行锁来避免写写冲突。所以业务端在执行 SQL 语句后，需要注意检查 commit 的返回值，即使执行时没有出错，commit的时候也可能会出错。

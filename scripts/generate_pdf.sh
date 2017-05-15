@@ -17,7 +17,7 @@ pandoc -N --toc --smart --latex-engine=xelatex \
     --listings \
     -V title="TiDB 中文手册" \
     -V author="PingCAP Inc." \
-    -V date="v1.0\$\sim\$rc1+${_version_tag}" \
+    -V date="v1.0.0\$\sim\$rc2+${_version_tag}" \
     -V CJKmainfont="${MAINFONT}" \
     -V mainfont="${MAINFONT}" \
     -V sansfont="${MAINFONT}" \
