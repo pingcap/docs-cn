@@ -48,10 +48,7 @@ TiDB 遵循 MySQL 的权限管理体系，可以创建用户并授予权限。
 
 在进行授权时，也可以使用 MySQL 语法，如 `GRANT SELECT ON *.* TO  'test'@'localhost';`，将读权限授予 test 用户。
 
-> 注意：在创建用户和授权时，TiDB 有几个和 MySQL 有区别：
->
-> * 创建用户时，用户标识采用 user@hostname 这种语法，其中 hostname 支持精确匹配和全匹配，不支持前缀匹配，也就是只支持 "192.168.199.1" 以及 “%”，而不支持 “192.168.%”
-> * TiDB 支持对用户授权，这里只是支持授权语法，并且记录在系统表中。但是实际上只对 DropTable 语句进行权限检查，对其他的语句并不会做权限检查。实现用户授权主要是为了兼容已有的 MySQL 业务
+更多细节可以参考[权限管理](https://github.com/pingcap/docs-cn/blob/master/sql/privilege.md)。
 
 ## 如何对 TiDB 进行水平扩展？
 
