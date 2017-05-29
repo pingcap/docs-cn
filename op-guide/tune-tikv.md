@@ -88,7 +88,7 @@ max-manifest-file-size = "20MB"
 # wal-dir = "/tmp/tikv/store"
 
 # 下面两个参数用于怎样处理 RocksDB 归档 WAL。
-# 更多详细信息请参考：https://github.com/facebook/rocksdb/wiki/How-to-persist-in-memory-RocksDB-database
+# 更多详细信息请参考：https://github.com/facebook/rocksdb/wiki/How-to-persist-in-memory-RocksDB-database%3F
 # wal-ttl-seconds = 0
 # wal-size-limit = 0
 
