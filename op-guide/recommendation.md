@@ -9,40 +9,11 @@ To learn the TiDB architecture, see [TiDB Architecture](../README.md#TiDB-Archit
 
 The following table lists the recommended hardware for each components.
 
-<table>
-  <tr>
-    <td>Component</td>
-    <td># of CPU Cores</td>
-    <td>Memory</td>
-    <td>Disk Type</td>
-    <td>Disk</td>
-    <td># of Instances</td>
-  </tr>
-  <tr>
-    <td>TiDB</td>
-    <td>8+</td>
-    <td>16G+ </td>
-    <td></td>
-    <td></td>
-    <td>2+</td>
-  </tr>
-  <tr>
-    <td>PD</td>
-    <td>8+</td>
-    <td>16G+ </td>
-    <td></td>
-    <td>200G+</td>
-    <td>3+</td>
-  </tr>
-  <tr>
-    <td>TiKV</td>
-    <td>8+</td>
-    <td>16G+ </td>
-    <td>SSD</td>
-    <td>200G~500G</td>
-    <td>3+</td>
-  </tr>
-</table>
+| Component | # of CPU Cores | Memory | Disk Type | Disk | # of Instances |
+| ---- | ------- | -------- | ------- | ------- | --------- |
+| TiDB | 8+ | 16G+ |  |  | 2+ |
+| PD   | 8+ | 16G+ |  | 200G+ | 3+ |
+| TiKV | 8+ | 16G+ | SSD | 200G~500G | 3+ |
 
 
 **Deployment tips:**
