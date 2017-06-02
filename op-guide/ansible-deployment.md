@@ -1,5 +1,6 @@
 ### 1 概述
 Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingcap/tidb-ansible) 是 PingCAP 基于 Ansible playbook 功能编写的集群部署工具。使用 TiDB-Ansible 可以快速部署一个完整的 TiDB 集群（包括 PD、TiDB、TiKV 和集群监控模块)。
+
 本部署工具具有如下特性：
 - 通过配置文件设置集群拓扑，一键完成各项运维工作：
   - 初始化机器
@@ -11,10 +12,10 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 - 支持对机器系统进行初始化，创建部署用户、设置 hostname 等。
 - 滚动升级时支持模块存活检测。
 
-### 2 部署准备
+### 2 准备机器
 - 部署目标机器若干
     - 建议4台及以上，TiKV 建议至少3实例，且与 TiKV、PD 模块不位于同一主机,详见[部署建议](https://github.com/pingcap/docs-cn/blob/master/op-guide/recommendation.md)。
-    - Linux 操作系统，x86_64 架构(amd64)，内核版本建议 3.10 以上，推荐 CentOS 7.2 及以上版本, 文件系统推荐 ext4(部分内核版本 xfs 文件系统有 bug, 本工具检查到数据目录非ext4会退出)。
+    - Linux 操作系统，x86_64 架构(amd64)，内核版本建议 3.10 以上，推荐 CentOS 7.2 及以上版本, 文件系统推荐 ext4(部分内核版本 xfs 文件系统有 bug, 本工具检查到数据目录非 ext4 会退出)。
   - 机器之间网络互通，防火墙、iptables 等可以在部署验证时关闭，后期开启。
   - 机器的时间、时区设置正确，有 NTP 服务可以同步正确时间。
   - 部署账户具有 sudo 权限，或直接通过 root 用户部署。
@@ -77,12 +78,6 @@ cd /playbook #
 | node5 | 172.16.10.5 | TiKV2 |
 | node6 | 172.16.10.6 | TiKV3 |
 
-| 组件 | 消耗硬件资源 | 推荐硬件配置 |
-| ---- | ------- | -------- |
-| TiDB | CPU、内存 |8+ 核/32G+ 内存 |
-| TiKV | CPU、内存、磁盘 IO |8+ 核/32G+ 内存/200G+ 硬盘（建议 SSD）|
-| PD | CPU、内存、磁盘 IO |8+ 核/16G+ 内存/200G+ 硬盘（建议 SSD）|
-
 编辑 inventory.ini 文件：
 ```
 [tidb_servers]
@@ -112,7 +107,7 @@ pd_servers
 ```
 
 ### 3 部署任务
-> Ansible 远程连接用户(即  ansible_user)可使用 root 或普通用户(用户需要有 sudo 到 root 权限)。
+> Ansible 远程连接用户(即 ansible_user)可使用 root 或普通用户(用户需要有 sudo 到 root 权限)。
 
 > **TiDB 服务不推荐使用 root 用户运行, 本例使用 tidb 普通用户**。
 
@@ -130,7 +125,7 @@ pd_servers
   # ssh via normal user
   # ansible_user = tidb
   ```
-- local prepare (联网下载binary到中控机)
+- local prepare (联网下载 binary 到中控机)
 
                 ansible-playbook local_prepare.yml
 
@@ -138,7 +133,7 @@ pd_servers
   > 如服务运行用户尚未建立，此初始化操作会自动创建该用户。
 
                 ansible-playbook bootstrap.yml
-  如果ansible使用root用户远程连接需要密码, 使用-k参数，执行其他playbook同理：
+  如果 ansible 使用 root 用户远程连接需要密码, 使用 -k 参数，执行其他 playbook 同理：
 
                 ansible-playbook bootstrap.yml -k
 
@@ -152,8 +147,8 @@ pd_servers
 
 
 #### 3.2 ansible 通过普通用户远程连接部署
-> 本例中系统需提前创建该普通用户，并添加sudo权限。
-- 修改inventory.ini, 本例使用tidb用户作为服务运行用户，配置如下：
+> 本例中系统需提前创建该普通用户，并添加 sudo 权限。
+- 修改 inventory.ini, 本例使用 tidb 用户作为服务运行用户，配置如下：
   ```
   ## Connection
   # ssh via root:
@@ -164,7 +159,7 @@ pd_servers
   # ssh via normal user
   ansible_user = tidb
   ```
-- local prepare (联网下载binary到中控机)
+- local prepare (联网下载 binary 到中控机)
 
                 ansible-playbook local_prepare.yml
 
@@ -172,11 +167,11 @@ pd_servers
 
                 ansible-playbook bootstrap.yml
 
-  如果ansible使用普通用户远程连接需要密码, 需添加-k参数，执行其他playbook同理：
+  如果ansible使用普通用户远程连接需要密码, 需添加 -k 参数，执行其他 playbook 同理：
 
                 ansible-playbook bootstrap.yml -k
 
-  本playbook需要使用root权限执行，如果该普通用户 sudo 到root需要密码，需添加 -K 参数：
+  本playbook需要使用 root 权限执行，如果该普通用户 sudo 到 root 需要密码，需添加 -K 参数：
 
                 ansible-playbook bootstrap.yml -k -K
 
@@ -189,16 +184,16 @@ pd_servers
                 ansible-playbook start.yml
 
 #### 3.3 测试集群
-- 测试连接TiDB集群，推荐在TiDB前配置负载均衡来对外统一提供 SQL 接口。
+- 测试连接 TiDB 集群，推荐在 TiDB 前配置负载均衡来对外统一提供 SQL 接口。
 
-  使用MySQL 客户端连接测试, 4000为TiDB服务默认端口。
+  使用 MySQL 客户端连接测试, 4000为 TiDB 服务默认端口。
 
                 mysql -u root -h 172.16.10.1 -P 4000
 - 通过浏览器访问监控平台, 默认帐号密码(admin/admin)。
 
                 http://172.16.10.1:3000
 
-### 四、 常见运维操作汇总
+### 4 常见运维操作汇总
 |任务|Playbook|
 |----|--------|
 |启动集群|ansible-playbook start.yml|
@@ -206,7 +201,7 @@ pd_servers
 |销毁集群|ansible-playbook unsafe_cleanup.yml| (若部署目录为挂载点，会报错，但不影响执行效果）|
 |清除数据(测试用)|ansible-playbook cleanup_data.yml|
 |滚动升级|ansible-playbook rolling_update.yml|
-|滚动升级TiKV|ansible-playbook rolling_update.yml --tags=tikv|
-|滚动升级除pd外模块|ansible-playbook rolling_update.yml --skip-tags=pd|
+|滚动升级 TiKV|ansible-playbook rolling_update.yml --tags=tikv|
+|滚动升级除 pd 外模块|ansible-playbook rolling_update.yml --skip-tags=pd|
 
 > **TiDB 服务数据迁移、性能调优等更多高级功能请参考** https://github.com/pingcap/docs-cn。
