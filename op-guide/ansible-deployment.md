@@ -1,3 +1,9 @@
+---
+title: TiDB Ansible 部署方案
+category: deployment
+---
+
+# TiDB Ansible 部署方案
 ### 1 概述
 Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingcap/tidb-ansible) 是 PingCAP 基于 Ansible playbook 功能编写的集群部署工具。使用 TiDB-Ansible 可以快速部署一个完整的 TiDB 集群（包括 PD、TiDB、TiKV 和集群监控模块)。
 
