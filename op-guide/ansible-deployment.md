@@ -74,6 +74,7 @@ cd /playbook #
 | TiDB | CPU、内存 |8+ 核/32G+ 内存 |
 | TiKV | CPU、内存、磁盘 IO |8+ 核/32G+ 内存/200G+ 硬盘（建议 SSD）|
 | PD | CPU、内存、磁盘 IO |8+ 核/16G+ 内存/200G+ 硬盘（建议 SSD）|
+
 编辑 inventory.ini 文件：
 ```
 [tidb_servers]
