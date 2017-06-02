@@ -113,7 +113,7 @@ pd_servers
 
 以下根据这两种情况作说明：
 #### 3.1 ansible 通过 root 用户远程连接部署
-- 修改inventory.ini, 本例使用tidb帐户作为服务运行用户：
+- 修改 inventory.ini, 本例使用 tidb 帐户作为服务运行用户：
 取消 `ansible_user = root` 和 `ansible_become_user`注释，给`ansible_user = tidb`添加注释：
   ```
   ## Connection
