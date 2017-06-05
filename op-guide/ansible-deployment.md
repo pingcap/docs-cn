@@ -145,7 +145,7 @@ pd_servers
 
 - 部署 TiDB 集群软件
 
-取消 inventory.ini 文件中 `# ansible_become = true` 注释，并执行以下命令：
+  取消 inventory.ini 文件中 `# ansible_become = true` 注释，并执行以下命令：
 
                 ansible-playbook deploy.yml
 
