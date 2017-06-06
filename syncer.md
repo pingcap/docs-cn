@@ -1,5 +1,5 @@
 ## syncer 架构
-![](./architecture.jpeg)
+![](./syncer.jpeg)
 
 ## 下载 TiDB 工具集 (Linux)
 
