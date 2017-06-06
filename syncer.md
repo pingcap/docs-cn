@@ -1,3 +1,5 @@
+## [syncer 架构](./architecture.jpeg)
+
 ## 下载 TiDB 工具集 (Linux)
 
 ```bash
@@ -151,3 +153,19 @@ mysql> select * from t1;
 根据上面的 route-rules 可以支持将分库分表的数据导入到同一个库同一个表中，但是在开始前需要检查分库分表规则
 +   是否可以利用 route-rule 的语义规则表示
 +   分表中是否包含唯一递增主键，或者合并后数据上有冲突的唯一索引或者主键
+
+### 分库分表同步示例
+假设有存在下面的分库分表规则
++ mysql 实例 A: schema - route_db; table - route_table_1
++ mysql 实例 B: schema - route_db; table - route_table_2
+
+需要同步到一个 tidb 实例 schema - route_db; table - route_table
+
+则只需要在两个 mysql 实例下面，启动两个 syncer, 并且设置以下 route-rule
+```
+[[route-rules]]
+pattern-schema = "route_db"
+pattern-table = "route_table_*"
+target-schema = "route_db"
+target-table = "route_table"
+```
