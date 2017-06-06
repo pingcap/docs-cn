@@ -28,7 +28,6 @@
   - [读取历史版本数据](op-guide/history-read.md)
   - [故障诊断](trouble-shooting.md)
 + 更多资源
-  - [常用工具](https://github.com/pingcap/tidb-tools)
   - [PingCAP 团队技术博客](https://pingcap.com/bloglist-zh.html)
 - [常见问题与解答](FAQ.md)
 
