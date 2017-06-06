@@ -9,8 +9,6 @@ category: advanced
 
 是由 PingCAP 开发的数据导入工具，可以用于向 TiDB 中导入数据，也可以用于向 MySQL 中导入数据。
 
-[源代码](https://github.com/pingcap/tidb-tools/tree/master/loader)
-
 [Binary 下载](http://download.pingcap.org/tidb-tools-latest-linux-amd64.tar.gz)
 
 ## 为什么我们要做这个东西

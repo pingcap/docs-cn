@@ -97,7 +97,7 @@ TiDB 在提供水平扩展特性的同时，还能提供 SQL 以及分布式事�
 
 ## 如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？
 
-TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提供了一个[检查工具](https://github.com/pingcap/tidb-tools/tree/master/checker)，用于检查 MySQL 中的 Schema 是否和 TiDB 兼容。
+TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提供了一个[检查工具-Checker](http://download.pingcap.org/tidb-tools-latest-linux-amd64.tar.gz)，用于检查 MySQL 中的 Schema 是否和 TiDB 兼容。
 
 ## TiDB 是否支持其他存储引擎？
 
