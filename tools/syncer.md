@@ -1,18 +1,18 @@
 ## syncer 架构
-![](./syncer.jpeg)
+![](../media/syncer_architecture.png)
 
 ## 下载 TiDB 工具集 (Linux)
 
 ```bash
 # 下载 tool 压缩包
-wget http://download.pingcap.org/tidb-tools-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-tools-latest-linux-amd64.sha256
+wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
+wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
 
 # 检查文件完整性，返回 ok 则正确
-sha256sum -c tidb-tools-latest-linux-amd64.sha256
+sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
 # 解开压缩包
-tar -xzf tidb-tools-latest-linux-amd64.tar.gz
-cd tidb-tools-latest-linux-amd64
+tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
+cd tidb-enterprise-tools-latest-linux-amd64
 ```
 
 ## MySQL 开启 binlog
@@ -54,7 +54,8 @@ meta = "./syncer.meta"
 worker-count = 1
 batch = 1
 
-pprof-addr = ":10081"
+# pprof 调试地址, Prometheus 也可以通过该地址拉取 syncer metrics
+status-addr = ":10081"
 
 skip-sqls = ["ALTER USER", "CREATE USER"]
 
@@ -72,7 +73,6 @@ tbl-name = "table1"
 [[replicate-do-table]]
 db-name ="db3"
 tbl-name = "table2"
-
 # 支持正则，以~开头表示使用正则
 # 同步所有以 test 开头的库
 replicate-do-db = ["~^test.*"]
@@ -109,6 +109,7 @@ port = 4000
 
 启动 `syncer`:
 
+
 ```bash
 ./bin/syncer -config config.toml
 2016/10/27 15:22:01 binlogsyncer.go:226: [info] begin to sync binlog from position (mysql-bin.000003, 1280)
@@ -122,7 +123,6 @@ port = 4000
 ```sql
 INSERT INTO t1 VALUES (4, 4), (5, 5);
 ```
-
 登录到 TiDB 查看：
 
 ```sql
@@ -156,7 +156,7 @@ mysql> select * from t1;
 +   分表中是否包含唯一递增主键，或者合并后数据上有冲突的唯一索引或者主键
 
 ## 分库分表同步示例
-![](./route.jpeg = 350x350)
+![](../media/syncer_sharding.jpg)
 
 则只需要在所有 mysql 实例下面，启动 syncer, 并且设置以下 route-rule
 ```
@@ -166,3 +166,13 @@ pattern-table = "table_*"
 target-schema = "example_db"
 target-table = "table"
 ```
+## 监控方案
+Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息存储方案，使用 Grafana 作为可视化组件进行展示。
+
+Prometheus 是一个拥有多维度数据模型，灵活的查询语句的时序数据库。Prometheus 作为热门的开源项目，拥有活跃的社区及众多的成功案例。
+
+Prometheus 提供了多个组件供用户使用。目前，我们使用 Prometheus Server，来收集和存储时间序列数据。Client 代码库，在程序中定制需要的 Metrics 。Prometheus 主动抓取这些 Metrics, 配合 AlertManager 来实现报警机制。其结构如下图
+![](../media/syncer_monitor_scheme.png)
+
+Grafana 是一个开源的 metric 分析及可视化系统。我们使用 Grafana 来展示各项性能指标 。如下图所示
+![](../media/syncer_monitor.png)
