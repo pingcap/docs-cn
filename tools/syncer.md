@@ -156,7 +156,7 @@ mysql> select * from t1;
 +   分表中是否包含唯一递增主键，或者合并后数据上有冲突的唯一索引或者主键
 
 ## 分库分表同步示例
-![](../media/syncer_sharding.jpg)
+![](../media/syncer_sharding.png)
 
 则只需要在所有 mysql 实例下面，启动 syncer, 并且设置以下 route-rule
 ```

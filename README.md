@@ -23,6 +23,7 @@
   - [与 MySQL 兼容性对比](op-guide/mysql-compatibility.md)
 + 高级功能
   - [数据迁移方法](op-guide/migration.md)
+  - [Syncer 使用文档](tools/syncer.md)
   - [Loader 使用文档](tools/loader.md)
   - [性能调优](op-guide/tune-tikv.md)
   - [读取历史版本数据](op-guide/history-read.md)
