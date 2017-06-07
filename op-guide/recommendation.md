@@ -7,7 +7,7 @@ category: deployment
 
 To learn the TiDB architecture, see [TiDB Architecture](../README.md#TiDB-Architecture).
 
-The following table lists the recommended hardware for each components.
+The following table lists the recommended hardware for each component.
 
 | Component | # of CPU Cores | Memory | Disk Type | Disk | # of Instances |
 | ---- | ------- | -------- | ------- | ------- | --------- |
