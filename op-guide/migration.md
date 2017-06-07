@@ -20,9 +20,9 @@ See the following for the assumed MySQL and TiDB server information:
 ## Step 1. Using the `checker` tool to check the Schema
 
 Before migrating, you can use the `checker` tool in TiDB to check if TiDB supports the table schema of the data to be migrated in advance. If the `checker` fails to check a certain table schema, it means that the table is not currently supported by TiDB and therefore the data in the table cannot be migrated. 
-See [Downloading the TiDB toolset](#downloading-the-tidb-toolset) to download the `checker` tool.
+See [Downloading the TiDB Toolset](#downloading-the-tidb-toolset) to download the `checker` tool.
 
-### Downloading the TiDB toolset
+### Downloading the TiDB Toolset
 
 #### Linux
 
@@ -194,10 +194,25 @@ The previous section introduces how to import data from MySQL to TiDB in full vo
 
 Therefore, TiDB provides the `syncer` tool for an incremental data import from MySQL to TiDB easily.
 
-See [Downloading the TiDB toolset](#downloading-the-tidb-toolset) to download the `syncer` tool.
+See [Downloading the TiDB Enterprise Toolset](#downloading-the-tidb-enterprise-toolset) to download the `syncer` tool.
+
+### Downloading the TiDB Enterprise Toolset
+
+#### Linux
+
+```bash
+# Download the enterpise tool package.
+wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
+wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
+
+# Check the file integrity. If the result is OK, the file is correct.
+sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
+# Extract the package.
+tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
+cd tidb-enterprise-tools-latest-linux-amd64
+```
 
 Assuming the data from `t1` and `t2` is already imported to TiDB using `mydumper`/`myloader`. Now we hope that any updates to these two tables are synchronized to the TiDB in real time.
-
 
 ###1. Enabling binary logging (binlog) in MySQL
 
