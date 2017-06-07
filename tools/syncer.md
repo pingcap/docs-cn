@@ -6,7 +6,7 @@ category: advanced
 # Syncer 使用文档
 
 ## syncer 架构
-![](../media/syncer_architecture.png)
+![architecture](../media/syncer_architecture.png)
 
 ## 下载 TiDB 工具集 (Linux)
 
@@ -150,8 +150,7 @@ mysql> select * from t1;
 
 
 ```bash
-2016/10/27 15:22:31 syncer.go:668: [info] [syncer]total events = 1, insert = 1, update = 0, delete = 0, total tps = 0, recent tps = 0, binlog name = mysql-bin.000003, binlog pos = 1280.
-2016/10/27 15:23:01 syncer.go:668: [info] [syncer]total events = 2, insert = 2, update = 0, delete = 0, total tps = 0, recent tps = 0, binlog name = mysql-bin.000003, binlog pos = 1538.
+2017/06/08 01:18:51 syncer.go:934: [info] [syncer]total events = 15, total tps = 0, recent tps = 0, master-binlog = (ON.000001, 11992), master-binlog-gtid=53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-74, syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-17
 ```
 
 可以看到，使用 `syncer`，我们就能自动的将 MySQL 的更新同步到 TiDB。
@@ -163,7 +162,7 @@ mysql> select * from t1;
 +   分表中是否包含唯一递增主键，或者合并后数据上有冲突的唯一索引或者主键
 
 ## 分库分表同步示例
-![](../media/syncer_sharding.png)
+![sharding](../media/syncer_sharding.png)
 
 则只需要在所有 mysql 实例下面，启动 syncer, 并且设置以下 route-rule
 ```
@@ -174,12 +173,8 @@ target-schema = "example_db"
 target-table = "table"
 ```
 ## 监控方案
-Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息存储方案，使用 Grafana 作为可视化组件进行展示。
-
-Prometheus 是一个拥有多维度数据模型，灵活的查询语句的时序数据库。Prometheus 作为热门的开源项目，拥有活跃的社区及众多的成功案例。
-
-Prometheus 提供了多个组件供用户使用。目前，我们使用 Prometheus Server，来收集和存储时间序列数据。Client 代码库，在程序中定制需要的 Metrics 。Prometheus 主动抓取这些 Metrics, 配合 AlertManager 来实现报警机制。其结构如下图
-![](../media/syncer_monitor_scheme.png)
+Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息存储方案，使用 Grafana 作为可视化组件进行展示。配合 AlertManager 来实现报警机制。其方案如下图
+![monitor_scheme](../media/syncer_monitor_scheme.png)
 
 Grafana 是一个开源的 metric 分析及可视化系统。我们使用 Grafana 来展示各项性能指标 。如下图所示
-![](../media/syncer_monitor.png)
+![monitor](../media/syncer_monitor.png)
