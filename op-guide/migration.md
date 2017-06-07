@@ -49,14 +49,14 @@ category: advanced
 
 ```bash
 # 下载 tool 压缩包
-wget http://download.pingcap.org/tidb-tools-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-tools-latest-linux-amd64.sha256
+wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
+wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
 
 # 检查文件完整性，返回 ok 则正确
-sha256sum -c tidb-tools-latest-linux-amd64.sha256
+sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
 # 解开压缩包
-tar -xzf tidb-tools-latest-linux-amd64.tar.gz
-cd tidb-tools-latest-linux-amd64
+tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
+cd tidb-enterprise-tools-latest-linux-amd64
 ```
 
 ### 使用 checker 检查的一个示范
@@ -260,19 +260,10 @@ meta = "./syncer.meta"
 worker-count = 1
 batch = 1
 
-pprof-addr = ":10081"
+# pprof 调试地址, Prometheus 也可以通过该地址拉取 syncer metrics
+status-addr = ":10081"
 
-[from]
-host = "127.0.0.1"
-user = "root"
-password = ""
-port = 3306
-
-[to]
-host = "127.0.0.1"
-user = "root"
-password = ""
-port = 4000
+skip-sqls = ["ALTER USER", "CREATE USER"]
 
 # 支持白名单过滤, 指定只同步的某些库和某些表, 例如:
 
@@ -288,10 +279,38 @@ tbl-name = "table1"
 [[replicate-do-table]]
 db-name ="db3"
 tbl-name = "table2"
-
 # 支持正则，以~开头表示使用正则
 # 同步所有以 test 开头的库
 replicate-do-db = ["~^test.*"]
+
+# sharding 同步规则，采用 wildcharacter
+# 1. 星号字符 (*) 可以匹配零个或者多个字符,
+#    例子, doc* 匹配 doc 和 document, 但是和 dodo 不匹配;
+#    星号只能放在 pattern 结尾，并且一个 pattern 中只能有一个
+# 2. 问号字符 (?) 匹配任一一个字符
+[[route-rules]]
+pattern-schema = "route_*"
+pattern-table = "abc_*"
+target-schema = "route"
+target-table = "abc"
+
+[[route-rules]]
+pattern-schema = "route_*"
+pattern-table = "xyz_*"
+target-schema = "route"
+target-table = "xyz"
+
+[from]
+host = "127.0.0.1"
+user = "root"
+password = ""
+port = 3306
+
+[to]
+host = "127.0.0.1"
+user = "root"
+password = ""
+port = 4000
 ```
 
 启动 `syncer`:

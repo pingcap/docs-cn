@@ -1,3 +1,10 @@
+---
+title: Syncer 使用文档
+category: advanced
+---
+
+# Syncer 使用文档
+
 ## syncer 架构
 ![](../media/syncer_architecture.png)
 
