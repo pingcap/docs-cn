@@ -178,5 +178,5 @@ target-schema = "example_db"
 target-table = "table"
 ```
 ## 监控方案
-Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息存储方案，使用 Grafana 作为可视化组件进行展示，配合 AlertManager 来实现报警机。其方案如下图
+Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息存储方案，使用 Grafana 作为可视化组件进行展示，配合 AlertManager 来实现报警。其方案如下图
 ![monitor_scheme](../media/syncer_monitor_scheme.png)
