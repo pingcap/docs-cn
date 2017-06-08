@@ -150,7 +150,12 @@ mysql> select * from t1;
 
 
 ```bash
-2017/06/08 01:18:51 syncer.go:934: [info] [syncer]total events = 15, total tps = 0, recent tps = 0, master-binlog = (ON.000001, 11992), master-binlog-gtid=53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-74, syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-17
+2017/06/08 01:18:51 syncer.go:934: [info] [syncer]total events = 15, total tps = 130, recent tps = 4,
+master-binlog = (ON.000001, 11992), master-binlog-gtid=53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-74,
+syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-17
+2017/06/08 01:19:21 syncer.go:934: [info] [syncer]total events = 15, total tps = 191, recent tps = 2,
+master-binlog = (ON.000001, 11992), master-binlog-gtid=53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-74,
+syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-35
 ```
 
 可以看到，使用 `syncer`，我们就能自动的将 MySQL 的更新同步到 TiDB。
@@ -173,8 +178,5 @@ target-schema = "example_db"
 target-table = "table"
 ```
 ## 监控方案
-Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息存储方案，使用 Grafana 作为可视化组件进行展示。配合 AlertManager 来实现报警机制。其方案如下图
+Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息存储方案，使用 Grafana 作为可视化组件进行展示，配合 AlertManager 来实现报警机。其方案如下图
 ![monitor_scheme](../media/syncer_monitor_scheme.png)
-
-Grafana 是一个开源的 metric 分析及可视化系统。我们使用 Grafana 来展示各项性能指标 。如下图所示
-![monitor](../media/syncer_monitor.png)
