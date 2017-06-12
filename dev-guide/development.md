@@ -8,7 +8,7 @@ Before you begin, check the [supported platforms](./requirements.md#supported-pl
 
 ## Install RocksDB
 
-RocksDB 5.1 is required, You can install the RocksDB shared library manually according to [INSTALL.md](https://github.com/facebook/rocksdb/blob/master/INSTALL.md) or use the [build RocksDB script](../scripts/build_rocksdb.sh) to build and install RocksDB in the system path.
+RocksDB 5.4+ is required, You can install the RocksDB shared library manually according to [INSTALL.md](https://github.com/facebook/rocksdb/blob/master/INSTALL.md) or use the [build RocksDB script](../scripts/build_rocksdb.sh) to build and install RocksDB in the system path.
 
 ## Build TiKV
 
