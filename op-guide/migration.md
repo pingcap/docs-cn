@@ -28,14 +28,14 @@ See [Downloading the TiDB Toolset](#downloading-the-tidb-toolset) to download th
 
 ```bash
 # Download the tool package.
-wget http://download.pingcap.org/tidb-tools-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-tools-latest-linux-amd64.sha256
+wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
+wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
 
 # Check the file integrity. If the result is OK, the file is correct.
-sha256sum -c tidb-tools-latest-linux-amd64.sha256 
+sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
 # Extract the package. 
-tar -xzf tidb-tools-latest-linux-amd64.tar.gz
-cd tidb-tools-latest-linux-amd64
+tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
+cd tidb-enterprise-tools-latest-linux-amd64
 ```
 
 ### A sample to use the `checker` tool
@@ -105,20 +105,20 @@ github.com/pingcap/tidb/parser/yy_parser.go:124:
 ```
 
 
-## Step 2. Using the `mydumper` / `myloader` tool to export and import data in full volume
+## Step 2. Using the `mydumper` / `loader` tool to export and import data in full volume
 
-You can use `mydumper` to export data from MySQL and `myloader` to import the data into TiDB. 
+You can use `mydumper` to export data from MySQL and `loader` to import the data into TiDB.
 
-**Note:** Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use the `mysqldump` tool. Its performance is much slower than `mydumper` / `myloader` and it costs a lot of time to migrate large amounts of data.
+**Note:** Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use the `mysqldump` tool. Its performance is much slower than `mydumper` / `loader` and it costs a lot of time to migrate large amounts of data.
 
-`mydumper`/`myloader` is a more powerful tool to migrate data. For more information, see [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper).
+`mydumper`/`loader` is a more powerful tool to migrate data. For more information, see [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper).
 
 ###1. Downloading the Binary
 
 #### Linux
 
 ```bash
-# Download the mydumper package. Note: Both `mydumper`/`myloader` are included in the same package.
+# Download the mydumper package.
 wget http://download.pingcap.org/mydumper-linux-amd64.tar.gz
 wget http://download.pingcap.org/mydumper-linux-amd64.sha256
 
@@ -148,10 +148,10 @@ On the Cloud platforms which require the `super privilege`, such as on the Aliyu
 
 ###3. Importing data to TiDB
 
-Use the `myloader` tool to import the data from MySQL to TiDB
+Use the `loader` tool to import the data from MySQL to TiDB
 
 ```bash
-./bin/myloader -h 127.0.0.1 -P 4000 -u root -t 16 -q 1 -d ./var/test
+./bin/loader -h 127.0.0.1 -u root -P 4000 -t 4 -d ./var/test
 ```
 In this command, 
 + `-q 1` means how many queries are included in this transaction. The default value is 1000. In this example, we use `1`.
@@ -190,7 +190,7 @@ mysql> select * from t2;
 
 ## Step 3. Using the `syncer` tool to import data incrementally
 
-The previous section introduces how to import data from MySQL to TiDB in full volume using `mydumper`/`myloader`. But this is not applicable if the data in MySQL is updated after the migration and it is expected to import the updated data quickly. 
+The previous section introduces how to import data from MySQL to TiDB in full volume using `mydumper`/`loader`. But this is not applicable if the data in MySQL is updated after the migration and it is expected to import the updated data quickly.
 
 Therefore, TiDB provides the `syncer` tool for an incremental data import from MySQL to TiDB easily.
 
@@ -212,7 +212,7 @@ tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
 cd tidb-enterprise-tools-latest-linux-amd64
 ```
 
-Assuming the data from `t1` and `t2` is already imported to TiDB using `mydumper`/`myloader`. Now we hope that any updates to these two tables are synchronized to the TiDB in real time.
+Assuming the data from `t1` and `t2` is already imported to TiDB using `mydumper`/`loader`. Now we hope that any updates to these two tables are synchronized to the TiDB in real time.
 
 ###1. Enabling binary logging (binlog) in MySQL
 
@@ -256,12 +256,45 @@ log-level = "info"
 
 server-id = 101
 
-# the file path for meta
 meta = "./syncer.meta"
-worker-count = 1
-batch = 1
+worker-count = 16
+batch = 10
 
-pprof-addr = ":10081"
+status-addr = ":10081"
+
+skip-sqls = ["ALTER USER", "CREATE USER"]
+
+##replicate-do-db priority over replicate-do-table if have same db name
+##and we support regex expression , start with '~' declare use regex expression.
+#
+#replicate-do-db = ["~^b.*","s1"]
+#[[replicate-do-table]]
+#db-name ="test"
+#tbl-name = "log"
+
+#[[replicate-do-table]]
+#db-name ="test"
+#tbl-name = "~^a.*"
+
+# skip prefix mathched sqls
+# skip-sqls = ["^ALTER\\s+USER", "^CREATE\\s+USER"]
+
+# 1. asterisk character (*, also called "star") matches zero or more characters,
+#    for example, doc* matches doc and document but not dodo;
+#    asterisk character must be in the end of wildcard word,
+#    and there is only one asterisk in one wildcard word
+# 2. the question mark ? matches exactly one character
+#[[route-rules]]
+#pattern-schema = "route_*"
+#pattern-table = "abc_*"
+#target-schema = "route"
+#target-table = "abc"
+
+#[[route-rules]]
+#pattern-schema = "route_*"
+#pattern-table = "xyz_*"
+#target-schema = "route"
+#target-table = "xyz"
 
 [from]
 host = "127.0.0.1"
@@ -312,8 +345,12 @@ mysql> select * from t1;
 `syncer` outputs the current synchronized data statistics every 30 seconds:
 
 ```bash
-2016/10/27 15:22:31 syncer.go:668: [info] [syncer]total events = 1, insert = 1, update = 0, delete = 0, total tps = 0, recent tps = 0, binlog name = mysql-bin.000003, binlog pos = 1280.
-2016/10/27 15:23:01 syncer.go:668: [info] [syncer]total events = 2, insert = 2, update = 0, delete = 0, total tps = 0, recent tps = 0, binlog name = mysql-bin.000003, binlog pos = 1538.
+2017/06/08 01:18:51 syncer.go:934: [info] [syncer]total events = 15, total tps = 130, recent tps = 4,
+master-binlog = (ON.000001, 11992), master-binlog-gtid=53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-74,
+syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-17
+2017/06/08 01:19:21 syncer.go:934: [info] [syncer]total events = 15, total tps = 191, recent tps = 2,
+master-binlog = (ON.000001, 11992), master-binlog-gtid=53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-74,
+syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-35
 ```
 
 You can see that by using `syncer`, the updates in MySQL can be automatically synchronized in TiDB.
