@@ -10,7 +10,7 @@ echo "building RocksDB in $DEPS_PATH"
 mkdir -p ${DEPS_PATH}
 cd $DEPS_PATH
 
-ROCKSDB_VER=5.2.1
+ROCKSDB_VER=5.4.6
 
 SUDO=
 if which sudo; then 
@@ -19,8 +19,12 @@ fi
 
 function get_linux_platform {
     if [ -f /etc/redhat-release ]; then 
-        # For CentOS or redhat, we treat all as CentOS.
-        echo "CentOS"
+        if [[ `cat /etc/redhat-release` == Fedora* ]]; then
+	    echo "Fedora"
+        else 
+            # For CentOS or redhat, we treat all as CentOS.
+            echo "CentOS"
+	fi
     elif [ -f /etc/lsb-release ]; then
         DIST=`cat /etc/lsb-release | grep '^DISTRIB_ID' | awk -F=  '{ print $2 }'`
         echo "$DIST"
@@ -50,6 +54,21 @@ function install_in_centos {
     if [ ! -d rocksdb-${ROCKSDB_VER} ]; then
         ${SUDO} yum install -y epel-release
         ${SUDO} yum install -y snappy-devel zlib-devel bzip2-devel lz4-devel
+        curl -L https://github.com/facebook/rocksdb/archive/v${ROCKSDB_VER}.tar.gz -o rocksdb.tar.gz 
+        tar xf rocksdb.tar.gz 
+    fi
+    
+    cd rocksdb-${ROCKSDB_VER} 
+    make shared_lib 
+    ${SUDO} make install-shared 
+    # guarantee tikv can find rocksdb.
+    ${SUDO} ldconfig
+}
+
+function install_in_fedora {
+    echo "building RocksDB in Fedora..."
+    if [ ! -d rocksdb-${ROCKSDB_VER} ]; then
+        ${SUDO} dnf install -y snappy-devel zlib-devel bzip2-devel lz4-devel
         curl -L https://github.com/facebook/rocksdb/archive/v${ROCKSDB_VER}.tar.gz -o rocksdb.tar.gz 
         tar xf rocksdb.tar.gz 
     fi
@@ -96,6 +115,9 @@ case "$OSTYPE" in
             ;;
             CentOS)
                 install_in_centos
+            ;;
+            Fedora)
+                install_in_fedora
             ;;
             *)
                 echo "unsupported platform $dist, you may install RocksDB manually"
