@@ -53,7 +53,7 @@ function install_in_centos {
     echo "building RocksDB in CentOS..."
     if [ ! -d rocksdb-${ROCKSDB_VER} ]; then
         ${SUDO} yum install -y epel-release
-        ${SUDO} yum install -y snappy-devel zlib-devel bzip2-devel lz4-devel
+        ${SUDO} yum install -y snappy-devel zlib-devel bzip2-devel lz4-devel libzstd-devel
         curl -L https://github.com/facebook/rocksdb/archive/v${ROCKSDB_VER}.tar.gz -o rocksdb.tar.gz 
         tar xf rocksdb.tar.gz 
     fi
@@ -88,6 +88,7 @@ function install_in_macosx {
             brew update
             brew install lz4 || true
             brew install snappy || true
+            brew install zstd || true
         else
             # note: macports do allow you to do port install rocksdb
             port=$(which port 2>/dev/null) || true
@@ -95,6 +96,7 @@ function install_in_macosx {
                 $SUDO port selfupdate
                 $SUDO port install lz4 || true
                 $SUDO port install snappy || true
+                $SUDO port install zstd || true
             fi
         fi
         curl -L https://github.com/facebook/rocksdb/archive/v${ROCKSDB_VER}.tar.gz -o rocksdb.tar.gz 
