@@ -66,12 +66,6 @@ TiDB follows MySQL user authentication mechanism. You can create user accounts a
   GRANT SELECT ON \*.\* TO  'test'@'localhost';
   ```
 
-Note: There are following differences between TiDB and MySQL in user account creating and authorizing:
-
-+ You can use the "user@hostname" grammar to create accounts. In this grammar, “hostname” supports exact match like “192.168.199.1” and full match like “%”, but doesn’t support prefix match like “192.168.%”.
-
-+ To be compatible with the existing MySQL businesses, TiDB supports user authorization but it only supports the authorization grammar and recording the authorization in the system table. TiDB checks the authorization for the DropTable statement only. It does not check the authorization for other statements.
-
 ## How does TiDB scale?
 
 As your business grows, your database might face the following three bottlenecks:

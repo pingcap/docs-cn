@@ -65,9 +65,14 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 + The value can be (true) or (false). (true) is to enable and (false) is to disable. The Performance Schema provides a way to inspect internal execution of the server at runtime. See [performance schema](http://dev.mysql.com/doc/refman/5.7/en/performance-schema.html) for more information. If you enable the performance schema, the performance will be affected.
 
 ### --privilege
-+ enable(true) or disable(false) the privilege check.
++ enable(true) or disable(false) the privilege check(for debugging)
++ default: true
++ The value can be (true) or (false). (true) is to enable and (false) is to disable. This option is deprecated and will be removed.
+
+### --skip-grant-table
++ enables anyone to connect without a password and with all privileges
 + default: false
-+ The value can be (true) or (false). (true) is to enable and (false) is to disable. This feature is a work in progress, so it's disabled by default. It will be enabled by default when finished.
++ The value can be (true) or (false). This option is usually used to reset password, enabling it requires the root privileges.
 
 ### --report-status
 + enable(true) or disable(false) the status report and pprof tool.
