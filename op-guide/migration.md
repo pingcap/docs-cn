@@ -113,7 +113,7 @@ You can use `mydumper` to export data from MySQL and `loader` to import the data
 
 `mydumper`/`loader` is a more powerful tool to migrate data. For more information, see [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper).
 
-###1. Downloading the Binary
+### 1. Downloading the Binary
 
 #### Linux
 
@@ -129,7 +129,7 @@ tar -xzf mydumper-linux-amd64.tar.gz
 cd mydumper-linux-amd64
 ```
 
-###2. Exporting data from MySQL 
+### 2. Exporting data from MySQL 
 
 Use the `mydumper` tool to export data from MySQL by typing the following command:
 
@@ -146,15 +146,20 @@ In this command,
 **Note:**
 On the Cloud platforms which require the `super privilege`, such as on the Aliyun platform, add the `--no-locks` parameter to the command. If not, you might get the error message that you don't have the privilege.
 
-###3. Importing data to TiDB
+### 3. Importing data to TiDB
 
+<<<<<<< HEAD
+Use the `loader` tool to import the data from MySQL to TiDB.
+=======
 Use the `loader` tool to import the data from MySQL to TiDB
+>>>>>>> master
 
 ```bash
 ./bin/loader -h 127.0.0.1 -u root -P 4000 -t 4 -d ./var/test
 ```
+
 In this command, 
-+ `-q 1` means how many queries are included in this transaction. The default value is 1000. In this example, we use `1`.
++ `-q 1` means how many queries are included in each transaction. The default value is 1. When importing data to TiDB, it is recommended to use the default value.
 
 After the data is imported, you can view the data in TiDB using the official MySQL client:
 
@@ -214,7 +219,7 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 Assuming the data from `t1` and `t2` is already imported to TiDB using `mydumper`/`loader`. Now we hope that any updates to these two tables are synchronized to the TiDB in real time.
 
-###1. Enabling binary logging (binlog) in MySQL
+### 1. Enabling binary logging (binlog) in MySQL
 
 Before using the `syncer` tool, make sure:
 + Binlog is enabled in MySQL. See [Setting the Replication Master Configuration](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html).
@@ -225,9 +230,9 @@ Before using the `syncer` tool, make sure:
     SET GLOBAL binlog_format = ROW;
     ``` 
 
-###2. Obtaining the position to synchronize
+### 2. Obtaining the position to synchronize
 
-Use the `show master status` statement to get the position of the current binlog, which is the  initial synchronizing position for `syncer`. 
+Use the `show master status` statement to get the position of the current binlog, which is the initial synchronizing position for `syncer`. 
 
 ```bash
 show master status;
@@ -247,7 +252,7 @@ binlog-pos = 1280
 ```
 **Note:** The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is synchronized. 
 
-###3. Start `syncer`
+### 3. Start `syncer`
 
 The `config.toml` file for `syncer`:
 
@@ -256,6 +261,10 @@ log-level = "info"
 
 server-id = 101
 
+<<<<<<< HEAD
+# The file path for meta.
+=======
+>>>>>>> master
 meta = "./syncer.meta"
 worker-count = 16
 batch = 10
@@ -307,26 +316,43 @@ host = "127.0.0.1"
 user = "root"
 password = ""
 port = 4000
-```
 
+# Support whitelist filtering and specify the libraries and tables to synchronize, for example: 
+
+# Specify all the tables under db1 and db2 to synchronize
+replicate-do-db = ["db1","db2"]
+
+# Specify db1.table1 to synchronize
+[[replicate-do-table]]
+db-name ="db1"
+tbl-name = "table1"
+
+# Specify db3.table2 to synchronize 
+[[replicate-do-table]]
+db-name ="db3"
+tbl-name = "table2"
+
+# Support regular expressions.Start a regular expression with "~".
+# Synchronize all the libraries that begin with test.
+replicate-do-db = ["~^test.*"]
+```
 Start `syncer`:
 
 ```bash
 ./bin/syncer -config config.toml
-
 2016/10/27 15:22:01 binlogsyncer.go:226: [info] begin to sync binlog from position (mysql-bin.000003, 1280)
 2016/10/27 15:22:01 binlogsyncer.go:130: [info] register slave for master server 127.0.0.1:3306
 2016/10/27 15:22:01 binlogsyncer.go:552: [info] rotate to (mysql-bin.000003, 1280)
 2016/10/27 15:22:01 syncer.go:549: [info] rotate binlog to (mysql-bin.000003, 1280)
 ```
 
-###4. Inserting data into MySQL
+### 4. Inserting data into MySQL
 
 ```bash
 INSERT INTO t1 VALUES (4, 4), (5, 5);
 ```
 
-###5. Login TiDB and view the data:
+### 5. Logging in TiDB and viewing the data:
 
 ```bash
 mysql -h127.0.0.1 -P4000 -uroot -p
