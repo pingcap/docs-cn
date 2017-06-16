@@ -58,6 +58,10 @@ address = ""
 job = "tikv"
 
 [raftstore]
+# 默认为 true，表示强制将数据刷到磁盘上。如果是非金融安全级别的业务场景，建议设置成 false，
+# 以便获得更高的性能。
+sync-log = true
+
 region-max-size = "80MB"
 # region 分裂阈值
 region-split-size = "64MB"
