@@ -150,6 +150,11 @@ Yes. Your applications can be migrated to TiDB without changing a single line of
 
 Yes. TiDB supports many popular storage engines, such as goleveldb and TiKV.
 
+## Does the `go get` or `go install` command work with TiDB?
+
+No. You can clone the [TiDB repository](https://github.com/pingcap/tidb) to your `$GOPATH/src/github.com/pingcap/tidb` and run the `make` command manually. TiDB is a project rather than a library. Its package management is very complex and the parser is generated using the [`parser.y`](https://github.com/pingcap/tidb/blob/master/parser/parser.y) file, so TiDB uses `Makefile`.
+However, if you are very familiar with `Go`, you can try the `make parser; ln -s _vendor/src vendor` command at the TiDB root directory. After that, the `go run`, `go test`, `go install` commands might work. But this approach is not recommended.
+
 ## Why the modified `toml` configuration for TiKV/PD does not take effect?
 You need to set the `--config` parameter in TiKV/PD to make the `toml` configuration effective. TiKV/PD does not read the configuration by default.
 
