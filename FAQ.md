@@ -46,7 +46,7 @@ TiDB is not a good choice if the number of the rows in your database table is le
 
 ## How does TiDB manage user account?
 
-TiDB follows MySQL user authentication mechanism. You can create user accounts and authorize them. 
+TiDB follows MySQL user authentication mechanism. You can create user accounts and authorize them.
 
 + You can use MySQL grammar to create user accounts. For example, you can create a user account by using the following statement:
   ```
@@ -100,13 +100,13 @@ Yes. The transaction model in TiDB is inspired by Google’s Percolator, a paper
 
 Yes. ACID semantics are guaranteed in TiDB:
 
-+ Atomicity: Each transaction in TiDB is "all or nothing": if one part of the transaction fails, then the entire transaction fails, and the database state is left unchanged. TiDB guarantees atomicity in each and every situation, including power failures, errors, and crashes. 
++ Atomicity: Each transaction in TiDB is "all or nothing": if one part of the transaction fails, then the entire transaction fails, and the database state is left unchanged. TiDB guarantees atomicity in each and every situation, including power failures, errors, and crashes.
 
-+ Consistency: TiDB ensures that any transaction brings the database from one valid state to another. Any data written to the TiDB database must be valid according to all defined rules, including constraints, cascades, triggers, and any combination thereof. 
++ Consistency: TiDB ensures that any transaction brings the database from one valid state to another. Any data written to the TiDB database must be valid according to all defined rules, including constraints, cascades, triggers, and any combination thereof.
 
-+ Isolation: TiDB provides snapshot isolation (SI), snapshot isolation with lock (SQL statement: SELECT ... FOR UPDATE), and externally consistent reads and writes in distributed transactions.   
++ Isolation: TiDB provides snapshot isolation (SI), snapshot isolation with lock (SQL statement: SELECT ... FOR UPDATE), and externally consistent reads and writes in distributed transactions.
 
-+ Durability: TiDB allows a collection of machines to work as a coherent group that can survive the failures of some of its members. So in TiDB, once a transaction has been committed, it will remain so, even in the event of power loss, crashes, or errors. 
++ Durability: TiDB allows a collection of machines to work as a coherent group that can survive the failures of some of its members. So in TiDB, once a transaction has been committed, it will remain so, even in the event of power loss, crashes, or errors.
 
 ## How to choose the lease parameter in TiDB?
 
@@ -124,7 +124,7 @@ Any language that has MySQL client or driver.
 
 TiDB is compatible with MySQL protocol. TiDB sever speaks MySQL protocol and follows MySQL’s SQL grammar. The MySQL protocol layer and the TiDB SQL layer within the TiDB server work together to translate MySQL requests to TiDB SQL plan.
 
-TiDB maps relational databases to Key-Value databases. It maps the relational table to Key-Value pairs and it also translate SQL statements to Key-Value operations. 
+TiDB maps relational databases to Key-Value databases. It maps the relational table to Key-Value pairs and it also translate SQL statements to Key-Value operations.
 
 ## Can I use SQL statements to work with TiDB?
 
@@ -155,7 +155,7 @@ You need to set the `--config` parameter in TiKV/PD to make the `toml` configura
 
 ## Why the TiKV data directory is gone?
 
-For TiKV, the default value of the `--store` parameter is `/tmp/tikv/store`. In some virtual machines, restarting the operating system results in removing all the data under the `/tmp` directory. It is recommended to set the TiKV data directory explicitly by setting the `--store` parameter.
+For TiKV, the default value of the `--data-dir` parameter is `/tmp/tikv/store`. In some virtual machines, restarting the operating system results in removing all the data under the `/tmp` directory. It is recommended to set the TiKV data directory explicitly by setting the `--data-dir` parameter.
 
 ## The `cluster ID mismatch` message is displayed when starting TiKV.
 
