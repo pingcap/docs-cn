@@ -134,22 +134,8 @@ github.com/pingcap/tidb-tools/checker/checker.go:114:
 
 我们使用 `mydumper` 从 MySQL 导出数据，然后用 `loader` 将其导入到 TiDB 里面。
 
-> 注意：虽然 TiDB 也支持使用 MySQL 官方的 `mysqldump` 工具来进行数据的迁移工作，但相比于 `mydumper` / `myloader`，性能会慢很多，大量数据的迁移会花费很多时间，这里我们并不推荐。
+> 注意：虽然 TiDB 也支持使用 MySQL 官方的 `mysqldump` 工具来进行数据的迁移工作，但相比于 `mydumper` / `loader`，性能会慢很多，大量数据的迁移会花费很多时间，这里我们并不推荐。
 
-
-### 下载 Binary (Linux)
-
-```bash
-# 下载 mydumper 压缩包
-wget http://download.pingcap.org/mydumper-linux-amd64.tar.gz
-wget http://download.pingcap.org/mydumper-linux-amd64.sha256
-
-# 检查文件完整性，返回 ok 则正确
-sha256sum -c mydumper-linux-amd64.sha256
-# 解开压缩包
-tar -xzf mydumper-linux-amd64.tar.gz
-cd mydumper-linux-amd64
-```
 
 ### 从 MySQL 导出数据
 
@@ -211,7 +197,7 @@ mysql> select * from t2;
 
 ## 使用 `syncer` 增量导入数据
 
-上面我们介绍了如何使用 `mydumper`/`myloader` 将 MySQL 的数据全量导入到 TiDB，但如果后续 MySQL 的数据有更新，我们仍然希望快速导入，使用全量的方式就不合适了。
+上面我们介绍了如何使用 `mydumper`/`loader` 将 MySQL 的数据全量导入到 TiDB，但如果后续 MySQL 的数据有更新，我们仍然希望快速导入，使用全量的方式就不合适了。
 
 TiDB 提供 `syncer` 工具能方便的将 MySQL 的数据增量的导入到 TiDB 里面。
 
@@ -231,7 +217,7 @@ tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
 cd tidb-enterprise-tools-latest-linux-amd64
 ```
 
-假设我们之前已经使用 `mydumper`/`myloader` 导入了 `t1` 和 `t2` 两张表的一些数据，现在我们希望这两张表的任何更新，都是实时的同步到 TiDB 上面。
+假设我们之前已经使用 `mydumper`/`loader` 导入了 `t1` 和 `t2` 两张表的一些数据，现在我们希望这两张表的任何更新，都是实时的同步到 TiDB 上面。
 
 ### 获取同步 position
 
