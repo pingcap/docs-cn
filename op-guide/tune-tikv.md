@@ -13,7 +13,7 @@ TiKV 使用了 RocksDB 的 `Column Falimies` 特性，数据最终存储在 Rock
 
 `raft` CF 主要存储的是 raft log，与其对应的参数位于 `[rocksdb.raftcf]` 项中；
 `default` CF 存储的是真正的数据，与其对应的参数位于 `[rocksdb.defaultcf]` 项中；
-`write` CF 存储的是数据的版本信息（MVCC）以及索引相关的数据，相关的参数位于 `[rocksdb.write]` 项中
+`write` CF 存储的是数据的版本信息（MVCC）以及索引相关的数据，相关的参数位于 `[rocksdb.write]` 项中；
 `lock` CF 存储的是锁信息，系统使用默认参数。
 
 每个 CF 都有单独的 `block-cache`，用于缓存数据块，加速 RocksDB 的读取速度，block-cache 的大小通过参数 `block-cache-size` 控制，block-cache-size 越大，能够缓存的热点数据越多，对读取操作越有利，同时占用的系统内存也会越多。
