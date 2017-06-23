@@ -117,6 +117,7 @@ pd_servers
 
 > **TiDB 服务不推荐使用 root 用户运行, 本例使用 tidb 普通用户**。
 
+如果你要是有非默认的私钥地址，请先修改`ansible.cfg`中的`ssh_args` 中的 `aws.key`。你可以替换为私钥所在的地址。
 以下根据这两种情况作说明：
 #### 3.1 ansible 通过 root 用户远程连接部署
 - 修改 inventory.ini, 本例使用 tidb 帐户作为服务运行用户：
