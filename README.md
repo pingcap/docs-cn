@@ -1,16 +1,17 @@
 # TiDB Documentation
 
+## Documentation List
 
-+ [Quick Start](https://github.com/pingcap/tidb/blob/master/docs/QUICKSTART.md)
-+ Step 1: [Download](op-guide/binary-deployment.md#download-and-decompress-the-official-binary-package)
+- [Quick Start](https://github.com/pingcap/tidb/blob/master/docs/QUICKSTART.md)
+- [Step 1: Download](op-guide/binary-deployment.md#download-and-decompress-the-official-binary-package)
 + Step 2: Deploy
   - [Deployment Recommendation](op-guide/recommendation.md)
-  - Ansible Deployment
+  - [Ansible Deployment](op-guide/ansible-deployment.md)
   - [Binary Deployment](op-guide/binary-deployment.md)
   - [Docker Deployment](op-guide/docker-deployment.md)
-  - Cross-Region Deployment
+  - [Cross-Region Deployment](op-guide/location-awareness.md)
   - [Configuration Flags](op-guide/configuration.md)
-+ Step 3: [Scale](op-guide/horizontal-scale.md)
+- [Step 3: Scale](op-guide/horizontal-scale.md)
 + Step 4: Develope
   - [TiDB SQL Grammar](sql/README.md)
   - [Compatibility with MySQL](op-guide/mysql-compatibility.md)
@@ -18,10 +19,9 @@
   - [Overview of the Monitoring Framework](op-guide/monitor-overview.md)
   - [Monitoring a TiDB Cluster](op-guide/monitoring-tidb.md)
   - [PD Command-Line Tools](op-guide/pd-control.md)
-
 + Advanced Usage
   - [Data Migration from MySQL to TiDB](op-guide/migration.md)
-  - [Loader Instructions](./tool/loader.md)
+  - [Loader Instructions](./tools/loader.md)
   - [Performance Tuning](op-guide/tune-TiKV.md)
   - [Reading Data from History Versions](op-guide/history-read.md)
   - [Troubleshooting](./trouble-shooting.md)
