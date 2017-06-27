@@ -16,7 +16,7 @@ version: '2'
 services:
   pd1:
     image: pingcap/pd
-    ports:
+    expose:
       - "2379"
       - "2380"
     volumes:
@@ -34,7 +34,7 @@ services:
 
   pd2:
     image: pingcap/pd
-    ports:
+    expose:
       - "2379"
       - "2380"
     volumes:
@@ -52,7 +52,7 @@ services:
 
   pd3:
     image: pingcap/pd
-    ports:
+    expose:
       - "2379"
       - "2380"
     volumes:
@@ -70,7 +70,7 @@ services:
 
   tikv1:
     image: pingcap/tikv
-    ports:
+    expose:
       - "20160"
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -92,7 +92,7 @@ services:
 
   tikv2:
     image: pingcap/tikv
-    ports:
+    expose:
       - "20160"
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -114,7 +114,7 @@ services:
 
   tikv3:
     image: pingcap/tikv
-    ports:
+    expose:
       - "20160"
     volumes:
       - /etc/localtime:/etc/localtime:ro
