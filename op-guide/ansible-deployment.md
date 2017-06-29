@@ -160,14 +160,14 @@ pd_servers
 	5.1 Edit the `inventory.ini` file as follows:
 	
 	  ```
-	  ## Connection
-	  # ssh via root:
-	  # ansible_user = root
-	  # ansible_become = true
-	  # ansible_become_user = tidb
-	  
-	  # ssh via normal user
-	  ansible_user = tidb
+		  ## Connection
+		  # ssh via root:
+		  # ansible_user = root
+		  # ansible_become = true
+		  # ansible_become_user = tidb
+		  
+		  # ssh via normal user
+		  ansible_user = tidb
 	  ```
 	5.2 Connect to the network and download the TiDB, TiKV, and PD binaries:
 		

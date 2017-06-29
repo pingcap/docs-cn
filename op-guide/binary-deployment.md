@@ -9,11 +9,13 @@ category: deployment
 
 A complete TiDB project contains PD, TiKV, TiDB. The start-up sequence is PD -> TiKV -> TiDB.
 
-To learn the TiDB architecture, see [TiDB Architecture](../README.md#TiDB-Architecture).
+Before your start, see [TiDB Architecture](../README.md#TiDB-Architecture) and [Deployment Recommendations](op-guide/recommendation.md).
 
-To quickly understand and try TiDB, follow [Standalone Cluster Deployment](#standalone-cluster-deployment).
+To quickly understand and try TiDB, see [Single Node Cluster Deployment](#single-node-deployment).
 
-To deploy and use TiDB in production, follow [Multi Nodes Deployment](#multi-nodes-deployment).
+To try TiDB out and explore the features, see [Multiple Nodes Cluster Deployment for Test](#multiple-nodes-cluster-deployment-for-test).
+
+To deploy and use TiDB in production, see [Multiple Nodes Cluster Deployment](#multiple-nodes-cluster-deployment).
 
 ## Download and Decompress the Official Binary Package
 
@@ -32,7 +34,9 @@ tar -xzf tidb-latest-linux-amd64.tar.gz
 cd tidb-latest-linux-amd64
 ```
 
-#### CentOS 6 (Not Recommended)
+### CentOS 6 (Not Recommended)
+
+**Warning:** It is not recommended to deploy on CentOS 6 because most of the developments and tests are performed on the CentOS 7+ and Ubuntu 14.04+ platforms. There might not be enough tests on the CentOS 6 platform.
 
 ```bash
 # Download CentOS 6 package
@@ -47,7 +51,7 @@ tar -xzf tidb-latest-linux-amd64-centos6.tar.gz
 cd tidb-latest-linux-amd64-centos6
 ```
 
-## Standalone Cluster Deployment
+## Single Node Cluster Deployment
 
 1. Start PD.
 
@@ -75,20 +79,22 @@ cd tidb-latest-linux-amd64-centos6
     mysql -h 127.0.0.1 -P 4000 -u root -D test
     ```
 
-## Multi Nodes Deployment In Production
+## Multiple Nodes Cluster Deployment
 
-Assume we have six machines with the following details:
+For production environment, multiple nodes cluster deployment is recommended. Before you begin, see [Deployment Recommendations](op-guide/recommendation.md).
+
+Assuming you have six nodes with the following details:
 
 |Name|Host IP|Services|
 |----|-------|--------|
-|node1|192.168.199.113|PD1, TiDB|
-|node2|192.168.199.114|PD2|
-|node3|192.168.199.115|PD3|
-|node4|192.168.199.116|TiKV1|
-|node5|192.168.199.117|TiKV2|
-|node6|192.168.199.118|TiKV3|
+|Node1|192.168.199.113|PD1, TiDB|
+|Node2|192.168.199.114|PD2|
+|Node3|192.168.199.115|PD3|
+|Node4|192.168.199.116|TiKV1|
+|Node5|192.168.199.117|TiKV2|
+|Node6|192.168.199.118|TiKV3|
 
-1. Start PD on node1, node2 and node3.
+1. Start PD on Node1, Node2 and Node3.
 
     ```bash
     ./bin/pd-server --name=pd1 \
@@ -110,7 +116,7 @@ Assume we have six machines with the following details:
                     --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
     ```
 
-2. Start TiKV on node4, node5 and node6.
+2. Start TiKV on Node4, Node5 and Node6.
 
     ```bash
     ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
@@ -126,7 +132,7 @@ Assume we have six machines with the following details:
                       --store=tikv3
     ```
 
-3. Start TiDB on node1.
+3. Start TiDB on Node1.
 
     ```bash
     ./bin/tidb-server --store=tikv \
@@ -139,20 +145,26 @@ Assume we have six machines with the following details:
     mysql -h 192.168.199.113 -P 4000 -u root -D test
     ```
 
-**Note:** If you are starting TiKV or deploying PD in the production environment, it is highly recommended to specify the path for the configuration file using the `--config` parameter. If the parameter is not set, TiKV or PD does not read the configuration file.
+**Note:** 
+- If you start TiKV or deploy PD in the production environment, it is highly recommended to specify the path for the configuration file using the `--config` flag. If the flag is not set, TiKV or PD does not read the configuration file.
+- If you use `nohup` to start the cluster in the production environment, write the startup commands in a script and then run the script. If not, the `nohup` process might abort because it receives exceptions when the Shell command exits. For more information, see [the TiDB/TiKV/PD process aborts unexpectedly](/./trouble-shooting.md#the-tidbtikvpd-process-aborts-unexpectedly).
 
-## Multi Nodes Deployment In Testing
+## Multiple Nodes Cluster Deployment for Test
 
-Assume we have four machines with the following details:
+If you want to test TiDB and you have limited number of nodes, you can use one PD instance to test the entire cluster.
+
+Assuming you have four nodes. You can deploy 1 PD instance, 3 TiKV instances, and 1 TiDB instance. See the following table for the details:
 
 |Name|Host IP|Services|
 |----|-------|--------|
-|node1|192.168.199.113|PD1, TiDB|
-|node2|192.168.199.114|TiKV1|
-|node3|192.168.199.115|TiKV2|
-|node4|192.168.199.116|TiKV3|
+|Node1|192.168.199.113|PD1, TiDB|
+|Node2|192.168.199.114|TiKV1|
+|Node3|192.168.199.115|TiKV2|
+|Node4|192.168.199.116|TiKV3|
 
-1. Start PD on node1.
+Start PD, TiKV and TiDB according to the following procedure:
+
+1. Start PD on Node1.
 
     ```bash
     ./bin/pd-server --name=pd1 \
@@ -162,7 +174,7 @@ Assume we have four machines with the following details:
                     --initial-cluster="pd1=http://192.168.199.113:2380"
     ```
 
-2. Start TiKV on node2, node3 and node4.
+2. Start TiKV on Node2, Node3 and Node4.
 
     ```bash
     ./bin/tikv-server --pd="192.168.199.113:2379" \
@@ -178,7 +190,7 @@ Assume we have four machines with the following details:
                       --store=tikv3
     ```
 
-3. Start TiDB on node1.
+3. Start TiDB on Node1.
 
     ```bash
     ./bin/tidb-server --store=tikv \
@@ -190,65 +202,3 @@ Assume we have four machines with the following details:
     ```sh
     mysql -h 192.168.199.113 -P 4000 -u root -D test
     ```
-
-## Add/Remove node dynamically
-
-### PD
-
-You can use `join` to start a new PD server and add it to an existing PD cluster. For example, we have started three PD servers:
-
-|Name|ClientUrls|PeerUrls|
-|----|----------|--------|
-|pd1|http://host1:2379|http://host1:2380|
-|pd2|http://host2:2379|http://host2:2380|
-|pd3|http://host3:2379|http://host3:2380|
-
-If you want to add `pd4`, you can add the corresponding `client-urls` of the PD service in the current PD cluster to the `join` parameters. For example:
-
-```bash
-./bin/pd-server --name=pd4 \
-                --client-urls="http://host4:2379"
-                --peer-urls="http://host4:2380"
-                --join="http://host1:2379"
-```
-If you want to remove `pd4`, you can call the HTTP API of PD. For example:
-
-```
-curl -X DELETE http://host1:2379/pd/api/v1/members/pd4
-```
-
-You can check all the PD nodes to see if the PD server is added or removed:
-
-```
-curl http://host1:2379/pd/api/v1/members
-```
-
-### TiKV
-It is very simple to add a new TiKV server (which is also called a TiKV Store) to a TiKV cluster dynamically. You can directly start a TiKV Store and PD will automatically detect it. After you start the new Store, PD will automatically balance all the TiKV Stores in the cluster. If PD finds that the new Store has no data, it will try to move some regions from other Stores to the newly added Store.
-
-You can also ask PD to remove a Store explicitly. To remove the Store:
-
-1. PD marks the Store as `offline`.
-2. PD migrates the data from the Store to other Stores.
-3. After all the data are migrated, PD marks the Store as `tombstone`.
-4. The Store can be safely removed from the cluster.
-
-You can use the following command to call the HTTP API of PD to remove a TiKV Store whose store ID is `1`:
-
-```
-curl -X DELETE http://host:port/pd/api/v1/store/1
-```
-You can check the state of the Store by using the following command:
-
-```
-curl http://host:port/pd/api/v1/store/1
-```
-+ If the result is `state = 1`, the Store is `offline`.
-+ If the result is `state = 2`, the Store is `tombstone`.
-+ If the result is `state = 0`, the Store is `up`.
-
-For detailed API documents, see [PD API v1](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html).
-
-### TiDB
-
-TiDB server is stateless, and you can add or remove a TiDB server directly. Note that if you put all TiDB servers behind a proxy like HAProxy, you must update the proxy configuration and reload it.

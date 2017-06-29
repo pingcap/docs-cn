@@ -203,15 +203,3 @@ TiKV supports some human readable conversion.
 + the store capacity
 + default: 0 (unlimited)
 + PD uses this flag to determine how to balance the TiKV servers. (Tip: you can use 10GB instead of 1073741824)
-
-### -S, --dsn
-
-+ the DSN to use
-+ default: "raftkv"
-+ The flag is deprecated now.
-
-### --pd
-
-+ the pd endpoints
-+ default: ""
-+ You must set this flag to let TiKV connect to PD. Multiple endpoints are separated by comma, for example, "pd1:2379,pd2:2379".
