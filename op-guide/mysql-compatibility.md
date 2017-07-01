@@ -73,7 +73,7 @@ TiDB 使用乐观事务模型，在执行 Update、Insert、Delete 等语句时�
      LINES STARTING BY 'string' TERMINATED BY 'string'
      (col_name ...);
 ```
-其中 ESCAPED BY 目前只支持 '\\'。
+其中 ESCAPED BY 目前只支持 '/\/\'。
 
 + 事务的处理：
 TiDB 在执行 load data 时，默认每 2 万行记录作为一个事务进行持久化存储。如果一次 load data 操作插入的数据超过 2 万行，那么会分为多个事务进行提交。如果某个事务出错，这个事务会提交失败，但它前面的事务仍然会提交成功，在这种情况下一次 load data 操作会有部分数据插入成功，部分数据插入失败。而 MySQL 中会将一次 load data 操作视为一个事务，如果其中发生失败情况，将会导致整个 load data 操作失败。
