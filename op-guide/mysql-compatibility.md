@@ -46,7 +46,7 @@ TiDB 实现了 F1 的异步 Schema 变更算法，DDL 执行过程中不会阻�
 + Modify Column
 + Truncate Table
 + Rename Table
-+ Crete Table Like
++ Create Table Like
 
 以上语句还有一些支持不完善的地方，具体包括如下：
 
