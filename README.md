@@ -7,8 +7,7 @@
   - [TiDB 整体架构](overview.md#tidb-整体架构)
 + 安装 & 部署
   - [部署建议](op-guide/recommendation.md)
-  - [Binary 下载](op-guide/binary-deployment.md#下载官方-binary)
-  - [Ansible 部署方案 (推荐)](op-guide/ansible-deployment.md)
+  - [Ansible 部署方案 (强烈推荐)](op-guide/ansible-deployment.md)
   - [Binary 部署方案](op-guide/binary-deployment.md)
   - [Docker 部署方案](op-guide/docker-deployment.md)
   - [跨机房部署方案](op-guide/location-awareness.md)
