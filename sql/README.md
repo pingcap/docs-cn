@@ -1,11 +1,11 @@
 ---
-title: SQL Statment Syntax of TiDB
+title: SQL Statement Syntax of TiDB
 category: compatibility
 ---
 
-# SQL Statment Syntax of TiDB
+# SQL Statement Syntax of TiDB
 
-TiDB supports the SQL-92 standard and is compatible with MySQL grammar. Currently, TiDB supports the majority of frequently-used MySQL syntax.
+TiDB supports the SQL-92 standard and is compatible with MySQL grammar. Currently, TiDB supports the majority of frequently used MySQL syntax.
 
 ## Table of Contents
 
@@ -32,5 +32,7 @@ TiDB supports the SQL-92 standard and is compatible with MySQL grammar. Currentl
     - Prepared SQL Statement Syntax
     - Database Administration Statements
     - Utility Statements
++ [Privilege Management](privilege.md)
++ [The Proprietary System Variables and Syntax in TiDB](tidb-specific.md)
 + Others
     - SQL Modes

@@ -14,17 +14,44 @@ See the following for the assumed MySQL and TiDB server information:
 
 |Name|Address|Port|User|Password|
 |----|-------|----|----|--------|
-|MySQL|127.0.0.1|3306|root||
-|TiDB|127.0.0.1|4000|root||
+|MySQL|127.0.0.1|3306|root|* |
+|TiDB|127.0.0.1|4000|root|* |
+
+
+## Scenarios
+
+ + To import all the history data. This needs the following tools:
+	 - `Checker`: to check if the shema is compatible with TiDB.
+	 - `Mydumper`: to export data from MySQL.
+	 - `Loader`: to import data to TiDB.
+
+ + To incrementally synchronise data after all the history data is imported. This needs the following tools:
+	 - `Checker`: to check if the shema is compatible with TiDB.
+	 - `Mydumper`: to export data from MySQL.
+	 - `Loader`: to import data to TiDB.
+	 - `Syncer`: to incrementally synchronise data from MySQL to TiDB.
+
+	 **Note:** To incrementally synchronise data from MySQL to TiDB, the binary logging (binlog) must be enabled and must use the `row` format in MySQL.
+	
+### Enabling binary logging (binlog) in MySQL
+
+Before using the `syncer` tool, make sure:
++ Binlog is enabled in MySQL. See [Setting the Replication Master Configuration](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html).
+
++ Binlog must use the `row` format which is the recommended binlog format in MySQL 5.7. It can be configured using the following statement:
+
+    ```bash
+    SET GLOBAL binlog_format = ROW;
+    ``` 
+
 
 ## Step 1. Using the `checker` tool to check the Schema
 
-Before migrating, you can use the `checker` tool in TiDB to check if TiDB supports the table schema of the data to be migrated in advance. If the `checker` fails to check a certain table schema, it means that the table is not currently supported by TiDB and therefore the data in the table cannot be migrated. 
+Before migrating, you can use the `checker` tool in TiDB to check if TiDB supports the table schema of the data to be migrated. If the `checker` fails to check a certain table schema, it means that the table is not currently supported by TiDB and therefore the data in the table cannot be migrated.
+ 
 See [Downloading the TiDB Toolset](#downloading-the-tidb-toolset) to download the `checker` tool.
 
-### Downloading the TiDB Toolset
-
-#### Linux
+### Downloading the TiDB Toolset (Linux)
 
 ```bash
 # Download the tool package.
@@ -33,6 +60,7 @@ wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
 
 # Check the file integrity. If the result is OK, the file is correct.
 sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
+
 # Extract the package. 
 tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
 cd tidb-enterprise-tools-latest-linux-amd64
@@ -105,33 +133,16 @@ github.com/pingcap/tidb/parser/yy_parser.go:124:
 ```
 
 
-## Step 2. Using the `mydumper` / `loader` tool to export and import data in full volume
+## Step 2. Using the `mydumper` / `loader` tool to export and import all the data
 
 You can use `mydumper` to export data from MySQL and `loader` to import the data into TiDB.
 
-**Note:** Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use the `mysqldump` tool. Its performance is much slower than `mydumper` / `loader` and it costs a lot of time to migrate large amounts of data.
+**Note:** Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use the `mysqldump` tool. Its performance is much lower than `mydumper` / `loader` and it costs a lot of time to migrate large amounts of data. `mydumper`/`loader` is a more powerful tool to migrate data. For more information, see [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper).
 
-`mydumper`/`loader` is a more powerful tool to migrate data. For more information, see [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper).
 
-### 1. Downloading the Binary
+### 1. Exporting data from MySQL 
 
-#### Linux
-
-```bash
-# Download the mydumper package.
-wget http://download.pingcap.org/mydumper-linux-amd64.tar.gz
-wget http://download.pingcap.org/mydumper-linux-amd64.sha256
-
-# Check the file integrity. If the result is OK, the file is correct. 
-sha256sum -c mydumper-linux-amd64.sha256 
-# Extract the package.
-tar -xzf mydumper-linux-amd64.tar.gz
-cd mydumper-linux-amd64
-```
-
-### 2. Exporting data from MySQL 
-
-Use the `mydumper` tool to export data from MySQL by typing the following command:
+Use the `mydumper` tool to export data from MySQL by using the following command:
 
 ```bash
 ./bin/mydumper -h 127.0.0.1 -P 3306 -u root -t 16 -F 128 -B test -T t1,t2 --skip-tz-utc -o ./var/test
@@ -146,13 +157,10 @@ In this command,
 **Note:**
 On the Cloud platforms which require the `super privilege`, such as on the Aliyun platform, add the `--no-locks` parameter to the command. If not, you might get the error message that you don't have the privilege.
 
-### 3. Importing data to TiDB
+### 2. Importing data to TiDB
 
-<<<<<<< HEAD
-Use the `loader` tool to import the data from MySQL to TiDB.
-=======
-Use the `loader` tool to import the data from MySQL to TiDB
->>>>>>> master
+
+Use the `loader` tool to import the data from MySQL to TiDB. See [Loader instructions](./tools/loader.md) for more information.
 
 ```bash
 ./bin/loader -h 127.0.0.1 -u root -P 4000 -t 4 -d ./var/test
@@ -161,7 +169,7 @@ Use the `loader` tool to import the data from MySQL to TiDB
 In this command, 
 + `-q 1` means how many queries are included in each transaction. The default value is 1. When importing data to TiDB, it is recommended to use the default value.
 
-After the data is imported, you can view the data in TiDB using the official MySQL client:
+After the data is imported, you can view the data in TiDB using the MySQL client:
 
 ```bash
 mysql -h127.0.0.1 -P4000 -uroot
@@ -193,66 +201,54 @@ mysql> select * from t2;
 +----+------+
 ```
 
-## Step 3. Using the `syncer` tool to import data incrementally
+## Step 3. (Optional) Using the `syncer` tool to import data incrementally
 
-The previous section introduces how to import data from MySQL to TiDB in full volume using `mydumper`/`loader`. But this is not applicable if the data in MySQL is updated after the migration and it is expected to import the updated data quickly.
+The previous section introduces how to import all the history data from MySQL to TiDB using `mydumper`/`loader`. But this is not applicable if the data in MySQL is updated after the migration and it is expected to import the updated data quickly.
 
-Therefore, TiDB provides the `syncer` tool for an incremental data import from MySQL to TiDB easily.
+Therefore, TiDB provides the `syncer` tool for an incremental data import from MySQL to TiDB.
 
 See [Downloading the TiDB Enterprise Toolset](#downloading-the-tidb-enterprise-toolset) to download the `syncer` tool.
 
-### Downloading the TiDB Enterprise Toolset
-
-#### Linux
+### Downloading the TiDB Enterprise Toolset (Linux)
 
 ```bash
-# Download the enterpise tool package.
+# Download the enterprise tool package.
 wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
 wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
 
 # Check the file integrity. If the result is OK, the file is correct.
 sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
+
 # Extract the package.
 tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
 cd tidb-enterprise-tools-latest-linux-amd64
 ```
 
-Assuming the data from `t1` and `t2` is already imported to TiDB using `mydumper`/`loader`. Now we hope that any updates to these two tables are synchronized to the TiDB in real time.
+Assuming the data from `t1` and `t2` is already imported to TiDB using `mydumper`/`loader`. Now we hope that any updates to these two tables are synchronised to TiDB in real time.
 
-### 1. Enabling binary logging (binlog) in MySQL
+### 1. Obtaining the position to synchronise
 
-Before using the `syncer` tool, make sure:
-+ Binlog is enabled in MySQL. See [Setting the Replication Master Configuration](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html).
-
-+ Binlog must use the `row` format which is the recommended binlog format in MySQL 5.7. It can be configured using the following statement:
-
-    ```bash
-    SET GLOBAL binlog_format = ROW;
-    ``` 
-
-### 2. Obtaining the position to synchronize
-
-Use the `show master status` statement to get the position of the current binlog, which is the initial synchronizing position for `syncer`. 
-
-```bash
-show master status;
-+------------------+----------+--------------+------------------+-------------------+
-| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
-+------------------+----------+--------------+------------------+-------------------+
-| mysql-bin.000003 |     1280 |              |                  |                   |
-+------------------+----------+--------------+------------------+-------------------+
+The data exported from MySQL contains a metadata file which includes the position information. Take the following metadata information as an example:
 ```
+Started dump at: 2017-04-28 10:48:10
+SHOW MASTER STATUS:
+	Log: mysql-bin.000003
+	Pos: 930143241
+	GTID:
 
-The information about the position is stored in the `syncer.meta` file for `syncer`:
+Finished dump at: 2017-04-28 10:48:11
+
+```
+The position information (`Pos: 930143241`) needs to be stored in the `syncer.meta` file for `syncer` to synchronize:
 
 ```bash
 # cat syncer.meta
 binlog-name = "mysql-bin.000003"
-binlog-pos = 1280
+binlog-pos = 930143241
 ```
-**Note:** The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is synchronized. 
+**Note:** The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is synchronised. 
 
-### 3. Start `syncer`
+### 2. Start `syncer`
 
 The `config.toml` file for `syncer`:
 
@@ -261,38 +257,40 @@ log-level = "info"
 
 server-id = 101
 
-<<<<<<< HEAD
-# The file path for meta.
-=======
->>>>>>> master
+# The file path for meta:
 meta = "./syncer.meta"
 worker-count = 16
 batch = 10
 
+# The testing address for pprof. It can also be used by Prometheus to pull the syncer metrics.
 status-addr = ":10081"
 
 skip-sqls = ["ALTER USER", "CREATE USER"]
 
-##replicate-do-db priority over replicate-do-table if have same db name
-##and we support regex expression , start with '~' declare use regex expression.
-#
-#replicate-do-db = ["~^b.*","s1"]
-#[[replicate-do-table]]
-#db-name ="test"
-#tbl-name = "log"
+# Support whitelist filter. You can specify the database and table to be synchronised. For example:
+# Synchronise all the tables of db1 and db2:
+replicate-do-db = ["db1","db2"]
 
-#[[replicate-do-table]]
-#db-name ="test"
-#tbl-name = "~^a.*"
+# Synchronise db1.table1.
+[[replicate-do-table]]
+db-name ="db1"
+tbl-name = "table1"
 
-# skip prefix mathched sqls
-# skip-sqls = ["^ALTER\\s+USER", "^CREATE\\s+USER"]
+# Synchronise db3.table2.
+[[replicate-do-table]]
+db-name ="db3"
+tbl-name = "table2"
 
-# 1. asterisk character (*, also called "star") matches zero or more characters,
-#    for example, doc* matches doc and document but not dodo;
-#    asterisk character must be in the end of wildcard word,
-#    and there is only one asterisk in one wildcard word
-# 2. the question mark ? matches exactly one character
+# Support regular expressions. Start with '~'  to use regular expressions.
+# To synchronise all the databases that start with `test`:
+replicate-do-db = ["~^test.*"]
+
+# The sharding synchronising rules support wildcharacter.
+# 1. The asterisk character (*, also called "star") matches zero or more characters,
+#    for example, "doc*" matches "doc" and "document" but not "dodo";
+#    asterisk character must be in the end of the wildcard word,
+#    and there is only one asterisk in one wildcard word.
+# 2. The question mark ? matches exactly one character.
 #[[route-rules]]
 #pattern-schema = "route_*"
 #pattern-table = "abc_*"
@@ -317,24 +315,6 @@ user = "root"
 password = ""
 port = 4000
 
-# Support whitelist filtering and specify the libraries and tables to synchronize, for example: 
-
-# Specify all the tables under db1 and db2 to synchronize
-replicate-do-db = ["db1","db2"]
-
-# Specify db1.table1 to synchronize
-[[replicate-do-table]]
-db-name ="db1"
-tbl-name = "table1"
-
-# Specify db3.table2 to synchronize 
-[[replicate-do-table]]
-db-name ="db3"
-tbl-name = "table2"
-
-# Support regular expressions.Start a regular expression with "~".
-# Synchronize all the libraries that begin with test.
-replicate-do-db = ["~^test.*"]
 ```
 Start `syncer`:
 
@@ -346,13 +326,13 @@ Start `syncer`:
 2016/10/27 15:22:01 syncer.go:549: [info] rotate binlog to (mysql-bin.000003, 1280)
 ```
 
-### 4. Inserting data into MySQL
+### 3. Inserting data into MySQL
 
 ```bash
 INSERT INTO t1 VALUES (4, 4), (5, 5);
 ```
 
-### 5. Logging in TiDB and viewing the data:
+### 4. Logging in TiDB and viewing the data:
 
 ```bash
 mysql -h127.0.0.1 -P4000 -uroot -p
@@ -368,7 +348,7 @@ mysql> select * from t1;
 +----+------+
 ```
 
-`syncer` outputs the current synchronized data statistics every 30 seconds:
+`syncer` outputs the current synchronised data statistics every 30 seconds:
 
 ```bash
 2017/06/08 01:18:51 syncer.go:934: [info] [syncer]total events = 15, total tps = 130, recent tps = 4,
@@ -379,4 +359,4 @@ master-binlog = (ON.000001, 11992), master-binlog-gtid=53ea0ed1-9bf8-11e6-8bea-6
 syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-35
 ```
 
-You can see that by using `syncer`, the updates in MySQL can be automatically synchronized in TiDB.
+You can see that by using `syncer`, the updates in MySQL are automatically synchronised in TiDB.

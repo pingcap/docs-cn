@@ -12,16 +12,17 @@
   - [Cross-Region Deployment](op-guide/location-awareness.md)
   - [Configuration Flags](op-guide/configuration.md)
 - [Step 3: Scale](op-guide/horizontal-scale.md)
-+ Step 4: Develope
++ Step 4: Develop
   - [TiDB SQL Grammar](sql/README.md)
-  - [Compatibility with MySQL](op-guide/mysql-compatibility.md)
+  - [Compatibility with MySQL](sql/mysql-compatibility.md)
 + Step 5: Monitor
   - [Overview of the Monitoring Framework](op-guide/monitor-overview.md)
   - [Monitoring a TiDB Cluster](op-guide/monitoring-tidb.md)
   - [PD Command-Line Tools](op-guide/pd-control.md)
 + Advanced Usage
   - [Data Migration from MySQL to TiDB](op-guide/migration.md)
-  - [Loader Instructions](./tools/loader.md)
+  - [Syncer User Guide](./tools/syncer.md)
+  - [Loader User Guide](./tools/loader.md)
   - [Performance Tuning](op-guide/tune-TiKV.md)
   - [Reading Data from History Versions](op-guide/history-read.md)
   - [Troubleshooting](./trouble-shooting.md)

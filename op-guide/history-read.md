@@ -52,7 +52,7 @@ mysql> select variable_name, variable_value from mysql.tidb;
 ```
 
 Pay special attention to the following two rows:
-- `tikv_gc_life_time`: This row is to configure the retention time of the history version and its default value is 10m. You can use SQL statements to configure it. For example, if you want all the data within one day to be readable, set this row to 24h.
+- `tikv_gc_life_time`: This row is to configure the retention time of the history version and its default value is 10m. You can use SQL statements to configure it. For example, if you want all the data within one day to be readable, set this row to 24h by using the `update mysql.tidb set variable_value='24h' where variable_name='tikv_gc_life_time'` statement. The format is: "24h", "2h30m", "2.5h". The unit of time can be: "h", "m", "s".
 
   **Note:** If your data is updated very frequently, the following issues might occur if the value of the `tikv_gc_life_time` is set to be too large like in days or months：
     - The more versions of the data, the more disk storage is occupied.
