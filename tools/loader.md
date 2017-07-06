@@ -43,8 +43,8 @@ category: advanced
         需要导入的数据存放路径 (默认为 "./")
   -h string
         TiDB/MySQL 的 host (默认为 "127.0.0.1")
-  -checkpoint string
-        checkpoint 文件位置，loader 在运行过程中会不断的更新这个文件，在中断并恢复后，会通过这个文件获取上次运行的进度 (默认为 "loader.checkpoint")
+  -checkpoint-schema string
+        checkpoint 数据库名，loader 在运行过程中会不断的更新这个数据库，在中断并恢复后，会通过这个文件获取上次运行的进度 (默认为 "tidb_loader")
   -skip-unique-check
        是否跳过 unique index 检查，0 表示不跳过，1 表示跳过（能够提高导入数据的速度），注意只有在向 TiDB 中导入数据时，才需要打开这个选项 (默认为1)
   -p string
@@ -118,6 +118,7 @@ port = 4000
 
 ### 注意事项
 
-如果使用默认的 checkpoint 参数，在导完一个 database 数据库后，请删除 tidb_loader 后再开始导入下一个 database。推荐每个数据库导入的时候，将`checkpoint-schema = "tidb_loader"`设定当前任务标识。
+如果使用默认的 `checkpoint-schema` 参数，在导完一个 database 数据库后，请删除 `tidb_loader` 后再开始导入下一个 database。  
+推荐数据库开始导入的时候，明确指定`checkpoint-schema = "tidb_loader"`参数。
 
 
