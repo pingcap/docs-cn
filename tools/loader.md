@@ -75,20 +75,22 @@ log-file = ""
 # Directory of the dump to import
 dir = "./"
 
-# Loader saved checkpoint
-checkpoint = "loader.checkpoint"
-
 # Loader pprof addr
 pprof-addr = ":10084"
 
-# Number of threads for each pool
-pool-size = 4
+# We saved checkpoint data to tidb, which schema name is defined here.
+checkpoint-schema = "tidb_loader"
 
-# Number of pools
-pool-count = 8
+# Number of threads restoring concurrently for worker pool. Each worker restore one file at a time, increase this as TiKV nodes increase
+pool-size = 16
 
-# Skip unique index check 注意如果不是向 TiDB 中导入数据，请将这个设为 0
-skip-unique-check = 1
+# Skip unique index check
+skip-unique-check = 0
+
+# An alternative database to restore into
+#alternative-db = ""
+# Database to restore
+#source-db = ""
 
 # DB config
 [db]
@@ -96,6 +98,12 @@ host = "127.0.0.1"
 user = "root"
 password = ""
 port = 4000
+
+# [[route-rules]]
+# pattern-schema = "shard_db_*"
+# pattern-table = "shard_table_*"
+# target-schema = "shard_db"
+# target-table = "shard_table"
 ```
 
 ### 使用示例
@@ -110,6 +118,6 @@ port = 4000
 
 ### 注意事项
 
-如果使用默认的 checkpoint 文件，在导完一个 database 数据后，请删除 loader.checkpoint 后再开始导入下一个 database。推荐每个数据库导入的时候，明确指定 checkpoint 文件名。
+如果使用默认的 checkpoint 参数，在导完一个 database 数据库后，请删除 tidb_loader 后再开始导入下一个 database。推荐每个数据库导入的时候，将`checkpoint-schema = "tidb_loader"`设定当前任务标识。
 
 
