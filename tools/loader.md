@@ -39,7 +39,7 @@ Since tools like mysqldump will take us days to migrate massive amounts of data,
   
   -h string: the host of TiDB/MySQL (default: "127.0.0.1")
   
-  -checkpoint string: the file location of checkpoint. In the execution process, loader will constantly update this file. After recovering from an interruption, loader will get the process of the last run through this file. (default: "loader.checkpoint")
+  -checkpoint-schema string: the database name of checkpoint. In the execution process, loader will constantly update this database. After recovering from an interruption, loader will get the process of the last run through this database. (default: "tidb_loader")
   
   -skip-unique-check: whether to skip the unique index check, 0 means no while 1 means yes (can improve the speed of importing data).
   Note: Only when you import data to TiDB can you open this option (default: 1)
@@ -69,20 +69,23 @@ log-file = ""
 # Directory of the dump to import
 dir = "./"
 
-# Loader saved checkpoint
-checkpoint = "loader.checkpoint"
-
 # Loader pprof addr
 pprof-addr = ":10084"
 
-# Number of threads to use
-worker = 4
+# We saved checkpoint data to tidb, which schema name is defined here.
+checkpoint-schema = "tidb_loader"
 
-# Number of queries per transcation
-batch = 1
+# Number of threads restoring concurrently for worker pool. Each worker restore one file at a time, increase this as TiKV nodes increase
+pool-size = 16
+ 
+# Skip unique index check
+skip-unique-check = 0
 
-# Skip unique index check Note: If you don't import data to TiDB, please set this value to 0.
-skip-unique-check = 1
+# An alternative database to restore into
+
+#alternative-db = ""
+# Database to restore
+#source-db = ""
 
 # DB config
 [db]
@@ -90,6 +93,13 @@ host = "127.0.0.1"
 user = "root"
 password = ""
 port = 4000
+
+# [[route-rules]]
+# pattern-schema = "shard_db_*"
+# pattern-table = "shard_table_*"
+# target-schema = "shard_db"
+# target-table = "shard_table"
+
 ```
 
 ### Usage
@@ -104,4 +114,5 @@ Or use configuration file "config.toml":
     
 ### Note
 
-If you use the default checkpoint file, after importing the data of a database, please delete loader.checkpoint before you begin to import the next database. When importing each database, explicitly specify the file name of checkpoint is recommended.
++ If you use the default checkpoint-schema, after importing the data of a database, drop the tidb_loader database before you begin to import the next database. 
++ It is recommended to specify the `checkpoint-schema = "tidb_loader"` parameter when importing data.
