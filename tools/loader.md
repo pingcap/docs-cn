@@ -29,7 +29,7 @@ Since tools like mysqldump will take us days to migrate massive amounts of data,
 
 ## Usage
 
-### Parameter discription
+### Parameter description
 ```
   -L string: the log level setting. It can be set as debug, info, warn, error, fatal (default: "info")
   
