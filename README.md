@@ -8,7 +8,6 @@
 + 安装 & 部署
   - [部署建议](op-guide/recommendation.md)
   - [Ansible 部署方案 (强烈推荐)](op-guide/ansible-deployment.md)
-  - [Binary 部署方案](op-guide/binary-deployment.md)
   - [Docker 部署方案](op-guide/docker-deployment.md)
   - [跨机房部署方案](op-guide/location-awareness.md)
   - [命令行参数](op-guide/configuration.md)
