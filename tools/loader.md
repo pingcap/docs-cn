@@ -7,7 +7,9 @@ category: advanced
 
 ## Loader 是什么
 
-是由 PingCAP 开发的数据导入工具，可以用于向 TiDB 中导入数据，也可以用于向 MySQL 中导入数据。
+是由 PingCAP 开发的数据导入工具，可以用于向 TiDB 中导入数据。
+
+Loader 暂不支持 MySQL。
 
 [Binary 下载](http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz)
 
@@ -56,7 +58,7 @@ category: advanced
   -skip-unique-check 
       是否跳过 unique index 检查，0 表示不跳过，1 表示跳过（能够提高导入数据的速度），注意只有在向 TiDB 中导入数据时，才需要打开这个选项 (默认为1)
   -t int
-      单个线程池的线程数 (默认为 4)，一个线程池同一时刻只能对一个表进行导入
+      线程数 (默认为 16). 每个线程同一时刻只能操作一个数据文件。
   -u string
       TiDB/MySQL 的用户名 (默认为 "root")
 ```
