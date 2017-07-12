@@ -36,29 +36,29 @@ category: advanced
 ### 参数说明
 ```
   -L string
-        log 级别设置，可以设置为 debug, info, warn, error, fatal (默认为 "info")
+      log 级别设置，可以设置为 debug, info, warn, error, fatal (默认为 "info")
   -P int
-        TiDB/MySQL 的端口 (默认为 4000)
-  -d string
-        需要导入的数据存放路径 (默认为 "./")
-  -h string
-        TiDB/MySQL 的 host (默认为 "127.0.0.1")
+      TiDB/MySQL 的端口 (默认为 4000)
+  -V
+      打印 loader 版本
+  -c string
+      指定配置文件启动 loader 
   -checkpoint-schema string
-        checkpoint 数据库名，loader 在运行过程中会不断的更新这个数据库，在中断并恢复后，会通过这个库获取上次运行的进度 (默认为 "tidb_loader")
-  -skip-unique-check
-       是否跳过 unique index 检查，0 表示不跳过，1 表示跳过（能够提高导入数据的速度），注意只有在向 TiDB 中导入数据时，才需要打开这个选项 (默认为1)
+      checkpoint 数据库名，loader 在运行过程中会不断的更新这个数据库，在中断并恢复后，会通过这个库获取上次运行的进度 (默认为 "tidb_loader")
+  -d string
+      Directory of the dump to import (default "./")
+  -h string
+      The host to connect to (default "127.0.0.1")
   -p string
-        TiDB/MySQL 账户密码
+      TiDB/MySQL 账户密码
   -pprof-addr string
-        Loader 的 pprof 地址，用于对 Loader 进行性能调试 (默认为 ":10084")
+      Loader 的 pprof 地址，用于对 Loader 进行性能调试 (默认为 ":10084")
+  -skip-unique-check 
+      是否跳过 unique index 检查，0 表示不跳过，1 表示跳过（能够提高导入数据的速度），注意只有在向 TiDB 中导入数据时，才需要打开这个选项 (默认为1)
   -t int
-        单个线程池的线程数 (默认为 4)，一个线程池同一时刻只能对一个表进行导入
-  -pc int
-        线程池的个数（默认值 8），启动多个线程池可以支持表级别的并发，分散写入的热点问题，能够充分利用整个集群的所有 TiKV 节点的资源，提升导入数据的速度
-  -file-num-per-block int
-        一个逻辑块包含的数据文件个数（默认值 64），如果导入的是一个比较大的表（例如 100GB），Loader 支持将该表分成多个逻辑块，然后将不同逻辑块分给不同的线程池进行并发导入，分散写入热点，充分利用整个集群的所有 TiKV 节点的资源，提升导入数据的速度。
+      单个线程池的线程数 (默认为 4)，一个线程池同一时刻只能对一个表进行导入
   -u string
-        TiDB/MySQL 的用户名 (默认为 "root")
+      TiDB/MySQL 的用户名 (默认为 "root")
 ```
 
 ### 配置文件
