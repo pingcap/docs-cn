@@ -12,7 +12,7 @@ TiDB 集群状态监控目前有两种接口，第一种是通过 HTTP 接口对
 这类接口可以获取组件的一些基本信息，并且可以作为 keepalive 监测接口。另外 PD 的接口可以看到整个 TiKV 集群的详细信息。
 
 ### TiDB Server
-TiDB 对外暴露的 HTTP 接口是 http://host:port/status，默认的端口号是 10080 （可以通过 --status 参数设置），可以通过访问这个接口获取当前 TiDB Server 的状态，以及判断是否存活。返回结果是 **Json** 格式：
+TiDB 对外暴露的 HTTP 接口是 http://host:port/status ，默认的端口号是 10080 （可以通过 --status 参数设置），可以通过访问这个接口获取当前 TiDB Server 的状态，以及判断是否存活。返回结果是 **Json** 格式：
 
 ```bash
 curl http://127.0.0.1:10080/status
@@ -170,7 +170,7 @@ Grafana
 
 #### Grafana 配置
 
-+   进入 Grafana Web 界面（默认地址: http://localhost:3000，默认账号: admin 密码: admin）
++   进入 Grafana Web 界面（默认地址: http://localhost:3000 ，默认账号: admin 密码: admin）
 
     点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息 ( 注: Type 选 Prometheus，Url 为 Prometheus 地址，其他根据实际情况填写 ）
 

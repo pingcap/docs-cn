@@ -107,7 +107,7 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提�
 
 请手动将TiDB克隆到GOPATH目录，然后运行 `make` 命令。TiDB是一个项目而不是一个库，它的依赖比较复杂，并且parser也是根据 `parser.y` 生成的，我们不支持 `go get` 方式，而是使用 Makefile 来管理。
 
-如果你是开发者并且熟习Go语言，你可以尝试在TiDB项目的根目录运行 `make parser; ln -s _vendor/src vendor` ，之后就可以使用 `go run`, `go test` `go install` 等命令，但是并不推荐这种做法。
+如果你是开发者并且熟悉Go语言，你可以尝试在TiDB项目的根目录运行 `make parser; ln -s _vendor/src vendor` ，之后就可以使用 `go run`, `go test` `go install` 等命令，但是并不推荐这种做法。
 
 ## 为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？
 
@@ -123,7 +123,7 @@ TiKV 本地存储的 cluster ID 和指定的 PD 的 cluster ID 不一致。在�
 
 ## TiKV 启动报错：duplicated store address
 
-启动参数中的地址已经被其他的 TiKV 注册在 PD 集群中了。造成该错误的常见情况：TiKV `--data-dir` 指定的路径下没有数据文件夹时（删除或移动后没有更新 `--data-dir`），用之前参数重新启动该 TiKV。请尝试用 pdctl 的 [store 删除](https://github.com/pingcap/pd/tree/master/pdctl#store-delete-)功能，删除之前的 store, 然后重新启动 TiKV 即可。
+启动参数中的地址已经被其他的 TiKV 注册在 PD 集群中了。造成该错误的常见情况：TiKV `--data-dir` 指定的路径下没有数据文件夹时（删除或移动后没有更新 `--data-dir`），用之前参数重新启动该 TiKV。请尝试用 pdctl 的 [store 删除](https://github.com/pingcap/pd/tree/master/pdctl#store-delete-store_id)功能，删除之前的 store, 然后重新启动 TiKV 即可。
 
 ## 访问 PD 报错：TiKV cluster is not bootstrapped
 
