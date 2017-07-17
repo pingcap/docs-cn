@@ -3,19 +3,17 @@
 ## Documentation List
 
 - [Quick Start](https://github.com/pingcap/tidb/blob/master/docs/QUICKSTART.md)
-- [Step 1: Download](op-guide/binary-deployment.md#download-and-decompress-the-official-binary-package)
-+ Step 2: Deploy
++ Deploy
   - [Deployment Recommendation](op-guide/recommendation.md)
-  - [Ansible Deployment](op-guide/ansible-deployment.md)
-  - [Binary Deployment](op-guide/binary-deployment.md)
+  - [Ansible Deployment(Recommended)](op-guide/ansible-deployment.md)
   - [Docker Deployment](op-guide/docker-deployment.md)
   - [Cross-Region Deployment](op-guide/location-awareness.md)
   - [Configuration Flags](op-guide/configuration.md)
-- [Step 3: Scale](op-guide/horizontal-scale.md)
-+ Step 4: Develop
+- [Scale](op-guide/horizontal-scale.md)
++ Develop
   - [TiDB SQL Grammar](sql/README.md)
   - [Compatibility with MySQL](sql/mysql-compatibility.md)
-+ Step 5: Monitor
++ Monitor
   - [Overview of the Monitoring Framework](op-guide/monitor-overview.md)
   - [Monitoring a TiDB Cluster](op-guide/monitoring-tidb.md)
   - [PD Command-Line Tools](op-guide/pd-control.md)
