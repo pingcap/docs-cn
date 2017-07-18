@@ -74,9 +74,15 @@ category: deployment
 
 ### \-\-privilege
 
-+ 使用 true/false 来打开或者关闭权限功能
++ 使用 true/false 来打开或者关闭权限功能(用于开发调试)
++ 默认: true
++ 值可以是(true) or (false)。当前版本的权限控制还在完善中，将来会去掉此选项
+
+### \-\-skip-grant-table
+
++ 允许任何人不带密码连接，并且所有的操作不检查权限
 + 默认: false
-+ 值可以是(true) or (false)。当前版本的权限控制还在完善中，所以默认关闭，开发完成后，会默认打开。
++ 值可以是(true) or (false)。启用此选项需要有本机的root权限，一般用于忘记密码时重置
 
 ### \-\-report-status
 
