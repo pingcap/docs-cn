@@ -219,4 +219,4 @@ pd_servers
 |滚动升级 TiKV|ansible-playbook rolling_update.yml --tags=tikv|
 |滚动升级除 pd 外模块|ansible-playbook rolling_update.yml --skip-tags=pd|
 
-> **TiDB 服务数据迁移、性能调优等更多高级功能请参考** https://github.com/pingcap/docs-cn。
+> **TiDB 服务数据迁移、性能调优等更多高级功能请参考** https://github.com/pingcap/docs-cn 。
