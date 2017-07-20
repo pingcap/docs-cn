@@ -38,7 +38,7 @@ log-level = "info"
 
 # 建议使用默认值
 # notify-capacity = 40960
-# message-per-tick = 4996
+# messages-per-tick = 4096
 
 # socket 的发送／接收缓冲区大小
 # send-buffer-size = "128KB"
