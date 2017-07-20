@@ -35,7 +35,7 @@ log-level = "info"
 
 # It is recommended to use the default value.
 # notify-capacity = 40960
-# message-per-tick = 4996
+# messages-per-tick = 4096
 
 # The size of the send / receive buffer of socket.
 # send-buffer-size = "128KB"
