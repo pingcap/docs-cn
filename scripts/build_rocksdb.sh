@@ -38,6 +38,11 @@ function install_in_ubuntu {
     if [ ! -d rocksdb-${ROCKSDB_VER} ]; then
         ${SUDO} apt-get update 
         ${SUDO} apt-get install -y --no-install-recommends zlib1g-dev libbz2-dev libsnappy-dev libgflags-dev liblz4-dev 
+	curl -L https://github.com/facebook/zstd/archive/v1.3.0.tar.gz -o lzstd.tar.gz
+	tar xf lzstd.tar.gz
+	cd zstd-1.3.0
+	${SUDO} make install
+        cd ..
         curl -L https://github.com/facebook/rocksdb/archive/v${ROCKSDB_VER}.tar.gz -o rocksdb.tar.gz 
         tar xf rocksdb.tar.gz 
     fi
@@ -68,7 +73,7 @@ function install_in_centos {
 function install_in_fedora {
     echo "building RocksDB in Fedora..."
     if [ ! -d rocksdb-${ROCKSDB_VER} ]; then
-        ${SUDO} dnf install -y snappy-devel zlib-devel bzip2-devel lz4-devel
+        ${SUDO} dnf install -y snappy-devel zlib-devel bzip2-devel lz4-devel libzstd-devel
         curl -L https://github.com/facebook/rocksdb/archive/v${ROCKSDB_VER}.tar.gz -o rocksdb.tar.gz 
         tar xf rocksdb.tar.gz 
     fi
