@@ -134,8 +134,7 @@ github.com/pingcap/tidb-tools/checker/checker.go:114:
 
 我们使用 `mydumper` 从 MySQL 导出数据，然后用 `loader` 将其导入到 TiDB 里面。
 
-> 注意：虽然 TiDB 也支持使用 MySQL 官方的 `mysqldump` 工具来进行数据的迁移工作，但相比于 `mydumper` / `loader`，性能会慢很多，大量数据的迁移会花费很多时间，这里我们并不推荐。
-
+> 注意：虽然 TiDB 也支持使用 MySQL 官方的 `mysqldump` 工具来进行数据的迁移工作，但相比于 `mydumper` / `loader`，性能会慢很多，大量数据的迁移会花费很多时间，这里我们并不推荐。 为了快速的迁移数据（特别是数据量具大的库），可以参考一下  [`mydumper`/`loader` 全量导入数据的最佳实践](#)。 
 
 ### 从 MySQL 导出数据
 
@@ -194,6 +193,24 @@ mysql> select * from t2;
 |  3 | c    |
 +----+------+
 ```
+
+### `mydumper`/`loader` 全量导入数据最佳实践
+* 使用 mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64 
+* loader 可以根据 tikv 的负载，设置成紧可能大的值，例如 64
+
+下面举例某次导入，以及相关的配置### `mydumper`/`loader` 全量导入数据最佳实践
+- 使用 mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64 
+- loader 可以根据 tikv 的负载，设置成尽可能大的值，例如 64
+
+#### 下面举例某次导入，以及相关的配置
+ - mydumper 导出后总数据量 214G，单表 8 列，20 亿行数据
+ - 集群拓扑
+     - TIKV * 12
+     - TIDB * 4 
+     - PD * 3
+
+导入时间 12 小时左右, mydumper -F 设置为 16, loader -t 参数 64 
+
 
 ## 使用 `syncer` 增量导入数据
 
