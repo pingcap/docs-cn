@@ -134,19 +134,35 @@ github.com/pingcap/tidb-tools/checker/checker.go:114:
 
 我们使用 `mydumper` 从 MySQL 导出数据，然后用 `loader` 将其导入到 TiDB 里面。
 
-> 注意：虽然 TiDB 也支持使用 MySQL 官方的 `mysqldump` 工具来进行数据的迁移工作，但相比于 `mydumper` / `loader`，性能会慢很多，大量数据的迁移会花费很多时间，这里我们并不推荐。 为了快速的迁移数据（特别是数据量具大的库），可以参考一下  [`mydumper`/`loader` 全量导入数据的最佳实践](#mydumperloader-全量导入数据最佳实践)。 
+> 注意：虽然 TiDB 也支持使用 MySQL 官方的 `mysqldump` 工具来进行数据的迁移工作，但相比于 `mydumper` / `loader`，性能会慢很多，大量数据的迁移会花费很多时间，这里我们并不推荐。
+
+### `mydumper`/`loader` 全量导入数据最佳实践
+为了快速的迁移数据 (特别是数据量巨大的库), 可以参考下面建议
+
+* 使用 mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64 
+* loader 可以根据 tikv 的负载以及 tikv 的数量，设置成尽可能大的值，例如 32
+
+#### 某次导入示例，以及相关的配置
+ - mydumper 导出后总数据量 214G，单表 8 列，20 亿行数据
+ - 集群拓扑
+     - TIKV * 12
+     - TIDB * 4 
+     - PD * 3
+ - mydumper -F 设置为 16, loader -t 参数 64
+ 
+结果：导入时间 11 小时左右，19.4 G/小时
 
 ### 从 MySQL 导出数据
 
 我们使用 `mydumper` 从 MySQL 导出数据，如下:
 
 ```bash
-./bin/mydumper -h 127.0.0.1 -P 3306 -u root -t 16 -F 128 -B test -T t1,t2 --skip-tz-utc -o ./var/test
+./bin/mydumper -h 127.0.0.1 -P 3306 -u root -t 16 -F 64 -B test -T t1,t2 --skip-tz-utc -o ./var/test
 ```
 
 上面，我们使用 `-B test` 表明是对 `test` 这个 database 操作，然后用 `-T t1,t2` 表明只导出 `t1`，`t2` 两张表。
 
-`-t 16` 表明使用 16 个线程去导出数据。`-F 128` 是将实际的 table 切分成多大的 chunk，这里就是 128MB 一个 chunk。
+`-t 16` 表明使用 16 个线程去导出数据。`-F 64` 是将实际的 table 切分成多大的 chunk，这里就是 64MB 一个 chunk。
 
 `--skip-tz-utc` 添加这个参数忽略掉 MySQL 与导数据的机器之间时区设置不一致的情况，禁止自动转换。
 
@@ -157,10 +173,8 @@ github.com/pingcap/tidb-tools/checker/checker.go:114:
 我们使用 `loader` 将之前导出的数据导入到 TiDB。Loader 的下载和具体的使用方法见 [Loader 使用文档](../tools/loader.md)
 
 ```bash
-./bin/loader -h 127.0.0.1 -u root -P 4000 -t 4 -d ./var/test
+./bin/loader -h 127.0.0.1 -u root -P 4000 -t 32 -d ./var/test
 ```
-
-这里 `-q 1` 表明每个事务包含多少个 query，默认是 1，在向 TiDB 中导入数据时，推荐用默认值。
 
 导入成功之后，我们可以用 MySQL 官方客户端进入 TiDB，查看:
 
@@ -193,20 +207,6 @@ mysql> select * from t2;
 |  3 | c    |
 +----+------+
 ```
-
-### `mydumper`/`loader` 全量导入数据最佳实践
-* 使用 mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64 
-* loader 可以根据 tikv 的负载调整，设置成尽可能大的值，例如 64
-
-#### 下面举例某次导入，以及相关的配置
- - mydumper 导出后总数据量 214G，单表 8 列，20 亿行数据
- - 集群拓扑
-     - TIKV * 12
-     - TIDB * 4 
-     - PD * 3
-
-导入时间 12 小时左右, mydumper -F 设置为 16, loader -t 参数 64 
-
 
 ## 使用 `syncer` 增量导入数据
 
