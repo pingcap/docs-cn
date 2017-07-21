@@ -1,5 +1,5 @@
 ---
-title: TiDB Release Notes
+title: TiDB RC1 Release Notes
 category: Releases
 ---
 2016 年 12 月 23 日，分布式关系型数据库 TiDB 正式发布 RC1。
