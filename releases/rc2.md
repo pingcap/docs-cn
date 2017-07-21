@@ -3,6 +3,8 @@ title: TiDB RC2 Release Notes
 category: Releases
 ---
 
+2017 年 3 月 1 日，TiDB 正式发布 RC2 版。该版本对 MySQL 兼容性、SQL 优化器、系统稳定性、性能做了大量的工作。对于 OLTP 场景，读取性能提升 60%，写入性能提升 30%。另外提供了权限管理功能，用户可以按照 MySQL 的权限管理方式控制数据访问权限。
+
 ## TiDB
 
 + SQL 查询优化器
