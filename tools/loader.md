@@ -7,13 +7,13 @@ category: advanced
 
 ## What is Loader?
 
-Developed by PingCAP, Loader is a data import tool and it imports data to TiDB and MySQL.
+Loader is a data import tool to load data to TiDB.
 
 [Download the Binary](http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz)
 
 ## Why did we develop Loader?
 
-Since tools like mysqldump will take us days to migrate massive amounts of data, we used the mydumper/myloader suite of Percona to multi-thread export and import data. During the process, we found that mydumper works well. However, as myloader lacks functions of error retry and savepoint, it is inconvenient for us to use. Therefore, we developed loader, which reads the output data files of mydumper and imports data to TiDB/MySQL through mysql protocol.
+Since tools like mysqldump will take us days to migrate massive amounts of data, we used the mydumper/myloader suite of Percona to multi-thread export and import data. During the process, we found that mydumper works well. However, as myloader lacks functions of error retry and savepoint, it is inconvenient for us to use. Therefore, we developed loader, which reads the output data files of mydumper and imports data to TiDB through mysql protocol.
 
 ## What can Loader do?
 
@@ -33,26 +33,28 @@ Since tools like mysqldump will take us days to migrate massive amounts of data,
 ```
   -L string: the log level setting. It can be set as debug, info, warn, error, fatal (default: "info")
   
-  -P int: the port of TiDB/MySQL (default: 4000)
+  -P int: the port of TiDB (default: 4000)
+
+  -V boolean: prints version and exit
   
-  -d string: the storage directory of data that need to import (default: "./")
-  
-  -h string: the host of TiDB/MySQL (default: "127.0.0.1")
+  -c string: config file
   
   -checkpoint-schema string: the database name of checkpoint. In the execution process, loader will constantly update this database. After recovering from an interruption, loader will get the process of the last run through this database. (default: "tidb_loader")
+
+  -d string: the storage directory of data that need to import (default: "./")
   
-  -skip-unique-check: whether to skip the unique index check, 0 means no while 1 means yes (can improve the speed of importing data).
-  Note: Only when you import data to TiDB can you open this option (default: 1)
+  -h string: the host of TiDB (default: "127.0.0.1")  
   
-  -p string: the account and password of TiDB/MySQL
+  -p string: the account and password of TiDB
   
   -pprof-addr string: the pprof address of Loader. It tunes the perfomance of Loader (default: ":10084")
+
+  -skip-unique-check: whether to skip the unique index check, 0 means no while 1 means yes (can improve the speed of importing data).
+  Note: Only when you import data to TiDB can you open this option (default: 1)
+
+  -t int: the number of thread,increase this as TiKV nodes increase (default: 16)
   
-  -q int: the number of insert statement that included in each transaction during the import process (default: 1. By default, the size of each insert statement of sql exported by mydumper is 1MB, including many rows of data.)
-  
-  -t int: the number of thread (default: 4)
-  
-  -u string: the user name of TiDB/MySQL (default: "root")
+  -u string: the user name of TiDB (default: "root")
 ```
 
 ### Configuration file
