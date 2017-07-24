@@ -98,28 +98,28 @@ cd tidb-latest-linux-amd64-centos6
 
 请按如下步骤 **依次启动** PD 集群，TiKV 集群以及 TiDB：
 
-1. 在 node1，node2，node3 启动 PD
+1. 在 node1，node2，node3 依次启动 PD
 
     ```bash
     ./bin/pd-server --name=pd1 \
                     --data-dir=pd1 \
                     --client-urls="http://192.168.199.113:2379" \
                     --peer-urls="http://192.168.199.113:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380" \
+                    --initial-cluster="pd1=http://192.168.199.113:2380" \
                     --log-file=pd.log
 
     ./bin/pd-server --name=pd2 \
                     --data-dir=pd2 \
                     --client-urls="http://192.168.199.114:2379" \
                     --peer-urls="http://192.168.199.114:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380" \
+                    --join="http://192.168.199.113:2379" \
                     --log-file=pd.log
 
     ./bin/pd-server --name=pd3 \
                     --data-dir=pd3 \
                     --client-urls="http://192.168.199.115:2379" \
                     --peer-urls="http://192.168.199.115:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380" \
+                    --join="http://192.168.199.113:2379" \
                     --log-file=pd.log
     ```
 
