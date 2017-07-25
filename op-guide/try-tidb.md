@@ -9,25 +9,24 @@ category: quick start
 `TiDB` 支持 `SQL92` 标准并兼容 `MySQL` 语法，目前已经实现了大多数常用的 `MySQL` 语法。用户可以直接使用现有的 `MySQL` 客户端连接。如果现有的业务已经基于 `MySQL` 开发，大多数情况不需要修改代码即可直接替换单机的 `MySQL`。
 
 
-## create a DB
-使用 `create database` 语句可完成对数据库的创建, 创建命令的格式如下:
+## 创建数据库
+使用 `CREATE DATABASE` 语句可完成对数据库的创建, 创建命令的格式如下:
 
-    create database 数据库名 [其他选项];
+    CREATE DATABASE 数据库名 [其他选项];
   
-例如我们需要创建一个名为 samp_db 的数据库, 在命令行下执行以下命令:
+例如我们需要创建一个名为 `samp_db` 的数据库, 在命令行下执行以下命令:
 
-    create database if not exists samp_db;
+    CREATE DATABASE IF NOT EXISTS samp_db;
 
-查看`Tidb`中的所有数据库：
+查看 `Tidb` 中的所有数据库：
 
-    show databases;
+    SHOW DATABASES;
 
 删除数据库：
 
-    drop database samp_db;
+    DROP DATABASE samp_db;
 
-
-## create a table
+## 创建表
 
  使用 `CREATE TABLE`  + 表名 + 列名 + 数据类型 + 约束。具体例子如下：
 
@@ -41,9 +40,7 @@ category: quick start
 
 如果表已存在，则使用关键词 `IF NOT EXISTS` 可以防止发生错误。
 
-
-
-    CREATE TABLE IF NOT EXISTS         person (
+    CREATE TABLE IF NOT EXISTS person (
       number INT(11),
       name VARCHAR(255),
     birthday DATE
@@ -55,7 +52,7 @@ category: quick start
 
 查看表所有的列：
 
-    SHOW FULL COLUMNS from person;
+    SHOW FULL COLUMNS FROM person;
 
 删除表
 
@@ -70,9 +67,9 @@ category: quick start
     SHOW TABLES FROM samp_db;
 
 
-## create an index
+## 创建索引
 
-对于值不唯一的列，可以使用 `create index` 和 `alter table`：
+对于值不唯一的列，可以使用 `CREATE INDEX` 和 `ALTER TABLE`：
 
     CREATE INDEX person_num ON person (number );
     ALTER TABLE person ADD INDEX person_num (number )；
@@ -91,38 +88,41 @@ category: quick start
 
     show index from person ;
 
-## CRUD
+## 增删改查数据
 
-利用 `insert` 插入数据
+利用 `INSERT` 插入数据
 
-    insert into person values("1","tom","20170912");
-    select * from person;
+    INSERT INTO person VALUES("1","tom","20170912");
+    
+利用 `SELECT` 检索数据    
+    
+    SELECT * FROM person;
     +--------+------+------------+
     | number | name | birthday   |
     +--------+------+------------+
     |      1 | tom  | 2017-09-12 |
     +--------+------+------------+
 
-
-修改表内数据：
+利用 `UPDATE ` 修改表内数据：
 
     UPDATE person SET birthday='20171010' WHERE name='tom';
-    select * from person;
+    
+    SELECT * FROM person;
     +--------+------+------------+
     | number | name | birthday   |
     +--------+------+------------+
     |      1 | tom  | 2017-10-10 |
     +--------+------+------------+
 
-删除表内数据：
+利用 `DELETE` 删除表内数据：
 
-    delete from person where number=1;
-    select * from person;
+    DELETE FROM person WHERE number=1;
+    SELECT * FROM person;
     Empty set (0.00 sec)
 
 
-## create a user
-使用 `create user` 语句创建一个只在本地登录的用户 `tiuser`，密码为‘123456’：
+## 创建用户
+使用 `CREATE USER` 语句创建一个只在本地登录的用户 `tiuser`，密码为 `123456`：
 
     CREATE USER 'tiuser'@'localhost' IDENTIFIED BY '123456';
 
