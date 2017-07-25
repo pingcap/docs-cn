@@ -29,7 +29,7 @@ category: quick start
 
 ## create a table
 
- 使用`CREATE TABLE`  + 表名 + 列名 + 数据类型 + 约束。具体例子如下：
+ 使用 `CREATE TABLE`  + 表名 + 列名 + 数据类型 + 约束。具体例子如下：
 
     CREATE TABLE person (
     number INT(11),
@@ -65,14 +65,14 @@ category: quick start
 
     DROP TABLE IF EXISTS person;
 
-查看 `samp_db`中的所有表：
+查看 `samp_db` 中的所有表：
 
     SHOW TABLES FROM samp_db;
 
 
 ## create an index
 
-对于值不唯一的列，可以使用`create index`和`alter table`：
+对于值不唯一的列，可以使用 `create index` 和 `alter table`：
 
     CREATE INDEX person_num ON person (number );
     ALTER TABLE person ADD INDEX person_num (number )；
@@ -93,7 +93,7 @@ category: quick start
 
 ## CRUD
 
-利用`insert`插入数据
+利用 `insert` 插入数据
 
     insert into person values("1","tom","20170912");
     select * from person;
@@ -122,15 +122,15 @@ category: quick start
 
 
 ## create a user
-使用`create user`语句创建一个只在本地登录的用户`tiuser`，密码为‘123456’：
+使用 `create user` 语句创建一个只在本地登录的用户 `tiuser`，密码为‘123456’：
 
     CREATE USER 'tiuser'@'localhost' IDENTIFIED BY '123456';
 
-授权用户可查询`samp_db`库下的表：
+授权用户可查询 `samp_db` 库下的表：
 
     GRANT SELECT ON samp_db .* TO 'tiuser'@'localhost';
  
-查询`tiuser`用户的授权：
+查询 `tiuser` 用户的授权：
 
     show grants for tiuser@localhost;
 
