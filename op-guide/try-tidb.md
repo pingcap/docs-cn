@@ -82,7 +82,7 @@ category: quick start
     CREATE UNIQUE INDEX person_num ON person (number );
     ALTER TABLE person ADD UNIQUE person_num  on (number);
 
-可利用`ALTER TABLE`或`DROP INDEX`语句来删除索引。类似于`CREATE INDEX`语句，`DROP INDEX`可以在`ALTER TABLE`内部作为一条语句处理，语法如下。
+可利用 `ALTER TABLE` 或 `DROP INDEX` 语句来删除索引。类似于 `CREATE INDEX` 语句，`DROP INDEX` 可以在 `ALTER TABLE` 内部作为一条语句处理，语法如下。
 
     DROP INDEX person_num ON person;
     ALTER TABLE person DROP INDEX person_num ;
