@@ -6,7 +6,7 @@ category: quick start
 # Try TiDB
 
 
-`TiDB` 支持 `SQL92` 标准并兼容 `MySQL` 语法，目前已经实现了大多数常用的 `MySQL` 语法。用户可以直接使用现有的 `MySQL` 客户端连接。如果现有的业务已经基于 `MySQL` 开发，大多数情况不需要修改代码即可直接替换单机的 `MySQL`。
+TiDB 支持 `SQL92` 标准并兼容 MySQL 语法，目前已经实现了大多数常用的 MySQL 语法。用户可以直接使用现有的 MySQL 客户端连接。如果现有的业务已经基于 MySQL 开发，大多数情况不需要修改代码即可直接替换单机的 MySQL。
 
 
 ## 创建数据库
@@ -18,7 +18,7 @@ category: quick start
 
     CREATE DATABASE IF NOT EXISTS samp_db;
 
-查看 `Tidb` 中的所有数据库：
+查看 TiDB 中的所有数据库：
 
     SHOW DATABASES;
 
@@ -76,8 +76,8 @@ category: quick start
 
 对于值唯一的列可以创建唯一索引：
 
-    CREATE UNIQUE INDEX person_num ON person (number );
-    ALTER TABLE person ADD UNIQUE person_num  on (number);
+    CREATE UNIQUE INDEX person_num ON person (number);
+    ALTER TABLE person ADD UNIQUE person_num  ON (number);
 
 可利用 `ALTER TABLE` 或 `DROP INDEX` 语句来删除索引。类似于 `CREATE INDEX` 语句，`DROP INDEX` 可以在 `ALTER TABLE` 内部作为一条语句处理，语法如下。
 
@@ -86,7 +86,7 @@ category: quick start
 
 查看表内所有索引：
 
-    show index from person ;
+    SHOW INDEX FROM person ;
 
 ## 增删改查数据
 
@@ -103,7 +103,7 @@ category: quick start
     |      1 | tom  | 2017-09-12 |
     +--------+------+------------+
 
-利用 `UPDATE ` 修改表内数据：
+利用 `UPDATE` 修改表内数据：
 
     UPDATE person SET birthday='20171010' WHERE name='tom';
     
@@ -132,7 +132,7 @@ category: quick start
  
 查询 `tiuser` 用户的授权：
 
-    show grants for tiuser@localhost;
+    SHOW GRANTS FOR tiuser@localhost;
 
 删除用户
 
