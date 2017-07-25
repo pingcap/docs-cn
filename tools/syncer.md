@@ -21,6 +21,9 @@ sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
 tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
 cd tidb-enterprise-tools-latest-linux-amd64
 ```
+## Syncer 部署位置
+
+Syncer 可以部署在任一台可以连通对应的 MySQL 和 TiDB 集群的机器上，推荐部署在 TiDB 集群。
 
 ## MySQL 开启 binlog
 
