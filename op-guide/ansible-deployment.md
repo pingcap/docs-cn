@@ -40,7 +40,7 @@ Before you start, make sure that you have:
    
 - Operating system:
    		
-	- Ubuntu, CentOS 7.2 or later, or Docker
+	- CentOS 7.3 or later
 	   		
 	- X86_64 architecture (AMD64)
 	   		
@@ -197,7 +197,7 @@ pd_servers
 	  ## Connection
 	  # ssh via root:
 	  ansible_user = root
-	  # ansible_become = true
+	  ansible_become = true
 	  ansible_become_user = tidb
 	  
 	  # ssh via normal user
@@ -217,27 +217,11 @@ pd_servers
 	- If the service user does not exist, the initialization operation will automatically create the user.
 	- Add the `-k` (lowercase) parameter if password is needed to connect to the managed node. This applies to other playbooks as well.
 	 
-	5.4 Change the root user to the normal user.
-	
-	Because root user is not recommended to run the TiDB service, you need to change the root user to a normal user. Edit the `inventory.ini` file to uncomment `# ansible_become = true` as follows:
-	
-	```
-	  ## Connection
-	  # ssh via root:
-	  ansible_user = root
-	  ansible_become = true
-	  ansible_become_user = tidb
-	  
-	  # ssh via normal user
-	  # ansible_user = tidb
-	  
-	```
-	 
-	5.5 Run the following command:
+	5.4 Run the following command:
 	
 		ansible-playbook deploy.yml -k
 	 
-	5.6 Start the TiDB cluster: 
+	5.5 Start the TiDB cluster: 
 		
 		ansible-playbook start.yml -k
 
