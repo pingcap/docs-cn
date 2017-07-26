@@ -25,7 +25,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 1.2 部署目标机器若干
   - 建议4台及以上，TiKV 建议至少3实例，且与 TiDB、PD 模块不位于同一主机,详见[部署建议](https://github.com/pingcap/docs-cn/blob/master/op-guide/recommendation.md)。
-  - Linux 操作系统，x86_64 架构(amd64)，内核版本建议 3.10 以上，推荐 CentOS 7.2 及以上版本, 文件系统推荐 ext4(部分内核版本 xfs 文件系统有 bug, 本工具检查到数据目录非 ext4 会退出)。
+  - Linux 操作系统，x86_64 架构(amd64)，内核版本建议 3.10 以上，推荐 CentOS 7.3 及以上版本, 文件系统推荐 ext4(部分内核版本 xfs 文件系统有 bug, 本工具检查到数据目录非 ext4 会退出)。
   - 机器之间网络互通，防火墙、iptables 等可以在部署验证时关闭，后期开启。
   - 机器的时间、时区设置正确，有 NTP 服务可以同步正确时间。
   - 若使用普通用户作为 Ansible SSH 远程连接用户，该用户需要有 sudo 到 root 权限，或直接使用 root 用户远程连接。
@@ -122,13 +122,13 @@ pd_servers
 #### 5.1 ansible 通过 root 用户远程连接部署
 
 - 修改 inventory.ini, 本例使用 tidb 帐户作为服务运行用户：
-取消 `ansible_user = root` 和 `ansible_become_user`注释，给`ansible_user = tidb`添加注释：
+取消 `ansible_user = root` 、`ansible_become = true`及 `ansible_become_user`注释，给`ansible_user = tidb`添加注释：
 
   ```
   ## Connection
   # ssh via root:
   ansible_user = root
-  # ansible_become = true
+  ansible_become = true
   ansible_become_user = tidb
   
   # ssh via normal user
@@ -148,8 +148,6 @@ pd_servers
                 ansible-playbook bootstrap.yml -k
 
 - 部署 TiDB 集群软件
-
-  取消 inventory.ini 文件中 `# ansible_become = true` 注释，并执行以下命令：
 
                 ansible-playbook deploy.yml -k
 
@@ -220,3 +218,4 @@ pd_servers
 |滚动升级除 pd 外模块|ansible-playbook rolling_update.yml --skip-tags=pd|
 
 > **TiDB 服务数据迁移、性能调优等更多高级功能请参考** https://github.com/pingcap/docs-cn。
+
