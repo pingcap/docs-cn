@@ -74,12 +74,10 @@ region-split-check-diff = "8MB"
 # endpoints = "127.0.0.1:2379"
 
 [rocksdb]
-# RocksDB 进行 compaction 的最大线程数。具体 RocksDB 为什么需要进行 compaction，请参考
-# RocksDB 的相关资料。在写流量比较大的时候（例如导数据），建议开启更多的 compaction 线程，但应
-# 小于CPU的核数。例如在导数据的时候，32 核 CPU 的机器，可以把 max-background-compactions
-# 和 max-background-flushes 设置成 28。
-max-background-compactions = 6
-max-background-flushes = 2
+# RocksDB 进行后台任务的最大线程数，后台任务包括 compaction 和 flush。具体 RocksDB 为什么需要进行 compaction，
+# 请参考 RocksDB 的相关资料。在写流量比较大的时候（例如导数据），建议开启更多的线程，
+# 但应小于 CPU 的核数。例如在导数据的时候，32 核 CPU 的机器，可以设置成 28。
+# max-background-jobs = 8
 
 # RocksDB 能够打开的最大文件句柄数。
 # max-open-files = 40960
