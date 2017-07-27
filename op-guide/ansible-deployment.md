@@ -206,6 +206,37 @@ pd_servers
 
                 http://172.16.10.1:3000
 
+### 7 滚动升级
+
+> 滚动升级 tidb 服务，滚动升级期间不影响业务运行(最小环境 ：`pd*3 、tidb*2、tikv*3`)  
+> 远程连接权限问题，参考以上步骤( 已建立互信无需加 `-k` )
+
+- 下载binary
+  - 第一种：使用playbook下载最新 master binary，自动替换 binary 到`tidb-ansible/resource/bin/`
+
+                ansible-playbook local_prepare.yml
+
+  - 第二种：使用 wget 下载 binary，手动替换 binary 到 `tidb-ansible/resource/bin/`
+
+                wget http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz
+
+- 使用 ansible 滚动升级
+
+> 滚动升级tikv节点( 只升级单独节点 )
+
+                ansible-playbook rolling_update.yml --tags=tikv
+
+> 滚动升级所有节点
+
+                ansible-playbook rolling_update.yml
+
+
+
+
+
+
+
+
 ### 常见运维操作汇总
 |任务|Playbook|
 |----|--------|
