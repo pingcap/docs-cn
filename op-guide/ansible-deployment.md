@@ -222,11 +222,11 @@ pd_servers
 
 - 使用 ansible 滚动升级
 
-> 滚动升级tikv节点( 只升级单独节点 )
+> 滚动升级tikv节点( 只升级单独服务 )
 
                 ansible-playbook rolling_update.yml --tags=tikv
 
-> 滚动升级所有节点
+> 滚动升级所有服务
 
                 ansible-playbook rolling_update.yml
 
