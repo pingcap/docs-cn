@@ -154,3 +154,36 @@ PD 启动参数中的 `--initial-cluster` 包含了某个不属于该集群的�
 	fallocate -p -n -o 5000 -l 4192 tidb_test
 	LANG=en_US.UTF-8 stat tidb_test |awk 'NR==2{print $2}'
 	rm -rf tidb_test
+	
+## 出现 transaction too large 报错怎么办？ 	
+由于分布式事务要做两阶段提交，并且底层还需要做 Raft 复制，如果一个事务非常大，会使得提交过程非常慢，并且会卡住下面的 Raft 复制流程。为了避免系统出现被卡住的情况，我们对事务的大小做了限制：
+
+- 单条 KV entry 不超过 6MB
+
+- KV entry 的总条数不超过 30w
+
+- KV entry 的总大小不超过 100MB
+
+在 Google 的 Cloud Spanner 上面，也有类似的限制（https://cloud.google.com/spanner/docs/limits）。
+
+#### 解决方案：
+
+##### 导入：
+分批插入时一批最好别超过1w行，性能会好点。
+##### insert select ：
+我们内部有一个隐藏参数，当开启这个参数的时候，insert 会把大事务分批执行。好处是就不会因为事务太大导致超时了，坏处是语句就没有原子性了，假如中间报错，会造成“插一半”的情况，所以只有在需要的时候，使用这个功能。
+
+	set @@session.tidb_batch_insert=1;
+
+建议：
+
+1.建议在 session 中使用，不影响其他语句 
+
+2.使用以后可以关闭 `set @@session.tidb_batch_insert=0`
+
+## select count(1) 比较慢，有优化方法么？
+由于 TiDB 的默认参数是按照 OLTP 系统优化的，所以 OLAP 的性能较弱。所以偏向于 OLAP 的场景时，可以尝试修改这些参数。
+
+具体参数可以参考：https://github.com/pingcap/docs-cn/blob/master/sql/tidb-specific.md#tidb_distsql_scan_concurrency
+
+
