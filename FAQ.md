@@ -182,7 +182,9 @@ PD 启动参数中的 `--initial-cluster` 包含了某个不属于该集群的�
 2.使用以后可以关闭 `set @@session.tidb_batch_insert=0`
 
 ## select count(1) 比较慢，有优化方法么？
-由于 TiDB 的默认参数是按照 OLTP 系统优化的，所以 OLAP 的性能较弱。所以偏向于 OLAP 的场景时，可以尝试修改这些参数。
+由于 TiDB 的默认参数是按照 OLTP 系统优化的，所以 OLAP 的性能较弱。所以偏向于 OLAP 的场景时，可以尝试增大这些参数。
+
+例如tidb_distsql_scan_concurrency，这个变量用来设置 scan 操作的并发度，默认是10，可以增大这个参数。
 
 具体参数可以参考：https://github.com/pingcap/docs-cn/blob/master/sql/tidb-specific.md#tidb_distsql_scan_concurrency
 
