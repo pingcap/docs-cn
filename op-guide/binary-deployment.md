@@ -94,26 +94,29 @@ Assuming you have six nodes with the following details:
 |Node5|192.168.199.117|TiKV2|
 |Node6|192.168.199.118|TiKV3|
 
-1. Start PD on Node1, Node2 and Node3.
+1. Start PD on Node1, Node2 and Node3 in sequence.
 
     ```bash
     ./bin/pd-server --name=pd1 \
                     --data-dir=pd1 \
                     --client-urls="http://192.168.199.113:2379" \
                     --peer-urls="http://192.168.199.113:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
-              
+                    --initial-cluster="pd1=http://192.168.199.113:2380" \
+                    --log-file=pd.log
+
     ./bin/pd-server --name=pd2 \
                     --data-dir=pd2 \
                     --client-urls="http://192.168.199.114:2379" \
                     --peer-urls="http://192.168.199.114:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
-              
+                    --join="http://192.168.199.113:2379" \
+                    --log-file=pd.log
+
     ./bin/pd-server --name=pd3 \
                     --data-dir=pd3 \
                     --client-urls="http://192.168.199.115:2379" \
                     --peer-urls="http://192.168.199.115:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380"
+                    --join="http://192.168.199.113:2379" \
+                    --log-file=pd.log
     ```
 
 2. Start TiKV on Node4, Node5 and Node6.
