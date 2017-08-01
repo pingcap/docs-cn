@@ -24,9 +24,7 @@ PD	|	Current storage usage	|	tikv 集群存储空间占用率	|	超过 80% 应�
 PD	|	99% completed_cmds_duration_seconds	|	99% pd-server 请求完成时间	|	小于 5ms
 PD	|	average completed_cmds_duration_seconds	|	pd-server 请求平均完成时间	|	小于 50ms
 PD	|	leader balance ratio	|	leader ratio 最大的节点与最小的节点的差	|	均衡状况下一般小于 5%，节点重启时会比较大
-PD	|	region balance ratio	|	region ratio 最大的节点与最小的节点的差	|	均衡状况下一般小于 5%，新增/下线节点时会比较大
-PD	|	storage capacity	|	集群总存储容量	|	
-PD	|	number of region	|	region数量分布	|	
+PD	|	region balance ratio	|	region ratio 最大的节点与最小的节点的差	|	均衡状况下一般小于 5%，新增/下线节点时会比较大		
 TiDB	|	handle_requests_duration_seconds	|	请求PD获取TSO响应时间	|	小于100ms
 TiDB	|	tidb server QPS	|	集群的请求量	|	这个和业务相关
 TiDB	|	statement count	|	单位时间内不同类型语句执行的数目	|	这个和业务相关
