@@ -36,7 +36,7 @@ TiKV	|	99%  & 99.99%  scheduler command duration	|	99% & 99.99% 命令执行的�
 TiKV	|	95%  & 99% storage async_request duration	|	95%  & 99% Raft 命令执行时间	|	95% 小于 50ms；99% 小于100ms
 TiKV	|	server report failure message	|	发送失败或者收到了错误的 message	|	如果出现了大量的 unreachadble 的消息，表明系统网络出现了问题。如果有 store not match 这样的错误，表明收到了不属于这个集群发过来的消息
 TiKV	|	Vote	|	Raft vote 的频率	|	通常这个值只会在发生 split 的时候有变动，如果长时间出现了 vote 偏高的情况，证明系统出现了严重的问题，有一些节点无法工作了
-TiKV	|	95% 以及 99% coprocessor request duration	|	95% 以及 99%  coprocessor 执行时间	|	和业务相关，但通常不会出现持续高位的值
+TiKV	|	95% & 99% coprocessor request duration	|	95% & 99%  coprocessor 执行时间	|	和业务相关，但通常不会出现持续高位的值
 TiKV	|	Pending task	|	累积的任务数量	|	除了 pd worker，其他任何偏高都属于异常
 TiKV	|	stall	|	RocksDB Stall 时间	|	大于 0，表明 RocksDB 忙不过来，需要注意 IO 和 CPU 了
 TiKV	|	channel full	|	channel 满了，表明线程太忙无法处理	|	如果大于 0，表明线程已经没法处理了
