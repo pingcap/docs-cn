@@ -1,12 +1,12 @@
 ---
-title: overview dashboard 说明
+title: 重要监控指标详解
 category: monitoring
 ---
 
-# overview dashboard 说明
+# 重要监控指标详解
 
-> 使用 ansible 部署 tidb 集群，一键部署监控系统 (prometheus/grafana)，监控架构请看 [TiDB 监控框架概述](../op-guide/monitor-overview.md) 
-> 目前 grafana dashboard 信息过多，采摘出来几十个比较重要的 metrics 单独放在 overview dashboar 。  
+> 使用 ansible 部署 tidb 集群，一键部署监控系统 (prometheus/grafana)，监控架构请看 [TiDB 监控框架概述](../op-guide/monitor-overview.md) 。
+> 目前 grafana dashboard 信息过多，主要是给 TiDB 的开发者们看的，为此采摘出来几十个比较重要的 metrics 单独放在 overview dashboard，供用户使用。  
 > 以下为 overview dashboard 说明。  
 
 
