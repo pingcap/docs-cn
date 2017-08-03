@@ -126,7 +126,7 @@ mysql> select * from t2;
 ```
 
 
-## 增量备份
+## 使用 `mydumper`/`loader`/`drainer` 增量导入数据
 
 
 ### 下载 TiDB  (Linux)
@@ -205,7 +205,7 @@ db-type = "mysql"
 
 ##replicate-do-db priority over replicate-do-table if have same db name
 ##and we support regex expression , start with '~' declare use regex expression.
-#
+
 #replicate-do-db = ["~^b.*","s1"]
 #[[replicate-do-table]]
 #db-name ="test"
@@ -238,4 +238,3 @@ port = 3306
 
 - 在 grafana 导入 drainer.json 监控面板
 - 观察 `synchronization delay` metrics 
-
