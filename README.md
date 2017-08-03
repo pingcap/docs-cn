@@ -15,7 +15,7 @@
 + 运维 & 监控
   - [集群扩容缩容方案](op-guide/horizontal-scale.md)
   - [整体监控框架概述](op-guide/monitor-overview.md)
-  - [重要监控指标详解](op-guide/dashboard-overview-info.md)
+  - [重要监控指标详解](op-guide/overview-dashboard-info.md)
   - [组件状态 API & 监控](op-guide/monitor.md)
   - [PD 命令行工具](op-guide/pd-control.md)
 + SQL 兼容及对比
@@ -28,6 +28,7 @@
   - [性能调优](op-guide/tune-tikv.md)
   - [读取历史版本数据](op-guide/history-read.md)
   - [故障诊断](trouble-shooting.md)
+  - [备份恢复方法](op-guide/backup-restore.md)
 + 更多资源
   - [常用工具](https://github.com/pingcap/tidb-tools)
   - [PingCAP 团队技术博客](https://pingcap.com/bloglist-zh.html)
