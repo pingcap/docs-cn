@@ -4,31 +4,70 @@ category: FAQ
 ---
 
 
-- [产品](#产品)
-  - [通用](#通用)
-  - [PD](#pd)
-  - [TiDB](#tidb)
-  - [TiKV](#tikv)
-  - [TiSpark](#tispark)
-  
-- [运维](#运维)
-  - [部署安装](#部署安装)
-  - [扩容](#扩容)
-  - [监控](#监控)
-  - [升级](#升级)
-  - [性能调优](#性能调优)
-  - [备份恢复](#备份恢复)
-  - [其他](#其他)
-+ SQL
-  - [SQL 语法](#sql-语法)
-  - [SQL 优化](#sql-优化)    
-    
-    
+
+* [产品](#产品)
+  * [关于产品](#关于产品)
+     * [TiDB 是什么？](#tidb-是什么)
+     * [TiDB 是基于 MySQL 开发的吗？](#tidb-是基于-mysql-开发的吗)
+     * [TiDB 和 TiKV 是如何配合使用？ 他们之间的关系是？](#tidb-和-tikv-是如何配合使用-他们之间的关系是)
+     * [Placement Driver (PD) 是做什么的？](#placement-driver-pd-是做什么的)
+     * [TiDB 用起来简单吗？](#tidb-用起来简单吗)
+     * [TiDB 适用的场景是？](#tidb-适用的场景是)
+     * [TiDB 不适用于哪些场景？](#tidb-不适用于哪些场景)
+     * [TiDB 的强一致特性是什么样的？](#tidb-的强一致特性是什么样的)
+     * [TiDB 支持分布式事务吗？](#tidb-支持分布式事务吗)
+     * [在使用 TiDB 时，我需要用什么编程语言？](#在使用-tidb-时我需要用什么编程语言)
+     * [和 MySQL/Oracle 等传统关系型数据库相比，TiDB 有什么优势？](#和-mysqloracle-等传统关系型数据库相比tidb-有什么优势)
+     * [和 Cassandra/Hbase/MongoDB 等 NoSQL 数据库相比，TiDB 有什么优势？](#和-cassandrahbasemongodb-等-nosql-数据库相比tidb-有什么优势)
+     * [使用 go get 方式安装 TiDB 为什么报错了？](#使用-go-get-方式安装-tidb-为什么报错了)
+  * [PD](#pd)
+     * [访问 PD 报错：TiKV cluster is not bootstrapped](#访问-pd-报错tikv-cluster-is-not-bootstrapped)
+     * [PD 启动报错：etcd cluster ID mismatch](#pd-启动报错etcd-cluster-id-mismatch)
+     * [更改 PD 的启动参数](#更改-pd-的启动参数)
+     * [PD 能容忍的时间同步误差是多少？](#pd-能容忍的时间同步误差是多少)
+  * [TiDB](#tidb)
+     * [TiDB 的 lease 参数应该如何设置？](#tidb-的-lease-参数应该如何设置)
+     * [在使用 TiDB 时，DDL 语句为什么这么慢？](#在使用-tidb-时ddl-语句为什么这么慢)
+     * [TiDB 是否支持其他存储引擎？](#tidb-是否支持其他存储引擎)
+     * [TiDB 中 raft 的日志存储在哪里？](#tidb-中-raft-的日志存储在哪里)
+  * [TiKV](#tikv)
+     * [为什么 TiKV 数据目录不见了](#为什么-tikv-数据目录不见了)
+     * [TiKV 启动报错：cluster ID mismatch](#tikv-启动报错cluster-id-mismatch)
+     * [TiKV 启动报错：duplicated store address](#tikv-启动报错duplicated-store-address)
+     * [按照 TIDB 的 key 设定，会不会很长？](#按照-tidb-的-key-设定会不会很长)
+  * [TiSpark](#tispark)
+     * [TiSpark 的使用文档在哪里？](#tispark-的使用文档在哪里)
+* [运维](#运维)
+  * [部署安装](#部署安装)
+     * [为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？](#为什么修改了-tikvpd-的-toml-配置文件却没有生效)
+     * [我的数据盘是 xfs 且不能更改怎么办？](#我的数据盘是-xfs-且不能更改怎么办)
+     * [chrony 能满足时间同步的要求 ？](#chrony-能满足时间同步的要求-)
+  * [扩容](#扩容)
+     * [如何对 TiDB 进行水平扩展？](#如何对-tidb-进行水平扩展)
+  * [监控](#监控)
+     * [监控有一部分显示不出来？](#监控有一部分显示不出来)
+  * [升级](#升级)
+  * [性能调优](#性能调优)
+  * [备份恢复](#备份恢复)
+  * [其他](#其他)
+     * [TiDB是如何进行权限管理的？](#tidb是如何进行权限管理的)
+     * [TiDB 高可用的特性是怎么样的？](#tidb-高可用的特性是怎么样的)
+     * [如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？](#如何将一个运行在-mysql-上的应用迁移到-tidb-上)
+     * [TiDB/PD/TiKV 的日志在哪里](#tidbpdtikv-的日志在哪里)
+     * [如何安全停止 TiDB?](#如何安全停止-tidb)
+     * [TiDB 里面不能执行 kill 吗？](#tidb-里面不能执行-kill-吗)
+* [SQL](#sql)
+  * [SQL 语法](#sql-语法)
+     * [出现 transaction too large 报错怎么办？](#出现-transaction-too-large-报错怎么办)
+     * [查看当时运行的 ddl job](#查看当时运行的-ddl-job)              
+  * [SQL 优化](#sql-优化)
+     * [select count(1) 比较慢，有优化方法么？](#select-count1-比较慢有优化方法么)
+
     
     
 ## 产品
 
-### 通用
+### 关于产品
 
 #### TiDB 是什么？
 
@@ -251,14 +290,15 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提�
 
 在 Google 的 Cloud Spanner 上面，也有类似的限制（https://cloud.google.com/spanner/docs/limits）。
 
-##### 解决方案：
+解决方案：
 
-##### 导入：
+1. 导入：
 分批插入时一批最好别超过1w行，性能会好点。
-##### insert select ：
+
+2. insert select ：
 我们内部有一个隐藏参数，当开启这个参数的时候，insert 会把大事务分批执行。好处是就不会因为事务太大导致超时了，坏处是语句就没有原子性了，假如中间报错，会造成“插一半”的情况，所以只有在需要的时候，使用这个功能。
 
-	set @@session.tidb_batch_insert=1;
+			set @@session.tidb_batch_insert=1;
 
 建议：
 
@@ -266,7 +306,7 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提�
 
 2.使用以后可以关闭 `set @@session.tidb_batch_insert=0`
 
-##### delete && update：
+delete && update：
 可以使用 limit 加循环的方式进行操作。
 
 #### 查看当时运行的 ddl job
@@ -278,13 +318,13 @@ admin show ddl
 
 ### SQL 优化
 
-## select count(1) 比较慢，有优化方法么？
+#### select count(1) 比较慢，有优化方法么？
 count(1) 就是暴力扫表，提高并发度能显著的提升速度，修改并发度可以参考https://github.com/pingcap/docs-cn/blob/master/sql/tidb-specific.md#tidb_distsql_scan_concurrency。 但是也要看 cpu、io 资源。TiDB 每次查询都要访问 TiKV，在数据量小的情况下，MySQL 都在内存里，TiDB 还需要进行一次网络访问。
 
 提升建议：
 
 1. 建议提升硬件，符合我们的标准https://github.com/pingcap/docs-cn/blob/master/op-guide/recommendation.md
-2. 提升并发度，默认是 10，可以提升到 50 或者更高
+2. 提升并发度，默认是 10，可以提升到 50 试试，但是一般提升在 2-4 倍之间
 3. 测试大数据量的 count
 4. 调优 TiKV 配置： https://github.com/pingcap/docs-cn/blob/master/op-guide/tune-tikv.md
 
