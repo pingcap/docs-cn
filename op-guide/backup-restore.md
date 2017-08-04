@@ -38,9 +38,9 @@ cd tidb-enterprise-tools-latest-linux-amd64
 ```
 
 
-## 使用 `mydumper`/`loader` 全量导入数据
+## 使用 `mydumper`/`loader` 全量备份恢复数据
 
-`mydumper` 是一个强大的数据迁移工具，具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)。
+`mydumper` 是一个强大的数据备份工具，具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)。
 
 我们使用 `mydumper` 从 TiDB 导出数据进行备份，然后用 `loader` 将其导入到 TiDB 里面进行恢复。
 
@@ -52,7 +52,7 @@ cd tidb-enterprise-tools-latest-linux-amd64
 * 使用 mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64 
 * loader的 -t 参数可以根据 tikv 的实例个数以及负载进行评估调整，例如 3个 tikv 的场景， 此值可以设为 3 *（1 ～ n)；当 tikv 负载过高，loader 以及 tidb 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 tikv 负载不是太高的时候，可以适当调大该值。
 
-#### 某次导入示例，以及相关的配置
+#### 某次数据恢复示例，以及相关的配置
  - mydumper 导出后总数据量 214G，单表 8 列，20 亿行数据
  - 集群拓扑
      - TIKV * 12
