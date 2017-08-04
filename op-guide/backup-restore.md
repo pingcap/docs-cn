@@ -19,7 +19,7 @@ category: advanced
 
 在这个备份恢复过程中，我们会用到下面的工具:
 
-- mydumper 从 MySQL 导出数据
+- mydumper 从 TiDB 导出数据
 - loader 导入数据到 TiDB
 
 
