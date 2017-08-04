@@ -28,7 +28,7 @@
   - [性能调优](op-guide/tune-tikv.md)
   - [读取历史版本数据](op-guide/history-read.md)
   - [故障诊断](trouble-shooting.md)
-  - [备份恢复方法](op-guide/backup-restore.md)
+  - [备份 & 恢复](op-guide/backup-restore.md)
 + 更多资源
   - [常用工具](https://github.com/pingcap/tidb-tools)
   - [PingCAP 团队技术博客](https://pingcap.com/bloglist-zh.html)
