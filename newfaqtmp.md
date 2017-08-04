@@ -20,6 +20,7 @@ category: FAQ
      * [和 MySQL/Oracle 等传统关系型数据库相比，TiDB 有什么优势？](#和-mysqloracle-等传统关系型数据库相比tidb-有什么优势)
      * [和 Cassandra/Hbase/MongoDB 等 NoSQL 数据库相比，TiDB 有什么优势？](#和-cassandrahbasemongodb-等-nosql-数据库相比tidb-有什么优势)
      * [使用 go get 方式安装 TiDB 为什么报错了？](#使用-go-get-方式安装-tidb-为什么报错了)
+     * [TiDB 高可用的特性是怎么样的？](#tidb-高可用的特性是怎么样的)
   * [PD](#pd)
      * [访问 PD 报错：TiKV cluster is not bootstrapped](#访问-pd-报错tikv-cluster-is-not-bootstrapped)
      * [PD 启动报错：etcd cluster ID mismatch](#pd-启动报错etcd-cluster-id-mismatch)
@@ -46,13 +47,12 @@ category: FAQ
      * [如何对 TiDB 进行水平扩展？](#如何对-tidb-进行水平扩展)
   * [监控](#监控)
      * [监控有一部分显示不出来？](#监控有一部分显示不出来)
-  * [升级](#升级)
+  * [数据迁移](#数据迁移)
+     * [如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？](#如何将一个运行在-mysql-上的应用迁移到-tidb-上)
   * [性能调优](#性能调优)
   * [备份恢复](#备份恢复)
   * [其他](#其他)
      * [TiDB是如何进行权限管理的？](#tidb是如何进行权限管理的)
-     * [TiDB 高可用的特性是怎么样的？](#tidb-高可用的特性是怎么样的)
-     * [如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？](#如何将一个运行在-mysql-上的应用迁移到-tidb-上)
      * [TiDB/PD/TiKV 的日志在哪里](#tidbpdtikv-的日志在哪里)
      * [如何安全停止 TiDB?](#如何安全停止-tidb)
      * [TiDB 里面不能执行 kill 吗？](#tidb-里面不能执行-kill-吗)
@@ -128,6 +128,10 @@ TiDB 在提供水平扩展特性的同时，还能提供 SQL 以及分布式事�
 请手动将TiDB克隆到GOPATH目录，然后运行 `make` 命令。TiDB是一个项目而不是一个库，它的依赖比较复杂，并且parser也是根据 `parser.y` 生成的，我们不支持 `go get` 方式，而是使用 Makefile 来管理。
 
 如果你是开发者并且熟悉Go语言，你可以尝试在TiDB项目的根目录运行 `make parser; ln -s _vendor/src vendor` ，之后就可以使用 `go run`, `go test` `go install` 等命令，但是并不推荐这种做法。
+
+#### TiDB 高可用的特性是怎么样的？
+
+高可用是 TiDB 的另一大特点，TiDB/TiKV/PD 这三个组件都能容忍部分实例失效，不影响整个集群的可用性。具体见 [TiDB 高可用性](README.md#高可用)。
 
 ### PD
 
@@ -235,7 +239,11 @@ rocksdb 对于 key 有压缩。
 #### 监控有一部分显示不出来？
 查看访问监控的机器时间跟集群内机器的时间差，如果比较大，更正时间后即可显示正常。
 
-### 升级
+### 数据迁移
+
+#### 如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？
+
+TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提供了一个[检查工具](https://github.com/pingcap/tidb-tools/tree/master/checker)，用于检查 MySQL 中的 Schema 是否和 TiDB 兼容。
 
 ### 性能调优
 
@@ -255,14 +263,6 @@ TiDB 遵循 MySQL 的权限管理体系，可以创建用户并授予权限。
 
 更多细节可以参考[权限管理](https://github.com/pingcap/docs-cn/blob/master/sql/privilege.md)。
 
-
-#### TiDB 高可用的特性是怎么样的？
-
-高可用是 TiDB 的另一大特点，TiDB/TiKV/PD 这三个组件都能容忍部分实例失效，不影响整个集群的可用性。具体见 [TiDB 高可用性](README.md#高可用)。
-
-#### 如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？
-
-TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提供了一个[检查工具](https://github.com/pingcap/tidb-tools/tree/master/checker)，用于检查 MySQL 中的 Schema 是否和 TiDB 兼容。
 
 #### TiDB/PD/TiKV 的日志在哪里
 
