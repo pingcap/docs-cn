@@ -102,6 +102,12 @@ category: deployment
 + 默认: 15s
 + 设置为 0 表明不推送统计信息给 Push Gateway
 
+### \-\-proxy-protocol-networks
+
++ PROXY Protocol 允许的代理服务器地址列表，如果需要配置多个地址用`,`分隔。
++ 默认: ""
++ 如果为空，TiDB 会禁用 PROXY Protocol 功能。地址可以使用 IP 地址（192.168.1.50）或者 CIDR （192.168.1.0、24），`*` 代表所有地址。
+
 ## Placement Driver (PD)
 
 ### -L
