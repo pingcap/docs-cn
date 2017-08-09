@@ -18,6 +18,7 @@
   - [重要监控指标详解](op-guide/dashboard-overview-info.md)
   - [组件状态 API & 监控](op-guide/monitor.md)
   - [PD 命令行工具](op-guide/pd-control.md)
+  - [TiDB 运维文档](op-guide/tidb-ops-guide.md)
 + SQL 兼容及对比
   - [TiDB SQL 文法](sql/README.md)
   - [与 MySQL 兼容性对比](op-guide/mysql-compatibility.md)
