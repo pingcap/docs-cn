@@ -50,7 +50,7 @@ Grafana 是一个开源的 metric 分析及可视化系统。我们使用 Grafan
 
 所以日常巡检都是围绕着 Grafana 为中心。
 
-### Grafana dashboard 说明
+### Grafana 监控指标说明
 
 > 目前 Grafana dashboard 整体分为四个dashboard，node_export，PD，TiDB，TiKV。 内容较多，主要在于全面了解整个集群各个组件	的运行情况。  
 > 针对对于日常运维，我们挑选出一些重要的 metrics 指标放在 overview 页面，方便日常运维人员观察集群组件(PD,TiDB,TiKV)使用状态以及集群使用状态 。  
