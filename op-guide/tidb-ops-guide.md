@@ -31,7 +31,7 @@ category: deployment
          * [查询 region store 信息](#查询-region--store-信息)
    * [常见FAQ](#常见faq)
       * [TiDB 服务相关](#tidb-服务相关)
-      * [如何kill tidb session](#如何kill-tidb-session)
+      * [如何 kill tidb session ](#如何kill-tidb-session)
       * [查看当时运行的 ddl job](#查看当时运行的-ddl-job)
       * [备份恢复](#备份恢复)
       * [drainer 服务相关](#drainer-服务相关)
@@ -457,7 +457,7 @@ Success!
 - TiDB 日志出现 TIME_INDEX_DOBLE
 	- 先取一次索引，再从索引中拿倒相应的主键，再通过主键取一次数据
 
-#### 如何kill tidb session
+#### 如何 kill tidb session
 
 - ddl语句跑起来之后除非出错，否则 kill 不了
 - 其他语句可以通过 `show processlist` 查看到 session id 
