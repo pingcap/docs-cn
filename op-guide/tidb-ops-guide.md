@@ -7,7 +7,7 @@ category: deployment
 
 * [概述](#概述)
 * [日常巡检指标监控](#日常巡检指标监控)
-   * [Grafana dashboard 说明](#grafana-dashboard-说明)
+   * [Grafana 监控指标说明](#grafana-监控指标说明)
 * [告警说明](#告警说明)
    * [alert.rule 告警说明](#alertrule-告警说明)
    * [告警处理](#告警处理)
@@ -67,8 +67,8 @@ PD	|	Storage Capacity	|	TiDB 集群总可用数据库空间大小	|
 PD	|	Current Storage Size	|	TiDB 集群目前已用数据库空间大小	|	
 PD	|	Store Status  -- up store	|	TiKV 正常节点数量	|	
 PD	|	Store Status  -- down store	|	TiKV 异常节点数量	|	如果大于0，证明有节点不正常
-PD	|	Store Status  -- offline store	|	手动执行下线操作TiKV节点数量	|	
-PD	|	Store Status  -- Tombstone store	|	下线成功的TiKV节点数量	|	
+PD	|	Store Status  -- offline store	|	手动执行下线操作 TiKV 节点数量	|	
+PD	|	Store Status  -- Tombstone store	|	下线成功的 TiKV 节点数量	|	
 PD	|	Current storage usage	|	TiKV 集群存储空间占用率	|	超过 80% 应考虑添加 TiKV 节点
 PD	|	leader balance ratio	|	leader ratio 最大的节点与最小的节点的差	|	均衡状况下一般小于 5%，节点重启时会比较大
 PD	|	region balance ratio	|	region ratio 最大的节点与最小的节点的差	|	均衡状况下一般小于 5%，新增/下线节点时会比较大
@@ -81,10 +81,10 @@ PD	|	average completed-cmds-duration-seconds	|	pd-server 请求平均完成时�
 服务	|	监控对象	|	说明	|	正常范围
 ---	|	---	|	---	|	---
 TiDB	|	connection count	  |	从业务服务器连接到数据库的连接数	|	和业务相关。但是如果连接数发生跳变，需要查明原因。比如突然掉为0，可以检查网络是否中断；如果突然上涨，需要检查业务。
-TiDB	|	handle-requests-duration-seconds	|	请求PD获取TSO响应时间	|	小于100ms
+TiDB	|	handle-requests-duration-seconds	|	请求 PD 获取 TSO 响应时间	|	小于100ms
 TiDB	|	TiDB server QPS	|	集群的请求量	|	这个和业务相关
 TiDB	|	statement count	|	单位时间内不同类型语句执行的数目	|	这个和业务相关
-TiDB	|	Query Duration 99th percentile	|	99% 的query时长	|	
+TiDB	|	Query Duration 99th percentile	|	99% 的 query 时长	|	
 
 ####TiKV运行参数
 
@@ -99,7 +99,7 @@ TiKV	|	Pending task	|	累积的任务数量	|	除了 pd worker，其他任何偏
 TiKV	|	stall	|	RocksDB Stall 时间	|	大于 0，表明 RocksDB 忙不过来，需要注意 IO 和 CPU 了
 TiKV	|	channel full	|	channel 满了，表明线程太忙无法处理	|	如果大于 0，表明线程已经没法处理了
 TiKV	|	95% send-message-duration-seconds	|	95% 发送消息的时间	|	小于50ms
-TiKV	|	leader/region	|	每个TiKV的leader/region数量	|	和业务相关
+TiKV	|	leader/region	|	每个 TiKV 的leader/region数量	|	和业务相关
 
 
 -----
@@ -114,7 +114,7 @@ Push GateWay 来接收 Client Push 上来的数据，统一供 Prometheus 主服
 
 其结构如下图：  
  
-![Prometheus](https://github.com/pingcap/docs-cn/raw/master/media/Prometheus-in-TiDB.png)
+![ Prometheus ](https://github.com/pingcap/docs-cn/blob/master/media/prometheus-in-tidb.png?raw=true)
 
 根据 TiDB 的业务，我们在 Prometheus 定制了一些业务告警规则(`alert.rule`),并设定了一些默认阈值，上线前可以根据而业务自动定制 alert.rule 信息。  
 
@@ -124,24 +124,24 @@ Push GateWay 来接收 Client Push 上来的数据，统一供 Prometheus 主服
 
 服务	|	ALERT 	|	说明	|	metrics
 ---	|	---	|	---	|	---
-TiDB	|	load_schema_fail	|	检测TiDB  loader schema tableinfo 执行状态，如果出现failed 则告警，如果状态 failed，TiDB进入不可用状态。(当执行完DDL，TiDB 会有 loader schema tableinfo 操作，加载最新表信息	|	rate(TiDB_domain_load_schema_total{type='failed'}[1m]) > 0
+TiDB	|	load_schema_fail	|	检测 TiDB  loader schema tableinfo 执行状态，如果出现failed 则告警，如果状态 failed，TiDB 进入不可用状态。(当执行完DDL，TiDB 会有 loader schema tableinfo 操作，加载最新表信息	|	rate(TiDB_domain_load_schema_total{type='failed'}[1m]) > 0
 TiDB	|	load_shema_latency	|	TiDB loader schema tablesinfo 时间超过5秒，一般情况是TiKV主机变慢了，可以 观察监控TiDB--Schema Load 组下面三个面板	|	histogram_quantile(1, rate(TiDB_domain_load_schema_duration_bucket[5m])) > 5
 TiDB	|	memery_abnormal	|	监控 TiDB 服务内存使用率(主要防止出现 TiDB OOM现象，如果TiDB内存占用超过阈值需要排查相关 TiDB进程 是否在执行ddl或者慢查询)	|	go_memstats_heap_inuse_bytes{job='TiDB'} > 1000000000
 TiDB	|	TiDB_query_duration	|	99% query 请求时间，当有超过 1s 的慢查询告警	|	histogram_quantile(0.99, sum(rate(TiDB_server_handle_query_duration_seconds_bucket[1m])) by (le, instance)) > 1
 TiDB	|	TiDB_TiKVclient_region_err	|	TiKV 运行出现server is busy 次数，出现这个告警，说明目前TiKV节点比较繁忙了，需要检查集群状态(是否在调度 leader/region , TiKV 节点磁盘利用率, rockdb cpu使用率,)	|	sum(rate(TiDB_TiKVclient_region_err_total{type='server_is_busy'}[1m])) > 0
 TiKV	|	TiKV_raft_process_ready	|	处理ready的耗时	|	sum(rate(TiKV_raftstore_raft_process_nanos_total{type='ready'}[1m])) by (type, instance) / 1000000000 > 1
 TiKV	|	raft_sotre_msg	|	消息发送失败的个数	|	sum(rate(TiKV_server_report_failure_msg_total{type='unreachable'}[1m])) > 10
-TiKV	|	TiKV_channel_full_total	|	TiKV 出现 channel full > 0,相关TiKV节点太繁忙，或者TiKV 节点不可用状态	|	sum(rate(TiKV_channel_full_total[1m])) by (type, instance) > 0
+TiKV	|	TiKV_channel_full_total	|	TiKV 出现 channel full > 0,相关 TiKV 节点太繁忙，或者 TiKV 节点不可用状态	|	sum(rate(TiKV_channel_full_total[1m])) by (type, instance) > 0
 TiKV	|	coprocessor_pending_request	|	请求太多，出现排队，	|	sum(rate(TiKV_coprocessor_pending_request[1m])) by (type,instance) > 2
 TiKV	|	TiKV_scheduler_context_total	|	如果这个告警数值太大，表示目前有大量写入正在进行	|	sum(TiKV_scheduler_contex_total) by (job) > 300
-TiKV	|	TiKV_thread_cpu_seconds_total	|	raftstore CPU告警	|	rate(TiKV_thread_cpu_seconds_total{name='raftstore'}[1m]) > 0.8
-TiKV	|	TiKV_thread_cpu_seconds_total	|	endpoint-pool CPU告警	|	rate(TiKV_thread_cpu_seconds_total{name='endpoint-pool'}[1m]) > 0.9
-TiKV	|	TiKV_thread_cpu_seconds_total	|	sched-worker-pool CPU告警	|	rate(TiKV_thread_cpu_seconds_total{name='sched-worker-pool'}[1m]) > 0.9
+TiKV	|	TiKV_thread_cpu_seconds_total	|	raftstore CPU 告警	|	rate(TiKV_thread_cpu_seconds_total{name='raftstore'}[1m]) > 0.8
+TiKV	|	TiKV_thread_cpu_seconds_total	|	endpoint-pool CPU 告警	|	rate(TiKV_thread_cpu_seconds_total{name='endpoint-pool'}[1m]) > 0.9
+TiKV	|	TiKV_thread_cpu_seconds_total	|	sched-worker-pool CPU 告警	|	rate(TiKV_thread_cpu_seconds_total{name='sched-worker-pool'}[1m]) > 0.9
 TiKV	|	TiKV_leader_drops	|	TiKV 单节点 30s leader 数量调度情况，如果连续下降10个以上会告警。	|	delta(TiKV_pd_heartbeat_tick_total{type="leader"}[30s]) < -10
-PD	|	etcd_disk_fsync	|	监控etcd wal 写入情况，判断etcd是否进程退出。当etcd无法写入时，PD 进程会退出	|	sum(rate(etcd_disk_wal_fsync_duration_seconds_count[1m])) by (instance) == 0
-Syncer	|	Syncer_status	|	Syncer binlog同步告警，当master与syncer binlog文件大与1时告警。	|	syncer_binlog_file{node='master'} - ON(instance, job) syncer_binlog_file{node='syncer'} > 1
+PD	|	etcd_disk_fsync	|	监控 etcd wal 写入情况，判断 etcd 是否进程退出。当 etcd 无法写入时，PD 进程会退出	|	sum(rate(etcd_disk_wal_fsync_duration_seconds_count[1m])) by (instance) == 0
+Syncer	|	Syncer_status	|	Syncer binlog 同步告警，当 master 与 syncer binlog 文件大与1时告警。	|	syncer_binlog_file{node='master'} - ON(instance, job) syncer_binlog_file{node='syncer'} > 1
 drainer	|	Drainer_status_timeout	|	Drainer 与线上同步时间超时1800秒告警	|	(binlog_drainer_window{instance="production-users-TiDB-1",marker="upper"} - IGNORING(marker) binlog_drainer_position{instance="production-users-TiDB-1"}) / (2 ^ 18 * 10 ^ 3) > 1800
-drainer	|	Drainer_Disk_space_not_enough	|	drainer 服务磁盘告警，需要指定drainer主机，磁盘剩余小于150G告警	|	node_filesystem_avail{instance='10.1.102.62:9100',mountpoint='/data'}/1024/1024/1024 < 150
+drainer	|	Drainer_Disk_space_not_enough	|	drainer 服务磁盘告警，需要指定 drainer 主机，磁盘剩余小于150G告警	|	node_filesystem_avail{instance='10.1.102.62:9100',mountpoint='/data'}/1024/1024/1024 < 150
 OS	|	Disk_space_not_enough	|	磁盘剩余空间告警，磁盘剩余空间小于30%告警	|	node_filesystem_free{fstype!~"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs",instance=~".+",mountpoint!~"^/boo.+|/usr.+",mountpoint=~".+"} / node_filesystem_size{fstype!~"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs",instance=~".+",mountpoint!~"^/boo.+|/usr.+",mountpoint=~".+"} * 100 < 30
 OS	|	Disk_IO_Utilization	|	磁盘 IO 利用率告警，大于30告警	|	sort_desc(rate(node_disk_io_time_ms[1m])/10  or irate(node_disk_io_time_ms[1m]) /10 ) 
 
@@ -181,9 +181,9 @@ OS	|	Disk_IO_Utilization	|	磁盘 IO 利用率告警，大于30告警	|	sort_des
 
 - 检查 drainer 日志输出，根据日志输出判断问题
 - drainer 上游组件影响说明
-	- PD `用来获取pump组件信息`
+	- PD `用来获取 pump 组件信息`
 		- 如果所有PD机器宕机，那么会出现整个TiDB集群不可用
-	- pump `pump链接TiDB，生成binlog，drainer 来 pump 拉 binlog 信息`
+	- pump `pump链接 TiDB，生成binlog，drainer 来 pump 拉 binlog 信息`
 		- 注意pump数据磁盘空间是否写满
 		- 查看日志是否还在生成 binlog 文件
 	- TiDB `TiDB 进程正常退出，pump无法生成 binlog，不影响drainer；如果TiDB异常，pump无法生成binlog，drainer 因数据一致性操作，拿不到binlog 会异常`
@@ -254,7 +254,7 @@ Monitor	|	Grafana_data_dir: "{{ deploy_dir }}/data.Grafana"	|	Grafana 存放数�
 > 远程连接权限问题，参考以上步骤( 已建立互信无需加 `-k` )
 
 - 下载binary
-  - 第一种：使用playbook下载最新 master binary，自动替换 binary 到`TiDB-ansible/resource/bin/`
+  - 第一种：使用 playbook 下载最新 master binary，自动替换 binary 到`TiDB-ansible/resource/bin/`
 
                 ansible-playbook local_prepare.yml
 
@@ -294,7 +294,7 @@ Monitor	|	Grafana_data_dir: "{{ deploy_dir }}/data.Grafana"	|	Grafana 存放数�
 				- member
 - 滚动重启整个集群
 	- ansible-playbook rolling_update.yml
-- 查看监控检查新节点运行情况(dashboard title)
+- 查看监控检查新节点运行情况 (dashboard title)
 	- PD dashboard
 		- Leader Balance Ratio
 	- TiKV dashboard
@@ -479,7 +479,7 @@ TiDB 有自身的 binlog，可以做数据增量备份 同时每天可以用 myd
 #### drainer 服务相关
 
 - drainer 日志出现 `desc = binlogger: file not found`
-	- 找不到pump binlog 文件
+	- 找不到 pump binlog 文件
 	- 检查 savepoint 与 pump 节点 binlog 文件ID 是否一致
 	- 一般场景不会出现此问题，出现此问题尽快联系 pingcap 运维
 
