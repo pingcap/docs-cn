@@ -117,6 +117,7 @@ pd_servers
 
 > Ansible 远程连接用户(即 ansible_user)可使用 root 用户或普通用户(该用户需要有 sudo 到 root 权限)。
 
+如果你要是有非默认的私钥地址，请先修改`ansible.cfg`中的`ssh_args` 中的 `aws.key`。你可以替换为私钥所在的地址。
 以下根据这两种情况作说明：
 
 #### 5.1 ansible 通过 root 用户远程连接部署
