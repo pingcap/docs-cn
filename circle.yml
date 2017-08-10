@@ -4,7 +4,7 @@ jobs:
   build:
     docker:
       - image: andelf/doc-build:0.1.7
-    working_directory: /src/pingcap/docs-cn
+    working_directory: ~/pingcap/docs-cn
     steps:
       - checkout
 
@@ -19,7 +19,7 @@ jobs:
   deploy:
     docker:
       - image: andelf/doc-build:0.1.7
-    working_directory: /src/pingcap/docs-cn
+    working_directory: ~/pingcap/docs-cn
     steps:
       - run:
           name: "Publish PDF"
