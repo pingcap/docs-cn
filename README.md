@@ -29,6 +29,7 @@
   - [性能调优](op-guide/tune-tikv.md)
   - [读取历史版本数据](op-guide/history-read.md)
   - [故障诊断](trouble-shooting.md)
+- [TiSpark 用户指南](op-guide/tispark_user_guide.md)
 + 更多资源
   - [常用工具](https://github.com/pingcap/tidb-tools)
   - [PingCAP 团队技术博客](https://pingcap.com/bloglist-zh.html)
