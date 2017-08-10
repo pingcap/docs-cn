@@ -124,12 +124,12 @@ Push GateWay 来接收 Client Push 上来的数据，统一供 Prometheus 主服
 
 服务	|	ALERT 	|	说明	|	metrics
 ---	|	---	|	---	|	---
-TiDB	|	load_schema_fail	|	检测 TiDB  loader schema tableinfo 执行状态，如果出现failed 则告警，如果状态 failed，TiDB 进入不可用状态。(当执行完DDL，TiDB 会有 loader schema tableinfo 操作，加载最新表信息	|	rate(TiDB_domain_load_schema_total{type='failed'}[1m]) > 0
-TiDB	|	load_shema_latency	|	TiDB loader schema tablesinfo 时间超过5秒，一般情况是TiKV主机变慢了，可以 观察监控TiDB--Schema Load 组下面三个面板	|	histogram_quantile(1, rate(TiDB_domain_load_schema_duration_bucket[5m])) > 5
-TiDB	|	memery_abnormal	|	监控 TiDB 服务内存使用率(主要防止出现 TiDB OOM现象，如果TiDB内存占用超过阈值需要排查相关 TiDB进程 是否在执行ddl或者慢查询)	|	go_memstats_heap_inuse_bytes{job='TiDB'} > 1000000000
+TiDB	|	load_schema_fail	|	检测 TiDB  loader schema tableinfo 执行状态，如果出现 failed 则告警，如果状态 failed，TiDB 进入不可用状态。(当执行完 DDL，TiDB 会有 loader schema tableinfo 操作，加载最新表信息	|	rate(TiDB_domain_load_schema_total{type='failed'}[1m]) > 0
+TiDB	|	load_shema_latency	|	TiDB loader schema tablesinfo 时间超过5秒，一般情况是 TiKV 主机变慢了，可以 观察监控 TiDB--Schema Load 组下面三个面板	|	histogram_quantile(1, rate(TiDB_domain_load_schema_duration_bucket[5m])) > 5
+TiDB	|	memery_abnormal	|	监控 TiDB 服务内存使用率(主要防止出现 TiDB OOM 现象，如果 TiDB 内存占用超过阈值需要排查相关 TiDB 进程 是否在执行 ddl 或者慢查询)	|	go_memstats_heap_inuse_bytes{job='TiDB'} > 1000000000
 TiDB	|	TiDB_query_duration	|	99% query 请求时间，当有超过 1s 的慢查询告警	|	histogram_quantile(0.99, sum(rate(TiDB_server_handle_query_duration_seconds_bucket[1m])) by (le, instance)) > 1
-TiDB	|	TiDB_TiKVclient_region_err	|	TiKV 运行出现server is busy 次数，出现这个告警，说明目前TiKV节点比较繁忙了，需要检查集群状态(是否在调度 leader/region , TiKV 节点磁盘利用率, rockdb cpu使用率,)	|	sum(rate(TiDB_TiKVclient_region_err_total{type='server_is_busy'}[1m])) > 0
-TiKV	|	TiKV_raft_process_ready	|	处理ready的耗时	|	sum(rate(TiKV_raftstore_raft_process_nanos_total{type='ready'}[1m])) by (type, instance) / 1000000000 > 1
+TiDB	|	TiDB_TiKVclient_region_err	|	TiKV 运行出现 server is busy 次数，出现这个告警，说明目前 TiKV 节点比较繁忙了，需要检查集群状态(是否在调度 leader/region , TiKV 节点磁盘利用率, rockdb cpu 使用率,)	|	sum(rate(TiDB_TiKVclient_region_err_total{type='server_is_busy'}[1m])) > 0
+TiKV	|	TiKV_raft_process_ready	|	处理 ready 的耗时	|	sum(rate(TiKV_raftstore_raft_process_nanos_total{type='ready'}[1m])) by (type, instance) / 1000000000 > 1
 TiKV	|	raft_sotre_msg	|	消息发送失败的个数	|	sum(rate(TiKV_server_report_failure_msg_total{type='unreachable'}[1m])) > 10
 TiKV	|	TiKV_channel_full_total	|	TiKV 出现 channel full > 0,相关 TiKV 节点太繁忙，或者 TiKV 节点不可用状态	|	sum(rate(TiKV_channel_full_total[1m])) by (type, instance) > 0
 TiKV	|	coprocessor_pending_request	|	请求太多，出现排队，	|	sum(rate(TiKV_coprocessor_pending_request[1m])) by (type,instance) > 2
@@ -154,8 +154,8 @@ OS	|	Disk_IO_Utilization	|	磁盘 IO 利用率告警，大于30告警	|	sort_des
 	- 根据监控，可以查看到是那台 TiDB 进程正在执行 sql
 - 登录相关节点查看日志
 	- grep TIME_QUERY TiDB.log 
-	- 查到相关sql语句，看是否可以进行优化
-	- 查看TiKV是否存在热点，如磁盘 read 利用率高(iostat)
+	- 查到相关 sql 语句，看是否可以进行优化
+	- 查看 TiKV 是否存在热点，如磁盘 read 利用率高(iostat)
 - 登录TiDB ，使用 `show processlist` 可以看到执行语句
 	- 使用 `kill TiDB pid` 可杀死相应进程， pid 为 `show processlist` 查到的sql id。
 
@@ -182,11 +182,11 @@ OS	|	Disk_IO_Utilization	|	磁盘 IO 利用率告警，大于30告警	|	sort_des
 - 检查 drainer 日志输出，根据日志输出判断问题
 - drainer 上游组件影响说明
 	- PD `用来获取 pump 组件信息`
-		- 如果所有PD机器宕机，那么会出现整个TiDB集群不可用
+		- 如果所有 PD 机器宕机，那么会出现整个 TiDB 集群不可用
 	- pump `pump链接 TiDB，生成binlog，drainer 来 pump 拉 binlog 信息`
-		- 注意pump数据磁盘空间是否写满
+		- 注意 pump 数据磁盘空间是否写满
 		- 查看日志是否还在生成 binlog 文件
-	- TiDB `TiDB 进程正常退出，pump无法生成 binlog，不影响drainer；如果TiDB异常，pump无法生成binlog，drainer 因数据一致性操作，拿不到binlog 会异常`
+	- TiDB `TiDB 进程正常退出，pump无法生成 binlog，不影响drainer；如果TiDB异常，pump无法生成 binlog，drainer 因数据一致性操作，拿不到 binlog 会异常`
 
 -----
 
@@ -207,7 +207,7 @@ TiDB	|	TiDB_status_port: 10080	|	TiDB 服务状态监听端口（监控数据）
 Monitor	|	node_exporter_port: 9100	|	node_exporter 服务监听端口(主机监控)
 Monitor	|	Prometheus_port: 9090	|	Promethus 服务监听端口
 Monitor	|	pushgateway_port: 9091	|	PushGateway 服务监听端口
-Monitor	|	Grafana_port: 3000	|	Grafana 服务监听端口(web port)
+Monitor	|	Grafana_port: 3000	|	Grafana 服务监听端口( web port )
 
 
 #### TiDB 服务默认目录
@@ -320,7 +320,7 @@ Monitor	|	Grafana_data_dir: "{{ deploy_dir }}/data.Grafana"	|	Grafana 存放数�
 
 > 使用 ./pd-ctl -u "http://127.0.0.1:2379" 链接 PD 服务
 > pd-ctl 使用命令行交互模式调整 tidb 集群状态信息
-> 以下为运维操作简单示例，更多功能请看[PD Control 使用说明](https://github.com/pingcap/docs-cn/blob/master/op-guide/pd-control.md)
+> 以下为运维操作简单示例，更多功能请看[ PD Control 使用说明](https://github.com/pingcap/docs-cn/blob/master/op-guide/pd-control.md )
 
 ##### 查询/删除 PD 成员
 
