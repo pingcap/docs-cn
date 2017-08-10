@@ -16,23 +16,9 @@ jobs:
           name: "Generate PDF"
           command: scripts/generate_pdf.sh
 
-  deploy:
-    docker:
-      - image: andelf/doc-build:0.1.7
-    working_directory: ~/pingcap/docs-cn
-    steps:
-      - run:
-          name: "Publish PDF"
-          command: python3 scripts/upload.py output.pdf tidb-manual-cn.pdf
-
-workflows:
-  version: 2
-  default-workflow:
-    jobs:
-      - build
       - deploy:
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
+          name: "Publish PDF"
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              python3 scripts/upload.py output.pdf tidb-manual-cn.pdf
+            fi
