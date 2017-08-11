@@ -21,6 +21,7 @@
 + SQL 兼容及对比
   - [TiDB SQL 文法](sql/README.md)
   - [与 MySQL 兼容性对比](op-guide/mysql-compatibility.md)
+  - [JSON 函数及 Generated Column ](op-guide/json_functions_generated_column.md)
 + 高级功能
   - [数据迁移方法](op-guide/migration.md)
   - [Syncer 使用文档](tools/syncer.md)
