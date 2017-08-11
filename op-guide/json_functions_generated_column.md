@@ -85,4 +85,5 @@ SELECT name, id FROM person WHERE city = 'Beijing'
 目前 JSON 及生成列仍然有一些限制：
 * 不能 ALTER TABLE 增加 STORED 存储方式的生成列；
 * 不能 ALTER TABLE 在生成列上增加索引；
+
 这些功能，包括其他一些 JSON 函数的实现尚在开发过程中。请社区踊跃尝试，并多多反馈，帮助我们将中国的开源事业推向新的高度！
