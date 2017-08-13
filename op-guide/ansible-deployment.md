@@ -209,6 +209,8 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 > 远程连接权限问题，参考以上步骤( 已建立互信无需加 `-k` )
 
+> 如果集群环境中有 pump / drainer 服务，建议先停止 drainer 后滚动升级 (升级 tidb 时会升级 pump)。
+
 - 下载binary
 
   1. 使用playbook下载最新 master binary，自动替换 binary 到`tidb-ansible/resource/bin/`
