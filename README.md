@@ -25,6 +25,7 @@
   - [数据迁移方法](op-guide/migration.md)
   - [Syncer 使用文档](tools/syncer.md)
   - [Loader 使用文档](tools/loader.md)
+  - [TiDB-binlog 使用文档](op-guide/tidb-binlog.md)
   - [性能调优](op-guide/tune-tikv.md)
   - [读取历史版本数据](op-guide/history-read.md)
   - [故障诊断](trouble-shooting.md)
