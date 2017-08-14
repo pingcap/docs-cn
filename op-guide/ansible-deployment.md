@@ -248,3 +248,12 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 > TiDB 服务数据迁移、性能调优等更多高级功能请参考 https://github.com/pingcap/docs-cn 。
 
+
+### FAQ
+#### 如何下载安装指定版本 TiDB
+inventory.ini 文件中指定的 TiDB 默认版本为 master 版本 `tidb_version = latest`, 如需安装 TiDB rc4 版本，先下载 TiDB-Ansible rc4 分支，确认 inventory.ini 文件中 `tidb_version = rc4`。
+
+          git clone -b rc4 https://github.com/pingcap/tidb-ansible.git
+          
+
+
