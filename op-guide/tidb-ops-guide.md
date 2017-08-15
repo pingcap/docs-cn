@@ -254,23 +254,22 @@ Monitor	|	Grafana_data_dir: "{{ deploy_dir }}/data.Grafana"	|	Grafana 存放数�
 > 远程连接权限问题，参考以上步骤( 已建立互信无需加 `-k` )
 
 - 下载binary
-  - 第一种：使用 playbook 下载最新 master binary，自动替换 binary 到`TiDB-ansible/resource/bin/`
+  1. 使用 playbook 下载最新 master binary，自动替换 binary 到`TiDB-ansible/resource/bin/`
 
-                ansible-playbook local_prepare.yml
+          ansible-playbook local_prepare.yml
 
-  - 第二种：使用 wget 下载 binary，手动替换 binary 到 `TiDB-ansible/resource/bin/`
+  2. 使用 wget 下载 binary，手动替换 binary 到 `TiDB-ansible/resource/bin/`
 
-                wget http://download.pingcap.org/TiDB-latest-linux-amd64.tar.gz
+          wget http://download.pingcap.org/TiDB-latest-linux-amd64.tar.gz
 
 - 使用 ansible 滚动升级
-
-> 滚动升级TiKV节点( 只升级单独服务 )
-
-                ansible-playbook rolling_update.yml --tags=TiKV
-
-> 滚动升级所有服务
-
-                ansible-playbook rolling_update.yml
+  1. 滚动升级TiKV节点( 只升级单独服务 )
+  
+          ansible-playbook rolling_update.yml --tags=TiKV
+	 
+  2. 滚动升级所有服务
+  
+          ansible-playbook rolling_update.yml
 
 
 
