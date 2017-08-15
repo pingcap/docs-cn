@@ -50,7 +50,7 @@ cd tidb-enterprise-tools-latest-linux-amd64
 为了快速的备份恢复数据 (特别是数据量巨大的库), 可以参考下面建议
 
 * 使用 mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64 
-* loader的 -t 参数可以根据 tikv 的实例个数以及负载进行评估调整，例如 3个 tikv 的场景， 此值可以设为 3 *（1 ～ n)；当 tikv 负载过高，loader 以及 tidb 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 tikv 负载不是太高的时候，可以适当调大该值。
+* loader的 `-t` 参数可以根据 tikv 的实例个数以及负载进行评估调整，例如 3个 tikv 的场景， 此值可以设为 `3 *(1 ～ n)`；当 tikv 负载过高，loader 以及 tidb 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 tikv 负载不是太高的时候，可以适当调大该值。
 
 #### 某次数据恢复示例，以及相关的配置
  - mydumper 导出后总数据量 214G，单表 8 列，20 亿行数据
