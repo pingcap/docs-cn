@@ -3,6 +3,8 @@ title: TiDB Quick Start Guide
 category: quick start
 ---
 
+# TiDB Quick Start Guide
+
 -   [About TiDB](#about-tidb)
 -   [About this guide](#about-this-guide)
 -   [Deploy a TiDB cluster](#deploy-a-tidb-cluster)
