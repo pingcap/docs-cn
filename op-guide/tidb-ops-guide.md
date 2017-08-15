@@ -59,7 +59,7 @@ Grafana 是一个开源的 metric 分析及可视化系统。我们使用 Grafan
 > 针对对于日常运维，我们挑选出一些重要的 metrics 指标放在 overview 页面，方便日常运维人员观察集群组件(PD,TiDB,TiKV)使用状态以及集群使用状态 。  
 > 以下为 overview dashboard 说明。  
 
-####PD运行参数
+#### PD运行参数
 
 服务	|	监控对象	|	说明	|	正常范围
 ---	|	---	|	---	|	---
@@ -76,7 +76,7 @@ PD	|	number of region	|	region数量分布	|
 PD	|	99% completed-cmds-duration-seconds	|	99% pd-server 请求完成时间	|	小于 5ms
 PD	|	average completed-cmds-duration-seconds	|	pd-server 请求平均完成时间	|	小于 50ms
 
-####TiDB运行参数
+#### TiDB运行参数
 
 服务	|	监控对象	|	说明	|	正常范围
 ---	|	---	|	---	|	---
@@ -86,7 +86,7 @@ TiDB	|	TiDB server QPS	|	集群的请求量	|	这个和业务相关
 TiDB	|	statement count	|	单位时间内不同类型语句执行的数目	|	这个和业务相关
 TiDB	|	Query Duration 99th percentile	|	99% 的 query 时长	|	
 
-####TiKV运行参数
+#### TiKV运行参数
 
 服务	|	监控对象	|	说明	|	正常范围
 ---	|	---	|	---	|	---
