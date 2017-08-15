@@ -2,7 +2,7 @@
 
 ## Documentation List
 
-- [Quick Start](https://github.com/pingcap/tidb/blob/master/docs/QUICKSTART.md)
+- [Quick Start](./QUICKSTART.md)
 + Deploy
   - [Deployment Recommendation](op-guide/recommendation.md)
   - [Ansible Deployment(Recommended)](op-guide/ansible-deployment.md)
