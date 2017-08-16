@@ -276,11 +276,11 @@ cd tidb-binlog-latest-linux-amd64
     # 以 '~' 开始声明使用正则表达式
     #
     #replicate-do-db = ["~^b.*","s1"]
-    #[[replicate-do-table]]
+    #[[syncer.replicate-do-table]]
     #db-name ="test"
     #tbl-name = "log"
 
-    #[[replicate-do-table]]
+    #[[syncer.replicate-do-table]]
     #db-name ="test"
     #tbl-name = "~^a.*"
 
