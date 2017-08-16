@@ -68,69 +68,79 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 ### A sample to use the `checker` tool
 
-1\. Create several tables in the `test` database in MySQL and insert data.
+1. Create several tables in the `test` database in MySQL and insert data.
+	
+	```sql
+	USE test;
+	CREATE TABLE t1 (id INT, age INT, PRIMARY KEY(id)) ENGINE=InnoDB;
+	CREATE TABLE t2 (id INT, name VARCHAR(256), PRIMARY KEY(id)) ENGINE=InnoDB;
+	
+	INSERT INTO t1 VALUES (1, 1), (2, 2), (3, 3);
+	INSERT INTO t2 VALUES (1, "a"), (2, "b"), (3, "c");
+	```
 
-```bash
-USE test;
-CREATE TABLE t1 (id INT, age INT, PRIMARY KEY(id)) ENGINE=InnoDB;
-CREATE TABLE t2 (id INT, name VARCHAR(256), PRIMARY KEY(id)) ENGINE=InnoDB;
+2. Use the `checker` tool to check all the tables in the `test` database.
 
-INSERT INTO t1 VALUES (1, 1), (2, 2), (3, 3);
-INSERT INTO t2 VALUES (1, "a"), (2, "b"), (3, "c");
-```
+	```bash
+	./bin/checker -host 127.0.0.1 -port 3306 -user root test
+	2016/10/27 13:11:49 checker.go:48: [info] Checking database test
+	2016/10/27 13:11:49 main.go:37: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
+	2016/10/27 13:11:49 checker.go:63: [info] Checking table t1
+	2016/10/27 13:11:49 checker.go:69: [info] Check table t1 succ
+	2016/10/27 13:11:49 checker.go:63: [info] Checking table t2
+	2016/10/27 13:11:49 checker.go:69: [info] Check table t2 succ
+	```
 
-2\. Use the `checker` tool to check all the tables in the `test` database.
+3. Use the `checker` tool to check one of the tables in the `test` database. 
+	
+	**Note:** Assuming you need to migrate the `t1` table only in this sample.
 
-```bash
-./bin/checker -host 127.0.0.1 -port 3306 -user root test
-2016/10/27 13:11:49 checker.go:48: [info] Checking database test
-2016/10/27 13:11:49 main.go:37: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
-2016/10/27 13:11:49 checker.go:63: [info] Checking table t1
-2016/10/27 13:11:49 checker.go:69: [info] Check table t1 succ
-2016/10/27 13:11:49 checker.go:63: [info] Checking table t2
-2016/10/27 13:11:49 checker.go:69: [info] Check table t2 succ
-```
-
-3\. Use the `checker` tool to check one of the tables in the `test` database.
-
-**Note:** Assuming you need to migrate the `t1` table only in this sample.
-
-```bash
-./bin/checker -host 127.0.0.1 -port 3306 -user root test t1
-2016/10/27 13:13:56 checker.go:48: [info] Checking database test
-2016/10/27 13:13:56 main.go:37: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
-2016/10/27 13:13:56 checker.go:63: [info] Checking table t1
-2016/10/27 13:13:56 checker.go:69: [info] Check table t1 succ
-Check database succ!
-```
+	```bash
+	./bin/checker -host 127.0.0.1 -port 3306 -user root test t1
+	2016/10/27 13:13:56 checker.go:48: [info] Checking database test
+	2016/10/27 13:13:56 main.go:37: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
+	2016/10/27 13:13:56 checker.go:63: [info] Checking table t1
+	2016/10/27 13:13:56 checker.go:69: [info] Check table t1 succ
+	Check database succ!
+	```
 
 ### A sample of a table that cannot be migrated
 
-1\. Create the following `t_error` table in MySQL:
-```bash
-CREATE TABLE t_error (
-  c timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-```
+1. Create the following `t_error` table in MySQL:
 
+	```sql
+	CREATE TABLE t_error ( a INT NOT NULL, PRIMARY KEY (a))
+	ENGINE=InnoDB TABLESPACE ts1                          
+	PARTITION BY RANGE (a) PARTITIONS 3 (
+	PARTITION P1 VALUES LESS THAN (2),
+	PARTITION P2 VALUES LESS THAN (4) TABLESPACE ts2,
+	PARTITION P3 VALUES LESS THAN (6) TABLESPACE ts3);
+	```
+2. Use the `checker` tool to check the table. If the following error is displayed, the `t_error` table cannot be migrated.
 
-2\. Use the `checker` tool to check the table. If the following error is displayed, the `t_error` table cannot be migrated.
-
-```bash
-./bin/checker -host 127.0.0.1 -port 3306 -user root test t_error
-2016/10/27 13:19:28 checker.go:48: [info] Checking database test
-2016/10/27 13:19:28 main.go:37: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
-2016/10/27 13:19:28 checker.go:63: [info] Checking table t_error
-2016/10/27 13:19:28 checker.go:67: [error] Check table t_error failed with err: line 1 column 56 near ") ON UPDATE CURRENT_TIMESTAMP(3)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1"
-github.com/pingcap/tidb/parser/yy_parser.go:111:
-github.com/pingcap/tidb/parser/yy_parser.go:124:
-/home/jenkins/workspace/WORKFLOW_TOOLS_BUILDING/go/src/github.com/pingcap/tidb-tools/checker/checker.go:122:  parse CREATE TABLE `t_error` (
-  `c` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 error
-/home/jenkins/workspace/WORKFLOW_TOOLS_BUILDING/go/src/github.com/pingcap/tidb-tools/checker/checker.go:114:
-2016/10/27 13:19:28 main.go:68: [error] Check database test with 1 errors and 0 warnings.
-```
+	```bash
+	./bin/checker -host 127.0.0.1 -port 3306 -user root test t_error
+	2017/08/04 11:14:35 checker.go:48: [info] Checking database test
+	2017/08/04 11:14:35 main.go:39: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
+	2017/08/04 11:14:35 checker.go:63: [info] Checking table t1
+	2017/08/04 11:14:35 checker.go:67: [error] Check table t1 failed with err: line 3 column 29 near " ENGINE=InnoDB DEFAULT CHARSET=latin1
+	/*!50100 PARTITION BY RANGE (a)
+	(PARTITION P1 VALUES LESS THAN (2) ENGINE = InnoDB,
+	 PARTITION P2 VALUES LESS THAN (4) TABLESPACE = ts2 ENGINE = InnoDB,
+	 PARTITION P3 VALUES LESS THAN (6) TABLESPACE = ts3 ENGINE = InnoDB) */" (total length 354)
+	github.com/pingcap/tidb/parser/yy_parser.go:96:
+	github.com/pingcap/tidb/parser/yy_parser.go:109:
+	/home/jenkins/workspace/build_tidb_tools_master/go/src/github.com/pingcap/tidb-tools/checker/checker.go:122:  parse CREATE TABLE `t1` (
+	  `a` int(11) NOT NULL,
+	  PRIMARY KEY (`a`)
+	) /*!50100 TABLESPACE ts1 */ ENGINE=InnoDB DEFAULT CHARSET=latin1
+	/*!50100 PARTITION BY RANGE (a)
+	(PARTITION P1 VALUES LESS THAN (2) ENGINE = InnoDB,
+	 PARTITION P2 VALUES LESS THAN (4) TABLESPACE = ts2 ENGINE = InnoDB,
+	 PARTITION P3 VALUES LESS THAN (6) TABLESPACE = ts3 ENGINE = InnoDB) */ error
+	/home/jenkins/workspace/build_tidb_tools_master/go/src/github.com/pingcap/tidb-tools/checker/checker.go:114:
+	2017/08/04 11:14:35 main.go:83: [error] Check database test with 1 errors and 0 warnings.
+	```
 
 
 ## Step 2. Using the `mydumper` / `loader` tool to export and import all the data
@@ -148,6 +158,7 @@ Use the `mydumper` tool to export data from MySQL by using the following command
 ./bin/mydumper -h 127.0.0.1 -P 3306 -u root -t 16 -F 64 -B test -T t1,t2 --skip-tz-utc -o ./var/test
 ```
 In this command, 
+
 + `-B test`: means the data is exported from the `test` database.
 + `-T t1,t2`: means only the `t1` and `t2` tables are exported.
 + `-t 16`: means 16 threads are used to export the data.
@@ -168,7 +179,7 @@ Use the `loader` tool to import the data from MySQL to TiDB. See [Loader instruc
 
 After the data is imported, you can view the data in TiDB using the MySQL client:
 
-```bash
+```sql
 mysql -h127.0.0.1 -P4000 -uroot
 
 mysql> show tables;
@@ -354,7 +365,7 @@ INSERT INTO t1 VALUES (4, 4), (5, 5);
 
 ### 4. Logging in TiDB and viewing the data:
 
-```bash
+```sql
 mysql -h127.0.0.1 -P4000 -uroot -p
 mysql> select * from t1;
 +----+------+
