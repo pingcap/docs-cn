@@ -23,7 +23,8 @@ sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
 tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
 cd tidb-enterprise-tools-latest-linux-amd64
 ```
-
+## Where to deploy Syncer
+Syncer can be deployed to any of the machines that can connect to MySQL or TiDB cluster. But it is recommended to be deployed to the TiDB cluster.
 ## Enabling binary logging (binlog) in MySQL
 
 Before using the `syncer` tool, make sure:
