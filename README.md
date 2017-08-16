@@ -2,6 +2,7 @@
 
 ## Documentation List
 
+
 + [Quick Start](./QUICKSTART.md)
   -   [About TiDB](./QUICKSTART.md#about-tidb)
   -   [About this guide](./QUICKSTART.md#about-this-guide)
@@ -10,6 +11,7 @@
   -   [Monitoring a TiDB cluster](./QUICKSTART.md#monitoring-a-tidb-cluster)
   -   [Scale the TiDB cluster](./QUICKSTART.md#scale-the-tidb-cluster)
   -   [Destroy the cluster](./QUICKSTART.md#destroy-the-cluster)
+- [TiDB Connector for Spark User Guide](https://github.com/pingcap/tispark/blob/master/docs/userguide.md)
 + Deploy
   - [Deployment Recommendation](op-guide/recommendation.md)
   - [Ansible Deployment(Recommended)](op-guide/ansible-deployment.md)
