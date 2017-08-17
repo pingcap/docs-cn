@@ -11,9 +11,9 @@ The following table lists the recommended hardware for each component.
 
 | Component | Hardware Resources | # of CPU Cores | Memory | Disk Type | Disk  Size|
 | ---- |-------| ------- | -------- | ------- | ------- | 
-| TiDB | CPU, Memory | 8+ | 32G+ |  |  | 
-| TiKV | CPU, Memory, Disk I/O |8+ | 32G+ | SSD | 200G~500G | 
-| PD   | CPU, Memory, Disk I/O |8+ | 16G+ |  | 200G+ |
+| TiDB | CPU, Memory | 32+ | 64G+ |  |  | 
+| TiKV | CPU, Memory, Disk I/O |32+ | 64G+ | SSD | 200G~500G | 
+| PD   | CPU, Memory, Disk I/O |8+ | 16G+ |  SSD | 200G+ |
 
 **Note:** The size of the disk for TiKV does not exceed 500G to avoid long data recovering time in case of disk failure.
 
