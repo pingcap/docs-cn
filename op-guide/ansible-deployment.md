@@ -174,16 +174,16 @@ pd_servers
 	
 	5.1 Edit the `inventory.ini` file as follows:
 		
-	  ```
-	  ## Connection
-	  # ssh via root:
-	  # ansible_user = root
-	  # ansible_become = true
-	  # ansible_become_user = tidb
-	
-	  # ssh via normal user
-	  ansible_user = tidb
-	  ```
+  ```
+  ## Connection
+  # ssh via root:
+  # ansible_user = root
+  # ansible_become = true
+  # ansible_become_user = tidb
+
+  # ssh via normal user
+  ansible_user = tidb
+  ```
   
 	5.2 Connect to the network and download the TiDB, TiKV, and PD binaries:
 		
@@ -218,7 +218,6 @@ pd_servers
 	  
 	# ssh via normal user
 	# ansible_user = tidb
-	  
 	```
 
 	5.2 Connect to the network and download the TiDB, TiKV, and PD binaries.
@@ -251,14 +250,14 @@ chmod 777 tidb-ansible-master/scripts/grafana-config-copy.py
 	
 6.1 Use the MySQL client to connect to the TiDB cluster:
 	  	
-	  	mysql -u root-h 172.16.10.1 -P 4000
-	  
+	  	mysql -u root-h 172.16.10.1 -P 4000	  
+
 **Note:** The TiDB service default port is 4000.
 	  
 6.2 Open a browser to access the monitoring platform:
 
 	    http://172.16.10.1:3000
-	    
+  
 The default account and password: admin/admin.
 
 ## 7. Perform Rolling Update
