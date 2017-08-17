@@ -175,6 +175,7 @@ Use the normal user with the sudo privileges to deploy TiDB:
   # ssh via normal user
   ansible_user = tidb
  ```
+ 
 5.2 Connect to the network and download the TiDB, TiKV, and PD binaries:
 		
 		ansible-playbook local_prepare.yml

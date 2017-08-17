@@ -173,17 +173,18 @@ pd_servers
 - If you use the normal user with the sudo privileges to deploy TiDB:
 	
 	5.1 Edit the `inventory.ini` file as follows:
+		
+	  ```
+	  ## Connection
+	  # ssh via root:
+	  # ansible_user = root
+	  # ansible_become = true
+	  # ansible_become_user = tidb
 	
-  ```
-  ## Connection
-  # ssh via root:
-  # ansible_user = root
-  # ansible_become = true
-  # ansible_become_user = tidb
-
-  # ssh via normal user
-  ansible_user = tidb
-  ```
+	  # ssh via normal user
+	  ansible_user = tidb
+	  ```
+  
 	5.2 Connect to the network and download the TiDB, TiKV, and PD binaries:
 		
 		ansible-playbook local_prepare.yml
@@ -239,6 +240,12 @@ pd_servers
 	5.5 Start the TiDB cluster: 
 		
 		ansible-playbook start.yml -k
+
+**Note:** If an error containing "Permission denied" is displayed, you can use the `chmod` command to change the permissions of the specified file. For example: 
+
+```
+chmod 777 tidb-ansible-master/scripts/grafana-config-copy.py
+```
 
 ## 6 Test the cluster
 	
@@ -296,7 +303,7 @@ The rolling update of the TiDB service does not impact the ongoing business. The
 |----|--------|
 | Start the cluster | `ansible-playbook start.yml` |
 | Stop the cluster | `ansible-playbook stop.yml` |
-| Destroy the cluster | `ansible-playbook unsafe_cleanup.yml` (If the deployment directory is a mount point, an error will be reported, but implementation results will remain unaffected) | 
+| Destroy the cluster | `ansible-playbook unsafe_cleanup.yml`	 (If the deployment directory is a mount point, an error will be reported, but implementation results will remain unaffected) | 
 | Clean data (for test) | `ansible-playbook cleanup_data.yml` |
 | Rolling Upgrade | `ansible-playbook rolling_update.yml` |
 | Rolling upgrade TiKV | `ansible-playbook rolling_update.yml --tags=tikv` |
