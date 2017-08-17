@@ -34,7 +34,7 @@ category: deployment
 ### \-\-lease
 
 + Schema 的租约时间，单位：秒
-+ 默认: "1"
++ 默认: "10"
 + Schema 的 lease 主要用在 online schema changes 上面。这个值会影响到实际的 DDL 语句的执行时间。千万不要随便改动这个值，除非你能知道相关的内部机制
 
 ### \-\-host
@@ -62,13 +62,13 @@ category: deployment
 
 + Prometheus Push Gateway 地址
 + 默认: ""
-+ 如果为空，TiDB 不会将统计信息推送给 Push Gateway
++ 如果为空，TiDB 不会将统计信息推送给 Push Gateway,参数格式 如 `--metrics-addr=192.168.100.115:9091`
 
 ### \-\-metrics-intervel
 
 + 推送统计信息到 Prometheus Push Gateway 的时间间隔
 + 默认: 15s
-+ 设置为 0 表明不推送统计信息给 Push Gateway
++ 设置为 0 表明不推送统计信息给 Push Gateway,如: `--metrics-interval=2` 是每两秒推送到 Push Gataway
 
 ### \-\-path
 
