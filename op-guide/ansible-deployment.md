@@ -5,6 +5,20 @@ category: deployment
 
 # TiDB Ansible Deployment
 
+## Table of Content
+
+-   [Overview](#overview)
+-   [1. Prepare](#prepare)
+-   [2. Install Ansible in the Control
+    Machine](#install-ansible-in-the-control-machine)
+-   [3. Download TiDB-Ansible to the Control
+    Machine](#download-tidb-ansible-to-the-control-machine)
+-   [4. Orchestrate the TiDB cluster](#orchestrate-the-tidb-cluster)
+-   [5. Deploy the TiDB cluster](#deploy-the-tidb-cluster)
+-   [6 Test the cluster](#test-the-cluster)
+-   [7. Rolling Update](#rolling-update)
+-   [Summary of common operations](#summary-of-common-operations)
+
 ## Overview
 Ansible is an IT automation tool. It can configure systems, deploy software, and orchestrate more advanced IT tasks such as continuous deployments or zero downtime rolling updates.
 
@@ -12,7 +26,7 @@ Ansible is an IT automation tool. It can configure systems, deploy software, and
  
 You can use the TiDB-Ansible configuration file to set up the cluster topology, completing all operation tasks with one click, including:
 	
-- Initializing the system, including creating user for deployment, setting up hostname, etc.
+- Initializing the system, including creating a user for deployment, setting up a hostname, etc.
 - Deploying the components
 - Rolling upgrade, including module survival detection
 - Cleaning data
@@ -48,7 +62,7 @@ Before you start, make sure that you have:
 			
 	- Ext4 file system. 
 
-- Network between machines. Turn off the firewalls and iptables when deploying and turn them on after the deployment.
+- The network between machines. Turn off the firewalls and iptables when deploying and turn them on after the deployment.
 
 - The same time and time zone for all machines with the NTP service on to synchronize the correct time.
 
@@ -56,9 +70,9 @@ Before you start, make sure that you have:
 
 - Python 2.6 or Python 2.7
 
-**Note:** The Control Machine can be one of the managed nodes with access to external network to download binary.
+**Note:** The Control Machine can be one of the managed nodes with access to the external network to download binary.
 
-### 2. Install Ansible in the Control Machine
+## 2. Install Ansible in the Control Machine
 
 Install Ansible 2.3 or later to your platform: 
 
@@ -101,11 +115,11 @@ Install Ansible 2.3 or later to your platform:
 For more information, see [Ansible Documentation](http://docs.ansible.com/ansible/intro_installation.html).
 
 
-### 3. Download TiDB-Ansible to the Control Machine
+## 3. Download TiDB-Ansible to the Control Machine
 Download the latest master version of the ZIP package from GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible) or [click to download]( https://github.com/pingcap/tidb-ansible/Archive/master.zip).
  
  
-### 4. Allocate machine resources and edit the `inventory.ini` file in the Control Machine
+## 4. Orchestrate the TiDB cluster
 
 The standard Cluster has 6 machines: 
 
@@ -153,21 +167,21 @@ pd_servers
 172.16.10.1
 ```
  
-### 5. Deploy the TiDB cluster
+## 5. Deploy the TiDB cluster
 
 - If you use the normal user with the sudo privileges to deploy TiDB:
 	
 	5.1 Edit the `inventory.ini` file as follows:
 	
 	  ```
-		  ## Connection
-		  # ssh via root:
-		  # ansible_user = root
-		  # ansible_become = true
-		  # ansible_become_user = tidb
-		  
-		  # ssh via normal user
-		  ansible_user = tidb
+	  ## Connection
+	  # ssh via root:
+	  # ansible_user = root
+	  # ansible_become = true
+	  # ansible_become_user = tidb
+
+	  # ssh via normal user
+	  ansible_user = tidb
 	  ```
 	5.2 Connect to the network and download the TiDB, TiKV, and PD binaries:
 		
@@ -178,12 +192,12 @@ pd_servers
 		ansible-playbook bootstrap.yml -k -K
 	 
 	**Note:** 
-	- Add the `-k` (lowercase) parameter if password is needed to connect to the managed node. This applies to other playbooks as well.
-	- Add the `-K`(uppercase) parameter because this playbook needs root privileges.
+	- Add the `-k` (lower case) parameter if a password is needed to connect to the managed node. This applies to other playbooks as well.
+	- Add the `-K`(upper case) parameter because this playbook needs root privileges.
 	            
 	5.4 Deploy the TiDB cluster:
 	 
-	    ansible-playbook deploy.yml -k
+	    ansible-playbook deploy.yml -k
 	 
 	5.5 Start the TiDB cluster:
 	 
@@ -215,7 +229,7 @@ pd_servers
 		
 	**Note:** 
 	- If the service user does not exist, the initialization operation will automatically create the user.
-	- Add the `-k` (lowercase) parameter if password is needed to connect to the managed node. This applies to other playbooks as well.
+	- Add the `-k` (lower case) parameter if a password is needed to connect to the managed node. This applies to other playbooks as well.
 	 
 	5.4 Run the following command:
 	
@@ -225,7 +239,7 @@ pd_servers
 		
 		ansible-playbook start.yml -k
 
-### 6 Test the cluster
+## 6 Test the cluster
 	
 6.1 Use the MySQL client to connect to the TiDB cluster:
 	  	
@@ -238,8 +252,45 @@ pd_servers
 	    http://172.16.10.1:3000
 	    
 The default account and password: admin/admin.
+
+## 7. Perform Rolling Update
+The rolling update of the TiDB service does not impact the ongoing business. The environment with the minimum number of instances is as follows:
+
++ 2 TiDB instances
++ 3 TiKV instances
++ 3 PD instances
+
+**Note:** For remote connections, add the `-k` (lower case) parameter if the password is needed to connect to the managed node. But if the mutual authentication is already set up, you don't need to add the `-k` parameter.
+
+**Note:** If the `pump`/`drainer` services are running in the cluster, it is recommended to stop the `drainer` service first before the rolling update. The rolling update of the TiDB service automatically updates the `pump` service.
+	
+7.1. Download the binary
+
+- Use playbook to download the latest master binary and replace the existing binary in `tidb-ansible/resource/bin/` automatically:
+
+	```
+	ansible-playbook local_prepare.yml
+	```
+- Use `wget` to download the binary and replace  the existing binary in `tidb-ansible/resource/bin/` manually:
+
+	```
+	wget http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz
+	```
+
+7.2. Use Ansible for rolling update
+
+- To apply rolling update to a specific service, such as TiKV:
+
+	```
+	ansible-playbook rolling_update.yml --tags=tikv
+	```
+- To apply rolling update to all the services:
+
+	```
+	ansible-playbook rolling_update.yml
+	```
  
-### Summary of common operations
+## Summary of common operations
 | Job | Playbook |
 |----|--------|
 | Start the cluster | ansible-playbook start.yml |
