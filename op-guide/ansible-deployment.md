@@ -74,6 +74,7 @@ sudo apt-get install ansible
 ## 3. 下载 TiDB-Ansible
 
 从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载最新 master 版本，或[点击下载](https://github.com/pingcap/tidb-ansible/archive/master.zip)。
+将下载下来的文件解压缩，默认的文件夹名称为 `tidb-ansible-master`。该文件夹包含用 TiDB-Ansible 来部署 TiDB 集群所需要的所有文件。
 
 ## 4. 分配机器资源，编辑 inventory.ini 文件
 
@@ -94,7 +95,7 @@ sudo apt-get install ansible
 | node5 | 172.16.10.5 | TiKV2 |
 | node6 | 172.16.10.6 | TiKV3 |
 
-编辑 `inventory.ini` 文件：
+将下载下来的文件解压缩，默认的文件夹名称为 `tidb-ansible-master`。该文件夹包含用 TiDB-Ansible 来部署 TiDB 集群所需要的所有文件。
 
 ```ini
 [tidb_servers]
