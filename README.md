@@ -2,9 +2,14 @@
 
 ## 目录
 
-+ TiDB 简介 & 整体架构
-  - [TiDB 简介](overview.md#tidb-简介)
-  - [TiDB 整体架构](overview.md#tidb-整体架构)
+ + [TiDB 快速入门指南](./QUICKSTART.md)
+    - [关于 TiDB](./QUICKSTART.md#关于-tidb)
+    - [关于本指南](./QUICKSTART.md#关于本指南)
+    - [TiDB 集群部署](./QUICKSTART.md#tidb-集群部署)
+    - [TiDB 基本操作](./QUICKSTART.md#tidb-基本操作)
+    - [TiDB 集群监控](./QUICKSTART.md#tidb-集群监控)
+    - [TiDB 集群扩容缩容方案](./QUICKSTART.md#tidb-集群扩容缩容方案)
+    - [集群销毁](./QUICKSTART.md#集群销毁)
 + 安装 & 部署
   - [部署建议](op-guide/recommendation.md)
   - [Ansible 部署方案 (强烈推荐)](op-guide/ansible-deployment.md)
