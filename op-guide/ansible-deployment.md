@@ -151,16 +151,16 @@ ansible_become_user = tidb
 
 5.2 使用 `local_prepare.yml` playbook, 联网下载 binary 到中控机：
 
-ansible-playbook local_prepare.yml
+    ansible-playbook local_prepare.yml
 
 5.3 初始化系统环境，修改内核参数
   > 如服务运行用户尚未建立，此初始化操作会自动创建该用户。
 
-    ansible-playbook bootstrap.yml
+        ansible-playbook bootstrap.yml
 
   如果 ansible 使用 root 用户远程连接需要密码, 使用 -k 参数，执行其他 playbook 同理：
 
-    ansible-playbook bootstrap.yml -k
+       ansible-playbook bootstrap.yml -k
 
 5.4 部署 TiDB 集群软件
 
@@ -171,7 +171,7 @@ ansible-playbook local_prepare.yml
     ansible-playbook start.yml -k
 
 
-- Ansible 通过普通用户远程连接部署
+- Ansible 通过普通用户远程连接部署
 > 本例中系统需提前创建 tidb 普通用户，并添加 sudo 权限，本例 tidb 帐户同时作为服务运行用户。
 
 5.1 修改 `inventory.ini`, 本例使用 `tidb` 用户作为服务运行用户，配置如下：
