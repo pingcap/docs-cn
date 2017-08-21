@@ -79,7 +79,7 @@ sudo apt-get install ansible
 
 ## 4. 分配机器资源，编辑 inventory.ini 文件
 
->inventory.ini 文件在 tidb-ansible-master 目录下。
+>inventory.ini 文件路径为 tidb-ansible-master/inventory.ini。
 
 标准 TiDB 集群需要6台机器:
 
@@ -141,7 +141,7 @@ pd_servers
 
 取消 `ansible_user = root` 、`ansible_become = true` 及 `ansible_become_user` 注释，给 `ansible_user = tidb` 添加注释：
 
-```
+```ini
 ## Connection
 # ssh via root:
 ansible_user = root
@@ -159,7 +159,7 @@ ansible_become_user = tidb
 5.3 初始化系统环境，修改内核参数
   > 如服务运行用户尚未建立，此初始化操作会自动创建该用户。
 
-       ansible-playbook bootstrap.yml
+        ansible-playbook bootstrap.yml
 
   如果 ansible 使用 root 用户远程连接需要密码, 使用 -k 参数，执行其他 playbook 同理：
 
@@ -180,7 +180,7 @@ ansible_become_user = tidb
 
 5.1 修改 `inventory.ini`, 本例使用 `tidb` 用户作为服务运行用户，配置如下：
 
-```
+```ini
 ## Connection
 # ssh via root:
 # ansible_user = root
@@ -222,7 +222,7 @@ ansible_user = tidb
 6.1 使用 MySQL 客户端连接测试, TCP 4000 端口是 TiDB 服务默认端口。
 
 ```sql
-mysql -u root -h 172.16.10.1 -P 4000
+ mysql -u root -h 172.16.10.1 -P 4000
 ```
 
 6.2 通过浏览器访问监控平台。  
@@ -270,7 +270,7 @@ mysql -u root -h 172.16.10.1 -P 4000
 > TiDB 服务数据迁移、性能调优等更多高级功能请参考 [https://github.com/pingcap/docs-cn](https://github.com/pingcap/docs-cn)
 
 ## FAQ
-#### TiDB 各版本下载链接  
+### TiDB 各版本下载链接  
 
 >Master 版本:
 >[Master-CentOS7](http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz)
@@ -280,7 +280,7 @@ mysql -u root -h 172.16.10.1 -P 4000
 >[RC4-CentOS7](http://download.pingcap.org/tidb-rc4-linux-amd64.tar.gz)
 >[RC4-CentOS6](http://download.pingcap.org/tidb-rc4-linux-amd64-centos6.tar.gz)
 
-#### 如何下载安装 RC4 版本 TiDB
+### 如何下载安装 RC4 版本 TiDB
 
 >inventory.ini 文件中指定的 TiDB 默认版本为 master 版本 `tidb_version = latest`, 如需安装 TiDB rc4 版本，先下载 TiDB-Ansible rc4 分支，确认 inventory.ini 文件中 `tidb_version = rc4`。安装步骤同上。
 
