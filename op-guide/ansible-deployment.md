@@ -161,7 +161,7 @@ ansible_become_user = tidb
 
        ansible-playbook bootstrap.yml
 
-  如果 root 用户没有做无密码登录, 使用 -k 参数，执行其他 playbook 同理：
+  如果 ansible 使用 root 用户远程连接需要密码, 使用 -k 参数，执行其他 playbook 同理：
 
        ansible-playbook bootstrap.yml -k
 
@@ -221,7 +221,7 @@ ansible_user = tidb
 
 6.1 使用 MySQL 客户端连接测试, TCP 4000 端口是 TiDB 服务默认端口。
 
-```
+```sql
 mysql -u root -h 172.16.10.1 -P 4000
 ```
 
