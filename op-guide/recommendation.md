@@ -15,7 +15,9 @@ The following table lists the recommended hardware for each component.
 | TiKV | CPU, Memory, Disk I/O |32+ | 64G+ | SSD | 200G~500G | 
 | PD   | CPU, Memory, Disk I/O |8+ | 16G+ |  SSD | 200G+ |
 
-**Note:** The size of the disk for TiKV does not exceed 500G to avoid long data recovering time in case of disk failure.
+**Note:** 
+* For OLTP scenarios, it is strongly recommended to use SSD disks for TiKV and PD, or there might be performance issues.
+* The size of the disk for TiKV does not exceed 500G to avoid long data recovering time in case of disk failure.
 
 ## The Overall Deployment Plan
 
