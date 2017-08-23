@@ -1,3 +1,4 @@
+
 ---
 title: TiDB User Guide
 category: user guide
@@ -22,8 +23,8 @@ TiDB supports the SQL-92 standard and is compatible with MySQL. To help you easi
 	- Using Secure Connections
 + Optimization
 + Language Structure
-    - Literal Values
-    - Schema Object Names
+    - Literal Values
+    - Schema Object Names
     - Keywords and Reserved words
     - User-Defined Variables
     - Expression Syntax
@@ -44,20 +45,20 @@ TiDB supports the SQL-92 standard and is compatible with MySQL. To help you easi
 	- Using Data Types from Other Database Engines
 + Functions and Operators
 	- Function and Operator Reference
-	- Type Conversion in Expression Evaluation
+	- [Type Conversion in Expression Evaluation](functions-and-operators/type-conversion-in-expression-evaluation.md)
 	- Operators
-	- Control Flow Functions
-	- String Functions
-	- Numeric Functions and Operators
+	- [Control Flow Functions](functions-and-operators/control-flow-functions.md)
+	- [String Functions](functions-and-operators/string-functions.md)
+	- [Numeric Functions and Operators](functions-and-operators/numeric-functions-and-operators.md)
 	- Date and Time Functions
 	- Cast Functions and Operators
 	- Bit Functions and Operators
-	- Encryption and Compression Functions
+	- [Encryption and Compression Functions](functions-and-operators/encryption-and-compression-functions.md)
 	- Information Functions
 	- JSON Functions
 	- Functions Used with Global Transaction IDs
-	- Aggregate (GROUP BY) Functions
-	- Miscellaneous Functions
+	- [Aggregate (GROUP BY) Functions](functions-and-operators/aggregate-group-by-functions.md)
+	- [Miscellaneous Functions](functions-and-operators/miscellaneous-functions.md)
 	- Precision Math
 + SQL Statement Syntax
 	- Data Definition Statements
