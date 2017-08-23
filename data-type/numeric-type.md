@@ -13,7 +13,7 @@ TiDB 支持 MySQL 所有的数值类型，按照精度可以分为:
 + [定点类型（精确值)](#定点类型)
 
 ## 整数类型
-TiDB 支持 MySQL 所有的整数类型，包括 INTEGER/INT、TINYINT、SMALLINT、MEDIUMINT 以及 BIGINT。每种类型对存储空间的需求以及最小/最大值如下表所示:
+TiDB 支持 MySQL 所有的整数类型，包括 INTEGER/INT、TINYINT、SMALLINT、MEDIUMINT 以及 BIGINT，类型定义参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/numeric-type-overview.html)文档。每种类型对存储空间的需求以及最小/最大值如下表所示:
 
 |类型 | 存储空间 | 最小值(有符号/无符号) | 最大值(有符号/无符号)|
 |--|---|----------|------------|
