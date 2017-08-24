@@ -124,7 +124,7 @@ category: deployment
  
 + 大于这个值得 sql 语句将被记录 
 + 默认: 300  	
-+ 值只能是一个整数，单位是毫秒
++ 值只能是一个整数 (int) ，单位是毫秒
 
 ### \-\-socket string
 + TiDB 服务使用 unix socket file 方式接受外部连接
@@ -133,9 +133,9 @@ category: deployment
 
 ### \-\-statsLease string
 
-+ 自动更新统计信息
++ 增量扫描全表并分析表的数据量 索引等一些信息
 + 默认: 3s
-+ 扫描全表并分析表的数据量 索引等一些信息，持久化存储到tikv，会耗费一些内存开销
++ 使用此参数需要先手动执行 analyze table name; 自动更新统计信息,持久化存储到tikv，会耗费一些内存开销,
 
 ### \-\-status
 
