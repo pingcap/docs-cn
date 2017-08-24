@@ -1,5 +1,5 @@
 ---
-title: 字面值
+title: 字符串字面值
 category: user guide
 ---
 
