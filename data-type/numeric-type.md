@@ -13,7 +13,46 @@ TiDB 支持 MySQL 所有的数值类型，按照精度可以分为:
 + [定点类型（精确值)](#定点类型)
 
 ## 整数类型
-TiDB 支持 MySQL 所有的整数类型，包括 INTEGER/INT、TINYINT、SMALLINT、MEDIUMINT 以及 BIGINT，类型定义参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/numeric-type-overview.html)文档。每种类型对存储空间的需求以及最小/最大值如下表所示:
+TiDB 支持 MySQL 所有的整数类型，包括 INTEGER/INT、TINYINT、SMALLINT、MEDIUMINT 以及 BIGINT，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/numeric-type-overview.html)文档。
+
+### 类型定义
+语法：
+```sql
+BIT[(M)]
+比特值类型。M 表示比特位的长度，取值范围从1到64，其默认值是1。
+
+TINYINT[(M)] [UNSIGNED] [ZEROFILL]
+TINYINT 类型。有符号数的范围是[-128, 127]。无符号数的范围是[0, 255]。
+
+BOOL, BOOLEAN
+布尔类型，和 TINYINT(1) 等价。零值被认为是 False，非零值认为是 True。在 TiDB 内部，True 存储为1， False 存储为0。
+
+SMALLINT[(M)] [UNSIGNED] [ZEROFILL]
+SMALLINT 类型。有符号数的范围是[-32768, 32767]。无符号数的范围是[0, 65535]。
+
+MEDIUMINT[(M)] [UNSIGNED] [ZEROFILL]
+MEDIUMINT 类型。有符号数的范围是[-8388608, 8388607]。无符号数的范围是[0, 16777215]。
+
+INT[(M)] [UNSIGNED] [ZEROFILL]
+INT 类型。 有符号数的范围是[-2147483648, 2147483647]。无符号数的范围是[0, 4294967295]。
+
+INTEGER[(M)] [UNSIGNED] [ZEROFILL]
+和 INT 是同义词。
+
+BIGINT[(M)] [UNSIGNED] [ZEROFILL]
+BIGINT 类型。 有符号数的范围是[-9223372036854775808, 9223372036854775807]。无符号数的范围是[0, 18446744073709551615]。
+```
+
+字段意义:
+|语法元素|说明|
+|-------|---|
+|M | 类型长度，可选的|
+|UNSIGNED | 无符号数，如果不加这个标识，则为有符号数|
+|ZEROFILL | 补零标识，如果有这个标识，TiDB 会自动给类型增加 UNSIGNED 标识，但是没有做补零的操作|
+
+### 存储空间以及取值范围
+
+每种类型对存储空间的需求以及最大/最小值如下表所示:
 
 |类型 | 存储空间 | 最小值(有符号/无符号) | 最大值(有符号/无符号)|
 |--|---|----------|------------|
