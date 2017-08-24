@@ -59,7 +59,7 @@ TiDB 支持 SQL92 标准并兼容 MySQL 语法，为了帮您更好地使用 TiD
 	- 精度数学
 + SQL 语句语法
 	- [数据定义语句(DDL)](ddl/README.md)
-	- 数据操作语句(DML)
+	- [数据操作语句(DML)](dml/README.md)
 	- 事务语句
 	- Prepared SQL 语句语法
 	- 复合语句语法
