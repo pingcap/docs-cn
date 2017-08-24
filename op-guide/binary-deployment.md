@@ -69,11 +69,11 @@ category: deployment
 
 | 配置	| 描述 |
 | :-- | :-- |
-|  支持平台  |   请查看和了解系统部署建议    |
-|  LVM  |   TiDB 支持 各类Linux 操作系统上的 Linux Volume Manager (LVM)  |
-|  文件系统  |   TiDB 部署环境推荐使用 ext4 文件系统|
-|  Swap 空间  |   TiDB 部署最少需要 2GB 的 Swap 空间，Swap 空间不要与数据空间放在一个盘    |
-|  Disk Block Size  |   设置系统磁盘 Block 大小为 4096    |
+|  支持平台  |   请查看和了解系统部署建议 |
+|  LVM  |   TiDB 支持 各类Linux 操作系统上的 Linux Volume Manager (LVM) |
+|  文件系统  |  TiDB 部署环境推荐使用 ext4 文件系统|
+|  Swap 空间  |  TiDB 部署推荐关闭 Swap 空间 |
+|  Disk Block Size  |  设置系统磁盘 Block 大小为 4096 |
     
 ###  网络与防火墙   
 
@@ -84,29 +84,28 @@ category: deployment
 
 ### 操作系统参数
 
-| 配置 | 说明 | 
-| :-- | :-- | :-- | 
+| 配置 | 说明 |
+| :-- | :-- | :-- |
 | Nice Limits | 数据库系统管理员 tidb 的 nice 值设置为缺省值 0 |
-| min_free_kbytes | 在 /etc/sysctl.conf 中关于 vm.min_free_kbytes 的设置需要足够高 |
-| Maximum Memory Maps | 在 /etc/sysctl.conf 中关于 vm.max_map_count 的值最好设置为 65536 或者使用总内存KB / 16 进行设置. |
+| min_free_kbytes | 在 ysctl.conf 中关于 vm.min_free_kbytes 的设置需要足够高 |
 | User Open Files Limit | 对数据库管理员 tidb 的 open 文件数设置为 100000 |
 | System Open File Limits | 对系统的 open 文件数设置为 100000 |
-| User Process Limits | 在 /etc/security/limits.conf 配置的 tidb 用户的 nproc 为 4096 |
-| Address Space Limits | 在 /etc/security/limits.conf 配置的 tidb 用户空间为 unlimited |
-| File Size Limits | 在 /etc/security/limits.conf 配置的 tidb 用户 fsize 为 unlimited |
+| User Process Limits | 在 limits.conf 配置的 tidb 用户的 nproc 为 4096 |
+| Address Space Limits | 在 limits.conf 配置的 tidb 用户空间为 unlimited |
+| File Size Limits | 在 limits.conf 配置的 tidb 用户 fsize 为 unlimited |
 | Disk Readahead | 设置数据磁盘 readhaeat 为 4096 |
 | NTP 服务 | 为各个节点配置 NTP 时间同步服务 |
 | SELinux  | 关闭各个节点的 SELinux 服务  |
 | CPU Frequency Scaling |  TiDB 推荐打开 CPU 超频 |
-| Transparent Hugepages | 针对 Red Hat 7+ 和 CentOS 7+ 系统, Transparent Hugepages 必须被设置为 always. |
+| Transparent Hugepages | 针对 Red Hat 7+ 和 CentOS 7+ 系统, Transparent Hugepages 必须被设置为 always |
 | I/O Scheduler | 设置数据磁盘 I/0 Schedule 设置为 deadline 模式 |
 | vm.swappiness | 设置 vm.swappiness = 0 |
 
 
 ### 数据库运行用户设置
 
-| 配置 | 说明 | 
-| :-- | :-- | :-- | 
+| 配置 | 说明 |
+| :-- | :-- | :-- |
 | LANG 环境设定 | 设置 LANG=en_US.UTF8 |
 | TZ 时去设定 | 确保所有节点的时区 TZ 设置为一样的值 |
 
@@ -461,7 +460,7 @@ scrape_configs:
 ./prometheus \
     --config.file="/data1/tidb/deploy/conf/prometheus.yml" \
     --web.listen-address=":9090" \
-    --web.external-url="http://172.16.10.77:9090/" \
+    --web.external-url="http://192.168.199.113:9090/" \
     --log.level="info" \
     --storage.local.path="/data1/tidb/deploy/data.metrics" \
     --storage.local.retention="360h0m0s"
@@ -483,7 +482,7 @@ vi grafana.ini
 http_port = 3000
 
 # The public facing domain name used to access grafana from a browser
-domain = 172.16.10.77
+domain = 192.168.199.113
 
 ...
 
