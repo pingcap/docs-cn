@@ -5,7 +5,9 @@ category: user guide
 
 # TiDB 数据操作语言
 
-TiDB 支持 SQL92 标准并兼容 MySQL 语法，为了帮您更好地使用 TiDB, 该文档沿用了 MySQL 大部分的文档结构，同时针对 TiDB 特有的功能作了详细的描述。
+数据操作语言（Data Manipulation Language， DML）用于帮助用户实现对数据库的基本操作，比如查询、写入、删除和修改数据库中的数据。
+
+TiDB 支持的数据操作语言包括 Select ，Insert, Delete, Update，和 Replace。
 
 ## Table of Contents
 + [Select 语句](select.md)
