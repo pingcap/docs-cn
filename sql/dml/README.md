@@ -11,7 +11,7 @@ TiDB 支持的数据操作语言包括 Select ，Insert, Delete, Update，和 Re
 
 ## Table of Contents
 + [Select 语句](select.md)
-+ Insert 语句
++ [Insert 语句](insert.md)
 + Delete 语句
 + Update 语句
 + Replace 语句
