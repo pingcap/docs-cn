@@ -34,7 +34,7 @@ ansible_user = tidb
 
 #### B 场景
 
-1. 客户集群主机有 root 权限，无服务运行小权限用户( tidb 推荐使用非 root 用户启动进程，当检测到用户为 root 时，无法启动服务 )
+1. 客户集群主机有 root 权限，无服务运行小权限用户( TiDB 推荐使用非 root 用户启动进程，当检测到用户为 root 时，无法启动服务 )
 2. 此时: `ansible_become_user` 等同 `deploy_user` ( depoly_user 不为 root )
 3. 使用以下代码块即可
 4. 执行 deploy.yml 时需要取消 `# ansible_become = true` 注释 
