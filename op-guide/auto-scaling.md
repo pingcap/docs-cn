@@ -17,7 +17,7 @@ category: deployment
 
 #### A 场景
 
-1. 客户集群主机拥有小用户(非root用户,且root用户无法远程登录),小用户拥有sudo权限
+1. 客户集群主机拥有小用户(非 root 用户,且 root 用户无法远程登录),小用户拥有 sudo 权限
 2. 此时：`ansible_user` 等同于 `deploy_user`.
 2. 使用以下代码块即可
 4. 如果未做互信请在命令后添加 `-k` 或者 `-k -K` 参数，-k 为 `ansible_user` 密码，-K 为 `ansible_become_user` 密码
@@ -34,7 +34,7 @@ ansible_user = tidb
 
 #### B 场景
 
-1. 客户集群主机有root权限，无服务运行小权限用户( tidb推荐使用非root用户启动进程，当检测到用户为 root 时，无法启动服务 )
+1. 客户集群主机有 root 权限，无服务运行小权限用户( tidb 推荐使用非 root 用户启动进程，当检测到用户为 root 时，无法启动服务 )
 2. 此时: `ansible_become_user` 等同 `deploy_user` ( depoly_user 不为 root )
 3. 使用以下代码块即可
 4. 执行 deploy.yml 时需要取消 `# ansible_become = true` 注释 
