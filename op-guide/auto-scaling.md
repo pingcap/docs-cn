@@ -20,7 +20,7 @@ category: deployment
 1. 客户集群主机拥有小用户(非 root 用户,且 root 用户无法远程登录),小用户拥有 sudo 权限
 2. 此时：`ansible_user` 等同于 `deploy_user`.
 2. 使用以下代码块即可
-4. 如果未做互信请在命令后添加 `-k` 或者 `-k -K` 参数，-k 为 `ansible_user` 密码，-K 为 `ansible_become_user` 密码
+4. 如果未做互信请在命令后添加 `-k` 或者 `-k -K` 参数, -k 为 `ansible_user` 密码, -K 为 `ansible_become_user` 密码
 
 ```
 # ssh via root:
@@ -34,11 +34,11 @@ ansible_user = tidb
 
 #### B 场景
 
-1. 客户集群主机有 root 权限，无服务运行小权限用户( TiDB 推荐使用非 root 用户启动进程，当检测到用户为 root 时，无法启动服务 )
+1. 客户集群主机有 root 权限，无服务运行小权限用户( TiDB 推荐使用非 root 用户启动进程, 当检测到用户为 root 时, 无法启动服务 )
 2. 此时: `ansible_become_user` 等同 `deploy_user` ( depoly_user 不为 root )
 3. 使用以下代码块即可
 4. 执行 deploy.yml 时需要取消 `# ansible_become = true` 注释 
-5. 如果未做互信请在命令后添加 `-k` 参数，-k 为 `ansible_user` 密码。
+5. 如果未做互信请在命令后添加 `-k` 参数，-k 为 `ansible_user` 密码
 
 ```
 # ssh via root:
@@ -54,9 +54,9 @@ ansible_user = tidb
 
 ## 扩容 & 修复节点
 
-> 扩容与修复单节点方式类似。  
+> 扩容与修复单节点方式类似  
 
-> 扩容 PD 与 TiKV TiDB 操作步骤不同，操作时请分开操作。
+> 扩容 PD 与 TiKV TiDB 操作步骤不同, 操作时请分开操作
 
 #### 现有集群
 
@@ -202,12 +202,12 @@ ansible_user = tidb
 - 使用 pd-ctl 工具检查 `replica-schedule-limit` 参数
     - `./pd-ctl -u "http://172.16.10.1:2379"`
         - config show
-            - { "replica-schedule-limit": 8  } // 控制 TIKV 下线速度;如果为 0 ，不执行下线操作
+            - { "replica-schedule-limit": 8  } // 控制 TIKV 下线速度;如果为 0 , 不执行下线操作
             - `config set replica-schedule-limit 4 ` // 最多同时进行 4 个 replica 调度
 - 使用 pd-ctl 工具下线 TiKV 节点
     - `./pd-ctl -u "http://172.16.10.1:2379"`
         - stote //查询 172.16.10.5 tikv 节点 ID，例如 ID 为 3
-        - store delete 3 // 下线store 3,
+        - store delete 3 // 下线store 3
         - stote 3 // 查询 store 状态是否为 offline 
     - 更多用法参考[PD Control 使用说明](https://github.com/pingcap/docs-cn/blob/master/op-guide/pd-control.md)
 - 更新 inventory.ini 文件
