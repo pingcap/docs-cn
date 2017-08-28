@@ -8,7 +8,7 @@ category: deployment
 - [概述](#概述)
 - [1. 准备机器](#准备机器)
 - [2. 在中控机器上安装配置 Ansible](#在中控机器上安装配置-ansible)
-- [3. 下载 TiDB-Ansible](#3-下载-tidb-ansible)
+- [3. 下载 TiDB-Ansible](#下载-tidb-ansible)
 - [4. 分配机器资源，编辑 inventory.ini 文件](#分配机器资源编辑-inventoryini-文件)
 - [5. 部署任务](#部署任务)
 - [6. 测试集群](#测试集群)
