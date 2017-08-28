@@ -19,6 +19,7 @@
   - [命令行参数](op-guide/configuration.md)
 + 运维 & 监控
   - [集群扩容缩容方案](op-guide/horizontal-scale.md)
+  - [Ansible 弹性伸缩方案](op-guide/auto-scaling.md)
   - [整体监控框架概述](op-guide/monitor-overview.md)
   - [重要监控指标详解](op-guide/dashboard-overview-info.md)
   - [组件状态 API & 监控](op-guide/monitor.md)
