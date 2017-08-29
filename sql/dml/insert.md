@@ -5,7 +5,7 @@ category: user guide
 
 # Insert 语句
 
-Insert 语句用于向数据库中插入数据，TiDB 兼容 MySQL insert 语句的所有语法。
+Insert 语句用于向数据库中插入数据，TiDB 兼容 MySQL Insert 语句的所有语法。
 
 ## 语法定义
 
