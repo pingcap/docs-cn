@@ -1,3 +1,11 @@
+---
+title: JSON 函数及 Generated Column
+category: compatibility
+---
+
+# JSON 函数及 Generated Column
+
+### 概述
 为了在功能上与最新版的MySQL（版本 5.7 及以上）保持同步，同时更好地支持文档存储类业务，我们在最新版本的 TiDB 中加入了 JSON 的支持。用户可以在 TiDB 的表中使用 JSON 类型的字段，同时以生成列（generated column）的方式为 JSON 文档内部的字段建立索引。基于此，用户可以很灵活地处理那些 schema 不确定地业务，同时不必受限于传统文档数据库糟糕的读性能及匮乏的事务支持。
 
 ### JSON功能介绍
@@ -11,15 +19,15 @@ CREATE TABLE person （
 ```
 当我们向表中插入数据时，便可以这样处理那些模式不确定的数据了：
 ```sql
-INSERT INTO person (name, address_info) VALUES ("Jhon", '{"city": "Beijing"}');
+INSERT INTO person (name, address_info) VALUES ("John", '{"city": "Beijing"}');
 ```
 就这么简单！直接在 JSON 字段对应的位置上，放一个合法的 JSON 字符串，就可以向表中插入 JSON 了。TiDB 会解析这个文本，然后以一种更加紧凑、易于访问的二进制形式来保存。
 
 当然，你也可以将其他类型的数据用 CAST 转换为 JSON：
 ```sql
-INSERT INTO person (name, address_info) VALUES ("Jhon", CAST('{"city": "Beijing"}' AS JSON));
-INSERT INTO person (name, address_info) VALUES ("Jhon", CAST('123' AS JSON));
-INSERT INTO person (name, address_info) VALUES ("Jhon", CAST(123 AS JSON));
+INSERT INTO person (name, address_info) VALUES ("John", CAST('{"city": "Beijing"}' AS JSON));
+INSERT INTO person (name, address_info) VALUES ("John", CAST('123' AS JSON));
+INSERT INTO person (name, address_info) VALUES ("John", CAST(123 AS JSON));
 ```
 
 现在，我们想查询表中所有居住在北京的用户，该怎么做呢？需要把数据全拉回来，然后在业务层进行过滤吗？不需要，和 MongoDB 等老牌文档数据库相同，我们有在服务端支持用户各种复杂组合查询条件的能力。你可以这样写SQL：
@@ -28,9 +36,9 @@ SELECT id, name FROM person WHERE JSON_EXTRACT(address_info, '$.city') = 'Beijin
 ```
 **JSON_EXTRACT** 是TiDB支持的一个函数，熟悉 MySQL 5.7 的 JSON 功能的朋友应当很熟悉，它们的用法完全相同。这个函数的意思就是，从 *address_info* 这个文档中取出名为city这个字段。它的第二个参数是一个“路径表达式”， 我们由此可以指定到底要取出哪个字段。关于路径表达式的完整语法描述比较复杂，我们还是看几个简单的例子来了解它大致的使用吧：
 ```sql
-SET @person = '{"name":"Jhon","friends":[{"name":"Forest","age":16},{"name":"Zhang San","gender":"male"}]}';
+SET @person = '{"name":"John","friends":[{"name":"Forest","age":16},{"name":"Zhang San","gender":"male"}]}';
 
-SELECT JSON_EXTRACT(@person,  '$.name'); -- gets "Jhon"
+SELECT JSON_EXTRACT(@person,  '$.name'); -- gets "John"
 SELECT JSON_EXTRACT(@person,  '$.friends[0].age'); -- gets 16
 SELECT JSON_EXTRACT(@person,  '$.friends[1].gender'); -- gets "male"
 SELECT JSON_EXTRACT(@person,  '$.friends[2].name'); -- gets NULL
