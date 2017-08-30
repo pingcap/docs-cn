@@ -7,23 +7,23 @@ category: deployment
 
 ## Table of Content
 
--   [Overview](#overview)
--   [1. Prepare](#prepare)
--   [2. Install Ansible in the Control
-    Machine](#install-ansible-in-the-control-machine)
--   [3. Download TiDB-Ansible to the Control
-    Machine](#download-tidb-ansible-to-the-control-machine)
--   [4. Orchestrate the TiDB cluster](#orchestrate-the-tidb-cluster)
--   [5. Deploy the TiDB cluster](#deploy-the-tidb-cluster)
--   [6 Test the cluster](#test-the-cluster)
--   [7. Rolling Update](#perform-rolling-update)
--   [Summary of common operations](#summary-of-common-operations)
+- [Overview](#overview)
+1. [Prepare](#prepare)
+2. [Install Ansible in the Control Machine](#install-ansible-in-the-control-machine)
+3. [Download TiDB-Ansible to the Control Machine](#download-tidb-ansible-to-the-control-machine)
+4. [Orchestrate the TiDB cluster](#orchestrate-the-tidb-cluster)
+5. [Deploy the TiDB cluster](#deploy-the-tidb-cluster)
+6. [Test the cluster](#test-the-cluster)
+7. [Rolling Update](#perform-rolling-update)
+- [Summary of common operations](#summary-of-common-operations)
+
 
 ## Overview
+
 Ansible is an IT automation tool. It can configure systems, deploy software, and orchestrate more advanced IT tasks such as continuous deployments or zero downtime rolling updates.
 
 [TiDB-Ansible](https://github.com/pingcap/tidb-ansible) is a TiDB cluster deployment tool developed by PingCAP, based on Ansible playbook. TiDB-Ansible enables you to quickly deploy a new TiDB cluster which includes PD, TiDB, TiKV, and the cluster monitoring modules.
- 
+
 You can use the TiDB-Ansible configuration file to set up the cluster topology, completing all operation tasks with one click, including:
 	
 - Initializing the system, including creating a user for deployment, setting up a hostname, etc.
@@ -35,6 +35,7 @@ You can use the TiDB-Ansible configuration file to set up the cluster topology, 
 
  
 ## 1. Prepare
+
 Before you start, make sure that you have:
 
 1.1 A Control Machine with the following requirements:
@@ -91,24 +92,6 @@ Install Ansible 2.3 or later to your platform:
 	yum update
 	yum install ansible
 	```
- 
-- Homebrew on macOS:
-	
-	To install Homebrew, see [Homebrew]( https://brew.sh ).
-	 
-	```
-	brew update
-	brew install ansible
-	```
- 
-- Docker
-	
-	Install and configure Docker for your own platform.
-	```
-	docker run -v `pwd`:/playbook --rm -it williamyeh/ansible:ubuntu16.04 /bin/bash
-	cd /playbook # 
-	```
-	**Note:** The above command mounts the current working directory as the /playbook directory in the container.
 		
  You can use the `ansible --version` command to see the version information.
 
@@ -309,3 +292,14 @@ The rolling update of the TiDB service does not impact the ongoing business. The
 | Rolling upgrade modules except PD | `ansible-playbook rolling_update.yml --skip-tags=pd` |
  
 For more advanced features of TiDB including data migration, performance tuning, etc., see [TiDB Documents](https://github.com/pingcap/docs). 
+
+### FAQ
+
+#### How to download and install TiDB of a specified version?
+
+The default TiDB version in `inventory.ini` is `tidb_version = latest` in master. If you need to install TiDB RC4, use the following command to download the ` TiDB-Ansible RC4` version:
+
+		git clone -b rc4 https://github.com/pingcap/tidb-ansible.git
+
+And then edit the `inventory.ini` file and specify `tidb_version = rc4`.
+
