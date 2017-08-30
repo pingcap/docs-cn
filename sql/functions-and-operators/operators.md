@@ -53,7 +53,7 @@
 
 ``` sql
 INTERVAL
-BINARY, COLLATE
+BINARY
 !
 - (unary minus), ~ (unary bit inversion)
 ^
