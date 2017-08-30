@@ -1,4 +1,3 @@
-
 ---
 title: TiDB Binary 部署方案详解
 category: deployment
