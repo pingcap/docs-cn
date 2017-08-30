@@ -16,7 +16,7 @@ category: deployment
 -   [4. Orchestrate the TiDB cluster](#orchestrate-the-tidb-cluster)
 -   [5. Deploy the TiDB cluster](#deploy-the-tidb-cluster)
 -   [6 Test the cluster](#test-the-cluster)
--   [7. Rolling Update](#rolling-update)
+-   [7. Rolling Update](#perform-rolling-update)
 -   [Summary of common operations](#summary-of-common-operations)
 
 ## Overview
