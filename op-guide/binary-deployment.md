@@ -6,39 +6,35 @@ category: deployment
 
 # TiDB Binary 部署指导
 
-
 目录
-=================
 
-  * [概述](#概述)
-  * [TiDB 组件及默认端口](#tidb-组件及默认端口)
-  * [TiDB 安装前系统配置与检查](#tidb-安装前系统配置与检查)
-     * [操作系统检查](#操作系统检查)
-     * [网络与防火墙](#网络与防火墙)
-     * [操作系统参数](#操作系统参数)
-     * [数据库运行用户设置](#数据库运行用户设置)
-  * [创建系统数据库运行账户](#创建系统数据库运行账户)
-  * [下载官方 Binary](#下载官方-binary)
-  * [单节点方式快速部署](#单节点方式快速部署)
-  * [功能性测试部署](#功能性测试部署)
-  * [多节点集群模式部署](#多节点集群模式部署)
-  * [TiDB 监控和告警环境安装](#tidb-监控和告警环境安装)
-     * [获取二进制包](#获取二进制包)
-     * [启动监控服务](#启动监控服务)
+  + [概述](#概述)
+  + [TiDB 组件及默认端口](#tidb-组件及默认端口)
+  + [TiDB 安装前系统配置与检查](#tidb-安装前系统配置与检查)
+     - [操作系统检查](#操作系统检查)
+     - [网络与防火墙](#网络与防火墙)
+     - [操作系统参数](#操作系统参数)
+     - [数据库运行用户设置](#数据库运行用户设置)
+  - [创建系统数据库运行账户](#创建系统数据库运行账户)
+  - [下载官方 Binary](#下载官方-binary)
+  - [单节点方式快速部署](#单节点方式快速部署)
+  - [功能性测试部署](#功能性测试部署)
+  - [多节点集群模式部署](#多节点集群模式部署)
+  - [TiDB 监控和告警环境安装](#tidb-监控和告警环境安装)
+     - [获取二进制包](#获取二进制包)
+     - [启动监控服务](#启动监控服务)
 
 ## 概述
 
-一个完整的 TiDB 集群包括 PD，TiKV 以及 TiDB。启动顺序依次是 PD，TiKV 以及 TiDB。在关闭数据库服务是，请按照启动的相反顺序进行逐一服务关闭。
+一个完整的 TiDB 集群包括 PD，TiKV 以及 TiDB。启动顺序依次是 PD，TiKV 以及 TiDB。在关闭数据库服务时，请按照启动的相反顺序进行逐一关闭。
 
-阅读本章前，请先确保阅读 TiDB 整体架构 及 部署建议
+阅读本章前，请务必先阅读 [TiDB 整体架构](../overview.md#tidb-整体架构) 及 [部署建议](../op-guide/recommendation.md)。
 
 本文档描述了三种场景的二进制部署方式：
 
-- 快速了解和试用 TiDB，推荐使用单节点方式快速部署。
-
-- 功能性测试 TiDB，推荐使用功能性测试部署。
-
-- 生产环境使用 TiDB，推荐使用多节点集群模式部署。
+- 快速了解和试用 TiDB，推荐使用[单节点方式快速部署](#单节点方式快速部署)。
+- 功能性测试 TiDB，推荐使用[功能性测试部署](#功能性测试部署)。
+- 在生产环境使用 TiDB，推荐使用[多节点集群模式部署](#多节点集群模式部署)。
 
 ## TiDB 组件及默认端口
 
@@ -86,32 +82,32 @@ category: deployment
 
 | 配置	| 描述 |
 | :-- | :-- |
-| Nice Limits | 数据库系统管理员 tidb 的 nice 值设置为缺省值 0 |
-| min_free_kbytes | 在 ysctl.conf 中关于 vm.min_free_kbytes 的设置需要足够高 |
-| User Open Files Limit | 对数据库管理员 tidb 的 open 文件数设置为 100000 |
+| Nice Limits | 数据库系统管理员 TiDB 的 nice 值设置为缺省值 0 |
+| `min_free_kbytes` | 在 ysctl.conf 中关于 `vm.min_free_kbytes` 的设置需要足够高 |
+| User Open Files Limit | 对数据库管理员 TiDB 的 open 文件数设置为 100000 |
 | System Open File Limits | 对系统的 open 文件数设置为 100000 |
-| User Process Limits | 在 limits.conf 配置的 tidb 用户的 nproc 为 4096 |
-| Address Space Limits | 在 limits.conf 配置的 tidb 用户空间为 unlimited |
-| File Size Limits | 在 limits.conf 配置的 tidb 用户 fsize 为 unlimited |
+| User Process Limits | 在 limits.conf 配置的 TiDB 用户的 nproc 为 4096 |
+| Address Space Limits | 在 limits.conf 配置的 TiDB 用户空间为 unlimited |
+| File Size Limits | 在 limits.conf 配置的 TiDB 用户 fsize 为 unlimited |
 | Disk Readahead | 设置数据磁盘 readhaeat 为 4096 |
 | NTP 服务 | 为各个节点配置 NTP 时间同步服务 |
 | SELinux  | 关闭各个节点的 SELinux 服务  |
 | CPU Frequency Scaling |  TiDB 推荐打开 CPU 超频 |
 | Transparent Hugepages | 针对 Red Hat 7+ 和 CentOS 7+ 系统, Transparent Hugepages 必须被设置为 always |
 | I/O Scheduler | 设置数据磁盘 I/0 Schedule 设置为 deadline 模式 |
-| vm.swappiness | 设置 vm.swappiness = 0 |
+| vm.swappiness | 设置 `vm.swappiness = 0` |
 
 
 ### 数据库运行用户设置
 
 | 配置	| 描述 |
 | :-- | :-- |
-| LANG 环境设定 | 设置 LANG=en_US.UTF8 |
+| LANG 环境设定 | 设置 `LANG=en_US.UTF8` |
 | TZ 时去设定 | 确保所有节点的时区 TZ 设置为一样的值 |
 
 ## 创建系统数据库运行账户
 
-在 linux 环境下，在每台安装节点上创建 tidb 作为数据库系统运行用户并设置集群节点之间的 ssh 互信访问。以下是一个示例，具体创建用户与开通 ssh 互信访问请联系系统管理员进行。
+在 Linux 环境下，在每台安装节点上创建 TiDB 作为数据库系统运行用户并设置集群节点之间的 ssh 互信访问。以下是一个示例，具体创建用户与开通 ssh 互信访问请联系系统管理员进行。
 
 ```
 # useradd tidb
@@ -150,11 +146,10 @@ The key's randomart image is:
 
 ## 下载官方 Binary
 
-TiDB官方提供了支持 Linux 版本的二进制安装包，官方推荐使用 Redhat 7+、CentOS 7+或Ubuntu 14.04+以上版本的操作系统，不推荐在 Redhat 6、CentOS 6 上部署 TiDB 集群
+TiDB官方提供了支持 Linux 版本的二进制安装包，官方推荐使用 Redhat 7+、CentOS 7+ 或 Ubuntu 14.04+ 以上版本的操作系统，不推荐在 Redhat 6、CentOS 6 上部署 TiDB 集群。
 
 操作系统：Linux (Redhat 7+，CentOS 7+，Ubuntu 14.04+)
 
----
 执行步骤：
 
 ```
@@ -172,55 +167,44 @@ cd tidb-latest-linux-amd64
 
 ```
 
-操作系统：Linux (Redhat 6，CentOS 6)
-
-```
-
-# 下载 CentOS6 压缩包
-wget http://download.pingcap.org/tidb-latest-linux-amd64-centos6.tar.gz
-wget http://download.pingcap.org/tidb-latest-linux-amd64-centos6.sha256
-
-# 检查文件完整性，返回 ok 则正确
-sha256sum -c tidb-latest-linux-amd64-centos6.sha256
-
-# 解开压缩包
-tar -xzf tidb-latest-linux-amd64-centos6.tar.gz
-cd tidb-latest-linux-amd64-centos6
-
-```
-
 ## 单节点方式快速部署
 
 在获取TiDB 二进制文件包后，我们可以在单机上面，运行和测试 TiDB 集群，请按如下步骤依次启动 PD，TiKV，TiDB。
 
 注：以下启动各个应用程序组件实例的时候，请选择后台启动，避免前台失效后程序自动退出。
 
-```
 
-# 1. 启动 PD
+1. 启动 PD：
 
+```bash
 ./bin/pd-server --data-dir=pd \
                 --log-file=pd.log
-# 2. 启动 TiKV
+```
 
+2. 启动 TiKV：
+
+```bash
 ./bin/tikv-server --pd="127.0.0.1:2379" \
                   --data-dir=tikv \
                   --log-file=tikv.log
-#3. 启动 TiDB
+```
+3. 启动 TiDB：
 
+```bash
 ./bin/tidb-server --store=tikv \
                   --path="127.0.0.1:2379" \
                   --log-file=tidb.log
+```
 
-# 使用官方的 mysql 客户端连接 TiDB
+4. 使用官方的 MySQL 客户端连接 TiDB：
 
+```bash
 mysql -h 127.0.0.1 -P 4000 -u root -D test
-
 ```
 
 ## 功能性测试部署
 
-如果只是对 TiDB 进行测试，并且机器数量有限，我们可以只启动一台 PD 测试 整个集群。
+如果只是对 TiDB 进行测试，并且机器数量有限，我们可以只启动一台 PD 来测试整个集群。
 
 这里我们使用四个节点，部署一个 PD，三个 TiKV，以及一个 TiDB，各个节点以及所运行服务信息如下：
 
@@ -233,11 +217,11 @@ mysql -h 127.0.0.1 -P 4000 -u root -D test
 
 请按如下步骤依次启动 PD 集群，TiKV 集群以及 TiDB：
 
-注：以下启动各个应用程序组件实例的时候，请选择后台启动，避免前台失效后程序自动退出。
+> 注意：以下启动各个应用程序组件实例的时候，请选择后台启动，避免前台失效后程序自动退出。
 
-步骤一.在 node1 启动 PD
+1. 在 node1 启动 PD
 
-```
+```bash
 ./bin/pd-server --name=pd1 \
                 --data-dir=pd1 \
                 --client-urls="http://192.168.199.113:2379" \
@@ -246,9 +230,9 @@ mysql -h 127.0.0.1 -P 4000 -u root -D test
                 --log-file=pd.log
 ```
 
-步骤二.在 node2，node3，node4 启动 TiKV
+2. 在 node2，node3，node4 启动 TiKV
 
-```
+```bash
 ./bin/tikv-server --pd="192.168.199.113:2379" \
                   --addr="192.168.199.114:20160" \
                   --data-dir=tikv1 \
@@ -265,23 +249,24 @@ mysql -h 127.0.0.1 -P 4000 -u root -D test
                   --log-file=tikv.log
 ```
 
-步骤三. 在 node1 启动 TiDB
+3. 在 node1 启动 TiDB
 
-```
+```bash
 ./bin/tidb-server --store=tikv \
                   --path="192.168.199.113:2379" \
                   --log-file=tidb.log
 ```
-步骤四. 使用官方 mysql 客户端连接 TiDB
 
-```
+4. 使用官方 mysql 客户端连接 TiDB
+
+```bash
 mysql -h 192.168.199.113 -P 4000 -u root -D test
 
 ```
 
 ## 多节点集群模式部署
 
-在生产环境中，我们推荐多节点部署 TiDB 集群，首先请参考部署建议。
+在生产环境中，我们推荐多节点部署 TiDB 集群，首先请参考[部署建议](../op-guide/recommendation.md)。
 
 这里我们使用六个节点，部署三个 PD，三个 TiKV，以及一个 TiDB，各个节点以及所运行服务信息如下：
 
@@ -296,9 +281,9 @@ mysql -h 192.168.199.113 -P 4000 -u root -D test
 
 请按如下步骤 依次启动 PD 集群，TiKV 集群以及 TiDB：
 
-步骤一 . 在 node1，node2，node3 依次启动 PD
+1. 在 node1，node2，node3 依次启动 PD：
 
-```
+```bash
 ./bin/pd-server --name=pd1 \
                 --data-dir=pd1 \
                 --client-urls="http://192.168.199.113:2379" \
@@ -328,9 +313,9 @@ mysql -h 192.168.199.113 -P 4000 -u root -D test
 
 ```
 
-步骤二. 在 node4，node5，node6 启动 TiKV
+2. 在 node4，node5，node6 启动 TiKV：
 
-```
+```bash
 ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
                   --addr="192.168.199.116:20160" \
                   --data-dir=tikv1 \
@@ -348,25 +333,26 @@ mysql -h 192.168.199.113 -P 4000 -u root -D test
 
 ```
 
-步骤三. 在 node1 启动 TiDB
+3. 在 node1 启动 TiDB：
 
-```
+```bash
 ./bin/tidb-server --store=tikv \
                   --path="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
                   --log-file=tidb.log
 
 ```
 
-步骤四. 使用官方 mysql 客户端连接 TiDB
+4. 使用官方 MySQL 客户端连接 TiDB：
 
-```
+```bash
 
 mysql -h 192.168.199.113 -P 4000 -u root -D test
 
 ```
-注意：在生产环境中启动 TiKV 时，建议使用 --config 参数指定配置文件路径，如果不设置这个参数，TiKV 不会读取配置文件。同样，在生产环境中部署 PD 时，也建议使用 --config 参数指定配置文件路径。
 
-注意：如果使用 nohup 在生产环境中启动集群，需要将启动命令放到一个脚本文件里面执行，否则会出现因为 Shell 退出导致 nohup 启动的进程也收到异常信号退出的问题，具体参考进程异常退出。
+> 注意：在生产环境中启动 TiKV 时，建议使用 `--config` 参数指定配置文件路径。如果不设置这个参数，TiKV 不会读取配置文件。同样，在生产环境中部署 PD 时，也建议使用 `--config` 参数指定配置文件路径。
+
+> 注意：如果使用 nohup 在生产环境中启动集群，需要将启动命令放到一个脚本文件里面执行，否则会出现因为 Shell 退出导致 nohup 启动的进程也收到异常信号退出的问题，具体参考进程异常退出。
 
 
 ## TiDB 监控和告警环境安装
@@ -375,7 +361,7 @@ mysql -h 192.168.199.113 -P 4000 -u root -D test
 
 | Name  | Host IP | Services |
 | --- | --- | --- |
-| node1	| 192.168.199.113	| node_export, pushgateway，prometheus，grafana |
+| node1	| 192.168.199.113	| node_export, pushgateway，Prometheus，Grafana |
 | node2	| 192.168.199.114	| node_export |
 | node3	| 192.168.199.115	| node_export |
 | node4	| 192.168.199.116	| node_export |
@@ -400,7 +386,7 @@ tar -xzf grafana-4.1.2-1486989747.linux-x64.tar.gz
 
 ### 启动监控服务
 
-每个节点都启动 node_exporter，通讯端口： 9100.
+1. 每个节点都启动 node_exporter，通讯端口： 9100：
 
 ```
 cd node_exporter-0.14.0-rc.1.linux-amd64
@@ -411,7 +397,7 @@ cd node_exporter-0.14.0-rc.1.linux-amd64
 
 ```
 
-启动 pushgateway，通讯端口：9091.
+2. 启动 pushgateway，通讯端口：9091：
 
 ```
 cd pushgateway-0.3.1.linux-amd64
@@ -422,7 +408,7 @@ cd pushgateway-0.3.1.linux-amd64
     --web.listen-address=":9091"
 
 ```
-启动 prometheus，通讯端口：9090.
+3. 启动 Prometheus，通讯端口：9090：
 
 ```
 cd prometheus-1.5.2.linux-amd64
@@ -466,7 +452,7 @@ scrape_configs:
     --storage.local.retention="360h0m0s"
 
 ```
-启动 grafana，端口3000
+4. 启动 Grafana，端口：3000：
 
 ```
 
@@ -486,11 +472,9 @@ domain = 192.168.199.113
 
 ...
 
-#启动 grafana 服务
+#启动 Grafana 服务
 ./grafana-server \
     --homepath="/data1/tidb/deploy/opt/grafana" \
     --config="/data1/tidb/deploy/opt/grafana/conf/grafana.ini"
 
 ```
-
-
