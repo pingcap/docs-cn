@@ -21,12 +21,12 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 
 | 属性名          | 含义                                                                                                                                          |
 |:----------------|:----------------------------------------------------------------------------------------------------------------------------------------------|
-| "id"            | operator 的 id，在整个执行计划中唯一的标识一个 operator                                                                                       |
-| "parents"       | 这个 operator 的 parent。目前的执行计划可以看做是一个 operator 构成的树状结构，数据从 child 流向 parent，每个 operator 的 parent 有且仅有一个 |
-| "children"      | 这个 operator 的 children，也即是这个 operator 的数据来源                                                                                     |
-| "task"          | 当前这个 operator 属于什么 task。目前的执行计划分成为两种 task，一种叫 **root** task，在 tidb-server 上执行，一种叫 **cop** task，并行的在 tikv 上执行。当前的执行计划在 task 级别的拓扑关系是一个 root task 后面可以跟许多 cop task，root task 使用 cop task 的输出结果作为输入。cop task 中执行的也即是 tidb 下推到 tikv 上的任务，每个 cop task 分散在 tikv 集群中，由多个进程共同执行 |
-| "operator info" | 每个 operator 的详细信息。各个 operator 的 operator info 各有不同，我们将在 [TiDB operator info](#operator-info) 中详细介绍                   |
-| "count"         | 预计当前 operator 将会输出的数据条数，基于统计信息以及 operator 的执行逻辑估算而来                                                            |
+| id            | operator 的 id，在整个执行计划中唯一的标识一个 operator                                                                                       |
+| parents       | 这个 operator 的 parent。目前的执行计划可以看做是一个 operator 构成的树状结构，数据从 child 流向 parent，每个 operator 的 parent 有且仅有一个 |
+| children      | 这个 operator 的 children，也即是这个 operator 的数据来源                                                                                     |
+| task          | 当前这个 operator 属于什么 task。目前的执行计划分成为两种 task，一种叫 **root** task，在 tidb-server 上执行，一种叫 **cop** task，并行的在 tikv 上执行。当前的执行计划在 task 级别的拓扑关系是一个 root task 后面可以跟许多 cop task，root task 使用 cop task 的输出结果作为输入。cop task 中执行的也即是 tidb 下推到 tikv 上的任务，每个 cop task 分散在 tikv 集群中，由多个进程共同执行 |
+| operator info | 每个 operator 的详细信息。各个 operator 的 operator info 各有不同，我们将在 [TiDB operator info](#operator-info) 中详细介绍                   |
+| count         | 预计当前 operator 将会输出的数据条数，基于统计信息以及 operator 的执行逻辑估算而来                                                            |
 
 ## <span id="operator-info">operator info</span>
 
