@@ -16,6 +16,7 @@ in_toc = False
 contents = []
 
 hyper_link_pattern = re.compile(r'([\-\+]+)\s\[(.*?)\]\((.*?)(#.*?)?\)')
+image_link_pattern = re.compile(r'!\[(.*?)\]\((.*?)\)')
 level_pattern = re.compile(r'(\s*[\-\+]+)\s')
 # match all headings
 heading_patthern = re.compile(r'(^#+|\n#+)\s')
@@ -105,6 +106,15 @@ def replace_link(match):
     else:
         return full
 
+def replace_img_link(match):
+    full = match.group(0)
+    link_name = match.group(1)
+    link = match.group(2)
+
+    if link.endswith('.png'):
+        fname = os.path.basename(link)
+        return '![%s](./media/%s)' % (link_name, fname)
+
 def replace_heading_func(diff_level=0):
 
     def replace_heading(match):
@@ -133,6 +143,7 @@ for type_, level, name in followups:
         with open(name) as fp:
             chapter = fp.read()
             chapter = hyper_link_pattern.sub(replace_link, chapter)
+            chapter = image_link_pattern.sub(replace_img_link, chapter)
 
             # fix heading level
             diff_level = level - heading_patthern.findall(chapter)[0].count('#')

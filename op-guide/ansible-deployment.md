@@ -287,7 +287,8 @@ pd_servers
 
 > TiDB 服务数据迁移、性能调优等更多高级功能请参考 [https://github.com/pingcap/docs-cn](https://github.com/pingcap/docs-cn)
 
-## FAQ
+## 常见部署问题
+
 ### TiDB 各版本下载链接
 
 -   Master 版本:
@@ -300,7 +301,8 @@ pd_servers
 
 ### 如何下载安装 RC4 版本 TiDB
 
-> inventory.ini 文件中指定的 TiDB 默认版本为 master 版本 `tidb_version = latest`, 如需安装 TiDB rc4 版本，先下载 TiDB-Ansible rc4 分支，确认 inventory.ini 文件中 `tidb_version = rc4`。安装步骤同上。
+`inventory.ini` 文件中指定的 TiDB 默认版本为 master 版本 `tidb_version = latest`, 如需安装 TiDB rc4 版本，
+需要先下载 TiDB-Ansible rc4 分支，确认 inventory.ini 文件中 `tidb_version = rc4`。安装步骤同上。
 
 从 github 下载 TiDB-Ansile rc4 分支
 
