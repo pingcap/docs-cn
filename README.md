@@ -2,9 +2,14 @@
 
 ## 目录
 
-+ TiDB 简介 & 整体架构
-  - [TiDB 简介](overview.md#tidb-简介)
-  - [TiDB 整体架构](overview.md#tidb-整体架构)
++ TiDB 快速入门指南
+  - [关于 TiDB](QUICKSTART.md#关于-tidb)
+  - [关于本指南](QUICKSTART.md#关于本指南)
+  - [TiDB 集群部署](QUICKSTART.md#tidb-集群部署)
+  - [TiDB 基本操作](QUICKSTART.md#tidb-基本操作)
+  - [TiDB 集群监控](QUICKSTART.md#tidb-集群监控)
+  - [TiDB 集群扩容缩容方案](QUICKSTART.md#tidb-集群扩容缩容方案)
+  - [集群销毁](QUICKSTART.md#集群销毁)
 + 安装 & 部署
   - [部署建议](op-guide/recommendation.md)
   - [Ansible 部署方案 (强烈推荐)](op-guide/ansible-deployment.md)
@@ -21,14 +26,17 @@
 + SQL 兼容及对比
   - [TiDB SQL 文法](sql/README.md)
   - [与 MySQL 兼容性对比](op-guide/mysql-compatibility.md)
+  - [JSON 函数及 Generated Column](op-guide/json-functions-generated-column.md)
 + 高级功能
   - [数据迁移方法](op-guide/migration.md)
   - [Syncer 使用文档](tools/syncer.md)
   - [Loader 使用文档](tools/loader.md)
+  - [TiDB-binlog 使用文档](op-guide/tidb-binlog.md)
   - [性能调优](op-guide/tune-tikv.md)
   - [读取历史版本数据](op-guide/history-read.md)
   - [故障诊断](trouble-shooting.md)
   - [备份 & 恢复](op-guide/backup-restore.md)
+- [TiSpark 用户指南](op-guide/tispark_user_guide.md)
 + 更多资源
   - [常用工具](https://github.com/pingcap/tidb-tools)
   - [PingCAP 团队技术博客](https://pingcap.com/bloglist-zh.html)

@@ -1,23 +1,24 @@
-machine:
-  python:
-    version: 3.5.2
+version: 2
 
-dependencies:
-  override:
-    - wget https://github.com/jgm/pandoc/releases/download/1.19.1/pandoc-1.19.1-1-amd64.deb -O pandoc.deb
-    - sudo dpkg -i pandoc.deb
-    - sudo apt-get -y install texlive-xetex texlive-latex-extra texlive-lang-cjk texlive-fonts-recommended etoolbox
-    - sudo apt-get -y install ttf-wqy-microhei
+jobs:
+  build:
+    docker:
+      - image: andelf/doc-build:0.1.7
+    working_directory: ~/pingcap/docs-cn
+    steps:
+      - checkout
 
-test:
-  override:
-    - python3 scripts/merge_by_toc.py
-    - ./scripts/generate_pdf.sh
+      - run:
+          name: "Merge Makedown Files"
+          command: python3 scripts/merge_by_toc.py
 
-deployment:
-  development:
-    branch: master
-    commands:
-      - pip3 install qiniu
-      - python3 scripts/upload.py output.pdf tidb-manual-cn.pdf
+      - run:
+          name: "Generate PDF"
+          command: scripts/generate_pdf.sh
 
+      - deploy:
+          name: "Publish PDF"
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              python3 scripts/upload.py output.pdf tidb-manual-cn.pdf
+            fi

@@ -1,16 +1,20 @@
 ---
 title: 权限管理
-category: compatibility
+category: user guide
 ---
 
-# 权限管理
+# 目录
++ [概述](#权限管理概述)
++ [示例](#示例)
++ [创建用户](create-user.md)
++ [Grant 语句](grant.md)
++ [Revoke 语句](revoke.md)
+
+# 权限管理概述
 
 TiDB的权限管理系统是按照MySQL的权限管理进行实现，大部分的MySQL的语法和权限类型都是支持的。如果发现行为跟MySQL不一致的地方，欢迎报告issue。
 
-> 注意：当前版本的权限功能并没有默认开启，需要添加启动参数指定： 
-> ./tidb-server -privilege=true
-> 如果不指定参数，权限检查不会生效。将来去掉这个参数(预计RC3)并默认启用权限检查。
-
+# 示例
 ## 1. 用户账户操作
 
 ### 更改密码

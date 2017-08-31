@@ -102,30 +102,38 @@ cd tidb-enterprise-tools-latest-linux-amd64
 我们在 MySQL 里面创建如下表：
 
 ```sql
-CREATE TABLE t_error (
-  c timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE t_error ( a INT NOT NULL, PRIMARY KEY (a))
+ENGINE=InnoDB TABLESPACE ts1                          
+PARTITION BY RANGE (a) PARTITIONS 3 (
+PARTITION P1 VALUES LESS THAN (2),
+PARTITION P2 VALUES LESS THAN (4) TABLESPACE ts2,
+PARTITION P3 VALUES LESS THAN (6) TABLESPACE ts3);
 ```
 
 使用 `checker` 进行检查，会报错，表明我们没法迁移 `t_error` 这张表。
 
 ```bash
 ./bin/checker -host 127.0.0.1 -port 3306 -user root test t_error
-2016/10/27 13:19:28 checker.go:48: [info] Checking database test
-2016/10/27 13:19:28 main.go:37: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
-2016/10/27 13:19:28 checker.go:63: [info] Checking table t_error
-2016/10/27 13:19:28 checker.go:67: [error]
-Check table t_error failed with err: line 1 column 56 near ") ON UPDATE CURRENT_TIMESTAMP(3)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1"
-github.com/pingcap/tidb/parser/yy_parser.go:111:
-github.com/pingcap/tidb/parser/yy_parser.go:124:
-/home/jenkins/workspace/WORKFLOW_TOOLS_BUILDING/go/src/ \
-github.com/pingcap/tidb-tools/checker/checker.go:122:  parse CREATE TABLE `t_error` (
-  `c` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 error
-/home/jenkins/workspace/WORKFLOW_TOOLS_BUILDING/go/src/ \
-github.com/pingcap/tidb-tools/checker/checker.go:114:
-2016/10/27 13:19:28 main.go:68: [error] Check database test with 1 errors and 0 warnings.
+2017/08/04 11:14:35 checker.go:48: [info] Checking database test
+2017/08/04 11:14:35 main.go:39: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
+2017/08/04 11:14:35 checker.go:63: [info] Checking table t1
+2017/08/04 11:14:35 checker.go:67: [error] Check table t1 failed with err: line 3 column 29 near " ENGINE=InnoDB DEFAULT CHARSET=latin1
+/*!50100 PARTITION BY RANGE (a)
+(PARTITION P1 VALUES LESS THAN (2) ENGINE = InnoDB,
+ PARTITION P2 VALUES LESS THAN (4) TABLESPACE = ts2 ENGINE = InnoDB,
+ PARTITION P3 VALUES LESS THAN (6) TABLESPACE = ts3 ENGINE = InnoDB) */" (total length 354)
+github.com/pingcap/tidb/parser/yy_parser.go:96:
+github.com/pingcap/tidb/parser/yy_parser.go:109:
+/home/jenkins/workspace/build_tidb_tools_master/go/src/github.com/pingcap/tidb-tools/checker/checker.go:122:  parse CREATE TABLE `t1` (
+  `a` int(11) NOT NULL,
+  PRIMARY KEY (`a`)
+) /*!50100 TABLESPACE ts1 */ ENGINE=InnoDB DEFAULT CHARSET=latin1
+/*!50100 PARTITION BY RANGE (a)
+(PARTITION P1 VALUES LESS THAN (2) ENGINE = InnoDB,
+ PARTITION P2 VALUES LESS THAN (4) TABLESPACE = ts2 ENGINE = InnoDB,
+ PARTITION P3 VALUES LESS THAN (6) TABLESPACE = ts3 ENGINE = InnoDB) */ error
+/home/jenkins/workspace/build_tidb_tools_master/go/src/github.com/pingcap/tidb-tools/checker/checker.go:114:
+2017/08/04 11:14:35 main.go:83: [error] Check database test with 1 errors and 0 warnings.
 ```
 
 ## 使用 `mydumper`/`loader` 全量导入数据
@@ -169,6 +177,8 @@ github.com/pingcap/tidb-tools/checker/checker.go:114:
 > 注意：在阿里云等一些需要 `super privilege` 的云上面，`mydumper` 需要加上 `--no-locks` 参数，否则会提示没有权限操作。
 
 ### 向 TiDB 导入数据
+
+> 注意：目前 TiDB 仅支持 UTF8 字符编码，假设 mydumper 导出数据为 latin1 字符编码，请使用 `iconv -f latin1 -t utf-8 $file -o /data/imdbload/$basename` 命令转换，$file 为已有文件，$basename 为转换后文件。
 
 我们使用 `loader` 将之前导出的数据导入到 TiDB。Loader 的下载和具体的使用方法见 [Loader 使用文档](../tools/loader.md)
 
