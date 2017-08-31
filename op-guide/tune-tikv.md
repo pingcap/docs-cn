@@ -123,9 +123,10 @@ max-manifest-file-size = "20MB"
 # 数据块大小。RocksDB 是按照 block 为单元对数据进行压缩的，同时 block 也是缓存在 block-cache
 # 中的最小单元（类似其他数据库的 page 概念）。
 block-size = "64KB"
+
 # RocksDB 每一层数据的压缩方式，可选的值为：no,snappy,zlib,bzip2,lz4,lz4hc,zstd。
 # no:no:lz4:lz4:lz4:zstd:zstd 表示 level0 和 level1 不压缩，level2 到 level4 采用 lz4 压缩算法,
-level5 和 level6 采用 zstd 压缩算法,。
+# level5 和 level6 采用 zstd 压缩算法,。
 # no 表示没有压缩，lz4 是速度和压缩比较为中庸的压缩算法，zlib 的压缩比很高，对存储空间比较友
 # 好，但是压缩速度比较慢，压缩的时候需要占用较多的 CPU 资源。不同的机器需要根据 CPU 以及 IO 资
 # 源情况来配置怎样的压缩方式。例如：如果采用的压缩方式为"no:no:lz4:lz4:lz4:zstd:zstd"，在大量
@@ -137,8 +138,10 @@ level5 和 level6 采用 zstd 压缩算法,。
 # 个时候可以考虑用 IO 资源换取 CPU 资源，将压缩方式改成"no:no:no:lz4:lz4:zstd:zstd"。总之，目
 # 的是为了最大限度地利用系统的现有资源，使 TiKV 的性能在现有的资源情况下充分发挥。
 compression-per-level = ["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
+
 # RocksDB memtable 的大小。
 write-buffer-size = "128MB"
+
 # 最多允许几个 memtable 存在。写入到 RocksDB 的数据首先会记录到 WAL 日志里面，然后会插入到
 # memtable 里面，当 memtable 的大小到达了 write-buffer-size 限定的大小的时候，当前的
 # memtable 会变成只读的，然后生成一个新的 memtable 接收新的写入。只读的 memtable 会被
@@ -155,9 +158,11 @@ max-write-buffer-number = 5
 # 另一个表现。当 level0 的 sst 的文件个数到达 4（默认值），level0 的 sst 文件会和 level1 中
 # 有 overlap 的 sst 文件进行 compaction，缓解读放大的问题。
 level0-slowdown-writes-trigger = 20
+
 # 当 level0 的 sst 文件个数到达 level0-stop-writes-trigger 指定的限度的时候，RocksDB 会
 # stall 住新的写入。
 level0-stop-writes-trigger = 36
+
 # 当 level1 的数据量大小达到 max-bytes-for-level-base 限定的值的时候，会触发 level1 的
 # sst 和 level2 种有 overlap 的 sst 进行 compaction。
 # 黄金定律：max-bytes-for-level-base 的设置的第一参考原则就是保证和 level0 的数据量大致相
@@ -168,9 +173,11 @@ level0-stop-writes-trigger = 36
 # 缩成一个 sst 文件的大小大概是多少，例如 32MB，那么 max-bytes-for-level-base 的建议值就应
 # 该是 32MB * 4 = 128MB。
 max-bytes-for-level-base = "512MB"
+
 # sst 文件的大小。level0 的 sst 文件的大小受 write-buffer-size 和 level0 采用的压缩算法的
 # 影响，target-file-size-base 参数用于控制 level1-level6 单个 sst 文件的大小。
 target-file-size-base = "32MB"
+
 # 在不配置该参数的情况下，TiKV 会将该值设置为系统总内存量的 40%。如果需要在单个物理机上部署多个
 # TiKV 节点，需要显式配置该参数，否则 TiKV 容易出现 OOM 的问题。
 # block-cache-size = "1GB"
@@ -178,13 +185,16 @@ target-file-size-base = "32MB"
 [rocksdb.writecf]
 # 保持和 rocksdb.defaultcf.compression-per-level 一致。
 compression-per-level = ["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
+
 # 保持和 rocksdb.defaultcf.write-buffer-size 一致。
 write-buffer-size = "128MB"
 max-write-buffer-number = 5
 min-write-buffer-number-to-merge = 1
+
 # 保持和 rocksdb.defaultcf.max-bytes-for-level-base 一致。
 max-bytes-for-level-base = "512MB"
 target-file-size-base = "32MB"
+
 # 在不配置该参数的情况下，TiKV 会将该值设置为系统总内存量的 15%。如果需要在单个物理机上部署多个
 # TiKV 节点，需要显式配置该参数。版本信息（MVCC）相关的数据以及索引相关的数据都记录在 write 这
 # 个 cf 里面，如果业务的场景下单表索引较多，可以将该参数设置的更大一点。
@@ -203,13 +213,16 @@ target-file-size-base = "32MB"
 [raftdb.defaultcf]
 # 保持和 rocksdb.defaultcf.compression-per-level 一致。
 compression-per-level = ["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
+
 # 保持和 rocksdb.defaultcf.write-buffer-size 一致。
 write-buffer-size = "128MB"
 max-write-buffer-number = 5
 min-write-buffer-number-to-merge = 1
+
 # 保持和 rocksdb.defaultcf.max-bytes-for-level-base 一致。
 max-bytes-for-level-base = "512MB"
 target-file-size-base = "32MB"
+
 # 通常配置在 256MB 到 2GB 之间，通常情况下使用默认值就可以了，但如果系统资源比较充足可以适当调大点。
 block-cache-size = "256MB"
 ```
