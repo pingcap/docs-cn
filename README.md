@@ -3,14 +3,14 @@
 ## Documentation List
 
 + Quick Start
-  -   [TiDB Quick Start Guide](./QUICKSTART.md)
-    -   [About TiDB](./QUICKSTART.md#about-tidb)
-    -   [About this guide](./QUICKSTART.md#about-this-guide)
-    -   [Deploy a TiDB cluster](./QUICKSTART.md#deploy-a-tidb-cluster)
-    -   [Try TiDB](./QUICKSTART.md#try-tidb)
-    -   [Monitoring a TiDB cluster](./QUICKSTART.md#monitoring-a-tidb-cluster)
-    -   [Scale the TiDB cluster](./QUICKSTART.md#scale-the-tidb-cluster)
-    -   [Destroy the cluster](./QUICKSTART.md#destroy-the-cluster)
+  + [TiDB Quick Start Guide](./QUICKSTART.md)
+    - [About TiDB](./QUICKSTART.md#about-tidb)
+    - [About this guide](./QUICKSTART.md#about-this-guide)
+    - [Deploy a TiDB cluster](./QUICKSTART.md#deploy-a-tidb-cluster)
+    - [Try TiDB](./QUICKSTART.md#try-tidb)
+    - [Monitoring a TiDB cluster](./QUICKSTART.md#monitoring-a-tidb-cluster)
+    - [Scale the TiDB cluster](./QUICKSTART.md#scale-the-tidb-cluster)
+    - [Destroy the cluster](./QUICKSTART.md#destroy-the-cluster)
   - [TiDB Connector for Spark User Guide](https://github.com/pingcap/tispark/blob/master/docs/userguide.md)
 + Deploy
   - [Deployment Recommendation](op-guide/recommendation.md)
