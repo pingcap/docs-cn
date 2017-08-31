@@ -3,7 +3,7 @@ title: FAQ
 category: FAQ
 ---
 
-
+# FAQ
 
 * [产品](#产品)
   * [关于产品](#关于产品)
@@ -59,12 +59,12 @@ category: FAQ
 * [SQL](#sql)
   * [SQL 语法](#sql-语法)
      * [出现 transaction too large 报错怎么办？](#出现-transaction-too-large-报错怎么办)
-     * [查看当时运行的 ddl job](#查看当时运行的-ddl-job)              
+     * [查看当时运行的 ddl job](#查看当时运行的-ddl-job)
   * [SQL 优化](#sql-优化)
      * [select count(1) 比较慢，有优化方法么？](#select-count1-比较慢有优化方法么)
 
-    
-    
+
+
 ## 产品
 
 ### 关于产品
@@ -218,7 +218,7 @@ rocksdb 对于 key 有压缩。
 	fallocate -p -n -o 5000 -l 4192 tidb_test
 	LANG=en_US.UTF-8 stat tidb_test |awk 'NR==2{print $2}'
 	rm -rf tidb_test
-	
+
 #### chrony 能满足时间同步的要求 ？
 可以，只要能让 pd 机器时间同步就行。
 
@@ -279,7 +279,7 @@ TiDB 遵循 MySQL 的权限管理体系，可以创建用户并授予权限。
 
 ### SQL 语法
 
-#### 出现 transaction too large 报错怎么办？ 	
+#### 出现 transaction too large 报错怎么办？
 由于分布式事务要做两阶段提交，并且底层还需要做 Raft 复制，如果一个事务非常大，会使得提交过程非常慢，并且会卡住下面的 Raft 复制流程。为了避免系统出现被卡住的情况，我们对事务的大小做了限制：
 
 - 单条 KV entry 不超过 6MB
@@ -302,7 +302,7 @@ TiDB 遵循 MySQL 的权限管理体系，可以创建用户并授予权限。
 
 建议：
 
-1.建议在 session 中使用，不影响其他语句 
+1.建议在 session 中使用，不影响其他语句
 
 2.使用以后可以关闭 `set @@session.tidb_batch_insert=0`
 
@@ -311,7 +311,7 @@ delete && update：
 
 #### 查看当时运行的 ddl job
 
-admin show ddl 
+admin show ddl
 
 注意： ddl 除非是遇到错误，否则目前是不能取消的
 

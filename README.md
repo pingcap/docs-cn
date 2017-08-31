@@ -2,7 +2,8 @@
 
 ## 目录
 
-+ TiDB 快速入门指南
++ TiDDB 概览
++ [快速入门指南](QUICKSTART.md)
   - [关于 TiDB](QUICKSTART.md#关于-tidb)
   - [关于本指南](QUICKSTART.md#关于本指南)
   - [TiDB 集群部署](QUICKSTART.md#tidb-集群部署)
