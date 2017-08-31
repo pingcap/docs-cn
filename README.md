@@ -2,16 +2,16 @@
 
 ## Documentation List
 
-
-+ [Quick Start](./QUICKSTART.md)
-  -   [About TiDB](./QUICKSTART.md#about-tidb)
-  -   [About this guide](./QUICKSTART.md#about-this-guide)
-  -   [Deploy a TiDB cluster](./QUICKSTART.md#deploy-a-tidb-cluster)
-  -   [Try TiDB](./QUICKSTART.md#try-tidb)
-  -   [Monitoring a TiDB cluster](./QUICKSTART.md#monitoring-a-tidb-cluster)
-  -   [Scale the TiDB cluster](./QUICKSTART.md#scale-the-tidb-cluster)
-  -   [Destroy the cluster](./QUICKSTART.md#destroy-the-cluster)
-- [TiDB Connector for Spark User Guide](https://github.com/pingcap/tispark/blob/master/docs/userguide.md)
++ Quick Start
+  -   [TiDB Quick Start Guide](./QUICKSTART.md)
+    -   [About TiDB](./QUICKSTART.md#about-tidb)
+    -   [About this guide](./QUICKSTART.md#about-this-guide)
+    -   [Deploy a TiDB cluster](./QUICKSTART.md#deploy-a-tidb-cluster)
+    -   [Try TiDB](./QUICKSTART.md#try-tidb)
+    -   [Monitoring a TiDB cluster](./QUICKSTART.md#monitoring-a-tidb-cluster)
+    -   [Scale the TiDB cluster](./QUICKSTART.md#scale-the-tidb-cluster)
+    -   [Destroy the cluster](./QUICKSTART.md#destroy-the-cluster)
+  - [TiDB Connector for Spark User Guide](https://github.com/pingcap/tispark/blob/master/docs/userguide.md)
 + Deploy
   - [Deployment Recommendation](op-guide/recommendation.md)
   - [Ansible Deployment(Recommended)](op-guide/ansible-deployment.md)
@@ -33,6 +33,12 @@
   - [Performance Tuning](op-guide/tune-TiKV.md)
   - [Reading Data from History Versions](op-guide/history-read.md)
 - [Troubleshooting](./trouble-shooting.md)
++ Releases
+  - [Pre-GA](release/prega.md)
+  - [RC4](release/rc4.md)
+  - [RC3](release/rc3.md)
+  - [RC2](release/rc2.md)
+  - [RC1](release/rc1.md)
 + More Resources
   - [Frequently Used Tools](https://github.com/pingcap/tidb-tools)
   - [PingCAP Blog](https://pingcap.github.io/blog/)
