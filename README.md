@@ -11,7 +11,7 @@
   - [TiDB 集群扩容缩容方案](QUICKSTART.md#tidb-集群扩容缩容方案)
   - [集群销毁](QUICKSTART.md#集群销毁)
 + 安装 & 部署
-  - [部署建议](op-guide/recommendation.md)
+  - [部署建议](op-guide/requirement.md)
   - [Ansible 部署方案 (强烈推荐)](op-guide/ansible-deployment.md)
   - [Binary 部署方案](op-guide/binary-deployment.md)
   - [Docker 部署方案](op-guide/docker-deployment.md)
