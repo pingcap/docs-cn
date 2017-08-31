@@ -1,13 +1,13 @@
 ---
-title: Bit-Value Literals
+title: Bit-value Literals
 category: user guide
 ---
 
-# Bit-Value Literals
+# Bit-value Literals
 
-位值字面值用`b`或者`0b`做前缀, 后接以0跟1组成的二进制数字.其中`0b`是大小写敏感的, `0B`是会报错的.
+位值字面值用 `b` 或者 `0b` 做前缀, 后接以 0 跟 1 组成的二进制数字。其中 `0b` 是大小写敏感的, `0B` 是会报错的。
 
-合法的bit-value:
+合法的 bit-value:
 
 ```
 b'01'
@@ -15,18 +15,18 @@ B'01'
 0b01
 ```
 
-非法的bit-value:
+非法的 bit-value:
 
 ```
 b'2' (2 不是二进制数值, 必须为0或1)
 0B01 (0B必须是小写ob)
 ```
 
-默认情况, 位值字面值是一个二进制字符串.
+默认情况, 位值字面值是一个二进制字符串。
 
-bit-value是作为二进制返回的, 所以输出到MySQL client可能会显示不出来, 如果要转换为可打印的字符, 可以使用内建函数`BIN()`或者`HEX()`:
+Bit-value 是作为二进制返回的, 所以输出到 MySQL client 可能会显示不出来, 如果要转换为可打印的字符, 可以使用内建函数  `BIN()` 或者 `HEX()`:
 
-```
+```sql
 CREATE TABLE t (b BIT(8));
 INSERT INTO t SET b = b'00010011';
 INSERT INTO t SET b = b'1110';
