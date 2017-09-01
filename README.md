@@ -12,6 +12,7 @@
     - [TiDB 集群扩容缩容方案](QUICKSTART.md#tidb-集群扩容缩容方案)
     - [集群销毁](QUICKSTART.md#集群销毁)
   - [TiSpark 用户指南](op-guide/tispark_user_guide.md)
+    - [TiSpark 快速入门指南](op-guide/tispark-quick-start-guide.md)
 + 安装 & 部署
   - [部署建议](op-guide/requirement.md)
   - [Ansible 部署方案 (强烈推荐)](op-guide/ansible-deployment.md)
