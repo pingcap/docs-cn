@@ -5,9 +5,10 @@ category: user guide
 
 # TiDB 用户文档
 
-TiDB 支持 SQL92 标准并兼容 MySQL 语法，为了帮您更好地使用 TiDB, 该文档沿用了 MySQL 大部分的文档结构，同时针对 TiDB 特有的功能作了详细的描述。
+TiDB 支持 SQL92 标准并兼容 MySQL 语法，为了帮您更好地使用 TiDB, 该文档沿用了 MySQL 大部分的文档结构，
+同时针对 TiDB 特有的功能作了详细的描述。
 
-## Table of Contents
+Table of Contents
 
 + TiDB 数据库管理
 	- TiDB 服务器和服务器启动脚本

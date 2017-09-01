@@ -95,6 +95,7 @@ TiDB 集群可以在不影响线上服务的情况下动态进行扩容和缩容
 ```
 
 我们可以通过这个 store 的 state 来确定这个 store 的状态：
+
 - `state=0`: 这个 store 正常服务
 - `state=1`: 这个 store 正在下线，此时 store 仍在服务中
 - `state=2`: 这个 store 已经完成下线，此时 store 上已经没有数据，可以关闭实例
