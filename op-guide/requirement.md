@@ -11,12 +11,12 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运�
 
 ## Linux 操作系统版本要求
 
-| Linux 操作系统平台 | 版本 |
-| :----------------- | :--------: |
-| Red Hat Enterprise Linux | 7.3 及以上 |
-| CentOS | 7.3 及以上 |
-| Oracle Enterprise Linux | 7.3 及以上 |
-| Ubuntu LTS | 14.04 及以上 |
+| Linux 操作系统平台       | 版本         |
+| :----------------------- | :----------: |
+| Red Hat Enterprise Linux | 7.3 及以上   |
+| CentOS                   | 7.3 及以上   |
+| Oracle Enterprise Linux  | 7.3 及以上   |
+| Ubuntu LTS               | 14.04 及以上 |
 
 > 注： Oracle Enterprise Linux 只支持 Red Hat 兼容内核 (RHCK) , 不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。
 
