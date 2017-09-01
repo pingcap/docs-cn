@@ -2,8 +2,8 @@
 
 ## 目录
 
-+ TiDB 快速入门
-  - [快速入门指南](QUICKSTART.md)
++ 快速入门
+  - [TiDB 快速入门指南](QUICKSTART.md)
     - [关于 TiDB](QUICKSTART.md#关于-tidb)
     - [关于本指南](QUICKSTART.md#关于本指南)
     - [TiDB 集群部署](QUICKSTART.md#tidb-集群部署)
@@ -11,37 +11,106 @@
     - [TiDB 集群监控](QUICKSTART.md#tidb-集群监控)
     - [TiDB 集群扩容缩容方案](QUICKSTART.md#tidb-集群扩容缩容方案)
     - [集群销毁](QUICKSTART.md#集群销毁)
-  - [TiSpark 用户指南](op-guide/tispark_user_guide.md)
+  + [TiSpark 用户指南](op-guide/tispark_user_guide.md)
     - [TiSpark 快速入门指南](op-guide/tispark-quick-start-guide.md)
-+ 安装 & 部署
-  - [部署建议](op-guide/requirement.md)
-  - [Ansible 部署方案 (强烈推荐)](op-guide/ansible-deployment.md)
-  - [Binary 部署方案](op-guide/binary-deployment.md)
-  - [Docker 部署方案](op-guide/docker-deployment.md)
-  - [跨机房部署方案](op-guide/location-awareness.md)
-  - [命令行参数](op-guide/configuration.md)
-+ 运维 & 监控
-  - [集群扩容缩容方案](op-guide/horizontal-scale.md)
-  - [整体监控框架概述](op-guide/monitor-overview.md)
-  - [重要监控指标详解](op-guide/dashboard-overview-info.md)
-  - [组件状态 API & 监控](op-guide/monitor.md)
-  - [PD 命令行工具](op-guide/pd-control.md)
-+ SQL 兼容及对比
-  - [TiDB SQL 文法](sql/README.md)
-  - [与 MySQL 兼容性对比](op-guide/mysql-compatibility.md)
-  - [JSON 函数及 Generated Column](op-guide/json-functions-generated-column.md)
-+ 高级功能
-  - [数据迁移方法](op-guide/migration.md)
++ TiDB 运维文档    
+  - [软硬件环境需求](op-guide/requirement.md)
+  <!--+ 下载
+    - TiDB, TiKV, PD
+    - TiDB Ansible Playbook-->
+  - [TiDB 集群整体架构](#tidb-整体架构)
+  + 部署集群
+    - [Ansible 部署方案 (强烈推荐)](op-guide/ansible-deployment.md)
+    - [Docker 部署方案](op-guide/docker-deployment.md)
+    - [跨机房部署方案](op-guide/location-awareness.md)
+  + 配置集群
+    - [配置参数](op-guide/configuration.md)
+    - [PD 命令行工具](op-guide/pd-control.md)
+  <!--+ 启动 & 停止集群-->
+  + 监控集群
+    - [整体监控框架概述](op-guide/monitor-overview.md)
+    - [重要监控指标详解](op-guide/dashboard-overview-info.md)
+    - [组件状态 API & 监控](op-guide/monitor.md)
+  + [扩容缩容](op-guide/horizontal-scale.md)  
+  + 升级
+    - [使用 Ansible 升级](op-guide/ansible-deployment.md)
+  <!--  - 使用二进制文件升级-->
+  + [备份与恢复](op-guide/backup-restore.md)
+  - [读取历史版本数据](op-guide/history-read.md)
+  + 性能调优
+    - [TiKV 性能参数调优](op-guide/tune-tikv.md) 
+  + 导入导出
+    - [全量导入](op-guide/migration.md)
+  + 手动运维
+    - [Binary 部署方案](op-guide/binary-deployment.md)
+    - [故障诊断](trouble-shooting.md)
+    - [数据迁移方法](op-guide/migration.md)
+
++ TiDB 用户文档
+  + TiDB 数据库管理
+    <!--- TiDB 服务器和服务器启动脚本
+    - TiDB 数据目录
+    - TiDB 系统数据库
+    - TiDB 服务器日志文件 -->
+    - [TiDB 专用系统变量和语法](sql/tidb-specific.md)
+  + TiDB 安全
+    - [TiDB 访问权限管理](sql/privilege/README.md)
+  <!--  - TiDB 用户账户管理
+    - 使用安全连接
+  + 优化
+  + 语言结构
+    - 字面值
+    - 数据库、表、索引、列和别名
+      - 关键字和保留字
+      - 用户变量
+      - 表达式语法
+      - 注释语法
+  + 字符集和时区支持
+    - 字符集支持
+    - 字符集配置
+    - 时区支持-->
+  - [数据类型](sql/data-type/README.md)
+  <!--  - 数值类型
+    - 日期和时间类型
+    - 字符串类型
+    - JSON 数据类型
+    - 数据类型默认值
+    - 数据类型存储需求
+    - 选择正确的列类型
+    - 使用来自其他数据库引擎的数据类型
+  + 函数和操作符
+    - 函数和操作符概述
+    - 表达式求值的类型转换
+    - 操作符
+    - 控制流程函数
+    - 字符串函数
+    - 数值函数与操作符
+    - 日期和时间函数
+    - Cast函数和操作符
+    - 位函数和操作符
+    - 加密和压缩函数
+    - 信息函数
+    - JSON 函数
+    - 全局事务 ID 函数
+    - GROUP BY 聚合函数
+    - 其他函数
+    - 精度数学-->
+  + SQL 语句语法
+    - [数据定义语句(DDL)](sql/ddl/README.md)
+    - [数据操作语句(DML)](sql/dml/README.md)
+  <!--- 事务语句
+    - Prepared SQL 语句语法
+    - 复合语句语法
+    - 数据库管理语句
+    - 实用工具语句-->
+    - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
+
++ 工具
   - [Syncer 使用文档](tools/syncer.md)
   - [Loader 使用文档](tools/loader.md)
   - [TiDB-binlog 使用文档](op-guide/tidb-binlog.md)
-  - [性能调优](op-guide/tune-tikv.md)
-  - [读取历史版本数据](op-guide/history-read.md)
-  - [故障诊断](trouble-shooting.md)
-  - [备份 & 恢复](op-guide/backup-restore.md)
 - [常见问题与解答](FAQ.md)
 + 更多资源
-  - [常用工具](https://github.com/pingcap/tidb-tools)
   - [PingCAP 团队技术博客](https://pingcap.com/bloglist-zh.html)
 
 ## TiDB 简介
