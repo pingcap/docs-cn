@@ -22,3 +22,10 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               python3 scripts/upload.py output.pdf tidb-manual-cn.pdf
             fi
+
+      - run:
+          name: "Copy Generated PDF"
+          command: mkdir /tmp/artifacts && cp output.pdf doc.md /tmp/artifacts
+
+      - store_artifacts:
+          path: /tmp/artifacts
