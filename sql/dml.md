@@ -9,13 +9,6 @@ category: user guide
 
 TiDB 支持的数据操作语言包括 Select ，Insert, Delete, Update，和 Replace。
 
-## Table of Contents
-+ [Select 语句](#select-语句)
-+ [Insert 语句](#insert-语句)
-+ Delete 语句
-+ Update 语句
-+ Replace 语句
-
 ## Select 语句
 
 Select 语句用于从数据库中查询数据。
@@ -41,13 +34,13 @@ SELECT
 
 ### 语法元素说明
 
-|语法元素 | 说明|
-|-------- | -----------|
-|`ALL、DISTINCT、DISTINCTROW` | 查询结果集中可能会包含重复值。指定 DISTINCT/DISTINCTROW 则在查询结果中过滤掉重复的行；指定 ALL 则列出所有的行。默认为 ALL。|
+|语法元素 | 说明 |
+| --------------------- | -------------------------------------------------- |
+|`ALL`、`DISTINCT`、`DISTINCTROW` | 查询结果集中可能会包含重复值。指定 DISTINCT/DISTINCTROW 则在查询结果中过滤掉重复的行；指定 ALL 则列出所有的行。默认为 ALL。|
 |`HIGH_PRIORITY` | 该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句|
-|`SQL_CACHE、SQL_NO_CACHE、SQL_CALC_FOUND_ROWS` | TiDB 出于兼容性解析这三个语法，但是不做任何处理|
+|`SQL_CACHE`、`SQL_NO_CACHE`、`SQL_CALC_FOUND_ROWS` | TiDB 出于兼容性解析这三个语法，但是不做任何处理|
 |`select_expr` | 投影操作列表，一般包括列名、表达式，或者是用 '*' 表示全部列|
-|`From table_references` | 表示数据来源，数据来源可以是一个表（select * from t;）或者是多个表 (select * from t1 join t2;) 或者是0个表 (select 1+1;)|
+|`FROM table_references` | 表示数据来源，数据来源可以是一个表（select * from t;）或者是多个表 (select * from t1 join t2;) 或者是0个表 (select 1+1;)|
 |`WHERE where_condition` | Where 子句用于设置过滤条件，查询结果中只会包含满足条件的数据|
 |`GROUP BY` | GroupBy 子句用于对查询结果集进行分组|
 |`HAVING where_condition` | Having 子句与 Where 子句作用类似，Having 子句可以让过滤 GroupBy 后的各种数据，Where 子句用于在聚合前过滤记录。|
@@ -88,15 +81,15 @@ assignment_list:
 
 ## 语法元素说明
 
-|语法元素 | 说明|
-|-------- | -----------|
-|`LOW_PRIORITY` | 该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级|
-|`DELAYED` | TiDB 出于兼容性解析这个语法，但是不做任何处理|
-|`HIGH_PRIORITY` | 该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句|
-|`IGNORE` | 如果发生 Uniq Key 冲突，则忽略插入的数据，不报错|
-|`tbl_name` | 要插入的表名|
-|`insert_values` | 待插入的数据，下面一节会详细描述|
-|`ON DUPLICATE KEY UPDATE assignment_list` | 如果发生 Uniq Key 冲突，则舍弃要插入的数据，改用 assignment_list 更新已存在的行|
+| 语法元素 | 说明 |
+| -------------- | --------------------------------------------------------- |
+| `LOW_PRIORITY` | 该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级 |
+| `DELAYED` | TiDB 出于兼容性解析这个语法，但是不做任何处理 |
+| `HIGH_PRIORITY` | 该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句|
+| `IGNORE` | 如果发生 Uniq Key 冲突，则忽略插入的数据，不报错 |
+| `tbl_name` | 要插入的表名 |
+| `insert_values` | 待插入的数据，下面一节会详细描述 |
+| `ON DUPLICATE KEY UPDATE assignment_list` | 如果发生 Uniq Key 冲突，则舍弃要插入的数据，改用 assignment_list 更新已存在的行 |
 
 ### insert_values
 

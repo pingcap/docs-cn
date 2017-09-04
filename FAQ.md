@@ -290,17 +290,18 @@ TiDB 遵循 MySQL 的权限管理体系，可以创建用户并授予权限。
 ```
 admin show ddl
 ```
-**注意：** 除非 DDL 遇到错误，否则目前是不能取消的。
+
+> 注意：除非 DDL 遇到错误，否则目前是不能取消的。
 
 ### SQL 优化
 
 #### `select count(1)` 比较慢，如何优化？
 
-`count(1)` 就是暴力扫表，提高并发度能显著的提升速度，修改并发度可以参考[`tidb_distsql_scan_concurrency`变量](sql/tidb-specific.md#tidb_distsql_scan_concurrency)。 但是也要看 CPU 和 I/O 资源。TiDB 每次查询都要访问 TiKV，在数据量小的情况下，MySQL 都在内存里，TiDB 还需要进行一次网络访问。
+`count(1)` 就是暴力扫表，提高并发度能显著的提升速度，修改并发度可以参考 [`tidb_distsql_scan_concurrency`](sql/tidb-specific.md#tidb_distsql_scan_concurrency) 变量。 但是也要看 CPU 和 I/O 资源。TiDB 每次查询都要访问 TiKV，在数据量小的情况下，MySQL 都在内存里，TiDB 还需要进行一次网络访问。
 
-**提升建议：**
-
-1. 建议提升硬件，可以参考[部署建议](op-guide/requirement.md)。
-2. 提升并发度，默认是 10，可以提升到 50 试试，但是一般提升在 2-4 倍之间。
-3. 测试大数据量的 count。
-4. 调优 TiKV 配置，可以参考[性能调优](op-guide/tune-tikv.md)。
+> 提升建议：
+>
+> 1. 建议提升硬件，可以参考[部署建议](op-guide/requirement.md)。
+> 2. 提升并发度，默认是 10，可以提升到 50 试试，但是一般提升在 2-4 倍之间。
+> 3. 测试大数据量的 count。
+> 4. 调优 TiKV 配置，可以参考[性能调优](op-guide/tune-tikv.md)。

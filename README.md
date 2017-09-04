@@ -12,7 +12,7 @@
     - [TiDB 集群扩容缩容方案](QUICKSTART.md#tidb-集群扩容缩容方案)
     - [集群销毁](QUICKSTART.md#集群销毁)
   - [TiSpark 快速入门指南](op-guide/tispark-quick-start-guide.md)
-- [TiSpark 用户指南](op-guide/tispark_user_guide.md)
+- [TiSpark 用户指南](op-guide/tispark-user-guide.md)
 + TiDB 运维文档
   - [软硬件环境需求](op-guide/requirement.md)
   - [TiDB 集群整体架构](#tidb-整体架构)
