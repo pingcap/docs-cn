@@ -11,9 +11,9 @@
     - [TiDB 集群监控](QUICKSTART.md#tidb-集群监控)
     - [TiDB 集群扩容缩容方案](QUICKSTART.md#tidb-集群扩容缩容方案)
     - [集群销毁](QUICKSTART.md#集群销毁)
-   - [TiSpark 快速入门指南](op-guide/tispark-quick-start-guide.md)
+  - [TiSpark 快速入门指南](op-guide/tispark-quick-start-guide.md)
 - [TiSpark 用户指南](op-guide/tispark_user_guide.md)
-+ TiDB 运维文档    
++ TiDB 运维文档
   - [软硬件环境需求](op-guide/requirement.md)
   - [TiDB 集群整体架构](#tidb-整体架构)
   + 部署集群
@@ -27,13 +27,13 @@
     - [整体监控框架概述](op-guide/monitor-overview.md)
     - [重要监控指标详解](op-guide/dashboard-overview-info.md)
     - [组件状态 API & 监控](op-guide/monitor.md)
-  + [扩容缩容](op-guide/horizontal-scale.md)  
+  + [扩容缩容](op-guide/horizontal-scale.md)
   + 升级
     - [使用 Ansible 升级](op-guide/ansible-deployment.md)
   - [备份与恢复](op-guide/backup-restore.md)
   - [读取历史版本数据](op-guide/history-read.md)
   + 性能调优
-    - [TiKV 性能参数调优](op-guide/tune-tikv.md) 
+    - [TiKV 性能参数调优](op-guide/tune-tikv.md)
   + 导入导出
     - [全量导入](op-guide/migration.md)
   + 手动运维
