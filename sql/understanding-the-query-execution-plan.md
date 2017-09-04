@@ -2,6 +2,7 @@
 title: 理解 TiDB 执行计划
 category: user guide
 ---
+
 # 理解 TiDB 执行计划
 
 TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计划，执行计划由一系列的 operator 构成，这里我们详细解释一下 TiDB 中 `EXPLAIN` 语句返回的执行计划信息。
