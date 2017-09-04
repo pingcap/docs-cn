@@ -103,16 +103,16 @@ category: deployment
 + 值可以为 (true) 或者 (false). (true) 表明我们开启状态监听端口。 (false) 表明关闭
 
 ### \-\-retry-limit int
-    	
-+ 事务遇见冲突时，提交事物最大重试次数 
-+ 默认: 10 
+
++ 事务遇见冲突时，提交事物最大重试次数
++ 默认: 10
 + 设置较大的重试次数会影响 TiDB 集群性能
 
 ### \-\-run-ddl
 
 + tidb-server 是否运行 DDL 语句，集群内大于两台以上 tidb-server 时设置
 + 默认: true
-+ 值可以为 (true) 或者 (false). (true) 表明自身会运行 DDL. (false) 表明自身不会运行 DDL 
++ 值可以为 (true) 或者 (false). (true) 表明自身会运行 DDL. (false) 表明自身不会运行 DDL
 
 ### \-\-skip-grant-table
 
@@ -121,9 +121,9 @@ category: deployment
 + 值可以是(true) or (false)。启用此选项需要有本机的root权限，一般用于忘记密码时重置
 
 ### \-\-slow-threshold int
- 
-+ 大于这个值得 sql 语句将被记录 
-+ 默认: 300  	
+
++ 大于这个值得 sql 语句将被记录
++ 默认: 300
 + 值只能是一个整数 (int) ，单位是毫秒
 
 ### \-\-socket string
@@ -155,7 +155,7 @@ category: deployment
 
 ### \-\-tcp-keep-alive
 
-+ TiDB 在 tcp 层开启 keepalive 
++ TiDB 在 tcp 层开启 keepalive
 + 默认: false
 
 ## Placement Driver (PD)

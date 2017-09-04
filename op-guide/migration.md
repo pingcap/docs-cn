@@ -252,9 +252,9 @@ medadata 文件信息内容举例：
 ```
 Started dump at: 2017-04-28 10:48:10
 SHOW MASTER STATUS:
-	Log: mysql-bin.000003
-	Pos: 930143241
-	GTID:
+    Log: mysql-bin.000003
+    Pos: 930143241
+    GTID:
 
 Finished dump at: 2017-04-28 10:48:11
 ```

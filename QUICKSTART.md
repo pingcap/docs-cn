@@ -536,7 +536,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
 
     [grafana_servers]
     172.16.10.3
-  	```
+    ```
 
     现在拓扑结构如下所示：
 
@@ -552,7 +552,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
 
 2.  初始化新增节点：
 
-		    ansible-playbook bootstrap.yml -k -K
+        ansible-playbook bootstrap.yml -k -K
 
 3.  部署集群：
 
@@ -574,7 +574,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
 
 5.  滚动升级整个集群：
 
-		    ansible-playbook rolling_update.yml -k
+        ansible-playbook rolling_update.yml -k
 
 6.  打开浏览器访问监控平台: `http://172.16.10.3:3000`，监控整个集群和新增节点的状态
 

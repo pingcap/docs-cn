@@ -200,15 +200,16 @@ Rocksdb 对于 key 有压缩。
 因为 Rocksdb 在 XFS 和某些 Linux kernel 中有 [bug](https://github.com/facebook/rocksdb/pull/2038)。所以不推荐使用 XFS 作为文件系统。
 
 如果您想尝试使用，可以在 TiKV 的部署盘运行如下脚本，如果结果是 5000，可以尝试使用，但是不建议在生产环境中使用。
+
 ```bash
-	#!/bin/bash
-	touch tidb_test
-	fallocate -n -o 0 -l 9192 tidb_test
-	printf 'a%.0s' {1..5000} > tidb_test
-	truncate -s 5000 tidb_test
-	fallocate -p -n -o 5000 -l 4192 tidb_test
-	LANG=en_US.UTF-8 stat tidb_test |awk 'NR==2{print $2}'
-	rm -rf tidb_test
+#!/bin/bash
+touch tidb_test
+fallocate -n -o 0 -l 9192 tidb_test
+printf 'a%.0s' {1..5000} > tidb_test
+truncate -s 5000 tidb_test
+fallocate -p -n -o 5000 -l 4192 tidb_test
+LANG=en_US.UTF-8 stat tidb_test |awk 'NR==2{print $2}'
+rm -rf tidb_test
 ```
 #### chrony 能满足时间同步的要求吗？
 可以，只要能让 PD 机器时间同步就行。
@@ -290,17 +291,18 @@ TiDB 遵循 MySQL 的权限管理体系，可以创建用户并授予权限。
 ```
 admin show ddl
 ```
-**注意：** 除非 DDL 遇到错误，否则目前是不能取消的。
+
+> 注意：除非 DDL 遇到错误，否则目前是不能取消的。
 
 ### SQL 优化
 
 #### `select count(1)` 比较慢，如何优化？
 
-`count(1)` 就是暴力扫表，提高并发度能显著的提升速度，修改并发度可以参考[`tidb_distsql_scan_concurrency`变量](sql/tidb-specific.md#tidb_distsql_scan_concurrency)。 但是也要看 CPU 和 I/O 资源。TiDB 每次查询都要访问 TiKV，在数据量小的情况下，MySQL 都在内存里，TiDB 还需要进行一次网络访问。
+`count(1)` 就是暴力扫表，提高并发度能显著的提升速度，修改并发度可以参考 [`tidb_distsql_scan_concurrency`](sql/tidb-specific.md#tidb_distsql_scan_concurrency) 变量。 但是也要看 CPU 和 I/O 资源。TiDB 每次查询都要访问 TiKV，在数据量小的情况下，MySQL 都在内存里，TiDB 还需要进行一次网络访问。
 
-**提升建议：**
-
-1. 建议提升硬件，可以参考[部署建议](op-guide/requirement.md)。
-2. 提升并发度，默认是 10，可以提升到 50 试试，但是一般提升在 2-4 倍之间。
-3. 测试大数据量的 count。
-4. 调优 TiKV 配置，可以参考[性能调优](op-guide/tune-tikv.md)。
+> 提升建议：
+>
+> 1. 建议提升硬件，可以参考[部署建议](op-guide/requirement.md)。
+> 2. 提升并发度，默认是 10，可以提升到 50 试试，但是一般提升在 2-4 倍之间。
+> 3. 测试大数据量的 count。
+> 4. 调优 TiKV 配置，可以参考[性能调优](op-guide/tune-tikv.md)。

@@ -1,3 +1,7 @@
+---
+title: TiSpark 用户指南
+category: tispark
+---
 
 # TiSpark 用户指南
 
@@ -32,31 +36,31 @@ TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
 对于 TiKV 和 TiSpark 分开部署的场景，可以参考如下建议：
 
-+ 	硬件配置建议
++   硬件配置建议
 
-	普通场景可以参考 [TiDB 和 TiKV 硬件配置建议](https://github.com/pingcap/docs-cn/blob/master/op-guide/recommendation.md#tidb-集群各个组件的硬件消耗情况及推荐配置)，但是如果是偏重分析的场景，可以将 TiKV 节点增加到至少 64G 内存，如果是机械硬盘，则推荐 8 块。
+    普通场景可以参考 [TiDB 和 TiKV 硬件配置建议](https://github.com/pingcap/docs-cn/blob/master/op-guide/recommendation.md#tidb-集群各个组件的硬件消耗情况及推荐配置)，但是如果是偏重分析的场景，可以将 TiKV 节点增加到至少 64G 内存，如果是机械硬盘，则推荐 8 块。
 
-+  TiKV 参数建议
++   TiKV 参数建议
 
-	```toml
-	[server]
-	end-point-concurrency = 8  # 如果使用场景偏向分析，则可以考虑扩大这个参数
-	[raftstore]
-	sync-log = false
-	[rocksdb]
-	max-background-compactions = 6
-	max-background-flushes = 2
-	[rocksdb.defaultcf]
-	block-cache-size = "10GB"
-	[rocksdb.writecf]
-	block-cache-size = "4GB"
-	[rocksdb.raftcf]
-	block-cache-size = "1GB"
-	[rocksdb.lockcf]
-	block-cache-size = "1GB"
-	[storage]
-	scheduler-worker-pool-size = 4
-	```
+    ```toml
+    [server]
+    end-point-concurrency = 8  # 如果使用场景偏向分析，则可以考虑扩大这个参数
+    [raftstore]
+    sync-log = false
+    [rocksdb]
+    max-background-compactions = 6
+    max-background-flushes = 2
+    [rocksdb.defaultcf]
+    block-cache-size = "10GB"
+    [rocksdb.writecf]
+    block-cache-size = "4GB"
+    [rocksdb.raftcf]
+    block-cache-size = "1GB"
+    [rocksdb.lockcf]
+    block-cache-size = "1GB"
+    [storage]
+    scheduler-worker-pool-size = 4
+    ```
 
 #### Spark / TiSpark 集群独立部署配置
 
@@ -95,6 +99,7 @@ spark-shell --jars $PATH/tispark-0.1.0.jar
 ```
 ${SPARK_INSTALL_PATH}/jars
 ```
+
 这样无论您是使用 Spark-Submit 还是 Spark-Shell 都可以直接使用 TiSpark。
 
 ### 没有 Spark 集群的部署方式
@@ -117,7 +122,6 @@ ${SPARK_INSTALL_PATH}/jars
 
 ```
 cd $SPARKPATH
-
 ./sbin/start-master.sh
 ```
 
@@ -127,7 +131,7 @@ cd $SPARKPATH
 
 类似地，可以用如下命令启动 Spark-Slave节点：
 
-./sbin/start-slave.sh spark://spark-master-hostname:7077
+    ./sbin/start-slave.sh spark://spark-master-hostname:7077
 
 命令返回以后，您就可以通过刚才的面板查看这个 Slave 是否已经正确的加入了 Spark 集群。 在所有 Slave 节点重复刚才的命令。在确认所有的 Slave 都可以正确连接 Master，这样您就拥有了一个 Standalone 模式的 Spark 集群。
 
@@ -165,7 +169,7 @@ spark.sql("select count(*) from lineitem").show
 
 -   Q. 是独立部署还是和现有 Spark／Hadoop 集群共用资源？
 
-	A. 您可以利用现有 Spark 集群无需单独部署，但是如果现有集群繁忙，TiSpark 将无法达到理想速度。
+    A. 您可以利用现有 Spark 集群无需单独部署，但是如果现有集群繁忙，TiSpark 将无法达到理想速度。
 
 -   Q. 是否可以和 TiKV 混合部署？
 

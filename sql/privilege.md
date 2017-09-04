@@ -161,29 +161,29 @@ ERROR 1141 (42000): There is no such grant defined for user 'genius' on host '%'
 ```
 
 > 关于模糊匹配和转义，字符串和 identifier
-> 
-> 
-> ``` 
-> mysql> grant all privileges on `te\%`.* to 'genius'@'localhost';
-> Query OK, 0 rows affected (0.00 sec) 
+>
+>
 > ```
-> 
+> mysql> grant all privileges on `te\%`.* to 'genius'@'localhost';
+> Query OK, 0 rows affected (0.00 sec)
+> ```
+>
 > 这个例子是精确匹配名叫 `te%` 的数据库，注意到用了 `\` 转义字符。
-> 
+>
 > 以单引号包含的，是一个字符串。以反引号包含的，是一个 identifier。注意下面区别：
-> 
+>
 > ```
 > mysql> grant all privileges on 'test'.* to 'genius'@'localhost';
 > ERROR 1064 (42000): You have an error in your SQL syntax; check the
 > manual that corresponds to your MySQL server version for the right
 > syntax to use near ''test'.* to 'genius'@'localhost'' at line 1
-> 
+>
 > mysql> grant all privileges on `test`.* to 'genius'@'localhost';
 > Query OK, 0 rows affected (0.00 sec)
 > ```
-> 
+>
 > 如果一些特殊的关键字想做为表名，可以用反引号包含起来。比如：
-> 
+>
 > ```
 > mysql> create table `select` (id int);
 > Query OK, 0 rows affected (0.27 sec)
@@ -290,18 +290,17 @@ flush privileges;
 现阶段对权限的支持还没有做到 column 级别。
 
 ## Create User 语句
+
 ```sql
 CREATE USER [IF NOT EXISTS]
     user [auth_spec] [, user [auth_spec]] ...
-
-user:
-    参见[用户账号名](user-account-name.md)。
-
 auth_spec: {
     IDENTIFIED BY 'auth_string'
   | IDENTIFIED BY PASSWORD 'hash_string'
 }
 ```
+
+user 参见[用户账号名](user-account-name.md)。
 
 * IDENTIFIED BY 'auth_string'
 
