@@ -200,15 +200,16 @@ Rocksdb 对于 key 有压缩。
 因为 Rocksdb 在 XFS 和某些 Linux kernel 中有 [bug](https://github.com/facebook/rocksdb/pull/2038)。所以不推荐使用 XFS 作为文件系统。
 
 如果您想尝试使用，可以在 TiKV 的部署盘运行如下脚本，如果结果是 5000，可以尝试使用，但是不建议在生产环境中使用。
+
 ```bash
-	#!/bin/bash
-	touch tidb_test
-	fallocate -n -o 0 -l 9192 tidb_test
-	printf 'a%.0s' {1..5000} > tidb_test
-	truncate -s 5000 tidb_test
-	fallocate -p -n -o 5000 -l 4192 tidb_test
-	LANG=en_US.UTF-8 stat tidb_test |awk 'NR==2{print $2}'
-	rm -rf tidb_test
+#!/bin/bash
+touch tidb_test
+fallocate -n -o 0 -l 9192 tidb_test
+printf 'a%.0s' {1..5000} > tidb_test
+truncate -s 5000 tidb_test
+fallocate -p -n -o 5000 -l 4192 tidb_test
+LANG=en_US.UTF-8 stat tidb_test |awk 'NR==2{print $2}'
+rm -rf tidb_test
 ```
 #### chrony 能满足时间同步的要求吗？
 可以，只要能让 PD 机器时间同步就行。
