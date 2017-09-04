@@ -1,6 +1,6 @@
 # Control Flow Functions
 
-| Name	                                                                                            | Description                       |
+| Name                                                                                            | Description                       |
 |:--------------------------------------------------------------------------------------------------|:----------------------------------|
 | [`CASE`](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html#operator_case)       | Case operator                     |
 | [`IF()`](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html#function_if)         | If/else construct                 |

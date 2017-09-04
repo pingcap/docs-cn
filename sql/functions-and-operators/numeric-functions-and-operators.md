@@ -2,7 +2,7 @@
 
 ## Arithmetic Operators
 
-| Name	                                                                                        | Description                       |
+| Name                                                                                        | Description                       |
 |:----------------------------------------------------------------------------------------------|:----------------------------------|
 | [`+`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_plus)        | Addition operator                 |
 | [`-`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_minus)       | Minus operator                    |

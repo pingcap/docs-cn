@@ -20,19 +20,19 @@ See the following for the assumed MySQL and TiDB server information:
 
 ## Scenarios
 
- + To import all the history data. This needs the following tools:
-	 - `Checker`: to check if the shema is compatible with TiDB.
-	 - `Mydumper`: to export data from MySQL.
-	 - `Loader`: to import data to TiDB.
++ To import all the history data. This needs the following tools:
+    - `Checker`: to check if the shema is compatible with TiDB.
+    - `Mydumper`: to export data from MySQL.
+    - `Loader`: to import data to TiDB.
 
- + To incrementally synchronise data after all the history data is imported. This needs the following tools:
-	 - `Checker`: to check if the shema is compatible with TiDB.
-	 - `Mydumper`: to export data from MySQL.
-	 - `Loader`: to import data to TiDB.
-	 - `Syncer`: to incrementally synchronise data from MySQL to TiDB.
++ To incrementally synchronise data after all the history data is imported. This needs the following tools:
+    - `Checker`: to check if the shema is compatible with TiDB.
+    - `Mydumper`: to export data from MySQL.
+    - `Loader`: to import data to TiDB.
+    - `Syncer`: to incrementally synchronise data from MySQL to TiDB.
 
-	 **Note:** To incrementally synchronise data from MySQL to TiDB, the binary logging (binlog) must be enabled and must use the `row` format in MySQL.
-	
+    **Note:** To incrementally synchronise data from MySQL to TiDB, the binary logging (binlog) must be enabled and must use the `row` format in MySQL.
+
 ### Enabling binary logging (binlog) in MySQL
 
 Before using the `syncer` tool, make sure:
@@ -42,13 +42,13 @@ Before using the `syncer` tool, make sure:
 
     ```bash
     SET GLOBAL binlog_format = ROW;
-    ``` 
+    ```
 
 
 ## Step 1. Using the `checker` tool to check the Schema
 
 Before migrating, you can use the `checker` tool in TiDB to check if TiDB supports the table schema of the data to be migrated. If the `checker` fails to check a certain table schema, it means that the table is not currently supported by TiDB and therefore the data in the table cannot be migrated.
- 
+
 See [Downloading the TiDB Toolset](#downloading-the-tidb-toolset) to download the `checker` tool.
 
 ### Downloading the TiDB Toolset (Linux)
@@ -61,7 +61,7 @@ wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
 # Check the file integrity. If the result is OK, the file is correct.
 sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
 
-# Extract the package. 
+# Extract the package.
 tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
 cd tidb-enterprise-tools-latest-linux-amd64
 ```
@@ -69,78 +69,78 @@ cd tidb-enterprise-tools-latest-linux-amd64
 ### A sample to use the `checker` tool
 
 1. Create several tables in the `test` database in MySQL and insert data.
-	
-	```sql
-	USE test;
-	CREATE TABLE t1 (id INT, age INT, PRIMARY KEY(id)) ENGINE=InnoDB;
-	CREATE TABLE t2 (id INT, name VARCHAR(256), PRIMARY KEY(id)) ENGINE=InnoDB;
-	
-	INSERT INTO t1 VALUES (1, 1), (2, 2), (3, 3);
-	INSERT INTO t2 VALUES (1, "a"), (2, "b"), (3, "c");
-	```
+
+    ```sql
+    USE test;
+    CREATE TABLE t1 (id INT, age INT, PRIMARY KEY(id)) ENGINE=InnoDB;
+    CREATE TABLE t2 (id INT, name VARCHAR(256), PRIMARY KEY(id)) ENGINE=InnoDB;
+
+    INSERT INTO t1 VALUES (1, 1), (2, 2), (3, 3);
+    INSERT INTO t2 VALUES (1, "a"), (2, "b"), (3, "c");
+    ```
 
 2. Use the `checker` tool to check all the tables in the `test` database.
 
-	```bash
-	./bin/checker -host 127.0.0.1 -port 3306 -user root test
-	2016/10/27 13:11:49 checker.go:48: [info] Checking database test
-	2016/10/27 13:11:49 main.go:37: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
-	2016/10/27 13:11:49 checker.go:63: [info] Checking table t1
-	2016/10/27 13:11:49 checker.go:69: [info] Check table t1 succ
-	2016/10/27 13:11:49 checker.go:63: [info] Checking table t2
-	2016/10/27 13:11:49 checker.go:69: [info] Check table t2 succ
-	```
+    ```bash
+    ./bin/checker -host 127.0.0.1 -port 3306 -user root test
+    2016/10/27 13:11:49 checker.go:48: [info] Checking database test
+    2016/10/27 13:11:49 main.go:37: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
+    2016/10/27 13:11:49 checker.go:63: [info] Checking table t1
+    2016/10/27 13:11:49 checker.go:69: [info] Check table t1 succ
+    2016/10/27 13:11:49 checker.go:63: [info] Checking table t2
+    2016/10/27 13:11:49 checker.go:69: [info] Check table t2 succ
+    ```
 
-3. Use the `checker` tool to check one of the tables in the `test` database. 
-	
-	**Note:** Assuming you need to migrate the `t1` table only in this sample.
+3. Use the `checker` tool to check one of the tables in the `test` database.
 
-	```bash
-	./bin/checker -host 127.0.0.1 -port 3306 -user root test t1
-	2016/10/27 13:13:56 checker.go:48: [info] Checking database test
-	2016/10/27 13:13:56 main.go:37: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
-	2016/10/27 13:13:56 checker.go:63: [info] Checking table t1
-	2016/10/27 13:13:56 checker.go:69: [info] Check table t1 succ
-	Check database succ!
-	```
+    **Note:** Assuming you need to migrate the `t1` table only in this sample.
+
+    ```bash
+    ./bin/checker -host 127.0.0.1 -port 3306 -user root test t1
+    2016/10/27 13:13:56 checker.go:48: [info] Checking database test
+    2016/10/27 13:13:56 main.go:37: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
+    2016/10/27 13:13:56 checker.go:63: [info] Checking table t1
+    2016/10/27 13:13:56 checker.go:69: [info] Check table t1 succ
+    Check database succ!
+    ```
 
 ### A sample of a table that cannot be migrated
 
 1. Create the following `t_error` table in MySQL:
 
-	```sql
-	CREATE TABLE t_error ( a INT NOT NULL, PRIMARY KEY (a))
-	ENGINE=InnoDB TABLESPACE ts1                          
-	PARTITION BY RANGE (a) PARTITIONS 3 (
-	PARTITION P1 VALUES LESS THAN (2),
-	PARTITION P2 VALUES LESS THAN (4) TABLESPACE ts2,
-	PARTITION P3 VALUES LESS THAN (6) TABLESPACE ts3);
-	```
+    ```sql
+    CREATE TABLE t_error ( a INT NOT NULL, PRIMARY KEY (a))
+    ENGINE=InnoDB TABLESPACE ts1
+    PARTITION BY RANGE (a) PARTITIONS 3 (
+    PARTITION P1 VALUES LESS THAN (2),
+    PARTITION P2 VALUES LESS THAN (4) TABLESPACE ts2,
+    PARTITION P3 VALUES LESS THAN (6) TABLESPACE ts3);
+    ```
 2. Use the `checker` tool to check the table. If the following error is displayed, the `t_error` table cannot be migrated.
 
-	```bash
-	./bin/checker -host 127.0.0.1 -port 3306 -user root test t_error
-	2017/08/04 11:14:35 checker.go:48: [info] Checking database test
-	2017/08/04 11:14:35 main.go:39: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
-	2017/08/04 11:14:35 checker.go:63: [info] Checking table t1
-	2017/08/04 11:14:35 checker.go:67: [error] Check table t1 failed with err: line 3 column 29 near " ENGINE=InnoDB DEFAULT CHARSET=latin1
-	/*!50100 PARTITION BY RANGE (a)
-	(PARTITION P1 VALUES LESS THAN (2) ENGINE = InnoDB,
-	 PARTITION P2 VALUES LESS THAN (4) TABLESPACE = ts2 ENGINE = InnoDB,
-	 PARTITION P3 VALUES LESS THAN (6) TABLESPACE = ts3 ENGINE = InnoDB) */" (total length 354)
-	github.com/pingcap/tidb/parser/yy_parser.go:96:
-	github.com/pingcap/tidb/parser/yy_parser.go:109:
-	/home/jenkins/workspace/build_tidb_tools_master/go/src/github.com/pingcap/tidb-tools/checker/checker.go:122:  parse CREATE TABLE `t1` (
-	  `a` int(11) NOT NULL,
-	  PRIMARY KEY (`a`)
-	) /*!50100 TABLESPACE ts1 */ ENGINE=InnoDB DEFAULT CHARSET=latin1
-	/*!50100 PARTITION BY RANGE (a)
-	(PARTITION P1 VALUES LESS THAN (2) ENGINE = InnoDB,
-	 PARTITION P2 VALUES LESS THAN (4) TABLESPACE = ts2 ENGINE = InnoDB,
-	 PARTITION P3 VALUES LESS THAN (6) TABLESPACE = ts3 ENGINE = InnoDB) */ error
-	/home/jenkins/workspace/build_tidb_tools_master/go/src/github.com/pingcap/tidb-tools/checker/checker.go:114:
-	2017/08/04 11:14:35 main.go:83: [error] Check database test with 1 errors and 0 warnings.
-	```
+    ```bash
+    ./bin/checker -host 127.0.0.1 -port 3306 -user root test t_error
+    2017/08/04 11:14:35 checker.go:48: [info] Checking database test
+    2017/08/04 11:14:35 main.go:39: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
+    2017/08/04 11:14:35 checker.go:63: [info] Checking table t1
+    2017/08/04 11:14:35 checker.go:67: [error] Check table t1 failed with err: line 3 column 29 near " ENGINE=InnoDB DEFAULT CHARSET=latin1
+    /*!50100 PARTITION BY RANGE (a)
+    (PARTITION P1 VALUES LESS THAN (2) ENGINE = InnoDB,
+     PARTITION P2 VALUES LESS THAN (4) TABLESPACE = ts2 ENGINE = InnoDB,
+     PARTITION P3 VALUES LESS THAN (6) TABLESPACE = ts3 ENGINE = InnoDB) */" (total length 354)
+    github.com/pingcap/tidb/parser/yy_parser.go:96:
+    github.com/pingcap/tidb/parser/yy_parser.go:109:
+    /home/jenkins/workspace/build_tidb_tools_master/go/src/github.com/pingcap/tidb-tools/checker/checker.go:122:  parse CREATE TABLE `t1` (
+      `a` int(11) NOT NULL,
+      PRIMARY KEY (`a`)
+    ) /*!50100 TABLESPACE ts1 */ ENGINE=InnoDB DEFAULT CHARSET=latin1
+    /*!50100 PARTITION BY RANGE (a)
+    (PARTITION P1 VALUES LESS THAN (2) ENGINE = InnoDB,
+     PARTITION P2 VALUES LESS THAN (4) TABLESPACE = ts2 ENGINE = InnoDB,
+     PARTITION P3 VALUES LESS THAN (6) TABLESPACE = ts3 ENGINE = InnoDB) */ error
+    /home/jenkins/workspace/build_tidb_tools_master/go/src/github.com/pingcap/tidb-tools/checker/checker.go:114:
+    2017/08/04 11:14:35 main.go:83: [error] Check database test with 1 errors and 0 warnings.
+    ```
 
 
 ## Step 2. Using the `mydumper` / `loader` tool to export and import all the data
@@ -150,14 +150,14 @@ You can use `mydumper` to export data from MySQL and `loader` to import the data
 **Note:** Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use the `mysqldump` tool. Its performance is much lower than `mydumper` / `loader` and it costs a lot of time to migrate large amounts of data. `mydumper`/`loader` is a more powerful tool to migrate data. For more information, see [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper).
 
 
-### 1. Exporting data from MySQL 
+### 1. Exporting data from MySQL
 
 Use the `mydumper` tool to export data from MySQL by using the following command:
 
 ```bash
 ./bin/mydumper -h 127.0.0.1 -P 3306 -u root -t 16 -F 64 -B test -T t1,t2 --skip-tz-utc -o ./var/test
 ```
-In this command, 
+In this command,
 
 + `-B test`: means the data is exported from the `test` database.
 + `-T t1,t2`: means only the `t1` and `t2` tables are exported.
@@ -263,9 +263,9 @@ The data exported from MySQL contains a metadata file which includes the positio
 ```
 Started dump at: 2017-04-28 10:48:10
 SHOW MASTER STATUS:
-	Log: mysql-bin.000003
-	Pos: 930143241
-	GTID:
+    Log: mysql-bin.000003
+    Pos: 930143241
+    GTID:
 
 Finished dump at: 2017-04-28 10:48:11
 
@@ -277,7 +277,7 @@ The position information (`Pos: 930143241`) needs to be stored in the `syncer.me
 binlog-name = "mysql-bin.000003"
 binlog-pos = 930143241
 ```
-**Note:** The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is synchronised. 
+**Note:** The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is synchronised.
 
 ### 2. Start `syncer`
 

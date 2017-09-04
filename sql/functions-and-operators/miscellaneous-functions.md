@@ -1,7 +1,7 @@
 # Miscellaneous Functions
 
-| Name	                                                                                                                | Description                                       |
-|:----------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------|
+| Name | Description  |
+|:------------|:-----------------------------------------------------------------------------------------------|
 | [`ANY_VALUE()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_any-value)              | Suppress ONLY_FULL_GROUP_BY value rejection       |
 | [`SLEEP()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_sleep)                      | Sleep for a number of seconds                     |
 | [`UUID()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_uuid)                        | Return a Universal Unique Identifier (UUID)       |

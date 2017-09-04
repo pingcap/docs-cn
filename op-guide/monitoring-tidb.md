@@ -11,7 +11,7 @@ Currently there are two types of interfaces to monitor the state of the TiDB clu
 
 * Using Prometheus to record the detailed information of the various operations in the components, which is called the Metrics interface.
 
-## The component state interface 
+## The component state interface
 
 You can use this type of interface to monitor the basic information of the component. This interface can act as the interface to monitor Keepalive. In addition, the interface of the Placement Driver (PD) can get the details of the entire TiKV cluster.
 
@@ -19,7 +19,7 @@ You can use this type of interface to monitor the basic information of the compo
 
 The HTTP interface of TiDB is: `http://host:port/status`
 
-The default port number is: 10080 which can be set using the `--status` flag. 
+The default port number is: 10080 which can be set using the `--status` flag.
 
 The interface can be used to get the current TiDB server state and to determine whether the server is alive. The result is returned in the following JSON format:
 
@@ -32,7 +32,7 @@ curl http://127.0.0.1:10080/status
 }
 ```
 
-In this example, 
+In this example,
 * connection: the current number of clients connected to the TiDB server
 
 * version: the TiDB version number
@@ -54,8 +54,8 @@ curl http://127.0.0.1:2379/pd/api/v1/stores
 {
   "count": 1 // the number of the TiKV node
   "stores": [  // the list of the TiKV node
-   // the detailed information about the single TiKV node
-   {
+  // the detailed information about the single TiKV node
+  {
       "store": {
         "id": 1,
         "address": "127.0.0.1:22161",
@@ -93,7 +93,7 @@ You can get the following metrics for each component:
 
 * query processing time to monitor the latency and throughput
 
-* the DDL process monitoring 
+* the DDL process monitoring
 
 * TiKV client related monitoring
 
@@ -151,33 +151,33 @@ See the following links for your reference:
 
 #### Configuring TiDB, PD and TiKV
 
-- TiDB: Set the two parameters: `--metrics-addr` and `--metrics-interval`. 
+- TiDB: Set the two parameters: `--metrics-addr` and `--metrics-interval`.
 
-    - Set the Push Gateway address as the `--metrics-addr` parameter. 
+    - Set the Push Gateway address as the `--metrics-addr` parameter.
 
     - Set the push frequency as the `--metrics-interval` parameter. The unit is s, and the default value is 15.
 
-- PD: update the toml configuration file with the Push Gateway address and the the push frequency: 
+- PD: update the toml configuration file with the Push Gateway address and the the push frequency:
 
-	```toml
-	[metric]
-	# prometheus client push interval, set "0s" to disable prometheus.
-	interval = "15s"
-	# prometheus pushgateway address, leaves it empty will disable prometheus.
-	address = "host:port"
-	```
+  ```toml
+  [metric]
+  # prometheus client push interval, set "0s" to disable prometheus.
+  interval = "15s"
+  # prometheus pushgateway address, leaves it empty will disable prometheus.
+  address = "host:port"
+  ```
 
 * TiKV: update the toml configuration file with the Push Gateway address and the the push frequency. Set the job field as "tikv".
 
-	```toml
-	[metric]
-	# the Prometheus client push interval. Setting the value to 0s stops Prometheus client from pushing.
-	interval = "15s"
-	# the Prometheus pushgateway address. Leaving it empty stops Prometheus client from pushing.
-	address = "host:port"
-	# the Prometheus client push job name. Note: A node id will automatically append, e.g., "tikv_1".
-	job = "tikv"
-	```
+  ```toml
+  [metric]
+  # the Prometheus client push interval. Setting the value to 0s stops Prometheus client from pushing.
+  interval = "15s"
+  # the Prometheus pushgateway address. Leaving it empty stops Prometheus client from pushing.
+  address = "host:port"
+  # the Prometheus client push job name. Note: A node id will automatically append, e.g., "tikv_1".
+  job = "tikv"
+  ```
 #### Configuring PushServer
 
 Generally, it does not need to be configured. You can use the default port: 9091.
@@ -206,7 +206,7 @@ Add the Push Gateway address to the yaml configuration file:
 
 ##### Creating a Prometheus data source
 
-1. Login the Grafana Web interface. 
+1. Login the Grafana Web interface.
 
     * The default address is: [http://localhost:3000](http://localhost:3000)
 
@@ -222,7 +222,7 @@ Add the Push Gateway address to the yaml configuration file:
 
 5. Specify the data source information:
 
-    * Specify the name for the data source. 
+    * Specify the name for the data source.
 
     * For Type, select Prometheus.
 
@@ -238,9 +238,9 @@ Add the Push Gateway address to the yaml configuration file:
 
 2. On the sidebar menu, click "Dashboards" -> "Import" to open the "Import Dashboard" window.
 
-3. Click "Upload .json File" to upload a JSON file ( Download [TiDB Grafana Config](https://grafana.com/tidb) ). 
+3. Click "Upload .json File" to upload a JSON file ( Download [TiDB Grafana Config](https://grafana.com/tidb) ).
 
-4. Click "Save & Open". 
+4. Click "Save & Open".
 
 5. A Prometheus dashboard is created.
 

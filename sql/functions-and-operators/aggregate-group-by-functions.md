@@ -4,7 +4,7 @@
 
 This section describes the supported MySQL group (aggregate) functions in TiDB.
 
-| Name	                                                                                                        | Description                                       |
+| Name                                                                                                        | Description                                       |
 |:--------------------------------------------------------------------------------------------------------------|:--------------------------------------------------|
 | [`COUNT()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_count)                   | Return a count of the number of rows returned     |
 | [`COUNT(DISTINCT)`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_count-distinct)  | Return the count of a number of different values  |

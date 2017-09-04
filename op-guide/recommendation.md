@@ -10,30 +10,29 @@ Before your start, see [TiDB Architecture](../README.md#TiDB-Architecture).
 The following table lists the recommended hardware for each component.
 
 | Component | Hardware Resources | # of CPU Cores | Memory | Disk Type | Disk  Size|
-| ---- |-------| ------- | -------- | ------- | ------- | 
-| TiDB | CPU, Memory | 32+ | 64G+ |  |  | 
-| TiKV | CPU, Memory, Disk I/O |32+ | 64G+ | SSD | 200G~500G | 
+| ---- |-------| ------- | -------- | ------- | ------- |
+| TiDB | CPU, Memory | 32+ | 64G+ |  |  |
+| TiKV | CPU, Memory, Disk I/O |32+ | 64G+ | SSD | 200G~500G |
 | PD   | CPU, Memory, Disk I/O |8+ | 16G+ |  SSD | 200G+ |
 
-**Note:** 
-* For OLTP scenarios, it is strongly recommended to use SSD disks for TiKV and PD, or there might be performance issues.
-* The size of the disk for TiKV does not exceed 500G to avoid long data recovering time in case of disk failure.
+> Note:
+>
+> For OLTP scenarios, it is strongly recommended to use SSD disks for TiKV and PD, or there might be performance issues.
+> The size of the disk for TiKV does not exceed 500G to avoid long data recovering time in case of disk failure.
 
 ## The Overall Deployment Plan
 
 | Component |# and of Instances for Production | # of Instances for Test |
-| ----- | ------- | ------- |
+| ---- | --------------------------------------------------------- | ------- |
 | TiDB | 2+, highly available, and add more instances based on the concurrency and throughputs| 1+|
 | PD | 3+，highly available | 1+ |
 | TiKV | 3+，highly available，and add more instances based on the computing resources and storage capacity |3+|
 
-**Note:** 
-
-- The TiDB instance can be deployed on its own, or share the same node with PD.
-
-- For PD and TiKV, deploy a single instance on one disk to avoid I/O competition which impacts the performance.
-
-- Deploy the TiDB instances and the TiKV instances separately to avoid competing CPU resources which impacts the performance. 
+> Note:
+>
+> - The TiDB instance can be deployed on its own, or share the same node with PD.
+> - For PD and TiKV, deploy a single instance on one disk to avoid I/O competition which impacts the performance.
+> - Deploy the TiDB instances and the TiKV instances separately to avoid competing CPU resources which impacts the performance.
 
 
 ### Example: Deployment for the Production Environment (at least 6 nodes)

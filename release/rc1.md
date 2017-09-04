@@ -8,7 +8,7 @@ On December 23, 2016, TiDB RC1 is released. See the following updates in this re
 ## TiKV:
 + The write speed has been improved.
 + The disk space usage is reduced.
-+ Hundreds of TBs of data can be supported.  
++ Hundreds of TBs of data can be supported.
 + The stability is improved and TiKV can support a cluster with 200 nodes.
 + Supports the Raw KV API and the Golang client.
 
@@ -19,23 +19,23 @@ Placement Driver (PD):
 
 ## TiDB:
 + The following features are added or improved in the SQL query optimizer:
-	- Eager aggregation
-	- More detailed `EXPLAIN` information
-	- Parallelization of the `UNION` operator
-	- Optimization of the subquery performance
-	- Optimization of the conditional push-down
-	- Optimization of the Cost Based Optimizer (CBO) framework
+    - Eager aggregation
+    - More detailed `EXPLAIN` information
+    - Parallelization of the `UNION` operator
+    - Optimization of the subquery performance
+    - Optimization of the conditional push-down
+    - Optimization of the Cost Based Optimizer (CBO) framework
 + The implementation of the time related data types are refactored to improve the compatibility with MySQL.
-+  More built-in functions in MySQL are supported. 
++  More built-in functions in MySQL are supported.
 +  The speed of the `add index` statement is enhanced.
 +  The following statements are supported:
-	-  Use the `CHANGE COLUMN` statement to change the name of a column.
-	-  Use `MODIFY COLUMN` and `CHANGE COLUMN` of the `ALTER TABLE` statement for some of the column type transfer.
-	
+    -  Use the `CHANGE COLUMN` statement to change the name of a column.
+    -  Use `MODIFY COLUMN` and `CHANGE COLUMN` of the `ALTER TABLE` statement for some of the column type transfer.
+
 ## New Tools:
 + `Loader` is added to be compatible with the `mydumper` data format in Percona and provides the following functions:
-	- Multi-thread import
-	- Retry if error occurs
-	- Breakpoint resume
-	- Targeted optimization for TiDB
+    - Multi-thread import
+    - Retry if error occurs
+    - Breakpoint resume
+    - Targeted optimization for TiDB
 + The tool for one-click deployment is added.

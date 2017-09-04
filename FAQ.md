@@ -161,7 +161,7 @@ The lease parameter (`--lease=60`) is set from the command line when starting a 
 #### Can I use other key-value storage engines with TiDB?
 
 Yes. Besides TiKV, TiDB supports many popular standalone storage engines, such as GolevelDB, RocksDB and BoltDB. If the storage engine is a KV engine that supports transactions and it provides a client that meets the interface requirement of TiDB, then it can connect to TiDB.
-    
+
 #### Where is the Raft log stored in TiDB?
 
 In RocksDB.
@@ -204,18 +204,18 @@ You need to set the `--config` parameter in TiKV/PD to make the `toml` configura
 
 #### What can I do if the file system of my data disk is XFS and cannot be changed?
 
-Because of the [bug](https://github.com/facebook/rocksdb/pull/2038) in RocksDB for the XFS system and certain Linux kernel, we do not recommend using the XFS file system. 
- 
+Because of the [bug](https://github.com/facebook/rocksdb/pull/2038) in RocksDB for the XFS system and certain Linux kernel, we do not recommend using the XFS file system.
+
 Currently, you can run the following test script on the TiKV deployment disk. If the result is 5000, you can try to use it, but it is not recommended for production use.
 
-	#!/bin/bash
-	touch tidb_test
-	fallocate -n -o 0 -l 9192 tidb_test
-	printf 'a%.0s' {1..5000} > tidb_test
-	truncate -s 5000 tidb_test
-	fallocate -p -n -o 5000 -l 4192 tidb_test
-	LANG=en_US.UTF-8 stat tidb_test |awk 'NR==2{print $2}'
-	rm -rf tidb_test
+    #!/bin/bash
+    touch tidb_test
+    fallocate -n -o 0 -l 9192 tidb_test
+    printf 'a%.0s' {1..5000} > tidb_test
+    truncate -s 5000 tidb_test
+    fallocate -p -n -o 5000 -l 4192 tidb_test
+    LANG=en_US.UTF-8 stat tidb_test |awk 'NR==2{print $2}'
+    rm -rf tidb_test
 
 #### Can chrony meet the requirement of time synchronization?
 
@@ -251,7 +251,7 @@ Check the time difference between the machine time of the monitor and the time w
 
 #### Can a MySQL application be migrated to TiDB?
 
-Yes. Your applications can be migrated to TiDB without changing a single line of code in most cases. You can use [checker](https://github.com/pingcap/tidb-tools/tree/master/checker) to check whether the Schema in MySQL is compatible with TiDB. 
+Yes. Your applications can be migrated to TiDB without changing a single line of code in most cases. You can use [checker](https://github.com/pingcap/tidb-tools/tree/master/checker) to check whether the Schema in MySQL is compatible with TiDB.
 
 ### Performance tuning
 
@@ -263,14 +263,14 @@ Yes. Your applications can be migrated to TiDB without changing a single line of
 
 TiDB follows MySQL user authentication mechanism. You can create user accounts and authorize them.
 
-- You can use MySQL grammar to create user accounts. For example, you can create a user account by using the following statement:  
-  
+- You can use MySQL grammar to create user accounts. For example, you can create a user account by using the following statement:
+
   ```
   CREATE USER 'test'@'localhost' identified by '123';
   ```
-    
-  The user name of this account is "test"; the password is “123" and this user can login from localhost only.  
-  
+
+  The user name of this account is "test"; the password is “123" and this user can login from localhost only.
+
   You can use the `Set Password` statement to set and change the password. For example, to set the password for the default "root" account, you can use the following statement:
 
   ```
@@ -291,11 +291,11 @@ By default, TiDB/PD/TiKV outputs the logs to standard error. If a file is specif
 
 #### How to safely stop TiDB?
 
-If the cluster is deployed through ansible, you can use the command `ansible-playbook stop.yml` to stop the TiDB cluster. If the cluster is not deployed through ansible, `kill` all the services directly. The components of TiDB will do `graceful shutdown`.    
+If the cluster is deployed through ansible, you can use the command `ansible-playbook stop.yml` to stop the TiDB cluster. If the cluster is not deployed through ansible, `kill` all the services directly. The components of TiDB will do `graceful shutdown`.
 
 #### Can `kill` be executed in TiDB?
 
-You can `kill` DML statements. First use `show processlist` to find the id corresponding with the session, and then execute `kill tidb connection id`.  
+You can `kill` DML statements. First use `show processlist` to find the id corresponding with the session, and then execute `kill tidb connection id`.
 
 But currently, you cannot `kill` DDL statements. Once you start executing DDL statements, you cannot stop them unless something goes wrong. If something goes wrong, the DDL statements will stop executing.
 
@@ -303,7 +303,7 @@ But currently, you cannot `kill` DDL statements. Once you start executing DDL st
 
 ### SQL syntax
 
-#### The error message `transaction too large` is displayed.    
+#### The error message `transaction too large` is displayed.
 
 As distributed transactions need to conduct two-phase commit and the bottom layer performs Raft replication, if a transaction is very large, the commit process would be quite slow and the following Raft replication flow is thus struck. To avoid this problem, we limit the transaction size:
 
@@ -315,17 +315,17 @@ There are [similar limits](https://cloud.google.com/spanner/docs/limits) on Goog
 
 **Solution:**
 
-1. When you import data, insert in batches and it'd be better keep the number of one batch within 10,000 rows.   
-    
+1. When you import data, insert in batches and it'd be better keep the number of one batch within 10,000 rows.
+
 2. As for `insert` and `select`, you can open the hidden parameter `set @@session.tidb_batch_insert=1;`, and `insert` will execute large transactions in batches. In this way, you can avoid the timeout caused by large transactions, but this may lead to the loss of atomicity. An error in the process of execution leads to partly inserted transaction. Therefore, use this parameter only when necessary, and use it in session to avoid affecting other statements. When the transaction is finished, use `set @@session.tidb_batch_insert=0` to close it.
 
-3. As for `delete` and `update`, you can use `limit` plus circulation to operate.   
-  
+3. As for `delete` and `update`, you can use `limit` plus circulation to operate.
+
 #### Check the running DDL job
 
 ```sql
 admin show ddl
-``` 
+```
 
 Note: The DDL cannot be cancelled unless it goes wrong.
 
@@ -337,7 +337,7 @@ The `count(1)` statement counts the total number of rows in a table. Improving t
 
 **Note**:
 
-1. See the [system requirements](op-guide/recommendation.md). 
+1. See the [system requirements](op-guide/recommendation.md).
 2. Improve the concurrency. The default value is 10. You can improve it to 50 and have a try. But usually the improvement is 2-4 times of the default value.
 3. Test the `count` in the case of large amount of data.
-4. Optimize [TiKV configuration](op-guide/tune-TiKV.md). 
+4. Optimize [TiKV configuration](op-guide/tune-TiKV.md).
