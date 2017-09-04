@@ -17,10 +17,11 @@ Table of Contents
 	- [TiDB 专用系统变量和语法](tidb-specific.md)
 	- TiDB 服务器日志文件
 + TiDB 安全
-	- [TiDB 访问权限管理](privilege/README.md)
+	- [TiDB 访问权限管理](privilege.md)
 	- TiDB 用户账户管理
 	- 使用安全连接
 + 优化
+	- [理解 TiDB 执行计划](understanding-the-query-execution-plan.md)
 + 语言结构
     - 字面值
     - 数据库、表、索引、列和别名
@@ -32,10 +33,10 @@ Table of Contents
 	- 字符集支持
 	- 字符集配置
 	- 时区支持
-+ [数据类型](data-type/README.md)
-	- 数值类型
++ 数据类型
+	- [数值类型](datatype.md#数值类型)
 	- 日期和时间类型
-	- 字符串类型
+	- [字符串类型](datatype.md#字符串类型)
 	- JSON 数据类型
 	- 数据类型默认值
 	- 数据类型存储需求
@@ -59,8 +60,8 @@ Table of Contents
 	- 其他函数
 	- 精度数学
 + SQL 语句语法
-	- [数据定义语句(DDL)](ddl/README.md)
-	- [数据操作语句(DML)](dml/README.md)
+	- [数据定义语句(DDL)](ddl.md)
+	- [数据操作语句(DML)](dml.md)
 	- 事务语句
 	- Prepared SQL 语句语法
 	- 复合语句语法
