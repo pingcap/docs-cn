@@ -40,7 +40,6 @@
     - [Binary 部署方案](op-guide/binary-deployment.md)
     - [故障诊断](trouble-shooting.md)
     - [数据迁移方法](op-guide/migration.md)
-
 + TiDB 用户文档
   + TiDB 数据库管理
     - [TiDB 专用系统变量和语法](sql/tidb-specific.md)
@@ -50,7 +49,6 @@
     - [数据定义语句(DDL)](sql/ddl/README.md)
     - [数据操作语句(DML)](sql/dml/README.md)
     - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
-
 + 工具
   - [Syncer 使用文档](tools/syncer.md)
   - [Loader 使用文档](tools/loader.md)
