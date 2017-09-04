@@ -10,7 +10,7 @@ jobs:
 
       - run:
           name: "Special Check for Golang User"
-          command: (grep -Re '\t' *  | tee | grep '.md' && (echo 'you TAB sucks!'; exit 1)) || true
+          command: grep -RP '\t' *  | tee | grep '.md' && exit 1; echo ok
 
       - run:
           name: "Merge Makedown Files"
