@@ -54,7 +54,7 @@ TiDB 实现了 F1 的异步 Schema 变更算法，DDL 执行过程中不会阻�
 + Drop Column 操作不支持删除的列为主键列或索引列。
 + Add Column 操作不支持同时将新添加的列设为主键或唯一索引，也不支持将此列设成 auto_increment 属性。
 + Change/Modify Column 操作目前支持部分语法，细节如下：
-    - 在修改类型方面，只支持整数类型之间修改，字符串类型之间修改和 Blob 类型之间的修改，且只能使原类型长度变长。此外，不能改变列的 unsigned/charset/collate 属性。这里的类型分类如下：
+	- 在修改类型方面，只支持整数类型之间修改，字符串类型之间修改和 Blob 类型之间的修改，且只能使原类型长度变长。此外，不能改变列的 unsigned/charset/collate 属性。这里的类型分类如下：
         * 具体支持的整型类型有：TinyInt，SmallInt，MediumInt，Int，BigInt。
         * 具体支持的字符串类型有：Char，Varchar，Text，TinyText，MediumText，LongText。
         * 具体支持的 Blob 类型有：Blob，TinyBlob，MediumBlob，LongBlob。
