@@ -103,7 +103,7 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 ```sql
 CREATE TABLE t_error ( a INT NOT NULL, PRIMARY KEY (a))
-ENGINE=InnoDB TABLESPACE ts1                          
+ENGINE=InnoDB TABLESPACE ts1
 PARTITION BY RANGE (a) PARTITIONS 3 (
 PARTITION P1 VALUES LESS THAN (2),
 PARTITION P2 VALUES LESS THAN (4) TABLESPACE ts2,
@@ -147,17 +147,18 @@ github.com/pingcap/tidb/parser/yy_parser.go:109:
 ### `mydumper`/`loader` 全量导入数据最佳实践
 为了快速的迁移数据 (特别是数据量巨大的库), 可以参考下面建议
 
-* 使用 mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64 
+* 使用 mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64
 * loader的 -t 参数可以根据 tikv 的实例个数以及负载进行评估调整，例如 3个 tikv 的场景， 此值可以设为 3 *（1 ～ n)；当 tikv 负载过高，loader 以及 tidb 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 tikv 负载不是太高的时候，可以适当调大该值。
 
 #### 某次导入示例，以及相关的配置
- - mydumper 导出后总数据量 214G，单表 8 列，20 亿行数据
- - 集群拓扑
-     - TIKV * 12
-     - TIDB * 4 
-     - PD * 3
- - mydumper -F 设置为 16, loader -t 参数 64
- 
+
+- mydumper 导出后总数据量 214G，单表 8 列，20 亿行数据
+- 集群拓扑
+    - TIKV * 12
+    - TIDB * 4
+    - PD * 3
+- mydumper -F 设置为 16, loader -t 参数 64
+
 结果：导入时间 11 小时左右，19.4 G/小时
 
 ### 从 MySQL 导出数据
@@ -251,9 +252,9 @@ medadata 文件信息内容举例：
 ```
 Started dump at: 2017-04-28 10:48:10
 SHOW MASTER STATUS:
-	Log: mysql-bin.000003
-	Pos: 930143241
-	GTID:
+    Log: mysql-bin.000003
+    Pos: 930143241
+    GTID:
 
 Finished dump at: 2017-04-28 10:48:11
 ```
