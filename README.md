@@ -59,7 +59,7 @@
   - [PD 命令行工具](op-guide/pd-control.md)
 + TiSpark 文档
   - [TiSpark 快速入门指南](op-guide/tispark-quick-start-guide.md)
-  - [TiSpark 用户指南](op-guide/tispark_user_guide.md)
+  - [TiSpark 用户指南](op-guide/tispark-user-guide.md)
 - [常见问题与解答](FAQ.md)
 + 版本发布声明
   - [Pre-GA](releases/prega.md)
