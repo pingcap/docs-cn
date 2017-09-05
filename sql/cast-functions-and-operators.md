@@ -1,6 +1,10 @@
+---
+title: Cast Functions and Operators
+category: user guide
+---
+
 # Cast Functions and Operators
 
-**Cast Functions and Operators**
 
 | Name                                     | Description                      |
 | ---------------------------------------- | -------------------------------- |

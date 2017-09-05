@@ -1,7 +1,9 @@
 ---
 title: TiDB RC1 Release Notes
-category: release notes
+category: releases
 ---
+
+# TiDB RC1 Release Notes
 
 On December 23, 2016, TiDB RC1 is released. See the following updates in this release:
 

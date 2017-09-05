@@ -1,3 +1,8 @@
+---
+title: Miscellaneous Functions
+category: user guide
+---
+
 # Miscellaneous Functions
 
 | Name | Description  |

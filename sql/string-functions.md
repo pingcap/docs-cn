@@ -1,3 +1,9 @@
+---
+title: String Functions
+category: user guide
+---
+
+
 # String Functions
 
 | Name                                                                                                              | Description                                                                                                                               |

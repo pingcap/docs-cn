@@ -1,6 +1,6 @@
 ---
-Title: privilege management
-Category: compatibility
+title: Privilege Management
+category: user guide
 ---
 
 

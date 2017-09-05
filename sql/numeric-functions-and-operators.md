@@ -1,3 +1,8 @@
+---
+title: Numeric Functions and Operators
+category: user guide
+---
+
 # Numeric Functions and Operators
 
 ## Arithmetic Operators
@@ -9,7 +14,7 @@
 | [`*`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_times)       | Multiplication operator           |
 | [`/`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_divide)      | Division operator                 |
 | [`DIV`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_div)       | Integer division                  |
-| [`%, MOD`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_mod)    | Modulo operator                   |
+| [`%`, `MOD`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_mod)  | Modulo operator                   |
 | [`-`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_unary-minus) | Change the sign of the argument   |
 
 

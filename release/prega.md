@@ -1,9 +1,11 @@
-+++
-title: TiDB Pre+GA Release Notes
-category: release notes
-+++
+---
+title: Pre-GA release notes
+category: releases
+---
 
-On August 30, 2017, TiDB Pre+GA is released! This release is focused on MySQL compatibility, SQL optimization, stability, and performance.
+# Pre-GA release notes
+
+On August 30, 2017, TiDB Pre-GA is released! This release is focused on MySQL compatibility, SQL optimization, stability, and performance.
 
 ## TiDB:
     + The SQL query optimizer:

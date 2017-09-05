@@ -1,7 +1,10 @@
 ---
 title: TiDB RC3 Release Notes
-category: release notes
+category: releases
 ---
+
+#TiDB RC3 Release Notes
+
 On June 20, 2017, TiDB RC4 is released!This release is focused on MySQL compatibility, SQL optimization, stability, and performance.
 
 ## Highlight:

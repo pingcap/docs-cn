@@ -1,3 +1,8 @@
+---
+title: Aggregate (GROUP BY) Functions
+category: user guide
+---
+
 # Aggregate (GROUP BY) Functions
 
 ## Aggregate (GROUP BY) Function Descriptions

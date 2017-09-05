@@ -1,7 +1,9 @@
 ---
-title: Deploy TiDB-Binlog
-category: advanced
+title: TiDB-Binlog user guide
+category: tool
 ---
+
+# TiDB-Binlog User Guide
 
 - [About TiDB-Binlog](#about-tidb-binlog)
 - [TiDB-Binlog architecture](#tidb-binlog-architecture)

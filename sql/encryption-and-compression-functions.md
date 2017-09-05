@@ -1,3 +1,8 @@
+---
+title: Encryption and Compression Functions
+category: user guide
+---
+
 # Encryption and Compression Functions
 
 | Name                                                                                                                                               | Description                                       |
