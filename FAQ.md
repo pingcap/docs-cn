@@ -186,7 +186,7 @@ Rocksdb 对于 key 有压缩。
 ### TiSpark
 
 #### TiSpark 的使用文档在哪里？
-可以先参考 [TiSpark 用户指南](op-guide/tispark_user_guide.md)。
+可以先参考 [TiSpark 用户指南](op-guide/tispark-user-guide.md)。
 
 ## 运维
 
