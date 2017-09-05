@@ -62,11 +62,11 @@
   - [TiSpark 用户指南](op-guide/tispark_user_guide.md)
 - [常见问题与解答](FAQ.md)
 + 版本发布声明
-  - [Pre-GA](release/prega.md)
-  - [RC4](release/rc4.md)
-  - [RC3](release/rc3.md)
-  - [RC2](release/rc2.md)
-  - [RC1](release/rc1.md)
+  - [Pre-GA](releases/prega.md)
+  - [RC4](releases/rc4.md)
+  - [RC3](releases/rc3.md)
+  - [RC2](releases/rc2.md)
+  - [RC1](releases/rc1.md)
 + 更多资源
   - [PingCAP 团队技术博客](https://pingcap.com/bloglist-zh.html)
 
