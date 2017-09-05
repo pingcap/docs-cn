@@ -25,7 +25,7 @@
     - [整体监控框架概述](op-guide/monitor-overview.md)
     - [重要监控指标详解](op-guide/dashboard-overview-info.md)
     - [组件状态 API & 监控](op-guide/monitor.md)
-  + [扩容缩容](op-guide/horizontal-scale.md)
+  - [扩容缩容](op-guide/horizontal-scale.md)
   + 升级
     - [使用 Ansible 升级](op-guide/ansible-deployment.md)
   + 性能调优
