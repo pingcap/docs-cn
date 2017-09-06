@@ -108,6 +108,12 @@ category: deployment
 + 默认: ""
 + 如果为空，TiDB 会禁用 PROXY Protocol 功能。地址可以使用 IP 地址（192.168.1.50）或者 CIDR （192.168.1.0、24），`*` 代表所有地址。
 
+### \-\-proxy-protocol-header-timeout
+
++ PROXY Protocol 请求头读取超时时间。
++ 默认: 5
++ 单位为秒。注意：请不要配置成0，除非特殊情况，一般使用默认值即可。
+
 ## Placement Driver (PD)
 
 ### -L
