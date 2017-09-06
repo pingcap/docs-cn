@@ -11,7 +11,7 @@
   - [集群部署](QUICKSTART.md#tidb-集群部署)
   - [基本操作](QUICKSTART.md#tidb-基本操作)
   - [集群监控](QUICKSTART.md#tidb-集群监控)
-  - [集群扩容缩容方案](QUICKSTART.md#tidb-集群扩容缩容方案)
+  - [扩容缩容](QUICKSTART.md#tidb-集群扩容缩容方案)
   - [集群销毁](QUICKSTART.md#集群销毁)
 + TiDB 运维文档
   - [软硬件环境需求](op-guide/recommendation.md)
@@ -34,7 +34,6 @@
     - [备份与恢复](op-guide/backup-restore.md)
     - [全量导入](op-guide/migration.md#使用-mydumperloader-全量导入数据)
     - [增量导入](op-guide/migration.md#使用-syncer-增量导入数据)
-    - [读取历史版本数据](op-guide/history-read.md)
   + 手动运维
     - [Binary 部署方案](op-guide/binary-deployment.md)
 + TiDB 用户文档
@@ -52,9 +51,11 @@
     - [数据操作语句(DML)](sql/dml.md)
     - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
 - [故障诊断](trouble-shooting.md)
++ 高级功能
+    - [历史数据回溯](op-guide/history-read.md)
 + 工具
-  - [Syncer 使用文档](tools/syncer.md)
   - [Loader 使用文档](tools/loader.md)
+  - [Syncer 使用文档](tools/syncer.md)
   - [TiDB-binlog 使用文档](op-guide/tidb-binlog.md)
   - [PD 命令行工具](op-guide/pd-control.md)
 + TiSpark 文档
@@ -67,7 +68,6 @@
   - [RC4](releases/rc4.md)
   - [RC3](releases/rc3.md)
   - [RC2](releases/rc2.md)
-  - [RC2 Preview Release](releases/prerc2.md)
   - [RC1](releases/rc1.md)
 + 更多资源
   - [PingCAP 团队技术博客](https://pingcap.com/bloglist-zh.html)
