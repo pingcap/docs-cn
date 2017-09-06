@@ -61,11 +61,13 @@
   - [TiSpark 快速入门指南](op-guide/tispark-quick-start-guide.md)
   - [TiSpark 用户指南](op-guide/tispark-user-guide.md)
 - [常见问题与解答](FAQ.md)
+- [最佳实践](https://pingcap.com/blog-TiDB-Best-Practice-zh)
 + 版本发布声明
   - [Pre-GA](releases/prega.md)
   - [RC4](releases/rc4.md)
   - [RC3](releases/rc3.md)
   - [RC2](releases/rc2.md)
+  - [RC2 Preview Release](releases/prerc2.md)
   - [RC1](releases/rc1.md)
 + 更多资源
   - [PingCAP 团队技术博客](https://pingcap.com/bloglist-zh.html)
