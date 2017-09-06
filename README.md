@@ -52,7 +52,7 @@
     - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
 - [故障诊断](trouble-shooting.md)
 + 高级功能
-    - [历史数据回溯](op-guide/history-read.md)
+  - [历史数据回溯](op-guide/history-read.md)
 + 工具
   - [Loader 使用文档](tools/loader.md)
   - [Syncer 使用文档](tools/syncer.md)
