@@ -7,12 +7,17 @@ category: advanced
 This document describes how to tune the TiKV parameters for optimal performance.
 
 TiKV uses RocksDB for persistent storage at the bottom level of the TiKV architecture. Therefore, many of the performance parameters are related to RocksDB.
+TiKV uses two RocksDB instances: the default RocksDB instance stores KV data, the Raft RocksDB instance (RaftDB) stores Raft logs.
 
-TiKV implements `Column Families` (CF) from RocksDB and the data is ultimately stored in the `raft`, `default`, `lock` and `write` CFs inside RocksDB.
-+ The `raft` CF stores the Raft log. The corresponding parameters are in `[rocksdb.raftcf]`.
+TiKV implements `Column Families` (CF) from RocksDB.
+
+The default RocksDB instance stores KV data in the `default`, `write` and `lock` CFs.
 + The `default` CF stores the actual data. The corresponding parameters are in  `[rocksdb.defaultcf]`.
-+ The `write` CF stores the version information in Multi-Version Concurrency Control (MVCC). The corresponding parameters are in `[rocksdb.write]`.
++ The `write` CF stores the version information in Multi-Version Concurrency Control (MVCC). The corresponding parameters are in `[rocksdb.writecf]`.
 + The `lock` CF stores the lock information. The system uses the default parameters.
+
+The Raft RocksDB (RaftDB) instance stores Raft logs.
++ The `default` CF stores the Raft log. The corresponding parameters are in `[raftdb.defaultcf]`.
 
 Each CF has a separate `block cache` to cache data blocks to accelerate the data reading speed in RocksDB. You can configure the size of the `block cache` by setting the `block-cache-size` parameter. The bigger the `block-cache-size`, the more hot data can be cached, and the easier to read data, in the meantime, the more system memory will be occupied.
 
