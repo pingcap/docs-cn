@@ -50,7 +50,6 @@
     - [数据定义语句(DDL)](sql/ddl.md)
     - [数据操作语句(DML)](sql/dml.md)
     - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
-- [故障诊断](trouble-shooting.md)
 + 高级功能
   - [历史数据回溯](op-guide/history-read.md)
 + 工具
@@ -62,6 +61,7 @@
   - [TiSpark 快速入门指南](op-guide/tispark-quick-start-guide.md)
   - [TiSpark 用户指南](op-guide/tispark-user-guide.md)
 - [常见问题与解答](FAQ.md)
+- [故障诊断](trouble-shooting.md)
 - [最佳实践](https://pingcap.com/blog-TiDB-Best-Practice-zh)
 + 版本发布声明
   - [Pre-GA](releases/prega.md)
