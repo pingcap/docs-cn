@@ -38,7 +38,9 @@ Loader 暂不支持 MySQL。
 ### 参数说明
 ```
   -B string
-      恢复到的另一个数据库,与 -s 联合使用
+      恢复成另一个数据库(该数据库之前不存在),与 -s 联合使用
+  -s string
+      指定一个已存在数据库,与 -B 联合使用
   -L string
       log 级别设置，可以设置为 debug, info, warn, error, fatal (默认为 "info")
   -P int
@@ -57,8 +59,6 @@ Loader 暂不支持 MySQL。
       TiDB 账户密码
   -pprof-addr string
       Loader 的 pprof 地址，用于对 Loader 进行性能调试 (默认为 ":10084")
-  -s string
-      指定一个数据库,与 -B 联合使用
   -skip-unique-check 
       是否跳过 unique index 检查，0 表示不跳过，1 表示跳过（能够提高导入数据的速度），注意只有在向 TiDB 中导入数据时，才需要打开这个选项 (默认为1)
   -t int
