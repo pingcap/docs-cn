@@ -182,7 +182,7 @@ github.com/pingcap/tidb/parser/yy_parser.go:109:
 
 > 注意：目前 TiDB 仅支持 UTF8 字符编码，假设 mydumper 导出数据为 latin1 字符编码，请使用 `iconv -f latin1 -t utf-8 $file -o /data/imdbload/$basename` 命令转换，$file 为已有文件，$basename 为转换后文件。
 
-> 注意：当 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。  
+> 注意：如果 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。  
 
 我们使用 `loader` 将之前导出的数据导入到 TiDB。Loader 的下载和具体的使用方法见 [Loader 使用文档](../tools/loader.md)
 
