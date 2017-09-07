@@ -37,6 +37,8 @@ Loader 暂不支持 MySQL。
 
 ### 参数说明
 ```
+  -B string
+      An alternative database to restore into
   -L string
       log 级别设置，可以设置为 debug, info, warn, error, fatal (默认为 "info")
   -P int
@@ -48,19 +50,21 @@ Loader 暂不支持 MySQL。
   -checkpoint-schema string
       checkpoint 数据库名，loader 在运行过程中会不断的更新这个数据库，在中断并恢复后，会通过这个库获取上次运行的进度 (默认为 "tidb_loader")
   -d string
-      Directory of the dump to import (default "./")
+       需要导入的数据存放路径 (default "./")
   -h string
-      The host to connect to (default "127.0.0.1")
+       TiDB 服务 host IP  (default "127.0.0.1")
   -p string
-      TiDB/MySQL 账户密码
+      TiDB 账户密码
   -pprof-addr string
       Loader 的 pprof 地址，用于对 Loader 进行性能调试 (默认为 ":10084")
+  -s string
+      Database to restore
   -skip-unique-check 
       是否跳过 unique index 检查，0 表示不跳过，1 表示跳过（能够提高导入数据的速度），注意只有在向 TiDB 中导入数据时，才需要打开这个选项 (默认为1)
   -t int
       线程数 (默认为 16). 每个线程同一时刻只能操作一个数据文件。
   -u string
-      TiDB/MySQL 的用户名 (默认为 "root")
+      TiDB 的用户名 (默认为 "root")
 ```
 
 ### 配置文件
