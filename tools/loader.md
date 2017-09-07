@@ -124,7 +124,7 @@ port = 4000
 
 ### 注意事项
 
-当 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。  
+如果 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。  
 如果使用默认的 `checkpoint-schema` 参数，在导完一个 database 数据库后，请 `drop database tidb_loader` 后再开始导入下一个 database。  
 推荐数据库开始导入的时候，明确指定 `checkpoint-schema = "tidb_loader"` 参数。
 
