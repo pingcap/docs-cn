@@ -38,7 +38,7 @@ Loader 暂不支持 MySQL。
 ### 参数说明
 ```
   -B string
-      An alternative database to restore into
+      恢复到的另一个数据库,与 -s 联合使用
   -L string
       log 级别设置，可以设置为 debug, info, warn, error, fatal (默认为 "info")
   -P int
@@ -58,7 +58,7 @@ Loader 暂不支持 MySQL。
   -pprof-addr string
       Loader 的 pprof 地址，用于对 Loader 进行性能调试 (默认为 ":10084")
   -s string
-      Database to restore
+      指定一个数据库,与 -B 联合使用
   -skip-unique-check 
       是否跳过 unique index 检查，0 表示不跳过，1 表示跳过（能够提高导入数据的速度），注意只有在向 TiDB 中导入数据时，才需要打开这个选项 (默认为1)
   -t int
@@ -124,7 +124,8 @@ port = 4000
 
 ### 注意事项
 
+当 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。  
 如果使用默认的 `checkpoint-schema` 参数，在导完一个 database 数据库后，请 `drop database tidb_loader` 后再开始导入下一个 database。  
-推荐数据库开始导入的时候，明确指定`checkpoint-schema = "tidb_loader"`参数。
+推荐数据库开始导入的时候，明确指定 `checkpoint-schema = "tidb_loader"` 参数。
 
 

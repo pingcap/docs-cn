@@ -145,6 +145,7 @@ github.com/pingcap/tidb/parser/yy_parser.go:109:
 > 注意：虽然 TiDB 也支持使用 MySQL 官方的 `mysqldump` 工具来进行数据的迁移工作，但相比于 `mydumper` / `loader`，性能会慢很多，大量数据的迁移会花费很多时间，这里我们并不推荐。
 
 ### `mydumper`/`loader` 全量导入数据最佳实践
+
 为了快速的迁移数据 (特别是数据量巨大的库), 可以参考下面建议
 
 * 使用 mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64
@@ -180,6 +181,8 @@ github.com/pingcap/tidb/parser/yy_parser.go:109:
 ### 向 TiDB 导入数据
 
 > 注意：目前 TiDB 仅支持 UTF8 字符编码，假设 mydumper 导出数据为 latin1 字符编码，请使用 `iconv -f latin1 -t utf-8 $file -o /data/imdbload/$basename` 命令转换，$file 为已有文件，$basename 为转换后文件。
+
+> 注意：当 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。  
 
 我们使用 `loader` 将之前导出的数据导入到 TiDB。Loader 的下载和具体的使用方法见 [Loader 使用文档](../tools/loader.md)
 
