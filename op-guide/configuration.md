@@ -145,7 +145,6 @@ category: deployment
 + Prometheus 统计可以通过 "http://host:status_port/metrics" 访问
 + Pprof 数据可以通过 "http://host:status_port/debug/pprof" 访问
 
-
 ### \-\-store
 
 + 用来指定 TiDB 底层使用的存储引擎
@@ -157,6 +156,26 @@ category: deployment
 
 + TiDB 在 tcp 层开启 keepalive
 + 默认: false
+
+### \-\-ssl-cert
+
++ PEM 格式的 SSL 证书文件路径
++ 默认: ""
++ 当同时设置了该选项和 `--ssl-key` 选项时，TiDB 将接受（但不强制）客户端使用 TLS 安全地连接到 TiDB。
++ 若指定的证书或私钥无效，则 TiDB 会照常启动，但无法接受安全连接。
+
+### \-\-ssl-key
+
++ PEM 格式的 SSL 证书密钥文件路径，即 `--ssl-cert` 所指定的证书的私钥
++ 默认: ""
++ 目前 TiDB 不支持加载由密码保护的私钥。
+
+### \-\-ssl-ca
+
++ PEM 格式的受信任 CA 的证书文件路径
++ 默认: ""
++ 当同时设置了该选项和 `--ssl-cert`、`--ssl-key` 选项时，TiDB 将在客户端出示证书的情况下根据该选项指定的受信任的 CA 列表验证客户端证书。若验证失败，则连接会被终止。
++ 即使设置了该选项，若客户端没有出示证书，则安全连接仍然继续，不会进行客户端证书验证。
 
 ## Placement Driver (PD)
 
