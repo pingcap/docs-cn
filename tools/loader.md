@@ -37,6 +37,10 @@ Loader 暂不支持 MySQL。
 
 ### 参数说明
 ```
+  -B string
+      恢复成另一个数据库(该数据库之前不存在),与 -s 联合使用
+  -s string
+      指定一个已存在数据库,与 -B 联合使用
   -L string
       log 级别设置，可以设置为 debug, info, warn, error, fatal (默认为 "info")
   -P int
@@ -48,11 +52,11 @@ Loader 暂不支持 MySQL。
   -checkpoint-schema string
       checkpoint 数据库名，loader 在运行过程中会不断的更新这个数据库，在中断并恢复后，会通过这个库获取上次运行的进度 (默认为 "tidb_loader")
   -d string
-      Directory of the dump to import (default "./")
+       需要导入的数据存放路径 (default "./")
   -h string
-      The host to connect to (default "127.0.0.1")
+       TiDB 服务 host IP  (default "127.0.0.1")
   -p string
-      TiDB/MySQL 账户密码
+      TiDB 账户密码
   -pprof-addr string
       Loader 的 pprof 地址，用于对 Loader 进行性能调试 (默认为 ":10084")
   -skip-unique-check 
@@ -60,7 +64,7 @@ Loader 暂不支持 MySQL。
   -t int
       线程数 (默认为 16). 每个线程同一时刻只能操作一个数据文件。
   -u string
-      TiDB/MySQL 的用户名 (默认为 "root")
+      TiDB 的用户名 (默认为 "root")
 ```
 
 ### 配置文件
@@ -120,7 +124,8 @@ port = 4000
 
 ### 注意事项
 
+如果 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。  
 如果使用默认的 `checkpoint-schema` 参数，在导完一个 database 数据库后，请 `drop database tidb_loader` 后再开始导入下一个 database。  
-推荐数据库开始导入的时候，明确指定`checkpoint-schema = "tidb_loader"`参数。
+推荐数据库开始导入的时候，明确指定 `checkpoint-schema = "tidb_loader"` 参数。
 
 
