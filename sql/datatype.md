@@ -94,6 +94,8 @@ TiDB 支持 MySQL 所有的浮点类型，包括 FLOAT、DOUBLE，完整信息�
 
 #### 类型定义
 
+语法：
+
 ```sql
 FLOAT[(M,D)] [UNSIGNED] [ZEROFILL]
 > 小(单精度)浮点数。允许的值范围为-2^128 ~ +2^128，也即-3.402823466E+38到-1.175494351E-38、0和1.175494351E-38 到3.402823466E+38。这些是理论限制，基于IEEE标准。实际的范围根据硬件或操作系统的不同可能稍微小些。
@@ -133,6 +135,8 @@ FLOAT(p) [UNSIGNED] [ZEROFILL]
 TiDB 支持 MySQL 所有的浮点类型，包括 DECIMAL、NUMERIC，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/fixed-point-types.html)文档。
 
 #### 类型定义
+
+语法：
 
 ```sql
 DECIMAL[(M[,D])] [UNSIGNED] [ZEROFILL]
