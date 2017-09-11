@@ -118,15 +118,15 @@ TODO
 
 `BLOB`、`TEXT`以及`JSON`不可以设置默认值。
 
-如果一个列的定义中没有`DEFAULT`的设置。TIDB按照如下的规则决定:
+如果一个列的定义中没有`DEFAULT`的设置。TiDB 按照如下的规则决定:
 
 * 如果该类型可以使用`NULL`作为值，那么这个列会在定义时添加隐式的默认值设置`DEFAULT NULL`。
 * 如果该类型无法使用`NULL`作为值，那么这个列在定义时不会添加隐式的默认值设置。
 
-对于一个设置了`NOT NULL`但是没有显式设置`DEFAULT`的列，当`INSERT`、`REPLACE`没有涉及到该列的值时，TiDB根据当时的SQL_MODE进行不同的行为：
+对于一个设置了`NOT NULL`但是没有显式设置`DEFAULT`的列，当`INSERT`、`REPLACE`没有涉及到该列的值时，TiDB 根据当时的`SQL_MODE`进行不同的行为：
 
 * 如果此时是`strict sql mode`，在事务中的语句会导致事务失败并回滚，非事务中的语句会直接报错。
-* 如果此时不是`strict sql mode`，TIDB会为这列赋值为列数据类型的隐式默认值。
+* 如果此时不是`strict sql mode`，TiDB 会为这列赋值为列数据类型的隐式默认值。
 
 此时隐式默认值的设置按照如下规则：
 
