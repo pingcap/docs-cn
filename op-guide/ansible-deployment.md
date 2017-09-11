@@ -5,19 +5,6 @@ category: deployment
 
 # TiDB Ansible Deployment
 
-## Table of Content
-
-- [Overview](#overview)
-1. [Prepare](#prepare)
-2. [Install Ansible in the Control Machine](#install-ansible-in-the-control-machine)
-3. [Download TiDB-Ansible to the Control Machine](#download-tidb-ansible-to-the-control-machine)
-4. [Orchestrate the TiDB cluster](#orchestrate-the-tidb-cluster)
-5. [Deploy the TiDB cluster](#deploy-the-tidb-cluster)
-6. [Test the cluster](#test-the-cluster)
-7. [Rolling Update](#perform-rolling-update)
-- [Summary of common operations](#summary-of-common-operations)
-
-
 ## Overview
 
 Ansible is an IT automation tool. It can configure systems, deploy software, and orchestrate more advanced IT tasks such as continuous deployments or zero downtime rolling updates.

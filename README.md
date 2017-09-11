@@ -5,16 +5,14 @@
 + [About TiDB](overview.md)
   - [TiDB Introduction](overview.md#tidb-introduction)
   - [TiDB Architecture](overview.md#tidb-architecture)
-+ Quick Start
-  + [TiDB Quick Start Guide](./QUICKSTART.md)
-    - [About TiDB](./QUICKSTART.md#about-tidb)
-    - [About this guide](./QUICKSTART.md#about-this-guide)
-    - [Deploy a TiDB cluster](./QUICKSTART.md#deploy-a-tidb-cluster)
-    - [Try TiDB](./QUICKSTART.md#try-tidb)
-    - [Monitoring a TiDB cluster](./QUICKSTART.md#monitoring-a-tidb-cluster)
-    - [Scale the TiDB cluster](./QUICKSTART.md#scale-the-tidb-cluster)
-    - [Destroy the cluster](./QUICKSTART.md#destroy-the-cluster)
-- [TiDB Connector for Spark User Guide](https://github.com/pingcap/tispark/blob/master/docs/userguide.md)
++ [TiDB Quick Start Guide](./QUICKSTART.md)
+  - [About TiDB](./QUICKSTART.md#about-tidb)
+  - [About this guide](./QUICKSTART.md#about-this-guide)
+  - [Deploy a TiDB cluster](./QUICKSTART.md#deploy-a-tidb-cluster)
+  - [Try TiDB](./QUICKSTART.md#try-tidb)
+  - [Monitoring a TiDB cluster](./QUICKSTART.md#monitoring-a-tidb-cluster)
+  - [Scale the TiDB cluster](./QUICKSTART.md#scale-the-tidb-cluster)
+  - [Destroy the cluster](./QUICKSTART.md#destroy-the-cluster)
 + Operations Guide
   - [Hardware and Software Requirements](op-guide/recommendation.md)
   + Deploy
@@ -23,19 +21,20 @@
     - [Cross-Region Deployment](op-guide/location-awareness.md)
   + Configure
     - [Configuration Flags](op-guide/configuration.md)
-    - [PD Command-Line Tools](op-guide/pd-control.md)
   + Monitor
     - [Overview of the Monitoring Framework](op-guide/monitor-overview.md)
+    - [Key Metrics](op-guide/key-metrics.md)
     - [Monitoring a TiDB Cluster](op-guide/monitoring-tidb.md)
   - [Scale](op-guide/horizontal-scale.md)
   - [Upgrade](op-guide/ansible-deployment.md#perform-rolling-update)
-  - [Performance Tuning](op-guide/tune-TiKV.md)
-  + Backup and Restore
-    - [Reading Data from History Versions](op-guide/history-read.md) 
-  - [Import and Export](op-guide/migration.md)
+  + Performance Tuning
+    - [Performance Tuning for TiKV](op-guide/tune-TiKV.md)
+  + Backup and Migrate
+    + [Migrate data from MySQL to TiDB](op-guide/migration.md)
+      - [Migrate all the data](op-guide/migration.md#using-the-mydumper--loader-tool-to-export-and-import-all-the-data)
+      - [Migrate the data incrementally](op-guide/migration.md#optional-using-the-syncer-tool-to-import-data-incrementally)
   + Manual operations 
     - [Deploy Using the Binary](op-guide/binary-deployment.md)
-    - [Troubleshoot](./trouble-shooting.md)
 + User Guide
   + TiDB Server Administration
     - [The Proprietary System Variables and Syntax in TiDB](sql/tidb-specific.md)
@@ -52,10 +51,17 @@
     - [Miscellaneous Functions](sql/miscellaneous-functions.md)
   - [TiDB SQL Grammar](sql/README.md)
   - [Compatibility with MySQL](sql/mysql-compatibility.md)
++ Advanced Usage
+  - [Reading Data from History Versions](op-guide/history-read.md) 
 + Tools
   - [Syncer User Guide](./tools/syncer.md)
   - [Loader User Guide](./tools/loader.md)
   - [TiDB-Binlog User Guide](./tools/tidb-binlog.md)
+  - [PD Command-Line Tools](op-guide/pd-control.md)
+- [TiDB Connector for Spark User Guide](https://github.com/pingcap/tispark/blob/master/docs/userguide.md)
+- [Frequently Asked Questions (FAQ)](./FAQ.md)
+- [Troubleshoot](./trouble-shooting.md)
+- [TiDB Best Practices](https://pingcap.github.io/blog/2017/07/24/tidbbestpractice/)
 + Releases
   - [Pre-GA](release/prega.md)
   - [RC4](release/rc4.md)
@@ -66,7 +72,6 @@
   - [Frequently Used Tools](https://github.com/pingcap/tidb-tools)
   - [PingCAP Blog](https://pingcap.github.io/blog/)
   - [Weekly Update](http://weekly.pingcap.com/)
-- [Frequently Asked Questions (FAQ)](./FAQ.md)
 
 ## TiDB Introduction
 

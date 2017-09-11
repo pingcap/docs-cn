@@ -1,6 +1,6 @@
 ---
 title: PD Control Instructions
-category: monitoring
+category: tools
 ---
 
 # PD Control Instructions

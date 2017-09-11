@@ -1,3 +1,8 @@
+---
+title: Cross-Region Deployment
+category: deployment
+---
+
 # Cross-Region Deployment
 
 ## Overview

@@ -1,6 +1,6 @@
 ---
 title: TiKV Performance Tuning
-category: advanced
+category: tuning
 ---
 
 # TiKV Performance Tuning

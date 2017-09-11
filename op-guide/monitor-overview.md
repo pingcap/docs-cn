@@ -1,6 +1,6 @@
 ---
 title: Overview of the TiDB Monitoring Framework
-category: monitoring
+category: deployment
 ---
 
 # Overview of the TiDB Monitoring Framework

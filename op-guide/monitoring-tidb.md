@@ -1,6 +1,6 @@
 ---
 title: Monitoring a TiDB Cluster
-category: monitoring
+category: deployment
 ---
 
 # Monitoring a TiDB Cluster
