@@ -53,7 +53,7 @@ Table of Contents
     - Cast函数和操作符
     - 位函数和操作符
     - 加密和压缩函数
-    - 信息函数
+    - [信息函数](information-functions.md)
     - JSON 函数
     - 全局事务 ID 函数
     - GROUP BY 聚合函数
