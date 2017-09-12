@@ -50,7 +50,7 @@ Table of Contents
     - 字符串函数
     - 数值函数与操作符
     - 日期和时间函数
-    - [Cast函数和操作符](cast-functions-and-operators.md)
+    - [Cast 函数和操作符](cast-functions-and-operators.md)
     - 位函数和操作符
     - 加密和压缩函数
     - 信息函数
