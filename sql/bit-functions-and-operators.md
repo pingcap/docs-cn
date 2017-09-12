@@ -1,4 +1,11 @@
+---
+title: TiDB 用户文档
+category: user guide
+---
+
 ## 位函数和操作符
+
+TiDB 中位函数和操作符的使用方法与 MySQL 基本一致，详情参见: [Bit Functions and Operators](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html).
 
 **位函数和操作符表**
 
@@ -11,5 +18,3 @@
 | [`^`](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_bitwise-xor) | 位亦或             |
 | [`<<`](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_left-shift) | 左移              |
 | [`>>`](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_right-shift) | 右移              |
-
-详情参见[这里](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#).
