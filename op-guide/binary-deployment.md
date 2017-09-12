@@ -83,8 +83,8 @@ category: deployment
 
 ### 操作系统参数
 
-| 配置 | 说明 |
-| :-- | :-- | :-- |
+| 配置 | 说明 |	
+| :-- | :-- |
 | Nice Limits | 数据库系统管理员 tidb 的 nice 值设置为缺省值 0 |
 | min_free_kbytes | 在 ysctl.conf 中关于 vm.min_free_kbytes 的设置需要足够高 |
 | User Open Files Limit | 对数据库管理员 tidb 的 open 文件数设置为 1000000 |
