@@ -51,7 +51,7 @@ Table of Contents
     - 数值函数与操作符
     - 日期和时间函数
     - Cast函数和操作符
-    - 位函数和操作符
+    - [位函数和操作符](bit-functions-and-operators.md)
     - 加密和压缩函数
     - 信息函数
     - JSON 函数
