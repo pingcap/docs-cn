@@ -23,8 +23,8 @@ Table of Contents
 + 优化
     - [理解 TiDB 执行计划](understanding-the-query-execution-plan.md)
 + 语言结构
-    - 字面值
-    - 数据库、表、索引、列和别名
+    - 字面值
+    - 数据库、表、索引、列和别名
     - 关键字和保留字
     - 用户变量
     - 表达式语法
@@ -45,7 +45,7 @@ Table of Contents
 + 函数和操作符
     - 函数和操作符概述
     - 表达式求值的类型转换
-    - 操作符
+    - [操作符](operators.md)
     - 控制流程函数
     - 字符串函数
     - 数值函数与操作符
