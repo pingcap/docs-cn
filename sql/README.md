@@ -48,7 +48,7 @@ TiDB 支持 SQL92 标准并兼容 MySQL 语法，为了帮您更好地使用 TiD
 	- 字符串函数
 	- 数值函数与操作符
 	- 日期和时间函数
-	- Cast函数和操作符
+	- [Cast 函数和操作符](functions-and-operators/cast-functions-and-operators.md)
 	- 位函数和操作符
 	- 加密和压缩函数
 	- 信息函数
