@@ -1,11 +1,11 @@
-# 运算符
+# 操作符
 
-1. [运算符优先级](#operator-precedence)
-2. [比较方法和运算符](#comparison-functions-and-operators)
-3. [逻辑运算符](#comparison-functions-and-operators)
-4. [赋值运算符](#comparison-functions-and-operators)
+1. [操作符优先级](#operator-precedence)
+2. [比较方法和操作符](#comparison-functions-and-operators)
+3. [逻辑操作符](#comparison-functions-and-operators)
+4. [赋值操作符](#comparison-functions-and-operators)
 
-| 运算符名                                     | 功能描述                                     |
+| 操作符名                                     | 功能描述                                     |
 | ---------------------------------------- | ---------------------------------------- |
 | [`AND`, `&&`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_and) | 逻辑与                                      |
 | [`=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-equal) | 赋值 (可用于 [`SET`](https://dev.mysql.com/doc/refman/5.7/en/set-variable.html) 语句中, 或用于 [`UPDATE`](https://dev.mysql.com/doc/refman/5.7/en/update.html) 语句的 `SET` 中 ) |
@@ -47,9 +47,9 @@
 | [`-`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_unary-minus) | 取反符号                                     |
 | [`XOR`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_xor) | 逻辑亦或                                     |
 
-## 运算符优先级
+## 操作符优先级
 
-运算符优先级显示在以下列表中，从最高优先级到最低优先级。同一行显示的运算符具有相同的优先级。
+操作符优先级显示在以下列表中，从最高优先级到最低优先级。同一行显示的操作符具有相同的优先级。
 
 ``` sql
 INTERVAL
@@ -73,9 +73,9 @@ OR, ||
 
 详情参见 [这里](https://dev.mysql.com/doc/refman/5.7/en/operator-precedence.html).
 
-## 比较方法和运算符
+## 比较方法和操作符
 
-| 运算符名                                     | 功能描述              |
+| 操作符名                                     | 功能描述              |
 | ---------------------------------------- | ----------------- |
 | [`BETWEEN ... AND ...`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_between) | 判断值是否在范围内         |
 | [`COALESCE()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_coalesce) | 返回第一个非空值          |
@@ -103,9 +103,9 @@ OR, ||
 
 详情参见 [这里](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html).
 
-## 逻辑运算符
+## 逻辑操作符
 
-| 运算符名                                     | 功能描述 |
+| 操作符名                                     | 功能描述 |
 | ---------------------------------------- | ---- |
 | [`AND`, `&&`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_and) | 逻辑与  |
 | [`NOT`, `!`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_not) | 逻辑非  |
@@ -114,9 +114,9 @@ OR, ||
 
 详情参见 [这里](https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html).
 
-## 赋值运算符
+## 赋值操作符
 
-| 运算符名                                     | 功能描述                                     |
+| 操作符名                                     | 功能描述                                     |
 | ---------------------------------------- | ---------------------------------------- |
 | [`=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-equal) | 赋值 (可用于 [`SET`](https://dev.mysql.com/doc/refman/5.7/en/set-variable.html) 语句中, 或用于 [`UPDATE`](https://dev.mysql.com/doc/refman/5.7/en/update.html) 语句的 `SET` 中 ) |
 | [`:=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-value) | 赋值                                       |
