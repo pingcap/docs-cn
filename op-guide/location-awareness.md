@@ -25,7 +25,7 @@ tikv-server --labels zone=<zone>,rack=<rack>,host=<host>
 
 配置文件：
 
-``` toml
+```toml
 [server]
 labels = "zone=<zone>,rack=<rack>,host=<host>"
 ```
@@ -34,7 +34,7 @@ labels = "zone=<zone>,rack=<rack>,host=<host>"
 
 可以通过 PD 的配置文件让 PD 理解 TiKV 集群的拓扑结构。
 
-``` toml
+```toml
 [replication]
 max-replicas = 3
 location-labels = ["zone", "rack", "host"]
@@ -82,7 +82,7 @@ tikv-server --labels zone=z4,rack=r2,host=h2
 
 在这种拓扑结构下，PD 会优先把每一份数据的不同副本调度到不同的数据中心。
 这时候如果其中一个数据中心挂了，不会影响正常服务。
-如果这个数据中心一段时间内恢复不了，PD 会把这个数据中心的副本迁出去。
+如果这个数据中心一段时间内恢复不了，PD 会把这个数据中心的副本迁移出去。
 
 总的来说，PD 能够根据当前的拓扑结构使得集群容灾能力最大化，所以如果我们希望达到某个级别的容灾能力，
 就需要根据拓扑机构在不同的地理位置提供多于备份数 (`max-replicas`) 的机器。

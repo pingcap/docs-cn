@@ -13,7 +13,7 @@ TiDB 支持 `SQL92` 标准并兼容 MySQL 语法，目前已经实现了大多�
 使用 `CREATE DATABASE` 语句可完成对数据库的创建, 创建命令的格式如下:
 
     CREATE DATABASE 数据库名 [其他选项];
-  
+
 例如我们需要创建一个名为 `samp_db` 的数据库, 在命令行下执行以下命令:
 
     CREATE DATABASE IF NOT EXISTS samp_db;
@@ -93,9 +93,9 @@ TiDB 支持 `SQL92` 标准并兼容 MySQL 语法，目前已经实现了大多�
 利用 `INSERT` 插入数据
 
     INSERT INTO person VALUES("1","tom","20170912");
-    
-利用 `SELECT` 检索数据    
-    
+
+利用 `SELECT` 检索数据
+
     SELECT * FROM person;
     +--------+------+------------+
     | number | name | birthday   |
@@ -106,7 +106,7 @@ TiDB 支持 `SQL92` 标准并兼容 MySQL 语法，目前已经实现了大多�
 利用 `UPDATE` 修改表内数据：
 
     UPDATE person SET birthday='20171010' WHERE name='tom';
-    
+
     SELECT * FROM person;
     +--------+------+------------+
     | number | name | birthday   |
@@ -129,7 +129,7 @@ TiDB 支持 `SQL92` 标准并兼容 MySQL 语法，目前已经实现了大多�
 授权用户可查询 `samp_db` 库下的表：
 
     GRANT SELECT ON samp_db .* TO 'tiuser'@'localhost';
- 
+
 查询 `tiuser` 用户的授权：
 
     SHOW GRANTS FOR tiuser@localhost;

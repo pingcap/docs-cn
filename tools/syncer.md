@@ -6,7 +6,7 @@ category: advanced
 # Syncer 使用文档
 
 ## syncer 架构
-![architecture](../media/syncer_architecture.png)
+![syncer 架构](../media/syncer-architecture.png)
 
 ## 下载 TiDB 工具集 (Linux)
 
@@ -21,6 +21,7 @@ sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
 tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
 cd tidb-enterprise-tools-latest-linux-amd64
 ```
+
 ## Syncer 部署位置
 
 Syncer 可以部署在任一台可以连通对应的 MySQL 和 TiDB 集群的机器上，推荐部署在 TiDB 集群。
@@ -119,7 +120,6 @@ port = 4000
 
 启动 `syncer`:
 
-
 ```bash
 ./bin/syncer -config config.toml
 2016/10/27 15:22:01 binlogsyncer.go:226: [info] begin to sync binlog from position (mysql-bin.000003, 1280)
@@ -170,9 +170,11 @@ syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-
 +   分表中是否包含唯一递增主键，或者合并后数据上有冲突的唯一索引或者主键
 
 ## 分库分表同步示例
-![sharding](../media/syncer_sharding.png)
+
+![sharding](../media/syncer-sharding.png)
 
 则只需要在所有 mysql 实例下面，启动 syncer, 并且设置以下 route-rule
+
 ```
 [[route-rules]]
 pattern-schema = "example_db"
@@ -180,6 +182,9 @@ pattern-table = "table_*"
 target-schema = "example_db"
 target-table = "table"
 ```
+
 ## 监控方案
+
 Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息存储方案，使用 Grafana 作为可视化组件进行展示，配合 AlertManager 来实现报警。其方案如下图
-![monitor_scheme](../media/syncer_monitor_scheme.png)
+
+![monitor_scheme](../media/syncer-monitor-scheme.png)
