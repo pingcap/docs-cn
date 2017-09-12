@@ -8,6 +8,7 @@ category: user guide
 ## 目录
 + [概述](#概述)
 + [数值类型](#数值类型)
++ [日期时间类型](#日期时间类型)
 + [字符串类型](#字符串类型)
 + [Json 类型](#json-类型)
 + 其他类型
@@ -97,10 +98,88 @@ TODO
 TODO
 
 
+## 日期时间类型
+
+### 概述
+
+TiDB 支持 MySQL 所有的日期时间类型，包括 DATE、DATETIME、TIMESTAMP、TIME 以及 YEAR，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-types.html)文档。
+
+### 类型定义
+
+语法：
+```sql
+DATE
+> 日期。支持的范围为`1000-01-01`到`9999-12-31`。以`YYYY-MM-DD`格式显示 DATE 值。
+
+DATETIME[(fsp)]
+> 日期和时间的组合。支持的范围是`1000-01-01 00:00:00.000000`到`9999-12-31 23:59:59.000000`。
+以`YYYY-MM-DD HH:MM:SS[.fraction]`格式显示 DATETIME 值。fsp 参数是表示秒精度，取值范围为0-6，默认值取0。
+
+TIMESTAMP[(fsp)]
+> 时间戳。支持的范围是`1970-01-01 00:00:01.000000`到`2038-01-19 03:14:07.999999`。
+fsp 参数是表示秒精度，取值范围为0-6，默认值取0。
+
+TIME[(fsp)]
+> 时间。范围是`-838:59:59.000000`到`838:59:59.000000`。以`HH:MM:SS[.fraction]`格式显示 TIME 值。
+fsp 参数是表示秒精度，取值范围为：0-6。默认值取0。
+
+YEAR[(2|4)]
+> 两位或四位格式的年。默认是四位格式。在四位格式中，允许的值是1901到2155和0000。在两位格式中，允许的值是70到69，表示从1970年到2069年。
+```
+
 ## 字符串类型
 
 ### 概述
 
+TiDB 支持 MySQL 所有的字符串类型，包括 CHAR、VARCHAR、BINARY、VARBINARY、BLOB、TEXT、ENUM 以及 SET，
+完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/string-types.html)文档。
+
+### 类型定义
+
+语法：
+```sql
+[NATIONAL] CHAR[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
+> 定长字符串。CHAR列的长度固定为创建表时声明的长度。长度可以为从 0 到 255 的任何值。当保存 CHAR 值时，在它们的右边填充空格以达到指定的长度。
+
+[NATIONAL] VARCHAR(M) [CHARACTER SET charset_name] [COLLATE collation_name]
+> 变长字符串。M表示最大列长度，范围是0到65535。VARCHAR的最大实际长度由最长的行的大小和使用的字符集确定。
+
+BINARY(M)
+> 类似于 CHAR， 区别在于 BINARY 存储的是二进制字符串。
+
+VARBINARY(M)
+> 类似于 VARCHAR， 区别在于 VARBINARY 存储的是二进制字符串。
+
+BLOB[(M)]
+> 二进制大文件。M表示最大列长度，范围是0到65535。
+
+TINYBLOB
+> 类似于 BLOB, 区别在于最大列长度为 255。
+
+MEDIUMBLOB
+> 类似于 BLOB, 区别在于最大列长度为 16777215。
+
+LONGBLOB
+> 类似于 BLOB, 区别在于最大列长度为 4294967295。
+
+TEXT[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
+> 文本串。M表示最大列长度，范围是0到65535。VARCHAR的最大实际长度由最长的行的大小和使用的字符集确定。
+
+TINYTEXT[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
+> 类似于 TEXT, 区别在于最大列长度为 255。
+
+MEDIUMTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
+> 类似于 TEXT, 区别在于最大列长度为 16777215。
+
+LONGTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
+> 类似于 TEXT, 区别在于最大列长度为 4294967295。
+
+ENUM('value1','value2',...) [CHARACTER SET charset_name] [COLLATE collation_name]
+> 枚举。只能有一个值的字符串对象，其值通常选自允许值列表中，在某些情况下也可以是空串或者 NULL。
+
+SET('value1','value2',...) [CHARACTER SET charset_name] [COLLATE collation_name]
+> 集合。可以有零或者多个值的字符串对象，每一个值必须选自允许值列表中。
+```
 
 ## Json 类型
 
