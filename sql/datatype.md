@@ -139,10 +139,10 @@ TiDB 支持 MySQL 所有的字符串类型，包括 CHAR、VARCHAR、BINARY、VA
 语法：
 ```sql
 [NATIONAL] CHAR[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
-> 定长字符串。CHAR列的长度固定为创建表时声明的长度。长度可以为从 0 到 255 的任何值。当保存 CHAR 值时，在它们的右边填充空格以达到指定的长度。
+> 定长字符串。CHAR 列的长度固定为创建表时声明的长度。长度可以为从0到255的任何值。当保存 CHAR 值时，在它们的右边填充空格以达到指定的长度。
 
 [NATIONAL] VARCHAR(M) [CHARACTER SET charset_name] [COLLATE collation_name]
-> 变长字符串。M表示最大列长度，范围是0到65535。VARCHAR的最大实际长度由最长的行的大小和使用的字符集确定。
+> 变长字符串。M 表示最大列长度，范围是0到65535。VARCHAR 的最大实际长度由最长的行的大小和使用的字符集确定。
 
 BINARY(M)
 > 类似于 CHAR， 区别在于 BINARY 存储的是二进制字符串。
@@ -151,7 +151,7 @@ VARBINARY(M)
 > 类似于 VARCHAR， 区别在于 VARBINARY 存储的是二进制字符串。
 
 BLOB[(M)]
-> 二进制大文件。M表示最大列长度，范围是0到65535。
+> 二进制大文件。M 表示最大列长度，范围是0到65535。
 
 TINYBLOB
 > 类似于 BLOB, 区别在于最大列长度为 255。
@@ -163,7 +163,7 @@ LONGBLOB
 > 类似于 BLOB, 区别在于最大列长度为 4294967295。
 
 TEXT[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
-> 文本串。M表示最大列长度，范围是0到65535。VARCHAR的最大实际长度由最长的行的大小和使用的字符集确定。
+> 文本串。M 表示最大列长度，范围是0到65535。VARCHAR 的最大实际长度由最长的行的大小和使用的字符集确定。
 
 TINYTEXT[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
 > 类似于 TEXT, 区别在于最大列长度为 255。
