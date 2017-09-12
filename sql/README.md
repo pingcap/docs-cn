@@ -11,17 +11,6 @@ TiDB 支持 SQL92 标准并兼容 MySQL 语法，为了帮您更好地使用 TiD
 Table of Contents
 
 + TiDB 数据库管理
-<<<<<<< HEAD
-  - TiDB 服务器和服务器启动脚本
-  - TiDB 数据目录
-  - TiDB 系统数据库
-  - [TiDB 专用系统变量和语法](tidb-specific.md)
-  - TiDB 服务器日志文件
-+ TiDB 安全
-  - [TiDB 访问权限管理](privilege/README.md)
-  - TiDB 用户账户管理
-  - 使用安全连接
-=======
     - TiDB 服务器和服务器启动脚本
     - TiDB 数据目录
     - TiDB 系统数据库
@@ -31,7 +20,6 @@ Table of Contents
     - [TiDB 访问权限管理](privilege.md)
     - TiDB 用户账户管理
     - 使用安全连接
->>>>>>> 868fa0aa448f9f3755e17fbbc42349ed7ff2f421
 + 优化
     - [理解 TiDB 执行计划](understanding-the-query-execution-plan.md)
 + 语言结构
