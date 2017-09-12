@@ -140,7 +140,6 @@ TiDB 支持 MySQL 所有的浮点类型，包括 DECIMAL、NUMERIC，完整信�
 
 ```sql
 DECIMAL[(M[,D])] [UNSIGNED] [ZEROFILL]
-
 > 定点数。M 是小数位数(精度)的总数，D 是小数点(标度)后面的位数。小数点和‘-’(负数)符号不包括在M中。如果 D 是0，则值没有小数点或分数部分。如果 D 被省略， 默认是0。如果 M 被省略， 默认是10。
 
 NUMERIC[(M[,D])] [UNSIGNED] [ZEROFILL]
