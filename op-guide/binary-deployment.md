@@ -70,7 +70,6 @@ category: deployment
 | 配置	| 描述 |
 | :-- | :-- |
 |  支持平台  |   请查看和了解系统部署建议 |
-|  LVM  |   TiDB 支持 各类Linux 操作系统上的 Linux Volume Manager (LVM) |
 |  文件系统  |  TiDB 部署环境推荐使用 ext4 文件系统|
 |  Swap 空间  |  TiDB 部署推荐关闭 Swap 空间 |
 |  Disk Block Size  |  设置系统磁盘 Block 大小为 4096 |
@@ -79,7 +78,7 @@ category: deployment
 
 | 配置	| 描述 |
 | :-- | :-- |
-| 防护墙 / 端口 | 请查看 TiDB 所需端口在各个节点之间能正常访问 |
+| 防火墙 / 端口 | 请查看 TiDB 所需端口在各个节点之间能正常访问 |
 
 
 ### 操作系统参数
@@ -88,12 +87,12 @@ category: deployment
 | :-- | :-- | :-- |
 | Nice Limits | 数据库系统管理员 tidb 的 nice 值设置为缺省值 0 |
 | min_free_kbytes | 在 ysctl.conf 中关于 vm.min_free_kbytes 的设置需要足够高 |
-| User Open Files Limit | 对数据库管理员 tidb 的 open 文件数设置为 100000 |
-| System Open File Limits | 对系统的 open 文件数设置为 100000 |
+| User Open Files Limit | 对数据库管理员 tidb 的 open 文件数设置为 1000000 |
+| System Open File Limits | 对系统的 open 文件数设置为 1000000 |
 | User Process Limits | 在 limits.conf 配置的 tidb 用户的 nproc 为 4096 |
 | Address Space Limits | 在 limits.conf 配置的 tidb 用户空间为 unlimited |
 | File Size Limits | 在 limits.conf 配置的 tidb 用户 fsize 为 unlimited |
-| Disk Readahead | 设置数据磁盘 readhaeat 为 4096 |
+| Disk Readahead | 设置数据磁盘 readahead 至少为 4096 |
 | NTP 服务 | 为各个节点配置 NTP 时间同步服务 |
 | SELinux  | 关闭各个节点的 SELinux 服务  |
 | CPU Frequency Scaling |  TiDB 推荐打开 CPU 超频 |
@@ -150,9 +149,9 @@ The key's randomart image is:
 
 ## 下载官方 Binary
 
-TiDB官方提供了支持 Linux 版本的二进制安装包，官方推荐使用 Redhat 7+、CentOS 7+或Ubuntu 14.04+以上版本的操作系统，不推荐在 Redhat 6、CentOS 6 上部署 TiDB 集群
+TiDB官方提供了支持 Linux 版本的二进制安装包，官方推荐使用 Redhat 7+、CentOS 7+ 以上版本的操作系统，不推荐在 Redhat 6、CentOS 6 上部署 TiDB 集群
 
-操作系统：Linux (Redhat 7+，CentOS 7+，Ubuntu 14.04+)
+操作系统：Linux ( Redhat 7+，CentOS 7+ )
 
 ---
 执行步骤：
@@ -365,6 +364,8 @@ mysql -h 192.168.199.113 -P 4000 -u root -D test
 
 ```
 注意：在生产环境中启动 TiKV 时，建议使用 --config 参数指定配置文件路径，如果不设置这个参数，TiKV 不会读取配置文件。同样，在生产环境中部署 PD 时，也建议使用 --config 参数指定配置文件路径。
+
+TiKV 调优参见：[ TiKV 性能参数调优 ](https://github.com/pingcap/docs-cn/blob/master/op-guide/tune-tikv.md)
 
 注意：如果使用 nohup 在生产环境中启动集群，需要将启动命令放到一个脚本文件里面执行，否则会出现因为 Shell 退出导致 nohup 启动的进程也收到异常信号退出的问题，具体参考进程异常退出。
 
