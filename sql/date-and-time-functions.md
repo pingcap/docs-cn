@@ -1,6 +1,13 @@
+---
+title: TiDB 用户文档
+category: user guide
+---
+
 ## 日期和时间函数
 
-*日期时间函数表**
+TiDB 中日期和时间函数的使用方法与 MySQL 基本一致，详情参见: [Date and Time Functions](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html).
+
+**日期时间函数表**
 
 | 函数名                                      | 功能描述                                     |
 | ---------------------------------------- | ---------------------------------------- |
@@ -64,5 +71,3 @@
 | [`WEEKOFYEAR()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_weekofyear) | 返回参数在日历中对应的一年中的星期数                       |
 | [`YEAR()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_year) | 返回参数对应的年数                                |
 | [`YEARWEEK()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_yearweek) | 返回年数和星期数                                 |
-
-详情参见[这里](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html).
