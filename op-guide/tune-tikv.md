@@ -10,14 +10,15 @@ category: advanced
 TiKV 最底层使用的是 RocksDB 做为持久化存储，所以 TiKV 的很多性能相关的参数都是与 RocksDB 相关的。
 TiKV 使用了两个 RocksDB 实例，默认 RocksDB 实例存储 KV 数据， Raft RocksDB 实例（简称 RaftDB）存储 Raft 数据。
 
-TiKV 使用了 RocksDB 的 `Column Falimies` 特性，KV 数据最终存储在默认 RocksDB 内部的 `default`、`write` 和 `lock` 3 个 CF 内。
+TiKV 使用了 RocksDB 的 `Column Falimies` 特性。
 
-`default` CF 存储的是真正的数据，与其对应的参数位于 `[rocksdb.defaultcf]` 项中；
-`write` CF 存储的是数据的版本信息（MVCC）以及索引相关的数据，相关的参数位于 `[rocksdb.writecf]` 项中；
-`lock` CF 存储的是锁信息，系统使用默认参数。
+默认 RocksDB 实例将 KV 数据存储在内部的 `default`、`write` 和 `lock` 3 个 CF 内。
++ `default` CF 存储的是真正的数据，与其对应的参数位于 `[rocksdb.defaultcf]` 项中；
++ `write` CF 存储的是数据的版本信息（MVCC）以及索引相关的数据，相关的参数位于 `[rocksdb.writecf]` 项中；
++ `lock` CF 存储的是锁信息，系统使用默认参数。
 
-Raft Rocksdb 实例存储 Raft log。
-`default` CF 主要存储的是 raft log，与其对应的参数位于 `[raftdb.defaultcf]` 项中。
+Raft RocksDB 实例存储 Raft log。
++ `default` CF 主要存储的是 raft log，与其对应的参数位于 `[raftdb.defaultcf]` 项中。
 
 每个 CF 都有单独的 `block-cache`，用于缓存数据块，加速 RocksDB 的读取速度，block-cache 的大小通过参数 `block-cache-size` 控制，block-cache-size 越大，能够缓存的热点数据越多，对读取操作越有利，同时占用的系统内存也会越多。
 
