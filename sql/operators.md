@@ -3,19 +3,15 @@ title: TiDB 用户文档
 category: user guide
 ---
 
-
-
 # 操作符
-
-
 
 1. [操作符优先级](#操作符优先级)
 2. [比较方法和操作符](#比较方法和操作符)
 3. [逻辑操作符](#逻辑操作符)
 4. [赋值操作符](#赋值操作符)
 
-| 操作符名                                     | 功能描述                                     |
-| ---------------------------------------- | ---------------------------------------- |
+| 操作符名 | 功能描述 |
+| -------- | ---------------------------------------- |
 | [`AND`, `&&`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_and) | 逻辑与                                      |
 | [`=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-equal) | 赋值 (可用于 [`SET`](https://dev.mysql.com/doc/refman/5.7/en/set-variable.html) 语句中, 或用于 [`UPDATE`](https://dev.mysql.com/doc/refman/5.7/en/update.html) 语句的 `SET` 中 ) |
 | [`:=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-value) | 赋值                                       |
@@ -24,7 +20,7 @@ category: user guide
 | [`&`](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_bitwise-and) | 位与                                       |
 | [`~`](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_bitwise-invert) | 位非                                       |
 | [`\|`](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_bitwise-or) | 位或                                       |
-| [`^`](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_bitwise-xor) | 位异或                                      |
+| [`^`](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_bitwise-xor) | 按位异或                                      |
 | [`CASE`](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html#operator_case) | case 操作符                                 |
 | [`DIV`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_div) | 整数除                                      |
 | [`/`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_divide) | 除法                                       |
@@ -84,8 +80,8 @@ OR, ||
 
 ## 比较方法和操作符
 
-| 操作符名                                     | 功能描述              |
-| ---------------------------------------- | ----------------- |
+| 操作符名 | 功能描述 |
+| -------- | ----------------------------------------- |
 | [`BETWEEN ... AND ...`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_between) | 判断值是否在范围内         |
 | [`COALESCE()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_coalesce) | 返回第一个非空值          |
 | [`=`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_equal) | 相等比较              |
@@ -114,8 +110,8 @@ OR, ||
 
 ## 逻辑操作符
 
-| 操作符名                                     | 功能描述 |
-| ---------------------------------------- | ---- |
+| 操作符名 | 功能描述 |
+| -------- | ----------------------------------------- |
 | [`AND`, `&&`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_and) | 逻辑与  |
 | [`NOT`, `!`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_not) | 逻辑非  |
 | [`\|\|`, `OR`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_or) | 逻辑或  |
@@ -125,8 +121,8 @@ OR, ||
 
 ## 赋值操作符
 
-| 操作符名                                     | 功能描述                                     |
-| ---------------------------------------- | ---------------------------------------- |
+| 操作符名 | 功能描述 |
+| -------- | -------------------------------------------- |
 | [`=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-equal) | 赋值 (可用于 [`SET`](https://dev.mysql.com/doc/refman/5.7/en/set-variable.html) 语句中, 或用于 [`UPDATE`](https://dev.mysql.com/doc/refman/5.7/en/update.html) 语句的 `SET` 中 ) |
 | [`:=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-value) | 赋值                                       |
 

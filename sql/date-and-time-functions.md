@@ -3,14 +3,14 @@ title: TiDB 用户文档
 category: user guide
 ---
 
-## 日期和时间函数
+# 日期和时间函数
 
 TiDB 中日期和时间函数的使用方法与 MySQL 基本一致，详情参见: [Date and Time Functions](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html).
 
 **日期时间函数表**
 
-| 函数名                                      | 功能描述                                     |
-| ---------------------------------------- | ---------------------------------------- |
+| 函数名 | 功能描述                                 |
+| ------ | ---------------------------------------- |
 | [`ADDDATE()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_adddate) | 将时间间隔添加到日期上                              |
 | [`ADDTIME()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_addtime) | 时间数值相加                                   |
 | [`CONVERT_TZ()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_convert-tz) | 转换时区                                     |
