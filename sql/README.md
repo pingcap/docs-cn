@@ -38,10 +38,9 @@ Table of Contents
     - 日期和时间类型
     - [字符串类型](datatype.md#字符串类型)
     - JSON 数据类型
-    - 数据类型默认值
+    - [数据类型默认值](datatype.md#数据类型的默认值)
     - 数据类型存储需求
     - 选择正确的列类型
-    - 使用来自其他数据库引擎的数据类型
 + 函数和操作符
     - 函数和操作符概述
     - 表达式求值的类型转换
@@ -50,7 +49,7 @@ Table of Contents
     - 字符串函数
     - 数值函数与操作符
     - [日期和时间函数](date-and-time-functions.md)
-    - Cast函数和操作符
+    - [Cast 函数和操作符](cast-functions-and-operators.md)
     - 位函数和操作符
     - 加密和压缩函数
     - 信息函数
