@@ -10,7 +10,7 @@ TiDB 中信息函数的使用方法与 MySQL 基本一致，详情参见: [Infor
 **信息函数表**
 
 | 函数名                                      | 功能描述                                     |
-| ---------------------------------------- | ---------------------------------------- |
+| ----------- | ---------------------------------------- |
 | [`CONNECTION_ID()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_connection-id) | 返回当前连接的连接 ID (线程 ID)                     |
 | [`CURRENT_USER()`, `CURRENT_USER`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_current-user) | 返回当前用户的用户名和主机名                           |
 | [`DATABASE()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_database) | 返回默认(当前)的数据库名                            |
