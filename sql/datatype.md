@@ -163,7 +163,7 @@ LONGBLOB
 > 类似于 BLOB, 区别在于最大列长度为 4294967295。
 
 TEXT[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
-> 文本串。M 表示最大列长度，范围是0到65535。VARCHAR 的最大实际长度由最长的行的大小和使用的字符集确定。
+> 文本串。M 表示最大列长度，范围是0到65535。TEXT 的最大实际长度由最长的行的大小和使用的字符集确定。
 
 TINYTEXT[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
 > 类似于 TEXT, 区别在于最大列长度为 255。
