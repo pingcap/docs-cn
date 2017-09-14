@@ -60,7 +60,7 @@ To quickly backup and restore data (especially large amounts of data), refer to 
   - 48 vCPU [2 x 12 physical cores]
   - Memory: 128G
   - Disk: sda [raid 10, 300G] sdb[RAID 5, 2T]
-  - OS: CentOS 7.2
+  - Operating System: CentOS 7.3
 - The `-F` parameter of `mydumper` is set to 16 and the `-t` parameter of `loader` is set to 64.
 
 **Results**: It takes 11 hours to import all the data, which is 19.4G/hour.

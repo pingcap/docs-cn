@@ -3,7 +3,7 @@ title: TiDB Docker Deployment
 category: deployment
 ---
 
-# TiDB Docker Deployment
+# Docker Deployment
 
 This page shows you how to manually deploy a multi-node TiDB cluster on multiple machines using Docker.
 

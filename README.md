@@ -7,12 +7,12 @@
   - [TiDB Architecture](overview.md#tidb-architecture)
 + [TiDB Quick Start Guide](./QUICKSTART.md)
   - [About TiDB](./QUICKSTART.md#about-tidb)
-  - [About this guide](./QUICKSTART.md#about-this-guide)
-  - [Deploy a TiDB cluster](./QUICKSTART.md#deploy-a-tidb-cluster)
+  - [About This Guide](./QUICKSTART.md#about-this-guide)
+  - [Deploy a TiDB Cluster](./QUICKSTART.md#deploy-a-tidb-cluster)
   - [Try TiDB](./QUICKSTART.md#try-tidb)
-  - [Monitoring a TiDB cluster](./QUICKSTART.md#monitoring-a-tidb-cluster)
-  - [Scale the TiDB cluster](./QUICKSTART.md#scale-the-tidb-cluster)
-  - [Destroy the cluster](./QUICKSTART.md#destroy-the-cluster)
+  - [Monitor the TiDB Cluster](./QUICKSTART.md#monitoring-a-tidb-cluster)
+  - [Scale the TiDB Cluster](./QUICKSTART.md#scale-the-tidb-cluster)
+  - [Destroy the TiDB Cluster](./QUICKSTART.md#destroy-the-cluster)
 + Operations Guide
   - [Hardware and Software Requirements](op-guide/recommendation.md)
   + Deploy
@@ -23,18 +23,19 @@
     - [Configuration Flags](op-guide/configuration.md)
   + Monitor
     - [Overview of the Monitoring Framework](op-guide/monitor-overview.md)
-    - [Key Metrics](op-guide/key-metrics.md)
-    - [Monitoring a TiDB Cluster](op-guide/monitoring-tidb.md)
+    - [Key Metrics](op-guide/dashboard-overview-info.md)
+    - [Monitor a TiDB Cluster](op-guide/monitoring-tidb.md)
   - [Scale](op-guide/horizontal-scale.md)
   - [Upgrade](op-guide/ansible-deployment.md#perform-rolling-update)
   + Performance Tuning
     - [Performance Tuning for TiKV](op-guide/tune-TiKV.md)
   + Backup and Migrate
-    + [Migrate data from MySQL to TiDB](op-guide/migration.md)
-      - [Migrate all the data](op-guide/migration.md#using-the-mydumper--loader-tool-to-export-and-import-all-the-data)
-      - [Migrate the data incrementally](op-guide/migration.md#optional-using-the-syncer-tool-to-import-data-incrementally)
+    - [Backup and Restore](op-guide/backup-restore.md)
+    + [Migrate Data From MySQL to TiDB](op-guide/migration.md)
+      - [Migrate All the Data](op-guide/migration.md#using-the-mydumper--loader-tool-to-export-and-import-all-the-data)
+      - [Migrate the Data Incrementally](op-guide/migration.md#optional-using-the-syncer-tool-to-import-data-incrementally)
   + Manual operations 
-    - [Deploy Using the Binary](op-guide/binary-deployment.md)
+    - [Deploy TiDB Using the Binary](op-guide/binary-deployment.md)
 + User Guide
   + TiDB Server Administration
     - [The Proprietary System Variables and Syntax in TiDB](sql/tidb-specific.md)
@@ -52,7 +53,7 @@
   - [TiDB SQL Grammar](sql/README.md)
   - [Compatibility with MySQL](sql/mysql-compatibility.md)
 + Advanced Usage
-  - [Reading Data from History Versions](op-guide/history-read.md) 
+  - [Read Data From History Versions](op-guide/history-read.md) 
 + Tools
   - [Syncer User Guide](./tools/syncer.md)
   - [Loader User Guide](./tools/loader.md)

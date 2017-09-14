@@ -20,7 +20,7 @@ category: quick start
     - [Create, show, and drop an index](#create-show-and-drop-an-index)
     - [Insert, select, update, and delete data](#insert-select-update-and-delete-data)
     - [Create, authorize, and delete a user](#create-authorize-and-delete-a-user)
-- [Monitoring a TiDB cluster](#monitoring-a-tidb-cluster)
+- [Monitor a TiDB cluster](#monitor-a-tidb-cluster)
     - [About the key metrics](#about-the-key-metrics)
 - [Scale the TiDB cluster](#scale-the-tidb-cluster)
 - [Destroy the cluster](#destroy-the-cluster)
@@ -60,7 +60,7 @@ pip install Jinja2==2.7.2 MarkupSafe==0.11
 
 - 4 or more machines. At least 3 instances for TiKV. Don’t deploy TiKV together with TiDB or PD on the same machine. See [deploying recommendations](https://github.com/pingcap/docs/blob/master/op-guide/recommendation.md).
 - Operating system:
-  - CentOS 7.0 and later versions
+  - CentOS 7.3 and later versions
   - X86_64 architecture (AMD64)
   - Kernel version 3.10 or later
   - Ext4 file system.
@@ -378,7 +378,7 @@ Delete `tiuser`:
 DROP USER 'tiuser'@'localhost';
 ```
 
-## Monitoring a TiDB cluster
+## Monitor a TiDB cluster
 
 Open a browser to access the monitoring platform: `http://172.16.10.3:3000`.
 

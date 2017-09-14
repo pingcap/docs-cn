@@ -3,7 +3,7 @@ title: Software and Hardware Requirements
 category: deployment
 ---
 
-# TiDB Software and Hardware Requirements
+# Software and Hardware Requirements
 
 ## About
 

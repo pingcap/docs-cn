@@ -3,7 +3,7 @@ title: TiDB Binary Deployment
 category: deployment
 ---
 
-# TiDB Binary Deployment
+# Binary Deployment
 
 ## Overview
 
@@ -19,7 +19,7 @@ To deploy and use TiDB in production, see [Multiple Nodes Cluster Deployment](#m
 
 ## Download and Decompress the Official Binary Package
 
-### Linux (CentOS 7+, Ubuntu 14.04+)
+### Linux (CentOS 7.3+, Ubuntu 14.04+)
 
 ```bash
 # Download package
@@ -32,23 +32,6 @@ sha256sum -c tidb-latest-linux-amd64.sha256
 # Decompress the package
 tar -xzf tidb-latest-linux-amd64.tar.gz
 cd tidb-latest-linux-amd64
-```
-
-### CentOS 6 (Not Recommended)
-
-**Warning:** It is not recommended to deploy on CentOS 6 because most of the developments and tests are performed on the CentOS 7+ and Ubuntu 14.04+ platforms. There might not be enough tests on the CentOS 6 platform.
-
-```bash
-# Download CentOS 6 package
-wget http://download.pingcap.org/tidb-latest-linux-amd64-centos6.tar.gz
-wget http://download.pingcap.org/tidb-latest-linux-amd64-centos6.sha256
-
-# Verify the integrity
-sha256sum -c tidb-latest-linux-amd64-centos6.sha256
-
-# Decompress the package
-tar -xzf tidb-latest-linux-amd64-centos6.tar.gz
-cd tidb-latest-linux-amd64-centos6
 ```
 
 ## Single Node Cluster Deployment

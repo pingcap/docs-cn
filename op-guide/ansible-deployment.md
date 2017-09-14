@@ -3,7 +3,7 @@ title: TiDB Ansible Deployment
 category: deployment
 ---
 
-# TiDB Ansible Deployment
+# Ansible Deployment
 
 ## Overview
 
@@ -34,13 +34,14 @@ Before you start, make sure that you have:
     pip install Jinja2==2.7.2 MarkupSafe==0.11
     ```
 
+- Access to the external network to install curl package and download binary.
 - Access to the managed nodes via SSH using password login or SSH authorized_key login.
 
 1.2  Several managed nodes with the following requirements:
 
 - 4 or more machines. At least 3 instances for TiKV. Don’t deploy TiKV together with TiDB or PD on the same machine. See [deploying recommendations](https://github.com/pingcap/docs/blob/master/op-guide/recommendation.md).
 
-- Operating system:
+- Recommended Operating system:
 
     - CentOS 7.3 or later
 
@@ -52,13 +53,13 @@ Before you start, make sure that you have:
 
 - The network between machines. Turn off the firewalls and iptables when deploying and turn them on after the deployment.
 
-- The same time and time zone for all machines with the NTP service on to synchronize the correct time.
+- The same time and time zone for all machines with the NTP service on to synchronize the correct time. If you are using the Ubuntu platform, install the ntpstat package.
 
 - A remote user account which you can use to login from the Control Machine to connect to the managed nodes via SSH. It can be the root user or a user account with sudo privileges.
 
 - Python 2.6 or Python 2.7
 
-**Note:** The Control Machine can be one of the managed nodes with access to the external network to download binary.
+**Note:** The Control Machine can be one of the managed nodes.
 
 ## 2. Install Ansible in the Control Machine
 
