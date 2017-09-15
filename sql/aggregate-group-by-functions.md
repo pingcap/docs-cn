@@ -7,7 +7,7 @@ category: user guide
 
 ## GROUP BY 聚合函数功能描述
 
-本节介绍 TiDB 中支持的 MySQL 组（聚合）函数。
+本节介绍 TiDB 中支持的 MySQL GROUP BY 聚合函数。
 
 | 函数名    | 功能描述              |
 |:---------|:--------------------|
@@ -19,10 +19,10 @@ category: user guide
 | [`MIN()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_min)                       | 返回最小值     |
 | [`GROUP_CONCAT()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_group-concat)     | 返回连接的字符串  |
 
-**Note**:
-
-- 除非另有说明，否则组函数默认忽略 `NULL` 值。
-- 如果在不包含 `GROUP BY` 子句的语句中使用组函数，则相当于对所有行进行分组。详情参阅 [TiDB 中的 GROUP BY](#tidb-中的-group-by)。 
+> **Note**:
+>
+> - 除非另有说明，否则组函数默认忽略 `NULL` 值。
+> - 如果在不包含 `GROUP BY` 子句的语句中使用组函数，则相当于对所有行进行分组。详情参阅 [TiDB 中的 GROUP BY](#tidb-中的-group-by)。 
 
 ## GROUP BY 修饰符
 
