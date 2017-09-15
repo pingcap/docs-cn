@@ -30,7 +30,7 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 | operator info | 每个 operator 的详细信息。各个 operator 的 operator info 各有不同，我们将在 [Operator Info](#operator-info) 中详细介绍                   |
 | count         | 预计当前 operator 将会输出的数据条数，基于统计信息以及 operator 的执行逻辑估算而来                                                            |
 
-## <span id="introduction">概述</span>
+## 概述
 
 ### Task 简介
 
@@ -48,7 +48,7 @@ TiDB 的索引数据和表数据一样，也存放在 TiKV 中。它的 key 是�
 值得注意的是，我们只支持比较符一端是列，另一端是常量，或可以计算成某一常量的情况，类似 `year(birth_day) < 1992` 的查询条件是不能利用索引的。还要注意应尽可能使用同一类型进行比较，以避免引入额外的 cast 操作而导致不能利用索引，如 `user_id = 123456`，如果 `user_id` 是字符串，需要将 `123456` 也写成字符串常量的形式。
 针对同一列的范围查询条件使用 `AND` 和 `OR` 组合后，等于对范围求交集或者并集。对于多维组合索引，我们可以写多个列的条件。例如对组合索引`(a, b, c)`，当 a 为等值查询时，可以继续求 b 的查询范围，当 b 也为等值查询时，可以继续求 c 的查询范围，反之如果 a 为非等值查询，则只能求 a 的范围。
 
-## <span id="operator-info">Operator Info</span>
+## Operator Info
 
 ### TableScan
 
