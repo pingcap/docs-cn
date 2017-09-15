@@ -161,7 +161,7 @@ category: deployment
 
 + PEM 格式的 SSL 证书文件路径
 + 默认: ""
-+ 当同时设置了该选项和 `--ssl-key` 选项时，TiDB 将接受（但不强制）客户端使用 TLS 安全地连接到 TiDB。
++ 当同时设置了该选项和 `--ssl-key` 选项时，TiDB 将接受（但不强制）客户端使用 TLS 安全地连接到 TiDB。
 + 若指定的证书或私钥无效，则 TiDB 会照常启动，但无法接受安全连接。
 
 ### \-\-ssl-key
