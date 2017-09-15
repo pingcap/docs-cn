@@ -24,8 +24,8 @@ ANALYZE TABLE TableName INDEX IndexNameList
 
 ### 自动更新
 
-在发生增加，删除以及修改语句时，TiDB 会自动更新表的总行数以及修改的行数。这些信息会定期持久化下来，更新的周期可以由 `statsLease` 参数指定，
-更新的周期是 5 * `statsLease`, `statsLease` 的默认值是 3s，如果将其指定为 0，那么将不会自动更新。
+在发生增加，删除以及修改语句时，TiDB 会自动更新表的总行数以及修改的行数。这些信息会定期持久化下来，
+更新的周期是 5 * `stats-lease`, `stats-lease` 的默认值是 3s，如果将其指定为 0，那么将不会自动更新。
 
 ## 统计信息的查看
 
