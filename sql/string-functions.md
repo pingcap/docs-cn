@@ -5,29 +5,29 @@ category: user guide
 
 # 字符串函数
 
-| 函数名                                                                                                              | 功能描述                                                                                                                               |
-|:------------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------|
-| [`ASCII()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_ascii)                         | 返回最左字符的数值                                                                                               |
-| [`CHAR()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_char)                           | 返回一个包含整数的代码值所给出的字符的字符串                                                                                              |
-| [`BIN()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_bin)                             | 返回一个数的二进制值的字符串表示                                                                              |
-| [`HEX()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_hex)                             | 返回十进制值或字符串值的十六进制表示                                                                          |
-| [`OCT()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_oct)                             | 返回一个数的八进制值的字符串表示                                                                               |
-| [`UNHEX()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_unhex)                         | 返回 HEX 表示的数字所代表的字符串                                                                                 |
-| [`TO_BASE64()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_to-base64)                 | 返回转换为基数为 64 的字符串参数                                                                                         |
-| [`FROM_BASE64()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_from-base64)             | 解码为基数 64 的字符串并返回结果                                                                                              |
+| 函数名   | 功能描述          |
+|:----------|:-----------------------|
+| [`ASCII()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_ascii)  | 返回最左字符的数值       |
+| [`CHAR()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_char)    | 返回由整数的代码值所给出的字符组成的字符串    |
+| [`BIN()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_bin)      | 返回一个数的二进制值的字符串表示   |
+| [`HEX()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_hex)      | 返回十进制值或字符串值的十六进制表示                                                                          |
+| [`OCT()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_oct)      | 返回一个数的八进制值的字符串表示                                                                               |
+| [`UNHEX()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_unhex)       | 返回 HEX 表示的数字所代表的字符串                                                                                 |
+| [`TO_BASE64()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_to-base64)                 | 返回转换为 BASE64 的字符串参数                                                                                         |
+| [`FROM_BASE64()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_from-base64)             | 解码为 BASE64 的字符串并返回结果                                                                                              |
 | [`LOWER()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_lower)                         | 返回小写字母的字符                                                                                                          |
 | [`LCASE()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_lcase)                         | 与 `LOWER()` 功能相同                                                                                                                       |
 | [`UPPER()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_upper)                         | 返回大写字母的字符                                                                                                                     |
 | [`UCASE()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_ucase)                         | 与 `UPPER()` 功能相同                                                                                                                       |
-| [`LPAD()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_lpad)                           | 返回左边由指定字符串填补的字符串参数                                                                         |
-| [`RPAD()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_rpad)                           | 返回右边由指定字符串填补的字符串参数                                                                                               |
+| [`LPAD()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_lpad)                           | 返回左边由指定字符串填充的字符串参数                                                                         |
+| [`RPAD()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_rpad)                           | 返回右边由指定字符串填充的字符串参数                                                                                               |
 | [`TRIM()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_trim)                           | 删除字符串的前缀和后缀                                                                                                        |
-| [`LTRIM()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_ltrim)                         | 删除引导的空格字符                                                                                                                     |
+| [`LTRIM()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_ltrim)                         | 删除前面的空格字符                                                                                                             |
 | [`RTRIM()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_rtrim)                         | 删除结尾的空格字符                                                                                                                    |
-| [`BIT_LENGTH()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_bit-length)               | 返回字符串的长度，单位是比特                                                                                                        |
-| [`CHAR_LENGTH()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_char-length)             | 返回字符串的长度，单位是字符                                                                                                   |
+| [`BIT_LENGTH()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_bit-length)               | 返回字符串的位长度                                                                                                        |
+| [`CHAR_LENGTH()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_char-length)             | 返回字符串的字符长度                                                                                                   |
 | [`CHARACTER_LENGTH()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_character-length)   | 与 `CHAR_LENGTH()` 功能相同                                                                                                                 |
-| [`LENGTH()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_length)                       | 返回字符串的长度，单位是字节                                                                                                    |
+| [`LENGTH()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_length)                       | 返回字符串的字节长度                                                                                                    |
 | [`OCTET_LENGTH()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_octet-length)           | 与 `LENGTH()` 功能相同                                                                                                                      |
 | [`INSERT()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_insert)                       | 在指定位置插入一个子字符串，直到指定的字符数                                                     |
 | [`REPLACE()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_replace)                     | 替换指定的字符串                                                                                                 |
@@ -47,14 +47,14 @@ category: user guide
 | [`SPACE()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_space)                       | 返回指定数目的空格组成的字符串                                                                                          |
 | [`FIELD()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_field)                         | 返回参数在后续参数中出现的第一个位置                                                             |
 | [`ELT()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_elt)                             | 返回指定位置的字符串                                                                                                             |
-| [`EXPORT_SET()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_export-set)               | 返回一个字符串，其中对于 bits 值中的每个位组，可以得到一个 on 字符串，而对于每个清零比特位，可以得到一个 off 字符串        |
-| [`MAKE_SET()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_make-set)                   | 返回一组逗号分隔的字符串，由 bits 组中具有相应比特的字符串组成                                                       |
+| [`EXPORT_SET()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_export-set)               | 返回一个字符串，其中值位中设置的每个位，可以得到一个 on 字符串，而每个未设置的位，可以得到一个 off 字符串        |
+| [`MAKE_SET()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_make-set)                   | 返回一组逗号分隔的字符串，由位集合中具有相应位的字符串组成                                                    |
 | [`FIND_IN_SET()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_find-in-set)             | 返回第一个参数在第二个参数中出现的位置                                                                |
 | [`FORMAT()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_format)                       | 返回指定小数位数格式的数字                                                                           |
 | [`ORD()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_ord)                             | 返回参数中最左字符的字符代码                                                                              |
-| [`QUOTE()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_quote)                         | 引证一个字符串，由此产生一个在 SQL 语句中可用作完全转义数据值的结果                                                                                           |
+| [`QUOTE()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_quote)                         | 引用一个字符串，返回一个在 SQL 语句中可用作正确转义的数据值的结果                                                                                           |
 | [`SOUNDEX()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_soundex)                     | 返回一个 soundex 字符串                                                                                                                   |
-| [`SOUNDS LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#operator_sounds-like)               | 比较 sounds                                                                                                                            |
+| [`SOUNDS LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#operator_sounds-like)               | 按发音比较字符串     |
 
 ## 字符串比较函数
 
