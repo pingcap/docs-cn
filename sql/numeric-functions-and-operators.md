@@ -7,8 +7,8 @@ category: user guide
 
 ## 算术操作符
 
-| 操作符名                                                                                        | 功能描述                       |
-|:----------------------------------------------------------------------------------------------|:----------------------------------|
+| 操作符名     | 功能描述                       |
+|:-------------|:--------------------------------|
 | [`+`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_plus)        | 加号                 |
 | [`-`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_minus)       | 减号                    |
 | [`*`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_times)       | 乘号           |
@@ -51,4 +51,4 @@ category: user guide
 | [`SIGN()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_sign)             | 返回参数的符号      |
 | [`CONV()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_conv)             | 不同数基间转换数字，返回数字的字符串表示   |
 | [`TRUNCATE()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_truncate)     | 返回被舍位至指定小数位数的数字     |
-| [`CRC32()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_crc32)           | 计算循环冗余码校验值并返回一个 32 比特无符号值                     |
+| [`CRC32()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_crc32)           | 计算循环冗余码校验值并返回一个 32 位无符号值                     |
