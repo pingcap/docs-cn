@@ -22,9 +22,10 @@ Table of Contents
     - 使用安全连接
 + 优化
     - [理解 TiDB 执行计划](understanding-the-query-execution-plan.md)
+    - [统计信息简介](introduction-to-statistics.md)
 + 语言结构
-    - 字面值
-    - 数据库、表、索引、列和别名
+    - 字面值
+    - 数据库、表、索引、列和别名
     - 关键字和保留字
     - 用户变量
     - 表达式语法
@@ -44,15 +45,15 @@ Table of Contents
 + 函数和操作符
     - 函数和操作符概述
     - 表达式求值的类型转换
-    - 操作符
+    - [操作符](operators.md)
     - 控制流程函数
     - 字符串函数
     - 数值函数与操作符
-    - 日期和时间函数
-    - Cast函数和操作符
+    - [日期和时间函数](date-and-time-functions.md)
+    - [Cast 函数和操作符](cast-functions-and-operators.md)
     - 位函数和操作符
     - 加密和压缩函数
-    - 信息函数
+    - [信息函数](information-functions.md)
     - JSON 函数
     - 全局事务 ID 函数
     - GROUP BY 聚合函数
