@@ -207,6 +207,13 @@ pd_servers
         ansible-playbook bootstrap.yml -k
         ```
 
+        或者：
+        如果 Ansible 使用普通用户远程连接需要密码, 可以添加 --extra-vars 参数，执行其他 playbook 同理：
+
+        ```
+        ansible-playbook bootstrap.yml --extra-vars "ansible_sudo_pass=tidbpasswd"
+        ```
+
         本 playbook 需要使用 root 权限执行，如果该普通用户 sudo 到 root 需要密码，需添加 -K 参数：
 
         ```
