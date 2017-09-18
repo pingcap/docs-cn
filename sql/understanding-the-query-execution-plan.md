@@ -38,9 +38,9 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 
 ### 表数据和索引数据
 
-TiDB 的表数据是指一张表的原始数据，存放在 TiKV 中。对于每行表数据，它的 key 是一个64位整数，称为 handle id。如果一张表存在 int 类型的主键，我们会把主键的值当作表数据的 handle id，否则由系统自动生成 handle id。表数据的 value 由这一行的所有数据编码而成。在读取表数据的时候，我们可以按照 handle id 递增的顺序返回。
+TiDB 的表数据是指一张表的原始数据，存放在 TiKV 中。对于每行表数据，它的 key 是一个 64 位整数，称为 Handle ID。如果一张表存在 int 类型的主键，我们会把主键的值当作表数据的 Handle ID，否则由系统自动生成 Handle ID。表数据的 value 由这一行的所有数据编码而成。在读取表数据的时候，我们可以按照 Handle ID 递增的顺序返回。
 
-TiDB 的索引数据和表数据一样，也存放在 TiKV 中。它的 key 是由索引列编码的有序 bytes，value 是这一行索引数据对应的 handle id，通过 handle id 我们可以读取这一行的非索引列。在读取索引数据的时候，我们按照索引列递增的顺序返回，如果有多个索引列，我们首先保证第 1 列递增，并且在第 i 列相等的情况下，保证第 i + 1 列递增。
+TiDB 的索引数据和表数据一样，也存放在 TiKV 中。它的 key 是由索引列编码的有序 bytes，value 是这一行索引数据对应的 Handle ID，通过 Handle ID 我们可以读取这一行的非索引列。在读取索引数据的时候，我们按照索引列递增的顺序返回，如果有多个索引列，我们首先保证第 1 列递增，并且在第 i 列相等的情况下，保证第 i + 1 列递增。
 
 ### 范围查询
 
@@ -50,16 +50,27 @@ TiDB 的索引数据和表数据一样，也存放在 TiKV 中。它的 key 是�
 
 ## Operator Info
 
-### TableScan
+### TableReader 和 TableScan
 
-TableScan 表示在 KV 端对表数据进行扫描。table 表示它在 SQL 语句中的表名，如果表名被重命名，则显示重命名。range 表示扫描的数据范围，如果在查询中不指定 WHERE/HAVING/ON 条件，则会选择全表扫描，如果在 int 类型的主键上有范围查询条件，会选择范围查询。keep order 表示 table scan 是否按顺序返回。
+TableScan 表示在 KV 端对表数据进行扫描，TableReader 表示在 TiDB 端从 TiKV 端读取，属于同一功能的两个算子。table 表示 SQL 语句中的表名，如果表名被重命名，则显示重命名。range 表示扫描的数据范围，如果在查询中不指定 WHERE/HAVING/ON 条件，则会选择全表扫描，如果在 int 类型的主键上有范围查询条件，会选择范围查询。keep order 表示 table scan 是否按顺序返回。
 
 ### IndexReader 和 IndexLookUp
 
+Index 在 TiDB 端的读取方式有两种：IndexReader 表示直接从索引中读取索引列，适用于 SQL 语句中仅引用了该索引相关的列或主键；IndexLookUp 表示从索引中过滤部分数据，仅返回这些数据的 Handle ID，通过 Handle ID 再次查找表数据，这种方式需要两次从 TiKV 获取数据。Index 的读取方式是由优化器自动选择的。
+
+IndexScan 是 KV 端读取索引数据的算子，和 TableScan 功能类似。table 表示 SQL 语句中的表名，如果表名被重命名，则显示重命名。index 表示索引名。range 表示扫描的数据范围。out of order 表示 index scan 是否按照顺序返回。注意在 TiDB 中，多列或者非 int 列构成的主键是当作唯一索引处理的。
+
 ### Selection
+
+Selection 表示 SQL 语句中的选择条件，通常出现在 WHERE/HAVING/ON 子句中。
 
 ### Projection
 
-### TableDual
+Projection 对应 SQL 语句中的 SELECT 列表，功能是将每一条输入数据映射成新的输出数据。
 
-### Union
+### Aggregation
+
+Aggregation 对应 SQL 语句中的 Group By 语句或者没有 Group By 语句但是存在聚合函数，例如 count 或 sum 函数等。TiDB 支持两种聚合算法：Hash Aggregation 以及 Stream Aggregation（待补充）。Hash Aggregation 是基于哈希的聚合算法，如果 Hash Aggregation 紧邻 Table 或者 Index 的读取算子，则聚合算子会在 TiKV 端进行预聚合，以提高计算的并行度和减少网络开销。
+
+### Join
+
