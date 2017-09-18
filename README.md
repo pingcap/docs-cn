@@ -31,7 +31,7 @@
     - [Performance Tuning for TiKV](op-guide/tune-TiKV.md)
   + Backup and Migrate
     - [Backup and Restore](op-guide/backup-restore.md)
-    + [Migrate Data From MySQL to TiDB](op-guide/migration.md)
+    + [Migrate Data from MySQL to TiDB](op-guide/migration.md)
       - [Migrate All the Data](op-guide/migration.md#using-the-mydumper--loader-tool-to-export-and-import-all-the-data)
       - [Migrate the Data Incrementally](op-guide/migration.md#optional-using-the-syncer-tool-to-import-data-incrementally)
   + Manual operations 
@@ -59,7 +59,9 @@
   - [Loader User Guide](./tools/loader.md)
   - [TiDB-Binlog User Guide](./tools/tidb-binlog.md)
   - [PD Command-Line Tools](op-guide/pd-control.md)
-- [TiDB Connector for Spark User Guide](https://github.com/pingcap/tispark/blob/master/docs/userguide.md)
++ The TiDB Connector for Spark
+  - [Quick Start Guide](tispark/tispark-quick-start-guide.md)
+  - [User Guide](tispark/tispark-user-guide.md)
 - [Frequently Asked Questions (FAQ)](./FAQ.md)
 - [Troubleshoot](./trouble-shooting.md)
 - [TiDB Best Practices](https://pingcap.github.io/blog/2017/07/24/tidbbestpractice/)
@@ -106,7 +108,7 @@ Power TiDB with your most favorite engines. TiDB supports many popular storage e
 
 To better understand TiDB’s features, you need to understand the TiDB architecture.
 
-![image alt text](media/tidb-architecture.png)
+![TiDB Architecture](media/tidb-architecture.png)
 
 The TiDB cluster has three components: the TiDB Server, the PD Server,  and the TiKV server.
 

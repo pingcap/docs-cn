@@ -3,9 +3,9 @@ title: TiSpark Quick Start Guide
 category: User Guide
 ---
 
-# TiSpark Quick Start Guide
+# Quick Start Guide for the TiDB Connector for Spark
 
-To make it easy to try [TiSpark](https://github.com/pingcap/tispark/blob/master/docs/userguide.md), TiDB cluster integrates Spark, TiSpark jar package and TiSpark sample data by default, in both the Pre-GA and master versions installed using TiDB-Ansible.
+To make it easy to try [the TiDB Connector for Spark](tispark-user-guide.md), TiDB cluster integrates Spark, TiSpark jar package and TiSpark sample data by default, in both the Pre-GA and master versions installed using TiDB-Ansible.
 
 ## Deployment Information
 

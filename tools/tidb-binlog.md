@@ -4,22 +4,6 @@ category: tool
 ---
 
 # TiDB-Binlog User Guide
-
-- [About TiDB-Binlog](#about-tidb-binlog)
-- [TiDB-Binlog architecture](#tidb-binlog-architecture)
-    - [Pump](#pump)
-    - [Drainer](#drainer)
-- [Install TiDB-Binlog](#install-tidb-binlog)
-    - [Download Binary for the CentOS 7+ platform](#download-binary-for-the-centos-7-platform)
-    - [Deploy TiDB-Binlog](#deploy-tidb-binlog)
-    - [Note](#note)
-    - [Examples and Parameters Explanation](#examples-and-parameters-explanation)
-- [Monitor TiDB-Binlog](#monitor-tidb-binlog)
-    - [Configure Pump/Drainer](#configure-pumpdrainer)
-    - [Configure Grafana](#configure-grafana)
-        - [Create a Prometheus data source](#create-a-prometheus-data-source)
-        - [Create a Grafana dashboard](#create-a-grafana-dashboard)
-
 ## About TiDB-Binlog
 
 TiDB-Binlog is a tool for enterprise users to collect binlog files for TiDB and provide real-time backup and synchronization.
@@ -47,7 +31,7 @@ Drainer collects binlog files from each Pump node, converts them into specified 
 
 ## Install TiDB-Binlog
 
-### Download Binary for the CentOS 7+ platform
+### Download Binary for the CentOS 7.3+ platform
 
 ```bash
 # Download the tool package.
