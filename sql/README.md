@@ -68,6 +68,6 @@ Table of Contents
     - 数据库管理语句
     - 实用工具语句
     - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
-+ 文档数据库
+- [文档型数据库](json-functions-generated-column.md)
 + 连接器和 API
 + 故障诊断
