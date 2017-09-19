@@ -14,7 +14,7 @@ DDL（Data Definition Language）用于定义和管理数据库以及数据库�
 + [RENAME TABLE 语法](#rename-table-语法)
 + ALTER TABLE 语法
 + CREATE INDEX 语法
-+ [DROP INDEX 语法](#drop-index-语法t)
++ [DROP INDEX 语法](#drop-index-语法)
 
 ## CREATE DATABASE 语法
 
