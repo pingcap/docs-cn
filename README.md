@@ -44,7 +44,7 @@
     - [TiDB 访问权限管理](sql/privilege.md)
   + 优化
     - [理解 TiDB 执行计划](sql/understanding-the-query-execution-plan.md)
-  + 数据类型
+  + [数据类型](sql/datatype.md)
     - [数值类型](sql/datatype.md#数值类型)
     - [字符串类型](sql/datatype.md#字符串类型)
     - [数据类型默认值](sql/datatype.md#数据类型的默认值)
