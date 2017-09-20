@@ -11,7 +11,7 @@ category: compatibility
 
 ## JSON功能介绍
 
-TiDB的 JSON 主要参考了 MySQL 5.7 的用户接口。例如，可以创建一个表，包含一个 JSON 字段来存储那些复杂的信息：
+TiDB 的 JSON 主要参考了 MySQL 5.7 的用户接口。例如，可以创建一个表，包含一个 JSON 字段来存储那些复杂的信息：
 
 ```sql
 CREATE TABLE person (
@@ -43,7 +43,7 @@ INSERT INTO person (name, address_info) VALUES ("John", CAST(123 AS JSON));
 SELECT id, name FROM person WHERE JSON_EXTRACT(address_info, '$.city') = 'Beijing');
 ```
 
-TiDB 支持 `JSON_EXTRACT` 函数，该函数与 MySQL 5.7 中 `JSON_EXTRACT`的用法完全相同。这个函数的意思就是，从 `address_info` 这个文档中取出名为 `city` 这个字段。它的第二个参数是一个“路径表达式”，我们由此可以指定到底要取出哪个字段。关于路径表达式的完整语法描述比较复杂，我们还是通过几个简单的例子来了解其用法：
+TiDB 支持 `JSON_EXTRACT` 函数，该函数与 MySQL 5.7 中 `JSON_EXTRACT` 的用法完全相同。这个函数的意思就是，从 `address_info` 这个文档中取出名为 `city` 这个字段。它的第二个参数是一个“路径表达式”，我们由此可以指定到底要取出哪个字段。关于路径表达式的完整语法描述比较复杂，我们还是通过几个简单的例子来了解其用法：
 
 ```sql
 SET @person = '{"name":"John","friends":[{"name":"Forest","age":16},{"name":"Zhang San","gender":"male"}]}';
@@ -74,7 +74,7 @@ SELECT JSON_EXTRACT(@person,  '$.friends[2].name'); -- gets NULL
 
 在有了上述的知识铺垫后，您可能会发现我们在查询 JSON 中的一个字段时，走的是全表扫描。使用 TiDB 的 `EXPLAIN` 语句时，一个比 MySQL 完备得多的结果会告诉我们，的确是全表扫描。那么，我们能否对 JSON 字段进行索引呢？
 
-首先，这种索引姿势是错误的：
+首先，这种索引是错误的：
 
 ```sql
 CREATE TABLE person (
