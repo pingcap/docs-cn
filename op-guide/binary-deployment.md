@@ -1,4 +1,3 @@
-
 ---
 title: TiDB Binary 部署方案详解
 category: deployment
@@ -81,7 +80,7 @@ category: deployment
 | I/O Scheduler | 设置数据磁盘 I/0 Schedule 设置为 `deadline` 模式 |
 | vm.swappiness | 设置 `vm.swappiness = 0` |
 
-注意：请联系系统管理员进行操作系统参数调整。
+> 注意：请联系系统管理员进行操作系统参数调整。
 
 ### 数据库运行用户设置
 
@@ -94,7 +93,7 @@ category: deployment
 
 在 Linux 环境下，在每台安装节点上创建 tidb 作为数据库系统运行用户并设置集群节点之间的 ssh 互信访问。以下是一个示例，具体创建用户与开通 ssh 互信访问请联系系统管理员进行。
 
-```
+```bash
 # useradd tidb
 # usermod -a -G tidb tidb
 # su - tidb
@@ -123,7 +122,7 @@ The key's randomart image is:
 +-----------------+
 
 -bash-4.2$ cd .ssh
--bash-4.2$ cp id_rsa.pub authorized_keys
+-bash-4.2$ cat id_rsa.pub >> authorized_keys
 -bash-4.2$ chmod 644 authorized_keys
 -bash-4.2$ ssh-copy-id -i ~/.ssh/id_rsa.pub 192.168.1.100
 
@@ -131,7 +130,7 @@ The key's randomart image is:
 
 ## 下载官方 Binary
 
-TiDB 官方提供了支持 Linux 版本的二进制安装包，官方推荐使用 Redhat 7+、CentOS 7+ 以上版本的操作系统，不推荐在 Redhat 6、CentOS 6 上部署 TiDB 集群
+TiDB 官方提供了支持 Linux 版本的二进制安装包，官方推荐使用 Redhat 7+、CentOS 7+ 以上版本的操作系统，不推荐在 Redhat 6、CentOS 6 上部署 TiDB 集群。
 
 ### 操作系统：Linux ( Redhat 7+，CentOS 7+ )
 
@@ -153,37 +152,20 @@ cd tidb-latest-linux-amd64
 
 ```
 
-### 操作系统：Linux ( Redhat 6，CentOS 6 )
-
-```
-
-# 下载 CentOS6 压缩包
-wget http://download.pingcap.org/tidb-latest-linux-amd64-centos6.tar.gz
-wget http://download.pingcap.org/tidb-latest-linux-amd64-centos6.sha256
-
-# 检查文件完整性，返回 ok 则正确
-sha256sum -c tidb-latest-linux-amd64-centos6.sha256
-
-# 解开压缩包
-tar -xzf tidb-latest-linux-amd64-centos6.tar.gz
-cd tidb-latest-linux-amd64-centos6
-
-```
-
 ## 单节点方式快速部署
 
 在获取 TiDB 二进制文件包后，我们可以在单机上面，运行和测试 TiDB 集群，请按如下步骤依次启动 PD，TiKV，TiDB。
 
-注意：以下启动各个应用程序组件实例的时候，请选择后台启动，避免前台失效后程序自动退出。
+> 注意：以下启动各个应用程序组件实例的时候，请选择后台启动，避免前台失效后程序自动退出。
 
-步骤一. 启动 PD
+步骤一. 启动 PD：
 
 ```
 ./bin/pd-server --data-dir=pd \
                 --log-file=pd.log
 ```
 
-步骤二. 启动 TiKV
+步骤二. 启动 TiKV：
 
 ```
 ./bin/tikv-server --pd="127.0.0.1:2379" \
@@ -191,14 +173,14 @@ cd tidb-latest-linux-amd64-centos6
                   --log-file=tikv.log
 ```
 
-步骤三. 启动 TiDB
+步骤三. 启动 TiDB：
 
 ```
 ./bin/tidb-server --store=tikv \
                   --path="127.0.0.1:2379" \
                   --log-file=tidb.log
 ```
-步骤四. 使用 mysql 客户端连接 TiDB
+步骤四. 使用 MySQL 客户端连接 TiDB:
 
 ```
 mysql -h 127.0.0.1 -P 4000 -u root -D test
@@ -207,7 +189,7 @@ mysql -h 127.0.0.1 -P 4000 -u root -D test
 
 ## 功能性测试部署
 
-如果只是对 TiDB 进行测试，并且机器数量有限，我们可以只启动一台 PD 测试 整个集群。
+如果只是对 TiDB 进行测试，并且机器数量有限，我们可以只启动一台 PD 测试整个集群。
 
 这里我们使用四个节点，部署一个 PD，三个 TiKV，以及一个 TiDB，各个节点以及所运行服务信息如下：
 
@@ -220,9 +202,9 @@ mysql -h 127.0.0.1 -P 4000 -u root -D test
 
 请按如下步骤依次启动 PD 集群，TiKV 集群以及 TiDB：
 
-注意：以下启动各个应用程序组件实例的时候，请选择后台启动，避免前台失效后程序自动退出。
+> 注意：以下启动各个应用程序组件实例的时候，请选择后台启动，避免前台失效后程序自动退出。
 
-步骤一. 在 node1 启动 PD
+步骤一. 在 node1 启动 PD：
 
 ```
 ./bin/pd-server --name=pd1 \
@@ -233,7 +215,7 @@ mysql -h 127.0.0.1 -P 4000 -u root -D test
                 --log-file=pd.log
 ```
 
-步骤二. 在 node2，node3，node4 启动 TiKV
+步骤二. 在 node2，node3，node4 启动 TiKV：
 
 ```
 ./bin/tikv-server --pd="192.168.199.113:2379" \
@@ -252,14 +234,14 @@ mysql -h 127.0.0.1 -P 4000 -u root -D test
                   --log-file=tikv.log
 ```
 
-步骤三. 在 node1 启动 TiDB
+步骤三. 在 node1 启动 TiDB：
 
 ```
 ./bin/tidb-server --store=tikv \
                   --path="192.168.199.113:2379" \
                   --log-file=tidb.log
 ```
-步骤四. 使用 mysql 客户端连接 TiDB
+步骤四. 使用 MySQL 客户端连接 TiDB：
 
 ```
 mysql -h 192.168.199.113 -P 4000 -u root -D test
@@ -283,7 +265,7 @@ mysql -h 192.168.199.113 -P 4000 -u root -D test
 
 请按如下步骤依次启动 PD 集群，TiKV 集群以及 TiDB：
 
-步骤一 . 在 node1，node2，node3 依次启动 PD
+步骤一 . 在 node1，node2，node3 依次启动 PD：
 
 ```
 ./bin/pd-server --name=pd1 \
@@ -315,7 +297,7 @@ mysql -h 192.168.199.113 -P 4000 -u root -D test
 
 ```
 
-步骤二. 在 node4，node5，node6 启动 TiKV
+步骤二. 在 node4，node5，node6 启动 TiKV：
 
 ```
 ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
@@ -335,7 +317,7 @@ mysql -h 192.168.199.113 -P 4000 -u root -D test
 
 ```
 
-步骤三. 在 node1 启动 TiDB
+步骤三. 在 node1 启动 TiDB：
 
 ```
 ./bin/tidb-server --store=tikv \
@@ -344,27 +326,27 @@ mysql -h 192.168.199.113 -P 4000 -u root -D test
 
 ```
 
-步骤四. 使用 mysql 客户端连接 TiDB
+步骤四. 使用 MySQL 客户端连接 TiDB：
 
 ```
 
 mysql -h 192.168.199.113 -P 4000 -u root -D test
 
 ```
-注意：在生产环境中启动 TiKV 时，建议使用 --config 参数指定配置文件路径，如果不设置这个参数，TiKV 不会读取配置文件。同样，在生产环境中部署 PD 时，也建议使用 --config 参数指定配置文件路径。
+> 注意：在生产环境中启动 TiKV 时，建议使用 `--config` 参数指定配置文件路径，如果不设置这个参数，TiKV 不会读取配置文件。同样，在生产环境中部署 PD 时，也建议使用 `--config` 参数指定配置文件路径。
 
-TiKV 调优参见：[TiKV 性能参数调优](https://github.com/pingcap/docs-cn/blob/master/op-guide/tune-tikv.md)
+TiKV 调优参见：[TiKV 性能参数调优](https://github.com/pingcap/docs-cn/blob/master/op-guide/tune-tikv.md)。
 
-注意：如果使用 nohup 在生产环境中启动集群，需要将启动命令放到一个脚本文件里面执行，否则会出现因为 Shell 退出导致 nohup 启动的进程也收到异常信号退出的问题，具体参考进程异常退出。
+> 注意：如果使用 nohup 在生产环境中启动集群，需要将启动命令放到一个脚本文件里面执行，否则会出现因为 Shell 退出导致 nohup 启动的进程也收到异常信号退出的问题，具体参考进程异常退出。
 
 
 ## TiDB 监控和告警环境安装
 
-监控和告警安装
+安装部署监控和告警环境的系统信息如下：
 
 | Name  | Host IP | Services |
 | :-- | :-- | :------------- |
-| node1 | 192.168.199.113 | node_export, pushgateway, prometheus, grafana |
+| node1 | 192.168.199.113 | node_export, pushgateway, Prometheus, Grafana |
 | node2 | 192.168.199.114 | node_export |
 | node3 | 192.168.199.115 | node_export |
 | node4 | 192.168.199.116 | node_export |
@@ -389,7 +371,7 @@ tar -xzf pushgateway-0.3.1.linux-amd64.tar.gz
 
 ### 启动监控服务
 
-### 在 node1，node2，node3，node4 启动 node_exporter
+### 在 node1，node2，node3，node4 启动 `node_exporter`：
 
 ```
 $cd node_exporter-0.14.0-rc.1.linux-amd64
@@ -400,7 +382,7 @@ $cd node_exporter-0.14.0-rc.1.linux-amd64
 
 ```
 
-### 在 node1 启动 pushgateway
+### 在 node1 启动 pushgateway:
 
 ```
 $cd pushgateway-0.3.1.linux-amd64
@@ -412,7 +394,7 @@ $cd pushgateway-0.3.1.linux-amd64
 
 ```
 
-### 在 node1 启动 prometheus
+### 在 node1 启动 Prometheus:
 
 ```
 $cd prometheus-1.5.2.linux-amd64
@@ -447,7 +429,7 @@ scrape_configs:
       - '192.168.199.116:9100'
 ...
  
-# 启动 prometheus 
+# 启动 Prometheus:
 ./prometheus \
     --config.file="/data1/tidb/deploy/conf/prometheus.yml" \
     --web.listen-address=":9090" \
@@ -458,7 +440,7 @@ scrape_configs:
 
 ```
 
-### 在 node1 启动 grafana
+### 在 node1 启动 Grafana:
 
 ```
 
@@ -478,7 +460,7 @@ domain = 192.168.199.113
 
 ...
 
-#启动 grafana 服务
+#启动 Grafana 服务
 ./grafana-server \
     --homepath="/data1/tidb/deploy/opt/grafana" \
     --config="/data1/tidb/deploy/opt/grafana/conf/grafana.ini"
