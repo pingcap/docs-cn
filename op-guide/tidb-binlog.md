@@ -3,11 +3,9 @@ title: TiDB-Binlog 部署方案
 category: advanced
 ---
 
-
-
 # TiDB-Binlog 部署方案
 
-## 目录
+目录
 
   - [TiDB-Binlog 功能特性](#tidb-binlog-简介)
   - [TiDB-Binlog 整体架构](#tidb-binlog-架构)
@@ -32,7 +30,7 @@ TiDB-Binlog 支持以下功能场景:
 
 TiDB-Binlog 集群主要分为两个组件：
 
-### Pump 
+### Pump
 
 Pump 是一个守护进程，在每个 TiDB 的主机上后台运行。他的主要功能是实时记录 TiDB 产生的 Binlog 并顺序写入磁盘文件
 
@@ -44,33 +42,33 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
 
 ### 下载官方 Binary
 
-- ( CentOS 7+ )
+-   CentOS 7+
 
-```bash
-# 下载压缩包
-wget http://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-binlog-latest-linux-amd64.sha256
+    ```bash
+    # 下载压缩包
+    wget http://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz
+    wget http://download.pingcap.org/tidb-binlog-latest-linux-amd64.sha256
 
-# 检查文件完整性，返回 ok 则正确
-sha256sum -c tidb-binlog-latest-linux-amd64.sha256
+    # 检查文件完整性，返回 ok 则正确
+    sha256sum -c tidb-binlog-latest-linux-amd64.sha256
 
-# 解开压缩包
-tar -xzf tidb-binlog-latest-linux-amd64.tar.gz
-cd tidb-binlog-latest-linux-amd64
-```
+    # 解开压缩包
+    tar -xzf tidb-binlog-latest-linux-amd64.tar.gz
+    cd tidb-binlog-latest-linux-amd64
+    ```
 
 ### TiDB-Binlog 部署
 
-- 推荐使用 ansible 部署 PUMP 
+推荐使用 ansible 部署 PUMP
 
-*   搭建全新的 TiDB Cluster，启动顺序 pd-server -> tikv-server -> pump -> tidb-server -> drainer 
+*   搭建全新的 TiDB Cluster，启动顺序 pd-server -> tikv-server -> pump -> tidb-server -> drainer
     * 修改 tidb-ansible inventory.ini 文件
         * enable_binlog = True
     * 执行 ansible-playbook deploy.yml
     * 执行 ansible-playbook start.yml
         * drainer 目前需要手动部署
 
-*   对已有的 TiDB Cluster 部署 binlog 
+*   对已有的 TiDB Cluster 部署 binlog
     * 修改 tidb-ansible inventory.ini 文件
         * enable_binlog = True
     * 执行 ansible-playbook rolling_update.yml
@@ -82,7 +80,7 @@ cd tidb-binlog-latest-linux-amd64
 
     我们设置 TiDB 启动参数 binlog-socket 为对应的 pump 的参数 socket 所指定的 unix socket 文件路径，最终部署结构如下图所示：
 
-    ![TiDB pump 模块部署结构](../media/tidb_pump_deployment.jpeg)
+    ![TiDB pump 模块部署结构](../media/tidb-pump-deployment.png)
 
 *   drainer 不支持对 ignore schemas（在过滤列表中的 schemas） 的 table 进行 rename DDL 操作
 
@@ -96,7 +94,8 @@ cd tidb-binlog-latest-linux-amd64
     *  设置 savepoint 文件路径，然后启动 drainer， `bin/drainer --config=conf/drainer.toml --data-dir=${drainer_savepoint_dir}`
 
 *   drainer 输出的 pb, 需要在配置文件设置下面的参数
-    ```
+
+    ```toml
     [syncer]
     db-type = "pb"
     disable-dispatch = true
@@ -115,7 +114,7 @@ cd tidb-binlog-latest-linux-amd64
     ```bash
     ./bin/pump -config pump.toml
     ```
-    
+
     参数解释
 
     ```
@@ -153,7 +152,7 @@ cd tidb-binlog-latest-linux-amd64
 
     配置文件
 
-    ```
+    ```toml
     # pump Configuration.
 
     # pump 提供服务的 rpc 地址(默认 "127.0.0.1:8250")
@@ -186,7 +185,7 @@ cd tidb-binlog-latest-linux-amd64
     ```bash
     ./bin/drainer -config drainer.toml
     ```
-    
+
     参数解释
 
     ```
@@ -209,12 +208,12 @@ cd tidb-binlog-latest-linux-amd64
     -detect-interval int
         向 pd 查询在线 pump 的时间间隔 (默认 10，单位 秒)
     -disable-dispatch
-        是否禁用拆分单个 binlog 的 sqls 的功能，如果设置为 true，则按照每个 binlog   
+        是否禁用拆分单个 binlog 的 sqls 的功能，如果设置为 true，则按照每个 binlog
         顺序依次还原成单个事务进行同步( 下游服务类型为 mysql, 该项设置为 False )
     -gen-savepoint
         如果设置为 true, 则只生成 drainer 的 savepoint meta 文件, 可以配合 mydumper 使用
     -ignore-schemas string
-        db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test"),   
+        db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test"),
         不支持对 ignore schemas 的 table 进行 rename DDL 操作
     -log-file string
         log 文件路径
@@ -232,7 +231,7 @@ cd tidb-binlog-latest-linux-amd64
 
     配置文件
 
-    ```
+    ```toml
     # drainer Configuration.
 
     # drainer 提供服务的地址(默认 "127.0.0.1:8249")
@@ -253,7 +252,7 @@ cd tidb-binlog-latest-linux-amd64
     # syncer Configuration.
     [syncer]
 
-    ## db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test"),   
+    ## db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test"),
     ## 不支持对 ignore schemas 的 table 进行 rename DDL 操作
     ignore-schemas = "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql"
 
@@ -263,7 +262,7 @@ cd tidb-binlog-latest-linux-amd64
     # 同步下游的并发数，该值设置越高同步的吞吐性能越好 (default 1)
     worker-count = 1
 
-    # 是否禁用拆分单个 binlog 的 sqls 的功能，如果设置为 true，则按照每个 binlog   
+    # 是否禁用拆分单个 binlog 的 sqls 的功能，如果设置为 true，则按照每个 binlog
     # 顺序依次还原成单个事务进行同步( 下游服务类型为 mysql, 该项设置为 False )
     disable-dispatch = false
 
@@ -272,7 +271,7 @@ cd tidb-binlog-latest-linux-amd64
     db-type = "mysql"
 
     # replicate-do-db priority over replicate-do-table if have same db name
-    # and we support regex expression , 
+    # and we support regex expression ,
     # 以 '~' 开始声明使用正则表达式
     #
     #replicate-do-db = ["~^b.*","s1"]
@@ -308,16 +307,12 @@ cd tidb-binlog-latest-linux-amd64
 
 drainer 启动时可以设置 `--metrics-addr` 和 `--metrics-interval` 两个参数，其中 metrics-addr 设为 Push Gateway 的地址，metrics-interval 为 push 的频率，单位为秒，默认值为15
 
-
 ### Grafana 配置
 
-+ 进入 Grafana Web 界面（默认地址: `http://localhost:3000`，默认账号: admin 密码: admin）
++   进入 Grafana Web 界面（默认地址: `http://localhost:3000`，默认账号: admin 密码: admin）
 
-  点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息 ( 注: Type 选 Prometheus，Url 为 Prometheus 地址，根据实际情况 添加/填写 ）
+    点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息 ( 注: Type 选 Prometheus，Url 为 Prometheus 地址，根据实际情况 添加/填写 ）
 
-+ 导入 dashboard 配置文件
++   导入 dashboard 配置文件
 
-  点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 dashboard [配置文件][1]上传 -> 选择对应的 data source
-
-
-  [1]: https://github.com/pingcap/docs/tree/master/etc
+    点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 [dashboard 配置文件](https://github.com/pingcap/docs/tree/master/etc)上传 -> 选择对应的 data source

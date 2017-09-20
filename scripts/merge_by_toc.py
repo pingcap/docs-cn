@@ -16,6 +16,7 @@ in_toc = False
 contents = []
 
 hyper_link_pattern = re.compile(r'([\-\+]+)\s\[(.*?)\]\((.*?)(#.*?)?\)')
+image_link_pattern = re.compile(r'!\[(.*?)\]\((.*?)\)')
 level_pattern = re.compile(r'(\s*[\-\+]+)\s')
 # match all headings
 heading_patthern = re.compile(r'(^#+|\n#+)\s')
@@ -72,11 +73,15 @@ file_link_name = {}
 for tp, lv, f in followups:
     if tp != 'FILE':
         continue
-    tag = open(f).read().strip().split('\n')[0]
-    if tag.startswith('# '):
-        tag = tag[2:]
-    elif tag.startswith('## '):
-        tag = tag[3:]
+    lines = open(f).read().strip().split('\n')
+    for tag in lines:
+        if tag.startswith('# '):
+            tag = tag[2:]
+            break
+        elif tag.startswith('## '):
+            tag = tag[3:]
+            break
+        print("skiping", f)
     file_link_name[f] = tag.lower().replace(' ', '-')
 
 print(file_link_name)
@@ -101,6 +106,15 @@ def replace_link(match):
     else:
         return full
 
+def replace_img_link(match):
+    full = match.group(0)
+    link_name = match.group(1)
+    link = match.group(2)
+
+    if link.endswith('.png'):
+        fname = os.path.basename(link)
+        return '![%s](./media/%s)' % (link_name, fname)
+
 def replace_heading_func(diff_level=0):
 
     def replace_heading(match):
@@ -114,15 +128,22 @@ def replace_heading_func(diff_level=0):
 
 
 # stage 3, concat files
+fileset = set()
 for type_, level, name in followups:
     if type_ == 'TOC':
-        contents.append("{} {}".format('#' * level, name))
+        contents.append("{} {}\n".format('#' * level, name))
     elif type_ == 'RAW':
         contents.append(name)
     elif type_ == 'FILE':
+        if name in fileset:
+            continue
+
+        fileset.add(name)
+
         with open(name) as fp:
             chapter = fp.read()
             chapter = hyper_link_pattern.sub(replace_link, chapter)
+            chapter = image_link_pattern.sub(replace_img_link, chapter)
 
             # fix heading level
             diff_level = level - heading_patthern.findall(chapter)[0].count('#')
