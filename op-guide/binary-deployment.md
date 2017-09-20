@@ -9,17 +9,17 @@ category: deployment
 
 ## 概述
 
-一个完整的 TiDB 集群包括 PD，TiKV 以及 TiDB。启动顺序依次是 PD，TiKV 以及 TiDB。在关闭数据库服务是，请按照启动的相反顺序进行逐一服务关闭。
+一个完整的 TiDB 集群包括 PD，TiKV 以及 TiDB。启动顺序依次是 PD，TiKV 以及 TiDB。在关闭数据库服务时，请按照启动的相反顺序进行逐一关闭服务。
 
-阅读本章前，请先确保阅读 TiDB 整体架构 及 部署建议
+阅读本章前，请先确保阅读 [TiDB 整体架构](../overview.md#tidb-整体架构)及[部署建议](recommendation.md)。
 
 本文档描述了三种场景的二进制部署方式：
 
-- 快速了解和试用 TiDB，推荐使用单节点方式快速部署。
+- 快速了解和试用 TiDB，推荐使用[单节点方式快速部署](#单节点方式快速部署)。
 
-- 功能性测试 TiDB，推荐使用功能性测试部署。
+- 功能性测试 TiDB，推荐使用[功能性测试部署](#功能性测试部署)。
 
-- 生产环境使用 TiDB，推荐使用多节点集群模式部署。
+- 生产环境使用 TiDB，推荐使用[多节点集群模式部署](#多节点集群模式部署)。
 
 ## TiDB 组件及默认端口
 
@@ -50,7 +50,7 @@ category: deployment
 
 | 配置 | 描述 |
 | :-- | :---------------------------- |
-|  支持平台  |   请查看和了解系统部署建议 |
+|  支持平台  |   请查看和了解[系统部署建议](recommendation.md) |
 |  文件系统  |  TiDB 部署环境推荐使用 ext4 文件系统|
 |  Swap 空间  |  TiDB 部署推荐关闭 Swap 空间 |
 |  Disk Block Size  |  设置系统磁盘 Block 大小为 4096 |
@@ -59,7 +59,7 @@ category: deployment
 
 | 配置| 描述 |
 | :-- | :---------------------------- |
-| 防火墙 / 端口 | 请查看 TiDB 所需端口在各个节点之间能正常访问 |
+| 防火墙 / 端口 | 请查看 TiDB 所需端口在各个节点之间是否能正常访问 |
 
 
 ### 操作系统参数
@@ -67,19 +67,19 @@ category: deployment
 | 配置 | 说明 |
 | :-- | :---------------------------- |
 | Nice Limits | 系统用户 tidb 的 nice 值设置为缺省值 0 |
-| min_free_kbytes | 在 sysctl.conf 中关于 vm.min_free_kbytes 的设置需要足够高 |
-| User Open Files Limit | 对数据库管理员 tidb 的 open 文件数设置为 1000000 |
-| System Open File Limits | 对系统的 open 文件数设置为 1000000 |
-| User Process Limits | 在 limits.conf 配置的 tidb 用户的 nproc 为 4096 |
-| Address Space Limits | 在 limits.conf 配置的 tidb 用户空间为 unlimited |
-| File Size Limits | 在 limits.conf 配置的 tidb 用户 fsize 为 unlimited |
-| Disk Readahead | 设置数据磁盘 readahead 至少为 4096 |
+| min_free_kbytes | 在 `sysctl.conf` 中关于 `vm.min_free_kbytes` 的设置需要足够高 |
+| User Open Files Limit | 对数据库管理员 tidb 的 open 文件数设置为 `1000000` |
+| System Open File Limits | 对系统的 open 文件数设置为 `1000000` |
+| User Process Limits | 在 `limits.conf` 配置的 tidb 用户的 nproc 为 `4096` |
+| Address Space Limits | 在 `limits.conf` 配置的 tidb 用户空间为 `unlimited` |
+| File Size Limits | 在 `limits.conf` 配置的 tidb 用户 fsize 为 `unlimited` |
+| Disk Readahead | 设置数据磁盘 `readahead` 至少为 `4096` |
 | NTP 服务 | 为各个节点配置 NTP 时间同步服务 |
 | SELinux  | 关闭各个节点的 SELinux 服务  |
 | CPU Frequency Scaling |  TiDB 推荐打开 CPU 超频 |
-| Transparent Hugepages | 针对 Red Hat 7+ 和 CentOS 7+ 系统, Transparent Hugepages 必须被设置为 always |
-| I/O Scheduler | 设置数据磁盘 I/0 Schedule 设置为 deadline 模式 |
-| vm.swappiness | 设置 vm.swappiness = 0 |
+| Transparent Hugepages | 针对 Red Hat 7+ 和 CentOS 7+ 系统, Transparent Hugepages 必须被设置为 `always` |
+| I/O Scheduler | 设置数据磁盘 I/0 Schedule 设置为 `deadline` 模式 |
+| vm.swappiness | 设置 `vm.swappiness = 0` |
 
 注意：请联系系统管理员进行操作系统参数调整。
 
@@ -87,12 +87,12 @@ category: deployment
 
 | 配置 | 说明 |
 | :-- | :---------------------------- |
-| LANG 环境设定 | 设置 LANG = en_US.UTF8 |
-| TZ 时去设定 | 确保所有节点的时区 TZ 设置为一样的值 |
+| LANG 环境设定 | 设置 `LANG = en_US.UTF8` |
+| TZ 时区设定 | 确保所有节点的时区 TZ 设置为一样的值 |
 
 ## 创建系统数据库运行账户
 
-在 linux 环境下，在每台安装节点上创建 tidb 作为数据库系统运行用户并设置集群节点之间的 ssh 互信访问。以下是一个示例，具体创建用户与开通 ssh 互信访问请联系系统管理员进行。
+在 Linux 环境下，在每台安装节点上创建 tidb 作为数据库系统运行用户并设置集群节点之间的 ssh 互信访问。以下是一个示例，具体创建用户与开通 ssh 互信访问请联系系统管理员进行。
 
 ```
 # useradd tidb
