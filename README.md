@@ -38,7 +38,7 @@
     - [Binary 部署方案](op-guide/binary-deployment.md)
 + TiDB 用户文档
   + TiDB 数据库管理
-    - [服务器启动参数](sql/server-command-option.md)
+    - [TiDB 服务器启动参数](sql/server-command-option.md)
     - [TiDB 专用系统变量和语法](sql/tidb-specific.md)
   + TiDB 安全
     - [TiDB 访问权限管理](sql/privilege.md)
