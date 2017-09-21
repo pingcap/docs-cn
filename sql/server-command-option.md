@@ -1,5 +1,5 @@
 ---
-title: TiDB服务器启动参数和配置
+title: TiDB 服务器启动参数和配置
 category: user guide
 ---
 
