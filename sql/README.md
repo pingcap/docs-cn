@@ -13,7 +13,7 @@ Table of Contents
 + TiDB 数据库管理
     - TiDB 服务器和服务器启动脚本
     - TiDB 数据目录
-    - TiDB 系统数据库
+    - [TiDB 系统数据库](system-database.md)
     - [TiDB 专用系统变量和语法](tidb-specific.md)
     - TiDB 服务器日志文件
 + TiDB 安全
