@@ -22,7 +22,7 @@ Table of Contents
     - 使用安全连接
 + 优化
     - [理解 TiDB 执行计划](understanding-the-query-execution-plan.md)
-    - 统计信息简介
+    - [统计信息简介](statistics.md)
 + 语言结构
     - 字面值
     - 数据库、表、索引、列和别名
