@@ -125,7 +125,6 @@ The key's randomart image is:
 -bash-4.2$ cat id_rsa.pub >> authorized_keys
 -bash-4.2$ chmod 644 authorized_keys
 -bash-4.2$ ssh-copy-id -i ~/.ssh/id_rsa.pub 192.168.1.100
-
 ```
 
 ## 下载官方 Binary
@@ -134,7 +133,6 @@ TiDB 官方提供了支持 Linux 版本的二进制安装包，官方推荐使�
 
 ### 操作系统：Linux ( Redhat 7+，CentOS 7+ )
 
----
 执行步骤：
 
 ```
@@ -149,7 +147,6 @@ sha256sum -c tidb-latest-linux-amd64.sha256
 # 解开压缩包
 tar -xzf tidb-latest-linux-amd64.tar.gz
 cd tidb-latest-linux-amd64
-
 ```
 
 ## 单节点方式快速部署
@@ -184,7 +181,6 @@ cd tidb-latest-linux-amd64
 
 ```
 mysql -h 127.0.0.1 -P 4000 -u root -D test
-
 ```
 
 ## 功能性测试部署
@@ -245,7 +241,6 @@ mysql -h 127.0.0.1 -P 4000 -u root -D test
 
 ```
 mysql -h 192.168.199.113 -P 4000 -u root -D test
-
 ```
 
 ## 多节点集群模式部署
@@ -293,8 +288,6 @@ mysql -h 192.168.199.113 -P 4000 -u root -D test
                 --join="http://192.168.199.113:2379" \
                 -L "info" \
                 --log-file=pd.log
-
-
 ```
 
 步骤二. 在 node4，node5，node6 启动 TiKV：
@@ -314,7 +307,6 @@ mysql -h 192.168.199.113 -P 4000 -u root -D test
                   --addr="192.168.199.118:20160" \
                   --data-dir=tikv3 \
                   --log-file=tikv.log
-
 ```
 
 步骤三. 在 node1 启动 TiDB：
@@ -329,16 +321,14 @@ mysql -h 192.168.199.113 -P 4000 -u root -D test
 步骤四. 使用 MySQL 客户端连接 TiDB：
 
 ```
-
 mysql -h 192.168.199.113 -P 4000 -u root -D test
-
 ```
+
 > 注意：在生产环境中启动 TiKV 时，建议使用 `--config` 参数指定配置文件路径，如果不设置这个参数，TiKV 不会读取配置文件。同样，在生产环境中部署 PD 时，也建议使用 `--config` 参数指定配置文件路径。
 
 TiKV 调优参见：[TiKV 性能参数调优](https://github.com/pingcap/docs-cn/blob/master/op-guide/tune-tikv.md)。
 
 > 注意：如果使用 nohup 在生产环境中启动集群，需要将启动命令放到一个脚本文件里面执行，否则会出现因为 Shell 退出导致 nohup 启动的进程也收到异常信号退出的问题，具体参考进程异常退出。
-
 
 ## TiDB 监控和告警环境安装
 
@@ -354,7 +344,6 @@ TiKV 调优参见：[TiKV 性能参数调优](https://github.com/pingcap/docs-cn
 ### 获取二进制包
 
 ```
-
 # 下载压缩包
 wget https://github.com/prometheus/prometheus/releases/download/v1.5.2/prometheus-1.5.2.linux-amd64.tar.gz
 wget https://github.com/prometheus/node_exporter/releases/download/v0.14.0-rc.2/node_exporter-0.14.0-rc.2.linux-amd64.tar.gz
@@ -366,7 +355,6 @@ tar -xzf prometheus-1.5.2.linux-amd64.tar.gz
 tar -xzf node_exporter-0.14.0-rc.1.linux-amd64.tar.gz
 tar -xzf grafana-4.1.2-1486989747.linux-x64.tar.gz
 tar -xzf pushgateway-0.3.1.linux-amd64.tar.gz
-
 ```
 
 ### 启动监控服务
@@ -379,7 +367,6 @@ $cd node_exporter-0.14.0-rc.1.linux-amd64
 #启动 node_exporter 服务
 ./node_exporter --web.listen-address=":9100" \
     --log.level="info"
-
 ```
 
 ### 在 node1 启动 pushgateway:
@@ -391,7 +378,6 @@ $cd pushgateway-0.3.1.linux-amd64
 ./pushgateway \
     --log.level="info" \
     --web.listen-address=":9091"
-
 ```
 
 ### 在 node1 启动 Prometheus:
@@ -437,13 +423,11 @@ scrape_configs:
     --log.level="info" \
     --storage.local.path="/data1/tidb/deploy/data.metrics" \
     --storage.local.retention="360h0m0s"
-
 ```
 
 ### 在 node1 启动 Grafana:
 
 ```
-
 cd grafana-4.1.2-1486989747.linux-x64
 
 #编辑配置文件
@@ -464,5 +448,4 @@ domain = 192.168.199.113
 ./grafana-server \
     --homepath="/data1/tidb/deploy/opt/grafana" \
     --config="/data1/tidb/deploy/opt/grafana/conf/grafana.ini"
-
 ```
