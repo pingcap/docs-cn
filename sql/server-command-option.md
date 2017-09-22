@@ -1,13 +1,13 @@
 ---
-title: TiDB 服务器启动参数和配置
+title: TiDB 进程启动参数和配置
 category: user guide
 ---
 
-## TiDB 服务器启动参数
+## TiDB 进程启动参数
 
-当你启动 TiDB 服务器时，你可以指定一些程序启动参数。
+当你启动 TiDB 进程时，你可以指定一些程序启动参数。
 
-TiDB授受许多的启动参数，执行这个命令可以得到一个简要的说明：
+TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的说明：
 
     ./tidb-server --help
 
@@ -45,33 +45,33 @@ TiDB授受许多的启动参数，执行这个命令可以得到一个简要的�
 
 + Schema 的租约时间，单位：秒
 + 默认: "10"
-+ Schema 的 lease 主要用在 online schema changes 上面。这个值会影响到实际的 DDL 语句的执行时间。千万不要随便改动这个值，除非你能知道相关的内部机制
++ Schema 的 lease 主要用在 online schema changes 上面。这个值会影响到实际的 DDL 语句的执行时间。大多数情况下，用户不需要修改这个值，除非您清晰的了解 TiDB DDL 的内部实现机制
 
 ### \-\-host
 
 + TiDB 服务监听 host
 + 默认: "0.0.0.0"
 + TiDB 服务会监听这个 host
-+ 0.0.0.0 默认会监听所有的网卡 address。如果有多块网卡，可以指定对外提供服务的网卡，譬如192.168.100.113
++ 0.0.0.0 默认会监听所有的网卡 address。如果有多块网卡，可以指定对外提供服务的网卡，譬如 192.168.100.113
 
 ### \-\-log-file
 
 + Log 文件
 + 默认: ""
-+ 如果没设置这个参数，log 会默认输出到 "stderr"，如果设置了，log 就会输出到对应的文件里面，在每天凌晨，log 会自动轮转使用一个新的文件，并且将以前的文件改名备份
++ 如果没设置这个参数，log 会默认输出到 "stderr"，如果设置了， log 就会输出到对应的文件里面，在每天凌晨，log 会自动轮转使用一个新的文件，并且将以前的文件改名备份
 
 
 ### \-\-metrics-addr
 
 + Prometheus Push Gateway 地址
 + 默认: ""
-+ 如果为空，TiDB 不会将统计信息推送给 Push Gateway,参数格式 如 `--metrics-addr=192.168.100.115:9091`
++ 如果为空，TiDB 不会将统计信息推送给 Push Gateway ，参数格式 如 `--metrics-addr=192.168.100.115:9091`
 
 ### \-\-metrics-intervel
 
 + 推送统计信息到 Prometheus Push Gateway 的时间间隔
 + 默认: 15s
-+ 设置为 0 表明不推送统计信息给 Push Gateway,如: `--metrics-interval=2` 是每两秒推送到 Push Gataway
++ 设置为 0 表明不推送统计信息给 Push Gateway ，如: `--metrics-interval=2` 是每两秒推送到 Push Gataway
 
 ### \-\-path
 
@@ -84,7 +84,7 @@ TiDB授受许多的启动参数，执行这个命令可以得到一个简要的�
 
 + 打开 (true) 或者关闭 (false) 服务状态监听端口
 + 默认: true
-+ 值可以为 (true) 或者 (false). (true) 表明我们开启状态监听端口。 (false) 表明关闭
++ 值可以为 (true) 或者 (false). (true) 表明我们开启状态监听端口。 (false) 表明关闭。状态监听端口用于通过 HTTP 方式对外报告一些服务内部信息
 
 ### \-\-run-ddl
 
