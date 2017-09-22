@@ -22,7 +22,7 @@ TiDB 的系统数据库跟 MySQL 类似， 里面包含一些服务器运行时�
 
 * `stats_buckets` 统计信息的桶
 * `stats_histograms` 统计信息的直方图
-* `stats_meta`
+* `stats_meta` 表的元信息，比如总行数和修改数
 
 ### GC Worker 相关系统表
 
@@ -30,5 +30,5 @@ TiDB 的系统数据库跟 MySQL 类似， 里面包含一些服务器运行时�
 
 ### 其它系统表
 
-* `GLOBAL_VARIABLES` 全局变量表
+* `GLOBAL_VARIABLES` 全局系统变量表
 * `tidb` 用于 TiDB 在 bootstrap 的时候记录记录相关版本信息
