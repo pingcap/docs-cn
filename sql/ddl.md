@@ -8,7 +8,7 @@ DDL（Data Definition Language）用于定义和管理数据库以及数据库�
 
 + [CREATE DATABASE 语法](#create-database-语法)
 + [DROP DATABASE 语法](#drop-database-语法)
-+ CREATE TABLE 语法
++ [CREATE TABLE 语法](#create-table-语法)
 + [DROP TABLE 语法](#drop-table-语法)
 + [TRUNCATE TABLE 语法](#truncate-table-语法)
 + [RENAME TABLE 语法](#rename-table-语法)
