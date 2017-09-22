@@ -37,7 +37,7 @@
       - [增量导入](op-guide/migration.md#使用-syncer-增量导入数据)
   + 手动运维
     - [Binary 部署方案](op-guide/binary-deployment.md)
-+ TiDB 用户文档
++ [TiDB 用户文档](sql/README.md)
   + TiDB 数据库管理
     - [TiDB 专用系统变量和语法](sql/tidb-specific.md)
   + TiDB 安全
