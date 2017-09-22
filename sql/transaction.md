@@ -47,7 +47,7 @@ COMMIT;
 ```sql
 ROLLBACK;
 ```
-回滚当前事务，撤销从 `BEGIN` 到 `ROLLBACK` 之间地所有修改。
+回滚当前事务，撤销从 `BEGIN` 到 `ROLLBACK` 之间的所有修改。
 
 
 ## 显式事务和隐式事务
