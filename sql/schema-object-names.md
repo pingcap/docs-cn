@@ -5,16 +5,16 @@ category: user guide
 
 # Schema Object Names
 
-在TiDB中, 包括database, table, index, column, alias等等都被认为是identifier(标识符, 之后阐述用英文).
+在 TiDB 中, 包括 database, table, index, column, alias 等等都被认为是identifier(标识符, 之后阐述用英文).
 
-在TiDB中, identifier可以被反引号(\`)包裹, 为了阐述方便, 我们叫这种情况为`被引用`. identifier也可以不被\`包裹. 
-但是如果一个identifier存在一个特殊符号或者是一个保留关键字, 那么你必须要`引用`它.
+在 TiDB 中, identifier可以被反引号(\`)包裹, 为了阐述方便, 我们叫这种情况为`被引用`. identifier 也可以不被\`包裹. 
+但是如果一个 identifier 存在一个特殊符号或者是一个保留关键字, 那么你必须要`引用`它.
 
 ```
 mysql> SELECT * FROM `table` WHERE `table`.id = 20;
 ```
 
-如果`ANSI_QUOTES` sql mode被设置了, 那么我们认为被双引号`"`包裹的字符串为identifier.
+如果`ANSI_QUOTES` sql mode 被设置了, 那么我们认为被双引号`"`包裹的字符串为identifier.
 
 ```
 mysql> CREATE TABLE "test" (a varchar(10));
@@ -27,13 +27,13 @@ mysql> CREATE TABLE "test" (a varchar(10));
 Query OK, 0 rows affected (0.09 sec)
 ```
 
-如果你需要在被引用的identifier中使用反引号这个字符, 那你需要重复两次, 例如你需要创建一个表为a`b:
+如果你需要在被引用的 identifier 中使用反引号这个字符, 那你需要重复两次, 例如你需要创建一个表为a`b:
 
 ```
 mysql> CREATE TABLE `a``b` (a int);
 ```
 
-在select语句中, alias语句可以用identifier或者字符串:
+在 select 语句中, alias 语句可以用 identifier 或者字符串:
 
 ```
 mysql> SELECT 1 AS `identifier`, 2 AS 'string';
@@ -63,7 +63,7 @@ CREATE TABLE test.t (i int);
 
 对于 `.` 左右两端可以出现空格, `table_name.col_name` 等于 `table_name . col_name`.  
 
-如果你要引用这个identifier, 那么请使用
+如果你要引用这个 identifier , 那么请使用
 
 ```
 `table_name`.`col_name` 
