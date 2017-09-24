@@ -5,7 +5,7 @@ category: user guide
 
 # Numeric Literals
 
-数值字面值包括integer跟Decimal类型跟浮点数字面值.
+数值字面值包括 integer 跟 Decimal 类型跟浮点数字面值.
 
 integer可以包括`.`作为小数点分隔, 数字前可以有`-`或者`+`来表示正数或者负数.
 

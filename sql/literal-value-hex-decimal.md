@@ -35,7 +35,7 @@ mysql> select X'0aff';
 | X'0aff' |
 +---------+
 |
-�       |
+       |
 +---------+
 1 row in set (0.00 sec)
 ```
