@@ -180,7 +180,7 @@ DELETE [LOW_PRIORITY] [QUICK] [IGNORE]
     [WHERE where_condition]
 ```
 
-删除多个表的数据的时候，可以用这两种语法。这两种写法都可以指定从多个表查询数据，但只删除其中一些表的数据。在第一种语法中，只会删除 `FROM` 关键字之前的 Table 列表中所列 Table 的表中的数据。对于第二种写法，只会删除 `FROM` 之后 `USING` 之前地 Table 列表中的所列 Table 中的数据。
+删除多个表的数据的时候，可以用这两种语法。这两种写法都可以指定从多个表查询数据，但只删除其中一些表的数据。在第一种语法中，只会删除 `FROM` 关键字之前的 Table 列表中所列 Table 的表中的数据。对于第二种写法，只会删除 `FROM` 之后 `USING` 之前的 Table 列表中的所列 Table 中的数据。
 
 
 ## 语法元素说明
@@ -203,7 +203,7 @@ Update 语句用于更新表中的数据。
 
 Update 语句一共有两种语法，分别用于更新单表数据和多表数据。
 
-###  单表 Update
+### 单表 Update
 ```sql
 UPDATE [LOW_PRIORITY] [IGNORE] table_reference
     SET assignment_list
