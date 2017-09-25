@@ -44,20 +44,20 @@ Table of Contents
     - 选择正确的列类型
 + 函数和操作符
     - 函数和操作符概述
-    - 表达式求值的类型转换
+    - [表达式求值的类型转换](type-conversion-in-expression-evaluation.md)
     - [操作符](operators.md)
-    - 控制流程函数
-    - 字符串函数
-    - 数值函数与操作符
+    - [控制流程函数](control-flow-functions.md)
+    - [字符串函数](string-functions.md)
+    - [数值函数与操作符](numeric-functions-and-operators.md)
     - [日期和时间函数](date-and-time-functions.md)
     - [位函数和操作符](bit-functions-and-operators.md)
     - [Cast 函数和操作符](cast-functions-and-operators.md)
-    - 加密和压缩函数
+    - [加密和压缩函数](encryption-and-compression-functions.md)
     - [信息函数](information-functions.md)
     - JSON 函数
     - 全局事务 ID 函数
-    - GROUP BY 聚合函数
-    - 其他函数
+    - [GROUP BY 聚合函数](aggregate-group-by-functions.md)
+    - [其他函数](miscellaneous-functions.md)
     - 精度数学
 + SQL 语句语法
     - [数据定义语句(DDL)](ddl.md)
