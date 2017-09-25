@@ -3,7 +3,7 @@ title: TiDB 系统数据库
 category: user guide
 ---
 
-TiDB 的系统数据库跟 MySQL 类似， 里面包含一些服务器运行时需要的信息。
+TiDB 的系统数据库跟 MySQL 类似，里面包含一些服务器运行时需要的信息。
 
 ### 权限系统表
 
@@ -31,4 +31,4 @@ TiDB 的系统数据库跟 MySQL 类似， 里面包含一些服务器运行时�
 ### 其它系统表
 
 * `GLOBAL_VARIABLES` 全局系统变量表
-* `tidb` 用于 TiDB 在 bootstrap 的时候记录记录相关版本信息
+* `tidb` 用于 TiDB 在 bootstrap 的时候记录相关版本信息
