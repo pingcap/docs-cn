@@ -1,5 +1,5 @@
 ---
-title: 事务语言
+title: 事务语句
 category: user guide
 ---
 
@@ -13,6 +13,7 @@ TiDB 支持分布式事务。涉及到事务的语句包括 `Autocommit` 变量�
 SET autocommit = {0 | 1}
 ```
 通过设置 autocommit 的值为 1，可以将当前 Session 设置为自动提交状态，0 则表示当前 Session 为非自动提交状态。默认情况下， autocommit 的值为 1。
+
 在自动提交状态，每条语句运行后，会将其修改自动提交到数据库中。否则，会等到运行 `COMMIT` 语句或者是 `BEGIN` 语句的时候，才会将之前的修改提交到数据库。
 
 另外 autocommit 也是一个 System Variable，所以可以通过变量赋值语句修改当前 Session 或者是 Global 的值。
@@ -51,7 +52,7 @@ ROLLBACK;
 
 
 ## 显式事务和隐式事务
-TiDB 可以显式或隐式地使用事务（`BEGIN/COMMIT`） 或者隐式的使用事务 （`SET autocommit = 1`）。
+TiDB 可以显式地使用事务（`BEGIN/COMMIT`） 或者隐式的使用事务 （`SET autocommit = 1`）。
 
 如果在 autocmmit = 1 的状态下，通过 `BEGIN` 语句开启一个新的事务，那么在 `COMMIT`/`ROLLBACK` 之前，会禁用 autocommit，也就是变成显式事务。
 
