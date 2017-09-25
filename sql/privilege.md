@@ -11,7 +11,7 @@ category: user guide
 + [创建用户](#create-user-语句)
 + [Grant 语句](#grant-语句)
 + [Revoke 语句](#revoke-语句)
-+ [用户账户名](#用户账户名)
++ [用户账户名](understanding-the-query-execution-plan.md#用户账户名)
 
 ## 权限管理概述
 
@@ -315,8 +315,3 @@ user 参见[用户账号名](user-account-name.md)。
 
 
 ## Revoke 语句
-
-
-
-
-## 用户账户名

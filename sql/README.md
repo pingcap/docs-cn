@@ -18,7 +18,7 @@ Table of Contents
     - TiDB 服务器日志文件
 + TiDB 安全
     - [TiDB 访问权限管理](privilege.md)
-    - TiDB 用户账户管理
+    - [TiDB 用户账户管理](user-account-management.md)
     - 使用安全连接
 + 优化
     - [理解 TiDB 执行计划](understanding-the-query-execution-plan.md)
