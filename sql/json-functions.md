@@ -1,22 +1,22 @@
 ---
-title: TiDB 用户文档
+title: JSON 相关的函数和语法糖
 category: user guide
 ---
 
 # JSON 相关的函数和语法糖
 
 | 函数名或语法糖               | 示例                           | 功能描述                                               |
-| ---------------------------- | ------------------------------ | ------------------------------------                   |
-| [JSON_EXTRACT][json_extract] | JSON_EXTRACT(doc, path)        | 从JSON文档中解出某一路径对应的子文档                   |
-| [JSON_UNQUOTE][json_unquote] | JSON_UNQUOTE(doc)              | 去掉JSON文档外面的引号                                 |
-| [JSON_TYPE][json_type]       | JSON_TYPE(doc)                 | 检查某JSON文档内部内容的类型                           |
-| [JSON_SET][json_set]         | JSON_SET(doc, path, value)     | 在JSON文档中为某一路径设置子文档                       |
-| [JSON_INSERT][json_insert]   | JSON_INSERT(doc, path, value)  | 在JSON文档中在某一路径下插入子文档                     |
-| [JSON_REPLACE][json_replace] | JSON_REPLACE(doc, path, value) | 替换JSON文档中的某一路径下的子文档                     |
-| [JSON_REMOVE][json_remove]   | JSON_REMOVE(doc, path)         | 移除JSON文档中某一路径下的子文档                       |
-| [JSON_MERGE][json_merge]     | JSON_MERGE(doc1, doc2, doc3)   | 将多个JSON文档合并成一个文档，其类型为数组             |
-| [JSON_OBJECT][json_object]   | JSON_OBJECT(k1, v1, k2, v2)    | 根据一系列K/V对创建一个JSON文档                        |
-| [JSON_ARRAY][json_array]     | JSON_ARRAY(doc1, doc2, doc3)   | 根据一系列元素创建一个JSON文档                         |
+| ---------------------------- | ------------------------------ | ------------------------------------------------------ |
+| [JSON_EXTRACT][json_extract] | JSON_EXTRACT(doc, path)        | 从 JSON 文档中解出某一路径对应的子文档                 |
+| [JSON_UNQUOTE][json_unquote] | JSON_UNQUOTE(doc)              | 去掉 JSON 文档外面的引号                               |
+| [JSON_TYPE][json_type]       | JSON_TYPE(doc)                 | 检查某 JSON 文档内部内容的类型                         |
+| [JSON_SET][json_set]         | JSON_SET(doc, path, value)     | 在 JSON 文档中为某一路径设置子文档                     |
+| [JSON_INSERT][json_insert]   | JSON_INSERT(doc, path, value)  | 在 JSON 文档中在某一路径下插入子文档                   |
+| [JSON_REPLACE][json_replace] | JSON_REPLACE(doc, path, value) | 替换 JSON 文档中的某一路径下的子文档                   |
+| [JSON_REMOVE][json_remove]   | JSON_REMOVE(doc, path)         | 移除 JSON 文档中某一路径下的子文档                     |
+| [JSON_MERGE][json_merge]     | JSON_MERGE(doc1, doc2, doc3)   | 将多个 JSON 文档合并成一个文档，其类型为数组           |
+| [JSON_OBJECT][json_object]   | JSON_OBJECT(k1, v1, k2, v2)    | 根据一系列 K/V 对创建一个 JSON 文档                    |
+| [JSON_ARRAY][json_array]     | JSON_ARRAY(doc1, doc2, doc3)   | 根据一系列元素创建一个 JSON 文档                       |
 | ->                           | doc->'$.a[3]'                  | JSON_EXTRACT(doc, '$.a[3]') 的语法糖                   |
 | ->>                          | doc->>'$.a[3]'                 | JSON_UNQUOTE(JSONJSON_EXTRACT(doc, '$.a[3]')) 的语法糖 |
 

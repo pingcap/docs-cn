@@ -32,24 +32,34 @@
     - [TiKV 性能参数调优](op-guide/tune-tikv.md)
   + 备份与迁移
     - [备份与恢复](op-guide/backup-restore.md)
-    - [全量导入](op-guide/migration.md#使用-mydumperloader-全量导入数据)
-    - [增量导入](op-guide/migration.md#使用-syncer-增量导入数据)
+    + [数据迁移](op-guide/migration.md)
+      - [全量导入](op-guide/migration.md#使用-mydumperloader-全量导入数据)
+      - [增量导入](op-guide/migration.md#使用-syncer-增量导入数据)
   + 手动运维
     - [Binary 部署方案](op-guide/binary-deployment.md)
-+ TiDB 用户文档
++ [TiDB 用户文档](sql/README.md)
   + TiDB 数据库管理
     - [TiDB 专用系统变量和语法](sql/tidb-specific.md)
   + TiDB 安全
     - [TiDB 访问权限管理](sql/privilege.md)
   + 优化
     - [理解 TiDB 执行计划](sql/understanding-the-query-execution-plan.md)
-  + 数据类型
+  + [数据类型](sql/datatype.md)
     - [数值类型](sql/datatype.md#数值类型)
-    - [JSON 数据类型](sql/json-functions-generated-column.md)
+    - [字符串类型](sql/datatype.md#字符串类型)
+    - [数据类型默认值](sql/datatype.md#数据类型的默认值)
+  + 函数与操作符
+    - [操作符](sql/operators.md)
+    - [日期和时间函数](sql/date-and-time-functions.md)
+    - [位函数和操作符](sql/bit-functions-and-operators.md)
+    - [Cast 函数和操作符](sql/cast-functions-and-operators.md)
+    - [信息函数](sql/information-functions.md)
   + SQL 语句语法
     - [数据定义语句(DDL)](sql/ddl.md)
     - [数据操作语句(DML)](sql/dml.md)
+    - [与 MySQL 兼容性对比](sql/mysql-compatibility.md)
     - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
+  - [文档型数据库](sql/json-functions-generated-column.md)
 + 高级功能
   - [历史数据回溯](op-guide/history-read.md)
 + 工具

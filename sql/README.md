@@ -13,7 +13,7 @@ Table of Contents
 + TiDB 数据库管理
     - TiDB 服务器和服务器启动脚本
     - TiDB 数据目录
-    - TiDB 系统数据库
+    - [TiDB 系统数据库](system-database.md)
     - [TiDB 专用系统变量和语法](tidb-specific.md)
     - TiDB 服务器日志文件
 + TiDB 安全
@@ -22,9 +22,10 @@ Table of Contents
     - 使用安全连接
 + 优化
     - [理解 TiDB 执行计划](understanding-the-query-execution-plan.md)
+    - [统计信息简介](statistics.md)
 + 语言结构
-    - 字面值
-    - 数据库、表、索引、列和别名
+    - 字面值
+    - 数据库、表、索引、列和别名
     - 关键字和保留字
     - 用户变量
     - 表达式语法
@@ -44,16 +45,17 @@ Table of Contents
 + 函数和操作符
     - 函数和操作符概述
     - 表达式求值的类型转换
-    - 操作符
+    - [操作符](operators.md)
     - 控制流程函数
     - 字符串函数
     - 数值函数与操作符
-    - 日期和时间函数
+    - [日期和时间函数](date-and-time-functions.md)
+    - [位函数和操作符](bit-functions-and-operators.md)
     - [Cast 函数和操作符](cast-functions-and-operators.md)
-    - 位函数和操作符
     - 加密和压缩函数
     - 信息函数
     - [JSON 函数](json-functions.md)
+    - [信息函数](information-functions.md)
     - 全局事务 ID 函数
     - GROUP BY 聚合函数
     - 其他函数
@@ -67,6 +69,6 @@ Table of Contents
     - 数据库管理语句
     - 实用工具语句
     - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
-+ 文档数据库
+- [文档型数据库](json-functions-generated-column.md)
 + 连接器和 API
 + 故障诊断
