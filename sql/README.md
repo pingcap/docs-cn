@@ -19,7 +19,7 @@ Table of Contents
 + TiDB 安全
     - [TiDB 访问权限管理](privilege.md)
     - TiDB 用户账户管理
-    - 使用安全连接
+    - [使用加密连接](encrypted-connections.md)
 + 优化
     - [理解 TiDB 执行计划](understanding-the-query-execution-plan.md)
     - [统计信息简介](statistics.md)
