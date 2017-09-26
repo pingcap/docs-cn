@@ -59,8 +59,6 @@ Loader 暂不支持 MySQL。
       TiDB 账户密码
   -pprof-addr string
       Loader 的 pprof 地址，用于对 Loader 进行性能调试 (默认为 ":10084")
-  -skip-unique-check 
-      是否跳过 unique index 检查，0 表示不跳过，1 表示跳过（能够提高导入数据的速度），注意只有在向 TiDB 中导入数据时，才需要打开这个选项 (默认为1)
   -t int
       线程数 (默认为 16). 每个线程同一时刻只能操作一个数据文件。
   -u string
@@ -89,9 +87,6 @@ checkpoint-schema = "tidb_loader"
 
 # Number of threads restoring concurrently for worker pool. Each worker restore one file at a time, increase this as TiKV nodes increase
 pool-size = 16
-
-# Skip unique index check
-skip-unique-check = 0
 
 # An alternative database to restore into
 #alternative-db = ""
