@@ -4,17 +4,18 @@ category: user guide
 ---
 
 # 数据定义语言
+
 DDL（Data Definition Language）用于定义和管理数据库以及数据库中各种对象的语句。
 
-+ [CREATE DATABASE 语法](#create-database-语法)
-+ [DROP DATABASE 语法](#drop-database-语法)
-+ [CREATE TABLE 语法](#create-table-语法)
-+ [DROP TABLE 语法](#drop-table-语法)
-+ [TRUNCATE TABLE 语法](#truncate-table-语法)
-+ [RENAME TABLE 语法](#rename-table-语法)
-+ ALTER TABLE 语法
-+ [CREATE INDEX 语法](#create-index-语法)
-+ [DROP INDEX 语法](#drop-index-语法)
+* [CREATE DATABASE 语法](#create-database-语法)
+* [DROP DATABASE 语法](#drop-database-语法)
+* [CREATE TABLE 语法](#create-table-语法)
+* [DROP TABLE 语法](#drop-table-语法)
+* [TRUNCATE TABLE 语法](#truncate-table-语法)
+* [RENAME TABLE 语法](#rename-table-语法)
+* ALTER TABLE 语法
+* [CREATE INDEX 语法](#create-index-语法)
+* [DROP INDEX 语法](#drop-index-语法)
 
 ## CREATE DATABASE 语法
 
@@ -28,7 +29,7 @@ create_specification:
 ```
 
 `CREATE DATABASE` 用于创建数据库，并可以指定数据库的默认属性（如数据库默认字符集,校验规则。`CREATE SCHEMA` 跟 `CREATE DATABASE` 操作效果一样。
-  
+
 当创建已存在的数据库且不指定使用 `IF NOT EXISTS` 时会报错。
 
 `create_specification` 选项用于指定数据库具体的 `CHARACTER` 和 `COLLATE`。目前这个选项只是语法支持。
@@ -185,6 +186,7 @@ table_option:
 |`COMMENT`       |注释信息                              | `COMMENT` = 'comment info' |
 
 ### AUTO_INCREMENT 说明
+
 TiDB 的自增 ID (`AUTO_INCREMENT` ID) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。
 
 允许给整型类型的字段指定 `AUTO_INCREMENT`，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。
@@ -248,29 +250,19 @@ index_type:
 
 `CREATE INDEX` 语句的作用是为一个已经存在的表创建一个索引。在功能上，`CREATE INDEX` 对应于 `ALTER TABLE` 语句的创建索引功能。与 MySQL 一样 `CREATE INDEX` 不能创建主键索引。
 
-### 在语法上：
+### 与 MySQL 的差异
 
 * 支持 `UNIQUE` 索引，不支持 `FULLTEXT` 和 `SPATIAL` 索引。
 
-* `index_col_name` 支持长度选项，以及索引排序选项 `ASC` 和 `DESC` 。
+* `index_col_name` 支持长度选项，最大长度限制为3072字节，该长度限制不根据建表时使用的存储引擎、字符集而变。这是因为 TiDB 并非使用 Innodb 、 MyISAM 等存储引擎，因此，仅对建表时的存储引擎选项进行了 MySQL 语法上的兼容。对于字符集，TiDB 使用的是 utf8mb4 字符集，对于建表时的字符集选项同样仅有 MySQL 语法上的兼容。详见[与 MySQL 兼容性对比](mysql-compatibility.md)章节。
 
-* `index_option` 支持 `KEY_BLOCK_SIZE` 、`index_type` 和 `COMMENT`，不支持 `WITH PARSER` 。
+* `index_col_name` 支持索引排序选项 `ASC` 和 `DESC`。 排序选项行为与 MySQL 一致，仅支持语法解析，内部所有索引都是以正序排列。详见 MySQL 的 [CREATE INDEX Syntax](https://dev.mysql.com/doc/refman/5.7/en/create-index.html) 章节。
 
-* `index_type` 支持 `BTREE` 和 `HASH` 。
+* `index_option` 支持 `KEY_BLOCK_SIZE` 、`index_type` 和 `COMMENT` 。 `COMMENT` 允许最大1024个字符。不支持 `WITH PARSER` 选项。
+
+* `index_type` 支持 `BTREE` 和 `HASH` ，但仅有 MySQL 语法上的支持，即索引类型与建表语句中的存储引擎选项无关。举例：在 MySQL 中，使用 Innodb 的表，在 `CREATE INDEX` 时只能使用 `BTREE` 索引，而在 TiDB 中既可以使用 `BTREE` 也可以使用 `HASH` 。
 
 * 不支持 MySQL 的 `algorithm_option` 和 `lock_option` 选项。
-
-### 在功能上：
-
-* `index_col_name` 的最大长度限制为3072字节，该长度限制不根据建表时使用的存储引擎、字符集而变。由于 TiDB 并非使用 innodb 、 MyISAM 等存储引擎，因此，仅对建表时的存储引擎选项进行了 MySQL 语法上的兼容；对于字符集，TiDB 仅支持 utf8mb4 字符集，对于建表时的字符集选项同样仅有 MySQL 语法上的兼容。详见[与 MySQL 兼容性对比](mysql-compatibility.md)章节。
-
-* `index_col_name` 的 `ASC` 和 `DESC` 选项行为与 MySQL 一致，仅支持语法解析，内部所有索引都是以正序排列。详见 MySQL 的 [CREATE INDEX Syntax](https://dev.mysql.com/doc/refman/5.7/en/create-index.html) 章节。
-
-* `index_option` 的 `KEY_BLOCK_SIZE` 选项，仅有语法上的支持。
-
-* `index_option` 的 `COMMENT 'string'` ，支持最大1024个字符。
-
-* `index_type` 选项仅有语法上的支持，并且 `BTREE` 和 `HASH` ，不根据建表时的存储引擎选项而变，同 `index_col_name` 。
 
 ## DROP INDEX 语法
 
