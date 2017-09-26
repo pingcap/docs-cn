@@ -5,7 +5,7 @@ category: user guide
 
 ## TiDB 进程启动参数
 
-当你启动 TiDB 进程时，你可以指定一些程序启动参数。
+启动 TiDB 进程时，可以指定一些程序启动参数。
 
 TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的说明：
 
@@ -21,7 +21,7 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 
 + Log 级别
 + 默认: "info"
-+ 我们能选择 debug, info, warn, error 或者 fatal
++ 可选值包括 debug, info, warn, error 或者 fatal
 
 ### -P
 
@@ -33,7 +33,7 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 
 + TiDB 服务使用 unix socket file 方式接受内部连接，如 PUMP 服务
 + 默认: ""
-+ 譬如我们可以使用 "/tmp/pump.sock" 来接受 PUMP unix socket file 通信
++ 譬如使用 "/tmp/pump.sock" 来接受 PUMP unix socket file 通信
 
 ### \-\-config
 
@@ -77,14 +77,14 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 
 + 对于本地存储引擎 "goleveldb", "BoltDB" 来说，path 指定的是实际的数据存放路径
 + 对于 "memory" 存储引擎来说，path 不用设置
-+ 对于 "TiKV" 存储引擎来说，path 指定的是实际的 PD 地址。假设我们在 192.168.100.113:2379, 192.168.100.114:2379 和 192.168.100.115:2379 上面部署了 PD，那么 path 为 "192.168.100.113:2379, 192.168.100.114:2379, 192.168.100.115:2379"
++ 对于 "TiKV" 存储引擎来说，path 指定的是实际的 PD 地址。例如 PD 部署在 192.168.100.113:2379, 192.168.100.114:2379 和 192.168.100.115:2379 上面，那么 path 为 "192.168.100.113:2379, 192.168.100.114:2379, 192.168.100.115:2379"
 + 默认: "/tmp/tidb"
 
 ### \-\-report-status
 
 + 打开 (true) 或者关闭 (false) 服务状态监听端口
 + 默认: true
-+ 值可以为 (true) 或者 (false). (true) 表明我们开启状态监听端口。 (false) 表明关闭。状态监听端口用于通过 HTTP 方式对外报告一些服务内部信息
++ 值可以为 (true) 或者 (false). (true) 表明开启状态监听端口。 (false) 表明关闭。状态监听端口用于通过 HTTP 方式对外报告一些服务内部信息
 
 ### \-\-run-ddl
 
@@ -95,7 +95,7 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 ### \-\-socket string
 + TiDB 服务使用 unix socket file 方式接受外部连接
 + 默认: ""
-+ 譬如我们可以使用 "/tmp/tidb.sock" 来打开 unix socket file
++ 譬如可以使用 "/tmp/tidb.sock" 来打开 unix socket file
 
 ### \-\-status
 
@@ -109,8 +109,8 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 
 + 用来指定 TiDB 底层使用的存储引擎
 + 默认: "mocktikv"
-+ 你可以选择 "memory", "goleveldb", "boltdb", "mocktikv" 或者 "tikv"。（前面都是本地存储引擎，而 TiKV 是一个分布式存储引擎）
-+ 例如，如果我们可以通过 `tidb-server --store=memory` 来启动一个纯内存引擎的 TiDB
++ 可选值包括 "memory", "goleveldb", "boltdb", "mocktikv" 或者 "tikv"。（前面都是本地存储引擎，而 TiKV 是一个分布式存储引擎）
++ 例如，通过 `tidb-server --store=memory` 来启动一个纯内存引擎的 TiDB
 
 ## TiDB 服务器配置文件
 
@@ -177,7 +177,7 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 
 + 允许任何人不带密码连接，并且所有的操作不检查权限
 + 默认: false
-+ 值可以是(true) or (false)。启用此选项需要有本机的root权限，一般用于忘记密码时重置
++ 值可以是(true) or (false)。启用此选项需要本机的 root 权限，一般用于忘记密码时重置
 
 ### stats-lease
 
