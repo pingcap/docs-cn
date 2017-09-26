@@ -1,9 +1,9 @@
 ---
-title: TiDB 读取历史版本数据
+title: TiDB 历史数据回溯
 category: advanced
 ---
 
-# TiDB 读取历史版本数据
+# TiDB 历史数据回溯
 
 本文档用于描述 TiDB 如何读取历史版本数据，包括具体的操作流程以及历史数据的保存策略。
 

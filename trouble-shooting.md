@@ -18,6 +18,7 @@ category: advanced
 
 
 ## 数据库连接不上
+
 首先请确认集群的各项服务是否已经启动，包括 tidb-server、pd-server、tikv-server。请用 ps 命令查看所有进程是否在。如果某个组件的进程已经不在了，请参考对应的章节排查错误。
 
 如果所有的进程都在，请查看 tidb-server 的日志，看是否有报错？常见的错误包括：
@@ -39,6 +40,7 @@ category: advanced
     集群 ID 是由 pd-server 在集群初始化时随机分配，所以重新部署集群后，集群 ID 会发生变化。tidb-server 业务需要重启以获取新的集群 ID。
 
 ## tidb-server 启动报错
+
 tidb-server 无法启动的常见情况包括：
 
 +   启动参数错误
@@ -51,10 +53,12 @@ tidb-server 无法启动的常见情况包括：
 
     首先检查 pd-server 的进程状态和日志，确保 pd-server 成功启动，对应端口已打开：`lsof -i:port`。
 
-    若 pd-server 正常，则需要检查 tidb-server 机器和 pd-server 对应端口之间的连通性，确保网段连通且对应服务端口已添加到防火墙白名单中，可通过 nc 或 curl 工具检查。
+    若 pd-server 正常，则需要检查 tidb-server 机器和 pd-server 对应端口之间的连通性，
+    确保网段连通且对应服务端口已添加到防火墙白名单中，可通过 nc 或 curl 工具检查。
 
-    例如，假设 tidb 服务位于 `192.168.1.100`，无法连接的 pd 位于 `192.168.1.101`，且 2379 为其 client port，则可以在 tidb 机器上执行
-  `nc -v -z 192.168.1.101 2379`，测试是否可以访问端口。或使用 `curl -v 192.168.1.101:2379/pd/api/v1/leader` 直接检查 pd 是否正常服务。
+    例如，假设 tidb 服务位于 `192.168.1.100`，无法连接的 pd 位于 `192.168.1.101`，且 2379 为其 client port，
+    则可以在 tidb 机器上执行 `nc -v -z 192.168.1.101 2379`，测试是否可以访问端口。
+    或使用 `curl -v 192.168.1.101:2379/pd/api/v1/leader` 直接检查 pd 是否正常服务。
 
 ## tikv-server 启动报错
 
@@ -69,7 +73,8 @@ tidb-server 无法启动的常见情况包括：
 
     首先检查 pd-server 的进程状态和日志。确保 pd-server 成功启动，对应端口已打开：`lsof -i:port`。
 
-    若 pd-server 正常，则需要检查 tikv-server 机器和 pd-server 对应端口之间的连通性，确保网段连通且对应服务端口已添加到防火墙白名单中，可通过 nc 或 curl 工具检查。具体命令参考上一节。
+    若 pd-server 正常，则需要检查 tikv-server 机器和 pd-server 对应端口之间的连通性，
+    确保网段连通且对应服务端口已添加到防火墙白名单中，可通过 nc 或 curl 工具检查。具体命令参考上一节。
 
 +   文件被占用
 
