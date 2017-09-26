@@ -74,7 +74,7 @@ Aggregation 对应 SQL 语句中的 Group By 语句或者没有 Group By 语句�
 
 ### Join
 
-TiDB 支持 Inner Join 以及 Left/Right Outer Join，并会自动将可以化简的外链接转换为 Inner Join。
+TiDB 支持 Inner Join 以及 Left/Right Outer Join，并会自动将可以化简的外连接转换为 Inner Join。
 
 TiDB 支持三种 Join 算法：Hash Join，Sort Merge Join 和 Index Look up Join。Hash Join 的原理是将参与连接的小表预先装载到内存中，读取大表的所有数据进行连接。Sort Merge Join 会利用输入数据的有序信息，同时读取两张表的数据并依次进行比较。Index Look Up Join 会读取外表的数据，并对内表进行主键或索引键查询。
 
