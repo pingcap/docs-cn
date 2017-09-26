@@ -9,6 +9,13 @@ category: user guide
 
 TiDB 支持的数据操作语言包括 Select ，Insert, Delete, Update，和 Replace。
 
+# 目录
+
++ [Select](#select-语句)
++ [Insert](#insert-语句)
++ [Delete](#delete-语句)
++ [Update](#update-语句)
+
 ## Select 语句
 
 Select 语句用于从数据库中查询数据。
@@ -140,3 +147,97 @@ INSERT INTO tbl_name SELECT * from tbl_name1;
 ```
 
 上面的例子中，从 `tbl_name1` 中查询出数据，插入 `tbl_name` 中。
+
+# Delete 语句
+
+Delete 语句用于删除数据库中的数据，TiDB 兼容 MySQL Delete 语句除 PARTITION 之外的所有语法。Delete 语句主要分为单表删除和多表删除两种，下面分开描述。
+
+## 单表删除
+
+这种语法用于删除的数据只会涉及一个表的情况。
+
+### 语法定义
+```sql
+DELETE [LOW_PRIORITY] [QUICK] [IGNORE] FROM tbl_name
+    [WHERE where_condition]
+    [ORDER BY ...]
+    [LIMIT row_count]
+```
+
+## 多表删除
+
+这种语法用于删除的数据会涉及多张表的情况。一共有两种写法：
+
+```sql
+DELETE [LOW_PRIORITY] [QUICK] [IGNORE]
+    tbl_name[.*] [, tbl_name[.*]] ...
+    FROM table_references
+    [WHERE where_condition]
+
+DELETE [LOW_PRIORITY] [QUICK] [IGNORE]
+    FROM tbl_name[.*] [, tbl_name[.*]] ...
+    USING table_references
+    [WHERE where_condition]
+```
+
+删除多个表的数据的时候，可以用这两种语法。这两种写法都可以指定从多个表查询数据，但只删除其中一些表的数据。在第一种语法中，只会删除 `FROM` 关键字之前的 Table 列表中所列 Table 的表中的数据。对于第二种写法，只会删除 `FROM` 之后 `USING` 之前的 Table 列表中的所列 Table 中的数据。
+
+
+## 语法元素说明
+
+| 语法元素 | 说明 |
+| -------------- | --------------------------------------------------------- |
+| `LOW_PRIORITY` | 该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级 |
+| `QUICK` | TiDB 出于兼容性解析这个语法，但是不做任何处理 |
+| `IGNORE` | TiDB 出于兼容性解析这个语法，但是不做任何处理|
+| `tbl_name` | 要删除数据的表名 |
+| `WHERE where_condition` | Where 表达式，只删除满足表达式的那些行 |
+| `ORDER BY` | 对待删除数据集进行排序 |
+| `LIMIT row_count` | 只对待删除数据集中排序前 row_count 行的内容进行删除 |
+
+# Update 语句
+
+Update 语句用于更新表中的数据。
+
+## 语法定义
+
+Update 语句一共有两种语法，分别用于更新单表数据和多表数据。
+
+### 单表 Update
+```sql
+UPDATE [LOW_PRIORITY] [IGNORE] table_reference
+    SET assignment_list
+    [WHERE where_condition]
+    [ORDER BY ...]
+    [LIMIT row_count]
+
+assignment:
+    col_name = value
+
+assignment_list:
+    assignment [, assignment] ...
+```
+
+单表 Update 语句会更新 Table 中现有行的指定列。`SET assignment_list` 指定了要更新的列名，以及要赋予地新值。 Where/OrderBy/Limit 子句一起用于从 Table 中查询出待更新的数据。
+
+### 多表 Update
+```sql
+UPDATE [LOW_PRIORITY] [IGNORE] table_references
+    SET assignment_list
+    [WHERE where_condition]
+```
+多表更新语句用于将 `table_references` 中满足 Where 子句的数据地指定列赋予新的值。
+
+
+## 语法元素说明
+
+| 语法元素 | 说明 |
+| -------------- | --------------------------------------------------------- |
+| `LOW_PRIORITY` | 该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级 |
+| `IGNORE` | TiDB 出于兼容性解析这个语法，但是不做任何处理|
+| `table_reference` | 待更新的 Table 名称 |
+| `table_references` | 待更新的 Table 名称列表 |
+| `SET assignment_list` | 待更新的列名以及目标值 |
+| `WHERE where_condition` | Where 表达式，只更新满足表达式的那些行 |
+| `ORDER BY` | 对待更新数据集进行排序 |
+| `LIMIT row_count` | 只对待更新数据集中排序前 row_count 行的内容进行更新 |
