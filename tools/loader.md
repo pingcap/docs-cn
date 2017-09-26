@@ -49,9 +49,6 @@ Since tools like mysqldump will take us days to migrate massive amounts of data,
   
   -pprof-addr string: the pprof address of Loader. It tunes the perfomance of Loader (default: ":10084")
 
-  -skip-unique-check: whether to skip the unique index check, 0 means no while 1 means yes (can improve the speed of importing data).
-  Note: Only when you import data to TiDB can you open this option (default: 1)
-
   -t int: the number of thread,increase this as TiKV nodes increase (default: 16)
   
   -u string: the user name of TiDB (default: "root")
@@ -79,12 +76,8 @@ checkpoint-schema = "tidb_loader"
 
 # Number of threads restoring concurrently for worker pool. Each worker restore one file at a time, increase this as TiKV nodes increase
 pool-size = 16
- 
-# Skip unique index check
-skip-unique-check = 0
 
 # An alternative database to restore into
-
 #alternative-db = ""
 # Database to restore
 #source-db = ""
