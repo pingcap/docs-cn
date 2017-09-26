@@ -25,6 +25,13 @@ Table of Contents
     - [统计信息简介](statistics.md)
 + 语言结构
     - 字面值
+        * [字符串字面值](literal-value-string-literals.md)
+        * [数字字面值](literal-value-numeric-literals.md)
+        * [NULL 值](literal-value-null-values.md)
+        * [十六进制字面值](literal-value-hex-decimal.md)
+        * [date 和 time 字面值](literal-value-date-and-time-literals.md)
+        * [布尔值](literal-value-boolean.md)
+        * [bit-val 字面值](literal-value-bit-value.md)
     - 数据库、表、索引、列和别名
     - 关键字和保留字
     - 用户变量
