@@ -53,8 +53,9 @@ Table of Contents
     - [位函数和操作符](bit-functions-and-operators.md)
     - [Cast 函数和操作符](cast-functions-and-operators.md)
     - [加密和压缩函数](encryption-and-compression-functions.md)
+    - 信息函数
+    - [JSON 函数](json-functions.md)
     - [信息函数](information-functions.md)
-    - JSON 函数
     - 全局事务 ID 函数
     - [GROUP BY 聚合函数](aggregate-group-by-functions.md)
     - [其他函数](miscellaneous-functions.md)
