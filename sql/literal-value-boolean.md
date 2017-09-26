@@ -5,7 +5,7 @@ category: user guide
 
 # Boolean Literals
 
-常量 `TRUE` 和 `FALSE` 等于`1` 和 `0`, 它是大小写不敏感的.
+常量 `TRUE` 和 `FALSE` 等于 `1` 和 `0`, 它是大小写不敏感的.
 
 ```
 mysql> SELECT TRUE, true, tRuE, FALSE, FaLsE, false;
