@@ -1,3 +1,8 @@
+---
+title: TiDB 用户文档
+category: user guide
+---
+
 # 精度数学
 
 TiDB 中精度数学计算与 MySQL 中基本一致, 详情请参见: [Precision Math](https://dev.mysql.com/doc/refman/5.7/en/precision-math.html).
