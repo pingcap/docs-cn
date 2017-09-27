@@ -18,7 +18,7 @@ Table of Contents
     - TiDB 服务器日志文件
 + TiDB 安全
     - [TiDB 访问权限管理](privilege.md)
-    - TiDB 用户账户管理
+    - [TiDB 用户账户管理](user-account-management.md)
     - [使用加密连接](encrypted-connections.md)
 + 优化
     - [理解 TiDB 执行计划](understanding-the-query-execution-plan.md)
@@ -28,8 +28,8 @@ Table of Contents
     - 数据库、表、索引、列和别名
     - 关键字和保留字
     - 用户变量
-    - 表达式语法
-    - 注释语法
+    - [表达式语法](expression-syntax.md)
+    - [注释语法](comment-syntax.md)
 + 字符集和时区支持
     - 字符集支持
     - 字符集配置
@@ -53,8 +53,9 @@ Table of Contents
     - [位函数和操作符](bit-functions-and-operators.md)
     - [Cast 函数和操作符](cast-functions-and-operators.md)
     - [加密和压缩函数](encryption-and-compression-functions.md)
+    - 信息函数
+    - [JSON 函数](json-functions.md)
     - [信息函数](information-functions.md)
-    - JSON 函数
     - 全局事务 ID 函数
     - [GROUP BY 聚合函数](aggregate-group-by-functions.md)
     - [其他函数](miscellaneous-functions.md)
@@ -62,7 +63,7 @@ Table of Contents
 + SQL 语句语法
     - [数据定义语句(DDL)](ddl.md)
     - [数据操作语句(DML)](dml.md)
-    - 事务语句
+    - [事务语句](transaction.md)
     - Prepared SQL 语句语法
     - 复合语句语法
     - 数据库管理语句
