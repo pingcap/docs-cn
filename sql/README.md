@@ -20,6 +20,8 @@ TiDB supports the SQL-92 standard and is compatible with MySQL. To help you easi
     - TiDB User Account Management
     - Using Secure Connections
 + Optimization
+    - Understand the Query Execution Plan
+    - [Introduction to Statistics](statistics.md)
 + Language Structure
     - Literal Values
     - Schema Object Names
