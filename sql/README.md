@@ -46,7 +46,7 @@ TiDB supports the SQL-92 standard and is compatible with MySQL. To help you easi
 + Functions and Operators
     - Function and Operator Reference
     - [Type Conversion in Expression Evaluation](type-conversion-in-expression-evaluation.md)
-    - Operators
+    - [Operators](operators.md)
     - [Control Flow Functions](control-flow-functions.md)
     - [String Functions](string-functions.md)
     - [Numeric Functions and Operators](numeric-functions-and-operators.md)
