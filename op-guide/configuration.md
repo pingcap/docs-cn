@@ -94,6 +94,16 @@ The default TiDB ports are 4000 for client requests and 10080 for status report.
 + default: true
 + The value can be (true) or (false). (true) is to enable join without any equal conditions. (false) is to disable it.
 
+### --proxy-protocol-networks
++ The proxy server’s IP addresses that allowed by PROXY Protocol.
++ default: "" (empty string)
++ The value can be IP address (192.168.1.50) or CIDR (192.168.1.0/24), if more than one address (or CIDR) required, use `,` to split. `*` means any IP addresses. Leaving it empty disable PROXY Protocol.
+
+### --proxy-protocol-header-timeout
++ PROXY Protocol header read timeout.
++ default: 5 (seconds)
++ The value set timeout for the PROXY protocol header read. The unit is second. You should not set this value to 0.
+
 ## Placement Driver (PD)
 
 ### -L
