@@ -62,7 +62,20 @@ mysql> SELECT 1+1--1;
 1 row in set (0.01 sec)
 ```
 
-有一种注释会被当做是优化器 Hint 特殊对待：
+TiDB 也跟 MySQL 保持一致，支持一种 C 风格注释的变体：
+
+```
+/*! Specific code */
+```
+
+在这种格式中，TiDB 会执行注释中的语句，这个语法是为了让这些 SQL 在其他的数据库中被忽略，而在 TiDB 中被执行。
+
+例如： `SELECT /*! STRAIGHT_JOIN */ col1 FROM table1,table2 WHERE ...`
+
+在 TiDB 中，它等价于 `SELECT STRAIGHT_JOIN col1 FROM table1,table2 WHERE ...`
+
+
+还有一种注释会被当做是优化器 Hint 特殊对待：
 
 ```
 SELECT /*+ hint */ FROM ...;
