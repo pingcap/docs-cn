@@ -30,12 +30,12 @@ Dates 如果 year 部分只有两个数字, 这是有歧义的(推荐使用四�
 * 8个数字, 会解释为 `YYYYMMDD`
 * 14个数字, 会被解释为 `YYYYMMDDHHMMSS`
 
-对于TIME类型, TiDB 用以下格式来表示:
+对于 Time 类型, TiDB 用以下格式来表示:
 
 * `'D HH:MM:SS'`, 或者`'HH:MM:SS'`, `'HH:MM'`, `'D HH:MM'`, `'D HH'`, `'SS'`, 这里的 D 表示 days, 合法的范围是`0-34`.
 * 数值 `HHMMSS`, 例如 `231010` 被解释为`'23:10:10'`
-* 数值 `SS`, `MMSS`, `HHMMSS` 都是可以被当做 TIME.
+* 数值 `SS`, `MMSS`, `HHMMSS` 都是可以被当做 Time.
 
-TIME类型的小数点也是`.`, 精度最多小数点后6位.
+Time 类型的小数点也是`.`, 精度最多小数点后6位.
 
 更多[细节](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-literals.html)

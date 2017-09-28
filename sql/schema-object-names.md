@@ -5,7 +5,7 @@ category: user guide
 
 # Schema Object Names
 
-在 TiDB 中, 包括 database, table, index, column, alias 等等都被认为是identifier(标识符, 之后阐述用英文).
+在 TiDB 中, 包括 database, table, index, column, alias 等等都被认为是identifier (标识符, 之后阐述用英文).
 
 在 TiDB 中, identifier可以被反引号(\`)包裹, 为了阐述方便, 我们叫这种情况为`被引用`. identifier 也可以不被\`包裹. 
 但是如果一个 identifier 存在一个特殊符号或者是一个保留关键字, 那么你必须要`引用`它.
@@ -14,7 +14,7 @@ category: user guide
 mysql> SELECT * FROM `table` WHERE `table`.id = 20;
 ```
 
-如果`ANSI_QUOTES` sql mode 被设置了, 那么我们认为被双引号`"`包裹的字符串为identifier.
+如果`ANSI_QUOTES` sql mode 被设置了, 那么我们认为被双引号`"`包裹的字符串为 identifier.
 
 ```
 mysql> CREATE TABLE "test" (a varchar(10));
