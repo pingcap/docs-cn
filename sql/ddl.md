@@ -47,11 +47,11 @@ DROP {DATABASE | SCHEMA} [IF EXISTS] db_name
 ## CREATE TABLE 语法
 
 ```sql
-CREATE [TEMPORARY] TABLE [IF NOT EXISTS] tbl_name
+CREATE TABLE [IF NOT EXISTS] tbl_name
     (create_definition,...)
     [table_options]
 
-CREATE [TEMPORARY] TABLE [IF NOT EXISTS] tbl_name
+CREATE TABLE [IF NOT EXISTS] tbl_name
     { LIKE old_tbl_name | (LIKE old_tbl_name) }
 
 create_definition:
@@ -194,7 +194,7 @@ TiDB 的自增 ID (`AUTO_INCREMENT` ID) 只保证自增且唯一，并不保证�
 ## DROP TABLE 语法
 
 ```sql
-DROP [TEMPORARY] TABLE [IF EXISTS]
+DROP TABLE [IF EXISTS]
     tbl_name [, tbl_name] ...
 ```
 
