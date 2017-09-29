@@ -32,7 +32,7 @@ Table of Contents
     - [注释语法](comment-syntax.md)
 + 字符集和时区支持
     - 字符集支持
-    - 字符集配置
+    - [字符集配置](character-set-configuration.md)
     - 时区支持
 + 数据类型
     - [数值类型](datatype.md#数值类型)
