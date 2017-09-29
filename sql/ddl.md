@@ -13,7 +13,7 @@ DDL（Data Definition Language）用于定义和管理数据库以及数据库�
 * [DROP TABLE 语法](#drop-table-语法)
 * [TRUNCATE TABLE 语法](#truncate-table-语法)
 * [RENAME TABLE 语法](#rename-table-语法)
-* ALTER TABLE 语法
+* [ALTER TABLE 语法](#alter-table-语法)
 * [CREATE INDEX 语法](#create-index-语法)
 * [DROP INDEX 语法](#drop-index-语法)
 
@@ -227,6 +227,99 @@ RENAME TABLE
 ```sql
 ALTER TABLE old_table RENAME new_table;
 ```
+
+## ALTER TABLE 语法
+
+```sql
+ALTER TABLE tbl_name
+    [alter_specification]
+
+alter_specification:
+    table_options
+  | ADD [COLUMN] col_name column_definition
+        [FIRST | AFTER col_name]
+  | ADD [COLUMN] (col_name column_definition,...)
+  | ADD {INDEX|KEY} [index_name]
+        [index_type] (index_col_name,...) [index_option] ...
+  | ADD [CONSTRAINT [symbol]] PRIMARY KEY
+        [index_type] (index_col_name,...) [index_option] ...
+  | ADD [CONSTRAINT [symbol]]
+        UNIQUE [INDEX|KEY] [index_name]
+        [index_type] (index_col_name,...) [index_option] ...
+  | ADD FULLTEXT [INDEX|KEY] [index_name]
+        (index_col_name,...) [index_option] ...
+  | ADD [CONSTRAINT [symbol]]
+        FOREIGN KEY [index_name] (index_col_name,...)
+        reference_definition
+  | ALTER [COLUMN] col_name {SET DEFAULT literal | DROP DEFAULT}
+  | CHANGE [COLUMN] old_col_name new_col_name column_definition
+        [FIRST|AFTER col_name]
+  | {DISABLE|ENABLE} KEYS
+  | DROP [COLUMN] col_name
+  | DROP {INDEX|KEY} index_name
+  | DROP PRIMARY KEY
+  | DROP FOREIGN KEY fk_symbol
+  | LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}
+  | MODIFY [COLUMN] col_name column_definition
+        [FIRST | AFTER col_name]
+  | RENAME [TO|AS] new_tbl_name
+  | {WITHOUT|WITH} VALIDATION
+
+index_col_name:
+    col_name [(length)] [ASC | DESC]
+
+index_type:
+    USING {BTREE | HASH}
+
+index_option:
+    KEY_BLOCK_SIZE [=] value
+  | index_type
+  | COMMENT 'string'
+
+table_options:
+    table_option [[,] table_option] ...
+
+table_option:
+    AVG_ROW_LENGTH [=] value
+  | [DEFAULT] CHARACTER SET [=] charset_name
+  | CHECKSUM [=] {0 | 1}
+  | [DEFAULT] COLLATE [=] collation_name
+  | COMMENT [=] 'string'
+  | COMPRESSION [=] {'ZLIB'|'LZ4'|'NONE'}
+  | CONNECTION [=] 'connect_string'
+  | DELAY_KEY_WRITE [=] {0 | 1}
+  | ENGINE [=] engine_name
+  | KEY_BLOCK_SIZE [=] value
+  | MAX_ROWS [=] value
+  | MIN_ROWS [=] value
+  | ROW_FORMAT [=] {DEFAULT|DYNAMIC|FIXED|COMPRESSED|REDUNDANT|COMPACT}
+  | STATS_PERSISTENT [=] {DEFAULT|0|1}
+```
+`ALTER TABLE` 用于修改已存在的表的结构，比如：修改表及表属性、新增或删除列、创建或删除索引、修改列及属性等. 以下是几个字段类型的描述:
+
+* `index_col_name`、`index_type` 和 `index_option` 可以参考 [CREATE INDEX 语法](#create-index-语法).
+
+* `table_option` 目前支持都只是语法上支持。
+
+下面介绍一下具体操作类型的支持情况。
+
+* `ADD/DROP INDEX/COLUMN` 操作目前不支持同时创建或删除多个索引或列。
+
+* `ADD/DROP PRIMARY KEY` 操作目前不支持。
+
+* `DROP COLUMN` 操作目前不支持删除的列为主键列或索引列。
+
+* `ADD COLUMN` 操作目前不支持同时将新添加的列设为主键或唯一索引，也不支持将此列设成 `AUTO_INCREMENT` 属性。
+
+* `CHANGE/MODIFY COLUMN` 操作目前支持部分语法，细节如下：
+    - 在修改类型方面，只支持整数类型之间修改，字符串类型之间修改和 Blob 类型之间的修改，且只能使原类型长度变长。此外，不能改变列的 `unsigned`/`charset`/`collate` 属性。这里的类型分类如下：
+    - 具体支持的整型类型有：`TinyInt`，`SmallInt`，`MediumInt`，`Int`，`BigInt`。
+    - 具体支持的字符串类型有：`Char`，`Varchar`，`Text`，`TinyText`，`MediumText`，`LongText`。
+    - 具体支持的 Blob 类型有：`Blob`，`TinyBlob`，`MediumBlob`，`LongBlob`。
+    - 在修改类型定义方面，支持的包括 `default value`，`comment`，`null`，`not null` 和 `OnUpdate`，但是不支持从 `null` 到 `not null` 的修改。
+    - 不支持对 `enum` 类型的列进行修改
+
+* `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}` 目前只是语法支持。
 
 ## CREATE INDEX 语法
 
