@@ -74,6 +74,8 @@ TiDB 也跟 MySQL 保持一致，支持一种 C 风格注释的变体：
 
 在 TiDB 中，它等价于 `SELECT STRAIGHT_JOIN col1 FROM table1,table2 WHERE ...`
 
+如果你在 `!` 用了一个版本数字，例如 `/*!50110 KEY_BLOCK_SIZE=1024 */`，在 MySQL 中表示只有 MySQL 的版本大于等于 5.1.10 才会处理这个 comment，但是在 TiDB 中，这个版本号不会起作用，我们都会处理这个注释。
+
 
 还有一种注释会被当做是优化器 Hint 特殊对待：
 
