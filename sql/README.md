@@ -59,7 +59,7 @@ Table of Contents
     - 全局事务 ID 函数
     - [GROUP BY 聚合函数](aggregate-group-by-functions.md)
     - [其他函数](miscellaneous-functions.md)
-    - 精度数学
+    - [精度数学](precision-math.md)
 + SQL 语句语法
     - [数据定义语句(DDL)](ddl.md)
     - [数据操作语句(DML)](dml.md)
