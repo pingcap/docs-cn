@@ -24,7 +24,7 @@ This section describes the supported MySQL group (aggregate) functions in TiDB.
 
 ## GROUP BY Modifiers
 
-TiDB dose not support any `GROUP BY` modifiers currently, we'll do it in the future, for more information, see [#4250](https://github.com/pingcap/tidb/issues/4250).
+TiDB dose not support any `GROUP BY` modifiers currently. We'll do it in the future. For more information, see [#4250](https://github.com/pingcap/tidb/issues/4250).
 
 ## <span id="tidb-handling-of-group-by">TiDB Handling of GROUP BY</span>
 
@@ -39,7 +39,7 @@ insert into t values(1, 2, 3), (2, 2, 3), (3, 2, 3);
 select a, b, sum(c) from t group by a;
 ```
 
-The preceding query is legal in TiDB. TiDB does not support sql mode `ONLY_FULL_GROUP_BY` currently, we'll do it in the future, for more inmormation, see [#4248](https://github.com/pingcap/tidb/issues/4248).
+The preceding query is legal in TiDB. TiDB does not support SQL mode `ONLY_FULL_GROUP_BY` currently. We'll do it in the future. For more inmormation, see [#4248](https://github.com/pingcap/tidb/issues/4248).
 
 Suppose that we execute the following query, expecting the results to be ordered by "c":
 ```sql
@@ -89,4 +89,4 @@ group by id, val;
 
 ## Detection of Functional Dependence
 
-TiDB does not support sql mode `ONLY_FULL_GROUP_BY` and detection of functional dependence, we'll do it in the future, for more information see [#4248](https://github.com/pingcap/tidb/issues/4248).
+TiDB does not support SQL mode `ONLY_FULL_GROUP_BY` and detection of functional dependence. We'll do it in the future. For more information, see [#4248](https://github.com/pingcap/tidb/issues/4248).
