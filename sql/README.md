@@ -33,7 +33,7 @@ Table of Contents
 + 字符集和时区支持
     - 字符集支持
     - [字符集配置](character-set-configuration.md)
-    - 时区支持
+    - [时区支持](time-zone.md)
 + 数据类型
     - [数值类型](datatype.md#数值类型)
     - 日期和时间类型
