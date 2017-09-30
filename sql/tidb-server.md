@@ -24,7 +24,7 @@ TiDB 兼容 MySQL 的系统变量，同时定义了一些特有的系统变量�
 
 ## TiDB 数据目录
 
-TiDB 数据存放在存储引擎中，数据目录取决于使用的存储引擎，存储引擎的选择参见[TiDB 启动参数文档](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#--store)。
+TiDB 数据存放在存储引擎中，数据目录取决于使用的存储引擎，存储引擎的选择参见 [TiDB 启动参数文档](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#--store)。
 
 对于使用本地存储引擎的情况，数据存储在本机硬盘上，目录位置通过 [path](https://github.com/pingcap/docs-cn/blob/master/op-guide/configuration.md#--path) 参数控制。
 
