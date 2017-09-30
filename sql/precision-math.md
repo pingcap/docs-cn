@@ -73,7 +73,7 @@ DECIMAL 列不允许插入大于列定义的隐含范围的值. 例如, DECIMAL(
 SET sql_mode = 'TRADITIONAL`;
 ```
 
-向一个具有精确值类型（`DECIMAL` 或者整数类型）的列插入数据时，如果插入的数据位于该列的值域范围内将使用该数据的精确值。如果该数据的小数部分太长，将会发生数值修约，这时会有 warning 产生，具体内容可以看[数值修约](#round)。
+向一个具有精确值类型（`DECIMAL` 或者整数类型）的列插入数据时，如果插入的数据位于该列的值域范围内将使用该数据的精确值。如果该数据的小数部分太长，将会发生数值修约，这时会有 warning 产生，具体内容可以看"数值修约"。
 
 如果该数据整数部分太长：
 
@@ -106,7 +106,7 @@ INSERT INTO t SET i = 1/0;
 | strict, `ERROR_FOR_DIVISION_BY_ZERO` | 有 error，插入失败 |
 
 
-## <span id="round">数值修约</span>
+## 数值修约
 
 `round()` 函数的结果取决于他的参数是否是精确值：
 
@@ -123,7 +123,7 @@ TiDB > SELECT ROUND(2.5), ROUND(25E-1);
 1 row in set (0.00 sec)
 ```
 
-向一个 `DECIMAL` 或者整数类型列插入数据时，round 的规则将采用 [round half away from zer](https://en.wikipedia.org/wiki/Rounding\#Round_half_away_from_zero) 的方式：
+向一个 `DECIMAL` 或者整数类型列插入数据时，round 的规则将采用 [round half away from zero](https://en.wikipedia.org/wiki/Rounding\#Round_half_away_from_zero) 的方式：
 
 ```sql
 TiDB > CREATE TABLE t (d DECIMAL(10,0));
