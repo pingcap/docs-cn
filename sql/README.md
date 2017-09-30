@@ -71,4 +71,4 @@ Table of Contents
     - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
 - [文档型数据库](json-functions-generated-column.md)
 + 连接器和 API
-+ [错误码，故障诊断](error.md)
++ [错误码与故障诊断](error.md)
