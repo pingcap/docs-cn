@@ -23,4 +23,4 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 ## 故障诊断
 
-参见[故障诊断文档](../trouble-shooting.md)以及 [FAQ] (../FAQ.md)。
+参见[故障诊断文档](../trouble-shooting.md)以及 [FAQ](../FAQ.md)。
