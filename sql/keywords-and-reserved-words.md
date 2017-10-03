@@ -8,7 +8,7 @@ category: user guide
 关键字在 SQL 中有特殊的意义, 例如 `SELECT, UPDATE, DELETE`，在作为表名跟函数名的时候，需要特殊对待，例如作为表名，保留字需要被反引号包住：
 
 ```
-mysql> CREATE TABLE SELECT (a INT);
+mysql> CREATE TABLE select (a INT);
 ERROR 1105 (HY000): line 0 column 19 near " (a INT)" (total length 27)
 mysql> CREATE TABLE `select` (a INT);
 Query OK, 0 rows affected (0.09 sec)

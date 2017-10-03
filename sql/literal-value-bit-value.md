@@ -21,7 +21,7 @@ category: user guide
 
 默认情况, 位值字面值是一个二进制字符串。
 
-Bit-value 是作为二进制返回的, 所以输出到 MySQL client 可能会显示不出来, 如果要转换为可打印的字符, 可以使用内建函数  `BIN()` 或者 `HEX()`:
+Bit-value 是作为二进制返回的, 所以输出到 MySQL Client 可能会显示不出来, 如果要转换为可打印的字符, 可以使用内建函数  `BIN()` 或者 `HEX()`:
 
 ```sql
 CREATE TABLE t (b BIT(8));
