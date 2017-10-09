@@ -6,8 +6,8 @@ category: user guide
 # 字符集支持
 
 名词解释，下面的阐述中会交错使用中文或者英文，请互相对照：
-* Character Set: 字符集
-* Collation: 排序规则
+* Character Set：字符集
+* Collation：排序规则
 
 
 目前 `TiDB` 支持以下字符集：
@@ -28,7 +28,7 @@ mysql> SHOW CHARACTER SET;
 
 **注意**：在 `TiDB` 中实际上 `utf8` 被当做成了 `utf8mb4` 来处理。
 
-对于字符集来说，至少会有一个 Collation （排序规则） 与之对应。而大部分字符集实际上会有多个 Collation。利用以下的语句可以查看：
+对于字符集来说，至少会有一个 Collation（排序规则）与之对应。而大部分字符集实际上会有多个 Collation。利用以下的语句可以查看：
 
 ```
 mysql> SHOW COLLATION WHERE Charset = 'latin1';
@@ -47,7 +47,7 @@ mysql> SHOW COLLATION WHERE Charset = 'latin1';
 8 rows in set (0.00 sec)
 ```
 
-`latin1` Collation（排序规则） 分别有以下含义：
+`latin1` Collation（排序规则）分别有以下含义：
 
 Collation         | 含义
 :-                | :-
@@ -173,12 +173,12 @@ col_name {ENUM | SET} (val_list)
 
 ## 客户端连接的 Character Sets 和 Collations
 
-* 服务器的字符集和排序规则可以通过系统变量 `character_set_server` 和 `collation_server` 获取
-* 数据库的字符集和排序规则可以通过环境变量 ` character_set_database` 和 `collation_database` 获取
+* 服务器的字符集和排序规则可以通过系统变量 `character_set_server` 和 `collation_server` 获取。
+* 数据库的字符集和排序规则可以通过环境变量 `character_set_database` 和 `collation_database` 获取。
 
-对于每一个客户端的连接，也有相应的变量表示字符集和排序规则：`character_set_connection` 和 `collation_connection`
+对于每一个客户端的连接，也有相应的变量表示字符集和排序规则：`character_set_connection` 和 `collation_connection`。
 
-`character_set_client` 代表客户端的字符集。 在返回结果前，服务端会把结果根据 `character_set_results` 转换成对应的字符集。包括结果的元信息等。
+`character_set_client` 代表客户端的字符集。在返回结果前，服务端会把结果根据 `character_set_results` 转换成对应的字符集。包括结果的元信息等。
 
 可以用以下的语句来影响这些跟客户端相关的字符集变量：
 
