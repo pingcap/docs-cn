@@ -5,7 +5,7 @@ category: user guide
 
 # Keywords and Reserved Words
 
-关键字在 SQL 中有特殊的意义, 例如 `SELECT, UPDATE, DELETE`，在作为表名跟函数名的时候，需要特殊对待，例如作为表名，保留字需要被反引号包住：
+关键字在 SQL 中有特殊的意义, 例如 `SELECT`, `UPDATE`, `DELETE`，在作为表名跟函数名的时候，需要特殊对待，例如作为表名，保留字需要被反引号包住：
 
 ```
 mysql> CREATE TABLE select (a INT);
@@ -28,7 +28,7 @@ mysql> CREATE TABLE test.select (BEGIN int, END int);
 Query OK, 0 rows affected (0.08 sec)
 ```
 
-下表列出了在 TiDB 中的关键字跟保留字，保留字用(R)来标识：
+下表列出了在 TiDB 中的关键字跟保留字，保留字用 (R) 来标识：
 
 ACTION | ADD (R) | ADDDATE
 :- | :- | :-
