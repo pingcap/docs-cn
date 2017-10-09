@@ -31,7 +31,7 @@ mysql> SELECT @a1, @a2, @t3, @a4 := @a1+@a2+@a3;
 +------+------+------+--------------------+
 ```
 
-如果设置用户变量用了 `HEX` 或者 `BIT` 值，TiDB会把它当成二进制字符串。如果你要将其设置成数字， 那么需要手动加上 `CAST转换`: `CAST(.. AS UNSIGNED)`：
+如果设置用户变量用了 `HEX` 或者 `BIT` 值，TiDB会把它当成二进制字符串。如果你要将其设置成数字，那么需要手动加上 `CAST转换`: `CAST(.. AS UNSIGNED)`：
 
 ```
 mysql> SELECT @v1, @v2, @v3;
@@ -60,7 +60,7 @@ mysql> SELECT @v1, @v2, @v3;
 1 row in set (0.00 sec)
 ```
 
-如果获取一个没有设置过的变量, 会返回一个NULL:
+如果获取一个没有设置过的变量，会返回一个 NULL：
 
 ```
 mysql> select @not_exist;
@@ -72,7 +72,7 @@ mysql> select @not_exist;
 1 row in set (0.00 sec)
 ```
 
-用户自定义变量不能直接在 SQL 语句中被当成 identifier, 例:
+用户自定义变量不能直接在 SQL 语句中被当成 identifier，例：
 
 ```
 mysql> select * from t;
@@ -109,7 +109,7 @@ mysql> SELECT @col FROM t;
 1 row in set (0.01 sec)
 ```
 
-但是有一个例外是如果你在 PREPARE 语句中使用它, 是可以的:
+但是有一个例外是如果你在 PREPARE 语句中使用它，是可以的：
 
 ```
 mysql> PREPARE stmt FROM "SELECT @c FROM t";
