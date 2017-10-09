@@ -7,7 +7,7 @@ category: user guide
 
 | 函数或语法糖                                                       | 功能描述                                                   |
 | ------------------------------------------------------------------ | ---------------------------------------------------------- |
-| [JSON_EXTRACT(json_doc, path[, path] ...])][json_extract]          | 从 JSON 文档中解出某一路径对应的子文档                     |
+| [JSON_EXTRACT(json_doc, path[, path] ...)][json_extract]          | 从 JSON 文档中解出某一路径对应的子文档                     |
 | [JSON_UNQUOTE(json_val)][json_unquote]                             | 去掉 JSON 文档外面的引号                                   |
 | [JSON_TYPE(json_val)][json_type]                                   | 检查某 JSON 文档内部内容的类型                             |
 | [JSON_SET(json_doc, path, val[, path, val] ...)][json_set]         | 在 JSON 文档中为某一路径设置子文档                         |
