@@ -5,7 +5,7 @@ category: user guide
 
 # Keywords and Reserved Words
 
-关键字在 SQL 中有特殊的意义, 例如 `SELECT`, `UPDATE`, `DELETE`，在作为表名跟函数名的时候，需要特殊对待，例如作为表名，保留字需要被反引号包住：
+关键字在 SQL 中有特殊的意义， 例如 `SELECT`， `UPDATE`， `DELETE`，在作为表名跟函数名的时候，需要特殊对待，例如作为表名，保留字需要被反引号包住：
 
 ```
 mysql> CREATE TABLE select (a INT);
@@ -14,14 +14,14 @@ mysql> CREATE TABLE `select` (a INT);
 Query OK, 0 rows affected (0.09 sec)
 ```
 
-`BEGIN` 和 `END` 是关键字, 但不是保留字，所以不需要反引号：
+`BEGIN` 和 `END` 是关键字， 但不是保留字，所以不需要反引号：
 
 ```
 mysql> CREATE TABLE `select` (BEGIN int, END int);
 Query OK, 0 rows affected (0.09 sec)
 ```
 
-有一种特殊情况, 如果使用了限定符 `.` , 那么也不需要用反引号:
+有一种特殊情况， 如果使用了限定符 `.`，那么也不需要用反引号：
 
 ```
 mysql> CREATE TABLE test.select (BEGIN int, END int);
