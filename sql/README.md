@@ -11,15 +11,15 @@ TiDB 支持 SQL92 标准并兼容 MySQL 语法，为了帮您更好地使用 TiD
 Table of Contents
 
 + TiDB 数据库管理
-    - TiDB 服务器和服务器启动脚本
-    - TiDB 数据目录
+    - [TiDB 服务](tidb-server.md)
+    - [TiDB 数据目录](tidb-server.md#tidb-数据目录)
     - [TiDB 系统数据库](system-database.md)
     - [TiDB 专用系统变量和语法](tidb-specific.md)
-    - TiDB 服务器日志文件
+    - [TiDB 服务器日志文件](tidb-server.md#tidb-服务器日志文件)
 + TiDB 安全
     - [TiDB 访问权限管理](privilege.md)
     - [TiDB 用户账户管理](user-account-management.md)
-    - 使用安全连接
+    - [使用加密连接](encrypted-connections.md)
 + 优化
     - [理解 TiDB 执行计划](understanding-the-query-execution-plan.md)
     - [统计信息简介](statistics.md)
@@ -32,8 +32,8 @@ Table of Contents
     - [注释语法](comment-syntax.md)
 + 字符集和时区支持
     - [字符集支持](character-set-support.md)
-    - 字符集配置
-    - 时区支持
+    - [字符集配置](character-set-configuration.md)
+    - [时区支持](time-zone.md)
 + 数据类型
     - [数值类型](datatype.md#数值类型)
     - 日期和时间类型
@@ -59,7 +59,7 @@ Table of Contents
     - 全局事务 ID 函数
     - [GROUP BY 聚合函数](aggregate-group-by-functions.md)
     - [其他函数](miscellaneous-functions.md)
-    - 精度数学
+    - [精度数学](precision-math.md)
 + SQL 语句语法
     - [数据定义语句(DDL)](ddl.md)
     - [数据操作语句(DML)](dml.md)
@@ -71,4 +71,4 @@ Table of Contents
     - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
 - [文档型数据库](json-functions-generated-column.md)
 + 连接器和 API
-+ 故障诊断
++ [错误码与故障诊断](error.md)

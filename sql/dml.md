@@ -15,6 +15,7 @@ TiDB 支持的数据操作语言包括 Select ，Insert, Delete, Update，和 Re
 + [Insert](#insert-语句)
 + [Delete](#delete-语句)
 + [Update](#update-语句)
++ [Replace](#replace-语句)
 
 ## Select 语句
 
@@ -241,3 +242,37 @@ UPDATE [LOW_PRIORITY] [IGNORE] table_references
 | `WHERE where_condition` | Where 表达式，只更新满足表达式的那些行 |
 | `ORDER BY` | 对待更新数据集进行排序 |
 | `LIMIT row_count` | 只对待更新数据集中排序前 row_count 行的内容进行更新 |
+
+
+# Replace 语句
+
+Replace 语句是 MySQL 对标准 SQL 语法的扩展，其行为和 Insert 语句一样，但是当现有数据中有和待插入数据在 PRIMARY KEY 或者 UNIQUE KEY 冲突的情况下，会先删除旧数据，再插入新数据。
+
+## 语法定义
+
+```sql
+REPLACE [LOW_PRIORITY | DELAYED]
+    [INTO] tbl_name
+    [(col_name [, col_name] ...)]
+    {VALUES | VALUE} (value_list) [, (value_list)] ...
+
+REPLACE [LOW_PRIORITY | DELAYED]
+    [INTO] tbl_name
+    SET assignment_list
+
+REPLACE [LOW_PRIORITY | DELAYED]
+    [INTO] tbl_name
+    [(col_name [, col_name] ...)]
+    SELECT ...
+```
+
+## 语法元素说明
+
+| 语法元素 | 说明 |
+| -------------- | --------------------------------------------------------- |
+| `LOW_PRIORITY` | 该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级 |
+| `DELAYED` | TiDB 出于兼容性解析这个语法，但是不做任何处理|
+| `tbl_name` | 待更新的 Table 名称 |
+| `value_list` | 待插入的数据 |
+| `SET assignment_list` | 待更新的列名以及目标值 |
+| `SELECT ...` | 待插入的数据集，该数据集来自于一个 `Select` 语句 |
