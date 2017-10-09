@@ -36,6 +36,6 @@ Dates 如果 year 部分只有两个数字，这是有歧义的(推荐使用四�
 * 数值 `HHMMSS`，例如 `231010` 被解释为`'23:10:10'`
 * 数值 `SS`，`MMSS`，`HHMMSS` 都是可以被当做 Time。
 
-Time 类型的小数点也是 `.`，精度  最多小数点后6位。
+Time 类型的小数点也是 `.`，精度最多小数点后6位。
 
 更多[细节](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-literals.html)
