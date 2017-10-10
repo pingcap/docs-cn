@@ -60,9 +60,9 @@ latin1_german2_ci | 德国 DIN-2，不区分大小写
 latin1_spanish_ci | 现代西班牙语，不区分大小写
 latin1_swedish_ci | 瑞典语/芬兰语，不区分大小写
 
-每一个字符集，都有一个相应的 Collation，例如 `utf8` 的默认 Collation 就为 `utf8_general_ci`。
+每一个字符集，都有一个默认的 Collation，例如 `utf8` 的默认 Collation 就为 `utf8_general_ci`。
 
-**注意** `TiDB` 目前的 Collation 都是大小写敏感的。
+**注意** `TiDB` 目前的 Collation 都是区分大小写的。
 
 ## Collation 命名规则
 
