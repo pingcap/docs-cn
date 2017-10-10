@@ -31,7 +31,7 @@ Table of Contents
     - [表达式语法](expression-syntax.md)
     - [注释语法](comment-syntax.md)
 + 字符集和时区支持
-    - 字符集支持
+    - [字符集支持](character-set-support.md)
     - [字符集配置](character-set-configuration.md)
     - [时区支持](time-zone.md)
 + 数据类型
