@@ -72,8 +72,7 @@ Table of Contents
     - [数据操作语句(DML)](dml.md)
     - [事务语句](transaction.md)
     - Prepared SQL 语句语法
-    - 复合语句语法
-    - 数据库管理语句
+    - [数据库管理语句](admin.md)
     - 实用工具语句
     - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
 - [文档型数据库](json-functions-generated-column.md)
