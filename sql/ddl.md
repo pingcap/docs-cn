@@ -32,7 +32,7 @@ create_specification:
 
 当创建已存在的数据库且不指定使用 `IF NOT EXISTS` 时会报错。
 
-`create_specification` 选项用于指定数据库具体的 `CHARACTER` 和 `COLLATE`。目前这个选项只是语法支持。
+`create_specification` 选项用于指定数据库具体的 `CHARACTER SET` 和 `COLLATE`。目前这个选项只是语法支持。
 
 ## DROP DATABASE 语法
 
@@ -177,13 +177,13 @@ table_option:
 
 * `index_option` 中 `KEY_BLOCK_SIZE` 目前只是语法上支持。
 
-* `table_option` 目前支持的只有 `AUTO_INCREMENT`，`COMMENT` 和 `CHARACTER SET`，其它只是语法上支持。具体内容参考下表，各个子句j间用逗号隔开。
+* `table_option` 目前支持的只有 `AUTO_INCREMENT`，`CHARACTER SET` 和 `COMMENT`，其它只是语法上支持。具体内容参考下表，各个子句j间用逗号隔开。
 
-| 参数           |含义                                  |举例                        |
-|----------------|--------------------------------------|----------------------------|
-|`AUTO_INCREMENT`|自增字段初始值                        |`AUTO_INCREMENT` = 5|
-|`CHARACTER SET` |指定该表的字符串编码。目前支持 UTF8MB4| `CHARACTER SET` =  'utf8mb4'|
-|`COMMENT`       |注释信息                              | `COMMENT` = 'comment info' |
+    | 参数           |含义                                  |举例                        |
+    |----------------|--------------------------------------|----------------------------|
+    |`AUTO_INCREMENT`|自增字段初始值                        |`AUTO_INCREMENT` = 5|
+    |`CHARACTER SET` |指定该表的字符串编码。目前支持 UTF8MB4| `CHARACTER SET` =  'utf8mb4'|
+    |`COMMENT`       |注释信息                              | `COMMENT` = 'comment info' |
 
 ### AUTO_INCREMENT 说明
 
