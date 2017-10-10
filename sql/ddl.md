@@ -177,7 +177,7 @@ table_option:
 
 * `index_option` 中 `KEY_BLOCK_SIZE` 目前只是语法上支持。
 
-* `table_option` 目前支持的只有 `AUTO_INCREMENT`，`CHARACTER SET` 和 `COMMENT`，其它只是语法上支持。具体内容参考下表，各个子句j间用逗号隔开。
+* `table_option` 目前支持的只有 `AUTO_INCREMENT`，`CHARACTER SET` 和 `COMMENT`，其它只是语法上支持。具体内容参考下表，各个子句之间用逗号隔开。
 
     | 参数           |含义                                  |举例                        |
     |----------------|--------------------------------------|----------------------------|
