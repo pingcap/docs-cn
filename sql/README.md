@@ -32,9 +32,9 @@ Table of Contents
         - [date 和 time 字面值](literal-value-date-and-time-literals.md)
         - [布尔值](literal-value-boolean.md)
         - [bit-val 字面值](literal-value-bit-value.md)
-    - 数据库、表、索引、列和别名
-    - 关键字和保留字
-    - 用户变量
+    - [数据库、表、索引、列和别名](schema-object-names.md)
+    - [关键字和保留字](keywords-and-reserved-words.md)
+    - [用户变量](user-defined-variables.md)
     - [表达式语法](expression-syntax.md)
     - [注释语法](comment-syntax.md)
 + 字符集和时区支持
