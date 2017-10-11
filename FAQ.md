@@ -208,7 +208,7 @@ leader-schedule-limit 调度是用来均衡不同 TiKV 的 leader 数，影响�
 
 #### 每个 region group 的 replica 数量可配置吗？调整的方法是？
 
-可以，目前只能调整全局的 replica 数量。首次启动时 PD 会读配置文件（conf/pd.yml），使用其中的 max-replicas 配置，之后修改需要使用 pd-ctl 配置命令 `onfig set max-replicas $num`，配置后可通过 `config show all` 来查看已生效的配置。调整的时候，不会影响业务，会在后台添加，注意总 tikv 实例数总是要大于等于设置的副本数，例如 3 副本需要至少 3 个 TiKV。增加副本数量之前需要预估额外的存储需求。pd-ctl 的详细用法可参考 [PD Control 使用说明](op-guide/pd-control.md)。
+可以，目前只能调整全局的 replica 数量。首次启动时 PD 会读配置文件（conf/pd.yml），使用其中的 max-replicas 配置，之后修改需要使用 pd-ctl 配置命令 `config set max-replicas $num`，配置后可通过 `config show all` 来查看已生效的配置。调整的时候，不会影响业务，会在后台添加，注意总 tikv 实例数总是要大于等于设置的副本数，例如 3 副本需要至少 3 个 TiKV。增加副本数量之前需要预估额外的存储需求。pd-ctl 的详细用法可参考 [PD Control 使用说明](op-guide/pd-control.md)。
 
 ### TiDB
 
@@ -226,13 +226,13 @@ leader-schedule-limit 调度是用来均衡不同 TiKV 的 leader 数，影响�
 
 #### 为什么有的时候执行 DDL 会很慢？
 
-TiDB 集群中 DDL 是串行执行的，不会并发执行，可以使用 admin show ddl， 语句查看正在运行的 DDL；admin show ddl jobs， 查看历史 DDL 和队列中的 DDL。
+TiDB 集群中 DDL 是串行执行的，不会并发执行，可以使用 admin show ddl，语句查看正在运行的 DDL；admin show ddl jobs，查看历史 DDL 和队列中的 DDL。
 
 #### ERROR 2013 (HY000): Lost connection to MySQL server during query 问题的排查方法
 
 + log 中是否有 panic
 + dmesg 中是否有 oom, 命令：dmesg |grep -i oom
-+ 长时间没有访问，也会收到这个报错，一般是tcp超时导致的，tcp长时间不用, 会被操作系统kill
++ 长时间没有访问，也会收到这个报错，一般是 tcp 超时导致的，tcp 长时间不用, 会被操作系统 kill。
 
 ### TiKV
 
@@ -302,7 +302,7 @@ rm -rf tidb_test
 
 #### 如何对 TiDB 进行水平扩展？
 
-当您的业务不断增长时，数据库可能会面临三方面瓶颈，第一是存储资源不够，也就是磁盘空间不够；第二是计算资源不够用，如 CPU 占用较高， 第三是吞吐跟不上。这时可以对 TiDB 集群做水平扩展。
+当您的业务不断增长时，数据库可能会面临三方面瓶颈，第一是存储资源不够，也就是磁盘空间不够；第二是计算资源不够用，如 CPU 占用较高，第三是吞吐跟不上。这时可以对 TiDB 集群做水平扩展。
 
 - 如果是存储资源不够，可以通过添加 TiKV Server 节点来解决。新节点启动后，PD 会自动将其他节点的部分数据迁移过去，无需人工介入。
 - 如果是计算资源不够，可以查看 TiDB Server 和 TiKV Server 节点的 CPU 消耗情况，再考虑添加 TiDB Server 节点或者是 TiKV Server 节点来解决。如添加 TiDB Server 节点，将其配置在前端的 Load Balancer 之后即可。
