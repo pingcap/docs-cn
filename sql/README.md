@@ -55,7 +55,7 @@ TiDB supports the SQL-92 standard and is compatible with MySQL. To help you easi
     - Bit Functions and Operators
     - [Encryption and Compression Functions](encryption-and-compression-functions.md)
     - [Information Functions](information-functions.md)
-    - JSON Functions
+    - [JSON Functions](json-functions.md)
     - Functions Used with Global Transaction IDs
     - [Aggregate (GROUP BY) Functions](aggregate-group-by-functions.md)
     - [Miscellaneous Functions](miscellaneous-functions.md)
