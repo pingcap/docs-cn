@@ -50,7 +50,7 @@ Table of Contents
     - 数据类型存储需求
     - 选择正确的列类型
 + 函数和操作符
-    - 函数和操作符概述
+    - [函数和操作符概述](functions-and-operators-reference.md)
     - [表达式求值的类型转换](type-conversion-in-expression-evaluation.md)
     - [操作符](operators.md)
     - [控制流程函数](control-flow-functions.md)
@@ -60,7 +60,7 @@ Table of Contents
     - [位函数和操作符](bit-functions-and-operators.md)
     - [Cast 函数和操作符](cast-functions-and-operators.md)
     - [加密和压缩函数](encryption-and-compression-functions.md)
-    - 信息函数
+    - [信息函数](information-functions.md)
     - [JSON 函数](json-functions.md)
     - [信息函数](information-functions.md)
     - 全局事务 ID 函数
