@@ -43,7 +43,7 @@ Table of Contents
     - [时区支持](time-zone.md)
 + 数据类型
     - [数值类型](datatype.md#数值类型)
-    - 日期和时间类型
+    - [日期和时间类型](date-and-time-types.md)
     - [字符串类型](datatype.md#字符串类型)
     - JSON 数据类型
     - [数据类型默认值](datatype.md#数据类型的默认值)
