@@ -245,12 +245,57 @@ SET('value1','value2',...) [CHARACTER SET charset_name] [COLLATE collation_name]
 
 ## Json 类型
 
-### 概述
-
 
 ## 枚举类型
 
+集合类型是一个字符串，其值必须是从一个固定集合中选取，这个固定集合在创建表的时候定义，语法是：
+```sql
+ENUM('value1','value2',...) [CHARACTER SET charset_name] [COLLATE collation_name]
+
+# 例子
+ENUM('apple', 'orange', 'pear')
+```
+
+枚举类型的值在 TiDB 内部使用数值来存储，每个值会按照定义的顺序转换为一个数字，比如上面的例子中，每个字符串值都会映射为一个数字：
+| 值 | 数字 |
+| ---- | ---- |
+| NULL  | NULL |
+| '' | 0 |
+| 'apple' | 1 |
+| 'orange' | 2 |
+| 'pear' | 3 |
+
+更多信息参考 [MySQL 枚举文档](https://dev.mysql.com/doc/refman/5.7/en/enum.html)。
+
 ## 集合类型
+
+集合类型是一个包含零个或多个值的字符串，其中每个值必须是从一个固定集合中选取，这个固定集合在创建表的时候定义，语法是：
+
+```sql
+SET('value1','value2',...) [CHARACTER SET charset_name] [COLLATE collation_name]
+
+# 例子
+SET('1', '2') NOT NULL
+```
+
+上面的例子中，这列的有效值可以是：
+```
+''
+'1'
+'2'
+'1,2'
+```
+
+集合类型的值在 TiDB 内部会转换为一个 Int64 数值，每个元素是否存在用一个二进制位的 0/1 值来表示，比如这个例子 `SET('a','b','c','d')`，每一个元素都被映射为一个数字，且每个数字的二进制表示只会有一位是 1：
+| 成员 | 十进制表示 | 二进制表示 |
+| ---- | ---- | ------ |
+| 'a'  | 1 | 0001 |
+| 'b' | 2 | 0010 |
+| 'c' | 4 | 0100 |
+| 'd' | 8 | 1000 |
+这样对于值为 `('a', 'c')` 的元素，其二进制表示即为 0101。
+
+更多信息参考 [MySQL 集合文档](https://dev.mysql.com/doc/refman/5.7/en/set.html)。
 
 
 ## 数据类型的默认值
