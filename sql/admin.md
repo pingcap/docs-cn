@@ -92,7 +92,7 @@ SHOW TRIGGERS [FROM db_name] [like_or_where]
 SHOW EVENTS
 SHOW FUNCTION STATUS [like_or_where]
 
-# TiDB 特有语句，用于查看统计信息，具体信息请参考[统计信息](https://github.com/pingcap/docs-cn/blob/master/sql/statistics.md#统计信息的查看)
+# TiDB 特有语句，用于查看统计信息
 SHOW STATS_META [like_or_where]
 SHOW STATS_HISTOGRAMS [like_or_where]
 SHOW STATS_BUCKETS [like_or_where]
@@ -102,6 +102,10 @@ like_or_where:
     LIKE 'pattern'
   | WHERE expr
 ```
+
+说明：
+* 通过 `SHOW` 语句展示统计信息请参考[统计信息说明](https://github.com/pingcap/docs-cn/blob/master/sql/statistics.md#统计信息的查看)
+* 关于 `SHOW` 语句更多信息请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/5.7/en/show.html)
 
 ## `ADMIN` 语句
 
@@ -118,4 +122,4 @@ ADMIN SHOW DDL JOBS
 
 * `ADMIN SHOW DDL JOBS`
 
-用于查看当前 DDL 作业队列中的前十条结果以及已执行完成的 DDL 作业队列中的最近十条结果。
+用于查看当前 DDL 作业队列中的所有结果（包括正在运行以及等待运行的任务）以及已执行完成的 DDL 作业队列中的最近十条结果。
