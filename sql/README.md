@@ -50,7 +50,7 @@ Table of Contents
     - 数据类型存储需求
     - 选择正确的列类型
 + 函数和操作符
-    - 函数和操作符概述
+    - [函数和操作符概述](functions-and-operators-reference.md)
     - [表达式求值的类型转换](type-conversion-in-expression-evaluation.md)
     - [操作符](operators.md)
     - [控制流程函数](control-flow-functions.md)
@@ -60,7 +60,7 @@ Table of Contents
     - [位函数和操作符](bit-functions-and-operators.md)
     - [Cast 函数和操作符](cast-functions-and-operators.md)
     - [加密和压缩函数](encryption-and-compression-functions.md)
-    - 信息函数
+    - [信息函数](information-functions.md)
     - [JSON 函数](json-functions.md)
     - [信息函数](information-functions.md)
     - 全局事务 ID 函数
@@ -71,9 +71,8 @@ Table of Contents
     - [数据定义语句(DDL)](ddl.md)
     - [数据操作语句(DML)](dml.md)
     - [事务语句](transaction.md)
-    - Prepared SQL 语句语法
-    - 复合语句语法
-    - 数据库管理语句
+    - [数据库管理语句](admin.md)
+    - [Prepared SQL 语句语法](prepare.md)
     - [实用工具语句](util.md)
     - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
 - [文档型数据库](json-functions-generated-column.md)
