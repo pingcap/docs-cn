@@ -1,8 +1,8 @@
 ## 连接器和API
 
-数据库连接器为客户端提供了连接数据库服务端的方式，APIs 提供了使用mysql协议和资源的底层接口。无论是连接器还是API，都可以用来在不同的语言和环境内连接服务器并执行sql语句，包括odbc、java（jdbc）、Perl、Python、PHP、Ruby和C。
+数据库连接器为客户端提供了连接数据库服务端的方式，APIs 提供了使用 MySQL 协议和资源的底层接口。无论是连接器还是 API，都可以用来在不同的语言和环境内连接服务器并执行sql语句，包括 odbc、java(jdbc)、Perl、Python、PHP、Ruby 和 C。
 
-tidb兼容mysql（5.6、5.7）的所有连接器和API，包括：
+tidb 兼容 MySQL(5.6、5.7) 的所有连接器和 API，包括：
 
 + [MySQL Connector/C](https://dev.mysql.com/doc/refman/5.7/en/connector-c-info.html)
 + [MySQL Connector/C++](https://dev.mysql.com/doc/refman/5.7/en/connector-cpp-info.html)
@@ -22,22 +22,22 @@ tidb兼容mysql（5.6、5.7）的所有连接器和API，包括：
 
 ### 使用mysql连接器连接tidb
 
-oracle官方提供了以下API，tidb可以兼容所有这些API
+Oracle 官方提供了以下 API ，tidb 可以兼容所有这些 API。
 
-+ [MySQL Connector/C](https://dev.mysql.com/doc/refman/5.7/en/connector-c-info.html)：c语言的客户端库，是libmysqlclient的替代品
-+ [MySQL Connector/C++](https://dev.mysql.com/doc/refman/5.7/en/connector-cpp-info.html)：c++语言的客户端库
-+ [MySQL Connector/J](https://dev.mysql.com/doc/refman/5.7/en/connector-j-info.html)：java语言的客户端库，基于标准JDBC接口
-+ [MySQL Connector/Net](https://dev.mysql.com/doc/refman/5.7/en/connector-net-info.html)：.net语言的客户端库，[MySQL for Visual Studio](https://dev.mysql.com/doc/visual-studio/en/)使用这个库，支持Microsoft Visual Studio 2012, 2013, 2015, 和2017版本
-+ [MySQL Connector/ODBC](https://dev.mysql.com/doc/refman/5.7/en/connector-odbc-info.html)：标准的odbc接口，支持windows，unix，和os x
-+ [MySQL Connector/Python](https://dev.mysql.com/doc/refman/5.7/en/connector-python-info.html)：python语言的客户端包，和[Python DB API version 2.0](http://www.python.org/dev/peps/pep-0249/)一致
++ [MySQL Connector/C](https://dev.mysql.com/doc/refman/5.7/en/connector-c-info.html)：C 语言的客户端库，是libmysqlclient的替代品
++ [MySQL Connector/C++](https://dev.mysql.com/doc/refman/5.7/en/connector-cpp-info.html)：C++语言的客户端库
++ [MySQL Connector/J](https://dev.mysql.com/doc/refman/5.7/en/connector-j-info.html)：Java 语言的客户端库，基于标准 JDBC 接口
++ [MySQL Connector/Net](https://dev.mysql.com/doc/refman/5.7/en/connector-net-info.html)：.net 语言的客户端库，[MySQL for Visual Studio](https://dev.mysql.com/doc/visual-studio/en/)使用这个库，支持 Microsoft Visual Studio 2012, 2013, 2015, 和2017版本
++ [MySQL Connector/ODBC](https://dev.mysql.com/doc/refman/5.7/en/connector-odbc-info.html)：标准的 ODBC 接口，支持 windows，unix 和 os x
++ [MySQL Connector/Python](https://dev.mysql.com/doc/refman/5.7/en/connector-python-info.html)：Python 语言的客户端包，和 [Python DB API version 2.0](http://www.python.org/dev/peps/pep-0249/) 一致
 
 ### 使用mysql c API连接tidb
 
-如果使用c程序直接连接tidb，可以直接链接libmysqlclient库，使用mysql的[C API](https://dev.mysql.com/doc/refman/5.7/en/c-api.html)，这是最主要的一种c语言连接方式，被各种客户端和API广泛使用，包括Connector/C 
+如果使用 C 语言程序直接连接 tidb，可以直接链接 libmysqlclient 库，使用 MySQL 的 [C API](https://dev.mysql.com/doc/refman/5.7/en/c-api.html)，这是最主要的一种 C 语言连接方式，被各种客户端和 API 广泛使用，包括 Connector/C。
 
 ### 使用mysql第三方API连接tidb
 
-第三方API非oracle官方提供，下表列出了常用的第三方API
+第三方 API 非 Oracle 官方提供，下表列出了常用的第三方 API：
 
 | Environment    | API                                      | Type                             | Notes                                    |
 | -------------- | ---------------------------------------- | -------------------------------- | ---------------------------------------- |
