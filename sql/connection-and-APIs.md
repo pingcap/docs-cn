@@ -1,8 +1,8 @@
-## 连接器和API
+# 连接器和 API
 
-数据库连接器为客户端提供了连接数据库服务端的方式，APIs 提供了使用 MySQL 协议和资源的底层接口。无论是连接器还是 API，都可以用来在不同的语言和环境内连接服务器并执行sql语句，包括 odbc、java(jdbc)、Perl、Python、PHP、Ruby 和 C。
+数据库连接器为客户端提供了连接数据库服务端的方式，APIs 提供了使用 MySQL 协议和资源的底层接口。无论是连接器还是 API，都可以用来在不同的语言和环境内连接服务器并执行 sql 语句，包括 odbc、java(jdbc)、Perl、Python、PHP、Ruby 和 C。
 
-tidb 兼容 MySQL(5.6、5.7) 的所有连接器和 API，包括：
+TiDB 兼容 MySQL(5.6、5.7) 的所有连接器和 API，包括：
 
 + [MySQL Connector/C](https://dev.mysql.com/doc/refman/5.7/en/connector-c-info.html)
 + [MySQL Connector/C++](https://dev.mysql.com/doc/refman/5.7/en/connector-cpp-info.html)
@@ -20,9 +20,9 @@ tidb 兼容 MySQL(5.6、5.7) 的所有连接器和 API，包括：
 + [Mysql Go API](https://github.com/go-sql-driver/mysql)
 
 
-### 使用mysql连接器连接tidb
+## 使用 MySQL 连接器连接 TiDB
 
-Oracle 官方提供了以下 API ，tidb 可以兼容所有这些 API。
+Oracle 官方提供了以下 API , TiDB 可以兼容所有这些 API。
 
 + [MySQL Connector/C](https://dev.mysql.com/doc/refman/5.7/en/connector-c-info.html)：C 语言的客户端库，是libmysqlclient的替代品
 + [MySQL Connector/C++](https://dev.mysql.com/doc/refman/5.7/en/connector-cpp-info.html)：C++语言的客户端库
@@ -31,11 +31,11 @@ Oracle 官方提供了以下 API ，tidb 可以兼容所有这些 API。
 + [MySQL Connector/ODBC](https://dev.mysql.com/doc/refman/5.7/en/connector-odbc-info.html)：标准的 ODBC 接口，支持 windows，unix 和 os x
 + [MySQL Connector/Python](https://dev.mysql.com/doc/refman/5.7/en/connector-python-info.html)：Python 语言的客户端包，和 [Python DB API version 2.0](http://www.python.org/dev/peps/pep-0249/) 一致
 
-### 使用mysql c API连接tidb
+## 使用 MySQL C API 连接 TiDB
 
-如果使用 C 语言程序直接连接 tidb，可以直接链接 libmysqlclient 库，使用 MySQL 的 [C API](https://dev.mysql.com/doc/refman/5.7/en/c-api.html)，这是最主要的一种 C 语言连接方式，被各种客户端和 API 广泛使用，包括 Connector/C。
+如果使用 C 语言程序直接连接 TiDB，可以直接链接 libmysqlclient 库，使用 MySQL 的 [C API](https://dev.mysql.com/doc/refman/5.7/en/c-api.html)，这是最主要的一种 C 语言连接方式，被各种客户端和 API 广泛使用，包括 Connector/C。
 
-### 使用mysql第三方API连接tidb
+## 使用 MySQL 第三方 API 连接 TiDB
 
 第三方 API 非 Oracle 官方提供，下表列出了常用的第三方 API：
 
@@ -78,7 +78,7 @@ Oracle 官方提供了以下 API ，tidb 可以兼容所有这些 API。
 
 
 
-### tidb支持的连接器版本
+## TiDB 支持的连接器版本
 
 | Connector        | Connector version            |
 | ---------------- | ---------------------------- |
