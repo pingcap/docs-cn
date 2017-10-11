@@ -28,7 +28,7 @@ TiDB supports the SQL-92 standard and is compatible with MySQL. To help you easi
     - Keywords and Reserved words
     - User-Defined Variables
     - [Expression Syntax](expression-syntax.md)
-    - Comment Syntax
+    - [Comment Syntax](comment-syntax.md)
 + Globalization
     - Character Set Support
     - Character Set Configuration
