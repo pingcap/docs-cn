@@ -77,5 +77,5 @@ Table of Contents
     - 实用工具语句
     - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
 - [文档型数据库](json-functions-generated-column.md)
-+ 连接器和 API
++ [连接器和 API](connection-and-APIs.md)
 + [错误码与故障诊断](error.md)
