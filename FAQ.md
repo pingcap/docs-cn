@@ -169,14 +169,13 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 #### 如何导出 TiDB 数据？
 
-TiDB 目前暂时不支持 select into outfile，可以通过以下方式导出 TiDB 导出数据，
-+ 写程序导出
+TiDB 目前暂时不支持 select into outfile，可以通过以下方式导出 TiDB 数据：
 + 参考[MYSQL使用mysqldump导出某个表的部分数据](http://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出。
 + mysql client select 的结果输出到一个文件。
 
 #### TiDB 是否支持会话超时？
 
-TiDB 暂不支持数据库层面的会话超时，目前想要实现超时，在没 LB（Load Balancing） 的时候，需要应用侧记录发起的 session 的 id，通过应用自定义超时，超时以后需要到发起 query 的节点上用 kill tidb id 来杀掉 sql。有客户使用程序来实现，当达到超时时间，应用层就会抛出异常继续执行后续的程序段。
+TiDB 暂不支持数据库层面的会话超时，目前想要实现超时，在没 LB（Load Balancing） 的时候，需要应用侧记录发起的 session 的 id，通过应用自定义超时，超时以后需要到发起 query 的节点上用 kill tidb id 来杀掉 sql。目前建议使用应用程序来实现会话超时，当达到超时时间，应用层就会抛出异常继续执行后续的程序段。
 
 ### PD
 
@@ -265,15 +264,11 @@ Rocksdb 对于 key 有压缩。
 
 #### TiSpark 的使用文档在哪里？
 
-可以先参考 [TiSpark 用户指南](op-guide/tispark-user-guide.md)。
+可以参考 [TiSpark 用户指南](op-guide/tispark-user-guide.md)。
 
 #### TiSpark 的案例
 
 请参考[链接](https://github.com/zhexuany/tispark_examples)中介绍的案例。
-
-#### TiSpark 分为 TiSpark 和 tikv-client 两部分，如果 Spark 因为版本变化导致 logical plan 和 Sparkplan 发生了变化，那么 TiSpark 中的代码需不需要改动呢？
-
-需要。
 
 ## 运维
 
@@ -397,7 +392,7 @@ admin show ddl
 
 > 提升建议：
 >
-> 1. 建议提升硬件，可以参考[部署建议](op-guide/requirement.md)。
+> 1. 建议提升硬件配置，可以参考[部署建议](op-guide/requirement.md)。
 > 2. 提升并发度，默认是 10，可以提升到 50 试试，但是一般提升在 2-4 倍之间。
 > 3. 测试大数据量的 count。
 > 4. 调优 TiKV 配置，可以参考[性能调优](op-guide/tune-tikv.md)。
