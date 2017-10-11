@@ -70,7 +70,7 @@ TiDB 支持部分 `SHOW` 语句，用于查看 Database/Table/Column 信息，�
 SHOW CHARACTER SET [like_or_where]
 SHOW COLLATION [like_or_where]
 SHOW [FULL] COLUMNS FROM tbl_name [FROM db_name] [like_or_where]
-SHOW CREATE DATABASE db_name
+SHOW CREATE {DATABASE|SCHEMA} db_name
 SHOW CREATE TABLE tbl_name
 SHOW DATABASES [like_or_where]
 SHOW GRANTS FOR user
