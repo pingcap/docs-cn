@@ -171,7 +171,7 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 TiDB 目前暂时不支持 select into outfile，可以通过以下方式导出 TiDB 导出数据，
 + 写程序导出
-+ 参考[文章](http://blog.csdn.net/xin_yu_xin/article/details/7574662)使用 mysqldump 加 where 条件导出。
++ 参考[MYSQL使用mysqldump导出某个表的部分数据](http://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出。
 + mysql client select 的结果输出到一个文件。
 
 #### TiDB 是否支持会话超时？
@@ -201,15 +201,15 @@ PD 启动参数中的 `--initial-cluster` 包含了某个不属于该集群的�
 
 #### Client 连接是如何与寻找 PD 的？
 
-Client 只能连接通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD 与 TiKV 对 client 透明。当 TiDB 连接任意一台 PD 的时候，PD 会告知 TiDB 当前的 leader 是谁，如果此台 PD 不是 leader ，TiDB将会重新连接至 leader PD。
+Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD 与 TiKV 对 client 透明。当 TiDB 连接任意一台 PD 的时候，PD 会告知 TiDB 当前的 leader 是谁，如果此台 PD 不是 leader ，TiDB 将会重新连接至 leader PD。
 
 #### PD 参数中 leader-schedule-limit 和 region-schedule-limit 调度有什么区别？
 
-leader-schedule-limit 调度均衡不同 TiKV 的 leader 数，影响处理查询的负载。region-schedule-limit 调度是均衡不同 TiKV 的副本数，影响不同节点的数据量。
+leader-schedule-limit 调度是用来均衡不同 TiKV 的 leader 数，影响处理查询的负载。region-schedule-limit 调度是均衡不同 TiKV 的副本数，影响不同节点的数据量。
 
 #### 每个 region group 的 replica 数量可配置吗？调整的方法是？
 
-可以，目前只能调整全局的 replica。首次启动时 PD 会读配置文件（conf/pd.yml），使用其中的 max-replicas 配置，之后修改需要使用 pd-ctl 配置命令 config set max-replicas $num，配置后可通过 config show all 来查看已生效的配置。调整的时候，不会影响业务，会在后台添加，注意总tikv实例数总是要大于等于设置的副本数，例如 3 副本需要至少 3 个  TiKV。增加副本数量之前需要预估额外的存储需求。pd-ctl 的详细用法可参考 [PD Control 使用说明](op-guide/pd-control.md)。
+可以，目前只能调整全局的 replica 数量。首次启动时 PD 会读配置文件（conf/pd.yml），使用其中的 max-replicas 配置，之后修改需要使用 pd-ctl 配置命令 `onfig set max-replicas $num`，配置后可通过 `config show all` 来查看已生效的配置。调整的时候，不会影响业务，会在后台添加，注意总 tikv 实例数总是要大于等于设置的副本数，例如 3 副本需要至少 3 个 TiKV。增加副本数量之前需要预估额外的存储需求。pd-ctl 的详细用法可参考 [PD Control 使用说明](op-guide/pd-control.md)。
 
 ### TiDB
 
@@ -317,7 +317,7 @@ rm -rf tidb_test
 
 #### TiDB 监控框架 Prometheus + Grafana 监控机器建议单独还是多台部署？建议 cpu 和内存是多少？
 
-监控机建议单独部署.建议 8 core 32 GB 以上，硬盘 500 GB 以上
+监控机建议单独部署。建议 CPU 8 core，内存 32 GB 以上，硬盘 500 GB 以上。
 
 #### 有一部分监控信息显示不出来？
 
