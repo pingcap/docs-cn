@@ -71,7 +71,7 @@ Table of Contents
     - [数据定义语句(DDL)](ddl.md)
     - [数据操作语句(DML)](dml.md)
     - [事务语句](transaction.md)
-    - Prepared SQL 语句语法
+    - [Prepared SQL 语句语法](prepare.md)
     - 复合语句语法
     - 数据库管理语句
     - 实用工具语句
