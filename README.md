@@ -6,7 +6,7 @@
   - [TiDB 简介](overview.md#tidb-简介)
   - [TiDB 整体架构](overview.md#tidb-整体架构)
 - [TiDB 快速入门指南](QUICKSTART.md)
-+ TiDB 运维文档
++ [TiDB 运维文档](op-guide/README.md)
   - [软硬件环境需求](op-guide/README.md#软硬件环境需求)
   - [部署集群](op-guide/README.md#部署集群)
   - [配置集群](op-guide/README.md#配置集群)
