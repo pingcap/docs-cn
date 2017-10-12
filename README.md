@@ -42,7 +42,6 @@
 - [最佳实践](https://pingcap.com/blog-TiDB-Best-Practice-zh)
 - [版本发布历史](releases/README.md)
 + 更多资源
-  - [官网](https://pingcap.com/bloglist-zh.html)
   - [PingCAP 团队技术博客](https://pingcap.com/bloglist-zh.html)
   - [知乎专栏](https://zhuanlan.zhihu.com/newsql)
   - [Weekly](http://weekly.pingcap.com/)
