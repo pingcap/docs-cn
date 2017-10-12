@@ -5,7 +5,7 @@ category: user guide
 
 # 日期和时间类型
 
-用于表示日期和时间类型的值是 DATE TIME DATETIME TIMESTAMP 和 YEAR。每一种类型都有自己的有效值的范围，也有一个零值用于表示它是一个无效的值。TIMESTAMP 类型有个自动更新的行为，后面介绍。
+用于表示日期和时间类型的值是 DATE，TIME，DATETIME，TIMESTAMP 和 YEAR。每一种类型都有自己的有效值的范围，也有一个零值用于表示它是一个无效的值。TIMESTAMP 类型有个自动更新的行为，后面介绍。
 
 处理日期和时间类型时，请记住下面这些：
 
@@ -29,9 +29,9 @@ category: user guide
 | TIMESTAMP | '0000-00-00 00:00:00' |
 | YEAR      | 0000         |
 
-## DATE,DATETIME,TIMESTAMP 类型
+## DATE，DATETIME 和 TIMESTAMP 类型
 
-DATE,DATETIME,TIMESTAMP 类型都是相关的。这里描述它们的共同点和区别。
+DATE，DATETIME，TIMESTAMP 类型都是相关的。这里描述它们的共同点和区别。
 
 DATA 用于只有日期部分，没有时间部分。TiDB 按照 'YYYY-MM-DD' 格式接受和显示 DATE 类型的值。支持的值的范围是在 '1000-01-01' 到 '9999-12-31'。
 
@@ -43,7 +43,7 @@ DATETIME 和 TIMESTAMP 值可以包含一个最多6位的分数部分，精确�
 
 TiDB 将 TIMESTAMP 从当前时区转成 UTC 时区存储，检索时再从 UTC 时区转化到当前时区（注意，DATETIME 并不会这样处理）。每个连接默认的时区是服务器的本地时区，可以通过 `time_zone` 环境变量进行修改。只要时区保持不变，存储和取回来的值都是一样的。如果存储的是 TIMESTAMP 值，并且时区改变了，那么存储的值和读出来的值会发生变化。
 
-不合法的 DATE,DATETIME,TIMESTAMP 值会被自动地转成相应类型的零值（'0000-00-00' 或 '0000-00-00 00:00:00'）。
+不合法的 DATE，DATETIME，TIMESTAMP 值会被自动地转成相应类型的零值（'0000-00-00' 或 '0000-00-00 00:00:00'）。
 
 注意，TIMESTAMP 类型的值是不允许月份或者日里面出现零的，唯一的例外是零值本身 '0000-00-00 00:00:00'。
 
@@ -100,9 +100,9 @@ CREATE TABLE t1 (
 
 ## 时间值中的小数部分
 
-TIME,DATETIME,TIMESTAMP 支持分数部分，可以精确到毫秒精度。
+TIME，DATETIME，TIMESTAMP 支持分数部分，可以精确到毫秒精度。
 
-+ 使用 `type_name(fsp)` 来定义支持分数精度的列，其中 `type_name` 可以是 TIME,DATETIME 或者 TIMESTAMP，例如：
++ 使用 `type_name(fsp)` 来定义支持分数精度的列，其中 `type_name` 可以是 TIME，DATETIME 或者 TIMESTAMP，例如：
 
 ```
 CREATE TABLE t1 (t TIME(3), dt DATETIME(6));
@@ -110,7 +110,7 @@ CREATE TABLE t1 (t TIME(3), dt DATETIME(6));
 
 fsp 必须是从 0 到 6。0 表示没有分数部分，如果 fsp 忽略，则默认就是 0。
 
-+ 插入一条 TIME,DATETIME 或者 TIMESTAMP 涉及到分数部分时，如果分数位不够，或者过多，可能会涉及到 rounding。例如：
++ 插入一条 TIME，DATETIME 或者 TIMESTAMP 涉及到分数部分时，如果分数位不够，或者过多，可能会涉及到 rounding。例如：
 
 ```
 mysql> CREATE TABLE fractest( c1 TIME(2), c2 DATETIME(2), c3 TIMESTAMP(2) );
@@ -131,7 +131,7 @@ mysql> SELECT * FROM fractest;
 
 ## 日期和时间类型转换
 
-有时候可能会需要在日期类型间进行转换，某些转换可能会丢失信息。例如，DATE,DATETIME,TIMESTAMP 的值都是有各自的表示范围的。TIMESTAMP 不可以早于 UTC 时间的 1970 年，或者晚于 UTC 时间的 '2038-01-19 03:14:07'，这意味着 '1968-01-01' 是一个合理的 DATE 或者 DATETIME 日期值，但是转换成 TIMESTAMP 时会变成 0。
+有时候可能会需要在日期类型间进行转换，某些转换可能会丢失信息。例如，DATE，DATETIME，TIMESTAMP 的值都是有各自的表示范围的。TIMESTAMP 不可以早于 UTC 时间的 1970 年，或者晚于 UTC 时间的 '2038-01-19 03:14:07'，这意味着 '1968-01-01' 是一个合理的 DATE 或者 DATETIME 日期值，但是转换成 TIMESTAMP 时会变成 0。
 
 DATE 的转换：
 
@@ -174,7 +174,7 @@ mysql> SELECT NOW(), NOW()+0, NOW(3)+0;
 
 日期中包含两位数字的年是带有歧义的，因为不知道世纪。
 
-对于 DATETIME,DATE 和 TIMESTAMP 类型，TiDB 采用如下规则处理歧义：
+对于 DATETIME，DATE 和 TIMESTAMP 类型，TiDB 采用如下规则处理歧义：
 
 + 范围在 00-69 被转换成 2000-2069
 + 范围在 70-99 被转换成 1970-1999
