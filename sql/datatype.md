@@ -245,12 +245,12 @@ SET('value1','value2',...) [CHARACTER SET charset_name] [COLLATE collation_name]
 
 ## Json 类型
 
-Json类型可以存储Json这种半结构化的数据，相比于直接将Json存储为字符串，它的好处在于：
+Json 类型可以存储 Json 这种半结构化的数据，相比于直接将 Json 存储为字符串，它的好处在于：
 
-1. 使用Binary格式进行序列化，对Json的内部字段的查询、解析加快；
-2. 多了Json合法性验证的步骤，只有合法的Json文档才可以放入这个字段中；
+1. 使用 Binary 格式进行序列化，对 Json 的内部字段的查询、解析加快；
+2. 多了 Json 合法性验证的步骤，只有合法的 Json 文档才可以放入这个字段中；
 
-Json字段本身上，并不能创建索引。相反，可以对Json文档中的某个子字段创建索引。例如：
+Json 字段本身上，并不能创建索引。相反，可以对 Json 文档中的某个子字段创建索引。例如：
 ```sql
 CREATE TABLE city (
     id INT PRIMARY KEY,
