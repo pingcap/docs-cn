@@ -70,7 +70,7 @@ TiDB 支持 SQL92 标准并兼容 MySQL 语法，为了帮您更好地使用 TiD
 - [信息函数](information-functions.md)
 - [JSON 函数](json-functions.md)
 - [信息函数](information-functions.md)
-- 全局事务 ID 函数 TBD
+- 全局事务 ID 函数 [TBD]
 - [GROUP BY 聚合函数](aggregate-group-by-functions.md)
 - [其他函数](miscellaneous-functions.md)
 - [精度数学](precision-math.md)
