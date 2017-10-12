@@ -61,7 +61,7 @@ TiDB supports the SQL-92 standard and is compatible with MySQL. To help you easi
     - [Miscellaneous Functions](miscellaneous-functions.md)
     - Precision Math
 + SQL Statement Syntax
-    - Data Definition Statements
+    - [Data Definition Statements](ddl.md)
     - Data Manipulation Statements
     - [Transactions](transaction.md)
     - Replication Statements
