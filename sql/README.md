@@ -14,6 +14,7 @@ Table of Contents
     - [TiDB 服务](tidb-server.md)
     - [TiDB 数据目录](tidb-server.md#tidb-数据目录)
     - [TiDB 系统数据库](system-database.md)
+    - [TiDB 系统变量](variable.md)
     - [TiDB 专用系统变量和语法](tidb-specific.md)
     - [TiDB 服务器日志文件](tidb-server.md#tidb-服务器日志文件)
 + TiDB 安全
