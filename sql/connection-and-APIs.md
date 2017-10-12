@@ -24,11 +24,11 @@ TiDB 兼容 MySQL(5.6、5.7) 的所有连接器和 API，包括：
 
 Oracle 官方提供了以下 API , TiDB 可以兼容所有这些 API。
 
-+ [MySQL Connector/C](https://dev.mysql.com/doc/refman/5.7/en/connector-c-info.html)：C 语言的客户端库，是libmysqlclient的替代品
-+ [MySQL Connector/C++](https://dev.mysql.com/doc/refman/5.7/en/connector-cpp-info.html)：C++语言的客户端库
++ [MySQL Connector/C](https://dev.mysql.com/doc/refman/5.7/en/connector-c-info.html)：C 语言的客户端库，是 libmysqlclient 的替代品
++ [MySQL Connector/C++](https://dev.mysql.com/doc/refman/5.7/en/connector-cpp-info.html)：C++ 语言的客户端库
 + [MySQL Connector/J](https://dev.mysql.com/doc/refman/5.7/en/connector-j-info.html)：Java 语言的客户端库，基于标准 JDBC 接口
-+ [MySQL Connector/Net](https://dev.mysql.com/doc/refman/5.7/en/connector-net-info.html)：.net 语言的客户端库，[MySQL for Visual Studio](https://dev.mysql.com/doc/visual-studio/en/)使用这个库，支持 Microsoft Visual Studio 2012, 2013, 2015, 和2017版本
-+ [MySQL Connector/ODBC](https://dev.mysql.com/doc/refman/5.7/en/connector-odbc-info.html)：标准的 ODBC 接口，支持 windows，unix 和 os x
++ [MySQL Connector/Net](https://dev.mysql.com/doc/refman/5.7/en/connector-net-info.html)：.Net 语言的客户端库，[MySQL for Visual Studio](https://dev.mysql.com/doc/visual-studio/en/)使用这个库，支持 Microsoft Visual Studio 2012，2013，2015和2017版本
++ [MySQL Connector/ODBC](https://dev.mysql.com/doc/refman/5.7/en/connector-odbc-info.html)：标准的 ODBC 接口，支持 Windows，Unix 和 OS X
 + [MySQL Connector/Python](https://dev.mysql.com/doc/refman/5.7/en/connector-python-info.html)：Python 语言的客户端包，和 [Python DB API version 2.0](http://www.python.org/dev/peps/pep-0249/) 一致
 
 ## 使用 MySQL C API 连接 TiDB
