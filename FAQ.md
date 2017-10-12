@@ -19,57 +19,56 @@ category: FAQ
     - [TiDB 支持分布式事务吗？](#tidb-支持分布式事务吗)
     - [当多个事务冲突严重时（如同时修改同一行数据），会造成某些事务写入失败吗？](#当多个事务冲突严重时-如同时修改同一行数据-会造成某些事务写入失败吗)
     - [在使用 TiDB 时，我需要用什么编程语言？](#在使用-tidb-时我需要用什么编程语言)
-    - [和 MySQL/Oracle 等传统关系型数据库相比，TiDB 有什么优势？](#和-mysqloracle-等传统关系型数据库相比tidb-有什么优势)
+    - [和 MySQL/Oracle 等传统关系型数据库相比，TiDB 有什么优势？](#和-mysql-oracle-等传统关系型数据库相比tidb-有什么优势)
     - [和 Cassandra/Hbase/MongoDB 等 NoSQL 数据库相比，TiDB 有什么优势？](#和-cassandrahbasemongodb-等-nosql-数据库相比tidb-有什么优势)
     - [使用 `go get` 方式安装 TiDB 为什么报错了？](#使用-go-get-方式安装-tidb-为什么报错了)
     - [TiDB 高可用的特性是怎么样的？](#tidb-高可用的特性是怎么样的)
-    - [TiDB 中删除数据后会立即释放空间吗？](#TiDB-中删除数据后会立即释放空间吗)
-    - [Load 数据时可以对目标表执行 DDL 操作吗？](#Load数据时可以对目标表执行DDL操作吗)
-    - [TiDB 是否支持 replace into 语法？](#TiDB是否支持replace-into语法)
-    - [如何导出 TiDB 数据？](#如何导出-unload-TiDB数据)
-    - [TiDB 是否支持会话超时？](#TiDB-是否支持会话超时)
+    - [TiDB 中删除数据后会立即释放空间吗？](#tidb-中删除数据后会立即释放空间吗)
+    - [Load 数据时可以对目标表执行 DDL 操作吗？](#load数据时可以对目标表执行ddl操作吗)
+    - [TiDB 是否支持 replace into 语法？](#tidb是否支持replace-into语法)
+    - [如何导出 TiDB 数据？](#如何导出-unload-tidb数据)
+    - [TiDB 是否支持会话超时？](#tidb-是否支持会话超时)
   + [PD](#pd)
     - [访问 PD 报错：`TiKV cluster is not bootstrapped`](#访问-pd-报错tikv-cluster-is-not-bootstrapped)
     - [PD 启动报错：`etcd cluster ID mismatch`](#pd-启动报错etcd-cluster-id-mismatch)
     - [更改 PD 的启动参数](#更改-pd-的启动参数)
     - [PD 能容忍的时间同步误差是多少？](#pd-能容忍的时间同步误差是多少)
-    - [Client 连接是如何与寻找 PD 的？](#Client-连接是如何与寻找PD的)
+    - [Client 连接是如何寻找 PD 的？](#client-连接是如何寻找pd的)
     - [PD 参数中 leader-schedule-limit 和 region-schedule-limit 调度有什么区别？](#PD参数中leader-schedule-limit和region-schedule-limit调度有什么区别)
-    - [每个 region group 的 replica 数量可配置吗？调整的方法是？](#每个region-group的replica数量可配置吗调整的方法是)
+    - [每个 region 的 replica 数量可配置吗？调整的方法是？](#每个region的replica数量可配置吗调整的方法是)
   + [TiDB](#tidb)
     - [TiDB 的 lease 参数应该如何设置？](#tidb-的-lease-参数应该如何设置)
     - [TiDB 是否支持其他存储引擎？](#tidb-是否支持其他存储引擎)
     - [TiDB 中 Raft 的日志存储在哪里？](#tidb-中-raft-的日志存储在哪里)
-    - [为什么有的时候执行 DDL 会很慢？](#为什么有的时候执行DDL会很慢)
-    - [ERROR 2013 (HY000): Lost connection to MySQL server during query 问题的排查方法](#ERROR-2013-HY000-Lost-connection-to-MySQL-server-during-query问题的排查方法)
+    - [为什么有的时候执行 DDL 会很慢？](#为什么有的时候执行ddl会很慢)
+    - [ERROR 2013 (HY000): Lost connection to MySQL server during query 问题的排查方法](#error-2013-hy000-lost-connection-to-mysql-server-during-query问题的排查方法)
   + [TiKV](#tikv)
-    - [TiKV 集群副本建议配置数量是多少，是不是最小高可用配置（3个）最好？](#TiKV集群副本建议配置数量是多少-是不是最小高可用配置-3个-最好)
-    - [TiKV 可以指定独立副本机器吗（集群是集群，副本是副本，数据和副本分离）？](#TiKV可以指定独立副本机器吗-集群是集群-副本是副本-数据和副本分离)
+    - [TiKV 集群副本建议配置数量是多少，是不是最小高可用配置（3个）最好？](#tikv集群副本建议配置数量是多少-是不是最小高可用配置-3个-最好)
+    - [TiKV 可以指定独立副本机器吗（集群是集群，副本是副本，数据和副本分离）？](#tikv可以指定独立副本机器吗-集群是集群-副本是副本-数据和副本分离)
     - [为什么 TiKV 数据目录不见了？](#为什么-tikv-数据目录不见了)
     - [TiKV 启动报错：`cluster ID mismatch`](#tikv-启动报错cluster-id-mismatch)
     - [TiKV 启动报错：`duplicated store address`](#tikv-启动报错duplicated-store-address)
-    - [按照 TIDB 的 key 设定，会不会很长？](#按照-tidb-的-key-设定会不会很长)
+    - [按照 TiDB 的 key 设定，会不会很长？](#按照-tidb-的-key-设定会不会很长)
   + [TiSpark](#tispark)
     - [TiSpark 的使用文档在哪里？](#tispark-的使用文档在哪里)
-    - [TiSpark 的案例](#TiSpark的案例)
-    - [TiSpark 分为 TiSpark 和 tikv-client 两部分，如果 Spark 因为版本变化导致 logical plan 和 Sparkplan 发生了变化，那么 TiSpark 中的代码需不需要改动呢？](#TiSpark分为TiSpark和tikv-client两部分-如果Spark因为版本变化导致logical-plan和Sparkplan发生了变化-那么TiSpark中的代码需不需要改动呢)
+    - [TiSpark 的案例](#tispark的案例)
 + [运维](#运维)
   + [部署安装](#部署安装)
     - [为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？](#为什么修改了-tikvpd-的-toml-配置文件却没有生效)
     - [我的数据盘是 XFS 且不能更改怎么办？](#我的数据盘是-xfs-且不能更改怎么办)
-    - [chrony 能满足时间同步的要求吗？](#chrony-能满足时间同步的要求吗)
+    - [可以配置 Chrony 满足 TiDB 对时间同步的要求吗？](#可以配置-chrony-满足-tidb-对时间同步的要求吗)
   + [扩容](#扩容)
     - [如何对 TiDB 进行水平扩展？](#如何对-tidb-进行水平扩展)
   + [监控](#监控)
     - [有一部分监控信息显示不出来？](#有一部分监控信息显示不出来)
-    - [TiDB 监控框架 Prometheus + Grafana 监控机器建议单独还是多台部署？建议 cpu 和内存是多少？](#TiDB监控框架Prometheus+Grafana监控机器建议单独还是多台部署建议cpu和内存是多少)
+    - [TiDB 监控框架 Prometheus + Grafana 监控机器建议单独还是多台部署？建议 cpu 和内存是多少？](#tidb监控框架prometheus+grafana监控机器建议单独还是多台部署建议cpu和内存是多少)
   + [数据迁移](#数据迁移)
     - [如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？](#如何将一个运行在-mysql-上的应用迁移到-tidb-上)
   - [性能调优](#性能调优)
   - [备份恢复](#备份恢复)
   + [其他](#其他)
-    - [TiDB是如何进行权限管理的？](#tidb是如何进行权限管理的)
-    - [TiDB/PD/TiKV 的日志在哪里？](#tidbpdtikv-的日志在哪里)
+    - [TiDB 是如何进行权限管理的？](#tidb是如何进行权限管理的)
+    - [TiDB/PD/TiKV 的日志在哪里？](#tidb-pd-tikv-的日志在哪里)
     - [如何安全停止 TiDB?](#如何安全停止-tidb)
     - [TiDB 里面可以执行 kill 命令吗？](#tidb-里面可以执行-kill-命令吗)
 + [SQL](#sql)
@@ -170,8 +169,8 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 #### 如何导出 TiDB 数据？
 
 TiDB 目前暂时不支持 select into outfile，可以通过以下方式导出 TiDB 数据：
-+ 参考[MYSQL使用mysqldump导出某个表的部分数据](http://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出。
-+ mysql client select 的结果输出到一个文件。
++ 参考 [MySQL使用mysqldump导出某个表的部分数据](http://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出。
++ 使用 MySQL client 将 select 的结果输出到一个文件。
 
 #### TiDB 是否支持会话超时？
 
@@ -198,7 +197,7 @@ PD 启动参数中的 `--initial-cluster` 包含了某个不属于该集群的�
 
 理论上误差越小越好，切换 leader 的时候如果时钟回退，就会卡住直到追上之前的 leader。这个容忍是业务上的，PD 多长的误差都能容忍。 但是误差越大，主从切换的时候，停止服务的时间越长。
 
-#### Client 连接是如何与寻找 PD 的？
+#### Client 连接是如何寻找 PD 的？
 
 Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD 与 TiKV 对 client 透明。当 TiDB 连接任意一台 PD 的时候，PD 会告知 TiDB 当前的 leader 是谁，如果此台 PD 不是 leader ，TiDB 将会重新连接至 leader PD。
 
@@ -206,9 +205,9 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 leader-schedule-limit 调度是用来均衡不同 TiKV 的 leader 数，影响处理查询的负载。region-schedule-limit 调度是均衡不同 TiKV 的副本数，影响不同节点的数据量。
 
-#### 每个 region group 的 replica 数量可配置吗？调整的方法是？
+#### 每个 region 的 replica 数量可配置吗？调整的方法是？
 
-可以，目前只能调整全局的 replica 数量。首次启动时 PD 会读配置文件（conf/pd.yml），使用其中的 max-replicas 配置，之后修改需要使用 pd-ctl 配置命令 `config set max-replicas $num`，配置后可通过 `config show all` 来查看已生效的配置。调整的时候，不会影响业务，会在后台添加，注意总 tikv 实例数总是要大于等于设置的副本数，例如 3 副本需要至少 3 个 TiKV。增加副本数量之前需要预估额外的存储需求。pd-ctl 的详细用法可参考 [PD Control 使用说明](op-guide/pd-control.md)。
+可以，目前只能调整全局的 replica 数量。首次启动时 PD 会读配置文件（conf/pd.yml），使用其中的 max-replicas 配置，之后修改需要使用 pd-ctl 配置命令 `config set max-replicas $num`，配置后可通过 `config show all` 来查看已生效的配置。调整的时候，不会影响业务，会在后台添加，注意总 TiKV 实例数总是要大于等于设置的副本数，例如 3 副本需要至少 3 个 TiKV。增加副本数量之前需要预估额外的存储需求。pd-ctl 的详细用法可参考 [PD Control 使用说明](op-guide/pd-control.md)。
 
 ### TiDB
 
@@ -222,7 +221,7 @@ leader-schedule-limit 调度是用来均衡不同 TiKV 的 leader 数，影响�
 
 #### TiDB 中 Raft 的日志存储在哪里？
 
-在 Rocksdb 中。
+在 RocksDB 中。
 
 #### 为什么有的时候执行 DDL 会很慢？
 
@@ -231,18 +230,18 @@ TiDB 集群中 DDL 是串行执行的，不会并发执行，可以使用 admin 
 #### ERROR 2013 (HY000): Lost connection to MySQL server during query 问题的排查方法
 
 + log 中是否有 panic
-+ dmesg 中是否有 oom, 命令：dmesg |grep -i oom
++ dmesg 中是否有 oom, 命令：`dmesg |grep -i oom`
 + 长时间没有访问，也会收到这个报错，一般是 tcp 超时导致的，tcp 长时间不用, 会被操作系统 kill。
 
 ### TiKV
 
 #### TiKV 集群副本建议配置数量是多少，是不是最小高可用配置（3个）最好？
 
-测试的话，3副本即可，副本升高，性能会有下降，但是安全性更高。是否设置更多副本需要看具体业务需要。
+测试的话，3 副本即可，副本升高，性能会有下降，但是安全性更高。是否设置更多副本需要看具体业务需要。
 
 #### TiKV 可以指定独立副本机器吗（集群是集群，副本是副本，数据和副本分离）？
 
-不可以.
+不可以。
 
 #### 为什么 TiKV 数据目录不见了？
 
@@ -256,9 +255,9 @@ TiKV 本地存储的 cluster ID 和指定的 PD 的 cluster ID 不一致。在�
 
 启动参数中的地址已经被其他的 TiKV 注册在 PD 集群中了。造成该错误的常见情况：TiKV `--data-dir` 指定的路径下没有数据文件夹时（删除或移动后没有更新 `--data-dir`），用之前参数重新启动该 TiKV。请尝试用 pdctl 的 [store 删除](https://github.com/pingcap/pd/tree/master/pdctl#store-delete-store_id)功能，删除之前的 store, 然后重新启动 TiKV 即可。
 
-#### 按照 TIDB 的 key 设定，会不会很长？
+#### 按照 TiDB 的 key 设定，会不会很长？
 
-Rocksdb 对于 key 有压缩。
+RocksDB 对于 key 有压缩。
 
 ### TiSpark
 
@@ -280,7 +279,7 @@ Rocksdb 对于 key 有压缩。
 
 #### 我的数据盘是 XFS 且不能更改怎么办？
 
-因为 Rocksdb 在 XFS 和某些 Linux kernel 中有 [bug](https://github.com/facebook/rocksdb/pull/2038)。所以不推荐使用 XFS 作为文件系统。
+因为 RocksDB 在 XFS 和某些 Linux kernel 中有 [bug](https://github.com/facebook/rocksdb/pull/2038)。所以不推荐使用 XFS 作为文件系统。
 
 如果您想尝试使用，可以在 TiKV 的部署盘运行如下脚本，如果结果是 5000，可以尝试使用，但是不建议在生产环境中使用。
 
@@ -294,9 +293,9 @@ fallocate -p -n -o 5000 -l 4192 tidb_test
 LANG=en_US.UTF-8 stat tidb_test |awk 'NR==2{print $2}'
 rm -rf tidb_test
 ```
-#### chrony 能满足时间同步的要求吗？
+#### 可以配置 Chrony 满足 TiDB 对时间同步的要求吗？
 
-可以，只要能让 PD 机器时间同步就行。
+可以，只要能让 PD 机器时间同步就行。若使用 Chrony 配置时间同步，请在运行 deploy 脚本之前将 inventory.ini 配置文件中的 enable_ntpd 置为 False，即 `enable_ntpd = False`。
 
 ### 扩容
 
@@ -330,15 +329,15 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提�
 
 ### 其他
 
-#### TiDB是如何进行权限管理的？
+#### TiDB 是如何进行权限管理的？
 
 TiDB 遵循 MySQL 的权限管理体系，可以创建用户并授予权限。
 
 在创建用户时，可以使用 MySQL 语法，如 `CREATE USER 'test'@'localhost' identified by '123';`，这样就添加了一个用户名为 test，密码为 123 的用户，这个用户只能从 localhost 登录。
 
-修改用户密码时，可以使用 `Set Password` 语句，例如给 TiDB 的默认 root 用户增加密码：`SET PASSWORD FOR 'root'@'%' = '123';`。
+修改用户密码时，可以使用 `Set Password` 语句，例如给 TiDB 的默认 root 用户增加密码：`SET PASSWORD FOR 'root'@'%' = '123';`
 
-在进行授权时，也可以使用 MySQL 语法，如 `GRANT SELECT ON *.* TO  'test'@'localhost';`，将读权限授予 test 用户。
+在进行授权时，也可以使用 MySQL 语法，如 `GRANT SELECT ON *.* TO  'test'@'localhost';` 将读权限授予 test 用户。
 
 更多细节可以参考[权限管理](https://github.com/pingcap/docs-cn/blob/master/sql/privilege.md)。
 
