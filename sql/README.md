@@ -25,7 +25,7 @@ TiDB supports the SQL-92 standard and is compatible with MySQL. To help you easi
 + Language Structure
     - Literal Values
     - Schema Object Names
-    - Keywords and Reserved words
+    - [Keywords and Reserved Words](keywords-and-reserved-words.md)
     - User-Defined Variables
     - [Expression Syntax](expression-syntax.md)
     - [Comment Syntax](comment-syntax.md)
