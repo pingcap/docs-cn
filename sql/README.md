@@ -71,5 +71,5 @@ TiDB supports the SQL-92 standard and is compatible with MySQL. To help you easi
     - Utility Statements
     - [TiDB SQL Syntax Diagram](https://pingcap.github.io/sqlgram/)
 + Document Store
-+ Connectors and APIs
++ [Connectors and APIs](connection-and-APIs.md)
 + Troubleshooting
