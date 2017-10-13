@@ -20,7 +20,7 @@ TiDB supports the SQL-92 standard and is compatible with MySQL. To help you easi
     - [TiDB User Account Management](user-account-management.md)
     - [Use Encrypted Connections](encrypted-connections.md)
 + Optimization
-    - Understand the Query Execution Plan
+    - [Understand the Query Execution Plan](understanding-the-query-execution-plan.md)
     - [Introduction to Statistics](statistics.md)
 + Language Structure
     - Literal Values
