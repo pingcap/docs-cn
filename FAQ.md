@@ -9,7 +9,7 @@ category: FAQ
   + [关于产品](#关于产品)
     - [TiDB 是什么？](#tidb-是什么)
     - [TiDB 是基于 MySQL 开发的吗？](#tidb-是基于-mysql-开发的吗)
-    - [TiDB 和 MySQL Group Replication 的区别是什么？](#tidb和-mysql-group-replication的区别是什么)
+    - [TiDB 和 MySQL Group Replication 的区别是什么？](#tidb-和-mysql-group-replication-的区别是什么)
     - [TiDB 和 TiKV 是如何配合使用？ 他们之间的关系是？](#tidb-和-tikv-是如何配合使用-他们之间的关系是)
     - [Placement Driver (PD) 是做什么的？](#placement-driver-pd-是做什么的)
     - [TiDB 用起来简单吗？](#tidb-用起来简单吗)
