@@ -11,6 +11,7 @@ TiDB 支持 SQL92 标准并兼容 MySQL 语法，为了帮您更好地使用 TiD
 ## TiDB 数据库管理
 
 - [TiDB 服务](tidb-server.md)
+- [TiDB 进程启动参数](server-command-option.md)
 - [TiDB 数据目录](tidb-server.md#tidb-数据目录)
 - [TiDB 系统数据库](system-database.md)
 - [TiDB 系统变量](variable.md)
