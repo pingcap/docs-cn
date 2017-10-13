@@ -27,6 +27,7 @@
   - [JSON 支持](sql/user-manual.md#json-支持)
   - [Connectors 和 API](sql/user-manual.md#connectors-和-api)
   - [错误码与故障诊断](sql/user-manual.md#错误码与故障诊断)
+  - [与 MySQL 兼容性对比](sql/user-manual.md#与-mysql-兼容性对比)
 + 高级功能
   - [历史数据回溯](op-guide/history-read.md)
 + 工具
