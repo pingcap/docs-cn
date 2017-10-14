@@ -1,6 +1,6 @@
 ---
 title: PD Control 使用说明
-category: monitoring
+category: tools
 ---
 
 # PD Control 使用说明
