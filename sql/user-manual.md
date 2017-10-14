@@ -57,8 +57,8 @@ TiDB supports the SQL-92 standard and is compatible with MySQL. To help you easi
 - [Control Flow Functions](control-flow-functions.md)
 - [String Functions](string-functions.md)
 - [Numeric Functions and Operators](numeric-functions-and-operators.md)
-- Date and Time Functions
-- Bit Functions and Operators
+- [Date and Time Functions](date-and-time-functions.md)
+- [Bit Functions and Operators](bit-functions-and-operators.md)
 - [Cast Functions and Operators](cast-functions-and-operators.md)
 - [Encryption and Compression Functions](encryption-and-compression-functions.md)
 - [Information Functions](information-functions.md)
