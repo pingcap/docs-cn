@@ -34,7 +34,7 @@
   - [Loader 使用文档](tools/loader.md)
   - [Syncer 使用文档](tools/syncer.md)
   - [TiDB-binlog 使用文档](op-guide/tidb-binlog.md)
-  - [PD Control 使用文档](op-guide/pd-control.md)
+  - [PD Control 使用文档](tools/pd-control.md)
 + TiSpark 文档
   - [TiSpark 快速入门指南](op-guide/tispark-quick-start-guide.md)
   - [TiSpark 用户指南](op-guide/tispark-user-guide.md)
