@@ -68,7 +68,7 @@ category: deployment
 | | [ tispark-SNAPSHOT-jar-with-dependencies ](http://download.pingcap.org/tispark-SNAPSHOT-jar-with-dependencies.jar) |  |
 | | [ tispark-sample-data ](http://download.pingcap.org/tispark-sample-data.tar.gz) |  |
 
-> 下载所有软件包，上传至中控机。
+> 下载所有软件安装包（`spark` 组件根据业务情况选择下载），上传至中控机。
 
 ## 安装部署
 
