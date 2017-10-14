@@ -53,20 +53,20 @@ category: deployment
 
 | 组件类别 | 下载地址 | 说明 |
 | -------- | ----  | -------- |
-**部署**| [ tidb-ansible-master ](https://github.com/pingcap/tidb-ansible/archive/master.zip) |  |
-**TiDB**| [ tidb-latest ](http://download.pingcap.org/tidb-latest-linux-amd64-unportable.tar.gz) | |
+|**部署**| [ tidb-ansible-master ](https://github.com/pingcap/tidb-ansible/archive/master.zip) |  |
+|**TiDB**| [ tidb-latest ](http://download.pingcap.org/tidb-latest-linux-amd64-unportable.tar.gz) | |
 | | [ tidb-tools-latest ](http://download.pingcap.org/tidb-tools-latest-linux-amd64.tar.gz) |  |
 | | [ tidb-binlog-latest ](http://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz) |  |
-**监控**| [ prometheus-1.5.2 ](https://github.com/prometheus/prometheus/releases/download/v1.5.2/prometheus-1.5.2.linux-amd64.tar.gz) |  |
+|**监控**| [ prometheus-1.5.2 ](https://github.com/prometheus/prometheus/releases/download/v1.5.2/prometheus-1.5.2.linux-amd64.tar.gz) |  |
 | | [ grafana-4.1.2 ](https://grafanarel.s3.amazonaws.com/builds/grafana-4.1.2-1486989747.linux-x64.tar.gz) |  |
-|| [ node_exporter-0.14.0-rc.1 ](http://download.pingcap.org/node_exporter-0.14.0-rc.1.linux-amd64.tar.gz) |  |
-|| [ pushgateway-0.3.1 ](http://download.pingcap.org/pushgateway-0.3.1.linux-amd64.tar.gz) |  |
-|| [ alertmanager-0.5.1 ](https://github.com/prometheus/alertmanager/releases/download/v0.5.1/alertmanager-0.5.1.linux-amd64.tar.gz) |  |
-|| [ daemontools-0.53 ](http://oifici4co.bkt.gdipper.com/daemontools-0.53.tar.gz) |  |
+| | [ node_exporter-0.14.0-rc.1 ](http://download.pingcap.org/node_exporter-0.14.0-rc.1.linux-amd64.tar.gz) |  |
+| | [ pushgateway-0.3.1 ](http://download.pingcap.org/pushgateway-0.3.1.linux-amd64.tar.gz) |  |
+| | [ alertmanager-0.5.1 ](https://github.com/prometheus/alertmanager/releases/download/v0.5.1/alertmanager-0.5.1.linux-amd64.tar.gz) |  |
+| | [ daemontools-0.53 ](http://oifici4co.bkt.gdipper.com/daemontools-0.53.tar.gz) |  |
 |**测试**| [ fio-2.16 ](https://download.pingcap.org/fio-2.16.tar.gz) |  |
 |**Spark**| [ spark-2.1.1-bin-hadoop ](http://download.pingcap.org/spark-2.1.1-bin-hadoop2.7.tgz) |  |
-|| [ tispark-SNAPSHOT-jar-with-dependencies ](http://download.pingcap.org/tispark-SNAPSHOT-jar-with-dependencies.jar) |  |
-|| [ tispark-sample-data ](http://download.pingcap.org/tispark-sample-data.tar.gz) |  |
+| | [ tispark-SNAPSHOT-jar-with-dependencies ](http://download.pingcap.org/tispark-SNAPSHOT-jar-with-dependencies.jar) |  |
+| | [ tispark-sample-data ](http://download.pingcap.org/tispark-sample-data.tar.gz) |  |
 
 > 下载所有软件包，上传至中控机。
 
@@ -75,6 +75,14 @@ category: deployment
 1.  解压集群部署工具 `tidb-ansible`
 
 2.  将其它所有组件复制到 `tidb-ansible-master` 下的 `downloads` 目录
+
+3.  将TiDB安装包名称变更：
+
+    ```ini
+    
+    mv tidb-latest-linux-amd64-unportable.tar.gz tidb-latest.tar.gz 
+    
+    ```
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
