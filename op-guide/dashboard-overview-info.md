@@ -1,6 +1,6 @@
 ---
 title: Key Metrics
-category: deployment
+category: operations
 ---
 
 # Key Metrics

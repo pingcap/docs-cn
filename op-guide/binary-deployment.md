@@ -1,6 +1,6 @@
 ---
 title: Deploy TiDB Using the Binary
-category: deployment
+category: operations
 ---
 
 # Deploy TiDB Using the Binary

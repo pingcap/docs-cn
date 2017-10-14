@@ -1,6 +1,6 @@
 ---
 title: TiDB Ansible Deployment
-category: deployment
+category: operations
 ---
 
 # Ansible Deployment

@@ -1,6 +1,6 @@
 ---
 title: Configuration Flags
-category: deployment
+category: operations
 ---
 
 # Configuration Flags

@@ -1,6 +1,6 @@
 ---
 title: Backup and Restore
-category: advanced
+category: operations
 ---
 
 # Backup and Restore

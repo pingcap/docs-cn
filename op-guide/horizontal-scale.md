@@ -1,6 +1,6 @@
 ---
 title: Scaling a TiDB Cluster
-category: deployment
+category: operations
 ---
 
 # Scaling a TiDB Cluster

@@ -1,6 +1,6 @@
 ---
 title: Software and Hardware Requirements
-category: deployment
+category: operations
 ---
 
 # Software and Hardware Requirements
@@ -47,7 +47,7 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 | :-----: | :------: | :------: | :------: | :------: | ------ | :------: | :-----: |
 |  TiDB  | 32 core+ | 128 GB+ | SSD | 2+ | 500 GB+ | 2 or more 10 Gigabit network cards | 2 |
 | PD | 16 core+ | 32 GB+ | SSD | 2+ | 200 GB+ | 2 or more 10 Gigabit network cards | 3 |
-| TiKV | 32 core+ | 128 GB+ | SSD | 2+ | 200~500 GB. <br/>It is recommended to keep the size of TiKV hard disk within 500G in case it takes too long to restore data when the hard disk is damaged.  | 2 or more 10 Gigabit network cards | 3 | 
+| TiKV | 32 core+ | 128 GB+ | SSD | 2+ | 200~500 GB. | 2 or more 10 Gigabit network cards | 3 | 
 | Monitor | 16 core+ | 32 GB+ | SAS | 4+ | 200 GB+ | 2 or more Gigabit network cards | 1 |
 |     |     |     |      |      |      |  Total Server Number   |    9   |
 
@@ -55,6 +55,7 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 
 - In the production environment, you can deploy and run TiDB and PD on the same server. If you have a higher requirement for performance and reliability, try to deploy them separately.
 - It is strongly recommended to use higher configuration in the production environment.
+- It is recommended to keep the size of TiKV hard disk within 500G in case it takes too long to restore data when the hard disk is damaged.
 
 ## Network Requirements
 

@@ -1,6 +1,6 @@
 ---
 title: Cross-Region Deployment
-category: deployment
+category: operations
 ---
 
 # Cross-Region Deployment

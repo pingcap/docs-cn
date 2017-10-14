@@ -1,6 +1,6 @@
 ---
 title: TiDB Docker Deployment
-category: deployment
+category: operations
 ---
 
 # Docker Deployment

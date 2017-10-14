@@ -1,6 +1,6 @@
 ---
 title: TiDB Docker Compose
-category: deployment
+category: operations
 ---
 
 # TiDB Docker Compose
