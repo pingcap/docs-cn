@@ -76,7 +76,7 @@ category: deployment
 
 2.  将其它所有组件复制到 `tidb-ansible-master` 下的 `downloads` 目录
 
-3.  将TiDB安装包名称变更：
+3.  将 TiDB 安装包名称变更：
 
     ```ini
     
