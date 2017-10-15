@@ -42,6 +42,7 @@ category: FAQ
     - [TiDB 中 Raft 的日志存储在哪里？](#tidb-中-raft-的日志存储在哪里)
     - [为什么有的时候执行 DDL 会很慢？](#为什么有的时候执行-ddl-会很慢)
     - [ERROR 2013 (HY000): Lost connection to MySQL server during query 问题的排查方法](#error-2013-hy000-lost-connection-to-mysql-server-during-query-问题的排查方法)
+    - [TiDB 可以使用 S3 作为后端存储吗？ 是否支持如下 DDL： `CREATE TABLE ... LOCATION "s3://xxx/yyy"`](#TiDB 可以使用 S3 作为后端存储吗？ 是否支持如下 DDL： `CREATE TABLE ... LOCATION "s3://xxx/yyy"`)
   + [TiKV](#tikv)
     - [TiKV 集群副本建议配置数量是多少，是不是最小高可用配置（3个）最好？](#tikv-集群副本建议配置数量是多少是不是最小高可用配置-3-个最好)
     - [TiKV 可以指定独立副本机器吗（集群是集群，副本是副本，数据和副本分离）？](#tikv-可以指定独立副本机器吗集群是集群副本是副本数据和副本分离)
@@ -49,6 +50,8 @@ category: FAQ
     - [TiKV 启动报错：`cluster ID mismatch`](#tikv-启动报错cluster-id-mismatch)
     - [TiKV 启动报错：`duplicated store address`](#tikv-启动报错duplicated-store-address)
     - [按照 TiDB 的 key 设定，会不会很长？](#按照-tidb-的-key-设定会不会很长)
+    - [#### 统计了一下 master 和 slave 日志，发现数据的原始大小差不多，但是实际文件大小 slave 要比 master 大，slave 的压缩比在 2.4 左右，master 的压缩比在 3.1 左右。但是 master 和 slave 用的是一样的压缩算法，为什么效果不一样?](##### 统计了一下 master 和 slave 日志，发现数据的原始大小差不多，但是实际文件大小 slave 要比 master 大，slave 的压缩比在 2.4 左右，master 的压缩比在 3.1 左右。但是 master 和 slave 用的是一样的压缩算法，为什么效果不一样?)
+    - [TiKV block cache 有哪些特性？](#TiKV block cache 有哪些特性？)
   + [TiSpark](#tispark)
     - [TiSpark 的使用文档在哪里？](#tispark-的使用文档在哪里)
     - [TiSpark 的案例](#tispark-的案例)
@@ -62,8 +65,10 @@ category: FAQ
   + [监控](#监控)
     - [有一部分监控信息显示不出来？](#有一部分监控信息显示不出来)
     - [TiDB 监控框架 Prometheus + Grafana 监控机器建议单独还是多台部署？建议 cpu 和内存是多少？](#tidb-监控框架-prometheusgrafana-监控机器建议单独还是多台部署建议-cpu-和内存是多少)
+    - [如何配置监控 Syncer 运行情况？]（#如何配置监控 Syncer 运行情况？）
   + [数据迁移](#数据迁移)
     - [如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？](#如何将一个运行在-mysql-上的应用迁移到-tidb-上)
+    - [不小心把 MySQL 的 user 表 导入到 TiDB 了，无法登陆，是否有办法恢复？](#不小心把 MySQL 的 user 表 导入到 TiDB 了，无法登陆，是否有办法恢复？)
   - [性能调优](#性能调优)
   - [备份恢复](#备份恢复)
   + [其他](#其他)
@@ -71,13 +76,15 @@ category: FAQ
     - [TiDB/PD/TiKV 的日志在哪里？](#tidbpdtikv-的日志在哪里)
     - [如何安全停止 TiDB?](#如何安全停止-tidb)
     - [TiDB 里面可以执行 kill 命令吗？](#tidb-里面可以执行-kill-命令吗)
+    - [supervise／svc／svcstat 服务具体起什么作用？](#supervise／svc／svcstat 服务具体起什么作用？)
 + [SQL](#sql)
   + [SQL 语法](#sql-语法)
     - [出现 `transaction too large` 报错怎么办？](#出现-transaction-too-large-报错怎么办)
     - [查看当时运行的 DDL job](#查看当时运行的-ddl-job)
+    - [执行 `grant SHOW DATABASES on db.*` 报错 `column Show_db_priv not found`](#执行 `grant SHOW DATABASES on db.*` 报错 `column Show_db_priv not found`)
   + [SQL 优化](#sql-优化)
     - [`select count(1)` 比较慢，如何优化？](#select-count1-比较慢如何优化)
-
+    - [FROM_UNIXTIME 效率低问题？](#FROM_UNIXTIME 效率低问题？)
 
 ## 产品
 
@@ -176,6 +183,11 @@ TiDB 目前暂时不支持 select into outfile，可以通过以下方式导出 
 
 TiDB 暂不支持数据库层面的会话超时，目前想要实现超时，在没 LB（Load Balancing） 的时候，需要应用侧记录发起的 session 的 id，通过应用自定义超时，超时以后需要到发起 query 的节点上用 kill tidb id 来杀掉 sql。目前建议使用应用程序来实现会话超时，当达到超时时间，应用层就会抛出异常继续执行后续的程序段。
 
+#### TiDB 可以使用 S3 作为后端存储吗？ 是否支持如下 DDL： `CREATE TABLE ... LOCATION "s3://xxx/yyy"`
+
+不可以， 目前 TiDB 只支持分布式存储引擎和 Goleveldb/Rocksdb/Boltdb 引擎；
+如果你能够实现 S3 存储引擎客户端， 也应该基于 TiKV 接口实现。
+
 ### PD
 
 #### 访问 PD 报错：`TiKV cluster is not bootstrapped`
@@ -259,6 +271,24 @@ TiKV 本地存储的 cluster ID 和指定的 PD 的 cluster ID 不一致。在�
 
 RocksDB 对于 key 有压缩。
 
+#### 统计了一下 master 和 slave 日志，发现数据的原始大小差不多，但是实际文件大小 slave 要比 master 大，slave 的压缩比在 2.4 左右，master 的压缩比在 3.1 左右。但是 master 和 slave 用的是一样的压缩算法，为什么效果不一样?
+
+目前来看 master 有些文件的压缩率会高一些，这个取决于底层数据的分布和 rocksdb 的实现, 数据偶尔有些波动是正常的，底层存储引擎会根据需要调整数据。
+
+#### TiKV block cache 有哪些特性？
+
+TiKV 使用了 RocksDB 的 Column Falimies 特性，KV 数据最终存储在默认 RocksDB 内部的 default、write 和 lock 3 个 CF 内。
+
+- default CF 存储的是真正的数据，与其对应的参数位于 [rocksdb.defaultcf] 项中； write CF 存储的是数据的版本信息（MVCC）以及索引相关的数据，相关的参数位于 [rocksdb.writecf] 项中； lock CF 存储的是锁信息，系统使用默认参数。
+
+- Raft Rocksdb 实例存储 Raft log。 default CF 主要存储的是 raft log，与其对应的参数位于 [raftdb.defaultcf] 项中。
+
+- 每个 CF 都有单独的 block-cache，用于缓存数据块，加速 RocksDB 的读取速度，block-cache 的大小通过参数 block-cache-size 控制，block-cache-size 越大，能够缓存的热点数据越多，对读取操作越有利，同时占用的系统内存也会越多。
+
+- 每个 CF 有各自的 write-buffer，大小通过 write-buffer-size 控制。
+
+
+
 ### TiSpark
 
 #### TiSpark 的使用文档在哪里？
@@ -317,11 +347,63 @@ rm -rf tidb_test
 
 查看访问监控的机器时间跟集群内机器的时间差，如果比较大，更正时间后即可显示正常。
 
+#### 如何配置监控 Syncer 运行情况？
+
+下载 [Syncer Json](https://github.com/pingcap/docs/blob/master/etc/Syncer.json) 导入到 Grafana，修改 Prometheus 配置文件，添加以下内容：
+
+```
+- job_name: ‘syncer_ops’ // 任务名字
+    static_configs:
+      - targets: [’10.10.1.1:10096’] //syncer监听地址与端口，通知prometheus去拉去syncer的数据。
+```
+
+重启 Prometheus 即可。
+
 ### 数据迁移
 
 #### 如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？
 
 TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提供了一个[检查工具](https://github.com/pingcap/tidb-tools/tree/master/checker)，用于检查 MySQL 中的 Schema 是否和 TiDB 兼容。
+
+#### 不小心把 MySQL 的 user 表 导入到 TiDB 了，无法登陆，是否有办法恢复？
+
+重启 TiDB 服务， 配置文件中增加 `-skp-grant-table=true` 参数， 登陆集群后按照如下 SQL 重建：
+
+```
+DROP TABLE IF EXIST mysql.user;
+
+CREATE TABLE if not exists mysql.user (
+    Host        CHAR(64),
+    User        CHAR(16),
+    Password      CHAR(41),
+    Select_priv     ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Insert_priv     ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Update_priv     ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Delete_priv     ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Create_priv     ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Drop_priv     ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Process_priv      ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Grant_priv      ENUM('N','Y') NOT NULL DEFAULT 'N',
+    References_priv     ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Alter_priv      ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Show_db_priv      ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Super_priv      ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Create_tmp_table_priv   ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Lock_tables_priv    ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Execute_priv      ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Create_view_priv    ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Show_view_priv      ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Create_routine_priv   ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Alter_routine_priv    ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Index_priv      ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Create_user_priv    ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Event_priv      ENUM('N','Y') NOT NULL DEFAULT 'N',
+    Trigger_priv      ENUM('N','Y') NOT NULL DEFAULT 'N',
+    PRIMARY KEY (Host, User));
+
+INSERT INTO mysql.user VALUES ("%", "root", "", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y");
+
+```
 
 ### 性能调优
 
@@ -355,6 +437,12 @@ TiDB 遵循 MySQL 的权限管理体系，可以创建用户并授予权限。
 可以 kill DML 语句。首先使用 `show processlist`，找到对应 session 的 id，然后执行 `kill tidb connection id`。
 但是，目前不能 kill DDL 语句。DDL 语句一旦开始执行便不能停止，除非出错，出错以后，会停止运行。
 
+#### supervise／svc／svcstat 服务具体起什么作用？
+
+supervise 服务是管理进程的，守护进程
+svc 启停服务
+svsstat 查看进程状态
+
 ## SQL
 
 ### SQL 语法
@@ -381,6 +469,11 @@ TiDB 遵循 MySQL 的权限管理体系，可以创建用户并授予权限。
 admin show ddl
 ```
 
+#### 执行 `grant SHOW DATABASES on db.*` 报错 `column Show_db_priv not found`
+
+`SHOW DATABASES` 这个是一个全局的权限项而不是数据库级的权限，所以授予的时候是不能够授予某个数据库的 `SHOW DATABASES` 权限：
+授予这一项权限需要授予到所有数据库： `grant SHOW DATABASES on *.*`
+
 > 注意：除非 DDL 遇到错误，否则目前是不能取消的。
 
 ### SQL 优化
@@ -388,6 +481,10 @@ admin show ddl
 #### `select count(1)` 比较慢，如何优化？
 
 `count(1)` 就是暴力扫表，提高并发度能显著的提升速度，修改并发度可以参考 [`tidb_distsql_scan_concurrency`](sql/tidb-specific.md#tidb_distsql_scan_concurrency) 变量。 但是也要看 CPU 和 I/O 资源。TiDB 每次查询都要访问 TiKV，在数据量小的情况下，MySQL 都在内存里，TiDB 还需要进行一次网络访问。
+
+#### FROM_UNIXTIME 效率低问题？
+
+获取系统时间不要使用 FROM_UNIXTIME, 建议采用 datetime 转成时间戳去比较方式, 目前 FROM_UNIXTIME 无法走索引。
 
 > 提升建议：
 >
