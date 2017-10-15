@@ -36,18 +36,19 @@ TiDB supports the SQL-92 standard and is compatible with MySQL. To help you easi
 
 ## Globalization
 
-- Character Set Support
-- Character Set Configuration
-- Time Zone
+- [Character Set Support](character-set-support.md)
+- [Character Set Configuration](character-set-configuration.md)
+- [Time Zone](time-zone.md)
 
 ## Data Types
 
-- Numeric Types
-- Date and Time Types
-- String Types
-- Extensions for Spatial Data
-- The JSON Data Type
-- Data Type Default Values
+- [Numeric Types](datatype.md#numeric-types)
+- [Date and Time Types](datatype.md#date-and-time-types)
+- [String Types](datatype.md#string-types)
+- [JSON Types](datatype.md#json-types)
+- [The ENUM data type](datatype.md#the-enum-data-type)
+- [The SET Type](datatype.md#the-set-type)
+- [Data Type Default Values](datatype.md#data-type-default-values)
 
 ## Functions and Operators
 
@@ -66,13 +67,14 @@ TiDB supports the SQL-92 standard and is compatible with MySQL. To help you easi
 - Functions Used with Global Transaction IDs [TBD]
 - [Aggregate (GROUP BY) Functions](aggregate-group-by-functions.md)
 - [Miscellaneous Functions](miscellaneous-functions.md)
-- Precision Math
+- [Precision Math](precision-math.md)
 
 ## SQL Statement Syntax
 
 - [Data Definition Statements](ddl.md)
-- Data Manipulation Statements
+- [Data Manipulation Statements](dml.md)
 - [Transactions](transaction.md)
+
 - [Database Administration Statements](admin.md)
 - [Prepared SQL Statement Syntax](prepare.md)
 - [Utility Statements](util.md)
