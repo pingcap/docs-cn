@@ -80,8 +80,6 @@ category: deployment
 
     ```ini
     
-    cd tidb-ansible-master
-    
     mv tidb-latest-linux-amd64-unportable.tar.gz tidb-latest.tar.gz
     
     mv tidb-tools-latest-linux-amd64.tar.gz tidb-tools-latest.tar.gz
