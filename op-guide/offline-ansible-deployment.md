@@ -80,8 +80,17 @@ category: deployment
 
     ```ini
     
-    mv tidb-latest-linux-amd64-unportable.tar.gz tidb-latest.tar.gz 
-    
+    cd tidb-ansible-master/
+    
+    mv tidb-latest-linux-amd64-unportable.tar.gz tidb-latest.tar.gz
+    mv tidb-tools-latest-linux-amd64.tar.gz tidb-tools-latest.tar.gz
+    mv tidb-binlog-latest-linux-amd64.tar.gz tidb-binlog-latest.tar.gz
+    mv prometheus-1.5.2.linux-amd64.tar.gz prometheus-1.5.2.tar.gz
+    mv grafana-4.1.2-1486989747.linux-x64.tar.gz grafana-4.1.2.tar.gz
+    mv node_exporter-0.14.0-rc.1.linux-amd64.tar.gz node_exporter-0.14.0.tar.gz
+    mv pushgateway-0.3.1.linux-amd64.tar.gz pushgateway-0.3.1.tar.gz
+    mv alertmanager-0.5.1.linux-amd64.tar.gz alertmanager-0.5.1.tar.gz
+  
     ```
 
 ## 分配机器资源，编辑 inventory.ini 文件
