@@ -125,7 +125,6 @@ category: Releases
 - Guilherme Hübner Franco
 - Haibin Xie
 - Han Fei
-- hanfei1991
 - Hiroaki Nakamura
 - hiwjd
 - Hongyuan Wang
@@ -145,7 +144,6 @@ category: Releases
 - Jason W
 - Jay
 - Jay Lee
-- Jian Zhang
 - Jianfei Wang
 - Jiaxing Liang
 - Jie Zhou
@@ -203,7 +201,6 @@ category: Releases
 - ShawnLi
 - Shen Li
 - Sheng Tang
-- shenli
 - Shirly
 - Shuai Li
 - ShuNing
@@ -215,7 +212,6 @@ category: Releases
 - skimmilk6877
 - sllt
 - soup
-- Soup
 - Sphinx
 - Steffen
 - sumBug
@@ -248,7 +244,6 @@ category: Releases
 - Xuanwo
 - XuHuaiyu
 - Yang Zhexuan
-- yang zhexuan
 - Yann Autissier
 - Yanzhe Chen
 - Yiding Cui
@@ -269,8 +264,6 @@ category: Releases
 - Zhou Tao
 - Zhoubirdblue
 - zhouningnan
-- zimulala
-- zimuxia
 - Ziyi Yan
 - zs634134578
 - zyguan
