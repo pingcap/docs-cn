@@ -73,237 +73,209 @@ category: Releases
 
 ### 感谢社区个人贡献者 TiDB Contributor
 
-- 8cbx 
+- 8cbx
 - Akihiro Suda
-- Akihiro Suda 
 - aliyx
-- alston111111 
+- alston111111
 - andelf
-- Andy Librian 
-- Arthur Yang 
-- astaxie 
-- Bai, Yang 
+- Andy Librian
+- Arthur Yang
+- astaxie
+- Bai, Yang
 - bailaohe
 - Bin Liu
-- Bin Liu 
-- Blame cosmos 
+- Blame cosmos
 - Breezewish
 - Carlos Ferreira
-- Ce Gao 
+- Ce Gao
 - Changjian Zhang
 - Cheng Lian
 - Cholerae Hu
-- Chu Chao 
-- coldwater 
-- Cole R Lawrence 
+- Chu Chao
+- coldwater
+- Cole R Lawrence
 - cuiqiu
-- cuiqiu 
-- cuiyuan 
+- cuiyuan
 - Cwen
-- Dagang 
+- Dagang
 - David Chen
-- David Chen 
 - David Ding
-- dawxy 
+- dawxy
 - dcadevil
-- Deshi Xiao 
-- Di Tang 
+- Deshi Xiao
+- Di Tang
 - disksing
-- disksing 
 - dongxu
-- dongxu 
 - dreamquster
 - Drogon
-- Du Chuan 
-- Dylan Wen 
+- Du Chuan
+- Dylan Wen
 - eBoyy
-- Eric Romano 
+- Eric Romano
 - Ewan Chou
-- Ewan Chou 
 - Fiisio
 - Fred Wang
-- fud 
-- fudali 
+- fud
+- fudali
 - gaoyangxiaozhu
-- Gogs 
+- Gogs
 - goroutine
 - Gregory Ian
-- Guanqun Lu 
+- Guanqun Lu
 - Guilherme Hübner Franco
 - Haibin Xie
-- Haibin Xie 
 - Han Fei
-- hanfei1991 
-- Hiroaki Nakamura 
-- hiwjd 
+- hanfei1991
+- Hiroaki Nakamura
+- hiwjd
 - Hongyuan Wang
 - Hu Ming
-- Hu Ziming 
+- Hu Ziming
 - Huachao Huang
-- Huachao Huang 
 - HuaiyuXu
-- HuaiyuXu 
 - Huxley Hu
 - iamxy
-- iamxy 
 - Ian
-- insion 
+- insion
 - iroi44
-- Ivan.Yang 
+- Ivan.Yang
 - Jack Yu
-- jacky liu 
-- Jan Mercl 
-- Jason W 
+- jacky liu
+- Jan Mercl
+- Jason W
 - Jay
-- Jay 
-- Jay Lee 
+- Jay Lee
 - Jian Zhang
 - Jianfei Wang
 - Jiaxing Liang
-- Jie Zhou 
-- jinhelin 
-- Jonathan Boulle 
-- Karl Ostendorf 
-- knarfeh 
-- Kuiba 
+- Jie Zhou
+- jinhelin
+- Jonathan Boulle
+- Karl Ostendorf
+- knarfeh
+- Kuiba
 - leixuechun
-- li 
-- Li Shihai 
+- li
+- Li Shihai
 - Liao Qiang
-- Light 
-- lijian 
+- Light
+- lijian
 - Lilian Lee
 - Liqueur Librazy
-- Liqueur Librazy 
 - Liu Cong
-- Liu Shaohui 
+- Liu Shaohui
 - liubo0127
 - liyanan
-- lkk2003rty 
+- lkk2003rty
 - Louis
 - louishust
-- louishust 
-- luckcolors 
+- luckcolors
 - Lynn
-- maiyang 
-- maxwell 
+- maiyang
+- maxwell
 - mengshangqi
-- Michael Belenchenko 
+- Michael Belenchenko
 - mo2zie
-- morefreeze 
-- MQ 
+- morefreeze
+- MQ
 - mxlxm
 - Neil Shen
-- netroby 
+- netroby
 - ngaut
-- ngaut 
-- Nicole Nie 
-- nolouch 
-- overvenus 
-- PaladinTyrion 
+- Nicole Nie
+- nolouch
+- overvenus
+- PaladinTyrion
 - paulg
 - Priya Seth
 - qgxiaozhan
-- qhsong 
-- Qiannan 
+- qhsong
+- Qiannan
 - qiuyesuifeng
 - Queeny
 - queenypingcap
-- queenypingcap 
 - qupeng
-- qupeng 
 - Rain Li
 - ranxiaolong
 - Ray
-- Rick Yu 
+- Rick Yu
 - shady
-- shady 
-- ShawnLi 
+- ShawnLi
 - Shen Li
-- Sheng Tang 
-- shenli 
-- Shirly 
+- Sheng Tang
+- shenli
+- Shirly
 - Shuai Li
 - ShuNing
-- ShuNing 
 - ShuYu Wang
-- ShuYu Wang 
 - siddontang
-- siddontang 
-- silenceper 
+- silenceper
 - Simon J Mudd
-- Simon Xia 
+- Simon Xia
 - skimmilk6877
-- sllt 
+- sllt
 - soup
-- Soup 
+- Soup
 - Sphinx
-- Steffen 
+- Steffen
 - sumBug
 - sunhao2017
-- Tao Meng 
+- Tao Meng
 - Tao Zhou
 - tennix
-- tennix 
 - tiancaiamao
-- tiancaiamao 
-- TianGuangyu 
-- Tristan Su 
-- ueizhou 
+- TianGuangyu
+- Tristan Su
+- ueizhou
 - UncP
-- Unknwon 
+- Unknwon
 - v01dstar
-- v01dstar 
-- Van 
-- WangXiangUSTC 
+- Van
+- WangXiangUSTC
 - wangyisong1996
 - weekface
-- weekface 
-- wegel 
+- wegel
 - Wei Fu
-- Wenbin Xiao 
+- Wenbin Xiao
 - Wenting Li
 - Wenxuan Shi
 - winkyao
-- woodpenker 
-- wuxuelian 
-- Xiang Li 
+- woodpenker
+- wuxuelian
+- Xiang Li
 - xiaojian cai
-- Xuanjia Yang 
-- Xuanwo 
+- Xuanjia Yang
+- Xuanwo
 - XuHuaiyu
 - Yang Zhexuan
 - yang zhexuan
-- Yann Autissier 
-- Yanzhe Chen 
+- Yann Autissier
+- Yanzhe Chen
 - Yiding Cui
-- Yiding Cui 
-- Yim 
+- Yim
 - youyouhu
 - Yu Jun
-- Yuwen Shen 
+- Yuwen Shen
 - Zejun Li
-- Zejun Li 
-- Zhang Yuning 
+- Zhang Yuning
 - zhangjinpeng1987
-- zhangjinpeng1987 
 - ZHAO Yijun
-- Zhe-xuan Yang 
 - ZhengQian
 - ZhengQianFang
 - zhengwanbo
-- ZhiFeng Hu 
+- Zhe-xuan Yang
+- ZhiFeng Hu
 - Zhiyuan Zheng
 - Zhou Tao
-- Zhoubirdblue 
+- Zhoubirdblue
 - zhouningnan
 - zimulala
-- zimuxia 
+- zimuxia
 - Ziyi Yan
-- zs634134578 
-- zyguan 
+- zs634134578
+- zyguan
 - zz-jason
-- 仇柯人 
+- 仇柯人
+- 王维真
 - 王妍军
-- 王维真 
 - 赵星宇
