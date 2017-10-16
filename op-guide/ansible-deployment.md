@@ -246,7 +246,7 @@ pd_servers
 
 ### 下载 binary
 
-1.  使用 playbook 下载 TiDB 1.0 binary，自动替换 binary 到 `tidb-ansible/resource/bin/`
+1.  使用 playbook 下载 TiDB 1.0 版本 binary，自动替换 binary 到 `tidb-ansible/resource/bin/`
 
     ```
     ansible-playbook local_prepare.yml
