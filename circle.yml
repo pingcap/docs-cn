@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: andelf/doc-build:0.1.7
+      - image: andelf/doc-build:0.1.9
     working_directory: ~/pingcap/docs-cn
     steps:
       - checkout
