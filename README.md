@@ -6,7 +6,7 @@
   - [TiDB Introduction](overview.md#tidb-introduction)
   - [TiDB Architecture](overview.md#tidb-architecture)
 - [TiDB Quick Start Guide](./QUICKSTART.md)
-+ Operations Guide
++ [TiDB Operations Guide](op-guide/op-guide.md)
   - [Hardware and Software Requirements](op-guide/op-guide.md#hardware-and-software-requirements)
   - [Deploy](op-guide/op-guide.md#deploy)
   - [Configure](op-guide/op-guide.md#configure)
@@ -16,7 +16,7 @@
   - [Performance Tuning](op-guide/op-guide.md#performance-tuning)
   - [Backup and Migrate](op-guide/op-guide.md#backup-and-migrate)
   - [Deploy TiDB Using the Binary](op-guide/op-guide.md#deploy-tidb-using-the-binary)
-+ User Guide
++ [TiDB User Guide](sql/user-manual.md)
   - [TiDB Server Administration](sql/user-manual.md#tidb-server-administration)
   - [SQL Optimization](sql/user-manual.md#sql-optimization)
   - [Language Structure](sql/user-manual.md#language-structure)
@@ -46,33 +46,38 @@
   - [PingCAP Blog](https://pingcap.github.io/blog/)
   - [Weekly Update](http://weekly.pingcap.com/)
 
-## TiDB Introduction
+## What is TiDB?
 
-TiDB (The pronunciation is: /'taɪdiːbi:/ tai-D-B, etymology: titanium) is a distributed SQL database. Inspired by the design of Google [F1](http://research.google.com/pubs/pub41344.html), TiDB supports the best features of both traditional RDBMS and NoSQL.
+TiDB (The pronunciation is: /'taɪdiːbi:/ tai-D-B, etymology: titanium) is a Hybrid Transactional/Analytical Processing (HTAP) database. Inspired by the design of Google F1 and Google Spanner, TiDB features infinite horizontal scalability, strong consistency, and high availability. The goal of TiDB is to serve as a one-stop solution for online transactions and analyses.
 
-### Horizontal scalability
-Grow TiDB as your business grows. You can increase the capacity simply by adding more machines.
+- __Horizontal scalability__
 
-### Consistent distributed transactions
-Think of TiDB as a single-machine RDBMS. You can start a transaction that crosses multiple machines without worrying about consistency. TiDB makes your application code simple and robust.
+Grow TiDB as your business grows. You can increase the capacity for storage and computation simply by adding more machines.
 
-### Auto failover
-TiDB is stateless. TiKV and PD can tolerate failures of some of their instances. Whether it’s data machine failures or even downtime of an entire data center, your data can be recovered automatically.  With its strong consistency guarantee, your data will be safe and up-to-date.
+- __Compatible with MySQL protocol__
 
-### Asynchronous schema changes
-Evolve TiDB schemas as your requirement evolves. You can add new columns and indices without stopping or affecting the on-going operations.
-
-### Compatible with MySQL protocol
 Use TiDB as MySQL. You can replace MySQL with TiDB to power your application without changing a single line of code in most cases.
 
-### Written in Go
-Enjoy TiDB as much as we love Go. We believe Go code is both easy and enjoyable to work with. Go makes us improve TiDB fast and makes it easy to dive into the codebase.
+- __Automatic Failover and high availability__
 
-### NewSQL over TiKV
-Turn [TiKV](https://github.com/pingcap/tikv) into a NewSQL database.
+Your data and applications are always-on. TiDB automatically handles malfunctions and protects your applications from machine failures or even downtime of an entire data-center.
 
-## Multiple storage engine support
-Power TiDB with your most favorite engines. TiDB supports many popular storage engines in single-machine mode. You can choose from GolevelDB, LevelDB, RocksDB, LMDB, BoltDB and even more to come.
+- __Consistent distributed transactions__
+
+Think of TiDB as a single-machine RDBMS. You can start a transaction that crosses multiple machines without worrying about consistency. TiDB makes your application code simple and robust.
+
+- __Online DDL__
+
+Evolve TiDB schemas as your requirement changes. You can add new columns and indexes without stopping or affecting the on-going operations.
+
+- __Multiple storage engine support__
+
+Power TiDB with your most favorite engines. TiDB supports local storage engines such as GolevelDB and BoltDB, as well as [TiKV](https://github.com/pingcap/tikv), a distributed storage engine.
+
+
+## Roadmap
+
+Read the [Roadmap](https://github.com/pingcap/tidb/blob/master/docs/ROADMAP.md).
 
 ## TiDB Architecture
 
