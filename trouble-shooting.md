@@ -98,16 +98,16 @@ tidb-server 无法启动的常见情况包括：
 
     这样依然可能导致进程因终端连接突然中断，作为终端 SHELL 的子进程被杀掉。
     推荐将启动命令写在脚本中，通过脚本运行（相当于二次 fork 启动）。
-    
+
 ## TiKV 进程异常重启
 
-+	检查 dmesg 或者 syslog 里面是否有 OOM 信息
-	
-	如果有 OOM 信息并且杀掉的进程为 TiKV，请减少 TiKV 的 RocksDB 的各个 CF 的 `block-cache-size` 值。
-	
-+	检查 TiKV 日志是否有 panic 的 log
-	
-	提交 Issue 并附上 panic 的 log。
++   检查 dmesg 或者 syslog 里面是否有 OOM 信息
+
+    如果有 OOM 信息并且杀掉的进程为 TiKV，请减少 TiKV 的 RocksDB 的各个 CF 的 `block-cache-size` 值。
+
++   检查 TiKV 日志是否有 panic 的 log
+
+    提交 Issue 并附上 panic 的 log。
 
 ## TiDB panic
 
