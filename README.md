@@ -37,7 +37,6 @@
 + The TiDB Connector for Spark
   - [Quick Start Guide](tispark/tispark-quick-start-guide.md)
   - [User Guide](tispark/tispark-user-guide.md)
-+ [TiDB Roadmap](ROADMAP.md)
 - [Frequently Asked Questions (FAQ)](./FAQ.md)
 - [Troubleshoot](./trouble-shooting.md)
 - [TiDB Best Practices](https://pingcap.github.io/blog/2017/07/24/tidbbestpractice/)
@@ -78,7 +77,7 @@ Power TiDB with your most favorite engines. TiDB supports local storage engines 
 
 ## Roadmap
 
-Read the [Roadmap](https://github.com/pingcap/tidb/blob/master/docs/ROADMAP.md).
+Read the [Roadmap](https://github.com/pingcap/docs/blob/master/ROADMAP.md).
 
 ## TiDB Architecture
 
