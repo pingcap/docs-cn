@@ -107,6 +107,7 @@ On October 16, 2017, TiDB 1.0 is now released! This release is focused on MySQL 
 - Eric Romano
 - Ewan Chou
 - Fiisio
+- follitude
 - Fred Wang
 - fud
 - fudali
