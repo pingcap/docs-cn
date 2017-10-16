@@ -68,7 +68,7 @@ category: FAQ
     - [如何配置监控 Syncer 运行情况？](#如何配置监控-syncer-运行情况)
   + [数据迁移](#数据迁移)
     - [如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？](#如何将一个运行在-mysql-上的应用迁移到-tidb-上)
-    - [不小心把 MySQL 的 user 表导入到 TiDB 了，无法登陆，是否有办法恢复？](#不小心把-mysql-的-user-表导入到-tidb-了无法登陆是否有办法恢复)
+    - [不小心把 MySQL 的 user 表导入到 TiDB 了，无法登陆，是否有办法恢复？](#不小心把-mysql-的-user-表导入到-tidb-了无法登陆是否有办法恢复)
   - [性能调优](#性能调优)
   - [备份恢复](#备份恢复)
   + [其他](#其他)
@@ -240,7 +240,7 @@ TiDB 集群中 DDL 是串行执行的，不会并发执行，可以使用 admin 
 + dmesg 中是否有 oom, 命令：`dmesg |grep -i oom`
 + 长时间没有访问，也会收到这个报错，一般是 tcp 超时导致的，tcp 长时间不用, 会被操作系统 kill。
 
-#### TiDB 可以使用 S3 作为后端存储吗？ 是否支持如下 DDL： `CREATE TABLE ... LOCATION "s3://xxx/yyy"`
+#### TiDB 可以使用 S3 作为后端存储吗？
 
 不可以，目前 TiDB 只支持分布式存储引擎和 Goleveldb/Rocksdb/Boltdb 引擎；
 
