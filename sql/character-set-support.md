@@ -57,7 +57,7 @@ Collation         | Meaning
 `latin1_spanish_ci` | Modern Spanish
 `latin1_swedish_ci` | Swedish/Finnish
 
-Each character set has a default collation. For example, the default collation for utf8 is `utf8_general_ci`.
+Each character set has a default collation. For example, the default collation for utf8 is `utf8_bin`.
 
 > **Note**: The collations in TiDB are case sensitive.
 
