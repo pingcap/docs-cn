@@ -28,7 +28,7 @@ category: deployment
 
 1.  CentOS 7 Ansible 离线安装方式：
 
-> 下载 [ Ansible ]( https://download.pingcap.org/ansible-2.3-rpms.el7.tar.gz ) 离线安装包 ，上传至中控机。
+> 下载 [ Ansible ]( https://download.pingcap.org/ansible-2.3-rpms.el7.tar.gz) 离线安装包 ，上传至中控机。
 
 ```ini
   
@@ -53,8 +53,8 @@ category: deployment
 
 | 组件类别 | 下载地址 | 说明 |
 | -------- | ----  | -------- |
-|**部署**| [ tidb-ansible-master ](https://github.com/pingcap/tidb-ansible/archive/master.zip) |  |
-|**TiDB**| [ tidb-latest ](http://download.pingcap.org/tidb-latest-linux-amd64-unportable.tar.gz) | |
+|**部署**| [ tidb-ansible release-1.0 ](https://github.com/pingcap/tidb-ansible/tree/release-1.0) |  |
+|**TiDB**| [ tidb-1.0.0 ](http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz) | |
 | | [ tidb-tools-latest ](http://download.pingcap.org/tidb-tools-latest-linux-amd64.tar.gz) |  |
 | | [ tidb-binlog-latest ](http://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz) |  |
 |**监控**| [ prometheus-1.5.2 ](https://github.com/prometheus/prometheus/releases/download/v1.5.2/prometheus-1.5.2.linux-amd64.tar.gz) |  |
@@ -74,13 +74,13 @@ category: deployment
 
 1.  解压集群部署工具 `tidb-ansible`
 
-2.  将其它所有组件复制到 `tidb-ansible-master` 下的 `downloads` 目录
+2.  将其它所有组件复制到 `tidb-ansible` 下的 `downloads` 目录
 
 3.  将 TiDB 安装包名称变更：
 
     ```ini
     
-    mv tidb-latest-linux-amd64-unportable.tar.gz tidb-latest.tar.gz
+    mv tidb-v1.0.0-linux-amd64-unportable.tar.gz tidb-v1.0.0.tar.gz
     
     mv tidb-tools-latest-linux-amd64.tar.gz tidb-tools-latest.tar.gz
     
@@ -100,7 +100,7 @@ category: deployment
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
-> inventory.ini 文件路径为 tidb-ansible-master/inventory.ini。
+> inventory.ini 文件路径为 tidb-ansible/inventory.ini。
 
 标准 TiDB 集群需要6台机器:
 
