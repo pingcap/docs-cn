@@ -42,7 +42,7 @@ category: FAQ
     - [TiDB 中 Raft 的日志存储在哪里？](#tidb-中-raft-的日志存储在哪里)
     - [为什么有的时候执行 DDL 会很慢？](#为什么有的时候执行-ddl-会很慢)
     - [ERROR 2013 (HY000): Lost connection to MySQL server during query 问题的排查方法](#error-2013-hy000-lost-connection-to-mysql-server-during-query-问题的排查方法)
-    - [TiDB 可以使用 S3 作为后端存储吗？ 是否支持如下 DDL： `CREATE TABLE ... LOCATION "s3://xxx/yyy"`](#TiDB 可以使用 S3 作为后端存储吗？ 是否支持如下 DDL： `CREATE TABLE ... LOCATION "s3://xxx/yyy"`)
+    - [TiDB 可以使用 S3 作为后端存储吗？ 是否支持如下 DDL： `CREATE TABLE ... LOCATION "s3://xxx/yyy"`](#TiDB-可以使用-S3-作为后端存储吗？-是否支持如下-DDL:-`CREATE TABLE ... LOCATION "s3://xxx/yyy"`)
   + [TiKV](#tikv)
     - [TiKV 集群副本建议配置数量是多少，是不是最小高可用配置（3个）最好？](#tikv-集群副本建议配置数量是多少是不是最小高可用配置-3-个最好)
     - [TiKV 可以指定独立副本机器吗（集群是集群，副本是副本，数据和副本分离）？](#tikv-可以指定独立副本机器吗集群是集群副本是副本数据和副本分离)
@@ -50,8 +50,8 @@ category: FAQ
     - [TiKV 启动报错：`cluster ID mismatch`](#tikv-启动报错cluster-id-mismatch)
     - [TiKV 启动报错：`duplicated store address`](#tikv-启动报错duplicated-store-address)
     - [按照 TiDB 的 key 设定，会不会很长？](#按照-tidb-的-key-设定会不会很长)
-    - [#### 统计了一下 master 和 slave 日志，发现数据的原始大小差不多，但是实际文件大小 slave 要比 master 大，slave 的压缩比在 2.4 左右，master 的压缩比在 3.1 左右。但是 master 和 slave 用的是一样的压缩算法，为什么效果不一样?](##### 统计了一下 master 和 slave 日志，发现数据的原始大小差不多，但是实际文件大小 slave 要比 master 大，slave 的压缩比在 2.4 左右，master 的压缩比在 3.1 左右。但是 master 和 slave 用的是一样的压缩算法，为什么效果不一样?)
-    - [TiKV block cache 有哪些特性？](#TiKV block cache 有哪些特性？)
+    - [统计了一下 master 和 slave 日志，发现数据的原始大小差不多，但是实际文件大小 slave 要比 master 大，slave 的压缩比在 2.4 左右，master 的压缩比在 3.1 左右。但是 master 和 slave 用的是一样的压缩算法，为什么效果不一样?](#统计了一下-master-和-slave-日志发现数据的原始大小差不多但是实际文件大小-slave-要比-master-大-slave-的压缩比在2.4左右-master-的压缩比在3.1左右但是-master-和-slave-用的是一样的压缩算法为什么效果不一样)
+    - [TiKV block cache 有哪些特性？](#tikv-block-cache-有哪些特性)
   + [TiSpark](#tispark)
     - [TiSpark 的使用文档在哪里？](#tispark-的使用文档在哪里)
     - [TiSpark 的案例](#tispark-的案例)
@@ -65,10 +65,10 @@ category: FAQ
   + [监控](#监控)
     - [有一部分监控信息显示不出来？](#有一部分监控信息显示不出来)
     - [TiDB 监控框架 Prometheus + Grafana 监控机器建议单独还是多台部署？建议 cpu 和内存是多少？](#tidb-监控框架-prometheusgrafana-监控机器建议单独还是多台部署建议-cpu-和内存是多少)
-    - [如何配置监控 Syncer 运行情况？]（#如何配置监控 Syncer 运行情况？）
+    - [如何配置监控 Syncer 运行情况？](#如何配置监控-syncer-运行情况)
   + [数据迁移](#数据迁移)
     - [如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？](#如何将一个运行在-mysql-上的应用迁移到-tidb-上)
-    - [不小心把 MySQL 的 user 表 导入到 TiDB 了，无法登陆，是否有办法恢复？](#不小心把 MySQL 的 user 表 导入到 TiDB 了，无法登陆，是否有办法恢复？)
+    - [不小心把 MySQL 的 user 表导入到 TiDB 了，无法登陆，是否有办法恢复？](#不小心把-mysql-的-user-表导入到-tidb-了无法登陆是否有办法恢复)
   - [性能调优](#性能调优)
   - [备份恢复](#备份恢复)
   + [其他](#其他)
@@ -76,15 +76,15 @@ category: FAQ
     - [TiDB/PD/TiKV 的日志在哪里？](#tidbpdtikv-的日志在哪里)
     - [如何安全停止 TiDB?](#如何安全停止-tidb)
     - [TiDB 里面可以执行 kill 命令吗？](#tidb-里面可以执行-kill-命令吗)
-    - [supervise／svc／svcstat 服务具体起什么作用？](#supervise／svc／svcstat 服务具体起什么作用？)
+    - [supervise/svc/svcstat 服务具体起什么作用？](#supervisesvcsvcstat-服务具体起什么作用)
 + [SQL](#sql)
   + [SQL 语法](#sql-语法)
     - [出现 `transaction too large` 报错怎么办？](#出现-transaction-too-large-报错怎么办)
     - [查看当时运行的 DDL job](#查看当时运行的-ddl-job)
-    - [执行 `grant SHOW DATABASES on db.*` 报错 `column Show_db_priv not found`](#执行 `grant SHOW DATABASES on db.*` 报错 `column Show_db_priv not found`)
+    - [执行 `grant SHOW DATABASES on db.*` 报错 `column Show_db_priv not found`](#执行-grant-show-databases-on-db-报错-column-show_db_priv-not-found)
   + [SQL 优化](#sql-优化)
     - [`select count(1)` 比较慢，如何优化？](#select-count1-比较慢如何优化)
-    - [FROM_UNIXTIME 效率低问题？](#FROM_UNIXTIME 效率低问题？)
+    - [FROM_UNIXTIME 效率低问题？](#from_unixtime-效率低问题)
 
 ## 产品
 
@@ -183,11 +183,6 @@ TiDB 目前暂时不支持 select into outfile，可以通过以下方式导出 
 
 TiDB 暂不支持数据库层面的会话超时，目前想要实现超时，在没 LB（Load Balancing） 的时候，需要应用侧记录发起的 session 的 id，通过应用自定义超时，超时以后需要到发起 query 的节点上用 kill tidb id 来杀掉 sql。目前建议使用应用程序来实现会话超时，当达到超时时间，应用层就会抛出异常继续执行后续的程序段。
 
-#### TiDB 可以使用 S3 作为后端存储吗？ 是否支持如下 DDL： `CREATE TABLE ... LOCATION "s3://xxx/yyy"`
-
-不可以， 目前 TiDB 只支持分布式存储引擎和 Goleveldb/Rocksdb/Boltdb 引擎；
-如果你能够实现 S3 存储引擎客户端， 也应该基于 TiKV 接口实现。
-
 ### PD
 
 #### 访问 PD 报错：`TiKV cluster is not bootstrapped`
@@ -244,6 +239,11 @@ TiDB 集群中 DDL 是串行执行的，不会并发执行，可以使用 admin 
 + log 中是否有 panic
 + dmesg 中是否有 oom, 命令：`dmesg |grep -i oom`
 + 长时间没有访问，也会收到这个报错，一般是 tcp 超时导致的，tcp 长时间不用, 会被操作系统 kill。
+
+#### TiDB 可以使用 S3 作为后端存储吗？ 是否支持如下 DDL： `CREATE TABLE ... LOCATION "s3://xxx/yyy"`
+
+不可以， 目前 TiDB 只支持分布式存储引擎和 Goleveldb/Rocksdb/Boltdb 引擎；
+如果你能够实现 S3 存储引擎客户端， 也应该基于 TiKV 接口实现。
 
 ### TiKV
 
