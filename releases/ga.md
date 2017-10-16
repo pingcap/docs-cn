@@ -114,8 +114,8 @@ category: Releases
 - Eric Romano
 - Ewan Chou
 - Fiisio
-- Fred Wang
 - follitude
+- Fred Wang
 - fud
 - fudali
 - gaoyangxiaozhu
