@@ -61,12 +61,13 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 ## 下载 TiDB-Ansible
 
-从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载最新 master 版本，或[点击下载](https://github.com/pingcap/tidb-ansible/archive/master.zip)。
-将下载下来的文件解压缩，默认的文件夹名称为 `tidb-ansible-master`。该文件夹包含用 TiDB-Ansible 来部署 TiDB 集群所需要的所有文件。
-
+使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 release-1.0 分支，默认的文件夹名称为 `tidb-ansible`。该文件夹包含用 TiDB-Ansible 来部署 TiDB 集群所需要的所有文件。
+```
+git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
+```
 ## 分配机器资源，编辑 inventory.ini 文件
 
-> inventory.ini 文件路径为 tidb-ansible-master/inventory.ini。
+> inventory.ini 文件路径为 tidb-ansible/inventory.ini。
 
 标准 TiDB 集群需要6台机器:
 
@@ -84,8 +85,6 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 | node4 | 172.16.10.4 | TiKV1 |
 | node5 | 172.16.10.5 | TiKV2 |
 | node6 | 172.16.10.6 | TiKV3 |
-
-将下载下来的文件解压缩，默认的文件夹名称为 `tidb-ansible-master`。该文件夹包含用 TiDB-Ansible 来部署 TiDB 集群所需要的所有文件。
 
 ```ini
 [tidb_servers]
@@ -247,7 +246,7 @@ pd_servers
 
 ### 下载 binary
 
-1.  使用 playbook 下载最新 master binary，自动替换 binary 到 `tidb-ansible/resource/bin/`
+1.  使用 playbook 下载 TiDB 1.0 版本 binary，自动替换 binary 到 `tidb-ansible/resource/bin/`
 
     ```
     ansible-playbook local_prepare.yml
@@ -256,7 +255,7 @@ pd_servers
 2.  使用 wget 下载 binary，解压后手动替换 binary 到 `tidb-ansible/resource/bin/`
 
     ```
-    wget http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz
+    wget http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz
     ```
 
 ### 使用 Ansible 滚动升级
@@ -291,23 +290,18 @@ pd_servers
 
 ### TiDB 各版本下载链接
 
--   Master 版本:
-    - [Master-CentOS7](http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz)
-    - [Master-CentOS6](http://download.pingcap.org/tidb-latest-linux-amd64-centos6.tar.gz)
+- 1.0 版本:
+    - [TiDB 1.0-CentOS7](http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz)
+    - [TiDB 1.0-CentOS6](http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable-centos6.tar.gz)
 
-- RC4 版本:
-    - [RC4-CentOS7](http://download.pingcap.org/tidb-rc4-linux-amd64.tar.gz)
-    - [RC4-CentOS6](http://download.pingcap.org/tidb-rc4-linux-amd64-centos6.tar.gz)
+### 如何下载安装指定版本 TiDB
 
-### 如何下载安装 RC4 版本 TiDB
+如需安装 TiDB 1.0 版本，需要先下载 TiDB-Ansible release-1.0 分支，确认 inventory.ini 文件中 `tidb_version = v1.0.0`, 安装步骤同上。
 
-`inventory.ini` 文件中指定的 TiDB 默认版本为 master 版本 `tidb_version = latest`, 如需安装 TiDB rc4 版本，
-需要先下载 TiDB-Ansible rc4 分支，确认 inventory.ini 文件中 `tidb_version = rc4`。安装步骤同上。
-
-从 github 下载 TiDB-Ansile rc4 分支
+从 github 下载 TiDB-Ansible release-1.0 分支:
 
 ```
-git clone -b rc4 https://github.com/pingcap/tidb-ansible.git
+git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 ```
 
 ### 自定义端口
