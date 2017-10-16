@@ -38,9 +38,38 @@ category: Releases
 + 支持可配置框架
 + 支持 ThriftSever/JDBC 和 Spark SQL 脚本入口
 
-## 源码地址：https://github.com/pingcap/tidb
+## 源码地址
+
+[源码地址](https://github.com/pingcap/tidb)
 
 ## 鸣谢
+
+### 特别感谢参与项目的企业和团队
+
+- Archon
+- Mobike
+- SpeedCloud
+- UCloud
+- 腾讯云
+- 韩国三星研究院
+
+### 感谢以下组织/个人提供出色的开源软件/服务：
+
+- Asta Xie
+- CNCF
+- CoreOS
+- Databricks
+- Docker
+- Github
+- Grafana
+- gRPC
+- Jepsen
+- Kubernetes
+- Namazu
+- Prometheus
+- RedHat
+- RocksDB Team
+- Rust Team
 
 ### 感谢社区个人贡献者 TiDB Contributor
 
@@ -278,30 +307,3 @@ category: Releases
 - 王妍军
 - 王维真 
 - 赵星宇
-
-### 特别感谢参与项目的企业和团队
-
-- Archon
-- Mobike
-- SpeedCloud
-- UCloud
-- 腾讯云
-- 韩国三星研究院
-
-### 感谢以下组织/个人提供出色的开源软件/服务：
-
-- Asta Xie
-- CNCF
-- CoreOS
-- Databricks
-- Docker
-- Github
-- Grafana
-- gRPC
-- Jepsen
-- Kubernetes
-- Namazu
-- Prometheus
-- RedHat
-- RocksDB Team
-- Rust Team
