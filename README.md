@@ -37,6 +37,7 @@
 + The TiDB Connector for Spark
   - [Quick Start Guide](tispark/tispark-quick-start-guide.md)
   - [User Guide](tispark/tispark-user-guide.md)
++ [TiDB Roadmap](ROADMAP.md)
 - [Frequently Asked Questions (FAQ)](./FAQ.md)
 - [Troubleshoot](./trouble-shooting.md)
 - [TiDB Best Practices](https://pingcap.github.io/blog/2017/07/24/tidbbestpractice/)
