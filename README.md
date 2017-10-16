@@ -38,7 +38,6 @@
 + TiSpark 文档
   - [TiSpark 快速入门指南](op-guide/tispark-quick-start-guide.md)
   - [TiSpark 用户指南](op-guide/tispark-user-guide.md)
-- [TiDB Roadmap](ROADMAP.md)
 - [常见问题与解答(FAQ)](FAQ.md)
 - [故障诊断](trouble-shooting.md)
 - [最佳实践](https://pingcap.com/blog-TiDB-Best-Practice-zh)
