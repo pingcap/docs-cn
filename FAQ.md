@@ -242,8 +242,9 @@ TiDB 集群中 DDL 是串行执行的，不会并发执行，可以使用 admin 
 
 #### TiDB 可以使用 S3 作为后端存储吗？ 是否支持如下 DDL： `CREATE TABLE ... LOCATION "s3://xxx/yyy"`
 
-不可以， 目前 TiDB 只支持分布式存储引擎和 Goleveldb/Rocksdb/Boltdb 引擎；
-如果你能够实现 S3 存储引擎客户端， 也应该基于 TiKV 接口实现。
+不可以，目前 TiDB 只支持分布式存储引擎和 Goleveldb/Rocksdb/Boltdb 引擎；
+
+如果你能够实现 S3 存储引擎客户端，应该基于 TiKV 接口实现。
 
 ### TiKV
 
@@ -365,7 +366,7 @@ rm -rf tidb_test
 
 TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提供了一个[检查工具](https://github.com/pingcap/tidb-tools/tree/master/checker)，用于检查 MySQL 中的 Schema 是否和 TiDB 兼容。
 
-#### 不小心把 MySQL 的 user 表 导入到 TiDB 了，无法登陆，是否有办法恢复？
+#### 不小心把 MySQL 的 user 表导入到 TiDB 了，无法登陆，是否有办法恢复？
 
 重启 TiDB 服务， 配置文件中增加 `-skip-grant-table=true` 参数， 登陆集群后按照如下 SQL 重建：
 
@@ -470,13 +471,12 @@ svsstat 查看进程状态
 ```
 admin show ddl
 ```
+> 注意：除非 DDL 遇到错误，否则目前是不能取消的。
 
 #### 执行 `grant SHOW DATABASES on db.*` 报错 `column Show_db_priv not found`
 
 `SHOW DATABASES` 这个是一个全局的权限项而不是数据库级的权限，所以授予的时候是不能够授予某个数据库的 `SHOW DATABASES` 权限，
 授予这一项权限需要授予到所有数据库：`grant SHOW DATABASES on *.*`。
-
-> 注意：除非 DDL 遇到错误，否则目前是不能取消的。
 
 ### SQL 优化
 
@@ -484,13 +484,13 @@ admin show ddl
 
 `count(1)` 就是暴力扫表，提高并发度能显著的提升速度，修改并发度可以参考 [`tidb_distsql_scan_concurrency`](sql/tidb-specific.md#tidb_distsql_scan_concurrency) 变量。 但是也要看 CPU 和 I/O 资源。TiDB 每次查询都要访问 TiKV，在数据量小的情况下，MySQL 都在内存里，TiDB 还需要进行一次网络访问。
 
-#### FROM_UNIXTIME 效率低问题？
-
-获取系统时间不要使用 FROM_UNIXTIME，建议采用 datetime 转成时间戳去比较方式，目前 FROM_UNIXTIME 无法走索引。
-
 > 提升建议：
 >
 > 1. 建议提升硬件配置，可以参考[部署建议](op-guide/requirement.md)。
 > 2. 提升并发度，默认是 10，可以提升到 50 试试，但是一般提升在 2-4 倍之间。
 > 3. 测试大数据量的 count。
 > 4. 调优 TiKV 配置，可以参考[性能调优](op-guide/tune-tikv.md)。
+
+#### FROM_UNIXTIME 效率低问题？
+
+获取系统时间不要使用 FROM_UNIXTIME，建议采用 datetime 转成时间戳去比较方式，目前 FROM_UNIXTIME 无法走索引。
