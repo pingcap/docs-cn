@@ -29,7 +29,7 @@ TiDB 的自增 ID (Auto Increment ID) 只保证自增且唯一，并不保证连
 #### 注意：
 有多台 TiDB 情况下使用自增 ID 时，建议不要混用缺省值和自定义值。原因是目前在如下情况下会报错：
 
-在有两个 TiDB（TiDB A 缓存 [1,5000] 的自增 ID，TiDB B 缓存 [5001,10000] 的自增 ID）的集群，创建一个带有自增 ID 的表（SQL：`create table t(id int unique key auto_increment, c int);`）。首先客户端向 TiDB B 插入一条将 `id` 设置为 1 的语句，并执行成功。然后，客户端向 TiDB A 发送插入一条记录，且记录中 `id` 使用缺省值即 1, 最终返回 `Duplicated Error`。 
+在有两个 TiDB（TiDB A 缓存 [1,5000] 的自增 ID，TiDB B 缓存 [5001,10000] 的自增 ID）的集群，创建一个带有自增 ID 的表（SQL：`create table t(id int unique key auto_increment, c int);`）。首先客户端向 TiDB B 插入一条将 `id` 设置为 1 的语句，并执行成功。然后，客户端向 TiDB A 发送插入一条记录，且记录中 `id` 使用缺省值即 1， 最终返回 `Duplicated Error`。 
 
 这个问题近期会解决。
 
