@@ -50,7 +50,7 @@ category: FAQ
     - [TiKV 启动报错：`cluster ID mismatch`](#tikv-启动报错cluster-id-mismatch)
     - [TiKV 启动报错：`duplicated store address`](#tikv-启动报错duplicated-store-address)
     - [按照 TiDB 的 key 设定，会不会很长？](#按照-tidb-的-key-设定会不会很长)
-    - [TiKV master 和 slave 用的是一样的压缩算法，为什么效果不一样?](#tikv-master-和-slave-用的是一样的压缩算法为什么效果不一样)
+    - [TiKV master 和 slave 用的是一样的压缩算法，为什么效果不一样?](#tikv-master-和-slave-用的是一样的压缩算法为什么效果不一样)
     - [TiKV block cache 有哪些特性？](#tikv-block-cache-有哪些特性)
   + [TiSpark](#tispark)
     - [TiSpark 的使用文档在哪里？](#tispark-的使用文档在哪里)
