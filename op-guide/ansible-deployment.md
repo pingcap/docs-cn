@@ -87,9 +87,12 @@ For more information, see [Ansible Documentation](http://docs.ansible.com/ansibl
 
 
 ## 3. Download TiDB-Ansible to the Control Machine
-Download the latest master version of the ZIP package from GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible) or [click to download]( https://github.com/pingcap/tidb-ansible/archive/master.zip).
+Use the following command to download the TiDB-Ansible `release-1.0` branch from GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible).
+The default folder name is `tidb-ansible`. The `tidb-ansible` directory contains all files you need to get started with TiDB-Ansible.
 
-You can then unzip the package and the default folder name is `tidb-ansible-master`. The `tidb-ansible-master` directory contains all the files you need to get started with TiDB-Ansible.
+```
+git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
+```
 
 ## 4. Orchestrate the TiDB cluster
 
@@ -110,7 +113,7 @@ The cluster topology is as follows:
 | node5 | 172.16.10.5 | TiKV2 |
 | node6 | 172.16.10.6 | TiKV3 |
 
-Edit the `inventory.ini` file from the `tidb-ansible-master` directory as follows:
+Edit the `inventory.ini` file from the `tidb-ansible` directory as follows:
 
 ```
 [tidb_servers]
@@ -244,15 +247,15 @@ The rolling update of the TiDB service does not impact the ongoing business. The
 
 7.1. Download the binary
 
-- Use playbook to download the latest master binary and replace the existing binary in `tidb-ansible/resource/bin/` automatically:
+- Use playbook to download the TiDB, TiKV, and PD binaries and replace the existing binary in `tidb-ansible/resource/bin/` automatically:
 
     ```
     ansible-playbook local_prepare.yml
     ```
-- Use `wget` to download the binary and replace  the existing binary in `tidb-ansible/resource/bin/` manually:
+- Use `wget` to download the binary and replace the existing binary in `tidb-ansible/resource/bin/` manually:
 
     ```
-    wget http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz
+    wget http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz
     ```
 
 7.2. Use Ansible for rolling update
@@ -285,9 +288,9 @@ For more advanced features of TiDB including data migration, performance tuning,
 
 #### How to download and install TiDB of a specified version?
 
-The default TiDB version in `inventory.ini` is `tidb_version = latest` in master. If you need to install TiDB RC4, use the following command to download the ` TiDB-Ansible RC4` version:
+If you need to install TiDB 1.0 version, use the following command to download the `TiDB-Ansible 1.0` branch:
 
-    git clone -b rc4 https://github.com/pingcap/tidb-ansible.git
+    git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 
-And then edit the `inventory.ini` file and specify `tidb_version = rc4`.
+And then edit the `inventory.ini` file and specify `tidb_version = v1.0.0`.
 
