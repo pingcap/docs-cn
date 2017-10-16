@@ -42,7 +42,7 @@ category: FAQ
     - [TiDB 中 Raft 的日志存储在哪里？](#tidb-中-raft-的日志存储在哪里)
     - [为什么有的时候执行 DDL 会很慢？](#为什么有的时候执行-ddl-会很慢)
     - [ERROR 2013 (HY000): Lost connection to MySQL server during query 问题的排查方法](#error-2013-hy000-lost-connection-to-mysql-server-during-query-问题的排查方法)
-    - [TiDB 可以使用 S3 作为后端存储吗？ 是否支持如下 DDL： `CREATE TABLE ... LOCATION "s3://xxx/yyy"`](#tidb-可以使用-s3-作为后端存储吗是否支持如下-ddl-create-table-...-location-s3xxxyyy)
+    - [TiDB 可以使用 S3 作为后端存储吗？](#tidb-可以使用-s3-作为后端存储吗)
   + [TiKV](#tikv)
     - [TiKV 集群副本建议配置数量是多少，是不是最小高可用配置（3个）最好？](#tikv-集群副本建议配置数量是多少是不是最小高可用配置-3-个最好)
     - [TiKV 可以指定独立副本机器吗（集群是集群，副本是副本，数据和副本分离）？](#tikv-可以指定独立副本机器吗集群是集群副本是副本数据和副本分离)
@@ -50,7 +50,7 @@ category: FAQ
     - [TiKV 启动报错：`cluster ID mismatch`](#tikv-启动报错cluster-id-mismatch)
     - [TiKV 启动报错：`duplicated store address`](#tikv-启动报错duplicated-store-address)
     - [按照 TiDB 的 key 设定，会不会很长？](#按照-tidb-的-key-设定会不会很长)
-    - [统计了一下 master 和 slave 日志，发现数据的原始大小差不多，但是实际文件大小 slave 要比 master 大，slave 的压缩比在 2.4 左右，master 的压缩比在 3.1 左右。但是 master 和 slave 用的是一样的压缩算法，为什么效果不一样?](#统计了一下-master-和-slave-日志发现数据的原始大小差不多但是实际文件大小-slave-要比-master-大-slave-的压缩比在2.4左右-master-的压缩比在3.1左右但是-master-和-slave-用的是一样的压缩算法为什么效果不一样)
+    - [TiKV master 和 slave 用的是一样的压缩算法，为什么效果不一样?](#tikv-master-和-slave-用的是一样的压缩算法为什么效果不一样)
     - [TiKV block cache 有哪些特性？](#tikv-block-cache-有哪些特性)
   + [TiSpark](#tispark)
     - [TiSpark 的使用文档在哪里？](#tispark-的使用文档在哪里)
@@ -244,6 +244,8 @@ TiDB 集群中 DDL 是串行执行的，不会并发执行，可以使用 admin 
 
 不可以，目前 TiDB 只支持分布式存储引擎和 Goleveldb/Rocksdb/Boltdb 引擎；
 
+是否支持如下 DDL： `CREATE TABLE ... LOCATION "s3://xxx/yyy"`？
+
 如果你能够实现 S3 存储引擎客户端，应该基于 TiKV 接口实现。
 
 ### TiKV
@@ -272,7 +274,7 @@ TiKV 本地存储的 cluster ID 和指定的 PD 的 cluster ID 不一致。在�
 
 RocksDB 对于 key 有压缩。
 
-#### 统计了一下 master 和 slave 日志，发现数据的原始大小差不多，但是实际文件大小 slave 要比 master 大，slave 的压缩比在 2.4 左右，master 的压缩比在 3.1 左右。但是 master 和 slave 用的是一样的压缩算法，为什么效果不一样?
+#### TiKV master 和 slave 用的是一样的压缩算法，为什么效果不一样?
 
 目前来看 master 有些文件的压缩率会高一些，这个取决于底层数据的分布和 rocksdb 的实现, 数据偶尔有些波动是正常的，底层存储引擎会根据需要调整数据。
 
