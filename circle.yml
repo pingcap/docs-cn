@@ -25,7 +25,7 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               sudo bash -c 'echo "119.188.128.5 uc.qbox.me" >> /etc/hosts';
-              python3 scripts/upload.py output.pdf tidb-manual-cn.pdf;
+              python3 scripts/upload.py output.pdf tidb-manual-en.pdf;
             fi
 
       - run:
