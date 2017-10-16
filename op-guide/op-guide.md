@@ -28,7 +28,8 @@ category: deployment
 
 ## 扩容缩容
 
-- [扩容缩容](horizontal-scale.md)
+- [使用 Ansible 扩容缩容](../QUICKSTART.md#tidb-集群扩容缩容方案)
+- [集群扩容缩容方案](horizontal-scale.md)
 
 ## 升级
 
