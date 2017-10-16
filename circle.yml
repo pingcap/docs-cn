@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: andelf/doc-build:0.1.7
+      - image: andelf/doc-build:0.1.9
     working_directory: ~/pingcap/docs
     steps:
       - checkout
@@ -24,5 +24,13 @@ jobs:
           name: "Publish PDF"
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              python3 scripts/upload.py output.pdf tidb-manual-en.pdf
+              sudo bash -c 'echo "119.188.128.5 uc.qbox.me" >> /etc/hosts';
+              python3 scripts/upload.py output.pdf tidb-manual-cn.pdf;
             fi
+
+      - run:
+          name: "Copy Generated PDF"
+          command: mkdir /tmp/artifacts && cp output.pdf doc.md /tmp/artifacts
+
+      - store_artifacts:
+          path: /tmp/artifacts
