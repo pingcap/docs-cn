@@ -11,23 +11,24 @@ category: operations
 
 ## Deploy
 
-    - [Ansible Deployment (Recommended)](ansible-deployment.md)
-    - [Docker Deployment](docker-deployment.md)
-    - [Cross-Region Deployment](location-awareness.md)
+  - [Ansible Deployment (Recommended)](ansible-deployment.md)
+  - [Docker Deployment](docker-deployment.md)
+  - [Cross-Region Deployment](location-awareness.md)
 
 ## Configure
 
-    - [Configuration Flags](configuration.md)
+  - [Configuration Flags](configuration.md)
 
 ## Monitor
 
-    - [Overview of the Monitoring Framework](monitor-overview.md)
-    - [Key Metrics](dashboard-overview-info.md)
-    - [Monitor a TiDB Cluster](monitoring-tidb.md)
+  - [Overview of the Monitoring Framework](monitor-overview.md)
+  - [Key Metrics](dashboard-overview-info.md)
+  - [Monitor a TiDB Cluster](monitoring-tidb.md)
 
 ## Scale
 
   - [Scale](horizontal-scale.md)
+  - [Use Ansible to Scale](../QUICKSTART.md#scale-the-tidb-cluster)
 
 ## Upgrade
 
@@ -35,15 +36,15 @@ category: operations
 
 ## Performance Tuning
 
-    - [Performance Tuning for TiKV](tune-TiKV.md)
+  - [Performance Tuning for TiKV](tune-TiKV.md)
 
 ## Backup and Migrate
 
-    - [Backup and Restore](backup-restore.md)
-    + [Migrate Data from MySQL to TiDB](migration.md)
-      - [Migrate All the Data](migration.md#using-the-mydumper--loader-tool-to-export-and-import-all-the-data)
-      - [Migrate the Data Incrementally](migration.md#optional-using-the-syncer-tool-to-import-data-incrementally)
+  - [Backup and Restore](backup-restore.md)
+  + [Migrate Data from MySQL to TiDB](migration.md)
+    - [Migrate All the Data](migration.md#using-the-mydumper--loader-tool-to-export-and-import-all-the-data)
+    - [Migrate the Data Incrementally](migration.md#optional-using-the-syncer-tool-to-import-data-incrementally)
 
 ## Deploy TiDB Using the Binary
 
-    - [Deploy TiDB Using the Binary](binary-deployment.md)
+  - [Deploy TiDB Using the Binary](binary-deployment.md)

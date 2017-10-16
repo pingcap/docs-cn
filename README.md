@@ -26,7 +26,7 @@
   - [SQL Statement Syntax](sql/user-manual.md#sql-statement-syntax)
   - [JSON Functions and Generated Column](sql/user-manual.md#json-functions-and-generated-column)
   - [Connectors and APIs](sql/user-manual.md#connectors-and-apis)
-  - [Compatibility with MySQL](sql/user-manual.md#compatibility-with-mysql)
+  - [Compatibility with MySQL](sql/mysql-compatibility.md)
 + Advanced Usage
   - [Read Data From History Versions](op-guide/history-read.md) 
 + Tools

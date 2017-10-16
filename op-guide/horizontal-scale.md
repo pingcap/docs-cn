@@ -11,7 +11,7 @@ The capacity of a TiDB cluster can be incresead or reduced without affecting onl
 
 The following part shows you how to add or delete PD, TiKV or TiDB nodes.
 
-About pd-ctl usage, please refer to [pd-control](./pd-control.md).
+About pd-ctl usage, please refer to [pd-control](../tools/pd-control.md).
 
 ## PD
 
