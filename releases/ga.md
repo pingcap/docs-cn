@@ -115,6 +115,7 @@ category: Releases
 - Ewan Chou
 - Fiisio
 - Fred Wang
+- follitude
 - fud
 - fudali
 - gaoyangxiaozhu
