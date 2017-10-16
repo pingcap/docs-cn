@@ -20,7 +20,7 @@ On October 16, 2017, TiDB 1.0 is now released! This release is focused on MySQL 
 - Support the Stream Aggregator operator
 
 ## PD:
-- 
+
 - Support read flow based balancing
 - Support setting the Store weight and weight based balancing
 
