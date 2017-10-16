@@ -138,7 +138,7 @@ pd_servers
         # ansible_user = tidb
         ```
 
-    2.  使用 `local_prepare.yml` playbook, 联网下载 master 版本的 binary 到中控机：
+    2.  使用 `local_prepare.yml` playbook, 联网下载 TiDB binary 到中控机：
 
         ```
         ansible-playbook local_prepare.yml
@@ -188,7 +188,7 @@ pd_servers
         ansible_user = tidb
         ```
 
-    2.  使用 `local_prepare.yml` playbook, 联网下载 master 版本 binary 到中控机：
+    2.  使用 `local_prepare.yml` playbook, 联网下载 TiDB binary 到中控机：
 
         ```
         ansible-playbook local_prepare.yml
@@ -246,7 +246,7 @@ pd_servers
 
 ### 下载 binary
 
-1.  使用 playbook 下载 TiDB 1.0 版本 binary，自动替换 binary 到 `tidb-ansible/resource/bin/`
+1.  使用 playbook 下载 TiDB 1.0 binary，自动替换 binary 到 `tidb-ansible/resource/bin/`
 
     ```
     ansible-playbook local_prepare.yml
