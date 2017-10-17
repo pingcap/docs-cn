@@ -27,7 +27,7 @@ category: quick start
 
 ## About TiDB
 
-TiDB is a distributed open source SQL database and supports the best features of both traditional RDBMS and NoSQL. TiDB is compatible with MySQL and features in infinite horizontal scalability, strong consistency, and high availability. The goal of TiDB is to serve as a one-stop solution for online transactions and analysis.
+TiDB (The pronunciation is: /’taɪdiːbi:/ tai-D-B, etymology: titanium) is a Hybrid Transactional/Analytical Processing (HTAP) database. Inspired by the design of Google F1 and Google Spanner, TiDB features infinite horizontal scalability, strong consistency, and high availability. The goal of TiDB is to serve as a one-stop solution for online transactions and analyses.
 
 ## About this guide
 
