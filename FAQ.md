@@ -276,7 +276,7 @@ RocksDB 对于 key 有压缩。
 
 #### TiKV master 和 slave 用的是一样的压缩算法，为什么效果不一样?
 
-目前来看 master 有些文件的压缩率会高一些，这个取决于底层数据的分布和 rocksdb 的实现, 数据偶尔有些波动是正常的，底层存储引擎会根据需要调整数据。
+目前来看 master 有些文件的压缩率会高一些，这个取决于底层数据的分布和 RocksDB 的实现, 数据偶尔有些波动是正常的，底层存储引擎会根据需要调整数据。
 
 #### TiKV block cache 有哪些特性？
 
@@ -370,7 +370,7 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提�
 
 #### 不小心把 MySQL 的 user 表导入到 TiDB 了，无法登陆，是否有办法恢复？
 
-重启 TiDB 服务， 配置文件中增加 `-skip-grant-table=true` 参数， 登陆集群后按照如下 SQL 重建：
+重启 TiDB 服务，配置文件中增加 `-skip-grant-table=true` 参数，登陆集群后按照如下 SQL 重建：
 
 ```
 DROP TABLE IF EXIST mysql.user;
@@ -477,8 +477,7 @@ admin show ddl
 
 #### 执行 `grant SHOW DATABASES on db.*` 报错 `column Show_db_priv not found`
 
-`SHOW DATABASES` 这个是一个全局的权限项而不是数据库级的权限，所以授予的时候是不能够授予某个数据库的 `SHOW DATABASES` 权限，
-授予这一项权限需要授予到所有数据库：`grant SHOW DATABASES on *.*`。
+`SHOW DATABASES` 是一个全局的权限而不是数据库级的权限，所以授予此项权限时，不能授予某个数据库，而是需要授予所有数据库：`grant SHOW DATABASES on *.*`。
 
 ### SQL 优化
 
@@ -493,6 +492,6 @@ admin show ddl
 > 3. 测试大数据量的 count。
 > 4. 调优 TiKV 配置，可以参考[性能调优](op-guide/tune-tikv.md)。
 
-#### FROM_UNIXTIME 效率低问题？
+#### 如何解决 FROM_UNIXTIME 效率低问题？
 
-获取系统时间不要使用 FROM_UNIXTIME，建议采用 datetime 转成时间戳去比较方式，目前 FROM_UNIXTIME 无法走索引。
+获取系统时间不要使用 FROM_UNIXTIME，建议采用 datetime 转成时间戳去比较的方式，目前 FROM_UNIXTIME 无法走索引。
