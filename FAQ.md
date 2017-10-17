@@ -84,7 +84,7 @@ category: FAQ
     - [执行 `grant SHOW DATABASES on db.*` 报错 `column Show_db_priv not found`](#执行-grant-show-databases-on-db-报错-column-show_db_priv-not-found)
   + [SQL 优化](#sql-优化)
     - [`select count(1)` 比较慢，如何优化？](#select-count1-比较慢如何优化)
-    - [FROM_UNIXTIME 效率低问题？](#from_unixtime-效率低问题)
+    - [如何解决 FROM_UNIXTIME 效率低的问题？](#如何解决-from_unixtime-效率低的问题)
 
 ## 产品
 
@@ -276,7 +276,7 @@ RocksDB 对于 key 有压缩。
 
 #### TiKV master 和 slave 用的是一样的压缩算法，为什么效果不一样?
 
-目前来看 master 有些文件的压缩率会高一些，这个取决于底层数据的分布和 RocksDB 的实现, 数据偶尔有些波动是正常的，底层存储引擎会根据需要调整数据。
+目前来看 master 有些文件的压缩率会高一些，这个取决于底层数据的分布和 RocksDB 的实现，数据偶尔有些波动是正常的，底层存储引擎会根据需要调整数据。
 
 #### TiKV block cache 有哪些特性？
 
@@ -372,7 +372,7 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提�
 
 重启 TiDB 服务，配置文件中增加 `-skip-grant-table=true` 参数，登陆集群后按照如下 SQL 重建：
 
-```
+```sql
 DROP TABLE IF EXIST mysql.user;
 
 CREATE TABLE if not exists mysql.user (
@@ -442,11 +442,9 @@ TiDB 遵循 MySQL 的权限管理体系，可以创建用户并授予权限。
 
 #### supervise/svc/svstat 服务具体起什么作用？
 
-supervise 守护进程
-
-svc 启停服务
-
-svstat 查看进程状态
+- supervise 守护进程
+- svc 启停服务
+- svstat 查看进程状态
 
 ## SQL
 
