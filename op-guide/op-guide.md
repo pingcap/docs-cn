@@ -12,6 +12,7 @@ category: deployment
 ## 部署集群
 
 - [Ansible 部署方案 (强烈推荐)](ansible-deployment.md)
+- [离线 Ansible 部署方案 (强烈推荐)](offline-ansible-deployment.md)
 - [Docker 部署方案](docker-deployment.md)
 - [跨机房部署方案](location-awareness.md)
 
@@ -27,7 +28,8 @@ category: deployment
 
 ## 扩容缩容
 
-- [扩容缩容](horizontal-scale.md)
+- [使用 Ansible 扩容缩容](../QUICKSTART.md#tidb-集群扩容缩容方案)
+- [集群扩容缩容方案](horizontal-scale.md)
 
 ## 升级
 
