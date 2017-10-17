@@ -10,7 +10,7 @@ category: FAQ
         - [TiDB 是什么？](#tidb-是什么)
         - [TiDB 是基于 MySQL 开发的吗？](#tidb-是基于-mysql-开发的吗)
         - [TiDB 和 MySQL Group Replication 的区别是什么？](#tidb-和-mysql-group-replication-的区别是什么)
-        - [TiDB 和 TiKV 是如何配合使用？ 他们之间的关系是？](#tidb-和-tikv-是如何配合使用-他们之间的关系是)
+        - [TiDB 和 TiKV 如何配合使用？ 他们之间的关系是？](#tidb-和-tikv-如何配合使用-他们之间的关系是)
         - [Placement Driver (PD) 是做什么的？](#placement-driver-pd-是做什么的)
         - [TiDB 用起来简单吗？](#tidb-用起来简单吗)
         - [TiDB 适用的场景是？](#tidb-适用的场景是)
@@ -63,7 +63,7 @@ category: FAQ
     - [扩容](#扩容)
         - [如何对 TiDB 进行水平扩展？](#如何对-tidb-进行水平扩展)
     - [监控](#监控)
-        - [TiDB 监控框架 Prometheus + Grafana 监控机器建议单独还是多台部署？建议 cpu 和内存是多少？](#tidb-监控框架-prometheus--grafana-监控机器建议单独还是多台部署建议-cpu-和内存是多少)
+        - [TiDB 监控框架 Prometheus + Grafana 监控机器建议单独还是多台部署？建议 CPU 和内存是多少？](#tidb-监控框架-prometheus--grafana-监控机器建议单独还是多台部署建议-cpu-和内存是多少)
         - [有一部分监控信息显示不出来？](#有一部分监控信息显示不出来)
         - [如何配置监控 Syncer 运行情况？](#如何配置监控-syncer-运行情况)
     - [数据迁移](#数据迁移)
@@ -102,7 +102,7 @@ TiDB 是一个分布式 NewSQL 数据库。支持水平扩展、高可用、ACID
 
 MySQL Group Replication (MGR) 是基于 MySQL 单机版的一个高可用解决方案，而 MGR 不解决扩展性的问题。TiDB 从架构上就比较适合分布式场景，在开发过程中的各种决策也是以如何适应分布式场景出发来设计的。
 
-#### TiDB 和 TiKV 是如何配合使用？ 他们之间的关系是？
+#### TiDB 和 TiKV 如何配合使用？ 他们之间的关系是？
 
 TiDB 是 SQL 层，主要负责 SQL 的解析、制定查询计划、生成执行器；TiKV 是分布式 Key-Value 存储引擎，用来存储真正的数据。简而言之，TiKV 是 TiDB 的存储引擎。
 
@@ -284,13 +284,11 @@ TiKV 使用了 RocksDB 的 Column Falimies 特性，KV 数据最终存储在默�
 
 - default CF 存储的是真正的数据，与其对应的参数位于 [rocksdb.defaultcf] 项中； write CF 存储的是数据的版本信息（MVCC）以及索引相关的数据，相关的参数位于 [rocksdb.writecf] 项中； lock CF 存储的是锁信息，系统使用默认参数。
 
-- Raft Rocksdb 实例存储 Raft log。 default CF 主要存储的是 raft log，与其对应的参数位于 [raftdb.defaultcf] 项中。
+- Raft Rocksdb 实例存储 Raft log。 default CF 主要存储的是 Raft log，与其对应的参数位于 [raftdb.defaultcf] 项中。
 
 - 每个 CF 都有单独的 block-cache，用于缓存数据块，加速 RocksDB 的读取速度，block-cache 的大小通过参数 block-cache-size 控制，block-cache-size 越大，能够缓存的热点数据越多，对读取操作越有利，同时占用的系统内存也会越多。
 
 - 每个 CF 有各自的 write-buffer，大小通过 write-buffer-size 控制。
-
-
 
 ### TiSpark
 
@@ -342,7 +340,7 @@ rm -rf tidb_test
 
 ### 监控
 
-#### TiDB 监控框架 Prometheus + Grafana 监控机器建议单独还是多台部署？建议 cpu 和内存是多少？
+#### TiDB 监控框架 Prometheus + Grafana 监控机器建议单独还是多台部署？建议 CPU 和内存是多少？
 
 监控机建议单独部署。建议 CPU 8 core，内存 32 GB 以上，硬盘 500 GB 以上。
 
