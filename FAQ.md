@@ -34,7 +34,7 @@ category: FAQ
     - [更改 PD 的启动参数](#更改-pd-的启动参数)
     - [PD 能容忍的时间同步误差是多少？](#pd-能容忍的时间同步误差是多少)
     - [Client 连接是如何寻找 PD 的？](#client-连接是如何寻找-pd-的)
-    - [PD 参数中 leader-schedule-limit 和 region-schedule-limit 调度有什么区别？](#pd-参数中-leader-schedule-limit-和-region-schedule-limit-调度有什么区别)
+    - [PD 参数中 leader-schedule-limit 和 region-schedule-limit 调度有什么区别？](#pd-参数中-leader-schedule-limit-和-region-schedule-limit-调度有什么区别)
     - [每个 region 的 replica 数量可配置吗？调整的方法是？](#每个-region-的-replica-数量可配置吗调整的方法是)
   + [TiDB](#tidb)
     - [TiDB 的 lease 参数应该如何设置？](#tidb-的-lease-参数应该如何设置)
