@@ -19,7 +19,7 @@ category: FAQ
     - [TiDB 支持分布式事务吗？](#tidb-支持分布式事务吗)
     - [当多个事务冲突严重时（如同时修改同一行数据），会造成某些事务写入失败吗？](#当多个事务冲突严重时如同时修改同一行数据会造成某些事务写入失败吗)
     - [在使用 TiDB 时，我需要用什么编程语言？](#在使用-tidb-时我需要用什么编程语言)
-    - [和 MySQL/Oracle 等传统关系型数据库相比，TiDB 有什么优势？](#和-mysqloracle-等传统关系型数据库相比-tidb-有什么优势)
+    - [和 MySQL/Oracle 等传统关系型数据库相比，TiDB 有什么优势？](#和-mysqloracle-等传统关系型数据库相比tidb-有什么优势)
     - [和 Cassandra/Hbase/MongoDB 等 NoSQL 数据库相比，TiDB 有什么优势？](#和-cassandrahbasemongodb-等-nosql-数据库相比tidb-有什么优势)
     - [使用 `go get` 方式安装 TiDB 为什么报错了？](#使用-go-get-方式安装-tidb-为什么报错了)
     - [TiDB 高可用的特性是怎么样的？](#tidb-高可用的特性是怎么样的)
@@ -34,7 +34,7 @@ category: FAQ
     - [更改 PD 的启动参数](#更改-pd-的启动参数)
     - [PD 能容忍的时间同步误差是多少？](#pd-能容忍的时间同步误差是多少)
     - [Client 连接是如何寻找 PD 的？](#client-连接是如何寻找-pd-的)
-    - [PD 参数中 leader-schedule-limit 和 region-schedule-limit 调度有什么区别？](#PD-参数中-leader-schedule-limit-和-region-schedule-limit-调度有什么区别)
+    - [PD 参数中 leader-schedule-limit 和 region-schedule-limit 调度有什么区别？](#pd-参数中-leader-schedule-limit-和-region-schedule-limit-调度有什么区别)
     - [每个 region 的 replica 数量可配置吗？调整的方法是？](#每个-region-的-replica-数量可配置吗调整的方法是)
   + [TiDB](#tidb)
     - [TiDB 的 lease 参数应该如何设置？](#tidb-的-lease-参数应该如何设置)
@@ -440,13 +440,13 @@ TiDB 遵循 MySQL 的权限管理体系，可以创建用户并授予权限。
 可以 kill DML 语句。首先使用 `show processlist`，找到对应 session 的 id，然后执行 `kill tidb connection id`。
 但是，目前不能 kill DDL 语句。DDL 语句一旦开始执行便不能停止，除非出错，出错以后，会停止运行。
 
-#### supervise/svc/svcstat 服务具体起什么作用？
+#### supervise/svc/svstat 服务具体起什么作用？
 
-supervise 服务是管理进程的，守护进程
+supervise 守护进程
 
 svc 启停服务
 
-svsstat 查看进程状态
+svstat 查看进程状态
 
 ## SQL
 
@@ -492,6 +492,6 @@ admin show ddl
 > 3. 测试大数据量的 count。
 > 4. 调优 TiKV 配置，可以参考[性能调优](op-guide/tune-tikv.md)。
 
-#### 如何解决 FROM_UNIXTIME 效率低问题？
+#### 如何解决 FROM_UNIXTIME 效率低的问题？
 
 获取系统时间不要使用 FROM_UNIXTIME，建议采用 datetime 转成时间戳去比较的方式，目前 FROM_UNIXTIME 无法走索引。
