@@ -171,6 +171,7 @@ category: Releases
 - louishust
 - luckcolors
 - Lynn
+- Mae Huang
 - maiyang
 - maxwell
 - mengshangqi
@@ -184,6 +185,7 @@ category: Releases
 - ngaut
 - Nicole Nie
 - nolouch
+- onlymellb
 - overvenus
 - PaladinTyrion
 - paulg
@@ -192,7 +194,6 @@ category: Releases
 - qhsong
 - Qiannan
 - qiuyesuifeng
-- Queeny
 - queenypingcap
 - qupeng
 - Rain Li
