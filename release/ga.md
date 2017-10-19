@@ -164,6 +164,7 @@ On October 16, 2017, TiDB 1.0 is now released! This release is focused on MySQL 
 - louishust
 - luckcolors
 - Lynn
+- Mae Huang
 - maiyang
 - maxwell
 - mengshangqi
@@ -177,6 +178,7 @@ On October 16, 2017, TiDB 1.0 is now released! This release is focused on MySQL 
 - ngaut
 - Nicole Nie
 - nolouch
+- onlymellb
 - overvenus
 - PaladinTyrion
 - paulg
@@ -186,7 +188,6 @@ On October 16, 2017, TiDB 1.0 is now released! This release is focused on MySQL 
 - Qiannan
 - qiukeren
 - qiuyesuifeng
-- Queeny
 - queenypingcap
 - qupeng
 - Rain Li
