@@ -3,6 +3,8 @@ title: TiDB 系统数据库
 category: user guide
 ---
 
+# TiDB 系统数据库
+
 TiDB 的系统数据库跟 MySQL 类似，里面包含一些服务器运行时需要的信息。
 
 ### 权限系统表
@@ -33,7 +35,6 @@ TiDB 的系统数据库跟 MySQL 类似，里面包含一些服务器运行时�
 * `GLOBAL_VARIABLES` 全局系统变量表
 * `tidb` 用于 TiDB 在 bootstrap 的时候记录相关版本信息
 
-
 ## INFORMATION\_SCHEMA 里面的表
 
 INFORMATION\_SCHEMA 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。
@@ -42,7 +43,7 @@ INFORMATION\_SCHEMA 库里面的表主要是为了兼容 MySQL 而存在，有�
 
 提供字符集相关的信息，其实数据是假的。TiDB 默认支持并且只支持 utf8mb4 。
 
-```
+```sql
 mysql> select * from CHARACTER_SETS;
 +--------------------|----------------------|-----------------------|--------+
 | CHARACTER_SET_NAME | DEFAULT_COLLATE_NAME | DESCRIPTION           | MAXLEN |
@@ -56,83 +57,83 @@ mysql> select * from CHARACTER_SETS;
 5 rows in set (0.00 sec)
 ```
 
-### COLLATIONS
+### COLLATIONS Table
 
 同上。
 
-### COLLATION\_CHARACTER\_SET\_APPLICABILITY
+### COLLATION\_CHARACTER\_SET\_APPLICABILITY Table
 
 空表。
 
-### COLUMNS
+### COLUMNS Table
 
-COLUMNS 表提供了关于所有表的列的信息。这张表里面的信息不准确，推荐使用 Show 语句查询：
+COLUMNS 表提供了关于所有表的列的信息。这张表里面的信息不准确，推荐使用 SHOW 语句查询：
 
-```
+```sql
 SHOW COLUMNS FROM table_name [FROM db_name] [LIKE 'wild']
 ```
 
-### COLUMNS\_PRIVILEGE
+### COLUMNS\_PRIVILEGE Table
 
 空表。
 
-### ENGINES
+### ENGINES Table
 
-ENGINES 表提供了关于存储引擎的信息。目前这张表里面的是假的。生产环境中，TiDB 只推荐使用 TiKV 引擎。
+ENGINES 表提供了关于存储引擎的信息。目前这张表里面的数据是假的。生产环境中，TiDB 只推荐使用 TiKV 引擎。
 
-### EVENTS
-
-空表。
-
-### FILES
+### EVENTS Table
 
 空表。
 
-### GLOBAL\_STATUS
+### FILES Table
 
 空表。
 
-### GLOBAL\_VARIABLES
+### GLOBAL\_STATUS Table
 
 空表。
 
-### KEY\_COLUMN\_USAGE
+### GLOBAL\_VARIABLES Table
+
+空表。
+
+### KEY\_COLUMN\_USAGE Table
 
 KEY\_COLUMN\_USAGE 这张表描述了关于列的 key 的约束，比如是否是主键列。
 
-### OPTIMIZER\_TRACE
+### OPTIMIZER\_TRACE Table
 
 空表。
 
-### PARAMETERS
+### PARAMETERS Table
 
 空表。
 
-### PARTITIONS
+### PARTITIONS Table
 
 空表。
 
-### PLUGINS
+### PLUGINS Table
 
 空表。
 
-### PROFILING
+### PROFILING Table
 
 空表。
 
-### REFERENTIAL\_CONSTRAINTS
+### REFERENTIAL\_CONSTRAINTS Table
 
 空表。
 
-### ROUTINES
+### ROUTINES Table
 
 空表。
 
-### SCHEMATA
+### SCHEMATA Table
 
 SCHEMATA 表提供了关于数据库的信息。表中的内容和 SHOW DATABASES 基本等价。
 
-```
+```sql
 mysql> select * from SCHEMATA;
 +--------------|--------------------|----------------------------|------------------------|----------+
 | CATALOG_NAME | SCHEMA_NAME        | DEFAULT_CHARACTER_SET_NAME | DEFAULT_COLLATION_NAME | SQL_PATH |
@@ -145,23 +146,23 @@ mysql> select * from SCHEMATA;
 4 rows in set (0.00 sec)
 ```
 
-### SCHEMA\_PRIVILEGES
+### SCHEMA\_PRIVILEGES Table
 
-空表
+空表。
 
-### SESSION\_STATUS
+### SESSION\_STATUS Table
 
-空表
+空表。
 
-### SESSION\_VARIABLES
+### SESSION\_VARIABLES Table
 
 SESSION\_VARIABLES 表提供了关于 session 变量的信息。表中的数据跟 SHOW SESSION VARIABLES 类似。
 
-### STATISTICS
+### STATISTICS Table
 
 统计信息的表。
 
-```
+```sql
 mysql> desc statistics;
 +---------------|---------------------|------|------|---------|-------+
 | Field         | Type                | Null | Key  | Default | Extra |
@@ -187,7 +188,7 @@ mysql> desc statistics;
 
 下列操作是等价的。
 
-```
+```sql
 SELECT * FROM INFORMATION_SCHEMA.STATISTICS
   WHERE table_name = 'tbl_name'
   AND table_schema = 'db_name'
@@ -197,13 +198,13 @@ SHOW INDEX
   FROM db_name
 ```
 
-### TABLES
+### TABLES Table
 
 TABLES 表提供了数据库里面关于表的信息。
 
 以下操作是等价的：
 
-```
+```sql
 SELECT table_name FROM INFORMATION_SCHEMA.TABLES
   WHERE table_schema = 'db_name'
   [AND table_name LIKE 'wild']
@@ -213,30 +214,30 @@ SHOW TABLES
   [LIKE 'wild']
 ```
 
-### TABLESPACES
+### TABLESPACES Table
 
 空表。
 
-### TABLE\_CONSTRAINTS
+### TABLE\_CONSTRAINTS Table
 
 TABLE\_CONSTRAINTS 记录了表的约束信息。其中：
 
 * `CONSTRAINT_TYPE` 的取值可以是 UNIQUE, PRIMARY KEY, 或者 FOREIGN KEY。
 * UNIQUE 和 PRIMARY KEY 信息跟 SHOW INDEX 看到的是一样的。
 
-### TABLE\_PRIVILEGES
+### TABLE\_PRIVILEGES Table
 
 空表。
 
-### TRIGGERS
+### TRIGGERS Table
 
 空表。
 
-### USER\_PRIVILEGES
+### USER\_PRIVILEGES Table
 
 USER\_PRIVILEGES 表提供了关于全局权限的信息。这张表的内容是根据 mysql.user 表生成的。
 
-```
+```sql
 mysql> desc USER_PRIVILEGES;
 +----------------|--------------|------|------|---------|-------+
 | Field          | Type         | Null | Key  | Default | Extra |
@@ -249,6 +250,6 @@ mysql> desc USER_PRIVILEGES;
 4 rows in set (0.00 sec)
 ```
 
-### VIEWS
+### VIEWS Table
 
 空表。TiDB 暂不支持视图。
