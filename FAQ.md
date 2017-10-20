@@ -74,7 +74,7 @@ category: FAQ
 + [SQL](#sql)
   + [SQL 语法](#sql-语法)
     - [出现 `transaction too large` 报错怎么办？](#出现-transaction-too-large-报错怎么办)
-    - [查看当时运行的 DDL job](#查看当时运行的-ddl-job)
+    - [查看 DDL job](#查看-ddl-job)
   + [SQL 优化](#sql-优化)
     - [`select count(1)` 比较慢，如何优化？](#select-count1-比较慢如何优化)
 
@@ -225,7 +225,12 @@ leader-schedule-limit 调度是用来均衡不同 TiKV 的 leader 数，影响�
 
 #### 为什么有的时候执行 DDL 会很慢？
 
-TiDB 集群中 DDL 是串行执行的，不会并发执行，可以使用 admin show ddl，语句查看正在运行的 DDL；admin show ddl jobs，查看历史 DDL 和队列中的 DDL。
+可能原因如下：
+
++ 多个 DDL 语句一起执行的时候，后面的几个 DDL 语句会比较慢。原因是当前 TiDB 集群中 DDL 操作是串行执行的。
++ 在正常集群启动后，第一个 DDL 操作的执行时间可能会比较久，一般在 30s 左右，这个原因是刚启动时 TiDB 在竞选处理 DDL 的 leader。 
++ 在滚动升级或者停机升级时，由于停机顺序（先停 PD 再停 TiDB）或者用 `kill -9` 指令停 TiDB 导致 TiDB 没有及时清理注册数据，那么会影响 TiDB 启动后 10min 内的 DDL 语句处理时间。这段时间内运行 DDL 语句时，每个 DDL 状态变化都需要等待 2 * lease（默认 lease = 10s）。
+
 
 #### ERROR 2013 (HY000): Lost connection to MySQL server during query 问题的排查方法
 
@@ -375,13 +380,10 @@ TiDB 遵循 MySQL 的权限管理体系，可以创建用户并授予权限。
 + 对于 `insert` 和 `select`，可以开启 `set @@session.tidb_batch_insert=1;` 隐藏参数，`insert` 会把大事务分批执行。这样不会因为事务太大而超时，但是可能会导致事务原子性的丢失。如果事务执行过程中报错，会导致只完成一部分事务的插入。所以建议只有在需要的时候，在 session 中使用，这样不会影响其他语句。事务完成以后，可以用 `set @@session.tidb_batch_insert=0` 关闭。
 + 对 `delete` 和 `update` 语句，可以使用 `limit` 加循环的方式进行操作。
 
-#### 查看当时运行的 DDL job
+#### 查看 DDL job
 
-```
-admin show ddl
-```
-
-> 注意：除非 DDL 遇到错误，否则目前是不能取消的。
++ 可以使用 `admin show ddl`，语句查看正在运行的 DDL 作业。
++ `admin show ddl jobs`，用于查看当前 DDL 作业队列中的所有结果（包括正在运行以及等待运行的任务）以及已执行完成的 DDL 作业队列中的最近十条结果。
 
 ### SQL 优化
 
