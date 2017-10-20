@@ -120,7 +120,7 @@ TiDB is not a good choice if the number of the rows in your database table is le
 
 #### How is TiDB strongly-consistent?
 
-Strong consistency means all replicas return the same value when queried for the attribute of an object. TiDB uses the [Raft consensus algorithm](https://raft.github.io/) to ensure consistency among multiple replicas. TiDB allows a collection of machines to work as a coherent group that can survive the failures of some of its members.
+TiDB uses the [Raft consensus algorithm](https://raft.github.io/) to ensure consistency among multiple replicas. At the bottom layer, TiDB uses a model of replication log + State Machine to replicate data. For the write requests, the data is written to a Leader and the Leader then replicates the command to its Followers in the form of log. When the majority of nodes in the cluster receive this log, this log is committed and can be applied into the State Machine. TiDB has the latest data even if a minority of the replicas are lost.
 
 #### Does TiDB support distributed transactions?
 
