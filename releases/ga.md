@@ -48,7 +48,7 @@ category: Releases
 
 - Archon
 - Mobike
-- SpeedCloud
+- SpeedyCloud
 - UCloud
 - 腾讯云
 - 韩国三星研究院
