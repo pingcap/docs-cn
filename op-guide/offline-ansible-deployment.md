@@ -104,11 +104,11 @@ category: deployment
 
 标准 TiDB 集群需要6台机器:
 
-- 2个 TiDB 实例
-- 3个 PD 实例
-- 3个 TiKV 实例，第一台 TiDB 机器同时用作监控机
+- 2个 TiDB 节点
+- 3个 PD 节点
+- 3个 TiKV 节点，第一台 TiDB 机器同时用作监控机
 
-集群拓扑如下：
+### 单机单 TiKV 实例集群拓扑如下
 
 | Name | Host IP | Services |
 | ---- | ------- | -------- |
@@ -147,6 +147,61 @@ pd_servers
 [grafana_servers]
 172.16.10.1
 ```
+
+### 单机多 TiKV 实例集群拓扑如下(以三实例为例)
+
+| Name | Host IP | Services |
+| ---- | ------- | -------- |
+| node1 | 172.16.10.1 | PD1, TiDB1 |
+| node2 | 172.16.10.2 | PD2, TiDB2 |
+| node3 | 172.16.10.3 | PD3 |
+| node4 | 172.16.10.4 | TiKV1-1, TiKV1-2, TiKV1-3 |
+| node5 | 172.16.10.5 | TiKV2-1, TiKV2-2, TiKV2-3 |
+| node6 | 172.16.10.6 | TiKV3-1, TiKV3-2, TiKV3-3 |
+
+```ini
+[tidb_servers]
+172.16.10.1
+172.16.10.2
+
+[pd_servers]
+172.16.10.1
+172.16.10.2
+172.16.10.3
+
+[tikv_servers]
+TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy tikv_port=20171
+TiKV1-2 ansible_host=172.16.10.4 deploy_dir=/data2/deploy tikv_port=20172
+TiKV1-3 ansible_host=172.16.10.4 deploy_dir=/data3/deploy tikv_port=20173
+TiKV2-1 ansible_host=172.16.10.5 deploy_dir=/data1/deploy tikv_port=20171
+TiKV2-2 ansible_host=172.16.10.5 deploy_dir=/data2/deploy tikv_port=20172
+TiKV2-3 ansible_host=172.16.10.5 deploy_dir=/data3/deploy tikv_port=20173
+TiKV3-1 ansible_host=172.16.10.6 deploy_dir=/data1/deploy tikv_port=20171
+TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172
+TiKV3-3 ansible_host=172.16.10.6 deploy_dir=/data3/deploy tikv_port=20173
+
+[monitored_servers:children]
+tidb_servers
+tikv_servers
+pd_servers
+
+[monitoring_servers]
+172.16.10.1
+
+[grafana_servers]
+172.16.10.1
+```
+
+- 参数调整
+
+    1.  多实例情况下, 需要修改 `conf/tikv.yml` 中的 `end-point-concurrency` 以及 `block-cache-size` 参数:
+        - `end-point-concurrency`: 总数低于 CPU Vcores 即可
+        - `rocksdb defaultcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 30%
+        - `rocksdb writecf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 45%
+        - `rocksdb lockcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
+        - `raftdb defaultcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
+    2.  如果多个 TiKV 实例部署在同一块物理磁盘上, 需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
+        - `capaticy` = (DISK - 日志空间) / TiKV 实例数量, 单位为 GB
 
 ## 部署任务
 
