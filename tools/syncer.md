@@ -28,6 +28,8 @@ Syncer 可以部署在任一台可以连通对应的 MySQL 和 TiDB 集群的机
 
 ## `syncer` 增量导入数据示例
 
+使用前请详细阅读[syncer 同步前预检查](#syncer 同步前检查)
+
 ### 设置同步开始的 position
 
 设置 syncer 的 meta 文件, 这里假设 meta 文件是 `syncer.meta`:
@@ -247,30 +249,7 @@ target-schema = "example_db"
 target-table = "table"
 ```
 
-## 监控方案
-
-Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息存储方案，使用 Grafana 作为可视化组件进行展示，配合 AlertManager 来实现报警。其方案如下图
-
 ![monitor_scheme](../media/syncer-monitor-scheme.png)
-
-### 配置 Syncer 监控
-
- Prometheus 添加 syncer job 信息，将以下内容刷新到 prometheus 配置文件，重启 prometheus
-
-
-```
-  - job_name: 'syncer_ops' // 任务名字，区分数据上报
-    static_configs:
-      - targets: ['10.1.1.4:10086'] // syncer 监听地址与端口，通知 prometheus 获取 syncer 的监控数据。
-```
-
-#### Grafana 配置
-
-+   进入 Grafana Web 界面（默认地址: http://localhost:3000 ，默认账号: admin 密码: admin）
-
-+   导入 dashboard 配置文件
-
-    点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 Dashboard [配置文件](https://github.com/pingcap/docs/tree/master/etc)上传 -> 选择对应的 data source
 
 ### syncer 同步前检查
 
@@ -362,23 +341,80 @@ Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息�
 	-   `show binlog events in 'mysql-bin.000023' from 136676560 limit 10;`
 
 
-### syncer 工具数据流程
-
-sycner 匹配规则优先级
-
-
-
-
-### Syncer 性能调优
-
-Syncer 获取一批 events 放置到 batch 中，然后由 syncer 将相应 batch 提交到 tidb 数据库。
-
-可以根据 TiDB 集群规模机型调整 `worker-count = 16` & `batch = 10` 参数，
-batch 提交时间可以观察 syncer dashboard 中的 `syncer_txn_costs_gauge_in_second` , 单位为秒。如果 metric current 比较大，将 batch 调小。
-
-因此可以套取一个简单的公式为 `1/(transaction cost) * batch * worker-count`
-
-
 ### syncer 常见错误
 
 1. [如何跳过错误语句](https://github.com/pingcap/tidb/issues/4865)
+2. syncer 如何查看同步进度?
+   - 查看 Garafan 中 syncer dashboard， 当 binlog file 为 0 时，查看 binlog pos master 与 syncer 的差距，差距越小同步越接近。
+
+-----
+
+## 监控方案
+
+Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息存储方案，使用 Grafana 作为可视化组件进行展示，配合 AlertManager 来实现报警。其方案如下图
+
+![monitor_scheme](../media/syncer-monitor-scheme.png)
+
+### 配置 Syncer 监控与告警
+
+- syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。以下将分别配置 syncer 监控与告警，期间需要重启 Prometheus 。
+ 	-   Prometheus 添加 syncer job 信息，
+	-   将以下内容刷新到 prometheus 配置文件，重启 prometheus
+
+    ```
+      - job_name: 'syncer_ops' // 任务名字，区分数据上报
+        static_configs:
+          - targets: ['10.1.1.4:10086'] // syncer 监听地址与端口，通知 prometheus 获取 syncer 的监控数据。
+    ```
+
+	-   配置 Prometheus --> alertmanager  告警
+	-   将以下内容刷新到 alert.rule 配置文件，且 Prometheus 指定 --alertmanager.url 参数启动。
+
+    ```
+    # syncer
+    ALERT syncer_status
+      IF  syncer_binlog_file{node='master'} - ON(instance, job) syncer_binlog_file{node='syncer'} > 1
+      FOR 1m
+      LABELS {channels="alerts", env="test-cluster"}
+      ANNOTATIONS {
+      summary = "syncer status error",
+      description="alert: syncer_binlog_file{node='master'} - ON(instance, job) syncer_binlog_file{node='syncer'} > 1 instance: {{     $labels.instance }} values: {{ $value }}",
+      }
+    ```
+
+#### Grafana 配置
+
++   进入 Grafana Web 界面（默认地址: http://localhost:3000 ，默认账号: admin 密码: admin）
+
++   导入 dashboard 配置文件
+
+    点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 Dashboard [配置文件](https://github.com/pingcap/docs/tree/master/etc)上传 -> 选择对应的 data source
+### Grafana Syncer metrics 说明 
+
+#### title: binlog events
+- metrics: `irate(syncer_binlog_events_total[1m])`
+- info: syncer已经同步到的master biglog相关信息统计, 主要有 `query` `rotate` `update_rows` `write_rows` `delete_rows` 五种类型。
+
+#### title: syncer_binlog_file
+- metrics: `syncer_binlog_file`
+- info: syncer同步 master binlog 文件数量。
+
+#### title: binlog pos
+- metrics: `syncer_binlog_pos`
+- info: syncer同步当前 master binlog 的 binlog-pos 信息
+
+#### title: syncer_gtid
+- metrics: `syncer_gtid`
+- info: syncer同步当前 master binlog 的 binlog-gtid 信息
+
+#### title: syncer_binlog_file
+- metrics: `syncer_binlog_file{node="master"} - ON(instance, job) syncer_binlog_file{node="syncer"}`
+- info: syncer与 master 同步时，相差的 binlog 文件数量,正常状态为 0 ,表示数据正在实时同步。数值越大，相差 binlog 文件数越多。
+
+#### title: binlog skipped events
+- metrics: `irate(syncer_binlog_skipped_events_total[1m])`
+- info: syncer同步master biglog文件时跳过执行sql数量统计。跳过sql语句格式由`syncer.toml`文件中`skip-sqls`参数控制。具体设置查看[官方文档](https://pingcap.com/doc-syncer-zh)
+
+#### title: syncer_txn_costs_gauge_in_second
+- metrics: `syncer_txn_costs_gauge_in_second`
+- info: syncer 处理一个 batch 的时间，单位为秒
