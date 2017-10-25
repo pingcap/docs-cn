@@ -253,8 +253,8 @@ target-table = "table"
 
 1.  源库 server-id 检查
 
-    - 可通过以下命令查看 server-id:
-    - 如果结果为空或者为 0，请设置为大于或者等于 ≥ 1 的正整数。 
+    - 可通过以下命令查看 server-id 
+    - 如果结果为空或者为 0 (server_id 为 0 时，无法同步数据)
     - Syncer 配置文件中 server-id 在 mysql server-id 上添加一个随机正整数，且不能在 mysql 主备或集群内重复。
 
     ```
@@ -274,7 +274,7 @@ target-table = "table"
     - 如果结果是 log_bin = OFF，需要开启。开启方式请参考[官方文档](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
 
     ```
-    mysql> show global variables like 'log_bin'
+    mysql> show global variables like 'log_bin';
     +--------------------+---------+
     | Variable_name | Value  |
     +--------------------+---------+
@@ -385,7 +385,7 @@ Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息�
 
 +   进入 Grafana Web 界面（默认地址: http://localhost:3000 ，默认账号: admin 密码: admin）
 
-+   导入 dashboard 配置文件
++      导入 dashboard 配置文件
 
     点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 Dashboard [配置文件](https://github.com/pingcap/docs/tree/master/etc)上传 -> 选择对应的 data source
 ### Grafana Syncer metrics 说明 
