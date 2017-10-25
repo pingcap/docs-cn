@@ -249,7 +249,6 @@ target-schema = "example_db"
 target-table = "table"
 ```
 
-![monitor_scheme](../media/syncer-monitor-scheme.png)
 
 ### syncer 同步前检查
 
