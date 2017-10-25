@@ -249,7 +249,6 @@ target-schema = "example_db"
 target-table = "table"
 ```
 
-
 ### syncer 同步前检查
 
 1.  源库 server-id 检查
