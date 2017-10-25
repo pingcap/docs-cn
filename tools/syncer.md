@@ -253,9 +253,9 @@ target-table = "table"
 
 1.  源库 server-id 检查
 
-	-   可通过以下命令查看 server-id:
-	-   如果结果为空或者为 0，请设置为大于或者等于 ≥ 1 的正整数。 
-	-   syncer 配置文件中 server-id 在 mysql server-id 上添加一个随机正整数，且不能在 mysql 主备或集群内重复。
+    - 可通过以下命令查看 server-id:
+    - 如果结果为空或者为 0，请设置为大于或者等于 ≥ 1 的正整数。 
+    - Syncer 配置文件中 server-id 在 mysql server-id 上添加一个随机正整数，且不能在 mysql 主备或集群内重复。
 
     ```
     mysql> show global variables like 'server_id';
@@ -269,9 +269,9 @@ target-table = "table"
 
 1.  检查 Binlog 相关参数
 
-	-   检查 MySQL 是否开启 binlog
-	-   可以用如下命令确认是否开启了 binlog
-	-   如果结果是 log_bin = OFF，需要开启。开启方式请参考[官方文档](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
+    - 检查 MySQL 是否开启 binlog
+    - 可以用如下命令确认是否开启了 binlog
+    - 如果结果是 log_bin = OFF，需要开启。开启方式请参考[官方文档](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
 
     ```
     mysql> show global variables like 'log_bin'
@@ -287,7 +287,7 @@ target-table = "table"
 
 1.  检查 MySQL binlog 格式是否为 ROW
 
-	-   可以用如下命令检查 binlog 格式：
+    - 可以用如下命令检查 binlog 格式：
 
     ```
     mysql> show global variables like 'binlog_format';
@@ -298,8 +298,9 @@ target-table = "table"
     +--------------------+----------+
     1 row in set (0.00 sec)
     ```
-	-   如果发现 binlog 格式是其他格式，可以通过如下命令设置为 ROW：
-	-   如果 MySQL 有链接，建立重启 MySQL 服务。
+
+    - 如果发现 binlog 格式是其他格式，可以通过如下命令设置为 ROW：
+    - 如果 MySQL 有链接，建立重启 MySQL 服务。
 
     ```
     mysql> set global binlog_format=ROW;
@@ -309,7 +310,7 @@ target-table = "table"
 
 1.  检查 MySQL binlog_row_image  是否为 FULL
 
-	-   可以用如下命令检查 binlog_row_image
+    - 可以用如下命令检查 binlog_row_image
 
     ```
     mysql> show global variables like 'binlog_row_image';
@@ -320,7 +321,8 @@ target-table = "table"
     +--------------------------+----------+
     1 row in set (0.01 sec)
     ```
-	-   如果 binlog_row_image 结果不为 FULL，请设置为 FULL。设置方式如下：
+
+    - 如果 binlog_row_image 结果不为 FULL，请设置为 FULL。设置方式如下：
 
     ```
     mysql> set global binlog_row_image = FULL;
@@ -329,15 +331,14 @@ target-table = "table"
   
 1.  检查上下游同步用户权限
 
-	-   需要上游 MySQL 同步账号至少赋予以下权限：
-	-   ` select , reload , replication slave , replication client `
+    - 需要上游 MySQL 同步账号至少赋予以下权限：
+    - ` select , reload , replication slave , replication client `
 
 
 1.  检查 GTID 与 POS 相关信息
 
-	-   使用以下语句查看 binlog 内容
-	-   `show binlog events in 'mysql-bin.000023' from 136676560 limit 10;`
-
+    - 使用以下语句查看 binlog 内容
+    - `show binlog events in 'mysql-bin.000023' from 136676560 limit 10;
 
 ### syncer 常见错误
 
@@ -356,8 +357,8 @@ Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息�
 ### 配置 Syncer 监控与告警
 
 - syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。以下将分别配置 syncer 监控与告警，期间需要重启 Prometheus 。
- 	-   Prometheus 添加 syncer job 信息，
-	-   将以下内容刷新到 prometheus 配置文件，重启 prometheus
+    - Prometheus 添加 syncer job 信息，
+    - 将以下内容刷新到 prometheus 配置文件，重启 prometheus
 
     ```
       - job_name: 'syncer_ops' // 任务名字，区分数据上报
@@ -365,8 +366,8 @@ Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息�
           - targets: ['10.1.1.4:10086'] // syncer 监听地址与端口，通知 prometheus 获取 syncer 的监控数据。
     ```
 
-	-   配置 Prometheus --> alertmanager  告警
-	-   将以下内容刷新到 alert.rule 配置文件，且 Prometheus 指定 --alertmanager.url 参数启动。
+    - 配置 Prometheus --> alertmanager  告警
+    - 将以下内容刷新到 alert.rule 配置文件，且 Prometheus 指定 --alertmanager.url 参数启动。
 
     ```
     # syncer
