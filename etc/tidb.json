@@ -1,3463 +1,3629 @@
 {
-  "style": "dark", 
+  "__inputs": [
+    {
+      "name": "DS_TEST-CLUSTER",
+      "label": "test-cluster",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "4.1.2"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    }
+  ],
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "hideControls": false,
+  "id": null,
+  "links": [
+    {
+      "icon": "external link",
+      "tags": [],
+      "type": "dashboards"
+    }
+  ],
+  "refresh": "30s",
   "rows": [
     {
-      "repeat": null, 
-      "titleSize": "h6", 
-      "repeatIteration": null, 
-      "title": "Query", 
-      "height": "240", 
-      "repeatRowId": null, 
+      "collapse": false,
+      "height": "240",
       "panels": [
         {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [
-            {
-              "colorMode": "critical", 
-              "line": true, 
-              "op": "gt", 
-              "value": 1, 
-              "fill": true
-            }
-          ], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "linewidth": 1, 
-          "steppedLine": false, 
-          "id": 23, 
-          "fill": 1, 
-          "span": 4, 
-          "title": "Query Duration 80th percentile", 
-          "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": true
-          }, 
-          "legend": {
-            "total": false, 
-            "show": true, 
-            "max": false, 
-            "min": false, 
-            "current": false, 
-            "values": false, 
-            "avg": false
-          }, 
-          "targets": [
-            {
-              "intervalFactor": 2, 
-              "expr": "histogram_quantile(0.80, sum(rate(tidb_server_handle_query_duration_seconds_bucket[1m])) by (le))", 
-              "step": 60, 
-              "refId": "A", 
-              "legendFormat": "average"
-            }, 
-            {
-              "intervalFactor": 2, 
-              "expr": "histogram_quantile(0.80, sum(rate(tidb_server_handle_query_duration_seconds_bucket[1m])) by (le, instance))", 
-              "step": 60, 
-              "refId": "B", 
-              "legendFormat": "{{instance}}"
-            }
-          ], 
-          "yaxes": [
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "s", 
-              "min": 0, 
-              "label": null
-            }, 
-            {
-              "logBase": 1, 
-              "show": false, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
           "alert": {
-            "noDataState": "no_data", 
-            "name": "Query Seconds 80 alert", 
-            "frequency": "60s", 
-            "notifications": [], 
-            "handler": 1, 
-            "executionErrorState": "alerting", 
-            "message": "Query \u5904\u7406\u65f6\u95f4\u5f02\u5e38\uff01", 
             "conditions": [
               {
-                "operator": {
-                  "type": "and"
-                }, 
-                "query": {
-                  "params": [
-                    "A", 
-                    "10s", 
-                    "now"
-                  ], 
-                  "model": {
-                    "intervalFactor": 2, 
-                    "expr": "histogram_quantile(0.80, sum(rate(tidb_server_handle_query_duration_seconds_bucket[1m])) by (le))", 
-                    "step": 60, 
-                    "refId": "A", 
-                    "legendFormat": "average"
-                  }, 
-                  "datasourceId": 1
-                }, 
                 "evaluator": {
-                  "type": "gt", 
                   "params": [
                     1
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "datasourceId": 1,
+                  "model": {
+                    "expr": "histogram_quantile(0.80, sum(rate(tidb_server_handle_query_duration_seconds_bucket[1m])) by (le))",
+                    "intervalFactor": 2,
+                    "legendFormat": "average",
+                    "refId": "A",
+                    "step": 60
+                  },
+                  "params": [
+                    "A",
+                    "10s",
+                    "now"
                   ]
-                }, 
+                },
                 "reducer": {
-                  "type": "avg", 
-                  "params": []
-                }, 
+                  "params": [],
+                  "type": "avg"
+                },
                 "type": "query"
               }
-            ]
-          }, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
-        {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [
-            {
-              "colorMode": "critical", 
-              "line": true, 
-              "op": "gt", 
-              "value": 1, 
-              "fill": true
-            }
-          ], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "linewidth": 1, 
-          "steppedLine": false, 
-          "id": 1, 
-          "fill": 1, 
-          "span": 4, 
-          "title": "Query Duration 95th percentile", 
-          "tooltip": {
-            "sort": 0, 
-            "shared": false, 
-            "value_type": "cumulative", 
-            "msResolution": true
-          }, 
+            ],
+            "executionErrorState": "alerting",
+            "frequency": "60s",
+            "handler": 1,
+            "message": "Query 处理时间异常！",
+            "name": "Query Seconds 80 alert",
+            "noDataState": "no_data",
+            "notifications": []
+          },
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 23,
           "legend": {
-            "total": false, 
-            "min": false, 
-            "max": false, 
-            "show": true, 
-            "current": false, 
-            "hideEmpty": true, 
-            "values": false, 
-            "avg": false, 
-            "hideZero": true
-          }, 
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
-              "intervalFactor": 2, 
-              "expr": "histogram_quantile(0.95, sum(rate(tidb_server_handle_query_duration_seconds_bucket[1m])) by (le))", 
-              "step": 60, 
-              "refId": "A", 
-              "legendFormat": "average"
-            }, 
+              "expr": "histogram_quantile(0.80, sum(rate(tidb_server_handle_query_duration_seconds_bucket[1m])) by (le))",
+              "intervalFactor": 2,
+              "legendFormat": "average",
+              "refId": "A",
+              "step": 60
+            },
             {
-              "intervalFactor": 2, 
-              "expr": "histogram_quantile(0.95, sum(rate(tidb_server_handle_query_duration_seconds_bucket[1m])) by (le, instance))", 
-              "step": 60, 
-              "refId": "B", 
-              "legendFormat": "{{ instance }}"
+              "expr": "histogram_quantile(0.80, sum(rate(tidb_server_handle_query_duration_seconds_bucket[1m])) by (le, instance))",
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}}",
+              "refId": "B",
+              "step": 60
             }
-          ], 
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 1
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Query Duration 80th percentile",
+          "tooltip": {
+            "msResolution": true,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
           "yaxes": [
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "s", 
-              "min": "0", 
-              "label": null
-            }, 
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": 0,
+              "show": true
+            },
             {
-              "logBase": 1, 
-              "show": false, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
             }
-          ], 
+          ]
+        },
+        {
+          "alert": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    1
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "datasourceId": 1,
+                  "model": {
+                    "expr": "histogram_quantile(0.95, sum(rate(tidb_server_handle_query_duration_seconds_bucket[1m])) by (le))",
+                    "intervalFactor": 2,
+                    "legendFormat": "average",
+                    "refId": "A",
+                    "step": 60
+                  },
+                  "params": [
+                    "A",
+                    "10s",
+                    "now"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "avg"
+                },
+                "type": "query"
+              }
+            ],
+            "executionErrorState": "alerting",
+            "frequency": "60s",
+            "handler": 1,
+            "message": "Query duration at 95th percentile is high.",
+            "name": "Query Duration 95th percentile alert",
+            "noDataState": "no_data",
+            "notifications": []
+          },
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 1,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.95, sum(rate(tidb_server_handle_query_duration_seconds_bucket[1m])) by (le))",
+              "intervalFactor": 2,
+              "legendFormat": "average",
+              "refId": "A",
+              "step": 60
+            },
+            {
+              "expr": "histogram_quantile(0.95, sum(rate(tidb_server_handle_query_duration_seconds_bucket[1m])) by (le, instance))",
+              "intervalFactor": 2,
+              "legendFormat": "{{ instance }}",
+              "refId": "B",
+              "step": 60
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 1
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Query Duration 95th percentile",
+          "tooltip": {
+            "msResolution": true,
+            "shared": false,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "transparent": false,
+          "type": "graph",
           "xaxis": {
-            "show": true, 
+            "mode": "time",
+            "name": null,
+            "show": true,
             "values": [
               "max"
-            ], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "transparent": false, 
-          "error": false, 
-          "editable": true, 
-          "alert": {
-            "noDataState": "no_data", 
-            "name": "Query Duration 95th percentile alert", 
-            "frequency": "60s", 
-            "notifications": [], 
-            "handler": 1, 
-            "executionErrorState": "alerting", 
-            "message": "Query duration at 95th percentile is high.", 
-            "conditions": [
-              {
-                "operator": {
-                  "type": "and"
-                }, 
-                "query": {
-                  "params": [
-                    "A", 
-                    "10s", 
-                    "now"
-                  ], 
-                  "model": {
-                    "intervalFactor": 2, 
-                    "expr": "histogram_quantile(0.95, sum(rate(tidb_server_handle_query_duration_seconds_bucket[1m])) by (le))", 
-                    "step": 60, 
-                    "refId": "A", 
-                    "legendFormat": "average"
-                  }, 
-                  "datasourceId": 1
-                }, 
-                "evaluator": {
-                  "type": "gt", 
-                  "params": [
-                    1
-                  ]
-                }, 
-                "reducer": {
-                  "type": "avg", 
-                  "params": []
-                }, 
-                "type": "query"
-              }
             ]
-          }, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
-        {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [
-            {
-              "colorMode": "critical", 
-              "line": true, 
-              "op": "gt", 
-              "value": 10, 
-              "fill": true
-            }
-          ], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "linewidth": 1, 
-          "steppedLine": false, 
-          "id": 25, 
-          "fill": 1, 
-          "span": 4, 
-          "title": "Query Duration 99th percentile", 
-          "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": true
-          }, 
-          "legend": {
-            "total": false, 
-            "show": true, 
-            "max": false, 
-            "min": false, 
-            "current": false, 
-            "values": false, 
-            "avg": false
-          }, 
-          "targets": [
-            {
-              "intervalFactor": 2, 
-              "expr": "histogram_quantile(0.99, sum(rate(tidb_server_handle_query_duration_seconds_bucket[1m])) by (le))", 
-              "step": 60, 
-              "refId": "B", 
-              "legendFormat": "average"
-            }, 
-            {
-              "intervalFactor": 2, 
-              "expr": "histogram_quantile(0.99, sum(rate(tidb_server_handle_query_duration_seconds_bucket[1m])) by (le, instance))", 
-              "step": 60, 
-              "refId": "A", 
-              "legendFormat": "{{instance}}"
-            }
-          ], 
+          },
           "yaxes": [
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "s", 
-              "min": "0", 
-              "label": null
-            }, 
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
             }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
+          ]
+        },
+        {
           "alert": {
-            "noDataState": "no_data", 
-            "name": "Query Duration 99th percentile alert", 
-            "frequency": "60s", 
-            "notifications": [], 
-            "handler": 1, 
-            "executionErrorState": "alerting", 
-            "message": "Query duration for 99th percentile is high.", 
             "conditions": [
               {
-                "operator": {
-                  "type": "and"
-                }, 
-                "query": {
-                  "params": [
-                    "A", 
-                    "1m", 
-                    "now"
-                  ], 
-                  "model": {
-                    "intervalFactor": 2, 
-                    "expr": "histogram_quantile(0.99, sum(rate(tidb_server_handle_query_duration_seconds_bucket[1m])) by (le, instance))", 
-                    "step": 60, 
-                    "refId": "A", 
-                    "legendFormat": "{{instance}}"
-                  }, 
-                  "datasourceId": 1
-                }, 
                 "evaluator": {
-                  "type": "gt", 
                   "params": [
                     10
-                  ]
-                }, 
-                "reducer": {
-                  "type": "avg", 
-                  "params": []
-                }, 
-                "type": "query"
-              }
-            ]
-          }, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
-        {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [
-            {
-              "colorMode": "critical", 
-              "line": true, 
-              "op": "gt", 
-              "value": 1, 
-              "fill": true
-            }
-          ], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "linewidth": 1, 
-          "steppedLine": false, 
-          "id": 37, 
-          "fill": 0, 
-          "span": 4, 
-          "title": "Average Query Duration", 
-          "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": true
-          }, 
-          "legend": {
-            "rightSide": true, 
-            "total": false, 
-            "min": false, 
-            "max": true, 
-            "show": false, 
-            "current": false, 
-            "hideEmpty": true, 
-            "values": true, 
-            "alignAsTable": false, 
-            "avg": false, 
-            "hideZero": true
-          }, 
-          "targets": [
-            {
-              "intervalFactor": 2, 
-              "expr": "irate(tidb_server_handle_query_duration_seconds_sum[30s]) / irate(tidb_server_handle_query_duration_seconds_count[30s])", 
-              "step": 60, 
-              "refId": "A", 
-              "legendFormat": "{{instance}}"
-            }, 
-            {
-              "intervalFactor": 2, 
-              "expr": "sum(irate(tidb_server_handle_query_duration_seconds_sum[30s])) / sum(irate(tidb_server_handle_query_duration_seconds_count[30s]))", 
-              "step": 60, 
-              "refId": "B", 
-              "legendFormat": "average"
-            }
-          ], 
-          "yaxes": [
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "s", 
-              "min": "0", 
-              "label": null
-            }, 
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "alert": {
-            "noDataState": "no_data", 
-            "name": "Average Query Duration alert", 
-            "frequency": "60s", 
-            "notifications": [], 
-            "handler": 1, 
-            "executionErrorState": "alerting", 
-            "message": "Average query duration is high.", 
-            "conditions": [
-              {
+                  ],
+                  "type": "gt"
+                },
                 "operator": {
                   "type": "and"
-                }, 
+                },
                 "query": {
-                  "params": [
-                    "A", 
-                    "5m", 
-                    "now"
-                  ], 
+                  "datasourceId": 1,
                   "model": {
-                    "intervalFactor": 2, 
-                    "expr": "irate(tidb_server_handle_query_duration_seconds_sum[30s]) / irate(tidb_server_handle_query_duration_seconds_count[30s])", 
-                    "step": 60, 
-                    "refId": "A", 
-                    "legendFormat": "{{instance}}"
-                  }, 
-                  "datasourceId": 1
-                }, 
+                    "expr": "histogram_quantile(0.99, sum(rate(tidb_server_handle_query_duration_seconds_bucket[1m])) by (le, instance))",
+                    "intervalFactor": 2,
+                    "legendFormat": "{{instance}}",
+                    "refId": "A",
+                    "step": 60
+                  },
+                  "params": [
+                    "A",
+                    "1m",
+                    "now"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "avg"
+                },
+                "type": "query"
+              }
+            ],
+            "executionErrorState": "alerting",
+            "frequency": "60s",
+            "handler": 1,
+            "message": "Query duration for 99th percentile is high.",
+            "name": "Query Duration 99th percentile alert",
+            "noDataState": "no_data",
+            "notifications": []
+          },
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 25,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(tidb_server_handle_query_duration_seconds_bucket[1m])) by (le))",
+              "intervalFactor": 2,
+              "legendFormat": "average",
+              "refId": "B",
+              "step": 60
+            },
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(tidb_server_handle_query_duration_seconds_bucket[1m])) by (le, instance))",
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}}",
+              "refId": "A",
+              "step": 60
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 10
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Query Duration 99th percentile",
+          "tooltip": {
+            "msResolution": true,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        },
+        {
+          "alert": {
+            "conditions": [
+              {
                 "evaluator": {
-                  "type": "gt", 
                   "params": [
                     1
-                  ]
-                }, 
-                "reducer": {
-                  "type": "avg", 
-                  "params": []
-                }, 
-                "type": "query"
-              }
-            ]
-          }, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
-        {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "linewidth": 1, 
-          "steppedLine": false, 
-          "id": 2, 
-          "fill": 0, 
-          "span": 8, 
-          "title": "QPS", 
-          "tooltip": {
-            "sort": 2, 
-            "shared": true, 
-            "value_type": "individual", 
-            "msResolution": true
-          }, 
-          "legend": {
-            "sort": "max", 
-            "rightSide": true, 
-            "total": false, 
-            "sideWidth": 250, 
-            "min": false, 
-            "max": true, 
-            "show": true, 
-            "current": true, 
-            "hideEmpty": true, 
-            "values": true, 
-            "alignAsTable": true, 
-            "avg": false, 
-            "sortDesc": true, 
-            "hideZero": true
-          }, 
-          "targets": [
-            {
-              "intervalFactor": 2, 
-              "expr": "rate(tidb_server_query_total[1m])", 
-              "step": 30, 
-              "refId": "A", 
-              "legendFormat": "{{instance}}-{{job}} {{type}} {{status}}"
-            }
-          ], 
-          "yaxes": [
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": "0", 
-              "label": null
-            }, 
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [
-            {
-              "alias": "total", 
-              "lines": false
-            }
-          ], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5, 
-          "minSpan": 12
-        }, 
-        {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "linewidth": 1, 
-          "steppedLine": false, 
-          "id": 42, 
-          "fill": 1, 
-          "span": 4, 
-          "title": "QPS Total", 
-          "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": true
-          }, 
-          "legend": {
-            "sort": "max", 
-            "rightSide": false, 
-            "total": false, 
-            "sideWidth": 250, 
-            "min": false, 
-            "max": true, 
-            "show": true, 
-            "current": true, 
-            "hideEmpty": true, 
-            "values": true, 
-            "alignAsTable": true, 
-            "avg": false, 
-            "sortDesc": false, 
-            "hideZero": false
-          }, 
-          "targets": [
-            {
-              "intervalFactor": 2, 
-              "expr": "sum(rate(tidb_server_query_total[1m])) by (status)", 
-              "step": 60, 
-              "refId": "A", 
-              "legendFormat": "query {{status}}"
-            }, 
-            {
-              "intervalFactor": 3, 
-              "expr": "sum(rate(tidb_server_query_total{status=\"OK\"}[1m]  offset 1d))", 
-              "step": 90, 
-              "refId": "B", 
-              "legendFormat": "yesterday"
-            }
-          ], 
-          "yaxes": [
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "ops", 
-              "min": "0", 
-              "label": null
-            }, 
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5, 
-          "minSpan": 12
-        }, 
-        {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "linewidth": 1, 
-          "steppedLine": false, 
-          "id": 21, 
-          "fill": 1, 
-          "span": 8, 
-          "title": "Statement Count", 
-          "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "sort": null, 
-            "rightSide": true, 
-            "total": false, 
-            "min": false, 
-            "max": true, 
-            "show": true, 
-            "current": true, 
-            "hideEmpty": true, 
-            "values": true, 
-            "alignAsTable": true, 
-            "avg": true, 
-            "sortDesc": null, 
-            "hideZero": true
-          }, 
-          "targets": [
-            {
-              "intervalFactor": 2, 
-              "expr": "sum(irate(tidb_executor_statement_node_total[1m])) by (type)", 
-              "step": 30, 
-              "refId": "A", 
-              "legendFormat": "{{type}}"
-            }
-          ], 
-          "yaxes": [
-            {
-              "logBase": 10, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": "0", 
-              "label": null
-            }, 
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5, 
-          "decimals": null
-        }
-      ], 
-      "showTitle": true, 
-      "collapse": false
-    }, 
-    {
-      "repeat": null, 
-      "titleSize": "h6", 
-      "repeatIteration": null, 
-      "title": "Query", 
-      "height": "250px", 
-      "repeatRowId": null, 
-      "panels": [
-        {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 8, 
-          "linewidth": 1, 
-          "steppedLine": true, 
-          "targets": [
-            {
-              "intervalFactor": 2, 
-              "expr": "tidb_server_connections", 
-              "step": 30, 
-              "refId": "A", 
-              "legendFormat": "{{instance}}-{{job}}"
-            }, 
-            {
-              "intervalFactor": 2, 
-              "expr": "sum(tidb_server_connections)", 
-              "step": 30, 
-              "refId": "B", 
-              "legendFormat": "total"
-            }
-          ], 
-          "fill": 1, 
-          "span": 6, 
-          "title": "Connection Count", 
-          "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "individual", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "rightSide": true, 
-            "total": false, 
-            "min": false, 
-            "max": false, 
-            "show": true, 
-            "current": true, 
-            "values": true, 
-            "alignAsTable": true, 
-            "avg": false
-          }, 
-          "yaxes": [
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": "0", 
-              "label": null
-            }, 
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [
-            {
-              "alias": "total", 
-              "lines": false, 
-              "fill": 0
-            }
-          ], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": true, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
-        {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [
-            {
-              "colorMode": "critical", 
-              "line": true, 
-              "op": "gt", 
-              "value": 1000000000, 
-              "fill": true
-            }
-          ], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "linewidth": 1, 
-          "steppedLine": false, 
-          "id": 3, 
-          "fill": 0, 
-          "span": 6, 
-          "title": "Heap Memory Usage", 
-          "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": true
-          }, 
-          "legend": {
-            "rightSide": true, 
-            "total": false, 
-            "sideWidth": null, 
-            "min": false, 
-            "max": true, 
-            "show": true, 
-            "current": true, 
-            "hideEmpty": true, 
-            "values": true, 
-            "alignAsTable": true, 
-            "avg": false, 
-            "hideZero": false
-          }, 
-          "targets": [
-            {
-              "hide": false, 
-              "expr": "go_memstats_heap_inuse_bytes{job=~\"tidb.*\"}", 
-              "metric": "go_memstats_heap_inuse_bytes", 
-              "step": 30, 
-              "legendFormat": "{{instance}}-{{job}}", 
-              "intervalFactor": 2, 
-              "refId": "B"
-            }
-          ], 
-          "yaxes": [
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "bytes", 
-              "min": "0", 
-              "label": ""
-            }, 
-            {
-              "logBase": 1, 
-              "show": false, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": ""
-            }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "alert": {
-            "noDataState": "no_data", 
-            "name": "TiDB Heap Memory Usage alert", 
-            "frequency": "60s", 
-            "notifications": [], 
-            "handler": 1, 
-            "executionErrorState": "alerting", 
-            "message": "TiDB mem heap is over 1GiB", 
-            "conditions": [
-              {
+                  ],
+                  "type": "gt"
+                },
                 "operator": {
                   "type": "and"
-                }, 
+                },
                 "query": {
-                  "params": [
-                    "B", 
-                    "10s", 
-                    "now"
-                  ], 
+                  "datasourceId": 1,
                   "model": {
-                    "hide": false, 
-                    "expr": "go_memstats_heap_inuse_bytes{job=~\"tidb.*\"}", 
-                    "metric": "go_memstats_heap_inuse_bytes", 
-                    "step": 30, 
-                    "legendFormat": "{{instance}}-{{job}}", 
-                    "intervalFactor": 2, 
-                    "refId": "B"
-                  }, 
-                  "datasourceId": 1
-                }, 
-                "evaluator": {
-                  "type": "gt", 
+                    "expr": "irate(tidb_server_handle_query_duration_seconds_sum[30s]) / irate(tidb_server_handle_query_duration_seconds_count[30s])",
+                    "intervalFactor": 2,
+                    "legendFormat": "{{instance}}",
+                    "refId": "A",
+                    "step": 60
+                  },
                   "params": [
-                    1000000000
+                    "A",
+                    "5m",
+                    "now"
                   ]
-                }, 
+                },
                 "reducer": {
-                  "type": "avg", 
-                  "params": []
-                }, 
+                  "params": [],
+                  "type": "avg"
+                },
                 "type": "query"
               }
-            ]
-          }, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
+            ],
+            "executionErrorState": "alerting",
+            "frequency": "60s",
+            "handler": 1,
+            "message": "Average query duration is high.",
+            "name": "Average Query Duration alert",
+            "noDataState": "no_data",
+            "notifications": []
+          },
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "grid": {},
+          "id": 37,
+          "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": false,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "irate(tidb_server_handle_query_duration_seconds_sum[30s]) / irate(tidb_server_handle_query_duration_seconds_count[30s])",
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}}",
+              "refId": "A",
+              "step": 60
+            },
+            {
+              "expr": "sum(irate(tidb_server_handle_query_duration_seconds_sum[30s])) / sum(irate(tidb_server_handle_query_duration_seconds_count[30s]))",
+              "intervalFactor": 2,
+              "legendFormat": "average",
+              "refId": "B",
+              "step": 60
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 1
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Average Query Duration",
+          "tooltip": {
+            "msResolution": true,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "grid": {},
+          "id": 2,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sideWidth": 250,
+            "sort": "max",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "minSpan": 12,
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [
+            {
+              "alias": "total",
+              "lines": false
+            }
+          ],
+          "span": 8,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(tidb_server_query_total[1m])",
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}}-{{job}} {{type}} {{status}}",
+              "refId": "A",
+              "step": 30
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "QPS",
+          "tooltip": {
+            "msResolution": true,
+            "shared": true,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 42,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": false,
+            "max": true,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sideWidth": 250,
+            "sort": "max",
+            "sortDesc": false,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "minSpan": 12,
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(rate(tidb_server_query_total[1m])) by (status)",
+              "intervalFactor": 2,
+              "legendFormat": "query {{status}}",
+              "refId": "A",
+              "step": 60
+            },
+            {
+              "expr": "sum(rate(tidb_server_query_total{status=\"OK\"}[1m]  offset 1d))",
+              "intervalFactor": 3,
+              "legendFormat": "yesterday",
+              "refId": "B",
+              "step": 90
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "QPS Total",
+          "tooltip": {
+            "msResolution": true,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "ops",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "decimals": null,
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 21,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": null,
+            "sortDesc": null,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 8,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(irate(tidb_executor_statement_node_total[1m])) by (type)",
+              "intervalFactor": 2,
+              "legendFormat": "{{type}}",
+              "refId": "A",
+              "step": 30
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Statement Count",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 10,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
         }
-      ], 
-      "showTitle": true, 
-      "collapse": false
-    }, 
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": true,
+      "title": "Query",
+      "titleSize": "h6"
+    },
     {
-      "repeat": null, 
-      "titleSize": "h6", 
-      "repeatIteration": null, 
-      "title": "Distsql", 
-      "height": "250px", 
-      "repeatRowId": null, 
+      "collapse": false,
+      "height": "250px",
       "panels": [
         {
-          "bars": false, 
-          "timeFrom": null, 
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 8,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [
+            {
+              "alias": "total",
+              "fill": 0,
+              "lines": false
+            }
+          ],
+          "span": 6,
+          "stack": true,
+          "steppedLine": true,
+          "targets": [
+            {
+              "expr": "tidb_server_connections",
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}}-{{job}}",
+              "refId": "A",
+              "step": 30
+            },
+            {
+              "expr": "sum(tidb_server_connections)",
+              "intervalFactor": 2,
+              "legendFormat": "total",
+              "refId": "B",
+              "step": 30
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Connection Count",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        },
+        {
+          "alert": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    1000000000
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "datasourceId": 1,
+                  "model": {
+                    "expr": "go_memstats_heap_inuse_bytes{job=~\"tidb.*\"}",
+                    "hide": false,
+                    "intervalFactor": 2,
+                    "legendFormat": "{{instance}}-{{job}}",
+                    "metric": "go_memstats_heap_inuse_bytes",
+                    "refId": "B",
+                    "step": 30
+                  },
+                  "params": [
+                    "B",
+                    "10s",
+                    "now"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "avg"
+                },
+                "type": "query"
+              }
+            ],
+            "executionErrorState": "alerting",
+            "frequency": "60s",
+            "handler": 1,
+            "message": "TiDB mem heap is over 1GiB",
+            "name": "TiDB Heap Memory Usage alert",
+            "noDataState": "no_data",
+            "notifications": []
+          },
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "grid": {},
+          "id": 3,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": false,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sideWidth": null,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "go_memstats_heap_inuse_bytes{job=~\"tidb.*\"}",
+              "hide": false,
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}}-{{job}}",
+              "metric": "go_memstats_heap_inuse_bytes",
+              "refId": "B",
+              "step": 30
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 1000000000
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Heap Memory Usage",
+          "tooltip": {
+            "msResolution": true,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "bytes",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": true,
+      "title": "Query",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": true,
+      "height": "250px",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 12,
+          "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
           "links": [
             {
               "type": "dashboard"
             }
-          ], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 12, 
-          "linewidth": 2, 
-          "steppedLine": false, 
+          ],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
-              "hide": false, 
-              "expr": "histogram_quantile(0.99, sum(rate(tidb_distsql_handle_query_duration_seconds_bucket[1m])) by (le))", 
-              "metric": "tidb_distsql_handle_query_duration_seconds_bucket", 
-              "step": 4, 
-              "legendFormat": "", 
-              "intervalFactor": 2, 
-              "refId": "A"
+              "expr": "histogram_quantile(0.99, sum(rate(tidb_distsql_handle_query_duration_seconds_bucket[1m])) by (le))",
+              "hide": false,
+              "intervalFactor": 2,
+              "legendFormat": "",
+              "metric": "tidb_distsql_handle_query_duration_seconds_bucket",
+              "refId": "A",
+              "step": 4
             }
-          ], 
-          "fill": 1, 
-          "span": 6, 
-          "title": "Distsql Seconds 99", 
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Distsql Seconds 99",
           "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "total": false, 
-            "show": false, 
-            "max": false, 
-            "min": false, 
-            "current": false, 
-            "values": false, 
-            "alignAsTable": false, 
-            "avg": false
-          }, 
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
           "yaxes": [
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "s", 
-              "min": 0, 
-              "label": null
-            }, 
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": 0,
+              "show": true
+            },
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
             }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
+          ]
+        },
         {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 14, 
-          "linewidth": 2, 
-          "steppedLine": false, 
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 14,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(tidb_distsql_query_total [1m]))", 
-              "metric": "tidb_distsql_query_total", 
-              "step": 4, 
-              "legendFormat": "", 
-              "intervalFactor": 2, 
-              "refId": "A"
+              "expr": "sum(rate(tidb_distsql_query_total [1m]))",
+              "intervalFactor": 2,
+              "legendFormat": "",
+              "metric": "tidb_distsql_query_total",
+              "refId": "A",
+              "step": 4
             }
-          ], 
-          "fill": 1, 
-          "span": 6, 
-          "title": "Distsql QPS", 
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Distsql QPS",
           "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "rightSide": false, 
-            "total": false, 
-            "show": false, 
-            "max": false, 
-            "min": false, 
-            "current": false, 
-            "values": false, 
-            "avg": false
-          }, 
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
           "yaxes": [
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": 0, 
-              "label": null
-            }, 
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": 0,
+              "show": true
+            },
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
             }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
+          ]
         }
-      ], 
-      "showTitle": true, 
-      "collapse": true
-    }, 
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": true,
+      "title": "Distsql",
+      "titleSize": "h6"
+    },
     {
-      "repeat": null, 
-      "titleSize": "h6", 
-      "repeatIteration": null, 
-      "title": "Coprocessor", 
-      "height": "250px", 
-      "repeatRowId": null, 
+      "collapse": true,
+      "height": "250px",
       "panels": [
         {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 40, 
-          "linewidth": 2, 
-          "steppedLine": false, 
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 40,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": "total",
+            "sortDesc": true,
+            "total": true,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
-              "intervalFactor": 2, 
-              "expr": "sum(rate(tidb_tikvclient_cop_count[1m])) by (type)", 
-              "step": 4, 
-              "refId": "A", 
-              "legendFormat": "{{type}}"
+              "expr": "sum(rate(tidb_tikvclient_cop_count[1m])) by (type)",
+              "intervalFactor": 2,
+              "legendFormat": "{{type}}",
+              "refId": "A",
+              "step": 4
             }
-          ], 
-          "fill": 1, 
-          "span": 6, 
-          "title": "Coprocessor Count", 
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Coprocessor Count",
           "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "sort": "total", 
-            "rightSide": true, 
-            "total": true, 
-            "min": false, 
-            "max": false, 
-            "show": true, 
-            "current": false, 
-            "hideEmpty": true, 
-            "values": true, 
-            "alignAsTable": true, 
-            "avg": false, 
-            "sortDesc": true, 
-            "hideZero": true
-          }, 
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
           "yaxes": [
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }, 
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
             }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
+          ]
+        },
         {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 41, 
-          "linewidth": 2, 
-          "steppedLine": false, 
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 41,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": "max",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
-              "intervalFactor": 2, 
-              "expr": "histogram_quantile(0.999, sum(rate(tidb_tikvclient_cop_seconds_bucket[1m])) by (le, instance))", 
-              "step": 4, 
-              "refId": "A", 
-              "legendFormat": "{{instance}}"
+              "expr": "histogram_quantile(0.999, sum(rate(tidb_tikvclient_cop_seconds_bucket[1m])) by (le, instance))",
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}}",
+              "refId": "A",
+              "step": 4
             }
-          ], 
-          "fill": 1, 
-          "span": 6, 
-          "title": "Coprocessor Seconds 999", 
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Coprocessor Seconds 999",
           "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "sort": "max", 
-            "rightSide": true, 
-            "total": false, 
-            "min": false, 
-            "max": true, 
-            "show": true, 
-            "current": false, 
-            "values": true, 
-            "alignAsTable": true, 
-            "avg": false, 
-            "sortDesc": true
-          }, 
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
           "yaxes": [
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "s", 
-              "min": "0", 
-              "label": null
-            }, 
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
             }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
+          ]
         }
-      ], 
-      "showTitle": true, 
-      "collapse": true
-    }, 
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": true,
+      "title": "Coprocessor",
+      "titleSize": "h6"
+    },
     {
-      "repeat": null, 
-      "titleSize": "h6", 
-      "repeatIteration": null, 
-      "title": "KV", 
-      "height": "250px", 
-      "repeatRowId": null, 
+      "collapse": false,
+      "height": "250px",
       "panels": [
         {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 5, 
-          "linewidth": 2, 
-          "steppedLine": false, 
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 5,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": "max",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
-              "intervalFactor": 2, 
-              "expr": "sum(rate(tidb_tikvclient_txn_cmd_total[1m])) by (type)", 
-              "step": 30, 
-              "refId": "A", 
-              "legendFormat": "{{type}}"
+              "expr": "sum(rate(tidb_tikvclient_txn_cmd_total[1m])) by (type)",
+              "intervalFactor": 2,
+              "legendFormat": "{{type}}",
+              "refId": "A",
+              "step": 30
             }
-          ], 
-          "fill": 1, 
-          "span": 6, 
-          "title": "KV Cmd Count", 
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "KV Cmd Count",
           "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": true
-          }, 
-          "legend": {
-            "sort": "max", 
-            "rightSide": true, 
-            "total": false, 
-            "min": false, 
-            "max": true, 
-            "show": true, 
-            "current": true, 
-            "hideEmpty": true, 
-            "values": true, 
-            "alignAsTable": true, 
-            "avg": false, 
-            "sortDesc": true, 
-            "hideZero": true
-          }, 
+            "msResolution": true,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
           "yaxes": [
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }, 
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
             }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
+          ]
+        },
         {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 4, 
-          "linewidth": 2, 
-          "steppedLine": false, 
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 4,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
-              "intervalFactor": 2, 
-              "expr": "sum(rate(tidb_tikvclient_txn_total[1m])) by (instance)", 
-              "step": 30, 
-              "refId": "A", 
-              "legendFormat": "{{instance}}"
+              "expr": "sum(rate(tidb_tikvclient_txn_total[1m])) by (instance)",
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}}",
+              "refId": "A",
+              "step": 30
             }
-          ], 
-          "fill": 1, 
-          "span": 6, 
-          "title": "KV Txn Count", 
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "KV Txn Count",
           "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": true
-          }, 
-          "legend": {
-            "rightSide": true, 
-            "total": false, 
-            "min": false, 
-            "max": true, 
-            "show": true, 
-            "current": true, 
-            "values": true, 
-            "alignAsTable": true, 
-            "avg": false
-          }, 
+            "msResolution": true,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
           "yaxes": [
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": "0", 
-              "label": null
-            }, 
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
             }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
+          ]
+        },
         {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 6, 
-          "linewidth": 2, 
-          "steppedLine": false, 
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 6,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": null,
+            "sortDesc": null,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
-              "intervalFactor": 2, 
-              "expr": "histogram_quantile(0.9999, sum(rate(tidb_tikvclient_backoff_seconds_bucket[1m])) by (instance, le))", 
-              "step": 30, 
-              "refId": "A", 
-              "legendFormat": "{{instance}}"
+              "expr": "histogram_quantile(0.9999, sum(rate(tidb_tikvclient_backoff_seconds_bucket[1m])) by (instance, le))",
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}}",
+              "refId": "A",
+              "step": 30
             }
-          ], 
-          "fill": 1, 
-          "span": 6, 
-          "title": "KV Retry Seconds 9999", 
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "KV Retry Seconds 9999",
           "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "sort": null, 
-            "rightSide": true, 
-            "total": false, 
-            "min": false, 
-            "max": true, 
-            "show": true, 
-            "current": false, 
-            "values": true, 
-            "alignAsTable": true, 
-            "avg": false, 
-            "sortDesc": null
-          }, 
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
           "yaxes": [
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "s", 
-              "min": null, 
-              "label": null
-            }, 
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
             }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
+          ]
+        },
         {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 30, 
-          "linewidth": 1, 
-          "steppedLine": false, 
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 30,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": "max",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
-              "intervalFactor": 2, 
-              "expr": "histogram_quantile(0.9999, sum(rate(tidb_tikvclient_request_seconds_bucket[1m])) by (le, instance, type))", 
-              "step": 30, 
-              "refId": "A", 
-              "legendFormat": "{{instance}} {{type}}"
+              "expr": "histogram_quantile(0.9999, sum(rate(tidb_tikvclient_request_seconds_bucket[1m])) by (le, instance, type))",
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}} {{type}}",
+              "refId": "A",
+              "step": 30
             }
-          ], 
-          "fill": 1, 
-          "span": 6, 
-          "title": "KV Request Seconds 9999", 
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "KV Request Seconds 9999",
           "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "individual", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "sort": "max", 
-            "rightSide": true, 
-            "total": false, 
-            "min": false, 
-            "max": true, 
-            "show": true, 
-            "current": false, 
-            "values": true, 
-            "alignAsTable": true, 
-            "avg": false, 
-            "sortDesc": true
-          }, 
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
           "yaxes": [
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "s", 
-              "min": null, 
-              "label": null
-            }, 
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
             }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
+          ]
+        },
         {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 18, 
-          "linewidth": 1, 
-          "steppedLine": false, 
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 18,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
-              "intervalFactor": 2, 
-              "expr": "histogram_quantile(0.99, sum(rate(tidb_tikvclient_txn_cmd_seconds_bucket[1m])) by (le, type))", 
-              "step": 30, 
-              "refId": "A", 
-              "legendFormat": "{{type}}"
+              "expr": "histogram_quantile(0.99, sum(rate(tidb_tikvclient_txn_cmd_seconds_bucket[1m])) by (le, type))",
+              "intervalFactor": 2,
+              "legendFormat": "{{type}}",
+              "refId": "A",
+              "step": 30
             }
-          ], 
-          "fill": 1, 
-          "span": 6, 
-          "title": "KV Cmd Seconds 99", 
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "KV Cmd Seconds 99",
           "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "rightSide": true, 
-            "total": false, 
-            "min": false, 
-            "max": true, 
-            "show": true, 
-            "current": true, 
-            "hideEmpty": true, 
-            "values": true, 
-            "alignAsTable": true, 
-            "avg": false, 
-            "hideZero": true
-          }, 
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
           "yaxes": [
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "s", 
-              "min": null, 
-              "label": null
-            }, 
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
             }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
+          ]
+        },
         {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 22, 
-          "linewidth": 2, 
-          "steppedLine": false, 
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 22,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
-              "intervalFactor": 2, 
-              "expr": "histogram_quantile(0.999, sum(rate(tidb_tikvclient_txn_cmd_seconds_bucket[1m])) by (le, type))", 
-              "step": 30, 
-              "refId": "A", 
-              "legendFormat": "{{type}}"
+              "expr": "histogram_quantile(0.999, sum(rate(tidb_tikvclient_txn_cmd_seconds_bucket[1m])) by (le, type))",
+              "intervalFactor": 2,
+              "legendFormat": "{{type}}",
+              "refId": "A",
+              "step": 30
             }
-          ], 
-          "fill": 1, 
-          "span": 6, 
-          "title": "KV Cmd Seconds 9999", 
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "KV Cmd Seconds 9999",
           "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "rightSide": true, 
-            "total": false, 
-            "min": false, 
-            "max": false, 
-            "show": true, 
-            "current": false, 
-            "values": false, 
-            "alignAsTable": true, 
-            "avg": false
-          }, 
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
           "yaxes": [
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "s", 
-              "min": null, 
-              "label": null
-            }, 
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
             }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
+          ]
+        },
         {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 44, 
-          "linewidth": 2, 
-          "steppedLine": false, 
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 44,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
-              "intervalFactor": 2, 
-              "expr": "histogram_quantile(0.90, sum(rate(tidb_tikvclient_txn_regions_num_bucket[1m])) by (le, instance))", 
-              "step": 60, 
-              "refId": "A", 
-              "legendFormat": "{{instance}}"
+              "expr": "histogram_quantile(0.90, sum(rate(tidb_tikvclient_txn_regions_num_bucket[1m])) by (le, instance))",
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}}",
+              "refId": "A",
+              "step": 30
             }
-          ], 
-          "fill": 1, 
-          "span": 6, 
-          "title": "90 Txn regions count", 
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "90 Txn regions count",
           "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": true
-          }, 
-          "legend": {
-            "rightSide": true, 
-            "total": false, 
-            "min": false, 
-            "max": true, 
-            "show": true, 
-            "current": true, 
-            "values": true, 
-            "alignAsTable": true, 
-            "avg": false
-          }, 
+            "msResolution": true,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
           "yaxes": [
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": "0", 
-              "label": null
-            }, 
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
             }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
+          ]
         }
-      ], 
-      "showTitle": true, 
-      "collapse": false
-    }, 
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": true,
+      "title": "KV",
+      "titleSize": "h6"
+    },
     {
-      "repeat": null, 
-      "titleSize": "h6", 
-      "repeatIteration": null, 
-      "title": "KV 2", 
-      "height": 250, 
-      "repeatRowId": null, 
+      "collapse": false,
+      "height": 250,
       "panels": [
         {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 33, 
-          "linewidth": 2, 
-          "steppedLine": false, 
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 33,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": "avg",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
-              "intervalFactor": 2, 
-              "expr": "histogram_quantile(1, sum(rate(tidb_tikvclient_txn_write_kv_count_bucket[1m])) by (le, instance))", 
-              "step": 30, 
-              "refId": "B", 
-              "legendFormat": "{{instance}}"
+              "expr": "histogram_quantile(1, sum(rate(tidb_tikvclient_txn_write_kv_count_bucket[1m])) by (le, instance))",
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}}",
+              "refId": "B",
+              "step": 30
             }
-          ], 
-          "fill": 1, 
-          "span": 6, 
-          "title": "KV Count Per Txn", 
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "KV Count Per Txn",
           "tooltip": {
-            "sort": 2, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "sort": "avg", 
-            "rightSide": true, 
-            "total": false, 
-            "min": false, 
-            "max": true, 
-            "show": true, 
-            "current": false, 
-            "values": true, 
-            "alignAsTable": true, 
-            "avg": true, 
-            "sortDesc": true
-          }, 
+            "msResolution": false,
+            "shared": true,
+            "sort": 2,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
           "yaxes": [
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }, 
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
             }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
+          ]
+        },
         {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 34, 
-          "linewidth": 2, 
-          "steppedLine": false, 
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 34,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": "avg",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
-              "intervalFactor": 2, 
-              "expr": "histogram_quantile(1, sum(rate(tidb_tikvclient_txn_write_size_bucket[1m])) by (le, instance))", 
-              "step": 30, 
-              "refId": "A", 
-              "legendFormat": "{{instance}}"
+              "expr": "histogram_quantile(1, sum(rate(tidb_tikvclient_txn_write_size_bucket[1m])) by (le, instance))",
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}}",
+              "refId": "A",
+              "step": 30
             }
-          ], 
-          "fill": 1, 
-          "span": 6, 
-          "title": "Size Per Txn", 
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Size Per Txn",
           "tooltip": {
-            "sort": 2, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "sort": "avg", 
-            "rightSide": true, 
-            "total": false, 
-            "min": false, 
-            "max": true, 
-            "show": true, 
-            "current": false, 
-            "values": true, 
-            "alignAsTable": true, 
-            "avg": false, 
-            "sortDesc": true
-          }, 
+            "msResolution": false,
+            "shared": true,
+            "sort": 2,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
           "yaxes": [
             {
-              "logBase": 10, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }, 
+              "format": "short",
+              "label": null,
+              "logBase": 10,
+              "max": null,
+              "min": null,
+              "show": true
+            },
             {
-              "logBase": 1, 
-              "show": false, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
             }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
+          ]
+        },
         {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [
-            {
-              "colorMode": "critical", 
-              "line": true, 
-              "op": "gt", 
-              "value": 0, 
-              "fill": true
-            }
-          ], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "linewidth": 1, 
-          "steppedLine": false, 
-          "id": 11, 
-          "fill": 0, 
-          "span": 6, 
-          "title": "TiClient Region Error", 
-          "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "rightSide": true, 
-            "total": false, 
-            "min": false, 
-            "max": true, 
-            "show": true, 
-            "current": true, 
-            "hideEmpty": true, 
-            "values": true, 
-            "alignAsTable": true, 
-            "avg": false, 
-            "hideZero": true
-          }, 
-          "targets": [
-            {
-              "expr": "sum(rate(tidb_tikvclient_region_err_total[1m])) by (type, instance)", 
-              "metric": "tidb_server_session_execute_parse_duration_count", 
-              "step": 30, 
-              "legendFormat": "{{instance}} {{type}}", 
-              "intervalFactor": 2, 
-              "refId": "A"
-            }
-          ], 
-          "yaxes": [
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "ops", 
-              "min": "0", 
-              "label": null
-            }, 
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
           "alert": {
-            "noDataState": "no_data", 
-            "name": "TiDB TiClient Region Error alert", 
-            "frequency": "60s", 
-            "notifications": [], 
-            "handler": 1, 
-            "executionErrorState": "alerting", 
-            "message": "TiDB report 'server is busy'", 
             "conditions": [
               {
-                "operator": {
-                  "type": "and"
-                }, 
-                "query": {
-                  "params": [
-                    "A", 
-                    "1m", 
-                    "now"
-                  ], 
-                  "model": {
-                    "expr": "sum(rate(tidb_tikvclient_region_err_total[1m])) by (type, instance)", 
-                    "metric": "tidb_server_session_execute_parse_duration_count", 
-                    "step": 30, 
-                    "legendFormat": "{{instance}} {{type}}", 
-                    "intervalFactor": 2, 
-                    "refId": "A"
-                  }, 
-                  "datasourceId": 1
-                }, 
                 "evaluator": {
-                  "type": "gt", 
                   "params": [
                     0
-                  ]
-                }, 
-                "reducer": {
-                  "type": "avg", 
-                  "params": []
-                }, 
-                "type": "query"
-              }
-            ]
-          }, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5, 
-          "decimals": 2
-        }, 
-        {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 32, 
-          "linewidth": 2, 
-          "steppedLine": false, 
-          "targets": [
-            {
-              "expr": "sum(rate(tidb_tikvclient_lock_resolver_actions_total[1m])) by (type)", 
-              "metric": "tidb_tikvclient_lock_resolver_actions_total", 
-              "step": 30, 
-              "legendFormat": "{{type}}", 
-              "intervalFactor": 2, 
-              "refId": "A"
-            }
-          ], 
-          "fill": 1, 
-          "span": 6, 
-          "title": "LockResolve", 
-          "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "rightSide": false, 
-            "total": false, 
-            "min": false, 
-            "max": true, 
-            "show": true, 
-            "current": false, 
-            "hideEmpty": true, 
-            "values": true, 
-            "alignAsTable": false, 
-            "avg": false, 
-            "hideZero": true
-          }, 
-          "yaxes": [
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": "0", 
-              "label": null
-            }, 
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }
-      ], 
-      "showTitle": true, 
-      "collapse": false
-    }, 
-    {
-      "repeat": null, 
-      "titleSize": "h6", 
-      "repeatIteration": null, 
-      "title": "PD Client", 
-      "height": "250px", 
-      "repeatRowId": null, 
-      "panels": [
-        {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 20, 
-          "linewidth": 2, 
-          "steppedLine": false, 
-          "targets": [
-            {
-              "intervalFactor": 2, 
-              "expr": "sum(rate(pd_client_cmd_handle_cmds_duration_seconds_bucket[1m])) by (type)",
-              "step": 10, 
-              "refId": "A", 
-              "legendFormat": "{{type}}"
-            }
-          ], 
-          "fill": 1, 
-          "span": 3, 
-          "title": "PD Client cmd count", 
-          "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "total": false, 
-            "show": true, 
-            "max": false, 
-            "min": false, 
-            "current": false, 
-            "values": false, 
-            "avg": false
-          }, 
-          "yaxes": [
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }, 
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
-        {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 35, 
-          "linewidth": 1, 
-          "steppedLine": false, 
-          "targets": [
-            {
-              "intervalFactor": 2, 
-              "expr": "histogram_quantile(0.999, sum(rate(pd_client_cmd_handle_cmds_duration_seconds_bucket[1m])) by (le, type))", 
-              "step": 10, 
-              "refId": "A", 
-              "legendFormat": "{{type}}"
-            }
-          ], 
-          "fill": 1, 
-          "span": 3, 
-          "title": "PD Client cmd duration 999", 
-          "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "total": false, 
-            "show": true, 
-            "max": false, 
-            "min": false, 
-            "current": false, 
-            "values": false, 
-            "avg": false
-          }, 
-          "yaxes": [
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "s", 
-              "min": null, 
-              "label": null
-            }, 
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
-        {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 45, 
-          "linewidth": 1, 
-          "steppedLine": false, 
-          "targets": [
-            {
-              "intervalFactor": 2, 
-              "expr": "histogram_quantile(0.999, sum(rate(pd_client_request_handle_requests_duration_seconds_bucket[1m])) by (le, type))",
-              "step": 10, 
-              "refId": "A", 
-              "legendFormat": "{{type}}"
-            }
-          ], 
-          "fill": 1, 
-          "span": 3, 
-          "title": "PD Client request duration 999", 
-          "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "total": false, 
-            "show": true, 
-            "max": false, 
-            "min": false, 
-            "current": false, 
-            "values": false, 
-            "avg": false
-          }, 
-          "yaxes": [
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "s", 
-              "min": null, 
-              "label": null
-            }, 
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
-        {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 43, 
-          "linewidth": 2, 
-          "steppedLine": false, 
-          "targets": [
-            {
-              "intervalFactor": 2, 
-              "expr": "sum(rate(pd_client_cmd_handle_failed_cmds_duration_seconds_count[1m])) by (type)",
-              "step": 10, 
-              "refId": "A", 
-              "legendFormat": "{{type}}"
-            }
-          ], 
-          "fill": 1, 
-          "span": 3, 
-          "title": "PD Client cmd fail", 
-          "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "total": false, 
-            "show": true, 
-            "max": false, 
-            "min": false, 
-            "current": false, 
-            "values": false, 
-            "avg": false
-          }, 
-          "yaxes": [
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "ops", 
-              "min": "0", 
-              "label": null
-            }, 
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }
-      ], 
-      "showTitle": true, 
-      "collapse": true
-    }, 
-    {
-      "repeat": null, 
-      "titleSize": "h6", 
-      "repeatIteration": null, 
-      "title": "Schema Load", 
-      "height": 250, 
-      "repeatRowId": null, 
-      "panels": [
-        {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [
-            {
-              "colorMode": "critical", 
-              "line": true, 
-              "op": "gt", 
-              "value": 5, 
-              "fill": true
-            }
-          ], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "linewidth": 1, 
-          "steppedLine": false, 
-          "id": 27, 
-          "fill": 1, 
-          "span": 4, 
-          "title": "Load Schema Duration", 
-          "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "individual", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "rightSide": true, 
-            "total": false, 
-            "min": false, 
-            "max": false, 
-            "show": true, 
-            "current": false, 
-            "values": false, 
-            "alignAsTable": true, 
-            "avg": false
-          }, 
-          "targets": [
-            {
-              "expr": "tidb_domain_load_schema_duration_sum / tidb_domain_load_schema_duration_count", 
-              "metric": "", 
-              "step": 10, 
-              "legendFormat": "{{instance}}", 
-              "intervalFactor": 2, 
-              "refId": "A"
-            }
-          ], 
-          "yaxes": [
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "s", 
-              "min": "0", 
-              "label": null
-            }, 
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "alert": {
-            "noDataState": "no_data", 
-            "name": "Load Schema Duration alert", 
-            "frequency": "60s", 
-            "notifications": [], 
-            "handler": 1, 
-            "executionErrorState": "alerting", 
-            "message": "TiDB load schema latency is over 5s", 
-            "conditions": [
-              {
+                  ],
+                  "type": "gt"
+                },
                 "operator": {
                   "type": "and"
-                }, 
+                },
                 "query": {
-                  "params": [
-                    "A", 
-                    "5m", 
-                    "now"
-                  ], 
+                  "datasourceId": 1,
                   "model": {
-                    "expr": "tidb_domain_load_schema_duration_sum / tidb_domain_load_schema_duration_count", 
-                    "metric": "", 
-                    "step": 10, 
-                    "legendFormat": "{{instance}}", 
-                    "intervalFactor": 2, 
-                    "refId": "A"
-                  }, 
-                  "datasourceId": 1
-                }, 
+                    "expr": "sum(rate(tidb_tikvclient_region_err_total[1m])) by (type, instance)",
+                    "intervalFactor": 2,
+                    "legendFormat": "{{instance}} {{type}}",
+                    "metric": "tidb_server_session_execute_parse_duration_count",
+                    "refId": "A",
+                    "step": 30
+                  },
+                  "params": [
+                    "A",
+                    "1m",
+                    "now"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "avg"
+                },
+                "type": "query"
+              }
+            ],
+            "executionErrorState": "alerting",
+            "frequency": "60s",
+            "handler": 1,
+            "message": "TiDB report 'server is busy'",
+            "name": "TiDB TiClient Region Error alert",
+            "noDataState": "no_data",
+            "notifications": []
+          },
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "decimals": 2,
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "grid": {},
+          "id": 11,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(rate(tidb_tikvclient_region_err_total[1m])) by (type, instance)",
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}} {{type}}",
+              "metric": "tidb_server_session_execute_parse_duration_count",
+              "refId": "A",
+              "step": 30
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 0
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "TiClient Region Error",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "ops",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 32,
+          "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(rate(tidb_tikvclient_lock_resolver_actions_total[1m])) by (type)",
+              "intervalFactor": 2,
+              "legendFormat": "{{type}}",
+              "metric": "tidb_tikvclient_lock_resolver_actions_total",
+              "refId": "A",
+              "step": 30
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "LockResolve",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": true,
+      "title": "KV 2",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": true,
+      "height": "250px",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 20,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 3,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(rate(pd_client_cmd_handle_cmds_duration_seconds_bucket[1m])) by (type)",
+              "intervalFactor": 2,
+              "legendFormat": "{{type}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "PD Client cmd count",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 35,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 3,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.999, sum(rate(pd_client_cmd_handle_cmds_duration_seconds_bucket[1m])) by (le, type))",
+              "intervalFactor": 2,
+              "legendFormat": "{{type}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "PD Client cmd duration 999",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 45,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 3,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.999, sum(rate(pd_client_request_handle_requests_duration_seconds_bucket[1m])) by (le, type))",
+              "intervalFactor": 2,
+              "legendFormat": "{{type}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "PD Client request duration 999",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 43,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 3,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(rate(pd_client_cmd_handle_failed_cmds_duration_seconds_count[1m])) by (type)",
+              "intervalFactor": 2,
+              "legendFormat": "{{type}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "PD Client cmd fail",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "ops",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": true,
+      "title": "PD Client",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": true,
+      "height": 250,
+      "panels": [
+        {
+          "alert": {
+            "conditions": [
+              {
                 "evaluator": {
-                  "type": "gt", 
                   "params": [
                     5
-                  ]
-                }, 
-                "reducer": {
-                  "type": "avg", 
-                  "params": []
-                }, 
-                "type": "query"
-              }
-            ]
-          }, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
-        {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [
-            {
-              "colorMode": "critical", 
-              "line": true, 
-              "op": "gt", 
-              "value": 0, 
-              "fill": true
-            }
-          ], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "linewidth": 1, 
-          "steppedLine": false, 
-          "id": 28, 
-          "fill": 0, 
-          "span": 4, 
-          "title": "Load Schema QPS", 
-          "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "individual", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "rightSide": true, 
-            "total": false, 
-            "min": false, 
-            "max": false, 
-            "show": true, 
-            "current": false, 
-            "values": false, 
-            "alignAsTable": true, 
-            "avg": false
-          }, 
-          "targets": [
-            {
-              "expr": "rate(tidb_domain_load_schema_total{type='succ'}[1m])", 
-              "metric": "tidb_domain_load_schema_duration_count", 
-              "step": 10, 
-              "legendFormat": "{{instance}} succ", 
-              "intervalFactor": 2, 
-              "refId": "A"
-            }, 
-            {
-              "hide": false, 
-              "expr": "rate(tidb_domain_load_schema_total{type='failed'}[1m])", 
-              "step": 10, 
-              "legendFormat": "{{instance}} failed", 
-              "intervalFactor": 2, 
-              "refId": "B"
-            }
-          ], 
-          "yaxes": [
-            {
-              "logBase": 10, 
-              "show": true, 
-              "max": null, 
-              "format": "ops", 
-              "min": "0", 
-              "label": null
-            }, 
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [
-            {
-              "alias": "/.*failed/", 
-              "bars": true
-            }
-          ], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "alert": {
-            "noDataState": "no_data", 
-            "name": "Load schema alert", 
-            "frequency": "60s", 
-            "notifications": [], 
-            "handler": 1, 
-            "executionErrorState": "alerting", 
-            "message": "TiDB load schema fails", 
-            "conditions": [
-              {
+                  ],
+                  "type": "gt"
+                },
                 "operator": {
                   "type": "and"
-                }, 
+                },
                 "query": {
-                  "params": [
-                    "B", 
-                    "1m", 
-                    "now"
-                  ], 
+                  "datasourceId": 1,
                   "model": {
-                    "hide": false, 
-                    "expr": "rate(tidb_domain_load_schema_total{type='failed'}[1m])", 
-                    "step": 10, 
-                    "legendFormat": "{{instance}} failed", 
-                    "intervalFactor": 2, 
-                    "refId": "B"
-                  }, 
-                  "datasourceId": 1
-                }, 
+                    "expr": "tidb_domain_load_schema_duration_sum / tidb_domain_load_schema_duration_count",
+                    "intervalFactor": 2,
+                    "legendFormat": "{{instance}}",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 10
+                  },
+                  "params": [
+                    "A",
+                    "5m",
+                    "now"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "avg"
+                },
+                "type": "query"
+              }
+            ],
+            "executionErrorState": "alerting",
+            "frequency": "60s",
+            "handler": 1,
+            "message": "TiDB load schema latency is over 5s",
+            "name": "Load Schema Duration alert",
+            "noDataState": "no_data",
+            "notifications": []
+          },
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 27,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "tidb_domain_load_schema_duration_sum / tidb_domain_load_schema_duration_count",
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}}",
+              "metric": "",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 5
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Load Schema Duration",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        },
+        {
+          "alert": {
+            "conditions": [
+              {
                 "evaluator": {
-                  "type": "gt", 
                   "params": [
                     0
-                  ]
-                }, 
-                "reducer": {
-                  "type": "avg", 
-                  "params": []
-                }, 
-                "type": "query"
-              }
-            ]
-          }, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
-        {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [
-            {
-              "colorMode": "critical", 
-              "line": true, 
-              "op": "gt", 
-              "value": 1, 
-              "fill": true
-            }
-          ], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "linewidth": 1, 
-          "steppedLine": false, 
-          "id": 29, 
-          "fill": 0, 
-          "span": 4, 
-          "title": "Schema Lease Error Rate", 
-          "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "individual", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "rightSide": true, 
-            "total": false, 
-            "min": false, 
-            "max": false, 
-            "show": true, 
-            "current": false, 
-            "hideEmpty": true, 
-            "values": false, 
-            "alignAsTable": true, 
-            "avg": false, 
-            "hideZero": true
-          }, 
-          "targets": [
-            {
-              "expr": "rate(tidb_server_schema_lease_error_counter[1m])", 
-              "metric": "tidb_server_", 
-              "step": 10, 
-              "legendFormat": "{{instance}} {{type}}", 
-              "intervalFactor": 2, 
-              "refId": "A"
-            }
-          ], 
-          "yaxes": [
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "ops", 
-              "min": "0", 
-              "label": null
-            }, 
-            {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "alert": {
-            "noDataState": "no_data", 
-            "name": "Schema Lease Error alert", 
-            "frequency": "60s", 
-            "notifications": [], 
-            "handler": 1, 
-            "executionErrorState": "alerting", 
-            "message": "Schema lease error.", 
-            "conditions": [
-              {
+                  ],
+                  "type": "gt"
+                },
                 "operator": {
                   "type": "and"
-                }, 
+                },
                 "query": {
-                  "params": [
-                    "A", 
-                    "1m", 
-                    "now"
-                  ], 
+                  "datasourceId": 1,
                   "model": {
-                    "expr": "rate(tidb_server_schema_lease_error_counter[1m])", 
-                    "metric": "tidb_server_", 
-                    "step": 10, 
-                    "legendFormat": "{{instance}} {{type}}", 
-                    "intervalFactor": 2, 
-                    "refId": "A"
-                  }, 
-                  "datasourceId": 1
-                }, 
-                "evaluator": {
-                  "type": "gt", 
+                    "expr": "rate(tidb_domain_load_schema_total{type='failed'}[1m])",
+                    "hide": false,
+                    "intervalFactor": 2,
+                    "legendFormat": "{{instance}} failed",
+                    "refId": "B",
+                    "step": 10
+                  },
                   "params": [
-                    1
+                    "B",
+                    "1m",
+                    "now"
                   ]
-                }, 
+                },
                 "reducer": {
-                  "type": "avg", 
-                  "params": []
-                }, 
+                  "params": [],
+                  "type": "avg"
+                },
                 "type": "query"
               }
-            ]
-          }, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5, 
-          "decimals": 2
+            ],
+            "executionErrorState": "alerting",
+            "frequency": "60s",
+            "handler": 1,
+            "message": "TiDB load schema fails",
+            "name": "Load schema alert",
+            "noDataState": "no_data",
+            "notifications": []
+          },
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "grid": {},
+          "id": 28,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [
+            {
+              "alias": "/.*failed/",
+              "bars": true
+            }
+          ],
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(tidb_domain_load_schema_total{type='succ'}[1m])",
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}} succ",
+              "metric": "tidb_domain_load_schema_duration_count",
+              "refId": "A",
+              "step": 10
+            },
+            {
+              "expr": "rate(tidb_domain_load_schema_total{type='failed'}[1m])",
+              "hide": false,
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}} failed",
+              "refId": "B",
+              "step": 10
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 0
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Load Schema QPS",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "ops",
+              "label": null,
+              "logBase": 10,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        },
+        {
+          "alert": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    1
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "datasourceId": 1,
+                  "model": {
+                    "expr": "rate(tidb_server_schema_lease_error_counter[1m])",
+                    "intervalFactor": 2,
+                    "legendFormat": "{{instance}} {{type}}",
+                    "metric": "tidb_server_",
+                    "refId": "A",
+                    "step": 10
+                  },
+                  "params": [
+                    "A",
+                    "1m",
+                    "now"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "avg"
+                },
+                "type": "query"
+              }
+            ],
+            "executionErrorState": "alerting",
+            "frequency": "60s",
+            "handler": 1,
+            "message": "Schema lease error.",
+            "name": "Schema Lease Error alert",
+            "noDataState": "no_data",
+            "notifications": []
+          },
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "decimals": 2,
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "grid": {},
+          "id": 29,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(tidb_server_schema_lease_error_counter[1m])",
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}} {{type}}",
+              "metric": "tidb_server_",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 1
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Schema Lease Error Rate",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "ops",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
         }
-      ], 
-      "showTitle": true, 
-      "collapse": true
-    }, 
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": true,
+      "title": "Schema Load",
+      "titleSize": "h6"
+    },
     {
-      "repeat": null, 
-      "titleSize": "h6", 
-      "repeatIteration": null, 
-      "title": "DDL", 
-      "height": "250px", 
-      "repeatRowId": null, 
+      "collapse": true,
+      "height": "250px",
       "panels": [
         {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 9, 
-          "linewidth": 2, 
-          "steppedLine": false, 
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 9,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
-              "intervalFactor": 2, 
-              "expr": "histogram_quantile(0.95, sum(rate(tidb_ddl_handle_job_duration_seconds_bucket[1m])) by (le))", 
-              "step": 10, 
-              "refId": "A", 
-              "legendFormat": "ddl handle job duration"
+              "expr": "histogram_quantile(0.95, sum(rate(tidb_ddl_handle_job_duration_seconds_bucket[1m])) by (le))",
+              "intervalFactor": 2,
+              "legendFormat": "ddl handle job duration",
+              "refId": "A",
+              "step": 10
             }
-          ], 
-          "fill": 1, 
-          "span": 4, 
-          "title": "DDL Seconds 95", 
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "DDL Seconds 95",
           "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "total": false, 
-            "show": true, 
-            "max": false, 
-            "min": false, 
-            "current": false, 
-            "values": false, 
-            "avg": false
-          }, 
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
           "yaxes": [
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "s", 
-              "min": "0", 
-              "label": null
-            }, 
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
             }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
+          ]
+        },
         {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 7, 
-          "linewidth": 2, 
-          "steppedLine": false, 
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 7,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sortDesc": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
-              "expr": "histogram_quantile(0.95, sum(rate(tidb_ddl_batch_add_or_del_data_succ_bucket[1m])) by (le))", 
-              "metric": "tidb_ddl_ba", 
-              "step": 10, 
-              "legendFormat": "ddl batch", 
-              "intervalFactor": 2, 
-              "refId": "A"
+              "expr": "histogram_quantile(0.95, sum(rate(tidb_ddl_batch_add_or_del_data_succ_bucket[1m])) by (le))",
+              "intervalFactor": 2,
+              "legendFormat": "ddl batch",
+              "metric": "tidb_ddl_ba",
+              "refId": "A",
+              "step": 10
             }
-          ], 
-          "fill": 1, 
-          "span": 4, 
-          "title": "DDL Batch Seconds 95", 
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "DDL Batch Seconds 95",
           "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "rightSide": false, 
-            "total": false, 
-            "min": false, 
-            "max": false, 
-            "show": true, 
-            "current": false, 
-            "values": false, 
-            "alignAsTable": true, 
-            "avg": false, 
-            "sortDesc": true
-          }, 
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
           "yaxes": [
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "s", 
-              "min": "0", 
-              "label": null
-            }, 
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
             }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
+          ]
+        },
         {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 36, 
-          "linewidth": 1, 
-          "steppedLine": false, 
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 36,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
-              "intervalFactor": 2, 
-              "expr": "sum(rate(tidb_server_session_retry_count[1m]))", 
-              "step": 10, 
-              "refId": "A", 
-              "legendFormat": "session retry"
+              "expr": "sum(rate(tidb_server_session_retry_count[1m]))",
+              "intervalFactor": 2,
+              "legendFormat": "session retry",
+              "refId": "A",
+              "step": 10
             }
-          ], 
-          "fill": 1, 
-          "span": 4, 
-          "title": "Session Retry", 
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Session Retry",
           "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "individual", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "total": false, 
-            "show": true, 
-            "max": false, 
-            "min": false, 
-            "current": false, 
-            "values": false, 
-            "avg": false
-          }, 
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
           "yaxes": [
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "ops", 
-              "min": "0", 
-              "label": null
-            }, 
+              "format": "ops",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
             }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
-        }, 
+          ]
+        },
         {
-          "bars": false, 
-          "timeFrom": null, 
-          "links": [], 
-          "thresholds": [], 
-          "nullPointMode": "null as zero", 
-          "renderer": "flot", 
-          "id": 38, 
-          "linewidth": 2, 
-          "steppedLine": false, 
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 38,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": "max",
+            "sortDesc": true,
+            "total": true,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 12,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
-              "intervalFactor": 2, 
-              "expr": "sum(rate(tidb_tikvclient_backoff_count[1m])) by (type)", 
-              "step": 2, 
-              "refId": "A", 
-              "legendFormat": "{{type}}"
+              "expr": "sum(rate(tidb_tikvclient_backoff_count[1m])) by (type)",
+              "intervalFactor": 2,
+              "legendFormat": "{{type}}",
+              "refId": "A",
+              "step": 2
             }
-          ], 
-          "fill": 1, 
-          "span": 12, 
-          "title": "KV Backoff Count", 
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "KV Backoff Count",
           "tooltip": {
-            "sort": 0, 
-            "shared": true, 
-            "value_type": "cumulative", 
-            "msResolution": false
-          }, 
-          "legend": {
-            "sort": "max", 
-            "rightSide": true, 
-            "total": true, 
-            "min": false, 
-            "max": true, 
-            "show": true, 
-            "current": false, 
-            "hideEmpty": true, 
-            "values": true, 
-            "alignAsTable": true, 
-            "avg": false, 
-            "sortDesc": true, 
-            "hideZero": true
-          }, 
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
           "yaxes": [
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
-            }, 
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
             {
-              "logBase": 1, 
-              "show": true, 
-              "max": null, 
-              "format": "short", 
-              "min": null, 
-              "label": null
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
             }
-          ], 
-          "xaxis": {
-            "show": true, 
-            "values": [], 
-            "mode": "time", 
-            "name": null
-          }, 
-          "seriesOverrides": [], 
-          "percentage": false, 
-          "type": "graph", 
-          "error": false, 
-          "editable": true, 
-          "grid": {}, 
-          "stack": false, 
-          "timeShift": null, 
-          "aliasColors": {}, 
-          "lines": true, 
-          "points": false, 
-          "datasource": "${DS_TIDB-CLUSTER}", 
-          "pointradius": 5
+          ]
         }
-      ], 
-      "showTitle": true, 
-      "collapse": true
-    }
-  ], 
-  "editMode": false, 
-  "links": [
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": true,
+      "title": "DDL",
+      "titleSize": "h6"
+    },
     {
-      "tags": [], 
-      "type": "dashboards", 
-      "icon": "external link"
+      "collapse": true,
+      "height": 250,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "fill": 1,
+          "id": 46,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.95, sum(rate(tidb_statistics_auto_analyze_duration_bucket[1m])) by (le))",
+              "intervalFactor": 2,
+              "legendFormat": "auto analyze duration",
+              "refId": "A",
+              "step": 30
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Auto Analyze Seconds 95",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "fill": 1,
+          "id": 47,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(tidb_statistics_auto_analyze_total{type='succ'}[1m])",
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}} succ",
+              "refId": "A",
+              "step": 30
+            },
+            {
+              "expr": "rate(tidb_statistics_auto_analyze_total{type='failed'}[1m])",
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}} failed",
+              "refId": "B",
+              "step": 30
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Auto Analyze QPS",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Statistics",
+      "titleSize": "h6"
     }
-  ], 
-  "tags": [], 
-  "graphTooltip": 0, 
-  "hideControls": false, 
-  "title": "TiDB Cluster - tidb", 
-  "editable": true, 
-  "refresh": "30s", 
-  "id": null, 
-  "gnetId": null, 
-  "timepicker": {
-    "time_options": [
-      "5m", 
-      "15m", 
-      "1h", 
-      "6h", 
-      "12h", 
-      "24h", 
-      "2d", 
-      "7d", 
-      "30d"
-    ], 
-    "refresh_intervals": [
-      "5s", 
-      "10s", 
-      "30s", 
-      "1m", 
-      "5m", 
-      "15m", 
-      "30m", 
-      "1h", 
-      "2h", 
-      "1d"
-    ]
-  }, 
-  "__inputs": [
-    {
-      "description": "", 
-      "pluginName": "Prometheus", 
-      "label": "tidb-cluster", 
-      "pluginId": "prometheus", 
-      "type": "datasource", 
-      "name": "DS_TIDB-CLUSTER"
-    }
-  ], 
-  "version": 11, 
-  "time": {
-    "to": "now", 
-    "from": "now-6h"
-  }, 
-  "__requires": [
-    {
-      "version": "4.0.1", 
-      "type": "grafana", 
-      "id": "grafana", 
-      "name": "Grafana"
-    }, 
-    {
-      "version": "1.0.0", 
-      "type": "datasource", 
-      "id": "prometheus", 
-      "name": "Prometheus"
-    }
-  ], 
-  "timezone": "browser", 
-  "schemaVersion": 14, 
-  "annotations": {
-    "list": []
-  }, 
+  ],
+  "schemaVersion": 14,
+  "style": "dark",
+  "tags": [],
   "templating": {
     "list": []
-  }
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "TiDB Cluster - tidb",
+  "version": 0
 }
