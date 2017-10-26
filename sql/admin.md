@@ -127,4 +127,4 @@ ADMIN CANCEL DDL JOBS 'job_id' [, 'job_id'] ...
 
 * `ADMIN CANCEL DDL JOBS 'job_id' [, 'job_id'] ...`
 
-用于取消正在执行的 DDL 作业，其返回值为对应的作业取消是否成功，如果失败会显示失败的具体原因。这个操作可以同时取消多个 DDL 作业，其中 DDL 作业 ID 可以通过 `ADMIN SHOW DDL JOBS` 语句来获取。其中如果希望取消的作业已经完成，则取消操作将会失败。
+用于取消正在执行的 DDL 作业，其返回值为对应的作业取消是否成功，如果失败会显示失败的具体原因。这个操作可以同时取消多个 DDL 作业，其中 DDL 作业 ID 可以通过 `ADMIN SHOW DDL JOBS` 语句来获取。其中如果希望取消的作业已经完成，则取消操作将会失败。
