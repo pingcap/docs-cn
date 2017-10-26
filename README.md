@@ -41,6 +41,8 @@
 - [Troubleshoot](./trouble-shooting.md)
 - [TiDB Best Practices](https://pingcap.github.io/blog/2017/07/24/tidbbestpractice/)
 - [Releases](release/rn.md)
+- [TiDB Roadmap](https://github.com/pingcap/docs/blob/master/ROADMAP.md)
+- [Connect with us](community.md)
 + More Resources
   - [Frequently Used Tools](https://github.com/pingcap/tidb-tools)
   - [PingCAP Blog](https://pingcap.github.io/blog/)
@@ -78,6 +80,13 @@ Power TiDB with your most favorite engines. TiDB supports local storage engines 
 ## Roadmap
 
 Read the [Roadmap](https://github.com/pingcap/docs/blob/master/ROADMAP.md).
+
+## Connect with us
+
+- **Twitter**: [@PingCAP](https://twitter.com/PingCAP)
+- **Reddit**: https://www.reddit.com/r/TiDB/
+- **Stack Overflow**: https://stackoverflow.com/questions/tagged/tidb
+- **Mailing list**: [Google Group](https://groups.google.com/forum/#!forum/tidb-user)
 
 ## TiDB Architecture
 

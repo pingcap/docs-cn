@@ -35,6 +35,13 @@ Power TiDB with your most favorite engines. TiDB supports local storage engines 
 
 Read the [Roadmap](https://github.com/pingcap/docs/blob/master/ROADMAP.md).
 
+## Connect with us
+
+- **Twitter**: [@PingCAP](https://twitter.com/PingCAP)
+- **Reddit**: https://www.reddit.com/r/TiDB/
+- **Stack Overflow**: https://stackoverflow.com/questions/tagged/tidb
+- **Mailing list**: [Google Group](https://groups.google.com/forum/#!forum/tidb-user)
+
 ## TiDB Architecture
 
 To better understand TiDB’s features, you need to understand the TiDB architecture.
