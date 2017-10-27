@@ -8,9 +8,9 @@
 - [TiDB 快速入门指南](QUICKSTART.md)
 + TiDB 运维文档
   - [软硬件环境需求](op-guide/recommendation.md)
-  + 部署集群
-      - [Ansible 部署方案 (强烈推荐)](op-guide/ansible-deployment.md)
-      - [离线 Ansible 部署方案 (强烈推荐)](op-guide/offline-ansible-deployment.md)
+  + 部署集群 
+      - [Ansible 部署方案（强烈推荐）](op-guide/ansible-deployment.md)
+      - [离线 Ansible 部署方案（强烈推荐）](op-guide/offline-ansible-deployment.md)
       - [Docker 部署方案](op-guide/docker-deployment.md)
       - [跨机房部署方案](op-guide/location-awareness.md)
   - [配置集群](op-guide/configuration.md)
@@ -88,8 +88,8 @@
       - [其他函数](sql/miscellaneous-functions.md)
       - [精度数学](sql/precision-math.md)
   + SQL 语句语法
-      - [数据定义语句(DDL)](sql/ddl.md)
-      - [数据操作语句(DML)](sql/dml.md)
+      - [数据定义语句 (DDL)](sql/ddl.md)
+      - [数据操作语句 (DML)](sql/dml.md)
       - [事务语句](sql/transaction.md)
       - [数据库管理语句](sql/admin.md)
       - [Prepared SQL 语句语法](sql/prepare.md)
