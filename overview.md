@@ -31,6 +31,12 @@ Evolve TiDB schemas as your requirement changes. You can add new columns and ind
 
 Power TiDB with your most favorite engines. TiDB supports local storage engines such as GolevelDB and BoltDB, as well as [TiKV](https://github.com/pingcap/tikv), a distributed storage engine.
 
+Read the following three articles to understand TiDB techniques:
+
+- [Data Storage](https://pingcap.github.io/blog/2017/07/11/tidbinternal1/)
+- [Computing](https://pingcap.github.io/blog/2017/07/11/tidbinternal2/)
+- [Scheduling](https://pingcap.github.io/blog/2017/07/20/tidbinternal3/)
+
 ## Roadmap
 
 Read the [Roadmap](https://github.com/pingcap/docs/blob/master/ROADMAP.md).

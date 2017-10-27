@@ -60,7 +60,7 @@ Grow TiDB as your business grows. You can increase the capacity for storage and 
 
 Use TiDB as MySQL. You can replace MySQL with TiDB to power your application without changing a single line of code in most cases.
 
-- __Automatic Failover and high availability__
+- __Automatic failover and high availability__
 
 Your data and applications are always-on. TiDB automatically handles malfunctions and protects your applications from machine failures or even downtime of an entire data-center.
 
@@ -76,6 +76,11 @@ Evolve TiDB schemas as your requirement changes. You can add new columns and ind
 
 Power TiDB with your most favorite engines. TiDB supports local storage engines such as GolevelDB and BoltDB, as well as [TiKV](https://github.com/pingcap/tikv), a distributed storage engine.
 
+Read the following three articles to understand TiDB techniques:
+
+- [Data Storage](https://pingcap.github.io/blog/2017/07/11/tidbinternal1/)
+- [Computing](https://pingcap.github.io/blog/2017/07/11/tidbinternal2/)
+- [Scheduling](https://pingcap.github.io/blog/2017/07/20/tidbinternal3/)
 
 ## Roadmap
 
@@ -120,7 +125,7 @@ Placement Driver (PD) is the managing component of the entire cluster and is in 
 
 2. Scheduling and load balancing regions in the TiKV cluster, including but not limited to data migration and Raft group leader transfer.
 
-3. Allocating the transaction ID that is globally unique and monotonic increasing.
+3. Allocating the transaction ID that is globally unique and monotonically increasing.
 
 As a cluster, PD needs to be deployed to an odd number of nodes. Usually it is recommended to deploy to 3 online nodes at least.
 
@@ -132,9 +137,9 @@ TiKV server is responsible for storing data. From an external view, TiKV is a di
 
 Horizontal scalability is the most important feature of TiDB. The scalability includes two aspects: the computing capability and the storage capacity. The TiDB server processes the SQL requests. As the business grows, the overall processing capability and higher throughput can be achieved by simply adding more TiDB server nodes. Data is stored in TiKV. As the size of the data grows, the scalability of data can be resolved by adding more TiKV server nodes. PD schedules data in Regions among the TiKV nodes and migrates part of the data to the newly added node. So in the early stage, you can deploy only a few service instances. For example, it is recommended to deploy at least 3 TiKV nodes, 3 PD nodes and 2 TiDB nodes. As business grows, more TiDB and TiKV instances can be added on-demand.
 
-## High availability
+## High Availability
 
-High availability is another important feature of TiDB. All of the three components, TiDB, TiKV and PD, can tolerate the failure of some instances without impacting the availability of the entire cluster. For each component, See the following for more details about the availability, the consequence of a single instance failure and how to recover.
+High availability is another important feature of TiDB. All of the three components, TiDB, TiKV and PD, can tolerate the failure of some instances without impacting the availability of the entire cluster. For each component, see the following for more details about the availability, the consequence of a single instance failure and how to recover.
 
 ### TiDB
 
@@ -146,4 +151,4 @@ PD is a cluster and the data consistency is ensured using the Raft protocol. If 
 
 ### TiKV
 
-TiKV is a cluster and the data consistency is ensured using the Raft protocol. The number of the replicas can be configurable and the default is 3 replicas. The load of TiKV servers are balanced through PD. If one of the node is down, all the Regions in the node will be impacted. If the failed node is the Leader of the Region, the service will be interrupted and a new election will be initiated. If the failed node is a Follower of the Region, the service will not be impacted. If a TiKV node is down for a period of time (the default value is 10 minutes), PD will move the data to another TiKV node.
+TiKV is a cluster and the data consistency is ensured using the Raft protocol. The number of the replicas is configurable and the default is 3 replicas. The load of TiKV servers are balanced through PD. If one of the node is down, all the Regions in the node will be impacted. If the failed node is the Leader of the Region, the service will be interrupted and a new election will be initiated. If the failed node is a Follower of the Region, the service will not be impacted. If a TiKV node is down for a period of time (the default value is 10 minutes), PD will move the data to another TiKV node.
