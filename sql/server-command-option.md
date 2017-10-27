@@ -172,6 +172,12 @@ Same as the "run-ddl" startup option
 - Default: 300
 - It is required that the value is an integer (int); unit: millisecond
 
+### slow-query-file
+
+- The slow query log file
+- Default: ""
+- The value is the file name. If a non-null string is specified, the slow query log is redirected to the corresponding file. 
+
 ### retry-limit
 
 - The maximum number of commit retries when the transaction meets a conflict
