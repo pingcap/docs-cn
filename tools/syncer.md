@@ -351,16 +351,21 @@ target-table = "table"
 推荐使用 [supervise](https://cr.yp.to/daemontools/supervise.html) 类似服务守护 syncer 进程启动  
 
 1. 使用 screen 服务启动；以下实例需要事先安装 screen 与 sendmail 相关软件，且配置 smtp 相关信息
-	- `screen -S syncer-ops` ; 创建一个会话窗口
-	- `./syncer --config ops.toml --enable-gtid  --auto-fix-gtid;echo "syncer is down"|mail -s "syncer status" `
-	- screen 使用 `CTRL + A & D` 联合键退出； 使用 `screen -ls` 查看已创建会话，使用 `screen -r ID` 恢复会话
+    - `screen -S syncer-ops` ; 创建一个会话窗口
+
+    `./syncer --config ops.toml --enable-gtid  --auto-fix-gtid;echo "syncer is down"|mail -s "syncer status" `
+
+    - screen 使用 `CTRL + A & D` 联合键退出； 使用 `screen -ls` 查看已创建会话，使用 `screen -r ID` 恢复会话
 2. 使用 `nohup &` 方式启动 syncer 服务
-	- 创建 `syncer.sh` , 输入以下内容  
+    - 创建 `syncer.sh` , 输入以下内容  
 
     `./syncer --config ops.toml --enable-gtid  --auto-fix-gtid -log-file ./${1}.log --status-addr 127.0.0.1:${2};echo "syncer is down"|mail -s "syncer status" `
-	- 创建 start_ops.sh，内容如下
+
+    - 创建 start_ops.sh，内容如下
+
     `nohup ./syncer.sh ops 10088 &>./nohup.out &`
-	- 使用 `sh start_ops.sh` 方式启动 syncer 服务
+
+    - 使用 `sh start_ops.sh` 方式启动 syncer 服务
 
 
 -----
