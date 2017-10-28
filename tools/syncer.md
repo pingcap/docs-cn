@@ -28,7 +28,7 @@ Syncer 可以部署在任一台可以连通对应的 MySQL 和 TiDB 集群的机
 
 ## `syncer` 增量导入数据示例
 
-使用前请详细阅读[syncer 同步前预检查](#syncer 同步前检查)
+使用前请详细阅读[syncer 同步前预检查](#syncer-同步前检查)
 
 ### 设置同步开始的 position
 
@@ -53,29 +53,27 @@ Usage of syncer:
   -L string
       日志等级: debug, info, warn, error, fatal (默认为 "info")
   -V  
-      输出 syncer 版本
+      输出 syncer 版本；默认 false
   -auto-fix-gtid
-      当 mysql master/slave 切换时，自动修复 gtid 信息
+      当 mysql master/slave 切换时，自动修复 gtid 信息；默认 false
   -b int
       batch 事务大小 (默认 10)
   -c int
       syncer 处理 batch 线程数 (默认 16)
   -config string
-      指定配置文件启动 sycner 
+      指定相应配置文件启动 sycner 服务；如 `--config config.toml` 
   -enable-gtid
-      使用 gtid 模式启动 syncer 
+      使用 gtid 模式启动 syncer；默认 false，开启前需要上游 MySQL 开启 GTID 功能
   -log-file string
-      日志文件路劲
+      指定日志文件路劲；如 `--log-file ./syncer.log`
   -log-rotate string
-      指定日志切割类型, hour/day (默认 "day")
+      指定日志切割周期, hour/day (默认 "day")
   -meta string
-      指定 syncer 上有 meta 信息文件  (默认 "syncer.meta")
-  -safe-mode
-      启用 syncer 安全模式
+      指定 syncer 上游 meta 信息文件  (默认与配置文件相同路劲下 "syncer.meta")
   -server-id int
-     指定 MySQL slave sever-ID (默认 101)
+     指定 MySQL slave sever-id (默认 101)
   -status-addr string
-      指定 syncer metric 信息 IP:Port
+      指定 syncer metric 信息; 如 `--status-addr 127:0.0.1:10088`
 ```
 
 `syncer` 的配置文件 `config.toml`:
@@ -96,35 +94,40 @@ batch = 10
 ## 将 127.0.0.1 修改为相应主机 IP 地址
 status-addr = "127.0.0.1:10086"
 
-## 跳过 DDL 或者其他语句，格式为**前缀完全匹配**，如: `DROP TABLE ABC`,则至少需要填入`DROP TABLE`.
+## 跳过 DDL 或者其他语句，格式为 **前缀完全匹配**，如: `DROP TABLE ABC`,则至少需要填入`DROP TABLE`.
 # skip-sqls = ["ALTER USER", "CREATE USER"]
 
-## 指定要同步数据库名；支持匹配，必须以 `~` 开始， 星号字符 (*) 可以匹配零个或者多个字符。
+## 在使用 route-rules 功能后， 
+## replicate-do-db & replicate-ignore-db 匹配合表之后(target-schema & target-table )数值
+## 优先级关系: replicate-do-db --> replicate-do-table --> replicate-ignore-db --> replicate-ignore-table 
+## 指定要同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
 #replicate-do-db = ["~^b.*","s1"]
 
-## 指定要同步的 db.table 表；支持匹配，必须以 `~` 开始， 星号字符 (*) 可以匹配零个或者多个字符。
-## dn-name 与 tbl-name 不支持 `db-name ="dbname，dbname2"` 格式
+## 指定要同步的 db.table 表
+## db-name 与 tbl-name 不支持 `db-name ="dbname，dbname2"` 格式
 #[[replicate-do-table]]
 #db-name ="dbname"
 #tbl-name = "table-name"
-
+ 
 #[[replicate-do-table]]
 #db-name ="dbname1"
 #tbl-name = "table-name1"
 
+## 指定要同步的 db.table 表；支持正则匹配，表达式语句必须以 `~` 开始
 #[[replicate-do-table]]
 #db-name ="test"
 #tbl-name = "~^a.*"
 
-## 指定要**忽略**同步数据库名；支持匹配，必须以 `~` 开始， 星号字符 (*) 可以匹配零个或者多个字符。
+## 指定**忽略**同步数据库；支持正则匹配，表达式语句必须以 `~` 开始
 #replicate-ignore-db = ["~^b.*","s1"]
 
-## 指定要**忽略**同步数据库名；支持匹配，必须以 `~` 开始， 星号字符 (*) 可以匹配零个或者多个字符。
+## 指定**忽略**同步数据库
+## db-name & tbl-name 不支持 `db-name ="dbname，dbname2"` 语句格式
 #[[replicate-ignore-table]]
 #db-name = "your_db"
 #tbl-name = "your_table"
 
-## 指定要**忽略**同步数据库名；支持匹配，必须以 `~` 开始， 星号字符 (*) 可以匹配零个或者多个字符。
+## 指定要**忽略**同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
 #[[replicate-ignore-table]]
 #db-name ="test"
 #tbl-name = "~^a.*"
@@ -167,6 +170,7 @@ port = 4000
 
 ```bash
 ./bin/syncer -config config.toml
+
 2016/10/27 15:22:01 binlogsyncer.go:226: [info] begin to sync binlog from position (mysql-bin.000003, 1280)
 2016/10/27 15:22:01 binlogsyncer.go:130: [info] register slave for master server 127.0.0.1:3306
 2016/10/27 15:22:01 binlogsyncer.go:552: [info] rotate to (mysql-bin.000003, 1280)
@@ -217,6 +221,7 @@ syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-
 根据上面的 route-rules 可以支持将分库分表的数据导入到同一个库同一个表中，但是在开始前需要检查分库分表规则
 +   是否可以利用 route-rule 的语义规则表示
 +   分表中是否包含唯一递增主键，或者合并后数据上有冲突的唯一索引或者主键
++   暂时对 ddl 支持不完善
 
 ![sharding](../media/syncer-sharding.png)
 
@@ -234,10 +239,11 @@ target-table = "table"
 
 #### 2. 指定分库分表同步示例
 
-则只需要在所有 mysql 实例下面，启动 syncer, 并且设置以下 route-rule
+则只需要在所有 mysql 实例下面，启动 syncer, 并且设置以下 route-rule 以及相关 replicate-do-db & replicate-ignore-db
 
 ```toml
-## replicate-do-table 需要填入 target-schema 与 target-table 信息。
+## 在使用 route-rules 功能后， 
+## replicate-do-db & replicate-ignore-db 匹配合表之后(target-schema & target-table )数值
 [replicate-do-table]
 db-name = "example_db"
 table-name = "table"
@@ -254,8 +260,8 @@ target-table = "table"
 1.  源库 server-id 检查
 
     - 可通过以下命令查看 server-id 
-    - 如果结果为空或者为 0 (server_id 为 0 时，无法同步数据)
-    - Syncer 配置文件中 server-id 在 mysql server-id 上添加一个随机正整数，且不能在 mysql 主备或集群内重复。
+    - 结果为空或者为 0 , syncer 无法同步数据
+    - Syncer server-id 与 MySQL server-id 不能相同，且在 MySQL   cluster 中唯一
 
     ```
     mysql> show global variables like 'server_id';
@@ -300,7 +306,7 @@ target-table = "table"
     ```
 
     - 如果发现 binlog 格式是其他格式，可以通过如下命令设置为 ROW：
-    - 如果 MySQL 有链接，建立重启 MySQL 服务。
+    - 如果 MySQL 有连接，建议重启 MySQL 服务或者杀掉所有连接。
 
     ```
     mysql> set global binlog_format=ROW;
@@ -332,19 +338,30 @@ target-table = "table"
 1.  检查上下游同步用户权限
 
     - 需要上游 MySQL 同步账号至少赋予以下权限：
-    - ` select , reload , replication slave , replication client `
-
+      ` select , reload , replication slave , replication client`
+    
+    - 下游 TiDB 可暂时采用 root 同权限账号
 
 1.  检查 GTID 与 POS 相关信息
 
     - 使用以下语句查看 binlog 内容
-    - `show binlog events in 'mysql-bin.000023' from 136676560 limit 10;
+     `show binlog events in 'mysql-bin.000023' from 136676560 limit 10;`
+### 安全启动 syncer 服务
 
-### syncer 常见错误
+推荐使用 [supervise](https://cr.yp.to/daemontools/supervise.html) 类似服务守护 syncer 进程启动  
 
-1. [如何跳过错误语句](https://github.com/pingcap/tidb/issues/4865)
-2. syncer 如何查看同步进度?
-   - 查看 Garafan 中 syncer dashboard， 当 binlog file 为 0 时，查看 binlog pos master 与 syncer 的差距，差距越小同步越接近。
+1. 使用 screen 服务启动；以下实例需要事先安装 screen 与 sendmail 相关软件，且配置 smtp 相关信息
+	- `screen -S syncer-ops` ; 创建一个会话窗口
+	- `./syncer --config ops.toml --enable-gtid  --auto-fix-gtid;echo "syncer is down"|mail -s "syncer status" `
+	- screen 使用 `CTRL + A & D` 联合键退出； 使用 `screen -ls` 查看已创建会话，使用 `screen -r ID` 恢复会话
+2. 使用 `nohup &` 方式启动 syncer 服务
+	- 创建 `syncer.sh` , 输入以下内容  
+
+    `./syncer --config ops.toml --enable-gtid  --auto-fix-gtid -log-file ./${1}.log --status-addr 127.0.0.1:${2};echo "syncer is down"|mail -s "syncer status" `
+	- 创建 start_ops.sh，内容如下
+    `nohup ./syncer.sh ops 10088 &>./nohup.out &`
+	- 使用 `sh start_ops.sh` 方式启动 syncer 服务
+
 
 -----
 

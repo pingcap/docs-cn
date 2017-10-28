@@ -101,7 +101,7 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 > 注意：目前 TiDB 支持 UTF8mb4 [字符编码](../sql/character-set-support.md)，假设 mydumper 导出数据为 latin1 字符编码，请使用 `iconv -f latin1 -t utf-8 $file -o /data/imdbload/$basename` 命令转换，$file 为已有文件，$basename 为转换后文件。
 
-> 注意：如果 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。  
+> 注意：如果 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。
 
 我们使用 `loader` 将之前导出的数据导入到 TiDB。Loader 的下载和具体的使用方法见 [Loader 使用文档](../tools/loader.md)
 
@@ -190,9 +190,13 @@ binlog-pos = 930143241
 binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e-487b6bd31bf7:1-4"
 ```
 
-注意：`syncer.meta` 只需要第一次使用的时候配置，后续 `syncer` 同步新的 binlog 之后会自动将其更新到最新的 position。
++ 注意：`syncer.meta` 只需要第一次使用的时候配置，后续 `syncer` 同步新的 binlog 之后会自动将其更新到最新的 position。
+
++ 注意： 如果使用 binlog position 同步则只需要配置 binlog-name binlog-pos; 使用 gtid 同步则需要设置 gtid，且启动 syncer 时带有 `--enable-gtid`
 
 ### 启动 `syncer`
+
+启动 syncer 服务之前请详细阅读 [Syncer 增量导入](../tools/syncer.md )
 
 `syncer` 的配置文件 `config.toml`:
 
@@ -211,35 +215,40 @@ batch = 10
 ## 将 127.0.0.1 修改为相应主机 IP 地址
 status-addr = "127.0.0.1:10086"
 
-## 跳过 DDL 或者其他语句，格式为**前缀完全匹配**，如: `DROP TABLE ABC`,则至少需要填入`DROP TABLE`.
+## 跳过 DDL 或者其他语句，格式为 **前缀完全匹配**，如: `DROP TABLE ABC`,则至少需要填入`DROP TABLE`.
 # skip-sqls = ["ALTER USER", "CREATE USER"]
 
-## 指定要同步数据库名；支持匹配，必须以 `~` 开始， 星号字符 (*) 可以匹配零个或者多个字符。
+## 在使用 route-rules 功能后， 
+## replicate-do-db & replicate-ignore-db 匹配合表之后(target-schema & target-table )数值
+## 优先级关系: replicate-do-db --> replicate-do-table --> replicate-ignore-db --> replicate-ignore-table 
+## 指定要同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
 #replicate-do-db = ["~^b.*","s1"]
 
-## 指定要同步的 db.table 表；支持匹配，必须以 `~` 开始， 星号字符 (*) 可以匹配零个或者多个字符。
-## dn-name 与 tbl-name 不支持 `db-name ="dbname，dbname2"` 格式
+## 指定要同步的 db.table 表
+## db-name 与 tbl-name 不支持 `db-name ="dbname，dbname2"` 格式
 #[[replicate-do-table]]
 #db-name ="dbname"
 #tbl-name = "table-name"
-
+ 
 #[[replicate-do-table]]
 #db-name ="dbname1"
 #tbl-name = "table-name1"
 
+## 指定要同步的 db.table 表；支持正则匹配，表达式语句必须以 `~` 开始
 #[[replicate-do-table]]
 #db-name ="test"
 #tbl-name = "~^a.*"
 
-## 指定要**忽略**同步数据库名；支持匹配，必须以 `~` 开始， 星号字符 (*) 可以匹配零个或者多个字符。
+## 指定**忽略**同步数据库；支持正则匹配，表达式语句必须以 `~` 开始
 #replicate-ignore-db = ["~^b.*","s1"]
 
-## 指定要**忽略**同步数据库名；支持匹配，必须以 `~` 开始， 星号字符 (*) 可以匹配零个或者多个字符。
+## 指定**忽略**同步数据库
+## db-name & tbl-name 不支持 `db-name ="dbname，dbname2"` 语句格式
 #[[replicate-ignore-table]]
 #db-name = "your_db"
 #tbl-name = "your_table"
 
-## 指定要**忽略**同步数据库名；支持匹配，必须以 `~` 开始， 星号字符 (*) 可以匹配零个或者多个字符。
+## 指定要**忽略**同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
 #[[replicate-ignore-table]]
 #db-name ="test"
 #tbl-name = "~^a.*"
