@@ -65,11 +65,11 @@ Usage of syncer:
   -enable-gtid
       使用 gtid 模式启动 syncer；默认 false，开启前需要上游 MySQL 开启 GTID 功能
   -log-file string
-      指定日志文件路劲；如 `--log-file ./syncer.log`
+      指定日志文件目录；如 `--log-file ./syncer.log`
   -log-rotate string
       指定日志切割周期, hour/day (默认 "day")
   -meta string
-      指定 syncer 上游 meta 信息文件  (默认与配置文件相同路劲下 "syncer.meta")
+      指定 syncer 上游 meta 信息文件  (默认与配置文件相同目录下 "syncer.meta")
   -server-id int
      指定 MySQL slave sever-id (默认 101)
   -status-addr string
@@ -97,9 +97,6 @@ status-addr = "127.0.0.1:10086"
 ## 跳过 DDL 或者其他语句，格式为 **前缀完全匹配**，如: `DROP TABLE ABC`,则至少需要填入`DROP TABLE`.
 # skip-sqls = ["ALTER USER", "CREATE USER"]
 
-## 在使用 route-rules 功能后， 
-## replicate-do-db & replicate-ignore-db 匹配合表之后(target-schema & target-table )数值
-## 优先级关系: replicate-do-db --> replicate-do-table --> replicate-ignore-db --> replicate-ignore-table 
 ## 指定要同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
 #replicate-do-db = ["~^b.*","s1"]
 
@@ -216,43 +213,105 @@ syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-
 
 ## FAQ 
 
+### 指定数据库同步
+
+1. 通过实际案例描述 syncer 同步数据库参数优先级关系。
+2. 如果使用 route-rules 规则，请移步 [sharding 同步支持](#sharding-同步支持) 
+3. 优先级：replicate-do-db --> replicate-do-table --> replicate-ignore-db --> replicate-ignore-table
+
+```toml
+# 指定同步 ops 数据库
+# 指定同步以 ti 开头的数据库
+replicate-do-db = ["ops","~^ti.*"]
+
+# china 数据库下有 guangzhou / shanghai / beijing 等多张表，只同步 shanghai 与 beijing 表。
+# 指定同步 china 数据库下 shanghai 表
+[[replicate-do-table]]
+db-name ="china"
+tbl-name = "shanghai"
+
+# 指定同步 china 数据库下 beijing 表
+[[replicate-do-table]]
+db-name ="china"
+tbl-name = "beijing"
+
+# ops 数据库下有 ops_user / ops_admin / weekly 等数据表，只需要同步 ops_user 表。
+# 因 replicate-do-db 优先级比 replicate-do-table 高，所以此处设置只同步 ops_user 表无效，实际工作会同步 ops 整个数据库
+[[replicate-do-table]]
+db-name ="ops"
+tbl-name = "ops_user"
+
+# history 数据下有 2017_01 2017_02 ... 2017_12 / 2016_01  2016_02 ... 2016_12  等多张表,只需要同步 2017 年的数据表
+[[replicate-do-table]]
+db-name ="history"
+tbl-name = "~^2017_.*"
+
+# 忽略同步 ops 与 fault 数据库
+# 忽略同步以 www 开头的数据库
+## 因 replicate-do-db 优先级比 replicate-ignore-db 高，所以此处忽略同步 ops 不生效。
+replicate-ignore-db = ["ops","fault","~^www"]
+
+# fault 数据库下有 faults / user_feedback / ticket 等数据表
+# 忽略同步 user_feedback 数据表
+# 因 replicate-ignore-db 优先级比 replicate-ignore-table 高，所以此处设置只同步 user_feedback 表无效，实际工作会同步 fault 整个数据库
+[[replicate-ignore-table]]
+db-name = "fault"
+tbl-name = "user_feedback"
+
+# order 数据下有 2017_01 2017_02 ... 2017_12 / 2016_01  2016_02 ... 2016_12  等多张表,忽略 2016 年的数据表
+[[replicate-ignore-table]]
+db-name ="order"
+tbl-name = "~^2016_.*"
+```
+
+
 ### sharding 同步支持
 
-根据上面的 route-rules 可以支持将分库分表的数据导入到同一个库同一个表中，但是在开始前需要检查分库分表规则
+根据配置文件的 route-rules 可以支持将分库分表的数据导入到同一个库同一个表中，但是在开始前需要检查分库分表规则
 +   是否可以利用 route-rule 的语义规则表示
 +   分表中是否包含唯一递增主键，或者合并后数据上有冲突的唯一索引或者主键
 +   暂时对 ddl 支持不完善
 
 ![sharding](../media/syncer-sharding.png)
 
-#### 1. 分库分表同步示例
+#### 分库分表同步示例
 
-则只需要在所有 mysql 实例下面，启动 syncer, 并且设置以下 route-rule
+1. 则只需要在所有 mysql 实例下面，启动 syncer, 并且设置以下 route-rules
+2. replicate-do-db & replicate-ignore-db 与 route-rules 同时使用场景下，replicate-do-db & replicate-ignore-db 需要指定 route-rules 中 target-schema & target-table 内容
 
-```toml
-[[route-rules]]
-pattern-schema = "example_db"
-pattern-table = "table_*"
-target-schema = "example_db"
-target-table = "table"
-```
-
-#### 2. 指定分库分表同步示例
-
-则只需要在所有 mysql 实例下面，启动 syncer, 并且设置以下 route-rule 以及相关 replicate-do-db & replicate-ignore-db
 
 ```toml
-## 在使用 route-rules 功能后， 
-## replicate-do-db & replicate-ignore-db 匹配合表之后(target-schema & target-table )数值
-[replicate-do-table]
-db-name = "example_db"
-table-name = "table"
+# 场景如下:
+# 数据库A 下有 order_2016 / history_2016 等多个数据库
+# 数据库B 下有 order_2017 / history_2017 等多个数据库
+# 指定同步数据库A  order_2016 数据库，数据表如下 2016_01 2016_02 ... 2016_12 
+# 指定同步数据表B  order_2017 数据库，数据表如下 2017_01 2017_02 ... 2017_12
+# 表内使用 order_id 作为主键，数据之间主键不冲突
+# 忽略同步 history_2016 与 history_2017 数据库
+# 目标库需要为 order ，目标数据表为 order_2017 / order_2016
+
+# syncer 获取到上游数据后，发现 route-rules 规则启用，先做合库合表操作，再进行 do-db & do-table 判定
+## 此处需要设置 target-schema & target-table 判定需要同步的数据库
+[[replicate-do-table]]
+db-name ="order"
+tbl-name = "order_2016"
+
+[[replicate-do-table]]
+db-name ="order"
+tbl-name = "order_2017"
 
 [[route-rules]]
-pattern-schema = "example_db"
-pattern-table = "table_*"
-target-schema = "example_db"
-target-table = "table"
+pattern-schema = "order_2016"
+pattern-table = "2016_??"
+target-schema = "order"
+target-table = "order_2016"
+
+[[route-rules]]
+pattern-schema = "order_2017"
+pattern-table = "2017_??"
+target-schema = "order"
+target-table = "order_2017"
+
 ```
 
 ### syncer 同步前检查
@@ -346,6 +405,11 @@ target-table = "table"
 
     - 使用以下语句查看 binlog 内容
      `show binlog events in 'mysql-bin.000023' from 136676560 limit 10;`
+
+ 
+
+
+
 ### 安全启动 syncer 服务
 
 推荐使用 [supervise](https://cr.yp.to/daemontools/supervise.html) 类似服务守护 syncer 进程启动  
