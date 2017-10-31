@@ -115,7 +115,7 @@ SHOW STATS_BUCKETS [ShowLikeOrWhere]
 
 ## 删除统计信息
 
-你可以通过执行 `DROP STATS` 语句来删除统计信息。
+可以通过执行 `DROP STATS` 语句来删除统计信息。
 
 语法：
 ```sql
