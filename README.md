@@ -46,14 +46,7 @@
       - [理解 TiDB 执行计划](sql/understanding-the-query-execution-plan.md)
       - [统计信息](sql/statistics.md)
   + 语言结构
-      + 字面值
-          - [字符串字面值](sql/literal-value-string-literals.md)
-          - [数字字面值](sql/literal-value-numeric-literals.md)
-          - [NULL 值](sql/literal-value-null-values.md)
-          - [十六进制字面值](sql/literal-value-hex-decimal.md)
-          - [date 和 time 字面值](sql/literal-value-date-and-time-literals.md)
-          - [布尔值](sql/literal-value-boolean.md)
-          - [bit-val 字面值](sql/literal-value-bit-value.md)
+      - [字面值](sql/literal-values.md)
       - [数据库、表、索引、列和别名](sql/schema-object-names.md)
       - [关键字和保留字](sql/keywords-and-reserved-words.md)
       - [用户变量](sql/user-defined-variables.md)
