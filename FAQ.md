@@ -237,7 +237,7 @@ leader-schedule-limit 调度是用来均衡不同 TiKV 的 leader 数，影响�
 + 多个 DDL 语句一起执行的时候，后面的几个 DDL 语句会比较慢。原因是当前 TiDB 集群中 DDL 操作是串行执行的。
 + 在正常集群启动后，第一个 DDL 操作的执行时间可能会比较久，一般在 30s 左右，这个原因是刚启动时 TiDB 在竞选处理 DDL 的 leader。 
 + 在滚动升级或者停机升级时，由于停机顺序（先停 PD 再停 TiDB）或者用 `kill -9` 指令停 TiDB 导致 TiDB 没有及时清理注册数据，那么会影响 TiDB 启动后 10min 内的 DDL 语句处理时间。这段时间内运行 DDL 语句时，每个 DDL 状态变化都需要等待 2 * lease（默认 lease = 10s）。
-
++ 当集群中某个 TiDB 与 PD 之间发生通讯问题，即 TiDB 不能从 PD 及时获取或更新版本信息，那么这时候 DDL 操作的每个状态处理需要等待 2 * lease。
 
 #### ERROR 2013 (HY000): Lost connection to MySQL server during query 问题的排查方法
 
