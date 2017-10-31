@@ -112,3 +112,13 @@ SHOW STATS_BUCKETS [ShowLikeOrWhere]
 | repeats | 最大值出现的次数 |
 | lower_bound | 最小值 |
 | upper_bound | 最大值 |
+
+## 删除统计信息
+
+你可以通过执行 `DROP STATS` 语句来删除统计信息。
+
+语法：
+```sql
+DROP STATS TableName
+> 该语句会删除 TableName 中所有的统计信息。
+```
