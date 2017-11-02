@@ -348,8 +348,6 @@ target-table = "order_2017"
     1 row in set (0.00 sec)
     ```
 
-
-
 1.  检查 MySQL binlog 格式是否为 ROW
 
     - 可以用如下命令检查 binlog 格式：
@@ -393,11 +391,15 @@ target-table = "order_2017"
     mysql> set global binlog_row_image = FULL;
     Query OK, 0 rows affected (0.01 sec)
     ```
-  
+1.  检查 mydumper 用户权限
+
+    - mydumper 导出数据至少拥有以下权限:
+    - mydumper 操作对象为 RDS 时，可以添加 --no-locks 参数，避免申请 reload 权限
+      ` select , reload `
 1.  检查上下游同步用户权限
 
     - 需要上游 MySQL 同步账号至少赋予以下权限：
-      ` select , reload , replication slave , replication client`
+      ` select , replication slave , replication client`
     
     - 下游 TiDB 可暂时采用 root 同权限账号
 
@@ -430,7 +432,6 @@ target-table = "order_2017"
     `nohup ./syncer.sh ops 10088 &>./nohup.out &`
 
     - 使用 `sh start_ops.sh` 方式启动 syncer 服务
-
 
 -----
 
