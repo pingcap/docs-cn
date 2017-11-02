@@ -38,7 +38,7 @@ TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
 +   硬件配置建议
 
-    普通场景可以参考 [TiDB 和 TiKV 硬件配置建议](https://github.com/pingcap/docs-cn/blob/master/op-guide/recommendation.md#tidb-集群各个组件的硬件消耗情况及推荐配置)，但是如果是偏重分析的场景，可以将 TiKV 节点增加到至少 64G 内存，如果是机械硬盘，则推荐 8 块。
+    普通场景可以参考 [TiDB 和 TiKV 硬件配置建议](https://github.com/pingcap/docs-cn/blob/master/op-guide/recommendation.md#tidb-集群各个组件的硬件消耗情况及推荐配置)，但是如果是偏重分析的场景，可以将 TiKV 节点增加到至少 64G 内存。
 
 +   TiKV 参数建议
 
@@ -144,7 +144,7 @@ cd $SPARKPATH
 ```scala
 import org.apache.spark.sql.TiContext
 
-val ti = new TiContext(spark, List("192.168.1.100:2379"))
+val ti = new TiContext(spark)
 
 ti.tidbMapDatabase("tpch")
 ```
