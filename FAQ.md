@@ -281,11 +281,11 @@ RocksDB 对于 key 有压缩。
 
 #### TiKV master 和 slave 用的是一样的压缩算法，为什么效果不一样?
 
-目前来看 master 有些文件的压缩率会高一些，这个取决于底层数据的分布和 RocksDB 的实现，数据偶尔有些波动是正常的，底层存储引擎会根据需要调整数据。
+目前来看 master 有些文件的压缩率会高一些，这个取决于底层数据的分布和 RocksDB 的实现，数据大小偶尔有些波动是正常的，底层存储引擎会根据需要调整数据。
 
 #### TiKV block cache 有哪些特性？
 
-TiKV 使用了 RocksDB 的 Column Falimies 特性，KV 数据最终存储在默认 RocksDB 内部的 default、write 和 lock 3 个 CF 内。
+TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在默认 RocksDB 内部的 default、write 和 lock 3 个 CF 内。
 
 - default CF 存储的是真正的数据，与其对应的参数位于 [rocksdb.defaultcf] 项中； write CF 存储的是数据的版本信息（MVCC）以及索引相关的数据，相关的参数位于 [rocksdb.writecf] 项中； lock CF 存储的是锁信息，系统使用默认参数。
 
