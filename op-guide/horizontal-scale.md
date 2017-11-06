@@ -90,7 +90,7 @@ TiDB 集群可以在不影响线上服务的情况下动态进行扩容和缩容
   "store": {
     "id": 1,
     "address": "127.0.0.1:21060",
-    "state": 0,
+    "state": 1,
     "state_name": "Offline"
   },
   "status": {
