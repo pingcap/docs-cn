@@ -28,18 +28,20 @@ TiDB 是开源分布式 SQL 数据库，结合了传统的 RDBMS 和 NoSQL 的�
 + 符合下列要求的一台中控机
     - Python 2.6 或 Python 2.7
     - Python Jinja2 2.7.2 和 MarkupSafe 0.11 安装包。可使用以下命令进行安装：
+        
         ```bash
         pip install Jinja2==2.7.2 MarkupSafe==0.11
         ```
+        
     - 可通过 SSH 登录目标节点，支持密码登录和 SSH authorized_key 登录。
 
 + 符合下列要求的目标节点若干
-    - 机器 4 台以上。TiKV 至少 3 个实例，而且不要将 TiKV 与 TiDB 或 PD 模块部署在同一台机器上。详见[部署建议](https://github.com/pingcap/docs/blob/master/op-guide/recommendation.md)。
+    - 机器 4 台以上。TiKV 至少 3 个实例，而且不要将 TiKV 与 TiDB 或 PD 模块部署在同一台机器上。详见[部署建议](op-guide/recommendation.md)。
     - 操作系统：
-        - CentOS 7.0 及以上版本
-        - X86_64 架构 (AMD64)
-        - 内核版本 3.10 及以上
-        - Ext4 文件系统
+      - CentOS 7.0 及以上版本
+      - X86_64 架构 (AMD64)
+      - 内核版本 3.10 及以上
+      - Ext4 文件系统
     - 机器之间互通网络。部署时关闭防火墙和 iptables，部署完成后再开启。
     - 所有机器的时间和时区设置一致，有 NTP 服务可以同步正确时间。
     - 一个可从中控机登录的远程用户帐号，以通过 SSH 连接托管节点。普通用户帐号需要有 sudo 权限。

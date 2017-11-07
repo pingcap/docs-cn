@@ -3,7 +3,7 @@ title: 离线 TiDB Ansible 部署方案
 category: deployment
 ---
 
-#离线 TiDB Ansible 部署方案
+# 离线 TiDB Ansible 部署方案
 
 
 ## 准备机器
