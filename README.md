@@ -75,8 +75,6 @@
     - [加密和压缩函数](sql/encryption-and-compression-functions.md)
     - [信息函数](sql/information-functions.md)
     - [JSON 函数](sql/json-functions.md)
-    - [信息函数](sql/information-functions.md)
-    - 全局事务 ID 函数 [TBD]
     - [GROUP BY 聚合函数](sql/aggregate-group-by-functions.md)
     - [其他函数](sql/miscellaneous-functions.md)
     - [精度数学](sql/precision-math.md)
