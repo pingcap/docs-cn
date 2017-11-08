@@ -7,16 +7,6 @@ category: user guide
 
 DDL（Data Definition Language）用于定义和管理数据库以及数据库中各种对象的语句。
 
-* [CREATE DATABASE 语法](#create-database-语法)
-* [DROP DATABASE 语法](#drop-database-语法)
-* [CREATE TABLE 语法](#create-table-语法)
-* [DROP TABLE 语法](#drop-table-语法)
-* [TRUNCATE TABLE 语法](#truncate-table-语法)
-* [RENAME TABLE 语法](#rename-table-语法)
-* [ALTER TABLE 语法](#alter-table-语法)
-* [CREATE INDEX 语法](#create-index-语法)
-* [DROP INDEX 语法](#drop-index-语法)
-
 ## CREATE DATABASE 语法
 
 ```sql
@@ -212,7 +202,7 @@ TRUNCATE [TABLE] tbl_name
 
 此操作于删除指定表全表数据的操作类似，但是操作的执行速度会远快于删除全表的速度，且不受表内数据行数影响。
 
-注意：使用此语句后，原先表内的 `AUTO_INCREMENT` 的值不会记录，会被重新计数。
+> **注意**：使用此语句后，原先表内的 `AUTO_INCREMENT` 的值不会记录，会被重新计数。
 
 ## RENAME TABLE 语法
 
