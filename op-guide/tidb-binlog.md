@@ -10,7 +10,7 @@ category: advanced
   - [TiDB-Binlog 功能特性](#tidb-binlog-简介)
   - [TiDB-Binlog 整体架构](#tidb-binlog-架构)
   - [安装部署](#tidb-binlog-安装)
-  - [整体监控框架概述](https://github.com/pingcap/docs-cn/blob/master/op-guide/monitor-overview.md)
+  - [整体监控框架概述](monitor-overview.md)
   - [组件状态 API & 监控](#tidb-binlog-监控)
 
 ## TiDB-Binlog 简介
