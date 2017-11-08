@@ -27,30 +27,31 @@ category: deployment
 | 组件 | 默认端口 | 协议 | 说明 | 
 | :-- | :-- | :-- | :--------------- |
 | ssh | 22 | TCP | sshd 服务 |
-| TiDB|  4000  | TCP |  应用及 DBA 工具访问通信端口| 
-| TiDB| 10080  |  TCP | TiDB 状态信息上报通信端口| 
-| TiKV|  20160 |  TCP | TiKV 通信端口  | 
+| TiDB |  4000  | TCP |  应用及 DBA 工具访问通信端口 | 
+| TiDB | 10080  |  TCP | TiDB 状态信息上报通信端口 | 
+| TiKV |  20160 |  TCP | TiKV 通信端口  | 
 | PD | 2379 | TCP | 提供 TiDB 和 PD 通信端口 | 
-| PD | 2380 | TCP | PD 集群节点间通信端口| 
+| PD | 2380 | TCP | PD 集群节点间通信端口 | 
 
 
 ### 2. TiDB 数据库组件（选装）
 
 | 组件 | 默认端口 | 协议 | 说明 | 
 | :-- | :-- | :-- | :------------------------ |
-| Prometheus |  9090| TCP | Prometheus 服务通信端口  | 
+| Prometheus |  9090| TCP | Prometheus 服务通信端口 | 
 | Pushgateway |  9091 | TCP | TiDB, TiKV, PD 监控聚合和上报端口 |
 | Node_exporter|  9100| TCP | TiDB 集群每个节点的系统信息上报通信端口 |  
 | Grafana | 3000 | TCP | Web 监控服务对外服务和客户端(浏览器)访问端口 | 
-| alertmanager | 9093 | TCP |告警服务端口 |
+| alertmanager | 9093 | TCP | 告警服务端口 |
 
 ## TiDB 安装前系统配置与检查
+
 ### 操作系统检查
 
 | 配置 | 描述 |
 | :-- | :---------------------------- |
 |  支持平台  |   请查看和了解[系统部署建议](recommendation.md) |
-|  文件系统  |  TiDB 部署环境推荐使用 ext4 文件系统|
+|  文件系统  |  TiDB 部署环境推荐使用 ext4 文件系统 |
 |  Swap 空间  |  TiDB 部署推荐关闭 Swap 空间 |
 |  Disk Block Size  |  设置系统磁盘 Block 大小为 4096 |
     
