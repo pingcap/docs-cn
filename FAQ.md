@@ -78,7 +78,7 @@ TiDB 在提供水平扩展特性的同时，还能提供 SQL 以及分布式事�
 
 #### TiDB 高可用的特性是怎么样的？
 
-高可用是 TiDB 的另一大特点，TiDB/TiKV/PD 这三个组件都能容忍部分实例失效，不影响整个集群的可用性。具体见 [TiDB 高可用性](README.md#高可用)。
+高可用是 TiDB 的另一大特点，TiDB/TiKV/PD 这三个组件都能容忍部分实例失效，不影响整个集群的可用性。具体见 [TiDB 高可用性](overview.md#高可用)。
 
 #### TiDB 中删除数据后会立即释放空间吗？
 
@@ -95,6 +95,7 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 #### 如何导出 TiDB 数据？
 
 TiDB 目前暂时不支持 select into outfile，可以通过以下方式导出 TiDB 数据：
+
 + 参考 [MySQL使用mysqldump导出某个表的部分数据](http://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出。
 + 使用 MySQL client 将 select 的结果输出到一个文件。
 
@@ -133,7 +134,7 @@ leader-schedule-limit 调度是用来均衡不同 TiKV 的 leader 数，影响�
 
 #### 每个 region 的 replica 数量可配置吗？调整的方法是？
 
-可以，目前只能调整全局的 replica 数量。首次启动时 PD 会读配置文件（conf/pd.yml），使用其中的 max-replicas 配置，之后修改需要使用 pd-ctl 配置命令 `config set max-replicas $num`，配置后可通过 `config show all` 来查看已生效的配置。调整的时候，不会影响业务，会在后台添加，注意总 TiKV 实例数总是要大于等于设置的副本数，例如 3 副本需要至少 3 个 TiKV。增加副本数量之前需要预估额外的存储需求。pd-ctl 的详细用法可参考 [PD Control 使用说明](tools/pd-control.md)。
+可以，目前只能调整全局的 replica 数量。首次启动时 PD 会读配置文件（`conf/pd.yml`），使用其中的 max-replicas 配置，之后修改需要使用 pd-ctl 配置命令 `config set max-replicas $num`，配置后可通过 `config show all` 来查看已生效的配置。调整的时候，不会影响业务，会在后台添加，注意总 TiKV 实例数总是要大于等于设置的副本数，例如 3 副本需要至少 3 个 TiKV。增加副本数量之前需要预估额外的存储需求。pd-ctl 的详细用法可参考 [PD Control 使用说明](tools/pd-control.md)。
 
 ### TiDB
 
@@ -168,7 +169,7 @@ leader-schedule-limit 调度是用来均衡不同 TiKV 的 leader 数，影响�
 
 不可以，目前 TiDB 只支持分布式存储引擎和 Goleveldb/Rocksdb/Boltdb 引擎；
 
-是否支持如下 DDL： `CREATE TABLE ... LOCATION "s3://xxx/yyy"`？
+#### 是否支持如下 DDL： `CREATE TABLE ... LOCATION "s3://xxx/yyy"`？
 
 如果你能够实现 S3 存储引擎客户端，应该基于 TiKV 接口实现。
 
@@ -250,7 +251,7 @@ rm -rf tidb_test
 ```
 #### 可以配置 Chrony 满足 TiDB 对时间同步的要求吗？
 
-可以，只要能让 PD 机器时间同步就行。若使用 Chrony 配置时间同步，请在运行 deploy 脚本之前将 inventory.ini 配置文件中的 enable_ntpd 置为 False，即 `enable_ntpd = False`。
+可以，只要能让 PD 机器时间同步就行。若使用 Chrony 配置时间同步，请在运行 deploy 脚本之前将 `inventory.ini` 配置文件中的 `enable_ntpd` 置为 False，即 `enable_ntpd = False`。
 
 ### 扩容
 
@@ -346,7 +347,7 @@ TiDB 遵循 MySQL 的权限管理体系，可以创建用户并授予权限。
 
 在进行授权时，也可以使用 MySQL 语法，如 `GRANT SELECT ON *.* TO  'test'@'localhost';` 将读权限授予 test 用户。
 
-更多细节可以参考[权限管理](https://github.com/pingcap/docs-cn/blob/master/sql/privilege.md)。
+更多细节可以参考[权限管理](sql/privilege.md)。
 
 
 #### TiDB/PD/TiKV 的日志在哪里？
