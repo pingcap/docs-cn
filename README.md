@@ -102,7 +102,7 @@
   - [TiSpark 用户指南](op-guide/tispark-user-guide.md)
 - [常见问题与解答(FAQ)](FAQ.md)
 - [故障诊断](trouble-shooting.md)
-- [最佳实践](/blog-cn/tidb-best-practice/)
+- [最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
 - [版本发布历史](releases/README.md)
 + 更多资源
   - [PingCAP 团队技术博客](https://pingcap.com/bloglist-zh.html)
