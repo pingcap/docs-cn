@@ -23,9 +23,9 @@ TiDB 对业务没有任何侵入性，能优雅的替换传统的数据库中间
 
 三篇文章了解 TiDB 技术内幕：
 
-- [说存储](/blog-cn/tidb-internal-1/)
-- [说计算](/blog-cn/tidb-internal-2/)
-- [谈调度](/blog-cn/tidb-internal-3/)
+- [说存储](https://pingcap.com/blog-cn/tidb-internal-1/)
+- [说计算](https://pingcap.com/blog-cn/tidb-internal-2/)
+- [谈调度](https://pingcap.com/blog-cn/tidb-internal-3/)
 
 ## TiDB 整体架构
 
