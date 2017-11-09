@@ -181,7 +181,7 @@ col_name {ENUM | SET} (val_list)
 
 可以用以下的语句来影响这些跟客户端相关的字符集变量：
 
-* `SET NAMES 'charset_name' [COLLATE 'collation_name']` 
+* `SET NAMES 'charset_name' [COLLATE 'collation_name']`
 
 `SET NAMES` 用来设定客户端会在之后的请求中使用的字符集。`SET NAMES utf8` 表示客户端会在接下来的请求中，都使用 utf8 字符集。服务端也会在之后返回结果的时候使用 utf8 字符集。
 `SET NAMES 'charset_name'` 语句其实等于下面语句的组合：
@@ -202,5 +202,5 @@ SET character_set_client = charset_name;
 SET character_set_results = charset_name;
 SET collation_connection = @@collation_database;
 ```
-    
+
 更多细节，参考 [Connection Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-connection.html)。

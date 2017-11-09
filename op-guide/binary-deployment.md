@@ -24,24 +24,24 @@ category: deployment
 
 ### 1. TiDB 数据库组件（必装）
 
-| 组件 | 默认端口 | 协议 | 说明 | 
+| 组件 | 默认端口 | 协议 | 说明 |
 | :-- | :-- | :-- | :--------------- |
 | ssh | 22 | TCP | sshd 服务 |
-| TiDB |  4000  | TCP |  应用及 DBA 工具访问通信端口 | 
-| TiDB | 10080  |  TCP | TiDB 状态信息上报通信端口 | 
-| TiKV |  20160 |  TCP | TiKV 通信端口  | 
-| PD | 2379 | TCP | 提供 TiDB 和 PD 通信端口 | 
-| PD | 2380 | TCP | PD 集群节点间通信端口 | 
+| TiDB |  4000  | TCP |  应用及 DBA 工具访问通信端口 |
+| TiDB | 10080  |  TCP | TiDB 状态信息上报通信端口 |
+| TiKV |  20160 |  TCP | TiKV 通信端口  |
+| PD | 2379 | TCP | 提供 TiDB 和 PD 通信端口 |
+| PD | 2380 | TCP | PD 集群节点间通信端口 |
 
 
 ### 2. TiDB 数据库组件（选装）
 
-| 组件 | 默认端口 | 协议 | 说明 | 
+| 组件 | 默认端口 | 协议 | 说明 |
 | :-- | :-- | :-- | :------------------------ |
-| Prometheus |  9090| TCP | Prometheus 服务通信端口 | 
+| Prometheus |  9090| TCP | Prometheus 服务通信端口 |
 | Pushgateway |  9091 | TCP | TiDB, TiKV, PD 监控聚合和上报端口 |
-| Node_exporter|  9100| TCP | TiDB 集群每个节点的系统信息上报通信端口 |  
-| Grafana | 3000 | TCP | Web 监控服务对外服务和客户端(浏览器)访问端口 | 
+| Node_exporter|  9100| TCP | TiDB 集群每个节点的系统信息上报通信端口 |
+| Grafana | 3000 | TCP | Web 监控服务对外服务和客户端(浏览器)访问端口 |
 | alertmanager | 9093 | TCP | 告警服务端口 |
 
 ## TiDB 安装前系统配置与检查
@@ -54,8 +54,8 @@ category: deployment
 |  文件系统  |  TiDB 部署环境推荐使用 ext4 文件系统 |
 |  Swap 空间  |  TiDB 部署推荐关闭 Swap 空间 |
 |  Disk Block Size  |  设置系统磁盘 Block 大小为 4096 |
-    
-### 网络与防火墙   
+
+### 网络与防火墙
 
 | 配置| 描述 |
 | :-- | :---------------------------- |
@@ -101,10 +101,10 @@ category: deployment
 Last login: Tue Aug 22 12:06:23 CST 2017 on pts/2
 -bash-4.2$ ssh-keygen -t rsa
 Generating public/private rsa key pair.
-Enter file in which to save the key (/home/tidb/.ssh/id_rsa): 
+Enter file in which to save the key (/home/tidb/.ssh/id_rsa):
 Created directory '/home/tidb/.ssh'.
-Enter passphrase (empty for no passphrase): 
-Enter same passphrase again: 
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
 Your identification has been saved in /home/tidb/.ssh/id_rsa.
 Your public key has been saved in /home/tidb/.ssh/id_rsa.pub.
 The key fingerprint is:
@@ -415,7 +415,7 @@ scrape_configs:
       - '192.168.199.115:9100'
       - '192.168.199.116:9100'
 ...
- 
+
 # 启动 Prometheus:
 ./prometheus \
     --config.file="/data1/tidb/deploy/conf/prometheus.yml" \
