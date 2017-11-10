@@ -36,10 +36,6 @@ category: advanced
 ### 参数说明
 
 ```
-  -B string
-      恢复成另一个数据库(该数据库之前不存在),与 -s 联合使用
-  -s string
-      指定一个已存在数据库,与 -B 联合使用
   -L string
       log 级别设置，可以设置为 debug, info, warn, error, fatal (默认为 "info")
   -P int
@@ -86,11 +82,6 @@ checkpoint-schema = "tidb_loader"
 
 # Number of threads restoring concurrently for worker pool. Each worker restore one file at a time, increase this as TiKV nodes increase
 pool-size = 16
-
-# An alternative database to restore into
-#alternative-db = ""
-# Database to restore
-#source-db = ""
 
 # DB config
 [db]
