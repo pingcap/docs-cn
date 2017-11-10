@@ -6,30 +6,6 @@
   - [TiDB 简介](overview.md#tidb-简介)
   - [TiDB 整体架构](overview.md#tidb-整体架构)
 - [TiDB 快速入门指南](QUICKSTART.md)
-+ TiDB 运维文档
-  - [软硬件环境需求](op-guide/recommendation.md)
-  + 部署集群 
-    - [Ansible 部署方案（强烈推荐）](op-guide/ansible-deployment.md)
-    - [离线 Ansible 部署方案（强烈推荐）](op-guide/offline-ansible-deployment.md)
-    - [Docker 部署方案](op-guide/docker-deployment.md)
-    - [跨机房部署方案](op-guide/location-awareness.md)
-  - [配置集群](op-guide/configuration.md)
-  + 监控集群
-    - [整体监控框架概述](op-guide/monitor-overview.md)
-    - [重要监控指标详解](op-guide/dashboard-overview-info.md)
-    - [组件状态 API & 监控](op-guide/monitor.md)
-  + 扩容缩容
-     - [使用 Ansible 扩容缩容](QUICKSTART.md#tidb-集群扩容缩容方案)
-     - [集群扩容缩容方案](op-guide/horizontal-scale.md)
-  - [升级](op-guide/ansible-deployment.md#滚动升级)
-  - [性能调优](op-guide/tune-tikv.md)
-  + 备份与迁移
-    - [备份与恢复](op-guide/backup-restore.md)
-    + 数据迁移
-      - [数据迁移概述](op-guide/migration-overview.md)
-      - [全量导入](op-guide/migration.md#使用-mydumperloader-全量导入数据)
-      - [增量导入](op-guide/migration.md#使用-syncer-增量导入数据)
-  - [Binary 部署方案](op-guide/binary-deployment.md)
 + TiDB 用户文档
   + TiDB 数据库管理
     - [TiDB 服务](sql/tidb-server.md)
@@ -90,8 +66,33 @@
   - [Connectors 和 API](sql/connection-and-APIs.md)
   - [错误码与故障诊断](sql/error.md)
   - [与 MySQL 兼容性对比](sql/mysql-compatibility.md)
-+ 高级功能
-  - [历史数据回溯](op-guide/history-read.md)
+  + 高级功能
+    - [历史数据回溯](op-guide/history-read.md)
++ TiDB 运维文档
+  - [软硬件环境需求](op-guide/recommendation.md)
+  + 部署集群 
+    - [Ansible 部署方案（强烈推荐）](op-guide/ansible-deployment.md)
+    - [离线 Ansible 部署方案（强烈推荐）](op-guide/offline-ansible-deployment.md)
+    - [Docker 部署方案](op-guide/docker-deployment.md)
+    - [跨机房部署方案](op-guide/location-awareness.md)
+  - [配置集群](op-guide/configuration.md)
+  + 监控集群
+    - [整体监控框架概述](op-guide/monitor-overview.md)
+    - [重要监控指标详解](op-guide/dashboard-overview-info.md)
+    - [组件状态 API & 监控](op-guide/monitor.md)
+  + 扩容缩容
+     - [使用 Ansible 扩容缩容](QUICKSTART.md#tidb-集群扩容缩容方案)
+     - [集群扩容缩容方案](op-guide/horizontal-scale.md)
+  - [升级](op-guide/ansible-deployment.md#滚动升级)
+  - [性能调优](op-guide/tune-tikv.md)
+  + 备份与迁移
+    - [备份与恢复](op-guide/backup-restore.md)
+    + 数据迁移
+      - [数据迁移概述](op-guide/migration-overview.md)
+      - [全量导入](op-guide/migration.md#使用-mydumperloader-全量导入数据)
+      - [增量导入](op-guide/migration.md#使用-syncer-增量导入数据)
+  - [Binary 部署方案](op-guide/binary-deployment.md)
+  - [故障诊断](trouble-shooting.md)
 + TiDB 周边工具
   - [Loader 使用文档](tools/loader.md)
   - [Syncer 使用文档](tools/syncer.md)
@@ -101,7 +102,6 @@
   - [TiSpark 快速入门指南](op-guide/tispark-quick-start-guide.md)
   - [TiSpark 用户指南](op-guide/tispark-user-guide.md)
 - [常见问题与解答(FAQ)](FAQ.md)
-- [故障诊断](trouble-shooting.md)
 - [最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
 - [版本发布历史](releases/README.md)
 + 更多资源
