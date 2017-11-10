@@ -92,7 +92,7 @@
   - [与 MySQL 兼容性对比](sql/mysql-compatibility.md)
 + 高级功能
   - [历史数据回溯](op-guide/history-read.md)
-+ 工具
++ TiDB 周边工具
   - [Loader 使用文档](tools/loader.md)
   - [Syncer 使用文档](tools/syncer.md)
   - [TiDB-binlog 使用文档](op-guide/tidb-binlog.md)
