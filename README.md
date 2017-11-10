@@ -21,7 +21,7 @@
   + 扩容缩容
      - [使用 Ansible 扩容缩容](QUICKSTART.md#tidb-集群扩容缩容方案)
      - [集群扩容缩容方案](op-guide/horizontal-scale.md)
-  - [升级](op-guide/ansible-deployment.md)
+  - [升级](op-guide/ansible-deployment.md#滚动升级)
   - [性能调优](op-guide/tune-tikv.md)
   + 备份与迁移
     - [备份与恢复](op-guide/backup-restore.md)
