@@ -105,9 +105,9 @@
 - [最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
 - [版本发布历史](releases/README.md)
 + 更多资源
-  - [PingCAP 团队技术博客](https://pingcap.com/bloglist-zh.html)
+  - [PingCAP 团队技术博客](https://pingcap.com/blog-cn/)
   - [知乎专栏](https://zhuanlan.zhihu.com/newsql)
-  - [Weekly](http://weekly.pingcap.com/)
+  - [Weekly](https://pingcap.com/weekly/)
   - [英文文档](https://pingcap.com/docs)
 
 
