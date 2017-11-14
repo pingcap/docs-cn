@@ -37,6 +37,8 @@
     - [日期和时间类型](sql/date-and-time-types.md)
     - [字符串类型](sql/datatype.md#字符串类型)
     - [JSON 数据类型](sql/datatype.md#json-类型)
+    - [枚举类型](sql/datatype.md#枚举类型)
+    - [集合类型](sql/datatype.md#集合类型)
     - [数据类型默认值](sql/datatype.md#数据类型的默认值)
   + 函数和操作符
     - [函数和操作符概述](sql/functions-and-operators-reference.md)
@@ -94,8 +96,8 @@
   - [Binary 部署方案](op-guide/binary-deployment.md)
   - [故障诊断](trouble-shooting.md)
 + TiDB 周边工具
-  - [Loader 使用文档](tools/loader.md)
   - [Syncer 使用文档](tools/syncer.md)
+  - [Loader 使用文档](tools/loader.md)
   - [TiDB-binlog 使用文档](op-guide/tidb-binlog.md)
   - [PD Control 使用文档](tools/pd-control.md)
 + TiSpark 文档
@@ -104,7 +106,9 @@
 - [常见问题与解答(FAQ)](FAQ.md)
 - [最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
 - [版本发布历史](releases/README.md)
+- [TiDB 路线图](https://github.com/pingcap/docs-cn/blob/master/ROADMAP.md)
 + 更多资源
+  - [常用工具](https://github.com/pingcap/tidb-tools)
   - [PingCAP 团队技术博客](https://pingcap.com/blog-cn/)
   - [知乎专栏](https://zhuanlan.zhihu.com/newsql)
   - [Weekly](https://pingcap.com/weekly/)
