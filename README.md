@@ -37,8 +37,8 @@
     - [日期和时间类型](sql/date-and-time-types.md)
     - [字符串类型](sql/datatype.md#字符串类型)
     - [JSON 数据类型](sql/datatype.md#json-类型)
-    - [枚举类型](sql/datatype.md#枚举类型)
-    - [集合类型](sql/datatype.md#集合类型)
+    - [枚举类型](sql/datatype.md#枚举类型)
+    - [集合类型](sql/datatype.md#集合类型)
     - [数据类型默认值](sql/datatype.md#数据类型的默认值)
   + 函数和操作符
     - [函数和操作符概述](sql/functions-and-operators-reference.md)
@@ -108,7 +108,7 @@
 - [版本发布历史](releases/README.md)
 - [TiDB 路线图](https://github.com/pingcap/docs-cn/blob/master/ROADMAP.md)
 + 更多资源
-  - [常用工具](https://github.com/pingcap/tidb-tools)
+  - [常用工具](https://github.com/pingcap/tidb-tools)
   - [PingCAP 团队技术博客](https://pingcap.com/blog-cn/)
   - [知乎专栏](https://zhuanlan.zhihu.com/newsql)
   - [Weekly](https://pingcap.com/weekly/)
