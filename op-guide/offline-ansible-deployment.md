@@ -1,24 +1,9 @@
 ---
-title: TiDB Ansible Deployment
+title: Offline deployment using Ansible
 category: operations
 ---
 
-# Ansible Deployment
-
-## Overview
-
-Ansible is an IT automation tool. It can configure systems, deploy software, and orchestrate more advanced IT tasks such as continuous deployments or zero downtime rolling updates.
-
-[TiDB-Ansible](https://github.com/pingcap/tidb-ansible) is a TiDB cluster deployment tool developed by PingCAP, based on Ansible playbook. TiDB-Ansible enables you to quickly deploy a new TiDB cluster which includes PD, TiDB, TiKV, and the cluster monitoring modules.
-
-You can use the TiDB-Ansible configuration file to set up the cluster topology, completing all operation tasks with one click, including:
-
-- Initializing the system, including creating a user for deployment, setting up a hostname, etc.
-- Deploying the components
-- Rolling upgrade, including module survival detection
-- Cleaning data
-- Cleaning environment
-- Configuring monitoring modules
+# Offline deployment using Ansible
 
 ## Prepare
 
@@ -28,11 +13,11 @@ Before you start, make sure that you have:
 
     - Python 2.6 or Python 2.7
     - Python Jinja2 2.7.2 and MarkupSafe 0.11 packages. You can use the following commands to install the packages:
-    
+      
       ```
       pip install Jinja2==2.7.2 MarkupSafe==0.11
       ```
-    
+
     - Access to the external network to install curl package and download binary.
     - Access to the managed nodes via SSH using password login or SSH authorized_key login.
 
@@ -42,10 +27,13 @@ Before you start, make sure that you have:
 
     - Recommended Operating system:
 
-        - CentOS 7.3 or later
-        - X86_64 architecture (AMD64)
-        - Kernel version 3.10 or later
-        - Ext4 file system.
+      - CentOS 7.3 or later
+
+      - X86_64 architecture (AMD64)
+
+      - Kernel version 3.10 or later
+
+      - Ext4 file system
 
     - The network between machines. Turn off the firewalls and iptables when deploying and turn them on after the deployment.
 
@@ -55,44 +43,85 @@ Before you start, make sure that you have:
 
     - Python 2.6 or Python 2.7
 
-    > **Note:** The Control Machine can be one of the managed nodes.
+    > **Note**: The Control Machine can be one of the managed nodes.
 
 ## Install Ansible in the Control Machine
 
-Install Ansible 2.3 or later to your platform:
+1. Install Ansible offline on CentOS:
 
-- PPA source on Ubuntu:
+  > Download the [Ansible](https://download.pingcap.org/ansible-2.3-rpms.el7.tar.gz) offline installation package to the Control Machine.
+  
+  ```ini
+  
+  tar -xzvf ansible-2.3-rpms.el7.tar.gz
+  
+  cd ansible-2.3-rpms.el7
+  
+  rpm -ivh PyYAML*.rpm libtomcrypt*.rpm libtommath*.rpm libyaml*.rpm python-
+  babel*.rpm python-backports*.rpm python-backports-ssl_match_hostname*.rpm
+  python-httplib2*.rpm python-jinja2*.rpm python-keyczar*.rpm python-
+  markupsafe*.rpm python-setuptools*.rpm python-six*.rpm python2-crypto*.rpm
+  python2-ecdsa*.rpm python2-paramiko*.rpm python2-pyasn1*.rpm sshpass*.rpm
+  rpm -ivh ansible-2.3.1.0-1.el7.noarch.rpm
+  ```
 
+2. After Ansible is installed, you can view the version using `ansible --version`.
+  
+  ```
+  ansible --version
+  # ansible 2.3.1.0
+  ```
+
+## Download TiDB packages
+
+Download all packages to the Control Machine.
+
+| Component | Download link | 
+| -------- | ----  | 
+|**Deploy**| [ tidb-ansible release-1.0 ](https://github.com/pingcap/tidb-ansible/tree/release-1.0) | 
+|**TiDB**| [ tidb-1.0.0 ](http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz) |
+| | [ tidb-tools-latest ](http://download.pingcap.org/tidb-tools-latest-linux-amd64.tar.gz) | 
+| | [ tidb-binlog-latest ](http://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz) |
+|**Monitor**| [ prometheus-1.5.2 ](https://github.com/prometheus/prometheus/releases/download/v1.5.2/prometheus-1.5.2.linux-amd64.tar.gz) | 
+| | [ grafana-4.1.2 ](https://grafanarel.s3.amazonaws.com/builds/grafana-4.1.2-1486989747.linux-x64.tar.gz) |
+| | [ node_exporter-0.14.0-rc.1 ](http://download.pingcap.org/node_exporter-0.14.0-rc.1.linux-amd64.tar.gz) | 
+| | [ pushgateway-0.3.1 ](http://download.pingcap.org/pushgateway-0.3.1.linux-amd64.tar.gz) |
+| | [ alertmanager-0.5.1 ](https://github.com/prometheus/alertmanager/releases/download/v0.5.1/alertmanager-0.5.1.linux-amd64.tar.gz) |
+| | [ daemontools-0.53 ](http://oifici4co.bkt.gdipper.com/daemontools-0.53.tar.gz) |
+|**Test**| [ fio-2.16 ](https://download.pingcap.org/fio-2.16.tar.gz) | 
+|**Spark**| [ spark-2.1.1-bin-hadoop ](http://download.pingcap.org/spark-2.1.1-bin-hadoop2.7.tgz) |
+| | [ tispark-SNAPSHOT-jar-with-dependencies ](http://download.pingcap.org/tispark-SNAPSHOT-jar-with-dependencies.jar) |
+| | [ tispark-sample-data ](http://download.pingcap.org/tispark-sample-data.tar.gz) |
+
+## Install the packages
+
+1. Extract the cluster deployment tool `tidb-ansible`.
+2. Copy all the other components to the `downloads` directory in `tidb-ansible`.
+3. Change the name of TiDB installation packages:
+
+    ```ini
+    
+    mv tidb-v1.0.0-linux-amd64-unportable.tar.gz tidb-v1.0.0.tar.gz
+    
+    mv tidb-tools-latest-linux-amd64.tar.gz tidb-tools-latest.tar.gz
+    
+    mv tidb-binlog-latest-linux-amd64.tar.gz tidb-binlog-latest.tar.gz
+    
+    mv prometheus-1.5.2.linux-amd64.tar.gz prometheus-1.5.2.tar.gz
+    
+    mv grafana-4.1.2-1486989747.linux-x64.tar.gz grafana-4.1.2.tar.gz
+    
+    mv node_exporter-0.14.0-rc.1.linux-amd64.tar.gz node_exporter-0.14.0.tar.gz
+    
+    mv pushgateway-0.3.1.linux-amd64.tar.gz pushgateway-0.3.1.tar.gz
+    
+    mv alertmanager-0.5.1.linux-amd64.tar.gz alertmanager-0.5.1.tar.gz
+  
     ```
-    sudo add-apt-repository ppa:ansible/ansible
-    sudo apt-get update
-    sudo apt-get install ansible
-    ```
 
-- EPEL source on CentOS:
+## Orchestrate the TiDB cluster
 
-    ```
-    yum install epel-release
-    yum update
-    yum install ansible
-    ```
-
-You can use the `ansible --version` command to view the version information.
-
-For more information, see [Ansible Documentation](http://docs.ansible.com/ansible/intro_installation.html).
-
-## Download TiDB-Ansible to the Control Machine
-
-Use the following command to download the TiDB-Ansible `release-1.0` branch from GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible).
-The default folder name is `tidb-ansible`. The `tidb-ansible` directory contains all files you need to get started with TiDB-Ansible.
-
-```
-git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
-```
-
-## Orchestrate the TiDB Cluster
-
-The file path of `inventory.ini`: `tidb-ansible/inventory.ini`
+The file path of `inventory.ini` is: `tidb-ansible/inventory.ini`
 
 The standard cluster has 6 machines:
 
@@ -100,7 +129,7 @@ The standard cluster has 6 machines:
 - 3 PD nodes
 - 3 TiKV nodes
 
-### The Cluster Topology of Single TiKV Instance on a Single Machine 
+### The cluster topology of single TiKV instance on a single machine 
 
 | Name | Host IP | Services |
 | ---- | ------- | -------- |
@@ -138,7 +167,7 @@ pd_servers
 172.16.10.1
 ```
 
-### The Cluster Topology of Multiple TiKV Instances on a Single Machine
+### The cluster topology of multiple TiKV instances on a single machine
 
 Take three TiKV instances as an example:
 
@@ -193,7 +222,7 @@ location_labels = ["host"]
 
 1. For multiple TiKV instances, edit the `end-point-concurrency` and `block-cache-size` parameters in `conf/tikv.yml`:
 
-    - `end-point-concurrency`: keep the number lower than CPU Vcores
+    - `end-point-concurrency`: keep the number less than CPU Vcores
     - `rocksdb defaultcf block-cache-size(GB)`: MEM * 80% / TiKV instance number * 30% 
     - `rocksdb writecf block-cache-size(GB)`: MEM * 80% / TiKV instance number * 45%
     - `rocksdb lockcf block-cache-size(GB)`: MEM * 80% / TiKV instance number * 2.5% (128 MB at a minimum)
@@ -203,7 +232,7 @@ location_labels = ["host"]
 
     - `capaticy`: (DISK - log space) / TiKV instance number (the unit is GB)
 
-## Deploy the TiDB Cluster
+## Deploy the TiDB cluster
 
 > **Note**: 
 > 
@@ -315,14 +344,14 @@ Descriptions about the two circumstances are as follows.
         ansible-playbook start.yml -k
         ```
 
-## Test the Cluster
+## Test the cluster
 
 It is recommended to configure load balancing to provide uniform SQL interface.
 
 1. Connect to the TiDB cluster using the MySQL client.
 
     ```
-    mysql -u root -h 172.16.10.1 -P 4000
+    mysql -u root-h 172.16.10.1 -P 4000
     ```
     
     > **Note**: The default port of TiDB service is 4000.
@@ -334,105 +363,3 @@ It is recommended to configure load balancing to provide uniform SQL interface.
     ```
     
     The default account and password: `admin/admin`.
-
-## Perform Rolling Update
-
-- The rolling update of the TiDB service does not impact the ongoing business. Minimum requirements: `pd*3, tidb*2, tikv*3`.
-- For remote connection privileges, see the procedures described in the above section. But if the mutual authentication is already set up, you don't need to add the `-k` parameter.
-- If the `pump`/`drainer` services are running in the cluster, it is recommended to stop the `drainer` service first before the rolling update. The rolling update of the TiDB service automatically updates the `pump` service.
-
-### Download the Binary
-
-1. Use `playbook` to download the TiDB 1.0 binary and replace the existing binary in `tidb-ansible/resource/bin/` automatically.
-
-    ```
-    ansible-playbook local_prepare.yml
-    ```
-
-2. Use `wget` to download the binary and replace the existing binary in `tidb-ansible/resource/bin/` manually.
-
-    ```
-    wget http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz
-    ```
-
-### Use Ansible for Rolling Update
-
-1. To apply rolling update to a specific service, such as TiKV.
-
-    ```
-    ansible-playbook rolling_update.yml --tags=tikv
-    ```
-
-2. To apply rolling update to all the services.
-
-    ```
-    ansible-playbook rolling_update.yml
-    ```
-
-## Summary of Common Operations
-
-| Job | Playbook |
-| ------------- | ------------------ |
-| Start the cluster | `ansible-playbook start.yml` |
-| Stop the cluster | `ansible-playbook stop.yml` |
-| Destroy the cluster | `ansible-playbook unsafe_cleanup.yml` (If the deployment directory is a mount point, an error will be reported, but implementation results will remain unaffected) |
-| Clean data (for test) | `ansible-playbook cleanup_data.yml` |
-| Rolling Upgrade | `ansible-playbook rolling_update.yml` |
-| Rolling upgrade TiKV | `ansible-playbook rolling_update.yml --tags=tikv` |
-| Rolling upgrade modules except PD | `ansible-playbook rolling_update.yml --skip-tags=pd` |
-
-For more advanced features of TiDB including data migration, performance tuning, etc., see [TiDB Documents](https://github.com/pingcap/docs).
-
-## FAQ
-
-### The download links for various TiDB versions.
-
-- 1.0 version:
-  - [TiDB 1.0-CentOS7](http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz)
-  - [TiDB 1.0-CentOS6](http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable-centos6.tar.gz)
-
-### How to download and install TiDB of a specified version?
-
-If you need to install TiDB 1.0 version, download the `TiDB-Ansible release-1.0` branch and make sure `tidb_version = v1.0.0` in the `inventory.ini` file. For installation procedures, see the above description in this document.
-
-Download the `TiDB-Ansible release-1.0` branch from GitHub:
-
-```
-git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
-```
-
-### Custom Port 
-
-| Component | Variable Port | Default Port | Description |
-| :-- | :-- | :-- | :-- |
-| TiDB |  tidb_port | 4000  | the communication port for the application and DBA tools |
-| TiDB | tidb_status_port | 10080  | the communication port to report TiDB status |
-| TiKV | tikv_port | 20160 |  the TiKV communication port  |
-| PD | pd_client_port | 2379 | the communication port between TiDB and PD |
-| PD | pd_peer_port | 2380 | the inter-node communication port within the PD cluster |
-| Pump | pump_port | 8250  | the pump communication port |
-| Prometheus | prometheus_port | 9090 | the communication port for the Prometheus service |
-| Pushgateway | pushgateway_port | 9091 | the aggregation and report port for TiDB, TiKV, and PD monitor |
-| node_exporter | node_exporter_port | 9100 | the communication port to report the system information of every TiDB cluster node |
-| Grafana | grafana_port|  3000 | the port for the external Web monitoring service and client (Browser) access |
-
-### Custom Deployment Directory
-
-| Component | Variable Directory | Default Directory | Description |
-| :-- | :-- | :-- | :-- |
-| Global | deploy_dir | /home/tidb/deploy | the deployment directory |
-| TiDB | tidb_log_dir | {{ deploy_dir }}/log  | the TiDB log directory |
-| TiKV | tikv_log_dir | {{ deploy_dir }}/log | the TiKV log directory |
-| TiKV | tikv_data_dir | {{ deploy_dir }}/data | the data directory |
-| TiKV | wal_dir | "" | the rocksdb write-ahead log directory, consistent with the TiKV data directory when the value is null |
-| TiKV | raftdb_path | "" | the raftdb directory, being tikv_data_dir/raft when the value is null |
-| PD | pd_log_dir | {{ deploy_dir }}/log | the PD log directory |
-| PD | pd_data_dir | {{ deploy_dir }}/data.pd | the PD data directory |
-| Pump | pump_log_dir | {{ deploy_dir }}/log  | the Pump log directory |
-| Pump | pump_data_dir | {{ deploy_dir }}/data.pump  | the Pump data directory |
-| Prometheus | prometheus_log_dir | {{ deploy_dir }}/log | the Prometheus log directory |
-| Prometheus | prometheus_data_dir | {{ deploy_dir }}/data.metrics | the Prometheus data directory |
-| pushgateway | pushgateway_log_dir | {{ deploy_dir }}/log | the pushgateway log directory |
-| node_exporter | node_exporter_log_dir | {{ deploy_dir }}/log | the node_exporter log directory |
-| Grafana | grafana_log_dir | {{ deploy_dir }}/log | the Grafana log directory |
-| Grafana | grafana_data_dir | {{ deploy_dir }}/data.grafana | the Grafana data directory |

@@ -12,6 +12,7 @@ category: operations
 ## Deploy
 
   - [Ansible Deployment (Recommended)](ansible-deployment.md)
+  - [Offline Ansible Deployment (Recommended)](offline-ansible-deployment.md)
   - [Docker Deployment](docker-deployment.md)
   - [Cross-Region Deployment](location-awareness.md)
 
