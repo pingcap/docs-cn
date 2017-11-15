@@ -3,13 +3,13 @@ title: Introduction to Statistics
 category: user guide
 ---
 
-# Introduction to Statistics
+# Introduction to statistics
 
 Based on the statistics, the TiDB optimizer chooses the most efficient query execution plan. The statistics collect table-level and column-level information. The statistics of a table include the total number of rows and the number of updated rows. The statistics of a column include the number of different values, the number of `NULL`, and the histogram of the column.
 
-## Collect Statistics
+## Collect statistics
 
-### Manual Collection
+### Manual collection
 
 You can run the `ANALYZE` statement to collect statistics.
 
@@ -23,11 +23,11 @@ ANALYZE TABLE TableName INDEX IndexNameList
 > The statement collects statistics of the index columns on all `IndexNameList` in `TableName`. 
 ```
 
-### Automatic Update
+### Automatic update
 
 For the `INSERT`, `DELETE`, or `UPDATE` statements, TiDB automatically updates the number of rows and updated rows. TiDB persists this information regularly and the update cycle is 5 * `stats-lease`. The default value of `stats-lease` is `3s`. If you specify the value as `0`, it does not update automatically.
 
-### Control `ANALYZE` Concurrency
+### Control `ANALYZE` concurrency
 
 When you run the `ANALYZE` statement, you can adjust the concurrency using the following parameters, to control its effect on the system.
 
@@ -43,11 +43,11 @@ When you analyze regular columns, you can use the `tidb_distsql_scan_concurrency
 
 When you analyze index columns, you can use the `tidb_index_serial_scan_concurrency` parameter to control the number of Region to be read at one time. The default value is `1`.
 
-## View Statistics
+## View statistics
 
 You can view the statistics status using the following statements.
 
-### Metadata of Tables
+### Metadata of tables
 
 You can use the `SHOW STATS_META` statement to view the total number of rows and the number of updated rows.
 
@@ -68,7 +68,7 @@ Currently, the `SHOW STATS_META` statement returns the following 5 columns:
 | `modify_count` | the number of modified rows |
 | `row_count` | the total number of rows |
 
-### Metadata of Columns
+### Metadata of columns
 
 You can use the `SHOW STATS_HISTOGRAMS` statement to view the number of different values and the number of `NULL` in all the columns.
 
@@ -91,7 +91,7 @@ Currently, the `SHOW STATS_HISTOGRAMS` statement returns the following 7 columns
 | `distinct_count` | the number of different values |
 | `null_count` | the number of `NULL` |
 
-### Buckets of Histogram
+### Buckets of histogram
 
 You can use the `SHOW STATS_BUCKETS` statement to view each bucket of the histogram.
 
@@ -115,3 +115,14 @@ Currently, the `SHOW STATS_BUCKETS` statement returns the following 9 columns:
 | `repeats` | the occurrence number of the maximum value |
 | `lower_bound` | the minimum value |
 | `upper_bound` | the maximum value |
+
+## Delete statistics
+
+You can run the `DROP STATS` statement to delete statistics.
+
+Syntax:
+
+```sql
+DROP STATS TableName
+> The statement deletes statistics of all the tables in `TableName`。
+```
