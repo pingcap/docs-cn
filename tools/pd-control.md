@@ -208,3 +208,15 @@ Replica 调度的开销较大，所以这个值不宜调得太大。
 >> scheduler add shuffle-region-scheduler     // 随机调度不同 store 上的 region
 >> scheduler remove grant-leader-scheduler-1  // 把对应的 scheduler 删掉
 ```
+
+### hot [read | write | store]
+
+用于显示集群热点信息。
+
+示例：
+
+```bash
+>> hot read                                   // 显示读热点信息
+>> hot write                                  // 显示写热点信息
+>> hot store                                  // 显示所有 store 的读写信息
+```
