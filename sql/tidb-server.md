@@ -21,14 +21,13 @@ TiDB 兼容 MySQL 的系统变量，同时定义了一些特有的系统变量�
 
 和 MySQL 类似，TiDB 中也有系统表，用于存放数据库运行时所需信息。具体信息参考 [TiDB 系统数据库](system-database.md)文档。
 
-
 ## TiDB 数据目录
 
-TiDB 数据存放在存储引擎中，数据目录取决于使用的存储引擎，存储引擎的选择参见 [TiDB 启动参数文档](../op-guide/configuration.md#--store)。
+TiDB 数据存放在存储引擎中，数据目录取决于使用的存储引擎，存储引擎的选择参见 [TiDB 启动参数文档](../op-guide/configuration.md#store)。
 
-对于使用本地存储引擎的情况，数据存储在本机硬盘上，目录位置通过 [path](../op-guide/configuration.md#--path) 参数控制。
+对于使用本地存储引擎的情况，数据存储在本机硬盘上，目录位置通过 [path](../op-guide/configuration.md#path) 参数控制。
 
-对于使用 TiKV 引擎的情况，数据存储在 TiKV 节点上，目录位置通过 [data-dir](../op-guide/configuration.md#--data-dir-1) 参数控制。
+对于使用 TiKV 引擎的情况，数据存储在 TiKV 节点上，目录位置通过 [data-dir](../op-guide/configuration.md#data-dir-1) 参数控制。
 
 ## TiDB 服务器日志文件
 
