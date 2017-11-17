@@ -126,13 +126,15 @@ Protobuf 格式示例：
 {
   "members": [......]
 }
->> member leader                        // 显示 leader 的信息
+>> member leader show                   // 显示 leader 的信息
 {
   "name": "pd",
   "addr": "http://192.168.199.229:2379",
   "id": 9724873857558226554
 }
->> member delete pd2                    // 下线 "pd2"
+>> member delete name pd2               // 下线 "pd2"
+Success!
+>> member delete id 1319539429105371180 // 使用 id 下线节点
 Success!
 ```
 
