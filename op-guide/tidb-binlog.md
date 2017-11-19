@@ -232,7 +232,7 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
     配置文件
 
     ```toml
-    # drainer Configuration.
+    # drainer Configuration.  
 
     # drainer 提供服务的地址(默认 "127.0.0.1:8249")
     addr = "127.0.0.1:8249"
@@ -275,14 +275,12 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
     # 以 '~' 开始声明使用正则表达式
     #
     #replicate-do-db = ["~^b.*","s1"]
-    #[[syncer.replicate-do-table]]
+    #[[syncer.replicate-do-table]]
     #db-name ="test"
     #tbl-name = "log"
-
     #[[syncer.replicate-do-table]]
     #db-name ="test"
     #tbl-name = "~^a.*"
-
     # db-type 设置为 mysql 时，下游数据库服务器参数
     [syncer.to]
     host = "127.0.0.1"
