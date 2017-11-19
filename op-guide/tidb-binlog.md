@@ -5,14 +5,6 @@ category: advanced
 
 # TiDB-Binlog 部署方案
 
-目录
-
-  - [TiDB-Binlog 功能特性](#tidb-binlog-简介)
-  - [TiDB-Binlog 整体架构](#tidb-binlog-架构)
-  - [安装部署](#tidb-binlog-安装)
-  - [整体监控框架概述](https://github.com/pingcap/docs-cn/blob/master/op-guide/monitor-overview.md)
-  - [组件状态 API & 监控](#tidb-binlog-监控)
-
 ## TiDB-Binlog 简介
 
 TiDB-Binlog 用于收集 TiDB 的 Binlog，并提供实时备份和同步功能的商业工具。
@@ -30,11 +22,11 @@ TiDB-Binlog 支持以下功能场景:
 
 TiDB-Binlog 集群主要分为两个组件：
 
-### Pump
+#### Pump
 
 Pump 是一个守护进程，在每个 TiDB 的主机上后台运行。他的主要功能是实时记录 TiDB 产生的 Binlog 并顺序写入磁盘文件
 
-### Drainer
+#### Drainer
 
 Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提交顺序转化为指定数据库兼容的 SQL 语句，最后同步到目的数据库或者写到顺序文件
 
@@ -59,24 +51,11 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
 
 ### TiDB-Binlog 部署
 
-推荐使用 ansible 部署 PUMP
-
-*   搭建全新的 TiDB Cluster，启动顺序 pd-server -> tikv-server -> pump -> tidb-server -> drainer
-    * 修改 tidb-ansible inventory.ini 文件
-        * enable_binlog = True
-    * 执行 ansible-playbook deploy.yml
-    * 执行 ansible-playbook start.yml
-        * drainer 目前需要手动部署
-
-*   对已有的 TiDB Cluster 部署 binlog
-    * 修改 tidb-ansible inventory.ini 文件
-        * enable_binlog = True
-    * 执行 ansible-playbook rolling_update.yml
-        * drainer 目前需要手动部署
-
-### 注意
+#### 注意
 
 *   需要为一个 TiDB 集群中的每台 TiDB server 部署一个 pump，目前 TiDB server 只支持以 unix socket 方式的输出 binlog。
+*   手动部署时， 启动优先级为： PUMP > TiDB ； 停止优先级为 TiDB > PUMP 
+
 
     我们设置 TiDB 启动参数 binlog-socket 为对应的 pump 的参数 socket 所指定的 unix socket 文件路径，最终部署结构如下图所示：
 
@@ -105,17 +84,24 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
     ```
 
 
-### 示例及参数解释
+#### 使用 ansible 部署 PUMP (推荐)
 
-1.  Pump
+*   搭建全新的 TiDB Cluster，启动顺序 pd-server -> tikv-server -> pump -> tidb-server -> drainer
+    * 修改 tidb-ansible inventory.ini 文件
+        * enable_binlog = True
+    * 执行 ansible-playbook deploy.yml
+    * 执行 ansible-playbook start.yml
+        * drainer 目前需要手动部署
 
-    示例
+*   对已有的 TiDB Cluster 部署 binlog
+    * 修改 tidb-ansible inventory.ini 文件
+        * enable_binlog = True
+    * 执行 ansible-playbook rolling_update.yml --tags=tidb
+        * drainer 目前需要手动部署
 
-    ```bash
-    ./bin/pump -config pump.toml
-    ```
+#### 使用 Binary 部署 PUMP 
 
-    参数解释
+1. PUMP 命令行参数说明
 
     ```
     Usage of pump:
@@ -150,43 +136,37 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
         unix socket 模式服务监听地址 (默认 unix:///tmp/pump.sock)
     ```
 
-    配置文件
+
+ 2. PUMP 配置文件
 
     ```toml
     # pump Configuration.
-
     # pump 提供服务的 rpc 地址(默认 "127.0.0.1:8250")
     addr = "127.0.0.1:8250"
-
     # pump 对外提供服务的 rpc 地址(默认 "127.0.0.1:8250")
     advertise-addr = ""
-
     # binlog 最大保留天数 (默认 7)， 设置为 0 可永久保存
     gc = 7
-
     #  pump 数据存储位置路径
     data-dir = "data.pump"
-
     # pump 向 pd 发送心跳间隔 (单位 秒)
     heartbeat-interval = 3
-
     # pd 集群节点的地址 (默认 "http://127.0.0.1:2379")
     pd-urls = "http://127.0.0.1:2379"
-
     # unix socket 模式服务监听地址 (默认 unix:///tmp/pump.sock)
     socket = "unix:///tmp/pump.sock"
     ```
-
-
-2.  Drainer
-
-    示例
+3. 启动示例
 
     ```bash
-    ./bin/drainer -config drainer.toml
+    ./bin/pump -config pump.toml
     ```
 
-    参数解释
+-----
+
+#### 使用 Binary 部署 Drainer 
+
+1.  Drainer 命令行参数说明
 
     ```
     Usage of drainer:
@@ -229,7 +209,8 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
        输出到下游数据库一个事务的 sql 数量 (default 1)
     ```
 
-    配置文件
+
+2. Drainer 配置文件
 
     ```toml
     # drainer Configuration.  
@@ -291,6 +272,12 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
     # db-type 设置为 pb 时,存放 binlog 文件的目录
     # [syncer.to]
     # dir = "data.drainer"
+    ```
+
+3. 启动示例
+
+    ```bash
+    ./bin/drainer -config drainer.toml
     ```
 
 -----
