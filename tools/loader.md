@@ -35,7 +35,7 @@ category: advanced
 
 #### 注意事项
 
-请勿使用 loader 导入 MySQL 实例中 `mysql` 数据库到下游 TiDB。
+请勿使用 loader 导入 MySQL 实例中 `mysql` 系统数据库到下游 TiDB。
 
 如果 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。
 
@@ -128,10 +128,10 @@ port = 4000
 
 ##  FAQ
 
-### 合库合表场景案例说明
+#### 合库合表场景案例说明
   
  根据配置文件的 route-rules 可以支持将分库分表的数据导入到同一个库同一个表中，但是在开始前需要检查分库分表规则
- +   是否可以利用 route-rule 的语义规则表示
+ +   是否可以利用 route-rules 的语义规则表示
  +   分表中是否包含唯一递增主键，或者合并后数据上有冲突的唯一索引或者主键
  
  loader 需要配置文件中开启 route-rules 参数以提供合库合表功能
