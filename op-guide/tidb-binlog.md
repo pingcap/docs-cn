@@ -84,7 +84,7 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
     ```
 
 
-#### 使用 ansible 部署 PUMP (推荐)
+#### 使用 tidb-ansible 部署 PUMP (推荐)
 
 *   搭建全新的 TiDB Cluster，启动顺序 pd-server -> tikv-server -> pump -> tidb-server -> drainer
     * 修改 tidb-ansible inventory.ini 文件
