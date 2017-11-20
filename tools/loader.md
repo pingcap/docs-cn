@@ -33,14 +33,14 @@ category: advanced
 
 ## 使用方法
 
-#### 注意事项
-
-请勿使用 loader 导入 MySQL 实例中 `mysql` 数据库到下游 TiDB。
-
-如果 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。
-
-如果使用默认的 `checkpoint-schema` 参数，在导完一个 database 数据库后，请 `drop database tidb_loader` 后再开始导入下一个 database。  
-
+#### 注意事项
+
+请勿使用 loader 导入 MySQL 实例中 `mysql` 数据库到下游 TiDB。
+
+如果 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。
+
+如果使用默认的 `checkpoint-schema` 参数，在导完一个 database 数据库后，请 `drop database tidb_loader` 后再开始导入下一个 database。  
+
 推荐数据库开始导入的时候，明确指定 `checkpoint-schema = "tidb_loader"` 参数。
 
 ### 参数说明
@@ -124,25 +124,4 @@ port = 4000
 
     ./bin/loader -c=config.toml
 
-------
 
-## FAQ
-
-
-### 合库合表场景案例说明
-
-根据配置文件的 route-rules 可以支持将分库分表的数据导入到同一个库同一个表中，但是在开始前需要检查分库分表规则
-+   是否可以利用 route-rule 的语义规则表示
-+   分表中是否包含唯一递增主键，或者合并后数据上有冲突的唯一索引或者主键
-
-loader 需要配置文件中开启 route-rules 参数以提供合库合表功能
-+   如果使用该功能，pattern-schema 与 target-schema 必须填写
-+   如果 pattern-table 与 target-table 为空，将不进行表名称合并或转换
-
-```
-[[route-rules]]
-pattern-schema = "example_db"
-pattern-table = "table_*"
-target-schema = "example_db"
-target-table = "table"
-```
