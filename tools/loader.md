@@ -33,6 +33,16 @@ category: advanced
 
 ## 使用方法
 
+#### 注意事项
+
+请勿使用 loader 导入 MySQL 实例中 `mysql` 数据库到下游 TiDB。
+
+如果 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。
+
+如果使用默认的 `checkpoint-schema` 参数，在导完一个 database 数据库后，请 `drop database tidb_loader` 后再开始导入下一个 database。  
+
+推荐数据库开始导入的时候，明确指定 `checkpoint-schema = "tidb_loader"` 参数。
+
 ### 参数说明
 
 ```
@@ -65,30 +75,37 @@ category: advanced
 除了使用命令行参数外，还可以使用配置文件来配置，配置文件的格式如下：
 
 ```toml
-# Loader log level
+# 日志输出等级；可以设置为 debug, info, warn, error, fatal (默认为 "info")
 log-level = "info"
 
-# Loader log file
-log-file = ""
+# 指定 loader 日志目录
+log-file = "loader.log"
 
-# Directory of the dump to import
+# 需要导入的数据存放路径 (default "./")
 dir = "./"
 
-# Loader pprof addr
-pprof-addr = ":10084"
+#  Loader 的 pprof 地址，用于对 Loader 进行性能调试 (默认为 ":10084")
+pprof-addr = "127.0.0.1:10084"
 
-# We saved checkpoint data to tidb, which schema name is defined here.
+# checkpoint 数据库名，loader 在运行过程中会不断的更新这个数据库，在中断并恢复后，
+# 会通过这个库获取上次运行的进度 (默认为 "tidb_loader")
 checkpoint-schema = "tidb_loader"
 
-# Number of threads restoring concurrently for worker pool. Each worker restore one file at a time, increase this as TiKV nodes increase
+# 线程数 (默认为 16). 每个线程同一时刻只能操作一个数据文件。
 pool-size = 16
 
-# DB config
+# 目标数据库信息
 [db]
 host = "127.0.0.1"
 user = "root"
 password = ""
 port = 4000
+
+# sharding 同步规则，采用 wildcharacter
+# 1\. 星号字符 (*) 可以匹配零个或者多个字符,
+#    例子, doc* 匹配 doc 和 document, 但是和 dodo 不匹配;
+#    星号只能放在 pattern 结尾，并且一个 pattern 中只能有一个
+# 2\. 问号字符 (?) 匹配任一一个字符
 
 # [[route-rules]]
 # pattern-schema = "shard_db_*"
@@ -107,8 +124,25 @@ port = 4000
 
     ./bin/loader -c=config.toml
 
-### 注意事项
+------
 
-如果 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。  
-如果使用默认的 `checkpoint-schema` 参数，在导完一个 database 数据库后，请 `drop database tidb_loader` 后再开始导入下一个 database。  
-推荐数据库开始导入的时候，明确指定 `checkpoint-schema = "tidb_loader"` 参数。
+## FAQ
+
+
+### 合库合表场景案例说明
+
+根据配置文件的 route-rules 可以支持将分库分表的数据导入到同一个库同一个表中，但是在开始前需要检查分库分表规则
++   是否可以利用 route-rule 的语义规则表示
++   分表中是否包含唯一递增主键，或者合并后数据上有冲突的唯一索引或者主键
+
+loader 需要配置文件中开启 route-rules 参数以提供合库合表功能
++   如果使用该功能，pattern-schema 与 target-schema 必须填写
++   如果 pattern-table 与 target-table 为空，将不进行表名称合并或转换
+
+```
+[[route-rules]]
+pattern-schema = "example_db"
+pattern-table = "table_*"
+target-schema = "example_db"
+target-table = "table"
+```
