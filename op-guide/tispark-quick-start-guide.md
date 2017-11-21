@@ -109,7 +109,9 @@ $ bin/spark-shell
 
 ```scala
 scala> import org.apache.spark.sql.TiContext
-scala> val ti = new TiContext(spark, List("192.168.0.2:2379"))
+scala> val ti = new TiContext(spark)
+
+// Mapping all TiDB tables from `TPCH_001` database as Spark SQL tables
 scala> ti.tidbMapDatabase("TPCH_001")
 ```
 
