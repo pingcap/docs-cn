@@ -233,6 +233,14 @@ select count(*) from account;
 1 row selected (1.97 seconds)
 ```
 
+## TiSparkR
+
+TiSparkR is a thin layer built to support the R language with TiSpark. Refer to [this document](https://github.com/pingcap/tispark/blob/master/TiSparkR/Readme.md) for usage.
+
+## TiSpark on PySpark
+
+TiSpark on PySpark is a Python package build to support the Python language with TiSpark. Refer to [this document](https://github.com/pingcap/tispark/blob/master/python/README.md) for usage.
+
 ## FAQ
 
 Q: What are the pros/cons of independent deployment as opposed to a shared resource with an existing Spark / Hadoop cluster?
