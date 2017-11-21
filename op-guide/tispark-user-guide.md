@@ -84,7 +84,7 @@ SPARK_WORKER_CORES=8
 
 ## 部署 TiSpark
 
-TiSpark 的 jar 包可以在[这里](https://download.pingcap.org/tispark-0.1.0-beta-SNAPSHOT-jar-with-dependencies.jar)下载。
+TiSpark 的 jar 包可以在[这里](http://download.pingcap.org/tispark-0.1.0-SNAPSHOT-jar-with-dependencies.jar)下载。
 
 ### 已有 Spark 集群的部署方式
 

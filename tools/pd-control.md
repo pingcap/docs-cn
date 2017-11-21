@@ -126,13 +126,15 @@ Protobuf 格式示例：
 {
   "members": [......]
 }
->> member leader                        // 显示 leader 的信息
+>> member leader show                   // 显示 leader 的信息
 {
   "name": "pd",
   "addr": "http://192.168.199.229:2379",
   "id": 9724873857558226554
 }
->> member delete pd2                    // 下线 "pd2"
+>> member delete name pd2               // 下线 "pd2"
+Success!
+>> member delete id 1319539429105371180 // 使用 id 下线节点
 Success!
 ```
 
@@ -207,4 +209,16 @@ Replica 调度的开销较大，所以这个值不宜调得太大。
 >> scheduler add shuffle-leader-scheduler     // 随机交换不同 store 上的 leader
 >> scheduler add shuffle-region-scheduler     // 随机调度不同 store 上的 region
 >> scheduler remove grant-leader-scheduler-1  // 把对应的 scheduler 删掉
+```
+
+### hot [read | write | store]
+
+用于显示集群热点信息。
+
+示例：
+
+```bash
+>> hot read                                   // 显示读热点信息
+>> hot write                                  // 显示写热点信息
+>> hot store                                  // 显示所有 store 的读写信息
 ```
