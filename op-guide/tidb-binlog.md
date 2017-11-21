@@ -38,15 +38,15 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
 
     ```bash
     # 下载压缩包
-    wget http://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz
-    wget http://download.pingcap.org/tidb-binlog-latest-linux-amd64.sha256
+    wget http://download.pingcap.org/tidb-binlog-local-linux-amd64.tar.gz
+    wget http://download.pingcap.org/tidb-binlog-local-linux-amd64.sha256
 
     # 检查文件完整性，返回 ok 则正确
-    sha256sum -c tidb-binlog-latest-linux-amd64.sha256
+    sha256sum -c tidb-binlog-local-linux-amd64.sha256
 
     # 解开压缩包
-    tar -xzf tidb-binlog-latest-linux-amd64.tar.gz
-    cd tidb-binlog-latest-linux-amd64
+    tar -xzf tidb-binlog-local-linux-amd64.tar.gz
+    cd tidb-binlog-local-linux-amd64
     ```
 
 ### TiDB-Binlog 部署
@@ -254,14 +254,17 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
     # replicate-do-db priority over replicate-do-table if have same db name
     # and we support regex expression ,
     # 以 '~' 开始声明使用正则表达式
-    #
+
     #replicate-do-db = ["~^b.*","s1"]
+
     #[[syncer.replicate-do-table]]
     #db-name ="test"
     #tbl-name = "log"
+
     #[[syncer.replicate-do-table]]
     #db-name ="test"
     #tbl-name = "~^a.*"
+
     # db-type 设置为 mysql 时，下游数据库服务器参数
     [syncer.to]
     host = "127.0.0.1"
@@ -273,6 +276,7 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
     # [syncer.to]
     # dir = "data.drainer"
     ```
+   
 
 3. 启动示例
 
