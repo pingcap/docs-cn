@@ -30,6 +30,7 @@ Since tools like mysqldump will take us days to migrate massive amounts of data,
 ## Usage
 
 ### Parameter description
+
 ```
   -L string: the log level setting. It can be set as debug, info, warn, error, fatal (default: "info")
   
@@ -77,11 +78,6 @@ checkpoint-schema = "tidb_loader"
 # Number of threads restoring concurrently for worker pool. Each worker restore one file at a time, increase this as TiKV nodes increase
 pool-size = 16
 
-# An alternative database to restore into
-#alternative-db = ""
-# Database to restore
-#source-db = ""
-
 # DB config
 [db]
 host = "127.0.0.1"
@@ -94,20 +90,23 @@ port = 4000
 # pattern-table = "shard_table_*"
 # target-schema = "shard_db"
 # target-table = "shard_table"
-
 ```
 
-### Usage
+### Usage example
 
 Command line parameter:
 
-    ./bin/loader -d ./test -h 127.0.0.1 -u root -P 4000
+```
+./bin/loader -d ./test -h 127.0.0.1 -u root -P 4000
+```
 
 Or use configuration file "config.toml":
 
-    ./bin/loader -c=config.toml
-    
-### Note
+```
+./bin/loader -c=config.toml
+```
 
-+ If you use the default checkpoint-schema, after importing the data of a database, drop the tidb_loader database before you begin to import the next database. 
-+ It is recommended to specify the `checkpoint-schema = "tidb_loader"` parameter when importing data.
+> **Note:**
+
+> - If you use the default checkpoint-schema, after importing the data of a database, drop the tidb_loader database before you begin to import the next database. 
+> - It is recommended to specify the `checkpoint-schema = "tidb_loader"` parameter when importing data.
