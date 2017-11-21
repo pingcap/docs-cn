@@ -3,23 +3,22 @@ title: Privilege Management
 category: user guide
 ---
 
+# Privilege management
 
-# Privilege Management
+## Privilege management overview
 
 TiDB's privilege management system is implemented according to the privilege management system in MySQL. It supports most of the syntaxes and privilege types in MySQL. If you find any inconsistency with MySQL, feel free to [open an issue](https://github.com/pingcap/docs-cn/issues/new).
 
-**Note:** Starting from RC3, the privilege management function is enabled by default. But if you use earlier versions than RC3, you must add the following startup option or the privilege check does not work:
+## Examples
 
-    ./tidb-server -privilege=true
-
-## 1. User account operation
+### User account operation
 
 TiDB user account names consist of a user name and a host name. The account name syntax is `'user_name'@'host_name'`.
 
 The `user_name` is case sensitive.
 The `host_name` can be a host name or an IP address. The `%` and `_` wildcard characters are permitted in host name or IP address values. For example, a host value of `'%'` matches any host name and `'192.168.1.%'` matches every host on a subnet.
 
-### Create user
+#### Create user
 
 The `CREATE USER` statement creates new MySQL accounts.
 
@@ -41,7 +40,7 @@ create user 'test'@'%' identified by '';
 
 **Required Privilege:** To use `CREATE USER`, you must have the global `CREATE USER` privilege.
 
-### Change the password
+#### Change the password
 
 You can use the `SET PASSWORD` syntax to assign or modify a password to a user account.
 
@@ -51,7 +50,7 @@ set password for 'root'@'%' = 'xxx';
 
 **Required Privilege:** Operations that assign or modify passwords are permitted only to users with the `CREATE USER` privilege.
 
-### Drop user
+#### Drop user
 
 The `DROP USER` statement removes one or more MySQL accounts and their privileges. It removes the user record entries in the `mysql.user` table and the privilege rows for the account from all grant tables.
 
@@ -60,7 +59,7 @@ drop user 'test'@'%';
 ```
 **Required Privilege:** To use `DROP USER`, you must have the global `CREATE USER` privilege.
 
-### Reset the root password
+#### Reset the root password
 
 If you forget the root password, you can skip the privilege system and use the root privilege to reset the password.
 
@@ -78,9 +77,9 @@ To reset the root password,
     mysql -h 127.0.0.1 -P 4000 -u root
     ```
 
-## 2. Privilege-related operations
+### Privilege-related operations
 
-### Grant privileges
+#### Grant privileges
 
 The `GRANT` statement grants privileges to the user accounts.
 
@@ -151,7 +150,7 @@ mysql> select user,host,db from mysql.db where user='genius';
 
 In this example, because of the `%` in `te%`, all the databases starting with `te` are granted the privilege.
 
-### Revoke privileges
+#### Revoke privileges
 
 The `REVOKE` statement enables system administrators to revoke privileges from the user accounts.
 
@@ -161,7 +160,7 @@ The `REVOKE` statement corresponds with the `REVOKE` statement：
 revoke all privileges on `test`.* from 'genius'@'localhost';
 ```
 
-**Note：** To revoke privileges, you need the exact match. If the matching result cannot be found, an error will be displayed.
+**Note:** To revoke privileges, you need the exact match. If the matching result cannot be found, an error will be displayed.
 
 ```
 mysql> revoke all privileges on `te%`.* from 'genius'@'%';
@@ -197,7 +196,7 @@ ERROR 1141 (42000): There is no such grant defined for user 'genius' on host '%'
 > Query OK, 0 rows affected (0.27 sec)
 > ```
 
-### Check privileges granted to user
+#### Check privileges granted to user
 
 You can use the `show grant` statement to see what privileges are granted to a user.
 
@@ -225,9 +224,10 @@ To be more precise, you can check the privilege information in the `Grant` table
     select tables_priv from mysql.tables_priv where user='test' and host='%' and db='db1';
     ```
 
-## 3. Implementation of the privilege system
+### Implementation of the privilege system
 
-### Grant table
+#### Grant table
+
 The following system tables are special because all the privilege-related data is stored in them:
 
 - mysql.user (user account, global privilege)
@@ -264,7 +264,7 @@ delete from mysql.user where user='test';
 
 However, it’s not recommended to manually modify the grant table.
 
-### Connection verification
+#### Connection verification
 
 When the client sends a connection request, TiDB server will verify the login operation. TiDB server first checks the `mysql.user` table. If a record of `User` and `Host` matches the connection request, TiDB server then verifies the `Password`.
 
@@ -272,8 +272,7 @@ User identity is based on two pieces of information: `Host`, the host that initi
 
 `User`+`Host` may match several rows in `user` table. To deal with this scenario, the rows in the `user` table are sorted. The table rows will be checked one by one when the client connects; the first matched row will be used to verify. When sorting, Host is ranked before User.
 
-
-### Request verification
+#### Request verification
 
 When the connection is successful, the request verification process checks whether the operation has the privilege.
 
@@ -287,7 +286,7 @@ Data in the `user` and `db` tables is also sorted when loaded into memory.
 
 The use of `%` in `tables_priv` and `columns_priv` is similar, but column value in `Db`, `Table_name` and `Column_name` cannot contain `%`. The sorting is also similar when loaded.
 
-### Time of effect
+#### Time of effect
 
 When TiDB starts, some privilege-check tables are loaded into memory, and then the cached data is used to verify the privileges. The system will periodically synchronize the `grant` table from database to cache. Time of effect is determined by the synchronization cycle. Currently, the value is 5 minutes.
 
@@ -297,9 +296,10 @@ If an immediate effect is needed when you modify the `grant` table, you can run 
 flush privileges
 ```
 
-## 4. Limitations and constraints
+### Limitations and constraints
 
 Currently, the following privileges are not checked yet because they are less frequently used:
+
 - FILE
 - USAGE
 - SHUTDOWN
@@ -309,3 +309,24 @@ Currently, the following privileges are not checked yet because they are less fr
 - ...
 
 **Note:** The column-level privilege is not implemented at this stage.
+
+## `Create User` statement
+
+```sql
+CREATE USER [IF NOT EXISTS]
+    user [auth_spec] [, user [auth_spec]] ...
+auth_spec: {
+    IDENTIFIED BY 'auth_string'
+  | IDENTIFIED BY PASSWORD 'hash_string'
+}
+```
+
+For more information about the user account, see [TiDB user account management](user-account-management.md).
+
+- IDENTIFIED BY `auth_string`
+  
+  When you set the login password, `auth_string` is encrypted by TiDB and stored in the `mysql.user` table. 
+  
+- IDENTIFIED BY PASSWORD `hash_string`
+  
+  When you set the login password, `hash_string` is encrypted by TiDB and stored in the `mysql.user` table. Currently, this is not the same as MySQL.
