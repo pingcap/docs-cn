@@ -38,7 +38,7 @@ TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
 +   硬件配置建议
 
-    普通场景可以参考 [TiDB 和 TiKV 硬件配置建议](https://github.com/pingcap/docs-cn/blob/master/op-guide/recommendation.md#tidb-集群各个组件的硬件消耗情况及推荐配置)，但是如果是偏重分析的场景，可以将 TiKV 节点增加到至少 64G 内存，如果是机械硬盘，则推荐 8 块。
+    普通场景可以参考 [TiDB 和 TiKV 硬件配置建议](https://github.com/pingcap/docs-cn/blob/master/op-guide/recommendation.md#tidb-集群各个组件的硬件消耗情况及推荐配置)，但是如果是偏重分析的场景，可以将 TiKV 节点增加到至少 64G 内存。
 
 +   TiKV 参数建议
 
@@ -84,7 +84,7 @@ SPARK_WORKER_CORES=8
 
 ## 部署 TiSpark
 
-TiSpark 的 jar 包可以在[这里](https://download.pingcap.org/tispark-0.1.0-beta-SNAPSHOT-jar-with-dependencies.jar)下载。
+TiSpark 的 jar 包可以在[这里](http://download.pingcap.org/tispark-0.1.0-SNAPSHOT-jar-with-dependencies.jar)下载。
 
 ### 已有 Spark 集群的部署方式
 
@@ -139,12 +139,17 @@ cd $SPARKPATH
 
 假设您已经按照上述步骤成功启动了 TiSpark 集群， 下面简单介绍如何使用 Spark SQL 来做 OLAP 分析。这里我们用名为 tpch 数据库中的 lineitem 表作为范例。
 
-在 Spark-Shell 里输入下面的命令,  假设你的 PD 节点位于 192.168.1.100，端口 2379：
+假设你的 PD 节点位于 192.168.1.100，端口为 2379，在`$SPARK_HOME/conf/spark-defaults.conf`加入
+```
+spark.tispark.pd.addresses 192.168.1.100:2379
+```
+
+然后在 Spark-Shell 里输入下面的命令：
 
 ```scala
 import org.apache.spark.sql.TiContext
 
-val ti = new TiContext(spark, List("192.168.1.100:2379"))
+val ti = new TiContext(spark)
 
 ti.tidbMapDatabase("tpch")
 ```
