@@ -9,7 +9,7 @@ category: operations
 
 A complete TiDB cluster contains PD, TiKV, and TiDB. To start the database service, follow the order of PD -> TiKV -> TiDB. To stop the database service, follow the order of stopping TiDB -> TiKV -> PD.
 
-Before you start, see [TiDB Architecture](../README.md#TiDB-Architecture) and [Software and Hardware Requirements](recommendation.md).
+Before you start, see [TiDB Architecture](../overview.md#tidb-architecture) and [Software and Hardware Requirements](./recommendation.md).
 
 This document describes the binary deployment of three scenarios:
 
@@ -21,23 +21,27 @@ This document describes the binary deployment of three scenarios:
 
 ### TiDB Database Components (Required)
 
-| Component | Default Port | Protocol | Description | 
+See the following table for the default ports for the TiDB components:
+
+| Component | Default Port | Protocol | Description |
 | :-- | :-- | :-- | :----------- |
 | ssh | 22 | TCP | sshd service |
-| TiDB|  4000  | TCP | the communication port for the application and DBA tools | 
-| TiDB| 10080  |  TCP | the communication port to report TiDB status | 
-| TiKV|  20160 |  TCP | the TiKV communication port  | 
-| PD | 2379 | TCP | the communication port between TiDB and PD | 
+| TiDB|  4000  | TCP | the communication port for the application and DBA tools |
+| TiDB| 10080  |  TCP | the communication port to report TiDB status |
+| TiKV|  20160 |  TCP | the TiKV communication port  |
+| PD | 2379 | TCP | the communication port between TiDB and PD |
 | PD | 2380 | TCP | the inter-node communication port within the PD cluster |
 
 ### TiDB Database Components (Optional)
 
-| Component | Default Port | Protocol | Description | 
+See the following table for the default ports for the optional TiDB components:
+
+| Component | Default Port | Protocol | Description |
 | :-- | :-- | :-- | :------------------------ |
-| Prometheus |  9090| TCP | the communication port for the Prometheus service | 
+| Prometheus |  9090| TCP | the communication port for the Prometheus service |
 | Pushgateway |  9091 | TCP | the aggregation and report port for TiDB, TiKV, and PD monitor |
-| Node_exporter|  9100| TCP | the communication port to report the system information of every TiDB cluster node |  
-| Grafana | 3000 | TCP | the port for the external Web monitoring service and client (Browser) access | 
+| Node_exporter|  9100| TCP | the communication port to report the system information of every TiDB cluster node |
+| Grafana | 3000 | TCP | the port for the external Web monitoring service and client (Browser) access |
 | alertmanager | 9093 | TCP | the port for the alert service |
 
 ## Configure and Check the System before Installation
@@ -46,7 +50,7 @@ This document describes the binary deployment of three scenarios:
 
 | Configuration | Description |
 | :-- | :-------------------- |
-| Supported Platform | See the [Software and Hardware Requirements](recommendation.md) |
+| Supported Platform | See the [Software and Hardware Requirements](./recommendation.md) |
 | File System  |  The ext4 file system is recommended in TiDB Deployment |
 | Swap Space  |  The Swap Space is recommended to close in TiDB Deployment  |
 | Disk Block Size  |  Set the size of the system disk `Block` to `4096` |
@@ -76,6 +80,7 @@ This document describes the binary deployment of three scenarios:
 | I/O Scheduler | Set the I/O Scheduler of data disks to the `deadline` mode |
 | vm.swappiness | Set `vm.swappiness = 0` |
 
+
 > **Note**: To adjust the operating system parameters, contact your system administrator.
 
 ### Database Running User
@@ -83,7 +88,7 @@ This document describes the binary deployment of three scenarios:
 | Configuration | Description |
 | :-- | :---------------------------- |
 | LANG environment | Set `LANG = en_US.UTF8` |
-| TZ time zone | Set the TZ time zone of all nodes to the same value | 
+| TZ time zone | Set the TZ time zone of all nodes to the same value |
 
 ## Create the Database Running User Account
 
@@ -96,10 +101,10 @@ In the Linux environment, create TiDB on each installation node as a database ru
 Last login: Tue Aug 22 12:06:23 CST 2017 on pts/2
 -bash-4.2$ ssh-keygen -t rsa
 Generating public/private rsa key pair.
-Enter file in which to save the key (/home/tidb/.ssh/id_rsa): 
+Enter file in which to save the key (/home/tidb/.ssh/id_rsa):
 Created directory '/home/tidb/.ssh'.
-Enter passphrase (empty for no passphrase): 
-Enter same passphrase again: 
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
 Your identification has been saved in /home/tidb/.ssh/id_rsa.
 Your public key has been saved in /home/tidb/.ssh/id_rsa.pub.
 The key fingerprint is:
@@ -141,21 +146,21 @@ sha256sum -c tidb-latest-linux-amd64.sha256
 tar -xzf tidb-latest-linux-amd64.tar.gz
 cd tidb-latest-linux-amd64
 ```
-  
+
 ## Single Node Cluster Deployment
 
 After downloading the TiDB binary package, you can run and test the TiDB cluster on a standalone server. Follow the steps below to start PD, TiKV and TiDB:
 
 1. Start PD.
-    
+
     ```bash
     ./bin/pd-server --data-dir=pd \
                     --log-file=pd.log
-    ``` 
-   
-  
+    ```
+
+
 2. Start TiKV.
-    
+
     ```bash
     ./bin/tikv-server --pd="127.0.0.1:2379" \
                       --data-dir=tikv \
@@ -163,7 +168,7 @@ After downloading the TiDB binary package, you can run and test the TiDB cluster
     ```
 
 3. Start TiDB.
-    
+
     ```bash
     ./bin/tidb-server --store=tikv \
                       --path="127.0.0.1:2379" \
@@ -200,10 +205,10 @@ Follow the steps below to start PD, TiKV and TiDB:
                     --peer-urls="http://192.168.199.113:2380" \
                     --initial-cluster="pd1=http://192.168.199.113:2380" \
                     --log-file=pd.log
-    ```  
-    
+    ```
+
 2. Start TiKV on Node2, Node3 and Node4.
-    
+
     ```bash
     ./bin/tikv-server --pd="192.168.199.113:2379" \
                       --addr="192.168.199.114:20160" \
@@ -222,7 +227,7 @@ Follow the steps below to start PD, TiKV and TiDB:
     ```
 
 3. Start TiDB on Node1.
-    
+
     ```bash
     ./bin/tidb-server --store=tikv \
                       --path="192.168.199.113:2379" \
@@ -230,14 +235,14 @@ Follow the steps below to start PD, TiKV and TiDB:
     ```
 
 4. Use the official MySQL client to connect to TiDB.
-    
+
     ```sh
     mysql -h 192.168.199.113 -P 4000 -u root -D test
     ```
 
 ## Multiple Nodes Cluster Deployment
 
-For the production environment, multiple nodes cluster deployment is recommended. Before you begin, see [Software and Hardware Requirements](recommendation.md).
+For the production environment, multiple nodes cluster deployment is recommended. Before you begin, see [Software and Hardware Requirements](./recommendation.md).
 
 Assuming that you have six nodes, you can deploy 3 PD instances, 3 TiKV instances, and 1 TiDB instance. See the following table for details:
 
@@ -253,7 +258,7 @@ Assuming that you have six nodes, you can deploy 3 PD instances, 3 TiKV instance
 Follow the steps below to start PD, TiKV, and TiDB:
 
 1. Start PD on Node1, Node2, and Node3 in sequence.
-    
+
     ```bash
     ./bin/pd-server --name=pd1 \
                     --data-dir=pd1 \
@@ -281,9 +286,9 @@ Follow the steps below to start PD, TiKV, and TiDB:
                     -L "info" \
                     --log-file=pd.log
     ```
-    
+
 2. Start TiKV on Node4, Node5 and Node6.
-    
+
     ```bash
     ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
                       --addr="192.168.199.116:20160" \
@@ -300,26 +305,26 @@ Follow the steps below to start PD, TiKV, and TiDB:
                       --data-dir=tikv3 \
                       --log-file=tikv.log
     ```
-    
+
 3. Start TiDB on Node1.
-    
+
     ```bash
     ./bin/tidb-server --store=tikv \
                       --path="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
                       --log-file=tidb.log
     ```
-    
+
 4. Use the official MySQL client to connect to TiDB.
-    
+
     ```sh
     mysql -h 192.168.199.113 -P 4000 -u root -D test
     ```
-   
+
 > **Note**:
-> 
+>
 > - If you start TiKV or deploy PD in the production environment, it is highly recommended to specify the path for the configuration file using the `--config` parameter. If the parameter is not set, TiKV or PD does not read the configuration file.
-> - To tune TiKV, see [Performance Tuning for TiKV](tune-TiKV.md).
-> - If you use `nohup` to start the cluster in the production environment, write the startup commands in a script and then run the script. If not, the `nohup` process might abort because it receives exceptions when the Shell command exits. For more information, see [The TiDB/TiKV/PD process aborts unexpectedly](/./trouble-shooting.md#the-tidbtikvpd-process-aborts-unexpectedly). 
+> - To tune TiKV, see [Performance Tuning for TiKV](./tune-TiKV.md).
+> - If you use `nohup` to start the cluster in the production environment, write the startup commands in a script and then run the script. If not, the `nohup` process might abort because it receives exceptions when the Shell command exits. For more information, see [The TiDB/TiKV/PD process aborts unexpectedly](../trouble-shooting.md#the-tidbtikvpd-process-aborts-unexpectedly).
 
 ## TiDB Monitor and Alarm Deployment
 
@@ -358,7 +363,7 @@ $cd node_exporter-0.14.0-rc.1.linux-amd64
 # Start the node_exporter service.
 ./node_exporter --web.listen-address=":9100" \
     --log.level="info"
-``` 
+```
 
 #### Start `pushgateway` on Node1.
 
@@ -405,7 +410,7 @@ scrape_configs:
       - '192.168.199.115:9100'
       - '192.168.199.116:9100'
 ...
- 
+
 # Start Prometheus:
 ./prometheus \
     --config.file="/data1/tidb/deploy/conf/prometheus.yml" \
@@ -439,4 +444,4 @@ domain = 192.168.199.113
 ./grafana-server \
     --homepath="/data1/tidb/deploy/opt/grafana" \
     --config="/data1/tidb/deploy/opt/grafana/conf/grafana.ini"
-``` 
+```

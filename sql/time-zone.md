@@ -32,8 +32,7 @@ To set the format of the value of the `time_zone`:
 
 The current session time zone setting affects the display and storage of time values that are zone-sensitive. This includes the values displayed by functions such as `NOW()` or `CURTIME()`, 
 
-> **Note**:
-Only the values of the Timestamp data type is affected by time zone. This is because the Timestamp data type uses the literal value + time zone information. Other data types, such as Datetime/Date/Time, do not have time zone information, thus their values are not affected by the changes of time zone.
+> **Note**: Only the values of the Timestamp data type is affected by time zone. This is because the Timestamp data type uses the literal value + time zone information. Other data types, such as Datetime/Date/Time, do not have time zone information, thus their values are not affected by the changes of time zone.
 
 ```sql
 mysql> create table t (ts timestamp, dt datetime);
@@ -60,5 +59,6 @@ mysql> select * from t;
 In this example, no matter how you adjust the value of the time zone, the value of the Datetime data type is not affected. But the displayed value of the Timestamp data type changes if the time zone information changes. In fact, the value that is stored in the storage does not change, it's just displayed differently according to different time zone setting.
 
 > **Note**:
+>
 > - Time zone is involved during the conversion of the value of Timestamp and Datetime, which is handled based on the current `time_zone` of the session.
 > - For data migration, you need to pay special attention to the time zone setting of the master database and the slave database.

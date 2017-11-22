@@ -7,16 +7,6 @@ category: user guide
 
 DDL (Data Definition Language) is used to define the database structure or schema, and to manage the database and statements of various objects in the database.
 
-- [CREATE DATABASE Syntax](#create-database-syntax)
-- [DROP DATABASE Syntax](#drop-database-syntax)
-- [CREATE TABLE Syntax](#create-table-syntax)
-- [DROP TABLE Syntax](#drop-table-syntax)
-- [TRUNCATE TABLE Syntax](#truncate-table-syntax)
-- [RENAME TABLE Syntax](#rename-table-syntax)
-- [ALTER TABLE Syntax](#alter-table-syntax)
-- [CREATE INDEX Syntax](#create-index-syntax)
-- [DROP INDEX Syntax](#drop-index-syntax)  
-
 ## CREATE DATABASE Syntax
 
 ```sql

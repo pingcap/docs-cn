@@ -20,6 +20,7 @@ You can use the TiDB-Ansible configuration file to set up the cluster topology, 
 - Cleaning environment
 - Configuring monitoring modules
 
+
 ## Prepare
 
 Before you start, make sure that you have:
@@ -28,24 +29,27 @@ Before you start, make sure that you have:
 
     - Python 2.6 or Python 2.7
     - Python Jinja2 2.7.2 and MarkupSafe 0.11 packages. You can use the following commands to install the packages:
-    
+
       ```
       pip install Jinja2==2.7.2 MarkupSafe==0.11
       ```
-    
+
     - Access to the external network to install curl package and download binary.
     - Access to the managed nodes via SSH using password login or SSH authorized_key login.
 
 2. Several managed nodes with the following requirements:
 
-    - 4 or more machines. At least 3 instances for TiKV. Don't deploy TiKV together with TiDB or PD on the same machine. See [deploying recommendations](https://github.com/pingcap/docs/blob/master/op-guide/recommendation.md).
+    - 4 or more machines. At least 3 instances for TiKV. Don’t deploy TiKV together with TiDB or PD on the same machine. See [deploying recommendations](https://github.com/pingcap/docs/blob/master/op-guide/recommendation.md).
 
     - Recommended Operating system:
 
-        - CentOS 7.3 or later
-        - X86_64 architecture (AMD64)
-        - Kernel version 3.10 or later
-        - Ext4 file system.
+      - CentOS 7.3 or later
+
+      - X86_64 architecture (AMD64)
+
+      - Kernel version 3.10 or later
+
+      - Ext4 file system.
 
     - The network between machines. Turn off the firewalls and iptables when deploying and turn them on after the deployment.
 
@@ -55,7 +59,7 @@ Before you start, make sure that you have:
 
     - Python 2.6 or Python 2.7
 
-    > **Note:** The Control Machine can be one of the managed nodes.
+> **Note**: The Control Machine can be one of the managed nodes.
 
 ## Install Ansible in the Control Machine
 
@@ -77,7 +81,7 @@ Install Ansible 2.3 or later to your platform:
     yum install ansible
     ```
 
-You can use the `ansible --version` command to view the version information.
+You can use the `ansible --version` command to see the version information.
 
 For more information, see [Ansible Documentation](http://docs.ansible.com/ansible/intro_installation.html).
 
@@ -90,7 +94,8 @@ The default folder name is `tidb-ansible`. The `tidb-ansible` directory contains
 git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 ```
 
-## Orchestrate the TiDB Cluster
+
+## Orchestrate the TiDB cluster
 
 The file path of `inventory.ini`: `tidb-ansible/inventory.ini`
 
@@ -100,16 +105,16 @@ The standard cluster has 6 machines:
 - 3 PD nodes
 - 3 TiKV nodes
 
-### The Cluster Topology of Single TiKV Instance on a Single Machine 
+### The Cluster Topology of Single TiKV Instance on a Single Machine
 
-| Name | Host IP | Services |
-| ---- | ------- | -------- |
+| Name  | Host IP     | Services   |
+|:------|:------------|:-----------|
 | node1 | 172.16.10.1 | PD1, TiDB1 |
 | node2 | 172.16.10.2 | PD2, TiDB2 |
-| node3 | 172.16.10.3 | PD3 |
-| node4 | 172.16.10.4 | TiKV1 |
-| node5 | 172.16.10.5 | TiKV2 |
-| node6 | 172.16.10.6 | TiKV3 |
+| node3 | 172.16.10.3 | PD3        |
+| node4 | 172.16.10.4 | TiKV1      |
+| node5 | 172.16.10.5 | TiKV2      |
+| node6 | 172.16.10.6 | TiKV3      |
 
 ```ini
 [tidb_servers]
@@ -138,15 +143,16 @@ pd_servers
 172.16.10.1
 ```
 
+
 ### The Cluster Topology of Multiple TiKV Instances on a Single Machine
 
 Take three TiKV instances as an example:
 
-| Name | Host IP | Services |
-| ---- | ------- | -------- |
-| node1 | 172.16.10.1 | PD1, TiDB1 |
-| node2 | 172.16.10.2 | PD2, TiDB2 |
-| node3 | 172.16.10.3 | PD3 |
+| Name  | Host IP     | Services                  |
+|:------|:------------|:--------------------------|
+| node1 | 172.16.10.1 | PD1, TiDB1                |
+| node2 | 172.16.10.2 | PD2, TiDB2                |
+| node3 | 172.16.10.3 | PD3                       |
 | node4 | 172.16.10.4 | TiKV1-1, TiKV1-2, TiKV1-3 |
 | node5 | 172.16.10.5 | TiKV2-1, TiKV2-2, TiKV2-3 |
 | node6 | 172.16.10.6 | TiKV3-1, TiKV3-2, TiKV3-3 |
@@ -194,7 +200,7 @@ location_labels = ["host"]
 1. For multiple TiKV instances, edit the `end-point-concurrency` and `block-cache-size` parameters in `conf/tikv.yml`:
 
     - `end-point-concurrency`: keep the number lower than CPU Vcores
-    - `rocksdb defaultcf block-cache-size(GB)`: MEM * 80% / TiKV instance number * 30% 
+    - `rocksdb defaultcf block-cache-size(GB)`: MEM * 80% / TiKV instance number * 30%
     - `rocksdb writecf block-cache-size(GB)`: MEM * 80% / TiKV instance number * 45%
     - `rocksdb lockcf block-cache-size(GB)`: MEM * 80% / TiKV instance number * 2.5% (128 MB at a minimum)
     - `raftdb defaultcf block-cache-size(GB)`: MEM * 80% / TiKV instance number * 2.5% (128 MB at a minimum)
@@ -205,8 +211,8 @@ location_labels = ["host"]
 
 ## Deploy the TiDB Cluster
 
-> **Note**: 
-> 
+> **Note**:
+>
 > 1. It is not recommended to use the root user account to deploy TiDB.
 > 2. The remote Ansible user (the `ansible_user` in the `incentory.ini` file) can use either the root user account or a normal user account with sudo privileges to deploy TiDB.
 
@@ -218,45 +224,45 @@ Descriptions about the two circumstances are as follows.
 
     1. Edit `inventory.ini` as follows.
 
-        Remove the code comments for `ansible_user = root`, `ansible_become = true` and `ansible_become_user`. Add comments for `ansible_user = tidb`. 
-        
+        Remove the code comments for `ansible_user = root`, `ansible_become = true` and `ansible_become_user`. Add comments for `ansible_user = tidb`.
+
         ```
         ## Connection
         # ssh via root:
         ansible_user = root
         ansible_become = true
         ansible_become_user = tidb
-        
+
         # ssh via normal user
         # ansible_user = tidb
         ```
-    
+
     2. Connect to the network and download TiDB binary to the Control Machine.
 
         ```
         ansible-playbook local_prepare.yml
         ```
-    
+
     3. Initialize the system environment and edit the kernel parameters.
 
         ```
         ansible-playbook bootstrap.yml
         ```
-        
+
         > **Note**: If the service user does not exist, the initialization operation will automatically create the user.
-        
+
         If the remote connection using the root user requires a password, use the `-k` (lower case) parameter. This applies to other playbooks as well:
-        
+
         ```
         ansible-playbook bootstrap.yml -k
         ```
-    
+
     4. Deploy the TiDB cluster.
 
         ```
         ansible-playbook deploy.yml -k
         ```
-    
+
     5. Start the TiDB cluster.
 
         ```
@@ -278,37 +284,37 @@ Descriptions about the two circumstances are as follows.
         # ssh via normal user
         ansible_user = tidb
         ```
-    
+
     2. Connect to the network and download TiDB binary to the Control Machine.
 
         ```
         ansible-playbook local_prepare.yml
         ```
-    
+
     3. Initialize the system environment and modify the kernel parameters.
 
         ```
         ansible-playbook bootstrap.yml -k -K
         ```
-        
+
         If the remote connection using the normal user requires a password, add the `-k` (lower case) parameter. This applies to other playbooks as well:
-        
+
         ```
         ansible-playbook bootstrap.yml -k
         ```
-        
+
         The execution of this playbook requires root privileges. If a password is needed when the normal user gets root privileges from sudo, add the `-K` (upper case) parameter:
-        
+
         ```
         ansible-playbook bootstrap.yml -k -K
         ```
-    
+
     4. Deploy the TiDB cluster.
 
         ```
         ansible-playbook deploy.yml -k
         ```
-    
+
     5. Start the TiDB cluster.
 
         ```
@@ -324,7 +330,7 @@ It is recommended to configure load balancing to provide uniform SQL interface.
     ```
     mysql -u root -h 172.16.10.1 -P 4000
     ```
-    
+
     > **Note**: The default port of TiDB service is 4000.
 
 2. Access the monitoring platform using a web browser.
@@ -332,7 +338,7 @@ It is recommended to configure load balancing to provide uniform SQL interface.
     ```
     http://172.16.10.1:3000
     ```
-    
+
     The default account and password: `admin/admin`.
 
 ## Perform Rolling Update
@@ -365,20 +371,20 @@ It is recommended to configure load balancing to provide uniform SQL interface.
 
 2. To apply rolling update to all the services.
 
-    ```
-    ansible-playbook rolling_update.yml
-    ```
+      ```
+      ansible-playbook rolling_update.yml
+      ```
 
-## Summary of Common Operations
+## Summary of common operations
 
-| Job | Playbook |
-| ------------- | ------------------ |
-| Start the cluster | `ansible-playbook start.yml` |
-| Stop the cluster | `ansible-playbook stop.yml` |
-| Destroy the cluster | `ansible-playbook unsafe_cleanup.yml` (If the deployment directory is a mount point, an error will be reported, but implementation results will remain unaffected) |
-| Clean data (for test) | `ansible-playbook cleanup_data.yml` |
-| Rolling Upgrade | `ansible-playbook rolling_update.yml` |
-| Rolling upgrade TiKV | `ansible-playbook rolling_update.yml --tags=tikv` |
+| Job                               | Playbook                                 |
+|:----------------------------------|:-----------------------------------------|
+| Start the cluster                 | `ansible-playbook start.yml`             |
+| Stop the cluster                  | `ansible-playbook stop.yml`              |
+| Destroy the cluster               | `ansible-playbook unsafe_cleanup.yml` (If the deployment directory is a mount point, an error will be reported, but implementation results will remain unaffected) |
+| Clean data (for test)             | `ansible-playbook cleanup_data.yml`      |
+| Rolling Upgrade                   | `ansible-playbook rolling_update.yml`    |
+| Rolling upgrade TiKV              | `ansible-playbook rolling_update.yml --tags=tikv` |
 | Rolling upgrade modules except PD | `ansible-playbook rolling_update.yml --skip-tags=pd` |
 
 For more advanced features of TiDB including data migration, performance tuning, etc., see [TiDB Documents](https://github.com/pingcap/docs).
@@ -401,38 +407,38 @@ Download the `TiDB-Ansible release-1.0` branch from GitHub:
 git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 ```
 
-### Custom Port 
+### Custom Port
 
-| Component | Variable Port | Default Port | Description |
-| :-- | :-- | :-- | :-- |
-| TiDB |  tidb_port | 4000  | the communication port for the application and DBA tools |
-| TiDB | tidb_status_port | 10080  | the communication port to report TiDB status |
-| TiKV | tikv_port | 20160 |  the TiKV communication port  |
-| PD | pd_client_port | 2379 | the communication port between TiDB and PD |
-| PD | pd_peer_port | 2380 | the inter-node communication port within the PD cluster |
-| Pump | pump_port | 8250  | the pump communication port |
-| Prometheus | prometheus_port | 9090 | the communication port for the Prometheus service |
-| Pushgateway | pushgateway_port | 9091 | the aggregation and report port for TiDB, TiKV, and PD monitor |
-| node_exporter | node_exporter_port | 9100 | the communication port to report the system information of every TiDB cluster node |
-| Grafana | grafana_port|  3000 | the port for the external Web monitoring service and client (Browser) access |
+| Component     | Variable Port      | Default Port | Description              |
+|:--------------|:-------------------|:-------------|:-------------------------|
+| TiDB          | tidb_port          | 4000         | the communication port for the application and DBA tools |
+| TiDB          | tidb_status_port   | 10080        | the communication port to report TiDB status |
+| TiKV          | tikv_port          | 20160        | the TiKV communication port |
+| PD            | pd_client_port     | 2379         | the communication port between TiDB and PD |
+| PD            | pd_peer_port       | 2380         | the inter-node communication port within the PD cluster |
+| Pump          | pump_port          | 8250         | the pump communication port |
+| Prometheus    | prometheus_port    | 9090         | the communication port for the Prometheus service |
+| Pushgateway   | pushgateway_port   | 9091         | the aggregation and report port for TiDB, TiKV, and PD monitor |
+| node_exporter | node_exporter_port | 9100         | the communication port to report the system information of every TiDB cluster node |
+| Grafana       | grafana_port       | 3000         | the port for the external Web monitoring service and client (Browser) access |
 
 ### Custom Deployment Directory
 
-| Component | Variable Directory | Default Directory | Description |
-| :-- | :-- | :-- | :-- |
-| Global | deploy_dir | /home/tidb/deploy | the deployment directory |
-| TiDB | tidb_log_dir | {{ deploy_dir }}/log  | the TiDB log directory |
-| TiKV | tikv_log_dir | {{ deploy_dir }}/log | the TiKV log directory |
-| TiKV | tikv_data_dir | {{ deploy_dir }}/data | the data directory |
-| TiKV | wal_dir | "" | the rocksdb write-ahead log directory, consistent with the TiKV data directory when the value is null |
-| TiKV | raftdb_path | "" | the raftdb directory, being tikv_data_dir/raft when the value is null |
-| PD | pd_log_dir | {{ deploy_dir }}/log | the PD log directory |
-| PD | pd_data_dir | {{ deploy_dir }}/data.pd | the PD data directory |
-| Pump | pump_log_dir | {{ deploy_dir }}/log  | the Pump log directory |
-| Pump | pump_data_dir | {{ deploy_dir }}/data.pump  | the Pump data directory |
-| Prometheus | prometheus_log_dir | {{ deploy_dir }}/log | the Prometheus log directory |
-| Prometheus | prometheus_data_dir | {{ deploy_dir }}/data.metrics | the Prometheus data directory |
-| pushgateway | pushgateway_log_dir | {{ deploy_dir }}/log | the pushgateway log directory |
-| node_exporter | node_exporter_log_dir | {{ deploy_dir }}/log | the node_exporter log directory |
-| Grafana | grafana_log_dir | {{ deploy_dir }}/log | the Grafana log directory |
-| Grafana | grafana_data_dir | {{ deploy_dir }}/data.grafana | the Grafana data directory |
+| Component     | Variable Directory    | Default Directory             | Description |
+|:--------------|:----------------------|:------------------------------|:-----|
+| Global        | deploy_dir            | /home/tidb/deploy             | the deployment directory |
+| TiDB          | tidb_log_dir          | {{ deploy_dir }}/log          | the TiDB log directory |
+| TiKV          | tikv_log_dir          | {{ deploy_dir }}/log          | the TiKV log directory |
+| TiKV          | tikv_data_dir         | {{ deploy_dir }}/data         | the data directory |
+| TiKV          | wal_dir               | ""                            | the rocksdb write-ahead log directory, consistent with the TiKV data directory when the value is null |
+| TiKV          | raftdb_path           | ""                            | the raftdb directory, being tikv_data_dir/raft when the value is null |
+| PD            | pd_log_dir            | {{ deploy_dir }}/log          | the PD log directory |
+| PD            | pd_data_dir           | {{ deploy_dir }}/data.pd      | the PD data directory |
+| Pump          | pump_log_dir          | {{ deploy_dir }}/log          | the Pump log directory |
+| Pump          | pump_data_dir         | {{ deploy_dir }}/data.pump    | the Pump data directory |
+| Prometheus    | prometheus_log_dir    | {{ deploy_dir }}/log          | the Prometheus log directory |
+| Prometheus    | prometheus_data_dir   | {{ deploy_dir }}/data.metrics | the Prometheus data directory |
+| pushgateway   | pushgateway_log_dir   | {{ deploy_dir }}/log          | the pushgateway log directory |
+| node_exporter | node_exporter_log_dir | {{ deploy_dir }}/log          | the node_exporter log directory |
+| Grafana       | grafana_log_dir       | {{ deploy_dir }}/log          | the Grafana log directory |
+| Grafana       | grafana_data_dir      | {{ deploy_dir }}/data.grafana | the Grafana data directory |

@@ -16,13 +16,14 @@ TiDB implements a feature to read history data using the standard SQL interface 
 ## How TiDB Reads Data From History Versions
 
 The `tidb_snapshot` system variable is introduced to support reading history data. About the `tidb_snapshot` variable:
+
 - The variable is valid in the `Session` scope.
 - Its value can be modified using the `Set` statement. 
 - The data type for the variable is text. 
 - The variable is to record time in the following format: “2016-10-08 16:45:26.999”. Generally, the time can be set to seconds like in “2016-10-08 16:45:26”. 
 - When the variable is set, TiDB creates a Snapshot using its value as the timestamp, just for the data structure and there is no any overhead. After that, all the `Select` operations will read data from this Snapshot.
 
-**Note:** Because the timestamp in TiDB transactions is allocated by Placement Driver (PD), the version of the stored data is also marked based on the timestamp allocated by PD. When a Snapshot is created, the version number is based on the value of the `tidb_snapshot` variable. If there is a large difference between the local time of the TiDB server and the PD server, use the time of the PD server.
+> **Note:** Because the timestamp in TiDB transactions is allocated by Placement Driver (PD), the version of the stored data is also marked based on the timestamp allocated by PD. When a Snapshot is created, the version number is based on the value of the `tidb_snapshot` variable. If there is a large difference between the local time of the TiDB server and the PD server, use the time of the PD server.
 
 After reading data from history versions, you can read data from the latest version by ending the current Session or using the `Set` statement to set the value of the `tidb_snapshot` variable to "" (empty string). 
 
@@ -52,109 +53,111 @@ mysql> select variable_name, variable_value from mysql.tidb;
 ```
 
 Pay special attention to the following two rows:
+
 - `tikv_gc_life_time`: This row is to configure the retention time of the history version and its default value is 10m. You can use SQL statements to configure it. For example, if you want all the data within one day to be readable, set this row to 24h by using the `update mysql.tidb set variable_value='24h' where variable_name='tikv_gc_life_time'` statement. The format is: "24h", "2h30m", "2.5h". The unit of time can be: "h", "m", "s".
 
-  **Note:** If your data is updated very frequently, the following issues might occur if the value of the `tikv_gc_life_time` is set to be too large like in days or months：
-    - The more versions of the data, the more disk storage is occupied.
-    - A large amount of the history versions might slow down the query, especially the range queries like `select count(*) from t`.
-    - If the value of the `tikv_gc_life_time` variable is suddenly changed to be smaller while the database is running, it might lead to the removal of large amounts of history data and cause huge I/O burden.
-    
-- `tikv_gc_safe_point`: This row records the current safePoint. You can safely create the Snapshot to read the history data using the timestamp that is later than the safePoint. The safePoint automatically updates every time GC runs.
+> **Note:** If your data is updated very frequently, the following issues might occur if the value of the `tikv_gc_life_time` is set to be too large like in days or months:
+> 
+>  - The more versions of the data, the more disk storage is occupied.
+>  - A large amount of the history versions might slow down the query, especially the range queries like `select count(*) from t`.
+>  - If the value of the `tikv_gc_life_time` variable is suddenly changed to be smaller while the database is running, it might lead to the removal of large amounts of history data and cause huge I/O burden.
+>  - `tikv_gc_safe_point`: This row records the current safePoint. You can safely create the Snapshot to read the history data using the timestamp that is later than the safePoint. The safePoint automatically updates every time GC runs.
 
 ## Example
 
-1\. At the initial stage, create a table and insert several rows of data:
+1. At the initial stage, create a table and insert several rows of data:
 
-```
-mysql> create table t (c int);
-Query OK, 0 rows affected (0.01 sec)
+  ```sql
+  mysql> create table t (c int);
+  Query OK, 0 rows affected (0.01 sec)
+  
+  mysql> insert into t values (1), (2), (3);
+  Query OK, 3 rows affected (0.00 sec)
+  ```
 
-mysql> insert into t values (1), (2), (3);
-Query OK, 3 rows affected (0.00 sec)
-```
+2. View the data in the table:
+  
+  ```sql
+  mysql> select * from t;
+  +------+
+  | c    |
+  +------+
+  |    1 |
+  |    2 |
+  |    3 |
+  +------+
+  3 rows in set (0.00 sec)
+  ```
 
-2\. View the data in the table:
+3. View the timestamp of the table:
+  
+  ```sql
+  mysql> select now();
+  +---------------------+
+  | now()               |
+  +---------------------+
+  | 2016-10-08 16:45:26 |
+  +---------------------+
+  1 row in set (0.00 sec)
+  ```
 
-```
-mysql> select * from t;
-+------+
-| c    |
-+------+
-|    1 |
-|    2 |
-|    3 |
-+------+
-3 rows in set (0.00 sec)
-```
+4. Update the data in one row:
 
-3\. View the timestamp of the table:
+  ```sql
+  mysql> update t set c=22 where c=2;
+  Query OK, 1 row affected (0.00 sec)
+  ```
 
-```
-mysql> select now();
-+---------------------+
-| now()               |
-+---------------------+
-| 2016-10-08 16:45:26 |
-+---------------------+
-1 row in set (0.00 sec)
-```
+5. Make sure the data is updated:
 
-4\. Update the data in one row:
+  ```sql
+  mysql> select * from t;
+  +------+
+  | c    |
+  +------+
+  |    1 |
+  |   22 |
+  |    3 |
+  +------+
+  3 rows in set (0.00 sec)
+  ```
 
-```
-mysql> update t set c=22 where c=2;
-Query OK, 1 row affected (0.00 sec)
-```
+6. Set the `tidb_snapshot` variable whose scope is Session. The variable is set so that the latest version before the value can be read. 
 
-5\. Make sure the data is updated:
+  > **Note:** In this example, the value is set to be the time before the update operation.
+  
+  ```sql
+  mysql> set @@tidb_snapshot="2016-10-08 16:45:26";
+  Query OK, 0 rows affected (0.00 sec)
+  ```
+  **Result:** The read from the following statement is the data before the update operation, which is the history data.
 
-```
-mysql> select * from t;
-+------+
-| c    |
-+------+
-|    1 |
-|   22 |
-|    3 |
-+------+
-3 rows in set (0.00 sec)
-```
+  ```sql
+  mysql> select * from t;
+  +------+
+  | c    |
+  +------+
+  |    1 |
+  |    2 |
+  |    3 |
+  +------+
+  3 rows in set (0.00 sec)
+  ```
 
-6\. Set the `tidb_snapshot` variable whose scope is Session. The variable is set so that the latest version before the value can be read. 
-
-**Note:** In this example, the value is set to be the time before the update operation.
-
-```
-mysql> set @@tidb_snapshot="2016-10-08 16:45:26";
-Query OK, 0 rows affected (0.00 sec)
-```
-**Result:** The read from the following statement is the data before the update operation, which is the history data.
-
-```
-mysql> select * from t;
-+------+
-| c    |
-+------+
-|    1 |
-|    2 |
-|    3 |
-+------+
-3 rows in set (0.00 sec)
-```
-
-7\. Set the  `tidb_snapshot` variable to be "" (empty string) and you can read the data from the latest version:
-```
-mysql> set @@tidb_snapshot="";
-Query OK, 0 rows affected (0.00 sec)
-```
-```
-mysql> select * from t;
-+------+
-| c    |
-+------+
-|    1 |
-|   22 |
-|    3 |
-+------+
-3 rows in set (0.00 sec)
-```
+7. Set the  `tidb_snapshot` variable to be "" (empty string) and you can read the data from the latest version:
+  
+  ```sql
+  mysql> set @@tidb_snapshot="";
+  Query OK, 0 rows affected (0.00 sec)
+  ```
+  ```sql
+  mysql> select * from t;
+  +------+
+  | c    |
+  +------+
+  |    1 |
+  |   22 |
+  |    3 |
+  +------+
+  3 rows in set (0.00 sec)
+  ```

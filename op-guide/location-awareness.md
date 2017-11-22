@@ -9,7 +9,7 @@ category: operations
 
 PD schedules according to the topology of the TiKV cluster to maximize the TiKV's capability for disaster recovery.
 
-Before you begin, see [Binary Deployment (Recommended)](./binary-deployment.md) and [Docker Deployment](./docker-deployment.md).
+Before you begin, see [Ansible Deployment (Recommended)](ansible-deployment.md) and [Docker Deployment](docker-deployment.md).
 
 ## TiKV reports the topological information
 

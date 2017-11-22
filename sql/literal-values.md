@@ -52,19 +52,17 @@ SELECT _utf8'some text';
 
 Escape characters:
 
-| Escape Sequence  |  Description  | 
-| :-------: | :------- | 
-| \0  | An ASCII NUL (X'00') character |
-| \'  | A single quote (') character |
-| \"  | A double quote (")character |
-| \b  | A backspace character |
-| \n  | A newline (linefeed) character |
-| \r  | A carriage return character |
-| \t  | A tab character |
-| \z  | ASCII 26 (Ctrl + Z) |
-| \\  | A backslash (\) character |
-| \%  | A % character |
-| \_  | A _ character |
+- `\0`: An ASCII NUL (X'00') character
+- `\'`: A single quote (') character
+- `\"`: A double quote (")character
+- `\b`: A backspace character
+- `\n`: A newline (linefeed) character
+- `\r`: A carriage return character
+- `\t`: A tab character
+- `\z`: ASCII 26 (Ctrl + Z)
+- `\\`: A backslash `\` character
+- `\%`: A `%` character
+- `\_`: A `_` character
 
 You can use the following ways to include quote characters within a string:
 
@@ -89,9 +87,9 @@ For more information, see [Numeric Literals in MySQL](https://dev.mysql.com/doc/
 
 ## NULL Values
 
-The `NULL` value means “no data”. NULL can be written in any letter case. A synonym is `\N` (case sensitive). 
+The `NULL` value means “no data”. NULL can be written in any letter case. A synonym is `\N` (case sensitive).
 
-Be aware that the `NULL` value is different from values such as `0` for numeric types or the empty string `''` for string types.  
+Be aware that the `NULL` value is different from values such as `0` for numeric types or the empty string `''` for string types.
 
 ## Hexadecimal Literals
 
@@ -118,7 +116,7 @@ X'1z' (z is not a hexadecimal legal digit)
 Hexadecimal literals written using `X'val'` notation must contain an even number of digits. To avoid the syntax error, pad the value with a leading zero:
 
 ```
-mysql> select X'aff';
+mysql> select X'aff';
 ERROR 1105 (HY000): line 0 column 13 near ""hex literal: invalid hexadecimal format, must even numbers, but 3 (total length 13)
 mysql> select X'0aff';
 +---------+
@@ -160,9 +158,9 @@ TiDB supports the following formats for date values:
 
 - As a string in either `'YYYY-MM-DD'` or `'YY-MM-DD'` format. The `-` delimiter is "relaxed" in syntax. Any punctuation character may be used as the delimiter between date parts. For example, `'2017-08-24'`, `'2017&08&24'` and `'2012@12^31'` are equivalent. The only delimiter recognized is the `.` character, which is treated as a decimal point to separate the integer and fractional parts. The date and time parts can be separated by `T` other than a space. For example, `2017-8-24 10:42:00` and `2017-8-24T10:42:00` are equivalent.
 - As a string with no delimiters in either `'YYYYMMDDHHMMSS'` or `'YYMMDDHHMMSS'` format. For example, `'20170824104520'` and `'170824104520'` are interpreted as `'2017-08-24 10:45:20'`. But `'170824304520'` is illegal because the hour part exceeds the legal range.
-- As a number in either `YYYYMMDDHHMMSS` or `YYMMDDHHMMSS` format, without single quotation marks or double quotation marks. For example, `20170824104520` is interpreted as `'2017-08-24 10:45:20'`. 
+- As a number in either `YYYYMMDDHHMMSS` or `YYMMDDHHMMSS` format, without single quotation marks or double quotation marks. For example, `20170824104520` is interpreted as `'2017-08-24 10:45:20'`.
 
-A DATETIME or TIMESTAMP value can include a trailing fractional seconds part in up to microseconds (6 digits) precision. The fractional part should always be separated from the rest of the time by a decimal point. 
+A DATETIME or TIMESTAMP value can include a trailing fractional seconds part in up to microseconds (6 digits) precision. The fractional part should always be separated from the rest of the time by a decimal point.
 
 Dates containing two-digit year values are ambiguous. It is recommended to use the four-digit format. TiDB interprets two-digit year values using the following rules:
 
@@ -176,9 +174,9 @@ In TiDB, the date or time values specified as numbers are interpreted according 
 - 6 digits: `YYMMDD`
 - 12 digits: `YYMMDDHHMMSS`
 - 8 digits: `YYYYMMDD`
-- 14 digits: `YYYYMMDDHHMMSS` 
+- 14 digits: `YYYYMMDDHHMMSS`
 
-TiDB supports the following formats for time values: 
+TiDB supports the following formats for time values:
 
 - As a string in `'D HH:MM:SS'` format. You can also use one of the following “relaxed” syntaxes: `'HH:MM:SS'`, `'HH:MM'`, `'D HH:MM'`, `'D HH'`, or `'SS'`. Here D represents days and the legal value range is `0-34`.
 - As a number in `'HHMMSS'` format. For example, `231010` is interpreted as `'23:10:10'`.

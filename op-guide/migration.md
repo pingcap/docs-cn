@@ -1,156 +1,17 @@
 ---
-title: Migrating Data from MySQL to TiDB
+title: Migrate Data from MySQL to TiDB
 category: operations
 ---
 
-# Migrating Data from MySQL to TiDB
+# Migrate Data from MySQL to TiDB
 
-## Overview
-
-This document describes how to migrate data from MySQL to TiDB in detail.
-
-See the following for the assumed MySQL and TiDB server information:
-
-
-|Name|Address|Port|User|Password|
-|----|-------|----|----|--------|
-|MySQL|127.0.0.1|3306|root|* |
-|TiDB|127.0.0.1|4000|root|* |
-
-
-## Scenarios
-
-+ To import all the history data. This needs the following tools:
-    - `Checker`: to check if the shema is compatible with TiDB.
-    - `Mydumper`: to export data from MySQL.
-    - `Loader`: to import data to TiDB.
-
-+ To incrementally synchronise data after all the history data is imported. This needs the following tools:
-    - `Checker`: to check if the shema is compatible with TiDB.
-    - `Mydumper`: to export data from MySQL.
-    - `Loader`: to import data to TiDB.
-    - `Syncer`: to incrementally synchronise data from MySQL to TiDB.
-
-    **Note:** To incrementally synchronise data from MySQL to TiDB, the binary logging (binlog) must be enabled and must use the `row` format in MySQL.
-
-### Enabling binary logging (binlog) in MySQL
-
-Before using the `syncer` tool, make sure:
-+ Binlog is enabled in MySQL. See [Setting the Replication Master Configuration](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html).
-
-+ Binlog must use the `row` format which is the recommended binlog format in MySQL 5.7. It can be configured using the following statement:
-
-    ```bash
-    SET GLOBAL binlog_format = ROW;
-    ```
-
-
-## 1. Using the `checker` tool to check the Schema
-
-Before migrating, you can use the `checker` tool in TiDB to check if TiDB supports the table schema of the data to be migrated. If the `checker` fails to check a certain table schema, it means that the table is not currently supported by TiDB and therefore the data in the table cannot be migrated.
-
-See [Downloading the TiDB Toolset](#downloading-the-tidb-toolset) to download the `checker` tool.
-
-### Downloading the TiDB Toolset (Linux)
-
-```bash
-# Download the tool package.
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
-
-# Check the file integrity. If the result is OK, the file is correct.
-sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
-
-# Extract the package.
-tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
-cd tidb-enterprise-tools-latest-linux-amd64
-```
-
-### A sample to use the `checker` tool
-
-1. Create several tables in the `test` database in MySQL and insert data.
-
-    ```sql
-    USE test;
-    CREATE TABLE t1 (id INT, age INT, PRIMARY KEY(id)) ENGINE=InnoDB;
-    CREATE TABLE t2 (id INT, name VARCHAR(256), PRIMARY KEY(id)) ENGINE=InnoDB;
-
-    INSERT INTO t1 VALUES (1, 1), (2, 2), (3, 3);
-    INSERT INTO t2 VALUES (1, "a"), (2, "b"), (3, "c");
-    ```
-
-2. Use the `checker` tool to check all the tables in the `test` database.
-
-    ```bash
-    ./bin/checker -host 127.0.0.1 -port 3306 -user root test
-    2016/10/27 13:11:49 checker.go:48: [info] Checking database test
-    2016/10/27 13:11:49 main.go:37: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
-    2016/10/27 13:11:49 checker.go:63: [info] Checking table t1
-    2016/10/27 13:11:49 checker.go:69: [info] Check table t1 succ
-    2016/10/27 13:11:49 checker.go:63: [info] Checking table t2
-    2016/10/27 13:11:49 checker.go:69: [info] Check table t2 succ
-    ```
-
-3. Use the `checker` tool to check one of the tables in the `test` database.
-
-    **Note:** Assuming you need to migrate the `t1` table only in this sample.
-
-    ```bash
-    ./bin/checker -host 127.0.0.1 -port 3306 -user root test t1
-    2016/10/27 13:13:56 checker.go:48: [info] Checking database test
-    2016/10/27 13:13:56 main.go:37: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
-    2016/10/27 13:13:56 checker.go:63: [info] Checking table t1
-    2016/10/27 13:13:56 checker.go:69: [info] Check table t1 succ
-    Check database succ!
-    ```
-
-### A sample of a table that cannot be migrated
-
-1. Create the following `t_error` table in MySQL:
-
-    ```sql
-    CREATE TABLE t_error ( a INT NOT NULL, PRIMARY KEY (a))
-    ENGINE=InnoDB TABLESPACE ts1
-    PARTITION BY RANGE (a) PARTITIONS 3 (
-    PARTITION P1 VALUES LESS THAN (2),
-    PARTITION P2 VALUES LESS THAN (4) TABLESPACE ts2,
-    PARTITION P3 VALUES LESS THAN (6) TABLESPACE ts3);
-    ```
-2. Use the `checker` tool to check the table. If the following error is displayed, the `t_error` table cannot be migrated.
-
-    ```bash
-    ./bin/checker -host 127.0.0.1 -port 3306 -user root test t_error
-    2017/08/04 11:14:35 checker.go:48: [info] Checking database test
-    2017/08/04 11:14:35 main.go:39: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
-    2017/08/04 11:14:35 checker.go:63: [info] Checking table t1
-    2017/08/04 11:14:35 checker.go:67: [error] Check table t1 failed with err: line 3 column 29 near " ENGINE=InnoDB DEFAULT CHARSET=latin1
-    /*!50100 PARTITION BY RANGE (a)
-    (PARTITION P1 VALUES LESS THAN (2) ENGINE = InnoDB,
-     PARTITION P2 VALUES LESS THAN (4) TABLESPACE = ts2 ENGINE = InnoDB,
-     PARTITION P3 VALUES LESS THAN (6) TABLESPACE = ts3 ENGINE = InnoDB) */" (total length 354)
-    github.com/pingcap/tidb/parser/yy_parser.go:96:
-    github.com/pingcap/tidb/parser/yy_parser.go:109:
-    /home/jenkins/workspace/build_tidb_tools_master/go/src/github.com/pingcap/tidb-tools/checker/checker.go:122:  parse CREATE TABLE `t1` (
-      `a` int(11) NOT NULL,
-      PRIMARY KEY (`a`)
-    ) /*!50100 TABLESPACE ts1 */ ENGINE=InnoDB DEFAULT CHARSET=latin1
-    /*!50100 PARTITION BY RANGE (a)
-    (PARTITION P1 VALUES LESS THAN (2) ENGINE = InnoDB,
-     PARTITION P2 VALUES LESS THAN (4) TABLESPACE = ts2 ENGINE = InnoDB,
-     PARTITION P3 VALUES LESS THAN (6) TABLESPACE = ts3 ENGINE = InnoDB) */ error
-    /home/jenkins/workspace/build_tidb_tools_master/go/src/github.com/pingcap/tidb-tools/checker/checker.go:114:
-    2017/08/04 11:14:35 main.go:83: [error] Check database test with 1 errors and 0 warnings.
-    ```
-
-
-## 2. Using the `mydumper` / `loader` tool to export and import all the data
+## Use the `mydumper` / `loader` tool to export and import all the data
 
 You can use `mydumper` to export data from MySQL and `loader` to import the data into TiDB.
 
 > **Note:** Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use it. Its performance is much lower than `mydumper` / `loader` and it takes much time to migrate large amounts of data. `mydumper`/`loader` is more powerful. For more information, see [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper).
 
-
-### 1. Exporting data from MySQL
+### 1. Export data from MySQL
 
 Use the `mydumper` tool to export data from MySQL by using the following command:
 
@@ -159,17 +20,15 @@ Use the `mydumper` tool to export data from MySQL by using the following command
 ```
 In this command,
 
-+ `-B test`: means the data is exported from the `test` database.
-+ `-T t1,t2`: means only the `t1` and `t2` tables are exported.
-+ `-t 16`: means 16 threads are used to export the data.
-+ `-F 64`: means a table is partitioned into chunks and one chunk is 64MB.
-+ `--skip-tz-utc`: the purpose of adding this parameter is to ignore the inconsistency of time zone setting between MySQL and the data exporting machine and to disable automatic conversion.
+- `-B test`: means the data is exported from the `test` database.
+- `-T t1,t2`: means only the `t1` and `t2` tables are exported.
+- `-t 16`: means 16 threads are used to export the data.
+- `-F 64`: means a table is partitioned into chunks and one chunk is 64MB.
+- `--skip-tz-utc`: the purpose of adding this parameter is to ignore the inconsistency of time zone setting between MySQL and the data exporting machine and to disable automatic conversion.
 
-**Note:**
-On the Cloud platforms which require the `super privilege`, such as on the Aliyun platform, add the `--no-locks` parameter to the command. If not, you might get the error message that you don't have the privilege.
+> **Note**: On the Cloud platforms which require the `super privilege`, such as on the Aliyun platform, add the `--no-locks` parameter to the command. If not, you might get the error message that you don't have the privilege.
 
-### 2. Importing data to TiDB
-
+### 2. Import data to TiDB
 
 Use `loader` to import the data from MySQL to TiDB. See [Loader instructions](./tools/loader.md) for more information.
 
@@ -210,6 +69,7 @@ mysql> select * from t2;
 ```
 
 ### 3. Best practice
+
 To migrate data quickly, especially for huge amount of data, you can refer to the following recommendations.
 
 - Keep the exported data file as small as possible and it is recommended keep it within 64M. You can use the `-F` parameter to set the value.
@@ -232,7 +92,7 @@ To migrate data quickly, especially for huge amount of data, you can refer to th
 
 **Results**: It takes 11 hours to import all the data, which is 19.4G/hour.
 
-## 3. (Optional) Using the `syncer` tool to import data incrementally
+## (Optional) Using the `syncer` tool to import data incrementally
 
 The previous section introduces how to import all the history data from MySQL to TiDB using `mydumper`/`loader`. But this is not applicable if the data in MySQL is updated after the migration and it is expected to import the updated data quickly.
 
@@ -240,7 +100,7 @@ Therefore, TiDB provides the `syncer` tool for an incremental data import from M
 
 See [Downloading the TiDB Enterprise Toolset](#downloading-the-tidb-enterprise-toolset) to download the `syncer` tool.
 
-### Downloading the TiDB Enterprise Toolset (Linux)
+### Download the TiDB Enterprise Toolset (Linux)
 
 ```bash
 # Download the enterprise tool package.
@@ -257,7 +117,7 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 Assuming the data from `t1` and `t2` is already imported to TiDB using `mydumper`/`loader`. Now we hope that any updates to these two tables are synchronised to TiDB in real time.
 
-### 1. Obtaining the position to synchronise
+### 1. Obtain the position to synchronise
 
 The data exported from MySQL contains a metadata file which includes the position information. Take the following metadata information as an example:
 ```
@@ -277,7 +137,8 @@ The position information (`Pos: 930143241`) needs to be stored in the `syncer.me
 binlog-name = "mysql-bin.000003"
 binlog-pos = 930143241
 ```
-**Note:** The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is synchronised.
+
+> **Note:** The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is synchronised.
 
 ### 2. Start `syncer`
 
@@ -357,13 +218,13 @@ Start `syncer`:
 2016/10/27 15:22:01 syncer.go:549: [info] rotate binlog to (mysql-bin.000003, 1280)
 ```
 
-### 3. Inserting data into MySQL
+### 3. Insert data into MySQL
 
 ```bash
 INSERT INTO t1 VALUES (4, 4), (5, 5);
 ```
 
-### 4. Logging in TiDB and viewing the data:
+### 4. Log in TiDB and view the data
 
 ```sql
 mysql -h127.0.0.1 -P4000 -uroot -p

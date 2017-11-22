@@ -269,6 +269,7 @@ ENUM('apple', 'orange', 'pear')
 ```
 
 The value of the ENUM data type is stored as numbers. Each value is converted to a number according the definition order. In the previous example, each string is mapped to a number:
+
 | Value | Number |
 | ---- | ---- |
 | NULL | NULL |

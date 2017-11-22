@@ -24,7 +24,9 @@ tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
 cd tidb-enterprise-tools-latest-linux-amd64
 ```
 ## Where to deploy Syncer
+
 Syncer can be deployed to any of the machines that can connect to MySQL or TiDB cluster. But it is recommended to be deployed to the TiDB cluster.
+
 ## Enabling binary logging (binlog) in MySQL
 
 Before using the `syncer` tool, make sure:
@@ -47,9 +49,11 @@ binlog-name = "mysql-bin.000003"
 binlog-pos = 930143241
 binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e-487b6bd31bf7:1-4"
 ```
-**Note:** 
-+ The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is synchronised. 
-+ If you use the binlog position to synchronise, you only need to configure `binlog-name` and `binlog-pos`; if you use `binlog-gtid` to synchronise, you only need to configure `binlog-gtid`.
+
+> **Note:**
+>  
+> - The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is synchronised. 
+> - If you use the binlog position to synchronise, you only need to configure `binlog-name` and `binlog-pos`; if you use `binlog-gtid` to synchronise, you only need to configure `binlog-gtid`.
 
 ### 2. Start `syncer`
 
@@ -184,16 +188,18 @@ target-schema = "example_db"
 target-table = "table"
 ```
 
-**Note:** But before synchronising, you need to check:
-+ If the sharding rules can be represented using the `route-rules` syntax;
-+ If the sharded tables contain monotone increasing primary keys, or if there are conflicts in the unique indexes or the primary keys after the combination. 
+> **Note:** But before synchronising, you need to check:
+> 
+> + If the sharding rules can be represented using the `route-rules` syntax;
+> + If the sharded tables contain monotone increasing primary keys, or if there are conflicts in the unique indexes or the primary keys after the combination. 
 
 ## Monitoring
 
 The `syncer` monitoring scheme contains the following components:
-+ Prometheus, a time series database, to store the monitoring and performance metrics
-+ Grafana, an open source project for analysing and visualising metrics, to display the performance metrics.
-+ AlertManager, for the alerting mechanism
+
+- Prometheus, a time series database, to store the monitoring and performance metrics
+- Grafana, an open source project for analysing and visualising metrics, to display the performance metrics.
+- AlertManager, for the alerting mechanism
 
 For more information, see the following diagram:
 

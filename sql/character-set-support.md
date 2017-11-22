@@ -5,7 +5,7 @@ category: user guide
 
 # Character Set Support
 
-A character set is a set of symbols and encodings. A collation is a set of rules for comparing characters in a character set. 
+A character set is a set of symbols and encodings. A collation is a set of rules for comparing characters in a character set.
 
 Currently, TiDB supports the following character sets:
 
@@ -46,16 +46,16 @@ mysql> SHOW COLLATION WHERE Charset = 'latin1';
 
 The `latin1` collations have the following meanings:
 
-Collation         | Meaning
-:-                | :-
-`latin1_bin`        | Binary according to `latin1` encoding
-`latin1_danish_ci`  | Danish/Norwegian
-`latin1_general_ci` | Multilingual (Western European)
-`latin1_general_cs` | Multilingual (ISO Western European), case sensitive
-`latin1_german1_ci` | German DIN-1 (dictionary order)
-`latin1_german2_ci` | German DIN-2 (phone book order)
-`latin1_spanish_ci` | Modern Spanish
-`latin1_swedish_ci` | Swedish/Finnish
+| Collation           | Meaning                                             |
+|:--------------------|:----------------------------------------------------|
+| `latin1_bin`        | Binary according to `latin1` encoding               |
+| `latin1_danish_ci`  | Danish/Norwegian                                    |
+| `latin1_general_ci` | Multilingual (Western European)                     |
+| `latin1_general_cs` | Multilingual (ISO Western European), case sensitive |
+| `latin1_german1_ci` | German DIN-1 (dictionary order)                     |
+| `latin1_german2_ci` | German DIN-2 (phone book order)                     |
+| `latin1_spanish_ci` | Modern Spanish                                      |
+| `latin1_swedish_ci` | Swedish/Finnish                                     |
 
 Each character set has a default collation. For example, the default collation for utf8 is `utf8_bin`.
 
@@ -69,13 +69,13 @@ The collation names in TiDB follow these conventions:
 - A language-specific collation includes a language name. For example, `utf8_turkish_ci` and `utf8_hungarian_ci` sort characters for the utf8 character set using the rules of Turkish and Hungarian, respectively.
 - Collation suffixes indicate whether a collation is case and accent sensitive, or binary. The following table shows the suffixes used to indicate these characteristics.
 
-    Suffix  | Meaning
-    :-    | :-
-    \_ai   | Accent insensitive
-    \_as   | Accent insensitive
-    \_ci   | Case insensitive
-    \_cs   | Case sensitive
-    \_bin  | Binary
+| Suffix | Meaning            |
+|:-------|:-------------------|
+| \_ai   | Accent insensitive |
+| \_as   | Accent insensitive |
+| \_ci   | Case insensitive   |
+| \_cs   | Case sensitive     |
+| \_bin  | Binary             |
 
 > **Note**: For now, TiDB supports on some of the collations in the above table.
 
@@ -147,7 +147,7 @@ For example:
 mysql> CREATE TABLE t1(a int) CHARACTER SET utf8 COLLATE utf8_general_ci;
 Query OK, 0 rows affected (0.08 sec)
 ```
-The table character set and collation are used as the default values for column definitions if the column character set and collation are not specified in individual column definitions. 
+The table character set and collation are used as the default values for column definitions if the column character set and collation are not specified in individual column definitions.
 
 ## Column Character Set and Collation
 
@@ -185,7 +185,7 @@ You can use the following statement to specify a particular collation that is re
     SET character_set_connection = charset_name;
     ```
 
-    `COLLATE` is optional, if absent, the default collation of the `charset_name` is used. 
+    `COLLATE` is optional, if absent, the default collation of the `charset_name` is used.
 
 - `SET CHARACTER SET 'charset_name'`
 
@@ -196,5 +196,5 @@ You can use the following statement to specify a particular collation that is re
     SET character_set_results = charset_name;
     SET collation_connection = @@collation_database;
     ```
-    
+
 For more information, see [Connection Character Sets and Collations in MySQL](https://dev.mysql.com/doc/refman/5.7/en/charset-connection.html).

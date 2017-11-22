@@ -18,10 +18,10 @@ As an open source distributed NewSQL database with high performance, TiDB can be
 | Oracle Enterprise Linux  | 7.3 and above|
 | Ubuntu LTS               | 14.04 and above|
 
-**Note**
-
-- For Oracle Enterprise Linux, TiDB supports the Red Hat Compatible Kernel (RHCK) and does not support the Unbreakable Enterprise Kernel provided by Oracle Enterprise Linux.
-- The support for the Linux operating systems above include the deployment and operation in physical servers as well as in major virtualized environments like VMware, KVM and XEM.
+> **Note**:
+> 
+> - For Oracle Enterprise Linux, TiDB supports the Red Hat Compatible Kernel (RHCK) and does not support the Unbreakable Enterprise Kernel provided by Oracle Enterprise Linux.
+> - The support for the Linux operating systems above include the deployment and operation in physical servers as well as in major virtualized environments like VMware, KVM and XEM.
 
 ## Server Requirements
 
@@ -36,10 +36,10 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 | TiKV    | 16 core+   | 32 GB+  | SAS, 200 GB+ | Gigabit network card | 3       |
 |         |         |         |              | Total Server Number |  4      |     
 
-**Note**
-
-- In the test environment, the TiDB and PD can be deployed on the same server.
-- For performance-related testing, do not use low-performance storage and network hardware configuration, in order to guarantee the correctness of the test result.
+> **Note**:
+> 
+> - In the test environment, the TiDB and PD can be deployed on the same server.
+> - For performance-related testing, do not use low-performance storage and network hardware configuration, in order to guarantee the correctness of the test result.
 
 ### Production Environment
 
@@ -51,11 +51,11 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 | Monitor | 16 core+ | 32 GB+ | SAS | 4+ | 200 GB+ | 2 or more Gigabit network cards | 1 |
 |     |     |     |      |      |      |  Total Server Number   |    9   |
 
-**Note**:   
-
-- In the production environment, you can deploy and run TiDB and PD on the same server. If you have a higher requirement for performance and reliability, try to deploy them separately.
-- It is strongly recommended to use higher configuration in the production environment.
-- It is recommended to keep the size of TiKV hard disk within 500G in case it takes too long to restore data when the hard disk is damaged.
+> **Note**:   
+> 
+> - In the production environment, you can deploy and run TiDB and PD on the same server. If you have a higher requirement for performance and reliability, try to deploy them separately.
+> - It is strongly recommended to use higher configuration in the production environment.
+> - It is recommended to keep the size of TiKV hard disk within 500G in case it takes too long to restore data when the hard disk is damaged.
 
 ## Network Requirements
 

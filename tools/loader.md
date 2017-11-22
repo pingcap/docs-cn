@@ -33,25 +33,25 @@ Since tools like mysqldump will take us days to migrate massive amounts of data,
 
 ```
   -L string: the log level setting. It can be set as debug, info, warn, error, fatal (default: "info")
-  
+
   -P int: the port of TiDB (default: 4000)
 
   -V boolean: prints version and exit
-  
+
   -c string: config file
-  
+
   -checkpoint-schema string: the database name of checkpoint. In the execution process, loader will constantly update this database. After recovering from an interruption, loader will get the process of the last run through this database. (default: "tidb_loader")
 
   -d string: the storage directory of data that need to import (default: "./")
-  
-  -h string: the host of TiDB (default: "127.0.0.1")  
-  
+
+  -h string: the host of TiDB (default: "127.0.0.1")
+
   -p string: the account and password of TiDB
-  
+
   -pprof-addr string: the pprof address of Loader. It tunes the perfomance of Loader (default: ":10084")
 
   -t int: the number of thread,increase this as TiKV nodes increase (default: 16)
-  
+
   -u string: the user name of TiDB (default: "root")
 ```
 
@@ -107,6 +107,6 @@ Or use configuration file "config.toml":
 ```
 
 > **Note:**
-
-> - If you use the default checkpoint-schema, after importing the data of a database, drop the tidb_loader database before you begin to import the next database. 
+>
+> - If you use the default checkpoint-schema, after importing the data of a database, drop the tidb_loader database before you begin to import the next database.
 > - It is recommended to specify the `checkpoint-schema = "tidb_loader"` parameter when importing data.

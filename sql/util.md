@@ -85,7 +85,7 @@ The xx.dot is the result returned by the above statement.
 
 If the `dot` program is not installed on your computer, copy the result to [this website](http://www.webgraphviz.com/) to get a tree diagram:
 
-![Explain Dot](explain_dot.png)
+![Explain Dot](../media/explain_dot.png)
 
 ## `USE` Statement
 
@@ -93,4 +93,4 @@ If the `dot` program is not installed on your computer, copy the result to [this
 USE db_name
 ```
 
-The `USE` statement is used to switch the default database. If the table in SQL statements does not display the specified database, then use the default database. 
+The `USE` statement is used to switch the default database. If the table in SQL statements does not display the specified database, then use the default database.

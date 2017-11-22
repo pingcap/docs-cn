@@ -173,7 +173,7 @@ DELETE [LOW_PRIORITY] [QUICK] [IGNORE]
 
 Both of the two syntax formats can be used to delete multiple tables, or delete the selected results from multiple tables. There are still differences between the two formats. The first one will delete data of every table in the table list before `FROM`. The second one will delete the data of the tables in the table list which is after `FROM` and before `USING`.
 
-## The Description of the Syntax Elements
+### The Description of the Syntax Elements
 
 | Syntax Elements | Description|
 | -------------- | --------------------------------------------------------- |

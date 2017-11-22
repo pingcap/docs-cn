@@ -7,9 +7,8 @@ category: operations
 
 Currently there are two types of interfaces to monitor the state of the TiDB cluster:
 
-* Using the HTTP interface to get the internal information of a component, which is called the component state interface.
-
-* Using Prometheus to record the detailed information of the various operations in the components, which is called the Metrics interface.
+- Using the HTTP interface to get the internal information of a component, which is called the component state interface.
+- Using Prometheus to record the detailed information of the various operations in the components, which is called the Metrics interface.
 
 ## The component state interface
 
@@ -33,11 +32,10 @@ curl http://127.0.0.1:10080/status
 ```
 
 In this example,
-* connection: the current number of clients connected to the TiDB server
 
-* version: the TiDB version number
-
-* git_hash: the Git Hash of the current TiDB code
+- connection: the current number of clients connected to the TiDB server
+- version: the TiDB version number
+- git_hash: the Git Hash of the current TiDB code
 
 ### PD server
 
@@ -91,41 +89,41 @@ You can get the following metrics for each component:
 
 ### TiDB server
 
-* query processing time to monitor the latency and throughput
+- query processing time to monitor the latency and throughput
 
-* the DDL process monitoring
+- the DDL process monitoring
 
-* TiKV client related monitoring
+- TiKV client related monitoring
 
-* PD client related monitoring
+- PD client related monitoring
 
 ### PD server
 
-* the total number of times that the command executes
+- the total number of times that the command executes
 
-* the total number of times that a certain command fails
+- the total number of times that a certain command fails
 
-* the duration that a command succeeds
+- the duration that a command succeeds
 
-* the duration that a command fails
+- the duration that a command fails
 
-* the duration that a command finishes and returns result
+- the duration that a command finishes and returns result
 
 ### TiKV server
 
-* Garbage Collection (GC) monitoring
+- Garbage Collection (GC) monitoring
 
-* the total number of times that the TiKV command executes
+- the total number of times that the TiKV command executes
 
-* the duration that Scheduler executes commands
+- the duration that Scheduler executes commands
 
-* the total number of times of the Raft propose command
+- the total number of times of the Raft propose command
 
-* the duration that Raft executes commands
+- the duration that Raft executes commands
 
-* the total number of times that Raft commands fail
+- the total number of times that Raft commands fail
 
-* the total number of times that Raft processes the ready state
+- the total number of times that Raft processes the ready state
 
 ## Using Prometheus and Grafana
 
@@ -133,9 +131,9 @@ You can get the following metrics for each component:
 
 See the following diagram for the deployment architecture:
 
-![image alt text](../media/monitoring-tidb.png)
+![image alt text](../media/monitor-architecture.png)
 
-**Note:** You must add the Prometheus Pushgateway addresses to the startup parameters of the TiDB, PD and TiKV components.
+> **Note:** You must add the Prometheus Pushgateway addresses to the startup parameters of the TiDB, PD and TiKV components.
 
 ### Setting up the monitoring system
 
@@ -151,13 +149,12 @@ See the following links for your reference:
 
 #### Configuring TiDB, PD and TiKV
 
-- TiDB: Set the two parameters: `--metrics-addr` and `--metrics-interval`.
++ TiDB: Set the two parameters: `--metrics-addr` and `--metrics-interval`.
 
     - Set the Push Gateway address as the `--metrics-addr` parameter.
-
     - Set the push frequency as the `--metrics-interval` parameter. The unit is s, and the default value is 15.
 
-- PD: update the toml configuration file with the Push Gateway address and the the push frequency:
++ PD: update the toml configuration file with the Push Gateway address and the the push frequency:
 
   ```toml
   [metric]
@@ -167,7 +164,7 @@ See the following links for your reference:
   address = "host:port"
   ```
 
-* TiKV: update the toml configuration file with the Push Gateway address and the the push frequency. Set the job field as "tikv".
++ TiKV: update the toml configuration file with the Push Gateway address and the the push frequency. Set the job field as "tikv".
 
   ```toml
   [metric]
@@ -178,6 +175,7 @@ See the following links for your reference:
   # the Prometheus client push job name. Note: A node id will automatically append, e.g., "tikv_1".
   job = "tikv"
   ```
+
 #### Configuring PushServer
 
 Generally, it does not need to be configured. You can use the default port: 9091.
@@ -186,21 +184,21 @@ Generally, it does not need to be configured. You can use the default port: 9091
 
 Add the Push Gateway address to the yaml configuration file:
 
-    ```yaml
-    scrape_configs:
-      # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-      - job_name: 'TiDB'
+```yaml
+ scrape_configs:
+# The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+- job_name: 'TiDB'
 
-        # Override the global default and scrape targets from this job every 5 seconds.
-        scrape_interval: 5s
+  # Override the global default and scrape targets from this job every 5 seconds.
+  scrape_interval: 5s
 
-        honor_labels: true
+  honor_labels: true
 
-        static_configs:
-          - targets: ['host:port'] # use the Push Gateway address
-            labels:
-              group: 'production'
-    ```
+  static_configs:
+ - targets: ['host:port'] # use the Push Gateway address
+labels:
+  group: 'production'
+ ```
 
 #### Configuring Grafana
 
@@ -208,11 +206,11 @@ Add the Push Gateway address to the yaml configuration file:
 
 1. Login the Grafana Web interface.
 
-    * The default address is: [http://localhost:3000](http://localhost:3000)
+    - The default address is: [http://localhost:3000](http://localhost:3000)
 
-    * The default account name: admin
+    - The default account name: admin
 
-    * The password for the default account: admin
+    - The password for the default account: admin
 
 2. Click the Grafana logo to open the sidebar menu.
 
@@ -222,13 +220,13 @@ Add the Push Gateway address to the yaml configuration file:
 
 5. Specify the data source information:
 
-    * Specify the name for the data source.
+    - Specify the name for the data source.
 
-    * For Type, select Prometheus.
+    - For Type, select Prometheus.
 
-    * For Url, specify the Prometheus address.
+    - For Url, specify the Prometheus address.
 
-    * Specify other fields as needed.
+    - Specify other fields as needed.
 
 6. Click "Add" to save the new data source.
 
