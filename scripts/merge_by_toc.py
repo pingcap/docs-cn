@@ -92,13 +92,14 @@ def replace_link(match):
     link_name = match.group(1)
     link = match.group(2)
     frag = match.group(3)
-    if link.endswith('.md'):
-        if not frag:
-            for fpath in file_link_name:
-                if os.path.basename(fpath) == os.path.basename(link):
-                    frag = '#' + file_link_name[fpath]
 
-        return '[%s](%s)' % (link_name, frag)
+    if link.endswith('.md'):
+        if not link.startswith('http'):
+            if not frag:
+                for fpath in file_link_name:
+                    if os.path.basename(fpath) == os.path.basename(link):
+                        frag = '#' + file_link_name[fpath]
+            return '[%s](%s)' % (link_name, frag)
     elif link.endswith('.png'):
         # special handing for pic
         fname = os.path.basename(link)
