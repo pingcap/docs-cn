@@ -116,7 +116,7 @@ X'1z' (z 不是合法的十六进制值)
 对于使用 `X'val'` 格式的十六进制字面值，`val` 必须要有一个数字，可以在前面补一个 0 来避免语法错误。
 
 ```
-mysql> select X'aff';
+mysql> select X'aff';
 ERROR 1105 (HY000): line 0 column 13 near ""hex literal: invalid hexadecimal format, must even numbers, but 3 (total length 13)
 mysql> select X'0aff';
 +---------+
