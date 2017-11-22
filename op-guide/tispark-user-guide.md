@@ -139,7 +139,12 @@ cd $SPARKPATH
 
 假设您已经按照上述步骤成功启动了 TiSpark 集群， 下面简单介绍如何使用 Spark SQL 来做 OLAP 分析。这里我们用名为 tpch 数据库中的 lineitem 表作为范例。
 
-在 Spark-Shell 里输入下面的命令,  假设你的 PD 节点位于 192.168.1.100，端口 2379：
+假设你的 PD 节点位于 192.168.1.100，端口为 2379，在`$SPARK_HOME/conf/spark-defaults.conf`加入
+```
+spark.tispark.pd.addresses 192.168.1.100:2379
+```
+
+然后在 Spark-Shell 里输入下面的命令：
 
 ```scala
 import org.apache.spark.sql.TiContext
