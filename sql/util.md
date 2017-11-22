@@ -82,7 +82,7 @@ ot xx.dot -T png -O
 
 如果没有安装 `dot`，可以将结果拷贝到[这个网站](http://www.webgraphviz.com/)，可以得到一个树状图：
 
-![Explain Dot](explain_dot.png)
+![Explain Dot](../media/explain_dot.png)
 
 
 ## `USE` 语句

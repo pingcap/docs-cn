@@ -3,7 +3,7 @@ title: 离线 TiDB Ansible 部署方案
 category: deployment
 ---
 
-#离线 TiDB Ansible 部署方案
+# 离线 TiDB Ansible 部署方案
 
 
 ## 准备机器
@@ -17,7 +17,7 @@ category: deployment
 
 2.  部署目标机器若干
 
-    - 建议4台及以上，TiKV 至少3实例，且与 TiDB、PD 模块不位于同一主机,详见[部署建议](https://github.com/pingcap/docs-cn/blob/master/op-guide/recommendation.md)。
+    - 建议4台及以上，TiKV 至少3实例，且与 TiDB、PD 模块不位于同一主机,详见[部署建议](recommendation.md)。
     - Linux 操作系统，x86_64 架构(amd64)，内核版本建议 3.10 以上，推荐 CentOS 7.3 及以上版本, 文件系统推荐 ext4(部分内核版本 xfs 文件系统有 bug, 本工具检查到 xfs 文件系统有 bug 会退出)。
     - 机器之间网络互通，防火墙、iptables 等可以在部署验证时关闭，后期开启。
     - 机器的时间、时区设置正确(要求机器时间同步)，有 NTP 服务可以同步正确时间, ubuntu 系统需单独安装 ntpstat 软件包。

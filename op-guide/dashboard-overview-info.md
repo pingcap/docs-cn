@@ -5,7 +5,7 @@ category: monitoring
 
 # 重要监控指标详解
 
-使用 ansible 部署 tidb 集群时，一键部署监控系统 (prometheus/grafana)，监控架构请看 [TiDB 监控框架概述](../op-guide/monitor-overview.md)
+使用 ansible 部署 tidb 集群时，一键部署监控系统 (prometheus/grafana)，监控架构请看 [TiDB 监控框架概述](monitor-overview.md)
 
 目前 grafana dashboard 整体分为四个 dashboard，node_export，PD，TIDB，TIKV。 内容较多，主要在于尽快让 TIDB 开发确认问题。
 

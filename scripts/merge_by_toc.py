@@ -28,12 +28,14 @@ with open(entry_file) as fp:
     for line in fp:
         if line.startswith("## 目录"):
             in_toc = True
+            print("in toc")
         elif in_toc and line.startswith('## '):
             # yes, toc processing done
             # contents.append(line[1:]) # skip 1 level TOC
             break
         elif in_toc and not line.startswith('#') and line.strip():
             level_str = level_pattern.findall(line)[0]
+            print("level", level_str)
             if len(level_str) > len(current_level):
                 level += 1
             elif len(level_str) < len(current_level):
@@ -73,15 +75,14 @@ file_link_name = {}
 for tp, lv, f in followups:
     if tp != 'FILE':
         continue
-    lines = open(f).read().strip().split('\n')
-    for tag in lines:
-        if tag.startswith('# '):
-            tag = tag[2:]
-            break
-        elif tag.startswith('## '):
-            tag = tag[3:]
-            break
-        print("skiping", f)
+    try:
+        tag = open(f).read().strip().split('\n')[0]
+    except Exception as e:
+        tag = "ERROR"
+    if tag.startswith('# '):
+        tag = tag[2:]
+    elif tag.startswith('## '):
+        tag = tag[3:]
     file_link_name[f] = tag.lower().replace(' ', '-')
 
 print(file_link_name)
@@ -106,15 +107,6 @@ def replace_link(match):
     else:
         return full
 
-def replace_img_link(match):
-    full = match.group(0)
-    link_name = match.group(1)
-    link = match.group(2)
-
-    if link.endswith('.png'):
-        fname = os.path.basename(link)
-        return '![%s](./media/%s)' % (link_name, fname)
-
 def replace_heading_func(diff_level=0):
 
     def replace_heading(match):
@@ -126,32 +118,38 @@ def replace_heading_func(diff_level=0):
 
     return replace_heading
 
+def replace_img_link(match):
+    full = match.group(0)
+    link_name = match.group(1)
+    link = match.group(2)
+
+    if link.endswith('.png'):
+        fname = os.path.basename(link)
+        return '![%s](./media/%s)' % (link_name, fname)
 
 # stage 3, concat files
-fileset = set()
 for type_, level, name in followups:
     if type_ == 'TOC':
-        contents.append("{} {}\n".format('#' * level, name))
+        contents.append("\n{} {}\n".format('#' * level, name))
     elif type_ == 'RAW':
         contents.append(name)
     elif type_ == 'FILE':
-        if name in fileset:
-            continue
+        try:
+            with open(name) as fp:
+                chapter = fp.read()
+                chapter = hyper_link_pattern.sub(replace_link, chapter)
+                chapter = image_link_pattern.sub(replace_img_link, chapter)
 
-        fileset.add(name)
+                # fix heading level
+                diff_level = level - heading_patthern.findall(chapter)[0].count('#')
 
-        with open(name) as fp:
-            chapter = fp.read()
-            chapter = hyper_link_pattern.sub(replace_link, chapter)
-            chapter = image_link_pattern.sub(replace_img_link, chapter)
+                print(name, type_, level, diff_level)
+                chapter = heading_patthern.sub(replace_heading_func(diff_level), chapter)
+                contents.append(chapter)
+                contents.append('') # add an empty line
+        except Exception as e:
 
-            # fix heading level
-            diff_level = level - heading_patthern.findall(chapter)[0].count('#')
-
-            print(name, type_, level, diff_level)
-            chapter = heading_patthern.sub(replace_heading_func(diff_level), chapter)
-            contents.append(chapter)
-            contents.append('') # add an empty line
+            print("generate file error: ignore!")
 
 # stage 4, generage final doc.md
 with open("doc.md", 'w') as fp:

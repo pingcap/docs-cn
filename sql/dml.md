@@ -9,14 +9,6 @@ category: user guide
 
 TiDB 支持的数据操作语言包括 Select ，Insert, Delete, Update，和 Replace。
 
-# 目录
-
-+ [Select](#select-语句)
-+ [Insert](#insert-语句)
-+ [Delete](#delete-语句)
-+ [Update](#update-语句)
-+ [Replace](#replace-语句)
-
 ## Select 语句
 
 Select 语句用于从数据库中查询数据。
@@ -57,11 +49,11 @@ SELECT
 |`FOR UPDATE` | 对查询结果集所有数据上读锁，以监测其他事务对这些的并发修改。TiDB 使用[乐观事务模型](https://github.com/pingcap/docs-cn/blob/master/op-guide/mysql-compatibility.md#事务)在语句执行期间不会检测锁冲突，在事务的提交阶段才会检测事务冲突，如果执行 Select For Update 期间，有其他事务修改相关的数据，那么包含 Select For Update 语句的事务会提交失败。|
 |`LOCK IN SHARE MODE` | TiDB 出于兼容性解析这个语法，但是不做任何处理|
 
-# Insert 语句
+## Insert 语句
 
 Insert 语句用于向数据库中插入数据，TiDB 兼容 MySQL Insert 语句的所有语法。
 
-## 语法定义
+### 语法定义
 
 ```sql
 InsertStatement:
@@ -87,7 +79,7 @@ assignment_list:
     assignment [, assignment] ...
 ```
 
-## 语法元素说明
+### 语法元素说明
 
 | 语法元素 | 说明 |
 | -------------- | --------------------------------------------------------- |
@@ -149,11 +141,11 @@ INSERT INTO tbl_name SELECT * from tbl_name1;
 
 上面的例子中，从 `tbl_name1` 中查询出数据，插入 `tbl_name` 中。
 
-# Delete 语句
+## Delete 语句
 
 Delete 语句用于删除数据库中的数据，TiDB 兼容 MySQL Delete 语句除 PARTITION 之外的所有语法。Delete 语句主要分为单表删除和多表删除两种，下面分开描述。
 
-## 单表删除
+### 单表删除
 
 这种语法用于删除的数据只会涉及一个表的情况。
 
@@ -165,7 +157,7 @@ DELETE [LOW_PRIORITY] [QUICK] [IGNORE] FROM tbl_name
     [LIMIT row_count]
 ```
 
-## 多表删除
+### 多表删除
 
 这种语法用于删除的数据会涉及多张表的情况。一共有两种写法：
 
@@ -184,7 +176,7 @@ DELETE [LOW_PRIORITY] [QUICK] [IGNORE]
 删除多个表的数据的时候，可以用这两种语法。这两种写法都可以指定从多个表查询数据，但只删除其中一些表的数据。在第一种语法中，只会删除 `FROM` 关键字之前的 Table 列表中所列 Table 的表中的数据。对于第二种写法，只会删除 `FROM` 之后 `USING` 之前的 Table 列表中的所列 Table 中的数据。
 
 
-## 语法元素说明
+### 语法元素说明
 
 | 语法元素 | 说明 |
 | -------------- | --------------------------------------------------------- |
@@ -196,11 +188,11 @@ DELETE [LOW_PRIORITY] [QUICK] [IGNORE]
 | `ORDER BY` | 对待删除数据集进行排序 |
 | `LIMIT row_count` | 只对待删除数据集中排序前 row_count 行的内容进行删除 |
 
-# Update 语句
+## Update 语句
 
 Update 语句用于更新表中的数据。
 
-## 语法定义
+### 语法定义
 
 Update 语句一共有两种语法，分别用于更新单表数据和多表数据。
 
@@ -230,7 +222,7 @@ UPDATE [LOW_PRIORITY] [IGNORE] table_references
 多表更新语句用于将 `table_references` 中满足 Where 子句的数据地指定列赋予新的值。
 
 
-## 语法元素说明
+### 语法元素说明
 
 | 语法元素 | 说明 |
 | -------------- | --------------------------------------------------------- |
@@ -244,11 +236,11 @@ UPDATE [LOW_PRIORITY] [IGNORE] table_references
 | `LIMIT row_count` | 只对待更新数据集中排序前 row_count 行的内容进行更新 |
 
 
-# Replace 语句
+## Replace 语句
 
 Replace 语句是 MySQL 对标准 SQL 语法的扩展，其行为和 Insert 语句一样，但是当现有数据中有和待插入数据在 PRIMARY KEY 或者 UNIQUE KEY 冲突的情况下，会先删除旧数据，再插入新数据。
 
-## 语法定义
+### 语法定义
 
 ```sql
 REPLACE [LOW_PRIORITY | DELAYED]
@@ -266,7 +258,7 @@ REPLACE [LOW_PRIORITY | DELAYED]
     SELECT ...
 ```
 
-## 语法元素说明
+### 语法元素说明
 
 | 语法元素 | 说明 |
 | -------------- | --------------------------------------------------------- |
