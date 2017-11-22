@@ -49,16 +49,16 @@ mysql> SHOW COLLATION WHERE Charset = 'latin1';
 
 `latin1` Collation（排序规则）分别有以下含义：
 
-Collation         | 含义
-:-                | :-
-latin1_bin        | latin1 编码的二进制表示
-latin1_danish_ci  | 丹麦语/挪威语，不区分大小写
-latin1_general_ci | 多种语言的 (西欧)，不区分大小写
-latin1_general_cs | 多种语言的 (ISO 西欧)，区分大小写
-latin1_german1_ci | 德国 DIN-1 (字典序)，不区分大小写
-latin1_german2_ci | 德国 DIN-2，不区分大小写
-latin1_spanish_ci | 现代西班牙语，不区分大小写
-latin1_swedish_ci | 瑞典语/芬兰语，不区分大小写
+| Collation         | 含义                              |
+|:------------------|:----------------------------------|
+| latin1_bin        | latin1 编码的二进制表示           |
+| latin1_danish_ci  | 丹麦语/挪威语，不区分大小写       |
+| latin1_general_ci | 多种语言的 (西欧)，不区分大小写   |
+| latin1_general_cs | 多种语言的 (ISO 西欧)，区分大小写 |
+| latin1_german1_ci | 德国 DIN-1 (字典序)，不区分大小写 |
+| latin1_german2_ci | 德国 DIN-2，不区分大小写          |
+| latin1_spanish_ci | 现代西班牙语，不区分大小写        |
+| latin1_swedish_ci | 瑞典语/芬兰语，不区分大小写       |
 
 每一个字符集，都有一个默认的 Collation，例如 `utf8` 的默认 Collation 就为 `utf8_bin`。
 
@@ -73,13 +73,12 @@ latin1_swedish_ci | 瑞典语/芬兰语，不区分大小写
 * 一个语言对应的 Collation 会包含语言的名字，例如 utf8_turkish_ci 和 utf8_hungarian_ci 是依据 Turkish(土耳其语) 和 Hungarian(匈牙利语) 的排序规则来排序。
 * Collation 的后缀表示了 Collation 是否区分大小写和是否区分口音。下面的表展示了这些特性：
 
-后缀   | 含义
-:-    | :-
-\_ai   | 口音不敏感（Accent insensitive）
-\_as   | 口音敏感 （Accent insensitive）
-\_ci   | 大小写不敏感
-\_cs   | 大小写敏感
-\_bin  | 二进制（Binary）
+| 后缀 | 含义                             |
+|:-----|:---------------------------------|
+| \_ai | 口音不敏感（Accent insensitive） |
+| \_as | 口音敏感 （Accent insensitive）  |
+| \_ci | 大小写不敏感                     |
+| \_cs | 大小写敏感                       |
 
 > **注意**：目前为止 TiDB 只支持部分以上提到的 Collation。
 
@@ -182,7 +181,7 @@ col_name {ENUM | SET} (val_list)
 
 可以用以下的语句来影响这些跟客户端相关的字符集变量：
 
-* `SET NAMES 'charset_name' [COLLATE 'collation_name']` 
+* `SET NAMES 'charset_name' [COLLATE 'collation_name']`
 
 `SET NAMES` 用来设定客户端会在之后的请求中使用的字符集。`SET NAMES utf8` 表示客户端会在接下来的请求中，都使用 utf8 字符集。服务端也会在之后返回结果的时候使用 utf8 字符集。
 `SET NAMES 'charset_name'` 语句其实等于下面语句的组合：
@@ -203,5 +202,5 @@ SET character_set_client = charset_name;
 SET character_set_results = charset_name;
 SET collation_connection = @@collation_database;
 ```
-    
+
 更多细节，参考 [Connection Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-connection.html)。

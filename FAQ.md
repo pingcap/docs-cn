@@ -1,92 +1,9 @@
 ---
-title: FAQ
+title: TiDB FAQ
 category: FAQ
 ---
 
-# FAQ
-
-- [产品](#产品)
-    - [关于产品](#关于产品)
-        - [TiDB 是什么？](#tidb-是什么)
-        - [TiDB 是基于 MySQL 开发的吗？](#tidb-是基于-mysql-开发的吗)
-        - [TiDB 和 MySQL Group Replication 的区别是什么？](#tidb-和-mysql-group-replication-的区别是什么)
-        - [TiDB 和 TiKV 如何配合使用？ 他们之间的关系是？](#tidb-和-tikv-如何配合使用-他们之间的关系是)
-        - [Placement Driver (PD) 是做什么的？](#placement-driver-pd-是做什么的)
-        - [TiDB 用起来简单吗？](#tidb-用起来简单吗)
-        - [TiDB 适用的场景是？](#tidb-适用的场景是)
-        - [TiDB 不适用于哪些场景？](#tidb-不适用于哪些场景)
-        - [TiDB 的强一致特性是什么样的？](#tidb-的强一致特性是什么样的)
-        - [TiDB 支持分布式事务吗？](#tidb-支持分布式事务吗)
-        - [当多个事务冲突严重时（如同时修改同一行数据），会造成某些事务写入失败吗？](#当多个事务冲突严重时如同时修改同一行数据会造成某些事务写入失败吗)
-        - [在使用 TiDB 时，我需要用什么编程语言？](#在使用-tidb-时我需要用什么编程语言)
-        - [和 MySQL/Oracle 等传统关系型数据库相比，TiDB 有什么优势？](#和-mysqloracle-等传统关系型数据库相比tidb-有什么优势)
-        - [和 Cassandra/Hbase/MongoDB 等 NoSQL 数据库相比，TiDB 有什么优势？](#和-cassandrahbasemongodb-等-nosql-数据库相比tidb-有什么优势)
-        - [使用 `go get` 方式安装 TiDB 为什么报错了？](#使用-go-get-方式安装-tidb-为什么报错了)
-        - [TiDB 高可用的特性是怎么样的？](#tidb-高可用的特性是怎么样的)
-        - [TiDB 中删除数据后会立即释放空间吗？](#tidb-中删除数据后会立即释放空间吗)
-        - [Load 数据时可以对目标表执行 DDL 操作吗？](#load-数据时可以对目标表执行-ddl-操作吗)
-        - [TiDB 是否支持 replace into 语法？](#tidb-是否支持-replace-into-语法)
-        - [如何导出 TiDB 数据？](#如何导出-tidb-数据)
-        - [TiDB 是否支持会话超时？](#tidb-是否支持会话超时)
-    - [PD](#pd)
-        - [访问 PD 报错：`TiKV cluster is not bootstrapped`](#访问-pd-报错tikv-cluster-is-not-bootstrapped)
-        - [PD 启动报错：`etcd cluster ID mismatch`](#pd-启动报错etcd-cluster-id-mismatch)
-        - [更改 PD 的启动参数](#更改-pd-的启动参数)
-        - [PD 能容忍的时间同步误差是多少？](#pd-能容忍的时间同步误差是多少)
-        - [Client 连接是如何寻找 PD 的？](#client-连接是如何寻找-pd-的)
-        - [PD 参数中 leader-schedule-limit 和 region-schedule-limit 调度有什么区别？](#pd-参数中-leader-schedule-limit-和-region-schedule-limit-调度有什么区别)
-        - [每个 region 的 replica 数量可配置吗？调整的方法是？](#每个-region-的-replica-数量可配置吗调整的方法是)
-    - [TiDB](#tidb)
-        - [TiDB 的 lease 参数应该如何设置？](#tidb-的-lease-参数应该如何设置)
-        - [TiDB 是否支持其他存储引擎？](#tidb-是否支持其他存储引擎)
-        - [TiDB 中 Raft 的日志存储在哪里？](#tidb-中-raft-的日志存储在哪里)
-        - [为什么有的时候执行 DDL 会很慢？](#为什么有的时候执行-ddl-会很慢)
-        - [ERROR 2013 (HY000): Lost connection to MySQL server during query 问题的排查方法](#error-2013-hy000-lost-connection-to-mysql-server-during-query-问题的排查方法)
-        - [TiDB 可以使用 S3 作为后端存储吗？](#tidb-可以使用-s3-作为后端存储吗)
-    - [TiKV](#tikv)
-        - [TiKV 集群副本建议配置数量是多少，是不是最小高可用配置（3个）最好？](#tikv-集群副本建议配置数量是多少是不是最小高可用配置3个最好)
-        - [TiKV 可以指定独立副本机器吗（集群是集群，副本是副本，数据和副本分离）？](#tikv-可以指定独立副本机器吗集群是集群副本是副本数据和副本分离)
-        - [为什么 TiKV 数据目录不见了？](#为什么-tikv-数据目录不见了)
-        - [TiKV 启动报错：`cluster ID mismatch`](#tikv-启动报错cluster-id-mismatch)
-        - [TiKV 启动报错：`duplicated store address`](#tikv-启动报错duplicated-store-address)
-        - [按照 TiDB 的 key 设定，会不会很长？](#按照-tidb-的-key-设定会不会很长)
-        - [TiKV master 和 slave 用的是一样的压缩算法，为什么效果不一样?](#tikv-master-和-slave-用的是一样的压缩算法为什么效果不一样)
-        - [TiKV block cache 有哪些特性？](#tikv-block-cache-有哪些特性)        
-        - [TiKV 相关线程解释](#tikv-相关线程解释)
-    - [TiSpark](#tispark)
-        - [TiSpark 的使用文档在哪里？](#tispark-的使用文档在哪里)
-        - [TiSpark 的案例](#tispark-的案例)
-- [运维](#运维)
-    - [部署安装](#部署安装)
-        - [为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？](#为什么修改了-tikvpd-的-toml-配置文件却没有生效)
-        - [我的数据盘是 XFS 且不能更改怎么办？](#我的数据盘是-xfs-且不能更改怎么办)
-        - [可以配置 Chrony 满足 TiDB 对时间同步的要求吗？](#可以配置-chrony-满足-tidb-对时间同步的要求吗)
-    - [扩容](#扩容)
-        - [如何对 TiDB 进行水平扩展？](#如何对-tidb-进行水平扩展)
-    - [监控](#监控)
-        - [TiDB 监控框架 Prometheus + Grafana 监控机器建议单独还是多台部署？建议 CPU 和内存是多少？](#tidb-监控框架-prometheus--grafana-监控机器建议单独还是多台部署建议-cpu-和内存是多少)
-        - [有一部分监控信息显示不出来？](#有一部分监控信息显示不出来)
-        - [如何配置监控 Syncer 运行情况？](#如何配置监控-syncer-运行情况)
-    - [数据迁移](#数据迁移)
-        - [如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？](#如何将一个运行在-mysql-上的应用迁移到-tidb-上)
-        - [不小心把 MySQL 的 user 表导入到 TiDB 了，无法登陆，是否有办法恢复？](#不小心把-mysql-的-user-表导入到-tidb-了无法登陆是否有办法恢复)
-    - [性能调优](#性能调优)
-    - [备份恢复](#备份恢复)
-    - [其他](#其他)
-        - [TiDB 是如何进行权限管理的？](#tidb-是如何进行权限管理的)
-        - [TiDB/PD/TiKV 的日志在哪里？](#tidbpdtikv-的日志在哪里)
-        - [如何安全停止 TiDB?](#如何安全停止-tidb)
-        - [TiDB 里面可以执行 kill 命令吗？](#tidb-里面可以执行-kill-命令吗)
-        - [supervise/svc/svstat 服务具体起什么作用？](#supervisesvcsvstat-服务具体起什么作用)
-- [SQL](#sql)
-    - [SQL 语法](#sql-语法)
-        - [出现 `transaction too large` 报错怎么办？](#出现-transaction-too-large-报错怎么办)
-        - [查看 DDL job](#查看-ddl-job)
-        - [查看添加索引进度](#查看添加索引进度)
-        - [执行 `grant SHOW DATABASES on db.*` 报错 `column Show_db_priv not found`](#执行-grant-show-databases-on-db-报错-column-show_db_priv-not-found)
-    - [SQL 优化](#sql-优化)
-        - [`select count(1)` 比较慢，如何优化？](#select-count1-比较慢如何优化)
-        - [如何解决 FROM_UNIXTIME 效率低的问题？](#如何解决-from_unixtime-效率低的问题)
+# TiDB FAQ
 
 ## 产品
 
@@ -178,6 +95,7 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 #### 如何导出 TiDB 数据？
 
 TiDB 目前暂时不支持 select into outfile，可以通过以下方式导出 TiDB 数据：
+
 + 参考 [MySQL使用mysqldump导出某个表的部分数据](http://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出。
 + 使用 MySQL client 将 select 的结果输出到一个文件。
 
@@ -216,7 +134,7 @@ leader-schedule-limit 调度是用来均衡不同 TiKV 的 leader 数，影响�
 
 #### 每个 region 的 replica 数量可配置吗？调整的方法是？
 
-可以，目前只能调整全局的 replica 数量。首次启动时 PD 会读配置文件（conf/pd.yml），使用其中的 max-replicas 配置，之后修改需要使用 pd-ctl 配置命令 `config set max-replicas $num`，配置后可通过 `config show all` 来查看已生效的配置。调整的时候，不会影响业务，会在后台添加，注意总 TiKV 实例数总是要大于等于设置的副本数，例如 3 副本需要至少 3 个 TiKV。增加副本数量之前需要预估额外的存储需求。pd-ctl 的详细用法可参考 [PD Control 使用说明](tools/pd-control.md)。
+可以，目前只能调整全局的 replica 数量。首次启动时 PD 会读配置文件（`conf/pd.yml`），使用其中的 max-replicas 配置，之后修改需要使用 pd-ctl 配置命令 `config set max-replicas $num`，配置后可通过 `config show all` 来查看已生效的配置。调整的时候，不会影响业务，会在后台添加，注意总 TiKV 实例数总是要大于等于设置的副本数，例如 3 副本需要至少 3 个 TiKV。增加副本数量之前需要预估额外的存储需求。pd-ctl 的详细用法可参考 [PD Control 使用说明](tools/pd-control.md)。
 
 ### TiDB
 
@@ -237,7 +155,7 @@ leader-schedule-limit 调度是用来均衡不同 TiKV 的 leader 数，影响�
 可能原因如下：
 
 + 多个 DDL 语句一起执行的时候，后面的几个 DDL 语句会比较慢。原因是当前 TiDB 集群中 DDL 操作是串行执行的。
-+ 在正常集群启动后，第一个 DDL 操作的执行时间可能会比较久，一般在 30s 左右，这个原因是刚启动时 TiDB 在竞选处理 DDL 的 leader。 
++ 在正常集群启动后，第一个 DDL 操作的执行时间可能会比较久，一般在 30s 左右，这个原因是刚启动时 TiDB 在竞选处理 DDL 的 leader。
 + 在滚动升级或者停机升级时，由于停机顺序（先停 PD 再停 TiDB）或者用 `kill -9` 指令停 TiDB 导致 TiDB 没有及时清理注册数据，那么会影响 TiDB 启动后 10min 内的 DDL 语句处理时间。这段时间内运行 DDL 语句时，每个 DDL 状态变化都需要等待 2 * lease（默认 lease = 10s）。
 + 当集群中某个 TiDB 与 PD 之间发生通讯问题，即 TiDB 不能从 PD 及时获取或更新版本信息，那么这时候 DDL 操作的每个状态处理需要等待 2 * lease。
 
@@ -251,7 +169,7 @@ leader-schedule-limit 调度是用来均衡不同 TiKV 的 leader 数，影响�
 
 不可以，目前 TiDB 只支持分布式存储引擎和 Goleveldb/Rocksdb/Boltdb 引擎；
 
-是否支持如下 DDL： `CREATE TABLE ... LOCATION "s3://xxx/yyy"`？
+#### 是否支持如下 DDL： `CREATE TABLE ... LOCATION "s3://xxx/yyy"`？
 
 如果你能够实现 S3 存储引擎客户端，应该基于 TiKV 接口实现。
 
@@ -348,7 +266,7 @@ rm -rf tidb_test
 ```
 #### 可以配置 Chrony 满足 TiDB 对时间同步的要求吗？
 
-可以，只要能让 PD 机器时间同步就行。若使用 Chrony 配置时间同步，请在运行 deploy 脚本之前将 inventory.ini 配置文件中的 enable_ntpd 置为 False，即 `enable_ntpd = False`。
+可以，只要能让 PD 机器时间同步就行。若使用 Chrony 配置时间同步，请在运行 deploy 脚本之前将 `inventory.ini` 配置文件中的 `enable_ntpd` 置为 False，即 `enable_ntpd = False`。
 
 ### 扩容
 
@@ -444,7 +362,7 @@ TiDB 遵循 MySQL 的权限管理体系，可以创建用户并授予权限。
 
 在进行授权时，也可以使用 MySQL 语法，如 `GRANT SELECT ON *.* TO  'test'@'localhost';` 将读权限授予 test 用户。
 
-更多细节可以参考[权限管理](https://github.com/pingcap/docs-cn/blob/master/sql/privilege.md)。
+更多细节可以参考[权限管理](sql/privilege.md)。
 
 
 #### TiDB/PD/TiKV 的日志在哪里？
@@ -505,7 +423,7 @@ mysql> admin show ddl;
 ```
 + 其中 OWNER 代表了正则执行此 DDL 的 tidb 机器；JOB 为具体信息
   + JOB 中 `SchemaID:81, TableID:90` 为数据库 & 数据表相关信息
-  + JOB 中 `RowCount:1293344122` 为当前已操作行数                                                                                                                           
+  + JOB 中 `RowCount:1293344122` 为当前已操作行数
 
 #### 执行 `grant SHOW DATABASES on db.*` 报错 `column Show_db_priv not found`
 

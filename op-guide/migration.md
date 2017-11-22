@@ -5,55 +5,6 @@ category: advanced
 
 # 数据迁移
 
-## 概述
-
-该文档详细介绍了如何将 MySQL 的数据迁移到 TiDB。
-
-这里我们假定 MySQL 以及 TiDB 服务信息如下：
-
-|Name|Address|Port|User|Password|
-|----|-------|----|----|--------|
-|MySQL|127.0.0.1|3306|root|*|
-|TiDB|127.0.0.1|4000|root|*|
-
-在这个数据迁移过程中，我们会用到下面四个工具:
-
-- mydumper 从 MySQL 导出数据
-- loader 导入数据到 TiDB
-- syncer 增量同步 MySQL 数据到 TiDB
-
-## 两种迁移场景
-
-- 第一种场景：只全量导入历史数据 （需要 mydumper + loader）；
-- 第二种场景：全量导入历史数据后，通过增量的方式同步新的数据 （需要 mydumper + loader + syncer）。该场景需要提前开启 binlog 且格式必须为 ROW。
-
-
-## MySQL 开启 binlog
-
-**注意： 只有上文提到的第二种场景才需要在 dump 数据之前先开启 binlog**
-
-+   MySQL 开启 binlog 功能，参考 [Setting the Replication Master Configuration](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
-+   Binlog 格式必须使用 `ROW` format，这也是 MySQL 5.7 之后推荐的 binlog 格式，可以使用如下语句打开:
-
-    ```sql
-    SET GLOBAL binlog_format = ROW;
-    ```
-
-
-### 下载 TiDB 工具集 (Linux)
-
-```bash
-# 下载 tool 压缩包
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
-
-# 检查文件完整性，返回 ok 则正确
-sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
-# 解开压缩包
-tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
-cd tidb-enterprise-tools-latest-linux-amd64
-```
-
 ## 使用 `mydumper`/`loader` 全量导入数据
 
 `mydumper` 是一个更强大的数据迁移工具，具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)。
@@ -218,9 +169,9 @@ status-addr = "127.0.0.1:10086"
 ## 跳过 DDL 或者其他语句，格式为 **前缀完全匹配**，如: `DROP TABLE ABC`,则至少需要填入`DROP TABLE`.
 # skip-sqls = ["ALTER USER", "CREATE USER"]
 
-## 在使用 route-rules 功能后， 
+## 在使用 route-rules 功能后，
 ## replicate-do-db & replicate-ignore-db 匹配合表之后(target-schema & target-table )数值
-## 优先级关系: replicate-do-db --> replicate-do-table --> replicate-ignore-db --> replicate-ignore-table 
+## 优先级关系: replicate-do-db --> replicate-do-table --> replicate-ignore-db --> replicate-ignore-table
 ## 指定要同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
 #replicate-do-db = ["~^b.*","s1"]
 
@@ -229,7 +180,7 @@ status-addr = "127.0.0.1:10086"
 #[[replicate-do-table]]
 #db-name ="dbname"
 #tbl-name = "table-name"
- 
+
 #[[replicate-do-table]]
 #db-name ="dbname1"
 #tbl-name = "table-name1"
@@ -332,7 +283,3 @@ syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-
 ```
 
 可以看到，使用 `syncer`，我们就能自动的将 MySQL 的更新同步到 TiDB。
-
-
-
-

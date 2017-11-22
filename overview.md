@@ -1,9 +1,11 @@
 ---
-title: TiDB 简介
+title: TiDB 简介与整体架构
 category: introduction
 ---
 
-# TiDB 简介
+# TiDB 简介与整体架构
+
+## TiDB 简介
 
 TiDB 是 PingCAP 公司基于 Google [Spanner](http://research.google.com/archive/spanner.html) / [F1](http://research.google.com/pubs/pub41344.html) 论文实现的开源分布式 NewSQL 数据库。
 
@@ -21,9 +23,9 @@ TiDB 对业务没有任何侵入性，能优雅的替换传统的数据库中间
 
 三篇文章了解 TiDB 技术内幕：
 
-- [说存储](https://pingcap.com/blog-tidb-internal-1-zh)
-- [说计算](https://pingcap.com/blog-tidb-internal-2-zh)
-- [谈调度](https://pingcap.com/blog-tidb-internal-3-zh)
+- [说存储](https://pingcap.com/blog-cn/tidb-internal-1/)
+- [说计算](https://pingcap.com/blog-cn/tidb-internal-2/)
+- [谈调度](https://pingcap.com/blog-cn/tidb-internal-3/)
 
 ## TiDB 整体架构
 
