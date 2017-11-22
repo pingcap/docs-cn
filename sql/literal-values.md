@@ -52,17 +52,17 @@ SELECT _utf8'some text';
 
 转义字符：
 
-- \\0: ASCII NUL (X'00') 字符 
-- \\': 单引号 
-- \\": 双引号 
-- \\b: 退格符号 
-- \\n: 换行符 
-- \\r: 回车符 
+- \\0: ASCII NUL (X'00') 字符
+- \\': 单引号
+- \\": 双引号
+- \\b: 退格符号
+- \\n: 换行符
+- \\r: 回车符
 - \\t: tab 符（制表符）
-- \\z: ASCII 26 (Ctrl + Z) 
-- \\\: 反斜杠 \\ 
-- \\%: \% 
-- \\_: \_ 
+- \\z: ASCII 26 (Ctrl + Z)
+- \\\: 反斜杠 \\
+- \\%: \%
+- \\_: \_
 
 如果要在 string literal 中使用 `'` 或者 `"`，有以下几种办法：
 
@@ -116,7 +116,7 @@ X'1z' (z 不是合法的十六进制值)
 对于使用 `X'val'` 格式的十六进制字面值，`val` 必须要有一个数字，可以在前面补一个 0 来避免语法错误。
 
 ```
-mysql> select X'aff';
+mysql> select X'aff';
 ERROR 1105 (HY000): line 0 column 13 near ""hex literal: invalid hexadecimal format, must even numbers, but 3 (total length 13)
 mysql> select X'0aff';
 +---------+

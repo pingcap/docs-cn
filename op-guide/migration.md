@@ -50,9 +50,9 @@ category: advanced
 
 ### 向 TiDB 导入数据
 
-> 注意：目前 TiDB 仅支持 UTF8 字符编码，假设 mydumper 导出数据为 latin1 字符编码，请使用 `iconv -f latin1 -t utf-8 $file -o /data/imdbload/$basename` 命令转换，$file 为已有文件，$basename 为转换后文件。
+> 注意：目前 TiDB 支持 UTF8mb4 [字符编码](../sql/character-set-support.md)，假设 mydumper 导出数据为 latin1 字符编码，请使用 `iconv -f latin1 -t utf-8 $file -o /data/imdbload/$basename` 命令转换，$file 为已有文件，$basename 为转换后文件。
 
-> 注意：如果 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。  
+> 注意：如果 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。
 
 我们使用 `loader` 将之前导出的数据导入到 TiDB。Loader 的下载和具体的使用方法见 [Loader 使用文档](../tools/loader.md)
 
@@ -138,11 +138,16 @@ Finished dump at: 2017-04-28 10:48:11
 # cat syncer.meta
 binlog-name = "mysql-bin.000003"
 binlog-pos = 930143241
+binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e-487b6bd31bf7:1-4"
 ```
 
-注意：`syncer.meta` 只需要第一次使用的时候配置，后续 `syncer` 同步新的 binlog 之后会自动将其更新到最新的 position。
++ 注意：`syncer.meta` 只需要第一次使用的时候配置，后续 `syncer` 同步新的 binlog 之后会自动将其更新到最新的 position。
+
++ 注意： 如果使用 binlog position 同步则只需要配置 binlog-name binlog-pos; 使用 gtid 同步则需要设置 gtid，且启动 syncer 时带有 `--enable-gtid`
 
 ### 启动 `syncer`
+
+启动 syncer 服务之前请详细阅读 [Syncer 增量导入](../tools/syncer.md )
 
 `syncer` 的配置文件 `config.toml`:
 
@@ -151,50 +156,72 @@ log-level = "info"
 
 server-id = 101
 
-# meta 文件地址
+## meta 文件地址
 meta = "./syncer.meta"
-worker-count = 1
-batch = 1
 
-# pprof 调试地址, Prometheus 也可以通过该地址拉取 syncer metrics
-status-addr = ":10081"
+worker-count = 16
+batch = 10
 
-skip-sqls = ["ALTER USER", "CREATE USER"]
+## pprof 调试地址, Prometheus 也可以通过该地址拉取 syncer metrics
+## 将 127.0.0.1 修改为相应主机 IP 地址
+status-addr = "127.0.0.1:10086"
 
-# 支持白名单过滤, 指定只同步的某些库和某些表, 例如:
+## 跳过 DDL 或者其他语句，格式为 **前缀完全匹配**，如: `DROP TABLE ABC`,则至少需要填入`DROP TABLE`.
+# skip-sqls = ["ALTER USER", "CREATE USER"]
 
-# 指定同步 db1 和 db2 下的所有表
-replicate-do-db = ["db1","db2"]
+## 在使用 route-rules 功能后，
+## replicate-do-db & replicate-ignore-db 匹配合表之后(target-schema & target-table )数值
+## 优先级关系: replicate-do-db --> replicate-do-table --> replicate-ignore-db --> replicate-ignore-table
+## 指定要同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
+#replicate-do-db = ["~^b.*","s1"]
 
-# 指定同步 db1.table1
-[[replicate-do-table]]
-db-name ="db1"
-tbl-name = "table1"
+## 指定要同步的 db.table 表
+## db-name 与 tbl-name 不支持 `db-name ="dbname，dbname2"` 格式
+#[[replicate-do-table]]
+#db-name ="dbname"
+#tbl-name = "table-name"
 
-# 指定同步 db3.table2
-[[replicate-do-table]]
-db-name ="db3"
-tbl-name = "table2"
-# 支持正则，以~开头表示使用正则
-# 同步所有以 test 开头的库
-replicate-do-db = ["~^test.*"]
+#[[replicate-do-table]]
+#db-name ="dbname1"
+#tbl-name = "table-name1"
+
+## 指定要同步的 db.table 表；支持正则匹配，表达式语句必须以 `~` 开始
+#[[replicate-do-table]]
+#db-name ="test"
+#tbl-name = "~^a.*"
+
+## 指定**忽略**同步数据库；支持正则匹配，表达式语句必须以 `~` 开始
+#replicate-ignore-db = ["~^b.*","s1"]
+
+## 指定**忽略**同步数据库
+## db-name & tbl-name 不支持 `db-name ="dbname，dbname2"` 语句格式
+#[[replicate-ignore-table]]
+#db-name = "your_db"
+#tbl-name = "your_table"
+
+## 指定要**忽略**同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
+#[[replicate-ignore-table]]
+#db-name ="test"
+#tbl-name = "~^a.*"
+
 
 # sharding 同步规则，采用 wildcharacter
 # 1. 星号字符 (*) 可以匹配零个或者多个字符,
 #    例子, doc* 匹配 doc 和 document, 但是和 dodo 不匹配;
 #    星号只能放在 pattern 结尾，并且一个 pattern 中只能有一个
 # 2. 问号字符 (?) 匹配任一一个字符
-[[route-rules]]
-pattern-schema = "route_*"
-pattern-table = "abc_*"
-target-schema = "route"
-target-table = "abc"
 
-[[route-rules]]
-pattern-schema = "route_*"
-pattern-table = "xyz_*"
-target-schema = "route"
-target-table = "xyz"
+#[[route-rules]]
+#pattern-schema = "route_*"
+#pattern-table = "abc_*"
+#target-schema = "route"
+#target-table = "abc"
+
+#[[route-rules]]
+#pattern-schema = "route_*"
+#pattern-table = "xyz_*"
+#target-schema = "route"
+#target-table = "xyz"
 
 [from]
 host = "127.0.0.1"
@@ -207,12 +234,14 @@ host = "127.0.0.1"
 user = "root"
 password = ""
 port = 4000
+
 ```
 
 启动 `syncer`:
 
 ```bash
 ./bin/syncer -config config.toml
+
 2016/10/27 15:22:01 binlogsyncer.go:226: [info] begin to sync binlog from position (mysql-bin.000003, 1280)
 2016/10/27 15:22:01 binlogsyncer.go:130: [info] register slave for master server 127.0.0.1:3306
 2016/10/27 15:22:01 binlogsyncer.go:552: [info] rotate to (mysql-bin.000003, 1280)
@@ -254,7 +283,3 @@ syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-
 ```
 
 可以看到，使用 `syncer`，我们就能自动的将 MySQL 的更新同步到 TiDB。
-
-
-
-
