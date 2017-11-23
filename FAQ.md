@@ -234,7 +234,7 @@ TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在�
 
 #### TiSpark 的使用文档在哪里？
 
-可以参考 [TiSpark 用户指南](op-guide/tispark-user-guide.md)。
+可以参考 [TiSpark 用户指南](tispark/tispark-user-guide.md)。
 
 #### TiSpark 的案例
 

@@ -101,8 +101,8 @@
   - [TiDB-binlog 使用文档](tools/tidb-binlog.md)
   - [PD Control 使用文档](tools/pd-control.md)
 + TiSpark 文档
-  - [TiSpark 快速入门指南](op-guide/tispark-quick-start-guide.md)
-  - [TiSpark 用户指南](op-guide/tispark-user-guide.md)
+  - [TiSpark 快速入门指南](tispark/tispark-quick-start-guide.md)
+  - [TiSpark 用户指南](tispark/tispark-user-guide.md)
 - [常见问题与解答(FAQ)](FAQ.md)
 - [最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
 - [版本发布历史](releases/README.md)
