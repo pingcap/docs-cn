@@ -4,7 +4,7 @@ category: release
 ---
 
 # TiDB Release Notes
-  
+  - [1.0.3](103.md)
   - [1.0.2](102.md)
   - [1.0.1](101.md)
   - [1.0](ga.md)
