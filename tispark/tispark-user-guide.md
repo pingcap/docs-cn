@@ -171,16 +171,21 @@ And stop it like below:
 
 ## Demo
 
-Assuming you have successfully started the TiDB Connector for Spark cluster as described above, here's a quick introduction to how to use Spark SQL for OLAP analysis. Here we use a table named `lineitem` in the `tpch` database as an example.
+Assuming that you have successfully started the TiDB Connector for Spark cluster as described above, here's a quick introduction to how to use Spark SQL for OLAP analysis. Here we use a table named `lineitem` in the `tpch` database as an example.
 
 
-In the Spark-Shell, enter the following command, assuming that your PD node is located at `192.168.1.100`, port `2379`:
+Assuming that your PD node is located at `192.168.1.100`, port `2379`, add the following command to `$SPARK_HOME/conf/spark-defaults.conf`:
+
+```
+spark.tispark.pd.addresses 192.168.1.100:2379
+```
+
+And then enter the following command in the Spark-Shell:
 
 ```sh
 import org.apache.spark.sql.TiContext
 val ti = new TiContext(spark)
 ti.tidbMapDatabase ("tpch")
-
 ```
 After that you can call Spark SQL directly:
 
