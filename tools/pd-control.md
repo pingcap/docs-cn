@@ -128,14 +128,15 @@ Usage:
 {
   "members": [......]
 }
->> member leader                        // Display the information of leader
+>> member leader show                   // Display the information of leader
 {
   "name": "pd",
   "addr": "http://192.168.199.229:2379",
   "id": 9724873857558226554
 }
->> member delete pd2                    // Make "pd2" offline
+>> member delete name pd2               // Make "pd2" offline
 Success!
+>> member delete id 1319539429105371180 // Use id to shut down the node
 ```
 
 ### config [show | set \<option\> \<value\>]
