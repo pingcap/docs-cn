@@ -92,7 +92,7 @@ For the hybrid deployment of the TiDB Connector for Spark and TiKV, add the TiDB
 
 ## Deploy the TiDB Connector for Spark
 
-Download the TiDB Connector for Spark's jar package [here](https://download.pingcap.org/tispark-0.1.0-beta-SNAPSHOT-jar-with-dependencies.jar).
+Download the TiDB Connector for Spark's jar package [here](http://download.pingcap.org/tispark-0.1.0-SNAPSHOT-jar-with-dependencies.jar).
 
 ### Deploy the TiDB Connector for Spark on the existing Spark cluster
 
