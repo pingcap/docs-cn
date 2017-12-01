@@ -3,7 +3,7 @@ title: Loader Instructions
 category: advanced
 ---
 
-# Loader instructions
+# Loader Instructions
 
 ## What is Loader?
 
@@ -19,6 +19,10 @@ Since tools like mysqldump will take us days to migrate massive amounts of data,
 
 + Multi-thread import data
 
++ Support table level concurrent import and scattered hot spot write
+
++ Support concurrent import of a single large table and scattered hot spot write
+
 + Support mydumper data format
 
 + Support error retry
@@ -29,10 +33,16 @@ Since tools like mysqldump will take us days to migrate massive amounts of data,
 
 ## Usage
 
+> **Note:**
+> - Do not import the `mysql` system database from the MySQL instance to the downstream TiDB instance.
+> - If mydumper uses the `-m` parameter, the data is exported without the table structure and the loader can not import the data.
+> - If you use the default `checkpoint-schema` parameter, after importing the data of a database, run `drop database tidb_loader` before you begin to import the next database.
+> - It is recommended to specify the `checkpoint-schema = "tidb_loader"` parameter when importing data.
+
 ### Parameter description
 
 ```
-  -L string: the log level setting. It can be set as debug, info, warn, error, fatal (default: "info")
+  -L string: the log level setting, which can be set as debug, info, warn, error, fatal (default: "info")
 
   -P int: the port of TiDB (default: 4000)
 
@@ -60,36 +70,42 @@ Since tools like mysqldump will take us days to migrate massive amounts of data,
 Apart from command line parameters, you can also use configuration files. The format is shown as below:
 
 ```toml
-# Loader log level
+# Loader log level, which can be set as "debug", "info", "warn", "error" and "fatal" (default: "info")
 log-level = "info"
 
 # Loader log file
-log-file = ""
+log-file = "loader.log"
 
-# Directory of the dump to import
+# Directory of the dump to import (default: "./")
 dir = "./"
 
-# Loader pprof addr
-pprof-addr = ":10084"
+# Loader pprof address, used to tune the performance of Loader (default: "127.0.0.1:10084")
+pprof-addr = "127.0.0.1:10084"
 
-# We saved checkpoint data to tidb, which schema name is defined here.
+# The checkpoint data is saved to TiDB, and the schema name is defined here.
 checkpoint-schema = "tidb_loader"
 
-# Number of threads restoring concurrently for worker pool. Each worker restore one file at a time, increase this as TiKV nodes increase
+# Number of threads restoring concurrently for worker pool (default: 16). Each worker restore one file at a time.
 pool-size = 16
 
-# DB config
+# The target database information
 [db]
 host = "127.0.0.1"
 user = "root"
 password = ""
 port = 4000
 
-# [[route-rules]]
-# pattern-schema = "shard_db_*"
-# pattern-table = "shard_table_*"
-# target-schema = "shard_db"
-# target-table = "shard_table"
+# The sharding synchronising rules support wildcharacter.
+# 1. The asterisk character (*, also called "star") matches zero or more characters,
+#    for example, "doc*" matches "doc" and "document" but not "dodo";
+#    asterisk character must be in the end of the wildcard word,
+#    and there is only one asterisk in one wildcard word.
+# 2. The question mark '?' matches exactly one character.
+#    [[route-rules]]
+#    pattern-schema = "shard_db_*"
+#    pattern-table = "shard_table_*"
+#    target-schema = "shard_db"
+#    target-table = "shard_table"
 ```
 
 ### Usage example
@@ -106,7 +122,24 @@ Or use configuration file "config.toml":
 ./bin/loader -c=config.toml
 ```
 
-> **Note:**
->
-> - If you use the default checkpoint-schema, after importing the data of a database, drop the tidb_loader database before you begin to import the next database.
-> - It is recommended to specify the `checkpoint-schema = "tidb_loader"` parameter when importing data.
+## FAQ
+
+### The scenario of synchronising data from sharded tables
+
+Loader supports importing data from sharded tables into one table within one database according to the route-rules. Before synchronising, check the following items:
+
+- Whether the sharding rules can be represented using the `route-rules` syntax.
+- Whether the sharded tables contain monotone increasing primary keys, or whether there are conflicts in the unique indexes or the primary keys after the combination.
+
+To combine tables, start the `route-rules` parameter in the configuration file of Loader:
+
+- To use the table combination function, it is required to fill the `pattern-schema` and `target-schema`.
+- If the `pattern-table` and `target-table` are NULL, the table name is not combined or converted.
+
+```
+[[route-rules]]
+pattern-schema = "example_db"
+pattern-table = "table_*"
+target-schema = "example_db"
+target-table = "table"
+```
