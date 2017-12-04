@@ -1,6 +1,7 @@
 ---
 title: Performace test result for TiDB using Sysbench
-category: benchmark 
+category: benchmark
+draft:true
 ---
 
 # Performace test result for TiDB using Sysbench
