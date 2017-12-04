@@ -113,7 +113,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
         如果对应的配置在命令行参数里面也存在，pump 就会使用命令行参数的配置来覆盖配置文件里面的
     -data-dir string
         pump 数据存储位置路径
-    -kafka-addrs string 
+    -kafka-addrs string
         连接的 kafka 的地址 (默认 "127.0.0.1:9092")
     -zookeeper-addrs string
         zookeeper 地址，如果设置了该选项则从 zookeeper 中获取 kafka 地址，如果不设置则使用 kafka-addrs 的值
@@ -148,7 +148,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
     gc = 7
     #  pump 数据存储位置路径
     data-dir = "data.pump"
-    # 连接的 kafka 的地址（默认 "127.0.0.1:9092"）
+    # 连接的 kafka 的地址(默认 "127.0.0.1:9092")
     kafka-addrs = "127.0.0.1:9092"
     # zookeeper 地址，如果设置了该选项则从 zookeeper 中获取 kafka 地址，如果不设置则使用 kafka-addrs 的值
     # zookeeper-addrs = "127.0.0.1:2181"
@@ -184,7 +184,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
        如果对应的配置在命令行参数里面也存在，drainer 就会使用命令行参数的配置来覆盖配置文件里面的
     -data-dir string
        drainer 数据存储位置路径 (默认 "data.drainer")
-    -kafka-addrs string 
+    -kafka-addrs string
         连接的 kafka 的地址 (默认 "127.0.0.1:9092")
     -zookeeper-addrs string
         zookeeper 地址，如果设置了该选项则从 zookeeper 中获取 kafka 地址，如果不设置则使用 kafka-addrs 的值
