@@ -114,9 +114,9 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
     -data-dir string
         pump 数据存储位置路径
     -kafka-addrs string 
-		连接的 kafka 的地址 (默认 "127.0.0.1:9092")
-  	-zookeeper-addrs string
-		zookeeper 地址，如果设置了该选项则从 zookeeper 中获取 kafka 地址，如果不设置则使用 kafka-addrs 的值
+	连接的 kafka 的地址 (默认 "127.0.0.1:9092")
+    -zookeeper-addrs string
+	zookeeper 地址，如果设置了该选项则从 zookeeper 中获取 kafka 地址，如果不设置则使用 kafka-addrs 的值
     -gc int
         日志最大保留天数 (默认 7)， 设置为 0 可永久保存
     -heartbeat-interval uint
@@ -148,10 +148,10 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
     gc = 7
     #  pump 数据存储位置路径
     data-dir = "data.pump"
-    # kafka addrs where pump push binlog to
-	kafka-addrs = "127.0.0.1:9092"
-	# zookeeper addrs, get kafka-addrs from zookeeper if uncomment this
-	# zookeeper-addrs = "127.0.0.1:2181"
+    # 连接的 kafka 的地址 (默认 "127.0.0.1:9092")
+    kafka-addrs = "127.0.0.1:9092"
+    # zookeeper 地址，如果设置了该选项则从 zookeeper 中获取 kafka 地址，如果不设置则使用 kafka-addrs 的值
+    # zookeeper-addrs = "127.0.0.1:2181"
     # pump 向 pd 发送心跳间隔 (单位 秒)    
     heartbeat-interval = 3
     # pd 集群节点的地址 (默认 "http://127.0.0.1:2379")
@@ -185,9 +185,9 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
     -data-dir string
        drainer 数据存储位置路径 (默认 "data.drainer")
     -kafka-addrs string 
-		连接的 kafka 的地址 (默认 "127.0.0.1:9092")
-  	-zookeeper-addrs string
-		zookeeper 地址，如果设置了该选项则从 zookeeper 中获取 kafka 地址，如果不设置则使用 kafka-addrs 的值
+	连接的 kafka 的地址 (默认 "127.0.0.1:9092")
+    -zookeeper-addrs string
+        zookeeper 地址，如果设置了该选项则从 zookeeper 中获取 kafka 地址，如果不设置则使用 kafka-addrs 的值
     -dest-db-type string
         drainer 下游服务类型 (默认为 mysql)
     -detect-interval int
@@ -229,11 +229,11 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
     # drainer 数据存储位置路径 (默认 "data.drainer")
     data-dir = "data.drainer"
     
-    # kafka addrs where drainer pull binlog from
-	kafka-addrs = "127.0.0.1:9092"
+    # 连接的 kafka 的地址 (默认 "127.0.0.1:9092")
+    kafka-addrs = "127.0.0.1:9092"
 
-	# zookeeper addrs, get kafka-addrs from zookeeper if uncomment this
-	# zookeeper-addrs = "127.0.0.1:2181"
+    # zookeeper 地址，如果设置了该选项则从 zookeeper 中获取 kafka 地址，如果不设置则使用 kafka-addrs 的值
+    # zookeeper-addrs = "127.0.0.1:2181"
 
     # pd 集群节点的地址 (默认 "http://127.0.0.1:2379")
     pd-urls = "http://127.0.0.1:2379"
