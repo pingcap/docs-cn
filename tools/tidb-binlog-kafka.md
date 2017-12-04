@@ -114,9 +114,9 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
     -data-dir string
         pump 数据存储位置路径
     -kafka-addrs string 
-	连接的 kafka 的地址 (默认 "127.0.0.1:9092")
+        连接的 kafka 的地址 (默认 "127.0.0.1:9092")
     -zookeeper-addrs string
-	zookeeper 地址，如果设置了该选项则从 zookeeper 中获取 kafka 地址，如果不设置则使用 kafka-addrs 的值
+        zookeeper 地址，如果设置了该选项则从 zookeeper 中获取 kafka 地址，如果不设置则使用 kafka-addrs 的值
     -gc int
         日志最大保留天数 (默认 7)， 设置为 0 可永久保存
     -heartbeat-interval uint
@@ -148,7 +148,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
     gc = 7
     #  pump 数据存储位置路径
     data-dir = "data.pump"
-    # 连接的 kafka 的地址 (默认 "127.0.0.1:9092")
+    # 连接的 kafka 的地址（默认 "127.0.0.1:9092"）
     kafka-addrs = "127.0.0.1:9092"
     # zookeeper 地址，如果设置了该选项则从 zookeeper 中获取 kafka 地址，如果不设置则使用 kafka-addrs 的值
     # zookeeper-addrs = "127.0.0.1:2181"
@@ -228,7 +228,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
 
     # drainer 数据存储位置路径 (默认 "data.drainer")
     data-dir = "data.drainer"
-    
+
     # 连接的 kafka 的地址 (默认 "127.0.0.1:9092")
     kafka-addrs = "127.0.0.1:9092"
 
