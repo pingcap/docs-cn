@@ -27,36 +27,36 @@ Before you start, make sure that you have:
 
 1. A Control Machine with the following requirements:
 
-  - Python 2.6 or Python 2.7
+    - Python 2.6 or Python 2.7
 
-  - Python Jinja2 2.7.2 and MarkupSafe 0.11 packages. You can use the following commands to install the packages:
+    - Python Jinja2 2.7.2 and MarkupSafe 0.11 packages. You can use the following commands to install the packages:
+    
+        ```bash
+        pip install Jinja2==2.7.2 MarkupSafe==0.11
+        ```
 
-      ```bash
-      pip install Jinja2==2.7.2 MarkupSafe==0.11
-      ```
-
-  - Access to the managed nodes via SSH using password login or SSH authorized_key login.
+    - Access to the managed nodes via SSH using password login or SSH authorized_key login.
 
 2. Several managed nodes with the following requirements:
 
-  - 4 or more machines. At least 3 instances for TiKV. Don’t deploy TiKV together with TiDB or PD on the same machine. See [deploying recommendations](/op-guide/recommendation.md).
+    - 4 or more machines. At least 3 instances for TiKV. Don’t deploy TiKV together with TiDB or PD on the same machine. See [deploying recommendations](/op-guide/recommendation.md).
 
-  + Operating system:
+    + Operating system:
 
       - CentOS 7.3 and later versions
       - X86_64 architecture (AMD64)
       - Kernel version 3.10 or later
       - Ext4 file system.
 
-  - Network between machines. Turn off the firewalls and iptables when deploying and turn them on after the deployment.
+    - Network between machines. Turn off the firewalls and iptables when deploying and turn them on after the deployment.
 
-  - The same time and time zone for all machines with the NTP service on to synchronize the correct time.
+    - The same time and time zone for all machines with the NTP service on to synchronize the correct time.
 
-  - A remote user account which you can use to login from the Control Machine to connect to the managed nodes via SSH. It is a normal user account with sudo privileges.
+    - A remote user account which you can use to login from the Control Machine to connect to the managed nodes via SSH. It is a normal user account with sudo privileges.
+    
+    - Python 2.6 or Python 2.7
 
-  - Python 2.6 or Python 2.7
-
-  > **Note:** The Control Machine can be one of the managed nodes with access to external network to download binary.
+    > **Note:** The Control Machine can be one of the managed nodes with access to external network to download binary.
 
 ### Install Ansible in the Control Machine
 
@@ -136,39 +136,39 @@ Use the normal user with the sudo privileges to deploy TiDB:
 
 1. Edit the `inventory.ini` file as follows:
 
-  ```ini
-  ## Connection
-  # ssh via root:
-  # ansible_user = root
-  # ansible_become = true
-  # ansible_become_user = tidb
-
-  # ssh via normal user
-  ansible_user = tidb
-  ```
+    ```ini
+    ## Connection
+    # ssh via root:
+    # ansible_user = root
+    # ansible_become = true
+    # ansible_become_user = tidb
+    
+    # ssh via normal user
+    ansible_user = tidb
+    ```
 
 2. Connect to the network and download the TiDB, TiKV, and PD binaries:
 
-  ```
-  ansible-playbook local_prepare.yml
-  ```
+    ```
+    ansible-playbook local_prepare.yml
+    ```
 
 3. Initialize the system environment of the target machines and adjust the kernel parameters:
 
-  ```
-  ansible-playbook bootstrap.yml -k -K
-  ```
+    ```
+    ansible-playbook bootstrap.yml -k -K
+    ```
 
-  > **Note:**
-  > 
-  > - Add the `-k` (lowercase) parameter if password is needed to connect to the managed node. This applies to other playbooks as well.
-  > - Add the `-K` (uppercase) parameter if sudo needs password for root privileges.
+    > **Note:**
+    > 
+    > - Add the `-k` (lowercase) parameter if password is needed to connect to the managed node. This applies to other playbooks as well.
+    > - Add the `-K` (uppercase) parameter if sudo needs password for root privileges.
 
 4. Deploy the TiDB cluster:
 
-  ```
-  ansible-playbook deploy.yml -k
-  ```
+    ```
+    ansible-playbook deploy.yml -k
+    ```
 
 ### Start the cluster
 
@@ -244,6 +244,7 @@ CREATE TABLE IF NOT EXISTS person (
  birthday DATE
 );
 ```
+
 Use the `SHOW CREATE` statement to see the statement that creates the table. For example:
 
 ```sql
@@ -417,63 +418,63 @@ For example, if you want to add a TiDB node (node101) with the IP address: 172.1
 
 1. Edit the `inventory.ini` file and append the node information:
 
-  ```
-  [tidb_servers]
-  172.16.10.1
-  172.16.10.2
-  172.16.10.101
+    ```
+    [tidb_servers]
+    172.16.10.1
+    172.16.10.2
+    172.16.10.101
+
+    [pd_servers]
+    172.16.10.1
+    172.16.10.2
+    172.16.10.3
+    
+    [tikv_servers]
+    172.16.10.4
+    172.16.10.5
+    172.16.10.6
+    
+    [monitored_servers:children]
+    tidb_servers
+    tikv_servers
+    pd_servers
+    
+    [monitoring_servers]
+    172.16.10.3
+    
+    [grafana_servers]
+    172.16.10.3
+    ```
   
-  [pd_servers]
-  172.16.10.1
-  172.16.10.2
-  172.16.10.3
+    Now the topology is as follows:
   
-  [tikv_servers]
-  172.16.10.4
-  172.16.10.5
-  172.16.10.6
-  
-  [monitored_servers:children]
-  tidb_servers
-  tikv_servers
-  pd_servers
-  
-  [monitoring_servers]
-  172.16.10.3
-  
-  [grafana_servers]
-  172.16.10.3
-  ```
-  
-  Now the topology is as follows:
-  
-  | Name | Host IP | Services |
-  | ---- | ------- | -------- |
-  | node1 | 172.16.10.1 | PD1, TiDB1 |
-  | node2 | 172.16.10.2 | PD2, TiDB2 |
-  | node3 | 172.16.10.3 | PD3, Monitor |
-  | **node101** | **172.16.10.101**|**TiDB3** |
-  | node4 | 172.16.10.4 | TiKV1 |
-  | node5 | 172.16.10.5 | TiKV2 |
-  | node6 | 172.16.10.6 | TiKV3 |
+    | Name | Host IP | Services |
+    | ---- | ------- | -------- |
+    | node1 | 172.16.10.1 | PD1, TiDB1 |
+    | node2 | 172.16.10.2 | PD2, TiDB2 |
+    | node3 | 172.16.10.3 | PD3, Monitor |
+    | **node101** | **172.16.10.101**|**TiDB3** |
+    | node4 | 172.16.10.4 | TiKV1 |
+    | node5 | 172.16.10.5 | TiKV2 |
+    | node6 | 172.16.10.6 | TiKV3 |
         
 2. Initialize the newly added node:
 
-  ```
-  ansible-playbook bootstrap.yml -k -K
-  ```
+    ```
+    ansible-playbook bootstrap.yml -k -K
+    ```
 
 3. Deploy the cluster:
 
-  ```
-  ansible-playbook deploy.yml -k
-  ```
+    ```
+    ansible-playbook deploy.yml -k
+    ```
 
 4. Roll update the entire cluster:
 
-  ```
-  ansible-playbook rolling_update.yml -k
-  ```
+    ```
+    ansible-playbook rolling_update.yml -k
+    ```
 
 5. Monitor the status of the entire cluster and the newly added node by opening a browser to access the monitoring platform: `http://172.16.10.3:3000`
 
@@ -483,85 +484,85 @@ To add a PD node (node102) with the IP address: 172.16.10.102, you can use the f
 
 1. Edit the `inventory.ini` file and append the node information:
 
-  ```
-  [tidb_servers]
-  172.16.10.1
-  172.16.10.2
+    ```
+    [tidb_servers]
+    172.16.10.1
+    172.16.10.2
+    
+    [pd_servers]
+    172.16.10.1
+    172.16.10.2
+    172.16.10.3
+    172.16.10.102
+    
+    [tikv_servers]
+    172.16.10.4
+    172.16.10.5
+    172.16.10.6
+    
+    [monitored_servers:children]
+    tidb_servers
+    tikv_servers
+    pd_servers
+    
+    [monitoring_servers]
+    172.16.10.3
+    
+    [grafana_servers]
+    172.16.10.3
+    ```
   
-  [pd_servers]
-  172.16.10.1
-  172.16.10.2
-  172.16.10.3
-  172.16.10.102
+    Now the topology is as follows:
   
-  [tikv_servers]
-  172.16.10.4
-  172.16.10.5
-  172.16.10.6
-  
-  [monitored_servers:children]
-  tidb_servers
-  tikv_servers
-  pd_servers
-  
-  [monitoring_servers]
-  172.16.10.3
-  
-  [grafana_servers]
-  172.16.10.3
-  ```
-  
-  Now the topology is as follows:
-  
-  | Name | Host IP | Services |
-  | ---- | ------- | -------- |
-  | node1 | 172.16.10.1 | PD1, TiDB1 |
-  | node2 | 172.16.10.2 | PD2, TiDB2 |
-  | node3 | 172.16.10.3 | PD3, Monitor |
-  | **node102** | **172.16.10.102** | **PD4** |
-  | node4 | 172.16.10.4 | TiKV1 |
-  | node5 | 172.16.10.5 | TiKV2 |
-  | node6 | 172.16.10.6 | TiKV3 |
+    | Name | Host IP | Services |
+    | ---- | ------- | -------- |
+    | node1 | 172.16.10.1 | PD1, TiDB1 |
+    | node2 | 172.16.10.2 | PD2, TiDB2 |
+    | node3 | 172.16.10.3 | PD3, Monitor |
+    | **node102** | **172.16.10.102** | **PD4** |
+    | node4 | 172.16.10.4 | TiKV1 |
+    | node5 | 172.16.10.5 | TiKV2 |
+    | node6 | 172.16.10.6 | TiKV3 |
 
 2. Initialize the newly added node:
 
-  ```
-  ansible-playbook bootstrap.yml -k -K
-  ```
+    ```
+    ansible-playbook bootstrap.yml -k -K
+    ```
 
 3. Deploy the cluster:
 
-  ```
-  ansible-playbook deploy.yml -k
-  ```
+    ```
+    ansible-playbook deploy.yml -k
+    ```
 
 4. Login the newly added PD node and edit the starting script: 
   
-  ```
-  {deploy_dir}/scripts/run_pd.sh
-  ```
+    ```
+    {deploy_dir}/scripts/run_pd.sh
+    ```
   
-  1. Remove the  `--initial-cluster="xxxx"` configuration.
-  2. Add `join="http://172.16.10.1:2379"`. The IP address(`172.16.10.1`) can be any of the existing PD IP address in the cluster.
-  3. Manually start the PD service in the newly added PD node:
+    1. Remove the  `--initial-cluster="xxxx"` configuration.
+    2. Add `join="http://172.16.10.1:2379"`. The IP address(`172.16.10.1`) can be any of the existing PD IP address in the cluster.
+    3. Manually start the PD service in the newly added PD node:
+      
+        ```
+        {deploy_dir}/scripts/start_pd.sh
+        ```
+      
+    4. Use `pd-ctl` and see if the New node is added successfully:
     
-      ```
-      {deploy_dir}/scripts/start_pd.sh
-      ```
-
-  4. Use `pd-ctl` and see if the New node is added successfully:
+        ```
+        ./pd-ctl -u “http://172.16.10.1:2379”
+        ```
     
-      ```
-      ./pd-ctl -u “http://172.16.10.1:2379”
-      ```
-    
-      > **Note:** `pd-ctl` is a command to check the number of PD nodes.
+        > **Note:** `pd-ctl` is a command to check the number of PD nodes.
 
 5. Roll upgrade the entire cluster:
-
-  ```
-  ansible-playbook rolling_update.yml -k
-  ```
+    
+    ```
+    ansible-playbook rolling_update.yml -k
+    ```
    
 6. Monitor the status of the entire cluster and the newly added node by opening a browser to access the monitoring platform: `http://172.16.10.3:3000`
 
