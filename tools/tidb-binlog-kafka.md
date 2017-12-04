@@ -159,6 +159,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
     # unix socket 模式服务监听地址 (默认 unix:///tmp/pump.sock)
     socket = "unix:///tmp/pump.sock"
     ```
+
 3. 启动示例
 
     ```bash
