@@ -1,7 +1,7 @@
 ---
 title: TiDB Sysbench 性能测试报告 - v1.0.0
 category: benchmark 
-draft:true
+draft: true
 --- 
 
 # TiDB Sysbench 性能测试报告 - v1.0.0
