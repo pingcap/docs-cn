@@ -185,9 +185,9 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
     -data-dir string
        drainer 数据存储位置路径 (默认 "data.drainer")
     -kafka-addrs string 
-	连接的 kafka 的地址 (默认 "127.0.0.1:9092")
-    -zookeeper-addrs string
-        zookeeper 地址，如果设置了该选项则从 zookeeper 中获取 kafka 地址，如果不设置则使用 kafka-addrs 的值
+        连接的 kafka 的地址 (默认 "127.0.0.1:9092")
+    -zookeeper-addrs string
+        zookeeper 地址，如果设置了该选项则从 zookeeper 中获取 kafka 地址，如果不设置则使用 kafka-addrs 的值
     -dest-db-type string
         drainer 下游服务类型 (默认为 mysql)
     -detect-interval int
