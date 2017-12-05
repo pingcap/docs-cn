@@ -65,7 +65,7 @@ category: deployment
 | | [ daemontools-0.53 ](http://oifici4co.bkt.gdipper.com/daemontools-0.53.tar.gz) |  |
 |**测试**| [ fio-2.16 ](https://download.pingcap.org/fio-2.16.tar.gz) |  |
 |**Spark**| [ spark-2.1.1-bin-hadoop ](http://download.pingcap.org/spark-2.1.1-bin-hadoop2.7.tgz) |  |
-| | [ tispark-SNAPSHOT-jar-with-dependencies ](http://download.pingcap.org/tispark-SNAPSHOT-jar-with-dependencies.jar) |  |
+| | [ tispark-SNAPSHOT-jar-with-dependencies ](http://download.pingcap.org/tispark-0.1.0-SNAPSHOT-jar-with-dependencies.jar) |  |
 | | [ tispark-sample-data ](http://download.pingcap.org/tispark-sample-data.tar.gz) |  |
 
 > 下载所有软件安装包，上传至中控机。
