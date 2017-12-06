@@ -77,7 +77,7 @@ export PD_ADDR=http://127.0.0.1:2379
 示例：
 
 ```bash
->> cluster									// 显示 cluster 的信息
+>> cluster                                     // 显示 cluster 的信息
 {
   "id": 6493707687106161130,
   "max_peer_count": 3
@@ -91,7 +91,7 @@ export PD_ADDR=http://127.0.0.1:2379
 示例：
 
 ```bash
->> config show                             	//　显示 scheduler 的相关 config 信息
+>> config show                                //　显示 scheduler 的相关 config 信息
 {
   "max-snapshot-count": 3,
   "max-pending-peer-count": 16,
@@ -115,15 +115,15 @@ export PD_ADDR=http://127.0.0.1:2379
     }
   ]
 }
->> config show all 							// 显示所有的 config 信息
->> config show namespace ts1				// 显示名为 ts1 的 namespace 的相关 config 信息
+>> config show all                            // 显示所有的 config 信息
+>> config show namespace ts1                  // 显示名为 ts1 的 namespace 的相关 config 信息
 {
   "leader-schedule-limit": 64,
   "region-schedule-limit": 16,
   "replica-schedule-limit": 24,
   "max-replicas": 3,
 }
->> config show replication					// 显示 replication 的相关 config 信息
+>> config show replication                    // 显示 replication 的相关 config 信息
 {
   "max-replicas": 3,
   "location-labels": ""
@@ -135,7 +135,7 @@ export PD_ADDR=http://127.0.0.1:2379
 Leader 调度的开销较小，需要的时候可以适当调大。
 
 ```bash
->> config set leader-schedule-limit 4       // 最多同时进行 4 个 leader 调度
+>> config set leader-schedule-limit 4         // 最多同时进行 4 个 leader 调度
 ```
 
 通过调整 `region-schedule-limit` 可以控制同时进行 region 调度的任务个数。
@@ -143,7 +143,7 @@ Leader 调度的开销较小，需要的时候可以适当调大。
 Region 调度的开销较大，所以这个值不宜调得太大。
 
 ```bash
->> config set region-schedule-limit 2       // 最多同时进行 2 个 region 调度
+>> config set region-schedule-limit 2         // 最多同时进行 2 个 region 调度
 ```
 
 通过调整 `replica-schedule-limit` 可以控制同时进行 replica 调度的任务个数。
@@ -151,7 +151,7 @@ Region 调度的开销较大，所以这个值不宜调得太大。
 Replica 调度的开销较大，所以这个值不宜调得太大。
 
 ```bash
->> config set replica-schedule-limit 4      // 最多同时进行 4 个 replica 调度
+>> config set replica-schedule-limit 4        // 最多同时进行 4 个 replica 调度
 ```
 
 以上对配置的修改是全局性的，还可以通过对不同 namespace 的配置，进行细化调整。当 namespace 未设置相应配置时，使用全局配置。注：namespace 的配置只支持对 leader-schedule-limit，region-schedule-limit，replica-schedule-limit，max-replicas 的调整，否则不生效。
@@ -170,7 +170,7 @@ Replica 调度的开销较大，所以这个值不宜调得太大。
 在对 namespace 相关配置进行设置后，若想让该 namespace 继续使用全局配置，可删除该 namespace 的配置信息，之后便使用全局配置。
 
 ```bash
->> config delete namespace ts1 						// 删除名为 ts1 的 namespace 的相关配置
+>> config delete namespace ts1                      // 删除名为 ts1 的 namespace 的相关配置
 ```
 
 若只想让 namespace 中的某项配置使用全局配置而不影响其他配置，则可使用如下命令：
@@ -186,7 +186,7 @@ Replica 调度的开销较大，所以这个值不宜调得太大。
 示例：
 
 ```bash
->> health								// 显示健康信息
+>> health                                // 显示健康信息
 {"health": "true"}
 ```
 
@@ -209,8 +209,8 @@ Replica 调度的开销较大，所以这个值不宜调得太大。
 示例：
 
 ```bash
->> label								// 显示所有 label 
->> label store zone cn					// 显示所有包含 label 为 "zone":"cn" 的 store
+>> label                                // 显示所有 label 
+>> label store zone cn                  // 显示所有包含 label 为 "zone":"cn" 的 store
 ```
 
 ### member [leader | delete]
@@ -247,7 +247,7 @@ Success!
 >> operator show admin                      // 显示所有的 admin operators
 >> operator show leader                     // 显示所有的 leader operators
 >> operator show region                     // 显示所有的 region operators
->> operator add add-peer 1 2				// 在 store 2 上新增 region 1 的一个副本
+>> operator add add-peer 1 2                // 在 store 2 上新增 region 1 的一个副本
 >> operator remove remove-peer 1 2          // 移除 store 2 上的 region 1 的一个副本
 >> operator add transfer-leader 1 2         // 把 region 1 的 leader 调度到 store 2
 >> operator add transfer-region 1 2 3 4     // 把 region 1 调度到 store 2,3,4
@@ -341,17 +341,17 @@ Protobuf 格式示例：
 示例：
 
 ```bash
->> store            			// 显示所有 store 信息
+>> store                        // 显示所有 store 信息
 {
   "count": 3,
   "stores": [...]
 }
->> store 1          			// 获取 store id 为 1 的 store
+>> store 1                      // 获取 store id 为 1 的 store
   ......
->> store delete 1   			// 下线 store id 为 1 的 store
+>> store delete 1               // 下线 store id 为 1 的 store
   ......
->> store label 1 zone cn 		// 设置 store id 为 1 的 store 的键为 "zone" 的 label 的值为 "cn"
->> store weight 1 5 10			// 设置 store id 为 1 的 store 的 leader weight 为 5，region weight 为 10
+>> store label 1 zone cn        // 设置 store id 为 1 的 store 的键为 "zone" 的 label 的值为 "cn"
+>> store weight 1 5 10          // 设置 store id 为 1 的 store 的 leader weight 为 5，region weight 为 10
 ```
 
 ### table_ns [create | add | remove | set_store | rm_store | set_meta | rm_meta]
@@ -361,13 +361,13 @@ Protobuf 格式示例：
 示例：
 
 ```bash
->> table_ns add ts1 1			// 将 table id 为 1 的 table 添加到名为 ts1 的 namespace
->> table_ns create ts1			// 添加名为 ts1 的 namespace
->> table_ns remove ts1 1        // 将 table id 为 1 的 table 从名为 ts1 的 namespace 中移除
->> table_ns rm_meta ts1			// 将 meta 信息从名为 ts1 的 namespace 中移除
->> table_ns rm_store 1 ts1		// 将 store id 为 1 的 table 从名为 ts1 的 namespace 中移除
->> table_ns set_meta ts1		// 将 meta 信息添加到名为 ts1 的 namespace
->> table_ns set_store 1 ts1		// 将 store id 为 1 的 table 添加到名为 ts1 的 namespace
+>> table_ns add ts1 1            // 将 table id 为 1 的 table 添加到名为 ts1 的 namespace
+>> table_ns create ts1           // 添加名为 ts1 的 namespace
+>> table_ns remove ts1 1         // 将 table id 为 1 的 table 从名为 ts1 的 namespace 中移除
+>> table_ns rm_meta ts1          // 将 meta 信息从名为 ts1 的 namespace 中移除
+>> table_ns rm_store 1 ts1       // 将 store id 为 1 的 table 从名为 ts1 的 namespace 中移除
+>> table_ns set_meta ts1         // 将 meta 信息添加到名为 ts1 的 namespace
+>> table_ns set_store 1 ts1      // 将 store id 为 1 的 table 添加到名为 ts1 的 namespace
 ```
 
 ### tso
@@ -377,7 +377,7 @@ Protobuf 格式示例：
 示例：
 
 ```bash
->> tso 395181938313123110
+>> tso 395181938313123110        // 解析 TSO
 system:  2017-10-09 05:50:59 +0800 CST
 logic:  120102
 ```
