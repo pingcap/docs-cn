@@ -324,7 +324,9 @@ location_labels = ["host"]
     ansible-playbook local_prepare.yml
     ```
 
-4.  使用 wget 下载 binary，解压后手动替换 binary 到 `tidb-ansible/resource/bin/`
+### 手动下载 binary
+
+1.  除 “下载 binary” 中描述的方法之外，也可以手动下载 binary，解压后手动替换 binary 到 `tidb-ansible/resource/bin/`，请注意替换链接中的版本号
 
     ```
     wget http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz
