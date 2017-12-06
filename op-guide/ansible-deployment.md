@@ -30,9 +30,9 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 2.  部署目标机器若干
 
     - 建议4台及以上，TiKV 至少3实例，且与 TiDB、PD 模块不位于同一主机,详见[部署建议](recommendation.md)。
-    - Linux 操作系统，x86_64 架构(amd64)，内核版本建议 3.10 以上，推荐 CentOS 7.3 及以上版本, 文件系统推荐 ext4(部分内核版本 xfs 文件系统有 bug, 本工具检查到 xfs 文件系统有 bug 会退出)。
+    - Linux 操作系统，x86_64 架构(amd64)，内核版本建议 3.10 以上，推荐 CentOS 7.3 及以上版本，文件系统推荐 ext4(部分内核版本 xfs 文件系统有 bug，本工具检查到 xfs 文件系统有 bug 会退出)。
     - 机器之间网络互通，防火墙、iptables 等可以在部署验证时关闭，后期开启。
-    - 机器的时间、时区设置正确(要求机器时间同步)，有 NTP 服务可以同步正确时间, ubuntu 系统需单独安装 ntpstat 软件包。
+    - 机器的时间、时区设置正确(要求机器时间同步)，有 NTP 服务可以同步正确时间，ubuntu 系统需单独安装 ntpstat 软件包。
     - 若使用普通用户作为 Ansible SSH 远程连接用户，该用户需要有 sudo 到 root 权限，或直接使用 root 用户远程连接。
     - Python 2.6 或 Python 2.7。
 
@@ -164,18 +164,18 @@ location_labels = ["host"]
 
 - 参数调整
 
-    1.  多实例情况下, 需要修改 `conf/tikv.yml` 中的 `end-point-concurrency` 以及 `block-cache-size` 参数:
+    1.  多实例情况下，需要修改 `conf/tikv.yml` 中的 `end-point-concurrency` 以及 `block-cache-size` 参数:
         - `end-point-concurrency`: 总数低于 CPU Vcores 即可
         - `rocksdb defaultcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 30%
         - `rocksdb writecf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 45%
         - `rocksdb lockcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
         - `raftdb defaultcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
-    2.  如果多个 TiKV 实例部署在同一块物理磁盘上, 需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
-        - `capaticy` = (DISK - 日志空间) / TiKV 实例数量, 单位为 GB
+    2.  如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
+        - `capaticy` = (DISK - 日志空间) / TiKV 实例数量，单位为 GB
 
 ## 部署任务
 
-> TiDB 服务不推荐使用 root 用户运行, 本例使用 `tidb` 普通用户作为服务运行用户。
+> TiDB 服务不推荐使用 root 用户运行，本例使用 `tidb` 普通用户作为服务运行用户。
 
 > Ansible 远程连接用户(即 incentory.ini 文件中的 ansible_user)可使用 root 用户或普通用户(该用户需要有 sudo 到 root 权限)。
 
@@ -183,7 +183,7 @@ location_labels = ["host"]
 
 -   Ansible 通过 root 用户远程连接部署
 
-    1.  修改 `inventory.ini`, 本例使用 `tidb` 帐户作为服务运行用户：
+    1.  修改 `inventory.ini`，本例使用 `tidb` 帐户作为服务运行用户：
 
         取消 `ansible_user = root` 、`ansible_become = true` 及 `ansible_become_user` 注释，给 `ansible_user = tidb` 添加注释：
 
@@ -198,7 +198,7 @@ location_labels = ["host"]
         # ansible_user = tidb
         ```
 
-    2.  使用 `local_prepare.yml` playbook, 联网下载 TiDB binary 到中控机：
+    2.  使用 `local_prepare.yml` playbook，联网下载 TiDB binary 到中控机：
 
         ```
         ansible-playbook local_prepare.yml
@@ -212,7 +212,7 @@ location_labels = ["host"]
         ansible-playbook bootstrap.yml
         ```
 
-        如果 ansible 使用 root 用户远程连接需要密码, 使用 -k 参数，执行其他 playbook 同理：
+        如果 ansible 使用 root 用户远程连接需要密码，使用 -k 参数，执行其他 playbook 同理：
 
         ```
         ansible-playbook bootstrap.yml -k
@@ -235,7 +235,7 @@ location_labels = ["host"]
 
     > 本例中系统需提前创建 tidb 普通用户，并添加 sudo 权限，本例 tidb 帐户同时作为服务运行用户。
 
-    1.  修改 `inventory.ini`, 本例使用 `tidb` 用户作为服务运行用户，配置如下：
+    1.  修改 `inventory.ini`，本例使用 `tidb` 用户作为服务运行用户，配置如下：
 
         ```ini
         ## Connection
@@ -248,7 +248,7 @@ location_labels = ["host"]
         ansible_user = tidb
         ```
 
-    2.  使用 `local_prepare.yml` playbook, 联网下载 TiDB binary 到中控机：
+    2.  使用 `local_prepare.yml` playbook，联网下载 TiDB binary 到中控机：
 
         ```
         ansible-playbook local_prepare.yml
@@ -260,7 +260,7 @@ location_labels = ["host"]
         ansible-playbook bootstrap.yml
         ```
 
-        如果 Ansible 使用普通用户远程连接需要密码, 需添加 -k 参数，执行其他 playbook 同理：
+        如果 Ansible 使用普通用户远程连接需要密码，需添加 -k 参数，执行其他 playbook 同理：
 
         ```
         ansible-playbook bootstrap.yml -k
@@ -288,7 +288,7 @@ location_labels = ["host"]
 
 > 测试连接 TiDB 集群，推荐在 TiDB 前配置负载均衡来对外统一提供 SQL 接口。
 
--   使用 MySQL 客户端连接测试, TCP 4000 端口是 TiDB 服务默认端口。
+-   使用 MySQL 客户端连接测试，TCP 4000 端口是 TiDB 服务默认端口。
 
     ```sql
     mysql -u root -h 172.16.10.1 -P 4000
@@ -368,7 +368,7 @@ location_labels = ["host"]
 
 ### 如何下载安装指定版本 TiDB
 
-如需安装 TiDB 1.0 版本，需要先下载 TiDB-Ansible release-1.0 分支，确认 inventory.ini 文件中 `tidb_version = v1.0.0`, 安装步骤同上。
+如需安装 TiDB 1.0 版本，需要先下载 TiDB-Ansible release-1.0 分支，确认 inventory.ini 文件中 `tidb_version = v1.0.0`，安装步骤同上。
 
 从 github 下载 TiDB-Ansible release-1.0 分支:
 
@@ -386,7 +386,7 @@ git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 | PD | pd_peer_port | 2380 | PD 集群节点间通信端口 |
 | pump | pump_port | 8250  | pump 通信端口 |
 | prometheus | prometheus_port | 9090 | Prometheus 服务通信端口  |
-| pushgateway | pushgateway_port | 9091 | TiDB, TiKV, PD 监控聚合和上报端口 |
+| pushgateway | pushgateway_port | 9091 | TiDB，TiKV，PD 监控聚合和上报端口 |
 | node_exporter | node_exporter_port | 9100 | TiDB 集群每个节点的系统信息上报通信端口 |
 | grafana | grafana_port|  3000 | Web 监控服务对外服务和客户端(浏览器)访问端口 |
 
