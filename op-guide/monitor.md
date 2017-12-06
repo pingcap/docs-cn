@@ -147,27 +147,28 @@ Grafana
     ```
 
 #### PushServer 配置
+
 一般无需特殊配置，使用默认端口 9091 即可
 
-+   Prometheus 配置
+Prometheus 配置：
 
-    在 yaml 配置文件中添加 Push Gateway 地址：
+在 yaml 配置文件中添加 Push Gateway 地址：
 
-    ```yaml
-    scrape_configs:
-      # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-      - job_name: 'TiDB'
+```yaml
+ scrape_configs:
+# The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+- job_name: 'TiDB'
 
-        # Override the global default and scrape targets from this job every 5 seconds.
-        scrape_interval: 5s
+  # Override the global default and scrape targets from this job every 5 seconds.
+  scrape_interval: 5s
 
-        honor_labels: true
+  honor_labels: true
 
-        static_configs:
-          - targets: ['host:port'] # 这里填写 pushgateway 地址
-            labels:
-              group: 'production'
-    ```
+  static_configs:
+ - targets: ['host:port'] # use the Push Gateway address
+labels:
+  group: 'production'
+ ```
 
 #### Grafana 配置
 

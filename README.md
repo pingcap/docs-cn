@@ -2,51 +2,118 @@
 
 ## 目录
 
-+ [TiDB 简介与整体架构](overview.md)
++ TiDB 简介与整体架构
   - [TiDB 简介](overview.md#tidb-简介)
   - [TiDB 整体架构](overview.md#tidb-整体架构)
 - [TiDB 快速入门指南](QUICKSTART.md)
-+ [TiDB 运维文档](op-guide/op-guide.md)
-  - [软硬件环境需求](op-guide/op-guide.md#软硬件环境需求)
-  - [部署集群](op-guide/op-guide.md#部署集群)
-  - [配置集群](op-guide/op-guide.md#配置集群)
-  - [监控集群](op-guide/op-guide.md#监控集群)
-  - [扩容缩容](op-guide/op-guide.md#扩容缩容)
-  - [升级](op-guide/op-guide.md#升级)
-  - [性能调优](op-guide/op-guide.md#性能调优)
-  - [备份与迁移](op-guide/op-guide.md#备份与迁移)
-  - [Binary 部署方案](op-guide/op-guide.md#binary-部署方案)
-+ [TiDB 用户文档](sql/user-manual.md)
-  - [TiDB 数据库管理](sql/user-manual.md#tidb-数据库管理)
-  - [SQL 优化](sql/user-manual.md#sql-优化)
-  - [语言结构](sql/user-manual.md#语言结构)
-  - [字符集和时区](sql/user-manual.md#字符集和时区)
-  - [数据类型](sql/user-manual.md#数据类型)
-  - [函数和操作符](sql/user-manual.md#函数和操作符)
-  - [SQL 语句语法](sql/user-manual.md#sql-语句语法)
-  - [JSON 支持](sql/user-manual.md#json-支持)
-  - [Connectors 和 API](sql/user-manual.md#connectors-和-api)
-  - [错误码与故障诊断](sql/user-manual.md#错误码与故障诊断)
++ TiDB 用户文档
+  + TiDB 数据库管理
+    - [TiDB 服务](sql/tidb-server.md)
+    - [TiDB 进程启动参数](sql/server-command-option.md)
+    - [TiDB 数据目录](sql/tidb-server.md#tidb-数据目录)
+    - [TiDB 系统数据库](sql/system-database.md)
+    - [TiDB 系统变量](sql/variable.md)
+    - [TiDB 专用系统变量和语法](sql/tidb-specific.md)
+    - [TiDB 服务器日志文件](sql/tidb-server.md#tidb-服务器日志文件)
+    - [TiDB 访问权限管理](sql/privilege.md)
+    - [TiDB 用户账户管理](sql/user-account-management.md)
+    - [使用加密连接](sql/encrypted-connections.md)
+  + SQL 优化
+    - [理解 TiDB 执行计划](sql/understanding-the-query-execution-plan.md)
+    - [统计信息](sql/statistics.md)
+  + 语言结构
+    - [字面值](sql/literal-values.md)
+    - [数据库、表、索引、列和别名](sql/schema-object-names.md)
+    - [关键字和保留字](sql/keywords-and-reserved-words.md)
+    - [用户变量](sql/user-defined-variables.md)
+    - [表达式语法](sql/expression-syntax.md)
+    - [注释语法](sql/comment-syntax.md)
+  + 字符集和时区
+    - [字符集支持](sql/character-set-support.md)
+    - [字符集配置](sql/character-set-configuration.md)
+    - [时区](sql/time-zone.md)
+  + 数据类型
+    - [数值类型](sql/datatype.md#数值类型)
+    - [日期和时间类型](sql/date-and-time-types.md)
+    - [字符串类型](sql/datatype.md#字符串类型)
+    - [JSON 数据类型](sql/datatype.md#json-类型)
+    - [枚举类型](sql/datatype.md#枚举类型)
+    - [集合类型](sql/datatype.md#集合类型)
+    - [数据类型默认值](sql/datatype.md#数据类型的默认值)
+  + 函数和操作符
+    - [函数和操作符概述](sql/functions-and-operators-reference.md)
+    - [表达式求值的类型转换](sql/type-conversion-in-expression-evaluation.md)
+    - [操作符](sql/operators.md)
+    - [控制流程函数](sql/control-flow-functions.md)
+    - [字符串函数](sql/string-functions.md)
+    - [数值函数与操作符](sql/numeric-functions-and-operators.md)
+    - [日期和时间函数](sql/date-and-time-functions.md)
+    - [位函数和操作符](sql/bit-functions-and-operators.md)
+    - [Cast 函数和操作符](sql/cast-functions-and-operators.md)
+    - [加密和压缩函数](sql/encryption-and-compression-functions.md)
+    - [信息函数](sql/information-functions.md)
+    - [JSON 函数](sql/json-functions.md)
+    - [GROUP BY 聚合函数](sql/aggregate-group-by-functions.md)
+    - [其他函数](sql/miscellaneous-functions.md)
+    - [精度数学](sql/precision-math.md)
+  + SQL 语句语法
+    - [数据定义语句 (DDL)](sql/ddl.md)
+    - [数据操作语句 (DML)](sql/dml.md)
+    - [事务语句](sql/transaction.md)
+    - [数据库管理语句](sql/admin.md)
+    - [Prepared SQL 语句语法](sql/prepare.md)
+    - [实用工具语句](sql/util.md)
+    - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
+  - [JSON 支持](sql/json-functions-generated-column.md)
+  - [Connectors 和 API](sql/connection-and-APIs.md)
+  - [错误码与故障诊断](sql/error.md)
   - [与 MySQL 兼容性对比](sql/mysql-compatibility.md)
-+ 高级功能
-  - [历史数据回溯](op-guide/history-read.md)
-+ 工具
-  - [Loader 使用文档](tools/loader.md)
+  + 高级功能
+    - [历史数据回溯](op-guide/history-read.md)
++ TiDB 运维文档
+  - [软硬件环境需求](op-guide/recommendation.md)
+  + 部署集群 
+    - [Ansible 部署方案（强烈推荐）](op-guide/ansible-deployment.md)
+    - [离线 Ansible 部署方案（强烈推荐）](op-guide/offline-ansible-deployment.md)
+    - [Docker 部署方案](op-guide/docker-deployment.md)
+    - [跨机房部署方案](op-guide/location-awareness.md)
+  - [配置集群](op-guide/configuration.md)
+  + 监控集群
+    - [整体监控框架概述](op-guide/monitor-overview.md)
+    - [重要监控指标详解](op-guide/dashboard-overview-info.md)
+    - [组件状态 API & 监控](op-guide/monitor.md)
+  + 扩容缩容
+     - [使用 Ansible 扩容缩容](QUICKSTART.md#tidb-集群扩容缩容方案)
+     - [集群扩容缩容方案](op-guide/horizontal-scale.md)
+  - [升级](op-guide/ansible-deployment.md#滚动升级)
+  - [性能调优](op-guide/tune-tikv.md)
+  + 备份与迁移
+    - [备份与恢复](op-guide/backup-restore.md)
+    + 数据迁移
+      - [数据迁移概述](op-guide/migration-overview.md)
+      - [全量导入](op-guide/migration.md#使用-mydumperloader-全量导入数据)
+      - [增量导入](op-guide/migration.md#使用-syncer-增量导入数据)
+  - [Binary 部署方案](op-guide/binary-deployment.md)
+  - [故障诊断](trouble-shooting.md)
++ TiDB 周边工具
   - [Syncer 使用文档](tools/syncer.md)
-  - [TiDB-binlog 使用文档](op-guide/tidb-binlog.md)
+  - [Loader 使用文档](tools/loader.md)
+  - [TiDB-binlog 使用文档](tools/tidb-binlog.md)
   - [PD Control 使用文档](tools/pd-control.md)
 + TiSpark 文档
-  - [TiSpark 快速入门指南](op-guide/tispark-quick-start-guide.md)
-  - [TiSpark 用户指南](op-guide/tispark-user-guide.md)
+  - [TiSpark 快速入门指南](tispark/tispark-quick-start-guide.md)
+  - [TiSpark 用户指南](tispark/tispark-user-guide.md)
 - [常见问题与解答(FAQ)](FAQ.md)
-- [故障诊断](trouble-shooting.md)
-- [最佳实践](https://pingcap.com/blog-TiDB-Best-Practice-zh)
+- [最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
 - [版本发布历史](releases/README.md)
+- [TiDB 路线图](https://github.com/pingcap/docs-cn/blob/master/ROADMAP.md)
 + 更多资源
-  - [PingCAP 团队技术博客](https://pingcap.com/bloglist-zh.html)
+  - [常用工具](https://github.com/pingcap/tidb-tools)
+  - [PingCAP 团队技术博客](https://pingcap.com/blog-cn/)
   - [知乎专栏](https://zhuanlan.zhihu.com/newsql)
-  - [Weekly](http://weekly.pingcap.com/)
+  - [Weekly](https://pingcap.com/weekly/)
   - [英文文档](https://pingcap.com/docs)
+
 
 
 ## TiDB 简介
@@ -67,9 +134,9 @@ TiDB 对业务没有任何侵入性，能优雅的替换传统的数据库中间
 
 三篇文章了解 TiDB 技术内幕：
 
-- [说存储](https://pingcap.com/blog-tidb-internal-1-zh)
-- [说计算](https://pingcap.com/blog-tidb-internal-2-zh)
-- [谈调度](https://pingcap.com/blog-tidb-internal-3-zh)
+- [说存储](https://pingcap.com/blog-cn/tidb-internal-1/)
+- [说计算](https://pingcap.com/blog-cn/tidb-internal-2/)
+- [谈调度](https://pingcap.com/blog-cn/tidb-internal-3/)
 
 ## TiDB 整体架构
 

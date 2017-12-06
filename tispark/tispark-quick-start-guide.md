@@ -5,7 +5,7 @@ category: tispark
 
 # TiSpark 快速入门指南
 
-为了让大家快速体验 [TiSpark](https://github.com/pingcap/docs-cn/blob/master/op-guide/tispark-user-guide.md), 通过 TiDB-Ansible 安装的 Pre-GA 或 master 版本 TiDB 集群中默认已集成 Spark、TiSpark jar 包及 TiSpark sample data。
+为了让大家快速体验 [TiSpark](tispark/tispark-user-guide.md), 通过 TiDB-Ansible 安装的 Pre-GA 或 master 版本 TiDB 集群中默认已集成 Spark、TiSpark jar 包及 TiSpark sample data。
 
 ## 部署信息
 -   Spark 默认部署在 TiDB 实例部署目录下 spark 目录中

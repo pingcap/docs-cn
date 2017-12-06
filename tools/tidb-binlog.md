@@ -54,7 +54,7 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
 #### 注意
 
 *   需要为一个 TiDB 集群中的每台 TiDB server 部署一个 pump，目前 TiDB server 只支持以 unix socket 方式的输出 binlog。
-*   手动部署时， 启动优先级为： PUMP > TiDB ； 停止优先级为 TiDB > PUMP 
+*   手动部署时， 启动优先级为： PUMP > TiDB ； 停止优先级为 TiDB > PUMP
 
 
     我们设置 TiDB 启动参数 binlog-socket 为对应的 pump 的参数 socket 所指定的 unix socket 文件路径，最终部署结构如下图所示：
@@ -99,7 +99,7 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
     * 执行 ansible-playbook rolling_update.yml --tags=tidb
         * drainer 目前需要手动部署
 
-#### 使用 Binary 部署 PUMP 
+#### 使用 Binary 部署 PUMP
 
 1. PUMP 命令行参数说明
 
@@ -162,9 +162,7 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
     ./bin/pump -config pump.toml
     ```
 
------
-
-#### 使用 Binary 部署 Drainer 
+#### 使用 Binary 部署 Drainer
 
 1.  Drainer 命令行参数说明
 
@@ -213,7 +211,7 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
 2. Drainer 配置文件
 
     ```toml
-    # drainer Configuration.  
+    # drainer Configuration.
 
     # drainer 提供服务的地址(默认 "127.0.0.1:8249")
     addr = "127.0.0.1:8249"
@@ -276,15 +274,13 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
     # [syncer.to]
     # dir = "data.drainer"
     ```
-   
+
 
 3. 启动示例
 
     ```bash
     ./bin/drainer -config drainer.toml
     ```
-
------
 
 ## TiDB-Binlog 监控
 
