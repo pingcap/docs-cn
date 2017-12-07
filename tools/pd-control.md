@@ -176,7 +176,7 @@ Replica 调度的开销较大，所以这个值不宜调得太大。
 若只想让 namespace 中的某项配置使用全局配置而不影响其他配置，则可使用如下命令：
 
 ```bash
->>config delete namespace region-schedule-limit ts2 // 删除名为 ts2 的 namespace 的 region-schedule-limit 配置
+>> config delete namespace region-schedule-limit ts2 // 删除名为 ts2 的 namespace 的 region-schedule-limit 配置
 ```
 
 ### health
