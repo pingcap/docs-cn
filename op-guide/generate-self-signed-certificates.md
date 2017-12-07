@@ -75,7 +75,7 @@ cfssl print-defaults csr > ca-csr.json
                     "signing",
                     "key encipherment",
                     "server auth",
-                  	"client auth"
+                    "client auth"
                 ]
             },
             "client": {
