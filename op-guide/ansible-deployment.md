@@ -306,13 +306,27 @@ location_labels = ["host"]
 
 ### 下载 binary
 
-1.  使用 playbook 下载 TiDB 1.0 版本 binary，自动替换 binary 到 `tidb-ansible/resource/bin/`
+1.  修改 `inventory.ini` 中的 `tidb_version` 参数值，指定需要升级的版本号，本例指定升级的版本号为 `v1.0.2`
+
+    ```
+    tidb_version = v1.0.2
+    ```
+
+2.  删除原有的 downloads 目录 `tidb-ansible/downloads/`
+
+    ```
+    rm -rf downloads
+    ```
+
+3.  使用 playbook 下载 TiDB 1.0 版本 binary，自动替换 binary 到 `tidb-ansible/resource/bin/`
 
     ```
     ansible-playbook local_prepare.yml
     ```
 
-2.  使用 wget 下载 binary，解压后手动替换 binary 到 `tidb-ansible/resource/bin/`
+### 手动下载 binary
+
+1.  除 “下载 binary” 中描述的方法之外，也可以手动下载 binary，解压后手动替换 binary 到 `tidb-ansible/resource/bin/`，请注意替换链接中的版本号
 
     ```
     wget http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz
