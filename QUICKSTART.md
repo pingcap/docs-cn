@@ -266,13 +266,13 @@ SHOW TABLES FROM samp_db;
 对于值不唯一的列，可使用 `CREATE INDEX` 或 `ALTER TABLE` 语句。例如：
 
 ```sql
-CREATE INDEX person_num ON person (number);`
+CREATE INDEX person_num ON person (number);
 ```
 
 或者
 
 ```sql
-ALTER TABLE person ADD INDEX person_num (number)；
+ALTER TABLE person ADD INDEX person_num (number);
 ```
 
 对于值唯一的列，可以创建唯一索引。例如：
