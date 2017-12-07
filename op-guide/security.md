@@ -20,143 +20,11 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
 
 ### 准备证书
 
-在这里，使用 cfssl 来自建 CA 签发证书。
+推荐为 TiDB、TiKV、PD 分别准备一个 server 证书，并保证可以相互验证，而它们的各种客户端共用 client 证书。
 
-#### 下载 cfssl
+有多种工具可以生成自签名证书，如`openssl`，`easy-rsa`，`cfssl`。
 
-这里假设使用的是 x86_64 Linux 主机
-
-```bash
-mkdir ~/bin
-curl -s -L -o ~/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
-curl -s -L -o ~/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
-chmod +x ~/bin/{cfssl,cfssljson}
-export PATH=$PATH:~/bin
-```
-
-#### 初始化证书颁发机构
-
-生成默认的 cfssl 配置，方便之后的修改
-
-```bash
-mkdir ~/cfssl
-cd ~/cfssl
-cfssl print-defaults config > ca-config.json
-cfssl print-defaults csr > ca-csr.json
-```
-
-#### 生成证书
-
-##### 证书介绍
-
-- tidb-client certificate 用于通过 TiDB 验证客户端。例如`benchdb`，`benchkv`，`benchraw`
-- tidb-server certificate 由 TiDB 使用，为其他组件和客户端验证 TiDB 身份。
-- tikv-client certificate 用于通过 TiKV 验证客户端。例如`tikv-ctl`
-- tikv-server certificate 由 TiKV 使用，为其他组件和客户端验证 TiKV 身份。
-- pd-client certificate 用于通过 PD 验证客户端。例如`pd-ctl`，`pd-recover`，`pd-tso-bench`
-- pd-server certificate 由 PD 使用，为其他组件和客户端验证 PD 身份。
-
-##### 配置 CA 选项
-
-修改`ca-config.json`：
-
-```
-{
-    "signing": {
-        "default": {
-            "expiry": "43800h"
-        },
-        "profiles": {
-            "server": {
-                "expiry": "43800h",
-                "usages": [
-                    "signing",
-                    "key encipherment",
-                    "server auth"
-                ]
-            },
-            "client": {
-                "expiry": "43800h",
-                "usages": [
-                    "signing",
-                    "key encipherment",
-                    "client auth"
-                ]
-            }
-        }
-    }
-}
-```
-
-修改`ca-csr.json`
-
-```
-{
-    "CN": "My own CA",
-    "key": {
-        "algo": "rsa",
-        "size": 2048
-    },
-    "names": [
-        {
-            "C": "CN",
-            "L": "Beijing",
-            "O": "PingCAP",
-            "ST": "Beijing"
-        }
-    ]
-}
-```
-
-生成 CA 证书
-
-```bash
-cfssl gencert -initca ca-csr.json | cfssljson -bare ca -
-```
-
-将会生成以下几个文件：
-
-```Bash
-ca-key.pem
-ca.csr
-ca.pem
-```
-
-##### 生成服务器端证书
-
-```bash
-echo '{"CN":"tidb-server","hosts":["127.0.0.1"],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server -hostname="127.0.0.1" - | cfssljson -bare tidb-server
-
-echo '{"CN":"tikv-server","hosts":["127.0.0.1"],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server -hostname="127.0.0.1" - | cfssljson -bare tikv-server
-
-echo '{"CN":"pd-server","hosts":["127.0.0.1"],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server -hostname="127.0.0.1" - | cfssljson -bare pd-server
-```
-
-将会生成以下几个文件：
-
-```
-tidb-server-key.pem     tikv-server-key.pem      pd-server-key.pem
-tidb-server.csr         tikv-server.csr          pd-server.csr
-tidb-server.pem         tikv-server.pem          pd-server.pem
-```
-
-##### 生成客户端证书
-
-```bash
-echo '{"CN":"tidb-client","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=client -hostname="" - | cfssljson -bare tidb-client
-
-echo '{"CN":"tikv-client","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=client -hostname="" - | cfssljson -bare tikv-client
-
-echo '{"CN":"pd-client","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=client -hostname="" - | cfssljson -bare pd-client
-```
-
-将会生成以下几个文件：
-
-```bash
-tidb-client-key.pem     tikv-client-key.pem      pd-client-key.pem
-tidb-client.csr         tikv-client.csr          pd-client.csr
-tidb-client.pem         tikv-client.pem          pd-client.pem
-```
+这里提供一个使用`cfssl`生成证书的示例 [生成自签名证书](./generate-self-signed-certificates)
 
 ### 配置证书
 
@@ -182,8 +50,8 @@ cluster-ssl-key = "/path/to/tidb-server-key.pem"
 [security]
 # set the path for certificates. Empty string means disabling secure connectoins.
 ca-path = "/path/to/ca.pem"
-cert-path = "/path/to/tikv-client.pem"
-key-path = "/path/to/tikv-client-key.pem"
+cert-path = "/path/to/client.pem"
+key-path = "/path/to/client-key.pem"
 ```
 
 ##### PD
@@ -207,7 +75,7 @@ key-path = "/path/to/server-key.pem"
 ```bash
 ./pd-ctl -u https://127.0.0.1:2379 --cacert /path/to/ca.pem --cert /path/to/pd-client.pem --key /path/to/pd-client-key.pem
 
-./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/tikv-client.pem" --key-path="/path/to/tikv-clinet-key.pem"
+./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/client.pem" --key-path="/path/to/clinet-key.pem"
 ```
 
 
@@ -240,8 +108,6 @@ ssl-key = "/path/to/certs/server-key.pem"
 mysql -u root --host 127.0.0.1 --port 4000 --ssl-mode=REQUIRED
 ```
 
-
-
 ### 配置双向认证
 
 在 TiDB 的 config 文件或命令行参数中设置
@@ -256,7 +122,7 @@ ssl-cert = "/path/to/certs/server.pem"
 ssl-key = "/path/to/certs/server-key.pem"
 ```
 
-客户端
+客户端需要指定 client 证书
 
 ```bash
 mysql -u root --host 127.0.0.1 --port 4000 --ssl-cert=/path/to/certs/client-cert.pem --ssl-key=/path/to/certs/client-key.pem --ssl-ca=/path/to/certs/ca.pem --ssl-mode=VERIFY_IDENTITY
