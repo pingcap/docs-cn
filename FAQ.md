@@ -413,7 +413,7 @@ TiDB 遵循 MySQL 的权限管理体系，可以创建用户并授予权限。
 
 + 通过 `admin show ddl` 查看当前添加索引 job；如下:
 
-```
+```sql
 mysql> admin show ddl;
 +------------+--------------------------------------+---------------------------------------------------------------------------------------------------------------------------------+--------------------------------------+
 | SCHEMA_VER | OWNER                                | JOB                                                                                                                             | SELF_ID                              |
@@ -424,7 +424,7 @@ mysql> admin show ddl;
 ```
 
 + 其中 OWNER 代表了正在执行此 DDL 的 tidb 机器；JOB 列出了任务详细信息
-  + JOB 中 `SchemaID:81, TableID:90` 为数据库 ID 和用户表 ID
+  + JOB 中 `SchemaID:81, TableID:90` 为数据库 ID 和用户表 ID
   + JOB 中 `RowCount:1293344122` 为当前已操作行数
 
 #### 执行 `grant SHOW DATABASES on db.*` 报错 `column Show_db_priv not found`
