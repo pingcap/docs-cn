@@ -423,7 +423,7 @@ mysql> admin show ddl;
 
 ```
 
-+ 其中 OWNER 代表了正则执行此 DDL 的 tidb 机器；JOB 列出了任务详细信息
++ 其中 OWNER 代表了正在执行此 DDL 的 tidb 机器；JOB 列出了任务详细信息
   + JOB 中 `SchemaID:81, TableID:90` 为数据库 ID 和用户表 ID
   + JOB 中 `RowCount:1293344122` 为当前已操作行数
 
