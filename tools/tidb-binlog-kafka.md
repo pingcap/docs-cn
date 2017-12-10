@@ -71,7 +71,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
 
     为了保证数据的完整性，在 pump 运行 10 分钟左右后按顺序进行下面的操作
 
-    *  以 gen-savepoint model 运行 drainer 生成 drainer savepint 文件，`bin/drainer -gen-savepoint --data-dir= ${drainer_savepoint_dir} --pd-urls=${pd_urls}`
+    *  使用 generate_binlog_position 工具生成 drainer 启动需要的 savepint 文件，工具在项目 [tidb-tools](https://github.com/pingcap/tidb-tools) 中，make generate_binlog_position 编译该工具，具体的使用参考工具的 README 说明。
     *  全量备份，例如 mydumper 备份 tidb
     *  全量导入备份到目标系统
     *  设置 savepoint 文件路径，然后启动 drainer， `bin/drainer --config=conf/drainer.toml --data-dir=${drainer_savepoint_dir}`
@@ -148,7 +148,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
     gc = 7
     #  pump 数据存储位置路径
     data-dir = "data.pump"
-    # 连接的 kafka 的地址（默认 "127.0.0.1:9092"）
+    # 连接的 kafka 的地址(默认 "127.0.0.1:9092")
     kafka-addrs = "127.0.0.1:9092"
     # zookeeper 地址，如果设置了该选项则从 zookeeper 中获取 kafka 地址，如果不设置则使用 kafka-addrs 的值
     # zookeeper-addrs = "127.0.0.1:2181"
