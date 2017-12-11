@@ -306,7 +306,20 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
 
 使用 ansible 部署的 pump 服务，已经在启动参数设置 metrics 。
 
-drainer 启动时可以设置 `--metrics-addr` 和 `--metrics-interval` 两个参数，其中 metrics-addr 设为 Push Gateway 的地址，metrics-interval 为 push 的频率，单位为秒，默认值为15
+drainer 目前有两种方案  
+
++   第一种: 通过主动推送 metrics 数据到 pushgateway 服务,再通过 Prometheus 主动去 pushgateway 拉取数据.
+    设置 `--metrics-addr` 和 `--metrics-interval` 两个参数，其中 metrics-addr 设为 Push Gateway 的地址，metrics-interval 为 push 的频率，单位为秒，默认值为15
+
++   第二种: 修改 prometheus.yml 配置问件,添加一下内容后,重启 Prometheus 服务
+    
+    ```
+    - job_name: "drainer"
+      static_configs:
+      - targets:
+        - '127.0.0.1:8249'  // 修改为 drainer 服务实际 IP 信息
+
+    ```
 
 ### Grafana 配置
 
