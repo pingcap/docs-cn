@@ -171,7 +171,7 @@ location_labels = ["host"]
         - `rocksdb lockcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
         - `raftdb defaultcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
     2.  如果多个 TiKV 实例部署在同一块物理磁盘上, 需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
-        - `capaticy` = (DISK - 日志空间) / TiKV 实例数量, 单位为 GB
+        - `capacity` = (DISK - 日志空间) / TiKV 实例数量, 单位为 GB
 
 ## 部署任务
 
@@ -306,13 +306,27 @@ location_labels = ["host"]
 
 ### 下载 binary
 
-1.  使用 playbook 下载 TiDB 1.0 版本 binary，自动替换 binary 到 `tidb-ansible/resource/bin/`
+1.  修改 `inventory.ini` 中的 `tidb_version` 参数值，指定需要升级的版本号，本例指定升级的版本号为 `v1.0.2`
+
+    ```
+    tidb_version = v1.0.2
+    ```
+
+2.  删除原有的 downloads 目录 `tidb-ansible/downloads/`
+
+    ```
+    rm -rf downloads
+    ```
+
+3.  使用 playbook 下载 TiDB 1.0 版本 binary，自动替换 binary 到 `tidb-ansible/resource/bin/`
 
     ```
     ansible-playbook local_prepare.yml
     ```
 
-2.  使用 wget 下载 binary，解压后手动替换 binary 到 `tidb-ansible/resource/bin/`
+### 手动下载 binary
+
+1.  除 “下载 binary” 中描述的方法之外，也可以手动下载 binary，解压后手动替换 binary 到 `tidb-ansible/resource/bin/`，请注意替换链接中的版本号
 
     ```
     wget http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz
