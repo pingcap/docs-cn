@@ -34,6 +34,10 @@ Drainer 从 kafka 中收集 Binlog，并按照在 TiDB 中事务的提交顺序�
 
 Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 进行读取。（local版本将 binlog 存储在文件中，最新版本都使用 Kafka 存储）
 
+
+----
+
+
 ## TiDB-Binlog 安装
 
 ### 下载官方 Binary
@@ -67,14 +71,12 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
 
 *   drainer 不支持对 ignore schemas（在过滤列表中的 schemas） 的 table 进行 rename DDL 操作
 
-*   在已有的 TiDB 集群中启动 drainer，一般需要全量备份 并且获取 savepoint，然后导入全量备份，最后启动 drainer 从 savepoint 开始同步；
+*   为了保证数据的完整性，在 pump 运行 10 分钟左右后按顺序进行下面的操作
 
-    为了保证数据的完整性，在 pump 运行 10 分钟左右后按顺序进行下面的操作
-
-    *  使用 generate_binlog_position 工具生成 drainer 启动需要的 savepint 文件，工具在项目 [tidb-tools](https://github.com/pingcap/tidb-tools) 中，make generate_binlog_position 编译该工具，具体的使用参考工具的 README 说明。
+    *  使用 curl http://PUMP-IP:PORT/status 获取 TS 信息,
     *  全量备份，例如 mydumper 备份 tidb
     *  全量导入备份到目标系统
-    *  设置 savepoint 文件路径，然后启动 drainer， `bin/drainer --config=conf/drainer.toml --data-dir=${drainer_savepoint_dir}`
+    *  设置 initial-commit-ts 参数，然后启动 drainer， `bin/drainer -initial-commit-ts 396620406435348481 -config test.toml`
 
 *   drainer 输出的 pb, 需要在配置文件设置下面的参数
 
@@ -89,10 +91,6 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
    
 *   Kafka 和 Zookeeper 集群的安装和配置不在本文赘述，需要在部署 TiDB-Binlog 之前部署好。Kafka 需要0.9及以上版本，且保证设置参数auto.create.topics.enable=true, 推荐部署在3～5台服务器上，机器的磁盘空间和具体的业务数据量相关。
 
-
-#### 使用 tidb-ansible 部署 PUMP
-
-*   还在开发中
 
 #### 使用 Binary 部署 PUMP
 
@@ -170,7 +168,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
 
 1.  Drainer 命令行参数说明
 
-    ```
+    ```bash
     Usage of drainer:
     -L string
         日志输出信息等级设置: debug, info, warn, error, fatal (默认 "info")
@@ -180,15 +178,13 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
         drainer 提供服务的地址(默认 "127.0.0.1:8249")
     -c int
         同步下游的并发数，该值设置越高同步的吞吐性能越好 (default 1)
+    -cache-binlog-count int
+       drainer 占用内存大小,默认 65536
     -config string
        配置文件路径, drainer 会首先读取配置文件的配置
        如果对应的配置在命令行参数里面也存在，drainer 就会使用命令行参数的配置来覆盖配置文件里面的
     -data-dir string
         drainer 数据存储位置路径 (默认 "data.drainer")
-    -kafka-addrs string
-        连接的 kafka 的地址 (默认 "127.0.0.1:9092")
-    -zookeeper-addrs string
-        zookeeper 地址，如果设置了该选项则从 zookeeper 中获取 kafka 地址，如果不设置则使用 kafka-addrs 的值  
     -dest-db-type string
         drainer 下游服务类型 (默认为 mysql)
     -detect-interval int
@@ -196,21 +192,27 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
     -disable-dispatch
         是否禁用拆分单个 binlog 的 sqls 的功能，如果设置为 true，则按照每个 binlog
         顺序依次还原成单个事务进行同步( 下游服务类型为 mysql, 该项设置为 False )
-    -gen-savepoint
-        如果设置为 true, 则只生成 drainer 的 savepoint meta 文件, 可以配合 mydumper 使用
     -ignore-schemas string
         db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test"),
         不支持对 ignore schemas 的 table 进行 rename DDL 操作
+    -initial-commit-ts int
+        第一次启动 drainer 时,指定上游 TiDB 数据库 TS 信息( TS 功能等同 MySQL GTID 信息),如不指定参数,会读取下游数据库中 `tidb_binlog.checkpoint` 内 checkPoint 字段信息 
+    -kafka-addrs string
+        连接的 kafka 的地址 (默认 "127.0.0.1:9092")
+    -zookeeper-addrs string
+        zookeeper 地址，如果设置了该选项则从 zookeeper 中获取 kafka 地址，如果不设置则使用 kafka-addrs 的值  
     -log-file string
         log 文件路径
     -log-rotate string
         log 文件切换频率, hour/day
-    -metrics-addr string
-       prometheus pushgataway 地址，不设置则禁止上报监控信息
     -metrics-interval int
        监控信息上报频率 (默认 15，单位 秒)
+    -metrics-addr string
+       prometheus pushgataway 地址，不设置则禁止上报监控信息
     -pd-urls string
        pd 集群节点的地址 (默认 "http://127.0.0.1:2379")
+    -safe-mode
+        启用安全模式
     -txn-batch int
        输出到下游数据库一个事务的 sql 数量 (default 1)
     ```
@@ -298,7 +300,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
 
 ## TiDB-Binlog 监控
 
-这部分主要对 TiDB-Binlog 的状态、性能做监控，通过 Prometheus + Grafana 展现 metrics 数据，
+这部分主要对 TiDB-Binlog 的状态、性能做监控，通过 Prometheus + Grafana 展现 metrics 数据
 
 ### pump/drainer 配置
 
