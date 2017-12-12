@@ -27,9 +27,9 @@ See the following for the assumed MySQL and TiDB server information:
     - `Checker`: to check if the shema is compatible with TiDB.
     - `Mydumper`: to export data from MySQL.
     - `Loader`: to import data to TiDB.
-    - `Syncer`: to incrementally synchronise data from MySQL to TiDB.
+    - `Syncer`: to incrementally synchronize data from MySQL to TiDB.
 
-    **Note:** To incrementally synchronise data from MySQL to TiDB, the binary logging (binlog) must be enabled and must use the `row` format in MySQL.
+        > **Note:** To incrementally synchronize data from MySQL to TiDB, the binary logging (binlog) must be enabled and must use the `row` format in MySQL.
 
 ### Enable binary logging (binlog) in MySQL
 

@@ -30,7 +30,7 @@ See the following desrciptions about the related parameters to enable encrypted 
 - [`ssl-key`](server-command-option.md#ssl-key): specifies the private key that matches the certificate
 - [`ssl-ca`](server-command-option.md#ssl-ca): (optional) specifies the file path of the trusted CA certificate
 
-To enable encrypted connections in the TiDB server, you must specify both of the `ssl-cert` and `ssl-key` parameters in the configuration file when you start the TiDB server. You can also specify the `ssl-ca` parameter for client authentication (see [Enable Authentication](#enable-authentication)).
+To enable encrypted connections in the TiDB server, you must specify both of the `ssl-cert` and `ssl-key` parameters in the configuration file when you start the TiDB server. You can also specify the `ssl-ca` parameter for client authentication (see [Enable authentication](#enable-authentication)).
 
 All the files specified by the parameters are in PEM (Privacy Enhanced Mail) format. Currently, TiDB does not support the import of a password-protected private key, so it is required to provide a private key file without a password. If the certificate or private key is invalid, the TiDB server starts as usual, but the client cannot connect to the TiDB server through an encrypted connection.
 

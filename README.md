@@ -90,8 +90,8 @@
     - [Backup and Restore](op-guide/backup-restore.md)
     + Migrate
       - [Migration Overview](op-guide/migration-overview.md)
-      - [Migrate All the Data](op-guide/migration.md#using-the-mydumper--loader-tool-to-export-and-import-all-the-data)
-      - [Migrate the Data Incrementally](op-guide/migration.md#optional-using-the-syncer-tool-to-import-data-incrementally)
+      - [Migrate All the Data](op-guide/migration.md#use-the-mydumper--loader-tool-to-export-and-import-all-the-data)
+      - [Migrate the Data Incrementally](op-guide/migration.md#use-the-syncer-tool-to-import-data-incrementally-optional)
   - [Deploy TiDB Using the Binary](op-guide/binary-deployment.md)
   - [Troubleshoot](trouble-shooting.md)
 + TiDB Utilities
@@ -106,7 +106,7 @@
 - [TiDB Best Practices](https://pingcap.github.io/blog/2017/07/24/tidbbestpractice/)
 - [Releases](release/rn.md)
 - [TiDB Roadmap](https://github.com/pingcap/docs/blob/master/ROADMAP.md)
-- [Connect with Us](community.md)
+- [Connect with us](community.md)
 + More Resources
   - [Frequently Used Tools](https://github.com/pingcap/tidb-tools)
   - [PingCAP Blog](https://pingcap.com/blog/)

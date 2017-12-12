@@ -20,7 +20,7 @@ This section describes the supported MySQL group (aggregate) functions in TiDB.
 | [`GROUP_CONCAT()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_group-concat)     | Return a concatenated string                      |
 
 - Unless otherwise stated, group functions ignore `NULL` values.
-- If you use a group function in a statement containing no `GROUP BY` clause, it is equivalent to grouping on all rows. For more information see [TiDB Handling of GROUP BY](#tidb-handling-of-group-by).
+- If you use a group function in a statement containing no `GROUP BY` clause, it is equivalent to grouping on all rows. For more information see [TiDB handling of GROUP BY](#tidb-handling-of-group-by).
 
 ## GROUP BY modifiers
 

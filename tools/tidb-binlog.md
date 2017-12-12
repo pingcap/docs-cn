@@ -51,23 +51,23 @@ cd tidb-binlog-latest-linux-amd64
 
 - It is recommended to deploy Pump using Ansible.
 - Build a new TiDB cluster with a startup order of pd-server -> tikv-server -> pump -> tidb-server -> drainer.  
-  - Edit the `tidb-ansible inventory.ini` file:
-      
-      ```ini
-      enable_binlog = True
-      ```
+    - Edit the `tidb-ansible inventory.ini` file:
+        
+        ```ini
+        enable_binlog = True
+        ```
     
-  - Run `ansible-playbook deploy.yml` 
-  - Run `ansible-playbook start.yml`
+    - Run `ansible-playbook deploy.yml` 
+    - Run `ansible-playbook start.yml`
       
 - Deploy Binlog for an existing TiDB cluster.
-  - Edit the `tidb-ansible inventory.ini` file:
+    - Edit the `tidb-ansible inventory.ini` file:
     
-      ```ini
-      enable_binlog = True
-      ```
+        ```ini
+        enable_binlog = True
+        ```
     
-  - Run `ansible-playbook rolling_update.yml`
+    - Run `ansible-playbook rolling_update.yml`
 
 ### Note
 

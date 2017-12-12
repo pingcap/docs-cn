@@ -161,11 +161,11 @@ revoke all privileges on `test`.* from 'genius'@'localhost';
 ```
 
 > **Note:** To revoke privileges, you need the exact match. If the matching result cannot be found, an error will be displayed:
->
-> ```
-> mysql> revoke all privileges on `te%`.* from 'genius'@'%';
-> ERROR 1141 (42000): There is no such grant defined for user 'genius' on host '%'
-> ```
+
+    ```
+    mysql> revoke all privileges on `te%`.* from 'genius'@'%';
+    ERROR 1141 (42000): There is no such grant defined for user 'genius' on host '%'
+    ```
 
 About fuzzy matching, escape, string and identifier:
 

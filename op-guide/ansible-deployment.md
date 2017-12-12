@@ -39,7 +39,7 @@ Before you start, make sure that you have:
 
 2. Several managed nodes with the following requirements:
 
-    - 4 or more machines. At least 3 instances for TiKV. Don’t deploy TiKV together with TiDB or PD on the same machine. See [deploying recommendations](https://github.com/pingcap/docs/blob/master/op-guide/recommendation.md).
+    - 4 or more machines. At least 3 instances for TiKV. Don’t deploy TiKV together with TiDB or PD on the same machine. See [Software and Hardware Requirements](op-guide/recommendation.md).
 
     - Recommended Operating system:
 

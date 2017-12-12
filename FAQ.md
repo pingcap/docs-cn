@@ -370,11 +370,11 @@ TiDB follows MySQL user authentication mechanism. You can create user accounts a
     ```
     CREATE USER 'test'@'localhost' identified by '123';
     ```
+    
+    The user name of this account is "test"; the password is “123" and this user can login from localhost only.
 
-  The user name of this account is "test"; the password is “123" and this user can login from localhost only.
-
-  You can use the `Set Password` statement to set and change the password. For example, to set the password for the default "root" account, you can use the following statement:
-
+- You can use the `Set Password` statement to set and change the password. For example, to set the password for the default "root" account, you can use the following statement:
+    
     ```
     SET PASSWORD FOR 'root'@'%' = '123';
     ```
