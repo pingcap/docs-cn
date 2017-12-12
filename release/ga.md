@@ -3,7 +3,7 @@ title: TiDB 1.0 release notes
 category: Releases
 ---
 
-# TiDB 1.0 release notes
+# TiDB 1.0 Release Notes
 
 On October 16, 2017, TiDB 1.0 is now released! This release is focused on MySQL compatibility, SQL optimization, stability, and performance.
 

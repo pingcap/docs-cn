@@ -3,7 +3,7 @@ title: Privilege Management
 category: user guide
 ---
 
-# Privilege management
+# Privilege Management
 
 ## Privilege management overview
 
@@ -160,7 +160,7 @@ The `REVOKE` statement corresponds with the `REVOKE` statement:
 revoke all privileges on `test`.* from 'genius'@'localhost';
 ```
 
-> **Note:** To revoke privileges, you need the exact match. If the matching result cannot be found, an error will be displayed.
+> **Note:** To revoke privileges, you need the exact match. If the matching result cannot be found, an error will be displayed:
 >
 > ```
 > mysql> revoke all privileges on `te%`.* from 'genius'@'%';

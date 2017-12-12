@@ -9,7 +9,7 @@ category: user guide
 
 To be compatible with MySQL 5.7 or later and better support the document store, TiDB supports JSON in the latest version. In TiDB, a document is a set of Key-Value pairs, encoded as a JSON object. You can use the JSON datatype in a TiDB table and create indexes for the JSON document fields using generated columns. In this way, you can flexibly deal with the business scenarios with uncertain schema and are no longer limited by the read performance and the lack of support for transactions in traditional document databases.
 
-## JSON Functions
+## JSON functions
 
 The support for JSON in TiDB mainly refers to the user interface of MySQL 5.7. For example, you can create a table that includes a JSON field to store complex information:
 
@@ -70,7 +70,7 @@ You can get the general use of these functions directly from the function name. 
 
 Currently TiDB does not support all the JSON functions in MySQL 5.7. This is because our preliminary goal is to provide complete support for **MySQL X Plugin**, which covers the majority of JSON functions used to insert, select, update and delete data. More functions will be supported if necessary.
 
-## Index JSON Using Generated Column
+## Index JSON using generated column
 
 The full table scan is executed when you query a JSON field. When you run the `EXPLAIN` statement in TiDB, the results show that it is full table scan. Then, can you index the JSON field?
 
@@ -107,7 +107,7 @@ In this way, you can create an index.
 
 > **Note**: In the JSON document, if the field in the specified path does not exist, the result of `JSON_EXTRACT` will be `NULL`. The value of the generated column with index is also `NULL`. If this is not what you want to see, you can add a `NOT NULL` constraint on the generated column. In this way, when the value of the `city` field is `NULL` after you insert data, it can be detected.
 
-## Limitations         
+## Limitations
 
 The current limitations of JSON and generated column are as follows:
 

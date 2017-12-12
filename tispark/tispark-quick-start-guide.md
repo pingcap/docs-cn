@@ -7,24 +7,24 @@ category: User Guide
 
 To make it easy to try [the TiDB Connector for Spark](tispark-user-guide.md), TiDB cluster integrates Spark, TiSpark jar package and TiSpark sample data by default, in both the Pre-GA and master versions installed using TiDB-Ansible.
 
-## Deployment Information
+## Deployment information
 
 - Spark is deployed by default in the `spark` folder in the TiDB instance deployment directory.
 - The TiSpark jar package is deployed by default in the `jars` folder in the Spark deployment directory.
 
-  ```
-  spark/jars/tispark-0.1.0-beta-SNAPSHOT-jar-with-dependencies.jar
-  ```
+    ```
+    spark/jars/tispark-0.1.0-beta-SNAPSHOT-jar-with-dependencies.jar
+    ```
   
 - TiSpark sample data and import scripts are deployed by default in the TiDB-Ansible directory.
 
-  ```
-  tidb-ansible/resources/bin/tispark-sample-data
-  ```
-  
-## Prepare the Environment
+    ```
+    tidb-ansible/resources/bin/tispark-sample-data
+    ```
 
-### Install JDK on the TiDB Instance
+## Prepare the environment
+
+### Install JDK on the TiDB instance
 
 Download the latest version of JDK 1.8 from [Oracle JDK official download page](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-javase8-2177648.html). The version used in the following example is `jdk-8u141-linux-x64.tar.gz`.
 
@@ -46,7 +46,7 @@ Java(TM) SE Runtime Environment (build 1.8.0_144-b01)
 Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 ```
 
-### Import the Sample Data
+### Import the sample data
 
 Assume that the TiDB cluster is started. The service IP of one TiDB instance is `192.168.0.2`, the port is `4000`, the user name is `root`, and the password is null.
 
@@ -105,7 +105,7 @@ MySQL [TPCH_001]> show tables;
 8 rows in set (0.00 sec)
 ```
 
-## Use Example
+## Use example
 
 Assume that the IP of your PD node is `192.168.0.2`, and the port is `2379`. 
 

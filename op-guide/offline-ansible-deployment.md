@@ -1,9 +1,9 @@
 ---
-title: Offline deployment using Ansible
+title: Offline Deployment Using Ansible
 category: operations
 ---
 
-# Offline deployment using Ansible
+# Offline Deployment Using Ansible
 
 ## Prepare
 

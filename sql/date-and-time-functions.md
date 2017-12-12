@@ -1,8 +1,13 @@
+---
+title: Date and Time Functions
+category: user guide
+---
+
 # Date and Time Functions
 
 The usage of date and time functions is similar to MySQL. For more information, see [here](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-types.html).
 
-**Date/Time Functions**
+**Date/Time functions**
 
 | Name                                     | Description                              |
 | ---------------------------------------- | ---------------------------------------- |

@@ -3,7 +3,7 @@ title: Introduction to Statistics
 category: user guide
 ---
 
-# Introduction to statistics
+# Introduction to Statistics
 
 Based on the statistics, the TiDB optimizer chooses the most efficient query execution plan. The statistics collect table-level and column-level information. The statistics of a table include the total number of rows and the number of updated rows. The statistics of a column include the number of different values, the number of `NULL`, and the histogram of the column.
 

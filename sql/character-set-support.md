@@ -61,7 +61,7 @@ Each character set has a default collation. For example, the default collation f
 
 > **Note**: The collations in TiDB are case sensitive.
 
-## Collation Naming Conventions
+## Collation naming conventions
 
 The collation names in TiDB follow these conventions:
 
@@ -69,17 +69,17 @@ The collation names in TiDB follow these conventions:
 - A language-specific collation includes a language name. For example, `utf8_turkish_ci` and `utf8_hungarian_ci` sort characters for the utf8 character set using the rules of Turkish and Hungarian, respectively.
 - Collation suffixes indicate whether a collation is case and accent sensitive, or binary. The following table shows the suffixes used to indicate these characteristics.
 
-| Suffix | Meaning            |
-|:-------|:-------------------|
-| \_ai   | Accent insensitive |
-| \_as   | Accent insensitive |
-| \_ci   | Case insensitive   |
-| \_cs   | Case sensitive     |
-| \_bin  | Binary             |
+    | Suffix | Meaning            |
+    |:-------|:-------------------|
+    | \_ai   | Accent insensitive |
+    | \_as   | Accent insensitive |
+    | \_ci   | Case insensitive   |
+    | \_cs   | Case sensitive     |
+    | \_bin  | Binary             |
 
 > **Note**: For now, TiDB supports on some of the collations in the above table.
 
-## Database Character Set and Collation
+## Database character set and collation
 
 Each database has a character set and a collation. You can use the `CREATE DATABASE` statement to specify the database character set and collation:
 
@@ -127,7 +127,7 @@ SELECT DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME
 FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'db_name';
 ```
 
-## Table Character Set and Collation
+## Table character set and collation
 
 You can use the following statement to specify the character set and collation for tables:
 
@@ -149,7 +149,7 @@ Query OK, 0 rows affected (0.08 sec)
 ```
 The table character set and collation are used as the default values for column definitions if the column character set and collation are not specified in individual column definitions.
 
-## Column Character Set and Collation
+## Column character set and collation
 
 See the following table for the character set and collation syntax for columns:
 
@@ -163,7 +163,7 @@ col_name {ENUM | SET} (val_list)
     [COLLATE collation_name]
 ```
 
-## Connection Character Sets and Collations
+## Connection character sets and collations
 
 - The server character set and collation are the values of the `character_set_server` and `collation_server` system variables.
 

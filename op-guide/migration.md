@@ -11,7 +11,7 @@ You can use `mydumper` to export data from MySQL and `loader` to import the data
 
 > **Note:** Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use it. Its performance is much lower than `mydumper` / `loader` and it takes much time to migrate large amounts of data. `mydumper`/`loader` is more powerful. For more information, see [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper).
 
-### 1. Export data from MySQL
+### Export data from MySQL
 
 Use the `mydumper` tool to export data from MySQL by using the following command:
 
@@ -28,7 +28,7 @@ In this command,
 
 > **Note**: On the Cloud platforms which require the `super privilege`, such as on the Aliyun platform, add the `--no-locks` parameter to the command. If not, you might get the error message that you don't have the privilege.
 
-### 2. Import data to TiDB
+### Import data to TiDB
 
 Use `loader` to import the data from MySQL to TiDB. See [Loader instructions](./tools/loader.md) for more information.
 
@@ -68,7 +68,7 @@ mysql> select * from t2;
 +----+------+
 ```
 
-### 3. Best practice
+### Best practice
 
 To migrate data quickly, especially for huge amount of data, you can refer to the following recommendations.
 
@@ -92,15 +92,15 @@ To migrate data quickly, especially for huge amount of data, you can refer to th
 
 **Results**: It takes 11 hours to import all the data, which is 19.4G/hour.
 
-## (Optional) Using the `syncer` tool to import data incrementally
+## Use the `syncer` tool to import data incrementally (optional)
 
 The previous section introduces how to import all the history data from MySQL to TiDB using `mydumper`/`loader`. But this is not applicable if the data in MySQL is updated after the migration and it is expected to import the updated data quickly.
 
 Therefore, TiDB provides the `syncer` tool for an incremental data import from MySQL to TiDB.
 
-See [Downloading the TiDB Enterprise Toolset](#downloading-the-tidb-enterprise-toolset) to download the `syncer` tool.
+See [Download the TiDB enterprise toolset](#download-the-tidb-enterprise-toolset-linux) to download the `syncer` tool.
 
-### Download the TiDB Enterprise Toolset (Linux)
+### Download the TiDB enterprise toolset (Linux)
 
 ```bash
 # Download the enterprise tool package.
@@ -117,7 +117,7 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 Assuming the data from `t1` and `t2` is already imported to TiDB using `mydumper`/`loader`. Now we hope that any updates to these two tables are synchronised to TiDB in real time.
 
-### 1. Obtain the position to synchronise
+### Obtain the position to synchronise
 
 The data exported from MySQL contains a metadata file which includes the position information. Take the following metadata information as an example:
 ```
@@ -140,7 +140,7 @@ binlog-pos = 930143241
 
 > **Note:** The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is synchronised.
 
-### 2. Start `syncer`
+### Start `syncer`
 
 The `config.toml` file for `syncer`:
 
@@ -218,13 +218,13 @@ Start `syncer`:
 2016/10/27 15:22:01 syncer.go:549: [info] rotate binlog to (mysql-bin.000003, 1280)
 ```
 
-### 3. Insert data into MySQL
+### Insert data into MySQL
 
 ```bash
 INSERT INTO t1 VALUES (4, 4), (5, 5);
 ```
 
-### 4. Log in TiDB and view the data
+### Log in TiDB and view the data
 
 ```sql
 mysql -h127.0.0.1 -P4000 -uroot -p

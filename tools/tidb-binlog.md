@@ -4,6 +4,7 @@ category: tool
 ---
 
 # TiDB-Binlog User Guide
+
 ## About TiDB-Binlog
 
 TiDB-Binlog is a tool for enterprise users to collect binlog files for TiDB and provide real-time backup and synchronization.
@@ -50,11 +51,11 @@ cd tidb-binlog-latest-linux-amd64
 
 - It is recommended to deploy Pump using Ansible.
 - Build a new TiDB cluster with a startup order of pd-server -> tikv-server -> pump -> tidb-server -> drainer.  
-  - Edit the `tidb-ansible inventory.ini` file:  
-    
-    ```ini
-    enable_binlog = True
-    ```
+  - Edit the `tidb-ansible inventory.ini` file:
+      
+      ```ini
+      enable_binlog = True
+      ```
     
   - Run `ansible-playbook deploy.yml` 
   - Run `ansible-playbook start.yml`
@@ -62,9 +63,9 @@ cd tidb-binlog-latest-linux-amd64
 - Deploy Binlog for an existing TiDB cluster.
   - Edit the `tidb-ansible inventory.ini` file:
     
-    ```ini
-    enable_binlog = True
-    ```
+      ```ini
+      enable_binlog = True
+      ```
     
   - Run `ansible-playbook rolling_update.yml`
 
@@ -82,22 +83,22 @@ cd tidb-binlog-latest-linux-amd64
 
 - To start Drainer in the existing TiDB cluster, usually you need to do a full backup, get the savepoint, import the full backup, and start Drainer and synchronize from the savepoint.
   
-  To guarantee the integrity of data, perform the following operations 10 minutes after Pump is started:  
+- To guarantee the integrity of data, perform the following operations 10 minutes after Pump is started:  
 
     - Run Drainer at the `gen-savepoint` model and generate the Drainer savepoint file:  
       
-      ```
-      bin/drainer -gen-savepoint --data-dir= ${drainer_savepoint_dir} --pd-urls=${pd_urls}
-       ```
+        ```
+        bin/drainer -gen-savepoint --data-dir= ${drainer_savepoint_dir} --pd-urls=${pd_urls}
+        ```
        
     - Do a full backup. For example, back up TiDB using mydumper.
     - Import the full backup to the target system.
     - Set the file path of the savepoint and start Drainer:
       
-      ```
-      bin/drainer --config=conf/drainer.toml --data-dir=${drainer_savepoint_dir}
-      ```
- 
+        ```
+        bin/drainer --config=conf/drainer.toml --data-dir=${drainer_savepoint_dir}
+        ```
+
 - The drainer outputs `pb` and you need to set the following parameters in the configuration file.  
   
     ```
@@ -109,189 +110,188 @@ cd tidb-binlog-latest-linux-amd64
     dir = "/path/pb-dir"
     ```
 
-### Examples and Parameters Explanation
+### Examples and parameters explanation
 
-1. Pump
-   
-   Example
-   
-   ```bash
-    ./bin/pump -config pump.toml
-   ```
-   
-   Parameters Explanation
-   
-   ```
-   Usage of Pump:
-    -L string
-        log level: debug, info, warn, error, fatal (default "info")
-    -V
-        print Pump version info
-    -addr string
-        addr(i.e. 'host:port') to listen on for client traffic (default "127.0.0.1:8250").
-    -advertise-addr string
-        addr(i.e. 'host:port') to advertise to the public
-    -config string
-        path to the Pump configuration file
-    -data-dir string
-        path to store binlog data
-    -gc int
-        recycle binlog files older than gc days, zero means never recycle (default 7)
-    -heartbeat-interval int
-        number of seconds between heartbeat ticks (default 2)
-    -log-file string
-        log file path
-    -log-rotate string
-        log file rotate type, hour/day
-    -metrics-addr string
-        Prometheus pushgataway address; leaving it empty will disable Prometheus push
-    -metrics-interval int
-        Prometheus client push interval in second, set "0" to disable Prometheus push (default 15)
-    -pd-urls string
-        a comma separated list of the PD endpoints (default "http://127.0.0.1:2379")
-    -socket string
-        unix socket addr to listen on for client traffic
-    ```
-    
-    Configuration file
-    
-    ```
-    # Pump Configuration.
+#### Pump
 
-    # addr(i.e. 'host:port') to listen on for client traffic
-    addr = "127.0.0.1:8250"
-    
-    # addr(i.e. 'host:port') to advertise to the public
-    advertise-addr = ""
-    
-    # a integer value to control expiry date of the binlog data, indicates for how long (in days) the binlog data would be stored.
-    
-    # (default value is 0, means binlog data would never be removed)
-    gc = 7
-    
-    # path to the data directory of Pump's data
-    data-dir = "data.pump"
-    
-    # number of seconds between heartbeat ticks (in 2 seconds)
-    heartbeat-interval = 2
-    
-    # a comma separated list of PD endpoints
-    pd-urls = "http://127.0.0.1:2379"
-    
-    # unix socket addr to listen on for client traffic
-    socket = "unix:///tmp/pump.sock"
-    
-    ```
-   
-2. Drainer
-   
-   Example
-   
-   ```bash
-   ./bin/drainer -config drainer.toml
-   ```
-   
-   Parameters Explanation
-   
-   ```
-   Usage of Drainer:
-    -L string
-        log level: debug, info, warn, error, fatal (default "info")
-    -V
-        print version info
-    -addr string
-        addr (i.e. 'host:port') to listen on for Drainer connections (default "127.0.0.1:8249")
-    -c int
-        parallel worker count (default 1)
-    -config string
-        path to the configuration file
-    -data-dir string
-        Drainer data directory path (default data.drainer) (default "data.drainer")
-    -dest-db-type string
-        target db type: mysql or pb; see syncer section in conf/drainer.toml (default "mysql")
-    -detect-interval int
-        the interval time (in seconds) of detecting Pumps' status (default 10)
-    -disable-dispatch
-        disable dispatching sqls that in one same binlog; if set true, work-count and txn-batch would be useless
-    -gen-savepoint
-        generate the savepoint from cluster 
-    -ignore-schemas string
-        disable synchronizing those schemas (default "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql")
-    -log-file string
-        log file path
-    -log-rotate string
-        log file rotate type, hour/day
-    -metrics-addr string
-        Prometheus pushgateway address; leaving it empty will disable Prometheus push
-    -metrics-interval int
-        Prometheus client push interval in second, set "0" to disable Prometheus push (default 15)
-    -pd-urls string
-        a comma separated list of PD endpoints (default "http://127.0.0.1:2379")
-    -txn-batch int
-        number of binlog events in a transaction batch (default 1) 
-   ```
-   
-   Configuration file
-   
-   ```
-   # Drainer Configuration
+Example
 
-   # addr (i.e. 'host:port') to listen on for Drainer connections
-    addr = "127.0.0.1:8249"
+```bash
+./bin/pump -config pump.toml
+```
 
-   # the interval time (in seconds) of detect Pumps' status 
-    detect-interval = 10
+Parameters Explanation
 
-   # Drainer meta data directory path
-    data-dir = "data.drainer"
+```
+Usage of Pump:
+-L string
+    log level: debug, info, warn, error, fatal (default "info")
+-V
+    print Pump version info
+-addr string
+    addr(i.e. 'host:port') to listen on for client traffic (default "127.0.0.1:8250").
+-advertise-addr string
+    addr(i.e. 'host:port') to advertise to the public
+-config string
+    path to the Pump configuration file
+-data-dir string
+    path to store binlog data
+-gc int
+    recycle binlog files older than gc days, zero means never recycle (default 7)
+-heartbeat-interval int
+    number of seconds between heartbeat ticks (default 2)
+-log-file string
+    log file path
+-log-rotate string
+    log file rotate type, hour/day
+-metrics-addr string
+    Prometheus pushgataway address; leaving it empty will disable Prometheus push
+-metrics-interval int
+    Prometheus client push interval in second, set "0" to disable Prometheus push (default 15)
+-pd-urls string
+    a comma separated list of the PD endpoints (default "http://127.0.0.1:2379")
+-socket string
+    unix socket addr to listen on for client traffic
+```
 
-   # a comma separated list of PD endpoints
-    pd-urls = "http://127.0.0.1:2379"
+Configuration file
 
-   # The file path of log
-    log-file = "drainer.log"
+```
+# Pump Configuration.
 
-   # syncer Configuration
-    [syncer]
-   
-   # disable synchronizing these schemas
-   ignore-schemas = "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql"
-   
-   # number of binlog events in a transaction batc
-   txn-batch = 1
-   
-   # worker count to execute binlogs
-   worker-count = 1
-   
-   disable-dispatch = false
-   
-   # downstream storage, equal to --dest-db-type
-   # valid values are "mysql", "pb"
-   db-type = "mysql"
-   
-   # The replicate-do-db prioritizes over replicate-do-table if having the same db name. 
-   # Regular expressions are supported, and starting with '~' declares the use of regular expressions.
-   # replicate-do-db = ["~^b.*","s1"]
-   # [[syncer.replicate-do-table]]
-   # db-name ="test"
-   # tbl-name = "log"
-   
-   # [[syncer.replicate-do-table]]
-   # db-name ="test"
-   # tbl-name = "~^a.*"
-   
-   # the downstream mysql protocol database
-   [syncer.to]
-   host = "127.0.0.1"
-   user = "root"
-   password = ""
-   port = 3306
-   
-   # uncomment this if you want to use pb as db-type
-   # [syncer.to]
-   # dir = "data.drainer"
-   ```
-   
+# addr(i.e. 'host:port') to listen on for client traffic
+addr = "127.0.0.1:8250"
+
+# addr(i.e. 'host:port') to advertise to the public
+advertise-addr = ""
+
+# a integer value to control expiry date of the binlog data, indicates for how long (in days) the binlog data would be stored.
+
+# (default value is 0, means binlog data would never be removed)
+gc = 7
+
+# path to the data directory of Pump's data
+data-dir = "data.pump"
+
+# number of seconds between heartbeat ticks (in 2 seconds)
+heartbeat-interval = 2
+
+# a comma separated list of PD endpoints
+pd-urls = "http://127.0.0.1:2379"
+
+# unix socket addr to listen on for client traffic
+socket = "unix:///tmp/pump.sock"
+```
+
+#### Drainer
+
+Example
+
+```bash
+./bin/drainer -config drainer.toml
+```
+
+Parameters Explanation
+
+```
+Usage of Drainer:
+-L string
+    log level: debug, info, warn, error, fatal (default "info")
+-V
+    print version info
+-addr string
+    addr (i.e. 'host:port') to listen on for Drainer connections (default "127.0.0.1:8249")
+-c int
+    parallel worker count (default 1)
+-config string
+    path to the configuration file
+-data-dir string
+    Drainer data directory path (default data.drainer) (default "data.drainer")
+-dest-db-type string
+    target db type: mysql or pb; see syncer section in conf/drainer.toml (default "mysql")
+-detect-interval int
+    the interval time (in seconds) of detecting Pumps' status (default 10)
+-disable-dispatch
+    disable dispatching sqls that in one same binlog; if set true, work-count and txn-batch would be useless
+-gen-savepoint
+    generate the savepoint from cluster 
+-ignore-schemas string
+    disable synchronizing those schemas (default "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql")
+-log-file string
+    log file path
+-log-rotate string
+    log file rotate type, hour/day
+-metrics-addr string
+    Prometheus pushgateway address; leaving it empty will disable Prometheus push
+-metrics-interval int
+    Prometheus client push interval in second, set "0" to disable Prometheus push (default 15)
+-pd-urls string
+    a comma separated list of PD endpoints (default "http://127.0.0.1:2379")
+-txn-batch int
+    number of binlog events in a transaction batch (default 1) 
+```
+
+Configuration file
+
+```
+# Drainer Configuration
+
+# addr (i.e. 'host:port') to listen on for Drainer connections
+addr = "127.0.0.1:8249"
+
+# the interval time (in seconds) of detect Pumps' status 
+detect-interval = 10
+
+# Drainer meta data directory path
+data-dir = "data.drainer"
+
+# a comma separated list of PD endpoints
+pd-urls = "http://127.0.0.1:2379"
+
+# The file path of log
+log-file = "drainer.log"
+
+# syncer Configuration
+[syncer]
+
+# disable synchronizing these schemas
+ignore-schemas = "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql"
+
+# number of binlog events in a transaction batc
+txn-batch = 1
+
+# worker count to execute binlogs
+worker-count = 1
+
+disable-dispatch = false
+
+# downstream storage, equal to --dest-db-type
+# valid values are "mysql", "pb"
+db-type = "mysql"
+
+# The replicate-do-db prioritizes over replicate-do-table if having the same db name. 
+# Regular expressions are supported, and starting with '~' declares the use of regular expressions.
+# replicate-do-db = ["~^b.*","s1"]
+# [[syncer.replicate-do-table]]
+# db-name ="test"
+# tbl-name = "log"
+
+# [[syncer.replicate-do-table]]
+# db-name ="test"
+# tbl-name = "~^a.*"
+
+# the downstream mysql protocol database
+[syncer.to]
+host = "127.0.0.1"
+user = "root"
+password = ""
+port = 3306
+
+# uncomment this if you want to use pb as db-type
+# [syncer.to]
+# dir = "data.drainer"
+```
+
 ## Monitor TiDB-Binlog
 
 This section introduces how to monitor TiDB-Binlog's status and performance, and display the metrics using Prometheus and Grafana.
@@ -343,4 +343,3 @@ When you start Drainer, set the two parameters of `--metrics-addr` and `--metric
 4. Click "Save & Open". 
 
 5. A Prometheus dashboard is created.
-  

@@ -7,7 +7,7 @@ category: user guide
 
 Based on the details of your tables, the TiDB optimizer chooses the most efficient query execution plan, which consists of a series of operators. This document details the execution plan information returned by the `EXPLAIN` statement in TiDB.
 
-## Optimize SQL Statements Using `EXPLAIN`
+## Optimize SQL statements using `EXPLAIN`
 
 The result of the `EXPLAIN` statement provides information about how TiDB executes SQL queries:
 
@@ -17,7 +17,7 @@ The result of the `EXPLAIN` statement provides information about how TiDB execut
 
 The results of `EXPLAIN` shed light on how to index the data tables so that the execution plan can use the index to speed up the execution of SQL statements. You can also use `EXPLAIN` to check if the optimizer chooses the optimal order to join tables.
 
-## <span id="explain-output-format">`EXPLAIN` Output Format</span>
+## <span id="explain-output-format">`EXPLAIN` output format</span>
 
 Currently, the `EXPLAIN` statement returns the following six columns: id, parent, children, task, operator info, and count. Each operator in the execution plan is described by the six properties. In the results returned by `EXPLAIN`, each row describes an operator. See the following table for details:
 
@@ -32,17 +32,17 @@ Currently, the `EXPLAIN` statement returns the following six columns: id, parent
 
 ## Overview
 
-### Introduction to Task
+### Introduction to task
 
 Currently, the calculation task of TiDB contains two different tasks: cop task and root task. The cop task refers to the computing task that is pushed to the KV side and executed distributedly. The root task refers to the computing task that is executed at a single point in TiDB. One of the goals of SQL optimization is to push the calculation down to the KV side as much as possible.
 
-### Table Data and Index Data
+### Table data and index data
 
 The table data in TiDB refers to the raw data of a table, which is stored in TiKV. For each row of the table data, its key is a 64-bit integer called Handle ID. If a table has int type primary key, the value of the primary key is taken as the Handle ID of the table data, otherwise the system automatically generates the Handle ID. The value of the table data is encoded by all the data in this row. When the table data is read, return the results in the order in which the Handle ID is incremented.
 
 Similar to the table data, the index data in TiDB is also stored in TiKV. The key of index data is ordered bytes encoded by index columns. The value is the Handle ID of each row of index data. You can use the Handle ID to read the non-index columns in this row. When the index data is read, return the results in the order in which the index columns are incremented. If the case of multiple index columns, make sure that the first column is incremented and that the i + 1 column is incremented when the i column is equal.
 
-### Range Query
+### Range query
 
 In the WHERE/HAVING/ON condition, analyze the results returned by primary key or index key queries. For example, number and date types of comparison symbols, greater than, less than, equal to, greater than or equal to, less than or equal to, and character type LIKE symbols.
 
@@ -50,13 +50,13 @@ TiDB only supports the comparison symbols of which one side is a column and the 
 
 Using `AND` and `OR` combination on the range query conditions of the same column is equivalent to getting the intersection or union set. For multidimensional combined indexes, you can write the conditions for multiple columns. For example, in the `(a, b, c)` combined index, when `a` is an equivalent query, you can continue to calculate the query range of `b`; when `b` is also an equivalent query, you can continue to calculate the query range of `c`; otherwise, if `a` is a non-equivalent query, you can only calculate the query range of `a`.
 
-## Operator Info
+## Operator info
 
 ### TableReader and TableScan
 
 TableScan refers to scanning the table data at the KV side. TableReader refers to reading the table data from TiKV at the TiDB side. TableReader and TableScan are the two operators of one function. The `table` represents the table name in SQL statements. If the table is renamed, it displays the new name. The `range` represents the range of scanned data. If the WHERE/HAVING/ON condition is not specified in the query, full table scan is executed. If the range query condition is specified on the int type primary keys, range query is executed. The `keep order` indicates whether the table scan is returned in order.
 
-### IndexReader and IndexLookUp     
+### IndexReader and IndexLookUp
 
 The index data in TiDB is read in two ways: 1) IndexReader represents reading the index columns directly from the index, which is used when only index related columns or primary keys are quoted in SQL statements; 2) IndexLookUp represents filtering part of the data from the index, returning only the Handle ID, and retrieving the table data again using Handle ID. In the second way, data is retrieved twice from TiKV. The way of reading index data is automatically selected by the optimizer.
 

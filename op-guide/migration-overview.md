@@ -42,13 +42,13 @@ Before using the `syncer` tool, make sure:
     SET GLOBAL binlog_format = ROW;
     ```
 
-## Use the `checker` tool to check the Schema
+## Use the `checker` tool to check the schema
 
 Before migrating, you can use the `checker` tool in TiDB to check if TiDB supports the table schema of the data to be migrated. If the `checker` fails to check a certain table schema, it means that the table is not currently supported by TiDB and therefore the data in the table cannot be migrated.
 
-See [Downloading the TiDB Toolset](#downloading-the-tidb-toolset) to download the `checker` tool.
+See [Download the TiDB toolset](#download-the-tidb-toolset-linux) to download the `checker` tool.
 
-### Download the TiDB Toolset (Linux)
+### Download the TiDB toolset (Linux)
 
 ```bash
 # Download the tool package.

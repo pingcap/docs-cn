@@ -24,11 +24,11 @@ Each CF has a separate `block cache` to cache data blocks to accelerate the data
 
 Each CF also has a separate `write buffer`. You can configure the size by setting the `write-buffer-size` parameter.
 
-## 1. Parameter Specification
+## Parameter specification
 
-[TiKV Configuration](https://github.com/pingcap/tikv/blob/master/etc/config-template.toml)
+[TiKV Configuration](https://github.com/pingcap/tikv/blob/master/etc/config-template.toml).
 
-## 2.TiKV memory usage
+## TiKV memory usage
 
 Besides `block cache` and `write buffer`, the system memory is also occupied in the following scenarios:
 
@@ -37,7 +37,7 @@ Besides `block cache` and `write buffer`, the system memory is also occupied in 
 + When TiKV processes large queries such as `select * from ...`, it reads data and generate corresponding data structure in the memory and returns to TiDB. During the process, some of the memory are also occupied.
 
 
-## 3. Recommended configuration of TiKV
+## Recommended configuration of TiKV
 
 + In production environments, it is not recommended to deploy TiKV on the machine whose CPU core is less than 8 or the memory is less than 32GB.
 

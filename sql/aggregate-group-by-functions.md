@@ -5,7 +5,7 @@ category: user guide
 
 # Aggregate (GROUP BY) Functions
 
-## Aggregate (GROUP BY) Function Descriptions
+## Aggregate (GROUP BY) function descriptions
 
 This section describes the supported MySQL group (aggregate) functions in TiDB.
 
@@ -22,11 +22,11 @@ This section describes the supported MySQL group (aggregate) functions in TiDB.
 - Unless otherwise stated, group functions ignore `NULL` values.
 - If you use a group function in a statement containing no `GROUP BY` clause, it is equivalent to grouping on all rows. For more information see [TiDB Handling of GROUP BY](#tidb-handling-of-group-by).
 
-## GROUP BY Modifiers
+## GROUP BY modifiers
 
 TiDB dose not support any `GROUP BY` modifiers currently. We'll do it in the future. For more information, see [#4250](https://github.com/pingcap/tidb/issues/4250).
 
-## <span id="tidb-handling-of-group-by">TiDB Handling of GROUP BY</span>
+## <span id="tidb-handling-of-group-by">TiDB handling of GROUP BY</span>
 
 TiDB performs equivalent to MySQL with sql mode [`ONLY_FULL_GROUP_BY`](https://dev.mysql.com/doc/refman/5.7/en/sql-mode.html#sqlmode_only_full_group_by) being disabled: permits the `SELECT` list, `HAVING` condition, or `ORDER BY` list to refer to non-aggregated columns even if the columns are not functionally dependent on `GROUP BY` columns.
 
@@ -87,6 +87,6 @@ from tbl_name
 group by id, val;
 ```
 
-## Detection of Functional Dependence
+## Detection of functional dependence
 
 TiDB does not support SQL mode `ONLY_FULL_GROUP_BY` and detection of functional dependence. We'll do it in the future. For more information, see [#4248](https://github.com/pingcap/tidb/issues/4248).

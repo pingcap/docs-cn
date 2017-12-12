@@ -46,7 +46,7 @@ This document defines the roadmap for TiDB development.
   - [ ] Disaster Recovery
 - [ ] Flow control and degradation
 
-##  PD:
+## PD:
 - [ ] Improve namespace 
   - [ ] Different replication policies for different namespaces and tables
 
@@ -62,7 +62,7 @@ This document defines the roadmap for TiDB development.
 - [ ] Index Join and parallel merge join
 - [ ] Data Federation
 
-## SRE & Tools:
+## SRE & tools:
 
 - [ ] Kubernetes based intergration for the on-premise version 
 - [ ] Dashboard UI for the on-premise version

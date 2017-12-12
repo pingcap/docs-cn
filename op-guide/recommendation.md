@@ -9,7 +9,7 @@ category: operations
 
 As an open source distributed NewSQL database with high performance, TiDB can be deployed in the Intel architecture server and major virtualization environments and runs well. TiDB supports most of the major hardware networks and Linux operating systems. 
 
-## Linux OS Version Requirements
+## Linux OS version requirements
 
 | Linux OS Platform        | Version      |
 | :-----------------------:| :----------: |
@@ -23,11 +23,11 @@ As an open source distributed NewSQL database with high performance, TiDB can be
 > - For Oracle Enterprise Linux, TiDB supports the Red Hat Compatible Kernel (RHCK) and does not support the Unbreakable Enterprise Kernel provided by Oracle Enterprise Linux.
 > - The support for the Linux operating systems above include the deployment and operation in physical servers as well as in major virtualized environments like VMware, KVM and XEM.
 
-## Server Requirements
+## Server requirements
 
 You can deploy and run TiDB on the 64-bit generic hardware server platform in the Intel x86-64 architecture. The requirements and recommendations about server hardware configuration for development, testing and production environments are as follows:
 
-### Development and Testing Environments
+### Development and testing environments
 
 | Component | CPU     | Memory | Local Storage  | Network  | Instance Number (Minimum Requirement) |
 | :------: | :-----: | :-----: | :----------: | :------: | :----------------: |
@@ -41,7 +41,7 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 > - In the test environment, the TiDB and PD can be deployed on the same server.
 > - For performance-related testing, do not use low-performance storage and network hardware configuration, in order to guarantee the correctness of the test result.
 
-### Production Environment
+### Production environment
 
 | Component | CPU | Memory | Hard Disk Type | Hard Disk Number | Single Hard Disk Size | Network | Instance Number (Minimum Requirement) |
 | :-----: | :------: | :------: | :------: | :------: | ------ | :------: | :-----: |
@@ -57,7 +57,7 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 > - It is strongly recommended to use higher configuration in the production environment.
 > - It is recommended to keep the size of TiKV hard disk within 500G in case it takes too long to restore data when the hard disk is damaged.
 
-## Network Requirements
+## Network requirements
 
 As an open source distributed NewSQL database, TiDB requires the following network port configuration to run. Based on the TiDB deployment in actual environments, the administrator can enable relevant ports in the network side and host side. 
 
@@ -73,6 +73,6 @@ As an open source distributed NewSQL database, TiDB requires the following netwo
 | Node_exporter |  9100| the communication port to report the system information of every TiDB cluster node |
 | Grafana | 3000 | the port for the external Web monitoring service and client (Browser) access|
 
-## Web Browser Requirements
+## Web browser requirements
 
 Based on the Prometheus and Grafana platform, TiDB provides a visual data monitoring solution to monitor the TiDB cluster status. To visit the Grafana monitor interface, it is recommended to use a higher version of Microsoft IE, Google Chrome or Mozilla Firefox.

@@ -57,7 +57,7 @@ category: user guide
 | [`SOUNDEX()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_soundex)                     | Return a soundex string                                                                                                                   |
 | [`SOUNDS LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#operator_sounds-like)               | Compare sounds                                                                                                                            |
 
-## String Comparison Functions
+## String comparison functions
 
 | Name                                                                                                              | Description                                                                                                                               |
 |:------------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------|
@@ -66,7 +66,7 @@ category: user guide
 | [`STRCMP()`](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#function_strcmp)            | Compare two strings                                                                                                                       |
 | [`MATCH`](https://dev.mysql.com/doc/refman/5.7/en/fulltext-search.html#function_match)                            | Perform full-text search                                                                                                                  |
 
-## Regular Expressions
+## Regular expressions
 
 | Name                                                                                                              | Description                                                                                                                               |
 |:------------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------|

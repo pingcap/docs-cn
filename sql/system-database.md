@@ -7,7 +7,7 @@ category: user guide
 
 The TiDB System Database is similar to MySQL, which contains tables that store information required by the server when it runs.
 
-## Grant System Tables
+## Grant system tables
 
 These system tables contain grant information about user accounts and their privileges:
 
@@ -16,30 +16,30 @@ These system tables contain grant information about user accounts and their priv
 - `tables_priv`: table-level privileges
 - `columns_priv`: column-level privileges
 
-## Server-Side Help System Tables
+## Server-side help system tables
 
 Currently, the `help_topic` is NULL.
 
-## Statistics System Tables
+## Statistics system tables
 
 - `stats_buckets`: the buckets of statistics
 - `stats_histograms`: the histograms of statistics
 - `stats_meta`: the meta information of tables, such as the total number of rows and updated rows
 
-## GC Worker System Tables
+## GC worker system tables
 
 - `gc_delete_range`: to record the data to be deleted
 
-## Miscellaneous System Tables
+## Miscellaneous system tables
 
 - `GLOBAL_VARIABLES`: global system variable table
 - `tidb`: to record the version information when TiDB executes `bootstrap`
 
-## INFORMATION\_SCHEMA Tables
+## INFORMATION\_SCHEMA tables
 
 To be compatible with MySQL, TiDB supports INFORMATION\_SCHEMA tables. Some third-party software queries information in these tables. Currently, most INFORMATION\_SCHEMA tables in TiDB are NULL.
 
-### CHARACTER\_SETS Table
+### CHARACTER\_SETS table
 
 The CHARACTER\_SETS table provides information about character sets. But it contains dummy data. By default, TiDB only supports utf8mb4.
 
@@ -57,15 +57,15 @@ mysql> select * from CHARACTER_SETS;
 5 rows in set (0.00 sec)
 ```
 
-### COLLATIONS Table
+### COLLATIONS table
 
 The COLLATIONS table is similar to the CHARACTER\_SETS table.
 
-### COLLATION\_CHARACTER\_SET\_APPLICABILITY Table
+### COLLATION\_CHARACTER\_SET\_APPLICABILITY table
 
 NULL.
 
-### COLUMNS Table
+### COLUMNS table
 
 The COLUMNS table provides information about columns in tables. The information in this table is not accurate. To query information, it is recommended to use the `SHOW` statement:
 
@@ -73,63 +73,63 @@ The COLUMNS table provides information about columns in tables. The information 
 SHOW COLUMNS FROM table_name [FROM db_name] [LIKE 'wild']
 ```
 
-### COLUMNS\_PRIVILEGE Table
+### COLUMNS\_PRIVILEGE table
 
 NULL.
 
-### ENGINES Table
+### ENGINES table
 
 The ENGINES table provides information about storage engines. But it contains dummy data only. In the production environment, use the TiKV engine for TiDB.
 
-### EVENTS Table
+### EVENTS table
 
 NULL.
 
-### FILES Table
+### FILES table
 
 NULL.
 
-### GLOBAL\_STATUS Table
+### GLOBAL\_STATUS table
 
 NULL.
 
-### GLOBAL\_VARIABLES Table
+### GLOBAL\_VARIABLES table
 
 NULL.
 
-### KEY\_COLUMN\_USAGE Table
+### KEY\_COLUMN\_USAGE table
 
 The KEY_COLUMN_USAGE table describes the key constraints of the columns, such as the primary key constraint.
 
-### OPTIMIZER\_TRACE Table
+### OPTIMIZER\_TRACE table
 
 NULL.
 
-### PARAMETERS Table
+### PARAMETERS table
 
 NULL.
 
-### PARTITIONS Table
+### PARTITIONS table
 
 NULL.
 
-### PLUGINS Table
+### PLUGINS table
 
 NULL.
 
-### PROFILING Table
+### PROFILING table
 
 NULL.
 
-### REFERENTIAL\_CONSTRAINTS Table
+### REFERENTIAL\_CONSTRAINTS table
 
 NULL.
 
-### ROUTINES Table
+### ROUTINES table
 
 NULL.
 
-### SCHEMATA Table
+### SCHEMATA table
 
 The SCHEMATA table provides information about databases. The table data is equivalent to the result of the `SHOW DATABASES` statement.
 
@@ -146,19 +146,19 @@ mysql> select * from SCHEMATA;
 4 rows in set (0.00 sec)
 ```
 
-### SCHEMA\_PRIVILEGES Table
+### SCHEMA\_PRIVILEGES table
 
 NULL.
 
-### SESSION\_STATUS Table
+### SESSION\_STATUS table
 
 NULL.
 
-### SESSION\_VARIABLES Table
+### SESSION\_VARIABLES table
 
 The SESSION\_VARIABLES table provides information about session variables. The table data is similar to the result of the `SHOW SESSION VARIABLES` statement.
 
-### STATISTICS Table
+### STATISTICS table
 
 The STATISTICS table provides information about table indexes.
 
@@ -198,7 +198,7 @@ SHOW INDEX
   FROM db_name
 ```
 
-### TABLES Table
+### TABLES table
 
 The TABLES table provides information about tables in databases.
 
@@ -214,26 +214,26 @@ SHOW TABLES
   [LIKE 'wild']
 ```
 
-### TABLESPACES Table
+### TABLESPACES table
 
 NULL.
 
-### TABLE\_CONSTRAINTS Table
+### TABLE\_CONSTRAINTS table
 
 The TABLE_CONSTRAINTS table describes which tables have constraints.
 
 - The `CONSTRAINT_TYPE` value can be UNIQUE, PRIMARY KEY, or FOREIGN KEY.
 - The UNIQUE and PRIMARY KEY information is similar to the result of the `SHOW INDEX` statement.
 
-### TABLE\_PRIVILEGES Table
+### TABLE\_PRIVILEGES table
 
 NULL.
 
-### TRIGGERS Table
+### TRIGGERS table
 
 NULL.
 
-### USER\_PRIVILEGES Table
+### USER\_PRIVILEGES table
 
 The USER_PRIVILEGES table provides information about global privileges. This information comes from the mysql.user grant table.
 
@@ -250,6 +250,6 @@ mysql> desc USER_PRIVILEGES;
 4 rows in set (0.00 sec)
 ```
 
-### VIEWS Table
+### VIEWS table
 
 NULL. Currently, TiDB does not support views. 

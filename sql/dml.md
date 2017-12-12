@@ -30,7 +30,7 @@ SELECT
   [FOR UPDATE | LOCK IN SHARE MODE]]
 ```
  
-### The Description of the Syntax Elements 
+### Description of the syntax elements 
 
 |Syntax Element|Description|
 | --------------------- | -------------------------------------------------- |
@@ -45,7 +45,7 @@ SELECT
 |`ORDER BY` | The `ORDER BY` clause is used to sort the data in ascending or descending order, based on columns, expressions or items in the `select_expr` list.|
 |`LIMIT` | The `LIMIT` clause can be used to constrain the number of rows. `LIMIT` takes one or two numeric arguments. With one argument, the argument specifies the maximum number of rows to return, the first row to return is the first row of the table by default; with two arguments, the first argument specifies the offset of the first row to return, and the second specifies the maximum number of rows to return.|
 |`FOR UPDATE` | All the data in the result sets are read-locked, in order to detect the concurrent updates. TiDB uses the [Optimistic Transaction Model](mysql-compatibility.md#transaction). The transaction conflicts are detected in the commit phase instead of statement execution phase. while executing the `SELECT FOR UPDATE` statement, if there are other transactions trying to update relavant data, the `SELECT FOR UPDATE` transaction will fail.|
-|`LOCK IN SHARE MODE` | To guarantee compatibilityïŒ TiDB parses these three modifiers, but will ignore them.|
+|`LOCK IN SHARE MODE` | To guarantee compatibility, TiDB parses these three modifiers, but will ignore them.|
 
 ## INSERT
 
@@ -77,7 +77,7 @@ SELECT
     assignment [, assignment] ...
 ```
 
-### The Description of the Syntax Elements
+### Description of the syntax elements
 
 | Syntax Elements | Description |
 | -------------- | --------------------------------------------------------- |
@@ -117,7 +117,7 @@ You can use the following ways to specify the data set:
 
 - Assignment List
 
-  Insert the values by using Assignment Statements,for example:
+  Insert the values by using Assignment Statements, for example:
 
   ```sql
   INSERT INTO tbl_name a=1, b=2, c=3;
@@ -142,11 +142,11 @@ You can use the following ways to specify the data set:
 
 `DELETE` is a DML statement that removes rows from a table. TiDB is compatible with all the `DELETE` syntaxes of MySQL except for `PARTITION`. There are two kinds of `DELETE`, [`Single-Table DELETE`](#single-table-delete-syntax) and [`Multiple-Table DELETE`](#multiple-table-delete-syntax).
 
-### Single-Table DELETE Syntax
+### Single-Table DELETE syntax
 
-The `Single_Table DELETE` Syntax deletes rows from a single table. 
+The `Single_Table DELETE` syntax deletes rows from a single table. 
 
-###  DELETE Syntax
+###  DELETE syntax
 
 ```sql
 DELETE [LOW_PRIORITY] [QUICK] [IGNORE] FROM tbl_name
@@ -155,9 +155,9 @@ DELETE [LOW_PRIORITY] [QUICK] [IGNORE] FROM tbl_name
   [LIMIT row_count]
 ```
 
-### Multiple-Table DELETE Syntax
+### Multiple-Table DELETE syntax
 
-The `Multiple_Table DELETE` Syntax deletes rows of multiple tables, and has the following two kinds of formats:
+The `Multiple_Table DELETE` syntax deletes rows of multiple tables, and has the following two kinds of formats:
 
 ```sql
 DELETE [LOW_PRIORITY] [QUICK] [IGNORE]
@@ -173,7 +173,7 @@ DELETE [LOW_PRIORITY] [QUICK] [IGNORE]
 
 Both of the two syntax formats can be used to delete multiple tables, or delete the selected results from multiple tables. There are still differences between the two formats. The first one will delete data of every table in the table list before `FROM`. The second one will delete the data of the tables in the table list which is after `FROM` and before `USING`.
 
-### The Description of the Syntax Elements
+### Description of the syntax elements
 
 | Syntax Elements | Description|
 | -------------- | --------------------------------------------------------- |
@@ -211,7 +211,7 @@ assignment_list:
 
 For the single-table syntax, the `UPDATE` statement updates columns of existing rows in the named table with new values. The `SET assignment_list` clause indicates which columns to modify and the values they should be given. The `WHERE/Orderby/Limit` clause, if given, specifies the conditions that identify which rows to update.
 
-###  Multi-Table UPDATE
+###  Multi-table UPDATE
 
 ```sql
 UPDATE [LOW_PRIORITY] [IGNORE] table_references
@@ -221,7 +221,7 @@ UPDATE [LOW_PRIORITY] [IGNORE] table_references
 
 For the multiple-table syntax, `UPDATE` updates rows in each table named in `table_references` that satisfy the conditions. 
 
-### The Description of the Syntax Elements
+### Description of the syntax elements
 
 | Syntax Elements | Description |
 | -------------- | --------------------------------------------------------- |
@@ -256,7 +256,7 @@ REPLACE [LOW_PRIORITY | DELAYED]
   SELECT ...
 ```
 
-### The Description of the Syntax Elements
+### Description of the syntax elements
 
 |Syntax Element|Description|
 | -------------- | --------------------------------------------------------- |

@@ -5,7 +5,7 @@ category: introduction
 
 # About TiDB
 
-## TiDB Introduction
+## TiDB introduction
 
 TiDB (The pronunciation is: /'taɪdiːbi:/ tai-D-B, etymology: titanium) is a Hybrid Transactional/Analytical Processing (HTAP) database. Inspired by the design of Google F1 and Google Spanner, TiDB features infinite horizontal scalability, strong consistency, and high availability. The goal of TiDB is to serve as a one-stop solution for online transactions and analyses.
 
@@ -34,7 +34,7 @@ Read the [Roadmap](https://github.com/pingcap/docs/blob/master/ROADMAP.md).
 - **Stack Overflow**: https://stackoverflow.com/questions/tagged/tidb
 - **Mailing list**: [Google Group](https://groups.google.com/forum/#!forum/tidb-user)
 
-## TiDB Architecture
+## TiDB architecture
 
 To better understand TiDB’s features, you need to understand the TiDB architecture.
 
@@ -42,7 +42,7 @@ To better understand TiDB’s features, you need to understand the TiDB architec
 
 The TiDB cluster has three components: the TiDB Server, the PD Server,  and the TiKV server.
 
-### TiDB Server
+### TiDB server
 
 The TiDB server is in charge of the following operations:
 
@@ -58,7 +58,7 @@ The TiDB server is in charge of the following operations:
 
 The TiDB server is stateless. It doesn’t store data and it is for computing only. TiDB is horizontally scalable and provides the unified interface to the outside through the load balancing components such as Linux Virtual Server (LVS), HAProxy, or F5.
 
-### Placement Driver Server
+### Placement Driver server
 
 Placement Driver (PD) is the managing component of the entire cluster and is in charge of the following three operations:
 
@@ -70,13 +70,13 @@ Placement Driver (PD) is the managing component of the entire cluster and is in 
 
 As a cluster, PD needs to be deployed to an odd number of nodes. Usually it is recommended to deploy to 3 online nodes at least.
 
-### TiKV Server
+### TiKV server
 
 TiKV server is responsible for storing data. From an external view, TiKV is a distributed transactional Key-Value storage engine. Region is the basic unit to store data. Each Region stores the data for a particular Key Range which is a left-closed and right-open interval from StartKey to EndKey. There are multiple Regions in each TiKV node. TiKV uses the Raft protocol for replication to ensure the data consistency and disaster recovery. The replicas of the same Region on different nodes compose a Raft Group. The load balancing of the data among different TiKV nodes are scheduled by PD. Region is also the basic unit for scheduling the load balance.
 
 ## Features
 
-### Horizontal Scalability
+### Horizontal scalability
 
 Horizontal scalability is the most important feature of TiDB. The scalability includes two aspects: the computing capability and the storage capacity. The TiDB server processes the SQL requests. As the business grows, the overall processing capability and higher throughput can be achieved by simply adding more TiDB server nodes. Data is stored in TiKV. As the size of the data grows, the scalability of data can be resolved by adding more TiKV server nodes. PD schedules data in Regions among the TiKV nodes and migrates part of the data to the newly added node. So in the early stage, you can deploy only a few service instances. For example, it is recommended to deploy at least 3 TiKV nodes, 3 PD nodes and 2 TiDB nodes. As business grows, more TiDB and TiKV instances can be added on-demand.
 

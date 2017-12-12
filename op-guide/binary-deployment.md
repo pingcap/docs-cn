@@ -17,9 +17,9 @@ This document describes the binary deployment of three scenarios:
 - To try TiDB out and explore the features, see [Multiple Nodes Cluster Deployment for Test](#multiple-nodes-cluster-deployment-for-test).
 - To deploy and use TiDB in production, see [Multiple Nodes Cluster Deployment](#multiple-nodes-cluster-deployment).
 
-## TiDB Components and Default Ports
+## TiDB components and default ports
 
-### TiDB Database Components (Required)
+### TiDB database components (required)
 
 See the following table for the default ports for the TiDB components:
 
@@ -32,7 +32,7 @@ See the following table for the default ports for the TiDB components:
 | PD | 2379 | TCP | the communication port between TiDB and PD |
 | PD | 2380 | TCP | the inter-node communication port within the PD cluster |
 
-### TiDB Database Components (Optional)
+### TiDB database components (optional)
 
 See the following table for the default ports for the optional TiDB components:
 
@@ -44,9 +44,9 @@ See the following table for the default ports for the optional TiDB components:
 | Grafana | 3000 | TCP | the port for the external Web monitoring service and client (Browser) access |
 | alertmanager | 9093 | TCP | the port for the alert service |
 
-## Configure and Check the System before Installation
+## Configure and check the system before installation
 
-### Operating System
+### Operating system
 
 | Configuration | Description |
 | :-- | :-------------------- |
@@ -55,13 +55,13 @@ See the following table for the default ports for the optional TiDB components:
 | Swap Space  |  The Swap Space is recommended to close in TiDB Deployment  |
 | Disk Block Size  |  Set the size of the system disk `Block` to `4096` |
 
-### Network and Firewall
+### Network and firewall
 
 | Configuration | Description |
 | :-- | :------------------- |
 | Firewall / Port | Check whether the ports required by TiDB are accessible between the nodes |
 
-### Operating System Parameters
+### Operating system parameters
 
 | Configuration | Description |
 | :-- | :-------------------------- |
@@ -83,14 +83,14 @@ See the following table for the default ports for the optional TiDB components:
 
 > **Note**: To adjust the operating system parameters, contact your system administrator.
 
-### Database Running User
+### Database running user
 
 | Configuration | Description |
 | :-- | :---------------------------- |
 | LANG environment | Set `LANG = en_US.UTF8` |
 | TZ time zone | Set the TZ time zone of all nodes to the same value |
 
-## Create the Database Running User Account
+## Create the database running user account
 
 In the Linux environment, create TiDB on each installation node as a database running user, and set up the SSH mutual trust between cluster nodes. To create a running user and open SSH mutual trust, contact the system administrator. Here is an example:
 
@@ -128,11 +128,11 @@ The key's randomart image is:
 -bash-4.2$ ssh-copy-id -i ~/.ssh/id_rsa.pub 192.168.1.100
 ```
 
-## Download the Official Binary Package
+## Download the official binary package
 
 TiDB provides the official binary installation package that supports Linux. For the operating system, it is recommended to use Redhat 7.3+, CentOS 7.3+ and higher versions.
 
-### Operating System: Linux (Redhat 7+, CentOS 7+)
+### Operating system: Linux (Redhat 7+, CentOS 7+)
 
 ```
 # Download the package.
@@ -147,7 +147,7 @@ tar -xzf tidb-latest-linux-amd64.tar.gz
 cd tidb-latest-linux-amd64
 ```
 
-## Single Node Cluster Deployment
+## Single node cluster deployment
 
 After downloading the TiDB binary package, you can run and test the TiDB cluster on a standalone server. Follow the steps below to start PD, TiKV and TiDB:
 
@@ -181,7 +181,7 @@ After downloading the TiDB binary package, you can run and test the TiDB cluster
     mysql -h 127.0.0.1 -P 4000 -u root -D test
     ```
 
-## Multiple Nodes Cluster Deployment for Test
+## Multiple nodes cluster deployment for test
 
 If you want to test TiDB but have a limited number of nodes, you can use one PD instance to test the entire cluster.
 
@@ -240,7 +240,7 @@ Follow the steps below to start PD, TiKV and TiDB:
     mysql -h 192.168.199.113 -P 4000 -u root -D test
     ```
 
-## Multiple Nodes Cluster Deployment
+## Multiple nodes cluster deployment
 
 For the production environment, multiple nodes cluster deployment is recommended. Before you begin, see [Software and Hardware Requirements](./recommendation.md).
 
@@ -326,7 +326,7 @@ Follow the steps below to start PD, TiKV, and TiDB:
 > - To tune TiKV, see [Performance Tuning for TiKV](./tune-TiKV.md).
 > - If you use `nohup` to start the cluster in the production environment, write the startup commands in a script and then run the script. If not, the `nohup` process might abort because it receives exceptions when the Shell command exits. For more information, see [The TiDB/TiKV/PD process aborts unexpectedly](../trouble-shooting.md#the-tidbtikvpd-process-aborts-unexpectedly).
 
-## TiDB Monitor and Alarm Deployment
+## TiDB monitor and alarm deployment
 
 To install and deploy the environment for TiDB monitor and alarm service, see the following table for the system information:
 
@@ -337,7 +337,7 @@ To install and deploy the environment for TiDB monitor and alarm service, see th
 | Node3 | 192.168.199.115 | node_export |
 | Node4 | 192.168.199.116 | node_export |
 
-### Download the Binary Package
+### Download the binary package
 
 ```
 # Download the package.
@@ -353,7 +353,7 @@ tar -xzf grafana-4.1.2-1486989747.linux-x64.tar.gz
 tar -xzf pushgateway-0.3.1.linux-amd64.tar.gz
 ```
 
-### Start the Monitor Service
+### Start the monitor service
 
 ####  Start `node_exporter` on Node1, Node2, Node3 and Node4.
 

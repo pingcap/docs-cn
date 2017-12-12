@@ -16,7 +16,7 @@ The definition of the data type is: `T(M[, D])`. In this format:
 - `D` applies to floating-point and fixed-point types and indicates the number of digits following the decimal point (the scale).
 - `fsp` applies to the TIME, DATETIME, and TIMESTAMP types and represents the fractional seconds precision. The `fsp` value, if given, must be in the range 0 to 6. A value of 0 signifies that there is no fractional part. If omitted, the default precision is 0.
 
-## Numeric Types
+## Numeric types
 
 ### Overview
 
@@ -26,11 +26,11 @@ TiDB supports all the MySQL numeric types, including:
 + Floating-Point Types (Approximate Value)
 + Fixed-Point Types (Exact Value)
 
-### Integer Types (Exact Value)
+### Integer types (exact value)
 
 TiDB supports all the MySQL integer types, including INTEGER/INT, TINYINT, SMALLINT, MEDIUMINT, and BIGINT. For more information, see [Numeric Type Overview in MySQL](https://dev.mysql.com/doc/refman/5.7/en/numeric-type-overview.html).
 
-#### Type Definition
+#### Type definition
 
 Syntax:
 
@@ -69,7 +69,7 @@ The meaning of the fields:
 | UNSIGNED | UNSIGNED. If omitted, it is SIGNED. |
 | ZEROFILL | If you specify ZEROFILL for a numeric column, TiDB automatically adds the UNSIGNED attribute to the column. |
 
-#### Storage and Range
+#### Storage and range
 
 See the following for the requirements of the storage and minimum value/maximim value of each data type:
 
@@ -81,11 +81,11 @@ See the following for the requirements of the storage and minimum value/maximim 
 | `INT` | 4 | -2147483648 / 0 | 2147483647 / 4294967295 |
 | `BIGINT` | 8 | -9223372036854775808 / 0 | 9223372036854775807 / 18446744073709551615 |
 
-### Floating-Point Types (Approximate Value)
+### Floating-point types (approximate value)
 
 TiDB supports all the MySQL floating-point types, including FLOAT, and DOUBLE. For more information, [Floating-Point Types (Approximate Value) - FLOAT, DOUBLE in MySQL](https://dev.mysql.com/doc/refman/5.7/en/floating-point-types.html).
 
-#### Type Definition
+#### Type definition
 
 Syntax:
 
@@ -124,11 +124,11 @@ See the following for the requirements of the storage:
 | `DOUBLE` | 8 |
 
 
-### Fixed-Point Types (Exact Value)
+### Fixed-point types (exact value)
 
 TiDB supports all the MySQL floating-point types, including DECIMAL, and NUMERIC. For more information, [Fixed-Point Types (Exact Value) - DECIMAL, NUMERIC in MySQL](https://dev.mysql.com/doc/refman/5.7/en/fixed-point-types.html).
 
-#### Type Definition
+#### Type definition
 
 Syntax
 
@@ -149,13 +149,13 @@ The meaning of the fields:
 | UNSIGNED | UNSIGNED. If omitted, it is SIGNED. |
 | ZEROFILL | If you specify ZEROFILL for a numeric column, TiDB automatically adds the UNSIGNED attribute to the column. |
 
-## Date and Time Types
+## Date and time types
 
 ### Overview
 
 TiDB supports all the MySQL floating-point types, including DATE, DATETIME, TIMESTAMP, TIME, and YEAR. For more information, [Date and Time Types in MySQL](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-types.html).
 
-#### Type Definition
+#### Type definition
 
 Syntax:
 
@@ -181,13 +181,13 @@ YEAR[(2|4)]
 
 ```
 
-## String Types
+## String types
 
 ### Overview
 
 TiDB supports all the MySQL string types, including CHAR, VARCHAR, BINARY, VARBINARY, BLOB, TEXT, ENUM, and SET. For more information, [String Types in MySQL](https://dev.mysql.com/doc/refman/5.7/en/string-types.html).
 
-#### Type Definition
+#### Type definition
 
 Syntax:
 
@@ -235,7 +235,7 @@ SET('value1','value2',...) [CHARACTER SET charset_name] [COLLATE collation_name]
 > A set. A string object that can have zero or more values, each of which must be chosen from the list of values 'value1', 'value2', ...
 ```
 
-## JSON Types
+## JSON types
 
 TiDB supports the JSON (JavaScript Object Notation) data type.
 The JSON type can store semi-structured data like JSON documents. The JSON data type provides the following advantages over storing JSON-format strings in a string column:
@@ -280,7 +280,7 @@ The value of the ENUM data type is stored as numbers. Each value is converted to
 
 For more information, see [the ENUM type in MySQL](https://dev.mysql.com/doc/refman/5.7/en/enum.html).
 
-## The SET Type
+## The SET type
 
 A SET is a string object that can have zero or more values, each of which must be chosen from a list of permitted values specified when the table is created. The syntax is:
 
@@ -311,7 +311,7 @@ In this case, for an element of `('a', 'c')`, it is 0101 in binary.
 
 For more information, see [the SET type in MySQL](https://dev.mysql.com/doc/refman/5.7/en/set.html)。
 
-## Data Type Default Values
+## Data type default values
 
 The DEFAULT value clause in a data type specification indicates a default value for a column. The default value must be a constant and cannot be a function or an expression. But for the time type, you can specify the `NOW`, `CURRENT_TIMESTAMP`, `LOCALTIME`, and `LOCALTIMESTAMP` functions as the default for TIMESTAMP and DATETIME columns
 

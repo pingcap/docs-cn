@@ -1,9 +1,9 @@
 # Operators
 
-- [Operator Precedence](#operator-precedence)
-- [Comparison Functions and Operators](#comparison-functions-and-operators)
-- [Logical Operators](#logical-operators)
-- [Assignment Operators](#assignment-operators)
+- [Operator precedence](#operator-precedence)
+- [Comparison functions and operators](#comparison-functions-and-operators)
+- [Logical operators](#logical-operators)
+- [Assignment operators](#assignment-operators)
 
 | Name | Description |
 | ---------------------------------------- | ---------------------------------------- |
@@ -50,7 +50,7 @@
 | [-](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_unary-minus) | Change the sign of the argument |
 | [XOR](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_xor) | Logical XOR |
 
-## Operator Precedence
+## Operator precedence
 
 Operator precedences are shown in the following list, from highest precedence to the lowest. Operators that are shown together on a line have the same precedence.
 
@@ -76,7 +76,7 @@ OR, ||
 
 For details, see [here](https://dev.mysql.com/doc/refman/5.7/en/operator-precedence.html).
 
-## Comparison Functions and Operators
+## Comparison functions and operators
 
 | Name | Description |
 | ---------------------------------------- | ---------------------------------------- |
@@ -106,7 +106,7 @@ For details, see [here](https://dev.mysql.com/doc/refman/5.7/en/operator-precede
 
 For details, see [here](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html).
 
-## Logical Operators
+## Logical operators
 
 | Name | Description |
 | ---------------------------------------- | ------------- |
@@ -117,7 +117,7 @@ For details, see [here](https://dev.mysql.com/doc/refman/5.7/en/comparison-opera
 
 For details, see [here](https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html).
 
-## Assignment Operators
+## Assignment operators
 
 | Name | Description |
 | ---------------------------------------- | ---------------------------------------- |

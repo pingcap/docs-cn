@@ -5,7 +5,7 @@ category: user guide
 
 # TiDB User Account Management
 
-## User Names and Passwords
+## User names and passwords
 
 TiDB stores the user accounts in the table of the `mysql.user` system database. Each account is identified by a user name and the client host. Each account may have a password.
 
@@ -21,7 +21,7 @@ Or use the abbreviation of command line parameters:
 shell> mysql -P 4000 -u xxx -p
 ```
 
-## Add User Accounts
+## Add user accounts
 
 You can create TiDB accounts in two ways:
 
@@ -53,7 +53,7 @@ mysql> SHOW GRANTS FOR 'admin'@'localhost';
 +-----------------------------------------------------+
 ```
 
-## Remove User Accounts
+## Remove user accounts
 
 To remove a user account, use the `DROP USER` statement:
 
@@ -61,15 +61,15 @@ To remove a user account, use the `DROP USER` statement:
 mysql> DROP USER 'jeffrey'@'localhost';
 ```
 
-## Reserved User Accounts
+## Reserved user accounts
 
 TiDB creates the `'root'@'%'` default account during the database initialization. 
 
-## Set Account Resource Limits
+## Set account resource limits
 
 Currently, TiDB does not support setting account resource limits.
 
-## Assign Account Passwords
+## Assign account passwords
 
 TiDB stores passwords in the `mysql.user` system database. Operations that assign or update passwords are permitted only to users with the `CREATE USER` privilege, or, alternatively, privileges for the `mysql` database (`INSERT` privilege to create new accounts, `UPDATE` privilege to update existing accounts).  
 

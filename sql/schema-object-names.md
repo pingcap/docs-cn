@@ -46,7 +46,7 @@ mysql> SELECT 1 AS `identifier`, 2 AS 'string';
 
 For more information, see [MySQL Schema Object Names](https://dev.mysql.com/doc/refman/5.7/en/identifiers.html).
 
-## Identifier Qualifiers
+## Identifier qualifiers
 
 Object names can be unqualified or qualified. For example, the following statement creates a table using the unqualified name `t`:
 

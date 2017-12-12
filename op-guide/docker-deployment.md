@@ -16,13 +16,13 @@ Before you start, make sure that you have:
 + Installed the latest version of [Docker](https://www.docker.com/products/docker)
 + Pulled the latest images of TiDB, TiKV and PD from [Docker Hub](https://hub.docker.com). If not, pull the images using the following commands:
 
-```bash
-docker pull pingcap/tidb:latest
-docker pull pingcap/tikv:latest
-docker pull pingcap/pd:latest
-```
+    ```bash
+    docker pull pingcap/tidb:latest
+    docker pull pingcap/tikv:latest
+    docker pull pingcap/pd:latest
+    ```
 
-## Multi Nodes Deployment
+## Multi nodes deployment
 
 Assume we have 6 machines with the following details:
 

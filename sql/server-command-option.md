@@ -5,7 +5,7 @@ category: user guide
 
 # The TiDB Command Options
 
-## TiDB Startup Options
+## TiDB startup options
 
 When you star TiDB processes, you can specify some program options.
 
@@ -117,7 +117,7 @@ The complete descriptions of startup options are as follows.
 - Optional values: "memory", "goleveldb", "boltdb", "mocktikv" or "tikv" (TiKV is a distributed storage engine, while the others are local storage engines)
 - For example, use `tidb-server --store=memory` to start a TiDB server with a pure memory engine
 
-## TiDB Server Configuration Files 
+## TiDB server configuration files
 
 When you start the TiDB server, you can specify the server's configuration file using `--config path`. For overlapped options in configuration, the priority of command options is higher than configuration files.
 

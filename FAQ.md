@@ -236,7 +236,7 @@ TiKV implements the Column Family (CF) feature of RocksDB. By default, the KV da
 
 See the [TiSpark User Guide](tispark/tispark-user-guide.md).
 
-#### TiSpark Cases
+#### TiSpark cases
 
 See [TiSpark Cases](https://github.com/zhexuany/tispark_examples).
 
@@ -367,23 +367,23 @@ TiDB follows MySQL user authentication mechanism. You can create user accounts a
 
 - You can use MySQL grammar to create user accounts. For example, you can create a user account by using the following statement:
 
-  ```
-  CREATE USER 'test'@'localhost' identified by '123';
-  ```
+    ```
+    CREATE USER 'test'@'localhost' identified by '123';
+    ```
 
   The user name of this account is "test"; the password is “123" and this user can login from localhost only.
 
   You can use the `Set Password` statement to set and change the password. For example, to set the password for the default "root" account, you can use the following statement:
 
-  ```
-  SET PASSWORD FOR 'root'@'%' = '123';
-  ```
+    ```
+    SET PASSWORD FOR 'root'@'%' = '123';
+    ```
 
 - You can also use MySQL grammar to authorize this user. For example, you can grant the read privilege to the "test" user by using the following statement:
 
-  ```
-  GRANT SELECT ON \*.\* TO  'test'@'localhost';
-  ```
+    ```
+    GRANT SELECT ON \*.\* TO  'test'@'localhost';
+    ```
 
 See more about [privilege management](sql/privilege.md).
 

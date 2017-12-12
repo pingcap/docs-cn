@@ -20,7 +20,7 @@ The TiDB Connector for Spark is an OLAP solution that runs Spark SQL directly on
 + From the data integration point of view, TiDB Connector for Spark and TiDB serve as a solution runs both transaction and analysis directly on the same platform without building and maintaining any ETLs. It simplifies the system architecture and reduces the cost of maintenance.
 + also, you can deploy and utilize tools from the Spark ecosystem for further data processing and manipulation on TiDB. For example, using the TiDB Connector for Spark for data analysis and ETL; retrieving data from TiKV as a machine learning data source; generating reports from the scheduling system and so on.
 
-## Environment Setup
+## Environment setup
 
 + The current version of the TiDB Connector for Spark supports Spark 2.1. For Spark 2.0 and Spark 2.2, it has not been fully tested yet. It does not support any versions earlier than 2.0.
 + The TiDB Connector for Spark requires JDK 1.8+ and Scala 2.11 (Spark2.0 + default Scala version).
@@ -41,31 +41,31 @@ For independent deployment of TiKV and the TiDB Connector for Spark, it is recom
 
 + TiKV parameters (default)
 
-```
-[server]
-end-point-concurrency = 8  # For OLAP scenarios, consider increasing this parameter
-[raftstore]
-sync-log = false
+    ```
+    [server]
+    end-point-concurrency = 8  # For OLAP scenarios, consider increasing this parameter
+    [raftstore]
+    sync-log = false
 
-[rocksdb]
-max-background-compactions = 6
-max-background-flushes = 2
+    [rocksdb]
+    max-background-compactions = 6
+    max-background-flushes = 2
 
-[rocksdb.defaultcf]
-block-cache-size = "10GB"
+    [rocksdb.defaultcf]
+    block-cache-size = "10GB"
 
-[rocksdb.writecf]
-block-cache-size = "4GB"
+    [rocksdb.writecf]
+    block-cache-size = "4GB"
 
-[rocksdb.raftcf]
-block-cache-size = "1GB"
+    [rocksdb.raftcf]
+    block-cache-size = "1GB"
 
-[rocksdb.lockcf]
-block-cache-size = "1GB"
+    [rocksdb.lockcf]
+    block-cache-size = "1GB"
 
-[storage]
-scheduler-worker-pool-size = 4
-```
+    [storage]
+    scheduler-worker-pool-size = 4
+    ```
 
 #### Configuration of the independent deployment of the Spark cluster and the TiDB Connector for Spark cluster 
 
@@ -126,7 +126,7 @@ For the Standalone mode without Hadoop support, use Spark 2.1.x and any version 
  
 Suppose you already have a Spark binaries, and the current PATH is `SPARKPATH`, please copy the TiDB Connector for Spark jar package to the `${SPARKPATH}/jars` directory.
 
-#### Starting a Master node
+#### Start a Master node
 
 Execute the following command on the selected Spark Master node:
  
@@ -138,7 +138,7 @@ cd $SPARKPATH
 
 After the above step is completed, a log file will be printed on the screen. Check the log file to confirm whether the Spark-Master is started successfully. You can open the [http://spark-master-hostname:8080](http://spark-master-hostname:8080) to view the cluster information (if you does not change the Spark-Master default port number). When you start Spark-Slave, you can also use this panel to confirm whether the Slave is joined to the cluster.
 
-#### Starting a Slave node
+#### Start a Slave node
 
 
 Similarly, you can start a Spark-Slave node with the following command:
@@ -149,7 +149,7 @@ Similarly, you can start a Spark-Slave node with the following command:
 
 After the command returns, you can see if the Slave node is joined to the Spark cluster correctly from the panel as well. Repeat the above command at all Slave nodes. After all Slaves are connected to the master, you have a Standalone mode Spark cluster.
 
-#### Spark SQL shell and JDBC Server
+#### Spark SQL shell and JDBC server
 
 If you want to use JDBC server and interactive SQL shell, please copy `start-tithriftserver.sh stop-tithriftserver.sh` to your Spark's sbin folder and `tispark-sql` to the bin folder. 
 

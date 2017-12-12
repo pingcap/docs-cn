@@ -7,7 +7,7 @@ category: user guide
 
 On the basis of MySQL variables and syntaxes, TiDB has defined some specific system variables and syntaxes to optimize performance.
 
-## System Variable
+## System variable
 Variables can be set with the `SET` statement, for example:
 
 ```set @@tidb_distsql_scan_concurrency = 10 ```
@@ -36,7 +36,7 @@ Scope: SESSION | GLOBAL
 Default value: 1
 This variable is used to set the concurrency of the `serial scan` operation. Use a bigger value in OLAP scenarios, and a smaller value in OLTP scenarios.
  
-## Optimizer Hint
+## Optimizer hint
 On the basis of MySQL’s `Optimizer Hint` Syntax, TiDB adds some proprietary `Hint` syntaxes. When using the `Hint` syntax, the TiDB optimizer will try to use the specific algorithm, which performs better than the default algorithm in some scenarios.
  
 The `Hint` syntax is included in comments like `/*+ xxx */`, and in MySQL client versions earlier than 5.7.7, the comment is removed by default. If you want to use the `Hint` syntax in these earlier versions, add the `--comments` option when starting the client. For example: `mysql -h 127.0.0.1 -P 4000 -uroot --comments`.

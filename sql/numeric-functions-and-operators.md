@@ -5,7 +5,7 @@ category: user guide
 
 # Numeric Functions and Operators
 
-## Arithmetic Operators
+## Arithmetic operators
 
 | Name                                                                                        | Description                       |
 |:----------------------------------------------------------------------------------------------|:----------------------------------|
@@ -18,7 +18,7 @@ category: user guide
 | [`-`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_unary-minus) | Change the sign of the argument   |
 
 
-## Mathematical Functions
+## Mathematical functions
 
 | Name                                                                                                      | Description                                                       |
 |:----------------------------------------------------------------------------------------------------------|:------------------------------------------------------------------|

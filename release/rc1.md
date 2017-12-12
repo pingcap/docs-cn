@@ -34,7 +34,7 @@ Placement Driver (PD):
     -  Use the `CHANGE COLUMN` statement to change the name of a column.
     -  Use `MODIFY COLUMN` and `CHANGE COLUMN` of the `ALTER TABLE` statement for some of the column type transfer.
 
-## New Tools:
+## New tools:
 + `Loader` is added to be compatible with the `mydumper` data format in Percona and provides the following functions:
     - Multi-thread import
     - Retry if error occurs

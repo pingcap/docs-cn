@@ -30,9 +30,9 @@ Before you start, make sure that you have:
     - Python 2.6 or Python 2.7
     - Python Jinja2 2.7.2 and MarkupSafe 0.11 packages. You can use the following commands to install the packages:
 
-      ```
-      pip install Jinja2==2.7.2 MarkupSafe==0.11
-      ```
+        ```
+        pip install Jinja2==2.7.2 MarkupSafe==0.11
+        ```
 
     - Access to the external network to install curl package and download binary.
     - Access to the managed nodes via SSH using password login or SSH authorized_key login.
@@ -105,7 +105,7 @@ The standard cluster has 6 machines:
 - 3 PD nodes
 - 3 TiKV nodes
 
-### The Cluster Topology of Single TiKV Instance on a Single Machine
+### The cluster topology of single TiKV instance on a single machine
 
 | Name  | Host IP     | Services   |
 |:------|:------------|:-----------|
@@ -144,7 +144,7 @@ pd_servers
 ```
 
 
-### The Cluster Topology of Multiple TiKV Instances on a Single Machine
+### The cluster topology of multiple TiKV instances on a single machine
 
 Take three TiKV instances as an example:
 
@@ -209,7 +209,7 @@ location_labels = ["host"]
 
     - `capaticy`: (DISK - log space) / TiKV instance number (the unit is GB)
 
-## Deploy the TiDB Cluster
+## Deploy the TiDB cluster
 
 > **Note**:
 >
@@ -321,7 +321,7 @@ Descriptions about the two circumstances are as follows.
         ansible-playbook start.yml -k
         ```
 
-## Test the Cluster
+## Test the cluster
 
 It is recommended to configure load balancing to provide uniform SQL interface.
 
@@ -341,13 +341,13 @@ It is recommended to configure load balancing to provide uniform SQL interface.
 
     The default account and password: `admin/admin`.
 
-## Perform Rolling Update
+## Perform rolling update
 
 - The rolling update of the TiDB service does not impact the ongoing business. Minimum requirements: `pd*3, tidb*2, tikv*3`.
 - For remote connection privileges, see the procedures described in the above section. But if the mutual authentication is already set up, you don't need to add the `-k` parameter.
 - If the `pump`/`drainer` services are running in the cluster, it is recommended to stop the `drainer` service first before the rolling update. The rolling update of the TiDB service automatically updates the `pump` service.
 
-### Download the Binary
+### Download the binary
 
 1. Use `playbook` to download the TiDB 1.0 binary and replace the existing binary in `tidb-ansible/resource/bin/` automatically.
 
@@ -361,7 +361,7 @@ It is recommended to configure load balancing to provide uniform SQL interface.
     wget http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz
     ```
 
-### Use Ansible for Rolling Update
+### Use Ansible for rolling update
 
 1. To apply rolling update to a specific service, such as TiKV.
 
@@ -407,7 +407,7 @@ Download the `TiDB-Ansible release-1.0` branch from GitHub:
 git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 ```
 
-### Custom Port
+### Custom port
 
 | Component     | Variable Port      | Default Port | Description              |
 |:--------------|:-------------------|:-------------|:-------------------------|
@@ -422,7 +422,7 @@ git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 | node_exporter | node_exporter_port | 9100         | the communication port to report the system information of every TiDB cluster node |
 | Grafana       | grafana_port       | 3000         | the port for the external Web monitoring service and client (Browser) access |
 
-### Custom Deployment Directory
+### Custom deployment directory
 
 | Component     | Variable Directory    | Default Directory             | Description |
 |:--------------|:----------------------|:------------------------------|:-----|

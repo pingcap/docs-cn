@@ -5,7 +5,7 @@ category: user guide
 
 # Literal Values
 
-## String Literals
+## String literals
 
 A string is a sequence of bytes or characters, enclosed within either single quote `'` or double quote `"` characters. For example:
 
@@ -73,7 +73,7 @@ You can use the following ways to include quote characters within a string:
 
 For more information, see [String Literals in MySQL](https://dev.mysql.com/doc/refman/5.7/en/string-literals.html).
 
-## Numeric Literals
+## Numeric literals
 
 Numeric literals include integer and DECIMAL literals and floating-point literals.
 
@@ -85,13 +85,13 @@ Numeric literals can also be represented in scientific notation, such as `1.2E3,
 
 For more information, see [Numeric Literals in MySQL](https://dev.mysql.com/doc/refman/5.7/en/number-literals.html).
 
-## NULL Values
+## NULL values
 
 The `NULL` value means “no data”. NULL can be written in any letter case. A synonym is `\N` (case sensitive).
 
 Be aware that the `NULL` value is different from values such as `0` for numeric types or the empty string `''` for string types.
 
-## Hexadecimal Literals
+## Hexadecimal literals
 
 Hexadecimal literal values are written using `X'val'` or `0xval` notation, where `val` contains hexadecimal digits. A leading `0x` is case sensitive and cannot be written as `0X`.
 
@@ -150,7 +150,7 @@ mysql> SELECT X'54694442';
 1 row in set (0.00 sec)
 ```
 
-## Date and Time Literals
+## Date and time literals
 
 Date and time values can be represented in several formats, such as quoted strings or as numbers. When TiDB expects a date, it interprets any of `'2015-07-21'`, `'20150721'` and `20150721` as a date.
 
@@ -186,7 +186,7 @@ The time value can also include a trailing fractional part in up to 6 digits pre
 
 For more information, see [Date and Time Literals in MySQL](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-literals.html).
 
-## Boolean Literals
+## Boolean literals
 
 The constants `TRUE` and `FALSE` evaluate to 1 and 0 respectively, which are not case sensitive.
 
@@ -200,7 +200,7 @@ mysql> SELECT TRUE, true, tRuE, FALSE, FaLsE, false;
 1 row in set (0.00 sec)
 ```
 
-## Bit-Value Literals
+## Bit-value literals
 
 Bit-value literals are written using `b'val'` or `0bval` notation. The `val` is a binary value written using zeros and ones. A leading `0b` is case sensitive and cannot be written as `0B`.
 

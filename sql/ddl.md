@@ -7,7 +7,7 @@ category: user guide
 
 DDL (Data Definition Language) is used to define the database structure or schema, and to manage the database and statements of various objects in the database.
 
-## CREATE DATABASE Syntax
+## CREATE DATABASE syntax
 
 ```sql
 CREATE {DATABASE | SCHEMA} [IF NOT EXISTS] db_name
@@ -24,7 +24,7 @@ If you create an existing database and does not specify `IF NOT EXISTS`, an erro
 
 The `create_specification` option is used to specify the specific `CHARACTER SET` and `COLLATE` in the database. Currently, the option is only supported in syntax.
 
-## DROP DATABASE Syntax
+## DROP DATABASE syntax
 
 ```sql
 DROP {DATABASE | SCHEMA} [IF EXISTS] db_name
@@ -34,7 +34,7 @@ The `DROP DATABASE` statement is used to delete the specified database and its t
 
 The `IF EXISTS` statement is used to prevent an error if the database does not exist.
 
-## CREATE TABLE Syntax
+## CREATE TABLE syntax
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] tbl_name
@@ -167,13 +167,13 @@ The `CREATE TABLE` statement is used to create a table. Currently, it does not s
     | `CHARACTER SET` | To specify the string code for the table; currently only support UTF8MB4 | `CHARACTER SET` =  'utf8mb4' |
     | `COMMENT` | The comment information | `COMMENT` = 'comment info' |
   
-### AUTO_INCREMENT Description
+### AUTO_INCREMENT description
 
 The TiDB automatic increment ID (`AUTO_INCREMENT` ID) only guarantees automatic increment and uniqueness and does not guarantee continuous allocation. Currently, TiDB adopts bulk allocation. If you insert data into multiple TiDB servers at the same time, the allocated automatic increment ID is not continuous.
 
 You can specify the `AUTO_INCREMENT` for integer fields. A table only supports one field with the `AUTO_INCREMENT` property.
 
-## DROP TABLE Syntax
+## DROP TABLE syntax
 
 ```sql
 DROP TABLE [IF EXISTS]
@@ -184,7 +184,7 @@ You can delete multiple tables at the same time. The tables are separated by a c
 
 If you delete a table that does not exist and does not specify the use of `IF EXISTS`, an error is displayed.
 
-## TRUNCATE TABLE Syntax
+## TRUNCATE TABLE syntax
 
 ```sql
 TRUNCATE [TABLE] tbl_name
@@ -196,7 +196,7 @@ This operation is similar to deleting all the data of a specified table, but it 
 
 > **Note**: If you use the `TRUNCATE TABLE` statement, the value of `AUTO_INCREMENT` in the original table is reset to its starting value.
 
-## RENAME TABLE Syntax
+## RENAME TABLE syntax
 
 ```sql
 RENAME TABLE
@@ -211,7 +211,7 @@ This statement is equivalent to the following `ALTER TABLE` statement:
 ALTER TABLE old_table RENAME new_table;
 ```
 
-## ALTER TABLE Syntax
+## ALTER TABLE syntax
 
 ```sql
 ALTER TABLE tbl_name
@@ -299,7 +299,7 @@ The support for specific operation types is as follows:
   - The `CHANGE/MODIFY COLUMN` does not support the update of `enum` type column.
 - `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`: is currently only supported in syntax    
 
-## CREATE INDEX Syntax
+## CREATE INDEX syntax
 
 ```sql
 CREATE [UNIQUE] INDEX index_name
@@ -330,7 +330,7 @@ The `CREATE INDEX` statement is used to create the index for an existing table. 
 - The `index_type` supports `BTREE` and `HASH` only in MySQL syntax, which means the index type is independent of the storage engine option in the creating table statement. For example, in MySQL, when you use `CREATE INDEX` on a table using InnoDB, it only supports the `BTREE` index, while TiDB supports both `BTREE` and `HASH` indexes.   
 - The `CREATE INDEX` does not support the `algorithm_option` and `lock_option` in MySQL.
 
-## DROP INDEX Syntax
+## DROP INDEX syntax
 
 ```sql
 DROP INDEX index_name ON tbl_name

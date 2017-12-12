@@ -27,7 +27,7 @@ However, in TiDB, the following MySQL features are not supported for the time be
 
 ## Features that are different from MySQL
 
-### Auto-Increment ID
+### Auto-increment ID
 
 The auto-increment ID feature in TiDB is only guaranteed to be automatically incremental and unique but is not guaranteed to be allocated sequentially. Currently, TiDB is allocating IDs in batches. If data is inserted into multiple TiDB servers simultaneously, the allocated IDs are not sequential.
 
@@ -46,7 +46,7 @@ The auto-increment ID feature in TiDB is only guaranteed to be automatically inc
 > 1. The client inserts a statement to TiDB B which sets the `id` to be 1 and the statement is executed successfully.
 > 2. The client inserts a record to TiDB A which sets the `id` set to the default value 1. In this case, it returns `Duplicated Error`.
 
-### Built-in Functions
+### Built-in functions
 
 TiDB supports most of the MySQL built-in functions, but not all. See [TiDB SQL Grammar](https://pingcap.github.io/sqlgram/#FunctionCallKeyword) for the supported functions.
 

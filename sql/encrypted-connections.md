@@ -22,7 +22,7 @@ In short, to use encrypted connections, both of the following conditions must be
 1. Enable encrypted connections in the TiDB server.
 2. The client specifies to use an encrypted connection.
 
-## Configure TiDB to Use Encrypted Connections
+## Configure TiDB to use encrypted connections
 
 See the following desrciptions about the related parameters to enable encrypted connections:
 
@@ -64,7 +64,7 @@ ssl-key = "certs/server-key.pem"
 
 If the certificate parameters are correct, TiDB outputs `Secure connection is enabled` when started, otherwise it outputs `Secure connection is NOT ENABLED`.
 
-## Configure the MySQL Client to Use Encrypted Connections
+## Configure the MySQL client to use encrypted connections
 
 The client of MySQL 5.7 or later versions attempts to establish an encrypted connection by default. If the server does not support encrypted connections, it automatically returns to unencrypted connections. The client of MySQL earlier than version 5.7 uses the unencrypted connection by default.
 
@@ -76,7 +76,7 @@ You can change the connection behavior of the client using the following `--ssl-
 
 For more information, see [Client-Side Configuration for Encrypted Connections](https://dev.mysql.com/doc/refman/5.7/en/using-encrypted-connections.html#using-encrypted-connections-client-side-configuration) in MySQL.
 
-## Enable Authentication
+## Enable authentication
 
 If the `ssl-ca` parameter is not specified in the TiDB server or MySQL client, the client or the server does not perform authentication by default and cannot prevent man-in-the-middle attack. For example, the client might "securely" connect to a disguised client. You can configure the `ssl-ca` parameter for authentication in the server and client. Generally, you only need to authenticate the server, but you can also authenticate the client to further enhance the security.
 
@@ -95,7 +95,7 @@ If the `ssl-ca` parameter is not specified in the TiDB server or MySQL client, t
 
 > **Note**: Currently, it is optional that TiDB server authenticates the client. If the client does not present its identity certificate in the TLS handshake, the TLS connection can also be successfully established.
 
-## Check Whether the Current Connection Uses Encryption
+## Check whether the current connection uses encryption
 
 Use the `SHOW STATUS LIKE "%Ssl%";` statement to get the details of the current connection, including whether encryption is used, the encryption protocol used by encrypted connections, the TLS version number and so on.
 
@@ -119,17 +119,17 @@ SSL: Cipher in use is ECDHE-RSA-AES128-GCM-SHA256
 ...
 ```
 
-## Supported TLS Versions, Key Exchange Protocols, and Encryption Algorithms
+## Supported TLS versions, key exchange protocols, and encryption algorithms
 
 The TLS versions, key exchange protocols and encryption algorithms supported by TiDB are determined by the official Golang libraries.
 
-### Supported TLS Versions
+### Supported TLS versions
 
 - TLS 1.0
 - TLS 1.1
 - TLS 1.2
 
-### Supported Key Exchange Protocols and Encryption Algorithms
+### Supported key exchange protocols and encryption algorithms
 
 - TLS\_RSA\_WITH\_RC4\_128\_SHA
 - TLS\_RSA\_WITH\_3DES\_EDE\_CBC\_SHA

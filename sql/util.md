@@ -5,11 +5,11 @@ category: user guide
 
 # Utility Statements
 
-## `DESCRIBE` Statement
+## `DESCRIBE` statement
 
 The `DESCRIBE` and `EXPLAIN` statements are synonyms, which can also be abbreviated as `DESC`. See the usage of the `EXPLAIN` statement.
 
-## `EXPLAIN` Statement
+## `EXPLAIN` statement
 
 ```sql
 {EXPLAIN | DESCRIBE | DESC}
@@ -87,7 +87,7 @@ If the `dot` program is not installed on your computer, copy the result to [this
 
 ![Explain Dot](../media/explain_dot.png)
 
-## `USE` Statement
+## `USE` statement
 
 ```sql
 USE db_name

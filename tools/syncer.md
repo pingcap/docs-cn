@@ -5,11 +5,11 @@ category: advanced
 
 # Syncer User Guide
 
-## Syncer Architecture
+## Syncer architecture
 
 ![syncer sharding](../media/syncer_architecture.png)
 
-## Downloading the TiDB Toolset (Linux)
+## Download the TiDB toolset (Linux)
 
 ```bash
 # Download the tool package.
@@ -27,19 +27,20 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 Syncer can be deployed to any of the machines that can connect to MySQL or TiDB cluster. But it is recommended to be deployed to the TiDB cluster.
 
-## Enabling binary logging (binlog) in MySQL
+## Enable binary logging (binlog) in MySQL
 
 Before using the `syncer` tool, make sure:
-+ Binlog is enabled in MySQL. See [Setting the Replication Master Configuration](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html).
 
++ Binlog is enabled in MySQL. See [Setting the Replication Master Configuration](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html).
 + Binlog must use the `row` format which is the recommended binlog format in MySQL 5.7. It can be configured using the following statement:
 
     ```bash
     SET GLOBAL binlog_format = ROW;
-    ``` 
-## Using the `syncer` tool to import data incrementally
+    ```
 
-### 1. Obtaining the position to synchronise
+## Use the `syncer` tool to import data incrementally
+
+### 1. Obtain the position to synchronise
 
 Set the meta file for `syncer`. Assuming the meta file is `syncer.meta` file:
 
@@ -134,13 +135,13 @@ Start `syncer`:
 2016/10/27 15:22:01 syncer.go:549: [info] rotate binlog to (mysql-bin.000003, 1280)
 ```
 
-### 3. Inserting data into MySQL
+### 3. Insert data into MySQL
 
 ```bash
 INSERT INTO t1 VALUES (4, 4), (5, 5);
 ```
 
-### 4. Logging in TiDB and viewing the data:
+### 4. Log in TiDB and view the data:
 
 ```bash
 mysql -h127.0.0.1 -P4000 -uroot -p
@@ -169,7 +170,7 @@ syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-
 
 You can see that by using `syncer`, the updates in MySQL are automatically synchronised in TiDB.
 
-## Supporting synchronising data from sharded tables
+## Support synchronising data from sharded tables
 
 `Syncer` supports importing data from sharded tables into one table within one database according to the `route-rules`. 
 
@@ -193,7 +194,7 @@ target-table = "table"
 > + If the sharding rules can be represented using the `route-rules` syntax;
 > + If the sharded tables contain monotone increasing primary keys, or if there are conflicts in the unique indexes or the primary keys after the combination. 
 
-## Monitoring
+## Monitor
 
 The `syncer` monitoring scheme contains the following components:
 
@@ -204,9 +205,3 @@ The `syncer` monitoring scheme contains the following components:
 For more information, see the following diagram:
 
 ![syncer_monitor_scheme](../media/syncer_monitor_scheme.png)
-
-
-
-
-
-

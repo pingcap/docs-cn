@@ -7,7 +7,7 @@ category: user guide
 
 In TiDB, the usage of information functions is similar to MySQL. For more information, see [Information Functions](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html).
 
-## Information Function Descriptions
+## Information function descriptions
 
 | Name | Description |
 |:-----|:------------|

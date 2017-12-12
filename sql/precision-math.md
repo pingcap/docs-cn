@@ -7,7 +7,7 @@ category: user guide
 
 The precision math support in TiDB is consistent with MySQL. For more information, see [Precision Math in MySQL](https://dev.mysql.com/doc/refman/5.7/en/precision-math.html).
 
-## Numeric Types
+## Numeric types
 
 The scope of precision math for exact-value operations includes the exact-value data types (integer and DECIMAL types) and exact-value numeric literals. Approximate-value data types and numeric literals are handled as floating-point numbers.
 
@@ -19,7 +19,7 @@ Two numbers that look similar might be treated differently. For example, `2.34` 
 
 The DECIMAL data type is a fixed-point type and the calculations are exact. The FLOAT and DOUBLE data types are floating-point types and calculations are approximate.
 
-## DECIMAL Data Type Characteristics
+## DECIMAL data type characteristics
 
 This section discusses the following topics of the characteristics of the DECIMAL data type (and its synonyms):
 
@@ -52,7 +52,7 @@ DECIMAL columns do not permit values larger than the range implied by the column
 
 For more information about the internal format of the DECIMAL values, see [`mydecimal.go`](https://github.com/pingcap/tidb/blob/master/util/types/mydecimal.go)  in TiDB souce code.
 
-## Expression Handling
+## Expression handling
 
 For expressions with precision math, TiDB uses the exact-value numbers as given whenever possible. For example, numbers in comparisons are used exactly as given without a change in value. In strict SQL mode, if you add an exact data type into a column, a number is inserted with its exact value if it is within the column range. When retrieved, the value is the same as what is inserted. If strict SQL mode is not enabled, truncation for INSERT is permitted in TiDB.
 
@@ -101,22 +101,22 @@ The following results are returned in different SQL modes:
 | strict, `ERROR_FOR_DIVISION_BY_ZERO` | Error; no row is inserted. |
 
 
-## Rounding Behavior
+## Rounding behavior
 
 The result of the `ROUND()` function depends on whether its argument is exact or approximate:
 
 - For exact-value numbers, the `ROUND()` function uses the “round half up” rule.
 - For approximate-value numbers, the results in TiDB differs from that in MySQL:
 
-  ```sql
-  TiDB > SELECT ROUND(2.5), ROUND(25E-1);
-  +------------+--------------+
-  | ROUND(2.5) | ROUND(25E-1) |
-  +------------+--------------+
-  |          3 |            3 |
-  +------------+--------------+
-  1 row in set (0.00 sec)
-  ```
+    ```sql
+    TiDB > SELECT ROUND(2.5), ROUND(25E-1);
+    +------------+--------------+
+    | ROUND(2.5) | ROUND(25E-1) |
+    +------------+--------------+
+    |          3 |            3 |
+    +------------+--------------+
+    1 row in set (0.00 sec)
+    ```
 
 For inserts into a DECIMAL or integer column, the rounding uses [round half away from zero](https://en.wikipedia.org/wiki/Rounding\#Round_half_away_from_zero).
 

@@ -106,7 +106,7 @@
 - [TiDB Best Practices](https://pingcap.github.io/blog/2017/07/24/tidbbestpractice/)
 - [Releases](release/rn.md)
 - [TiDB Roadmap](https://github.com/pingcap/docs/blob/master/ROADMAP.md)
-- [Connect with us](community.md)
+- [Connect with Us](community.md)
 + More Resources
   - [Frequently Used Tools](https://github.com/pingcap/tidb-tools)
   - [PingCAP Blog](https://pingcap.com/blog/)

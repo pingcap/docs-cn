@@ -7,15 +7,15 @@ category: user guide
 
 TiDB manages the database using a number of statements, including granting privileges, modifying system variables, and querying database status.
 
-## Privilege Management
+## Privilege management
 
 See [Privilege Management](privilege.md).
 
-## `SET` Statement
+## `SET` statement
 
 The `SET` statement has multiple functions and forms.
 
-### Assign Values to Variables
+### Assign values to variables
 
 ```sql
 SET variable_assignment [, variable_assignment] ...
@@ -32,7 +32,7 @@ variable_assignment:
 
 You can use the above syntax to assign values to variables in TiDB, which include system variables and user-defined variables. All user-defined variables are session variables. The system variables set using `@@global.` or `GLOBAL` are global variables, otherwise session variables. For more information, see [The System Variables](variable.md).
 
-### `SET CHARACTER` Statement and `SET NAMES`
+### `SET CHARACTER` statement and `SET NAMES`
 
 ```sql
 SET {CHARACTER SET | CHARSET}
@@ -44,7 +44,7 @@ SET NAMES {'charset_name'
 
 This statement sets three session system variables (`character_set_client`, `character_set_results` and `character_set_connection`) as given character set. Currently, the value of `character_set_connection` differs from MySQL and is set as the value of `character_set_database` in MySQL.
 
-### Set the Password
+### Set the password
 
 ```sql
 SET PASSWORD [FOR user] = password_option
@@ -57,7 +57,7 @@ password_option: {
 
 This statement is used to set user passwords. For more information, see [Privilege Management](privilege.md).
 
-### Set the Isolation Level
+### Set the isolation level
 
 ```sql
 SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
@@ -65,7 +65,7 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
 
 This statement is used to set the transaction isolation level. For more information, see [Transaction Isolation Level](transaction.md#transaction-isolation-level).
 
-## `SHOW` Statement
+## `SHOW` statement
 
 TiDB supports part of `SHOW` statements, used to view the Database/Table/Column information and the internal status of the database. Currently supported statements:
 
@@ -112,7 +112,7 @@ like_or_where:
 > - To view statistics using the `SHOW` statement, see [View Statistics](statistics.md#view-statistics).
 > - For more information about the `SHOW` statement, see [SHOW Syntax in MySQL](https://dev.mysql.com/doc/refman/5.7/en/show.html).
 
-## `ADMIN` Statement
+## `ADMIN` statement
 
 This statement is a TiDB extension syntax, used to view the status of TiDB.
 

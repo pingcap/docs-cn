@@ -81,9 +81,9 @@ curl http://127.0.0.1:2379/pd/api/v1/stores
 }
 ```
 
-## The Metrics interface
+## The metrics interface
 
-You can use this type of interface to monitor the state and performance of the entire cluster. The metrics data is displayed in Prometheus and Grafana. See [Using Prometheus and Grafana](#using-prometheus-and-grafana) for how to set up the monitoring system.
+You can use this type of interface to monitor the state and performance of the entire cluster. The metrics data is displayed in Prometheus and Grafana. See [Use Prometheus and Grafana](#use-prometheus-and-grafana) for how to set up the monitoring system.
 
 You can get the following metrics for each component:
 
@@ -125,7 +125,7 @@ You can get the following metrics for each component:
 
 - the total number of times that Raft processes the ready state
 
-## Using Prometheus and Grafana
+## Use Prometheus and Grafana
 
 ### The deployment architecture
 
@@ -135,7 +135,7 @@ See the following diagram for the deployment architecture:
 
 > **Note:** You must add the Prometheus Pushgateway addresses to the startup parameters of the TiDB, PD and TiKV components.
 
-### Setting up the monitoring system
+### Set up the monitoring system
 
 See the following links for your reference:
 
@@ -145,9 +145,9 @@ See the following links for your reference:
 
 - Grafana: [http://docs.grafana.org](http://docs.grafana.org/)
 
-### Configuration
+## Configuration
 
-#### Configuring TiDB, PD and TiKV
+### Configure TiDB, PD and TiKV
 
 + TiDB: Set the two parameters: `--metrics-addr` and `--metrics-interval`.
 
@@ -156,31 +156,31 @@ See the following links for your reference:
 
 + PD: update the toml configuration file with the Push Gateway address and the the push frequency:
 
-  ```toml
-  [metric]
-  # prometheus client push interval, set "0s" to disable prometheus.
-  interval = "15s"
-  # prometheus pushgateway address, leaves it empty will disable prometheus.
-  address = "host:port"
-  ```
+    ```toml
+    [metric]
+    # prometheus client push interval, set "0s" to disable prometheus.
+    interval = "15s"
+    # prometheus pushgateway address, leaves it empty will disable prometheus.
+    address = "host:port"
+    ```
 
 + TiKV: update the toml configuration file with the Push Gateway address and the the push frequency. Set the job field as "tikv".
 
-  ```toml
-  [metric]
-  # the Prometheus client push interval. Setting the value to 0s stops Prometheus client from pushing.
-  interval = "15s"
-  # the Prometheus pushgateway address. Leaving it empty stops Prometheus client from pushing.
-  address = "host:port"
-  # the Prometheus client push job name. Note: A node id will automatically append, e.g., "tikv_1".
-  job = "tikv"
-  ```
+    ```toml
+    [metric]
+    # the Prometheus client push interval. Setting the value to 0s stops Prometheus client from pushing.
+    interval = "15s"
+    # the Prometheus pushgateway address. Leaving it empty stops Prometheus client from pushing.
+    address = "host:port"
+    # the Prometheus client push job name. Note: A node id will automatically append, e.g., "tikv_1".
+    job = "tikv"
+    ```
 
-#### Configuring PushServer
+### Configure PushServer
 
 Generally, it does not need to be configured. You can use the default port: 9091.
 
-#### Configuring Prometheus
+### Configure Prometheus
 
 Add the Push Gateway address to the yaml configuration file:
 
@@ -200,9 +200,9 @@ labels:
   group: 'production'
  ```
 
-#### Configuring Grafana
+### Configure Grafana
 
-##### Creating a Prometheus data source
+#### Create a Prometheus data source
 
 1. Login the Grafana Web interface.
 
@@ -230,7 +230,7 @@ labels:
 
 6. Click "Add" to save the new data source.
 
-##### Creating a Grafana dashboard
+#### Create a Grafana dashboard
 
 1. Click the Grafana logo to open the sidebar menu.
 

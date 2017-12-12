@@ -20,7 +20,7 @@ Use the following tools for data backup and restoration:
 - `mydumper`: to export data from TiDB
 - `loader`: to import data into TiDB
 
-### Download TiDB Toolset (Linux)
+### Download TiDB toolset (Linux)
 
 ```bash
 # Download the tool package.
@@ -35,20 +35,20 @@ tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
 cd tidb-enterprise-tools-latest-linux-amd64
 ```
 
-## Full Backup and Restoration Using `mydumper`/`loader`
+## Full backup and restoration using `mydumper`/`loader`
 
 You can use `mydumper` to export data from MySQL and `loader` to import the data into TiDB.
 
 > **Note**: Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use it. Its performance is much lower than `mydumper`/`loader` and it takes much time to migrate large amounts of data. `mydumper`/`loader` is more powerful. For more information, see https://github.com/maxbube/mydumper.
 
-### Best Practices of Full Backup and Restoration Using `mydumper`/`loader` 
+### Best practices of full backup and restoration using `mydumper`/`loader` 
 
 To quickly backup and restore data (especially large amounts of data), refer to the following recommendations:
 
 - Keep the exported data file as small as possible and it is recommended keep it within 64M. You can use the `-F` parameter to set the value.
 - You can adjust the `-t` parameter of `loader` based on the number and the load of TiKV instances. For example, if there are three TiKV instances, `-t` can be set to 3 * (1 ~ n). If the load of TiKV is too high and the log `backoffer.maxSleep 15000ms is exceeded` is displayed many times, decrease the value of `-t`; otherwise, increase it.
 
-#### An Example of Restoring Data and Related Configuration 
+#### An example of restoring data and related configuration 
 
 - The total size of the exported files is 214G. A single table has 8 columns and 2 billion rows.
 - The cluster topology:
@@ -65,7 +65,7 @@ To quickly backup and restore data (especially large amounts of data), refer to 
 
 **Results**: It takes 11 hours to import all the data, which is 19.4G/hour.
 
-### Backup Data from TiDB
+### Backup data from TiDB
 
 Use `mydumper` to backup data from TiDB.
 
@@ -80,7 +80,7 @@ In this command,
 - `-F 64`: means a table is partitioned into chunks and one chunk is 64MB.
 - `--skip-tz-utc`: the purpose of adding this parameter is to ignore the inconsistency of time zone setting between MySQL and the data exporting machine and to disable automatic conversion.
 
-### Restore Data into TiDB
+### Restore data into TiDB
 
 To restore data into TiDB, use `loader` to import the previously exported data. See [Loader instructions](../tools/loader.md) for more information.   
 

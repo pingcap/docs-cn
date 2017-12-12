@@ -60,7 +60,7 @@ ROLLBACK;
 
 This statement is used to roll back the current transaction and cancels all the updates between `BEGIN` and `COMMIT`.
 
-## Explicit and Implicit Transaction
+## Explicit and implicit transaction
 
 TiDB supports explicit transactions (`BEGIN/COMMIT`) and implicit transactions (`SET autocommit = 1`).
 
@@ -68,7 +68,7 @@ If you set the value of `autocommit` to 1 and start a new transaction through `B
 
 For DDL statements, the transaction is committed automatically and does not support rollback. If you run the DDL statement while the current Session is in the process of a transaction, the DDL statement is run after the current transaction is committed.
 
-## Transaction Isolation Level
+## Transaction isolation level
 
 TiDB uses `SNAPSHOT ISOLATION` by default. You can set the isolation level of the current Session to `READ COMMITTED` using the following statement:
 

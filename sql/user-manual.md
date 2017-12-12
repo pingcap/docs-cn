@@ -7,7 +7,7 @@ category: user guide
 
 TiDB supports the SQL-92 standard and is compatible with MySQL. To help you easily get started with TiDB, TiDB user guide mainly inherits the MySQL document structure with some TiDB specific changes.
 
-## TiDB Server Administration
+## TiDB server administration
 
 - [The TiDB Server](tidb-server.md)
 - [The TiDB Command Options](server-command-option.md)
@@ -20,12 +20,12 @@ TiDB supports the SQL-92 standard and is compatible with MySQL. To help you easi
 - [TiDB User Account Management](user-account-management.md)
 - [Use Encrypted Connections](encrypted-connections.md)
 
-## SQL Optimization
+## SQL optimization
 
 - [Understand the Query Execution Plan](understanding-the-query-execution-plan.md)
 - [Introduction to Statistics](statistics.md)
 
-## Language Structure
+## Language structure
 
 - [Literal Values](literal-values.md)
 - [Schema Object Names](schema-object-names.md)
@@ -40,7 +40,7 @@ TiDB supports the SQL-92 standard and is compatible with MySQL. To help you easi
 - [Character Set Configuration](character-set-configuration.md)
 - [Time Zone](time-zone.md)
 
-## Data Types
+## Data types
 
 - [Numeric Types](datatype.md#numeric-types)
 - [Date and Time Types](datatype.md#date-and-time-types)
@@ -50,7 +50,7 @@ TiDB supports the SQL-92 standard and is compatible with MySQL. To help you easi
 - [The SET Type](datatype.md#the-set-type)
 - [Data Type Default Values](datatype.md#data-type-default-values)
 
-## Functions and Operators
+## Functions and operators
 
 - [Function and Operator Reference](functions-and-operators-reference.md)
 - [Type Conversion in Expression Evaluation](type-conversion-in-expression-evaluation.md)
@@ -69,7 +69,7 @@ TiDB supports the SQL-92 standard and is compatible with MySQL. To help you easi
 - [Miscellaneous Functions](miscellaneous-functions.md)
 - [Precision Math](precision-math.md)
 
-## SQL Statement Syntax
+## SQL statement syntax
 
 - [Data Definition Statements](ddl.md)
 - [Data Manipulation Statements](dml.md)
@@ -80,7 +80,7 @@ TiDB supports the SQL-92 standard and is compatible with MySQL. To help you easi
 - [Utility Statements](util.md)
 - [TiDB SQL Syntax Diagram](https://pingcap.github.io/sqlgram/)
 
-## JSON Functions and Generated Column
+## JSON functions and generated column
 
 - [JSON Functions and Generated Column](json-functions-generated-column.md)
 
