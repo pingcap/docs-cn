@@ -26,17 +26,17 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
     - 依赖 Python Jinja2 及 MarkupSafe 指定版本模块: `pip install Jinja2==2.7.2 MarkupSafe==0.11`
     - 可通过 ssh 登录目标机器，支持密码登录或 ssh authorized_key 登录。
     - 中控机可以是部署目标机器中的某一台，该机器需开放外网访问，并且安装 curl 软件包，用于下载 binary。
-    - 如使用 Docker 方式部署，依赖详见[如何使用 docker 方式部署 TiDB](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何使用-docker-方式部署-TiDB)，默认为 binary 部署方式。
+    - 如使用 Docker 方式部署，依赖详见[如何使用 docker 方式部署 TiDB](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何使用-docker-方式部署-tidb)，默认为 binary 部署方式。
 
 2.  部署目标机器若干
 
     - 建议4台及以上，TiKV 至少3实例，且与 TiDB、PD 模块不位于同一主机,详见[部署建议](recommendation.md)。
     - Linux 操作系统，x86_64 架构(amd64)，内核版本建议 3.10 以上，推荐 CentOS 7.3 及以上版本, 文件系统推荐 ext4(部分内核版本 xfs 文件系统有 bug, 本工具检查到 xfs 文件系统有 bug 会退出)。
     - 机器之间网络互通，防火墙、iptables 等可以在部署验证时关闭，后期开启。
-    - 机器的时间、时区设置正确(要求机器时间同步)，有 NTP 服务可以同步正确时间， ubuntu 系统需单独安装 ntpstat 软件包，详见[如何检测 NTP 服务是否正常](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何检测-NTP-服务是否正常)。
+    - 机器的时间、时区设置正确(要求机器时间同步)，有 NTP 服务可以同步正确时间， ubuntu 系统需单独安装 ntpstat 软件包，详见[如何检测 NTP 服务是否正常](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何检测-ntp-服务是否正常)。
     - 若使用普通用户作为 Ansible SSH 远程连接用户，该用户需要有 sudo 到 root 权限，或直接使用 root 用户远程连接。
     - Python 2.6 或 Python 2.7。
-    - 如使用 Docker 方式部署，依赖详见[如何使用 docker 方式部署 TiDB](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何使用-docker-方式部署-TiDB)，默认为 binary 部署方式。
+    - 如使用 Docker 方式部署，依赖详见[如何使用 docker 方式部署 TiDB](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何使用-docker-方式部署-tidb)，默认为 binary 部署方式。
 
 ## 在中控机器上安装配置 Ansible
 
