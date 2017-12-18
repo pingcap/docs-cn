@@ -207,12 +207,15 @@ pd_servers
         ansible-playbook bootstrap.yml -k
         ```
 
-        或者：
-        如果 Ansible 使用普通用户远程连接需要密码, 可以添加 --extra-vars 参数，执行其他 playbook 同理：
+        或者：
+ 
+        如果 Ansible 使用普通用户远程连接需要密码, 可以添加 --extra-vars 参数，执行其他 playbook 同理：
 
-        ```
+        ```         
         ansible-playbook bootstrap.yml --extra-vars "ansible_sudo_pass=tidbpasswd"
         ```
+
+        但是这个不是最好的做法，这将使你的 sudo 密码保留在 shell 历史记录中，最好可以采用 `--ask-vault-pass` 参数，更多请参考：[playbooks_vault 详细介绍](http://docs.ansible.com/ansible/latest/playbooks_vault.html)。
 
         本 playbook 需要使用 root 权限执行，如果该普通用户 sudo 到 root 需要密码，需添加 -K 参数：
 
@@ -316,3 +319,5 @@ pd_servers
 ```
 git clone -b rc4 https://github.com/pingcap/tidb-ansible.git
 ```
+
+
