@@ -401,7 +401,7 @@ location_labels = ["host"]
 ### TiDB 各版本下载链接
 - master 版本：
     - [TiDB master-CentOS7](http://download.pingcap.org/tidb-latest-linux-amd64-unportable.tar.gz)
-    - [TiDB m aster-CentOS6](http://download.pingcap.org/tidb-latest-linux-amd64-unportable-centos6.tar.gz)
+    - [TiDB master-CentOS6](http://download.pingcap.org/tidb-latest-linux-amd64-unportable-centos6.tar.gz)
 
 - 1.0 版本:
     - [TiDB 1.0-CentOS7](http://download.pingcap.org/tidb-v1.0.4-linux-amd64-unportable.tar.gz)
@@ -479,7 +479,7 @@ unsynchronised
 $ ntpstat
 Unable to talk to NTP daemon. Is it running?
 ```
-使用以下命令可使 NTP 服务尽快开始同步，pool.ntp.org 可替换为您的 NTP server：
+使用以下命令可使 NTP 服务尽快开始同步，pool.ntp.org 可替换为 NTP server：
 ```
 $ sudo systemctl stop ntpd.service
 $ sudo ntpdate pool.ntp.org
