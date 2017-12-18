@@ -353,5 +353,3 @@ git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 | node_exporter | node_exporter_log_dir | {{ deploy_dir }}/log | 日志目录 |
 | grafana | grafana_log_dir | {{ deploy_dir }}/log | 日志目录 |
 | grafana | grafana_data_dir | {{ deploy_dir }}/data.grafana | 数据目录 |
-
-
