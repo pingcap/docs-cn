@@ -26,15 +26,17 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
     - 依赖 Python Jinja2 及 MarkupSafe 指定版本模块: `pip install Jinja2==2.7.2 MarkupSafe==0.11`
     - 可通过 ssh 登录目标机器，支持密码登录或 ssh authorized_key 登录。
     - 中控机可以是部署目标机器中的某一台，该机器需开放外网访问，并且安装 curl 软件包，用于下载 binary。
+    - 如使用 Docker 方式部署，依赖详见[如何使用 docker 方式部署 TiDB](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何使用-docker-方式部署-TiDB)，默认为 binary 部署方式。
 
 2.  部署目标机器若干
 
     - 建议4台及以上，TiKV 至少3实例，且与 TiDB、PD 模块不位于同一主机,详见[部署建议](recommendation.md)。
     - Linux 操作系统，x86_64 架构(amd64)，内核版本建议 3.10 以上，推荐 CentOS 7.3 及以上版本, 文件系统推荐 ext4(部分内核版本 xfs 文件系统有 bug, 本工具检查到 xfs 文件系统有 bug 会退出)。
     - 机器之间网络互通，防火墙、iptables 等可以在部署验证时关闭，后期开启。
-    - 机器的时间、时区设置正确(要求机器时间同步)，有 NTP 服务可以同步正确时间, ubuntu 系统需单独安装 ntpstat 软件包。
+    - 机器的时间、时区设置正确(要求机器时间同步)，有 NTP 服务可以同步正确时间， ubuntu 系统需单独安装 ntpstat 软件包，详见[如何检测 NTP 服务是否正常](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何检测-NTP-服务是否正常)。
     - 若使用普通用户作为 Ansible SSH 远程连接用户，该用户需要有 sudo 到 root 权限，或直接使用 root 用户远程连接。
     - Python 2.6 或 Python 2.7。
+    - 如使用 Docker 方式部署，依赖详见[如何使用 docker 方式部署 TiDB](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何使用-docker-方式部署-TiDB)，默认为 binary 部署方式。
 
 ## 在中控机器上安装配置 Ansible
 
@@ -61,10 +63,18 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 ## 下载 TiDB-Ansible
 
-使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 release-1.0 分支，默认的文件夹名称为 `tidb-ansible`。该文件夹包含用 TiDB-Ansible 来部署 TiDB 集群所需要的所有文件。
+使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`。该文件夹包含用 TiDB-Ansible 来部署 TiDB 集群所需要的所有文件。
+
+下载 GA 版本：
 ```
 git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 ```
+
+下载 master 版本：
+```
+git clone https://github.com/pingcap/tidb-ansible.git
+```
+> 生产环境请下载 GA 版本部署 TiDB。
 ## 分配机器资源，编辑 inventory.ini 文件
 
 > inventory.ini 文件路径为 tidb-ansible/inventory.ini。
@@ -173,6 +183,25 @@ location_labels = ["host"]
     2.  如果多个 TiKV 实例部署在同一块物理磁盘上, 需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
         - `capacity` = (DISK - 日志空间) / TiKV 实例数量, 单位为 GB
 
+### inventory.ini 变量调整
+| 变量 | 含义 |
+| ---- | ------- |
+| cluster_name | 集群名称，可调整 |
+| tidb_version | TiDB 版本，TiDB-Ansible 各分支默认已配置 |
+| deployment_method | 部署方式，默认为 binary，可选 docker |
+| process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
+| timezone | 修改部署目标机器时区，默认为 `Asia/Shanghai`, 可调整，与  `set_timezone` 变量结合使用 |
+| set_timezone | 默认为 True，即修改部署目标机器时区，关闭可修改为 False |
+| enable_elk | 目前不支持，请忽略 |
+| enable_firewalld | 开启防火墙，默认不开启 |
+| enable_ntpd | 检测部署目标机器 NTP 服务，默认为 True，请勿关闭 |
+| machine_benchmark | 检测部署目标机器磁盘 IOPS，默认为 True，请勿关闭 |
+| set_hostname | 根据 IP 修改部署目标机器主机名，默认为 False |
+| enable_binlog | 是否部署 pump 并开启 binlog，默认为 False，依赖 Kafka 集群，参见 `zookeeper_addrs` 变量 |
+| zookeeper_addrs | binlog Kafka 集群的 zookeeper 地址 |
+| enable_slow_query_log | TiDB 慢查询日志记录到单独文件({{ deploy_dir }}/log/tidb_slow_query.log)，默认为 False，记录到 tidb 日志
+| deploy_without_tidb | KV 模式，不部署 TiDB 服务，仅部署 PD、TiKV 及监控服务，请将 `inventory.ini` 文件中 tidb_servers 主机组 IP 设置为空。|
+
 ## 部署任务
 
 > TiDB 服务不推荐使用 root 用户运行, 本例使用 `tidb` 普通用户作为服务运行用户。
@@ -266,7 +295,7 @@ location_labels = ["host"]
         ansible-playbook bootstrap.yml -k
         ```
 
-        本 playbook 需要使用 root 权限执行，如果该普通用户 sudo 到 root 需要密码，需添加 -K 参数：
+        执行该 playbook 需要 root 权限，如果该普通用户 sudo 到 root 需要密码，需添加 -K 参数：
 
         ```
         ansible-playbook bootstrap.yml -k -K
@@ -276,6 +305,12 @@ location_labels = ["host"]
 
         ```
         ansible-playbook deploy.yml -k
+        ```
+     
+        如 `process_supervision = systemd`, 则执行该 playbook 需要 root 权限，如果该普通用户 sudo 到 root 需要密码，需添加 -K 参数：
+
+        ```
+        ansible-playbook deploy.yml -k -K
         ```
 
     5.  启动 TiDB 集群
@@ -357,20 +392,23 @@ location_labels = ["host"]
 |滚动升级|`ansible-playbook rolling_update.yml`|
 |滚动升级 TiKV|`ansible-playbook rolling_update.yml --tags=tikv`|
 |滚动升级除 pd 外模块|`ansible-playbook rolling_update.yml --skip-tags=pd`|
+|滚动升级监控组件|`ansible-playbook rolling_update_monitor.yml`|
 
 > TiDB 服务数据迁移、性能调优等更多高级功能请参考 [https://github.com/pingcap/docs-cn](https://github.com/pingcap/docs-cn)
 
 ## 常见部署问题
 
 ### TiDB 各版本下载链接
+- master 版本：
+    - [TiDB master-CentOS7](http://download.pingcap.org/tidb-latest-linux-amd64-unportable.tar.gz)
+    - [TiDB master-CentOS6](http://download.pingcap.org/tidb-latest-linux-amd64-unportable-centos6.tar.gz)
 
 - 1.0 版本:
-    - [TiDB 1.0-CentOS7](http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz)
-    - [TiDB 1.0-CentOS6](http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable-centos6.tar.gz)
+    - [TiDB 1.0-CentOS7](http://download.pingcap.org/tidb-v1.0.4-linux-amd64-unportable.tar.gz)
+    - [TiDB 1.0-CentOS6](http://download.pingcap.org/tidb-v1.0.4-linux-amd64-unportable-centos6.tar.gz)
 
 ### 如何下载安装指定版本 TiDB
-
-如需安装 TiDB 1.0 版本，需要先下载 TiDB-Ansible release-1.0 分支，确认 inventory.ini 文件中 `tidb_version = v1.0.0`, 安装步骤同上。
+如需安装 TiDB 1.0.4 版本，需要先下载 TiDB-Ansible release-1.0 分支，确认 inventory.ini 文件中 `tidb_version = v1.0.4`, 安装步骤同上。
 
 从 github 下载 TiDB-Ansible release-1.0 分支:
 
@@ -378,7 +416,9 @@ location_labels = ["host"]
 git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 ```
 
-### 自定义端口
+### 如何自定义端口
+修改 `inventory.ini` 文件，在相应服务 IP 后添加以下主机变量即可：
+
 | 组件 | 端口变量 | 默认端口 | 说明 |
 | :-- | :-- | :-- | :-- |
 | TiDB |  tidb_port | 4000  | 应用及 DBA 工具访问通信端口 |
@@ -392,7 +432,9 @@ git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 | node_exporter | node_exporter_port | 9100 | TiDB 集群每个节点的系统信息上报通信端口 |
 | grafana | grafana_port|  3000 | Web 监控服务对外服务和客户端(浏览器)访问端口 |
 
-### 自定义部署目录
+### 如何自定义部署目录
+修改 `inventory.ini` 文件，在相应服务 IP 后添加以下主机变量即可：
+
 | 组件 | 目录变量 | 默认目录 | 说明 |
 | :-- | :-- | :-- | :-- |
 | 全局 | deploy_dir | /home/tidb/deploy | 部署目录 |
@@ -411,3 +453,63 @@ git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 | node_exporter | node_exporter_log_dir | {{ deploy_dir }}/log | 日志目录 |
 | grafana | grafana_log_dir | {{ deploy_dir }}/log | 日志目录 |
 | grafana | grafana_data_dir | {{ deploy_dir }}/data.grafana | 数据目录 |
+
+### 如何检测 NTP 服务是否正常
+执行以下命令输出 `running` 表示 NTP 服务正在运行：
+```
+$ sudo systemctl status ntpd.service
+● ntpd.service - Network Time Service
+   Loaded: loaded (/usr/lib/systemd/system/ntpd.service; disabled; vendor preset: disabled)
+   Active: active (running) since 一 2017-12-18 13:13:19 CST; 3s ago
+```
+执行 ntpstat 命令，输出 synchronised to NTP server(正在与 NTP server 同步)表示在正常同步：
+```
+$ ntpstat
+synchronised to NTP server (85.199.214.101) at stratum 2
+   time correct to within 91 ms
+   polling server every 1024 s
+```
+以下情况表示 NTP 服务未正常同步：
+```
+$ ntpstat
+unsynchronised
+```
+以下情况表示 NTP 服务未正常运行：
+```
+$ ntpstat
+Unable to talk to NTP daemon. Is it running?
+```
+使用以下命令可使 NTP 服务尽快开始同步，pool.ntp.org 可替换为 NTP server：
+```
+$ sudo systemctl stop ntpd.service
+$ sudo ntpdate pool.ntp.org
+$ sudo systemctl start ntpd.service
+```
+
+### 如何使用 docker 方式部署 TiDB
+- 中控机及部署目标机器需要已安装好 Docker，`inventory.ini` 中的普通用户(如 `ansible_user = tidb`)需要有 sudo 权限及 [docker 运行权限](https://docs.docker.com/engine/installation/linux/linux-postinstall/)。
+- 中控机及部署目标机器需要已安装 `docker-py` 模块:
+```
+sudo pip install docker-py
+```
+- 修改 `inventory.ini` 如下：
+```
+# deployment methods, [binary, docker]
+deployment_method = docker
+
+# process supervision, [systemd, supervise]
+process_supervision = systemd
+```
+安装过程与 binary 安装方式一致。
+
+### 如何调整进程监管方式从 supervise 到 systemd
+```
+# process supervision, [systemd, supervise]
+process_supervision = systemd
+```
+TiDB-Anisble 在 TiDB v1.0.4 版本之前进程监管方式默认为 supervise， 之前安装的集群可保持不变，如需更新为 systemd，需关闭集群按以下方式变更：
+```
+ansible-playbook stop.yml
+ansible-playbook deploy.yml -D
+ansible-playbook start.yml
+```
