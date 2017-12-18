@@ -107,7 +107,7 @@
 - [最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
 - [版本发布历史](releases/README.md)
 - [TiDB 路线图](https://github.com/pingcap/docs-cn/blob/master/ROADMAP.md)
-+  用户案例
++ 用户案例
   - [易果生鲜：TiDB / TiSpark 在易果集团实时数仓中的创新实践](http://t.cn/RTYVhzH)
   - [360金融：TiDB 在360金融贷款实时风控场景应用](http://t.cn/RTKnTev)
   - [猿辅导：TiDB 在猿辅导数据快速增长及复杂查询场景下的应用实践](http://t.cn/RTKnKSX)
