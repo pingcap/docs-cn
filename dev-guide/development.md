@@ -6,12 +6,6 @@ If you want to develop the TiDB project, you can follow this guide.
 
 Before you begin, check the [supported platforms](./requirements.md#supported-platforms) and [prerequisites](./requirements.md#prerequisites) first.
 
-## Install RocksDB
-
-You must follow [rust-rocksdb](https://github.com/pingcap/rust-rocksdb/blob/master/librocksdb_sys/build.sh#L127) to see which version TiKV needs. You can install the RocksDB shared library manually according to [INSTALL.md](https://github.com/facebook/rocksdb/blob/master/INSTALL.md).
-
-After you install RocksDB, make sure that the RocksDB include path is in the `CPATH` environment variable and the RocksDB lib path is in the `LIBRARY_PATH` and `LD_LIBRARY_PATH` environment variables.  
-
 ## Build TiKV
 
 After you install the RocksDB shared library, you can build TiKV directly without `ROCKSDB_SYS_STATIC`.

@@ -53,7 +53,7 @@ rm -rf $TIDB_PATH/deps/tikv
 git clone --depth=1 https://github.com/pingcap/tikv.git $TIDB_PATH/deps/tikv
 cd $TIDB_PATH/deps/tikv
 
-make static_release
+make release
 
 cp -f ./bin/tikv-server $TIDB_PATH/bin
 cd $TIDB_PATH

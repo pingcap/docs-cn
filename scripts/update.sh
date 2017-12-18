@@ -50,7 +50,7 @@ echo "updating and building TiKV..."
 cd $TIDB_PATH/deps/tikv
 git pull
 
-make static_release
+make release
 
 cp -f ./bin/tikv-server $TIDB_PATH/bin
 cd $TIDB_PATH
