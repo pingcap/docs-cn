@@ -32,7 +32,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
     - 建议4台及以上，TiKV 至少3实例，且与 TiDB、PD 模块不位于同一主机,详见[部署建议](recommendation.md)。
     - Linux 操作系统，x86_64 架构(amd64)，内核版本建议 3.10 以上，推荐 CentOS 7.3 及以上版本, 文件系统推荐 ext4(部分内核版本 xfs 文件系统有 bug, 本工具检查到 xfs 文件系统有 bug 会退出)。
     - 机器之间网络互通，防火墙、iptables 等可以在部署验证时关闭，后期开启。
-    - 机器的时间、时区设置正确(要求机器时间同步)，有 NTP 服务可以同步正确时间, ubuntu 系统需单独安装 ntpstat 软件包。
+    - 机器的时间、时区设置正确(要求机器时间同步)，有 NTP 服务可以同步正确时间, ubuntu 系统需单独安装 ntpstat 软件包, 参考[如何检测 NTP 服务是否正常](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何检测 NTP 服务是否正常)
     - 若使用普通用户作为 Ansible SSH 远程连接用户，该用户需要有 sudo 到 root 权限，或直接使用 root 用户远程连接。
     - Python 2.6 或 Python 2.7。
 
@@ -62,6 +62,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 ## 下载 TiDB-Ansible
 
 使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`。该文件夹包含用 TiDB-Ansible 来部署 TiDB 集群所需要的所有文件。
+
 下载 GA 版本：
 ```
 git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
@@ -71,7 +72,7 @@ git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 ```
 git clone https://github.com/pingcap/tidb-ansible.git
 ```
-> 生产环境请下载 GA 版本安装。
+> 生产环境请下载 GA 版本。
 ## 分配机器资源，编辑 inventory.ini 文件
 
 > inventory.ini 文件路径为 tidb-ansible/inventory.ini。
@@ -462,3 +463,18 @@ $ sudo systemctl stop ntpd.service
 $ sudo ntpdate pool.ntp.org
 $ sudo systemctl start ntpd.service
 ```
+
+### 如何使用 TiDB-Ansible 安装 docker 版本 TiDB
+- `inventory.ini` 中的普通用户(如 `ansible_user = tidb`)需要有 sudo 权限及 [docker 运行权限](https://docs.docker.com/engine/installation/linux/linux-postinstall/)。
+- 中控机及目标安装机器需要安装 `docker-py`:
+```
+sudo pip install docker-py
+```
+- 修改 `inventory.ini` 如下：
+```# deployment methods, [binary, docker]
+deployment_method = docker
+
+# process supervision, [systemd, supervise]
+process_supervision = systemd
+```
+安装过程与 binary 安装方式一致。
