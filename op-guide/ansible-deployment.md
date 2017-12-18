@@ -26,7 +26,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
     - 依赖 Python Jinja2 及 MarkupSafe 指定版本模块: `pip install Jinja2==2.7.2 MarkupSafe==0.11`
     - 可通过 ssh 登录目标机器，支持密码登录或 ssh authorized_key 登录。
     - 中控机可以是部署目标机器中的某一台，该机器需开放外网访问，并且安装 curl 软件包，用于下载 binary。
-    - 如使用 Docker 方式部署，依赖详见[如何使用 docker 方式部署 TiDB](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何使用docker方式部署TiDB)， 默认为 binary 部署方式。
+    - 如使用 Docker 方式部署，依赖详见[如何使用 docker 方式部署 TiDB](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何使用docker方式部署TiDB), 默认为 binary 部署方式。
 
 2.  部署目标机器若干
 
