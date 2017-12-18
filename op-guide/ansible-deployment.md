@@ -61,10 +61,17 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 ## 下载 TiDB-Ansible
 
-使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 release-1.0 分支，默认的文件夹名称为 `tidb-ansible`。该文件夹包含用 TiDB-Ansible 来部署 TiDB 集群所需要的所有文件。
+使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`。该文件夹包含用 TiDB-Ansible 来部署 TiDB 集群所需要的所有文件。
+下载 GA 版本：
 ```
 git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 ```
+
+下载 master 版本：
+```
+git clone https://github.com/pingcap/tidb-ansible.git
+```
+> 生产环境请下载 GA 版本安装。
 ## 分配机器资源，编辑 inventory.ini 文件
 
 > inventory.ini 文件路径为 tidb-ansible/inventory.ini。
@@ -266,7 +273,7 @@ location_labels = ["host"]
         ansible-playbook bootstrap.yml -k
         ```
 
-        本 playbook 需要使用 root 权限执行，如果该普通用户 sudo 到 root 需要密码，需添加 -K 参数：
+        执行该 playbook 需要 root 权限，如果该普通用户 sudo 到 root 需要密码，需添加 -K 参数：
 
         ```
         ansible-playbook bootstrap.yml -k -K
@@ -276,6 +283,12 @@ location_labels = ["host"]
 
         ```
         ansible-playbook deploy.yml -k
+        ```
+     
+        如 `process_supervision = systemd`, 则执行该 playbook 需要 root 权限，如果该普通用户 sudo 到 root 需要密码，需添加 -K 参数：
+
+        ```
+        ansible-playbook deploy.yml -k -K
         ```
 
     5.  启动 TiDB 集群
@@ -363,14 +376,16 @@ location_labels = ["host"]
 ## 常见部署问题
 
 ### TiDB 各版本下载链接
+- master 版本：
+    - [TiDB master-CentOS7](http://download.pingcap.org/tidb-latest-linux-amd64-unportable.tar.gz)
+    - [TiDB m aster-CentOS6](http://download.pingcap.org/tidb-latest-linux-amd64-unportable-centos6.tar.gz)
 
 - 1.0 版本:
-    - [TiDB 1.0-CentOS7](http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz)
-    - [TiDB 1.0-CentOS6](http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable-centos6.tar.gz)
+    - [TiDB 1.0-CentOS7](http://download.pingcap.org/tidb-v1.0.4-linux-amd64-unportable.tar.gz)
+    - [TiDB 1.0-CentOS6](http://download.pingcap.org/tidb-v1.0.4-linux-amd64-unportable-centos6.tar.gz)
 
 ### 如何下载安装指定版本 TiDB
-
-如需安装 TiDB 1.0 版本，需要先下载 TiDB-Ansible release-1.0 分支，确认 inventory.ini 文件中 `tidb_version = v1.0.0`, 安装步骤同上。
+如需安装 TiDB 1.0.4 版本，需要先下载 TiDB-Ansible release-1.0 分支，确认 inventory.ini 文件中 `tidb_version = v1.0.4`, 安装步骤同上。
 
 从 github 下载 TiDB-Ansible release-1.0 分支:
 
@@ -378,7 +393,9 @@ location_labels = ["host"]
 git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 ```
 
-### 自定义端口
+### 如何自定义端口
+修改 `inventory.ini` 文件，在相应服务 IP 后添加以下主机变量即可：
+
 | 组件 | 端口变量 | 默认端口 | 说明 |
 | :-- | :-- | :-- | :-- |
 | TiDB |  tidb_port | 4000  | 应用及 DBA 工具访问通信端口 |
@@ -392,7 +409,9 @@ git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 | node_exporter | node_exporter_port | 9100 | TiDB 集群每个节点的系统信息上报通信端口 |
 | grafana | grafana_port|  3000 | Web 监控服务对外服务和客户端(浏览器)访问端口 |
 
-### 自定义部署目录
+### 如何自定义部署目录
+修改 `inventory.ini` 文件，在相应服务 IP 后添加以下主机变量即可：
+
 | 组件 | 目录变量 | 默认目录 | 说明 |
 | :-- | :-- | :-- | :-- |
 | 全局 | deploy_dir | /home/tidb/deploy | 部署目录 |
@@ -411,3 +430,35 @@ git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 | node_exporter | node_exporter_log_dir | {{ deploy_dir }}/log | 日志目录 |
 | grafana | grafana_log_dir | {{ deploy_dir }}/log | 日志目录 |
 | grafana | grafana_data_dir | {{ deploy_dir }}/data.grafana | 数据目录 |
+
+### 如何检测 NTP 服务是否正常
+执行以下命令输出 `running` 表示 NTP 服务正在运行：
+```
+$ sudo systemctl status ntpd.service
+● ntpd.service - Network Time Service
+   Loaded: loaded (/usr/lib/systemd/system/ntpd.service; disabled; vendor preset: disabled)
+   Active: active (running) since 一 2017-12-18 13:13:19 CST; 3s ago
+```
+执行 ntpstat 命令，输出 synchronised to NTP server(正在与 NTP server 同步)表示在正常同步:
+```
+$ ntpstat
+synchronised to NTP server (85.199.214.101) at stratum 2
+   time correct to within 91 ms
+   polling server every 1024 s
+```
+以下情况表示未正常同步:
+```
+$ ntpstat
+unsynchronised
+```
+以下情况表示 NTP 服务未正常运行：
+```
+$ ntpstat
+Unable to talk to NTP daemon. Is it running?
+```
+使用以下命令可使 NTP 服务尽快开始同步，pool.ntp.org 可替换为您的 NTP server：
+```
+$ sudo systemctl stop ntpd.service
+$ sudo ntpdate pool.ntp.org
+$ sudo systemctl start ntpd.service
+```
