@@ -92,15 +92,16 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
 
 #### 使用 tidb-ansible 部署 PUMP
 
-- 使用 [kafka-ansible](https://github.com/pingcap/thirdparty-ops/tree/master/kafka-ansible) 部署 Kafka 集群。
-- 使用 [TiDB-Ansible](https://github.com/pingcap/tidb-ansible) 部署 TiDB 集群时，修改 `inventory.ini` 文件, 设置 `enable_binlog = True`, 并配置 Kafka 集群的 zookeeper 地址 `zookeeper_addrs`, 这样部署 TiDB 集群时会部署 PUMP。
+- 如无 Kafka 集群, 可使用 [kafka-ansible](https://github.com/pingcap/thirdparty-ops/tree/master/kafka-ansible) 部署 Kafka 集群。
+- 使用 [TiDB-Ansible](https://github.com/pingcap/tidb-ansible) 部署 TiDB 集群时，修改 `tidb-ansible/inventory.ini` 文件, 设置 `enable_binlog = True`, 并配置 `zookeeper_addrs` 变量为您的 Kafka 集群 zookeeper 地址 , 这样部署 TiDB 集群时会部署 PUMP。
 
+  配置样例:
   ```
   # binlog trigger
   enable_binlog = True
   # zookeeper address of kafka cluster, example:
   # zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
-  zookeeper_addrs = ""
+  zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
   ``` 
 
 #### 使用 Binary 部署 PUMP
