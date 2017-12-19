@@ -1,5 +1,5 @@
 ---
-title: Monitoring a TiDB Cluster
+title: Monitor a TiDB Cluster
 category: operations
 ---
 
