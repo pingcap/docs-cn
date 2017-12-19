@@ -108,6 +108,7 @@
 - [版本发布历史](releases/README.md)
 - [TiDB 路线图](https://github.com/pingcap/docs-cn/blob/master/ROADMAP.md)
 + 用户案例
+  - [Mobike](http://t.cn/RT8FbP6)
   - [易果生鲜](http://t.cn/RTYVhzH)
   - [360金融](http://t.cn/RTKnTev)
   - [猿辅导](http://t.cn/RTKnKSX)
@@ -116,7 +117,6 @@
   - [一面数据](http://t.cn/RT9r5di)
   - [万达网络](http://t.cn/RTKm6ds)
   - [某电信运营商](http://t.cn/RTYWADg)
-  - [Mobike](http://t.cn/RT8FbP6)
 + 更多资源
   - [常用工具](https://github.com/pingcap/tidb-tools)
   - [PingCAP 团队技术博客](https://pingcap.com/blog-cn/)
