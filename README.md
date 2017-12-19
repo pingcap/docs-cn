@@ -80,7 +80,7 @@
   + Monitor
     - [Overview of the Monitoring Framework](op-guide/monitor-overview.md)
     - [Key Metrics](op-guide/dashboard-overview-info.md)
-    - [Monitor a TiDB Cluster](op-guide/monitoring-tidb.md)
+    - [Monitor a TiDB Cluster](op-guide/monitor.md)
   + Scale
     - [Scale a TiDB Cluster](op-guide/horizontal-scale.md)
     - [Use Ansible to Scale](QUICKSTART.md#scale-the-tidb-cluster)
