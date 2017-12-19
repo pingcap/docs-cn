@@ -434,6 +434,25 @@ There are [similar limits](https://cloud.google.com/spanner/docs/limits) on Goog
 - `admin show ddl`: to view the running DDL job
 - `admin show ddl jobs`: to view all the results in the current DDL job queue (including tasks that are running and waiting to run) and the last ten results in the completed DDL job queue
 
+#### View the progress of adding an index.
+
+Use `admin show ddl` to view the current job of adding an index:
+
+```sql
+mysql> admin show ddl;
++------------+--------------------------------------+---------------------------------------------------------------------------------------------------------------------------------+--------------------------------------+
+| SCHEMA_VER | OWNER                                | JOB                                                                                                                             | SELF_ID                              |
++------------+--------------------------------------+---------------------------------------------------------------------------------------------------------------------------------+--------------------------------------+
+|         69 | 9deb4179-fb5c-4040-b3b3-2e8fc585d8db | ID:102, Type:add index, State:running, SchemaState:write reorganization, SchemaID:81, TableID:90, RowCount:1293344122, ArgLen:0 | 9deb4179-fb5c-4040-b3b3-2e8fc585d8db |
++------------+--------------------------------------+---------------------------------------------------------------------------------------------------------------------------------+--------------------------------------+
+
+```
+
+- The `OWNER` represents the TiDB server that is running this DDL statement.
+- The `JOB` lists the detailed information of the task.
+- The `SchemaID:81, TableID:90` in `JOB` represents the database ID and the user table ID.
+- The `RowCount:1293344122` in `JOB` represents the numer of rows that have been processed currently.
+
 #### The `column Show_db_priv not found` message is displayed when executing `grant SHOW DATABASES on db.*`.
 
 `SHOW DATABASES` is a global privilege rather than a database-level privilege. Therefore, you cannot grant this privilege to a database. You need to grant all databases:
