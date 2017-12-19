@@ -282,8 +282,9 @@ CREATE INDEX person_num ON person (number);
 or
 
 ```sql
-ALTER TABLE person ADD INDEX person_num (number)；
+ALTER TABLE person ADD INDEX person_num (number);
 ```
+
 You can also create unique indexes for the columns whose value is unique. For example:
 
 ```sql
@@ -293,9 +294,11 @@ CREATE UNIQUE INDEX person_num ON person (number);
 or
 
 ```sql
-ALTER TABLE person ADD UNIQUE person_num  on (number);
+ALTER TABLE person ADD UNIQUE person_num on (number);
 ```
+
 Use the `SHOW INDEX` to display all the indexes in a table:
+
 ```sql
 SHOW INDEX from person;
 ```
