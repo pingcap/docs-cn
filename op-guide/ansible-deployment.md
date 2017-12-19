@@ -349,17 +349,33 @@ It is recommended to configure load balancing to provide uniform SQL interface.
 
 ### Download the binary
 
-1. Use `playbook` to download the TiDB 1.0 binary and replace the existing binary in `tidb-ansible/resource/bin/` automatically.
+1. Edit the value of the `tidb_version` parameter in `inventory.ini`, and specify the version number you need to update to. The following example specifies the version number as `v1.0.2`:
+
+    ```
+    tidb_version = v1.0.2
+    ```
+
+2. Delete the existing downloads directory `tidb-ansible/downloads/`.
+
+    ```
+    rm -rf downloads
+    ```
+
+3. Use `playbook` to download the TiDB 1.0 binary and replace the existing binary in `tidb-ansible/resource/bin/` automatically.
 
     ```
     ansible-playbook local_prepare.yml
     ```
 
-2. Use `wget` to download the binary and replace the existing binary in `tidb-ansible/resource/bin/` manually.
+### Download the binary manually
 
-    ```
-    wget http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz
-    ```
+You can also download the binary manually. Use `wget` to download the binary and replace the existing binary in `tidb-ansible/resource/bin/` manually.
+
+```
+wget http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz
+```
+
+> **Note:** Remember to replace the version number in the download link.
 
 ### Use Ansible for rolling update
 
