@@ -1,5 +1,5 @@
 ---
-title: TiDB Ansible Deployment
+title: Ansible Deployment
 category: operations
 ---
 
@@ -207,7 +207,7 @@ location_labels = ["host"]
 
 2. If multiple TiKV instances are deployed on a same physical disk, edit the `capacity` parameter in `conf/tikv.yml`:
 
-    - `capaticy`: (DISK - log space) / TiKV instance number (the unit is GB)
+    - `capacity`: (DISK - log space) / TiKV instance number (the unit is GB)
 
 ## Deploy the TiDB cluster
 
@@ -269,7 +269,7 @@ Descriptions about the two circumstances are as follows.
         ansible-playbook start.yml -k
         ```
 
-- Use the normal user with  to deploy TiDB.
+- Use the normal user account to deploy TiDB.
 
     > **Note**: Before the deployment, you should create the normal `tidb` user account and add the sudo privileges. The following example uses the `tidb` user account as the user who runs the service.
 
