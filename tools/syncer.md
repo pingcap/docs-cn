@@ -451,7 +451,7 @@ target-table = "order_2017"
     - syncer 遇到无法执行的 SQL 会自动退出
     - 查看 syncer.meta 文件内 binlog-name 与 binlog-pos 信息
     - 登陆上游数据,通过类似语句查看 `show binlog events in 'mysql-bin.000023' from 136676560 limit 10;`
-        - TiDB 数据库 `alter add column` 目前不支持同时添加多列, 新版本 syncer 会对类似 SQL 切割,如过还未跳过可以联系 TiDB 技术支持
+        - TiDB 数据库 `alter add column` 目前不支持同时添加多列, 新版本 syncer 会对类似 SQL 切割,如果还未跳过可以联系 TiDB 技术支持
     - 获取到 SQL 后在 TiDB 执行该语句
         - 如果使用 POS 点位置启动, 修改 meta 文件内 binlog-pos 到相应语句的 END POS 信息,再次启动服务
         - 如果使用 GTID 启动,需要修改 GTID 位置到相应语句之后第一个 GTID,再次启动服务
