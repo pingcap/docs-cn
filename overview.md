@@ -11,7 +11,7 @@ TiDB (The pronunciation is: /'taɪdiːbi:/ tai-D-B, etymology: titanium) is a Hy
 
 - __Horizontal scalability__
 - __Compatible with MySQL protocol__
-- __Automatic Failover and high availability__
+- __Automatic failover and high availability__
 - __Consistent distributed transactions__
 - __Online DDL__
 - __Multiple storage engine support__
@@ -40,7 +40,7 @@ To better understand TiDB’s features, you need to understand the TiDB architec
 
 ![image alt text](media/tidb-architecture.png)
 
-The TiDB cluster has three components: the TiDB Server, the PD Server,  and the TiKV server.
+The TiDB cluster has three components: the TiDB server, the PD server,  and the TiKV server.
 
 ### TiDB server
 
@@ -50,17 +50,17 @@ The TiDB server is in charge of the following operations:
 
 2. Processing the SQL related logics
 
-3. Locating the TiKV address for storing and computing data through the Placement Driver (PD)
+3. Locating the TiKV address for storing and computing data through Placement Driver (PD)
 
 4. Exchanging data with TiKV
 
 5. Returning the result
 
-The TiDB server is stateless. It doesn’t store data and it is for computing only. TiDB is horizontally scalable and provides the unified interface to the outside through the load balancing components such as Linux Virtual Server (LVS), HAProxy, or F5.
+The TiDB server is stateless. It does not store data and it is for computing only. TiDB is horizontally scalable and provides the unified interface to the outside through the load balancing components such as Linux Virtual Server (LVS), HAProxy, or F5.
 
 ### Placement Driver server
 
-Placement Driver (PD) is the managing component of the entire cluster and is in charge of the following three operations:
+The Placement Driver (PD) server is the managing component of the entire cluster and is in charge of the following three operations:
 
 1. Storing the metadata of the cluster such as the region location of a specific key.
 
@@ -72,7 +72,7 @@ As a cluster, PD needs to be deployed to an odd number of nodes. Usually it is r
 
 ### TiKV server
 
-TiKV server is responsible for storing data. From an external view, TiKV is a distributed transactional Key-Value storage engine. Region is the basic unit to store data. Each Region stores the data for a particular Key Range which is a left-closed and right-open interval from StartKey to EndKey. There are multiple Regions in each TiKV node. TiKV uses the Raft protocol for replication to ensure the data consistency and disaster recovery. The replicas of the same Region on different nodes compose a Raft Group. The load balancing of the data among different TiKV nodes are scheduled by PD. Region is also the basic unit for scheduling the load balance.
+The TiKV server is responsible for storing data. From an external view, TiKV is a distributed transactional Key-Value storage engine. Region is the basic unit to store data. Each Region stores the data for a particular Key Range which is a left-closed and right-open interval from StartKey to EndKey. There are multiple Regions in each TiKV node. TiKV uses the Raft protocol for replication to ensure the data consistency and disaster recovery. The replicas of the same Region on different nodes compose a Raft Group. The load balancing of the data among different TiKV nodes are scheduled by PD. Region is also the basic unit for scheduling the load balance.
 
 ## Features
 
