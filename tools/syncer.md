@@ -32,7 +32,7 @@ Syncer 可以部署在任一台可以连通对应的 MySQL 和 TiDB 集群的机
 
 ### 设置同步开始的 position
 
-设置 syncer 的 meta 文件, 这里假设 meta 文件是 `syncer.meta`:
+设置 syncer 的 meta 文件，这里假设 meta 文件是 `syncer.meta`：
 
 ```bash
 # cat syncer.meta
@@ -46,7 +46,7 @@ binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e
 
 ### 启动 `syncer`
 
-`syncer` 的命令行参数说明:
+`syncer` 的命令行参数说明：
 
 ```
 Usage of syncer:
@@ -76,7 +76,7 @@ Usage of syncer:
       指定 syncer metric 信息; 如 `--status-addr 127:0.0.1:10088`
 ```
 
-`syncer` 的配置文件 `config.toml`:
+`syncer` 的配置文件 `config.toml`：
 
 
 ```toml
@@ -133,8 +133,8 @@ status-addr = "127.0.0.1:10086"
 
 
 # sharding 同步规则，采用 wildcharacter
-# 1. 星号字符 (*) 可以匹配零个或者多个字符,
-#    例子, doc* 匹配 doc 和 document, 但是和 dodo 不匹配;
+# 1. 星号字符 (*) 可以匹配零个或者多个字符，
+#    例子，doc* 匹配 doc 和 document，但是和 dodo 不匹配；
 #    星号只能放在 pattern 结尾，并且一个 pattern 中只能有一个
 # 2. 问号字符 (?) 匹配任一一个字符
 
@@ -165,7 +165,7 @@ port = 4000
 ```
 
 
-启动 `syncer`:
+启动 `syncer`：
 
 ```bash
 ./bin/syncer -config config.toml
@@ -278,7 +278,7 @@ tbl-name = "~^2016_.*"
 
 #### 分库分表同步示例
 
-1. 则只需要在所有 mysql 实例下面，启动 syncer, 并且设置以下 route-rules
+1. 则只需要在所有 mysql 实例下面，启动 syncer，并且设置以下 route-rules
 2. replicate-do-db & replicate-ignore-db 与 route-rules 同时使用场景下，replicate-do-db & replicate-ignore-db 需要指定 route-rules 中 target-schema & target-table 内容
 
 
@@ -321,7 +321,7 @@ target-table = "order_2017"
 1.  源库 server-id 检查
 
     - 可通过以下命令查看 server-id 
-    - 结果为空或者为 0 , syncer 无法同步数据
+    - 结果为空或者为 0， syncer 无法同步数据
     - Syncer server-id 与 MySQL server-id 不能相同，且在 MySQL   cluster 中唯一
 
     ```
@@ -395,7 +395,7 @@ target-table = "order_2017"
     ```
 1.  检查 mydumper 用户权限
 
-    - mydumper 导出数据至少拥有以下权限:
+    - mydumper 导出数据至少拥有以下权限：
     - mydumper 操作对象为 RDS 时，可以添加 --no-locks 参数，避免申请 reload 权限
       ` select , reload `
 1.  检查上下游同步用户权限
@@ -419,13 +419,13 @@ target-table = "order_2017"
 推荐使用 [supervise](https://cr.yp.to/daemontools/supervise.html) 类似服务守护 syncer 进程启动  
 
 1. 使用 screen 服务启动；以下实例需要事先安装 screen 与 sendmail 相关软件，且配置 smtp 相关信息
-    - `screen -S syncer-ops` ; 创建一个会话窗口
+    - `screen -S syncer-ops`；创建一个会话窗口
 
     `./syncer --config ops.toml --enable-gtid  --auto-fix-gtid;echo "syncer is down"|mail -s "syncer status" `
 
-    - screen 使用 `CTRL + A & D` 联合键退出； 使用 `screen -ls` 查看已创建会话，使用 `screen -r ID` 恢复会话
+    - screen 使用 `CTRL + A & D` 联合键退出；使用 `screen -ls` 查看已创建会话，使用 `screen -r ID` 恢复会话
 2. 使用 `nohup &` 方式启动 syncer 服务
-    - 创建 `syncer.sh` , 输入以下内容  
+    - 创建 `syncer.sh`，输入以下内容  
 
     `./syncer --config ops.toml --enable-gtid  --auto-fix-gtid -log-file ./${1}.log --status-addr 127.0.0.1:${2};echo "syncer is down"|mail -s "syncer status" `
 
@@ -440,33 +440,33 @@ target-table = "order_2017"
 
 1. DDL 与 DML 同步机制
 
-    - 当 binlog 内有 DDL 的时候, 如果 DDL 前面有 DML, syncer 优先同步 DDL 前所有 DML 语句, 再执行相应 DDL 
+    - 当 binlog 内有 DDL 的时候，如果 DDL 前面有 DML，syncer 优先同步 DDL 前所有 DML 语句，再执行相应 DDL 
 
-2. syncer 启动时没有填写 meta 文件信息,应该怎么办
+2. syncer 启动时没有填写 meta 文件信息，应该怎么办
 
-    - syncer 启动时未读取到 meta 指定 binlog 位置, syncer 会自动获取上游数据库存在的第一个 binlog 的第一个位置开始同步
+    - syncer 启动时未读取到 meta 指定 binlog 位置，syncer 会自动获取上游数据库存在的第一个 binlog 的第一个位置开始同步
 
 3. syncer 如何手动跳过指定语句
 
     - syncer 遇到无法执行的 SQL 会自动退出
     - 查看 syncer.meta 文件内 binlog-name 与 binlog-pos 信息
-    - 登陆上游数据,通过类似语句查看 `show binlog events in 'mysql-bin.000023' from 136676560 limit 10;`
-        - TiDB 数据库 `alter add column` 目前不支持同时添加多列, 新版本 syncer 会对类似 SQL 切割,如果还未跳过可以联系 TiDB 技术支持
+    - 登陆上游数据，通过类似语句查看 `show binlog events in 'mysql-bin.000023' from 136676560 limit 10;`
+        - TiDB 数据库 `alter add column` 目前不支持同时添加多列，新版本 syncer 会对类似 SQL 切割，如果还未跳过可以联系 TiDB 技术支持
     - 获取到 SQL 后在 TiDB 执行该语句
-        - 如果使用 POS 点位置启动, 修改 meta 文件内 binlog-pos 到相应语句的 END POS 信息,再次启动服务
-        - 如果使用 GTID 启动,需要修改 GTID 位置到相应语句之后第一个 GTID,再次启动服务
+        - 如果使用 POS 点位置启动，修改 meta 文件内 binlog-pos 到相应语句的 END POS 信息，再次启动服务
+        - 如果使用 GTID 启动，需要修改 GTID 位置到相应语句之后第一个 GTID，再次启动服务
 
 4. MySQL to MySQL 场景是否可以用 syncer 
 
 
-    - 不推荐使用 syncer , syncer 对下游 TiDB 有定向开发;下游是 MySQL 时,会有部分语句不支持,同时对 MySQL to MySQL 的 DDL 支持效果不佳
+    - 不推荐使用 syncer，syncer 对下游 TiDB 有定向开发；下游是 MySQL 时，会有部分语句不支持，同时对 MySQL to MySQL 的 DDL 支持效果不佳
 
 5. syncer 日志错误解释
 
     - `no db error` 检查下游是否存在需要同步的 database 信息
-    - `driver: bad connection` 网络连接闪断,具体可以通过 tcpdump 抓包获取时谁先发起断开连接请求. 另外推荐使用 supervise 守护 syncer 进程,当 syncer 进程挂掉的时候, supervise 会自动拉起 syncer 进程
-    - 其他 error 信息由 TiDB 服务返回,可以登陆 TiDB 服务查看日志详细内容. 
-        - `Error 9002: TiKV server timeout[try again later]` TiClient error ,检查 TiKV 服务状态以及 TiKV 的[主机配置](https://github.com/pingcap/docs-cn/blob/master/op-guide/recommendation.md)是否满足要求
+    - `driver: bad connection` 网络连接闪断，具体可以通过 tcpdump 抓包获取时谁先发起断开连接请求。另外推荐使用 supervise 守护 syncer 进程，当 syncer 进程挂掉的时候，supervise 会自动拉起 syncer 进程
+    - 其他 error 信息由 TiDB 服务返回，可以登陆 TiDB 服务查看日志详细内容. 
+        - `Error 9002: TiKV server timeout[try again later]` TiClient error，检查 TiKV 服务状态以及 TiKV 的[主机配置](https://github.com/pingcap/docs-cn/blob/master/op-guide/recommendation.md)是否满足要求
 
 
 
@@ -480,7 +480,7 @@ Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息�
 
 ### 配置 Syncer 监控与告警
 
-- syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。以下将分别配置 syncer 监控与告警，期间需要重启 Prometheus 。
+- syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。以下将分别配置 syncer 监控与告警，期间需要重启 Prometheus。
     - Prometheus 添加 syncer job 信息，
     - 将以下内容刷新到 prometheus 配置文件，重启 prometheus
 
@@ -490,7 +490,7 @@ Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息�
           - targets: ['10.1.1.4:10086'] // syncer 监听地址与端口，通知 prometheus 获取 syncer 的监控数据。
     ```
 
-    - 配置 Prometheus --> alertmanager  告警
+    - 配置 Prometheus --> alertmanager 告警
     - 将以下内容刷新到 alert.rule 配置文件，且 Prometheus 指定 --alertmanager.url 参数启动。
 
     ```
@@ -507,7 +507,7 @@ Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息�
 
 #### Grafana 配置
 
-+   进入 Grafana Web 界面（默认地址: http://localhost:3000 ，默认账号: admin 密码: admin）
++   进入 Grafana Web 界面（默认地址：http://localhost:3000， 默认账号：admin 密码： admin）
 
 +      导入 dashboard 配置文件
 
@@ -515,29 +515,29 @@ Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息�
 ### Grafana Syncer metrics 说明 
 
 #### title: binlog events
-- metrics: `irate(syncer_binlog_events_total[1m])`
-- info: syncer已经同步到的master biglog相关信息统计, 主要有 `query` `rotate` `update_rows` `write_rows` `delete_rows` 五种类型。
+- metrics：`irate(syncer_binlog_events_total[1m])`
+- info：syncer已经同步到的master biglog相关信息统计，主要有 `query` `rotate` `update_rows` `write_rows` `delete_rows` 五种类型。
 
-#### title: syncer_binlog_file
-- metrics: `syncer_binlog_file`
-- info: syncer同步 master binlog 文件数量。
+#### title：syncer_binlog_file
+- metrics：`syncer_binlog_file`
+- info：syncer同步 master binlog 文件数量。
 
-#### title: binlog pos
-- metrics: `syncer_binlog_pos`
-- info: syncer同步当前 master binlog 的 binlog-pos 信息
+#### title：binlog pos
+- metrics：`syncer_binlog_pos`
+- info：syncer同步当前 master binlog 的 binlog-pos 信息
 
-#### title: syncer_gtid
-- metrics: `syncer_gtid`
-- info: syncer同步当前 master binlog 的 binlog-gtid 信息
+#### title：syncer_gtid
+- metrics：`syncer_gtid`
+- info：syncer同步当前 master binlog 的 binlog-gtid 信息
 
-#### title: syncer_binlog_file
-- metrics: `syncer_binlog_file{node="master"} - ON(instance, job) syncer_binlog_file{node="syncer"}`
-- info: syncer与 master 同步时，相差的 binlog 文件数量,正常状态为 0 ,表示数据正在实时同步。数值越大，相差 binlog 文件数越多。
+#### title：syncer_binlog_file
+- metrics：`syncer_binlog_file{node="master"} - ON(instance, job) syncer_binlog_file{node="syncer"}`
+- info：syncer与 master 同步时，相差的 binlog 文件数量，正常状态为 0，表示数据正在实时同步。数值越大，相差 binlog 文件数越多。
 
-#### title: binlog skipped events
-- metrics: `irate(syncer_binlog_skipped_events_total[1m])`
-- info: syncer同步master biglog文件时跳过执行sql数量统计。跳过sql语句格式由`syncer.toml`文件中`skip-sqls`参数控制。具体设置查看[官方文档](https://pingcap.com/doc-syncer-zh)
+#### title：binlog skipped events
+- metrics：`irate(syncer_binlog_skipped_events_total[1m])`
+- info：syncer同步master biglog文件时跳过执行sql数量统计。跳过sql语句格式由 `syncer.toml` 文件中 `skip-sqls` 参数控制。具体设置查看[官方文档](https://pingcap.com/doc-syncer-zh)
 
-#### title: syncer_txn_costs_gauge_in_second
-- metrics: `syncer_txn_costs_gauge_in_second`
-- info: syncer 处理一个 batch 的时间，单位为秒
+#### title：syncer_txn_costs_gauge_in_second
+- metrics：`syncer_txn_costs_gauge_in_second`
+- info：syncer 处理一个 batch 的时间，单位为秒
