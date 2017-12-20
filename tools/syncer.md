@@ -322,7 +322,7 @@ target-table = "order_2017"
 
     - 可通过以下命令查看 server-id 
     - 结果为空或者为 0， syncer 无法同步数据
-    - Syncer server-id 与 MySQL server-id 不能相同，且在 MySQL   cluster 中唯一
+    - Syncer server-id 与 MySQL server-id 不能相同，且在 MySQL cluster 中唯一
 
     ```
     mysql> show global variables like 'server_id';
@@ -336,9 +336,7 @@ target-table = "order_2017"
 
 1.  检查 Binlog 相关参数
 
-    - 检查 MySQL 是否开启 binlog
-    - 可以用如下命令确认是否开启了 binlog
-    - 如果结果是 log_bin = OFF，需要开启。开启方式请参考[官方文档](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
+    - 可以用如下命令确认是否开启了 binlog：
 
     ```
     mysql> show global variables like 'log_bin';
@@ -364,17 +362,9 @@ target-table = "order_2017"
     1 row in set (0.00 sec)
     ```
 
-    - 如果发现 binlog 格式是其他格式，可以通过如下命令设置为 ROW,如果 MySQL 有连接，建议重启 MySQL 服务或者杀掉所有连接。
-
-    ```
-    mysql> set global binlog_format=ROW;
-    mysql>  flush logs;
-    Query OK, 0 rows affected (0.01 sec)
-    ```
-
 1.  检查 MySQL binlog_row_image  是否为 FULL
 
-    - 可以用如下命令检查 binlog_row_image
+    - 可以用如下命令检查 binlog_row_image：
 
     ```
     mysql> show global variables like 'binlog_row_image';
@@ -386,32 +376,23 @@ target-table = "order_2017"
     1 row in set (0.01 sec)
     ```
 
-    - 如果 binlog_row_image 结果不为 FULL，请设置为 FULL。设置方式如下：
-
-    ```
-    mysql> set global binlog_row_image = FULL;
-    Query OK, 0 rows affected (0.01 sec)
-    ```
 
 1.  检查 mydumper 用户权限
 
-    - mydumper 操作对象为 RDS 时，可以添加 --no-locks 参数，避免申请 reload 权限
-      ` select , reload `
+    - mydumper user 至少拥有以下操作权限： `select , reload`
+    - mydumper 目标数据库为 RDS 时，可以添加 --no-locks 参数，避免申请 reload 权限
+      
 
 1.  检查上下游同步用户权限
 
-    - 需要上游 MySQL 同步账号至少赋予以下权限：
-      ` select , replication slave , replication client`
+    - 需要上游 MySQL 同步账号至少赋予以下权限：` select , replication slave , replication client`
     
-    - 下游 TiDB 可暂时采用 root 同权限账号
+    - 下游 TiDB 采用 root 同权限账号
 
 1.  检查 GTID 与 POS 相关信息
 
-    - 使用以下语句查看 binlog 内容
-     `show binlog events in 'mysql-bin.000023' from 136676560 limit 10;`
-
- 
-
+    - 使用以下语句查看当前 binlog 与 POS 信息：`show master status;`
+    - 使用以下语句查看 binlog 内容：`show binlog events in 'mysql-bin.000023' from 136676560 limit 10;`
 
 
 ### 安全启动 syncer 服务
@@ -467,7 +448,6 @@ target-table = "order_2017"
     - `driver: bad connection` 网络连接闪断，具体可以通过 tcpdump 抓包获取时谁先发起断开连接请求。另外推荐使用 supervise 守护 syncer 进程，当 syncer 进程挂掉的时候，supervise 会自动拉起 syncer 进程
     - 其他 error 信息由 TiDB 服务返回，可以登陆 TiDB 服务查看日志详细内容. 
         - `Error 9002: TiKV server timeout[try again later]` TiClient error，检查 TiKV 服务状态以及 TiKV 的[主机配置](https://github.com/pingcap/docs-cn/blob/master/op-guide/recommendation.md)是否满足要求
-
 
 
 -----
