@@ -446,7 +446,7 @@ target-table = "order_2017"
 
     - syncer 启动时未读取到 meta 指定 binlog 位置, syncer 会自动获取上游数据库存在的第一个 binlog 的第一个位置开始同步
 
-3. syncer 如何手动跳过下游不支持语句
+3. syncer 如何手动跳过指定语句
 
     - syncer 遇到无法执行的 SQL 会自动退出
     - 查看 syncer.meta 文件内 binlog-name 与 binlog-pos 信息
