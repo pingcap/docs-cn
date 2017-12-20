@@ -6,6 +6,7 @@ category: advanced
 # Syncer 使用文档
 
 ## syncer 架构
+
 ![syncer 架构](../media/syncer-architecture.png)
 
 ## 下载 TiDB 工具集 (Linux)
@@ -22,17 +23,13 @@ tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
 cd tidb-enterprise-tools-latest-linux-amd64
 ```
 
-## Syncer 部署位置
+## `Syncer` 增量导入数据示例
 
-Syncer 可以部署在任一台可以连通对应的 MySQL 和 TiDB 集群的机器上，推荐部署在 TiDB 集群。
-
-## `syncer` 增量导入数据示例
-
-使用前请详细阅读[syncer 同步前预检查](#syncer-同步前检查)
+使用前请详细阅读 [syncer 同步前预检查](#syncer-同步前检查)
 
 ### 设置同步开始的 position
 
-设置 syncer 的 meta 文件, 这里假设 meta 文件是 `syncer.meta`:
+设置 syncer 的 meta 文件，这里假设 meta 文件是 `syncer.meta`：
 
 ```bash
 # cat syncer.meta
@@ -42,16 +39,17 @@ binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e
 ```
 
 + 注意： `syncer.meta` 只需要第一次使用的时候配置，后续 `syncer` 同步新的 binlog 之后会自动将其更新到最新的 position
-+ 注意： 如果使用 binlog position 同步则只需要配置 binlog-name binlog-pos; 使用 gtid 同步则需要设置 gtid，且启动 syncer 时带有 `--enable-gtid`
++ 注意： 如果使用 binlog position 同步则只需要配置 binlog-name binlog-pos；使用 gtid 同步则需要设置 gtid，且启动 syncer 时带有 `--enable-gtid`
++ 注意： Syncer 可以部署在任一台可以连通对应的 MySQL 和 TiDB 集群的机器上，推荐部署在 TiDB 集群。
 
-### 启动 `syncer`
+### 启动 `Syncer`
 
-`syncer` 的命令行参数说明:
+`syncer` 的命令行参数说明：
 
 ```
 Usage of syncer:
   -L string
-      日志等级: debug, info, warn, error, fatal (默认为 "info")
+      日志等级：debug, info, warn, error, fatal (默认为 "info")
   -V  
       输出 syncer 版本；默认 false
   -auto-fix-gtid
@@ -67,16 +65,16 @@ Usage of syncer:
   -log-file string
       指定日志文件目录；如 `--log-file ./syncer.log`
   -log-rotate string
-      指定日志切割周期, hour/day (默认 "day")
+      指定日志切割周期 hour/day (默认 "day")
   -meta string
       指定 syncer 上游 meta 信息文件  (默认与配置文件相同目录下 "syncer.meta")
   -server-id int
      指定 MySQL slave sever-id (默认 101)
   -status-addr string
-      指定 syncer metric 信息; 如 `--status-addr 127:0.0.1:10088`
+      指定 syncer metric 信息；如 `--status-addr 127:0.0.1:10088`
 ```
 
-`syncer` 的配置文件 `config.toml`:
+`syncer` 的配置文件 `config.toml`：
 
 
 ```toml
@@ -90,12 +88,14 @@ meta = "./syncer.meta"
 worker-count = 16
 batch = 10
 
-## pprof 调试地址, Prometheus 也可以通过该地址拉取 syncer metrics
+## pprof 调试地址，Prometheus 也可以通过该地址拉取 syncer metrics
 ## 将 127.0.0.1 修改为相应主机 IP 地址
 status-addr = "127.0.0.1:10086"
 
-## 跳过 DDL 或者其他语句，格式为 **前缀完全匹配**，如: `DROP TABLE ABC`,则至少需要填入`DROP TABLE`.
+## 跳过 DDL 或者其他语句，格式为 **前缀完全匹配**
 # skip-sqls = ["ALTER USER", "CREATE USER"]
+## 支持 "DELETE","INSERT","UPDATE" 三种语句
+# skip-events = ["DELETE","INSERT","UPDATE"]
 
 ## 指定要同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
 #replicate-do-db = ["~^b.*","s1"]
@@ -131,8 +131,8 @@ status-addr = "127.0.0.1:10086"
 
 
 # sharding 同步规则，采用 wildcharacter
-# 1. 星号字符 (*) 可以匹配零个或者多个字符,
-#    例子, doc* 匹配 doc 和 document, 但是和 dodo 不匹配;
+# 1. 星号字符 (*) 可以匹配零个或者多个字符，
+#    例子，doc* 匹配 doc 和 document，但是和 dodo 不匹配；
 #    星号只能放在 pattern 结尾，并且一个 pattern 中只能有一个
 # 2. 问号字符 (?) 匹配任一一个字符
 
@@ -163,7 +163,7 @@ port = 4000
 ```
 
 
-启动 `syncer`:
+启动 `syncer`：
 
 ```bash
 ./bin/syncer -config config.toml
@@ -179,6 +179,7 @@ port = 4000
 ```sql
 INSERT INTO t1 VALUES (4, 4), (5, 5);
 ```
+
 登录到 TiDB 查看：
 
 ```sql
@@ -213,11 +214,20 @@ syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-
 
 ## FAQ 
 
+### sharding 同步支持
+
+根据配置文件的 route-rules 可以支持将分库分表的数据导入到同一个库同一个表中，但是在开始前需要检查分库分表规则
++   是否可以利用 route-rule 的语义规则表示
++   分表中是否包含唯一递增主键，或者合并后数据上有冲突的唯一索引或者主键
++   暂时对 ddl 支持不完善
+
+![sharding](../media/syncer-sharding.png)
+
+
 ### 指定数据库同步
 
-1. 通过实际案例描述 syncer 同步数据库参数优先级关系。
-2. 如果使用 route-rules 规则，请移步 [sharding 同步支持](#sharding-同步支持) 
-3. 优先级：replicate-do-db --> replicate-do-table --> replicate-ignore-db --> replicate-ignore-table
+1. 如果使用 route-rules 规则，需要打开 [sharding 同步支持](#sharding-同步支持) 
+1. 优先级：replicate-do-db --> replicate-do-table --> replicate-ignore-db --> replicate-ignore-table
 
 ```toml
 # 指定同步 ops 数据库
@@ -241,7 +251,7 @@ tbl-name = "beijing"
 db-name ="ops"
 tbl-name = "ops_user"
 
-# history 数据下有 2017_01 2017_02 ... 2017_12 / 2016_01  2016_02 ... 2016_12  等多张表,只需要同步 2017 年的数据表
+# history 数据下有 2017_01 2017_02 ... 2017_12 / 2016_01  2016_02 ... 2016_12  等多张表，只需要同步 2017 年的数据表
 [[replicate-do-table]]
 db-name ="history"
 tbl-name = "~^2017_.*"
@@ -258,25 +268,15 @@ replicate-ignore-db = ["ops","fault","~^www"]
 db-name = "fault"
 tbl-name = "user_feedback"
 
-# order 数据下有 2017_01 2017_02 ... 2017_12 / 2016_01  2016_02 ... 2016_12  等多张表,忽略 2016 年的数据表
+# order 数据下有 2017_01 2017_02 ... 2017_12 / 2016_01  2016_02 ... 2016_12  等多张表，忽略 2016 年的数据表
 [[replicate-ignore-table]]
 db-name ="order"
 tbl-name = "~^2016_.*"
 ```
 
-
-### sharding 同步支持
-
-根据配置文件的 route-rules 可以支持将分库分表的数据导入到同一个库同一个表中，但是在开始前需要检查分库分表规则
-+   是否可以利用 route-rule 的语义规则表示
-+   分表中是否包含唯一递增主键，或者合并后数据上有冲突的唯一索引或者主键
-+   暂时对 ddl 支持不完善
-
-![sharding](../media/syncer-sharding.png)
-
 #### 分库分表同步示例
 
-1. 则只需要在所有 mysql 实例下面，启动 syncer, 并且设置以下 route-rules
+1. 每个 mysql 实例需要启动一个 syncer 服务，并且设置相应的 route-rules
 2. replicate-do-db & replicate-ignore-db 与 route-rules 同时使用场景下，replicate-do-db & replicate-ignore-db 需要指定 route-rules 中 target-schema & target-table 内容
 
 
@@ -314,13 +314,11 @@ target-table = "order_2017"
 
 ```
 
-### syncer 同步前检查
+### Syncer 同步前检查
 
 1.  源库 server-id 检查
 
-    - 可通过以下命令查看 server-id 
-    - 结果为空或者为 0 , syncer 无法同步数据
-    - Syncer server-id 与 MySQL server-id 不能相同，且在 MySQL   cluster 中唯一
+    - 可通过以下命令查看 server-id：
 
     ```
     mysql> show global variables like 'server_id';
@@ -332,18 +330,16 @@ target-table = "order_2017"
     1 row in set (0.01 sec)
     ```
 
-1.  检查 Binlog 相关参数
+1.  检查 binlog 相关参数
 
-    - 检查 MySQL 是否开启 binlog
-    - 可以用如下命令确认是否开启了 binlog
-    - 如果结果是 log_bin = OFF，需要开启。开启方式请参考[官方文档](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
+    - 可以用如下命令确认是否开启了 binlog：
 
     ```
     mysql> show global variables like 'log_bin';
     +--------------------+---------+
-    | Variable_name | Value  |
+    | Variable_name      | Value   |
     +--------------------+---------+
-    | log_bin             | ON      |
+    | log_bin            | ON      |
     +--------------------+---------+
     1 row in set (0.00 sec)
     ```
@@ -355,75 +351,57 @@ target-table = "order_2017"
     ```
     mysql> show global variables like 'binlog_format';
     +--------------------+----------+
-    | Variable_name | Value   |
+    | Variable_name      | Value    |
     +--------------------+----------+
-    | binlog_format   | ROW   |
+    | binlog_format      | ROW      |
     +--------------------+----------+
     1 row in set (0.00 sec)
     ```
 
-    - 如果发现 binlog 格式是其他格式，可以通过如下命令设置为 ROW：
-    - 如果 MySQL 有连接，建议重启 MySQL 服务或者杀掉所有连接。
-
-    ```
-    mysql> set global binlog_format=ROW;
-    mysql>  flush logs;
-    Query OK, 0 rows affected (0.01 sec)
-    ```
-
 1.  检查 MySQL binlog_row_image  是否为 FULL
 
-    - 可以用如下命令检查 binlog_row_image
+    - 可以用如下命令检查 binlog_row_image：
 
     ```
     mysql> show global variables like 'binlog_row_image';
     +--------------------------+---------+
-    | Variable_name        | Value  |
+    | Variable_name            | Value   |
     +--------------------------+---------+
-    | binlog_row_image   | FULL  |
-    +--------------------------+----------+
+    | binlog_row_image         | FULL    |
+    +--------------------------+---------+
     1 row in set (0.01 sec)
     ```
 
-    - 如果 binlog_row_image 结果不为 FULL，请设置为 FULL。设置方式如下：
 
-    ```
-    mysql> set global binlog_row_image = FULL;
-    Query OK, 0 rows affected (0.01 sec)
-    ```
 1.  检查 mydumper 用户权限
 
-    - mydumper 导出数据至少拥有以下权限:
-    - mydumper 操作对象为 RDS 时，可以添加 --no-locks 参数，避免申请 reload 权限
-      ` select , reload `
+    - mydumper user 至少拥有以下操作权限： `select , reload`
+    - mydumper 目标数据库为 RDS 时，可以添加 --no-locks 参数，避免申请 reload 权限
+      
+
 1.  检查上下游同步用户权限
 
-    - 需要上游 MySQL 同步账号至少赋予以下权限：
-      ` select , replication slave , replication client`
-    
-    - 下游 TiDB 可暂时采用 root 同权限账号
+    - 需要上游 MySQL 账号赋予相应权限：`select , replication slave , replication client`
+    - 下游 TiDB 采用 root 同权限账号
 
 1.  检查 GTID 与 POS 相关信息
 
-    - 使用以下语句查看 binlog 内容
-     `show binlog events in 'mysql-bin.000023' from 136676560 limit 10;`
-
- 
+    - 使用以下语句查看当前 binlog 与 POS 信息：`show master status;`
+    - 使用以下语句查看 binlog 内容：`show binlog events in 'mysql-bin.000023' from 136676560 limit 10;`
 
 
-
-### 安全启动 syncer 服务
+### 安全启动 Syncer 服务
 
 推荐使用 [supervise](https://cr.yp.to/daemontools/supervise.html) 类似服务守护 syncer 进程启动  
 
 1. 使用 screen 服务启动；以下实例需要事先安装 screen 与 sendmail 相关软件，且配置 smtp 相关信息
-    - `screen -S syncer-ops` ; 创建一个会话窗口
+    - `screen -S syncer-ops`；创建一个会话窗口
 
     `./syncer --config ops.toml --enable-gtid  --auto-fix-gtid;echo "syncer is down"|mail -s "syncer status" `
 
-    - screen 使用 `CTRL + A & D` 联合键退出； 使用 `screen -ls` 查看已创建会话，使用 `screen -r ID` 恢复会话
+    - screen 使用 `CTRL + A & D` 联合键退出；使用 `screen -ls` 查看已创建会话，使用 `screen -r ID` 恢复会话
 2. 使用 `nohup &` 方式启动 syncer 服务
-    - 创建 `syncer.sh` , 输入以下内容  
+    - 创建 `syncer.sh`，输入以下内容  
 
     `./syncer --config ops.toml --enable-gtid  --auto-fix-gtid -log-file ./${1}.log --status-addr 127.0.0.1:${2};echo "syncer is down"|mail -s "syncer status" `
 
@@ -432,6 +410,45 @@ target-table = "order_2017"
     `nohup ./syncer.sh ops 10088 &>./nohup.out &`
 
     - 使用 `sh start_ops.sh` 方式启动 syncer 服务
+
+
+### 运维常见问题
+
+1. syncer 日志滚动刷新，数据不同步
+
+   - 查看上游数据库 server-id，如果为空或者为 0，syncer 无法正常同步数据，同时 server-id 在 MySQL cluster 中应该唯一 
+
+1. DDL 与 DML 同步机制
+
+    - 当 binlog 内有 DDL 的时候，如果 DDL 前面有 DML，syncer 优先同步 DDL 前所有 DML 语句，再执行相应 DDL 
+
+2. syncer 启动时没有填写 meta 文件信息，应该怎么办
+
+    - syncer 启动时未读取到 meta 指定 binlog 位置，syncer 会自动获取上游数据库存在的第一个 binlog 的第一个位置开始同步
+
+3. syncer 如何手动跳过指定语句
+
+    - syncer 遇到无法执行的 SQL 会自动退出
+    - 查看 syncer.meta 文件内 binlog-name 与 binlog-pos 信息
+    - 登陆上游数据，通过类似语句查看 `show binlog events in 'mysql-bin.000023' from 136676560 limit 10;`
+        - TiDB 数据库 `alter add column` 目前不支持同时添加多列，新版本 syncer 会对类似 SQL 切割，如果还未跳过可以联系 TiDB 技术支持
+    - 获取到 SQL 后在 TiDB 执行该语句
+        - 如果使用 POS 点位置启动，修改 meta 文件内 binlog-pos 到相应语句的 END POS 信息，再次启动服务
+        - 如果使用 GTID 启动，需要修改 GTID 位置到相应语句之后第一个 GTID，再次启动服务
+
+4. MySQL to MySQL 场景是否可以用 syncer 
+
+
+    - 不推荐使用 syncer，syncer 对下游 TiDB 有定向开发；下游是 MySQL 时，DDL 语句支持不完善
+
+5. syncer 日志错误解释
+
+    - `no db error` 检查下游是否存在需要同步的 database 信息
+    - `driver: bad connection` 网络连接闪断，具体可以通过 tcpdump 抓包获取时谁先发起断开连接请求。另外推荐使用 supervise 守护 syncer 进程，当 syncer 进程挂掉的时候，supervise 会自动拉起 syncer 进程
+    - 其他 error 信息由 TiDB 服务返回，可以登陆 TiDB 服务查看日志详细内容。
+        - `Error 9002: TiKV server timeout[try again later]` TiClient error，检查 TiKV 服务状态以及 TiKV 的[主机配置](https://github.com/pingcap/docs-cn/blob/master/op-guide/recommendation.md)是否满足要求
+
+
 
 -----
 
@@ -443,17 +460,17 @@ Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息�
 
 ### 配置 Syncer 监控与告警
 
-- syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。以下将分别配置 syncer 监控与告警，期间需要重启 Prometheus 。
+- syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。以下将分别配置 syncer 监控与告警，期间需要重启 Prometheus。
     - Prometheus 添加 syncer job 信息，
     - 将以下内容刷新到 prometheus 配置文件，重启 prometheus
 
     ```
-      - job_name: 'syncer_ops' // 任务名字，区分数据上报
+      - job_name: 'syncer_ops'
         static_configs:
-          - targets: ['10.1.1.4:10086'] // syncer 监听地址与端口，通知 prometheus 获取 syncer 的监控数据。
+          - targets: ['10.1.1.4:10086']
     ```
 
-    - 配置 Prometheus --> alertmanager  告警
+    - 配置 Prometheus --> alertmanager 告警
     - 将以下内容刷新到 alert.rule 配置文件，且 Prometheus 指定 --alertmanager.url 参数启动。
 
     ```
@@ -464,43 +481,51 @@ Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息�
       LABELS {channels="alerts", env="test-cluster"}
       ANNOTATIONS {
       summary = "syncer status error",
-      description="alert: syncer_binlog_file{node='master'} - ON(instance, job) syncer_binlog_file{node='syncer'} > 1 instance: {{     $labels.instance }} values: {{ $value }}",
+      description="alert: syncer_binlog_file{node='master'} - ON(instance, job) syncer_binlog_file{node='syncer'} > 1 instance: {{ $labels.instance }} values: {{ $value }}",
       }
     ```
 
 #### Grafana 配置
 
-+   进入 Grafana Web 界面（默认地址: http://localhost:3000 ，默认账号: admin 密码: admin）
++   进入 Grafana Web 界面（默认地址：http://localhost:3000， 默认账号：admin 密码： admin）
 
-+      导入 dashboard 配置文件
++   导入 dashboard 配置文件
 
     点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 Dashboard [配置文件](https://github.com/pingcap/docs/tree/master/etc)上传 -> 选择对应的 data source
+
 ### Grafana Syncer metrics 说明 
 
 #### title: binlog events
-- metrics: `irate(syncer_binlog_events_total[1m])`
-- info: syncer已经同步到的master biglog相关信息统计, 主要有 `query` `rotate` `update_rows` `write_rows` `delete_rows` 五种类型。
 
-#### title: syncer_binlog_file
-- metrics: `syncer_binlog_file`
-- info: syncer同步 master binlog 文件数量。
+- metrics：`irate(syncer_binlog_events_total[1m])`
+- info：syncer已经同步到的master biglog相关信息统计，主要有 `query` `rotate` `update_rows` `write_rows` `delete_rows` 五种类型。
 
-#### title: binlog pos
-- metrics: `syncer_binlog_pos`
-- info: syncer同步当前 master binlog 的 binlog-pos 信息
+#### title：syncer_binlog_file
 
-#### title: syncer_gtid
-- metrics: `syncer_gtid`
-- info: syncer同步当前 master binlog 的 binlog-gtid 信息
+- metrics：`syncer_binlog_file`
+- info：syncer同步 master binlog 文件数量。
 
-#### title: syncer_binlog_file
-- metrics: `syncer_binlog_file{node="master"} - ON(instance, job) syncer_binlog_file{node="syncer"}`
-- info: syncer与 master 同步时，相差的 binlog 文件数量,正常状态为 0 ,表示数据正在实时同步。数值越大，相差 binlog 文件数越多。
+#### title：binlog pos
 
-#### title: binlog skipped events
-- metrics: `irate(syncer_binlog_skipped_events_total[1m])`
-- info: syncer同步master biglog文件时跳过执行sql数量统计。跳过sql语句格式由`syncer.toml`文件中`skip-sqls`参数控制。具体设置查看[官方文档](https://pingcap.com/doc-syncer-zh)
+- metrics：`syncer_binlog_pos`
+- info：syncer同步当前 master binlog 的 binlog-pos 信息
 
-#### title: syncer_txn_costs_gauge_in_second
-- metrics: `syncer_txn_costs_gauge_in_second`
-- info: syncer 处理一个 batch 的时间，单位为秒
+#### title：syncer_gtid
+
+- metrics：`syncer_gtid`
+- info：syncer同步当前 master binlog 的 binlog-gtid 信息
+
+#### title：syncer_binlog_file
+
+- metrics：`syncer_binlog_file{node="master"} - ON(instance, job) syncer_binlog_file{node="syncer"}`
+- info：syncer与 master 同步时，相差的 binlog 文件数量，正常状态为 0，表示数据正在实时同步。数值越大，相差 binlog 文件数越多。
+
+#### title：binlog skipped events
+
+- metrics：`irate(syncer_binlog_skipped_events_total[1m])`
+- info：syncer同步master biglog文件时跳过执行sql数量统计。跳过sql语句格式由 `syncer.toml` 文件中 `skip-sqls` 参数控制。具体设置查看[官方文档](https://pingcap.com/doc-syncer-zh)
+
+#### title：syncer_txn_costs_gauge_in_second
+
+- metrics：`syncer_txn_costs_gauge_in_second`
+- info：syncer 处理一个 batch 的时间，单位为秒
