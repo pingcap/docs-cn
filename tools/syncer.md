@@ -96,7 +96,7 @@ status-addr = "127.0.0.1:10086"
 
 ## 跳过 DDL 或者其他语句，格式为 **前缀完全匹配**
 # skip-sqls = ["ALTER USER", "CREATE USER"]
-## 支持 "DELETE","INSERT","UPDATE" 三种语句,在下游作为冷数据仓库场景可选用
+## 支持 "DELETE","INSERT","UPDATE" 三种语句
 # skip-events = ["DELETE","INSERT","UPDATE"]
 
 ## 指定要同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
