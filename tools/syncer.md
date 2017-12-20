@@ -320,9 +320,7 @@ target-table = "order_2017"
 
 1.  源库 server-id 检查
 
-    - 可通过以下命令查看 server-id 
-    - 结果为空或者为 0， syncer 无法同步数据
-    - Syncer server-id 与 MySQL server-id 不能相同，且在 MySQL cluster 中唯一
+    - 可通过以下命令查看 server-id
 
     ```
     mysql> show global variables like 'server_id';
@@ -419,6 +417,10 @@ target-table = "order_2017"
 
 ### 运维常见问题
 
+1. syncer 日志滚动刷新,数据不同步
+
+   - 查看上游数据库 server-id，如果为空或者为 0，syncer 无法正常同步数据，同时 server-id 在 MySQL cluster 中应该唯一 
+
 1. DDL 与 DML 同步机制
 
     - 当 binlog 内有 DDL 的时候，如果 DDL 前面有 DML，syncer 优先同步 DDL 前所有 DML 语句，再执行相应 DDL 
@@ -448,6 +450,7 @@ target-table = "order_2017"
     - `driver: bad connection` 网络连接闪断，具体可以通过 tcpdump 抓包获取时谁先发起断开连接请求。另外推荐使用 supervise 守护 syncer 进程，当 syncer 进程挂掉的时候，supervise 会自动拉起 syncer 进程
     - 其他 error 信息由 TiDB 服务返回，可以登陆 TiDB 服务查看日志详细内容. 
         - `Error 9002: TiKV server timeout[try again later]` TiClient error，检查 TiKV 服务状态以及 TiKV 的[主机配置](https://github.com/pingcap/docs-cn/blob/master/op-guide/recommendation.md)是否满足要求
+
 
 
 -----
