@@ -28,7 +28,7 @@ Syncer 可以部署在任一台可以连通对应的 MySQL 和 TiDB 集群的机
 
 ## `syncer` 增量导入数据示例
 
-使用前请详细阅读[syncer 同步前预检查](#syncer-同步前检查)
+使用前请详细阅读 [syncer 同步前预检查](#syncer-同步前检查)
 
 ### 设置同步开始的 position
 
@@ -42,7 +42,7 @@ binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e
 ```
 
 + 注意： `syncer.meta` 只需要第一次使用的时候配置，后续 `syncer` 同步新的 binlog 之后会自动将其更新到最新的 position
-+ 注意： 如果使用 binlog position 同步则只需要配置 binlog-name binlog-pos; 使用 gtid 同步则需要设置 gtid，且启动 syncer 时带有 `--enable-gtid`
++ 注意： 如果使用 binlog position 同步则只需要配置 binlog-name binlog-pos；使用 gtid 同步则需要设置 gtid，且启动 syncer 时带有 `--enable-gtid`
 
 ### 启动 `syncer`
 
