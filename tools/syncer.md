@@ -439,7 +439,7 @@ target-table = "order_2017"
 4. MySQL to MySQL 场景是否可以用 syncer 
 
 
-    - 不推荐使用 syncer，syncer 对下游 TiDB 有定向开发；下游是 MySQL 时，会有部分语句不支持，同时对 MySQL to MySQL 的 DDL 支持效果不佳
+    - 不推荐使用 syncer，syncer 对下游 TiDB 有定向开发；下游是 MySQL 时，DDL 语句支持不完善
 
 5. syncer 日志错误解释
 
