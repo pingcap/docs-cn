@@ -51,7 +51,7 @@ binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e
 ```
 Usage of syncer:
   -L string
-      日志等级: debug, info, warn, error, fatal (默认为 "info")
+      日志等级：debug, info, warn, error, fatal (默认为 "info")
   -V  
       输出 syncer 版本；默认 false
   -auto-fix-gtid
@@ -67,13 +67,13 @@ Usage of syncer:
   -log-file string
       指定日志文件目录；如 `--log-file ./syncer.log`
   -log-rotate string
-      指定日志切割周期, hour/day (默认 "day")
+      指定日志切割周期 hour/day (默认 "day")
   -meta string
       指定 syncer 上游 meta 信息文件  (默认与配置文件相同目录下 "syncer.meta")
   -server-id int
      指定 MySQL slave sever-id (默认 101)
   -status-addr string
-      指定 syncer metric 信息; 如 `--status-addr 127:0.0.1:10088`
+      指定 syncer metric 信息；如 `--status-addr 127:0.0.1:10088`
 ```
 
 `syncer` 的配置文件 `config.toml`：
@@ -90,7 +90,7 @@ meta = "./syncer.meta"
 worker-count = 16
 batch = 10
 
-## pprof 调试地址, Prometheus 也可以通过该地址拉取 syncer metrics
+## pprof 调试地址，Prometheus 也可以通过该地址拉取 syncer metrics
 ## 将 127.0.0.1 修改为相应主机 IP 地址
 status-addr = "127.0.0.1:10086"
 
@@ -243,7 +243,7 @@ tbl-name = "beijing"
 db-name ="ops"
 tbl-name = "ops_user"
 
-# history 数据下有 2017_01 2017_02 ... 2017_12 / 2016_01  2016_02 ... 2016_12  等多张表,只需要同步 2017 年的数据表
+# history 数据下有 2017_01 2017_02 ... 2017_12 / 2016_01  2016_02 ... 2016_12  等多张表，只需要同步 2017 年的数据表
 [[replicate-do-table]]
 db-name ="history"
 tbl-name = "~^2017_.*"
@@ -260,7 +260,7 @@ replicate-ignore-db = ["ops","fault","~^www"]
 db-name = "fault"
 tbl-name = "user_feedback"
 
-# order 数据下有 2017_01 2017_02 ... 2017_12 / 2016_01  2016_02 ... 2016_12  等多张表,忽略 2016 年的数据表
+# order 数据下有 2017_01 2017_02 ... 2017_12 / 2016_01  2016_02 ... 2016_12  等多张表，忽略 2016 年的数据表
 [[replicate-ignore-table]]
 db-name ="order"
 tbl-name = "~^2016_.*"
@@ -417,7 +417,7 @@ target-table = "order_2017"
 
 ### 运维常见问题
 
-1. syncer 日志滚动刷新,数据不同步
+1. syncer 日志滚动刷新，数据不同步
 
    - 查看上游数据库 server-id，如果为空或者为 0，syncer 无法正常同步数据，同时 server-id 在 MySQL cluster 中应该唯一 
 
@@ -448,7 +448,7 @@ target-table = "order_2017"
 
     - `no db error` 检查下游是否存在需要同步的 database 信息
     - `driver: bad connection` 网络连接闪断，具体可以通过 tcpdump 抓包获取时谁先发起断开连接请求。另外推荐使用 supervise 守护 syncer 进程，当 syncer 进程挂掉的时候，supervise 会自动拉起 syncer 进程
-    - 其他 error 信息由 TiDB 服务返回，可以登陆 TiDB 服务查看日志详细内容. 
+    - 其他 error 信息由 TiDB 服务返回，可以登陆 TiDB 服务查看日志详细内容。
         - `Error 9002: TiKV server timeout[try again later]` TiClient error，检查 TiKV 服务状态以及 TiKV 的[主机配置](https://github.com/pingcap/docs-cn/blob/master/op-guide/recommendation.md)是否满足要求
 
 
@@ -484,7 +484,7 @@ Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息�
       LABELS {channels="alerts", env="test-cluster"}
       ANNOTATIONS {
       summary = "syncer status error",
-      description="alert: syncer_binlog_file{node='master'} - ON(instance, job) syncer_binlog_file{node='syncer'} > 1 instance: {{     $labels.instance }} values: {{ $value }}",
+      description="alert: syncer_binlog_file{node='master'} - ON(instance, job) syncer_binlog_file{node='syncer'} > 1 instance: {{ $labels.instance }} values: {{ $value }}",
       }
     ```
 
