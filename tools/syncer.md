@@ -278,7 +278,7 @@ tbl-name = "~^2016_.*"
 
 #### 分库分表同步示例
 
-1. 则只需要在所有 mysql 实例下面，启动 syncer，并且设置以下 route-rules
+1. 需要在所有 mysql 实例下面，启动 syncer，并且设置以下 route-rules
 2. replicate-do-db & replicate-ignore-db 与 route-rules 同时使用场景下，replicate-do-db & replicate-ignore-db 需要指定 route-rules 中 target-schema & target-table 内容
 
 
@@ -364,8 +364,7 @@ target-table = "order_2017"
     1 row in set (0.00 sec)
     ```
 
-    - 如果发现 binlog 格式是其他格式，可以通过如下命令设置为 ROW：
-    - 如果 MySQL 有连接，建议重启 MySQL 服务或者杀掉所有连接。
+    - 如果发现 binlog 格式是其他格式，可以通过如下命令设置为 ROW,如果 MySQL 有连接，建议重启 MySQL 服务或者杀掉所有连接。
 
     ```
     mysql> set global binlog_format=ROW;
@@ -393,11 +392,12 @@ target-table = "order_2017"
     mysql> set global binlog_row_image = FULL;
     Query OK, 0 rows affected (0.01 sec)
     ```
+
 1.  检查 mydumper 用户权限
 
-    - mydumper 导出数据至少拥有以下权限：
     - mydumper 操作对象为 RDS 时，可以添加 --no-locks 参数，避免申请 reload 权限
       ` select , reload `
+
 1.  检查上下游同步用户权限
 
     - 需要上游 MySQL 同步账号至少赋予以下权限：
