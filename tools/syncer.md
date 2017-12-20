@@ -435,6 +435,49 @@ target-table = "order_2017"
 
     - 使用 `sh start_ops.sh` 方式启动 syncer 服务
 
+
+### 运维常见问题
+
+1. DDL 与 DML 同步机制
+
+    - 当 binlog 内有 DDL 的时候, 如果 DDL 前面有 DML, syncer 优先同步 DDL 前所有 DML 语句, 再执行相应 DDL 
+
+2. skip-events / skip-sqls 支持的语句有哪些?
+
+    - skip-events 支持跳过 insert / update / delete 三种 DML 语句操作
+    - skip-sqls 已经支持跳过 TRIGGER / PROCEDURE / VIEW / TABLESPACE / FUNCTION / USER 类语句的 创建/删除/修改 操作
+        - 其他需要跳过的 DDL 语句,请输入以前缀开头的字符串以用于匹配
+        - 如: `/*test*/CREATE USER 'jeff'@'localhost' IDENTIFIED BY 'password';` , 需要填写 `/*test*/CREATE USER` 
+        - 如: `drop  database testskip` , 需要填写 `DROP DATABASE` 
+
+3. syncer 启动时没有填写 meta 文件信息,应该怎么办
+
+    - syncer 启动时未读取到 meta 指定 binlog 位置, syncer 会自动获取上游数据库存在的第一个 binlog 的第一个位置开始同步
+
+4. syncer 如何手动跳过下游不支持语句
+
+    - syncer 遇到无法执行的 SQL 会自动退出
+    - 查看 syncer.meta 文件内 binlog-name 与 binlog-pos 信息
+    - 登陆上游数据,通过类似语句查看 `show binlog events in 'mysql-bin.000023' from 136676560 limit 10;`
+        - TiDB 数据库 `alter add column` 目前不支持同时添加多列, 新版本 syncer 会对类似 SQL 切割,如过还未跳过可以联系 TiDB 技术支持
+    - 获取到 SQL 后在 TiDB 执行该语句
+        - 如果使用 POS 点位置启动, 修改 meta 文件内 binlog-pos 到相应语句的 END POS 信息,再次启动服务
+        - 如果使用 GTID 启动,需要修改 GTID 位置到相应语句之后第一个 GTID,再次启动服务
+
+5. MySQL to MySQL 场景是否可以用 syncer 
+
+
+    - 不推荐使用 syncer , syncer 对下游 TiDB 有定向开发;下游是 MySQL 时,会有部分语句不支持,同时对 MySQL to MySQL 的 DDL 支持效果不佳
+
+6. syncer 日志错误解释
+
+    - `no db error` 检查下游是否存在需要同步的 database 信息
+    - `driver: bad connection` 网络连接闪断,具体可以通过 tcpdump 抓包获取时谁先发起断开连接请求. 另外推荐使用 supervise 守护 syncer 进程,当 syncer 进程挂掉的时候, supervise 会自动拉起 syncer 进程
+    - 其他 error 信息由 TiDB 服务返回,可以登陆 TiDB 服务查看日志详细内容. 
+        - `Error 9002: TiKV server timeout[try again later]` TiClient error ,检查 TiKV 服务状态以及 TiKV 的[主机配置](https://github.com/pingcap/docs-cn/blob/master/op-guide/recommendation.md)是否满足要求
+
+
+
 -----
 
 ## 监控方案
