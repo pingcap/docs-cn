@@ -399,13 +399,9 @@ location_labels = ["host"]
 ## 常见部署问题
 
 ### TiDB 各版本下载链接
-- master 版本：
-    - [TiDB master-CentOS7](http://download.pingcap.org/tidb-latest-linux-amd64-unportable.tar.gz)
-    - [TiDB master-CentOS6](http://download.pingcap.org/tidb-latest-linux-amd64-unportable-centos6.tar.gz)
+- master 版本：[TiDB master-CentOS7](http://download.pingcap.org/tidb-latest-linux-amd64-unportable.tar.gz)
 
-- 1.0 版本:
-    - [TiDB 1.0-CentOS7](http://download.pingcap.org/tidb-v1.0.4-linux-amd64-unportable.tar.gz)
-    - [TiDB 1.0-CentOS6](http://download.pingcap.org/tidb-v1.0.4-linux-amd64-unportable-centos6.tar.gz)
+- 1.0 版本: [TiDB 1.0-CentOS7](http://download.pingcap.org/tidb-v1.0.4-linux-amd64-unportable.tar.gz)
 
 ### 如何下载安装指定版本 TiDB
 如需安装 TiDB 1.0.4 版本，需要先下载 TiDB-Ansible release-1.0 分支，确认 inventory.ini 文件中 `tidb_version = v1.0.4`, 安装步骤同上。
