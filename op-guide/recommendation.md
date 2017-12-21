@@ -16,7 +16,7 @@ As an open source distributed NewSQL database with high performance, TiDB can be
 | Red Hat Enterprise Linux | 7.3 and above|
 | CentOS                   | 7.3 and above|
 | Oracle Enterprise Linux  | 7.3 and above|
-| Ubuntu LTS               | 14.04 and above|
+| Ubuntu LTS               | 16.04 and above|
 
 > **Note**:
 > 
