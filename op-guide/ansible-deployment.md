@@ -74,16 +74,18 @@ git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 ```
 git clone https://github.com/pingcap/tidb-ansible.git
 ```
-> 生产环境请下载 GA 版本部署 TiDB。
+
+> **注：**生产环境请下载 GA 版本部署 TiDB。
+
 ## 分配机器资源，编辑 inventory.ini 文件
 
-> inventory.ini 文件路径为 tidb-ansible/inventory.ini。
+inventory.ini 文件路径为 tidb-ansible/inventory.ini。
 
-标准 TiDB 集群需要6台机器:
+标准 TiDB 集群需要 6 台机器:
 
-- 2个 TiDB 节点
-- 3个 PD 节点
-- 3个 TiKV 节点，第一台 TiDB 机器同时用作监控机
+- 2 个 TiDB 节点
+- 3 个 PD 节点
+- 3 个 TiKV 节点，第一台 TiDB 机器同时用作监控机
 
 ### 单机单 TiKV 实例集群拓扑如下
 
