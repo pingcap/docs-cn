@@ -9,7 +9,7 @@ category: deployment
 
 本文档介绍 TiDB 集群如何开启 TLS 验证，其支持
 
-- TiDB组件之间的双向验证，包括 TiDB、TiKV、PD 相互之间， TiKV Control 与 TiKV、PD Control 与 PD 的双向认证，以及 TiKV peer 之间、 PD peer 之间。一旦开启，所有组件之间均使用验证，不支持只开启某一部分的验证。
+- TiDB 组件之间的双向验证，包括 TiDB、TiKV、PD 相互之间，TiKV Control 与 TiKV、PD Control 与 PD 的双向认证，以及 TiKV peer 之间、PD peer 之间。一旦开启，所有组件之间均使用验证，不支持只开启某一部分的验证。
 - MySQL Client 与 TiDB 之间的客户端对服务器身份的单向验证以及双向验证。
 
 MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用另外一套证书。
@@ -22,15 +22,15 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
 
 推荐为 TiDB、TiKV、PD 分别准备一个 server 证书，并保证可以相互验证，而它们的各种客户端共用 client 证书。
 
-有多种工具可以生成自签名证书，如`openssl`，`easy-rsa`，`cfssl`。
+有多种工具可以生成自签名证书，如 `openssl` ， `easy-rsa ` ， `cfssl` 。
 
-这里提供一个使用`cfssl`生成证书的示例 [生成自签名证书](./generate-self-signed-certificates)
+这里提供一个使用 `cfssl` 生成证书的示例 [生成自签名证书](./generate-self-signed-certificates)
 
 ### 配置证书
 
 ##### TiDB
 
-在 config 文件或命令行参数中设置
+在 config 文件或命令行参数中设置：
 
 ```toml
 [security]
@@ -44,7 +44,7 @@ cluster-ssl-key = "/path/to/tidb-server-key.pem"
 
 ##### TiKV
 
-在 config 文件或命令行参数中设置，并设置相应 url 为 https
+在 config 文件或命令行参数中设置，并设置相应 url 为 https：
 
 ```toml
 [security]
@@ -56,7 +56,7 @@ key-path = "/path/to/client-key.pem"
 
 ##### PD
 
-在 config 文件或命令行参数中设置，并设置相应 url 为 https
+在 config 文件或命令行参数中设置，并设置相应 url 为 https：
 
 ```toml
 [security]
@@ -68,9 +68,9 @@ cert-path = "/path/to/server.pem"
 key-path = "/path/to/server-key.pem"
 ```
 
-此时 TiDB 集群各个组件间便开启了双向验证
+此时 TiDB 集群各个组件间便开启了双向验证。
 
-在使用客户端连接时，需要指定 client 证书， 示例：
+在使用客户端连接时，需要指定 client 证书，示例：
 
 ```bash
 ./pd-ctl -u https://127.0.0.1:2379 --cacert /path/to/ca.pem --cert /path/to/pd-client.pem --key /path/to/pd-client-key.pem
@@ -90,7 +90,7 @@ mysql_ssl_rsa_setup --datadir=certs
 
 ### 配置单向认证
 
-在 TiDB 的 config 文件或命令行参数中设置
+在 TiDB 的 config 文件或命令行参数中设置：
 
 ```toml
 [security]
@@ -110,7 +110,7 @@ mysql -u root --host 127.0.0.1 --port 4000 --ssl-mode=REQUIRED
 
 ### 配置双向认证
 
-在 TiDB 的 config 文件或命令行参数中设置
+在 TiDB 的 config 文件或命令行参数中设置：
 
 ```toml
 [security]
