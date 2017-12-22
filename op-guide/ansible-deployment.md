@@ -74,16 +74,18 @@ git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 ```
 git clone https://github.com/pingcap/tidb-ansible.git
 ```
-> 生产环境请下载 GA 版本部署 TiDB。
+
+> **注：**生产环境请下载 GA 版本部署 TiDB。
+
 ## 分配机器资源，编辑 inventory.ini 文件
 
-> inventory.ini 文件路径为 tidb-ansible/inventory.ini。
+inventory.ini 文件路径为 tidb-ansible/inventory.ini。
 
-标准 TiDB 集群需要6台机器:
+标准 TiDB 集群需要 6 台机器:
 
-- 2个 TiDB 节点
-- 3个 PD 节点
-- 3个 TiKV 节点，第一台 TiDB 机器同时用作监控机
+- 2 个 TiDB 节点
+- 3 个 PD 节点
+- 3 个 TiKV 节点，第一台 TiDB 机器同时用作监控机
 
 ### 单机单 TiKV 实例集群拓扑如下
 
@@ -482,28 +484,37 @@ $ sudo ntpdate pool.ntp.org
 $ sudo systemctl start ntpd.service
 ```
 
-### 如何使用 docker 方式部署 TiDB
-- 中控机及部署目标机器需要已安装好 Docker，`inventory.ini` 中的普通用户(如 `ansible_user = tidb`)需要有 sudo 权限及 [docker 运行权限](https://docs.docker.com/engine/installation/linux/linux-postinstall/)。
-- 中控机及部署目标机器需要已安装 `docker-py` 模块:
-```
-sudo pip install docker-py
-```
-- 修改 `inventory.ini` 如下：
-```
-# deployment methods, [binary, docker]
-deployment_method = docker
+### 如何使用 Docker 方式部署 TiDB
 
-# process supervision, [systemd, supervise]
-process_supervision = systemd
-```
+- 中控机及部署目标机器需要已安装好 Docker，`inventory.ini` 中的普通用户（如 `ansible_user = tidb`）需要有 sudo 权限及 [docker 运行权限](https://docs.docker.com/engine/installation/linux/linux-postinstall/)。
+
+- 中控机及部署目标机器需要已安装 `docker-py` 模块:
+
+    ```
+    sudo pip install docker-py
+    ```
+
+- 修改 `inventory.ini` 如下：
+
+    ```
+    # deployment methods, [binary, docker]
+    deployment_method = docker
+
+    # process supervision, [systemd, supervise]
+    process_supervision = systemd
+    ```
+
 安装过程与 binary 安装方式一致。
 
 ### 如何调整进程监管方式从 supervise 到 systemd
+
 ```
 # process supervision, [systemd, supervise]
 process_supervision = systemd
 ```
+
 TiDB-Anisble 在 TiDB v1.0.4 版本之前进程监管方式默认为 supervise， 之前安装的集群可保持不变，如需更新为 systemd，需关闭集群按以下方式变更：
+
 ```
 ansible-playbook stop.yml
 ansible-playbook deploy.yml -D
