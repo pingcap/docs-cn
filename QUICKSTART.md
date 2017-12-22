@@ -614,7 +614,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
         ansible-playbook rolling_update_monitor.yml -k --tags=prometheus
 
-7.  打开浏览器访问监控平台： `http://172.16.10.3:3000`，监控整个集群和新增节点的状态。
+7.  打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群和新增节点的状态。
 
 ### 缩容 TiDB 节点
 
@@ -672,7 +672,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
         ansible-playbook rolling_update_monitor.yml -k --tags=prometheus
 
-4.  打开浏览器访问监控平台： `http://172.16.10.3:3000`，监控整个集群的状态。
+4.  打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群的状态。
 
 ### 缩容 TiKV 节点
 
@@ -742,7 +742,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
         ansible-playbook rolling_update_monitor.yml -k --tags=prometheus
 
-6.  打开浏览器访问监控平台： `http://172.16.10.3:3000`，监控整个集群的状态。
+6.  打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群的状态。
 
 ### 缩容 PD 节点
 
@@ -812,7 +812,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
         ansible-playbook rolling_update_monitor.yml -k --tags=prometheus
 
-6.  打开浏览器访问监控平台： `http://172.16.10.3:3000`，监控整个集群的状态。
+6.  打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群的状态。
 
 ## 集群销毁
 
