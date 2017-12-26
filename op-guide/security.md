@@ -1,9 +1,9 @@
 ---
-title: 开启TLS验证
+title: 开启 TLS 验证
 category: deployment
 ---
 
-# 开启TLS验证
+# 开启 TLS 验证
 
 ## 概述
 

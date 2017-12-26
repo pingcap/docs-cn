@@ -24,7 +24,7 @@ category: deployment
 
 ## 下载 cfssl
 
-假设使用 x86_64 Linux 主机: 
+假设使用 x86_64 Linux 主机：
 
 ```bash
 mkdir ~/bin
