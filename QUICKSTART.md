@@ -594,9 +594,9 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 4.  登录新增的 PD 节点，编辑启动脚本：`{deploy_dir}/scripts/run_pd.sh`
 
-    1.  移除 `--initial-cluster="xxxx"` 配置
+    1.  移除 `--initial-cluster="xxxx" \` 配置
 
-    2.  添加 `join="http://172.16.10.1:2379"`。IP 地址 (172.16.10.1) 可以是集群内现有 PD IP 地址中的任意一个
+    2.  添加 `--join="http://172.16.10.1:2379" \`。IP 地址 (172.16.10.1) 可以是集群内现有 PD IP 地址中的任意一个
 
     3.  在新增 PD 节点中手动启动 PD 服务：
     `{deploy_dir}/scripts/start_pd.sh`
