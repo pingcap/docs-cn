@@ -5,6 +5,7 @@ category: release
 
 # TiDB Release Notes
 
+  - [1.0.5](105.md)
   - [1.0.4](104.md)
   - [1.0.3](103.md)
   - [1.0.2](102.md)
