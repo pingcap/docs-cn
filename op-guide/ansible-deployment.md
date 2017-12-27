@@ -49,7 +49,6 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
     ```bash
     yum install epel-release
-    yum update
     yum install ansible
     ```
 
