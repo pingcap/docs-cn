@@ -7,7 +7,7 @@ category: deployment
 
 ## 概述
 
-本文档介绍 TiDB 集群如何开启 TLS 验证，其支持
+本文档介绍 TiDB 集群如何开启 TLS 验证，其支持：
 
 - TiDB 组件之间的双向验证，包括 TiDB、TiKV、PD 相互之间，TiKV Control 与 TiKV、PD Control 与 PD 的双向认证，以及 TiKV peer 之间、PD peer 之间。一旦开启，所有组件之间均使用验证，不支持只开启某一部分的验证。
 - MySQL Client 与 TiDB 之间的客户端对服务器身份的单向验证以及双向验证。
@@ -22,7 +22,7 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
 
 推荐为 TiDB、TiKV、PD 分别准备一个 server 证书，并保证可以相互验证，而它们的各种客户端共用 client 证书。
 
-有多种工具可以生成自签名证书，如 `openssl` ， `easy-rsa ` ， `cfssl` 。
+有多种工具可以生成自签名证书，如 `openssl`， `easy-rsa `， `cfssl`。
 
 这里提供一个使用 `cfssl` 生成证书的示例 [生成自签名证书](./generate-self-signed-certificates)
 

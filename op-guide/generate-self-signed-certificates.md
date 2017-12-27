@@ -56,7 +56,7 @@ cfssl print-defaults csr > ca-csr.json
 - tidb-server certificate 由 TiDB 使用，为其他组件和客户端验证 TiDB 身份。
 - tikv-server certificate 由 TiKV 使用，为其他组件和客户端验证 TiKV 身份。
 - pd-server certificate 由 PD 使用，为其他组件和客户端验证 PD 身份。
-- client certificate 用于通过 PD、TiKV、TiDB 验证客户端。例如 `pd-ctl` ， `tikv-ctl` ， `pd-recover` 。
+- client certificate 用于通过 PD、TiKV、TiDB 验证客户端。例如 `pd-ctl`， `tikv-ctl`， `pd-recover`。
 
 #### 配置 CA 选项
 
