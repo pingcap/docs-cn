@@ -5,6 +5,8 @@ category: advanced
 
 # TiDB-Binlog 部署方案
 
+本文档介绍如何部署 Kafka 版本的 TiDB-Binlog。如需部署 local 版本的 TiDB-Binlog，可参考 [local 版本的 TiDB-Binlog 部署文档](tidb-binlog.md)。
+
 ## TiDB-Binlog 简介
 
 TiDB-Binlog 用于收集 TiDB 的 Binlog，并提供实时备份和同步功能的商业工具。
