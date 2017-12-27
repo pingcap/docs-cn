@@ -56,21 +56,21 @@ category: deployment
     - 下载 master 分支的 tidb-ansible，用来安装 master 版本的 tidb 集群（binlog 为 kafka 版本）
 
       `git clone https://github.com/pingcap/tidb-ansible`
-    
+
     - 下载 release-1.0 分支的 tidb-ansible，用来安装 release-1.0（GA 版本）版本的 tidb 集群（binlog 为 kafka 版本）
 
       `git clone -b release-1.0 https://github.com/pingcap/tidb-ansible`
-    
-    - 下载  release-1.0-binlog-local 分支的 tidb-ansible，用来安装 release-1.0-binlog-local 版本的 tidb 集群（binlog 为  local 版本）
-    
+
+    - 下载 release-1.0-binlog-local 分支的 tidb-ansible，用来安装 release-1.0-binlog-local 版本的 tidb 集群（binlog 为 local 版本）
+
       `git clone -b release-1.0-binlog-local https://github.com/pingcap/tidb-ansible`
 
 2.  下载 TiDB 相关依赖包：
 
-	```
+    ```
     cd tidb-ansible
     ansible-playbook local_prepare.yml
-	```
+    ```
 
 3.  将执行完以上命令之后的 tidb-ansible 安装包拷贝到中控机。
 
