@@ -99,7 +99,7 @@
 + TiDB 周边工具
   - [Syncer 使用文档](tools/syncer.md)
   - [Loader 使用文档](tools/loader.md)
-  - [TiDB-binlog 使用文档](tools/tidb-binlog.md)
+  - [TiDB-Binlog 使用文档](tools/tidb-binlog-kafka.md)
   - [PD Control 使用文档](tools/pd-control.md)
 + TiSpark 文档
   - [TiSpark 快速入门指南](tispark/tispark-quick-start-guide.md)
