@@ -73,9 +73,9 @@ label = "cop"
 1 row in set (0.00 sec)
 ```
 
-如果电脑上安装了 `dot` 程序，可以通过如下方式生成 PNG 文件：
+如果电脑上安装了 `dot` 程序 (包含在 graphviz 软件包中)，可以通过如下方式生成 PNG 文件：
 ```bash
-ot xx.dot -T png -O
+dot xx.dot -T png -O
 
 这里的 xx.dot 是上面的语句返回结果。
 ```

@@ -16,7 +16,7 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运�
 | Red Hat Enterprise Linux | 7.3 及以上   |
 | CentOS                   | 7.3 及以上   |
 | Oracle Enterprise Linux  | 7.3 及以上   |
-| Ubuntu LTS               | 14.04 及以上 |
+| Ubuntu LTS               | 16.04 及以上 |
 
 > **注**：
 >

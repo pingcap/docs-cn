@@ -66,6 +66,7 @@
     - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
   - [JSON 支持](sql/json-functions-generated-column.md)
   - [Connectors 和 API](sql/connection-and-APIs.md)
+  - [TiDB 事务隔离级别](sql/transaction-isolation.md)
   - [错误码与故障诊断](sql/error.md)
   - [与 MySQL 兼容性对比](sql/mysql-compatibility.md)
   + 高级功能
@@ -98,15 +99,25 @@
 + TiDB 周边工具
   - [Syncer 使用文档](tools/syncer.md)
   - [Loader 使用文档](tools/loader.md)
-  - [TiDB-binlog 使用文档](tools/tidb-binlog.md)
+  - [TiDB-Binlog 使用文档](tools/tidb-binlog-kafka.md)
   - [PD Control 使用文档](tools/pd-control.md)
 + TiSpark 文档
-  - [TiSpark 快速入门指南](op-guide/tispark-quick-start-guide.md)
-  - [TiSpark 用户指南](op-guide/tispark-user-guide.md)
+  - [TiSpark 快速入门指南](tispark/tispark-quick-start-guide.md)
+  - [TiSpark 用户指南](tispark/tispark-user-guide.md)
 - [常见问题与解答(FAQ)](FAQ.md)
 - [最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
 - [版本发布历史](releases/README.md)
 - [TiDB 路线图](https://github.com/pingcap/docs-cn/blob/master/ROADMAP.md)
++ 用户案例
+  - [Mobike](http://t.cn/RT8FbP6)
+  - [易果生鲜](http://t.cn/RTYVhzH)
+  - [360金融](http://t.cn/RTKnTev)
+  - [猿辅导](http://t.cn/RTKnKSX)
+  - [去哪儿](http://t.cn/RTKnsL7)
+  - [盖娅互娱](http://t.cn/RT9r7hx)
+  - [一面数据](http://t.cn/RT9r5di)
+  - [万达网络](http://t.cn/RTKm6ds)
+  - [某电信运营商](http://t.cn/RTYWADg)
 + 更多资源
   - [常用工具](https://github.com/pingcap/tidb-tools)
   - [PingCAP 团队技术博客](https://pingcap.com/blog-cn/)
