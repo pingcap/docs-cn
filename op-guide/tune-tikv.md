@@ -65,7 +65,7 @@ log-level = "info"
 
 [pd]
 # pd 的地址
-# endpoints = "127.0.0.1:2379"
+# endpoints = ["127.0.0.1:2379"]
 
 [metric]
 # 将 metrics 推送给 Prometheus pushgateway 的时间间隔
