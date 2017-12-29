@@ -77,7 +77,6 @@ Install Ansible 2.3 or later to your platform:
 
     ```
     yum install epel-release
-    yum update
     yum install ansible
     ```
 
