@@ -79,7 +79,7 @@
     - [跨机房部署方案](op-guide/location-awareness.md)
   + 配置集群
     - [参数解释](op-guide/configuration.md)
-    - [开启TLS验证](op-guide/security.md)
+    - [开启 TLS 验证](op-guide/security.md)
     - [生成自签名证书](op-guide/generate-self-signed-certificates.md)
   + 监控集群
     - [整体监控框架概述](op-guide/monitor-overview.md)
