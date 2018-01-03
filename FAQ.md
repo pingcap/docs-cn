@@ -106,13 +106,13 @@ TiDB 暂不支持数据库层面的会话超时，目前想要实现超时，在
 #### TiDB 生产环境的版本管理策略是怎么样的？如何尽可能避免频繁升级？
 TiDB 版本目前逐步标准化，每次 Release 都包含详细的 Change list，版本功能[变化详情](https://github.com/pingcap/TiDB/releases)，生产环境是否有必要升级取决于业务系统，建议升级之前详细了解前后版本的功能差异。
 
-版本号说明参考：`Release Version: v1.0.3-1-ga80e796`，`v1.0.3` 表示 GA 标准版 `-1` 表示该版本 commit 1 次，`ga80e796` 代表版本的 `git-hash`
+版本号说明参考：`Release Version: v1.0.3-1-ga80e796`，`v1.0.3` 表示 GA 标准版 `-1` 表示该版本 commit 1 次，`ga80e796` 代表版本的 `git-hash`。
 
 #### 分不清 TiDB master 版本之间的区别，经常用错 TiDB-ansible 版本?
 TiDB 目前社区非常活跃，在 GA 版本发布后，还在不断的优化和修改 BUG。因此  TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的[新版本发布官方网站](https://pingcap.com/weekly/ )。此外 TiDB 安装推荐使用 TiDB-Ansible 进行安装，TiDB-Ansible 的版本也会随着 TiDB 的版本发布进行更新，因此建议用户在安装升级新版本的时候使用最新的 TiDB-Ansible 安装包版本进行安装。
 此外，在 TiDB 版本 GA 后，对 TiDB 的版本号进行了统一管理，TiDB 的版本可以通过几种方式进行查看：
-通过 `select tidb_version()` 进行查看；
-通过执行 `tidb-server -V` 进行查看；
++ 通过 `select tidb_version()` 进行查看；
++ 通过执行 `tidb-server -V` 进行查看。
 
 #### 官方有没有三中心跨机房部署的推荐方案？
 从 TiDB 架构来讲，完全支持真正意义上的跨中心异地多活，操作层面依赖数据中心之间的网络延迟和稳定性，一般建议延迟在 5ms 以下，目前我们已经有相似客户方案，具体请咨询官方。
@@ -200,7 +200,7 @@ leader-schedule-limit 调度是用来均衡不同 TiKV 的 leader 数，影响�
 如果你能够实现 S3 存储引擎客户端，应该基于 TiKV 接口实现。
 
 #### Infomation_schema 能否支持更多真实信息？
-`Infomation_schema`库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。
+`Infomation_schema` 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。
 当前 TiDB 支持的：`Infomation_schema` 请参考 [TiDB 系统数据库说明文档](https://pingcap.com/docs-cn/SQL/system-database/)。
 
 #### TiDB 针对不同存储的优化建议？
@@ -210,7 +210,7 @@ TiDB 在进行 OLTP 场景中，数据访问和操作需要高 IO 磁盘的支�
 tidb-server 在与 tikv-server 通讯过程中，在进行大量数据操作过程中，会出现 `Server is busy` 或者 `backoff.maxsleep 20000ms` 的日志提示信息，这是由于 TiKV-server 在处理过程中系统比较忙而出现的提示信息。通常这时候可以通过系统资源监控到 TiKV 主机系统资源使用率比较高的情况出现。如果这种情况出现，可以根据资源使用情况进行相应的扩容操作。
 
 #### TiClient  type 场景解释
-`TiClient Region Error` 该指标描述的是在 TiDB-server 作为客户端通过 kv 接口访问 TiKV-server 进行数据操作过程中，TiDB-server 操作 TiKV-server 中的 Region 数据出现的错误类型与 mertic 指标，错误类型包括`not_leader``stale_epoch`。出现这些错误的情况是当 TiDB-server 根据自己的缓存信息去操作 Region leader 数据的时候，Region leader 发生了迁移或者 TiKV 当前的 Region 信息与 TiDB 缓存的路由信息不一致而出现的错误提示。一般这种情况下，TiDB-server 都会自动重新从 PD 获取最新的路由数据，重做之前的操作。
+`TiClient Region Error` 该指标描述的是在 TiDB-server 作为客户端通过 kv 接口访问 TiKV-server 进行数据操作过程中，TiDB-server 操作 TiKV-server 中的 Region 数据出现的错误类型与 mertic 指标，错误类型包括 `not_leader`、`stale_epoch`。出现这些错误的情况是当 TiDB-server 根据自己的缓存信息去操作 Region leader 数据的时候，Region leader 发生了迁移或者 TiKV 当前的 Region 信息与 TiDB 缓存的路由信息不一致而出现的错误提示。一般这种情况下，TiDB-server 都会自动重新从 PD 获取最新的路由数据，重做之前的操作。
 
 ### TiKV
 
@@ -332,7 +332,7 @@ rm -rf tidb_test
 除 Ansible 之外，还支持 Docker 容器化部署，详细可在[官网](https://pingcap.com/docs-cn/op-guide/docker-deployment/)进行检索。官方更推荐 Ansible 方式，可以对集群主机做出相关优化以及检测，可以自动生成启动、停止、升级等脚本方便后期管理，同时部署了相关监控系统，在测试与调优以及排查问题时非常直观。
 
 #### 可否在单机上安装开发环境？
-可以，使用 `docker-compose` 在本地一键拉起一个集群，包括集群监控，还可以根据需求自定义各个组件的软件版本和实例个数，以及自定义配置文件。详细可参考[官方文档](https://github.com/tennix/tidb-docker-compose)。
+可以，使用 `docker-compose` 在本地一键拉起一个集群，包括集群监控，还可以根据需求自定义各个组件的软件版本和实例个数，以及自定义配置文件。详细可参考(https://github.com/tennix/tidb-docker-compose)。
 
 #### TiDB 同时支持的最大并发连接数 ？
 当前版本 TiDB 没有最大连接数的限制，如果并发过大导致响应时间增加，可以通过增加 TiDB 节点进行扩容。
