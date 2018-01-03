@@ -63,7 +63,13 @@ docker-compose 可以在单机上一键部署一套 TiDB 测试集群，要求 d
 
 	[tidb-vision](https://github.com/pingcap/tidb-vision) 是 TiDB 集群可视化页面，可以可视化地显示 PD 对 TiKV 数据的调度。如果不想部署该组件，可以将 `tidbVision` 项留空。
 
-	pd, tikv, tidb 和 tidb-vision 支持从源码构建 docker 镜像，如果希望从源码构建某个组件，需要将其 `image` 字段留空，然后设置其 `repo` 和 `branch` 字段
+	pd, tikv, tidb 和 tidb-vision 支持从 GitHub 源码或本地文件构建 docker 镜像，供开发测试使用。
+
+	* 如果希望从 GitHub 源码构建某个组件的镜像，需要将其 `image` 字段留空，然后设置其 `buildFrom` 为 `remote`
+
+	* 如果希望从本地已编译好的 binary 文件构建 pd, tikv 或 tidb 镜像，需要将其 `image` 字段留空，然后设置其 `buildFrom` 为 `local`，并将已编译好的 binary 拷贝到对应的 pd/bin/pd-server, tikv/bin/tikv-server, tidb/bin/tidb-server
+
+	* 如果希望从本地构建 tidb-vision 镜像，需要将其 `image` 字段留空，然后设置其 `buildFrom` 为 `local`，并将 tidb-vision 项目拷贝到 tidb-vision/tidb-vision
 
 4. 生成 docker-compose.yml 文件
 
@@ -74,7 +80,7 @@ docker-compose 可以在单机上一键部署一套 TiDB 测试集群，要求 d
 5. 使用生成的 docker-compose.yml 创建并启动集群
 
 	```bash
-	docker-compose up -d -f generated-docker-compose.yml
+	docker-compose -f generated-docker-compose.yml up -d
 	```
 
 6. 访问集群
