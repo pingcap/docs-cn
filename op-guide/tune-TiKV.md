@@ -1,9 +1,9 @@
 ---
-title: TiKV Performance Tuning
+title: Tune TiKV Performance
 category: tuning
 ---
 
-# Performance Tuning for TiKV
+# Tune TiKV Performance
 
 This document describes how to tune the TiKV parameters for optimal performance.
 
