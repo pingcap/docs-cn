@@ -106,7 +106,7 @@ TiDB 暂不支持数据库层面的会话超时，目前想要实现超时，在
 #### TiDB 生产环境的版本管理策略是怎么样的？如何尽可能避免频繁升级？
 TiDB 版本目前逐步标准化，每次 Release 都包含详细的 Change list，版本功能[变化详情](https://github.com/pingcap/TiDB/releases)，生产环境是否有必要升级取决于业务系统，建议升级之前详细了解前后版本的功能差异。
 
-版本号说明参考：`Release Version: v1.0.3-1-ga80e796`，`v1.0.3` 表示 GA 标准版  `-1` 表示该版本 commit 1 次，`ga80e796` 代表版本的 `git-hash`
+版本号说明参考：`Release Version: v1.0.3-1-ga80e796`，`v1.0.3` 表示 GA 标准版 `-1` 表示该版本 commit 1 次，`ga80e796` 代表版本的 `git-hash`
 
 #### 分不清 TiDB master 版本之间的区别，经常用错 TiDB-ansible 版本?
 TiDB 目前社区非常活跃，在 GA 版本发布后，还在不断的优化和修改 BUG。因此  TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的[新版本发布官方网站](https://pingcap.com/weekly/ )。此外 TiDB 安装推荐使用 TiDB-Ansible 进行安装，TiDB-Ansible 的版本也会随着 TiDB 的版本发布进行更新，因此建议用户在安装升级新版本的时候使用最新的 TiDB-Ansible 安装包版本进行安装。
@@ -202,9 +202,6 @@ leader-schedule-limit 调度是用来均衡不同 TiKV 的 leader 数，影响�
 #### Infomation_schema 能否支持更多真实信息？
 `Infomation_schema`库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。
 当前 TiDB 支持的：`Infomation_schema` 请参考 [TiDB 系统数据库说明文档](https://pingcap.com/docs-cn/SQL/system-database/)。
-
-#### TiDB 自动化回归测试怎么做的？
-TiDB 内部提供了一整套测试框架和测试代码，从而保证 TiDB 版本的正确测试和发布，目前这套测试框架为非开源项目。
 
 #### TiDB 针对不同存储的优化建议？
 TiDB 在进行 OLTP 场景中，数据访问和操作需要高 IO 磁盘的支持，因此，TiDB 部署的最佳实践中推荐用户使用 NVMe SSD 磁盘作为数据存储磁盘。
