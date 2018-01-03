@@ -332,7 +332,7 @@ rm -rf tidb_test
 除 Ansible 之外，还支持 Docker 容器化部署，详细可在[官网](https://pingcap.com/docs-cn/op-guide/docker-deployment/)进行检索。官方更推荐 Ansible 方式，可以对集群主机做出相关优化以及检测，可以自动生成启动、停止、升级等脚本方便后期管理，同时部署了相关监控系统，在测试与调优以及排查问题时非常直观。
 
 #### 可否在单机上安装开发环境？
-可以，使用 `docker-compose` 在本地一键拉起一个集群，包括集群监控，还可以根据需求自定义各个组件的软件版本和实例个数，以及自定义配置文件。详细可参考(https://github.com/tennix/tidb-docker-compose)。
+可以，使用 `docker-compose` 在本地一键拉起一个集群，包括集群监控，还可以根据需求自定义各个组件的软件版本和实例个数，以及自定义配置文件。详细可参考[官方文档](https://github.com/pingcap/tidb-docker-compose)。
 
 #### TiDB 同时支持的最大并发连接数 ？
 当前版本 TiDB 没有最大连接数的限制，如果并发过大导致响应时间增加，可以通过增加 TiDB 节点进行扩容。
