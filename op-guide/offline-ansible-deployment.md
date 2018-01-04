@@ -28,8 +28,6 @@ category: deployment
 
 1.  CentOS 7 Ansible 离线安装方式：
 
-> 下载 [ Ansible ]( https://download.pingcap.org/ansible-2.3-rpms.el7.tar.gz) 离线安装包 ，上传至中控机。
-
 ```ini
   
   tar -xzvf ansible-2.3-rpms.el7.tar.gz
@@ -49,54 +47,32 @@ category: deployment
 ```
 2.  安装完成后，可通过 `ansible --version` 查看版本。
 
-## TiDB 软件包下载
+## 安装准备
 
-| 组件类别 | 下载地址 | 说明 |
-| -------- | ----  | -------- |
-|**部署**| [ tidb-ansible release-1.0 ](https://github.com/pingcap/tidb-ansible/tree/release-1.0) |  |
-|**TiDB**| [ tidb-1.0.0 ](http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz) | |
-| | [ tidb-tools-latest ](http://download.pingcap.org/tidb-tools-latest-linux-amd64.tar.gz) |  |
-| | [ tidb-binlog-latest ](http://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz) |  |
-|**监控**| [ prometheus-1.5.2 ](https://github.com/prometheus/prometheus/releases/download/v1.5.2/prometheus-1.5.2.linux-amd64.tar.gz) |  |
-| | [ grafana-4.1.2 ](https://grafanarel.s3.amazonaws.com/builds/grafana-4.1.2-1486989747.linux-x64.tar.gz) |  |
-| | [ node_exporter-0.14.0-rc.1 ](http://download.pingcap.org/node_exporter-0.14.0-rc.1.linux-amd64.tar.gz) |  |
-| | [ pushgateway-0.3.1 ](http://download.pingcap.org/pushgateway-0.3.1.linux-amd64.tar.gz) |  |
-| | [ alertmanager-0.5.1 ](https://github.com/prometheus/alertmanager/releases/download/v0.5.1/alertmanager-0.5.1.linux-amd64.tar.gz) |  |
-| | [ daemontools-0.53 ](http://oifici4co.bkt.gdipper.com/daemontools-0.53.tar.gz) |  |
-|**测试**| [ fio-2.16 ](https://download.pingcap.org/fio-2.16.tar.gz) |  |
-|**Spark**| [ spark-2.1.1-bin-hadoop ](http://download.pingcap.org/spark-2.1.1-bin-hadoop2.7.tgz) |  |
-| | [ tispark-SNAPSHOT-jar-with-dependencies ](http://download.pingcap.org/tispark-SNAPSHOT-jar-with-dependencies.jar) |  |
-| | [ tispark-sample-data ](http://download.pingcap.org/tispark-sample-data.tar.gz) |  |
+> 在一台有外网，并且安装有 ansible 的机器执行如下命令：
 
-> 下载所有软件安装包，上传至中控机。
+1.  下载 tidb-ansible：
 
-## 安装部署
+    - 下载 master 分支的 tidb-ansible，用来安装 master 版本的 tidb 集群（binlog 为 kafka 版本）
 
-1.  解压集群部署工具 `tidb-ansible`
+      `git clone https://github.com/pingcap/tidb-ansible`
 
-2.  将其它所有组件复制到 `tidb-ansible` 下的 `downloads` 目录
+    - 下载 release-1.0 分支的 tidb-ansible，用来安装 release-1.0（GA 版本）版本的 tidb 集群（binlog 为 kafka 版本）
 
-3.  将 TiDB 安装包名称变更：
+      `git clone -b release-1.0 https://github.com/pingcap/tidb-ansible`
 
-    ```ini
-    
-    mv tidb-v1.0.0-linux-amd64-unportable.tar.gz tidb-v1.0.0.tar.gz
-    
-    mv tidb-tools-latest-linux-amd64.tar.gz tidb-tools-latest.tar.gz
-    
-    mv tidb-binlog-latest-linux-amd64.tar.gz tidb-binlog-latest.tar.gz
-    
-    mv prometheus-1.5.2.linux-amd64.tar.gz prometheus-1.5.2.tar.gz
-    
-    mv grafana-4.1.2-1486989747.linux-x64.tar.gz grafana-4.1.2.tar.gz
-    
-    mv node_exporter-0.14.0-rc.1.linux-amd64.tar.gz node_exporter-0.14.0.tar.gz
-    
-    mv pushgateway-0.3.1.linux-amd64.tar.gz pushgateway-0.3.1.tar.gz
-    
-    mv alertmanager-0.5.1.linux-amd64.tar.gz alertmanager-0.5.1.tar.gz
-  
+    - 下载 release-1.0-binlog-local 分支的 tidb-ansible，用来安装 release-1.0-binlog-local 版本的 tidb 集群（binlog 为 local 版本）
+
+      `git clone -b release-1.0-binlog-local https://github.com/pingcap/tidb-ansible`
+
+2.  下载 TiDB 相关依赖包：
+
     ```
+    cd tidb-ansible
+    ansible-playbook local_prepare.yml
+    ```
+
+3.  将执行完以上命令之后的 tidb-ansible 安装包拷贝到中控机。
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
@@ -118,8 +94,6 @@ category: deployment
 | node4 | 172.16.10.4 | TiKV1 |
 | node5 | 172.16.10.5 | TiKV2 |
 | node6 | 172.16.10.6 | TiKV3 |
-
-`tidb-ansible` 解压后默认的文件夹名称为 `tidb-ansible-master`，该文件夹包含用 TiDB-Ansible 来部署 TiDB 集群所需要的所有文件。
 
 ```ini
 [tidb_servers]
@@ -233,13 +207,7 @@ location_labels = ["host"]
         # ansible_user = tidb
         ```
 
-    2.  使用 `local_prepare.yml` playbook， 离线环境将检查 `downloads` 目录下各个集群组件并完成复制解压：
-
-        ```
-        ansible-playbook local_prepare.yml
-        ```
-
-    3.  初始化系统环境，修改内核参数
+    2.  初始化系统环境，修改内核参数
 
         > 如服务运行用户尚未建立，此初始化操作会自动创建该用户。
 
@@ -253,13 +221,13 @@ location_labels = ["host"]
         ansible-playbook bootstrap.yml -k
         ```
 
-    4.  部署 TiDB 集群软件
+    3.  部署 TiDB 集群软件
 
         ```
         ansible-playbook deploy.yml -k
         ```
 
-    5.  启动 TiDB 集群
+    4.  启动 TiDB 集群
 
         ```
         ansible-playbook start.yml -k
