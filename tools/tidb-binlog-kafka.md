@@ -76,11 +76,13 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
     *  使用 generate_binlog_position 工具生成 drainer 启动需要的 savepoint 文件，工具在项目 [tidb-tools](https://github.com/pingcap/tidb-tools) 中，make generate_binlog_position 编译该工具，具体的使用参考工具的 README 说明。
     *  全量备份，例如 mydumper 备份 tidb
     *  全量导入备份到目标系统
-    *  kafka 版 drainer 的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，如果 checkpoint 表中没有有效的数据，可以通过 savepoint 文件获取，然后启动 drainer， `bin/drainer --config=conf/drainer.toml --initial-commit-ts=${drainer_savepoint_dir/commitTS}`
+    *   kafka 版本drainer 启动的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，
+    如果 checkpoint 表中没有效的数据，可以通过 savepoint 文件获取，然后启动 drainer，
+    `bin/drainer --config=conf/drainer.toml --initial-commit-ts=${drainer_savepoint_dir/commitTS}`
 
 *   drainer 输出的 pb, 需要在配置文件设置下面的参数
 
-    ```toml
+    ```
     [syncer]
     db-type = "pb"
     disable-dispatch = true
@@ -89,21 +91,23 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
     dir = "/path/pb-dir"
     ```
    
-*   Kafka 和 Zookeeper 集群需要在部署 TiDB-Binlog 之前部署好。Kafka 需要0.9及以上版本.
+#### Kafka 和 Zookeeper 集群需要在部署 TiDB-Binlog 之前部署好。Kafka 需要0.9及以上版本.
 
-### kafka 集群配置推荐 ###
+#### kafka 集群配置推荐 
 
 |名字|数量|内存|CPU|硬盘|
 |:---:|:---:|:---:|:---:|:---:|
 |Kafka|3+|16G|8+|2+ 1TB|
 |Zookeeper|3+|8G|4+|2+ 300G|
 
-*   kafka 配置参数推荐
+*   kafka 配置参数推荐
     ```
     auto.create.topics.enable=true 如果还没有创建topic，kafka会在broker上自动创建topic
-    broker.id 必备参数用来标识 kafka 集群，不能重复，如 broker.id = 1.
-    fs.file-max = 1000000 kafka会使用大量文件和网络 socket,建议修改成 1000000, 修改方法（vi /etc/sysctl.conf）
-    ```
+    broker.id 必备参数用来标识 kafka 集群，不能重复，如 broker.id = 1.
+    fs.file-max = 1000000 kafka会使用大量文件和网络 socket,建议修改成 1000000, 修改方法（vi /etc/sysctl.conf）
+    ```
+   
+    
 #### 使用 tidb-ansible 部署 PUMP
 
 - 如无 Kafka 集群，可使用 [kafka-ansible](https://github.com/pingcap/thirdparty-ops/tree/master/kafka-ansible) 部署 Kafka 集群。
@@ -119,209 +123,212 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
   ``` 
 
 #### 使用 Binary 部署 PUMP
+    使用样例：
+    假设我们有三个PD，三个zookeeper，一个TiDB,各个节点信息如下  
+    ```
+    TiDB="192.168.0.10"
+    PD1="192.168.0.16"
+    PD2="192.168.0.15"
+    PD3="192.168.0.14"
+    ZK1="192.168.0.13"
+    ZK2="192.168.0.12"
+    ZK3="192.168.0.11"
+    ```
+    在 ip="192.168.0.10" 的机器上面部署 drainer pump
+    对应的 pd 集群的 ip="192.168.0.16,192.168.0.15,192.168.0.14" 
+    对应的 kafka 集群的 zookeeper 的 ip="192.168.0.13,192.168.0.12,192.168.0.11" 以此为例，说明 pump drainer 的使用
 
-  使用样例：
-  假设我们有三个PD，三个zookeeper，一个TiDB,各个节点信息如下
-   ```
-   TiDB="192.168.0.10"
-   PD1="192.168.0.16"
-   PD2="192.168.0.15"
-   PD3="192.168.0.14"
-   ZK1="192.168.0.13"
-   ZK2="192.168.0.12"
-   ZK3="192.168.0.11"
-   ```
-
+    
 1. PUMP 命令行参数说明
 
-    ```
-    Usage of pump:
-    -L string
-        日志输出信息等级设置: debug, info, warn, error, fatal (默认 "info")
-    -V
-        打印版本信息
-    -addr string
-        pump 提供服务的 rpc 地址(-addr="192.168.0.10:8250")
-    -advertise-addr string
-        pump 对外提供服务的 rpc 地址(-advertise-addr="192.168.0.10:8250")
-    -config string
-        配置文件路径,如果你指定了配置文件，pump 会首先读取配置文件的配置
-        如果对应的配置在命令行参数里面也存在，pump 就会使用命令行参数的配置来覆盖配置文件里面的
-    -data-dir string
-        pump 数据存储位置路径
-    -zookeeper-addrs string (-zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181")
-        zookeeper 地址，该选项从 zookeeper 中获取 kafka 地址
-    -gc int
-        日志最大保留天数 (默认 7)， 设置为 0 可永久保存
-    -heartbeat-interval uint
-        pump 向 pd 发送心跳间隔 (单位 秒)
-    -log-file string
-        log 文件路径
-    -log-rotate string
-        log 文件切换频率, hour/day
-    -metrics-addr string
-       prometheus pushgataway 地址，不设置则禁止上报监控信息
-    -metrics-interval int
-       监控信息上报频率 (默认 15，单位 秒)
-    -pd-urls string
-        pd 集群节点的地址 (-pd-urls="http://192.168.0.16:2379:http://192.168.0.15:2379:http://192.168.0.14:2379")
-    -socket string
-        unix socket 模式服务监听地址 (默认 unix:///tmp/pump.sock)
-    ```
+ ```
+ Usage of pump:
+ -L string
+     日志输出信息等级设置: debug, info, warn, error, fatal (默认 "info")
+ -V
+     打印版本信息
+ -addr string
+       pump 提供服务的 rpc 地址(-addr="192.168.0.10:8250")
+ -advertise-addr string
+       pump 对外提供服务的 rpc 地址(-advertise-addr="192.168.0.10:8250")
+ -config string
+     配置文件路径,如果你指定了配置文件，pump 会首先读取配置文件的配置
+     如果对应的配置在命令行参数里面也存在，pump 就会使用命令行参数的配置来覆盖配置文件里面的
+ -data-dir string
+     pump 数据存储位置路径
+ -zookeeper-addrs string (-zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181")
+     zookeeper 地址，该选项从 zookeeper 中获取 kafka 地址
+ -gc int
+     日志最大保留天数 (默认 7)， 设置为 0 可永久保存
+ -heartbeat-interval uint
+     pump 向 pd 发送心跳间隔 (单位 秒)
+ -log-file string
+     log 文件路径
+ -log-rotate string
+     log 文件切换频率, hour/day
+ -metrics-addr string
+    prometheus pushgataway 地址，不设置则禁止上报监控信息
+ -metrics-interval int
+    监控信息上报频率 (默认 15，单位 秒)
+ -pd-urls string
+       pd 集群节点的地址 (-pd-urls="http://192.168.0.16:2379:http://192.168.0.15:2379:http://192.168.0.14:2379")
+ -socket string
+     unix socket 模式服务监听地址 (默认 unix:///tmp/pump.sock)
+ ```
 
 
- 2. PUMP 配置文件
+2. PUMP 配置文件
 
-    ```toml
-    # pump Configuration.
-    # pump 提供服务的 rpc 地址("192.168.0.10:8250")
-    addr = "192.168.0.10:8250"
-    # pump 对外提供服务的 rpc 地址("192.168.0.10:8250")
-    advertise-addr = ""
-    # binlog 最大保留天数 (默认 7)， 设置为 0 可永久保存
-    gc = 7
-    #  pump 数据存储位置路径
-    data-dir = "data.pump"
-    # zookeeper 地址，设置该选项从 zookeeper 中获取 kafka 地址
-    # zookeeper-addrs = "192.168.0.11:2181:192.168.0.12:2181:192.168.0.13:2181"
-    # pump 向 pd 发送心跳间隔 (单位 秒)    
-    heartbeat-interval = 3
-    # pd 集群节点的地址
-    pd-urls = "http://192.168.0.16:2379:http://192.168.0.15:2379:http://192.168.0.14:2379"
-    # unix socket 模式服务监听地址 (默认 unix:///tmp/pump.sock)
-    socket = "unix:///tmp/pump.sock"
-    ```
+ ```toml
+ # pump Configuration.
+   # pump 提供服务的 rpc 地址("192.168.0.10:8250")
+ addr = "192.168.0.10:8250"
+   # pump 对外提供服务的 rpc 地址("192.168.0.10:8250")
+ advertise-addr = ""
+ # binlog 最大保留天数 (默认 7)， 设置为 0 可永久保存
+ gc = 7
+ #  pump 数据存储位置路径
+ data-dir = "data.pump"
+ # zookeeper 地址，设置该选项从 zookeeper 中获取 kafka 地址
+ # zookeeper-addrs = "192.168.0.11:2181:192.168.0.12:2181:192.168.0.13:2181"
+ # pump 向 pd 发送心跳间隔 (单位 秒)    
+ heartbeat-interval = 3
+   # pd 集群节点的地址
+ pd-urls = "http://192.168.0.16:2379:http://192.168.0.15:2379:http://192.168.0.14:2379"
+ # unix socket 模式服务监听地址 (默认 unix:///tmp/pump.sock)
+ socket = "unix:///tmp/pump.sock"
+ ```
 
 3. 启动示例
 
-    ```bash
-    ./bin/pump -config pump.toml
-    ```
+ ```bash
+ ./bin/pump -config pump.toml
+ ```
 
 #### 使用 Binary 部署 Drainer
 
 1.  Drainer 命令行参数说明
 
-    ```
-    Usage of drainer:
-    -L string
-        日志输出信息等级设置: debug, info, warn, error, fatal (默认 "info")
-    -V
-        打印版本信息
-    -addr string
-        drainer 提供服务的地址(-addr="192.168.0.10:8249")
-    -c int
-        同步下游的并发数，该值设置越高同步的吞吐性能越好 (default 1)
-    -config string
-       配置文件路径, drainer 会首先读取配置文件的配置
-       如果对应的配置在命令行参数里面也存在，drainer 就会使用命令行参数的配置来覆盖配置文件里面的
-    -data-dir string
-        drainer 数据存储位置路径 (默认 "data.drainer")
-    -zookeeper-addrs string
-        zookeeper 地址，该选项从 zookeeper 中获取 kafka 地址
-    -dest-db-type string
-        drainer 下游服务类型 (默认为 mysql)
-    -detect-interval int
-        向 pd 查询在线 pump 的时间间隔 (默认 10，单位 秒)
-    -disable-dispatch
-        是否禁用拆分单个 binlog 的 sqls 的功能，如果设置为 true，则按照每个 binlog
-        顺序依次还原成单个事务进行同步( 下游服务类型为 mysql, 该项设置为 False )
-    -ignore-schemas string
-        db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test"),
-        不支持对 ignore schemas 的 table 进行 rename DDL 操作
-    -initial-commit-ts (默认为 0)
-        如果 drainer 没有相关的断点信息，可以通过该项来设置相关的断点信息
-    -log-file string
-        log 文件路径
-    -log-rotate string
-        log 文件切换频率, hour/day
-    -metrics-addr string
-       prometheus pushgataway 地址，不设置则禁止上报监控信息
-    -metrics-interval int
-       监控信息上报频率 (默认 15，单位 秒)
-    -pd-urls string
-       pd 集群节点的地址 (-pd-urls="http://192.168.0.16:2379:http://192.168.0.15:2379:http://192.168.0.14:2379")
-    -txn-batch int
-       输出到下游数据库一个事务的 sql 数量 (default 1)
-    ```
+ ```
+ Usage of drainer:
+ -L string
+     日志输出信息等级设置: debug, info, warn, error, fatal (默认 "info")
+ -V
+     打印版本信息
+ -addr string
+       drainer 提供服务的地址(-addr="192.168.0.10:8249")
+ -c int
+     同步下游的并发数，该值设置越高同步的吞吐性能越好 (default 1)
+ -config string
+    配置文件路径, drainer 会首先读取配置文件的配置
+    如果对应的配置在命令行参数里面也存在，drainer 就会使用命令行参数的配置来覆盖配置文件里面的
+ -data-dir string
+     drainer 数据存储位置路径 (默认 "data.drainer")
+ -zookeeper-addrs string
+     zookeeper 地址，该选项从 zookeeper 中获取 kafka 地址
+ -dest-db-type string
+     drainer 下游服务类型 (默认为 mysql)
+ -detect-interval int
+     向 pd 查询在线 pump 的时间间隔 (默认 10，单位 秒)
+ -disable-dispatch
+     是否禁用拆分单个 binlog 的 sqls 的功能，如果设置为 true，则按照每个 binlog
+     顺序依次还原成单个事务进行同步( 下游服务类型为 mysql, 该项设置为 False )
+ -ignore-schemas string
+     db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test"),
+     不支持对 ignore schemas 的 table 进行 rename DDL 操作
+   -initial-commit-ts (默认为 0)
+       如果 drainer 没有相关的断点信息，可以通过该项来设置相关的断点信息
+   -log-file string
+     log 文件路径
+ -log-rotate string
+     log 文件切换频率, hour/day
+ -metrics-addr string
+    prometheus pushgataway 地址，不设置则禁止上报监控信息
+ -metrics-interval int
+    监控信息上报频率 (默认 15，单位 秒)
+ -pd-urls string
+      pd 集群节点的地址 (-pd-urls="http://192.168.0.16:2379:http://192.168.0.15:2379:http://192.168.0.14:2379")
+ -txn-batch int
+    输出到下游数据库一个事务的 sql 数量 (default 1)
+ ```
 
 
 2. Drainer 配置文件
 
-    ```toml
-    # drainer Configuration.
+ ```toml
+ # drainer Configuration.
 
-    # drainer 提供服务的地址("192.168.0.10:8249")
-    addr = "192.168.0.10:8249"
+   # drainer 提供服务的地址("192.168.0.10:8249")
+ addr = "192.168.0.10:8249"
 
-    # 向 pd 查询在线 pump 的时间间隔 (默认 10，单位 秒)
-    detect-interval = 10
+ # 向 pd 查询在线 pump 的时间间隔 (默认 10，单位 秒)
+ detect-interval = 10
 
-    # drainer 数据存储位置路径 (默认 "data.drainer")
-    data-dir = "data.drainer"
-    
-    # zookeeper 地址，该选项则从 zookeeper 中获取 kafka 地址
-    # zookeeper-addrs = "192.168.0.10:2181"
-    
-    # pd 集群节点的地址
-    pd-urls = "http://192.168.0.16:2379:http://192.168.0.15:2379:http://192.168.0.14:2379"
+ # drainer 数据存储位置路径 (默认 "data.drainer")
+ data-dir = "data.drainer"
+ 
+ # zookeeper 地址，该选项则从 zookeeper 中获取 kafka 地址
+ # zookeeper-addrs = "192.168.0.10:2181"
+ 
+   # pd 集群节点的地址
+   pd-urls = "http://192.168.0.16:2379:http://192.168.0.15:2379:http://192.168.0.14:2379"
 
-    # log 文件路径
-    log-file = "drainer.log"
+ # log 文件路径
+ log-file = "drainer.log"
 
-    # syncer Configuration.
-    [syncer]
+ # syncer Configuration.
+ [syncer]
 
-    ## db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test"),
-    ## 不支持对 ignore schemas 的 table 进行 rename DDL 操作
-    ignore-schemas = "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql"
+ ## db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test"),
+ ## 不支持对 ignore schemas 的 table 进行 rename DDL 操作
+ ignore-schemas = "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql"
 
-    # 输出到下游数据库一个事务的 sql 数量 (default 1)
-    txn-batch = 1
+ # 输出到下游数据库一个事务的 sql 数量 (default 1)
+ txn-batch = 1
 
-    # 同步下游的并发数，该值设置越高同步的吞吐性能越好 (default 1)
-    worker-count = 1
+ # 同步下游的并发数，该值设置越高同步的吞吐性能越好 (default 1)
+ worker-count = 1
 
-    # 是否禁用拆分单个 binlog 的 sqls 的功能，如果设置为 true，则按照每个 binlog
-    # 顺序依次还原成单个事务进行同步( 下游服务类型为 mysql, 该项设置为 False )
-    disable-dispatch = false
+ # 是否禁用拆分单个 binlog 的 sqls 的功能，如果设置为 true，则按照每个 binlog
+ # 顺序依次还原成单个事务进行同步( 下游服务类型为 mysql, 该项设置为 False )
+ disable-dispatch = false
 
-    # drainer 下游服务类型 (默认为 mysql)
-    # 参数有效值为 "mysql", "pb"
-    db-type = "mysql"
+ # drainer 下游服务类型 (默认为 mysql)
+ # 参数有效值为 "mysql", "pb"
+ db-type = "mysql"
 
-    # replicate-do-db priority over replicate-do-table if have same db name
-    # and we support regex expression ,
-    # 以 '~' 开始声明使用正则表达式
+ # replicate-do-db priority over replicate-do-table if have same db name
+ # and we support regex expression ,
+ # 以 '~' 开始声明使用正则表达式
 
-    #replicate-do-db = ["~^b.*","s1"]
+ #replicate-do-db = ["~^b.*","s1"]
 
-    #[[syncer.replicate-do-table]]
-    #db-name ="test"
-    #tbl-name = "log"
+ #[[syncer.replicate-do-table]]
+ #db-name ="test"
+ #tbl-name = "log"
 
-    #[[syncer.replicate-do-table]]
-    #db-name ="test"
-    #tbl-name = "~^a.*"
+ #[[syncer.replicate-do-table]]
+ #db-name ="test"
+ #tbl-name = "~^a.*"
 
-    # db-type 设置为 mysql 时，下游数据库服务器参数
-    [syncer.to]
-    host = "192.168.0.10"
-    user = "root"
-    password = ""
-    port = 3306
+ # db-type 设置为 mysql 时，下游数据库服务器参数
+ [syncer.to]
+ host = "192.168.0.10"
+ user = "root"
+ password = ""
+ port = 3306
 
-    # db-type 设置为 pb 时,存放 binlog 文件的目录
-    # [syncer.to]
-    # dir = "data.drainer"
-    ```
+ # db-type 设置为 pb 时,存放 binlog 文件的目录
+ # [syncer.to]
+ # dir = "data.drainer"
+ ```
 
 
 3. 启动示例
 
-    ```bash
-    ./bin/drainer -config drainer.toml
-    ```
+ ```bash
+ ./bin/drainer -config drainer.toml
+ ```
 
 ## TiDB-Binlog 监控
 
@@ -337,8 +344,8 @@ drainer 启动时可以设置 `--metrics-addr` 和 `--metrics-interval` 两个�
 
 +   进入 Grafana Web 界面（默认地址: `http://localhost:3000`，默认账号: admin 密码: admin）
 
-    点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息 ( 注: Type 选 Prometheus，Url 为 Prometheus 地址，根据实际情况 添加/填写 ）
+ 点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息 ( 注: Type 选 Prometheus，Url 为 Prometheus 地址，根据实际情况 添加/填写 ）
 
 +   导入 dashboard 配置文件
 
-    点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 [dashboard 配置文件](https://github.com/pingcap/docs/tree/master/etc)上传 -> 选择对应的 data source
+ 点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 [dashboard 配置文件](https://github.com/pingcap/docs/tree/master/etc)上传 -> 选择对应的 data source
