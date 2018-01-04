@@ -444,10 +444,6 @@ Delete，Truncate 和 Drop 都不会立即释放空间，对于 Truncate 和 Dro
 + 查看 [Syncer](https://pingcap.com/docs-cn/tools/syncer/)/ [Drainer](https://pingcap.com/docs-cn/tools/tidb-binlog-kafka/#pump-drainer-%E9%85%8D%E7%BD%AE) 文档寻求帮助。
 + 及时更换新版的 Syncer / Drainer。
 
-#### TiDB 主键热点问题怎么解决？从数据模型上怎么设计可以避免？
-建议主键是随机分散的，保证数据不落在同一个或者某几个 Region 上。
-
-
 ### 性能调优
 
 #### TiDB 如何提高数据加载速度？
