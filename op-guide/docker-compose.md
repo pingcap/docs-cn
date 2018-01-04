@@ -3,11 +3,11 @@ title: 使用 Docker Compose 构建集群
 category: deployment
 ---
 
-# 使用 Docker Compose 构建集群
+# 使用 Docker Compose 快速构建集群
 
-docker-compose 可以在单机上一键部署一套 TiDB 测试集群，要求 docker 是 17.06.0 及以上版本
+[Docker compose](https://docs.docker.com/compose/overview) 可以通过一个 YAML 文件定义多个容器的应用服务，然后一键启动或停止。可以用来在单机上一键部署一套 TiDB 测试集群，使用 Docker Compose 部署 TiDB 集群要求 docker 是 17.06.0 及以上版本
 
-## 快速入门
+## 快速开始
 
 1. 下载 tidb-docker-compose
 
@@ -18,7 +18,7 @@ docker-compose 可以在单机上一键部署一套 TiDB 测试集群，要求 d
 2. 创建并启动集群
 
     ```bash
-    tidb-docker-compose && docker-compose up -d
+    cd tidb-docker-compose && docker-compose up -d
     ```
 
 3. 访问集群
@@ -29,7 +29,7 @@ docker-compose 可以在单机上一键部署一套 TiDB 测试集群，要求 d
 
     访问集群 Grafana 监控页面： <http://localhost:3000> 默认用户名和密码都是 admin
 
-    [集群可视化页面](https://github.com/tidb-vision)： <http://localhost:8010>
+    [集群数据可视化](https://github.com/tidb-vision)： <http://localhost:8010>
 
 ## 自定义集群
 
@@ -51,7 +51,7 @@ docker-compose 可以在单机上一键部署一套 TiDB 测试集群，要求 d
     git clone https://github.com/pingcap/tidb-docker-compose.git
     ```
 
-3. 自定义配置
+3. 自定义集群
 
     ```bash
     cd tidb-docker-compose
