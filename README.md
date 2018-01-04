@@ -118,6 +118,7 @@
   - [一面数据](http://t.cn/RT9r5di)
   - [万达网络](http://t.cn/RTKm6ds)
   - [某电信运营商](http://t.cn/RTYWADg)
+  - [TiDB 在凤凰网新闻内容业务的创新实践](http://t.cn/RHRQfNT)
 + 更多资源
   - [常用工具](https://github.com/pingcap/tidb-tools)
   - [PingCAP 团队技术博客](https://pingcap.com/blog-cn/)
