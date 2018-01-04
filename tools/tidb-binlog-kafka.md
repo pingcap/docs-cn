@@ -76,7 +76,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
     *  使用 generate_binlog_position 工具生成 drainer 启动需要的 savepoint 文件，工具在项目 [tidb-tools](https://github.com/pingcap/tidb-tools) 中，make generate_binlog_position 编译该工具，具体的使用参考工具的 README 说明。
     *  全量备份，例如 mydumper 备份 tidb
     *  全量导入备份到目标系统
-    *   kafka 版本drainer 启动的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，
+    *  kafka 版本 drainer 启动的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，
     如果 checkpoint 表中没有效的数据，可以通过 savepoint 文件获取，然后启动 drainer，
     `bin/drainer --config=conf/drainer.toml --initial-commit-ts=${drainer_savepoint_dir/commitTS}`
 
@@ -91,7 +91,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
     dir = "/path/pb-dir"
     ```
    
-#### Kafka 和 Zookeeper 集群需要在部署 TiDB-Binlog 之前部署好。Kafka 需要0.9及以上版本.
+#### Kafka 和 Zookeeper 集群需要在部署 TiDB-Binlog 之前部署好。Kafka 需要0.9及以上版本。
 
 #### kafka 集群配置推荐 
 
@@ -100,12 +100,12 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
 |Kafka|3+|16G|8+|2+ 1TB|
 |Zookeeper|3+|8G|4+|2+ 300G|
 
-*   kafka 配置参数推荐
-    ```
-    auto.create.topics.enable=true 如果还没有创建topic，kafka会在broker上自动创建topic
-    broker.id 必备参数用来标识 kafka 集群，不能重复，如 broker.id = 1.
-    fs.file-max = 1000000 kafka会使用大量文件和网络 socket,建议修改成 1000000, 修改方法（vi /etc/sysctl.conf）
-    ```
+#### kafka 配置参数推荐
+    
+ - auto.create.topics.enable=true 如果还没有创建topic，kafka会在broker上自动创建topic
+ - broker.id 必备参数用来标识 kafka 集群，不能重复，如 broker.id = 1
+ - fs.file-max = 1000000 kafka会使用大量文件和网络 socket,建议修改成 1000000, 修改方法（vi /etc/sysctl.conf）
+    
    
     
 #### 使用 tidb-ansible 部署 PUMP
@@ -124,7 +124,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
 
 #### 使用 Binary 部署 PUMP
     使用样例：
-    假设我们有三个PD，三个zookeeper，一个TiDB,各个节点信息如下  
+    假设我们有三个 PD，三个 zookeeper，一个 TiDB, 各个节点信息如下  
     ```
     TiDB="192.168.0.10"
     PD1="192.168.0.16"
@@ -236,9 +236,9 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
  -ignore-schemas string
      db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test"),
      不支持对 ignore schemas 的 table 进行 rename DDL 操作
-   -initial-commit-ts (默认为 0)
-       如果 drainer 没有相关的断点信息，可以通过该项来设置相关的断点信息
-   -log-file string
+ -initial-commit-ts (默认为 0)
+     如果 drainer 没有相关的断点信息，可以通过该项来设置相关的断点信息
+ -log-file string
      log 文件路径
  -log-rotate string
      log 文件切换频率, hour/day
@@ -247,7 +247,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
  -metrics-interval int
     监控信息上报频率 (默认 15，单位 秒)
  -pd-urls string
-      pd 集群节点的地址 (-pd-urls="http://192.168.0.16:2379:http://192.168.0.15:2379:http://192.168.0.14:2379")
+    pd 集群节点的地址 (-pd-urls="http://192.168.0.16:2379:http://192.168.0.15:2379:http://192.168.0.14:2379")
  -txn-batch int
     输出到下游数据库一个事务的 sql 数量 (default 1)
  ```
@@ -258,7 +258,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
  ```toml
  # drainer Configuration.
 
-   # drainer 提供服务的地址("192.168.0.10:8249")
+ # drainer 提供服务的地址("192.168.0.10:8249")
  addr = "192.168.0.10:8249"
 
  # 向 pd 查询在线 pump 的时间间隔 (默认 10，单位 秒)
@@ -270,8 +270,8 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
  # zookeeper 地址，该选项则从 zookeeper 中获取 kafka 地址
  # zookeeper-addrs = "192.168.0.10:2181"
  
-   # pd 集群节点的地址
-   pd-urls = "http://192.168.0.16:2379:http://192.168.0.15:2379:http://192.168.0.14:2379"
+ # pd 集群节点的地址
+ pd-urls = "http://192.168.0.16:2379:http://192.168.0.15:2379:http://192.168.0.14:2379"
 
  # log 文件路径
  log-file = "drainer.log"
