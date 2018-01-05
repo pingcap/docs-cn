@@ -439,7 +439,7 @@ mysql> admin show ddl;
 
 > 提升建议：
 >
-> 1. 建议提升硬件配置，可以参考[部署建议](op-guide/requirement.md)。
+> 1. 建议提升硬件配置，可以参考[部署建议](op-guide/recommendation.md)。
 > 2. 提升并发度，默认是 10，可以提升到 50 试试，但是一般提升在 2-4 倍之间。
 > 3. 测试大数据量的 count。
 > 4. 调优 TiKV 配置，可以参考[性能调优](op-guide/tune-tikv.md)。

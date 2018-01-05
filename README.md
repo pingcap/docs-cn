@@ -66,6 +66,7 @@
     - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
   - [JSON 支持](sql/json-functions-generated-column.md)
   - [Connectors 和 API](sql/connection-and-APIs.md)
+  - [TiDB 事务隔离级别](sql/transaction-isolation.md)
   - [错误码与故障诊断](sql/error.md)
   - [与 MySQL 兼容性对比](sql/mysql-compatibility.md)
   + 高级功能
@@ -77,7 +78,10 @@
     - [离线 Ansible 部署方案（强烈推荐）](op-guide/offline-ansible-deployment.md)
     - [Docker 部署方案](op-guide/docker-deployment.md)
     - [跨机房部署方案](op-guide/location-awareness.md)
-  - [配置集群](op-guide/configuration.md)
+  + 配置集群
+    - [参数解释](op-guide/configuration.md)
+    - [开启 TLS 验证](op-guide/security.md)
+    - [生成自签名证书](op-guide/generate-self-signed-certificates.md)
   + 监控集群
     - [整体监控框架概述](op-guide/monitor-overview.md)
     - [重要监控指标详解](op-guide/dashboard-overview-info.md)
@@ -98,7 +102,7 @@
 + TiDB 周边工具
   - [Syncer 使用文档](tools/syncer.md)
   - [Loader 使用文档](tools/loader.md)
-  - [TiDB-binlog 使用文档](tools/tidb-binlog.md)
+  - [TiDB-Binlog 使用文档](tools/tidb-binlog-kafka.md)
   - [PD Control 使用文档](tools/pd-control.md)
 + TiSpark 文档
   - [TiSpark 快速入门指南](tispark/tispark-quick-start-guide.md)
@@ -117,6 +121,7 @@
   - [一面数据](http://t.cn/RT9r5di)
   - [万达网络](http://t.cn/RTKm6ds)
   - [某电信运营商](http://t.cn/RTYWADg)
+  - [凤凰网](http://t.cn/RHRQfNT)
 + 更多资源
   - [常用工具](https://github.com/pingcap/tidb-tools)
   - [PingCAP 团队技术博客](https://pingcap.com/blog-cn/)
