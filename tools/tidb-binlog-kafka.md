@@ -76,9 +76,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
     *  使用 generate_binlog_position 工具生成 drainer 启动需要的 savepoint 文件，工具在项目 [tidb-tools](https://github.com/pingcap/tidb-tools) 中，make generate_binlog_position 编译该工具，具体的使用参考工具的 README 说明。
     *  全量备份，例如 mydumper 备份 tidb
     *  全量导入备份到目标系统
-    *  kafka 版本 drainer 启动的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，如果 checkpoint 表中没有效的数据，可以通过 savepoint 文件获取，然后启动 drainer
-    
-    `bin/drainer --config=conf/drainer.toml --initial-commit-ts=${commitTS}`
+    *  kafka 版本 drainer 启动的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，如果 checkpoint 表中没有效的数据，可以通过设置 `initial-commit-ts` 启动 drainer 从指定位置开始消费 - `bin/drainer --config=conf/drainer.toml --initial-commit-ts=${commitTS}`
 
 *   drainer 输出的 pb, 需要在配置文件设置下面的参数
 
