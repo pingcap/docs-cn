@@ -171,7 +171,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
  -metrics-interval int
     监控信息上报频率 (默认 15，单位 秒)
  -pd-urls string
-       pd 集群节点的地址 (-pd-urls="http://192.168.0.16:2379:http://192.168.0.15:2379:http://192.168.0.14:2379")
+       pd 集群节点的地址 (-pd-urls="http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379")
  -socket string
      unix socket 模式服务监听地址 (默认 unix:///tmp/pump.sock)
  ```
@@ -190,11 +190,11 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
  #  pump 数据存储位置路径
  data-dir = "data.pump"
  # zookeeper 地址，设置该选项从 zookeeper 中获取 kafka 地址
- # zookeeper-addrs = "192.168.0.11:2181:192.168.0.12:2181:192.168.0.13:2181"
+ # zookeeper-addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
  # pump 向 pd 发送心跳间隔 (单位 秒)    
  heartbeat-interval = 3
    # pd 集群节点的地址
- pd-urls = "http://192.168.0.16:2379:http://192.168.0.15:2379:http://192.168.0.14:2379"
+ pd-urls = "http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379"
  # unix socket 模式服务监听地址 (默认 unix:///tmp/pump.sock)
  socket = "unix:///tmp/pump.sock"
  ```
@@ -224,7 +224,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
     如果对应的配置在命令行参数里面也存在，drainer 就会使用命令行参数的配置来覆盖配置文件里面的
  -data-dir string
      drainer 数据存储位置路径 (默认 "data.drainer")
- -zookeeper-addrs string
+ -zookeeper-addrs string (-zookeeper-addrs="192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181")
      zookeeper 地址，该选项从 zookeeper 中获取 kafka 地址
  -dest-db-type string
      drainer 下游服务类型 (默认为 mysql)
@@ -247,7 +247,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
  -metrics-interval int
     监控信息上报频率 (默认 15，单位 秒)
  -pd-urls string
-    pd 集群节点的地址 (-pd-urls="http://192.168.0.16:2379:http://192.168.0.15:2379:http://192.168.0.14:2379")
+    pd 集群节点的地址 (-pd-urls="http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379")
  -txn-batch int
     输出到下游数据库一个事务的 sql 数量 (default 1)
  ```
@@ -267,11 +267,11 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
  # drainer 数据存储位置路径 (默认 "data.drainer")
  data-dir = "data.drainer"
  
- # zookeeper 地址，该选项则从 zookeeper 中获取 kafka 地址
- # zookeeper-addrs = "192.168.0.10:2181"
+ # zookeeper 地址，该选项从 zookeeper 中获取 kafka 地址
+ # zookeeper-addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
  
  # pd 集群节点的地址
- pd-urls = "http://192.168.0.16:2379:http://192.168.0.15:2379:http://192.168.0.14:2379"
+ pd-urls = "http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379"
 
  # log 文件路径
  log-file = "drainer.log"
