@@ -271,7 +271,7 @@ TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在�
 
 #### TiKV channel full 是啥原因？
 + Raftstore 线程卡了，可以看一下 Raftstore 的 CPU 使用情况。
-+ TiKV 太忙了(读取、写入、磁盘 IO 等)，请求处理不过来。
++ TiKV 太忙了（读取、写入、磁盘 IO 等），请求处理不过来。
 
 #### TiKV 频繁切换 Region leader 切换是啥原因？
 + 网络问题导致节点间通信卡了，查看 Report failures 监控。
@@ -341,7 +341,7 @@ rm -rf tidb_test
 TiDB 和 TiKV 对 CPU 和内存都有比较高的要求，不建议部署到相同节点。
 
 #### 为什么要在 CentOS 7 上部署 TiDB 集群？
-TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运行在 Intel 架构服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络，作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境, 具体可以参考 TiDB 的[官方部署要求](https://pingcap.com/docs-cn/op-guide/recommendation/)。
+TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运行在 Intel 架构服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络，作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境，具体可以参考 TiDB 的[官方部署要求](https://pingcap.com/docs-cn/op-guide/recommendation/)。
 其中 TiDB 在 CentOS 7 的环境下进行大量的测试，同时也有很多这个操作系统的部署最佳实践，因此，我们推荐客户在部署 TiDB 的时候使用 CentOS 7+ 以上的Linux 操作系统。
 
 #### 2块网卡的目的是？万兆的目的是？
