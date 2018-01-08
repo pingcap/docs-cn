@@ -118,7 +118,7 @@ TiDB 目前社区非常活跃，在 GA 版本发布后，还在不断的优化�
 从 TiDB 架构来讲，完全支持真正意义上的跨中心异地多活，操作层面依赖数据中心之间的网络延迟和稳定性，一般建议延迟在 5ms 以下，目前我们已经有相似客户方案，具体请咨询官方:info@pingcap.com。
 
 #### 除了官方文档，有没有其他 TiDB 知识获取途径？
-目前[官方文档](https://pingcap.com/docs-cn/)是获取 TiDB 相关知识最主要、最及时的发布途径。除此之外，我们也有一些技术沟通群，如有需求可发邮件至 Info@pingcap.com 获取。
+目前[官方文档](https://pingcap.com/docs-cn/)是获取 TiDB 相关知识最主要、最及时的发布途径。除此之外，我们也有一些技术沟通群，如有需求可发邮件至 info@pingcap.com 获取。
 
 #### TiDB 集群容量 QPS 与节点数之间关系如何，如何进行容量预估？
 可以理解为大概是线性的关系，当前集群每个节点可以承载的 QPS，可参考[官方测试文档](http://t.cn/RT8oi0j)。
@@ -279,7 +279,7 @@ TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在�
 + Raftstore 线程卡了。
 
 #### Leader 节点挂了会影响服务吗？会有多久的影响 ？
-TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强一致，当一份备份出现问题时，其他的副本能保证数据的安全。通常 TiDB 配置每个 Region 为 3 副本，根据 Raft 协议，每个 Region 会选取一个 Leader 提供服务。但单个Region Leader 失效时，在最大 2 * lease time（leasetime 是 10秒）时间后，通过 Raft 协议会很快选新的 Region Leader 提供服务。
+TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强一致，当一份备份出现问题时，其他的副本能保证数据的安全。通常 TiDB 配置每个 Region 为 3 副本，根据 Raft 协议，每个 Region 会选取一个 Leader 提供服务。但单个Region Leader 失效时，在最大 2 * lease time（leasetime 是 10 秒）时间后，通过 Raft 协议会很快选新的 Region Leader 提供服务。
 
 #### TiKV 在分别那些场景下占用大量 IO，内存，CPU，超过参数配置的多倍？
 在大量写入、读取的场景中会占用大量的磁盘 IO、内存和 CPU。在执行很复杂的查询，比如会产生很大中间结果集的情况下，会消耗很多的内存和 CPU 资源。
