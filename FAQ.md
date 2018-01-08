@@ -428,7 +428,7 @@ INSERT INTO mysql.user VALUES ("%", "root", "", "Y", "Y", "Y", "Y", "Y", "Y", "Y
 
 ```
 #### 怎样把数据从 TiDB 导出／导入呢？
-TiDB 遵从 MySQL 协议,可以使用 Mydumper 工具导出数据，使用 Loader 工具导入数据，和 MySQL 导出／导入方式一样。
+TiDB 遵从 MySQL 协议，可以使用 Mydumper 工具导出数据，使用 Loader 工具导入数据，和 MySQL 导出／导入方式一样。
 
 #### 数据删除后空间多长时间空间回收？
 Delete，Truncate 和 Drop 都不会立即释放空间，对于 Truncate 和 Drop 操作，在达到 TiDB 的 GC (Garbage Collection) 时间后（默认 10 分钟），TiDB 的 GC 机制会删除数据并释放空间。对于 Delete 操作 TiDB 的 GC 机制会删除数据，但不会释放空间，而是当后续数据写入 RocksDB 且进行 Compact 时对空间重新利用。
