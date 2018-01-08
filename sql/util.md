@@ -75,10 +75,10 @@ label = "cop"
 1 row in set (0.00 sec)
 ```
 
-If the `dot` program is installed on your computer, you can generate a PNG file using the following method:
+If the `dot` program (in the `graphviz` package) is installed on your computer, you can generate a PNG file using the following method:
 
 ```bash
-ot xx.dot -T png -O
+dot xx.dot -T png -O
 
 The xx.dot is the result returned by the above statement.
 ```
