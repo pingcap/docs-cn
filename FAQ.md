@@ -543,7 +543,7 @@ mysql> admin show ddl;
 
 #### `select count(1)` 比较慢，如何优化？
 
-`count(1)` 就是暴力扫表，提高并发度能显著的提升速度，修改并发度可以参考 [`tidb_distsql_scan_concurrency`](sql/tidb-specific.md#tidb_distsql_scan_concurrency) 变量。 但是也要看 CPU 和 I/O 资源。TiDB 每次查询都要访问 TiKV，在数据量小的情况下，MySQL 都在内存里，TiDB 还需要进行一次网络访问。
+`count(1)` 就是暴力扫表，提高并发度能显著的提升速度，修改并发度可以参考 [`tidb_distsql_scan_concurrency`](sql/tidb-specific.md#tidb_distsql_scan_concurrency) 变量。但是也要看 CPU 和 I/O 资源。TiDB 每次查询都要访问 TiKV，在数据量小的情况下，MySQL 都在内存里，TiDB 还需要进行一次网络访问。
 
 > 提升建议：
 >
