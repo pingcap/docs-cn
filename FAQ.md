@@ -104,7 +104,7 @@ TiDB 目前暂时不支持 select into outfile，可以通过以下方式导出 
 TiDB 暂不支持数据库层面的会话超时，目前想要实现超时，在没 LB（Load Balancing） 的时候，需要应用侧记录发起的 session 的 id，通过应用自定义超时，超时以后需要到发起 query 的节点上用 kill tidb id 来杀掉 sql。目前建议使用应用程序来实现会话超时，当达到超时时间，应用层就会抛出异常继续执行后续的程序段。
 
 #### TiDB 生产环境的版本管理策略是怎么样的？如何尽可能避免频繁升级？
-TiDB 版本目前逐步标准化，每次 Release 都包含详细的 Change list，版本功能[变化详情](https://github.com/pingcap/TiDB/releases)，生产环境是否有必要升级取决于业务系统，建议升级之前详细了解前后版本的功能差异。
+TiDB 版本目前逐步标准化，每次 Release 都包含详细的 Change log，版本功能[变化详情](https://github.com/pingcap/TiDB/releases)，生产环境是否有必要升级取决于业务系统，建议升级之前详细了解前后版本的功能差异。
 
 版本号说明参考：`Release Version: v1.0.3-1-ga80e796`，`v1.0.3` 表示 GA 标准版 `-1` 表示该版本 commit 1 次，`ga80e796` 代表版本的 `git-hash`。
 
