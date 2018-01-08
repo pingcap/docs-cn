@@ -109,7 +109,7 @@ TiDB 版本目前逐步标准化，每次 Release 都包含详细的 Change list
 版本号说明参考：`Release Version: v1.0.3-1-ga80e796`，`v1.0.3` 表示 GA 标准版 `-1` 表示该版本 commit 1 次，`ga80e796` 代表版本的 `git-hash`。
 
 #### 分不清 TiDB master 版本之间的区别，经常用错 TiDB-Ansible 版本?
-TiDB 目前社区非常活跃，在 GA 版本发布后，还在不断的优化和修改 BUG。因此  TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的[新版本发布官方网站](https://pingcap.com/weekly/ )。此外 TiDB 安装推荐使用 TiDB-Ansible 进行安装，TiDB-Ansible 的版本也会随着 TiDB 的版本发布进行更新，因此建议用户在安装升级新版本的时候使用最新的 TiDB-Ansible 安装包版本进行安装。
+TiDB 目前社区非常活跃，在 GA 版本发布后，还在不断的优化和修改 BUG。因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的[新版本发布官方网站](https://pingcap.com/weekly/)。此外 TiDB 安装推荐使用 TiDB-Ansible 进行安装，TiDB-Ansible 的版本也会随着 TiDB 的版本发布进行更新，因此建议用户在安装升级新版本的时候使用最新的 TiDB-Ansible 安装包版本进行安装。
 此外，在 TiDB 版本 GA 后，对 TiDB 的版本号进行了统一管理，TiDB 的版本可以通过几种方式进行查看：
 + 通过 `select tidb_version()` 进行查看；
 + 通过执行 `tidb-server -V` 进行查看。
@@ -118,7 +118,7 @@ TiDB 目前社区非常活跃，在 GA 版本发布后，还在不断的优化�
 从 TiDB 架构来讲，完全支持真正意义上的跨中心异地多活，操作层面依赖数据中心之间的网络延迟和稳定性，一般建议延迟在 5ms 以下，目前我们已经有相似客户方案，具体请咨询官方:info@pingcap.com。
 
 #### 除了官方文档，有没有其他 TiDB 知识获取途径？
-目前[官方文档](https://pingcap.com/docs-cn/)是获取 TiDB 相关知识最主要、最及时的发布途径。除此之外，我们也有一些技术沟通群，有需求的同学可以邮件 Info@pingcap.com 进行获取。
+目前[官方文档](https://pingcap.com/docs-cn/)是获取 TiDB 相关知识最主要、最及时的发布途径。除此之外，我们也有一些技术沟通群，如有需求可发邮件至 Info@pingcap.com 获取。
 
 #### TiDB 集群容量 QPS 与节点数之间关系如何，如何进行容量预估？
 可以理解为大概是线性的关系，当前集群每个节点可以承载的 QPS，可参考[官方测试文档](http://t.cn/RT8oi0j)。
@@ -209,7 +209,7 @@ TiDB 在进行 OLTP 场景中，数据访问和操作需要高 IO 磁盘的支�
 #### TiDB Backoff type 场景解释?
 TiDB-server 在与 TiKV-server 通讯过程中，在进行大量数据操作过程中，会出现 `Server is busy` 或者 `backoff.maxsleep 20000ms` 的日志提示信息，这是由于 TiKV-server 在处理过程中系统比较忙而出现的提示信息。通常这时候可以通过系统资源监控到 TiKV 主机系统资源使用率比较高的情况出现。如果这种情况出现，可以根据资源使用情况进行相应的扩容操作。
 
-#### TiClient  type 场景解释
+#### TiClient type 场景解释
 `TiClient Region Error` 该指标描述的是在 TiDB-server 作为客户端通过 kv 接口访问 TiKV-server 进行数据操作过程中，TiDB-server 操作 TiKV-server 中的 Region 数据出现的错误类型与 mertic 指标，错误类型包括 `not_leader`、`stale_epoch`。出现这些错误的情况是当 TiDB-server 根据自己的缓存信息去操作 Region leader 数据的时候，Region leader 发生了迁移或者 TiKV 当前的 Region 信息与 TiDB 缓存的路由信息不一致而出现的错误提示。一般这种情况下，TiDB-server 都会自动重新从 PD 获取最新的路由数据，重做之前的操作。
 
 ### TiKV
@@ -345,7 +345,7 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运�
 其中 TiDB 在 CentOS 7 的环境下进行大量的测试，同时也有很多这个操作系统的部署最佳实践，因此，我们推荐客户在部署 TiDB 的时候使用 CentOS 7+ 以上的Linux 操作系统。
 
 #### 2块网卡的目的是？万兆的目的是？
-作为一个分布式集群，TiDB 对时间的要求还是比较高的，尤其是 PD 需要分发唯一的时间戳，如果 PD 时间不统一，如果有 PD 切换，将会等待更长的时间。2 块网卡可以做 bond ，保证数据传输的稳定，万兆可以保证数据传输的速度，千兆网卡容易出现瓶颈，我们强烈建议使用万兆网卡。
+作为一个分布式集群，TiDB 对时间的要求还是比较高的，尤其是 PD 需要分发唯一的时间戳，如果 PD 时间不统一，如果有 PD 切换，将会等待更长的时间。2 块网卡可以做 bond，保证数据传输的稳定，万兆可以保证数据传输的速度，千兆网卡容易出现瓶颈，我们强烈建议使用万兆网卡。
 
 ### 扩容
 
