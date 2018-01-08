@@ -207,7 +207,7 @@ leader-schedule-limit 调度是用来均衡不同 TiKV 的 leader 数，影响�
 TiDB 在进行 OLTP 场景中，数据访问和操作需要高 IO 磁盘的支持，因此，TiDB 部署的最佳实践中推荐用户使用 NVMe SSD 磁盘作为数据存储磁盘。
 
 #### TiDB Backoff type 场景解释?
-tidb-server 在与 tikv-server 通讯过程中，在进行大量数据操作过程中，会出现 `Server is busy` 或者 `backoff.maxsleep 20000ms` 的日志提示信息，这是由于 TiKV-server 在处理过程中系统比较忙而出现的提示信息。通常这时候可以通过系统资源监控到 TiKV 主机系统资源使用率比较高的情况出现。如果这种情况出现，可以根据资源使用情况进行相应的扩容操作。
+TiDB-server 在与 TiKV-server 通讯过程中，在进行大量数据操作过程中，会出现 `Server is busy` 或者 `backoff.maxsleep 20000ms` 的日志提示信息，这是由于 TiKV-server 在处理过程中系统比较忙而出现的提示信息。通常这时候可以通过系统资源监控到 TiKV 主机系统资源使用率比较高的情况出现。如果这种情况出现，可以根据资源使用情况进行相应的扩容操作。
 
 #### TiClient  type 场景解释
 `TiClient Region Error` 该指标描述的是在 TiDB-server 作为客户端通过 kv 接口访问 TiKV-server 进行数据操作过程中，TiDB-server 操作 TiKV-server 中的 Region 数据出现的错误类型与 mertic 指标，错误类型包括 `not_leader`、`stale_epoch`。出现这些错误的情况是当 TiDB-server 根据自己的缓存信息去操作 Region leader 数据的时候，Region leader 发生了迁移或者 TiKV 当前的 Region 信息与 TiDB 缓存的路由信息不一致而出现的错误提示。一般这种情况下，TiDB-server 都会自动重新从 PD 获取最新的路由数据，重做之前的操作。
