@@ -384,6 +384,10 @@ TiDB 遵循 MySQL 的权限管理体系，可以创建用户并授予权限。
 - svc 启停服务
 - svstat 查看进程状态
 
+#### 使用 JDBC 的 prepare 方式写入数据很慢，怎样定位问题？
+
+使用 JDBC 的 `prepareStatement` 写入数据时，`addBatch` 操作并不访问数据库，只有 `executeBatch` 操作才会访问数据库，精确统计 `addBatch` 和 `executeBatch` 的执行时间，可以判断造成写入慢的原因是在数据库还是其他组件，如前端的缓存等。
+
 ## SQL
 
 ### SQL 语法
