@@ -73,7 +73,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
 
     为了保证数据的完整性，在 Pump 运行 10 分钟左右后按顺序进行下面的操作
 
-    *  使用 [tidb-tools](https://github.com/pingcap/tidb-tools) 项目中的 generate_binlog_position 工具生成 drainer 启动需要的 savepoint 文件中，make generate_binlog_position 编译该工具，具体的使用参考工具的 README 说明。也可以直接下载获取该工具：[generate_binlog_position](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.tar.gz)， [sha256](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.sha256)，并使用sha256sum验证该文件。
+    *  使用 [tidb-tools](https://github.com/pingcap/tidb-tools) 项目中的 generate_binlog_position 工具生成 drainer 启动需要的 savepoint 文件中，make generate_binlog_position 编译该工具，具体的使用参考工具的 README 说明。也可以直接下载获取该工具：[generate_binlog_position](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.tar.gz)， 并使用sha256sum验证该文件 [sha256](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.sha256)。
     *  全量备份，例如 mydumper 备份 tidb
     *  全量导入备份到目标系统
     *  kafka 版本 drainer 启动的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，如果 checkpoint 表中没有效的数据，可以通过设置 `initial-commit-ts` 启动 drainer 从指定位置开始消费 - `bin/drainer --config=conf/drainer.toml --initial-commit-ts=${commitTS}`
@@ -102,7 +102,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
     
  - auto.create.topics.enable=true 如果还没有创建 topic，Kafka 会在 broker 上自动创建 topic
  - broker.id 必备参数用来标识 Kafka 集群，不能重复，如 broker.id = 1
- - fs.file-max = 1000000 kafka 会使用大量文件和网络 socket， 建议修改成 1000000， 修改方法（vi /etc/sysctl.conf）
+ - fs.file-max = 1000000 Kafka 会使用大量文件和网络 socket， 建议修改成 1000000， 修改方法（vi /etc/sysctl.conf）
     
    
     
@@ -122,7 +122,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
 
 #### 使用 Binary 部署 PUMP
     使用样例：
-    假设我们有三个 PD，三个 Zookeeper，一个 TiDB , 各个节点信息如下  
+    假设我们有三个 PD，三个 Zookeeper，一个 TiDB，各个节点信息如下  
     ```
     TiDB="192.168.0.10"
     PD1="192.168.0.16"
