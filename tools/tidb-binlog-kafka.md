@@ -71,12 +71,12 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
 
 *   在已有的 TiDB 集群中启动 drainer，一般需要全量备份 并且获取 savepoint，然后导入全量备份，最后启动 drainer 从 savepoint 开始同步；
 
-    为了保证数据的完整性，在 pump 运行 10 分钟左右后按顺序进行下面的操作
+    为了保证数据的完整性，在 Pump 运行 10 分钟左右后按顺序进行下面的操作
 
-    *  使用 generate_binlog_position 工具生成 drainer 启动需要的 savepoint 文件，工具在项目 [tidb-tools](https://github.com/pingcap/tidb-tools) 中，make generate_binlog_position 编译该工具，具体的使用参考工具的 README 说明。
+    *  使用 [tidb-tools](https://github.com/pingcap/tidb-tools) 项目中的 generate_binlog_position 工具生成 drainer 启动需要的 savepoint 文件中，make generate_binlog_position 编译该工具，具体的使用参考工具的 README 说明。也可以直接下载获取该工具：[generate_binlog_position](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.tar.gz)， [sha256](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.sha256)，并使用sha256sum验证该文件。
     *  全量备份，例如 mydumper 备份 tidb
     *  全量导入备份到目标系统
-    *  kafka 版本 drainer 启动的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，如果 checkpoint 表中没有效的数据，可以通过设置 `initial-commit-ts` 启动 drainer 从指定位置开始消费 - `bin/drainer --config=conf/drainer.toml --initial-commit-ts=${commitTS}`
+    *  kafka 版本 drainer 启动的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，如果 checkpoint 表中没有效的数据，可以通过设置 `initial-commit-ts` 启动 drainer 从指定位置开始消费 - `bin/drainer --config=conf/drainer.toml --initial-commit-ts=${commitTS}`
 
 *   drainer 输出的 pb, 需要在配置文件设置下面的参数
 
@@ -89,7 +89,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
     dir = "/path/pb-dir"
     ```
    
-#### Kafka 和 Zookeeper 集群需要在部署 TiDB-Binlog 之前部署好。Kafka 需要0.9及以上版本。
+#### Kafka 和 Zookeeper 集群需要在部署 TiDB-Binlog 之前部署好。Kafka 需要 0.9 及以上版本。
 
 #### kafka 集群配置推荐 
 
@@ -100,9 +100,9 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
 
 #### kafka 配置参数推荐
     
- - auto.create.topics.enable=true 如果还没有创建topic，kafka会在broker上自动创建topic
- - broker.id 必备参数用来标识 kafka 集群，不能重复，如 broker.id = 1
- - fs.file-max = 1000000 kafka会使用大量文件和网络 socket,建议修改成 1000000, 修改方法（vi /etc/sysctl.conf）
+ - auto.create.topics.enable=true 如果还没有创建 topic，Kafka 会在 broker 上自动创建 topic
+ - broker.id 必备参数用来标识 Kafka 集群，不能重复，如 broker.id = 1
+ - fs.file-max = 1000000 kafka 会使用大量文件和网络 socket， 建议修改成 1000000， 修改方法（vi /etc/sysctl.conf）
     
    
     
@@ -122,7 +122,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
 
 #### 使用 Binary 部署 PUMP
     使用样例：
-    假设我们有三个 PD，三个 zookeeper，一个 TiDB, 各个节点信息如下  
+    假设我们有三个 PD，三个 Zookeeper，一个 TiDB , 各个节点信息如下  
     ```
     TiDB="192.168.0.10"
     PD1="192.168.0.16"
@@ -132,9 +132,9 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
     ZK2="192.168.0.12"
     ZK3="192.168.0.11"
     ```
-    在 ip="192.168.0.10" 的机器上面部署 drainer pump
-    对应的 pd 集群的 ip="192.168.0.16,192.168.0.15,192.168.0.14" 
-    对应的 kafka 集群的 zookeeper 的 ip="192.168.0.13,192.168.0.12,192.168.0.11" 以此为例，说明 pump drainer 的使用
+    在 ip="192.168.0.10" 的机器上面部署 Drainer Pump
+    对应的 PD 集群的 ip="192.168.0.16,192.168.0.15,192.168.0.14" 
+    对应的 Kafka 集群的 Zookeeper 的 ip="192.168.0.13,192.168.0.12,192.168.0.11" 以此为例，说明 Pump Drainer 的使用
 
     
 1. PUMP 命令行参数说明
@@ -328,6 +328,29 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
  ./bin/drainer -config drainer.toml
  ```
 
+## 下载 PbReader 工具 (Linux)
+
+PbReader 是一个解析 Drainer 生成的 Pb 文件， 翻译成对应的 sql 语句
+
+-   CentOS 7+
+    ```bash
+    # 下载 PbReader 压缩包
+    wget http://download.pingcap.org/pb_reader-latest-linux-amd64.tar.gz
+    wget http://download.pingcap.org/pb_reader-latest-linux-amd64.sha256
+
+    # 检查文件完整性，返回 ok 则正确
+    sha256sum -c pb_reader-latest-linux-amd64.sha256
+    # 解开压缩包
+    tar -xzf pb_reader-latest-linux-amd64.tar.gz
+    cd pb_reader-latest-linux-amd64
+    ```
+
+PbReader 使用示例
+
+```bash
+./bin/pbReader -binlog-file=binlog-0000000000000000
+```
+
 ## TiDB-Binlog 监控
 
 这部分主要对 TiDB-Binlog 的状态、性能做监控，通过 Prometheus + Grafana 展现 metrics 数据，
@@ -344,6 +367,6 @@ drainer 启动时可以设置 `--metrics-addr` 和 `--metrics-interval` 两个�
 
  点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息 ( 注: Type 选 Prometheus，Url 为 Prometheus 地址，根据实际情况 添加/填写 ）
 
-+   导入 dashboard 配置文件
++   导入 dashboard 配置文件 
 
  点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 [dashboard 配置文件](https://github.com/pingcap/docs/tree/master/etc)上传 -> 选择对应的 data source
