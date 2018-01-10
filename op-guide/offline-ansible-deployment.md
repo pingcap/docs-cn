@@ -8,14 +8,14 @@ category: deployment
 
 ## 准备机器
 
-1.  部署中控机一台:
+1. 部署中控机一台:
 
     - Python 2.6 或 Python 2.7，安装有 Ansible 2.3 版本或以上版本。
     - 依赖 Python Jinja2 及 MarkupSafe 指定版本模块: `pip install Jinja2==2.7.2 MarkupSafe==0.11`
     - 可通过 ssh 登录目标机器，支持密码登录或 ssh authorized_key 登录。
     - 中控机可以是部署目标机器中的某一台，该机器需开放外网访问，并且安装 curl 软件包，用于下载 binary。
 
-2.  部署目标机器若干
+2. 部署目标机器若干
 
     - 建议4台及以上，TiKV 至少3实例，且与 TiDB、PD 模块不位于同一主机,详见[部署建议](recommendation.md)。
     - Linux 操作系统，x86_64 架构(amd64)，内核版本建议 3.10 以上，推荐 CentOS 7.3 及以上版本, 文件系统推荐 ext4(部分内核版本 xfs 文件系统有 bug, 本工具检查到 xfs 文件系统有 bug 会退出)。
@@ -26,53 +26,54 @@ category: deployment
 
 ## 在中控机器上安装配置 Ansible
 
-1.  CentOS 7 Ansible 离线安装方式：
+1. CentOS 7 Ansible 离线安装方式：
 
-```ini
-  
-  tar -xzvf ansible-2.3-rpms.el7.tar.gz
-  
-  cd ansible-2.3-rpms.el7
-  
-  rpm -ivh PyYAML*.rpm libtomcrypt*.rpm libtommath*.rpm libyaml*.rpm python-
-  babel*.rpm python-backports*.rpm python-backports-ssl_match_hostname*.rpm
-  python-httplib2*.rpm python-jinja2*.rpm python-keyczar*.rpm python-
-  markupsafe*.rpm python-setuptools*.rpm python-six*.rpm python2-crypto*.rpm
-  python2-ecdsa*.rpm python2-paramiko*.rpm python2-pyasn1*.rpm sshpass*.rpm
-  rpm -ivh ansible-2.3.1.0-1.el7.noarch.rpm
-  
-  ansible --version
-  # ansible 2.3.1.0
-      
-```
-2.  安装完成后，可通过 `ansible --version` 查看版本。
+    ```ini
+    tar -xzvf ansible-2.3-rpms.el7.tar.gz
+    
+    cd ansible-2.3-rpms.el7
+    
+    rpm -ivh PyYAML*.rpm libtomcrypt*.rpm libtommath*.rpm libyaml*.rpm python-
+    babel*.rpm python-backports*.rpm python-backports-ssl_match_hostname*.rpm
+    python-httplib2*.rpm python-jinja2*.rpm python-keyczar*.rpm python-
+    markupsafe*.rpm python-setuptools*.rpm python-six*.rpm python2-crypto*.rpm
+    python2-ecdsa*.rpm python2-paramiko*.rpm python2-pyasn1*.rpm sshpass*.rpm
+    rpm -ivh ansible-2.3.1.0-1.el7.noarch.rpm
+    ```
+
+2. 安装完成后，可通过 `ansible --version` 查看版本：
+
+    ```
+    ansible --version
+    # ansible 2.3.1.0
+    ```
 
 ## 安装准备
 
 > 在一台有外网，并且安装有 ansible 的机器执行如下命令：
 
-1.  下载 tidb-ansible：
+1. 下载 tidb-ansible：
 
     - 下载 master 分支的 tidb-ansible，用来安装 master 版本的 tidb 集群（binlog 为 kafka 版本）
 
-      `git clone https://github.com/pingcap/tidb-ansible`
+        `git clone https://github.com/pingcap/tidb-ansible`
 
     - 下载 release-1.0 分支的 tidb-ansible，用来安装 release-1.0（GA 版本）版本的 tidb 集群（binlog 为 kafka 版本）
 
-      `git clone -b release-1.0 https://github.com/pingcap/tidb-ansible`
+        `git clone -b release-1.0 https://github.com/pingcap/tidb-ansible`
 
     - 下载 release-1.0-binlog-local 分支的 tidb-ansible，用来安装 release-1.0-binlog-local 版本的 tidb 集群（binlog 为 local 版本）
 
-      `git clone -b release-1.0-binlog-local https://github.com/pingcap/tidb-ansible`
+        `git clone -b release-1.0-binlog-local https://github.com/pingcap/tidb-ansible`
 
-2.  下载 TiDB 相关依赖包：
+2. 下载 TiDB 相关依赖包：
 
     ```
     cd tidb-ansible
     ansible-playbook local_prepare.yml
     ```
 
-3.  将执行完以上命令之后的 tidb-ansible 安装包拷贝到中控机。
+3. 将执行完以上命令之后的 tidb-ansible 安装包拷贝到中控机。
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
