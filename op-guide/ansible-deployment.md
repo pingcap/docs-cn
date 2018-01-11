@@ -27,15 +27,15 @@ Before you start, make sure that you have:
 
 1. A Control Machine with the following requirements:
 
-    - Python 2.6 or Python 2.7
+    - Python 2.6 or Python 2.7, Ansible 2.3 or above
     - Python Jinja2 2.7.2 and MarkupSafe 0.11 packages. You can use the following commands to install the packages:
 
         ```
         pip install Jinja2==2.7.2 MarkupSafe==0.11
         ```
 
+    - Access to the managed nodes via SSH using password login or `SSH authorized_key` login.
     - Access to the external network to install curl package and download binary.
-    - Access to the managed nodes via SSH using password login or SSH authorized_key login.
 
 2. Several managed nodes with the following requirements:
 
@@ -53,13 +53,16 @@ Before you start, make sure that you have:
 
     - The network between machines. Turn off the firewalls and iptables when deploying and turn them on after the deployment.
 
-    - The same time and time zone for all machines with the NTP service on to synchronize the correct time. If you are using the Ubuntu platform, install the ntpstat package.
+    - The same time and time zone for all machines with the NTP service on to synchronize the correct time. If you are using the Ubuntu platform, install the ntpstat package. See [How to check whether the NTP service is normal](#how-to-check-whether-the-ntp-service-is-normal).
 
     - A remote user account which you can use to login from the Control Machine to connect to the managed nodes via SSH. It can be the root user or a user account with sudo privileges.
 
     - Python 2.6 or Python 2.7
 
-> **Note**: The Control Machine can be one of the managed nodes.
+> **Note:**
+>
+> - The Control Machine can be one of the managed nodes.
+> - Binary is used to deploy by default. To deploy using Docker, see [How to deploy TiDB using Docker](#how-to-deploy-tidb-using-docker).
 
 ## Install Ansible in the Control Machine
 
@@ -86,13 +89,21 @@ For more information, see [Ansible Documentation](http://docs.ansible.com/ansibl
 
 ## Download TiDB-Ansible to the Control Machine
 
-Use the following command to download the TiDB-Ansible `release-1.0` branch from GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible).
-The default folder name is `tidb-ansible`. The `tidb-ansible` directory contains all files you need to get started with TiDB-Ansible.
+Use the following command to download the corresponding version of TiDB-Ansible from GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`. The `tidb-ansible` directory contains all files you need to get started with TiDB-Ansible.
+
+Download the 1.0 version:
 
 ```
 git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 ```
 
+Download the master version:
+
+```
+git clone https://github.com/pingcap/tidb-ansible.git
+```
+
+> **Note:** For the production environment, download the 1.0 version to deploy TiDB.
 
 ## Orchestrate the TiDB cluster
 
@@ -208,6 +219,26 @@ location_labels = ["host"]
 
     - `capacity`: (DISK - log space) / TiKV instance number (the unit is GB)
 
+### Description of inventory.ini variables
+
+| Variable | Description |
+| ---- | ------- |
+| cluster_name | the name of a cluster, adjustable |
+| tidb_version | the version of TiDB, configured by default in TiDB-Ansible branches |
+| deployment_method | the method of deployment, binary by default, Docker optional |
+| process_supervision | the supervision way of processes, systemd by default, supervise optional |
+| timezone | the timezone of the managed node, adjustable, `Asia/Shanghai` by default, used with the `set_timezone` variable |
+| set_timezone | to edit the timezone of the managed node, True by default; False means closing |
+| enable_elk | currently not supported |
+| enable_firewalld | to enable the firewall, closed by default |
+| enable_ntpd | to monitor the NTP service of the managed node, True by default; do not close it |
+| machine_benchmark | to monitor the disk IOPS of the managed node, True by default; do not close it |
+| set_hostname | to edit the hostname of the mananged node based on the IP, False by default |
+| enable_binlog | whether to deploy Pump and enable the binlog, False by default, dependent on the Kafka cluster; see the `zookeeper_addrs` variable |
+| zookeeper_addrs | the zookeeper address of the binlog Kafka cluster |
+| enable_slow_query_log | to record the slow query log of TiDB into a single file: ({{ deploy_dir }}/log/tidb_slow_query.log). False by default, to record it into the TiDB log |
+| deploy_without_tidb | the Key-Value mode, deploy only PD, TiKV and the monitoring service, not TiDB; set the IP of the tidb_servers host group to null in the `inventory.ini` file |
+
 ## Deploy the TiDB cluster
 
 > **Note**:
@@ -314,6 +345,12 @@ Descriptions about the two circumstances are as follows.
         ansible-playbook deploy.yml -k
         ```
 
+        If `process_supervision = systemd`, then the execution of this playbook requires root privileges. If a password is needed when the normal user gets root privileges from sudo, add the `-K` (upper case) parameter:
+
+        ```
+        ansible-playbook deploy.yml -k -K
+        ```
+
     5. Start the TiDB cluster.
 
         ```
@@ -401,6 +438,7 @@ wget http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz
 | Rolling Upgrade                   | `ansible-playbook rolling_update.yml`    |
 | Rolling upgrade TiKV              | `ansible-playbook rolling_update.yml --tags=tikv` |
 | Rolling upgrade modules except PD | `ansible-playbook rolling_update.yml --skip-tags=pd` |
+| Rolling update the monitoring components | `ansible-playbook rolling_update_monitor.yml` |
 
 For more advanced features of TiDB including data migration, performance tuning, etc., see [TiDB Documents](https://github.com/pingcap/docs).
 
@@ -408,13 +446,12 @@ For more advanced features of TiDB including data migration, performance tuning,
 
 ### The download links for various TiDB versions.
 
-- 1.0 version:
-  - [TiDB 1.0-CentOS7](http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz)
-  - [TiDB 1.0-CentOS6](http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable-centos6.tar.gz)
+- Master version: [TiDB master-CentOS7](http://download.pingcap.org/tidb-latest-linux-amd64-unportable.tar.gz)
+- 1.0 version: [TiDB 1.0-CentOS7](http://download.pingcap.org/tidb-v1.0.4-linux-amd64-unportable.tar.gz)
 
 ### How to download and install TiDB of a specified version?
 
-If you need to install TiDB 1.0 version, download the `TiDB-Ansible release-1.0` branch and make sure `tidb_version = v1.0.0` in the `inventory.ini` file. For installation procedures, see the above description in this document.
+If you need to install the TiDB 1.0.4 version, download the `TiDB-Ansible release-1.0` branch and make sure `tidb_version = v1.0.4` in the `inventory.ini` file. For installation procedures, see the above description in this document.
 
 Download the `TiDB-Ansible release-1.0` branch from GitHub:
 
@@ -422,7 +459,9 @@ Download the `TiDB-Ansible release-1.0` branch from GitHub:
 git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 ```
 
-### Custom port
+### How to customize the port?
+
+Edit the `inventory.ini` file and add the following host variable after the IP of the corresponding service:
 
 | Component     | Variable Port      | Default Port | Description              |
 |:--------------|:-------------------|:-------------|:-------------------------|
@@ -437,7 +476,7 @@ git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 | node_exporter | node_exporter_port | 9100         | the communication port to report the system information of every TiDB cluster node |
 | Grafana       | grafana_port       | 3000         | the port for the external Web monitoring service and client (Browser) access |
 
-### Custom deployment directory
+### How to customize the deployment directory?
 
 | Component     | Variable Directory    | Default Directory             | Description |
 |:--------------|:----------------------|:------------------------------|:-----|
@@ -457,3 +496,81 @@ git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 | node_exporter | node_exporter_log_dir | {{ deploy_dir }}/log          | the node_exporter log directory |
 | Grafana       | grafana_log_dir       | {{ deploy_dir }}/log          | the Grafana log directory |
 | Grafana       | grafana_data_dir      | {{ deploy_dir }}/data.grafana | the Grafana data directory |
+
+### How to check whether the NTP service is normal?
+
+Run the following command. If it returns `running`, then the NTP service is running:
+
+```
+$ sudo systemctl status ntpd.service
+● ntpd.service - Network Time Service
+   Loaded: loaded (/usr/lib/systemd/system/ntpd.service; disabled; vendor preset: disabled)
+   Active: active (running) since 一 2017-12-18 13:13:19 CST; 3s ago
+```
+
+Run the ntpstat command. If it returns `synchronised to NTP server` (synchronizing with the NTP server), then the synchronization process is normal.
+
+```
+$ ntpstat
+synchronised to NTP server (85.199.214.101) at stratum 2
+   time correct to within 91 ms
+   polling server every 1024 s
+```
+
+The following condition indicates the NTP service is not synchronized normally:
+
+```
+$ ntpstat
+unsynchronised
+```
+
+The following condition indicates the NTP service is not running normally:
+
+```
+$ ntpstat
+Unable to talk to NTP daemon. Is it running?
+```
+
+Running the following command can promote the starting of the NTP service synchronization. You can replace `pool.ntp.org` with the NTP server.
+
+```
+$ sudo systemctl stop ntpd.service
+$ sudo ntpdate pool.ntp.org
+$ sudo systemctl start ntpd.service
+```
+
+### How to deploy TiDB using Docker?
+
+- Install Docker on the Control Machine and the managed node. The normal user (such as `ansible_user = tidb`) account in `inventory.ini` must have the sudo privileges or [running Docker privileges](https://docs.docker.com/engine/installation/linux/linux-postinstall/).
+- Install the `docker-py` module on the Control Machine and the managed node.
+
+    ```
+    sudo pip install docker-py
+    ```
+
+- Edit the `inventory.ini` file:
+
+    ```
+    # deployment methods, [binary, docker]
+    deployment_method = docker
+    
+    # process supervision, [systemd, supervise]
+    process_supervision = systemd
+    ```
+
+The Docker installation process is similar to the binary method.
+
+### How to adjust the supervision method of a process from supervise to systemd?
+
+```
+# process supervision, [systemd, supervise]
+process_supervision = systemd
+```
+
+For versions earlier than TiDB 1.0.4, the TiDB-Ansible supervision method of a process is supervise by default. The previously installed cluster can remain the same. If you need to change the supervision method to systemd, close the cluster and run the following command:
+
+```
+ansible-playbook stop.yml
+ansible-playbook deploy.yml -D
+ansible-playbook start.yml
+```
