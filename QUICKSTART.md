@@ -13,7 +13,7 @@ TiDB (The pronunciation is: /’taɪdiːbi:/ tai-D-B, etymology: titanium) is a 
 
 This guide outlines how to perform a quick deployment of a TiDB cluster using TiDB-Ansible and walks you through the basic TiDB operations and administrations.
 
-## Deploy a TiDB cluster
+## Deploy the TiDB cluster
 
 This section describes how to deploy a TiDB cluster. A TiDB cluster consists of different components: TiDB servers, TiKV servers, and Placement Driver (PD) servers.
 
@@ -376,7 +376,7 @@ Delete `tiuser`:
 DROP USER 'tiuser'@'localhost';
 ```
 
-## Monitor a TiDB cluster
+## Monitor the TiDB cluster
 
 Open a browser to access the monitoring platform: `http://172.16.10.3:3000`.
 
@@ -415,102 +415,135 @@ TiKV | leader/region | the number of leader/region per TiKV server| application 
 
 ## Scale the TiDB cluster
 
-The capacity of a TiDB cluster can be increased or reduced without affecting the online services.
+The capacity of a TiDB cluster can be increased or decreased without affecting the online services.
 
-For example, if you want to add a TiDB node (node101) with the IP address: 172.16.10.101, you can use the following procedure:
+> **Warning:** In decreasing the capacity, if your cluster has a mixed deployment of other services, do not perform the following procedures. The following examples assume that the removed nodes have no mixed deployment of other services.
+
+Assume that the topology is as follows:
+
+| Name | Host IP | Services |
+| ---- | ------- | -------- |
+| node1 | 172.16.10.1 | PD1 |
+| node2 | 172.16.10.2 | PD2 |
+| node3 | 172.16.10.3 | PD3, Monitor |
+| node4 | 172.16.10.4 | TiDB1 |
+| node5 | 172.16.10.5 | TiDB2 |
+| node6 | 172.16.10.6 | TiKV1 |
+| node7 | 172.16.10.7 | TiKV2 |
+| node8 | 172.16.10.8 | TiKV3 |
+| node9 | 172.16.10.9 | TiKV4 |
+
+### Increase the capacity of a TiDB/TiKV node
+
+For example, if you want to add two TiDB nodes (node101, node102) with the IP address `172.16.10.101` and `172.16.10.102`, you can use the following procedures:
 
 1. Edit the `inventory.ini` file and append the node information:
 
-    ```
+    ```ini
     [tidb_servers]
-    172.16.10.1
-    172.16.10.2
+    172.16.10.4
+    172.16.10.5
     172.16.10.101
+    172.16.10.102
 
     [pd_servers]
     172.16.10.1
     172.16.10.2
     172.16.10.3
-    
+
     [tikv_servers]
-    172.16.10.4
-    172.16.10.5
     172.16.10.6
-    
+    172.16.10.7
+    172.16.10.8
+    172.16.10.9
+
     [monitored_servers:children]
     tidb_servers
     tikv_servers
     pd_servers
-    
+
     [monitoring_servers]
     172.16.10.3
-    
+
     [grafana_servers]
     172.16.10.3
     ```
-  
+
     Now the topology is as follows:
-  
+
     | Name | Host IP | Services |
     | ---- | ------- | -------- |
-    | node1 | 172.16.10.1 | PD1, TiDB1 |
-    | node2 | 172.16.10.2 | PD2, TiDB2 |
+    | node1 | 172.16.10.1 | PD1 |
+    | node2 | 172.16.10.2 | PD2 |
     | node3 | 172.16.10.3 | PD3, Monitor |
+    | node4 | 172.16.10.4 | TiDB1 |
+    | node5 | 172.16.10.5 | TiDB2 |
     | **node101** | **172.16.10.101**|**TiDB3** |
-    | node4 | 172.16.10.4 | TiKV1 |
-    | node5 | 172.16.10.5 | TiKV2 |
-    | node6 | 172.16.10.6 | TiKV3 |
+    | **node102** | **172.16.10.102**|**TiDB4** |
+    | node6 | 172.16.10.6 | TiKV1 |
+    | node7 | 172.16.10.7 | TiKV2 |
+    | node8 | 172.16.10.8 | TiKV3 |
+    | node9 | 172.16.10.9 | TiKV4 |
         
 2. Initialize the newly added node:
 
     ```
-    ansible-playbook bootstrap.yml -k -K
+    ansible-playbook bootstrap.yml -k -K -l 172.16.10.101,172.16.10.102
     ```
 
-3. Deploy the cluster:
+3. Deploy the newly added node:
 
     ```
-    ansible-playbook deploy.yml -k
+    ansible-playbook deploy.yml -k -l 172.16.10.101,172.16.10.102
     ```
 
-4. Roll update the entire cluster:
+4. Start the newly added node:
 
     ```
-    ansible-playbook rolling_update.yml -k
+    ansible-playbook start.yml -k -l 172.16.10.101,172.16.10.102
     ```
 
-5. Monitor the status of the entire cluster and the newly added node by opening a browser to access the monitoring platform: `http://172.16.10.3:3000`
+5. Update the Prometheus configuration and restart the cluster:
+
+    ```
+    ansible-playbook rolling_update_monitor.yml -k --tags=prometheus
+    ```
+
+6. Monitor the status of the entire cluster and the newly added node by opening a browser to access the monitoring platform: `http://172.16.10.3:3000`.
 
 You can use the same procedure to add a TiKV node. But to add a PD node, some configuration files need to be manually updated.
 
-To add a PD node (node102) with the IP address: 172.16.10.102, you can use the following procedure:
+### Increase the capacity of a PD node
+
+For example, if you want to add a PD node (node103) with the IP address `172.16.10.103`, you can use the following procedures:
 
 1. Edit the `inventory.ini` file and append the node information:
 
-    ```
+    ```ini
     [tidb_servers]
-    172.16.10.1
-    172.16.10.2
-    
+    172.16.10.4
+    172.16.10.5
+
     [pd_servers]
     172.16.10.1
     172.16.10.2
     172.16.10.3
-    172.16.10.102
-    
+    172.16.10.103
+
     [tikv_servers]
-    172.16.10.4
-    172.16.10.5
     172.16.10.6
-    
+    172.16.10.7
+    172.16.10.8
+    172.16.10.9
+
     [monitored_servers:children]
     tidb_servers
     tikv_servers
     pd_servers
-    
+
     [monitoring_servers]
     172.16.10.3
-    
+
     [grafana_servers]
     172.16.10.3
     ```
@@ -519,24 +552,27 @@ To add a PD node (node102) with the IP address: 172.16.10.102, you can use the f
   
     | Name | Host IP | Services |
     | ---- | ------- | -------- |
-    | node1 | 172.16.10.1 | PD1, TiDB1 |
-    | node2 | 172.16.10.2 | PD2, TiDB2 |
+    | node1 | 172.16.10.1 | PD1 |
+    | node2 | 172.16.10.2 | PD2 |
     | node3 | 172.16.10.3 | PD3, Monitor |
-    | **node102** | **172.16.10.102** | **PD4** |
-    | node4 | 172.16.10.4 | TiKV1 |
-    | node5 | 172.16.10.5 | TiKV2 |
-    | node6 | 172.16.10.6 | TiKV3 |
+    | **node103** | **172.16.10.103** | **PD4** |
+    | node4 | 172.16.10.4 | TiDB1 |
+    | node5 | 172.16.10.5 | TiDB2 |
+    | node6 | 172.16.10.6 | TiKV1 |
+    | node7 | 172.16.10.7 | TiKV2 |
+    | node8 | 172.16.10.8 | TiKV3 |
+    | node9 | 172.16.10.9 | TiKV4 |
 
 2. Initialize the newly added node:
 
     ```
-    ansible-playbook bootstrap.yml -k -K
+    ansible-playbook bootstrap.yml -k -K -l 172.16.10.103
     ```
 
-3. Deploy the cluster:
+3. Deploy the newly added node:
 
     ```
-    ansible-playbook deploy.yml -k
+    ansible-playbook deploy.yml -k -l 172.16.10.103
     ```
 
 4. Login the newly added PD node and edit the starting script: 
@@ -544,22 +580,22 @@ To add a PD node (node102) with the IP address: 172.16.10.102, you can use the f
     ```
     {deploy_dir}/scripts/run_pd.sh
     ```
-  
-    1. Remove the  `--initial-cluster="xxxx"` configuration.
-    2. Add `join="http://172.16.10.1:2379"`. The IP address(`172.16.10.1`) can be any of the existing PD IP address in the cluster.
+
+    1. Remove the `--initial-cluster="xxxx" \` configuration.
+    2. Add `--join="http://172.16.10.1:2379" \`. The IP address (`172.16.10.1`) can be any of the existing PD IP address in the cluster.
     3. Manually start the PD service in the newly added PD node:
       
         ```
         {deploy_dir}/scripts/start_pd.sh
         ```
       
-    4. Use `pd-ctl` and see if the New node is added successfully:
+    4. Use `pd-ctl` to check whether the new node is added successfully:
     
         ```
-        ./pd-ctl -u “http://172.16.10.1:2379”
+        ./pd-ctl -u "http://172.16.10.1:2379"
         ```
     
-        > **Note:** `pd-ctl` is a command to check the number of PD nodes.
+        > **Note:** `pd-ctl` is a command used to check the number of PD nodes.
 
 5. Roll upgrade the entire cluster:
     
@@ -567,9 +603,243 @@ To add a PD node (node102) with the IP address: 172.16.10.102, you can use the f
     ansible-playbook rolling_update.yml -k
     ```
    
-6. Monitor the status of the entire cluster and the newly added node by opening a browser to access the monitoring platform: `http://172.16.10.3:3000`
+6. Update the Prometheus configuration and restart the cluster:
 
-## Destroy the cluster
+    ```
+    ansible-playbook rolling_update_monitor.yml -k --tags=prometheus
+    ```
+
+7. Monitor the status of the entire cluster and the newly added node by opening a browser to access the monitoring platform: `http://172.16.10.3:3000`.
+
+### Decrease the capacity of a TiDB node
+
+For example, if you want to remove a TiDB node (node5) with the IP address `172.16.10.5`, you can use the following procedures:
+
+1. Stop all services on node5:
+
+    ```
+    ansible-playbook stop.yml -k -l 172.16.10.5
+    ```
+
+2. Edit the `inventory.ini` file and remove the node information:
+
+    ```ini
+    [tidb_servers]
+    172.16.10.4
+    #172.16.10.5  # the removed node
+
+    [pd_servers]
+    172.16.10.1
+    172.16.10.2
+    172.16.10.3
+
+    [tikv_servers]
+    172.16.10.6
+    172.16.10.7
+    172.16.10.8
+    172.16.10.9
+
+    [monitored_servers:children]
+    tidb_servers
+    tikv_servers
+    pd_servers
+
+    [monitoring_servers]
+    172.16.10.3
+
+    [grafana_servers]
+    172.16.10.3
+    ```
+
+    Now the topology is as follows:
+
+    | Name | Host IP | Services |
+    | ---- | ------- | -------- |
+    | node1 | 172.16.10.1 | PD1 |
+    | node2 | 172.16.10.2 | PD2 |
+    | node3 | 172.16.10.3 | PD3, Monitor |
+    | node4 | 172.16.10.4 | TiDB1 |
+    | **node5** | **172.16.10.5** | **TiDB2 removed** |
+    | node6 | 172.16.10.6 | TiKV1 |
+    | node7 | 172.16.10.7 | TiKV2 |
+    | node8 | 172.16.10.8 | TiKV3 |
+    | node9 | 172.16.10.9 | TiKV4 |
+
+3. Update the Prometheus configuration and restart the cluster:
+
+    ```
+    ansible-playbook rolling_update_monitor.yml -k --tags=prometheus
+    ```
+
+4. Monitor the status of the entire cluster by opening a browser to access the monitoring platform: `http://172.16.10.3:3000`.
+
+### Decrease the capacity of a TiKV node
+
+For example, if you want to remove a TiKV node (node9) with the IP address `172.16.10.9`, you can use the following procedures:
+
+1. Remove the node from the cluster using `pd-ctl`:
+
+    1. View the store id of node9:
+        
+        ```
+        ./pd-ctl -u "http://172.16.10.1:2379" -d store
+        ```
+
+    2. Remove node9 from the cluster, assuming that the store id is 10:
+        
+        ```
+        ./pd-ctl -u "http://172.16.10.1:2379" -d store delete 10
+        ```
+        
+2. Use Grafana or `pd-ctl` to check whether the node is successfully removed:
+
+    ```
+    ./pd-ctl -u "http://172.16.10.1:2379" -d store 10
+    ```
+
+    > **Note:** It takes some time to remove the node. If node9 does not show in the result, the node is successfully removed.
+
+3. After the node is successfully removed, stop the services on node9:
+
+    ```
+    ansible-playbook stop.yml -k -l 172.16.10.9
+    ```
+
+4. Edit the `inventory.ini` file and remove the node information:
+
+    ```ini
+    [tidb_servers]
+    172.16.10.4
+    172.16.10.5
+
+    [pd_servers]
+    172.16.10.1
+    172.16.10.2
+    172.16.10.3
+
+    [tikv_servers]
+    172.16.10.6
+    172.16.10.7
+    172.16.10.8
+    #172.16.10.9  # 注释被移除节点
+
+    [monitored_servers:children]
+    tidb_servers
+    tikv_servers
+    pd_servers
+
+    [monitoring_servers]
+    172.16.10.3
+
+    [grafana_servers]
+    172.16.10.3
+    ```
+
+    Now the topology is as follows:
+
+    | Name | Host IP | Services |
+    | ---- | ------- | -------- |
+    | node1 | 172.16.10.1 | PD1 |
+    | node2 | 172.16.10.2 | PD2 |
+    | node3 | 172.16.10.3 | PD3, Monitor |
+    | node4 | 172.16.10.4 | TiDB1 |
+    | node5 | 172.16.10.5 | TiDB2 |
+    | node6 | 172.16.10.6 | TiKV1 |
+    | node7 | 172.16.10.7 | TiKV2 |
+    | node8 | 172.16.10.8 | TiKV3 |
+    | **node9** | **172.16.10.9** | **TiKV4 removed** |
+
+5. Update the Prometheus configuration and restart the cluster:
+
+    ```
+    ansible-playbook rolling_update_monitor.yml -k --tags=prometheus
+    ```
+
+6. Monitor the status of the entire cluster by opening a browser to access the monitoring platform: `http://172.16.10.3:3000`.
+
+### Decrease the capacity of a PD node
+
+For example, if you want to remove a PD node (node2) with the IP address `172.16.10.2`, you can use the following procedures:
+
+1. Remove the node from the cluster using `pd-ctl`:
+
+    1. View the name of node2:
+
+        ```
+        ./pd-ctl -u "http://172.16.10.1:2379" -d member
+        ```
+
+    2. Remove node2 from the cluster, assuming that the name is pd2:
+        
+        ```
+        ./pd-ctl -u "http://172.16.10.1:2379" -d member delete name pd2
+        ```
+
+2. Use Grafana or `pd-ctl` to check whether the node is successfully removed:
+
+    ```
+    ./pd-ctl -u "http://172.16.10.1:2379" -d member
+    ```
+
+3. After the node is successfully removed, stop the services on node2:
+
+    ```
+    ansible-playbook stop.yml -k -l 172.16.10.2
+    ```
+
+4. Edit the `inventory.ini` file and remove the node information:
+
+    ```ini
+    [tidb_servers]
+    172.16.10.4
+    172.16.10.5
+
+    [pd_servers]
+    172.16.10.1
+    #172.16.10.2  # 注释被移除节点
+    172.16.10.3
+
+    [tikv_servers]
+    172.16.10.6
+    172.16.10.7
+    172.16.10.8
+    172.16.10.9
+
+    [monitored_servers:children]
+    tidb_servers
+    tikv_servers
+    pd_servers
+
+    [monitoring_servers]
+    172.16.10.3
+
+    [grafana_servers]
+    172.16.10.3
+    ```
+
+    Now the topology is as follows:
+
+    | Name | Host IP | Services |
+    | ---- | ------- | -------- |
+    | node1 | 172.16.10.1 | PD1 |
+    | **node2** | **172.16.10.2** | **PD2 removed** |
+    | node3 | 172.16.10.3 | PD3, Monitor |
+    | node4 | 172.16.10.4 | TiDB1 |
+    | node5 | 172.16.10.5 | TiDB2 |
+    | node6 | 172.16.10.6 | TiKV1 |
+    | node7 | 172.16.10.7 | TiKV2 |
+    | node8 | 172.16.10.8 | TiKV3 |
+    | node9 | 172.16.10.9 | TiKV4 |
+
+5. Update the Prometheus configuration and restart the cluster:
+
+    ```
+    ansible-playbook rolling_update_monitor.yml -k --tags=prometheus
+    ```
+
+6. Monitor the status of the entire cluster by opening a browser to access the monitoring platform: `http://172.16.10.3:3000`.
+
+## Destroy the TiDB cluster
 
 Stop the cluster:
 
