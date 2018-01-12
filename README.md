@@ -97,7 +97,7 @@
 + TiDB Utilities
   - [Syncer User Guide](tools/syncer.md)
   - [Loader User Guide](tools/loader.md)
-  - [TiDB-Binlog User Guide](tools/tidb-binlog.md)
+  - [TiDB-Binlog User Guide](tools/tidb-binlog-kafka.md)
   - [PD Control User Guide](tools/pd-control.md)
 + The TiDB Connector for Spark
   - [Quick Start Guide](tispark/tispark-quick-start-guide.md)
