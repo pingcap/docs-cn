@@ -103,6 +103,26 @@ TiDB 目前暂时不支持 select into outfile，可以通过以下方式导出 
 
 TiDB 暂不支持数据库层面的会话超时，目前想要实现超时，在没 LB（Load Balancing） 的时候，需要应用侧记录发起的 session 的 id，通过应用自定义超时，超时以后需要到发起 query 的节点上用 kill tidb id 来杀掉 sql。目前建议使用应用程序来实现会话超时，当达到超时时间，应用层就会抛出异常继续执行后续的程序段。
 
+#### TiDB 生产环境的版本管理策略是怎么样的？如何尽可能避免频繁升级？
+TiDB 版本目前逐步标准化，每次 Release 都包含详细的 Change log，版本功能[变化详情](https://github.com/pingcap/TiDB/releases)，生产环境是否有必要升级取决于业务系统，建议升级之前详细了解前后版本的功能差异。
+
+版本号说明参考：`Release Version: v1.0.3-1-ga80e796`，`v1.0.3` 表示 GA 标准版 `-1` 表示该版本 commit 1 次，`ga80e796` 代表版本的 `git-hash`。
+
+#### 分不清 TiDB master 版本之间的区别，经常用错 TiDB-Ansible 版本?
+TiDB 目前社区非常活跃，在 GA 版本发布后，还在不断的优化和修改 BUG。因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的[新版本发布官方网站](https://pingcap.com/weekly/)。此外 TiDB 安装推荐使用 TiDB-Ansible 进行安装，TiDB-Ansible 的版本也会随着 TiDB 的版本发布进行更新，因此建议用户在安装升级新版本的时候使用最新的 TiDB-Ansible 安装包版本进行安装。
+此外，在 TiDB 版本 GA 后，对 TiDB 的版本号进行了统一管理，TiDB 的版本可以通过几种方式进行查看：
++ 通过 `select tidb_version()` 进行查看；
++ 通过执行 `tidb-server -V` 进行查看。
+
+#### 官方有没有三中心跨机房部署的推荐方案？
+从 TiDB 架构来讲，完全支持真正意义上的跨中心异地多活，操作层面依赖数据中心之间的网络延迟和稳定性，一般建议延迟在 5ms 以下，目前我们已经有相似客户方案，具体请咨询官方:info@pingcap.com。
+
+#### 除了官方文档，有没有其他 TiDB 知识获取途径？
+目前[官方文档](https://pingcap.com/docs-cn/)是获取 TiDB 相关知识最主要、最及时的发布途径。除此之外，我们也有一些技术沟通群，如有需求可发邮件至 info@pingcap.com 获取。
+
+#### TiDB 集群容量 QPS 与节点数之间关系如何，如何进行容量预估？
+可以理解为大概是线性的关系，当前集群每个节点可以承载的 QPS，可参考[官方测试文档](http://t.cn/RT8oi0j)。
+
 ### PD
 
 #### 访问 PD 报错：`TiKV cluster is not bootstrapped`
@@ -135,6 +155,12 @@ leader-schedule-limit 调度是用来均衡不同 TiKV 的 leader 数，影响�
 #### 每个 region 的 replica 数量可配置吗？调整的方法是？
 
 可以，目前只能调整全局的 replica 数量。首次启动时 PD 会读配置文件（`conf/pd.yml`），使用其中的 max-replicas 配置，之后修改需要使用 pd-ctl 配置命令 `config set max-replicas $num`，配置后可通过 `config show all` 来查看已生效的配置。调整的时候，不会影响业务，会在后台添加，注意总 TiKV 实例数总是要大于等于设置的副本数，例如 3 副本需要至少 3 个 TiKV。增加副本数量之前需要预估额外的存储需求。pd-ctl 的详细用法可参考 [PD Control 使用说明](tools/pd-control.md)。
+
+#### 集群下线节点后，怎么删除老集群节点监控信息？
+下线节点一般指 TiKV 节点通过 pd-ctl 或者监控判断节点是否下线完成。节点下线完成后，手动停止下线节点上相关的服务。从 Prometheus 配置文件中删除对应节点的 `node_exporter` 信息。从 Ansible `inventory.ini` 中删除对应节点的信息。
+
+#### 缺少命令行集群管理工具，整个集群的健康度当前是否正常，不好确认？
+可以通过 pd-ctl 等工具来判断集群大体的状态，详细的集群状态还是需要通过监控来确认。
 
 ### TiDB
 
@@ -172,6 +198,19 @@ leader-schedule-limit 调度是用来均衡不同 TiKV 的 leader 数，影响�
 #### 是否支持如下 DDL： `CREATE TABLE ... LOCATION "s3://xxx/yyy"`？
 
 如果你能够实现 S3 存储引擎客户端，应该基于 TiKV 接口实现。
+
+#### Infomation_schema 能否支持更多真实信息？
+`Infomation_schema` 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。
+当前 TiDB 支持的：`Infomation_schema` 请参考 [TiDB 系统数据库说明文档](https://pingcap.com/docs-cn/SQL/system-database/)。
+
+#### TiDB 针对不同存储的优化建议？
+TiDB 在进行 OLTP 场景中，数据访问和操作需要高 IO 磁盘的支持，因此，TiDB 部署的最佳实践中推荐用户使用 NVMe SSD 磁盘作为数据存储磁盘。
+
+#### TiDB Backoff type 场景解释?
+TiDB-server 在与 TiKV-server 通讯过程中，在进行大量数据操作过程中，会出现 `Server is busy` 或者 `backoff.maxsleep 20000ms` 的日志提示信息，这是由于 TiKV-server 在处理过程中系统比较忙而出现的提示信息。通常这时候可以通过系统资源监控到 TiKV 主机系统资源使用率比较高的情况出现。如果这种情况出现，可以根据资源使用情况进行相应的扩容操作。
+
+#### TiClient type 场景解释
+`TiClient Region Error` 该指标描述的是在 TiDB-server 作为客户端通过 kv 接口访问 TiKV-server 进行数据操作过程中，TiDB-server 操作 TiKV-server 中的 Region 数据出现的错误类型与 mertic 指标，错误类型包括 `not_leader`、`stale_epoch`。出现这些错误的情况是当 TiDB-server 根据自己的缓存信息去操作 Region leader 数据的时候，Region leader 发生了迁移或者 TiKV 当前的 Region 信息与 TiDB 缓存的路由信息不一致而出现的错误提示。一般这种情况下，TiDB-server 都会自动重新从 PD 获取最新的路由数据，重做之前的操作。
 
 ### TiKV
 
@@ -230,6 +269,21 @@ TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在�
 | apply worker | 数据写入操作完成后，会经过这个线程写入到 rocksdb |
 | rocksdb:bg* | rocksdb 对数据进行 compaction 的线程 |
 
+#### TiKV channel full 是啥原因？
++ Raftstore 线程卡了，可以看一下 Raftstore 的 CPU 使用情况。
++ TiKV 太忙了（读取、写入、磁盘 IO 等），请求处理不过来。
+
+#### TiKV 频繁切换 Region leader 切换是啥原因？
++ 网络问题导致节点间通信卡了，查看 Report failures 监控。
++ 原主 Leader 的节点卡了，导致没有及时给 Follower 发送消息。
++ Raftstore 线程卡了。
+
+#### Leader 节点挂了会影响服务吗？会有多久的影响 ？
+TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强一致，当一份备份出现问题时，其他的副本能保证数据的安全。通常 TiDB 配置每个 Region 为 3 副本，根据 Raft 协议，每个 Region 会选取一个 Leader 提供服务。但单个Region Leader 失效时，在最大 2 * lease time（leasetime 是 10 秒）时间后，通过 Raft 协议会很快选新的 Region Leader 提供服务。
+
+#### TiKV 在分别那些场景下占用大量 IO，内存，CPU，超过参数配置的多倍？
+在大量写入、读取的场景中会占用大量的磁盘 IO、内存和 CPU。在执行很复杂的查询，比如会产生很大中间结果集的情况下，会消耗很多的内存和 CPU 资源。
+
 ### TiSpark
 
 #### TiSpark 的使用文档在哪里？
@@ -268,6 +322,31 @@ rm -rf tidb_test
 
 可以，只要能让 PD 机器时间同步就行。若使用 Chrony 配置时间同步，请在运行 deploy 脚本之前将 `inventory.ini` 配置文件中的 `enable_ntpd` 置为 False，即 `enable_ntpd = False`。
 
+#### TiDB 是否可以使用 SAS/SATA 盘或者进行 SSD/SAS 混合部署？
+不可以使用，TiDB 在进行 OLTP 场景中，数据访问和操作需要高 IO 磁盘的支持，TiDB 作为强一致的分布式数据库，存在一定的写放大，如副本复制、存储底层 Compaction，因此，TiDB 部署的最佳实践中推荐用户使用 NVMe SSD 磁盘作为数据存储磁盘。另外，TiKV 与 PD 不能混合部署。
+
+#### 有没有图形化部署 TiDB 的工具？
+暂时没有。
+
+#### 不想用 Ansible 部署 TiDB，能否支持其他部署的方法？
+除 Ansible 之外，还支持 Docker 容器化部署，详细可在[官网](https://pingcap.com/docs-cn/op-guide/docker-deployment/)进行检索。官方更推荐 Ansible 方式，可以对集群主机做出相关优化以及检测，可以自动生成启动、停止、升级等脚本方便后期管理，同时部署了相关监控系统，在测试与调优以及排查问题时非常直观。
+
+#### 可否在单机上安装开发环境？
+可以，使用 `docker-compose` 在本地一键拉起一个集群，包括集群监控，还可以根据需求自定义各个组件的软件版本和实例个数，以及自定义配置文件。详细可参考[官方文档](https://github.com/pingcap/tidb-docker-compose)。
+
+#### TiDB 同时支持的最大并发连接数 ？
+当前版本 TiDB 没有最大连接数的限制，如果并发过大导致响应时间增加，可以通过增加 TiDB 节点进行扩容。
+
+#### 是否可以将 TiDB 和 TiKV 部署在一起？
+TiDB 和 TiKV 对 CPU 和内存都有比较高的要求，不建议部署到相同节点。
+
+#### 为什么要在 CentOS 7 上部署 TiDB 集群？
+TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运行在 Intel 架构服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络，作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境，具体可以参考 TiDB 的[官方部署要求](https://pingcap.com/docs-cn/op-guide/recommendation/)。
+其中 TiDB 在 CentOS 7 的环境下进行大量的测试，同时也有很多这个操作系统的部署最佳实践，因此，我们推荐客户在部署 TiDB 的时候使用 CentOS 7+ 以上的Linux 操作系统。
+
+#### 2块网卡的目的是？万兆的目的是？
+作为一个分布式集群，TiDB 对时间的要求还是比较高的，尤其是 PD 需要分发唯一的时间戳，如果 PD 时间不统一，如果有 PD 切换，将会等待更长的时间。2 块网卡可以做 bond，保证数据传输的稳定，万兆可以保证数据传输的速度，千兆网卡容易出现瓶颈，我们强烈建议使用万兆网卡。
+
 ### 扩容
 
 #### 如何对 TiDB 进行水平扩展？
@@ -299,6 +378,9 @@ rm -rf tidb_test
 ```
 
 重启 Prometheus 即可。
+
+#### 目前的监控使用方式及主要监控指标，有没有更好看的监控？
+TiDB 使用 Prometheus + Grafana 组成 TiDB 数据库系统的监控系统，用户在 Grafana 上通过 dashboard 可以监控到 TiDB 的各类运行指标，包括系统资源的监控指标，包括客户端连接与 SQL 运行的指标，包括内部通讯和 Region 调度的指标，通过这些指标，可以让数据库管理员更好的了解到系统的运行状态，运行瓶颈等内容。在监控指标的过程中，我们按照 TiDB 不同的模块，分别列出了各个模块重要的指标项，一般用户只需要关注这些常见的指标项。具体指标请参见[官方文档](https://pingcap.com/docs-cn/op-guide/dashboard-overview-info/)。
 
 ### 数据迁移
 
@@ -345,8 +427,31 @@ CREATE TABLE if not exists mysql.user (
 INSERT INTO mysql.user VALUES ("%", "root", "", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y");
 
 ```
+#### 怎样把数据从 TiDB 导出／导入呢？
+TiDB 遵从 MySQL 协议，可以使用 Mydumper 工具导出数据，使用 Loader 工具导入数据，和 MySQL 导出／导入方式一样。
+
+#### 数据删除后空间多长时间空间回收？
+Delete，Truncate 和 Drop 都不会立即释放空间，对于 Truncate 和 Drop 操作，在达到 TiDB 的 GC (Garbage Collection) 时间后（默认 10 分钟），TiDB 的 GC 机制会删除数据并释放空间。对于 Delete 操作 TiDB 的 GC 机制会删除数据，但不会释放空间，而是当后续数据写入 RocksDB 且进行 Compact 时对空间重新利用。
+
+#### 数据删除后查询速度变慢了？
+大量删除数据后，会有很多无用的 key 存在，影响查询效率。目前正在开发 Region Merge 功能，完善之后可以解决这个问题，具体看参考[最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)中的删除数据部分。
+
+#### 数据删除最高效最快的方式？
+在删除大量数据的时候，建议使用 `Delete * from t where xx limit 5000`（xx 建议在满足业务过滤逻辑下，尽量加上强过滤索引列或者直接使用主键选定范围，如 `id >= 5000*n+m and id < 5000*(n+1)+m `）这样的方案，通过循环来删除，用 `Affected Rows == 0` 作为循环结束条件，这样避免遇到事务大小的限制。如果一次删除的数据量非常大，这种循环的方式会越来越慢，因为每次删除都是从前向后遍历，前面的删除之后，短时间内会残留不少删除标记（后续会被 GC 掉），影响后面的 Delete 语句。如果有可能，建议把 Where 条件细化。可以参考官网[最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)。
+
+#### Syncer / Drainer 同步出错、中断怎么处理？
++ 查看 log 分析出错原因。
++ 查看 [Syncer](https://pingcap.com/docs-cn/tools/syncer/)/ [Drainer](https://pingcap.com/docs-cn/tools/tidb-binlog-kafka/#pump-drainer-%E9%85%8D%E7%BD%AE) 文档寻求帮助。
++ 及时更换新版的 Syncer / Drainer。
 
 ### 性能调优
+
+#### TiDB 如何提高数据加载速度？
+主要三个方面：
+
++ 目前正在开发分布式导入工具 Lightning，需要注意的是数据导入过程中为了性能考虑，不会执行完整的事务流程，所以没办法保证导入过程中正在导入的数据的 ACID 约束，只能保证整个导入过程结束以后导入数据的 ACID 约束。因此适用场景主要为新数据的导入（比如新的表或者新的索引），或者是全量的备份恢复（先 Truncate 原表再导入）。
++ TiDB 的数据加载与磁盘以及整体集群状态相关，加载数据时应关注该主机的磁盘利用率/ TiClient Error / Backoff / Thread CPU 等相关 metric，可以分析相应瓶颈。
+
 
 ### 备份恢复
 
@@ -383,6 +488,10 @@ TiDB 遵循 MySQL 的权限管理体系，可以创建用户并授予权限。
 - supervise 守护进程
 - svc 启停服务
 - svstat 查看进程状态
+
+#### 使用 JDBC 的 prepare 方式写入数据很慢，怎样定位问题？
+
+使用 JDBC 的 `prepareStatement` 写入数据时，`addBatch` 操作并不访问数据库，只有 `executeBatch` 操作才会访问数据库，精确统计 `addBatch` 和 `executeBatch` 的执行时间，可以判断造成写入慢的原因是在数据库还是其他组件，如前端的缓存等。
 
 ## SQL
 
@@ -433,17 +542,23 @@ mysql> admin show ddl;
 
 ### SQL 优化
 
+#### TiDB 的执行计划如何查看？
+参考[官网文档](https://pingcap.com/docs-cn/SQL/understanding-the-query-execution-plan/)。
+
 #### `select count(1)` 比较慢，如何优化？
 
-`count(1)` 就是暴力扫表，提高并发度能显著的提升速度，修改并发度可以参考 [`tidb_distsql_scan_concurrency`](sql/tidb-specific.md#tidb_distsql_scan_concurrency) 变量。 但是也要看 CPU 和 I/O 资源。TiDB 每次查询都要访问 TiKV，在数据量小的情况下，MySQL 都在内存里，TiDB 还需要进行一次网络访问。
+`count(1)` 就是暴力扫表，提高并发度能显著的提升速度，修改并发度可以参考 [`tidb_distsql_scan_concurrency`](sql/tidb-specific.md#tidb_distsql_scan_concurrency) 变量。但是也要看 CPU 和 I/O 资源。TiDB 每次查询都要访问 TiKV，在数据量小的情况下，MySQL 都在内存里，TiDB 还需要进行一次网络访问。
 
 > 提升建议：
 >
-> 1. 建议提升硬件配置，可以参考[部署建议](op-guide/requirement.md)。
+> 1. 建议提升硬件配置，可以参考[部署建议](op-guide/recommendation.md)。
 > 2. 提升并发度，默认是 10，可以提升到 50 试试，但是一般提升在 2-4 倍之间。
 > 3. 测试大数据量的 count。
 > 4. 调优 TiKV 配置，可以参考[性能调优](op-guide/tune-tikv.md)。
 
 #### 如何解决 FROM_UNIXTIME 效率低的问题？
 
-获取系统时间不要使用 FROM_UNIXTIME，建议采用 datetime 转成时间戳去比较的方式，目前 FROM_UNIXTIME 无法走索引。
+获取系统时间不要使用 `FROM_UNIXTIME`，建议采用 `datetime` 转成时间戳去比较的方式，目前 `FROM_UNIXTIME` 无法走索引。
+
+#### 每次手动或者定时 Analyze 表比较麻烦，什么时候可以实现自动 Analyze？
+自动分析目前还没具体时间计划，但我们正在开发自动持续增量更新直方图的功能。

@@ -5,6 +5,8 @@ category: advanced
 
 # TiDB-Binlog 部署方案
 
+本文档介绍如何部署 Kafka 版本的 TiDB-Binlog。如需部署 local 版本的 TiDB-Binlog，可参考 [local 版本的 TiDB-Binlog 部署文档](tidb-binlog.md)。
+
 ## TiDB-Binlog 简介
 
 TiDB-Binlog 用于收集 TiDB 的 Binlog，并提供实时备份和同步功能的商业工具。
@@ -71,7 +73,7 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
 
     为了保证数据的完整性，在 pump 运行 10 分钟左右后按顺序进行下面的操作
 
-    *  使用 generate_binlog_position 工具生成 drainer 启动需要的 savepint 文件，工具在项目 [tidb-tools](https://github.com/pingcap/tidb-tools) 中，make generate_binlog_position 编译该工具，具体的使用参考工具的 README 说明。
+    *  使用 generate_binlog_position 工具生成 drainer 启动需要的 savepint 文件，工具在项目 [tidb-tools](https://github.com/pingcap/tidb-tools) 中，make generate_binlog_position 编译该工具，具体的使用参考工具的 README 说明。也可以直接下载获取该工具：[generate_binlog_position](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.tar.gz)， [sha256](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.sha256)，并使用sha256sum验证该文件。
     *  全量备份，例如 mydumper 备份 tidb
     *  全量导入备份到目标系统
     *  设置 savepoint 文件路径，然后启动 drainer， `bin/drainer --config=conf/drainer.toml --data-dir=${drainer_savepoint_dir}`
