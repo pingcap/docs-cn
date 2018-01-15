@@ -123,6 +123,8 @@
   - [万达网络](http://t.cn/RTKm6ds)
   - [某电信运营商](http://t.cn/RTYWADg)
   - [凤凰网](http://t.cn/RHRQfNT)
+  - [G7](http://t.cn/RQVePoX)
+
 + 更多资源
   - [常用工具](https://github.com/pingcap/tidb-tools)
   - [PingCAP 团队技术博客](https://pingcap.com/blog-cn/)
