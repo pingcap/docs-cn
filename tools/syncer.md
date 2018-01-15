@@ -94,8 +94,26 @@ batch = 10
 ## 将 127.0.0.1 修改为相应主机 IP 地址
 status-addr = "127.0.0.1:10086"
 
-## 跳过 DDL 或者其他语句，格式为 **前缀完全匹配**，如: `DROP TABLE ABC`,则至少需要填入`DROP TABLE`.
-# skip-sqls = ["ALTER USER", "CREATE USER"]
+# 注意: skip-sqls 已经废弃, 请使用 skip-ddls.
+# skip-ddls 可以跳过与 TiDB 不兼容的 DDL 语句，支持正则语法。
+# skip-ddls = ["^CREATE\\s+USER"]
+
+# 注意: skip-events 已经废弃, 请使用 skip-dmls 
+# skip-dmls 用于跳过 DML 语句. type 字段取值为 'insert', 'update', 'delete'。
+# 下面的例子为跳过 foo.bar 表的所有 delete 语句。
+# [[skip-dmls]]
+# db-name = "foo"
+# tbl-name = "bar"
+# type = "delete"
+# 
+# 下面的例子为跳过所有表的 delete 语句。
+# [[skip-dmls]]
+# type = "delete"
+# 
+# 下面的例子为跳过 foo 库中所有表的 delete 语句。 
+# [[skip-dmls]]
+# db-name = "foo"
+# type = "delete"
 
 ## 指定要同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
 #replicate-do-db = ["~^b.*","s1"]
