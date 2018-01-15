@@ -3,156 +3,92 @@ title: 使用 Docker Compose 构建集群
 category: deployment
 ---
 
-## 使用 Docker Compose 构建集群
+# 使用 Docker Compose 快速构建集群
 
-只需要一个简单的 `docker-compose.yml`:
+[Docker Compose](https://docs.docker.com/compose/overview) 可以通过一个 YAML 文件定义多个容器的应用服务，然后一键启动或停止。可以用来在单机上一键部署一套 TiDB 测试集群，使用 Docker Compose 部署 TiDB 集群要求 Docker 是 17.06.0 及以上版本。
 
-```yaml
-version: '2'
+## 快速开始
 
-services:
-  pd1:
-    image: pingcap/pd
-    ports:
-      - "2379"
-      - "2380"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
+1. 下载 tidb-docker-compose
 
-    command:
-      - --name=pd1
-      - --client-urls=http://0.0.0.0:2379
-      - --peer-urls=http://0.0.0.0:2380
-      - --advertise-client-urls=http://pd1:2379
-      - --advertise-peer-urls=http://pd1:2380
-      - --initial-cluster=pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380
+    ```bash
+    git clone https://github.com/pingcap/tidb-docker-compose.git
+    ```
 
-    privileged: true
+2. 创建并启动集群
 
-  pd2:
-    image: pingcap/pd
-    ports:
-      - "2379"
-      - "2380"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
+    ```bash
+    cd tidb-docker-compose && docker-compose up -d
+    ```
 
-    command:
-      - --name=pd2
-      - --client-urls=http://0.0.0.0:2379
-      - --peer-urls=http://0.0.0.0:2380
-      - --advertise-client-urls=http://pd2:2379
-      - --advertise-peer-urls=http://pd2:2380
-      - --initial-cluster=pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380
+3. 访问集群
 
-    privileged: true
+    ```bash
+    mysql -h 127.0.0.1 -P 4000 -u root
+    ```
 
-  pd3:
-    image: pingcap/pd
-    ports:
-      - "2379"
-      - "2380"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
+    访问集群 Grafana 监控页面：<http://localhost:3000> 默认用户名和密码都是 admin。
 
-    command:
-      - --name=pd3
-      - --client-urls=http://0.0.0.0:2379
-      - --peer-urls=http://0.0.0.0:2380
-      - --advertise-client-urls=http://pd3:2379
-      - --advertise-peer-urls=http://pd3:2380
-      - --initial-cluster=pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380
+    [集群数据可视化](https://github.com/tidb-vision)：<http://localhost:8010>
 
-    privileged: true
+## 自定义集群
 
-  tikv1:
-    image: pingcap/tikv
-    ports:
-      - "20160"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
+快速开始里面默认部署 3 个 PD，3 个 TiKV，1 个 TiDB 和监控组件 Prometheus，Pushgateway，Grafana 以及 tidb-vision。如果想自定义集群，可以直接修改 docker-compose.yml，但是手动修改比较繁琐而且容易出错，强烈建议使用 [Helm](https://helm.sh) 模板引擎生成 docker-compose.yml 文件。
 
-    command:
-      - --addr=0.0.0.0:20160
-      - --advertise-addr=tikv1:20160
-      - --data-dir=/var/tikv
-      - --pd=pd1:2379,pd2:2379,pd3:2379
+1. 安装 Helm
 
-    depends_on:
-      - "pd1"
-      - "pd2"
-      - "pd3"
+    [Helm](https://helm.sh) 可以用作模板渲染引擎，只需要下载其 binary 文件即可以使用。
 
-    entrypoint: /tikv-server
+    ```bash
+    curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
+    ```
 
-    privileged: true
+    如果是 Mac 系统，也可以通过 Homebrew 安装：`brew install kubernetes-helm`
 
-  tikv2:
-    image: pingcap/tikv
-    ports:
-      - "20160"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
+2. 下载 tidb-docker-compose
 
-    command:
-      - --addr=0.0.0.0:20160
-      - --advertise-addr=tikv2:20160
-      - --data-dir=/var/tikv
-      - --pd=pd1:2379,pd2:2379,pd3:2379
+    ```bash
+    git clone https://github.com/pingcap/tidb-docker-compose.git
+    ```
 
-    depends_on:
-      - "pd1"
-      - "pd2"
-      - "pd3"
+3. 自定义集群
 
-    entrypoint: /tikv-server
+    ```bash
+    cd tidb-docker-compose
+    cp compose/values.yaml values.yaml
+    vim values.yaml
+    ```
 
-    privileged: true
+    修改 values.yaml 里面的配置，例如集群规模，TiDB 镜像版本等。
 
-  tikv3:
-    image: pingcap/tikv
-    ports:
-      - "20160"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
+    [tidb-vision](https://github.com/pingcap/tidb-vision) 是 TiDB 集群可视化页面，可以可视化地显示 PD 对 TiKV 数据的调度。如果不想部署该组件，可以将 `tidbVision` 项留空。
 
-    command:
-      - --addr=0.0.0.0:20160
-      - --advertise-addr=tikv3:20160
-      - --data-dir=/var/tikv
-      - --pd=pd1:2379,pd2:2379,pd3:2379
+    PD，TiKV，TiDB 和 tidb-vision 支持从 GitHub 源码或本地文件构建 Docker 镜像，供开发测试使用。
 
-    depends_on:
-      - "pd1"
-      - "pd2"
-      - "pd3"
+    - 如果希望从 GitHub 源码构建某个组件的镜像，需要将其 `image` 字段留空，然后设置其 `buildFrom` 为 `remote`。
 
-    entrypoint: /tikv-server
+    - 如果希望从本地已编译好的 binary 文件构建 PD，TiKV 或 TiDB 镜像，需要将其 `image` 字段留空，然后设置其 `buildFrom` 为 `local`，并将已编译好的 binary 拷贝到对应的 pd/bin/pd-server，tikv/bin/tikv-server，tidb/bin/tidb-server。
 
-    privileged: true
+    - 如果希望从本地构建 tidb-vision 镜像，需要将其 `image` 字段留空，然后设置其 `buildFrom` 为 `local`，并将 tidb-vision 项目拷贝到 tidb-vision/tidb-vision。
 
-  tidb:
-    image: pingcap/tidb
-    ports:
-      - "4000"
-      - "10080"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
+4. 生成 docker-compose.yml 文件
 
-    command:
-      - --store=tikv
-      - --path=pd1:2379,pd2:2379,pd3:2379
-      - -L=warn
+    ```bash
+    helm template -f values.yaml compose > generated-docker-compose.yml
+    ```
 
-    depends_on:
-      - "tikv1"
-      - "tikv2"
-      - "tikv3"
+5. 使用生成的 docker-compose.yml 创建并启动集群
 
-    privileged: true
-```
+    ```bash
+    docker-compose -f generated-docker-compose.yml up -d
+    ```
 
-+ 使用 `docker-compose up -d` 创建并启动集群
-+ 使用 `docker-compose port tidb 4000` 获得 TiDB 的对外服务端口。由于 Docker 做了端口转发, 你可能会获得一个类似 `0.0.0.0:32966` 的结果, 那么就可以通过 `32966` 端口访问 TiDB
-+ 运行 `mysql -h 127.0.0.1 -P 32966 -u root -D test` 连接到 TiDB 进行测试
-+ 运行 `docker-compose down` 关闭并销毁集群
+6. 访问集群
+
+    ```bash
+    mysql -h 127.0.0.1 -P 4000 -u root
+    ```
+
+    访问集群 Grafana 监控页面：<http://localhost:3000> 默认用户名和密码都是 admin。
+
+    如果启用了 tidb-vision，可以通过 <http://localhost:8010> 查看。

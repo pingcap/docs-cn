@@ -77,8 +77,12 @@
     - [Ansible 部署方案（强烈推荐）](op-guide/ansible-deployment.md)
     - [离线 Ansible 部署方案（强烈推荐）](op-guide/offline-ansible-deployment.md)
     - [Docker 部署方案](op-guide/docker-deployment.md)
+    - [Docker Compose 部署方案](op-guide/docker-compose.md)
     - [跨机房部署方案](op-guide/location-awareness.md)
-  - [配置集群](op-guide/configuration.md)
+  + 配置集群
+    - [参数解释](op-guide/configuration.md)
+    - [开启 TLS 验证](op-guide/security.md)
+    - [生成自签名证书](op-guide/generate-self-signed-certificates.md)
   + 监控集群
     - [整体监控框架概述](op-guide/monitor-overview.md)
     - [重要监控指标详解](op-guide/dashboard-overview-info.md)
@@ -118,6 +122,7 @@
   - [一面数据](http://t.cn/RT9r5di)
   - [万达网络](http://t.cn/RTKm6ds)
   - [某电信运营商](http://t.cn/RTYWADg)
+  - [凤凰网](http://t.cn/RHRQfNT)
 + 更多资源
   - [常用工具](https://github.com/pingcap/tidb-tools)
   - [PingCAP 团队技术博客](https://pingcap.com/blog-cn/)
