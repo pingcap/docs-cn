@@ -75,7 +75,7 @@
   - [软硬件环境需求](op-guide/recommendation.md)
   + 部署集群 
     - [Ansible 部署方案（强烈推荐）](op-guide/ansible-deployment.md)
-    - [离线 Ansible 部署方案（强烈推荐）](op-guide/offline-ansible-deployment.md)
+    - [离线 Ansible 部署方案](op-guide/offline-ansible-deployment.md)
     - [Docker 部署方案](op-guide/docker-deployment.md)
     - [Docker Compose 部署方案](op-guide/docker-compose.md)
     - [跨机房部署方案](op-guide/location-awareness.md)
