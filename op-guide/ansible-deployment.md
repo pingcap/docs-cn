@@ -22,7 +22,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 1.  部署中控机一台:
 
-    - Python 2.6 或 Python 2.7，安装有 Ansible 2.3 版本或以上版本。
+    - Python 2.7，安装有 Ansible 2.3 版本或以上版本。
     - 依赖 Python Jinja2 及 MarkupSafe 指定版本模块: `pip install Jinja2==2.7.2 MarkupSafe==0.11`
     - 可通过 ssh 登录目标机器，支持密码登录或 ssh authorized_key 登录。
     - 中控机可以是部署目标机器中的某一台，该机器需开放外网访问，并且安装 curl 软件包，用于下载 binary。
@@ -35,7 +35,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
     - 机器之间网络互通，防火墙、iptables 等可以在部署验证时关闭，后期开启。
     - 机器的时间、时区设置正确(要求机器时间同步)，有 NTP 服务可以同步正确时间， ubuntu 系统需单独安装 ntpstat 软件包，详见[如何检测 NTP 服务是否正常](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何检测-ntp-服务是否正常)。
     - 若使用普通用户作为 Ansible SSH 远程连接用户，该用户需要有 sudo 到 root 权限，或直接使用 root 用户远程连接。
-    - Python 2.6 或 Python 2.7。
+    - Python 2.7。
     - 如使用 Docker 方式部署，依赖详见[如何使用 docker 方式部署 TiDB](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何使用-docker-方式部署-tidb)，默认为 binary 部署方式。
 
 ## 在中控机器上安装配置 Ansible
@@ -156,10 +156,13 @@ TiKV3-1 ansible_host=172.16.10.6 deploy_dir=/data1/deploy tikv_port=20171 labels
 TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv3"
 TiKV3-3 ansible_host=172.16.10.6 deploy_dir=/data3/deploy tikv_port=20173 labels="host=tikv3"
 
-[monitored_servers:children]
-tidb_servers
-tikv_servers
-pd_servers
+[monitored_servers]
+172.16.10.1
+172.16.10.2
+172.16.10.3
+172.16.10.4
+172.16.10.5
+172.16.10.6
 
 [monitoring_servers]
 172.16.10.1
@@ -193,7 +196,6 @@ location_labels = ["host"]
 | process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
 | timezone | 修改部署目标机器时区，默认为 `Asia/Shanghai`, 可调整，与  `set_timezone` 变量结合使用 |
 | set_timezone | 默认为 True，即修改部署目标机器时区，关闭可修改为 False |
-| enable_elk | 目前不支持，请忽略 |
 | enable_firewalld | 开启防火墙，默认不开启 |
 | enable_ntpd | 检测部署目标机器 NTP 服务，默认为 True，请勿关闭 |
 | machine_benchmark | 检测部署目标机器磁盘 IOPS，默认为 True，请勿关闭 |

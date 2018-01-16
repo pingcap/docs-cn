@@ -13,7 +13,6 @@ category: deployment
     - Python 2.6 或 Python 2.7，安装有 Ansible 2.3 版本或以上版本。
     - 依赖 Python Jinja2 及 MarkupSafe 指定版本模块：`pip install Jinja2==2.7.2 MarkupSafe==0.11`
     - 可通过 ssh 登录目标机器，支持密码登录或 ssh authorized_key 登录。
-    - 中控机可以是部署目标机器中的某一台，该机器需开放外网访问，并且安装 curl 软件包，用于下载 binary。
 
 2. 部署目标机器若干
 
@@ -157,10 +156,13 @@ TiKV3-1 ansible_host=172.16.10.6 deploy_dir=/data1/deploy tikv_port=20171 labels
 TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv3"
 TiKV3-3 ansible_host=172.16.10.6 deploy_dir=/data3/deploy tikv_port=20173 labels="host=tikv3"
 
-[monitored_servers:children]
-tidb_servers
-tikv_servers
-pd_servers
+[monitored_servers]
+172.16.10.1
+172.16.10.2
+172.16.10.3
+172.16.10.4
+172.16.10.5
+172.16.10.6
 
 [monitoring_servers]
 172.16.10.1
