@@ -20,61 +20,50 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 ## 准备机器
 
-1.  部署中控机一台:
+1.  部署目标机器若干
 
-    - Python 2.7，安装有 Ansible 2.3 版本或以上版本。
-    - 依赖 Python Jinja2 及 MarkupSafe 指定版本模块: `pip install Jinja2==2.7.2 MarkupSafe==0.11`
-    - 可通过 ssh 登录目标机器，支持密码登录或 ssh authorized_key 登录。
-    - 中控机可以是部署目标机器中的某一台，该机器需开放外网访问，并且安装 curl 软件包，用于下载 binary。
-    - 如使用 Docker 方式部署，依赖详见[如何使用 docker 方式部署 TiDB](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何使用-docker-方式部署-tidb)，默认为 binary 部署方式。
+    - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机, 详见[部署建议](recommendation.md)。
+    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构(amd64), 文件系统请使用 ext4，不要使用 xfs 或其他文件系统。
+    - 机器之间内网互通，防火墙如 iptables 等请在部署时关闭。
+    - 机器的时间、时区设置一致，开启 NTP 服务在正常同步时间，可参考[如何检测 NTP 服务是否正常](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何检测-ntp-服务是否正常)。
+    - 创建 tidb 普通用户作为程序运行用户，tidb 用户可以免密码 sudo 到 root。
 
-2.  部署目标机器若干
+2.  部署中控机一台:
 
-    - 建议4台及以上，TiKV 至少3实例，且与 TiDB、PD 模块不位于同一主机,详见[部署建议](recommendation.md)。
-    - Linux 操作系统，x86_64 架构(amd64)，内核版本建议 3.10 以上，推荐 CentOS 7.3 及以上版本, 文件系统推荐 ext4(部分内核版本 xfs 文件系统有 bug, 本工具检查到 xfs 文件系统有 bug 会退出)。
-    - 机器之间网络互通，防火墙、iptables 等可以在部署验证时关闭，后期开启。
-    - 机器的时间、时区设置正确(要求机器时间同步)，有 NTP 服务可以同步正确时间， ubuntu 系统需单独安装 ntpstat 软件包，详见[如何检测 NTP 服务是否正常](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何检测-ntp-服务是否正常)。
-    - 若使用普通用户作为 Ansible SSH 远程连接用户，该用户需要有 sudo 到 root 权限，或直接使用 root 用户远程连接。
-    - Python 2.7。
-    - 如使用 Docker 方式部署，依赖详见[如何使用 docker 方式部署 TiDB](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何使用-docker-方式部署-tidb)，默认为 binary 部署方式。
+    - 中控机可以是部署目标机器中的某一台。
+    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统(默认包含 Python 2.7)。
+    - 该机器需开放外网访问，用于下载 TiDB 及相关软件安装包。
+    - 配置 ssh authorized_key，在中控机上可以使用 tidb 用户免密码 ssh 登录到部署目标机器。
 
-## 在中控机器上安装配置 Ansible
+## 在中控机器上安装 Ansible 及其依赖
 
-按照 [官方手册](http://docs.ansible.com/ansible/intro_installation.html) 安装 Ansible，推荐使用 Ansible 2.3 及以上版本。
-安装完成后，可通过 `ansible --version` 查看版本。
-
-以下是各操作系统 Anisble 简单安装说明：
-
--   CentOS 使用 epel 源安装:
+请按以下方式在 CentOS 7 系统的中控机上安装 Ansible。 通过 epel 源安装， 会自动安装 Ansible 相关依赖(如 Jinja2==2.7.2 MarkupSafe==0.11)，安装完成后，可通过 `ansible --version` 查看版本，请务必确认是 **Ansible 2.3** 及以上版本，否则会有兼容问题。
 
     ```bash
-    yum install epel-release
-    yum install ansible
+    # yum install epel-release
+    # yum install ansible curl
+    # ansible --version
+      ansible 2.4.2.0
     ```
 
--   Ubuntu 通过 PPA 源安装:
+> 其他系统可参考 [如何安装 Ansible](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何安装-ansible)
 
-    ```bash
-    sudo add-apt-repository ppa:ansible/ansible
-    sudo apt-get update
-    sudo apt-get install ansible
-    ```
+## 在中控机器上下载 TiDB-Ansible
 
-## 下载 TiDB-Ansible
-
-使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`。该文件夹包含用 TiDB-Ansible 来部署 TiDB 集群所需要的所有文件。
-
+使用以下命令在中控机上从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`。
 下载 GA 版本：
 ```
 git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 ```
+
+或
 
 下载 master 版本：
 ```
 git clone https://github.com/pingcap/tidb-ansible.git
 ```
 
-> **注：**生产环境请下载 GA 版本部署 TiDB。
+> **注：** 生产环境请下载 GA 版本部署 TiDB。
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
@@ -176,6 +165,8 @@ TiKV3-3 ansible_host=172.16.10.6 deploy_dir=/data3/deploy tikv_port=20173 labels
 location_labels = ["host"]
 ```
 
+> **注：** 单机多 TiKV 时，请务必修改 `[monitored_servers:children]` 为 `[monitored_servers]`, 单行一个 IP 地址。
+
 - 参数调整
 
     1.  多实例情况下, 需要修改 `conf/tikv.yml` 中的 `end-point-concurrency` 以及 `block-cache-size` 参数:
@@ -198,7 +189,6 @@ location_labels = ["host"]
 | set_timezone | 默认为 True，即修改部署目标机器时区，关闭可修改为 False |
 | enable_firewalld | 开启防火墙，默认不开启 |
 | enable_ntpd | 检测部署目标机器 NTP 服务，默认为 True，请勿关闭 |
-| machine_benchmark | 检测部署目标机器磁盘 IOPS，默认为 True，请勿关闭 |
 | set_hostname | 根据 IP 修改部署目标机器主机名，默认为 False |
 | enable_binlog | 是否部署 pump 并开启 binlog，默认为 False，依赖 Kafka 集群，参见 `zookeeper_addrs` 变量 |
 | zookeeper_addrs | binlog Kafka 集群的 zookeeper 地址 |
@@ -207,67 +197,9 @@ location_labels = ["host"]
 
 ## 部署任务
 
-> TiDB 服务不推荐使用 root 用户运行, 本例使用 `tidb` 普通用户作为服务运行用户。
+    > 本例中系统需提前创建 tidb 普通用户，本例 tidb 帐户作为服务运行用户。
 
-> Ansible 远程连接用户(即 incentory.ini 文件中的 ansible_user)可使用 root 用户或普通用户(该用户需要有 sudo 到 root 权限)。
-
-以下根据这两种情况作说明：
-
--   Ansible 通过 root 用户远程连接部署
-
-    1.  修改 `inventory.ini`, 本例使用 `tidb` 帐户作为服务运行用户：
-
-        取消 `ansible_user = root` 、`ansible_become = true` 及 `ansible_become_user` 注释，给 `ansible_user = tidb` 添加注释：
-
-        ```ini
-        ## Connection
-        # ssh via root:
-        ansible_user = root
-        ansible_become = true
-        ansible_become_user = tidb
-
-        # ssh via normal user
-        # ansible_user = tidb
-        ```
-
-    2.  使用 `local_prepare.yml` playbook, 联网下载 TiDB binary 到中控机：
-
-        ```
-        ansible-playbook local_prepare.yml
-        ```
-
-    3.  初始化系统环境，修改内核参数
-
-        > 如服务运行用户尚未建立，此初始化操作会自动创建该用户。
-
-        ```
-        ansible-playbook bootstrap.yml
-        ```
-
-        如果 ansible 使用 root 用户远程连接需要密码, 使用 -k 参数，执行其他 playbook 同理：
-
-        ```
-        ansible-playbook bootstrap.yml -k
-        ```
-
-    4.  部署 TiDB 集群软件
-
-        ```
-        ansible-playbook deploy.yml -k
-        ```
-
-    5.  启动 TiDB 集群
-
-        ```
-        ansible-playbook start.yml -k
-        ```
-
-
--   Ansible 通过普通用户远程连接部署
-
-    > 本例中系统需提前创建 tidb 普通用户，并添加 sudo 权限，本例 tidb 帐户同时作为服务运行用户。
-
-    1.  修改 `inventory.ini`, 本例使用 `tidb` 用户作为服务运行用户，配置如下：
+    1.  确认 `tidb-ansible/inventory.ini` 文件中 `ansible_user = tidb`, 本例使用 `tidb` 用户作为服务运行用户，配置如下：
 
         ```ini
         ## Connection
@@ -292,34 +224,16 @@ location_labels = ["host"]
         ansible-playbook bootstrap.yml
         ```
 
-        如果 Ansible 使用普通用户远程连接需要密码, 需添加 -k 参数，执行其他 playbook 同理：
-
-        ```
-        ansible-playbook bootstrap.yml -k
-        ```
-
-        执行该 playbook 需要 root 权限，如果该普通用户 sudo 到 root 需要密码，需添加 -K 参数：
-
-        ```
-        ansible-playbook bootstrap.yml -k -K
-        ```
-
     4.  部署 TiDB 集群软件
 
         ```
-        ansible-playbook deploy.yml -k
-        ```
-     
-        如 `process_supervision = systemd`, 则执行该 playbook 需要 root 权限，如果该普通用户 sudo 到 root 需要密码，需添加 -K 参数：
-
-        ```
-        ansible-playbook deploy.yml -k -K
+        ansible-playbook deploy.yml
         ```
 
     5.  启动 TiDB 集群
 
         ```
-        ansible-playbook start.yml -k
+        ansible-playbook start.yml
         ```
 
 ## 测试集群
@@ -339,7 +253,6 @@ location_labels = ["host"]
 ## 滚动升级
 
 > - 滚动升级 TiDB 服务，滚动升级期间不影响业务运行(最小环境 ：`pd*3 、tidb*2、tikv*3`)
-> - 远程连接权限问题，参考以上步骤( 已建立互信无需加 `-k` )
 > - 如果集群环境中有 pump / drainer 服务，建议先停止 drainer 后滚动升级 (升级 TiDB 时会升级 pump)。
 
 ### 下载 binary
@@ -400,11 +313,6 @@ location_labels = ["host"]
 > TiDB 服务数据迁移、性能调优等更多高级功能请参考 [https://github.com/pingcap/docs-cn](https://github.com/pingcap/docs-cn)
 
 ## 常见部署问题
-
-### TiDB 各版本下载链接
-- master 版本：[TiDB master-CentOS7](http://download.pingcap.org/tidb-latest-linux-amd64-unportable.tar.gz)
-
-- 1.0 版本: [TiDB 1.0-CentOS7](http://download.pingcap.org/tidb-v1.0.4-linux-amd64-unportable.tar.gz)
 
 ### 如何下载安装指定版本 TiDB
 如需安装 TiDB 1.0.4 版本，需要先下载 TiDB-Ansible release-1.0 分支，确认 inventory.ini 文件中 `tidb_version = v1.0.4`, 安装步骤同上。
@@ -468,6 +376,7 @@ synchronised to NTP server (85.199.214.101) at stratum 2
    time correct to within 91 ms
    polling server every 1024 s
 ```
+> ubuntu 系统请安装 ntpstat 软件包。
 以下情况表示 NTP 服务未正常同步：
 ```
 $ ntpstat
@@ -521,3 +430,13 @@ ansible-playbook stop.yml
 ansible-playbook deploy.yml -D
 ansible-playbook start.yml
 ```
+
+### 如何安装 Ansible
+如果是 CentOS 系统, 直接按文章开头的方式安装即可，如果是 Ubuntu 系统, 可通过 PPA 源安装:
+
+    ```bash
+    sudo add-apt-repository ppa:ansible/ansible
+    sudo apt-get update
+    sudo apt-get install ansible
+    ```
+其他可按照 [官方手册](http://docs.ansible.com/ansible/intro_installation.html) 安装 Ansible。
