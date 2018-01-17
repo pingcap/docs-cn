@@ -39,18 +39,19 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 请按以下方式在 CentOS 7 系统的中控机上安装 Ansible。 通过 epel 源安装， 会自动安装 Ansible 相关依赖(如 Jinja2==2.7.2 MarkupSafe==0.11)，安装完成后，可通过 `ansible --version` 查看版本，请务必确认是 **Ansible 2.3** 及以上版本，否则会有兼容问题。
 
-    ```bash
-    # yum install epel-release
-    # yum install ansible curl
-    # ansible --version
-      ansible 2.4.2.0
-    ```
+  ```bash
+  # yum install epel-release
+  # yum install ansible curl
+  # ansible --version
+    ansible 2.4.2.0
+  ```
 
 > 其他系统可参考 [如何安装 Ansible](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何安装-ansible)
 
 ## 在中控机器上下载 TiDB-Ansible
 
 使用以下命令在中控机上从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`。
+
 下载 GA 版本：
 ```
 git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
@@ -197,7 +198,7 @@ location_labels = ["host"]
 
 ## 部署任务
 
-    > 本例中系统需提前创建 tidb 普通用户，本例 tidb 帐户作为服务运行用户。
+    > ansible-playbook 执行 Playbook 时默认并发为 5，可添加 -f 参数指定并发。
 
     1.  确认 `tidb-ansible/inventory.ini` 文件中 `ansible_user = tidb`, 本例使用 `tidb` 用户作为服务运行用户，配置如下：
 
