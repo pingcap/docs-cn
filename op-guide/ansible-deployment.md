@@ -11,7 +11,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 本部署工具可以通过配置文件设置集群拓扑，一键完成以下各项运维工作：
 
-- 初始化操作系统，包括创建部署用户、设置 hostname 等
+- 初始化操作系统参数
 - 部署组件
 - 滚动升级，滚动升级时支持模块存活检测
 - 数据清理
@@ -25,7 +25,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
     - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机, 详见[部署建议](recommendation.md)。
     - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构(amd64), 文件系统请使用 ext4，不要使用 xfs 或其他文件系统。
     - 机器之间内网互通，防火墙如 iptables 等请在部署时关闭。
-    - 机器的时间、时区设置一致，开启 NTP 服务在正常同步时间，可参考[如何检测 NTP 服务是否正常](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何检测-ntp-服务是否正常)。
+    - 机器的时间、时区设置一致，开启 NTP 服务且在正常同步时间，可参考[如何检测 NTP 服务是否正常](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何检测-ntp-服务是否正常)。
     - 创建 tidb 普通用户作为程序运行用户，tidb 用户可以免密码 sudo 到 root。
 
 2.  部署中控机一台:
@@ -198,44 +198,44 @@ location_labels = ["host"]
 
 ## 部署任务
 
-    > ansible-playbook 执行 Playbook 时默认并发为 5，可添加 -f 参数指定并发。
+> ansible-playbook 执行 Playbook 时默认并发为 5，部署目标机器较多时可添加 -f 参数指定并发。
 
-    1.  确认 `tidb-ansible/inventory.ini` 文件中 `ansible_user = tidb`, 本例使用 `tidb` 用户作为服务运行用户，配置如下：
+1.  确认 `tidb-ansible/inventory.ini` 文件中 `ansible_user = tidb`, 本例使用 `tidb` 用户作为服务运行用户，配置如下：
 
-        ```ini
-        ## Connection
-        # ssh via root:
-        # ansible_user = root
-        # ansible_become = true
-        # ansible_become_user = tidb
+    ```ini
+    ## Connection
+    # ssh via root:
+    # ansible_user = root
+    # ansible_become = true
+    # ansible_become_user = tidb
 
-        # ssh via normal user
-        ansible_user = tidb
-        ```
+    # ssh via normal user
+    ansible_user = tidb
+    ```
 
-    2.  使用 `local_prepare.yml` playbook, 联网下载 TiDB binary 到中控机：
+2.  使用 `local_prepare.yml` playbook, 联网下载 TiDB binary 到中控机：
 
-        ```
-        ansible-playbook local_prepare.yml
-        ```
+    ```
+    ansible-playbook local_prepare.yml
+    ```
 
-    3.  初始化系统环境，修改内核参数
+3.  初始化系统环境，修改内核参数
 
-        ```
-        ansible-playbook bootstrap.yml
-        ```
+    ```
+    ansible-playbook bootstrap.yml
+    ```
 
-    4.  部署 TiDB 集群软件
+4.  部署 TiDB 集群软件
 
-        ```
-        ansible-playbook deploy.yml
-        ```
+    ```
+    ansible-playbook deploy.yml
+    ```
 
-    5.  启动 TiDB 集群
+5.  启动 TiDB 集群
 
-        ```
-        ansible-playbook start.yml
-        ```
+    ```
+    ansible-playbook start.yml
+    ```
 
 ## 测试集群
 
@@ -256,7 +256,7 @@ location_labels = ["host"]
 > - 滚动升级 TiDB 服务，滚动升级期间不影响业务运行(最小环境 ：`pd*3 、tidb*2、tikv*3`)
 > - 如果集群环境中有 pump / drainer 服务，建议先停止 drainer 后滚动升级 (升级 TiDB 时会升级 pump)。
 
-### 下载 binary
+### 自动下载 binary
 
 1.  修改 `inventory.ini` 中的 `tidb_version` 参数值，指定需要升级的版本号，本例指定升级的版本号为 `v1.0.2`
 
@@ -310,8 +310,6 @@ location_labels = ["host"]
 |滚动升级 TiKV|`ansible-playbook rolling_update.yml --tags=tikv`|
 |滚动升级除 pd 外模块|`ansible-playbook rolling_update.yml --skip-tags=pd`|
 |滚动升级监控组件|`ansible-playbook rolling_update_monitor.yml`|
-
-> TiDB 服务数据迁移、性能调优等更多高级功能请参考 [https://github.com/pingcap/docs-cn](https://github.com/pingcap/docs-cn)
 
 ## 常见部署问题
 
@@ -435,9 +433,9 @@ ansible-playbook start.yml
 ### 如何安装 Ansible
 如果是 CentOS 系统, 直接按文章开头的方式安装即可，如果是 Ubuntu 系统, 可通过 PPA 源安装:
 
-    ```bash
-    sudo add-apt-repository ppa:ansible/ansible
-    sudo apt-get update
-    sudo apt-get install ansible
-    ```
+```bash
+sudo add-apt-repository ppa:ansible/ansible
+sudo apt-get update
+sudo apt-get install ansible
+```
 其他可按照 [官方手册](http://docs.ansible.com/ansible/intro_installation.html) 安装 Ansible。
