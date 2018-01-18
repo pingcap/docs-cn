@@ -33,7 +33,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
     - 中控机可以是部署目标机器中的某一台。
     - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统(默认包含 Python 2.7)。
     - 该机器需开放外网访问，用于下载 TiDB 及相关软件安装包。
-    - 配置 ssh authorized_key，在中控机上可以使用 tidb 用户免密码 ssh 登录到部署目标机器。
+    - 配置 ssh authorized_key 互信，在中控机上可以使用 tidb 用户免密码 ssh 登录到部署目标机器。
 
 ## 在中控机器上安装 Ansible 及其依赖
 
@@ -447,11 +447,11 @@ sudo add-apt-repository ppa:ansible/ansible
 sudo apt-get update
 sudo apt-get install ansible
 ```
-其他可按照 [官方手册](http://docs.ansible.com/ansible/intro_installation.html) 安装 Ansible。
+其他系统可按照 [官方手册](http://docs.ansible.com/ansible/intro_installation.html) 安装 Ansible。
 
 ### 数据盘 ext4 文件系统挂载参数
 数据盘请格式化成 ext4 文件系统，挂载时请添加 nodelalloc 和 noatime 挂载参数。
-nodelalloc 是必选参数，noatime 是可选建议参数。下面以 /dev/nvme0n1 数据盘为例：
+nodelalloc 是必选参数，否则 Ansible 安装时检测无法通过，noatime 是可选建议参数。下面以 /dev/nvme0n1 数据盘为例：
 
 ```
 # vi /etc/fstab
