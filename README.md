@@ -74,6 +74,7 @@
   - [Hardware and Software Requirements](op-guide/recommendation.md)
   + Deploy
     - [Ansible Deployment (Recommended)](op-guide/ansible-deployment.md)
+    - [Offline Deployment Using Ansible](op-guide/offline-ansible-deployment.md)
     - [Docker Deployment](op-guide/docker-deployment.md)
     - [Cross-Region Deployment](op-guide/location-awareness.md)
   - [Configure](op-guide/configuration.md)

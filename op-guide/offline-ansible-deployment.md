@@ -14,9 +14,9 @@ Before you start, make sure that you have:
     - Python 2.6 or Python 2.7
     - Python Jinja2 2.7.2 and MarkupSafe 0.11 packages. You can use the following commands to install the packages:
       
-      ```
-      pip install Jinja2==2.7.2 MarkupSafe==0.11
-      ```
+        ```
+        pip install Jinja2==2.7.2 MarkupSafe==0.11
+        ```
 
     - Access to the external network to install curl package and download binary.
     - Access to the managed nodes via SSH using password login or SSH authorized_key login.
@@ -49,75 +49,60 @@ Before you start, make sure that you have:
 
 1. Install Ansible offline on CentOS:
 
-  > Download the [Ansible](https://download.pingcap.org/ansible-2.3-rpms.el7.tar.gz) offline installation package to the Control Machine.
+    > Download the [Ansible](https://download.pingcap.org/ansible-2.3-rpms.el7.tar.gz) offline installation package to the Control Machine.
   
-  ```ini
-  
-  tar -xzvf ansible-2.3-rpms.el7.tar.gz
-  
-  cd ansible-2.3-rpms.el7
-  
-  rpm -ivh PyYAML*.rpm libtomcrypt*.rpm libtommath*.rpm libyaml*.rpm python-
-  babel*.rpm python-backports*.rpm python-backports-ssl_match_hostname*.rpm
-  python-httplib2*.rpm python-jinja2*.rpm python-keyczar*.rpm python-
-  markupsafe*.rpm python-setuptools*.rpm python-six*.rpm python2-crypto*.rpm
-  python2-ecdsa*.rpm python2-paramiko*.rpm python2-pyasn1*.rpm sshpass*.rpm
-  rpm -ivh ansible-2.3.1.0-1.el7.noarch.rpm
-  ```
+    ```ini
+    tar -xzvf ansible-2.3-rpms.el7.tar.gz
+    
+    cd ansible-2.3-rpms.el7
+    
+    rpm -ivh PyYAML*.rpm libtomcrypt*.rpm libtommath*.rpm libyaml*.rpm python-
+    babel*.rpm python-backports*.rpm python-backports-ssl_match_hostname*.rpm
+    python-httplib2*.rpm python-jinja2*.rpm python-keyczar*.rpm python-
+    markupsafe*.rpm python-setuptools*.rpm python-six*.rpm python2-crypto*.rpm
+    python2-ecdsa*.rpm python2-paramiko*.rpm python2-pyasn1*.rpm sshpass*.rpm
+    rpm -ivh ansible-2.3.1.0-1.el7.noarch.rpm
+    ```
 
 2. After Ansible is installed, you can view the version using `ansible --version`.
   
-  ```
-  ansible --version
-  # ansible 2.3.1.0
-  ```
+    ```
+    ansible --version
+    # ansible 2.3.1.0
+    ```
 
 ## Download TiDB packages
 
-Download all packages to the Control Machine.
+Run the following command on a machine installed with Ansible and connected to network:
 
-| Component | Download link | 
-| -------- | ----  | 
-|**Deploy**| [ tidb-ansible release-1.0 ](https://github.com/pingcap/tidb-ansible/tree/release-1.0) | 
-|**TiDB**| [ tidb-1.0.0 ](http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz) |
-| | [ tidb-tools-latest ](http://download.pingcap.org/tidb-tools-latest-linux-amd64.tar.gz) | 
-| | [ tidb-binlog-latest ](http://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz) |
-|**Monitor**| [ prometheus-1.5.2 ](https://github.com/prometheus/prometheus/releases/download/v1.5.2/prometheus-1.5.2.linux-amd64.tar.gz) | 
-| | [ grafana-4.1.2 ](https://grafanarel.s3.amazonaws.com/builds/grafana-4.1.2-1486989747.linux-x64.tar.gz) |
-| | [ node_exporter-0.14.0-rc.1 ](http://download.pingcap.org/node_exporter-0.14.0-rc.1.linux-amd64.tar.gz) | 
-| | [ pushgateway-0.3.1 ](http://download.pingcap.org/pushgateway-0.3.1.linux-amd64.tar.gz) |
-| | [ alertmanager-0.5.1 ](https://github.com/prometheus/alertmanager/releases/download/v0.5.1/alertmanager-0.5.1.linux-amd64.tar.gz) |
-| | [ daemontools-0.53 ](http://oifici4co.bkt.gdipper.com/daemontools-0.53.tar.gz) |
-|**Test**| [ fio-2.16 ](https://download.pingcap.org/fio-2.16.tar.gz) | 
-|**Spark**| [ spark-2.1.1-bin-hadoop ](http://download.pingcap.org/spark-2.1.1-bin-hadoop2.7.tgz) |
-| | [ tispark-SNAPSHOT-jar-with-dependencies ](http://download.pingcap.org/tispark-0.1.0-SNAPSHOT-jar-with-dependencies.jar) |
-| | [ tispark-sample-data ](http://download.pingcap.org/tispark-sample-data.tar.gz) |
+1. Download TiDB-Ansible:
 
-## Install the packages
+    - Download TiDB-Ansible of the master branch, used to install the master version of TiDB cluster (Binlog is the Kafka version)
 
-1. Extract the cluster deployment tool `tidb-ansible`.
-2. Copy all the other components to the `downloads` directory in `tidb-ansible`.
-3. Change the name of TiDB installation packages:
+        ```
+        git clone https://github.com/pingcap/tidb-ansible
+        ```
+    
+    - Download TiDB-Ansible of the release-1.0 branch, used to install the release-1.0 (GA) version of TiDB cluster (Binlog is the Kafka version)
 
-    ```ini
+        ```
+        git clone -b release-1.0 https://github.com/pingcap/tidb-ansible
+        ```
     
-    mv tidb-v1.0.0-linux-amd64-unportable.tar.gz tidb-v1.0.0.tar.gz
-    
-    mv tidb-tools-latest-linux-amd64.tar.gz tidb-tools-latest.tar.gz
-    
-    mv tidb-binlog-latest-linux-amd64.tar.gz tidb-binlog-latest.tar.gz
-    
-    mv prometheus-1.5.2.linux-amd64.tar.gz prometheus-1.5.2.tar.gz
-    
-    mv grafana-4.1.2-1486989747.linux-x64.tar.gz grafana-4.1.2.tar.gz
-    
-    mv node_exporter-0.14.0-rc.1.linux-amd64.tar.gz node_exporter-0.14.0.tar.gz
-    
-    mv pushgateway-0.3.1.linux-amd64.tar.gz pushgateway-0.3.1.tar.gz
-    
-    mv alertmanager-0.5.1.linux-amd64.tar.gz alertmanager-0.5.1.tar.gz
-  
+    - Download TiDB-Ansible of the release-1.0-binlog-local branch, used to install the release-1.0-binlog-local version of TiDB cluster (Binlog is the local version)
+
+       ```
+       git clone -b release-1.0-binlog-local https://github.com/pingcap/tidb-ansible
+       ```
+
+2. Download TiDB dependencies:
+
     ```
+    cd tidb-ansible
+    ansible-playbook local_prepare.yml
+    ```
+
+3. After running the above command, copy the TiDB-Ansible packages to the Control Machine.
 
 ## Orchestrate the TiDB cluster
 
@@ -201,10 +186,13 @@ TiKV3-1 ansible_host=172.16.10.6 deploy_dir=/data1/deploy tikv_port=20171 labels
 TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv3"
 TiKV3-3 ansible_host=172.16.10.6 deploy_dir=/data3/deploy tikv_port=20173 labels="host=tikv3"
 
-[monitored_servers:children]
-tidb_servers
-tikv_servers
-pd_servers
+[monitored_servers]
+172.16.10.1
+172.16.10.2
+172.16.10.3
+172.16.10.4
+172.16.10.5
+172.16.10.6
 
 [monitoring_servers]
 172.16.10.1
@@ -260,13 +248,7 @@ Descriptions about the two circumstances are as follows.
         # ansible_user = tidb
         ```
     
-    2. Connect to the network and download TiDB binary to the Control Machine.
-
-        ```
-        ansible-playbook local_prepare.yml
-        ```
-    
-    3. Initialize the system environment and edit the kernel parameters.
+    2. Initialize the system environment and edit the kernel parameters.
 
         ```
         ansible-playbook bootstrap.yml
@@ -280,13 +262,13 @@ Descriptions about the two circumstances are as follows.
         ansible-playbook bootstrap.yml -k
         ```
     
-    4. Deploy the TiDB cluster.
+    3. Deploy the TiDB cluster.
 
         ```
         ansible-playbook deploy.yml -k
         ```
     
-    5. Start the TiDB cluster.
+    4. Start the TiDB cluster.
 
         ```
         ansible-playbook start.yml -k
@@ -308,7 +290,7 @@ Descriptions about the two circumstances are as follows.
         ansible_user = tidb
         ```
     
-    2. Connect to the network and download TiDB binary to the Control Machine.
+    2. Use the `local_prepare.yml` playbook, and each cluster component in the downloads directory is examined, copied and extracted.
 
         ```
         ansible-playbook local_prepare.yml
