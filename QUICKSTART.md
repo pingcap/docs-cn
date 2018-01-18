@@ -721,7 +721,7 @@ For example, if you want to remove a TiKV node (node9) with the IP address `172.
     172.16.10.6
     172.16.10.7
     172.16.10.8
-    #172.16.10.9  # 注释被移除节点
+    #172.16.10.9  # the removed node
 
     [monitored_servers:children]
     tidb_servers
@@ -796,7 +796,7 @@ For example, if you want to remove a PD node (node2) with the IP address `172.16
 
     [pd_servers]
     172.16.10.1
-    #172.16.10.2  # 注释被移除节点
+    #172.16.10.2  # the removed node
     172.16.10.3
 
     [tikv_servers]
