@@ -49,8 +49,10 @@ Before you start, make sure that you have:
 
       - Kernel version 3.10 or later
 
-      - Ext4 file system.
+      - ext4 filesystem
 
+          Use ext4 filesystem for your data disks. Mount ext4 filesystem with the `nodelalloc` mount option. See [Mount the data disk ext4 filesystem with options](#mount-the-data-disk-ext4-filesystem-with-options).
+    
     - The network between machines. Turn off the firewalls and iptables when deploying and turn them on after the deployment.
 
     - The same time and time zone for all machines with the NTP service on to synchronize the correct time. If you are using the Ubuntu platform, install the ntpstat package. See [How to check whether the NTP service is normal](#how-to-check-whether-the-ntp-service-is-normal).
@@ -573,4 +575,15 @@ For versions earlier than TiDB 1.0.4, the TiDB-Ansible supervision method of a p
 ansible-playbook stop.yml
 ansible-playbook deploy.yml -D
 ansible-playbook start.yml
+```
+
+### Mount the data disk ext4 filesystem with options
+
+Format your data disks to ext4 filesystem and mount the filesystem with the `nodelalloc` and `noatime` options. It is required to mount the `nodelalloc` option, or else the Ansible deployment cannot pass the detection. The `noatime` option is optional. 
+
+Take the `/dev/nvme0n1` data disk as an example:
+
+```
+# vi /etc/fstab
+/dev/nvme0n1 /data1 ext4 defaults,nodelalloc,noatime 0 2
 ```
