@@ -23,7 +23,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 1.  部署目标机器若干
 
     - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机, 详见[部署建议](recommendation.md)。
-    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构(amd64), 文件系统请使用 ext4，不要使用 xfs 或其他文件系统。
+    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构(amd64), 数据盘请使用 ext4 文件系统，挂载 ext4 文件系统时请添加 nodelalloc 挂载参数，可参考[数据盘 ext4 文件系统挂载参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#数据盘-ext4-文件系统挂载参数)
     - 机器之间内网互通，防火墙如 iptables 等请在部署时关闭。
     - 机器的时间、时区设置一致，开启 NTP 服务且在正常同步时间，可参考[如何检测 NTP 服务是否正常](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何检测-ntp-服务是否正常)。
     - 创建 tidb 普通用户作为程序运行用户，tidb 用户可以免密码 sudo 到 root。
@@ -198,7 +198,7 @@ location_labels = ["host"]
 
 ## 部署任务
 
-> ansible-playbook 执行 Playbook 时默认并发为 5，部署目标机器较多时可添加 -f 参数指定并发。
+> ansible-playbook 执行 Playbook 时默认并发为 5，部署目标机器较多时可添加 -f 参数指定并发, 如 `ansible-playbook deploy.yml -f 10`
 
 1.  确认 `tidb-ansible/inventory.ini` 文件中 `ansible_user = tidb`, 本例使用 `tidb` 用户作为服务运行用户，配置如下：
 
@@ -224,6 +224,13 @@ location_labels = ["host"]
     ```
     ansible-playbook bootstrap.yml
     ```
+  
+    如果从中控机 SSH 连接 tidb 用户需要密码, 需添加 -k 参数，
+    如果 tidb 用户 sudo 到 root 需要密码，需添加 -K 参数, 执行剩余其他 playbook 同理。
+
+    ```
+    ansible-playbook bootstrap.yml -k -K
+    ``` 
 
 4.  部署 TiDB 集群软件
 
@@ -236,6 +243,8 @@ location_labels = ["host"]
     ```
     ansible-playbook start.yml
     ```
+
+> 如希望使用 root 用户远程连接部署，请参考[使用 root 用户远程连接 TiDB Ansible 部署方案](https://github.com/pingcap/docs-cn/blob/master/op-guide/root-ansible-deployment.md), 不推荐使用该方式部署。
 
 ## 测试集群
 
@@ -254,7 +263,7 @@ location_labels = ["host"]
 ## 滚动升级
 
 > - 滚动升级 TiDB 服务，滚动升级期间不影响业务运行(最小环境 ：`pd*3 、tidb*2、tikv*3`)
-> - 如果集群环境中有 pump / drainer 服务，建议先停止 drainer 后滚动升级 (升级 TiDB 时会升级 pump)。
+> - **如果集群环境中有 pump / drainer 服务，建议先停止 drainer 后滚动升级 (升级 TiDB 时会升级 pump)**。
 
 ### 自动下载 binary
 
@@ -439,3 +448,12 @@ sudo apt-get update
 sudo apt-get install ansible
 ```
 其他可按照 [官方手册](http://docs.ansible.com/ansible/intro_installation.html) 安装 Ansible。
+
+### 数据盘 ext4 文件系统挂载参数
+数据盘请格式化成 ext4 文件系统，挂载时请添加 nodelalloc 和 noatime 挂载参数。
+nodelalloc 是必选参数，noatime 是可选建议参数。下面以 /dev/nvme0n1 数据盘为例：
+
+```
+# vi /etc/fstab
+/dev/nvme0n1 /data1 ext4 defaults,nodelalloc,noatime 0 2
+```
