@@ -7,6 +7,7 @@ category: release
 
 TiDB 历史版本发布声明如下：
 
+  - [1.1 Alpha](11alpha.md)
   - [1.0](ga.md)
   - [Pre-GA](prega.md)
   - [RC4](rc4.md)
