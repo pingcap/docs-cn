@@ -18,10 +18,13 @@ On January 19, 2018, TiDB 1.1 Alpha is released. This release has great improvem
     - Use Count-Min Sketch to evaluate the cost of queries using unique index more accurately
     - Support more complex conditions to make full use of index
 - SQL executor
-    - Refactor all executor operators using Chunk architecture, improve AP execution performance and reduce memory usage
+    - Refactor all executor operators using Chunk architecture, improve the execution performance of analytical statements and reduce memory usage
     - Optimize performance of the `INSERT INGORE` statement
     - Push down more types and functions to TiKV
     - Support more `SQL_MODE`
+    - Optimize the `Load Data` performance to increase the speed by 10 times
+    - Optimize the `Use Database` performance
+    - Support statistics on the memory usage of physical operators
 - Server
     - Support the PROXY protocol
 
@@ -44,6 +47,6 @@ On January 19, 2018, TiDB 1.1 Alpha is released. This release has great improvem
 - Solve the reconnection issue between PD and TiKV
 - Enhance the features of the data recovery tool TiKV-CTL
 - Support splitting according to table in Region
-- Support the Delete Range feature
+- Support the `Delete Range` feature
 - Support setting the IO limit caused by snapshot
 - Improve the flow control mechanism
