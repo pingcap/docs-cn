@@ -66,6 +66,7 @@
     - [TiDB SQL Syntax Diagram](https://pingcap.github.io/sqlgram/)
   - [JSON Functions and Generated Column](sql/json-functions-generated-column.md)
   - [Connectors and APIs](sql/connection-and-APIs.md)
+  - [TiDB Transaction Isolation Levels](sql/transaction-isolation.md)
   - [Error Codes and Troubleshooting](sql/error.md)
   - [Compatibility with MySQL](sql/mysql-compatibility.md)
   + Advanced Usage
