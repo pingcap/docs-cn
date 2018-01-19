@@ -10,23 +10,23 @@ category: Releases
 ## TiDB：
 
 - SQL parser
-	- 兼容更多语法
+    - 兼容更多语法
 - SQL 查询优化器
-	- 统计信息减小内存占用
-	- 优化统计信息启动时载入的时间
-	- 更精确的代价估算
-	- 使用 Count-Min Sketch 更精确地估算点查的代价
-	- 支持更复杂的条件，更充分使用索引
+    - 统计信息减小内存占用
+    - 优化统计信息启动时载入的时间
+    - 更精确的代价估算
+    - 使用 Count-Min Sketch 更精确地估算点查的代价
+    - 支持更复杂的条件，更充分使用索引
 - SQL 执行器
-	- 使用 Chunk 结构重构所有执行器算子，提升分析型语句执行性能，减少内存占用
-	- 优化 `INSERT INGORE` 语句性能
-	- 下推更多的类型和函数
-	- 支持更多的 `SQL_MODE`
-	- 优化 `Load Data` 性能，速度提升 10 倍
-	- 优化 `Use Database` 性能
-	- 支持对物理算子内存使用进行统计
+    - 使用 Chunk 结构重构所有执行器算子，提升分析型语句执行性能，减少内存占用
+    - 优化 `INSERT INGORE` 语句性能
+    - 下推更多的类型和函数
+    - 支持更多的 `SQL_MODE`
+    - 优化 `Load Data` 性能，速度提升 10 倍
+    - 优化 `Use Database` 性能
+    - 支持对物理算子内存使用进行统计
 - Server
-	- 支持 PROXY protocol
+    - 支持 PROXY protocol
 
 ## PD：
 
