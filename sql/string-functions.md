@@ -7,7 +7,7 @@ category: user guide
 
 | 函数名   | 功能描述          |
 |:----------|:-----------------------|
-| [`ASCII()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_ascii)  | 返回最左字符的数值       |
+| [`ASCII()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_ascii)  | 返回字符的ASCII码值       |
 | [`CHAR()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_char)    | 返回由整数的代码值所给出的字符组成的字符串    |
 | [`BIN()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_bin)      | 返回一个数的二进制值的字符串表示   |
 | [`HEX()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_hex)      | 返回十进制值或字符串值的十六进制表示                                                                          |
