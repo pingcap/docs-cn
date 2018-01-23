@@ -23,7 +23,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 1.  部署目标机器若干
 
     - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机, 详见[部署建议](recommendation.md)。
-    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构(amd64), 数据盘请使用 ext4 文件系统，挂载 ext4 文件系统时请添加 nodelalloc 挂载参数，可参考[数据盘 ext4 文件系统挂载参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#数据盘-ext4-文件系统挂载参数)
+    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构(amd64), 数据盘请使用 ext4 文件系统，挂载 ext4 文件系统时请添加 nodelalloc 挂载参数，可参考[数据盘 ext4 文件系统挂载参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#数据盘-ext4-文件系统挂载参数)。
     - 机器之间内网互通，防火墙如 iptables 等请在部署时关闭。
     - 机器的时间、时区设置一致，开启 NTP 服务且在正常同步时间，可参考[如何检测 NTP 服务是否正常](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何检测-ntp-服务是否正常)。
     - 创建 tidb 普通用户作为程序运行用户，tidb 用户可以免密码 sudo 到 root。
@@ -46,7 +46,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
     ansible 2.4.2.0
   ```
 
-> 其他系统可参考 [如何安装 Ansible](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何安装-ansible)
+> 其他系统可参考 [如何安装 Ansible](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何安装-ansible)。
 
 ## 在中控机器上下载 TiDB-Ansible
 
@@ -263,7 +263,7 @@ location_labels = ["host"]
 ## 滚动升级
 
 > - 滚动升级 TiDB 服务，滚动升级期间不影响业务运行(最小环境 ：`pd*3 、tidb*2、tikv*3`)
-> - **如果集群环境中有 pump / drainer 服务，建议先停止 drainer 后滚动升级 (升级 TiDB 时会升级 pump)**。
+> - **如果集群环境中有 pump / drainer 服务，请先停止 drainer 后滚动升级 (升级 TiDB 时会升级 pump)**。
 
 ### 自动下载 binary
 
@@ -314,7 +314,7 @@ location_labels = ["host"]
 |启动集群|`ansible-playbook start.yml`|
 |停止集群|`ansible-playbook stop.yml`|
 |销毁集群|`ansible-playbook unsafe_cleanup.yml` (若部署目录为挂载点，会报错，可忽略）|
-|清除数据(测试用)|`ansible-playbook cleanup_data.yml`|
+|清除数据(测试用)|`ansible-playbook unsafe_cleanup_data.yml`|
 |滚动升级|`ansible-playbook rolling_update.yml`|
 |滚动升级 TiKV|`ansible-playbook rolling_update.yml --tags=tikv`|
 |滚动升级除 pd 外模块|`ansible-playbook rolling_update.yml --skip-tags=pd`|
@@ -385,6 +385,7 @@ synchronised to NTP server (85.199.214.101) at stratum 2
    polling server every 1024 s
 ```
 > ubuntu 系统请安装 ntpstat 软件包。
+
 以下情况表示 NTP 服务未正常同步：
 ```
 $ ntpstat
