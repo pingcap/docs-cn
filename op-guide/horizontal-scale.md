@@ -7,7 +7,7 @@ category: operations
 
 ## Overview
 
-The capacity of a TiDB cluster can be incresead or reduced without affecting online services.
+The capacity of a TiDB cluster can be increased or reduced without affecting online services.
 
 The following part shows you how to add or delete PD, TiKV or TiDB nodes.
 
