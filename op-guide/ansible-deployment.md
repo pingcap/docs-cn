@@ -26,14 +26,14 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
     - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构(amd64), 数据盘请使用 ext4 文件系统，挂载 ext4 文件系统时请添加 nodelalloc 挂载参数，可参考[数据盘 ext4 文件系统挂载参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#数据盘-ext4-文件系统挂载参数)。
     - 机器之间内网互通，防火墙如 iptables 等请在部署时关闭。
     - 机器的时间、时区设置一致，开启 NTP 服务且在正常同步时间，可参考[如何检测 NTP 服务是否正常](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何检测-ntp-服务是否正常)。
-    - 创建 tidb 普通用户作为程序运行用户，tidb 用户可以免密码 sudo 到 root。
+    - 创建 `tidb` 普通用户作为程序运行用户，tidb 用户可以免密码 sudo 到 root 用户，可参考[如何配置 ssh 互信及 sudo 免密码](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何配置-ssh-互信及-sudo-免密码)。
 
 2.  部署中控机一台:
 
     - 中控机可以是部署目标机器中的某一台。
     - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统(默认包含 Python 2.7)。
     - 该机器需开放外网访问，用于下载 TiDB 及相关软件安装包。
-    - 配置 ssh authorized_key 互信，在中控机上可以使用 tidb 用户免密码 ssh 登录到部署目标机器。
+    - 配置 ssh authorized_key 互信，在中控机上可以使用 `tidb` 用户免密码 ssh 登录到部署目标机器，可参考[如何配置 ssh 互信及 sudo 免密码](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何配置-ssh-互信及-sudo-免密码)。
 
 ## 在中控机器上安装 Ansible 及其依赖
 
@@ -116,16 +116,16 @@ pd_servers
 172.16.10.1
 ```
 
-### 单机多 TiKV 实例集群拓扑如下(以三实例为例)
+### 单机多 TiKV 实例集群拓扑如下(以两实例为例)
 
 | Name | Host IP | Services |
 | ---- | ------- | -------- |
 | node1 | 172.16.10.1 | PD1, TiDB1 |
 | node2 | 172.16.10.2 | PD2, TiDB2 |
 | node3 | 172.16.10.3 | PD3 |
-| node4 | 172.16.10.4 | TiKV1-1, TiKV1-2, TiKV1-3 |
-| node5 | 172.16.10.5 | TiKV2-1, TiKV2-2, TiKV2-3 |
-| node6 | 172.16.10.6 | TiKV3-1, TiKV3-2, TiKV3-3 |
+| node4 | 172.16.10.4 | TiKV1-1, TiKV1-2 |
+| node5 | 172.16.10.5 | TiKV2-1, TiKV2-2 |
+| node6 | 172.16.10.6 | TiKV3-1, TiKV3-2 |
 
 ```ini
 [tidb_servers]
@@ -140,13 +140,10 @@ pd_servers
 [tikv_servers]
 TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy tikv_port=20171 labels="host=tikv1"
 TiKV1-2 ansible_host=172.16.10.4 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv1"
-TiKV1-3 ansible_host=172.16.10.4 deploy_dir=/data3/deploy tikv_port=20173 labels="host=tikv1"
 TiKV2-1 ansible_host=172.16.10.5 deploy_dir=/data1/deploy tikv_port=20171 labels="host=tikv2"
 TiKV2-2 ansible_host=172.16.10.5 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv2"
-TiKV2-3 ansible_host=172.16.10.5 deploy_dir=/data3/deploy tikv_port=20173 labels="host=tikv2"
 TiKV3-1 ansible_host=172.16.10.6 deploy_dir=/data1/deploy tikv_port=20171 labels="host=tikv3"
 TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv3"
-TiKV3-3 ansible_host=172.16.10.6 deploy_dir=/data3/deploy tikv_port=20173 labels="host=tikv3"
 
 [monitored_servers]
 172.16.10.1
@@ -226,13 +223,6 @@ location_labels = ["host"]
     ```
     ansible-playbook bootstrap.yml
     ```
-  
-    如果从中控机 SSH 连接 tidb 用户需要密码, 需添加 -k 参数，
-    如果 tidb 用户 sudo 到 root 需要密码，需添加 -K 参数, 执行剩余其他 playbook 同理。
-
-    ```
-    ansible-playbook bootstrap.yml -k -K
-    ``` 
 
 4.  部署 TiDB 集群软件
 
@@ -297,13 +287,25 @@ location_labels = ["host"]
 
 ### 使用 Ansible 滚动升级
 
-1.  滚动升级 TiKV 节点( 只升级单独服务 )
+- 滚动升级 TiKV 节点( 只升级 TiKV 服务 )
 
     ```
     ansible-playbook rolling_update.yml --tags=tikv
     ```
 
-2.  滚动升级所有服务
+- 滚动升级 PD 节点( 只升级单独 PD 服务 )
+
+    ```
+    ansible-playbook rolling_update.yml --tags=pd
+    ```
+
+- 滚动升级 TiDB 节点( 只升级单独 TiDB 服务 )
+
+    ```
+    ansible-playbook rolling_update.yml --tags=tidb
+    ```
+
+- 滚动升级所有服务
 
     ```
     ansible-playbook rolling_update.yml
@@ -461,7 +463,7 @@ nodelalloc 是必选参数，否则 Ansible 安装时检测无法通过，noatim
 /dev/nvme0n1 /data1 ext4 defaults,nodelalloc,noatime 0 2
 ```
 
-### 配置 ssh 互信及 sudo 免密码
+### 如何配置 ssh 互信及 sudo 免密码
 #### 在中控机上创建 tidb 用户，并生成 ssh key。
 ```
 # useradd tidb
@@ -504,7 +506,7 @@ $ vi hosts.ini
 [all:vars]
 username = tidb
 ```
-执行以下命令，按提示输入部署目标机器 root 密码
+执行以下命令，按提示输入部署目标机器 root 密码。
 ```
 $ ansible-playbook -i hosts.ini create_users.yml -k
 ```
@@ -526,12 +528,12 @@ tidb ALL=(ALL) NOPASSWD: ALL
 ```
 
 #### 验证 ssh 互信及 sudo 免密码
-以 `tidb` 用户登录到中控机, ssh 部署目标机器 IP, 不需要输入密码并登录登录，表示 ssh 互信配置成功。
+以 `tidb` 用户登录到中控机, ssh 登录目标机器 IP, 不需要输入密码并登录成功，表示 ssh 互信配置成功。
 ```
 [tidb@172.16.10.49 ~]$ ssh 172.16.10.61
 [tidb@172.16.10.61 ~]$
 ```
-以 `tidb` 用户登录到部署目标机器后，执行以下命令，不需要输入密码并切换到 root 用户，表示 sudo 免密码配置成功。
+以 `tidb` 用户登录到部署目标机器后，执行以下命令，不需要输入密码并切换到 root 用户，表示 `tidb` 用户 sudo 免密码配置成功。
 ```
 [tidb@172.16.10.61 ~]$ sudo -su root
 [root@172.16.10.61 tidb]#
