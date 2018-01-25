@@ -50,10 +50,11 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 ## 在中控机器上下载 TiDB-Ansible
 
-使用以下命令在中控机上从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`。
+以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录，使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`。
 
 下载 GA 版本：
 ```
+cd /home/tidb
 git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 ```
 
@@ -61,6 +62,7 @@ git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 
 下载 master 版本：
 ```
+cd /home/tidb
 git clone https://github.com/pingcap/tidb-ansible.git
 ```
 
@@ -457,4 +459,80 @@ nodelalloc 是必选参数，否则 Ansible 安装时检测无法通过，noatim
 ```
 # vi /etc/fstab
 /dev/nvme0n1 /data1 ext4 defaults,nodelalloc,noatime 0 2
+```
+
+### 配置 ssh 互信及 sudo 免密码
+#### 在中控机上创建 tidb 用户，并生成 ssh key。
+```
+# useradd tidb
+# passwd tidb
+# su - tidb
+$
+$ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/tidb/.ssh/id_rsa):
+Created directory '/home/tidb/.ssh'.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/tidb/.ssh/id_rsa.
+Your public key has been saved in /home/tidb/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:eIBykszR1KyECA/h0d7PRKz4fhAeli7IrVphhte7/So tidb@172.16.10.49
+The key's randomart image is:
++---[RSA 2048]----+
+|=+o+.o.          |
+|o=o+o.oo         |
+| .O.=.=          |
+| . B.B +         |
+|o B * B S        |
+| * + * +         |
+|  o + .          |
+| o  E+ .         |
+|o   ..+o.        |
++----[SHA256]-----+
+```
+#### 使用 Ansible 自动配置 ssh 互信及 sudo 免密码
+参照[在中控机器上下载 TiDB-Ansible](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#在中控机器上下载-tidb-ansible)下载 TiDB-Ansible, 将你的部署目标机器 IP 添加到 `[servers]` 区块下
+```
+$ vi hosts.ini
+[servers]
+172.16.10.49
+172.16.10.50
+172.16.10.61
+172.16.10.62
+
+[all:vars]
+username = tidb
+```
+执行以下命令，按提示输入部署目标机器 root 密码
+```
+$ ansible-playbook -i hosts.ini create_users.yml -k
+```
+
+#### 手工配置 ssh 互信及 sudo 免密码
+以 `root` 用户依次登录到部署目标机器创建 `tidb` 用户并设置登录密码。
+```
+# useradd tidb
+# passwd tidb
+```
+执行以下命令，将 `tidb ALL=(ALL) NOPASSWD: ALL` 添加到文件末尾，即配置好 sudo 免密码。
+```
+# visudo
+tidb ALL=(ALL) NOPASSWD: ALL
+```
+以 `tidb` 用户登录到中控机，执行以下命令，将 `172.16.10.61` 替换成你的部署目标机器 IP, 按提示输入部署目标机器 tidb 用户密码，执行成功后即创建好 ssh 互信，其他机器同理。
+```
+[tidb@172.16.10.49 ~]$ ssh-copy-id -i ~/.ssh/id_rsa.pub 172.16.10.61
+```
+
+#### 验证 ssh 互信及 sudo 免密码
+以 `tidb` 用户登录到中控机, ssh 部署目标机器 IP, 不需要输入密码并登录登录，表示 ssh 互信配置成功。
+```
+[tidb@172.16.10.49 ~]$ ssh 172.16.10.61
+[tidb@172.16.10.61 ~]$
+```
+以 `tidb` 用户登录到部署目标机器后，执行以下命令，不需要输入密码并切换到 root 用户，表示 sudo 免密码配置成功。
+```
+[tidb@172.16.10.61 ~]$ sudo -su root
+[root@172.16.10.61 tidb]#
 ```
