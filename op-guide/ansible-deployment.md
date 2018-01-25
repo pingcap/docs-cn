@@ -13,7 +13,7 @@ Ansible is an IT automation tool. It can configure systems, deploy software, and
 
 You can use the TiDB-Ansible configuration file to set up the cluster topology, completing all operation tasks with one click, including:
 
-- Initializing the system, including creating a user for deployment, setting up a hostname, etc.
+- Initializing operating system parameters
 - Deploying the components
 - Rolling upgrade, including module survival detection
 - Cleaning data
@@ -25,79 +25,57 @@ You can use the TiDB-Ansible configuration file to set up the cluster topology, 
 
 Before you start, make sure that you have:
 
-1. A Control Machine with the following requirements:
+1. Several managed nodes with the following requirements:
 
-    - Python 2.6 or Python 2.7, Ansible 2.3 or above
-    - Python Jinja2 2.7.2 and MarkupSafe 0.11 packages. You can use the following commands to install the packages:
-
-        ```
-        pip install Jinja2==2.7.2 MarkupSafe==0.11
-        ```
-
-    - Access to the managed nodes via SSH using password login or `SSH authorized_key` login.
-    - Access to the external network to install curl package and download binary.
-
-2. Several managed nodes with the following requirements:
-
-    - 4 or more machines. At least 3 instances for TiKV. Don’t deploy TiKV together with TiDB or PD on the same machine. See [Software and Hardware Requirements](recommendation.md).
+    - 4 or more machines. At least 3 instances for TiKV. Do not deploy TiKV together with TiDB or PD on the same machine. See [Software and Hardware Requirements](recommendation.md).
 
     - Recommended Operating system:
 
-      - CentOS 7.3 or later
-
-      - X86_64 architecture (AMD64)
-
-      - Kernel version 3.10 or later
-
+      - CentOS 7.3 or later Linux
+      - x86_64 architecture (AMD64)
       - ext4 filesystem
 
           Use ext4 filesystem for your data disks. Mount ext4 filesystem with the `nodelalloc` mount option. See [Mount the data disk ext4 filesystem with options](#mount-the-data-disk-ext4-filesystem-with-options).
     
     - The network between machines. Turn off the firewalls and iptables when deploying and turn them on after the deployment.
 
-    - The same time and time zone for all machines with the NTP service on to synchronize the correct time. If you are using the Ubuntu platform, install the ntpstat package. See [How to check whether the NTP service is normal](#how-to-check-whether-the-ntp-service-is-normal).
+    - The same time and time zone for all machines with the NTP service on to synchronize the correct time. See [How to check whether the NTP service is normal](#how-to-check-whether-the-ntp-service-is-normal).
 
-    - A remote user account which you can use to login from the Control Machine to connect to the managed nodes via SSH. It can be the root user or a user account with sudo privileges.
+    - Create a normal user account as the user who runs the service. The user can sudo to root without a password.
 
-    - Python 2.6 or Python 2.7
+2. A Control Machine with the following requirements:
 
-> **Note:**
->
-> - The Control Machine can be one of the managed nodes.
-> - Binary is used to deploy by default. To deploy using Docker, see [How to deploy TiDB using Docker](#how-to-deploy-tidb-using-docker).
+    - The Control Machine can be one of the managed nodes.
+    - It is recommended to install CentOS 7.3 or later version of Linux operating system (Python 2.7 involved by default).
+    - The machine has access to the external network, used to download TiDB and relevant packages.
+    - Configure mutual trust of `ssh authorized_key`. In the Control Machine, you can login the deployed target machine using `tidb` user account without a password.
 
-## Install Ansible in the Control Machine
+## Install Ansible and dependencies in the Control Machine
 
-Install Ansible 2.3 or later to your platform:
+Use the following method to install Ansible on the Control Machine of CentOS 7 system. Installation from the EPEL source includes Ansible dependencies automatically (such as `Jinja2==2.7.2 MarkupSafe==0.11`). After installation, you can view the version using `ansible --version`. 
 
-- PPA source on Ubuntu:
+> **Note:** Make sure that the Ansible version is **Ansible 2.3** or later, otherwise a compatibility issue occurs.
 
-    ```
-    sudo add-apt-repository ppa:ansible/ansible
-    sudo apt-get update
-    sudo apt-get install ansible
-    ```
+```bash
+  # yum install epel-release
+  # yum install ansible curl
+  # ansible --version
+    ansible 2.4.2.0
+```
 
-- EPEL source on CentOS:
-
-    ```
-    yum install epel-release
-    yum install ansible
-    ```
-
-You can use the `ansible --version` command to see the version information.
-
-For more information, see [Ansible Documentation](http://docs.ansible.com/ansible/intro_installation.html).
+For other systems, see [Install Ansible](ansible-deployment.md#install-ansible).
 
 ## Download TiDB-Ansible to the Control Machine
 
-Use the following command to download the corresponding version of TiDB-Ansible from GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`. The `tidb-ansible` directory contains all files you need to get started with TiDB-Ansible.
+Use the following command to download the corresponding version of TiDB-Ansible from GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`.
 
 Download the 1.0 version:
 
 ```
 git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 ```
+
+or
 
 Download the master version:
 
@@ -190,10 +168,13 @@ TiKV3-1 ansible_host=172.16.10.6 deploy_dir=/data1/deploy tikv_port=20171 labels
 TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv3"
 TiKV3-3 ansible_host=172.16.10.6 deploy_dir=/data3/deploy tikv_port=20173 labels="host=tikv3"
 
-[monitored_servers:children]
-tidb_servers
-tikv_servers
-pd_servers
+[monitored_servers]
+172.16.10.1
+172.16.10.2
+172.16.10.3
+172.16.10.4
+172.16.10.5
+172.16.10.6
 
 [monitoring_servers]
 172.16.10.1
@@ -206,6 +187,8 @@ pd_servers
 [pd_servers:vars]
 location_labels = ["host"]
 ```
+
+> **Note:** For multiple TiKV instances on a single machine, it is required to modify `[monitored_servers:children]` to `[monitored_servers]`, with one IP address in a single row.
 
 **Edit the parameters:**
 
@@ -243,121 +226,58 @@ location_labels = ["host"]
 
 ## Deploy the TiDB cluster
 
-> **Note**:
->
-> 1. It is not recommended to use the root user account to deploy TiDB.
-> 2. The remote Ansible user (the `ansible_user` in the `incentory.ini` file) can use either the root user account or a normal user account with sudo privileges to deploy TiDB.
+When `ansible-playbook` runs Playbook, the default concurrent number is 5. If many target machines are deployed, you can add the `-f` parameter to specify the concurrency, such as `ansible-playbook deploy.yml -f 10`.
 
-Descriptions about the two circumstances are as follows.
+The following example uses the `tidb` user account as the user who runs the service.
 
-- Use the root user account to deploy TiDB.
+To deploy TiDB using a normal user account, take the following steps:
 
-    > **Note**: The following example uses the `tidb` user account as the user who runs the service.
+1. Edit the `tidb-ansible/inventory.ini` file to make sure `ansible_user = tidb`. 
 
-    1. Edit `inventory.ini` as follows.
+    ```
+    ## Connection
+    # ssh via root:
+    # ansible_user = root
+    # ansible_become = true
+    # ansible_become_user = tidb
+    
+    # ssh via normal user
+    ansible_user = tidb
+    ```
 
-        Remove the code comments for `ansible_user = root`, `ansible_become = true` and `ansible_become_user`. Add comments for `ansible_user = tidb`.
+2. Connect to the network and download TiDB binary to the Control Machine using `local_prepare.yml` playbook.
 
-        ```
-        ## Connection
-        # ssh via root:
-        ansible_user = root
-        ansible_become = true
-        ansible_become_user = tidb
+    ```
+    ansible-playbook local_prepare.yml
+    ```
 
-        # ssh via normal user
-        # ansible_user = tidb
-        ```
+3. Initialize the system environment and modify the kernel parameters.
 
-    2. Connect to the network and download TiDB binary to the Control Machine.
+    ```
+    ansible-playbook bootstrap.yml
+    ```
 
-        ```
-        ansible-playbook local_prepare.yml
-        ```
-
-    3. Initialize the system environment and edit the kernel parameters.
-
-        ```
-        ansible-playbook bootstrap.yml
-        ```
-
-        > **Note**: If the service user does not exist, the initialization operation will automatically create the user.
-
-        If the remote connection using the root user requires a password, use the `-k` (lower case) parameter. This applies to other playbooks as well:
-
-        ```
-        ansible-playbook bootstrap.yml -k
-        ```
-
-    4. Deploy the TiDB cluster.
-
-        ```
-        ansible-playbook deploy.yml -k
-        ```
-
-    5. Start the TiDB cluster.
-
-        ```
-        ansible-playbook start.yml -k
-        ```
-
-- Use the normal user account to deploy TiDB.
-
-    > **Note**: Before the deployment, you should create the normal `tidb` user account and add the sudo privileges. The following example uses the `tidb` user account as the user who runs the service.
-
-    1. Edit the `inventory.ini` file.
-
-        ```
-        ## Connection
-        # ssh via root:
-        # ansible_user = root
-        # ansible_become = true
-        # ansible_become_user = tidb
-        # ssh via normal user
-        ansible_user = tidb
-        ```
-
-    2. Connect to the network and download TiDB binary to the Control Machine.
-
-        ```
-        ansible-playbook local_prepare.yml
-        ```
-
-    3. Initialize the system environment and modify the kernel parameters.
+    - If the remote connection using the normal user requires a password, add the `-k` (lower case) parameter.
+    - If a password is required when the normal user gets root privileges from sudo, add the `-K` (upper case) parameter.
+    - This applies to other playbooks as well.
 
         ```
         ansible-playbook bootstrap.yml -k -K
         ```
 
-        If the remote connection using the normal user requires a password, add the `-k` (lower case) parameter. This applies to other playbooks as well:
+4. Deploy the TiDB cluster software.
 
-        ```
-        ansible-playbook bootstrap.yml -k
-        ```
+    ```
+    ansible-playbook deploy.yml
+    ```
 
-        The execution of this playbook requires root privileges. If a password is needed when the normal user gets root privileges from sudo, add the `-K` (upper case) parameter:
+5. Start the TiDB cluster.
 
-        ```
-        ansible-playbook bootstrap.yml -k -K
-        ```
+    ```
+    ansible-playbook start.yml
+    ```
 
-    4. Deploy the TiDB cluster.
-
-        ```
-        ansible-playbook deploy.yml -k
-        ```
-
-        If `process_supervision = systemd`, then the execution of this playbook requires root privileges. If a password is needed when the normal user gets root privileges from sudo, add the `-K` (upper case) parameter:
-
-        ```
-        ansible-playbook deploy.yml -k -K
-        ```
-
-    5. Start the TiDB cluster.
-
-        ```
-        ansible-playbook start.yml -k
-        ```
+> **Note:** If you want to deploy TiDB using the root user account, see [Ansible Deployment Using the Root User Account](op-guide/root-ansible-deployment.md).
 
 ## Test the cluster
 
@@ -365,7 +285,7 @@ It is recommended to configure load balancing to provide uniform SQL interface.
 
 1. Connect to the TiDB cluster using the MySQL client.
 
-    ```
+    ```sql
     mysql -u root -h 172.16.10.1 -P 4000
     ```
 
@@ -377,15 +297,14 @@ It is recommended to configure load balancing to provide uniform SQL interface.
     http://172.16.10.1:3000
     ```
 
-    The default account and password: `admin/admin`.
+    The default account and password: `admin`/`admin`.
 
 ## Perform rolling update
 
 - The rolling update of the TiDB service does not impact the ongoing business. Minimum requirements: `pd*3, tidb*2, tikv*3`.
-- For remote connection privileges, see the procedures described in the above section. But if the mutual authentication is already set up, you don't need to add the `-k` parameter.
-- If the `pump`/`drainer` services are running in the cluster, it is recommended to stop the `drainer` service first before the rolling update. The rolling update of the TiDB service automatically updates the `pump` service.
+- **If the `pump`/`drainer` services are running in the cluster, stop the `drainer` service before rolling update. The rolling update of the TiDB service automatically updates the `pump` service.**
 
-### Download the binary
+### Download the binary automatically
 
 1. Edit the value of the `tidb_version` parameter in `inventory.ini`, and specify the version number you need to update to. The following example specifies the version number as `v1.0.2`:
 
@@ -436,20 +355,13 @@ wget http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz
 | Start the cluster                 | `ansible-playbook start.yml`             |
 | Stop the cluster                  | `ansible-playbook stop.yml`              |
 | Destroy the cluster               | `ansible-playbook unsafe_cleanup.yml` (If the deployment directory is a mount point, an error will be reported, but implementation results will remain unaffected) |
-| Clean data (for test)             | `ansible-playbook cleanup_data.yml`      |
+| Clean data (for test)             | `ansible-playbook unsafe_cleanup_data.yml` |
 | Rolling Upgrade                   | `ansible-playbook rolling_update.yml`    |
 | Rolling upgrade TiKV              | `ansible-playbook rolling_update.yml --tags=tikv` |
 | Rolling upgrade modules except PD | `ansible-playbook rolling_update.yml --skip-tags=pd` |
 | Rolling update the monitoring components | `ansible-playbook rolling_update_monitor.yml` |
 
-For more advanced features of TiDB including data migration, performance tuning, etc., see [TiDB Documents](https://github.com/pingcap/docs).
-
 ## FAQ
-
-### The download links for various TiDB versions.
-
-- Master version: [TiDB master-CentOS7](http://download.pingcap.org/tidb-latest-linux-amd64-unportable.tar.gz)
-- 1.0 version: [TiDB 1.0-CentOS7](http://download.pingcap.org/tidb-v1.0.4-linux-amd64-unportable.tar.gz)
 
 ### How to download and install TiDB of a specified version?
 
@@ -519,6 +431,8 @@ synchronised to NTP server (85.199.214.101) at stratum 2
    polling server every 1024 s
 ```
 
+> **Note:** For the Ubuntu system, install the `ntpstat` package.
+
 The following condition indicates the NTP service is not synchronized normally:
 
 ```
@@ -576,6 +490,19 @@ ansible-playbook stop.yml
 ansible-playbook deploy.yml -D
 ansible-playbook start.yml
 ```
+
+#### How to install Ansible?
+
+- For the CentOS system, install Ansible following the method described at the beginning of this document.
+- For the Ubuntu system, install Ansible using PPA source:
+
+    ```bash
+    sudo add-apt-repository ppa:ansible/ansible
+    sudo apt-get update
+    sudo apt-get install ansible
+    ```
+
+- For other systems, see the [official Ansible document](http://docs.ansible.com/ansible/intro_installation.html).
 
 ### Mount the data disk ext4 filesystem with options
 
