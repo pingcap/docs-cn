@@ -212,6 +212,16 @@ location_labels = ["host"]
     ansible_user = tidb
     ```
 
+    执行以下命令如果所有 server 返回 `tidb` 表示 ssh 互信配置成功。
+    ```
+    ansible -i inventory.ini all -m shell -a 'whoami'
+    ```
+
+    执行以下命令如果所有 server 返回 `root` 表示 `tidb` 用户 sudo 免密码配置成功。
+    ```
+    ansible -i inventory.ini all -m shell -a 'whoami' -b
+    ```
+
 2.  使用 `local_prepare.yml` playbook, 联网下载 TiDB binary 到中控机：
 
     ```
@@ -374,7 +384,7 @@ git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 | grafana | grafana_data_dir | {{ deploy_dir }}/data.grafana | 数据目录 |
 
 ### 如何检测 NTP 服务是否正常
-执行以下命令输出 `running` 表示 NTP 服务正在运行：
+执行以下命令输出 `running` 表示 NTP 服务正在运行:
 ```
 $ sudo systemctl status ntpd.service
 ● ntpd.service - Network Time Service
@@ -400,10 +410,37 @@ unsynchronised
 $ ntpstat
 Unable to talk to NTP daemon. Is it running?
 ```
-使用以下命令可使 NTP 服务尽快开始同步，pool.ntp.org 可替换为 NTP server：
+使用以下命令可使 NTP 服务尽快开始同步，pool.ntp.org 可替换为其他 NTP server：
 ```
 $ sudo systemctl stop ntpd.service
 $ sudo ntpdate pool.ntp.org
+$ sudo systemctl start ntpd.service
+```
+
+#### 如何使用 Ansible 部署 NTP 服务
+参照[在中控机器上下载 TiDB-Ansible](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#在中控机器上下载-tidb-ansible)下载 TiDB-Ansible, 将你的部署目标机器 IP 添加到 `[servers]` 区块下, time_server 变量的值 `pool.ntp.org` 可替换为其他 NTP server，在启动 NTP 服务前, 系统会 ntpdate 该 NTP server，Ansible 安装的 NTP 服务使用安装包默认 server 列表，见配置文件 `cat /etc/ntp.conf` 中 server 参数。
+
+```
+$ vi hosts.ini
+[servers]
+172.16.10.49
+172.16.10.50
+172.16.10.61
+172.16.10.62
+
+[all:vars]
+username = tidb
+ntp_server = pool.ntp.org
+```
+执行以下命令，按提示输入部署目标机器 root 密码。
+```
+$ ansible-playbook -i hosts.ini deploy_ntp.yml -k
+```
+
+#### 如何手工安装 NTP 服务
+在 CentOS 7 系统上执行以下命令：
+```
+$ sudo yum install ntp ntpdate
 $ sudo systemctl start ntpd.service
 ```
 
@@ -493,7 +530,7 @@ The key's randomart image is:
 |o   ..+o.        |
 +----[SHA256]-----+
 ```
-#### 使用 Ansible 自动配置 ssh 互信及 sudo 免密码
+#### 如何使用 Ansible 自动配置 ssh 互信及 sudo 免密码
 参照[在中控机器上下载 TiDB-Ansible](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#在中控机器上下载-tidb-ansible)下载 TiDB-Ansible, 将你的部署目标机器 IP 添加到 `[servers]` 区块下
 ```
 $ vi hosts.ini
@@ -511,7 +548,7 @@ username = tidb
 $ ansible-playbook -i hosts.ini create_users.yml -k
 ```
 
-#### 手工配置 ssh 互信及 sudo 免密码
+#### 如何手工配置 ssh 互信及 sudo 免密码
 以 `root` 用户依次登录到部署目标机器创建 `tidb` 用户并设置登录密码。
 ```
 # useradd tidb
