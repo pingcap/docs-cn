@@ -26,14 +26,14 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
     - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构(amd64), 数据盘请使用 ext4 文件系统，挂载 ext4 文件系统时请添加 nodelalloc 挂载参数，可参考[数据盘 ext4 文件系统挂载参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#数据盘-ext4-文件系统挂载参数)。
     - 机器之间内网互通，防火墙如 iptables 等请在部署时关闭。
     - 机器的时间、时区设置一致，开启 NTP 服务且在正常同步时间，可参考[如何检测 NTP 服务是否正常](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何检测-ntp-服务是否正常)。
-    - 创建 tidb 普通用户作为程序运行用户，tidb 用户可以免密码 sudo 到 root。
+    - 创建 `tidb` 普通用户作为程序运行用户，tidb 用户可以免密码 sudo 到 root 用户，可参考[如何配置 ssh 互信及 sudo 免密码](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何配置-ssh-互信及-sudo-免密码)。
 
 2.  部署中控机一台:
 
     - 中控机可以是部署目标机器中的某一台。
     - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统(默认包含 Python 2.7)。
     - 该机器需开放外网访问，用于下载 TiDB 及相关软件安装包。
-    - 配置 ssh authorized_key 互信，在中控机上可以使用 tidb 用户免密码 ssh 登录到部署目标机器。
+    - 配置 ssh authorized_key 互信，在中控机上可以使用 `tidb` 用户免密码 ssh 登录到部署目标机器，可参考[如何配置 ssh 互信及 sudo 免密码](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何配置-ssh-互信及-sudo-免密码)。
 
 ## 在中控机器上安装 Ansible 及其依赖
 
@@ -50,10 +50,11 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 ## 在中控机器上下载 TiDB-Ansible
 
-使用以下命令在中控机上从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`。
+以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录，使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`。
 
 下载 GA 版本：
 ```
+cd /home/tidb
 git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 ```
 
@@ -61,6 +62,7 @@ git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 
 下载 master 版本：
 ```
+cd /home/tidb
 git clone https://github.com/pingcap/tidb-ansible.git
 ```
 
@@ -114,16 +116,16 @@ pd_servers
 172.16.10.1
 ```
 
-### 单机多 TiKV 实例集群拓扑如下(以三实例为例)
+### 单机多 TiKV 实例集群拓扑如下(以两实例为例)
 
 | Name | Host IP | Services |
 | ---- | ------- | -------- |
 | node1 | 172.16.10.1 | PD1, TiDB1 |
 | node2 | 172.16.10.2 | PD2, TiDB2 |
 | node3 | 172.16.10.3 | PD3 |
-| node4 | 172.16.10.4 | TiKV1-1, TiKV1-2, TiKV1-3 |
-| node5 | 172.16.10.5 | TiKV2-1, TiKV2-2, TiKV2-3 |
-| node6 | 172.16.10.6 | TiKV3-1, TiKV3-2, TiKV3-3 |
+| node4 | 172.16.10.4 | TiKV1-1, TiKV1-2 |
+| node5 | 172.16.10.5 | TiKV2-1, TiKV2-2 |
+| node6 | 172.16.10.6 | TiKV3-1, TiKV3-2 |
 
 ```ini
 [tidb_servers]
@@ -138,13 +140,10 @@ pd_servers
 [tikv_servers]
 TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy tikv_port=20171 labels="host=tikv1"
 TiKV1-2 ansible_host=172.16.10.4 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv1"
-TiKV1-3 ansible_host=172.16.10.4 deploy_dir=/data3/deploy tikv_port=20173 labels="host=tikv1"
 TiKV2-1 ansible_host=172.16.10.5 deploy_dir=/data1/deploy tikv_port=20171 labels="host=tikv2"
 TiKV2-2 ansible_host=172.16.10.5 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv2"
-TiKV2-3 ansible_host=172.16.10.5 deploy_dir=/data3/deploy tikv_port=20173 labels="host=tikv2"
 TiKV3-1 ansible_host=172.16.10.6 deploy_dir=/data1/deploy tikv_port=20171 labels="host=tikv3"
 TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv3"
-TiKV3-3 ansible_host=172.16.10.6 deploy_dir=/data3/deploy tikv_port=20173 labels="host=tikv3"
 
 [monitored_servers]
 172.16.10.1
@@ -213,6 +212,16 @@ location_labels = ["host"]
     ansible_user = tidb
     ```
 
+    执行以下命令如果所有 server 返回 `tidb` 表示 ssh 互信配置成功。
+    ```
+    ansible -i inventory.ini all -m shell -a 'whoami'
+    ```
+
+    执行以下命令如果所有 server 返回 `root` 表示 `tidb` 用户 sudo 免密码配置成功。
+    ```
+    ansible -i inventory.ini all -m shell -a 'whoami' -b
+    ```
+
 2.  使用 `local_prepare.yml` playbook, 联网下载 TiDB binary 到中控机：
 
     ```
@@ -224,13 +233,6 @@ location_labels = ["host"]
     ```
     ansible-playbook bootstrap.yml
     ```
-  
-    如果从中控机 SSH 连接 tidb 用户需要密码, 需添加 -k 参数，
-    如果 tidb 用户 sudo 到 root 需要密码，需添加 -K 参数, 执行剩余其他 playbook 同理。
-
-    ```
-    ansible-playbook bootstrap.yml -k -K
-    ``` 
 
 4.  部署 TiDB 集群软件
 
@@ -295,13 +297,25 @@ location_labels = ["host"]
 
 ### 使用 Ansible 滚动升级
 
-1.  滚动升级 TiKV 节点( 只升级单独服务 )
+- 滚动升级 TiKV 节点( 只升级 TiKV 服务 )
 
     ```
     ansible-playbook rolling_update.yml --tags=tikv
     ```
 
-2.  滚动升级所有服务
+- 滚动升级 PD 节点( 只升级单独 PD 服务 )
+
+    ```
+    ansible-playbook rolling_update.yml --tags=pd
+    ```
+
+- 滚动升级 TiDB 节点( 只升级单独 TiDB 服务 )
+
+    ```
+    ansible-playbook rolling_update.yml --tags=tidb
+    ```
+
+- 滚动升级所有服务
 
     ```
     ansible-playbook rolling_update.yml
@@ -370,7 +384,7 @@ git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 | grafana | grafana_data_dir | {{ deploy_dir }}/data.grafana | 数据目录 |
 
 ### 如何检测 NTP 服务是否正常
-执行以下命令输出 `running` 表示 NTP 服务正在运行：
+执行以下命令输出 `running` 表示 NTP 服务正在运行:
 ```
 $ sudo systemctl status ntpd.service
 ● ntpd.service - Network Time Service
@@ -396,10 +410,37 @@ unsynchronised
 $ ntpstat
 Unable to talk to NTP daemon. Is it running?
 ```
-使用以下命令可使 NTP 服务尽快开始同步，pool.ntp.org 可替换为 NTP server：
+使用以下命令可使 NTP 服务尽快开始同步，pool.ntp.org 可替换为其他 NTP server：
 ```
 $ sudo systemctl stop ntpd.service
 $ sudo ntpdate pool.ntp.org
+$ sudo systemctl start ntpd.service
+```
+
+#### 如何使用 Ansible 部署 NTP 服务
+参照[在中控机器上下载 TiDB-Ansible](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#在中控机器上下载-tidb-ansible)下载 TiDB-Ansible, 将你的部署目标机器 IP 添加到 `[servers]` 区块下, time_server 变量的值 `pool.ntp.org` 可替换为其他 NTP server，在启动 NTP 服务前, 系统会 ntpdate 该 NTP server，Ansible 安装的 NTP 服务使用安装包默认 server 列表，见配置文件 `cat /etc/ntp.conf` 中 server 参数。
+
+```
+$ vi hosts.ini
+[servers]
+172.16.10.49
+172.16.10.50
+172.16.10.61
+172.16.10.62
+
+[all:vars]
+username = tidb
+ntp_server = pool.ntp.org
+```
+执行以下命令，按提示输入部署目标机器 root 密码。
+```
+$ ansible-playbook -i hosts.ini deploy_ntp.yml -k
+```
+
+#### 如何手工安装 NTP 服务
+在 CentOS 7 系统上执行以下命令：
+```
+$ sudo yum install ntp ntpdate
 $ sudo systemctl start ntpd.service
 ```
 
@@ -457,4 +498,80 @@ nodelalloc 是必选参数，否则 Ansible 安装时检测无法通过，noatim
 ```
 # vi /etc/fstab
 /dev/nvme0n1 /data1 ext4 defaults,nodelalloc,noatime 0 2
+```
+
+### 如何配置 ssh 互信及 sudo 免密码
+#### 在中控机上创建 tidb 用户，并生成 ssh key。
+```
+# useradd tidb
+# passwd tidb
+# su - tidb
+$
+$ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/tidb/.ssh/id_rsa):
+Created directory '/home/tidb/.ssh'.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/tidb/.ssh/id_rsa.
+Your public key has been saved in /home/tidb/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:eIBykszR1KyECA/h0d7PRKz4fhAeli7IrVphhte7/So tidb@172.16.10.49
+The key's randomart image is:
++---[RSA 2048]----+
+|=+o+.o.          |
+|o=o+o.oo         |
+| .O.=.=          |
+| . B.B +         |
+|o B * B S        |
+| * + * +         |
+|  o + .          |
+| o  E+ .         |
+|o   ..+o.        |
++----[SHA256]-----+
+```
+#### 如何使用 Ansible 自动配置 ssh 互信及 sudo 免密码
+参照[在中控机器上下载 TiDB-Ansible](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#在中控机器上下载-tidb-ansible)下载 TiDB-Ansible, 将你的部署目标机器 IP 添加到 `[servers]` 区块下
+```
+$ vi hosts.ini
+[servers]
+172.16.10.49
+172.16.10.50
+172.16.10.61
+172.16.10.62
+
+[all:vars]
+username = tidb
+```
+执行以下命令，按提示输入部署目标机器 root 密码。
+```
+$ ansible-playbook -i hosts.ini create_users.yml -k
+```
+
+#### 如何手工配置 ssh 互信及 sudo 免密码
+以 `root` 用户依次登录到部署目标机器创建 `tidb` 用户并设置登录密码。
+```
+# useradd tidb
+# passwd tidb
+```
+执行以下命令，将 `tidb ALL=(ALL) NOPASSWD: ALL` 添加到文件末尾，即配置好 sudo 免密码。
+```
+# visudo
+tidb ALL=(ALL) NOPASSWD: ALL
+```
+以 `tidb` 用户登录到中控机，执行以下命令，将 `172.16.10.61` 替换成你的部署目标机器 IP, 按提示输入部署目标机器 tidb 用户密码，执行成功后即创建好 ssh 互信，其他机器同理。
+```
+[tidb@172.16.10.49 ~]$ ssh-copy-id -i ~/.ssh/id_rsa.pub 172.16.10.61
+```
+
+#### 验证 ssh 互信及 sudo 免密码
+以 `tidb` 用户登录到中控机, ssh 登录目标机器 IP, 不需要输入密码并登录成功，表示 ssh 互信配置成功。
+```
+[tidb@172.16.10.49 ~]$ ssh 172.16.10.61
+[tidb@172.16.10.61 ~]$
+```
+以 `tidb` 用户登录到部署目标机器后，执行以下命令，不需要输入密码并切换到 root 用户，表示 `tidb` 用户 sudo 免密码配置成功。
+```
+[tidb@172.16.10.61 ~]$ sudo -su root
+[root@172.16.10.61 tidb]#
 ```
