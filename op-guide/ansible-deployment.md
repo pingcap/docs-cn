@@ -165,7 +165,7 @@ TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 labels
 location_labels = ["host"]
 ```
 
-> **注：** 单机多 TiKV 时，请务必修改 `[monitored_servers:children]` 为 `[monitored_servers]`, 单行一个 IP 地址。
+> **注：单机多 TiKV 时，请务必修改 `[monitored_servers:children]` 为 `[monitored_servers]`, 单行一个 IP 地址。**
 
 - 参数调整
 
@@ -418,7 +418,7 @@ $ sudo systemctl start ntpd.service
 ```
 
 #### 如何使用 Ansible 部署 NTP 服务
-参照[在中控机器上下载 TiDB-Ansible](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#在中控机器上下载-tidb-ansible)下载 TiDB-Ansible, 将你的部署目标机器 IP 添加到 `[servers]` 区块下, time_server 变量的值 `pool.ntp.org` 可替换为其他 NTP server，在启动 NTP 服务前, 系统会 ntpdate 该 NTP server，Ansible 安装的 NTP 服务使用安装包默认 server 列表，见配置文件 `cat /etc/ntp.conf` 中 server 参数。
+参照[在中控机器上下载 TiDB-Ansible](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#在中控机器上下载-tidb-ansible)下载 TiDB-Ansible, 将你的部署目标机器 IP 添加到 `[servers]` 区块下, `ntp_server` 变量的值 `pool.ntp.org` 可替换为其他 NTP server，在启动 NTP 服务前, 系统会 ntpdate 该 NTP server，Ansible 安装的 NTP 服务使用安装包默认 server 列表，见配置文件 `cat /etc/ntp.conf` 中 server 参数。
 
 ```
 $ vi hosts.ini
