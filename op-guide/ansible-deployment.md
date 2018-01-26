@@ -41,14 +41,14 @@ Before you start, make sure that you have:
 
     - The same time and time zone for all machines with the NTP service on to synchronize the correct time. See [How to check whether the NTP service is normal](#how-to-check-whether-the-ntp-service-is-normal).
 
-    - Create a normal user account as the user who runs the service. The user can sudo to root without a password.
+    - Create a normal `tidb` user account as the user who runs the service. The `tidb` user can sudo to the root user without a password. See [How to configure SSH mutual trust and sudo without password](#how-to-configure-ssh-mutual-trust-and-sudo-without-password).
 
 2. A Control Machine with the following requirements:
 
     - The Control Machine can be one of the managed nodes.
     - It is recommended to install CentOS 7.3 or later version of Linux operating system (Python 2.7 involved by default).
     - The machine has access to the external network, used to download TiDB and relevant packages.
-    - Configure mutual trust of `ssh authorized_key`. In the Control Machine, you can login the deployed target machine using `tidb` user account without a password.
+    - Configure mutual trust of `ssh authorized_key`. In the Control Machine, you can login to the deployment target machine using `tidb` user account without a password. See [How to configure SSH mutual trust and sudo without password](#how-to-configure-ssh-mutual-trust-and-sudo-without-password).
 
 ## Install Ansible and dependencies in the Control Machine
 
@@ -67,11 +67,12 @@ For other systems, see [Install Ansible](ansible-deployment.md#install-ansible).
 
 ## Download TiDB-Ansible to the Control Machine
 
-Use the following command to download the corresponding version of TiDB-Ansible from GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`.
+Login to the Control Machine using the `tidb` user account and enter the `/home/tidb` directory. Use the following command to download the corresponding version of TiDB-Ansible from GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`.
 
 Download the 1.0 version:
 
 ```
+cd /home/tidb
 git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 ```
 
@@ -80,6 +81,7 @@ or
 Download the master version:
 
 ```
+cd /home/tidb
 git clone https://github.com/pingcap/tidb-ansible.git
 ```
 
@@ -136,16 +138,16 @@ pd_servers
 
 ### The cluster topology of multiple TiKV instances on a single machine
 
-Take three TiKV instances as an example:
+Take two TiKV instances as an example:
 
-| Name  | Host IP     | Services                  |
-|:------|:------------|:--------------------------|
-| node1 | 172.16.10.1 | PD1, TiDB1                |
-| node2 | 172.16.10.2 | PD2, TiDB2                |
-| node3 | 172.16.10.3 | PD3                       |
-| node4 | 172.16.10.4 | TiKV1-1, TiKV1-2, TiKV1-3 |
-| node5 | 172.16.10.5 | TiKV2-1, TiKV2-2, TiKV2-3 |
-| node6 | 172.16.10.6 | TiKV3-1, TiKV3-2, TiKV3-3 |
+| Name  | Host IP     | Services   |
+|:------|:------------|:-----------|
+| node1 | 172.16.10.1 | PD1, TiDB1 |
+| node2 | 172.16.10.2 | PD2, TiDB2  |
+| node3 | 172.16.10.3 | PD3         |
+| node4 | 172.16.10.4 | TiKV1-1, TiKV1-2 |
+| node5 | 172.16.10.5 | TiKV2-1, TiKV2-2 |
+| node6 | 172.16.10.6 | TiKV3-1, TiKV3-2 |
 
 ```ini
 [tidb_servers]
@@ -226,7 +228,7 @@ location_labels = ["host"]
 
 ## Deploy the TiDB cluster
 
-When `ansible-playbook` runs Playbook, the default concurrent number is 5. If many target machines are deployed, you can add the `-f` parameter to specify the concurrency, such as `ansible-playbook deploy.yml -f 10`.
+When `ansible-playbook` runs Playbook, the default concurrent number is 5. If many deployment target machines are deployed, you can add the `-f` parameter to specify the concurrency, such as `ansible-playbook deploy.yml -f 10`.
 
 The following example uses the `tidb` user account as the user who runs the service.
 
@@ -245,6 +247,18 @@ To deploy TiDB using a normal user account, take the following steps:
     ansible_user = tidb
     ```
 
+    Run the following command and if all servers return `tidb`, then the SSH mutual trust is successfully configured:
+
+    ```
+    ansible -i inventory.ini all -m shell -a 'whoami'
+    ```
+
+    Run the following command and if all servers return `root`, then sudo without password of the `tidb` user is successfully configured:
+
+    ```
+    ansible -i inventory.ini all -m shell -a 'whoami' -b
+    ```
+
 2. Connect to the network and download TiDB binary to the Control Machine using `local_prepare.yml` playbook.
 
     ```
@@ -256,14 +270,6 @@ To deploy TiDB using a normal user account, take the following steps:
     ```
     ansible-playbook bootstrap.yml
     ```
-
-    - If the remote connection using the normal user requires a password, add the `-k` (lower case) parameter.
-    - If a password is required when the normal user gets root privileges from sudo, add the `-K` (upper case) parameter.
-    - This applies to other playbooks as well.
-
-        ```
-        ansible-playbook bootstrap.yml -k -K
-        ```
 
 4. Deploy the TiDB cluster software.
 
@@ -336,17 +342,29 @@ wget http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz
 
 ### Use Ansible for rolling update
 
-1. To apply rolling update to a specific service, such as TiKV.
-
+- Apply rolling update to the TiKV node (only update the TiKV service).
+    
     ```
     ansible-playbook rolling_update.yml --tags=tikv
     ```
 
-2. To apply rolling update to all the services.
+- Apply rolling update to the PD node (only update single PD service).
 
-      ```
-      ansible-playbook rolling_update.yml
-      ```
+    ```
+    ansible-playbook rolling_update.yml --tags=pd
+    ```
+
+- Apply rolling update to the TiDB node (only update single TiDB service).
+
+    ```
+    ansible-playbook rolling_update.yml --tags=tidb
+    ```
+
+- Apply rolling update to all services.
+
+    ```
+    ansible-playbook rolling_update.yml
+    ```
 
 ## Summary of common operations
 
@@ -447,11 +465,43 @@ $ ntpstat
 Unable to talk to NTP daemon. Is it running?
 ```
 
-Running the following command can promote the starting of the NTP service synchronization. You can replace `pool.ntp.org` with the NTP server.
+Running the following command can promote the starting of the NTP service synchronization. You can replace `pool.ntp.org` with other NTP server.
 
 ```
 $ sudo systemctl stop ntpd.service
 $ sudo ntpdate pool.ntp.org
+$ sudo systemctl start ntpd.service
+```
+
+### How to deploy the NTP service using Ansible?
+
+Refer to [Download TiDB-Ansible to the Control Machine](#download-tidb-ansible-to-the-control-machine) and download TiDB-Ansible. Add the IP of the deployment target machine to `[servers]`. You can replace the `ntp_server` variable value `pool.ntp.org` with other NTP server. Before starting the NTP service, the system `ntpdate` the NTP server. The NTP service deployed by Ansible uses the default server list in the package. See the `server` parameter in the `cat /etc/ntp.conf` file.
+
+```
+$ vi hosts.ini
+[servers]
+172.16.10.49
+172.16.10.50
+172.16.10.61
+172.16.10.62
+
+[all:vars]
+username = tidb
+ntp_server = pool.ntp.org
+```
+
+Run the following command, and enter the root password of the deployment target machine as prompted:
+
+```
+$ ansible-playbook -i hosts.ini deploy_ntp.yml -k
+```
+
+### How to install the NTP service manually?
+
+Run the following command on the CentOS 7 system:
+
+```
+$ sudo yum install ntp ntpdate
 $ sudo systemctl start ntpd.service
 ```
 
@@ -513,4 +563,97 @@ Take the `/dev/nvme0n1` data disk as an example:
 ```
 # vi /etc/fstab
 /dev/nvme0n1 /data1 ext4 defaults,nodelalloc,noatime 0 2
+```
+
+### How to configure SSH mutual trust and sudo without password?
+
+#### Create the `tidb` user on the Control Machine and generate the SSH key.
+
+```
+# useradd tidb
+# passwd tidb
+# su - tidb
+$
+$ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/tidb/.ssh/id_rsa):
+Created directory '/home/tidb/.ssh'.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/tidb/.ssh/id_rsa.
+Your public key has been saved in /home/tidb/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:eIBykszR1KyECA/h0d7PRKz4fhAeli7IrVphhte7/So tidb@172.16.10.49
+The key's randomart image is:
++---[RSA 2048]----+
+|=+o+.o.          |
+|o=o+o.oo         |
+| .O.=.=          |
+| . B.B +         |
+|o B * B S        |
+| * + * +         |
+|  o + .          |
+| o  E+ .         |
+|o   ..+o.        |
++----[SHA256]-----+
+```
+
+#### How to automatically configure SSH mutual trust and sudo without password using Ansible?
+
+Refer to [Download TiDB-Ansible to the Control Machine](#download-tidb-ansible-to-the-control-machine) and download TiDB-Ansible. Add the IP of the deployment target machine to `[servers]`.
+
+```
+$ vi hosts.ini
+[servers]
+172.16.10.49
+172.16.10.50
+172.16.10.61
+172.16.10.62
+
+[all:vars]
+username = tidb
+```
+
+Run the following command, and enter the `root` password of the deployment target machine as prompted:
+
+```
+$ ansible-playbook -i hosts.ini create_users.yml -k
+```
+
+#### How to manually configure SSH mutual trust and sudo without password?
+
+Use the `root` user to login to the deployment target machine, create the `tidb` user and set the login password.
+
+```
+# useradd tidb
+# passwd tidb
+```
+
+To configure sudo without password, run the following command, and add `tidb ALL=(ALL) NOPASSWD: ALL` to the end of the file:
+
+```
+# visudo
+tidb ALL=(ALL) NOPASSWD: ALL
+```
+
+Use the `tidb` user to login to the Control Machine, and run the following command. Replace `172.16.10.61` with the IP of your deployment target machine, and enter the `tidb` user password of the deployment target machine. Successful execution indicates that SSH mutual trust is already created. This applies to other machines as well.
+
+```
+[tidb@172.16.10.49 ~]$ ssh-copy-id -i ~/.ssh/id_rsa.pub 172.16.10.61
+```
+
+#### Authenticate SSH mutual trust and sudo without password
+
+Use the `tidb` user to login to the Control Machine, and login to the IP of the target machine using SSH. If you do not need to enter the password and can successfully login, then SSH mutual trust is successfully configured.
+
+```
+[tidb@172.16.10.49 ~]$ ssh 172.16.10.61
+[tidb@172.16.10.61 ~]$
+```
+
+After you login to the deployment target machine using the `tidb` user, run the following command. If you do not need to enter the password and can switch to the `root` user, then sudo without password of the `tidb` user is successfully configured.
+
+```
+[tidb@172.16.10.61 ~]$ sudo -su root
+[root@172.16.10.61 tidb]#
 ```
