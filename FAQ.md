@@ -334,15 +334,11 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 ### 3.2.7 缺少命令行集群管理工具，整个集群的健康度当前是否正常，不好确认？
 
-可以通过 pd-ctl 等工具来判断集群大体的状态，详细的集群状态还是需要通过监控来确认。
+可以通过 pd-ctl 等工具来判断集群大概的状态，详细的集群状态还是需要通过监控来确认。
 
 ### 3.2.8 集群下线节点后，怎么删除老集群节点监控信息？
 
 下线节点一般指 TiKV 节点通过 pd-ctl 或者监控判断节点是否下线完成。节点下线完成后，手动停止下线节点上相关的服务。从 Prometheus 配置文件中删除对应节点的 node_exporter 信息。从 Ansible inventory.ini 中删除对应节点的信息。
-
-### 3.2.9 如何通过命令来查看整个集群的健康度？
-
-可以通过 pd-ctl 等工具来判断集群大概的状态，详细的集群状态还是需要通过监控来确认。
 
 ## 3.3 TiDB server 管理
 
@@ -352,7 +348,7 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 ### 3.3.2 TiDB 是否支持其他存储引擎？
 
-是的，除了 TiKV 之外，TiDB 还支持一些流行的单机存储引擎，比如 GolevelDB, RocksDB, BoltDB 等。如果一个存储引擎是支持事务的 KV 引擎，并且能提供一个满足 TiDB 接口要求的 Client，即可接入 TiDB。
+是的，除了 TiKV 之外，TiDB 还支持一些流行的单机存储引擎，比如 Goleveldb/Rocksdb/Boltdb 等。如果一个存储引擎是支持事务的 KV 引擎，并且能提供一个满足 TiDB 接口要求的 Client，即可接入 TiDB。
 
 ### 3.3.3 为什么有的时候执行 DDL 会很慢？
 
@@ -369,7 +365,7 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 ### 3.3.5 Infomation_schema 能否支持更多真实信息？
 
-Infomation_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。 当前 TiDB 支持的：Infomation_schema 请参考 [TiDB 系统数据库说明文档](https://pingcap.com/docs-cn/SQL/system-database/)。
+Infomation_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。当前 TiDB 支持的：Infomation\_schema 请参考 [TiDB 系统数据库说明文档](https://pingcap.com/docs-cn/SQL/system-database/)。
 
 ### 3.3.6 TiDB Backoff type 主要原因?
 
@@ -441,7 +437,7 @@ TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强
 
 首先不是前期划分好的，但确实有 Region 分裂机制，有一个参数 `region_split_size`，超过这个值就会触发分裂，分裂后的信息会汇报给 PD。
 
-### 3.4.13 TiKV 是否有类似 MySQL 的 innodb_flush_log_trx_commit 参数，来保证提交数据不丢失？
+### 3.4.13 TiKV 是否有类似 MySQL 的 `innodb_flush_log_trx_commit` 参数，来保证提交数据不丢失？
 
 是的，TiKV 单机的存储引擎目前使用两个 rockdb 实例，其中一个存储 raft-log，TiKV 有个 sync-log 参数，在ture 的情况下，每次提交都会强制刷盘到 raft-log，如果发生 crash 后，通过 raft-log 进行 KV 数据的恢复。
 
@@ -451,7 +447,7 @@ WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD
 
 ### 3.4.15 在最严格 sync-log = ture 的数据可用模式下，写入性能如何？
 
-一般来说开启 sync-log 性能损耗大概 30% 左右，官方有个 `sync-log = false` 的基准测试，可以参考： [https://github.com/pingcap/docs-cn/blob/master/benchmark/sysbench.md](https://github.com/pingcap/docs-cn/blob/master/benchmark/sysbench.md)
+一般来说开启 sync-log 性能损耗大概 30% 左右，官方有个 `sync-log = false` 的基准测试，可以参考：[https://github.com/pingcap/docs-cn/blob/master/benchmark/sysbench.md](https://github.com/pingcap/docs-cn/blob/master/benchmark/sysbench.md)
 
 ### 3.4.16 是否可以利用上层的 Raft + 多副本，达到完全的数据可靠，单机存储引擎不需要最严格模式？
 
@@ -522,7 +518,7 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提�
 
 ### 4.1.5 如何导出 TiDB 数据？
 
-TiDB 目前暂时不支持 select into outfile，可以通过以下方式导出 TiDB 数据：参考 [MySQL使用mysqldump导出某个表的部分数据](http://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出，使用 MySQL client 将 select 的结果输出到一个文件。
+TiDB 目前暂时不支持 `select into outfile`，可以通过以下方式导出 TiDB 数据：参考 [MySQL使用mysqldump导出某个表的部分数据](http://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出，使用 MySQL client 将 select 的结果输出到一个文件。
 
 ### 4.1.6 DB2、Oracle 这些数据库有没办法通过 OGG 同步到 TiDB。
 
@@ -532,11 +528,11 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法是程序实
 
 ### 4.2.1 Syncer 架构
 
-详细参考： [https://pingcap.com/blog-cn/tidb-syncer/](https://pingcap.com/blog-cn/tidb-syncer/)
+详细参考：[https://pingcap.com/blog-cn/tidb-syncer/](https://pingcap.com/blog-cn/tidb-syncer/)
 
 #### 4.2.1.1 Syncer 使用文档
 
-详细参考： [https://pingcap.com/docs-cn/tools/syncer/](https://pingcap.com/docs-cn/tools/syncer/)
+详细参考：[https://pingcap.com/docs-cn/tools/syncer/](https://pingcap.com/docs-cn/tools/syncer/)
 
 #### 4.2.1.2 如何配置监控 Syncer 运行情况？
 
@@ -554,7 +550,7 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法是程序实
 
 ### 4.2.2 Wormhole 工具
 
-Wormhole 是一项数据同步服务,让用户能够通过 Web 控制台, 轻松操作数据的全量 + 增量同步 ，支持多种同、异构数据源之间的数据迁移，如   MySQL   -&gt;   TiDB，MongoDB   -&gt;TiDB。具体可联系官方进行试用：[info@pingcap.com](mailto:info@pingcap.com)。
+Wormhole 是一项数据同步服务,让用户能够通过 Web 控制台, 轻松操作数据的全量 + 增量同步，支持多种同、异构数据源之间的数据迁移，如 MySQL -> TiDB，MongoDB -> TiDB。具体可联系官方进行试用：[info@pingcap.com](mailto:info@pingcap.com)。
 
 ## 4.3 业务流量迁入
 
@@ -605,7 +601,7 @@ Delete，Truncate 和 Drop 都不会立即释放空间，对于 Truncate 和 Dro
 
 ### 4.3.10 数据删除最高效最快的方式？
 
-在删除大量数据的时候，建议使用 `Delete * from t where xx limit 5000`（xx 建议在满足业务过滤逻辑下，尽量加上强过滤索引列或者直接使用主键选定范围，如 `id >= 5000*n+m and id <= 5000*(n+1)+m`这样的方案，通过循环来删除，用 `Affected Rows == 0` 作为循环结束条件，这样避免遇到事务大小的限制。如果一次删除的数据量非常大，这种循环的方式会越来越慢，因为每次删除都是从前向后遍历，前面的删除之后，短时间内会残留不少删除标记（后续会被 GC 掉），影响后面的 Delete 语句。如果有可能，建议把 Where 条件细化。可以参考官网 [最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)。
+在删除大量数据的时候，建议使用 `Delete * from t where xx limit 5000`（xx 建议在满足业务过滤逻辑下，尽量加上强过滤索引列或者直接使用主键选定范围，如 `id >= 5000*n+m and id <= 5000*(n+1)+m` 这样的方案，通过循环来删除，用 `Affected Rows == 0` 作为循环结束条件，这样避免遇到事务大小的限制。如果一次删除的数据量非常大，这种循环的方式会越来越慢，因为每次删除都是从前向后遍历，前面的删除之后，短时间内会残留不少删除标记（后续会被 GC 掉），影响后面的 Delete 语句。如果有可能，建议把 Where 条件细化。可以参考官网 [最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)。
 
 ### 4.3.11 TiDB 如何提高数据加载速度？
 
@@ -618,16 +614,15 @@ Delete，Truncate 和 Drop 都不会立即释放空间，对于 Truncate 和 Dro
 
 ## 5.1 TiDB 执行计划？
 
-详细解读： [https://pingcap.com/docs-cn/sql/understanding-the-query-execution-plan](https://pingcap.com/docs-cn/sql/understanding-the-query-execution-plan)
+详细解读：[https://pingcap.com/docs-cn/sql/understanding-the-query-execution-plan](https://pingcap.com/docs-cn/sql/understanding-the-query-execution-plan)
 
 ### 5.1.1 统计信息收集
 
-详细解读： [https://pingcap.com/docs-cn/sql/statistics](https://pingcap.com/docs-cn/sql/statistics)
+详细解读：[https://pingcap.com/docs-cn/sql/statistics](https://pingcap.com/docs-cn/sql/statistics)
 
 ### 5.1.2 Count 如何加速？
 
-count 就是暴力扫表，提高并发度能显著的提升速度，修改并发度可以参考 [`tidb_distsql_scan_concurrency`](sql/tidb
-specific.md#tidb\_distsql\_scan\_concurrency) 变量。 但是也要看 CPU 和 I/O 资源。TiDB 每次查询都要访问 TiKV，在数据量小的情况下，MySQL 都在内存里，TiDB 还需要进行一次网络访问。
+count 就是暴力扫表，提高并发度能显著的提升速度，修改并发度可以参考 `tidb_distsql_scan_concurrency`变量，但是也要看 CPU 和 I/O 资源。TiDB 每次查询都要访问 TiKV，在数据量小的情况下，MySQL 都在内存里，TiDB 还需要进行一次网络访问。
 
 提升建议：
 
@@ -656,23 +651,23 @@ specific.md#tidb\_distsql\_scan\_concurrency) 变量。 但是也要看 CPU 和 
 
 ### 6.1.1 TiDB 参数及调整
 
-详情参考： [https://pingcap.com/docs-cn/sql/server-command-option](https://pingcap.com/docs-cn/sql/server-command-option)
+详情参考：[https://pingcap.com/docs-cn/sql/server-command-option](https://pingcap.com/docs-cn/sql/server-command-option)
 
 ## 6.2 TiKV
 
 ### 6.2.1 TiKV 性能参数调优
 
-详情参考： [https://pingcap.com/docs-cn/op-guide/tune-tikv/](https://pingcap.com/docs-cn/op-guide/tune-tikv/)
+详情参考：[https://pingcap.com/docs-cn/op-guide/tune-tikv/](https://pingcap.com/docs-cn/op-guide/tune-tikv/)
 
 # 七、监控
 
 ## 7.1 Prometheus监控框架
 
-详细参考： [https://pingcap.com/docs-cn/op-guide/monitor-overview](https://pingcap.com/docs-cn/op-guide/monitor-overview)
+详细参考：[https://pingcap.com/docs-cn/op-guide/monitor-overview](https://pingcap.com/docs-cn/op-guide/monitor-overview)
 
 ## 7.2 监控指标解读
 
-详细参考： [https://pingcap.com/docs-cn/op-guide/dashboard-overview-info](https://pingcap.com/docs-cn/op-guide/dashboard-overview-info)
+详细参考：[https://pingcap.com/docs-cn/op-guide/dashboard-overview-info](https://pingcap.com/docs-cn/op-guide/dashboard-overview-info)
 
 ### 7.2.1 目前的监控使用方式及主要监控指标，有没有更好看的监控？
 
