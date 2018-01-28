@@ -46,7 +46,7 @@ TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强
 
 TiDB 支持 ACID 分布式事务，事务模型是以 Google 的 Percolator 模型为基础，并做了一些优化。这个模型需要一个时间戳分配器，分配唯一且递增的时间戳。在 TiDB 集群中，PD 承担时间戳分配器的角色。
 
-### 1.1.10 TiDB 支持哪些编程语言?
+### 1.1.10 TiDB 支持哪些编程语言？
 
 只要支持 MySQL Client/Driver 的编程语言，都可以直接使用 TiDB。
 
@@ -317,11 +317,11 @@ PD 启动参数中的 `--initial-cluster` 包含了某个不属于该集群的�
 
 ### 3.2.3 PD 能容忍的时间同步误差是多少？
 
-理论上误差越小越好，切换 leader 的时候如果时钟回退，就会卡住直到追上之前的 leader。这个容忍是业务上的，PD 多长的误差都能容忍。 但是误差越大，主从切换的时候，停止服务的时间越长。
+理论上误差越小越好，切换 leader 的时候如果时钟回退，就会卡住直到追上之前的 leader。这个容忍是业务上的，PD 多长的误差都能容忍。但是误差越大，主从切换的时候，停止服务的时间越长。
 
 ### 3.2.4 Client 连接是如何寻找 PD 的？
 
-Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD 与 TiKV 对 Client 透明。当 TiDB 连接任意一台 PD 的时候，PD 会告知 TiDB 当前的 leader 是谁，如果此台 PD 不是 leader ，TiDB 将会重新连接至 leader PD。
+Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD 与 TiKV 对 Client 透明。当 TiDB 连接任意一台 PD 的时候，PD 会告知 TiDB 当前的 leader 是谁，如果此台 PD 不是 leader，TiDB 将会重新连接至 leader PD。
 
 ### 3.2.5 PD 参数中 leader-schedule-limit 和 region-schedule-limit 调度有什么区别？
 
@@ -365,7 +365,7 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 ### 3.3.5 Infomation_schema 能否支持更多真实信息？
 
-Infomation_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。当前 TiDB 支持的：Infomation\_schema 请参考[TiDB 系统数据库说明文档](https://pingcap.com/docs-cn/SQL/system-database/)。
+Infomation_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。当前 TiDB 支持的：Infomation\_schema 请参考[TiDB 系统数据库说明文档](https://pingcap.com/docs-cn/sql/system-database)。
 
 ### 3.3.6 TiDB Backoff type 主要原因?
 
@@ -391,7 +391,7 @@ TiKV 本地存储的 cluster ID 和指定的 PD 的 cluster ID 不一致。在�
 
 ### 3.4.3 TiKV 启动报错：duplicated store address
 
-启动参数中的地址已经被其他的 TiKV 注册在 PD 集群中了。造成该错误的常见情况：TiKV `--data-dir` 指定的路径下没有数据文件夹时（删除或移动后没有更新 --data-dir），用之前参数重新启动该 TiKV。请尝试用 pd-ctl 的[store 删除](https://github.com/pingcap/pd/tree/master/pdctl#store-delete-store_id)功能，删除之前的 store, 然后重新启动 TiKV 即可。
+启动参数中的地址已经被其他的 TiKV 注册在 PD 集群中了。造成该错误的常见情况：TiKV `--data-dir` 指定的路径下没有数据文件夹（删除或移动后没有更新 --data-dir），用之前参数重新启动该 TiKV。请尝试用 pd-ctl 的[store delete](https://github.com/pingcap/pd/tree/master/pdctl#store-delete-store_id)功能，删除之前的 store, 然后重新启动 TiKV 即可。
 
 ### 3.4.4 TiKV master 和 slave 用的是一样的压缩算法，为什么效果不一样?
 
@@ -401,10 +401,12 @@ TiKV 本地存储的 cluster ID 和指定的 PD 的 cluster ID 不一致。在�
 
 TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在默认 RocksDB 内部的 default、write、lock 3 个 CF 内。
 
-- default CF 存储的是真正的数据，与其对应的参数位于 [rocksdb.defaultcf] 项中； write CF 存储的是数据的版本信息（MVCC）、索引、小表相关的数据，相关的参数位于 [rocksdb.writecf] 项中； lock CF 存储的是锁信息，系统使用默认参数。
-- Raft Rocksdb 实例存储 Raft log。 default CF 主要存储的是 Raft log，与其对应的参数位于 [raftdb.defaultcf] 项中。
-- 每个 CF 都有单独的 block-cache，用于缓存数据块，加速 RocksDB 的读取速度，block-cache 的大小通过参数 block-cache-size 控制，block-cache-size 越大，能够缓存的热点数据越多，对读取操作越有利，同时占用的系统内存也会越多。
-- 每个 CF 有各自的 write-buffer，大小通过 write-buffer-size 控制。
+- default CF 存储的是真正的数据，与其对应的参数位于 [rocksdb.defaultcf] 项中。 
+- write CF 存储的是数据的版本信息（MVCC）、索引、小表相关的数据，相关的参数位于 [rocksdb.writecf] 项中。
+- lock CF 存储的是锁信息，系统使用默认参数。
+- Raft Rocksdb 实例存储 Raft log。default CF 主要存储的是 Raft log，与其对应的参数位于 [raftdb.defaultcf] 项中。
+- 每个 CF 都有单独的 Block-cache，用于缓存数据块，加速 RocksDB 的读取速度，Block-cache 的大小通过参数 `block-cache-size` 控制，`block-cache-size` 越大，能够缓存的热点数据越多，对读取操作越有利，同时占用的系统内存也会越多。
+- 每个 CF 有各自的 Write-buffer，大小通过 `write-buffer-size` 控制。
 
 ### 3.4.6 TiKV channel full 是啥原因？
 
@@ -443,7 +445,7 @@ TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强
 
 ### 3.4.14 对 WAL 存储有什么推荐的硬件配置，例如 SSD，RAID 级别，RAID 卡 cache 策略，NUMA 设置 ,文件系统选择，操作系统的 IO 调度策略等？
 
-WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD，RAID 如果允许的话，最好是 RAID 10，RAID 卡 cache、操作系统 IO 调度目前没有针对性的 best pratise，Linux 7 以上默认配置即可，NUMA 没有特别建议，Muma 内存分配策略可以尝试使用 `interleave = all`，文件系统建议 EXT4。
+WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD，RAID 如果允许的话，最好是 RAID 10，RAID 卡 cache、操作系统 IO 调度目前没有针对性的 best pratise，Linux 7 以上默认配置即可，NUMA 没有特别建议，Muma 内存分配策略可以尝试使用 `interleave = all`，文件系统建议 ext4。
 
 ### 3.4.15 在最严格 sync-log = ture 的数据可用模式下，写入性能如何？
 
@@ -484,7 +486,7 @@ TiKV 支持单独进行接口调用，理论上也可以起个实例做为 Cache
 
 ### 3.5.3 我们的 DBA 测试过 MySQL 性能，单台 TiDB 的性能没有 MySQL 性能那么好？
 
-TiDB 设计的目标就是针对 MySQL 单台容量限制而被迫做的分库分表的场景，或者需要强一致性和完整分布式事务的场景。它的优势是通过尽量下推到存储节点进行并行计算。对于小表（比如千万级以下），不适合 TiDB， 因为数据量少，region 有限，发挥不了并行的优势，最极端的就是计数器表，几行记录高频更新，这几行在 TiDB 里，会变成存储引擎上的几个 KV，然后只落在一个 Region 里，而这个 Region 只落在一个节点上。加上后台强一致性复制的开销，TiDB 引擎到 TiKV 引擎的开销，最后表现出来的就是没有单个 MySQL 好。
+TiDB 设计的目标就是针对 MySQL 单台容量限制而被迫做的分库分表的场景，或者需要强一致性和完整分布式事务的场景。它的优势是通过尽量下推到存储节点进行并行计算。对于小表（比如千万级以下），不适合 TiDB， 因为数据量少，Region 有限，发挥不了并行的优势，最极端的就是计数器表，几行记录高频更新，这几行在 TiDB 里，会变成存储引擎上的几个 KV，然后只落在一个 Region 里，而这个 Region 只落在一个节点上。加上后台强一致性复制的开销，TiDB 引擎到 TiKV 引擎的开销，最后表现出来的就是没有单个 MySQL 好。
 
 ## 3.6 TiDB 备份恢复
 
@@ -494,7 +496,7 @@ TiDB 设计的目标就是针对 MySQL 单台容量限制而被迫做的分库�
 
 使用 mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64；
 
-loader的 -t 参数可以根据 tikv 的实例个数以及负载进行评估调整，例如 3 个 TiKV 的场景， 此值可以设为 3 * (1 ～ n)，当 tikv 负载过高，loader 以及 tidb 日志中出现大量 backoffer.maxSleep 15000ms is exceeded 可以适当调小该值，当 tikv 负载不是太高的时候，可以适当调大该值。
+loader的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调整，例如 3 个 TiKV 的场景， 此值可以设为 3 * (1 ～ n)，当 TiKV 负载过高，loader 以及 TiDB 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 TiKV 负载不是太高的时候，可以适当调大该值。
 
 # 四、数据、流量迁移
 
@@ -550,13 +552,13 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法是程序实
 
 ### 4.2.2 Wormhole 工具
 
-Wormhole 是一项数据同步服务,让用户能够通过 Web 控制台, 轻松操作数据的全量 + 增量同步，支持多种同、异构数据源之间的数据迁移，如 MySQL -> TiDB，MongoDB -> TiDB。具体可联系官方进行试用：[info@pingcap.com](mailto:info@pingcap.com)。
+Wormhole 是一项数据同步服务，让用户能够通过 Web 控制台, 轻松操作数据的全量 + 增量同步，支持多种同、异构数据源之间的数据迁移，如 MySQL -> TiDB，MongoDB -> TiDB。具体可联系官方进行试用：[info@pingcap.com](mailto:info@pingcap.com)。
 
 ## 4.3 业务流量迁入
 
 ### 4.3.1 如何快速迁移业务流量？
 
-我们建议通过 syncer 或 wormhole 搭建成多源 MySQL、MongoDB -> TiDB 实时同步环境，读写流量可以按照需求分阶段通过修改网络配置进行流量迁移，建议 DB 上层部署一个稳定的网络 LB（HAproxy、LVS、F5、DNS 等），这样直接修改网络配置就能实现无缝流量迁移。
+我们建议通过 Syncer 或 Wormhole 搭建成多源 MySQL、MongoDB -> TiDB 实时同步环境，读写流量可以按照需求分阶段通过修改网络配置进行流量迁移，建议 DB 上层部署一个稳定的网络 LB（HAproxy、LVS、F5、DNS 等），这样直接修改网络配置就能实现无缝流量迁移。
 
 ### 4.3.2 TiDB 总读写流量有限制吗？
 TiDB 读流量可以通过增加 TiDB server 进行扩展，总读容量无限制，写流量可以通过增加 TiKV 节点进行扩容，基本上写容量也没有限制。
@@ -640,9 +642,9 @@ Count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 可以使用 `admin show ddl`，语句查看正在运行的 DDL 作业。
 `admin show ddl jobs`，用于查看当前 DDL 作业队列中的所有结果（包括正在运行以及等待运行的任务）以及已执行完成的 DDL 作业队列中的最近十条结果。
 
-### 5.1.5 SQL 引擎是否支持基于 COST 的优化（CBO)，如果支持，实现到什么程度？
+### 5.1.5 TiDB 是否支持基于 COST 的优化（CBO），如果支持，实现到什么程度？
 
-是的，我们使用的 CBO，我们有一个小组单独会对代价模型、统计信息持续优化，除此之外，我们支持 hash join、soft merge等关联算法。
+是的，TiDB 使用的基于成本的优化器（CBO），我们有一个小组单独会对代价模型、统计信息持续优化，除此之外，我们支持 hash join、soft merge 等关联算法。
 
 # 六、数据库优化
 
@@ -710,15 +712,15 @@ TiKV 操作繁忙，一般出现在数据库负载比较高时，请检查 TiKV 
 
 ### 9.1.6 ERROR 9006 (HY000) : GC Too Early
 
-GC Life Time 间隔时间过短，长事务本应读到的数据可能被清理了，应增加GC Life Time。
+`GC Life Time` 间隔时间过短，长事务本应读到的数据可能被清理了，应增加 `GC Life Time`。
 
 ## 9.2 MySQL 原生报错汇总
 
 ### 9.2.1 ERROR 2013 (HY000): Lost connection to MySQL server during query 问题的排查方法？
 
 - log 中是否有 panic
-- dmesg 中是否有 oom, 命令：`dmesg -T | grep -i oom`
-- 长时间没有访问，也会收到这个报错，一般是 tcp 超时导致的，tcp 长时间不用, 会被操作系统 kill
+- dmesg 中是否有 oom，命令：`dmesg -T | grep -i oom`
+- 长时间没有访问，也会收到这个报错，一般是 tcp 超时导致的，tcp 长时间不用, 会被操作系统 kill。
 
 ### 9.2.2 ERROR 1105 (HY000): other error: unknown error Wire Error(InvalidEnumValue(4004)) 是什么意思？
 
