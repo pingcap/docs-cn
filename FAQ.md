@@ -638,7 +638,6 @@ count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 ### 5.1.4 如何查看 DDL job？
 
 可以使用 `admin show ddl`，语句查看正在运行的 DDL 作业。
-
 `admin show ddl jobs`，用于查看当前 DDL 作业队列中的所有结果（包括正在运行以及等待运行的任务）以及已执行完成的 DDL 作业队列中的最近十条结果。
 
 ### 5.1.5 SQL 引擎是否支持基于 COST 的优化（CBO)，如果支持，实现到什么程度？
@@ -718,7 +717,7 @@ GC Life Time 间隔时间过短，长事务本应读到的数据可能被清理�
 ### 9.2.1 ERROR 2013 (HY000): Lost connection to MySQL server during query 问题的排查方法？
 
 - log 中是否有 panic
-- dmesg 中是否有 oom, 命令：dmesg |grep -i oom
+- dmesg 中是否有 oom, 命令：`dmesg -T|grep -i oom`
 - 长时间没有访问，也会收到这个报错，一般是 tcp 超时导致的，tcp 长时间不用, 会被操作系统 kill
 
 ### 9.2.2 ERROR 1105 (HY000): other error: unknown error Wire Error(InvalidEnumValue(4004)) 是什么意思？
