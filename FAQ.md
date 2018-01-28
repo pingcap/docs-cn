@@ -12,7 +12,7 @@ category: FAQ
 
 ### 1.1.2 TiDB 是什么？
 
-TiDB 是一个分布式 NewSQL 数据库。它具有弹性水平扩展、支持 ACID 事务、支持标准 SQL、具有数据强一致的高可用、不仅适合 OLTP 场景还适合 OLAP 场景的混合数据库。同时 TiDB 还支持 MySQL 语法和 MySQL 协议。
+TiDB 是一个分布式 NewSQL 数据库。它支持水平弹性扩展、ACID 事务、标准 SQL、MySQL 语法和 MySQL 协议，具有数据强一致的高可用特性，是一个不仅适合 OLTP 场景还适合 OLAP 场景的混合数据库。
 
 ### 1.1.3 TiDB 是基于 MySQL 开发的吗？
 
