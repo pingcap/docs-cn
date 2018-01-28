@@ -207,7 +207,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ### 2.3.2 滚动升级有那些影响?
 
-滚动升级 TiDB 服务，滚动升级期间不影响业务运行，需要配置最小集群拓扑（TiDB * 2、PD * 3、TiKV * 3），如果集群环境中有 pump/drainer 服务，建议先停止 drainer 后滚动升级（升级 TiDB 时会升级 pump）。
+滚动升级 TiDB 服务，滚动升级期间不影响业务运行，需要配置最小集群拓扑（TiDB * 2、PD * 3、TiKV * 3），如果集群环境中有 Pump/Drainer 服务，建议先停止 Drainer 后滚动升级（升级 TiDB 时会升级 Pump）。
 
 ### 2.3.3 Binary 如何升级？
 
