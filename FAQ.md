@@ -249,7 +249,7 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 
 ### 3.1.4 TiDB（TiKV) 数据目录？
 
-默认在 ${ [data-dir](https://pingcap.com/docs-cn/op-guide/configuration/#data-dir-1)}/data/ 目录下，其中包括 backup、 db、raft 、snap 四个目录，分别存储备份、数据、raft 数据及镜像数据。
+默认在 ${ [data-dir](https://pingcap.com/docs-cn/op-guide/configuration/#data-dir-1) }/data/ 目录下，其中包括 backup、 db、raft 、snap 四个目录，分别存储备份、数据、raft 数据及镜像数据。
 
 ### 3.1.5 TiDB 有哪些系统表？
 
