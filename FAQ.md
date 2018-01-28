@@ -207,8 +207,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ### 2.3.2 滚动升级有那些影响?
 
-滚动升级 TiDB 服务，滚动升级期间不影响业务运行（最小环境：PD*3），
-如果集群环境中有 pump / drainer 服务，建议先停止 drainer 后滚动升级 (升级 TiDB 时会升级 pump)。
+滚动升级 TiDB 服务，滚动升级期间不影响业务运行，需要配置最小集群拓扑（TiDB * 2、PD * 3、TiKV * 3），如果集群环境中有 pump/drainer 服务，建议先停止 drainer 后滚动升级（升级 TiDB 时会升级 pump）。
 
 ### 2.3.3 Binary 如何升级？
 
@@ -216,7 +215,7 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 
 ### 2.3.4 一般升级选择升级 TiKV 还是所有组件都升级？
 
-常规需要一起升，因为整个版本都是一起测试的，单独升级只有当发生一个紧急故障，然后单独对一个有问题的角色做升级。
+常规需要一起升，因为整个版本都是一起测试的，单独升级只限当发生一个紧急故障时，需要单独对一个有问题的角色做升级。
 
 # 三、集群管理
 
@@ -247,15 +246,15 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 
 ### 3.1.4 TiDB（TiKV) 数据目录？
 
-默认在 ${ [data-dir](https://pingcap.com/docs-cn/op-guide/configuration/#data-dir-1)}/data/ 目录下，其中包括 backup、 db、raft 、snap 四个目录，分别存储备份、数据、raft 数据及镜像数据。
+默认在 ${ [data-dir](https://pingcap.com/docs-cn/op-guide/configuration/#data-dir-1)}/data/ 目录下，其中包括 backup、db、raft、snap 四个目录，分别存储备份、数据、raft 数据及镜像数据。
 
 ### 3.1.5 TiDB 有哪些系统表？
 
-和 MySQL 类似，TiDB 中也有系统表，用于存放数据库运行时所需信息。具体信息参考 [TiDB 系统数据库](https://pingcap.com/docs-cn/sql/system-database/)文档。
+和 MySQL 类似，TiDB 中也有系统表，用于存放数据库运行时所需信息，具体信息参考 [TiDB 系统数据库](https://pingcap.com/docs-cn/sql/system-database/)文档。
 
 ### 3.1.6 TiDB 各节点服务器下是否有日志文件，如何管理？
 
-这三个组件默认情况下会在日志中输出标准错误，如果启动的时候通过 `--log-file` 参数指定了日志文件，那么日志会输出到指定的文件中，并且按天做 rotation。
+默认情况下各节点服务器会在日志中输出标准错误，如果启动的时候通过 `--log-file` 参数指定了日志文件，那么日志会输出到指定的文件中，并且按天做 rotation。
 
 ### 3.1.7 如何规范停止 TiDB？
 
@@ -263,11 +262,11 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 
 ### 3.1.8 TiDB 里面可以执行 kill 命令吗？
 
-可以 kill DML 语句，首先使用 `show processlist`，找到对应 session 的 id，然后执行 `kill tidb connection id`。但是，目前不能 kill DDL 语句。DDL 语句一旦开始执行便不能停止，除非出错，出错以后会自动停止运行。
+可以 kill DML 语句，首先使用 `show processlist`，找到对应 session 的 id，然后执行 `kill id`。但是，目前不能 kill DDL 语句。DDL 语句一旦开始执行便不能停止，除非出错，出错以后会自动停止运行。
 
 ### 3.1.9 TiDB 是否支持会话超时？
 
-TiDB 暂不支持数据库层面的会话超时，目前想要实现超时，在没 LB（Load Balancing） 的时候，需要应用侧记录发起的 session 的 id，通过应用自定义超时，超时以后需要到发起 query 的节点上用 kill tidb id 来杀掉 sql。目前建议使用应用程序来实现会话超时，当达到超时时间，应用层就会抛出异常继续执行后续的程序段。
+TiDB 暂不支持数据库层面的会话超时，目前想要实现超时，在没 LB（Load Balancing）的时候，需要应用侧记录发起的 Session 的 ID，通过应用自定义超时，超时以后需要到发起 Query 的节点上用 `kill id` 来杀掉 SQL。目前建议使用应用程序来实现会话超时，当达到超时时间，应用层就会抛出异常继续执行后续的程序段。
 
 ### 3.1.10 TiDB 生产环境的版本管理策略是怎么样的？如何尽可能避免频繁升级？
 
@@ -277,7 +276,7 @@ TiDB 版本目前逐步标准化，每次 Release 都包含详细的 Change log�
 
 ### 3.1.11 分不清 TiDB master 版本之间的区别，经常用错 TiDB-Ansible 版本?
 
-TiDB 目前社区非常活跃，在 GA 版本发布后，还在不断的优化和修改 BUG。因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的 [新版本发布官方网站](https://pingcap.com/weekly/)。此外 TiDB 安装推荐使用 TiDB-Ansible 进行安装，TiDB-Ansible 的版本也会随着 TiDB 的版本发布进行更新，因此建议用户在安装升级新版本的时候使用最新的 TiDB-Ansible 安装包版本进行安装。 此外，在 TiDB 版本 GA 后，对 TiDB 的版本号进行了统一管理，TiDB 的版本可以通过几种方式进行查看： 
+TiDB 目前社区非常活跃，在 GA 版本发布后，还在不断的优化和修改 BUG，因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的 [新版本发布官方网站](https://pingcap.com/weekly/)。此外 TiDB 安装推荐使用 TiDB-Ansible 进行安装，TiDB-Ansible 的版本也会随着 TiDB 的版本发布进行更新，因此建议用户在安装升级新版本的时候使用最新的 TiDB-Ansible 安装包版本进行安装。 此外，在 TiDB 版本 GA 后，对 TiDB 的版本号进行了统一管理，TiDB 的版本可以通过几种方式进行查看： 
 
 - 通过 select tidb\_version() 进行查看；
 - 通过执行 tidb-server -V 进行查看。
@@ -288,29 +287,29 @@ TiDB 目前社区非常活跃，在 GA 版本发布后，还在不断的优化�
 
 ### 3.1.13 如何对 TiDB 进行水平扩展？
 
-当您的业务不断增长时，数据库可能会面临三方面瓶颈，第一是存储资源不够，也就是磁盘空间不够；第二是计算资源不够用，如 CPU 占用较高，第三是吞吐跟不上。这时可以对 TiDB 集群做水平扩展。
+当您的业务不断增长时，数据库可能会面临三方面瓶颈，第一是存储空间，第二是计算资源，第三是读写容量，这时可以对 TiDB 集群做水平扩展。
 
-- 如果是存储资源不够，可以通过添加 TiKV Server 节点来解决。新节点启动后，PD 会自动将其他节点的部分数据迁移过去，无需人工介入。
-- 如果是计算资源不够，可以查看 TiDB Server 和 TiKV Server 节点的 CPU 消耗情况，再考虑添加 TiDB Server 节点或者是 TiKV Server 节点来解决。如添加 TiDB Server 节点，将其配置在前端的 Load Balancer 之后即可。
-- 如果是吞吐跟不上，一般可以考虑同时增加 TiDB Server 和 TiKV Server 节点。
+- 如果是存储资源不够，可以通过添加 TiKV Server 节点来解决，新节点启动后，PD 会自动将其他节点的部分数据迁移过去，无需人工介入。
+- 如果是计算资源不够，可以查看 TiDB Server 和 TiKV Server 节点的 CPU 消耗情况，再考虑添加 TiDB Server 节点或者是 TiKV Server 节点来解决，如添加 TiDB Server 节点，将其添加到前端 Load Balancer 配置之中即可。
+- 如果是容量跟不上，一般可以考虑同时增加 TiDB Server 和 TiKV Server 节点。
 
 ### 3.1.14 Percolator 用了分布式锁，crash 的客户端会保持锁，会造成锁没有 release？
 
-详细可参考： [https://pingcap.com/blog-cn/percolator-and-txn/](https://pingcap.com/blog-cn/percolator-and-txn/)
+详细可参考：[https://pingcap.com/blog-cn/percolator-and-txn/](https://pingcap.com/blog-cn/percolator-and-txn/)
 
 ### 3.1.15 TiDB 为什么选用 gRPC 而不选用 thirft，是因为 Google 在用吗？
 
-不只是因为 Google 在用，有一些比较好的特性我们需要，比如流控、加密还有 streaming。
+不只是因为 Google 在用，有一些比较好的特性我们需要，比如流控、加密还有 Streaming。
 
 ### 3.1.16 like(bindo.customers.name, jason%, 92) 这个92代表什么？
 
-转义字符是那个，默认是\ ( ASCII 92)
+转义字符是那个，默认是 ( ASCII 92)
 
 ## 3.2 PD 管理
 
 ### 3.2.1 访问 PD 报错：TiKV cluster is not bootstrapped
 
-PD 的大部分 API 需要在初始化 TiKV 集群以后才能使用，如果在部署新集群的时候只启动了 PD，还没有启动 TiKV，这时候访问 PD 就会报这个错误。遇到这个错误应该先把要部署的 TiKV 启动起来，TiKV 会自动完成初始化工作，然后就可以正常访问 PD 了。
+PD 的大部分 API 需要在初始化 TiKV 集群以后才能使用，如果在部署新集群的时候只启动了 PD，还没有启动 TiKV，这时候访问 PD 就会报这个错误。遇到这个错误应该先把要部署的 TiKV 启动起来，TiKV 会自动完成初始化工作，然后就可以正常访问 PD。
 
 ### 3.2.2 PD 启动报错：etcd cluster ID mismatch
 
@@ -326,12 +325,12 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 ### 3.2.5 PD 参数中 leader-schedule-limit 和 region-schedule-limit 调度有什么区别？
 
-leader-schedule-limit 调度是用来均衡不同 TiKV 的 leader 数，影响处理查询的负载。
-region-schedule-limit 调度是均衡不同 TiKV 的副本数，影响不同节点的数据量。
+- leader-schedule-limit 调度是用来均衡不同 TiKV 的 leader 数，影响处理查询的负载。
+- region-schedule-limit 调度是均衡不同 TiKV 的副本数，影响不同节点的数据量。
 
 ### 3.2.6 每个 region 的 replica 数量可配置吗？调整的方法是？
 
-可以，目前只能调整全局的 replica 数量。首次启动时 PD 会读配置文件（conf / pd.yml），使用其中的 max-replicas 配置，之后修改需要使用 pd-ctl 配置命令 `config set max-replicas $num`，配置后可通过 `config show all` 来查看已生效的配置。调整的时候，不会影响业务，会在后台添加，注意总 TiKV 实例数总是要大于等于设置的副本数，例如 3 副本需要至少 3 个 TiKV。增加副本数量之前需要预估额外的存储需求。pd-ctl 的详细用法可参考 [PD Control 使用说明](https://pingcap.com/docs-cn/FAQ/tools/pd-control.md)。
+可以，目前只能调整全局的 replica 数量。首次启动时 PD 会读配置文件（conf/pd.yml），使用其中的 max-replicas 配置，之后修改需要使用 pd-ctl 配置命令 `config set max-replicas $num`，配置后可通过 `config show all` 来查看已生效的配置。调整的时候，不会影响业务，会在后台添加，注意总 TiKV 实例数总是要大于等于设置的副本数，例如 3 副本需要至少 3 个 TiKV。增加副本数量之前需要预估额外的存储需求。pd-ctl 的详细用法可参考 [PD Control 使用说明](https://pingcap.com/docs-cn/FAQ/tools/pd-control.md)。
 
 ### 3.2.7 缺少命令行集群管理工具，整个集群的健康度当前是否正常，不好确认？
 
@@ -339,11 +338,11 @@ region-schedule-limit 调度是均衡不同 TiKV 的副本数，影响不同节�
 
 ### 3.2.8 集群下线节点后，怎么删除老集群节点监控信息？
 
-下线节点一般指 TiKV 节点通过 pd-ctl 或者监控判断节点是否下线完成。节点下线完成后，手动停止下线节点上相关的服务。从 Prometheus 配置文件中删除对应节点的 node\_exporter 信息。从 Ansible inventory.ini 中删除对应节点的信息。
+下线节点一般指 TiKV 节点通过 pd-ctl 或者监控判断节点是否下线完成。节点下线完成后，手动停止下线节点上相关的服务。从 Prometheus 配置文件中删除对应节点的 node_exporter 信息。从 Ansible inventory.ini 中删除对应节点的信息。
 
 ### 3.2.9 如何通过命令来查看整个集群的健康度？
 
-可以通过 pd-ctl 等工具来判断集群大体的状态，详细的集群状态还是需要通过监控来确认。
+可以通过 pd-ctl 等工具来判断集群大概的状态，详细的集群状态还是需要通过监控来确认。
 
 ## 3.3 TiDB server 管理
 
@@ -353,7 +352,7 @@ region-schedule-limit 调度是均衡不同 TiKV 的副本数，影响不同节�
 
 ### 3.3.2 TiDB 是否支持其他存储引擎？
 
-是的。除了 TiKV 之外，TiDB 还支持一些流行的单机存储引擎，比如 GolevelDB, RocksDB, BoltDB 等。如果一个存储引擎是支持事务的 KV 引擎，并且能提供一个满足 TiDB 接口要求的 Client，即可接入 TiDB。
+是的，除了 TiKV 之外，TiDB 还支持一些流行的单机存储引擎，比如 GolevelDB, RocksDB, BoltDB 等。如果一个存储引擎是支持事务的 KV 引擎，并且能提供一个满足 TiDB 接口要求的 Client，即可接入 TiDB。
 
 ### 3.3.3 为什么有的时候执行 DDL 会很慢？
 
@@ -361,26 +360,26 @@ region-schedule-limit 调度是均衡不同 TiKV 的副本数，影响不同节�
 
 - 多个 DDL 语句一起执行的时候，后面的几个 DDL 语句会比较慢。原因是当前 TiDB 集群中 DDL 操作是串行执行的。
 - 在正常集群启动后，第一个 DDL 操作的执行时间可能会比较久，一般在 30s 左右，这个原因是刚启动时 TiDB 在竞选处理 DDL 的 leader。
-- 在滚动升级或者停机升级时，由于停机顺序（先停 PD 再停 TiDB）或者用 `kill -9` 指令停 TiDB 导致 TiDB 没有及时清理注册数据，那么会影响 TiDB 启动后 10min 内的 DDL 语句处理时间。这段时间内运行 DDL 语句时，每个 DDL 状态变化都需要等待 2 \* lease（默认 lease = 10s）。
-- 当集群中某个 TiDB 与 PD 之间发生通讯问题，即 TiDB 不能从 PD 及时获取或更新版本信息，那么这时候 DDL 操作的每个状态处理需要等待 2 \* lease。
+- 在滚动升级或者停机升级时，由于停机顺序（先停 PD 再停 TiDB）或者用 `kill -9` 指令停 TiDB 导致 TiDB 没有及时清理注册数据，那么会影响 TiDB 启动后 10min 内的 DDL 语句处理时间。这段时间内运行 DDL 语句时，每个 DDL 状态变化都需要等待 2 * lease（默认 lease = 10s）。
+- 当集群中某个 TiDB 与 PD 之间发生通讯问题，即 TiDB 不能从 PD 及时获取或更新版本信息，那么这时候 DDL 操作的每个状态处理需要等待 2 * lease。
 
 ### 3.3.4 TiDB 可以使用 S3 作为后端存储吗？
 
-不可以，目前 TiDB 只支持分布式存储引擎和 Goleveldb / Rocksdb / Boltdb 引擎；
+不可以，目前 TiDB 只支持分布式存储引擎和 Goleveldb/Rocksdb/Boltdb 引擎；
 
-### 3.3.5 Infomation\_schema 能否支持更多真实信息？
+### 3.3.5 Infomation_schema 能否支持更多真实信息？
 
-Infomation\_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。 当前 TiDB 支持的：Infomation\_schema 请参考 [TiDB 系统数据库说明文档](https://pingcap.com/docs-cn/SQL/system-database/)。
+Infomation_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。 当前 TiDB 支持的：Infomation_schema 请参考 [TiDB 系统数据库说明文档](https://pingcap.com/docs-cn/SQL/system-database/)。
 
 ### 3.3.6 TiDB Backoff type 主要原因?
 
-TiDB-server 与 TiKV-server 随时进行通讯，在进行大量数据操作过程中，会出现 Server is busy 或者 backoff.maxsleep 20000ms 的日志提示信息，这是由于 TiKV-server 在处理过程中系统比较忙而出现的提示信息。通常这时候可以通过系统资源监控到 TiKV 主机系统资源使用率比较高的情况出现。如果这种情况出现，可以根据资源使用情况进行相应的扩容操作。
+TiDB-server 与 TiKV-server 随时进行通讯，在进行大量数据操作过程中，会出现 Server is busy 或者 backoff.maxsleep 20000ms 的日志提示信息，这是由于 TiKV-server 在处理过程中系统比较忙而出现的提示信息，通常这时候可以通过系统资源监控到 TiKV 主机系统资源使用率比较高的情况出现。如果这种情况出现，可以根据资源使用情况进行相应的扩容操作。
 
 ### 3.3.7 TiClient type 主要原因？
 
-TiClient Region Error 该指标描述的是在 TiDB-server 作为客户端通过 KV 接口访问 TiKV-server 进行数据操作过程中，TiDB-server 操作 TiKV-server 中的 Region 数据出现的错误类型与 mertic 指标，错误类型包括 not\_leader、stale\_epoch。出现这些错误的情况是当 TiDB-server 根据自己的缓存信息去操作 Region leader 数据的时候，Region leader 发生了迁移或者 TiKV 当前的 Region 信息与 TiDB 缓存的路由信息不一致而出现的错误提示。一般这种情况下，TiDB-server 都会自动重新从 PD 获取最新的路由数据，重做之前的操作。
+TiClient Region Error 该指标描述的是在 TiDB-server 作为客户端通过 KV 接口访问 TiKV-server 进行数据操作过程中，TiDB-server 操作 TiKV-server 中的 Region 数据出现的错误类型与 mertic 指标，错误类型包括 not_leader、stale_epoch。出现这些错误的情况是当 TiDB-server 根据自己的缓存信息去操作 Region leader 数据的时候，Region leader 发生了迁移或者 TiKV 当前的 Region 信息与 TiDB 缓存的路由信息不一致而出现的错误提示。一般这种情况下，TiDB-server 都会自动重新从 PD 获取最新的路由数据，重做之前的操作。
 
-### 3.3.8 TiDB 同时支持的最大并发连接数 ？
+### 3.3.8 TiDB 同时支持的最大并发连接数？
 
 当前版本 TiDB 没有最大连接数的限制，如果并发过大导致响应时间增加，可以通过增加 TiDB 节点进行扩容。
 
@@ -396,7 +395,7 @@ TiKV 本地存储的 cluster ID 和指定的 PD 的 cluster ID 不一致。在�
 
 ### 3.4.3 TiKV 启动报错：duplicated store address
 
-启动参数中的地址已经被其他的 TiKV 注册在 PD 集群中了。造成该错误的常见情况：TiKV `--data-dir` 指定的路径下没有数据文件夹时（删除或移动后没有更新 --data-dir），用之前参数重新启动该 TiKV。请尝试用 pdctl 的 [store 删除](https://github.com/pingcap/pd/tree/master/pdctl#store-delete-store_id)功能，删除之前的 store, 然后重新启动 TiKV 即可。
+启动参数中的地址已经被其他的 TiKV 注册在 PD 集群中了。造成该错误的常见情况：TiKV `--data-dir` 指定的路径下没有数据文件夹时（删除或移动后没有更新 --data-dir），用之前参数重新启动该 TiKV。请尝试用 pd-ctl 的[store 删除](https://github.com/pingcap/pd/tree/master/pdctl#store-delete-store_id)功能，删除之前的 store, 然后重新启动 TiKV 即可。
 
 ### 3.4.4 TiKV master 和 slave 用的是一样的压缩算法，为什么效果不一样?
 
@@ -404,7 +403,7 @@ TiKV 本地存储的 cluster ID 和指定的 PD 的 cluster ID 不一致。在�
 
 ### 3.4.5 TiKV block cache 有哪些特性？
 
-TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在默认 RocksDB 内部的 default、write 和 lock 3 个 CF 内。
+TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在默认 RocksDB 内部的 default、write、lock 3 个 CF 内。
 
 - default CF 存储的是真正的数据，与其对应的参数位于 [rocksdb.defaultcf] 项中； write CF 存储的是数据的版本信息（MVCC）、索引、小表相关的数据，相关的参数位于 [rocksdb.writecf] 项中； lock CF 存储的是锁信息，系统使用默认参数。
 - Raft Rocksdb 实例存储 Raft log。 default CF 主要存储的是 Raft log，与其对应的参数位于 [raftdb.defaultcf] 项中。
@@ -424,19 +423,19 @@ TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在�
 
 ### 3.4.8 Leader 节点挂了会影响服务吗？会有多久的影响 ？
 
-TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强一致，当一份备份出现问题时，其他的副本能保证数据的安全。通常 TiDB 配置每个 Region 为 3 副本，根据 Raft 协议，每个 Region 会选取一个 Leader 提供服务。但单个Region Leader 失效时，在最大 2 \* lease time（leasetime 是 10 秒）时间后，通过 Raft 协议会很快选新的 Region Leader 提供服务。
+TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强一致，当一份备份出现问题时，其他的副本能保证数据的安全。通常 TiDB 配置每个 Region 为 3 副本，根据 Raft 协议，每个 Region 会选取一个 Leader 提供服务。但单个Region Leader 失效时，在最大 2 * lease time（leasetime 是 10 秒）时间后，通过 Raft 协议会很快选新的 Region Leader 提供服务。
 
-### 3.4.9 TiKV 在分别那些场景下占用大量 IO，内存，CPU，超过参数配置的多倍？
+### 3.4.9 TiKV 在分别在那些场景下占用大量 IO、内存、CPU（超过参数配置的多倍）？
 
-在大量写入、读取的场景中会占用大量的磁盘 IO、内存和 CPU。在执行很复杂的查询，比如会产生很大中间结果集的情况下，会消耗很多的内存和 CPU 资源。
+在大量写入、读取的场景中会占用大量的磁盘 IO、内存、CPU。在执行很复杂的查询，比如会产生很大中间结果集的情况下，会消耗很多的内存和 CPU 资源。
 
-### 3.4.10 TiKV 是否可以使用 SAS / SATA 盘或者进行 SSD / SAS 混合部署？
+### 3.4.10 TiKV 是否可以使用 SAS/SATA 盘或者进行 SSD/SAS 混合部署？
 
 不可以使用，TiDB 在进行 OLTP 场景中，数据访问和操作需要高 IO 磁盘的支持，TiDB 作为强一致的分布式数据库，存在一定的写放大，如副本复制、存储底层 Compaction，因此，TiDB 部署的最佳实践中推荐用户使用 NVMe SSD 磁盘作为数据存储磁盘。另外，TiKV 与 PD 不能混合部署。
 
 ### 3.4.11 数据表 Key 的 Range 范围划分是在数据接入之前就已经划分好了吗？
 
-不是的，这个和 MySQL 分表规则不一样，需要提前设置好，TiKV 是根据 Region 的 大小动态分裂的。
+不是的，这个和 MySQL 分表规则不一样，需要提前设置好，TiKV 是根据 Region 的大小动态分裂的。
 
 ### 3.4.12 Region 是如何进行分裂的？
 
@@ -444,11 +443,11 @@ TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强
 
 ### 3.4.13 TiKV 是否有类似 MySQL 的 innodb_flush_log_trx_commit 参数，来保证提交数据不丢失？
 
-是的，TiKV 单机的存储引擎目前使用两个 rockdb 实例，其中一个存储 raftlog，TiKV 有个 sync-log 参数，在ture 的情况下，每次提交都会强制刷盘到 raft-log，如果发生 crash 后，通过 raft-log 进行 KV 数据的恢复。
+是的，TiKV 单机的存储引擎目前使用两个 rockdb 实例，其中一个存储 raft-log，TiKV 有个 sync-log 参数，在ture 的情况下，每次提交都会强制刷盘到 raft-log，如果发生 crash 后，通过 raft-log 进行 KV 数据的恢复。
 
 ### 3.4.14 对 WAL 存储有什么推荐的硬件配置，例如 SSD，RAID 级别，RAID 卡 cache 策略，NUMA 设置 ,文件系统选择，操作系统的 IO 调度策略等？
 
-WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD，RAID 如果允许的话，最好是 RAID10，RAID 卡 cache、操作系统 IO 调度目前没有针对性的 best pratise，Linux 7 以上默认配置即可， NUMA 没有特别建议，Muma 内存分配策略可以尝试使用 `interleave = all`，文件系统建议 EXT4。
+WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD，RAID 如果允许的话，最好是 RAID 10，RAID 卡 cache、操作系统 IO 调度目前没有针对性的 best pratise，Linux 7 以上默认配置即可，NUMA 没有特别建议，Muma 内存分配策略可以尝试使用 `interleave = all`，文件系统建议 EXT4。
 
 ### 3.4.15 在最严格 sync-log = ture 的数据可用模式下，写入性能如何？
 
@@ -456,7 +455,7 @@ WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD
 
 ### 3.4.16 是否可以利用上层的 Raft + 多副本，达到完全的数据可靠，单机存储引擎不需要最严格模式？
 
-Raft 是强一致复制，写入必须同时超过 50% 的节点接受、应用才返回 ACK（三节点中二节点）,在这种情况下，数据一致性是可以保证的，但理论上两个节点也可能同时 crash，所以在诸如金融行业对数据零容忍的场景，还是需要开启 sync-log。
+Raft 是强一致复制，写入必须同时超过 50% 的节点接受、应用才返回 ACK（三节点中二节点），在这种情况下，数据一致性是可以保证的，但理论上两个节点也可能同时Crash，所以在诸如金融行业对数据零容忍的场景，还是需要开启 sync-log。
 
 ### 3.4.17 使用 Raft 协议，数据写入会有多次网络的 roundtrip，实际写入延迟如何？
 
@@ -489,17 +488,17 @@ TiKV 支持单独进行接口调用，理论上也可以起个实例做为 Cache
 
 ### 3.5.3 我们的 DBA 测试过 MySQL 性能，单台 TiDB 的性能没有 MySQL 性能那么好？
 
-TiDB 设计的目标就是针对 MySQL 单台容量限制而被动做的分库分表的场景，或者需要强一致性和完整分布式事务的场景。他的优势是通过尽量下推到存储节点进行并行计算。对于小表（比如千万级以下），不适合 TiDB， 因为数据量少，region 有限，发挥不了并行的优势，最极端的就是计数器表，几行记录高频更新，这几行在 TiDB 里，会变成存储引擎上的几个 KV, 然后只落在一个 Region 里，而这个 Region 只落在一个节点上。加上后台强一致性复制的开销，TiDB 引擎到 TiKV 引擎的开销，最后表现出来的就是没有单个 MySQL 好。
+TiDB 设计的目标就是针对 MySQL 单台容量限制而被迫做的分库分表的场景，或者需要强一致性和完整分布式事务的场景。它的优势是通过尽量下推到存储节点进行并行计算。对于小表（比如千万级以下），不适合 TiDB， 因为数据量少，region 有限，发挥不了并行的优势，最极端的就是计数器表，几行记录高频更新，这几行在 TiDB 里，会变成存储引擎上的几个 KV，然后只落在一个 Region 里，而这个 Region 只落在一个节点上。加上后台强一致性复制的开销，TiDB 引擎到 TiKV 引擎的开销，最后表现出来的就是没有单个 MySQL 好。
 
 ## 3.6 TiDB 备份恢复
 
 ### 3.6.1 TiDB 主要备份方式？
 
-目前 TiDB 主要依赖  mydumper 逻辑导出进行备份，具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)，虽然 TiDB 也支持使用 MySQL 官方的 mysqldump 工具来进行数据的备份恢复工作，但相比于 mydumper / loader，性能会慢很多，大量数据的备份恢复会花费很多时间，这里我们并不推荐。
+目前 TiDB 主要依赖 mydumper 逻辑导出进行备份，具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)，虽然 TiDB 也支持使用 MySQL 官方的 mysqldump 工具来进行数据的备份恢复工作，但相比于 mydumper/loader，性能会慢很多，大量数据的备份恢复会花费很多时间，这里我们并不推荐。
 
 使用 mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64；
 
-loader的 -t 参数可以根据 tikv 的实例个数以及负载进行评估调整，例如 3 个 tikv 的场景， 此值可以设为 3 \*(1 ～ n)，当 tikv 负载过高，loader 以及 tidb 日志中出现大量 backoffer.maxSleep 15000ms is exceeded 可以适当调小该值，当 tikv 负载不是太高的时候，可以适当调大该值。
+loader的 -t 参数可以根据 tikv 的实例个数以及负载进行评估调整，例如 3 个 TiKV 的场景， 此值可以设为 3 * (1 ～ n)，当 tikv 负载过高，loader 以及 tidb 日志中出现大量 backoffer.maxSleep 15000ms is exceeded 可以适当调小该值，当 tikv 负载不是太高的时候，可以适当调大该值。
 
 # 四、数据、流量迁移
 
