@@ -66,7 +66,7 @@ TiDB 支持 ACID 分布式事务，事务模型是以 Google 的 Percolator 模�
 
 详细可参考：[https://github.com/pingcap/docs/blob/master/SQL/variable.md](https://github.com/pingcap/docs/blob/master/sql/variable.md)
 
-### 1.1.15 TiDB 是否支持 select for update？
+### 1.1.15 TiDB 是否支持 select for update 吗？
 
 支持，但语义上和 MySQL 有区别，TiDB 是分布式数据库，采用的乐观锁机制，也就说 select for update 不在事务开启就锁住数据，而是其他事务在提交的时候进行冲突检查，如有冲突，会进行回滚。
 
@@ -145,7 +145,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ### 2.2.1 Ansible 部署方式（强烈推荐）
 
-详细可参考： [http://t.cn/R9vib7R](http://t.cn/R9vib7R)
+详细可参考：[http://t.cn/R9vib7R](http://t.cn/R9vib7R)
 
 #### 2.2.1.1 为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？
 
@@ -187,11 +187,11 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ### 2.2.2 TiDB 离线 Ansible 部署方案
 
-首先这不是我们建议的方式，如果中控机没有外网，也可以通过离线 Ansible 部署方式，详情可参考：[https://pingcap.com/docs-cn/op-guide/offlne-ansible-deployment/](https://pingcap.com/docs-cn/op-guide/offline-ansible-deployment/)
+首先这不是我们建议的方式，如果中控机没有外网，也可以通过离线 Ansible 部署方式，详情可参考：[https://pingcap.com/docs-cn/op-guide/offline-ansible-deployment/](https://pingcap.com/docs-cn/op-guide/offline-ansible-deployment/)
 
 ### 2.2.3 Docker Compose 快速构建集群（单机部署）
 
-使用 docker-compose 在本地一键拉起一个集群，包括集群监控，还可以根据需求自定义各个组件的软件版本和实例个数，以及自定义配置文件，这种只限于开发环境，详细可参考 [官方文档](https://github.com/pingcap/tidb-docker-compose)。
+使用 docker-compose 在本地一键拉起一个集群，包括集群监控，还可以根据需求自定义各个组件的软件版本和实例个数，以及自定义配置文件，这种只限于开发环境，详细可参考：[官方文档](https://github.com/pingcap/tidb-docker-compose)。
 
 ## 2.3 升级
 
@@ -246,11 +246,11 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 
 ### 3.1.4 TiDB（TiKV) 有那些数据目录？
 
-默认在 ${ [data-dir](https://pingcap.com/docs-cn/op-guide/configuration/#data-dir-1)}/data/ 目录下，其中包括 backup、db、raft、snap 四个目录，分别存储备份、数据、raft 数据及镜像数据。
+默认在 ${[data-dir](https://pingcap.com/docs-cn/op-guide/configuration/#data-dir-1)}/data/ 目录下，其中包括 backup、db、raft、snap 四个目录，分别存储备份、数据、raft 数据及镜像数据。
 
 ### 3.1.5 TiDB 有哪些系统表？
 
-和 MySQL 类似，TiDB 中也有系统表，用于存放数据库运行时所需信息，具体信息参考 [TiDB 系统数据库](https://pingcap.com/docs-cn/sql/system-database/)文档。
+和 MySQL 类似，TiDB 中也有系统表，用于存放数据库运行时所需信息，具体信息参考：[TiDB 系统数据库](https://pingcap.com/docs-cn/sql/system-database/)文档。
 
 ### 3.1.6 TiDB 各节点服务器下是否有日志文件，如何管理？
 
@@ -365,7 +365,7 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 ### 3.3.5 Infomation_schema 能否支持更多真实信息？
 
-Infomation_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。当前 TiDB 支持的：Infomation\_schema 请参考 [TiDB 系统数据库说明文档](https://pingcap.com/docs-cn/SQL/system-database/)。
+Infomation_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。当前 TiDB 支持的：Infomation\_schema 请参考[TiDB 系统数据库说明文档](https://pingcap.com/docs-cn/SQL/system-database/)。
 
 ### 3.3.6 TiDB Backoff type 主要原因?
 
@@ -479,7 +479,7 @@ TiKV 支持单独进行接口调用，理论上也可以起个实例做为 Cache
 ### 3.5.2 TiDB 集群容量 QPS 与节点数之间关系如何，和 MySQL 对比如何？
 
 - 在 10 节点内，TiDB 写入能力（Insert TPS）和节点数量基本成 40% 线性递增，MySQL 由于是单节点写入，所以不具备写入扩展能力。
-- MySQL 读扩容可以通过添加从库进行扩展，但写流量无法扩展，只能通过分库分表，而分库分表有很多问题，具体参考： [http://t.cn/RTD18qV](http://t.cn/RTD18qV)。
+- MySQL 读扩容可以通过添加从库进行扩展，但写流量无法扩展，只能通过分库分表，而分库分表有很多问题，具体参考：[http://t.cn/RTD18qV](http://t.cn/RTD18qV)。
 - TiDB 不管是读流量、还是写流量都可以通过添加节点快速方便的进行扩展。
 
 ### 3.5.3 我们的 DBA 测试过 MySQL 性能，单台 TiDB 的性能没有 MySQL 性能那么好？
@@ -540,7 +540,7 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法是程序实
 
 - job_name: &#39;syncer_ops&#39; // 任务名字
     static_configs:
-- targets: [&#39;10.10.1.1:10096&#39;] //syncer监听地址与端口，通知 prometheus 去拉去 syncer 的数据。
+- targets: [&#39;10.10.1.1:10096&#39;] //syncer监听地址与端口，通知 prometheus 拉取 syncer 的数据。
 
 重启 Prometheus 即可。
 
@@ -622,7 +622,7 @@ Delete，Truncate 和 Drop 都不会立即释放空间，对于 Truncate 和 Dro
 
 ### 5.1.2 Count 如何加速？
 
-count 就是暴力扫表，提高并发度能显著的提升速度，修改并发度可以参考 `tidb_distsql_scan_concurrency`变量，但是也要看 CPU 和 I/O 资源。TiDB 每次查询都要访问 TiKV，在数据量小的情况下，MySQL 都在内存里，TiDB 还需要进行一次网络访问。
+Count 就是暴力扫表，提高并发度能显著的提升速度，修改并发度可以参考 `tidb_distsql_scan_concurrency` 变量，但是也要看 CPU 和 I/O 资源。TiDB 每次查询都要访问 TiKV，在数据量小的情况下，MySQL 都在内存里，TiDB 还需要进行一次网络访问。
 
 提升建议：
 
