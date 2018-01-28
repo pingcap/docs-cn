@@ -278,8 +278,8 @@ TiDB 版本目前逐步标准化，每次 Release 都包含详细的 Change log�
 
 TiDB 目前社区非常活跃，在 GA 版本发布后，还在不断的优化和修改 BUG，因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的 [新版本发布官方网站](https://pingcap.com/weekly/)。此外 TiDB 安装推荐使用 TiDB-Ansible 进行安装，TiDB-Ansible 的版本也会随着 TiDB 的版本发布进行更新，因此建议用户在安装升级新版本的时候使用最新的 TiDB-Ansible 安装包版本进行安装。 此外，在 TiDB 版本 GA 后，对 TiDB 的版本号进行了统一管理，TiDB 的版本可以通过几种方式进行查看： 
 
-- 通过 select tidb\_version() 进行查看；
-- 通过执行 tidb-server -V 进行查看。
+- 通过 `select tidb_version()` 进行查看；
+- 通过执行 `tidb-server -V` 进行查看。
 
 ### 3.1.12 有没有图形化部署 TiDB 的工具？
 
