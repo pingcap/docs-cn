@@ -62,11 +62,11 @@ TiDB 支持 ACID 分布式事务，事务模型是以 Google 的 Percolator 模�
 
 目前 [官方文档](https://pingcap.com/docs-cn/)是获取 TiDB 相关知识最主要、最及时的发布途径。除此之外，我们也有一些技术沟通群，如有需求可发邮件至 [info@pingcap.com](mailto:info@pingcap.com) 获取。
 
-### 1.1.14 MySQL variables 兼容性列表吗 ？
+### 1.1.14 TiDB 对那些 MySQL variables 兼容？
 
 详细可参考：[https://github.com/pingcap/docs/blob/master/SQL/variable.md](https://github.com/pingcap/docs/blob/master/sql/variable.md)
 
-### 1.1.15 TiDB 支持 select for update ？
+### 1.1.15 TiDB 是否支持 select for update？
 
 支持，但语义上和 MySQL 有区别，TiDB 是分布式数据库，采用的乐观锁机制，也就说 select for update 不在事务开启就锁住数据，而是其他事务在提交的时候进行冲突检查，如有冲突，会进行回滚。
 
@@ -84,7 +84,7 @@ TiDB 字符集默认就是 UTF8 而且目前只支持 UTF8，字符串就是 Mem
 
 ### 1.2.2 计算 TiDB
 
-#### 1.2.2.1 TiDB 详细解读？
+#### 1.2.2.1 TiDB 详细解读
 
 [http://t.cn/RTKRkBh](http://t.cn/RTKRkBh)
 
@@ -98,7 +98,7 @@ TiDB 字符集默认就是 UTF8 而且目前只支持 UTF8，字符串就是 Mem
 
 ## 2.1 环境准备
 
-### 2.1.1 操作系统版本要求？
+### 2.1.1 操作系统版本要求
 
 | **Linux 操作系统平台** | **版本** |
 | --- | --- |
@@ -110,11 +110,11 @@ TiDB 字符集默认就是 UTF8 而且目前只支持 UTF8，字符串就是 Mem
 
 TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运行在 Intel 架构服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络，作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境，具体可以参考 TiDB 的 [官方部署要求](https://pingcap.com/docs-cn/op-guide/recommendation/)。 其中 TiDB 在 CentOS 7.3 的环境下进行大量的测试，同时也有很多这个操作系统的部署最佳实践，因此，我们推荐客户在部署 TiDB 的时候使用 CentOS 7.3+ 以上的Linux 操作系统。
 
-### 2.1.2 硬件要求？
+### 2.1.2 硬件要求
 
 TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台。对于开发，测试，及生产环境的服务器硬件配置有以下要求和建议：
 
-#### 2.1.2.1 开发及测试环境？
+#### 2.1.2.1 开发及测试环境
 
 | **组件** | **CPU** | **内存** | **本地存储** | **网络** | **实例数量(最低要求)** |
 | --- | --- | --- | --- | --- | --- |
@@ -165,7 +165,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 - svc 启停服务
 - svstat 查看进程状态
 
-#### 2.2.1.5 inventory.ini 变量参数解读？
+#### 2.2.1.5 inventory.ini 变量参数解读
 
 | **变量** | **含义** |
 | --- | --- |
@@ -185,7 +185,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | enable_slow_query_log | TiDB 慢查询日志记录到单独文件({{ deploy_dir }}/log/tidb_slow_query.log)，默认为 False，记录到 tidb 日志 |
 | deploy_without_tidb | KV 模式，不部署 TiDB 服务，仅部署 PD、TiKV 及监控服务，请将 inventory.ini 文件中 tidb_servers 主机组 IP 设置为空。 |
 
-### 2.2.2 TiDB 离线 Ansible 部署方案？
+### 2.2.2 TiDB 离线 Ansible 部署方案
 
 首先这不是我们建议的方式，如果中控机没有外网，也可以通过离线 Ansible 部署方式，详情可参考：[https://pingcap.com/docs-cn/op-guide/offlne-ansible-deployment/](https://pingcap.com/docs-cn/op-guide/offline-ansible-deployment/)
 
@@ -234,7 +234,7 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 | 滚动升级除 pd 外模块 | ansible-playbook rolling\_update.yml --skip-tags=pd |
 | 滚动升级监控组件 | ansible-playbook rolling\_update\_monitor.yml |
 
-### 3.1.2 登陆 TiDB？
+### 3.1.2 TiDB 如何登陆？
 
 和 MySQL 登陆方式一样，可以按照下面例子进行登陆。
 
@@ -244,7 +244,7 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 
 和 MySQL 一样，TiDB 也分为静态参数和固态参数，静态参数可以直接通过`set global xxx = n`的方式进行修改，不过新参数值只限于该实例生命周期有效。
 
-### 3.1.4 TiDB（TiKV) 数据目录？
+### 3.1.4 TiDB（TiKV) 有那些数据目录？
 
 默认在 ${ [data-dir](https://pingcap.com/docs-cn/op-guide/configuration/#data-dir-1)}/data/ 目录下，其中包括 backup、db、raft、snap 四个目录，分别存储备份、数据、raft 数据及镜像数据。
 
@@ -285,7 +285,7 @@ TiDB 目前社区非常活跃，在 GA 版本发布后，还在不断的优化�
 
 暂时没有。
 
-### 3.1.13 如何对 TiDB 进行水平扩展？
+### 3.1.13 TiDB 如何进行水平扩展？
 
 当您的业务不断增长时，数据库可能会面临三方面瓶颈，第一是存储空间，第二是计算资源，第三是读写容量，这时可以对 TiDB 集群做水平扩展。
 
@@ -371,7 +371,7 @@ Infomation_schema 库里面的表主要是为了兼容 MySQL 而存在，有些�
 
 TiDB-server 与 TiKV-server 随时进行通讯，在进行大量数据操作过程中，会出现 Server is busy 或者 backoff.maxsleep 20000ms 的日志提示信息，这是由于 TiKV-server 在处理过程中系统比较忙而出现的提示信息，通常这时候可以通过系统资源监控到 TiKV 主机系统资源使用率比较高的情况出现。如果这种情况出现，可以根据资源使用情况进行相应的扩容操作。
 
-### 3.3.7 TiClient type 主要原因？
+### 3.3.7 TiDB TiClient type 主要原因？
 
 TiClient Region Error 该指标描述的是在 TiDB-server 作为客户端通过 KV 接口访问 TiKV-server 进行数据操作过程中，TiDB-server 操作 TiKV-server 中的 Region 数据出现的错误类型与 mertic 指标，错误类型包括 not_leader、stale_epoch。出现这些错误的情况是当 TiDB-server 根据自己的缓存信息去操作 Region leader 数据的时候，Region leader 发生了迁移或者 TiKV 当前的 Region 信息与 TiDB 缓存的路由信息不一致而出现的错误提示。一般这种情况下，TiDB-server 都会自动重新从 PD 获取最新的路由数据，重做之前的操作。
 
@@ -417,7 +417,7 @@ TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在�
 - 原主 Leader 的节点卡了，导致没有及时给 Follower 发送消息。
 - Raftstore 线程卡了。
 
-### 3.4.8 Leader 节点挂了会影响服务吗？会有多久的影响 ？
+### 3.4.8 Leader 节点挂了会影响服务吗？会有多长时间的影响？
 
 TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强一致，当一份备份出现问题时，其他的副本能保证数据的安全。通常 TiDB 配置每个 Region 为 3 副本，根据 Raft 协议，每个 Region 会选取一个 Leader 提供服务。但单个Region Leader 失效时，在最大 2 * lease time（leasetime 是 10 秒）时间后，通过 Raft 协议会很快选新的 Region Leader 提供服务。
 
@@ -672,9 +672,9 @@ count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 
 TiDB 使用 Prometheus + Grafana 组成 TiDB 数据库系统的监控系统，用户在 Grafana 上通过 dashboard 可以监控到 TiDB 的各类运行指标，包括系统资源的监控指标，包括客户端连接与 SQL 运行的指标，包括内部通讯和 Region 调度的指标，通过这些指标，可以让数据库管理员更好的了解到系统的运行状态，运行瓶颈等内容。在监控指标的过程中，我们按照 TiDB 不同的模块，分别列出了各个模块重要的指标项，一般用户只需要关注这些常见的指标项。具体指标请参见 [官方文档](https://pingcap.com/docs-cn/op-guide/dashboard-overview-info/)。
 
-### 7.2.2 普罗米修斯监控数据默认 1个月 自动清除一次，可以自己设定成 2个月 或者 手动删除吗？
+### 7.2.2 Prometheus 监控数据默认 1个月自动清除一次，可以自己设定成2个月或者手动删除吗？
 
-可以的，在普罗米修斯启动的机器上，找到启动脚本，然后修改启动参数，然后重启普罗米修斯。
+可以的，在 Prometheus 启动的机器上，找到启动脚本，然后修改启动参数，然后重启 Prometheus 生效。
 
 # 八、Cloud TiDB
 
@@ -717,7 +717,7 @@ GC Life Time 间隔时间过短，长事务本应读到的数据可能被清理�
 ### 9.2.1 ERROR 2013 (HY000): Lost connection to MySQL server during query 问题的排查方法？
 
 - log 中是否有 panic
-- dmesg 中是否有 oom, 命令：`dmesg -T|grep -i oom`
+- dmesg 中是否有 oom, 命令：`dmesg -T | grep -i oom`
 - 长时间没有访问，也会收到这个报错，一般是 tcp 超时导致的，tcp 长时间不用, 会被操作系统 kill
 
 ### 9.2.2 ERROR 1105 (HY000): other error: unknown error Wire Error(InvalidEnumValue(4004)) 是什么意思？
