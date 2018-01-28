@@ -18,7 +18,7 @@ TiDB 是一个分布式 NewSQL 数据库。它支持水平弹性扩展、ACID �
 
 不是，虽然 TiDB 支持 MySQL 语法和协议，但是 TiDB 是由 PingCAP 团队完全自主开发的产品。
 
-### 1.1.4 TiDB 、TiKV 、Placement Driver (PD)  主要作用？
+### 1.1.4 TiDB、TiKV、Placement Driver (PD)  主要作用？
 
 - TiDB 是 Server 计算层，主要负责 SQL 的解析、制定查询计划、生成执行器。
 - TiKV 是分布式 Key-Value 存储引擎，用来存储真正的数据，简而言之，TiKV 是 TiDB 的存储引擎。
