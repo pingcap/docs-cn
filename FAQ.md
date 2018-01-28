@@ -149,9 +149,9 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 详细可参考： [http://t.cn/R9vib7R](http://t.cn/R9vib7R)
 
-#### 2.2.1.1 为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？
+#### 2.2.1.1 为什么修改了 TiKV / PD 的 toml 配置文件，却没有生效？
 
-如果要使用配置文件，请设置 TiKV/PD 的 `--config` 参数，TiKV/PD 默认情况下不会读取配置文件。PD 只会在第一次启动时读取配置文件，之后都需要通过 pd-ctl 修改。
+这种情况一般是因为没有使用 `--config` 参数来指定配置文件（目前只会出现在 binary 部署的场景），TiKV/PD 会按默认值来设置。如果要使用配置文件，请设置 TiKV / PD 的 `--config` 参数。对于 TiKV 组件，修改配置后重启服务即可；对于 PD 组件，只会在第一次启动时读取配置文件，之后可以使用 pd-ctl 的方式来修改配置，详情可参考：[https://pingcap.com/docs-cn/tools/pd-control/](https://pingcap.com/docs-cn/tools/pd-control/)
 
 #### 2.2.1.2 TiDB 监控框架 Prometheus + Grafana 监控机器建议单独还是多台部署？
 
@@ -189,7 +189,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ### 2.2.2 TiDB 离线 Ansible 部署方案？
 
-首先这不是我们建议的方式，如果中控机没有外网，也可以通过离线 Ansible 部署方式，不过需要注意的是，离线部署的各组件版本下载地址不会及时更新，所以需要在有外网的机器执行 local_prepare 来下载相关依赖，详情可参考： [https://pingcap.com/docs-cn/op-guide/offlne-ansible-deployment/](https://pingcap.com/docs-cn/op-guide/offline-ansible-deployment/)
+首先这不是我们建议的方式，如果中控机没有外网，也可以通过离线 Ansible 部署方式，详情可参考： [https://pingcap.com/docs-cn/op-guide/offlne-ansible-deployment/](https://pingcap.com/docs-cn/op-guide/offline-ansible-deployment/)
 
 ### 2.2.3 Docker Compose 快速构建集群（单机部署）
 
