@@ -442,9 +442,9 @@ TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强
 
 ### 3.4.12 Region 是如何进行分裂的？
 
-首先不是前期划分好的，但确实有 Region 分裂机制，有一个参数 `region\_split\_size`，超过这个值就会触发分裂，分裂后的信息会汇报给 PD。
+首先不是前期划分好的，但确实有 Region 分裂机制，有一个参数 `region_split_size`，超过这个值就会触发分裂，分裂后的信息会汇报给 PD。
 
-### 3.4.13 TiKV 是否有类似 MySQL 的 innodb\_flush\_log\_trx\_commit 参数，来保证提交数据不丢失？
+### 3.4.13 TiKV 是否有类似 MySQL 的 innodb_flush_log_trx_commit 参数，来保证提交数据不丢失？
 
 是的，TiKV 单机的存储引擎目前使用两个 rockdb 实例，其中一个存储 raftlog，TiKV 有个 sync-log 参数，在ture 的情况下，每次提交都会强制刷盘到 raft-log，如果发生 crash 后，通过 raft-log 进行 KV 数据的恢复。
 
