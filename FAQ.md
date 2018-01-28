@@ -171,21 +171,21 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 | **变量** | **含义** |
 | --- | --- |
-| cluster\_name | 集群名称，可调整 |
-| tidb\_version | TiDB 版本，TiDB-Ansible 各分支默认已配置 |
-| deployment\_method | 部署方式，默认为 binary，可选 docker |
-| process\_supervision | 进程监管方式，默认为 systemd，可选 supervise |
-| timezone | 修改部署目标机器时区，默认为 Asia/Shanghai, 可调整，与set\_timezone 变量结合使用 |
-| set\_timezone | 默认为 True，即修改部署目标机器时区，关闭可修改为 False |
-| enable\_elk | 目前不支持，请忽略 |
-| enable\_firewalld | 开启防火墙，默认不开启 |
-| enable\_ntpd | 检测部署目标机器 NTP 服务，默认为 True，请勿关闭 |
-| machine\_benchmark | 检测部署目标机器磁盘 IOPS，默认为 True，请勿关闭 |
-| set\_hostname | 根据 IP 修改部署目标机器主机名，默认为 False |
-| enable\_binlog | 是否部署 pump 并开启 binlog，默认为 False，依赖 Kafka 集群，参见 zookeeper\_addrs 变量 |
-| zookeeper\_addrs | binlog Kafka 集群的 zookeeper 地址 |
-| enable\_slow\_query\_log | TiDB 慢查询日志记录到单独文件({{ deploy\_dir }}/log/tidb\_slow\_query.log)，默认为 False，记录到 tidb 日志 |
-| deploy\_without\_tidb | KV 模式，不部署 TiDB 服务，仅部署 PD、TiKV 及监控服务，请将 inventory.ini 文件中 tidb\_servers 主机组 IP 设置为空。 |
+| cluster_name | 集群名称，可调整 |
+| tidb_version | TiDB 版本，TiDB-Ansible 各分支默认已配置 |
+| deployment_method | 部署方式，默认为 binary，可选 docker |
+| process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
+| timezone | 修改部署目标机器时区，默认为 Asia/Shanghai, 可调整，与set_timezone 变量结合使用 |
+| set_timezone | 默认为 True，即修改部署目标机器时区，关闭可修改为 False |
+| enable_elk | 目前不支持，请忽略 |
+| enable_firewalld | 开启防火墙，默认不开启 |
+| enable_ntpd | 检测部署目标机器 NTP 服务，默认为 True，请勿关闭 |
+| machine_benchmark | 检测部署目标机器磁盘 IOPS，默认为 True，请勿关闭 |
+| set_hostname | 根据 IP 修改部署目标机器主机名，默认为 False |
+| enable_binlog | 是否部署 pump 并开启 binlog，默认为 False，依赖 Kafka 集群，参见 zookeeper_addrs 变量 |
+| zookeeper_addrs | binlog Kafka 集群的 zookeeper 地址 |
+| enable_slow_query_log | TiDB 慢查询日志记录到单独文件({{ deploy_dir }}/log/tidb_slow_query.log)，默认为 False，记录到 tidb 日志 |
+| deploy_without_tidb | KV 模式，不部署 TiDB 服务，仅部署 PD、TiKV 及监控服务，请将 inventory.ini 文件中 tidb_servers 主机组 IP 设置为空。 |
 
 ### 2.2.2 TiDB 离线 Ansible 部署方案？
 
