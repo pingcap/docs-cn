@@ -12,7 +12,7 @@ category: FAQ
 
 ### 1.1.2 TiDB 是什么？
 
-TiDB 是一个分布式 NewSQL 数据库。它具有弹性水平扩展、支持 ACID 事务、支持标准 SQL 、具有数据强一致的高可用、不仅适合 OLTP 场景还适合 OLAP 场景的混合数据库。同时 TiDB 还支持 MySQL 语法和 MySQL 协议。
+TiDB 是一个分布式 NewSQL 数据库。它具有弹性水平扩展、支持 ACID 事务、支持标准 SQL、具有数据强一致的高可用、不仅适合 OLTP 场景还适合 OLAP 场景的混合数据库。同时 TiDB 还支持 MySQL 语法和 MySQL 协议。
 
 ### 1.1.3 TiDB 是基于 MySQL 开发的吗？
 
@@ -20,11 +20,9 @@ TiDB 是一个分布式 NewSQL 数据库。它具有弹性水平扩展、支持 
 
 ### 1.1.4 TiDB 、TiKV 、Placement Driver (PD)  主要作用？
 
-TiDB 是 Server 计算层，主要负责 SQL 的解析、制定查询计划、生成执行器。
-
-TiKV 是分布式 Key-Value 存储引擎，用来存储真正的数据，简而言之，TiKV 是 TiDB 的存储引擎。
-
-PD 是 TiDB 集群的管理组件，负责存储 TiKV 的元数据，同时也负责分配时间戳以及对 TiKV 做负载均衡调度。
+- TiDB 是 Server 计算层，主要负责 SQL 的解析、制定查询计划、生成执行器。
+- TiKV 是分布式 Key-Value 存储引擎，用来存储真正的数据，简而言之，TiKV 是 TiDB 的存储引擎。
+- PD 是 TiDB 集群的管理组件，负责存储 TiKV 的元数据，同时也负责分配时间戳以及对 TiKV 做负载均衡调度。
 
 ### 1.1.5 TiDB 易用性如何？
 
@@ -32,7 +30,7 @@ TiDB 使用起来很简单，可以将 TiDB 集群当成 MySQL 来用，你可�
 
 ### 1.1.6 TiDB 和 MySQL 兼容性如何？
 
-TiDB 目前还不支持触发器、存储过程、自定义函数、外键，除此之外，TiDB 支持 MySQL 5.7 99.9%以上的语法。
+TiDB 目前还不支持触发器、存储过程、自定义函数、外键，除此之外，TiDB 支持绝大部分 MySQL 5.7的语法。
 
 详情参见：[与 MySQL 兼容性对比](sql/mysql-compatibility.md)。
 
@@ -42,19 +40,19 @@ TiDB 天然具备高可用特性，TiDB、TiKV、PD 这三个组件都能容忍�
 
 ### 1.1.8 TiDB 数据是强一致的吗？
 
-TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强一致。单个副本失效时，不影响数据的可靠性。
+TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强一致，单个副本失效时，不影响数据的可靠性。
 
 ### 1.1.9 TiDB 支持分布式事务吗？
 
-TiDB 支持 ACID 分布式事务。事务模型是以 Google 的 Percolator 模型为基础，并做了一些优化。这个模型需要一个时间戳分配器，分配唯一且递增的时间戳。在 TiDB 集群中，PD 承担时间戳分配器的角色。
+TiDB 支持 ACID 分布式事务，事务模型是以 Google 的 Percolator 模型为基础，并做了一些优化。这个模型需要一个时间戳分配器，分配唯一且递增的时间戳。在 TiDB 集群中，PD 承担时间戳分配器的角色。
 
 ### 1.1.10 TiDB 支持哪些编程语言?
 
-只要支持 MySQL Client / Driver 的编程语言，都可以直接使用 TiDB。
+只要支持 MySQL Client/Driver 的编程语言，都可以直接使用 TiDB。
 
 ### 1.1.11 TiDB 是否支持其他存储引擎？
 
-是的，除了 TiKV 之外，TiDB 还支持一些流行的单机存储引擎，比如 GolevelDB, RocksDB,  BoltDB 等。如果一个存储引擎是支持事务的 KV 引擎，并且能提供一个满足 TiDB 接口要求的 Client，即可接入 TiDB。
+是的，除了 TiKV 之外，TiDB 还支持一些流行的单机存储引擎，比如 GolevelDB、RocksDB、BoltDB 等。如果一个存储引擎是支持事务的 KV 引擎，并且能提供一个满足 TiDB 接口要求的 Client，即可接入 TiDB。
 
 ### 1.1.12 官方有没有三中心跨机房多活部署的推荐方案？
 
@@ -66,7 +64,7 @@ TiDB 支持 ACID 分布式事务。事务模型是以 Google 的 Percolator 模�
 
 ### 1.1.14 MySQL variables 兼容性列表吗 ？
 
-详细可参考： [https://github.com/pingcap/docs/blob/master/SQL/variable.md](https://github.com/pingcap/docs/blob/master/sql/variable.md)
+详细可参考：[https://github.com/pingcap/docs/blob/master/SQL/variable.md](https://github.com/pingcap/docs/blob/master/sql/variable.md)
 
 ### 1.1.15 TiDB 支持 select for update ？
 
@@ -74,7 +72,7 @@ TiDB 支持 ACID 分布式事务。事务模型是以 Google 的 Percolator 模�
 
 ### 1.1.16 TiDB 的 codec 能保证 UTF8 的字符串是 memcomparable 的吗？我们的 key 需要支持 UTF8，有什么编码建议吗？
 
-TiDB 字符集默认就是 UTF8 而且目前只支持 UTF8 ，字符串就是 Memcomparable 格式的。
+TiDB 字符集默认就是 UTF8 而且目前只支持 UTF8，字符串就是 Memcomparable 格式的。
 
 ## 1.2 TiDB 原理
 
@@ -137,7 +135,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 #### 2.1.2.3 2块网卡的目的是？万兆的目的是？
 
-作为一个分布式集群，TiDB 对时间的要求还是比较高的，尤其是 PD 需要分发唯一的时间戳，如果 PD 时间不统一，如果有 PD 切换，将会等待更长的时间。2 块网卡可以做 bond，保证数据传输的稳定，万兆可以保证数据传输的速度，千兆网卡容易出现瓶颈，我们强烈建议使用万兆网卡。
+作为一个分布式集群，TiDB 对时间的要求还是比较高的，尤其是 PD 需要分发唯一的时间戳，如果 PD 时间不统一，如果有 PD 切换，将会等待更长的时间。2块网卡可以做 bond，保证数据传输的稳定，万兆可以保证数据传输的速度，千兆网卡容易出现瓶颈，我们强烈建议使用万兆网卡。
 
 #### 2.1.2.4 SSD 不做 RAID 是否可行？
 
@@ -149,9 +147,9 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 详细可参考： [http://t.cn/R9vib7R](http://t.cn/R9vib7R)
 
-#### 2.2.1.1 为什么修改了 TiKV / PD 的 toml 配置文件，却没有生效？
+#### 2.2.1.1 为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？
 
-这种情况一般是因为没有使用 `--config` 参数来指定配置文件（目前只会出现在 binary 部署的场景），TiKV/PD 会按默认值来设置。如果要使用配置文件，请设置 TiKV / PD 的 `--config` 参数。对于 TiKV 组件，修改配置后重启服务即可；对于 PD 组件，只会在第一次启动时读取配置文件，之后可以使用 pd-ctl 的方式来修改配置，详情可参考：[https://pingcap.com/docs-cn/tools/pd-control/](https://pingcap.com/docs-cn/tools/pd-control/)
+这种情况一般是因为没有使用 `--config` 参数来指定配置文件（目前只会出现在 binary 部署的场景），TiKV/PD 会按默认值来设置。如果要使用配置文件，请设置 TiKV/PD 的 `--config` 参数。对于 TiKV 组件，修改配置后重启服务即可；对于 PD 组件，只会在第一次启动时读取配置文件，之后可以使用 pd-ctl 的方式来修改配置，详情可参考：[https://pingcap.com/docs-cn/tools/pd-control/](https://pingcap.com/docs-cn/tools/pd-control/)
 
 #### 2.2.1.2 TiDB 监控框架 Prometheus + Grafana 监控机器建议单独还是多台部署？
 
@@ -161,7 +159,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 查看访问监控的机器时间跟集群内机器的时间差，如果比较大，更正时间后即可显示正常。
 
-#### 2.2.1.4 supervise / svc / svstat 服务具体起什么作用？
+#### 2.2.1.4 supervise/svc/svstat 服务具体起什么作用？
 
 - supervise 守护进程
 - svc 启停服务
@@ -189,7 +187,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ### 2.2.2 TiDB 离线 Ansible 部署方案？
 
-首先这不是我们建议的方式，如果中控机没有外网，也可以通过离线 Ansible 部署方式，详情可参考： [https://pingcap.com/docs-cn/op-guide/offlne-ansible-deployment/](https://pingcap.com/docs-cn/op-guide/offline-ansible-deployment/)
+首先这不是我们建议的方式，如果中控机没有外网，也可以通过离线 Ansible 部署方式，详情可参考：[https://pingcap.com/docs-cn/op-guide/offlne-ansible-deployment/](https://pingcap.com/docs-cn/op-guide/offline-ansible-deployment/)
 
 ### 2.2.3 Docker Compose 快速构建集群（单机部署）
 
@@ -209,7 +207,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ### 2.3.2 滚动升级有那些影响?
 
-滚动升级 TiDB 服务，滚动升级期间不影响业务运行(最小环境 ：pd\*3 、tidb\*2、tikv\*3)，
+滚动升级 TiDB 服务，滚动升级期间不影响业务运行（最小环境：PD*3），
 如果集群环境中有 pump / drainer 服务，建议先停止 drainer 后滚动升级 (升级 TiDB 时会升级 pump)。
 
 ### 2.3.3 Binary 如何升级？
