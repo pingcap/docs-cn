@@ -108,7 +108,7 @@ TiDB 字符集默认就是 UTF8 而且目前只支持 UTF8，字符串就是 Mem
 
 #### 2.1.1.1  为什么要在 CentOS 7 上部署 TiDB 集群？
 
-TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运行在 Intel 架构服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络，作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境，具体可以参考 TiDB 的 [官方部署要求](https://pingcap.com/docs-cn/op-guide/recommendation/)。 其中 TiDB 在 CentOS 7.3 的环境下进行大量的测试，同时也有很多这个操作系统的部署最佳实践，因此，我们推荐客户在部署 TiDB 的时候使用 CentOS 7.3+ 以上的Linux 操作系统。
+TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运行在 Intel 架构服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络，作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境，具体可以参考 TiDB 的[官方部署要求](https://pingcap.com/docs-cn/op-guide/recommendation/)。 其中 TiDB 在 CentOS 7.3 的环境下进行大量的测试，同时也有很多这个操作系统的部署最佳实践，因此，我们推荐客户在部署 TiDB 的时候使用 CentOS 7.3+ 以上的Linux 操作系统。
 
 ### 2.1.2 硬件要求
 
@@ -133,9 +133,9 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | 监控 | 8核+ | 16 GB+ | SAS | 千兆网卡 | 1 |
 |   |   |   |   | 服务器总计 | 9 |
 
-#### 2.1.2.3 2块网卡的目的是？万兆的目的是？
+#### 2.1.2.3 2 块网卡的目的是？万兆的目的是？
 
-作为一个分布式集群，TiDB 对时间的要求还是比较高的，尤其是 PD 需要分发唯一的时间戳，如果 PD 时间不统一，如果有 PD 切换，将会等待更长的时间。2块网卡可以做 bond，保证数据传输的稳定，万兆可以保证数据传输的速度，千兆网卡容易出现瓶颈，我们强烈建议使用万兆网卡。
+作为一个分布式集群，TiDB 对时间的要求还是比较高的，尤其是 PD 需要分发唯一的时间戳，如果 PD 时间不统一，如果有 PD 切换，将会等待更长的时间。2 块网卡可以做 bond，保证数据传输的稳定，万兆可以保证数据传输的速度，千兆网卡容易出现瓶颈，我们强烈建议使用万兆网卡。
 
 #### 2.1.2.4 SSD 不做 RAID 是否可行？
 
@@ -231,7 +231,7 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 | 清除数据(测试用) | ansible-playbook cleanup\_data.yml |
 | 滚动升级 | ansible-playbook rolling\_update.yml |
 | 滚动升级 TiKV | ansible-playbook rolling\_update.yml --tags=tikv |
-| 滚动升级除 pd 外模块 | ansible-playbook rolling\_update.yml --skip-tags=pd |
+| 滚动升级除 PD 外模块 | ansible-playbook rolling\_update.yml --skip-tags=pd |
 | 滚动升级监控组件 | ansible-playbook rolling\_update\_monitor.yml |
 
 ### 3.1.2 TiDB 如何登陆？
@@ -297,13 +297,13 @@ TiDB 目前社区非常活跃，在 GA 版本发布后，还在不断的优化�
 
 详细可参考：[https://pingcap.com/blog-cn/percolator-and-txn/](https://pingcap.com/blog-cn/percolator-and-txn/)
 
-### 3.1.15 TiDB 为什么选用 gRPC 而不选用 thirft，是因为 Google 在用吗？
+### 3.1.15 TiDB 为什么选用 gRPC 而不选用 Thirft，是因为 Google 在用吗？
 
 不只是因为 Google 在用，有一些比较好的特性我们需要，比如流控、加密还有 Streaming。
 
 ### 3.1.16 like(bindo.customers.name, jason%, 92) 这个92代表什么？
 
-转义字符是那个，默认是 ( ASCII 92)
+转义字符是那个，默认是 (ASCII 92)
 
 ## 3.2 PD 管理
 
@@ -660,7 +660,7 @@ count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 
 # 七、监控
 
-## 7.1 Prometheus监控框架
+## 7.1 Prometheus 监控框架
 
 详细参考：[https://pingcap.com/docs-cn/op-guide/monitor-overview](https://pingcap.com/docs-cn/op-guide/monitor-overview)
 
