@@ -6,7 +6,7 @@ category: FAQ
 # 一、 TiDB 介绍、架构、原理
 
 ## 1.1 TiDB 介绍及整体架构
-### 1.1.1 TiDB 整体架构？
+### 1.1.1 TiDB 整体架构
 
 [https://pingcap.com/docs-cn/overview/](https://pingcap.com/docs-cn/overview/)
 
@@ -78,7 +78,7 @@ TiDB 字符集默认就是 UTF8 而且目前只支持 UTF8，字符串就是 Mem
 
 ### 1.2.1 存储 TiKV
 
-#### 1.2.1.1 TiKV 详细解读？
+#### 1.2.1.1 TiKV 详细解读
 
 [http://t.cn/RTKRRWv](http://t.cn/RTKRRWv)
 
@@ -123,7 +123,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | TiKV | 8核+ | 32 GB+ | SSD, 200 GB+ | 千兆网卡 | 3 |
 |   |   |   |   | 服务器总计 | 4 |
 
-#### 2.1.2.2 线上环境？
+#### 2.1.2.2 线上环境
 
 | **组件** | **CPU** | **内存** | **硬盘类型** | **网络** | **实例数量(最低要求)** |
 | --- | --- | --- | --- | --- | --- |
@@ -614,7 +614,7 @@ Delete，Truncate 和 Drop 都不会立即释放空间，对于 Truncate 和 Dro
 
 # 五、SQL 优化
 
-## 5.1 TiDB 执行计划？
+## 5.1 TiDB 执行计划解读
 
 详细解读：[https://pingcap.com/docs-cn/sql/understanding-the-query-execution-plan](https://pingcap.com/docs-cn/sql/understanding-the-query-execution-plan)
 
