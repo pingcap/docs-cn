@@ -522,7 +522,7 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提�
 
 TiDB 目前暂时不支持 `select into outfile`，可以通过以下方式导出 TiDB 数据：参考 [MySQL使用mysqldump导出某个表的部分数据](http://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出，使用 MySQL client 将 select 的结果输出到一个文件。
 
-### 4.1.6 DB2、Oracle 这些数据库有没办法通过 OGG 同步到 TiDB。
+### 4.1.6 DB2、Oracle 这些数据库有那些方式可以同步到 TiDB？
 
 DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法是程序实现、Oracle 官方工具 OGG、Gateway（透明网关）、CDC（Change Data Capture），导出（Spool）成文本然后进行 Load，第三方工具，目前看 OGG 最为合适。
 
