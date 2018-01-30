@@ -34,7 +34,7 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 | TiDB    | 16 core+   | 16 GB+  | SAS, 200 GB+ | Gigabit network card | 1       |
 | PD      | 16 core+   | 16 GB+  | SAS, 200 GB+ | Gigabit network card | -       |
 | TiKV    | 16 core+   | 32 GB+  | SAS, 200 GB+ | Gigabit network card | 3       |
-|         |         |         |              | Total Server Number |  4      |     
+|         |         |         |              | Total Server Number |  4      |
 
 > **Note**:
 > 
@@ -43,15 +43,15 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 
 ### Production environment
 
-| Component | CPU | Memory | Hard Disk Type | Hard Disk Number | Single Hard Disk Size | Network | Instance Number (Minimum Requirement) |
-| :-----: | :------: | :------: | :------: | :------: | ------ | :------: | :-----: |
-|  TiDB  | 32 core+ | 128 GB+ | SSD | 2+ | 500 GB+ | 2 or more 10 Gigabit network cards | 2 |
-| PD | 16 core+ | 32 GB+ | SSD | 2+ | 200 GB+ | 2 or more 10 Gigabit network cards | 3 |
-| TiKV | 32 core+ | 128 GB+ | SSD | 2+ | 200~500 GB. | 2 or more 10 Gigabit network cards | 3 | 
-| Monitor | 16 core+ | 32 GB+ | SAS | 4+ | 200 GB+ | 2 or more Gigabit network cards | 1 |
-|     |     |     |      |      |      |  Total Server Number   |    9   |
+| Component | CPU | Memory | Hard Disk Type | Single Hard Disk Size | Network | Instance Number (Minimum Requirement) |
+| :-----: | :------: | :------: | :------: | :------: | :------: | :-----: |
+|  TiDB  | 32 core+ | 128 GB+ | SSD | 500 GB+ | 2 or more 10 Gigabit network cards | 2 |
+| PD | 16 core+ | 32 GB+ | SSD | 200 GB+ | 2 or more 10 Gigabit network cards | 3 |
+| TiKV | 32 core+ | 128 GB+ | SSD | 200~500 GB. | 2 or more 10 Gigabit network cards | 3 | 
+| Monitor | 16 core+ | 32 GB+ | SAS | 200 GB+ | 2 or more Gigabit network cards | 1 |
+|     |     |     |      |     |  Total Server Number   |    9   |
 
-> **Note**:   
+> **Note**:
 > 
 > - In the production environment, you can deploy and run TiDB and PD on the same server. If you have a higher requirement for performance and reliability, try to deploy them separately.
 > - It is strongly recommended to use higher configuration in the production environment.
