@@ -125,6 +125,7 @@
   - [凤凰网](http://t.cn/RHRQfNT)
   - [G7](http://t.cn/RQVePoX)
   - [佐助金融](http://t.cn/RQeoKaa)
+  - [二维火](http://t.cn/R8bXM2f)
 
 + 更多资源
   - [常用工具](https://github.com/pingcap/tidb-tools)
