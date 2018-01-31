@@ -14,13 +14,13 @@ This document defines the roadmap for TiDB development.
   - [ ] Optimize the cost model
 - [ ] Executor
   - [ ] Parallel Operators
-  - [ ] Compact Row Foramt to reduce memory usage
+  - [ ] Compact Row Format to reduce memory usage
   - [ ] File Sort
 - [ ] Support View
 - [ ] Support Window Function
 - [ ] Common Table Expression
 - [ ] Table Partition
-- [ ] Hash time index to reslove the issue with hot regions
+- [ ] Hash time index to resolve the issue with hot regions
 - [ ] Reverse Index
 - [ ] Cluster Index
 - [ ] Improve DDL
