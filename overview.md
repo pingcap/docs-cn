@@ -11,14 +11,14 @@ TiDB 是 PingCAP 公司受 Google [Spanner](http://research.google.com/archive/s
 
 TiDB 具备如下 NewSQL 核心特性：
 
-* SQL支持 （TiDB 是 MySQL 兼容的）
-* 水平线性弹性扩展
+* SQL支持（TiDB 是 MySQL 兼容的）
+* 水平弹性扩展（吞吐可线性扩展）
 * 分布式事务
 * 跨数据中心数据强一致性保证
 * 故障自恢复的高可用
-* 海量数据高并发实时写入与实时查询
+* 海量数据高并发实时写入与实时查询（HTAP 混合负载）
 
-TiDB 的设计目标是 100% 的 OLTP 场景和 80% 的 OLAP 场景，更复杂的 OLAP 分析可以通过 TiSpark 项目来完成。
+TiDB 的设计目标是 100% 的 OLTP 场景和 80% 的 OLAP 场景，更复杂的 OLAP 分析可以通过 [TiSpark 项目](https://github.com/pingcap/docs-cn/blob/master/tispark/tispark-user-guide.md)来完成。
 
 TiDB 对业务没有任何侵入性，能优雅的替换传统的数据库中间件、数据库分库分表等 Sharding 方案。同时它也让开发运维人员不用关注数据库 Scale 的细节问题，专注于业务开发，极大的提升研发的生产力。
 
