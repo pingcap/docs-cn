@@ -22,18 +22,18 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 1.  部署目标机器若干
 
-    - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机, 详见[部署建议](recommendation.md)。
-    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构(amd64), 数据盘请使用 ext4 文件系统，挂载 ext4 文件系统时请添加 nodelalloc 挂载参数，可参考[数据盘 ext4 文件系统挂载参数](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#数据盘-ext4-文件系统挂载参数)。
+    - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见[部署建议](recommendation.md)。
+    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构(amd64)，数据盘请使用 ext4 文件系统，挂载 ext4 文件系统时请添加 nodelalloc 挂载参数，可参考[数据盘 ext4 文件系统挂载参数](#数据盘-ext4-文件系统挂载参数)。
     - 机器之间内网互通，防火墙如 iptables 等请在部署时关闭。
-    - 机器的时间、时区设置一致，开启 NTP 服务且在正常同步时间，可参考[如何检测 NTP 服务是否正常](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何检测-ntp-服务是否正常)。
-    - 创建 `tidb` 普通用户作为程序运行用户，tidb 用户可以免密码 sudo 到 root 用户，可参考[如何配置 ssh 互信及 sudo 免密码](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何配置-ssh-互信及-sudo-免密码)。
+    - 机器的时间、时区设置一致，开启 NTP 服务且在正常同步时间，可参考[如何检测 NTP 服务是否正常](#如何检测-ntp-服务是否正常)。
+    - 创建 `tidb` 普通用户作为程序运行用户，tidb 用户可以免密码 sudo 到 root 用户，可参考[如何配置 ssh 互信及 sudo 免密码](#如何配置-ssh-互信及-sudo-免密码)。
 
 2.  部署中控机一台:
 
     - 中控机可以是部署目标机器中的某一台。
     - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统(默认包含 Python 2.7)。
     - 该机器需开放外网访问，用于下载 TiDB 及相关软件安装包。
-    - 配置 ssh authorized_key 互信，在中控机上可以使用 `tidb` 用户免密码 ssh 登录到部署目标机器，可参考[如何配置 ssh 互信及 sudo 免密码](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何配置-ssh-互信及-sudo-免密码)。
+    - 配置 ssh authorized_key 互信，在中控机上可以使用 `tidb` 用户免密码 ssh 登录到部署目标机器，可参考[如何配置 ssh 互信及 sudo 免密码](#如何配置-ssh-互信及-sudo-免密码)。
 
 ## 在中控机器上安装 Ansible 及其依赖
 
@@ -46,7 +46,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
     ansible 2.4.2.0
   ```
 
-> 其他系统可参考 [如何安装 Ansible](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何安装-ansible)。
+> 其他系统可参考 [如何安装 Ansible](#如何安装-ansible)。
 
 ## 在中控机器上下载 TiDB-Ansible
 
@@ -418,7 +418,7 @@ $ sudo systemctl start ntpd.service
 ```
 
 #### 如何使用 Ansible 部署 NTP 服务
-参照[在中控机器上下载 TiDB-Ansible](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#在中控机器上下载-tidb-ansible)下载 TiDB-Ansible, 将你的部署目标机器 IP 添加到 `[servers]` 区块下, `ntp_server` 变量的值 `pool.ntp.org` 可替换为其他 NTP server，在启动 NTP 服务前, 系统会 ntpdate 该 NTP server，Ansible 安装的 NTP 服务使用安装包默认 server 列表，见配置文件 `cat /etc/ntp.conf` 中 server 参数。
+参照[在中控机器上下载 TiDB-Ansible](#在中控机器上下载-tidb-ansible)下载 TiDB-Ansible, 将你的部署目标机器 IP 添加到 `[servers]` 区块下, `ntp_server` 变量的值 `pool.ntp.org` 可替换为其他 NTP server，在启动 NTP 服务前, 系统会 ntpdate 该 NTP server，Ansible 安装的 NTP 服务使用安装包默认 server 列表，见配置文件 `cat /etc/ntp.conf` 中 server 参数。
 
 ```
 $ vi hosts.ini
@@ -531,7 +531,8 @@ The key's randomart image is:
 +----[SHA256]-----+
 ```
 #### 如何使用 Ansible 自动配置 ssh 互信及 sudo 免密码
-参照[在中控机器上下载 TiDB-Ansible](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#在中控机器上下载-tidb-ansible)下载 TiDB-Ansible, 将你的部署目标机器 IP 添加到 `[servers]` 区块下
+
+参照[在中控机器上下载 TiDB-Ansible](#在中控机器上下载-tidb-ansible)下载 TiDB-Ansible, 将你的部署目标机器 IP 添加到 `[servers]` 区块下
 ```
 $ vi hosts.ini
 [servers]
