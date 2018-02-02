@@ -525,6 +525,7 @@ TiDB 目前暂时不支持 `select into outfile`，可以通过以下方式导�
 ### 4.1.6 DB2、Oracle 数据库如何迁移到 TiDB？
 
 DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
+
 - 使用 Oracle 官方迁移工具，如 OGG、Gateway（透明网关）、CDC（Change Data Capture）。
 - 自研数据导出导入程序实现。
 - 导出（Spool）成文本文件，然后通过 Load infile 进行导入。
