@@ -37,7 +37,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 ## 在中控机器上安装 Ansible 及其依赖
 
-请按以下方式在 CentOS 7 系统的中控机上安装 Ansible。 通过 epel 源安装， 会自动安装 Ansible 相关依赖(如 Jinja2==2.7.2 MarkupSafe==0.11)，安装完成后，可通过 `ansible --version` 查看版本，请务必确认是 **Ansible 2.3** 及以上版本，否则会有兼容问题。
+请按以下方式在 CentOS 7 系统的中控机上安装 Ansible。 通过 epel 源安装， 会自动安装 Ansible 相关依赖(如 Jinja2==2.7.2 MarkupSafe==0.11)，安装完成后，可通过 `ansible --version` 查看版本，请务必确认是 **Ansible 2.4** 及以上版本，否则会有兼容问题。
 
   ```bash
   # yum install epel-release
@@ -104,16 +104,19 @@ inventory.ini 文件路径为 tidb-ansible/inventory.ini。
 172.16.10.5
 172.16.10.6
 
-[monitored_servers:children]
-tidb_servers
-tikv_servers
-pd_servers
-
 [monitoring_servers]
 172.16.10.1
 
 [grafana_servers]
 172.16.10.1
+
+[monitored_servers]
+172.16.10.1
+172.16.10.2
+172.16.10.3
+172.16.10.4
+172.16.10.5
+172.16.10.6
 ```
 
 ### 单机多 TiKV 实例集群拓扑如下(以两实例为例)
@@ -145,6 +148,12 @@ TiKV2-2 ansible_host=172.16.10.5 deploy_dir=/data2/deploy tikv_port=20172 labels
 TiKV3-1 ansible_host=172.16.10.6 deploy_dir=/data1/deploy tikv_port=20171 labels="host=tikv3"
 TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv3"
 
+[monitoring_servers]
+172.16.10.1
+
+[grafana_servers]
+172.16.10.1
+
 [monitored_servers]
 172.16.10.1
 172.16.10.2
@@ -153,19 +162,11 @@ TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 labels
 172.16.10.5
 172.16.10.6
 
-[monitoring_servers]
-172.16.10.1
-
-[grafana_servers]
-172.16.10.1
-
 ......
 
 [pd_servers:vars]
 location_labels = ["host"]
 ```
-
-> **注：单机多 TiKV 时，请务必修改 `[monitored_servers:children]` 为 `[monitored_servers]`, 单行一个 IP 地址。**
 
 - 参数调整
 
