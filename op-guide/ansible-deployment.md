@@ -54,7 +54,7 @@ Before you start, make sure that you have:
 
 Use the following method to install Ansible on the Control Machine of CentOS 7 system. Installation from the EPEL source includes Ansible dependencies automatically (such as `Jinja2==2.7.2 MarkupSafe==0.11`). After installation, you can view the version using `ansible --version`. 
 
-> **Note:** Make sure that the Ansible version is **Ansible 2.3** or later, otherwise a compatibility issue occurs.
+> **Note:** Make sure that the Ansible version is **Ansible 2.4** or later, otherwise a compatibility issue occurs.
 
 ```bash
   # yum install epel-release
@@ -123,16 +123,19 @@ The standard cluster has 6 machines:
 172.16.10.5
 172.16.10.6
 
-[monitored_servers:children]
-tidb_servers
-tikv_servers
-pd_servers
-
 [monitoring_servers]
 172.16.10.1
 
 [grafana_servers]
 172.16.10.1
+
+[monitored_servers]
+172.16.10.1
+172.16.10.2
+172.16.10.3
+172.16.10.4
+172.16.10.5
+172.16.10.6
 ```
 
 
@@ -170,6 +173,12 @@ TiKV3-1 ansible_host=172.16.10.6 deploy_dir=/data1/deploy tikv_port=20171 labels
 TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv3"
 TiKV3-3 ansible_host=172.16.10.6 deploy_dir=/data3/deploy tikv_port=20173 labels="host=tikv3"
 
+[monitoring_servers]
+172.16.10.1
+
+[grafana_servers]
+172.16.10.1
+
 [monitored_servers]
 172.16.10.1
 172.16.10.2
@@ -178,19 +187,11 @@ TiKV3-3 ansible_host=172.16.10.6 deploy_dir=/data3/deploy tikv_port=20173 labels
 172.16.10.5
 172.16.10.6
 
-[monitoring_servers]
-172.16.10.1
-
-[grafana_servers]
-172.16.10.1
-
 ......
 
 [pd_servers:vars]
 location_labels = ["host"]
 ```
-
-> **Note:** For multiple TiKV instances on a single machine, it is required to modify `[monitored_servers:children]` to `[monitored_servers]`, with one IP address in a single row.
 
 **Edit the parameters:**
 
