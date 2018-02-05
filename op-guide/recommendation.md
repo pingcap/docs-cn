@@ -49,7 +49,7 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 | PD | 8 core+ | 16 GB+ | SSD | 10 Gigabit network card (2 preferred) | 3 |
 | TiKV | 16 core+ | 48 GB+ | SSD | 10 Gigabit network card (2 preferred) | 3 |
 | Monitor | 8 core+ | 16 GB+ | SAS | Gigabit network card | 1 |
-|     |     |     |      |     |  Total Server Number   |    9   |
+|     |     |     |      |  Total Server Number   |    9   |
 
 > **Note**:
 > 
