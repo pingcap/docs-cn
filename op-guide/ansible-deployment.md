@@ -28,7 +28,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
     - 机器的时间、时区设置一致，开启 NTP 服务且在正常同步时间，可参考[如何检测 NTP 服务是否正常](#如何检测-ntp-服务是否正常)。
     - 创建 `tidb` 普通用户作为程序运行用户，tidb 用户可以免密码 sudo 到 root 用户，可参考[如何配置 ssh 互信及 sudo 免密码](#如何配置-ssh-互信及-sudo-免密码)。
 
-> **使用 Ansible 方式部署时，TiKV 及 PD 节点数据分区所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](docker-compose.md)单机进行测试。
+> **注：使用 Ansible 方式部署时，TiKV 及 PD 节点数据分区所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](docker-compose.md)单机进行测试。
 
 2.  部署中控机一台:
 
@@ -184,7 +184,9 @@ location_labels = ["host"]
 ### inventory.ini 变量调整
 
 #### 部署目录调整
-部署目录通过 `deploy_dir` 变量控制，默认全局变量已设置为 `/home/tidb/deploy`, 对所有服务生效。如数据盘挂载目录为 `/data1`, 可设置为 `/data1/deploy`, 样例如下:
+
+部署目录通过 `deploy_dir` 变量控制，默认全局变量已设置为 `/home/tidb/deploy`，对所有服务生效。如数据盘挂载目录为 `/data1`，可设置为 `/data1/deploy`，样例如下:
+
 ```
 ## Global variables
 [all:vars]
@@ -192,6 +194,7 @@ deploy_dir = /data1/deploy
 ```
 
 如为某一服务单独设置部署目录，可在配置服务主机列表时配置主机变量，以 TiKV 节点为例，其他服务类推，请务必添加第一列别名，以免服务混布时混淆。
+
 ```
 TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 ```
