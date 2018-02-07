@@ -154,6 +154,8 @@ Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 
      如果对应的配置在命令行参数里面也存在，pump 就会使用命令行参数的配置来覆盖配置文件里面的
  -data-dir string
      pump 数据存储位置路径
+ -enable-tolerant
+     开启该选项后，当写 binlog 失败，pump 选择丢弃该 binlog 数据，并且不反悔错（默认开启）
  -zookeeper-addrs string (-zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181")
      zookeeper 地址，该选项从 zookeeper 中获取 kafka 地址
  -gc int
