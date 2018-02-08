@@ -119,6 +119,7 @@
   - [猿辅导](http://t.cn/RTKnKSX)
   - [去哪儿](http://t.cn/RTKnsL7)
   - [盖娅互娱](http://t.cn/RT9r7hx)
+  - [游族网络](http://t.cn/R8k4AWB)
   - [一面数据](http://t.cn/RT9r5di)
   - [万达网络](http://t.cn/RTKm6ds)
   - [某电信运营商](http://t.cn/RTYWADg)
