@@ -21,157 +21,7 @@ TiDB 是开源分布式 SQL 数据库，结合了传统的 RDBMS 和 NoSQL 的�
 
 ![TiDB Architecture](media/tidb-architecture.png)
 
-### 准备环境
-
-开始部署前，需准备如下环境：
-
-+ 符合下列要求的一台中控机
-    - Python 2.6 或 Python 2.7
-    - Python Jinja2 2.7.2 和 MarkupSafe 0.11 安装包。可使用以下命令进行安装：
-        
-        ```bash
-        pip install Jinja2==2.7.2 MarkupSafe==0.11
-        ```
-        
-    - 可通过 SSH 登录目标节点，支持密码登录和 SSH authorized_key 登录。
-
-+ 符合下列要求的目标节点若干
-    - 机器 4 台以上。TiKV 至少 3 个实例，而且不要将 TiKV 与 TiDB 或 PD 模块部署在同一台机器上。详见[部署建议](op-guide/recommendation.md)。
-    - 操作系统：
-      - CentOS 7.0 及以上版本
-      - X86_64 架构 (AMD64)
-      - 内核版本 3.10 及以上
-      - Ext4 文件系统
-    - 机器之间互通网络。部署时关闭防火墙和 iptables，部署完成后再开启。
-    - 所有机器的时间和时区设置一致，有 NTP 服务可以同步正确时间。
-    - 一个可从中控机登录的远程用户帐号，以通过 SSH 连接托管节点。普通用户帐号需要有 sudo 权限。
-    - Python 2.6 或 Python 2.7
-
-> 注：中控机可以是目标节点中的某一台，该机器需开放外网访问，用于下载 binary。
-
-### 在中控机上安装 Ansible
-
-在 CentOS 7.3 平台上安装 Ansible 2.3 及以上版本：
-
-```bash
-yum install epel-release
-yum update
-yum install ansible
-```
-
-可使用 `ansible --version` 命令查看版本信息。
-
-更多详细信息，参见 [Ansible 文档](http://docs.ansible.com/ansible/latest/intro_installation.html)。
-
-### 下载 TiDB-Ansible 至中控机
-
-从 GitHub [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载最新 master 版本或[点击下载](https://github.com/pingcap/tidb-ansible/archive/master.zip)。
-
-将下载下来的文件解压缩，默认的文件夹名称为 `tidb-ansible-master`。该文件夹包含用 TiDB-Ansible 来部署 TiDB 集群所需要的所有文件。
-
-### 分配 TiDB 集群资源
-
-标准的 TiDB 集群需要 6 台机器：
-
-- 2 个 TiDB 实例
-- 3 个 PD 实例，其中一个 PD 实例负责监控。
-- 3 个 TiKV 实例
-
-集群拓扑结构如下：
-
-| Name | Host IP | Services |
-| ---- | ------- | -------- |
-| node1 | 172.16.10.1 | PD1, TiDB1 |
-| node2 | 172.16.10.2 | PD2, TiDB2 |
-| node3 | 172.16.10.3 | PD3, Monitor|
-| node4 | 172.16.10.4 | TiKV1 |
-| node5 | 172.16.10.5 | TiKV2 |
-| node6 | 172.16.10.6 | TiKV3 |
-
-编辑 `tidb-ansible-master` 文件夹中的 `inventory.ini` 文件：
-
-```toml
-[tidb_servers]
-172.16.10.1
-172.16.10.2
-
-[pd_servers]
-172.16.10.1
-172.16.10.2
-172.16.10.3
-
-[tikv_servers]
-172.16.10.4
-172.16.10.5
-172.16.10.6
-
-[monitored_servers:children]
-tidb_servers
-tikv_servers
-pd_servers
-
-[monitoring_servers]
-172.16.10.3
-
-[grafana_servers]
-172.16.10.3
-
-# ...
-```
-
-### 部署 TiDB 集群
-
-使用有 sudo 权限的普通用户部署 TiDB:
-
-1.  编辑 `inventory.ini` 文件，如下所示：
-
-    ```ini
-    ## Connection
-    # ssh via root:
-    # ansible_user = root
-    # ansible_become = true
-    # ansible_become_user = tidb
-
-    # ssh via normal user
-    ansible_user = tidb
-    ```
-
-2.  连网下载 TiDB、TiKV 和 PD binaries：
-
-    ```
-    ansible-playbook local_prepare.yml
-    ```
-
-3.  初始化目标机器的系统环境，修改内核参数：
-
-    ```
-    ansible-playbook bootstrap.yml -k -K
-    ```
-
-    > - 如果连接至托管节点需要密码，需添加 `-k`（小写）参数。这同样适用于其他 playbooks。
-    > - 如果 sudo 到 root 权限需要密码，需添加 `-K`（大写）参数。
-
-4. 部署 TiDB 集群：
-
-    ```
-    ansible-playbook deploy.yml -k
-    ```
-
-### 启动 TiDB 集群
-
-启动 TiDB 集群：
-
-```
-ansible-playbook start.yml -k
-```
-
-使用 MySQL 客户端连接至 TiDB 集群：
-
-```sql
-mysql -u root -h 172.16.10.1 -P 4000
-```
-
-> 注：TiDB 服务的默认端口是 4000。
+参考[TiDB Ansible 部署方案](op-guide/ansible-deployment.md)。
 
 ## TiDB 基本操作
 
@@ -486,10 +336,18 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
     172.16.10.8
     172.16.10.9
 
-    [monitored_servers:children]
-    tidb_servers
-    tikv_servers
-    pd_servers
+    [monitored_servers]
+    172.16.10.1
+    172.16.10.2
+    172.16.10.3
+    172.16.10.4
+    172.16.10.5
+    172.16.10.6
+    172.16.10.7
+    172.16.10.8
+    172.16.10.9
+    172.16.10.101
+    172.16.10.102
 
     [monitoring_servers]
     172.16.10.3
@@ -516,19 +374,19 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 2.  初始化新增节点：
 
-        ansible-playbook bootstrap.yml -k -K -l 172.16.10.101,172.16.10.102
+        ansible-playbook bootstrap.yml -l 172.16.10.101,172.16.10.102
 
 3.  部署新增节点：
 
-        ansible-playbook deploy.yml -k -l 172.16.10.101,172.16.10.102
+        ansible-playbook deploy.yml -l 172.16.10.101,172.16.10.102
 
 4.  启动新节点服务：
 
-        ansible-playbook start.yml -k -l 172.16.10.101,172.16.10.102
+        ansible-playbook start.yml -l 172.16.10.101,172.16.10.102
 
 5.  更新 Prometheus 配置并重启：
 
-        ansible-playbook rolling_update_monitor.yml -k --tags=prometheus
+        ansible-playbook rolling_update_monitor.yml --tags=prometheus
 
 6.  打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群和新增节点的状态。
 
@@ -557,10 +415,17 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
     172.16.10.8
     172.16.10.9
 
-    [monitored_servers:children]
-    tidb_servers
-    tikv_servers
-    pd_servers
+    [monitored_servers]
+    172.16.10.4
+    172.16.10.5
+    172.16.10.1
+    172.16.10.2
+    172.16.10.3
+    172.16.10.103
+    172.16.10.6
+    172.16.10.7
+    172.16.10.8
+    172.16.10.9
 
     [monitoring_servers]
     172.16.10.3
@@ -586,11 +451,11 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 2.  初始化新增节点：
 
-        ansible-playbook bootstrap.yml -k -K -l 172.16.10.103
+        ansible-playbook bootstrap.yml -l 172.16.10.103
 
 3.  部署新增节点：
 
-        ansible-playbook deploy.yml -k -l 172.16.10.103
+        ansible-playbook deploy.yml -l 172.16.10.103
 
 4.  登录新增的 PD 节点，编辑启动脚本：`{deploy_dir}/scripts/run_pd.sh`
 
@@ -608,11 +473,11 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 5.  滚动升级整个集群：
 
-        ansible-playbook rolling_update.yml -k
+        ansible-playbook rolling_update.yml
 
 6.  更新 Prometheus 配置并重启：
 
-        ansible-playbook rolling_update_monitor.yml -k --tags=prometheus
+        ansible-playbook rolling_update_monitor.yml --tags=prometheus
 
 7.  打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群和新增节点的状态。
 
@@ -622,7 +487,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 1.  停止 node5 节点上的服务：
 
-        ansible-playbook stop.yml -k -l 172.16.10.5
+        ansible-playbook stop.yml -l 172.16.10.5
 
 2.  编辑 `inventory.ini` 文件，移除节点信息：
 
@@ -642,10 +507,16 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
     172.16.10.8
     172.16.10.9
 
-    [monitored_servers:children]
-    tidb_servers
-    tikv_servers
-    pd_servers
+    [monitored_servers]
+    172.16.10.4
+    #172.16.10.5  # 注释被移除节点
+    172.16.10.1
+    172.16.10.2
+    172.16.10.3
+    172.16.10.6
+    172.16.10.7
+    172.16.10.8
+    172.16.10.9
 
     [monitoring_servers]
     172.16.10.3
@@ -670,7 +541,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 3.  更新 Prometheus 配置并重启：
 
-        ansible-playbook rolling_update_monitor.yml -k --tags=prometheus
+        ansible-playbook rolling_update_monitor.yml --tags=prometheus
 
 4.  打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群的状态。
 
@@ -692,7 +563,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 3.  下线成功后，停止 node9 上的服务：
 
-        ansible-playbook stop.yml -k -l 172.16.10.9
+        ansible-playbook stop.yml -l 172.16.10.9
 
 4.  编辑 `inventory.ini` 文件，移除节点信息：
 
@@ -712,10 +583,16 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
     172.16.10.8
     #172.16.10.9  # 注释被移除节点
 
-    [monitored_servers:children]
-    tidb_servers
-    tikv_servers
-    pd_servers
+    [monitored_servers]
+    172.16.10.4
+    172.16.10.5
+    172.16.10.1
+    172.16.10.2
+    172.16.10.3
+    172.16.10.6
+    172.16.10.7
+    172.16.10.8
+    #172.16.10.9  # 注释被移除节点
 
     [monitoring_servers]
     172.16.10.3
@@ -740,7 +617,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 5.  更新 Prometheus 配置并重启：
 
-        ansible-playbook rolling_update_monitor.yml -k --tags=prometheus
+        ansible-playbook rolling_update_monitor.yml --tags=prometheus
 
 6.  打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群的状态。
 
@@ -762,7 +639,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 3.  下线成功后，停止 node2 上的服务：
 
-        ansible-playbook stop.yml -k -l 172.16.10.2
+        ansible-playbook stop.yml -l 172.16.10.2
 
 4.  编辑 `inventory.ini` 文件，移除节点信息：
 
@@ -782,10 +659,16 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
     172.16.10.8
     172.16.10.9
 
-    [monitored_servers:children]
-    tidb_servers
-    tikv_servers
-    pd_servers
+    [monitored_servers]
+    172.16.10.4
+    172.16.10.5
+    172.16.10.1
+    #172.16.10.2  # 注释被移除节点
+    172.16.10.3
+    172.16.10.6
+    172.16.10.7
+    172.16.10.8
+    172.16.10.9
 
     [monitoring_servers]
     172.16.10.3
@@ -810,7 +693,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 5.  更新 Prometheus 配置并重启：
 
-        ansible-playbook rolling_update_monitor.yml -k --tags=prometheus
+        ansible-playbook rolling_update_monitor.yml --tags=prometheus
 
 6.  打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群的状态。
 
@@ -818,9 +701,8 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 停用集群：
 
-    ansible-playbook stop.yml -k
+    ansible-playbook stop.yml
 
 销毁集群：
 
-    ansible-playbook unsafe_cleanup.yml -k
-
+    ansible-playbook unsafe_cleanup.yml

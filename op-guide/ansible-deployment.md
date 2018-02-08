@@ -28,7 +28,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
     - 机器的时间、时区设置一致，开启 NTP 服务且在正常同步时间，可参考[如何检测 NTP 服务是否正常](#如何检测-ntp-服务是否正常)。
     - 创建 `tidb` 普通用户作为程序运行用户，tidb 用户可以免密码 sudo 到 root 用户，可参考[如何配置 ssh 互信及 sudo 免密码](#如何配置-ssh-互信及-sudo-免密码)。
 
-    > **注：使用 Ansible 方式部署时，TiKV 及 PD 节点数据分区所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](docker-compose.md)单机进行测试。
+    > **注：使用 Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](docker-compose.md)单机进行测试。
 
 2.  部署中控机一台:
 
@@ -170,9 +170,9 @@ TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 labels
 location_labels = ["host"]
 ```
 
-- 参数调整
+- 服务配置文件参数调整
 
-    1.  多实例情况下，需要修改 `conf/tikv.yml` 中的 `end-point-concurrency` 以及 `block-cache-size` 参数:
+    1.  多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中的 `end-point-concurrency` 以及 `block-cache-size` 参数:
         - `end-point-concurrency`: 总数低于 CPU Vcores 即可
         - `rocksdb defaultcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 30%
         - `rocksdb writecf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 45%
@@ -243,7 +243,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
     ansible -i inventory.ini all -m shell -a 'whoami' -b
     ```
 
-2.  使用 `local_prepare.yml` playbook，联网下载 TiDB binary 到中控机：
+2.  执行 `local_prepare.yml` playbook，联网下载 TiDB binary 到中控机：
 
     ```
     ansible-playbook local_prepare.yml
