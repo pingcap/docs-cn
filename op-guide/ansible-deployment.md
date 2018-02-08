@@ -43,16 +43,18 @@ Before you start, make sure that you have:
 
     - Create a normal `tidb` user account as the user who runs the service. The `tidb` user can sudo to the root user without a password. See [How to configure SSH mutual trust and sudo without password](#how-to-configure-ssh-mutual-trust-and-sudo-without-password).
 
+    > **Note:** When you deploy TiDB using Ansible, use SSD disks for the data directory of TiKV and PD nodes.
+
 2. A Control Machine with the following requirements:
 
     - The Control Machine can be one of the managed nodes.
     - It is recommended to install CentOS 7.3 or later version of Linux operating system (Python 2.7 involved by default).
-    - The machine has access to the external network, used to download TiDB and relevant packages.
+    - The Control Machine must have access to the Internet in order to download TiDB and related packages.
     - Configure mutual trust of `ssh authorized_key`. In the Control Machine, you can login to the deployment target machine using `tidb` user account without a password. See [How to configure SSH mutual trust and sudo without password](#how-to-configure-ssh-mutual-trust-and-sudo-without-password).
 
 ## Install Ansible and dependencies in the Control Machine
 
-Use the following method to install Ansible on the Control Machine of CentOS 7 system. Installation from the EPEL source includes Ansible dependencies automatically (such as `Jinja2==2.7.2 MarkupSafe==0.11`). After installation, you can view the version using `ansible --version`. 
+Use the following method to install Ansible on the Control Machine of CentOS 7 system. Installation from the EPEL source includes Ansible dependencies automatically (such as `Jinja2==2.7.2 MarkupSafe==0.11`). After installation, you can view the version using `ansible --version`.
 
 > **Note:** Make sure that the Ansible version is **Ansible 2.4** or later, otherwise a compatibility issue occurs.
 
@@ -208,6 +210,24 @@ location_labels = ["host"]
     - `capacity`: (DISK - log space) / TiKV instance number (the unit is GB)
 
 ### Description of inventory.ini variables
+
+#### Description of the deployment directory
+
+You can configure the deployment directory using the `deploy_dir` variable. The global variable is set to `/home/tidb/deploy` by default, and it applies to all services. If the data disk is mounted on the `/data1` directory, you can set it to `/data1/deploy`. For example:
+
+```
+## Global variables
+[all:vars]
+deploy_dir = /data1/deploy
+```
+
+To set a deployment directory separately for a service, you can configure host variables when configuring the service host list. Take the TiKV node as an example and it is similar for other services. You must add the first column alias to avoid confusion when the services are mixedly deployed.
+
+```
+TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
+```
+
+#### Description of other variables
 
 | Variable | Description |
 | ---- | ------- |
