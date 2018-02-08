@@ -28,7 +28,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
     - 机器的时间、时区设置一致，开启 NTP 服务且在正常同步时间，可参考[如何检测 NTP 服务是否正常](#如何检测-ntp-服务是否正常)。
     - 创建 `tidb` 普通用户作为程序运行用户，tidb 用户可以免密码 sudo 到 root 用户，可参考[如何配置 ssh 互信及 sudo 免密码](#如何配置-ssh-互信及-sudo-免密码)。
 
-> **注：使用 Ansible 方式部署时，TiKV 及 PD 节点数据分区所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](docker-compose.md)单机进行测试。
+    > **注：使用 Ansible 方式部署时，TiKV 及 PD 节点数据分区所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](docker-compose.md)单机进行测试。
 
 2.  部署中控机一台:
 
@@ -172,14 +172,14 @@ location_labels = ["host"]
 
 - 参数调整
 
-    1.  多实例情况下, 需要修改 `conf/tikv.yml` 中的 `end-point-concurrency` 以及 `block-cache-size` 参数:
+    1.  多实例情况下，需要修改 `conf/tikv.yml` 中的 `end-point-concurrency` 以及 `block-cache-size` 参数:
         - `end-point-concurrency`: 总数低于 CPU Vcores 即可
         - `rocksdb defaultcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 30%
         - `rocksdb writecf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 45%
         - `rocksdb lockcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
         - `raftdb defaultcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
-    2.  如果多个 TiKV 实例部署在同一块物理磁盘上, 需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
-        - `capacity` = (DISK - 日志空间) / TiKV 实例数量, 单位为 GB
+    2.  如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
+        - `capacity` = (DISK - 日志空间) / TiKV 实例数量，单位为 GB
 
 ### inventory.ini 变量调整
 
@@ -206,7 +206,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | tidb_version | TiDB 版本，TiDB-Ansible 各分支默认已配置 |
 | deployment_method | 部署方式，默认为 binary，可选 docker |
 | process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
-| timezone | 修改部署目标机器时区，默认为 `Asia/Shanghai`, 可调整，与  `set_timezone` 变量结合使用 |
+| timezone | 修改部署目标机器时区，默认为 `Asia/Shanghai`，可调整，与  `set_timezone` 变量结合使用 |
 | set_timezone | 默认为 True，即修改部署目标机器时区，关闭可修改为 False |
 | enable_firewalld | 开启防火墙，默认不开启 |
 | enable_ntpd | 检测部署目标机器 NTP 服务，默认为 True，请勿关闭 |
@@ -218,9 +218,9 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 
 ## 部署任务
 
-> ansible-playbook 执行 Playbook 时默认并发为 5，部署目标机器较多时可添加 -f 参数指定并发, 如 `ansible-playbook deploy.yml -f 10`
+> ansible-playbook 执行 Playbook 时默认并发为 5，部署目标机器较多时可添加 -f 参数指定并发，如 `ansible-playbook deploy.yml -f 10`
 
-1.  确认 `tidb-ansible/inventory.ini` 文件中 `ansible_user = tidb`, 本例使用 `tidb` 用户作为服务运行用户，配置如下：
+1.  确认 `tidb-ansible/inventory.ini` 文件中 `ansible_user = tidb`，本例使用 `tidb` 用户作为服务运行用户，配置如下：
 
     ```ini
     ## Connection
@@ -243,7 +243,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
     ansible -i inventory.ini all -m shell -a 'whoami' -b
     ```
 
-2.  使用 `local_prepare.yml` playbook, 联网下载 TiDB binary 到中控机：
+2.  使用 `local_prepare.yml` playbook，联网下载 TiDB binary 到中控机：
 
     ```
     ansible-playbook local_prepare.yml
@@ -267,13 +267,13 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
     ansible-playbook start.yml
     ```
 
-> 如希望使用 root 用户远程连接部署，请参考[使用 root 用户远程连接 TiDB Ansible 部署方案](https://github.com/pingcap/docs-cn/blob/master/op-guide/root-ansible-deployment.md), 不推荐使用该方式部署。
+> 如希望使用 root 用户远程连接部署，请参考[使用 root 用户远程连接 TiDB Ansible 部署方案](https://github.com/pingcap/docs-cn/blob/master/op-guide/root-ansible-deployment.md)，不推荐使用该方式部署。
 
 ## 测试集群
 
 > 测试连接 TiDB 集群，推荐在 TiDB 前配置负载均衡来对外统一提供 SQL 接口。
 
--   使用 MySQL 客户端连接测试, TCP 4000 端口是 TiDB 服务默认端口。
+-   使用 MySQL 客户端连接测试，TCP 4000 端口是 TiDB 服务默认端口。
 
     ```sql
     mysql -u root -h 172.16.10.1 -P 4000
@@ -358,7 +358,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 ## 常见部署问题
 
 ### 如何下载安装指定版本 TiDB
-如需安装 TiDB 1.0.4 版本，需要先下载 TiDB-Ansible release-1.0 分支，确认 inventory.ini 文件中 `tidb_version = v1.0.4`, 安装步骤同上。
+如需安装 TiDB 1.0.4 版本，需要先下载 TiDB-Ansible release-1.0 分支，确认 inventory.ini 文件中 `tidb_version = v1.0.4`，安装步骤同上。
 
 从 github 下载 TiDB-Ansible release-1.0 分支:
 
@@ -383,6 +383,7 @@ git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 | grafana | grafana_port|  3000 | Web 监控服务对外服务和客户端(浏览器)访问端口 |
 
 ### 如何自定义部署目录
+
 修改 `inventory.ini` 文件，在相应服务 IP 后添加以下主机变量即可：
 
 | 组件 | 目录变量 | 默认目录 | 说明 |
@@ -405,33 +406,41 @@ git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 | grafana | grafana_data_dir | {{ deploy_dir }}/data.grafana | 数据目录 |
 
 ### 如何检测 NTP 服务是否正常
+
 执行以下命令输出 `running` 表示 NTP 服务正在运行:
+
 ```
 $ sudo systemctl status ntpd.service
 ● ntpd.service - Network Time Service
    Loaded: loaded (/usr/lib/systemd/system/ntpd.service; disabled; vendor preset: disabled)
    Active: active (running) since 一 2017-12-18 13:13:19 CST; 3s ago
 ```
+
 执行 ntpstat 命令，输出 synchronised to NTP server(正在与 NTP server 同步)表示在正常同步：
+
 ```
 $ ntpstat
 synchronised to NTP server (85.199.214.101) at stratum 2
    time correct to within 91 ms
    polling server every 1024 s
 ```
-> ubuntu 系统请安装 ntpstat 软件包。
+> **注：**Ubuntu 系统请安装 ntpstat 软件包。
 
 以下情况表示 NTP 服务未正常同步：
+
 ```
 $ ntpstat
 unsynchronised
 ```
 以下情况表示 NTP 服务未正常运行：
+
 ```
 $ ntpstat
 Unable to talk to NTP daemon. Is it running?
 ```
+
 使用以下命令可使 NTP 服务尽快开始同步，pool.ntp.org 可替换为其他 NTP server：
+
 ```
 $ sudo systemctl stop ntpd.service
 $ sudo ntpdate pool.ntp.org
@@ -439,7 +448,8 @@ $ sudo systemctl start ntpd.service
 ```
 
 #### 如何使用 Ansible 部署 NTP 服务
-参照[在中控机器上下载 TiDB-Ansible](#在中控机器上下载-tidb-ansible)下载 TiDB-Ansible, 将你的部署目标机器 IP 添加到 `[servers]` 区块下, `ntp_server` 变量的值 `pool.ntp.org` 可替换为其他 NTP server，在启动 NTP 服务前, 系统会 ntpdate 该 NTP server，Ansible 安装的 NTP 服务使用安装包默认 server 列表，见配置文件 `cat /etc/ntp.conf` 中 server 参数。
+
+参照[在中控机器上下载 TiDB-Ansible](#在中控机器上下载-tidb-ansible)下载 TiDB-Ansible，将你的部署目标机器 IP 添加到 `[servers]` 区块下，`ntp_server` 变量的值 `pool.ntp.org` 可替换为其他 NTP server，在启动 NTP 服务前，系统会 ntpdate 该 NTP server，Ansible 安装的 NTP 服务使用安装包默认 server 列表，见配置文件 `cat /etc/ntp.conf` 中 server 参数。
 
 ```
 $ vi hosts.ini
@@ -453,13 +463,17 @@ $ vi hosts.ini
 username = tidb
 ntp_server = pool.ntp.org
 ```
+
 执行以下命令，按提示输入部署目标机器 root 密码。
+
 ```
 $ ansible-playbook -i hosts.ini deploy_ntp.yml -k
 ```
 
 #### 如何手工安装 NTP 服务
+
 在 CentOS 7 系统上执行以下命令：
+
 ```
 $ sudo yum install ntp ntpdate
 $ sudo systemctl start ntpd.service
@@ -503,16 +517,19 @@ ansible-playbook start.yml
 ```
 
 ### 如何安装 Ansible
-如果是 CentOS 系统, 直接按文章开头的方式安装即可，如果是 Ubuntu 系统, 可通过 PPA 源安装:
+
+如果是 CentOS 系统，直接按文章开头的方式安装即可，如果是 Ubuntu 系统, 可通过 PPA 源安装：
 
 ```bash
 sudo add-apt-repository ppa:ansible/ansible
 sudo apt-get update
 sudo apt-get install ansible
 ```
+
 其他系统可按照 [官方手册](http://docs.ansible.com/ansible/intro_installation.html) 安装 Ansible。
 
 ### 数据盘 ext4 文件系统挂载参数
+
 数据盘请格式化成 ext4 文件系统，挂载时请添加 nodelalloc 和 noatime 挂载参数。
 nodelalloc 是必选参数，否则 Ansible 安装时检测无法通过，noatime 是可选建议参数。下面以 /dev/nvme0n1 数据盘为例：
 
@@ -522,6 +539,7 @@ nodelalloc 是必选参数，否则 Ansible 安装时检测无法通过，noatim
 ```
 
 ### 如何配置 ssh 互信及 sudo 免密码
+
 #### 在中控机上创建 tidb 用户，并生成 ssh key。
 ```
 # useradd tidb
@@ -551,9 +569,11 @@ The key's randomart image is:
 |o   ..+o.        |
 +----[SHA256]-----+
 ```
+
 #### 如何使用 Ansible 自动配置 ssh 互信及 sudo 免密码
 
-参照[在中控机器上下载 TiDB-Ansible](#在中控机器上下载-tidb-ansible)下载 TiDB-Ansible, 将你的部署目标机器 IP 添加到 `[servers]` 区块下
+参照[在中控机器上下载 TiDB-Ansible](#在中控机器上下载-tidb-ansible)下载 TiDB-Ansible，将你的部署目标机器 IP 添加到 `[servers]` 区块下。
+
 ```
 $ vi hosts.ini
 [servers]
@@ -565,34 +585,45 @@ $ vi hosts.ini
 [all:vars]
 username = tidb
 ```
+
 执行以下命令，按提示输入部署目标机器 root 密码。
+
 ```
 $ ansible-playbook -i hosts.ini create_users.yml -k
 ```
 
 #### 如何手工配置 ssh 互信及 sudo 免密码
+
 以 `root` 用户依次登录到部署目标机器创建 `tidb` 用户并设置登录密码。
+
 ```
 # useradd tidb
 # passwd tidb
 ```
+
 执行以下命令，将 `tidb ALL=(ALL) NOPASSWD: ALL` 添加到文件末尾，即配置好 sudo 免密码。
+
 ```
 # visudo
 tidb ALL=(ALL) NOPASSWD: ALL
 ```
-以 `tidb` 用户登录到中控机，执行以下命令，将 `172.16.10.61` 替换成你的部署目标机器 IP, 按提示输入部署目标机器 tidb 用户密码，执行成功后即创建好 ssh 互信，其他机器同理。
+
+以 `tidb` 用户登录到中控机，执行以下命令，将 `172.16.10.61` 替换成你的部署目标机器 IP，按提示输入部署目标机器 tidb 用户密码，执行成功后即创建好 ssh 互信，其他机器同理。
+
 ```
 [tidb@172.16.10.49 ~]$ ssh-copy-id -i ~/.ssh/id_rsa.pub 172.16.10.61
 ```
 
 #### 验证 ssh 互信及 sudo 免密码
-以 `tidb` 用户登录到中控机, ssh 登录目标机器 IP, 不需要输入密码并登录成功，表示 ssh 互信配置成功。
+以 `tidb` 用户登录到中控机，ssh 登录目标机器 IP，不需要输入密码并登录成功，表示 ssh 互信配置成功。
+
 ```
 [tidb@172.16.10.49 ~]$ ssh 172.16.10.61
 [tidb@172.16.10.61 ~]$
 ```
+
 以 `tidb` 用户登录到部署目标机器后，执行以下命令，不需要输入密码并切换到 root 用户，表示 `tidb` 用户 sudo 免密码配置成功。
+
 ```
 [tidb@172.16.10.61 ~]$ sudo -su root
 [root@172.16.10.61 tidb]#
