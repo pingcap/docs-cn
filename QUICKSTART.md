@@ -21,170 +21,7 @@ The architecture is as follows:
 
 ![TiDB Architecture](media/tidb-architecture.png)
 
-### Prepare the environment
-
-Before you start, make sure that you have:
-
-1. A Control Machine with the following requirements:
-
-    - Python 2.6 or Python 2.7
-
-    - Python Jinja2 2.7.2 and MarkupSafe 0.11 packages. You can use the following commands to install the packages:
-    
-        ```bash
-        pip install Jinja2==2.7.2 MarkupSafe==0.11
-        ```
-
-    - Access to the managed nodes via SSH using password login or SSH authorized_key login.
-
-2. Several managed nodes with the following requirements:
-
-    - 4 or more machines. At least 3 instances for TiKV. Don’t deploy TiKV together with TiDB or PD on the same machine. See [deploying recommendations](/op-guide/recommendation.md).
-
-    + Operating system:
-
-      - CentOS 7.3 and later versions
-      - X86_64 architecture (AMD64)
-      - Kernel version 3.10 or later
-      - Ext4 file system.
-
-    - Network between machines. Turn off the firewalls and iptables when deploying and turn them on after the deployment.
-
-    - The same time and time zone for all machines with the NTP service on to synchronize the correct time.
-
-    - A remote user account which you can use to login from the Control Machine to connect to the managed nodes via SSH. It is a normal user account with sudo privileges.
-    
-    - Python 2.6 or Python 2.7
-
-    > **Note:** The Control Machine can be one of the managed nodes with access to external network to download binary.
-
-### Install Ansible in the Control Machine
-
-Install Ansible 2.3 or later to your CentOS 7.3 platform:
-
-```
-yum install epel-release
-yum update
-yum install ansible
-```
-
-You can use the `ansible --version` command to see the version information.
-
-For more information, see [Ansible Documentation](http://docs.ansible.com/ansible/intro_installation.html).
-
-
-### Download TiDB-Ansible to the Control Machine
-
-Download the latest master version of the ZIP package from GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible) or [click to download]( https://github.com/pingcap/tidb-ansible/archive/master.zip).
-
-You can then unzip the package and the default folder name is `tidb-ansible-master`. The `tidb-ansible-master` directory contains all the files you need to get started with TiDB-Ansible.
-
-### Orchestrate the TiDB cluster
-
-The standard Cluster has 6 machines:
-
-- 2 TiDB instances
-- 3 PD instances, one of the PD instances is used as the monitor.
-- 3 TiKV instances
-
-The cluster topology is as follows:
-
-| Name | Host IP | Services |
-| ---- | ------- | -------- |
-| node1 | 172.16.10.1 | PD1, TiDB1 |
-| node2 | 172.16.10.2 | PD2, TiDB2 |
-| node3 | 172.16.10.3 | PD3, Monitor|
-| node4 | 172.16.10.4 | TiKV1 |
-| node5 | 172.16.10.5 | TiKV2 |
-| node6 | 172.16.10.6 | TiKV3 |
-
-Edit the `inventory.ini` file from the `tidb-ansible-master` directory as follows:
-
-```ini
-[tidb_servers]
-172.16.10.1
-172.16.10.2
-
-[pd_servers]
-172.16.10.1
-172.16.10.2
-172.16.10.3
-
-[tikv_servers]
-172.16.10.4
-172.16.10.5
-172.16.10.6
-
-[monitored_servers:children]
-tidb_servers
-tikv_servers
-pd_servers
-
-[monitoring_servers]
-172.16.10.3
-
-[grafana_servers]
-172.16.10.3
-
-...
-
-```
-
-### Deploy the TiDB cluster
-
-Use the normal user with the sudo privileges to deploy TiDB:
-
-1. Edit the `inventory.ini` file as follows:
-
-    ```ini
-    ## Connection
-    # ssh via root:
-    # ansible_user = root
-    # ansible_become = true
-    # ansible_become_user = tidb
-    
-    # ssh via normal user
-    ansible_user = tidb
-    ```
-
-2. Connect to the network and download the TiDB, TiKV, and PD binaries:
-
-    ```
-    ansible-playbook local_prepare.yml
-    ```
-
-3. Initialize the system environment of the target machines and adjust the kernel parameters:
-
-    ```
-    ansible-playbook bootstrap.yml -k -K
-    ```
-
-    > **Note:**
-    > 
-    > - Add the `-k` (lowercase) parameter if password is needed to connect to the managed node. This applies to other playbooks as well.
-    > - Add the `-K` (uppercase) parameter if sudo needs password for root privileges.
-
-4. Deploy the TiDB cluster:
-
-    ```
-    ansible-playbook deploy.yml -k
-    ```
-
-### Start the cluster
-
-Start the TiDB cluster:
-
-```
-ansible-playbook start.yml -k
-```
-
-Use the MySQL client to connect to the TiDB cluster:
-
-```sql
-mysql -u root -h 172.16.10.1 -P 4000
-```
-
-> **Note:** The TiDB service default port is 4000.
+For details of deploying a TiDB cluster, see [Ansible Deployment](op-guide/ansible-deployment.md).
 
 ## Try TiDB
 
@@ -457,10 +294,18 @@ For example, if you want to add two TiDB nodes (node101, node102) with the IP ad
     172.16.10.8
     172.16.10.9
 
-    [monitored_servers:children]
-    tidb_servers
-    tikv_servers
-    pd_servers
+    [monitored_servers]
+    172.16.10.1
+    172.16.10.2
+    172.16.10.3
+    172.16.10.4
+    172.16.10.5
+    172.16.10.6
+    172.16.10.7
+    172.16.10.8
+    172.16.10.9
+    172.16.10.101
+    172.16.10.102
 
     [monitoring_servers]
     172.16.10.3
@@ -488,25 +333,25 @@ For example, if you want to add two TiDB nodes (node101, node102) with the IP ad
 2. Initialize the newly added node:
 
     ```
-    ansible-playbook bootstrap.yml -k -K -l 172.16.10.101,172.16.10.102
+    ansible-playbook bootstrap.yml -l 172.16.10.101,172.16.10.102
     ```
 
 3. Deploy the newly added node:
 
     ```
-    ansible-playbook deploy.yml -k -l 172.16.10.101,172.16.10.102
+    ansible-playbook deploy.yml -l 172.16.10.101,172.16.10.102
     ```
 
 4. Start the newly added node:
 
     ```
-    ansible-playbook start.yml -k -l 172.16.10.101,172.16.10.102
+    ansible-playbook start.yml -l 172.16.10.101,172.16.10.102
     ```
 
 5. Update the Prometheus configuration and restart the cluster:
 
     ```
-    ansible-playbook rolling_update_monitor.yml -k --tags=prometheus
+    ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
 6. Monitor the status of the entire cluster and the newly added node by opening a browser to access the monitoring platform: `http://172.16.10.3:3000`.
@@ -536,10 +381,17 @@ For example, if you want to add a PD node (node103) with the IP address `172.16.
     172.16.10.8
     172.16.10.9
 
-    [monitored_servers:children]
-    tidb_servers
-    tikv_servers
-    pd_servers
+    [monitored_servers]
+    172.16.10.4
+    172.16.10.5
+    172.16.10.1
+    172.16.10.2
+    172.16.10.3
+    172.16.10.103
+    172.16.10.6
+    172.16.10.7
+    172.16.10.8
+    172.16.10.9
 
     [monitoring_servers]
     172.16.10.3
@@ -566,13 +418,13 @@ For example, if you want to add a PD node (node103) with the IP address `172.16.
 2. Initialize the newly added node:
 
     ```
-    ansible-playbook bootstrap.yml -k -K -l 172.16.10.103
+    ansible-playbook bootstrap.yml -l 172.16.10.103
     ```
 
 3. Deploy the newly added node:
 
     ```
-    ansible-playbook deploy.yml -k -l 172.16.10.103
+    ansible-playbook deploy.yml -l 172.16.10.103
     ```
 
 4. Login the newly added PD node and edit the starting script: 
@@ -600,13 +452,13 @@ For example, if you want to add a PD node (node103) with the IP address `172.16.
 5. Roll upgrade the entire cluster:
     
     ```
-    ansible-playbook rolling_update.yml -k
+    ansible-playbook rolling_update.yml
     ```
    
 6. Update the Prometheus configuration and restart the cluster:
 
     ```
-    ansible-playbook rolling_update_monitor.yml -k --tags=prometheus
+    ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
 7. Monitor the status of the entire cluster and the newly added node by opening a browser to access the monitoring platform: `http://172.16.10.3:3000`.
@@ -618,7 +470,7 @@ For example, if you want to remove a TiDB node (node5) with the IP address `172.
 1. Stop all services on node5:
 
     ```
-    ansible-playbook stop.yml -k -l 172.16.10.5
+    ansible-playbook stop.yml -l 172.16.10.5
     ```
 
 2. Edit the `inventory.ini` file and remove the node information:
@@ -639,10 +491,16 @@ For example, if you want to remove a TiDB node (node5) with the IP address `172.
     172.16.10.8
     172.16.10.9
 
-    [monitored_servers:children]
-    tidb_servers
-    tikv_servers
-    pd_servers
+    [monitored_servers]
+    172.16.10.4
+    #172.16.10.5  # the removed node
+    172.16.10.1
+    172.16.10.2
+    172.16.10.3
+    172.16.10.6
+    172.16.10.7
+    172.16.10.8
+    172.16.10.9
 
     [monitoring_servers]
     172.16.10.3
@@ -668,7 +526,7 @@ For example, if you want to remove a TiDB node (node5) with the IP address `172.
 3. Update the Prometheus configuration and restart the cluster:
 
     ```
-    ansible-playbook rolling_update_monitor.yml -k --tags=prometheus
+    ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
 4. Monitor the status of the entire cluster by opening a browser to access the monitoring platform: `http://172.16.10.3:3000`.
@@ -702,7 +560,7 @@ For example, if you want to remove a TiKV node (node9) with the IP address `172.
 3. After the node is successfully removed, stop the services on node9:
 
     ```
-    ansible-playbook stop.yml -k -l 172.16.10.9
+    ansible-playbook stop.yml -l 172.16.10.9
     ```
 
 4. Edit the `inventory.ini` file and remove the node information:
@@ -723,10 +581,16 @@ For example, if you want to remove a TiKV node (node9) with the IP address `172.
     172.16.10.8
     #172.16.10.9  # the removed node
 
-    [monitored_servers:children]
-    tidb_servers
-    tikv_servers
-    pd_servers
+    [monitored_servers]
+    172.16.10.4
+    172.16.10.5
+    172.16.10.1
+    172.16.10.2
+    172.16.10.3
+    172.16.10.6
+    172.16.10.7
+    172.16.10.8
+    #172.16.10.9  # the removed node
 
     [monitoring_servers]
     172.16.10.3
@@ -752,7 +616,7 @@ For example, if you want to remove a TiKV node (node9) with the IP address `172.
 5. Update the Prometheus configuration and restart the cluster:
 
     ```
-    ansible-playbook rolling_update_monitor.yml -k --tags=prometheus
+    ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
 6. Monitor the status of the entire cluster by opening a browser to access the monitoring platform: `http://172.16.10.3:3000`.
@@ -784,7 +648,7 @@ For example, if you want to remove a PD node (node2) with the IP address `172.16
 3. After the node is successfully removed, stop the services on node2:
 
     ```
-    ansible-playbook stop.yml -k -l 172.16.10.2
+    ansible-playbook stop.yml -l 172.16.10.2
     ```
 
 4. Edit the `inventory.ini` file and remove the node information:
@@ -805,10 +669,16 @@ For example, if you want to remove a PD node (node2) with the IP address `172.16
     172.16.10.8
     172.16.10.9
 
-    [monitored_servers:children]
-    tidb_servers
-    tikv_servers
-    pd_servers
+    [monitored_servers]
+    172.16.10.4
+    172.16.10.5
+    172.16.10.1
+    #172.16.10.2  # the removed node
+    172.16.10.3
+    172.16.10.6
+    172.16.10.7
+    172.16.10.8
+    172.16.10.9
 
     [monitoring_servers]
     172.16.10.3
@@ -834,7 +704,7 @@ For example, if you want to remove a PD node (node2) with the IP address `172.16
 5. Update the Prometheus configuration and restart the cluster:
 
     ```
-    ansible-playbook rolling_update_monitor.yml -k --tags=prometheus
+    ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
 6. Monitor the status of the entire cluster by opening a browser to access the monitoring platform: `http://172.16.10.3:3000`.
@@ -844,11 +714,11 @@ For example, if you want to remove a PD node (node2) with the IP address `172.16
 Stop the cluster:
 
 ```
-ansible-playbook stop.yml -k
+ansible-playbook stop.yml
 ```
 
 Destroy the cluster:
 
 ```
-ansible-playbook unsafe_cleanup.yml -k
+ansible-playbook unsafe_cleanup.yml
 ```

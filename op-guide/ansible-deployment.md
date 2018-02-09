@@ -25,7 +25,7 @@ You can use the TiDB-Ansible configuration file to set up the cluster topology, 
 
 Before you start, make sure that you have:
 
-1. Several managed nodes with the following requirements:
+1. Several target machines with the following requirements:
 
     - 4 or more machines. At least 3 instances for TiKV. Do not deploy TiKV together with TiDB or PD on the same machine. See [Software and Hardware Requirements](recommendation.md).
 
@@ -195,9 +195,9 @@ TiKV3-3 ansible_host=172.16.10.6 deploy_dir=/data3/deploy tikv_port=20173 labels
 location_labels = ["host"]
 ```
 
-**Edit the parameters:**
+**Edit the parameters in the service configuration file:**
 
-1. For multiple TiKV instances, edit the `end-point-concurrency` and `block-cache-size` parameters in `conf/tikv.yml`:
+1. For multiple TiKV instances, edit the `end-point-concurrency` and `block-cache-size` parameters in `tidb-ansible/conf/tikv.yml`:
 
     - `end-point-concurrency`: keep the number lower than CPU Vcores
     - `rocksdb defaultcf block-cache-size(GB)`: MEM * 80% / TiKV instance number * 30%
@@ -280,7 +280,7 @@ To deploy TiDB using a normal user account, take the following steps:
     ansible -i inventory.ini all -m shell -a 'whoami' -b
     ```
 
-2. Connect to the network and download TiDB binary to the Control Machine using `local_prepare.yml` playbook.
+2. Run the `local_prepare.yml` playbook, connect to the Internet and download TiDB binary to the Control Machine.
 
     ```
     ansible-playbook local_prepare.yml
