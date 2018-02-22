@@ -715,7 +715,7 @@ TiKV 操作繁忙，一般出现在数据库负载比较高时，请检查 TiKV 
 
 清理锁超时，当数据库上承载的业务存在大量的事务冲突时，会遇到这种错误，请检查业务代码是否有锁争用。
 
-### 9.1.5 ERROR 9005 (HY000) : Region is unavaiable
+### 9.1.5 ERROR 9005 (HY000) : Region is unavailable
 
 访问的 Region 不可用，某个 Raft Group 不可用，如副本数目不足，出现在 TiKV 比较繁忙或者是 TiKV 节点停机的时候，请检查 TiKV Server 状态/监控/日志。
 
