@@ -365,7 +365,7 @@ PbReader 使用示例
 
 ### Pump/Drainer 配置
 
-使用 ansible 部署的 pump 服务，已经在启动参数设置 metrics 。
+使用 ansible 部署的 Pump 服务，已经在启动参数设置 metrics 。
 
 drainer 启动时可以设置 `--metrics-addr` 和 `--metrics-interval` 两个参数，其中 metrics-addr 设为 Push Gateway 的地址，metrics-interval 为 push 的频率，单位为秒，默认值为 15。
 
