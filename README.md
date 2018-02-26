@@ -127,6 +127,7 @@
   - [佐助金融](http://t.cn/RQeoKaa)
   - [360金融](http://t.cn/RTKnTev)
   - [某电信运营商](http://t.cn/RTYWADg)
+  - [Ping++](http://t.cn/RE5xYKn)
 + 更多资源
   - [常用工具](https://github.com/pingcap/tidb-tools)
   - [PingCAP 团队技术博客](https://pingcap.com/blog-cn/)
