@@ -119,6 +119,7 @@
   - [凤凰网](http://t.cn/RHRQfNT)
   - [猿辅导](http://t.cn/RTKnKSX)
   - [二维火](http://t.cn/R8bXM2f)
+  - [Ping++](http://t.cn/RE5xYKn)
   - [去哪儿](http://t.cn/RTKnsL7)
   - [G7](http://t.cn/RQVePoX)
   - [盖娅互娱](http://t.cn/RT9r7hx)
@@ -127,7 +128,6 @@
   - [佐助金融](http://t.cn/RQeoKaa)
   - [360金融](http://t.cn/RTKnTev)
   - [某电信运营商](http://t.cn/RTYWADg)
-  - [Ping++](http://t.cn/RE5xYKn)
 + 更多资源
   - [常用工具](https://github.com/pingcap/tidb-tools)
   - [PingCAP 团队技术博客](https://pingcap.com/blog-cn/)
