@@ -347,7 +347,7 @@ index_type:
 
 * 不支持 MySQL 的 `algorithm_option` 和 `lock_option` 选项。
 
-* 我们最多支持 512 个列。`innodb` 的限制是 1017。`MySQL` 的硬限制是 4096。详见 MySQL 文档 [Limits on Table Column Count and Row Size](https://dev.mysql.com/doc/refman/5.7/en/column-count-limit.html)
+* TiDB 单表最多支持 512 个列。InnoDB 的限制是 1017。MySQL 的硬限制是 4096。详见 MySQL 文档 [Limits on Table Column Count and Row Size](https://dev.mysql.com/doc/refman/5.7/en/column-count-limit.html)
 
 ## DROP INDEX 语法
 
