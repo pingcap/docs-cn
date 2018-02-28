@@ -74,6 +74,14 @@ TiDB 支持 ACID 分布式事务，事务模型是以 Google 的 Percolator 模�
 
 TiDB 字符集默认就是 UTF8 而且目前只支持 UTF8，字符串就是 memcomparable 格式的。
 
+### 1.1.17 TiDB 用户名长度限制？
+
+在 TiDB 中用户名最长为 32 字符。
+
+### 1.1.18 一个事务中的语句数量限制是多少？
+
+一个事务中的语句数量，默认限制为 5000 条。
+
 ## 1.2 TiDB 原理
 
 ### 1.2.1 存储 TiKV
@@ -346,6 +354,10 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 下线节点一般指 TiKV 节点通过 pd-ctl 或者监控判断节点是否下线完成。节点下线完成后，手动停止下线节点上相关的服务。从 Prometheus 配置文件中删除对应节点的 node_exporter 信息。从 Ansible inventory.ini 中删除对应节点的信息。
 
+### 3.2.9 怎样观察 transfer leader 的运行情况？
+
+可以通过 pd operator 查看。
+
 ## 3.3 TiDB server 管理
 
 ### 3.3.1 TiDB 的 lease 参数应该如何设置？
@@ -380,6 +392,14 @@ TiClient Region Error 该指标描述的是在 TiDB-server 作为客户端通过
 ### 3.3.7 TiDB 同时支持的最大并发连接数？
 
 当前版本 TiDB 没有最大连接数的限制，如果并发过大导致响应时间增加，可以通过增加 TiDB 节点进行扩容。
+
+### 3.3.8 `distsql_scan_concurrency` 默认值是多少？
+
+默认值为 15。
+
+### 3.3.9 如何查看某张表创建的时间？
+
+information_schema 中的 tables 表里的 create_time 即为表的真实创建时间。
 
 ## 3.4 TiKV 管理
 
@@ -469,6 +489,18 @@ TiKV 支持单独进行接口调用，理论上也可以起个实例做为 Cache
 
 - 减少 TiDB 与 TiKV 之间的数据传输。
 - 计算下推，充分利用 TiKV 的分布式计算资源。
+
+### 3.4.20 空 region 默认多大？
+
+空 region 默认大小为 1MB，减少来回搬迁。
+
+### 3.4.21 tikv 和 pd 之间的通讯协议是什么？
+
+tikv 和 pd 之间的通讯协议升级为 proto3。
+
+### 3.4.22 出现故障后，多久可以观察到 store 的的状态变化？
+
+10 分钟。
 
 ## 3.5 TiDB 测试
 
@@ -621,6 +653,10 @@ Delete，Truncate 和 Drop 都不会立即释放空间，对于 Truncate 和 Dro
 - 目前正在开发分布式导入工具 Lightning，需要注意的是数据导入过程中为了性能考虑，不会执行完整的事务流程，所以没办法保证导入过程中正在导入的数据的 ACID 约束，只能保证整个导入过程结束以后导入数据的 ACID 约束。因此适用场景主要为新数据的导入（比如新的表或者新的索引），或者是全量的备份恢复（先 Truncate 原表再导入）。
 - TiDB 的数据加载与磁盘以及整体集群状态相关，加载数据时应关注该主机的磁盘利用率，TiClient Error/Backoff/Thread CPU 等相关 metric，可以分析相应瓶颈。
 
+### 4.3.12 对数据做删除操作之后，空间回收很慢，如何处理？
+
+可以设置并行 GC，加快对空间的回收速度。默认并发为 1，最大可调整为 tikv 实例数量的 50%。
+
 # 五、SQL 优化
 
 ## 5.1 TiDB 执行计划解读
@@ -654,6 +690,10 @@ Count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 ### 5.1.5 TiDB 是否支持基于 COST 的优化（CBO），如果支持，实现到什么程度？
 
 是的，TiDB 使用的基于成本的优化器（CBO），我们有一个小组单独会对代价模型、统计信息持续优化，除此之外，我们支持 hash join、soft merge 等关联算法。
+
+### 5.1.6 如何确定某张表是否需要做 analyze ？
+
+可以通过 `show stats_healthy` 来查看表是否需要做 analyze。
 
 # 六、数据库优化
 
