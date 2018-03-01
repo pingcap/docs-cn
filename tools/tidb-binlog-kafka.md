@@ -26,15 +26,17 @@ TiDB-Binlog 集群主要分为三个组件：
 
 #### Pump
 
-Pump 是一个守护进程，在每个 TiDB 的主机上后台运行。他的主要功能是实时记录 TiDB 产生的 Binlog 并顺序写入kafka中
+Pump 是一个守护进程，在每个 TiDB 主机的后台运行。其主要功能是实时记录 TiDB 产生的 Binlog 并顺序写入 Kafka 中。
 
 #### Drainer
 
-Drainer 从 kafka 中收集 Binlog，并按照在 TiDB 中事务的提交顺序转化为指定数据库兼容的 SQL 语句，最后同步到目的数据库或者写到顺序文件
+Drainer 从 Kafka 中收集 Binlog，并按照 TiDB 中事务的提交顺序转化为指定数据库兼容的 SQL 语句，最后同步到目的数据库或者写到顺序文件。
 
 #### Kafka & ZooKeeper
 
-Kafka 集群用来存储由 Pump 写入的 binlog 数据，并提供给 Drainer 进行读取。（local版本将 binlog 存储在文件中，最新版本都使用 Kafka 存储）
+Kafka 集群用来存储由 Pump 写入的 Binlog 数据，并提供给 Drainer 进行读取。
+
+> **注：**local 版本将 Binlog 存储在文件中，最新版本则使用 Kafka 存储。
 
 ## TiDB-Binlog 安装
 
@@ -59,10 +61,10 @@ cd tidb-binlog-latest-linux-amd64
 
 #### 注意
 
-* 需要为一个 TiDB 集群中的每台 TiDB server 部署一个 Pump，目前 TiDB server 只支持以 unix socket 的方式输出 binlog。
+* 需要为一个 TiDB 集群中的每台 TiDB server 部署一个 Pump，目前 TiDB server 只支持以 unix socket 的方式输出 Binlog。
 * 手动部署时，启动优先级为：Pump > TiDB；停止优先级为 TiDB > Pump。
 
-    我们设置 TiDB 启动参数 binlog-socket 为对应的 pump 的参数 socket 所指定的 unix socket 文件路径，最终部署结构如下图所示：
+    设置 TiDB 启动参数 `binlog-socket` 为对应的 Pump 参数 `socket` 所指定的 unix socket 文件路径，最终部署结构如下图所示：
 
     ![TiDB pump 模块部署结构](../media/tidb-pump-deployment.png)
 
@@ -97,10 +99,10 @@ cd tidb-binlog-latest-linux-amd64
 |ZooKeeper|3+|8G|4+|2+ 300G|
 
 #### Kafka 配置参数推荐
-    
-- auto.create.topics.enable=true 如果还没有创建 topic，Kafka 会在 broker 上自动创建 topic
-- broker.id 必备参数用来标识 Kafka 集群，不能重复，如 broker.id = 1
-- fs.file-max = 1000000 Kafka 会使用大量文件和网络 socket，建议修改成 1000000，修改方法（vi /etc/sysctl.conf）
+
+- `auto.create.topics.enable = true`：如果还没有创建 topic，Kafka 会在 broker 上自动创建 topic
+- `broker.id`：用来标识 Kafka 集群的必备参数，不能重复；如 `broker.id = 1`
+- `fs.file-max = 1000000`：Kafka 会使用大量文件和网络 socket，建议修改成 1000000，通过 `vi /etc/sysctl.conf` 进行修改
 
 #### 使用 tidb-ansible 部署 Pump
 
@@ -142,15 +144,15 @@ ZK3="192.168.0.11"
 1. Pump 命令行参数说明
 
     ```
-    Usage of pump:
+    Usage of Pump:
     -L string
         日志输出信息等级设置: debug, info, warn, error, fatal (默认 "info")
     -V
         打印版本信息
     -addr string
-        Pump 提供服务的 rpc 地址(-addr="192.168.0.10:8250")
+        Pump 提供服务的 RPC 地址(-addr="192.168.0.10:8250")
     -advertise-addr string
-        Pump 对外提供服务的 rpc 地址(-advertise-addr="192.168.0.10:8250")
+        Pump 对外提供服务的 RPC 地址(-advertise-addr="192.168.0.10:8250")
     -config string
         配置文件路径，如果你指定了配置文件，Pump 会首先读取配置文件的配置；
         如果对应的配置在命令行参数里面也存在，Pump 就会使用命令行参数的配置来覆盖配置文件里面的。
@@ -173,7 +175,7 @@ ZK3="192.168.0.11"
     -pd-urls string
         PD 集群节点的地址 (-pd-urls="http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379")
     -socket string
-        unix socket 模式服务监听地址 (默认 unix:///tmp/pump.sock)
+        unix socket 模式服务监听地址（默认 unix:///tmp/pump.sock）
     ```
 
 2. Pump 配置文件
@@ -181,10 +183,10 @@ ZK3="192.168.0.11"
     ```toml
     # Pump Configuration.
 
-    # Pump 提供服务的 rpc 地址("192.168.0.10:8250")
+    # Pump 提供服务的 RPC 地址("192.168.0.10:8250")
     addr = "192.168.0.10:8250"
 
-    # Pump 对外提供服务的 rpc 地址("192.168.0.10:8250")
+    # Pump 对外提供服务的 RPC 地址("192.168.0.10:8250")
     advertise-addr = ""
     
     # binlog 最大保留天数 (默认 7)，设置为 0 可永久保存
@@ -193,10 +195,10 @@ ZK3="192.168.0.11"
     # Pump 数据存储位置路径
     data-dir = "data.pump"
  
-    # ZooKeeper 地址，设置该选项从 ZooKeeper 中获取 kafka 地址
+    # ZooKeeper 地址，设置该选项从 ZooKeeper 中获取 Kafka 地址
     # ZooKeeper-addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
 
-    # Pump 向 pd 发送心跳间隔 (单位 秒)
+    # Pump 向 PD 发送心跳的间隔 (单位 秒)
     heartbeat-interval = 3
    
     # PD 集群节点的地址
@@ -232,7 +234,7 @@ ZK3="192.168.0.11"
     -data-dir string
         Drainer 数据存储位置路径 (默认 "data.drainer")
     -zookeeper-addrs string (-zookeeper-addrs="192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181")
-        ZooKeeper 地址，该选项从 ZooKeeper 中获取 kafka 地址
+        ZooKeeper 地址，该选项从 ZooKeeper 中获取 Kafka 地址
     -dest-db-type string
         Drainer 下游服务类型 (默认为 mysql)
     -detect-interval int
@@ -244,7 +246,7 @@ ZK3="192.168.0.11"
         db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test")，
         不支持对 ignore schemas 的 table 进行 rename DDL 操作
     -initial-commit-ts (默认为 0)
-        如果 drainer 没有相关的断点信息，可以通过该项来设置相关的断点信息
+        如果 Drainer 没有相关的断点信息，可以通过该项来设置相关的断点信息
     -log-file string
         log 文件路径
     -log-rotate string
@@ -324,7 +326,7 @@ ZK3="192.168.0.11"
     password = ""
     port = 3306
 
-    # db-type 设置为 pb 时,存放 binlog 文件的目录
+    # db-type 设置为 pb 时，存放 binlog 文件的目录
     # [syncer.to]
     # dir = "data.drainer"
     ```
@@ -337,7 +339,7 @@ ZK3="192.168.0.11"
 
 ## 下载 PbReader 工具 (Linux)
 
-PbReader 是一个解析 Drainer 生成的 Pb 文件，翻译成对应的 SQL 语句。
+PbReader 用于解析 Drainer 生成的 Pb 文件，并翻译成对应的 SQL 语句。
 
 CentOS 7+
 
@@ -348,6 +350,7 @@ wget http://download.pingcap.org/pb_reader-latest-linux-amd64.sha256
 
 # 检查文件完整性，返回 ok 则正确
 sha256sum -c pb_reader-latest-linux-amd64.sha256
+
 # 解开压缩包
 tar -xzf pb_reader-latest-linux-amd64.tar.gz
 cd pb_reader-latest-linux-amd64
@@ -361,19 +364,22 @@ PbReader 使用示例
 
 ## TiDB-Binlog 监控
 
-这部分主要对 TiDB-Binlog 的状态、性能做监控，通过 Prometheus + Grafana 展现 metrics 数据。
+本部分主要介绍如何对 TiDB-Binlog 的状态、性能做监控，并通过 Prometheus + Grafana 展现 metrics 数据。
 
 ### Pump/Drainer 配置
 
-使用 ansible 部署的 Pump 服务，已经在启动参数设置 metrics 。
+使用 Ansible 部署的 Pump 服务已经在启动参数设置 metrics。启动 Drainer 时可以设置以下两个参数：
 
-drainer 启动时可以设置 `--metrics-addr` 和 `--metrics-interval` 两个参数，其中 metrics-addr 设为 Push Gateway 的地址，metrics-interval 为 push 的频率，单位为秒，默认值为 15。
+- `--metrics-addr`：设为 Push Gateway 的地址
+- `--metrics-interval`：设为 push 的频率，单位为秒，默认值为 15
 
 ### Grafana 配置
 
 + 进入 Grafana Web 界面（默认地址: `http://localhost:3000`，默认账号：admin，密码：admin）
 
-    点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息 ( 注: Type 选 Prometheus，URL 为 Prometheus 地址，根据实际情况 添加/填写 ）
+    点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息
+    
+    > **注：**Type 选 Prometheus，URL 为 Prometheus 地址，根据实际情况添加/填写。
 
 + 导入 dashboard 配置文件
 
