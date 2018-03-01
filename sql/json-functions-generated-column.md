@@ -40,7 +40,7 @@ INSERT INTO person (name, address_info) VALUES ("John", CAST(123 AS JSON));
 Now, if you want to query all the users living in Beijing from the table, you can simply use the following SQL statement:
 
 ```sql
-SELECT id, name FROM person WHERE JSON_EXTRACT(address_info, '$.city') = 'Beijing');
+SELECT id, name FROM person WHERE JSON_EXTRACT(address_info, '$.city') = 'Beijing';
 ```
 
 TiDB supports the `JSON_EXTRACT` function which is exactly the same as in MySQL. The function is to extract the `city` field from the `address_info` document. The second argument is a "path expression" and is used to specify which field to extract. See the following few examples to help you understand the "path expression":
