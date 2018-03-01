@@ -392,9 +392,9 @@ target-table = "order_2017"
     Query OK, 0 rows affected (0.01 sec)
     ```
 
-4. 检查 MySQL binlog_row_image  是否为 FULL
+4. 检查 MySQL `binlog_row_image` 是否为 FULL
 
-    - 可以用如下命令检查 binlog_row_image
+    - 可以用如下命令检查 `binlog_row_image`
 
     ```
     mysql> show global variables like 'binlog_row_image';
