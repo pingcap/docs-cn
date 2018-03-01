@@ -64,7 +64,7 @@ cd tidb-binlog-latest-linux-amd64
 * 需要为一个 TiDB 集群中的每台 TiDB server 部署一个 Pump，目前 TiDB server 只支持以 unix socket 的方式输出 Binlog。
 * 手动部署时，启动优先级为：Pump > TiDB；停止优先级为 TiDB > Pump。
 
-    我们设置 TiDB 启动参数 binlog-socket 为对应的 Pump 的参数 socket 所指定的 unix socket 文件路径，最终部署结构如下图所示：
+    设置 TiDB 启动参数 `binlog-socket` 为对应的 Pump 参数 `socket` 所指定的 unix socket 文件路径，最终部署结构如下图所示：
 
     ![TiDB pump 模块部署结构](../media/tidb-pump-deployment.png)
 
@@ -99,10 +99,10 @@ cd tidb-binlog-latest-linux-amd64
 |ZooKeeper|3+|8G|4+|2+ 300G|
 
 #### Kafka 配置参数推荐
-    
-- auto.create.topics.enable=true 如果还没有创建 topic，Kafka 会在 broker 上自动创建 topic
-- broker.id 必备参数用来标识 Kafka 集群，不能重复，如 broker.id = 1
-- fs.file-max = 1000000 Kafka 会使用大量文件和网络 socket，建议修改成 1000000，修改方法（vi /etc/sysctl.conf）
+
+- `auto.create.topics.enable = true`：如果还没有创建 topic，Kafka 会在 broker 上自动创建 topic
+- `broker.id`：用来标识 Kafka 集群的必备参数，不能重复；如 `broker.id = 1`
+- `fs.file-max = 1000000`：Kafka 会使用大量文件和网络 socket，建议修改成 1000000，通过 `vi /etc/sysctl.conf` 进行修改
 
 #### 使用 tidb-ansible 部署 Pump
 
@@ -379,7 +379,7 @@ PbReader 使用示例
 
     点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息
     
-    > **注：**Type 选 Prometheus，URL 为 Prometheus 地址，根据实际情况 添加/填写 ）
+    > **注：**Type 选 Prometheus，URL 为 Prometheus 地址，根据实际情况添加/填写。
 
 + 导入 dashboard 配置文件
 
