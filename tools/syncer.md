@@ -290,8 +290,8 @@ tbl-name = "~^2016_.*"
 
 根据配置文件的 route-rules，支持将分库分表的数据导入到同一个库同一个表中，但是在开始前需要检查分库分表规则，如下：
 
-- 是否可以利用 route-rule 的语义规则表示
-- 分表中是否包含唯一递增主键，或者合并后数据上有冲突的唯一索引或者主键
+- 是否可以利用 route-rules 的语义规则表示
+- 分表中是否包含唯一递增主键，或者合并后是否包含数据上有冲突的唯一索引或者主键
 
 暂时对 DDL 支持不完善。
 
@@ -299,8 +299,8 @@ tbl-name = "~^2016_.*"
 
 #### 分库分表同步示例
 
-1. 则只需要在所有 MySQL 实例下面，启动 Syncer, 并设置 route-rules。
-2. replicate-do-db & replicate-ignore-db 与 route-rules 同时使用场景下，replicate-do-db & replicate-ignore-db 需要指定 route-rules 中 target-schema & target-table 内容。
+1. 只需在所有 MySQL 实例下面，启动 Syncer, 并设置 route-rules。
+2. `replicate-do-db` & `replicate-ignore-db` 与 route-rules 同时使用场景下，`replicate-do-db` & `replicate-ignore-db` 需要指定 route-rules 中 `target-schema` & `target-table` 的内容。
 
 ```toml
 # 场景如下:
@@ -337,7 +337,7 @@ target-table = "order_2017"
 
 ### Syncer 同步前检查
 
-1.  源库 server-id 检查
+1. 源库 server-id 检查
 
     - 可通过以下命令查看 server-id 
     - 结果为空或者为 0，Syncer 无法同步数据
@@ -353,7 +353,7 @@ target-table = "order_2017"
     1 row in set (0.01 sec)
     ```
 
-2.  检查 Binlog 相关参数
+2. 检查 Binlog 相关参数
 
     - 检查 MySQL 是否开启 binlog
     - 可以用如下命令确认是否开启了 binlog
@@ -369,7 +369,7 @@ target-table = "order_2017"
     1 row in set (0.00 sec)
     ```
 
-3.  检查 MySQL binlog 格式是否为 ROW
+3. 检查 MySQL binlog 格式是否为 ROW
 
     - 可以用如下命令检查 binlog 格式：
 
@@ -392,7 +392,7 @@ target-table = "order_2017"
     Query OK, 0 rows affected (0.01 sec)
     ```
 
-4.  检查 MySQL binlog_row_image  是否为 FULL
+4. 检查 MySQL binlog_row_image  是否为 FULL
 
     - 可以用如下命令检查 binlog_row_image
 
@@ -412,12 +412,12 @@ target-table = "order_2017"
     mysql> set global binlog_row_image = FULL;
     Query OK, 0 rows affected (0.01 sec)
     ```
-5.  检查 mydumper 用户权限
+5. 检查 mydumper 用户权限
 
     - mydumper 导出数据至少拥有以下权限：`select, reload`
     - mydumper 操作对象为 RDS 时，可以添加 `--no-locks` 参数，避免申请 `reload` 权限
 
-6.  检查上下游同步用户权限
+6. 检查上下游同步用户权限
 
     - 需要上游 MySQL 同步账号至少赋予以下权限：
         
@@ -425,7 +425,7 @@ target-table = "order_2017"
     
     - 下游 TiDB 可暂时采用 root 同权限账号
 
-7.  检查 GTID 与 POS 相关信息
+7. 检查 GTID 与 POS 相关信息
 
     - 使用以下语句查看 binlog 内容：
         
@@ -433,23 +433,23 @@ target-table = "order_2017"
 
 ## 监控方案
 
-Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息存储方案，使用 Grafana 作为可视化组件进行展示，配合 AlertManager 来实现报警。其方案如下图
+Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息存储方案，使用 Grafana 作为可视化组件进行展示，配合 AlertManager 来实现报警。其方案如下图所示：
 
 ![monitor_scheme](../media/syncer-monitor-scheme.png)
 
 ### 配置 Syncer 监控与告警
 
-- syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。以下将分别配置 syncer 监控与告警，期间需要重启 Prometheus 。
-    - Prometheus 添加 syncer job 信息，
-    - 将以下内容刷新到 prometheus 配置文件，重启 prometheus
+- Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。以下将分别配置 Syncer 监控与告警，期间需要重启 Prometheus 。
+    - Prometheus 添加 Syncer job 信息，
+    - 将以下内容刷新到 Prometheus 配置文件，重启 Prometheus
 
         ```
           - job_name: 'syncer_ops' // 任务名字，区分数据上报
             static_configs:
-              - targets: ['10.1.1.4:10086'] // syncer 监听地址与端口，通知 prometheus 获取 syncer 的监控数据。
+              - targets: ['10.1.1.4:10086'] // Syncer 监听地址与端口，通知 Prometheus 获取 Syncer 的监控数据。
         ```
 
-    - 配置 Prometheus --> alertmanager  告警
+    - 配置 Prometheus -> AlertManager 告警
     - 将以下内容刷新到 alert.rule 配置文件，且 Prometheus 指定 --alertmanager.url 参数启动。
 
         ```
