@@ -49,7 +49,8 @@ binlog-pos = 930143241
 binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e-487b6bd31bf7:1-4"
 ```
 
-> **注意：** 
+> **注：** 
+>
 > - `syncer.meta` 只需要第一次使用的时候配置，后续 Syncer 同步新的 binlog 之后会自动将其更新到最新的 position。
 > - 如果使用 binlog position 同步则只需要配置 binlog-name binlog-pos; 使用 gtid 同步则需要设置 gtid，且启动 Syncer 时带有 `--enable-gtid`。
 
