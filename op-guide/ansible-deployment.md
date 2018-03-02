@@ -628,3 +628,21 @@ tidb ALL=(ALL) NOPASSWD: ALL
 [tidb@172.16.10.61 ~]$ sudo -su root
 [root@172.16.10.61 tidb]#
 ```
+
+### You need to install jmespath prior to running json_query filter 报错
+请参考 [在中控机器上安装 Ansible 及其依赖](#在中控机器上安装-ansible-及其依赖) 在中控机上安装 Ansible 2.4 版本，默认会安装 `python2-jmespath` 依赖包。CentOS 7 系统可通过以下命令单独安装：
+
+```
+sudo yum install python2-jmespath
+```
+
+在中控机上 python 交互窗口里 `import jmespath`，如果没有报错，表示依赖安装成功，如果有 `ImportError: No module named jmespath` 报错, 表示未安装 python `jmespath` 模块。
+
+```
+$ python
+Python 2.7.5 (default, Nov  6 2016, 00:28:07)
+[GCC 4.8.5 20150623 (Red Hat 4.8.5-11)] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import jmespath
+```
+
