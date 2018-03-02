@@ -275,9 +275,8 @@ If the cluster is deployed using Ansible, you can use the `ansible-playbook stop
 
 #### Can `kill` be executed in TiDB?
 
-You can `kill` DML statements. First use `show processlist` to find the ID corresponding with the session, and then execute `kill tidb connection id`.
-
-But currently, you cannot `kill` DDL statements. Once you start executing DDL statements, you cannot stop them unless something goes wrong. If something goes wrong, the DDL statements will stop executing.
+- You can `kill` DML statements. First use `show processlist` to find the ID corresponding with the session, and then run `kill id`.
+- You can `kill` DDL statements. First use `admin show ddl jobs` to find the ID of the DDL job you need to kill, and then run `admin cancel ddl jobs 'job_id' [, 'job_id'] ...`. For more details, see the [`ADMIN` statement](sql/admin.md#admin-statement).
 
 #### Does TiDB support session timeout?
 
