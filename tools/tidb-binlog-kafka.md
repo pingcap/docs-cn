@@ -32,7 +32,7 @@ Pump is a daemon that runs on the background of each TiDB host. Its main functio
 
 Drainer collects binlog files from each Pump node, converts them into specified database-compatible SQL statements in the commit order of the transactions in TiDB, and synchronizes to the target database or writes to the file sequentially.
 
-### Kafka & Zookeeper
+### Kafka & ZooKeeper
 
 The Kafka cluster stores the binlog data written by Pump and provides the binlog data to Drainer for reading.
 
@@ -73,10 +73,10 @@ cd tidb-binlog-latest-linux-amd64
     
     To guarantee the integrity of data, perform the following operations 10 minutes after Pump is started:
 
-    - Use the `generate_binlog_position` tool to generate the Drainer savepoint file. The tool is involved in the [tidb-tools](https://github.com/pingcap/tidb-tools) project. See the [README description](https://github.com/pingcap/tidb-tools/blob/master/generate_binlog_position/README.md) for usage.
+    - Use the `generate_binlog_position` tool of the [tidb-tools](https://github.com/pingcap/tidb-tools)project to generate the Drainer savepoint file. Use `generate_binlog_position` to compile this tool. See the [README description](https://github.com/pingcap/tidb-tools/blob/master/generate_binlog_position/README.md) for usage. You can also download this tool from [generate_binlog_position](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.tar.gz) and use `sha256sum` to verify the [sha256](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.sha256) file.
     - Do a full backup. For example, back up TiDB using mydumper.
     - Import the full backup to the target system.
-    - Set the file path of the savepoint and start Drainer:
+    - The savepoint file started by the Kafka version of Drainer is stored in the checkpoint table of the downstream database tidb_binlog by default. If no valid data exists in the checkpoint table, configure `initial-commit-ts` to make Drainer work from a specified position when it is started: 
       
         ```
         bin/drainer --config=conf/drainer.toml --data-dir=${drainer_savepoint_dir}
@@ -84,7 +84,7 @@ cd tidb-binlog-latest-linux-amd64
 
 - The drainer outputs `pb` and you need to set the following parameters in the configuration file:
 
-    ```toml
+    ```
     [syncer]
     db-type = "pb"
     disable-dispatch = true
@@ -93,17 +93,24 @@ cd tidb-binlog-latest-linux-amd64
     dir = "/path/pb-dir"
     ```
 
-- Before you deploy the TiDB-Binlog, install the Kafka and Zookeeper cluster and pay attention to the following items:
+- Deploy Kafka and ZooKeeper cluster before deploying TiDB-Binlog. Make sure that Kafka is 0.9 version or later.
 
-    - Make sure that Kafka is 0.9 version or later.
-    - It is required to set the parameter `auto.create.topics.enable=true`.
-    - It is recommended to deploy Kafka and Zookeeper on 3 to 5 servers.
-    - The size of the disk space depends on the business data volume.
+#### Recommended Kafka cluster configuration  		  
+|Name|Number|Memory size|CPU|Hard disk|
+|:---:|:---:|:---:|:---:|:---:|
+|Kafka|3+|16G|8+|2+ 1TB|
+|ZooKeeper|3+|8G|4+|2+ 300G|
+  		  
+#### Recommended Kafka parameter configuration
+    
+- `auto.create.topics.enable = true`: if no topic exists, Kafka automatically creates a topic on the broker.
+- `broker.id`: a required parameter to identify the Kafka cluster. Keep the parameter value unique. For example, `broker.id = 1`.
+- `fs.file-max = 1000000`: Kafka uses a lot of files and network sockets. It is recommended to change the parameter value to 1000000. Change the value using `vi /etc/sysctl.conf`.   
 
 ### Deploy Pump using TiDB-Ansible
 
 - If you have not deployed the Kafka cluster, use the [Kafka-Ansible](https://github.com/pingcap/thirdparty-ops/tree/master/kafka-ansible) to deploy.
-- When you deploy the TiDB cluster using [TiDB-Ansible](https://github.com/pingcap/tidb-ansible), edit the `tidb-ansible/inventory.ini` file, set `enable_binlog = True`, and configure the `zookeeper_addrs` variable as the Zookeeper address of the Kafka cluster. In this way, Pump is deployed while you deploy the TiDB cluster.
+- When you deploy the TiDB cluster using [TiDB-Ansible](https://github.com/pingcap/tidb-ansible), edit the `tidb-ansible/inventory.ini` file, set `enable_binlog = True`, and configure the `zookeeper_addrs` variable as the ZooKeeper address of the Kafka cluster. In this way, Pump is deployed while you deploy the TiDB cluster.
 
 Configuration example:
 
@@ -117,7 +124,29 @@ zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
 
 ### Deploy Pump using Binary
 
-1. Description of Pump command line arguments
+A usage example:
+
+Assume that we have three PDs, three ZooKeepers, and one TiDB. The information of each node is as follows: 
+	
+```
+TiDB="192.168.0.10"
+PD1="192.168.0.16"
+PD2="192.168.0.15"
+PD3="192.168.0.14"
+ZK1="192.168.0.13"
+ZK2="192.168.0.12"
+ZK3="192.168.0.11"
+```
+
+Deploy Drainer/Pump on the machine with the IP address "192.168.0.10".
+
+The IP address of the corresponding PD cluster is "192.168.0.16,192.168.0.15,192.168.0.14". 
+
+The ZooKeeper IP address of the corresponding Kafka cluster is "192.168.0.13,192.168.0.12,192.168.0.11".
+
+This example describes how to use Pump/Drainer.
+
+1. Description of Pump command line options
 
     ```
     Usage of Pump:
@@ -126,17 +155,15 @@ zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
     -V
         to print Pump version info
     -addr string
-        the RPC address that Pump provides service (default "127.0.0.1:8250")
+        the RPC address that Pump provides service (-addr= "192.168.0.10:8250")
     -advertise-addr string
-        the RPC address that Pump provides external service
+        the RPC address that Pump provides external service (-advertise-addr="192.168.0.10:8250")
     -config string
         to configure the file path of Pump; if you specifies the configuration file, Pump reads the configuration first; if the corresponding configuration also exists in the command line argument, Pump uses the command line configuration to cover that in the configuration file
     -data-dir string
         the path of storing Pump data
-    -kafka-addrs string
-        the connected Kafka address (default "127.0.0.1:9092")
-    -zookeeper-addrs string
-        the Zookeeper address; if you set the option, the Kafka address is got from Zookeeper; if you do not set the option, the value of kafka-addrs is used
+    -zookeeper-addrs string (-zookeeper_addrs="192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181")
+        the ZooKeeper address; this option gets the Kafka address from ZooKeeper
     -gc int
         the maximum days that the binlog is retained (default 7), and 0 means retaining the binlog permanently
     -heartbeat-interval int
@@ -150,7 +177,7 @@ zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
     -metrics-interval int
         the frequency of reporting monitoring information (default 15, unit: second)
     -pd-urls string
-        the node address of the PD cluster (default "http://127.0.0.1:2379")
+        the node address of the PD cluster (-pd-urls="http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379")
     -socket string
         the monitoring address of the unix socket service (default "unix:///tmp/pump.sock")
     ```
@@ -159,10 +186,10 @@ zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
 
     ```toml
     # Pump configuration.
-    # the RPC address that Pump provides service
-    addr = "127.0.0.1:8250"
+    # the RPC address that Pump provides service (default "192.168.0.10:8250")
+    addr = "192.168.0.10:8250"
     
-    # the RPC address that Pump provides external service
+    # the RPC address that Pump provides external service (default "192.168.0.10:8250")
     advertise-addr = ""
     
     # an integer value to control expiry date of the binlog data, indicates how long (in days) the binlog data is stored.
@@ -172,17 +199,14 @@ zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
     # the path of storing Pump data
     data-dir = "data.pump"
 
-    # the connected Kafka address (default "127.0.0.1:9092")
-    kafka-addrs = "127.0.0.1:9092"
-
-    # the Zookeeper address; if you set the option, the Kafka address is got from Zookeeper; if you do not set the option, the value of kafka-addrs is used
-    zookeeper-addrs = "127.0.0.1:2181"
+    # the ZooKeeper address; You can set the option to get the Kafka address from ZooKeeper
+    zookeeper-addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
 
     # the interval between heartbeats that Pump sends to PD (unit: second)
     heartbeat-interval = 3
 
-    # the node address of the PD cluster (default "http://127.0.0.1:2379")
-    pd-urls = "http://127.0.0.1:2379"
+    # the node address of the PD cluster
+    pd-urls = "http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379"
 
     # the monitoring address of the unix socket service (default "unix:///tmp/pump.sock")
     socket = "unix:///tmp/pump.sock"
@@ -205,27 +229,25 @@ zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
     -V
         to print Pump version info
     -addr string
-        the address that Drainer provides service (default "127.0.0.1:8249")
+        the address that Drainer provides service (default "192.168.0.10:8249")
     -c int
         to synchronize the downstream concurrency number, and a bigger value means better throughput performance (default 1)
     -config string
         to configure the file path of Drainer; if you specifies the configuration file, Drainer reads the configuration first; if the corresponding configuration also exists in the command line argument, Pump uses the command line configuration to cover that in the configuration file
     -data-dir string
         the path of storing Drainer data (default "data.drainer")
-    -kafka-addrs string
-        the connected Kafka address (default "127.0.0.1:9092")
-    -zookeeper-addrs string
-        the Zookeeper address; if you set the option, the Kafka address is got from Zookeeper; if you do not set the option, the value of kafka-addrs is used
+    -zookeeper-addrs string (-zookeeper-addrs="192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181")
+        the ZooKeeper address; you can set this option to get the Kafka address from ZooKeeper
     -dest-db-type string
         the downstream service type of Drainer (default "mysql")
     -detect-interval int
         the interval of detecting Pump's status from PD (default 10, unit: second)
     -disable-dispatch
         whether to disable dispatching sqls in a single binlog; if you set the value to true, it is restored into a single transaction to synchronize in the order of each binlog (If the downstream service type is "mysql", set the value to false)
-    -gen-savepoint
-        If you set the value to true, only the savepoint meta file of Drainer is generated, and you can use it with mydumper
     -ignore-schemas string
         the DB filtering list (default "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test"); does not support the rename DDL operation on the table of ignore schemas
+    -initial-commit-ts (default 0)
+        If Drainer does not provide related breakpoint information, you can use this option to configure the related breakpoint information
     -log-file string
         the path of the log file
     -log-rotate string
@@ -235,7 +257,7 @@ zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
     -metrics-interval int
         the frequency of reporting monitoring information (default 15, unit: second)
     -pd-urls string
-        the node address of the PD cluster (default "http://127.0.0.1:2379")
+        the node address of the PD cluster (-pd-urls="http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379")
     -txn-batch int
         the number of SQL statements in a single transaction that is output to the downstream database (default 1)
     ```
@@ -245,8 +267,8 @@ zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
     ```toml
     # Drainer configuration
 
-    # the address that Drainer provides service (default "127.0.0.1:8249")
-    addr = "127.0.0.1:8249"
+    # the address that Drainer provides service ("192.168.0.10:8249")
+    addr = "192.168.0.10:8249"
 
     # the interval of detecting Pump's status from PD (default 10, unit: second)
     detect-interval = 10
@@ -254,14 +276,11 @@ zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
     # the path of storing Drainer data (default "data.drainer")
     data-dir = "data.drainer"
 
-    # the connected Kafka address (default "127.0.0.1:9092")
-    kafka-addrs = "127.0.0.1:9092"
+    # the ZooKeeper address; you can use this option to get the Kafka address from ZooKeeper
+    zookeeper-addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
 
-    # the Zookeeper address; if you set the option, the Kafka address is got from Zookeeper; if you do not set the option, the value of kafka-addrs is used
-    zookeeper-addrs = "127.0.0.1:2181"
-
-    # the node address of the PD cluster (default "http://127.0.0.1:2379")
-    pd-urls = "http://127.0.0.1:2379"
+    # the node address of the PD cluster
+    pd-urls = "http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379"
 
     # the path of the log file
     log-file = "drainer.log"
@@ -303,7 +322,7 @@ zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
 
     # server parameters of the downstream database when the db-type is set to "mysql"
     [syncer.to]
-    host = "127.0.0.1"
+    host = "192.168.0.10"
     user = "root"
     password = ""
     port = 3306
@@ -318,7 +337,32 @@ zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
     ```bash
     ./bin/drainer -config drainer.toml
     ```
+ 
+## Download PbReader (Linux)
 
+PbReader parses the pb file generated by Drainer and translates it into SQL statements.
+
+CentOS 7+
+
+```bash
+# Download PbReader package
+wget http://download.pingcap.org/pb_reader-latest-linux-amd64.tar.gz
+wget http://download.pingcap.org/pb_reader-latest-linux-amd64.sha256
+    
+# Check the file integrity. If the result is OK, the file is correct.
+sha256sum -c pb_reader-latest-linux-amd64.sha256
+
+# Extract the package.
+tar -xzf pb_reader-latest-linux-amd64.tar.gz
+cd pb_reader-latest-linux-amd64
+```
+    
+The PbReader usage example
+    
+```bash
+./bin/pbReader -binlog-file=binlog-0000000000000000
+```    
+    
 ## Monitor TiDB-Binlog
 
 This section introduces how to monitor TiDB-Binlog's status and performance, and display the metrics using Prometheus and Grafana.
@@ -364,6 +408,4 @@ When you start Drainer, set the two parameters of `--metrics-addr` and `--metric
 
 3. Click "Upload .json File" to upload a JSON file (Download [TiDB Grafana Config](https://grafana.com/tidb)).
 
-4. Click "Save & Open".
-
-5. A Prometheus dashboard is created.
+4. Click "Save & Open". A Prometheus dashboard is created.
