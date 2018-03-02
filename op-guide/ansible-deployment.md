@@ -678,3 +678,26 @@ After you login to the deployment target machine using the `tidb` user, run the 
 [tidb@172.16.10.61 ~]$ sudo -su root
 [root@172.16.10.61 tidb]#
 ```
+
+### Error: You need to install jmespath prior to running json_query filter
+
+See [Install Ansible and dependencies in the Control Machine](#install-ansible-and-dependencies-in-the-control-machine) and install Ansible 2.4 in the Control Machine. The `python2-jmespath` dependent package is installed by default.
+
+For the CentOS 7 system, you can install `jmespath` using the following command:
+
+```
+sudo yum install python2-jmespath
+```
+
+Enter `import jmespath` in the Python interactive window of the Control Machine.
+
+- If no error displays, the dependency is successfully installed.
+- If the `ImportError: No module named jmespath` error displays, the Python `jmespath` module is not successfully installed.
+
+```
+$ python
+Python 2.7.5 (default, Nov  6 2016, 00:28:07)
+[GCC 4.8.5 20150623 (Red Hat 4.8.5-11)] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import jmespath
+```
