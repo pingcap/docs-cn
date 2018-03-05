@@ -123,7 +123,7 @@
   - [Ping++](http://t.cn/RE5xYKn)
   - [去哪儿](http://t.cn/RTKnsL7)
   - [G7](http://t.cn/RQVePoX)
-  - [零氪科技](http://t.cn/REj7tSv)
+  - [零氪科技](http://t.cn/REj7tSv)
   - [盖娅互娱](http://t.cn/RT9r7hx)
   - [游族网络](http://t.cn/R8k4AWB)
   - [万达网络](http://t.cn/RTKm6ds)
