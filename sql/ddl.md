@@ -186,11 +186,14 @@ TiDB 的自增 ID (`AUTO_INCREMENT` ID) 只保证自增且唯一，并不保证�
 ```sql
 DROP TABLE [IF EXISTS]
     tbl_name [, tbl_name] ...
+    [RESTRICT | CASCADE]
 ```
 
 可以同时删除多个表，表之间用 `,` 隔开。
 
 当删除不存在的表时且不指定使用 `IF EXISTS` 时会报错。
+
+关键字 RESTRICT 和 CASCADE 没有实际效果。其作用是与其他数据库兼容。
 
 ## TRUNCATE TABLE 语法
 
