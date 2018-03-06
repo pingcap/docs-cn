@@ -178,11 +178,14 @@ You can specify the `AUTO_INCREMENT` for integer fields. A table only supports o
 ```sql
 DROP TABLE [IF EXISTS]
     tbl_name [, tbl_name] ...
+    [RESTRICT | CASCADE]
 ```
 
 You can delete multiple tables at the same time. The tables are separated by a comma `,`.
 
 If you delete a table that does not exist and does not specify the use of `IF EXISTS`, an error is displayed.
+
+The RESTRICT and CASCADE keywords do nothing. They are permitted to make porting easier from other database systems.
 
 ## TRUNCATE TABLE syntax
 
