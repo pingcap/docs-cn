@@ -354,10 +354,6 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 下线节点一般指 TiKV 节点通过 pd-ctl 或者监控判断节点是否下线完成。节点下线完成后，手动停止下线节点上相关的服务。从 Prometheus 配置文件中删除对应节点的 node_exporter 信息。从 Ansible inventory.ini 中删除对应节点的信息。
 
-### 3.2.9 怎样观察 transfer leader 的运行情况？
-
-可以通过 pd operator 查看。
-
 ## 3.3 TiDB server 管理
 
 ### 3.3.1 TiDB 的 lease 参数应该如何设置？
@@ -399,7 +395,7 @@ TiClient Region Error 该指标描述的是在 TiDB-server 作为客户端通过
 
 ### 3.3.9 如何查看某张表创建的时间？
 
-information_schema 中的 tables 表里的 create_time 即为表的真实创建时间。
+information_schema 库中的 tables 表里的 create_time 即为表的真实创建时间。
 
 ## 3.4 TiKV 管理
 
@@ -489,18 +485,6 @@ TiKV 支持单独进行接口调用，理论上也可以起个实例做为 Cache
 
 - 减少 TiDB 与 TiKV 之间的数据传输。
 - 计算下推，充分利用 TiKV 的分布式计算资源。
-
-### 3.4.20 空 region 默认多大？
-
-空 region 默认大小为 1MB，减少来回搬迁。
-
-### 3.4.21 tikv 和 pd 之间的通讯协议是什么？
-
-tikv 和 pd 之间的通讯协议升级为 proto3。
-
-### 3.4.22 出现故障后，多久可以观察到 store 的的状态变化？
-
-10 分钟。
 
 ## 3.5 TiDB 测试
 
