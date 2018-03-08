@@ -66,6 +66,7 @@
     - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
   - [JSON 支持](sql/json-functions-generated-column.md)
   - [Connectors 和 API](sql/connection-and-APIs.md)
+  - [TiDB 事务隔离级别](sql/transaction-isolation.md)
   - [错误码与故障诊断](sql/error.md)
   - [与 MySQL 兼容性对比](sql/mysql-compatibility.md)
   + 高级功能
@@ -74,10 +75,14 @@
   - [软硬件环境需求](op-guide/recommendation.md)
   + 部署集群 
     - [Ansible 部署方案（强烈推荐）](op-guide/ansible-deployment.md)
-    - [离线 Ansible 部署方案（强烈推荐）](op-guide/offline-ansible-deployment.md)
+    - [离线 Ansible 部署方案](op-guide/offline-ansible-deployment.md)
     - [Docker 部署方案](op-guide/docker-deployment.md)
+    - [Docker Compose 部署方案](op-guide/docker-compose.md)
     - [跨机房部署方案](op-guide/location-awareness.md)
-  - [配置集群](op-guide/configuration.md)
+  + 配置集群
+    - [参数解释](op-guide/configuration.md)
+    - [开启 TLS 验证](op-guide/security.md)
+    - [生成自签名证书](op-guide/generate-self-signed-certificates.md)
   + 监控集群
     - [整体监控框架概述](op-guide/monitor-overview.md)
     - [重要监控指标详解](op-guide/dashboard-overview-info.md)
@@ -98,7 +103,7 @@
 + TiDB 周边工具
   - [Syncer 使用文档](tools/syncer.md)
   - [Loader 使用文档](tools/loader.md)
-  - [TiDB-binlog 使用文档](tools/tidb-binlog.md)
+  - [TiDB-Binlog 使用文档](tools/tidb-binlog-kafka.md)
   - [PD Control 使用文档](tools/pd-control.md)
 + TiSpark 文档
   - [TiSpark 快速入门指南](tispark/tispark-quick-start-guide.md)
@@ -107,6 +112,24 @@
 - [最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
 - [版本发布历史](releases/README.md)
 - [TiDB 路线图](https://github.com/pingcap/docs-cn/blob/master/ROADMAP.md)
++ 用户案例
+  - [海航](http://t.cn/REXx0Qe)
+  - [Mobike](http://t.cn/RT8FbP6)
+  - [易果生鲜](http://t.cn/RTYVhzH)
+  - [一面数据](http://t.cn/RT9r5di)
+  - [凤凰网](http://t.cn/RHRQfNT)
+  - [猿辅导](http://t.cn/RTKnKSX)
+  - [二维火](http://t.cn/R8bXM2f)
+  - [Ping++](http://t.cn/RE5xYKn)
+  - [去哪儿](http://t.cn/RTKnsL7)
+  - [G7](http://t.cn/RQVePoX)
+  - [零氪科技](http://t.cn/REj7tSv)
+  - [盖娅互娱](http://t.cn/RT9r7hx)
+  - [游族网络](http://t.cn/R8k4AWB)
+  - [万达网络](http://t.cn/RTKm6ds)
+  - [佐助金融](http://t.cn/RQeoKaa)
+  - [360金融](http://t.cn/RTKnTev)
+  - [某电信运营商](http://t.cn/RTYWADg)
 + 更多资源
   - [常用工具](https://github.com/pingcap/tidb-tools)
   - [PingCAP 团队技术博客](https://pingcap.com/blog-cn/)
@@ -118,17 +141,18 @@
 
 ## TiDB 简介
 
-TiDB 是 PingCAP 公司基于 Google [Spanner](http://research.google.com/archive/spanner.html) / [F1](http://research.google.com/pubs/pub41344.html) 论文实现的开源分布式 NewSQL 数据库。
+TiDB 是 PingCAP 公司受 Google [Spanner](http://research.google.com/archive/spanner.html) / [F1](http://research.google.com/pubs/pub41344.html) 论文启发而设计的开源分布式 NewSQL 数据库。
 
 TiDB 具备如下 NewSQL 核心特性：
 
-* SQL支持 （TiDB 是 MySQL 兼容的）
-* 水平线性弹性扩展
+* SQL支持（TiDB 是 MySQL 兼容的）
+* 水平弹性扩展（吞吐可线性扩展）
 * 分布式事务
 * 跨数据中心数据强一致性保证
 * 故障自恢复的高可用
+* 海量数据高并发实时写入与实时查询（HTAP 混合负载）
 
-TiDB 的设计目标是 100% 的 OLTP 场景和 80% 的 OLAP 场景。
+TiDB 的设计目标是 100% 的 OLTP 场景和 80% 的 OLAP 场景，更复杂的 OLAP 分析可以通过 [TiSpark 项目](https://github.com/pingcap/docs-cn/blob/master/tispark/tispark-user-guide.md)来完成。
 
 TiDB 对业务没有任何侵入性，能优雅的替换传统的数据库中间件、数据库分库分表等 Sharding 方案。同时它也让开发运维人员不用关注数据库 Scale 的细节问题，专注于业务开发，极大的提升研发的生产力。
 
