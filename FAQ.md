@@ -725,6 +725,8 @@ TiKV 操作繁忙，一般出现在数据库负载比较高时，请检查 TiKV 
 
 `GC Life Time` 间隔时间过短，长事务本应读到的数据可能被清理了，应增加 `GC Life Time`。
 
+使用如下命令`update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_time';`，其中 30m 代表仅清理 30 分钟前的数据，这可能会浪费一定额外的存储空间。
+
 ## 9.2 MySQL 原生报错汇总
 
 ### 9.2.1 ERROR 2013 (HY000): Lost connection to MySQL server during query 问题的排查方法？
