@@ -110,9 +110,8 @@
 - [Frequently Asked Questions (FAQ)](FAQ.md)
 - [TiDB Best Practices](https://pingcap.github.io/blog/2017/07/24/tidbbestpractice/)
 - [Releases](releases/rn.md)
+- [TiDB Adopters](adopters.md)
 - [TiDB Roadmap](https://github.com/pingcap/docs/blob/master/ROADMAP.md)
-+ Use Cases
-  - [The Hybrid Database Capturing Perishable Insights at Yiguo](https://www.datanami.com/2018/02/22/hybrid-database-capturing-perishable-insights-yiguo/)
 - [Connect with us](community.md)
 + More Resources
   - [Frequently Used Tools](https://github.com/pingcap/tidb-tools)
