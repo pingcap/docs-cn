@@ -5,7 +5,7 @@ category: tispark
 
 # TiSpark 快速入门指南
 
-为了让大家快速体验 [TiSpark](https://github.com/pingcap/docs-cn/blob/master/op-guide/tispark_user_guide.md), 通过 TiDB-Ansible 安装的 Pre-GA 或 master 版本 TiDB 集群中默认已集成 Spark、TiSpark jar 包及 TiSpark sample data。
+为了让大家快速体验 [TiSpark](tispark/tispark-user-guide.md), 通过 TiDB-Ansible 安装的 Pre-GA 或 master 版本 TiDB 集群中默认已集成 Spark、TiSpark jar 包及 TiSpark sample data。
 
 ## 部署信息
 -   Spark 默认部署在 TiDB 实例部署目录下 spark 目录中
@@ -20,17 +20,17 @@ category: tispark
 ## 环境准备
 ### 在 TiDB 实例上安装 JDK
 
-在 [Oracle JDK 官方下载页面 ](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-javase8-2177648.html) 下载 jdk 1.8 当前最新版，本示例中下载的版本为 jdk-8u141-linux-x64.tar.gz。
+在 [Oracle JDK 官方下载页面 ](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-javase8-2177648.html) 下载 JDK 1.8 当前最新版，本示例中下载的版本为 `jdk-8u141-linux-x64.tar.gz`。
 
-解压并根据您的 jdk 部署目录设置环境变量，
-编辑 ~/.bashrc 文件，比如：
+解压并根据您的 JDK 部署目录设置环境变量，
+编辑 `~/.bashrc` 文件，比如：
 
-```
+```bashrc
 export JAVA_HOME=/home/pingcap/jdk1.8.0_144
 export PATH=$JAVA_HOME/bin:$PATH
 ```
 
-验证 jdk 有效性：
+验证 JDK 有效性：
 
 ```
 $ java -version
@@ -47,7 +47,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 cd tidb-ansible/resources/bin/tispark-sample-data
 ```
 
-修改 sample_data.sh 中 TiDB 登录信息，比如：
+修改 `sample_data.sh` 中 TiDB 登录信息，比如：
 
 ```
 mysql -h 192.168.0.2 -P 4000 -u root < dss.ddl
@@ -59,9 +59,9 @@ mysql -h 192.168.0.2 -P 4000 -u root < dss.ddl
 ./sample_data.sh
 ```
 
-> 执行脚本的机器上需要安装 mysql client，CentOS 用户可通过 `yum -y install mysql`来安装。
+> 执行脚本的机器上需要安装 MySQL client，CentOS 用户可通过 `yum -y install mysql`来安装。
 
-登录 TiDB 并验证数据包含 TPCH_001 库及以下表：
+登录 TiDB 并验证数据包含 `TPCH_001` 库及以下表：
 
 ```
 $ mysql -uroot -P4000 -h192.168.0.2
@@ -109,7 +109,9 @@ $ bin/spark-shell
 
 ```scala
 scala> import org.apache.spark.sql.TiContext
-scala> val ti = new TiContext(spark, List("192.168.0.2:2379"))
+scala> val ti = new TiContext(spark)
+
+// Mapping all TiDB tables from `TPCH_001` database as Spark SQL tables
 scala> ti.tidbMapDatabase("TPCH_001")
 ```
 

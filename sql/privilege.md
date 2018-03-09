@@ -5,20 +5,13 @@ category: user guide
 
 # 权限管理
 
-## 目录
-+ [概述](#权限管理概述)
-+ [示例](#示例)
-+ [创建用户](#create-user-语句)
-+ [Grant 语句](#grant-语句)
-+ [Revoke 语句](#revoke-语句)
-+ [用户账户名](#用户账户名)
-
 ## 权限管理概述
 
 TiDB的权限管理系统是按照 MySQL 的权限管理进行实现，大部分的 MySQL 的语法和权限类型都是支持的。如果发现行为跟 MySQL 不一致的地方，欢迎报告 issue。
 
 ## 示例
-### 1. 用户账户操作
+
+### 用户账户操作
 
 #### 更改密码
 
@@ -300,7 +293,7 @@ auth_spec: {
 }
 ```
 
-user 参见[用户账号名](user-account-name.md)。
+user 参见[用户账号名](user-account-management.md)。
 
 * IDENTIFIED BY 'auth_string'
 
@@ -309,14 +302,3 @@ user 参见[用户账号名](user-account-name.md)。
 * IDENTIFIED BY PASSWORD 'hash_string'
 
 设置登录密码，`hash_string` 将会被 TiDB 经过加密存储在 `mysql.user` 表中。目前这个行为和 MySQL 不一致，会在接下来的版本中修改为和 MySQL 一致的行为。
-
-## Grant 语句
-
-
-
-## Revoke 语句
-
-
-
-
-## 用户账户名

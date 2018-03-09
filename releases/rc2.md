@@ -10,7 +10,6 @@ category: Releases
 ## TiDB
 
 + SQL 查询优化器
-
     - 统计信息收集和使用
     - 关联子查询优化
     - 优化 CBO 框架

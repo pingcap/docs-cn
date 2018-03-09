@@ -9,8 +9,6 @@ category: advanced
 
 是由 PingCAP 开发的数据导入工具，可以用于向 TiDB 中导入数据。
 
-Loader 暂不支持 MySQL。
-
 [Binary 下载](http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz)
 
 ## 为什么我们要做这个东西
@@ -35,7 +33,18 @@ Loader 暂不支持 MySQL。
 
 ## 使用方法
 
+#### 注意事项
+
+请勿使用 loader 导入 MySQL 实例中 `mysql` 系统数据库到下游 TiDB。
+
+如果 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。
+
+如果使用默认的 `checkpoint-schema` 参数，在导完一个 database 数据库后，请 `drop database tidb_loader` 后再开始导入下一个 database。  
+
+推荐数据库开始导入的时候，明确指定 `checkpoint-schema = "tidb_loader"` 参数。
+
 ### 参数说明
+
 ```
   -L string
       log 级别设置，可以设置为 debug, info, warn, error, fatal (默认为 "info")
@@ -48,19 +57,17 @@ Loader 暂不支持 MySQL。
   -checkpoint-schema string
       checkpoint 数据库名，loader 在运行过程中会不断的更新这个数据库，在中断并恢复后，会通过这个库获取上次运行的进度 (默认为 "tidb_loader")
   -d string
-      Directory of the dump to import (default "./")
+       需要导入的数据存放路径 (default "./")
   -h string
-      The host to connect to (default "127.0.0.1")
+       TiDB 服务 host IP  (default "127.0.0.1")
   -p string
-      TiDB/MySQL 账户密码
+      TiDB 账户密码
   -pprof-addr string
       Loader 的 pprof 地址，用于对 Loader 进行性能调试 (默认为 ":10084")
-  -skip-unique-check 
-      是否跳过 unique index 检查，0 表示不跳过，1 表示跳过（能够提高导入数据的速度），注意只有在向 TiDB 中导入数据时，才需要打开这个选项 (默认为1)
   -t int
       线程数 (默认为 16). 每个线程同一时刻只能操作一个数据文件。
   -u string
-      TiDB/MySQL 的用户名 (默认为 "root")
+      TiDB 的用户名 (默认为 "root")
 ```
 
 ### 配置文件
@@ -68,38 +75,37 @@ Loader 暂不支持 MySQL。
 除了使用命令行参数外，还可以使用配置文件来配置，配置文件的格式如下：
 
 ```toml
-# Loader log level
+# 日志输出等级；可以设置为 debug, info, warn, error, fatal (默认为 "info")
 log-level = "info"
 
-# Loader log file
-log-file = ""
+# 指定 loader 日志目录
+log-file = "loader.log"
 
-# Directory of the dump to import
+# 需要导入的数据存放路径 (default "./")
 dir = "./"
 
-# Loader pprof addr
-pprof-addr = ":10084"
+#  Loader 的 pprof 地址，用于对 Loader 进行性能调试 (默认为 ":10084")
+pprof-addr = "127.0.0.1:10084"
 
-# We saved checkpoint data to tidb, which schema name is defined here.
+# checkpoint 数据库名，loader 在运行过程中会不断的更新这个数据库，在中断并恢复后，
+# 会通过这个库获取上次运行的进度 (默认为 "tidb_loader")
 checkpoint-schema = "tidb_loader"
 
-# Number of threads restoring concurrently for worker pool. Each worker restore one file at a time, increase this as TiKV nodes increase
+# 线程数 (默认为 16). 每个线程同一时刻只能操作一个数据文件。
 pool-size = 16
 
-# Skip unique index check
-skip-unique-check = 0
-
-# An alternative database to restore into
-#alternative-db = ""
-# Database to restore
-#source-db = ""
-
-# DB config
+# 目标数据库信息
 [db]
 host = "127.0.0.1"
 user = "root"
 password = ""
 port = 4000
+
+# sharding 同步规则，采用 wildcharacter
+# 1\. 星号字符 (*) 可以匹配零个或者多个字符,
+#    例子, doc* 匹配 doc 和 document, 但是和 dodo 不匹配;
+#    星号只能放在 pattern 结尾，并且一个 pattern 中只能有一个
+# 2\. 问号字符 (?) 匹配任一一个字符
 
 # [[route-rules]]
 # pattern-schema = "shard_db_*"
@@ -118,9 +124,26 @@ port = 4000
 
     ./bin/loader -c=config.toml
 
-### 注意事项
+------
 
-如果使用默认的 `checkpoint-schema` 参数，在导完一个 database 数据库后，请 `drop database tidb_loader` 后再开始导入下一个 database。  
-推荐数据库开始导入的时候，明确指定`checkpoint-schema = "tidb_loader"`参数。
+##  FAQ
 
+#### 合库合表场景案例说明
+  
+根据配置文件的 route-rules 可以支持将分库分表的数据导入到同一个库同一个表中，但是在开始前需要检查分库分表规则：
 
++ 是否可以利用 route-rules 的语义规则表示
++ 分表中是否包含唯一递增主键，或者合并后是否包含数据上有冲突的唯一索引或者主键
+
+Loader 需要配置文件中开启 route-rules 参数以提供合库合表功能
+
++ 如果使用该功能，必须填写 `pattern-schema` 与 `target-schema` 
++ 如果 `pattern-table` 与 `target-table` 为空，将不进行表名称合并或转换
+
+```
+[[route-rules]]
+pattern-schema = "example_db"
+pattern-table = "table_*"
+target-schema = "example_db"
+target-table = "table"
+```

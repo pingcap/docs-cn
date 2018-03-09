@@ -5,137 +5,6 @@ category: advanced
 
 # 数据迁移
 
-## 概述
-
-该文档详细介绍了如何将 MySQL 的数据迁移到 TiDB。
-
-这里我们假定 MySQL 以及 TiDB 服务信息如下：
-
-|Name|Address|Port|User|Password|
-|----|-------|----|----|--------|
-|MySQL|127.0.0.1|3306|root|*|
-|TiDB|127.0.0.1|4000|root|*|
-
-在这个数据迁移过程中，我们会用到下面四个工具:
-
-- checker 检查 schema 能否被 TiDB 兼容
-- mydumper 从 MySQL 导出数据
-- loader 导入数据到 TiDB
-- syncer 增量同步 MySQL 数据到 TiDB
-
-## 两种迁移场景
-
-- 第一种场景：只全量导入历史数据 （需要 checker + mydumper + loader）；
-- 第二种场景：全量导入历史数据后，通过增量的方式同步新的数据 （需要 checker + mydumper + loader + syncer）。该场景需要提前开启 binlog 且格式必须为 ROW。
-
-
-## MySQL 开启 binlog
-
-**注意： 只有上文提到的第二种场景才需要在 dump 数据之前先开启 binlog**
-
-+   MySQL 开启 binlog 功能，参考 [Setting the Replication Master Configuration](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
-+   Binlog 格式必须使用 `ROW` format，这也是 MySQL 5.7 之后推荐的 binlog 格式，可以使用如下语句打开:
-
-    ```sql
-    SET GLOBAL binlog_format = ROW;
-    ```
-
-
-## 使用 checker 进行 Schema 检查
-
-在迁移之前，我们可以使用 TiDB 的 checker 工具，来预先检查 TiDB 是否能支持需要迁移的 table schema。如果 check 某个 table schema 失败，表明 TiDB 当前并不支持，我们不能对该 table 里面的数据进行迁移。checker 包含在 TiDB 工具集里面，我们可以直接下载。
-
-### 下载 TiDB 工具集 (Linux)
-
-```bash
-# 下载 tool 压缩包
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
-
-# 检查文件完整性，返回 ok 则正确
-sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
-# 解开压缩包
-tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
-cd tidb-enterprise-tools-latest-linux-amd64
-```
-
-### 使用 checker 检查的一个示范
-
-+   在 MySQL 的 test database 里面创建几张表，并插入数据:
-
-    ```sql
-    USE test;
-    CREATE TABLE t1 (id INT, age INT, PRIMARY KEY(id)) ENGINE=InnoDB;
-    CREATE TABLE t2 (id INT, name VARCHAR(256), PRIMARY KEY(id)) ENGINE=InnoDB;
-
-    INSERT INTO t1 VALUES (1, 1), (2, 2), (3, 3);
-    INSERT INTO t2 VALUES (1, "a"), (2, "b"), (3, "c");
-    ```
-
-+   使用 checker 检查 test database 里面所有的 table
-
-    ```bash
-    ./bin/checker -host 127.0.0.1 -port 3306 -user root test
-    2016/10/27 13:11:49 checker.go:48: [info] Checking database test
-    2016/10/27 13:11:49 main.go:37: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
-    2016/10/27 13:11:49 checker.go:63: [info] Checking table t1
-    2016/10/27 13:11:49 checker.go:69: [info] Check table t1 succ
-    2016/10/27 13:11:49 checker.go:63: [info] Checking table t2
-    2016/10/27 13:11:49 checker.go:69: [info] Check table t2 succ
-    ```
-
-+   使用 checker 检查 test database 里面某一个 table
-
-    这里，假设我们只需要迁移 table `t1`。
-
-    ```bash
-    ./bin/checker -host 127.0.0.1 -port 3306 -user root test t1
-    2016/10/27 13:13:56 checker.go:48: [info] Checking database test
-    2016/10/27 13:13:56 main.go:37: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
-    2016/10/27 13:13:56 checker.go:63: [info] Checking table t1
-    2016/10/27 13:13:56 checker.go:69: [info] Check table t1 succ
-    Check database succ!
-    ```
-
-### 一个无法迁移的 table 例子
-
-我们在 MySQL 里面创建如下表：
-
-```sql
-CREATE TABLE t_error ( a INT NOT NULL, PRIMARY KEY (a))
-ENGINE=InnoDB TABLESPACE ts1
-PARTITION BY RANGE (a) PARTITIONS 3 (
-PARTITION P1 VALUES LESS THAN (2),
-PARTITION P2 VALUES LESS THAN (4) TABLESPACE ts2,
-PARTITION P3 VALUES LESS THAN (6) TABLESPACE ts3);
-```
-
-使用 `checker` 进行检查，会报错，表明我们没法迁移 `t_error` 这张表。
-
-```bash
-./bin/checker -host 127.0.0.1 -port 3306 -user root test t_error
-2017/08/04 11:14:35 checker.go:48: [info] Checking database test
-2017/08/04 11:14:35 main.go:39: [info] Database DSN: root:@tcp(127.0.0.1:3306)/test?charset=utf8
-2017/08/04 11:14:35 checker.go:63: [info] Checking table t1
-2017/08/04 11:14:35 checker.go:67: [error] Check table t1 failed with err: line 3 column 29 near " ENGINE=InnoDB DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY RANGE (a)
-(PARTITION P1 VALUES LESS THAN (2) ENGINE = InnoDB,
- PARTITION P2 VALUES LESS THAN (4) TABLESPACE = ts2 ENGINE = InnoDB,
- PARTITION P3 VALUES LESS THAN (6) TABLESPACE = ts3 ENGINE = InnoDB) */" (total length 354)
-github.com/pingcap/tidb/parser/yy_parser.go:96:
-github.com/pingcap/tidb/parser/yy_parser.go:109:
-/home/jenkins/workspace/build_tidb_tools_master/go/src/github.com/pingcap/tidb-tools/checker/checker.go:122:  parse CREATE TABLE `t1` (
-  `a` int(11) NOT NULL,
-  PRIMARY KEY (`a`)
-) /*!50100 TABLESPACE ts1 */ ENGINE=InnoDB DEFAULT CHARSET=latin1
-/*!50100 PARTITION BY RANGE (a)
-(PARTITION P1 VALUES LESS THAN (2) ENGINE = InnoDB,
- PARTITION P2 VALUES LESS THAN (4) TABLESPACE = ts2 ENGINE = InnoDB,
- PARTITION P3 VALUES LESS THAN (6) TABLESPACE = ts3 ENGINE = InnoDB) */ error
-/home/jenkins/workspace/build_tidb_tools_master/go/src/github.com/pingcap/tidb-tools/checker/checker.go:114:
-2017/08/04 11:14:35 main.go:83: [error] Check database test with 1 errors and 0 warnings.
-```
-
 ## 使用 `mydumper`/`loader` 全量导入数据
 
 `mydumper` 是一个更强大的数据迁移工具，具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)。
@@ -145,8 +14,10 @@ github.com/pingcap/tidb/parser/yy_parser.go:109:
 > 注意：虽然 TiDB 也支持使用 MySQL 官方的 `mysqldump` 工具来进行数据的迁移工作，但相比于 `mydumper` / `loader`，性能会慢很多，大量数据的迁移会花费很多时间，这里我们并不推荐。
 
 ### `mydumper`/`loader` 全量导入数据最佳实践
+
 为了快速的迁移数据 (特别是数据量巨大的库), 可以参考下面建议
 
+* mydumper 导出数据至少要拥有 `SELECT` , `RELOAD` , `LOCK TABLES` 权限
 * 使用 mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64
 * loader的 -t 参数可以根据 tikv 的实例个数以及负载进行评估调整，例如 3个 tikv 的场景， 此值可以设为 3 *（1 ～ n)；当 tikv 负载过高，loader 以及 tidb 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 tikv 负载不是太高的时候，可以适当调大该值。
 
@@ -179,7 +50,9 @@ github.com/pingcap/tidb/parser/yy_parser.go:109:
 
 ### 向 TiDB 导入数据
 
-> 注意：目前 TiDB 仅支持 UTF8 字符编码，假设 mydumper 导出数据为 latin1 字符编码，请使用 `iconv -f latin1 -t utf-8 $file -o /data/imdbload/$basename` 命令转换，$file 为已有文件，$basename 为转换后文件。
+> 注意：目前 TiDB 支持 UTF8mb4 [字符编码](../sql/character-set-support.md)，假设 mydumper 导出数据为 latin1 字符编码，请使用 `iconv -f latin1 -t utf-8 $file -o /data/imdbload/$basename` 命令转换，$file 为已有文件，$basename 为转换后文件。
+
+> 注意：如果 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。
 
 我们使用 `loader` 将之前导出的数据导入到 TiDB。Loader 的下载和具体的使用方法见 [Loader 使用文档](../tools/loader.md)
 
@@ -265,11 +138,16 @@ Finished dump at: 2017-04-28 10:48:11
 # cat syncer.meta
 binlog-name = "mysql-bin.000003"
 binlog-pos = 930143241
+binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e-487b6bd31bf7:1-4"
 ```
 
-注意：`syncer.meta` 只需要第一次使用的时候配置，后续 `syncer` 同步新的 binlog 之后会自动将其更新到最新的 position。
++ 注意：`syncer.meta` 只需要第一次使用的时候配置，后续 `syncer` 同步新的 binlog 之后会自动将其更新到最新的 position。
+
++ 注意： 如果使用 binlog position 同步则只需要配置 binlog-name binlog-pos; 使用 gtid 同步则需要设置 gtid，且启动 syncer 时带有 `--enable-gtid`
 
 ### 启动 `syncer`
+
+启动 syncer 服务之前请详细阅读 [Syncer 增量导入](../tools/syncer.md )
 
 `syncer` 的配置文件 `config.toml`:
 
@@ -278,50 +156,72 @@ log-level = "info"
 
 server-id = 101
 
-# meta 文件地址
+## meta 文件地址
 meta = "./syncer.meta"
-worker-count = 1
-batch = 1
 
-# pprof 调试地址, Prometheus 也可以通过该地址拉取 syncer metrics
-status-addr = ":10081"
+worker-count = 16
+batch = 10
 
-skip-sqls = ["ALTER USER", "CREATE USER"]
+## pprof 调试地址, Prometheus 也可以通过该地址拉取 syncer metrics
+## 将 127.0.0.1 修改为相应主机 IP 地址
+status-addr = "127.0.0.1:10086"
 
-# 支持白名单过滤, 指定只同步的某些库和某些表, 例如:
+## 跳过 DDL 或者其他语句，格式为 **前缀完全匹配**，如: `DROP TABLE ABC`,则至少需要填入`DROP TABLE`.
+# skip-sqls = ["ALTER USER", "CREATE USER"]
 
-# 指定同步 db1 和 db2 下的所有表
-replicate-do-db = ["db1","db2"]
+## 在使用 route-rules 功能后，
+## replicate-do-db & replicate-ignore-db 匹配合表之后(target-schema & target-table )数值
+## 优先级关系: replicate-do-db --> replicate-do-table --> replicate-ignore-db --> replicate-ignore-table
+## 指定要同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
+#replicate-do-db = ["~^b.*","s1"]
 
-# 指定同步 db1.table1
-[[replicate-do-table]]
-db-name ="db1"
-tbl-name = "table1"
+## 指定要同步的 db.table 表
+## db-name 与 tbl-name 不支持 `db-name ="dbname，dbname2"` 格式
+#[[replicate-do-table]]
+#db-name ="dbname"
+#tbl-name = "table-name"
 
-# 指定同步 db3.table2
-[[replicate-do-table]]
-db-name ="db3"
-tbl-name = "table2"
-# 支持正则，以~开头表示使用正则
-# 同步所有以 test 开头的库
-replicate-do-db = ["~^test.*"]
+#[[replicate-do-table]]
+#db-name ="dbname1"
+#tbl-name = "table-name1"
+
+## 指定要同步的 db.table 表；支持正则匹配，表达式语句必须以 `~` 开始
+#[[replicate-do-table]]
+#db-name ="test"
+#tbl-name = "~^a.*"
+
+## 指定**忽略**同步数据库；支持正则匹配，表达式语句必须以 `~` 开始
+#replicate-ignore-db = ["~^b.*","s1"]
+
+## 指定**忽略**同步数据库
+## db-name & tbl-name 不支持 `db-name ="dbname，dbname2"` 语句格式
+#[[replicate-ignore-table]]
+#db-name = "your_db"
+#tbl-name = "your_table"
+
+## 指定要**忽略**同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
+#[[replicate-ignore-table]]
+#db-name ="test"
+#tbl-name = "~^a.*"
+
 
 # sharding 同步规则，采用 wildcharacter
 # 1. 星号字符 (*) 可以匹配零个或者多个字符,
 #    例子, doc* 匹配 doc 和 document, 但是和 dodo 不匹配;
 #    星号只能放在 pattern 结尾，并且一个 pattern 中只能有一个
 # 2. 问号字符 (?) 匹配任一一个字符
-[[route-rules]]
-pattern-schema = "route_*"
-pattern-table = "abc_*"
-target-schema = "route"
-target-table = "abc"
 
-[[route-rules]]
-pattern-schema = "route_*"
-pattern-table = "xyz_*"
-target-schema = "route"
-target-table = "xyz"
+#[[route-rules]]
+#pattern-schema = "route_*"
+#pattern-table = "abc_*"
+#target-schema = "route"
+#target-table = "abc"
+
+#[[route-rules]]
+#pattern-schema = "route_*"
+#pattern-table = "xyz_*"
+#target-schema = "route"
+#target-table = "xyz"
 
 [from]
 host = "127.0.0.1"
@@ -334,12 +234,14 @@ host = "127.0.0.1"
 user = "root"
 password = ""
 port = 4000
+
 ```
 
 启动 `syncer`:
 
 ```bash
 ./bin/syncer -config config.toml
+
 2016/10/27 15:22:01 binlogsyncer.go:226: [info] begin to sync binlog from position (mysql-bin.000003, 1280)
 2016/10/27 15:22:01 binlogsyncer.go:130: [info] register slave for master server 127.0.0.1:3306
 2016/10/27 15:22:01 binlogsyncer.go:552: [info] rotate to (mysql-bin.000003, 1280)
@@ -381,7 +283,3 @@ syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-
 ```
 
 可以看到，使用 `syncer`，我们就能自动的将 MySQL 的更新同步到 TiDB。
-
-
-
-

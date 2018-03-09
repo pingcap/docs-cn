@@ -50,6 +50,23 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 这个变量用来设置顺序 scan 操作的并发度，AP 类应用适合较大的值，TP 类应用适合较小的值。
 
+### tidb_index_join_batch_size
+
+作用域：SESSION | GLOBAL
+
+默认值：25000
+
+这个变量用来设置 index lookup join 操作的 batch 大小，AP 类应用适合较大的值，TP 类应用适合较小的值。
+
+### tidb_max_row_count_for_inlj
+
+作用域：SESSION | GLOBAL
+
+默认值：128
+
+这个变量用来设置安全启用 Index Nested Loop Join 算法的外表大小。
+如果外表行数大于这个值，只有使用 hint 语法才会启用 Index Nested Loop Join 算法。
+
 ## Optimizer Hint
 
 TiDB 在 MySQL 的 Optimizer Hint 语法上，增加了一些 TiDB 专有的 Hint 语法, 使用这些 Hint 的时候，TiDB 优化器会尽量使用指定的算法，在某些场景下会比默认算法更优。

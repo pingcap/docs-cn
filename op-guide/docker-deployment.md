@@ -107,6 +107,7 @@ docker run -d --name pd3 \
 ```bash
 docker run -d --name tikv1 \
   -p 20160:20160 \
+  --ulimit nofile=1000000:1000000 \
   -v /etc/localtime:/etc/localtime:ro \
   -v /data:/data \
   pingcap/tikv:latest \
@@ -121,6 +122,7 @@ docker run -d --name tikv1 \
 ```bash
 docker run -d --name tikv2 \
   -p 20160:20160 \
+  --ulimit nofile=1000000:1000000 \
   -v /etc/localtime:/etc/localtime:ro \
   -v /data:/data \
   pingcap/tikv:latest \
@@ -135,6 +137,7 @@ docker run -d --name tikv2 \
 ```bash
 docker run -d --name tikv3 \
   -p 20160:20160 \
+  --ulimit nofile=1000000:1000000 \
   -v /etc/localtime:/etc/localtime:ro \
   -v /data:/data \
   pingcap/tikv:latest \
