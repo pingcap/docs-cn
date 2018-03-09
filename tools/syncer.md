@@ -5,11 +5,15 @@ category: advanced
 
 # Syncer User Guide
 
+## About Syncer
+
+Syncer is a tool used to import data incrementally. It is a part of the TiDB enterprise toolset. To obtain Syncer, see [Download the TiDB enterprise toolset](#download-the-tidb-toolset-linux).
+
 ## Syncer architecture
 
 ![syncer sharding](../media/syncer_architecture.png)
 
-## Download the TiDB toolset (Linux)
+## Download the TiDB enterprise toolset (Linux)
 
 ```bash
 # Download the tool package.
@@ -19,30 +23,22 @@ wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
 # Check the file integrity. If the result is OK, the file is correct.
 sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
 
-# Extract the package. 
+# Extract the package.
 tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
 cd tidb-enterprise-tools-latest-linux-amd64
 ```
+
 ## Where to deploy Syncer
 
-Syncer can be deployed to any of the machines that can connect to MySQL or TiDB cluster. But it is recommended to be deployed to the TiDB cluster.
+You can deploy Syncer to any of the machines that can connect to MySQL or the TiDB cluster. But it is recommended to deploy Syncer to the TiDB cluster.
 
-## Enable binary logging (binlog) in MySQL
+## Use Syncer to import data incrementally
 
-Before using the `syncer` tool, make sure:
+Before importing data, read [Check before importing data using Syncer](#check-before-importing-data-using-syncer).
 
-+ Binlog is enabled in MySQL. See [Setting the Replication Master Configuration](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html).
-+ Binlog must use the `row` format which is the recommended binlog format in MySQL 5.7. It can be configured using the following statement:
+### 1. Set the position to synchronize
 
-    ```bash
-    SET GLOBAL binlog_format = ROW;
-    ```
-
-## Use the `syncer` tool to import data incrementally
-
-### 1. Obtain the position to synchronise
-
-Set the meta file for `syncer`. Assuming the meta file is `syncer.meta` file:
+Edit the meta file of Syncer, assuming the meta file is `syncer.meta`:
 
 ```bash
 # cat syncer.meta
@@ -52,13 +48,43 @@ binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e
 ```
 
 > **Note:**
->  
-> - The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is synchronised. 
-> - If you use the binlog position to synchronise, you only need to configure `binlog-name` and `binlog-pos`; if you use `binlog-gtid` to synchronise, you only need to configure `binlog-gtid`.
+>
+> - The `syncer.meta` file only needs to be configured when it is first used. The position is automatically updated when the new subsequent binlog is synchronized.
+> - If you use the binlog position to synchronize, you only need to configure `binlog-name` and `binlog-pos`; if you use `binlog-gtid` to synchronize, you need to configure `binlog-gtid` and set `--enable-gtid` when starting Syncer.
 
-### 2. Start `syncer`
+### 2. Start Syncer
 
-The `config.toml` file for `syncer`:
+Description of Syncer command line options:
+
+```
+Usage of Syncer:
+  -L string
+      log level: debug, info, warn, error, fatal (default "info")
+  -V
+      to print Syncer version info (default false)
+  -auto-fix-gtid
+      to automatically fix the gtid info when MySQL master and slave switches (default false)
+  -b int
+      the size of batch transactions (default 10)
+  -c int
+      the number of batch threads that Syncer processes (default 16)
+  -config string
+      to specify the corresponding configuration file when starting Syncer; for example, `--config config.toml`
+  -enable-gtid
+      to start Syncer using the mode; default false; before enabling this option, you need to enable GTID in the upstream MySQL
+  -log-file string
+      to specify the log file directory, such as `--log-file ./syncer.log`
+  -log-rotate string
+      to specify the log file rotating cycle, hour/day (default "day")
+  -meta string
+      to specify the meta file of Syncer upstream (in the same directory with the configuration file by default "syncer.meta")
+  -server-id int
+      to specify MySQL slave sever-id (default 101)
+  -status-addr string
+      to specify Syncer metrics, such as `--status-addr 127:0.0.1:10088`
+```
+
+The `config.toml` configuration file of Syncer:
 
 ```toml
 log-level = "info"
@@ -67,68 +93,84 @@ server-id = 101
 
 # The file path for meta:
 meta = "./syncer.meta"
+
 worker-count = 16
 batch = 10
 
-# The testing address for pprof. It can also be used by Prometheus to pull the syncer metrics.
-status-addr = ":10081"
+# The testing address for pprof. It can also be used by Prometheus to pull Syncer metrics.
+# Change "127.0.0.1" to the IP address of the corresponding host
+status-addr = "127.0.0.1:10086"
 
-# Notice: skip-sqls is abandoned, and use skip-ddls instead.
-# skip-ddls skips DDL statements, and supports regular expressions. If the DDL sqls are incompatible with TiDB, skip them using these rules.
+# Note: skip-sqls is abandoned, and use skip-ddls instead.
+# skip-ddls skips the DDL statements that are incompatible with TiDB, and supports regular expressions.
 # skip-ddls = ["^CREATE\\s+USER"]
 
-# Notice: skip-events is abandoned, and use skip-dmls instead.
-# skip-dmls skips DML statements. The type value can be 'insert', 'update' and 'delete'.
-# skip 'delete' statements in foo.bar table.
+# Note: skip-events is abandoned, and use skip-dmls instead.
+# skip-dmls skips the DML statements. The type value can be 'insert', 'update' and 'delete'.
+# The 'delete' statements that skip-dmls skips in the foo.bar table:
 # [[skip-dmls]]
 # db-name = "foo"
 # tbl-name = "bar"
 # type = "delete"
-# 
-# skip all delete statements.
+#
+# The 'delete' statements that skip-dmls skips in all tables:
 # [[skip-dmls]]
 # type = "delete"
-# 
-# skip all delete statements in all foo.* tables.
+#
+# The 'delete' statements that skip-dmls skips in all foo.* tables:
 # [[skip-dmls]]
 # db-name = "foo"
 # type = "delete"
 
-# Support whitelist filter. You can specify the database and table to be synchronised. For example:
-# Synchronise all the tables of db1 and db2:
-# replicate-do-db = ["db1","db2"]
+# Specify the database name to be synchronized. Support regular expressions. Start with '~' to use regular expressions.
+# replicate-do-db = ["~^b.*","s1"]
 
-# Synchronise db1.table1.
+# Specify the db.table to be synchronized.
+# db-name and tbl-name do not support the `db-name ="dbname，dbname2"` format.
 # [[replicate-do-table]]
-# db-name ="db1"
-# tbl-name = "table1"
+# db-name ="dbname"
+# tbl-name = "table-name"
 
-# Synchronise db3.table2.
 # [[replicate-do-table]]
-# db-name ="db3"
-# tbl-name = "table2"
+# db-name ="dbname1"
+# tbl-name = "table-name1"
 
-# Support regular expressions. Start with '~'  to use regular expressions.
-# To synchronise all the databases that start with `test`:
-# replicate-do-db = ["~^test.*"]
+# Specify the db.table to be synchronized. Support regular expressions. Start with '~' to use regular expressions.
+# [[replicate-do-table]]
+# db-name ="test"
+# tbl-name = "~^a.*"
 
-# The sharding synchronising rules support wildcharacter.
-# 1. The asterisk character (*, also called "star") matches zero or more characters,
-#    for example, "doc*" matches "doc" and "document" but not "dodo";
-#    asterisk character must be in the end of the wildcard word,
+# Specify the database you want to ignore in synchronization. Support regular expressions. Start with '~' to use regular expressions.
+# replicate-ignore-db = ["~^b.*","s1"]
+
+# Specify the database table you want to ignore in synchronization.
+# db-name and tbl-name do not support the `db-name ="dbname，dbname2"` format.
+# [[replicate-ignore-table]]
+# db-name = "your_db"
+# tbl-name = "your_table"
+
+# Specify the database table you want to ignore in synchronization. Support regular expressions. Start with '~' to use regular expressions.
+# [[replicate-ignore-table]]
+# db-name ="test"
+# tbl-name = "~^a.*"
+
+# The sharding synchronizing rules support wildcharacter.
+# 1. The asterisk character ("*", also called "star") matches zero or more characters,
+#    For example, "doc*" matches "doc" and "document" but not "dodo";
+#    The asterisk character must be in the end of the wildcard word,
 #    and there is only one asterisk in one wildcard word.
-# 2. The question mark '?' matches exactly one character.
-#[[route-rules]]
-#pattern-schema = "route_*"
-#pattern-table = "abc_*"
-#target-schema = "route"
-#target-table = "abc"
+# 2. The question mark ("?") matches any single character.
+# [[route-rules]]
+# pattern-schema = "route_*"
+# pattern-table = "abc_*"
+# target-schema = "route"
+# target-table = "abc"
 
-#[[route-rules]]
-#pattern-schema = "route_*"
-#pattern-table = "xyz_*"
-#target-schema = "route"
-#target-table = "xyz"
+# [[route-rules]]
+# pattern-schema = "route_*"
+# pattern-table = "xyz_*"
+# target-schema = "route"
+# target-table = "xyz"
 
 [from]
 host = "127.0.0.1"
@@ -141,13 +183,13 @@ host = "127.0.0.1"
 user = "root"
 password = ""
 port = 4000
-
 ```
 
-Start `syncer`:
+Start Syncer:
 
 ```bash
 ./bin/syncer -config config.toml
+
 2016/10/27 15:22:01 binlogsyncer.go:226: [info] begin to sync binlog from position (mysql-bin.000003, 1280)
 2016/10/27 15:22:01 binlogsyncer.go:130: [info] register slave for master server 127.0.0.1:3306
 2016/10/27 15:22:01 binlogsyncer.go:552: [info] rotate to (mysql-bin.000003, 1280)
@@ -156,13 +198,13 @@ Start `syncer`:
 
 ### 3. Insert data into MySQL
 
-```bash
+```sql
 INSERT INTO t1 VALUES (4, 4), (5, 5);
 ```
 
-### 4. Log in TiDB and view the data:
+### 4. Log in to TiDB and view the data
 
-```bash
+```sql
 mysql -h127.0.0.1 -P4000 -uroot -p
 mysql> select * from t1;
 +----+------+
@@ -176,7 +218,7 @@ mysql> select * from t1;
 +----+------+
 ```
 
-`syncer` outputs the current synchronised data statistics every 30 seconds:
+Syncer outputs the current synchronized data statistics every 30 seconds:
 
 ```bash
 2017/06/08 01:18:51 syncer.go:934: [info] [syncer]total events = 15, total tps = 130, recent tps = 4,
@@ -187,40 +229,299 @@ master-binlog = (ON.000001, 11992), master-binlog-gtid=53ea0ed1-9bf8-11e6-8bea-6
 syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-35
 ```
 
-You can see that by using `syncer`, the updates in MySQL are automatically synchronised in TiDB.
+The update in MySQL is automatically synchronized in TiDB.
 
-## Support synchronising data from sharded tables
+## Description of Syncer configuration
 
-`Syncer` supports importing data from sharded tables into one table within one database according to the `route-rules`. 
+### Specify the database to be synchronized
 
-For example, 
+This section describes the priority of parameters when you use Syncer to synchronize the database.
+
+- To use the route-rules, see [Support for synchronizing data from sharded tables](#support-for-synchronizing-data-from-sharded-tables).
+- Priority: replicate-do-db --> replicate-do-table --> replicate-ignore-db --> replicate-ignore-table
+
+```toml
+# Specify the ops database to be synchronized.
+# Specify to synchronize the database starting with ti.
+replicate-do-db = ["ops","~^ti.*"]
+
+# The "china" database includes multiple tables such as guangzhou, shanghai and beijing. You only need to synchronize the shanghai and beijing tables.
+# Specify to synchronize the shanghai table in the "china" database.
+[[replicate-do-table]]
+db-name ="china"
+tbl-name = "shanghai"
+
+# Specify to synchronize the beijing table in the "china" database.
+[[replicate-do-table]]
+db-name ="china"
+tbl-name = "beijing"
+
+# The "ops" database includes multiple tables such as ops_user, ops_admin, weekly. You only need to synchronize the ops_user table.
+# Because replicate-do-db has a higher priority than replicate-do-table, it is invalid if you only set to synchronize the ops_user table. In fact, the whole "ops" database is synchronized.
+[[replicate-do-table]]
+db-name ="ops"
+tbl-name = "ops_user"
+
+# The "history" database includes multiple tables such as 2017_01 2017_02 ... 2017_12/2016_01  2016_02 ... 2016_12. You only need to synchronize the tables of 2017.
+[[replicate-do-table]]
+db-name ="history"
+tbl-name = "~^2017_.*"
+
+# Ignore the "ops" and "fault" databases in synchronization
+# Ignore the databases starting with "www" in synchronization
+# Because replicate-do-db has a higher priority than replicate-ignore-db, it is invalid to ignore the "ops" database here in synchronization.
+replicate-ignore-db = ["ops","fault","~^www"]
+
+# The "fault" database includes multiple tables such as faults, user_feedback, ticket.
+# Ignore the user_feedback table in synchronization.
+# Because replicate-ignore-db has a higher priority than replicate-ignore-table, it is invalid if you only set to synchronize the user_feedback table. In fact, the whole "fault" database is synchronized.
+[[replicate-ignore-table]]
+db-name = "fault"
+tbl-name = "user_feedback"
+
+# The "order" database includes multiple tables such as 2017_01 2017_02 ... 2017_12/2016_01  2016_02 ... 2016_12. You need to ignore the tables of 2016.
+[[replicate-ignore-table]]
+db-name ="order"
+tbl-name = "~^2016_.*"
+```
+
+### Support for synchronizing data from sharded tables
+
+You can use Syncer to import data from sharded tables into one table within one database according to the `route-rules`. But before synchronizing, you need to check:
+
+- Whether the sharding rules can be represented using the `route-rules` syntax.
+- Whether the sharded tables contain unique increasing primary keys, or whether conflicts exist in the unique indexes or the primary keys after the combination.
+
+Currently, the support for DDL is still in progress.
 
 ![syncer sharding](../media/syncer_sharding.png)
 
+#### Usage of synchronizing data from sharded tables
 
-You just need to start `syncer` in all the MySQL instances and set the following `route-rules`:
+1. Start Syncer in all MySQL instances and configure the route-rules.
+2. In scenarios using replicate-do-db & replicate-ignore-db and route-rules at the same time, you need to specify the target-schema & target-table content in route-rules.
 
-```
+```toml
+# The scenarios are as follows:
+# Database A includes multiple databases such as order_2016 and history_2016.
+# Database B includes multiple databases such as order_2017 and history_2017.
+# Specify to synchronize order_2016 in database A; the data tables are 2016_01 2016_02 ... 2016_12
+# Specify to synchronize order_2017 in database B; the data tables are 2017_01 2017_02 ... 2017_12
+# Use order_id as the primary key in the table, and the primary keys among data do not conflict.
+# Ignore the history_2016 and history_2017 databases in synchronization
+# The target database is "order" and the target data tables are order_2017 and order_2016.
+
+# When Syncer finds that the route-rules is enabled after Syncer gets the upstream data, it first combines databases and tables, and then determines do-db & do-table.
+# You need to configure the database to be synchronized, which is required when you determine the target-schema & target-table.
+[[replicate-do-table]]
+db-name ="order"
+tbl-name = "order_2016"
+
+[[replicate-do-table]]
+db-name ="order"
+tbl-name = "order_2017"
+
 [[route-rules]]
-pattern-schema = "example_db"
-pattern-table = "table_*"
-target-schema = "example_db"
-target-table = "table"
+pattern-schema = "order_2016"
+pattern-table = "2016_??"
+target-schema = "order"
+target-table = "order_2016"
+
+[[route-rules]]
+pattern-schema = "order_2017"
+pattern-table = "2017_??"
+target-schema = "order"
+target-table = "order_2017"
 ```
 
-> **Note:** But before synchronising, you need to check:
-> 
-> + If the sharding rules can be represented using the `route-rules` syntax;
-> + If the sharded tables contain monotone increasing primary keys, or if there are conflicts in the unique indexes or the primary keys after the combination. 
+### Check before importing data using Syncer
 
-## Monitor
+1. Check the `server-id` of the source database.
 
-The `syncer` monitoring scheme contains the following components:
+    - Check the `server-id` using the following command:
 
-- Prometheus, a time series database, to store the monitoring and performance metrics
-- Grafana, an open source project for analysing and visualising metrics, to display the performance metrics.
-- AlertManager, for the alerting mechanism
+        ```
+        mysql> show global variables like 'server_id';
+        +---------------+-------
+        | Variable_name | Value |
+        +---------------+-------+
+        | server_id     | 1     |
+        +---------------+-------+
+        1 row in set (0.01 sec)
+        ```
 
-For more information, see the following diagram:
+    - If the result is null or 0, Syncer cannot synchronize data.
+    - Syncer server-id must be different from MySQL server-id, and must be unique in the MySQL cluster.
+
+2. Check the related binlog parameters
+
+    - Check whether the binlog is enabled in MySQL using the following command:
+        
+        ```
+        mysql> show global variables like 'log_bin';
+        +--------------------+---------+
+        | Variable_name | Value  |
+        +--------------------+---------+
+        | log_bin             | ON      |
+        +--------------------+---------+
+        1 row in set (0.00 sec)
+        ```
+
+    - If the result is `log_bin = OFF`, you need to enable the binlog. See the [document about enabling the binlog](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html).
+
+3. Check whether the binlog format in MySQL is ROW.
+
+    - Check the binlog format using the following command:
+
+        ```
+        mysql> show global variables like 'binlog_format';
+        +--------------------+----------+
+        | Variable_name | Value   |
+        +--------------------+----------+
+        | binlog_format   | ROW   |
+        +--------------------+----------+
+        1 row in set (0.00 sec)
+        ```
+
+    - If the binlog format is not ROW, set it to ROW using the following command:
+
+        ```
+        mysql> set global binlog_format=ROW;
+        mysql>  flush logs;
+        Query OK, 0 rows affected (0.01 sec)
+        ```
+
+    - If MySQL is connected, it is recommended to restart MySQL or kill all connections.
+
+4. Check whether MySQL `binlog_row_image` is FULL.
+
+    - Check `binlog_row_image` using the following command:
+
+        ```
+        mysql> show global variables like 'binlog_row_image';
+        +--------------------------+---------+
+        | Variable_name        | Value  |
+        +--------------------------+---------+
+        | binlog_row_image   | FULL  |
+        +--------------------------+----------+
+        1 row in set (0.01 sec)
+        ```
+
+    - If the result of `binlog_row_image` is not FULL, set it to FULL using the following command:
+    
+        ```
+        mysql> set global binlog_row_image = FULL;
+        Query OK, 0 rows affected (0.01 sec)
+        ```
+
+5. Check user privileges of mydumper.
+
+    - To export data using mydumper, the user must have the privilege of `select, reload`.
+    - You can add the `--no-locks` option when the operation object is RDS, to avoid applying for the privilege of `reload`.
+
+6. Check user privileges of synchronizing the upstream and downstream data.
+
+    - The following privileges granted by the upstream MySQL synchronization account at least:
+
+        `select, replication slave, replication client`
+
+    - For the downstream TiDB, you can temporarily use the root account with the same privileges.
+
+7. Check the GTID and POS related information.
+
+    Check the binlog information using the following statement:
+
+    ```
+    show binlog events in 'mysql-bin.000023' from 136676560 limit 10;
+    ```
+
+## Syncer monitoring solution
+
+The `syncer` monitoring solution contains the following components:
+
+- Prometheus, an open source time series database, used to store the monitoring and performance metrics
+- Grafana, an open source project for analyzing and visualizing metrics, used to display the performance metrics
+- AlertManager, combined with Grafana to implement the alerting mechanism
+
+See the following diagram:
 
 ![syncer_monitor_scheme](../media/syncer_monitor_scheme.png)
+
+### Configure Syncer monitor and alert
+
+Syncer provides the metric interface, and requires Prometheus to actively obtain data. In the process of configuring Syncer monitor and alert, you need to restart Prometheus.
+
+1. Add the Syncer job information in Prometheus.
+    
+    Flush the following content to the configuration file of Prometheus, and restart Prometheus.
+
+    ```
+    - job_name: 'syncer_ops' // name of the job, to distinguish the reported data
+        static_configs:
+          - targets: ['10.1.1.4:10086'] // Syncer monitoring address and port; to inform Prometheus of obtaining the monitoring data of Syncer
+    ```
+
+2. Configure Prometheus -> alertmanager alert.
+
+    Flush the following content to the `alert.rule` configuration file, and specify to enable the `--alertmanager.url` option in Prometheus.
+
+    ```
+    # syncer
+    ALERT syncer_status
+      IF  syncer_binlog_file{node='master'} - ON(instance, job) syncer_binlog_file{node='syncer'} > 1
+      FOR 1m
+      LABELS {channels="alerts", env="test-cluster"}
+      ANNOTATIONS {
+      summary = "syncer status error",
+      description="alert: syncer_binlog_file{node='master'} - ON(instance, job) syncer_binlog_file{node='syncer'} > 1 instance: {{     $labels.instance }} values: {{ $value }}",
+      }
+    ```
+
+#### Configure Grafana
+
+1. Log in to the Grafana Web interface.
+
+    - The default address is: http://localhost:3000
+    - The default account name: admin
+    - The password for the default account: admin
+
+2. Import the configuration file of Grafana dashboard.
+
+    Click the Grafana Logo -> click Dashboards -> click Import -> choose and import the dashboard [configuration file](https://github.com/pingcap/docs/tree/master/etc) -> choose the corresponding data source.
+
+### Description of Grafana Syncer metrics
+
+#### title: binlog events
+
+- metrics: `irate(syncer_binlog_events_total[1m])`
+- info: the master binlog statistics that has been synchronized by Syncer, including the five major types of `query`, `rotate`, `update_rows`, `write_rows` and `delete_rows`
+
+#### title: syncer_binlog_file
+
+- metrics: `syncer_binlog_file`
+- info: the number of master binlog files synchronized by Syncer
+
+#### title: binlog pos
+
+- metrics: `syncer_binlog_pos`
+- info: the binlog-pos information that Syncer synchronizes the current master binlog
+
+#### title: syncer_gtid
+
+- metrics: `syncer_gtid`
+- info: the binlog-gtid information that Syncer synchronizes the current master binlog
+
+#### title: syncer_binlog_file
+
+- metrics: `syncer_binlog_file{node="master"} - ON(instance, job) syncer_binlog_file{node="syncer"}`
+- info: the number of different binlog files between the upstream and the downstream in the process of synchronization; the normal value is 0, which indicates real-time synchronization; a larger value indicates a larger number of binlog files discrepancy
+
+#### title: binlog skipped events
+
+- metrics: `irate(syncer_binlog_skipped_events_total[1m])`
+- info: the total number of SQL statements that Syncer skips when the upstream synchronizes binlog files with the downstream; you can configure the format of SQL statements skipped by Syncer using the `skip-sqls` parameter in the `syncer.toml` file.
+
+#### title: syncer_txn_costs_gauge_in_second
+
+- metrics: `syncer_txn_costs_gauge_in_second`
+- info: the time consumed by Syncer when it processes one batch (unit: second)
