@@ -455,10 +455,12 @@ Syncer provides the metric interface, and requires Prometheus to actively obtain
 
     Flush the following content to the configuration file of Prometheus, and restart Prometheus.
 
-    ```toml
+    ```
+
     - job_name: 'syncer_ops' // name of the job, to distinguish the reported data
     static_configs:
         - targets: ['10.1.1.4:10086'] // Syncer monitoring address and port; to inform Prometheus of obtaining the monitoring data of Syncer
+    
     ```
 
 2. Configure Prometheus -> alertmanager alert.
