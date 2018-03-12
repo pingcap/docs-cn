@@ -1,161 +1,114 @@
 ---
-title: TiDB Docker Compose
+title: TiDB Docker Compose Deployment
 category: operations
 ---
 
-# TiDB Docker Compose
+# TiDB Docker Compose Deployment
 
-## Use `docker-compose`
+This document describes how to quickly deploy TiDB using Docker Compose.
 
-Note: If you are using `docker-compose`, you don't need to create a Docker network and start TiDB,TiKV and PD containers separately.
-The following `docker-compose.yml` file is enough.
+With [Docker Compose](https://docs.docker.com/compose/overview), you can use a YAML file to configure application services in multiple containers. Then, with a single command, you can create and start all the services from your configuration.
 
-```yaml
-version: '2'
+You can use Docker Compose to deploy a TiDB test cluster with a single command. It is required to use Docker 17.06.0 or later.
 
-services:
-  pd1:
-    image: pingcap/pd
-    expose:
-      - "2379"
-      - "2380"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
+## Quick start
 
-    command:
-      - --name=pd1
-      - --client-urls=http://0.0.0.0:2379
-      - --peer-urls=http://0.0.0.0:2380
-      - --advertise-client-urls=http://pd1:2379
-      - --advertise-peer-urls=http://pd1:2380
-      - --initial-cluster=pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380
+1. Download `tidb-docker-compose`.
 
-    privileged: true
+    ```bash
+    git clone https://github.com/pingcap/tidb-docker-compose.git
+    ```
 
-  pd2:
-    image: pingcap/pd
-    expose:
-      - "2379"
-      - "2380"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
+2. Create and start the cluster.
 
-    command:
-      - --name=pd2
-      - --client-urls=http://0.0.0.0:2379
-      - --peer-urls=http://0.0.0.0:2380
-      - --advertise-client-urls=http://pd2:2379
-      - --advertise-peer-urls=http://pd2:2380
-      - --initial-cluster=pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380
+    ```bash
+    cd tidb-docker-compose && docker-compose up -d
+    ```
 
-    privileged: true
+3. Access the cluster.
 
-  pd3:
-    image: pingcap/pd
-    expose:
-      - "2379"
-      - "2380"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
+    ```bash
+    mysql -h 127.0.0.1 -P 4000 -u root
+    ```
 
-    command:
-      - --name=pd3
-      - --client-urls=http://0.0.0.0:2379
-      - --peer-urls=http://0.0.0.0:2380
-      - --advertise-client-urls=http://pd3:2379
-      - --advertise-peer-urls=http://pd3:2380
-      - --initial-cluster=pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380
+    Access the Grafana monitoring interface:
 
-    privileged: true
+    - Default address: <http://localhost:3000>
+    - Default account name: admin
+    - Default password: admin
 
-  tikv1:
-    image: pingcap/tikv
-    expose:
-      - "20160"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
+    Access the [cluster data visualization interface](https://github.com/tidb-vision): <http://localhost:8010>
 
-    command:
-      - --addr=0.0.0.0:20160
-      - --advertise-addr=tikv1:20160
-      - --data-dir=/var/tikv
-      - --pd=pd1:2379,pd2:2379,pd3:2379
+## Customize the cluster
 
-    depends_on:
-      - "pd1"
-      - "pd2"
-      - "pd3"
+In [Quick start](#quick-start), the following components are deployed by default:
 
-    entrypoint: /tikv-server
+- 3 PD instances, 3 TiKV instances, 1 TiDB instance
+- Monitoring components: Prometheus，Pushgateway，Grafana
+- Data visualization component: tidb-vision
 
-    privileged: true
+To customize the cluster, you can edit the `docker-compose.yml` file directly. It is recommended to generate `docker-compose.yml` using the [Helm](https://helm.sh) template engine, because manual editing is tedious and error-prone.
 
-  tikv2:
-    image: pingcap/tikv
-    expose:
-      - "20160"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
+1. Install Helm.
 
-    command:
-      - --addr=0.0.0.0:20160
-      - --advertise-addr=tikv2:20160
-      - --data-dir=/var/tikv
-      - --pd=pd1:2379,pd2:2379,pd3:2379
+    [Helm](https://helm.sh) can be used as a template rendering engine. To use Helm, you only need to download its binary file:
 
-    depends_on:
-      - "pd1"
-      - "pd2"
-      - "pd3"
+    ```bash
+    curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
+    ```
 
-    entrypoint: /tikv-server
+    For macOS, you can also install Helm using the following command in Homebrew:
 
-    privileged: true
+    ```
+    brew install kubernetes-helm
+    ```
 
-  tikv3:
-    image: pingcap/tikv
-    expose:
-      - "20160"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
+2. Download `tidb-docker-compose`.
 
-    command:
-      - --addr=0.0.0.0:20160
-      - --advertise-addr=tikv3:20160
-      - --data-dir=/var/tikv
-      - --pd=pd1:2379,pd2:2379,pd3:2379
+    ```bash
+    git clone https://github.com/pingcap/tidb-docker-compose.git
+    ```
 
-    depends_on:
-      - "pd1"
-      - "pd2"
-      - "pd3"
+3. Customize the cluster.
 
-    entrypoint: /tikv-server
+    ```bash
+    cd tidb-docker-compose
+    cp compose/values.yaml values.yaml
+    vim values.yaml
+    ```
 
-    privileged: true
+    Modify the configuration in `values.yaml`, such as the cluster size, TiDB image version, and so on.
 
-  tidb:
-    image: pingcap/tidb
-    ports:
-      - "4000"
-      - "10080"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
+    [tidb-vision](https://github.com/pingcap/tidb-vision) is the data visualization interface of the TiDB cluster, used to visually display the PD scheduling on TiKV data. If you do not need this component, leave `tidbVision` empty.
 
-    command:
-      - --store=tikv
-      - --path=pd1:2379,pd2:2379,pd3:2379
-      - -L=warn
+    For PD, TiKV, TiDB and tidb-vision, you can build Docker images from GitHub source code or local files for development and testing.
 
-    depends_on:
-      - "tikv1"
-      - "tikv2"
-      - "tikv3"
+    - To build the image of a component from GitHub source code, you need to leave the `image` field empty and set `buildFrom` to `remote`.
+    - To build PD, TiKV or TiDB images from the locally compiled binary file, you need to leave the `image` field empty, set `buildFrom` to `local` and copy the compiled binary file to the corresponding `pd/bin/pd-server`, `tikv/bin/tikv-server`, `tidb/bin/tidb-server`.
+    - To build the tidb-vision image from local, you need to leave the `image` field empty, set `buildFrom` to `local` and copy the tidb-vision project to `tidb-vision/tidb-vision`.
 
-    privileged: true
-```
+4. Generate the `docker-compose.yml` file.
 
-+ Use `docker-compose up -d` to create and start the cluster.
-+ Use `docker-compose port tidb 4000` to print the TiDB public port. For example, if the output is `0.0.0.0:32966`, the TiDB public port is `32966`.
-+ Use `mysql -h 127.0.0.1 -P 32966 -u root -D test` to connect to TiDB and enjoy it.
-+ Use `docker-compose down` to stop and remove the cluster.
+    ```bash
+    helm template -f values.yaml compose > generated-docker-compose.yml
+    ```
+
+5. Create and start the cluster using the generated `docker-compose.yml` file.
+
+    ```bash
+    docker-compose -f generated-docker-compose.yml up -d
+    ```
+
+6. Access the cluster.
+
+    ```bash
+    mysql -h 127.0.0.1 -P 4000 -u root
+    ```
+
+    Access the Grafana monitoring interface:
+
+    - Default address: <http://localhost:3000>
+    - Default account name: admin
+    - Default password: admin
+
+    If tidb-vision is enabled, you can access the [cluster data visualization interface](https://github.com/tidb-vision): <http://localhost:8010>.
