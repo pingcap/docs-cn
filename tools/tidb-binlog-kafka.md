@@ -162,6 +162,8 @@ This example describes how to use Pump/Drainer.
         to configure the file path of Pump; if you specifies the configuration file, Pump reads the configuration first; if the corresponding configuration also exists in the command line argument, Pump uses the command line configuration to cover that in the configuration file
     -data-dir string
         the path of storing Pump data
+    -enable-tolerant
+        after enabling tolerant, Pump wouldn't return error if it fails to write binlog (default true)
     -zookeeper-addrs string (-zookeeper_addrs="192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181")
         the ZooKeeper address; this option gets the Kafka address from ZooKeeper
     -gc int
