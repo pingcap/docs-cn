@@ -444,7 +444,7 @@ Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息�
     - Prometheus 添加 Syncer job 信息，
     - 将以下内容刷新到 Prometheus 配置文件，重启 Prometheus
 
-        ```
+        ```yaml
           - job_name: 'syncer_ops' // 任务名字，区分数据上报
             static_configs:
               - targets: ['10.1.1.4:10086'] // Syncer 监听地址与端口，通知 Prometheus 获取 Syncer 的监控数据。
