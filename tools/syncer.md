@@ -440,9 +440,9 @@ Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息�
 
 ### 配置 Syncer 监控与告警
 
-* Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。以下将分别配置 Syncer 监控与告警，期间需要重启 Prometheus 。
-  * Prometheus 添加 Syncer job 信息，
-  * 将以下内容刷新到 Prometheus 配置文件，重启 Prometheus
+Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。配置 Syncer 监控与告警的操作步骤如下：
+
+1. 在 Prometheus 中添加 Syncer job 信息，将以下内容刷新到 Prometheus 配置文件，重启 Prometheus 后生效。
 
     ```yaml
     - job_name: 'syncer_ops' // 任务名字，区分数据上报
@@ -450,20 +450,19 @@ Syncer 使用开源时序数据库 Prometheus 作为监控和性能指标信息�
         - targets: ['10.1.1.4:10086'] // Syncer 监听地址与端口，通知 Prometheus 获取 Syncer 的监控数据。
     ```
 
-    * 配置 Prometheus -> AlertManager 告警
-    * 将以下内容刷新到 alert.rule 配置文件，且 Prometheus 指定 --alertmanager.url 参数启动。
+2. 配置 Prometheus [告警](https://prometheus.io/docs/alerting/alertmanager/)，将以下内容刷新到 `alert.rule` 配置文件，重启 Prometheus 后生效。
 
-      ```
-      # syncer
-      ALERT syncer_status
-        IF  syncer_binlog_file{node='master'} - ON(instance, job) syncer_binlog_file{node='syncer'} > 1
-        FOR 1m
-        LABELS {channels="alerts", env="test-cluster"}
-        ANNOTATIONS {
-        summary = "syncer status error",
-        description="alert: syncer_binlog_file{node='master'} - ON(instance, job) syncer_binlog_file{node='syncer'} > 1 instance: {{     $labels.instance }} values: {{ $value }}",
-        }
-      ```
+    ```
+    # syncer
+    ALERT syncer_status
+      IF  syncer_binlog_file{node='master'} - ON(instance, job) syncer_binlog_file{node='syncer'} > 1
+      FOR 1m
+      LABELS {channels="alerts", env="test-cluster"}
+      ANNOTATIONS {
+      summary = "syncer status error",
+      description="alert: syncer_binlog_file{node='master'} - ON(instance, job) syncer_binlog_file{node='syncer'} > 1 instance: {{     $labels.instance }} values: {{ $value }}",
+      }
+    ```
 
 #### Grafana 配置
 
