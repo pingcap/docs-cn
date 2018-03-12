@@ -445,9 +445,9 @@ Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。配�
 1. 在 Prometheus 中添加 Syncer job 信息，将以下内容刷新到 Prometheus 配置文件，重启 Prometheus 后生效。
 
     ```yaml
-    - job_name: 'syncer_ops' // 任务名字，区分数据上报
-      static_configs:
-        - targets: ['10.1.1.4:10086'] // Syncer 监听地址与端口，通知 Prometheus 获取 Syncer 的监控数据。
+        - job_name: 'syncer_ops' // 任务名字，区分数据上报
+          static_configs:
+            - targets: ['10.1.1.4:10086'] // Syncer 监听地址与端口，通知 Prometheus 获取 Syncer 的监控数据。
     ```
 
 2. 配置 Prometheus [告警](https://prometheus.io/docs/alerting/alertmanager/)，将以下内容刷新到 `alert.rule` 配置文件，重启 Prometheus 后生效。
