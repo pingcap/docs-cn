@@ -158,11 +158,13 @@ ZK3="192.168.0.11"
         如果对应的配置在命令行参数里面也存在，Pump 就会使用命令行参数的配置来覆盖配置文件里面的。
     -data-dir string
         Pump 数据存储位置路径
+    -enable-tolerant
+        开启 tolerant 后，如果 binlog 写入失败，Pump 不会报错（默认 true）
     -zookeeper-addrs string (-zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181")
         ZooKeeper 地址，该选项从 ZooKeeper 中获取 Kafka 地址
     -gc int
         日志最大保留天数 (默认 7)，设置为 0 可永久保存
-    -heartbeat-interval uint
+    -heartbeat-interval int
         Pump 向 PD 发送心跳间隔 (单位 秒)
     -log-file string
         log 文件路径
