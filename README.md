@@ -1,4 +1,4 @@
-# TiDB 中文技术文档
+﻿# TiDB 中文技术文档
 
 ## 目录
 
@@ -123,6 +123,7 @@
   - [Ping++](http://t.cn/RE5xYKn)
   - [去哪儿](http://t.cn/RTKnsL7)
   - [G7](http://t.cn/RQVePoX)
+  - [乐视云](http://t.cn/Rnv3IVs)
   - [零氪科技](http://t.cn/REj7tSv)
   - [盖娅互娱](http://t.cn/RT9r7hx)
   - [游族网络](http://t.cn/R8k4AWB)
