@@ -40,7 +40,7 @@ INSERT INTO person (name, address_info) VALUES ("John", CAST(123 AS JSON));
 现在，如果我们想查询表中所有居住在北京的用户，该怎么做呢？需要把数据全拉回来，然后在业务层进行过滤吗？不需要，和 MongoDB 等文档数据库相同，我们有在服务端支持用户各种复杂组合查询条件的能力。你可以这样写 SQL：
 
 ```sql
-SELECT id, name FROM person WHERE JSON_EXTRACT(address_info, '$.city') = 'Beijing');
+SELECT id, name FROM person WHERE JSON_EXTRACT(address_info, '$.city') = 'Beijing';
 ```
 
 TiDB 支持 `JSON_EXTRACT` 函数，该函数与 MySQL 5.7 中 `JSON_EXTRACT` 的用法完全相同。这个函数的意思就是，从 `address_info` 这个文档中取出名为 `city` 这个字段。它的第二个参数是一个“路径表达式”，我们由此可以指定到底要取出哪个字段。关于路径表达式的完整语法描述比较复杂，我们还是通过几个简单的例子来了解其用法：

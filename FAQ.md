@@ -64,7 +64,7 @@ TiDB 支持 ACID 分布式事务，事务模型是以 Google 的 Percolator 模�
 
 ### 1.1.14 TiDB 对那些 MySQL variables 兼容？
 
-详细可参考：[https://github.com/pingcap/docs/blob/master/SQL/variable.md](https://github.com/pingcap/docs/blob/master/sql/variable.md)
+详细可参考：[系统变量](sql/variable.md)
 
 ### 1.1.15 TiDB 是否支持 select for update 吗？
 
@@ -72,7 +72,7 @@ TiDB 支持 ACID 分布式事务，事务模型是以 Google 的 Percolator 模�
 
 ### 1.1.16 TiDB 的 codec 能保证 UTF8 的字符串是 memcomparable 的吗？我们的 key 需要支持 UTF8，有什么编码建议吗？
 
-TiDB 字符集默认就是 UTF8 而且目前只支持 UTF8，字符串就是 Memcomparable 格式的。
+TiDB 字符集默认就是 UTF8 而且目前只支持 UTF8，字符串就是 memcomparable 格式的。
 
 ## 1.2 TiDB 原理
 
@@ -145,7 +145,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ### 2.2.1 Ansible 部署方式（强烈推荐）
 
-详细可参考：[http://t.cn/R9vib7R](http://t.cn/R9vib7R)
+详细可参考：[TiDB Ansible 部署方案](op-guide/ansible-deployment.md)
 
 #### 2.2.1.1 为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？
 
@@ -217,6 +217,12 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 
 常规需要一起升，因为整个版本都是一起测试的，单独升级只限当发生一个紧急故障时，需要单独对一个有问题的角色做升级。
 
+### 2.3.5 启动集群或者升级集群过程中出现 “Timeout when waiting for search string 200 OK” 是什么原因？如何处理？
+
+可能有以下几种原因：进程没有正常启动；端口被占用；进程没有正常停掉；停掉集群的情况下使用 rolling_update.yml 来升级集群（操作错误）。
+
+处理方式：登录到相应节点查看进程或者端口的状态；纠正错误的操作步骤。
+
 # 三、集群管理
 
 ## 3.1 集群日常管理
@@ -244,7 +250,7 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 
 和 MySQL 一样，TiDB 也分为静态参数和固态参数，静态参数可以直接通过`set global xxx = n`的方式进行修改，不过新参数值只限于该实例生命周期有效。
 
-### 3.1.4 TiDB（TiKV) 有那些数据目录？
+### 3.1.4 TiDB (TiKV) 有哪些数据目录？
 
 默认在 ${[data-dir](https://pingcap.com/docs-cn/op-guide/configuration/#data-dir-1)}/data/ 目录下，其中包括 backup、db、raft、snap 四个目录，分别存储备份、数据、raft 数据及镜像数据。
 
@@ -262,7 +268,9 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 
 ### 3.1.8 TiDB 里面可以执行 kill 命令吗？
 
-可以 kill DML 语句，首先使用 `show processlist`，找到对应 session 的 id，然后执行 `kill id`。但是，目前不能 kill DDL 语句。DDL 语句一旦开始执行便不能停止，除非出错，出错以后会自动停止运行。
+可以 kill DML 语句，首先使用 `show processlist`，找到对应 session 的 id，然后执行 `kill id`。
+
+可以 kill DDL 语句，首先使用 `admin show ddl jobs`，查找需要 kill 的 DDL job ID，然后执行 `admin cancel ddl jobs 'job_id' [, 'job_id'] ...`。具体可以参考 [admin 操作](sql/admin.md#admin-语句)。
 
 ### 3.1.9 TiDB 是否支持会话超时？
 
@@ -297,7 +305,7 @@ TiDB 目前社区非常活跃，在 GA 版本发布后，还在不断的优化�
 
 详细可参考：[https://pingcap.com/blog-cn/percolator-and-txn/](https://pingcap.com/blog-cn/percolator-and-txn/)
 
-### 3.1.15 TiDB 为什么选用 gRPC 而不选用 Thirft，是因为 Google 在用吗？
+### 3.1.15 TiDB 为什么选用 gRPC 而不选用 Thrift，是因为 Google 在用吗？
 
 不只是因为 Google 在用，有一些比较好的特性我们需要，比如流控、加密还有 Streaming。
 
@@ -346,11 +354,7 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 启动 TiDB Server 时，需要通过命令行参数设置 lease 参数（--lease=60），其值会影响 DDL 的速度（只会影响当前执行 DDL 的 session，其他的 session 不会受影响）。在测试阶段，lease 的值可以设为 1s，加快测试进度；在生产环境下，我们推荐这个值设为分钟级（一般可以设为 60），这样可以保证 DDL 操作的安全。
 
-### 3.3.2 TiDB 是否支持其他存储引擎？
-
-是的，除了 TiKV 之外，TiDB 还支持一些流行的单机存储引擎，比如 Goleveldb/Rocksdb/Boltdb 等。如果一个存储引擎是支持事务的 KV 引擎，并且能提供一个满足 TiDB 接口要求的 Client，即可接入 TiDB。
-
-### 3.3.3 为什么有的时候执行 DDL 会很慢？
+### 3.3.2 为什么有的时候执行 DDL 会很慢？
 
 可能原因如下：
 
@@ -359,23 +363,23 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 - 在滚动升级或者停机升级时，由于停机顺序（先停 PD 再停 TiDB）或者用 `kill -9` 指令停 TiDB 导致 TiDB 没有及时清理注册数据，那么会影响 TiDB 启动后 10min 内的 DDL 语句处理时间。这段时间内运行 DDL 语句时，每个 DDL 状态变化都需要等待 2 * lease（默认 lease = 10s）。
 - 当集群中某个 TiDB 与 PD 之间发生通讯问题，即 TiDB 不能从 PD 及时获取或更新版本信息，那么这时候 DDL 操作的每个状态处理需要等待 2 * lease。
 
-### 3.3.4 TiDB 可以使用 S3 作为后端存储吗？
+### 3.3.3 TiDB 可以使用 S3 作为后端存储吗？
 
 不可以，目前 TiDB 只支持分布式存储引擎和 Goleveldb/Rocksdb/Boltdb 引擎；
 
-### 3.3.5 Infomation_schema 能否支持更多真实信息？
+### 3.3.4 Infomation_schema 能否支持更多真实信息？
 
 Infomation_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。当前 TiDB 支持的：Infomation\_schema 请参考[TiDB 系统数据库说明文档](https://pingcap.com/docs-cn/sql/system-database)。
 
-### 3.3.6 TiDB Backoff type 主要原因?
+### 3.3.5 TiDB Backoff type 主要原因?
 
 TiDB-server 与 TiKV-server 随时进行通讯，在进行大量数据操作过程中，会出现 Server is busy 或者 backoff.maxsleep 20000ms 的日志提示信息，这是由于 TiKV-server 在处理过程中系统比较忙而出现的提示信息，通常这时候可以通过系统资源监控到 TiKV 主机系统资源使用率比较高的情况出现。如果这种情况出现，可以根据资源使用情况进行相应的扩容操作。
 
-### 3.3.7 TiDB TiClient type 主要原因？
+### 3.3.6 TiDB TiClient type 主要原因？
 
 TiClient Region Error 该指标描述的是在 TiDB-server 作为客户端通过 KV 接口访问 TiKV-server 进行数据操作过程中，TiDB-server 操作 TiKV-server 中的 Region 数据出现的错误类型与 mertic 指标，错误类型包括 not_leader、stale_epoch。出现这些错误的情况是当 TiDB-server 根据自己的缓存信息去操作 Region leader 数据的时候，Region leader 发生了迁移或者 TiKV 当前的 Region 信息与 TiDB 缓存的路由信息不一致而出现的错误提示。一般这种情况下，TiDB-server 都会自动重新从 PD 获取最新的路由数据，重做之前的操作。
 
-### 3.3.8 TiDB 同时支持的最大并发连接数？
+### 3.3.7 TiDB 同时支持的最大并发连接数？
 
 当前版本 TiDB 没有最大连接数的限制，如果并发过大导致响应时间增加，可以通过增加 TiDB 节点进行扩容。
 
@@ -441,11 +445,11 @@ TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强
 
 ### 3.4.13 TiKV 是否有类似 MySQL 的 `innodb_flush_log_trx_commit` 参数，来保证提交数据不丢失？
 
-是的，TiKV 单机的存储引擎目前使用两个 rockdb 实例，其中一个存储 raft-log，TiKV 有个 sync-log 参数，在ture 的情况下，每次提交都会强制刷盘到 raft-log，如果发生 crash 后，通过 raft-log 进行 KV 数据的恢复。
+是的，TiKV 单机的存储引擎目前使用两个 RocksDB 实例，其中一个存储 raft-log，TiKV 有个 sync-log 参数，在ture 的情况下，每次提交都会强制刷盘到 raft-log，如果发生 crash 后，通过 raft-log 进行 KV 数据的恢复。
 
 ### 3.4.14 对 WAL 存储有什么推荐的硬件配置，例如 SSD，RAID 级别，RAID 卡 cache 策略，NUMA 设置 ,文件系统选择，操作系统的 IO 调度策略等？
 
-WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD，RAID 如果允许的话，最好是 RAID 10，RAID 卡 cache、操作系统 IO 调度目前没有针对性的 best pratise，Linux 7 以上默认配置即可，NUMA 没有特别建议，Muma 内存分配策略可以尝试使用 `interleave = all`，文件系统建议 ext4。
+WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD，RAID 如果允许的话，最好是 RAID 10，RAID 卡 cache、操作系统 I/O 调度目前没有针对性的最佳实践，Linux 7 以上默认配置即可，NUMA 没有特别建议，NUMA 内存分配策略可以尝试使用 `interleave = all`，文件系统建议 ext4。
 
 ### 3.4.15 在最严格 sync-log = ture 的数据可用模式下，写入性能如何？
 
@@ -472,7 +476,7 @@ TiKV 支持单独进行接口调用，理论上也可以起个实例做为 Cache
 
 ### 3.5.1 TiDB Sysbench 基准测试结果如何？
 
-很多用户在接触 TiDB 都习惯做一个基准测试或者 TiDB 与 MySQL 的对比测试，官方也做了一个类似测试，汇总很多测试结果后，我们发现虽然测试的数据有一定的偏差，但结论或者方向基本一直，由于 TiDB 与 MySQL 由于架构上的差别非常大，很多方面是很难找到一个基准点，所以官方的建议两点：
+很多用户在接触 TiDB 都习惯做一个基准测试或者 TiDB 与 MySQL 的对比测试，官方也做了一个类似测试，汇总很多测试结果后，我们发现虽然测试的数据有一定的偏差，但结论或者方向基本一致，由于 TiDB 与 MySQL 由于架构上的差别非常大，很多方面是很难找到一个基准点，所以官方的建议两点：
 
 - 大家不要用过多精力纠结这类基准测试上，应该更多关注 TiDB 的场景上的区别。
 - 大家可以直接参考官方相关测试。官方 Sysbench 测试及 TiDB 与 MySQL 对比测试请参考：
@@ -713,7 +717,7 @@ TiKV 操作繁忙，一般出现在数据库负载比较高时，请检查 TiKV 
 
 清理锁超时，当数据库上承载的业务存在大量的事务冲突时，会遇到这种错误，请检查业务代码是否有锁争用。
 
-### 9.1.5 ERROR 9005 (HY000) : Region is unavaiable
+### 9.1.5 ERROR 9005 (HY000) : Region is unavailable
 
 访问的 Region 不可用，某个 Raft Group 不可用，如副本数目不足，出现在 TiKV 比较繁忙或者是 TiKV 节点停机的时候，请检查 TiKV Server 状态/监控/日志。
 
