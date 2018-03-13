@@ -164,7 +164,7 @@ ZK3="192.168.0.11"
         ZooKeeper 地址，该选项从 ZooKeeper 中获取 Kafka 地址
     -gc int
         日志最大保留天数 (默认 7)，设置为 0 可永久保存
-    -heartbeat-interval uint
+    -heartbeat-interval int
         Pump 向 PD 发送心跳间隔 (单位 秒)
     -log-file string
         log 文件路径
