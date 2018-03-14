@@ -673,7 +673,7 @@ Count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 
 ### 5.1.6 如何确定某张表是否需要做 analyze ？
 
-可以通过 `show stats_healthy` 来查看表是否需要做 analyze。
+可以通过 `show stats_healthy` 来查看 Healthy 字段，一般小于等于 60 的表需要做 analyze。
 
 # 六、数据库优化
 
