@@ -646,3 +646,10 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> import jmespath
 ```
 
+如果安装 `python2-jmespath` 包后 `import jmespath` 仍然报错，请通过 pip 来安装 python `jmespath` 模块。
+
+```
+$ sudo yum -y install epel-release
+$ sudo yum -y install python-pip
+$ sudo pip install jmespath
+```
