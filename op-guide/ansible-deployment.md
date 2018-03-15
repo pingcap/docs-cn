@@ -701,3 +701,11 @@ Python 2.7.5 (default, Nov  6 2016, 00:28:07)
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import jmespath
 ```
+
+If `import jmespath` still reports an error after the `python2-jmespath` package is installed, install the Python `jmespath` module using pip:
+
+```
+$ sudo yum -y install epel-release
+$ sudo yum -y install python-pip
+$ sudo pip install jmespath
+```
