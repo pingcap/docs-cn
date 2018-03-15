@@ -533,9 +533,25 @@ sudo apt-get install ansible
 数据盘请格式化成 ext4 文件系统，挂载时请添加 nodelalloc 和 noatime 挂载参数。
 nodelalloc 是必选参数，否则 Ansible 安装时检测无法通过，noatime 是可选建议参数。下面以 /dev/nvme0n1 数据盘为例：
 
+编辑 `/etc/fstab` 文件，添加 `nodelalloc` 挂载参数：
+
 ```
 # vi /etc/fstab
 /dev/nvme0n1 /data1 ext4 defaults,nodelalloc,noatime 0 2
+```
+
+使用以下命令 umount 挂载目录并重新挂载：
+
+```
+# umount /data1
+# mount -a
+```
+
+通过以下命令确认是否生效：
+
+```
+# mount -t ext4
+/dev/nvme0n1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
 ```
 
 ### 如何配置 ssh 互信及 sudo 免密码
