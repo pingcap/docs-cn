@@ -10,6 +10,7 @@ This is a list of TiDB adopters in various industries.
 - [Mobike (Ridesharing)](https://mobike.com/global/)
 - [Yiguo.com (E-commerce)](https://www.datanami.com/2018/02/22/hybrid-database-capturing-perishable-insights-yiguo/)
 - [Phoenix TV (Media)](http://www.ifeng.com/)
+- [LeCloud (MediaTech)](http://www.lecloud.com/en-us/)
 - [Ping++ (Payment)](https://www.crunchbase.com/organization/ping-5)
 - [Qunar.com (Travel)](https://www.crunchbase.com/organization/qunar-com)
 - [LinkDoc Technology (HealthTech)](https://www.crunchbase.com/organization/linkdoc-technology)
