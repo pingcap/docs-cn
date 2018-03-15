@@ -74,6 +74,8 @@ git clone https://github.com/pingcap/tidb-ansible.git
 
 inventory.ini 文件路径为 tidb-ansible/inventory.ini。
 
+> **注：** 请使用内网 IP 来部署集群。
+
 标准 TiDB 集群需要 6 台机器:
 
 - 2 个 TiDB 节点
@@ -424,7 +426,7 @@ synchronised to NTP server (85.199.214.101) at stratum 2
    time correct to within 91 ms
    polling server every 1024 s
 ```
-> **注：**Ubuntu 系统请安装 ntpstat 软件包。
+> **注：** Ubuntu 系统请安装 ntpstat 软件包。
 
 以下情况表示 NTP 服务未正常同步：
 
