@@ -77,6 +77,14 @@ Yes. But it differs from MySQL in syntax. As a distributed database, TiDB uses t
 
 The character sets of TiDB use UTF-8 by default and currently only support UTF-8. The string of TiDB uses the memcomparable format.
 
+#### What is the length limit for the TiDB user name?
+
+32 characters at most.
+
+#### What is the maximum number of statements in a transaction?
+
+5000 at most.
+
 ### TiDB techniques
 
 #### TiKV for data storage
@@ -405,6 +413,10 @@ In the communication process between the TiDB server and the TiKV server, the `S
 
 The current TiDB version has no limit for the maximum number of concurrent connections. If too large concurrency leads to an increase of response time, you can increase the capacity by adding TiDB nodes.
 
+#### How to view the creation time of a table?
+
+The `create_time` of tables in the `information_schema` is the creation time.
+
 ### Manage the TiKV server
 
 #### What is the recommended number of replicas in the TiKV cluster? Is it better to keep the minimum number for high availability?
@@ -693,6 +705,14 @@ If the amount of data that needs to be deleted at a time is very large, this loo
 - Currently Lightning is in development for distributed data import. It should be noted that the data import process does not perform a complete transaction process for performance reasons. Therefore, the ACID constraint of the data being imported during the import process cannot be guaranteed. The ACID constraint of the imported data can only be guaranteed after the entire import process ends. Therefore, the applicable scenarios mainly include importing new data (such as a new table or a new index) or the full backup and restoring (truncate the original table and then import data).
 - Data loading in TiDB is related to the status of disks and the whole cluster. When loading data, pay attention to metrics like the disk usage rate of the host, TiClient Error, Backoff, Thread CPU and so on. You can analyze the bottlenecks using these metrics.
 
+#### What should I do if it is slow to reclaim storage space after deleting data?
+
+You can configure concurrent GC to increase the speed of reclaiming storage space. The default concurrency is 1, and you can modify it to at most 50% of the number of TiKV instances using the following command:
+
+```
+update mysql.tidb set VARIABLE_VALUE="3" where VARIABLE_NAME="tikv_gc_concurrency";
+```
+
 ## SQL optimization
 
 ### TiDB execution plan description
@@ -726,6 +746,10 @@ Use `admin show ddl` to view the current job of adding an index.
 #### Does TiDB support CBO (Cost-Based Optimization)? If yes, to what extent?
 
 Yes. TiDB uses the cost-based optimizer. The cost model and statistics are constantly optimized. Besides, TiDB also supports correlation algorithms like hash join and soft merge.
+
+#### How to determine whether I need to execute `analyze` on a table?
+
+View the `Healthy` field using `show stats_healthy` and generally you need to execute `analyze` on a table when the field value is smaller than 60.
 
 ## Database optimization
 
