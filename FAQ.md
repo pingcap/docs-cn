@@ -74,6 +74,14 @@ TiDB 支持 ACID 分布式事务，事务模型是以 Google 的 Percolator 模�
 
 TiDB 字符集默认就是 UTF8 而且目前只支持 UTF8，字符串就是 memcomparable 格式的。
 
+### 1.1.17 TiDB 用户名长度限制？
+
+在 TiDB 中用户名最长为 32 字符。
+
+### 1.1.18 一个事务中的语句数量最大是多少？
+
+一个事务中的语句数量，默认限制最大为 5000 条。
+
 ## 1.2 TiDB 原理
 
 ### 1.2.1 存储 TiKV
@@ -383,6 +391,10 @@ TiClient Region Error 该指标描述的是在 TiDB-server 作为客户端通过
 
 当前版本 TiDB 没有最大连接数的限制，如果并发过大导致响应时间增加，可以通过增加 TiDB 节点进行扩容。
 
+### 3.3.8 如何查看某张表创建的时间？
+
+information_schema 库中的 tables 表里的 create_time 即为表的真实创建时间。
+
 ## 3.4 TiKV 管理
 
 ### 3.4.1 TiKV 集群副本建议配置数量是多少，是不是最小高可用配置（3个）最好？
@@ -623,6 +635,10 @@ Delete，Truncate 和 Drop 都不会立即释放空间，对于 Truncate 和 Dro
 - 目前正在开发分布式导入工具 Lightning，需要注意的是数据导入过程中为了性能考虑，不会执行完整的事务流程，所以没办法保证导入过程中正在导入的数据的 ACID 约束，只能保证整个导入过程结束以后导入数据的 ACID 约束。因此适用场景主要为新数据的导入（比如新的表或者新的索引），或者是全量的备份恢复（先 Truncate 原表再导入）。
 - TiDB 的数据加载与磁盘以及整体集群状态相关，加载数据时应关注该主机的磁盘利用率，TiClient Error/Backoff/Thread CPU 等相关 metric，可以分析相应瓶颈。
 
+### 4.3.12 对数据做删除操作之后，空间回收比较慢，如何处理？
+
+可以设置并行 GC，加快对空间的回收速度。默认并发为 1，最大可调整为 tikv 实例数量的 50%。可使用 `update mysql.tidb set VARIABLE_VALUE="3" where VARIABLE_NAME="tikv_gc_concurrency";` 命令来调整。
+
 # 五、SQL 优化
 
 ## 5.1 TiDB 执行计划解读
@@ -656,6 +672,10 @@ Count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 ### 5.1.5 TiDB 是否支持基于 COST 的优化（CBO），如果支持，实现到什么程度？
 
 是的，TiDB 使用的基于成本的优化器（CBO），我们有一个小组单独会对代价模型、统计信息持续优化，除此之外，我们支持 hash join、soft merge 等关联算法。
+
+### 5.1.6 如何确定某张表是否需要做 analyze ？
+
+可以通过 `show stats_healthy` 来查看 Healthy 字段，一般小于等于 60 的表需要做 analyze。
 
 # 六、数据库优化
 
