@@ -809,7 +809,13 @@ The accessed Region is not available. A Raft Group is not available, with possib
 
 #### ERROR 9006 (HY000): GC Too Early
 
-The interval of `GC Life Time` is too short. The data that should have been read by long transactions might be deleted. You can add the `GC Life Time`.
+The interval of `GC Life Time` is too short. The data that should have been read by long transactions might be deleted. You can add `GC Life Time` using the following command:
+
+```
+update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_time';
+```
+
+> **Note:** "30m" means only cleaning up the data generated 30 minutes ago, which might consume some extra storage space.
 
 ### MySQL native error messages
 
