@@ -198,7 +198,7 @@ CREATE USER 'tiuser'@'localhost' IDENTIFIED BY '123456';
 Grant `tiuser` the privilege to retrieve the tables in the `samp_db` database:
 
 ```sql
-GRANT SELECT ON samp_db .* TO 'tiuser'@'localhost';
+GRANT SELECT ON samp_db.* TO 'tiuser'@'localhost';
 ```
 
 Check the privileges of `tiuser`:
