@@ -91,7 +91,9 @@ git clone https://github.com/pingcap/tidb-ansible.git
 
 ## Orchestrate the TiDB cluster
 
-The file path of `inventory.ini`: `tidb-ansible/inventory.ini`
+The file path of `inventory.ini`: `tidb-ansible/inventory.ini`.
+
+> **Note:** Use the internal IP address to deploy the cluster.
 
 The standard cluster has 6 machines:
 
@@ -581,10 +583,26 @@ Format your data disks to ext4 filesystem and mount the filesystem with the `nod
 
 Take the `/dev/nvme0n1` data disk as an example:
 
-```
-# vi /etc/fstab
-/dev/nvme0n1 /data1 ext4 defaults,nodelalloc,noatime 0 2
-```
+1. Edit the `/etc/fstab` file and add the `nodelalloc` mount option:
+
+    ```
+    # vi /etc/fstab
+    /dev/nvme0n1 /data1 ext4 defaults,nodelalloc,noatime 0 2
+    ```
+
+2. Umount the mount directory and remount using the following command:
+
+    ```
+    # umount /data1
+    # mount -a
+    ```
+
+3. Check using the following command: 
+
+    ```
+    # mount -t ext4
+    /dev/nvme0n1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
+    ```
 
 ### How to configure SSH mutual trust and sudo without password?
 
