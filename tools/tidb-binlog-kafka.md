@@ -107,7 +107,7 @@ cd tidb-binlog-latest-linux-amd64
 #### 使用 tidb-ansible 部署 Pump
 
 - 如无 Kafka 集群，可使用 [kafka-ansible](https://github.com/pingcap/thirdparty-ops/tree/master/kafka-ansible) 部署 Kafka 集群。
-- 使用 [TiDB-Ansible](https://github.com/pingcap/tidb-ansible) 部署 TiDB 集群时，修改 `tidb-ansible/inventory.ini` 文件，设置 `enable_binlog = True`，并配置 `zookeeper_addrs` 变量为 Kafka 集群的 ZooKeeper 地址，这样部署 TiDB 集群时会部署 Pump。
+- 使用 [tidb-ansible](https://github.com/pingcap/tidb-ansible) 部署 TiDB 集群时，修改 `tidb-ansible/inventory.ini` 文件，设置 `enable_binlog = True`，并配置 `zookeeper_addrs` 变量为 Kafka 集群的 ZooKeeper 地址，这样部署 TiDB 集群时会部署 Pump。
 
 配置样例:
 
