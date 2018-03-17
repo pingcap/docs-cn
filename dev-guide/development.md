@@ -8,23 +8,23 @@ Before you begin, check the [supported platforms](./requirements.md#supported-pl
 
 ## Build TiKV
 
-After you install the RocksDB shared library, you can build TiKV directly without `ROCKSDB_SYS_STATIC`.
-
-+ Get the TiKV source code.
++ Get TiKV source code from GitHub
 
     ```bash
     git clone https://github.com/pingcap/tikv.git 
+    cd tikv
     ```
-+ Enter the source directory to build and install the binary in the `bin` directory.
+
++ Run all unit tests:
 
     ```bash
-    make
-    ```
-    
-+ Run unit test.
-    
-    ```bash
     make test
+    ```
+
++ Build in release mode:
+
+    ```bash
+    make release
     ```
 
 ## Build TiDB
