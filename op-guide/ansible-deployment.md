@@ -200,8 +200,9 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 ```
 
 #### 其他变量调整
-| 变量 | 含义 |
-| ---- | ------- |
+
+| 变量            | 含义                                                        |
+| --------------- | ---------------------------------------------------------- |
 | cluster_name | 集群名称，可调整 |
 | tidb_version | TiDB 版本，TiDB-Ansible 各分支默认已配置 |
 | deployment_method | 部署方式，默认为 binary，可选 docker |
@@ -213,7 +214,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | set_hostname | 根据 IP 修改部署目标机器主机名，默认为 False |
 | enable_binlog | 是否部署 pump 并开启 binlog，默认为 False，依赖 Kafka 集群，参见 `zookeeper_addrs` 变量 |
 | zookeeper_addrs | binlog Kafka 集群的 zookeeper 地址 |
-| enable_slow_query_log | TiDB 慢查询日志记录到单独文件({{ deploy_dir }}/log/tidb_slow_query.log)，默认为 False，记录到 tidb 日志
+| enable_slow_query_log | TiDB 慢查询日志记录到单独文件({{ deploy_dir }}/log/tidb_slow_query.log)，默认为 False，记录到 tidb 日志 |
 | deploy_without_tidb | KV 模式，不部署 TiDB 服务，仅部署 PD、TiKV 及监控服务，请将 `inventory.ini` 文件中 tidb_servers 主机组 IP 设置为空。|
 
 ## 部署任务
@@ -424,7 +425,7 @@ synchronised to NTP server (85.199.214.101) at stratum 2
    time correct to within 91 ms
    polling server every 1024 s
 ```
-> **注：**Ubuntu 系统请安装 ntpstat 软件包。
+> **注：** Ubuntu 系统请安装 ntpstat 软件包。
 
 以下情况表示 NTP 服务未正常同步：
 
