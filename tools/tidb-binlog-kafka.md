@@ -107,7 +107,7 @@ cd tidb-binlog-latest-linux-amd64
 #### 使用 tidb-ansible 部署 Pump
 
 - 如无 Kafka 集群，可使用 [kafka-ansible](https://github.com/pingcap/thirdparty-ops/tree/master/kafka-ansible) 部署 Kafka 集群。
-- 使用 [TiDB-Ansible](https://github.com/pingcap/tidb-ansible) 部署 TiDB 集群时，修改 `tidb-ansible/inventory.ini` 文件，设置 `enable_binlog = True`，并配置 `zookeeper_addrs` 变量为 Kafka 集群的 ZooKeeper 地址，这样部署 TiDB 集群时会部署 Pump。
+- 使用 [tidb-ansible](https://github.com/pingcap/tidb-ansible) 部署 TiDB 集群时，修改 `tidb-ansible/inventory.ini` 文件，设置 `enable_binlog = True`，并配置 `zookeeper_addrs` 变量为 Kafka 集群的 ZooKeeper 地址，这样部署 TiDB 集群时会部署 Pump。
 
 配置样例:
 
@@ -158,11 +158,13 @@ ZK3="192.168.0.11"
         如果对应的配置在命令行参数里面也存在，Pump 就会使用命令行参数的配置来覆盖配置文件里面的。
     -data-dir string
         Pump 数据存储位置路径
+    -enable-tolerant
+        开启 tolerant 后，如果 binlog 写入失败，Pump 不会报错（默认开启）
     -zookeeper-addrs string (-zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181")
         ZooKeeper 地址，该选项从 ZooKeeper 中获取 Kafka 地址
     -gc int
         日志最大保留天数 (默认 7)，设置为 0 可永久保存
-    -heartbeat-interval uint
+    -heartbeat-interval int
         Pump 向 PD 发送心跳间隔 (单位 秒)
     -log-file string
         log 文件路径

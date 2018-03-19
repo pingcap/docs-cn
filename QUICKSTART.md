@@ -200,7 +200,7 @@ CREATE USER 'tiuser'@'localhost' IDENTIFIED BY '123456';
 授权用户 `tiuser` 可检索数据库 `samp_db` 内的表：
 
 ```sql
-GRANT SELECT ON samp_db .* TO 'tiuser'@'localhost';
+GRANT SELECT ON samp_db.* TO 'tiuser'@'localhost';
 ```
 
 查询用户 `tiuser` 的权限：
