@@ -76,7 +76,7 @@ cd tidb-binlog-latest-linux-amd64
     - Use the `generate_binlog_position` tool of the [tidb-tools](https://github.com/pingcap/tidb-tools)project to generate the Drainer savepoint file. Use `generate_binlog_position` to compile this tool. See the [README description](https://github.com/pingcap/tidb-tools/blob/master/generate_binlog_position/README.md) for usage. You can also download this tool from [generate_binlog_position](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.tar.gz) and use `sha256sum` to verify the [sha256](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.sha256) file.
     - Do a full backup. For example, back up TiDB using mydumper.
     - Import the full backup to the target system.
-    - The savepoint file started by the Kafka version of Drainer is stored in the checkpoint table of the downstream database tidb_binlog by default. If no valid data exists in the checkpoint table, configure `initial-commit-ts` to make Drainer work from a specified position when it is started: 
+    - The savepoint file started by the Kafka version of Drainer is stored in the checkpoint table of the downstream database tidb_binlog by default. If no valid data exists in the checkpoint table, configure `initial-commit-ts` to make Drainer work from a specified position when it is started:
 
         ```
         bin/drainer --config=conf/drainer.toml --data-dir=${drainer_savepoint_dir}
@@ -97,10 +97,10 @@ cd tidb-binlog-latest-linux-amd64
 
 #### Recommended Kafka cluster configuration
 
-|Name|Number|Memory size|CPU|Hard disk|
-|:---:|:---:|:---:|:---:|:---:|
-|Kafka|3+|16G|8+|2+ 1TB|
-|ZooKeeper|3+|8G|4+|2+ 300G|
+| Name | Number | Memory size | CPU | Hard disk |
+| :---: | :---: | :---: | :---: | :---: |
+| Kafka | 3+ | 16G | 8+ | 2+ 1TB |
+| ZooKeeper | 3+ | 8G | 4+ | 2+ 300G |
 
 #### Recommended Kafka parameter configuration
 
@@ -127,8 +127,8 @@ zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
 
 A usage example:
 
-Assume that we have three PDs, three ZooKeepers, and one TiDB. The information of each node is as follows: 
-	
+Assume that we have three PDs, three ZooKeepers, and one TiDB. The information of each node is as follows:
+
 ```
 TiDB="192.168.0.10"
 PD1="192.168.0.16"
@@ -191,14 +191,14 @@ This example describes how to use Pump/Drainer.
     # Pump configuration.
     # the RPC address that Pump provides service (default "192.168.0.10:8250")
     addr = "192.168.0.10:8250"
-    
+
     # the RPC address that Pump provides external service (default "192.168.0.10:8250")
     advertise-addr = ""
-    
+
     # an integer value to control expiry date of the binlog data, indicates how long (in days) the binlog data is stored.
     # (default value is 0, means binlog data would never be removed)
     gc = 7
-    
+
     # the path of storing Pump data
     data-dir = "data.pump"
 
@@ -216,7 +216,7 @@ This example describes how to use Pump/Drainer.
     ```
 
 3. Startup example
-    
+
     ```bash
     ./bin/pump -config pump.toml
     ```
