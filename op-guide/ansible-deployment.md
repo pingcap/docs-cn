@@ -50,7 +50,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 > 其他系统可参考 [如何安装 Ansible](#如何安装-ansible)。
 
-确认中控机上已安装 Python `jmespath` 模块(0.9.0 或以上版本)，可参考[You need to install jmespath prior to running json_query filter 报错](#you-need-to-install-jmespath-prior-to-running-json_query-filter-报错)。
+确认中控机上已安装 Python `jmespath` 模块(0.9.0 或以上版本)，可参考 [You need to install jmespath prior to running json_query filter 报错](#you-need-to-install-jmespath-prior-to-running-json_query-filter-报错)。
 
 ## 在中控机器上下载 TiDB-Ansible
 
