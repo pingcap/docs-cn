@@ -43,12 +43,14 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
   ```bash
   # yum install epel-release
-  # yum install ansible curl
+  # yum install ansible curl python2-jmespath
   # ansible --version
     ansible 2.4.2.0
   ```
 
 > 其他系统可参考 [如何安装 Ansible](#如何安装-ansible)。
+
+确认中控机上已安装 Python `jmespath` 模块(0.9.0 或以上版本)，可参考 [You need to install jmespath prior to running json_query filter 报错](#you-need-to-install-jmespath-prior-to-running-json_query-filter-报错)。
 
 ## 在中控机器上下载 TiDB-Ansible
 
@@ -672,5 +674,15 @@ Type "help", "copyright", "credits" or "license" for more information.
 ```
 $ sudo yum -y install epel-release
 $ sudo yum -y install python-pip
+$ sudo pip install jmespath
+$ pip show jmespath
+Name: jmespath
+Version: 0.9.0
+```
+
+Ubuntu 系统可使用以下命令安装：
+
+```
+$ sudo apt-get install python-pip
 $ sudo pip install jmespath
 ```
