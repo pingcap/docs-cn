@@ -5,13 +5,13 @@ category: operations
 
 # TiDB Docker Compose Deployment
 
-This document describes how to quickly deploy TiDB using Docker Compose.
+This document describes how to quickly deploy TiDB using [Docker Compose](https://docs.docker.com/compose/overview).
 
-With [Docker Compose](https://docs.docker.com/compose/overview), you can use a YAML file to configure application services in multiple containers. Then, with a single command, you can create and start all the services from your configuration.
+With Docker Compose, you can use a YAML file to configure application services in multiple containers. Then, with a single command, you can create and start all the services from your configuration.
 
 You can use Docker Compose to deploy a TiDB test cluster with a single command. It is required to use Docker 17.06.0 or later.
 
-## Quick start
+## Deploy TiDB using Docker Compose
 
 1. Download `tidb-docker-compose`.
 
@@ -37,11 +37,11 @@ You can use Docker Compose to deploy a TiDB test cluster with a single command. 
     - Default account name: admin
     - Default password: admin
 
-    Access the [cluster data visualization interface](https://github.com/tidb-vision): <http://localhost:8010>
+    Access the [cluster data visualization interface](https://github.com/pingcap/tidb-vision): <http://localhost:8010>
 
 ## Customize the cluster
 
-In [Quick start](#quick-start), the following components are deployed by default:
+After the deployment is completed, the following components are deployed by default:
 
 - 3 PD instances, 3 TiKV instances, 1 TiDB instance
 - Monitoring components: Prometheus，Pushgateway，Grafana
@@ -111,4 +111,4 @@ To customize the cluster, you can edit the `docker-compose.yml` file directly. I
     - Default account name: admin
     - Default password: admin
 
-    If tidb-vision is enabled, you can access the [cluster data visualization interface](https://github.com/tidb-vision): <http://localhost:8010>.
+    If tidb-vision is enabled, you can access the cluster data visualization interface: <http://localhost:8010>.
