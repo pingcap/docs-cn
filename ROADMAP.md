@@ -7,7 +7,8 @@ category: Roadmap
 
 This document defines the roadmap for TiDB development.
 
-## TiDB：
+## TiDB:
+
 - [ ] Optimizer
   - [ ] Refactor Ranger
   - [ ] Optimize the statistics info 
@@ -47,12 +48,11 @@ This document defines the roadmap for TiDB development.
 - [ ] Flow control and degradation
 
 ## PD:
-- [ ] Improve namespace 
+
+- [ ] Improve namespace
   - [ ] Different replication policies for different namespaces and tables
-
   - [ ] Decentralize scheduling table regions
-  - [ ] Scheduler supports prioritization to be more controllable 
-
+  - [ ] Scheduler supports prioritization to be more controllable
 - [ ] Use machine learning to optimize scheduling
 
 ## TiSpark:
