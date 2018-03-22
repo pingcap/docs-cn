@@ -9,7 +9,7 @@ category: operations
 
 A complete TiDB cluster contains PD, TiKV, and TiDB. To start the database service, follow the order of PD -> TiKV -> TiDB. To stop the database service, follow the order of stopping TiDB -> TiKV -> PD.
 
-Before you start, see [TiDB architecture](../overview.md#tidb-architecture) and [Software and Hardware Requirements](op-guide/recommendation.md).
+Before you start, see [TiDB architecture](../overview.md#tidb-architecture) and [Software and Hardware Requirements](recommendation.md).
 
 This document describes the binary deployment of three scenarios:
 

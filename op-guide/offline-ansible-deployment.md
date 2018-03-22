@@ -87,13 +87,13 @@ Before you start, make sure that you have:
 
 ## Orchestrate the TiDB cluster
 
-See [Orchestrate the TiDB cluster](op-guide/ansible-deployment.md#orchestrate-the-tidb-cluster).
+See [Orchestrate the TiDB cluster](ansible-deployment.md#orchestrate-the-tidb-cluster).
 
 ## Deploy the TiDB cluster
 
-1. See [Deploy the TiDB cluster](op-guide/ansible-deployment.md#deploy-the-tidb-cluster).
+1. See [Deploy the TiDB cluster](ansible-deployment.md#deploy-the-tidb-cluster).
 2. You do not need to run the `ansible-playbook local_prepare.yml` playbook again.
 
 ## Test the cluster
 
-See [Test the cluster](op-guide/ansible-deployment.md#test-the-cluster).
+See [Test the cluster](ansible-deployment.md#test-the-cluster).

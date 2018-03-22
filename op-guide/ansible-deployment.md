@@ -310,7 +310,7 @@ To deploy TiDB using a normal user account, take the following steps:
     ansible-playbook start.yml
     ```
 
-> **Note:** If you want to deploy TiDB using the root user account, see [Ansible Deployment Using the Root User Account](op-guide/root-ansible-deployment.md).
+> **Note:** If you want to deploy TiDB using the root user account, see [Ansible Deployment Using the Root User Account](root-ansible-deployment.md).
 
 ## Test the cluster
 
