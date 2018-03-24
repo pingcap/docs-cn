@@ -23,16 +23,16 @@ Before you start, make sure that you have:
 
 1. Install Ansible offline on the CentOS 7 system:
 
-    > Download the [Ansible](http://download.pingcap.org/ansible-2.4-rpms.el7.tar.gz) offline installation package to the Control Machine.
-  
+    > Download the [Ansible 2.4.2](https://download.pingcap.org/ansible-2.4.2-rpms.el7.tar.gz) offline installation package to the Control Machine.
+
     ```bash
-    # tar -xzvf ansible-2.4-rpms.el7.tar.gz
+    # tar -xzvf ansible-2.4.2-rpms.el7.tar.gz
 
     # cd ansible-2.4-rpms.el7
 
-    # rpm -ivh PyYAML*rpm libyaml*rpm python-babel*rpm python-backports*rpm python-backports-ssl_match_hostname*rpm python-cffi*rpm python-enum34*rpm python-httplib2*rpm python-idna*rpm python-ipaddress*rpm python-jinja2*rpm python-markupsafe*rpm python-paramiko*rpm python-passlib*rpm python-ply*rpm python-pycparser*rpm python-setuptools*rpm python-six*rpm python2-cryptography*rpm python2-jmespath*rpm python2-pyasn1*rpm sshpass*rpm
+    # chmod u+x install_ansible.sh
 
-    # rpm -ivh ansible-2.4.2.0-2.el7.noarch.rpm
+    # ./install_ansible.sh
     ```
 
 2. After Ansible is installed, you can view the version using `ansible --version`.
