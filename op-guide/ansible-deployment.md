@@ -183,7 +183,7 @@ location_labels = ["host"]
         - `rocksdb lockcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
         - `raftdb defaultcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
     2.  如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
-        - `capacity` = (DISK - 日志空间) / TiKV 实例数量，单位为 GB
+        - `capacity` = (DISK - 日志空间) / TiKV 实例数量
 
 ### inventory.ini 变量调整
 
