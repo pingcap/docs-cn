@@ -20,6 +20,7 @@ This is a list of TiDB adopters in various industries.
 - [360 Financial (FinTech)](https://jinrong.360jie.com.cn/)
 - [GAEA (Gaming)](http://gaea.com/en)
 - [YOOZOO GAMES (Gaming)](http://www.yoozoo.com/en)
+- [FUNYOURS JAPAN (Gaming)](http://company.funyours.co.jp/)
 - [Hainan eKing Technology (Enterprise Technology)](https://www.crunchbase.com/organization/hainan-eking-technology)
 - [2Dfire (FoodTech)](http://www.2dfire.com/)
 - [G7 (Internet of Things)](https://www.english.g7.com.cn/)
