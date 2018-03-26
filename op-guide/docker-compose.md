@@ -44,7 +44,7 @@ You can use Docker Compose to deploy a TiDB test cluster with a single command. 
 After the deployment is completed, the following components are deployed by default:
 
 - 3 PD instances, 3 TiKV instances, 1 TiDB instance
-- Monitoring components: Prometheus，Pushgateway，Grafana
+- Monitoring components: Prometheus, Pushgateway, Grafana
 - Data visualization component: tidb-vision
 
 To customize the cluster, you can edit the `docker-compose.yml` file directly. It is recommended to generate `docker-compose.yml` using the [Helm](https://helm.sh) template engine, because manual editing is tedious and error-prone.
