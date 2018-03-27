@@ -113,6 +113,7 @@
 - [版本发布历史](releases/README.md)
 - [TiDB 路线图](https://github.com/pingcap/docs-cn/blob/master/ROADMAP.md)
 + 用户案例
+  - [北京银行](http://t.cn/RnY8fGn)
   - [海航](http://t.cn/REXx0Qe)
   - [今日头条](http://t.cn/RnLfEMf)
   - [Mobike](http://t.cn/RT8FbP6)
