@@ -114,9 +114,9 @@ cd tidb-binlog-latest-linux-amd64
 ```
 # binlog trigger
 enable_binlog = True
-# zookeeper address of Kafka cluster, example:
+# ZooKeeper address of Kafka cluster, example:
 # zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
-# you can also append an optional chroot string to the urls to specify the root directory for all kafka znodes， example:
+# you can also append an optional chroot string to the urls to specify the root directory for all Kafka znodes, example:
 # zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181/kafka/123"
 zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
 ```
@@ -163,7 +163,7 @@ ZK3="192.168.0.11"
     -enable-tolerant
         开启 tolerant 后，如果 binlog 写入失败，Pump 不会报错（默认开启）
     -zookeeper-addrs string (-zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181")
-        ZooKeeper 地址，该选项从 ZooKeeper 中获取 Kafka 地址，需要和 kafka 中配置相同
+        ZooKeeper 地址，该选项从 ZooKeeper 中获取 Kafka 地址，需要和 Kafka 中配置相同
     -gc int
         日志最大保留天数 (默认 7)，设置为 0 可永久保存
     -heartbeat-interval int
@@ -199,9 +199,9 @@ ZK3="192.168.0.11"
     # Pump 数据存储位置路径
     data-dir = "data.pump"
  
-    # zookeeper 地址，该选项从 zookeeper 中获取 kafka 地址，若 kafka 中配置了命名空间，则此处需同样配置
+    # ZooKeeper 地址，该选项从 ZooKeeper 中获取 Kafka 地址，若 Kafka 中配置了命名空间，则此处需同样配置
     # zookeeper-addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
-    # 配置了命令空间的 zookeeper 地址配置示例
+    # 配置了命令空间的 ZooKeeper 地址配置示例
     # zookeeper-addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181/kafka/123"
 
     # Pump 向 PD 发送心跳的间隔 (单位 秒)
@@ -240,7 +240,7 @@ ZK3="192.168.0.11"
     -data-dir string
         Drainer 数据存储位置路径 (默认 "data.drainer")
     -zookeeper-addrs string (-zookeeper-addrs="192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181")
-        ZooKeeper 地址，该选项从 ZooKeeper 中获取 Kafka 地址，需要和 kafka 中配置相同
+        ZooKeeper 地址，该选项从 ZooKeeper 中获取 Kafka 地址，需要和 Kafka 中配置相同
     -dest-db-type string
         Drainer 下游服务类型 (默认为 mysql)
     -detect-interval int
@@ -281,9 +281,9 @@ ZK3="192.168.0.11"
     # Drainer 数据存储位置路径 (默认 "data.drainer")
     data-dir = "data.drainer"
 
-    # zookeeper 地址，该选项从 zookeeper 中获取 kafka 地址，若 kafka 中配置了命名空间，则此处需同样配置
-    #  zookeeper-addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
-    # 配置了命令空间的 zookeeper 地址配置示例
+    # ZooKeeper 地址，该选项从 ZooKeeper 中获取 Kafka 地址，若 Kafka 中配置了命名空间，则此处需同样配置
+    # zookeeper-addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
+    # 配置了命令空间的 ZooKeeper 地址配置示例
     # zookeeper-addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181/kafka/123"
 
     # PD 集群节点的地址
