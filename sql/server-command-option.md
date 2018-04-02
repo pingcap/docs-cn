@@ -7,7 +7,7 @@ category: user guide
 
 ## TiDB startup options
 
-When you star TiDB processes, you can specify some program options.
+When you start TiDB processes, you can specify some program options.
 
 TiDB supports a lot of startup options. Run the following command to get a brief introduction:
 
