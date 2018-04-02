@@ -110,7 +110,7 @@
   - [TiSpark 用户指南](tispark/tispark-user-guide.md)
 - [常见问题与解答(FAQ)](FAQ.md)
 - [最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
-- [版本发布历史](releases/README.md)
+- [版本发布历史](releases/rn.md)
 - [TiDB 路线图](https://github.com/pingcap/docs-cn/blob/master/ROADMAP.md)
 + 用户案例
   - [北京银行](http://t.cn/RnY8fGn)
