@@ -5,6 +5,7 @@ category: release
 
 # TiDB Release Notes
 
+  - [2.0 RC4](2rc4.md)
   - [2.0 RC3](2rc3.md)
   - [2.0 RC1](2rc1.md)
   - [1.1 Beta](11beta.md)
