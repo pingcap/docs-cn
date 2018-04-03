@@ -9,6 +9,7 @@ This is a list of TiDB adopters in various industries.
 
 - [Bank of Beijing (Banking)](http://www.bankofbeijing.com.cn/en2011/index.html)
 - [Mobike (Ridesharing)](https://mobike.com/global/)
+- [Ele.me (Catering)](https://www.crunchbase.com/organization/ele-me)
 - [Yiguo.com (E-commerce)](https://www.datanami.com/2018/02/22/hybrid-database-capturing-perishable-insights-yiguo/)
 - [Toutiao (Media)](https://www.crunchbase.com/organization/toutiao)
 - [Phoenix TV (Media)](http://www.ifeng.com/)
