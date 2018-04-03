@@ -361,7 +361,7 @@ cd pb_reader-latest-linux-amd64
 PbReader 使用示例
 
 ```bash
-./bin/pbReader -binlog-file=binlog-0000000000000000
+./bin/pbReader -binlog-file=${path}/binlog-0000000000000000
 ```
 
 ## TiDB-Binlog 监控
