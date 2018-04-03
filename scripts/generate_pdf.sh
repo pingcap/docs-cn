@@ -22,6 +22,7 @@ pandoc -N --toc --smart --latex-engine=xelatex \
     -V mainfont="${MAINFONT}" \
     -V sansfont="${MAINFONT}" \
     -V monofont="${MONOFONT}" \
+    -V fontsize=12pt \
     -V geometry:margin=1in \
     -V include-after="\\input{templates/copyright.tex}" \
     doc.md -o output.pdf
