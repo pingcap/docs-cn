@@ -12,13 +12,15 @@ TiKV uses two RocksDB instances: the default RocksDB instance stores KV data, th
 
 TiKV implements `Column Families` (CF) from RocksDB.
 
-The default RocksDB instance stores KV data in the `default`, `write` and `lock` CFs.
-+ The `default` CF stores the actual data. The corresponding parameters are in `[rocksdb.defaultcf]`.
-+ The `write` CF stores the version information in Multi-Version Concurrency Control (MVCC) and index-related data. The corresponding parameters are in `[rocksdb.writecf]`.
-+ The `lock` CF stores the lock information. The system uses the default parameters.
+- The default RocksDB instance stores KV data in the `default`, `write` and `lock` CFs.
 
-The Raft RocksDB (RaftDB) instance stores Raft logs.
-+ The `default` CF stores the Raft log. The corresponding parameters are in `[raftdb.defaultcf]`.
+    - The `default` CF stores the actual data. The corresponding parameters are in `[rocksdb.defaultcf]`.
+    - The `write` CF stores the version information in Multi-Version Concurrency Control (MVCC) and index-related data. The corresponding parameters are in `[rocksdb.writecf]`.
+    - The `lock` CF stores the lock information. The system uses the default parameters.
+
+- The Raft RocksDB (RaftDB) instance stores Raft logs.
+    
+    - The `default` CF stores the Raft log. The corresponding parameters are in `[raftdb.defaultcf]`.
 
 Each CF has a separate `block cache` to cache data blocks to accelerate the data reading speed in RocksDB. You can configure the size of the `block cache` by setting the `block-cache-size` parameter. The bigger the `block-cache-size`, the more hot data can be cached, and the easier to read data, in the meantime, the more system memory will be occupied.
 
