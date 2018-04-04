@@ -207,8 +207,8 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 
 > **注：** 以下控制变量开启请使用首字母大写 `True`，关闭请使用首字母大写 `False`。
 
-| 变量 | 含义 |
-| ---- | ------- |
+| 变量            | 含义                                                        |
+| --------------- | ---------------------------------------------------------- |
 | cluster_name | 集群名称，可调整 |
 | tidb_version | TiDB 版本，TiDB-Ansible 各分支默认已配置 |
 | deployment_method | 部署方式，默认为 binary，可选 docker |
@@ -220,7 +220,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | set_hostname | 根据 IP 修改部署目标机器主机名，默认为 False |
 | enable_binlog | 是否部署 pump 并开启 binlog，默认为 False，依赖 Kafka 集群，参见 `zookeeper_addrs` 变量 |
 | zookeeper_addrs | binlog Kafka 集群的 zookeeper 地址 |
-| enable_slow_query_log | TiDB 慢查询日志记录到单独文件({{ deploy_dir }}/log/tidb_slow_query.log)，默认为 False，记录到 tidb 日志
+| enable_slow_query_log | TiDB 慢查询日志记录到单独文件({{ deploy_dir }}/log/tidb_slow_query.log)，默认为 False，记录到 tidb 日志 |
 | deploy_without_tidb | KV 模式，不部署 TiDB 服务，仅部署 PD、TiKV 及监控服务，请将 `inventory.ini` 文件中 tidb_servers 主机组 IP 设置为空。|
 
 ## 部署任务
@@ -685,4 +685,16 @@ Ubuntu 系统可使用以下命令安装：
 ```
 $ sudo apt-get install python-pip
 $ sudo pip install jmespath
+```
+
+#### 启动 Pump/Drainer 报 `zk: node does not exist` 错误
+
+请检查 `inventory.ini` 里的 `zookeeper_addrs` 参数配置与 Kafka 集群内的配置是否相同、是否填写了命名空间。关于命名空间的配置说明如下：
+
+```
+# zookeeper connection string (see zookeeper docs for details).
+# zookeeper address of kafka cluster, example:
+# zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
+# you can also append an optional chroot string to the urls to specify the root directory for all kafka znodes， example:
+# zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181/kafka/123"
 ```

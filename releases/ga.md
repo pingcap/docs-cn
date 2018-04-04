@@ -3,7 +3,7 @@ title: TiDB 1.0 release notes
 category: Releases
 ---
 
-# TiDB 1.0 release notes
+# TiDB 1.0 Release Notes
 
 10 月 16 日，TiDB 发布 GA 版（TiDB 1.0）。该版本对 MySQL 兼容性、SQL 优化器、系统稳定性、性能做了大量的工作。
 
