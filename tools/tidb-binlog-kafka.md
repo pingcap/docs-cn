@@ -116,7 +116,7 @@ cd tidb-binlog-latest-linux-amd64
 enable_binlog = True
 # ZooKeeper address of Kafka cluster, example:
 # zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
-# you can also append an optional chroot string to the urls to specify the root directory for all Kafka znodes, example:
+# You can also append an optional chroot string to the URLs to specify the root directory for all Kafka znodes, example:
 # zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181/kafka/123"
 zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
 ```
