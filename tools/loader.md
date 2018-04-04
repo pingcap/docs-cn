@@ -13,7 +13,7 @@ Loader is a data import tool to load data to TiDB.
 
 ## Why did we develop Loader?
 
-Since tools like mysqldump will take us days to migrate massive amounts of data, we used the mydumper/myloader suite of Percona to multi-thread export and import data. During the process, we found that mydumper works well. However, as myloader lacks functions of error retry and savepoint, it is inconvenient for us to use. Therefore, we developed loader, which reads the output data files of mydumper and imports data to TiDB through mysql protocol.
+Since tools like mysqldump will take us days to migrate massive amounts of data, we used the [mydumper/myloader suite](https://github.com/maxbube/mydumper) to multi-thread export and import data. During the process, we found that mydumper works well. However, as myloader lacks functions of error retry and savepoint, it is inconvenient for us to use. Therefore, we developed loader, which reads the output data files of mydumper and imports data to TiDB through mysql protocol.
 
 ## What can Loader do?
 
