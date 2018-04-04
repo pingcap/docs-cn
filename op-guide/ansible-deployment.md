@@ -686,3 +686,15 @@ Ubuntu 系统可使用以下命令安装：
 $ sudo apt-get install python-pip
 $ sudo pip install jmespath
 ```
+
+#### 启动 Pump/Drainer 报 `zk: node does not exist` 错误
+
+请检查 `inventory.ini` 里的 `zookeeper_addrs` 参数配置与 Kafka 集群内的配置是否相同、是否填写了命名空间。关于命名空间的配置说明如下：
+
+```
+# zookeeper connection string (see zookeeper docs for details).
+# zookeeper address of kafka cluster, example:
+# zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
+# you can also append an optional chroot string to the urls to specify the root directory for all kafka znodes， example:
+# zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181/kafka/123"
+```
