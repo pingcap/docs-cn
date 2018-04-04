@@ -7,7 +7,7 @@ category: deployment
 
 ## TiDB
 
-### `--V`
+### `-V`
 
 + 输出 TiDB 的版本
 + 默认: ""
@@ -21,16 +21,17 @@ category: deployment
 ### `--store`
 
 + 用来指定 TiDB 底层使用的存储引擎
-+ 默认: "goleveldb"
-+ 你可以选择 "memory", "goleveldb", "BoltDB" 或者 "TiKV"。（前面三个是本地存储引擎，而 TiKV 是一个分布式存储引擎）
-+ 例如，如果我们可以通过 `tidb-server --store=memory` 来启动一个纯内存引擎的 TiDB
++ 默认: "mocktikv"
++ 你可以选择 mocktikv" 或者 "tikv"。（mocktikv 是本地存储引擎，而 tikv 是一个分布式存储引擎）
+
 
 ### `--path`
 
-+ 对于本地存储引擎 "goleveldb", "BoltDB" 来说，path 指定的是实际的数据存放路径
-+ 对于 "memory" 存储引擎来说，path 不用设置
++ 对于本地存储引擎 "mocktikv" 来说，path 指定的是实际的数据存放路径
++ 对于 `--store = tikv` 时必须指定path，`--store = mocktikv` 时，如果不指定 path，会使用默认值。
 + 对于 "TiKV" 存储引擎来说，path 指定的是实际的 PD 地址。假设我们在 192.168.100.113:2379, 192.168.100.114:2379 和 192.168.100.115:2379 上面部署了 PD，那么 path 为 "192.168.100.113:2379, 192.168.100.114:2379, 192.168.100.115:2379"
 + 默认: "/tmp/tidb"
++ 我们可以通过 `tidb-server --store=mocktikv --path=""` 来启动一个纯内存引擎的 TiDB。
 
 ### `--host`
 
@@ -106,12 +107,6 @@ category: deployment
 + 推送统计信息到 Prometheus Push Gateway 的时间间隔
 + 默认: 15s
 + 设置为 0 表明不推送统计信息给 Push Gateway,如: `--metrics-interval=2` 是每两秒推送到 Push Gataway
-
-### `--lease`
-
-+ Schema 的租约时间，单位：秒
-+ 默认: "10"
-+ Schema 的 lease 主要用在 online schema changes 上面。这个值会影响到实际的 DDL 语句的执行时间。千万不要随便改动这个值，除非你能知道相关的内部机制
 
 ### `--token-limit`
 
