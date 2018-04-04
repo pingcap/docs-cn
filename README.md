@@ -69,6 +69,7 @@
   - [TiDB 事务隔离级别](sql/transaction-isolation.md)
   - [错误码与故障诊断](sql/error.md)
   - [与 MySQL 兼容性对比](sql/mysql-compatibility.md)
+  - [TiDB 内存控制](sql/tidb-memory-control.md)
   + 高级功能
     - [历史数据回溯](op-guide/history-read.md)
 + TiDB 运维文档
