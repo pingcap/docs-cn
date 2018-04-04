@@ -667,7 +667,8 @@ Count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 ### 5.1.4 如何查看 DDL job？
 
 可以使用 `admin show ddl`，语句查看正在运行的 DDL 作业。
-`admin show ddl jobs`，用于查看当前 DDL 作业队列中的所有结果（包括正在运行以及等待运行的任务）以及已执行完成的 DDL 作业队列中的最近十条结果。`admin show ddl job queries 'job_id' [, 'job_id'] ...`，用于显示 `job_id` 对应的 DDL 任务的原始 SQL 语句。这个 `job_id` 也跟只会搜索正在执行中的任务以及 DDL 历史作业队伍中最近的十条。
+* `admin show ddl jobs`，用于查看当前 DDL 作业队列中的所有结果（包括正在运行以及等待运行的任务）以及已执行完成的 DDL 作业队列中的最近十条结果。
+* `admin show ddl job queries 'job_id' [, 'job_id'] ...`，用于显示 `job_id` 对应的 DDL 任务的原始 SQL 语句。这个 `job_id` 也跟只会搜索正在执行中的任务以及 DDL 历史作业队伍中最近的十条。
 
 ### 5.1.5 TiDB 是否支持基于 COST 的优化（CBO），如果支持，实现到什么程度？
 
