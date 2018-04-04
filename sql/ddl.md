@@ -362,4 +362,4 @@ DROP INDEX index_name ON tbl_name
 
 ## ADMIN 语句
 
-`ADMIN` 语句可以查看一些跟 DDL 任务相关的信息，具体可以看[这里](admin.md)
+`ADMIN` 语句可以查看一些跟 DDL 任务相关的信息，具体可以看[这里](admin.md)。
