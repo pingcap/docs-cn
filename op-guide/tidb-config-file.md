@@ -139,7 +139,7 @@ TiDB 配置文件比命令行参数支持更多的选项。大家可以在 [conf
 
 ### `tcp-keep-alive`
 
-+ TiDB 在 tcp 层开启 keepalive	
++ TiDB 在 tcp 层开启 keepalive 
 + 默认: false
 
 ### `retry-limit`
