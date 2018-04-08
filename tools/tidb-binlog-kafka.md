@@ -118,8 +118,10 @@ Configuration example:
 ```
 # binlog trigger
 enable_binlog = True
-# zookeeper address of kafka cluster, example:
+# ZooKeeper address of the Kafka cluster. Example:
 # zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
+# You can also append an optional chroot string to the URLs to specify the root directory for all Kafka znodes. Example:
+# zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181/kafka/123"
 zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
 ```
 
@@ -166,7 +168,7 @@ This example describes how to use Pump/Drainer.
     -enable-tolerant
         after enabling tolerant, Pump wouldn't return error if it fails to write binlog (default true)
     -zookeeper-addrs string (-zookeeper_addrs="192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181")
-        the ZooKeeper address; this option gets the Kafka address from ZooKeeper
+        the ZooKeeper address; this option gets the Kafka address from ZooKeeper, and you need to keep it the same with the configuration in Kafka
     -gc int
         the maximum days that the binlog is retained (default 7), and 0 means retaining the binlog permanently
     -heartbeat-interval int
@@ -176,7 +178,7 @@ This example describes how to use Pump/Drainer.
     -log-rotate string
         the log file rotating frequency (hour/day)
     -metrics-addr string
-        the Prometheus pushgataway address; leaving it empty disables Prometheus push
+        the Prometheus pushgateway address; leaving it empty disables Prometheus push
     -metrics-interval int
         the frequency of reporting monitoring information (default 15, unit: second)
     -pd-urls string
@@ -202,8 +204,10 @@ This example describes how to use Pump/Drainer.
     # the path of storing Pump data
     data-dir = "data.pump"
 
-    # the ZooKeeper address; You can set the option to get the Kafka address from ZooKeeper
+    # the ZooKeeper address; You can set the option to get the Kafka address from ZooKeeper; if the namespace is configured in Kafka, you need to keep the same configuration here
     zookeeper-addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
+    # example of the ZooKeeper address that configures the namespace
+    zookeeper-addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181/kafka/123"
 
     # the interval between heartbeats that Pump sends to PD (unit: second)
     heartbeat-interval = 3
@@ -240,7 +244,7 @@ This example describes how to use Pump/Drainer.
     -data-dir string
         the path of storing Drainer data (default "data.drainer")
     -zookeeper-addrs string (-zookeeper-addrs="192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181")
-        the ZooKeeper address; you can set this option to get the Kafka address from ZooKeeper
+        the ZooKeeper address; you can set this option to get the Kafka address from ZooKeeper, and you need to keep it the same with the configuration in Kafka
     -dest-db-type string
         the downstream service type of Drainer (default "mysql")
     -detect-interval int
@@ -256,7 +260,7 @@ This example describes how to use Pump/Drainer.
     -log-rotate string
         the log file rotating frequency (hour/day)
     -metrics-addr string
-        the Prometheus pushgataway address; leaving it empty disables Prometheus push
+        the Prometheus pushgateway address; leaving it empty disables Prometheus push
     -metrics-interval int
         the frequency of reporting monitoring information (default 15, unit: second)
     -pd-urls string
@@ -279,8 +283,10 @@ This example describes how to use Pump/Drainer.
     # the path of storing Drainer data (default "data.drainer")
     data-dir = "data.drainer"
 
-    # the ZooKeeper address; you can use this option to get the Kafka address from ZooKeeper
+    # the ZooKeeper address; you can use this option to get the Kafka address from ZooKeeper; if the namespace is configured in Kafka, you need to keep the same configuration here
     zookeeper-addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
+    # example of the ZooKeeper address that configures the namespace
+    zookeeper-addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181/kafka/123"
 
     # the node address of the PD cluster
     pd-urls = "http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379"

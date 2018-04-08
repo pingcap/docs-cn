@@ -741,3 +741,15 @@ For the Ubuntu system, you can install the Python `jmespath` module using the fo
 $ sudo apt-get install python-pip
 $ sudo pip install jmespath
 ```
+
+### The `zk: node does not exist` error when starting Pump/Drainer
+
+Check whether the `zookeeper_addrs` configuration in `inventory.ini` is the same with the configuration in the Kafka cluster, and whether the namespace is filled in. The description about namespace configuration is as follows:
+
+```
+# ZooKeeper connection string (see ZooKeeper docs for details).
+# ZooKeeper address of the Kafka cluster. Example:
+# zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
+# You can also append an optional chroot string to the URLs to specify the root directory for all Kafka znodes. Example:
+# zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181/kafka/123"
+```
