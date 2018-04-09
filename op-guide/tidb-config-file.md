@@ -5,13 +5,13 @@ category: deployment
 
 # TiDB 配置文件
 
-TiDB 配置文件比命令行参数支持更多的选项。大家可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认的配置文件。大家重命名为 `config.toml` 即可。
+TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认的配置文件，重命名为 config.toml 即可。
 
-这里只阐述在命令行参数中没有的参数，命令行参数大家可以看[这里](configuration.md)
+本文档只阐述未包含在命令行参数中的参数，命令行参数参见[这里](configuration.md)。
 
 ### `split-table`
 
-+ 为每个 table 建立单独的 region。
++ 为每个 table 建立单独的 Region。
 + 默认: true
 + 如果需要创建大量的表，我们建议把这个参数设置为 false。
 
@@ -19,7 +19,7 @@ TiDB 配置文件比命令行参数支持更多的选项。大家可以在 [conf
 
 + 指定 TiDB 发生 out-of-memory 错误时的操作。
 + 默认: "log"
-+ 现在合法的选项是 ["log", "cancel"]，如果为 "log", 仅仅是打印日志，不作实质处理。如果为 "cancel"，我们会取消执行这个操作，并且输出日志。
++ 现在合法的选项是 ["log", "cancel"]，如果为 "log"，仅仅是打印日志，不作实质处理。如果为 "cancel"，我们会取消执行这个操作，并且输出日志。
 
 ### `enable-streaming`
 
@@ -89,7 +89,7 @@ TiDB 配置文件比命令行参数支持更多的选项。大家可以在 [conf
 
 + 保留的日志的最大数量。
 + 默认: 0
-+ 默认全部保存，如果设置为7，会最多保留 7 个老的日志文件。
++ 默认全部保存，如果设置为 7，会最多保留 7 个老的日志文件。
 
 #### `log-rotate`
 
@@ -135,11 +135,11 @@ TiDB 配置文件比命令行参数支持更多的选项。大家可以在 [conf
 
 + TiDB 一个事务允许的最大语句条数限制。
 + 默认: 5000
-+ 在一个事务中，超过 `stmt-count-limit` 条语句后还没有 roolback 或者 commit，TiDB 将会返回 `statement count 5001 exceeds the transaction limitation, autocommit = false` 错误。
++ 在一个事务中，超过 `stmt-count-limit` 条语句后还没有 rollback 或者 commit，TiDB 将会返回 `statement count 5001 exceeds the transaction limitation, autocommit = false` 错误。
 
 ### `tcp-keep-alive`
 
-+ TiDB 在 tcp 层开启 keepalive 
++ TiDB 在 TCP 层开启 keepalive 
 + 默认: false
 
 ### `retry-limit`
@@ -161,19 +161,25 @@ TiDB 配置文件比命令行参数支持更多的选项。大家可以在 [conf
 
 ### `stats-lease`
 
-+ TiDB 统计信息做 Analyze 和 重载统计信息的时间间隔。
-+ 默认: xxx
-+ xxxx
++ TiDB 重载统计信息, 更新表行数, 检查是否需要自动 analyze 以及加载列的统计信息的时间间隔
++ 默认： 3s
+    - 每隔 `stats-lease` 时间， TiDB 会检查统计信息是否有更新，如果有会将其更新到内存中
+    - 每隔 `5 * stats-lease` 时间，TiDB 会将 DML 产生的总行数以及修改的行数变化持久化下来
+    - 每隔 `stats-lease` 时间，TiDB 会检查是否有表或者索引需要自动 analyze
+    - 每隔 `stats-lease` 时间，TiDB 会检查是否有列的统计信息需要被加载到内存中
+
+
 
 ### `run-auto-analyze`
 
-TiDB 是否做自动的 Analyze。
++ TiDB 是否做自动的 Analyze。
 + 默认: true
 
 ### `feedback-probability`
 
-+ xxx
-+ 默认: xxx
++ TiDB 对查询收集统计信息反馈的概率
++ 默认： 0
++ 对于每一个查询，TiDB 会以 `feedback-probability` 的概率收集查询的反馈，用于更新统计信息。
 
 ## plan-cache
 
@@ -214,11 +220,11 @@ prepare 语句的 Plan cache 设置。
 
 ### `grpc-connection-count`
 
-+ 跟每个 tikv 之间建立的最大连接数。
++ 跟每个 TiKV 之间建立的最大连接数。
 + 默认: 16
 
 ### `commit-timeout`
 
 + 执行事务提交时，最大的超时时间。
 + 默认: 41s
-+ 这个值必须是大于两倍 raft 选举的超时时间。
++ 这个值必须是大于两倍 Raft 选举的超时时间。
