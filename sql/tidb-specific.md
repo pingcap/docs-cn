@@ -256,11 +256,11 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 ### tidb_general_log
 
-作用域：SESSION
+作用域：SERVER
 
 默认值：0
 
-这个变量用来设置是否记录所有查询相关的所有日志信息。
+这个变量用来设置是否在日志里记录所有的 SQL 语句。
 
 ### tidb_enable_streaming
 
@@ -268,7 +268,7 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 默认值：0
 
-这个变量用来设置是否启动 Stream 接口接收 coprocessor 响应。
+这个变量用来设置是否启用 Streaming。
 
 ## Optimizer Hint
 
