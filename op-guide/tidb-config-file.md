@@ -129,7 +129,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + TiDB 的 CPU 使用数量。
 + 默认: 0
-+ 默认为 0 表示使用机器上所有的 CPU，也可以设置成 `max-procs`， 那么 TiDB 会使用 `max-procs` 个 CPU 数量。
++ 默认为 0 表示使用机器上所有的 CPU，也可以设置成 `max-procs`， 那么 TiDB 会使用 `n` 个 CPU 数量。
 
 ### `stmt-count-limit`
 
