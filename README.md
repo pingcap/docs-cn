@@ -69,6 +69,7 @@
   - [TiDB Transaction Isolation Levels](sql/transaction-isolation.md)
   - [Error Codes and Troubleshooting](sql/error.md)
   - [Compatibility with MySQL](sql/mysql-compatibility.md)
+  - [TiDB Memory Control](sql/tidb-memory-control.md)
   + Advanced Usage
     - [Read Data From History Versions](op-guide/history-read.md)
 + TiDB Operations Guide
