@@ -8,8 +8,7 @@ jobs:
     branches:
       only:
         - master
-        - xuechun/polish-ci-pdf-generating
-        # - website-preview
+        - website-preview
     steps:
       - checkout
 
@@ -32,7 +31,7 @@ jobs:
               sudo bash -c 'echo "119.188.128.5 uc.qbox.me" >> /etc/hosts';
               python3 scripts/upload.py output.pdf tidb-manual-cn.pdf;
             fi
-            if [ "${CIRCLE_BRANCH}" == "xuechun/polish-ci-pdf-generating" ]; then
+            if [ "${CIRCLE_BRANCH}" == "website-preview" ]; then
               sudo bash -c 'echo "119.188.128.5 uc.qbox.me" >> /etc/hosts';
               python3 scripts/upload.py output.pdf tidb-manual-cn-preview.pdf;
             fi
