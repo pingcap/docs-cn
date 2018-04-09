@@ -81,6 +81,7 @@
     - [跨机房部署方案](op-guide/location-awareness.md)
   + 配置集群
     - [参数解释](op-guide/configuration.md)
+    - [TiDB 配置项解释](op-guide/tidb-config-file.md)
     - [开启 TLS 验证](op-guide/security.md)
     - [生成自签名证书](op-guide/generate-self-signed-certificates.md)
   + 监控集群
