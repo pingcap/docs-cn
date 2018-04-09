@@ -742,6 +742,7 @@ Use `admin show ddl` to view the current job of adding an index.
 
 - `admin show ddl`: to view the running DDL job
 - `admin show ddl jobs`: to view all the results in the current DDL job queue (including tasks that are running and waiting to run) and the last ten results in the completed DDL job queue
+- `admin show ddl job queries 'job_id' [, 'job_id'] ...`: to view the original SQL statement of the DDL task corresponding to the `job_id`; the `job_id` only searches the running DDL job and the last ten results in the DDL history job queue
 
 #### Does TiDB support CBO (Cost-Based Optimization)? If yes, to what extent?
 
