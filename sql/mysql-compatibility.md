@@ -21,7 +21,6 @@ However, in TiDB, the following MySQL features are not supported for the time be
 + The `FULLTEXT` indexes
 + The `Spatial` indexes
 + The Non-UTF-8 characters
-+ The JSON data type
 + Add primary key
 + Drop primary key
 
