@@ -133,7 +133,7 @@ DROP STATS TableName
 
 统计信息的导出接口为：
 ```
-http://localhost:10080/stats/dump/${db_name}/${table_name}
+http://{tidb-server-ip}:{tidb-server-status-port}/stats/dump/${db_name}/${table_name}
 ```
 
 通过该接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 的 json 格式的统计信息。
