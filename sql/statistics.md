@@ -20,6 +20,9 @@ ANALYZE TABLE TableNameList
 
 ANALYZE TABLE TableName INDEX IndexNameList
 > 该语句会收集 TableName 中所有的 IndexNameList 中的索引列的统计信息。
+
+ANALYZE TABLE TableName INDEX
+> 该语句会收集 TableName 中所有索引列的统计信息。
 ```
 
 ### 自动更新
@@ -88,6 +91,7 @@ SHOW STATS_HISTOGRAMS [ShowLikeOrWhere]
 | update_time | 更新时间 |
 | distinct_count | 不同值数量 |
 | null_count | NULL 的数量 |
+| avg_col_size | 列平均长度 |
 
 ### 直方图桶的信息
 
@@ -122,3 +126,22 @@ SHOW STATS_BUCKETS [ShowLikeOrWhere]
 DROP STATS TableName
 > 该语句会删除 TableName 中所有的统计信息。
 ```
+
+## 统计信息的导入导出
+
+### 导出统计信息
+
+统计信息的导出接口为：
+```
+http://localhost:10080/stats/dump/${db_name}/${table_name}
+```
+
+通过该接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 的 json 格式的统计信息。
+
+### 导入统计信息
+
+语法：
+```sql
+LOAD STATS 'file_name'
+```
+`file_name` 为要导入的统计信息的文件名。该文件一般是通过统计信息导出接口得到的 json 文件。
