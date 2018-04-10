@@ -18,11 +18,9 @@ TiDB 优化器会根据统计信息来选择最优的执行计划。统计信息
 ANALYZE TABLE TableNameList
 > 该语句会收集 TableNameList 中所有表的统计信息。
 
-ANALYZE TABLE TableName INDEX IndexNameList
+ANALYZE TABLE TableName INDEX [IndexNameList]
 > 该语句会收集 TableName 中所有的 IndexNameList 中的索引列的统计信息。
-
-ANALYZE TABLE TableName INDEX
-> 该语句会收集 TableName 中所有索引列的统计信息。
+> IndexNameList 为空时会收集所有索引列的统计信息。
 ```
 
 ### 自动更新
@@ -133,15 +131,17 @@ DROP STATS TableName
 
 统计信息的导出接口为：
 ```
-http://{tidb-server-ip}:{tidb-server-status-port}/stats/dump/${db_name}/${table_name}
+http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${table_name}
+> 通过该接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 的 json 格式的统计信息。
 ```
 
-通过该接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 的 json 格式的统计信息。
-
 ### 导入统计信息
+
+导入的统计信息一般是通过统计信息导出接口得到的 json 文件。
 
 语法：
 ```sql
 LOAD STATS 'file_name'
+> `file_name` 为要导入的统计信息的文件名。
 ```
-`file_name` 为要导入的统计信息的文件名。该文件一般是通过统计信息导出接口得到的 json 文件。
+
