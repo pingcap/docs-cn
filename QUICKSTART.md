@@ -29,189 +29,192 @@ This section describes some basic CRUD operations in TiDB.
 
 ### Create, show, and drop a database
 
-You can use the `CREATE DATABASE` statement to create a database.
+- To create a database, use the `CREATE DATABASE` statement. The Syntax is as follows:
 
-The Syntax is as follows:
+    ```sql
+    CREATE DATABASE db_name [options];
+    ```
 
-```sql
-CREATE DATABASE db_name [options];
-```
+    For example, the following statement creates a database with the name `samp_db`:
 
-For example, the following statement creates a database with the name `samp_db`:
+    ```sql
+    CREATE DATABASE IF NOT EXISTS samp_db;
+    ```
 
-```sql
-CREATE DATABASE IF NOT EXISTS samp_db;
-```
-You can use the `SHOW DATABASES` statement to show the databases:
+- To show the databases, use the `SHOW DATABASES` statement:
 
-```sql
-SHOW DATABASES;
-```
+    ```sql
+    SHOW DATABASES;
+    ```
 
-You can use the `DROP DATABASE` statement to delete a database, for example:
+- To delete a database, use the `DROP DATABASE` statement. For example:
 
-```sql
-DROP DATABASE samp_db;
-```
+    ```sql
+    DROP DATABASE samp_db;
+    ```
 
 ### Create, show, and drop a table
 
-Use the `CREATE TABLE` statement to create a table. The Syntax is as follows:
+- To create a table, use the `CREATE TABLE` statement. The Syntax is as follows:
 
-```sql
-CREATE TABLE table_name column_name data_type constraint;
-```
+    ```sql
+    CREATE TABLE table_name column_name data_type constraint;
+    ```
 
-For example:
+    For example:
 
-```sql
-CREATE TABLE person (
- number INT(11),
- name VARCHAR(255),
- birthday DATE
-);
-```
+    ```sql
+    CREATE TABLE person (
+     number INT(11),
+     name VARCHAR(255),
+     birthday DATE
+    );
+    ```
 
-Add `IF NOT EXISTS` to prevent an error if the table exists:
+    Add `IF NOT EXISTS` to prevent an error if the table exists:
 
-```sql
-CREATE TABLE IF NOT EXISTS person (
- number INT(11),
- name VARCHAR(255),
- birthday DATE
-);
-```
+    ```sql
+    CREATE TABLE IF NOT EXISTS person (
+     number INT(11),
+     name VARCHAR(255),
+     birthday DATE
+    );
+    ```
 
-Use the `SHOW CREATE` statement to see the statement that creates the table. For example:
+- To view the statement that creates the table, use the `SHOW CREATE` statement. For example:
 
-```sql
-SHOW CREATE table person;
-```
+    ```sql
+    SHOW CREATE table person;
+    ```
 
-Use the `SHOW FULL COLUMNS` statement to display the information about all the columns in a table. For example:
+- To show all the tables in a database, use the `SHOW TABLES` statement. For example:
 
-```sql
-SHOW FULL COLUMNS FROM person;
-```
+    ```sql
+    SHOW TABLES FROM samp_db;
+    ```
 
-Use the `DROP TABLE` statement to delete a table. For example:
+- To show the information about all the columns in a table, use the `SHOW FULL COLUMNS` statement. For example:
 
-```sql
-DROP TABLE person;
-```
-or
-```sql
-DROP TABLE IF EXISTS person;
-```
-Use the `SHOW TABLES` statement to show all the tables in a database. For example:
-```sql
-SHOW TABLES FROM samp_db;
-```
+    ```sql
+    SHOW FULL COLUMNS FROM person;
+    ```
+
+- To delete a table, use the `DROP TABLE` statement. For example:
+
+    ```sql
+    DROP TABLE person;
+    ```
+
+    or
+
+    ```sql
+    DROP TABLE IF EXISTS person;
+    ```
 
 ### Create, show, and drop an index
 
-For the columns whose value is not unique, you can use the `CREATE INDEX` or `ALTER TABLE` statements. For example:
+- To create an index for the column whose value is not unique, use the `CREATE INDEX` or `ALTER TABLE` statement. For example:
 
-```sql
-CREATE INDEX person_num ON person (number);
-```
+    ```sql
+    CREATE INDEX person_num ON person (number);
+    ```
 
-or
+    or
 
-```sql
-ALTER TABLE person ADD INDEX person_num (number);
-```
+    ```sql
+    ALTER TABLE person ADD INDEX person_num (number);
+    ```
 
-You can also create unique indexes for the columns whose value is unique. For example:
+- To create a unique index for the column whose value is unique, use the `CREATE UNIQUE INDEX` or `ALTER TABLE` statement. For example:
 
-```sql
-CREATE UNIQUE INDEX person_num ON person (number);
-```
+    ```sql
+    CREATE UNIQUE INDEX person_num ON person (number);
+    ```
 
-or
+    or
 
-```sql
-ALTER TABLE person ADD UNIQUE person_num on (number);
-```
+    ```sql
+    ALTER TABLE person ADD UNIQUE person_num on (number);
+    ```
 
-Use the `SHOW INDEX` to display all the indexes in a table:
+- To show all the indexes in a table, use the `SHOW INDEX` statement:
 
-```sql
-SHOW INDEX from person;
-```
+    ```sql
+    SHOW INDEX from person;
+    ```
 
-Use the `ALTER TABLE` or `DROP INDEX` to delete an index. Like the `CREATE INDEX` statement, `DROP INDEX` can also be embedded in the `ALTER TABLE` statement. For example:
+- To delete an index, use the `DROP INDEX` or `ALTER TABLE` statement. For example:
 
-```sql
-DROP INDEX person_num ON person;
-ALTER TABLE person DROP INDEX person_num;
-```
+    ```sql
+    DROP INDEX person_num ON person;
+    ALTER TABLE person DROP INDEX person_num;
+    ```
 
 ### Insert, select, update, and delete data
 
-Use the `INSERT` statement to insert data into a table. For example:
+- To insert data into a table, use the `INSERT` statement. For example:
 
-```sql
-INSERT INTO person VALUES("1","tom","20170912");
-```
+    ```sql
+    INSERT INTO person VALUES("1","tom","20170912");
+    ```
 
-Use the `SELECT` statement to see the data in a table. For example:
+- To view the data in a table, use the `SELECT` statement. For example:
 
-```sql
-SELECT * FROM person;
-+--------+------+------------+
-| number | name | birthday   |
-+--------+------+------------+
-|      1 | tom  | 2017-09-12 |
-+--------+------+------------+
-```
+    ```sql
+    SELECT * FROM person;
+    +--------+------+------------+
+    | number | name | birthday   |
+    +--------+------+------------+
+    |      1 | tom  | 2017-09-12 |
+    +--------+------+------------+
+    ```
 
-Use the `UPDATE ` statement to update the data in a table. For example:
+- To update the data in a table, use the `UPDATE` statement. For example:
 
-```sql
-UPDATE person SET birthday='20171010' WHERE name='tom';
+    ```sql
+    UPDATE person SET birthday='20171010' WHERE name='tom';
 
-SELECT * FROM person;
-+--------+------+------------+
-| number | name | birthday   |
-+--------+------+------------+
-|      1 | tom  | 2017-10-10 |
-+--------+------+------------+
-```
+    SELECT * FROM person;
+    +--------+------+------------+
+    | number | name | birthday   |
+    +--------+------+------------+
+    |      1 | tom  | 2017-10-10 |
+    +--------+------+------------+
+    ```
 
-Use the `DELETE` statement to delete the data in a table. For example:
+- To delete the data in a table, use the `DELETE` statement. For example:
 
-```sql
-DELETE FROM person WHERE number=1;
-SELECT * FROM person;
-Empty set (0.00 sec)
-```
+    ```sql
+    DELETE FROM person WHERE number=1;
+    SELECT * FROM person;
+    Empty set (0.00 sec)
+    ```
 
 ### Create, authorize, and delete a user
 
-Use the `CREATE USER` statement to create a user named `tiuser` with the password `123456`:
+- To create a user, use the `CREATE USER` statement. The following example creates a user named `tiuser` with the password `123456`:
 
-```sql
-CREATE USER 'tiuser'@'localhost' IDENTIFIED BY '123456';
-```
+    ```sql
+    CREATE USER 'tiuser'@'localhost' IDENTIFIED BY '123456';
+    ```
 
-Grant `tiuser` the privilege to retrieve the tables in the `samp_db` database:
+- To grant `tiuser` the privilege to retrieve the tables in the `samp_db` database:
 
-```sql
-GRANT SELECT ON samp_db.* TO 'tiuser'@'localhost';
-```
+    ```sql
+    GRANT SELECT ON samp_db.* TO 'tiuser'@'localhost';
+    ```
 
-Check the privileges of `tiuser`:
+- To check the privileges of `tiuser`:
 
-```sql
-SHOW GRANTS for tiuser@localhost;
-```
+    ```sql
+    SHOW GRANTS for tiuser@localhost;
+    ```
 
-Delete `tiuser`:
+- To delete `tiuser`:
 
-```sql
-DROP USER 'tiuser'@'localhost';
-```
+    ```sql
+    DROP USER 'tiuser'@'localhost';
+    ```
 
 ## Monitor the TiDB cluster
 
