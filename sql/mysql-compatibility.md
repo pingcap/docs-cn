@@ -57,34 +57,32 @@ TiDB implements the asynchronous schema changes algorithm in F1. The Data Manipu
 + Drop Database
 + Create Table
 + Drop Table
-+ Add Index: Does not support creating muliple indexs at the same time.
++ Add Index: Does not support creating multiple indexes at the same time.
 + Drop Index
 + Add Column:
-    - Does not support creating muliple columns at the same time.
+    - Does not support creating multiple columns at the same time.
     - Does not support setting a column as the primary key, or creating a unique index, or specifying auto_increment while adding it.
 + Drop Column: Does not support dropping the primary key column or index column.
 + Alter Column
 + Change/Modify Column
-    - Supports changing/modifying the types among the following integer types: TinyInt，SmallInt，MediumInt，Int，BigInt.
-    - Supports changing/modifying the types among the following string types: Char，Varchar，Text，TinyText，MediumText，LongText
-    - Support changing/modifying the types among the following string types: Blob，TinyBlob，MediumBlob，LongBlob.
+    - Supports changing/modifying the types among the following integer types: TinyInt, SmallInt, MediumInt, Int, BigInt.
+    - Supports changing/modifying the types among the following string types: Char, Varchar, Text, TinyText, MediumText, LongText
+    - Support changing/modifying the types among the following string types: Blob, TinyBlob, MediumBlob, LongBlob.
+    
+        > **Note:** The changing/modifying column operation cannot make the length of the original type become shorter and it cannot change the unsigned/charset/collate attributes of the column.
 
-**Note:** The change/modifying column operation cannot make the length of the original type become shorter and it cannot change the unsigned/charset/collate attributes of the column.
-
-    - Supports changing the following type definitions: default value，comment，null，not null and OnUpdate, but does not support changing from null to not null.
+    - Supports changing the following type definitions: default value, comment, null, not null and OnUpdate, but does not support changing from null to not null.
     - Supports parsing the `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}` syntax, but there is no actual operation.
 
 + Truncate Table
 + Rename Table
 + Create Table Like
 
-
 ### Transaction
 
 TiDB implements an optimistic transaction model. Unlike MySQL, which uses row-level locking to avoid write conflict, in TiDB, the write conflict is checked only in the `commit` process during the execution of the statements like `Update`, `Insert`, `Delete`, and so on.
 
 **Note:** On the business side, remember to check the returned results of `commit` because even there is no error in the execution, there might be errors in the `commit` process.
-
 
 ### Load data
 
@@ -96,7 +94,9 @@ TiDB implements an optimistic transaction model. Unlike MySQL, which uses row-le
         LINES STARTING BY 'string' TERMINATED BY 'string'
         (col_name ...);
     ```
-Currently, the supported `ESCAPED BY` characters are: `/\/\`.
+    
+    Currently, the supported `ESCAPED BY` characters are: `/\/\`.
+
 + Transaction
 
     When TiDB is in the execution of loading data, by default, a record with 20,000 rows of data is seen as a transaction for persistent storage. If a load data operation inserts more than 20,000 rows, it will be divided into multiple transactions to commit. If an error occurs in one transaction, this transaction in process will not be committed. However, transactions before that are committed successfully. In this case, a part of the load data operation is successfully inserted, and the rest of the data insertion fails. But MySQL treats a load data operation as a transaction, one error leads to the failure of the entire load data operation.
