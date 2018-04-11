@@ -173,7 +173,7 @@ ZK3="192.168.0.11"
     -log-rotate string
         log 文件切换频率，hour/day
     -metrics-addr string
-        Prometheus pushgataway 地址，不设置则禁止上报监控信息
+        Prometheus pushgateway 地址，不设置则禁止上报监控信息
     -metrics-interval int
         监控信息上报频率 (默认 15，单位 秒)
     -pd-urls string
@@ -258,7 +258,7 @@ ZK3="192.168.0.11"
     -log-rotate string
         log 文件切换频率，hour/day
     -metrics-addr string
-        Prometheus pushgataway 地址，不设置则禁止上报监控信息
+        Prometheus pushgateway 地址，不设置则禁止上报监控信息
     -metrics-interval int
         监控信息上报频率（默认 15，单位 秒）
     -pd-urls string
