@@ -135,7 +135,7 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 默认值: 0
 
 这个变量用来设置是否跳过 UTF-8 字符的验证。
-验证 UTF-8 字符需要消耗一定的性能，当可以确认输入的字符串为有效的 UT-F8 字符时，可能将其设置为 1。
+验证 UTF-8 字符需要消耗一定的性能，当可以确认输入的字符串为有效的 UTF-8 字符时，可以将其设置为 1。
 
 ### tidb_batch_insert
 
@@ -185,19 +185,10 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 作用域：SESSION
 
-默认值：32 GB 
-
-这个变量用来设置 HashJoin 的内存使用阈值。
-如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### tidb_mem_quota_hashjoin
-
-作用域：SESSION
-
-默认值：32 GB 
+默认值：32 GB
 
 这个变量用来设置 HashJoin 算子的内存使用阈值。
-如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
+如果 HashJoin 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
 
 ### tidb_mem_quota_mergejoin
 
@@ -293,4 +284,4 @@ TiDB 在 MySQL 的 Optimizer Hint 语法上，增加了一些 TiDB 专有的 Hin
 ### TIDB_HJ(t1, t2)
 
 ```SELECT /*+ TIDB_HJ(t1, t2) */ * from t1，t2 where t1.id = t2.id```
-提示优化器使用 Hash Join 算法，这个算法并发执行，执行速度较快，但会消耗较多内存。
+提示优化器使用 Hash Join 算法，这个算法多线程并发执行，执行速度较快，但会消耗较多内存。
