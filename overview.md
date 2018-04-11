@@ -7,17 +7,33 @@ category: introduction
 
 ## TiDB introduction
 
-TiDB (The pronunciation is: /'taɪdiːbi:/ tai-D-B, etymology: titanium) is a Hybrid Transactional/Analytical Processing (HTAP) database. Inspired by the design of Google F1 and Google Spanner, TiDB features infinite horizontal scalability, strong consistency, and high availability. The goal of TiDB is to serve as a one-stop solution for online transactions and analyses.
+TiDB (The pronunciation is: /'taɪdiːbi:/ tai-D-B, etymology: titanium) is an open source distributed scalable Hybrid Transactional and Analytical Processing (HTAP) database built by PingCAP. Inspired by the design of Google F1 and Google Spanner, TiDB features infinite horizontal scalability, strong consistency, and high availability. The goal of TiDB is to serve as a one-stop solution for both OLTP (Online Transactional Processing) and OLAP (Online Analytical Processing).
 
-- __Horizontal and linear scalability__
-- __Compatible with MySQL protocol__
-- __Automatic failover and high availability__
-- __Consistent distributed transactions__
-- __Online DDL__
-- __Multiple storage engine support__
-- __Highly concurrent and real-time writing and query of large volume of data (HTAP)__
+- __Horizontal scalability__
 
-TiDB is designed to support both OLTP (Online Transactional Processing) and OLAP (Online Analytical Processing) scenarios. For complex OLAP scenarios, use [TiSpark](tispark/tispark-user-guide.md).
+    TiDB provides horizontal scalability simply by adding new nodes. Never worry about infrastructure capacity ever again.
+
+- __MySQL compatibility__
+
+    Easily replace MySQL with TiDB to power your applications without changing a single line of code in most cases and still benefit from the MySQL ecosystem.
+
+- __Distributed transaction__
+
+    TiDB is your source of truth, guaranteeing ACID compliance, so your data is accurate and reliable anytime, anywhere.
+
+- __Cloud Native__
+
+    TiDB is designed to work in the cloud -- public, private, or hybrid -- making deployment, provisioning, and maintenance drop-dead simple.
+
+- __No more ETL__
+
+    ETL (Extract, Transform and Load) is no longer necessary with TiDB's hybrid OLTP/OLAP architecture, enabling you to create new values for your users, easier and faster.
+
+- __High availability__
+
+    With TiDB, your data and applications are always on and continuously available, so your users are never disappointed.
+
+TiDB is designed to support both OLTP and OLAP scenarios. For complex OLAP scenarios, use [TiSpark](tispark/tispark-user-guide.md).
 
 Read the following three articles to understand TiDB techniques:
 
