@@ -13,21 +13,21 @@ As an open source distributed NewSQL database with high performance, TiDB can be
 
 | Linux OS Platform        | Version      |
 | :-----------------------:| :----------: |
-| Red Hat Enterprise Linux | 7.3 and above|
-| CentOS                   | 7.3 and above|
-| Oracle Enterprise Linux  | 7.3 and above|
-| Ubuntu LTS               | 16.04 and above|
+| Red Hat Enterprise Linux | 7.3 or later |
+| CentOS                   | 7.3 or later |
+| Oracle Enterprise Linux  | 7.3 or later |
+| Ubuntu LTS               | 16.04 or later |
 
-> **Note**:
+> **Note:**
 > 
 > - For Oracle Enterprise Linux, TiDB supports the Red Hat Compatible Kernel (RHCK) and does not support the Unbreakable Enterprise Kernel provided by Oracle Enterprise Linux.
-> - The support for the Linux operating systems above include the deployment and operation in physical servers as well as in major virtualized environments like VMware, KVM and XEM.
+> - The support for the Linux operating systems above includes the deployment and operation in physical servers as well as in major virtualized environments like VMware, KVM and XEM.
 
 ## Server requirements
 
-You can deploy and run TiDB on the 64-bit generic hardware server platform in the Intel x86-64 architecture. The requirements and recommendations about server hardware configuration for development, testing and production environments are as follows:
+You can deploy and run TiDB on the 64-bit generic hardware server platform in the Intel x86-64 architecture. The requirements and recommendations about server hardware configuration for development, test and production environments are as follows:
 
-### Development and testing environments
+### Development and test environments
 
 | Component | CPU     | Memory | Local Storage  | Network  | Instance Number (Minimum Requirement) |
 | :------: | :-----: | :-----: | :----------: | :------: | :----------------: |
@@ -39,7 +39,7 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 > **Note**:
 > 
 > - In the test environment, the TiDB and PD can be deployed on the same server.
-> - For performance-related testing, do not use low-performance storage and network hardware configuration, in order to guarantee the correctness of the test result.
+> - For performance-related test, do not use low-performance storage and network hardware configuration, in order to guarantee the correctness of the test result.
 
 ### Production environment
 
@@ -75,4 +75,4 @@ As an open source distributed NewSQL database, TiDB requires the following netwo
 
 ## Web browser requirements
 
-Based on the Prometheus and Grafana platform, TiDB provides a visual data monitoring solution to monitor the TiDB cluster status. To visit the Grafana monitor interface, it is recommended to use a higher version of Microsoft IE, Google Chrome or Mozilla Firefox.
+Based on the Prometheus and Grafana platform, TiDB provides a visual data monitoring solution to monitor the TiDB cluster status. To access the Grafana monitor interface, it is recommended to use a higher version of Microsoft IE, Google Chrome or Mozilla Firefox.
