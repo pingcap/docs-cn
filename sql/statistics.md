@@ -19,8 +19,9 @@ Syntax:
 ANALYZE TABLE TableNameList
 > The statement collects statistics of all the tables in `TableNameList`. 
 
-ANALYZE TABLE TableName INDEX IndexNameList
-> The statement collects statistics of the index columns on all `IndexNameList` in `TableName`. 
+ANALYZE TABLE TableName INDEX [IndexNameList]
+> The statement collects statistics of the index columns on all `IndexNameList` in `TableName`.
+> The statement collects statistics of all index columns when `IndexNameList` is empty.
 ```
 
 ### Automatic update
@@ -31,7 +32,7 @@ For the `INSERT`, `DELETE`, or `UPDATE` statements, TiDB automatically updates t
 
 When you run the `ANALYZE` statement, you can adjust the concurrency using the following parameters, to control its effect on the system.
 
-#### `tidb_build_stats_concurrency` 
+#### `tidb_build_stats_concurrency`
 
 Currently, when you run the `ANALYZE` statement, the task is divided into multiple small tasks. Each task only works on one column or index. You can use the `tidb_build_stats_concurrency` parameter to control the number of simultaneous tasks. The default value is `4`.
 
@@ -90,6 +91,7 @@ Currently, the `SHOW STATS_HISTOGRAMS` statement returns the following 7 columns
 | `update_time` | the time of the update |
 | `distinct_count` | the number of different values |
 | `null_count` | the number of `NULL` |
+| `avg_col_size` | the average length of columns |
 
 ### Buckets of histogram
 
@@ -124,5 +126,27 @@ Syntax:
 
 ```sql
 DROP STATS TableName
-> The statement deletes statistics of all the tables in `TableName`。
+> The statement deletes statistics of all the tables in `TableName`.
+```
+
+## Import and export statistics
+
+### Export statistics
+
+The interface to export statistics:
+
+```
+http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${table_name}
+> Use this interface to obtain the JSON format statistics of the `${table_name}` table in the `${db_name}` database.
+```
+
+### Import statistics
+
+Generally, the imported statistics refer to the JSON file obtained using the export interface.
+
+Syntax:
+
+```
+LOAD STATS 'file_name'
+> `file_name` is the file name of the statistics to be imported.
 ```
