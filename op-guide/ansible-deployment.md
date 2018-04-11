@@ -246,7 +246,6 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | enable_elk | currently not supported |
 | enable_firewalld | to enable the firewall, closed by default |
 | enable_ntpd | to monitor the NTP service of the managed node, True by default; do not close it |
-| machine_benchmark | to monitor the disk IOPS of the managed node, True by default; do not close it |
 | set_hostname | to edit the hostname of the mananged node based on the IP, False by default |
 | enable_binlog | whether to deploy Pump and enable the binlog, False by default, dependent on the Kafka cluster; see the `zookeeper_addrs` variable |
 | zookeeper_addrs | the zookeeper address of the binlog Kafka cluster |
