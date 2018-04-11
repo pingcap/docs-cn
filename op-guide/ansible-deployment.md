@@ -692,9 +692,9 @@ $ sudo pip install jmespath
 请检查 `inventory.ini` 里的 `zookeeper_addrs` 参数配置与 Kafka 集群内的配置是否相同、是否填写了命名空间。关于命名空间的配置说明如下：
 
 ```
-# zookeeper connection string (see zookeeper docs for details).
-# zookeeper address of kafka cluster, example:
+# ZooKeeper connection string (see ZooKeeper docs for details).
+# ZooKeeper address of Kafka cluster, example:
 # zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
-# you can also append an optional chroot string to the urls to specify the root directory for all kafka znodes， example:
+# You can also append an optional chroot string to the URLs to specify the root directory for all Kafka znodes. Example:
 # zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181/kafka/123"
 ```
