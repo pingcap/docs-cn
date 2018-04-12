@@ -54,23 +54,24 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 ## 在中控机器上下载 TiDB-Ansible
 
-以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录，使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`。
+以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录，使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`，以下为各版本下载示例，版本选择可以咨询官方。
 
-下载 GA 版本：
+下载 1.0 GA 版本：
 ```
-cd /home/tidb
 git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
+```
+
+下载 2.0 版本：
+```
+git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
 ```
 
 或
 
 下载 master 版本：
 ```
-cd /home/tidb
 git clone https://github.com/pingcap/tidb-ansible.git
 ```
-
-> **注：** 生产环境请下载 GA 版本部署 TiDB。
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
