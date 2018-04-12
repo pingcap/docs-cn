@@ -71,13 +71,18 @@ For other systems, see [Install Ansible](ansible-deployment.md#install-ansible).
 
 ## Download TiDB-Ansible to the Control Machine
 
-Login to the Control Machine using the `tidb` user account and enter the `/home/tidb` directory. Use the following command to download the corresponding version of TiDB-Ansible from GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`.
+Login to the Control Machine using the `tidb` user account and enter the `/home/tidb` directory. Use the following command to download the corresponding version of TiDB-Ansible from GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`. The following are examples of downloading various versions, and you can turn to the official team for advice on which version to choose.
 
-Download the 1.0 version:
+Download the 1.0 GA version:
 
 ```
-cd /home/tidb
 git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
+```
+
+Download the 2.0 version:
+
+```
+git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
 ```
 
 or
@@ -85,11 +90,8 @@ or
 Download the master version:
 
 ```
-cd /home/tidb
 git clone https://github.com/pingcap/tidb-ansible.git
 ```
-
-> **Note:** For the production environment, download the 1.0 version to deploy TiDB.
 
 ## Orchestrate the TiDB cluster
 

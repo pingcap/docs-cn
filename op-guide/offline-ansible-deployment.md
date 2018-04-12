@@ -59,22 +59,27 @@ Before you start, make sure that you have:
 
 2. Download TiDB-Ansible.
 
-    Use the following command to download the corresponding version of TiDB-Ansible from the GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`.
+    Use the following command to download the corresponding version of TiDB-Ansible from the GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`. The following are examples of downloading various versions, and you can turn to the official team for advice on which version to choose.
 
-    Download the 1.0 (GA) version:
-    
+    Download the 1.0 GA version:
+
     ```
     git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
     ```
 
-    OR
+    Download the 2.0 version:
+
+    ```
+    git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
+    ```
+
+    or
 
     Download the master version:
 
     ```
     git clone https://github.com/pingcap/tidb-ansible.git
     ```
-    > **Note:** For production environment, download TiDB-Ansible 1.0 to deploy TiDB.
 
 3. Run the `local_prepare.yml` playbook, and download TiDB binary online to the download machine.
 
