@@ -162,13 +162,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `stats-lease`
 
 + TiDB 重载统计信息, 更新表行数, 检查是否需要自动 analyze 以及加载列的统计信息的时间间隔
-+ 默认： 3s
++ 默认: 3s
     - 每隔 `stats-lease` 时间， TiDB 会检查统计信息是否有更新，如果有会将其更新到内存中
     - 每隔 `5 * stats-lease` 时间，TiDB 会将 DML 产生的总行数以及修改的行数变化持久化下来
     - 每隔 `stats-lease` 时间，TiDB 会检查是否有表或者索引需要自动 analyze
     - 每隔 `stats-lease` 时间，TiDB 会检查是否有列的统计信息需要被加载到内存中
-
-
 
 ### `run-auto-analyze`
 
@@ -178,7 +176,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `feedback-probability`
 
 + TiDB 对查询收集统计信息反馈的概率
-+ 默认： 0
++ 默认: 0
 + 对于每一个查询，TiDB 会以 `feedback-probability` 的概率收集查询的反馈，用于更新统计信息。
 
 ## plan-cache
@@ -202,7 +200,7 @@ Plan cache 相关配置。
 + 默认: 256
 + 这个数量越大，锁的粒度越小。
 
-### prepared-plan-cache
+## prepared-plan-cache
 
 prepare 语句的 Plan cache 设置。
 
