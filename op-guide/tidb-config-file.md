@@ -148,12 +148,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认: 10
 + 如果 TiDB 超过 `retry-limit` 次重试还是没有成功，将会返回错误。
 
-### `join-concurrency`
-
-+ join-concurrency 并发执行 join 的 goroutine 数量
-+ 默认: 5
-+ 看数据量和数据分布情况，一般情况下是越多越好，数值越大对 CPU 开销越大
-
 ### `cross-join`
 
 + 默认: true
