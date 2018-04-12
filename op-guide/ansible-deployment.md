@@ -73,8 +73,6 @@ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
 git clone https://github.com/pingcap/tidb-ansible.git
 ```
 
-> **注：** 生产环境请下载 GA 版本部署 TiDB。
-
 ## 分配机器资源，编辑 inventory.ini 文件
 
 inventory.ini 文件路径为 tidb-ansible/inventory.ini。

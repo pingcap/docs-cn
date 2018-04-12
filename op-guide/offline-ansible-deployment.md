@@ -75,9 +75,6 @@ category: deployment
     git clone https://github.com/pingcap/tidb-ansible.git
     ```
 
-    > **注：** 生产环境请下载 GA 版本部署 TiDB。
-
-
 3.  执行 `local_prepare.yml` playbook，联网下载 TiDB binary 到下载机
 
     ```
