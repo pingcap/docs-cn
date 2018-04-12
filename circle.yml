@@ -5,6 +5,10 @@ jobs:
     docker:
       - image: andelf/doc-build:0.1.9
     working_directory: ~/pingcap/docs
+    branches:
+      only:
+        - master
+        - website-preview
     steps:
       - checkout
 
@@ -23,9 +27,12 @@ jobs:
       - deploy:
           name: "Publish PDF"
           command: |
+            sudo bash -c 'echo "119.188.128.5 uc.qbox.me" >> /etc/hosts';
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              sudo bash -c 'echo "119.188.128.5 uc.qbox.me" >> /etc/hosts';
               python3 scripts/upload.py output.pdf tidb-manual-en.pdf;
+            fi
+            if [ "${CIRCLE_BRANCH}" == "website-preview" ]; then
+              python3 scripts/upload.py output.pdf tidb-manual-en-preview.pdf;
             fi
 
       - run:
