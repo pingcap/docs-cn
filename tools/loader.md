@@ -34,6 +34,7 @@ Since tools like mysqldump will take us days to migrate massive amounts of data,
 ## Usage
 
 > **Note:**
+> 
 > - Do not import the `mysql` system database from the MySQL instance to the downstream TiDB instance.
 > - If mydumper uses the `-m` parameter, the data is exported without the table structure and the loader can not import the data.
 > - If you use the default `checkpoint-schema` parameter, after importing the data of a database, run `drop database tidb_loader` before you begin to import the next database.
@@ -58,7 +59,7 @@ Since tools like mysqldump will take us days to migrate massive amounts of data,
 
   -p string: the account and password of TiDB
 
-  -pprof-addr string: the pprof address of Loader. It tunes the perfomance of Loader (default: ":10084")
+  -pprof-addr string: the pprof address of Loader. It tunes the performance of Loader (default: ":10084")
 
   -t int: the number of thread,increase this as TiKV nodes increase (default: 16)
 
