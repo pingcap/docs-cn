@@ -172,7 +172,7 @@ Check the time difference between the machine time of the monitor and the time w
 
 ##### Description of inventory.ini variables
 
-| Variable | Description |
+| Variable        | Description                                                |
 | ---- | ------- |
 | cluster_name | the name of a cluster, adjustable |
 | tidb_version | the version of TiDB, configured by default in TiDB-Ansible branches |
