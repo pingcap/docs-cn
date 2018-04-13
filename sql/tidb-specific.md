@@ -91,7 +91,7 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 作用域: SESSION | GLOBAL
 
-默认值: 10
+默认值: 15
 
 这个变量用来设置 scan 操作的并发度，AP 类应用适合较大的值，TP 类应用适合较小的值。
 对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
@@ -111,6 +111,22 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 默认值: 4
 
 这个变量用来设置 index lookup 操作的并发度，AP 类应用适合较大的值，TP 类应用适合较小的值。
+
+### tidb_index_lookup_join_concurrency
+
+作用域: SESSION | GLOBAL
+
+默认值: 4
+
+这个变量用来设置 index lookup join 算法的并发度。
+
+### tidb_hash_join_concurrency
+
+作用域: SESSION | GLOBAL
+
+默认值: 5
+
+这个变量用来设置 hash join 算法的并发度。
 
 ### tidb_index_serial_scan_concurrency
 
