@@ -278,7 +278,7 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 
 #### 3.1.8 TiDB 里面可以执行 kill 命令吗？
 
-- 可以 kill DML 语句，首先使用 `show processlist`，找到对应 session 的 id，然后执行 `kill tidb id`。
+- 可以 kill DML 语句，首先使用 `show processlist`，找到对应 session 的 id，然后执行 `kill tidb [session id]`。
 - 可以 kill DDL 语句，首先使用 `admin show ddl jobs`，查找需要 kill 的 DDL job ID，然后执行 `admin cancel ddl jobs 'job_id' [, 'job_id'] ...`。具体可以参考 [admin 操作](sql/admin.md#admin-语句)。
 
 #### 3.1.9 TiDB 是否支持会话超时？
