@@ -278,13 +278,12 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 
 #### 3.1.8 TiDB 里面可以执行 kill 命令吗？
 
-可以 kill DML 语句，首先使用 `show processlist`，找到对应 session 的 id，然后执行 `kill id`。
-
-可以 kill DDL 语句，首先使用 `admin show ddl jobs`，查找需要 kill 的 DDL job ID，然后执行 `admin cancel ddl jobs 'job_id' [, 'job_id'] ...`。具体可以参考 [admin 操作](sql/admin.md#admin-语句)。
+- 可以 kill DML 语句，首先使用 `show processlist`，找到对应 session 的 id，然后执行 `kill tidb [session id]`。
+- 可以 kill DDL 语句，首先使用 `admin show ddl jobs`，查找需要 kill 的 DDL job ID，然后执行 `admin cancel ddl jobs 'job_id' [, 'job_id'] ...`。具体可以参考 [admin 操作](sql/admin.md#admin-语句)。
 
 #### 3.1.9 TiDB 是否支持会话超时？
 
-TiDB 暂不支持数据库层面的会话超时，目前想要实现超时，在没 LB（Load Balancing）的时候，需要应用侧记录发起的 Session 的 ID，通过应用自定义超时，超时以后需要到发起 Query 的节点上用 `kill id` 来杀掉 SQL。目前建议使用应用程序来实现会话超时，当达到超时时间，应用层就会抛出异常继续执行后续的程序段。
+TiDB 暂不支持数据库层面的会话超时，目前想要实现超时，在没 LB（Load Balancing）的时候，需要应用侧记录发起的 Session 的 ID，通过应用自定义超时，超时以后需要到发起 Query 的节点上用 `kill tidb [session id]` 来杀掉 SQL。目前建议使用应用程序来实现会话超时，当达到超时时间，应用层就会抛出异常继续执行后续的程序段。
 
 #### 3.1.10 TiDB 生产环境的版本管理策略是怎么样的？如何尽可能避免频繁升级？
 
