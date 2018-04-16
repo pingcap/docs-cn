@@ -159,16 +159,33 @@
 
 ## TiDB 简介
 
-TiDB 是 PingCAP 公司受 Google [Spanner](http://research.google.com/archive/spanner.html) / [F1](http://research.google.com/pubs/pub41344.html) 论文启发而设计的开源分布式 NewSQL 数据库。
+TiDB 是 PingCAP 公司受 Google [Spanner](http://research.google.com/archive/spanner.html) / [F1](http://research.google.com/pubs/pub41344.html) 论文启发而设计的开源分布式 HTAP 数据库，结合了传统的 RDBMS 和 NoSQL 的最佳特性。TiDB 兼容 MySQL，支持无限的水平扩展，具备强一致性和高可用性。TiDB 的目标是为 OLTP 和 OLAP 场景提供一站式的解决方案。
 
-TiDB 具备如下 NewSQL 核心特性：
+TiDB 具备如下核心特性：
 
-* SQL支持（TiDB 是 MySQL 兼容的）
-* 水平弹性扩展（吞吐可线性扩展）
-* 分布式事务
-* 跨数据中心数据强一致性保证
-* 故障自恢复的高可用
-* 海量数据高并发实时写入与实时查询（HTAP 混合负载）
+- 水平弹性扩展
+
+    通过简单地增加新节点即可实现 TiDB 的水平扩展，无需再担心数据库的计算和存储能力。
+
+- 高度兼容 MySQL
+
+    大多数情况下，无需修改一行代码即可从 MySQL 轻松迁移至 TiDB，而且会一直受益于 MySQL 生态。
+
+- 支持分布式事务
+
+    TiDB 支持 ACID 事务，让数据无论在任何时间、任何地点都安全、准确。
+
+- 云原生 SQL 数据库
+
+    TiDB 是为云而设计的数据库，支持公有云、私有云和混合云，使部署、配置和维护变得十分简单。
+
+- 无需 ETL
+
+    TiDB 的 OLTP/OLAP 混合架构让你无需进行 ETL，从而更快更轻松地为用户创造价值。
+
+- 故障自恢复的高可用
+
+    TiDB 可以让数据和业务始终在线并可用，永远不会让你的用户失望。
 
 TiDB 的设计目标是 100% 的 OLTP 场景和 80% 的 OLAP 场景，更复杂的 OLAP 分析可以通过 [TiSpark 项目](https://github.com/pingcap/docs-cn/blob/master/tispark/tispark-user-guide.md)来完成。
 

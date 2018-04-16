@@ -7,7 +7,7 @@ category: deployment
 
 ## 关于 TiDB
 
-TiDB 是开源分布式 SQL 数据库，结合了传统的 RDBMS 和 NoSQL 的最佳特性。TiDB 兼容 MySQL，支持无限的水平扩展，具备强一致性和高可用性。TiDB 的目标是为在线事务和分析提供一站式的解决方案。
+TiDB 是 PingCAP 公司受 Google [Spanner](http://research.google.com/archive/spanner.html) / [F1](http://research.google.com/pubs/pub41344.html) 论文启发而设计的开源分布式 HTAP 数据库，结合了传统的 RDBMS 和 NoSQL 的最佳特性。TiDB 兼容 MySQL，支持无限的水平扩展，具备强一致性和高可用性。TiDB 的目标是为 OLTP 和 OLAP 场景提供一站式的解决方案。
 
 ## 关于本指南
 
