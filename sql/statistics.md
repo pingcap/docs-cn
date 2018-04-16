@@ -5,7 +5,10 @@ category: user guide
 
 # Introduction to Statistics
 
-Based on the statistics, the TiDB optimizer chooses the most efficient query execution plan. The statistics collect table-level and column-level information. The statistics of a table include the total number of rows and the number of updated rows. The statistics of a column include the number of different values, the number of `NULL`, and the histogram of the column.
+Based on the statistics, the TiDB optimizer chooses the most efficient query execution plan. The statistics collect table-level and column-level information.
+
+- The statistics of a table include the total number of rows and the number of updated rows.
+- The statistics of a column include the number of different values, the number of `NULL`, the histogram, and the Count-Min Sketch of the column.
 
 ## Collect statistics
 
@@ -27,6 +30,8 @@ ANALYZE TABLE TableName INDEX [IndexNameList]
 ### Automatic update
 
 For the `INSERT`, `DELETE`, or `UPDATE` statements, TiDB automatically updates the number of rows and updated rows. TiDB persists this information regularly and the update cycle is 5 * `stats-lease`. The default value of `stats-lease` is `3s`. If you specify the value as `0`, it does not update automatically.
+
+When the query is executed, TiDB collects feedback with the probability of `feedback-probability` and uses it to update the histogram and Count-Min Sketch.
 
 ### Control `ANALYZE` concurrency
 
