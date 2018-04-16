@@ -301,3 +301,30 @@ TiDB 在 MySQL 的 Optimizer Hint 语法上，增加了一些 TiDB 专有的 Hin
 
 ```SELECT /*+ TIDB_HJ(t1, t2) */ * from t1，t2 where t1.id = t2.id```
 提示优化器使用 Hash Join 算法，这个算法多线程并发执行，执行速度较快，但会消耗较多内存。
+
+
+## _tidb_rowid
+
+这个是一个 TiDB 的隐藏列，代表隐式的 ROW ID 的列名，只存在于 PK 非整数或没有 PK 的表上，可以进行增减改查的操作。
+
+SELECT 语句示例：```SELECT *, _tidb_rowid from t;```
+
+INSERT 语句示例：```INSERT t (c, _tidb_rowid) VALUES (1, 1);```
+
+UPDATE 语句示例：```UPDATE t SET c = c + 1 WHERE _tidb_rowid = 1;```
+
+DELETE 语句示例：```DELETE FROM t WHERE _tidb_rowid = 1;```
+
+## SHARD_ROW_ID_BITS
+
+这个 TABLE OPTION 是用来设置隐式 _tidb_rowid 的分片数量的 bit 位数。
+
+对于 PK 非整数或没有 PK 的表，TiDB 会使用一个隐式的自增 rowid，大量 INSERT 时会把数据集中写入单个 region，造成写入热点。
+通过设置 SHARD_ROW_ID_BITS 可以把 rowid 打散写入多个不同的 region，缓解写入热点问题。
+但是设置的过大会造成 RPC 请求数放大，增加 CPU 和网络开销。
+
+`SHARD_ROW_ID_BITS = 4` 代表 16 个分片， `SHARD_ROW_ID_BITS = 6` 表示 64 个分片，`SHARD_ROW_ID_BITS = 0` 就是默认值 1 个分片 。
+
+CREATE TABLE 语句示例: ```CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;```
+
+ALTER TABLE 语句示例： ```ALTER TABLE MODIFY t SHARD_ROW_ID_BITS = 4;```
