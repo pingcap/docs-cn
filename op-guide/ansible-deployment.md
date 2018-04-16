@@ -60,7 +60,7 @@ git clone https://github.com/pingcap/tidb-ansible.git
 
 ## 在中控机器上安装 Ansible 及其依赖
 
-请按以下方式在 CentOS 7 系统的中控机上通过 pip 安装 Ansible  及其相关依赖的指定版本，安装完成后，可通过 `ansible --version` 查看 Ansible 版本。目前 release-1.0 及 release-2.0 版本依赖 Ansible 2.4, master 版本兼容 Ansible 2.4 及 Ansible 2.5 版本, Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中，请按以下方式安装，否则会有兼容问题。
+请按以下方式在 CentOS 7 系统的中控机上通过 pip 安装 Ansible 及其相关依赖的指定版本，安装完成后，可通过 `ansible --version` 查看 Ansible 版本。目前 release-1.0 及 release-2.0 版本依赖 Ansible 2.4，master 版本兼容 Ansible 2.4 及 Ansible 2.5 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中，请按以下方式安装，否则会有兼容问题。
 
   ```bash
   $ sudo yum -y install epel-release
@@ -223,9 +223,9 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | zookeeper_addrs | binlog Kafka 集群的 zookeeper 地址 |
 | enable_slow_query_log | TiDB 慢查询日志记录到单独文件({{ deploy_dir }}/log/tidb_slow_query.log)，默认为 False，记录到 tidb 日志 |
 | deploy_without_tidb | KV 模式，不部署 TiDB 服务，仅部署 PD、TiKV 及监控服务，请将 `inventory.ini` 文件中 tidb_servers 主机组 IP 设置为空。|
-| alertmanager_target | 可选：如果你已单独部署 alertmanager，可配置该变量，格式: alertmanager_host:alertmanager_port |
+| alertmanager_target | 可选：如果你已单独部署 alertmanager，可配置该变量，格式：alertmanager_host:alertmanager_port |
 | grafana_admin_user | Grafana 管理员帐号用户名，默认为 admin |
-| grafana_admin_password | Grafana 管理员帐号密码，默认为 admin, 用于 Ansible 导入 Dashboard 和创建 API Key, 如后期通过 grafana web 修改了密码，请更新此变量 |
+| grafana_admin_password | Grafana 管理员帐号密码，默认为 admin，用于 Ansible 导入 Dashboard 和创建 API Key，如后期通过 grafana web 修改了密码，请更新此变量 |
 
 ## 部署任务
 
@@ -528,7 +528,7 @@ ansible-playbook start.yml
 
 ### 如何安装 Ansible
 
-如果是 CentOS 系统，直接按文章开头的方式安装即可，如果是 Ubuntu 系统, 可按以下方式安装:
+如果是 CentOS 系统，直接按文章开头的方式安装即可，如果是 Ubuntu 系统，可按以下方式安装:
 
 ```bash
 $ sudo apt-get install python-pip curl
@@ -656,7 +656,7 @@ tidb ALL=(ALL) NOPASSWD: ALL
 ### You need to install jmespath prior to running json_query filter 报错
 请参照 [在中控机器上安装 Ansible 及其依赖](#在中控机器上安装-ansible-及其依赖) 在中控机上通过 pip 安装 Ansible 及相关依赖的指定版本，默认已安装 `jmespath`。
 
-CentOS 7 系统可通过以下命令单独安装 `jmespath`:
+CentOS 7 系统可通过以下命令单独安装 `jmespath`：
 
 ```
 $ sudo yum -y install epel-release
@@ -667,7 +667,7 @@ Name: jmespath
 Version: 0.9.0
 ```
 
-在中控机上 python 交互窗口里 `import jmespath`，如果没有报错，表示依赖安装成功，如果有 `ImportError: No module named jmespath` 报错, 表示未安装 python `jmespath` 模块。
+在中控机上 python 交互窗口里 `import jmespath`，如果没有报错，表示依赖安装成功，如果有 `ImportError: No module named jmespath` 报错，表示未安装 python `jmespath` 模块。
 
 ```
 $ python
