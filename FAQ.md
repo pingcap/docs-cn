@@ -283,12 +283,12 @@ If the cluster is deployed using Ansible, you can use the `ansible-playbook stop
 
 #### Can `kill` be executed in TiDB?
 
-- You can `kill` DML statements. First use `show processlist` to find the ID corresponding with the session, and then run `kill id`.
+- You can `kill` DML statements. First use `show processlist` to find the ID corresponding with the session, and then run `kill tidb [session id]`.
 - You can `kill` DDL statements. First use `admin show ddl jobs` to find the ID of the DDL job you need to kill, and then run `admin cancel ddl jobs 'job_id' [, 'job_id'] ...`. For more details, see the [`ADMIN` statement](sql/admin.md#admin-statement).
 
 #### Does TiDB support session timeout?
 
-Currently, TiDB does not support session timeout in the database level. If you want to implement session timeout, use the session ID started by side records in the absence of LB (Load Balancing), and customize the session timeout on the application. After timeout, kill SQL using `kill id` on the node that starts the query. It is currently recommended to implement session timeout using applications. When the timeout time is reached, the application layer reports an exception and continues to execute subsequent program segments.
+Currently, TiDB does not support session timeout in the database level. If you want to implement session timeout, use the session ID started by side records in the absence of LB (Load Balancing), and customize the session timeout on the application. After timeout, kill SQL using `kill tidb [session id]` on the node that starts the query. It is currently recommended to implement session timeout using applications. When the timeout time is reached, the application layer reports an exception and continues to execute subsequent program segments.
 
 #### What is the TiDB version management strategy for production environment? How to avoid frequent upgrade?
 
