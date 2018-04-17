@@ -17,6 +17,7 @@ Data manipulation language (DML) is a family of syntax elements used for selecti
 SELECT
   [ALL | DISTINCT | DISTINCTROW ]
     [HIGH_PRIORITY]
+    [STRAIGHT_JOIN]
     [SQL_CACHE | SQL_NO_CACHE] [SQL_CALC_FOUND_ROWS]
   select_expr [, select_expr ...]
   [FROM table_references
@@ -29,14 +30,15 @@ SELECT
   [LIMIT {[offset,] row_count | row_count OFFSET offset}]
   [FOR UPDATE | LOCK IN SHARE MODE]]
 ```
- 
-### Description of the syntax elements 
+
+### Description of the syntax elements
 
 |Syntax Element|Description|
 | --------------------- | -------------------------------------------------- |
 |`ALL`, `DISTINCT`, `DISTINCTROW` | The `ALL`, `DISTINCT`/`DISTINCTROW` modifiers specify whether duplicate rows should be returned. ALL (the default) specifies that all matching rows should be returned.|
 |`HIGH_PRIORITY` | `HIGH_PRIORITY` gives the current statement higher priority than other statements. |
 |`SQL_CACHE`, `SQL_NO_CACHE`, `SQL_CALC_FOUND_ROWS` | To guarantee compatibility with MySQL, TiDB parses these three modifiers, but will ignore them.|
+| `STRAIGHT_JOIN` | `STRAIGHT_JOIN` forces the optimizer to execute a Join query in the order of the tables used in the `FROM` clause. You can use this syntax to speed up queries execution when the Join order chosen by the optimizer is not good. |
 |`select_expr` | Each `select_expr` indicates a column to retrieve. including the column names and expressions. `\*` represents all the columns.|
 \|`FROM table_references` | The `FROM table_references` clause indicates the table (such as `(select * from t;)`) , or tables(such as `select * from t1 join t2;)') or even 0 tables (such as `select 1+1 from dual;` (which is equivalent to `select 1+1;')) from which to retrieve rows.|
 |`WHERE where_condition` | The `WHERE` clause, if given, indicates the condition or conditions that rows must satisfy to be selected. The result contains only the data that meets the condition(s).|
