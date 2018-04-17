@@ -52,23 +52,6 @@ Before you start, make sure that you have:
     - The Control Machine must have access to the Internet in order to download TiDB and related packages.
     - Configure mutual trust of `ssh authorized_key`. In the Control Machine, you can login to the deployment target machine using `tidb` user account without a password. See [How to configure SSH mutual trust and sudo without password](#how-to-configure-ssh-mutual-trust-and-sudo-without-password).
 
-## Install Ansible and dependencies in the Control Machine
-
-Use the following method to install Ansible on the Control Machine of CentOS 7 system. Installation from the EPEL source includes Ansible dependencies automatically (such as `Jinja2==2.7.2 MarkupSafe==0.11`). After installation, you can view the version using `ansible --version`.
-
-> **Note:** Make sure that the Ansible version is **Ansible 2.4** or later, otherwise a compatibility issue occurs.
-
-```bash
-  # yum install epel-release
-  # yum install ansible curl python2-jmespath
-  # ansible --version
-    ansible 2.4.2.0
-```
-
-For other systems, see [Install Ansible](ansible-deployment.md#install-ansible).
-
-> **Note:** Make sure that the Python `jmespath` module (0.9.0 or later) is installed on the Control Machine. See [Error: You need to install jmespath prior to running json_query filter](#error-you-need-to-install-jmespath-prior-to-running-json_query-filter).
-
 ## Download TiDB-Ansible to the Control Machine
 
 Login to the Control Machine using the `tidb` user account and enter the `/home/tidb` directory. Use the following command to download the corresponding version of TiDB-Ansible from GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`. The following are examples of downloading various versions, and you can turn to the official team for advice on which version to choose.
@@ -92,6 +75,23 @@ Download the master version:
 ```
 git clone https://github.com/pingcap/tidb-ansible.git
 ```
+
+## Install Ansible and dependencies in the Control Machine
+
+Use `pip` to install Ansible and dependencies on the Control Machine of CentOS 7 system. After installation, you can use `ansible --version` to view the Ansible version. Currently releases-1.0 and release-2.0 depend on Ansible 2.4, while the master version is compatible with Ansible 2.4 and Ansible 2.5.
+
+Ansible and related dependencies are recorded in the `tidb-ansible/requirements.txt` file. Install Ansible and dependencies as follows, otherwise compatibility issue occurs.
+
+```bash
+$ sudo yum -y install epel-release
+$ sudo yum -y install python-pip curl
+$ cd tidb-ansible
+$ sudo pip install -r ./requirements.txt
+$ ansible --version
+  ansible 2.5.0
+```
+
+For other systems, see [Install Ansible](ansible-deployment.md#install-ansible).
 
 ## Orchestrate the TiDB cluster
 
@@ -253,6 +253,9 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | zookeeper_addrs | the zookeeper address of the binlog Kafka cluster |
 | enable_slow_query_log | to record the slow query log of TiDB into a single file: ({{ deploy_dir }}/log/tidb_slow_query.log). False by default, to record it into the TiDB log |
 | deploy_without_tidb | the Key-Value mode, deploy only PD, TiKV and the monitoring service, not TiDB; set the IP of the tidb_servers host group to null in the `inventory.ini` file |
+| alertmanager_target | optional: If you have deployed `alertmanager` separately, you can configure this variable using the `alertmanager_host:alertmanager_port` format |
+| grafana_admin_user | the username of Grafana administrator; default `admin` |
+| grafana_admin_password | the password of Grafana administrator account; default `admin`; used to import Dashboard and create the API key using Ansible; update this variable after you modify it through Grafana web |
 
 ## Deploy the TiDB cluster
 
@@ -435,6 +438,7 @@ Edit the `inventory.ini` file and add the following host variable after the IP o
 | Pushgateway   | pushgateway_port   | 9091         | the aggregation and report port for TiDB, TiKV, and PD monitor |
 | node_exporter | node_exporter_port | 9100         | the communication port to report the system information of every TiDB cluster node |
 | Grafana       | grafana_port       | 3000         | the port for the external Web monitoring service and client (Browser) access |
+| Grafana | grafana_collector_port | 8686 | the grafana_collector communication port, used to export Dashboard as the PDF format |
 
 ### How to customize the deployment directory?
 
@@ -572,15 +576,13 @@ ansible-playbook start.yml
 #### How to install Ansible?
 
 - For the CentOS system, install Ansible following the method described at the beginning of this document.
-- For the Ubuntu system, install Ansible using PPA source:
+- For the Ubuntu system, install Ansible as follows:
 
     ```bash
-    sudo add-apt-repository ppa:ansible/ansible
-    sudo apt-get update
-    sudo apt-get install ansible
+    $ sudo apt-get install python-pip curl
+    $ cd tidb-ansible
+    $ sudo pip install -r ./requirements.txt
     ```
-
-- For other systems, see the [official Ansible document](http://docs.ansible.com/ansible/intro_installation.html).
 
 ### Mount the data disk ext4 filesystem with options
 
@@ -704,12 +706,17 @@ After you login to the deployment target machine using the `tidb` user, run the 
 
 ### Error: You need to install jmespath prior to running json_query filter
 
-See [Install Ansible and dependencies in the Control Machine](#install-ansible-and-dependencies-in-the-control-machine) and install Ansible 2.4 in the Control Machine. The `python2-jmespath` dependent package is installed by default.
+See [Install Ansible and dependencies in the Control Machine](#install-ansible-and-dependencies-in-the-control-machine) and use `pip` to install Ansible and the related specific dependencies in the Control Machine. The `jmespath` dependent package is installed by default.
 
-For the CentOS 7 system, you can install `jmespath` using the following command:
+For the CentOS 7 system, you can install `jmespath` separately using the following command:
 
 ```
-sudo yum install python2-jmespath
+$ sudo yum -y install epel-release
+$ sudo yum -y install python-pip
+$ sudo pip install jmespath
+$ pip show jmespath
+Name: jmespath
+Version: 0.9.0
 ```
 
 Enter `import jmespath` in the Python interactive window of the Control Machine.
@@ -725,18 +732,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> import jmespath
 ```
 
-If `import jmespath` still reports an error after the `python2-jmespath` package is installed, install the Python `jmespath` module using pip:
-
-```
-$ sudo yum -y install epel-release
-$ sudo yum -y install python-pip
-$ sudo pip install jmespath
-$ pip show jmespath
-Name: jmespath
-Version: 0.9.0
-```
-
-For the Ubuntu system, you can install the Python `jmespath` module using the following command:
+For the Ubuntu system, you can install `jmespath` separately using the following command:
 
 ```
 $ sudo apt-get install python-pip
