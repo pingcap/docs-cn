@@ -21,10 +21,14 @@ TiDB 实现了其中的两种：读已提交和可重复读。
 
 TiDB 使用[percolator事务模型](https://research.google.com/pubs/pub36726.html)，当事务启动时会获取全局读时间戳，事务提交时也会获取全局提交时间戳，并以此确定事务的执行顺序，如果想了解 TiDB 事务模型的实现可以详细阅读以下两篇文章：[TiKV 的 MVCC（Multi-Version Concurrency Control）机制](https://pingcap.com/blog-cn/mvcc-in-tikv/)，[Percolator 和 TiDB 事务算法](https://pingcap.com/blog-cn/percolator-and-txn/)。
 
-可以通过以下命令设置事务的隔离级别：
+可以通过以下命令设置 session 或者 global 的事务的隔离级别：
 
-```SET SESSION TRANSACTION ISOLATION LEVEL [read committed|repeatable read]```
+```SET [SESSION | GLOBAL] TRANSACTION ISOLATION LEVEL [read committed|repeatable read]```
 
+
+如果不使用 session 或者 global 关键字，这条语句只会对下一个执行的事务生效，不会对整个会话或者全局生效。
+
+```SET TRANSACTION ISOLATION LEVEL [read committed|repeatable read]```
 
 ## 可重复读
 
@@ -73,3 +77,27 @@ MySQL 的可重复读隔离级别并非 snapshot 隔离级别，MySQL 可重复�
 retry-limit = 10
 ```
 
+## 语句回滚
+
+在事务内部执行一个语句，遇到错误时，该语句不会生效。
+
+```
+begin;
+insert into test values (1);
+insert into tset values (2);  // tset 拼写错了，这条语句出错。
+insert into test values (3);
+commit;
+```
+
+上面的例子里面，第二个语句失败，其它插入 1 和 3 仍然能正常提交。
+
+
+```
+begin;
+insert into test values (1);
+insert into tset values (2);  // tset 拼写错了，这条语句出错。
+insert into test values (3);
+rollback;
+```
+
+这个例子中，第二个语句失败，最后由于调用了 rollback，事务不会将任何数据写入数据库。
