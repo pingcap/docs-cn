@@ -37,40 +37,41 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
     - 该机器需开放外网访问，用于下载 TiDB 及相关软件安装包。
     - 配置 ssh authorized_key 互信，在中控机上可以使用 `tidb` 用户免密码 ssh 登录到部署目标机器，可参考[如何配置 ssh 互信及 sudo 免密码](#如何配置-ssh-互信及-sudo-免密码)。
 
-## 在中控机器上安装 Ansible 及其依赖
-
-请按以下方式在 CentOS 7 系统的中控机上安装 Ansible。 通过 epel 源安装， 会自动安装 Ansible 相关依赖(如 Jinja2==2.7.2 MarkupSafe==0.11)，安装完成后，可通过 `ansible --version` 查看版本，请务必确认是 **Ansible 2.4** 及以上版本，否则会有兼容问题。
-
-  ```bash
-  # yum install epel-release
-  # yum install ansible curl python2-jmespath
-  # ansible --version
-    ansible 2.4.2.0
-  ```
-
-> 其他系统可参考 [如何安装 Ansible](#如何安装-ansible)。
-
-确认中控机上已安装 Python `jmespath` 模块(0.9.0 或以上版本)，可参考 [You need to install jmespath prior to running json_query filter 报错](#you-need-to-install-jmespath-prior-to-running-json_query-filter-报错)。
-
 ## 在中控机器上下载 TiDB-Ansible
 
-以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录，使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`。
+以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录，使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`，以下为各版本下载示例，版本选择可以咨询官方。
 
-下载 GA 版本：
+下载 1.0 GA 版本：
 ```
-cd /home/tidb
 git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
+```
+
+下载 2.0 版本：
+```
+git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
 ```
 
 或
 
 下载 master 版本：
 ```
-cd /home/tidb
 git clone https://github.com/pingcap/tidb-ansible.git
 ```
 
-> **注：** 生产环境请下载 GA 版本部署 TiDB。
+## 在中控机器上安装 Ansible 及其依赖
+
+请按以下方式在 CentOS 7 系统的中控机上通过 pip 安装 Ansible 及其相关依赖的指定版本，安装完成后，可通过 `ansible --version` 查看 Ansible 版本。目前 release-1.0 及 release-2.0 版本依赖 Ansible 2.4，master 版本兼容 Ansible 2.4 及 Ansible 2.5 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中，请按以下方式安装，否则会有兼容问题。
+
+  ```bash
+  $ sudo yum -y install epel-release
+  $ sudo yum -y install python-pip curl
+  $ cd tidb-ansible
+  $ sudo pip install -r ./requirements.txt
+  $ ansible --version
+    ansible 2.5.0
+  ```
+
+> 其他系统可参考 [如何安装 Ansible](#如何安装-ansible)。
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
@@ -207,8 +208,8 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 
 > **注：** 以下控制变量开启请使用首字母大写 `True`，关闭请使用首字母大写 `False`。
 
-| 变量 | 含义 |
-| ---- | ------- |
+| 变量            | 含义                                                        |
+| --------------- | ---------------------------------------------------------- |
 | cluster_name | 集群名称，可调整 |
 | tidb_version | TiDB 版本，TiDB-Ansible 各分支默认已配置 |
 | deployment_method | 部署方式，默认为 binary，可选 docker |
@@ -220,8 +221,11 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | set_hostname | 根据 IP 修改部署目标机器主机名，默认为 False |
 | enable_binlog | 是否部署 pump 并开启 binlog，默认为 False，依赖 Kafka 集群，参见 `zookeeper_addrs` 变量 |
 | zookeeper_addrs | binlog Kafka 集群的 zookeeper 地址 |
-| enable_slow_query_log | TiDB 慢查询日志记录到单独文件({{ deploy_dir }}/log/tidb_slow_query.log)，默认为 False，记录到 tidb 日志
+| enable_slow_query_log | TiDB 慢查询日志记录到单独文件({{ deploy_dir }}/log/tidb_slow_query.log)，默认为 False，记录到 tidb 日志 |
 | deploy_without_tidb | KV 模式，不部署 TiDB 服务，仅部署 PD、TiKV 及监控服务，请将 `inventory.ini` 文件中 tidb_servers 主机组 IP 设置为空。|
+| alertmanager_target | 可选：如果你已单独部署 alertmanager，可配置该变量，格式：alertmanager_host:alertmanager_port |
+| grafana_admin_user | Grafana 管理员帐号用户名，默认为 admin |
+| grafana_admin_password | Grafana 管理员帐号密码，默认为 admin，用于 Ansible 导入 Dashboard 和创建 API Key，如后期通过 grafana web 修改了密码，请更新此变量 |
 
 ## 部署任务
 
@@ -273,8 +277,6 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
     ```
     ansible-playbook start.yml
     ```
-
-> 如希望使用 root 用户远程连接部署，请参考[使用 root 用户远程连接 TiDB Ansible 部署方案](https://github.com/pingcap/docs-cn/blob/master/op-guide/root-ansible-deployment.md)，不推荐使用该方式部署。
 
 ## 测试集群
 
@@ -387,7 +389,8 @@ git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
 | prometheus | prometheus_port | 9090 | Prometheus 服务通信端口  |
 | pushgateway | pushgateway_port | 9091 | TiDB, TiKV, PD 监控聚合和上报端口 |
 | node_exporter | node_exporter_port | 9100 | TiDB 集群每个节点的系统信息上报通信端口 |
-| grafana | grafana_port|  3000 | Web 监控服务对外服务和客户端(浏览器)访问端口 |
+| grafana | grafana_port |  3000 | Web 监控服务对外服务和客户端(浏览器)访问端口 |
+| grafana | grafana_collector_port |  8686 | grafana_collector 通信端口，用于将 Dashboard 导出为 PDF 格式 |
 
 ### 如何自定义部署目录
 
@@ -525,15 +528,13 @@ ansible-playbook start.yml
 
 ### 如何安装 Ansible
 
-如果是 CentOS 系统，直接按文章开头的方式安装即可，如果是 Ubuntu 系统, 可通过 PPA 源安装：
+如果是 CentOS 系统，直接按文章开头的方式安装即可，如果是 Ubuntu 系统，可按以下方式安装:
 
 ```bash
-sudo add-apt-repository ppa:ansible/ansible
-sudo apt-get update
-sudo apt-get install ansible
+$ sudo apt-get install python-pip curl
+$ cd tidb-ansible
+$ sudo pip install -r ./requirements.txt
 ```
-
-其他系统可按照 [官方手册](http://docs.ansible.com/ansible/intro_installation.html) 安装 Ansible。
 
 ### 数据盘 ext4 文件系统挂载参数
 
@@ -653,23 +654,9 @@ tidb ALL=(ALL) NOPASSWD: ALL
 ```
 
 ### You need to install jmespath prior to running json_query filter 报错
-请参考 [在中控机器上安装 Ansible 及其依赖](#在中控机器上安装-ansible-及其依赖) 在中控机上安装 Ansible 2.4 版本，默认会安装 `python2-jmespath` 依赖包。CentOS 7 系统可通过以下命令单独安装：
+请参照 [在中控机器上安装 Ansible 及其依赖](#在中控机器上安装-ansible-及其依赖) 在中控机上通过 pip 安装 Ansible 及相关依赖的指定版本，默认已安装 `jmespath`。
 
-```
-sudo yum install python2-jmespath
-```
-
-在中控机上 python 交互窗口里 `import jmespath`，如果没有报错，表示依赖安装成功，如果有 `ImportError: No module named jmespath` 报错, 表示未安装 python `jmespath` 模块。
-
-```
-$ python
-Python 2.7.5 (default, Nov  6 2016, 00:28:07)
-[GCC 4.8.5 20150623 (Red Hat 4.8.5-11)] on linux2
-Type "help", "copyright", "credits" or "license" for more information.
->>> import jmespath
-```
-
-如果安装 `python2-jmespath` 包后 `import jmespath` 仍然报错，请通过 pip 来安装 python `jmespath` 模块。
+CentOS 7 系统可通过以下命令单独安装 `jmespath`：
 
 ```
 $ sudo yum -y install epel-release
@@ -680,9 +667,31 @@ Name: jmespath
 Version: 0.9.0
 ```
 
-Ubuntu 系统可使用以下命令安装：
+在中控机上 python 交互窗口里 `import jmespath`，如果没有报错，表示依赖安装成功，如果有 `ImportError: No module named jmespath` 报错，表示未安装 python `jmespath` 模块。
+
+```
+$ python
+Python 2.7.5 (default, Nov  6 2016, 00:28:07)
+[GCC 4.8.5 20150623 (Red Hat 4.8.5-11)] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import jmespath
+```
+
+Ubuntu 系统可使用以下命令单独安装 `jmespath`：
 
 ```
 $ sudo apt-get install python-pip
 $ sudo pip install jmespath
+```
+
+#### 启动 Pump/Drainer 报 `zk: node does not exist` 错误
+
+请检查 `inventory.ini` 里的 `zookeeper_addrs` 参数配置与 Kafka 集群内的配置是否相同、是否填写了命名空间。关于命名空间的配置说明如下：
+
+```
+# ZooKeeper connection string (see ZooKeeper docs for details).
+# ZooKeeper address of Kafka cluster, example:
+# zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
+# You can also append an optional chroot string to the URLs to specify the root directory for all Kafka znodes. Example:
+# zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181/kafka/123"
 ```

@@ -70,7 +70,7 @@ DECIMAL 列不允许插入大于列定义的隐含范围的值. 例如, DECIMAL(
 向一个数值类型列插入数据的具体行为会受到 SQL 模式的影响。接下来的讨论将围绕严格模式以及 `ERROR_FOR_DIVISION_BY_ZERO` 模式展开，如果要打开所有的限制，可以简单的使用 `TRADITIONAL` 模式，这个模式将同时使用严格模式以及 `ERROR_FOR_DIVISION_BY_ZERO`  模式：
 
 ```sql
-SET sql_mode = 'TRADITIONAL`;
+SET sql_mode = 'TRADITIONAL';
 ```
 
 向一个具有精确值类型（`DECIMAL` 或者整数类型）的列插入数据时，如果插入的数据位于该列的值域范围内将使用该数据的精确值。如果该数据的小数部分太长，将会发生数值修约，这时会有 warning 产生，具体内容可以看"数值修约"。

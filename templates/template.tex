@@ -13,7 +13,7 @@ $endif$
 \usepackage{fixltx2e} % provides \textsubscript
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
-  \usepackage[utf8]{inputenc}
+  \usepackage[utf8x]{inputenc}
 $if(euro)$
   \usepackage{eurosym}
 $endif$
@@ -92,7 +92,7 @@ $if(tables)$
 \usepackage{longtable,booktabs}
 $endif$
 $if(graphics)$
-\usepackage{graphicx}
+\usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
 \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
@@ -104,7 +104,7 @@ $if(graphics)$
 $endif$
 \ifxetex
   \usepackage[setpagesize=false, % page size defined by xetex
-              unicode=false, % unicode breaks when used with xetex
+              unicode=true, % unicode breaks when used with xetex
               xetex]{hyperref}
 \else
   \usepackage[unicode=true]{hyperref}
@@ -209,6 +209,57 @@ $endfor$
 \backgroundsetup{contents=\includegraphics{media/pingcap-logo},
   placement=top,scale=0.2,hshift=1000pt,vshift=-150pt,
   opacity=0.9,angle=0}
+
+
+
+  %
+  % line spacing
+  %
+  $if(linestretch)$
+  $else$
+  \usepackage{setspace}
+  \setstretch{1.2}
+  $endif$
+
+  %
+% colors
+%
+% $if(colorlinks)$
+% $else$
+% \usepackage[dvipsnames,svgnames*,x11names*,table]{xcolor}
+% $endif$
+
+%
+% listing colors
+%
+
+%\definecolor{listing-background}{rgb}{0.97,0.97,0.97}
+%\definecolor{listing-rule}{HTML}{B3B2B3}
+%\definecolor{listing-numbers}{HTML}{B3B2B3}
+%\definecolor{listing-text-color}{HTML}{000000}
+%\definecolor{listing-keyword}{HTML}{D8006B}
+%\definecolor{listing-identifier}{HTML}{000000}
+%\definecolor{listing-string}{HTML}{006CA9}
+%\definecolor{listing-comment}{rgb}{0.25,0.5,0.35}
+%\definecolor{listing-javadoc-comment}{HTML}{006CA9}
+
+
+$if(mainfont)$
+$else$
+\usepackage[default]{sourcesanspro}
+\usepackage{sourcecodepro}
+$endif$
+
+
+
+
+%
+% remove paragraph indention
+%
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+
 
 % avoid level-4, 5 heading to be connected with following content
 % https://github.com/jgm/pandoc/issues/1658

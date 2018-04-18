@@ -69,6 +69,7 @@
   - [TiDB 事务隔离级别](sql/transaction-isolation.md)
   - [错误码与故障诊断](sql/error.md)
   - [与 MySQL 兼容性对比](sql/mysql-compatibility.md)
+  - [TiDB 内存控制](sql/tidb-memory-control.md)
   + 高级功能
     - [历史数据回溯](op-guide/history-read.md)
 + TiDB 运维文档
@@ -81,6 +82,7 @@
     - [跨机房部署方案](op-guide/location-awareness.md)
   + 配置集群
     - [参数解释](op-guide/configuration.md)
+    - [TiDB 配置项解释](op-guide/tidb-config-file.md)
     - [开启 TLS 验证](op-guide/security.md)
     - [生成自签名证书](op-guide/generate-self-signed-certificates.md)
   + 监控集群
@@ -110,20 +112,35 @@
   - [TiSpark 用户指南](tispark/tispark-user-guide.md)
 - [常见问题与解答(FAQ)](FAQ.md)
 - [最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
-- [版本发布历史](releases/README.md)
-- [TiDB 路线图](https://github.com/pingcap/docs-cn/blob/master/ROADMAP.md)
++ [版本发布历史](releases/rn.md)
+  - [2.0 RC5](releases/2rc5.md)
+  - [2.0 RC4](releases/2rc4.md)
+  - [2.0 RC3](releases/2rc3.md)
+  - [2.0 RC1](releases/2rc1.md)
+  - [1.1 Beta](releases/11beta.md)
+  - [1.1 Alpha](releases/11alpha.md)
+  - [1.0](releases/ga.md)
+  - [Pre-GA](releases/prega.md)
+  - [RC4](releases/rc4.md)
+  - [RC3](releases/rc3.md)
+  - [RC2](releases/rc2.md)
+  - [RC1](releases/rc1.md)
+- [TiDB 路线图](ROADMAP.md)
 + 用户案例
+  - [北京银行](http://t.cn/RnY8fGn)
   - [海航](http://t.cn/REXx0Qe)
   - [今日头条](http://t.cn/RnLfEMf)
   - [Mobike](http://t.cn/RT8FbP6)
+  - [饿了么](http://t.cn/RnsqFT6)
   - [易果生鲜](http://t.cn/RTYVhzH)
+  - [同程旅游](http://t.cn/RmXeNKR)
+  - [去哪儿](http://t.cn/RTKnsL7)
+  - [G7](http://t.cn/RQVePoX)
   - [一面数据](http://t.cn/RT9r5di)
   - [凤凰网](http://t.cn/RHRQfNT)
   - [猿辅导](http://t.cn/RTKnKSX)
   - [二维火](http://t.cn/R8bXM2f)
   - [Ping++](http://t.cn/RE5xYKn)
-  - [去哪儿](http://t.cn/RTKnsL7)
-  - [G7](http://t.cn/RQVePoX)
   - [乐视云](http://t.cn/Rnv3IVs)
   - [零氪科技](http://t.cn/REj7tSv)
   - [盖娅互娱](http://t.cn/RT9r7hx)
@@ -208,4 +225,4 @@ TiKV Server 负责存储数据，从外部看 TiKV 是一个分布式的提供�
 
 +   TiKV
 
-    TiKV 是一个集群，通过 Raft 协议保持数据的一致性（副本数量可配置，默认保存三副本），并通过 PD 做负载均衡调度。单个节点失效时，会影响这个节点上存储的所有 Region。对于 Region 中的 Leader 节点，会中断服务，等待重新选举；对于 Region 中的 Follower 节点，不会影响服务。当某个 TiKV 节点失效，并且在一段时间内（默认 10 分钟）无法恢复，PD 会将其上的数据迁移到其他的 TiKV 节点上。
+    TiKV 是一个集群，通过 Raft 协议保持数据的一致性（副本数量可配置，默认保存三副本），并通过 PD 做负载均衡调度。单个节点失效时，会影响这个节点上存储的所有 Region。对于 Region 中的 Leader 节点，会中断服务，等待重新选举；对于 Region 中的 Follower 节点，不会影响服务。当某个 TiKV 节点失效，并且在一段时间内（默认 30 分钟）无法恢复，PD 会将其上的数据迁移到其他的 TiKV 节点上。
