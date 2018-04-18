@@ -36,7 +36,7 @@ mysql> select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb;
 10 rows in set (0.02 sec)
 ```
 
-其中， `tikv_gc_run_interval` ， `tikv_gc_life_time` ， `tikv_gc_concurrency` 这三条记录可以手动配置，其余带有 `tikv_gc` 前缀的记录为当前运行状态的记录，不要手动修改它们。
+其中， `tikv_gc_run_interval` ， `tikv_gc_life_time` ， `tikv_gc_concurrency` 这三条记录可以手动配置。其余带有 `tikv_gc` 前缀的记录为当前运行状态的记录， TiDB 会自动更新这些记录，请不要手动修改它们。
 
 `tikv_gc_run_interval` 是 GC 运行时间间隔。 `tikv_gc_life_time` 是历史版本的保留时间，每次进行 GC 时，会清理超过该时间的历史数据。这两项配置不应低于 10 分钟，默认值均为 10 分钟。可以直接用 SQL 修改其数值来进行配置。比如，如果我们想保留一天以内的历史数据，就可以执行：
 
