@@ -29,7 +29,7 @@ TiDB 使用 MVCC 管理版本，当更新/删除数据时，不会做真正的�
 
 我们使用周期性运行的 GC （Garbage Collection， 垃圾回收）来进行清理，关于 GC 的详细介绍清参阅 [TiDB 垃圾回收 (GC)](gc.md)
 
-这里我们需要重点关注的是 `tikv_gc_life_time` 和 `tikv_gc_safe_point` 这条。 `tikv_gc_life_time` 用于配置历史版本保留时间，可以手动修改； `tikv_gc_safe_point` 记录了当前的 safePoint，用户可以安全地使用大于 safePoint 的时间戳创建 snapshot 读取历史版本。safePoint 在每次 GC 开始运行时自动更新。
+这里我们需要重点关注的是 `tikv_gc_life_time` 和 `tikv_gc_safe_point` 这条。`tikv_gc_life_time` 用于配置历史版本保留时间，可以手动修改；`tikv_gc_safe_point` 记录了当前的 safePoint，用户可以安全地使用大于 safePoint 的时间戳创建 snapshot 读取历史版本。safePoint 在每次 GC 开始运行时自动更新。
 
 ## 示例
 
