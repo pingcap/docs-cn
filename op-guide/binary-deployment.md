@@ -363,7 +363,7 @@ tar -xzf pushgateway-0.3.1.linux-amd64.tar.gz
 ### 在 node1，node2，node3，node4 启动 `node_exporter`：
 
 ```
-$cd node_exporter-0.14.0-rc.1.linux-amd64
+$cd node_exporter-0.14.0-rc.2.linux-amd64
 
 #启动 node_exporter 服务
 ./node_exporter --web.listen-address=":9100" \
@@ -429,7 +429,7 @@ scrape_configs:
 ### 在 node1 启动 Grafana:
 
 ```
-cd grafana-4.1.2-1486989747.linux-x64
+cd grafana-4.1.2-1486989747
 
 #编辑配置文件
 
