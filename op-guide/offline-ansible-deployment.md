@@ -19,39 +19,59 @@ category: deployment
 
 ## 在中控机器上离线安装 Ansible 及其依赖
 
-1.  CentOS 7 系统 Ansible 离线安装方式：
+以下是 CentOS 7 系统 Ansible 离线安装方式：
 
-    > 下载 [ Ansible 2.4.2 ](https://download.pingcap.org/ansible-2.4.2-rpms.el7.tar.gz) 离线安装包 ，上传至中控机。
+1.  离线安装 pip :
+    > 下载 [ pip 离线安装包 ](https://download.pingcap.org/pip-rpms.el7.tar.gz), 上传至中控机。
 
     ```bash
-    # tar -xzvf ansible-2.4.2-rpms.el7.tar.gz
+    # tar -xzvf pip-rpms.el7.tar.gz
+    # cd pip-rpms.el7
+    # chmod u+x install_pip.sh
+    # ./install_pip.sh
+    ```
 
-    # cd ansible-2.4-rpms.el7
+    安装完成后，可通过 `pip -V` 验证 pip 是否安装成功：
 
-    # chmod u+x install_ansible.sh
+    ```bash
+    # pip -V
+     pip 8.1.2 from /usr/lib/python2.7/site-packages (python 2.7)
+    ```
 
+2.  离线安装 Ansible 及其依赖：
+
+    目前 release-1.0 版本依赖 Ansible 2.4，release-2.0 及 master 版本兼容 Ansible 2.4 及 Ansible 2.5 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中，请下载对应版本离线安装包上传至中控机。
+
+    > 下载 [Ansible 2.4 离线安装包](https://download.pingcap.org/ansible-2.4.2-pip.tar.gz)
+    > 下载 [Ansible 2.5 离线安装包](https://download.pingcap.org/ansible-2.5.0-pip.tar.gz)
+
+    下面以安装 Ansible 2.5 为例，Ansible 2.4 安装方式与之一致：
+
+    ```
+    # tar -xzvf ansible-2.5.0-pip.tar.gz
+    # cd ansible-2.5.0-pip/
+    # chmod install_ansible.sh
     # ./install_ansible.sh
     ```
 
-2.  安装完成后，可通过 `ansible --version` 查看版本：
+    安装完成后，可通过 `ansible --version` 查看版本：
 
     ```bash
     # ansible --version
-     ansible 2.4.2.0
+     ansible 2.5.0
     ```
 
 ## 在下载机上下载 TiDB-Ansible 及 TiDB 安装包
 
 1.  在下载机上安装 Ansible
 
-    请按以下方式在 CentOS 7 系统的下载机上在线安装 Ansible。 通过 epel 源安装， 会自动安装 Ansible 相关依赖(如 Jinja2==2.7.2 MarkupSafe==0.11)，安装完成后，可通过 `ansible --version` 查看版本，请务必确认是 **Ansible 2.4** 及以上版本，否则会有兼容问题。
+    请按以下方式在 CentOS 7 系统的下载机上在线安装 Ansible。安装完成后，可通过 `ansible --version` 查看版本，请务必确认是 **Ansible 2.4** 及以上版本，否则会有兼容问题。
 
     ```bash
     # yum install epel-release
     # yum install ansible curl
-    # ansible --version
-     
-     ansible 2.4.2.0
+    # ansible --version   
+      ansible 2.4.2.0
     ```
 
 2.  下载 tidb-ansible

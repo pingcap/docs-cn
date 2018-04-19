@@ -60,7 +60,7 @@ git clone https://github.com/pingcap/tidb-ansible.git
 
 ## 在中控机器上安装 Ansible 及其依赖
 
-请按以下方式在 CentOS 7 系统的中控机上通过 pip 安装 Ansible 及其相关依赖的指定版本，安装完成后，可通过 `ansible --version` 查看 Ansible 版本。目前 release-1.0 及 release-2.0 版本依赖 Ansible 2.4，master 版本兼容 Ansible 2.4 及 Ansible 2.5 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中，请按以下方式安装，否则会有兼容问题。
+请按以下方式在 CentOS 7 系统的中控机上通过 pip 安装 Ansible 及其相关依赖的指定版本，安装完成后，可通过 `ansible --version` 查看 Ansible 版本。目前 release-1.0 版本依赖 Ansible 2.4，release-2.0 及 master 版本兼容 Ansible 2.4 及 Ansible 2.5 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中，请按以下方式安装，否则会有兼容问题。
 
   ```bash
   $ sudo yum -y install epel-release
@@ -212,7 +212,6 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | --------------- | ---------------------------------------------------------- |
 | cluster_name | 集群名称，可调整 |
 | tidb_version | TiDB 版本，TiDB-Ansible 各分支默认已配置 |
-| deployment_method | 部署方式，默认为 binary，可选 docker |
 | process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
 | timezone | 修改部署目标机器时区，默认为 `Asia/Shanghai`，可调整，与  `set_timezone` 变量结合使用 |
 | set_timezone | 默认为 True，即修改部署目标机器时区，关闭可修改为 False |
@@ -235,11 +234,6 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 
     ```ini
     ## Connection
-    # ssh via root:
-    # ansible_user = root
-    # ansible_become = true
-    # ansible_become_user = tidb
-
     # ssh via normal user
     ansible_user = tidb
     ```
@@ -488,28 +482,6 @@ $ ansible-playbook -i hosts.ini deploy_ntp.yml -k
 $ sudo yum install ntp ntpdate
 $ sudo systemctl start ntpd.service
 ```
-
-### 如何使用 Docker 方式部署 TiDB
-
-- 中控机及部署目标机器需要已安装好 Docker，`inventory.ini` 中的普通用户（如 `ansible_user = tidb`）需要有 sudo 权限及 [docker 运行权限](https://docs.docker.com/engine/installation/linux/linux-postinstall/)。
-
-- 中控机及部署目标机器需要已安装 `docker-py` 模块:
-
-    ```
-    sudo pip install docker-py
-    ```
-
-- 修改 `inventory.ini` 如下：
-
-    ```
-    # deployment methods, [binary, docker]
-    deployment_method = docker
-
-    # process supervision, [systemd, supervise]
-    process_supervision = systemd
-    ```
-
-安装过程与 binary 安装方式一致。
 
 ### 如何调整进程监管方式从 supervise 到 systemd
 
