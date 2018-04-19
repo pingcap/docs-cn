@@ -20,10 +20,16 @@ TiDB offers two transaction isolation levels: Read Committed and Repeatable Read
 
 TiDB uses the [Percolator transaction model](https://research.google.com/pubs/pub36726.html). A global read timestamp is obtained when the transaction is started, and a global commit timestamp is obtained when the transaction is committed. The execution order of transactions is confirmed based on the timestamps. To know more about the implementation of TiDB transaction model, see [MVCC in TiKV](https://pingcap.com/blog/2016-11-17-mvcc-in-tikv/).
 
-Use the following command to set the level of transaction isolation:
+Use the following command to set the isolation level of the Session or Global transaction:
 
 ```
-SET SESSION TRANSACTION ISOLATION LEVEL [read committed|repeatable read]
+SET [SESSION | GLOBAL] TRANSACTION ISOLATION LEVEL [read committed|repeatable read]
+```
+
+If you do not use the Session or Global keyword, this statement takes effect only for the transaction to be executed next, but not for the entire session or global transaction.
+
+```
+SET TRANSACTION ISOLATION LEVEL [read committed|repeatable read]
 ```
 
 ## Repeatable Read
@@ -73,3 +79,27 @@ You can control the number of retries by configuring the `retry-limit` parameter
 # The maximum number of retries when commit a transaction.
 retry-limit = 10
 ```
+
+## Statement rollback
+
+If you execute a statement within a transaction, the statement does not take effect when an error occurs.
+
+```
+begin;
+insert into test values (1);
+insert into tset values (2);  // This statement does not take effect because "test" is misspelled as "tset".
+insert into test values (3);
+commit;
+```
+
+In the above example, the second `insert` statement fails, while the other two `insert` statements (1 & 3) can be successfully committed.
+
+```
+begin;
+insert into test values (1);
+insert into tset values (2);  // This statement does not take effect because "test" is misspelled as "tset".
+insert into test values (3);
+rollback;
+```
+
+In the above example, the second `insert` statement fails, and this transaction does not insert any data into the database because `rollback` is called.
