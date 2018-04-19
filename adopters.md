@@ -14,6 +14,7 @@ This is a list of TiDB adopters in various industries.
 - [Toutiao (Media)](https://www.crunchbase.com/organization/toutiao)
 - [Phoenix TV (Media)](http://www.ifeng.com/)
 - [LeCloud (MediaTech)](http://www.lecloud.com/en-us/)
+- [Mobikok (Marketing)](http://www.kokmobi.com/en/cn/index.asp)
 - [Ping++ (Payment)](https://www.crunchbase.com/organization/ping-5)
 - [Qunar.com (Travel)](https://www.crunchbase.com/organization/qunar-com)
 - [LinkDoc Technology (HealthTech)](https://www.crunchbase.com/organization/linkdoc-technology)
