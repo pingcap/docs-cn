@@ -446,7 +446,7 @@ domain = 192.168.199.113
 ...
 
 #启动 Grafana 服务
-./grafana-server \
+./bin/grafana-server \
     --homepath="/data1/tidb/deploy/opt/grafana" \
     --config="/data1/tidb/deploy/opt/grafana/conf/grafana.ini"
 ```
