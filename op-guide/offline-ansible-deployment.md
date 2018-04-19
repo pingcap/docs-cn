@@ -43,6 +43,7 @@ category: deployment
     目前 release-1.0 版本依赖 Ansible 2.4，release-2.0 及 master 版本兼容 Ansible 2.4 及 Ansible 2.5 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中，请下载对应版本离线安装包上传至中控机。
 
     > 下载 [Ansible 2.4 离线安装包](https://download.pingcap.org/ansible-2.4.2-pip.tar.gz)
+
     > 下载 [Ansible 2.5 离线安装包](https://download.pingcap.org/ansible-2.5.0-pip.tar.gz)
 
     下面以安装 Ansible 2.5 为例，Ansible 2.4 安装方式与之一致：
