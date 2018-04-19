@@ -82,6 +82,7 @@
     - [Cross-Region Deployment](op-guide/location-awareness.md)
   + Configure
     - [Configuration Flags](op-guide/configuration.md)
+    - [Configuration File Description](op-guide/tidb-config-file.md)
     - [Enable TLS Authentication](op-guide/security.md)
     - [Generate Self-signed Certificates](op-guide/generate-self-signed-certificates.md)
   + Monitor
