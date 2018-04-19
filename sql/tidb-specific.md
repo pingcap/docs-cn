@@ -240,4 +240,30 @@ This variable is used to remind the optimizer to use the `Index Nested Loop Join
 
 ```SELECT /*+ TIDB_HJ(t1, t2) */ * from t1，t2 where t1.id = t2.id```
 
-This variable is used to remind the optimizer to use the `Hash Join` algorithm. This algorithm executes threads concurrently. It runs faster but takes up more memory. 
+This variable is used to remind the optimizer to use the `Hash Join` algorithm. This algorithm executes threads concurrently. It runs faster but takes up more memory.
+
+## _tidb_rowid
+
+This is a hidden column of TiDB, which represents the column name of the implicit ROW ID. It only exists on the tables with non-integer PK or without PK. You can execute the `SELECT`, `INSERT`, `UPDATE` and `DELETE` statements on this column, and the usage of these statements are as follows:
+
+- `SELECT`: `SELECT *, _tidb_rowid from t;`
+- `INSERT`: `INSERT t (c, _tidb_rowid) VALUES (1, 1);`
+- `UPDATE`: `UPDATE t SET c = c + 1 WHERE _tidb_rowid = 1;`
+- `DELETE`: `DELETE FROM t WHERE _tidb_rowid = 1;`
+
+## SHARD_ROW_ID_BITS
+
+You can use this TABLE OPTION to set the bit digit of the number of implicit `_tidb_rowid` shards.
+
+For the tables with non-integer PK or without PK, TiDB uses an implicit auto-increment ROW ID. When a large number of `INSERT` operations occur, the data is written into a single Region, causing a write hot spot.
+
+To mitigate the hot spot issue, you can configure `SHARD_ROW_ID_BITS`. The ROW ID is scattered and the data is written into multiple different Regions. But setting an overlarge value might lead to an excessively large number of RPC requests, which increases the CPU and network overheads.
+
+- `SHARD_ROW_ID_BITS = 4` indicates 16 shards
+- `SHARD_ROW_ID_BITS = 6` indicates 64 shards
+- `SHARD_ROW_ID_BITS = 0` indicates the default 1 shard
+
+Usage of statements:
+
+- `CREATE TABLE`: `CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;`
+- `ALTER TABLE`: `ALTER TABLE MODIFY t SHARD_ROW_ID_BITS = 4;`
