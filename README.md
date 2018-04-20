@@ -72,6 +72,7 @@
   - [TiDB 内存控制](sql/tidb-memory-control.md)
   + 高级功能
     - [历史数据回溯](op-guide/history-read.md)
+    - [垃圾回收 (GC)](op-guide/gc.md)
 + TiDB 运维文档
   - [软硬件环境需求](op-guide/recommendation.md)
   + 部署集群 

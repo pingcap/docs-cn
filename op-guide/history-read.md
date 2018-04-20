@@ -27,38 +27,9 @@ TiDB 实现了通过标准 SQL 接口读取历史数据功能，无需特殊的 
 
 TiDB 使用 MVCC 管理版本，当更新/删除数据时，不会做真正的数据删除，只会添加一个新版本数据，所以可以保留历史数据。历史数据不会全部保留，超过一定时间的历史数据会被彻底删除，以减小空间占用以及避免历史版本过多引入的性能开销。
 
-我们使用周期性运行的 GC （Garbage Collection， 垃圾回收）来进行清理，GC 的触发方式为：每个 TiDB 启动后会在后台运行一个 gc_worker，每个集群中有一个 gc_worker 会被自动选为 leader，leader 负责维护 GC 的状态并向所有的 TiKV region leader 发送 GC 命令。
+我们使用周期性运行的 GC （Garbage Collection， 垃圾回收）来进行清理，关于 GC 的详细介绍清参阅 [TiDB 垃圾回收 (GC)](gc.md)
 
-GC 的运行状态记录记录在 mysql.tidb 系统表中，可通过 SQL 语句进行监测与配置。
-
-```sql
-mysql> select variable_name, variable_value from mysql.tidb;
-+-----------------------+----------------------------+
-| variable_name         | variable_value             |
-+-----------------------+----------------------------+
-| bootstrapped          | True                       |
-| tikv_gc_leader_uuid   | 55daa0dfc9c0006            |
-| tikv_gc_leader_desc   | host:pingcap-pc5 pid:10549 |
-| tikv_gc_leader_lease  | 20160927-13:18:28 +0800 CST|
-| tikv_gc_run_interval  | 10m0s                      |
-| tikv_gc_life_time     | 10m0s                      |
-| tikv_gc_last_run_time | 20160927-13:13:28 +0800 CST|
-| tikv_gc_safe_point    | 20160927-13:03:28 +0800 CST|
-+-----------------------+----------------------------+
-7 rows in set (0.00 sec)
-```
-
-其中需要重点关注的是 `tikv_gc_life_time` 和 `tikv_gc_safe_point` 这两行。
-
-`tikv_gc_life_time` 用于配置历史版本保留时间（默认值为 10m），用户可以使用 SQL 进行配置。比如我们需要一天内的所有历史版本都可读，那么可以使用 SQL `update mysql.tidb set variable_value='24h' where variable_name='tikv_gc_life_time'` 将此行设置为 24 小时。时长字符串的形式是数字后接时间单位的序列，如 `24h`、`2h30m`、`2.5h`。可以使用的时间单位包括 "h"、"m"、"s"。
-
-`tikv_gc_safe_point` 记录了当前的 safePoint，用户可以安全地使用大于 safePoint 的时间戳创建 snapshot 读取历史版本。safePoint 在每次 GC 开始运行时自动更新。
-
-需要注意的是，在数据更新频繁的场景下如果将 `tikv_gc_life_time` 设置得比较大（如数天甚至数月），可能会有一些潜在的问题：
-
-1. 随着版本的不断增多，数据占用的磁盘空间会随之增加。
-2. 大量的历史版本会在一定程度上导致查询变慢，主要影响范围查询（`select count(*) from t`）。
-3. 如果在运行中突然将 `tikv_gc_life_time` 配置调小，可能会导致大量历史数据被删除，造成 I/O 负担。
+这里我们需要重点关注的是 `tikv_gc_life_time` 和 `tikv_gc_safe_point` 这条。`tikv_gc_life_time` 用于配置历史版本保留时间，可以手动修改；`tikv_gc_safe_point` 记录了当前的 safePoint，用户可以安全地使用大于 safePoint 的时间戳创建 snapshot 读取历史版本。safePoint 在每次 GC 开始运行时自动更新。
 
 ## 示例
 
