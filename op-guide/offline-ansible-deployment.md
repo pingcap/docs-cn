@@ -72,7 +72,7 @@ category: deployment
     # yum install epel-release
     # yum install ansible curl
     # ansible --version   
-      ansible 2.4.2.0
+      ansible 2.5.0
     ```
 
 2.  下载 tidb-ansible
