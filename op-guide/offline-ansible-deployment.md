@@ -19,41 +19,62 @@ Before you start, make sure that you have:
     - For system requirements and configuration, see [Prepare the environment](ansible-deployment.md#prepare).
     - It is acceptable without access to the Internet.
 
-## Install Ansible and dependencies in the Control Machine
+## Install Ansible and dependencies offline in the Control Machine
 
-1. Install Ansible offline on the CentOS 7 system:
+Take the following steps to install Ansible offline on the CentOS 7 system:
 
-    > Download the [Ansible 2.4.2](https://download.pingcap.org/ansible-2.4.2-rpms.el7.tar.gz) offline installation package to the Control Machine.
+1. Install `pip` offline.
+
+    > Download the [`pip`](https://download.pingcap.org/pip-rpms.el7.tar.gz) offline installation package to the Control Machine.
 
     ```bash
-    # tar -xzvf ansible-2.4.2-rpms.el7.tar.gz
+    # tar -xzvf pip-rpms.el7.tar.gz
+    # cd pip-rpms.el7
+    # chmod u+x install_pip.sh
+    # ./install_pip.sh
+    ```
 
-    # cd ansible-2.4-rpms.el7
+    After the installation is finished, you can use `pip -V` to check whether it is successfully installed:
 
-    # chmod u+x install_ansible.sh
+    ```bash
+    # pip -V
+     pip 8.1.2 from /usr/lib/python2.7/site-packages (python 2.7)
+    ```
 
+2. Install Ansible and its dependencies offline.
+
+    Currently releases-1.0 depends on Ansible 2.4, while release-2.0 and the master version are compatible with Ansible 2.4 and Ansible 2.5. Ansible and related dependencies are recorded in the `tidb-ansible/requirements.txt` file. Download the corresponding offline installation version to the Control Machine.
+
+    - Download [Ansible 2.4 offline installation package](https://download.pingcap.org/ansible-2.4.2-pip.tar.gz)
+    - Download [Ansible 2.5 offline installation package](https://download.pingcap.org/ansible-2.5.0-pip.tar.gz)
+
+    The installing methods of Ansible 2.4 and Ansible 2.5 are similar. Take Ansible 2.5 as an example:
+
+    ```
+    # tar -xzvf ansible-2.5.0-pip.tar.gz
+    # cd ansible-2.5.0-pip/
+    # chmod install_ansible.sh
     # ./install_ansible.sh
     ```
 
-2. After Ansible is installed, you can view the version using `ansible --version`.
-  
+    After Ansible is installed, you can view the version using `ansible --version`.
+
     ```bash
     # ansible --version
-     ansible 2.4.2.0
+     ansible 2.5.0
     ```
 
 ## Download TiDB-Ansible and TiDB packages on the download machine
 
 1. Install Ansible on the download machine.
 
-    Use the following method to install Ansible online on the download machine installed with the CentOS 7 system. Installing using the EPEL source automatically installs the related Ansible dependencies (such as `Jinja2==2.7.2 MarkupSafe==0.11`). After Ansible is installed, you can view the version using `ansible --version`.
+    Use the following method to install Ansible online on the download machine installed with the CentOS 7 system. After Ansible is installed, you can view the version using `ansible --version`.
 
     ```bash
     # yum install epel-release
     # yum install ansible curl
     # ansible --version
-
-     ansible 2.4.2.0
+      ansible 2.5.0
     ```
     > **Note:** Make sure that the version of Ansible is 2.4 or later, otherwise compatibility problem might occur.
 

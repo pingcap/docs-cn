@@ -78,7 +78,7 @@ git clone https://github.com/pingcap/tidb-ansible.git
 
 ## Install Ansible and dependencies in the Control Machine
 
-Use `pip` to install Ansible and dependencies on the Control Machine of CentOS 7 system. After installation, you can use `ansible --version` to view the Ansible version. Currently releases-1.0 and release-2.0 depend on Ansible 2.4, while the master version is compatible with Ansible 2.4 and Ansible 2.5.
+Use `pip` to install Ansible and dependencies on the Control Machine of CentOS 7 system. After installation, you can use `ansible --version` to view the Ansible version. Currently releases-1.0 depends on Ansible 2.4, while release-2.0 and the master version are compatible with Ansible 2.4 and Ansible 2.5.
 
 Ansible and related dependencies are recorded in the `tidb-ansible/requirements.txt` file. Install Ansible and dependencies as follows, otherwise compatibility issue occurs.
 
@@ -241,7 +241,6 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | ---- | ------- |
 | cluster_name | the name of a cluster, adjustable |
 | tidb_version | the version of TiDB, configured by default in TiDB-Ansible branches |
-| deployment_method | the method of deployment, binary by default, Docker optional |
 | process_supervision | the supervision way of processes, systemd by default, supervise optional |
 | timezone | the timezone of the managed node, adjustable, `Asia/Shanghai` by default, used with the `set_timezone` variable |
 | set_timezone | to edit the timezone of the managed node, True by default; False means closing |
@@ -269,11 +268,6 @@ To deploy TiDB using a normal user account, take the following steps:
 
     ```
     ## Connection
-    # ssh via root:
-    # ansible_user = root
-    # ansible_become = true
-    # ansible_become_user = tidb
-
     # ssh via normal user
     ansible_user = tidb
     ```
@@ -536,27 +530,6 @@ Run the following command on the CentOS 7 system:
 $ sudo yum install ntp ntpdate
 $ sudo systemctl start ntpd.service
 ```
-
-### How to deploy TiDB using Docker?
-
-- Install Docker on the Control Machine and the managed node. The normal user (such as `ansible_user = tidb`) account in `inventory.ini` must have the sudo privileges or [running Docker privileges](https://docs.docker.com/engine/installation/linux/linux-postinstall/).
-- Install the `docker-py` module on the Control Machine and the managed node.
-
-    ```
-    sudo pip install docker-py
-    ```
-
-- Edit the `inventory.ini` file:
-
-    ```
-    # deployment methods, [binary, docker]
-    deployment_method = docker
-
-    # process supervision, [systemd, supervise]
-    process_supervision = systemd
-    ```
-
-The Docker installation process is similar to the binary method.
 
 ### How to adjust the supervision method of a process from supervise to systemd?
 
