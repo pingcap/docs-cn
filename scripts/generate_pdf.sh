@@ -13,7 +13,7 @@ MONOFONT="WenQuanYi Micro Hei Mono"
 _version_tag="$(date '+%Y%m%d')"
 
 # default version: `pandoc --latex-engine=xelatex doc.md -s -o output2.pdf`
-# used to debug template settting error
+# used to debug template setting error
 
 pandoc -N --toc --smart --latex-engine=xelatex \
     --template=templates/template.tex \
