@@ -21,7 +21,7 @@ pandoc -N --toc --smart --latex-engine=xelatex \
     --listings \
     -V title="TiDB Documentation" \
     -V author="PingCAP Inc." \
-    -V date="v1.0.0\$\sim\$${_version_tag}" \
+    -V date="${_version_tag}" \
     -V CJKmainfont="${MAINFONT}" \
     -V fontsize=12pt \
     -V geometry:margin=1in \
