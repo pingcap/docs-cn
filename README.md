@@ -108,6 +108,7 @@
   - [Loader 使用文档](tools/loader.md)
   - [TiDB-Binlog 使用文档](tools/tidb-binlog-kafka.md)
   - [PD Control 使用文档](tools/pd-control.md)
+  - [TiKV Control 使用文档](tools/tikv-control.md)
 + TiSpark 文档
   - [TiSpark 快速入门指南](tispark/tispark-quick-start-guide.md)
   - [TiSpark 用户指南](tispark/tispark-user-guide.md)
