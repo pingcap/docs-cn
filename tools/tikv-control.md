@@ -23,8 +23,11 @@ tikv-ctl 有两种运行模式：远程模式和本地模式。前者通过 `--h
 的形式作简单的变换。一般我们使用 `escaped` 形式。一个简单的例子如下：
 
 > $ tikv-ctl --to-escaped 0xaaff
+>
 > \252\377
+>
 > $ tikv-ctl --to-hex "\252\377"
+>
 > AAFF
 
 注意在命令行上指定 `escaped` 形式的 key 时，需要用双引号引起来，否则 bash 会将
@@ -43,21 +46,32 @@ tikv-ctl 有两种运行模式：远程模式和本地模式。前者通过 `--h
 两个子命令都同时支持远程模式和本地模式。它们的用法及输出内容如下所示：
 
 > $ tikv-ctl --host 127.0.0.1:21060 raft region -r 2
+>
 > region id: 2
+>
 > region state key: \001\003\000\000\000\000\000\000\000\002\001
+>
 > region state: Some(region {id: 2 region_epoch {conf_ver: 3 version: 1} peers {id: 3 store_id: 1} peers {id: 5 store_id: 4} peers {id: 7 store_id: 6}})
+>
 > raft state key: \001\002\000\000\000\000\000\000\000\002\002
+>
 > raft state: Some(hard_state {term: 307 vote: 5 commit: 314617} last_index: 314617)
+>
 > apply state key: \001\002\000\000\000\000\000\000\000\002\003
+>
 > apply state: Some(applied_index: 314617 truncated_state {index: 313474 term: 151})
 
 ### 查看 Region 的大小
 `size` 命令可以查看 Region 的大小：
 
 > $ tikv-ctl --db /path/to/tikv/db size -r 2
+>
 > region id: 2
+>
 > cf default region size: 799.703 MB
+>
 > cf write region size: 41.250 MB
+>
 > cf lock region size: 27616
 
 ### 扫描查看给定范围的 MVCC
@@ -65,19 +79,26 @@ tikv-ctl 有两种运行模式：远程模式和本地模式。前者通过 `--h
 `--show-cf` 参数指定只需要查看哪些列族。
 
 > $ tikv-ctl --db /path/to/tikv/db scan --from 'zm' --limit 2 --show-cf lock,default,write
+>
 > key: zmBootstr\377a\377pKey\000\000\377\000\000\373\000\000\000\000\000\377\000\000s\000\000\000\000\000\372
+>
 >          write cf value: start_ts: 399650102814441473 commit_ts: 399650102814441475 short_value: "20"
-> 
+>
 > key: zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\000\000\000\371
+>
 >          write cf value: start_ts: 399650105239273474 commit_ts: 399650105239273475 short_value: "\000\000\000\000\000\000\000\002"
+>
 >          write cf value: start_ts: 399650105199951882 commit_ts: 399650105213059076 short_value: "\000\000\000\000\000\000\000\001"
 
 ### 查看给定 key 的 MVCC
 与上个命令类似，`mvcc` 命令可以查看给定 key 的 MVCC：
 
 > $ tikv-ctl --db /path/to/tikv/db mvcc -k "zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\000\000\000\371" --show-cf=lock,write,default
+>
 > key: zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\000\000\000\371
+>
 >          write cf value: start_ts: 399650105239273474 commit_ts: 399650105239273475 short_value: "\000\000\000\000\000\000\000\002"
+>
 >          write cf value: start_ts: 399650105199951882 commit_ts: 399650105213059076 short_value: "\000\000\000\000\000\000\000\001"
 
 命令中，key 同样需要是 escaped 形式的 raw key。
@@ -91,6 +112,7 @@ tikv-ctl 有两种运行模式：远程模式和本地模式。前者通过 `--h
 参数值可以选。
 
 > $ tikv-ctl --db /path/to/tikv/db compact -d kv
+>
 > success!
 
 ### 设置一个 Region 为 tombstone
