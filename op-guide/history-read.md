@@ -29,39 +29,14 @@ After reading data from history versions, you can read data from the latest vers
 
 ## How TiDB manages the data versions
 
-TiDB implements Multi-Version Concurrency Control (MVCC) to manage data versions. The history versions of data are kept because each update / removal creates a new version of the data object instead of updating / removing the data object in-place. But not all the versions are kept. If the versions are older than a specific time, they will be removed completely to reduce the storage occupancy and the performance overhead caused by too many history versions.
+TiDB implements Multi-Version Concurrency Control (MVCC) to manage data versions. The history versions of data are kept because each update/removal creates a new version of the data object instead of updating/removing the data object in-place. But not all the versions are kept. If the versions are older than a specific time, they will be removed completely to reduce the storage occupancy and the performance overhead caused by too many history versions.
 
-In TiDB, Garbage Collection (GC) runs periodically to remove the obsolete data versions. GC is triggered in the following way: There is a `gc_worker` goroutine running in the background of each TiDB server. In a cluster with multiple TiDB servers, one of the `gc_worker` goroutines will be automatically selected to be the leader. The leader is responsible for maintaining the GC state and sends GC commands to each TiKV region leader.
+In TiDB, Garbage Collection (GC) runs periodically to remove the obsolete data versions. For GC details, see [TiDB Garbage Collection (GC)](gc.md)
 
-The running record of GC is recorded in the system table of `mysql.tidb` as follows and can be monitored and configured using the SQL statements：
+Pay special attention to the following two variables:
 
-```
-mysql> select variable_name, variable_value from mysql.tidb;
-+-----------------------+----------------------------+
-| variable_name         | variable_value             |
-+-----------------------+----------------------------+
-| bootstrapped          | True                       |
-| tikv_gc_leader_uuid   | 55daa0dfc9c0006            |
-| tikv_gc_leader_desc   | host:pingcap-pc5 pid:10549 |
-| tikv_gc_leader_lease  | 20160927-13:18:28 +0800 CST|
-| tikv_gc_run_interval  | 10m0s                      |
-| tikv_gc_life_time     | 10m0s                      |
-| tikv_gc_last_run_time | 20160927-13:13:28 +0800 CST|
-| tikv_gc_safe_point    | 20160927-13:03:28 +0800 CST|
-+-----------------------+----------------------------+
-7 rows in set (0.00 sec)
-```
-
-Pay special attention to the following two rows:
-
-- `tikv_gc_life_time`: This row is to configure the retention time of the history version and its default value is 10m. You can use SQL statements to configure it. For example, if you want all the data within one day to be readable, set this row to 24h by using the `update mysql.tidb set variable_value='24h' where variable_name='tikv_gc_life_time'` statement. The format is: "24h", "2h30m", "2.5h". The unit of time can be: "h", "m", "s".
-
-> **Note:** If your data is updated very frequently, the following issues might occur if the value of the `tikv_gc_life_time` is set to be too large like in days or months:
-> 
->  - The more versions of the data, the more disk storage is occupied.
->  - A large amount of the history versions might slow down the query, especially the range queries like `select count(*) from t`.
->  - If the value of the `tikv_gc_life_time` variable is suddenly changed to be smaller while the database is running, it might lead to the removal of large amounts of history data and cause huge I/O burden.
->  - `tikv_gc_safe_point`: This row records the current safePoint. You can safely create the Snapshot to read the history data using the timestamp that is later than the safePoint. The safePoint automatically updates every time GC runs.
+- `tikv_gc_life_time`: It is used to configure the retention time of the history version. You can modify it manually.
+- `tikv_gc_safe_point`: It records the current `safePoint`. You can safely create the snapshot to read the history data using the timestamp that is later than `safePoint`. `safePoint` automatically updates every time GC runs.
 
 ## Example
 

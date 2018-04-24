@@ -72,6 +72,7 @@
   - [TiDB Memory Control](sql/tidb-memory-control.md)
   + Advanced Usage
     - [Read Data From History Versions](op-guide/history-read.md)
+    - [Garbage Collection (GC)](op-guide/gc.md)
 + TiDB Operations Guide
   - [Hardware and Software Requirements](op-guide/recommendation.md)
   + Deploy
