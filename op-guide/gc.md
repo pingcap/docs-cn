@@ -81,4 +81,5 @@ The TiDB transaction model is inspired by Google's Percolator. It's mainly a two
 ### 3. Do GC
 
 Clear the data before the safe point of each key and the write record. 
+
 > **Note**: If the last record in all the write records of `Put` and `Delete` types before the safe point is `Put`, this record and its data cannot be deleted directly. Otherwise, you cannot successfully perform the read operation whose timestamp is after the safe point and before the next version of the key. 
