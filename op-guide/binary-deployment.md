@@ -327,7 +327,7 @@ mysql -h 192.168.199.113 -P 4000 -u root -D test
 
 > 注意：在生产环境中启动 TiKV 时，建议使用 `--config` 参数指定配置文件路径，如果不设置这个参数，TiKV 不会读取配置文件。同样，在生产环境中部署 PD 时，也建议使用 `--config` 参数指定配置文件路径。
 
-TiKV 调优参见：[TiKV 性能参数调优](https://github.com/pingcap/docs-cn/blob/master/op-guide/tune-tikv.md)。
+TiKV 调优参见：[TiKV 性能参数调优](tune-tikv.md)。
 
 > 注意：如果使用 nohup 在生产环境中启动集群，需要将启动命令放到一个脚本文件里面执行，否则会出现因为 Shell 退出导致 nohup 启动的进程也收到异常信号退出的问题，具体参考进程异常退出。
 
