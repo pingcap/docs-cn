@@ -277,7 +277,6 @@ mysql -h 192.168.199.113 -P 4000 -u root -D test
                 --client-urls="http://192.168.199.114:2379" \
                 --peer-urls="http://192.168.199.114:2380" \
                 --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380" \
-                --join="http://192.168.199.113:2379" \
                 -L "info" \
                 --log-file=pd.log
 
@@ -286,7 +285,6 @@ mysql -h 192.168.199.113 -P 4000 -u root -D test
                 --client-urls="http://192.168.199.115:2379" \
                 --peer-urls="http://192.168.199.115:2380" \
                 --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380" \
-                --join="http://192.168.199.113:2379" \
                 -L "info" \
                 --log-file=pd.log
 ```
