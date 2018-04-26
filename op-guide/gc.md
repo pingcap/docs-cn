@@ -74,4 +74,4 @@ DeleteRanges 通常在 drop table 这样的操作之后需要进行，用于删�
 
 ### 3. Do GC
 
-这一步把每一个 key 的 safe point 之前的数据和 Write 记录清除掉。有一个特例是，如果 safe point 之前的最后一个 Write 记录是 `Put`（即写入），那么该记录（及其对应的数据）不能被直接删除。否则，时间戳在 safe point 之后、该 key 的下一个版本之前的读取操作将无法读取到该数据。
+这一步把每一个 key 的 safe point 之前的数据和 Write 记录清除掉。有一个特例是，如果在 safe point 之前的所有 `Put` 类型和 `Delete` 类型的 Write 记录中，最后一个记录是 `Put`（即写入），那么该记录（及其对应的数据）不能被直接删除。否则，时间戳在 safe point 之后、该 key 的下一个版本之前的读取操作将无法读取到该数据。
