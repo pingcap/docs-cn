@@ -97,7 +97,10 @@ TiDB 2.0：
 | 21        | 31.466s            | OOM              |
 | 22        | 31.539s            | 125.471s         |
 
+![TPC-H Query Result](./tpch.png)
+
 说明：
-- Query 15 1.0 和 2.0 都还未支持视图，所以结果标记为 NaN
+- 图中红色为 Release 1.0，蓝色为 Release 2.0
+- Query 15 因为 1.0 和 2.0 都还未支持视图，所以结果标记为 NaN
 - Query 2, 17, 19 因为 TiDB 1.0 长时间未跑出结果，所以结果标记为 Nan
 - Query 5, 7, 18, 21 因为 TiDB 1.0 在跑的过程中内存占用过多被 oom-killer 杀死，所以结果标记为 OOM
