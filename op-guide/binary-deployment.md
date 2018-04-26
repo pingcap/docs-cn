@@ -273,7 +273,6 @@ Follow the steps below to start PD, TiKV, and TiDB:
                     --client-urls="http://192.168.199.114:2379" \
                     --peer-urls="http://192.168.199.114:2380" \
                     --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380" \
-                    --join="http://192.168.199.113:2379" \
                     -L "info" \
                     --log-file=pd.log
 
@@ -282,7 +281,6 @@ Follow the steps below to start PD, TiKV, and TiDB:
                     --client-urls="http://192.168.199.115:2379" \
                     --peer-urls="http://192.168.199.115:2380" \
                     --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380" \
-                    --join="http://192.168.199.113:2379" \
                     -L "info" \
                     --log-file=pd.log
     ```
@@ -358,7 +356,7 @@ tar -xzf pushgateway-0.3.1.linux-amd64.tar.gz
 ####  Start `node_exporter` on Node1, Node2, Node3 and Node4.
 
 ```
-$cd node_exporter-0.14.0-rc.1.linux-amd64
+$cd node_exporter-0.14.0-rc.2.linux-amd64
 
 # Start the node_exporter service.
 ./node_exporter --web.listen-address=":9100" \
@@ -424,7 +422,7 @@ scrape_configs:
 #### Start Grafana in Node1.
 
 ```
-cd grafana-4.1.2-1486989747.linux-x64
+cd grafana-4.1.2-1486989747
 
 # Edit the Configuration file:
 
