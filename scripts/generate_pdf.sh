@@ -15,6 +15,7 @@ _version_tag="$(date '+%Y%m%d')"
 pandoc -N --toc --smart --latex-engine=xelatex \
     --template=templates/template.tex \
     --listings \
+    --columns=80 \
     -V title="TiDB 中文手册" \
     -V author="PingCAP Inc." \
     -V date="${_version_tag}" \
@@ -24,4 +25,4 @@ pandoc -N --toc --smart --latex-engine=xelatex \
     -V monofont="${MONOFONT}" \
     -V geometry:margin=1in \
     -V include-after="\\input{templates/copyright.tex}" \
-    doc.md -o output.pdf
+    doc.md -s -o output.pdf

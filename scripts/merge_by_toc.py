@@ -40,7 +40,7 @@ with open(entry_file) as fp:
             ## get level from space length
             print(line)
             level_space_str = level_pattern.findall(line)[0][:-1]
-            level = len(level_space_str) // 2 + 1
+            level = len(level_space_str) // 2 + 1 ## python divide get integer
 
             matches = toc_line_pattern.findall(line)
             if matches:
@@ -52,15 +52,14 @@ with open(entry_file) as fp:
                             print(key)
                             followups.append(key)
                     elif fpath.startswith('http'):
-                       followups.append(('TOC', level, line.strip()))
+                        ## remove list format character `- `, `+ `
+                        followups.append(('TOC', level, line.strip()[2:]))
             else:
                 name = line.strip().split(None, 1)[-1]
                 key = ('TOC', level, name)
                 if key not in followups:
                     print(key)
                     followups.append(key)
-
-
         else:
             pass
 
