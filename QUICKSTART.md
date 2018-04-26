@@ -558,7 +558,7 @@ For example, if you want to remove a TiKV node (node9) with the IP address `172.
     ./pd-ctl -u "http://172.16.10.1:2379" -d store 10
     ```
 
-    > **Note:** It takes some time to remove the node. If node9 does not show in the result, the node is successfully removed.
+    > **Note:** It takes some time to remove the node. If the status of the node you remove becomes Tombstone, then this node is successfully removed.
 
 3. After the node is successfully removed, stop the services on node9:
 
