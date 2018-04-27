@@ -100,7 +100,7 @@ https://github.com/pingcap/tidb-bench/tree/master/sysbench
 | v1.0.8  | 32 | 1000 万 | 512 * 3 |  203012 | 7.57333 ms / 15.3733 ms  |
 | v1.0.8  | 32 | 1000 万 | 1024 * 3 |  205932 | 14.9267 ms / 40.7633 ms |
 
-GA2.0 比 GA1.0 在 select 查询性能上，最高提升了 10% 左右。
+GA2.0 比 GA1.0 在 Select 查询性能上，最高提升了 10% 左右。
 
 ### 标准 OLTP 测试 
 
