@@ -108,6 +108,7 @@
   - [Loader User Guide](tools/loader.md)
   - [TiDB-Binlog User Guide](tools/tidb-binlog-kafka.md)
   - [PD Control User Guide](tools/pd-control.md)
+  - [TiKV Control User Guide](tools/tikv-control.md)
   - [TiDB Controller User Guide](tools/tidb-controller.md)
 + The TiDB Connector for Spark
   - [Quick Start Guide](tispark/tispark-quick-start-guide.md)
