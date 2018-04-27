@@ -11,12 +11,14 @@ category: benchmark
 ## 测试版本、时间、地点 
 
 TiDB 版本：v1.0.8 Vs v2.0.0-rc6 
+
 时间：2018 年 4 月
+
 地点：北京      
 
 ## 测试环境
  
- IDC机器       
+IDC机器       
  
 | 类别 | 名称 |  
 | :--------: | :---------: | 
@@ -51,21 +53,20 @@ https://github.com/pingcap/tidb-bench/tree/master/sysbench
 
 ### TiKV 参数配置
 
-
 * v1.0.8
-```
-sync-log = false
-grpc-concurrency = 8
-grpc-raft-conn-num = 24 
-```
+    ```
+    sync-log = false
+    grpc-concurrency = 8
+    grpc-raft-conn-num = 24 
+    ```
 
 * v2.0.0-rc6
-``` 
-sync-log = false
-grpc-concurrency = 8
-grpc-raft-conn-num = 24 
-use-delete-range: false
-```
+    ``` 
+    sync-log = false
+    grpc-concurrency = 8
+    grpc-raft-conn-num = 24 
+    use-delete-range: false
+    ```
 
 ### 集群拓扑
 
@@ -97,7 +98,6 @@ use-delete-range: false
 | v1.0.8  | 32 | 1000 万 | 1024 * 3 |  205932 | 14.9267 ms / 40.7633 ms |
 
 GA2.0 比 GA1.0 在 select 查询性能上，最高提升了 10% 左右。
-
 
 ### 标准 OLTP 测试 
 
