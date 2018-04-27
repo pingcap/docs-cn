@@ -292,7 +292,10 @@ table_option:
 
 * `index_col_name`、`index_type` 和 `index_option` 可以参考 [CREATE INDEX 语法](#create-index-语法).
 
-* `table_option` 目前除了 COMMENT 支持以外，其他都只是语法上支持。
+* `table_option` 目前支持的修改类型如下, 其他的目前只是语法支持:
+    - COMMENT
+    - AUTO_INCREMENT
+    
 
 下面介绍一下具体操作类型的支持情况。
 
