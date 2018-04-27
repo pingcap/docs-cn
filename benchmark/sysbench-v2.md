@@ -12,7 +12,9 @@ This test aims to compare the performances of TiDB 1.0 and TiDB 2.0.
 ## Test version, time, and place 
 
 TiDB version: v1.0.8 vs. v2.0.0-rc6 
+
 Time: April 2018
+
 Place: Beijing, China      
 
 ## Test environment
