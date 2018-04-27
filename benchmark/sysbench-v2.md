@@ -6,6 +6,7 @@ category: benchmark
 # TiDB Sysbench 性能对比测试报告 - v2.0.0 对比 v1.0.0
 
 ## 测试目的
+
 对比 TiDB 2.0 版本和 1.0 版本在 OLTP 场景下的性能。
 
 ## 测试版本、时间、地点 
@@ -18,11 +19,11 @@ TiDB 版本：v1.0.8 Vs v2.0.0-rc6
 
 ## 测试环境
  
-IDC机器       
+IDC 机器       
  
 | 类别 | 名称 |  
 | :--------: | :---------: | 
-| OS | linux (CentOS 7.3.1611) |   
+| OS | Linux (CentOS 7.3.1611) |   
 | CPU | 40 vCPUs, Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz |
 | RAM | 128GB | 
 | DISK | Optane 500GB SSD * 1 |  
@@ -54,6 +55,7 @@ https://github.com/pingcap/tidb-bench/tree/master/sysbench
 ### TiKV 参数配置
 
 * v1.0.8
+
     ```
     sync-log = false
     grpc-concurrency = 8
@@ -61,6 +63,7 @@ https://github.com/pingcap/tidb-bench/tree/master/sysbench
     ```
 
 * v2.0.0-rc6
+
     ``` 
     sync-log = false
     grpc-concurrency = 8
@@ -127,4 +130,4 @@ GA2.0 比 GA1.0 在 oltp 性能上，性能基本一致。
 | v1.0.8 | 32 | 1000 万 | 512 * 3 | 44123 | 34.8067 ms / 63.32 ms |
 | v1.0.8 | 32 | 1000 万 | 1024 * 3 | 48496 | 63.3333 ms / 118.92 ms |
 
-GA2.0 比 GA1.0 在 insert 性能上略有提升。
+GA2.0 比 GA1.0 在 Insert 性能上略有提升。
