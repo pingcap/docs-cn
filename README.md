@@ -109,6 +109,7 @@
   - [TiDB-Binlog 使用文档](tools/tidb-binlog-kafka.md)
   - [PD Control 使用文档](tools/pd-control.md)
   - [TiKV Control 使用文档](tools/tikv-control.md)
+  - [TiDB Controller 使用文档](tools/tidb-controller.md)
 + TiSpark 文档
   - [TiSpark 快速入门指南](tispark/tispark-quick-start-guide.md)
   - [TiSpark 用户指南](tispark/tispark-user-guide.md)
@@ -133,7 +134,8 @@
   - [海航](http://t.cn/REXx0Qe)
   - [今日头条](http://t.cn/RnLfEMf)
   - [Mobike](http://t.cn/RT8FbP6)
-  - [饿了么](http://t.cn/RnsqFT6)
+  - [饿了么（一）](http://t.cn/RucuK6m)
+  - [饿了么（二）](http://t.cn/RnsqFT6)
   - [易果生鲜](http://t.cn/RTYVhzH)
   - [同程旅游](http://t.cn/RmXeNKR)
   - [去哪儿](http://t.cn/RTKnsL7)

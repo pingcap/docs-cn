@@ -277,7 +277,6 @@ mysql -h 192.168.199.113 -P 4000 -u root -D test
                 --client-urls="http://192.168.199.114:2379" \
                 --peer-urls="http://192.168.199.114:2380" \
                 --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380" \
-                --join="http://192.168.199.113:2379" \
                 -L "info" \
                 --log-file=pd.log
 
@@ -286,7 +285,6 @@ mysql -h 192.168.199.113 -P 4000 -u root -D test
                 --client-urls="http://192.168.199.115:2379" \
                 --peer-urls="http://192.168.199.115:2380" \
                 --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380" \
-                --join="http://192.168.199.113:2379" \
                 -L "info" \
                 --log-file=pd.log
 ```
@@ -327,7 +325,7 @@ mysql -h 192.168.199.113 -P 4000 -u root -D test
 
 > 注意：在生产环境中启动 TiKV 时，建议使用 `--config` 参数指定配置文件路径，如果不设置这个参数，TiKV 不会读取配置文件。同样，在生产环境中部署 PD 时，也建议使用 `--config` 参数指定配置文件路径。
 
-TiKV 调优参见：[TiKV 性能参数调优](https://github.com/pingcap/docs-cn/blob/master/op-guide/tune-tikv.md)。
+TiKV 调优参见：[TiKV 性能参数调优](tune-tikv.md)。
 
 > 注意：如果使用 nohup 在生产环境中启动集群，需要将启动命令放到一个脚本文件里面执行，否则会出现因为 Shell 退出导致 nohup 启动的进程也收到异常信号退出的问题，具体参考进程异常退出。
 
@@ -363,7 +361,7 @@ tar -xzf pushgateway-0.3.1.linux-amd64.tar.gz
 ### 在 node1，node2，node3，node4 启动 `node_exporter`：
 
 ```
-$cd node_exporter-0.14.0-rc.1.linux-amd64
+$cd node_exporter-0.14.0-rc.2.linux-amd64
 
 #启动 node_exporter 服务
 ./node_exporter --web.listen-address=":9100" \
@@ -429,7 +427,7 @@ scrape_configs:
 ### 在 node1 启动 Grafana:
 
 ```
-cd grafana-4.1.2-1486989747.linux-x64
+cd grafana-4.1.2-1486989747
 
 #编辑配置文件
 
