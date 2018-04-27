@@ -158,7 +158,7 @@ You need to set the `--config` parameter in TiKV/PD to make the `toml` configura
 
 ##### Should I deploy the TiDB monitoring framework (Prometheus + Grafana) on a standalone machine or on multiple machines? What is the recommended CPU and memory?
 
-The monitoring machine is recommended to use standalone deployment. It is recommended to use a 8 core CPU with 16 GB+ memory and a 500 GB+ hard disk.
+The monitoring machine is recommended to use standalone deployment. It is recommended to use an 8 core CPU with 16 GB+ memory and a 500 GB+ hard disk.
 
 ##### Why the monitor cannot display all metrics?
 
@@ -210,9 +210,9 @@ It is not recommended to deploy TiDB offline using Ansible. If the Control Machi
     ansible-playbook rolling_update.yml
     ```
 
-#### What is the effect of rolling udpates?
+#### How are the rolling updates done?
 
-When you apply rolling updates to TiDB services, the running application is not affected. You need to configure the minimum cluster topology (TiDB * 2, PD * 3, TiKV * 3). If the Pump/Drainer service is involved in the cluster, it is recommended to stop Drainer before rolling updates. When you update TiDB, Pump is also updated.
+When you apply rolling updates to the TiDB services, the running application is not affected. You need to configure the minimum cluster topology (TiDB * 2, PD * 3, TiKV * 3). If the Pump/Drainer service is involved in the cluster, it is recommended to stop Drainer before rolling updates. When you update TiDB, Pump is also updated.
 
 #### How to upgrade when I deploy TiDB using Binary?
 
