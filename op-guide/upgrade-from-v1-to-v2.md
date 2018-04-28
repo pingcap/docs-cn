@@ -64,7 +64,7 @@ $ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
     process_supervision = systemd
     ```
 
-    如需变更，可参考 [如何调整进程监管方式从 supervise 到 systemd], 先使用备份 `/home/tidb/tidb-ansible-bak/` 分支变更进程监管方式再升级。
+    如需变更，可参考 [如何调整进程监管方式从 supervise 到 systemd](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何调整进程监管方式从-supervise-到-systemd), 先使用备份 `/home/tidb/tidb-ansible-bak/` 分支变更进程监管方式再升级。
 
 ### 编辑 TiDB 集群组件配置文件
 如之前自定义过 TiDB 集群组件配置文件，请参照备份文件修改 `/home/tidb/tidb-ansible/conf` 下对应配置文件。
