@@ -12,7 +12,8 @@ category: deployment
 ## 部署集群
 
 - [Ansible 部署方案 (强烈推荐)](ansible-deployment.md)
-- [离线 Ansible 部署方案 (强烈推荐)](offline-ansible-deployment.md)
+- [离线 Ansible 部署方案](offline-ansible-deployment.md)
+- [从 TiDB 1.0 升级到 2.0 操作指南](upgrade-from-v1-to-v2.md)
 - [Docker 部署方案](docker-deployment.md)
 - [跨机房部署方案](location-awareness.md)
 
