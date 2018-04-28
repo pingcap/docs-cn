@@ -41,12 +41,8 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录，使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`，以下为各版本下载示例，版本选择可以咨询官方。
 
-下载 1.0 GA 版本：
-```
-git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
-```
+下载 2.0 GA 版本：
 
-下载 2.0 版本：
 ```
 git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
 ```
@@ -54,6 +50,7 @@ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
 或
 
 下载 master 版本：
+
 ```
 git clone https://github.com/pingcap/tidb-ansible.git
 ```
@@ -177,13 +174,27 @@ location_labels = ["host"]
 
 - 服务配置文件参数调整
 
-    1.  多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中的 `end-point-concurrency` 以及 `block-cache-size` 参数:
-        - `end-point-concurrency`: 总数低于 CPU Vcores 即可
+    1.  多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中的 `block-cache-size` 参数:
         - `rocksdb defaultcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 30%
         - `rocksdb writecf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 45%
         - `rocksdb lockcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
         - `raftdb defaultcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
-    2.  如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
+
+    2.  多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中以下三个参数：
+
+        ```
+        readpool:
+          coprocessor:
+            # Notice: if CPU_NUM > 8, default thread pool size for coprocessors
+            # will be set to CPU_NUM * 0.8.
+            # high-concurrency: 8
+            # normal-concurrency: 8
+            # low-concurrency: 8
+        ```
+
+        - 推荐设置：实例数*参数值 = CPU_Vcores * 0.8。
+
+    3.  如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
         - `capacity` = (DISK - 日志空间) / TiKV 实例数量，例如 "100GB"
 
 ### inventory.ini 变量调整
