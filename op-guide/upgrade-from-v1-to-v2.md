@@ -55,7 +55,7 @@ $ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
     ansible_user = tidb
     ```
 
-    可参考[如何配置 ssh 互信及 sudo 免密码](#如何配置-ssh-互信及-sudo-免密码) 自动配置主机间互信。
+    可参考[如何配置 ssh 互信及 sudo 免密码](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#如何配置-ssh-互信及-sudo-免密码) 自动配置主机间互信。
 
 2. `process_supervision` 变量请与之前版本保持一致，默认推荐使用 systemd。
 
@@ -81,7 +81,7 @@ $ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
       # low-concurrency: 8
   ```
 
-  单机多 TiKV 实例情况下，需要修改这三个参数，推荐设置：实例数*参数值 = CPU_Vcores * 0.8。
+  > 单机多 TiKV 实例情况下，需要修改这三个参数，推荐设置：实例数*参数值 = CPU_Vcores * 0.8。
 
 ## 下载 TiDB 2.0 binary 到中控机
 
