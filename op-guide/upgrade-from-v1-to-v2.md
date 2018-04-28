@@ -60,6 +60,14 @@ $ ansible-playbook rolling_update.yml
 
 ## 滚动升级 TiDB 监控组件
 
+为满足客户监控组件支持集群混布需求，监控组件 systemd service 开始按端口区分，为兼容之前的版本，你需要执行 migrate_monitor.yml Playbook。
+
+```
+$ ansible-playbook migrate_monitor.yml
+```
+
+滚动升级 TiDB 监控组件：
+
 ```
 $ ansible-playbook rolling_update_monitor.yml
 ```
