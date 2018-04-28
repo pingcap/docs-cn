@@ -45,43 +45,43 @@ $ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
 ### 编辑 `inventory.ini` 文件
 编辑 `inventory.ini` 文件，IP 信息参照备份文件 `/home/tidb/tidb-ansible-bak/inventory.ini`。
 
-以下变量配置，需要重点确认，变量含义可参考[inventory.ini 变量调整](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#其他变量调整)
+以下变量配置，需要重点确认，变量含义可参考 [inventory.ini 变量调整](https://github.com/pingcap/docs-cn/blob/master/op-guide/ansible-deployment.md#其他变量调整)。
 
 1. 请确认 `ansible_user` 配置的是普通用户。为统一权限管理，不再支持使用 root 用户远程安装。 默认配置中使用 `tidb` 用户作为 SSH 远程用户及程序运行用户。
 
-```
-## Connection
-# ssh via normal user
-ansible_user = tidb
-```
+    ```
+    ## Connection
+    # ssh via normal user
+    ansible_user = tidb
+    ```
 
-可参考[如何配置 ssh 互信及 sudo 免密码](#如何配置-ssh-互信及-sudo-免密码) 自动配置主机间互信。
+    可参考[如何配置 ssh 互信及 sudo 免密码](#如何配置-ssh-互信及-sudo-免密码) 自动配置主机间互信。
 
 2. `process_supervision` 变量请与之前版本保持一致，默认推荐使用 systemd。
 
-```
-# process supervision, [systemd, supervise]
-process_supervision = systemd
-```
+    ```
+    # process supervision, [systemd, supervise]
+    process_supervision = systemd
+    ```
 
-如需变更，可参考[如何调整进程监管方式从 supervise 到 systemd], 先使用备份 `/home/tidb/tidb-ansible-bak/` 分支变更进程监管方式再升级。
+    如需变更，可参考 [如何调整进程监管方式从 supervise 到 systemd], 先使用备份 `/home/tidb/tidb-ansible-bak/` 分支变更进程监管方式再升级。
 
 ### 编辑 TiDB 集群组件配置文件
 如之前自定义过 TiDB 集群组件配置文件，请参照备份文件修改 `/home/tidb/tidb-ansible/conf` 下对应配置文件。
 
-> TiKV 配置中 `end-point-concurrency` 变更为三个参数
+  > TiKV 配置中 `end-point-concurrency` 变更为 `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数:
 
-```
-readpool:
-  coprocessor:
-    # Notice: if CPU_NUM > 8, default thread pool size for coprocessors
-    # will be set to CPU_NUM * 0.8.
-    # high-concurrency: 8
-    # normal-concurrency: 8
-    # low-concurrency: 8
-```
+  ```
+  readpool:
+    coprocessor:
+      # Notice: if CPU_NUM > 8, default thread pool size for coprocessors
+      # will be set to CPU_NUM * 0.8.
+      # high-concurrency: 8
+      # normal-concurrency: 8
+      # low-concurrency: 8
+  ```
 
-单机多 TiKV 实例情况下，需要修改这三个参数，推荐设置：实例数*参数值 = CPU_Vcores * 0.8。
+  单机多 TiKV 实例情况下，需要修改这三个参数，推荐设置：实例数*参数值 = CPU_Vcores * 0.8。
 
 ## 下载 TiDB 2.0 binary 到中控机
 

@@ -180,7 +180,7 @@ location_labels = ["host"]
         - `rocksdb lockcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
         - `raftdb defaultcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
 
-    2.  多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中以下三个参数：
+    2.  多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中 `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数：
 
         ```
         readpool:
