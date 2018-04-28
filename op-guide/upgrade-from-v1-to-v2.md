@@ -46,7 +46,9 @@ $ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
 
 如之前自定义过 TiDB 集群组件配置，请参照备份文件修改 `/home/tidb/tidb-ansible/conf` 下对应配置文件。
 
-## 下载 TiDB binary 到中控机
+## 下载 TiDB 2.0 binary 到中控机
+
+确认 `tidb-ansible/inventory.ini` 文件中 `tidb_version = v2.0.0`, 然后执行以下命令下载 TiDB 2.0 binary 到中控机。
 
 ```
 $ ansible-playbook local_prepare.yml
@@ -60,7 +62,16 @@ $ ansible-playbook rolling_update.yml
 
 ## 滚动升级 TiDB 监控组件
 
-为满足客户监控组件支持集群混布需求，监控组件 systemd service 开始按端口区分，为兼容之前的版本，你需要执行 migrate_monitor.yml Playbook。
+为满足客户监控组件混布需求，监控组件 systemd service 开始按端口区分。
+
+查看 `inventory.ini` 文件中 `process_supervision` 变量: 
+
+```
+# process supervision, [systemd, supervise]
+process_supervision = systemd
+```
+
+如果 `process_supervision = systemd`, 为兼容之前的版本，你需要执行 `migrate_monitor.yml` Playbook。
 
 ```
 $ ansible-playbook migrate_monitor.yml
