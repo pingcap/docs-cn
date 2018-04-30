@@ -285,7 +285,7 @@ table_option:
 The `ALTER TABLE` statement is used to update the structure of an existing table, such as updating the table or table properties, adding or deleting columns, creating or deleting indexes, updating columns or column properties. The descriptions of several field types are as follows:
 
 - For `index_col_name`, `index_type`, and `index_option`, see [CREATE INDEX Syntax](#create-index-syntax).
-- Currently, the `table_option` is only supported in syntax.
+- Currently, the `table_option` supports `AUTO_INCREMENT` and `COMMENT`, while the others are only supported in syntax.
 
 The support for specific operation types is as follows:
 
