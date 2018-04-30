@@ -30,29 +30,29 @@ This document defines the roadmap for TiDB development.
 ## TiKV:
 
 - [ ] Raft
-  - [ ] Region merge
+  - [x] Region merge
   - [ ] Local read thread
   - [ ] Multi-thread raftstore
-  - [ ] None voter
+  - [x] None voter
   - [ ] Pre-vote
-- [ ] RocksDB
-  - [ ] DeleteRange
-- [ ] Transaction
-  - [ ] Optimize transaction conflicts
-- [ ] Coprocessor
-  - [ ] Streaming
+- [x] RocksDB
+  - [x] DeleteRange
+- [x] Transaction
+  - [x] Optimize transaction conflicts
+- [x] Coprocessor
+  - [x] Streaming
 - [ ] Tool
-  - [ ] Import distributed data
+  - [x] Import distributed data
   - [ ] Export distributed data
   - [ ] Disaster Recovery
 - [ ] Flow control and degradation
 
 ## PD:
 
-- [ ] Improve namespace
-  - [ ] Different replication policies for different namespaces and tables
-  - [ ] Decentralize scheduling table regions
-  - [ ] Scheduler supports prioritization to be more controllable
+- [x] Improve namespace
+  - [x] Different replication policies for different namespaces and tables
+  - [x] Decentralize scheduling table regions
+  - [x] Scheduler supports prioritization to be more controllable
 - [ ] Use machine learning to optimize scheduling
 
 ## TiSpark:
