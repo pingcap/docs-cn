@@ -5,7 +5,7 @@ category: deployment
 
 # TiDB 2.0 升级操作指南
 
-> 本文档适用于从 TiDB 1.0 版本或 TiDB 2.0 rc 版本升级到 2.0 GA 版本。
+> 本文档适用于从 TiDB 1.0 版本或 TiDB 2.0 rc 版本升级到 TiDB 2.0 GA 版本。
 
 ## 在中控机器上安装 Ansible 及其依赖
 
@@ -87,11 +87,11 @@ $ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
       # low-concurrency: 8
   ```
 
-  > 单机多 TiKV 实例情况下，需要修改这三个参数，推荐设置：实例数*参数值 = CPU_Vcores * 0.8。
+  > 单机多 TiKV 实例情况下，需要修改这三个参数，推荐设置：实例数*参数值 = CPU_Vcores * 0.8 。
 
 ## 下载 TiDB 2.0 binary 到中控机
 
-确认 `tidb-ansible/inventory.ini` 文件中 `tidb_version = v2.0.0`, 然后执行以下命令下载 TiDB 2.0 binary 到中控机。
+确认 `tidb-ansible/inventory.ini` 文件中 `tidb_version = v2.0.0`,  然后执行以下命令下载 TiDB 2.0 binary 到中控机。
 
 ```
 $ ansible-playbook local_prepare.yml
