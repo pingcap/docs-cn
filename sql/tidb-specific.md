@@ -266,4 +266,4 @@ To mitigate the hot spot issue, you can configure `SHARD_ROW_ID_BITS`. The ROW I
 Usage of statements:
 
 - `CREATE TABLE`: `CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;`
-- `ALTER TABLE`: `ALTER TABLE MODIFY t SHARD_ROW_ID_BITS = 4;`
+- `ALTER TABLE`: `ALTER TABLE t SHARD_ROW_ID_BITS = 4;`
