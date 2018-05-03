@@ -117,8 +117,17 @@ See [Orchestrate the TiDB cluster](ansible-deployment.md#orchestrate-the-tidb-cl
 
 ## Deploy the TiDB cluster
 
-1. See [Deploy the TiDB cluster](ansible-deployment.md#deploy-the-tidb-cluster).
-2. You do not need to run the `ansible-playbook local_prepare.yml` playbook again.
+1. You do not need to run the `ansible-playbook local_prepare.yml` playbook again.
+2. You can use the `Report` button on the Grafana Dashboard to generate the PDF file. This function depends on the `fontconfig` package. To use this function, download the [`fontconfig` offline installation package](https://download.pingcap.org/fontconfig-rpms.el7.tar.gz) and upload it to the `grafana_servers` machine to install.
+
+    ```
+    $ tar -xzvf fontconfig-rpms.el7.tar.gz
+    $ cd fontconfig-rpms.el7/offline_packages
+    $ chmod u+x install_fontconfig.sh
+    $ ./install_fontconfig.sh
+    ```
+
+3. Refer to [Deploy the TiDB cluster](ansible-deployment.md#deploy-the-tidb-cluster).
 
 ## Test the cluster
 

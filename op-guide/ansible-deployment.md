@@ -302,6 +302,12 @@ To deploy TiDB using a normal user account, take the following steps:
     ansible-playbook deploy.yml
     ```
 
+    > **Note:** You can use the `Report` button on the Grafana Dashboard to generate the PDF file. This function depends on the `fontconfig` package. To use this function, login to the `grafana_servers` machine and install it using the following command:
+    >
+    > ```
+    > $ sudo yum install fontconfig
+    > ```
+
 5. Start the TiDB cluster.
 
     ```
