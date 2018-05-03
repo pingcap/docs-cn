@@ -73,19 +73,19 @@ $ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
 
 如之前自定义过 TiDB 集群组件配置文件，请参照备份文件修改 `/home/tidb/tidb-ansible/conf` 下对应配置文件。
 
-> **注意**：TiKV 配置中 `end-point-concurrency` 变更为 `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数：
->
-> ```
-> readpool:
->   coprocessor:
->     # Notice: if CPU_NUM > 8, default thread pool size for coprocessors
->     # will be set to CPU_NUM * 0.8.
->     # high-concurrency: 8
->     # normal-concurrency: 8
->     # low-concurrency: 8
-> ```
->
-> 单机多 TiKV 实例情况下，需要修改这三个参数，推荐设置：`实例数 * 参数值 = CPU_Vcores * 0.8`。
+TiKV 配置中 `end-point-concurrency` 变更为 `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数：
+
+```
+readpool:
+  coprocessor:
+    # Notice: if CPU_NUM > 8, default thread pool size for coprocessors
+    # will be set to CPU_NUM * 0.8.
+    # high-concurrency: 8
+    # normal-concurrency: 8
+    # low-concurrency: 8
+```
+
+单机多 TiKV 实例情况下，需要修改这三个参数，推荐设置：`实例数 * 参数值 = CPU_Vcores * 0.8`。
 
 ## 下载 TiDB 2.0 binary 到中控机
 
