@@ -120,7 +120,7 @@ $ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores 3,4,5
 success!
 ```
 
-> **注意**：**这个命令只支持本地模式**。在运行成功后，会打印 **success!**。
+> **注意**：**这个命令只支持本地模式**。在运行成功后，会打印 `success!`。
 
 ### 向 TiKV 发出 consistency-check 请求
 
