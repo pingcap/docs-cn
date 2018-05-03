@@ -277,6 +277,12 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
     ansible-playbook deploy.yml
     ```
 
+    > Grafana Dashboard 上的 Report 按钮可用来生成 PDF 文件, 此功能依赖 ` fontconfig` 包, 如需使用该功能，请登录 grafana_servers 机器，用以下命令安装：
+
+    ```
+    $ sudo yum install fontconfig
+    ```
+
 5.  启动 TiDB 集群
 
     ```
