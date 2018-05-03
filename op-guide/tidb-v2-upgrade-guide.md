@@ -81,19 +81,19 @@ Pay special attention to the following variables configuration. For variable mea
 
 If you have previously customized the configuration file of TiDB cluster components, refer to the backup file to modify the corresponding configuration file in `/home/tidb/tidb-ansible/conf`.
 
-> **Note:** In TiKV configuration, `end-point-concurrency` is changed to three parameters: `high-concurrency`, `normal-concurrency` and `low-concurrency`.
->
-> ```
-> readpool:
->   coprocessor:
->     # Notice: if CPU_NUM > 8, default thread pool size for coprocessors
->     # will be set to CPU_NUM * 0.8.
->     # high-concurrency: 8
->     # normal-concurrency: 8
->     # low-concurrency: 8
-> ```
->
-> For the cluster topology of multiple TiKV instances on a single machine, you need to modify the three parameters above. Recommended configuration: `number of instances * parameter value = CPU_Vcores * 0.8`.
+In TiKV configuration, `end-point-concurrency` is changed to three parameters: `high-concurrency`, `normal-concurrency` and `low-concurrency`.
+
+```
+readpool:
+  coprocessor:
+    # Notice: if CPU_NUM > 8, default thread pool size for coprocessors
+    # will be set to CPU_NUM * 0.8.
+    # high-concurrency: 8
+    # normal-concurrency: 8
+    # low-concurrency: 8
+```
+
+For the cluster topology of multiple TiKV instances on a single machine, you need to modify the three parameters above. Recommended configuration: `number of instances * parameter value = CPU_Vcores * 0.8`.
 
 ## Download TiDB 2.0 binary to the Control Machine
 
