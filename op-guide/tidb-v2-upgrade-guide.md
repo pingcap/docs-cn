@@ -85,7 +85,7 @@ $ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
 >     # low-concurrency: 8
 > ```
 >
-> 单机多 TiKV 实例情况下，需要修改这三个参数，推荐设置：`实例数*参数值 = CPU_Vcores * 0.8`。
+> 单机多 TiKV 实例情况下，需要修改这三个参数，推荐设置：`实例数 * 参数值 = CPU_Vcores * 0.8`。
 
 ## 下载 TiDB 2.0 binary 到中控机
 
