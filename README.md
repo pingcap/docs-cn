@@ -78,6 +78,7 @@
   + Deploy
     - [Ansible Deployment (Recommended)](op-guide/ansible-deployment.md)
     - [Offline Deployment Using Ansible](op-guide/offline-ansible-deployment.md)
+    - [TiDB 2.0 Upgrade Guide](op-guide/tidb-v2-upgrade-guide.md)
     - [Docker Deployment](op-guide/docker-deployment.md)
     - [Docker Compose Deployment](op-guide/docker-compose.md)
     - [Cross-Region Deployment](op-guide/location-awareness.md)
