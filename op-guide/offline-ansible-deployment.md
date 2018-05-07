@@ -38,6 +38,8 @@ category: deployment
      pip 8.1.2 from /usr/lib/python2.7/site-packages (python 2.7)
     ```
 
+    > 如果你的系统已安装 pip, 请确认版本 >= 8.1.2, 否则离线安装 ansible 及其依赖时，会有兼容问题。
+
 2.  离线安装 Ansible 及其依赖：
 
     目前 release-1.0 版本依赖 Ansible 2.4，release-2.0 及 master 版本兼容 Ansible 2.4 及 Ansible 2.5 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中，请下载对应版本离线安装包上传至中控机。
