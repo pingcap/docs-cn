@@ -105,12 +105,12 @@
   - [Binary 部署方案](op-guide/binary-deployment.md)
   - [故障诊断](trouble-shooting.md)
 + TiDB 周边工具
-  - [Syncer 使用文档](tools/syncer.md)
-  - [Loader 使用文档](tools/loader.md)
-  - [TiDB-Binlog 使用文档](tools/tidb-binlog-kafka.md)
-  - [PD Control 使用文档](tools/pd-control.md)
-  - [TiKV Control 使用文档](tools/tikv-control.md)
-  - [TiDB Controller 使用文档](tools/tidb-controller.md)
+  - [Syncer](tools/syncer.md)
+  - [Loader](tools/loader.md)
+  - [TiDB-Binlog](tools/tidb-binlog-kafka.md)
+  - [PD Control](tools/pd-control.md)
+  - [TiKV Control](tools/tikv-control.md)
+  - [TiDB Controller](tools/tidb-controller.md)
 + TiSpark 文档
   - [TiSpark 快速入门指南](tispark/tispark-quick-start-guide.md)
   - [TiSpark 用户指南](tispark/tispark-user-guide.md)
