@@ -104,14 +104,14 @@
       - [Migrate the Data Incrementally](op-guide/migration.md#use-the-syncer-tool-to-import-data-incrementally-optional)
   - [Deploy TiDB Using the Binary](op-guide/binary-deployment.md)
   - [Troubleshoot](trouble-shooting.md)
-+ TiDB Utilities
-  - [Syncer User Guide](tools/syncer.md)
-  - [Loader User Guide](tools/loader.md)
-  - [TiDB-Binlog User Guide](tools/tidb-binlog-kafka.md)
-  - [PD Control User Guide](tools/pd-control.md)
-  - [TiKV Control User Guide](tools/tikv-control.md)
-  - [TiDB Controller User Guide](tools/tidb-controller.md)
-+ The TiDB Connector for Spark
++ TiDB Enterprise Tools
+  - [Syncer](tools/syncer.md)
+  - [Loader](tools/loader.md)
+  - [TiDB-Binlog](tools/tidb-binlog-kafka.md)
+  - [PD Control](tools/pd-control.md)
+  - [TiKV Control](tools/tikv-control.md)
+  - [TiDB Controller](tools/tidb-controller.md)
++ TiSpark
   - [Quick Start Guide](tispark/tispark-quick-start-guide.md)
   - [User Guide](tispark/tispark-user-guide.md)
 - [Frequently Asked Questions (FAQ)](FAQ.md)
