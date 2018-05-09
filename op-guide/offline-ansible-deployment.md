@@ -41,6 +41,8 @@ Take the following steps to install Ansible offline on the CentOS 7 system:
      pip 8.1.2 from /usr/lib/python2.7/site-packages (python 2.7)
     ```
 
+    > **Note:** If `pip` is already installed to your system, make sure that the version is 8.1.2 or later. Otherwise, compatibility error occurs when you install Ansible and its dependencies offline.
+
 2. Install Ansible and its dependencies offline.
 
     Currently releases-1.0 depends on Ansible 2.4, while release-2.0 and the master version are compatible with Ansible 2.4 and Ansible 2.5. Ansible and related dependencies are recorded in the `tidb-ansible/requirements.txt` file. Download the corresponding offline installation version to the Control Machine.
