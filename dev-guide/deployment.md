@@ -2,11 +2,9 @@
 
 ## Overview
 
-Note: **The easiest way to deploy TiDB is to use the official binary package directly, see [Binary Deployment](../op-guide/binary-deployment.md).**
+Note: **The easiest way to deploy TiDB is to use TiDB Ansible, see [Ansible Deployment](../op-guide/ansible-deployment.md).**
 
-If you want to build the TiDB project, deploy the binaries to other machines and run them, you can follow this guide.
-
-Check the [supported platforms](./requirements.md#supported-platforms) and [prerequisites](./requirements.md#prerequisites) first.
+Before you start, check the [supported platforms](./requirements.md#supported-platforms) and [prerequisites](./requirements.md#prerequisites) first.
 
 ## Building and installing TiDB components
 
