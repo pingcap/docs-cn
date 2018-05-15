@@ -302,9 +302,9 @@ Take `Release Version: v1.0.3-1-ga80e796` as an example of version number descri
 
 #### What's the difference between various TiDB master versions? How to avoid using the wrong TiDB-Ansible version?
 
-The TiDB community is highly active. After the GA release, the engineers have been keeping optimizing and fixing bugs. Therefore, the TiDB version is updated quite fast. If you want to keep informed of the latest version, see [TiDB Weekly update](https://pingcap.com/weekly/).
+The TiDB community is highly active. After the 1.0 GA release, the engineers have been keeping optimizing and fixing bugs. Therefore, the TiDB version is updated quite fast. If you want to keep informed of the latest version, see [TiDB Weekly update](https://pingcap.com/weekly/).
 
-It is recommended to deploy the TiDB cluster using the latest version of TiDB-Ansible, which will also be updated along with the TiDB version. Besides, TiDB has a unified management of the version number after GA release. You can view the version number using the following two methods:
+It is recommended to deploy the TiDB cluster using the latest version of TiDB-Ansible, which will also be updated along with the TiDB version. Besides, TiDB has a unified management of the version number after the 1.0 GA release. You can view the version number using the following two methods:
 
 - `select tidb_version()`
 - `tidb-server -V`
@@ -674,10 +674,6 @@ There are [similar limits](https://cloud.google.com/spanner/docs/limits) on Goog
 
 3. As for `delete` and `update`, you can use `limit` plus circulation to operate.
 
-#### Does TiDB release space immediately after deleting data?
-
-`DELETE`, `TRUNCATE` and `DROP` do not release space immediately. For `TRUNCATE` and `DROP` operations, TiDB deletes the data and releases the space after reaching the GC (garbage collection) time (10 minutes by default). For the `DELETE` operation, TiDB deletes the data and does not release the space based on the GC mechanism, but reuses the space when subsequent data is committed to RocksDB and compacted.
-
 #### Can I execute DDL operations on the target table when loading data?
 
 No. None of the DDL operations can be executed on the target table when you load data, otherwise the data fails to be loaded.
@@ -686,9 +682,9 @@ No. None of the DDL operations can be executed on the target table when you load
 
 Yes. But the `load data` does not support the `replace into` syntax.
 
-#### How long does it take to reclaim disk space after deleting data?
+#### Does TiDB release space immediately after deleting data?
 
-None of the `Delete`, `Truncate` and `Drop` operations releases data immediately. For the `Truncate` and `Drop` operations, after the TiDB GC (Garbage Collection) time (10 minutes by default), the data is deleted and the space is released. For the `Delete` operation, the data is deleted but the space is not released according to TiDB GC. When data is written into RocksDB and executes `Compact`, the space is reused.
+None of the `DELETE`, `TRUNCATE` and `DROP` operations release data immediately. For the `TRUNCATE` and `DROP` operations, after the TiDB GC (Garbage Collection) time (10 minutes by default), the data is deleted and the space is released. For the `DELETE` operation, the data is deleted but the space is not released according to TiDB GC. When subsequent data is written into RocksDB and executes `COMPACT`, the space is reused.
 
 #### Why does the query speed getting slow after deleting data?
 
