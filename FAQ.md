@@ -765,3 +765,7 @@ update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_tim
 #### 9.2.2 ERROR 1105 (HY000): other error: unknown error Wire Error(InvalidEnumValue(4004)) 是什么意思？
 
 这类问题一般是 TiDB 和 TiKV 版本不匹配，在升级过程尽量一起升级，避免版本 mismatch。
+
+#### 9.2.3 ERROR 1148 (42000): the used command is not allowed with this TiDB version 问题的处理方法？
+
+这个问题是因为在执行 `LOAD DATA LOCAL` 语句的时候，MySQL 客户端不允许执行此语句（即 `local_infile` 选项为 0）。解决方法是在启动 MySQL 客户端时，用`--local-infile=1`选项。具体启动指令类似：`mysql --local-infile=1 -u root -h 127.0.0.1 -P 4000`。有些 MySQL 客户端需要设置而有些不需要设置的原因是不同版本的 MySQL 客户端对 `local-infile` 的默认值不同。
