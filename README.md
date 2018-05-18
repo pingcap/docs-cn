@@ -157,6 +157,7 @@
   - [万达网络](http://t.cn/RTKm6ds)
   - [佐助金融](http://t.cn/RQeoKaa)
   - [360金融](http://t.cn/RTKnTev)
+  - [中国电信翼支付](http://t.cn/R3Wd9p3)
   - [某电信运营商](http://t.cn/RTYWADg)
 + 更多资源
   - [常用工具](https://github.com/pingcap/tidb-tools)
