@@ -18,6 +18,7 @@ This is a list of TiDB adopters in various industries.
 - [Ping++ (Payment)](https://www.crunchbase.com/organization/ping-5)
 - [Qunar.com (Travel)](https://www.crunchbase.com/organization/qunar-com)
 - [LinkDoc Technology (HealthTech)](https://www.crunchbase.com/organization/linkdoc-technology)
+- [WEIRUIDA (Measurement and Control)](https://pitchbook.com/profiles/company/161294-41)
 - [Yuanfudao (EdTech)](https://www.crunchbase.com/organization/yuanfudao)
 - [ZuoZhu Financial (FinTech)](http://www.zuozh.com/)
 - [360 Financial (FinTech)](https://jinrong.360jie.com.cn/)
