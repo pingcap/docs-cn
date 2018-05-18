@@ -22,6 +22,7 @@ This is a list of TiDB adopters in various industries.
 - [Yuanfudao (EdTech)](https://www.crunchbase.com/organization/yuanfudao)
 - [ZuoZhu Financial (FinTech)](http://www.zuozh.com/)
 - [360 Financial (FinTech)](https://jinrong.360jie.com.cn/)
+- [China Telecom BestPay (FinTech)](https://www.bestpay.com.cn/global/oig/index.html)
 - [GAEA (Gaming)](http://gaea.com/en)
 - [YOOZOO GAMES (Gaming)](http://www.yoozoo.com/en)
 - [FUNYOURS JAPAN (Gaming)](http://company.funyours.co.jp/)
