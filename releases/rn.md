@@ -5,6 +5,7 @@ category: release
 
 # TiDB Release Notes
 
+  - [2.0.2](202.md)
   - [2.0.1](201.md)
   - [2.0](2.0ga.md)
   - [2.0 RC5](2rc5.md)
