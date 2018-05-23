@@ -28,7 +28,7 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 ### tidb_import_data
 
-作用域: SESSION | GLOBAL
+作用域: SESSION
 
 默认值: 0
 
@@ -155,7 +155,7 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 ### tidb_batch_insert
 
-作用域: SESSION | GLOBAL
+作用域: SESSION
 
 默认值: 0
 
@@ -164,7 +164,7 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 ### tidb_batch_delete
 
-作用域: SESSION | GLOBAL
+作用域: SESSION
 
 默认值: 0
 
@@ -173,7 +173,7 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 ### tidb_dml_batch_size
 
-作用域: SESSION | GLOBAL
+作用域: SESSION
 
 默认值: 20000
 
