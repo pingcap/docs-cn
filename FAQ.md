@@ -289,14 +289,18 @@ TiDB 暂不支持数据库层面的会话超时，目前想要实现超时，在
 
 TiDB 版本目前逐步标准化，每次 Release 都包含详细的 Change log，版本功能 [变化详情](https://github.com/pingcap/TiDB/releases)，生产环境是否有必要升级取决于业务系统，建议升级之前详细了解前后版本的功能差异。
 
-版本号说明参考：Release Version: v1.0.3-1-ga80e796，v1.0.3 表示 GA 标准版 -1 表示该版本 commit 1 次，ga80e796 代表版本的 git-hash。
+版本号说明参考：Release Version: `v1.0.3-1-ga80e796`
+
+- `v1.0.3` 表示 GA 标准版
+- `1` 表示该版本 commit 1 次
+- `ga80e796` 代表版本的 `git-hash`
 
 #### 3.1.11 分不清 TiDB master 版本之间的区别，经常用错 TiDB-Ansible 版本?
 
-TiDB 目前社区非常活跃，在 GA 版本发布后，还在不断的优化和修改 BUG，因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的 [新版本发布官方网站](https://pingcap.com/weekly/)。此外 TiDB 安装推荐使用 TiDB-Ansible 进行安装，TiDB-Ansible 的版本也会随着 TiDB 的版本发布进行更新，因此建议用户在安装升级新版本的时候使用最新的 TiDB-Ansible 安装包版本进行安装。 此外，在 TiDB 版本 GA 后，对 TiDB 的版本号进行了统一管理，TiDB 的版本可以通过几种方式进行查看：
+TiDB 目前社区非常活跃，在 1.0 GA 版本发布后，还在不断的优化和修改 BUG，因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的 [新版本发布官方网站](https://pingcap.com/weekly/)。此外 TiDB 安装推荐使用 TiDB-Ansible 进行安装，TiDB-Ansible 的版本也会随着 TiDB 的版本发布进行更新，因此建议用户在安装升级新版本的时候使用最新的 TiDB-Ansible 安装包版本进行安装。此外，在 TiDB 1.0 GA 版本后，对 TiDB 的版本号进行了统一管理，TiDB 的版本可以通过以下两种方式进行查看：
 
-- 通过 `select tidb_version()` 进行查看；
-- 通过执行 `tidb-server -V` 进行查看。
+- 通过 `select tidb_version()` 进行查看
+- 通过执行 `tidb-server -V` 进行查看
 
 #### 3.1.12 有没有图形化部署 TiDB 的工具？
 
