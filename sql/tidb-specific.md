@@ -24,7 +24,7 @@ If you need to set the global variable, run:
 
 ### tidb_import_data
 
-- Scope: SESSION | GLOBAl
+- Scope: SESSION
 - Default value: 0
 - This variable indicates whether to import data from the dump file currently.
 - To speed up importing, the unique index constraint is not checked when the variable is set to 1.
@@ -126,21 +126,21 @@ If you need to set the global variable, run:
 
 ### tidb_batch_insert
 
-- Scope: SESSION | GLOBAL
+- Scope: SESSION
 - Default value: 0
 - This variable is used to set whether to divide the inserted data automatically. It is valid only when `autocommit` is enabled.
 - When inserting a large amount of data, you can set the variable value to true. Then the inserted data is automatically divided into multiple batches and each batch is inserted by a single transaction.
 
 ### tidb_batch_delete
 
-- Scope: SESSION | GLOBAL
+- Scope: SESSION
 - Default value: 0
 - This variable is used to set whether to divide the data for deletion automatically. It is valid only when `autocommit` is enabled.
 - When deleting a large amount of data, you can set the variable value to true. Then the data for deletion is automatically divided into multiple batches and each batch is deleted by a single transaction.
 
 ### tidb_dml_batch_size
 
-- Scope: SESSION | GLOBAL
+- Scope: SESSION
 - Default value: 20000
 - This variable is used to set the automatically divided batch size of the data for insertion/deletion. It is only valid when `tidb_batch_insert` or `tidb_batch_delete` is enabled.
 - When the data size of a single row is very large, the overall data size of 20 thousand rows exceeds the size limit for a single transaction. In this case, set the variable to a smaller value.
