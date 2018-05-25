@@ -288,11 +288,12 @@ table_option:
   | ROW_FORMAT [=] {DEFAULT|DYNAMIC|FIXED|COMPRESSED|REDUNDANT|COMPACT}
   | STATS_PERSISTENT [=] {DEFAULT|0|1}
 ```
-`ALTER TABLE` 用于修改已存在的表的结构，比如：修改表及表属性、新增或删除列、创建或删除索引、修改列及属性等. 以下是几个字段类型的描述:
 
-* `index_col_name`、`index_type` 和 `index_option` 可以参考 [CREATE INDEX 语法](#create-index-语法).
+`ALTER TABLE` 用于修改已存在的表的结构，比如：修改表及表属性、新增或删除列、创建或删除索引、修改列及属性等。以下是几个字段类型的描述：
 
-* `table_option` 目前支持都只是语法上支持。
+* `index_col_name`、`index_type` 和 `index_option` 可以参考 [CREATE INDEX 语法](#create-index-语法)。
+
+* `table_option` 目前支持的修改类型为 `AUTO_INCREMENT` 和 `COMMENT`，其它的只是语法上支持。
 
 下面介绍一下具体操作类型的支持情况。
 
