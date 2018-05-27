@@ -195,19 +195,19 @@ show grants for 'root'@'%';
 先查看该用户是否拥有全局 Insert 权限：
 
 ```sql
-select Insert from mysql.user where user='test' and host='%';
+select Insert_priv from mysql.user where user='test' and host='%';
 ```
 
 如果没有，再查看该用户是否拥有 `db1` 数据库级别的  Insert权限：
 
 ```sql
-select Insert from mysql.db where user='test' and host='%';
+select Insert_priv from mysql.db where user='test' and host='%';
 ```
 
 如果仍然没有，则继续判断是否拥有 `db1.t` 这张表的 Insert 权限：
 
 ```sql
-select tables_priv from mysql.tables_priv where user='test' and host='%' and db='db1';
+select table_priv from mysql.tables_priv where user='test' and host='%' and db='db1';
 ```
 
 ### 权限系统的实现
