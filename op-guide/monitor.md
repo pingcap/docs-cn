@@ -150,7 +150,7 @@ Grafana
 
 一般无需特殊配置，使用默认端口 9091 即可
 
-Prometheus 配置：
+#### Prometheus 配置
 
 在 yaml 配置文件中添加 Push Gateway 地址：
 
