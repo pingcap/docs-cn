@@ -208,19 +208,19 @@ To be more precise, you can check the privilege information in the `Grant` table
 1. Check if `test@%` has global `Insert` privilege:
 
     ```sql
-    select Insert from mysql.user where user='test' and host='%';
+    select Insert_priv from mysql.user where user='test' and host='%';
     ```
 
 2. If not, check if `test@%` has database-level `Insert` privilege at `db1`:
 
     ```sql
-    select Insert from mysql.db where user='test' and host='%';
+    select Insert_priv from mysql.db where user='test' and host='%';
     ```
 
 3. If the result is still empty, check whether `test@%` has table-level `Insert` privilege at `db1.t`:
 
     ```sql
-    select tables_priv from mysql.tables_priv where user='test' and host='%' and db='db1';
+    select table_priv from mysql.tables_priv where user='test' and host='%' and db='db1';
     ```
 
 ### Implementation of the privilege system
