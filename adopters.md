@@ -28,6 +28,7 @@ This is a list of TiDB adopters in various industries.
 - [FUNYOURS JAPAN (Gaming)](http://company.funyours.co.jp/)
 - [Hainan eKing Technology (Enterprise Technology)](https://www.crunchbase.com/organization/hainan-eking-technology)
 - [2Dfire (FoodTech)](http://www.2dfire.com/)
+- [Keruyun (FoodTech)](http://www.keruyun.com/en)
 - [G7 (Internet of Things)](https://www.english.g7.com.cn/)
 - [Yimian Data (Big Data)](https://www.yimian.com.cn)
 - [Wanda Internet Technology Group (Big Data)](http://www.wanda-tech.cn/en/)
