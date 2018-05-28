@@ -318,6 +318,8 @@ To deploy TiDB using a normal user account, take the following steps:
 
 ## Test the cluster
 
+> **Note:** Because TiDB is compatible with MySQL, you must use MySQL client to connect to TiDB directly.
+
 It is recommended to configure load balancing to provide uniform SQL interface.
 
 1. Connect to the TiDB cluster using the MySQL client.
@@ -467,7 +469,7 @@ Run the following command. If it returns `running`, then the NTP service is runn
 
 ```
 $ sudo systemctl status ntpd.service
-● ntpd.service - Network Time Service
+  ntpd.service - Network Time Service
    Loaded: loaded (/usr/lib/systemd/system/ntpd.service; disabled; vendor preset: disabled)
    Active: active (running) since 一 2017-12-18 13:13:19 CST; 3s ago
 ```

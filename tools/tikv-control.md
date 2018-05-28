@@ -5,8 +5,7 @@ category: tools
 
 # TiKV Control User Guide
 
-TiKV Control (`tikv-ctl`) is a command line tool of TiKV, used to manage the cluster. When you compile TiKV, the `tikv-ctl` command is also compiled at the same time. If the cluster is deployed using Ansible, the binary file also exist in the corresponding `tidb-ansible/resources/bin` directory.
-
+TiKV Control (`tikv-ctl`) is a command line tool of TiKV, used to manage the cluster. When you compile TiKV, the `tikv-ctl` command is also compiled at the same time. If the cluster is deployed using Ansible, the `tikv-ctl` binary file exists in the corresponding `tidb-ansible/resources/bin` directory. If the cluster is deployed using the binary, the `tikv-ctl` file is in the `bin` directory together with other files such as `tidb-server`, `pd-server`, `tikv-server`, etc.
 ## General options
 
 `tikv-ctl` provides two operation modes:

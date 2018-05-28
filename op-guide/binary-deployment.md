@@ -132,7 +132,9 @@ The key's randomart image is:
 
 TiDB provides the official binary installation package that supports Linux. For the operating system, it is recommended to use Redhat 7.3+, CentOS 7.3+ and higher versions.
 
-### Operating system: Linux (Redhat 7+, CentOS 7+)
+> **Note:** Because TiDB is compatible with MySQL, you must use MySQL client to connect to TiDB directly.
+
+### Download and extract the package on each node
 
 ```
 # Download the package.
@@ -207,19 +209,29 @@ Follow the steps below to start PD, TiKV and TiDB:
                     --log-file=pd.log
     ```
 
-2. Start TiKV on Node2, Node3 and Node4.
+2. Log in and start TiKV on other nodes: Node2, Node3 and Node4:
+
+    On Node2:
 
     ```bash
     ./bin/tikv-server --pd="192.168.199.113:2379" \
                       --addr="192.168.199.114:20160" \
                       --data-dir=tikv1 \
                       --log-file=tikv.log
+    ```
 
+    On Node3: 
+
+    ```bash
     ./bin/tikv-server --pd="192.168.199.113:2379" \
                       --addr="192.168.199.115:20160" \
                       --data-dir=tikv2 \
                       --log-file=tikv.log
+    ```
 
+    On Node4:
+    
+    ```bash
     ./bin/tikv-server --pd="192.168.199.113:2379" \
                       --addr="192.168.199.116:20160" \
                       --data-dir=tikv3 \
