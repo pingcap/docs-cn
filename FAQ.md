@@ -84,6 +84,49 @@ TiDB 字符集默认就是 UTF8 而且目前只支持 UTF8，字符串就是 mem
 
 一个事务中的语句数量，默认限制最大为 5000 条。
 
+#### 1.1.19 TiDB 是否支持 XA？
+
+虽然 TiDB 的 JDBC 驱动用的就是 MySQL JDBC（Connector / J）, 但是当使用 Atomikos 的时候，数据源要配置成类似这样的配置：`type="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"`。MySQL JDBC XADataSource 连接 TiDB 的模式目前是不支持的。MySQL JDBC 中配置好的 XADataSource 模式，只对 MySQL 数据库起作用（dml 去修改 redo 等）。
+
+Atomikos 配好两个数据源后，JDBC 驱动都要设置成 XA 模式，然后 Atomikos 在操作 TM 和 RM（DB）的时候，会通过数据源的配置，发起带有 XA 指令到 JDBC 层，JDBC 层 XA 模式启用的情况下，会对 InnoDB（如果是 MySQL 的话）下发操作一连串 XA 逻辑的动作，包括 DML 去变更 redo log 等，就是两阶段递交的那些操作。TiDB 的引擎目前版本中，没有对上层应用层 JTA / XA 的支持，是不解析这些 Atomikos 发过来的 XA 类型的操作的。 
+
+MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiDB 本身就通过 Google 的 Percolator 事务模型支持分布式事务，性能稳定性比 XA 要高出很多，所以不会也不需要支持 XA。
+
+#### 1.1.20 show processlist 是否显示系统线程号？
+
+TiDB 的 `show processlist` 与 mysql 的 `show processlist` 显示内容基本一样，不会显示系统进程号，而 ID 表示当前的 session ID。其中 TiDB 的 `show processlist` 和 mysql 的 `show processlist` 区别如下：
+
+1）由于 TiDB 是分布式数据库，tidb-server 实例是无状态的 SQL 解析和执行引擎（具体参考 [TiDB 整体架构](https://pingcap.com/docs-cn/overview/#tidb-整体架构)），用户使用 mysql 客户端登录的是哪个 tidb-server，`show processlist` 就会显示当前连接的这个 tidb-server 中执行的 session 列表，不是整个集群中运行的全部  session 列表；而 mysql 是单机数据库，`show processlist` 列出的是当前整个 mysql 数据库的全部执行 SQL 列表。
+
+2）TiDB 的 `show processlist` 显示内容比起 mysql 来讲，多了一个当前 session 使用内存的估算值（单位 Byte）。
+
+#### 1.1.21 如何修改用户名密码和权限？
+
+TiDB 作为分布式数据库，在TiDB 中修改用户密码建议使用 `set password for 'root'@'%' = '0101001';` 或 `alter` 方法，不推荐使用 `update mysql.user` 的方法进行，这种方法可能会造成其它节点刷新不及时的情况。修改权限也一样，都建议采用官方的标准语法。具体参考 [TiDB 用户账户管理](https://pingcap.com/docs-cn/sql/user-account-management/)
+
+#### 1.1.22 TiDB中，为什么出现后插入数据的自增 ID 反而小？
+
+TiDB 的自增 ID (AUTO\_INCREMENT ID) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 tidb-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。
+此外，TiDB允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 AUTO_INCREMENT 的字段。
+具体参考 [数据定义语言](https://pingcap.com/docs-cn/sql/ddl/)
+
+#### 1.1.23 sql_mode 默认除了通过命令 set 修改，配置文件怎么修改？
+
+TiDB 的 sql_mode 与 mysql 的 sql_mode 设置方法有一些差别，TiDB 不支持配置文件配置设置数据库的 sql\_mode，而只能使用 set 命令去设置，具体方法为：`set @@global.sql_mode ='STRICT_TRANS_TABLES';`。
+
+#### 1.1.24 我们支持哪些认证协议，过程是怎样的？
+
+这一层跟 MySQL 一样，走的 SASL 认证协议，用于用户登陆认证，对密码的处理流程。
+
+客户端连接 TiDB 的时候，走的是 challenge / response（挑战-应答）的认证模式，过程如下：
+第一步：客户端连接服务器；
+
+第二步：服务器发送随机字符串 challenge 给客户端；
+
+第三步：客户端发送 username + response 给服务器；
+
+第四步：服务器验证 response。
+
 ### 1.2 TiDB 原理
 
 #### 1.2.1 存储 TiKV
@@ -151,6 +194,16 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 资源可接受的话，我们建议做 RAID 10，如果资源有限，也可以不做 RAID。
 
+##### 2.1.2.5 TiDB 集群各个组件的配置推荐？
+
+tidb-server 需要 CPU 和内存比较好的机器，参考官网配置要求，如果后期需要开启 binlog，根据业务量的评估和 GC 时间的要求，也需要本地磁盘大一点，不要求 SSD 磁盘；
+
+pd-server 里面存了集群元信息，会有频繁的读写请求，对磁盘 IO 要求相对比较高，磁盘太差会影响整个集群性能，推荐 SSD 磁盘，空间不用太大。另外集群 region 数量越多对 CPU、内存的要求越高；
+
+tikv-server 对 CPU、内存、磁盘要求都比较高，一定要用 SSD 磁盘；
+
+具体参考 [TiDB 软件和硬件环境要求](https://pingcap.com/docs-cn/op-guide/recommendation/)
+
 ### 2.2 安装部署
 
 #### 2.2.1 Ansible 部署方式（强烈推荐）
@@ -202,6 +255,31 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 #### 2.2.3 Docker Compose 快速构建集群（单机部署）
 
 使用 docker-compose 在本地一键拉起一个集群，包括集群监控，还可以根据需求自定义各个组件的软件版本和实例个数，以及自定义配置文件，这种只限于开发环境，详细可参考：[官方文档](https://pingcap.com/docs-cn/op-guide/docker-compose/)。
+
+#### 2.2.4 如何开启 TiDB 中的慢查询日志？
+
+TiDB 中，对慢查询的定义在 tidb-ansible 的 `conf/tidb.yml` 配置文件中，`slow-threshold: 300`，这个参数是配置慢查询记录阈值的，单位是 ms。
+
+如果希望生成单独的慢查询日志文件，修改 inventory.ini 配置文件的参数 `enable_slow_query_log` 为 True。
+
+如上配置修改之后，需要执行 `ansible-playbook rolling_update.yml --tags=tidb`，对 tidb-server 实例进行滚动升级，升级完成后，tidb-server 将在 `tidb_slow_query.log`
+文件中记录慢查询日志。
+
+#### 2.2.5 首次部署 TiDB 集群时，没有配置 tikv 的 Label 信息，在后续如何添加配置 Label？
+
+TiDB 的 Label 设置是与集群的部署架构相关的，是集群部署中的重要内容，是 PD 进行全局管理和调度的依据。如果集群在初期部署过程中没有设置 Label，需要在后期对部署结构进行调整，就需要手动通过 PD 的管理工具 pd-ctl 来添加 location-labels 信息，例如：`config set location-labels "zone, rack, host"`（根据实际的 label 层级名字配置）。pd-ctl 的使用参考 [PD Control 使用说明](https://pingcap.com/docs-cn/tools/pd-control/)
+
+#### 2.2.6 为什么测试磁盘的 dd 命令用 oflag=direct 这个选项？
+
+Direct 模式就是把写入请求直接封装成 IO 指令发到磁盘，这样是为了绕开文件系统的缓存，可以直接测试磁盘的真实的 IO 读写能力。
+
+#### 2.2.7 如何用 fio 命令测试 TiKV 实例的磁盘性能
+
+随机读测试：
+`./fio -ioengine=libaio -bs=32k -direct=1 -thread -rw=randread  -size=10G -filename=fio_randread_test.txt -name='PingCAP' -iodepth=4 -runtime=60`
+
+顺序写和随机读混合测试：
+`./fio -ioengine=libaio -bs=32k -direct=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randr_write_test.txt -name='PingCAP' -iodepth=4 -runtime=60`
 
 ### 2.3 升级
 
@@ -400,6 +478,10 @@ TiClient Region Error 该指标描述的是在 TiDB-server 作为客户端通过
 
 information_schema 库中的 tables 表里的 create_time 即为表的真实创建时间。
 
+#### 3.3.9 TiDB 的日志中 EXPENSIVE_QUERY 是什么意思？
+
+TiDB 在执行 SQL 时，预估出来每个 operator 处理了超过 10000 条数据就认为这条 query 是 expensive query。可以通过修改 tidb-server 配置参数来对这个门限值进行调整，调整后需要重新启动 tidb-server。
+
 ### 3.4 TiKV 管理
 
 #### 3.4.1 TiKV 集群副本建议配置数量是多少，是不是最小高可用配置（3个）最好？
@@ -489,6 +571,10 @@ TiKV 支持单独进行接口调用，理论上也可以起个实例做为 Cache
 - 减少 TiDB 与 TiKV 之间的数据传输。
 - 计算下推，充分利用 TiKV 的分布式计算资源。
 
+#### 3.4.20 IO error: No space left on device While appending to file
+
+这是磁盘空间不足导致的，需要加节点或者扩大磁盘空间。
+
 ### 3.5 TiDB 测试
 
 #### 3.5.1 TiDB Sysbench 基准测试结果如何？
@@ -577,6 +663,14 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 ##### 4.2.1.3 有没有现成的同步方案，可以将数据同步到 Hbase、Elasticsearh 等其他存储？
 
 没有，目前依赖程序自行实现。
+
+##### 4.2.1.4 利用 Syncer 做数据同步的时候是否支持只同步部分表？
+
+支持，具体参考 syncer 使用手册 [Syncer 使用文档](https://pingcap.com/docs-cn/tools/syncer/)
+
+##### 4.2.1.5 频繁的执行 DDL 会影响 Syncer 同步速度吗？
+
+频繁执行 DDL 对同步速度会有影响。对于 Sycner 来说，DDL 是串行执行的，当同步遇到了 DDL，就会以串行的方式执行，所以这种场景就会导致同步速度下降。
 
 #### 4.2.2 Wormhole 工具
 
@@ -684,6 +778,18 @@ Count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 
 可以通过 `show stats_healthy` 来查看 Healthy 字段，一般小于等于 60 的表需要做 analyze。
 
+#### 5.1.7 SQL 的执行计划展开成了树，ID 的序号有什么规律吗？这棵树的执行顺序会是怎么样的？
+
+ID 没什么规律，只要是唯一就行，不过生成的时候，是有一个计数器，生成一个 plan 就加一，执行的顺序和序号无关，整个执行计划是一颗树，执行时从根节点开始，不断地向上返回数据。
+
+执行计划的理解，请参考 [理解 TiDB 执行计划](https://pingcap.com/docs-cn/sql/understanding-the-query-execution-plan/)
+
+#### 5.1.8 TiDB 执行计划中，task cop 在一个 root 下，这个是并行的么？
+
+目前 TiDB 的计算任务隶属于两种不同的 task：cop task 和 root task。cop task 是指被下推到 KV 端分布式执行的计算任务，root task 是指在 TiDB 端单点执行的计算任务。一般来讲 root task 的输入数据是来自于 cop task 的；但是 root task 在处理数据的时候，TiKV 上的 cop task 也可以同时处理数据，等待 TiDB 的 root task 拉取，所以从这个观点上来看，他们是并行的；但是存在数据上下游关系；在执行的过程中，某些时间段其实也是并行的，第一个 cop task 在处理 [100, 200] 的数据，第二个 cop task 在处理 [1, 100] 的数据。
+
+执行计划的理解，请参考 [理解 TiDB 执行计划](https://pingcap.com/docs-cn/sql/understanding-the-query-execution-plan/)
+
 ## 六、数据库优化
 
 ### 6.1 TiDB
@@ -691,6 +797,12 @@ Count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 #### 6.1.1 TiDB 参数及调整
 
 详情参考：[https://pingcap.com/docs-cn/sql/server-command-option](https://pingcap.com/docs-cn/sql/server-command-option)
+
+#### 6.1.2 如何打散热点
+
+TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指的是 Region 的读写访问热点。而 TiDB 中对于 PK 非整数或没有 PK 的表，可以通过设置 `SHARD_ROW_ID_BITS` 来适度分解 Region 分片，以达到打散 Region 热点的效果。
+
+具体可参考官网 [TiDB 专用系统变量和语法](https://pingcap.com/docs-cn/sql/tidb-specific/) 中 `SHARD_ROW_ID_BITS` 的介绍。
 
 ### 6.2 TiKV
 
@@ -715,6 +827,20 @@ TiDB 使用 Prometheus + Grafana 组成 TiDB 数据库系统的监控系统，�
 #### 7.2.2 Prometheus 监控数据默认 1个月自动清除一次，可以自己设定成2个月或者手动删除吗？
 
 可以的，在 Prometheus 启动的机器上，找到启动脚本，然后修改启动参数，然后重启 Prometheus 生效。
+
+#### 7.2.3 Region Health 监控项
+
+TiDB-2.0 版本中，PD metric 监控页面中，对 Region 健康度进行了监控，其中 Region Health 监控项是对所有 Region 副本状况的一些统计。其中 miss 是缺副本，extra 是多副本。同时也增加了按 Label 统计的隔离级别，level-1 表示这些 Region 的副本在第一级 Label 下是物理隔离的，没有配置 location label 时所有 Region 都在 level-0。
+
+#### 7.2.4 Statement Count 监控项中的 selectsimplefull 是什么意思？
+
+代表全表扫，但是可能是很小的系统表。
+
+#### 7.2.5 监控上的 QPS 和 Statement OPS 有什么区别？
+
+QPS 会统计执行的所有 SQL 命令，包括 use database、load data、begin、commit、set、show、insert、select 等。
+
+Statement OPS 只统计 select、updat、insert 等业务相关的，所以 Statement OPS 的统计和业务比较相符。
 
 ## 八、Cloud TiDB
 
@@ -773,3 +899,9 @@ update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_tim
 #### 9.2.3 ERROR 1148 (42000): the used command is not allowed with this TiDB version 问题的处理方法？
 
 这个问题是因为在执行 `LOAD DATA LOCAL` 语句的时候，MySQL 客户端不允许执行此语句（即 `local_infile` 选项为 0）。解决方法是在启动 MySQL 客户端时，用 `--local-infile=1` 选项。具体启动指令类似：`mysql --local-infile=1 -u root -h 127.0.0.1 -P 4000`。有些 MySQL 客户端需要设置而有些不需要设置，原因是不同版本的 MySQL 客户端对 `local-infile` 的默认值不同。
+
+#### 9.2.4 ERROR 9001 (HY000): PD server timeoutstart timestamp may fall behind safepoint
+
+这个报错一般是 TiDB 访问 PD 出了问题，TiDB 后台有个 worker 会不断地从 PD 查询 safepoint，如果超过 100s 查不成功就会报这个错。
+
+TiDB 常见错误码请参考 [错误码与故障诊断](https://pingcap.com/docs-cn/sql/error/)
