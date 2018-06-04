@@ -102,7 +102,7 @@ TiDB 的 `show processlist` 与 mysql 的 `show processlist` 显示内容基本�
 
 #### 1.1.21 如何修改用户名密码和权限？
 
-TiDB 作为分布式数据库，在TiDB 中修改用户密码建议使用 `set password for 'root'@'%' = '0101001';` 或 `alter` 方法，不推荐使用 `update mysql.user` 的方法进行，这种方法可能会造成其它节点刷新不及时的情况。修改权限也一样，都建议采用官方的标准语法。具体参考 [TiDB 用户账户管理](https://pingcap.com/docs-cn/sql/user-account-management/)
+TiDB 作为分布式数据库，在 TiDB 中修改用户密码建议使用 `set password for 'root'@'%' = '0101001';` 或 `alter` 方法，不推荐使用 `update mysql.user` 的方法进行，这种方法可能会造成其它节点刷新不及时的情况。修改权限也一样，都建议采用官方的标准语法。具体参考 [TiDB 用户账户管理](https://pingcap.com/docs-cn/sql/user-account-management/)
 
 #### 1.1.22 TiDB中，为什么出现后插入数据的自增 ID 反而小？
 
