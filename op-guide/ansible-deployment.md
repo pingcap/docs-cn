@@ -44,7 +44,8 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 下载 2.0 GA 版本：
 
 ```
-git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
+$ sudo yum -y install git
+$ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
 ```
 
 或
@@ -52,7 +53,8 @@ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
 下载 master 版本：
 
 ```
-git clone https://github.com/pingcap/tidb-ansible.git
+$ sudo yum -y install git
+$ git clone https://github.com/pingcap/tidb-ansible.git
 ```
 
 ## 在中控机器上安装 Ansible 及其依赖
@@ -81,6 +83,8 @@ inventory.ini 文件路径为 tidb-ansible/inventory.ini。
 - 2 个 TiDB 节点
 - 3 个 PD 节点
 - 3 个 TiKV 节点，第一台 TiDB 机器同时用作监控机
+
+> 默认情况下，单台机器上只需部署一个 TiKV 实例。如果你的 TiKV 部署机器 CPU 及内存配置是[部署建议](recommendation.md)的两倍或以上，并且拥有两块 SSD 硬盘或单块容量超 2T 的 SSD 硬盘, 可以考虑部署两实例，但不建议部署两个以上实例。
 
 ### 单机单 TiKV 实例集群拓扑如下
 
@@ -195,7 +199,7 @@ location_labels = ["host"]
         - 推荐设置：实例数*参数值 = CPU_Vcores * 0.8。
 
     3.  如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
-        - `capacity` = (DISK - 日志空间) / TiKV 实例数量，例如 "100GB"
+        - `capacity` = (磁盘总容量 - 日志占用容量) / TiKV 实例数量，例如 "100GB"
 
 ### inventory.ini 变量调整
 
