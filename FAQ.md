@@ -373,30 +373,38 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 - 多个 DDL 语句一起执行的时候，后面的几个 DDL 语句会比较慢。原因是当前 TiDB 集群中 DDL 操作是串行执行的。
 - 在正常集群启动后，第一个 DDL 操作的执行时间可能会比较久，一般在 30s 左右，这个原因是刚启动时 TiDB 在竞选处理 DDL 的 leader。
-- 在滚动升级或者停机升级时，由于停机顺序（先停 PD 再停 TiDB）或者用 `kill -9` 指令停 TiDB 导致 TiDB 没有及时清理注册数据，那么会影响 TiDB 启动后 10min 内的 DDL 语句处理时间。这段时间内运行 DDL 语句时，每个 DDL 状态变化都需要等待 2 * lease（默认 lease = 10s）。
+- 在滚动升级或者停机升级时，由于停机顺序（先停 PD 再停 TiDB）或者用 `kill -9` 指令停 TiDB 导致 TiDB 没有及时清理注册数据，那么会影响 TiDB 启动后 10min 内的 DDL 语句处理时间。这段时间内运行 DDL 语句时，每个 DDL 状态变化都需要等待 2 * lease（默认 lease = 45s）。
 - 当集群中某个 TiDB 与 PD 之间发生通讯问题，即 TiDB 不能从 PD 及时获取或更新版本信息，那么这时候 DDL 操作的每个状态处理需要等待 2 * lease。
 
-#### 3.3.3 TiDB 可以使用 S3 作为后端存储吗？
+#### 3.3.3 DDL 在正常情况下的耗时是多少？
+
+当只有一个 DDL 操作时，大部分 DDL 操作的耗时都约等于定时检查 DDL job 完成的间隔时间（其中间隔分两种：add index 操作为 3s，其他 DDL 操作为 1s）。如果接收 DDL 请求的 TiDB 和 DDL owner 所处的 TiDB 是一台的话，此 DDL 操作耗时为真实修改 schema 的耗时(约为上百毫秒)，即可忽略间隔时间，比如只有一台 TiDB 的集群。在正常情况下不属于此大部分 DDL 操作的是 add index 操作，且此操作所在表的行数过比较多时。
+
+这个间隔耗时问题后续会有优化。
+
+在此 DDL 操作开始前还有未完成的 DDL 操作时，还需加上处理之前 DDL 操作的时间。
+
+#### 3.3.4 TiDB 可以使用 S3 作为后端存储吗？
 
 不可以，目前 TiDB 只支持分布式存储引擎和 Goleveldb/Rocksdb/Boltdb 引擎；
 
-#### 3.3.4 Infomation_schema 能否支持更多真实信息？
+#### 3.3.5 Infomation_schema 能否支持更多真实信息？
 
 Infomation_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。当前 TiDB 支持的：Infomation\_schema 请参考[TiDB 系统数据库说明文档](https://pingcap.com/docs-cn/sql/system-database)。
 
-#### 3.3.5 TiDB Backoff type 主要原因?
+#### 3.3.6 TiDB Backoff type 主要原因?
 
 TiDB-server 与 TiKV-server 随时进行通讯，在进行大量数据操作过程中，会出现 Server is busy 或者 backoff.maxsleep 20000ms 的日志提示信息，这是由于 TiKV-server 在处理过程中系统比较忙而出现的提示信息，通常这时候可以通过系统资源监控到 TiKV 主机系统资源使用率比较高的情况出现。如果这种情况出现，可以根据资源使用情况进行相应的扩容操作。
 
-#### 3.3.6 TiDB TiClient type 主要原因？
+#### 3.3.7 TiDB TiClient type 主要原因？
 
 TiClient Region Error 该指标描述的是在 TiDB-server 作为客户端通过 KV 接口访问 TiKV-server 进行数据操作过程中，TiDB-server 操作 TiKV-server 中的 Region 数据出现的错误类型与 mertic 指标，错误类型包括 not_leader、stale_epoch。出现这些错误的情况是当 TiDB-server 根据自己的缓存信息去操作 Region leader 数据的时候，Region leader 发生了迁移或者 TiKV 当前的 Region 信息与 TiDB 缓存的路由信息不一致而出现的错误提示。一般这种情况下，TiDB-server 都会自动重新从 PD 获取最新的路由数据，重做之前的操作。
 
-#### 3.3.7 TiDB 同时支持的最大并发连接数？
+#### 3.3.8 TiDB 同时支持的最大并发连接数？
 
 当前版本 TiDB 没有最大连接数的限制，如果并发过大导致响应时间增加，可以通过增加 TiDB 节点进行扩容。
 
-#### 3.3.8 如何查看某张表创建的时间？
+#### 3.3.9 如何查看某张表创建的时间？
 
 information_schema 库中的 tables 表里的 create_time 即为表的真实创建时间。
 
