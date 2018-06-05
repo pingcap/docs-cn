@@ -146,3 +146,17 @@ all regions are healthy
 ```
 
 命令执行成功会打印上面的信息，否则会打印出有错误的 Region 列表。目前可以检出的错误包括 last index、commit index 和 apply index 之间的不匹配，以及 Raft log 的丢失。其他一些情况，比如 Snapshot 文件损坏等仍然需要后续的支持。
+
+### 查看 region 的 properties 信息
+
+本地查看部署在 /path/to/tikv 的 tikv 上面 region 2 的 properties 信息：
+
+```bash
+$ tikv-ctl --db /path/to/tikv/data/db region-properties -r 2
+```
+
+在线查看运行在 127.0.0.1:20160 的 tikv 上面 region 2 的 properties 信息：
+
+```bash
+$ tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
+```
