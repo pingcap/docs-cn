@@ -55,3 +55,7 @@ curl localhost:2379/pd/api/v1/stores
 ```
 
 If the state of all the TiKV instances is "Up", you have successfully deployed a TiKV cluster.
+
+## What's next?
+
+If you want to try the Go client, see [Try Two Types of APIs](go-client-api.md).
