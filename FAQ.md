@@ -276,12 +276,12 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 #### 2.2.7 如何用 fio 命令测试 TiKV 实例的磁盘性能？
 
-随机读测试：
+- 随机读测试：
 ```
 ./fio -ioengine=libaio -bs=32k -direct=1 -thread -rw=randread  -size=10G -filename=fio_randread_test.txt -name='PingCAP' -iodepth=4 -runtime=60
 ```
 
-顺序写和随机读混合测试：
+- 顺序写和随机读混合测试：
 ```
 ./fio -ioengine=libaio -bs=32k -direct=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randr_write_test.txt -name='PingCAP' -iodepth=4 -runtime=60
 ```
