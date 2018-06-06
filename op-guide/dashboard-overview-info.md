@@ -5,87 +5,133 @@ category: monitoring
 
 # 重要监控指标详解
 
-使用 ansible 部署 tidb 集群时，一键部署监控系统 (prometheus/grafana)，监控架构请看 [TiDB 监控框架概述](monitor-overview.md)
+使用 ansible 部署 tidb 集群时，一键部署监控系统 (prometheus/grafana)，监控架构请看 [TiDB 监控框架概述](monitor-overview.md)。
 
-目前 grafana dashboard 整体分为四个 dashboard，node_export，PD，TIDB，TIKV。 内容较多，主要在于尽快让 TIDB 开发确认问题。
+目前 grafana dashboard 整体分为 PD、TIDB、TIKV、Node\_exporter、Overview 等。内容较多，主要在于尽快让 TIDB 开发确认问题。
 
 对于日常运维，我们单独挑选出重要的 metrics 放在 overview 页面，方便日常运维人员观察集群组件(PD, TIDB, TIKV)使用状态以及集群使用状态 。
 
-以下为 overview dashboard 说明：
+以下为 Overview Dashboard 监控说明：
 
 ## 说明
 
--   PD
-    -   Storage Capacity   :   tidb 集群总可用数据库空间大小
-    -   Current Storage Size   :   tidb 集群目前已用数据库空间大小
-    -   Store Status  -- up store   :   tikv 正常节点数量
-    -   Store Status  -- down store   :   tikv 异常节点数量
++ Services Port Status
 
-        如果大于0，证明有节点不正常
-    -   Store Status  -- offline store   :   手动执行下线操作tikv节点数量
-    -   Store Status  -- Tombstone store   :   下线成功的tikv节点数量
-    -   Current storage usage   :   tikv 集群存储空间占用率
+	- Services Online：各服务在线节点数量
 
-        超过 80% 应考虑添加 tikv 节点
-    -   99% completed_cmds_duration_seconds   :   99% pd-server 请求完成时间
+	- Services Offline：各服务 Down 掉节点数量
 
-        小于 5ms
-    -   average completed_cmds_duration_seconds   :   pd-server 请求平均完成时间
++ PD
 
-        小于 50ms
-    -   leader balance ratio   :   leader ratio 最大的节点与最小的节点的差
+	- Storage Capacity：tidb 集群总可用数据库空间大小
 
-        均衡状况下一般小于 5%，节点重启时会比较大
-    -   region balance ratio   :   region ratio 最大的节点与最小的节点的差
+	- Current Storage Size：tidb 集群目前已用数据库空间大小
 
-        均衡状况下一般小于 5%，新增/下线节点时会比较大
+	- Number of Regions：当前集群的 region 总量
+	
+	- Leader Balance Ratio：leader 数量最多和最少节点相差的百分比，一般小于 5%，节点重启时会有比较大的波动
 
--   TiDB
-    -   handle_requests_duration_seconds   :   请求PD获取TSO响应时间
+   - Region Balance Ratio：region 数量最多和最少节点相差的百分比，一般小于 5%，新增/下线节点时相差比较大
 
-        小于100ms
-    -   tidb server QPS   :   集群的请求量
+   + Store Status：集群 TiKV 节点的状态
 
-        和业务相关
-    -   connection count   :   从业务服务器连接到数据库的连接数
+		- Up Stores：正常运行的 TiKV 节点数量
 
-        和业务相关。但是如果连接数发生跳变，需要查明原因。比如突然掉为0，可以检查网络是否中断；如果突然上涨，需要检查业务。
-    -   statement count   :   单位时间内不同类型语句执行的数目
+		- Disconnect Stores：短时间内通信异常的 TiKV 节点数量
 
-        这个和业务相关
-    -   Query Duration 99th percentile   :   99% 的query时间
+		- LowSpace Stores：剩余可用空间小于 80% 的 TiKV 节点数量
 
--   TiKV
-    -   99%  & 99.99%  scheduler command duration   :   99% & 99.99% 命令执行的时间
+		- Down Stores：停止工作的 TiKV 节点数量，如果大于0，说明有节点不正常
 
-        99% 小于 50ms；99.99% 小于100ms
-    -   95%  & 99% storage async_request duration   :   95%  & 99% Raft 命令执行时间
+		- Offline Stores：正在下线的 TiKV 节点数量（正在下线的 TiKV 节点还在提供服务）
 
-        95% 小于 50ms；99% 小于100ms
-    -   server report failure message   :   发送失败或者收到了错误的 message
+		- Tombstone stores：下线成功的tikv节点数量
 
-        如果出现了大量的 unreachadble 的消息，表明系统网络出现了问题。如果有 store not match 这样的错误，表明收到了不属于这个集群发过来的消息
-    -   Vote   :   Raft vote 的频率
+	- 99% completed\_cmds\_duration\_seconds：单位时间内，99% 的 pd-server 请求执行时间小于监控曲线的值，一般 <= 5ms
 
-        通常这个值只会在发生 split 的时候有变动，如果长时间出现了 vote 偏高的情况，证明系统出现了严重的问题，有一些节点无法工作了
-    -   95% & 99% coprocessor request duration   :   95% & 99%  coprocessor 执行时间
+	- handle\_requests\_duration\_seconds：TiDB 向 PD 发送请求到返回 tso 等信息的时间，一般 <= 5ms
 
-        和业务相关，但通常不会出现持续高位的值
-    -   Pending task   :   累积的任务数量
++ TiDB
 
-        除了 pd worker，其他任何偏高都属于异常
-    -   stall   :   RocksDB Stall 时间
+	- Statement OPS：SQL 执行数量统计（包含 select、insert、update 等）
 
-        大于 0，表明 RocksDB 忙不过来，需要注意 IO 和 CPU 了
-    -   channel full   :   channel 满了，表明线程太忙无法处理
+	- Duration：SQL 执行的时间
 
-        如果大于 0，表明线程已经没法处理了
-    -   95% send_message_duration_seconds   :   95% 发送消息的时间
+	- QPS By Instance：每个 TiDB 上的 QPS
 
-        小于50ms
-    -   leader/region   :   每个tikv的leader/region数量
+	- Failed Query OPM：失败 SQL 的统计，例如语法错误、主键冲突等
 
-        和业务相关
+	- connection count：每个 TiDB 的连接数
+
+	- Heap Memory Usage：每个 TiDB 使用的堆内存大小
+
+	- Transaction OPS：事务执行数量统计
+
+	- Transaction Duration：事务执行的时间
+
+	- KV Cmd OPS：KV 命令执行数量统计
+
+	- KV Cmd Duration 99：KV 命令执行的时间
+
+	- PD TSO OPS：TiDB 从 PD 获取 TSO 的数量
+
+	- PD TSO Wait Duration：TiDB 向 PD 发送 TSO 请求的时间
+
+	- TiClient Region Error OPS：TiKV 返回 Region 相关错误信息的数量
+
+	- Lock Resolve OPS：事务冲突相关的数量
+
+	- Load Schema Duration：TiDB 从 TiKV 获取 Schema 的时间
+
+	- KV Backoff OPS：TiKV 返回错误信息的数量（事务冲突等）
+
++ TiKV
+
+	- leader：各个 TiKV 节点上 leader 的数量分布
+
+	- region：各个 TiKV 节点上 region 的数量分布
+
+	- CPU：各个 TiKV 节点的 CPU 使用率
+
+	- Memory：各个 TiKV 节点的内存使用量
+
+	- store size：各个 TiKV 节点存储的数据量
+
+	- cf size：整个集群不同 cf 存储的数据量
+
+	- channel full：正常情况显示 no data，如果有了监控值，说明对应 TiKV 节点的消息处理不过来了
+
+	- server report failure：正常情况显示 no data，如果出现了 unreachable，说明 TiKV 之间通信有问题
+
+	- scheduler pending commands：写入堆积的数量，不持续很高属于正常现象
+
+	- coprocessor pending requests：正常情况监控为 0 或者数量很少
+
+	- coprocessor executor count：不同类型的查询操作数量
+
+	- coprocessor request duration：TiKV 中查询消耗的时间
+
+	- raft store CPU：raftstore 线程的 CPU 使用率，目前为单线程，超过 80% 说明使用率很高
+
+	- Coprocessor CPU：TiKV 查询线程的 CPU 使用率，和业务相关，复杂查询会使用大量的 CPU 资源
+
++ System Info
+
+	- Vcores：CPU 核心数量
+
+	- Memory：内存总大小
+
+	- CPU Usage：CPU 使用率，最大为 100%
+
+	- Load [1m]：1 分钟的负载情况
+
+	- Memory Available：剩余内存大小
+
+	- Network Traffic：网卡流量统计
+
+	- TCP Retrans：网络监控，TCP 相关信息统计
+
+	- IO Util：磁盘使用率，最高为 100%，一般到 80% - 90% 就需要考虑加节点
 
 ## 图例
 
