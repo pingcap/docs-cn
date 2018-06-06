@@ -195,11 +195,9 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ##### 2.1.2.5 TiDB 集群各个组件的配置推荐？
 
-tidb-server 需要 CPU 和内存比较好的机器，参考官网配置要求，如果后期需要开启 binlog，根据业务量的评估和 GC 时间的要求，也需要本地磁盘大一点，不要求 SSD 磁盘；
-
-pd-server 里面存了集群元信息，会有频繁的读写请求，对磁盘 IO 要求相对比较高，磁盘太差会影响整个集群性能，推荐 SSD 磁盘，空间不用太大。另外集群 region 数量越多对 CPU、内存的要求越高；
-
-tikv-server 对 CPU、内存、磁盘要求都比较高，一定要用 SSD 磁盘。
+- TiDB 需要 CPU 和内存比较好的机器，参考官网配置要求，如果后期需要开启 Binlog，根据业务量的评估和 GC 时间的要求，也需要本地磁盘大一点，不要求 SSD 磁盘；
+- PD 里面存了集群元信息，会有频繁的读写请求，对磁盘 IO 要求相对比较高，磁盘太差会影响整个集群性能，推荐 SSD 磁盘，空间不用太大。另外集群 Region 数量越多对 CPU、内存的要求越高；
+- TiKV 对 CPU、内存、磁盘要求都比较高，一定要用 SSD 磁盘。
 
 详情可参考 [TiDB 软硬件环境需求](op-guide/recommendation.md)。
 
@@ -274,17 +272,19 @@ pd-ctl 的使用参考 [PD Control 使用说明](tools/pd-control.md)。
 
 #### 2.2.6 为什么测试磁盘的 dd 命令用 oflag=direct 这个选项？
 
-Direct 模式就是把写入请求直接封装成 IO 指令发到磁盘，这样是为了绕开文件系统的缓存，可以直接测试磁盘的真实的 IO 读写能力。
+Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这样是为了绕开文件系统的缓存，可以直接测试磁盘的真实的 I/O 读写能力。
 
-#### 2.2.7 如何用 fio 命令测试 TiKV 实例的磁盘性能
+#### 2.2.7 如何用 fio 命令测试 TiKV 实例的磁盘性能？
 
 随机读测试：
-
-`./fio -ioengine=libaio -bs=32k -direct=1 -thread -rw=randread  -size=10G -filename=fio_randread_test.txt -name='PingCAP' -iodepth=4 -runtime=60`
+```
+./fio -ioengine=libaio -bs=32k -direct=1 -thread -rw=randread  -size=10G -filename=fio_randread_test.txt -name='PingCAP' -iodepth=4 -runtime=60
+```
 
 顺序写和随机读混合测试：
-
-`./fio -ioengine=libaio -bs=32k -direct=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randr_write_test.txt -name='PingCAP' -iodepth=4 -runtime=60`
+```
+./fio -ioengine=libaio -bs=32k -direct=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randr_write_test.txt -name='PingCAP' -iodepth=4 -runtime=60
+```
 
 ### 2.3 升级
 
@@ -499,7 +499,7 @@ TiKV 本地存储的 cluster ID 和指定的 PD 的 cluster ID 不一致。在�
 
 #### 3.4.3 TiKV 启动报错：duplicated store address
 
-启动参数中的地址已经被其他的 TiKV 注册在 PD 集群中了。造成该错误的常见情况：TiKV `--data-dir` 指定的路径下没有数据文件夹（删除或移动后没有更新 --data-dir），用之前参数重新启动该 TiKV。请尝试用 pd-ctl 的 [store delete](https://github.com/pingcap/pd/tree/master/pdctl#store-delete-store_id) 功能，删除之前的 store, 然后重新启动 TiKV 即可。
+启动参数中的地址已经被其他的 TiKV 注册在 PD 集群中了。造成该错误的常见情况：TiKV `--data-dir` 指定的路径下没有数据文件夹（删除或移动后没有更新 --data-dir），用之前参数重新启动该 TiKV。请尝试用 pd-ctl 的 [store delete](https://github.com/pingcap/pd/tree/master/pdctl#store-delete-store_id) 功能，删除之前的 store，然后重新启动 TiKV 即可。
 
 #### 3.4.4 TiKV master 和 slave 用的是一样的压缩算法，为什么效果不一样?
 
@@ -670,7 +670,7 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 ##### 4.2.1.4 利用 Syncer 做数据同步的时候是否支持只同步部分表？
 
-支持，具体参考 syncer 使用手册 [Syncer 使用文档](tools/syncer.md)
+支持，具体参考 Syncer 使用手册 [Syncer 使用文档](tools/syncer.md)
 
 ##### 4.2.1.5 频繁的执行 DDL 会影响 Syncer 同步速度吗？
 
