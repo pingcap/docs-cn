@@ -5,11 +5,11 @@ category: monitoring
 
 # 重要监控指标详解
 
-使用 ansible 部署 tidb 集群时，一键部署监控系统 (prometheus/grafana)，监控架构请看 [TiDB 监控框架概述](monitor-overview.md)。
+使用 Ansible 部署 TiDB 集群时，一键部署监控系统 (Prometheus/Grafana)，监控架构请看 [TiDB 监控框架概述](monitor-overview.md)。
 
-目前 grafana dashboard 整体分为 PD、TIDB、TIKV、Node\_exporter、Overview 等。内容较多，主要在于尽快让 TIDB 开发确认问题。
+目前 Grafana Dashboard 整体分为 PD、TIDB、TIKV、Node\_exporter、Overview 等。内容较多，主要在于尽快让 TiDB 开发确认问题。
 
-对于日常运维，我们单独挑选出重要的 metrics 放在 overview 页面，方便日常运维人员观察集群组件(PD, TIDB, TIKV)使用状态以及集群使用状态 。
+对于日常运维，我们单独挑选出重要的 Metrics 放在 Overview 页面，方便日常运维人员观察集群组件(PD, TiDB, TiKV)使用状态以及集群使用状态 。
 
 以下为 Overview Dashboard 监控说明：
 
@@ -23,15 +23,15 @@ category: monitoring
 
 + PD
 
-	- Storage Capacity：tidb 集群总可用数据库空间大小
+	- Storage Capacity：TiDB 集群总可用数据库空间大小
 
-	- Current Storage Size：tidb 集群目前已用数据库空间大小
+	- Current Storage Size：TiDB 集群目前已用数据库空间大小
 
-	- Number of Regions：当前集群的 region 总量
+	- Number of Regions：当前集群的 Region 总量
 	
-	- Leader Balance Ratio：leader 数量最多和最少节点相差的百分比，一般小于 5%，节点重启时会有比较大的波动
+	- Leader Balance Ratio：Leader 数量最多和最少节点相差的百分比，一般小于 5%，节点重启时会有比较大的波动
 
-   - Region Balance Ratio：region 数量最多和最少节点相差的百分比，一般小于 5%，新增/下线节点时相差比较大
+   - Region Balance Ratio：Region 数量最多和最少节点相差的百分比，一般小于 5%，新增/下线节点时相差比较大
 
    + Store Status：集群 TiKV 节点的状态
 
@@ -41,15 +41,15 @@ category: monitoring
 
 		- LowSpace Stores：剩余可用空间小于 80% 的 TiKV 节点数量
 
-		- Down Stores：停止工作的 TiKV 节点数量，如果大于0，说明有节点不正常
+		- Down Stores：停止工作的 TiKV 节点数量，如果大于 0，说明有节点不正常
 
 		- Offline Stores：正在下线的 TiKV 节点数量（正在下线的 TiKV 节点还在提供服务）
 
-		- Tombstone stores：下线成功的tikv节点数量
+		- Tombstone stores：下线成功的 TiKV 节点数量
 
 	- 99% completed\_cmds\_duration\_seconds：单位时间内，99% 的 pd-server 请求执行时间小于监控曲线的值，一般 <= 5ms
 
-	- handle\_requests\_duration\_seconds：TiDB 向 PD 发送请求到返回 tso 等信息的时间，一般 <= 5ms
+	- handle\_requests\_duration\_seconds：TiDB 向 PD 发送请求到返回 TSO 等信息的时间，一般 <= 5ms
 
 + TiDB
 
@@ -87,9 +87,9 @@ category: monitoring
 
 + TiKV
 
-	- leader：各个 TiKV 节点上 leader 的数量分布
+	- leader：各个 TiKV 节点上 Leader 的数量分布
 
-	- region：各个 TiKV 节点上 region 的数量分布
+	- region：各个 TiKV 节点上 Region 的数量分布
 
 	- CPU：各个 TiKV 节点的 CPU 使用率
 
@@ -97,11 +97,11 @@ category: monitoring
 
 	- store size：各个 TiKV 节点存储的数据量
 
-	- cf size：整个集群不同 cf 存储的数据量
+	- cf size：集群不同 CF 存储的数据量
 
-	- channel full：正常情况显示 no data，如果有了监控值，说明对应 TiKV 节点的消息处理不过来了
+	- channel full：正常情况显示 No data，如果有了监控值，说明对应 TiKV 节点的消息处理不过来了
 
-	- server report failure：正常情况显示 no data，如果出现了 unreachable，说明 TiKV 之间通信有问题
+	- server report failure：正常情况显示 No data，如果出现了 unreachable，说明 TiKV 之间通信有问题
 
 	- scheduler pending commands：写入堆积的数量，不持续很高属于正常现象
 
