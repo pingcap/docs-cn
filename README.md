@@ -158,6 +158,7 @@
   - [威锐达测控](http://t.cn/R3CrviR)
   - [盖娅互娱](http://t.cn/RT9r7hx)
   - [游族网络](http://t.cn/R8k4AWB)
+  - [西山居](http://t.cn/RBP12zj)
   - [FUNYOURS JAPAN](http://t.cn/Rnoab5D)
   - [万达网络](http://t.cn/RTKm6ds)
   - [佐助金融](http://t.cn/RQeoKaa)
