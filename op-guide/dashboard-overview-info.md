@@ -49,7 +49,7 @@ category: monitoring
 
 	- 99% completed\_cmds\_duration\_seconds：单位时间内，99% 的 pd-server 请求执行时间小于监控曲线的值，一般 <= 5ms
 
-	- handle\_requests\_duration\_seconds：TiDB 向 PD 发送请求到返回 TSO 等信息的时间，一般 <= 5ms
+	- handle\_requests\_duration\_seconds：PD 发送请求的网络耗时
 
 + TiDB
 
@@ -75,7 +75,7 @@ category: monitoring
 
 	- PD TSO OPS：TiDB 从 PD 获取 TSO 的数量
 
-	- PD TSO Wait Duration：TiDB 向 PD 发送 TSO 请求的时间
+	- PD TSO Wait Duration：TiDB 从 PD 获取 TS 的时间
 
 	- TiClient Region Error OPS：TiKV 返回 Region 相关错误信息的数量
 
