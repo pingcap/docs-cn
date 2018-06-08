@@ -68,7 +68,7 @@ TiDB 支持 ACID 分布式事务，事务模型是以 Google 的 Percolator 模�
 
 详细可参考[系统变量](sql/variable.md)。
 
-#### 1.1.15 TiDB 是否支持 select for update 吗？
+#### 1.1.15 TiDB 是否支持 select for update？
 
 支持，但语义上和 MySQL 有区别，TiDB 是分布式数据库，采用的乐观锁机制，也就说 select for update 不在事务开启就锁住数据，而是其他事务在提交的时候进行冲突检查，如有冲突，会进行回滚。
 
