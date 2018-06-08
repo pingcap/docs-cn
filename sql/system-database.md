@@ -73,7 +73,7 @@ COLUMNS 表提供了关于所有表的列的信息。这张表里面的信息不
 SHOW COLUMNS FROM table_name [FROM db_name] [LIKE 'wild']
 ```
 
-### COLUMNS\_PRIVILEGE Table
+### COLUMN\_PRIVILEGES Table
 
 空表。
 
