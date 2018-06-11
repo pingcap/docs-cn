@@ -11,6 +11,7 @@ This is a list of TiDB adopters in various industries.
 - [Mobike (Ridesharing)](https://mobike.com/global/)
 - [Ele.me (Catering)](https://www.crunchbase.com/organization/ele-me)
 - [Yiguo.com (E-commerce)](https://www.datanami.com/2018/02/22/hybrid-database-capturing-perishable-insights-yiguo/)
+- [Zhuan Zhuan (E-commerce)](http://www.zhuanzhuan.com/)
 - [Toutiao (Media)](https://www.crunchbase.com/organization/toutiao)
 - [Phoenix TV (Media)](http://www.ifeng.com/)
 - [LeCloud (MediaTech)](http://www.lecloud.com/en-us/)
