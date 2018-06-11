@@ -1,9 +1,9 @@
 ---
-title: Offline Deployment Using Ansible
+title: Deploy TiDB Offline Using Ansible
 category: operations
 ---
 
-# Offline Deployment Using Ansible
+# Deploy TiDB Offline Using Ansible
 
 ## Prepare
 
