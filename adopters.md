@@ -25,6 +25,7 @@ This is a list of TiDB adopters in various industries.
 - [China Telecom BestPay (FinTech)](https://www.bestpay.com.cn/global/oig/index.html)
 - [GAEA (Gaming)](http://gaea.com/en)
 - [YOOZOO GAMES (Gaming)](http://www.yoozoo.com/en)
+- [Seasun Games (Gaming)](http://www.seasungames.com/)
 - [FUNYOURS JAPAN (Gaming)](http://company.funyours.co.jp/)
 - [Hainan eKing Technology (Enterprise Technology)](https://www.crunchbase.com/organization/hainan-eking-technology)
 - [2Dfire (FoodTech)](http://www.2dfire.com/)
