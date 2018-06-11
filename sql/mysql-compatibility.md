@@ -32,18 +32,22 @@ The auto-increment ID feature in TiDB is only guaranteed to be automatically inc
 
 > **Warning**:
 > 
-> If you use the auto-increment ID in a cluster with multiple TiDB servers, do not mix the default value and the custom value, because it reports an error in the following situation:
+> If you use the auto-increment ID in a cluster with multiple tidb-server instances, do not mix the default value and the custom value, otherwise an error occurs in the following situation:
 > 
-> In a cluster of two TiDB servers, namely TiDB A and TiDB B, TiDB A caches [1,5000] auto-increment ID, while TiDB B caches [5001,10000] auto-increment ID. Use the following statement to create a table with auto-increment ID:
+> Assume that you have a table with the auto-increment ID:
 > 
 > ```
 > create table t(id int unique key auto_increment, c int);
 > ```
+> 
+> The principle of the auto-increment ID in TiDB is that each tidb-server instance caches a section of ID values for allocation and fetches the next section after this section is used up.
 >
-> The statement is executed as follows:
+> Assume that the cluster contains two tidb-server instances, namely Instance A and Instance B. Instance A caches the auto-increment ID of [1, 5000], while Instance B caches the auto-increment ID of [5001, 10000].
+> 
+> The operations are executed as follows:
 >
-> 1. The client inserts a statement to TiDB B which sets the `id` to be 1 and the statement is executed successfully.
-> 2. The client inserts a record to TiDB A which sets the `id` set to the default value 1. In this case, it returns `Duplicated Error`.
+> 1. The client issues the `insert into t values (1, 1)` statement to Instance B which sets the `id` to 1 and the statement is executed successfully.
+> 2. The client issues the `insert into t (c) (1)` statement to Instance A. This statement does not specify the value of `id`, so Instance A allocates the value. Currently, Instances A caches the auto-increment ID of [1, 5000], so it allocates the `id` value to 1 and adds 1 to the local counter. However, at this time the data with the `id` of 1 already exists in the cluster, therefore it reports `Duplicated Error`.
 
 ### Built-in functions
 
