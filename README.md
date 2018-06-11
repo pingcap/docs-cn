@@ -118,6 +118,7 @@
     - [Prerequisites](op-guide/recommendation.md)
     - [Install and Deploy TiKV Using Docker Compose](tikv/deploy-tikv-docker-compose.md)
     - [Install and Deploy TiKV Using Ansible](tikv/deploy-tikv-using-ansible.md)
+    - [Install and Deploy TiKV Using Docker](tikv/deploy-tikv-using-docker.md)
     - [Install and Deploy TiKV Using Binary Files](tikv/deploy-tikv-using-binary.md)
   + Client Drivers
     - [Go](tikv/go-client-api.md)
