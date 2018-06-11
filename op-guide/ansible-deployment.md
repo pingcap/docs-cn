@@ -1,13 +1,13 @@
 ---
-title: Ansible Deployment
+title: Deploy TiDB Using Ansible
 category: operations
 ---
 
-# Ansible Deployment
+# Deploy TiDB Using Ansible
 
 ## Overview
 
-Ansible is an IT automation tool. It can configure systems, deploy software, and orchestrate more advanced IT tasks such as continuous deployments or zero downtime rolling updates.
+Ansible is an IT automation tool that can configure systems, deploy software, and orchestrate more advanced IT tasks such as continuous deployments or zero downtime rolling updates.
 
 [TiDB-Ansible](https://github.com/pingcap/tidb-ansible) is a TiDB cluster deployment tool developed by PingCAP, based on Ansible playbook. TiDB-Ansible enables you to quickly deploy a new TiDB cluster which includes PD, TiDB, TiKV, and the cluster monitoring modules.
 
@@ -20,92 +20,105 @@ You can use the TiDB-Ansible configuration file to set up the cluster topology, 
 - Cleaning environment
 - Configuring monitoring modules
 
-
 ## Prepare
 
 Before you start, make sure that you have:
 
-1. Several target machines with the following requirements:
+1. Several target machines that meet the following requirements:
 
-    - 4 or more machines. At least 3 instances for TiKV. Do not deploy TiKV together with TiDB or PD on the same machine. See [Software and Hardware Requirements](recommendation.md).
+    - 4 or more machines
+    
+        A standard TiDB cluster contains 6 machines. You can use 4 machines for testing.
 
-    - Recommended Operating system:
+    - CentOS 7.3 (64 bit) or later with Python 2.7 installed, x86_64 architecture (AMD64), ext4 filesystem
 
-      - CentOS 7.3 or later Linux
-      - x86_64 architecture (AMD64)
-      - ext4 filesystem
+        Use ext4 filesystem for your data disks. Mount ext4 filesystem with the `nodelalloc` mount option. See [Mount the data disk ext4 filesystem with options](#mount-the-data-disk-ext4-filesystem-with-options).
 
-          Use ext4 filesystem for your data disks. Mount ext4 filesystem with the `nodelalloc` mount option. See [Mount the data disk ext4 filesystem with options](#mount-the-data-disk-ext4-filesystem-with-options).
+    - Network between machines.
 
-    - The network between machines. Turn off the firewalls and iptables when deploying and turn them on after the deployment.
+    - Same time and time zone for all machines with the NTP service on to synchronize the correct time
+    
+        See [How to check whether the NTP service is normal](#how-to-check-whether-the-ntp-service-is-normal).
 
-    - The same time and time zone for all machines with the NTP service on to synchronize the correct time. See [How to check whether the NTP service is normal](#how-to-check-whether-the-ntp-service-is-normal).
-
-    - Create a normal `tidb` user account as the user who runs the service. The `tidb` user can sudo to the root user without a password. See [How to configure SSH mutual trust and sudo without password](#how-to-configure-ssh-mutual-trust-and-sudo-without-password).
+    - Create a normal `tidb` user account as the user who runs the service
+    
+        The `tidb` user can sudo to the root user without a password. See [How to configure SSH mutual trust and sudo without password](#how-to-configure-ssh-mutual-trust-and-sudo-without-password).
 
     > **Note:** When you deploy TiDB using Ansible, use SSD disks for the data directory of TiKV and PD nodes.
 
 2. A Control Machine with the following requirements:
 
-    - The Control Machine can be one of the managed nodes.
-    - It is recommended to install CentOS 7.3 or later version of Linux operating system (Python 2.7 involved by default).
-    - The Control Machine must have access to the Internet in order to download TiDB and related packages.
-    - Configure mutual trust of `ssh authorized_key`. In the Control Machine, you can login to the deployment target machine using `tidb` user account without a password. See [How to configure SSH mutual trust and sudo without password](#how-to-configure-ssh-mutual-trust-and-sudo-without-password).
+    > **Note:** The Control Machine can be one of the target machines.
+    
+    - CentOS 7.3 (64 bit) or later with Python 2.7 installed
+    - Access to the Internet
+    - Git installed
+    - SSH Mutual Trust configured
+    
+        In the Control Machine, you can log in to the deployment target machine using the `tidb` user account without a password. See [How to configure SSH mutual trust and sudo without password](#how-to-configure-ssh-mutual-trust-and-sudo-without-password).
 
-## Download TiDB-Ansible to the Control Machine
+## Step 1: Download TiDB-Ansible to the Control Machine
 
-Login to the Control Machine using the `tidb` user account and enter the `/home/tidb` directory. Use the following command to download the corresponding version of TiDB-Ansible from GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`. The following are examples of downloading various versions, and you can turn to the official team for advice on which version to choose.
+1. Log in to the Control Machine using the `tidb` user account and enter the `/home/tidb` directory.
 
-Download the 1.0 GA version:
+2. Download the corresponding TiDB-Ansible version. The default folder name is `tidb-ansible`.
 
-```
-git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
-```
+    - Download the 2.0 GA version:
 
-Download the 2.0 version:
+        ```bash
+        git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
+        ```
+    
+    - Download the master version:
 
-```
-git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
-```
+        ```bash
+        git clone https://github.com/pingcap/tidb-ansible.git
+        ```
 
-or
+    If you have questions regarding which version to use, email to info@pingcap.com for more information or [file an issue](https://github.com/pingcap/tidb-ansible/issues/new).
 
-Download the master version:
+## Step 2: Install Ansible and dependencies on the Control Machine
 
-```
-git clone https://github.com/pingcap/tidb-ansible.git
-```
+1. Install Ansible and the dependencies on the Control Machine:
 
-## Install Ansible and dependencies in the Control Machine
+    ```bash
+    sudo yum -y install epel-release
+    sudo yum -y install python-pip curl
+    cd tidb-ansible
+    sudo pip install -r ./requirements.txt
+    ```
 
-Use `pip` to install Ansible and dependencies on the Control Machine of CentOS 7 system. After installation, you can use `ansible --version` to view the Ansible version. Currently releases-1.0 depends on Ansible 2.4, while release-2.0 and the master version are compatible with Ansible 2.4 and Ansible 2.5.
+    Ansible and related dependencies are in the `tidb-ansible/requirements.txt` file.
 
-Ansible and related dependencies are recorded in the `tidb-ansible/requirements.txt` file. Install Ansible and dependencies as follows, otherwise compatibility issue occurs.
+2. View the version of Ansible:
 
-```bash
-$ sudo yum -y install epel-release
-$ sudo yum -y install python-pip curl
-$ cd tidb-ansible
-$ sudo pip install -r ./requirements.txt
-$ ansible --version
-  ansible 2.5.0
-```
+    ```bash
+    ansible --version
+    ```
+
+    Currently, the 1.0 GA version depends on Ansible 2.4, while the 2.0 GA version and the master version are compatible with Ansible 2.4 and Ansible 2.5.
 
 For other systems, see [Install Ansible](ansible-deployment.md#install-ansible).
 
-## Orchestrate the TiDB cluster
+## Step 3: Edit the `inventory.ini` file to orchestrate the TiDB cluster
 
-The file path of `inventory.ini`: `tidb-ansible/inventory.ini`.
+Edit the `tidb-ansible/inventory.ini` file to orchestrate the TiDB cluster. The standard TiDB cluster contains 6 machines: 2 TiDB modes, 3 PD nodes and 3 TiKV nodes.
 
-> **Note:** Use the internal IP address to deploy the cluster.
+- Deploy at least 3 instances for TiKV.
+- Do not deploy TiKV together with TiDB or PD on the same machine.
+- Use the first TiDB machine as the monitoring machine.
 
-The standard cluster has 6 machines:
+> **Note:** It is required to use the internal IP address to deploy.
 
-- 2 TiDB nodes, the first TiDB machine is used as a monitor
-- 3 PD nodes
-- 3 TiKV nodes
+You can choose one of the following two types of cluster topology according to your scenario:
 
-### The cluster topology of single TiKV instance on a single machine
+- [The cluster topology of a single TiKV instance on each TiKV node](#option-1-use-the-cluster-topology-of-a-single-tikv-instance-on-each-tikv-node)
+
+    In most cases, it is recommended to deploy one TiKV instance on each TiKV node for better performance. However, if the CPU and memory of your TiKV machines are much better than the required in [Hardware and Software Requirements](../op-guide/recommendation.md), and you have more than two disks in one node or the capacity of one SSD is larger than 2 TB, you can deploy no more than 2 TiKV instances on a single TiKV node.
+
+- [The cluster topology of multiple TiKV instances on each TiKV node](#option-2-use-the-cluster-topology-of-multiple-tikv-instances-on-each-tikv-node)
+
+### Option 1: Use the cluster topology of a single TiKV instance on each TiKV node
 
 | Name  | Host IP     | Services   |
 |:------|:------------|:-----------|
@@ -146,10 +159,9 @@ The standard cluster has 6 machines:
 172.16.10.6
 ```
 
+### Option 2: Use the cluster topology of multiple TiKV instances on each TiKV node
 
-### The cluster topology of multiple TiKV instances on a single machine
-
-Take two TiKV instances as an example:
+Take two TiKV instances on each TiKV node as an example:
 
 | Name  | Host IP     | Services   |
 |:------|:------------|:-----------|
@@ -203,39 +215,52 @@ location_labels = ["host"]
 
 **Edit the parameters in the service configuration file:**
 
-1. For multiple TiKV instances, edit the `end-point-concurrency` and `block-cache-size` parameters in `tidb-ansible/conf/tikv.yml`:
+1. For the cluster topology of multiple TiKV instances on each TiKV node, you need to edit the `block-cache-size` parameter in `tidb-ansible/conf/tikv.yml`:
 
-    - `end-point-concurrency`: keep the number lower than CPU Vcores
     - `rocksdb defaultcf block-cache-size(GB)`: MEM * 80% / TiKV instance number * 30%
     - `rocksdb writecf block-cache-size(GB)`: MEM * 80% / TiKV instance number * 45%
     - `rocksdb lockcf block-cache-size(GB)`: MEM * 80% / TiKV instance number * 2.5% (128 MB at a minimum)
     - `raftdb defaultcf block-cache-size(GB)`: MEM * 80% / TiKV instance number * 2.5% (128 MB at a minimum)
 
-2. If multiple TiKV instances are deployed on a same physical disk, edit the `capacity` parameter in `conf/tikv.yml`:
+2. For the cluster topology of multiple TiKV instances on each TiKV node, you need to edit the `high-concurrency`, `normal-concurrency` and `low-concurrency` parameters in the `tidb-ansible/conf/tikv.yml` file:
 
-    - `capacity`: (DISK - log space) / TiKV instance number (the unit is GB)
+    ```
+    readpool:
+    coprocessor:
+        # Notice: if CPU_NUM > 8, default thread pool size for coprocessors
+        # will be set to CPU_NUM * 0.8.
+        # high-concurrency: 8
+        # normal-concurrency: 8
+        # low-concurrency: 8
+    ```
 
-### Description of inventory.ini variables
+    Recommended configuration: `number of instances * parameter value = CPU_Vcores * 0.8`.
 
-#### Description of the deployment directory
+3. If multiple TiKV instances are deployed on a same physical disk, edit the `capacity` parameter in `conf/tikv.yml`:
 
-You can configure the deployment directory using the `deploy_dir` variable. The global variable is set to `/home/tidb/deploy` by default, and it applies to all services. If the data disk is mounted on the `/data1` directory, you can set it to `/data1/deploy`. For example:
+    - `capacity`: (total disk capacity - log space) / TiKV instance number (the unit is GB)
 
-```
+## Step 4: Edit variables in the `inventory.ini` file
+
+Edit the `deploy_dir` variable to configure the deployment directory.
+
+The global variable is set to `/home/tidb/deploy` by default, and it applies to all services. If the data disk is mounted on the `/data1` directory, you can set it to `/data1/deploy`. For example:
+
+```bash
 ## Global variables
 [all:vars]
 deploy_dir = /data1/deploy
 ```
 
-To set a deployment directory separately for a service, you can configure host variables when configuring the service host list. Take the TiKV node as an example and it is similar for other services. You must add the first column alias to avoid confusion when the services are mixedly deployed.
+**Note:** To separately set the deployment directory for a service, you can configure the host variable while configuring the service host list in the `inventory.ini` file. It is required to add the first column alias, to avoid confusion in scenarios of mixed services deployment.
 
-```
+```bash
 TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 ```
 
-#### Description of other variables
+### Description of other variables
 
-> **Note:** To enable the following control variables, use the capitalized `True`. To disable the following control variables, use the capitalized `False`.
+To enable the following control variables, use the capitalized `True`. To disable the following control variables, use the capitalized `False`.
 
 | Variable | Description |
 | ---- | ------- |
@@ -256,13 +281,11 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | grafana_admin_user | the username of Grafana administrator; default `admin` |
 | grafana_admin_password | the password of Grafana administrator account; default `admin`; used to import Dashboard and create the API key using Ansible; update this variable after you modify it through Grafana web |
 
-## Deploy the TiDB cluster
+## Step 5: Deploy the TiDB cluster
 
 When `ansible-playbook` runs Playbook, the default concurrent number is 5. If many deployment target machines are deployed, you can add the `-f` parameter to specify the concurrency, such as `ansible-playbook deploy.yml -f 10`.
 
-The following example uses the `tidb` user account as the user who runs the service.
-
-To deploy TiDB using a normal user account, take the following steps:
+The following example uses `tidb` as the user who runs the service.
 
 1. Edit the `tidb-ansible/inventory.ini` file to make sure `ansible_user = tidb`.
 
@@ -318,9 +341,7 @@ To deploy TiDB using a normal user account, take the following steps:
 
 ## Test the cluster
 
-> **Note:** Because TiDB is compatible with MySQL, you must use MySQL client to connect to TiDB directly.
-
-It is recommended to configure load balancing to provide uniform SQL interface.
+Because TiDB is compatible with MySQL, you must use the MySQL client to connect to TiDB directly. It is recommended to configure load balancing to provide uniform SQL interface.
 
 1. Connect to the TiDB cluster using the MySQL client.
 
@@ -336,7 +357,7 @@ It is recommended to configure load balancing to provide uniform SQL interface.
     http://172.16.10.1:3000
     ```
 
-    The default account and password: `admin`/`admin`.
+    > **Note**: The default account and password: `admin`/`admin`.
 
 ## Perform rolling update
 

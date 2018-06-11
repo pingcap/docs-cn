@@ -23,11 +23,11 @@ This guide describes how to install and deploy TiKV using Ansible. Ansible is an
 
     - Network between machines
     
-    - Same time and time zone for all machines with the NTP service on to synchronize the correct time.
+    - Same time and time zone for all machines with the NTP service on to synchronize the correct time
     
         See [How to check whether the NTP service is normal](../op-guide/ansible-deployment#how-to-check-whether-the-ntp-service-is-normal).
 
-    - Create a normal `tidb` user account as the user who runs the service. 
+    - Create a normal `tidb` user account as the user who runs the service
     
         The `tidb` user can sudo to the root user without a password. See [How to configure SSH mutual trust and sudo without password](../op-guide/ansible-deployment#how-to-configure-ssh-mutual-trust-and-sudo-without-password).
     
@@ -42,7 +42,7 @@ This guide describes how to install and deploy TiKV using Ansible. Ansible is an
     - Git installed
     - SSH Mutual Trust configured
 
-        In the Control Machine, you can log in to the deployment target machine using `tidb` user account without a password. See [How to configure SSH mutual trust and sudo without password](../op-guide/ansible-deployment#how-to-configure-ssh-mutual-trust-and-sudo-without-password).
+        In the Control Machine, you can log in to the deployment target machine using the `tidb` user account without a password. See [How to configure SSH mutual trust and sudo without password](../op-guide/ansible-deployment#how-to-configure-ssh-mutual-trust-and-sudo-without-password).
 
 ## Step 1: Download TiDB-Ansible to the Control Machine
 
@@ -226,6 +226,8 @@ Edit the parameters in the service configuration file:
 ## Step 4: Edit variables in the `inventory.ini` file
 
 1. Edit the `deploy_dir` variable to configure the deployment directory.
+
+    The global variable is set to `/home/tidb/deploy` by default, and it applies to all services. If the data disk is mounted on the `/data1` directory, you can set it to `/data1/deploy`. For example:
 
     ```bash
     ## Global variables
