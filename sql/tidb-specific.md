@@ -20,7 +20,7 @@ If you need to set the global variable, run:
 
 - Scope: SESSION
 - Default value: ""
-- This variable is used to set the time point at which the data is read by the session. For example, when you set the variable to "2017-11-11 20:20:20", the current session reads the data of this moment.
+- This variable is used to set the time point at which the data is read by the session. For example, when you set the variable to "2017-11-11 20:20:20" or a TSO number like "400036290571534337", the current session reads the data of this moment.
 
 ### tidb_import_data
 

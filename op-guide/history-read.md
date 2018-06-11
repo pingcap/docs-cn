@@ -20,7 +20,7 @@ The `tidb_snapshot` system variable is introduced to support reading history dat
 - The variable is valid in the `Session` scope.
 - Its value can be modified using the `Set` statement. 
 - The data type for the variable is text. 
-- The variable is to record time in the following format: “2016-10-08 16:45:26.999”. Generally, the time can be set to seconds like in “2016-10-08 16:45:26”. 
+- The variable accepts TSO (Timestamp Oracle) and datetime. TSO is a globally unique time service, which is obtained from PD. The acceptable datetime format is "2016-10-08 16:45:26.999". Generally, the datetime can be set using second precision, for example "2016-10-08 16:45:26".
 - When the variable is set, TiDB creates a Snapshot using its value as the timestamp, just for the data structure and there is no any overhead. After that, all the `Select` operations will read data from this Snapshot.
 
 > **Note:** Because the timestamp in TiDB transactions is allocated by Placement Driver (PD), the version of the stored data is also marked based on the timestamp allocated by PD. When a Snapshot is created, the version number is based on the value of the `tidb_snapshot` variable. If there is a large difference between the local time of the TiDB server and the PD server, use the time of the PD server.
