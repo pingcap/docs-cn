@@ -74,7 +74,7 @@ $ git clone https://github.com/pingcap/tidb-ansible.git
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
-inventory.ini 文件路径为 tidb-ansible/inventory.ini。
+inventory.ini 文件路径为 `tidb-ansible/inventory.ini`。
 
 > **注：** 请使用内网 IP 来部署集群。
 
@@ -84,9 +84,9 @@ inventory.ini 文件路径为 tidb-ansible/inventory.ini。
 - 3 个 PD 节点
 - 3 个 TiKV 节点，第一台 TiDB 机器同时用作监控机
 
-> 默认情况下，单台机器上只需部署一个 TiKV 实例。如果你的 TiKV 部署机器 CPU 及内存配置是[部署建议](recommendation.md)的两倍或以上，并且拥有两块 SSD 硬盘或单块容量超 2T 的 SSD 硬盘, 可以考虑部署两实例，但不建议部署两个以上实例。
+默认情况下，单台机器上只需部署一个 TiKV 实例。如果你的 TiKV 部署机器 CPU 及内存配置是[部署建议](recommendation.md)的两倍或以上，并且拥有两块 SSD 硬盘或单块容量超 2T 的 SSD 硬盘，可以考虑部署两实例，但不建议部署两个以上实例。
 
-### 单机单 TiKV 实例集群拓扑如下
+### 单机单 TiKV 实例集群拓扑
 
 | Name | Host IP | Services |
 | ---- | ------- | -------- |
@@ -127,7 +127,9 @@ inventory.ini 文件路径为 tidb-ansible/inventory.ini。
 172.16.10.6
 ```
 
-### 单机多 TiKV 实例集群拓扑如下(以两实例为例)
+### 单机多 TiKV 实例集群拓扑
+
+以两实例为例：
 
 | Name | Host IP | Services |
 | ---- | ------- | -------- |
