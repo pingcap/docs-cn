@@ -161,3 +161,17 @@ all regions are healthy
 ```
 
 If the command is successfully executed, it prints the above information. If the command fails, it prints the list of bad Regions. Currently, the errors that can be detected include the mismatches between `last index`, `commit index` and `apply index`, and the loss of Raft log. Other conditions like the damage of snapshot files still need further support.
+
+### View Region properties
+
+- To view in local the properties of Region 2 on the TiKV instance that is deployed in `/path/to/tikv`:
+
+    ```bash
+    $ tikv-ctl --db /path/to/tikv/data/db region-properties -r 2
+    ```
+
+- To view online the properties of Region 2 on the TiKV instance that is running on `127.0.0.1:20160`:
+
+    ```bash
+    $ tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
+    ```
