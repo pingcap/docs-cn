@@ -12,11 +12,13 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 本部署工具可以通过配置文件设置集群拓扑，一键完成以下各项运维工作：
 
 - 初始化操作系统参数
-- 部署组件
-- 滚动升级，滚动升级时支持模块存活检测
-- 数据清理
-- 环境清理
-- 配置监控模块
+- 部署 TiDB 组件
+- 部署监控组件
+- 升级组件版本
+- 变更组件配置
+- 集群扩容缩容
+- 清除集群数据
+- 销毁集群
 
 ## 准备机器
 
@@ -24,9 +26,8 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
     - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见[部署建议](recommendation.md)。
     - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构(amd64)，数据盘请使用 ext4 文件系统，挂载 ext4 文件系统时请添加 nodelalloc 挂载参数，可参考[数据盘 ext4 文件系统挂载参数](#数据盘-ext4-文件系统挂载参数)。
-    - 机器之间内网互通，防火墙如 iptables 等请在部署时关闭。
+    - 机器之间内网互通。
     - 机器的时间、时区设置一致，开启 NTP 服务且在正常同步时间，可参考[如何检测 NTP 服务是否正常](#如何检测-ntp-服务是否正常)。
-    - 创建 `tidb` 普通用户作为程序运行用户，tidb 用户可以免密码 sudo 到 root 用户，可参考[如何配置 ssh 互信及 sudo 免密码](#如何配置-ssh-互信及-sudo-免密码)。
 
     > **注：使用 Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](docker-compose.md)单机进行测试。
 
@@ -35,16 +36,84 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
     - 中控机可以是部署目标机器中的某一台。
     - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统(默认包含 Python 2.7)。
     - 该机器需开放外网访问，用于下载 TiDB 及相关软件安装包。
-    - 配置 ssh authorized_key 互信，在中控机上可以使用 `tidb` 用户免密码 ssh 登录到部署目标机器，可参考[如何配置 ssh 互信及 sudo 免密码](#如何配置-ssh-互信及-sudo-免密码)。
+
+## 在中控机上安装系统依赖包
+
+以 `root` 用户登录中控机
+
+如果中控机是 CentOS 7 系统，执行以下命令：
+
+```
+# yum -y install epel-release git curl sshpass
+# yum -y install python-pip
+```
+
+如果是中控机是 Ubuntu 系统，执行以下命令：
+
+```
+# apt-get install git curl sshpass python-pip
+```
+
+## 在中控机上创建 tidb 用户，并生成 ssh key
+
+以 `root` 用户登录中控机, 执行以下命令
+
+创建 `tidb` 用户
+
+```
+# useradd tidb
+```
+
+设置 `tidb` 用户密码
+
+```
+# passwd tidb
+```
+
+配置 `tidb` 用户 sudo 规则，将 `tidb ALL=(ALL) NOPASSWD: ALL` 添加到文件末尾即可。
+
+```
+# visudo
+tidb ALL=(ALL) NOPASSWD: ALL
+```
+
+`su` 命令从 `root` 用户切换到 `tidb` 用户，创建 `tidb` 用户 ssh key, 提示 `Enter passphrase` 时直接回车即可，执行成功后，ssh 私钥文件为 `/home/tidb/.ssh/id_rsa`, ssh 公钥文件为 `/home/tidb/.ssh/id_rsa.pub`。
+
+```
+# su - tidb
+$ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/tidb/.ssh/id_rsa):
+Created directory '/home/tidb/.ssh'.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/tidb/.ssh/id_rsa.
+Your public key has been saved in /home/tidb/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:eIBykszR1KyECA/h0d7PRKz4fhAeli7IrVphhte7/So tidb@172.16.10.49
+The key's randomart image is:
++---[RSA 2048]----+
+|=+o+.o.          |
+|o=o+o.oo         |
+| .O.=.=          |
+| . B.B +         |
+|o B * B S        |
+| * + * +         |
+|  o + .          |
+| o  E+ .         |
+|o   ..+o.        |
++----[SHA256]-----+
+```
 
 ## 在中控机器上下载 TiDB-Ansible
 
-以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录，使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`，以下为各版本下载示例，版本选择可以咨询官方。
+以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录。
+
+使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`，以下为各版本下载示例，版本选择可以咨询官方。
 
 下载 2.0 GA 版本：
 
 ```
-$ sudo yum -y install git
 $ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
 ```
 
@@ -53,28 +122,60 @@ $ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
 下载 master 版本：
 
 ```
-$ sudo yum -y install git
 $ git clone https://github.com/pingcap/tidb-ansible.git
 ```
 
 ## 在中控机器上安装 Ansible 及其依赖
 
-请按以下方式在 CentOS 7 系统的中控机上通过 pip 安装 Ansible 及其相关依赖的指定版本，安装完成后，可通过 `ansible --version` 查看 Ansible 版本。目前 release-1.0 版本依赖 Ansible 2.4，release-2.0 及 master 版本兼容 Ansible 2.4 及 Ansible 2.5 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中，请按以下方式安装，否则会有兼容问题。
+以 `tidb` 用户登录中控机, 按以下方式在中控机上通过 pip 安装 Ansible 及其相关依赖的指定版本，安装完成后，可通过 `ansible --version` 查看 Ansible 版本。目前 release-2.0 及 master 版本兼容 Ansible 2.4 及 Ansible 2.5 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中，请务必按以下方式安装，否则会有兼容问题。
 
   ```bash
-  $ sudo yum -y install epel-release
-  $ sudo yum -y install python-pip curl
-  $ cd tidb-ansible
+  $ cd /home/tidb/tidb-ansible
   $ sudo pip install -r ./requirements.txt
   $ ansible --version
     ansible 2.5.0
   ```
 
-> 其他系统可参考 [如何安装 Ansible](#如何安装-ansible)。
+## 在中控机上配置部署机器 ssh 互信及 sudo 规则
+
+以 `tidb` 用户登录中控机, 将你的部署目标机器 IP 添加到 `hosts.ini` 文件 `[servers]` 区块下。
+
+```
+$ cd /home/tidb/tidb-ansible
+$ vi hosts.ini
+[servers]
+192.168.0.2
+192.168.0.3
+192.168.0.4
+192.168.0.5
+192.168.0.6
+192.168.0.7
+192.168.0.8
+192.168.0.10
+
+[all:vars]
+username = tidb
+ntp_server = pool.ntp.org
+```
+
+执行以下命令，按提示输入部署目标机器 `root` 用户密码。该步骤将在部署目标机器上创建 `tidb` 用户，并配置 sudo 规则，配置中控机与部署目标机器之间的 ssh 互信。
+
+```
+$ ansible-playbook -i hosts.ini create_users.yml -k
+```
+
+## 在部署目标机器上安装 NTP 服务
+
+以 `tidb` 用户登录中控机，执行以下命令，按提示输入部署目标机器 root 密码。该步骤将在部署目标机器上安装 NTP 服务，服务使用安装包默认的 NTP server 列表，见配置文件 `/etc/ntp.conf` 中 server 参数。在启动 NTP 服务前，系统会 ntpdate `hosts.ini` 文件 中 `ntp_server`，默认为 `pool.ntp.org`，也可替换为你的 NTP server。
+
+```
+$ cd /home/tidb/tidb-ansible
+$ ansible-playbook -i hosts.ini deploy_ntp.yml -k
+```
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
-inventory.ini 文件路径为 `tidb-ansible/inventory.ini`。
+以 `tidb` 用户登录中控机, `inventory.ini` 文件路径为 `/home/tidb/tidb-ansible/inventory.ini`。
 
 > **注：** 请使用内网 IP 来部署集群。
 
@@ -171,8 +272,6 @@ TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 labels
 172.16.10.4
 172.16.10.5
 172.16.10.6
-
-......
 
 [pd_servers:vars]
 location_labels = ["host"]
@@ -451,6 +550,7 @@ synchronised to NTP server (85.199.214.101) at stratum 2
    time correct to within 91 ms
    polling server every 1024 s
 ```
+
 > **注：** Ubuntu 系统请安装 ntpstat 软件包。
 
 以下情况表示 NTP 服务未正常同步：
@@ -472,29 +572,6 @@ Unable to talk to NTP daemon. Is it running?
 $ sudo systemctl stop ntpd.service
 $ sudo ntpdate pool.ntp.org
 $ sudo systemctl start ntpd.service
-```
-
-#### 如何使用 Ansible 部署 NTP 服务
-
-参照[在中控机器上下载 TiDB-Ansible](#在中控机器上下载-tidb-ansible)下载 TiDB-Ansible，将你的部署目标机器 IP 添加到 `[servers]` 区块下，`ntp_server` 变量的值 `pool.ntp.org` 可替换为其他 NTP server，在启动 NTP 服务前，系统会 ntpdate 该 NTP server，Ansible 安装的 NTP 服务使用安装包默认 server 列表，见配置文件 `cat /etc/ntp.conf` 中 server 参数。
-
-```
-$ vi hosts.ini
-[servers]
-172.16.10.49
-172.16.10.50
-172.16.10.61
-172.16.10.62
-
-[all:vars]
-username = tidb
-ntp_server = pool.ntp.org
-```
-
-执行以下命令，按提示输入部署目标机器 root 密码。
-
-```
-$ ansible-playbook -i hosts.ini deploy_ntp.yml -k
 ```
 
 #### 如何手工安装 NTP 服务
@@ -521,16 +598,6 @@ ansible-playbook deploy.yml -D
 ansible-playbook start.yml
 ```
 
-### 如何安装 Ansible
-
-如果是 CentOS 系统，直接按文章开头的方式安装即可，如果是 Ubuntu 系统，可按以下方式安装:
-
-```bash
-$ sudo apt-get install python-pip curl
-$ cd tidb-ansible
-$ sudo pip install -r ./requirements.txt
-```
-
 ### 数据盘 ext4 文件系统挂载参数
 
 数据盘请格式化成 ext4 文件系统，挂载时请添加 nodelalloc 和 noatime 挂载参数。
@@ -555,60 +622,6 @@ nodelalloc 是必选参数，否则 Ansible 安装时检测无法通过，noatim
 ```
 # mount -t ext4
 /dev/nvme0n1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
-```
-
-### 如何配置 ssh 互信及 sudo 免密码
-
-#### 在中控机上创建 tidb 用户，并生成 ssh key。
-```
-# useradd tidb
-# passwd tidb
-# su - tidb
-$
-$ ssh-keygen -t rsa
-Generating public/private rsa key pair.
-Enter file in which to save the key (/home/tidb/.ssh/id_rsa):
-Created directory '/home/tidb/.ssh'.
-Enter passphrase (empty for no passphrase):
-Enter same passphrase again:
-Your identification has been saved in /home/tidb/.ssh/id_rsa.
-Your public key has been saved in /home/tidb/.ssh/id_rsa.pub.
-The key fingerprint is:
-SHA256:eIBykszR1KyECA/h0d7PRKz4fhAeli7IrVphhte7/So tidb@172.16.10.49
-The key's randomart image is:
-+---[RSA 2048]----+
-|=+o+.o.          |
-|o=o+o.oo         |
-| .O.=.=          |
-| . B.B +         |
-|o B * B S        |
-| * + * +         |
-|  o + .          |
-| o  E+ .         |
-|o   ..+o.        |
-+----[SHA256]-----+
-```
-
-#### 如何使用 Ansible 自动配置 ssh 互信及 sudo 免密码
-
-参照[在中控机器上下载 TiDB-Ansible](#在中控机器上下载-tidb-ansible)下载 TiDB-Ansible，将你的部署目标机器 IP 添加到 `[servers]` 区块下。
-
-```
-$ vi hosts.ini
-[servers]
-172.16.10.49
-172.16.10.50
-172.16.10.61
-172.16.10.62
-
-[all:vars]
-username = tidb
-```
-
-执行以下命令，按提示输入部署目标机器 root 密码。
-
-```
-$ ansible-playbook -i hosts.ini create_users.yml -k
 ```
 
 #### 如何手工配置 ssh 互信及 sudo 免密码
