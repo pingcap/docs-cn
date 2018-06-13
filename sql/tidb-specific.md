@@ -277,6 +277,14 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 这个变量用来设置是否启用 Streaming。
 
+### tidb_retry_limit
+
+作用域：SESSION | GLOBAL
+
+默认值：10
+
+这个变量用来设置最多可重试次数, 即在一个事务执行中遇到可重试的错误时，这个事务可以被重新执行，这个变量值表明最多可重试的次数。
+
 ## Optimizer Hint
 
 TiDB 在 MySQL 的 Optimizer Hint 语法上，增加了一些 TiDB 专有的 Hint 语法, 使用这些 Hint 的时候，TiDB 优化器会尽量使用指定的算法，在某些场景下会比默认算法更优。
