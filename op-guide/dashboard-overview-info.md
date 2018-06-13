@@ -61,7 +61,7 @@ category: monitoring
 
 	- Failed Query OPM：失败 SQL 的统计，例如语法错误、主键冲突等
 
-	- connection count：每个 TiDB 的连接数
+	- Connection count：每个 TiDB 的连接数
 
 	- Heap Memory Usage：每个 TiDB 使用的堆内存大小
 
@@ -101,9 +101,9 @@ category: monitoring
 
 	- channel full：正常情况显示 No data，如果有了监控值，说明对应 TiKV 节点的消息处理不过来了
 
-	- server report failure：正常情况显示 No data，如果出现了 unreachable，说明 TiKV 之间通信有问题
+	- server report failures：正常情况显示 No data，如果出现了 Unreachable，说明 TiKV 之间通信有问题
 
-	- scheduler pending commands：写入堆积的数量，不持续很高属于正常现象
+	- scheduler pending commands：写入堆积的数量，偶尔出现峰值属于正常现象
 
 	- coprocessor pending requests：正常情况监控为 0 或者数量很少
 
