@@ -45,7 +45,7 @@ category: monitoring
 
 		- Offline Stores：正在下线的 TiKV 节点数量（正在下线的 TiKV 节点还在提供服务）
 
-		- Tombstone stores：下线成功的 TiKV 节点数量
+		- Tombstone Stores：下线成功的 TiKV 节点数量
 
 	- 99% completed\_cmds\_duration\_seconds：单位时间内，99% 的 pd-server 请求执行时间小于监控曲线的值，一般 <= 5ms
 
