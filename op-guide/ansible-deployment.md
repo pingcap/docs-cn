@@ -7,13 +7,12 @@ category: deployment
 
 ## 概述
 
-Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingcap/tidb-ansible) 是 PingCAP 基于 Ansible playbook 功能编写的集群部署工具。使用 TiDB-Ansible 可以快速部署一个完整的 TiDB 集群（包括 PD、TiDB、TiKV 和集群监控模块)。
+Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingcap/tidb-ansible) 是 PingCAP 基于 Ansible playbook 功能编写的集群部署工具。使用 TiDB-Ansible 可以快速部署一个完整的 TiDB 集群。
 
 本部署工具可以通过配置文件设置集群拓扑，一键完成以下各项运维工作：
 
 - 初始化操作系统参数
-- 部署 TiDB 组件
-- 部署监控组件
+- 部署 TiDB 集群(包括 PD、TiDB、TiKV 等组件和监控组件)
 - 升级组件版本
 - 变更组件配置
 - 集群扩容缩容
@@ -25,9 +24,8 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 1.  部署目标机器若干
 
     - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见[部署建议](recommendation.md)。
-    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构(amd64)，数据盘请使用 ext4 文件系统，挂载 ext4 文件系统时请添加 nodelalloc 挂载参数，可参考[数据盘 ext4 文件系统挂载参数](#数据盘-ext4-文件系统挂载参数)。
+    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构(amd64)。
     - 机器之间内网互通。
-    - 机器的时间、时区设置一致，开启 NTP 服务且在正常同步时间，可参考[如何检测 NTP 服务是否正常](#如何检测-ntp-服务是否正常)。
 
     > **注：使用 Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](docker-compose.md)单机进行测试。
 
@@ -51,7 +49,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 如果是中控机是 Ubuntu 系统，执行以下命令：
 
 ```
-# apt-get install git curl sshpass python-pip
+# apt-get -y install git curl sshpass python-pip
 ```
 
 ## 在中控机上创建 tidb 用户，并生成 ssh key
@@ -70,14 +68,14 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 # passwd tidb
 ```
 
-配置 `tidb` 用户 sudo 规则，将 `tidb ALL=(ALL) NOPASSWD: ALL` 添加到文件末尾即可。
+配置 `tidb` 用户 sudo 免密码，将 `tidb ALL=(ALL) NOPASSWD: ALL` 添加到文件末尾即可。
 
 ```
 # visudo
 tidb ALL=(ALL) NOPASSWD: ALL
 ```
 
-`su` 命令从 `root` 用户切换到 `tidb` 用户，创建 `tidb` 用户 ssh key, 提示 `Enter passphrase` 时直接回车即可，执行成功后，ssh 私钥文件为 `/home/tidb/.ssh/id_rsa`, ssh 公钥文件为 `/home/tidb/.ssh/id_rsa.pub`。
+生成 ssh key: 执行 `su` 命令从 `root` 用户切换到 `tidb` 用户下，创建 `tidb` 用户 ssh key, 提示 `Enter passphrase` 时直接回车即可。执行成功后，ssh 私钥文件为 `/home/tidb/.ssh/id_rsa`, ssh 公钥文件为 `/home/tidb/.ssh/id_rsa.pub`。
 
 ```
 # su - tidb
@@ -127,7 +125,7 @@ $ git clone https://github.com/pingcap/tidb-ansible.git
 
 ## 在中控机器上安装 Ansible 及其依赖
 
-以 `tidb` 用户登录中控机, 按以下方式在中控机上通过 pip 安装 Ansible 及其相关依赖的指定版本，安装完成后，可通过 `ansible --version` 查看 Ansible 版本。目前 release-2.0 及 master 版本兼容 Ansible 2.4 及 Ansible 2.5 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中，请务必按以下方式安装，否则会有兼容问题。
+以 `tidb` 用户登录中控机, 请务必按以下方式通过 pip 安装 Ansible 及其相关依赖的指定版本，否则会有兼容问题。安装完成后，可通过 `ansible --version` 查看 Ansible 版本。目前 release-2.0 及 master 版本兼容 Ansible 2.4 及 Ansible 2.5 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中。
 
   ```bash
   $ cd /home/tidb/tidb-ansible
@@ -172,6 +170,71 @@ $ ansible-playbook -i hosts.ini create_users.yml -k
 $ cd /home/tidb/tidb-ansible
 $ ansible-playbook -i hosts.ini deploy_ntp.yml -k
 ```
+
+## 在部署目标机器上添加数据盘 ext4 文件系统挂载参数
+
+部署目标机器数据盘请格式化成 ext4 文件系统，挂载时请添加 nodelalloc 和 noatime 挂载参数。`nodelalloc` 是必选参数，否则 Ansible 安装时检测无法通过，noatime 是可选建议参数。
+
+下面以 /dev/nvme0n1 数据盘为例：
+
+查看数据盘
+
+```
+# fdisk -l
+Disk /dev/nvme0n1: 1000 GB
+```
+
+创建分区表
+
+```
+# parted -s -a optimal /dev/nvme0n1 mklabel gpt -- mkpart primary ext4 1 -1
+```
+
+格式化文件系统
+
+```
+# mkfs.ext4 /dev/nvme0n1
+```
+
+查看数据盘分区 UUID，本例中 nvme0n1 的 UUID 为 c51eb23b-195c-4061-92a9-3fad812cc12f。
+
+```
+# lsblk -f
+NAME    FSTYPE LABEL UUID                                 MOUNTPOINT
+sda
+├─sda1  ext4         237b634b-a565-477b-8371-6dff0c41f5ab /boot
+├─sda2  swap         f414c5c0-f823-4bb1-8fdf-e531173a72ed
+└─sda3  ext4         547909c1-398d-4696-94c6-03e43e317b60 /
+sr0
+nvme0n1 ext4         c51eb23b-195c-4061-92a9-3fad812cc12f
+```
+
+编辑 `/etc/fstab` 文件，添加 `nodelalloc` 挂载参数
+
+```
+# vi /etc/fstab
+UUID=c51eb23b-195c-4061-92a9-3fad812cc12f /data1 ext4 defaults,nodelalloc,noatime 0 2
+```
+
+挂载数据盘
+
+```
+# mkdir /data1
+# mount -a
+```
+
+执行以下命令，如果文件系统为 ext4, 并且挂载参数中包含 nodelalloc 表示生效：
+
+```
+# mount -t ext4
+/dev/nvme0n1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
+```
+
+> 如果你的数据盘已经格式化成 ext4 并挂载, 可按以下步骤卸载，从编辑 `/etc/fstab` 文件步骤开始执行即可。
+
+  ```
+  # umount /dev/nvme0n1
+  ```
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
@@ -385,7 +448,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
     >**注意**：Grafana Dashboard 上的 Report 按钮可用来生成 PDF 文件，此功能依赖 `fontconfig` 包。如需使用该功能，登录 grafana_servers 机器，用以下命令安装：
     >
     > ```
-    > $ sudo yum install fontconfig
+    > $ sudo yum install fontconfig open-sans-fonts
     > ```
 
 5.  启动 TiDB 集群
@@ -559,6 +622,7 @@ synchronised to NTP server (85.199.214.101) at stratum 2
 $ ntpstat
 unsynchronised
 ```
+
 以下情况表示 NTP 服务未正常运行：
 
 ```
@@ -598,33 +662,7 @@ ansible-playbook deploy.yml -D
 ansible-playbook start.yml
 ```
 
-### 数据盘 ext4 文件系统挂载参数
-
-数据盘请格式化成 ext4 文件系统，挂载时请添加 nodelalloc 和 noatime 挂载参数。
-nodelalloc 是必选参数，否则 Ansible 安装时检测无法通过，noatime 是可选建议参数。下面以 /dev/nvme0n1 数据盘为例：
-
-编辑 `/etc/fstab` 文件，添加 `nodelalloc` 挂载参数：
-
-```
-# vi /etc/fstab
-/dev/nvme0n1 /data1 ext4 defaults,nodelalloc,noatime 0 2
-```
-
-使用以下命令 umount 挂载目录并重新挂载：
-
-```
-# umount /data1
-# mount -a
-```
-
-通过以下命令确认是否生效：
-
-```
-# mount -t ext4
-/dev/nvme0n1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
-```
-
-#### 如何手工配置 ssh 互信及 sudo 免密码
+### 如何手工配置 ssh 互信及 sudo 免密码
 
 以 `root` 用户依次登录到部署目标机器创建 `tidb` 用户并设置登录密码。
 
@@ -646,7 +684,6 @@ tidb ALL=(ALL) NOPASSWD: ALL
 [tidb@172.16.10.49 ~]$ ssh-copy-id -i ~/.ssh/id_rsa.pub 172.16.10.61
 ```
 
-#### 验证 ssh 互信及 sudo 免密码
 以 `tidb` 用户登录到中控机，ssh 登录目标机器 IP，不需要输入密码并登录成功，表示 ssh 互信配置成功。
 
 ```
@@ -662,14 +699,11 @@ tidb ALL=(ALL) NOPASSWD: ALL
 ```
 
 ### You need to install jmespath prior to running json_query filter 报错
-请参照 [在中控机器上安装 Ansible 及其依赖](#在中控机器上安装-ansible-及其依赖) 在中控机上通过 pip 安装 Ansible 及相关依赖的指定版本，默认已安装 `jmespath`。
+请参照 [在中控机器上安装 Ansible 及其依赖](#在中控机器上安装-ansible-及其依赖) 在中控机上通过 pip 安装 Ansible 及相关依赖的指定版本，默认会安装 `jmespath`。
 
-CentOS 7 系统可通过以下命令单独安装 `jmespath`：
+可通过以下命令验证 `jmespath` 是否安装成功：
 
 ```
-$ sudo yum -y install epel-release
-$ sudo yum -y install python-pip
-$ sudo pip install jmespath
 $ pip show jmespath
 Name: jmespath
 Version: 0.9.0
@@ -685,14 +719,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> import jmespath
 ```
 
-Ubuntu 系统可使用以下命令单独安装 `jmespath`：
-
-```
-$ sudo apt-get install python-pip
-$ sudo pip install jmespath
-```
-
-#### 启动 Pump/Drainer 报 `zk: node does not exist` 错误
+### 启动 Pump/Drainer 报 `zk: node does not exist` 错误
 
 请检查 `inventory.ini` 里的 `zookeeper_addrs` 参数配置与 Kafka 集群内的配置是否相同、是否填写了命名空间。关于命名空间的配置说明如下：
 
