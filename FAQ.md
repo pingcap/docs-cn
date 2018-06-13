@@ -367,36 +367,45 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 启动 TiDB Server 时，需要通过命令行参数设置 lease 参数（--lease=60），其值会影响 DDL 的速度（只会影响当前执行 DDL 的 session，其他的 session 不会受影响）。在测试阶段，lease 的值可以设为 1s，加快测试进度；在生产环境下，我们推荐这个值设为分钟级（一般可以设为 60），这样可以保证 DDL 操作的安全。
 
-#### 3.3.2 为什么有的时候执行 DDL 会很慢？
+#### 3.3.2 DDL 在正常情况下的耗时是多少？
+
+一般情况下处理一个 DDL 操作（之前没有其他 DDL 操作在处理）的耗时基本可以分如下为三种：
+- add index 操作，且此操作对应表数据行数比较少，耗时约为 3s.
+- add index 操作，且此操作对应表数据行数比较多，耗时具体由表中数据行数和当时 QPS 情况定（add index 操作优先级比一般 SQL 低）。
+- 其他 DDL 操作耗时约为 1s.
+
+此外，如果接收 DDL 请求的 TiDB 和 DDL owner 所处的 TiDB 是一台，那么上面列举的第一和第三种可能的耗时应该在几十到几百毫秒。
+
+#### 3.3.3 为什么有的时候执行 DDL 会很慢？
 
 可能原因如下：
 
 - 多个 DDL 语句一起执行的时候，后面的几个 DDL 语句会比较慢。原因是当前 TiDB 集群中 DDL 操作是串行执行的。
 - 在正常集群启动后，第一个 DDL 操作的执行时间可能会比较久，一般在 30s 左右，这个原因是刚启动时 TiDB 在竞选处理 DDL 的 leader。
-- 在滚动升级或者停机升级时，由于停机顺序（先停 PD 再停 TiDB）或者用 `kill -9` 指令停 TiDB 导致 TiDB 没有及时清理注册数据，那么会影响 TiDB 启动后 10min 内的 DDL 语句处理时间。这段时间内运行 DDL 语句时，每个 DDL 状态变化都需要等待 2 * lease（默认 lease = 10s）。
+- 由于停 TiDB 时不能与 PD 正常通讯（包括停电情况）或者用 `kill -9` 指令停 TiDB 导致 TiDB 没有及时从 PD 清理注册数据，那么会影响 TiDB 启动后 10min 内的 DDL 语句处理时间。这段时间内运行 DDL 语句时，每个 DDL 状态变化都需要等待 2 * lease（默认 lease = 45s）。
 - 当集群中某个 TiDB 与 PD 之间发生通讯问题，即 TiDB 不能从 PD 及时获取或更新版本信息，那么这时候 DDL 操作的每个状态处理需要等待 2 * lease。
 
-#### 3.3.3 TiDB 可以使用 S3 作为后端存储吗？
+#### 3.3.4 TiDB 可以使用 S3 作为后端存储吗？
 
 不可以，目前 TiDB 只支持分布式存储引擎和 Goleveldb/Rocksdb/Boltdb 引擎；
 
-#### 3.3.4 Infomation_schema 能否支持更多真实信息？
+#### 3.3.5 Infomation_schema 能否支持更多真实信息？
 
 Infomation_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。当前 TiDB 支持的：Infomation\_schema 请参考[TiDB 系统数据库说明文档](https://pingcap.com/docs-cn/sql/system-database)。
 
-#### 3.3.5 TiDB Backoff type 主要原因?
+#### 3.3.6 TiDB Backoff type 主要原因?
 
 TiDB-server 与 TiKV-server 随时进行通讯，在进行大量数据操作过程中，会出现 Server is busy 或者 backoff.maxsleep 20000ms 的日志提示信息，这是由于 TiKV-server 在处理过程中系统比较忙而出现的提示信息，通常这时候可以通过系统资源监控到 TiKV 主机系统资源使用率比较高的情况出现。如果这种情况出现，可以根据资源使用情况进行相应的扩容操作。
 
-#### 3.3.6 TiDB TiClient type 主要原因？
+#### 3.3.7 TiDB TiClient type 主要原因？
 
 TiClient Region Error 该指标描述的是在 TiDB-server 作为客户端通过 KV 接口访问 TiKV-server 进行数据操作过程中，TiDB-server 操作 TiKV-server 中的 Region 数据出现的错误类型与 mertic 指标，错误类型包括 not_leader、stale_epoch。出现这些错误的情况是当 TiDB-server 根据自己的缓存信息去操作 Region leader 数据的时候，Region leader 发生了迁移或者 TiKV 当前的 Region 信息与 TiDB 缓存的路由信息不一致而出现的错误提示。一般这种情况下，TiDB-server 都会自动重新从 PD 获取最新的路由数据，重做之前的操作。
 
-#### 3.3.7 TiDB 同时支持的最大并发连接数？
+#### 3.3.8 TiDB 同时支持的最大并发连接数？
 
 当前版本 TiDB 没有最大连接数的限制，如果并发过大导致响应时间增加，可以通过增加 TiDB 节点进行扩容。
 
-#### 3.3.8 如何查看某张表创建的时间？
+#### 3.3.9 如何查看某张表创建的时间？
 
 information_schema 库中的 tables 表里的 create_time 即为表的真实创建时间。
 
