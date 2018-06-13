@@ -3,21 +3,30 @@
 ## TiDB：
 
 - [ ] 优化器
-  - [ ] 重构 Ranger
-  - [ ] 统计信息优化
+  - [x] 重构 Ranger
   - [ ] 代价模型优化
+  - [ ] Join Reorder
+- [ ] 统计信息
+  - [x] 基于 Query Feedback 动态更新统计信息
+  - [x] 自动 Analyze
+  - [ ] 提升 Row Count 估算精度
 - [ ] 执行引擎
+  - [ ] 下推 Projection 到 Coprocessor
+  - [ ] 优化 HashJoin 算子执行速度
   - [ ] 算子并行化
-  - [ ] Compact Row Format，节省内存占用
+    - [x] 并行 Projection
+    - [ ] 并行聚合
+    - [ ] 并行 Sort
+  - [x] Compact Row Format，节省内存占用
   - [ ] File Sort
-- [ ] 支持 View
-- [ ] 支持窗口函数
-- [ ] 支持 Common Table Expression
-- [ ] 支持分区表
-- [ ] Hash 时间索引，解决写入热点 Region 问题
-- [ ] 逆序索引
+- [ ] View
+- [ ] 窗口函数
+- [ ] Common Table Expression
+- [ ] 分区表
 - [ ] 聚簇索引
 - [ ] DDL 改进
+  - [x] Add Index 加速
+  - [ ] 并行 DDL
 - [ ] 支持 `utf8_general_ci` collation
 
 ## TiKV:
@@ -51,7 +60,7 @@
 ## TiSpark:
 
 - [ ] Limit/Order 下推
-- [ ] DAG 接口接入（废除 Select 接口）
+- [x] DAG 接口接入（废除 Select 接口）
 - [ ] Index Join 和并行 merge join
 - [ ] Data Federation（桥接其他数据源，最好能和社区同步，这个接进来可以比较好扩展 Usecase，如果再做一个 InputFormat 适配就可以接 Hive 和 Presto 这些 Hadoop 上的数仓）
 
