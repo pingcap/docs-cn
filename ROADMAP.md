@@ -9,23 +9,23 @@ This document defines the roadmap for TiDB development.
 
 ## TiDB:
 
-- [ ] Optimizer
-  - [x] Refactor Ranger
-  - [ ] Optimize the cost model
-  - [ ] Join Reorder
-- [ ] Statistics
-  - [x] Update statistics dynamically according to the query feedback
-  - [x] Analyze table automatically
-  - [ ] Improve the accuracy of Row Count estimation
-- [ ] Executor
-  - [ ] Push down the Projection operator to the Coprocessor
-  - [ ] Improve the performance of the HashJoin operator
-  - [ ] Parallel Operators
-    - [x] Projection
-    - [ ] Aggregation
-    - [ ] Sort
-  - [x] Compact Row Format to reduce memory usage
-  - [ ] File Sort
++ [ ] Optimizer
+    - [x] Refactor Ranger
+    - [ ] Optimize the cost model
+    - [ ] Join Reorder
++ [ ] Statistics
+    - [x] Update statistics dynamically according to the query feedback
+    - [x] Analyze table automatically
+    - [ ] Improve the accuracy of Row Count estimation
++ [ ] Executor
+    - [ ] Push down the Projection operator to the Coprocessor
+    - [ ] Improve the performance of the HashJoin operator
+    - [ ] Parallel Operators
+        - [x] Projection
+        - [ ] Aggregation
+        - [ ] Sort
+    - [x] Compact Row Format to reduce memory usage
+    - [ ] File Sort
 - [ ] View
 - [ ] Window Function
 - [ ] Common Table Expression
@@ -39,34 +39,34 @@ This document defines the roadmap for TiDB development.
 ## TiKV:
 
 - [ ] Raft
-  - [x] Region merge
-  - [ ] Local read thread
-  - [ ] Multi-thread raftstore
-  - [x] None voter
-  - [ ] Pre-vote
+    - [x] Region merge
+    - [ ] Local read thread
+    - [ ] Multi-thread raftstore
+    - [x] None voter
+    - [ ] Pre-vote
 - [x] RocksDB
-  - [x] DeleteRange
+    - [x] DeleteRange
 - [x] Transaction
-  - [x] Optimize transaction conflicts
+    - [x] Optimize transaction conflicts
 - [x] Coprocessor
-  - [x] Streaming
+    - [x] Streaming
 - [ ] Tool
-  - [x] Import distributed data
-  - [ ] Export distributed data
-  - [ ] Disaster Recovery
+    - [x] Import distributed data
+    - [ ] Export distributed data
+    - [ ] Disaster Recovery
 - [ ] Flow control and degradation
 
 ## PD:
 
 - [x] Improve namespace
-  - [x] Different replication policies for different namespaces and tables
+    - [x] Different replication policies for different namespaces and tables
 - [x] Decentralize scheduling table Regions
 - [x] Scheduler supports prioritization to be more controllable
 - [ ] Use machine learning to optimize scheduling
 
 ## TiSpark:
 
-- [ ] Limit / Order push-down
+- [ ] Limit/Order push-down
 - [x] Access through the DAG interface and deprecate the Select interface
 - [ ] Index Join and parallel merge join
 - [ ] Data Federation
