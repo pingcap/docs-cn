@@ -31,6 +31,7 @@ This document describes the options that are not involved in command line option
 - To configure the value of the `lower_case_table_names` system variable
 - Default: 2
 - For details, you can see the [MySQL description](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names) of this variable
+- Currently, TiDB only supports setting the value of this option to 2. This means it is case-sensitive when you save a table name, but case-insensitive when you compare table names. The comparison is based on the lower case.
 
 ## Log
 
