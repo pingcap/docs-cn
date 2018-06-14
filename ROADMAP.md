@@ -10,21 +10,30 @@ This document defines the roadmap for TiDB development.
 ## TiDB:
 
 - [ ] Optimizer
-  - [ ] Refactor Ranger
-  - [ ] Optimize the statistics info 
+  - [x] Refactor Ranger
   - [ ] Optimize the cost model
+  - [ ] Join Reorder
+- [ ] Statistics
+  - [x] Update statistics dynamically according to the query feedback
+  - [x] Analyze table automatically
+  - [ ] Improve the accuracy of Row Count estimation
 - [ ] Executor
+  - [ ] Push down the Projection operator to the Coprocessor
+  - [ ] Improve the performance of the HashJoin operator
   - [ ] Parallel Operators
-  - [ ] Compact Row Format to reduce memory usage
+    - [x] Projection
+    - [ ] Aggregation
+    - [ ] Sort
+  - [x] Compact Row Format to reduce memory usage
   - [ ] File Sort
-- [ ] Support View
-- [ ] Support Window Function
+- [ ] View
+- [ ] Window Function
 - [ ] Common Table Expression
 - [ ] Table Partition
-- [ ] Hash time index to resolve the issue with hot regions
-- [ ] Reverse Index
 - [ ] Cluster Index
 - [ ] Improve DDL
+  - [x] Speed up Add Index operation
+  - [ ] Parallel DDL
 - [ ] Support `utf8_general_ci` collation
 
 ## TiKV:
@@ -58,7 +67,7 @@ This document defines the roadmap for TiDB development.
 ## TiSpark:
 
 - [ ] Limit / Order push-down
-- [ ] Access through the DAG interface and deprecate the Select interface
+- [x] Access through the DAG interface and deprecate the Select interface
 - [ ] Index Join and parallel merge join
 - [ ] Data Federation
 
