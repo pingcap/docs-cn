@@ -21,7 +21,7 @@ To use the Raw Key-Value API in applications developed by golang, take the follo
 
 2. Import the dependency packages.
 
-    ```bash
+    ```go
     import (
         "fmt"
         "github.com/pingcap/tidb/config"
@@ -31,7 +31,7 @@ To use the Raw Key-Value API in applications developed by golang, take the follo
 
 3. Create a Raw Key-Value client.
 
-    ```bash
+    ```go
     cli, err := tikv.NewRawKVClient([]string{"192.168.199.113:2379"}, config.Security{})
     ```
 
@@ -42,7 +42,7 @@ To use the Raw Key-Value API in applications developed by golang, take the follo
 
 4. Call the Raw Key-Value client methods to access the data on TiKV. The Raw Key-Value API contains the following methods, and you can also find them at [GoDoc](https://godoc.org/github.com/pingcap/tidb/store/tikv#RawKVClient).
 
-    ```bash
+    ```go
     type RawKVClient struct
     func (c *RawKVClient) Close() error
     func (c *RawKVClient) ClusterID() uint64
@@ -54,7 +54,7 @@ To use the Raw Key-Value API in applications developed by golang, take the follo
 
 ### Usage example of the Raw Key-Value API
 
-```bash
+```go
 package main
 
 import (
@@ -142,23 +142,32 @@ To use the Transactional Key-Value API in applications developed by golang, take
 1. Install the necessary packages.
 
     ```bash
+    go get -v -u github.com/juju/errors
     go get -v -u github.com/pingcap/tidb/kv
     go get -v -u github.com/pingcap/tidb/store/tikv
+    go get -v -u golang.org/x/net/context
     ```
 
 2. Import the dependency packages.
 
-    ```bash
+    ```go
     import (
+        "flag"
+        "fmt"
+        "os"
+
+        "github.com/juju/errors"
         "github.com/pingcap/tidb/kv"
         "github.com/pingcap/tidb/store/tikv"
-        "fmt"
+        "github.com/pingcap/tidb/terror"
+
+        goctx "golang.org/x/net/context"
     )
     ```
 
 3. Create Storage using a URL scheme.
 
-    ```bash
+    ```go
     driver := tikv.Driver{}
     storage, err := driver.Open("tikv://192.168.199.113:2379")
     ```
@@ -169,7 +178,7 @@ To use the Transactional Key-Value API in applications developed by golang, take
 
 5. Call the Transactional Key-Value API's methods to access the data on TiKV. The Transactional Key-Value API contains the following methods:
 
-    ```bash
+    ```go
     Begin() -> Txn
     Txn.Get(key []byte) -> (value []byte)
     Txn.Set(key []byte, value []byte)
@@ -180,96 +189,140 @@ To use the Transactional Key-Value API in applications developed by golang, take
 
 ### Usage example of the Transactional Key-Value API
 
-```bash
+```go
 package main
 
 import (
-    "context"
+    "flag"
     "fmt"
-    "strconv"
+    "os"
 
+    "github.com/juju/errors"
     "github.com/pingcap/tidb/kv"
     "github.com/pingcap/tidb/store/tikv"
+    "github.com/pingcap/tidb/terror"
+
+    goctx "golang.org/x/net/context"
 )
 
-// if key not found, set value to zero
-// else increase the value
-func increase(storage kv.Storage, key []byte) error {
-    txn, err := storage.Begin()
+type KV struct {
+    K, V []byte
+}
+
+func (kv KV) String() string {
+    return fmt.Sprintf("%s => %s (%v)", kv.K, kv.V, kv.V)
+}
+
+var (
+    store  kv.Storage
+    pdAddr = flag.String("pd", "192.168.199.113:2379", "pd address:192.168.199.113:2379")
+)
+
+// Init initializes information.
+func initStore() {
+    driver := tikv.Driver{}
+    var err error
+    store, err = driver.Open(fmt.Sprintf("tikv://%s", *pdAddr))
+    terror.MustNil(err)
+}
+
+// key1 val1 key2 val2 ...
+func puts(args ...[]byte) error {
+    tx, err := store.Begin()
     if err != nil {
-        return err
-    }
-    defer txn.Rollback()
-    var oldValue int
-    val, err := txn.Get(key)
-    if err != nil {
-        if !kv.ErrNotExist.Equal(err) {
-            return err
-        }
-    } else {
-        oldValue, err = strconv.Atoi(string(val))
-        if err != nil {
-            return err
-        }
+        return errors.Trace(err)
     }
 
-    err = txn.Set(key, []byte(strconv.Itoa(oldValue+1)))
-    if err != nil {
-        return err
+    for i := 0; i < len(args); i += 2 {
+        key, val := args[i], args[i+1]
+        err := tx.Set(key, val)
+        if err != nil {
+            return errors.Trace(err)
+        }
     }
-    err = txn.Commit(context.Background())
+    err = tx.Commit(goctx.Background())
+    if err != nil {
+        return errors.Trace(err)
+    }
+
     return nil
 }
 
-// lookup value for key
-func lookup(storage kv.Storage, key []byte) (int, error) {
-    var value int
-    txn, err := storage.Begin()
+func get(k []byte) (KV, error) {
+    tx, err := store.Begin()
     if err != nil {
-        return value, err
+        return KV{}, errors.Trace(err)
     }
-    defer txn.Rollback()
-    val, err := txn.Get(key)
+    v, err := tx.Get(k)
     if err != nil {
-        return value, err
+        return KV{}, errors.Trace(err)
     }
-    value, err = strconv.Atoi(string(val))
+    return KV{K: k, V: v}, nil
+}
+
+func dels(keys ...[]byte) error {
+    tx, err := store.Begin()
     if err != nil {
-        return value, err
+        return errors.Trace(err)
     }
-    return value, nil
+    for _, key := range keys {
+        err := tx.Delete(key)
+        if err != nil {
+            return errors.Trace(err)
+        }
+    }
+    err = tx.Commit(goctx.Background())
+    if err != nil {
+        return errors.Trace(err)
+    }
+    return nil
+}
+
+func scan(keyPrefix []byte, limit int) ([]KV, error) {
+    tx, err := store.Begin()
+    if err != nil {
+        return nil, errors.Trace(err)
+    }
+    it, err := tx.Seek(keyPrefix)
+    if err != nil {
+        return nil, errors.Trace(err)
+    }
+    defer it.Close()
+    var ret []KV
+    for it.Valid() && limit > 0 {
+        ret = append(ret, KV{K: it.Key()[:], V: it.Value()[:]})
+        limit--
+        it.Next()
+    }
+    return ret, nil
 }
 
 func main() {
-    driver := tikv.Driver{}
-    storage, err := driver.Open("tikv://192.168.199.113:2379")
-    if err != nil {
-        panic(err)
+    pdAddr := os.Getenv("PD_ADDR")
+    if pdAddr != "" {
+        os.Args = append(os.Args, "-pd", pdAddr)
     }
-    defer storage.Close()
+    flag.Parse()
+    initStore()
 
-    key := []byte("Account")
-    // lookup account
-    account, err := lookup(storage, key)
-    if err != nil {
-        fmt.Printf("failed to lookup key %s: %v\n", key, err)
-    } else {
-        fmt.Printf("Account is %d\n", account)
+    // set
+    err := puts([]byte("key1"), []byte("value1"), []byte("key2"), []byte("value2"))
+    terror.MustNil(err)
+
+    // get
+    kv, err := get([]byte("key1"))
+    terror.MustNil(err)
+    fmt.Println(kv)
+
+    // scan
+    ret, err := scan([]byte("key"), 10)
+    for _, kv := range ret {
+        fmt.Println(kv)
     }
 
-    // increase account
-    err = increase(storage, key)
-    if err != nil {
-        panic(err)
-    }
-
-    // lookup account again
-    account, err = lookup(storage, key)
-    if err != nil {
-        fmt.Printf("failed to lookup key %s: %v\n", key, err)
-    } else {
-        fmt.Printf("Account increased to %d\n", account)
-    }
+    // delete
+    err = dels([]byte("key1"), []byte("key2"))
+    terror.MustNil(err)
 }
 ```
 
@@ -277,19 +330,9 @@ The result is like:
 
 ```bash
 INFO[0000] [pd] create pd client with endpoints [192.168.199.113:2379]
-INFO[0000] [pd] leader switches to: http://127.0.0.1:2379, previous:
-INFO[0000] [pd] init cluster id 6554145799874853483
-INFO[0000] [kv] Rollback txn 400197262324006914
-failed to lookup key Account: [kv:2]Error: key not exist
-INFO[0000] [kv] Rollback txn 400197262324006917
-Account increased to 1
-
-# run the program again
-INFO[0000] [pd] create pd client with endpoints [192.168.199.113:2379]
-INFO[0000] [pd] leader switches to: http://127.0.0.1:2379, previous:
-INFO[0000] [pd] init cluster id 6554145799874853483
-INFO[0000] [kv] Rollback txn 400198364324954114
-Account is 1
-INFO[0000] [kv] Rollback txn 400198364324954117
-Account increased to  2
+INFO[0000] [pd] leader switches to: http://192.168.199.113:2379, previous:
+INFO[0000] [pd] init cluster id 6563858376412119197
+key1 => value1 ([118 97 108 117 101 49])
+key1 => value1 ([118 97 108 117 101 49])
+key2 => value2 ([118 97 108 117 101 50])
 ```
