@@ -9,7 +9,7 @@ category: deployment
 
 Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingcap/tidb-ansible) 是 PingCAP 基于 Ansible playbook 功能编写的集群部署工具。使用 TiDB-Ansible 可以快速部署一个完整的 TiDB 集群。
 
-本部署工具可以通过配置文件设置集群拓扑，一键完成以下各项运维工作：
+本部署工具可以通过配置文件设置集群拓扑，完成以下各项运维工作：
 
 - 初始化操作系统参数
 - 部署 TiDB 集群(包括 PD、TiDB、TiKV 等组件和监控组件)
@@ -17,6 +17,8 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 - 变更组件配置
 - 集群扩容缩容
 - 清除集群数据
+- 启动集群
+- 关闭集群
 - 销毁集群
 
 ## 准备机器
@@ -164,6 +166,8 @@ $ ansible-playbook -i hosts.ini create_users.yml -k
 
 ## 在部署目标机器上安装 NTP 服务
 
+> 如果你的部署目标机器时间、时区设置一致，已开启 NTP 服务且在正常同步时间，此步骤可忽略。可参考[如何检测 NTP 服务是否正常](#如何检测-ntp-服务是否正常)。
+
 以 `tidb` 用户登录中控机，执行以下命令，按提示输入部署目标机器 root 密码。该步骤将在部署目标机器上安装 NTP 服务，服务使用安装包默认的 NTP server 列表，见配置文件 `/etc/ntp.conf` 中 server 参数。在启动 NTP 服务前，系统会 ntpdate `hosts.ini` 文件 中 `ntp_server`，默认为 `pool.ntp.org`，也可替换为你的 NTP server。
 
 ```
@@ -174,6 +178,12 @@ $ ansible-playbook -i hosts.ini deploy_ntp.yml -k
 ## 在部署目标机器上添加数据盘 ext4 文件系统挂载参数
 
 部署目标机器数据盘请格式化成 ext4 文件系统，挂载时请添加 nodelalloc 和 noatime 挂载参数。`nodelalloc` 是必选参数，否则 Ansible 安装时检测无法通过，noatime 是可选建议参数。
+
+> 如果你的数据盘已经格式化成 ext4 并挂载, 可先执行 `umount` 命令卸载，从编辑 `/etc/fstab` 文件步骤开始执行, 添加挂载参数重新挂载即可。
+
+  ```
+  # umount /dev/nvme0n1
+  ```
 
 下面以 /dev/nvme0n1 数据盘为例：
 
@@ -229,12 +239,6 @@ UUID=c51eb23b-195c-4061-92a9-3fad812cc12f /data1 ext4 defaults,nodelalloc,noatim
 # mount -t ext4
 /dev/nvme0n1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
 ```
-
-> 如果你的数据盘已经格式化成 ext4 并挂载, 可按以下步骤卸载，从编辑 `/etc/fstab` 文件步骤开始执行即可。
-
-  ```
-  # umount /dev/nvme0n1
-  ```
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
@@ -404,6 +408,9 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | alertmanager_target | 可选：如果你已单独部署 alertmanager，可配置该变量，格式：alertmanager_host:alertmanager_port |
 | grafana_admin_user | Grafana 管理员帐号用户名，默认为 admin |
 | grafana_admin_password | Grafana 管理员帐号密码，默认为 admin，用于 Ansible 导入 Dashboard 和创建 API Key，如后期通过 grafana web 修改了密码，请更新此变量 |
+| collect_log_recent_hours | 采集日志时，采集最近几个小时的日志，默认为 2 小时 |
+| enable_bandwidth_limit | 在中控机上从部署目标机器拉取诊断数据时，是否限速，默认为 True，与 collect_bandwidth_limit 变量结合使用 |
+| collect_bandwidth_limit | 在中控机上从部署目标机器拉取诊断数据时限速多少，单位: Kbit/s，默认 10000，即 10Mb/s，如果是单机多 TiKV 实例部署方式，需除以单机实例个数 |
 
 ## 部署任务
 
@@ -445,7 +452,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
     ansible-playbook deploy.yml
     ```
 
-    >**注意**：Grafana Dashboard 上的 Report 按钮可用来生成 PDF 文件，此功能依赖 `fontconfig` 包。如需使用该功能，登录 grafana_servers 机器，用以下命令安装：
+    >**注意**：Grafana Dashboard 上的 Report 按钮可用来生成 PDF 文件，此功能依赖 `fontconfig` 包和英文字体。如需使用该功能，登录 grafana_servers 机器，用以下命令安装：
     >
     > ```
     > $ sudo yum install fontconfig open-sans-fonts
@@ -471,105 +478,26 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 
     地址：`http://172.16.10.1:3000`  默认帐号密码是：`admin`/`admin`
 
-## 滚动升级
-
-> - 滚动升级 TiDB 服务，滚动升级期间不影响业务运行(最小环境 ：`pd*3 、tidb*2、tikv*3`)
-> - **如果集群环境中有 pump / drainer 服务，请先停止 drainer 后滚动升级 (升级 TiDB 时会升级 pump)**。
-
-### 自动下载 binary
-
-1.  修改 `inventory.ini` 中的 `tidb_version` 参数值，指定需要升级的版本号，本例指定升级的版本号为 `v1.0.2`
-
-    ```
-    tidb_version = v1.0.2
-    ```
-
-2.  删除原有的 downloads 目录 `tidb-ansible/downloads/`
-
-    ```
-    rm -rf downloads
-    ```
-
-3.  使用 playbook 下载 TiDB 1.0 版本 binary，自动替换 binary 到 `tidb-ansible/resource/bin/`
-
-    ```
-    ansible-playbook local_prepare.yml
-    ```
-
-### 手动下载 binary
-
-1.  除 “下载 binary” 中描述的方法之外，也可以手动下载 binary，解压后手动替换 binary 到 `tidb-ansible/resource/bin/`，请注意替换链接中的版本号
-
-    ```
-    wget http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz
-    ```
-
-### 使用 Ansible 滚动升级
-
-- 滚动升级 TiKV 节点( 只升级 TiKV 服务 )
-
-    ```
-    ansible-playbook rolling_update.yml --tags=tikv
-    ```
-
-- 滚动升级 PD 节点( 只升级单独 PD 服务 )
-
-    ```
-    ansible-playbook rolling_update.yml --tags=pd
-    ```
-
-- 滚动升级 TiDB 节点( 只升级单独 TiDB 服务 )
-
-    ```
-    ansible-playbook rolling_update.yml --tags=tidb
-    ```
-
-- 滚动升级所有服务
-
-    ```
-    ansible-playbook rolling_update.yml
-    ```
-
-## 常见运维操作汇总
-
-|任务|Playbook|
-|----|--------|
-|启动集群|`ansible-playbook start.yml`|
-|停止集群|`ansible-playbook stop.yml`|
-|销毁集群|`ansible-playbook unsafe_cleanup.yml` (若部署目录为挂载点，会报错，可忽略）|
-|清除数据(测试用)|`ansible-playbook unsafe_cleanup_data.yml`|
-|滚动升级|`ansible-playbook rolling_update.yml`|
-|滚动升级 TiKV|`ansible-playbook rolling_update.yml --tags=tikv`|
-|滚动升级除 pd 外模块|`ansible-playbook rolling_update.yml --skip-tags=pd`|
-|滚动升级监控组件|`ansible-playbook rolling_update_monitor.yml`|
-
 ## 常见部署问题
-
-### 如何下载安装指定版本 TiDB
-如需安装 TiDB 1.0.4 版本，需要先下载 TiDB-Ansible release-1.0 分支，确认 inventory.ini 文件中 `tidb_version = v1.0.4`，安装步骤同上。
-
-从 github 下载 TiDB-Ansible release-1.0 分支:
-
-```
-git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
-```
 
 ### 如何自定义端口
 修改 `inventory.ini` 文件，在相应服务 IP 后添加以下主机变量即可：
 
 | 组件 | 端口变量 | 默认端口 | 说明 |
 | :-- | :-- | :-- | :-- |
-| TiDB |  tidb_port | 4000  | 应用及 DBA 工具访问通信端口 |
+| TiDB | tidb_port | 4000  | 应用及 DBA 工具访问通信端口 |
 | TiDB | tidb_status_port | 10080  | TiDB 状态信息上报通信端口 |
 | TiKV | tikv_port | 20160 |  TiKV 通信端口  |
 | PD | pd_client_port | 2379 | 提供 TiDB 和 PD 通信端口 |
 | PD | pd_peer_port | 2380 | PD 集群节点间通信端口 |
-| pump | pump_port | 8250  | pump 通信端口 |
-| prometheus | prometheus_port | 9090 | Prometheus 服务通信端口  |
-| pushgateway | pushgateway_port | 9091 | TiDB, TiKV, PD 监控聚合和上报端口 |
-| node_exporter | node_exporter_port | 9100 | TiDB 集群每个节点的系统信息上报通信端口 |
-| grafana | grafana_port |  3000 | Web 监控服务对外服务和客户端(浏览器)访问端口 |
-| grafana | grafana_collector_port |  8686 | grafana_collector 通信端口，用于将 Dashboard 导出为 PDF 格式 |
+| Pump | pump_port | 8250  | Pump 通信端口 |
+| Prometheus | prometheus_port | 9090 | Prometheus 服务通信端口 |
+| Pushgateway | pushgateway_port | 9091 | TiDB, TiKV, PD 监控聚合和上报端口 |
+| Node_exporter | node_exporter_port | 9100 | TiDB 集群每个节点的系统信息上报通信端口 |
+| Blackbox_exporter | blackbox_exporter_port | 9115 | Blackbox_exporter 通信端口，用于 TiDB 集群端口监控 |
+| Grafana | grafana_port |  3000 | Web 监控服务对外服务和客户端(浏览器)访问端口 |
+| Grafana | grafana_collector_port |  8686 | grafana_collector 通信端口，用于将 Dashboard 导出为 PDF 格式 |
+| Kafka_exporter | kafka_exporter_port | 9308 | Kafka_exporter 通信端口，用于监控 binlog Kafka 集群 |
 
 ### 如何自定义部署目录
 
@@ -614,7 +542,7 @@ synchronised to NTP server (85.199.214.101) at stratum 2
    polling server every 1024 s
 ```
 
-> **注：** Ubuntu 系统请安装 ntpstat 软件包。
+> **注：** Ubuntu 系统需安装 ntpstat 软件包。
 
 以下情况表示 NTP 服务未正常同步：
 
@@ -630,7 +558,7 @@ $ ntpstat
 Unable to talk to NTP daemon. Is it running?
 ```
 
-使用以下命令可使 NTP 服务尽快开始同步，pool.ntp.org 可替换为其他 NTP server：
+使用以下命令可使 NTP 服务尽快开始同步，pool.ntp.org 可替换为你的 NTP server：
 
 ```
 $ sudo systemctl stop ntpd.service
@@ -638,13 +566,12 @@ $ sudo ntpdate pool.ntp.org
 $ sudo systemctl start ntpd.service
 ```
 
-#### 如何手工安装 NTP 服务
-
-在 CentOS 7 系统上执行以下命令：
+在 CentOS 7 系统上执行以下命令，可手工安装 NTP 服务：
 
 ```
 $ sudo yum install ntp ntpdate
 $ sudo systemctl start ntpd.service
+$ sudo systemctl enable ntpd.service
 ```
 
 ### 如何调整进程监管方式从 supervise 到 systemd
