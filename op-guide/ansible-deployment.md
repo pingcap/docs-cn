@@ -13,13 +13,13 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 - 初始化操作系统参数
 - 部署 TiDB 集群(包括 PD、TiDB、TiKV 等组件和监控组件)
-- 升级组件版本
-- 变更组件配置
-- 集群扩容缩容
-- 清除集群数据
-- 启动集群
-- 关闭集群
-- 销毁集群
+- [升级组件版本](ansible-deployment-rolling-update.md#升级组件版本)
+- [变更组件配置](ansible-deployment-rolling-update.md#变更组件配置)
+- [集群扩容缩容](ansible-deployment-scale.md)
+- [启动集群](ansible-operation.md#启动集群)
+- [关闭集群](ansible-operation.md#关闭集群)
+- [清除集群数据](ansible-operation.md#清除集群数据)
+- [销毁集群](ansible-operation.md#销毁集群)
 
 ## 准备机器
 
