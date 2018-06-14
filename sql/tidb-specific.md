@@ -8,14 +8,19 @@ category: user guide
 On the basis of MySQL variables and syntaxes, TiDB has defined some specific system variables and syntaxes to optimize performance.
 
 ## System variable
+
 Variables can be set with the `SET` statement, for example:
 
-```set @@tidb_distsql_scan_concurrency = 10 ```
+```
+set @@tidb_distsql_scan_concurrency = 10
+```
 
 If you need to set the global variable, run:
 
-```set @@global.tidb_distsql_scan_concurrency = 10 ```
- 
+```
+set @@global.tidb_distsql_scan_concurrency = 10
+```
+
 ### tidb_snapshot
 
 - Scope: SESSION
@@ -218,8 +223,15 @@ If you need to set the global variable, run:
 - Scope: SERVER
 - Default value: 0
 - This variable is used to set whether to enable Streaming.
- 
-## Optimizer hint
+
+## tidb_retry_limit
+
+- Scope: SESSION | GLOBAL
+- Default value: 10
+- When a transaction encounters retriable errors, such as transaction conflicts and TiKV busy, this transaction can be re-executed. This variable is used to set the maximum number of the retries.
+
+## Optimizer Hint
+
 On the basis of MySQL’s `Optimizer Hint` Syntax, TiDB adds some proprietary `Hint` syntaxes. When using the `Hint` syntax, the TiDB optimizer will try to use the specific algorithm, which performs better than the default algorithm in some scenarios.
  
 The `Hint` syntax is included in comments like `/*+ xxx */`, and in MySQL client versions earlier than 5.7.7, the comment is removed by default. If you want to use the `Hint` syntax in these earlier versions, add the `--comments` option when starting the client. For example: `mysql -h 127.0.0.1 -P 4000 -uroot --comments`.
