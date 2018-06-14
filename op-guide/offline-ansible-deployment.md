@@ -113,7 +113,7 @@ category: deployment
 
 ## 在部署目标机器上添加数据盘 ext4 文件系统挂载参数
 
-参考[在部署目标机器上添加数据盘 ext4 文件系统挂载参数](ansible-deployment.md#https://github.com/LinuxGit/docs-cn/blob/Louis/refine-deployment-docs/op-guide/ansible-deployment.md#在部署目标机器上添加数据盘-ext4-文件系统挂载参数)即可。
+参考[在部署目标机器上添加数据盘 ext4 文件系统挂载参数](ansible-deployment.md#在部署目标机器上添加数据盘-ext4-文件系统挂载参数)即可。
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
