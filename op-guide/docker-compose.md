@@ -1,15 +1,22 @@
 ---
 title: TiDB Docker Compose Deployment
+summary: Deploy a TiDB testing cluster with a single command using Docker Compose.
 category: operations
 ---
 
 # TiDB Docker Compose Deployment
 
-This document describes how to quickly deploy TiDB using [Docker Compose](https://docs.docker.com/compose/overview).
+This document describes how to quickly deploy a TiDB testing cluster with a single command using [Docker Compose](https://docs.docker.com/compose/overview).
 
 With Docker Compose, you can use a YAML file to configure application services in multiple containers. Then, with a single command, you can create and start all the services from your configuration.
 
-You can use Docker Compose to deploy a TiDB test cluster with a single command. It is required to use Docker 17.06.0 or later.
+## Prerequisites
+
+Make sure you have installed the following items on your machine:
+
+- Docker (17.06.0 or later)
+- Docker Compose
+- Git
 
 ## Deploy TiDB using Docker Compose
 
@@ -22,7 +29,8 @@ You can use Docker Compose to deploy a TiDB test cluster with a single command. 
 2. Create and start the cluster.
 
     ```bash
-    cd tidb-docker-compose && docker-compose up -d
+    cd tidb-docker-compose && docker-compose pull # Get the latest Docker images
+    docker-compose up -d
     ```
 
 3. Access the cluster.
@@ -59,7 +67,7 @@ To customize the cluster, you can edit the `docker-compose.yml` file directly. I
 
     For macOS, you can also install Helm using the following command in Homebrew:
 
-    ```
+    ```bash
     brew install kubernetes-helm
     ```
 
@@ -77,7 +85,7 @@ To customize the cluster, you can edit the `docker-compose.yml` file directly. I
     vim values.yaml
     ```
 
-    Modify the configuration in `values.yaml`, such as the cluster size, TiDB image version, and so on.
+    You can modify the configuration in `values.yaml`, such as the cluster size, TiDB image version, and so on.
 
     [tidb-vision](https://github.com/pingcap/tidb-vision) is the data visualization interface of the TiDB cluster, used to visually display the PD scheduling on TiKV data. If you do not need this component, leave `tidbVision` empty.
 
@@ -96,6 +104,7 @@ To customize the cluster, you can edit the `docker-compose.yml` file directly. I
 5. Create and start the cluster using the generated `docker-compose.yml` file.
 
     ```bash
+    docker-compose -f generated-docker-compose.yaml pull # Get the latest Docker images
     docker-compose -f generated-docker-compose.yml up -d
     ```
 
@@ -112,3 +121,47 @@ To customize the cluster, you can edit the `docker-compose.yml` file directly. I
     - Default password: admin
 
     If tidb-vision is enabled, you can access the cluster data visualization interface: <http://localhost:8010>.
+
+## Access the Spark shell and load TiSpark
+
+Insert some sample data to the TiDB cluster:
+
+```bash
+$ docker-compose exec tispark-master bash
+$ cd /opt/spark/data/tispark-sample-data
+$ mysql -h tidb -P 4000 -u root < dss.ddl
+```
+
+After the sample data is loaded into the TiDB cluster, you can access the Spark shell using `docker-compose exec tispark-master /opt/spark/bin/spark-shell`.
+
+```bash
+$ docker-compose exec tispark-master /opt/spark/bin/spark-shell
+...
+Spark context available as 'sc' (master = local[*], app id = local-1527045927617).
+Spark session available as 'spark'.
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /___/ .__/\_,_/_/ /_/\_\   version 2.1.1
+      /_/
+
+Using Scala version 2.11.8 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_172)
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+scala> import org.apache.spark.sql.TiContext
+...
+scala> val ti = new TiContext(spark)
+...
+scala> ti.tidbMapDatabase("TPCH_001")
+...
+scala> spark.sql("select count(*) from lineitem").show
++--------+
+|count(1)|
++--------+
+|   60175|
++--------+
+```
+
+Here is [a 5-minute tutorial](https://www.pingcap.com/blog/how_to_spin_up_an_htap_database_in_5_minutes_with_tidb_tispark/) for macOS users that shows how to spin up a standard TiDB cluster using Docker Compose on your local computer.

@@ -1,56 +1,68 @@
 ---
 title: Install and Deploy TiKV Using Docker Compose
-category: user guide
+summary: Quickly deploy a TiKV testing cluster using Docker Compose.
+category: operations
 ---
 
 # Install and Deploy TiKV Using Docker Compose
 
-This guide describes how to quickly deploy a TiKV cluster using [Docker Compose](https://github.com/pingcap/tidb-docker-compose/). Currently, this installation method only supports the Linux system.
+This guide describes how to quickly deploy a TiKV testing cluster using [Docker Compose](https://github.com/pingcap/tidb-docker-compose/).
+
+> **Note:** Currently, this installation method only supports the Linux system.
 
 ## Prerequisites
 
-- Install Docker and Docker Compose.
+Make sure you have installed the following items on your machine:
 
-    ```
+- Docker (17.06.0 or later) and Docker Compose
+
+    ```bash
     sudo yum install docker docker-compose
     ```
 
-- Install Helm.
+- Helm
+
+    ```bash
+    curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
+    ```
+
+- Git
 
     ```
-    curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
+    sudo yum install git
     ```
 
 ## Install and deploy
 
 1. Download `tidb-docker-compose`.
 
-    ``` 
+    ```bash
     git clone https://github.com/pingcap/tidb-docker-compose.git
     ```
 
 2. Edit the `compose/values.yaml` file to configure `networkMode` to `host` and comment the TiDB section out.
 
-    ```
+    ```bash
     cd tidb-docker-compose/compose
     networkMode: host
     ```
 
 3. Generate the `generated-docker-compose.yml` file.
 
-    ```
+    ```bash
     helm template compose > generated-docker-compose.yml
     ```
 
 4. Create and start the cluster using the `generated-docker-compose.yml` file.
 
-    ```
+    ```bash
+    docker-compose -f generated-docker-compose.yaml pull # Get the latest Docker images
     docker-compose -f generated-docker-compose.yml up -d
     ```
 
 You can check whether the TiKV cluster has been successfully deployed using the following command:
 
-```
+```bash
 curl localhost:2379/pd/api/v1/stores
 ```
 
