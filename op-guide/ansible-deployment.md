@@ -13,11 +13,11 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 - 初始化操作系统参数
 - 部署 TiDB 集群(包括 PD、TiDB、TiKV 等组件和监控组件)
-- [升级组件版本](ansible-deployment-rolling-update.md#升级组件版本)
-- [变更组件配置](ansible-deployment-rolling-update.md#变更组件配置)
-- [集群扩容缩容](ansible-deployment-scale.md)
 - [启动集群](ansible-operation.md#启动集群)
 - [关闭集群](ansible-operation.md#关闭集群)
+- [变更组件配置](ansible-deployment-rolling-update.md#变更组件配置)
+- [集群扩容缩容](ansible-deployment-scale.md)
+- [升级组件版本](ansible-deployment-rolling-update.md#升级组件版本)
 - [清除集群数据](ansible-operation.md#清除集群数据)
 - [销毁集群](ansible-operation.md#销毁集群)
 
@@ -168,7 +168,10 @@ $ ansible-playbook -i hosts.ini create_users.yml -k
 
 > 如果你的部署目标机器时间、时区设置一致，已开启 NTP 服务且在正常同步时间，此步骤可忽略。可参考[如何检测 NTP 服务是否正常](#如何检测-ntp-服务是否正常)。
 
-以 `tidb` 用户登录中控机，执行以下命令，按提示输入部署目标机器 root 密码。该步骤将在部署目标机器上安装 NTP 服务，服务使用安装包默认的 NTP server 列表，见配置文件 `/etc/ntp.conf` 中 server 参数。在启动 NTP 服务前，系统会 ntpdate `hosts.ini` 文件 中 `ntp_server`，默认为 `pool.ntp.org`，也可替换为你的 NTP server。
+> 该步骤将在部署目标机器上使用系统自带软件源联网安装并启动 NTP 服务，服务使用安装包默认的 NTP server 列表，见配置文件 `/etc/ntp.conf` 中 server 参数，如果使用默认的 NTP server，你的机器需要连接外网。
+> 为了让 NTP 尽快开始同步，启动 NTP 服务前，系统会 ntpdate `hosts.ini` 文件中的 `ntp_server` 一次，默认为 `pool.ntp.org`，也可替换为你的 NTP server。
+
+以 `tidb` 用户登录中控机，执行以下命令，按提示输入部署目标机器 root 密码。
 
 ```
 $ cd /home/tidb/tidb-ansible
@@ -398,7 +401,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
 | timezone | 修改部署目标机器时区，默认为 `Asia/Shanghai`，可调整，与  `set_timezone` 变量结合使用 |
 | set_timezone | 默认为 True，即修改部署目标机器时区，关闭可修改为 False |
-| enable_firewalld | 开启防火墙，默认不开启 |
+| enable_firewalld | 开启防火墙，默认不开启，如需开启，请将[部署建议-网络要求](recommendation.md#网络要求) 中的端口加入白名单 |
 | enable_ntpd | 检测部署目标机器 NTP 服务，默认为 True，请勿关闭 |
 | set_hostname | 根据 IP 修改部署目标机器主机名，默认为 False |
 | enable_binlog | 是否部署 pump 并开启 binlog，默认为 False，依赖 Kafka 集群，参见 `zookeeper_addrs` 变量 |

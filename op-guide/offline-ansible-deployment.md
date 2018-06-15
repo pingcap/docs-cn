@@ -19,7 +19,7 @@ category: deployment
 
 ## 在中控机上安装系统依赖包
 
-> 下载 [ pip 离线安装包 ](https://download.pingcap.org/pip-rpms.el7.tar.gz), 上传至中控机, 该离线包仅支持 CentOS 7 系统。
+> 下载 [pip 离线安装包](https://download.pingcap.org/pip-rpms.el7.tar.gz)， 上传至中控机，该离线包仅支持 CentOS 7 系统。
 
 ```bash
 # tar -xzvf pip-rpms.el7.tar.gz
@@ -35,7 +35,7 @@ category: deployment
  pip 8.1.2 from /usr/lib/python2.7/site-packages (python 2.7)
 ```
 
-> 如果你的系统已安装 pip, 请确认版本 >= 8.1.2, 否则离线安装 ansible 及其依赖时，会有兼容问题。
+> 如果你的系统已安装 pip，请确认版本 >= 8.1.2，否则离线安装 ansible 及其依赖时，会有兼容问题。
 
 ## 在中控机上创建 tidb 用户，并生成 ssh key
 
@@ -45,7 +45,7 @@ category: deployment
 
 以下是 CentOS 7 系统 Ansible 离线安装方式：
 
-目前 release-2.0 及 master 版本兼容 Ansible 2.4 及 Ansible 2.5 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中，请下载 Ansible 2.5 离线安装包上传至中控机。
+目前 release-2.0 及 master 版本兼容 Ansible 2.5 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中，请下载 Ansible 2.5 离线安装包上传至中控机。
 
 > 下载 [Ansible 2.5 离线安装包](https://download.pingcap.org/ansible-2.5.0-pip.tar.gz)
 
