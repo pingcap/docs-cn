@@ -4,7 +4,8 @@ category: release
 ---
 
 # TiDB Release Notes
-
+  
+  - [2.0.4](204.md)
   - [2.0.3](203.md)
   - [2.0.2](202.md)
   - [2.0.1](201.md)
