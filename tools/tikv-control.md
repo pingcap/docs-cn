@@ -22,7 +22,7 @@ TiKV Control (`tikv-ctl`) is a command line tool of TiKV, used to manage the clu
 
 Unless otherwise noted, all commands supports both the remote mode and the local mode.
 
-Besides, `tikv-ctl` has two simple commands `--to-hex` and `--to-escaped`, which are used to make simple changes to the form of the key.
+Additionally, `tikv-ctl` has two simple commands `--to-hex` and `--to-escaped`, which are used to make simple changes to the form of the key.
 
 Generally, use the `escaped` form of the key. For example:
 
@@ -111,7 +111,7 @@ success!
 
 The `tombstone` command is usually used in circumstances where the sync-log is not enabled, and some data written in the Raft state machine is lost caused by power down.
 
-In a TiKV instance, you can use this command to set the status of some Regions to Tombstone. Then when you restart the instance, those Regions are skipped. Besides, those Regions need to have enough healthy replicas in other TiKV instances, so as to be able to continue writing and reading through the Raft mechanism.
+In a TiKV instance, you can use this command to set the status of some Regions to Tombstone. Then when you restart the instance, those Regions are skipped. Those Regions need to have enough healthy replicas in other TiKV instances to be able to continue writing and reading through the Raft mechanism.
 
 ```bash
 pd-ctl>> operator add remove-peer <region_id> <peer_id>

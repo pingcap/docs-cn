@@ -19,7 +19,7 @@ If you set the value of `autocommit` to 1, the status of the current Session is 
 
 In the autocommit status, the updates are automatically committed to the database after you run each statement. Otherwise, the updates are only committed when you run the `COMMIT` or `BEGIN` statement.
 
-Besides, autocommit is also a System Variable. You can update the current Session or the Global value using the following variable assignment statement:
+`autocommit` is also a System Variable. You can update the current Session or the Global value using the following variable assignment statement:
 
 ```sql
 SET @@SESSION.autocommit = {0 | 1};

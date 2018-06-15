@@ -294,7 +294,7 @@ The support for specific operation types is as follows:
 - `DROP COLUMN`: currently does not support the deletion of columns that are primary key columns or index columns
 - `ADD COLUMN`: currently, does not support setting the newly added column as the primary key or unique index at the same time, and does not support setting the column property to `AUTO_INCREMENT`
 - `CHANGE/MODIFY COLUMN`: currently supports some of the syntaxes, and the details are as follows:
-  - In updating data types, the `CHANGE/MODIFY COLUMN` only supports updates between integer types, updates between string types, and updates between Blob types. You can only extend the length of the original type. Besides, the column properties of `unsigned`/`charset`/`collate` cannot be changed. The specific supported types are classified as follows:
+  - In updating data types, the `CHANGE/MODIFY COLUMN` only supports updates between integer types, updates between string types, and updates between Blob types. You can only extend the length of the original type. The column properties of `unsigned`/`charset`/`collate` cannot be changed. The specific supported types are classified as follows:
       - Integer types: `TinyInt`, `SmallInt`, `MediumInt`, `Int`, `BigInt`
       - String types: `Char`, `Varchar`, `Text`, `TinyText`, `MediumText`, `LongText`
       - Blob types: `Blob`, `TinyBlob`, `MediumBlob`, `LongBlob`

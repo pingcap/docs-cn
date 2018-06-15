@@ -55,7 +55,7 @@ Any language supported by MySQL client or driver.
 
 #### Can I use other Key-Value storage engines with TiDB?
 
-Yes. Besides TiKV, TiDB supports many popular standalone storage engines, such as GolevelDB and BoltDB. If the storage engine is a KV engine that supports transactions and it provides a client that meets the interface requirement of TiDB, then it can connect to TiDB.
+Yes. TiKV and TiDB supports many popular standalone storage engines, such as GolevelDB and BoltDB. If the storage engine is a KV engine that supports transactions and it provides a client that meets the interface requirement of TiDB, then it can connect to TiDB.
 
 #### What's the recommended solution for the deployment of three geo-distributed data centers?
 
@@ -304,7 +304,7 @@ Take `Release Version: v1.0.3-1-ga80e796` as an example of version number descri
 
 The TiDB community is highly active. After the 1.0 GA release, the engineers have been keeping optimizing and fixing bugs. Therefore, the TiDB version is updated quite fast. If you want to keep informed of the latest version, see [TiDB Weekly update](https://pingcap.com/weekly/).
 
-It is recommended to deploy the TiDB cluster using the latest version of TiDB-Ansible, which will also be updated along with the TiDB version. Besides, TiDB has a unified management of the version number after the 1.0 GA release. You can view the version number using the following two methods:
+It is recommended to deploy the TiDB cluster using the latest version of TiDB-Ansible, which will also be updated along with the TiDB version. TiDB has a unified management of the version number after the 1.0 GA release. You can view the version number using the following two methods:
 
 - `select tidb_version()`
 - `tidb-server -V`
@@ -394,7 +394,7 @@ The processing time is different for different scenarios. Generally, you can con
 2. The `Add Index` operation with a relatively large number of rows in the corresponding data table: the processing time depends on the specific number of rows and the QPS at that time (the `Add Index` operation has a lower priority than ordinary SQL operations)
 3. Other DDL operations: about 1s
 
-Besides, if the TiDB server instance that receives the DDL request is the same TiDB server instance that the DDL owner is in, the first and third scenarios above might cost dozens to hundreds of milliseconds.
+If the TiDB server instance that receives the DDL request is the same TiDB server instance that the DDL owner is in, the first and third scenarios above may cost only dozens to hundreds of milliseconds.
 
 #### Why it is very slow to run DDL statements sometimes?
 
@@ -479,7 +479,7 @@ Writing or reading a large volume of data in TiKV takes up high I/O, memory and 
 
 #### Does TiKV support SAS/SATA disks or mixed deployment of SSD/SAS disks?
 
-No. For OLTP scenarios, TiDB requires high I/O disks for data access and operation. As a distributed database with strong consistency, TiDB has some write amplification such as replica replication and bottom layer storage compaction. Therefore, it is recommended to use NVMe SSD as the storage disks in TiDB best practices. Besides, the mixed deployment of TiKV and PD is not supported.
+No. For OLTP scenarios, TiDB requires high I/O disks for data access and operation. As a distributed database with strong consistency, TiDB has some write amplification such as replica replication and bottom layer storage compaction. Therefore, it is recommended to use NVMe SSD as the storage disks in TiDB best practices. Mixed deployment of TiKV and PD is not supported.
 
 #### Is the Range of the Key data table divided before data access?
 
@@ -752,7 +752,7 @@ Use `admin show ddl` to view the current job of adding an index.
 
 #### Does TiDB support CBO (Cost-Based Optimization)? If yes, to what extent?
 
-Yes. TiDB uses the cost-based optimizer. The cost model and statistics are constantly optimized. Besides, TiDB also supports correlation algorithms like hash join and soft merge.
+Yes. TiDB uses the cost-based optimizer. The cost model and statistics are constantly optimized. TiDB also supports correlation algorithms like hash join and soft merge.
 
 #### How to determine whether I need to execute `analyze` on a table?
 
