@@ -85,6 +85,10 @@ TiDB  集群可以在不影响线上服务的情况下进行扩容和缩容。�
 
         ansible-playbook bootstrap.yml -l 172.16.10.101,172.16.10.102
 
+> **注**：
+> 如果 `inventory.ini` 中为节点配置了别名，如 `node101 ansible_host=172.16.10.101`，执行 ansible-playbook 时 -l 请指定别名，以下步骤类似。
+> `ansible-playbook bootstrap.yml -l node101,node102`
+
 3.  部署新增节点：
 
         ansible-playbook deploy.yml -l 172.16.10.101,172.16.10.102
@@ -99,7 +103,7 @@ TiDB  集群可以在不影响线上服务的情况下进行扩容和缩容。�
 
 6.  打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群和新增节点的状态。
 
-可使用同样的步骤添加 TiKV 节点。但如果要添加 PD 节点，则需手动更新一些配置文件。
+    可使用同样的步骤添加 TiKV 节点。但如果要添加 PD 节点，则需手动更新一些配置文件。
 
 ## 扩容 PD 节点
 

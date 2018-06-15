@@ -21,7 +21,7 @@ TiDB 是 PingCAP 公司受 Google [Spanner](http://research.google.com/archive/s
 
 ![TiDB Architecture](media/tidb-architecture.png)
 
-参考[TiDB Ansible 部署方案](op-guide/ansible-deployment.md)。
+参考 [TiDB Ansible 部署方案](op-guide/ansible-deployment.md)。
 
 ## TiDB 基本操作
 

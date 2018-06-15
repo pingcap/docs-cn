@@ -39,7 +39,7 @@ category: deployment
 
 ## 在中控机上创建 tidb 用户，并生成 ssh key
 
-参考[在中控机上创建 tidb 用户，并生成 ssh key](ansible-deployment.md#在中控机上创建-tidb-用户并生成-ssh-key)即可。
+参考[在中控机上创建 tidb 用户，并生成 ssh key](ansible-deployment.md#在中控机上创建-tidb-用户并生成-ssh-key) 即可。
 
 ## 在中控机器上离线安装 Ansible 及其依赖
 

@@ -95,7 +95,7 @@
     - [使用 Ansible 扩容缩容](op-guide/ansible-deployment-scale.md)
     - [集群扩容缩容方案](op-guide/horizontal-scale.md)
   + [升级]
-    - [升级组件版本](op-guide/ansible-deployment-rolling-update.md)]
+    - [升级组件版本](op-guide/ansible-deployment-rolling-update.md#升级组件版本)
     - [TiDB 2.0 升级操作指南](op-guide/tidb-v2-upgrade-guide.md)
   - [性能调优](op-guide/tune-tikv.md)
   + 备份与迁移

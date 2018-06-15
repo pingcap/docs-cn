@@ -5,19 +5,19 @@ category: deployment
 
 # 使用 TiDB Ansible 升级 TiDB 集群
 
-滚动升级 TiDB 集群时，会串行关闭服务，更新服务 binary 和配置文件，再启动服务。在前端配置负载均衡的情况下，滚动升级期间不影响业务运行(最小环境 ：`pd * 3 、tidb * 2、tikv * 3`)。
+滚动升级 TiDB 集群时，会串行关闭服务，更新服务 binary 和配置文件，再启动服务。在前端配置负载均衡的情况下，滚动升级期间不影响业务运行(最小环境 ：pd * 3 、tidb * 2、tikv * 3)。
 
 > **注**：
-> - 如果 TiDB 集群开启了 binlog，部署了 pump 和 drainer 服务，升级 TiDB 服务时会升级 pump，请先停止 drainer 服务再执行滚动升级操作。
+> 如果 TiDB 集群开启了 binlog，部署了 pump 和 drainer 服务，升级 TiDB 服务时会升级 pump，请先停止 drainer 服务再执行滚动升级操作。
 
 ## 升级组件版本
 
 > **注**：
-> - 从 TiDB 1.0 升级到 TiDB 2.0，请参考 [TiDB 2.0 升级操作指南](tidb-v2-upgrade-guide.md)。
+> 跨大版本升级，需要更新 `tidb-ansible`，从 TiDB 1.0 升级到 TiDB 2.0，请参考 [TiDB 2.0 升级操作指南](tidb-v2-upgrade-guide.md)。
 
 ### 自动下载 binary
 
-1.  修改 `/home/tidb/tidb-ansible/inventory.ini` 中的 `tidb_version` 参数值，指定需要升级的版本号，本例从 `v2.0.2` 升级到 `v2.0.3`
+1.  修改 `/home/tidb/tidb-ansible/inventory.ini` 中的 `tidb_version` 参数值，指定需要升级的版本号，如从 `v2.0.2` 升级到 `v2.0.3`
 
     ```
     tidb_version = v2.0.3
@@ -38,7 +38,7 @@ category: deployment
 
 ### 手动下载 binary
 
-1.  除 “下载 binary” 中描述的方法之外，也可以手动下载 binary，解压后手动替换 binary 到 `/home/tidb/tidb-ansible/resource/bin/`，请注意替换链接中的版本号
+1.  除 “下载 binary” 中描述的方法之外，也可以手动下载 binary，解压后手动替换 binary 到 `/home/tidb/tidb-ansible/resource/bin/`，请注意替换链接中的版本号。
 
     ```
     wget http://download.pingcap.org/tidb-v2.0.3-linux-amd64-unportable.tar.gz
@@ -88,7 +88,7 @@ TiDB 集群组件配置模板存储在 `/home/tidb/tidb-ansible/conf` 文件夹�
 | TiKV | tikv.yml  |
 | PD | pd.yml  |
 
-默认配置项是注释状态，使用默认值。如果需要修改，需取消注释, 即去除 `#`，修改对应参数值。配置模板使用 yaml 格式，注意参数名及参数值之间使用 `:` 分隔，缩进为两个空格。
+默认配置项是注释状态，使用默认值。如果需要修改，需取消注释，即去除 `#`，修改对应参数值。配置模板使用 yaml 格式，注意参数名及参数值之间使用 `:` 分隔，缩进为两个空格。
 
 如修改 TiKV 配置中  `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数为 16：
 
