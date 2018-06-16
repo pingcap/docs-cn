@@ -72,7 +72,7 @@ TiDB 作为开源分布式 NewSQL 数据库，其正常运行需要网络环境�
 | Pump | 8250 | Pump 通信端口 |
 | Drainer | 8249 | Drainer 通信端口 |
 | Prometheus |  9090 | Prometheus 服务通信端口 |
-| Pushgateway |  9091 | TiDB, TiKV, PD 监控聚合和上报端口 |
+| Pushgateway |  9091 | TiDB，TiKV，PD 监控聚合和上报端口 |
 | Node_exporter |  9100 | TiDB 集群每个节点的系统信息上报通信端口 |
 | Blackbox_exporter | 9115 | Blackbox_exporter 通信端口，用于 TiDB 集群端口监控 |
 | Grafana | 3000 | Web 监控服务对外服务和客户端(浏览器)访问端口 |
@@ -81,4 +81,4 @@ TiDB 作为开源分布式 NewSQL 数据库，其正常运行需要网络环境�
 
 ## 客户端 Web 浏览器要求
 
-TiDB 提供了基于 Prometheus 和 Grafana 技术平台作为 TiDB 分布式数据库集群的可视化监控数据展现方案。建议用户采用高版本的微软 IE, Google Chrome，Mozilla Firefox 访问 Grafana 监控入口。
+TiDB 提供了基于 Prometheus 和 Grafana 技术平台作为 TiDB 分布式数据库集群的可视化监控数据展现方案。建议用户采用高版本的微软 IE，Google Chrome，Mozilla Firefox 访问 Grafana 监控入口。

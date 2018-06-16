@@ -5,7 +5,7 @@ category: deployment
 
 # 使用 TiDB Ansible 升级 TiDB 集群
 
-滚动升级 TiDB 集群时，会串行关闭服务，更新服务 binary 和配置文件，再启动服务。在前端配置负载均衡的情况下，滚动升级期间不影响业务运行(最小环境 ：pd * 3 、tidb * 2、tikv * 3)。
+滚动升级 TiDB 集群时，会串行关闭服务，更新服务 binary 和配置文件，再启动服务。在前端配置负载均衡的情况下，滚动升级期间不影响业务运行（最小环境 ：pd * 3 、tidb * 2、tikv * 3）。
 
 > **注**：
 > 如果 TiDB 集群开启了 binlog，部署了 pump 和 drainer 服务，升级 TiDB 服务时会升级 pump，请先停止 drainer 服务再执行滚动升级操作。
@@ -46,25 +46,25 @@ category: deployment
 
 ### 使用 Ansible 滚动升级
 
-- 滚动升级 TiKV 节点( 只升级 TiKV 服务 )
+- 滚动升级 TiKV 节点（只升级 TiKV 服务）
 
     ```
     $ ansible-playbook rolling_update.yml --tags=tikv
     ```
 
-- 滚动升级 PD 节点( 只升级单独 PD 服务 )
+- 滚动升级 PD 节点（只升级单独 PD 服务）
 
     ```
     $ ansible-playbook rolling_update.yml --tags=pd
     ```
 
-- 滚动升级 TiDB 节点( 只升级单独 TiDB 服务,  如果 TiDB 集群开启了 binlog，升级 TiDB 服务时会升级 pump)
+- 滚动升级 TiDB 节点（只升级单独 TiDB 服务，如果 TiDB 集群开启了 binlog，升级 TiDB 服务时会升级 pump）
 
     ```
     $ ansible-playbook rolling_update.yml --tags=tidb
     ```
 
-- 滚动升级所有服务(依次升级 PD, TiKV, TiDB 服务，如果 TiDB 集群开启了 binlog，升级 TiDB 服务时会升级 pump)
+- 滚动升级所有服务（依次升级 PD，TiKV，TiDB 服务，如果 TiDB 集群开启了 binlog，升级 TiDB 服务时会升级 pump）
 
     ```
     $ ansible-playbook rolling_update.yml

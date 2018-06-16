@@ -7,7 +7,7 @@ category: deployment
 
 ## 启动集群
 
-此操作会按顺序启动整个 TiDB 集群所有组件(包括 PD、TiDB、TiKV 等组件和监控组件)。
+此操作会按顺序启动整个 TiDB 集群所有组件（包括 PD、TiDB、TiKV 等组件和监控组件）。
 
 ```
 $ ansible-playbook start.yml
@@ -15,7 +15,7 @@ $ ansible-playbook start.yml
 
 ## 关闭集群
 
-此操作会按顺序关闭整个 TiDB 集群所有组件(包括 PD、TiDB、TiKV 等组件和监控组件)。
+此操作会按顺序关闭整个 TiDB 集群所有组件（包括 PD、TiDB、TiKV 等组件和监控组件）。
 
 ```
 $ ansible-playbook unsafe_cleanup.yml

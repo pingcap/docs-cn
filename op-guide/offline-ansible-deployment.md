@@ -123,7 +123,7 @@ category: deployment
 
 1.  `ansible-playbook local_prepare.yml` 该 playbook 不需要再执行。
 
-2.  Grafana Dashboard 上的 Report 按钮可用来生成 PDF 文件, 此功能依赖 `fontconfig` 包, 如需使用该功能，请下载 [fontconfig 离线安装包](https://download.pingcap.org/fontconfig-rpms.el7.tar.gz) 上传至 grafana_servers 机器安装。
+2.  Grafana Dashboard 上的 Report 按钮可用来生成 PDF 文件，此功能依赖 `fontconfig` 包，如需使用该功能，请下载 [fontconfig 离线安装包](https://download.pingcap.org/fontconfig-rpms.el7.tar.gz) 上传至 grafana_servers 机器安装。
 
     ```
     $ tar -xzvf fontconfig-rpms.el7.tar.gz

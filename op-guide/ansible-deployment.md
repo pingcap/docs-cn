@@ -56,7 +56,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 ## 在中控机上创建 tidb 用户，并生成 ssh key
 
-以 `root` 用户登录中控机, 执行以下命令
+以 `root` 用户登录中控机，执行以下命令
 
 创建 `tidb` 用户
 
@@ -77,7 +77,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 tidb ALL=(ALL) NOPASSWD: ALL
 ```
 
-生成 ssh key: 执行 `su` 命令从 `root` 用户切换到 `tidb` 用户下，创建 `tidb` 用户 ssh key, 提示 `Enter passphrase` 时直接回车即可。执行成功后，ssh 私钥文件为 `/home/tidb/.ssh/id_rsa`, ssh 公钥文件为 `/home/tidb/.ssh/id_rsa.pub`。
+生成 ssh key: 执行 `su` 命令从 `root` 用户切换到 `tidb` 用户下，创建 `tidb` 用户 ssh key， 提示 `Enter passphrase` 时直接回车即可。执行成功后，ssh 私钥文件为 `/home/tidb/.ssh/id_rsa`， ssh 公钥文件为 `/home/tidb/.ssh/id_rsa.pub`。
 
 ```
 # su - tidb
@@ -127,7 +127,7 @@ $ git clone https://github.com/pingcap/tidb-ansible.git
 
 ## 在中控机器上安装 Ansible 及其依赖
 
-以 `tidb` 用户登录中控机, 请务必按以下方式通过 pip 安装 Ansible 及其相关依赖的指定版本，否则会有兼容问题。安装完成后，可通过 `ansible --version` 查看 Ansible 版本。目前 release-2.0 及 master 版本兼容 Ansible 2.4 及 Ansible 2.5 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中。
+以 `tidb` 用户登录中控机，请务必按以下方式通过 pip 安装 Ansible 及其相关依赖的指定版本，否则会有兼容问题。安装完成后，可通过 `ansible --version` 查看 Ansible 版本。目前 release-2.0 及 master 版本兼容 Ansible 2.4 及 Ansible 2.5 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中。
 
   ```bash
   $ cd /home/tidb/tidb-ansible
@@ -138,7 +138,7 @@ $ git clone https://github.com/pingcap/tidb-ansible.git
 
 ## 在中控机上配置部署机器 ssh 互信及 sudo 规则
 
-以 `tidb` 用户登录中控机, 将你的部署目标机器 IP 添加到 `hosts.ini` 文件 `[servers]` 区块下。
+以 `tidb` 用户登录中控机，将你的部署目标机器 IP 添加到 `hosts.ini` 文件 `[servers]` 区块下。
 
 ```
 $ cd /home/tidb/tidb-ansible
@@ -182,7 +182,7 @@ $ ansible-playbook -i hosts.ini deploy_ntp.yml -k
 
 部署目标机器数据盘请格式化成 ext4 文件系统，挂载时请添加 nodelalloc 和 noatime 挂载参数。`nodelalloc` 是必选参数，否则 Ansible 安装时检测无法通过，noatime 是可选建议参数。
 
-> 如果你的数据盘已经格式化成 ext4 并挂载, 可先执行 `umount` 命令卸载，从编辑 `/etc/fstab` 文件步骤开始执行, 添加挂载参数重新挂载即可。
+> 如果你的数据盘已经格式化成 ext4 并挂载，可先执行 `umount` 命令卸载，从编辑 `/etc/fstab` 文件步骤开始执行，添加挂载参数重新挂载即可。
 
   ```
   # umount /dev/nvme0n1
@@ -236,7 +236,7 @@ UUID=c51eb23b-195c-4061-92a9-3fad812cc12f /data1 ext4 defaults,nodelalloc,noatim
 # mount -a
 ```
 
-执行以下命令，如果文件系统为 ext4, 并且挂载参数中包含 nodelalloc 表示生效：
+执行以下命令，如果文件系统为 ext4，并且挂载参数中包含 nodelalloc 表示生效：
 
 ```
 # mount -t ext4
@@ -245,7 +245,7 @@ UUID=c51eb23b-195c-4061-92a9-3fad812cc12f /data1 ext4 defaults,nodelalloc,noatim
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
-以 `tidb` 用户登录中控机, `inventory.ini` 文件路径为 `/home/tidb/tidb-ansible/inventory.ini`。
+以 `tidb` 用户登录中控机， `inventory.ini` 文件路径为 `/home/tidb/tidb-ansible/inventory.ini`。
 
 > **注：** 请使用内网 IP 来部署集群。
 
@@ -495,7 +495,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | PD | pd_peer_port | 2380 | PD 集群节点间通信端口 |
 | Pump | pump_port | 8250  | Pump 通信端口 |
 | Prometheus | prometheus_port | 9090 | Prometheus 服务通信端口 |
-| Pushgateway | pushgateway_port | 9091 | TiDB, TiKV, PD 监控聚合和上报端口 |
+| Pushgateway | pushgateway_port | 9091 | TiDB， TiKV， PD 监控聚合和上报端口 |
 | Node_exporter | node_exporter_port | 9100 | TiDB 集群每个节点的系统信息上报通信端口 |
 | Blackbox_exporter | blackbox_exporter_port | 9115 | Blackbox_exporter 通信端口，用于 TiDB 集群端口监控 |
 | Grafana | grafana_port |  3000 | Web 监控服务对外服务和客户端(浏览器)访问端口 |
