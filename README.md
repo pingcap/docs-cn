@@ -78,13 +78,13 @@
   + 部署集群
     - [Ansible 部署方案（强烈推荐）](op-guide/ansible-deployment.md)
     - [离线 Ansible 部署方案](op-guide/offline-ansible-deployment.md)
-    - [TiDB 2.0 升级操作指南](op-guide/tidb-v2-upgrade-guide.md)
     - [Docker 部署方案](op-guide/docker-deployment.md)
     - [Docker Compose 部署方案](op-guide/docker-compose.md)
     - [跨机房部署方案](op-guide/location-awareness.md)
   + 配置集群
     - [参数解释](op-guide/configuration.md)
     - [TiDB 配置项解释](op-guide/tidb-config-file.md)
+    - [使用 Ansible 变更组件配置](op-guide/ansible-deployment-rolling-update.md#变更组件配置)
     - [开启 TLS 验证](op-guide/security.md)
     - [生成自签名证书](op-guide/generate-self-signed-certificates.md)
   + 监控集群
@@ -92,9 +92,11 @@
     - [重要监控指标详解](op-guide/dashboard-overview-info.md)
     - [组件状态 API & 监控](op-guide/monitor.md)
   + 扩容缩容
-     - [使用 Ansible 扩容缩容](QUICKSTART.md#tidb-集群扩容缩容方案)
-     - [集群扩容缩容方案](op-guide/horizontal-scale.md)
-  - [升级](op-guide/ansible-deployment.md#滚动升级)
+    - [集群扩容缩容方案](op-guide/horizontal-scale.md)
+    - [使用 Ansible 扩容缩容](op-guide/ansible-deployment-scale.md)
+  + 升级
+    - [升级组件版本](op-guide/ansible-deployment-rolling-update.md#升级组件版本)
+    - [TiDB 2.0 升级操作指南](op-guide/tidb-v2-upgrade-guide.md)
   - [性能调优](op-guide/tune-tikv.md)
   + 备份与迁移
     - [备份与恢复](op-guide/backup-restore.md)
@@ -102,7 +104,6 @@
       - [数据迁移概述](op-guide/migration-overview.md)
       - [全量导入](op-guide/migration.md#使用-mydumperloader-全量导入数据)
       - [增量导入](op-guide/migration.md#使用-syncer-增量导入数据)
-  - [Binary 部署方案](op-guide/binary-deployment.md)
   - [故障诊断](trouble-shooting.md)
 + TiDB 周边工具
   - [Syncer](tools/syncer.md)
@@ -150,7 +151,7 @@
   - [一面数据](http://t.cn/RT9r5di)
   - [凤凰网](http://t.cn/RHRQfNT)
   - [猿辅导](http://t.cn/RTKnKSX)
-  - [Mobikok](http://t.cn/Rm1F6lg)
+  - [Mobikok](http://t.cn/Rm1F6lg)
   - [二维火](http://t.cn/R8bXM2f)
   - [客如云](http://t.cn/R1wSEJH)
   - [Ping++](http://t.cn/RE5xYKn)

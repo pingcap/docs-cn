@@ -85,11 +85,11 @@ readpool:
     # low-concurrency: 8
 ```
 
-单机多 TiKV 实例情况下，需要修改这三个参数，推荐设置：`实例数 * 参数值 = CPU_Vcores * 0.8`。
+单机多 TiKV 实例情况下，需要修改这三个参数，推荐设置：`实例数 * 参数值 = CPU 核数 * 0.8`。
 
 ## 下载 TiDB 2.0 binary 到中控机
 
-确认 `tidb-ansible/inventory.ini` 文件中 `tidb_version = v2.0.0`，然后执行以下命令下载 TiDB 2.0 binary 到中控机。
+确认 `tidb-ansible/inventory.ini` 文件中 `tidb_version = v2.0.4`，然后执行以下命令下载 TiDB 2.0 binary 到中控机。
 
 ```
 $ ansible-playbook local_prepare.yml

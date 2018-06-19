@@ -7,44 +7,113 @@ category: deployment
 
 ## 概述
 
-Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingcap/tidb-ansible) 是 PingCAP 基于 Ansible playbook 功能编写的集群部署工具。使用 TiDB-Ansible 可以快速部署一个完整的 TiDB 集群（包括 PD、TiDB、TiKV 和集群监控模块)。
+Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingcap/tidb-ansible) 是 PingCAP 基于 Ansible playbook 功能编写的集群部署工具。使用 TiDB-Ansible 可以快速部署一个完整的 TiDB 集群。
 
-本部署工具可以通过配置文件设置集群拓扑，一键完成以下各项运维工作：
+本部署工具可以通过配置文件设置集群拓扑，完成以下各项运维工作：
 
 - 初始化操作系统参数
-- 部署组件
-- 滚动升级，滚动升级时支持模块存活检测
-- 数据清理
-- 环境清理
-- 配置监控模块
+- 部署 TiDB 集群（包括 PD、TiDB、TiKV 等组件和监控组件）
+- [启动集群](ansible-operation.md#启动集群)
+- [关闭集群](ansible-operation.md#关闭集群)
+- [变更组件配置](ansible-deployment-rolling-update.md#变更组件配置)
+- [集群扩容缩容](ansible-deployment-scale.md)
+- [升级组件版本](ansible-deployment-rolling-update.md#升级组件版本)
+- [清除集群数据](ansible-operation.md#清除集群数据)
+- [销毁集群](ansible-operation.md#销毁集群)
 
 ## 准备机器
 
 1.  部署目标机器若干
 
     - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见[部署建议](recommendation.md)。
-    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构(amd64)，数据盘请使用 ext4 文件系统，挂载 ext4 文件系统时请添加 nodelalloc 挂载参数，可参考[数据盘 ext4 文件系统挂载参数](#数据盘-ext4-文件系统挂载参数)。
-    - 机器之间内网互通，防火墙如 iptables 等请在部署时关闭。
-    - 机器的时间、时区设置一致，开启 NTP 服务且在正常同步时间，可参考[如何检测 NTP 服务是否正常](#如何检测-ntp-服务是否正常)。
-    - 创建 `tidb` 普通用户作为程序运行用户，tidb 用户可以免密码 sudo 到 root 用户，可参考[如何配置 ssh 互信及 sudo 免密码](#如何配置-ssh-互信及-sudo-免密码)。
+    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构 (amd64)。
+    - 机器之间内网互通。
 
     > **注：使用 Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](docker-compose.md)单机进行测试。
 
 2.  部署中控机一台:
 
     - 中控机可以是部署目标机器中的某一台。
-    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统(默认包含 Python 2.7)。
+    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统（默认包含 Python 2.7）。
     - 该机器需开放外网访问，用于下载 TiDB 及相关软件安装包。
-    - 配置 ssh authorized_key 互信，在中控机上可以使用 `tidb` 用户免密码 ssh 登录到部署目标机器，可参考[如何配置 ssh 互信及 sudo 免密码](#如何配置-ssh-互信及-sudo-免密码)。
+
+## 在中控机上安装系统依赖包
+
+以 `root` 用户登录中控机
+
+如果中控机是 CentOS 7 系统，执行以下命令：
+
+```
+# yum -y install epel-release git curl sshpass
+# yum -y install python-pip
+```
+
+如果是中控机是 Ubuntu 系统，执行以下命令：
+
+```
+# apt-get -y install git curl sshpass python-pip
+```
+
+## 在中控机上创建 tidb 用户，并生成 ssh key
+
+以 `root` 用户登录中控机，执行以下命令
+
+创建 `tidb` 用户
+
+```
+# useradd tidb
+```
+
+设置 `tidb` 用户密码
+
+```
+# passwd tidb
+```
+
+配置 `tidb` 用户 sudo 免密码，将 `tidb ALL=(ALL) NOPASSWD: ALL` 添加到文件末尾即可。
+
+```
+# visudo
+tidb ALL=(ALL) NOPASSWD: ALL
+```
+
+生成 ssh key: 执行 `su` 命令从 `root` 用户切换到 `tidb` 用户下，创建 `tidb` 用户 ssh key， 提示 `Enter passphrase` 时直接回车即可。执行成功后，ssh 私钥文件为 `/home/tidb/.ssh/id_rsa`， ssh 公钥文件为 `/home/tidb/.ssh/id_rsa.pub`。
+
+```
+# su - tidb
+$ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/tidb/.ssh/id_rsa):
+Created directory '/home/tidb/.ssh'.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/tidb/.ssh/id_rsa.
+Your public key has been saved in /home/tidb/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:eIBykszR1KyECA/h0d7PRKz4fhAeli7IrVphhte7/So tidb@172.16.10.49
+The key's randomart image is:
++---[RSA 2048]----+
+|=+o+.o.          |
+|o=o+o.oo         |
+| .O.=.=          |
+| . B.B +         |
+|o B * B S        |
+| * + * +         |
+|  o + .          |
+| o  E+ .         |
+|o   ..+o.        |
++----[SHA256]-----+
+```
 
 ## 在中控机器上下载 TiDB-Ansible
 
-以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录，使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`，以下为各版本下载示例，版本选择可以咨询官方。
+以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录。
+
+使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`，以下为各版本下载示例，版本选择可以咨询官方。
 
 下载 2.0 GA 版本：
 
 ```
-$ sudo yum -y install git
 $ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
 ```
 
@@ -53,28 +122,130 @@ $ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
 下载 master 版本：
 
 ```
-$ sudo yum -y install git
 $ git clone https://github.com/pingcap/tidb-ansible.git
 ```
 
 ## 在中控机器上安装 Ansible 及其依赖
 
-请按以下方式在 CentOS 7 系统的中控机上通过 pip 安装 Ansible 及其相关依赖的指定版本，安装完成后，可通过 `ansible --version` 查看 Ansible 版本。目前 release-1.0 版本依赖 Ansible 2.4，release-2.0 及 master 版本兼容 Ansible 2.4 及 Ansible 2.5 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中，请按以下方式安装，否则会有兼容问题。
+以 `tidb` 用户登录中控机，请务必按以下方式通过 pip 安装 Ansible 及其相关依赖的指定版本，否则会有兼容问题。安装完成后，可通过 `ansible --version` 查看 Ansible 版本。目前 release-2.0 及 master 版本兼容 Ansible 2.4 及 Ansible 2.5 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中。
 
   ```bash
-  $ sudo yum -y install epel-release
-  $ sudo yum -y install python-pip curl
-  $ cd tidb-ansible
+  $ cd /home/tidb/tidb-ansible
   $ sudo pip install -r ./requirements.txt
   $ ansible --version
     ansible 2.5.0
   ```
 
-> 其他系统可参考 [如何安装 Ansible](#如何安装-ansible)。
+## 在中控机上配置部署机器 ssh 互信及 sudo 规则
+
+以 `tidb` 用户登录中控机，将你的部署目标机器 IP 添加到 `hosts.ini` 文件 `[servers]` 区块下。
+
+```
+$ cd /home/tidb/tidb-ansible
+$ vi hosts.ini
+[servers]
+192.168.0.2
+192.168.0.3
+192.168.0.4
+192.168.0.5
+192.168.0.6
+192.168.0.7
+192.168.0.8
+192.168.0.10
+
+[all:vars]
+username = tidb
+ntp_server = pool.ntp.org
+```
+
+执行以下命令，按提示输入部署目标机器 `root` 用户密码。该步骤将在部署目标机器上创建 `tidb` 用户，并配置 sudo 规则，配置中控机与部署目标机器之间的 ssh 互信。
+
+```
+$ ansible-playbook -i hosts.ini create_users.yml -k
+```
+
+## 在部署目标机器上安装 NTP 服务
+
+> 如果你的部署目标机器时间、时区设置一致，已开启 NTP 服务且在正常同步时间，此步骤可忽略。可参考[如何检测 NTP 服务是否正常](#如何检测-ntp-服务是否正常)。
+
+> 该步骤将在部署目标机器上使用系统自带软件源联网安装并启动 NTP 服务，服务使用安装包默认的 NTP server 列表，见配置文件 `/etc/ntp.conf` 中 server 参数，如果使用默认的 NTP server，你的机器需要连接外网。
+> 为了让 NTP 尽快开始同步，启动 NTP 服务前，系统会 ntpdate `hosts.ini` 文件中的 `ntp_server` 一次，默认为 `pool.ntp.org`，也可替换为你的 NTP server。
+
+以 `tidb` 用户登录中控机，执行以下命令，按提示输入部署目标机器 root 密码。
+
+```
+$ cd /home/tidb/tidb-ansible
+$ ansible-playbook -i hosts.ini deploy_ntp.yml -k
+```
+
+## 在部署目标机器上添加数据盘 ext4 文件系统挂载参数
+
+部署目标机器数据盘请格式化成 ext4 文件系统，挂载时请添加 nodelalloc 和 noatime 挂载参数。`nodelalloc` 是必选参数，否则 Ansible 安装时检测无法通过，noatime 是可选建议参数。
+
+> 如果你的数据盘已经格式化成 ext4 并挂载，可先执行 `umount` 命令卸载，从编辑 `/etc/fstab` 文件步骤开始执行，添加挂载参数重新挂载即可。
+
+  ```
+  # umount /dev/nvme0n1
+  ```
+
+下面以 /dev/nvme0n1 数据盘为例：
+
+查看数据盘
+
+```
+# fdisk -l
+Disk /dev/nvme0n1: 1000 GB
+```
+
+创建分区表
+
+```
+# parted -s -a optimal /dev/nvme0n1 mklabel gpt -- mkpart primary ext4 1 -1
+```
+
+格式化文件系统
+
+```
+# mkfs.ext4 /dev/nvme0n1
+```
+
+查看数据盘分区 UUID，本例中 nvme0n1 的 UUID 为 c51eb23b-195c-4061-92a9-3fad812cc12f。
+
+```
+# lsblk -f
+NAME    FSTYPE LABEL UUID                                 MOUNTPOINT
+sda
+├─sda1  ext4         237b634b-a565-477b-8371-6dff0c41f5ab /boot
+├─sda2  swap         f414c5c0-f823-4bb1-8fdf-e531173a72ed
+└─sda3  ext4         547909c1-398d-4696-94c6-03e43e317b60 /
+sr0
+nvme0n1 ext4         c51eb23b-195c-4061-92a9-3fad812cc12f
+```
+
+编辑 `/etc/fstab` 文件，添加 `nodelalloc` 挂载参数
+
+```
+# vi /etc/fstab
+UUID=c51eb23b-195c-4061-92a9-3fad812cc12f /data1 ext4 defaults,nodelalloc,noatime 0 2
+```
+
+挂载数据盘
+
+```
+# mkdir /data1
+# mount -a
+```
+
+执行以下命令，如果文件系统为 ext4，并且挂载参数中包含 nodelalloc 表示生效：
+
+```
+# mount -t ext4
+/dev/nvme0n1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
+```
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
-inventory.ini 文件路径为 `tidb-ansible/inventory.ini`。
+以 `tidb` 用户登录中控机，`inventory.ini` 文件路径为 `/home/tidb/tidb-ansible/inventory.ini`。
 
 > **注：** 请使用内网 IP 来部署集群。
 
@@ -172,8 +343,6 @@ TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 labels
 172.16.10.5
 172.16.10.6
 
-......
-
 [pd_servers:vars]
 location_labels = ["host"]
 ```
@@ -198,10 +367,10 @@ location_labels = ["host"]
             # low-concurrency: 8
         ```
 
-        - 推荐设置：实例数*参数值 = CPU_Vcores * 0.8。
+        - 推荐设置：实例数*参数值 = CPU 核数 * 0.8。
 
     3.  如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
-        - `capacity` = (磁盘总容量 - 日志占用容量) / TiKV 实例数量，例如 "100GB"
+        - `capacity` = 磁盘总容量 / TiKV 实例数量，例如 "100GB"
 
 ### inventory.ini 变量调整
 
@@ -232,7 +401,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
 | timezone | 修改部署目标机器时区，默认为 `Asia/Shanghai`，可调整，与  `set_timezone` 变量结合使用 |
 | set_timezone | 默认为 True，即修改部署目标机器时区，关闭可修改为 False |
-| enable_firewalld | 开启防火墙，默认不开启 |
+| enable_firewalld | 开启防火墙，默认不开启，如需开启，请将[部署建议-网络要求](recommendation.md#网络要求) 中的端口加入白名单 |
 | enable_ntpd | 检测部署目标机器 NTP 服务，默认为 True，请勿关闭 |
 | set_hostname | 根据 IP 修改部署目标机器主机名，默认为 False |
 | enable_binlog | 是否部署 pump 并开启 binlog，默认为 False，依赖 Kafka 集群，参见 `zookeeper_addrs` 变量 |
@@ -242,6 +411,9 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | alertmanager_target | 可选：如果你已单独部署 alertmanager，可配置该变量，格式：alertmanager_host:alertmanager_port |
 | grafana_admin_user | Grafana 管理员帐号用户名，默认为 admin |
 | grafana_admin_password | Grafana 管理员帐号密码，默认为 admin，用于 Ansible 导入 Dashboard 和创建 API Key，如后期通过 grafana web 修改了密码，请更新此变量 |
+| collect_log_recent_hours | 采集日志时，采集最近几个小时的日志，默认为 2 小时 |
+| enable_bandwidth_limit | 在中控机上从部署目标机器拉取诊断数据时，是否限速，默认为 True，与 collect_bandwidth_limit 变量结合使用 |
+| collect_bandwidth_limit | 在中控机上从部署目标机器拉取诊断数据时限速多少，单位: Kbit/s，默认 10000，即 10Mb/s，如果是单机多 TiKV 实例部署方式，需除以单机实例个数 |
 
 ## 部署任务
 
@@ -283,10 +455,10 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
     ansible-playbook deploy.yml
     ```
 
-    >**注意**：Grafana Dashboard 上的 Report 按钮可用来生成 PDF 文件，此功能依赖 `fontconfig` 包。如需使用该功能，登录 grafana_servers 机器，用以下命令安装：
+    >**注意**：Grafana Dashboard 上的 Report 按钮可用来生成 PDF 文件，此功能依赖 `fontconfig` 包和英文字体。如需使用该功能，登录 grafana_servers 机器，用以下命令安装：
     >
     > ```
-    > $ sudo yum install fontconfig
+    > $ sudo yum install fontconfig open-sans-fonts
     > ```
 
 5.  启动 TiDB 集群
@@ -309,105 +481,26 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 
     地址：`http://172.16.10.1:3000`  默认帐号密码是：`admin`/`admin`
 
-## 滚动升级
-
-> - 滚动升级 TiDB 服务，滚动升级期间不影响业务运行(最小环境 ：`pd*3 、tidb*2、tikv*3`)
-> - **如果集群环境中有 pump / drainer 服务，请先停止 drainer 后滚动升级 (升级 TiDB 时会升级 pump)**。
-
-### 自动下载 binary
-
-1.  修改 `inventory.ini` 中的 `tidb_version` 参数值，指定需要升级的版本号，本例指定升级的版本号为 `v1.0.2`
-
-    ```
-    tidb_version = v1.0.2
-    ```
-
-2.  删除原有的 downloads 目录 `tidb-ansible/downloads/`
-
-    ```
-    rm -rf downloads
-    ```
-
-3.  使用 playbook 下载 TiDB 1.0 版本 binary，自动替换 binary 到 `tidb-ansible/resource/bin/`
-
-    ```
-    ansible-playbook local_prepare.yml
-    ```
-
-### 手动下载 binary
-
-1.  除 “下载 binary” 中描述的方法之外，也可以手动下载 binary，解压后手动替换 binary 到 `tidb-ansible/resource/bin/`，请注意替换链接中的版本号
-
-    ```
-    wget http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz
-    ```
-
-### 使用 Ansible 滚动升级
-
-- 滚动升级 TiKV 节点( 只升级 TiKV 服务 )
-
-    ```
-    ansible-playbook rolling_update.yml --tags=tikv
-    ```
-
-- 滚动升级 PD 节点( 只升级单独 PD 服务 )
-
-    ```
-    ansible-playbook rolling_update.yml --tags=pd
-    ```
-
-- 滚动升级 TiDB 节点( 只升级单独 TiDB 服务 )
-
-    ```
-    ansible-playbook rolling_update.yml --tags=tidb
-    ```
-
-- 滚动升级所有服务
-
-    ```
-    ansible-playbook rolling_update.yml
-    ```
-
-## 常见运维操作汇总
-
-|任务|Playbook|
-|----|--------|
-|启动集群|`ansible-playbook start.yml`|
-|停止集群|`ansible-playbook stop.yml`|
-|销毁集群|`ansible-playbook unsafe_cleanup.yml` (若部署目录为挂载点，会报错，可忽略）|
-|清除数据(测试用)|`ansible-playbook unsafe_cleanup_data.yml`|
-|滚动升级|`ansible-playbook rolling_update.yml`|
-|滚动升级 TiKV|`ansible-playbook rolling_update.yml --tags=tikv`|
-|滚动升级除 pd 外模块|`ansible-playbook rolling_update.yml --skip-tags=pd`|
-|滚动升级监控组件|`ansible-playbook rolling_update_monitor.yml`|
-
 ## 常见部署问题
-
-### 如何下载安装指定版本 TiDB
-如需安装 TiDB 1.0.4 版本，需要先下载 TiDB-Ansible release-1.0 分支，确认 inventory.ini 文件中 `tidb_version = v1.0.4`，安装步骤同上。
-
-从 github 下载 TiDB-Ansible release-1.0 分支:
-
-```
-git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
-```
 
 ### 如何自定义端口
 修改 `inventory.ini` 文件，在相应服务 IP 后添加以下主机变量即可：
 
 | 组件 | 端口变量 | 默认端口 | 说明 |
 | :-- | :-- | :-- | :-- |
-| TiDB |  tidb_port | 4000  | 应用及 DBA 工具访问通信端口 |
+| TiDB | tidb_port | 4000  | 应用及 DBA 工具访问通信端口 |
 | TiDB | tidb_status_port | 10080  | TiDB 状态信息上报通信端口 |
 | TiKV | tikv_port | 20160 |  TiKV 通信端口  |
 | PD | pd_client_port | 2379 | 提供 TiDB 和 PD 通信端口 |
 | PD | pd_peer_port | 2380 | PD 集群节点间通信端口 |
-| pump | pump_port | 8250  | pump 通信端口 |
-| prometheus | prometheus_port | 9090 | Prometheus 服务通信端口  |
-| pushgateway | pushgateway_port | 9091 | TiDB, TiKV, PD 监控聚合和上报端口 |
-| node_exporter | node_exporter_port | 9100 | TiDB 集群每个节点的系统信息上报通信端口 |
-| grafana | grafana_port |  3000 | Web 监控服务对外服务和客户端(浏览器)访问端口 |
-| grafana | grafana_collector_port |  8686 | grafana_collector 通信端口，用于将 Dashboard 导出为 PDF 格式 |
+| Pump | pump_port | 8250  | Pump 通信端口 |
+| Prometheus | prometheus_port | 9090 | Prometheus 服务通信端口 |
+| Pushgateway | pushgateway_port | 9091 | TiDB， TiKV， PD 监控聚合和上报端口 |
+| Node_exporter | node_exporter_port | 9100 | TiDB 集群每个节点的系统信息上报通信端口 |
+| Blackbox_exporter | blackbox_exporter_port | 9115 | Blackbox_exporter 通信端口，用于 TiDB 集群端口监控 |
+| Grafana | grafana_port |  3000 | Web 监控服务对外服务和客户端(浏览器)访问端口 |
+| Grafana | grafana_collector_port |  8686 | grafana_collector 通信端口，用于将 Dashboard 导出为 PDF 格式 |
+| Kafka_exporter | kafka_exporter_port | 9308 | Kafka_exporter 通信端口，用于监控 binlog Kafka 集群 |
 
 ### 如何自定义部署目录
 
@@ -451,7 +544,8 @@ synchronised to NTP server (85.199.214.101) at stratum 2
    time correct to within 91 ms
    polling server every 1024 s
 ```
-> **注：** Ubuntu 系统请安装 ntpstat 软件包。
+
+> **注：** Ubuntu 系统需安装 ntpstat 软件包。
 
 以下情况表示 NTP 服务未正常同步：
 
@@ -459,6 +553,7 @@ synchronised to NTP server (85.199.214.101) at stratum 2
 $ ntpstat
 unsynchronised
 ```
+
 以下情况表示 NTP 服务未正常运行：
 
 ```
@@ -466,7 +561,7 @@ $ ntpstat
 Unable to talk to NTP daemon. Is it running?
 ```
 
-使用以下命令可使 NTP 服务尽快开始同步，pool.ntp.org 可替换为其他 NTP server：
+使用以下命令可使 NTP 服务尽快开始同步，pool.ntp.org 可替换为你的 NTP server：
 
 ```
 $ sudo systemctl stop ntpd.service
@@ -474,36 +569,12 @@ $ sudo ntpdate pool.ntp.org
 $ sudo systemctl start ntpd.service
 ```
 
-#### 如何使用 Ansible 部署 NTP 服务
-
-参照[在中控机器上下载 TiDB-Ansible](#在中控机器上下载-tidb-ansible)下载 TiDB-Ansible，将你的部署目标机器 IP 添加到 `[servers]` 区块下，`ntp_server` 变量的值 `pool.ntp.org` 可替换为其他 NTP server，在启动 NTP 服务前，系统会 ntpdate 该 NTP server，Ansible 安装的 NTP 服务使用安装包默认 server 列表，见配置文件 `cat /etc/ntp.conf` 中 server 参数。
-
-```
-$ vi hosts.ini
-[servers]
-172.16.10.49
-172.16.10.50
-172.16.10.61
-172.16.10.62
-
-[all:vars]
-username = tidb
-ntp_server = pool.ntp.org
-```
-
-执行以下命令，按提示输入部署目标机器 root 密码。
-
-```
-$ ansible-playbook -i hosts.ini deploy_ntp.yml -k
-```
-
-#### 如何手工安装 NTP 服务
-
-在 CentOS 7 系统上执行以下命令：
+在 CentOS 7 系统上执行以下命令，可手工安装 NTP 服务：
 
 ```
 $ sudo yum install ntp ntpdate
 $ sudo systemctl start ntpd.service
+$ sudo systemctl enable ntpd.service
 ```
 
 ### 如何调整进程监管方式从 supervise 到 systemd
@@ -521,97 +592,7 @@ ansible-playbook deploy.yml -D
 ansible-playbook start.yml
 ```
 
-### 如何安装 Ansible
-
-如果是 CentOS 系统，直接按文章开头的方式安装即可，如果是 Ubuntu 系统，可按以下方式安装:
-
-```bash
-$ sudo apt-get install python-pip curl
-$ cd tidb-ansible
-$ sudo pip install -r ./requirements.txt
-```
-
-### 数据盘 ext4 文件系统挂载参数
-
-数据盘请格式化成 ext4 文件系统，挂载时请添加 nodelalloc 和 noatime 挂载参数。
-nodelalloc 是必选参数，否则 Ansible 安装时检测无法通过，noatime 是可选建议参数。下面以 /dev/nvme0n1 数据盘为例：
-
-编辑 `/etc/fstab` 文件，添加 `nodelalloc` 挂载参数：
-
-```
-# vi /etc/fstab
-/dev/nvme0n1 /data1 ext4 defaults,nodelalloc,noatime 0 2
-```
-
-使用以下命令 umount 挂载目录并重新挂载：
-
-```
-# umount /data1
-# mount -a
-```
-
-通过以下命令确认是否生效：
-
-```
-# mount -t ext4
-/dev/nvme0n1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
-```
-
-### 如何配置 ssh 互信及 sudo 免密码
-
-#### 在中控机上创建 tidb 用户，并生成 ssh key。
-```
-# useradd tidb
-# passwd tidb
-# su - tidb
-$
-$ ssh-keygen -t rsa
-Generating public/private rsa key pair.
-Enter file in which to save the key (/home/tidb/.ssh/id_rsa):
-Created directory '/home/tidb/.ssh'.
-Enter passphrase (empty for no passphrase):
-Enter same passphrase again:
-Your identification has been saved in /home/tidb/.ssh/id_rsa.
-Your public key has been saved in /home/tidb/.ssh/id_rsa.pub.
-The key fingerprint is:
-SHA256:eIBykszR1KyECA/h0d7PRKz4fhAeli7IrVphhte7/So tidb@172.16.10.49
-The key's randomart image is:
-+---[RSA 2048]----+
-|=+o+.o.          |
-|o=o+o.oo         |
-| .O.=.=          |
-| . B.B +         |
-|o B * B S        |
-| * + * +         |
-|  o + .          |
-| o  E+ .         |
-|o   ..+o.        |
-+----[SHA256]-----+
-```
-
-#### 如何使用 Ansible 自动配置 ssh 互信及 sudo 免密码
-
-参照[在中控机器上下载 TiDB-Ansible](#在中控机器上下载-tidb-ansible)下载 TiDB-Ansible，将你的部署目标机器 IP 添加到 `[servers]` 区块下。
-
-```
-$ vi hosts.ini
-[servers]
-172.16.10.49
-172.16.10.50
-172.16.10.61
-172.16.10.62
-
-[all:vars]
-username = tidb
-```
-
-执行以下命令，按提示输入部署目标机器 root 密码。
-
-```
-$ ansible-playbook -i hosts.ini create_users.yml -k
-```
-
-#### 如何手工配置 ssh 互信及 sudo 免密码
+### 如何手工配置 ssh 互信及 sudo 免密码
 
 以 `root` 用户依次登录到部署目标机器创建 `tidb` 用户并设置登录密码。
 
@@ -633,7 +614,6 @@ tidb ALL=(ALL) NOPASSWD: ALL
 [tidb@172.16.10.49 ~]$ ssh-copy-id -i ~/.ssh/id_rsa.pub 172.16.10.61
 ```
 
-#### 验证 ssh 互信及 sudo 免密码
 以 `tidb` 用户登录到中控机，ssh 登录目标机器 IP，不需要输入密码并登录成功，表示 ssh 互信配置成功。
 
 ```
@@ -649,14 +629,11 @@ tidb ALL=(ALL) NOPASSWD: ALL
 ```
 
 ### You need to install jmespath prior to running json_query filter 报错
-请参照 [在中控机器上安装 Ansible 及其依赖](#在中控机器上安装-ansible-及其依赖) 在中控机上通过 pip 安装 Ansible 及相关依赖的指定版本，默认已安装 `jmespath`。
+请参照 [在中控机器上安装 Ansible 及其依赖](#在中控机器上安装-ansible-及其依赖) 在中控机上通过 pip 安装 Ansible 及相关依赖的指定版本，默认会安装 `jmespath`。
 
-CentOS 7 系统可通过以下命令单独安装 `jmespath`：
+可通过以下命令验证 `jmespath` 是否安装成功：
 
 ```
-$ sudo yum -y install epel-release
-$ sudo yum -y install python-pip
-$ sudo pip install jmespath
 $ pip show jmespath
 Name: jmespath
 Version: 0.9.0
@@ -672,14 +649,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> import jmespath
 ```
 
-Ubuntu 系统可使用以下命令单独安装 `jmespath`：
-
-```
-$ sudo apt-get install python-pip
-$ sudo pip install jmespath
-```
-
-#### 启动 Pump/Drainer 报 `zk: node does not exist` 错误
+### 启动 Pump/Drainer 报 `zk: node does not exist` 错误
 
 请检查 `inventory.ini` 里的 `zookeeper_addrs` 参数配置与 Kafka 集群内的配置是否相同、是否填写了命名空间。关于命名空间的配置说明如下：
 

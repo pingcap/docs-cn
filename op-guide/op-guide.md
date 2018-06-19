@@ -13,13 +13,13 @@ category: deployment
 
 - [Ansible 部署方案 (强烈推荐)](ansible-deployment.md)
 - [离线 Ansible 部署方案](offline-ansible-deployment.md)
-- [TiDB 2.0 升级操作指南](tidb-v2-upgrade-guide.md)
 - [Docker 部署方案](docker-deployment.md)
 - [跨机房部署方案](location-awareness.md)
 
 ## 配置集群
 
 - [配置参数](configuration.md)
+- [使用 Ansible 变更组件配置](ansible-deployment-rolling-update.md#变更组件配置)
 
 ## 监控集群
 
@@ -29,12 +29,13 @@ category: deployment
 
 ## 扩容缩容
 
-- [使用 Ansible 扩容缩容](../QUICKSTART.md#tidb-集群扩容缩容方案)
 - [集群扩容缩容方案](horizontal-scale.md)
+- [使用 Ansible 扩容缩容](ansible-deployment-scale.md)
 
 ## 升级
 
-- [使用 Ansible 升级](ansible-deployment.md)
+- [使用 Anisble 升级组件版本](ansible-deployment-rolling-update.md#升级组件版本)
+- [TiDB 2.0 升级操作指南](tidb-v2-upgrade-guide.md)
 
 ## 性能调优
 
@@ -46,7 +47,3 @@ category: deployment
 + [数据迁移](migration.md)
     - [全量导入](migration.md#使用-mydumperloader-全量导入数据)
     - [增量导入](migration.md#使用-syncer-增量导入数据)
-
-## Binary 部署方案
-
-- [Binary 部署方案](binary-deployment.md)
