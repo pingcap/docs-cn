@@ -92,8 +92,8 @@
     - [重要监控指标详解](op-guide/dashboard-overview-info.md)
     - [组件状态 API & 监控](op-guide/monitor.md)
   + 扩容缩容
-    - [使用 Ansible 扩容缩容](op-guide/ansible-deployment-scale.md)
     - [集群扩容缩容方案](op-guide/horizontal-scale.md)
+    - [使用 Ansible 扩容缩容](op-guide/ansible-deployment-scale.md)
   + 升级
     - [升级组件版本](op-guide/ansible-deployment-rolling-update.md#升级组件版本)
     - [TiDB 2.0 升级操作指南](op-guide/tidb-v2-upgrade-guide.md)
@@ -104,7 +104,6 @@
       - [数据迁移概述](op-guide/migration-overview.md)
       - [全量导入](op-guide/migration.md#使用-mydumperloader-全量导入数据)
       - [增量导入](op-guide/migration.md#使用-syncer-增量导入数据)
-  - [Binary 部署方案](op-guide/binary-deployment.md)
   - [故障诊断](trouble-shooting.md)
 + TiDB 周边工具
   - [Syncer](tools/syncer.md)

@@ -52,11 +52,22 @@ category: deployment
     $ ansible-playbook rolling_update.yml --tags=pd
     ```
 
+> 如果 PD 实例数大于等于 3，滚动升级 PD leader 实例时，Ansible 会先迁移 PD leader 到其他节点再关闭该实例。
+
 - 滚动升级 TiKV 节点（只升级 TiKV 服务）
 
     ```
     $ ansible-playbook rolling_update.yml --tags=tikv
     ```
+
+> 滚动升级 TiKV 实例时，Ansible 会迁移 region leader 到其他节点。具体逻辑为：调用 PD API 添加 evict leader scheduler，每 10 秒探测一次该 TiKV 实例 leader_count， 等待 leader_count 降到 10 以下（或 为空）或探测超 12 次后，即两分钟超时后，开始关闭 TiKV 升级，启动成功后再去除 evict leader scheduler，串行操作。
+
+> 如中途升级失败，请登录 pd-ctl 执行 scheduler show，查看是否有 evict-leader-scheduler, 如有需手工清除。`{PD_IP}` 和 `{STORE_ID}` 请替换为你的 PD IP 及 TiKV 实例的 store_id 。
+
+  ```
+  $ /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://{PD_IP}:2379" -d scheduler show
+  $ curl -X DELETE "http://{PD_IP}:2379/pd/api/v1/schedulers/evict-leader-scheduler-{STORE_ID}"
+  ```
 
 - 滚动升级 TiDB 节点（只升级单独 TiDB 服务，如果 TiDB 集群开启了 binlog，升级 TiDB 服务时会升级 pump）
 
