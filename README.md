@@ -94,7 +94,7 @@
   + 扩容缩容
     - [使用 Ansible 扩容缩容](op-guide/ansible-deployment-scale.md)
     - [集群扩容缩容方案](op-guide/horizontal-scale.md)
-  + [升级]
+  + 升级
     - [升级组件版本](op-guide/ansible-deployment-rolling-update.md#升级组件版本)
     - [TiDB 2.0 升级操作指南](op-guide/tidb-v2-upgrade-guide.md)
   - [性能调优](op-guide/tune-tikv.md)
@@ -151,7 +151,7 @@
   - [一面数据](http://t.cn/RT9r5di)
   - [凤凰网](http://t.cn/RHRQfNT)
   - [猿辅导](http://t.cn/RTKnKSX)
-  - [Mobikok](http://t.cn/Rm1F6lg)
+  - [Mobikok](http://t.cn/Rm1F6lg)
   - [二维火](http://t.cn/R8bXM2f)
   - [客如云](http://t.cn/R1wSEJH)
   - [Ping++](http://t.cn/RE5xYKn)

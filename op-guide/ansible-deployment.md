@@ -12,7 +12,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 本部署工具可以通过配置文件设置集群拓扑，完成以下各项运维工作：
 
 - 初始化操作系统参数
-- 部署 TiDB 集群(包括 PD、TiDB、TiKV 等组件和监控组件)
+- 部署 TiDB 集群（包括 PD、TiDB、TiKV 等组件和监控组件）
 - [启动集群](ansible-operation.md#启动集群)
 - [关闭集群](ansible-operation.md#关闭集群)
 - [变更组件配置](ansible-deployment-rolling-update.md#变更组件配置)
@@ -26,7 +26,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 1.  部署目标机器若干
 
     - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见[部署建议](recommendation.md)。
-    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构(amd64)。
+    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构 (amd64)。
     - 机器之间内网互通。
 
     > **注：使用 Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](docker-compose.md)单机进行测试。
@@ -34,7 +34,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 2.  部署中控机一台:
 
     - 中控机可以是部署目标机器中的某一台。
-    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统(默认包含 Python 2.7)。
+    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统（默认包含 Python 2.7）。
     - 该机器需开放外网访问，用于下载 TiDB 及相关软件安装包。
 
 ## 在中控机上安装系统依赖包
@@ -109,7 +109,7 @@ The key's randomart image is:
 
 以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录。
 
-使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible) 上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`，以下为各版本下载示例，版本选择可以咨询官方。
+使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`，以下为各版本下载示例，版本选择可以咨询官方。
 
 下载 2.0 GA 版本：
 
@@ -245,7 +245,7 @@ UUID=c51eb23b-195c-4061-92a9-3fad812cc12f /data1 ext4 defaults,nodelalloc,noatim
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
-以 `tidb` 用户登录中控机， `inventory.ini` 文件路径为 `/home/tidb/tidb-ansible/inventory.ini`。
+以 `tidb` 用户登录中控机，`inventory.ini` 文件路径为 `/home/tidb/tidb-ansible/inventory.ini`。
 
 > **注：** 请使用内网 IP 来部署集群。
 
@@ -370,7 +370,7 @@ location_labels = ["host"]
         - 推荐设置：实例数*参数值 = CPU_Vcores * 0.8。
 
     3.  如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
-        - `capacity` = (磁盘总容量 - 日志占用容量) / TiKV 实例数量，例如 "100GB"
+        - `capacity` = 磁盘总容量 / TiKV 实例数量，例如 "100GB"
 
 ### inventory.ini 变量调整
 

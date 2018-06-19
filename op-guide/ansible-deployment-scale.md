@@ -180,9 +180,7 @@ TiDB  集群可以在不影响线上服务的情况下进行扩容和缩容。�
     `{deploy_dir}/scripts/start_pd.sh`
 
     4.  使用 `pd-ctl` 检查新节点是否添加成功：
-    `/home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379"`
-
-    > 注: `pd-ctl` 命令用于查询 PD 节点的数量。
+    `/home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member`
 
 5.  滚动升级整个集群：
 
@@ -265,14 +263,14 @@ TiDB  集群可以在不影响线上服务的情况下进行扩容和缩容。�
 1.  使用 `pd-ctl` 从集群中移除节点：
 
     1.  查看 node9 节点的 store id：
-    `./pd-ctl -u "http://172.16.10.1:2379" -d store`
+    `/home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d store`
 
     2.  从集群中移除 node9，假如 store id 为 10：
-    `./pd-ctl -u "http://172.16.10.1:2379" -d store delete 10`
+    `/home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d store delete 10`
 
 2.  使用 Grafana 或者 `pd-ctl` 检查节点是否下线成功（下线需要一定时间，下线节点的状态变为 Tombstone 就说明下线成功了）：
 
-        ./pd-ctl -u "http://172.16.10.1:2379" -d store 10
+        /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d store 10
 
 3.  下线成功后，停止 node9 上的服务：
 
@@ -341,14 +339,14 @@ TiDB  集群可以在不影响线上服务的情况下进行扩容和缩容。�
 1.  使用 `pd-ctl` 从集群中移除节点：
 
     1.  查看 node2 节点的 name：
-    `./pd-ctl -u "http://172.16.10.1:2379" -d member`
+    `/home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member`
 
     2.  从集群中移除 node2，假如 name 为 pd2：
-    `./pd-ctl -u "http://172.16.10.1:2379" -d member delete name pd2`
+    `/home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member delete name pd2`
 
 2.  使用 Grafana 或者 `pd-ctl` 检查节点是否下线成功（PD 下线会很快，结果中没有 node2 节点信息即为下线成功）：
 
-        ./pd-ctl -u "http://172.16.10.1:2379" -d member
+        /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member
 
 3.  下线成功后，停止 node2 上的服务：
 

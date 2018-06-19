@@ -46,16 +46,16 @@ category: deployment
 
 ### 使用 Ansible 滚动升级
 
-- 滚动升级 TiKV 节点（只升级 TiKV 服务）
-
-    ```
-    $ ansible-playbook rolling_update.yml --tags=tikv
-    ```
-
 - 滚动升级 PD 节点（只升级单独 PD 服务）
 
     ```
     $ ansible-playbook rolling_update.yml --tags=pd
+    ```
+
+- 滚动升级 TiKV 节点（只升级 TiKV 服务）
+
+    ```
+    $ ansible-playbook rolling_update.yml --tags=tikv
     ```
 
 - 滚动升级 TiDB 节点（只升级单独 TiDB 服务，如果 TiDB 集群开启了 binlog，升级 TiDB 服务时会升级 pump）
