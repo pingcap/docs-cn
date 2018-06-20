@@ -18,7 +18,7 @@ $ ansible-playbook start.yml
 此操作会按顺序关闭整个 TiDB 集群所有组件（包括 PD、TiDB、TiKV 等组件和监控组件）。
 
 ```
-$ ansible-playbook unsafe_cleanup.yml
+$ ansible-playbook stop.yml
 ```
 
 ## 清除集群数据
@@ -26,7 +26,7 @@ $ ansible-playbook unsafe_cleanup.yml
 此操作会关闭 TiDB、Pump、TiKV、PD 服务，并清空 Pump、TiKV、PD 数据目录。
 
 ```
-$ ansible-playbook unsafe_cleanup.yml
+$ ansible-playbook unsafe_cleanup_data.yml
 ```
 
 ## 销毁集群
