@@ -125,7 +125,7 @@ $ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
 $ git clone https://github.com/pingcap/tidb-ansible.git
 ```
 
-> **注**：请务必按文档操作，将 `tidb-ansible` 下载到 `/home/tidb` 目录下，权限为 `tidb` 用户，不要下载到 /root 下，否则会遇到权限问题。
+> **注**：请务必按文档操作，将 `tidb-ansible` 下载到 `/home/tidb` 目录下，权限为 `tidb` 用户，不要下载到 `/root` 下，否则会遇到权限问题。
 
 ## 在中控机器上安装 Ansible 及其依赖
 

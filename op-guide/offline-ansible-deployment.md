@@ -19,7 +19,7 @@ category: deployment
 
 ## 在中控机上安装系统依赖包
 
-> 下载[系统依赖离线安装包](https://download.pingcap.org/ansible-system-rpms.el7.tar.gz)， 上传至中控机，该离线包仅支持 CentOS 7 系统，包含 `pip` 及 `sshpass`。
+> 下载[系统依赖离线安装包](https://download.pingcap.org/ansible-system-rpms.el7.tar.gz)，上传至中控机。该离线包仅支持 CentOS 7 系统，包含 `pip` 及 `sshpass`。
 
 ```bash
 # tar -xzvf ansible-system-rpms.el7.tar.gz
@@ -123,7 +123,7 @@ category: deployment
 
 1.  `ansible-playbook local_prepare.yml` 该 playbook 不需要再执行。
 
-2.  Grafana Dashboard 上的 Report 按钮可用来生成 PDF 文件，此功能依赖 `fontconfig` 包及英文字体，如需使用该功能，请下载 [font 离线安装包](https://download.pingcap.org/grafana-font-rpms.el7.tar.gz) 上传至 **grafana_servers** 机器上安装，该离线包仅支持 CentOS 7 系统，包含 `fontconfig` 及 `open-sans-fonts`。
+2.  Grafana Dashboard 上的 Report 按钮可用来生成 PDF 文件，此功能依赖 `fontconfig` 包及英文字体，如需使用该功能，请下载 [font 离线安装包](https://download.pingcap.org/grafana-font-rpms.el7.tar.gz)上传至 **grafana_servers** 机器上安装。该离线包仅支持 CentOS 7 系统，包含 `fontconfig` 及 `open-sans-fonts`。
 
     ```
     $ tar -xzvf grafana-font-rpms.el7.tar.gz
