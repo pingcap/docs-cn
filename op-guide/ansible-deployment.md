@@ -125,6 +125,8 @@ $ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
 $ git clone https://github.com/pingcap/tidb-ansible.git
 ```
 
+> **注**：请务必按文档操作，将 `tidb-ansible` 下载到 `/home/tidb` 目录下，权限为 `tidb` 用户，不要下载到 `/root` 下，否则会遇到权限问题。
+
 ## 在中控机器上安装 Ansible 及其依赖
 
 以 `tidb` 用户登录中控机，请务必按以下方式通过 pip 安装 Ansible 及其相关依赖的指定版本，否则会有兼容问题。安装完成后，可通过 `ansible --version` 查看 Ansible 版本。目前 release-2.0 及 master 版本兼容 Ansible 2.4 及 Ansible 2.5 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中。
@@ -421,6 +423,8 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 
 1.  确认 `tidb-ansible/inventory.ini` 文件中 `ansible_user = tidb`，本例使用 `tidb` 用户作为服务运行用户，配置如下：
 
+    > `ansible_user` 不要设置成 `root` 用户，`tidb-ansbile` 限制了服务以普通用户运行。
+
     ```ini
     ## Connection
     # ssh via normal user
@@ -455,7 +459,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
     ansible-playbook deploy.yml
     ```
 
-    >**注意**：Grafana Dashboard 上的 Report 按钮可用来生成 PDF 文件，此功能依赖 `fontconfig` 包和英文字体。如需使用该功能，登录 grafana_servers 机器，用以下命令安装：
+    >**注**：Grafana Dashboard 上的 Report 按钮可用来生成 PDF 文件，此功能依赖 `fontconfig` 包和英文字体。如需使用该功能，登录 **grafana_servers** 机器，用以下命令安装：
     >
     > ```
     > $ sudo yum install fontconfig open-sans-fonts
