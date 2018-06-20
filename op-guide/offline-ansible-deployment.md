@@ -19,13 +19,13 @@ category: deployment
 
 ## 在中控机上安装系统依赖包
 
-> 下载 [pip 离线安装包](https://download.pingcap.org/pip-rpms.el7.tar.gz)， 上传至中控机，该离线包仅支持 CentOS 7 系统。
+> 下载[系统依赖离线安装包](https://download.pingcap.org/ansible-system-rpms.el7.tar.gz)， 上传至中控机，该离线包仅支持 CentOS 7 系统，包含 `pip` 及 `sshpass`。
 
 ```bash
-# tar -xzvf pip-rpms.el7.tar.gz
-# cd pip-rpms.el7
-# chmod u+x install_pip.sh
-# ./install_pip.sh
+# tar -xzvf ansible-system-rpms.el7.tar.gz
+# cd ansible-system-rpms.el7
+# chmod u+x install_ansible_system_rpms.sh
+# ./install_ansible_system_rpms.sh
 ```
 
 安装完成后，可通过 `pip -V` 验证 pip 是否安装成功：
@@ -123,13 +123,13 @@ category: deployment
 
 1.  `ansible-playbook local_prepare.yml` 该 playbook 不需要再执行。
 
-2.  Grafana Dashboard 上的 Report 按钮可用来生成 PDF 文件，此功能依赖 `fontconfig` 包，如需使用该功能，请下载 [fontconfig 离线安装包](https://download.pingcap.org/fontconfig-rpms.el7.tar.gz) 上传至 grafana_servers 机器安装。
+2.  Grafana Dashboard 上的 Report 按钮可用来生成 PDF 文件，此功能依赖 `fontconfig` 包及英文字体，如需使用该功能，请下载 [font 离线安装包](https://download.pingcap.org/grafana-font-rpms.el7.tar.gz) 上传至 **grafana_servers** 机器上安装，该离线包仅支持 CentOS 7 系统，包含 `fontconfig` 及 `open-sans-fonts`。
 
     ```
-    $ tar -xzvf fontconfig-rpms.el7.tar.gz
-    $ cd fontconfig-rpms.el7/offline_packages
-    $ chmod u+x install_fontconfig.sh
-    $ ./install_fontconfig.sh
+    $ tar -xzvf grafana-font-rpms.el7.tar.gz
+    $ cd grafana-font-rpms.el7
+    $ chmod u+x install_grafana_font_rpms.sh
+    $ ./install_grafana_font_rpms.sh
     ```
 
 3.  参考[部署任务](ansible-deployment.md#部署任务)即可。
