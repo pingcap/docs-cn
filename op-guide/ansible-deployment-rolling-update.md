@@ -52,7 +52,7 @@ category: deployment
     $ ansible-playbook rolling_update.yml --tags=pd
     ```
    
-  如果 PD 实例数大于等于 3，滚动升级 PD leader 实例时，Ansible 会先迁移 PD leader 到其他节点再关闭该实例。
+    如果 PD 实例数大于等于 3，滚动升级 PD leader 实例时，Ansible 会先迁移 PD leader 到其他节点再关闭该实例。
 
 - 滚动升级 TiKV 节点（只升级 TiKV 服务）
 
@@ -60,9 +60,9 @@ category: deployment
     $ ansible-playbook rolling_update.yml --tags=tikv
     ```
 
-   滚动升级 TiKV 实例时，Ansible 会迁移 region leader 到其他节点。具体逻辑为：调用 PD API 添加 evict leader scheduler，每 10 秒探测一次该 TiKV 实例 leader_count， 等待 leader_count 降到 10 以下（或 为空）或探测超 12 次后，即两分钟超时后，开始关闭 TiKV 升级，启动成功后再去除 evict leader scheduler，串行操作。
+    滚动升级 TiKV 实例时，Ansible 会迁移 region leader 到其他节点。具体逻辑为：调用 PD API 添加 evict leader scheduler，每 10 秒探测一次该 TiKV 实例 leader_count， 等待 leader_count 降到 10 以下（或 为空）或探测超 12 次后，即两分钟超时后，开始关闭 TiKV 升级，启动成功后再去除 evict leader scheduler，串行操作。
 
-   如中途升级失败，请登录 pd-ctl 执行 scheduler show，查看是否有 evict-leader-scheduler, 如有需手工清除。`{PD_IP}` 和 `{STORE_ID}` 请替换为你的 PD IP 及 TiKV 实例的 store_id 。
+    如中途升级失败，请登录 pd-ctl 执行 scheduler show，查看是否有 evict-leader-scheduler, 如有需手工清除。`{PD_IP}` 和 `{STORE_ID}` 请替换为你的 PD IP 及 TiKV 实例的 store_id 。
 
     ```
     $ /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://{PD_IP}:2379" -d scheduler show
@@ -91,26 +91,26 @@ category: deployment
 
 1. 更新组件配置模板
 
-TiDB 集群组件配置模板存储在 `/home/tidb/tidb-ansible/conf` 文件夹下。
+    TiDB 集群组件配置模板存储在 `/home/tidb/tidb-ansible/conf` 文件夹下。
 
-| 组件       | 配置文件模板名     |
-| :-------- | :----------: |
-| TiDB | tidb.yml  |
-| TiKV | tikv.yml  |
-| PD | pd.yml  |
+    | 组件       | 配置文件模板名     |
+    | :-------- | :----------: |
+    | TiDB | tidb.yml  |
+    | TiKV | tikv.yml  |
+    | PD | pd.yml  |
 
-默认配置项是注释状态，使用默认值。如果需要修改，需取消注释，即去除 `#`，修改对应参数值。配置模板使用 yaml 格式，注意参数名及参数值之间使用 `:` 分隔，缩进为两个空格。
+    默认配置项是注释状态，使用默认值。如果需要修改，需取消注释，即去除 `#`，修改对应参数值。配置模板使用 yaml 格式，注意参数名及参数值之间使用 `:` 分隔，缩进为两个空格。
 
-如修改 TiKV 配置中  `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数为 16：
+    如修改 TiKV 配置中  `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数为 16：
 
-```
-readpool:
-  coprocessor:
-    # Notice: if CPU_NUM > 8, default thread pool size for coprocessors
-    # will be set to CPU_NUM * 0.8.
-    high-concurrency: 16
-    normal-concurrency: 16
-    low-concurrency: 16
-```
+    ```
+    readpool:
+      coprocessor:
+        # Notice: if CPU_NUM > 8, default thread pool size for coprocessors
+        # will be set to CPU_NUM * 0.8.
+        high-concurrency: 16
+        normal-concurrency: 16
+        low-concurrency: 16
+    ```
 
 2. 修改服务配置后，需使用 Ansible 滚动升级，参考[使用 Ansible 滚动升级](#使用-Ansible-滚动升级)。
