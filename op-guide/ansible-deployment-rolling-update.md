@@ -38,7 +38,7 @@ category: deployment
 
 ### 手动下载 binary
 
-1.  除 “下载 binary” 中描述的方法之外，也可以手动下载 binary，解压后手动替换 binary 到 `/home/tidb/tidb-ansible/resource/bin/`，请注意替换链接中的版本号。
+除 “下载 binary” 中描述的方法之外，也可以手动下载 binary，解压后手动替换 binary 到 `/home/tidb/tidb-ansible/resource/bin/`，请注意替换链接中的版本号。
 
     ```
     wget http://download.pingcap.org/tidb-v2.0.3-linux-amd64-unportable.tar.gz
