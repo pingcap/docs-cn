@@ -231,5 +231,5 @@ prepare 语句的 Plan cache 设置。
 + 默认: true
 
 ### `capacity`
-+ 内存空间的限制,单位:B
++ Hash 对应的 slot 数。
 + 默认：1024000
