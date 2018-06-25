@@ -406,6 +406,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | enable_firewalld | 开启防火墙，默认不开启，如需开启，请将[部署建议-网络要求](recommendation.md#网络要求) 中的端口加入白名单 |
 | enable_ntpd | 检测部署目标机器 NTP 服务，默认为 True，请勿关闭 |
 | set_hostname | 根据 IP 修改部署目标机器主机名，默认为 False |
+| dev_mode | 当 dev_mode = True 时，Ansible 不去检测部署目录机器的 CPU，内存和磁盘性能，默认为 False |
 | enable_binlog | 是否部署 pump 并开启 binlog，默认为 False，依赖 Kafka 集群，参见 `zookeeper_addrs` 变量 |
 | zookeeper_addrs | binlog Kafka 集群的 zookeeper 地址 |
 | enable_slow_query_log | TiDB 慢查询日志记录到单独文件({{ deploy_dir }}/log/tidb_slow_query.log)，默认为 False，记录到 tidb 日志 |
