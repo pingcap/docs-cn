@@ -148,6 +148,12 @@ category: deployment
 + 默认: "http://127.0.0.1:2379"
 + 如果部署一个集群，\-\-client-urls 必须指定当前主机的 IP 地址，例如 "http://192.168.100.113:2379"，如果是运行在 docker 则需要指定为 "http://0.0.0.0:2379"
 
+### `--peer-urls`
+
++ 处理其他 PD 节点请求监听 URL 列表。
++ default: "http://127.0.0.1:2380"
++ 如果部署一个集群，\-\-peer-urls 必须指定当前主机的 IP 地址，例如 "http://192.168.100.113:2380"，如果是运行在 docker 则需要指定为 "http://0.0.0.0:2380"
+
 ### `--config`
 
 + 配置文件
@@ -197,11 +203,26 @@ category: deployment
 + 默认: "pd"
 + 如果你需要启动多个 PD，一定要给 PD 使用不同的名字
 
-### `--peer-urls`
+### `--cacert`
 
-+ 处理其他 PD 节点请求监听 URL 列表。
-+ default: "http://127.0.0.1:2380"
-+ 如果部署一个集群，\-\-peer-urls 必须指定当前主机的 IP 地址，例如 "http://192.168.100.113:2380"，如果是运行在 docker 则需要指定为 "http://0.0.0.0:2380"
++ CA 文件路径，用于开启 TLS。
++ 默认: ""
+
+### `--cert`
+
++ 包含 X509 证书的 PEM 文件路径，用户开启 TLS。
++ 默认: ""
+
+### `--key`
+
++ 包含 X509 key 的 PEM 文件路径，用于开启 TLS。
++ 默认: ""
+
+### `--namespace-classifier`
+
++ 指定 PD 使用的 namespace 分类器。
++ 默认: "table"
++ 如果 TiKV 不与 TiDB 集群配合运行，建议配置为 'default'。
 
 ## TiKV
 

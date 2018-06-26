@@ -9,7 +9,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ## 源码编译
 
-1. [Go](https://golang.org/) Version 1.7 以上
+1. [Go](https://golang.org/) Version 1.9 以上
 2. 在 PD 项目根目录使用 `make` 命令进行编译，生成 bin/pd-ctl
 
 ## 简单例子
@@ -45,7 +45,7 @@ export PD_ADDR=http://127.0.0.1:2379
 
 ### \-\-detach,-d
 
-+ 使用单命令行模式(不进入 readline )
++ 使用单命令行模式(不进入 readline)
 + 默认值: false
 
 ### --cacert
@@ -95,11 +95,19 @@ export PD_ADDR=http://127.0.0.1:2379
 {
   "max-snapshot-count": 3,
   "max-pending-peer-count": 16,
+  "max-merge-region-size": 50,
+  "max-merge-region-rows": 200000,
+  "split-merge-interval": "1h",
+  "patrol-region-interval": "100ms",
   "max-store-down-time": "1h0m0s",
-  "leader-schedule-limit": 64,
-  "region-schedule-limit": 16,
-  "replica-schedule-limit": 24,
-  "tolerant-size-ratio": 2.5,
+  "leader-schedule-limit": 4,
+  "region-schedule-limit": 4,
+  "replica-schedule-limit":8,
+  "merge-schedule-limit": 8,
+  "tolerant-size-ratio": 5,
+  "low-space-ratio": 0.8,
+  "high-space-ratio": 0.6,
+  "disable-raft-learner": "false",
   "schedulers-v2": [
     {
       "type": "balance-region",
@@ -118,9 +126,9 @@ export PD_ADDR=http://127.0.0.1:2379
 >> config show all                            // 显示所有的 config 信息
 >> config show namespace ts1                  // 显示名为 ts1 的 namespace 的相关 config 信息
 {
-  "leader-schedule-limit": 64,
-  "region-schedule-limit": 16,
-  "replica-schedule-limit": 24,
+  "leader-schedule-limit": 4,
+  "region-schedule-limit": 4,
+  "replica-schedule-limit": 8,
   "max-replicas": 3,
 }
 >> config show replication                    // 显示 replication 的相关 config 信息
@@ -128,6 +136,52 @@ export PD_ADDR=http://127.0.0.1:2379
   "max-replicas": 3,
   "location-labels": ""
 }
+```
+
+`max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。
+当需要加快补副本或 balance 速度时可以调大这个值。
+
+```bash
+>> config set max-snapshort-count 16  // 设置最大 snapshot 为 16
+```
+
+`max-pending-peer-count` 控制单个 store 的 pending peer 上限，调度受制于这个配置来防止在部分节点产生大量日志落后的 Region。
+需要加快补副本或 balance 速度可以适当调大这个值，设置为 0 则表示不限制。
+
+```bash
+>> config set max-pending-peer-count 64  // 设置最大 pending peer 数量为 128
+```
+
+`max-merge-region-size` 控制 region merge 的 size 上限（单位是 M）。
+当 regionSize 大于指定值时 PD 不会将其与相邻的 region 合并。设置为 0 表示不开启 region merge 功能。
+
+```bash
+>> config set max-merge-region-size 16 // 设置 region merge 的 size 上限为 16M
+```
+
+`max-merge-region-rows` 控制 region merge 的 rowCount 上限。
+当 regionRowCount 大于指定值时 PD 不会将其与相邻的 region 合并。
+
+```bash
+>> config set max-merge-region-rows 50000 // 设置 region merge 的 rowCount 上限为 50k
+```
+
+`split-merge-interval` 控制对同一个 region 做 split 和 merge　操作的间隔，即对于新 split 的 region 一段时间内不会被 merge。
+
+```bash
+>> config set split-merge-interval 24h  // 设置 split merge 间隔为 1 天
+```
+
+`patrol-region-interval` 控制 replicaChecker 检查 region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。
+
+```bash
+>> config set patrol-region-interval 10ms // 设置 replica 的运行频率为 10ms
+```
+
+`max-store-down-time` 为 PD 认为失联 store 无法恢复的时间，当超过指定的时间没有收到 store 的心跳后，PD 会在其他节点补充副本。
+
+```bash
+>> config set max-store-down-time 30m  // 设置 store 心跳丢失 30 分钟开始补副本
 ```
 
 通过调整 `leader-schedule-limit` 可以控制同时进行 leader 调度的任务个数。
@@ -202,7 +256,7 @@ Replica 调度的开销较大，所以这个值不宜调得太大。
 >> hot store                            // 显示所有 store 的读写信息
 ```
 
-### label [store]
+### label [store \<name\> \<value\>]
 
 用于显示集群标签信息
 
@@ -213,27 +267,33 @@ Replica 调度的开销较大，所以这个值不宜调得太大。
 >> label store zone cn                  // 显示所有包含 label 为 "zone":"cn" 的 store
 ```
 
-### member [leader | delete]
+### member [delete | leader_priority | leader [show | resign | transfer \<member_name\>]]
 
-用于显示 PD 成员信息或删除指定成员。
+用于显示 PD 成员信息，删除指定成员，设置成员的 leader 优先级。
 
 示例：
 
 ```bash
 >> member                               // 显示所有成员的信息
 {
-  "members": [......]
+  "members": [......],
+  "leader": {......},
+  "etcd_leader": {......},
 }
+>> member delete name pd2               // 下线 "pd2"
+Success!
+>> member delete id 1319539429105371180 // 使用 id 下线节点
+Success!
 >> member leader show                   // 显示 leader 的信息
 {
   "name": "pd",
   "addr": "http://192.168.199.229:2379",
   "id": 9724873857558226554
 }
->> member delete name pd2               // 下线 "pd2"
-Success!
->> member delete id 1319539429105371180 // 使用 id 下线节点
-Success!
+>> member leader resign // 将 leader 从当前成员移走
+......
+>> member leader transfer 9724873857558226554 // 将 leader　迁移至指定 ID 成员
+......
 ```
 
 ### operator [show | add | remove]
@@ -252,6 +312,10 @@ Success!
 >> operator add transfer-leader 1 2         // 把 region 1 的 leader 调度到 store 2
 >> operator add transfer-region 1 2 3 4     // 把 region 1 调度到 store 2,3,4
 >> operator add transfer-peer 1 2 3         // 把 region 1 在 store 2 上的副本调度到 store 3
+>> operator add add-peer 1 2                // 在 store 2 上添加 region 1 的副本
+>> operator add remove-peer 1 2             // 移除 store 2 上 region 1 的副本
+>> operator add merge-region 1 2            // 将 region 1 与 region 2 合并
+>> operator add split-region 1              // 将 region 1 对半拆分成两个 region
 >> operator remove 1                        // 把 region 1 的调度操作删掉
 ```
 
@@ -316,6 +380,40 @@ Protobuf 格式示例：
     "id": 2,
     ......
   }
+}
+```
+
+### region sibling \<region_id\>
+
+用于查询某个 region 相邻的 region。
+
+示例：
+
+```bash
+>> region sibling 2
+{
+  "count": 2,
+  "regions": [......],
+}
+```
+
+### region check [miss-peer | extra-peer | down-peer | pending-peer | incorrect-ns]
+
+用于查询处于异常状态的 region，各类型的意义如下
+
+- miss-peer：缺副本的 region
+- extra-peer：多副本的 region
+- down-peer：有副本状态为 Down 的 region
+- pending-peer：有副本状态为 Pending 的 region
+- incorrect-ns：有副本不符合 namespace 约束的 region
+
+示例：
+
+```bash
+>> region miss-peer
+{
+  "count": 2,
+  "regions": [......],
 }
 ```
 
