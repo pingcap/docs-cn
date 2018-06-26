@@ -5,24 +5,29 @@ category: operations
 
 # Deploy TiDB Using Ansible
 
+This guide describes how to deploy a TiDB cluster using Ansible. For the production environment, it is recommended to deploy TiDB using Ansible.
+
 ## Overview
 
 Ansible is an IT automation tool that can configure systems, deploy software, and orchestrate more advanced IT tasks such as continuous deployments or zero downtime rolling updates.
 
 [TiDB-Ansible](https://github.com/pingcap/tidb-ansible) is a TiDB cluster deployment tool developed by PingCAP, based on Ansible playbook. TiDB-Ansible enables you to quickly deploy a new TiDB cluster which includes PD, TiDB, TiKV, and the cluster monitoring modules.
 
-You can use the TiDB-Ansible configuration file to set up the cluster topology, completing all operation tasks with one click, including:
+You can use the TiDB-Ansible configuration file to set up the cluster topology and complete all the following operation tasks:
 
-- Initializing operating system parameters
-- Deploying the components
-- Rolling upgrade, including module survival detection
-- Cleaning data
-- Cleaning environment
-- Configuring monitoring modules
+- Initialize operating system parameters
+- Deploy the whole TiDB cluster
+- Start the TiDB cluster
+- Stop the TiDB cluster
+- Modify component configuration
+- Scale the TiDB cluster
+- Upgrade the component version
+- Clean up data of the TiDB cluster
+- Destroy the TiDB cluster
 
-## Prepare
+## Prerequisites
 
-Before you start, make sure that you have:
+Before you start, make sure you have:
 
 1. Several target machines that meet the following requirements:
 
@@ -30,79 +35,252 @@ Before you start, make sure that you have:
     
         A standard TiDB cluster contains 6 machines. You can use 4 machines for testing.
 
-    - CentOS 7.3 (64 bit) or later with Python 2.7 installed, x86_64 architecture (AMD64), ext4 filesystem
+    - CentOS 7.3 (64 bit) or later, x86_64 architecture (AMD64)
+    - Network between machines
 
-        Use ext4 filesystem for your data disks. Mount ext4 filesystem with the `nodelalloc` mount option. See [Mount the data disk ext4 filesystem with options](#mount-the-data-disk-ext4-filesystem-with-options).
+    > **Note:** When you deploy TiDB using Ansible, **use SSD disks for the data directory of TiKV and PD nodes**. Otherwise, it cannot pass the check. If you only want to try TiDB out and explore the features, it is recommended to [deploy TiDB using Docker Compose](docker-compose.md) on a single machine.
 
-    - Network between machines.
-
-    - Same time and time zone for all machines with the NTP service on to synchronize the correct time
-    
-        See [How to check whether the NTP service is normal](#how-to-check-whether-the-ntp-service-is-normal).
-
-    - Create a normal `tidb` user account as the user who runs the service
-    
-        The `tidb` user can sudo to the root user without a password. See [How to configure SSH mutual trust and sudo without password](#how-to-configure-ssh-mutual-trust-and-sudo-without-password).
-
-    > **Note:** When you deploy TiDB using Ansible, use SSD disks for the data directory of TiKV and PD nodes.
-
-2. A Control Machine with the following requirements:
+2. A Control Machine that meets the following requirements:
 
     > **Note:** The Control Machine can be one of the target machines.
-    
+
     - CentOS 7.3 (64 bit) or later with Python 2.7 installed
     - Access to the Internet
-    - Git installed
-    - SSH Mutual Trust configured
-    
-        In the Control Machine, you can log in to the deployment target machine using the `tidb` user account without a password. See [How to configure SSH mutual trust and sudo without password](#how-to-configure-ssh-mutual-trust-and-sudo-without-password).
 
-## Step 1: Download TiDB-Ansible to the Control Machine
+## Step 1: Install system dependencies on the Control Machine
+
+Log in to the Control Machine using the `root` user account, and run the corresponding command according to your operating system.
+
+- If you use a Control Machine installed with CentOS 7, run the following command:
+
+```
+# yum -y install epel-release git curl sshpass
+# yum -y install python-pip
+```
+
+- If you use a Control Machine installed with Ubuntu, run the following command:
+
+```
+# apt-get -y install git curl sshpass python-pip
+```
+
+## Step 2: Create the `tidb` user on the Control Machine and generate the SSH key
+
+Make sure you have logged in to the Control Machine using the `root` user account, and then run the following command.
+
+1. Create the `tidb` user.
+
+    ```
+    # useradd tidb
+    ```
+
+2. Set a password for the `tidb` user account.
+
+    ```
+    # passwd tidb
+    ```
+
+3. Configure sudo without password for the `tidb` user account by adding `tidb ALL=(ALL) NOPASSWD: ALL` to the end of the sudo file:
+
+    ```
+    # visudo
+    tidb ALL=(ALL) NOPASSWD: ALL
+    ```
+4. Generate the SSH key.
+
+    Execute the `su` command to switch the user from `root` to `tidb`. Create the SSH key for the `tidb` user account and hit the Enter key when `Enter passphrase` is prompted. After successful execution, the SSH private key file is `/home/tidb/.ssh/id_rsa`, and the SSH public key file is `/home/tidb/.ssh/id_rsa.pub`.
+
+    ```
+    # su - tidb
+    $ ssh-keygen -t rsa
+    Generating public/private rsa key pair.
+    Enter file in which to save the key (/home/tidb/.ssh/id_rsa):
+    Created directory '/home/tidb/.ssh'.
+    Enter passphrase (empty for no passphrase):
+    Enter same passphrase again:
+    Your identification has been saved in /home/tidb/.ssh/id_rsa.
+    Your public key has been saved in /home/tidb/.ssh/id_rsa.pub.
+    The key fingerprint is:
+    SHA256:eIBykszR1KyECA/h0d7PRKz4fhAeli7IrVphhte7/So tidb@172.16.10.49
+    The key's randomart image is:
+    +---[RSA 2048]----+
+    |=+o+.o.          |
+    |o=o+o.oo         |
+    | .O.=.=          |
+    | . B.B +         |
+    |o B * B S        |
+    | * + * +         |
+    |  o + .          |
+    | o  E+ .         |
+    |o   ..+o.        |
+    +----[SHA256]-----+
+    ```
+
+## Step 3: Download TiDB-Ansible to the Control Machine
 
 1. Log in to the Control Machine using the `tidb` user account and enter the `/home/tidb` directory.
 
-2. Download the corresponding TiDB-Ansible version. The default folder name is `tidb-ansible`.
+2. Download the corresponding TiDB-Ansible version from the [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`.
 
     - Download the 2.0 GA version:
 
         ```bash
-        git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
+        $ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
         ```
     
     - Download the master version:
 
         ```bash
-        git clone https://github.com/pingcap/tidb-ansible.git
+        $ git clone https://github.com/pingcap/tidb-ansible.git
         ```
+
+    > **Note:** It is required to download `tidb-ansible` to the `/home/tidb` directory using the `tidb` user account. If you download it to the `/root` directory, a privilege issue occurs.
 
     If you have questions regarding which version to use, email to info@pingcap.com for more information or [file an issue](https://github.com/pingcap/tidb-ansible/issues/new).
 
-## Step 2: Install Ansible and dependencies on the Control Machine
+## Step 4: Install Ansible and its dependencies on the Control Machine
+
+Make sure you have logged in to the Control Machine using the `tidb` user account.
+
+It is required to use `pip` to install Ansible and its dependencies, otherwise a compatibility issue occurs. Currently, the TiDB 2.0 GA version and the master version are compatible with Ansible 2.4 and Ansible 2.5.
 
 1. Install Ansible and the dependencies on the Control Machine:
 
     ```bash
-    sudo yum -y install epel-release
-    sudo yum -y install python-pip curl
-    cd tidb-ansible
-    sudo pip install -r ./requirements.txt
+    $ cd /home/tidb/tidb-ansible
+    $ sudo pip install -r ./requirements.txt
     ```
 
-    Ansible and related dependencies are in the `tidb-ansible/requirements.txt` file.
+    Ansible and the related dependencies are in the `tidb-ansible/requirements.txt` file.
 
 2. View the version of Ansible:
 
     ```bash
-    ansible --version
+    $ ansible --version
+    ansible 2.5.0
     ```
 
-    Currently, the 1.0 GA version depends on Ansible 2.4, while the 2.0 GA version and the master version are compatible with Ansible 2.4 and Ansible 2.5.
+## Step 5: Configure the SSH mutual trust and sudo rules on the Control Machine
 
-For other systems, see [Install Ansible](ansible-deployment.md#install-ansible).
+Make sure you have logged in to the Control Machine using the `tidb` user account.
 
-## Step 3: Edit the `inventory.ini` file to orchestrate the TiDB cluster
+1. Add the IPs of your target machines to the `[servers]` section of the `hosts.ini` file.
 
-Edit the `tidb-ansible/inventory.ini` file to orchestrate the TiDB cluster. The standard TiDB cluster contains 6 machines: 2 TiDB modes, 3 PD nodes and 3 TiKV nodes.
+    ```bash
+    $ cd /home/tidb/tidb-ansible
+    $ vi hosts.ini
+    [servers]
+    192.168.0.2
+    192.168.0.3
+    192.168.0.4
+    192.168.0.5
+    192.168.0.6
+    192.168.0.7
+    192.168.0.8
+    192.168.0.10
+
+    [all:vars]
+    username = tidb
+    ntp_server = pool.ntp.org
+    ```
+
+2. Run the following command and input the `root` user account password of your target machines.
+
+    ```bash
+    $ ansible-playbook -i hosts.ini create_users.yml -k
+    ```
+
+    This step creates the `tidb` user account on the target machines, configures the sudo rules and the SSH mutual trust between the Control Machine and the target machines.
+
+## Step 6: Install the NTP service on the target machines
+
+> **Note:** If the time and time zone of all your target machines are same, the NTP service is on and is normally synchronizing time, you can ignore this step. See [How to check whether the NTP service is normal](#how-to-check-whether-the-ntp-service-is-normal).
+
+Make sure you have logged in to the Control Machine using the `tidb` user account, run the following command, and input the `root` password of your target machines as prompted:
+
+```bash
+$ cd /home/tidb/tidb-ansible
+$ ansible-playbook -i hosts.ini deploy_ntp.yml -k
+```
+
+The NTP service is installed and started using the software repository that comes with the system on the target machines. The default NTP server list in the installation package is used. The related `server` parameter is in the `/etc/ntp.conf` configuration file.
+
+To make the NTP service start synchronizing as soon as possible, the system executes the `ntpdate` command to set the local date and time by polling `ntp_server` in the `hosts.ini` file. The default server is `pool.ntp.org`, and you can also replace it with your NTP server.
+
+## Step 7: Mount the data disk ext4 filesystem with options on the target machines
+
+Log in to the Control Machine using the `root` user account.
+
+Format your data disks to the ext4 filesystem and mount the filesystem with the `nodelalloc` and `noatime` options. It is required to mount the `nodelalloc` option, or else the Ansible deployment cannot pass the test. The `noatime` option is optional.
+
+> **Note:** If your data disks have been formatted to ext4 and have mounted the options, you can uninstall it by running the following `umount` command, follow the steps starting from editing the `/etc/fstab` file, and remount the filesystem with options.
+> 
+> ```
+> # umount /dev/nvme0n1
+> ```
+
+Take the `/dev/nvme0n1` data disk as an example:
+
+1. View the data disk.
+
+    ```
+    # fdisk -l
+    Disk /dev/nvme0n1: 1000 GB
+    ```
+
+2. Create the partition table.
+
+    ```
+    # parted -s -a optimal /dev/nvme0n1 mklabel gpt -- mkpart primary ext4 1 -1
+    ```
+
+3. Format the data disk to the ext4 filesystem.
+
+    ```
+    # mkfs.ext4 /dev/nvme0n1
+    ```
+
+4. View the partition UUID of the data disk.
+
+    In this example, the UUID of `nvme0n1` is `c51eb23b-195c-4061-92a9-3fad812cc12f`.
+
+    ```
+    # lsblk -f
+    NAME    FSTYPE LABEL UUID                                 MOUNTPOINT
+    sda
+    ├─sda1  ext4         237b634b-a565-477b-8371-6dff0c41f5ab /boot
+    ├─sda2  swap         f414c5c0-f823-4bb1-8fdf-e531173a72ed
+    └─sda3  ext4         547909c1-398d-4696-94c6-03e43e317b60 /
+    sr0
+    nvme0n1 ext4         c51eb23b-195c-4061-92a9-3fad812cc12f
+    ```
+
+5. Edit the `/etc/fstab` file and add the mount options.
+
+    ```
+    # vi /etc/fstab
+    UUID=c51eb23b-195c-4061-92a9-3fad812cc12f /data1 ext4 defaults,nodelalloc,noatime 0 2
+    ```
+
+6. Mount the data disk.
+
+    ```
+    # mkdir /data1
+    # mount -a
+    ```
+
+7. Check using the following command.
+
+    ```
+    # mount -t ext4
+    /dev/nvme0n1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
+    ```
+
+    If the filesystem is ext4 and `nodelalloc` is included in the mount options, you have successfully mount the data disk ext4 filesystem with options on the target machines.
+
+## Step 8: Edit the `inventory.ini` file to orchestrate the TiDB cluster
+
+Log in to the Control Machine using the `tidb` user account, and edit the `tidb-ansible/inventory.ini` file to orchestrate the TiDB cluster. The standard TiDB cluster contains 6 machines: 2 TiDB nodes, 3 PD nodes and 3 TiKV nodes.
 
 - Deploy at least 3 instances for TiKV.
 - Do not deploy TiKV together with TiDB or PD on the same machine.
@@ -235,9 +413,13 @@ location_labels = ["host"]
 
 3. If multiple TiKV instances are deployed on a same physical disk, edit the `capacity` parameter in `conf/tikv.yml`:
 
-    - `capacity`: (total disk capacity - log space) / TiKV instance number (the unit is GB)
+    - `capacity`: total disk capacity / number of TiKV instances (the unit is GB)
 
-## Step 4: Edit variables in the `inventory.ini` file
+## Step 9: Edit variables in the `inventory.ini` file
+
+This step describes how to edit the variable of deployment directory and other variables in the `inventory.ini` file.
+
+### Configure the deployment directory
 
 Edit the `deploy_dir` variable to configure the deployment directory.
 
@@ -255,19 +437,18 @@ deploy_dir = /data1/deploy
 TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 ```
 
-### Description of other variables
+### Edit other variables (Optional)
 
 To enable the following control variables, use the capitalized `True`. To disable the following control variables, use the capitalized `False`.
 
-| Variable | Description |
+| Variable Name | Description |
 | ---- | ------- |
 | cluster_name | the name of a cluster, adjustable |
 | tidb_version | the version of TiDB, configured by default in TiDB-Ansible branches |
 | process_supervision | the supervision way of processes, systemd by default, supervise optional |
-| timezone | the timezone of the managed node, adjustable, `Asia/Shanghai` by default, used with the `set_timezone` variable |
+| timezone | the timezone of the managed node, adjustable, `Asia/Shanghai` by default, used together with the `set_timezone` variable |
 | set_timezone | to edit the timezone of the managed node, True by default; False means closing |
-| enable_elk | currently not supported |
-| enable_firewalld | to enable the firewall, closed by default |
+| enable_firewalld | to enable the firewall, closed by default; to enable it, add the ports in [network requirements](recommendation.md#network-requirements) to the white list |
 | enable_ntpd | to monitor the NTP service of the managed node, True by default; do not close it |
 | set_hostname | to edit the hostname of the mananged node based on the IP, False by default |
 | enable_binlog | whether to deploy Pump and enable the binlog, False by default, dependent on the Kafka cluster; see the `zookeeper_addrs` variable |
@@ -276,9 +457,12 @@ To enable the following control variables, use the capitalized `True`. To disabl
 | deploy_without_tidb | the Key-Value mode, deploy only PD, TiKV and the monitoring service, not TiDB; set the IP of the tidb_servers host group to null in the `inventory.ini` file |
 | alertmanager_target | optional: If you have deployed `alertmanager` separately, you can configure this variable using the `alertmanager_host:alertmanager_port` format |
 | grafana_admin_user | the username of Grafana administrator; default `admin` |
-| grafana_admin_password | the password of Grafana administrator account; default `admin`; used to import Dashboard and create the API key using Ansible; update this variable after you modify it through Grafana web |
+| grafana_admin_password | the password of Grafana administrator account; default `admin`; used to import Dashboard and create the API key using Ansible; update this variable if you have modified it through Grafana web |
+| collect_log_recent_hours | to collect the log of recent hours; default the recent 2 hours |
+| enable_bandwidth_limit | to set a bandwidth limit when pulling the diagnostic data from the target machines to the Control Machine; used together with the `collect_bandwidth_limit` variable |
+| collect_bandwidth_limit | the limited bandwidth when pulling the diagnostic data from the target machines to the Control Machine; unit: Kbit/s; default 10000, indicating 10Mb/s; for the cluster topology of multiple TiKV instances on each TiKV node, you need to divide the number of the TiKV instances on each TiKV node |
 
-## Step 5: Deploy the TiDB cluster
+## Step 10: Deploy the TiDB cluster
 
 When `ansible-playbook` runs Playbook, the default concurrent number is 5. If many deployment target machines are deployed, you can add the `-f` parameter to specify the concurrency, such as `ansible-playbook deploy.yml -f 10`.
 
@@ -292,6 +476,8 @@ The following example uses `tidb` as the user who runs the service.
     ansible_user = tidb
     ```
 
+    > **Note:** Do not configure `ansible_user` to `root`, because `tidb-ansible` limits the user that runs the service to the normal user.
+
     Run the following command and if all servers return `tidb`, then the SSH mutual trust is successfully configured:
 
     ```
@@ -304,7 +490,7 @@ The following example uses `tidb` as the user who runs the service.
     ansible -i inventory.ini all -m shell -a 'whoami' -b
     ```
 
-2. Run the `local_prepare.yml` playbook, connect to the Internet and download TiDB binary to the Control Machine.
+2. Run the `local_prepare.yml` playbook and download TiDB binary to the Control Machine.
 
     ```
     ansible-playbook local_prepare.yml
@@ -322,10 +508,10 @@ The following example uses `tidb` as the user who runs the service.
     ansible-playbook deploy.yml
     ```
 
-    > **Note:** You can use the `Report` button on the Grafana Dashboard to generate the PDF file. This function depends on the `fontconfig` package. To use this function, login to the `grafana_servers` machine and install it using the following command:
+    > **Note:** You can use the `Report` button on the Grafana Dashboard to generate the PDF file. This function depends on the `fontconfig` package and English fonts. To use this function, log in to the `grafana_servers` machine and install it using the following command:
     >
     > ```
-    > $ sudo yum install fontconfig
+    > $ sudo yum install fontconfig open-sans-fonts
     > ```
 
 5. Start the TiDB cluster.
@@ -336,7 +522,7 @@ The following example uses `tidb` as the user who runs the service.
 
 > **Note:** If you want to deploy TiDB using the root user account, see [Ansible Deployment Using the Root User Account](root-ansible-deployment.md).
 
-## Test the cluster
+## Test the TiDB cluster
 
 Because TiDB is compatible with MySQL, you must use the MySQL client to connect to TiDB directly. It is recommended to configure load balancing to provide uniform SQL interface.
 
@@ -356,91 +542,9 @@ Because TiDB is compatible with MySQL, you must use the MySQL client to connect 
 
     > **Note**: The default account and password: `admin`/`admin`.
 
-## Perform rolling update
+## Deployment FAQs
 
-- The rolling update of the TiDB service does not impact the ongoing business. Minimum requirements: `pd*3, tidb*2, tikv*3`.
-- **If the `pump`/`drainer` services are running in the cluster, stop the `drainer` service before rolling update. The rolling update of the TiDB service automatically updates the `pump` service.**
-
-### Download the binary automatically
-
-1. Edit the value of the `tidb_version` parameter in `inventory.ini`, and specify the version number you need to update to. The following example specifies the version number as `v1.0.2`:
-
-    ```
-    tidb_version = v1.0.2
-    ```
-
-2. Delete the existing downloads directory `tidb-ansible/downloads/`.
-
-    ```
-    rm -rf downloads
-    ```
-
-3. Use `playbook` to download the TiDB 1.0 binary and replace the existing binary in `tidb-ansible/resource/bin/` automatically.
-
-    ```
-    ansible-playbook local_prepare.yml
-    ```
-
-### Download the binary manually
-
-You can also download the binary manually. Use `wget` to download the binary and replace the existing binary in `tidb-ansible/resource/bin/` manually.
-
-```
-wget http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz
-```
-
-> **Note:** Remember to replace the version number in the download link.
-
-### Use Ansible for rolling update
-
-- Apply rolling update to the TiKV node (only update the TiKV service).
-
-    ```
-    ansible-playbook rolling_update.yml --tags=tikv
-    ```
-
-- Apply rolling update to the PD node (only update single PD service).
-
-    ```
-    ansible-playbook rolling_update.yml --tags=pd
-    ```
-
-- Apply rolling update to the TiDB node (only update single TiDB service).
-
-    ```
-    ansible-playbook rolling_update.yml --tags=tidb
-    ```
-
-- Apply rolling update to all services.
-
-    ```
-    ansible-playbook rolling_update.yml
-    ```
-
-## Summary of common operations
-
-| Job                               | Playbook                                 |
-|:----------------------------------|:-----------------------------------------|
-| Start the cluster                 | `ansible-playbook start.yml`             |
-| Stop the cluster                  | `ansible-playbook stop.yml`              |
-| Destroy the cluster               | `ansible-playbook unsafe_cleanup.yml` (If the deployment directory is a mount point, an error will be reported, but implementation results will remain unaffected) |
-| Clean data (for test)             | `ansible-playbook unsafe_cleanup_data.yml` |
-| Rolling Upgrade                   | `ansible-playbook rolling_update.yml`    |
-| Rolling upgrade TiKV              | `ansible-playbook rolling_update.yml --tags=tikv` |
-| Rolling upgrade modules except PD | `ansible-playbook rolling_update.yml --skip-tags=pd` |
-| Rolling update the monitoring components | `ansible-playbook rolling_update_monitor.yml` |
-
-## FAQ
-
-### How to download and install TiDB of a specified version?
-
-If you need to install the TiDB 1.0.4 version, download the `TiDB-Ansible release-1.0` branch and make sure `tidb_version = v1.0.4` in the `inventory.ini` file. For installation procedures, see the above description in this document.
-
-Download the `TiDB-Ansible release-1.0` branch from GitHub:
-
-```
-git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
-```
+This section lists the common questions about deploying TiDB using Ansible.
 
 ### How to customize the port?
 
@@ -456,11 +560,14 @@ Edit the `inventory.ini` file and add the following host variable after the IP o
 | Pump          | pump_port          | 8250         | the pump communication port |
 | Prometheus    | prometheus_port    | 9090         | the communication port for the Prometheus service |
 | Pushgateway   | pushgateway_port   | 9091         | the aggregation and report port for TiDB, TiKV, and PD monitor |
-| node_exporter | node_exporter_port | 9100         | the communication port to report the system information of every TiDB cluster node |
+| Node_exporter | node_exporter_port | 9100         | the communication port to report the system information of every TiDB cluster node |
 | Grafana       | grafana_port       | 3000         | the port for the external Web monitoring service and client (Browser) access |
 | Grafana | grafana_collector_port | 8686 | the grafana_collector communication port, used to export Dashboard as the PDF format |
+| Kafka_exporter | kafka_exporter_port | 9308 | the communication port for Kafka_exporter, used to monitor the binlog Kafka cluster |
 
 ### How to customize the deployment directory?
+
+Edit the `inventory.ini` file and add the following host variable after the IP of the corresponding service:
 
 | Component     | Variable Directory    | Default Directory             | Description |
 |:--------------|:----------------------|:------------------------------|:-----|
@@ -476,95 +583,73 @@ Edit the `inventory.ini` file and add the following host variable after the IP o
 | Pump          | pump_data_dir         | {{ deploy_dir }}/data.pump    | the Pump data directory |
 | Prometheus    | prometheus_log_dir    | {{ deploy_dir }}/log          | the Prometheus log directory |
 | Prometheus    | prometheus_data_dir   | {{ deploy_dir }}/data.metrics | the Prometheus data directory |
-| pushgateway   | pushgateway_log_dir   | {{ deploy_dir }}/log          | the pushgateway log directory |
-| node_exporter | node_exporter_log_dir | {{ deploy_dir }}/log          | the node_exporter log directory |
+| Pushgateway   | pushgateway_log_dir   | {{ deploy_dir }}/log          | the pushgateway log directory |
+| Node_exporter | node_exporter_log_dir | {{ deploy_dir }}/log          | the node_exporter log directory |
 | Grafana       | grafana_log_dir       | {{ deploy_dir }}/log          | the Grafana log directory |
 | Grafana       | grafana_data_dir      | {{ deploy_dir }}/data.grafana | the Grafana data directory |
 
 ### How to check whether the NTP service is normal?
 
-Run the following command. If it returns `running`, then the NTP service is running:
+1. Run the following command. If it returns `running`, then the NTP service is running:
 
-```
-$ sudo systemctl status ntpd.service
-  ntpd.service - Network Time Service
-   Loaded: loaded (/usr/lib/systemd/system/ntpd.service; disabled; vendor preset: disabled)
-   Active: active (running) since 一 2017-12-18 13:13:19 CST; 3s ago
-```
+    ```
+    $ sudo systemctl status ntpd.service
+    ntpd.service - Network Time Service
+    Loaded: loaded (/usr/lib/systemd/system/ntpd.service; disabled; vendor preset: disabled)
+    Active: active (running) since 一 2017-12-18 13:13:19 CST; 3s ago
+    ```
 
-Run the ntpstat command. If it returns `synchronised to NTP server` (synchronizing with the NTP server), then the synchronization process is normal.
+2. Run the ntpstat command. If it returns `synchronised to NTP server` (synchronizing with the NTP server), then the synchronization process is normal.
 
-```
-$ ntpstat
-synchronised to NTP server (85.199.214.101) at stratum 2
-   time correct to within 91 ms
-   polling server every 1024 s
-```
+    ```
+    $ ntpstat
+    synchronised to NTP server (85.199.214.101) at stratum 2
+    time correct to within 91 ms
+    polling server every 1024 s
+    ```
 
-> **Note:** For the Ubuntu system, install the `ntpstat` package.
+> **Note:** For the Ubuntu system, you need to install the `ntpstat` package.
 
-The following condition indicates the NTP service is not synchronized normally:
+- The following condition indicates the NTP service is not synchronizing normally:
 
-```
-$ ntpstat
-unsynchronised
-```
+    ```
+    $ ntpstat
+    unsynchronised
+    ```
 
-The following condition indicates the NTP service is not running normally:
+- The following condition indicates the NTP service is not running normally:
 
-```
-$ ntpstat
-Unable to talk to NTP daemon. Is it running?
-```
+    ```
+    $ ntpstat
+    Unable to talk to NTP daemon. Is it running?
+    ```
 
-Running the following command can promote the starting of the NTP service synchronization. You can replace `pool.ntp.org` with other NTP server.
+- To make the NTP service start synchronizing as soon as possible, run the following command. You can replace `pool.ntp.org` with other NTP servers.
 
-```
-$ sudo systemctl stop ntpd.service
-$ sudo ntpdate pool.ntp.org
-$ sudo systemctl start ntpd.service
-```
+    ```
+    $ sudo systemctl stop ntpd.service
+    $ sudo ntpdate pool.ntp.org
+    $ sudo systemctl start ntpd.service
+    ```
 
-### How to deploy the NTP service using Ansible?
+- To install the NTP service manually on the CentOS 7 system, run the following command:
 
-Refer to [Download TiDB-Ansible to the Control Machine](#download-tidb-ansible-to-the-control-machine) and download TiDB-Ansible. Add the IP of the deployment target machine to `[servers]`. You can replace the `ntp_server` variable value `pool.ntp.org` with other NTP server. Before starting the NTP service, the system `ntpdate` the NTP server. The NTP service deployed by Ansible uses the default server list in the package. See the `server` parameter in the `cat /etc/ntp.conf` file.
+    ```
+    $ sudo yum install ntp ntpdate
+    $ sudo systemctl start ntpd.service
+    $ sudo systemctl enable ntpd.service
+    ```
 
-```
-$ vi hosts.ini
-[servers]
-172.16.10.49
-172.16.10.50
-172.16.10.61
-172.16.10.62
+### How to modify the supervision method of a process from `supervise` to `systemd`?
 
-[all:vars]
-username = tidb
-ntp_server = pool.ntp.org
-```
-
-Run the following command, and enter the root password of the deployment target machine as prompted:
-
-```
-$ ansible-playbook -i hosts.ini deploy_ntp.yml -k
-```
-
-### How to install the NTP service manually?
-
-Run the following command on the CentOS 7 system:
-
-```
-$ sudo yum install ntp ntpdate
-$ sudo systemctl start ntpd.service
-```
-
-### How to adjust the supervision method of a process from supervise to systemd?
+Run the following command:
 
 ```
 # process supervision, [systemd, supervise]
 process_supervision = systemd
 ```
 
-For versions earlier than TiDB 1.0.4, the TiDB-Ansible supervision method of a process is supervise by default. The previously installed cluster can remain the same. If you need to change the supervision method to systemd, close the cluster and run the following command:
+For versions earlier than TiDB 1.0.4, the TiDB-Ansible supervision method of a process is `supervise` by default. The previously installed cluster can remain the same. If you need to change the supervision method to `systemd`, stop the cluster and run the following command:
 
 ```
 ansible-playbook stop.yml
@@ -572,102 +657,9 @@ ansible-playbook deploy.yml -D
 ansible-playbook start.yml
 ```
 
-#### How to install Ansible?
+### How to manually configure the SSH mutual trust and sudo without password?
 
-- For the CentOS system, install Ansible following the method described at the beginning of this document.
-- For the Ubuntu system, install Ansible as follows:
-
-    ```bash
-    $ sudo apt-get install python-pip curl
-    $ cd tidb-ansible
-    $ sudo pip install -r ./requirements.txt
-    ```
-
-### Mount the data disk ext4 filesystem with options
-
-Format your data disks to ext4 filesystem and mount the filesystem with the `nodelalloc` and `noatime` options. It is required to mount the `nodelalloc` option, or else the Ansible deployment cannot pass the detection. The `noatime` option is optional.
-
-Take the `/dev/nvme0n1` data disk as an example:
-
-1. Edit the `/etc/fstab` file and add the `nodelalloc` mount option:
-
-    ```
-    # vi /etc/fstab
-    /dev/nvme0n1 /data1 ext4 defaults,nodelalloc,noatime 0 2
-    ```
-
-2. Umount the mount directory and remount using the following command:
-
-    ```
-    # umount /data1
-    # mount -a
-    ```
-
-3. Check using the following command: 
-
-    ```
-    # mount -t ext4
-    /dev/nvme0n1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
-    ```
-
-### How to configure SSH mutual trust and sudo without password?
-
-#### Create the `tidb` user on the Control Machine and generate the SSH key.
-
-```
-# useradd tidb
-# passwd tidb
-# su - tidb
-$
-$ ssh-keygen -t rsa
-Generating public/private rsa key pair.
-Enter file in which to save the key (/home/tidb/.ssh/id_rsa):
-Created directory '/home/tidb/.ssh'.
-Enter passphrase (empty for no passphrase):
-Enter same passphrase again:
-Your identification has been saved in /home/tidb/.ssh/id_rsa.
-Your public key has been saved in /home/tidb/.ssh/id_rsa.pub.
-The key fingerprint is:
-SHA256:eIBykszR1KyECA/h0d7PRKz4fhAeli7IrVphhte7/So tidb@172.16.10.49
-The key's randomart image is:
-+---[RSA 2048]----+
-|=+o+.o.          |
-|o=o+o.oo         |
-| .O.=.=          |
-| . B.B +         |
-|o B * B S        |
-| * + * +         |
-|  o + .          |
-| o  E+ .         |
-|o   ..+o.        |
-+----[SHA256]-----+
-```
-
-#### How to automatically configure SSH mutual trust and sudo without password using Ansible?
-
-Refer to [Download TiDB-Ansible to the Control Machine](#download-tidb-ansible-to-the-control-machine) and download TiDB-Ansible. Add the IP of the deployment target machine to `[servers]`.
-
-```
-$ vi hosts.ini
-[servers]
-172.16.10.49
-172.16.10.50
-172.16.10.61
-172.16.10.62
-
-[all:vars]
-username = tidb
-```
-
-Run the following command, and enter the `root` password of the deployment target machine as prompted:
-
-```
-$ ansible-playbook -i hosts.ini create_users.yml -k
-```
-
-#### How to manually configure SSH mutual trust and sudo without password?
-
-Use the `root` user to login to the deployment target machine, create the `tidb` user and set the login password.
+Log in to the deployment target machine using the `root` user account, create the `tidb` user and set the login password.
 
 ```
 # useradd tidb
@@ -681,15 +673,13 @@ To configure sudo without password, run the following command, and add `tidb ALL
 tidb ALL=(ALL) NOPASSWD: ALL
 ```
 
-Use the `tidb` user to login to the Control Machine, and run the following command. Replace `172.16.10.61` with the IP of your deployment target machine, and enter the `tidb` user password of the deployment target machine. Successful execution indicates that SSH mutual trust is already created. This applies to other machines as well.
+Use the `tidb` user to log in to the Control Machine, and run the following command. Replace `172.16.10.61` with the IP of your deployment target machine, and enter the `tidb` user password of the deployment target machine as prompted. Successful execution indicates that SSH mutual trust is already created. This applies to other machines as well.
 
 ```
 [tidb@172.16.10.49 ~]$ ssh-copy-id -i ~/.ssh/id_rsa.pub 172.16.10.61
 ```
 
-#### Authenticate SSH mutual trust and sudo without password
-
-Use the `tidb` user to login to the Control Machine, and login to the IP of the target machine using SSH. If you do not need to enter the password and can successfully login, then SSH mutual trust is successfully configured.
+Log in to the Control Machine using the `tidb` user account, and log in to the IP of the target machine using SSH. If you do not need to enter the password and can successfully log in, then the SSH mutual trust is successfully configured.
 
 ```
 [tidb@172.16.10.49 ~]$ ssh 172.16.10.61
@@ -705,18 +695,7 @@ After you login to the deployment target machine using the `tidb` user, run the 
 
 ### Error: You need to install jmespath prior to running json_query filter
 
-See [Install Ansible and dependencies in the Control Machine](#install-ansible-and-dependencies-in-the-control-machine) and use `pip` to install Ansible and the related specific dependencies in the Control Machine. The `jmespath` dependent package is installed by default.
-
-For the CentOS 7 system, you can install `jmespath` separately using the following command:
-
-```
-$ sudo yum -y install epel-release
-$ sudo yum -y install python-pip
-$ sudo pip install jmespath
-$ pip show jmespath
-Name: jmespath
-Version: 0.9.0
-```
+See [Install Ansible and its dependencies on the Control Machine](#step-4-install-ansible-and-its-dependencies-on-the-control-machine) and use `pip` to install Ansible and the related specific dependencies in the Control Machine. The `jmespath` dependent package is installed by default.
 
 Enter `import jmespath` in the Python interactive window of the Control Machine.
 
@@ -729,13 +708,6 @@ Python 2.7.5 (default, Nov  6 2016, 00:28:07)
 [GCC 4.8.5 20150623 (Red Hat 4.8.5-11)] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import jmespath
-```
-
-For the Ubuntu system, you can install `jmespath` separately using the following command:
-
-```
-$ sudo apt-get install python-pip
-$ sudo pip install jmespath
 ```
 
 ### The `zk: node does not exist` error when starting Pump/Drainer
