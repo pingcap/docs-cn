@@ -56,7 +56,7 @@ Make sure you have installed the following items on your machine:
 4. Create and start the cluster using the `generated-docker-compose.yml` file.
 
     ```bash
-    docker-compose -f generated-docker-compose.yaml pull # Get the latest Docker images
+    docker-compose -f generated-docker-compose.yml pull # Get the latest Docker images
     docker-compose -f generated-docker-compose.yml up -d
     ```
 
