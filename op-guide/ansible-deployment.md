@@ -249,7 +249,8 @@ UUID=c51eb23b-195c-4061-92a9-3fad812cc12f /data1 ext4 defaults,nodelalloc,noatim
 
 以 `tidb` 用户登录中控机，`inventory.ini` 文件路径为 `/home/tidb/tidb-ansible/inventory.ini`。
 
-> **注：** 请使用内网 IP 来部署集群。
+> **注：** 请使用内网 IP 来部署集群，如果部署目标机器 SSH 端口非默认 22 端口，需添加 `ansible_port` 变量，如：
+> `TiDB1 ansible_host=172.16.10.1 ansible_port=5555`
 
 标准 TiDB 集群需要 6 台机器:
 
