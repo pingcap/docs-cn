@@ -451,6 +451,7 @@ To enable the following control variables, use the capitalized `True`. To disabl
 | enable_firewalld | to enable the firewall, closed by default; to enable it, add the ports in [network requirements](recommendation.md#network-requirements) to the white list |
 | enable_ntpd | to monitor the NTP service of the managed node, True by default; do not close it |
 | set_hostname | to edit the hostname of the mananged node based on the IP, False by default |
+| dev_mode | CPU, memory and disk performance will not be checked when dev_mode = True, False by default |
 | enable_binlog | whether to deploy Pump and enable the binlog, False by default, dependent on the Kafka cluster; see the `zookeeper_addrs` variable |
 | zookeeper_addrs | the zookeeper address of the binlog Kafka cluster |
 | enable_slow_query_log | to record the slow query log of TiDB into a single file: ({{ deploy_dir }}/log/tidb_slow_query.log). False by default, to record it into the TiDB log |
