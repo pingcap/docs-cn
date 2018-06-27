@@ -289,7 +289,7 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 有两种可能性：
 
-- ssh 互信的准备工作未做好，建议严格参照我们的官方文档步骤配置互信（[详情可参考](https://pingcap.com/docs-cn/op-guide/ansible-deployment/)），并使用命令 `ansible -i inventory.ini all -m shell -a 'whoami' -b` 来验证互信配置是否成功。
+- ssh 互信的准备工作未做好，建议严格参照我们的官方文档步骤配置互信（[详情可参考](op-guide/ansible-deployment.md)），并使用命令 `ansible -i inventory.ini all -m shell -a 'whoami' -b` 来验证互信配置是否成功。
 
 - 如果涉及到单服务器分配了多角色的场景，例如多组件混合部署或单台服务器部署了多个 TiKV 实例，可能是由于 ssh 复用的机制引起这个报错，可以使用 `ansible … -f 1` 的选项来规避这个报错。
 
