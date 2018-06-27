@@ -175,7 +175,7 @@ export PD_ADDR=http://127.0.0.1:2379
 `patrol-region-interval` 控制 replicaChecker 检查 region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。
 
 ```bash
->> config set patrol-region-interval 10ms // 设置 replica 的运行频率为 10ms
+>> config set patrol-region-interval 10ms // 设置 replicaChecker 的运行频率为 10ms
 ```
 
 `max-store-down-time` 为 PD 认为失联 store 无法恢复的时间，当超过指定的时间没有收到 store 的心跳后，PD 会在其他节点补充副本。
