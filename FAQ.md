@@ -92,7 +92,7 @@ Atomikos 配好两个数据源后，JDBC 驱动都要设置成 XA 模式，然�
 
 MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiDB 本身就通过 Google 的 Percolator 事务模型支持分布式事务，性能稳定性比 XA 要高出很多，所以不会也不需要支持 XA。
 
-#### 1.1.20 show processlist 是否显示系统线程号？
+#### 1.1.20 show processlist 是否显示系统进程号？
 
 TiDB 的 `show processlist` 与 MySQL 的 `show processlist` 显示内容基本一样，不会显示系统进程号，而 ID 表示当前的 session ID。其中 TiDB 的 `show processlist` 和 MySQL 的 `show processlist` 区别如下：
 
@@ -116,7 +116,7 @@ TiDB 的 sql_mode 与 MySQL 的 sql_mode 设置方法有一些差别，TiDB 不�
 
 这一层跟 MySQL 一样，走的 SASL 认证协议，用于用户登陆认证，对密码的处理流程。
 
-客户端连接 TiDB 的时候，走的是 challenge / response（挑战-应答）的认证模式，过程如下：
+客户端连接 TiDB 的时候，走的是 challenge-response（挑战-应答）的认证模式，过程如下：
 
 第一步：客户端连接服务器；
 
@@ -196,7 +196,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 ##### 2.1.2.5 TiDB 集群各个组件的配置推荐？
 
 - TiDB 需要 CPU 和内存比较好的机器，参考官网配置要求，如果后期需要开启 Binlog，根据业务量的评估和 GC 时间的要求，也需要本地磁盘大一点，不要求 SSD 磁盘；
-- PD 里面存了集群元信息，会有频繁的读写请求，对磁盘 IO 要求相对比较高，磁盘太差会影响整个集群性能，推荐 SSD 磁盘，空间不用太大。另外集群 Region 数量越多对 CPU、内存的要求越高；
+- PD 里面存了集群元信息，会有频繁的读写请求，对磁盘 I/O 要求相对比较高，磁盘太差会影响整个集群性能，推荐 SSD 磁盘，空间不用太大。另外集群 Region 数量越多对 CPU、内存的要求越高；
 - TiKV 对 CPU、内存、磁盘要求都比较高，一定要用 SSD 磁盘。
 
 详情可参考 [TiDB 软硬件环境需求](op-guide/recommendation.md)。
@@ -528,7 +528,7 @@ TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在�
 #### 3.4.6 TiKV channel full 是啥原因？
 
 - Raftstore 线程卡了，可以看一下 Raftstore 的 CPU 使用情况。
-- TiKV 太忙了（读取、写入、磁盘 IO 等），请求处理不过来。
+- TiKV 太忙了（读取、写入、磁盘 I/O 等），请求处理不过来。
 
 #### 3.4.7 TiKV 频繁切换 Region leader 切换是啥原因？
 
@@ -848,7 +848,7 @@ TiDB-2.0 版本中，PD metric 监控页面中，对 Region 健康度进行了�
 
 QPS 会统计执行的所有 SQL 命令，包括 use database、load data、begin、commit、set、show、insert、select 等。
 
-Statement OPS 只统计 select、updat、insert 等业务相关的，所以 Statement OPS 的统计和业务比较相符。
+Statement OPS 只统计 select、update、insert 等业务相关的，所以 Statement OPS 的统计和业务比较相符。
 
 ## 八、Cloud TiDB
 
