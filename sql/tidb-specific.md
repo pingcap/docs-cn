@@ -285,6 +285,16 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 这个变量用来设置最多可重试次数, 即在一个事务执行中遇到可重试的错误(例如事务冲突、TiKV 繁忙等)时，这个事务可以被重新执行，这个变量值表明最多可重试的次数。
 
+### tidb_disable_txn_auto_retry
+
+作用域：SESSION | GLOBAL
+
+默认值：0
+
+这个变量用来设置是否禁用显式事务自动重试，设置为 1 时，不会自动重试，如果遇到冲突需要在应用层重试。
+是否需要禁用自动重试，请参考[自动重试的风险](./transaction-isolation.md#事务重试的风险)
+
+
 ## Optimizer Hint
 
 TiDB 在 MySQL 的 Optimizer Hint 语法上，增加了一些 TiDB 专有的 Hint 语法, 使用这些 Hint 的时候，TiDB 优化器会尽量使用指定的算法，在某些场景下会比默认算法更优。
