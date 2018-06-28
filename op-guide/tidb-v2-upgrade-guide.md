@@ -93,11 +93,11 @@ readpool:
     # low-concurrency: 8
 ```
 
-For the cluster topology of multiple TiKV instances on a single machine, you need to modify the three parameters above. Recommended configuration: `number of instances * parameter value = CPU_Vcores * 0.8`.
+For the cluster topology of multiple TiKV instances on a single machine, you need to modify the three parameters above. Recommended configuration: `number of instances * parameter value = number of CPU cores * 0.8`.
 
 ## Download TiDB 2.0 binary to the Control Machine
 
-Make sure that `tidb_version = v2.0.0` in the `tidb-ansible/inventory.ini` file, and then run the following command to download TiDB 2.0 binary to the Control Machine:
+Make sure that `tidb_version = v2.0.4` in the `tidb-ansible/inventory.ini` file, and then run the following command to download TiDB 2.0 binary to the Control Machine:
 
 ```
 $ ansible-playbook local_prepare.yml

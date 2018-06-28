@@ -9,7 +9,7 @@ category: operations
 
 PD schedules according to the topology of the TiKV cluster to maximize the TiKV's capability for disaster recovery.
 
-Before you begin, see [Ansible Deployment (Recommended)](ansible-deployment.md) and [Docker Deployment](docker-deployment.md).
+Before you begin, see [Deploy TiDB Using Ansible (Recommended)](ansible-deployment.md) and [Deploy TiDB Using Docker](docker-deployment.md).
 
 ## TiKV reports the topological information
 

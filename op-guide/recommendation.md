@@ -59,19 +59,24 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 
 ## Network requirements
 
-As an open source distributed NewSQL database, TiDB requires the following network port configuration to run. Based on the TiDB deployment in actual environments, the administrator can enable relevant ports in the network side and host side. 
+As an open source distributed NewSQL database, TiDB requires the following network port configuration to run. Based on the TiDB deployment in actual environments, the administrator can open relevant ports in the network side and host side.
 
 | Component | Default Port | Description |
 | :--:| :--: | :-- |
-| TiDB |  4000  | the communication port for the application and DBA tools|
-| TiDB | 10080  | the communication port to report TiDB status|
-| TiKV |  20160 | the TiKV communication port  |
+| TiDB |  4000  | the communication port for the application and DBA tools |
+| TiDB | 10080  | the communication port to report TiDB status |
+| TiKV | 20160 | the TiKV communication port |
 | PD | 2379 | the communication port between TiDB and PD |
 | PD | 2380 | the inter-node communication port within the PD cluster |
-| Prometheus |  9090| the communication port for the Prometheus service|
-| Pushgateway |  9091| the aggregation and report port for TiDB, TiKV, and PD monitor |
-| Node_exporter |  9100| the communication port to report the system information of every TiDB cluster node |
+| Pump | 8250 | the Pump communication port |
+| Drainer | 8249 | the Drainer communication port |
+| Prometheus | 9090 | the communication port for the Prometheus service|
+| Pushgateway | 9091 | the aggregation and report port for TiDB, TiKV, and PD monitor |
+| Node_exporter | 9100 | the communication port to report the system information of every TiDB cluster node |
+| Blackbox_exporter | 9115 | the Blackbox_exporter communication port, used to monitor the ports in the TiDB cluster |
 | Grafana | 3000 | the port for the external Web monitoring service and client (Browser) access|
+| Grafana | 8686 | the grafana_collector communication port, used to export the Dashboard as the PDF format |
+| Kafka_exporter | 9308 | the Kafka_exporter communication port, used to monitor the binlog Kafka cluster |
 
 ## Web browser requirements
 

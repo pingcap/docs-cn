@@ -79,13 +79,13 @@
   + Deploy
     - [Ansible Deployment (Recommended)](op-guide/ansible-deployment.md)
     - [Offline Deployment Using Ansible](op-guide/offline-ansible-deployment.md)
-    - [TiDB 2.0 Upgrade Guide](op-guide/tidb-v2-upgrade-guide.md)
     - [Docker Deployment](op-guide/docker-deployment.md)
     - [Docker Compose Deployment](op-guide/docker-compose.md)
     - [Cross-Region Deployment](op-guide/location-awareness.md)
   + Configure
     - [Configuration Flags](op-guide/configuration.md)
     - [Configuration File Description](op-guide/tidb-config-file.md)
+    - [Modify Component Configuration Using Ansible](op-guide/ansible-deployment-rolling-update.md#modify-component-configuration)
     - [Enable TLS Authentication](op-guide/security.md)
     - [Generate Self-signed Certificates](op-guide/generate-self-signed-certificates.md)
   + Monitor
@@ -94,8 +94,10 @@
     - [Monitor a TiDB Cluster](op-guide/monitor.md)
   + Scale
     - [Scale a TiDB Cluster](op-guide/horizontal-scale.md)
-    - [Use Ansible to Scale](QUICKSTART.md#scale-the-tidb-cluster)
-  - [Upgrade](op-guide/ansible-deployment.md#perform-rolling-update)
+    - [Scale Using Ansible](op-guide/ansible-deployment-scale.md)
+  + Upgrade
+    - [Upgrade the Component Version](op-guide/ansible-deployment-rolling-update.md#upgrade-the-component-version)
+    - [TiDB 2.0 Upgrade Guide](op-guide/tidb-v2-upgrade-guide.md)
   - [Tune Performance](op-guide/tune-tikv.md)
   + Backup and Migrate
     - [Backup and Restore](op-guide/backup-restore.md)
@@ -103,7 +105,7 @@
       - [Migration Overview](op-guide/migration-overview.md)
       - [Migrate All the Data](op-guide/migration.md#use-the-mydumper--loader-tool-to-export-and-import-all-the-data)
       - [Migrate the Data Incrementally](op-guide/migration.md#use-the-syncer-tool-to-import-data-incrementally-optional)
-  - [Deploy TiDB Using the Binary](op-guide/binary-deployment.md)
+  - [TiDB-Ansible Common Operations](op-guide/ansible-operation.md)
   - [Troubleshoot](trouble-shooting.md)
 + TiDB Enterprise Tools
   - [Syncer](tools/syncer.md)

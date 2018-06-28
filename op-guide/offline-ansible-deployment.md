@@ -5,6 +5,8 @@ category: operations
 
 # Deploy TiDB Offline Using Ansible
 
+This guide describes how to deploy a TiDB cluster offline using Ansible.
+
 ## Prepare
 
 Before you start, make sure that you have:
@@ -16,25 +18,25 @@ Before you start, make sure that you have:
 
 2. Several target machines and one Control Machine
 
-    - For system requirements and configuration, see [Prepare the environment](ansible-deployment.md#prepare).
+    - For system requirements and configuration, see [Prepare the environment](ansible-deployment.md#prerequisites).
     - It is acceptable without access to the Internet.
 
-## Install Ansible and dependencies offline in the Control Machine
+## Step 1: Install system dependencies on the Control Machine
 
-Take the following steps to install Ansible offline on the CentOS 7 system:
+Take the following steps to install system dependencies on the Control Machine installed with the CentOS 7 system.
 
-1. Install `pip` offline.
+1. Download the [`pip`](https://download.pingcap.org/ansible-system-rpms.el7.tar.gz) offline installation package to the Control Machine.
 
-    > Download the [`pip`](https://download.pingcap.org/pip-rpms.el7.tar.gz) offline installation package to the Control Machine.
-
-    ```bash
-    # tar -xzvf pip-rpms.el7.tar.gz
-    # cd pip-rpms.el7
-    # chmod u+x install_pip.sh
-    # ./install_pip.sh
+    ```
+    # tar -xzvf ansible-system-rpms.el7.tar.gz
+    # cd ansible-system-rpms.el7
+    # chmod u+x install_ansible_system_rpms.sh
+    # ./install_ansible_system_rpms.sh
     ```
 
-    After the installation is finished, you can use `pip -V` to check whether it is successfully installed:
+    > **Note:** This offline installation package includes `pip` and `sshpass`, and only supports the CentOS 7 system.
+
+2. After the installation is finished, you can use `pip -V` to check whether it is successfully installed.
 
     ```bash
     # pip -V
@@ -43,14 +45,17 @@ Take the following steps to install Ansible offline on the CentOS 7 system:
 
     > **Note:** If `pip` is already installed to your system, make sure that the version is 8.1.2 or later. Otherwise, compatibility error occurs when you install Ansible and its dependencies offline.
 
+## Step 2: Create the `tidb` user on the Control Machine and generate the SSH key
+
+See [Create the `tidb` user on the Control Machine and generate the SSH key](ansible-deployment.md#step-2-create-the-tidb-user-on-the-control-machine-and-generate-the-ssh-key).
+
+## Step 3: Install Ansible and its dependencies offline on the Control Machine
+
+Currently, the TiDB 2.0 GA version and the master version are compatible with Ansible 2.5. Ansible and the related dependencies are in the `tidb-ansible/requirements.txt` file.
+
+1. Download [Ansible 2.5 offline installation package](https://download.pingcap.org/ansible-2.5.0-pip.tar.gz).
+
 2. Install Ansible and its dependencies offline.
-
-    Currently releases-1.0 depends on Ansible 2.4, while release-2.0 and the master version are compatible with Ansible 2.4 and Ansible 2.5. Ansible and related dependencies are recorded in the `tidb-ansible/requirements.txt` file. Download the corresponding offline installation version to the Control Machine.
-
-    - Download [Ansible 2.4 offline installation package](https://download.pingcap.org/ansible-2.4.2-pip.tar.gz)
-    - Download [Ansible 2.5 offline installation package](https://download.pingcap.org/ansible-2.5.0-pip.tar.gz)
-
-    The installing methods of Ansible 2.4 and Ansible 2.5 are similar. Take Ansible 2.5 as an example:
 
     ```
     # tar -xzvf ansible-2.5.0-pip.tar.gz
@@ -59,14 +64,16 @@ Take the following steps to install Ansible offline on the CentOS 7 system:
     # ./install_ansible.sh
     ```
 
+3. View the version of Ansible.
+
     After Ansible is installed, you can view the version using `ansible --version`.
 
-    ```bash
+    ```
     # ansible --version
      ansible 2.5.0
     ```
 
-## Download TiDB-Ansible and TiDB packages on the download machine
+## Step 4: Download TiDB-Ansible and TiDB packages on the download machine
 
 1. Install Ansible on the download machine.
 
@@ -78,17 +85,11 @@ Take the following steps to install Ansible offline on the CentOS 7 system:
     # ansible --version
       ansible 2.5.0
     ```
-    > **Note:** Make sure that the version of Ansible is 2.4 or later, otherwise compatibility problem might occur.
+    > **Note:** Make sure that the version of Ansible is 2.5, otherwise a compatibility issue occurs.
 
 2. Download TiDB-Ansible.
 
     Use the following command to download the corresponding version of TiDB-Ansible from the GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`. The following are examples of downloading various versions, and you can turn to the official team for advice on which version to choose.
-
-    Download the 1.0 GA version:
-
-    ```
-    git clone -b release-1.0 https://github.com/pingcap/tidb-ansible.git
-    ```
 
     Download the 2.0 version:
 
@@ -113,24 +114,37 @@ Take the following steps to install Ansible offline on the CentOS 7 system:
 
 4. After running the above command, copy the `tidb-ansible` folder to the `/home/tidb` directory of the Control Machine. The ownership authority of the file must be the `tidb` user.
 
-## Orchestrate the TiDB cluster
+## Step 5: Configure the SSH mutual trust and sudo rules on the Control Machine
 
-See [Orchestrate the TiDB cluster](ansible-deployment.md#orchestrate-the-tidb-cluster).
+See [Configure the SSH mutual trust and sudo rules on the Control Machine](ansible-deployment.md#configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine).
 
-## Deploy the TiDB cluster
+## Step 6: Install the NTP service on the target machines
 
-1. You do not need to run the `ansible-playbook local_prepare.yml` playbook again.
-2. You can use the `Report` button on the Grafana Dashboard to generate the PDF file. This function depends on the `fontconfig` package. To use this function, download the [`fontconfig` offline installation package](https://download.pingcap.org/fontconfig-rpms.el7.tar.gz) and upload it to the `grafana_servers` machine to install.
+See [Install the NTP service on the target machines](ansible-deployment.md#install-the-ntp-service-on-the-target-machines).
+
+## Step 7: Mount the data disk ext4 filesystem with options on the target machines
+
+See [Mount the data disk ext4 filesystem with options on the target machines](ansible-deployment.md#mount-the-data-disk-ext4-filesystem-with-options-on-the-target-machines).
+
+## Step 8: Edit the `inventory.ini` file to orchestrate the TiDB cluster
+
+See [Edit the `inventory.ini` file to orchestrate the TiDB cluster](ansible-deployment.md#edit-the-inventory.ini-file-to-orchestrate-the-tidb-cluster).
+
+## Step 9: Deploy the TiDB cluster
+
+1. You do not need to run the playbook in `ansible-playbook local_prepare.yml`.
+
+2. You can use the `Report` button on the Grafana Dashboard to generate the PDF file. This function depends on the `fontconfig` package and English fonts. To use this function, download the offline installation package, upload it to the `grafana_servers` machine, and install it. This package includes `fontconfig` and `open-sans-fonts`, and only supports the CentOS 7 system.
 
     ```
-    $ tar -xzvf fontconfig-rpms.el7.tar.gz
-    $ cd fontconfig-rpms.el7/offline_packages
-    $ chmod u+x install_fontconfig.sh
-    $ ./install_fontconfig.sh
+    $ tar -xzvf grafana-font-rpms.el7.tar.gz
+    $ cd grafana-font-rpms.el7
+    $ chmod u+x install_grafana_font_rpms.sh
+    $ ./install_grafana_font_rpms.sh
     ```
 
-3. Refer to [Deploy the TiDB cluster](ansible-deployment.md#deploy-the-tidb-cluster).
+3. See [Deploy the TiDB cluster](ansible-deployment.md#step-10-deploy-the-tidb-cluster).
 
-## Test the cluster
+## Test the TiDB cluster
 
-See [Test the cluster](ansible-deployment.md#test-the-cluster).
+See [Test the TiDB cluster](ansible-deployment.md#test-the-tidb-cluster).
