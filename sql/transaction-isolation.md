@@ -77,6 +77,52 @@ MySQL 的可重复读隔离级别并非 snapshot 隔离级别，MySQL 可重复�
 retry-limit = 10
 ```
 
+## 乐观事务注意事项
+
+因为 TiDB 使用乐观锁机制，通过显式的 BEGIN 语句创建的事务，在遇到冲突后自动重试可能会导致最终结果不符合预期。
+
+比如下面这两个例子:
+
+| Session1 | Session2   |
+| ---------------- | ------------ |
+| `begin;` | `begin;` |
+| `select balance from t where id = 1;` | `update t set balance = balance -100 where id = 1;` |
+|  | `update t set balance = balance -100 where id = 2;` |
+| // 使用 select 的结果决定后续的逻辑 | `commit;` |
+| `if balance > 100 {` | |
+| `update t set balance = balance + 100 where id = 2;` | |
+| `}` | |
+| `commit;` // 自动重试 | |
+
+| Session1 | Session2   |
+| ---------------- | ------------ |
+| `begin;` | `begin;` |
+| `update t set balance = balance - 100  where id = 1;` | `delete t where id = 1;` |
+|  | `commit;` |
+| // 使用 affected_rows 的结果决定后续的逻辑 | |
+| `if affected_rows > 100 {` | |
+| `update t set balance = balance + 100 where id = 2;` | |
+| `}` | |
+| `commit;` // 自动重试 | |
+
+因为 TiDB 自动重试机制会把事务第一次执行的所有语句重新执行一遍，当一个事务里的后续
+语句是否执行取决于前面语句执行结果的时候，自动重试无法保证最终结果符合预期。
+这种情况下，需要在应用层重试整个事务。
+
+通过配置全局变量 `tidb_disable_txn_auto_retry` 可以关掉显式事务的重试。
+
+```
+set @@global.tidb_disable_txn_auto_retry = 1;
+
+```
+
+这个变量不会影响 auto_commit = 1 的单语句的隐式事务，仍然会自动重试。
+
+关掉显示事务重试后，如果出现事务冲突，commit 语句会返回错误，错误信息会包含
+ `try again later` 这个字符串，应用层可以用来判断遇到的错误是否是可以重试的。
+
+如果事务执行过程中包含了应用层的逻辑，建议在应用层添加显式事务的重试，并关闭自动重试。
+
 ## 语句回滚
 
 在事务内部执行一个语句，遇到错误时，该语句不会生效。
