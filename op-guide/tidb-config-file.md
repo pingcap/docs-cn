@@ -228,8 +228,8 @@ prepare 语句的 Plan cache 设置。
 
 ### `enable`
 + 开启
-+ 默认: true
++ 默认: false
 
 ### `capacity`
-+ Hash 对应的 slot 数。
++ Hash 对应的 slot 数, 会自动向上调整为 2 的指数倍。每个 slot 占 32 Bytes 内存。当写入数据的范围比较广时（如导数据），设置过小会导致变慢，性能下降。
 + 默认：1024000
