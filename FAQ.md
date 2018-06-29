@@ -285,7 +285,7 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 ```
 ./fio -ioengine=libaio -bs=32k -direct=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randr_write_test.txt -name='PingCAP' -iodepth=4 -runtime=60
 ```
-#### 2.2.8 使用 TiDB Ansible 部署 TiDB 集群的时候，遇到 UNREACHABLE! "msg": "Failed to connect to the host via ssh: " 报错是什么原因？
+#### 2.2.8 使用 TiDB Ansible 部署 TiDB 集群的时候，遇到 `UNREACHABLE! "msg": "Failed to connect to the host via ssh: " ` 报错是什么原因？
 
 有两种可能性：
 
@@ -451,7 +451,7 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 下线节点一般指 TiKV 节点通过 pd-ctl 或者监控判断节点是否下线完成。节点下线完成后，手动停止下线节点上相关的服务。从 Prometheus 配置文件中删除对应节点的 node_exporter 信息。从 Ansible inventory.ini 中删除对应节点的信息。
 
-#### 3.2.9 使用 PD Control 连接 PD Server 时，为什么只能通过本机 IP 连接， 不能通过 127.0.0.1 连接？
+#### 3.2.9 使用 PD Control 连接 PD Server 时，为什么只能通过本机 IP 连接，不能通过 127.0.0.1 连接？
 
 因为使用 TiDB Ansible 部署的集群，PD 对外服务端口不会绑定到 127.0.0.1，所以 PD Control 不会识别 127.0.0.1。
 
@@ -664,9 +664,9 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 目前看来 OGG 最为合适。
 
-#### 4.1.7 用 Sqoop 批量写入 TiDB 数据，虽然配置了--batch 选项，但还是会遇到 java.sql.BatchUpdateExecption:statement count 5001 exceeds the transaction limitation 的错误，该如何解决？
+#### 4.1.7 用 Sqoop 批量写入 TiDB 数据，虽然配置了 `--batch` 选项，但还是会遇到 `java.sql.BatchUpdateExecption:statement count 5001 exceeds the transaction limitation` 的错误，该如何解决？
 
-在 Sqoop 中，--batch 是指每个批次提交 100 条 statement，但是默认每个 statement 是 100 条 SQL，所以此时 100 * 100 = 10000 条 SQL，超出了 TiDB 的事务限制 5000 条，可以增加选 `-Dsqoop.export.records.per.statement=10 ` 来解决这个问题，完整的用法如下：
+在 Sqoop 中，--batch 是指每个批次提交 100 条 statement，但是默认每个 statement 包含 100 条 SQL 语句，所以此时 100 * 100 = 10000 条 SQL，超出了 TiDB 的事务限制 5000 条，可以增加选项 `-Dsqoop.export.records.per.statement=10 ` 来解决这个问题，完整的用法如下：
 
 ```
 sqoop export \
@@ -719,9 +719,9 @@ Wormhole 是一项数据同步服务，让用户能够通过 Web 控制台, 轻�
 
 当前 Syncer 版本的没有进行高可用设计，Syncer 目前的配置信息 syncer.meta 直接存储在硬盘上，其存储方式类似于其他 MySQL 生态工具，比如 mydumper。 因此，要解决这个问题当前可以有两个方法：
 
-1）把 syncer.meta  数据放到比较安全的磁盘上，例如磁盘做好 raid1；
+1）把 syncer.meta 数据放到比较安全的磁盘上，例如磁盘做好 raid1；
 
-2）可以根据 Syncer 定期上报到 Prometheus 的监控信息来还原出历史同步的位置信息，该方法的位置信息可能在大量同步数据时由于延迟会可能不准确。
+2）可以根据 Syncer 定期上报到 Prometheus 的监控信息来还原出历史同步的位置信息，该方法的位置信息在大量同步数据时由于延迟会可能不准确。
 
 ### 4.3 业务流量迁入
 
