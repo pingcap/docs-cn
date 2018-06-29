@@ -666,7 +666,7 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 #### 4.1.7 用 Sqoop 批量写入 TiDB 数据，虽然配置了 `--batch` 选项，但还是会遇到 `java.sql.BatchUpdateExecption:statement count 5001 exceeds the transaction limitation` 的错误，该如何解决？
 
-在 Sqoop 中，--batch 是指每个批次提交 100 条 statement，但是默认每个 statement 包含 100 条 SQL 语句，所以此时 100 * 100 = 10000 条 SQL，超出了 TiDB 的事务限制 5000 条，可以增加选项 `-Dsqoop.export.records.per.statement=10 ` 来解决这个问题，完整的用法如下：
+- 在 Sqoop 中，`--batch` 是指每个批次提交 100 条 statement，但是默认每个 statement 包含 100 条 SQL 语句，所以此时 100 * 100 = 10000 条 SQL 语句，超出了 TiDB 的事务限制 5000 条，可以增加选项 `-Dsqoop.export.records.per.statement=10 ` 来解决这个问题，完整的用法如下：
 
 ```
 sqoop export \
@@ -678,6 +678,7 @@ sqoop export \
     --export-dir ${dir} \
     --batch
 ```
+- 也可以选择增大 tidb 的单个事物语句数量限制，不过这个会导致内存上涨。
 
 ### 4.2 增量数据同步
 
