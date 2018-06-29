@@ -160,6 +160,7 @@
   - [游族网络](http://t.cn/R8k4AWB)
   - [西山居](http://t.cn/RBP12zj)
   - [FUNYOURS JAPAN](http://t.cn/Rnoab5D)
+  - [特来电](http://t.cn/RrHzUGW)
   - [万达网络](http://t.cn/RTKm6ds)
   - [佐助金融](http://t.cn/RQeoKaa)
   - [360金融](http://t.cn/RTKnTev)
