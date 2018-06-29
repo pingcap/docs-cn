@@ -17,13 +17,13 @@ You can use the TiDB-Ansible configuration file to set up the cluster topology a
 
 - Initialize operating system parameters
 - Deploy the whole TiDB cluster
-- Start the TiDB cluster
-- Stop the TiDB cluster
-- Modify component configuration
-- Scale the TiDB cluster
-- Upgrade the component version
-- Clean up data of the TiDB cluster
-- Destroy the TiDB cluster
+- [Start the TiDB cluster](ansible-operation.md#start-a-cluster)
+- [Stop the TiDB cluster](ansible-operation.md#stop-a-cluster)
+- [Modify component configuration](ansible-deployment-rolling-update.md#modify-component-configuration)
+- [Scale the TiDB cluster](ansible-deployment-scale.md)
+- [Upgrade the component version](ansible-deployment-rolling-update.md#upgrade-the-component-version)
+- [Clean up data of the TiDB cluster](ansible-operation.md#clean-up-cluster-data)
+- [Destroy the TiDB cluster](ansible-operation.md#destroy-a-cluster)
 
 ## Prerequisites
 
@@ -53,16 +53,16 @@ Log in to the Control Machine using the `root` user account, and run the corresp
 
 - If you use a Control Machine installed with CentOS 7, run the following command:
 
-```
-# yum -y install epel-release git curl sshpass
-# yum -y install python-pip
-```
+    ```
+    # yum -y install epel-release git curl sshpass
+    # yum -y install python-pip
+    ```
 
 - If you use a Control Machine installed with Ubuntu, run the following command:
 
-```
-# apt-get -y install git curl sshpass python-pip
-```
+    ```
+    # apt-get -y install git curl sshpass python-pip
+    ```
 
 ## Step 2: Create the `tidb` user on the Control Machine and generate the SSH key
 
@@ -213,11 +213,7 @@ Log in to the Control Machine using the `root` user account.
 
 Format your data disks to the ext4 filesystem and mount the filesystem with the `nodelalloc` and `noatime` options. It is required to mount the `nodelalloc` option, or else the Ansible deployment cannot pass the test. The `noatime` option is optional.
 
-> **Note:** If your data disks have been formatted to ext4 and have mounted the options, you can uninstall it by running the following `umount` command, follow the steps starting from editing the `/etc/fstab` file, and remount the filesystem with options.
-> 
-> ```
-> # umount /dev/nvme0n1
-> ```
+> **Note:** If your data disks have been formatted to ext4 and have mounted the options, you can uninstall it by running the `# umount /dev/nvme0n1` command, follow the steps starting from editing the `/etc/fstab` file, and remount the filesystem with options.
 
 Take the `/dev/nvme0n1` data disk as an example:
 
@@ -286,7 +282,7 @@ Log in to the Control Machine using the `tidb` user account, and edit the `tidb-
 - Do not deploy TiKV together with TiDB or PD on the same machine.
 - Use the first TiDB machine as the monitoring machine.
 
-> **Note:** It is required to use the internal IP address to deploy.
+> **Note:** It is required to use the internal IP address to deploy. If the SSH port of the target machines are not the default 22 port, you need to add the `ansible_port` variable. For example, `TiDB1 ansible_host=172.16.10.1 ansible_port=5555`.
 
 You can choose one of the following two types of cluster topology according to your scenario:
 
