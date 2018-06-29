@@ -282,7 +282,7 @@ Log in to the Control Machine using the `tidb` user account, and edit the `tidb-
 - Do not deploy TiKV together with TiDB or PD on the same machine.
 - Use the first TiDB machine as the monitoring machine.
 
-> **Note:** It is required to use the internal IP address to deploy. If the SSH port of the target machines are not the default 22 port, you need to add the `ansible_port` variable. For example, `TiDB1 ansible_host=172.16.10.1 ansible_port=5555`.
+> **Note:** It is required to use the internal IP address to deploy. If the SSH port of the target machines is not the default 22 port, you need to add the `ansible_port` variable. For example, `TiDB1 ansible_host=172.16.10.1 ansible_port=5555`.
 
 You can choose one of the following two types of cluster topology according to your scenario:
 
