@@ -83,23 +83,30 @@ TiDB  集群可以在不影响线上服务的情况下进行扩容和缩容。�
 
 2.  初始化新增节点：
 
-        ansible-playbook bootstrap.yml -l 172.16.10.101,172.16.10.102
+    ```
+    ansible-playbook bootstrap.yml -l 172.16.10.101,172.16.10.102
+    ```
 
-> **注**：
-> 如果 `inventory.ini` 中为节点配置了别名，如 `node101 ansible_host=172.16.10.101`，执行 ansible-playbook 时 -l 请指定别名，以下步骤类似。
-> `ansible-playbook bootstrap.yml -l node101,node102`
+    > **注**：
+    > 如果 `inventory.ini` 中为节点配置了别名，如 `node101 ansible_host=172.16.10.101`，执行 ansible-playbook 时 -l 请指定别名，以下步骤类似。例如：`ansible-playbook bootstrap.yml -l node101,node102`
 
 3.  部署新增节点：
 
-        ansible-playbook deploy.yml -l 172.16.10.101,172.16.10.102
+    ```
+    ansible-playbook deploy.yml -l 172.16.10.101,172.16.10.102
+    ```
 
 4.  启动新节点服务：
 
-        ansible-playbook start.yml -l 172.16.10.101,172.16.10.102
+    ```
+    ansible-playbook start.yml -l 172.16.10.101,172.16.10.102
+    ```
 
 5.  更新 Prometheus 配置并重启：
 
-        ansible-playbook rolling_update_monitor.yml --tags=prometheus
+    ```
+    ansible-playbook rolling_update_monitor.yml --tags=prometheus
+    ```
 
 6.  打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群和新增节点的状态。
 
@@ -164,41 +171,57 @@ TiDB  集群可以在不影响线上服务的情况下进行扩容和缩容。�
 
 2.  初始化新增节点：
 
-        ansible-playbook bootstrap.yml -l 172.16.10.103
+    ```
+    ansible-playbook bootstrap.yml -l 172.16.10.103
+    ```
 
 3.  部署新增节点：
 
-        ansible-playbook deploy.yml -l 172.16.10.103
+    ```
+    ansible-playbook deploy.yml -l 172.16.10.103
+    ```
 
 4.  登录新增的 PD 节点，编辑启动脚本：`{deploy_dir}/scripts/run_pd.sh`
 
-    1.  移除 `--initial-cluster="xxxx" \` 配置
+    1.  移除 `--initial-cluster="xxxx" \` 配置。
 
-    2.  添加 `--join="http://172.16.10.1:2379" \`。IP 地址 （172.16.10.1） 可以是集群内现有 PD IP 地址中的任意一个
+    2.  添加 `--join="http://172.16.10.1:2379" \`，IP 地址 （172.16.10.1） 可以是集群内现有 PD IP 地址中的任意一个。
 
     3.  在新增 PD 节点中手动启动 PD 服务：
-    `{deploy_dir}/scripts/start_pd.sh`
+    
+        ```
+        {deploy_dir}/scripts/start_pd.sh
+        ```
 
     4.  使用 `pd-ctl` 检查新节点是否添加成功：
-    `/home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member`
+    
+        ```
+        /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member
+        ```
 
 5.  滚动升级整个集群：
 
-        ansible-playbook rolling_update.yml
+    ```
+    ansible-playbook rolling_update.yml
+    ```
 
 6.  更新 Prometheus 配置并重启：
 
-        ansible-playbook rolling_update_monitor.yml --tags=prometheus
+    ```
+    ansible-playbook rolling_update_monitor.yml --tags=prometheus
+    ```
 
 7.  打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群和新增节点的状态。
 
-### 缩容 TiDB 节点
+## 缩容 TiDB 节点
 
 例如，如果要移除一个 TiDB 节点（node5），IP 地址为 172.16.10.5，可以进行如下操作：
 
 1.  停止 node5 节点上的服务：
 
-        ansible-playbook stop.yml -l 172.16.10.5
+    ```
+    ansible-playbook stop.yml -l 172.16.10.5
+    ```
 
 2.  编辑 `inventory.ini` 文件，移除节点信息：
 
@@ -252,29 +275,41 @@ TiDB  集群可以在不影响线上服务的情况下进行扩容和缩容。�
 
 3.  更新 Prometheus 配置并重启：
 
-        ansible-playbook rolling_update_monitor.yml --tags=prometheus
+    ```
+    ansible-playbook rolling_update_monitor.yml --tags=prometheus
+    ```
 
 4.  打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群的状态。
 
-### 缩容 TiKV 节点
+## 缩容 TiKV 节点
 
 例如，如果要移除一个 TiKV 节点（node9），IP 地址为 172.16.10.9，可以进行如下操作：
 
 1.  使用 `pd-ctl` 从集群中移除节点：
 
     1.  查看 node9 节点的 store id：
-    `/home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d store`
+
+        ```
+        /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d store
+        ```
 
     2.  从集群中移除 node9，假如 store id 为 10：
-    `/home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d store delete 10`
+    
+        ```
+        /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d store delete 10
+        ```
 
 2.  使用 Grafana 或者 `pd-ctl` 检查节点是否下线成功（下线需要一定时间，下线节点的状态变为 Tombstone 就说明下线成功了）：
 
-        /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d store 10
+    ```
+    /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d store 10
+    ```
 
 3.  下线成功后，停止 node9 上的服务：
 
-        ansible-playbook stop.yml -l 172.16.10.9
+    ```
+    ansible-playbook stop.yml -l 172.16.10.9
+    ```
 
 4.  编辑 `inventory.ini` 文件，移除节点信息：
 
@@ -328,29 +363,41 @@ TiDB  集群可以在不影响线上服务的情况下进行扩容和缩容。�
 
 5.  更新 Prometheus 配置并重启：
 
-        ansible-playbook rolling_update_monitor.yml --tags=prometheus
+    ```
+    ansible-playbook rolling_update_monitor.yml --tags=prometheus
+    ```
 
 6.  打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群的状态。
 
-### 缩容 PD 节点
+## 缩容 PD 节点
 
 例如，如果要移除一个 PD 节点（node2），IP 地址为 172.16.10.2，可以进行如下操作：
 
 1.  使用 `pd-ctl` 从集群中移除节点：
 
     1.  查看 node2 节点的 name：
-    `/home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member`
+
+        ```
+        /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member
+        ```
 
     2.  从集群中移除 node2，假如 name 为 pd2：
-    `/home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member delete name pd2`
+    
+        ```
+        /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member delete name pd2
+        ```
 
 2.  使用 Grafana 或者 `pd-ctl` 检查节点是否下线成功（PD 下线会很快，结果中没有 node2 节点信息即为下线成功）：
 
-        /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member
+    ```
+    /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member
+    ```
 
 3.  下线成功后，停止 node2 上的服务：
 
-        ansible-playbook stop.yml -l 172.16.10.2
+    ```
+    ansible-playbook stop.yml -l 172.16.10.2
+    ```
 
 4.  编辑 `inventory.ini` 文件，移除节点信息：
 
@@ -404,6 +451,8 @@ TiDB  集群可以在不影响线上服务的情况下进行扩容和缩容。�
 
 5.  更新 Prometheus 配置并重启：
 
-        ansible-playbook rolling_update_monitor.yml --tags=prometheus
+    ```
+    ansible-playbook rolling_update_monitor.yml --tags=prometheus
+    ```
 
 6.  打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群的状态。

@@ -8,7 +8,7 @@ category: deployment
 滚动升级 TiDB 集群时，会串行关闭服务，更新服务 binary 和配置文件，再启动服务。在前端配置负载均衡的情况下，滚动升级期间不影响业务运行（最小环境 ：pd * 3 、tidb * 2、tikv * 3）。
 
 > **注**：
-> 如果 TiDB 集群开启了 binlog，部署了 pump 和 drainer 服务，升级 TiDB 服务时会升级 pump，请先停止 drainer 服务再执行滚动升级操作。
+> 如果 TiDB 集群开启了 binlog，部署了 Pump 和 Drainer 服务，升级 TiDB 服务时会升级 Pump，请先停止 Drainer 服务再执行滚动升级操作。
 
 ## 升级组件版本
 
@@ -113,4 +113,4 @@ wget http://download.pingcap.org/tidb-v2.0.3-linux-amd64-unportable.tar.gz
         low-concurrency: 16
     ```
 
-2. 修改服务配置后，需使用 Ansible 滚动升级，参考[使用 Ansible 滚动升级](#使用-Ansible-滚动升级)。
+2. 修改服务配置后，需使用 Ansible 滚动升级，参考[使用 Ansible 滚动升级](#使用-ansible-滚动升级)。
