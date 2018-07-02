@@ -36,7 +36,7 @@ Drainer 从 Kafka 中收集 Binlog，并按照 TiDB 中事务的提交顺序转�
 
 Kafka 集群用来存储由 Pump 写入的 Binlog 数据，并提供给 Drainer 进行读取。
 
-> **注：**local 版本将 Binlog 存储在文件中，最新版本则使用 Kafka 存储。
+> **注**：local 版本将 Binlog 存储在文件中，最新版本则使用 Kafka 存储。
 
 ## TiDB-Binlog 安装
 
@@ -73,10 +73,10 @@ cd tidb-binlog-latest-linux-amd64
 
     为了保证数据的完整性，在 Pump 运行 10 分钟左右后按顺序进行如下操作：
 
-    *  使用 [tidb-tools](https://github.com/pingcap/tidb-tools) 项目中的 generate_binlog_position 工具生成 Drainer 启动需要的 savepoint 文件中，make generate_binlog_position 编译该工具。具体使用参考工具的 README 说明，也可以直接下载获取该工具：[generate_binlog_position](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.tar.gz)， 并使用sha256sum验证该文件 [sha256](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.sha256)。
+    *  使用 [tidb-tools](https://github.com/pingcap/tidb-tools) 项目中的 [binlogctl](https://github.com/pingcap/tidb-tools/tree/master/tidb_binlog/binlogctl) 工具生成 Drainer 初次启动所需的 position
     *  全量备份，例如 mydumper 备份 TiDB
     *  全量导入备份到目标系统
-    *  Kafka 版本 Drainer 启动的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，如果 checkpoint 表中没有效的数据，可以通过设置 `initial-commit-ts` 启动 Drainer 从指定位置开始消费 - `bin/drainer --config=conf/drainer.toml --initial-commit-ts=${commitTS}`
+    *  Kafka 版本 Drainer 启动的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，如果 checkpoint 表中没有效的数据，可以通过设置 `initial-commit-ts` 启动 Drainer 从指定位置开始消费 - `bin/drainer --config=conf/drainer.toml --initial-commit-ts=${position}`
 
 * Drainer 输出的 pb，要在配置文件中设置如下参数：
 
