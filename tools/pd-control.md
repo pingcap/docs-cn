@@ -268,7 +268,7 @@ time: 43.12698ms
 
 ### region \<region_id\> [--jq="<query string>"]
 
-用于显示 region 信息。
+用于显示 region 信息。使用 jq 格式化输出请参考[jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。
 
 示例：
 
@@ -336,7 +336,7 @@ Protobuf 格式示例：
 
 ### store [delete | label | weight] \<store_id\>  [--jq="<query string>"]
 
-用于显示 store 信息或者删除指定 store。
+用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考[jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。
 
 示例：
 
