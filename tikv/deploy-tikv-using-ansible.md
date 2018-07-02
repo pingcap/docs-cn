@@ -19,17 +19,17 @@ This guide describes how to install and deploy TiKV using Ansible. Ansible is an
 
     - CentOS 7.3 (64 bit) or later with Python 2.7 installed, x86_64 architecture (AMD64), ext4 filesystem
 
-        Use ext4 filesystem for your data disks. Mount ext4 filesystem with the `nodelalloc` mount option. See [Mount the data disk ext4 filesystem with options](../op-guide/ansible-deployment#mount-the-data-disk-ext4-filesystem-with-options).
+        Use ext4 filesystem for your data disks. Mount ext4 filesystem with the `nodelalloc` mount option. See [Mount the data disk ext4 filesystem with options](../op-guide/ansible-deployment.md#step-7-mount-the-data-disk-ext4-filesystem-with-options-on-the-target-machines).
 
     - Network between machines
     
     - Same time and time zone for all machines with the NTP service on to synchronize the correct time
     
-        See [How to check whether the NTP service is normal](../op-guide/ansible-deployment#how-to-check-whether-the-ntp-service-is-normal).
+        See [How to check whether the NTP service is normal](../op-guide/ansible-deployment.md#how-to-check-whether-the-ntp-service-is-normal).
 
     - Create a normal `tidb` user account as the user who runs the service
     
-        The `tidb` user can sudo to the root user without a password. See [How to configure SSH mutual trust and sudo without password](../op-guide/ansible-deployment#how-to-configure-ssh-mutual-trust-and-sudo-without-password).
+        The `tidb` user can sudo to the root user without a password. See [How to configure SSH mutual trust and sudo without password](../op-guide/ansible-deployment.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine).
     
     > **Note:** When you deploy TiKV using Ansible, use SSD disks for the data directory of TiKV and PD nodes.
 
@@ -42,7 +42,7 @@ This guide describes how to install and deploy TiKV using Ansible. Ansible is an
     - Git installed
     - SSH Mutual Trust configured
 
-        In the Control Machine, you can log in to the deployment target machine using the `tidb` user account without a password. See [How to configure SSH mutual trust and sudo without password](../op-guide/ansible-deployment#how-to-configure-ssh-mutual-trust-and-sudo-without-password).
+        In the Control Machine, you can log in to the deployment target machine using the `tidb` user account without a password. See [How to configure SSH mutual trust and sudo without password](../op-guide/ansible-deployment.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine).
 
 ## Step 1: Download TiDB-Ansible to the Control Machine
 
