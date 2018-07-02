@@ -91,7 +91,7 @@ export PD_ADDR=http://127.0.0.1:2379
 示例：
 
 ```bash
->> config show                                //　显示 scheduler 的相关 config 信息
+>> config show                                // 显示 scheduler 的相关 config 信息
 {
   "max-snapshot-count": 3,
   "max-pending-peer-count": 16,
@@ -166,7 +166,7 @@ export PD_ADDR=http://127.0.0.1:2379
 >> config set max-merge-region-rows 50000 // 设置 region merge 的 rowCount 上限为 50k
 ```
 
-`split-merge-interval` 控制对同一个 region 做 split 和 merge　操作的间隔，即对于新 split 的 region 一段时间内不会被 merge。
+`split-merge-interval` 控制对同一个 region 做 split 和 merge 操作的间隔，即对于新 split 的 region 一段时间内不会被 merge。
 
 ```bash
 >> config set split-merge-interval 24h  // 设置 split merge 间隔为 1 天
@@ -292,7 +292,7 @@ Success!
 }
 >> member leader resign // 将 leader 从当前成员移走
 ......
->> member leader transfer 9724873857558226554 // 将 leader　迁移至指定 ID 成员
+>> member leader transfer 9724873857558226554 // 将 leader 迁移至指定 ID 成员
 ......
 ```
 
@@ -335,7 +335,7 @@ time: 43.12698ms
 示例：
 
 ```bash
->> region                               //　显示所有 region 信息
+>> region                               // 显示所有 region 信息
 {
   "count": 1,
   "regions": [......]
