@@ -266,7 +266,7 @@ Success!
 time: 43.12698ms
 ```
 
-### region \<region_id\>
+### region \<region_id\> [--jq="<query string>"]
 
 用于显示 region 信息。
 
@@ -334,7 +334,7 @@ Protobuf 格式示例：
 >> scheduler remove grant-leader-scheduler-1  // 把对应的 scheduler 删掉
 ```
 
-### store [delete | label | weight] \<store_id\>
+### store [delete | label | weight] \<store_id\>  [--jq="<query string>"]
 
 用于显示 store 信息或者删除指定 store。
 
@@ -382,7 +382,94 @@ system:  2017-10-09 05:50:59 +0800 CST
 logic:  120102
 ```
 
+## jq 格式化 json 输出示例
 
+### 简化 `store` 的输出
+
+```bash
+» store --jq=".stores[].store | { id, address, state_name}"
+{"id":1,"address":"127.0.0.1:20161","state_name":"Up"}
+{"id":30,"address":"127.0.0.1:20162","state_name":"Up"}
+...
+```
+
+### 查询节点剩余空间
+
+```bash
+» store --jq=".stores[] | {id: .store.id, avaiable: .status.available}"
+{"id":1,"avaiable":"10 GiB"}
+{"id":30,"avaiable":"10 GiB"}
+...
+```
+
+### 查询 Region 副本的分布情况
+
+```bash
+» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id]}"
+{"id":2,"peer_stores":[1,30,31]}
+{"id":4,"peer_stores":[1,31,34]}
+...
+```
+
+### 根据副本数过滤 Region
+
+例如副本数不为 3 的所有 Region：
+
+```bash
+» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length != 3)}"
+{"id":12,"peer_stores":[30,32]}
+{"id":2,"peer_stores":[1,30,31,32]}
+```
+
+### 根据副本 store ID 过滤 Region
+
+例如在 store30 上有副本的所有 Region：
+
+```bash
+» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==30))}"
+{"id":6,"peer_stores":[1,30,31]}
+{"id":22,"peer_stores":[1,30,32]}
+...
+```
+
+还可以像这样找出在 store30 或 store31 上有副本的所有 Region：
+
+```bash
+» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==(30,31)))}"
+{"id":16,"peer_stores":[1,30,34]}
+{"id":28,"peer_stores":[1,30,32]}
+{"id":12,"peer_stores":[30,32]}
+...
+```
+
+### 恢复数据时寻找相关 Region
+
+例如当 [store1, store30, store31] 宕机时不可用时，我们可以通过查找所有 Down 副本数量大于正常副本数量的所有 Region：
+
+```bash
+» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length as $total | map(if .==(1,30,31) then . else empty end) | length>=$total-length) }"
+{"id":2,"peer_stores":[1,30,31,32]}
+{"id":12,"peer_stores":[30,32]}
+{"id":14,"peer_stores":[1,30,32]}
+...
+```
+
+或者在 [store1, store30, store31] 无法启动时，找出 store1 上可以安全手动移除数据的 Region。我们可以这样过滤出所有在 store1 上有副本并且没有其他 DownPeer 的 Region：
+
+```bash
+» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length>1 and any(.==1) and all(.!=(30,31)))}"
+{"id":24,"peer_stores":[1,32,33]}
+```
+
+在 [store30, store31] 宕机时，找出能安全地通过创建 `remove-peer` Operator 进行处理的所有 Region，即有且仅有一个 DownPeer 的 Region：
+
+```bash
+» region --jq=".regions[] | {id: .id, remove_peer: [.peers[].store_id] | select(length>1) | map(if .==(30,31) then . else empty end) | select(length==1)}"
+{"id":12,"remove_peer":[30]}
+{"id":4,"remove_peer":[31]}
+{"id":22,"remove_peer":[30]}
+...
+```
 
 
 
