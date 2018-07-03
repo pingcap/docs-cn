@@ -464,9 +464,10 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 #### 3.3.2 DDL 在正常情况下的耗时是多少？
 
 一般情况下处理一个 DDL 操作（之前没有其他 DDL 操作在处理）的耗时基本可以分如下为三种：
-- add index 操作，且此操作对应表数据行数比较少，耗时约为 3s.
+
+- add index 操作，且此操作对应表数据行数比较少，耗时约为 3s。
 - add index 操作，且此操作对应表数据行数比较多，耗时具体由表中数据行数和当时 QPS 情况定（add index 操作优先级比一般 SQL 低）。
-- 其他 DDL 操作耗时约为 1s.
+- 其他 DDL 操作耗时约为 1s。
 
 此外，如果接收 DDL 请求的 TiDB 和 DDL owner 所处的 TiDB 是一台，那么上面列举的第一和第三种可能的耗时应该在几十到几百毫秒。
 
@@ -481,7 +482,7 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 #### 3.3.4 TiDB 可以使用 S3 作为后端存储吗？
 
-不可以，目前 TiDB 只支持分布式存储引擎和 Goleveldb/Rocksdb/Boltdb 引擎；
+不可以，目前 TiDB 只支持分布式存储引擎和 Goleveldb/Rocksdb/Boltdb 引擎。
 
 #### 3.3.5 Infomation_schema 能否支持更多真实信息？
 
