@@ -108,6 +108,11 @@ export PD_ADDR=http://127.0.0.1:2379
   "low-space-ratio": 0.8,
   "high-space-ratio": 0.6,
   "disable-raft-learner": "false",
+  "disable-remove-down-replica": "false",
+  "disable-make-up-offline-replica": "false",
+  "disable-make-up-replica": "false",
+  "disable-remove-extra-replica": "false",
+  "disable-location-replacement": "false",
   "schedulers-v2": [
     {
       "type": "balance-region",
@@ -214,6 +219,21 @@ Replica 调度的开销较大，所以这个值不宜调得太大。
 >> config set namespace ts1 leader-schedule-limit 4 // 设置名为 ts1 的 namespace 最多同时进行 4 个 leader 调度
 >> config set namespace ts2 region-schedule-limit 2 // 设置名为 ts2 的 namespace 最多同时进行  2 个 region 调度
 ```
+
+`disable-remove-down-replica` 用于关闭自动删除 DownReplica 的特性。
+当设置为 true 时，PD 不会自动清理宕机状态的副本。
+
+`disable-make-up-offline-replica` 用于关闭迁移 OfflineReplica 的特性。
+当设置为 true 时，PD 不会迁移下线状态的副本。
+
+`disable-make-up-replica` 用于关闭补充副本的特性。
+当设置为 true 时，PD 不会为副本数不足的 Region 补充副本。
+
+`disable-remove-extra-replica` 用于关闭删除多余副本的特性。
+当设置为 true 时，PD 不会为副本数过多的 Region 删除多余副本。
+
+`disable-location-replacement` 用于关闭隔离级别检查。
+当设置为 true 时，PD 不会通过调度来提升 Region 副本的隔离级别。
 
 ### config delete namespace \<name\> [\<option\>]
 
