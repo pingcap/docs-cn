@@ -97,7 +97,7 @@ cd tidb-binlog-latest-linux-amd64
     [syncer]
     db-type = "kafka"
 
-    # when db-type is kafka, you can uncomment this to config the down stream kafka, it will be the globle config kafka default
+    # when db-type is kafka, you can uncomment this to config the down stream kafka, or it will be the same kafka addrs where drainer pull binlog from.
     #[syncer.to]
     # kafka-addrs = "127.0.0.1:9092"
     # kafka-version = "0.8.2.0"
