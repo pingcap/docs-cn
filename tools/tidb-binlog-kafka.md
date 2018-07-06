@@ -73,13 +73,13 @@ cd tidb-binlog-latest-linux-amd64
 
     To guarantee the integrity of data, perform the following operations 10 minutes after Pump is started:
 
-    - Use the `generate_binlog_position` tool of the [tidb-tools](https://github.com/pingcap/tidb-tools)project to generate the Drainer savepoint file. Use `generate_binlog_position` to compile this tool. See the [README description](https://github.com/pingcap/tidb-tools/blob/master/generate_binlog_position/README.md) for usage. You can also download this tool from [generate_binlog_position](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.tar.gz) and use `sha256sum` to verify the [sha256](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.sha256) file.
-    - Do a full backup. For example, back up TiDB using mydumper.
+    - Use [binlogctl](https://github.com/pingcap/tidb-tools/tree/master/tidb_binlog/binlogctl) of the [tidb-tools](https://github.com/pingcap/tidb-tools) project to generate the `position` for the initial start of Drainer.
+    - Do a full backup. For example, back up TiDB using Mydumper.
     - Import the full backup to the target system.
-    - The savepoint file started by the Kafka version of Drainer is stored in the checkpoint table of the downstream database tidb_binlog by default. If no valid data exists in the checkpoint table, configure `initial-commit-ts` to make Drainer work from a specified position when it is started:
+    - The savepoint file started by the Kafka version of Drainer is stored in the `checkpoint` table of the downstream database `tidb_binlog` by default. If no valid data exists in the `checkpoint` table, configure `initial-commit-ts` to make Drainer work from a specified position when it is started:
 
         ```
-        bin/drainer --config=conf/drainer.toml --data-dir=${drainer_savepoint_dir}
+        bin/drainer --config=conf/drainer.toml --initial-commit-ts=${position}
         ```
 
 - The drainer outputs `pb` and you need to set the following parameters in the configuration file:
