@@ -3,7 +3,6 @@ title: TiDB 事务隔离级别
 category: user guide
 ---
 
-
 # TiDB 事务隔离级别
 
 事务隔离级别是数据库事务处理的基础，ACID 中 I，即 Isolation，指的就是事务的隔离性。
@@ -19,16 +18,19 @@ sql 92标准定义了4种隔离级别，读未提交、读已提交、可重复�
 
 TiDB 实现了其中的两种：读已提交和可重复读。
 
-TiDB 使用[percolator事务模型](https://research.google.com/pubs/pub36726.html)，当事务启动时会获取全局读时间戳，事务提交时也会获取全局提交时间戳，并以此确定事务的执行顺序，如果想了解 TiDB 事务模型的实现可以详细阅读以下两篇文章：[TiKV 的 MVCC（Multi-Version Concurrency Control）机制](https://pingcap.com/blog-cn/mvcc-in-tikv/)，[Percolator 和 TiDB 事务算法](https://pingcap.com/blog-cn/percolator-and-txn/)。
+TiDB 使用 [Percolator 事务模型](https://research.google.com/pubs/pub36726.html)，当事务启动时会获取全局读时间戳，事务提交时也会获取全局提交时间戳，并以此确定事务的执行顺序，如果想了解 TiDB 事务模型的实现可以详细阅读以下两篇文章：[TiKV 的 MVCC (Multi-Version Concurrency Control) 机制](https://pingcap.com/blog-cn/mvcc-in-tikv/)，[Percolator 和 TiDB 事务算法](https://pingcap.com/blog-cn/percolator-and-txn/)。
 
 可以通过以下命令设置 session 或者 global 的事务的隔离级别：
 
-```SET [SESSION | GLOBAL] TRANSACTION ISOLATION LEVEL [read committed|repeatable read]```
+```
+SET [SESSION | GLOBAL] TRANSACTION ISOLATION LEVEL [read committed|repeatable read]
+```
 
+如果不使用 session 或者 global 关键字，以下这条语句只会对下一个执行的事务生效，不会对整个会话或者全局生效：
 
-如果不使用 session 或者 global 关键字，这条语句只会对下一个执行的事务生效，不会对整个会话或者全局生效。
-
-```SET TRANSACTION ISOLATION LEVEL [read committed|repeatable read]```
+```
+SET TRANSACTION ISOLATION LEVEL [read committed|repeatable read]
+```
 
 ## 可重复读
 
@@ -51,7 +53,7 @@ commit;                         |
 
 ### 与 ANSI 可重复读隔离级别的区别
 
-尽管名称是可重复读隔离级别，但是 TiDB 中可重复读隔离级别和 ANSI 可重复隔离级别是不同的，按照[A Critique of ANSI SQL Isolation Levels](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-95-51.pdf)论文中的标准，TiDB 实现的是论文中的 snapshot 隔离级别，该隔离级别不会出现幻读，但是会出现写偏斜，而 ANSI 可重复读隔离级别不会出现写偏斜，会出现幻读。
+尽管名称是可重复读隔离级别，但是 TiDB 中可重复读隔离级别和 ANSI 可重复隔离级别是不同的，按照 [A Critique of ANSI SQL Isolation Levels](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-95-51.pdf) 论文中的标准，TiDB 实现的是论文中的 snapshot 隔离级别，该隔离级别不会出现幻读，但是会出现写偏斜，而 ANSI 可重复读隔离级别不会出现写偏斜，会出现幻读。
 
 ### 与MySQL可重复读隔离级别的区别
 
@@ -79,7 +81,7 @@ retry-limit = 10
 
 ## 乐观事务注意事项
 
-因为 TiDB 使用乐观锁机制，通过显式的 BEGIN 语句创建的事务，在遇到冲突后自动重试可能会导致最终结果不符合预期。
+因为 TiDB 使用乐观锁机制，通过显式的 `BEGIN` 语句创建的事务，在遇到冲突后自动重试可能会导致最终结果不符合预期。
 
 比如下面这两个例子:
 
@@ -113,13 +115,11 @@ retry-limit = 10
 
 ```
 set @@global.tidb_disable_txn_auto_retry = 1;
-
 ```
 
-这个变量不会影响 auto_commit = 1 的单语句的隐式事务，仍然会自动重试。
+这个变量不会影响 `auto_commit = 1` 的单语句的隐式事务，仍然会自动重试。
 
-关掉显示事务重试后，如果出现事务冲突，commit 语句会返回错误，错误信息会包含
- `try again later` 这个字符串，应用层可以用来判断遇到的错误是否是可以重试的。
+关掉显示事务重试后，如果出现事务冲突，commit 语句会返回错误，错误信息会包含 `try again later` 这个字符串，应用层可以用来判断遇到的错误是否是可以重试的。
 
 如果事务执行过程中包含了应用层的逻辑，建议在应用层添加显式事务的重试，并关闭自动重试。
 
@@ -136,7 +136,6 @@ commit;
 ```
 
 上面的例子里面，第二个语句失败，其它插入 1 和 3 仍然能正常提交。
-
 
 ```
 begin;
