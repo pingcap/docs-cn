@@ -7,6 +7,7 @@ category: release
 
 TiDB 历史版本发布声明如下：
 
+  - [2.0.5](205.md)
   - [2.1 Beta](21beta.md)
   - [2.0.4](204.md)
   - [2.0.3](203.md)
