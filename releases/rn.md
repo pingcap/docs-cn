@@ -5,6 +5,7 @@ category: release
 
 # TiDB Release Notes
   
+  - [2.0.5](205.md)
   - [2.1 Beta](21beta.md)
   - [2.0.4](204.md)
   - [2.0.3](203.md)
