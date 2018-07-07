@@ -63,7 +63,7 @@ wget http://download.pingcap.org/tidb-v2.0.3-linux-amd64-unportable.tar.gz
 
     滚动升级 TiKV 实例时，Ansible 会迁移 region leader 到其他节点。具体逻辑为：调用 PD API 添加 evict leader scheduler，每 10 秒探测一次该 TiKV 实例 leader_count， 等待 leader_count 降到 10 以下（或 为空）或探测超 12 次后，即两分钟超时后，开始关闭 TiKV 升级，启动成功后再去除 evict leader scheduler，串行操作。
 
-    如中途升级失败，请登录 pd-ctl 执行 scheduler show，查看是否有 evict-leader-scheduler, 如有需手工清除。`{PD_IP}` 和 `{STORE_ID}` 请替换为你的 PD IP 及 TiKV 实例的 store_id。
+    如中途升级失败，请登录 pd-ctl 执行 `scheduler show`，查看是否有 evict-leader-scheduler, 如有需手工清除。`{PD_IP}` 和 `{STORE_ID}` 请替换为你的 PD IP 及 TiKV 实例的 store_id。
 
     ```
     $ /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://{PD_IP}:2379"
