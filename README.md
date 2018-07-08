@@ -166,7 +166,6 @@
   - [FUNYOURS JAPAN](http://t.cn/Rnoab5D)
   - [特来电](http://t.cn/RrHzUGW)
   - [万达网络](http://t.cn/RTKm6ds)
-  - [佐助金融](http://t.cn/RQeoKaa)
   - [360金融](http://t.cn/RTKnTev)
   - [中国电信翼支付](http://t.cn/R3Wd9p3)
   - [某电信运营商](http://t.cn/RTYWADg)
