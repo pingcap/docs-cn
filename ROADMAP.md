@@ -43,11 +43,16 @@ This document defines the roadmap for TiDB development.
     - [ ] Local read thread
     - [ ] Multi-thread raftstore
     - [x] None voter
-    - [ ] Pre-vote
-- [x] RocksDB
+    - [x] Pre-vote
+    - [ ] Multi-thread apply pool
+    - [ ] Split region in batch
+    - [ ] Raft Engine
+- [x] RocksDB 
     - [x] DeleteRange
+    - [ ] BlobDB 
 - [x] Transaction
     - [x] Optimize transaction conflicts
+    - [ ] Distributed GC
 - [x] Coprocessor
     - [x] Streaming
 - [ ] Tool
@@ -63,6 +68,7 @@ This document defines the roadmap for TiDB development.
 - [x] Decentralize scheduling table Regions
 - [x] Scheduler supports prioritization to be more controllable
 - [ ] Use machine learning to optimize scheduling
+- [ ] Cluster Simulator
 
 ## TiSpark:
 
