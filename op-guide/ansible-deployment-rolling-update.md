@@ -13,7 +13,8 @@ category: deployment
 ## 升级组件版本
 
 > **注**：
-> 跨大版本升级，需要更新 `tidb-ansible`，从 TiDB 1.0 升级到 TiDB 2.0，请参考 [TiDB 2.0 升级操作指南](tidb-v2-upgrade-guide.md)。
+> 跨大版本升级，必须更新 `tidb-ansible`，从 TiDB 1.0 升级到 TiDB 2.0，请参考 [TiDB 2.0 升级操作指南](tidb-v2-upgrade-guide.md)。
+> 小版本升级，也建议更新 `tidb-ansible`，以获取最新的配置文件模板、特性及 bug 修复。
 
 ### 自动下载 binary
 
@@ -62,11 +63,19 @@ wget http://download.pingcap.org/tidb-v2.0.3-linux-amd64-unportable.tar.gz
 
     滚动升级 TiKV 实例时，Ansible 会迁移 region leader 到其他节点。具体逻辑为：调用 PD API 添加 evict leader scheduler，每 10 秒探测一次该 TiKV 实例 leader_count， 等待 leader_count 降到 10 以下（或 为空）或探测超 12 次后，即两分钟超时后，开始关闭 TiKV 升级，启动成功后再去除 evict leader scheduler，串行操作。
 
-    如中途升级失败，请登录 pd-ctl 执行 scheduler show，查看是否有 evict-leader-scheduler, 如有需手工清除。`{PD_IP}` 和 `{STORE_ID}` 请替换为你的 PD IP 及 TiKV 实例的 store_id 。
+    如中途升级失败，请登录 pd-ctl 执行 `scheduler show`，查看是否有 evict-leader-scheduler, 如有需手工清除。`{PD_IP}` 和 `{STORE_ID}` 请替换为你的 PD IP 及 TiKV 实例的 store_id。
 
     ```
-    $ /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://{PD_IP}:2379" -d scheduler show
-    $ curl -X DELETE "http://{PD_IP}:2379/pd/api/v1/schedulers/evict-leader-scheduler-{STORE_ID}"
+    $ /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://{PD_IP}:2379"
+    » scheduler show
+    [
+      "label-scheduler",
+      "evict-leader-scheduler-{STORE_ID}",
+      "balance-region-scheduler",
+      "balance-leader-scheduler",
+      "balance-hot-region-scheduler"
+    ]
+    » scheduler remove evict-leader-scheduler-{STORE_ID}
     ```
 
 - 滚动升级 TiDB 节点（只升级单独 TiDB 服务，如果 TiDB 集群开启了 binlog，升级 TiDB 服务时会升级 pump）
