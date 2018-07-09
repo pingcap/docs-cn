@@ -213,11 +213,46 @@ Replica 调度的开销较大，所以这个值不宜调得太大。
 >> config set replica-schedule-limit 4        // 最多同时进行 4 个 replica 调度
 ```
 
+`merge-schedule-limit` 控制同时进行的 region merge 调度的任务，设置为 0 则关闭 region merge。
+Merge 调度的开销较大，所以这个值不宜调得过大。
+
+```bash
+>> config set merge-schedule-limit 16       // 最多同时进行 16 个 merge 调度
+```
+
 以上对配置的修改是全局性的，还可以通过对不同 namespace 的配置，进行细化调整。当 namespace 未设置相应配置时，使用全局配置。注：namespace 的配置只支持对 leader-schedule-limit，region-schedule-limit，replica-schedule-limit，max-replicas 的调整，否则不生效。
 
 ```bash
 >> config set namespace ts1 leader-schedule-limit 4 // 设置名为 ts1 的 namespace 最多同时进行 4 个 leader 调度
 >> config set namespace ts2 region-schedule-limit 2 // 设置名为 ts2 的 namespace 最多同时进行  2 个 region 调度
+```
+
+`tolerant-size-ratio` 控制 balance 缓冲区大小。
+当两个 store 的 leader 或 region 的得分差距小于指定倍数的 region size 时，PD 会认为此时 balance 达到均衡状态。
+
+```bash
+>> config set tolerant-size-ratio 20        // 设置缓冲区为约 20 倍平均 regionSize
+```
+
+`low-space-ratio` 用于设置 store 空间不足的阈值。
+当节点的空间占用比例超过指定值时，PD 会尽可能避免往对应节点迁移数据，同时主要针对剩余空间大小进行调度，避免对应节点磁盘空间被耗尽。
+
+```bash
+config set low-space-ratio 0.9              // 设置空间不足阈值为 0.9
+```
+
+`high-space-ratio` 用于设置 store 空间充裕的阈值。
+当节点的空间占用比例小于指定值时，PD 调度时会忽略剩余空间这个指标，主要针对实际数据量进行均衡。
+
+```bash
+config set high-space-ratio 0.5             // 设置空间充裕阈值为 0.5
+```
+
+`disable-raft-learner` 用于关闭 raft learner 功能。
+默认配置下 PD 在添加副本时会使用 raft learner 来降低宕机或网络故障带来的不可用风险。
+
+```bash
+config set disable-raft-learner true        // 关闭 raft learner 功能
 ```
 
 `disable-remove-down-replica` 用于关闭自动删除 DownReplica 的特性。
