@@ -182,7 +182,7 @@ $ ansible-playbook -i hosts.ini deploy_ntp.yml -k
 
 ## 在部署目标机器上配置 CPUfreq 调节器模式
 
-为了让 CPU 发挥最大性能，生产环境请将 CPUfreq 调节器模式设置为 `performance` 模式。
+为了让 CPU 发挥最大性能，请将 CPUfreq 调节器模式设置为 `performance` 模式。
 
 > 你可以查看[使用 CPUFREQ 调控器](https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/power_management_guide/cpufreq_governors#cpufreq_setup)文档, 了解更多 CPUFREQ 相关信息。
 
