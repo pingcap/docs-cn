@@ -180,6 +180,50 @@ $ cd /home/tidb/tidb-ansible
 $ ansible-playbook -i hosts.ini deploy_ntp.yml -k
 ```
 
+## 在部署目标机器上配置 CPUfreq 调节器模式
+
+为了让 CPU 发挥最大性能，请将 CPUfreq 调节器模式设置为 `performance` 模式。
+
+> 你可以查看[使用 CPUFREQ 调控器](https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/power_management_guide/cpufreq_governors#cpufreq_setup)文档, 了解更多 CPUFREQ 相关信息。
+
+你可以通过 `cpupower` 命令查看系统支持的调节器模式：
+
+```
+# cpupower frequency-info --governors
+analyzing CPU 0:
+  available cpufreq governors: performance powersave
+```
+
+本例中系统支持设置 `performance` 和 `powersave` 模式。如果返回 “Not Available”，表示当前系统不支持，跳过该步骤即可。
+
+```
+# cpupower frequency-info --governors
+analyzing CPU 0:
+  available cpufreq governors: Not Available
+```
+
+你可以通过 `cpupower` 命令查看系统当前的 CPUfreq 调节器模式：
+
+```
+# cpupower frequency-info --policy
+analyzing CPU 0:
+  current policy: frequency should be within 1.20 GHz and 3.20 GHz.
+                  The governor "powersave" may decide which speed to use
+                  within this range.
+```
+
+本例中当前配置是 `powersave` 模式，你可以通过以下命令设置为 `performance` 模式。
+
+```
+# cpupower frequency-set --governor performance
+```
+
+你也可以通过以下命令在部署目标机器上批量设置：
+
+```
+$ ansible -i hosts.ini all -m shell -a "cpupower frequency-set --governor performance" -b
+```
+
 ## 在部署目标机器上添加数据盘 ext4 文件系统挂载参数
 
 部署目标机器数据盘请格式化成 ext4 文件系统，挂载时请添加 nodelalloc 和 noatime 挂载参数。`nodelalloc` 是必选参数，否则 Ansible 安装时检测无法通过，noatime 是可选建议参数。
