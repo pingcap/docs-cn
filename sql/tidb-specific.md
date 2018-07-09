@@ -224,11 +224,17 @@ set @@global.tidb_distsql_scan_concurrency = 10
 - Default value: 0
 - This variable is used to set whether to enable Streaming.
 
-## tidb_retry_limit
+### tidb_retry_limit
 
 - Scope: SESSION | GLOBAL
 - Default value: 10
 - When a transaction encounters retriable errors, such as transaction conflicts and TiKV busy, this transaction can be re-executed. This variable is used to set the maximum number of the retries.
+
+### tidb_disable_txn_auto_retry
+
+- Scope: SESSION | GLOBAL
+- Default: 0
+- This variable is used to set whether to disable automatic retry of explicit transactions. If you set this variable to 1, the transaction does not retry automatically. If there is a conflict, the transaction needs to be retried at the application layer. To decide whether you need to disable automatic retry, see [description of optimistic transactions](transaction-isolation.md#description-of-optimistic-transactions).
 
 ## Optimizer Hint
 
