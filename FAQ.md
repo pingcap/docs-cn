@@ -279,7 +279,14 @@ The Direct mode wraps the Write request into the I/O command and sends this comm
     ```
     ./fio -ioengine=libaio -bs=32k -direct=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randr_write_test.txt -name='PingCAP' -iodepth=4 -runtime=60
     ```
-    
+
+#### Error `UNREACHABLE! "msg": "Failed to connect to the host via ssh: " ` when deploying TiDB using TiDB-Ansible
+
+Two possible reasons and solutions:
+
+- The SSH mutual trust is not configured as required. It’s recommended to follow [the steps described in the official document](op-guide/ansible-deployment.md/#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine) and check whether it is successfully configured using `ansible -i inventory.ini all -m shell -a 'whoami' -b`.
+- If it involves the scenario where a single server is assigned multiple roles, for example, the mixed deployment of multiple components or multiple TiKV instances are deployed on a single server, this error might be caused by the SSH reuse mechanism. You can use the option of `ansible … -f 1` to avoid this error.
+
 ### Upgrade
 
 #### How to perform rolling updates using Ansible?
@@ -465,6 +472,10 @@ The offline node usually indicates the TiKV node. You can determine whether the 
 1. Manually stop the relevant services on the offline node.
 2. Delete the `node_exporter` data of the corresponding node from the Prometheus configuration file.
 3. Delete the data of the corresponding node from Ansible `inventory.ini`.
+
+#### Why couldn't I connect to the PD server using `127.0.0.1` when I was using the PD Control?
+
+If your TiDB cluster is deployed using TiDB-Ansible, the PD external service port is not bound to `127.0.0.1`, so PD Control does not recognize `127.0.0.1` and you can only connect to it using the local IP address.
 
 ### Manage the TiDB server
 
@@ -722,9 +733,30 @@ To migrate all the data or migrate incrementally from DB2 or Oracle to TiDB, see
 
 Currently, it is recommended to use OGG.
 
+#### Error: `java.sql.BatchUpdateExecption:statement count 5001 exceeds the transaction limitation` while using Sqoop to write data into TiDB in batches
+
+In Sqoop, `--batch` means committing 100 `statement`s in each batch, but by default each `statement` contains 100 SQL statements. So, 100 * 100 = 10000 SQL statements, which exceeds 5000, the maximum number of statements allowed in a single TiDB transaction.
+
+Two solutions:
+
+- Add the `-Dsqoop.export.records.per.statement=10` option as follows:
+
+    ```
+    sqoop export \
+        -Dsqoop.export.records.per.statement=10 \
+        --connect jdbc:mysql://mysql.example.com/sqoop \
+        --username sqoop ${user} \
+        --password ${passwd} \
+        --table ${tab_name} \
+        --export-dir ${dir} \
+        --batch
+    ```
+
+- You can also increase the limited number of statements in a single TiDB transaction, but this will consume more memory.
+
 ### Migrate the data incrementally
 
-#### Syncer 
+#### Syncer
 
 ##### Syncer user guide
 
@@ -757,6 +789,15 @@ Frequent DDL operations may affect the synchronization speed. For Sycner, DDL op
 #### Wormhole
 
 Wormhole is a data synchronization service, which enables the user to easily synchronize all the data or synchronize incrementally using Web console. It supports multiple types of data migration, such as from MySQL to TiDB, and from MongoDB to TiDB.
+
+#### If the machine that Syncer is in is broken and the directory of the `syncer.meta` file is lost, what should I do? 
+
+When you synchronize data using Syncer GTID, the `syncer.meta` file is constantly updated during the synchronization process. The current version of Syncer does not contain the design for high availability. The `syncer.meta` configuration file of Syncer is directly stored on the hard disks, which is similar to other tools in the MySQL ecosystem, such as mydumper. 
+
+Two solutions:
+
+- Put the `syncer.meta` file in a relatively secure disk. For example, use disks with RAID 1.
+- Restore the location information of history synchronization according to the monitoring data that Syncer reports to Prometheus regularly. But the location information might be inaccurate due to the delay when a large amount of data is synchronized.
 
 ### Migrate the traffic
 
