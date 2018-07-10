@@ -258,7 +258,7 @@ config set disable-raft-learner true        // 关闭 raft learner 功能
 `disable-remove-down-replica` 用于关闭自动删除 DownReplica 的特性。
 当设置为 true 时，PD 不会自动清理宕机状态的副本。
 
-`disable-make-up-offline-replica` 用于关闭迁移 OfflineReplica 的特性。
+`disable-replace-offline-replica` 用于关闭迁移 OfflineReplica 的特性。
 当设置为 true 时，PD 不会迁移下线状态的副本。
 
 `disable-make-up-replica` 用于关闭补充副本的特性。
