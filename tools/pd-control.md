@@ -154,7 +154,7 @@ export PD_ADDR=http://127.0.0.1:2379
 需要加快补副本或 balance 速度可以适当调大这个值，设置为 0 则表示不限制。
 
 ```bash
->> config set max-pending-peer-count 64  // 设置最大 pending peer 数量为 128
+>> config set max-pending-peer-count 64  // 设置最大 pending peer 数量为 64
 ```
 
 `max-merge-region-size` 控制 region merge 的 size 上限（单位是 M）。
