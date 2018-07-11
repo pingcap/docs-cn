@@ -109,7 +109,7 @@ export PD_ADDR=http://127.0.0.1:2379
   "high-space-ratio": 0.6,
   "disable-raft-learner": "false",
   "disable-remove-down-replica": "false",
-  "disable-make-up-offline-replica": "false",
+  "disable-replace-offline-replica": "false",
   "disable-make-up-replica": "false",
   "disable-remove-extra-replica": "false",
   "disable-location-replacement": "false",
