@@ -7,7 +7,7 @@ category: adopters
 
 This is a list of TiDB adopters in various industries.
 
-|Company| Industry| Success Story| 
+| Company | Industry | Success Story |
 | --- | --- | --- |
 |[Mobike](https://en.wikipedia.org/wiki/Mobike)|Ridesharing|[English](https://www.pingcap.com/blog/Use-Case-TiDB-in-Mobike/); [Chinese](https://www.pingcap.com/cases-cn/user-case-mobike/)|
 |[Jinri Toutiao](https://en.wikipedia.org/wiki/Toutiao)|Mobile News Platform|[Chinese](https://www.pingcap.com/cases-cn/user-case-toutiao/)|
@@ -28,7 +28,7 @@ This is a list of TiDB adopters in various industries.
 |[LinkDoc Technology](https://www.crunchbase.com/organization/linkdoc-technology)|HealthTech|[Chinese](https://www.pingcap.com/cases-cn/user-case-linkdoc/)||
 |[G7 Networks](https://www.english.g7.com.cn/)| Logistics|[Chinese](https://www.pingcap.com/cases-cn/user-case-g7/)||
 |[360 Finance](https://www.crunchbase.com/organization/360-finance)|FinTech|[Chinese](https://www.pingcap.com/cases-cn/user-case-360/)||
-|[GAEA](http://www.gaea.com/en/)|Gaming|[Chinese](https://www.pingcap.com/cases-cn/user-case-gaea-ad/)|[English](https://www.pingcap.com/blog/2017-05-22-Comparison-between-MySQL-and-TiDB-with-tens-of-millions-of-data-per-day/)|
+|[GAEA](http://www.gaea.com/en/)|Gaming|[English](https://www.pingcap.com/blog/2017-05-22-Comparison-between-MySQL-and-TiDB-with-tens-of-millions-of-data-per-day/); [Chinese](https://www.pingcap.com/cases-cn/user-case-gaea-ad/)|
 |[YOOZOO Games](https://www.crunchbase.com/organization/yoozoo-games)|Gaming|[Chinese](https://pingcap.com/cases-cn/user-case-youzu/)||
 |[Seasun Games](https://www.crunchbase.com/organization/seasun)|Gaming|[Chinese](https://pingcap.com/cases-cn/user-case-xishanju/)||
 |[NetEase Games](https://game.163.com/en/)|Gaming|||
