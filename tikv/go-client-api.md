@@ -123,7 +123,7 @@ RawKVClient is a client of the TiKV server and only supports the GET/PUT/DELETE/
 
 ## Try the Transactional Key-Value API
 
-The Transactional Key-Value API is complicated than the Raw Key-Value API. Some transaction related concepts are listed as follows. For more details, see the [KV package](https://github.com/pingcap/tidb/tree/master/kv).
+The Transactional Key-Value API is more complicated than the Raw Key-Value API. Some transaction related concepts are listed as follows. For more details, see the [KV package](https://github.com/pingcap/tidb/tree/master/kv).
 
 - Storage
     
