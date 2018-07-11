@@ -194,7 +194,7 @@ analyzing CPU 0:
   available cpufreq governors: performance powersave
 ```
 
-本例中系统支持设置 `performance` 和 `powersave` 模式。如果返回 “Not Available”，表示当前系统不支持，跳过该步骤即可。
+本例中系统支持设置 `performance` 和 `powersave` 模式。如果返回 “Not Available”，表示当前系统不支持配置 CPUfreq，跳过该步骤即可。
 
 ```
 # cpupower frequency-info --governors
