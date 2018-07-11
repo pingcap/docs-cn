@@ -55,7 +55,7 @@ Any language supported by MySQL client or driver.
 
 #### Can I use other Key-Value storage engines with TiDB?
 
-Yes. TiKV and TiDB supports many popular standalone storage engines, such as GolevelDB and BoltDB. If the storage engine is a KV engine that supports transactions and it provides a client that meets the interface requirement of TiDB, then it can connect to TiDB.
+Yes. TiKV and TiDB support many popular standalone storage engines, such as GolevelDB and BoltDB. If the storage engine is a KV engine that supports transactions and it provides a client that meets the interface requirement of TiDB, then it can connect to TiDB.
 
 #### What's the recommended solution for the deployment of three geo-distributed data centers?
 
