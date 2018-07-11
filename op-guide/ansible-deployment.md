@@ -207,7 +207,61 @@ The NTP service is installed and started using the software repository that come
 
 To make the NTP service start synchronizing as soon as possible, the system executes the `ntpdate` command to set the local date and time by polling `ntp_server` in the `hosts.ini` file. The default server is `pool.ntp.org`, and you can also replace it with your NTP server.
 
-## Step 7: Mount the data disk ext4 filesystem with options on the target machines
+## Step 7: Configure the CPUfreq governor mode on the target machine
+
+For details about CPUfreq, see [the CPUfreq Governor documentation](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/power_management_guide/cpufreq_governors).
+
+Set the CPUfreq governor mode to `performance` to make full use of CPU performance.
+
+### Check the governor modes supported by the system
+
+You can run the `cpupower frequency-info --governors` command to check the governor modes which the system supports:
+
+```
+# cpupower frequency-info --governors
+analyzing CPU 0:
+  available cpufreq governors: performance powersave
+```
+
+Taking the above code for example, the system supports the `performance` and `powersave` modes. 
+
+> **Note:** As the following shows, if it returns “Not Available”, it means that the current system does not support CPUfreq configuration and you can skip this step.
+
+>   ```
+>   # cpupower frequency-info --governors
+>   analyzing CPU 0:
+>     available cpufreq governors: Not Available
+>   ```
+
+### Check the current governor mode
+
+You can run the `cpupower frequency-info --policy` command to check the current CPUfreq governor mode:
+
+```
+# cpupower frequency-info --policy
+analyzing CPU 0:
+  current policy: frequency should be within 1.20 GHz and 3.20 GHz.
+                  The governor "powersave" may decide which speed to use
+                  within this range.
+```
+
+As the above code shows, the current mode is `powersave` in this example. 
+
+### Change the governor mode
+
+- You can run the following command to change the current mode to `performance`:
+
+    ```
+    # cpupower frequency-set --governor performance
+    ```
+
+- You can also run the following command to set the mode on the target machine in batches:
+
+    ```
+    $ ansible -i hosts.ini all -m shell -a "cpupower frequency-set --governor performance" -b
+    ```
+
+## Step 8: Mount the data disk ext4 filesystem with options on the target machines
 
 Log in to the Control Machine using the `root` user account.
 
@@ -274,7 +328,7 @@ Take the `/dev/nvme0n1` data disk as an example:
 
     If the filesystem is ext4 and `nodelalloc` is included in the mount options, you have successfully mount the data disk ext4 filesystem with options on the target machines.
 
-## Step 8: Edit the `inventory.ini` file to orchestrate the TiDB cluster
+## Step 9: Edit the `inventory.ini` file to orchestrate the TiDB cluster
 
 Log in to the Control Machine using the `tidb` user account, and edit the `tidb-ansible/inventory.ini` file to orchestrate the TiDB cluster. The standard TiDB cluster contains 6 machines: 2 TiDB nodes, 3 PD nodes and 3 TiKV nodes.
 
@@ -411,7 +465,7 @@ location_labels = ["host"]
 
     - `capacity`: total disk capacity / number of TiKV instances (the unit is GB)
 
-## Step 9: Edit variables in the `inventory.ini` file
+## Step 10: Edit variables in the `inventory.ini` file
 
 This step describes how to edit the variable of deployment directory and other variables in the `inventory.ini` file.
 
@@ -459,7 +513,7 @@ To enable the following control variables, use the capitalized `True`. To disabl
 | enable_bandwidth_limit | to set a bandwidth limit when pulling the diagnostic data from the target machines to the Control Machine; used together with the `collect_bandwidth_limit` variable |
 | collect_bandwidth_limit | the limited bandwidth when pulling the diagnostic data from the target machines to the Control Machine; unit: Kbit/s; default 10000, indicating 10Mb/s; for the cluster topology of multiple TiKV instances on each TiKV node, you need to divide the number of the TiKV instances on each TiKV node |
 
-## Step 10: Deploy the TiDB cluster
+## Step 11: Deploy the TiDB cluster
 
 When `ansible-playbook` runs Playbook, the default concurrent number is 5. If many deployment target machines are deployed, you can add the `-f` parameter to specify the concurrency, such as `ansible-playbook deploy.yml -f 10`.
 
