@@ -93,6 +93,20 @@ cd tidb-binlog-latest-linux-amd64
     dir = "/path/pb-dir"
     ```
 
+- The drainer outputs `kafka` and you need to set the following parameters in the configuration file:
+
+    ```
+    [syncer]
+    db-type = "kafka"
+
+    # when db-type is kafka, you can uncomment this to config the down stream kafka, or it will be the same kafka addrs where drainer pulls binlog from.
+    # [syncer.to]
+    # kafka-addrs = "127.0.0.1:9092"
+    # kafka-version = "0.8.2.0"
+    ```
+
+    The data which outputs to kafka follows the binlog format sorted by ts and defined by protobuf. See [driver](https://github.com/pingcap/tidb-tools/tree/master/tidb_binlog/driver) to access the data and sync to the down stream.
+
 - Deploy Kafka and ZooKeeper cluster before deploying TiDB-Binlog. Make sure that Kafka is 0.9 version or later.
 
 #### Recommended Kafka cluster configuration

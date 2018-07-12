@@ -11,7 +11,9 @@ When you perform a rolling update for a TiDB cluster, the service is shut down s
 
 ## Upgrade the component version
 
-To upgrade between large versions, you need to upgrade [`tidb-ansible`](https://github.com/pingcap/tidb-ansible). If you want to upgrade the version of TiDB from 1.0 to 2.0, see [TiDB 2.0 Upgrade Guide](tidb-v2-upgrade-guide.md).
+- To upgrade between large versions, you need to upgrade [`tidb-ansible`](https://github.com/pingcap/tidb-ansible). If you want to upgrade the version of TiDB from 1.0 to 2.0, see [TiDB 2.0 Upgrade Guide](tidb-v2-upgrade-guide.md). 
+
+- For a minor upgrade, it is also recommended to update `tidb-ansible` for the latest configuration file templates, features, and bug fixes.
 
 ### Download the binary automatically
 
@@ -67,8 +69,16 @@ wget http://download.pingcap.org/tidb-v2.0.3-linux-amd64-unportable.tar.gz
     If the rolling update fails in the process, log in to `pd-ctl` to execute `scheduler show` and check whether `evict-leader-scheduler` exists. If it does exist, delete it manually. Replace `{PD_IP}` and `{STORE_ID}` with your PD IP and the `store_id` of the TiKV instance:
 
     ```
-    $ /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://{PD_IP}:2379" -d scheduler show
-    $ curl -X DELETE "http://{PD_IP}:2379/pd/api/v1/schedulers/evict-leader-scheduler-{STORE_ID}"
+    $ /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://{PD_IP}:2379"$ /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://{PD_IP}:2379"
+    » scheduler show
+    [
+      "label-scheduler",
+      "evict-leader-scheduler-{STORE_ID}",
+      "balance-region-scheduler",
+      "balance-leader-scheduler",
+      "balance-hot-region-scheduler"
+    ]
+    » scheduler remove evict-leader-scheduler-{STORE_ID}
     ```
 
 - Apply a rolling update to the TiDB node (only upgrade the TiDB service)

@@ -98,14 +98,18 @@ In this command, the key is also the escaped form of raw key.
 
 To print the value of a key, use the `print` command.
 
-### Compact data manually
+### Compact data of each TiKV manually
 
-Use the `compact` command to manually compact TiKV data. If you specify the `--from` and `--to` options, then their flags are also in the form of escaped raw key. You can use the `--db` option to specify the RocksDB that you need to compact. The optional values are `kv` and `raft`.
+Use the `compact` command to manually compact data of each TiKV. If you specify the `--from` and `--to` options, then their flags are also in the form of escaped raw key. You can use the `--db` option to specify the RocksDB that you need to compact. The optional values are `kv` and `raft`. Also, the `--threads` option allows you to specify the concurrency that you compact and its default value is 8. Generally, a higher concurrency comes with a faster compact speed, which might yet affect the service. You need to choose an appropriate concurrency based on the scenario.
 
 ```bash
 $ tikv-ctl --db /path/to/tikv/db compact -d kv
 success!
 ```
+
+### Compact data of the whole TiKV cluster manually
+
+Use the `compact-cluster` command to manually compact data of the whole TiKV cluster. The flags of this command have the same meanings and usage as those of the `compact` command.
 
 ### Set a Region to tombstone
 

@@ -13,7 +13,7 @@ This document lists the Most Frequently Asked Questions about TiDB.
 
 #### What is TiDB?
 
-TiDB is a distributed SQL database that features in horizontal scalability, high availability and consistent distributed transactions. It also enables you to use MySQL’s SQL syntax and protocol to manage and retrieve data.
+TiDB is a distributed SQL database that features in horizontal scalability, high availability and consistent distributed transactions. It also enables you to use MySQL's SQL syntax and protocol to manage and retrieve data.
 
 #### What is TiDB's architecture?
 
@@ -827,6 +827,10 @@ There are [similar limits](https://cloud.google.com/spanner/docs/limits) on Goog
 
 3. As for `delete` and `update`, you can use `limit` plus circulation to operate.
 
+#### Does TiDB release space immediately after deleting data?
+
+None of the `DELETE`, `TRUNCATE` and `DROP` operations release data immediately. For the `TRUNCATE` and `DROP` operations, after the TiDB GC (Garbage Collection) time (10 minutes by default), the data is deleted and the space is released. For the `DELETE` operation, the data is deleted but the space is not released according to TiDB GC. When subsequent data is written into RocksDB and executes `COMPACT`, the space is reused.
+
 #### Can I execute DDL operations on the target table when loading data?
 
 No. None of the DDL operations can be executed on the target table when you load data, otherwise the data fails to be loaded.
@@ -834,10 +838,6 @@ No. None of the DDL operations can be executed on the target table when you load
 #### Does TiDB support the `replace into` syntax?
 
 Yes. But the `load data` does not support the `replace into` syntax.
-
-#### Does TiDB release space immediately after deleting data?
-
-None of the `DELETE`, `TRUNCATE` and `DROP` operations release data immediately. For the `TRUNCATE` and `DROP` operations, after the TiDB GC (Garbage Collection) time (10 minutes by default), the data is deleted and the space is released. For the `DELETE` operation, the data is deleted but the space is not released according to TiDB GC. When subsequent data is written into RocksDB and executes `COMPACT`, the space is reused.
 
 #### Why does the query speed getting slow after deleting data?
 
