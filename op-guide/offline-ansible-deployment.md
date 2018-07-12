@@ -122,15 +122,21 @@ See [Configure the SSH mutual trust and sudo rules on the Control Machine](ansib
 
 See [Install the NTP service on the target machines](ansible-deployment.md#install-the-ntp-service-on-the-target-machines).
 
-## Step 7: Mount the data disk ext4 filesystem with options on the target machines
+> **Note:** If the time and time zone of all your target machines are same, the NTP service is on and is normally synchronizing time, you can ignore this step. See [How to check whether the NTP service is normal](#how-to-check-whether-the-ntp-service-is-normal).
+
+## Step 7: Configure the CPUfreq governor mode on the target machine 
+
+See [Configure the CPUfreq governor mode on the target machine](ansible-deployment.md#configure-the-cpufreq-governor-mode-on-the-target-machine).
+
+## Step 8: Mount the data disk ext4 filesystem with options on the target machines
 
 See [Mount the data disk ext4 filesystem with options on the target machines](ansible-deployment.md#mount-the-data-disk-ext4-filesystem-with-options-on-the-target-machines).
 
-## Step 8: Edit the `inventory.ini` file to orchestrate the TiDB cluster
+## Step 9: Edit the `inventory.ini` file to orchestrate the TiDB cluster
 
 See [Edit the `inventory.ini` file to orchestrate the TiDB cluster](ansible-deployment.md#edit-the-inventory.ini-file-to-orchestrate-the-tidb-cluster).
 
-## Step 9: Deploy the TiDB cluster
+## Step 10: Deploy the TiDB cluster
 
 1. You do not need to run the playbook in `ansible-playbook local_prepare.yml`.
 
