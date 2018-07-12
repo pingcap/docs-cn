@@ -1,5 +1,5 @@
 ---
-title: 快速入门指南
+title: TiDB 快速入门指南
 category: deployment
 ---
 

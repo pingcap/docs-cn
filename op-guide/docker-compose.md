@@ -1,5 +1,5 @@
 ---
-title: 使用 Docker Compose 构建集群
+title: 使用 Docker Compose 快速构建集群
 category: deployment
 ---
 

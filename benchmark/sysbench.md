@@ -1,26 +1,27 @@
 ---
 title: TiDB Sysbench 性能测试报告 - v1.0.0
-category: benchmark 
+category: benchmark
 draft: true
---- 
+---
 
 # TiDB Sysbench 性能测试报告 - v1.0.0
 
 ## 测试目的
+
 测试 TiDB 在 OLTP 场景下的性能以及水平扩展能力。
 
 > **注意**: 不同的测试环境可能使测试结果发生改变。
 
-## 测试版本、时间、地点 
+## 测试版本、时间、地点
 
 TiDB 版本：v1.0.0 
 时间：2017 年 10 月 20 日
-地点：北京      
+地点：北京
 
 ## 测试环境
- 
- IDC机器       
- 
+
+IDC 机器
+
 | 类别       |  名称       |  
 | :--------: | :---------: | 
 | OS       | linux (CentOS 7.3.1611)       |   
@@ -28,10 +29,9 @@ TiDB 版本：v1.0.0
 | RAM | 128GB | 
 | DISK | 1.5T SSD * 2  + Optane SSD * 1 |  
 
-Sysbench 版本: 1.0.6   
+Sysbench 版本: 1.0.6
 
 测试脚本: https://github.com/pingcap/tidb-bench/tree/cwen/not_prepared_statement/sysbench
-
 
 ## 测试方案
 

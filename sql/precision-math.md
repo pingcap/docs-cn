@@ -1,5 +1,5 @@
 ---
-title: TiDB 用户文档
+title: 精度数学
 category: user guide
 ---
 

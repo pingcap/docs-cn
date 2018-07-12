@@ -3,7 +3,9 @@ title: 时区支持
 category: user guide
 ---
 
-TiDB 使用的时区由 `time_zone` 全局变量和 session 变量决定。`time_zone` 的初始值是机器当前的系统时区 'SYSTEM' 。
+# 时区支持
+
+TiDB 使用的时区由 `time_zone` 全局变量和 session 变量决定。`time_zone` 的初始值是机器当前的系统时区 'SYSTEM'。
 
 在运行过程中可以修改全局时区：
 

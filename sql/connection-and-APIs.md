@@ -1,3 +1,8 @@
+---
+title: 连接器和 API
+category: user guide
+---
+
 # 连接器和 API
 
 数据库连接器为客户端提供了连接数据库服务端的方式，APIs 提供了使用 MySQL 协议和资源的底层接口。无论是连接器还是 API，都可以用来在不同的语言和环境内连接服务器并执行 sql 语句，包括 odbc、java(jdbc)、Perl、Python、PHP、Ruby 和 C。
@@ -19,10 +24,9 @@ TiDB 兼容 MySQL(5.6、5.7) 的所有连接器和 API，包括：
 + [MySQL Eiffel Wrapper](https://dev.mysql.com/doc/refman/5.7/en/apis-eiffel.html)
 + [Mysql Go API](https://github.com/go-sql-driver/mysql)
 
-
 ## 使用 MySQL 连接器连接 TiDB
 
-Oracle 官方提供了以下 API , TiDB 可以兼容所有这些 API。
+Oracle 官方提供了以下 API，TiDB 可以兼容所有这些 API。
 
 + [MySQL Connector/C](https://dev.mysql.com/doc/refman/5.7/en/connector-c-info.html)：C 语言的客户端库，是 libmysqlclient 的替代品
 + [MySQL Connector/C++](https://dev.mysql.com/doc/refman/5.7/en/connector-cpp-info.html)：C++ 语言的客户端库

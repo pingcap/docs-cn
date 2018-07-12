@@ -5,9 +5,9 @@ category: advanced
 
 # Loader 使用文档
 
-## Loader 是什么
+## Loader 简介
 
-是由 PingCAP 开发的数据导入工具，可以用于向 TiDB 中导入数据。
+Loader 是由 PingCAP 开发的数据导入工具，用于向 TiDB 中导入数据。
 
 [Binary 下载](http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz)
 

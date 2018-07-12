@@ -1,5 +1,5 @@
 ---
-title: 软件和硬件环境要求
+title: TiDB 软件和硬件环境要求
 category: deployment
 ---
 

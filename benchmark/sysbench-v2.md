@@ -1,7 +1,7 @@
 ---
 title: TiDB Sysbench 性能对比测试报告 - v2.0.0 对比 v1.0.0
-category: benchmark 
---- 
+category: benchmark
+---
 
 # TiDB Sysbench 性能对比测试报告 - v2.0.0 对比 v1.0.0
 
@@ -9,28 +9,27 @@ category: benchmark
 
 对比 TiDB 2.0 版本和 1.0 版本在 OLTP 场景下的性能。
 
-## 测试版本、时间、地点 
+## 测试版本、时间、地点
 
-TiDB 版本：v1.0.8 Vs v2.0.0-rc6 
+TiDB 版本：v1.0.8 Vs v2.0.0-rc6
 
 时间：2018 年 4 月
 
-地点：北京      
+地点：北京
 
 ## 测试环境
- 
-IDC 机器       
- 
+
+IDC 机器
+
 | 类别 | 名称 |  
-| :--------: | :---------: | 
-| OS | Linux (CentOS 7.3.1611) |   
+| :--------: | :---------: |
+| OS | Linux (CentOS 7.3.1611) |
 | CPU | 40 vCPUs, Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz |
-| RAM | 128GB | 
+| RAM | 128GB |
 | DISK | Optane 500GB SSD * 1 |  
 
 Sysbench 测试脚本：
 https://github.com/pingcap/tidb-bench/tree/master/sysbench   
-
 
 ## 测试方案
 

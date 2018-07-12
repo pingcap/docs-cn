@@ -1,5 +1,5 @@
 ---
-title: DDL
+title: 数据定义语言
 category: user guide
 ---
 
