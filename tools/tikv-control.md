@@ -172,6 +172,8 @@ $ tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
 ```bash
 $ tikv-ctl modify-tikv-config -m kvdb -n max_background_jobs -v 8
 success！
+$ tikv-ctl modify-tikv-config -m kvdb -n write.block-cache-size -v 256MB
+success!
 $ tikv-ctl modify-tikv-config -m raftdb -n default.disable_auto_compactions -v true
 success!
 ```
