@@ -174,27 +174,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认: 0
 + 对于每一个查询，TiDB 会以 `feedback-probability` 的概率收集查询的反馈，用于更新统计信息。
 
-## plan-cache
-
-Plan cache 相关配置。
-
-### `enabled`
-
-+ 开启 Plan cache。
-+ 默认: false
-+ 开启 Plan cache 会省去相同 SQL 语句的查询优化开销。
-
-### `capacity`
-
-+ 缓存语句的数量。
-+ 默认: 2560
-
-### `shards`
-
-+ plan-cache 桶的数量。
-+ 默认: 256
-+ 这个数量越大，锁的粒度越小。
-
 ## prepared-plan-cache
 
 prepare 语句的 Plan cache 设置。
