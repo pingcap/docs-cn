@@ -20,8 +20,6 @@ category: deployment
 | node5 | 172.16.10.5 | TiKV2      |
 | node6 | 172.16.10.6 | TiKV3      |
 
-
-
 ## 下载 cfssl
 
 假设使用 x86_64 Linux 主机：
@@ -34,11 +32,9 @@ chmod +x ~/bin/{cfssl,cfssljson}
 export PATH=$PATH:~/bin
 ```
 
-
-
 ## 初始化证书颁发机构
 
-生成 cfssl 的默认配置，以便于之后修改： 
+生成 cfssl 的默认配置，以便于之后修改：
 
 ```bash
 mkdir ~/cfssl
@@ -46,8 +42,6 @@ cd ~/cfssl
 cfssl print-defaults config > ca-config.json
 cfssl print-defaults csr > ca-csr.json
 ```
-
-
 
 ## 生成证书
 
@@ -60,7 +54,7 @@ cfssl print-defaults csr > ca-csr.json
 
 #### 配置 CA 选项
 
-根据实际需求修改 `ca-config.json` ：  
+根据实际需求修改 `ca-config.json`：  
 
 ```json
 {

@@ -1,6 +1,6 @@
 ---
 title: JSON 函数及 Generated Column
-category: compatibility
+category: user guide
 ---
 
 # JSON 函数及 Generated Column
@@ -9,7 +9,7 @@ category: compatibility
 
 为了在功能上兼容 MySQL 5.7 及以上，同时更好地支持文档类型存储，我们在最新版本的 TiDB 中加入了 JSON 的支持。TiDB 所支持的文档是指以 JSON 为编码类型的键值对的组合。用户可以在 TiDB 的表中使用 JSON 类型的字段，同时以生成列（generated column）的方式为 JSON 文档内部的字段建立索引。基于此，用户可以很灵活地处理那些 schema 不确定的业务，同时不必受限于传统文档数据库糟糕的读性能及匮乏的事务支持。
 
-## JSON功能介绍
+## JSON 功能介绍
 
 TiDB 的 JSON 主要参考了 MySQL 5.7 的用户接口。例如，可以创建一个表，包含一个 JSON 字段来存储那些复杂的信息：
 

@@ -1,5 +1,5 @@
 ---
-title: TiDB 进程启动参数和配置
+title: TiDB 进程启动参数
 category: user guide
 ---
 

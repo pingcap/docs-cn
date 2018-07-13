@@ -1,13 +1,13 @@
 ---
-title: TiDB 用户文档
+title: 信息函数
 category: user guide
 ---
 
-## 信息函数
+# 信息函数
 
-TiDB 中信息函数的使用方法与 MySQL 基本一致，详情参见: [Information Functions](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html).
+TiDB 中信息函数的使用方法与 MySQL 基本一致，详情参见：[Information Functions](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html)。
 
-**信息函数表**
+## 信息函数表
 
 | 函数名 | 功能描述                                 |
 | ------ | ---------------------------------------- |

@@ -1,5 +1,5 @@
 ---
-title: 字符串字面值
+title: String Literals
 category: user guide
 ---
 

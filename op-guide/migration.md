@@ -9,17 +9,17 @@ category: advanced
 
 `mydumper` 是一个更强大的数据迁移工具，具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)。
 
-我们使用 `mydumper` 从 MySQL 导出数据，然后用 `loader` 将其导入到 TiDB 里面。
+你可以使用 `mydumper` 从 MySQL 导出数据，然后用 `loader` 将其导入到 TiDB 里面。
 
-> 注意：虽然 TiDB 也支持使用 MySQL 官方的 `mysqldump` 工具来进行数据的迁移工作，但相比于 `mydumper` / `loader`，性能会慢很多，大量数据的迁移会花费很多时间，这里我们并不推荐。
+> **注意**：虽然 TiDB 也支持使用 MySQL 官方的 `mysqldump` 工具来进行数据的迁移工作，但相比于 `mydumper` / `loader`，性能会慢很多，大量数据的迁移会花费很多时间，这里我们并不推荐。
 
 ### `mydumper`/`loader` 全量导入数据最佳实践
 
-为了快速的迁移数据 (特别是数据量巨大的库), 可以参考下面建议
+为了快速的迁移数据 (特别是数据量巨大的库)，可以参考下面建议
 
-* mydumper 导出数据至少要拥有 `SELECT` , `RELOAD` , `LOCK TABLES` 权限
-* 使用 mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64
-* loader的 -t 参数可以根据 tikv 的实例个数以及负载进行评估调整，例如 3个 tikv 的场景， 此值可以设为 3 *（1 ～ n)；当 tikv 负载过高，loader 以及 tidb 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 tikv 负载不是太高的时候，可以适当调大该值。
+* mydumper 导出数据至少要拥有 `SELECT`，`RELOAD`，`LOCK TABLES` 权限
+* 使用 mydumper 导出来的数据文件尽可能的小，最好不要超过 64M，可以设置参数 -F 64
+* loader的 -t 参数可以根据 tikv 的实例个数以及负载进行评估调整，例如 3个 tikv 的场景，此值可以设为 3 *（1 ～ n)；当 tikv 负载过高，loader 以及 tidb 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 tikv 负载不是太高的时候，可以适当调大该值。
 
 #### 某次导入示例，以及相关的配置
 

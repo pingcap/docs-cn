@@ -1,5 +1,5 @@
 ---
-title: TiDB 用户文档
+title: 日期和时间函数
 category: user guide
 ---
 
@@ -7,7 +7,7 @@ category: user guide
 
 TiDB 中日期和时间函数的使用方法与 MySQL 基本一致，详情参见: [Date and Time Functions](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html).
 
-**日期时间函数表**
+## 日期时间函数表
 
 | 函数名 | 功能描述 |
 | ------ | ---------------------------------------- |

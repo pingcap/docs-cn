@@ -1,5 +1,5 @@
 ---
-title: 数值字面值
+title: Numeric Literals
 category: user guide
 ---
 
