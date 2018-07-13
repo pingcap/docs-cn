@@ -175,27 +175,6 @@ Configuration about performance.
 - Default: 0
 - TiDB collects the feedback of each query at the probability of `feedback-probability`, to update statistics
 
-## Plan Cache
-
-Configuration about Plan Cache.
-
-### `enabled`
-
-- To enable Plan Cache
-- Default: false
-- Enabling Plan Cache saves the query optimization overhead of the same SQL statement
-
-### `capacity`
-
-- The number of cached statements
-- Default: 2560
-
-### `shards`
-
-- The number of plan-cache buckets
-- Default: 256
-- A larger number indicates a smaller particle size of the lock
-
 ## prepared-plan-cache
 
 The Plan Cache configuration of the `prepare` statement.
