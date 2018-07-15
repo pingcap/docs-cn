@@ -987,7 +987,7 @@ A lock resolving timeout. This usually occurs when a large number of transaction
 
 The accessed Region is not available. A Raft Group is not available, with possible reasons like an inadequate number of replicas. This usually occurs when the TiKV server is busy or the TiKV node is shut down. Check the status, monitoring data and log of the TiKV server.
 
-#### ERROR 9006 (HY000): GC Too Early
+#### ERROR 9006 (HY000): GC life time is shorter than transaction duration
 
 The interval of `GC Life Time` is too short. The data that should have been read by long transactions might be deleted. You can add `GC Life Time` using the following command:
 
