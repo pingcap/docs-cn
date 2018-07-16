@@ -164,3 +164,18 @@ $ tikv-ctl --db /path/to/tikv/data/db region-properties -r 2
 ```bash
 $ tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
 ```
+
+### 动态修改 TiKV 的 RocksDB 相关配置
+
+`modify-tikv-config` 命令可以动态修改配置参数，暂时仅支持对于 RocksDB 相关参数的动态更改。通过 `-m` 参数可以指定要修改的 RocksDB，有 `kvdb` 和 `raftdb` 两个值可以选择。`-n` 用于指定配置名，`-v` 用于指定配置值，其中配置名可以参考 [TiKV 配置模版](https://github.com/pingcap/tikv/blob/master/etc/config-template.toml#L213-L500)中 [rocksdb] 和 [raftdb] 下的参数，分别对应 `kvdb` 和 `raftdb`。同时还可以通过 `default|write|lock + . + 参数名` 的形式来指定的不同 CF 的配置（对于 `kvdb` 有 `default|write|lock` 可以选择，对于 `raftdb` 仅有 `default` 可以选择。
+
+```bash
+$ tikv-ctl modify-tikv-config -m kvdb -n max_background_jobs -v 8
+success！
+$ tikv-ctl modify-tikv-config -m kvdb -n write.block-cache-size -v 256MB
+success!
+$ tikv-ctl modify-tikv-config -m raftdb -n default.disable_auto_compactions -v true
+success!
+```
+
+
