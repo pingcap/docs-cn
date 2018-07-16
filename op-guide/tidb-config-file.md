@@ -201,3 +201,17 @@ The Plan Cache configuration of the `prepare` statement.
 - The maximum timeout time when executing a transaction commit
 - Default: 41s
 - It is required to set this value larger than twice of the Raft election timeout time
+
+### txn-local-latches
+
+Configuration about the transaction latch. It is recommended to enable it when many local transaction conflicts occur.
+
+### `enable`
+
+- To enable
+- Default: false
+
+### `capacity`
+
+- The number of slots corresponding to Hash, which automatically adjusts upward to an exponential multiple of 2. Each slot occupies 32 Bytes of memory. If set too small, it might result in slower running speed and poor performance in the scenario where data writing covers a relatively large range (such as importing data).
+- Default: 1024000
