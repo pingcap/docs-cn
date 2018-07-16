@@ -9,7 +9,7 @@ As a command line tool of PD, PD Control obtains the state information of the cl
 
 ## Source code compiling
 
-1. [Go](https://golang.org/) Version 1.7 or later
+1. [Go](https://golang.org/) Version 1.9 or later
 2. In the PD root directory, use the `make` command to compile and generate `bin/pd-ctl`
 
 > **Note:** Generally, you don't need to compile source code as the PD Control tool already exists in the released Binary or Docker. However, dev users can refer to the above instruction for compiling source code.
@@ -93,15 +93,28 @@ Use this command to view or modify the configuration information.
 Usage:
 
 ```bash
->> config show                                //　Display the config information of the scheduler
+>> config show                                // Display the config information of the scheduler
 {
   "max-snapshot-count": 3,
   "max-pending-peer-count": 16,
+  "max-merge-region-size": 50,
+  "max-merge-region-rows": 200000,
+  "split-merge-interval": "1h",
+  "patrol-region-interval": "100ms",
   "max-store-down-time": "1h0m0s",
-  "leader-schedule-limit": 64,
-  "region-schedule-limit": 16,
-  "replica-schedule-limit": 24,
-  "tolerant-size-ratio": 2.5,
+  "leader-schedule-limit": 4,
+  "region-schedule-limit": 4,
+  "replica-schedule-limit":8,
+  "merge-schedule-limit": 8,
+  "tolerant-size-ratio": 5,
+  "low-space-ratio": 0.8,
+  "high-space-ratio": 0.6,
+  "disable-raft-learner": "false",
+  "disable-remove-down-replica": "false",
+  "disable-replace-offline-replica": "false",
+  "disable-make-up-replica": "false",
+  "disable-remove-extra-replica": "false",
+  "disable-location-replacement": "false",
   "schedulers-v2": [
     {
       "type": "balance-region",
@@ -120,9 +133,9 @@ Usage:
 >> config show all                            // Display all config information
 >> config show namespace ts1                  // Display the config information of the namespace named ts1
 {
-  "leader-schedule-limit": 64,
-  "region-schedule-limit": 16,
-  "replica-schedule-limit": 24,
+  "leader-schedule-limit": 4,
+  "region-schedule-limit": 4,
+  "replica-schedule-limit": 8,
   "max-replicas": 3,
 }
 >> config show replication                    // Display the config information of replication
@@ -132,22 +145,70 @@ Usage:
 }
 ```
 
+- `max-snapshot-count` controls the maximum number of snapshots that a single store receives or sends out at the same time. The scheduler is restricted by this configuration to avoid taking up normal application resources. When you need to improve the speed of adding replicas or balancing, increase this value.
+
+    ```bash
+    >> config set max-snapshort-count 16  // Set the maximum number of snapshots to 16
+    ```
+
+- `max-pending-peer-count` controls the maximum number of pending peers in a single store. The scheduler is restricted by this configuration to avoid producing a large number of Regions without the latest log in some nodes. When you need to improve the speed of adding replicas or balancing, increase this value. Setting it to 0 indicates no limit.
+
+    ```bash
+    >> config set max-pending-peer-count 64  // Set the maximum number of pending peers to 64
+    ```
+
+- `max-merge-region-size` controls the upper limit on the size of Region Merge (the unit is M). When `regionSize` exceeds the specified value, PD does not merge it with the adjacent Region. Setting it to 0 indicates disabling Region Merge.
+
+    ```bash
+    >> config set max-merge-region-size 16 // Set the upper limit on the size of Region Merge to 16M
+    ```
+
+- `max-merge-region-rows` controls the upper limit on the row count of Region Merge. When `regionRowCount` exceeds the specified value, PD does not merge it with the adjacent Region.
+
+    ```bash
+    >> config set max-merge-region-rows 50000 // Set the the upper limit on rowCount to 50000
+    ```
+
+- `split-merge-interval` controls the interval between the `split` and `merge` operations on a same Region. This means the newly split Region won't be merged within a period of time.
+
+    ```bash
+    >> config set split-merge-interval 24h  // Set the interval between `split` and `merge` to one day
+    ```
+
+- `patrol-region-interval` controls the execution frequency that `replicaChecker` checks the health status of Regions. A shorter interval indicates a higher execution frequency. Generally, you do not need to adjust it.
+
+    ```bash
+    >> config set patrol-region-interval 10ms // Set the execution frequency of replicaChecker to 10ms
+    ```
+
+- `max-store-down-time` controls the time that PD decides the disconnected store cannot be restored if exceeded. If PD does not receive heartbeats from a store within the specified period of time, PD adds replicas in other nodes.
+
+    ```bash
+    >> config set max-store-down-time 30m  // Set the time within which PD receives no heartbeats and after which PD starts to add replicas to 30 minutes
+    ```
+
 - `leader-schedule-limit` controls the number of tasks scheduling the leader at the same time. This value affects the speed of leader balance. A larger value means a higher speed and setting the value to 0 closes the scheduling. Usually the leader scheduling has a small load, and you can increase the value in need.
     
     ```bash
     >> config set leader-schedule-limit 4         // 4 tasks of leader scheduling at the same time at most
     ```
 
-- `region-schedule-limit` controls the number of tasks scheduling the region at the same time. This value affects the speed of region balance. A larger value means a higher speed and setting the value to 0 closes the scheduling. Usually the region scheduling has a large load, so do not set a too large value.
-    
+- `region-schedule-limit` controls the number of tasks scheduling the Region at the same time. This value affects the speed of Region balance. A larger value means a higher speed and setting the value to 0 closes the scheduling. Usually the Region scheduling has a large load, so do not set a too large value.
+
     ```bash
-    >> config set region-schedule-limit 2         // 2 tasks of region scheduling at the same time at most
+    >> config set region-schedule-limit 2         // 2 tasks of Region scheduling at the same time at most
     ```
 
 - `replica-schedule-limit` controls the number of tasks scheduling the replica at the same time. This value affects the scheduling speed when the node is down or removed. A larger value means a higher speed and setting the value to 0 closes the scheduling. Usually the replica scheduling has a large load, so do not set a too large value.
 
     ```bash
     >> config set replica-schedule-limit 4        // 4 tasks of replica scheduling at the same time at most
+    ```
+
+- `merge-schedule-limit` controls the number of Region Merge scheduling tasks. Setting the value to 0 closes Region Merge. Usually the Merge scheduling has a large load, so do not set a too large value.
+
+    ```bash
+    >> config set merge-schedule-limit 16       // 16 tasks of Merge scheduling at the same time at most
     ```
 
 The configuration above is global. You can also tune the configuration by configuring different namespaces. The global configuration is used if the corresponding configuration of the namespace is not set.
@@ -158,6 +219,40 @@ The configuration above is global. You can also tune the configuration by config
     >> config set namespace ts1 leader-schedule-limit 4 // 4 tasks of leader scheduling at the same time at most for the namespace named ts1
     >> config set namespace ts2 region-schedule-limit 2 // 2 tasks of region scheduling at the same time at most for the namespace named ts2
     ```
+
+- `tolerant-size-ratio` controls the size of the balance buffer area. When the score difference between the leader or Region of the two stores is less than specified multiple times of the Region size, it is considered in balance by PD.
+
+    ```bash
+    >> config set tolerant-size-ratio 20        // Set the size of the buffer area to about 20 times of the average regionSize
+    ```
+
+- `low-space-ratio` controls the threshold value that is considered as insufficient store space. When the ratio of the space occupied by the node exceeds the specified value, PD tries to avoid migrating data to the corresponding node as much as possible. At the same time, PD mainly schedules the remaining space to avoid using up the disk space of the corresponding node.
+
+    ```bash
+    config set low-space-ratio 0.9              // Set the threshold value of insufficient space to 0.9
+    ```
+
+- `high-space-ratio` controls the threshold value that is considered as sufficient store space. When the ratio of the space occupied by the node is less than the specified value, PD ignores the remaining space and mainly schedules the actual data volume.
+
+    ```bash
+    config set high-space-ratio 0.5             // Set the threshold value of sufficient space to 0.5
+    ```
+
+- `disable-raft-learner` is used to disable Raft learner. By default, PD uses Raft learner when adding replicas to reduce the risk of unavailability due to downtime or network failure.
+
+    ```bash
+    config set disable-raft-learner true        // Disable Raft learner
+    ```
+
+- `disable-remove-down-replica` is used to disable the feature of automatically deleting DownReplica. When you set it to `true`, PD does not automatically clean up the downtime replicas.
+
+- `disable-replace-offline-replica` is used to disable the feature of migrating OfflineReplica. When you set it to `true`, PD does not migrate the offline replicas.
+
+- `disable-make-up-replica` is used to disable the feature of making up replicas. When you set it to `true`, PD does not adding replicas for Regions without sufficient replicas.
+
+- `disable-remove-extra-replica` is used to disable the feature of removing extra replicas. When you set it to `true`, PD does not remove extra replicas for Regions with redundant replicas.
+
+- `disable-location-replacement` is used to disable the isolation level check. When you set it to `true`, PD does not improve the isolation level of Region replicas by scheduling.
 
 ### `config delete namespace \<name\> [\<option\>]`
 
@@ -200,7 +295,7 @@ Usage:
 >> hot store                            // Display hot spot for all the read and write operations
 ```
 
-### `label [store]`
+### `label [store \<name\> \<value\>]`
 
 Use this command to view the label information of the cluster.
 
@@ -211,27 +306,33 @@ Usage:
 >> label store zone cn                  // Display all stores including the "zone":"cn" label
 ```
 
-### `member [leader | delete]`
+### `member [delete | leader_priority | leader [show | resign | transfer \<member_name\>]]`
 
-Use this command to view the PD members or remove a specified member.
+Use this command to view the PD members, remove a specified member, or configure the priority of leader.
 
 Usage:
 
 ```bash
 >> member                               // Display the information of all members
 {
-  "members": [......]
-}
->> member leader show                   // Display the information of the leader
-{
-  "name": "pd",
-  "addr": "http://192.168.199.229:2379",
-  "id": 9724873857558226554
+  "members": [......],
+  "leader": {......},
+  "etcd_leader": {......},
 }
 >> member delete name pd2               // Delete "pd2"
 Success!
 >> member delete id 1319539429105371180 // Delete a node using id
 Success!
+>> member leader show                   // Display the leader information
+{
+  "name": "pd",
+  "addr": "http://192.168.199.229:2379",
+  "id": 9724873857558226554
+}
+>> member leader resign // Move leader away from the current member
+......
+>> member leader transfer 9724873857558226554 // Migrate leader to a specified ID member
+......
 ```
 
 ### `operator [show | add | remove]`
@@ -244,13 +345,15 @@ Usage:
 >> operator show                            // Display all operators
 >> operator show admin                      // Display all admin operators
 >> operator show leader                     // Display all leader operators
->> operator show region                     // Display all region operators
->> operator add add-peer 1 2                // Add a replica of region 1 on store 2
->> operator remove remove-peer 1 2          // Remove a replica of region 1 on store 2
->> operator add transfer-leader 1 2         // Schedule the leader of region 1 to store 2
->> operator add transfer-region 1 2 3 4     // Schedule region 1 to store 2,3,4
->> operator add transfer-peer 1 2 3         // Schedule the replica of region 1 on store 2 to store 3
->> operator remove 1                        // Remove the scheduling operation of region 1
+>> operator show region                     // Display all Region operators
+>> operator add add-peer 1 2                // Add a replica of Region 1 on store 2
+>> operator remove remove-peer 1 2          // Remove a replica of Region 1 on store 2
+>> operator add transfer-leader 1 2         // Schedule the leader of Region 1 to store 2
+>> operator add transfer-region 1 2 3 4     // Schedule Region 1 to stores 2,3,4
+>> operator add transfer-peer 1 2 3         // Schedule the replica of Region 1 on store 2 to store 3
+>> operator add merge-region 1 2            // Merge Region 1 with Region 2
+>> operator add split-region 1              // Split Region 1 into two Regions in halves
+>> operator remove 1                        // Remove the scheduling operation of Region 1
 ```
 
 ### `ping`
@@ -314,6 +417,42 @@ Protobuf format usage:
     "id": 2,
     ......
   }
+}
+```
+
+### `region sibling \<region_id\>`
+
+Use this command to check the adjacent Regions of a specific Region.
+
+Usage:
+
+```bash
+>> region sibling 2
+{
+  "count": 2,
+  "regions": [......],
+}
+```
+
+### `region check [miss-peer | extra-peer | down-peer | pending-peer | incorrect-ns]`
+
+Use this command to check the Regions in abnormal conditions.
+
+Description of various types:
+
+- miss-peer: the Region without enough replicas
+- extra-peer: the Region with extra replicas
+- down-peer: the Region in which some replicas are Down
+- pending-peer：the Region in which some replicas are Pending
+- incorrect-ns：the Region in which some replicas deviate from the namespace constraints
+
+Usage:
+
+```bash
+>> region miss-peer
+{
+  "count": 2,
+  "regions": [......],
 }
 ```
 
