@@ -368,8 +368,8 @@ Success!
 >> operator add transfer-region 1 2 3 4                 // 把 region 1 调度到 store 2,3,4
 >> operator add transfer-peer 1 2 3                     // 把 region 1 在 store 2 上的副本调度到 store 3
 >> operator add merge-region 1 2                        // 将 region 1 与 region 2 合并
->> operator add split-region 1 --policy=approximate     // 将 region 1 对半拆分成两个 region, 基于粗略估计值
->> operator add split-region 1 --policy=scan            // 将 region 1 对半拆分成两个 region, 基于精确扫描值
+>> operator add split-region 1 --policy=approximate     // 将 region 1 对半拆分成两个 region，基于粗略估计值
+>> operator add split-region 1 --policy=scan            // 将 region 1 对半拆分成两个 region，基于精确扫描值
 >> operator remove 1                                    // 把 region 1 的调度操作删掉
 ```
 
