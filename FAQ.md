@@ -914,7 +914,7 @@ TiKV 操作繁忙，一般出现在数据库负载比较高时，请检查 TiKV 
 
 访问的 Region 不可用，某个 Raft Group 不可用，如副本数目不足，出现在 TiKV 比较繁忙或者是 TiKV 节点停机的时候，请检查 TiKV Server 状态/监控/日志。
 
-#### 9.1.6 ERROR 9006 (HY000) : GC Too Early
+#### 9.1.6 ERROR 9006 (HY000) : GC life time is shorter than transaction duration
 
 `GC Life Time` 间隔时间过短，长事务本应读到的数据可能被清理了，可使用如下命令增加 `GC Life Time`：
 
