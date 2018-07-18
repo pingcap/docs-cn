@@ -367,9 +367,9 @@ Usage:
 time: 43.12698ms
 ```
 
-### `region \<region_id\>`
+### `region \<region_id\> [--jq="<query string>"]`
 
-Use this command to view the region information.
+Use this command to view the region information. For a jq formatted output, see [jq-formatted-json-output-usage](#jq-formatted-json-output-usage).
 
 Usage:
 
@@ -471,9 +471,9 @@ Usage:
 >> scheduler remove grant-leader-scheduler-1  // Remove the corresponding scheduler
 ```
 
-### `store [delete | label | weight] \<store_id\>`
+### `store [delete | label | weight] \<store_id\>  [--jq="<query string>"]`
 
-Use this command to view the store information or remove a specified store.
+Use this command to view the store information or remove a specified store. For a jq formatted output, see [jq-formatted-json-output-usage](#jq-formatted-json-output-usage).
 
 Usage:
 
@@ -517,4 +517,93 @@ Usage:
 >> tso 395181938313123110        // Parse TSO
 system:  2017-10-09 05:50:59 +0800 CST
 logic:  120102
+```
+
+## Jq formatted JSON output usage
+
+### Simplify the output of `store`
+
+```bash
+» store --jq=".stores[].store | { id, address, state_name}"
+{"id":1,"address":"127.0.0.1:20161","state_name":"Up"}
+{"id":30,"address":"127.0.0.1:20162","state_name":"Up"}
+...
+```
+
+### Query the remaining space of the node
+
+```bash
+» store --jq=".stores[] | {id: .store.id, avaiable: .status.available}"
+{"id":1,"avaiable":"10 GiB"}
+{"id":30,"avaiable":"10 GiB"}
+...
+```
+
+### Query the distribution status of the Region replicas
+
+```bash
+» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id]}"
+{"id":2,"peer_stores":[1,30,31]}
+{"id":4,"peer_stores":[1,31,34]}
+...
+```
+
+### Filter Regions according to the number of replicas
+
+For example, to filter out all Regions whose number of replicas is not 3:
+
+```bash
+» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length != 3)}"
+{"id":12,"peer_stores":[30,32]}
+{"id":2,"peer_stores":[1,30,31,32]}
+```
+
+### Filter Regions according to the store ID of replicas
+
+For example, to filter out all Regions that have a replica on store30:
+
+```bash
+» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==30))}"
+{"id":6,"peer_stores":[1,30,31]}
+{"id":22,"peer_stores":[1,30,32]}
+...
+```
+
+You can also find out all Regions that have a replica on store30 or store31 in the same way:
+
+```bash
+» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==(30,31)))}"
+{"id":16,"peer_stores":[1,30,34]}
+{"id":28,"peer_stores":[1,30,32]}
+{"id":12,"peer_stores":[30,32]}
+...
+```
+
+### Look for relevant Regions when restoring data
+
+For example, when [store1, store30, store31] is unavailable at its downtime, you can find all Regions whose Down replicas are more than normal replicas:
+
+```bash
+» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length as $total | map(if .==(1,30,31) then . else empty end) | length>=$total-length) }"
+{"id":2,"peer_stores":[1,30,31,32]}
+{"id":12,"peer_stores":[30,32]}
+{"id":14,"peer_stores":[1,30,32]}
+...
+```
+
+Or when [store1, store30, store31] fails to start, you can find Regions where the data can be manually removed safely on store1. In this way, you can filter out all Regions that have a replica on store1 but don't have other DownPeers:
+
+```bash
+» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length>1 and any(.==1) and all(.!=(30,31)))}"
+{"id":24,"peer_stores":[1,32,33]}
+```
+
+When [store30, store31] is down, find out all Regions that can be safely processed by creating the `remove-peer` Operator, that is, Regions with one and only DownPeer:
+
+```bash
+» region --jq=".regions[] | {id: .id, remove_peer: [.peers[].store_id] | select(length>1) | map(if .==(30,31) then . else empty end) | select(length==1)}"
+{"id":12,"remove_peer":[30]}
+{"id":4,"remove_peer":[31]}
+{"id":22,"remove_peer":[30]}
+...
 ```
