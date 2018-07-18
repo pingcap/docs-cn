@@ -358,18 +358,19 @@ Success!
 示例：
 
 ```bash
->> operator show                            // 显示所有的 operators
->> operator show admin                      // 显示所有的 admin operators
->> operator show leader                     // 显示所有的 leader operators
->> operator show region                     // 显示所有的 region operators
->> operator add add-peer 1 2                // 在 store 2 上新增 region 1 的一个副本
->> operator remove remove-peer 1 2          // 移除 store 2 上的 region 1 的一个副本
->> operator add transfer-leader 1 2         // 把 region 1 的 leader 调度到 store 2
->> operator add transfer-region 1 2 3 4     // 把 region 1 调度到 store 2,3,4
->> operator add transfer-peer 1 2 3         // 把 region 1 在 store 2 上的副本调度到 store 3
->> operator add merge-region 1 2            // 将 region 1 与 region 2 合并
->> operator add split-region 1              // 将 region 1 对半拆分成两个 region
->> operator remove 1                        // 把 region 1 的调度操作删掉
+>> operator show                                        // 显示所有的 operators
+>> operator show admin                                  // 显示所有的 admin operators
+>> operator show leader                                 // 显示所有的 leader operators
+>> operator show region                                 // 显示所有的 region operators
+>> operator add add-peer 1 2                            // 在 store 2 上新增 region 1 的一个副本
+>> operator remove remove-peer 1 2                      // 移除 store 2 上的 region 1 的一个副本
+>> operator add transfer-leader 1 2                     // 把 region 1 的 leader 调度到 store 2
+>> operator add transfer-region 1 2 3 4                 // 把 region 1 调度到 store 2,3,4
+>> operator add transfer-peer 1 2 3                     // 把 region 1 在 store 2 上的副本调度到 store 3
+>> operator add merge-region 1 2                        // 将 region 1 与 region 2 合并
+>> operator add split-region 1 --policy=approximate     // 将 region 1 对半拆分成两个 region，基于粗略估计值
+>> operator add split-region 1 --policy=scan            // 将 region 1 对半拆分成两个 region，基于精确扫描值
+>> operator remove 1                                    // 把 region 1 的调度操作删掉
 ```
 
 ### ping
