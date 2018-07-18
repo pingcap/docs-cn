@@ -166,6 +166,8 @@ ntp_server = pool.ntp.org
 $ ansible-playbook -i hosts.ini create_users.yml -k
 ```
 
+> 手工配置 ssh 互信及 sudo 免密码可参考[如何手工配置 ssh 互信及 sudo 免密码](#如何手工配置-ssh-互信及-sudo-免密码)。
+
 ## 在部署目标机器上安装 NTP 服务
 
 > 如果你的部署目标机器时间、时区设置一致，已开启 NTP 服务且在正常同步时间，此步骤可忽略。可参考[如何检测 NTP 服务是否正常](#如何检测-ntp-服务是否正常)。
@@ -173,11 +175,11 @@ $ ansible-playbook -i hosts.ini create_users.yml -k
 > 该步骤将在部署目标机器上使用系统自带软件源联网安装并启动 NTP 服务，服务使用安装包默认的 NTP server 列表，见配置文件 `/etc/ntp.conf` 中 server 参数，如果使用默认的 NTP server，你的机器需要连接外网。
 > 为了让 NTP 尽快开始同步，启动 NTP 服务前，系统会 ntpdate `hosts.ini` 文件中的 `ntp_server` 一次，默认为 `pool.ntp.org`，也可替换为你的 NTP server。
 
-以 `tidb` 用户登录中控机，执行以下命令，按提示输入部署目标机器 root 密码。
+以 `tidb` 用户登录中控机，执行以下命令：
 
 ```
 $ cd /home/tidb/tidb-ansible
-$ ansible-playbook -i hosts.ini deploy_ntp.yml -k
+$ ansible-playbook -i hosts.ini deploy_ntp.yml -u tidb -b
 ```
 
 ## 在部署目标机器上配置 CPUfreq 调节器模式
@@ -221,7 +223,7 @@ analyzing CPU 0:
 你也可以通过以下命令在部署目标机器上批量设置：
 
 ```
-$ ansible -i hosts.ini all -m shell -a "cpupower frequency-set --governor performance" -b
+$ ansible -i hosts.ini all -m shell -a "cpupower frequency-set --governor performance" -u tidb -b
 ```
 
 ## 在部署目标机器上添加数据盘 ext4 文件系统挂载参数
