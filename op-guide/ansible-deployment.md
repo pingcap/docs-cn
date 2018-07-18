@@ -187,20 +187,22 @@ Make sure you have logged in to the Control Machine using the `tidb` user accoun
 2. Run the following command and input the `root` user account password of your target machines.
 
     ```bash
-    $ ansible-playbook -i hosts.ini create_users.yml -k
+    $ ansible-playbook -i hosts.ini create_users.yml -u root -k
     ```
 
     This step creates the `tidb` user account on the target machines, configures the sudo rules and the SSH mutual trust between the Control Machine and the target machines.
+
+> To configure the SSH mutual trust and sudo without password manually, see [How to manually configure the SSH mutual trust and sudo without password](#how-to-manually-configure-the-ssh-mutual-trust-and-sudo-without-password)
 
 ## Step 6: Install the NTP service on the target machines
 
 > **Note:** If the time and time zone of all your target machines are same, the NTP service is on and is normally synchronizing time, you can ignore this step. See [How to check whether the NTP service is normal](#how-to-check-whether-the-ntp-service-is-normal).
 
-Make sure you have logged in to the Control Machine using the `tidb` user account, run the following command, and input the `root` password of your target machines as prompted:
+Make sure you have logged in to the Control Machine using the `tidb` user account, run the following command:
 
 ```bash
 $ cd /home/tidb/tidb-ansible
-$ ansible-playbook -i hosts.ini deploy_ntp.yml -k
+$ ansible-playbook -i hosts.ini deploy_ntp.yml -u tidb -b
 ```
 
 The NTP service is installed and started using the software repository that comes with the system on the target machines. The default NTP server list in the installation package is used. The related `server` parameter is in the `/etc/ntp.conf` configuration file.
@@ -258,7 +260,7 @@ As the above code shows, the current mode is `powersave` in this example.
 - You can also run the following command to set the mode on the target machine in batches:
 
     ```
-    $ ansible -i hosts.ini all -m shell -a "cpupower frequency-set --governor performance" -b
+    $ ansible -i hosts.ini all -m shell -a "cpupower frequency-set --governor performance" -u tidb -b
     ```
 
 ## Step 8: Mount the data disk ext4 filesystem with options on the target machines
