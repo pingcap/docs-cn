@@ -33,6 +33,12 @@ category: deployment
 + 默认: "/tmp/tidb"
 + 我们可以通过 `tidb-server --store=mocktikv --path=""` 来启动一个纯内存引擎的 TiDB。
 
+### `--advertise-address`
+
++ 登录TiDB的IP地址
++ 默认: ""
++ TiDB 会存储一些信息( 比如IP ) 到PD。请确保`advertise-address`是该服务器的公网IP，比如172.16.30.8，否则这个参数将没有意义。
+
 ### `--host`
 
 + TiDB 服务监听 host
