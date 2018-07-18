@@ -163,7 +163,7 @@ ntp_server = pool.ntp.org
 执行以下命令，按提示输入部署目标机器 `root` 用户密码。该步骤将在部署目标机器上创建 `tidb` 用户，并配置 sudo 规则，配置中控机与部署目标机器之间的 ssh 互信。
 
 ```
-$ ansible-playbook -i hosts.ini create_users.yml -k
+$ ansible-playbook -i hosts.ini create_users.yml -u root -k
 ```
 
 > 手工配置 ssh 互信及 sudo 免密码可参考[如何手工配置 ssh 互信及 sudo 免密码](#如何手工配置-ssh-互信及-sudo-免密码)。
