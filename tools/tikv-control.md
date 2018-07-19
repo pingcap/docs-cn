@@ -5,7 +5,8 @@ category: tools
 
 # TiKV Control 使用说明
 
-TiKV Control (tikv-ctl) 是随 TiKV 附带的一个简单的管理工具，以下简称 tikv-ctl。在编译 TiKV 时，tikv-ctl 命令也会同时被编译出来，而通过 Ansible 部署的集群，在对应的 `tidb-ansible/resources/bin` 目录下也会有这个二进制文件。 
+TiKV Control (tikv-ctl) 是随 TiKV 附带的一个简单的管理工具，以下简称 tikv-ctl。在编译 TiKV 时，tikv-ctl 命令也会同时被编译出来，而通过 Ansible 部署的集群，在对应的 `tidb-ansible/resources/bin` 目录下也会有这个二进制文件。
+
 ## 通用参数
 
 tikv-ctl 有两种运行模式：远程模式和本地模式。前者通过 `--host` 选项接受 TiKV 的服务地址作为参数，后者则需要 `--db` 选项来指定本地 TiKV 数据目录路径。以下如无特殊说明，所有命令都同时支持这两种模式。对于远程模式，如果 TiKV 启用了 SSL，则 tikv-ctl 也需要指定相关的证书文件，例如：
@@ -151,15 +152,15 @@ all regions are healthy
 
 命令执行成功会打印上面的信息，否则会打印出有错误的 Region 列表。目前可以检出的错误包括 last index、commit index 和 apply index 之间的不匹配，以及 Raft log 的丢失。其他一些情况，比如 Snapshot 文件损坏等仍然需要后续的支持。
 
-### 查看 region 的 properties 信息
+### 查看 Region 的 properties 信息
 
-本地查看部署在 /path/to/tikv 的 tikv 上面 region 2 的 properties 信息：
+本地查看部署在 `/path/to/tikv` 的 tikv 上面 Region 2 的 properties 信息：
 
 ```bash
 $ tikv-ctl --db /path/to/tikv/data/db region-properties -r 2
 ```
 
-在线查看运行在 127.0.0.1:20160 的 tikv 上面 region 2 的 properties 信息：
+在线查看运行在 `127.0.0.1:20160` 的 tikv 上面 Region 2 的 properties 信息：
 
 ```bash
 $ tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
@@ -167,7 +168,11 @@ $ tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
 
 ### 动态修改 TiKV 的 RocksDB 相关配置
 
-`modify-tikv-config` 命令可以动态修改配置参数，暂时仅支持对于 RocksDB 相关参数的动态更改。通过 `-m` 参数可以指定要修改的 RocksDB，有 `kvdb` 和 `raftdb` 两个值可以选择。`-n` 用于指定配置名，`-v` 用于指定配置值，其中配置名可以参考 [TiKV 配置模版](https://github.com/pingcap/tikv/blob/master/etc/config-template.toml#L213-L500)中 [rocksdb] 和 [raftdb] 下的参数，分别对应 `kvdb` 和 `raftdb`。同时还可以通过 `default|write|lock + . + 参数名` 的形式来指定的不同 CF 的配置（对于 `kvdb` 有 `default|write|lock` 可以选择，对于 `raftdb` 仅有 `default` 可以选择。
+使用 `modify-tikv-config` 命令可以动态修改配置参数，暂时仅支持对于 RocksDB 相关参数的动态更改。
+
+- `-m` 可以指定要修改的 RocksDB，有 `kvdb` 和 `raftdb` 两个值可以选择。
+- `-n` 用于指定配置名。配置名可以参考 [TiKV 配置模版](https://github.com/pingcap/tikv/blob/master/etc/config-template.toml#L213-L500)中 `[rocksdb]` 和 `[raftdb]` 下的参数，分别对应 `kvdb` 和 `raftdb`。同时，还可以通过 `default|write|lock + . + 参数名` 的形式来指定的不同 CF 的配置（对于 `kvdb` 有 `default|write|lock` 可以选择，对于 `raftdb` 仅有 `default` 可以选择。
+- `-v` 用于指定配置值。
 
 ```bash
 $ tikv-ctl modify-tikv-config -m kvdb -n max_background_jobs -v 8
@@ -177,5 +182,3 @@ success!
 $ tikv-ctl modify-tikv-config -m raftdb -n default.disable_auto_compactions -v true
 success!
 ```
-
-
