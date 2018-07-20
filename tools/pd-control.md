@@ -342,18 +342,19 @@ Use this command to view and control the scheduling operation.
 Usage:
 
 ```bash
->> operator show                            // Display all operators
->> operator show admin                      // Display all admin operators
->> operator show leader                     // Display all leader operators
->> operator show region                     // Display all Region operators
->> operator add add-peer 1 2                // Add a replica of Region 1 on store 2
->> operator remove remove-peer 1 2          // Remove a replica of Region 1 on store 2
->> operator add transfer-leader 1 2         // Schedule the leader of Region 1 to store 2
->> operator add transfer-region 1 2 3 4     // Schedule Region 1 to stores 2,3,4
->> operator add transfer-peer 1 2 3         // Schedule the replica of Region 1 on store 2 to store 3
->> operator add merge-region 1 2            // Merge Region 1 with Region 2
->> operator add split-region 1              // Split Region 1 into two Regions in halves
->> operator remove 1                        // Remove the scheduling operation of Region 1
+>> operator show                                        // Display all operators
+>> operator show admin                                  // Display all admin operators
+>> operator show leader                                 // Display all leader operators
+>> operator show region                                 // Display all Region operators
+>> operator add add-peer 1 2                            // Add a replica of Region 1 on store 2
+>> operator remove remove-peer 1 2                      // Remove a replica of Region 1 on store 2
+>> operator add transfer-leader 1 2                     // Schedule the leader of Region 1 to store 2
+>> operator add transfer-region 1 2 3 4                 // Schedule Region 1 to stores 2,3,4
+>> operator add transfer-peer 1 2 3                     // Schedule the replica of Region 1 on store 2 to store 3
+>> operator add merge-region 1 2                        // Merge Region 1 with Region 2
+>> operator add split-region 1 --policy=approximate     // Split Region 1 into two Regions in halves, based on approximately estimated value
+>> operator add split-region 1 --policy=scan            // Split Region 1 into two Regions in halves, based on accurate scan value
+>> operator remove 1                                    // Remove the scheduling operation of Region 1
 ```
 
 ### `ping`
