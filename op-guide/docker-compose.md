@@ -152,3 +152,12 @@ scala> spark.sql("select count(*) from lineitem").show
 |   60175|
 +--------+
 ```
+
+你也可以通过 Python 或 R 来访问 Spark：
+
+```bash
+docker-compose exec tispark-master /opt/spark/bin/pyspark
+docker-compose exec tispark-master /opt/spark/bin/sparkR
+```
+
+更多关于 TiSpark 的信息，参见 [TiSpark 的详细文档](../tispark/tispark-quick-start-guide.md)。
