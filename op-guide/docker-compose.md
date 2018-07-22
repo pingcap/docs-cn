@@ -164,4 +164,13 @@ scala> spark.sql("select count(*) from lineitem").show
 +--------+
 ```
 
+You can also access Spark with Python or R using the following commands:
+
+```
+docker-compose exec tispark-master /opt/spark/bin/pyspark
+docker-compose exec tispark-master /opt/spark/bin/sparkR
+```
+
+For more details about TiSpark, see [here](../tispark/tispark-quick-start-guide.md).
+
 Here is [a 5-minute tutorial](https://www.pingcap.com/blog/how_to_spin_up_an_htap_database_in_5_minutes_with_tidb_tispark/) for macOS users that shows how to spin up a standard TiDB cluster using Docker Compose on your local computer.
