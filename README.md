@@ -110,6 +110,7 @@
   - [Loader](tools/loader.md)
   - [TiDB-Binlog](tools/tidb-binlog-kafka.md)
   - [PD Control](tools/pd-control.md)
+  - [PD Recover](tools/pd-recover.md)
   - [TiKV Control](tools/tikv-control.md)
   - [TiDB Controller](tools/tidb-controller.md)
 + TiSpark 文档
