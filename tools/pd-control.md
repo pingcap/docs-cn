@@ -257,8 +257,8 @@ config set high-space-ratio 0.5             // 设置空间充裕阈值为 0.5
 config set disable-raft-learner true        // 关闭 raft learner 功能
 ```
 
-`cluster-version` 集群的版本，用于控制某些 Feature 是否开启，处理兼容性问题．
-通常是集群正常运行的所有 TiKV 节点中的最低版本，需要回滚到更低的版本时才进行手动设置．
+`cluster-version` 集群的版本，用于控制某些 Feature 是否开启，处理兼容性问题。
+通常是集群正常运行的所有 TiKV 节点中的最低版本，需要回滚到更低的版本时才进行手动设置。
 
 ```bash
 config set cluster-version 1.0.8              // 设置 cluster version 为 1.0.8
