@@ -1,11 +1,10 @@
 ---
 title: TiDB Data Type
+summary: Learn about the data types supported in TiDB.
 category: user guide
 ---
 
 # TiDB Data Type
-
-## Overview
 
 TiDB supports all the data types in MySQL except the Spatial type, including numeric type, string type, date & time type, and JSON type.
 

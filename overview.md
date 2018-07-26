@@ -1,5 +1,6 @@
 ---
 title: About TiDB
+summary: Learn about what TiDB is, and the key features, architecture and roadmap of TiDB.
 category: introduction
 ---
 

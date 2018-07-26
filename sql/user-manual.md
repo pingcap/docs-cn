@@ -1,5 +1,6 @@
 ---
 title: TiDB User Guide
+summary: Learn about the user guide of TiDB.
 category: user guide
 ---
 

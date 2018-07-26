@@ -1,11 +1,12 @@
 ---
 title: TiDB 2.0 Upgrade Guide
+summary: Learn how to upgrade from TiDB 1.0/TiDB 2.0 RC version to TiDB 2.0 GA version.
 category: deployment
 ---
 
 # TiDB 2.0 Upgrade Guide
 
-This document describes how to upgrade from TiDB 1.0 or TiDB 2.0 RC versions to TiDB 2.0 GA.
+This document describes how to upgrade from TiDB 1.0 or TiDB 2.0 RC version to TiDB 2.0 GA version.
 
 ## Install Ansible and dependencies in the Control Machine
 

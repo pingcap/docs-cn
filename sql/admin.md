@@ -1,5 +1,6 @@
 ---
 title: Database Administration Statements
+summary: Use administration statements to manage the TiDB database. 
 category: user guide
 ---
 

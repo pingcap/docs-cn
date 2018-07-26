@@ -1,5 +1,6 @@
 ---
 title: Understand the Query Execution Plan
+summary: Learn about the execution plan information returned by the `EXPLAIN` statement in TiDB.
 category: user guide
 ---
 

@@ -1,11 +1,12 @@
 ---
 title: TiDB Memory Control
+summary: Learn how to configure the memory quota of a query and avoid OOM (out of memory).
 category: user guide
 ---
 
 # TiDB Memory Control
 
-Currently TiDB can track the memory quota of a single SQL query and take actions to prevent OOM (out of memory) or troubleshoot OOM when the memory usage exceeds a specific threshold value. In the TiDB configuration file, you can configure the options as below to control TiDB behaviors when the memory quota exceeds the threshold value:
+Currently, TiDB can track the memory quota of a single SQL query and take actions to prevent OOM (out of memory) or troubleshoot OOM when the memory usage exceeds a specific threshold value. In the TiDB configuration file, you can configure the options as below to control TiDB behaviors when the memory quota exceeds the threshold value:
 
 ```
 # Valid options: ["log", "cancel"]

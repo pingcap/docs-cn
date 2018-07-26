@@ -1,5 +1,6 @@
 ---
 title: Data Definition Statements
+summary: Learn how to use DDL (Data Definition Language) in TiDB.
 category: user guide
 ---
 

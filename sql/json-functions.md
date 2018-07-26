@@ -1,5 +1,6 @@
 ---
 title: JSON Functions
+summary: Learn about JSON functions.
 category: user guide
 ---
 

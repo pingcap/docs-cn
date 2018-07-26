@@ -1,9 +1,12 @@
 ---
 title: Numeric Functions and Operators
+summary: Learn about the numeric functions and operators.
 category: user guide
 ---
 
 # Numeric Functions and Operators
+
+This document describes the arithmetic operators and mathematical functions.
 
 ## Arithmetic operators
 

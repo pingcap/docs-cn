@@ -1,5 +1,6 @@
 ---
 title: The Proprietary System Variables and Syntaxes in TiDB
+summary: Use the proprietary system variables and syntaxes in TiDB to optimize performance.
 category: user guide
 ---
 

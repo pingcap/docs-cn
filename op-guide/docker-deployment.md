@@ -1,5 +1,6 @@
 ---
 title: Deploy TiDB Using Docker
+summary: Use Docker to manually deploy a multi-node TiDB cluster on multiple machines.
 category: operations
 ---
 

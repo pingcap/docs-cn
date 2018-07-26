@@ -1,6 +1,6 @@
 ---
 title: TiDB Docker Compose Deployment
-summary: Deploy a TiDB testing cluster with a single command using Docker Compose.
+summary: Use Docker Compose to quickly deploy a TiDB testing cluster.
 category: operations
 ---
 

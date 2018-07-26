@@ -1,5 +1,6 @@
 ---
 title: TiDB Roadmap
+summary: Learn about the roadmap of TiDB.
 category: Roadmap
 ---
 

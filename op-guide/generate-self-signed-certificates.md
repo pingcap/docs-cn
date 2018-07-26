@@ -1,5 +1,6 @@
 ---
 title: Generate Self-signed Certificates
+summary: Use `cfssl` to generate self-signed certificates.
 category: deployment
 ---
 

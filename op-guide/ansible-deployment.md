@@ -1,5 +1,6 @@
 ---
 title: Deploy TiDB Using Ansible
+summary: Use Ansible to deploy a TiDB cluster.
 category: operations
 ---
 

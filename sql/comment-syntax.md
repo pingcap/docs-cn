@@ -1,5 +1,6 @@
 ---
 title: Comment Syntax
+summary: Learn about the three comment styles in TiDB.
 category: user guide
 ---
 

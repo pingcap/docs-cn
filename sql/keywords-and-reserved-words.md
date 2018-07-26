@@ -1,5 +1,6 @@
 ---
 title: Keywords and Reserved Words
+summary: Learn about the keywords and reserved words in TiDB.
 category: user guide
 ---
 

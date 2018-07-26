@@ -1,5 +1,6 @@
 ---
 title: Transactions
+summary: Learn how to use the distributed transaction statements.
 category: user guide
 ---
 

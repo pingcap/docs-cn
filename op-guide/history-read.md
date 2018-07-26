@@ -1,5 +1,6 @@
 ---
 title: Reading Data from History Versions
+summary: Learn about how TiDB reads data from history versions.
 category: advanced
 ---
 

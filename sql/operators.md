@@ -1,4 +1,12 @@
+---
+title: Operators
+summary: Learn about the operators precedence, comparison functions and operators, logical operators, and assignment operators.
+category: user guide
+---
+
 # Operators
+
+This document describes the operators precedence, comparison functions and operators, logical operators, and assignment operators.
 
 - [Operator precedence](#operator-precedence)
 - [Comparison functions and operators](#comparison-functions-and-operators)

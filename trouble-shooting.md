@@ -1,5 +1,6 @@
 ---
 title: TiDB Cluster Troubleshooting Guide
+summary: Learn how to diagnose and resolve issues when you use TiDB.
 category: advanced
 ---
 

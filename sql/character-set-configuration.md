@@ -1,5 +1,6 @@
 ---
 title: Character Set Configuration
+summary: Learn about the character set configuration.
 category: user guide
 ---
 

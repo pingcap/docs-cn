@@ -1,5 +1,6 @@
 ---
 title: Migration Overview
+summary: Learn how to migrate data from MySQL to TiDB.
 category: operations
 ---
 

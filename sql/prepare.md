@@ -1,5 +1,6 @@
 ---
 title: Prepared SQL Statement Syntax
+summary: Use Prepared statements to reduce the load of statement parsing and query optimization, and improve execution efficiency.
 category: user guide
 ---
 

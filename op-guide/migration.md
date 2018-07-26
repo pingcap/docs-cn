@@ -1,5 +1,6 @@
 ---
 title: Migrate Data from MySQL to TiDB
+summary: Use `mydumper`, `loader` and `syncer` tools to migrate data from MySQL to TiDB.
 category: operations
 ---
 

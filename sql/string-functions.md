@@ -1,8 +1,8 @@
 ---
 title: String Functions
+summary: Learn about the string functions in TiDB.
 category: user guide
 ---
-
 
 # String Functions
 

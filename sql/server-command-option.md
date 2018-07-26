@@ -1,9 +1,12 @@
 ---
 title: The TiDB Command Options
+summary: Learn about TiDB command options and configuration files.
 category: user guide
 ---
 
 # The TiDB Command Options
+
+This document describes the startup options and TiDB server configuration files.
 
 ## TiDB startup options
 

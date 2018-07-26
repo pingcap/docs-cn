@@ -1,5 +1,6 @@
 ---
 title: Cross-Region Deployment
+summary: Learn the cross-region deployment that maximizes the capacity for disaster recovery.
 category: operations
 ---
 

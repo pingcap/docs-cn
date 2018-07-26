@@ -1,9 +1,12 @@
 ---
 title: Aggregate (GROUP BY) Functions
+summary: Learn about the supported aggregate functions in TiDB.
 category: user guide
 ---
 
 # Aggregate (GROUP BY) Functions
+
+This document describes details about the supported aggregate functions in TiDB.
 
 ## Aggregate (GROUP BY) function descriptions
 

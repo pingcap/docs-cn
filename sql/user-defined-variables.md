@@ -1,5 +1,6 @@
 ---
 title: User-Defined Variables
+summary: Learn how to use user-defined variables.
 category: user guide
 ---
 
@@ -8,6 +9,7 @@ category: user guide
 The format of the user-defined variables is `@var_name`. `@var_name` consists of alphanumeric characters, `_`, and `$`. The user-defined variables are case-insensitive.
 
 The user-defined variables are session specific, which means a user variable defined by one client cannot be seen or used by other clients.
+
 You can use the `SET` statement to set a user variable:
 
 ```sql

@@ -1,5 +1,6 @@
 ---
 title: The TiDB System Database
+summary: Learn tables contained in the TiDB System Database.
 category: user guide
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: TiDB Configuration File Description
+summary: Learn the TiDB configuration file options that are not involved in command line options.
 category: deployment
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: Time Zone
+summary: Learn how to set the time zone and its format.
 category: user guide
 ---
 
@@ -12,6 +13,7 @@ You can use the following statement to set the global server `time_zone` value a
 ```sql
 mysql> SET GLOBAL time_zone = timezone;
 ```
+
 Each client has its own time zone setting, given by the session `time_zone` variable. Initially, the session variable takes its value from the global `time_zone` variable, but the client can change its own time zone with this statement:
 
 ```sql

@@ -1,5 +1,6 @@
 ---
 title: TiDB-Binlog user guide
+summary: Learn how to deploy the Kafka version of TiDB-Binlog.
 category: tool
 ---
 

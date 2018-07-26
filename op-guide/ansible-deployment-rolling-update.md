@@ -1,5 +1,6 @@
 ---
 title: Upgrade TiDB Using TiDB-Ansible
+summary: Use TiDB-Ansible to perform a rolling update for a TiDB cluster.
 category: operations
 ---
 

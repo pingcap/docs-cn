@@ -1,5 +1,6 @@
 ---
 title: Configuration Flags
+summary: Learn some configuration flags of TiDB, TiKV and PD.
 category: operations
 ---
 

@@ -1,9 +1,12 @@
 ---
 title: Literal Values
+summary: Learn how to use various literal values.
 category: user guide
 ---
 
 # Literal Values
+
+This document describes String literals, Numeric literals, NULL values, Hexadecimal literals, Date and time literals, Boolean literals, and Bit-value literals.
 
 ## String literals
 

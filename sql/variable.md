@@ -1,5 +1,6 @@
 ---
 title: The System Variables
+summary: Learn how to use the system variables in TiDB.
 category: user guide
 ---
 

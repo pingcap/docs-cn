@@ -1,5 +1,6 @@
 ---
 title: Miscellaneous Functions
+summary: Learn about miscellaneous functions in TiDB.
 category: user guide
 ---
 

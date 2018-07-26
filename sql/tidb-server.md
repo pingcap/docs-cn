@@ -1,11 +1,10 @@
 ---
 title: The TiDB Server
+summary: Learn about the basic management functions of the TiDB cluster.
 category: user guide
 ---
 
 # The TiDB Server
-
-## TiDB service
 
 TiDB refers to the TiDB database management system. This document describes the basic management functions of the TiDB cluster.
 

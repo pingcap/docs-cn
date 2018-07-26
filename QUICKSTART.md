@@ -1,5 +1,6 @@
 ---
 title: TiDB Quick Start Guide
+summary: Learn how to deploy a TiDB cluster and try it quickly.
 category: quick start
 ---
 
@@ -21,7 +22,7 @@ The architecture is as follows:
 
 ![TiDB Architecture](media/tidb-architecture.png)
 
-For details of deploying a TiDB cluster, see [Ansible Deployment](op-guide/ansible-deployment.md).
+To quickly deploy a TiDB testing cluster, see [Deploy TiDB Using Docker Compose](op-guide/docker-compose.md).
 
 ## Try TiDB
 

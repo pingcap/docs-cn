@@ -1,5 +1,6 @@
 ---
 title: Backup and Restore
+summary: Learn how to back up and restore the data of TiDB.
 category: operations
 ---
 
@@ -7,7 +8,7 @@ category: operations
 
 ## About
 
-This document describes how to backup and restore the data of TiDB. Currently, this document only covers full backup and restoration.
+This document describes how to back up and restore the data of TiDB. Currently, this document only covers full backup and restoration.
 
 Here we assume that the TiDB service information is as follows:
 

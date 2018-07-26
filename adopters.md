@@ -1,5 +1,6 @@
 ---
 title: TiDB Adopters
+summary: Learn about the list of TiDB adopters in various industries.
 category: adopters
 ---
 

@@ -1,11 +1,10 @@
 ---
 title: Privilege Management
+summary: Learn how to manage the privilege.
 category: user guide
 ---
 
 # Privilege Management
-
-## Privilege management overview
 
 TiDB's privilege management system is implemented according to the privilege management system in MySQL. It supports most of the syntaxes and privilege types in MySQL. If you find any inconsistency with MySQL, feel free to [open an issue](https://github.com/pingcap/docs-cn/issues/new).
 

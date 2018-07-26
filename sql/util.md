@@ -1,9 +1,12 @@
 ---
 title: Utility Statements
+summary: Learn how to use the utility statements, including the `DESCRIBE`, `EXPLAIN`, and `USE` statements.
 category: user guide
 ---
 
 # Utility Statements
+
+This document describes the utility statements, including the `DESCRIBE`, `EXPLAIN`, and `USE` statements.
 
 ## `DESCRIBE` statement
 

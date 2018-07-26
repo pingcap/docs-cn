@@ -1,5 +1,6 @@
 ---
 title: Install and Deploy TiKV Using Binary Files
+summary: Use binary files to deploy a TiKV cluster on a single machine or on multiple nodes for testing.
 category: user guide
 ---
 
@@ -8,7 +9,7 @@ category: user guide
 This guide describes how to deploy a TiKV cluster using binary files.
 
 - To quickly understand and try TiKV, see [Deploy the TiKV cluster on a single machine](#deploy-the-tikv-cluster-on-a-single-machine).
-- To try TiKV out and explore the features, see [Deploy the TiKV cluster on multiple nodes for test](#deploy-the-tikv-cluster-on-multiple-nodes-for-test).
+- To try TiKV out and explore the features, see [Deploy the TiKV cluster on multiple nodes for testing](#deploy-the-tikv-cluster-on-multiple-nodes-for-testing).
 
 ## Deploy the TiKV cluster on a single machine
 
@@ -69,7 +70,7 @@ You can use the [pd-ctl](https://github.com/pingcap/pd/tree/master/pdctl) tool t
 
 If the state of all the TiKV instances is "Up", you have successfully deployed a TiKV cluster.
 
-## Deploy the TiKV cluster on multiple nodes for test
+## Deploy the TiKV cluster on multiple nodes for testing
 
 This section describes how to deploy TiKV on multiple nodes. If you want to test TiKV with a limited number of nodes, you can use one PD instance to test the entire cluster.
 

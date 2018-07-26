@@ -1,5 +1,6 @@
 ---
 title: TiDB-Binlog user guide
+summary: Learn how to install, deploy and monitor TiDB-Binlog.
 category: tool
 ---
 

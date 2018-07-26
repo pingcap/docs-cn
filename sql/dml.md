@@ -1,5 +1,6 @@
 ---
 title: TiDB Data Manipulation Language
+summary: Use DML (Data Manipulation Language) to select, insert, delete and update the data.
 category: user guide
 ---
 
