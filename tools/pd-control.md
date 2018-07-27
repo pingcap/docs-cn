@@ -356,7 +356,7 @@ Success!
 }
 >> member leader resign // 将 leader 从当前成员移走
 ......
->> member leader transfer 9724873857558226554 // 将 leader 迁移至指定 ID 成员
+>> member leader transfer pd3 // 将 leader 迁移至指定成员
 ......
 ```
 
