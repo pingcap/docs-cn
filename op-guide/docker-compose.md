@@ -97,7 +97,7 @@ category: deployment
 5. 使用生成的 `docker-compose.yml` 创建并启动集群
 
     ```bash
-    docker-compose -f generated-docker-compose.yaml pull # Get the latest Docker images
+    docker-compose -f generated-docker-compose.yml pull # Get the latest Docker images
     docker-compose -f generated-docker-compose.yml up -d
     ```
 
