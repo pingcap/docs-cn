@@ -28,7 +28,7 @@ category: monitoring
 	- Current Storage Size：TiDB 集群目前已用数据库空间大小
 
 	- Number of Regions：当前集群的 Region 总量
-	
+
 	- Leader Balance Ratio：Leader 数量最多和最少节点相差的百分比，一般小于 5%，节点重启时会有比较大的波动
 
   - Region Balance Ratio：Region 数量最多和最少节点相差的百分比，一般小于 5%，新增/下线节点时相差比较大
