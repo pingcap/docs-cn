@@ -31,9 +31,9 @@ category: monitoring
 	
 	- Leader Balance Ratio：Leader 数量最多和最少节点相差的百分比，一般小于 5%，节点重启时会有比较大的波动
 
-   - Region Balance Ratio：Region 数量最多和最少节点相差的百分比，一般小于 5%，新增/下线节点时相差比较大
+  - Region Balance Ratio：Region 数量最多和最少节点相差的百分比，一般小于 5%，新增/下线节点时相差比较大
 
-   + Store Status：集群 TiKV 节点的状态
+  + Store Status：集群 TiKV 节点的状态
 
 		- Up Stores：正常运行的 TiKV 节点数量
 
