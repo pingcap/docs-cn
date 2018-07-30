@@ -29,14 +29,14 @@ TiSpark is an OLAP solution that runs Spark SQL directly on TiKV, the distribute
 
 ## Recommended configuration
 
-### Deployment of TiKV and TiSpark clusters
+This section describes the configuration of independent deployment of TiKV and TiSpark, independent deployment of Spark and TiSpark, and hybrid deployment of TiKV and TiSpark.
 
-#### Configuration of the TiKV cluster
+### Configuration of independent deployment of TiKV and TiSpark
 
-For independent deployment of TiKV and TiSpark, it is recommended to refer to the following recommendations
- 
+For independent deployment of TiKV and TiSpark, it is recommended to refer to the following recommendations:
+
 + Hardware configuration
- - For general purposes, please refer to the TiDB and TiKV hardware configuration [recommendations](https://github.com/pingcap/docs/blob/master/op-guide/recommendation.md#deployment-recommendations).
+ - For general purposes, please refer to the TiDB and TiKV hardware configuration [recommendations](../op-guide/recommendation.md#deployment-recommendations).
  - If the usage is more focused on the analysis scenarios, you can increase the memory of the TiKV nodes to at least 64G.
 
 + TiKV parameters (default)
@@ -67,7 +67,7 @@ For independent deployment of TiKV and TiSpark, it is recommended to refer to th
     scheduler-worker-pool-size = 4
     ```
 
-#### Configuration of the independent deployment of the Spark cluster and TiSpark cluster
+### Configuration of independent deployment of Spark and TiSpark
 
 See the [Spark official website](https://spark.apache.org/docs/latest/hardware-provisioning.html) for the detail hardware recommendations.
 
@@ -85,9 +85,9 @@ SPARK_WORKER_MEMORY = 32g
 SPARK_WORKER_CORES = 8
 ```
 
-#### Hybrid deployment configuration for TiSpark and TiKV clusters
+### Configuration of hybrid deployment of TiKV and TiSpark
 
-For the hybrid deployment of TiSpark and TiKV, add TiSpark required resources to the TiKV reserved resources, and allocate 25% of the memory for the system.
+For the hybrid deployment of TiKV and TiSpark, add TiSpark required resources to the TiKV reserved resources, and allocate 25% of the memory for the system.
 
 ## Deploy the TiSpark cluster
 
