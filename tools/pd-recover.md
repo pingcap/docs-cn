@@ -33,7 +33,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 
 ### 恢复流程
 
-1. 从当前集群中找到集群的 Cluster ID 和 Alloc ID。一般 Cluster ID 可以从 PD，TiKV 或 TiDB 的日志中都可以获取。已经分配过的 Alloc ID 可以从 PD 日志获得 。另外也可以从 PD 的监控面板的 Metadata Information 监控项中获得。在指定 alloc-id 时需指定一个比当前最大的 Alloc ID 更大的值。如果没有途径获取 Alloc ID，可以根据集群中的 Region，Store 数预估一个较大的数，一般可取高几个数量级的数。
+1. 从当前集群中找到集群的 Cluster ID 和 Alloc ID。一般在 PD，TiKV 或 TiDB 的日志中都可以获取 Cluster ID。已经分配过的 Alloc ID 可以从 PD 日志获得。另外也可以从 PD 的监控面板的 Metadata Information 监控项中获得。在指定 alloc-id 时需指定一个比当前最大的 Alloc ID 更大的值。如果没有途径获取 Alloc ID，可以根据集群中的 Region，Store 数预估一个较大的数，一般可取高几个数量级的数。
 2. 停止整个集群，清空 PD 数据目录，重启 PD 集群。
 3. 使用 PD recover 进行恢复，注意指定正确的 cluster-id 和合适的 alloc-id。
 4. 提示恢复成功后，重启整个集群。
