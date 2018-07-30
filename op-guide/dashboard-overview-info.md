@@ -15,16 +15,16 @@ category: monitoring
 
 ## 说明
 
-+ Services Port Status
+- Services Port Status
 	- Services Online：各服务在线节点数量
 	- Services Offline：各服务 Down 掉节点数量
-+ PD
+- PD
 	- Storage Capacity：TiDB 集群总可用数据库空间大小
 	- Current Storage Size：TiDB 集群目前已用数据库空间大小
 	- Number of Regions：当前集群的 Region 总量
 	- Leader Balance Ratio：Leader 数量最多和最少节点相差的百分比，一般小于 5%，节点重启时会有比较大的波动
 	- Region Balance Ratio：Region 数量最多和最少节点相差的百分比，一般小于 5%，新增/下线节点时相差比较大
-	+ Store Status：集群 TiKV 节点的状态
+	- Store Status：集群 TiKV 节点的状态
 		- Up Stores：正常运行的 TiKV 节点数量
 		- Disconnect Stores：短时间内通信异常的 TiKV 节点数量
 		- LowSpace Stores：剩余可用空间小于 80% 的 TiKV 节点数量
@@ -33,7 +33,7 @@ category: monitoring
 		- Tombstone Stores：下线成功的 TiKV 节点数量
 	- 99% completed\_cmds\_duration\_seconds：单位时间内，99% 的 pd-server 请求执行时间小于监控曲线的值，一般 <= 5ms
 	- handle\_requests\_duration\_seconds：PD 发送请求的网络耗时
-+ TiDB
+- TiDB
 	- Statement OPS：SQL 执行数量统计（包含 select、insert、update 等）
 	- Duration：SQL 执行的时间
 	- QPS By Instance：每个 TiDB 上的 QPS
@@ -50,7 +50,7 @@ category: monitoring
 	- Lock Resolve OPS：事务冲突相关的数量
 	- Load Schema Duration：TiDB 从 TiKV 获取 Schema 的时间
 	- KV Backoff OPS：TiKV 返回错误信息的数量（事务冲突等）
-+ TiKV
+- TiKV
 	- leader：各个 TiKV 节点上 Leader 的数量分布
 	- region：各个 TiKV 节点上 Region 的数量分布
 	- CPU：各个 TiKV 节点的 CPU 使用率
@@ -65,7 +65,7 @@ category: monitoring
 	- coprocessor request duration：TiKV 中查询消耗的时间
 	- raft store CPU：raftstore 线程的 CPU 使用率，目前为单线程，超过 80% 说明使用率很高
 	- Coprocessor CPU：TiKV 查询线程的 CPU 使用率，和业务相关，复杂查询会使用大量的 CPU 资源
-+ System Info
+- System Info
 	- Vcores：CPU 核心数量
 	- Memory：内存总大小
 	- CPU Usage：CPU 使用率，最大为 100%
