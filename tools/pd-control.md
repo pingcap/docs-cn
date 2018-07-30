@@ -340,7 +340,7 @@ Success!
 }
 >> member leader resign // Move leader away from the current member
 ......
->> member leader transfer 9724873857558226554 // Migrate leader to a specified ID member
+>> member leader transfer pd3 // Migrate leader to a specified member
 ......
 ```
 
