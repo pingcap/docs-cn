@@ -25,12 +25,12 @@ category: monitoring
   - Leader Balance Ratio：Leader 数量最多和最少节点相差的百分比，一般小于 5%，节点重启时会有比较大的波动
   - Region Balance Ratio：Region 数量最多和最少节点相差的百分比，一般小于 5%，新增/下线节点时相差比较大
   - Store Status：集群 TiKV 节点的状态
-    - Up Stores：正常运行的 TiKV 节点数量
-    - Disconnect Stores：短时间内通信异常的 TiKV 节点数量
-    - LowSpace Stores：剩余可用空间小于 80% 的 TiKV 节点数量
-    - Down Stores：停止工作的 TiKV 节点数量，如果大于 0，说明有节点不正常
-    - Offline Stores：正在下线的 TiKV 节点数量（正在下线的 TiKV 节点还在提供服务）
-    - Tombstone Stores：下线成功的 TiKV 节点数量
+      - Up Stores：正常运行的 TiKV 节点数量
+      - Disconnect Stores：短时间内通信异常的 TiKV 节点数量
+      - LowSpace Stores：剩余可用空间小于 80% 的 TiKV 节点数量
+      - Down Stores：停止工作的 TiKV 节点数量，如果大于 0，说明有节点不正常
+      - Offline Stores：正在下线的 TiKV 节点数量（正在下线的 TiKV 节点还在提供服务）
+      - Tombstone Stores：下线成功的 TiKV 节点数量
   - 99% completed\_cmds\_duration\_seconds：单位时间内，99% 的 pd-server 请求执行时间小于监控曲线的值，一般 <= 5ms
   - handle\_requests\_duration\_seconds：PD 发送请求的网络耗时
 - TiDB
