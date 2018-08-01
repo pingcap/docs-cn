@@ -53,7 +53,7 @@ In the table above, `tikv_gc_run_interval`, `tikv_gc_life_time` and `tikv_gc_con
 
     The duration strings are a sequence of a number with the time unit, such as 24h, 2h30m and 2.5h. The time units you can use include "h", "m" and "s".
 
-    > **Note**: When you set `tikv_gc_life_time` to a large number (like days or even months) in a data updated frequently scenario, some problems as follows may occur: 
+    > **Note**: When you set `tikv_gc_life_time` to a large number (like days or even months) in a scenario where data is updated frequently, some problems as follows may occur: 
         
     - The more versions of the data, the more disk storage space is occupied.
     - A large number of history versions might slow down the query. They may affect range queries like `select count(*) from t`.
@@ -61,7 +61,7 @@ In the table above, `tikv_gc_run_interval`, `tikv_gc_life_time` and `tikv_gc_con
 
 - `tikv_gc_last_run_time`: the last time GC works.
 
-- `tikv_gc_safe_point`: the time that versions before which are cleared by GC and versions after which are readable.
+- `tikv_gc_safe_point`: the time before which versions are cleared by GC and after which versions are readable.
 
 - `tikv_gc_concurrency`: the GC concurrency. It is set to 1 by default. In this case, a single thread operates and threads send request to each Region and wait for the response one by one. You can set the variable value larger to improve the system performance, but keep the value smaller than 128.
 
@@ -71,7 +71,7 @@ The GC implementation process is complex. When the obsolete data is cleared, dat
 
 ### 1. Resolve locks
 
-The TiDB transaction model is inspired by Google's Percolator. It's mainly a two-phase commit protocol with some practical optimizations. When the first phase is finished, all the related keys are locked. Among these locks, one is the primary lock and the others are secondary locks which contain a pointer of the primary locks; in the secondary phase, the key with the primary lock gets a write record and its lock is removed. The write record indicates the write or delete operation in the history or the transactional rollback record of this key. Replacing the primary lock with which write record indicates whether the corresponding transaction is committed successfully. Then all the secondary locks are replaced successively. If the threads to replace the secondary locks fail, these locks are retained. During GC, the lock whose timestamp is before the safe point is replaced with the corresponding write record based on the transaction committing status.
+The TiDB transaction model is inspired by Google's Percolator. It's mainly a two-phase commit protocol with some practical optimizations. When the first phase is finished, all the related keys are locked. Among these locks, one is the primary lock and the others are secondary locks which contain a pointer of the primary locks; in the secondary phase, the key with the primary lock gets a write record and its lock is removed. The write record indicates the write or delete operation in the history or the transactional rollback record of this key. Replacing the primary lock with which write record indicates whether the corresponding transaction is committed successfully. Then all the secondary locks are replaced successively. If the threads fail to replace the secondary locks, these locks are retained. During GC, the lock whose timestamp is before the safe point is replaced with the corresponding write record based on the transaction committing status.
 
 > **Note**: This is a required step. Once GC has cleared the write record of the primary lock, you can never know whether this transaction is successful or not. As a result, data consistency cannot be guaranteed.
 
