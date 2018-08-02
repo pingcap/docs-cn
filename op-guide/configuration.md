@@ -37,7 +37,7 @@ category: deployment
 
 + 登录TiDB的IP地址
 + 默认: ""
-+ TiDB 会存储一些信息( 比如IP ) 到PD。请确保`advertise-address`是该服务器的公网IP，比如172.16.30.8，否则这个参数将没有意义。
++ 这个IP地址必须确保用户和集群中的其他机器都能够访问到。
 
 ### `--host`
 
