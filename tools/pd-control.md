@@ -11,7 +11,7 @@ As a command line tool of PD, PD Control obtains the state information of the cl
 ## Source code compiling
 
 1. [Go](https://golang.org/) Version 1.9 or later
-2. In the PD root directory, use the `make` command to compile and generate `bin/pd-ctl`
+2. In the root directory of the [PD project](https://github.com/pingcap/pd), use the `make` command to compile and generate `bin/pd-ctl`
 
 > **Note:** Generally, you don't need to compile source code as the PD Control tool already exists in the released Binary or Docker. However, dev users can refer to the above instruction for compiling source code.
 
