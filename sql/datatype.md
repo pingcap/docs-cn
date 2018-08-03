@@ -123,7 +123,7 @@ FLOAT(p) [UNSIGNED] [ZEROFILL]
 
 ### 定点类型
 
-TiDB 支持 MySQL 所有的浮点类型，包括 DECIMAL、NUMERIC，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/fixed-point-types.html)文档。
+TiDB 支持 MySQL 所有的定点类型，包括 DECIMAL、NUMERIC，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/fixed-point-types.html)文档。
 
 #### 类型定义
 
