@@ -12,6 +12,12 @@ TiDB, TiKV and PD are configurable using command-line flags and environment vari
 
 The default TiDB ports are 4000 for client requests and 10080 for status report.
 
+### `--advertise-address`
+
+- The IP address on which to advertise the apiserver to the TiDB server
+- Default: ""
+- This address must be reachable by the rest of the TiDB cluster and the user.
+
 ### `--binlog-socket`
 
 - The TiDB services use the unix socket file for internal connections, such as the Pump service
