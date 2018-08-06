@@ -35,9 +35,9 @@ category: deployment
 
 ### `--advertise-address`
 
-+ 登录TiDB的IP地址
++ 登录 TiDB 的 IP 地址
 + 默认: ""
-+ 这个IP地址必须确保用户和集群中的其他机器都能够访问到。
++ 这个 IP 地址必须确保用户和集群中的其他机器都能够访问到。
 
 ### `--host`
 
