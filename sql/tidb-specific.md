@@ -245,19 +245,19 @@ The `Hint` syntax is included in comments like `/*+ xxx */`, and in MySQL client
  
 ### TIDB_SMJ(t1, t2)
  
-```SELECT /*+ TIDB_SMJ(t1, t2) */ * from t1，t2 where t1.id = t2.id```
+```SELECT /*+ TIDB_SMJ(t1, t2) */ * from t1, t2 where t1.id = t2.id```
 
 This variable is used to remind the optimizer to use the `Sort Merge Join` algorithm. This algorithm takes up less memory, but takes longer to execute. It is recommended if the data size is too large, or there’s insufficient system memory.
 
 ### TIDB_INLJ(t1, t2)
  
-```SELECT /*+ TIDB_INLJ(t1, t2) */ * from t1，t2 where t1.id = t2.id```
+```SELECT /*+ TIDB_INLJ(t1, t2) */ * from t1, t2 where t1.id = t2.id```
 
 This variable is used to remind the optimizer to use the `Index Nested Loop Join` algorithm. In some scenarios, this algorithm runs faster and takes up fewer system resources, but may be slower and takes up more system resources in some other scenarios. You can try to use this algorithm in scenarios where the result-set is less than 10,000 rows after the outer table is filtered by the WHERE condition. The parameter in `TIDB_INLJ()` is the candidate table for the driving table (external table) when generating the query plan. That means, `TIDB_INLJ (t1)` will only consider using t1 as the driving table to create a query plan.
 
 ### TIDB_HJ(t1, t2)
 
-```SELECT /*+ TIDB_HJ(t1, t2) */ * from t1，t2 where t1.id = t2.id```
+```SELECT /*+ TIDB_HJ(t1, t2) */ * from t1, t2 where t1.id = t2.id```
 
 This variable is used to remind the optimizer to use the `Hash Join` algorithm. This algorithm executes threads concurrently. It runs faster but takes up more memory.
 

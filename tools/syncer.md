@@ -127,7 +127,7 @@ status-addr = "127.0.0.1:10086"
 # replicate-do-db = ["~^b.*","s1"]
 
 # Specify the db.table to be synchronized.
-# db-name and tbl-name do not support the `db-name ="dbname，dbname2"` format.
+# db-name and tbl-name do not support the `db-name ="dbname, dbname2"` format.
 # [[replicate-do-table]]
 # db-name ="dbname"
 # tbl-name = "table-name"
@@ -145,7 +145,7 @@ status-addr = "127.0.0.1:10086"
 # replicate-ignore-db = ["~^b.*","s1"]
 
 # Specify the database table you want to ignore in synchronization.
-# db-name and tbl-name do not support the `db-name ="dbname，dbname2"` format.
+# db-name and tbl-name do not support the `db-name ="dbname, dbname2"` format.
 # [[replicate-ignore-table]]
 # db-name = "your_db"
 # tbl-name = "your_table"
