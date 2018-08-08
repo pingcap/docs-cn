@@ -515,7 +515,7 @@ TiDB 在执行 SQL 时，预估出来每个 operator 处理了超过 10000 条�
 - HIGH_PRIORITY：该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句
 - LOW_PRIORITY：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
 
-以上两种参数可以结合 TiDB 的 DML 语言进行使用，具体使用方式可以参考[官方文档](https://pingcap.com/docs-cn/sql/dml/)，使用方法举例如下：
+以上两种参数可以结合 TiDB 的 DML 语言进行使用，具体使用方式可以参考[官方文档](sql/dml.md)，使用方法举例如下：
 
 1）通过在数据库中写 SQL 的方式来调整优先级：
 
@@ -526,22 +526,23 @@ delete HIGH_PRIORITY | LOW_PRIORITY from table_name;
 update HIGH_PRIORITY | LOW_PRIORITY table_reference set assignment_list where where_condition;
 replace HIGH_PRIORITY | LOW_PRIORITY into table_name;
 ```
+
 2）全表扫会自动调整为低优先级，analyze 也是默认低优先级。
 
 #### 3.3.11 在 TiDB 中 auto analyze 的触发策略是怎样的？
 
 触发策略：新表达到 1000 条，会自动触发。
 
-当表的 (修改数/当前总行数) 大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 analyze 语句。`tidb_auto_analyze_ratio` 的默认值为 0，即关闭此功能。为了保险起见，在开启此功能的时候，保证了其最小值为 0.3。但是不能大于等于 `pseudo-estimate-ratio` (默认值为 0.7），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
+当表的（修改数/当前总行数）大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 analyze 语句。`tidb_auto_analyze_ratio` 的默认值为 0，即关闭此功能。为了保险起见，在开启此功能的时候，保证了其最小值为 0.3。但是不能大于等于 `pseudo-estimate-ratio`（默认值为 0.7），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
 
-#### 3.3.12 Select 语句在 TiDB 的 RC 与 RR 隔离级别下的实现过程，以及对应用的影响。
+#### 3.3.12 Select 语句在 TiDB 的 RC 与 RR 隔离级别下的实现过程，以及对应用的影响是怎样的？
 
-TiDB 实现了两种隔离级别：读已提交和可重复读。
+TiDB 实现了两种隔离级别：读已提交（Read Committed, RC）和可重复读（Repeatable Read, RR）。
 
 Select 在不同的隔离级别上，会有不同的执行逻辑和表现形式：
 
-- 首先，select 在 RC 隔离级别下，不会到 PD 拿时间戳，直接用最大的 timestamp 去读数据，读取到当前最新的已经提交成功的数据。但在 RC 模式下，也会出现 RC 事务隔离级别本身的问题，即会出现幻读和不可重复读的情况。
-- RR 隔离级别还是要到 PD 去拿 timestamp ，通过 timestamp 以及 precolator 算法来读取多版本数据，防止读到被其他事务/会话修改过的数据，从而避免了幻读和不可重复读的问题。
+- 首先，select 在 RC 隔离级别下，不会到 PD 拿时间戳，而是直接用最大的 timestamp 去读数据，读取到当前最新的已经提交成功的数据。但在 RC 模式下，也会出现 RC 事务隔离级别本身的问题，即会出现幻读和不可重复读的情况。
+- RR 隔离级别还是要到 PD 去拿 timestamp，通过 timestamp 以及 Precolator 算法来读取多版本数据，防止读到被其他事务/会话修改过的数据，从而避免了幻读和不可重复读的问题。
 
 #### 3.3.13 SQL 中如何通过 hint 使用一个具体的 index？
 
