@@ -449,10 +449,16 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
     | node8 | 172.16.10.8 | TiKV3 |
     | node9 | 172.16.10.9 | TiKV4 |
 
-5.  更新 Prometheus 配置并重启：
+5.  滚动升级整个集群：
+
+    ```
+    ansible-playbook rolling_update.yml
+    ```
+
+6.  更新 Prometheus 配置并重启：
 
     ```
     ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
-6.  打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群的状态。
+7.  打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群的状态。
