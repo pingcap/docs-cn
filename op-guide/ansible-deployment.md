@@ -133,7 +133,7 @@ $ git clone https://github.com/pingcap/tidb-ansible.git
 
   ```bash
   $ cd /home/tidb/tidb-ansible
-  $ sudo pip install -r ./requirements.txt
+  $ pip install -r ./requirements.txt --user
   $ ansible --version
     ansible 2.5.0
   ```
