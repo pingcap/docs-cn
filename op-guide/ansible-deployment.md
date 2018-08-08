@@ -61,7 +61,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 创建 `tidb` 用户
 
 ```
-# useradd tidb
+# useradd -m -d /home/tidb tidb
 ```
 
 设置 `tidb` 用户密码
