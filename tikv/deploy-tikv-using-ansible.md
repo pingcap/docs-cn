@@ -59,7 +59,7 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
 1. Create the `tidb` user.
 
     ```
-    # useradd tidb
+    # useradd -m -d /home/tidb tidb
     ```
 
 2. Set a password for the `tidb` user account.
