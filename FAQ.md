@@ -510,7 +510,7 @@ TiDB 在执行 SQL 时，预估出来每个 operator 处理了超过 10000 条�
 
 #### 3.3.10 在 TiDB 中如何控制或改变 SQL 提交的执行优先级？
 
-首先需要了解高优先级和低优先级的语法元素
+首先需要了解高优先级和低优先级的语法元素：
 
 - HIGH_PRIORITY：该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句
 - LOW_PRIORITY：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
@@ -537,7 +537,7 @@ replace HIGH_PRIORITY | LOW_PRIORITY into table_name;
 
 #### 3.3.12 Select 语句在 TiDB 的 RC 与 RR 隔离级别下的实现过程，以及对应用的影响是怎样的？
 
-TiDB 实现了两种隔离级别：读已提交（Read Committed, RC）和可重复读（Repeatable Read, RR）。
+TiDB 实现了两种隔离级别：读已提交 (Read Committed, RC) 和可重复读 (Repeatable Read, RR)。
 
 Select 在不同的隔离级别上，会有不同的执行逻辑和表现形式：
 
