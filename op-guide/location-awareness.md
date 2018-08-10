@@ -45,13 +45,11 @@ location-labels = ["zone", "rack", "host"]
 
 ## PD schedules based on the TiKV topology
 
-PD makes optimal schedulings according to the topological information. You just need to care about what kind of topology can achieve the desired effect.
+PD makes optimal scheduling according to the topological information. You just need to care about what kind of topology can achieve the desired effect.
 
-If you use 3 replicas and hope that everything still works well when a data zone hangs up, you need at least 4 data zones.
-(Theoretically, three data zones are feasible but the current implementation cannot guarantee.)
+If you use 3 replicas and hope that the TiDB cluster is always highly available even when a data zone goes down, you need at least 4 data zones.
 
-Assume that we have 4 data zones, each zone has 2 racks and each rack has 2 hosts.
-We can start 2 TiKV instances on each host:
+Assume that you have 4 data zones, each zone has 2 racks, and each rack has 2 hosts. You can start 2 TiKV instances on each host:
 
 ```
 # zone=z1
@@ -82,7 +80,8 @@ tikv-server --labels zone=z4,rack=r2,host=h2
 In other words, 16 TiKV instances are distributed across 4 data zones, 8 racks and 16 machines.
 
 In this case, PD will schedule different replicas of each datum to different data zones.
-- If one of the data zones hangs up, everything still works well.
+
+- If one of the data zones goes down, the high availability of the TiDB cluster is not affected.
 - If the data zone cannot recover within a period of time, PD will remove the replica from this data zone.
 
 To sum up, PD maximizes the disaster recovery of the cluster according to the current topology. Therefore, if you want to reach a certain level of disaster recovery, deploy many machines in different sites according to the topology. The number of machines must be more than the number of `max-replicas`.
