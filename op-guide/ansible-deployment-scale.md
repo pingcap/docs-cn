@@ -457,10 +457,16 @@ For example, if you want to remove a PD node (node2) with the IP address `172.16
     | node8 | 172.16.10.8 | TiKV3 |
     | node9 | 172.16.10.9 | TiKV4 |
 
-5. Update the Prometheus configuration and restart the cluster:
+5. Perform a rolling update to the entire TiDB cluster:
+
+    ```
+    ansible-playbook rolling_update.yml
+    ```
+
+6. Update the Prometheus configuration and restart the cluster:
 
     ```
     ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
-6. Monitor the status of the entire cluster by opening a browser to access the monitoring platform: `http://172.16.10.3:3000`.
+7. To monitor the status of the entire cluster, open a browser to access the monitoring platform: `http://172.16.10.3:3000`.
