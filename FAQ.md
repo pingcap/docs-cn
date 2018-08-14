@@ -104,7 +104,7 @@ TiDB 的 `show processlist` 与 MySQL 的 `show processlist` 显示内容基本�
 
 TiDB 作为分布式数据库，在 TiDB 中修改用户密码建议使用 `set password for 'root'@'%' = '0101001';` 或 `alter` 方法，不推荐使用 `update mysql.user` 的方法进行，这种方法可能会造成其它节点刷新不及时的情况。修改权限也一样，都建议采用官方的标准语法。详情可参考 [TiDB 用户账户管理](sql/user-account-management.md)。
 
-#### 1.1.22 TiDB中，为什么出现后插入数据的自增 ID 反而小？
+#### 1.1.22 TiDB 中，为什么出现后插入数据的自增 ID 反而小？
 
 TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 tidb-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考[数据定义语句](sql/ddl.md)。
 
@@ -508,6 +508,38 @@ information_schema 库中的 tables 表里的 create_time 即为表的真实创�
 
 TiDB 在执行 SQL 时，预估出来每个 operator 处理了超过 10000 条数据就认为这条 query 是 expensive query。可以通过修改 tidb-server 配置参数来对这个门限值进行调整，调整后需要重新启动 tidb-server。
 
+#### 3.3.10 在 TiDB 中如何控制或改变 SQL 提交的执行优先级？
+
+TiDB 中高优先级和低优先级的语法元素如下：
+
+- HIGH_PRIORITY：该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句
+- LOW_PRIORITY：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
+
+以上两种参数可以结合 TiDB 的 DML 语言进行使用，具体使用方式可以参考[官方文档](sql/dml.md)，使用方法举例如下：
+
+1）通过在数据库中写 SQL 的方式来调整优先级：
+
+```
+select HIGH_PRIORITY | LOW_PRIORITY count(*) from table_name;
+insert HIGH_PRIORITY | LOW_PRIORITY into table_name insert_values;
+delete HIGH_PRIORITY | LOW_PRIORITY from table_name;
+update HIGH_PRIORITY | LOW_PRIORITY table_reference set assignment_list where where_condition;
+replace HIGH_PRIORITY | LOW_PRIORITY into table_name;
+```
+
+2）全表扫会自动调整为低优先级，analyze 也是默认低优先级。
+
+#### 3.3.11 在 TiDB 中 auto analyze 的触发策略是怎样的？
+
+触发策略：新表达到 1000 条，并且在 1 分钟内没有写入，会自动触发。
+
+当表的（修改数/当前总行数）大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 analyze 语句。`tidb_auto_analyze_ratio` 的默认值为 0，即关闭此功能。为了保险起见，在开启此功能的时候，保证了其最小值为 0.3。但是不能大于等于 `pseudo-estimate-ratio`（默认值为 0.7），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
+
+#### 3.3.12 SQL 中如何通过 hint 使用一个具体的 index？
+
+同 MySQL 的 用法一致，例如：
+`select column_name from table_name use index（index_name）where where_condition;`
+
 ### 3.4 TiKV 管理
 
 #### 3.4.1 TiKV 集群副本建议配置数量是多少，是不是最小高可用配置（3个）最好？
@@ -542,7 +574,7 @@ TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在�
 - Raftstore 线程卡了，可以看一下 Raftstore 的 CPU 使用情况。
 - TiKV 太忙了（读取、写入、磁盘 I/O 等），请求处理不过来。
 
-#### 3.4.7 TiKV 频繁切换 Region leader 切换是啥原因？
+#### 3.4.7 TiKV 频繁切换 Region leader 是什么原因？
 
 - 网络问题导致节点间通信卡了，查看 Report failures 监控。
 - 原主 Leader 的节点卡了，导致没有及时给 Follower 发送消息。
