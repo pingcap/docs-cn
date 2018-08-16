@@ -113,6 +113,7 @@ export PD_ADDR=http://127.0.0.1:2379
   "disable-make-up-replica": "false",
   "disable-remove-extra-replica": "false",
   "disable-location-replacement": "false",
+  "disable-namespace-relocation": "false",
   "schedulers-v2": [
     {
       "type": "balance-region",
@@ -278,6 +279,8 @@ config set cluster-version 1.0.8              // 设置 cluster version 为 1.0.
 
 `disable-location-replacement` 用于关闭隔离级别检查。
 当设置为 true 时，PD 不会通过调度来提升 Region 副本的隔离级别。
+
+`disable-namespace-relocation` 用于关闭 Region 的 namespace 调度。当设置为 true 时，PD 不会把 Region 调度到它所属的 Store 上。
 
 ### config delete namespace \<name\> [\<option\>]
 
