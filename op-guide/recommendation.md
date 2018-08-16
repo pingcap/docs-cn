@@ -22,6 +22,7 @@ As an open source distributed NewSQL database with high performance, TiDB can be
 > **Note:**
 > 
 > - For Oracle Enterprise Linux, TiDB supports the Red Hat Compatible Kernel (RHCK) and does not support the Unbreakable Enterprise Kernel provided by Oracle Enterprise Linux.
+> - A large number of TiDB tests have been run on the CentOS 7.3 system, and in our community there are a lot of best practices in which TiDB is deployed on the Linux operating system. Therefore, it is recommended to deploy TiDB on CentOS 7.3 or later.
 > - The support for the Linux operating systems above includes the deployment and operation in physical servers as well as in major virtualized environments like VMware, KVM and XEM.
 
 ## Server requirements
@@ -33,7 +34,7 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 | Component | CPU     | Memory | Local Storage  | Network  | Instance Number (Minimum Requirement) |
 | :------: | :-----: | :-----: | :----------: | :------: | :----------------: |
 | TiDB    | 8 core+   | 16 GB+  | SAS, 200 GB+ | Gigabit network card | 1 (can be deployed on the same machine with PD)      |
-| PD      | 8 core+   | 16 GB+  | SAS, 200 GB+ | Gigabit network card | 1 (can be deployed on the same machine with TiDB)       |
+| PD      | 4 core+   | 8 GB+  | SAS, 200 GB+ | Gigabit network card | 1 (can be deployed on the same machine with TiDB)       |
 | TiKV    | 8 core+   | 32 GB+  | SAS, 200 GB+ | Gigabit network card | 3       |
 |         |         |         |              | Total Server Number |  4      |
 
@@ -46,9 +47,9 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 
 | Component | CPU | Memory | Hard Disk Type | Network | Instance Number (Minimum Requirement) |
 | :-----: | :------: | :------: | :------: | :------: | :-----: |
-|  TiDB  | 16 core+ | 48 GB+ | SAS | 10 Gigabit network card (2 preferred) | 2 |
-| PD | 8 core+ | 16 GB+ | SSD | 10 Gigabit network card (2 preferred) | 3 |
-| TiKV | 16 core+ | 48 GB+ | SSD | 10 Gigabit network card (2 preferred) | 3 |
+|  TiDB  | 16 core+ | 32 GB+ | SAS | 10 Gigabit network card (2 preferred) | 2 |
+| PD | 4 core+ | 8 GB+ | SSD | 10 Gigabit network card (2 preferred) | 3 |
+| TiKV | 16 core+ | 32 GB+ | SSD | 10 Gigabit network card (2 preferred) | 3 |
 | Monitor | 8 core+ | 16 GB+ | SAS | Gigabit network card | 1 |
 |     |     |     |      |  Total Server Number   |    9   |
 
@@ -56,7 +57,7 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 > 
 > - In the production environment, you can deploy and run TiDB and PD on the same server. If you have a higher requirement for performance and reliability, try to deploy them separately.
 > - It is strongly recommended to use higher configuration in the production environment.
-> - It is recommended to keep the size of TiKV hard disk within 800G in case it takes too long to restore data when the hard disk is damaged.
+> - It is recommended to keep the size of TiKV hard disk within 2 TB if you are using PCI-E SSD disks or within 1.5 TB if you are using regular SSD disks.
 
 ## Network requirements
 
