@@ -11,7 +11,7 @@ Loader 是由 PingCAP 开发的数据导入工具，用于向 TiDB 中导入数�
 
 [Binary 下载](http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz)
 
-## 为什么我们要做这个东西
+## 为什么我们要做这个工具
 
 当数据量比较大的时候，如果用 mysqldump 这样的工具迁移数据会比较慢。我们尝试了 [mydumper/myloader 套件](https://github.com/maxbube/mydumper)，能够多线程导出和导入数据。在使用过程中，mydumper 问题不大，但是 myloader 由于缺乏出错重试、断点续传这样的功能，使用起来很不方便。所以我们开发了 loader，能够读取 mydumper 的输出数据文件，通过 MySQL protocol 向 TiDB/MySQL 中导入数据。
 
