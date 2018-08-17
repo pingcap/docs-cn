@@ -19,6 +19,13 @@ TiKV Control (`tikv-ctl`) is a command line tool of TiKV, used to manage the clu
     $ tikv-ctl --ca-path ca.pem --cert-path client.pem --key-path client-key.pem --host 127.0.0.1:21060 <subcommands>
     ```
 
+    However, sometimes `tikv-ctl` communicates with PD instead of TiKV. In this case, you need to use the `--pd` option instead of `--host`. Here is an example:
+    
+    ```
+    $ tikv-ctl --pd 127.0.0.1:2379 compact-cluster
+    store:"127.0.0.1:20160" compact db:KV cf:default range:([], []) success!
+    ```
+
 - Local mode: use the `--db` option to specify the local TiKV data directory path
 
 Unless otherwise noted, all commands supports both the remote mode and the local mode.
@@ -99,6 +106,26 @@ In this command, the key is also the escaped form of raw key.
 
 To print the value of a key, use the `print` command.
 
+### Print some properties about Region
+
+In order to record Region state details, TiKV writes some statistics into the SST files of Regions. To view these properties, run `tikv-ctl` with the `region-properties` sub-command:
+
+```bash
+$ tikv-ctl --host localhost:20160 region-properties -r 2
+num_files: 0
+num_entries: 0
+num_deletes: 0
+mvcc.min_ts: 18446744073709551615
+mvcc.max_ts: 0
+mvcc.num_rows: 0
+mvcc.num_puts: 0
+mvcc.num_versions: 0
+mvcc.max_row_versions: 0
+middle_key_by_approximate_size:
+```
+
+The properties can be used to check whether the Region is healthy or not. If not, you can use them to fix the Region. For example, spliting the Region manually by `middle_key_approximate_size`.
+
 ### Compact data of each TiKV manually
 
 Use the `compact` command to manually compact data of each TiKV. If you specify the `--from` and `--to` options, then their flags are also in the form of escaped raw key. You can use the `--db` option to specify the RocksDB that you need to compact. The optional values are `kv` and `raft`. Also, the `--threads` option allows you to specify the concurrency that you compact and its default value is 8. Generally, a higher concurrency comes with a faster compact speed, which might yet affect the service. You need to choose an appropriate concurrency based on the scenario.
@@ -155,6 +182,10 @@ DebugClient::check_region_consistency: RpcFailure(RpcStatus { status: Unknown, d
 >
 > - This command only supports the remote mode.
 > - Even if this command returns `success!`, you need to check whether TiKV panics. This is because this command is only a proposal that requests a consistency check for the leader, and you cannot know from the client whether the whole check process is successful or not.
+
+### Dump snapshot meta
+
+This sub-command is used to parse a snapshot meta file at given path and print the result.
 
 ### Print the Regions where the Raft state machine corrupts
 
