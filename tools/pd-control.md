@@ -116,6 +116,7 @@ Usage:
   "disable-make-up-replica": "false",
   "disable-remove-extra-replica": "false",
   "disable-location-replacement": "false",
+  "disable-namespace-relocation": "false",
   "schedulers-v2": [
     {
       "type": "balance-region",
@@ -262,6 +263,8 @@ The configuration above is global. You can also tune the configuration by config
 - `disable-remove-extra-replica` is used to disable the feature of removing extra replicas. When you set it to `true`, PD does not remove extra replicas for Regions with redundant replicas.
 
 - `disable-location-replacement` is used to disable the isolation level check. When you set it to `true`, PD does not improve the isolation level of Region replicas by scheduling.
+
+- `disable-namespace-relocation` is used to disable Region relocation to the store of its namespace. When you set it to `true`, PD does not move Regions to stores where they belong to.
 
 ### `config delete namespace \<name\> [\<option\>]`
 
