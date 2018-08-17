@@ -41,7 +41,7 @@ TiDB 的自增 ID (Auto Increment ID) 只保证自增且唯一，并不保证连
 > create table t(id int unique key auto_increment, c int);
 > ```
 > 
-> TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用于分配，用完这段值再去取下一段。
+> TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用于分配（目前会缓存 30000 个 ID），用完这段值再去取下一段。
 
 > 假设集群中有两个 tidb-server 实例 A 和 B（A 缓存 [1,30000] 的自增 ID，B 缓存 [30001,60000] 的自增 ID），
 >
