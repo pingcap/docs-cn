@@ -15,7 +15,7 @@ tikv-ctl 有两种运行模式：远程模式和本地模式。前者通过 `--h
 $ tikv-ctl --ca-path ca.pem --cert-path client.pem --key-path client-key.pem --host 127.0.0.1:21060 <subcommands>
 ```
 
-某些情况下，tikv-ctl 与 PD 进行通讯，而不与 TiKV 通讯。此时你需要使用 `--pd` 选项而非 `--host` 选项，例如：
+某些情况下，tikv-ctl 与 PD 进行通信，而不与 TiKV 通信。此时你需要使用 `--pd` 选项而非 `--host` 选项，例如：
 
 ```
 $ tikv-ctl --pd 127.0.0.1:2379 compact-cluster
