@@ -120,14 +120,14 @@ This statement is a TiDB extension syntax, used to view the status of TiDB.
 ```sql
 ADMIN SHOW DDL
 ADMIN SHOW DDL JOBS
-ADMIN SHOW DDL JOB QUERIES 'job_id' [, 'job_id'] ...
-ADMIN CANCEL DDL JOBS 'job_id' [, 'job_id'] ...
+ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...
+ADMIN CANCEL DDL JOBS job_id [, job_id] ...
 ```
 
 - `ADMIN SHOW DDL`: To view the currently running DDL jobs.
 - `ADMIN SHOW DDL JOBS`: To view all the results in the current DDL job queue (including tasks that are running and waiting to be run) and the last ten results in the completed DDL job queue.
-- `ADMIN SHOW DDL JOB QUERIES 'job_id' [, 'job_id'] ...`: To view the original SQL statement of the DDL task corresponding to the `job_id`; the `job_id` only searches the running DDL job and the last ten results in the DDL history job queue
-- `ADMIN CANCEL DDL JOBS 'job_id' [, 'job_id'] ...`: To cancel the currently running DDL jobs and return whether the corresponding jobs are successfully cancelled. If the operation fails to cancel the jobs, specific reasons are displayed.
+- `ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...`: To view the original SQL statement of the DDL task corresponding to the `job_id`; the `job_id` only searches the running DDL job and the last ten results in the DDL history job queue
+- `ADMIN CANCEL DDL JOBS job_id [, job_id] ...`: To cancel the currently running DDL jobs and return whether the corresponding jobs are successfully cancelled. If the operation fails to cancel the jobs, specific reasons are displayed.
 
   > **Note**:
   >
