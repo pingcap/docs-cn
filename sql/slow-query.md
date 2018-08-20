@@ -91,7 +91,7 @@ SQL 语句
 
 ### 定位问题语句的方法
 
-并不是所有 SLOW_QUERY 的语句都是有问题的，会造成集群整体压力增大的，是那些 process_time 很大的语句，wait_time
+并不是所有 SLOW_QUERY 的语句都是有问题的。会造成集群整体压力增大的，是那些 process_time 很大的语句。wait_time
 很大，但 process_time 很小的语句通常不是问题语句，是因为被问题语句阻塞，在执行队列等待造成的响应时间过长。
 
 
