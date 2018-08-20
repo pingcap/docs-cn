@@ -7,6 +7,7 @@ category: tools
 # TiKV Control User Guide
 
 TiKV Control (`tikv-ctl`) is a command line tool of TiKV, used to manage the cluster. When you compile TiKV, the `tikv-ctl` command is also compiled at the same time. If the cluster is deployed using Ansible, the `tikv-ctl` binary file exists in the corresponding `tidb-ansible/resources/bin` directory. If the cluster is deployed using the binary, the `tikv-ctl` file is in the `bin` directory together with other files such as `tidb-server`, `pd-server`, `tikv-server`, etc.
+
 ## General options
 
 `tikv-ctl` provides two operation modes:
@@ -124,7 +125,7 @@ mvcc.max_row_versions: 0
 middle_key_by_approximate_size:
 ```
 
-The properties can be used to check whether the Region is healthy or not. If not, you can use them to fix the Region. For example, spliting the Region manually by `middle_key_approximate_size`.
+The properties can be used to check whether the Region is healthy or not. If not, you can use them to fix the Region. For example, splitting the Region manually by `middle_key_approximate_size`.
 
 ### Compact data of each TiKV manually
 
