@@ -529,6 +529,42 @@ The `create_time` of tables in the `information_schema` is the creation time.
 
 When TiDB is executing a SQL statement, the query will be `EXPENSIVE_QUERY` if each operator is estimated to process over 10000 pieces of data. You can modify the `tidb-server` configuration parameter to adjust the threshold and then restart the `tidb-server`.
 
+#### How to control or change the execution priority of SQL commits?
+
+TiDB has the following high priority and low priority syntax:
+
+- HIGH_PRIORITY: this statement has a high priority, that is, TiDB gives priority to this statement and executes it first.
+
+- LOW_PRIORITY: this statement has a low priority, that is, TiDB reduces the priority of this statement during the execution period.
+
+You can combine the above two parameters with the DML of TiDB to use them. For usage details, see [TiDB DML](sql/dml.md). For example:
+
+1. Adjust the priority by writing SQL statements in the database:
+
+    ```
+    select HIGH_PRIORITY | LOW_PRIORITY count(*) from table_name;
+    insert HIGH_PRIORITY | LOW_PRIORITY into table_name insert_values;
+    delete HIGH_PRIORITY | LOW_PRIORITY from table_name;
+    update HIGH_PRIORITY | LOW_PRIORITY table_reference set assignment_list where where_condition;
+    replace HIGH_PRIORITY | LOW_PRIORITY into table_name;
+    ```
+
+2. The full table scan statement automatically adjusts itself to a low priority. `analyze` has a low priority by default. 
+
+#### What's the trigger strategy for `auto analyze` in TiDB?
+
+Trigger strategy: `auto analyze` is automatically triggered when the number of pieces of data in a new table reaches 1000 and this table has no write operation within one minute.
+
+When the modified number or the current total row number is larger than `tidb_auto_analyze_ratio`, the `analyze` statement is automatically triggered. The default value of `tidb_auto_analyze_ratio` is 0, indicating that this feature is disabled. To ensure safety, its minimum value is 0.3 when the feature is enabled, and it must be smaller than `pseudo-estimate-ratio` whose default value is 0.7, otherwise pseudo statistics will be used for a period of time. It is recommended to set `tidb_auto_analyze_ratio` to 0.5.
+
+#### How to use a specific index with hint in a SQL statement?
+
+Its usage is similar to MySQL:
+
+```
+select column_name from table_name use index（index_name）where where_condition;
+```
+
 ### Manage the TiKV server
 
 #### What is the recommended number of replicas in the TiKV cluster? Is it better to keep the minimum number for high availability?
