@@ -70,6 +70,7 @@
   - [错误码与故障诊断](sql/error.md)
   - [与 MySQL 兼容性对比](sql/mysql-compatibility.md)
   - [TiDB 内存控制](sql/tidb-memory-control.md)
+  - [慢查询日志](sql/slow-query.md)
   + 高级功能
     - [历史数据回溯](op-guide/history-read.md)
     - [垃圾回收 (GC)](op-guide/gc.md)

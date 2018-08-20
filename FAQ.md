@@ -972,6 +972,6 @@ update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_tim
 
 这个问题是因为在执行 `LOAD DATA LOCAL` 语句的时候，MySQL 客户端不允许执行此语句（即 `local_infile` 选项为 0）。解决方法是在启动 MySQL 客户端时，用 `--local-infile=1` 选项。具体启动指令类似：`mysql --local-infile=1 -u root -h 127.0.0.1 -P 4000`。有些 MySQL 客户端需要设置而有些不需要设置，原因是不同版本的 MySQL 客户端对 `local-infile` 的默认值不同。
 
-#### 9.2.4 ERROR 9001 (HY000): PD server timeoutstart timestamp may fall behind safepoint
+#### 9.2.4 ERROR 9001 (HY000): PD server timeout start timestamp may fall behind safe point
 
 这个报错一般是 TiDB 访问 PD 出了问题，TiDB 后台有个 worker 会不断地从 PD 查询 safepoint，如果超过 100s 查不成功就会报这个错。一般是因为 PD 有故障或者 TiDB 和 PD 之间的网络有问题。TiDB 常见错误码请参考[错误码与故障诊断](sql/error.md)。
