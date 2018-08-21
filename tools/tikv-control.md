@@ -15,6 +15,13 @@ tikv-ctl 有两种运行模式：远程模式和本地模式。前者通过 `--h
 $ tikv-ctl --ca-path ca.pem --cert-path client.pem --key-path client-key.pem --host 127.0.0.1:21060 <subcommands>
 ```
 
+某些情况下，tikv-ctl 与 PD 进行通信，而不与 TiKV 通信。此时你需要使用 `--pd` 选项而非 `--host` 选项，例如：
+
+```
+$ tikv-ctl --pd 127.0.0.1:2379 compact-cluster
+store:"127.0.0.1:20160" compact db:KV cf:default range:([], []) success!
+```
+
 除此之外，tikv-ctl 还有两个简单的命令 `--to-hex` 和 `--to-escaped`，用于对 key 的形式作简单的变换。一般使用 `escaped` 形式，示例如下：
 
 ```bash
@@ -89,6 +96,26 @@ key: zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\00
 
 打印某个 key 的值需要用到 `print` 命令。示例从略。
 
+### 打印 Region 的 properties 信息
+
+为了记录 Region 的状态信息，TiKV 将一些数据写入 Region 的 SST 文件中。你可以用子命令 `region-properties` 运行 tikv-ctl 来查看这些 properties 信息。例如：
+
+```bash
+$ tikv-ctl --host localhost:20160 region-properties -r 2
+num_files: 0
+num_entries: 0
+num_deletes: 0
+mvcc.min_ts: 18446744073709551615
+mvcc.max_ts: 0
+mvcc.num_rows: 0
+mvcc.num_puts: 0
+mvcc.num_versions: 0
+mvcc.max_row_versions: 0
+middle_key_by_approximate_size:
+```
+
+这些 properties 信息可以用于检查某个 Region 是否健康或者修复不健康的 Region。例如，使用 `middle_key_approximate_size` 可以手动分裂 Region。
+
 ### 手动 compact 单个 TiKV 的数据
 
 `compact` 命令可以对单个 TiKV 进行手动 compact。如果指定 `--from` 和 `--to` 选项，那么它们的参数也是 escaped raw key 形式的。`--db` 参数可以指定要 compact 的 RocksDB，有 `kv` 和 `raft` 参数值可以选。`--threads` 参数可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大， compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
@@ -140,6 +167,10 @@ DebugClient::check_region_consistency: RpcFailure(RpcStatus { status: Unknown, d
 ```
 
 需要注意的是，即使这个命令返回了成功，也需要去检查是否有 TiKV panic 了，因为这个命令只是给 Leader 发起一个 Consistency-check 的 propose，至于整个检查流程成功与否并不能在客户端知道。
+
+### Dump snapshot meta
+
+这条子命令可以用于解析指定路径下的 Snapshot 元文件并打印结果。
 
 ### 打印 Raft 状态机出错的 Region
 
