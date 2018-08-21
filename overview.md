@@ -55,11 +55,9 @@ Read the [Roadmap](https://github.com/pingcap/docs/blob/master/ROADMAP.md).
 
 ## TiDB architecture
 
-To better understand TiDB’s features, you need to understand the TiDB architecture.
+To better understand TiDB's features, you need to understand the TiDB architecture. The TiDB cluster includes three key components: the TiDB server, the PD server, and the TiKV server. In addition, TiDB also provides the [TiSpark](https://github.com/pingcap/tispark/) component for the complex OLAP requirements.
 
 ![image alt text](media/tidb-architecture.png)
-
-The TiDB cluster has three components: the TiDB server, the PD server,  and the TiKV server.
 
 ### TiDB server
 
@@ -92,6 +90,10 @@ As a cluster, PD needs to be deployed to an odd number of nodes. Usually it is r
 ### TiKV server
 
 The TiKV server is responsible for storing data. From an external view, TiKV is a distributed transactional Key-Value storage engine. Region is the basic unit to store data. Each Region stores the data for a particular Key Range which is a left-closed and right-open interval from StartKey to EndKey. There are multiple Regions in each TiKV node. TiKV uses the Raft protocol for replication to ensure the data consistency and disaster recovery. The replicas of the same Region on different nodes compose a Raft Group. The load balancing of the data among different TiKV nodes are scheduled by PD. Region is also the basic unit for scheduling the load balance.
+
+### TiSpark
+
+TiSpark deals with the complex OLAP requirements. TiSpark makes Spark SQL directly run on the storage layer of the TiDB cluster, combines the advantages of the distributed TiKV cluster, and integrates into the big data ecosystem. With TiSpark, TiDB can support both OLTP and OLAP scenarios in one cluster, so the users never need to worry about data synchronization.
 
 ## Features
 
