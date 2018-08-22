@@ -80,7 +80,7 @@ This document defines the roadmap for TiDB development.
 
 ## SRE & tools:
 
-- [ ] Kubernetes based intergration for the on-premise version 
+- [X] Kubernetes based integration for the on-premise version 
 - [ ] Dashboard UI for the on-premise version
 - [ ] The cluster backup and recovery tool
 - [ ] The data migration tool (Wormhole V2)
