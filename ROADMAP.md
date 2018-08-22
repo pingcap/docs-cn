@@ -71,7 +71,7 @@ category: Roadmap
 
 ## SRE&Tools:
 
-- [ ] On-Premise 版本集成部署 (K8s based)
+- [x] On-Premise 版本集成部署 (K8s based)
 - [ ] On-Premise 版本 Dashboard UI
 - [ ] 集群备份和恢复工具（结合物理备份）
 - [ ] 数据迁移工具（Wormhole 二期）
