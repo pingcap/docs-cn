@@ -54,7 +54,7 @@ category: deployment
 ```
 # tar -xzvf ansible-2.5.0-pip.tar.gz
 # cd ansible-2.5.0-pip/
-# chmod install_ansible.sh
+# chmod u+x install_ansible.sh
 # ./install_ansible.sh
 ```
 
