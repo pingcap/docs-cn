@@ -136,6 +136,30 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 这个变量用来设置顺序 scan 操作的并发度，AP 类应用适合较大的值，TP 类应用适合较小的值。
 
+### tidb_projection_concurrency
+
+作用域：SESSION | GLOBAL
+
+默认值：4
+
+这个变量用来设置 Projection 算子的并发度。 
+
+### tidb_hashagg_partial_concurrency
+
+作用域：SESSION | GLOBAL
+
+默认值：4
+
+这个变量用来设置并行 hash aggregation 算法 partial 阶段的执行并发度。对于聚合函数参数不为 distinct 的情况，HashAgg 分为 partial 和 final 阶段分别并行执行。
+
+### tidb_hashagg_final_concurrency
+
+作用域：SESSION | GLOBAL
+
+默认值：4
+
+这个变量用来设置并行 hash aggregation 算法 final 阶段的执行并发度。对于聚合函数参数不为 distinct 的情况，HashAgg 分为 partial 和 final 阶段分别并行执行。
+
 ### tidb_index_join_batch_size
 
 作用域：SESSION | GLOBAL
@@ -294,6 +318,37 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 这个变量用来设置是否禁用显式事务自动重试，设置为 1 时，不会自动重试，如果遇到冲突需要在应用层重试。
 是否需要禁用自动重试，请参考[自动重试的风险](./transaction-isolation.md#乐观事务注意事项)
 
+## tidb_enable_table_partition
+
+作用域：SESSION
+
+默认值：0
+
+这个变量用来设置是否开启 TABLE PARTITION 特性。
+
+## tidb_backoff_lock_fast
+
+作用域：SESSION | GLOBAL
+
+默认值：100
+
+这个变量用来设置
+
+## tidb_ddl_reorg_worker_cnt
+
+作用域: SESSION | GLOBAL
+
+默认值：16
+
+这个变量用来设置 DDL 操作 re-organize 阶段的并发度。
+
+## tidb_ddl_reorg_priority
+
+作用域：SESSION | GLOBAL
+
+默认值：PRIORITY_NORMAL
+
+这个变量用来设置 ADD INDEX 操作 re-organize 阶段的执行优先级, 可设置为 PRIORITY_LOW/PRIORITY_NORMAL/PRIORITY_HIGH。
 
 ## Optimizer Hint
 
