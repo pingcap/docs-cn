@@ -332,7 +332,7 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 默认值：100
 
-这个变量用来设置
+这个变量用来设置读请求遇到锁的 backoff 时间
 
 ## tidb_ddl_reorg_worker_cnt
 
