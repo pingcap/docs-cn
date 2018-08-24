@@ -5,40 +5,38 @@ category: user guide
 
 # 理解 TiDB 执行计划
 
-TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计划，执行计划由一系列的 operator 构成，这里我们详细解释一下 TiDB 中 `EXPLAIN` 语句返回的执行计划信息。
+TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计划，执行计划由一系列的 operator 构成。本文将详细解释 TiDB 中 `EXPLAIN` 语句返回的执行计划信息。
 
 ## 使用 `EXPLAIN` 来优化 SQL 语句
 
 `EXPLAIN` 语句的返回结果提供了 TiDB 执行 SQL 查询的详细信息：
 
-- `EXPLAIN` 可以和 `SELECT`, `DELETE`, `INSERT`, `REPLACE`, 以及 `UPDATE` 语句一起使用；
-- 执行 `EXPLAIN`，TiDB 会返回被 `EXPLAIN` 的 SQL 语句经过优化器后的最终物理执行计划。也就是说，`EXPLAIN` 展示了 TiDB 执行该 SQL 语句的完整信息，比如以什么样的顺序，什么方式 JOIN 两个表，表达式树长什么样等等。详细请看 [`EXPLAIN` 输出格式](#explain-output-format)；
-- TiDB 目前还不支持 `EXPLAIN [options] FOR CONNECTION connection_id`，我们将在未来支持它，详细请看：[#4351](https://github.com/pingcap/tidb/issues/4351)；
+- `EXPLAIN` 可以和 `SELECT`，`DELETE`，`INSERT`，`REPLACE`，以及 `UPDATE` 语句一起使用；
+- 执行 `EXPLAIN`，TiDB 会返回被 `EXPLAIN` 的 SQL 语句经过优化器后的最终物理执行计划。也就是说，`EXPLAIN` 展示了 TiDB 执行该 SQL 语句的完整信息，比如以什么样的顺序，什么方式 JOIN 两个表，表达式树长什么样等等。详见 [`EXPLAIN` 输出格式](#explain-output-format)；
+- TiDB 目前还不支持 `EXPLAIN [options] FOR CONNECTION connection_id`，将在未来支持它，详见 [#4351](https://github.com/pingcap/tidb/issues/4351)；
 
 通过观察 `EXPLAIN` 的结果，你可以知道如何给数据表添加索引使得执行计划使用索引从而加速 SQL 语句的执行速度；你也可以使用 `EXPLAIN` 来检查优化器是否选择了最优的顺序来 JOIN 数据表。
 
 ## <span id="explain-output-format">`EXPLAIN` 输出格式</span>
 
-目前 TiDB 的 `EXPLAIN` 会输出 6 列，分别是：id，parents，children，task，operator info 和 count，执行计划中每个 operator 都由这 6 列属性来描述，`EXPLAIN` 结果中每一行描述一个 operator。下面详细解释每个属性的含义：
+目前 TiDB 的 `EXPLAIN` 会输出 4 列，分别是：id，count，task，operator info。执行计划中每个 operator 都由这 4 列属性来描述，`EXPLAIN` 结果中每一行描述一个 operator。每个属性的具体含义如下：
 
 | 属性名          | 含义                                                                                                                                        |
 |:----------------|:--------------------------------------------------------------------------------------------------------------------------------------------|
-| id            | operator 的 id，在整个执行计划中唯一的标识一个 operator                                                                                       |
-| parents       | 这个 operator 的 parent。目前的执行计划可以看做是一个 operator 构成的树状结构，数据从 child 流向 parent，每个 operator 的 parent 有且仅有一个 |
-| children      | 这个 operator 的 children，也即是这个 operator 的数据来源                                                                                     |
-| task          | 当前这个 operator 属于什么 task。目前的执行计划分成为两种 task，一种叫 **root** task，在 tidb-server 上执行，一种叫 **cop** task，并行的在 tikv 上执行。当前的执行计划在 task 级别的拓扑关系是一个 root task 后面可以跟许多 cop task，root task 使用 cop task 的输出结果作为输入。cop task 中执行的也即是 tidb 下推到 tikv 上的任务，每个 cop task 分散在 tikv 集群中，由多个进程共同执行 |
-| operator info | 每个 operator 的详细信息。各个 operator 的 operator info 各有不同，我们将在 [Operator Info](#operator-info) 中详细介绍                   |
-| count         | 预计当前 operator 将会输出的数据条数，基于统计信息以及 operator 的执行逻辑估算而来                                                            |
+| id            | operator 的 id，在整个执行计划中唯一的标识一个 operator。在 TiDB 2.1 中，id 会格式化显示 operator 的树状结构。数据从 child 流向 parent，每个 operator 的 parent 有且仅有一个。                                                                                       |
+| count         | 预计当前 operator 将会输出的数据条数，基于统计信息以及 operator 的执行逻辑估算而来。                                                            |
+| task          | 当前这个 operator 属于什么 task。目前的执行计划分成为两种 task，一种叫 **root** task，在 tidb-server 上执行，一种叫 **cop** task，并行的在 TiKV 上执行。当前的执行计划在 task 级别的拓扑关系是一个 root task 后面可以跟许多 cop task，root task 使用 cop task 的输出结果作为输入。cop task 中执行的也即是 TiDB 下推到 TiKV 上的任务，每个 cop task 分散在 TiKV 集群中，由多个进程共同执行。 |
+| operator info | 每个 operator 的详细信息。各个 operator 的 operator info 各有不同，详见 [Operator Info](#operator-info)。                   |
 
 ## 概述
 
 ### Task 简介
 
-目前 TiDB 的计算任务隶属于两种不同的 task: cop task 和 root task。cop task 是指被下推到 KV 端分布式执行的计算任务，root task 是指在 TiDB 端单点执行的计算任务。SQL 优化的目标之一是将计算尽可能的下推到 KV 端执行。
+目前 TiDB 的计算任务隶属于两种不同的 task：cop task 和 root task。cop task 是指被下推到 KV 端分布式执行的计算任务，root task 是指在 TiDB 端单点执行的计算任务。SQL 优化的目标之一是将计算尽可能的下推到 KV 端执行。
 
 ### 表数据和索引数据
 
-TiDB 的表数据是指一张表的原始数据，存放在 TiKV 中。对于每行表数据，它的 key 是一个 64 位整数，称为 Handle ID。如果一张表存在 int 类型的主键，我们会把主键的值当作表数据的 Handle ID，否则由系统自动生成 Handle ID。表数据的 value 由这一行的所有数据编码而成。在读取表数据的时候，我们可以按照 Handle ID 递增的顺序返回。
+TiDB 的表数据是指一张表的原始数据，存放在 TiKV 中。对于每行表数据，它的 key 是一个 64 位整数，称为 Handle ID。如果一张表存在 int 类型的主键，我们会把主键的值当作表数据的 Handle ID，否则由系统自动生成 Handle ID。表数据的 value 由这一行的所有数据编码而成。在读取表数据的时候，可以按照 Handle ID 递增的顺序返回。
 
 TiDB 的索引数据和表数据一样，也存放在 TiKV 中。它的 key 是由索引列编码的有序 bytes，value 是这一行索引数据对应的 Handle ID，通过 Handle ID 我们可以读取这一行的非索引列。在读取索引数据的时候，我们按照索引列递增的顺序返回，如果有多个索引列，我们首先保证第 1 列递增，并且在第 i 列相等的情况下，保证第 i + 1 列递增。
 
