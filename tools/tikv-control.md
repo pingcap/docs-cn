@@ -5,7 +5,9 @@ category: tools
 
 # TiKV Control 使用说明
 
-TiKV Control (tikv-ctl) 是随 TiKV 附带的一个简单的管理工具，以下简称 tikv-ctl。在编译 TiKV 时，tikv-ctl 命令也会同时被编译出来，而通过 Ansible 部署的集群，在对应的 `tidb-ansible/resources/bin` 目录下也会有这个二进制文件。
+TiKV Control (tikv-ctl) 是随 TiKV 附带的一个简单的管理工具，以下简称 tikv-ctl。
+
+在编译 TiKV 时，tikv-ctl 命令也会同时被编译出来，而通过 Ansible 部署的集群，在对应的 `tidb-ansible/resources/bin` 目录下也会有这个二进制文件。
 
 ## 通用参数
 
@@ -144,17 +146,6 @@ success!
 > - `--pd/-p` 选项的参数指定 PD 的 endponits，它没有 `http` 前缀。
 > - **这个命令只支持本地模式**。需要指定 PD 的 endpoints 的原因是需要询问 PD 是否可以安全地 tombstone。因此，在 tombstone 之前往往还需要在 `pd-ctl` 中把该 Region 在这台机器上的对应 Peer 拿掉。
 
-### 强制 Region 从多副本失败状态恢复服务
-
-`unsafe-recover remove-fail-stores` 命令将一些失败掉的机器从所有 Region 的 peers 列表中移除。这样，这些 Region 便可以在 TiKV 重启之后以剩下的健康的副本继续提供服务了。这个命令常常用于多个 TiKV store 损坏或被删除的情况。
-
-```bash
-$ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores 3,4,5
-success!
-```
-
-> **注意**：**这个命令只支持本地模式**。在运行成功后，会打印 `success!`。
-
 ### 向 TiKV 发出 consistency-check 请求
 
 **这个命令只支持远程模式**，它可以让某个 Region 对应的 Raft 进行一次副本之间的一致性检查。如果检查失败，TiKV 自身会 panic。如果 `--host` 指定的 TiKV 不是这个 Region 的 Leader，则会报告错误。
@@ -213,3 +204,36 @@ success!
 $ tikv-ctl modify-tikv-config -m raftdb -n default.disable_auto_compactions -v true
 success!
 ```
+
+### 强制 Region 从多副本失败状态恢复服务
+
+`unsafe-recover remove-fail-stores` 命令将一些失败掉的机器从所有 Region 的 peers 列表中移除。这样，这些 Region 便可以在 TiKV 重启之后以剩下的健康的副本继续提供服务了。这个命令常常用于多个 TiKV store 损坏或被删除的情况。
+
+变量 `--stores` 接受多个以逗号分隔的 `store_id`，并使用变量 `--regions` 来指定包含的 Region。否则，所有 Region 中位于这些 store 上的 peers 默认都会被移除。 
+
+```bash
+$ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores --stores 3 --regions 1001,1002
+success!
+```
+
+> **注意**：
+> 
+> - **这个命令只支持本地模式**。在运行成功后，会打印 `success!`。
+> - 对于指定 Region 的 peers 所在的每个 store，你都必须运行这个命令。如果不设置变量 `--regions`，所有的 Region 都会被包含进来，你便需要为所有的 store 都运行这个命令。
+
+### 恢复损坏的 MVCC 数据
+
+`recover-mvcc` 命令可以用于 MVCC 数据损坏而造成 TiKV 无法正常运行的情况。为了从不同种类的不一致情况中恢复，该命令会反复检查 3 个 CF ("default", "write", "lock")。  
+
+`--regions` 变量可以通过 `region_id` 指定包含的 Region， `--pd` 变量可以指定 PD 的端点。
+
+```bash
+$ tikv-ctl --db /path/to/tikv/db recover-mvcc --regions 1001,1002 --pd 127.0.0.1:2379
+success!
+```
+
+> **注意**：
+> 
+> - **这个命令只支持本地模式**。在运行成功后，会打印 `success!`。
+> - `--pd` 变量指定 PD 的端点，但不使用 `http` 前缀。指定 PD 端点就是去查询指定的 `region_id` 是否有效。
+> - 对于指定 Region 的 peers 所在的每个 store，你都需要运行这个命令。
