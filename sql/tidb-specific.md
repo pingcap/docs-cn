@@ -348,7 +348,7 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 默认值：PRIORITY_NORMAL
 
-这个变量用来设置 `ADD INDEX` 操作 re-organize 阶段的执行优先级, 可设置为 PRIORITY_LOW/PRIORITY_NORMAL/PRIORITY_HIGH。
+这个变量用来设置 `ADD INDEX` 操作 re-organize 阶段的执行优先级，可设置为 PRIORITY_LOW/PRIORITY_NORMAL/PRIORITY_HIGH。
 
 ## Optimizer Hint
 
