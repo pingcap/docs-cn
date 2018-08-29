@@ -18,9 +18,10 @@
     - [TiDB 访问权限管理](sql/privilege.md)
     - [TiDB 用户账户管理](sql/user-account-management.md)
     - [使用加密连接](sql/encrypted-connections.md)
-  + SQL 优化
+  + SQL 优化与执行
     - [理解 TiDB 执行计划](sql/understanding-the-query-execution-plan.md)
     - [统计信息](sql/statistics.md)
+    - [TiDB 执行器原理](sql/executor.md)
   + 语言结构
     - [字面值](sql/literal-values.md)
     - [数据库、表、索引、列和别名](sql/schema-object-names.md)
