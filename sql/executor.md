@@ -3,7 +3,7 @@ title: TiDB 执行器原理
 category: user guide
 ---
 
-#TiDB 执行器原理
+# TiDB 执行器原理
 
 ## 聚合操作执行原理
 
