@@ -1052,6 +1052,6 @@ When you execute the `LOAD DATA LOCAL` statement but the MySQL client does not a
 
 The solution is to use the `--local-infile=1` option when you start the MySQL client. For example, use command like `mysql --local-infile=1 -u root -h 127.0.0.1 -P 4000`. The default value of `local-infile` is different in different versions of MySQL client, therefore you need to configure it in some MySQL clients and do not need to configure it in some others.
 
-#### ERROR 9001 (HY000): PD server timeoutstart timestamp may fall behind safepoint
+#### ERROR 9001 (HY000): PD server timeout start timestamp may fall behind safe point
 
 This error occurs when TiDB fails to access PD. A worker in the TiDB background continuously queries the safepoint from PD and this error occurs if it fails to query within 100s. Generally it is because the PD failure or network failure between TiDB and PD. For the details of common errors, see [Error Number and Fault Diagnosis](sql/error.md).

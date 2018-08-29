@@ -50,6 +50,12 @@ Configuration about log.
 - Default: false
 - If you set the value to true, the log does not output timestamp
 
+### `slow-query-file`
+
+- The file name of the slow query log
+- Default: ""
+- After you set it, the slow query log is output to this file separately
+
 ### `slow-threshold`
 
 - To output the threshold value of consumed time in the slow log
