@@ -6,7 +6,7 @@ category: user guide
 
 # Compatibility with MySQL
 
-TiDB supports the majority of the MySQL grammar, including cross-row transactions, JOIN, subquery, and so on. You can connect to TiDB directly using your own MySQL client. If your existing business is developed based on MySQL, you can replace MySQL with TiDB to power your application without changing a single line of code in most cases.
+TiDB supports the majority of the MySQL 5.7 syntax, including cross-row transactions, JOIN, subquery, and so on. You can connect to TiDB directly using your own MySQL client. If your existing business is developed based on MySQL, you can replace MySQL with TiDB to power your application without changing a single line of code in most cases.
 
 TiDB is compatible with most of the MySQL database management & administration tools such as `PHPMyAdmin`, `Navicat`, `MySQL Workbench`, and so on. It also supports the database backup tools, such as `mysqldump` and `mydumper/myloader`.
 
@@ -105,3 +105,14 @@ TiDB implements an optimistic transaction model. Unlike MySQL, which uses row-le
 + Transaction
 
     When TiDB is in the execution of loading data, by default, a record with 20,000 rows of data is seen as a transaction for persistent storage. If a load data operation inserts more than 20,000 rows, it will be divided into multiple transactions to commit. If an error occurs in one transaction, this transaction in process will not be committed. However, transactions before that are committed successfully. In this case, a part of the load data operation is successfully inserted, and the rest of the data insertion fails. But MySQL treats a load data operation as a transaction, one error leads to the failure of the entire load data operation.
+
+### Default differences
+
+- Default character set: `latin1` in MySQL 5.7 (UTF-8 in MySQL 8.0), while `utf8mb4` in TiDB.
+- Default collation: `latin1_swedish_ci` in MySQL 5.7, while `binary` in TiDB.
+- Default value of `lower_case_table_names`:
+    - The default value in TiDB is 2 and currently TiDB only supports 2.
+    - The default value in MySQL:
+        - On Linux: 0
+        - On Windows: 1
+        - On macOS: 2
