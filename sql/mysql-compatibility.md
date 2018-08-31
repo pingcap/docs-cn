@@ -112,13 +112,13 @@ TiDB 使用乐观事务模型，在执行 Update、Insert、Delete 等语句时�
 ### 默认设置的区别
 
 + 默认字符集不同：
-    + MySQL 5.7 中使用 `latin1`。（MySQL 8.0 中使用 `UTF-8`）
-    + TiDB 使用 `utf8mb4`。
+    + MySQL 5.7 中使用 `latin1`（MySQL 8.0 中使用 `UTF-8`）
+    + TiDB 使用 `utf8mb4`
 + 默认排序规则不同：
-    + MySQL 5.7 中使用 `latin1_swedish_ci`。 
-    + TiDB 使用 `binary`。
+    + MySQL 5.7 中使用 `latin1_swedish_ci`
+    + TiDB 使用 `binary`
 + `lower_case_table_names` 的默认值不同：
-    + TiDB 中该值默认为 2，并且目前 TiDB 只支持设置该值为 2。
+    + TiDB 中该值默认为 2，并且目前 TiDB 只支持设置该值为 2
     + MySQL 中默认设置：
         + Linux 系统中该值为 0
         + Windows 系统中该值为 1
