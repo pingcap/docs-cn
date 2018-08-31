@@ -6,7 +6,7 @@ category: User Guide
 
 # TiSpark Quick Start Guide
 
-To make it easy to [try TiSpark](tispark-user-guide.md), the TiDB cluster integrates Spark, TiSpark jar package and TiSpark sample data by default, in both the Pre-GA and master versions installed using TiDB-Ansible.
+To make it easy to [try TiSpark](tispark-user-guide.md), the TiDB cluster installed using TiDB-Ansible integrates Spark, TiSpark jar package and TiSpark sample data by default.
 
 ## Deployment information
 
@@ -14,9 +14,9 @@ To make it easy to [try TiSpark](tispark-user-guide.md), the TiDB cluster integr
 - The TiSpark jar package is deployed by default in the `jars` folder in the Spark deployment directory.
 
     ```
-    spark/jars/tispark-0.1.0-beta-SNAPSHOT-jar-with-dependencies.jar
+    spark/jars/tispark-SNAPSHOT-jar-with-dependencies.jar
     ```
-  
+
 - TiSpark sample data and import scripts are deployed by default in the TiDB-Ansible directory.
 
     ```
@@ -107,8 +107,6 @@ MySQL [TPCH_001]> show tables;
 ```
 
 ## Use example
-
-Assume that the IP of your PD node is `192.168.0.2`, and the port is `2379`. 
 
 First start the spark-shell in the spark deployment directory:
 

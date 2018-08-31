@@ -65,7 +65,7 @@ wget http://download.pingcap.org/tidb-v2.0.3-linux-amd64-unportable.tar.gz
     $ ansible-playbook rolling_update.yml --tags=tikv
     ```
 
-    When you apply a rolling update to the TiKV instance, Ansible migrates the Region leader to other nodes. The concrete logic is as follows: Call the PD API to add the `evict leader scheduler` -> Inspect the `leader_count` of this TiKV instance every 10 seconds -> Wait the `leader_count` to reduce to below 10, or until the times of inspecting the `leader_count` is more than 12 -> Start closing the rolling update of TiKV after two minutes of timeout -> Delete the `evict leader scheduler` after successful start. The operations are executed serially.
+    When you apply a rolling update to the TiKV instance, Ansible migrates the Region leader to other nodes. The concrete logic is as follows: Call the PD API to add the `evict leader scheduler` -> Inspect the `leader_count` of this TiKV instance every 10 seconds -> Wait the `leader_count` to reduce to below 1, or until the times of inspecting the `leader_count` is more than 18 -> Start closing the rolling update of TiKV after three minutes of timeout -> Delete the `evict leader scheduler` after successful start. The operations are executed serially.
 
     If the rolling update fails in the process, log in to `pd-ctl` to execute `scheduler show` and check whether `evict-leader-scheduler` exists. If it does exist, delete it manually. Replace `{PD_IP}` and `{STORE_ID}` with your PD IP and the `store_id` of the TiKV instance:
 
