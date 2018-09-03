@@ -116,6 +116,26 @@ set @@global.tidb_distsql_scan_concurrency = 10
 - This variable is used to set the concurrency of the `serial scan` operation. 
 - Use a bigger value in OLAP scenarios, and a smaller value in OLTP scenarios.
 
+### tidb_projection_concurrency
+
+- Scope: SESSION | GLOBAL
+- Default value: 4
+- This variable is used to set the concurrency of the `Projection` operator.
+
+### tidb_hashagg_partial_concurrency
+
+- Scope: SESSION | GLOBAL
+- Default value: 4
+- This variable is used to set the concurrency of executing the concurrent `hash aggregation` algorithm in the `partial` phase.
+- When the parameter of the aggregate function is not distinct, `HashAgg` is run concurrently and respectively in two phases - the `partial` phase and the `final` phase.
+
+### tidb_hashagg_final_concurrency
+
+- Scope: SESSION | GLOBAL
+- Default value: 4
+- This variable is used to set the concurrency of executing the concurrent `hash aggregation` algorithm in the `final` phase.
+- When the parameter of the aggregate function is not distinct, `HashAgg` is run concurrently and respectively in two phases - the `partial` phase and the `final` phase.
+
 ### tidb_index_join_batch_size
 
 - Scope: SESSION | GLOBAL
@@ -236,6 +256,31 @@ set @@global.tidb_distsql_scan_concurrency = 10
 - Scope: SESSION | GLOBAL
 - Default: 0
 - This variable is used to set whether to disable automatic retry of explicit transactions. If you set this variable to 1, the transaction does not retry automatically. If there is a conflict, the transaction needs to be retried at the application layer. To decide whether you need to disable automatic retry, see [description of optimistic transactions](transaction-isolation.md#description-of-optimistic-transactions).
+
+## tidb_enable_table_partition
+
+- Scope: SESSION
+- Default value: 0
+- This variable is used to set whether to enable the `TABLE PARTITION` feature.
+
+## tidb_backoff_lock_fast
+
+- Scope: SESSION | GLOBAL
+- Default value: 100
+- This variable is used to set the `backoff` time when the read request meets a lock.
+
+## tidb_ddl_reorg_worker_cnt
+
+- Scope: SESSION | GLOBAL
+- Default value: 16
+- This variable is used to set the concurrency of the DDL operation in the `re-organize` phase. 
+
+## tidb_ddl_reorg_priority
+
+- Scope: SESSION | GLOBAL
+- Default value: `PRIORITY_NORMAL`
+- This variable is used to set the priority of executing the `ADD INDEX` operation in the `re-organize` phase.
+- You can set the value of this variable to `PRIORITY_LOW`, `PRIORITY_NORMAL` or `PRIORITY_HIGH`.
 
 ## Optimizer Hint
 
