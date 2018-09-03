@@ -209,7 +209,7 @@ success!
 
 `unsafe-recover remove-fail-stores` 命令将一些失败掉的机器从所有 Region 的 peers 列表中移除。这样，这些 Region 便可以在 TiKV 重启之后以剩下的健康的副本继续提供服务了。这个命令常常用于多个 TiKV store 损坏或被删除的情况。
 
-变量 `--stores` 接受多个以逗号分隔的 `store_id`，并使用变量 `--regions` 来指定包含的 Region。否则，所有 Region 中位于这些 store 上的 peers 默认都会被移除。 
+`--stores` 选项接受多个以逗号分隔的 `store_id`，并使用 `--regions` 参数来指定包含的 Region。否则，所有 Region 中位于这些 store 上的 peers 默认都会被移除。 
 
 ```bash
 $ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores --stores 3 --regions 1001,1002
@@ -219,13 +219,13 @@ success!
 > **注意**：
 > 
 > - **这个命令只支持本地模式**。在运行成功后，会打印 `success!`。
-> - 对于指定 Region 的 peers 所在的每个 store，你都必须运行这个命令。如果不设置变量 `--regions`，所有的 Region 都会被包含进来，你便需要为所有的 store 都运行这个命令。
+> - 对于指定 Region 的 peers 所在的每个 store，均须运行这个命令。如果不设置 `--regions` 选项，所有的 Region 都会被包含进来，你则需要为所有的 store 都执行这个命令。
 
 ### 恢复损坏的 MVCC 数据
 
-`recover-mvcc` 命令可以用于 MVCC 数据损坏而造成 TiKV 无法正常运行的情况。为了从不同种类的不一致情况中恢复，该命令会反复检查 3 个 CF ("default", "write", "lock")。  
+`recover-mvcc` 命令用于 MVCC 数据损坏导致 TiKV 无法正常运行的情况。为了从不同种类的不一致情况中恢复，该命令会反复检查 3 个 CF ("default", "write", "lock")。  
 
-`--regions` 变量可以通过 `region_id` 指定包含的 Region， `--pd` 变量可以指定 PD 的端点。
+`--regions` 选项可以通过 `region_id` 指定包含的 Region，`--pd` 选项可以指定 PD 的端点。
 
 ```bash
 $ tikv-ctl --db /path/to/tikv/db recover-mvcc --regions 1001,1002 --pd 127.0.0.1:2379
@@ -235,5 +235,5 @@ success!
 > **注意**：
 > 
 > - **这个命令只支持本地模式**。在运行成功后，会打印 `success!`。
-> - `--pd` 变量指定 PD 的端点，但不使用 `http` 前缀。指定 PD 端点就是去查询指定的 `region_id` 是否有效。
-> - 对于指定 Region 的 peers 所在的每个 store，你都需要运行这个命令。
+> - `--pd` 选项指定 PD 的端点，不使用 `http` 前缀。指定 PD 端点就是去查询指定的 `region_id` 是否有效。
+> - 对于指定 Region 的 peers 所在的每个 store，均须执行这个命令。
