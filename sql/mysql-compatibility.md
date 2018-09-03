@@ -5,7 +5,7 @@ category: compatibility
 
 # 与 MySQL 兼容性对比
 
-TiDB 支持包括跨行事务，JOIN 及子查询在内的绝大多数 MySQL 的语法，用户可以直接使用现有的 MySQL 客户端连接。如果现有的业务已经基于 MySQL 开发，大多数情况不需要修改代码即可直接替换单机的 MySQL。
+TiDB 支持包括跨行事务、JOIN 及子查询在内的绝大多数 MySQL 5.7 的语法，用户可以直接使用现有的 MySQL 客户端连接。如果现有的业务已经基于 MySQL 开发，大多数情况不需要修改代码即可直接替换单机的 MySQL。
 
 包括现有的大多数 MySQL 运维工具（如 PHPMyAdmin, Navicat, MySQL Workbench 等），以及备份恢复工具（如 mysqldump, mydumper/myloader）等都可以直接使用。
 
@@ -108,3 +108,18 @@ TiDB 使用乐观事务模型，在执行 Update、Insert、Delete 等语句时�
 +   事务的处理：
 
     TiDB 在执行 load data 时，默认每 2 万行记录作为一个事务进行持久化存储。如果一次 load data 操作插入的数据超过 2 万行，那么会分为多个事务进行提交。如果某个事务出错，这个事务会提交失败，但它前面的事务仍然会提交成功，在这种情况下一次 load data 操作会有部分数据插入成功，部分数据插入失败。而 MySQL 中会将一次 load data 操作视为一个事务，如果其中发生失败情况，将会导致整个 load data 操作失败。
+
+### 默认设置的区别
+
++ 默认字符集不同：
+    + MySQL 5.7 中使用 `latin1`（MySQL 8.0 中使用 `UTF-8`）
+    + TiDB 使用 `utf8mb4`
++ 默认排序规则不同：
+    + MySQL 5.7 中使用 `latin1_swedish_ci`
+    + TiDB 使用 `binary`
++ `lower_case_table_names` 的默认值不同：
+    + TiDB 中该值默认为 2，并且目前 TiDB 只支持设置该值为 2
+    + MySQL 中默认设置：
+        + Linux 系统中该值为 0
+        + Windows 系统中该值为 1
+        + macOS 系统中该值为 2
