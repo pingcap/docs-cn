@@ -225,7 +225,7 @@ success!
 
 `recover-mvcc` 命令用于 MVCC 数据损坏导致 TiKV 无法正常运行的情况。为了从不同种类的不一致情况中恢复，该命令会反复检查 3 个 CF ("default", "write", "lock")。  
 
-`--regions` 选项可以通过 `region_id` 指定包含的 Region，`--pd` 选项可以指定 PD 的端点。
+`--regions` 选项可以通过 `region_id` 指定包含的 Region，`--pd` 选项可以指定 PD 的 endpoint。
 
 ```bash
 $ tikv-ctl --db /path/to/tikv/db recover-mvcc --regions 1001,1002 --pd 127.0.0.1:2379
@@ -235,5 +235,5 @@ success!
 > **注意**：
 > 
 > - **这个命令只支持本地模式**。在运行成功后，会打印 `success!`。
-> - `--pd` 选项指定 PD 的端点，不使用 `http` 前缀。指定 PD 端点就是去查询指定的 `region_id` 是否有效。
+> - `--pd` 选项指定 PD 的 endpoint，不使用 `http` 前缀，用于查询指定的 `region_id` 是否有效。
 > - 对于指定 Region 的 peers 所在的每个 store，均须执行这个命令。
