@@ -238,22 +238,27 @@ Success!
 
 ### operator [show | add | remove]
 
-用于显示和控制调度操作。
+用于显示和控制调度操作，或者分裂一个 region。
 
 示例：
 
 ```bash
->> operator show                            // 显示所有的 operators
->> operator show admin                      // 显示所有的 admin operators
->> operator show leader                     // 显示所有的 leader operators
->> operator show region                     // 显示所有的 region operators
->> operator add add-peer 1 2                // 在 store 2 上新增 region 1 的一个副本
->> operator remove remove-peer 1 2          // 移除 store 2 上的 region 1 的一个副本
->> operator add transfer-leader 1 2         // 把 region 1 的 leader 调度到 store 2
->> operator add transfer-region 1 2 3 4     // 把 region 1 调度到 store 2,3,4
->> operator add transfer-peer 1 2 3         // 把 region 1 在 store 2 上的副本调度到 store 3
->> operator remove 1                        // 把 region 1 的调度操作删掉
+>> operator show                                       // 显示所有的 operators
+>> operator show admin                                 // 显示所有的 admin operators
+>> operator show leader                                // 显示所有的 leader operators
+>> operator show region                                // 显示所有的 region operators
+>> operator add add-peer 1 2                           // 在 store 2 上新增 region 1 的一个副本
+>> operator remove remove-peer 1 2                     // 移除 store 2 上的 region 1 的一个副本
+>> operator add transfer-leader 1 2                    // 把 region 1 的 leader 调度到 store 2
+>> operator add transfer-region 1 2 3 4                // 把 region 1 调度到 store 2,3,4
+>> operator add transfer-peer 1 2 3                    // 把 region 1 在 store 2 上的副本调度到 store 3
+>> operator remove 1                                   // 把 region 1 的调度操作删掉
+>> operator add split-region 2 --policy=scan           // 分裂 region 2
+>> operator add split-region 2 --policy=approximate    // 分裂 region 2
 ```
+
+其中，对于 region 的分裂，都是尽可能地从靠近中间的位置。对这个位置的选择支持两种策略，即 scan 和 approximate。它们之间的区别是，前者通过扫描这个 region 的方式来确定中间的 key，而后者是通过查看 SST 文件中记录的统计信息，来得到近似的位置。一般来说，前者更加精确，而后者消耗更少的 IO，可以更快地完成。
+
 
 ### ping
 
