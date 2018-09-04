@@ -3,6 +3,8 @@ title: 实用工具语句
 category: user guide
 ---
 
+# 实用工具语句
+
 ## `DESCRIBE` 语句
 
 `DESCRIBE` 和 `EXPLAIN` 是同义词，另外还可以缩写为 `DESC`。请参考 `EXPLAIN` 语句的用法。

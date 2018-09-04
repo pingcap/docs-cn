@@ -5,7 +5,7 @@ category: compatibility
 
 # 与 MySQL 兼容性对比
 
-TiDB 支持包括跨行事务，JOIN 及子查询在内的绝大多数 MySQL 的语法，用户可以直接使用现有的 MySQL 客户端连接。如果现有的业务已经基于 MySQL 开发，大多数情况不需要修改代码即可直接替换单机的 MySQL。
+TiDB 支持包括跨行事务、JOIN 及子查询在内的绝大多数 MySQL 5.7 的语法，用户可以直接使用现有的 MySQL 客户端连接。如果现有的业务已经基于 MySQL 开发，大多数情况不需要修改代码即可直接替换单机的 MySQL。
 
 包括现有的大多数 MySQL 运维工具（如 PHPMyAdmin, Navicat, MySQL Workbench 等），以及备份恢复工具（如 mysqldump, mydumper/myloader）等都可以直接使用。
 
@@ -33,20 +33,23 @@ TiDB 的自增 ID (Auto Increment ID) 只保证自增且唯一，并不保证连
 
 > **注意：**
 >
-> 在有多台 TiDB 使用自增 ID 时，建议不要混用缺省值和自定义值。因为目前在如下情况下会报错：
->
-> 在有两个 TiDB（TiDB A 缓存 [1,5000] 的自增 ID，TiDB B 缓存 [5001,10000] 的自增 ID）的集群，使用如下 SQL 语句创建一个带有自增 ID 的表：
+> 在集群中有多个 tidb-server 实例时，如果表结构中有自增 ID，建议不要混用缺省值和自定义值。否则在如下情况下会遇到问题：
+> 
+> 假设有这样一个带有自增 ID 的表：
 >
 > ```
 > create table t(id int unique key auto_increment, c int);
 > ```
+> 
+> TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用于分配（目前会缓存 30000 个 ID），用完这段值再去取下一段。
+
+> 假设集群中有两个 tidb-server 实例 A 和 B（A 缓存 [1,30000] 的自增 ID，B 缓存 [30001,60000] 的自增 ID），
 >
-> 该语句执行如下：
+> 依次执行操作：
 >
-> 1. 客户端向 TiDB B 插入一条将 `id` 设置为 1 的语句，并执行成功。
-> 2. 客户端向 TiDB A 发送插入一条记录，且记录中 `id` 使用缺省值即 1，最终返回 `Duplicated Error`。
->
-> 该问题近期会解决。
+> 1. 客户端向 B 插入一条将 `id` 设置为 1 的语句 `insert into t values (1, 1)`，并执行成功。
+> 2. 客户端向 A 发送 Insert 语句 `insert into t (c) (1)`，这条语句中没有指定 `id` 的值，所以会由 A 分配，当前 A 缓存了 [1, 30000] 这段 ID，所以会分配 1 为自增 ID 的值，并把本地计数器加 1。而此时数据库中已经存在 `id` 为 1 的数据，最终返回 `Duplicated Error` 错误。
+
 
 ### 内建函数
 
@@ -105,3 +108,18 @@ TiDB 使用乐观事务模型，在执行 Update、Insert、Delete 等语句时�
 +   事务的处理：
 
     TiDB 在执行 load data 时，默认每 2 万行记录作为一个事务进行持久化存储。如果一次 load data 操作插入的数据超过 2 万行，那么会分为多个事务进行提交。如果某个事务出错，这个事务会提交失败，但它前面的事务仍然会提交成功，在这种情况下一次 load data 操作会有部分数据插入成功，部分数据插入失败。而 MySQL 中会将一次 load data 操作视为一个事务，如果其中发生失败情况，将会导致整个 load data 操作失败。
+
+### 默认设置的区别
+
++ 默认字符集不同：
+    + MySQL 5.7 中使用 `latin1`（MySQL 8.0 中使用 `UTF-8`）
+    + TiDB 使用 `utf8mb4`
++ 默认排序规则不同：
+    + MySQL 5.7 中使用 `latin1_swedish_ci`
+    + TiDB 使用 `binary`
++ `lower_case_table_names` 的默认值不同：
+    + TiDB 中该值默认为 2，并且目前 TiDB 只支持设置该值为 2
+    + MySQL 中默认设置：
+        + Linux 系统中该值为 0
+        + Windows 系统中该值为 1
+        + macOS 系统中该值为 2

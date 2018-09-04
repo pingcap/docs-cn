@@ -24,11 +24,11 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 默认值: 空字符串
 
 这个变量用来设置当前会话期待读取的历史数据所处时刻。
-比如当设置为 "2017-11-11 20:20:20" 时，当前会话将能读取到该时刻的数据。
+比如当设置为 "2017-11-11 20:20:20" 时或者一个 TSO 数字 "400036290571534337"，当前会话将能读取到该时刻的数据。
 
 ### tidb_import_data
 
-作用域: SESSION | GLOBAL
+作用域: SESSION
 
 默认值: 0
 
@@ -136,6 +136,30 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 这个变量用来设置顺序 scan 操作的并发度，AP 类应用适合较大的值，TP 类应用适合较小的值。
 
+### tidb_projection_concurrency
+
+作用域：SESSION | GLOBAL
+
+默认值：4
+
+这个变量用来设置 Projection 算子的并发度。 
+
+### tidb_hashagg_partial_concurrency
+
+作用域：SESSION | GLOBAL
+
+默认值：4
+
+这个变量用来设置并行 hash aggregation 算法 partial 阶段的执行并发度。对于聚合函数参数不为 distinct 的情况，HashAgg 分为 partial 和 final 阶段分别并行执行。
+
+### tidb_hashagg_final_concurrency
+
+作用域：SESSION | GLOBAL
+
+默认值：4
+
+这个变量用来设置并行 hash aggregation 算法 final 阶段的执行并发度。对于聚合函数参数不为 distinct 的情况，HashAgg 分为 partial 和 final 阶段分别并行执行。
+
 ### tidb_index_join_batch_size
 
 作用域：SESSION | GLOBAL
@@ -155,25 +179,25 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 ### tidb_batch_insert
 
-作用域: SESSION | GLOBAL
+作用域: SESSION
 
 默认值: 0
 
-这个变量用来设置是否自动切分插入数据。
+这个变量用来设置是否自动切分插入数据。仅在 autocommit 开启时有效。
 当插入大量数据时，可以将其设置为 true，这样插入数据会被自动切分为多个 batch，每个 batch 使用一个单独的事务进行插入。
 
 ### tidb_batch_delete
 
-作用域: SESSION | GLOBAL
+作用域: SESSION
 
 默认值: 0
 
-这个变量用来设置是否自动切分待删除的数据。
+这个变量用来设置是否自动切分待删除的数据。仅在 autocommit 开启时有效。
 当删除大量数据时，可以将其设置为 true，这样待删除数据会被自动切分为多个 batch，每个 batch 使用一个单独的事务进行删除。
 
 ### tidb_dml_batch_size
 
-作用域: SESSION | GLOBAL
+作用域: SESSION
 
 默认值: 20000
 
@@ -277,6 +301,55 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 这个变量用来设置是否启用 Streaming。
 
+### tidb_retry_limit
+
+作用域：SESSION | GLOBAL
+
+默认值：10
+
+这个变量用来设置最多可重试次数, 即在一个事务执行中遇到可重试的错误(例如事务冲突、TiKV 繁忙等)时，这个事务可以被重新执行，这个变量值表明最多可重试的次数。
+
+### tidb_disable_txn_auto_retry
+
+作用域：SESSION | GLOBAL
+
+默认值：0
+
+这个变量用来设置是否禁用显式事务自动重试，设置为 1 时，不会自动重试，如果遇到冲突需要在应用层重试。
+是否需要禁用自动重试，请参考[自动重试的风险](./transaction-isolation.md#乐观事务注意事项)
+
+## tidb_enable_table_partition
+
+作用域：SESSION
+
+默认值：0
+
+这个变量用来设置是否开启 TABLE PARTITION 特性。
+
+## tidb_backoff_lock_fast
+
+作用域：SESSION | GLOBAL
+
+默认值：100
+
+这个变量用来设置读请求遇到锁的 backoff 时间。
+
+## tidb_ddl_reorg_worker_cnt
+
+作用域: SESSION | GLOBAL
+
+默认值：16
+
+这个变量用来设置 DDL 操作 re-organize 阶段的并发度。
+
+## tidb_ddl_reorg_priority
+
+作用域：SESSION | GLOBAL
+
+默认值：PRIORITY_NORMAL
+
+这个变量用来设置 `ADD INDEX` 操作 re-organize 阶段的执行优先级，可设置为 PRIORITY_LOW/PRIORITY_NORMAL/PRIORITY_HIGH。
+
 ## Optimizer Hint
 
 TiDB 在 MySQL 的 Optimizer Hint 语法上，增加了一些 TiDB 专有的 Hint 语法, 使用这些 Hint 的时候，TiDB 优化器会尽量使用指定的算法，在某些场景下会比默认算法更优。
@@ -327,4 +400,4 @@ DELETE 语句示例：```DELETE FROM t WHERE _tidb_rowid = 1;```
 
 CREATE TABLE 语句示例: ```CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;```
 
-ALTER TABLE 语句示例： ```ALTER TABLE MODIFY t SHARD_ROW_ID_BITS = 4;```
+ALTER TABLE 语句示例： ```ALTER TABLE t SHARD_ROW_ID_BITS = 4;```

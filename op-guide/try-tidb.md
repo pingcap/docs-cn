@@ -5,7 +5,6 @@ category: quick start
 
 # Try TiDB
 
-
 TiDB 支持 `SQL92` 标准并兼容 MySQL 语法，目前已经实现了大多数常用的 MySQL 语法。用户可以直接使用现有的 MySQL 客户端连接。如果现有的业务已经基于 MySQL 开发，大多数情况不需要修改代码即可直接替换单机的 MySQL。
 
 

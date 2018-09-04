@@ -5,7 +5,7 @@ category: Releases
 
 # TiDB Pre-GA Release Notes
 
-8 月 30 日，TiDB 发布 Pre-GA 版。该版本对 MySQL 兼容性、SQL 优化器、系统稳定性、性能做了大量的工作。
+2017 年 8 月 30 日，TiDB 发布 Pre-GA 版。该版本对 MySQL 兼容性、SQL 优化器、系统稳定性、性能做了大量的工作。
 
 ## TiDB:
 

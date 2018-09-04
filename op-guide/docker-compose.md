@@ -1,13 +1,21 @@
 ---
-title: 使用 Docker Compose 构建集群
+title: 使用 Docker Compose 快速构建集群
 category: deployment
 ---
 
 # 使用 Docker Compose 快速构建集群
 
-本文档介绍如何通过 Docker Compose 快速部署 TiDB 集群。
+本文档介绍如何在单机上通过 Docker Compose 快速一键部署一套 TiDB 测试集群。
 
-[Docker Compose](https://docs.docker.com/compose/overview) 可以通过一个 YAML 文件定义多个容器的应用服务，然后一键启动或停止。可以用来在单机上一键部署一套 TiDB 测试集群，使用 Docker Compose 部署 TiDB 集群要求 Docker 是 17.06.0 及以上版本。
+[Docker Compose](https://docs.docker.com/compose/overview) 可以通过一个 YAML 文件定义多个容器的应用服务，然后一键启动或停止。
+
+## 准备环境
+
+确保你的机器上已安装：
+
+- Docker（17.06.0 及以上版本）
+- Docker Compose
+- Git
 
 ## 快速部署
 
@@ -20,7 +28,8 @@ category: deployment
 2. 创建并启动集群
 
     ```bash
-    cd tidb-docker-compose && docker-compose up -d
+    cd tidb-docker-compose && docker-compose pull # Get the latest Docker images
+    docker-compose up -d
     ```
 
 3. 访问集群
@@ -47,7 +56,11 @@ category: deployment
     curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
     ```
 
-    如果是 Mac 系统，也可以通过 Homebrew 安装：`brew install kubernetes-helm`
+    如果是 Mac 系统，也可以通过 Homebrew 安装：
+    
+    ```
+    brew install kubernetes-helm
+    ```
 
 2. 下载 `tidb-docker-compose`
 
@@ -84,6 +97,7 @@ category: deployment
 5. 使用生成的 `docker-compose.yml` 创建并启动集群
 
     ```bash
+    docker-compose -f generated-docker-compose.yml pull # Get the latest Docker images
     docker-compose -f generated-docker-compose.yml up -d
     ```
 
@@ -93,6 +107,57 @@ category: deployment
     mysql -h 127.0.0.1 -P 4000 -u root
     ```
 
-    访问集群 Grafana 监控页面：<http://localhost:3000> 默认用户名和密码都是 admin。
+    访问集群 Grafana 监控页面：<http://localhost:3000> 默认用户名和密码均为 admin。
 
     如果启用了 tidb-vision，可以通过 <http://localhost:8010> 查看。
+
+## 访问 Spark shell 并加载 TiSpark
+
+向 TiDB 集群中插入一些样本数据：
+
+```bash
+$ docker-compose exec tispark-master bash
+$ cd /opt/spark/data/tispark-sample-data
+$ mysql -h tidb -P 4000 -u root < dss.ddl
+```
+
+当样本数据加载到 TiDB 集群之后，可以使用 `docker-compose exec tispark-master /opt/spark/bin/spark-shell` 来访问 Spark shell。
+
+```bash
+$ docker-compose exec tispark-master /opt/spark/bin/spark-shell
+...
+Spark context available as 'sc' (master = local[*], app id = local-1527045927617).
+Spark session available as 'spark'.
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /___/ .__/\_,_/_/ /_/\_\   version 2.1.1
+      /_/
+
+Using Scala version 2.11.8 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_172)
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+scala> import org.apache.spark.sql.TiContext
+...
+scala> val ti = new TiContext(spark)
+...
+scala> ti.tidbMapDatabase("TPCH_001")
+...
+scala> spark.sql("select count(*) from lineitem").show
++--------+
+|count(1)|
++--------+
+|   60175|
++--------+
+```
+
+你也可以通过 Python 或 R 来访问 Spark：
+
+```bash
+docker-compose exec tispark-master /opt/spark/bin/pyspark
+docker-compose exec tispark-master /opt/spark/bin/sparkR
+```
+
+更多关于 TiSpark 的信息，参见 [TiSpark 的详细文档](../tispark/tispark-quick-start-guide.md)。

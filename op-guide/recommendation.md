@@ -1,5 +1,5 @@
 ---
-title: 软件和硬件环境要求
+title: TiDB 软件和硬件环境要求
 category: deployment
 ---
 
@@ -21,7 +21,8 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运�
 > **注**：
 >
 > - TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。
-> - TiDB 对 Linux 操作系统的以上支持包括部署和运行在物理服务器以及 VMware、KVM、XEN 主流虚拟化环境。
+> - TiDB 在 CentOS 7.3 的环境下进行过大量的测试，同时社区也有很多该操作系统部署的最佳实践，因此，建议使用 CentOS 7.3 以上的 Linux 操作系统来部署 TiDB。
+> - 以上 Linux 操作系统可运行在物理服务器以及 VMware、KVM、XEN 主流虚拟化环境上。
 
 ## 服务器要求
 
@@ -32,9 +33,8 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | **组件** | **CPU** | **内存** | **本地存储** | **网络** | **实例数量(最低要求)** |
 | --- | --- | --- | --- | --- | --- |
 | TiDB | 8核+ | 16 GB+ | SAS, 200 GB+ | 千兆网卡 | 1（可与 PD 同机器） |
-| PD | 8核+ | 16 GB+ | SAS, 200 GB+ | 千兆网卡 | 1（可与 TiDB 同机器） |
+| PD | 4核+ | 8 GB+ | SAS, 200 GB+ | 千兆网卡 | 1（可与 TiDB 同机器） |
 | TiKV | 8核+ | 32 GB+ | SSD, 200 GB+ | 千兆网卡 | 3 |
-|   |   |   |   | 服务器总计 | 4 |
 
 > **注**：
 >
@@ -46,34 +46,38 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 | **组件** | **CPU** | **内存** | **硬盘类型** | **网络** | **实例数量(最低要求)** |
 | --- | --- | --- | --- | --- | --- |
-| TiDB | 16核+ | 48 GB+ | SAS | 万兆网卡（2块最佳） | 2 |
-| PD | 8核+ | 16 GB+ | SSD | 万兆网卡（2块最佳） | 3 |
-| TiKV | 16核+ | 48 GB+ | SSD | 万兆网卡（2块最佳） | 3 |
+| TiDB | 16核+ | 32 GB+ | SAS | 万兆网卡（2块最佳） | 2 |
+| PD | 4核+ | 8 GB+ | SSD | 万兆网卡（2块最佳） | 3 |
+| TiKV | 16核+ | 32 GB+ | SSD | 万兆网卡（2块最佳） | 3 |
 | 监控 | 8核+ | 16 GB+ | SAS | 千兆网卡 | 1 |
-|   |   |   |   | 服务器总计 | 9 |
 
 > **注**：
 >
 > - 生产环境中的 TiDB 和 PD 可以部署和运行在同服务器上，如对性能和可靠性有更高的要求，应尽可能分开部署。
 > - 生产环境强烈推荐使用更高的配置。
-> - TiKV 硬盘大小建议不要超过 800G 以防止硬盘损坏时，数据恢复耗时过长
+> - TiKV 硬盘大小配置建议 PCI-E SSD 不超过 2 TB，普通 SSD 不超过 1.5 TB。
 
 ## 网络要求
 
-TiDB 作为开源分布式 NewSQL 数据库，其正常运行需要网络环境提供如下的网络端口配置要求，管理员可根据实际环境中 TiDB 组件部署的方案，在网络侧和主机侧启用相关端口：
+TiDB 作为开源分布式 NewSQL 数据库，其正常运行需要网络环境提供如下的网络端口配置要求，管理员可根据实际环境中 TiDB 组件部署的方案，在网络侧和主机侧开放相关端口：
 
 | 组件 | 默认端口 | 说明 |
 | :-- | :-- | :-- |
-| TiDB |  4000  |   应用及 DBA 工具访问通信端口|
-| TiDB | 10080  |   TiDB 状态信息上报通信端口|
-| TiKV |  20160 |  TiKV 通信端口  |
+| TiDB |  4000  | 应用及 DBA 工具访问通信端口 |
+| TiDB | 10080  | TiDB 状态信息上报通信端口 |
+| TiKV |  20160 | TiKV 通信端口 |
 | PD | 2379 | 提供 TiDB 和 PD 通信端口 |
-| PD | 2380 | PD 集群节点间通信端口|
-| Prometheus |  9090|Prometheus 服务通信端口  |
-| Pushgateway |  9091| TiDB, TiKV, PD 监控聚合和上报端口 |
-| Node_exporter |  9100| TiDB 集群每个节点的系统信息上报通信端口 |
+| PD | 2380 | PD 集群节点间通信端口 |
+| Pump | 8250 | Pump 通信端口 |
+| Drainer | 8249 | Drainer 通信端口 |
+| Prometheus |  9090 | Prometheus 服务通信端口 |
+| Pushgateway |  9091 | TiDB，TiKV，PD 监控聚合和上报端口 |
+| Node_exporter |  9100 | TiDB 集群每个节点的系统信息上报通信端口 |
+| Blackbox_exporter | 9115 | Blackbox_exporter 通信端口，用于 TiDB 集群端口监控 |
 | Grafana | 3000 | Web 监控服务对外服务和客户端(浏览器)访问端口 |
+| Grafana | 8686 | grafana_collector 通信端口，用于将 Dashboard 导出为 PDF 格式 |
+| Kafka_exporter | 9308 | Kafka_exporter 通信端口，用于监控 binlog kafka 集群 |
 
 ## 客户端 Web 浏览器要求
 
-TiDB 提供了基于 Prometheus 和 Grafana 技术平台作为 TiDB 分布式数据库集群的可视化监控数据展现方案。建议用户采用高版本的微软 IE, Google Chrome，Mozilla Firefox 访问 Grafana 监控入口。
+TiDB 提供了基于 Prometheus 和 Grafana 技术平台作为 TiDB 分布式数据库集群的可视化监控数据展现方案。建议用户采用高版本的微软 IE，Google Chrome，Mozilla Firefox 访问 Grafana 监控入口。

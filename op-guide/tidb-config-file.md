@@ -1,9 +1,9 @@
 ---
-title: TiDB 配置文件解释
+title: TiDB 配置项解释
 category: deployment
 ---
 
-# TiDB 配置文件
+# TiDB 配置项解释
 
 TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认的配置文件，重命名为 config.toml 即可。
 
@@ -31,6 +31,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 这个选项可以设置 TiDB 的系统变量 `lower_case_table_names` 的值。
 + 默认: 2
 + 具体可以查看 MySQL 关于这个变量的[描述](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names)
++ 注意：目前 TiDB 只支持将该选项的值设为 2，即按照大小写来保存表名，按照小写来比较（不区分大小写）。
 
 ## log 
 
@@ -46,6 +47,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 是否禁止在日志中输出时间戳。
 + 默认: false
 + 如果设置为 true，那么日志里面将不会输出时间戳。
+
+### `slow-query-file`
+
++ 慢查询日志的文件名。
++ 默认: ""
++ 设置后，慢查询日志会单独输出到该文件。
 
 ### `slow-threshold`
 
@@ -173,27 +180,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认: 0
 + 对于每一个查询，TiDB 会以 `feedback-probability` 的概率收集查询的反馈，用于更新统计信息。
 
-## plan-cache
-
-Plan cache 相关配置。
-
-### `enabled`
-
-+ 开启 Plan cache。
-+ 默认: false
-+ 开启 Plan cache 会省去相同 SQL 语句的查询优化开销。
-
-### `capacity`
-
-+ 缓存语句的数量。
-+ 默认: 2560
-
-### `shards`
-
-+ plan-cache 桶的数量。
-+ 默认: 256
-+ 这个数量越大，锁的粒度越小。
-
 ## prepared-plan-cache
 
 prepare 语句的 Plan cache 设置。
@@ -220,3 +206,15 @@ prepare 语句的 Plan cache 设置。
 + 执行事务提交时，最大的超时时间。
 + 默认: 41s
 + 这个值必须是大于两倍 Raft 选举的超时时间。
+
+## txn-local-latches
+
+事务内存锁相关配置，当本地事务冲突比较多时建议开启。
+
+### `enable`
++ 开启
++ 默认: false
+
+### `capacity`
++ Hash 对应的 slot 数, 会自动向上调整为 2 的指数倍。每个 slot 占 32 Bytes 内存。当写入数据的范围比较广时（如导数据），设置过小会导致变慢，性能下降。
++ 默认：1024000

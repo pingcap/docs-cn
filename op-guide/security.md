@@ -14,8 +14,6 @@ category: deployment
 
 MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用另外一套证书。
 
-
-
 ## TiDB 集群组件间开启 TLS（双向认证）
 
 ### 准备证书

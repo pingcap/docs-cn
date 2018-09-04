@@ -12,6 +12,7 @@ TiDB 集群状态监控目前有两种接口，第一种是通过 HTTP 接口对
 这类接口可以获取组件的一些基本信息，并且可以作为 keepalive 监测接口。另外 PD 的接口可以看到整个 TiKV 集群的详细信息。
 
 ### TiDB Server
+
 TiDB 对外暴露的 HTTP 接口是 http://host:port/status ，默认的端口号是 10080 （可以通过 --status 参数设置），可以通过访问这个接口获取当前 TiDB Server 的状态，以及判断是否存活。返回结果是 **Json** 格式：
 
 ```bash
@@ -150,7 +151,7 @@ Grafana
 
 一般无需特殊配置，使用默认端口 9091 即可
 
-Prometheus 配置：
+#### Prometheus 配置
 
 在 yaml 配置文件中添加 Push Gateway 地址：
 

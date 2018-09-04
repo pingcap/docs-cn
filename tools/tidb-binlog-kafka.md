@@ -36,7 +36,7 @@ Drainer 从 Kafka 中收集 Binlog，并按照 TiDB 中事务的提交顺序转�
 
 Kafka 集群用来存储由 Pump 写入的 Binlog 数据，并提供给 Drainer 进行读取。
 
-> **注：**local 版本将 Binlog 存储在文件中，最新版本则使用 Kafka 存储。
+> **注**：local 版本将 Binlog 存储在文件中，最新版本则使用 Kafka 存储。
 
 ## TiDB-Binlog 安装
 
@@ -62,6 +62,7 @@ cd tidb-binlog-latest-linux-amd64
 #### 注意
 
 * 需要为一个 TiDB 集群中的每台 TiDB server 部署一个 Pump，目前 TiDB server 只支持以 unix socket 的方式输出 Binlog。
+
 * 手动部署时，启动优先级为：Pump > TiDB；停止优先级为 TiDB > Pump。
 
     设置 TiDB 启动参数 `binlog-socket` 为对应的 Pump 参数 `socket` 所指定的 unix socket 文件路径，最终部署结构如下图所示：
@@ -69,16 +70,17 @@ cd tidb-binlog-latest-linux-amd64
     ![TiDB pump 模块部署结构](../media/tidb-pump-deployment.png)
 
 * Drainer 不支持对 ignore schemas（在过滤列表中的 schemas）的 table 进行 rename DDL 操作。
+
 * 在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取 savepoint，然后导入全量备份，最后启动 Drainer 从 savepoint 开始同步；
 
     为了保证数据的完整性，在 Pump 运行 10 分钟左右后按顺序进行如下操作：
 
-    *  使用 [tidb-tools](https://github.com/pingcap/tidb-tools) 项目中的 generate_binlog_position 工具生成 Drainer 启动需要的 savepoint 文件中，make generate_binlog_position 编译该工具。具体使用参考工具的 README 说明，也可以直接下载获取该工具：[generate_binlog_position](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.tar.gz)， 并使用sha256sum验证该文件 [sha256](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.sha256)。
+    *  使用 [tidb-tools](https://github.com/pingcap/tidb-tools) 项目中的 [binlogctl](https://github.com/pingcap/tidb-tools/tree/master/tidb_binlog/binlogctl) 工具生成 Drainer 初次启动所需的 position
     *  全量备份，例如 mydumper 备份 TiDB
     *  全量导入备份到目标系统
-    *  Kafka 版本 Drainer 启动的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，如果 checkpoint 表中没有效的数据，可以通过设置 `initial-commit-ts` 启动 Drainer 从指定位置开始消费 - `bin/drainer --config=conf/drainer.toml --initial-commit-ts=${commitTS}`
+    *  Kafka 版本 Drainer 启动的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，如果 checkpoint 表中没有效的数据，可以通过设置 `initial-commit-ts` 启动 Drainer 从指定位置开始消费 - `bin/drainer --config=conf/drainer.toml --initial-commit-ts=${position}`
 
-* Drainer 输出的 pb，要在配置文件中设置如下参数：
+* Drainer 输出为 pb，要在配置文件中设置如下参数：
 
     ```
     [syncer]
@@ -88,6 +90,20 @@ cd tidb-binlog-latest-linux-amd64
     [syncer.to]
     dir = "/path/pb-dir"
     ```
+
+* Drainer 输出为 kafka，要在配置文件中设置如下参数：
+
+    ```
+    [syncer]
+    db-type = "kafka"
+
+    # when db-type is kafka, you can uncomment this to config the down stream kafka, or it will be the same kafka addrs where drainer pull binlog from.
+    #[syncer.to]
+    # kafka-addrs = "127.0.0.1:9092"
+    # kafka-version = "0.8.2.0"
+    ```
+
+    输出到 kafka 的数据为按 ts 排好序的 protobuf 定义 binlog 格式，可以参考 [driver](https://github.com/pingcap/tidb-tools/tree/master/tidb_binlog/driver) 获取数据同步到下游。
 
 * Kafka 和 ZooKeeper 集群需要在部署 TiDB-Binlog 之前部署好。Kafka 需要 0.9 及以上版本。
 
@@ -206,7 +222,7 @@ ZK3="192.168.0.11"
 
     # Pump 向 PD 发送心跳的间隔 (单位 秒)
     heartbeat-interval = 3
-   
+      
     # PD 集群节点的地址
     pd-urls = "http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379"
  

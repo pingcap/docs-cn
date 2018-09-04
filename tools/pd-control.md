@@ -9,7 +9,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ## 源码编译
 
-1. [Go](https://golang.org/) Version 1.7 以上
+1. [Go](https://golang.org/) Version 1.9 以上
 2. 在 PD 项目根目录使用 `make` 命令进行编译，生成 bin/pd-ctl
 
 ## 简单例子
@@ -45,7 +45,7 @@ export PD_ADDR=http://127.0.0.1:2379
 
 ### \-\-detach,-d
 
-+ 使用单命令行模式(不进入 readline )
++ 使用单命令行模式(不进入 readline)
 + 默认值: false
 
 ### --cacert
@@ -91,15 +91,29 @@ export PD_ADDR=http://127.0.0.1:2379
 示例：
 
 ```bash
->> config show                                //　显示 scheduler 的相关 config 信息
+>> config show                                // 显示 scheduler 的相关 config 信息
 {
   "max-snapshot-count": 3,
   "max-pending-peer-count": 16,
+  "max-merge-region-size": 50,
+  "max-merge-region-rows": 200000,
+  "split-merge-interval": "1h",
+  "patrol-region-interval": "100ms",
   "max-store-down-time": "1h0m0s",
-  "leader-schedule-limit": 64,
-  "region-schedule-limit": 16,
-  "replica-schedule-limit": 24,
-  "tolerant-size-ratio": 2.5,
+  "leader-schedule-limit": 4,
+  "region-schedule-limit": 4,
+  "replica-schedule-limit":8,
+  "merge-schedule-limit": 8,
+  "tolerant-size-ratio": 5,
+  "low-space-ratio": 0.8,
+  "high-space-ratio": 0.6,
+  "disable-raft-learner": "false",
+  "disable-remove-down-replica": "false",
+  "disable-replace-offline-replica": "false",
+  "disable-make-up-replica": "false",
+  "disable-remove-extra-replica": "false",
+  "disable-location-replacement": "false",
+  "disable-namespace-relocation": "false",
   "schedulers-v2": [
     {
       "type": "balance-region",
@@ -118,9 +132,9 @@ export PD_ADDR=http://127.0.0.1:2379
 >> config show all                            // 显示所有的 config 信息
 >> config show namespace ts1                  // 显示名为 ts1 的 namespace 的相关 config 信息
 {
-  "leader-schedule-limit": 64,
-  "region-schedule-limit": 16,
-  "replica-schedule-limit": 24,
+  "leader-schedule-limit": 4,
+  "region-schedule-limit": 4,
+  "replica-schedule-limit": 8,
   "max-replicas": 3,
 }
 >> config show replication                    // 显示 replication 的相关 config 信息
@@ -128,6 +142,54 @@ export PD_ADDR=http://127.0.0.1:2379
   "max-replicas": 3,
   "location-labels": ""
 }
+>> config show cluster-version                // 显示目前集群版本，是目前集群 TiKV 节点的最低版本，并不对应 binary 的版本
+"2.0.0"
+```
+
+`max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。
+当需要加快补副本或 balance 速度时可以调大这个值。
+
+```bash
+>> config set max-snapshort-count 16  // 设置最大 snapshot 为 16
+```
+
+`max-pending-peer-count` 控制单个 store 的 pending peer 上限，调度受制于这个配置来防止在部分节点产生大量日志落后的 Region。
+需要加快补副本或 balance 速度可以适当调大这个值，设置为 0 则表示不限制。
+
+```bash
+>> config set max-pending-peer-count 64  // 设置最大 pending peer 数量为 64
+```
+
+`max-merge-region-size` 控制 region merge 的 size 上限（单位是 M）。
+当 regionSize 大于指定值时 PD 不会将其与相邻的 region 合并。设置为 0 表示不开启 region merge 功能。
+
+```bash
+>> config set max-merge-region-size 16 // 设置 region merge 的 size 上限为 16M
+```
+
+`max-merge-region-rows` 控制 region merge 的 rowCount 上限。
+当 regionRowCount 大于指定值时 PD 不会将其与相邻的 region 合并。
+
+```bash
+>> config set max-merge-region-rows 50000 // 设置 region merge 的 rowCount 上限为 50k
+```
+
+`split-merge-interval` 控制对同一个 region 做 split 和 merge 操作的间隔，即对于新 split 的 region 一段时间内不会被 merge。
+
+```bash
+>> config set split-merge-interval 24h  // 设置 split merge 间隔为 1 天
+```
+
+`patrol-region-interval` 控制 replicaChecker 检查 region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。
+
+```bash
+>> config set patrol-region-interval 10ms // 设置 replicaChecker 的运行频率为 10ms
+```
+
+`max-store-down-time` 为 PD 认为失联 store 无法恢复的时间，当超过指定的时间没有收到 store 的心跳后，PD 会在其他节点补充副本。
+
+```bash
+>> config set max-store-down-time 30m  // 设置 store 心跳丢失 30 分钟开始补副本
 ```
 
 通过调整 `leader-schedule-limit` 可以控制同时进行 leader 调度的任务个数。
@@ -154,12 +216,71 @@ Replica 调度的开销较大，所以这个值不宜调得太大。
 >> config set replica-schedule-limit 4        // 最多同时进行 4 个 replica 调度
 ```
 
+`merge-schedule-limit` 控制同时进行的 region merge 调度的任务，设置为 0 则关闭 region merge。
+Merge 调度的开销较大，所以这个值不宜调得过大。
+
+```bash
+>> config set merge-schedule-limit 16       // 最多同时进行 16 个 merge 调度
+```
+
 以上对配置的修改是全局性的，还可以通过对不同 namespace 的配置，进行细化调整。当 namespace 未设置相应配置时，使用全局配置。注：namespace 的配置只支持对 leader-schedule-limit，region-schedule-limit，replica-schedule-limit，max-replicas 的调整，否则不生效。
 
 ```bash
 >> config set namespace ts1 leader-schedule-limit 4 // 设置名为 ts1 的 namespace 最多同时进行 4 个 leader 调度
 >> config set namespace ts2 region-schedule-limit 2 // 设置名为 ts2 的 namespace 最多同时进行  2 个 region 调度
 ```
+
+`tolerant-size-ratio` 控制 balance 缓冲区大小。
+当两个 store 的 leader 或 region 的得分差距小于指定倍数的 region size 时，PD 会认为此时 balance 达到均衡状态。
+
+```bash
+>> config set tolerant-size-ratio 20        // 设置缓冲区为约 20 倍平均 regionSize
+```
+
+`low-space-ratio` 用于设置 store 空间不足的阈值。
+当节点的空间占用比例超过指定值时，PD 会尽可能避免往对应节点迁移数据，同时主要针对剩余空间大小进行调度，避免对应节点磁盘空间被耗尽。
+
+```bash
+config set low-space-ratio 0.9              // 设置空间不足阈值为 0.9
+```
+
+`high-space-ratio` 用于设置 store 空间充裕的阈值。
+当节点的空间占用比例小于指定值时，PD 调度时会忽略剩余空间这个指标，主要针对实际数据量进行均衡。
+
+```bash
+config set high-space-ratio 0.5             // 设置空间充裕阈值为 0.5
+```
+
+`disable-raft-learner` 用于关闭 raft learner 功能。
+默认配置下 PD 在添加副本时会使用 raft learner 来降低宕机或网络故障带来的不可用风险。
+
+```bash
+config set disable-raft-learner true        // 关闭 raft learner 功能
+```
+
+`cluster-version` 集群的版本，用于控制某些 Feature 是否开启，处理兼容性问题。
+通常是集群正常运行的所有 TiKV 节点中的最低版本，需要回滚到更低的版本时才进行手动设置。
+
+```bash
+config set cluster-version 1.0.8              // 设置 cluster version 为 1.0.8
+```
+
+`disable-remove-down-replica` 用于关闭自动删除 DownReplica 的特性。
+当设置为 true 时，PD 不会自动清理宕机状态的副本。
+
+`disable-replace-offline-replica` 用于关闭迁移 OfflineReplica 的特性。
+当设置为 true 时，PD 不会迁移下线状态的副本。
+
+`disable-make-up-replica` 用于关闭补充副本的特性。
+当设置为 true 时，PD 不会为副本数不足的 Region 补充副本。
+
+`disable-remove-extra-replica` 用于关闭删除多余副本的特性。
+当设置为 true 时，PD 不会为副本数过多的 Region 删除多余副本。
+
+`disable-location-replacement` 用于关闭隔离级别检查。
+当设置为 true 时，PD 不会通过调度来提升 Region 副本的隔离级别。
+
+`disable-namespace-relocation` 用于关闭 Region 的 namespace 调度。当设置为 true 时，PD 不会把 Region 调度到它所属的 Store 上。
 
 ### config delete namespace \<name\> [\<option\>]
 
@@ -202,7 +323,7 @@ Replica 调度的开销较大，所以这个值不宜调得太大。
 >> hot store                            // 显示所有 store 的读写信息
 ```
 
-### label [store]
+### label [store \<name\> \<value\>]
 
 用于显示集群标签信息
 
@@ -213,27 +334,33 @@ Replica 调度的开销较大，所以这个值不宜调得太大。
 >> label store zone cn                  // 显示所有包含 label 为 "zone":"cn" 的 store
 ```
 
-### member [leader | delete]
+### member [delete | leader_priority | leader [show | resign | transfer \<member_name\>]]
 
-用于显示 PD 成员信息或删除指定成员。
+用于显示 PD 成员信息，删除指定成员，设置成员的 leader 优先级。
 
 示例：
 
 ```bash
 >> member                               // 显示所有成员的信息
 {
-  "members": [......]
+  "members": [......],
+  "leader": {......},
+  "etcd_leader": {......},
 }
+>> member delete name pd2               // 下线 "pd2"
+Success!
+>> member delete id 1319539429105371180 // 使用 id 下线节点
+Success!
 >> member leader show                   // 显示 leader 的信息
 {
   "name": "pd",
   "addr": "http://192.168.199.229:2379",
   "id": 9724873857558226554
 }
->> member delete name pd2               // 下线 "pd2"
-Success!
->> member delete id 1319539429105371180 // 使用 id 下线节点
-Success!
+>> member leader resign // 将 leader 从当前成员移走
+......
+>> member leader transfer pd3 // 将 leader 迁移至指定成员
+......
 ```
 
 ### operator [show | add | remove]
@@ -243,22 +370,22 @@ Success!
 示例：
 
 ```bash
->> operator show                                       // 显示所有的 operators
->> operator show admin                                 // 显示所有的 admin operators
->> operator show leader                                // 显示所有的 leader operators
->> operator show region                                // 显示所有的 region operators
->> operator add add-peer 1 2                           // 在 store 2 上新增 region 1 的一个副本
->> operator remove remove-peer 1 2                     // 移除 store 2 上的 region 1 的一个副本
->> operator add transfer-leader 1 2                    // 把 region 1 的 leader 调度到 store 2
->> operator add transfer-region 1 2 3 4                // 把 region 1 调度到 store 2,3,4
->> operator add transfer-peer 1 2 3                    // 把 region 1 在 store 2 上的副本调度到 store 3
->> operator remove 1                                   // 把 region 1 的调度操作删掉
->> operator add split-region 2 --policy=scan           // 分裂 region 2
->> operator add split-region 2 --policy=approximate    // 分裂 region 2
+operator show                                        // 显示所有的 operators
+operator show admin                                  // 显示所有的 admin operators
+operator show leader                                 // 显示所有的 leader operators
+operator show region                                 // 显示所有的 region operators
+operator add add-peer 1 2                            // 在 store 2 上新增 region 1 的一个副本
+operator remove remove-peer 1 2                      // 移除 store 2 上的 region 1 的一个副本
+operator add transfer-leader 1 2                     // 把 region 1 的 leader 调度到 store 2
+operator add transfer-region 1 2 3 4                 // 把 region 1 调度到 store 2,3,4
+operator add transfer-peer 1 2 3                     // 把 region 1 在 store 2 上的副本调度到 store 3
+operator add merge-region 1 2                        // 将 region 1 与 region 2 合并
+operator add split-region 1 --policy=approximate     // 将 region 1 对半拆分成两个 region，基于粗略估计值
+operator add split-region 1 --policy=scan            // 将 region 1 对半拆分成两个 region，基于精确扫描值
+operator remove 1                                    // 把 region 1 的调度操作删掉
 ```
 
 其中，对于 region 的分裂，都是尽可能地从靠近中间的位置。对这个位置的选择支持两种策略，即 scan 和 approximate。它们之间的区别是，前者通过扫描这个 region 的方式来确定中间的 key，而后者是通过查看 SST 文件中记录的统计信息，来得到近似的位置。一般来说，前者更加精确，而后者消耗更少的 IO，可以更快地完成。
-
 
 ### ping
 
@@ -271,14 +398,14 @@ Success!
 time: 43.12698ms
 ```
 
-### region \<region_id\>
+### region \<region_id\> [--jq="<query string>"]
 
-用于显示 region 信息。
+用于显示 region 信息。使用 jq 格式化输出请参考[jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。
 
 示例：
 
 ```bash
->> region                               //　显示所有 region 信息
+>> region                               // 显示所有 region 信息
 {
   "count": 1,
   "regions": [......]
@@ -324,6 +451,40 @@ Protobuf 格式示例：
 }
 ```
 
+### region sibling \<region_id\>
+
+用于查询某个 region 相邻的 region。
+
+示例：
+
+```bash
+>> region sibling 2
+{
+  "count": 2,
+  "regions": [......],
+}
+```
+
+### region check [miss-peer | extra-peer | down-peer | pending-peer | incorrect-ns]
+
+用于查询处于异常状态的 region，各类型的意义如下
+
+- miss-peer：缺副本的 region
+- extra-peer：多副本的 region
+- down-peer：有副本状态为 Down 的 region
+- pending-peer：有副本状态为 Pending 的 region
+- incorrect-ns：有副本不符合 namespace 约束的 region
+
+示例：
+
+```bash
+>> region miss-peer
+{
+  "count": 2,
+  "regions": [......],
+}
+```
+
 ### scheduler [show | add | remove]
 
 用于显示和控制调度策略。
@@ -339,9 +500,9 @@ Protobuf 格式示例：
 >> scheduler remove grant-leader-scheduler-1  // 把对应的 scheduler 删掉
 ```
 
-### store [delete | label | weight] \<store_id\>
+### store [delete | label | weight] \<store_id\>  [--jq="<query string>"]
 
-用于显示 store 信息或者删除指定 store。
+用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考[jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。
 
 示例：
 
@@ -387,7 +548,94 @@ system:  2017-10-09 05:50:59 +0800 CST
 logic:  120102
 ```
 
+## jq 格式化 json 输出示例
 
+### 简化 `store` 的输出
+
+```bash
+» store --jq=".stores[].store | { id, address, state_name}"
+{"id":1,"address":"127.0.0.1:20161","state_name":"Up"}
+{"id":30,"address":"127.0.0.1:20162","state_name":"Up"}
+...
+```
+
+### 查询节点剩余空间
+
+```bash
+» store --jq=".stores[] | {id: .store.id, avaiable: .status.available}"
+{"id":1,"avaiable":"10 GiB"}
+{"id":30,"avaiable":"10 GiB"}
+...
+```
+
+### 查询 Region 副本的分布情况
+
+```bash
+» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id]}"
+{"id":2,"peer_stores":[1,30,31]}
+{"id":4,"peer_stores":[1,31,34]}
+...
+```
+
+### 根据副本数过滤 Region
+
+例如副本数不为 3 的所有 Region：
+
+```bash
+» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length != 3)}"
+{"id":12,"peer_stores":[30,32]}
+{"id":2,"peer_stores":[1,30,31,32]}
+```
+
+### 根据副本 store ID 过滤 Region
+
+例如在 store30 上有副本的所有 Region：
+
+```bash
+» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==30))}"
+{"id":6,"peer_stores":[1,30,31]}
+{"id":22,"peer_stores":[1,30,32]}
+...
+```
+
+还可以像这样找出在 store30 或 store31 上有副本的所有 Region：
+
+```bash
+» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==(30,31)))}"
+{"id":16,"peer_stores":[1,30,34]}
+{"id":28,"peer_stores":[1,30,32]}
+{"id":12,"peer_stores":[30,32]}
+...
+```
+
+### 恢复数据时寻找相关 Region
+
+例如当 [store1, store30, store31] 宕机时不可用时，我们可以通过查找所有 Down 副本数量大于正常副本数量的所有 Region：
+
+```bash
+» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length as $total | map(if .==(1,30,31) then . else empty end) | length>=$total-length) }"
+{"id":2,"peer_stores":[1,30,31,32]}
+{"id":12,"peer_stores":[30,32]}
+{"id":14,"peer_stores":[1,30,32]}
+...
+```
+
+或者在 [store1, store30, store31] 无法启动时，找出 store1 上可以安全手动移除数据的 Region。我们可以这样过滤出所有在 store1 上有副本并且没有其他 DownPeer 的 Region：
+
+```bash
+» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length>1 and any(.==1) and all(.!=(30,31)))}"
+{"id":24,"peer_stores":[1,32,33]}
+```
+
+在 [store30, store31] 宕机时，找出能安全地通过创建 `remove-peer` Operator 进行处理的所有 Region，即有且仅有一个 DownPeer 的 Region：
+
+```bash
+» region --jq=".regions[] | {id: .id, remove_peer: [.peers[].store_id] | select(length>1) | map(if .==(30,31) then . else empty end) | select(length==1)}"
+{"id":12,"remove_peer":[30]}
+{"id":4,"remove_peer":[31]}
+{"id":22,"remove_peer":[30]}
+...
+```
 
 
 

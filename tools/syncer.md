@@ -1,6 +1,6 @@
 ---
 title: Syncer 使用文档
-category: advanced
+category: tools
 ---
 
 # Syncer 使用文档
