@@ -1,6 +1,6 @@
 ---
 title: TiDB Quick Start Guide
-summary: Learn how to deploy a TiDB cluster quickly.
+summary: Learn how to quickly start a TiDB cluster.
 category: quick start
 ---
 
@@ -8,7 +8,7 @@ category: quick start
 
 This guide introduces how to deploy and monitor a TiDB cluster on your local drive using Docker Compose for experimenting and testing.
 
-**Warning:** Deploying TiDB using Docker Compose can only be used for experimental purposes. For production usage, [use Ansible to deploy the TiDB cluster](op-guide/ansible-deployment.md).
+> **Warning:** Deploying TiDB using Docker Compose can only be used for experimental purposes. For production usage, [use Ansible to deploy the TiDB cluster](op-guide/ansible-deployment.md).
 
 ## Prerequisites
 
@@ -50,11 +50,13 @@ Congratulations! You have deployed a TiDB cluster! You can see messages in your 
 
 You can now test your TiDB server using one of the following methods:
 
-- Use the MySQL client to connect to TiDB to read and write data:
+- Use the MySQL client to connect to TiDB:
 
     ```
     mysql -h 127.0.0.1 -P 4000 -u root
     ```
-
+    
+    You can [try TiDB](try-tidb.md) to explore the SQL statements.
+    
 - Use Grafana to view the status of the cluster via [http://localhost:3000](http://localhost:3000) with the default account name and password:  `admin` and `admin`.
 - Use [TiDB-Vision](https://github.com/pingcap/tidb-vision), a cluster visualization tool, to see data transfer and load-balancing inside your cluster via [http://localhost:8010](http://localhost:8010).

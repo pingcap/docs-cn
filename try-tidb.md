@@ -1,12 +1,14 @@
 ---
 title: Try TiDB
-summary: Some examples on how to test a TiDB cluster.
+summary: Learn about the basic SQL statements for the TiDB database.
 category: try tidb
 ---
 
 # Try TiDB
 
-This guide demonstrates some basic CRUD operations of TiDB that you can perform in the terminal after you successfully deployed a TiDB cluster. 
+After you successfully deploy a TiDB cluster, you can run SQL statements in TiDB. Because TiDB is compatible with MySQL, you can use THE MySQL client to connect to TiDB and run MySQL statements directly in most of the cases. For more information, see [Compatibility with MySQL](sql/mysql-compatibility.md).
+
+This page includes some basic SQL statements such as CRUD operations. For a complete list of the statements, see [TiDB SQL Syntax Diagram](https://pingcap.github.io/sqlgram/).
 
 ## Create, show, and drop a database
 
