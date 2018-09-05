@@ -11,7 +11,7 @@ category: user guide
 
 通过在 TiDB 的日志文件上 grep `SLOW_QUERY` 这个关键字，可以得到执行时间超过 [slow-threshold](../op-guide/tidb-config-file.md#slow-threshold) 的语句日志。
 
-`slow-threshold` 可以通过配置文件修改，默认是 300ms。如果配置了 [slow-query-file](../op-guide/tidb-config-file.md#slow-query-file), 慢查询日志会全部写在这个文件里。
+`slow-threshold` 可以通过配置文件修改，默认是 300ms。如果配置了 [slow-query-file](../op-guide/tidb-config-file.md#slow-query-file)，慢查询日志会全部写在这个文件里。
 
 ### 示例
 
@@ -35,7 +35,7 @@ sql:select count(c) from sbtest1 use index (k_1)
 
 #### wait_time
 
-表示这个语句在 TiKV 的等待时间之和，因为 TiKV 的 coprocessor 线程数是有限的，当所有的 coprocessor 线程都在工作的时候，请求会排队，当队列中有某些请求耗时很长的时候，后面的请求的等待时间都会增加。
+表示这个语句在 TiKV 的等待时间之和，因为 TiKV 的 Coprocessor 线程数是有限的，当所有的 Coprocessor 线程都在工作的时候，请求会排队，当队列中有某些请求耗时很长的时候，后面的请求的等待时间都会增加。
 
 #### backoff_time
 
@@ -43,15 +43,15 @@ sql:select count(c) from sbtest1 use index (k_1)
 
 #### request_count
 
-表示这个语句发送的 coprocessor 请求的数量。
+表示这个语句发送的 Coprocessor 请求的数量。
 
 #### total_keys
 
-表示 coprocessor 扫过的 key 的数量
+表示 Coprocessor 扫过的 key 的数量
 
 #### processed_keys
 
-表示 coprocessor 处理的 key 的数量。相比 total_keys，processed_keys 不包含 mvcc 的旧版本。如果 processed_keys 和 total_keys 相差很大，说明旧版本比较多。
+表示 Coprocessor 处理的 key 的数量。相比 total_keys，processed_keys 不包含 MVCC 的旧版本。如果 processed_keys 和 total_keys 相差很大，说明旧版本比较多。
 
 #### succ
 
@@ -88,8 +88,3 @@ sql:select count(c) from sbtest1 use index (k_1)
 ### 定位问题语句的方法
 
 并不是所有 SLOW_QUERY 的语句都是有问题的。会造成集群整体压力增大的，是那些 process_time 很大的语句。wait_time 很大，但 process_time 很小的语句通常不是问题语句，是因为被问题语句阻塞，在执行队列等待造成的响应时间过长。
-
-
-
-
-
