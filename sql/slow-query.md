@@ -51,7 +51,7 @@ sql:select count(c) from sbtest1 use index (k_1)
 
 #### processed_keys
 
-表示 coprocessor 处理的 key 的数量。相比 total_keys，processed_keys 不包含 mvcc 的旧版本和 mvcc delete 标记。如果 processed_keys 和 total_keys 相差很大，说明旧版本比较多。
+表示 coprocessor 处理的 key 的数量。相比 total_keys，processed_keys 不包含 mvcc 的旧版本。如果 processed_keys 和 total_keys 相差很大，说明旧版本比较多。
 
 #### succ
 
