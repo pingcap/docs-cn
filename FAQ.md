@@ -1054,4 +1054,4 @@ The solution is to use the `--local-infile=1` option when you start the MySQL cl
 
 #### ERROR 9001 (HY000): PD server timeout start timestamp may fall behind safe point
 
-This error occurs when TiDB fails to access PD. A worker in the TiDB background continuously queries the safepoint from PD and this error occurs if it fails to query within 100s. Generally it is because the PD failure or network failure between TiDB and PD. For the details of common errors, see [Error Number and Fault Diagnosis](sql/error.md).
+This error occurs when TiDB fails to access PD. A worker in the TiDB background continuously queries the safepoint from PD and this error occurs if it fails to query within 100s. Generally, it is because the disk on PD is slow and busy or the network failed between TiDB and PD. For the details of common errors, see [Error Number and Fault Diagnosis](sql/error.md).

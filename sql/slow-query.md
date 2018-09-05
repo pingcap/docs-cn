@@ -56,7 +56,7 @@ The number of keys that Coprocessor has scanned.
 
 #### `processed_keys`
 
-The number of keys that Coprocessor has processed. Compared with `total_keys`, `processed_keys` does not include the old versions of MVCC or the MVCC `delete` marks. A great difference between `processed_keys` and `total_keys` indicates that the number of old versions are relatively large.
+The number of keys that Coprocessor has processed. Compared with `total_keys`, `processed_keys` does not include the old versions of MVCC. A great difference between `processed_keys` and `total_keys` indicates that the number of old versions are relatively large.
 
 #### `succ`
 
