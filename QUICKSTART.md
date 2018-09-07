@@ -6,57 +6,29 @@ category: quick start
 
 # TiDB Quick Start Guide
 
-This guide introduces how to deploy and monitor a TiDB cluster on your local drive using Docker Compose for experimenting and testing.
+As an open source distributed scalable HTAP database, TiDB can be deployed on-premise or in-cloud. The following deployment options are officially supported by PingCAP.
 
-> **Warning:** Deploying TiDB using Docker Compose can only be used for experimental purposes. For production usage, [use Ansible to deploy the TiDB cluster](op-guide/ansible-deployment.md).
+- [Ansible Deployment](op-guide/ansible-deployment.md): This guide describes how to deploy TiDB using Ansible. It is strongly recommended for production deployment.
+- [Ansible Offline Deployment](op-guide/offline-ansible-deployment.md): If your environment has no access to the internet, you can follow this guide to see how to deploy a TiDB cluster offline using Ansible.
+- [Docker Deployment](op-guide/docker-deployment.md): This guide describes how to deploy TiDB using Docker.
+- [Docker Compose Deployment](op-guide/docker-compose.md): This guide describes how to deploy TiDB using Docker compose. You can follow this guide to quickly deploy a TiDB cluster for testing and development on your local drive.
+- [Kubernetes Deployment (beta)](op-guide/kubernetes.md): This guide describes how to deploy TiDB on Kubernetes using [TiDB Operator](https://github.com/pingcap/tidb-operator). You can follow this guide to see how to deploy TiDB on Google Kubernetes Engine or deploy TiDB locally using Docker in Docker.
 
-## Prerequisites
+## Community Provided Blog Posts & Tutorials
 
-Before you begin, make sure to install the following tools:
+The following list collects deployment guides and tutorials from the community. The content is subject to change by the contributors.
 
-- [Git](https://git-scm.com/downloads)
-- [Docker Compose](https://docs.docker.com/compose/install/)
-- [MySQL Client](https://dev.mysql.com/downloads/mysql/)
+- [How To Spin Up an HTAP Database in 5 Minutes with TiDB + TiSpark](https://www.pingcap.com/blog/how_to_spin_up_an_htap_database_in_5_minutes_with_tidb_tispark/)
+- [Developer install guide (single machine)](http://www.tocker.ca/this-blog-now-powered-by-wordpress-tidb.html)
 
-## Deploy a TiDB cluster
+_Your contribution is also welcome! Feel free to open a [pull request](https://github.com/pingcap/docs/edit/master/QUICKSTART.md) to add additional links._
 
-1. Download `tidb-docker-compose`:
+## Source Code
 
-    ```bash
-    git clone https://github.com/pingcap/tidb-docker-compose.git
-    ```
+Source code for [all components of the TiDB platform](https://github.com/pingcap) is available on GitHub.
 
-2. Change the directory to tidb-docker-compose and get the latest TiDB Docker Images:
-
-    ```bash
-    cd tidb-docker-compose && docker-compose pull
-    ```
-
-3. Start the TiDB cluster:
-
-    ```bash
-    docker-compose up -d
-    ```
-
-Congratulations! You have deployed a TiDB cluster! You can see messages in your terminal of the default components of a TiDB cluster: 
-
-- 1 TiDB instance
-- 3 TiKV instances
-- 3 Placement Driver (PD) instances
-- Prometheus
-- Grafana
-- 2 TiSpark instances (one master, one slave)
-- 1 TiDB-Vision instance
-
-You can now test your TiDB server using one of the following methods:
-
-- Use the MySQL client to connect to TiDB:
-
-    ```
-    mysql -h 127.0.0.1 -P 4000 -u root
-    ```
-    
-    You can [try TiDB](try-tidb.md) to explore the SQL statements.
-    
-- Use Grafana to view the status of the cluster via [http://localhost:3000](http://localhost:3000) with the default account name and password:  `admin` and `admin`.
-- Use [TiDB-Vision](https://github.com/pingcap/tidb-vision), a cluster visualization tool, to see data transfer and load-balancing inside your cluster via [http://localhost:8010](http://localhost:8010).
+- [TiDB](https://github.com/pingcap/tidb)
+- [TiKV](https://github.com/tikv/tikv)
+- [PD](https://github.com/pingcap/pd)
+- [TiSpark](https://github.com/pingcap/tispark)
+- [TiDB Operator](https://github.com/pingcap/tidb-operator)

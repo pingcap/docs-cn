@@ -8,7 +8,6 @@
 + Quick Start
   - [TiDB Quick Start Guide](QUICKSTART.md)
   - [Basic SQL Statements](try-tidb.md)
-- [TiDB Tutorial](https://www.pingcap.com/blog/how_to_spin_up_an_htap_database_in_5_minutes_with_tidb_tispark/)
 + TiDB User Guide
   + TiDB Server Administration
     - [The TiDB Server](sql/tidb-server.md)
