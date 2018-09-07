@@ -90,7 +90,7 @@ For example, if you want to add two TiDB nodes (node101, node102) with the IP ad
     ansible-playbook bootstrap.yml -l 172.16.10.101,172.16.10.102
     ```
 
-    > **Note:** If an alias is configured in the `inventory.ini` file, for example, `node101 ansible_host=172.16.10.101`, use `-1` to specify the alias when executing `ansible-playbook`. For example, `ansible-playbook bootstrap.yml -l node101,node102`. This also applies to the following steps.
+    > **Note:** If an alias is configured in the `inventory.ini` file, for example, `node101 ansible_host=172.16.10.101`, use `-l` to specify the alias when executing `ansible-playbook`. For example, `ansible-playbook bootstrap.yml -l node101,node102`. This also applies to the following steps.
 
 3. Deploy the newly added node:
 
