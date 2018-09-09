@@ -257,28 +257,28 @@ set @@global.tidb_distsql_scan_concurrency = 10
 - Default: 0
 - This variable is used to set whether to disable automatic retry of explicit transactions. If you set this variable to 1, the transaction does not retry automatically. If there is a conflict, the transaction needs to be retried at the application layer. To decide whether you need to disable automatic retry, see [description of optimistic transactions](transaction-isolation.md#description-of-optimistic-transactions).
 
-## tidb_enable_table_partition
+### tidb_enable_table_partition
 
 - Scope: SESSION
 - Default value: 0
 - This variable is used to set whether to enable the `TABLE PARTITION` feature.
 
-## tidb_backoff_lock_fast
+### tidb_backoff_lock_fast
 
 - Scope: SESSION | GLOBAL
 - Default value: 100
 - This variable is used to set the `backoff` time when the read request meets a lock.
 
-## tidb_ddl_reorg_worker_cnt
+### tidb_ddl_reorg_worker_cnt
 
 - Scope: SESSION | GLOBAL
 - Default value: 16
 - This variable is used to set the concurrency of the DDL operation in the `re-organize` phase. 
 
-## tidb_ddl_reorg_priority
+### tidb_ddl_reorg_priority
 
 - Scope: SESSION | GLOBAL
-- Default value: `PRIORITY_NORMAL`
+- Default value: `PRIORITY_LOW`
 - This variable is used to set the priority of executing the `ADD INDEX` operation in the `re-organize` phase.
 - You can set the value of this variable to `PRIORITY_LOW`, `PRIORITY_NORMAL` or `PRIORITY_HIGH`.
 
