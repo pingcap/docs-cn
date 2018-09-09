@@ -3,8 +3,9 @@
 ## Documentation List
 
 + About TiDB
-  - [TiDB Introduction](overview.md#tidb-introduction)
-  - [TiDB Architecture](overview.md#tidb-architecture)
+  - [TiDB Introduction](overview.md)
+  - [TiDB Architecture](architecture.md)
+  - [TiDB Key Features](features.md)
 + Quick Start
   - [TiDB Quick Start Guide](QUICKSTART.md)
   - [Basic SQL Statements](try-tidb.md)
