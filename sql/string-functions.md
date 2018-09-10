@@ -53,8 +53,6 @@ category: user guide
 | [`FORMAT()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_format)                       | 返回指定小数位数格式的数字                                                                           |
 | [`ORD()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_ord)                             | 返回参数中最左字符的字符代码                                                                              |
 | [`QUOTE()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_quote)                         | 引用一个字符串，返回一个在 SQL 语句中可用作正确转义的数据值的结果                                                                                           |
-| [`SOUNDEX()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_soundex)                     | 返回一个 soundex 字符串                                                                                                                   |
-| [`SOUNDS LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#operator_sounds-like)               | 按发音比较字符串     |
 
 ## 字符串比较函数
 
@@ -63,7 +61,6 @@ category: user guide
 | [`LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#operator_like)                  | 进行简单模式匹配                                                                                                                   |
 | [`NOT LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#operator_not-like)          | 否定简单模式匹配                                                                                                       |
 | [`STRCMP()`](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#function_strcmp)            | 比较两个字符串                                                                                                                       |
-| [`MATCH`](https://dev.mysql.com/doc/refman/5.7/en/fulltext-search.html#function_match)                            | 执行全文搜索                                                                                                                  |
 
 ## 正则表达式
 
