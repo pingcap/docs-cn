@@ -100,6 +100,7 @@ TiDB 使用乐观事务模型，在执行 Update、Insert、Delete 等语句时�
     LOAD DATA LOCAL INFILE 'file_name' INTO TABLE table_name
         {FIELDS | COLUMNS} TERMINATED BY 'string' ENCLOSED BY 'char' ESCAPED BY 'char'
         LINES STARTING BY 'string' TERMINATED BY 'string'
+        IGNORE n LINES
         (col_name ...);
     ```
 
