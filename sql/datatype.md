@@ -64,7 +64,7 @@ The meaning of the fields:
 
 | Syntax Element | Description |
 | -------- | ------------------------------- |
-| M | the length of the type. Optional. |
+| M | the display width of the type. Optional. |
 | UNSIGNED | UNSIGNED. If omitted, it is SIGNED. |
 | ZEROFILL | If you specify ZEROFILL for a numeric column, TiDB automatically adds the UNSIGNED attribute to the column. |
 
@@ -175,8 +175,8 @@ TIME[(fsp)]
 > A time. The range is '-838:59:59.000000' to '838:59:59.000000'. TiDB displays TIME values in 'HH:MM:SS[.fraction]' format.
 An optional fsp value in the range from 0 to 6 may be given to specify fractional seconds precision. If omitted, the default precision is 0.
 
-YEAR[(2|4)]
-> A year in two-digit or four-digit format. The default is the four-digit format. In four-digit format, values display as 1901 to 2155, and 0000. In two-digit format, values display as 70 to 69, representing years from 1970 to 2069.
+YEAR[(4)]
+> A year in four-digit format. Values display as 1901 to 2155, and 0000.
 
 ```
 
@@ -308,7 +308,7 @@ In TiDB, the values of the SET type is internally converted to Int64. The existe
 
 In this case, for an element of `('a', 'c')`, it is 0101 in binary.
 
-For more information, see [the SET type in MySQL](https://dev.mysql.com/doc/refman/5.7/en/set.html)。
+For more information, see [the SET type in MySQL](https://dev.mysql.com/doc/refman/5.7/en/set.html).
 
 ## Data type default values
 
