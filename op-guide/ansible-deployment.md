@@ -77,10 +77,15 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 tidb ALL=(ALL) NOPASSWD: ALL
 ```
 
-生成 ssh key: 执行 `su` 命令从 `root` 用户切换到 `tidb` 用户下，创建 `tidb` 用户 ssh key， 提示 `Enter passphrase` 时直接回车即可。执行成功后，ssh 私钥文件为 `/home/tidb/.ssh/id_rsa`， ssh 公钥文件为 `/home/tidb/.ssh/id_rsa.pub`。
+生成 ssh key: 执行 `su` 命令从 `root` 用户切换到 `tidb` 用户下。
 
 ```
 # su - tidb
+```
+
+创建 `tidb` 用户 ssh key， 提示 `Enter passphrase` 时直接回车即可。执行成功后，ssh 私钥文件为 `/home/tidb/.ssh/id_rsa`， ssh 公钥文件为 `/home/tidb/.ssh/id_rsa.pub`。
+
+```
 $ ssh-keygen -t rsa
 Generating public/private rsa key pair.
 Enter file in which to save the key (/home/tidb/.ssh/id_rsa):
@@ -107,11 +112,16 @@ The key's randomart image is:
 
 ## 在中控机器上下载 TiDB-Ansible
 
-以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录。
+以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录。以下为 tidb-ansible 分支与 TiDB 版本对应关系，版本选择可以咨询官方。
 
-使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`，以下为各版本下载示例，版本选择可以咨询官方。
+| tidb-ansible 分支 | TiDB 版本 | 备注 |
+| ---------------- | --------- | --- |
+| release-2.0 | 2.0 版本 | 最新稳定版本，可用于生产环境。 |
+| master | master 版本 | 包含最新特性，每日更新。 |
 
-下载 2.0 GA 版本：
+使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible 相应分支，默认的文件夹名称为 `tidb-ansible`。
+
+下载 2.0 版本：
 
 ```
 $ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
