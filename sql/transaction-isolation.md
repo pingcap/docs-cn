@@ -16,25 +16,13 @@ sql 92标准定义了4种隔离级别，读未提交、读已提交、可重复�
 | Repeatable read  | Not possible | Not possible       | Not possible in  TiDB | Possible              |
 | Serializable     | Not possible | Not possible       | Not possible          | Not possible          |
 
-TiDB 实现了其中的两种：读已提交和可重复读。
+TiDB 实现了其中的可重复读。
 
 TiDB 使用 [Percolator 事务模型](https://research.google.com/pubs/pub36726.html)，当事务启动时会获取全局读时间戳，事务提交时也会获取全局提交时间戳，并以此确定事务的执行顺序，如果想了解 TiDB 事务模型的实现可以详细阅读以下两篇文章：[TiKV 的 MVCC (Multi-Version Concurrency Control) 机制](https://pingcap.com/blog-cn/mvcc-in-tikv/)，[Percolator 和 TiDB 事务算法](https://pingcap.com/blog-cn/percolator-and-txn/)。
 
-可以通过以下命令设置 session 或者 global 的事务的隔离级别：
-
-```
-SET [SESSION | GLOBAL] TRANSACTION ISOLATION LEVEL [read committed|repeatable read]
-```
-
-如果不使用 session 或者 global 关键字，以下这条语句只会对下一个执行的事务生效，不会对整个会话或者全局生效：
-
-```
-SET TRANSACTION ISOLATION LEVEL [read committed|repeatable read]
-```
-
 ## 可重复读
 
-可重复读是 TiDB 的默认隔离级别，当事务隔离级别为可重复读时，只能读到该事务启动时已经提交的其他事务修改的数据，未提交的数据或在事务启动后其他事务提交的数据是不可见的。对于本事务而言，事务语句可以看到之前的语句做出的修改。
+当事务隔离级别为可重复读时，只能读到该事务启动时已经提交的其他事务修改的数据，未提交的数据或在事务启动后其他事务提交的数据是不可见的。对于本事务而言，事务语句可以看到之前的语句做出的修改。
 
 对于运行于不同节点的事务而言，不同事务启动和提交的顺序取决于从 PD 获取时间戳的顺序。
 
@@ -59,12 +47,6 @@ commit;                         |
 
 MySQL 可重复读隔离级别在更新时并不检验当前版本是否可见，也就是说，即使该行在事务启动后被更新过，同样可以继续更新。这种情况在 TiDB 会导致事务回滚并后台重试，重试最终可能会失败，导致事务最终失败，而 MySQL 是可以更新成功的。
 MySQL 的可重复读隔离级别并非 snapshot 隔离级别，MySQL 可重复读隔离级别的一致性要弱于 snapshot 隔离级别，也弱于 TiDB 的可重复读隔离级别。
-
-## 读已提交
-
-读已提交隔离级别和可重复读隔离级别不同，它仅仅保证不能读到未提交事务的数据，需要注意的是，事务提交是一个动态的过程，因此读已提交隔离级别可能读到某个事务部分提交的数据。
-
-不推荐在有严格一致要求的数据库中使用读已提交隔离级别。
 
 ## 事务重试
 
