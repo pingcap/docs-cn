@@ -54,8 +54,6 @@ category: user guide
 | [`FORMAT()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_format)                       | Return a number formatted to specified number of decimal places                                                                           |
 | [`ORD()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_ord)                             | Return character code for leftmost character of the argument                                                                              |
 | [`QUOTE()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_quote)                         | Escape the argument for use in an SQL statement                                                                                           |
-| [`SOUNDEX()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_soundex)                     | Return a soundex string                                                                                                                   |
-| [`SOUNDS LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#operator_sounds-like)               | Compare sounds                                                                                                                            |
 
 ## String comparison functions
 
@@ -64,7 +62,6 @@ category: user guide
 | [`LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#operator_like)                  | Simple pattern matching                                                                                                                   |
 | [`NOT LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#operator_not-like)          | Negation of simple pattern matching                                                                                                       |
 | [`STRCMP()`](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#function_strcmp)            | Compare two strings                                                                                                                       |
-| [`MATCH`](https://dev.mysql.com/doc/refman/5.7/en/fulltext-search.html#function_match)                            | Perform full-text search                                                                                                                  |
 
 ## Regular expressions
 
