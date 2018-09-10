@@ -97,6 +97,7 @@ TiDB implements an optimistic transaction model. Unlike MySQL, which uses row-le
     LOAD DATA LOCAL INFILE 'file_name' INTO TABLE table_name
         {FIELDS | COLUMNS} TERMINATED BY 'string' ENCLOSED BY 'char' ESCAPED BY 'char'
         LINES STARTING BY 'string' TERMINATED BY 'string'
+        IGNORE n LINES
         (col_name ...);
     ```
     
