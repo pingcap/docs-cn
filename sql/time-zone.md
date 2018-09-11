@@ -5,7 +5,11 @@ category: user guide
 
 # 时区支持
 
-TiDB 使用的时区由 `time_zone` 全局变量和 session 变量决定。`time_zone` 的初始值是机器当前的系统时区 'SYSTEM'。
+TiDB 使用的时区由 `time_zone` 全局变量和 session 变量决定。`time_zone` 的初始值是 TiDB 集群 bootstrap 初始化。具体逻辑如下:
+* 优先使用 `TZ` 环境变量
+* 如果失败，这从 `/etc/localtime` 的实际软链地址提取。
+* 如果上面两种都失败则使用 `UTC` 作为系统时区。
+
 
 在运行过程中可以修改全局时区：
 
