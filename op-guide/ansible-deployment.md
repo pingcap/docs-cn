@@ -89,10 +89,15 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
     ```
 4. Generate the SSH key.
 
-    Execute the `su` command to switch the user from `root` to `tidb`. Create the SSH key for the `tidb` user account and hit the Enter key when `Enter passphrase` is prompted. After successful execution, the SSH private key file is `/home/tidb/.ssh/id_rsa`, and the SSH public key file is `/home/tidb/.ssh/id_rsa.pub`.
+    Execute the `su` command to switch the user from `root` to `tidb`.
 
     ```
     # su - tidb
+    ```
+
+    Create the SSH key for the `tidb` user account and hit the Enter key when `Enter passphrase` is prompted. After successful execution, the SSH private key file is `/home/tidb/.ssh/id_rsa`, and the SSH public key file is `/home/tidb/.ssh/id_rsa.pub`.
+    
+    ```
     $ ssh-keygen -t rsa
     Generating public/private rsa key pair.
     Enter file in which to save the key (/home/tidb/.ssh/id_rsa):
@@ -119,11 +124,16 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
 
 ## Step 3: Download TiDB-Ansible to the Control Machine
 
-1. Log in to the Control Machine using the `tidb` user account and enter the `/home/tidb` directory.
+1. Log in to the Control Machine using the `tidb` user account and enter the `/home/tidb` directory. The corresponding relationship between the `tidb-ansible` branch and TiDB versions is as follows:
 
-2. Download the corresponding TiDB-Ansible version from the [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`.
+    | tidb-ansible branch | TiDB version | Note |
+    | ------------------- | ------------ | ---- |
+    | release-2.0 | 2.0 version | This is the latest stable version. You can use it in production. |
+    | master | master version | This version includes the latest features with a daily update. |
 
-    - Download the 2.0 GA version:
+2. Download the corresponding TiDB-Ansible branch from the [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`.
+
+    - Download the 2.0 version:
 
         ```bash
         $ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
