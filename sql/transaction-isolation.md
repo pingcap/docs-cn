@@ -17,25 +17,13 @@ The SQL-92 standard defines four levels of transaction isolation: Read Uncommitt
 | Repeatable Read  | Not possible | Not possible       | Not possible in  TiDB | Possible              |
 | Serializable     | Not possible | Not possible       | Not possible          | Not possible          |
 
-TiDB offers two transaction isolation levels: Read Committed and Repeatable Read.
+TiDB offers the Repeatable Read isolation level.
 
 TiDB uses the [Percolator transaction model](https://research.google.com/pubs/pub36726.html). A global read timestamp is obtained when the transaction is started, and a global commit timestamp is obtained when the transaction is committed. The execution order of transactions is confirmed based on the timestamps. To know more about the implementation of TiDB transaction model, see [MVCC in TiKV](https://pingcap.com/blog/2016-11-17-mvcc-in-tikv/).
 
-Use the following command to set the isolation level of the Session or Global transaction:
-
-```
-SET [SESSION | GLOBAL] TRANSACTION ISOLATION LEVEL [read committed|repeatable read]
-```
-
-If you do not use the Session or Global keyword, this statement takes effect only for the transaction to be executed next, but not for the entire session or global transaction.
-
-```
-SET TRANSACTION ISOLATION LEVEL [read committed|repeatable read]
-```
-
 ## Repeatable Read
 
-Repeatable Read is the default transaction isolation level in TiDB. The Repeatable Read isolation level only sees data committed before the transaction begins, and it never sees either uncommitted data or changes committed during transaction execution by concurrent transactions. However, the transaction statement does see the effects of previous updates executed within its own transaction, even though they are not yet committed.
+The Repeatable Read isolation level only sees data committed before the transaction begins, and it never sees either uncommitted data or changes committed during transaction execution by concurrent transactions. However, the transaction statement does see the effects of previous updates executed within its own transaction, even though they are not yet committed.
 
 For transactions running on different nodes, the start and commit order depends on the order that the timestamp is obtained from PD.
 
@@ -61,12 +49,6 @@ The Repeatable Read isolation level in TiDB differs from ANSI Repeatable Read is
 The Repeatable Read isolation level in TiDB differs from that in MySQL. The MySQL Repeatable Read isolation level does not check whether the current version is visible when updating, which means it can continue to update even if the row has been updated after the transaction starts. In contrast, if the row has been updated after the transaction starts, the TiDB transaction is rolled back and retried. Transaction Retries in TiDB might fail, leading to a final failure of the transaction, while in MySQL the updating transaction can be successful.
 
 The MySQL Repeatable Read isolation level is not the snapshot isolation level. The consistency of MySQL Repeatable Read isolation level is weaker than both the snapshot isolation level and TiDB Repeatable Read isolation level.
-
-## Read Committed
-
-The Read Committed isolation level differs from Repeatable Read isolation level. Read Committed only guarantees the uncommitted data cannot be read.
-
-**Note:** Because the transaction commit is a dynamic process, the Read Committed isolation level might read the data committed by part of the transaction. It is not recommended to use the Read Committed isolation level in a database that requires strict consistency.
 
 ## Transaction retry
 
