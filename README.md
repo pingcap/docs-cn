@@ -9,6 +9,7 @@
 + Quick Start
   - [TiDB Quick Start Guide](QUICKSTART.md)
   - [Basic SQL Statements](try-tidb.md)
+  - [Bikeshare Example Database](bikeshare-example-database.md)
 + TiDB User Guide
   + TiDB Server Administration
     - [The TiDB Server](sql/tidb-server.md)
