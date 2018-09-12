@@ -35,7 +35,7 @@
   + Globalization
     - [Character Set Support](sql/character-set-support.md)
     - [Character Set Configuration](sql/character-set-configuration.md)
-    - [Time Zone](sql/time-zone.md)
+    - [Time Zone Support](sql/time-zone.md)
   + Data Types
     - [Numeric Types](sql/datatype.md#numeric-types)
     - [Date and Time Types](sql/datatype.md#date-and-time-types)
