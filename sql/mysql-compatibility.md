@@ -14,16 +14,19 @@ However, in TiDB, the following MySQL features are not supported for the time be
 
 ## Unsupported features
 
-+ Stored Procedures
-+ View
-+ Trigger
-+ The user-defined functions
-+ The `FOREIGN KEY` constraints
-+ The `FULLTEXT` indexes
-+ The `Spatial` indexes
-+ The Non-UTF-8 characters
++ Stored procedures and functions
++ Views
++ Triggers
++ Events
++ User-defined functions
++ `FOREIGN KEY` constraints
++ `FULLTEXT` indexes
++ `SPATIAL` indexes
++ Character sets other than `utf8`
 + Add primary key
 + Drop primary key
++ SYS schema
++ Optimizer trace
 
 ## Features that are different from MySQL
 
@@ -49,6 +52,10 @@ The auto-increment ID feature in TiDB is only guaranteed to be automatically inc
 >
 > 1. The client issues the `insert into t values (1, 1)` statement to Instance B which sets the `id` to 1 and the statement is executed successfully.
 > 2. The client issues the `insert into t (c) (1)` statement to Instance A. This statement does not specify the value of `id`, so Instance A allocates the value. Currently, Instances A caches the auto-increment ID of [1, 30000], so it allocates the `id` value to 1 and adds 1 to the local counter. However, at this time the data with the `id` of 1 already exists in the cluster, therefore it reports `Duplicated Error`.
+
+### Performance schema
+
+Performance schema tables return empty results in TiDB. TiDB uses a combination of [Prometheus and Grafana](https://pingcap.com/docs/op-guide/monitor/#use-prometheus-and-grafana) for performance metrics instead.
 
 ### Built-in functions
 
@@ -83,11 +90,19 @@ TiDB implements the asynchronous schema changes algorithm in F1. The Data Manipu
 + Rename Table
 + Create Table Like
 
-### Transaction
+### Transaction model
 
 TiDB implements an optimistic transaction model. Unlike MySQL, which uses row-level locking to avoid write conflict, in TiDB, the write conflict is checked only in the `commit` process during the execution of the statements like `Update`, `Insert`, `Delete`, and so on.
 
 **Note:** On the business side, remember to check the returned results of `commit` because even there is no error in the execution, there might be errors in the `commit` process.
+
+### Large transactions
+
+Due to the distributed, 2-phase commit requirement of TiDB, large transactions that modify data can be particularly problematic. TiDB intentionally sets some limits on transaction sizes to reduce this impact:
+
+* Each Key-Value entry is no more than 6MB
+* The total number of Key-Value entries is no more than 300,000
+* The total size of Key-Value entries is no more than 100MB
 
 ### Load data
 
@@ -106,11 +121,39 @@ TiDB implements an optimistic transaction model. Unlike MySQL, which uses row-le
 + Transaction
 
     When TiDB is in the execution of loading data, by default, a record with 20,000 rows of data is seen as a transaction for persistent storage. If a load data operation inserts more than 20,000 rows, it will be divided into multiple transactions to commit. If an error occurs in one transaction, this transaction in process will not be committed. However, transactions before that are committed successfully. In this case, a part of the load data operation is successfully inserted, and the rest of the data insertion fails. But MySQL treats a load data operation as a transaction, one error leads to the failure of the entire load data operation.
+    
+### Storage engines
+
+For compatibility reasons, TiDB supports the syntax to create tables with alternative storage engines. Metadata commands describe tables as being of engine InnoDB:
+
+```sql
+mysql> CREATE TABLE t1 (a INT) ENGINE=MyISAM;
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> SHOW CREATE TABLE t1\G
+*************************** 1. row ***************************
+       Table: t1
+Create Table: CREATE TABLE `t1` (
+  `a` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+1 row in set (0.00 sec)
+```
+
+Architecturally, TiDB does support a similar storage engine abstraction to MySQL, user tables are be created in the engine specified by the [`--store`](server-command-option.md#--store) option used when starting tidb-server (typically `tikv`).
+
+### EXPLAIN
+
+The output of the query execution plan returned from the `EXPLAIN` command differs from MySQL. For more information, see [Understand the Query Execution Plan](understanding-the-query-execution-plan.md).
 
 ### Default differences
 
-- Default character set: `latin1` in MySQL 5.7 (UTF-8 in MySQL 8.0), while `utf8mb4` in TiDB.
+- Default character set:
+    - The default value in TiDB is `utf8` which is equivalent to `utf8mb4` in MySQL.
+    - The default value in MySQL 5.7 is `latin1`, but changes to `utf8mb4` in MySQL 8.0.
 - Default collation: `latin1_swedish_ci` in MySQL 5.7, while `binary` in TiDB.
+- Default SQL mode:
+    - The default value in TiDB is `STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION`.
+    - The default value in MySQL 5.7 is `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`.
 - Default value of `lower_case_table_names`:
     - The default value in TiDB is 2 and currently TiDB only supports 2.
     - The default value in MySQL:
