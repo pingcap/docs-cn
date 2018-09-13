@@ -2,7 +2,7 @@
 
 ## 目录
 
-+ TiDB 简介与整体架构
++ 关于 TiDB
   - [TiDB 简介](overview.md)
   - [TiDB 整体架构](architecture.md)
   - [TiDB 核心特性](features.md)
