@@ -375,7 +375,7 @@ Success!
 >> operator show leader                                 // 显示所有的 leader operators
 >> operator show region                                 // 显示所有的 region operators
 >> operator add add-peer 1 2                            // 在 store 2 上新增 region 1 的一个副本
->> operator remove remove-peer 1 2                      // 移除 store 2 上的 region 1 的一个副本
+>> operator add remove-peer 1 2                         // 移除 store 2 上的 region 1 的一个副本
 >> operator add transfer-leader 1 2                     // 把 region 1 的 leader 调度到 store 2
 >> operator add transfer-region 1 2 3 4                 // 把 region 1 调度到 store 2,3,4
 >> operator add transfer-peer 1 2 3                     // 把 region 1 在 store 2 上的副本调度到 store 3
