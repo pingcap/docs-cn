@@ -359,7 +359,7 @@ Usage:
 >> operator show leader                                 // Display all leader operators
 >> operator show region                                 // Display all Region operators
 >> operator add add-peer 1 2                            // Add a replica of Region 1 on store 2
->> operator remove remove-peer 1 2                      // Remove a replica of Region 1 on store 2
+>> operator add remove-peer 1 2                         // Remove a replica of Region 1 on store 2
 >> operator add transfer-leader 1 2                     // Schedule the leader of Region 1 to store 2
 >> operator add transfer-region 1 2 3 4                 // Schedule Region 1 to stores 2,3,4
 >> operator add transfer-peer 1 2 3                     // Schedule the replica of Region 1 on store 2 to store 3
