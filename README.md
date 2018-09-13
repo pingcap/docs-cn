@@ -3,8 +3,9 @@
 ## 目录
 
 + TiDB 简介与整体架构
-  - [TiDB 简介](overview.md#tidb-简介)
-  - [TiDB 整体架构](overview.md#tidb-整体架构)
+  - [TiDB 简介](overview.md)
+  - [TiDB 整体架构](architecture.md)
+  - [TiDB 核心特性](features.md)
 - [TiDB 快速入门指南](QUICKSTART.md)
 + TiDB 用户文档
   + TiDB 数据库管理
