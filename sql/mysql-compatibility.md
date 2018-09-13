@@ -40,9 +40,7 @@ The auto-increment ID feature in TiDB is only guaranteed to be automatically inc
 > 
 > Assume that you have a table with the auto-increment ID:
 > 
-> ```
-> create table t(id int unique key auto_increment, c int);
-> ```
+> `create table t(id int unique key auto_increment, c int);`
 > 
 > The principle of the auto-increment ID in TiDB is that each tidb-server instance caches a section of ID values (currently 30000 IDs are cached) for allocation and fetches the next section after this section is used up.
 >
