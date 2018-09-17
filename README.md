@@ -6,7 +6,6 @@
   - [TiDB 简介](overview.md)
   - [TiDB 整体架构](architecture.md)
   - [TiDB 核心特性](features.md)
-- [TiDB 快速入门指南](QUICKSTART.md)
 + TiDB 快速入门
   - [快速入门指南](QUICKSTART.md)
   - [SQL 基本操作](try-tidb.md)
