@@ -22,4 +22,4 @@ In TiDB, the usage of information functions is similar to MySQL. For more inform
 | [`SYSTEM_USER()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_system-user) | Synonym for `USER()`   |
 | [`USER()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_user) | Return the user name and host name provided by the client    |
 | [`VERSION()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_version) | Return a string that indicates the MySQL server version   |
-| `TIDB_VERSION` | Return a string that indicates the TiDB server version |
+| `TIDB_VERSION()` | Return a string that indicates the TiDB server version |
