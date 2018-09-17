@@ -107,7 +107,7 @@ Pay special attention to the following two variables:
     Query OK, 0 rows affected (0.00 sec)
     ```
 
-    > **Note:** You should use `@@` instead of `@` before `tidb_snapshot` because `@@` is used to denote the system variable while `@` is used to denote the user variable.
+    > **Note:** You should use `@@` instead of `@` before `tidb_snapshot` because `@@` is used to denote the global variable while `@` is used to denote the session variable.
 
     **Result:** The read from the following statement is the data before the update operation, which is the history data.
 
@@ -142,4 +142,4 @@ Pay special attention to the following two variables:
     3 rows in set (0.00 sec)
     ```
 
-    > **Note:** You should use `@@` instead of `@` before `tidb_snapshot` because `@@` is used to denote the system variable while `@` is used to denote the user variable.
+    > **Note:** You should use `@@` instead of `@` before `tidb_snapshot` because `@@` is used to denote the global variable while `@` is used to denote the session variable.
