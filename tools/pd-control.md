@@ -87,7 +87,7 @@ Usage:
 }
 ```
 
-### `config [show | set \<option\> \<value\>]`
+### `config [show | set <option> <value>]`
 
 Use this command to view or modify the configuration information.
 
@@ -266,7 +266,7 @@ The configuration above is global. You can also tune the configuration by config
 
 - `disable-namespace-relocation` is used to disable Region relocation to the store of its namespace. When you set it to `true`, PD does not move Regions to stores where they belong to.
 
-### `config delete namespace \<name\> [\<option\>]`
+### `config delete namespace <name> [<option>]`
 
 Use this command to delete the configuration of namespace.
 
@@ -307,7 +307,7 @@ Usage:
 >> hot store                            // Display hot spot for all the read and write operations
 ```
 
-### `label [store \<name\> \<value\>]`
+### `label [store <name> <value>]`
 
 Use this command to view the label information of the cluster.
 
@@ -318,7 +318,7 @@ Usage:
 >> label store zone cn                  // Display all stores including the "zone":"cn" label
 ```
 
-### `member [delete | leader_priority | leader [show | resign | transfer \<member_name\>]]`
+### `member [delete | leader_priority | leader [show | resign | transfer <member_name>]]`
 
 Use this command to view the PD members, remove a specified member, or configure the priority of leader.
 
@@ -380,7 +380,7 @@ Usage:
 time: 43.12698ms
 ```
 
-### `region \<region_id\> [--jq="<query string>"]`
+### `region <region_id> [--jq="<query string>"]`
 
 Use this command to view the region information. For a jq formatted output, see [jq-formatted-json-output-usage](#jq-formatted-json-output-usage).
 
@@ -405,7 +405,7 @@ Usage:
 }
 ```
 
-### `region key [--format=raw|pb|proto|protobuf] \<key\>`
+### `region key [--format=raw|pb|proto|protobuf] <key>`
 
 Use this command to query the region that a specific key resides in. It supports the raw and protobuf formats.
 
@@ -433,7 +433,7 @@ Protobuf format usage:
 }
 ```
 
-### `region sibling \<region_id\>`
+### `region sibling <region_id>`
 
 Use this command to check the adjacent Regions of a specific Region.
 
@@ -443,6 +443,76 @@ Usage:
 >> region sibling 2
 {
   "count": 2,
+  "regions": [......],
+}
+```
+
+### `region store <store_id>`
+
+Use this command to list all Regions of a specific store.
+
+Usage:
+
+```bash
+>> region store 2
+{
+  "count": 10,
+  "regions": [......],
+}
+```
+
+### `region topread [limit]`
+
+Use this command to list Regions with top read flow. The default value of the limit is 10.
+
+Usage:
+
+```bash
+>> region topread
+{
+  "count": 10,
+  "regions": [......],
+}
+```
+
+### `region topwrite [limit]`
+
+Use this command to list Regions with top write flow. The default value of the limit is 10.
+
+Usage:
+
+```bash
+>> region topwrite
+{
+  "count": 10,
+  "regions": [......],
+}
+```
+
+### `region topconfver [limit]`
+
+Use this command to list Regions with top conf version. The default value of the limit is 10.
+
+Usage:
+
+```bash
+>> region topconfver
+{
+  "count": 10,
+  "regions": [......],
+}
+```
+
+### `region topversion [limit]`
+
+Use this command to list Regions with top version. The default value of the limit is 10.
+
+Usage:
+
+```bash
+>> region topversion
+{
+  "count": 10,
   "regions": [......],
 }
 ```
@@ -484,7 +554,7 @@ Usage:
 >> scheduler remove grant-leader-scheduler-1  // Remove the corresponding scheduler
 ```
 
-### `store [delete | label | weight] \<store_id\>  [--jq="<query string>"]`
+### `store [delete | label | weight] <store_id>  [--jq="<query string>"]`
 
 Use this command to view the store information or remove a specified store. For a jq formatted output, see [jq-formatted-json-output-usage](#jq-formatted-json-output-usage).
 
