@@ -7,7 +7,7 @@ category: deployment
 
 本文介绍如何使用 Docker 部署一个多节点的 TiDB 集群。
 
-**注**：对于生产环境，不要使用 Docker 进行部署，而应[使用 Ansible 部署 TiDB 集群](ansible-deployment.md)。
+> **注**：对于生产环境，不要使用 Docker 进行部署，而应[使用 Ansible 部署 TiDB 集群](ansible-deployment.md)。
 
 ## 环境准备
 

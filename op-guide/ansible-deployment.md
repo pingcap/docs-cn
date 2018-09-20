@@ -21,7 +21,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 - [清除集群数据](ansible-operation.md#清除集群数据)
 - [销毁集群](ansible-operation.md#销毁集群)
 
-**注**：对于生产环境，须使用 TiDB-Ansible 部署 TiDB 集群。如果只是用于测试 TiDB 或体验 TiDB 的特性，建议[使用 Docker Compose 在单机上快速部署 TiDB 集群](docker-compose.md)。
+> **注**：对于生产环境，须使用 TiDB-Ansible 部署 TiDB 集群。如果只是用于测试 TiDB 或体验 TiDB 的特性，建议[使用 Docker Compose 在单机上快速部署 TiDB 集群](docker-compose.md)。
 
 ## 准备机器
 
