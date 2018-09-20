@@ -5,13 +5,14 @@ category: deployment
 
 # TiDB Docker 部署方案
 
-本篇将展示如何在多台主机上使用 Docker 部署一个 TiDB 集群。
+本文介绍如何使用 Docker 部署一个多节点的 TiDB 集群。
 
-阅读本章前，请先确保阅读 [TiDB 整体架构](../overview.md#tidb-整体架构) 及 [部署建议](../op-guide/recommendation.md)。
+**注**：对于生产环境，不要使用 Docker 进行部署，而应[使用 Ansible 部署 TiDB 集群](ansible-deployment.md)。
 
 ## 环境准备
 
 ### 安装 Docker
+
 Docker 可以方便地在 Linux / Mac OS / Windows 平台安装，安装方法请参考 [Docker 官方文档](https://www.docker.com/products/docker)。
 
 ### 拉取 TiDB 的 Docker 镜像
