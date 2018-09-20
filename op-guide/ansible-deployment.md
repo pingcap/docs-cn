@@ -7,7 +7,7 @@ category: deployment
 
 ## 概述
 
-Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingcap/tidb-ansible) 是 PingCAP 基于 Ansible playbook 功能编写的集群部署工具。使用 TiDB-Ansible 可以快速部署一个完整的 TiDB 集群。
+Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingcap/tidb-ansible) 是 PingCAP 基于 Ansible playbook 功能编写的集群部署工具。本文档介绍如何使用 TiDB-Ansible 部署一个完整的 TiDB 集群。
 
 本部署工具可以通过配置文件设置集群拓扑，完成以下各项运维工作：
 
@@ -20,6 +20,8 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 - [升级组件版本](ansible-deployment-rolling-update.md#升级组件版本)
 - [清除集群数据](ansible-operation.md#清除集群数据)
 - [销毁集群](ansible-operation.md#销毁集群)
+
+> **注**：对于生产环境，须使用 TiDB-Ansible 部署 TiDB 集群。如果只是用于测试 TiDB 或体验 TiDB 的特性，建议[使用 Docker Compose 在单机上快速部署 TiDB 集群](docker-compose.md)。
 
 ## 准备机器
 
@@ -477,7 +479,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 
 1.  确认 `tidb-ansible/inventory.ini` 文件中 `ansible_user = tidb`，本例使用 `tidb` 用户作为服务运行用户，配置如下：
 
-    > `ansible_user` 不要设置成 `root` 用户，`tidb-ansbile` 限制了服务以普通用户运行。
+    > `ansible_user` 不要设置成 `root` 用户，`tidb-ansible` 限制了服务以普通用户运行。
 
     ```ini
     ## Connection
