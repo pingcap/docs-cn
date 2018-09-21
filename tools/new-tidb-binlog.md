@@ -20,40 +20,52 @@ $ git clone -b new-tidb-binlog https://github.com/pingcap/tidb-ansible.git
 
 1. 设置 `enable_binlog = True`，表示 TiDB 集群开启 binlog。
 
-  ```
-  ## binlog trigger
-  enable_binlog = True
-  ```
+```
+## binlog trigger
+enable_binlog = True
+```
 
 2. 为 `pump_servers` 主机组添加部署机器 IP。
 
-  ```
-  ## Binlog Part
-  [pump_servers]
-  172.16.10.72
-  172.16.10.73
-  172.16.10.74
-  ```
+```
+## Binlog Part
+[pump_servers]
+172.16.10.72
+172.16.10.73
+172.16.10.74
+```
 
-  默认 pump 保留 5 天数据，如需修改可修改 `tidb-ansible/conf/pump.yml` 文件中 `gc` 变量值，并取消注释，如修改为 7。
+默认 pump 保留 5 天数据，如需修改可修改 `tidb-ansible/conf/pump.yml` 文件中 `gc` 变量值，并取消注释，如修改为 7。
 
-  ```
-  global:
-    # a integer value to control expiry date of the binlog data, indicates for how long (in days) the binlog data would be stored. 
-    # must bigger than 0
-    gc: 7
-  ```
+```
+global:
+  # a integer value to control expiry date of the binlog data, indicates for how long (in days) the binlog data would be stored. 
+  # must bigger than 0
+  gc: 7
+```
 
-  请确保部署目录有足够空间存储 binlog，详见：[部署目录调整](../op-guide/ansible-deployment.md#部署目录调整)，也可为 pump 设置单独的部署目录，。
+请确保部署目录有足够空间存储 binlog，详见：[部署目录调整](../op-guide/ansible-deployment.md#部署目录调整)，也可为 pump 设置单独的部署目录。
 
-  ```
-  ## Binlog Part
-  [pump_servers]
-  pump1 ansible_host=172.16.10.72 deploy_dir=/data1/pump
-  pump2 ansible_host=172.16.10.73 deploy_dir=/data1/pump
-  pump3 ansible_host=172.16.10.74 deploy_dir=/data1/pump
-  ```
+```
+## Binlog Part
+[pump_servers]
+pump1 ansible_host=172.16.10.72 deploy_dir=/data1/pump
+pump2 ansible_host=172.16.10.73 deploy_dir=/data1/pump
+pump3 ansible_host=172.16.10.74 deploy_dir=/data1/pump
+```
 
-3. 部署并启动 TiDB 集群。
+### 部署并启动 TiDB 集群。
 
-  使用 ansible 部署 TiDB 集群的具体方法参考 [TiDB Ansible 部署方案](../op-guide/ansible-deployment.md)。
+使用 ansible 部署 TiDB 集群的具体方法参考 [TiDB Ansible 部署方案](../op-guide/ansible-deployment.md)，开启 binlog 后默认会部署和启动 pump 服务。
+
+### 查看 pump 服务状态
+
+使用 binlogctl 查看 pump 服务状态，pd-urls 参数请替换为集群 PD 地址，结果 State 为 online 表示 pump 启动成功。
+
+```
+$ cd /home/tidb/tidb-ansible
+$ resources/bin/binlogctl -pd-urls=http://172.16.10.72:2379 -cmd pumps
+2018/09/21 16:45:54 nodes.go:46: [info] pump: &{NodeID:ip-172-16-10-72:8250 Addr:172.16.10.72:8250 State:online IsAlive:false Score:0 Label:<nil> MaxCommitTS:0 UpdateTS:403051525690884099}
+2018/09/21 16:45:54 nodes.go:46: [info] pump: &{NodeID:ip-172-16-10-73:8250 Addr:172.16.10.73:8250 State:online IsAlive:false Score:0 Label:<nil> MaxCommitTS:0 UpdateTS:403051525703991299}
+2018/09/21 16:45:54 nodes.go:46: [info] pump: &{NodeID:ip-172-16-10-74:8250 Addr:172.16.10.74:8250 State:online IsAlive:false Score:0 Label:<nil> MaxCommitTS:0 UpdateTS:403051525717360643}
+```
