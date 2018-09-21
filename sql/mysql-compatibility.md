@@ -152,7 +152,7 @@ TiDB 的 `EXPLAIN` 命令返回的查询执行计划的输出与 MySQL 不同。
 
 + 默认字符集不同：
     + TiDB 中为 `utf8`，相当于 MySQL 的 `utf8mb4`
-    + MySQL 5.7 中为 `latin1`，但在 MySQL 8.0 中更新为 `utf8mb4`
+    + MySQL 5.7 中为 `latin1`，但在 MySQL 8.0 中修改为 `utf8mb4`
 + 默认排序规则不同：
     + MySQL 5.7 中使用 `latin1_swedish_ci`
     + TiDB 使用 `binary`
