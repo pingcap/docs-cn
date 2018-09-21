@@ -16,7 +16,8 @@ category: advanced
 $ git clone -b new-tidb-binlog https://github.com/pingcap/tidb-ansible.git
 ```
 
-### 修改 tidb-ansible/inventory.ini 文件
+### 部署 pump
+#### 修改 tidb-ansible/inventory.ini 文件
 
 1. 设置 `enable_binlog = True`，表示 TiDB 集群开启 binlog。
 
@@ -54,11 +55,11 @@ pump2 ansible_host=172.16.10.73 deploy_dir=/data1/pump
 pump3 ansible_host=172.16.10.74 deploy_dir=/data1/pump
 ```
 
-### 部署并启动 TiDB 集群。
+#### 部署并启动 TiDB 集群。
 
 使用 ansible 部署 TiDB 集群的具体方法参考 [TiDB Ansible 部署方案](../op-guide/ansible-deployment.md)，开启 binlog 后默认会部署和启动 pump 服务。
 
-### 查看 pump 服务状态
+#### 查看 pump 服务状态
 
 使用 binlogctl 查看 pump 服务状态，pd-urls 参数请替换为集群 PD 地址，结果 State 为 online 表示 pump 启动成功。
 
@@ -69,3 +70,5 @@ $ resources/bin/binlogctl -pd-urls=http://172.16.10.72:2379 -cmd pumps
 2018/09/21 16:45:54 nodes.go:46: [info] pump: &{NodeID:ip-172-16-10-73:8250 Addr:172.16.10.73:8250 State:online IsAlive:false Score:0 Label:<nil> MaxCommitTS:0 UpdateTS:403051525703991299}
 2018/09/21 16:45:54 nodes.go:46: [info] pump: &{NodeID:ip-172-16-10-74:8250 Addr:172.16.10.74:8250 State:online IsAlive:false Score:0 Label:<nil> MaxCommitTS:0 UpdateTS:403051525717360643}
 ```
+
+### 部署 drainer
