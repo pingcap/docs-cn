@@ -72,3 +72,84 @@ $ resources/bin/binlogctl -pd-urls=http://172.16.10.72:2379 -cmd pumps
 ```
 
 ### 部署 drainer
+#### 获取 initial_commit_ts
+
+#### 修改 tidb-ansible/inventory.ini 文件
+
+为 `drainer_servers` 主机组添加部署机器 IP，initial_commit_ts 请设置为获取的 initial_commit_ts，仅用于 drainer 第一次启动。
+
+1. 以下游为 mysql 为例，别名为 `drainer_mysql`。
+
+```
+[drainer_servers]
+drainer_mysql ansible_host=172.16.10.71 initial_commit_ts="402899541671542785"
+```
+
+2. 以下游为 pb 为例，别名为 `drainer_pb`。
+
+```
+[drainer_servers]
+drainer_pb ansible_host=172.16.10.71 initial_commit_ts="402899541671542785"
+```
+
+#### 修改配置文件
+
+1. 以下游为 mysql 为例
+
+```
+$ cd /home/tidb/tidb-ansible/conf
+$ cp drainer.toml drainer_mysql_drainer.toml
+$ vi drainer_mysql_drainer.toml
+```
+
+db-type 设置为 "mysql", 配置下游 mysql 信息。
+
+```
+# downstream storage, equal to --dest-db-type
+# valid values are "mysql", "pb", "tidb", "flash", "kafka"
+db-type = "mysql"
+
+# the downstream mysql protocol database
+[syncer.to]
+host = "172.16.10.72"
+user = "root"
+password = "123456"
+port = 3306
+# Time and size limits for flash batch write
+# time-limit = "30s"
+# size-limit = "100000"
+```
+
+2. 以下游为 pd 为例
+
+```
+$ cd /home/tidb/tidb-ansible/conf
+$ cp drainer.toml drainer_pd_drainer.toml
+$ vi drainer_pd_drainer.toml
+```
+
+db-type 设置为 "pd"。
+
+```
+# downstream storage, equal to --dest-db-type
+# valid values are "mysql", "pb", "tidb", "flash", "kafka"
+db-type = "pd"
+
+# Uncomment this if you want to use pb or sql as db-type.
+# Compress compresses output file, like pb and sql file. Now it supports "gzip" algorithm only. 
+# Values can be "gzip". Leave it empty to disable compression. 
+[syncer.to]
+compression = ""
+```
+
+#### 部署 drainer
+
+```
+$ ansible-playbook deploy_drainer.yml
+```
+
+#### 启动 drainer
+
+```
+$ ansible-playbook start_drainer.yml
+```
