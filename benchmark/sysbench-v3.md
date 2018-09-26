@@ -99,6 +99,8 @@ block-cache-size = "20GB"
 | v2.0 | 512  | 121350.61 | 11.65 |
 | v2.0 | 1024 | 150036.31 | 17.32 |
 
+![point select](../media/sysbench_v3_point_select.png)
+
 v2.1 比 v2.0 在 Point Select 查询性能上，**提升了 50%**。
 
 ### Update Non-Index 测试
@@ -116,6 +118,8 @@ v2.1 比 v2.0 在 Point Select 查询性能上，**提升了 50%**。
 | v2.0 | 512  | 25994.33 | 46.63  |
 | v2.0 | 1024 | 27917.52 | 92.42  |
 
+![update non-index](../media/sysbench_v3_update_non_index.png)
+
 v2.1 与 v2.0 在 Update Non-Index 写入性能上基本一致。
 
 ### Update Index 测试
@@ -124,7 +128,7 @@ v2.1 与 v2.0 在 Update Non-Index 写入性能上基本一致。
 | :-: | :-: | :-: | :-: |
 | v2.1 | 64   | 9934.49  | 12.08  |
 | v2.1 | 128  | 10505.95 | 25.28  |
-| v2.1 | 256  | 10507.7  | 55.82  |
+| v2.1 | 256  | 11007.7  | 55.82  |
 | v2.1 | 512  | 11198.81 | 106.75 |
 | v2.1 | 1024 | 11591.89 | 200.47 |
 | v2.0 | 64   | 9754.68  | 11.65  |
@@ -132,5 +136,7 @@ v2.1 与 v2.0 在 Update Non-Index 写入性能上基本一致。
 | v2.0 | 256  | 11011.71 | 50.11  |
 | v2.0 | 512  | 11162.63 | 104.84 |
 | v2.0 | 1024 | 12067.63 | 179.94 |
+
+![update index](../media/sysbench_v3_update_index.png)
 
 v2.1 与 v2.0 在 Update Index 写入性能上基本一致。
