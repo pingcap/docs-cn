@@ -479,7 +479,7 @@ Protobuf 格式示例：
 
 ### `region topread [limit]`
 
-用于查询读流量最大的 region。limit 的默认值是 10。
+用于查询读流量最大的 region。limit 的默认值是 16。
 
 示例：
 
@@ -493,7 +493,7 @@ Protobuf 格式示例：
 
 ### `region topwrite [limit]`
 
-用于查询写流量最大的 region。limit 的默认值是 10。
+用于查询写流量最大的 region。limit 的默认值是 16。
 
 示例：
 
@@ -507,7 +507,7 @@ Protobuf 格式示例：
 
 ### `region topconfver [limit]`
 
-用于查询 conf version 最大的 region。limit 的默认值是 10。
+用于查询 conf version 最大的 region。limit 的默认值是 16。
 
 示例：
 
@@ -521,7 +521,7 @@ Protobuf 格式示例：
 
 ### `region topversion [limit]`
 
-用于查询 version 最大的 region。limit 的默认值是 10。
+用于查询 version 最大的 region。limit 的默认值是 16。
 
 示例：
 
@@ -530,6 +530,20 @@ Protobuf 格式示例：
 {
   "count": 10,
   "regions": [......],
+}
+```
+
+### `region topsize [limit]`
+
+用于查询 approximate size 最大的 region。limit 的默认值是 16。
+
+示例：
+
+```bash
+>> region topsize
+{
+    "count": 16,
+    "regions": [......],
 }
 ```
 
