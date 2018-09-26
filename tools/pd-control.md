@@ -486,7 +486,7 @@ Protobuf 格式示例：
 ```bash
 >> region topread
 {
-  "count": 10,
+  "count": 16,
   "regions": [......],
 }
 ```
@@ -500,7 +500,7 @@ Protobuf 格式示例：
 ```bash
 >> region topwrite
 {
-  "count": 10,
+  "count": 16,
   "regions": [......],
 }
 ```
@@ -514,7 +514,7 @@ Protobuf 格式示例：
 ```bash
 >> region topconfver
 {
-  "count": 10,
+  "count": 16,
   "regions": [......],
 }
 ```
@@ -528,7 +528,7 @@ Protobuf 格式示例：
 ```bash
 >> region topversion
 {
-  "count": 10,
+  "count": 16,
   "regions": [......],
 }
 ```
