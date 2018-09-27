@@ -42,29 +42,29 @@ To be compatible with MySQL, TiDB supports INFORMATION\_SCHEMA tables. Some thir
 
 ### CHARACTER\_SETS table
 
-The CHARACTER\_SETS table provides information about character sets. But it contains dummy data. By default, TiDB only supports utf8mb4.
+The CHARACTER\_SETS table provides information about [character sets](character-set-support.md). The default character set in TiDB is `utf8`, which behaves similar to `utf8mb4` in MySQL.  Additional character sets in this table are included for compatibility with MySQL:
 
 ```sql
-mysql> select * from CHARACTER_SETS;
-+--------------------|----------------------|-----------------------|--------+
-| CHARACTER_SET_NAME | DEFAULT_COLLATE_NAME | DESCRIPTION           | MAXLEN |
-+--------------------|----------------------|-----------------------|--------+
-| ascii              | ascii_general_ci     | US ASCII              |      1 |
-| binary             | binary               | Binary pseudo charset |      1 |
-| latin1             | latin1_swedish_ci    | cp1252 West European  |      1 |
-| utf8               | utf8_general_ci      | UTF-8 Unicode         |      3 |
-| utf8mb4            | utf8mb4_general_ci   | UTF-8 Unicode         |      4 |
-+--------------------|----------------------|-----------------------|--------+
+mysql> SELECT * FROM character_sets;
++--------------------+----------------------+---------------+--------+
+| CHARACTER_SET_NAME | DEFAULT_COLLATE_NAME | DESCRIPTION   | MAXLEN |
++--------------------+----------------------+---------------+--------+
+| utf8               | utf8_bin             | UTF-8 Unicode |      3 |
+| utf8mb4            | utf8mb4_bin          | UTF-8 Unicode |      4 |
+| ascii              | ascii_bin            | US ASCII      |      1 |
+| latin1             | latin1_bin           | Latin1        |      1 |
+| binary             | binary               | binary        |      1 |
++--------------------+----------------------+---------------+--------+
 5 rows in set (0.00 sec)
 ```
 
 ### COLLATIONS table
 
-The COLLATIONS table is similar to the CHARACTER\_SETS table.
+The COLLATIONS table provides a list of collations that correspond to character sets in the CHARACTER\_SETS table.  Currently this table is included only for compatibility with MySQL, as TiDB only supports binary collation.
 
 ### COLLATION\_CHARACTER\_SET\_APPLICABILITY table
 
-NULL.
+This table maps collations to the applicable character set name.  Similar to the collations table, it is included only for compatibility with MySQL.
 
 ### COLUMNS table
 
