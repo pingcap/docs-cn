@@ -82,11 +82,9 @@ category: deployment
 
     PD，TiKV，TiDB 和 tidb-vision 支持从 GitHub 源码或本地文件构建 Docker 镜像，供开发测试使用。
 
-    - 如果希望从 GitHub 源码构建某个组件的镜像，需要将其 `image` 字段留空，然后设置其 `buildFrom` 为 `remote`。
+    - 如果希望从本地已编译好的 binary 文件构建 PD，TiKV 或 TiDB 镜像，需要将其 `image` 字段留空，并将已编译好的 binary 拷贝到对应的 `pd/bin/pd-server`，`tikv/bin/tikv-server`，`tidb/bin/tidb-server`。
 
-    - 如果希望从本地已编译好的 binary 文件构建 PD，TiKV 或 TiDB 镜像，需要将其 `image` 字段留空，然后设置其 `buildFrom` 为 `local`，并将已编译好的 binary 拷贝到对应的 `pd/bin/pd-server`，`tikv/bin/tikv-server`，`tidb/bin/tidb-server`。
-
-    - 如果希望从本地构建 tidb-vision 镜像，需要将其 `image` 字段留空，然后设置其 `buildFrom` 为 `local`，并将 tidb-vision 项目拷贝到 `tidb-vision/tidb-vision`。
+    - 如果希望从本地构建 tidb-vision 镜像，需要将其 `image` 字段留空，并将 tidb-vision 项目拷贝到 `tidb-vision/tidb-vision`。
 
 4. 生成 `docker-compose.yml` 文件
 
