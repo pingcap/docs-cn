@@ -66,10 +66,14 @@ In addition to inserting and querying data, TiDB also supports editing JSON. In 
 - [JSON_REMOVE](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-remove)
 - [JSON_TYPE](https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-type)
 - [JSON_UNQUOTE](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-unquote)
+- [JSON_MERGE](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-merge)
+- [JSON_CONTAINS](https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-contains)
+- [JSON_CONTAINS_PATH](https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-contains-path)
+- [JSON_LENGTH](https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-length)
 
 You can get the general use of these functions directly from the function name. These functions in TiDB behave the same as in MySQL 5.7. For more information, see the [JSON Functions document of MySQL 5.7](https://dev.mysql.com/doc/refman/5.7/en/json-functions.html). If you are a user of MySQL 5.7, you can migrate to TiDB seamlessly.
 
-Currently TiDB does not support all the JSON functions in MySQL 5.7. This is because our preliminary goal is to provide complete support for **MySQL X Plugin**, which covers the majority of JSON functions used to insert, select, update and delete data. More functions will be supported if necessary.
+Currently TiDB does not support all the JSON functions in MySQL 5.7. You can track our progress in adding this functionality in [TiDB #7546](https://github.com/pingcap/tidb/issues/7546).
 
 ## Index JSON using generated column
 
