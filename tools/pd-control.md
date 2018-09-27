@@ -463,58 +463,73 @@ Usage:
 
 ### `region topread [limit]`
 
-Use this command to list Regions with top read flow. The default value of the limit is 10.
+Use this command to list Regions with top read flow. The default value of the limit is 16.
 
 Usage:
 
 ```bash
 >> region topread
 {
-  "count": 10,
+  "count": 16,
   "regions": [......],
 }
 ```
 
 ### `region topwrite [limit]`
 
-Use this command to list Regions with top write flow. The default value of the limit is 10.
+Use this command to list Regions with top write flow. The default value of the limit is 16.
 
 Usage:
 
 ```bash
 >> region topwrite
 {
-  "count": 10,
+  "count": 16,
   "regions": [......],
 }
 ```
 
 ### `region topconfver [limit]`
 
-Use this command to list Regions with top conf version. The default value of the limit is 10.
+Use this command to list Regions with top conf version. The default value of the limit is 16.
 
 Usage:
 
 ```bash
 >> region topconfver
 {
-  "count": 10,
+  "count": 16,
   "regions": [......],
 }
 ```
 
 ### `region topversion [limit]`
 
-Use this command to list Regions with top version. The default value of the limit is 10.
+Use this command to list Regions with top version. The default value of the limit is 16.
 
 Usage:
 
 ```bash
 >> region topversion
 {
-  "count": 10,
+  "count": 16,
   "regions": [......],
 }
+```
+
+### `region topsize [limit]`
+
+Use this command to list Regions with top approximate size. The default value of the limit is 16.
+
+Usage:
+
+```bash
+>> region topsize
+{
+   "count": 16,
+   "regions": [......],
+}
+
 ```
 
 ### `region check [miss-peer | extra-peer | down-peer | pending-peer | incorrect-ns]`
