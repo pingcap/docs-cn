@@ -43,6 +43,7 @@ The following MySQL system variables are fully supported in TiDB and have the sa
 | sql_mode | GLOBAL \| SESSION | support some of the MySQL SQL modes|
 | time_zone | GLOBAL \| SESSION | the time zone of the database |
 | tx_isolation | GLOBAL \| SESSION | the isolation level of a transaction |
+| hostname | NONE | the hostname of the TiDB server |
 
 ## The proprietary system variables and syntaxes in TiDB
 
