@@ -11,7 +11,7 @@ category: benchmark
 
 ## 测试版本、时间、地点
 
-TiDB 版本：v2.1.0-rc.2 V.S. v2.0.6
+TiDB 版本：v2.1.0-rc.2 vs. v2.0.6
 
 时间：2018 年 9 月
 
