@@ -89,7 +89,7 @@ sync-log = true
 region-max-size = "384MB"
 # The threshold value of Region split
 region-split-size = "256MB"
-# When the data size in a Region is larger than the threshold value, TiKV checks whether this Region needs split.
+# When the data size change in a Region is larger than the threshold value, TiKV checks whether this Region needs split.
 # To reduce the costs of scanning data in the checking process, set the value to 32MB during checking and set it to
 # the default value in normal operation. 
 region-split-check-diff = "32MB"
