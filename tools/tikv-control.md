@@ -143,7 +143,7 @@ success!
 
 > **注意**：
 > 
-> - `--pd/-p` 选项的参数指定 PD 的 endponits，它没有 `http` 前缀。
+> - `-p` 选项的参数指定 PD 的 endponits，它没有 `http` 前缀。
 > - **这个命令只支持本地模式**。需要指定 PD 的 endpoints 的原因是需要询问 PD 是否可以安全地 tombstone。因此，在 tombstone 之前往往还需要在 `pd-ctl` 中把该 Region 在这台机器上的对应 Peer 拿掉。
 
 ### 向 TiKV 发出 consistency-check 请求
@@ -209,31 +209,31 @@ success!
 
 `unsafe-recover remove-fail-stores` 命令将一些失败掉的机器从所有 Region 的 peers 列表中移除。这样，这些 Region 便可以在 TiKV 重启之后以剩下的健康的副本继续提供服务了。这个命令常常用于多个 TiKV store 损坏或被删除的情况。
 
-`--stores` 选项接受多个以逗号分隔的 `store_id`，并使用 `--regions` 参数来指定包含的 Region。否则，所有 Region 中位于这些 store 上的 peers 默认都会被移除。 
+`-s` 选项接受多个以逗号分隔的 `store_id`，并使用 `-r` 参数来指定包含的 Region。否则，所有 Region 中位于这些 store 上的 peers 默认都会被移除。 
 
 ```bash
-$ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores --stores 3 --regions 1001,1002
+$ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 3 -r 1001,1002
 success!
 ```
 
 > **注意**：
 > 
 > - **这个命令只支持本地模式**。在运行成功后，会打印 `success!`。
-> - 对于指定 Region 的 peers 所在的每个 store，均须运行这个命令。如果不设置 `--regions` 选项，所有的 Region 都会被包含进来，你则需要为所有的 store 都执行这个命令。
+> - 对于指定 Region 的 peers 所在的每个 store，均须运行这个命令。如果不设置 `-r` 选项，所有的 Region 都会被包含进来，你则需要为所有的 store 都执行这个命令。
 
 ### 恢复损坏的 MVCC 数据
 
 `recover-mvcc` 命令用于 MVCC 数据损坏导致 TiKV 无法正常运行的情况。为了从不同种类的不一致情况中恢复，该命令会反复检查 3 个 CF ("default", "write", "lock")。  
 
-`--regions` 选项可以通过 `region_id` 指定包含的 Region，`--pd` 选项可以指定 PD 的 endpoint。
+`-r` 选项可以通过 `region_id` 指定包含的 Region，`-p` 选项可以指定 PD 的 endpoint。
 
 ```bash
-$ tikv-ctl --db /path/to/tikv/db recover-mvcc --regions 1001,1002 --pd 127.0.0.1:2379
+$ tikv-ctl --db /path/to/tikv/db recover-mvcc -r 1001,1002 -p 127.0.0.1:2379
 success!
 ```
 
 > **注意**：
 > 
 > - **这个命令只支持本地模式**。在运行成功后，会打印 `success!`。
-> - `--pd` 选项指定 PD 的 endpoint，不使用 `http` 前缀，用于查询指定的 `region_id` 是否有效。
+> - `-p` 选项指定 PD 的 endpoint，不使用 `http` 前缀，用于查询指定的 `region_id` 是否有效。
 > - 对于指定 Region 的 peers 所在的每个 store，均须执行这个命令。
