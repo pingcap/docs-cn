@@ -18,10 +18,12 @@ category: deployment
 
 ### 自动下载 binary
 
-1.  修改 `/home/tidb/tidb-ansible/inventory.ini` 中的 `tidb_version` 参数值，指定需要升级的版本号，如从 `v2.0.2` 升级到 `v2.0.3`
+1.  修改 `/home/tidb/tidb-ansible/inventory.ini` 中的 `tidb_version` 参数值，指定需要升级的版本号，如从 `v2.0.6` 升级到 `v2.0.7`
+
+> 如果使用 master 分支 tidb-ansible，`tidb_version = latest` 保持不变即可，latest 版本 tidb 安装包会每日更新。
 
     ```
-    tidb_version = v2.0.3
+    tidb_version = v2.0.7
     ```
 
 2.  删除原有的 downloads 目录 `/home/tidb/tidb-ansible/downloads/`
@@ -31,7 +33,7 @@ category: deployment
     $ rm -rf downloads
     ```
 
-3.  使用 playbook 下载 TiDB `v2.0.3` 版本 binary，自动替换 binary 到 `/home/tidb/tidb-ansible/resource/bin/`
+3.  使用 playbook 下载 TiDB `v2.0.7` 版本 binary，自动替换 binary 到 `/home/tidb/tidb-ansible/resource/bin/`
 
     ```
     $ ansible-playbook local_prepare.yml
@@ -42,7 +44,7 @@ category: deployment
 除 “下载 binary” 中描述的方法之外，也可以手动下载 binary，解压后手动替换 binary 到 `/home/tidb/tidb-ansible/resource/bin/`，请注意替换链接中的版本号。
 
 ```
-wget http://download.pingcap.org/tidb-v2.0.3-linux-amd64-unportable.tar.gz
+wget http://download.pingcap.org/tidb-v2.0.7-linux-amd64.tar.gz
 ```
 
 ### 使用 Ansible 滚动升级
