@@ -20,11 +20,11 @@ category: deployment
 
 1.  修改 `/home/tidb/tidb-ansible/inventory.ini` 中的 `tidb_version` 参数值，指定需要升级的版本号，如从 `v2.0.6` 升级到 `v2.0.7`
 
-> 如果使用 master 分支 tidb-ansible，`tidb_version = latest` 保持不变即可，latest 版本 tidb 安装包会每日更新。
-
     ```
     tidb_version = v2.0.7
     ```
+
+> 如果使用 master 分支 tidb-ansible，`tidb_version = latest` 保持不变即可，latest 版本 tidb 安装包会每日更新。
 
 2.  删除原有的 downloads 目录 `/home/tidb/tidb-ansible/downloads/`
 
