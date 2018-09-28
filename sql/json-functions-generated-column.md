@@ -68,6 +68,7 @@ SELECT JSON_EXTRACT(@person,  '$.friends[2].name'); -- gets NULL
 * [JSON_MERGE](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-merge)
 * [JSON_CONTAINS](https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-contains)
 * [JSON_CONTAINS_PATH](https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-contains-path)
+* [JSON_LENGTH](https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-length)
 
 直接从名字上，我们便能得出这些函数的大致用途，而且它们的语义也与 MySQL 5.7 完全一致，因此，想要查询它们具体的用法，我们可以直接查阅 MySQL 5.7 的[相关文档](https://dev.mysql.com/doc/refman/5.7/en/json-functions.html)。MySQL 5.7 的用户可以无缝迁移至 TiDB。
 
