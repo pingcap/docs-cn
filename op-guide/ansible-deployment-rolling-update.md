@@ -33,7 +33,7 @@ category: deployment
     $ rm -rf downloads
     ```
 
-3.  使用 playbook 下载 TiDB `v2.0.7` 版本 binary，自动替换 binary 到 `/home/tidb/tidb-ansible/resource/bin/`
+3.  使用 playbook 下载 TiDB binary，自动替换 binary 到 `/home/tidb/tidb-ansible/resource/bin/`
 
     ```
     $ ansible-playbook local_prepare.yml
@@ -41,7 +41,7 @@ category: deployment
 
 ### 手动下载 binary
 
-除 “下载 binary” 中描述的方法之外，也可以手动下载 binary，解压后手动替换 binary 到 `/home/tidb/tidb-ansible/resource/bin/`，请注意替换链接中的版本号。
+除 “自动下载 binary” 中描述的方法之外，也可以手动下载 binary，解压后手动替换 binary 到 `/home/tidb/tidb-ansible/resource/bin/`，请注意替换链接中的版本号。
 
 ```
 wget http://download.pingcap.org/tidb-v2.0.7-linux-amd64.tar.gz
