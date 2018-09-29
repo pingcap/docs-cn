@@ -43,8 +43,8 @@ Make sure you have installed the following items on your machine:
 2. Edit the `compose/values.yaml` file to configure `networkMode` to `host` and comment the TiDB section out.
 
     ```bash
-    cd tidb-docker-compose/compose
-    networkMode: host
+    cd tidb-docker-compose
+    vim compose/values.yaml
     ```
 
 3. Generate the `generated-docker-compose.yml` file.
