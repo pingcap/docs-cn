@@ -69,10 +69,10 @@ category: Roadmap
 - [ ] Index Join 和并行 merge join
 - [ ] Data Federation（桥接其他数据源，最好能和社区同步，这个接进来可以比较好扩展 Usecase，如果再做一个 InputFormat 适配就可以接 Hive 和 Presto 这些 Hadoop 上的数仓）
 
-## SRE&Tools:
+## Tools:
 
-- [x] On-Premise 版本集成部署 (K8s based)
-- [ ] On-Premise 版本 Dashboard UI
-- [ ] 集群备份和恢复工具（结合物理备份）
-- [ ] 数据迁移工具（Wormhole 二期）
-- [ ] 安全与系统诊断
+- [x] 集群部署工具
+- [X] 高性能数据导入工具
+- [X] 集群备份和恢复工具 (包括全量+增量备份)
+- [ ] 数据在线迁移工具 (Syncer 升级版)
+- [ ] 集群诊断和分析工具
