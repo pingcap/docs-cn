@@ -78,10 +78,10 @@ This document defines the roadmap for TiDB development.
 - [ ] Index Join and parallel merge join
 - [ ] Data Federation
 
-## SRE & tools:
+## Tools:
 
-- [X] Kubernetes based integration for the on-premise version 
-- [ ] Dashboard UI for the on-premise version
-- [ ] The cluster backup and recovery tool
-- [ ] The data migration tool (Wormhole V2)
-- [ ] Security and system diagnosis
+- [X] Tool for automating TiDB deployment
+- [X] High-Performance data import tool
+- [X] Backup and restore tool (incremental backup supported)
+- [ ] Data online migration tool (premium edition of Syncer)
+- [ ] Diagnostic tools

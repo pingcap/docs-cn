@@ -791,7 +791,7 @@ Two solutions:
 
 - You can also increase the limited number of statements in a single TiDB transaction, but this will consume more memory.
 
-### Migrate the data incrementally
+### Migrate the data online
 
 #### Syncer
 
@@ -823,11 +823,7 @@ Yes. For details, see [Syncer User Guide](tools/syncer.md)
 
 Frequent DDL operations may affect the synchronization speed. For Sycner, DDL operations are executed serially. When DDL operations are executed during data synchronization, data will be synchronized serially and thus the synchronization speed will be slowed down.
 
-#### Wormhole
-
-Wormhole is a data synchronization service, which enables the user to easily synchronize all the data or synchronize incrementally using Web console. It supports multiple types of data migration, such as from MySQL to TiDB, and from MongoDB to TiDB.
-
-#### If the machine that Syncer is in is broken and the directory of the `syncer.meta` file is lost, what should I do? 
+##### If the machine that Syncer is in is broken and the directory of the `syncer.meta` file is lost, what should I do? 
 
 When you synchronize data using Syncer GTID, the `syncer.meta` file is constantly updated during the synchronization process. The current version of Syncer does not contain the design for high availability. The `syncer.meta` configuration file of Syncer is directly stored on the hard disks, which is similar to other tools in the MySQL ecosystem, such as mydumper. 
 
@@ -840,7 +836,7 @@ Two solutions:
 
 #### How to migrate the traffic quickly?
 
-It is recommended to build a multi-source MySQL, MongoDB -> TiDB real-time synchronization environment using Syncer or Wormhole. You can migrate the read and write traffic in batches by editing the network configuration as needed. Deploy a stable network LB (HAproxy, LVS, F5, DNS, etc.) on the upper layer, in order to implement seamless migration by directly editing the network configuration.
+It is recommended to build a multi-source MySQL -> TiDB real-time synchronization environment using Syncer tool. You can migrate the read and write traffic in batches by editing the network configuration as needed. Deploy a stable network LB (HAproxy, LVS, F5, DNS, etc.) on the upper layer, in order to implement seamless migration by directly editing the network configuration.
 
 #### Is there a limit for the total write and read capacity in TiDB?
 
