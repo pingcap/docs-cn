@@ -713,7 +713,7 @@ sqoop export \
 ```
 - 也可以选择增大 tidb 的单个事物语句数量限制，不过这个会导致内存上涨。
 
-### 4.2 增量数据同步
+### 4.2 在线数据同步
 
 #### 4.2.1 Syncer 架构
 
@@ -745,11 +745,7 @@ sqoop export \
 
 频繁执行 DDL 对同步速度会有影响。对于 Sycner 来说，DDL 是串行执行的，当同步遇到了 DDL，就会以串行的方式执行，所以这种场景就会导致同步速度下降。
 
-#### 4.2.2 Wormhole 工具
-
-Wormhole 是一项数据同步服务，让用户能够通过 Web 控制台, 轻松操作数据的全量 + 增量同步，支持多种同、异构数据源之间的数据迁移，如 MySQL -> TiDB，MongoDB -> TiDB。具体可联系官方进行试用 [info@pingcap.com](mailto:info@pingcap.com)。
-
-#### 4.2.3 使用 Syncer gtid 的方式同步时，同步过程中会不断更新 syncer.meta 文件，如果 Syncer 所在的机器坏了，导致 syncer.meta 文件所在的目录丢失，该如何处理？
+#### 4.2.1.6 使用 Syncer gtid 的方式同步时，同步过程中会不断更新 syncer.meta 文件，如果 Syncer 所在的机器坏了，导致 syncer.meta 文件所在的目录丢失，该如何处理？
 
 当前 Syncer 版本的没有进行高可用设计，Syncer 目前的配置信息 syncer.meta 直接存储在硬盘上，其存储方式类似于其他 MySQL 生态工具，比如 mydumper。 因此，要解决这个问题当前可以有两个方法：
 
