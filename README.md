@@ -155,6 +155,7 @@
   - [Mobike](http://t.cn/RT8FbP6)
   - [饿了么（一）](http://t.cn/RucuK6m)
   - [饿了么（二）](http://t.cn/RnsqFT6)
+  - [爱奇艺](http://t.cn/EvErsc1)
   - [易果生鲜](http://t.cn/RTYVhzH)
   - [同程旅游](http://t.cn/RmXeNKR)
   - [去哪儿](http://t.cn/RTKnsL7)
