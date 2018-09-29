@@ -314,6 +314,7 @@ config set cluster-version 1.0.8              // 设置 cluster version 为 1.0.
     "member_id": 13195394291058371180,
     "client_urls": [
       "http://127.0.0.1:2379"
+      ......
     ],
     "health": true
   }
