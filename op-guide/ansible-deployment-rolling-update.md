@@ -20,11 +20,13 @@ When you perform a rolling update for a TiDB cluster, the service is shut down s
 
 1. Edit the value of the `tidb_version` parameter in the `/home/tidb/tidb-ansible/inventory.ini` file, and specify the version number you need to upgrade to.
 
-    For example, to upgrade from `v2.0.2` to `v2.0.3`:
+    For example, to upgrade from `v2.0.6` to `v2.0.7`:
 
     ```
-    tidb_version = v2.0.3
+    tidb_version = v2.0.7
     ```
+
+    > **Note:** If you use `tidb-ansible` of the master branch, you can keep `tidb_version = latest`. The installation package of the latest TiDB version is updated each day.
 
 2. Delete the existing `downloads` directory `/home/tidb/tidb-ansible/downloads/`.
 
@@ -33,7 +35,7 @@ When you perform a rolling update for a TiDB cluster, the service is shut down s
     $ rm -rf downloads
     ```
 
-3. Use `playbook` to download the TiDB `v2.0.3` binary and replace the existing binary in `/home/tidb/tidb-ansible/resource/bin/` with it automatically.
+3. Use `playbook` to download the TiDB binary and replace the existing binary in `/home/tidb/tidb-ansible/resource/bin/` with it automatically.
 
     ```
     $ ansible-playbook local_prepare.yml
@@ -44,10 +46,16 @@ When you perform a rolling update for a TiDB cluster, the service is shut down s
 You can also download the binary manually. Use `wget` to download the binary and replace the existing binary in `/home/tidb/tidb-ansible/resource/bin/` with it manually.
 
 ```
-wget http://download.pingcap.org/tidb-v2.0.3-linux-amd64-unportable.tar.gz
+wget http://download.pingcap.org/tidb-v2.0.7-linux-amd64.tar.gz
 ```
 
 > **Note:** Remember to replace the version number in the download link with the one you need.
+
+If you use `tidb-ansible` of the master branch, download the binary using the following command:
+
+```
+$ wget http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz
+```
 
 ### Perform a rolling update using Ansible
 
