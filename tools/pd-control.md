@@ -308,7 +308,19 @@ config set cluster-version 1.0.8              // 设置 cluster version 为 1.0.
 
 ```bash
 >> health                                // 显示健康信息
-{"health": "true"}
+[
+  {
+    "name": "pd",
+    "member_id": 13195394291058371180,
+    "client_urls": [
+      "http://127.0.0.1:2379"
+      ......
+    ],
+    "health": true
+  }
+  ......
+]
+
 ```
 
 ### hot [read | write | store]
@@ -375,7 +387,7 @@ Success!
 >> operator show leader                                 // 显示所有的 leader operators
 >> operator show region                                 // 显示所有的 Region operators
 >> operator add add-peer 1 2                            // 在 store 2 上新增 Region 1 的一个副本
->> operator remove remove-peer 1 2                      // 移除 store 2 上的 Region 1 的一个副本
+>> operator add remove-peer 1 2                         // 移除 store 2 上的 Region 1 的一个副本
 >> operator add transfer-leader 1 2                     // 把 Region 1 的 leader 调度到 store 2
 >> operator add transfer-region 1 2 3 4                 // 把 Region 1 调度到 store 2,3,4
 >> operator add transfer-peer 1 2 3                     // 把 Region 1 在 store 2 上的副本调度到 store 3
