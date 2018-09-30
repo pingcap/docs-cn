@@ -9,18 +9,19 @@ category: Roadmap
 
 - [ ] 优化器
     - [x] 重构 Ranger
-    - [ ] 代价模型优化
+    - [x] 代价模型优化
+    - [ ] Cascades model planner
     - [ ] Join Reorder
 - [ ] 统计信息
     - [x] 基于 Query Feedback 动态更新统计信息
     - [x] 自动 Analyze
-    - [ ] 提升 Row Count 估算精度
+    - [x] 提升 Row Count 估算精度
 - [ ] 执行引擎
     - [ ] 下推 Projection 到 Coprocessor
-    - [ ] 优化 HashJoin 算子执行速度
+    - [x] 优化 HashJoin 算子执行速度
     - [ ] 算子并行化
         - [x] 并行 Projection
-        - [ ] 并行聚合
+        - [x] 并行聚合
         - [ ] 并行 Sort
     - [x] Compact Row Format，节省内存占用
     - [ ] File Sort
@@ -28,10 +29,18 @@ category: Roadmap
 - [ ] 窗口函数
 - [ ] Common Table Expression
 - [ ] 分区表
+    - [x] Range 分区
+    - [ ] Hash 分区
 - [ ] 聚簇索引
+- [ ] 新的 storage row format
+- [ ] Query Ttracing
 - [ ] DDL 改进
     - [x] Add Index 加速
-    - [ ] 并行 DDL
+    - [x] 并行 DDL
+    - [ ] 支持锁表
+    - [ ] 支持改变 column 类型
+    - [ ] 支持修改主键
+    - [ ] 支持一条语句中多个 DDL 操作
 - [ ] 支持 `utf8_general_ci` collation
 
 ## TiKV:
