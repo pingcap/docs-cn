@@ -41,7 +41,6 @@ category: Roadmap
     - [ ] 支持改变 column 类型
     - [ ] 支持修改主键
     - [ ] 支持一条语句中多个 DDL 操作
-
 - [ ] 支持 `utf8_general_ci` collation
 
 ## TiKV:
