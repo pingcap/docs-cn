@@ -7,7 +7,7 @@ category: deployment
 
 ## 概述
 
-Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingcap/tidb-ansible) 是 PingCAP 基于 Ansible playbook 功能编写的集群部署工具。使用 TiDB-Ansible 可以快速部署一个完整的 TiDB 集群。
+Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingcap/tidb-ansible) 是 PingCAP 基于 Ansible playbook 功能编写的集群部署工具。本文档介绍如何使用 TiDB-Ansible 部署一个完整的 TiDB 集群。
 
 本部署工具可以通过配置文件设置集群拓扑，完成以下各项运维工作：
 
@@ -20,6 +20,8 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 - [升级组件版本](ansible-deployment-rolling-update.md#升级组件版本)
 - [清除集群数据](ansible-operation.md#清除集群数据)
 - [销毁集群](ansible-operation.md#销毁集群)
+
+> **注**：对于生产环境，须使用 TiDB-Ansible 部署 TiDB 集群。如果只是用于测试 TiDB 或体验 TiDB 的特性，建议[使用 Docker Compose 在单机上快速部署 TiDB 集群](docker-compose.md)。
 
 ## 准备机器
 
@@ -77,10 +79,15 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 tidb ALL=(ALL) NOPASSWD: ALL
 ```
 
-生成 ssh key: 执行 `su` 命令从 `root` 用户切换到 `tidb` 用户下，创建 `tidb` 用户 ssh key， 提示 `Enter passphrase` 时直接回车即可。执行成功后，ssh 私钥文件为 `/home/tidb/.ssh/id_rsa`， ssh 公钥文件为 `/home/tidb/.ssh/id_rsa.pub`。
+生成 ssh key: 执行 `su` 命令从 `root` 用户切换到 `tidb` 用户下。
 
 ```
 # su - tidb
+```
+
+创建 `tidb` 用户 ssh key， 提示 `Enter passphrase` 时直接回车即可。执行成功后，ssh 私钥文件为 `/home/tidb/.ssh/id_rsa`， ssh 公钥文件为 `/home/tidb/.ssh/id_rsa.pub`。
+
+```
 $ ssh-keygen -t rsa
 Generating public/private rsa key pair.
 Enter file in which to save the key (/home/tidb/.ssh/id_rsa):
@@ -107,11 +114,16 @@ The key's randomart image is:
 
 ## 在中控机器上下载 TiDB-Ansible
 
-以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录。
+以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录。以下为 tidb-ansible 分支与 TiDB 版本对应关系，版本选择可以咨询官方。
 
-使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`，以下为各版本下载示例，版本选择可以咨询官方。
+| tidb-ansible 分支 | TiDB 版本 | 备注 |
+| ---------------- | --------- | --- |
+| release-2.0 | 2.0 版本 | 最新稳定版本，可用于生产环境。 |
+| master | master 版本 | 包含最新特性，每日更新。 |
 
-下载 2.0 GA 版本：
+使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible 相应分支，默认的文件夹名称为 `tidb-ansible`。
+
+下载 2.0 版本：
 
 ```
 $ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
@@ -446,8 +458,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | cluster_name | 集群名称，可调整 |
 | tidb_version | TiDB 版本，TiDB-Ansible 各分支默认已配置 |
 | process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
-| timezone | 修改部署目标机器时区，默认为 `Asia/Shanghai`，可调整，与  `set_timezone` 变量结合使用 |
-| set_timezone | 默认为 True，即修改部署目标机器时区，关闭可修改为 False |
+| timezone | 新安装 TiDB 集群第一次启动 bootstrap（初始化）时，将 TiDB 全局默认时区设置为该值。TiDB 使用的时区后续可通过 `time_zone` 全局变量和 session 变量来修改，参考[时区支持](https://github.com/pingcap/docs-cn/blob/master/sql/time-zone.md)。 默认为 `Asia/Shanghai`，可选值参考[ timzone 列表](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)。 |
 | enable_firewalld | 开启防火墙，默认不开启，如需开启，请将[部署建议-网络要求](recommendation.md#网络要求) 中的端口加入白名单 |
 | enable_ntpd | 检测部署目标机器 NTP 服务，默认为 True，请勿关闭 |
 | set_hostname | 根据 IP 修改部署目标机器主机名，默认为 False |
@@ -468,7 +479,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 
 1.  确认 `tidb-ansible/inventory.ini` 文件中 `ansible_user = tidb`，本例使用 `tidb` 用户作为服务运行用户，配置如下：
 
-    > `ansible_user` 不要设置成 `root` 用户，`tidb-ansbile` 限制了服务以普通用户运行。
+    > `ansible_user` 不要设置成 `root` 用户，`tidb-ansible` 限制了服务以普通用户运行。
 
     ```ini
     ## Connection

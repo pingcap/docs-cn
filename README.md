@@ -2,10 +2,13 @@
 
 ## 目录
 
-+ TiDB 简介与整体架构
-  - [TiDB 简介](overview.md#tidb-简介)
-  - [TiDB 整体架构](overview.md#tidb-整体架构)
-- [TiDB 快速入门指南](QUICKSTART.md)
++ 关于 TiDB
+  - [TiDB 简介](overview.md)
+  - [TiDB 整体架构](architecture.md)
+  - [TiDB 核心特性](features.md)
++ TiDB 快速入门
+  - [快速入门指南](QUICKSTART.md)
+  - [SQL 基本操作](try-tidb.md)
 + TiDB 用户文档
   + TiDB 数据库管理
     - [TiDB 服务](sql/tidb-server.md)
@@ -120,6 +123,9 @@
 - [常见问题与解答(FAQ)](FAQ.md)
 - [最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
 + [版本发布历史](releases/rn.md)
+  - [2.1 RC3](releases/21rc3.md)
+  - [2.1 RC2](releases/21rc2.md)
+  - [2.0.7](releases/207.md)
   - [2.1 RC1](releases/21rc1.md)
   - [2.0.6](releases/206.md)
   - [2.0.5](releases/205.md)
@@ -150,6 +156,7 @@
   - [Mobike](http://t.cn/RT8FbP6)
   - [饿了么（一）](http://t.cn/RucuK6m)
   - [饿了么（二）](http://t.cn/RnsqFT6)
+  - [爱奇艺](http://t.cn/EvErsc1)
   - [易果生鲜](http://t.cn/RTYVhzH)
   - [同程旅游](http://t.cn/RmXeNKR)
   - [去哪儿](http://t.cn/RTKnsL7)

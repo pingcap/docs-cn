@@ -84,7 +84,7 @@ export PD_ADDR=http://127.0.0.1:2379
 }
 ```
 
-### config [show | set \<option\> \<value\>]
+### config [show | set <option> <value>]
 
 用于显示或调整配置信息。
 
@@ -160,27 +160,27 @@ export PD_ADDR=http://127.0.0.1:2379
 >> config set max-pending-peer-count 64  // 设置最大 pending peer 数量为 64
 ```
 
-`max-merge-region-size` 控制 region merge 的 size 上限（单位是 M）。
-当 regionSize 大于指定值时 PD 不会将其与相邻的 region 合并。设置为 0 表示不开启 region merge 功能。
+`max-merge-region-size` 控制 Region Merge 的 size 上限（单位是 M）。
+当 regionSize 大于指定值时 PD 不会将其与相邻的 Region 合并。设置为 0 表示不开启 Region Merge 功能。
 
 ```bash
->> config set max-merge-region-size 16 // 设置 region merge 的 size 上限为 16M
+>> config set max-merge-region-size 16 // 设置 Region Merge 的 size 上限为 16M
 ```
 
-`max-merge-region-rows` 控制 region merge 的 rowCount 上限。
-当 regionRowCount 大于指定值时 PD 不会将其与相邻的 region 合并。
+`max-merge-region-rows` 控制 Region Merge 的 rowCount 上限。
+当 regionRowCount 大于指定值时 PD 不会将其与相邻的 Region 合并。
 
 ```bash
->> config set max-merge-region-rows 50000 // 设置 region merge 的 rowCount 上限为 50k
+>> config set max-merge-region-rows 50000 // 设置 Region Merge 的 rowCount 上限为 50k
 ```
 
-`split-merge-interval` 控制对同一个 region 做 split 和 merge 操作的间隔，即对于新 split 的 region 一段时间内不会被 merge。
+`split-merge-interval` 控制对同一个 Region 做 `split` 和 `merge` 操作的间隔，即对于新 `split` 的 Region 一段时间内不会被 `merge`。
 
 ```bash
->> config set split-merge-interval 24h  // 设置 split merge 间隔为 1 天
+>> config set split-merge-interval 24h  // 设置 `split` 和 `merge` 的间隔为 1 天
 ```
 
-`patrol-region-interval` 控制 replicaChecker 检查 region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。
+`patrol-region-interval` 控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。
 
 ```bash
 >> config set patrol-region-interval 10ms // 设置 replicaChecker 的运行频率为 10ms
@@ -200,12 +200,12 @@ Leader 调度的开销较小，需要的时候可以适当调大。
 >> config set leader-schedule-limit 4         // 最多同时进行 4 个 leader 调度
 ```
 
-通过调整 `region-schedule-limit` 可以控制同时进行 region 调度的任务个数。
-这个值主要影响 *region balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。
+通过调整 `region-schedule-limit` 可以控制同时进行 Region 调度的任务个数。
+这个值主要影响 *Region balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。
 Region 调度的开销较大，所以这个值不宜调得太大。
 
 ```bash
->> config set region-schedule-limit 2         // 最多同时进行 2 个 region 调度
+>> config set region-schedule-limit 2         // 最多同时进行 2 个 Region 调度
 ```
 
 通过调整 `replica-schedule-limit` 可以控制同时进行 replica 调度的任务个数。
@@ -216,7 +216,7 @@ Replica 调度的开销较大，所以这个值不宜调得太大。
 >> config set replica-schedule-limit 4        // 最多同时进行 4 个 replica 调度
 ```
 
-`merge-schedule-limit` 控制同时进行的 region merge 调度的任务，设置为 0 则关闭 region merge。
+`merge-schedule-limit` 控制同时进行的 Region Merge 调度的任务，设置为 0 则关闭 Region Merge。
 Merge 调度的开销较大，所以这个值不宜调得过大。
 
 ```bash
@@ -227,11 +227,11 @@ Merge 调度的开销较大，所以这个值不宜调得过大。
 
 ```bash
 >> config set namespace ts1 leader-schedule-limit 4 // 设置名为 ts1 的 namespace 最多同时进行 4 个 leader 调度
->> config set namespace ts2 region-schedule-limit 2 // 设置名为 ts2 的 namespace 最多同时进行  2 个 region 调度
+>> config set namespace ts2 region-schedule-limit 2 // 设置名为 ts2 的 namespace 最多同时进行  2 个 Region 调度
 ```
 
 `tolerant-size-ratio` 控制 balance 缓冲区大小。
-当两个 store 的 leader 或 region 的得分差距小于指定倍数的 region size 时，PD 会认为此时 balance 达到均衡状态。
+当两个 store 的 leader 或 Region 的得分差距小于指定倍数的 Region size 时，PD 会认为此时 balance 达到均衡状态。
 
 ```bash
 >> config set tolerant-size-ratio 20        // 设置缓冲区为约 20 倍平均 regionSize
@@ -282,7 +282,7 @@ config set cluster-version 1.0.8              // 设置 cluster version 为 1.0.
 
 `disable-namespace-relocation` 用于关闭 Region 的 namespace 调度。当设置为 true 时，PD 不会把 Region 调度到它所属的 Store 上。
 
-### config delete namespace \<name\> [\<option\>]
+### config delete namespace <name> [<option>]
 
 用于删除 namespace 的配置信息。
 
@@ -323,7 +323,7 @@ config set cluster-version 1.0.8              // 设置 cluster version 为 1.0.
 >> hot store                            // 显示所有 store 的读写信息
 ```
 
-### label [store \<name\> \<value\>]
+### label [store <name> <value>]
 
 用于显示集群标签信息
 
@@ -334,7 +334,7 @@ config set cluster-version 1.0.8              // 设置 cluster version 为 1.0.
 >> label store zone cn                  // 显示所有包含 label 为 "zone":"cn" 的 store
 ```
 
-### member [delete | leader_priority | leader [show | resign | transfer \<member_name\>]]
+### member [delete | leader_priority | leader [show | resign | transfer <member_name>]]
 
 用于显示 PD 成员信息，删除指定成员，设置成员的 leader 优先级。
 
@@ -365,27 +365,28 @@ Success!
 
 ### operator [show | add | remove]
 
-用于显示和控制调度操作，或者分裂一个 region。
+用于显示和控制调度操作，或者对 Region 进行分裂或合并。
 
 示例：
 
 ```bash
-operator show                                        // 显示所有的 operators
-operator show admin                                  // 显示所有的 admin operators
-operator show leader                                 // 显示所有的 leader operators
-operator show region                                 // 显示所有的 region operators
-operator add add-peer 1 2                            // 在 store 2 上新增 region 1 的一个副本
-operator remove remove-peer 1 2                      // 移除 store 2 上的 region 1 的一个副本
-operator add transfer-leader 1 2                     // 把 region 1 的 leader 调度到 store 2
-operator add transfer-region 1 2 3 4                 // 把 region 1 调度到 store 2,3,4
-operator add transfer-peer 1 2 3                     // 把 region 1 在 store 2 上的副本调度到 store 3
-operator add merge-region 1 2                        // 将 region 1 与 region 2 合并
-operator add split-region 1 --policy=approximate     // 将 region 1 对半拆分成两个 region，基于粗略估计值
-operator add split-region 1 --policy=scan            // 将 region 1 对半拆分成两个 region，基于精确扫描值
-operator remove 1                                    // 把 region 1 的调度操作删掉
+>> operator show                                        // 显示所有的 operators
+>> operator show admin                                  // 显示所有的 admin operators
+>> operator show leader                                 // 显示所有的 leader operators
+>> operator show region                                 // 显示所有的 region operators
+>> operator add add-peer 1 2                            // 在 store 2 上新增 region 1 的一个副本
+>> operator remove remove-peer 1 2                      // 移除 store 2 上的 region 1 的一个副本
+>> operator add transfer-leader 1 2                     // 把 region 1 的 leader 调度到 store 2
+>> operator add transfer-region 1 2 3 4                 // 把 region 1 调度到 store 2,3,4
+>> operator add transfer-peer 1 2 3                     // 把 region 1 在 store 2 上的副本调度到 store 3
+>> operator add merge-region 1 2                        // 将 region 1 与 region 2 合并
+>> operator add split-region 1 --policy=approximate     // 将 region 1 对半拆分成两个 region，基于粗略估计值
+>> operator add split-region 1 --policy=scan            // 将 region 1 对半拆分成两个 region，基于精确扫描值
+>> operator add merge-region 1 2                        // 合并两个相邻的 region 1 和 2
+>> operator remove 1                                    // 把 region 1 的调度操作删掉
 ```
 
-其中，对于 region 的分裂，都是尽可能地从靠近中间的位置。对这个位置的选择支持两种策略，即 scan 和 approximate。它们之间的区别是，前者通过扫描这个 region 的方式来确定中间的 key，而后者是通过查看 SST 文件中记录的统计信息，来得到近似的位置。一般来说，前者更加精确，而后者消耗更少的 IO，可以更快地完成。
+其中，Region 的分裂都是尽可能地从靠近中间的位置开始。对这个位置的选择支持两种策略，即 scan 和 approximate。它们之间的区别是，前者通过扫描这个 region 的方式来确定中间的 key，而后者是通过查看 SST 文件中记录的统计信息，来得到近似的位置。一般来说，前者更加精确，而后者消耗更少的 I/O，可以更快地完成。
 
 ### ping
 
@@ -398,20 +399,20 @@ operator remove 1                                    // 把 region 1 的调度�
 time: 43.12698ms
 ```
 
-### region \<region_id\> [--jq="<query string>"]
+### region <region_id> [--jq="<query string>"]
 
-用于显示 region 信息。使用 jq 格式化输出请参考[jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。
+用于显示 Region 信息。使用 jq 格式化输出请参考[jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。
 
 示例：
 
 ```bash
->> region                               // 显示所有 region 信息
+>> region                               // 显示所有 Region 信息
 {
   "count": 1,
   "regions": [......]
 }
 
->> region 2                             // 显示 region id 为 2 的信息
+>> region 2                             // 显示 Region id 为 2 的信息
 {
   "region": {
       "id": 2,
@@ -423,9 +424,9 @@ time: 43.12698ms
 }
 ```
 
-### region key [--format=raw|pb|proto|protobuf] \<key\>
+### region key [--format=raw|pb|proto|protobuf] <key>
 
-用于查询某个 key 在哪个 region 上，支持 raw 和 protobuf 格式。
+用于查询某个 key 在哪个 Region 上，支持 raw 和 protobuf 格式。
 
 Raw 格式（默认）示例：
 
@@ -451,9 +452,9 @@ Protobuf 格式示例：
 }
 ```
 
-### region sibling \<region_id\>
+### region sibling <region_id>
 
-用于查询某个 region 相邻的 region。
+用于查询某个 Region 相邻的 Region。
 
 示例：
 
@@ -465,15 +466,99 @@ Protobuf 格式示例：
 }
 ```
 
+### `region store <store_id>`
+
+用于查询某个 store 上面所有的 Region。
+
+示例：
+
+```bash
+>> region store 2
+{
+  "count": 10,
+  "regions": [......],
+}
+```
+
+### `region topread [limit]`
+
+用于查询读流量最大的 region。limit 的默认值是 16。
+
+示例：
+
+```bash
+>> region topread
+{
+  "count": 16,
+  "regions": [......],
+}
+```
+
+### `region topwrite [limit]`
+
+用于查询写流量最大的 region。limit 的默认值是 16。
+
+示例：
+
+```bash
+>> region topwrite
+{
+  "count": 16,
+  "regions": [......],
+}
+```
+
+### `region topconfver [limit]`
+
+用于查询 conf version 最大的 region。limit 的默认值是 16。
+
+示例：
+
+```bash
+>> region topconfver
+{
+  "count": 16,
+  "regions": [......],
+}
+```
+
+### `region topversion [limit]`
+
+用于查询 version 最大的 region。limit 的默认值是 16。
+
+示例：
+
+```bash
+>> region topversion
+{
+  "count": 16,
+  "regions": [......],
+}
+```
+
+### `region topsize [limit]`
+
+用于查询 approximate size 最大的 region。limit 的默认值是 16。
+
+示例：
+
+```bash
+>> region topsize
+{
+    "count": 16,
+    "regions": [......],
+}
+```
+
 ### region check [miss-peer | extra-peer | down-peer | pending-peer | incorrect-ns]
 
 用于查询处于异常状态的 region，各类型的意义如下
 
-- miss-peer：缺副本的 region
-- extra-peer：多副本的 region
-- down-peer：有副本状态为 Down 的 region
-- pending-peer：有副本状态为 Pending 的 region
-- incorrect-ns：有副本不符合 namespace 约束的 region
+- miss-peer：缺副本的 Region
+- extra-peer：多副本的 Region
+- down-peer：有副本状态为 Down 的 Region
+- pending-peer：有副本状态为 Pending 的 Region
+- incorrect-ns：有副本不符合 namespace 约束的 Region
 
 示例：
 
@@ -493,14 +578,14 @@ Protobuf 格式示例：
 
 ```bash
 >> scheduler show                             // 显示所有的 schedulers
->> scheduler add grant-leader-scheduler 1     // 把 store 1 上的所有 region 的 leader 调度到 store 1
->> scheduler add evict-leader-scheduler 1     // 把 store 1 上的所有 region 的 leader 从 store 1 调度出去
+>> scheduler add grant-leader-scheduler 1     // 把 store 1 上的所有 Region 的 leader 调度到 store 1
+>> scheduler add evict-leader-scheduler 1     // 把 store 1 上的所有 Region 的 leader 从 store 1 调度出去
 >> scheduler add shuffle-leader-scheduler     // 随机交换不同 store 上的 leader
->> scheduler add shuffle-region-scheduler     // 随机调度不同 store 上的 region
+>> scheduler add shuffle-region-scheduler     // 随机调度不同 store 上的 Region
 >> scheduler remove grant-leader-scheduler-1  // 把对应的 scheduler 删掉
 ```
 
-### store [delete | label | weight] \<store_id\>  [--jq="<query string>"]
+### store [delete | label | weight] <store_id>  [--jq="<query string>"]
 
 用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考[jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。
 

@@ -9,7 +9,7 @@ category: monitoring
 
 目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview 等。
 
-对于日常运维，我们单独挑选出重要的 Metrics 放在 Overview 页面，方便日常运维人员观察集群组件(PD, TiDB, TiKV)使用状态以及集群使用状态 。
+对于日常运维，我们单独挑选出重要的 Metrics 放在 Overview 页面，方便日常运维人员观察集群组件 (PD, TiDB, TiKV) 使用状态以及集群使用状态。
 
 以下为 Overview Dashboard 监控说明：
 

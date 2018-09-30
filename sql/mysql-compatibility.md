@@ -13,17 +13,21 @@ TiDB 支持包括跨行事务、JOIN 及子查询在内的绝大多数 MySQL 5.7
 
 一些 MySQL 语法在 TiDB 中可以解析通过，但是不会做任何后续的处理，例如 Create Table 语句中 `Engine` 以及 `Partition` 选项，都是解析并忽略。更多兼容性差异请参考具体的文档。
 
-
 ## 不支持的特性
 
-* 存储过程
+* 存储过程与函数
 * 视图
 * 触发器
+* 事件
 * 自定义函数
 * 外键约束
 * 全文索引
 * 空间索引
-* 非 UTF8 字符集
+* 非 `utf8` 字符集
+* 增加主键
+* 删除主键
+* SYS schema
+* MySQL 追踪优化器
 
 ## 与 MySQL 有差异的特性
 
@@ -31,25 +35,24 @@ TiDB 支持包括跨行事务、JOIN 及子查询在内的绝大多数 MySQL 5.7
 
 TiDB 的自增 ID (Auto Increment ID) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。
 
-> **注意：**
->
-> 在集群中有多个 tidb-server 实例时，如果表结构中有自增 ID，建议不要混用缺省值和自定义值。否则在如下情况下会遇到问题：
-> 
-> 假设有这样一个带有自增 ID 的表：
->
-> ```
-> create table t(id int unique key auto_increment, c int);
-> ```
-> 
-> TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用于分配（目前会缓存 30000 个 ID），用完这段值再去取下一段。
+在集群中有多个 tidb-server 实例时，如果表结构中有自增 ID，建议不要混用缺省值和自定义值，否则在如下情况下会遇到问题。
 
-> 假设集群中有两个 tidb-server 实例 A 和 B（A 缓存 [1,30000] 的自增 ID，B 缓存 [30001,60000] 的自增 ID），
->
-> 依次执行操作：
->
-> 1. 客户端向 B 插入一条将 `id` 设置为 1 的语句 `insert into t values (1, 1)`，并执行成功。
-> 2. 客户端向 A 发送 Insert 语句 `insert into t (c) (1)`，这条语句中没有指定 `id` 的值，所以会由 A 分配，当前 A 缓存了 [1, 30000] 这段 ID，所以会分配 1 为自增 ID 的值，并把本地计数器加 1。而此时数据库中已经存在 `id` 为 1 的数据，最终返回 `Duplicated Error` 错误。
+假设有这样一个带有自增 ID 的表：
 
+```sql
+create table t(id int unique key auto_increment, c int);
+```
+
+TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用于分配（目前会缓存 30000 个 ID），用完这段值再去取下一段。
+
+假设集群中有两个 tidb-server 实例 A 和 B（A 缓存 [1,30000] 的自增 ID，B 缓存 [30001,60000] 的自增 ID），依次执行如下操作：
+
+1. 客户端向 B 插入一条将 `id` 设置为 1 的语句 `insert into t values (1, 1)`，并执行成功。
+2. 客户端向 A 发送 Insert 语句 `insert into t (c) (1)`，这条语句中没有指定 `id` 的值，所以会由 A 分配，当前 A 缓存了 [1, 30000] 这段 ID，所以会分配 1 为自增 ID 的值，并把本地计数器加 1。而此时数据库中已经存在 `id` 为 1 的数据，最终返回 `Duplicated Error` 错误。
+
+### Performance schema
+
+Performance schema 表在 TiDB 中返回结果为空。TiDB 使用 [Prometheus 和 Grafana](https://pingcap.com/docs/op-guide/monitor/#use-prometheus-and-grafana) 来监测性能指标。
 
 ### 内建函数
 
@@ -89,8 +92,17 @@ TiDB 实现了 F1 的异步 Schema 变更算法，DDL 执行过程中不会阻�
     - 支持 LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE} 语法，但是不做任何事情（pass through）。
     - 不支持对enum类型的列进行修改
 
-### 事务
+### 事务模型
+
 TiDB 使用乐观事务模型，在执行 Update、Insert、Delete 等语句时，只有在提交过程中才会检查写写冲突，而不是像 MySQL 一样使用行锁来避免写写冲突。所以业务端在执行 SQL 语句后，需要注意检查 commit 的返回值，即使执行时没有出错，commit的时候也可能会出错。
+
+### 大事务
+
+由于 TiDB 分布式两阶段提交的要求，修改数据的大事务可能会出现一些问题。因此，TiDB 特意对事务大小设置了一些限制以减少这种影响：
+
+* 每个键值对不超过 6MB
+* 键值对的总数不超过 300,000
+* 键值对的总大小不超过 100MB
 
 ### Load data
 
@@ -100,6 +112,7 @@ TiDB 使用乐观事务模型，在执行 Update、Insert、Delete 等语句时�
     LOAD DATA LOCAL INFILE 'file_name' INTO TABLE table_name
         {FIELDS | COLUMNS} TERMINATED BY 'string' ENCLOSED BY 'char' ESCAPED BY 'char'
         LINES STARTING BY 'string' TERMINATED BY 'string'
+        IGNORE n LINES
         (col_name ...);
     ```
 
@@ -109,14 +122,39 @@ TiDB 使用乐观事务模型，在执行 Update、Insert、Delete 等语句时�
 
     TiDB 在执行 load data 时，默认每 2 万行记录作为一个事务进行持久化存储。如果一次 load data 操作插入的数据超过 2 万行，那么会分为多个事务进行提交。如果某个事务出错，这个事务会提交失败，但它前面的事务仍然会提交成功，在这种情况下一次 load data 操作会有部分数据插入成功，部分数据插入失败。而 MySQL 中会将一次 load data 操作视为一个事务，如果其中发生失败情况，将会导致整个 load data 操作失败。
 
+### 存储引擎
+
+出于兼容性原因，TiDB 支持使用备用存储引擎创建表的语法。元数据命令将表描述为 InnoDB 存储引擎：
+
+```sql
+mysql> CREATE TABLE t1 (a INT) ENGINE=MyISAM;
+Query OK, 0 rows affected (0.14 sec)
+ mysql> SHOW CREATE TABLE t1\G
+*************************** 1. row ***************************
+       Table: t1
+Create Table: CREATE TABLE `t1` (
+  `a` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+1 row in set (0.00 sec)
+```
+
+从架构上讲，TiDB 确实支持类似 MySQL 的存储引擎抽象，在启动 TiDB（通常是 `tikv`）时 [`--store`](server-command-option.md#--store) 选项指定的引擎中创建用户表。
+
+### EXPLAIN
+
+TiDB 的 `EXPLAIN` 命令返回的查询执行计划的输出与 MySQL 不同。更多内容参见 [理解 TiDB 执行计划](understanding-the-query-execution-plan.md)。
+
 ### 默认设置的区别
 
 + 默认字符集不同：
-    + MySQL 5.7 中使用 `latin1`（MySQL 8.0 中使用 `UTF-8`）
-    + TiDB 使用 `utf8mb4`
+    + TiDB 中为 `utf8`，相当于 MySQL 的 `utf8mb4`
+    + MySQL 5.7 中为 `latin1`，但在 MySQL 8.0 中修改为 `utf8mb4`
 + 默认排序规则不同：
     + MySQL 5.7 中使用 `latin1_swedish_ci`
     + TiDB 使用 `binary`
++ 默认 SQL mode 不同：
+    + TiDB 中为 `STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION`
+    + MySQL 中为 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`
 + `lower_case_table_names` 的默认值不同：
     + TiDB 中该值默认为 2，并且目前 TiDB 只支持设置该值为 2
     + MySQL 中默认设置：

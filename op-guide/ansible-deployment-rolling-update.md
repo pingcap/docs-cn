@@ -7,22 +7,21 @@ category: deployment
 
 滚动升级 TiDB 集群时，会串行关闭服务，更新服务 binary 和配置文件，再启动服务。在前端配置负载均衡的情况下，滚动升级期间不影响业务运行（最小环境 ：pd * 3 、tidb * 2、tikv * 3）。
 
-> **注**：
-> 如果 TiDB 集群开启了 binlog，部署了 Pump 和 Drainer 服务，升级 TiDB 服务时会升级 Pump，请先停止 Drainer 服务再执行滚动升级操作。
+> **注**：如果 TiDB 集群开启了 binlog，部署了 Pump 和 Drainer 服务，升级 TiDB 服务时会升级 Pump，请先停止 Drainer 服务再执行滚动升级操作。
 
 ## 升级组件版本
 
-> **注**：
-> 跨大版本升级，必须更新 `tidb-ansible`，从 TiDB 1.0 升级到 TiDB 2.0，请参考 [TiDB 2.0 升级操作指南](tidb-v2-upgrade-guide.md)。
-> 小版本升级，也建议更新 `tidb-ansible`，以获取最新的配置文件模板、特性及 bug 修复。
+跨大版本升级，必须更新 `tidb-ansible`，从 TiDB 1.0 升级到 TiDB 2.0，参考 [TiDB 2.0 升级操作指南](tidb-v2-upgrade-guide.md)。小版本升级，也建议更新 `tidb-ansible`，以获取最新的配置文件模板、特性及 bug 修复。
 
 ### 自动下载 binary
 
-1.  修改 `/home/tidb/tidb-ansible/inventory.ini` 中的 `tidb_version` 参数值，指定需要升级的版本号，如从 `v2.0.2` 升级到 `v2.0.3`
+1. 修改 `/home/tidb/tidb-ansible/inventory.ini` 中的 `tidb_version` 参数值，指定需要升级的版本号，如从 `v2.0.6` 升级到 `v2.0.7`
 
     ```
-    tidb_version = v2.0.3
+    tidb_version = v2.0.7
     ```
+
+    > **注**：如果使用 master 分支的 tidb-ansible，`tidb_version = latest` 保持不变即可，latest 版本的 TiDB 安装包会每日更新。
 
 2.  删除原有的 downloads 目录 `/home/tidb/tidb-ansible/downloads/`
 
@@ -31,7 +30,7 @@ category: deployment
     $ rm -rf downloads
     ```
 
-3.  使用 playbook 下载 TiDB `v2.0.3` 版本 binary，自动替换 binary 到 `/home/tidb/tidb-ansible/resource/bin/`
+3.  使用 playbook 下载 TiDB binary，自动替换 binary 到 `/home/tidb/tidb-ansible/resource/bin/`
 
     ```
     $ ansible-playbook local_prepare.yml
@@ -39,10 +38,16 @@ category: deployment
 
 ### 手动下载 binary
 
-除 “下载 binary” 中描述的方法之外，也可以手动下载 binary，解压后手动替换 binary 到 `/home/tidb/tidb-ansible/resource/bin/`，请注意替换链接中的版本号。
+除 “自动下载 binary” 中描述的方法之外，也可以手动下载 binary，解压后手动替换 binary 到 `/home/tidb/tidb-ansible/resource/bin/`，需注意替换链接中的版本号。
 
 ```
-wget http://download.pingcap.org/tidb-v2.0.3-linux-amd64-unportable.tar.gz
+$ wget http://download.pingcap.org/tidb-v2.0.7-linux-amd64.tar.gz
+```
+
+如果使用 master 分支的 tidb-ansible，使用以下命令下载 binary：
+
+```
+$ wget http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz
 ```
 
 ### 使用 Ansible 滚动升级

@@ -318,7 +318,7 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 这个变量用来设置是否禁用显式事务自动重试，设置为 1 时，不会自动重试，如果遇到冲突需要在应用层重试。
 是否需要禁用自动重试，请参考[自动重试的风险](./transaction-isolation.md#乐观事务注意事项)
 
-## tidb_enable_table_partition
+### tidb_enable_table_partition
 
 作用域：SESSION
 
@@ -326,7 +326,7 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 这个变量用来设置是否开启 TABLE PARTITION 特性。
 
-## tidb_backoff_lock_fast
+### tidb_backoff_lock_fast
 
 作用域：SESSION | GLOBAL
 
@@ -334,7 +334,7 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 这个变量用来设置读请求遇到锁的 backoff 时间。
 
-## tidb_ddl_reorg_worker_cnt
+### tidb_ddl_reorg_worker_cnt
 
 作用域: SESSION | GLOBAL
 
@@ -342,11 +342,11 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 这个变量用来设置 DDL 操作 re-organize 阶段的并发度。
 
-## tidb_ddl_reorg_priority
+### tidb_ddl_reorg_priority
 
 作用域：SESSION | GLOBAL
 
-默认值：PRIORITY_NORMAL
+默认值：PRIORITY_LOW
 
 这个变量用来设置 `ADD INDEX` 操作 re-organize 阶段的执行优先级，可设置为 PRIORITY_LOW/PRIORITY_NORMAL/PRIORITY_HIGH。
 
