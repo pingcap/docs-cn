@@ -143,7 +143,7 @@ success!
 
 > **注意**：
 > 
-> - `-p` 选项的参数指定 PD 的 endponits，它没有 `http` 前缀。
+> - `-p` 选项的参数指定 PD 的 endpoints，它没有 `http` 前缀。
 > - **这个命令只支持本地模式**。需要指定 PD 的 endpoints 的原因是需要询问 PD 是否可以安全地 tombstone。因此，在 tombstone 之前往往还需要在 `pd-ctl` 中把该 Region 在这台机器上的对应 Peer 拿掉。
 
 ### 向 TiKV 发出 consistency-check 请求
