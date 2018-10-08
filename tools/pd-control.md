@@ -292,7 +292,18 @@ Usage:
 
 ```bash
 >> health                                // Display the health information
-{"health": "true"}
+[
+  {
+    "name": "pd",
+    "member_id": 13195394291058371180,
+    "client_urls": [
+      "http://127.0.0.1:2379"
+      ......
+    ],
+    "health": true
+  }
+  ......
+]
 ```
 
 ### `hot [read | write | store]`
