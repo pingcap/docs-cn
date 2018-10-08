@@ -149,6 +149,13 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 + 默认: true
 + 在做 join 的时候，两边表没有任何条件（where 字段），默认可以执行这样的语句。但是设置为 false，则如有这样的 join 语句出现，server 会拒绝执行
 
+### force-priority
+
+- 语句的默认优先级
+- 默认: `NO_PRIORITY`
+- TiDB 支持的语句优先级包括：`LOW_PRIORITY`、`NO_PRIORITY`、`HIGH_PRIORITY` 以及 `DELAYED`。可选择将一部分服务器用于处理 OLAP 查询，并将该值设置为 `LOW_PRIORITY`，以确保 TiKV 服务器优先处理要导入到其他 TiDB 服务器的 OLTP 查询。这有利于确保 OLTP 性能更稳定，但 OLAP 性能可能会稍有下降。  
+- TiDB 自动将 table scan 设置为 `LOW_PRIORITY`， 通过将 [DML modifier](dml.md) 设置为 `HIGH PRIORITY` 或 `LOW PRIORITY`，可重写一条语句的优先级
+
 ### join-concurrency
 
 + join-concurrency 并发执行 join 的 goroutine 数量

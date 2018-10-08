@@ -350,6 +350,16 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 这个变量用来设置 `ADD INDEX` 操作 re-organize 阶段的执行优先级，可设置为 PRIORITY_LOW/PRIORITY_NORMAL/PRIORITY_HIGH。
 
+### tidb_force_priority
+
+作用域：SESSION
+
+默认值：`NO_PRIORITY`
+
+这个变量用于改变 TiDB server 上执行的语句的默认优先级。可确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
+
+可设置为 `PRIORITY_LOW`、`NO_PRIORITY` 或 `PRIORITY_HIGH`。
+
 ## Optimizer Hint
 
 TiDB 在 MySQL 的 Optimizer Hint 语法上，增加了一些 TiDB 专有的 Hint 语法, 使用这些 Hint 的时候，TiDB 优化器会尽量使用指定的算法，在某些场景下会比默认算法更优。
