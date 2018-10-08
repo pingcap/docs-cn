@@ -161,14 +161,14 @@ export PD_ADDR=http://127.0.0.1:2379
 ```
 
 `max-merge-region-size` 控制 Region Merge 的 size 上限（单位是 M）。
-当 regionSize 大于指定值时 PD 不会将其与相邻的 Region 合并。设置为 0 表示不开启 Region Merge 功能。
+当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。设置为 0 表示不开启 Region Merge 功能。
 
 ```bash
 >> config set max-merge-region-size 16 // 设置 Region Merge 的 size 上限为 16M
 ```
 
 `max-merge-region-rows` 控制 Region Merge 的 rowCount 上限。
-当 regionRowCount 大于指定值时 PD 不会将其与相邻的 Region 合并。
+当 Region RowCount 大于指定值时 PD 不会将其与相邻的 Region 合并。
 
 ```bash
 >> config set max-merge-region-rows 50000 // 设置 Region Merge 的 rowCount 上限为 50k
@@ -234,7 +234,7 @@ Merge 调度的开销较大，所以这个值不宜调得过大。
 当两个 store 的 leader 或 Region 的得分差距小于指定倍数的 Region size 时，PD 会认为此时 balance 达到均衡状态。
 
 ```bash
->> config set tolerant-size-ratio 20        // 设置缓冲区为约 20 倍平均 regionSize
+>> config set tolerant-size-ratio 20        // 设置缓冲区为约 20 倍平均 RegionSize
 ```
 
 `low-space-ratio` 用于设置 store 空间不足的阈值。
@@ -373,20 +373,19 @@ Success!
 >> operator show                                        // 显示所有的 operators
 >> operator show admin                                  // 显示所有的 admin operators
 >> operator show leader                                 // 显示所有的 leader operators
->> operator show region                                 // 显示所有的 region operators
->> operator add add-peer 1 2                            // 在 store 2 上新增 region 1 的一个副本
->> operator remove remove-peer 1 2                      // 移除 store 2 上的 region 1 的一个副本
->> operator add transfer-leader 1 2                     // 把 region 1 的 leader 调度到 store 2
->> operator add transfer-region 1 2 3 4                 // 把 region 1 调度到 store 2,3,4
->> operator add transfer-peer 1 2 3                     // 把 region 1 在 store 2 上的副本调度到 store 3
->> operator add merge-region 1 2                        // 将 region 1 与 region 2 合并
->> operator add split-region 1 --policy=approximate     // 将 region 1 对半拆分成两个 region，基于粗略估计值
->> operator add split-region 1 --policy=scan            // 将 region 1 对半拆分成两个 region，基于精确扫描值
->> operator add merge-region 1 2                        // 合并两个相邻的 region 1 和 2
->> operator remove 1                                    // 把 region 1 的调度操作删掉
+>> operator show region                                 // 显示所有的 Region operators
+>> operator add add-peer 1 2                            // 在 store 2 上新增 Region 1 的一个副本
+>> operator remove remove-peer 1 2                      // 移除 store 2 上的 Region 1 的一个副本
+>> operator add transfer-leader 1 2                     // 把 Region 1 的 leader 调度到 store 2
+>> operator add transfer-region 1 2 3 4                 // 把 Region 1 调度到 store 2,3,4
+>> operator add transfer-peer 1 2 3                     // 把 Region 1 在 store 2 上的副本调度到 store 3
+>> operator add merge-region 1 2                        // 将 Region 1 与 Region 2 合并
+>> operator add split-region 1 --policy=approximate     // 将 Region 1 对半拆分成两个 Region，基于粗略估计值
+>> operator add split-region 1 --policy=scan            // 将 Region 1 对半拆分成两个 Region，基于精确扫描值
+>> operator remove 1                                    // 把 Region 1 的调度操作删掉
 ```
 
-其中，Region 的分裂都是尽可能地从靠近中间的位置开始。对这个位置的选择支持两种策略，即 scan 和 approximate。它们之间的区别是，前者通过扫描这个 region 的方式来确定中间的 key，而后者是通过查看 SST 文件中记录的统计信息，来得到近似的位置。一般来说，前者更加精确，而后者消耗更少的 I/O，可以更快地完成。
+其中，Region 的分裂都是尽可能地从靠近中间的位置开始。对这个位置的选择支持两种策略，即 scan 和 approximate。它们之间的区别是，前者通过扫描这个 Region 的方式来确定中间的 key，而后者是通过查看 SST 文件中记录的统计信息，来得到近似的位置。一般来说，前者更加精确，而后者消耗更少的 I/O，可以更快地完成。
 
 ### ping
 
@@ -482,7 +481,7 @@ Protobuf 格式示例：
 
 ### `region topread [limit]`
 
-用于查询读流量最大的 region。limit 的默认值是 16。
+用于查询读流量最大的 Region。limit 的默认值是 16。
 
 示例：
 
@@ -496,7 +495,7 @@ Protobuf 格式示例：
 
 ### `region topwrite [limit]`
 
-用于查询写流量最大的 region。limit 的默认值是 16。
+用于查询写流量最大的 Region。limit 的默认值是 16。
 
 示例：
 
@@ -510,7 +509,7 @@ Protobuf 格式示例：
 
 ### `region topconfver [limit]`
 
-用于查询 conf version 最大的 region。limit 的默认值是 16。
+用于查询 conf version 最大的 Region。limit 的默认值是 16。
 
 示例：
 
@@ -524,7 +523,7 @@ Protobuf 格式示例：
 
 ### `region topversion [limit]`
 
-用于查询 version 最大的 region。limit 的默认值是 16。
+用于查询 version 最大的 Region。limit 的默认值是 16。
 
 示例：
 
@@ -538,7 +537,7 @@ Protobuf 格式示例：
 
 ### `region topsize [limit]`
 
-用于查询 approximate size 最大的 region。limit 的默认值是 16。
+用于查询 approximate size 最大的 Region。limit 的默认值是 16。
 
 示例：
 
@@ -552,7 +551,7 @@ Protobuf 格式示例：
 
 ### region check [miss-peer | extra-peer | down-peer | pending-peer | incorrect-ns]
 
-用于查询处于异常状态的 region，各类型的意义如下
+用于查询处于异常状态的 Region，各类型的意义如下
 
 - miss-peer：缺副本的 Region
 - extra-peer：多副本的 Region
@@ -602,7 +601,7 @@ Protobuf 格式示例：
 >> store delete 1               // 下线 store id 为 1 的 store
   ......
 >> store label 1 zone cn        // 设置 store id 为 1 的 store 的键为 "zone" 的 label 的值为 "cn"
->> store weight 1 5 10          // 设置 store id 为 1 的 store 的 leader weight 为 5，region weight 为 10
+>> store weight 1 5 10          // 设置 store id 为 1 的 store 的 leader weight 为 5，Region weight 为 10
 ```
 
 ### table_ns [create | add | remove | set_store | rm_store | set_meta | rm_meta]
