@@ -76,7 +76,7 @@ mysql> SHOW COLLATION WHERE Charset = 'latin1';
 | 后缀 | 含义                             |
 |:-----|:---------------------------------|
 | \_ai | 口音不敏感（Accent insensitive） |
-| \_as | 口音敏感 （Accent insensitive）  |
+| \_as | 口音敏感 （Accent sensitive）  |
 | \_ci | 大小写不敏感                     |
 | \_cs | 大小写敏感                       |
 
