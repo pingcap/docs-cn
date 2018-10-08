@@ -46,7 +46,7 @@ The default port number is: 2379.
 
 See [PD API doc](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html) for detailed information about various API names.
 
-The interface can be used to get the state of all the TiKV servers and the information about load balancing. It is the most important and frequently-used interface to get the state information of all the TiKV nodes. See the following example for the the information about a single-node TiKV cluster:
+The interface can be used to get the state of all the TiKV servers and the information about load balancing. It is the most important and frequently-used interface to get the state information of all the TiKV nodes. See the following example for the information about a single-node TiKV cluster:
 
 ```bash
 curl http://127.0.0.1:2379/pd/api/v1/stores
@@ -155,7 +155,7 @@ See the following links for your reference:
     - Set the Push Gateway address as the `--metrics-addr` parameter.
     - Set the push frequency as the `--metrics-interval` parameter. The unit is s, and the default value is 15.
 
-+ PD: update the toml configuration file with the Push Gateway address and the the push frequency:
++ PD: update the toml configuration file with the Push Gateway address and the push frequency:
 
     ```toml
     [metric]

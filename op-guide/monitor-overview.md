@@ -10,7 +10,7 @@ The TiDB monitoring framework adopts two open source projects: Prometheus and Gr
 
 ## About Prometheus in TiDB
 
-As a time series database, Prometheus has a multi-dimensional data model and flexible query language. As one of the most popular open source projects, many companies and organizations have adopted Prometheus, and the project has a very active community. PingCAP is one of the active developers and adoptors of Prometheus for monitoring and alerting in TiDB, TiKV and PD.
+As a time series database, Prometheus has a multi-dimensional data model and flexible query language. As one of the most popular open source projects, many companies and organizations have adopted Prometheus, and the project has a very active community. PingCAP is one of the active developers and adopters of Prometheus for monitoring and alerting in TiDB, TiKV and PD.
 
 Prometheus consists of multiple components. Currently, TiDB uses the following of them:
 
@@ -24,6 +24,6 @@ The diagram is as follows:
 <img src="../media/prometheus-in-tidb.png" width="500">
 
 ## About Grafana in TiDB
-Grafana is an open source project for analysing and visualizing metrics. TiDB uses Grafana to display the performance metrics as follows:
+Grafana is an open source project for analyzing and visualizing metrics. TiDB uses Grafana to display the performance metrics as follows:
 
 ![screenshot](../media/grafana-screenshot.png)
