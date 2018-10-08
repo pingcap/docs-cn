@@ -46,6 +46,7 @@ category: Roadmap
 ## TiKV:
 
 ### Raft
+
 - [x] Region Merge - 合并小的 Region 以减少开销
 - [x] Local Read Thread - 把读请求放在一个单独的线程处理
 - [x] 批量 Region Split - 加速大的 Region 的分裂
@@ -56,25 +57,31 @@ category: Roadmap
 - [ ] 多线程 Apply Pool - 在多个线程执行不同 Region 已经提交了的命令
 
 ### Engine
+
 - [ ] Titan - 把大的 key-values 从 LSM-Tree 中分离出来
 - [ ] 可拔插的 Engine 接口 - 简化接口逻辑并且提供可扩展性
 
 ### Storage
+
 - [ ] 在 scheduler 里做流控提前避免 write stall
 
 ### Transaction
-- [ ] 优化事务冲突
+
+- [x] 优化事务冲突
 - [ ] 分布式 GC - 把 MVCC 垃圾回收的逻辑分布到 TiKV 控制
 
 ### Coprocessor
+
 - [x] Streaming - 把大的数据集切成小块返回以减少内存消耗
 - [ ] Chunk Execution - 按 chunk 的方式来处理数据以提高性能
 - [ ] 请求跟踪 - 提供单个请求执行的详细信息
 
 ### Tools
+
 - [x] TiKV Importer - 通过直接导入 SST 文件的方式加速数据导入
 
 ### Client
+
 - [ ] 提供 Rust 版本的 TiKV client
 - [ ] gRPC 消息批量化 - 减少消息交互的开销
 
