@@ -510,7 +510,7 @@ To enable the following control variables, use the capitalized `True`. To disabl
 | timezone | the global default time zone configured when a new TiDB cluster bootstrap is initialized; you can edit it later using the global `time_zone` system variable and the session `time_zone` system variable as described in [Time Zone Support](../sql/time-zone.md); the default value is `Asia/Shanghai` and see [the list of time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for more optional values |
 | enable_firewalld | to enable the firewall, closed by default; to enable it, add the ports in [network requirements](recommendation.md#network-requirements) to the white list |
 | enable_ntpd | to monitor the NTP service of the managed node, True by default; do not close it |
-| set_hostname | to edit the hostname of the mananged node based on the IP, False by default |
+| set_hostname | to edit the hostname of the managed node based on the IP, False by default |
 | enable_binlog | whether to deploy Pump and enable the binlog, False by default, dependent on the Kafka cluster; see the `zookeeper_addrs` variable |
 | zookeeper_addrs | the zookeeper address of the binlog Kafka cluster |
 | enable_slow_query_log | to record the slow query log of TiDB into a single file: ({{ deploy_dir }}/log/tidb_slow_query.log). False by default, to record it into the TiDB log |
