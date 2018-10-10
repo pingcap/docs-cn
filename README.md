@@ -118,17 +118,9 @@
   - [TiDB-Binlog](tools/tidb-binlog-kafka.md)
   - [PD Control](tools/pd-control.md)
   - [PD Recover](tools/pd-recover.md)
-  - [TiKV Control](tools/tikv-control.md)
+  - [TiKV Control](https://github.com/tikv/tikv/blob/master/docs/tools/tikv-control.md)
   - [TiDB Controller](tools/tidb-controller.md)
-+ TiKV Documentation
-  - [Overview](tikv/tikv-overview.md)
-  + Install and Deploy TiKV
-    - [Prerequisites](op-guide/recommendation.md)
-    - [Install and Deploy TiKV Using Docker Compose](tikv/deploy-tikv-docker-compose.md)
-    - [Install and Deploy TiKV Using Ansible](tikv/deploy-tikv-using-ansible.md)
-    - [Install and Deploy TiKV Using Docker](tikv/deploy-tikv-using-docker.md)
-  + Client Drivers
-    - [Go](tikv/go-client-api.md)
++ [TiKV Documentation](https://github.com/tikv/tikv/wiki)
 + TiSpark Documentation
   - [Quick Start Guide](tispark/tispark-quick-start-guide.md)
   - [User Guide](tispark/tispark-user-guide.md)
