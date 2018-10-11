@@ -18,7 +18,7 @@ TiDB is a distributed SQL database that features in horizontal scalability, high
 
 #### What is TiDB's architecture?
 
-The TiDB cluster has three components: the TiDB server, the PD (Placement Driver) server, and the TiKV server. For more details, see [TiDB architecture](overview.md/#tidb-architecture).
+The TiDB cluster has three components: the TiDB server, the PD (Placement Driver) server, and the TiKV server. For more details, see [TiDB architecture](architecture.md).
 
 #### Is TiDB based on MySQL?
 
@@ -40,7 +40,7 @@ Currently, TiDB supports the majority of MySQL 5.7 syntax, but does not support 
 
 #### How is TiDB highly available?
 
-TiDB is self-healing. All of the three components, TiDB, TiKV and PD, can tolerate failures of some of their instances. With its strong consistency guarantee, whether it’s data machine failures or even downtime of an entire data center, your data can be recovered automatically. For more information, see [High availability](overview.md#high-availability).
+TiDB is self-healing. All of the three components, TiDB, TiKV and PD, can tolerate failures of some of their instances. With its strong consistency guarantee, whether it’s data machine failures or even downtime of an entire data center, your data can be recovered automatically. For more information, see [TiDB architecture](architecture.md).
 
 #### How is TiDB strongly consistent?
 
@@ -64,7 +64,7 @@ The architecture of TiDB guarantees that it fully supports geo-distribution and 
 
 #### Does TiDB provide any other knowledge resource besides the documentation?
 
-Currently, [TiDB documentation](https://www.pingcap.com/docs/overview) is the most important and timely way to get knowledge of TiDB. In addition, we also have some technical communication groups. If you have any needs, contact info@pingcap.com.
+Currently, [TiDB documentation](https://www.pingcap.com/docs/) is the most important and timely way to get knowledge of TiDB. In addition, we also have some technical communication groups. If you have any needs, contact info@pingcap.com.
 
 #### What are the MySQL variables that TiDB is compatible with?
 
@@ -98,7 +98,7 @@ As a standalone database, MySQL can only implement across-database transactions 
 
 The display content of TiDB `show processlist` is almost the same as that of MySQL `show processlist`. TiDB `show processlist` does not display the system process ID. The ID that it displays is the current session ID. The differences between TiDB `show processlist` and MySQL `show processlist` are as follows:
 
-- As TiDB is a distributed database, the `tidb-server` instance is a stateless engine for parsing and executing the SQL statements (for details, see [TiDB architecture](overview.md#tidb-architecture)). `show processlist` displays the session list executed in the `tidb-server` instance that the user logs in to from the MySQL client, not the list of all the sessions running in the cluster. But MySQL is a standalone database and its `show processlist` displays all the SQL statements executed in MySQL.
+- As TiDB is a distributed database, the `tidb-server` instance is a stateless engine for parsing and executing the SQL statements (for details, see [TiDB architecture](architecture.md)). `show processlist` displays the session list executed in the `tidb-server` instance that the user logs in to from the MySQL client, not the list of all the sessions running in the cluster. But MySQL is a standalone database and its `show processlist` displays all the SQL statements executed in MySQL.
 - TiDB `show processlist` displays the estimated memory usage (unit: Byte) of the current session, which is not displayed in MySQL `show processlist`.
 
 #### How to modify the user password and privilege?

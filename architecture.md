@@ -1,12 +1,12 @@
 ---
 title: TiDB Architecture
-summary: The key architecture components of the TiDB database platform
+summary: The key architecture components of the TiDB platform
 category: introduction
 ---
 
 # TiDB Architecture
 
-To better understand TiDB's features, you need to understand the TiDB architecture. The TiDB cluster includes three key components: the TiDB server, the PD server, and the TiKV server. In addition, TiDB also provides the [TiSpark](https://github.com/pingcap/tispark/) component for the complex OLAP requirements.
+The TiDB platform is comprised of three key components: the TiDB server, the PD server, and the TiKV server. In addition, TiDB also provides the [TiSpark](https://github.com/pingcap/tispark/) component for the complex OLAP requirements.
 
 ![image alt text](media/tidb-architecture.png)
 
