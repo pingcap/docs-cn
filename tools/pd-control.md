@@ -360,7 +360,7 @@ Success!
 
 ### `operator [show | add | remove]`
 
-Use this command to view and control the scheduling operation.
+Use this command to view and control the scheduling operation, split a Region, or merge Regions.
 
 Usage:
 
@@ -379,6 +379,8 @@ Usage:
 >> operator add split-region 1 --policy=scan            // Split Region 1 into two Regions in halves, based on accurate scan value
 >> operator remove 1                                    // Remove the scheduling operation of Region 1
 ```
+
+The splitting of Regions starts from the position as close as possible to the middle. You can locate this position using two strategies, namely "scan" and "approximate". The difference between them is that the former determines the middle key by scanning the Region, and the latter obtains the approximate position by checking the statistics recorded in the SST file. Generally, the former is more accurate, while the latter consumes less I/O and can be completed faster.
 
 ### `ping`
 
