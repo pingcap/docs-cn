@@ -38,9 +38,9 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 ## Full backup and restoration using `mydumper`/`loader`
 
-You can use `mydumper` to export data from MySQL and `loader` to import the data into TiDB.
+You can use [`mydumper`](../tools/mydumper.md) to export data from MySQL and [`loader`](../tools/loader.md) to import the data into TiDB.
 
-> **Note**: Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use it. Its performance is much lower than `mydumper`/`loader` and it takes much time to migrate large amounts of data. `mydumper`/`loader` is more powerful. For more information, see https://github.com/maxbube/mydumper.
+> **Important**: You must use the `mydumper` from the Enterprise Tools package, and not the `mydumper` provided by your operating system's package manager. The upstream version of `mydumper` does not yet handle TiDB correctly ([#155](https://github.com/maxbube/mydumper/pull/155)). Using `mysqldump` is also not recommended, as it is much slower for both backup and restoration.
 
 ### Best practices of full backup and restoration using `mydumper`/`loader` 
 
