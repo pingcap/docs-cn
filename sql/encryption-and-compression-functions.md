@@ -9,7 +9,7 @@ category: user guide
 | 函数名      | 功能描述      |
 |:-----------|:----------------------------|
 | [`MD5()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_md5)                                                             | 计算字符串的 MD5 校验和        |
-| [`PASSWORD()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_password)（在 MySQL 5.7.6 中已弃用）                                | 计算并返回密码字符串          |
+| [`PASSWORD()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_password)                                | 计算并返回密码字符串          |
 | [`RANDOM_BYTES()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_random-bytes)                                           | 返回随机字节向量                       |
 | [`SHA1()`, `SHA()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_sha1)                                                    | 计算 SHA-1 160 位校验和               |
 | [`SHA2()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_sha2)                                                           | 计算 SHA-2 校验和                       |
