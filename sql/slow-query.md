@@ -104,10 +104,7 @@ admin show slow top [internal | all] N
 admin show recent 10
 ```
 
-`top N` 则显示最近一段时间（大约几天）内，最慢的查询记录。
-如果指定 `internal` 选项，则返回查询系统内部 SQL 的慢查询记录；
-如果指定 `all` 选项，返回系统内部和用户 SQL 汇总以后的慢查询记录;
-默认只返回用户 SQL 中的慢查询记录。
+`top N` 则显示最近一段时间（大约几天）内，最慢的查询记录。如果指定 `internal` 选项，则返回查询系统内部 SQL 的慢查询记录；如果指定 `all` 选项，返回系统内部和用户 SQL 汇总以后的慢查询记录；默认只返回用户 SQL 中的慢查询记录。
 
 ```
 admin show top 3
