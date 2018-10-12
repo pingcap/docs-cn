@@ -95,3 +95,31 @@ The SQL statement.
 Not all of the `SLOW_QUERY` statements are problematic. Only those whose `process_time` is very large will increase the pressure on the entire cluster. 
 
 The statements whose `wait_time` is very large and `process_time` is very small are usually not problematic. The large `wait_time` is because the statement is blocked by real problematic statements and it has to wait in the execution queue, which leads to a much longer response time.
+
+### `admin show slow` command
+
+In addition to the TiDB log file, you can identify slow queries by running the `admin show slow` command:
+
+```sql
+admin show slow recent N
+admin show slow top [internal | all] N
+```
+
+`recent N` shows the recent N slow query records, for example:
+
+```sql
+admin show recent 10
+```
+
+`top N` shows the slowest N query records recently (within a few days).
+If the `internal` option is provided, the returned results would be the inner SQL executed by the system;
+If the `all` option is provided, the returned results would be the user's SQL combinated with inner SQL;
+Otherwise, this command would only return the slow query records from the user's SQL.
+
+```sql
+admin show top 3
+admin show top internal 3
+admin show top all 5
+```
+
+Due to the memory footprint restriction, the stored slow query records count is limited. If the specified `N` is greater than the records count, the returned records count may be smaller than `N`.
