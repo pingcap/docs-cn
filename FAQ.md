@@ -60,7 +60,7 @@ Yes. TiKV and TiDB support many popular standalone storage engines, such as Gole
 
 #### What's the recommended solution for the deployment of three geo-distributed data centers?
 
-The architecture of TiDB guarantees that it fully supports geo-distribution and multi-activeness. Your data and applications are always-on. All the outages are transparent to your applications and your data can recover automatically. The operation depends on the network latency and stability. It is recommended to keep the latency within 5ms. Currently, we already have similar use cases. For details, contact info@pingcap.com. 
+The architecture of TiDB guarantees that it fully supports geo-distribution and multi-activeness. Your data and applications are always-on. All the outages are transparent to your applications and your data can recover automatically. The operation depends on the network latency and stability. It is recommended to keep the latency within 5ms. Currently, we already have similar use cases. For details, contact info@pingcap.com.
 
 #### Does TiDB provide any other knowledge resource besides the documentation?
 
@@ -103,7 +103,7 @@ The display content of TiDB `show processlist` is almost the same as that of MyS
 
 #### How to modify the user password and privilege?
 
-To modify the user password in TiDB, it is recommended to use `set password for 'root'@'%' = '0101001';` or `alter`, not `update mysql.user` which might lead to the condition that the password in other nodes is not refreshed timely. 
+To modify the user password in TiDB, it is recommended to use `set password for 'root'@'%' = '0101001';` or `alter`, not `update mysql.user` which might lead to the condition that the password in other nodes is not refreshed timely.
 
 It is recommended to use the official standard statements when modifying the user password and privilege. For details, see [TiDB user account management](sql/user-account-management.md).
 
@@ -115,7 +115,7 @@ The auto-increment ID feature in TiDB is only guaranteed to be automatically inc
 
 The configuration method of TiDB `sql_mode` is different from that of MySQL `sql_mode`. TiDB does not support using the configuration file to configure `sql\_mode` of the database; it only supports using the `set` command to configure `sql\_mode` of the database. You can use `set @@global.sql_mode = 'STRICT_TRANS_TABLES';` to configure it.
 
-#### What authentication protocols does TiDB support? What's the process? 
+#### What authentication protocols does TiDB support? What's the process?
 
 - Like MySQL, TiDB supports the SASL protocol for user login authentication and password processing.
 
@@ -191,7 +191,7 @@ If the resources are adequate, it is recommended to use RAID 10 for SSD. If the 
 
 - TiDB has a high requirement on CPU and memory. If you need to open Binlog, the local disk space should be increased based on the service volume estimation and the time requirement for the GC operation. But the SSD disk is not a must.
 - PD stores the cluster metadata and has frequent Read and Write requests. It demands a high I/O disk. A disk of low performance will affect the performance of the whole cluster. It is recommended to use SSD disks. In addition, a larger number of Regions has a higher requirement on CPU and memory.
-- TiKV has a high requirement on CPU, memory and disk. It is required to use SSD. 
+- TiKV has a high requirement on CPU, memory and disk. It is required to use SSD.
 
 For details, see [TiDB software and hardware requirements](op-guide/recommendation.md).
 
@@ -259,7 +259,7 @@ You can use Docker Compose to build a TiDB cluster locally, including the cluste
 
 #### How to add the `label` configuration if `label` of TiKV was not configured when I deployed the TiDB cluster for the first time?
 
-The configuration of TiDB `label` is related to the cluster deployment architecture. It is important and is the basis for PD to execute global management and scheduling. If you did not configure `label` when deploying the cluster previously, you should adjust the deployment structure by manually adding the `location-labels` information using the PD management tool `pd-ctl`, for example, `config set location-labels "zone, rack, host"` (you should configure it based on the practical `label` level name). 
+The configuration of TiDB `label` is related to the cluster deployment architecture. It is important and is the basis for PD to execute global management and scheduling. If you did not configure `label` when deploying the cluster previously, you should adjust the deployment structure by manually adding the `location-labels` information using the PD management tool `pd-ctl`, for example, `config set location-labels "zone, rack, host"` (you should configure it based on the practical `label` level name).
 
 For the usage of `pd-ctl`, see [PD Control Instruction](tools/pd-control.md).
 
@@ -293,7 +293,7 @@ Two possible reasons and solutions:
 #### How to perform rolling updates using Ansible?
 
 - Apply rolling updates to the TiKV node (only update the TiKV service).
-    
+
     ```
     ansible-playbook rolling_update.yml --tags=tikv
     ```
@@ -549,7 +549,7 @@ You can combine the above two parameters with the DML of TiDB to use them. For u
     replace HIGH_PRIORITY | LOW_PRIORITY into table_name;
     ```
 
-2. The full table scan statement automatically adjusts itself to a low priority. `analyze` has a low priority by default. 
+2. The full table scan statement automatically adjusts itself to a low priority. `analyze` has a low priority by default.
 
 #### What's the trigger strategy for `auto analyze` in TiDB?
 
@@ -591,25 +591,24 @@ Currently, some files of TiKV master have a higher compression rate, which depen
 
 TiKV implements the Column Family (CF) feature of RocksDB. By default, the KV data is eventually stored in the 3 CFs (default, write and lock) within RocksDB.
 
-- The default CF stores real data and the corresponding parameter is in [rocksdb.defaultcf]. The write CF stores the data version information (MVCC) and index-related data, and the corresponding parameter is in `[rocksdb.writecf]`. The lock CF stores the lock information and the system uses the default parameter.
+- The default CF stores real data and the corresponding parameter is in `[rocksdb.defaultcf]`. The write CF stores the data version information (MVCC) and index-related data, and the corresponding parameter is in `[rocksdb.writecf]`. The lock CF stores the lock information and the system uses the default parameter.
 - The Raft RocksDB instance stores Raft logs. The default CF mainly stores Raft logs and the corresponding parameter is in `[raftdb.defaultcf]`.
 - Each CF has an individual block-cache to cache data blocks and improve RocksDB read speed. The size of block-cache is controlled by the `block-cache-size` parameter. A larger value of the parameter means more hot data can be cached and is more favorable to read operation. At the same time, it consumes more system memory.
 - Each CF has an individual write-buffer and the size is controlled by the `write-buffer-size` parameter.
 
 #### Why it occurs that "TiKV channel full"?
 
-- The Raftstore thread is too slow. You can view the CPU usage status of Raftstore.
-- TiKV is too busy (read, write, disk I/O, etc.) and cannot manage to handle it.
+- The Raftstore thread is too slow or blocked by I/O. You can view the CPU usage status of Raftstore.
+- TiKV is too busy (CPU, disk I/O, etc.) and cannot manage to handle it.
 
 #### Why does TiKV frequently switch Region leader?
 
-- Network problem leads to the failure of communication between nodes. You can view the monitoring information of Report failures.
-- The original main leader node fails, and cannot send information to the follower in time.
-- The Raftstore thread fails.
+- Leaders can not reach out to followers. E.g., network problem or node failure.
+- Leader balance from PD. E.g., PD wants to transfer leaders from a hotspot node to others.
 
-#### If the leader node is down, will the service be affected? How long?
+#### If a node is down, will the service be affected? How long?
 
-TiDB uses Raft to synchronize data among multiple replicas and guarantees the strong consistency of data. If one replica goes wrong, the other replicas can guarantee data security. The default number of replicas in each Region is 3. Based on the Raft protocol, a leader is elected in each Region, and if a single Region leader fails, a new Region leader is soon elected after a maximum of 2 * lease time (lease time is 10 seconds).
+TiDB uses Raft to synchronize data among multiple replicas and guarantees the strong consistency of data. If one replica goes wrong, the other replicas can guarantee data security. The default number of replicas in each Region is 3. Based on the Raft protocol, a leader is elected in each Region, and if a single leader fails, a follower is soon elected as Region leader after a maximum of 2 * lease time (lease time is 10 seconds).
 
 #### What are the TiKV scenarios that take up high I/O, memory, CPU, and exceed the parameter configuration?
 
@@ -625,7 +624,7 @@ No. It differs from the table splitting rules of MySQL. In TiKV, the table Range
 
 #### How does Region split?
 
-Region is not divided in advance, but it follows a Region split mechanism. When the Region size exceeds the value of the `region_split_size` parameter, split is triggered. After the split, the information is reported to PD.
+Region is not divided in advance, but it follows a Region split mechanism. When the Region size exceeds the value of the `region_split_size` or `region-split-keys` parameters, split is triggered. After the split, the information is reported to PD.
 
 #### Does TiKV have the `innodb_flush_log_trx_commit` parameter like MySQL, to guarantee the security of data?
 
@@ -811,9 +810,9 @@ Yes. For details, see [Syncer User Guide](tools/syncer.md)
 
 Frequent DDL operations may affect the synchronization speed. For Sycner, DDL operations are executed serially. When DDL operations are executed during data synchronization, data will be synchronized serially and thus the synchronization speed will be slowed down.
 
-##### If the machine that Syncer is in is broken and the directory of the `syncer.meta` file is lost, what should I do? 
+##### If the machine that Syncer is in is broken and the directory of the `syncer.meta` file is lost, what should I do?
 
-When you synchronize data using Syncer GTID, the `syncer.meta` file is constantly updated during the synchronization process. The current version of Syncer does not contain the design for high availability. The `syncer.meta` configuration file of Syncer is directly stored on the hard disks, which is similar to other tools in the MySQL ecosystem, such as mydumper. 
+When you synchronize data using Syncer GTID, the `syncer.meta` file is constantly updated during the synchronization process. The current version of Syncer does not contain the design for high availability. The `syncer.meta` configuration file of Syncer is directly stored on the hard disks, which is similar to other tools in the MySQL ecosystem, such as mydumper.
 
 Two solutions:
 
@@ -928,7 +927,7 @@ No rule exists for these IDs but the IDs are unique. When IDs are generated, a c
 
 #### In the TiDB query plan, `cop` tasks are in the same root. Are they executed concurrently?
 
-Currently the computing tasks of TiDB belong to two different types of tasks: `cop task` and `root task`. 
+Currently the computing tasks of TiDB belong to two different types of tasks: `cop task` and `root task`.
 
 `cop task` is the computing task which is pushed down to the KV end for distributed execution; `root task` is the computing task for single point execution on the TiDB end.
 
