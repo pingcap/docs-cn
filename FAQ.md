@@ -696,6 +696,16 @@ Keep the size of the data file exported from `mydumper` as small as possible. It
 
 You can edit the `t` parameter of `loader` based on the number of TiKV instances and load status. For example, in scenarios of three TiKV instances, you can set its value to `3 * (1 ～ n)`. When the TiKV load is very high and `backoffer.maxSleep 15000ms is exceeded` displays a lot in `loader` and TiDB logs, you can adjust the parameter to a smaller value. When the TiKV load is not very high, you can adjust the parameter to a larger value accordingly.
 
+## Migrate the data and traffic
+
+### Full data export and import
+
+#### Mydumper
+See [mydumper Instructions](tools/mydumper.md).
+
+#### Loader
+See [Loader Instructions](tools/loader.md).
+ 
 #### How to migrate an application running on MySQL to TiDB?
 
 Because TiDB supports most MySQL syntax, generally you can migrate your applications to TiDB without changing a single line of code in most cases. You can use [checker](https://github.com/pingcap/tidb-tools/tree/master/checker) to check whether the Schema in MySQL is compatible with TiDB.
