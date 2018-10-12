@@ -565,7 +565,7 @@ TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在�
 - default CF 存储的是真正的数据，与其对应的参数位于 [rocksdb.defaultcf] 项中。
 - write CF 存储的是数据的版本信息（MVCC）、索引、小表相关的数据，相关的参数位于 [rocksdb.writecf] 项中。
 - lock CF 存储的是锁信息，系统使用默认参数。
-- Raft Rocksdb 实例存储 Raft log。default CF 主要存储的是 Raft log，与其对应的参数位于 [raftdb.defaultcf] 项中。
+- Raft RocksDB 实例存储 Raft log。default CF 主要存储的是 Raft log，与其对应的参数位于 [raftdb.defaultcf] 项中。
 - 每个 CF 都有单独的 Block-cache，用于缓存数据块，加速 RocksDB 的读取速度，Block-cache 的大小通过参数 `block-cache-size` 控制，`block-cache-size` 越大，能够缓存的热点数据越多，对读取操作越有利，同时占用的系统内存也会越多。
 - 每个 CF 有各自的 Write-buffer，大小通过 `write-buffer-size` 控制。
 
@@ -656,7 +656,7 @@ TiDB 设计的目标就是针对 MySQL 单台容量限制而被迫做的分库�
 
 #### 3.6.1 TiDB 主要备份方式？
 
-目前 TiDB 主要依赖 mydumper 逻辑导出进行备份，具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)，虽然 TiDB 也支持使用 MySQL 官方的 mysqldump 工具来进行数据的备份恢复工作，但相比于 mydumper/loader，性能会慢很多，大量数据的备份恢复会花费很多时间，这里我们并不推荐。
+目前，推荐的备份方式是使用 [PingCAP fork of mydumper](tools/mydumper.md)。尽管 TiDB 也支持使用 MySQL 官方工具 `mysqldump` 进行数据备份、恢复，但其性能低于 [`mydumper`](tools/mydumper.md)/[`loader`](tools/loader.md)，并且该工具备份、恢复大量数量时，要耗费更多时间。
 
 使用 mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64；
 
@@ -666,14 +666,14 @@ loader的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调�
 
 ### 4.1 全量数据导出导入
 
-#### 4.1.1 Mydumper 工具
+#### 4.1.1 Mydumper
 
-具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)。
+参见 [mydumper Instructions](tools/mydumper.md)。
 
-#### 4.1.2 Loader 工具
+#### 4.1.2 Loader
 
-具体可以参考 [https://www.pingcap.com/docs-cn/tools/loader/](tools/loader.md)。
-
+参见 [Loader Instructions](tools/loader.md)。
+ 
 #### 4.1.3 如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？
 
 TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提供了一个[检查工具](https://github.com/pingcap/tidb-tools/tree/master/checker)，用于检查 MySQL 中的 Schema 是否和 TiDB 兼容。

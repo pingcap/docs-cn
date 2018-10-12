@@ -111,6 +111,7 @@
   - [故障诊断](trouble-shooting.md)
 + TiDB 周边工具
   - [Syncer](tools/syncer.md)
+  - [mydumper](tools/mydumper.md)
   - [Loader](tools/loader.md)
   - [TiDB-Binlog](tools/tidb-binlog-kafka.md)
   - [PD Control](tools/pd-control.md)
