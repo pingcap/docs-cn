@@ -28,6 +28,7 @@ TiDB 支持包括跨行事务、JOIN 及子查询在内的绝大多数 MySQL 5.7
 * 删除主键
 * SYS schema
 * MySQL 追踪优化器
+* X Protocol
 
 ## 与 MySQL 有差异的特性
 
