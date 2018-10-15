@@ -1,12 +1,12 @@
 ---
-title: The Proprietary System Variables and Syntaxes in TiDB
-summary: Use the proprietary system variables and syntaxes in TiDB to optimize performance.
+title: TiDB Specific System Variables
+summary: Use system variables specific to TiDB to optimize performance.
 category: user guide
 ---
 
-# The Proprietary System Variables and Syntaxes in TiDB
+# TiDB Specific System Variables
 
-On the basis of MySQL variables and syntaxes, TiDB has defined some specific system variables and syntaxes to optimize performance.
+TiDB contains a number of system variables which are specific to its usage, and **do not** apply to MySQL. These variables start with a `tidb_` prefix, and can be tuned to optimize system performance.
 
 ## System variable
 

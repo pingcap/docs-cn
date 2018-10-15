@@ -16,7 +16,7 @@
     - [The TiDB Data Directory](sql/tidb-server.md#tidb-data-directory)
     - [The TiDB System Database](sql/system-database.md)
     - [The TiDB System Variables](sql/variable.md)
-    - [The Proprietary System Variables and Syntax in TiDB](sql/tidb-specific.md)
+    - [The TiDB Specific System Variables](sql/tidb-specific.md)
     - [The TiDB Server Logs](sql/tidb-server.md#tidb-server-logs)
     - [The TiDB Access Privilege System](sql/privilege.md)
     - [TiDB User Account Management](sql/user-account-management.md)
