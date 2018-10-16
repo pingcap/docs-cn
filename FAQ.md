@@ -571,7 +571,7 @@ TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在�
 
 #### 3.4.6 TiKV channel full 是什么原因？
 
-- Raftstore 线程太慢，或者因 I/O 而卡住。可以看一下 Raftstore 的 CPU 使用情况。
+- Raftstore 线程太忙，或者因 I/O 而卡住。可以看一下 Raftstore 的 CPU 使用情况。
 - TiKV 过忙（CPU、磁盘 I/O 等），请求处理不过来。
 
 #### 3.4.7 TiKV 频繁切换 Region leader 是什么原因？
