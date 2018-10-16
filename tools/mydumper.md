@@ -18,7 +18,7 @@ category: tools
 
 + `INSERT` 语句中包含隐藏的 `_tidb_rowid` 列
 
-+ 允许 `tidb_snapshot` 为 [configurable](../op-guide/history-read.md#how-tidb-reads-data-from-history-versions) （即备份之前的数据）
++ [允许设置](../op-guide/history-read.md#操作流程) `tidb_snapshot` 的值（即可备份不同时间点的数据）  
 
 ### 新添参数
 
@@ -42,6 +42,6 @@ category: tools
 
 PingCAP 的 mydumper 源码 [位于 GitHub](https://github.com/pingcap/mydumper)。
 
-### 是否计划未来让 PingCAP 的 mydumper 对上游的 mydumper 生效？
+### 未来是否计划让 PingCAP 对 mydumper 的改动合并到上游？
 
 是的，PingCAP 团队计划让此 mydumper 对上游的 mydumper 生效。参见 [PR #155](https://github.com/maxbube/mydumper/pull/155).
