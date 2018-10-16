@@ -656,11 +656,11 @@ TiDB 设计的目标就是针对 MySQL 单台容量限制而被迫做的分库�
 
 #### 3.6.1 TiDB 主要备份方式？
 
-目前，推荐的备份方式是使用 [PingCAP fork of mydumper](tools/mydumper.md)。尽管 TiDB 也支持使用 MySQL 官方工具 `mysqldump` 进行数据备份、恢复，但其性能低于 [`mydumper`](tools/mydumper.md)/[`loader`](tools/loader.md)，并且该工具备份、恢复大量数量时，要耗费更多时间。
+目前，推荐的备份方式是使用 [PingCAP fork 的 mydumper](tools/mydumper.md)。尽管 TiDB 也支持使用 MySQL 官方工具 `mysqldump` 进行数据备份、恢复，但其性能低于 [`mydumper`](tools/mydumper.md)/[`loader`](tools/loader.md)，并且该工具备份、恢复大量数量时，要耗费更多时间。
 
 使用 mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64；
 
-loader的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调整，例如 3 个 TiKV 的场景， 此值可以设为 3 * (1 ～ n)，当 TiKV 负载过高，loader 以及 TiDB 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 TiKV 负载不是太高的时候，可以适当调大该值。
+loader 的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调整，例如 3 个 TiKV 的场景， 此值可以设为 3 * (1 ～ n)，当 TiKV 负载过高，loader 以及 TiDB 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 TiKV 负载不是太高的时候，可以适当调大该值。
 
 ## 四、数据、流量迁移
 
@@ -668,11 +668,11 @@ loader的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调�
 
 #### 4.1.1 Mydumper
 
-参见 [mydumper Instructions](tools/mydumper.md)。
+参见 [mydumper 使用文档](tools/mydumper.md)。
 
 #### 4.1.2 Loader
 
-参见 [Loader Instructions](tools/loader.md)。
+参见 [Loader 使用文档](tools/loader.md)。
  
 #### 4.1.3 如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？
 
