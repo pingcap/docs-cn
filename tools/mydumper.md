@@ -23,9 +23,9 @@ category: tools
 ### 新添参数
 
 ```
-  -z, --tidb-snapshot: Set the tidb_snapshot to be used for the backup.
-                       Default: NOW()-INTERVAL 1 SECOND.
-                       Accepts either a TSO or valid datetime.  For example: -z "2016-10-08 16:45:26"
+  -z, --tidb-snapshot: 设置 tidb_snapshot 用于备份
+                       默认值：NOW()-INTERVAL 1 SECOND
+                       此参数可设为 TSO 时间或有效的 datetime 时间。例如：-z "2016-10-08 16:45:26"
 ```
 
 ### 使用举例
