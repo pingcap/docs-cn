@@ -10,7 +10,8 @@ This document describes how TiDB reads data from the history versions, how TiDB 
 
 ## Feature description
 
-TiDB implements a feature to read history data using the standard SQL interface directly without special clients or drivers. By using this feature, 
+TiDB implements a feature to read history data using the standard SQL interface directly without special clients or drivers. By using this feature:
+
 - Even when data is updated or removed, its history versions can be read using the SQL interface.
 - Even if the table structure changes after the data is updated, TiDB can use the old structure to read the history data.
 
@@ -107,7 +108,7 @@ Pay special attention to the following two variables:
     Query OK, 0 rows affected (0.00 sec)
     ```
 
-    > **Note:** You should use `@@` instead of `@` before `tidb_snapshot` because `@@` is used to denote the global variable while `@` is used to denote the session variable.
+    > **Note:** You should use `@@` instead of `@` before `tidb_snapshot` because `@@` is used to denote the system variable while `@` is used to denote the user variable.
 
     **Result:** The read from the following statement is the data before the update operation, which is the history data.
 
@@ -142,4 +143,4 @@ Pay special attention to the following two variables:
     3 rows in set (0.00 sec)
     ```
 
-    > **Note:** You should use `@@` instead of `@` before `tidb_snapshot` because `@@` is used to denote the global variable while `@` is used to denote the session variable.
+    > **Note:** You should use `@@` instead of `@` before `tidb_snapshot` because `@@` is used to denote the system variable while `@` is used to denote the user variable.
