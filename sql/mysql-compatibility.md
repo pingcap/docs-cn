@@ -27,6 +27,7 @@ However, in TiDB, the following MySQL features are not supported for the time be
 + Drop primary key
 + SYS schema
 + Optimizer trace
++ XML Functions
 + X-Protocol
 
 ## Features that are different from MySQL
