@@ -21,7 +21,8 @@
     - [TiDB 访问权限管理](sql/privilege.md)
     - [TiDB 用户账户管理](sql/user-account-management.md)
     - [使用加密连接](sql/encrypted-connections.md)
-  + SQL 优化
+  + TiDB SQL 优化和执行
+    - [SQL 优化流程简介](sql/sql-optimizer-overview.md)
     - [理解 TiDB 执行计划](sql/understanding-the-query-execution-plan.md)
     - [统计信息](sql/statistics.md)
   + 语言结构
@@ -194,7 +195,7 @@ TiDB 是 PingCAP 公司受 Google [Spanner](http://research.google.com/archive/s
 TiDB 具备如下核心特性：
 
 - 高度兼容 MySQL
-    
+
     大多数情况下，无需修改代码即可从 MySQL 轻松迁移至 TiDB，分库分表后的 MySQL 集群亦可通过 TiDB 工具进行实时迁移。
 
 - 水平弹性扩展
