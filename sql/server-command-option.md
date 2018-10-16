@@ -153,8 +153,8 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 
 - 语句的默认优先级
 - 默认: `NO_PRIORITY`
-- TiDB 支持的语句优先级包括：`LOW_PRIORITY`、`NO_PRIORITY`、`HIGH_PRIORITY` 以及 `DELAYED`。可选择将一部分服务器用于处理 OLAP 查询，并将该值设置为 `LOW_PRIORITY`，以确保 TiKV 服务器优先处理要导入到其他 TiDB 服务器的 OLTP 查询。这有利于确保 OLTP 性能更稳定，但 OLAP 性能可能会稍有下降。  
-- TiDB 自动将 table scan 设置为 `LOW_PRIORITY`， 通过将 [DML modifier](dml.md) 设置为 `HIGH PRIORITY` 或 `LOW PRIORITY`，可重写一条语句的优先级
+- TiDB 支持的语句优先级包括：`NO_PRIORITY`、`LOW_PRIORITY`、`DELAYED` 以及 `HIGH_PRIORITY`。例如，如果你需要为 OLAP 查询指定专属服务器池，可将该值设置为 `LOW_PRIORITY`，以保证 TiKV 服务器优先处理其他 TiDB 服务器池收到的 OLTP 请求。这样可以使 OLTP 性能更稳定，但 OLAP 性能可能会稍有下降。
+- TiDB 自动将 table scan 设置为 `LOW_PRIORITY`，通过将 [DML modifier](dml.md) 设置为 `HIGH PRIORITY` 或 `LOW PRIORITY`，可重写一条语句的优先级
 
 ### join-concurrency
 
