@@ -21,7 +21,8 @@
     - [The TiDB Access Privilege System](sql/privilege.md)
     - [TiDB User Account Management](sql/user-account-management.md)
     - [Use Encrypted Connections](sql/encrypted-connections.md)
-  + SQL Optimization
+  + SQL Optimization and Execution
+    - [SQL Optimization Process](sql/sql-optimizer-overview.md)
     - [Understand the Query Execution Plan](sql/understanding-the-query-execution-plan.md)
     - [Introduction to Statistics](sql/statistics.md)
   + Language Structure
