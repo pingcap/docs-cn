@@ -356,9 +356,9 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 默认值：`NO_PRIORITY`
 
-这个变量用于改变 TiDB server 上执行的语句的默认优先级。可确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
+这个变量用于改变 TiDB server 上执行的语句的默认优先级。例如，你可以通过设置该变量来确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
 
-可设置为 `PRIORITY_LOW`、`NO_PRIORITY` 或 `PRIORITY_HIGH`。
+可设置为 `NO_PRIORITY`、`LOW_PRIORITY`、`DELAYED` 或 `HIGH_PRIORITY`。
 
 ## Optimizer Hint
 
