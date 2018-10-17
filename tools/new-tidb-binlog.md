@@ -92,6 +92,13 @@ drainer_mysql ansible_host=172.16.10.71 initial_commit_ts="402899541671542785"
 drainer_pb ansible_host=172.16.10.71 initial_commit_ts="402899541671542785"
 ```
 
+3. 获取 initial_commit_ts 方法
+
+```
+$ cd /home/tidb/tidb-ansible
+$ resources/bin/binlogctl -pd-urls=http://172.16.10.72:2379 -cmd generate_meta
+```
+
 #### 修改配置文件
 
 1. 以下游为 mysql 为例
@@ -120,26 +127,27 @@ port = 3306
 # size-limit = "100000"
 ```
 
-2. 以下游为 pd 为例
+2. 以下游为 pb 为例
 
 ```
 $ cd /home/tidb/tidb-ansible/conf
-$ cp drainer.toml drainer_pd_drainer.toml
-$ vi drainer_pd_drainer.toml
+$ cp drainer.toml drainer_pb_drainer.toml
+$ vi drainer_pb_drainer.toml
 ```
 
-db-type 设置为 "pd"。
+db-type 设置为 "pb"。
 
 ```
 # downstream storage, equal to --dest-db-type
 # valid values are "mysql", "pb", "tidb", "flash", "kafka"
-db-type = "pd"
+db-type = "pb"
 
 # Uncomment this if you want to use pb or sql as db-type.
 # Compress compresses output file, like pb and sql file. Now it supports "gzip" algorithm only. 
 # Values can be "gzip". Leave it empty to disable compression. 
 [syncer.to]
 compression = ""
+dir = "data.drainer"
 ```
 
 #### 部署 drainer
