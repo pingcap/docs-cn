@@ -126,7 +126,7 @@ $ resources/bin/binlogctl -pd-urls=http://172.16.10.72:2379 -cmd pumps
 2018/09/21 16:45:54 nodes.go:46: [info] pump: &{NodeID:ip-172-16-10-74:8250 Addr:172.16.10.74:8250 State:online IsAlive:false Score:0 Label:<nil> MaxCommitTS:0 UpdateTS:403051525717360643}
 ```
 
-#### 部署 drainer
+### 部署 drainer
 #### 获取 initial_commit_ts
 使用 binlogctl 工具生成 Drainer 初次启动所需的 tso 信息，命令：
 
