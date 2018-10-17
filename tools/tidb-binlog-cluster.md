@@ -1,5 +1,5 @@
 ---
-title: 新版 TiDB-Binlog 用户文档
+title: TiDB-Binlog cluster 版本用户文档
 category: advanced
 ---
 
