@@ -562,17 +562,17 @@ TiKV 本地存储的 cluster ID 和指定的 PD 的 cluster ID 不一致。在�
 
 TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在默认 RocksDB 内部的 default、write、lock 3 个 CF 内。
 
-- default CF 存储的是真正的数据，与其对应的参数位于 [rocksdb.defaultcf] 项中。
-- write CF 存储的是数据的版本信息（MVCC）、索引、小表相关的数据，相关的参数位于 [rocksdb.writecf] 项中。
+- default CF 存储的是真正的数据，与其对应的参数位于 `[rocksdb.defaultcf]` 项中。
+- write CF 存储的是数据的版本信息（MVCC）、索引、小表相关的数据，相关的参数位于 `[rocksdb.writecf]` 项中。
 - lock CF 存储的是锁信息，系统使用默认参数。
-- Raft Rocksdb 实例存储 Raft log。default CF 主要存储的是 Raft log，与其对应的参数位于 [raftdb.defaultcf] 项中。
+- Raft RocksDB 实例存储 Raft log。default CF 主要存储的是 Raft log，与其对应的参数位于 `[raftdb.defaultcf]` 项中。
 - 每个 CF 都有单独的 Block-cache，用于缓存数据块，加速 RocksDB 的读取速度，Block-cache 的大小通过参数 `block-cache-size` 控制，`block-cache-size` 越大，能够缓存的热点数据越多，对读取操作越有利，同时占用的系统内存也会越多。
 - 每个 CF 有各自的 Write-buffer，大小通过 `write-buffer-size` 控制。
 
-#### 3.4.6 TiKV channel full 是啥原因？
+#### 3.4.6 TiKV channel full 是什么原因？
 
-- Raftstore 线程卡了，可以看一下 Raftstore 的 CPU 使用情况。
-- TiKV 太忙了（读取、写入、磁盘 I/O 等），请求处理不过来。
+- Raftstore 线程太忙，或者因 I/O 而卡住。可以看一下 Raftstore 的 CPU 使用情况。
+- TiKV 过忙（CPU、磁盘 I/O 等），请求处理不过来。
 
 #### 3.4.7 TiKV 频繁切换 Region leader 是什么原因？
 
@@ -580,9 +580,9 @@ TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在�
 - 原主 Leader 的节点卡了，导致没有及时给 Follower 发送消息。
 - Raftstore 线程卡了。
 
-#### 3.4.8 Leader 节点挂了会影响服务吗？会有多长时间的影响？
+#### 3.4.8 如果一个节点挂了会影响服务吗？影响会持续多久？
 
-TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强一致，当一份备份出现问题时，其他的副本能保证数据的安全。通常 TiDB 配置每个 Region 为 3 副本，根据 Raft 协议，每个 Region 会选取一个 Leader 提供服务。但单个 Region Leader 失效时，在最大 2 * lease time（leasetime 是 10 秒）时间后，通过 Raft 协议会很快选新的 Region Leader 提供服务。
+TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强一致，当一份备份出现问题时，其他的副本能保证数据的安全。通常 TiDB 配置每个 Region 为 3 副本，根据 Raft 协议，每个 Region 会选取一个 Leader 提供服务。当单个 Leader 失效时，在最大 2 * lease time（leasetime 是 10 秒）时间后，通过 Raft 协议会很快将一个 Follower 选为新的 Region Leader 来提供服务。
 
 #### 3.4.9 TiKV 在分别在那些场景下占用大量 IO、内存、CPU（超过参数配置的多倍）？
 
@@ -598,7 +598,7 @@ TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强
 
 #### 3.4.12 Region 是如何进行分裂的？
 
-首先不是前期划分好的，但确实有 Region 分裂机制，有一个参数 `region_split_size`，超过这个值就会触发分裂，分裂后的信息会汇报给 PD。
+Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 的大小超过参数 `region_split_size` 或 `region-split-keys` 的值时，就会触发分裂，分裂后的信息会汇报给 PD。
 
 #### 3.4.13 TiKV 是否有类似 MySQL 的 `innodb_flush_log_trx_commit` 参数，来保证提交数据不丢失？
 
