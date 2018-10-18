@@ -85,7 +85,7 @@ enable_binlog = True
 172.16.10.74
 ```
 
-默认 pump 保留 5 天数据，如需修改可修改 `tidb-ansible/conf/pump.yml` 文件中 `gc` 变量值，并取消注释，如修改为 7。
+默认 Pump 保留 5 天数据，如需修改可修改 `tidb-ansible/conf/pump.yml` 文件中 `gc` 变量值，并取消注释，如修改为 7。
 
 ```
 global:
@@ -110,7 +110,7 @@ B. 部署并启动 TiDB 集群
 
 C. 查看 Pump 服务状态
 
-使用 binlogctl 查看 pump 服务状态，pd-urls 参数请替换为集群 PD 地址，结果 State 为 online 表示 Pump 启动成功。
+使用 binlogctl 查看 Pump 服务状态，pd-urls 参数请替换为集群 PD 地址，结果 State 为 online 表示 Pump 启动成功。
 
 ```
 $ cd /home/tidb/tidb-ansible
@@ -280,7 +280,7 @@ A. 使用 binary 部署 Pump
     -enable-tolerant
         开启 tolerant 后，如果 binlog 写入失败，Pump 不会报错（默认开启）
     -gc int
-        pump 只保留多少天以内的数据 (默认 7)
+        Pump 只保留多少天以内的数据 (默认 7)
     -heartbeat-interval int
         Pump 向 PD 发送心跳间隔 (单位 秒)
     -log-file string
@@ -472,9 +472,9 @@ B. 使用 binary 部署 Drainer
 
 注意：
 * 当暂停 Pump/Drainer 时，数据同步会中断；
-* pump 在下线时需要确认自己的数据被所有的非 offline 状态的 Drainer 消费了，所以在下线 pump 时需要确保所有的 Drainer 都是处于 online 状态，否则 pump 无法正常下线；
-* pump 保存的 binlog 数据只有在被所有非 offline 状态的 Drainer 消费的情况下才会 gc；
-* 不要轻易下线 drainer，只有在永久不需要使用该 Drainer 的情况下才需要下线 drainer。
+* Pump 在下线时需要确认自己的数据被所有的非 offline 状态的 Drainer 消费了，所以在下线 Pump 时需要确保所有的 Drainer 都是处于 online 状态，否则 Pump 无法正常下线；
+* Pump 保存的 binlog 数据只有在被所有非 offline 状态的 Drainer 消费的情况下才会 gc；
+* 不要轻易下线 Drainer，只有在永久不需要使用该 Drainer 的情况下才需要下线 Drainer。
 
 关于 Pump/Drainer 暂停、下线、状态查询、状态修改等具体的操作方法，参考如下 binlogctl 工具的使用方法介绍。
 
@@ -486,7 +486,7 @@ binlogctl 是一个 TiDB-Binlog 配套的运维工具，具有如下功能：
 * 暂停/下线 Pump/Drainer
 
 使用 binlogctl 的场景：
-* 第一次运行 drainer，需要获取当前的 ts
+* 第一次运行 Drainer，需要获取当前的 ts
 * Pump/Drainer 异常退出，状态没有更新，对业务造成影响，可以直接使用该工具修改状态
 * 同步出现故障/检查运行情况，需要查看 Pump/Drainer 的状态
 * 维护集群，需要暂停/下线 Pump/Drainer
