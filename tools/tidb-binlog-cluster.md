@@ -44,7 +44,7 @@ Drainer 从各个 Pump 中收集 Binlog 进行归并，再将 Binlog 转化成 S
 * 通过给 TiDB 增加启动参数 enable-binlog 来开启 Binlog。
 * Drainer 不支持对 ignore schemas（在过滤列表中的 schemas）的 table 进行 rename DDL 操作。
 * 在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取 savepoint，然后导入全量备份，最后启动 Drainer 从 savepoint 开始同步增量数据。
-* Drainer 支持将 Binlog 同步到 MySQL/TiDB/Kafka/ 文件。如果需要将 Binlog 同步到其他类型的目的中，可以设置 Drainer 将 Binlog 同步到 Kafka，再读取 Kafka 中的数据进行自定义处理，参考 [tidb-binlog driver](https://github.com/pingcap/tidb-tools/tree/master/tidb_binlog/driver)。
+* Drainer 支持将 Binlog 同步到 MySQL/TiDB/Kafka/ 文件。如果需要将 Binlog 同步到其他类型的目的地中，可以设置 Drainer 将 Binlog 同步到 Kafka，再读取 Kafka 中的数据进行自定义处理，参考 [tidb-binlog driver](https://github.com/pingcap/tidb-tools/tree/master/tidb_binlog/driver)。
 * Pump/Drainer 的状态需要区分已暂停（paused）和下线（offline），Ctrl+C 或者 kill 进程，Pump 和 Drainer 的状态都将变为 paused。暂停状态的 Pump 不需要将已保存的 Binlog 数据全部发送到 Drainer；如果需要较长时间退出 Pump（或不再使用该 Pump），需要使用 binlogctl 工具来下线 Pump。Drainer 同理。
 
 #### 服务器要求
@@ -59,7 +59,7 @@ Pump && Drainer 支持部署和运行在 Intel x86-64 架构的 64 位通用硬�
 ### 使用 tidb-ansible 部署 TiDB-Binlog 
 #### 下载 tidb-ansible
 
-以 tidb 用户登录中控机并进入 `/home/tidb` 目录，使用以下命令 tidb-ansible `new-tidb-binlog` 分支，默认的文件夹名称为 tidb-ansible。
+以 tidb 用户登录中控机并进入 `/home/tidb` 目录，使用以下命令下载 tidb-ansible `new-tidb-binlog` 分支，默认的文件夹名称为 tidb-ansible。
 
 ```
 $ git clone -b new-tidb-binlog https://github.com/pingcap/tidb-ansible.git
@@ -139,7 +139,7 @@ INFO[0000] [pd] init cluster id 6569368151110378289
 B. 全量数据的备份与恢复
 如果下游为 MySQL/TiDB， 需要保证数据的完整性，在 Drainer 启动前（Pump 运行后十分钟左右）进行数据的全量备份和恢复。
 
-推荐使用 mydumper 备份 TiDB 的全量数据，再使用 loader 将备份数据导入到下游。具体使用方法参考：[备份与恢复](https://github.com/pingcap/docs-cn/blob/master/op-guide/backup-restore.md)
+推荐使用 mydumper 备份 TiDB 的全量数据，再使用 loader 将备份数据导入到下游。具体使用方法参考：[备份与恢复](https://github.com/pingcap/docs-cn/blob/master/op-guide/backup-restore.md)。
 
 
 C. 修改 tidb-ansible/inventory.ini 文件
@@ -449,7 +449,7 @@ B. 使用 binary 部署 Drainer
     ```
 
 3. 启动示例  
-    注意：如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取initial-commit-ts 的值，并进行全量数据的备份与恢复。该部分在 [部署 Drainer](./tidb-binlog-cluster.md#部署-drainer) 一节中已经介绍了，就不再赘述。
+    注意：如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取 initial-commit-ts 的值，并进行全量数据的备份与恢复。该部分在 [部署 Drainer](./tidb-binlog-cluster.md#部署-drainer) 一节中已经介绍了，就不再赘述。
     
     初次启动时使用参数 initial-commit-ts， 命令如下：
 
@@ -571,4 +571,4 @@ binlogctl 使用说明：
 [binlogctl](https://github.com/pingcap/tidb-tools/tree/develop/tidb-binlog/binlogctl)
 
 ### TiDB-Binlog 监控
-使用 Ansible 部署成功后，可以进入 Grafana Web 界面（默认地址: <http://localhost:3000>，默认账号：admin，密码：admin）查看 Pump 和 Drainer 的运行状态。
+使用 Ansible 部署成功后，可以进入 Grafana Web 界面（默认地址: <http://grafana_ip:3000>，默认账号：admin，密码：admin）查看 Pump 和 Drainer 的运行状态。
