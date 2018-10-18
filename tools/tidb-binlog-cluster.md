@@ -170,7 +170,7 @@ $ cp drainer.toml drainer_mysql_drainer.toml
 $ vi drainer_mysql_drainer.toml
 ```
 
-db-type 设置为 "mysql", 配置下游 MySQL 信息。
+db-type 设置为 "mysql"， 配置下游 MySQL 信息。
 
 ```
 # downstream storage, equal to --dest-db-type
@@ -265,7 +265,7 @@ A. 使用 binary 部署 Pump
     ```
     Usage of Pump:
     -L string
-        日志输出信息等级设置: debug, info, warn, error, fatal (默认 "info")
+        日志输出信息等级设置：debug，info，warn，error，fatal (默认 "info")
     -V
         打印版本信息
     -addr string
@@ -333,7 +333,7 @@ B. 使用 binary 部署 Drainer
     ```
     Usage of Drainer:
     -L string
-        日志输出信息等级设置：debug, info, warn, error, fatal (默认 "info")
+        日志输出信息等级设置：debug，info，warn，error，fatal (默认 "info")
     -V
         打印版本信息
     -addr string
@@ -413,7 +413,7 @@ B. 使用 binary 部署 Drainer
     disable-dispatch = false
  
     # Drainer 下游服务类型（默认为 mysql）
-    # 参数有效值为 "mysql", "pb"
+    # 参数有效值为 "mysql"，"pb"
     db-type = "mysql"
  
     # replicate-do-db prioritizes over replicate-do-table when they have the same db name
@@ -496,12 +496,12 @@ binlogctl 下载链接：
 ```
 wget https://download.pingcap.org/binlogctl-new-linux-amd64.tar.gz
 wget https://download.pingcap.org/binlogctl-new-linux-amd64.sha256
- 
+
 # 检查文件完整性，返回 ok 则正确
 sha256sum -c tidb-binlog-new-linux-amd64.sha256
 ```
 
-binlogctl 使用说明： 
+binlogctl 使用说明：
 
 命令行参数：
 
@@ -532,7 +532,7 @@ binlogctl 使用说明：
 
     ```
     bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pumps/drainers
-    
+
     2018/06/21 11:24:10 nodes.go:53: [info] pump: &{NodeID:ip-192-168-199-118:8250 Host:127.0.0.1:8250 IsAlive:true IsOffline:false LatestFilePos:{Suffix:0 Offset:15320} LatestKafkaPos:{Suffix:0 Offset:382} OfflineTS:0}
     ```
  
@@ -540,10 +540,10 @@ binlogctl 使用说明：
 
     ```
     Pump/Drainer 的状态可以为：online, pausing, paused, closing and offline. 
- 
+
     bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd update-pump/update-drainer -node-id ip-127-0-0-1:8250/{nodeID} -state {state}
     ```
- 
+
     这条命令会修改 Pump/Drainer 保存在 pd 中的状态.
  
 3. 暂停/下线 Pump/Drainer
@@ -553,19 +553,18 @@ binlogctl 使用说明：
     ```
 
     binlogctl 会发送 http 请求给 Pump/Drainer，Pump/Drainer 收到命令后会退出进程，并且将自己的状态设置为 paused/offline。
- 
- 
+
 4. 生成 Drainer 启动需要的 meta 文件
 
     ```
     bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd generate_meta
- 
+
     INFO[0000] [pd] create pd client with endpoints [http://192.168.199.118:32379]
     INFO[0000] [pd] leader switches to: http://192.168.199.118:32379, previous:
     INFO[0000] [pd] init cluster id 6569368151110378289
     2018/06/21 11:24:47 meta.go:117: [info] meta: &{CommitTS:400962745252184065}
     ```
- 
+
     该命令会生成一个文件 `{data-dir}/savepoint`， 该文件中保存了 Drainer 初次启动需要的 tso 信息。
 
 注：binlogctl 的 github 链接：
