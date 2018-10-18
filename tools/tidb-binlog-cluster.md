@@ -45,12 +45,7 @@ Drainer 从各个 Pump 中收集 Binlog 进行归并，再将 Binlog 转化成 S
 * 通过设置 pump client 版本 TiDB 启动参数 enable-binlog 来开启 Binlog，设置为 true 表示开启 Binlog。
 * Drainer 不支持对 ignore schemas（在过滤列表中的 schemas）的 table 进行 rename DDL 操作。
 * 在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取 savepoint，然后导入全量备份，最后启动 Drainer 从 savepoint 开始同步增量数据；
-* 为了保证数据的完整性，在 Pump 运行 10 分钟左右后按顺序进行全量+增量数据迁移：
-    *  使用 tidb-tools 项目中的 binlogctl 工具生成 Drainer 初次启动所需的 position
-    *  全量备份，例如 mydumper 备份 TiDB
-    *  全量导入备份到目标系统
-    *  使用 binlogctl 生成的 position 来设置 Drainer 的启动参数 initial-commit-ts ，Drainer 就会从指定位置开始消费 - bin/drainer --config=conf/drainer.toml --initial-commit-ts=${position}
-* Drainer 支持将 Binlog 同步到 MySQL/TiDB/Kafka/文件 。如果需要将 Binlog 同步到其他类型的目的中，可以设置 Drainer 将 Binlog 同步到 Kafka，再读取 Kafka 中的数据进行自定义处理, 参考 tidb-binlog driver
+* Drainer 支持将 Binlog 同步到 MySQL/TiDB/Kafka/文件 。如果需要将 Binlog 同步到其他类型的目的中，可以设置 Drainer 将 Binlog 同步到 Kafka，再读取 Kafka 中的数据进行自定义处理, 参考 [tidb-binlog driver](https://github.com/pingcap/tidb-tools/tree/master/tidb_binlog/driver)
 * Pump/Drainer 的状态需要区分已暂停（paused）和下线（offline），ctrl-c 或者 kill 进程，Pump 和 Drainer 的状态都将变为 paused。暂停状态的 Pump 不需要将已保存的 Binlog 数据全部发送到 Drainer；如果需要较长时间退出 Pump（或不再使用该 Pump），需要使用 binlogctl 工具来下线 Pump。Drainer 同理。
 
 #### 服务器要求
@@ -127,7 +122,8 @@ $ resources/bin/binlogctl -pd-urls=http://172.16.10.72:2379 -cmd pumps
 ```
 
 ### 部署 drainer
-#### 获取 initial_commit_ts
+#### 获取 initial_commit_ts 
+
 使用 binlogctl 工具生成 Drainer 初次启动所需的 tso 信息，命令：
 
 ```
@@ -140,6 +136,12 @@ INFO[0000] [pd] init cluster id 6569368151110378289
 ```
  
 该命令会生成一个文件 `{data-dir}/savepoint`，该文件中包含 tso，用该 tso 作为drainer 初次启动使用的 initial-commit-ts 参数的值.
+
+#### 全量数据的备份与恢复
+如果下游为 MySQL/TiDB, 需要保证数据的完整性，在 Drainer 启动前（Pump 运行后十分钟左右）进行数据的全量备份和恢复。
+
+推荐使用 mydumper 备份 TiDB 的全量数据，再使用 loader 将备份数据导入到下游。
+具体使用方法参考：[备份与恢复]（https://github.com/pingcap/docs-cn/blob/master/op-guide/backup-restore.md）
 
 
 #### 修改 tidb-ansible/inventory.ini 文件
@@ -438,9 +440,13 @@ Drainer="192.168.0.13"
     # kafka-addrs = "127.0.0.1:9092"
     # kafka-version = "0.8.2.0"
     ```
-3. 启动示例
+3. 启动示例  
+
+    如果下游为 MysSQL/TiDB, 为了保证数据的完整性，在 Drainer 初次启动前需要获取initial-commit-ts 的值，并进行全量数据的备份与恢复。该部分在｀使用 tidb-ansible 部署 tidb-binlog｀ 中的 ｀部署 Drainer｀ 一节中已经介绍了，就不再赘述。
+    
+    初次启动时使用参数 initial-commit-ts, 命令如下：
     ```
-    ./bin/drainer -config drainer.toml
+    ./bin/drainer -config drainer.toml -initial-commit-ts {initial-commit-ts}
     ```
     如果命令行参数与配置文件中的参数重合，则使用命令行设置的参数的值。
 
