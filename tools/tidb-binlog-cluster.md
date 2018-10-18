@@ -66,7 +66,7 @@ Pump && Drainer 支持部署和运行在 Intel x86-64 架构的 64 位通用硬�
 $ git clone -b new-tidb-binlog https://github.com/pingcap/tidb-ansible.git
 ```
 
-### 部署 pump
+### 部署 Pump
 #### 修改 tidb-ansible/inventory.ini 文件
 
 1. 设置 `enable_binlog = True`，表示 TiDB 集群开启 binlog。
@@ -109,7 +109,7 @@ pump3 ansible_host=172.16.10.74 deploy_dir=/data1/pump
 
 使用 ansible 部署 TiDB 集群的具体方法参考 [TiDB Ansible 部署方案](../op-guide/ansible-deployment.md)，开启 binlog 后默认会部署和启动 pump 服务。
 
-#### 查看 pump 服务状态
+#### 查看 Pump 服务状态
 
 使用 binlogctl 查看 pump 服务状态，pd-urls 参数请替换为集群 PD 地址，结果 State 为 online 表示 pump 启动成功。
 
@@ -121,7 +121,7 @@ $ resources/bin/binlogctl -pd-urls=http://172.16.10.72:2379 -cmd pumps
 2018/09/21 16:45:54 nodes.go:46: [info] pump: &{NodeID:ip-172-16-10-74:8250 Addr:172.16.10.74:8250 State:online IsAlive:false Score:0 Label:<nil> MaxCommitTS:0 UpdateTS:403051525717360643}
 ```
 
-### 部署 drainer
+### 部署 Drainer
 #### 获取 initial_commit_ts 
 
 使用 binlogctl 工具生成 Drainer 初次启动所需的 tso 信息，命令：
@@ -140,7 +140,7 @@ INFO[0000] [pd] init cluster id 6569368151110378289
 #### 全量数据的备份与恢复
 如果下游为 MySQL/TiDB, 需要保证数据的完整性，在 Drainer 启动前（Pump 运行后十分钟左右）进行数据的全量备份和恢复。
 
-推荐使用 mydumper 备份 TiDB 的全量数据，再使用 loader 将备份数据导入到下游。具体使用方法参考：[备份与恢复]（https://github.com/pingcap/docs-cn/blob/master/op-guide/backup-restore.md）
+推荐使用 mydumper 备份 TiDB 的全量数据，再使用 loader 将备份数据导入到下游。具体使用方法参考：[备份与恢复](https://github.com/pingcap/docs-cn/blob/master/op-guide/backup-restore.md)
 
 
 #### 修改 tidb-ansible/inventory.ini 文件
@@ -212,13 +212,13 @@ compression = ""
 dir = "data.drainer"
 ```
 
-#### 部署 drainer
+#### 部署 Drainer
 
 ```
 $ ansible-playbook deploy_drainer.yml
 ```
 
-#### 启动 drainer
+#### 启动 Drainer
 
 ```
 $ ansible-playbook start_drainer.yml
