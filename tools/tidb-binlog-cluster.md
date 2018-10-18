@@ -449,7 +449,7 @@ B. 使用 binary 部署 Drainer
     ```
 
 3. 启动示例  
-    注意：如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取initial-commit-ts 的值，并进行全量数据的备份与恢复。该部分在 `使用 tidb-ansible 部署 TiDB-Binlog` 中的 `部署 Drainer` 一节中已经介绍了，就不再赘述。
+    注意：如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取initial-commit-ts 的值，并进行全量数据的备份与恢复。该部分在 [部署 Drainer](./tidb-binlog-cluster.md#部署-drainer) 一节中已经介绍了，就不再赘述。
     
     初次启动时使用参数 initial-commit-ts， 命令如下：
 
