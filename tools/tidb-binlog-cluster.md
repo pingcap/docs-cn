@@ -128,7 +128,7 @@ $ resources/bin/binlogctl -pd-urls=http://172.16.10.72:2379 -cmd pumps
 
 ### 部署 drainer
 #### 获取 initial_commit_ts
-使用 binlogctl 工具生成 Drainer 初次启动所需的 tso 信息，命令：
+使用 binlogctl 工具生成 Drainer 初次启动所需的 tso 信息，命令：
 
 ```
 $ cd /home/tidb/tidb-ansible
@@ -139,7 +139,7 @@ INFO[0000] [pd] init cluster id 6569368151110378289
 2018/06/21 11:24:47 meta.go:117: [info] meta: &{CommitTS:400962745252184065}
 ```
  
-该命令会生成一个文件 `{data-dir}/savepoint`，该文件中包含 tso，用该 tso 作为drainer 初次启动使用的 initial-commit-ts 参数的值.
+该命令会生成一个文件 `{data-dir}/savepoint`，该文件中包含 tso，用该 tso 作为drainer 初次启动使用的 initial-commit-ts 参数的值.
 
 
 #### 修改 tidb-ansible/inventory.ini 文件
