@@ -571,13 +571,4 @@ binlogctl 使用说明：
 [binlogctl](https://github.com/pingcap/tidb-tools/tree/develop/tidb-binlog/binlogctl)
 
 ### TiDB-Binlog 监控
-本部分主要介绍如何对 TiDB-Binlog 的状态、性能做监控，并通过 Prometheus + Grafana 展现 metrics 数据。
-#### Pump/Drainer 配置
-使用 Ansible 部署的 Pump 服务已经在启动参数设置 metrics。启动 Drainer 时可以设置以下两个参数：
-* --metrics-addr：设为 Push Gateway 的地址
-* --metrics-interval：设为 push 的频率，单位为秒，默认值为 15
-#### Grafana 配置
-* 进入 Grafana Web 界面（默认地址: <http://localhost:3000>，默认账号：admin，密码：admin)
-* 点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息(注：Type 选 Prometheus，URL 为 Prometheus 地址，根据实际情况添加/填写。)
-* 导入 dashboard 配置文件
-* 点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 dashboard 配置文件上传 -> 选择对应的 data source
+使用 Ansible 部署成功后，可以进入 Grafana Web 界面（默认地址: <http://localhost:3000>，默认账号：admin，密码：admin）查看 Pump 和 Drainer 的运行状态。
