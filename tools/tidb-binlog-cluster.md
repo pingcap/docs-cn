@@ -188,26 +188,27 @@ port = 3306
 # size-limit = "100000"
 ```
 
-2. 以下游为 pd 为例
+2. 以下游为 pb 为例
 
 ```
 $ cd /home/tidb/tidb-ansible/conf
-$ cp drainer.toml drainer_pd_drainer.toml
-$ vi drainer_pd_drainer.toml
+$ cp drainer.toml drainer_pb_drainer.toml
+$ vi drainer_pb_drainer.toml
 ```
 
-db-type 设置为 "pd"。
+db-type 设置为 "pb"。
 
 ```
 # downstream storage, equal to --dest-db-type
 # valid values are "mysql", "pb", "tidb", "flash", "kafka"
-db-type = "pd"
+db-type = "pb"
 
 # Uncomment this if you want to use pb or sql as db-type.
 # Compress compresses output file, like pb and sql file. Now it supports "gzip" algorithm only. 
 # Values can be "gzip". Leave it empty to disable compression. 
 [syncer.to]
 compression = ""
+dir = "data.drainer"
 ```
 
 #### 部署 drainer
