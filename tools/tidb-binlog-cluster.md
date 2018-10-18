@@ -441,8 +441,7 @@ Drainer="192.168.0.13"
     # kafka-version = "0.8.2.0"
     ```
 3. 启动示例  
-
-    如果下游为 MysSQL/TiDB, 为了保证数据的完整性，在 Drainer 初次启动前需要获取initial-commit-ts 的值，并进行全量数据的备份与恢复。该部分在｀使用 tidb-ansible 部署 tidb-binlog｀ 中的 ｀部署 Drainer｀ 一节中已经介绍了，就不再赘述。
+    注意：如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取initial-commit-ts 的值，并进行全量数据的备份与恢复。该部分在 `使用 tidb-ansible 部署 tidb-binlog` 中的 `部署 Drainer` 一节中已经介绍了，就不再赘述。
     
     初次启动时使用参数 initial-commit-ts, 命令如下：
     ```
