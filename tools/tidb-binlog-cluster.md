@@ -135,13 +135,12 @@ INFO[0000] [pd] init cluster id 6569368151110378289
 2018/06/21 11:24:47 meta.go:117: [info] meta: &{CommitTS:400962745252184065}
 ```
  
-该命令会生成一个文件 `{data-dir}/savepoint`，该文件中包含 tso，用该 tso 作为drainer 初次启动使用的 initial-commit-ts 参数的值.
+该命令会生成一个文件 `{data-dir}/savepoint`，该文件中包含 tso，用该 tso 作为 drainer 初次启动使用的 initial-commit-ts 参数的值.
 
 #### 全量数据的备份与恢复
-如果下游为 MySQL/TiDB, 需要保证数据的完整性，在 Drainer 启动前（Pump 运行后十分钟左右）进行数据的全量备份和恢复。
+如果下游为 MySQL/TiDB, 需要保证数据的完整性，在 Drainer 启动前（Pump 运行后十分钟左右）进行数据的全量备份和恢复。
 
-推荐使用 mydumper 备份 TiDB 的全量数据，再使用 loader 将备份数据导入到下游。
-具体使用方法参考：[备份与恢复]（https://github.com/pingcap/docs-cn/blob/master/op-guide/backup-restore.md）
+推荐使用 mydumper 备份 TiDB 的全量数据，再使用 loader 将备份数据导入到下游。具体使用方法参考：[备份与恢复]（https://github.com/pingcap/docs-cn/blob/master/op-guide/backup-restore.md）
 
 
 #### 修改 tidb-ansible/inventory.ini 文件
@@ -441,7 +440,7 @@ Drainer="192.168.0.13"
     # kafka-version = "0.8.2.0"
     ```
 3. 启动示例  
-    注意：如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取initial-commit-ts 的值，并进行全量数据的备份与恢复。该部分在 `使用 tidb-ansible 部署 tidb-binlog` 中的 `部署 Drainer` 一节中已经介绍了，就不再赘述。
+    注意：如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取initial-commit-ts 的值，并进行全量数据的备份与恢复。该部分在 `使用 tidb-ansible 部署 tidb-binlog` 中的 `部署 Drainer` 一节中已经介绍了，就不再赘述。
     
     初次启动时使用参数 initial-commit-ts, 命令如下：
     ```
