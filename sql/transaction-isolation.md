@@ -28,7 +28,7 @@ TiDB 使用 [Percolator 事务模型](https://research.google.com/pubs/pub36726.
 
 处于可重复读隔离级别的事务不能并发的更新同一行，当时事务提交时发现该行在该事务启动后，已经被另一个已提交的事务更新过，那么该事务会回滚并启动自动重试。示例如下：
 
-```
+```sql
 create table t1(id int);
 insert into t1 values(0);
 

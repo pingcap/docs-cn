@@ -11,11 +11,11 @@ category: advanced
 
 你可以使用 `mydumper` 从 MySQL 导出数据，然后用 `loader` 将其导入到 TiDB 里面。
 
-> **注意**：虽然 TiDB 也支持使用 MySQL 官方的 `mysqldump` 工具来进行数据的迁移工作，但相比于 `mydumper` / `loader`，性能会慢很多，大量数据的迁移会花费很多时间，这里我们并不推荐。
+> **注意**：虽然 TiDB 也支持使用 MySQL 官方的 `mysqldump` 工具来进行数据的迁移工作，但相比于 `mydumper`/`loader`，性能会慢很多，大量数据的迁移会花费很多时间，这里我们并不推荐。
 
 ### `mydumper`/`loader` 全量导入数据最佳实践
 
-为了快速的迁移数据 (特别是数据量巨大的库)，可以参考下面建议
+为了快速的迁移数据 (特别是数据量巨大的库)，可以参考以下建议：
 
 * mydumper 导出数据至少要拥有 `SELECT`，`RELOAD`，`LOCK TABLES` 权限
 * 使用 mydumper 导出来的数据文件尽可能的小，最好不要超过 64M，可以设置参数 -F 64

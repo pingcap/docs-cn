@@ -155,7 +155,7 @@ date_col = CAST(datetime_col AS DATE)
 
 将 TIME 和 DATETIME 转换成数值格式：
 
-```
+```sql
 mysql> SELECT CURTIME(), CURTIME()+0, CURTIME(3)+0;
 +-----------|-------------|--------------+
 | CURTIME() | CURTIME()+0 | CURTIME(3)+0 |

@@ -159,7 +159,7 @@ table_option:
 
 * `create_definition` 中 `FULLTEXT` 和 `FOREIGN KEY` 目前只是语法上支持
 
-* `data_type` 请参考[数据类型](datatype.md)章节。
+* `data_type` 请参考[数据类型](../sql/datatype.md)章节。
 
 * `index_col_name` 中 `[ASC | DESC]` 目前只是语法上支持。
 
@@ -217,6 +217,7 @@ RENAME TABLE
 `RENAME TABLE` 用于对一个表进行重命名。
 
 这个语句等价于如下的 `ALTER TABLE` 语句：
+
 ```sql
 ALTER TABLE old_table RENAME new_table;
 ```
@@ -363,4 +364,4 @@ DROP INDEX index_name ON tbl_name
 
 ## ADMIN 语句
 
-`ADMIN` 语句可以查看一些跟 DDL 任务相关的信息，具体可以看[这里](admin.md)。
+`ADMIN` 语句可以查看一些跟 DDL 任务相关的信息，具体可以看[这里](../sql/admin.md)。

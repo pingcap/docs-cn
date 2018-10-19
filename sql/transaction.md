@@ -15,7 +15,7 @@ TiDB 支持分布式事务。涉及到事务的语句包括 `Autocommit` 变量�
 SET autocommit = {0 | 1}
 ```
 
-通过设置 autocommit 的值为 1，可以将当前 Session 设置为自动提交状态，0 则表示当前 Session 为非自动提交状态。默认情况下， autocommit 的值为 1。
+通过设置 autocommit 的值为 1，可以将当前 Session 设置为自动提交状态，0 则表示当前 Session 为非自动提交状态。默认情况下，autocommit 的值为 1。
 
 在自动提交状态，每条语句运行后，会将其修改自动提交到数据库中。否则，会等到运行 `COMMIT` 语句或者是 `BEGIN` 语句的时候，才会将之前的修改提交到数据库。
 

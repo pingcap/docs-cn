@@ -70,15 +70,18 @@ curl http://127.0.0.1:2379/pd/api/v1/stores
 ```
 
 ## Metrics 监控
+
 这部分主要对整个集群的状态、性能做监控，通过 Prometheus+Grafana 展现 metrics 数据，在下面一节会介绍如何搭建监控系统。
 
 ### TiDB Server
+
 + query 处理时间，可以看到延迟和吞吐
 + ddl 过程监控
 + TiKV client 相关的监控
 + PD client 相关的监控
 
 ### PD Server
+
 + 命令执行的总次数
 + 某个命令执行失败的总次数
 + 某个命令执行成功的耗时统计
@@ -105,16 +108,12 @@ curl http://127.0.0.1:2379/pd/api/v1/stores
 
 ### 搭建监控系统
 
-Prometheus Push Gateway
-参考： https://github.com/prometheus/pushgateway
-
-Prometheus Server
-参考： https://github.com/prometheus/prometheus#install
-
-Grafana
-参考： http://docs.grafana.org
+- Prometheus Push Gateway 参考：https://github.com/prometheus/pushgateway
+- Prometheus Server 参考：https://github.com/prometheus/prometheus#install
+- Grafana 参考：http://docs.grafana.org
 
 ### 配置
+
 #### TiDB/PD/TiKV 配置
 
 +   TiDB

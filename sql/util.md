@@ -34,7 +34,7 @@ explainable_stmt: {
 }
 ```
 
-`EXPLAIN` 语句详细信息参考[理解 TiDB 执行计划](understanding-the-query-execution-plan.md)章节。
+`EXPLAIN` 语句详细信息参考[理解 TiDB 执行计划](../sql/understanding-the-query-execution-plan.md)章节。
 
 除了 MySQL 标准的结果格式之外，TiDB 还支持输出 DotGraph 结果，这时需要指定 `FORMAT = "dot"`，示例如下：
 
@@ -76,6 +76,7 @@ label = "cop"
 ```
 
 如果电脑上安装了 `dot` 程序 (包含在 graphviz 软件包中)，可以通过如下方式生成 PNG 文件：
+
 ```bash
 dot xx.dot -T png -O
 

@@ -14,7 +14,7 @@ category: deployment
 
 2. 部署目标机器若干及部署中控机一台
 
-    - 系统要求及配置参考[准备机器](ansible-deployment.md#准备机器)。
+    - 系统要求及配置参考[准备机器](../op-guide/ansible-deployment.md#准备机器)。
     - 可以无法访问外网。
 
 ## 在中控机上安装系统依赖包
@@ -39,7 +39,7 @@ category: deployment
 
 ## 在中控机上创建 tidb 用户，并生成 ssh key
 
-参考[在中控机上创建 tidb 用户，并生成 ssh key](ansible-deployment.md#在中控机上创建-tidb-用户并生成-ssh-key) 即可。
+参考[在中控机上创建 tidb 用户，并生成 ssh key](../op-guide/ansible-deployment.md#在中控机上创建-tidb-用户并生成-ssh-key) 即可。
 
 ## 在中控机器上离线安装 Ansible 及其依赖
 
@@ -105,25 +105,25 @@ category: deployment
 
 ## 在中控机上配置部署机器 ssh 互信及 sudo 规则
 
-参考[在中控机上配置部署机器 ssh 互信及 sudo 规则](ansible-deployment.md#在中控机上配置部署机器-ssh-互信及-sudo-规则)即可。
+参考[在中控机上配置部署机器 ssh 互信及 sudo 规则](../op-guide/ansible-deployment.md#在中控机上配置部署机器-ssh-互信及-sudo-规则)即可。
 
 ## 在部署目标机器上安装 NTP 服务
 
-> 如果你的部署目标机器时间、时区设置一致，已开启 NTP 服务且在正常同步时间，此步骤可忽略，可参考[如何检测 NTP 服务是否正常](ansible-deployment.md#如何检测-ntp-服务是否正常)。
+> 如果你的部署目标机器时间、时区设置一致，已开启 NTP 服务且在正常同步时间，此步骤可忽略，可参考[如何检测 NTP 服务是否正常](../op-guide/ansible-deployment.md#如何检测-ntp-服务是否正常)。
 
-参考[在部署目标机器上安装 NTP 服务](ansible-deployment.md#在部署目标机器上安装-ntp-服务)即可。
+参考[在部署目标机器上安装 NTP 服务](../op-guide/ansible-deployment.md#在部署目标机器上安装-ntp-服务)即可。
 
 ## 在部署目标机器上配置 CPUfreq 调节器模式
 
-参考[在部署目标机器上配置 CPUfreq 调节器模式](ansible-deployment.md#在部署目标机器上配置-cpufreq-调节器模式)即可。
+参考[在部署目标机器上配置 CPUfreq 调节器模式](../op-guide/ansible-deployment.md#在部署目标机器上配置-cpufreq-调节器模式)即可。
 
 ## 在部署目标机器上添加数据盘 ext4 文件系统挂载参数
 
-参考[在部署目标机器上添加数据盘 ext4 文件系统挂载参数](ansible-deployment.md#在部署目标机器上添加数据盘-ext4-文件系统挂载参数)即可。
+参考[在部署目标机器上添加数据盘 ext4 文件系统挂载参数](../op-guide/ansible-deployment.md#在部署目标机器上添加数据盘-ext4-文件系统挂载参数)即可。
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
-参考[分配机器资源，编辑 inventory.ini 文件](ansible-deployment.md#分配机器资源编辑-inventoryini-文件)即可。
+参考[分配机器资源，编辑 inventory.ini 文件](../op-guide/ansible-deployment.md#分配机器资源编辑-inventoryini-文件)即可。
 
 ## 部署任务
 
@@ -138,8 +138,8 @@ category: deployment
     $ ./install_grafana_font_rpms.sh
     ```
 
-3.  参考[部署任务](ansible-deployment.md#部署任务)即可。
+3.  参考[部署任务](../op-guide/ansible-deployment.md#部署任务)即可。
 
 ## 测试集群
 
-参考[测试集群](ansible-deployment.md#测试集群)即可。
+参考[测试集群](../op-guide/ansible-deployment.md#测试集群)即可。

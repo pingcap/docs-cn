@@ -9,7 +9,7 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
 
 ## 设置系统变量
 
-通过 [`SET` 语句](admin.md#set-语句)可以修改系统变量的值。进行修改时，还要考虑变量可修改的范围，不是所有的变量都能在全局/会话范围内进行修改。具体的可修改范围参考 [MySQL 动态变量文档](https://dev.mysql.com/doc/refman/5.7/en/dynamic-system-variables.html)。
+通过 [`SET` 语句](../sql/admin.md#set-语句)可以修改系统变量的值。进行修改时，还要考虑变量可修改的范围，不是所有的变量都能在全局/会话范围内进行修改。具体的可修改范围参考 [MySQL 动态变量文档](https://dev.mysql.com/doc/refman/5.7/en/dynamic-system-variables.html)。
 
 ### 全局范围值
 
@@ -45,4 +45,4 @@ SET @@autocommit = 1;
 
 ## TiDB 特有的系统变量
 
-参见 [TiDB 专用系统变量](tidb-specific.md#tidb-专用系统变量和语法)。
+参见 [TiDB 专用系统变量](../sql/tidb-specific.md#tidb-专用系统变量和语法)。

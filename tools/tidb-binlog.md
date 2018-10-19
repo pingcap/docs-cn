@@ -11,8 +11,8 @@ TiDB-Binlog 用于收集 TiDB 的 Binlog，并提供实时备份和同步功能�
 
 TiDB-Binlog 支持以下功能场景:
 
-* *数据同步*:       同步 TiDB 集群数据到其他数据库
-* *实时备份和恢复*:  备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复
+* **数据同步**：同步 TiDB 集群数据到其他数据库。
+* **实时备份和恢复**：备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复。
 
 ## TiDB-Binlog 架构
 
@@ -53,11 +53,11 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
 
 #### 注意
 
-*   需要为一个 TiDB 集群中的每台 TiDB server 部署一个 pump，目前 TiDB server 只支持以 unix socket 方式的输出 binlog。
-*   手动部署时， 启动优先级为： PUMP > TiDB ； 停止优先级为 TiDB > PUMP
+*   需要为一个 TiDB 集群中的每台 TiDB server 部署一个 Pump，目前 TiDB server 只支持以 unix socket 方式的输出 binlog。
+*   手动部署时， 启动优先级为： Pump > TiDB ； 停止优先级为 TiDB > Pump
 
 
-    我们设置 TiDB 启动参数 binlog-socket 为对应的 pump 的参数 socket 所指定的 unix socket 文件路径，最终部署结构如下图所示：
+    我们设置 TiDB 启动参数 binlog-socket 为对应的 Pump 的参数 socket 所指定的 unix socket 文件路径，最终部署结构如下图所示：
 
     ![TiDB pump 模块部署结构](../media/tidb-pump-deployment.png)
 
@@ -82,7 +82,6 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
     [syncer.to]
     dir = "/path/pb-dir"
     ```
-
 
 #### 使用 tidb-ansible 部署 PUMP (推荐)
 
@@ -127,7 +126,7 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
     -log-rotate string
         log 文件切换频率, hour/day
     -metrics-addr string
-       prometheus pushgataway 地址，不设置则禁止上报监控信息
+       prometheus Pushgateway 地址，不设置则禁止上报监控信息
     -metrics-interval int
        监控信息上报频率 (默认 15，单位 秒)
     -pd-urls string
@@ -135,7 +134,6 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
     -socket string
         unix socket 模式服务监听地址 (默认 unix:///tmp/pump.sock)
     ```
-
 
  2. PUMP 配置文件
 
@@ -156,6 +154,7 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
     # unix socket 模式服务监听地址 (默认 unix:///tmp/pump.sock)
     socket = "unix:///tmp/pump.sock"
     ```
+
 3. 启动示例
 
     ```bash
@@ -184,7 +183,7 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
     -dest-db-type string
         drainer 下游服务类型 (默认为 mysql)
     -detect-interval int
-        向 pd 查询在线 pump 的时间间隔 (默认 10，单位 秒)
+        向 pd 查询在线 Pump 的时间间隔 (默认 10，单位 秒)
     -disable-dispatch
         是否禁用拆分单个 binlog 的 sqls 的功能，如果设置为 true，则按照每个 binlog
         顺序依次还原成单个事务进行同步( 下游服务类型为 mysql, 该项设置为 False )
@@ -198,7 +197,7 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
     -log-rotate string
         log 文件切换频率, hour/day
     -metrics-addr string
-       prometheus pushgataway 地址，不设置则禁止上报监控信息
+       Prometheus Pushgateway 地址，不设置则禁止上报监控信息
     -metrics-interval int
        监控信息上报频率 (默认 15，单位 秒)
     -pd-urls string
@@ -206,7 +205,6 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
     -txn-batch int
        输出到下游数据库一个事务的 sql 数量 (default 1)
     ```
-
 
 2. Drainer 配置文件
 
@@ -228,7 +226,7 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
     # log 文件路径
     log-file = "drainer.log"
 
-    # syncer Configuration.
+    # Syncer Configuration.
     [syncer]
 
     ## db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test"),
@@ -274,7 +272,6 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
     # [syncer.to]
     # dir = "data.drainer"
     ```
-
 
 3. 启动示例
 

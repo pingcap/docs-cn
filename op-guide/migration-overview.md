@@ -28,7 +28,6 @@ category: advanced
 - 第一种场景：只全量导入历史数据 （需要 checker + mydumper + loader）；
 - 第二种场景：全量导入历史数据后，通过增量的方式同步新的数据 （需要 checker + mydumper + loader + syncer）。该场景需要提前开启 binlog 且格式必须为 ROW。
 
-
 ## MySQL 开启 binlog
 
 **注意： 只有上文提到的第二种场景才需要在 dump 数据之前先开启 binlog**
@@ -39,7 +38,6 @@ category: advanced
     ```sql
     SET GLOBAL binlog_format = ROW;
     ```
-
 
 ## 使用 checker 进行 Schema 检查
 
