@@ -20,15 +20,17 @@ However, in TiDB, the following MySQL features are not supported for the time be
 + Events
 + User-defined functions
 + `FOREIGN KEY` constraints
-+ `FULLTEXT` indexes
-+ `SPATIAL` indexes
++ `FULLTEXT` functions and indexes
++ `SPATIAL` functions and indexes
 + Character sets other than `utf8`
++ Collations other than `BINARY`
 + Add primary key
 + Drop primary key
 + SYS schema
 + Optimizer trace
 + XML Functions
 + X-Protocol
++ Savepoints
 
 ## Features that are different from MySQL
 
