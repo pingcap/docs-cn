@@ -40,11 +40,11 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 我们使用 `mydumper` 从 TiDB 导出数据进行备份，然后用 `loader` 将其导入到 TiDB 里面进行恢复。
 
-> **注意**：虽然 TiDB 也支持使用 MySQL 官方的 `mysqldump` 工具来进行数据的备份恢复工作，但相比于 `mydumper` / `loader`，性能会慢很多，大量数据的备份恢复会花费很多时间，这里我们并不推荐。
+> **注意**：虽然 TiDB 也支持使用 MySQL 官方的 `mysqldump` 工具来进行数据的备份恢复工作，但相比于 `mydumper`/`loader`，性能会慢很多，大量数据的备份恢复会花费很多时间，这里我们并不推荐。
 
 ### `mydumper`/`loader` 全量备份恢复最佳实践
 
-为了快速的备份恢复数据 (特别是数据量巨大的库), 可以参考下面建议
+为了快速的备份恢复数据 (特别是数据量巨大的库), 可以参考以下建议：
 
 * 使用 mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64 
 * loader的 `-t` 参数可以根据 tikv 的实例个数以及负载进行评估调整，例如 3个 tikv 的场景， 此值可以设为 `3 *(1 ～ n)`；当 tikv 负载过高，loader 以及 tidb 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 tikv 负载不是太高的时候，可以适当调大该值。

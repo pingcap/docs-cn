@@ -9,12 +9,16 @@ category: user guide
 
 TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的说明：
 
-    ./tidb-server --help
+```
+./tidb-server --help
+```
 
 获取版本信息可以使用下面命令：
 
-    ./tidb-server -V
-    
+```
+./tidb-server -V
+```
+
 以下是启动参数的完整描述。
 
 ### -L
@@ -71,7 +75,7 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 
 + 推送统计信息到 Prometheus Push Gateway 的时间间隔
 + 默认: 15s
-+ 设置为 0 表明不推送统计信息给 Push Gateway ，如: `--metrics-interval=2` 是每两秒推送到 Push Gataway
++ 设置为 0 表明不推送统计信息给 Push Gateway ，如: `--metrics-interval=2` 是每两秒推送到 Pushgateway
 
 ### \-\-path
 
@@ -93,6 +97,7 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 + 值可以为 (true) 或者 (false). (true) 表明自身会运行 DDL. (false) 表明自身不会运行 DDL
 
 ### \-\-socket string
+
 + TiDB 服务使用 unix socket file 方式接受外部连接
 + 默认: ""
 + 譬如可以使用 "/tmp/tidb.sock" 来打开 unix socket file
@@ -154,7 +159,7 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 - 语句的默认优先级
 - 默认: `NO_PRIORITY`
 - TiDB 支持的语句优先级包括：`NO_PRIORITY`、`LOW_PRIORITY`、`DELAYED` 以及 `HIGH_PRIORITY`。例如，如果你需要为 OLAP 查询指定专属服务器池，可将该值设置为 `LOW_PRIORITY`，以保证 TiKV 服务器优先处理其他 TiDB 服务器池收到的 OLTP 请求。这样可以使 OLTP 性能更稳定，但 OLAP 性能可能会稍有下降
-- TiDB 自动将 table scan 设置为 `LOW_PRIORITY`，通过将 [DML modifier](dml.md) 设置为 `HIGH PRIORITY` 或 `LOW PRIORITY`，可重写一条语句的优先级
+- TiDB 自动将 table scan 设置为 `LOW_PRIORITY`，通过将 [DML modifier](../sql/dml.md) 设置为 `HIGH PRIORITY` 或 `LOW PRIORITY`，可重写一条语句的优先级
 
 ### join-concurrency
 

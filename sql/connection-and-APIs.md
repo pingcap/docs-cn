@@ -80,8 +80,6 @@ Oracle 官方提供了以下 API，TiDB 可以兼容所有这些 API。
 | SPL            | `sql_mysql`                              | `libmysqlclient`                 | See [`sql_mysql` for SPL](http://www.clifford.at/spl/spldoc/sql_mysql.html). |
 | Tcl            | MySQLtcl                                 | `libmysqlclient`                 | See [Section 27.13, “MySQL Tcl API”](https://dev.mysql.com/doc/refman/5.7/en/apis-tcl.html). |
 
-
-
 ## TiDB 支持的连接器版本
 
 | Connector        | Connector version            |

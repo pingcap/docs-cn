@@ -5,7 +5,7 @@ category: user guide
 
 # 表达式语法 (Expression Syntax)
 
-在 TiDB 中，以下规则是表达式的语法，你可以在 parser/parser.y 中找到定义。TiDB 的语法解析是基于 yacc 的。
+在 TiDB 中，以下规则是表达式的语法，你可以在 `parser/parser.y` 中找到定义。TiDB 的语法解析是基于 yacc 的。
 
 ```
 Expression:

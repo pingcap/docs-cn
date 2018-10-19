@@ -14,6 +14,7 @@ TiDB 优化器会根据统计信息来选择最优的执行计划。统计信息
 你可以通过执行 `ANALYZE` 语句来收集统计信息。
 
 语法：
+
 ```sql
 ANALYZE TABLE TableNameList
 > 该语句会收集 TableNameList 中所有表的统计信息。
@@ -57,6 +58,7 @@ ANALYZE TABLE TableName INDEX [IndexNameList]
 你可以通过 `SHOW STATS_META` 来查看表的总行数以及修改的行数等信息。
 
 语法：
+
 ```sql
 SHOW STATS_META [ShowLikeOrWhere]
 > 该语句会输出所有表的总行数以及修改行数等信息，你可以通过使用 ShowLikeOrWhere 来筛选需要的信息。
@@ -77,6 +79,7 @@ SHOW STATS_META [ShowLikeOrWhere]
 你可以通过 `SHOW STATS_HISTOGRAMS` 来查看列的不同值数量以及 NULL 数量等信息。
 
 语法：
+
 ```sql
 SHOW STATS_HISTOGRAMS [ShowLikeOrWhere]
 > 该语句会输出所有列的不同值数量以及 NULL 数量等信息，你可以通过使用 ShowLikeOrWhere 来筛选需要的信息。
@@ -100,6 +103,7 @@ SHOW STATS_HISTOGRAMS [ShowLikeOrWhere]
 你可以通过 `SHOW STATS_BUCKETS` 来查看直方图每个桶的信息。
 
 语法：
+
 ```sql
 SHOW STATS_BUCKETS [ShowLikeOrWhere]
 > 该语句会输出所有桶的信息，你可以通过使用 ShowLikeOrWhere 来筛选需要的信息。
@@ -124,6 +128,7 @@ SHOW STATS_BUCKETS [ShowLikeOrWhere]
 可以通过执行 `DROP STATS` 语句来删除统计信息。
 
 语法：
+
 ```sql
 DROP STATS TableName
 > 该语句会删除 TableName 中所有的统计信息。
@@ -134,6 +139,7 @@ DROP STATS TableName
 ### 导出统计信息
 
 统计信息的导出接口为：
+
 ```
 http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${table_name}
 > 通过该接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 的 json 格式的统计信息。
@@ -144,8 +150,8 @@ http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${tabl
 导入的统计信息一般是通过统计信息导出接口得到的 json 文件。
 
 语法：
+
 ```sql
 LOAD STATS 'file_name'
 > `file_name` 为要导入的统计信息的文件名。
 ```
-

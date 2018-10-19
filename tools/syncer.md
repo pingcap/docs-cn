@@ -344,7 +344,7 @@ target-table = "order_2017"
     - 结果为空或者为 0，Syncer 无法同步数据
     - Syncer server-id 与 MySQL server-id 不能相同，且在 MySQL cluster 中唯一
 
-    ```
+    ```sql
     mysql> show global variables like 'server_id';
     +---------------+-------  
     | Variable_name | Value |
@@ -360,7 +360,7 @@ target-table = "order_2017"
     - 可以用如下命令确认是否开启了 binlog
     - 如果结果是 log_bin = OFF，需要开启。开启方式请参考[官方文档](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
 
-    ```
+    ```sql
     mysql> show global variables like 'log_bin';
     +--------------------+---------+
     | Variable_name | Value  |
@@ -374,7 +374,7 @@ target-table = "order_2017"
 
     - 可以用如下命令检查 binlog 格式：
 
-    ```
+    ```sql
     mysql> show global variables like 'binlog_format';
     +--------------------+----------+
     | Variable_name | Value   |
@@ -387,7 +387,7 @@ target-table = "order_2017"
     - 如果发现 binlog 格式是其他格式，可以通过如下命令设置为 ROW：
     - 如果 MySQL 有连接，建议重启 MySQL 服务或者杀掉所有连接。
 
-    ```
+    ```sql
     mysql> set global binlog_format=ROW;
     mysql>  flush logs;
     Query OK, 0 rows affected (0.01 sec)
@@ -397,7 +397,7 @@ target-table = "order_2017"
 
     - 可以用如下命令检查 `binlog_row_image`
 
-    ```
+    ```sql
     mysql> show global variables like 'binlog_row_image';
     +--------------------------+---------+
     | Variable_name        | Value  |
@@ -409,7 +409,7 @@ target-table = "order_2017"
 
     - 如果 binlog_row_image 结果不为 FULL，请设置为 FULL。设置方式如下：
 
-    ```
+    ```sql
     mysql> set global binlog_row_image = FULL;
     Query OK, 0 rows affected (0.01 sec)
     ```
@@ -422,7 +422,9 @@ target-table = "order_2017"
 
     - 需要上游 MySQL 同步账号至少赋予以下权限：
         
-        ` select , replication slave , replication client`
+        ```
+        select , replication slave , replication client
+        ```
     
     - 下游 TiDB 可暂时采用 root 同权限账号
 
@@ -430,7 +432,9 @@ target-table = "order_2017"
 
     - 使用以下语句查看 binlog 内容：
         
-        `show binlog events in 'mysql-bin.000023' from 136676560 limit 10;`
+        ```
+        show binlog events in 'mysql-bin.000023' from 136676560 limit 10;
+        ```
 
 ## 监控方案
 

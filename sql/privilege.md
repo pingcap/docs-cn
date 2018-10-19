@@ -85,7 +85,7 @@ grant all privileges on *.* to 'xxx'@'%';
 
 如果 grant 的目标用户不存在，TiDB 会自动创建用户。
 
-```
+```sql
 mysql> select * from mysql.user where user='xxxx';
 Empty set (0.00 sec)
 
@@ -105,7 +105,7 @@ mysql> select user,host from mysql.user where user='xxxx';
 
 grant 对于数据库或者表的授权，不检查数据库或表是否存在。
 
-```
+```sql
 mysql> select * from test.xxxx;
 ERROR 1146 (42S02): Table 'test.xxxx' doesn't exist
 
@@ -123,7 +123,7 @@ mysql> select user,host from mysql.tables_priv where user='xxxx';
 
 grant 可以模糊匹配地授予数据库和表
 
-```
+```sql
 mysql> grant all privileges on `te%`.* to genius;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -140,47 +140,46 @@ mysql> select user,host,db from mysql.db where user='genius';
 
 #### 收回权限
 
-revoke语句与grant对应：
+revoke 语句与 grant 对应：
 
 ```sql
 revoke all privileges on `test`.* from 'genius'@'localhost';
 ```
 
-注意 revoke 收回权限时只做精确匹配，若找不到记录则报错。而 grant 授予权限时可以使用模糊匹配。
+> **注意**：revoke 收回权限时只做精确匹配，若找不到记录则报错。而 grant 授予权限时可以使用模糊匹配。
 
-```
+```sql
 mysql> revoke all privileges on `te%`.* from 'genius'@'%';
 ERROR 1141 (42000): There is no such grant defined for user 'genius' on host '%'
 ```
 
-> 关于模糊匹配和转义，字符串和 identifier
->
->
-> ```
-> mysql> grant all privileges on `te\%`.* to 'genius'@'localhost';
-> Query OK, 0 rows affected (0.00 sec)
-> ```
->
-> 这个例子是精确匹配名叫 `te%` 的数据库，注意到用了 `\` 转义字符。
->
-> 以单引号包含的，是一个字符串。以反引号包含的，是一个 identifier。注意下面区别：
->
-> ```
-> mysql> grant all privileges on 'test'.* to 'genius'@'localhost';
-> ERROR 1064 (42000): You have an error in your SQL syntax; check the
-> manual that corresponds to your MySQL server version for the right
-> syntax to use near ''test'.* to 'genius'@'localhost'' at line 1
->
-> mysql> grant all privileges on `test`.* to 'genius'@'localhost';
-> Query OK, 0 rows affected (0.00 sec)
-> ```
->
-> 如果一些特殊的关键字想做为表名，可以用反引号包含起来。比如：
->
-> ```
-> mysql> create table `select` (id int);
-> Query OK, 0 rows affected (0.27 sec)
-> ```
+关于模糊匹配和转义，字符串和 identifier：
+
+```sql
+mysql> grant all privileges on `te\%`.* to 'genius'@'localhost';
+Query OK, 0 rows affected (0.00 sec)
+```
+
+上述例子是精确匹配名叫 `te%` 的数据库，注意使用 `\` 转义字符。
+
+以单引号包含的，是一个字符串。以反引号包含的，是一个 identifier。注意下面的区别：
+
+```sql
+mysql> grant all privileges on 'test'.* to 'genius'@'localhost';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the
+manual that corresponds to your MySQL server version for the right
+syntax to use near ''test'.* to 'genius'@'localhost'' at line 1
+
+mysql> grant all privileges on `test`.* to 'genius'@'localhost';
+Query OK, 0 rows affected (0.00 sec)
+```
+
+如果一些特殊的关键字想做为表名，可以用反引号包含起来。比如：
+
+```sql
+mysql> create table `select` (id int);
+Query OK, 0 rows affected (0.27 sec)
+```
 
 #### 查看为用户分配的权限
 
@@ -213,6 +212,7 @@ select table_priv from mysql.tables_priv where user='test' and host='%' and db='
 ### 权限系统的实现
 
 #### 授权表
+
 有几张系统表是非常特殊的表，权限相关的数据全部存储在这几张表内。
 
  - mysql.user 用户账户，全局权限
@@ -240,7 +240,7 @@ mysql> select User,Host,Select_priv,Insert_priv from mysql.user limit 1;
 
 实现层面其实也只是包装了一层语法糖。例如删除用户会执行：
 
-```
+```sql
 delete from mysql.user where user='test';
 ```
 
@@ -260,7 +260,7 @@ User+Host 可能会匹配 `user` 表里面多行，为了处理这种情况，`u
 
 `user` 表的权限是全局的，并且不管默认数据库是哪一个。比如 `user` 里面有 DELETE 权限，任何一行，任何的表，任何的数据库。
 
-`db`表里面，User 为空是匹配匿名用户，User 里面不能有通配符。Host和Db列里面可以有 `%` 和 `_`，可以模式匹配。
+`db`表里面，User 为空是匹配匿名用户，User 里面不能有通配符。Host 和 Db 列里面可以有 `%` 和 `_`，可以模式匹配。
 
 `user` 和 `db` 读到内存也是排序的。
 
@@ -293,7 +293,7 @@ auth_spec: {
 }
 ```
 
-user 参见[用户账号名](user-account-management.md)。
+user 参见[用户账号名](../sql/user-account-management.md)。
 
 * IDENTIFIED BY 'auth_string'
 

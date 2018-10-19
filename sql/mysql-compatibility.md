@@ -139,11 +139,11 @@ Create Table: CREATE TABLE `t1` (
 1 row in set (0.00 sec)
 ```
 
-从架构上讲，TiDB 确实支持类似 MySQL 的存储引擎抽象，在启动 TiDB（通常是 `tikv`）时 [`--store`](server-command-option.md#--store) 选项指定的引擎中创建用户表。
+从架构上讲，TiDB 确实支持类似 MySQL 的存储引擎抽象，在启动 TiDB（通常是 `tikv`）时 [`--store`](../sql/server-command-option.md#--store) 选项指定的引擎中创建用户表。
 
 ### EXPLAIN
 
-TiDB 的 `EXPLAIN` 命令返回的查询执行计划的输出与 MySQL 不同。更多内容参见 [理解 TiDB 执行计划](understanding-the-query-execution-plan.md)。
+TiDB 的 `EXPLAIN` 命令返回的查询执行计划的输出与 MySQL 不同。更多内容参见 [理解 TiDB 执行计划](../sql/understanding-the-query-execution-plan.md)。
 
 ### 默认设置的区别
 

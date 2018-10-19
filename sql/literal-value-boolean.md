@@ -7,7 +7,7 @@ category: user guide
 
 常量 `TRUE` 和 `FALSE` 等于 1 和 0，它是大小写不敏感的。
 
-```
+```sql
 mysql> SELECT TRUE, true, tRuE, FALSE, FaLsE, false;
 +------+------+------+-------+-------+-------+
 | TRUE | true | tRuE | FALSE | FaLsE | false |
