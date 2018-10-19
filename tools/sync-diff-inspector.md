@@ -154,7 +154,7 @@ tables = ["test"]
 
 # 配置该表对应的分表的相关配置
 [[table-config]]
-# 目标库的名称
+# 目标库的名称
 schema = "test"
 
 # 目标库中表的名称
