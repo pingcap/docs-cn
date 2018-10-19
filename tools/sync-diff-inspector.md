@@ -3,21 +3,21 @@ title: sync-diff-inspector 用户文档
 category: tools
 ---
 
-## sync-diff-inspector 简介
+## sync-diff-inspector 简介
 sync-diff-inspector 是一个用于校验 MySQL／TiDB 中两份数据是否一致的工具，该工具提供了修复数据的功能（适用于修复少量不一致的数据）。
 
 主要功能：
-* 对比表结构和数据
+* 对比表结构和数据
 * 如果数据不一致，则生成用于修复数据的 sql
 * 支持多个表的数据与单个表数据的比较（针对分库分表同步数据到总表的场景）
-* 支持不同库名／表名的数据的比较
+* 支持不同库名／表名的数据的比较
 
 Github 地址：[sync-diff-inspector](https://github.com/pingcap/tidb-tools/tree/master/sync_diff_inspector)
 
 下载地址：[sync-diff-inspector-linux-amd64.tar.gz](https://download.pingcap.org/sync-diff-inspector-linux-amd64.tar.gz)
 
 ## sync-diff-inspector 的使用
-### 通用配置文件说明
+### 通用配置文件说明
 
 ```
 # diff Configuration.
@@ -25,20 +25,20 @@ Github 地址：[sync-diff-inspector](https://github.com/pingcap/tidb-tools/tree
 # 日志级别，可以设置为 info、debug
 log-level = "info"
 
-# sync-diff-inspector 根据主键／唯一键／索引将数据划分为多个 chunk，
+# sync-diff-inspector 根据主键／唯一键／索引将数据划分为多个 chunk，
 # 对每一个 chunk 的数据进行对比。使用 chunk-size 设置 chunk 的大小
 chunk-size = 1000
 
 # 检查数据的线程数量
 check-thread-count = 4
 
-# 抽样检查的比例，如果设置为 100 则检查全部数据
+# 抽样检查的比例，如果设置为 100 则检查全部数据
 sample-percent = 100
 
 # 是否使用 TiDB 的隐藏列“_tidb_rowid”进行对比，当对比的表没有主键／唯一键且对比的两个数据库都为 TiDB 时可以开启该配置
 use-rowid = false
 
-# 通过计算 chunk 的 checksum 来对比数据，如果不开启则逐行对比数据
+# 通过计算 chunk 的 checksum 来对比数据，如果不开启则逐行对比数据
 use-checksum = true
 
 # 不对比数据
@@ -50,21 +50,21 @@ ignore-struct-check = false
 # 保存用于修复数据的 sql 的文件名称
 fix-sql-file = "fix.sql"
 
-# 配置需要对比的目标数据库中的表
+# 配置需要对比的目标数据库中的表
 [[check-tables]]
-# 目标库中数据库的名称
+# 目标库中数据库的名称
 schema = "test"
 
 # 需要检查的表
 tables = ["test1", "test2", "test3"]
 
-# 支持使用正则表达式配置检查的表，需要以‘~’开始，
-# 例如：下面的配置会检查所有表名以‘test’为前缀的表
+# 支持使用正则表达式配置检查的表，需要以‘~’开始，
+# 例如：下面的配置会检查所有表名以‘test’为前缀的表
 # tables = ["~test*"]
 
 # 对部分表进行特殊的配置，配置的表必须包含在 check-tables 中
 [[table-config]]
-# 目标库中数据库的名称
+# 目标库中数据库的名称
 schema = "test"
 
 # 表名
@@ -83,7 +83,7 @@ is-sharding = false
 # 需要与数据库中 charset 的设置相对应
 # collation = "latin1_bin"
 
-# 忽略某些列的检查，但是这些列仍然可以用于划分 chunk、对检查的数据进行排序
+# 忽略某些列的检查，但是这些列仍然可以用于划分 chunk、对检查的数据进行排序
 # ignore-columns = ["name"]
 
 # 移除某些列，检查时会将这些列从表结构中移除，既不会检查这些列的数据，
@@ -95,10 +95,10 @@ is-sharding = false
 # 目标库名
 schema = "test"
 
-# 目标表名
+# 目标表名
 table = "test2"
 
-# 非分库分表场景，设置为 false
+# 非分库分表场景，设置为 false
 is-sharding = false
 
 # 源数据的配置
@@ -131,14 +131,17 @@ password = ""
 # snapshot = "2016-10-08 16:45:26"
 ```
 
-### 分库分表场景下数据对比的配置示例：
-假设有两个 MySQL 实例，使用同步工具同步到一个 TiDB 中，场景如图所示：
+### 分库分表场景下数据对比的配置示例：
+假设有两个 MySQL 实例，使用同步工具同步到一个 TiDB 中，场景如图所示：
+
 ![shard-table-sync](../media/shard-table-sync.png)
+
 如果需要检查同步后数据是否一致，可以使用如下的配置对比数据：
+
 ```
 # diff Configuration.
 
-# 配置需要对比的目标数据库中的表
+# 配置需要对比的目标数据库中的表
 [[check-tables]]
 # 库的名称
 schema = "test"
