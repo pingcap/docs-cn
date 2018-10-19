@@ -42,4 +42,4 @@ PingCAP 的 mydumper 源码 [位于 GitHub](https://github.com/pingcap/mydumper)
 
 ### 未来是否计划让 PingCAP 对 mydumper 的改动合并到上游？
 
-是的，PingCAP 团队计划将对 mydumper 的改动合并到上游。参见 [PR #155](https://github.com/maxbube/mydumper/pull/155).
+是的，PingCAP 团队计划将对 mydumper 的改动合并到上游。参见 [PR #155](https://github.com/maxbube/mydumper/pull/155)。
