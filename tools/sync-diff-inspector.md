@@ -3,23 +3,26 @@ title: sync-diff-inspector 用户文档
 category: tools
 ---
 
+# sync-diff-inspector 用户文档
+
 ## sync-diff-inspector 简介
 sync-diff-inspector 是一个用于校验 MySQL／TiDB 中两份数据是否一致的工具，该工具提供了修复数据的功能（适用于修复少量不一致的数据）。
 
 主要功能：
+
 * 对比表结构和数据
-* 如果数据不一致，则生成用于修复数据的 sql
+* 如果数据不一致，则生成用于修复数据的 SQL
 * 支持多个表的数据与单个表数据的比较（针对分库分表同步数据到总表的场景）
 * 支持不同库名／表名的数据的比较
 
-Github 地址：[sync-diff-inspector](https://github.com/pingcap/tidb-tools/tree/master/sync_diff_inspector)
+GitHub 地址：[sync-diff-inspector](https://github.com/pingcap/tidb-tools/tree/master/sync_diff_inspector)
 
 下载地址：[sync-diff-inspector-linux-amd64.tar.gz](https://download.pingcap.org/sync-diff-inspector-linux-amd64.tar.gz)
 
 ## sync-diff-inspector 的使用
 ### 通用配置文件说明
 
-```
+``` toml
 # diff Configuration.
 
 # 日志级别，可以设置为 info、debug
@@ -138,7 +141,7 @@ password = ""
 
 如果需要检查同步后数据是否一致，可以使用如下的配置对比数据：
 
-```
+``` toml
 # diff Configuration.
 
 # 配置需要对比的目标数据库中的表
@@ -209,6 +212,6 @@ password = ""
 ### 运行 sync-diff-inspector
 执行如下命令：
 
-```
+``` bash
 ./bin/sync_diff_inspector --config=./config.toml
 ```
