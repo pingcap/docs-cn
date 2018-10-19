@@ -5,9 +5,10 @@ category: tispark
 
 # TiSpark 快速入门指南
 
-为了让大家快速体验 [TiSpark](tispark-user-guide.md)，通过 TiDB-Ansible 安装的 TiDB 集群中默认已集成 Spark、TiSpark jar 包及 TiSpark sample data。
+为了让大家快速体验 [TiSpark](../tispark/tispark-user-guide.md)，通过 TiDB-Ansible 安装的 TiDB 集群中默认已集成 Spark、TiSpark jar 包及 TiSpark sample data。
 
 ## 部署信息
+
 -   Spark 默认部署在 TiDB 实例部署目录下 spark 目录中
 -   TiSpark jar 包默认部署在 Spark 部署目录 jars 文件夹下：
 
@@ -18,6 +19,7 @@ category: tispark
     tidb-ansible/resources/bin/tispark-sample-data
 
 ## 环境准备
+
 ### 在 TiDB 实例上安装 JDK
 
 在 [Oracle JDK 官方下载页面 ](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-javase8-2177648.html) 下载 JDK 1.8 当前最新版，本示例中下载的版本为 `jdk-8u141-linux-x64.tar.gz`。
@@ -180,4 +182,5 @@ scala> spark.sql(
  528524219.358903|25.597168|35874.006533|0.049828|      14902|
 -----------------+---------+------------+--------+-----------+
 ```
-更多样例请参考 https://github.com/ilovesoup/tpch/tree/master/sparksql 。
+
+更多样例请参考 https://github.com/ilovesoup/tpch/tree/master/sparksql。

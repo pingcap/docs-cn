@@ -8,6 +8,7 @@ category: advanced
 当试用 TiDB 遇到问题时，请先参考本篇文档。如果问题未解决，请按文档要求收集必要的信息通过 Github [提供给 TiDB 开发者](https://github.com/pingcap/tidb/issues/new)。
 
 ## 如何给 TiDB 开发者报告错误
+
 当使用 TiDB 遇到问题并且通过后面所列信息无法解决时，请收集以下信息并[创建新 Issue](https://github.com/pingcap/tidb/issues/new):
 
 + 具体的出错信息以及正在执行的操作
@@ -23,18 +24,20 @@ category: advanced
 
 如果所有的进程都在，请查看 tidb-server 的日志，看是否有报错？常见的错误包括：
 
-+   InfomationSchema is out of date
++   InformationSchema is out of date
 
     无法连接 tikv-server，请检查 pd-server 以及 tikv-server 的状态和日志。
+
 +   panic
 
     程序有错误，请将具体的 panic log [提供给 TiDB 开发者](https://github.com/pingcap/tidb/issues/new)。
 
-如果是清空数据并重新部署服务，请确认以下信息：
+    如果是清空数据并重新部署服务，请确认以下信息：
 
 +   pd-server、tikv-server 数据都已清空
 
     tikv-server 存储具体的数据，pd-server 存储 tikv-server 中数据的的元信息。如果只清空 pd-server 或只清空 tikv-server 的数据，会导致两边数据不匹配。
+
 +   清空 pd-server 和 tikv-server 的数据并重启后，也需要重启 tidb-server
 
     集群 ID 是由 pd-server 在集群初始化时随机分配，所以重新部署集群后，集群 ID 会发生变化。tidb-server 业务需要重启以获取新的集群 ID。
@@ -45,10 +48,12 @@ tidb-server 无法启动的常见情况包括：
 
 +   启动参数错误
 
-    请参考[TiDB 命令行参数](op-guide/configuration.md#tidb)文档。
+    请参考[TiDB 命令行参数](op-guide/configuration.md#tidb)
+    
 +   端口被占用：`lsof -i:port`
 
     请确保 tidb-server 启动所需要的端口未被占用。
+
 +   无法连接 pd-server
 
     首先检查 pd-server 的进程状态和日志，确保 pd-server 成功启动，对应端口已打开：`lsof -i:port`。
@@ -125,7 +130,7 @@ tidb-server 无法启动的常见情况包括：
 
 ## 数据库访问超时，系统负载高
 
-首先检查 [SLOW-QUERY](./sql/slow-query.md) 日志, 判断是否是因为某条 SQL 语句导致。
+首先检查 [SLOW-QUERY](sql/slow-query.md) 日志, 判断是否是因为某条 SQL 语句导致。
 如果未能解决，请提供如下信息：
 
 + 部署的拓扑结构

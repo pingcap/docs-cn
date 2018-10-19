@@ -9,7 +9,7 @@ TiDB 可以通过一些语句对数据库进行管理，包括设置权限、修
 
 ## 权限管理
 
-参考[权限管理文档](privilege.md)。
+参考[权限管理文档](../sql/privilege.md)。
 
 ## `SET` 语句
 
@@ -30,7 +30,7 @@ variable_assignment:
         system_var_name = expr
 ```
 
-这种语法可以设置 TiDB 的变量值，包括系统变量以及用户定义变量。对于用户自定义变量，都是会话范围的变量；对于系统变量，通过 `@@global.` 或者是 `GLOBAL` 设置的变量为全局范围变量，否则为会话范围变量，具体参考[系统变量](variable.md)一章。
+这种语法可以设置 TiDB 的变量值，包括系统变量以及用户定义变量。对于用户自定义变量，都是会话范围的变量；对于系统变量，通过 `@@global.` 或者是 `GLOBAL` 设置的变量为全局范围变量，否则为会话范围变量，具体参考[系统变量](../sql/variable.md)一章。
 
 ### `SET CHARACTER` 语句和 `SET NAMES`
 
@@ -55,13 +55,15 @@ password_option: {
 }
 ```
 
-设置用户密码，具体信息参考[权限管理](privilege.md)。
+设置用户密码，具体信息参考[权限管理](../sql/privilege.md)。
 
 ### 设置隔离级别
+
 ```sql
 SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
 ```
-设置事务隔离级别，具体信息参考[事务语句](transaction.md#事务隔离级别)。
+
+设置事务隔离级别，具体信息参考[事务语句](../sql/transaction.md#事务隔离级别)。
 
 ## `SHOW` 语句
 
@@ -106,7 +108,8 @@ like_or_where:
 ```
 
 说明：
-* 通过 `SHOW` 语句展示统计信息请参考[统计信息说明](https://github.com/pingcap/docs-cn/blob/master/sql/statistics.md#统计信息的查看)
+
+* 通过 `SHOW` 语句展示统计信息请参考[统计信息说明](https://github.com/pingcap/docs-cn/blob/master/sql/statistics.md#统计信息的查看)。
 * 关于 `SHOW` 语句更多信息请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/5.7/en/show.html)
 
 ## `ADMIN` 语句

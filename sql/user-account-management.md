@@ -44,7 +44,7 @@ mysql> CREATE USER 'dummy'@'localhost';
 
 使用 `SHOW GRANTS` 可以看到为一个用户授予的权限：
 
-```
+```sql
 mysql> SHOW GRANTS FOR 'admin'@'localhost';
 +-----------------------------------------------------+
 | Grants for admin@localhost                          |
@@ -57,7 +57,7 @@ mysql> SHOW GRANTS FOR 'admin'@'localhost';
 
 使用 `DROP USER` 语句可以删除用户，例如：
 
-```
+```sql
 mysql> DROP USER 'jeffrey'@'localhost';
 ```
 

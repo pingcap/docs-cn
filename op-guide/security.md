@@ -22,7 +22,7 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
 
 有多种工具可以生成自签名证书，如 `openssl`，`easy-rsa `，`cfssl`。
 
-这里提供一个使用 `cfssl` 生成证书的示例：[生成自签名证书](generate-self-signed-certificates.md)。
+这里提供一个使用 `cfssl` 生成证书的示例：[生成自签名证书](../op-guide/generate-self-signed-certificates.md)。
 
 ### 配置证书
 
@@ -76,8 +76,6 @@ key-path = "/path/to/server-key.pem"
 ./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/client.pem" --key-path="/path/to/clinet-key.pem"
 ```
 
-
-
 ## MySQL 与 TiDB 间开启 TLS
 
 ### 准备证书
@@ -125,6 +123,3 @@ ssl-key = "/path/to/certs/server-key.pem"
 ```bash
 mysql -u root --host 127.0.0.1 --port 4000 --ssl-cert=/path/to/certs/client-cert.pem --ssl-key=/path/to/certs/client-key.pem --ssl-ca=/path/to/certs/ca.pem --ssl-mode=VERIFY_IDENTITY
 ```
-
-
-

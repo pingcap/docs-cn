@@ -7,7 +7,7 @@ category: deployment
 
 TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认的配置文件，重命名为 config.toml 即可。
 
-本文档只阐述未包含在命令行参数中的参数，命令行参数参见[这里](configuration.md)。
+本文档只阐述未包含在命令行参数中的参数，命令行参数参见[这里](../op-guide/configuration.md)。
 
 ### `split-table`
 
@@ -212,9 +212,11 @@ prepare 语句的 Plan cache 设置。
 事务内存锁相关配置，当本地事务冲突比较多时建议开启。
 
 ### `enable`
+
 + 开启
 + 默认: false
 
 ### `capacity`
+
 + Hash 对应的 slot 数, 会自动向上调整为 2 的指数倍。每个 slot 占 32 Bytes 内存。当写入数据的范围比较广时（如导数据），设置过小会导致变慢，性能下降。
 + 默认：1024000

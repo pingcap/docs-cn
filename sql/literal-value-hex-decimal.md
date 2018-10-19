@@ -27,7 +27,7 @@ X'1z' (z 不是合法的十六进制值)
 
 对于使用 `X'val'` 格式的十六进制字面值，`val` 必须要有一个数字，可以在前面补一个 0 来避免语法错误。
 
-```
+```sql
 mysql> select X'aff';
 ERROR 1105 (HY000): line 0 column 13 near ""hex literal: invalid hexadecimal format, must even numbers, but 3 (total length 13)
 mysql> select X'0aff';
@@ -44,7 +44,7 @@ mysql> select X'0aff';
 
 如果需要将一个字符串或者数字转换为十六进制字面值，可以使用内建函数 `HEX()`：
 
-```
+```sql
 mysql> SELECT HEX('TiDB');
 +-------------+
 | HEX('TiDB') |
