@@ -104,7 +104,7 @@ TiDB 的 `show processlist` 与 MySQL 的 `show processlist` 显示内容基本�
 
 TiDB 作为分布式数据库，在 TiDB 中修改用户密码建议使用 `set password for 'root'@'%' = '0101001';` 或 `alter` 方法，不推荐使用 `update mysql.user` 的方法进行，这种方法可能会造成其它节点刷新不及时的情况。修改权限也一样，都建议采用官方的标准语法。详情可参考 [TiDB 用户账户管理](sql/user-account-management.md)。
 
-#### 1.1.22 TiDB中，为什么出现后插入数据的自增 ID 反而小？
+#### 1.1.22 TiDB 中，为什么出现后插入数据的自增 ID 反而小？
 
 TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 tidb-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考[数据定义语句](sql/ddl.md)。
 
@@ -477,8 +477,8 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 - 多个 DDL 语句一起执行的时候，后面的几个 DDL 语句会比较慢。原因是当前 TiDB 集群中 DDL 操作是串行执行的。
 - 在正常集群启动后，第一个 DDL 操作的执行时间可能会比较久，一般在 30s 左右，这个原因是刚启动时 TiDB 在竞选处理 DDL 的 leader。
-- 由于停 TiDB 时不能与 PD 正常通讯（包括停电情况）或者用 `kill -9` 指令停 TiDB 导致 TiDB 没有及时从 PD 清理注册数据，那么会影响 TiDB 启动后 10min 内的 DDL 语句处理时间。这段时间内运行 DDL 语句时，每个 DDL 状态变化都需要等待 2 * lease（默认 lease = 45s）。
-- 当集群中某个 TiDB 与 PD 之间发生通讯问题，即 TiDB 不能从 PD 及时获取或更新版本信息，那么这时候 DDL 操作的每个状态处理需要等待 2 * lease。
+- 由于停 TiDB 时不能与 PD 正常通信（包括停电情况）或者用 `kill -9` 指令停 TiDB 导致 TiDB 没有及时从 PD 清理注册数据，那么会影响 TiDB 启动后 10min 内的 DDL 语句处理时间。这段时间内运行 DDL 语句时，每个 DDL 状态变化都需要等待 2 * lease（默认 lease = 45s）。
+- 当集群中某个 TiDB 与 PD 之间发生通信问题，即 TiDB 不能从 PD 及时获取或更新版本信息，那么这时候 DDL 操作的每个状态处理需要等待 2 * lease。
 
 #### 3.3.4 TiDB 可以使用 S3 作为后端存储吗？
 
@@ -490,7 +490,7 @@ Infomation_schema 库里面的表主要是为了兼容 MySQL 而存在，有些�
 
 #### 3.3.6 TiDB Backoff type 主要原因?
 
-TiDB-server 与 TiKV-server 随时进行通讯，在进行大量数据操作过程中，会出现 Server is busy 或者 backoff.maxsleep 20000ms 的日志提示信息，这是由于 TiKV-server 在处理过程中系统比较忙而出现的提示信息，通常这时候可以通过系统资源监控到 TiKV 主机系统资源使用率比较高的情况出现。如果这种情况出现，可以根据资源使用情况进行相应的扩容操作。
+TiDB-server 与 TiKV-server 随时进行通信，在进行大量数据操作过程中，会出现 Server is busy 或者 backoff.maxsleep 20000ms 的日志提示信息，这是由于 TiKV-server 在处理过程中系统比较忙而出现的提示信息，通常这时候可以通过系统资源监控到 TiKV 主机系统资源使用率比较高的情况出现。如果这种情况出现，可以根据资源使用情况进行相应的扩容操作。
 
 #### 3.3.7 TiDB TiClient type 主要原因？
 
@@ -507,6 +507,38 @@ information_schema 库中的 tables 表里的 create_time 即为表的真实创�
 #### 3.3.9 TiDB 的日志中 EXPENSIVE_QUERY 是什么意思？
 
 TiDB 在执行 SQL 时，预估出来每个 operator 处理了超过 10000 条数据就认为这条 query 是 expensive query。可以通过修改 tidb-server 配置参数来对这个门限值进行调整，调整后需要重新启动 tidb-server。
+
+#### 3.3.10 在 TiDB 中如何控制或改变 SQL 提交的执行优先级？
+
+TiDB 支持改变 [per-session](sql/tidb-specific.md#tidb_force_priority)、[全局](sql/server-command-option.md#force-priority)或[单个语句](sql/dml.md)的优先级。优先级包括：
+
+- HIGH_PRIORITY：该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句
+- LOW_PRIORITY：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
+
+以上两种参数可以结合 TiDB 的 DML 语言进行使用，具体使用方式可以参考[官方文档](sql/dml.md)，使用方法举例如下：
+
+1）通过在数据库中写 SQL 的方式来调整优先级：
+
+```
+select HIGH_PRIORITY | LOW_PRIORITY count(*) from table_name;
+insert HIGH_PRIORITY | LOW_PRIORITY into table_name insert_values;
+delete HIGH_PRIORITY | LOW_PRIORITY from table_name;
+update HIGH_PRIORITY | LOW_PRIORITY table_reference set assignment_list where where_condition;
+replace HIGH_PRIORITY | LOW_PRIORITY into table_name;
+```
+
+2）全表扫会自动调整为低优先级，analyze 也是默认低优先级。
+
+#### 3.3.11 在 TiDB 中 auto analyze 的触发策略是怎样的？
+
+触发策略：新表达到 1000 条，并且在 1 分钟内没有写入，会自动触发。
+
+当表的（修改数/当前总行数）大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 analyze 语句。`tidb_auto_analyze_ratio` 的默认值为 0，即关闭此功能。为了保险起见，在开启此功能的时候，保证了其最小值为 0.3。但是不能大于等于 `pseudo-estimate-ratio`（默认值为 0.7），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
+
+#### 3.3.12 SQL 中如何通过 hint 使用一个具体的 index？
+
+同 MySQL 的 用法一致，例如：
+`select column_name from table_name use index（index_name）where where_condition;`
 
 ### 3.4 TiKV 管理
 
@@ -530,27 +562,27 @@ TiKV 本地存储的 cluster ID 和指定的 PD 的 cluster ID 不一致。在�
 
 TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在默认 RocksDB 内部的 default、write、lock 3 个 CF 内。
 
-- default CF 存储的是真正的数据，与其对应的参数位于 [rocksdb.defaultcf] 项中。
-- write CF 存储的是数据的版本信息（MVCC）、索引、小表相关的数据，相关的参数位于 [rocksdb.writecf] 项中。
+- default CF 存储的是真正的数据，与其对应的参数位于 `[rocksdb.defaultcf]` 项中。
+- write CF 存储的是数据的版本信息（MVCC）、索引、小表相关的数据，相关的参数位于 `[rocksdb.writecf]` 项中。
 - lock CF 存储的是锁信息，系统使用默认参数。
-- Raft Rocksdb 实例存储 Raft log。default CF 主要存储的是 Raft log，与其对应的参数位于 [raftdb.defaultcf] 项中。
+- Raft RocksDB 实例存储 Raft log。default CF 主要存储的是 Raft log，与其对应的参数位于 `[raftdb.defaultcf]` 项中。
 - 每个 CF 都有单独的 Block-cache，用于缓存数据块，加速 RocksDB 的读取速度，Block-cache 的大小通过参数 `block-cache-size` 控制，`block-cache-size` 越大，能够缓存的热点数据越多，对读取操作越有利，同时占用的系统内存也会越多。
 - 每个 CF 有各自的 Write-buffer，大小通过 `write-buffer-size` 控制。
 
-#### 3.4.6 TiKV channel full 是啥原因？
+#### 3.4.6 TiKV channel full 是什么原因？
 
-- Raftstore 线程卡了，可以看一下 Raftstore 的 CPU 使用情况。
-- TiKV 太忙了（读取、写入、磁盘 I/O 等），请求处理不过来。
+- Raftstore 线程太忙，或者因 I/O 而卡住。可以看一下 Raftstore 的 CPU 使用情况。
+- TiKV 过忙（CPU、磁盘 I/O 等），请求处理不过来。
 
-#### 3.4.7 TiKV 频繁切换 Region leader 切换是啥原因？
+#### 3.4.7 TiKV 频繁切换 Region leader 是什么原因？
 
 - 网络问题导致节点间通信卡了，查看 Report failures 监控。
 - 原主 Leader 的节点卡了，导致没有及时给 Follower 发送消息。
 - Raftstore 线程卡了。
 
-#### 3.4.8 Leader 节点挂了会影响服务吗？会有多长时间的影响？
+#### 3.4.8 如果一个节点挂了会影响服务吗？影响会持续多久？
 
-TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强一致，当一份备份出现问题时，其他的副本能保证数据的安全。通常 TiDB 配置每个 Region 为 3 副本，根据 Raft 协议，每个 Region 会选取一个 Leader 提供服务。但单个 Region Leader 失效时，在最大 2 * lease time（leasetime 是 10 秒）时间后，通过 Raft 协议会很快选新的 Region Leader 提供服务。
+TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强一致，当一份备份出现问题时，其他的副本能保证数据的安全。通常 TiDB 配置每个 Region 为 3 副本，根据 Raft 协议，每个 Region 会选取一个 Leader 提供服务。当单个 Leader 失效时，在最大 2 * lease time（leasetime 是 10 秒）时间后，通过 Raft 协议会很快将一个 Follower 选为新的 Region Leader 来提供服务。
 
 #### 3.4.9 TiKV 在分别在那些场景下占用大量 IO、内存、CPU（超过参数配置的多倍）？
 
@@ -566,7 +598,7 @@ TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强
 
 #### 3.4.12 Region 是如何进行分裂的？
 
-首先不是前期划分好的，但确实有 Region 分裂机制，有一个参数 `region_split_size`，超过这个值就会触发分裂，分裂后的信息会汇报给 PD。
+Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 的大小超过参数 `region_split_size` 或 `region-split-keys` 的值时，就会触发分裂，分裂后的信息会汇报给 PD。
 
 #### 3.4.13 TiKV 是否有类似 MySQL 的 `innodb_flush_log_trx_commit` 参数，来保证提交数据不丢失？
 
@@ -681,7 +713,7 @@ sqoop export \
 ```
 - 也可以选择增大 tidb 的单个事物语句数量限制，不过这个会导致内存上涨。
 
-### 4.2 增量数据同步
+### 4.2 在线数据同步
 
 #### 4.2.1 Syncer 架构
 
@@ -713,11 +745,7 @@ sqoop export \
 
 频繁执行 DDL 对同步速度会有影响。对于 Sycner 来说，DDL 是串行执行的，当同步遇到了 DDL，就会以串行的方式执行，所以这种场景就会导致同步速度下降。
 
-#### 4.2.2 Wormhole 工具
-
-Wormhole 是一项数据同步服务，让用户能够通过 Web 控制台, 轻松操作数据的全量 + 增量同步，支持多种同、异构数据源之间的数据迁移，如 MySQL -> TiDB，MongoDB -> TiDB。具体可联系官方进行试用 [info@pingcap.com](mailto:info@pingcap.com)。
-
-#### 4.2.3 使用 Syncer gtid 的方式同步时，同步过程中会不断更新 syncer.meta 文件，如果 Syncer 所在的机器坏了，导致 syncer.meta 文件所在的目录丢失，该如何处理？
+#### 4.2.1.6 使用 Syncer gtid 的方式同步时，同步过程中会不断更新 syncer.meta 文件，如果 Syncer 所在的机器坏了，导致 syncer.meta 文件所在的目录丢失，该如何处理？
 
 当前 Syncer 版本的没有进行高可用设计，Syncer 目前的配置信息 syncer.meta 直接存储在硬盘上，其存储方式类似于其他 MySQL 生态工具，比如 mydumper。 因此，要解决这个问题当前可以有两个方法：
 
@@ -729,7 +757,7 @@ Wormhole 是一项数据同步服务，让用户能够通过 Web 控制台, 轻�
 
 #### 4.3.1 如何快速迁移业务流量？
 
-我们建议通过 Syncer 或 Wormhole 搭建成多源 MySQL、MongoDB -> TiDB 实时同步环境，读写流量可以按照需求分阶段通过修改网络配置进行流量迁移，建议 DB 上层部署一个稳定的网络 LB（HAproxy、LVS、F5、DNS 等），这样直接修改网络配置就能实现无缝流量迁移。
+我们建议通过 Syncer 工具搭建成多源 MySQL -> TiDB 实时同步环境，读写流量可以按照需求分阶段通过修改网络配置进行流量迁移，建议 DB 上层部署一个稳定的网络 LB（HAproxy、LVS、F5、DNS 等），这样直接修改网络配置就能实现无缝流量迁移。
 
 #### 4.3.2 TiDB 总读写流量有限制吗？
 
@@ -862,7 +890,7 @@ TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指�
 
 #### 7.2.1 目前的监控使用方式及主要监控指标，有没有更好看的监控？
 
-TiDB 使用 Prometheus + Grafana 组成 TiDB 数据库系统的监控系统，用户在 Grafana 上通过 dashboard 可以监控到 TiDB 的各类运行指标，包括系统资源的监控指标，包括客户端连接与 SQL 运行的指标，包括内部通讯和 Region 调度的指标，通过这些指标，可以让数据库管理员更好的了解到系统的运行状态，运行瓶颈等内容。在监控指标的过程中，我们按照 TiDB 不同的模块，分别列出了各个模块重要的指标项，一般用户只需要关注这些常见的指标项。具体指标请参见[官方文档](op-guide/dashboard-overview-info.md)。
+TiDB 使用 Prometheus + Grafana 组成 TiDB 数据库系统的监控系统，用户在 Grafana 上通过 dashboard 可以监控到 TiDB 的各类运行指标，包括系统资源的监控指标，包括客户端连接与 SQL 运行的指标，包括内部通信和 Region 调度的指标，通过这些指标，可以让数据库管理员更好的了解到系统的运行状态，运行瓶颈等内容。在监控指标的过程中，我们按照 TiDB 不同的模块，分别列出了各个模块重要的指标项，一般用户只需要关注这些常见的指标项。具体指标请参见[官方文档](op-guide/dashboard-overview-info.md)。
 
 #### 7.2.2 Prometheus 监控数据默认 1 个月自动清除一次，可以自己设定成 2 个月或者手动删除吗？
 
@@ -940,6 +968,6 @@ update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_tim
 
 这个问题是因为在执行 `LOAD DATA LOCAL` 语句的时候，MySQL 客户端不允许执行此语句（即 `local_infile` 选项为 0）。解决方法是在启动 MySQL 客户端时，用 `--local-infile=1` 选项。具体启动指令类似：`mysql --local-infile=1 -u root -h 127.0.0.1 -P 4000`。有些 MySQL 客户端需要设置而有些不需要设置，原因是不同版本的 MySQL 客户端对 `local-infile` 的默认值不同。
 
-#### 9.2.4 ERROR 9001 (HY000): PD server timeoutstart timestamp may fall behind safepoint
+#### 9.2.4 ERROR 9001 (HY000): PD server timeout start timestamp may fall behind safe point
 
-这个报错一般是 TiDB 访问 PD 出了问题，TiDB 后台有个 worker 会不断地从 PD 查询 safepoint，如果超过 100s 查不成功就会报这个错。一般是因为 PD 有故障或者 TiDB 和 PD 之间的网络有问题。TiDB 常见错误码请参考[错误码与故障诊断](sql/error.md)。
+这个报错一般是 TiDB 访问 PD 出了问题，TiDB 后台有个 worker 会不断地从 PD 查询 safepoint，如果超过 100s 查不成功就会报这个错。一般是因为 PD 磁盘操作过忙、反应过慢，或者 TiDB 和 PD 之间的网络有问题。TiDB 常见错误码请参考[错误码与故障诊断](sql/error.md)。

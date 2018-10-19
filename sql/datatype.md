@@ -63,7 +63,7 @@ BIGINT[(M)] [UNSIGNED] [ZEROFILL]
 
 | 语法元素 | 说明 |
 | ---- | --------|
-| M | 类型长度，可选的 |
+| M | 类型显示宽度，可选 |
 | UNSIGNED | 无符号数，如果不加这个标识，则为有符号数 |
 | ZEROFILL | 补零标识，如果有这个标识，TiDB 会自动给类型增加 UNSIGNED 标识，但是没有做补零的操作 |
 
@@ -123,7 +123,7 @@ FLOAT(p) [UNSIGNED] [ZEROFILL]
 
 ### 定点类型
 
-TiDB 支持 MySQL 所有的浮点类型，包括 DECIMAL、NUMERIC，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/fixed-point-types.html)文档。
+TiDB 支持 MySQL 所有的定点类型，包括 DECIMAL、NUMERIC，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/fixed-point-types.html)文档。
 
 #### 类型定义
 
@@ -174,8 +174,8 @@ TIME[(fsp)]
 > 时间。范围是`-838:59:59.000000`到`838:59:59.000000`。以`HH:MM:SS[.fraction]`格式显示 TIME 值。
 fsp 参数是表示秒精度，取值范围为：0-6。默认值取 0。
 
-YEAR[(2|4)]
-> 两位或四位格式的年。默认是四位格式。在四位格式中，允许的值是 1901 到 2155 和 0000。在两位格式中，允许的值是 70 到 69，表示从 1970 年到 2069 年。
+YEAR[(4)]
+> 四位格式的年。允许的值是 1901 到 2155 和 0000。
 ```
 
 ## 字符串类型

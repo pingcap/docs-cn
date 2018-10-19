@@ -21,4 +21,4 @@ TiDB 中信息函数的使用方法与 MySQL 基本一致，详情参见：[Info
 | [`SYSTEM_USER()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_system-user) | 与 USER() 同义                              |
 | [`USER()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_user) | 返回客户端提供的用户名和主机名                          |
 | [`VERSION()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_version) | 返回当前 MySQL 服务器的版本信息                      |
-| `TIDB_VERSION`                           | 返回当前 TiDB 服务器的版本信息                       |
+| `TIDB_VERSION()`                           | 返回当前 TiDB 服务器的版本信息                       |

@@ -5,9 +5,9 @@ category: deployment
 
 # 使用 Docker Compose 快速构建集群
 
-本文档介绍如何在单机上通过 Docker Compose 快速一键部署一套 TiDB 测试集群。
+本文档介绍如何在单机上通过 Docker Compose 快速一键部署一套 TiDB 测试集群。[Docker Compose](https://docs.docker.com/compose/overview) 可以通过一个 YAML 文件定义多个容器的应用服务，然后一键启动或停止。
 
-[Docker Compose](https://docs.docker.com/compose/overview) 可以通过一个 YAML 文件定义多个容器的应用服务，然后一键启动或停止。
+> **注**：对于生产环境，不要使用 Docker Compose 进行部署，而应[使用 Ansible 部署 TiDB 集群](ansible-deployment.md)。
 
 ## 准备环境
 
@@ -82,11 +82,9 @@ category: deployment
 
     PD，TiKV，TiDB 和 tidb-vision 支持从 GitHub 源码或本地文件构建 Docker 镜像，供开发测试使用。
 
-    - 如果希望从 GitHub 源码构建某个组件的镜像，需要将其 `image` 字段留空，然后设置其 `buildFrom` 为 `remote`。
+    - 如果希望从本地已编译好的 binary 文件构建 PD，TiKV 或 TiDB 镜像，需要将其 `image` 字段留空，并将已编译好的 binary 拷贝到对应的 `pd/bin/pd-server`，`tikv/bin/tikv-server`，`tidb/bin/tidb-server`。
 
-    - 如果希望从本地已编译好的 binary 文件构建 PD，TiKV 或 TiDB 镜像，需要将其 `image` 字段留空，然后设置其 `buildFrom` 为 `local`，并将已编译好的 binary 拷贝到对应的 `pd/bin/pd-server`，`tikv/bin/tikv-server`，`tidb/bin/tidb-server`。
-
-    - 如果希望从本地构建 tidb-vision 镜像，需要将其 `image` 字段留空，然后设置其 `buildFrom` 为 `local`，并将 tidb-vision 项目拷贝到 `tidb-vision/tidb-vision`。
+    - 如果希望从本地构建 tidb-vision 镜像，需要将其 `image` 字段留空，并将 tidb-vision 项目拷贝到 `tidb-vision/tidb-vision`。
 
 4. 生成 `docker-compose.yml` 文件
 

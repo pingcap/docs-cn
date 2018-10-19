@@ -2,10 +2,13 @@
 
 ## 目录
 
-+ TiDB 简介与整体架构
-  - [TiDB 简介](overview.md#tidb-简介)
-  - [TiDB 整体架构](overview.md#tidb-整体架构)
-- [TiDB 快速入门指南](QUICKSTART.md)
++ 关于 TiDB
+  - [TiDB 简介](overview.md)
+  - [TiDB 整体架构](architecture.md)
+  - [TiDB 核心特性](features.md)
++ TiDB 快速入门
+  - [快速入门指南](QUICKSTART.md)
+  - [SQL 基本操作](try-tidb.md)
 + TiDB 用户文档
   + TiDB 数据库管理
     - [TiDB 服务](sql/tidb-server.md)
@@ -18,7 +21,8 @@
     - [TiDB 访问权限管理](sql/privilege.md)
     - [TiDB 用户账户管理](sql/user-account-management.md)
     - [使用加密连接](sql/encrypted-connections.md)
-  + SQL 优化
+  + TiDB SQL 优化和执行
+    - [SQL 优化流程简介](sql/sql-optimizer-overview.md)
     - [理解 TiDB 执行计划](sql/understanding-the-query-execution-plan.md)
     - [统计信息](sql/statistics.md)
   + 语言结构
@@ -70,6 +74,7 @@
   - [错误码与故障诊断](sql/error.md)
   - [与 MySQL 兼容性对比](sql/mysql-compatibility.md)
   - [TiDB 内存控制](sql/tidb-memory-control.md)
+  - [慢查询日志](sql/slow-query.md)
   + 高级功能
     - [历史数据回溯](op-guide/history-read.md)
     - [垃圾回收 (GC)](op-guide/gc.md)
@@ -110,6 +115,7 @@
   - [Loader](tools/loader.md)
   - [TiDB-Binlog](tools/tidb-binlog-kafka.md)
   - [PD Control](tools/pd-control.md)
+  - [PD Recover](tools/pd-recover.md)
   - [TiKV Control](tools/tikv-control.md)
   - [TiDB Controller](tools/tidb-controller.md)
 + TiSpark 文档
@@ -118,6 +124,12 @@
 - [常见问题与解答(FAQ)](FAQ.md)
 - [最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
 + [版本发布历史](releases/rn.md)
+  - [2.0.8](releases/208.md)
+  - [2.1 RC3](releases/21rc3.md)
+  - [2.1 RC2](releases/21rc2.md)
+  - [2.0.7](releases/207.md)
+  - [2.1 RC1](releases/21rc1.md)
+  - [2.0.6](releases/206.md)
   - [2.0.5](releases/205.md)
   - [2.1 Beta](releases/21beta.md)
   - [2.0.4](releases/204.md)
@@ -146,6 +158,7 @@
   - [Mobike](http://t.cn/RT8FbP6)
   - [饿了么（一）](http://t.cn/RucuK6m)
   - [饿了么（二）](http://t.cn/RnsqFT6)
+  - [爱奇艺](http://t.cn/EvErsc1)
   - [易果生鲜](http://t.cn/RTYVhzH)
   - [同程旅游](http://t.cn/RmXeNKR)
   - [去哪儿](http://t.cn/RTKnsL7)
@@ -183,7 +196,7 @@ TiDB 是 PingCAP 公司受 Google [Spanner](http://research.google.com/archive/s
 TiDB 具备如下核心特性：
 
 - 高度兼容 MySQL
-    
+
     大多数情况下，无需修改代码即可从 MySQL 轻松迁移至 TiDB，分库分表后的 MySQL 集群亦可通过 TiDB 工具进行实时迁移。
 
 - 水平弹性扩展
