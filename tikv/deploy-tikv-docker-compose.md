@@ -79,4 +79,4 @@ If the state of all the TiKV instances is "Up", you have successfully deployed a
 
 ## What's next?
 
-If you want to try the Go client, see [Try Two Types of APIs](go-client-api.md).
+If you want to try the Go client, see [Try Two Types of APIs](../tikv/go-client-api.md).

@@ -143,7 +143,7 @@ Architecturally, TiDB does support a similar storage engine abstraction to MySQL
 
 ### EXPLAIN
 
-The output of the query execution plan returned from the `EXPLAIN` command differs from MySQL. For more information, see [Understand the Query Execution Plan](understanding-the-query-execution-plan.md).
+The output of the query execution plan returned from the `EXPLAIN` command differs from MySQL. For more information, see [Understand the Query Execution Plan](../sql/understanding-the-query-execution-plan.md).
 
 ### Default differences
 

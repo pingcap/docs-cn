@@ -42,7 +42,7 @@ To be compatible with MySQL, TiDB supports INFORMATION\_SCHEMA tables. Some thir
 
 ### CHARACTER\_SETS table
 
-The CHARACTER\_SETS table provides information about [character sets](character-set-support.md). The default character set in TiDB is `utf8`, which behaves similar to `utf8mb4` in MySQL.  Additional character sets in this table are included for compatibility with MySQL:
+The CHARACTER\_SETS table provides information about [character sets](../sql/character-set-support.md). The default character set in TiDB is `utf8`, which behaves similar to `utf8mb4` in MySQL. Additional character sets in this table are included for compatibility with MySQL:
 
 ```sql
 mysql> SELECT * FROM character_sets;

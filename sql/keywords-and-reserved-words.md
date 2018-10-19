@@ -8,7 +8,7 @@ category: user guide
 
 Keywords are words that have significance in SQL. Certain keywords, such as `SELECT`, `UPDATE`, or `DELETE`, are reserved and require special treatment for use as identifiers such as table and column names. For example, as table names, the reserved words must be quoted with backquotes:
 
-```
+```sql
 mysql> CREATE TABLE select (a INT);
 ERROR 1105 (HY000): line 0 column 19 near " (a INT)" (total length 27)
 mysql> CREATE TABLE `select` (a INT);
@@ -17,14 +17,14 @@ Query OK, 0 rows affected (0.09 sec)
 
 The `BEGIN` and `END` are keywords but not reserved words, so you do not need to quote them with backquotes:
 
-```
+```sql
 mysql> CREATE TABLE `select` (BEGIN int, END int);
 Query OK, 0 rows affected (0.09 sec)
 ```
 
 Exception: A word that follows a period `.` qualifier does not need to be quoted with backquotes either:
 
-```
+```sql
 mysql> CREATE TABLE test.select (BEGIN int, END int);
 Query OK, 0 rows affected (0.08 sec)
 ```

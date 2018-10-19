@@ -18,13 +18,13 @@ You can use the TiDB-Ansible configuration file to set up the cluster topology a
 
 - Initialize operating system parameters
 - Deploy the whole TiDB cluster
-- [Start the TiDB cluster](ansible-operation.md#start-a-cluster)
-- [Stop the TiDB cluster](ansible-operation.md#stop-a-cluster)
-- [Modify component configuration](ansible-deployment-rolling-update.md#modify-component-configuration)
-- [Scale the TiDB cluster](ansible-deployment-scale.md)
-- [Upgrade the component version](ansible-deployment-rolling-update.md#upgrade-the-component-version)
-- [Clean up data of the TiDB cluster](ansible-operation.md#clean-up-cluster-data)
-- [Destroy the TiDB cluster](ansible-operation.md#destroy-a-cluster)
+- [Start the TiDB cluster](../op-guide/ansible-operation.md#start-a-cluster)
+- [Stop the TiDB cluster](../op-guide/ansible-operation.md#stop-a-cluster)
+- [Modify component configuration](../op-guide/ansible-deployment-rolling-update.md#modify-component-configuration)
+- [Scale the TiDB cluster](../op-guide/ansible-deployment-scale.md)
+- [Upgrade the component version](../op-guide/ansible-deployment-rolling-update.md#upgrade-the-component-version)
+- [Clean up data of the TiDB cluster](../op-guide/ansible-operation.md#clean-up-cluster-data)
+- [Destroy the TiDB cluster](../op-guide/ansible-operation.md#destroy-a-cluster)
 
 ## Prepare
 
@@ -34,12 +34,12 @@ Before you start, make sure you have:
 
     - 4 or more machines
     
-        A standard TiDB cluster contains 6 machines. You can use 4 machines for testing. For more details, see [Software and Hardware Requirements](recommendation.md).
+        A standard TiDB cluster contains 6 machines. You can use 4 machines for testing. For more details, see [Software and Hardware Requirements](../op-guide/recommendation.md).
 
     - CentOS 7.3 (64 bit) or later, x86_64 architecture (AMD64)
     - Network between machines
 
-    > **Note:** When you deploy TiDB using Ansible, **use SSD disks for the data directory of TiKV and PD nodes**. Otherwise, it cannot pass the check. If you only want to try TiDB out and explore the features, it is recommended to [deploy TiDB using Docker Compose](docker-compose.md) on a single machine.
+    > **Note:** When you deploy TiDB using Ansible, **use SSD disks for the data directory of TiKV and PD nodes**. Otherwise, it cannot pass the check. If you only want to try TiDB out and explore the features, it is recommended to [deploy TiDB using Docker Compose](../op-guide/docker-compose.md) on a single machine.
 
 2. A Control Machine that meets the following requirements:
 
@@ -508,7 +508,7 @@ To enable the following control variables, use the capitalized `True`. To disabl
 | tidb_version | the version of TiDB, configured by default in TiDB-Ansible branches |
 | process_supervision | the supervision way of processes, systemd by default, supervise optional |
 | timezone | the global default time zone configured when a new TiDB cluster bootstrap is initialized; you can edit it later using the global `time_zone` system variable and the session `time_zone` system variable as described in [Time Zone Support](../sql/time-zone.md); the default value is `Asia/Shanghai` and see [the list of time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for more optional values |
-| enable_firewalld | to enable the firewall, closed by default; to enable it, add the ports in [network requirements](recommendation.md#network-requirements) to the white list |
+| enable_firewalld | to enable the firewall, closed by default; to enable it, add the ports in [network requirements](../op-guide/recommendation.md#network-requirements) to the white list |
 | enable_ntpd | to monitor the NTP service of the managed node, True by default; do not close it |
 | set_hostname | to edit the hostname of the managed node based on the IP, False by default |
 | enable_binlog | whether to deploy Pump and enable the binlog, False by default, dependent on the Kafka cluster; see the `zookeeper_addrs` variable |
@@ -579,8 +579,6 @@ The following example uses `tidb` as the user who runs the service.
     ```
     ansible-playbook start.yml
     ```
-
-> **Note:** If you want to deploy TiDB using the root user account, see [Ansible Deployment Using the Root User Account](root-ansible-deployment.md).
 
 ## Test the TiDB cluster
 

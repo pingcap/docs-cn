@@ -6,7 +6,7 @@ category: operations
 
 # Migrate Data from MySQL to TiDB
 
-## Use the `mydumper` / `loader` tool to export and import all the data
+## Use the `mydumper`/`loader` tool to export and import all the data
 
 You can use `mydumper` to export data from MySQL and `loader` to import the data into TiDB.
 
@@ -31,7 +31,7 @@ In this command,
 
 ### Import data to TiDB
 
-Use `loader` to import the data from MySQL to TiDB. See [Loader instructions](./tools/loader.md) for more information.
+Use `loader` to import the data from MySQL to TiDB. See [Loader instructions](../tools/loader.md) for more information.
 
 ```bash
 ./bin/loader -h 127.0.0.1 -u root -P 4000 -t 32 -d ./var/test
@@ -116,9 +116,9 @@ tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
 cd tidb-enterprise-tools-latest-linux-amd64
 ```
 
-Assuming the data from `t1` and `t2` is already imported to TiDB using `mydumper`/`loader`. Now we hope that any updates to these two tables are synchronised to TiDB in real time.
+Assuming the data from `t1` and `t2` is already imported to TiDB using `mydumper`/`loader`. Now we hope that any updates to these two tables are synchronized to TiDB in real time.
 
-### Obtain the position to synchronise
+### Obtain the position to synchronize
 
 The data exported from MySQL contains a metadata file which includes the position information. Take the following metadata information as an example:
 ```
@@ -139,7 +139,7 @@ binlog-name = "mysql-bin.000003"
 binlog-pos = 930143241
 ```
 
-> **Note:** The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is synchronised.
+> **Note:** The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is synchronized.
 
 ### Start `syncer`
 
@@ -160,22 +160,22 @@ status-addr = ":10081"
 
 skip-sqls = ["ALTER USER", "CREATE USER"]
 
-# Support whitelist filter. You can specify the database and table to be synchronised. For example:
-# Synchronise all the tables of db1 and db2:
+# Support whitelist filter. You can specify the database and table to be synchronized. For example:
+# Synchronize all the tables of db1 and db2:
 replicate-do-db = ["db1","db2"]
 
-# Synchronise db1.table1.
+# Synchronize db1.table1.
 [[replicate-do-table]]
 db-name ="db1"
 tbl-name = "table1"
 
-# Synchronise db3.table2.
+# Synchronize db3.table2.
 [[replicate-do-table]]
 db-name ="db3"
 tbl-name = "table2"
 
 # Support regular expressions. Start with '~'  to use regular expressions.
-# To synchronise all the databases that start with `test`:
+# To synchronize all the databases that start with `test`:
 replicate-do-db = ["~^test.*"]
 
 # The sharding synchronising rules support wildcharacter.
@@ -241,7 +241,7 @@ mysql> select * from t1;
 +----+------+
 ```
 
-`syncer` outputs the current synchronised data statistics every 30 seconds:
+`syncer` outputs the current synchronized data statistics every 30 seconds:
 
 ```bash
 2017/06/08 01:18:51 syncer.go:934: [info] [syncer]total events = 15, total tps = 130, recent tps = 4,
@@ -252,4 +252,4 @@ master-binlog = (ON.000001, 11992), master-binlog-gtid=53ea0ed1-9bf8-11e6-8bea-6
 syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-35
 ```
 
-You can see that by using `syncer`, the updates in MySQL are automatically synchronised in TiDB.
+You can see that by using `syncer`, the updates in MySQL are automatically synchronized in TiDB.

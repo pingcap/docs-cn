@@ -33,6 +33,7 @@ mysql> SELECT @a1, @a2, @t3, @a4 := @a1+@a2+@a3;
 | 1 | 2 | 4 | 7 |
 +------+------+------+--------------------+
 ```
+
 Hexadecimal or bit values assigned to user variables are treated as binary strings in TiDB. To assign a hexadecimal or bit value as a number, use it in numeric context. For example, add `0` or use `CAST(... AS UNSIGNED)`:
 
 ```sql

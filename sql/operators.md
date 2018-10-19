@@ -62,7 +62,7 @@ This document describes the operators precedence, comparison functions and opera
 
 Operator precedences are shown in the following list, from highest precedence to the lowest. Operators that are shown together on a line have the same precedence.
 
-``` sql
+```sql
 INTERVAL
 BINARY, COLLATE
 !

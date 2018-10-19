@@ -118,7 +118,7 @@ X'1z' (z is not a hexadecimal legal digit)
 
 Hexadecimal literals written using `X'val'` notation must contain an even number of digits. To avoid the syntax error, pad the value with a leading zero:
 
-```
+```sql
 mysql> select X'aff';
 ERROR 1105 (HY000): line 0 column 13 near ""hex literal: invalid hexadecimal format, must even numbers, but 3 (total length 13)
 mysql> select X'0aff';
@@ -135,7 +135,7 @@ By default, a hexadecimal literal is a binary string.
 
 To convert a string or a number to a string in hexadecimal format, use the `HEX()` function:
 
-```
+```sql
 mysql> SELECT HEX('TiDB');
 +-------------+
 | HEX('TiDB') |
@@ -193,7 +193,7 @@ For more information, see [Date and Time Literals in MySQL](https://dev.mysql.co
 
 The constants `TRUE` and `FALSE` evaluate to 1 and 0 respectively, which are not case sensitive.
 
-```
+```sql
 mysql> SELECT TRUE, true, tRuE, FALSE, FaLsE, false;
 +------+------+------+-------+-------+-------+
 | TRUE | true | tRuE | FALSE | FaLsE | false |

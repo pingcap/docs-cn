@@ -341,7 +341,7 @@ target-table = "order_2017"
 
     - Check the `server-id` using the following command:
 
-        ```
+        ```sql
         mysql> show global variables like 'server_id';
         +---------------+-------
         | Variable_name | Value |
@@ -358,7 +358,7 @@ target-table = "order_2017"
 
     - Check whether the binlog is enabled in MySQL using the following command:
         
-        ```
+        ```sql
         mysql> show global variables like 'log_bin';
         +--------------------+---------+
         | Variable_name | Value  |
@@ -374,7 +374,7 @@ target-table = "order_2017"
 
     - Check the binlog format using the following command:
 
-        ```
+        ```sql
         mysql> show global variables like 'binlog_format';
         +--------------------+----------+
         | Variable_name | Value   |
@@ -398,7 +398,7 @@ target-table = "order_2017"
 
     - Check `binlog_row_image` using the following command:
 
-        ```
+        ```sql
         mysql> show global variables like 'binlog_row_image';
         +--------------------------+---------+
         | Variable_name        | Value  |
@@ -410,7 +410,7 @@ target-table = "order_2017"
 
     - If the result of `binlog_row_image` is not FULL, set it to FULL using the following command:
     
-        ```
+        ```sql
         mysql> set global binlog_row_image = FULL;
         Query OK, 0 rows affected (0.01 sec)
         ```

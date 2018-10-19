@@ -72,6 +72,7 @@ SET sql_mode = 'TRADITIONAL`;
 ```
 
 If a number is inserted into an exact type column (DECIMAL or integer), it is inserted with its exact value if it is within the column range. For this number:
+
 - If the value has too many digits in the fractional part, rounding occurs and a warning is generated. 
 - If the value has too many digits in the integer part, it is too large and is handled as follows:
   - If strict mode is not enabled, the value is truncated to the nearest legal value and a warning is generated.
@@ -92,6 +93,7 @@ In the following SQL statement:
 ```sql
 INSERT INTO t SET i = 1/0;
 ```
+
 The following results are returned in different SQL modes:
 
 | `sql_mode` Value | Result |
@@ -100,7 +102,6 @@ The following results are returned in different SQL modes:
 | strict | No warning, no error; i is set to NULL. |
 | `ERROR_FOR_DIVISION_BY_ZERO` | Warning, no error; i is set to NULL. |
 | strict, `ERROR_FOR_DIVISION_BY_ZERO` | Error; no row is inserted. |
-
 
 ## Rounding behavior
 

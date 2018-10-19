@@ -27,9 +27,9 @@ In short, to use encrypted connections, both of the following conditions must be
 
 See the following desrciptions about the related parameters to enable encrypted connections:
 
-- [`ssl-cert`](server-command-option.md#ssl-cert): specifies the file path of the SSL certificate
-- [`ssl-key`](server-command-option.md#ssl-key): specifies the private key that matches the certificate
-- [`ssl-ca`](server-command-option.md#ssl-ca): (optional) specifies the file path of the trusted CA certificate
+- [`ssl-cert`](../sql/server-command-option.md#ssl-cert): specifies the file path of the SSL certificate
+- [`ssl-key`](../sql/server-command-option.md#ssl-key): specifies the private key that matches the certificate
+- [`ssl-ca`](../sql/server-command-option.md#ssl-ca): (optional) specifies the file path of the trusted CA certificate
 
 To enable encrypted connections in the TiDB server, you must specify both of the `ssl-cert` and `ssl-key` parameters in the configuration file when you start the TiDB server. You can also specify the `ssl-ca` parameter for client authentication (see [Enable authentication](#enable-authentication)).
 
@@ -82,7 +82,7 @@ For more information, see [Client-Side Configuration for Encrypted Connections](
 If the `ssl-ca` parameter is not specified in the TiDB server or MySQL client, the client or the server does not perform authentication by default and cannot prevent man-in-the-middle attack. For example, the client might "securely" connect to a disguised client. You can configure the `ssl-ca` parameter for authentication in the server and client. Generally, you only need to authenticate the server, but you can also authenticate the client to further enhance the security.
 
 + To authenticate the TiDB server from the MySQL client:
-  1. Specify the `ssl-cert` and` ssl-key` parameters in the TiDB server.
+  1. Specify the `ssl-cert` and `ssl-key` parameters in the TiDB server.
   2. Specify the `--ssl-ca` parameter in the MySQL client.
   3. Specify the `--ssl-mode` to `VERIFY_IDENTITY` in the MySQL client.
   4. Make sure that the certificate (`ssl-cert`) configured by the TiDB server is signed by the CA specified by the client `--ssl-ca` parameter, otherwise the authentication fails. 

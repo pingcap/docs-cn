@@ -58,8 +58,8 @@ INTEGER[(M)] [UNSIGNED] [ZEROFILL]
 
 BIGINT[(M)] [UNSIGNED] [ZEROFILL]
 > BIGINT. The signed range is: [-9223372036854775808, 9223372036854775807], and the unsigned range is [0, 18446744073709551615].
-
 ```
+
 The meaning of the fields:
 
 | Syntax Element | Description |
@@ -100,7 +100,6 @@ DOUBLE PRECISION [(M,D)] [UNSIGNED] [ZEROFILL], REAL[(M,D)] [UNSIGNED] [ZEROFILL
 
 FLOAT(p) [UNSIGNED] [ZEROFILL]
 > A floating-point number. p represents the precision in bits, but TiDB uses this value only to determine whether to use FLOAT or DOUBLE for the resulting data type. If p is from 0 to 24, the data type becomes FLOAT with no M or D values. If p is from 25 to 53, the data type becomes DOUBLE with no M or D values. The range of the resulting column is the same as for the single-precision FLOAT or double-precision DOUBLE data types described earlier in this section.
-
 ```
 
 The meaning of the fields:
@@ -254,7 +253,7 @@ INSERT INTO city VALUES (1, '{"name": "Beijing", "population": 100}');
 SELECT id FROM city WHERE population >= 100;
 ```
 
-For more information, see [JSON Functions and Generated Column](json-functions-generated-column.md).
+For more information, see [JSON Functions and Generated Column](../sql/json-functions-generated-column.md).
 
 ## The ENUM data type
 

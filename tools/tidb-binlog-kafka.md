@@ -6,7 +6,7 @@ category: tool
 
 # TiDB-Binlog User Guide
 
-This document describes how to deploy the Kafka version of TiDB-Binlog. If you need to deploy the local version of TiDB-Binlog, see the [TiDB-Binlog user guide for the local version](tidb-binlog.md).
+This document describes how to deploy the Kafka version of TiDB-Binlog. If you need to deploy the local version of TiDB-Binlog, see the [TiDB-Binlog user guide for the local version](../tools/tidb-binlog.md).
 
 ## About TiDB-Binlog
 
@@ -193,7 +193,7 @@ This example describes how to use Pump/Drainer.
     -log-rotate string
         the log file rotating frequency (hour/day)
     -metrics-addr string
-        the Prometheus pushgateway address; leaving it empty disables Prometheus push
+        the Prometheus Pushgateway address; leaving it empty disables Prometheus push
     -metrics-interval int
         the frequency of reporting monitoring information (default 15, unit: second)
     -pd-urls string
@@ -275,7 +275,7 @@ This example describes how to use Pump/Drainer.
     -log-rotate string
         the log file rotating frequency (hour/day)
     -metrics-addr string
-        the Prometheus pushgateway address; leaving it empty disables Prometheus push
+        the Prometheus Pushgateway address; leaving it empty disables Prometheus push
     -metrics-interval int
         the frequency of reporting monitoring information (default 15, unit: second)
     -pd-urls string

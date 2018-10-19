@@ -55,7 +55,7 @@ Object names can be unqualified or qualified. For example, the following stateme
 CREATE TABLE t (i int);
 ```
 
-If there is no default database, the `ERROR 1046 (3D000): No database selected` is displayed. You can also use the qualified name ` test.t`:
+If there is no default database, the `ERROR 1046 (3D000): No database selected` is displayed. You can also use the qualified name `test.t`:
 
 ```sql
 CREATE TABLE test.t (i int);
@@ -74,5 +74,5 @@ Instead of
 ```sql
 `table_name.col_name`
 ```
-For more information, see [MySQL Identifier Qualifiers](https://dev.mysql.com/doc/refman/5.7/en/identifier-qualifiers.html).
 
+For more information, see [MySQL Identifier Qualifiers](https://dev.mysql.com/doc/refman/5.7/en/identifier-qualifiers.html).

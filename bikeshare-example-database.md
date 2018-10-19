@@ -6,8 +6,7 @@ category: user guide
 
 # Bikeshare Example Database
 
-Examples used in the TiDB manual use [System Data](https://www.capitalbikeshare.com/system-data) from 
-Capital Bikeshare, released under the [Capital Bikeshare Data License Agreement](https://www.capitalbikeshare.com/data-license-agreement).
+Examples used in the TiDB manual use [System Data](https://www.capitalbikeshare.com/system-data) from Capital Bikeshare, released under the [Capital Bikeshare Data License Agreement](https://www.capitalbikeshare.com/data-license-agreement).
 
 ## Download all data files
 

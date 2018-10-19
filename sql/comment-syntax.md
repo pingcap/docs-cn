@@ -14,7 +14,7 @@ TiDB supports three comment styles:
 
 Example:
 
-```
+```sql
 mysql> SELECT 1+1;     # This comment continues to the end of line
 +------+
 | 1+1  |
@@ -73,13 +73,13 @@ In this comment style, TiDB runs the statements in the comment. The syntax is us
 
 For example:
 
-```
+```sql
 SELECT /*! STRAIGHT_JOIN */ col1 FROM table1,table2 WHERE ...
 ```
 
 In TiDB, you can also use another version:
 
-```
+```sql
 SELECT STRAIGHT_JOIN col1 FROM table1,table2 WHERE ...
 ```
 
@@ -97,6 +97,6 @@ Since Hint is involved in comments like `/*+ xxx */`, the MySQL client clears th
 mysql -h 127.0.0.1 -P 4000 -uroot --comments
 ```
 
-For details about the optimizer hints that TiDB supports, see [Optimizer hint](tidb-specific.md#optimizer-hint).
+For details about the optimizer hints that TiDB supports, see [Optimizer hint](../sql/tidb-specific.md#optimizer-hint).
 
 For more information, see [Comment Syntax](https://dev.mysql.com/doc/refman/5.7/en/comments.html).

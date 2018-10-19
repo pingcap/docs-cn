@@ -8,7 +8,7 @@ category: deployment
 
 The TiDB configuration file supports more options than command line options. You can find the default configuration file in [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) and rename it to `config.toml`.
 
-This document describes the options that are not involved in command line options. For command line options, see [here](configuration.md).
+This document describes the options that are not involved in command line options. For command line options, see [here](../op-guide/configuration.md).
 
 ### `split-table`
 

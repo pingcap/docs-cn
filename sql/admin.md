@@ -10,7 +10,7 @@ TiDB manages the database using a number of statements, including granting privi
 
 ## Privilege management
 
-See [Privilege Management](privilege.md).
+See [Privilege Management](../sql/privilege.md).
 
 ## `SET` statement
 
@@ -31,7 +31,7 @@ variable_assignment:
         system_var_name = expr
 ```
 
-You can use the above syntax to assign values to variables in TiDB, which include system variables and user-defined variables. All user-defined variables are session variables. The system variables set using `@@global.` or `GLOBAL` are global variables, otherwise session variables. For more information, see [The System Variables](variable.md).
+You can use the above syntax to assign values to variables in TiDB, which include system variables and user-defined variables. All user-defined variables are session variables. The system variables set using `@@global.` or `GLOBAL` are global variables, otherwise session variables. For more information, see [The System Variables](../sql/variable.md).
 
 ### `SET CHARACTER` statement and `SET NAMES`
 
@@ -56,7 +56,7 @@ password_option: {
 }
 ```
 
-This statement is used to set user passwords. For more information, see [Privilege Management](privilege.md).
+This statement is used to set user passwords. For more information, see [Privilege Management](../sql/privilege.md).
 
 ### Set the isolation level
 
@@ -64,7 +64,7 @@ This statement is used to set user passwords. For more information, see [Privile
 SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
 ```
 
-This statement is used to set the transaction isolation level. For more information, see [Transaction Isolation Level](transaction.md#transaction-isolation-level).
+This statement is used to set the transaction isolation level. For more information, see [Transaction Isolation Level](../sql/transaction.md#transaction-isolation-level).
 
 ## `SHOW` statement
 
@@ -110,7 +110,7 @@ like_or_where:
 
 > **Note**:
 > 
-> - To view statistics using the `SHOW` statement, see [View Statistics](statistics.md#view-statistics).
+> - To view statistics using the `SHOW` statement, see [View Statistics](../sql/statistics.md#view-statistics).
 > - For more information about the `SHOW` statement, see [SHOW Syntax in MySQL](https://dev.mysql.com/doc/refman/5.7/en/show.html).
 
 ## `ADMIN` statement

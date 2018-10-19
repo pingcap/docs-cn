@@ -41,13 +41,13 @@ SELECT
 |`SQL_CACHE`, `SQL_NO_CACHE`, `SQL_CALC_FOUND_ROWS` | To guarantee compatibility with MySQL, TiDB parses these three modifiers, but will ignore them.|
 | `STRAIGHT_JOIN` | `STRAIGHT_JOIN` forces the optimizer to execute a Join query in the order of the tables used in the `FROM` clause. You can use this syntax to speed up queries execution when the Join order chosen by the optimizer is not good. |
 |`select_expr` | Each `select_expr` indicates a column to retrieve. including the column names and expressions. `\*` represents all the columns.|
-\|`FROM table_references` | The `FROM table_references` clause indicates the table (such as `(select * from t;)`) , or tables(such as `select * from t1 join t2;)') or even 0 tables (such as `select 1+1 from dual;` (which is equivalent to `select 1+1;')) from which to retrieve rows.|
+\|`FROM table_references` | The `FROM table_references` clause indicates the table (such as `(select * from t;)`), or tables (such as `select * from t1 join t2;)`) or even 0 tables (such as `select 1+1 from dual;` (which is equivalent to `select 1+1;')) from which to retrieve rows.|
 |`WHERE where_condition` | The `WHERE` clause, if given, indicates the condition or conditions that rows must satisfy to be selected. The result contains only the data that meets the condition(s).|
 |`GROUP BY` | The `GROUP BY` statement is used to group the result-set.|
-|`HAVING where_condition` |The `HAVING` clause and the `WHERE` clause are both used to filter the results. The `HAVING` clause filters the results of `GROUP BY`, while the `WHERE` clause filter the results before aggregationã|
+|`HAVING where_condition` |The `HAVING` clause and the `WHERE` clause are both used to filter the results. The `HAVING` clause filters the results of `GROUP BY`, while the `WHERE` clause filter the results before aggregation |
 |`ORDER BY` | The `ORDER BY` clause is used to sort the data in ascending or descending order, based on columns, expressions or items in the `select_expr` list.|
 |`LIMIT` | The `LIMIT` clause can be used to constrain the number of rows. `LIMIT` takes one or two numeric arguments. With one argument, the argument specifies the maximum number of rows to return, the first row to return is the first row of the table by default; with two arguments, the first argument specifies the offset of the first row to return, and the second specifies the maximum number of rows to return.|
-|`FOR UPDATE` | All the data in the result sets are read-locked, in order to detect the concurrent updates. TiDB uses the [Optimistic Transaction Model](mysql-compatibility.md#transaction). The transaction conflicts are detected in the commit phase instead of statement execution phase. while executing the `SELECT FOR UPDATE` statement, if there are other transactions trying to update relavant data, the `SELECT FOR UPDATE` transaction will fail.|
+|`FOR UPDATE` | All the data in the result sets are read-locked, in order to detect the concurrent updates. TiDB uses the [Optimistic Transaction Model](../sql/mysql-compatibility.md#transaction). The transaction conflicts are detected in the commit phase instead of statement execution phase. while executing the `SELECT FOR UPDATE` statement, if there are other transactions trying to update relevant data, the `SELECT FOR UPDATE` transaction will fail.|
 |`LOCK IN SHARE MODE` | To guarantee compatibility, TiDB parses these three modifiers, but will ignore them.|
 
 ## INSERT
@@ -131,6 +131,7 @@ You can use the following ways to specify the data set:
 - Select Statement
 
   The data set to be inserted is obtained using a `SELECT` statement. The column to be inserted into is obtained from the Schema in the `SELECT` statement.
+
   ```sql
   CREATE TABLE tbl_name1 (
      a int,
@@ -139,6 +140,7 @@ You can use the following ways to specify the data set:
   );
   INSERT INTO tbl_name SELECT * from tbl_name1;
   ```
+
   In the example above, the data is selected from `tal_name1`, and then inserted into `tbl_name`.
 
 ## DELETE
@@ -149,7 +151,7 @@ You can use the following ways to specify the data set:
 
 The `Single_Table DELETE` syntax deletes rows from a single table. 
 
-###  DELETE syntax
+### DELETE syntax
 
 ```sql
 DELETE [LOW_PRIORITY] [QUICK] [IGNORE] FROM tbl_name
@@ -214,7 +216,7 @@ assignment_list:
 
 For the single-table syntax, the `UPDATE` statement updates columns of existing rows in the named table with new values. The `SET assignment_list` clause indicates which columns to modify and the values they should be given. The `WHERE/Orderby/Limit` clause, if given, specifies the conditions that identify which rows to update.
 
-###  Multi-table UPDATE
+### Multi-table UPDATE
 
 ```sql
 UPDATE [LOW_PRIORITY] [IGNORE] table_references

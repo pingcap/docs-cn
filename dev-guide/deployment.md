@@ -4,7 +4,7 @@
 
 Note: **The easiest way to deploy TiDB is to use TiDB Ansible, see [Ansible Deployment](../op-guide/ansible-deployment.md).**
 
-Before you start, check the [supported platforms](./requirements.md#supported-platforms) and [prerequisites](./requirements.md#prerequisites) first.
+Before you start, check the [supported platforms](../dev-guide/requirements.md#supported-platforms) and [prerequisites](../dev-guide/requirements.md#prerequisites) first.
 
 ## Building and installing TiDB components
 

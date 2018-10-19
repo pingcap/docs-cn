@@ -10,7 +10,7 @@ category: operations
 
 The capacity of a TiDB cluster can be increased or reduced without affecting online services.
 
-> **Note:** If your TiDB cluster is deployed using Ansible, see [Scale the TiDB Cluster Using TiDB-Ansible](ansible-deployment-scale.md).
+> **Note:** If your TiDB cluster is deployed using Ansible, see [Scale the TiDB Cluster Using TiDB-Ansible](../op-guide/ansible-deployment-scale.md).
 
 The following part shows you how to add or delete PD, TiKV or TiDB nodes.
 

@@ -23,7 +23,7 @@ It is recommended to prepare a separate server certificate for TiDB, TiKV and PD
 
 You can use multiple tools to generate self-signed certificates, such as `openssl`, `easy-rsa ` and `cfssl`.
 
-See an example of [generating self-signed certificates](generate-self-signed-certificates.md) using `cfssl`.
+See an example of [generating self-signed certificates](../op-guide/generate-self-signed-certificates.md) using `cfssl`.
 
 ### Configure certificates
 

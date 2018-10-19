@@ -541,7 +541,7 @@ You can combine the above two parameters with the DML of TiDB to use them. For u
 
 1. Adjust the priority by writing SQL statements in the database:
 
-    ```
+    ```sql
     select HIGH_PRIORITY | LOW_PRIORITY count(*) from table_name;
     insert HIGH_PRIORITY | LOW_PRIORITY into table_name insert_values;
     delete HIGH_PRIORITY | LOW_PRIORITY from table_name;
@@ -561,7 +561,7 @@ When the modified number or the current total row number is larger than `tidb_au
 
 Its usage is similar to MySQL:
 
-```
+```sql
 select column_name from table_name use index（index_name）where where_condition;
 ```
 

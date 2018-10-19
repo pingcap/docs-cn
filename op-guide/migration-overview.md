@@ -20,12 +20,12 @@ See the following for the assumed MySQL and TiDB server information:
 ## Scenarios
 
 + To import all the history data. This needs the following tools:
-    - `Checker`: to check if the shema is compatible with TiDB.
+    - `Checker`: to check if the schema is compatible with TiDB.
     - `Mydumper`: to export data from MySQL.
     - `Loader`: to import data to TiDB.
 
-+ To incrementally synchronise data after all the history data is imported. This needs the following tools:
-    - `Checker`: to check if the shema is compatible with TiDB.
++ To incrementally synchronize data after all the history data is imported. This needs the following tools:
+    - `Checker`: to check if the schema is compatible with TiDB.
     - `Mydumper`: to export data from MySQL.
     - `Loader`: to import data to TiDB.
     - `Syncer`: to incrementally synchronize data from MySQL to TiDB.
@@ -35,6 +35,7 @@ See the following for the assumed MySQL and TiDB server information:
 ### Enable binary logging (binlog) in MySQL
 
 Before using the `syncer` tool, make sure:
+
 + Binlog is enabled in MySQL. See [Setting the Replication Master Configuration](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html).
 
 + Binlog must use the `row` format which is the recommended binlog format in MySQL 5.7. It can be configured using the following statement:

@@ -140,7 +140,7 @@ See the following diagram for the deployment architecture:
 
 See the following links for your reference:
 
-- Prometheus Push Gateway: [https://github.com/prometheus/pushgateway](https://github.com/prometheus/pushgateway)
+- Prometheus Pushgateway: [https://github.com/prometheus/pushgateway](https://github.com/prometheus/pushgateway)
 
 - Prometheus Server: [https://github.com/prometheus/prometheus#install](https://github.com/prometheus/prometheus#install)
 
@@ -152,26 +152,26 @@ See the following links for your reference:
 
 + TiDB: Set the two parameters: `--metrics-addr` and `--metrics-interval`.
 
-    - Set the Push Gateway address as the `--metrics-addr` parameter.
+    - Set the Pushgateway address as the `--metrics-addr` parameter.
     - Set the push frequency as the `--metrics-interval` parameter. The unit is s, and the default value is 15.
 
-+ PD: update the toml configuration file with the Push Gateway address and the push frequency:
++ PD: update the toml configuration file with the Pushgateway address and the push frequency:
 
     ```toml
     [metric]
-    # prometheus client push interval, set "0s" to disable prometheus.
+    # Prometheus client push interval, set "0s" to disable prometheus.
     interval = "15s"
-    # prometheus pushgateway address, leaves it empty will disable prometheus.
+    # Prometheus Pushgateway address, leaves it empty will disable prometheus.
     address = "host:port"
     ```
 
-+ TiKV: update the toml configuration file with the Push Gateway address and the the push frequency. Set the job field as "tikv".
++ TiKV: update the toml configuration file with the Pushgateway address and the the push frequency. Set the job field as "tikv".
 
     ```toml
     [metric]
     # the Prometheus client push interval. Setting the value to 0s stops Prometheus client from pushing.
     interval = "15s"
-    # the Prometheus pushgateway address. Leaving it empty stops Prometheus client from pushing.
+    # the Prometheus Pushgateway address. Leaving it empty stops Prometheus client from pushing.
     address = "host:port"
     # the Prometheus client push job name. Note: A node id will automatically append, e.g., "tikv_1".
     job = "tikv"
@@ -183,7 +183,7 @@ Generally, it does not need to be configured. You can use the default port: 9091
 
 ### Configure Prometheus
 
-Add the Push Gateway address to the yaml configuration file:
+Add the Pushgateway address to the yaml configuration file:
 
 ```yaml
  scrape_configs:
@@ -196,7 +196,7 @@ Add the Push Gateway address to the yaml configuration file:
   honor_labels: true
 
   static_configs:
- - targets: ['host:port'] # use the Push Gateway address
+ - targets: ['host:port'] # use the Pushgateway address
 labels:
   group: 'production'
  ```
@@ -237,7 +237,7 @@ labels:
 
 2. On the sidebar menu, click "Dashboards" -> "Import" to open the "Import Dashboard" window.
 
-3. Click "Upload .json File" to upload a JSON file ( Download [TiDB Grafana Config](https://grafana.com/tidb) ).
+3. Click "Upload .json File" to upload a JSON file (Download [TiDB Grafana Config](https://grafana.com/tidb)).
 
 4. Click "Save & Open".
 
