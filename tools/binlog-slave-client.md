@@ -5,7 +5,7 @@ category: tools
 
 # binlog slave client 用户文档
 
-目前 Drainer 提供了多种输出方式，包括 MySQL、TiDB、TheFlash、pb 格式文件等。但是用户往往有一些自定义的需求，比如输出到 Elasticsearch、Hive 等，这些需求 Drainer 现在还没有实现，因此 Drainer 增加了输出到 Kafka 的功能，将 binlog 数据解析后按一定的格式再输出到 Kafka 中，用户编写代码从 Kafka 中读出数据再进行处理。
+目前 Drainer 提供了多种输出方式，包括 MySQL、TiDB、TheFlash、pb 格式文件等。但是用户往往有一些自定义的需求，比如输出到 Elasticsearch、Hive 等，这些需求 Drainer 现在还没有实现，因此 Drainer 增加了输出到 Kafka 的功能，将 binlog 数据解析后按一定的格式再输出到 Kafka 中，用户编写代码从 Kafka 中读出数据再进行处理。
 
 ## 配置 Drainer
 
@@ -22,7 +22,7 @@ kafka-addrs = "127.0.0.1:9092"
 kafka-version = "0.8.2.0"
 ```
 
-## 自定义开发
+## 自定义开发
 ### 数据格式
 首先需要了解 Drainer 写入到 Kafka 中的数据格式：
 
@@ -43,7 +43,7 @@ message Column {
   optional string string_value = 6;
 }
 
-// ColumnInfo 保存列的信息，包括列名、类型、是否为主键
+// ColumnInfo 保存列的信息，包括列名、类型、是否为主键
 message ColumnInfo {
   optional string name = 1 [ (gogoproto.nullable) = false ];
   // lower case column field type in mysql
@@ -79,9 +79,9 @@ message Table {
 // TableMutation 保存一行数据的变更
 message TableMutation {
   required MutationType type = 1;
-  // 修改后的数据
+  // 修改后的数据
   required Row row = 2;
-  // 修改前的数据，只对 Update MutationType 有效
+  // 修改前的数据，只对 Update MutationType 有效
   optional Row change_row = 3;
 }
 
@@ -129,11 +129,11 @@ TiDB-Tools 项目中提供了用于读取 Kafka 中 binlog 数据的 Driver，�
 使用该 Driver 时，用户需要配置如下信息：
 
 * KafkaAddr：Kafka 集群的地址
-* CommitTS：从哪个 commit ts 开始读取 binlog
-* Offset：从 Kafka 哪个 offset 开始读取，如果设置了 CommitTS 就不用配置该参数
+* CommitTS：从哪个 commit ts 开始读取 binlog
+* Offset：从 Kafka 哪个 offset 开始读取，如果设置了 CommitTS 就不用配置该参数
 * ClusterID：TiDB 集群的 cluster ID
 
-用户以包的形式引用 Driver 的代码即可使用，可以参考 Driver 中提供的的示例代码来学习如何使用 Driver 以及 binlog 数据的解析，目前提供了两个例子：
+用户以包的形式引用 Driver 的代码即可使用，可以参考 Driver 中提供的的示例代码来学习如何使用 Driver 以及 binlog 数据的解析，目前提供了两个例子：
 
 * 使用该 Driver 将数据同步到 MySQL，该示例包含将 binlog 转化为 SQL 的具体方法
 * 使用该 Driver 将数据打印出来
@@ -143,4 +143,4 @@ Driver 项目地址：[Binlog Slave Driver](https://github.com/pingcap/tidb-tool
 注：
 
 1. 示例代码仅仅用于示范如何使用 Driver，如果需要用于生产环境需要优化代码。
-2. 目前仅提供了 golang 版本的 Driver 以及示例代码。如果需要使用其他语言，用户需要根据 binlog 的 proto 文件生成相应语言的代码文件，并自行开发程序读取 Kafka 中的 binlog 数据、解析数据、输出到下游。也欢迎用户优化 example 代码，以及提交其他语言的示例代码到 [TiDB-Tools](https://github.com/pingcap/tidb-tools)。
+2. 目前仅提供了 golang 版本的 Driver 以及示例代码。如果需要使用其他语言，用户需要根据 binlog 的 proto 文件生成相应语言的代码文件，并自行开发程序读取 Kafka 中的 binlog 数据、解析数据、输出到下游。也欢迎用户优化 example 代码，以及提交其他语言的示例代码到 [TiDB-Tools](https://github.com/pingcap/tidb-tools)。
