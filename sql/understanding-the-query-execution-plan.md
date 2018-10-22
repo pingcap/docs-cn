@@ -28,6 +28,45 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 | task          | 当前这个 operator 属于什么 task。目前的执行计划分成为两种 task，一种叫 **root** task，在 tidb-server 上执行，一种叫 **cop** task，并行的在 TiKV 上执行。当前的执行计划在 task 级别的拓扑关系是一个 root task 后面可以跟许多 cop task，root task 使用 cop task 的输出结果作为输入。cop task 中执行的也即是 TiDB 下推到 TiKV 上的任务，每个 cop task 分散在 TiKV 集群中，由多个进程共同执行。 |
 | operator info | 每个 operator 的详细信息。各个 operator 的 operator info 各有不同，详见 [Operator Info](#operator-info)。                   |
 
+### 用例
+
+使用 [bikeshare example database](../bikeshare-example-database.md):
+
+```
+mysql> EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59';
++--------------------------+-------------+------+------------------------------------------------------------------------------------------------------------------------+
+| id                       | count       | task | operator info                                                                                                          |
++--------------------------+-------------+------+------------------------------------------------------------------------------------------------------------------------+
+| StreamAgg_20             | 1.00        | root | funcs:count(col_0)                                                                                                     |
+| └─TableReader_21         | 1.00        | root | data:StreamAgg_9                                                                                                       |
+|   └─StreamAgg_9          | 1.00        | cop  | funcs:count(1)                                                                                                         |
+|     └─Selection_19       | 8166.73     | cop  | ge(bikeshare.trips.start_date, 2017-07-01 00:00:00.000000), le(bikeshare.trips.start_date, 2017-07-01 23:59:59.000000) |
+|       └─TableScan_18     | 19117643.00 | cop  | table:trips, range:[-inf,+inf], keep order:false                                                                       |
++--------------------------+-------------+------+------------------------------------------------------------------------------------------------------------------------+
+5 rows in set (0.00 sec)
+```
+
+在上面的例子中，coprocessor 上读取 `trips` 表上的数据（`TableScan_18`），寻找满足 `start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59'` 条件的数据（`Selection_19`），然后计算满足条件的数据行数（`StreamAgg_9`），最后把结果返回给 TiDB。TiDB 汇总各个 coprocessor 返回的结果（`TableReader_21`），并进一步计算所有数据的行数（`StreamAgg_20`），最终把结果返回给客户端。在上面这个查询中，TiDB 根据 `trips` 表的统计信息估算出 `TableScan_18` 的输出结果行数为 19117643.00，满足条件 `start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59'` 的有 `8166.73` 条，经过聚合运算后，只有 1 条结果
+
+上面这个查询中，虽然大部分计算逻辑都下推到了 TiKV 的 coprocessor 上，但是其执行效率还是不够高。我们可以添加适当的索引来消除 `TableScan_18` 对 `trips` 的全表扫，进一步加速查询的执行：
+
+```sql
+mysql> ALTER TABLE trips ADD INDEX (start_date);
+..
+mysql> EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59';
++------------------------+---------+------+--------------------------------------------------------------------------------------------------+
+| id                     | count   | task | operator info                                                                                    |
++------------------------+---------+------+--------------------------------------------------------------------------------------------------+
+| StreamAgg_25           | 1.00    | root | funcs:count(col_0)                                                                               |
+| └─IndexReader_26       | 1.00    | root | index:StreamAgg_9                                                                                |
+|   └─StreamAgg_9        | 1.00    | cop  | funcs:count(1)                                                                                   |
+|     └─IndexScan_24     | 8166.73 | cop  | table:trips, index:start_date, range:[2017-07-01 00:00:00,2017-07-01 23:59:59], keep order:false |
++------------------------+---------+------+--------------------------------------------------------------------------------------------------+
+4 rows in set (0.01 sec)
+```
+
+在添加完索引后的新执行计划中，我们使用 `IndexScan_24` 直接读取满足条件 `start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59'` 的数据，可以看到，估算的要扫描的数据行数从之前的 `19117643.00` 降到了现在的 `8166.73`。在测试环境中显示，这个查询的执行时间从 50.41 秒降到了 0.00 秒！
+
 ## 概述
 
 ### Task 简介
