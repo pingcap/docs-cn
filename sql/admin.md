@@ -95,6 +95,7 @@ SHOW PROCEDURE STATUS [like_or_where]
 SHOW TRIGGERS [FROM db_name] [like_or_where]
 SHOW EVENTS
 SHOW FUNCTION STATUS [like_or_where]
+SHOW MASTER STATUS
 
 # TiDB 特有语句，用于查看统计信息
 SHOW STATS_META [like_or_where]
@@ -111,6 +112,18 @@ like_or_where:
 
 * 通过 `SHOW` 语句展示统计信息请参考[统计信息说明](https://github.com/pingcap/docs-cn/blob/master/sql/statistics.md#统计信息的查看)。
 * 关于 `SHOW` 语句更多信息请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/5.7/en/show.html)
+
+在 TiDB 中，`SHOW MASTER STATUS` 语句返回的 `UniqueID` 实际上是从 `PD` 获取的当前 `TSO` 时间，这个时间在做 binlog 增量同步过程中需要使用。
+
+```sql
+mysql> show master status;
++-------------|--------------------|--------------|------------------|-------------------+
+| File        | UniqueID           | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
++-------------|--------------------|--------------|------------------|-------------------+
+| tidb-binlog | 403756327834484736 |              |                  |                   |
++-------------|--------------------|--------------|------------------|-------------------+
+1 row in set (0.00 sec)
+```
 
 ## `ADMIN` 语句
 
