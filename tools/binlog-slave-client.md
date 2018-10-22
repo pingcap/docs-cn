@@ -143,4 +143,4 @@ Driver 项目地址：[Binlog Slave Driver](https://github.com/pingcap/tidb-tool
 注：
 
 1. 示例代码仅仅用于示范如何使用 Driver，如果需要用于生产环境需要优化代码。
-2. 目前仅提供了 golang 版本的 Driver 以及示例代码。如果需要使用其他语言，用户需要根据 binlog 的 proto 文件生成相应语言的代码文件，并自行开发程序读取 Kafka 中的 binlog 数据、解析数据、输出到下游。也欢迎用户优化 example 代码，以及提交其他语言的示例代码到 [TiDB-Tools](https://github.com/pingcap/tidb-tools)。
+2. 目前仅提供了 golang 版本的 Driver 以及示例代码。如果需要使用其他语言，用户需要根据 binlog 的 proto 文件生成相应语言的代码文件，并自行开发程序读取 Kafka 中的 binlog 数据、解析数据、输出到下游。也欢迎用户优化 example 代码，以及提交其他语言的示例代码到 [TiDB-Tools](https://github.com/pingcap/tidb-tools)。
