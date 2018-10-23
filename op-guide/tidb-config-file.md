@@ -34,6 +34,12 @@ This document describes the options that are not involved in command line option
 - For details, you can see the [MySQL description](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names) of this variable
 - Currently, TiDB only supports setting the value of this option to 2. This means it is case-sensitive when you save a table name, but case-insensitive when you compare table names. The comparison is based on the lower case.
 
+### `compatible-kill-query`
+
++ To set the "kill" statement to be MySQL compatible
++ Default: false
++ In TiDB, the behavior of "kill xxx" is not compatible with MySQL. A query is killed only when you are executing "kill tidb xxx". If `compatible-kill-query` is set to true, the "kill xxx" is compatible with MySQL, so no additional "tidb" is needed.
+
 ## Log
 
 Configuration about log.
