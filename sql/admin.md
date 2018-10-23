@@ -96,6 +96,7 @@ SHOW PROCEDURE STATUS [like_or_where]
 SHOW TRIGGERS [FROM db_name] [like_or_where]
 SHOW EVENTS
 SHOW FUNCTION STATUS [like_or_where]
+SHOW MASTER STATUS
 
 # TiDB-specific statements for viewing statistics
 SHOW STATS_META [like_or_where]
@@ -112,6 +113,18 @@ like_or_where:
 > 
 > - To view statistics using the `SHOW` statement, see [View Statistics](../sql/statistics.md#view-statistics).
 > - For more information about the `SHOW` statement, see [SHOW Syntax in MySQL](https://dev.mysql.com/doc/refman/5.7/en/show.html).
+
+The `UniqueID` field returned from `SHOW MASTER STATUS` is the current `TSO` obtained directly from `PD`. The `TSO` is used during binlog increment and [`mydumper`](../tools/mydumper.md) synchronization.
+
+```sql
+mysql> show master status;
++-------------|--------------------|--------------|------------------|-------------------+
+| File        | UniqueID           | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
++-------------|--------------------|--------------|------------------|-------------------+
+| tidb-binlog | 403756327834484736 |              |                  |                   |
++-------------|--------------------|--------------|------------------|-------------------+
+1 row in set (0.00 sec)
+```
 
 ## `ADMIN` statement
 
