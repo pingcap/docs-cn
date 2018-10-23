@@ -37,10 +37,6 @@ log-level = "info"
 # Set listening address
 # addr = "127.0.0.1:20160"
 
-# It is recommended to use the default value.
-# notify-capacity = 40960
-# messages-per-tick = 4096
-
 # Size of thread pool for gRPC
 # grpc-concurrency = 4
 # The number of gRPC connections between each TiKV instance
