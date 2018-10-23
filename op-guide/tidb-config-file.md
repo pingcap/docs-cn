@@ -37,7 +37,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 设置 "kill" 语句的兼容性。
 + 默认: false
-+ 在 TiDB 里面 "kill xxx" 语句和 MySQL 行为不一致。只有执行 "kill tidb xxx" 的时候，才会真正的杀死一条查询。当 `compatible-kill-query` 设置为真的时候，则兼容 MySQL 的行为，不需要 "tidb" 关键字。
++ 在 TiDB 里面 "kill xxx" 语句和 MySQL 行为不一致。只有执行 "kill tidb xxx" 的时候，才会真正的杀死一条查询。当 `compatible-kill-query` 设置为 true 的时候，则兼容 MySQL 的行为，不需要 "tidb" 关键字。
 
 ## log 
 
