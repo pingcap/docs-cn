@@ -123,7 +123,7 @@ TiDB > SELECT ROUND(2.5), ROUND(25E-1);
 1 row in set (0.00 sec)
 ```
 
-向一个 `DECIMAL` 或者整数类型列插入数据时，round 的规则将采用 [round half away from zero](https://en.wikipedia.org/wiki/Rounding\#Round_half_away_from_zero) 的方式：
+向一个 `DECIMAL` 或者整数类型列插入数据时，round 的规则将采用 [round half away from zero](https://en.wikipedia.org/wiki/Rounding#Round_half_away_from_zero) 的方式：
 
 ```sql
 TiDB > CREATE TABLE t (d DECIMAL(10,0));
