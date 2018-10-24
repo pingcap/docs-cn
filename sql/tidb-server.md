@@ -31,6 +31,6 @@ TiDB 数据存放在存储引擎中，数据目录取决于使用的存储引擎
 
 ## TiDB 服务器日志文件
 
-TiDB 集群的三个组件（`tidb-server`、`tikv-server`、`pd-server`）默认会将日志输出到标准错误中，并且三个组件都支持设置 `--log-file` [启动参数](../op-guide/configuration.md) （或者是配置文件中的配置项）将日志输出到文件中。
+TiDB 集群的三个组件（`tidb-server`、`tikv-server`、`pd-server`）默认会将日志输出到标准错误中，并且三个组件都支持设置 `--log-file` [启动参数](../op-guide/configuration.md)（或者是配置文件中的配置项）将日志输出到文件中。
 
 通过配置文件可以调整日志的行为，具体信息请参见各个组件的配置文件说明。例如： [`tidb-server` 日志配置项](https://github.com/pingcap/tidb/blob/master/config/config.toml.example#L46)。

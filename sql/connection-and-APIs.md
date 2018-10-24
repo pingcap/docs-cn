@@ -57,10 +57,10 @@ Oracle 官方提供了以下 API，TiDB 可以兼容所有这些 API。
 | Eiffel         | Eiffel MySQL                             | `libmysqlclient`                 | See [Section 27.14, “MySQL Eiffel Wrapper”](https://dev.mysql.com/doc/refman/5.7/en/apis-eiffel.html). |
 | Erlang         | `erlang-mysql-driver`                    | `libmysqlclient`                 | See [`erlang-mysql-driver`.](http://code.google.com/p/erlang-mysql-driver/) |
 | Haskell        | Haskell MySQL Bindings                   | Native Driver                    | See [Brian O'Sullivan's pure Haskell MySQL bindings](http://www.serpentine.com/blog/software/mysql/). |
-|                | `hsql-mysql`                             | `libmysqlclient`                 | See [MySQL driver for Haskell ](http://hackage.haskell.org/cgi-bin/hackage-scripts/package/hsql-mysql-1.7). |
+|                | `hsql-mysql`                             | `libmysqlclient`                 | See [MySQL driver for Haskell](http://hackage.haskell.org/cgi-bin/hackage-scripts/package/hsql-mysql-1.7). |
 | Java/JDBC      | Connector/J                              | Native Driver                    | See [MySQL Connector/J 5.1 Developer Guide](https://dev.mysql.com/doc/connector-j/5.1/en/). |
 | Kaya           | MyDB                                     | `libmysqlclient`                 | See [MyDB](http://kayalang.org/library/latest/MyDB). |
-| Lua            | LuaSQL                                   | `libmysqlclient`                 | See [LuaSQL](http://keplerproject.github.io/luasql/doc/us/). |
+| Lua            | LuaSQL                                   | `libmysqlclient`                 | See [LuaSQL](http://keplerproject.github.io/luasql/manual.html). |
 | .NET/Mono      | Connector/Net                            | Native Driver                    | See [MySQL Connector/Net Developer Guide](https://dev.mysql.com/doc/connector-net/en/). |
 | Objective Caml | OBjective Caml MySQL Bindings            | `libmysqlclient`                 | See [MySQL Bindings for Objective Caml](http://raevnos.pennmush.org/code/ocaml-mysql/). |
 | Octave         | Database bindings for GNU Octave         | `libmysqlclient`                 | See [Database bindings for GNU Octave](http://octave.sourceforge.net/database/index.html). |
