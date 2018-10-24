@@ -5,7 +5,7 @@ category: tools
 
 # TiDB Binlog 监控指标说明
 
-目前对 TiDB Binlog 中一些比较重要的方面配置了监控，根据指标的重要程度分为了 Emergency、Critical 和 Warning 三种级别。
+目前对 TiDB Binlog 中一些比较重要的方面配置了监控，根据指标的重要程度分为了 Emergency、Critical 和 Warning 三种级别。
 
 ## Emergency
 
