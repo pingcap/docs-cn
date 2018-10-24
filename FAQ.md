@@ -581,7 +581,7 @@ If you previously deploy a PD cluster, but then you remove the PD data and deplo
 
 This is because the address in the startup parameter has been registered in the PD cluster by other TiKVs. This error occurs when there is no data folder under the directory that TiKV `--store` specifies, but you use the previous parameter to restart the TiKV.
 
-To solve this problem, use the [store delete](https://github.com/pingcap/pd/tree/master/pdctl#store-delete-) function to delete the previous store and then restart TiKV.
+To solve this problem, use the [`store delete`](https://github.com/pingcap/pd/tree/55db505e8f35e8ab4e00efd202beb27a8ecc40fb/tools/pd-ctl#store-delete--label--weight-store_id----jqquery-string) function to delete the previous store and then restart TiKV.
 
 #### TiKV master and slave use the same compression algorithm, why the results are different?
 
@@ -794,7 +794,7 @@ Two solutions:
 
 ##### Syncer user guide
 
-See [Syncer User Guide](docs/tools/syncer.md).
+See [Syncer User Guide](tools/syncer.md).
 
 ##### How to configure to monitor Syncer status?
 

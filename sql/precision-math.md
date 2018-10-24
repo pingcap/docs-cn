@@ -120,7 +120,7 @@ The result of the `ROUND()` function depends on whether its argument is exact or
     1 row in set (0.00 sec)
     ```
 
-For inserts into a DECIMAL or integer column, the rounding uses [round half away from zero](https://en.wikipedia.org/wiki/Rounding\#Round_half_away_from_zero).
+For inserts into a DECIMAL or integer column, the rounding uses [round half away from zero](https://en.wikipedia.org/wiki/Rounding#Round_half_away_from_zero).
 
 ```sql
 TiDB > CREATE TABLE t (d DECIMAL(10,0));
