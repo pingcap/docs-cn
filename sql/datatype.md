@@ -9,7 +9,7 @@ category: user guide
 
 TiDB 支持 MySQL 除空间类型之外的所有数据类型，包括数值型类型、字符串类型、时间&日期类型、Json 类型。
 
-数据类型定义一般为 T(M[, D])，其中:
+数据类型定义一般为 T(M[, D])，其中：
 
 * T 表示具体的类型
 * M 对于整数类型表示最大显示长度；对于浮点数或者定点数表示精度；对于字符类型表示最大长度。M 的最大值取决于具体的类型。
@@ -146,9 +146,6 @@ NUMERIC[(M[,D])] [UNSIGNED] [ZEROFILL]
 | UNSIGNED | 无符号数，如果不加这个标识，则为有符号数 |
 | ZEROFILL | 补零标识，如果有这个标识，TiDB 会自动给类型增加 UNSIGNED 标识 |
 
-
-
-
 ## 日期时间类型
 
 ### 概述
@@ -158,6 +155,7 @@ TiDB 支持 MySQL 所有的日期时间类型，包括 DATE、DATETIME、TIMESTA
 ### 类型定义
 
 语法：
+
 ```sql
 DATE
 > 日期。支持的范围为`1000-01-01`到`9999-12-31`。以`YYYY-MM-DD`格式显示 DATE 值。
@@ -304,8 +302,8 @@ SET('1', '2') NOT NULL
 
 更多信息参考 [MySQL 集合文档](https://dev.mysql.com/doc/refman/5.7/en/set.html)。
 
-
 ## 数据类型的默认值
+
 在一个数据类型描述中的 `DEFAULT value` 段描述了一个列的默认值。这个默认值必须是常量，不可以是一个函数或者是表达式。但是对于时间类型，可以例外的使用 `NOW`、`CURRENT_TIMESTAMP`、`LOCALTIME`、`LOCALTIMESTAMP` 等函数作为 `DATETIME` 或者 `TIMESTAMP` 的默认值。
 
 `BLOB`、`TEXT` 以及 `JSON` 不可以设置默认值。

@@ -11,11 +11,15 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 变量可以通过 SET 语句设置，例如
 
-```set @@tidb_distsql_scan_concurrency = 10 ```
+```
+set @@tidb_distsql_scan_concurrency = 10
+```
 
 如果需要设值全局变量，执行
 
-```set @@global.tidb_distsql_scan_concurrency = 10 ```
+```
+set @@global.tidb_distsql_scan_concurrency = 10
+```
 
 ### tidb_snapshot
 
@@ -23,8 +27,7 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 默认值: 空字符串
 
-这个变量用来设置当前会话期待读取的历史数据所处时刻。
-比如当设置为 "2017-11-11 20:20:20" 时或者一个 TSO 数字 "400036290571534337"，当前会话将能读取到该时刻的数据。
+这个变量用来设置当前会话期待读取的历史数据所处时刻。比如当设置为 "2017-11-11 20:20:20" 时或者一个 TSO 数字 "400036290571534337"，当前会话将能读取到该时刻的数据。
 
 ### tidb_import_data
 
@@ -408,6 +411,6 @@ DELETE 语句示例：```DELETE FROM t WHERE _tidb_rowid = 1;```
 
 `SHARD_ROW_ID_BITS = 4` 代表 16 个分片， `SHARD_ROW_ID_BITS = 6` 表示 64 个分片，`SHARD_ROW_ID_BITS = 0` 就是默认值 1 个分片 。
 
-CREATE TABLE 语句示例: ```CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;```
+CREATE TABLE 语句示例：`CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;`
 
-ALTER TABLE 语句示例： ```ALTER TABLE t SHARD_ROW_ID_BITS = 4;```
+ALTER TABLE 语句示例：`ALTER TABLE t SHARD_ROW_ID_BITS = 4;`

@@ -152,5 +152,3 @@ client-key.pem
 client.csr         
 client.pem      
 ```
-
-### 

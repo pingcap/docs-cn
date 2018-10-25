@@ -18,17 +18,11 @@ Loader 是由 PingCAP 开发的数据导入工具，用于向 TiDB 中导入数�
 ## Loader 有哪些优点
 
 * 多线程导入
-
 * 支持表级别的并发导入，分散写入热点
-
 * 支持对单个大表并发导入，分散写入热点
-
 * 支持 mydumper 数据格式
-
 * 出错重试
-
 * 断点续导
-
 * 通过 system variable 优化 TiDB 导入数据速度
 
 ## 使用方法
@@ -123,8 +117,6 @@ port = 4000
 或者使用配置文件 "config.toml":
 
     ./bin/loader -c=config.toml
-
-------
 
 ##  FAQ
 

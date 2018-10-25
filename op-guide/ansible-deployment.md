@@ -13,25 +13,25 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 - 初始化操作系统参数
 - 部署 TiDB 集群（包括 PD、TiDB、TiKV 等组件和监控组件）
-- [启动集群](ansible-operation.md#启动集群)
-- [关闭集群](ansible-operation.md#关闭集群)
-- [变更组件配置](ansible-deployment-rolling-update.md#变更组件配置)
-- [集群扩容缩容](ansible-deployment-scale.md)
-- [升级组件版本](ansible-deployment-rolling-update.md#升级组件版本)
-- [清除集群数据](ansible-operation.md#清除集群数据)
-- [销毁集群](ansible-operation.md#销毁集群)
+- [启动集群](../op-guide/ansible-operation.md#启动集群)
+- [关闭集群](../op-guide/ansible-operation.md#关闭集群)
+- [变更组件配置](../op-guide/ansible-deployment-rolling-update.md#变更组件配置)
+- [集群扩容缩容](../op-guide/ansible-deployment-scale.md)
+- [升级组件版本](../op-guide/ansible-deployment-rolling-update.md#升级组件版本)
+- [清除集群数据](../op-guide/ansible-operation.md#清除集群数据)
+- [销毁集群](../op-guide/ansible-operation.md#销毁集群)
 
-> **注**：对于生产环境，须使用 TiDB-Ansible 部署 TiDB 集群。如果只是用于测试 TiDB 或体验 TiDB 的特性，建议[使用 Docker Compose 在单机上快速部署 TiDB 集群](docker-compose.md)。
+> **注**：对于生产环境，须使用 TiDB-Ansible 部署 TiDB 集群。如果只是用于测试 TiDB 或体验 TiDB 的特性，建议[使用 Docker Compose 在单机上快速部署 TiDB 集群](../op-guide/docker-compose.md)。
 
 ## 准备机器
 
 1.  部署目标机器若干
 
-    - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见[部署建议](recommendation.md)。
+    - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见[部署建议](../op-guide/recommendation.md)。
     - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构 (amd64)。
     - 机器之间内网互通。
 
-    > **注：使用 Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](docker-compose.md)单机进行测试。
+    > **注：使用 Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](../op-guide/docker-compose.md)单机进行测试。
 
 2.  部署中控机一台:
 
@@ -314,7 +314,7 @@ UUID=c51eb23b-195c-4061-92a9-3fad812cc12f /data1 ext4 defaults,nodelalloc,noatim
 - 3 个 PD 节点
 - 3 个 TiKV 节点，第一台 TiDB 机器同时用作监控机
 
-默认情况下，单台机器上只需部署一个 TiKV 实例。如果你的 TiKV 部署机器 CPU 及内存配置是[部署建议](recommendation.md)的两倍或以上，并且拥有两块 SSD 硬盘或单块容量超 2T 的 SSD 硬盘，可以考虑部署两实例，但不建议部署两个以上实例。
+默认情况下，单台机器上只需部署一个 TiKV 实例。如果你的 TiKV 部署机器 CPU 及内存配置是[部署建议](../op-guide/recommendation.md)的两倍或以上，并且拥有两块 SSD 硬盘或单块容量超 2T 的 SSD 硬盘，可以考虑部署两实例，但不建议部署两个以上实例。
 
 ### 单机单 TiKV 实例集群拓扑
 
@@ -689,6 +689,7 @@ tidb ALL=(ALL) NOPASSWD: ALL
 ```
 
 ### You need to install jmespath prior to running json_query filter 报错
+
 请参照 [在中控机器上安装 Ansible 及其依赖](#在中控机器上安装-ansible-及其依赖) 在中控机上通过 pip 安装 Ansible 及相关依赖的指定版本，默认会安装 `jmespath`。
 
 可通过以下命令验证 `jmespath` 是否安装成功：

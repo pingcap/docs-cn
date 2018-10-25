@@ -35,10 +35,6 @@ log-level = "info"
 # 监听地址
 # addr = "127.0.0.1:20160"
 
-# 建议使用默认值
-# notify-capacity = 40960
-# messages-per-tick = 4096
-
 # gRPC 线程池大小
 # grpc-concurrency = 4
 # TiKV 每个实例之间的 gRPC 连接数

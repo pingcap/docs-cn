@@ -7,7 +7,7 @@ category: deployment
 
 TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认的配置文件，重命名为 config.toml 即可。
 
-本文档只阐述未包含在命令行参数中的参数，命令行参数参见[这里](configuration.md)。
+本文档只阐述未包含在命令行参数中的参数，命令行参数参见[这里](../op-guide/configuration.md)。
 
 ### `split-table`
 
@@ -32,6 +32,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认: 2
 + 具体可以查看 MySQL 关于这个变量的[描述](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names)
 + 注意：目前 TiDB 只支持将该选项的值设为 2，即按照大小写来保存表名，按照小写来比较（不区分大小写）。
+
+### `compatible-kill-query`
+
++ 设置 "kill" 语句的兼容性。
++ 默认: false
++ 在 TiDB 里面 "kill xxx" 语句和 MySQL 行为不一致。只有执行 "kill tidb xxx" 的时候，才会真正的杀死一条查询。当 `compatible-kill-query` 设置为 true 的时候，则兼容 MySQL 的行为，不需要 "tidb" 关键字。
 
 ## log 
 
@@ -212,9 +218,11 @@ prepare 语句的 Plan cache 设置。
 事务内存锁相关配置，当本地事务冲突比较多时建议开启。
 
 ### `enable`
+
 + 开启
 + 默认: false
 
 ### `capacity`
+
 + Hash 对应的 slot 数, 会自动向上调整为 2 的指数倍。每个 slot 占 32 Bytes 内存。当写入数据的范围比较广时（如导数据），设置过小会导致变慢，性能下降。
 + 默认：1024000

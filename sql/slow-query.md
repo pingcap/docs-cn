@@ -5,7 +5,7 @@ category: user guide
 
 # 慢查询日志
 
-一条不合理的 SQL 语句会导致整个集群压力增大，响应变慢。对于这种问题，我们需要用慢查询日志来定位有问题的语句，解决性能问题。
+一条不合理的 SQL 语句会导致整个集群压力增大，响应变慢。对于这种问题，需要用慢查询日志来定位有问题的语句，解决性能问题。
 
 ### 获取日志
 
@@ -39,7 +39,7 @@ sql:select count(c) from sbtest1 use index (k_1)
 
 #### backoff_time
 
-表示语句遇到需要重试的错误时在重试前等待的时间，常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、tikv server is busy。
+表示语句遇到需要重试的错误时在重试前等待的时间，常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、`tikv server is busy`。
 
 #### request_count
 
