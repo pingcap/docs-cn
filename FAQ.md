@@ -485,19 +485,19 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 #### 3.3.4 TiDB 可以使用 S3 作为后端存储吗？
 
-不可以，目前 TiDB 只支持分布式存储引擎和 Goleveldb/Rocksdb/Boltdb 引擎。
+不可以，目前 TiDB 只支持分布式存储引擎和 GolevelDB/RocksDB/BoltDB 引擎。
 
-#### 3.3.5 Infomation_schema 能否支持更多真实信息？
+#### 3.3.5 Information_schema 能否支持更多真实信息？
 
-Infomation_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。当前 TiDB 支持的：Infomation\_schema 请参考 [TiDB 系统数据库说明文档](sql/system-database.md)。
+Information_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。当前 TiDB 支持的：Information\_schema 请参考 [TiDB 系统数据库说明文档](sql/system-database.md)。
 
 #### 3.3.6 TiDB Backoff type 主要原因?
 
-TiDB-server 与 TiKV-server 随时进行通信，在进行大量数据操作过程中，会出现 Server is busy 或者 backoff.maxsleep 20000ms 的日志提示信息，这是由于 TiKV-server 在处理过程中系统比较忙而出现的提示信息，通常这时候可以通过系统资源监控到 TiKV 主机系统资源使用率比较高的情况出现。如果这种情况出现，可以根据资源使用情况进行相应的扩容操作。
+TiDB-server 与 TiKV-server 随时进行通信，在进行大量数据操作过程中，会出现 `Server is busy` 或者 `backoff.maxsleep 20000ms` 的日志提示信息，这是由于 TiKV-server 在处理过程中系统比较忙而出现的提示信息，通常这时候可以通过系统资源监控到 TiKV 主机系统资源使用率比较高的情况出现。如果这种情况出现，可以根据资源使用情况进行相应的扩容操作。
 
 #### 3.3.7 TiDB TiClient type 主要原因？
 
-TiClient Region Error 该指标描述的是在 TiDB-server 作为客户端通过 KV 接口访问 TiKV-server 进行数据操作过程中，TiDB-server 操作 TiKV-server 中的 Region 数据出现的错误类型与 mertic 指标，错误类型包括 not_leader、stale_epoch。出现这些错误的情况是当 TiDB-server 根据自己的缓存信息去操作 Region leader 数据的时候，Region leader 发生了迁移或者 TiKV 当前的 Region 信息与 TiDB 缓存的路由信息不一致而出现的错误提示。一般这种情况下，TiDB-server 都会自动重新从 PD 获取最新的路由数据，重做之前的操作。
+TiClient Region Error 该指标描述的是在 TiDB-server 作为客户端通过 KV 接口访问 TiKV-server 进行数据操作过程中，TiDB-server 操作 TiKV-server 中的 Region 数据出现的错误类型与 metric 指标，错误类型包括 not_leader、stale_epoch。出现这些错误的情况是当 TiDB-server 根据自己的缓存信息去操作 Region leader 数据的时候，Region leader 发生了迁移或者 TiKV 当前的 Region 信息与 TiDB 缓存的路由信息不一致而出现的错误提示。一般这种情况下，TiDB-server 都会自动重新从 PD 获取最新的路由数据，重做之前的操作。
 
 #### 3.3.8 TiDB 同时支持的最大并发连接数？
 
@@ -611,7 +611,7 @@ Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 
 
 WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD，RAID 如果允许的话，最好是 RAID 10，RAID 卡 cache、操作系统 I/O 调度目前没有针对性的最佳实践，Linux 7 以上默认配置即可，NUMA 没有特别建议，NUMA 内存分配策略可以尝试使用 `interleave = all`，文件系统建议 ext4。
 
-#### 3.4.15 在最严格 sync-log = ture 的数据可用模式下，写入性能如何？
+#### 3.4.15 在最严格 sync-log = true 的数据可用模式下，写入性能如何？
 
 一般来说开启 sync-log 性能损耗大概 30% 左右，官方有个 `sync-log = false` 的基准测试，可以参考 [https://github.com/pingcap/docs-cn/blob/master/benchmark/sysbench.md](https://github.com/pingcap/docs-cn/blob/master/benchmark/sysbench.md)。
 
@@ -623,7 +623,7 @@ Raft 是强一致复制，写入必须同时超过 50% 的节点接受、应用�
 
 理论上和单机数据库比，多四个网络延迟。
 
-#### 3.4.18 有没有类似 MySQL 的 innodb Memcached plugin，可以直接使用 KV 接口，可以不需要独立的 Cache？
+#### 3.4.18 有没有类似 MySQL 的 InnoDB Memcached plugin，可以直接使用 KV 接口，可以不需要独立的 Cache？
 
 TiKV 支持单独进行接口调用，理论上也可以起个实例做为 Cache，但 TiDB 最大的价值是分布式关系型数据库，我们原则上不对 TiKV 单独进行支持。
 
@@ -714,6 +714,7 @@ sqoop export \
     --export-dir ${dir} \
     --batch
 ```
+
 - 也可以选择增大 tidb 的单个事物语句数量限制，不过这个会导致内存上涨。
 
 ### 4.2 在线数据同步
