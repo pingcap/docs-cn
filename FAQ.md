@@ -505,13 +505,13 @@ Possible reasons:
 
 #### Can I use S3 as the backend storage engine in TiDB?
 
-No. Currently, TiDB only supports the distributed storage engine and the Goleveldb/Rocksdb/Boltdb engine.
+No. Currently, TiDB only supports the distributed storage engine and the Goleveldb/RocksDB/BoltDB engine.
 
-#### Can the `Infomation_schema` support more real information?
+#### Can the `Information_schema` support more real information?
 
-The tables in `Infomation_schema` exist mainly for compatibility with MySQL, and some third-party software queries information in the tables. Currently, most of those tables are null. More parameter information is to be involved in the tables as TiDB updates later.
+The tables in `Information_schema` exist mainly for compatibility with MySQL, and some third-party software queries information in the tables. Currently, most of those tables are null. More parameter information is to be involved in the tables as TiDB updates later.
 
-For the `Infomation_schema` that TiDB currently supports, see [The TiDB System Database](sql/system-database.md).
+For the `Information_schema` that TiDB currently supports, see [The TiDB System Database](sql/system-database.md).
 
 #### What's the explanation of the TiDB Backoff type scenario?
 
