@@ -24,7 +24,7 @@ category: tools
 
 ```
   -z, --tidb-snapshot: Set the tidb_snapshot to be used for the backup.
-                       Default: NOW()-INTERVAL 1 SECOND.
+                       Default: The current TSO (UniqueID from SHOW MASTER STATUS).
                        Accepts either a TSO or valid datetime.  For example: -z "2016-10-08 16:45:26"
 ```
 
