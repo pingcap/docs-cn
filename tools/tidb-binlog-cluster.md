@@ -5,7 +5,7 @@ category: advanced
 
 # TiDB-Binlog 用户文档
 
-本文档介绍 cluster 版本 TiDB-Binlog 的架构以及部署方案。如需使用 local 版本或者 kafka 版本，可参考 [local 版本的 TiDB-Binlog 部署文档](../tools/tidb-binlog.md) 和 [kafka 版本的 TiDB-Binlog 部署文档](../tools/tidb-binlog－kafka.md)。
+本文档介绍 cluster 版本 TiDB-Binlog 的架构以及部署方案。如需使用 local 版本或者 kafka 版本，可参考 [local 版本的 TiDB-Binlog 部署文档](../tools/tidb-binlog.md) 和 [kafka 版本的 TiDB-Binlog 部署文档](../tools/tidb-binlog-kafka.md)。
 
 ## TiDB-Binlog 简介
 
