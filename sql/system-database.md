@@ -79,7 +79,7 @@ SHOW COLUMNS FROM table_name [FROM db_name] [LIKE 'wild']
 
 ### ENGINES Table
 
-ENGINES 表提供了关于存储引擎的信息。目前这张表里面的数据是假的。生产环境中，TiDB 只推荐使用 TiKV 引擎。
+ENGINES 表提供了关于存储引擎的信息。从和 MySQL 兼容性上考虑，TiDB `show engines` 的结果展示成了 InnoDB。
 
 ### EVENTS Table
 
