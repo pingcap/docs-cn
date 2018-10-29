@@ -24,6 +24,7 @@ TiDB supports most of the JSON functions that shipped with the GA release of MyS
 | [JSON_EXTRACT(json_doc, path[, path] ...)][json_extract]| Returns data from a JSON document, selected from the parts of the document matched by the `path` arguments |
 | [->][json_short_extract]  | Returns the value from a JSON column after the evaluating path; the syntactic sugar of `JSON_EXTRACT(doc, path_literal)`   |
 | [->>][json_short_extract_unquote]  | Returns the value from a JSON column after the evaluating path and unquoting the result; the syntactic sugar of `JSON_UNQUOTE(JSON_EXTRACT(doc, path_literal))` |
+| [JSON_KEYS(json_doc[, path])][json_keys] | Returns the keys from the top-level value of a JSON object as a JSON array, or, if a path argument is given, the top-level keys from the selected path |
 
 ## Functions that modify JSON values
 
@@ -50,7 +51,6 @@ The following JSON functions are unsupported in TiDB. You can track the progress
 * `JSON_APPEND` and its alias `JSON_ARRAY_APPEND`
 * `JSON_ARRAY_INSERT`
 * `JSON_DEPTH`
-* `JSON_KEYS`
 * `JSON_MERGE_PATCH`
 * `JSON_MERGE_PRESERVE`, use the alias `JSON_MERGE` instead
 * `JSON_PRETTY`
