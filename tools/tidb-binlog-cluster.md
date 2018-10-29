@@ -64,7 +64,7 @@ Pump && Drainer 支持部署和运行在 Intel x86-64 架构的 64 位通用硬�
 
 | tidb-ansible 分支 | TiDB 版本 | 备注 |
 | ---------------- | --------- | --- |
-| release-2.0 | 2.0 版本 | 最新稳定版本，可用于生产环境。 |
+| release-2.0-new-binlog | 2.0 版本 | 最新稳定版本，可用于生产环境。 |
 | master | master 版本 | 包含最新特性，每日更新。 |
 
 使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible 相应分支，默认的文件夹名称为 `tidb-ansible`。
@@ -190,7 +190,7 @@ $ cp drainer.toml drainer_mysql_drainer.toml
 $ vi drainer_mysql_drainer.toml
 ```
 
-> 配置文件名命名规则为 `别名_drainer.toml`，无法部署时无法找到自定义配置文件。
+> 配置文件名命名规则为 `别名_drainer.toml`，否则部署时无法找到自定义配置文件。
 
 db-type 设置为 "mysql"， 配置下游 MySQL 信息。
 
