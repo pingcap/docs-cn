@@ -418,9 +418,9 @@ Usage:
 }
 ```
 
-### `region key [--format=raw|pb|proto|protobuf] <key>`
+### `region key [--format=raw|encode] <key>`
 
-Use this command to query the region that a specific key resides in. It supports the raw and protobuf formats.
+Use this command to query the region that a specific key resides in. It supports the raw and encoding formats. And you need to use single quotes around the key when it is in the encoding format.
 
 Raw format usage (default):
 
@@ -434,10 +434,10 @@ Raw format usage (default):
 }
 ```
 
-Protobuf format usage:
+Encoding format usage:
 
 ```bash
->> region key --format=pb t\200\000\000\000\000\000\000\377\035_r\200\000\000\000\000\377\017U\320\000\000\000\000\000\372
+>> region key --format=encode 't\200\000\000\000\000\000\000\377\035_r\200\000\000\000\000\377\017U\320\000\000\000\000\000\372'
 {
   "region": {
     "id": 2,
