@@ -22,7 +22,7 @@ category: tools
 
 ```bash
   -z, --tidb-snapshot: 设置 tidb_snapshot 用于备份
-                       默认值：NOW()-INTERVAL 1 SECOND
+                       默认值：当前 TSO（SHOW MASTER STATUS 输出的 UniqueID）
                        此参数可设为 TSO 时间或有效的 datetime 时间。例如：-z "2016-10-08 16:45:26"
 ```
 
