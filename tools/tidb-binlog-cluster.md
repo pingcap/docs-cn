@@ -3,8 +3,6 @@ title: TiDB-Binlog cluster 版本用户文档
 category: advanced
 ---
 
-> cluster 版 TiDB-Binlog 尚未发布正式版，本文档用于测试环境部署。
-
 ## TiDB-Binlog 简介
 
 TiDB-Binlog 是一个用于收集 TiDB 的 Binlog，并提供实时备份和同步功能的商业工具。
@@ -62,10 +60,27 @@ Pump && Drainer 支持部署和运行在 Intel x86-64 架构的 64 位通用硬�
 
 #### 下载 tidb-ansible
 
-以 tidb 用户登录中控机并进入 `/home/tidb` 目录，使用以下命令下载 tidb-ansible `new-tidb-binlog` 分支，默认的文件夹名称为 tidb-ansible。
+以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录。以下为 tidb-ansible 分支与 TiDB 版本对应关系，版本选择可以咨询官方。
+
+| tidb-ansible 分支 | TiDB 版本 | 备注 |
+| ---------------- | --------- | --- |
+| release-2.0 | 2.0 版本 | 最新稳定版本，可用于生产环境。 |
+| master | master 版本 | 包含最新特性，每日更新。 |
+
+使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible 相应分支，默认的文件夹名称为 `tidb-ansible`。
+
+下载 2.0 版本：
 
 ```
-$ git clone -b new-tidb-binlog https://github.com/pingcap/tidb-ansible.git
+$ git clone -b release-2.0-new-binlog https://github.com/pingcap/tidb-ansible.git
+```
+
+或
+
+下载 master 版本：
+
+```
+$ git clone https://github.com/pingcap/tidb-ansible.git
 ```
 
 #### 部署 Pump
@@ -174,6 +189,8 @@ $ cd /home/tidb/tidb-ansible/conf
 $ cp drainer.toml drainer_mysql_drainer.toml
 $ vi drainer_mysql_drainer.toml
 ```
+
+> 配置文件名命名规则为 `别名_drainer.toml`，无法部署时无法找到自定义配置文件。
 
 db-type 设置为 "mysql"， 配置下游 MySQL 信息。
 
