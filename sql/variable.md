@@ -45,6 +45,6 @@ The following MySQL system variables are fully supported in TiDB and have the sa
 | tx_isolation | GLOBAL \| SESSION | the isolation level of a transaction |
 | hostname | NONE | the hostname of the TiDB server |
 
-## The proprietary system variables and syntaxes in TiDB
+## TiDB Specific System Variables
 
-See [The Proprietary System Variables and Syntax in TiDB](../sql/tidb-specific.md).
+See [TiDB Specific System Variables](../sql/tidb-specific.md).

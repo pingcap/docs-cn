@@ -8,7 +8,7 @@ category: user guide
 
 TiDB contains a number of system variables which are specific to its usage, and **do not** apply to MySQL. These variables start with a `tidb_` prefix, and can be tuned to optimize system performance.
 
-## System variable
+## System variables
 
 Variables can be set with the `SET` statement, for example:
 
@@ -289,11 +289,11 @@ set @@global.tidb_distsql_scan_concurrency = 10
 - This variable is used to change the default priority for statements executed on a TiDB server. A use case is to ensure that a particular user that is performing OLAP queries receives lower priority than users performing OLTP queries.
 - You can set the value of this variable to `NO_PRIORITY`, `LOW_PRIORITY`, `DELAYED` or `HIGH_PRIORITY`.
 
-## Optimizer Hint
+## Optimizer Hints
 
-On the basis of MySQL’s `Optimizer Hint` Syntax, TiDB adds some proprietary `Hint` syntaxes. When using the `Hint` syntax, the TiDB optimizer will try to use the specific algorithm, which performs better than the default algorithm in some scenarios.
- 
-The `Hint` syntax is included in comments like `/*+ xxx */`, and in MySQL client versions earlier than 5.7.7, the comment is removed by default. If you want to use the `Hint` syntax in these earlier versions, add the `--comments` option when starting the client. For example: `mysql -h 127.0.0.1 -P 4000 -uroot --comments`.
+TiDB supports optimizer hints, based on the comment-like syntax introduced in MySQL 5.7. i.e. `/*+ TIDB_XX(t1, t2) */`. Use of optimizer hints is recommended in cases where the TiDB optimizer selects a less optimal query plan.
+
+> **Note:** MySQL command-line clients earlier than 5.7.7 strip optimizer hints by default. If you want to use the `Hint` syntax in these earlier versions, add the `--comments` option when starting the client. For example: `mysql -h 127.0.0.1 -P 4000 -uroot --comments`.
  
 ### TIDB_SMJ(t1, t2)
  

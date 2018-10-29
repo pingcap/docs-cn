@@ -14,7 +14,7 @@ You can set the service parameters using the command line or the configuration f
 
 ## TiDB system variable
 
-TiDB is compatible with MySQL system variables, and defines some unique system variables to adjust the database behavior. For more information, see [The Proprietary System Variables and Syntaxes in TiDB](../sql/tidb-specific.md).
+TiDB is compatible with MySQL system variables, and defines some unique system variables to adjust the database behavior. For more information, see [TiDB Specific System Variables](../sql/tidb-specific.md).
 
 ## TiDB system table
 
