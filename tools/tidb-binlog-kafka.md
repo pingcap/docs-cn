@@ -46,15 +46,15 @@ CentOS 7+
 
 ```bash
 # 下载压缩包
-wget http://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-binlog-latest-linux-amd64.sha256
+wget http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.tar.gz
+wget http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.sha256
 
 # 检查文件完整性，返回 ok 则正确
-sha256sum -c tidb-binlog-latest-linux-amd64.sha256
+sha256sum -c tidb-binlog-kafka-linux-amd64.sha256
 
 # 解开压缩包
-tar -xzf tidb-binlog-latest-linux-amd64.tar.gz
-cd tidb-binlog-latest-linux-amd64
+tar -xzf tidb-binlog-kafka-linux-amd64.tar.gz
+cd tidb-binlog-kafka-linux-amd64
 ```
 
 ### TiDB-Binlog 部署
