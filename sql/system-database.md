@@ -80,7 +80,7 @@ NULL.
 
 ### ENGINES table
 
-The ENGINES table provides information about storage engines. But it contains dummy data only. In the production environment, use the TiKV engine for TiDB.
+The ENGINES table provides information about storage engines. For compatibility, TiDB will always describe InnoDB as the only supported engine.
 
 ### EVENTS table
 
