@@ -22,7 +22,6 @@ Pump 写 binlog 到本地存储时失败。
 处理方法
 
 * 先确认 pump_storage_error 监控是否存在错误，查看 Pump 日志确认原因
-* 最后因为数据丢失，需要选择全量同步或者使用 sync-diff-inspector 工具进行修复。
 
 ## Critical
 
