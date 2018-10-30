@@ -9,19 +9,19 @@ category: tools
 
 ## Emergency
 
-### 1. binlog_pump_loss_binlog_count
+### 1. binlog_pump_storage_error_count
 
 监控规则
 
-changes(binlog_pump_loss_binlog_count[1m]) > 0
+changes(binlog_pump_storage_error_count[1m]) > 0
 
 含义
 
-Pump 处理 TiDB write binlog rpc 失败。
+Pump 写 binlog 到本地存储时失败。
 
 处理方法
 
-* 先再次确认 pump_storage_error 监控是否存在错误。
+* 先确认 pump_storage_error 监控是否存在错误，查看 Pump 日志确认原因
 * 最后因为数据丢失，需要选择全量同步或者使用 sync-diff-inspector 工具进行修复。
 
 ## Critical
