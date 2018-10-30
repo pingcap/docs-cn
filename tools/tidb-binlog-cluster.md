@@ -3,6 +3,10 @@ title: TiDB-Binlog cluster 版本用户文档
 category: advanced
 ---
 
+# TiDB-Binlog 用户文档
+
+本文档介绍 cluster 版本 TiDB-Binlog 的架构以及部署方案。如需使用 local 版本或者 kafka 版本，可参考 [local 版本的 TiDB-Binlog 部署文档](../tools/tidb-binlog.md) 和 [kafka 版本的 TiDB-Binlog 部署文档](../tools/tidb-binlog-kafka.md)。
+
 ## TiDB-Binlog 简介
 
 TiDB-Binlog 是一个用于收集 TiDB 的 Binlog，并提供实时备份和同步功能的商业工具。
@@ -252,18 +256,18 @@ $ ansible-playbook start_drainer.yml
 
 ```bash
 TiDB（Pump Client）
-wget https://download.pingcap.org/tidb-v2.0.7-binlog-dev-linux-amd64.tar.gz
-wget https://download.pingcap.org/tidb-v2.0.7-binlog-dev-linux-amd64.sha256
+wget https://download.pingcap.org/tidb-v2.0.8-binlog-linux-amd64.tar.gz
+wget https://download.pingcap.org/tidb-v2.0.8-binlog-linux-amd64.sha256
 
 # 检查文件完整性，返回 ok 则正确
-sha256sum -c tidb-v2.0.7-binlog-dev-linux-amd64.sha256
+sha256sum -c tidb-v2.0.8-binlog-linux-amd64.sha256
 
 Pump && Drainer
-wget https://download.pingcap.org/tidb-binlog-new-linux-amd64.tar.gz
-wget https://download.pingcap.org/tidb-binlog-new-linux-amd64.sha256
+wget https://download.pingcap.org/tidb-binlog-cluster-latest-linux-amd64.tar.gz
+wget https://download.pingcap.org/tidb-binlog-cluster-latest-linux-amd64.sha256
 
 # 检查文件完整性，返回 ok 则正确
-sha256sum -c tidb-binlog-new-linux-amd64.sha256
+sha256sum -c tidb-binlog-cluster-latest-linux-amd64.sha256
 ```
 
 #### 使用样例
