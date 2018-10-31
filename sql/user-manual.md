@@ -81,9 +81,9 @@ TiDB supports the SQL-92 standard and is compatible with MySQL. To help you easi
 - [Utility Statements](util.md)
 - [TiDB SQL Syntax Diagram](https://pingcap.github.io/sqlgram/)
 
-## JSON functions and generated column
+## Generated columns
 
-- [JSON Functions and Generated Column](json-functions-generated-column.md)
+- [Generated Columns](generated-columns.md)
 
 ## Connectors and APIs
 

@@ -253,7 +253,7 @@ INSERT INTO city VALUES (1, '{"name": "Beijing", "population": 100}');
 SELECT id FROM city WHERE population >= 100;
 ```
 
-For more information, see [JSON Functions and Generated Column](../sql/json-functions-generated-column.md).
+For more information, see [JSON Functions](../sql/json-functions.md) and [Generated Columns](../sql/generated-columns.md).
 
 ## The ENUM data type
 
