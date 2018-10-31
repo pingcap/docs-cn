@@ -31,6 +31,7 @@ However, in TiDB, the following MySQL features are not supported for the time be
 + XML Functions
 + X-Protocol
 + Savepoints
++ Column-level privileges
 
 ## Features that are different from MySQL
 
