@@ -20,15 +20,19 @@ TiDB 支持包括跨行事务、JOIN 及子查询在内的绝大多数 MySQL 5.7
 * 触发器
 * 事件
 * 自定义函数
-* 外键约束
-* 全文索引
-* 空间索引
+* `FOREIGN KEY` 约束
+* `FULLTEXT` 函数与索引
+* `SPATIAL` 函数与索引
 * 非 `utf8` 字符集
+* `BINARY` 之外的排序规则
 * 增加主键
 * 删除主键
 * SYS schema
 * MySQL 追踪优化器
+* XML 函数
 * X Protocol
+* Savepoints
+* 列级权限
 
 ## 与 MySQL 有差异的特性
 
