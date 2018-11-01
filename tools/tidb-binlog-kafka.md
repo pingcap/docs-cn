@@ -122,6 +122,10 @@ cd tidb-binlog-latest-linux-amd64
 - `auto.create.topics.enable = true`: if no topic exists, Kafka automatically creates a topic on the broker.
 - `broker.id`: a required parameter to identify the Kafka cluster. Keep the parameter value unique. For example, `broker.id = 1`.
 - `fs.file-max = 1000000`: Kafka uses a lot of files and network sockets. It is recommended to change the parameter value to 1000000. Change the value using `vi /etc/sysctl.conf`.
+- Configure the following three parameters to 1G, to avoid the failure of writing into Kafka caused by too large a single message when a large number of data is modified in a transaction.
+    - `message.max.bytes=1073741824`
+    - `replica.fetch.max.bytes=1073741824`
+    - `fetch.message.max.bytes=1073741824`
 
 ### Deploy Pump using TiDB-Ansible
 
