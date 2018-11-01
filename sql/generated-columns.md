@@ -1,5 +1,5 @@
 ---
-title: Generated Columns
+title: Generated Column
 summary: 本文档介绍如何使用 generated column
 category: user guide
 ---
@@ -33,7 +33,7 @@ CREATE TABLE person (
 );
 ```
 
-该表中，`city` 列是一个 **generated column**。顾名思义，此列由该表的其他列生成，对此列进行插入或更新操作时，并不能对之赋值。此列按需生成，并不存储在数据库中，也不占用内存空间，因而是_虚拟的_。`city` 列的索引_存储在数据库中_，并使用和 `varchar(64)` 类的其他索引相同的结构。
+该表中，`city` 列是一个 **generated column**。顾名思义，此列由该表的其他列生成，对此列进行插入或更新操作时，并不能对之赋值。此列按需生成，并不存储在数据库中，也不占用内存空间，因而是**虚拟的**。`city` 列的索引**存储在数据库中**，并使用和 `varchar(64)` 类的其他索引相同的结构。
 
 可使用 generated column 的索引，以提高如下语句的执行速度：
 
@@ -66,4 +66,4 @@ ERROR 1048 (23000): Column 'city' cannot be null
 
 - 不能通过 `ALTER TABLE` 增加 `STORED` 存储方式的 generated column；
 - 不能通过 `ALTER TABLE` 在 generated column 上增加索引；
-- 并未支持所有的 [JSON 函数](json-functions.md)。
+- 并未支持所有的 [JSON 函数](../sql/json-functions.md)。
