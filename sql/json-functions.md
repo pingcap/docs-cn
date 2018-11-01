@@ -23,6 +23,7 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。MySQL 5.7 发布
 | [JSON_EXTRACT(json_doc, path[, path] ...)][json_extract]          | 从 JSON 文档中解出某一路径对应的子文档                     |
 | [->][json_short_extract]  | 返回执行路径后面的 JSON 列的值；`JSON_EXTRACT(doc, path_literal)` 的语法糖  |
 | [->>][json_short_extract_unquote]  | 返回执行路径后面的 JSON 列的值和转义后的结果； `JSON_UNQUOTE(JSON_EXTRACT(doc, path_literal))` 的语法糖 |
+| [JSON_KEYS(json_doc[, path])][json_keys] | 返回从 JSON 对象的顶级值作为 JSON array 的键，如果给定了路径参数，则从选定路径中获取顶级键 |
 
 ## 修改 JSON 值的函数
 
@@ -49,7 +50,6 @@ TiDB 暂未支持以下 JSON 函数。相关进展参见 [TiDB #7546](https://gi
 * `JSON_APPEND` 及其别名 `JSON_ARRAY_APPEND`
 * `JSON_ARRAY_INSERT`
 * `JSON_DEPTH`
-* `JSON_KEYS`
 * `JSON_MERGE_PATCH`
 * `JSON_MERGE_PRESERVE`，使用别名 `JSON_MERGE` 替代
 * `JSON_PRETTY`
