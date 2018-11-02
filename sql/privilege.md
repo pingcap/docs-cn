@@ -191,8 +191,8 @@ Query OK, 0 rows affected (0.27 sec)
 `SHOW GRANTS` 语句可以查看为用户分配了哪些权限。例如：
 
 ```sql
-SHOW GRANTS; // 查看当前用户的权限
-SHOW GRANTS for 'root'@'%'; // 查看某个特定用户的权限
+SHOW GRANTS; # 查看当前用户的权限
+SHOW GRANTS for 'root'@'%'; # 查看某个特定用户的权限
 ```
 
 更精确的方式，可以通过直接查看授权表的数据实现。比如想知道，`test@%` 该用户是否拥有对 `db1.t` 的 `Insert` 权限。
@@ -224,7 +224,7 @@ SELECT table_priv FROM mysql.tables_priv WHERE user='test' AND host='%' AND db='
 - mysql.user 用户账户，全局权限
 - mysql.db 数据库级别的权限
 - mysql.tables_priv 表级别的权限
-- mysql.columns_priv 列级别的权限，当前不支持
+- mysql.columns_priv 列级别的权限，当前暂不支持
 
 这几张表包含了数据的生效范围和权限信息。例如，`mysql.user` 表的部分数据：
 
