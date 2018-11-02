@@ -68,7 +68,7 @@
     - [Prepared SQL 语句语法](sql/prepare.md)
     - [实用工具语句](sql/util.md)
     - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
-  - [JSON 支持](sql/json-functions-generated-column.md)
+  - [Generated Column](sql/generated-columns.md)
   - [Connectors 和 API](sql/connection-and-APIs.md)
   - [TiDB 事务隔离级别](sql/transaction-isolation.md)
   - [错误码与故障诊断](sql/error.md)
