@@ -473,7 +473,7 @@ Drainer="192.168.0.13"
 
     - 启动示例  
         
-        > **注意：**如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取 initial-commit-ts 的值，并进行全量数据的备份与恢复。详细信息参见[部署 Drainer](#部署-drainer)。
+        > **注意**：如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取 initial-commit-ts 的值，并进行全量数据的备份与恢复。详细信息参见[部署 Drainer](#部署-drainer)。
     
         初次启动时使用参数 `initial-commit-ts`， 命令如下：
 
@@ -506,7 +506,7 @@ Pump/Drainer 中状态的定义：
 
 ### binlogctl 工具
 
-b[binlogctl](https://github.com/pingcap/tidb-tools/tree/develop/tidb-binlog/binlogctl) 是一个 TiDB-Binlog 配套的运维工具，具有如下功能：
+[binlogctl](https://github.com/pingcap/tidb-tools/tree/develop/tidb-binlog/binlogctl) 是一个 TiDB-Binlog 配套的运维工具，具有如下功能：
 
 * 获取当前 ts
 * 查看 Pump/Drainer 状态
