@@ -74,7 +74,7 @@ cd tidb-binlog-latest-linux-amd64
 
     To guarantee the integrity of data, perform the following operations 10 minutes after Pump is started:
 
-    - Use [binlogctl](https://github.com/pingcap/tidb-tools/tree/master/tidb_binlog/binlogctl) of the [tidb-tools](https://github.com/pingcap/tidb-tools) project to generate the `position` for the initial start of Drainer.
+    - Use [binlogctl](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/binlogctl) of the [tidb-tools](https://github.com/pingcap/tidb-tools) project to generate the `position` for the initial start of Drainer.
     - Do a full backup. For example, back up TiDB using Mydumper.
     - Import the full backup to the target system.
     - The savepoint metadata started by the Kafka version of Drainer is stored in the `checkpoint` table of the downstream database `tidb_binlog` by default. If no valid data exists in the `checkpoint` table, configure `initial-commit-ts` to make Drainer work from a specified position when it is started:
@@ -106,7 +106,7 @@ cd tidb-binlog-latest-linux-amd64
     # kafka-version = "0.8.2.0"
     ```
     
-    The data which outputs to kafka follows the binlog format sorted by ts and defined by protobuf. See [driver](https://github.com/pingcap/tidb-tools/tree/master/tidb_binlog/driver) to access the data and sync to the down stream.
+    The data which outputs to kafka follows the binlog format sorted by ts and defined by protobuf. See [driver](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/driver) to access the data and sync to the down stream.
     
 - Deploy Kafka and ZooKeeper cluster before deploying TiDB-Binlog. Make sure that Kafka is 0.9 version or later.
 

@@ -911,7 +911,7 @@ Recommendations:
 1. Improve the hardware configuration. See [Software and Hardware Requirements](op-guide/recommendation.md).
 2. Improve the concurrency. The default value is 10. You can improve it to 50 and have a try. But usually the improvement is 2-4 times of the default value.
 3. Test the `count` in the case of large amount of data.
-4. Optimize the TiKV configuration. See [Performance Tuning for TiKV](op-guide/tune-TiKV.md).
+4. Optimize the TiKV configuration. See [Performance Tuning for TiKV](op-guide/tune-tikv.md).
 
 #### How to view the progress of adding an index?
 
