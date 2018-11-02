@@ -64,7 +64,7 @@ TiDB 支持 ACID 分布式事务，事务模型是以 Google 的 Percolator 模�
 
 目前[官方文档](overview.md#tidb-简介)是获取 TiDB 相关知识最主要、最及时的发布途径。除此之外，我们也有一些技术沟通群，如有需求可发邮件至 [info@pingcap.com](mailto:info@pingcap.com) 获取。
 
-#### 1.1.14 TiDB 对那些 MySQL variables 兼容？
+#### 1.1.14 TiDB 对哪些 MySQL variables 兼容？
 
 详细可参考[系统变量](sql/variable.md)。
 
@@ -417,7 +417,7 @@ TiDB 目前社区非常活跃，在 1.0 GA 版本发布后，还在不断的优�
 
 #### 3.1.16 like(bindo.customers.name, jason%, 92) 这个92代表什么？
 
-转义字符是那个，默认是 (ASCII 92)
+那个是转义字符，默认是 (ASCII 92)。
 
 ### 3.2 PD 管理
 
@@ -489,7 +489,7 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 #### 3.3.5 Information_schema 能否支持更多真实信息？
 
-Information_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。当前 TiDB 支持的：Information\_schema 请参考 [TiDB 系统数据库说明文档](sql/system-database.md)。
+Information_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。当前 TiDB 支持的 Information\_schema 请参考 [TiDB 系统数据库说明文档](sql/system-database.md)。
 
 #### 3.3.6 TiDB Backoff type 主要原因?
 
@@ -540,7 +540,7 @@ replace HIGH_PRIORITY | LOW_PRIORITY into table_name;
 
 #### 3.3.12 SQL 中如何通过 hint 使用一个具体的 index？
 
-同 MySQL 的 用法一致，例如：
+同 MySQL 的用法一致，例如：
 `select column_name from table_name use index（index_name）where where_condition;`
 
 ### 3.4 TiKV 管理
@@ -607,7 +607,7 @@ Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 
 
 是的，TiKV 单机的存储引擎目前使用两个 RocksDB 实例，其中一个存储 raft-log，TiKV 有个 sync-log 参数，在 ture 的情况下，每次提交都会强制刷盘到 raft-log，如果发生 crash 后，通过 raft-log 进行 KV 数据的恢复。
 
-#### 3.4.14 对 WAL 存储有什么推荐的硬件配置，例如 SSD，RAID 级别，RAID 卡 cache 策略，NUMA 设置 ,文件系统选择，操作系统的 IO 调度策略等？
+#### 3.4.14 对 WAL 存储有什么推荐的硬件配置，例如 SSD，RAID 级别，RAID 卡 cache 策略，NUMA 设置，文件系统选择，操作系统的 IO 调度策略等？
 
 WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD，RAID 如果允许的话，最好是 RAID 10，RAID 卡 cache、操作系统 I/O 调度目前没有针对性的最佳实践，Linux 7 以上默认配置即可，NUMA 没有特别建议，NUMA 内存分配策略可以尝试使用 `interleave = all`，文件系统建议 ext4。
 
@@ -617,7 +617,7 @@ WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD
 
 #### 3.4.16 是否可以利用上层的 Raft + 多副本，达到完全的数据可靠，单机存储引擎不需要最严格模式？
 
-Raft 是强一致复制，写入必须同时超过 50% 的节点接受、应用才返回 ACK（三节点中二节点），在这种情况下，数据一致性是可以保证的，但理论上两个节点也可能同时 Crash，所以在诸如金融行业对数据零容忍的场景，还是需要开启 sync-log。
+Raft 是强一致复制，写入必须同时超过 50% 的节点接受，应用才返回 ACK（三节点中二节点），在这种情况下，数据一致性是可以保证的，但理论上两个节点也可能同时 Crash，所以在诸如金融行业对数据零容忍的场景，还是需要开启 sync-log。
 
 #### 3.4.17 使用 Raft 协议，数据写入会有多次网络的 roundtrip，实际写入延迟如何？
 
@@ -749,7 +749,7 @@ sqoop export \
 
 频繁执行 DDL 对同步速度会有影响。对于 Sycner 来说，DDL 是串行执行的，当同步遇到了 DDL，就会以串行的方式执行，所以这种场景就会导致同步速度下降。
 
-#### 4.2.1.6 使用 Syncer gtid 的方式同步时，同步过程中会不断更新 syncer.meta 文件，如果 Syncer 所在的机器坏了，导致 syncer.meta 文件所在的目录丢失，该如何处理？
+##### 4.2.1.6 使用 Syncer gtid 的方式同步时，同步过程中会不断更新 syncer.meta 文件，如果 Syncer 所在的机器坏了，导致 syncer.meta 文件所在的目录丢失，该如何处理？
 
 当前 Syncer 版本的没有进行高可用设计，Syncer 目前的配置信息 syncer.meta 直接存储在硬盘上，其存储方式类似于其他 MySQL 生态工具，比如 mydumper。 因此，要解决这个问题当前可以有两个方法：
 
