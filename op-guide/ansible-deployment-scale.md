@@ -198,6 +198,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
         ```
         /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member
         ```
+        注意 `run_pd.sh` 中 `--name="pd1" \` 这一配置，name要确认与现有集群配置不同，否则无法join成功。
 
 5.  滚动升级整个集群：
 
