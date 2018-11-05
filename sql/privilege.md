@@ -306,4 +306,4 @@ auth_spec: {
 User 参见[用户账号名](../sql/user-account-management.md)。
 
 * `IDENTIFIED BY 'auth_string'`：设置登录密码时，`auth_string` 会被 TiDB 经过加密存储在 `mysql.user` 表中。
-* `IDENTIFIED BY PASSWORD 'hash_string'`：设置登录密码时，`hash_string` 会被 TiDB 经过加密存储在 `mysql.user` 表中。目前这个行为和 MySQL 不一致，会在接下来的版本中修改为和 MySQL 一致的行为。
+* `IDENTIFIED BY PASSWORD 'hash_string'`：设置登录密码，`hash_string` 是一个类似于 `*EBE2869D7542FCE37D1C9BBC724B97BDE54428F1` 的 41 位字符串，会被 TiDB 直接存储在 `mysql.user` 表中，该字符串可以通过 `SELECT password('auth_string')` 加密得到。
