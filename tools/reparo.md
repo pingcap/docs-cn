@@ -85,7 +85,7 @@ Reparo 是 TiDB-Binlog 的一个配套工具，用于增量的恢复。使用 Ti
     ./bin/reparo -config reparo.toml
     ```
 
-### 注意
+### 注意
 
 * data-dir 用于指定 Drainer 输出的 binlog 文件目录。
 * start-datatime 和 start-tso 效果一样，只是时间格式上的区别，用于指定开始恢复的时间点；如果不指定，则默认在第一个 binlog 文件开始恢复。
