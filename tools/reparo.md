@@ -5,9 +5,9 @@ category: tools
 
 # Reparo 使用文档
 
-## Reparo 简介
+## Reparo 简介
 
-Reparo 是 TiDB-Binlog 的一个配套工具，用于增量的恢复。使用 TiDB-Binlog 中的 Drainer 将 binlog 按照 protobuf 格式输出到文件，通过这种方式来备份增量数据。当需要恢复增量数据时，使用 Reparo 解析文件中的 binlog，并将其应用到 TiDB／MySQL 中。
+Reparo 是 TiDB-Binlog 的一个配套工具，用于增量的恢复。使用 TiDB-Binlog 中的 Drainer 将 binlog 按照 protobuf 格式输出到文件，通过这种方式来备份增量数据。当需要恢复增量数据时，使用 Reparo 解析文件中的 binlog，并将其应用到 TiDB／MySQL 中。
 
 下载链接：[reparo-latest-linux-amd64.tar.gz](https://download.pingcap.org/reparo-latest-linux-amd64.tar.gz)
 
@@ -41,27 +41,28 @@ Reparo 是 TiDB-Binlog 的一个配套工具，用于增量的恢复。使用 
     ```
     # Drainer 输出的 protobuf 格式 binlog 文件的存储路径
     data-dir = "./data.drainer"
-    # Use index file to search target ts. Set this when `start-ts` is set.
-    # The file path would be {data-dir}/{index-name}
+
+    # 使用索引文件来搜索 ts 的位置，当设置了 `start-ts` 时设置该参数。文件的路径为 {data-dir}/{index-name}
     # index-name = "binlog.index"
     # log-file = ""
     # log-rotate = "hour"
+
+    # 日志输出信息等级设置：debug, info, warn, error, fatal (默认值：info)
     log-level = "info"
-    # start-datetime and stop-datetime enable you to pick a range of binlog to reparo.
-    # The datetime format is like '2018-02-28 12:12:12'.
+
+    # 使用 start-datetime 和 stop-datetime 来选择恢复指定时间范围内的 binlog，格式为 “2006-01-02 15:04:05”。
     # start-datetime = ""
     # stop-datetime = ""
-    # Start-tso is similar to start-datetime, but in pd-server tso format. e.g.  395181938313123110
-    # Stop-tso is is similar to stop-datetime, but in pd-server tso format. e.g. 395181938313123110
+
+    # start-tso、stop-tso 分别对应 start-datetime 和 stop-datetime，也是用于恢复指定时间范围内的 binlog，用 tso 的值来设置。如果已经设置了 start-datetime 和 stop-datetime， 就不需要再设置 start-tso 和 stop-tso。
     # start-tso = 0
     # stop-tso = 0
 
-    # dest-type choose a destination, which value can be "mysql", "print".
-    # for print, it just prints decoded value.
+    # 下游服务类型。 取值为 print, mysql（默认值：print）。当值为 print 时，只做解析打印到标准输出，不执行 SQL；如果为 mysql， 则需要在 [dest-db] 中配置 host、port、user、password 等信息。
     dest-type = "mysql"
-    ##replicate-do-db priority over replicate-do-table if have same db name
-    ##and we support regular expression , start with '~' declare use regular expression.
-    # 注： replicate-do-db 和 replicate-do-table 使用方式与drainer 提供的一致。
+
+    # replicate-do-db 和 replicate-do-table 用于指定恢复的库和表，replicate-do-db 的优先级高于 replicate-do-table，支持使用正则表达式来配置，需要以 '~' 开始声明使用正则表达式
+    # 注：replicate-do-db 和 replicate-do-table 使用方式与 Drainer 的使用方式一致。
     #replicate-do-db = ["~^b.*","s1"]
     #[[replicate-do-table]]
     #db-name ="test"
@@ -70,7 +71,7 @@ Reparo 是 TiDB-Binlog 的一个配套工具，用于增量的恢复。使用 
     #db-name ="test"
     #tbl-name = "~^a.*"
 
-    # 如果指定的 dest-type 为 mysql, 需要配置 dest-db。
+    # 如果 dest-type 设置为 mysql, 需要配置 dest-db。
     [dest-db]
     host = "127.0.0.1"
     port = 3309
@@ -84,11 +85,11 @@ Reparo 是 TiDB-Binlog 的一个配套工具，用于增量的恢复。使用 
     ./bin/reparo -config reparo.toml
     ```
 
-### 注意
+### 注意
 
 * data-dir 用于指定 Drainer 输出的 binlog 文件目录。
 * start-datatime 和 start-tso 效果一样，只是时间格式上的区别，用于指定开始恢复的时间点；如果不指定，则默认在第一个 binlog 文件开始恢复。
 * stop-datetime 和 stop-tso 效果一样，只是时间格式上的区别，用于指定结束恢复的时间点；如果不知道，则恢复到最后一个 binlog 文件的结尾。
-* dest-type 指定目标类型，取值为 ｀mysql｀, ｀print｀。 当值为 ｀mysql｀ 时，可以恢复到 MySQL/TiDB 等兼容 MySQL 协议的数据库，需要在配置下面的 [dest-db] 填写数据库信息；当取值为 ｀print｀ 的时候，只是打印 binlog 信息，通常用于 debug，以及查看 binlog 的内容，此时不需要填写 [dest-db] 。
+* dest-type 指定目标类型，取值为 ｀mysql｀, ｀print｀。 当值为 ｀mysql｀ 时，可以恢复到 MySQL/TiDB 等兼容 MySQL 协议的数据库，需要在配置下面的 [dest-db] 填写数据库信息；当取值为 ｀print｀ 的时候，只是打印 binlog 信息，通常用于 debug，以及查看 binlog 的内容，此时不需要填写 [dest-db] 。
 * replicate-do-db 用于指定恢复的库，不指定的话，则全部都恢复。
 * replicate-do-table 用于指定要恢复的表，不指定的话，则全部都恢复。
