@@ -16,12 +16,19 @@ TiDB 优化器会根据统计信息来选择最优的执行计划。统计信息
 语法：
 
 ```sql
-ANALYZE TABLE TableNameList
+ANALYZE TABLE TableNameList [WITH NUM BUCKETS]
 > 该语句会收集 TableNameList 中所有表的统计信息。
+> WITH NUM BUCKETS 可以用来指定生成直方图的桶数量上限。
 
-ANALYZE TABLE TableName INDEX [IndexNameList]
+ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS]
 > 该语句会收集 TableName 中所有的 IndexNameList 中的索引列的统计信息。
 > IndexNameList 为空时会收集所有索引列的统计信息。
+
+ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS]
+> 该语句会收集 TableName 中所有的 PartitionNameList 中分区的统计信息。
+
+ANALYZE TABLE TableName PARTITION PartitionNameList [IndexNameList] [WITH NUM BUCKETS]
+> 该语句会收集 TableName 中所有的 PartitionNameList 中分区的索引列统计信息。
 ```
 
 ### 自动更新
@@ -29,7 +36,15 @@ ANALYZE TABLE TableName INDEX [IndexNameList]
 在发生增加，删除以及修改语句时，TiDB 会自动更新表的总行数以及修改的行数。这些信息会定期持久化下来，
 更新的周期是 5 * `stats-lease`, `stats-lease` 的默认值是 3s，如果将其指定为 0，那么将不会自动更新。
 
-当修改的行数与总行数的比值大于 `auto-analyze-ratio` 时，TiDB 会自动发起 `Analyze` 语句。`auto-analyze-ratio` 可通过配置文件修改，其默认值是 0，即不开启此功能。
+和统计信息自动更新相关的三个系统变量如下：
+
+|  系统变量名 | 默认值 | 功能 |
+|---|---|---|
+| `tidb_auto_analyze_ratio`| 0.5 | 自动更新阈值 |
+| `tidb_auto_analyze_start_time` | `00:00 +0000` | 一天中能够进行自动更新的开始时间 |
+| `tidb_auto_analyze_end_time`   | `23:59 +0000` | 一天中能够进行自动更新的结束时间 |
+
+当某个表 `tbl` 的修改行数与总行数的比值大于 `tidb_auto_analyze_ratio`，并且当前时间在 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 之间时，TiDB 会在后台执行 `ANALYZE TABLE tbl` 语句自动更新这个表的统计信息。
 
 在查询语句执行时，TiDB 会以 `feedback-probability` 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。`feedback-probability` 可通过配置文件修改，其默认值是 0。
 
@@ -64,12 +79,13 @@ SHOW STATS_META [ShowLikeOrWhere]
 > 该语句会输出所有表的总行数以及修改行数等信息，你可以通过使用 ShowLikeOrWhere 来筛选需要的信息。
 ```
 
-目前 `SHOW STATS_META` 会输出 5 列，具体如下：
+目前 `SHOW STATS_META` 会输出 6 列，具体如下：
 
 | 语法元素 | 说明            |
 | -------- | ------------- |
 | db_name  |  数据库名    |
 | table_name | 表名 |
+| partition_name| 分区名 |
 | update_time | 更新时间 |
 | modify_count | 修改的行数 |
 | row_count | 总行数 |
@@ -85,12 +101,13 @@ SHOW STATS_HISTOGRAMS [ShowLikeOrWhere]
 > 该语句会输出所有列的不同值数量以及 NULL 数量等信息，你可以通过使用 ShowLikeOrWhere 来筛选需要的信息。
 ```
 
-目前 `SHOW STATS_HISTOGRAMS` 会输出 7 列，具体如下：
+目前 `SHOW STATS_HISTOGRAMS` 会输出 8 列，具体如下：
 
 | 语法元素 | 说明            |
 | -------- | ------------- |
 | db_name  |  数据库名    |
 | table_name | 表名 |
+| partition_name | 分区名 |
 | column_name | 列名 |
 | is_index | 是否是索引列 |
 | update_time | 更新时间 |
@@ -109,12 +126,13 @@ SHOW STATS_BUCKETS [ShowLikeOrWhere]
 > 该语句会输出所有桶的信息，你可以通过使用 ShowLikeOrWhere 来筛选需要的信息。
 ```
 
-目前 `SHOW STATS_BUCKETS` 会输出 9 列，具体如下：
+目前 `SHOW STATS_BUCKETS` 会输出 10 列，具体如下：
 
 | 语法元素 | 说明            |
 | -------- | ------------- |
 | db_name  |  数据库名    |
 | table_name | 表名 |
+| partition_name | 分区名 |
 | column_name | 列名 |
 | is_index | 是否是索引列 |
 | bucket_id | 桶的编号 |
