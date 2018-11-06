@@ -53,7 +53,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 * Drainer 不支持对 ignore schemas（在过滤列表中的 schemas）的 table 进行 rename DDL 操作。
 * 在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取 savepoint，然后导入全量备份，最后启动 Drainer 从 savepoint 开始同步增量数据。
 * Drainer 支持将 Binlog 同步到 MySQL、TiDB、Kafka 或者本地文件。如果需要将 Binlog 同步到其他类型的目的地中，可以设置 Drainer 将 Binlog 同步到 Kafka，再读取 Kafka 中的数据进行自定义处理，参考 [binlog slave client 用户文档](../tools/binlog-slave-client.md)。
-* 如果使用 TiDB-Binlog 用于增量恢复，可以设置下游为 `pb` 将同步到本地文件中，再使用 [Reparo](../tools/reparo.md) 恢复增量数据。
+* 如果 TiDB-Binlog 用于增量恢复，可以设置下游为 `pb` 将 binlog 同步到本地文件中，再使用 [Reparo](../tools/reparo.md) 恢复增量数据。
 * Pump/Drainer 的状态需要区分已暂停（paused）和下线（offline），Ctrl + C 或者 kill 进程，Pump 和 Drainer 的状态都将变为 paused。暂停状态的 Pump 不需要将已保存的 Binlog 数据全部发送到 Drainer；如果需要较长时间退出 Pump（或不再使用该 Pump），需要使用 binlogctl 工具来下线 Pump。Drainer 同理。
 
 ## TiDB-Binlog 部署
