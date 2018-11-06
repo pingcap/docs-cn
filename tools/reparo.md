@@ -18,17 +18,16 @@ Reparo 是 TiDB-Binlog 的一个配套工具，用于增量的恢复。使用 Ti
     ```
     Usage of reparo:
     -L string
-        日志输出信息等级设置：debug, info, warn, error, fatal (默认值：info)
-    -V 打印版本信息
+        日志输出信息等级设置：debug, info, warn, error, fatal (默认值：info)。
+    -V 打印版本信息。
     -config string
-         配置文件路径，如果指定了配置文件，reparo 会首先读取配置文件的配置；
-         如果对应的配置在命令行参数里面也存在，reparo 就会使用命令行参数的配置来覆盖配置文件里面的。
+        配置文件路径，如果指定了配置文件，reparo 会首先读取配置文件的配置；如果对应的配置在命令行参数里面也存在，reparo 就会使用命令行参数的配置来覆盖配置文件里面的。
     -data-dir string
-        Drainer 输出的 protobuf 格式 binlog 文件的存储路径 (默认值： data.drainer)
+        Drainer 输出的 protobuf 格式 binlog 文件的存储路径 (默认值： data.drainer)。
     -dest-type string
-        下游服务类型。 取值为 print, mysql（默认值：print）。当值为 print 时，只做解析打印到标准输出，不执行 SQL；如果为 mysql， 则需要在配置文件内配置 host、port、user、password 等信息。
+        下游服务类型。 取值为 print, mysql（默认值：print）。当值为 print 时，只做解析打印到标准输出，不执行 SQL；如果为 mysql，则需要在配置文件内配置 host、port、user、password 等信息。
     -log-file string
-        log 文件路径
+        log 文件路径。
     -log-rotate string
         log 文件切换频率，取值为 hour、day。
     -start-datetime string
@@ -39,15 +38,15 @@ Reparo 是 TiDB-Binlog 的一个配套工具，用于增量的恢复。使用 Ti
 ### 配置文件说明
 
     ```
-    # Drainer 输出的 protobuf 格式 binlog 文件的存储路径
+    # Drainer 输出的 protobuf 格式 binlog 文件的存储路径。
     data-dir = "./data.drainer"
 
-    # 使用索引文件来搜索 ts 的位置，当设置了 `start-ts` 时设置该参数。文件的路径为 {data-dir}/{index-name}
+    # 使用索引文件来搜索 ts 的位置，当设置了 `start-ts` 时设置该参数，文件的路径为 {data-dir}/{index-name}。
     # index-name = "binlog.index"
     # log-file = ""
     # log-rotate = "hour"
 
-    # 日志输出信息等级设置：debug, info, warn, error, fatal (默认值：info)
+    # 日志输出信息等级设置：debug, info, warn, error, fatal (默认值：info)。
     log-level = "info"
 
     # 使用 start-datetime 和 stop-datetime 来选择恢复指定时间范围内的 binlog，格式为 “2006-01-02 15:04:05”。
@@ -61,7 +60,7 @@ Reparo 是 TiDB-Binlog 的一个配套工具，用于增量的恢复。使用 Ti
     # 下游服务类型。 取值为 print, mysql（默认值：print）。当值为 print 时，只做解析打印到标准输出，不执行 SQL；如果为 mysql， 则需要在 [dest-db] 中配置 host、port、user、password 等信息。
     dest-type = "mysql"
 
-    # replicate-do-db 和 replicate-do-table 用于指定恢复的库和表，replicate-do-db 的优先级高于 replicate-do-table，支持使用正则表达式来配置，需要以 '~' 开始声明使用正则表达式
+    # replicate-do-db 和 replicate-do-table 用于指定恢复的库和表，replicate-do-db 的优先级高于 replicate-do-table。支持使用正则表达式来配置，需要以 '~' 开始声明使用正则表达式。
     # 注：replicate-do-db 和 replicate-do-table 使用方式与 Drainer 的使用方式一致。
     #replicate-do-db = ["~^b.*","s1"]
     #[[replicate-do-table]]
