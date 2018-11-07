@@ -324,10 +324,12 @@ auth_spec: {
 
 For more information about the user account, see [TiDB user account management](../sql/user-account-management.md).
 
-- IDENTIFIED BY `auth_string`
+- `IDENTIFIED BY 'auth_string'`
 
-  When you set the login password, `auth_string` is encrypted by TiDB and stored in the `mysql.user` table.
+    It is used to set the login password. `auth_string` is encrypted by TiDB and stored in the `mysql.user` table.
 
-- IDENTIFIED BY PASSWORD `hash_string`
+- `IDENTIFIED BY PASSWORD 'hash_string'`
 
-  When you set the login password, `hash_string` is encrypted by TiDB and stored in the `mysql.user` table. Currently, this is not the same as MySQL.
+    It is also used to set the login password. `hash_string` is a 41-character string similar to `*EBE2869D7542FCE37D1C9BBC724B97BDE54428F1`, which is directly stored in the `mysql.user` table by TiDB. To get this string, use `SELECT password('auth_string')` to encrypt your password.
+
+    TiDB supports the `mysql_native_password` authentication mechanism based on SHA-1, which is the default mechanism used in MySQL 5.7. Support for additional authentication mechanisms is planned in the future.
