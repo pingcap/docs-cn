@@ -118,7 +118,7 @@ message Binlog {
 }
 ```
 
-数据格式的具体定义在 [binlog.proto](https://github.com/pingcap/tidb-tools/blob/master/tidb_binlog/slave_binlog_proto/proto/binlog.proto)。
+数据格式的具体定义在 [binlog.proto](https://github.com/pingcap/tidb-tools/blob/master/tidb-binlog/slave_binlog_proto/proto/binlog.proto)。
 
 ### Driver
 TiDB-Tools 项目中提供了用于读取 Kafka 中 binlog 数据的 Driver，具有如下功能：
@@ -138,7 +138,7 @@ TiDB-Tools 项目中提供了用于读取 Kafka 中 binlog 数据的 Driver，�
 * 使用该 Driver 将数据同步到 MySQL，该示例包含将 binlog 转化为 SQL 的具体方法
 * 使用该 Driver 将数据打印出来
 
-Driver 项目地址：[Binlog Slave Driver](https://github.com/pingcap/tidb-tools/tree/master/tidb_binlog/driver)。
+Driver 项目地址：[Binlog Slave Driver](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/driver)。
 
 注：
 

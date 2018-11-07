@@ -75,7 +75,7 @@ cd tidb-binlog-kafka-linux-amd64
 
     为了保证数据的完整性，在 Pump 运行 10 分钟左右后按顺序进行如下操作：
 
-    *  使用 [tidb-tools](https://github.com/pingcap/tidb-tools) 项目中的 [binlogctl](https://github.com/pingcap/tidb-tools/tree/master/tidb_binlog/binlogctl) 工具生成 Drainer 初次启动所需的 position
+    *  使用 [tidb-tools](https://github.com/pingcap/tidb-tools) 项目中的 [binlogctl](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/binlogctl) 工具生成 Drainer 初次启动所需的 position
     *  全量备份，例如 mydumper 备份 TiDB
     *  全量导入备份到目标系统
     *  Kafka 版本 Drainer 启动的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，如果 checkpoint 表中没有效的数据，可以通过设置 `initial-commit-ts` 启动 Drainer 从指定位置开始消费 - `bin/drainer --config=conf/drainer.toml --initial-commit-ts=${position}`
@@ -103,7 +103,7 @@ cd tidb-binlog-kafka-linux-amd64
     # kafka-version = "0.8.2.0"
     ```
 
-    输出到 kafka 的数据为按 ts 排好序的 protobuf 定义 binlog 格式，可以参考 [driver](https://github.com/pingcap/tidb-tools/tree/master/tidb_binlog/driver) 获取数据同步到下游。
+    输出到 kafka 的数据为按 ts 排好序的 protobuf 定义 binlog 格式，可以参考 [driver](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/driver) 获取数据同步到下游。
 
 * Kafka 和 ZooKeeper 集群需要在部署 TiDB-Binlog 之前部署好。Kafka 需要 0.9 及以上版本。
 
