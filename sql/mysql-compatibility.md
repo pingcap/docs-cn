@@ -107,6 +107,28 @@ Due to the distributed, 2-phase commit requirement of TiDB, large transactions t
 * The total number of Key-Value entries is no more than 300,000
 * The total size of Key-Value entries is no more than 100MB
 
+### Small transactions
+
+Since each transaction in TiDB requires two round trips to the PD leader, small transactions may have higher latencies in TiDB than MySQL. As a hypothetical example, the following query could be improved by moving from `auto_commit` to using an explicit transaction:
+
+```sql
+# original version with auto_commit
+UPDATE my_table SET a='new_value' WHERE id = 1; 
+UPDATE my_table SET a='newer_value' WHERE id = 2;
+UPDATE my_table SET a='newest_value' WHERE id = 3;
+
+# improved version
+START TRANSACTION;
+UPDATE my_table SET a='new_value' WHERE id = 1; 
+UPDATE my_table SET a='newer_value' WHERE id = 2;
+UPDATE my_table SET a='newest_value' WHERE id = 3;
+COMMIT;
+```
+
+### Single-threaded workloads
+
+Due to its distributed nature, workloads that are single-threaded may perform worse in TiDB when compared to a single-instance deployment of MySQL. This difference is similar to the case of small transactions being potentially slower in TiDB.
+
 ### Load data
 
 + Syntax:
