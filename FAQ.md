@@ -64,7 +64,7 @@ TiDB 支持 ACID 分布式事务，事务模型是以 Google 的 Percolator 模�
 
 目前[官方文档](overview.md#tidb-简介)是获取 TiDB 相关知识最主要、最及时的发布途径。除此之外，我们也有一些技术沟通群，如有需求可发邮件至 [info@pingcap.com](mailto:info@pingcap.com) 获取。
 
-#### 1.1.14 TiDB 对那些 MySQL variables 兼容？
+#### 1.1.14 TiDB 对哪些 MySQL variables 兼容？
 
 详细可参考[系统变量](sql/variable.md)。
 
@@ -279,13 +279,13 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 - 随机读测试：
 
     ```bash
-    ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randread -size=10G -filename=fio_randread_test.txt -name='fio randread test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_result.json"
+    ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randread -size=10G -filename=fio_randread_test.txt -name='fio randread test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_result.json
     ```
 
 - 顺序写和随机读混合测试：
 
     ```bash
-    ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randread_write_test.txt -name='fio mixed randread and sequential write test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_write_test.json"
+    ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randread_write_test.txt -name='fio mixed randread and sequential write test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_write_test.json
     ```
 
 #### 2.2.8 使用 TiDB Ansible 部署 TiDB 集群的时候，遇到 `UNREACHABLE! "msg": "Failed to connect to the host via ssh: " ` 报错是什么原因？
@@ -417,7 +417,7 @@ TiDB 目前社区非常活跃，在 1.0 GA 版本发布后，还在不断的优�
 
 #### 3.1.16 like(bindo.customers.name, jason%, 92) 这个92代表什么？
 
-转义字符是那个，默认是 (ASCII 92)
+那个是转义字符，默认是 (ASCII 92)。
 
 ### 3.2 PD 管理
 
@@ -485,19 +485,19 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 #### 3.3.4 TiDB 可以使用 S3 作为后端存储吗？
 
-不可以，目前 TiDB 只支持分布式存储引擎和 Goleveldb/Rocksdb/Boltdb 引擎。
+不可以，目前 TiDB 只支持分布式存储引擎和 GolevelDB/RocksDB/BoltDB 引擎。
 
-#### 3.3.5 Infomation_schema 能否支持更多真实信息？
+#### 3.3.5 Information_schema 能否支持更多真实信息？
 
-Infomation_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。当前 TiDB 支持的：Infomation\_schema 请参考 [TiDB 系统数据库说明文档](sql/system-database.md)。
+Information_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。当前 TiDB 支持的 Information\_schema 请参考 [TiDB 系统数据库说明文档](sql/system-database.md)。
 
 #### 3.3.6 TiDB Backoff type 主要原因?
 
-TiDB-server 与 TiKV-server 随时进行通信，在进行大量数据操作过程中，会出现 Server is busy 或者 backoff.maxsleep 20000ms 的日志提示信息，这是由于 TiKV-server 在处理过程中系统比较忙而出现的提示信息，通常这时候可以通过系统资源监控到 TiKV 主机系统资源使用率比较高的情况出现。如果这种情况出现，可以根据资源使用情况进行相应的扩容操作。
+TiDB-server 与 TiKV-server 随时进行通信，在进行大量数据操作过程中，会出现 `Server is busy` 或者 `backoff.maxsleep 20000ms` 的日志提示信息，这是由于 TiKV-server 在处理过程中系统比较忙而出现的提示信息，通常这时候可以通过系统资源监控到 TiKV 主机系统资源使用率比较高的情况出现。如果这种情况出现，可以根据资源使用情况进行相应的扩容操作。
 
 #### 3.3.7 TiDB TiClient type 主要原因？
 
-TiClient Region Error 该指标描述的是在 TiDB-server 作为客户端通过 KV 接口访问 TiKV-server 进行数据操作过程中，TiDB-server 操作 TiKV-server 中的 Region 数据出现的错误类型与 mertic 指标，错误类型包括 not_leader、stale_epoch。出现这些错误的情况是当 TiDB-server 根据自己的缓存信息去操作 Region leader 数据的时候，Region leader 发生了迁移或者 TiKV 当前的 Region 信息与 TiDB 缓存的路由信息不一致而出现的错误提示。一般这种情况下，TiDB-server 都会自动重新从 PD 获取最新的路由数据，重做之前的操作。
+TiClient Region Error 该指标描述的是在 TiDB-server 作为客户端通过 KV 接口访问 TiKV-server 进行数据操作过程中，TiDB-server 操作 TiKV-server 中的 Region 数据出现的错误类型与 metric 指标，错误类型包括 not_leader、stale_epoch。出现这些错误的情况是当 TiDB-server 根据自己的缓存信息去操作 Region leader 数据的时候，Region leader 发生了迁移或者 TiKV 当前的 Region 信息与 TiDB 缓存的路由信息不一致而出现的错误提示。一般这种情况下，TiDB-server 都会自动重新从 PD 获取最新的路由数据，重做之前的操作。
 
 #### 3.3.8 TiDB 同时支持的最大并发连接数？
 
@@ -540,7 +540,7 @@ replace HIGH_PRIORITY | LOW_PRIORITY into table_name;
 
 #### 3.3.12 SQL 中如何通过 hint 使用一个具体的 index？
 
-同 MySQL 的 用法一致，例如：
+同 MySQL 的用法一致，例如：
 `select column_name from table_name use index（index_name）where where_condition;`
 
 ### 3.4 TiKV 管理
@@ -607,23 +607,23 @@ Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 
 
 是的，TiKV 单机的存储引擎目前使用两个 RocksDB 实例，其中一个存储 raft-log，TiKV 有个 sync-log 参数，在 ture 的情况下，每次提交都会强制刷盘到 raft-log，如果发生 crash 后，通过 raft-log 进行 KV 数据的恢复。
 
-#### 3.4.14 对 WAL 存储有什么推荐的硬件配置，例如 SSD，RAID 级别，RAID 卡 cache 策略，NUMA 设置 ,文件系统选择，操作系统的 IO 调度策略等？
+#### 3.4.14 对 WAL 存储有什么推荐的硬件配置，例如 SSD，RAID 级别，RAID 卡 cache 策略，NUMA 设置，文件系统选择，操作系统的 IO 调度策略等？
 
 WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD，RAID 如果允许的话，最好是 RAID 10，RAID 卡 cache、操作系统 I/O 调度目前没有针对性的最佳实践，Linux 7 以上默认配置即可，NUMA 没有特别建议，NUMA 内存分配策略可以尝试使用 `interleave = all`，文件系统建议 ext4。
 
-#### 3.4.15 在最严格 sync-log = ture 的数据可用模式下，写入性能如何？
+#### 3.4.15 在最严格 sync-log = true 的数据可用模式下，写入性能如何？
 
 一般来说开启 sync-log 性能损耗大概 30% 左右，官方有个 `sync-log = false` 的基准测试，可以参考 [https://github.com/pingcap/docs-cn/blob/master/benchmark/sysbench.md](https://github.com/pingcap/docs-cn/blob/master/benchmark/sysbench.md)。
 
 #### 3.4.16 是否可以利用上层的 Raft + 多副本，达到完全的数据可靠，单机存储引擎不需要最严格模式？
 
-Raft 是强一致复制，写入必须同时超过 50% 的节点接受、应用才返回 ACK（三节点中二节点），在这种情况下，数据一致性是可以保证的，但理论上两个节点也可能同时 Crash，所以在诸如金融行业对数据零容忍的场景，还是需要开启 sync-log。
+Raft 是强一致复制，写入必须同时超过 50% 的节点接受，应用才返回 ACK（三节点中二节点），在这种情况下，数据一致性是可以保证的，但理论上两个节点也可能同时 Crash，所以在诸如金融行业对数据零容忍的场景，还是需要开启 sync-log。
 
 #### 3.4.17 使用 Raft 协议，数据写入会有多次网络的 roundtrip，实际写入延迟如何？
 
 理论上和单机数据库比，多四个网络延迟。
 
-#### 3.4.18 有没有类似 MySQL 的 innodb Memcached plugin，可以直接使用 KV 接口，可以不需要独立的 Cache？
+#### 3.4.18 有没有类似 MySQL 的 InnoDB Memcached plugin，可以直接使用 KV 接口，可以不需要独立的 Cache？
 
 TiKV 支持单独进行接口调用，理论上也可以起个实例做为 Cache，但 TiDB 最大的价值是分布式关系型数据库，我们原则上不对 TiKV 单独进行支持。
 
@@ -659,24 +659,24 @@ TiDB 设计的目标就是针对 MySQL 单台容量限制而被迫做的分库�
 
 #### 3.6.1 TiDB 主要备份方式？
 
-目前 TiDB 主要依赖 mydumper 逻辑导出进行备份，具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)，虽然 TiDB 也支持使用 MySQL 官方的 mysqldump 工具来进行数据的备份恢复工作，但相比于 mydumper/loader，性能会慢很多，大量数据的备份恢复会花费很多时间，这里我们并不推荐。
+目前，推荐的备份方式是使用 [PingCAP fork 的 mydumper](tools/mydumper.md)。尽管 TiDB 也支持使用 MySQL 官方工具 `mysqldump` 进行数据备份、恢复，但其性能低于 [`mydumper`](tools/mydumper.md)/[`loader`](tools/loader.md)，并且该工具备份、恢复大量数量时，要耗费更多时间。
 
 使用 mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64；
 
-loader的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调整，例如 3 个 TiKV 的场景， 此值可以设为 3 * (1 ～ n)，当 TiKV 负载过高，loader 以及 TiDB 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 TiKV 负载不是太高的时候，可以适当调大该值。
+loader 的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调整，例如 3 个 TiKV 的场景， 此值可以设为 3 * (1 ～ n)，当 TiKV 负载过高，loader 以及 TiDB 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 TiKV 负载不是太高的时候，可以适当调大该值。
 
 ## 四、数据、流量迁移
 
 ### 4.1 全量数据导出导入
 
-#### 4.1.1 Mydumper 工具
+#### 4.1.1 Mydumper
 
-具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)。
+参见 [mydumper 使用文档](tools/mydumper.md)。
 
-#### 4.1.2 Loader 工具
+#### 4.1.2 Loader
 
-具体可以参考 [https://www.pingcap.com/docs-cn/tools/loader/](tools/loader.md)。
-
+参见 [Loader 使用文档](tools/loader.md)。
+ 
 #### 4.1.3 如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？
 
 TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提供了一个[检查工具](https://github.com/pingcap/tidb-tools/tree/master/checker)，用于检查 MySQL 中的 Schema 是否和 TiDB 兼容。
@@ -714,6 +714,7 @@ sqoop export \
     --export-dir ${dir} \
     --batch
 ```
+
 - 也可以选择增大 tidb 的单个事物语句数量限制，不过这个会导致内存上涨。
 
 ### 4.2 在线数据同步
@@ -748,7 +749,7 @@ sqoop export \
 
 频繁执行 DDL 对同步速度会有影响。对于 Sycner 来说，DDL 是串行执行的，当同步遇到了 DDL，就会以串行的方式执行，所以这种场景就会导致同步速度下降。
 
-#### 4.2.1.6 使用 Syncer gtid 的方式同步时，同步过程中会不断更新 syncer.meta 文件，如果 Syncer 所在的机器坏了，导致 syncer.meta 文件所在的目录丢失，该如何处理？
+##### 4.2.1.6 使用 Syncer gtid 的方式同步时，同步过程中会不断更新 syncer.meta 文件，如果 Syncer 所在的机器坏了，导致 syncer.meta 文件所在的目录丢失，该如何处理？
 
 当前 Syncer 版本的没有进行高可用设计，Syncer 目前的配置信息 syncer.meta 直接存储在硬盘上，其存储方式类似于其他 MySQL 生态工具，比如 mydumper。 因此，要解决这个问题当前可以有两个方法：
 
@@ -831,7 +832,7 @@ Count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 
 提升建议：
 
-- 建议提升硬件配置，可以参考[部署建议](op-guide/requirement.md)。
+- 建议提升硬件配置，可以参考[部署建议](op-guide/recommendation.md)。
 - 提升并发度，默认是 10，可以提升到 50 试试，但是一般提升在 2-4 倍之间。
 - 测试大数据量的 count。
 - 调优 TiKV 配置，可以参考[性能调优](op-guide/tune-tikv.md)。

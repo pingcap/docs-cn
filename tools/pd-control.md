@@ -435,9 +435,9 @@ time: 43.12698ms
 }
 ```
 
-### region key [--format=raw|pb|proto|protobuf] <key>
+### region key [--format=raw|encode] <key>
 
-用于查询某个 key 在哪个 Region 上，支持 raw 和 protobuf 格式。
+用于查询某个 key 在哪个 Region 上，支持 raw 和 encoding 格式。使用 encoding 格式时，key 需要使用单引号。
 
 Raw 格式（默认）示例：
 
@@ -451,10 +451,10 @@ Raw 格式（默认）示例：
 }
 ```
 
-Protobuf 格式示例：
+Encoding 格式示例：
 
 ```bash
->> region key --format=pb t\200\000\000\000\000\000\000\377\035_r\200\000\000\000\000\377\017U\320\000\000\000\000\000\372
+>> region key --format=encode 't\200\000\000\000\000\000\000\377\035_r\200\000\000\000\000\377\017U\320\000\000\000\000\000\372'
 {
   "region": {
     "id": 2,

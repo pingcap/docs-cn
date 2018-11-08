@@ -38,9 +38,9 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 `mydumper` 是一个强大的数据备份工具，具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)。
 
-我们使用 `mydumper` 从 TiDB 导出数据进行备份，然后用 `loader` 将其导入到 TiDB 里面进行恢复。
+可使用 [`mydumper`](../tools/mydumper.md) 从 TiDB 导出数据进行备份，然后用 [`loader`](../tools/loader.md) 将其导入到 TiDB 里面进行恢复。
 
-> **注意**：虽然 TiDB 也支持使用 MySQL 官方的 `mysqldump` 工具来进行数据的备份恢复工作，但相比于 `mydumper`/`loader`，性能会慢很多，大量数据的备份恢复会花费很多时间，这里我们并不推荐。
+> **注意**：必须使用企业版工具集包的 `mydumper`，不要使用你的操作系统的包管理工具提供的 `mydumper`。`mydumper` 的上游版本并不能对 TiDB 进行正确处理 ([#155](https://github.com/maxbube/mydumper/pull/155))。由于使用 `mysqldump` 进行数据备份和恢复都要耗费许多时间，这里也并不推荐。
 
 ### `mydumper`/`loader` 全量备份恢复最佳实践
 

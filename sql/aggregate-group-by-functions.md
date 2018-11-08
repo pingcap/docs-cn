@@ -5,9 +5,11 @@ category: user guide
 
 # GROUP BY 聚合函数
 
-## GROUP BY 聚合函数功能描述
+本文将详细介绍 TiDB 支持的聚合函数。
 
-本节介绍 TiDB 中支持的 MySQL GROUP BY 聚合函数。
+## TiDB 支持的聚合函数
+
+TiDB 支持的 MySQL GROUP BY 聚合函数如下所示：
 
 | 函数名    | 功能描述              |
 |:---------|:--------------------|
@@ -19,31 +21,46 @@ category: user guide
 | [`MIN()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_min)                       | 返回最小值     |
 | [`GROUP_CONCAT()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_group-concat)     | 返回连接的字符串  |
 
-> **Note**:
+> **注意**：
 >
 > - 除非另有说明，否则组函数默认忽略 `NULL` 值。
-> - 如果在不包含 `GROUP BY` 子句的语句中使用组函数，则相当于对所有行进行分组。详情参阅 [TiDB 中的 GROUP BY](#tidb-中的-group-by)。 
+> - 如果在不包含 `GROUP BY` 子句的语句中使用组函数，则相当于对所有行进行分组。
 
 ## GROUP BY 修饰符
 
-TiDB 目前不支持任何 `GROUP BY` 修饰符，将来会提供支持，详情参阅 [#4250](https://github.com/pingcap/tidb/issues/4250)。 
+TiDB 目前不支持 `GROUP BY` 修饰符，例如 `WITH ROLLUP`，将来会提供支持。详情参阅 [#4250](https://github.com/pingcap/tidb/issues/4250)。
 
-## TiDB 中的 GROUP BY
+## 对 SQL 模式的支持
 
-当 SQL 模式 [`ONLY_FULL_GROUP_BY`](https://dev.mysql.com/doc/refman/5.7/en/sql-mode.html#sqlmode_only_full_group_by) 被禁用时，TiDB 与 MySQL 等效：允许 `SELECT` 列表、`HAVING` 条件或 `ORDER BY` 列表引用非聚合列，即使这些列在功能上不依赖于 `GROUP BY` 列。
-
-例如，在 MySQL 5.7.5 中使用 `ONLY_FULL_GROUP_BY` 的查询是不合规的，因为 `SELECT` 列表中的非聚合列 "b" 在 `GROUP BY` 中不显示：
+TiDB 支持 SQL 模式 `ONLY_FULL_GROUP_BY`，当启用该模式时，TiDB 拒绝不明确的非聚合列的查询。例如，以下查询在启用 `ONLY_FULL_GROUP_BY` 时是不合规的，因为 `SELECT` 列表中的非聚合列 "b" 在 `GROUP BY` 语句中不显示：
 
 ```sql
 drop table if exists t;
 create table t(a bigint, b bigint, c bigint);
 insert into t values(1, 2, 3), (2, 2, 3), (3, 2, 3);
-select a, b, sum(c) from t group by a;
+
+mysql> select a, b, sum(c) from t group by a;
++------+------+--------+
+| a    | b    | sum(c) |
++------+------+--------+
+|    1 |    2 |      3 |
+|    2 |    2 |      3 |
+|    3 |    2 |      3 |
++------+------+--------+
+3 rows in set (0.01 sec)
+
+mysql> set sql_mode = 'ONLY_FULL_GROUP_BY';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select a, b, sum(c) from t group by a;
+ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'b' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
 ```
 
-上述查询在 TiDB 中是合规的。TiDB 目前不支持 SQL 模式 `ONLY_FULL_GROUP_BY`，将来会提供支持，详情参阅 [#4248](https://github.com/pingcap/tidb/issues/4248)。
+目前，TiDB 默认不开启 SQL 模式 [`ONLY_FULL_GROUP_BY`](../sql/mysql-compatibility.md#默认设置的区别)。
 
-假设我们执行以下查询，希望结果按 `c` 排序:
+### 与 MySQL 的区别
+
+TiDB 目前实现的 `ONLY_FULL_GROUP_BY` 没有 MySQL 5.7 严格。例如，假设我们执行以下查询，希望结果按 "c" 排序：
 
 ```sql
 drop table if exists t;
@@ -95,6 +112,13 @@ from tbl_name
 group by id, val;
 ```
 
-## 函数依赖检测
+## TiDB 不支持的聚合函数
 
-TiDB 不支持 SQL 模式 `ONLY_FULL_GROUP_BY` 和函数依赖检测，将来会提供支持，详情参阅 [#4248](https://github.com/pingcap/tidb/issues/4248)。
+TiDB 目前不支持的聚合函数如下所示，相关进展参阅 [TiDB #7623](https://github.com/pingcap/tidb/issues/7623)。
+
+- `STD`, `STDDEV`, `STDDEV_POP`
+- `STDDEV_SAMP`
+- `VARIANCE`, `VAR_POP`
+- `VAR_SAMP`
+- `JSON_ARRAYAGG`
+- `JSON_OBJECTAGG`

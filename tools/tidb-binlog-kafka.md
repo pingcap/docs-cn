@@ -46,15 +46,15 @@ CentOS 7+
 
 ```bash
 # 下载压缩包
-wget http://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-binlog-latest-linux-amd64.sha256
+wget http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.tar.gz
+wget http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.sha256
 
 # 检查文件完整性，返回 ok 则正确
-sha256sum -c tidb-binlog-latest-linux-amd64.sha256
+sha256sum -c tidb-binlog-kafka-linux-amd64.sha256
 
 # 解开压缩包
-tar -xzf tidb-binlog-latest-linux-amd64.tar.gz
-cd tidb-binlog-latest-linux-amd64
+tar -xzf tidb-binlog-kafka-linux-amd64.tar.gz
+cd tidb-binlog-kafka-linux-amd64
 ```
 
 ### TiDB-Binlog 部署
@@ -75,7 +75,7 @@ cd tidb-binlog-latest-linux-amd64
 
     为了保证数据的完整性，在 Pump 运行 10 分钟左右后按顺序进行如下操作：
 
-    *  使用 [tidb-tools](https://github.com/pingcap/tidb-tools) 项目中的 [binlogctl](https://github.com/pingcap/tidb-tools/tree/master/tidb_binlog/binlogctl) 工具生成 Drainer 初次启动所需的 position
+    *  使用 [tidb-tools](https://github.com/pingcap/tidb-tools) 项目中的 [binlogctl](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/binlogctl) 工具生成 Drainer 初次启动所需的 position
     *  全量备份，例如 mydumper 备份 TiDB
     *  全量导入备份到目标系统
     *  Kafka 版本 Drainer 启动的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，如果 checkpoint 表中没有效的数据，可以通过设置 `initial-commit-ts` 启动 Drainer 从指定位置开始消费 - `bin/drainer --config=conf/drainer.toml --initial-commit-ts=${position}`
@@ -103,7 +103,7 @@ cd tidb-binlog-latest-linux-amd64
     # kafka-version = "0.8.2.0"
     ```
 
-    输出到 kafka 的数据为按 ts 排好序的 protobuf 定义 binlog 格式，可以参考 [driver](https://github.com/pingcap/tidb-tools/tree/master/tidb_binlog/driver) 获取数据同步到下游。
+    输出到 kafka 的数据为按 ts 排好序的 protobuf 定义 binlog 格式，可以参考 [driver](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/driver) 获取数据同步到下游。
 
 * Kafka 和 ZooKeeper 集群需要在部署 TiDB-Binlog 之前部署好。Kafka 需要 0.9 及以上版本。
 
@@ -119,6 +119,10 @@ cd tidb-binlog-latest-linux-amd64
 - `auto.create.topics.enable = true`：如果还没有创建 topic，Kafka 会在 broker 上自动创建 topic
 - `broker.id`：用来标识 Kafka 集群的必备参数，不能重复；如 `broker.id = 1`
 - `fs.file-max = 1000000`：Kafka 会使用大量文件和网络 socket，建议修改成 1000000，通过 `vi /etc/sysctl.conf` 进行修改
+- 修改以下配置为1G, 否则很容易出现事务修改数据较多导致单个消息过大写 kafka 失败
+	* `message.max.bytes=1073741824`
+	* `replica.fetch.max.bytes=1073741824`
+	* `fetch.message.max.bytes=1073741824`
 
 #### 使用 tidb-ansible 部署 Pump
 

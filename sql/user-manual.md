@@ -87,7 +87,7 @@ TiDB 支持 SQL92 标准并兼容 MySQL 语法，为了帮您更好地使用 TiD
 - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
 
 ## JSON 支持
-- [JSON 支持](json-functions-generated-column.md)
+- [JSON 支持](json-functions.md)
 
 ## Connectors 和 API
 - [Connectors 和 API](connection-and-APIs.md)
