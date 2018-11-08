@@ -1,9 +1,9 @@
 ---
-title: binlog slave client 用户文档
+title: Binlog Slave Client 用户文档
 category: tools
 ---
 
-# binlog slave client 用户文档
+# Binlog Slave Client 用户文档
 
 目前 Drainer 提供了多种输出方式，包括 MySQL、TiDB、TheFlash、pb 格式文件等。但是用户往往有一些自定义的需求，比如输出到 Elasticsearch、Hive 等，这些需求 Drainer 现在还没有实现，因此 Drainer 增加了输出到 Kafka 的功能，将 binlog 数据解析后按一定的格式再输出到 Kafka 中，用户编写代码从 Kafka 中读出数据再进行处理。
 
@@ -23,7 +23,9 @@ kafka-version = "0.8.2.0"
 ```
 
 ## 自定义开发
+
 ### 数据格式
+
 首先需要了解 Drainer 写入到 Kafka 中的数据格式：
 
 ```
@@ -46,13 +48,13 @@ message Column {
 // ColumnInfo 保存列的信息，包括列名、类型、是否为主键
 message ColumnInfo {
   optional string name = 1 [ (gogoproto.nullable) = false ];
-  // lower case column field type in mysql
+  // MySQL 中小写的列字段类型
   // https://dev.mysql.com/doc/refman/8.0/en/data-types.html
-  // for numeric type: int bigint smallint tinyint float double decimal bit
-  // for string type: text longtext mediumtext char tinytext varchar
+  // numeric 类型：int bigint smallint tinyint float double decimal bit
+  // string 类型：text longtext mediumtext char tinytext varchar
   // blob longblog mediumblog binary tinyblob varbinary
   // enum set
-  // for json type: json
+  // json 类型：json
   optional string mysql_type = 2 [ (gogoproto.nullable) = false ];
   optional bool is_primary_key = 3 [ (gogoproto.nullable) = false ];
 }
@@ -67,7 +69,6 @@ enum MutationType {
   Delete = 2;
 }
 
-//  Table contains mutations in a table.
 // Table 包含一个表的数据变更
 message Table {
   optional string schema_name = 1;
@@ -87,41 +88,41 @@ message TableMutation {
 
 // DMLData 保存一个表所有的 DML 造成的数据变更
 message DMLData {
-  // tables contains all the table changes.
+  // `tables` 包含一个表的所有数据变更
   repeated Table tables = 1;
 }
 
 // DDLData 保存 DDL 的信息
 message DDLData {
-  // the current database use
+  // 当前使用的数据库
   optional string schema_name = 1;
-  // the relate table
+  // 相关表
   optional string table_name = 2;
-  // ddl_query is the original ddl statement query.
+  // `ddl_query` 是原始的 DDL 语句 query
   optional bytes ddl_query = 3;
 }
 
 // BinlogType 为 Binlog 的类型，分为 DML 和 DDL
 enum BinlogType {
-  DML = 0; //  has dml_data
-  DDL = 1; //  has ddl_query
+  DML = 0; //  Has `dml_data`
+  DDL = 1; //  Has `ddl_query`
 }
 
-// Binlog contains all the changes in a transaction.
 // Binlog 保存一个事务所有的变更，Kafka 中保存的数据为该结构数据序列化后的结果
 message Binlog {
   optional BinlogType type = 1 [ (gogoproto.nullable) = false ];
   optional int64 commit_ts = 2 [ (gogoproto.nullable) = false ];
-  // dml_data is marshalled from DML type
+  // dml_data 是由 DML 类型的数据序列化后生成的数据
   optional DMLData dml_data = 3;
   optional DDLData ddl_data = 4;
 }
 ```
 
-数据格式的具体定义在 [binlog.proto](https://github.com/pingcap/tidb-tools/blob/master/tidb-binlog/slave_binlog_proto/proto/binlog.proto)。
+查看数据格式的具体定义，参见 [binlog.proto](https://github.com/pingcap/tidb-tools/blob/master/tidb_binlog/slave_binlog_proto/proto/binlog.proto)。
 
 ### Driver
-TiDB-Tools 项目中提供了用于读取 Kafka 中 binlog 数据的 Driver，具有如下功能：
+
+TiDB-Tools 项目提供了用于读取 Kafka 中 binlog 数据的 Driver，具有如下功能：
 
 * 读取 Kafka 的数据
 * 根据 commit ts 查找到 Kafka 中存储的 binlog 的位置
@@ -140,7 +141,7 @@ TiDB-Tools 项目中提供了用于读取 Kafka 中 binlog 数据的 Driver，�
 
 Driver 项目地址：[Binlog Slave Driver](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/driver)。
 
-注：
-
-1. 示例代码仅仅用于示范如何使用 Driver，如果需要用于生产环境需要优化代码。
-2. 目前仅提供了 golang 版本的 Driver 以及示例代码。如果需要使用其他语言，用户需要根据 binlog 的 proto 文件生成相应语言的代码文件，并自行开发程序读取 Kafka 中的 binlog 数据、解析数据、输出到下游。也欢迎用户优化 example 代码，以及提交其他语言的示例代码到 [TiDB-Tools](https://github.com/pingcap/tidb-tools)。
+> **注意：**
+>
+> - 示例代码仅仅用于示范如何使用 Driver，如果需要用于生产环境需要优化代码。
+> - 目前仅提供了 golang 版本的 Driver 以及示例代码。如果需要使用其他语言，用户需要根据 binlog 的 proto 文件生成相应语言的代码文件，并自行开发程序读取 Kafka 中的 binlog 数据、解析数据、输出到下游。也欢迎用户优化 example 代码，以及提交其他语言的示例代码到 [TiDB-Tools](https://github.com/pingcap/tidb-tools)。
