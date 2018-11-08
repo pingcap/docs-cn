@@ -20,19 +20,34 @@ You can run the `ANALYZE` statement to collect statistics.
 Syntax:
 
 ```sql
-ANALYZE TABLE TableNameList
+ANALYZE TABLE TableNameList [WITH NUM BUCKETS]
 > The statement collects statistics of all the tables in `TableNameList`. 
+> `WITH NUM BUCKETS` specifies the maximum number of buckets in the generated histogram.
 
-ANALYZE TABLE TableName INDEX [IndexNameList]
-> The statement collects statistics of the index columns on all `IndexNameList` in `TableName`.
+ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS]
+> The statement collects statistics of the index columns on all `IndexNameList`s in `TableName`.
 > The statement collects statistics of all index columns when `IndexNameList` is empty.
+
+ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS]
+> The statement collects partition statistics of all `PartitionNameList`s in `TableName`.
+
+ANALYZE TABLE TableName PARTITION PartitionNameList [IndexNameList] [WITH NUM BUCKETS]
+> The statement collects index column statistics of the partitions in all `PartitionNameList`s in `TableName`.
 ```
 
 ### Automatic update
 
 For the `INSERT`, `DELETE`, or `UPDATE` statements, TiDB automatically updates the number of rows and updated rows. TiDB persists this information regularly and the update cycle is 5 * `stats-lease`. The default value of `stats-lease` is `3s`. If you specify the value as `0`, it does not update automatically.
 
-When the ratio of the number of modified rows to the total number of rows is greater than `auto-analyze-ratio`, TiDB automatically starts the `Analyze` statement. You can modify the value of `auto-analyze-ratio` in the configuration file. The default value is `0`, which means that this function is not enabled.
+Three system variables related to automatic update of statistics are as follows:
+
+|  System Variable | Default Value | Description |
+|---|---|---|
+| `tidb_auto_analyze_ratio`| 0.5 | the threshold value of automatic update |
+| `tidb_auto_analyze_start_time` | `00:00 +0000` | the start time in a day when TiDB can perform automatic update |
+| `tidb_auto_analyze_end_time`   | `23:59 +0000` | the end time in a day when TiDB can perform automatic update |
+
+When the ratio of the number of modified rows to the total number of rows of `tbl` in a table is greater than `tidb_auto_analyze_ratio`, and the current time is between `tidb_auto_analyze_start_time` and `tidb_auto_analyze_end_time`, TiDB executes the `ANALYZE TABLE tbl` statement in the background to automatically update the statistics of this table.
 
 When the query is executed, TiDB collects feedback with the probability of `feedback-probability` and uses it to update the histogram and Count-Min Sketch. You can modify the value of `feedback-probability` in the configuration file. The default value is `0`.
 
@@ -67,12 +82,13 @@ SHOW STATS_META [ShowLikeOrWhere]
 > The statement returns the total number of rows and the number of updated rows. You can use `ShowLikeOrWhere` to filter the information you need.
 ```
 
-Currently, the `SHOW STATS_META` statement returns the following 5 columns:
+Currently, the `SHOW STATS_META` statement returns the following 6 columns:
 
 | Syntax Element | Description  |
 | :-------- | :------------- |
 | `db_name`  |  database name    |
 | `table_name` | table name |
+| `partition_name`| partition name |
 | `update_time` | the time of the update |
 | `modify_count` | the number of modified rows |
 | `row_count` | the total number of rows |
@@ -88,12 +104,13 @@ SHOW STATS_HISTOGRAMS [ShowLikeOrWhere]
 > The statement returns the number of different values and the number of `NULL` in all the columns. You can use `ShowLikeOrWhere` to filter the information you need.
 ```
 
-Currently, the `SHOW STATS_HISTOGRAMS` statement returns the following 7 columns:
+Currently, the `SHOW STATS_HISTOGRAMS` statement returns the following 8 columns:
 
 | Syntax Element | Description    |
 | :-------- | :------------- |
 | `db_name`  |  database name    |
 | `table_name` | table name |
+| `partition_name` | partition name |
 | `column_name` | column name |
 | `is_index` | whether it is an index column or not |
 | `update_time` | the time of the update |
@@ -112,12 +129,13 @@ SHOW STATS_BUCKETS [ShowLikeOrWhere]
 > The statement returns information about all the buckets. You can use `ShowLikeOrWhere` to filter the information you need.
 ```
 
-Currently, the `SHOW STATS_BUCKETS` statement returns the following 9 columns:
+Currently, the `SHOW STATS_BUCKETS` statement returns the following 10 columns:
 
 | Syntax Element | Description   |
 | :-------- | :------------- |
 | `db_name`  |  database name    |
 | `table_name` | table name |
+| `partition_name` | partition name |
 | `column_name` | column name |
 | `is_index` | whether it is an index column or not |
 | `bucket_id` | the ID of a bucket |
