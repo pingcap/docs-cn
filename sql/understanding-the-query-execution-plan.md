@@ -33,7 +33,7 @@ Currently, the `EXPLAIN` statement returns the following four columns: id, count
 
 Using the [bikeshare example database](../bikeshare-example-database.md):
 
-```
+```sql
 mysql> EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59';
 +--------------------------+-------------+------+------------------------------------------------------------------------------------------------------------------------+
 | id                       | count       | task | operator info                                                                                                          |
@@ -67,6 +67,31 @@ mysql> EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 0
 ```
 
 In the revisited `EXPLAIN` you can see the count of rows scanned has reduced via the use of an index. On a reference system, the query execution time reduced from 50.41 seconds to 0.00 seconds!
+
+## <span id="explain-analyze-output-format">`EXPLAIN ANALYZE` output format</span>
+
+As an extension to `EXPLAIN`, `EXPLAIN ANALYZE` will execute the query and provide additional execution statistics in the `execution info` column as follows:
+
+* `time` shows the total wall time from entering the executor until exiting the execution. It includes all execution time of any child executor operations. If the executor is called multiple times (`loops`) from a parent executor, the time will be the cumulative time.
+
+* `loops` is the number of times the executor was called from the parent executor.
+
+* `rows` is the total number of rows that were returned by this executor. So for example, you can compare the accuracy of the `count` column to `rows`/`loops` in the `execution_info` column to asess how accurate the query optimizer's estimations are.
+
+### Example usage
+
+```sql
+mysql> EXPLAIN ANALYZE SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59';
++------------------------+---------+------+--------------------------------------------------------------------------------------------------+-----------------------------------+
+| id                     | count   | task | operator info                                                                                    | execution info                    |
++------------------------+---------+------+--------------------------------------------------------------------------------------------------+-----------------------------------+
+| StreamAgg_25           | 1.00    | root | funcs:count(col_0)                                                                               | time:79.851424ms, loops:2, rows:1 |
+| └─IndexReader_26       | 1.00    | root | index:StreamAgg_9                                                                                | time:79.835575ms, loops:2, rows:1 |
+|   └─StreamAgg_9        | 1.00    | cop  | funcs:count(1)                                                                                   |                                   |
+|     └─IndexScan_24     | 8161.83 | cop  | table:trips, index:start_date, range:[2017-07-01 00:00:00,2017-07-01 23:59:59], keep order:false |                                   |
++------------------------+---------+------+--------------------------------------------------------------------------------------------------+-----------------------------------+
+4 rows in set (0.08 sec)
+```
 
 ## Overview
 
