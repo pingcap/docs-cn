@@ -612,11 +612,11 @@ Cluster 版本的 TiDB-Binlog 不兼容 Kafka 版本以及 local 版本，TiDB �
 
 * 如果能接受重新导全量数据，则可以直接废弃老版本，按本文档部署。
 
-* 如果想从原来的 checkpoint 继续同步, 则使用以下升级流程：
+* 如果想从原来的 checkpoint 继续同步，则使用以下升级流程：
     1. 部署新版本 Pump；
     2. 暂停 TiDB 集群业务；
     3. 更新 TiDB 以及配置，写 binlog 到新的 Pump cluster；
     4. TiDB 集群重新接入业务；
     5. 确认老版本的 Drainer 已经将老版本的 Pump 的数据完全同步到下游；
     6. 启动新版本 Drainer；
-    7. 下线无用的老板本的 Pump、Drainer 以及依赖的 Kafka 和 Zookeeper。
+    7. 下线无用的老版本的 Pump、Drainer 以及依赖的 Kafka 和 Zookeeper。
