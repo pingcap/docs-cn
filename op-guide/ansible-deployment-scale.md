@@ -116,7 +116,9 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 例如，如果要添加一个 PD 节点（node103），IP 地址为 172.16.10.103，可以进行如下操作：
 
-1.  编辑 `inventory.ini` 文件，添加节点信息：
+1.  编辑 `inventory.ini` 文件，添加节点信息：  
+
+    新增节点 172.16.10.103 应该置于 pd_servers 主机组最后一行。
 
     ```ini
     [tidb_servers]
@@ -198,7 +200,6 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
         ```
         /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member
         ```
-        注意 `run_pd.sh` 中 `--name="pd1" \` 这一配置，name要确认与现有集群配置不同，否则无法join成功。
 
 5.  滚动升级整个集群：
 
