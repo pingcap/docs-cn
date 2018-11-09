@@ -118,7 +118,7 @@ You can use the same procedure to add a TiKV node. But to add a PD node, some co
 
 For example, if you want to add a PD node (node103) with the IP address `172.16.10.103`, take the following steps:
 
-1. Edit the `inventory.ini` file and append the node information:
+1. Edit the `inventory.ini` file and append the node information to the end of the `[pd_servers]` group:
 
     ```ini
     [tidb_servers]
