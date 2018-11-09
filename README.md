@@ -116,7 +116,7 @@
   - [Syncer](tools/syncer.md)
   - [mydumper](tools/mydumper.md)
   - [Loader](tools/loader.md)
-  - [TiDB-Binlog](tools/tidb-binlog-kafka.md)
+  - [TiDB-Binlog](tools/tidb-binlog-cluster.md)
   - [PD Control](tools/pd-control.md)
   - [PD Recover](tools/pd-recover.md)
   - [TiKV Control](https://github.com/tikv/tikv/blob/master/docs/tools/tikv-control.md)
