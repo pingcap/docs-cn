@@ -109,6 +109,28 @@ TiDB 使用乐观事务模型，在执行 Update、Insert、Delete 等语句时�
 * 键值对的总数不超过 300,000
 * 键值对的总大小不超过 100MB
 
+### 小事务
+
+由于 TiDB 中的每个事务都需要跟 PD leader 进行两次 round trip，TiDB 中的小事务相比于 MySQL 中的小事务延迟更高。以如下的 query 为例，用显示事务代替 `auto_commit`，可优化该 query 的性能。
+
+```sql
+# 使用 auto_commit 的原始版本
+UPDATE my_table SET a='new_value' WHERE id = 1; 
+UPDATE my_table SET a='newer_value' WHERE id = 2;
+UPDATE my_table SET a='newest_value' WHERE id = 3;
+
+# 优化后的版本
+START TRANSACTION;
+UPDATE my_table SET a='new_value' WHERE id = 1; 
+UPDATE my_table SET a='newer_value' WHERE id = 2;
+UPDATE my_table SET a='newest_value' WHERE id = 3;
+COMMIT;
+```
+
+### 单线程的 workload
+
+由于 TiDB 中的 workload 是分布式的，TiDB 中单线程的 workload 性能相比于单实例部署的 MySQL 较低。这与 TiDB 中的小事务延迟较高的情況类似。
+
 ### Load data
 
 +  语法：
