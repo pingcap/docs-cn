@@ -30,7 +30,7 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 
 ## <span id="explain-analyze-output-format">`EXPLAIN ANALYZE` 输出格式</span>
 
-作为 `EXPLAIN` 语句的延伸，`EXPLAIN ANALYZE` 语句执行查询并提供 `execution info` 列中额外的执行统计信息：
+作为 `EXPLAIN` 语句的扩展，`EXPLAIN ANALYZE` 语句执行查询并在 `execution info` 列中提供额外的执行统计信息。具体如下：
 
 * `time` 显示从进入执行器到离开执行器的全部 wall time，包括所有子执行器操作的全部执行时间。如果该执行器从父执行器中多次调出 (`loops`)，这个时间就是累积的时间。
 * `loops` 是执行器从父执行器中调出的次数。
