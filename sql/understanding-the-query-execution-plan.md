@@ -32,7 +32,7 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 
 作为 `EXPLAIN` 语句的扩展，`EXPLAIN ANALYZE` 语句执行查询并在 `execution info` 列中提供额外的执行统计信息。具体如下：
 
-* `time` 显示从进入 operator 到离开 operator 的全部 wall time，包括所有子 operator 操作的全部执行时间。如果该 operator 从父 operator 中多次调出 (`loops`)，这个时间就是累积的时间。
+* `time` 显示从进入 operator 到离开 operator 的全部 wall time，包括所有子 operator 操作的全部执行时间。如果该 operator 被父 operator 多次调用 (`loops`)，这个时间就是累积的时间。
 * `loops` 是当前 operator 被父 operator 的调用次数。
 * `rows` 是 operator 返回的行的总数。例如，可以将 `count` 列的精度和 `execution_info` 列中的 `rows`/`loops` 值进行对比，据此评定查询优化器估算的精确度。
 
