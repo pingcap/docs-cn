@@ -72,11 +72,11 @@ In the revisited `EXPLAIN` you can see the count of rows scanned has reduced via
 
 As an extension to `EXPLAIN`, `EXPLAIN ANALYZE` will execute the query and provide additional execution statistics in the `execution info` column as follows:
 
-* `time` shows the total wall time from entering the executor until exiting the execution. It includes all execution time of any child executor operations. If the executor is called multiple times (`loops`) from a parent executor, the time will be the cumulative time.
+* `time` shows the total wall time from entering the operator until exiting the execution. It includes all execution time of any child operator operations. If the operator is called multiple times (`loops`) from a parent operator, the time will be the cumulative time.
 
-* `loops` is the number of times the executor was called from the parent executor.
+* `loops` is the number of times the operator was called from the parent operator.
 
-* `rows` is the total number of rows that were returned by this executor. So for example, you can compare the accuracy of the `count` column to `rows`/`loops` in the `execution_info` column to assess how accurate the query optimizer's estimations are.
+* `rows` is the total number of rows that were returned by this operator. So for example, you can compare the accuracy of the `count` column to `rows`/`loops` in the `execution_info` column to assess how accurate the query optimizer's estimations are.
 
 ### Example usage
 
