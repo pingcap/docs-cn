@@ -125,6 +125,7 @@
 - [常见问题与解答(FAQ)](FAQ.md)
 - [最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
 + [版本发布历史](releases/rn.md)
+  - [2.1 RC5](releases/21rc5.md)
   - [2.1 RC4](releases/21rc4.md)
   - [2.0.8](releases/208.md)
   - [2.1 RC3](releases/21rc3.md)
