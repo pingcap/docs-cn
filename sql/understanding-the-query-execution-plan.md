@@ -5,7 +5,7 @@ category: user guide
 
 # 理解 TiDB 执行计划
 
-TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计划，执行计划由一系列的 operator 构成。本文将详细解释 TiDB 中 `EXPLAIN` 语句返回的执行计划信息。
+TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计划，执行计划由一系列的算子构成。本文将详细解释 TiDB 中 `EXPLAIN` 语句返回的执行计划信息。
 
 ## 使用 `EXPLAIN` 来优化 SQL 语句
 
@@ -19,22 +19,22 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 
 ## <span id="explain-output-format">`EXPLAIN` 输出格式</span>
 
-目前 TiDB 的 `EXPLAIN` 会输出 4 列，分别是：id，count，task，operator info。执行计划中每个 operator 都由这 4 列属性来描述，`EXPLAIN` 结果中每一行描述一个 operator。每个属性的具体含义如下：
+目前 TiDB 的 `EXPLAIN` 会输出 4 列，分别是：id，count，task，operator info。执行计划中每个算子都由这 4 列属性来描述，`EXPLAIN` 结果中每一行描述一个算子。每个属性的具体含义如下：
 
 | 属性名          | 含义                                                                                                                                        |
 |:----------------|:--------------------------------------------------------------------------------------------------------------------------------------------|
-| id            | operator 的 id，在整个执行计划中唯一的标识一个 operator。在 TiDB 2.1 中，id 会格式化显示 operator 的树状结构。数据从 child 流向 parent，每个 operator 的 parent 有且仅有一个。                                                                                       |
-| count         | 预计当前 operator 将会输出的数据条数，基于统计信息以及 operator 的执行逻辑估算而来。                                                            |
-| task          | 当前这个 operator 属于什么 task。目前的执行计划分成为两种 task，一种叫 **root** task，在 tidb-server 上执行，一种叫 **cop** task，并行的在 TiKV 上执行。当前的执行计划在 task 级别的拓扑关系是一个 root task 后面可以跟许多 cop task，root task 使用 cop task 的输出结果作为输入。cop task 中执行的也即是 TiDB 下推到 TiKV 上的任务，每个 cop task 分散在 TiKV 集群中，由多个进程共同执行。 |
-| operator info | 每个 operator 的详细信息。各个 operator 的 operator info 各有不同，详见 [Operator Info](#operator-info)。                   |
+| id            | 算子的 ID，在整个执行计划中唯一的标识一个算子。在 TiDB 2.1 中，id 会格式化显示算子的树状结构。数据从 child 流向 parent，每个 算子的 parent 有且仅有一个。                                                                                       |
+| count         | 预计当前算子将会输出的数据条数，基于统计信息以及算子的执行逻辑估算而来。                                                            |
+| task          | 当前这个算子属于什么 task。目前的执行计划分成为两种 task，一种叫 **root** task，在 tidb-server 上执行，一种叫 **cop** task，并行的在 TiKV 上执行。当前的执行计划在 task 级别的拓扑关系是一个 root task 后面可以跟许多 cop task，root task 使用 cop task 的输出结果作为输入。cop task 中执行的也即是 TiDB 下推到 TiKV 上的任务，每个 cop task 分散在 TiKV 集群中，由多个进程共同执行。 |
+| operator info | 每个算子的详细信息。各个算子的 operator info 各有不同，详见 [Operator Info](#operator-info)。                   |
 
 ## <span id="explain-analyze-output-format">`EXPLAIN ANALYZE` 输出格式</span>
 
 作为 `EXPLAIN` 语句的扩展，`EXPLAIN ANALYZE` 语句执行查询并在 `execution info` 列中提供额外的执行统计信息。具体如下：
 
-* `time` 显示从进入 operator 到离开 operator 的全部 wall time，包括所有子 operator 操作的全部执行时间。如果该 operator 被父 operator 多次调用 (`loops`)，这个时间就是累积的时间。
-* `loops` 是当前 operator 被父 operator 的调用次数。
-* `rows` 是 operator 返回的行的总数。例如，可以将 `count` 列的精度和 `execution_info` 列中的 `rows`/`loops` 值进行对比，据此评定查询优化器估算的精确度。
+* `time` 显示从进入算子到离开算子的全部 wall time，包括所有子算子操作的全部执行时间。如果该算子被父算子多次调用 (`loops`)，这个时间就是累积的时间。
+* `loops` 是当前算子被父算子的调用次数。
+* `rows` 是当前算子返回的行的总数。例如，可以将 `count` 列的精度和 `execution_info` 列中的 `rows`/`loops` 值进行对比，据此评定查询优化器估算的精确度。
 
 ## 概述
 
