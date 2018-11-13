@@ -1,9 +1,9 @@
 ---
-title: TiDB-Lightning 简介与架构
+title: TiDB-Lightning 简介
 category: tools
 ---
 
-# TiDB-Lightning 简介与架构
+# TiDB-Lightning 简介
 
 TiDB-Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，有以下两个主要的使用场景：一是大量新数据的快速导入；二是全量数据的备份恢复。目前，支持 mydumper 输出格式的数据源。
 
