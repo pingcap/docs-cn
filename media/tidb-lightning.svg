@@ -53,7 +53,7 @@
          <text style="stroke:none" x="45.9877993472" y="105" font-family="PingFang SC" font-size="8" font-weight="normal" font-style="normal">SQL</text>
          <text style="stroke:none" x="43.5" y="116" font-family="PingFang SC" font-size="8" font-weight="normal" font-style="normal">Dump</text>
       </g>
-      <text style="stroke:none" x="5.5" y="232.730876623" font-family="PingFang SC" font-size="12" font-weight="normal" font-style="normal">TiDB Lightning 工具包</text>
+      <text style="stroke:none" x="5.5" y="232.730876623" font-family="PingFang SC" font-size="12" font-weight="normal" font-style="normal">TiDB-Lightning 工具包</text>
       <text style="stroke:none" x="288.865300622" y="88.3173496889" font-family="PingFang SC" font-size="12" font-weight="normal" font-style="normal">TiDB 集群</text>
       <text style="stroke:none" x="5.5" y="376.730876623" font-family="PingFang SC" font-size="12" font-weight="normal" font-style="normal">TiKV 集群</text>
       <text style="stroke:none" x="419.5" y="287.112670094" font-family="PingFang SC" font-size="12" font-weight="normal" font-style="normal">PD 集群</text>
