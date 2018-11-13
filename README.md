@@ -114,7 +114,7 @@
   - [Syncer](tools/syncer.md)
   - [mydumper](tools/mydumper.md)
   - [Loader](tools/loader.md)
-  + Lightning
+  + TiDB-Lightning
     - [简介与架构](tools/lightning-overview-architecture.md)
     - [部署执行](tools/lightning-deployment.md)
     - [断点续传](tools/lightning-checkpoints.md)

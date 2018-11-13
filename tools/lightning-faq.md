@@ -1,9 +1,9 @@
 ---
-title: TiDB Lightning 常见问题
+title: TiDB-Lightning 常见问题
 category: tools
 ---
 
-# TiDB Lightning 常见问题
+# TiDB-Lightning 常见问题
 
 ## Lightning 对 TiDB/TiKV/PD 的最低版本要求是多少？
 

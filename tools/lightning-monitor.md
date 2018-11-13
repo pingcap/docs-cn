@@ -1,11 +1,11 @@
 ---
-title: TiDB Lightning 监控告警
+title: TiDB-Lightning 监控告警
 category: tools
 ---
 
-# TiDB Lightning 监控告警
+# TiDB-Lightning 监控告警
 
-TiDB Lightning 支持给 [Prometheus](https://prometheus.io/) 采集监控指标 (metrics)。本文主要介绍 TiDB Lightning 的监控配置与监控指标。
+TiDB-Lightning 支持给 [Prometheus](https://prometheus.io/) 采集监控指标 (metrics)。本文主要介绍 TiDB-Lightning 的监控配置与监控指标。
 
 ## 监控配置
 
