@@ -42,7 +42,7 @@ category: tools
     - 使用万兆网卡
     - 运行过程中 CPU、I/O 和网络带宽都可能打满，建议单独部署。条件不允许的情况下可以和其他组件（比如 `tikv-server`）部署在同一台机器上，但可能会影响导入速度。
 
-如果机器充裕的话，可以部署多套 `tidb-lightning` + `tikv-importer`，然后把源数据根据表为粒度进行切分，并发导入。
+如果机器充裕的话，可以部署多套 `tidb-lightning` + `tikv-importer`，然后将源数据以表为粒度进行切分，并发导入。
 
 ### 混合部署的硬件配置
 
@@ -55,7 +55,7 @@ category: tools
 - 1 TB+ SSD 硬盘，IOPS 越高越好
 - 使用万兆网卡
 
-> **注意**：`tidb-lightning` 是 CPU 密集型程序，如果和其它程序混合部署，需要通过 `region-concurrency` 限制下 `tidb-lightning` 的实际 CPU 占用核数，否则会影响其他程序的正常运行。建议将混合部署机器上 75% 的 CPU 分配给 `tidb-lightning`。例如，机器为 32 核，则 `tidb-lightning` 的 `region-concurrency` 可设为 24。
+> **注意**：`tidb-lightning` 是 CPU 密集型程序，如果和其它程序混合部署，需要通过 `region-concurrency` 限制 `tidb-lightning` 的 CPU 实际占用核数，否则会影响其他程序的正常运行。建议将混合部署机器上 75% 的 CPU 分配给 `tidb-lightning`。例如，机器为 32 核，则 `tidb-lightning` 的 `region-concurrency` 可设为 24。
 
 ## 部署 TiDB Lightning
 
@@ -258,10 +258,10 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](../op-guide/ansible-
     # 存储断点的数据库连接参数 (DSN)，格式为“用户:密码@tcp(地址:端口)”。
     # 默认会重用 [tidb] 设置目标数据库来存储断点。
     # 为避免加重目标集群的压力，建议另外使用一个兼容 MySQL 协议的数据库服务器。
-    #dsn = "root@tcp(127.0.0.1:4000)/"
+    # dsn = "root@tcp(127.0.0.1:4000)/"
     # 导入成功后是否保留断点。默认为删除。
     # 保留断点可用于除错，但有可能泄漏数据源的元数据。
-    #keep-after-success = false
+    # keep-after-success = false
 
     [tikv-importer]
     # tikv-importer 的监听地址，需改成 tikv-importer 服务器的实际地址。
