@@ -12,10 +12,16 @@ and automates tasks related to operating a TiDB cluster. It makes TiDB a truly c
 > **Warning:** Currently, TiDB Operator is work in progress [WIP] and is NOT ready for production. Use at your own risk.
 
 <main class="tabs">
-  <input id="tabGoogle" type="radio" name="tabs" checked>
-  <label for="tabGoogle" class="label__png">GCP</label>
-  <input id="tabLocal" type="radio" name="tabs">
-  <label for="tabLocal" class="label__png">Local</label>
+  <input id="tabGoogle" type="radio" name="tabs" value="GoogleContent" checked>
+  <label for="tabGoogle">
+      <span><img src="https://cloud.google.com/_static/images/cloud/icons/favicons/onecloud/apple-icon.png" width="20"></img></span>
+      <span class="label__title">GCP</span>
+  </label>
+  <input id="tabLocal" type="radio" name="tabs" value="LocalContent">
+  <label for="tabLocal">
+      <span><img src="https://avatars1.githubusercontent.com/u/13629408?s=400&v=4" width="20"></img></span>
+      <span class="label__title">Local</span>
+  </label>
   <section id="GoogleContent">
     <h3>Google Kubernetes Engine (GKE)</h3>
     <p>The TiDB Operator tutorial for GKE runs directly in the Google Cloud Shell.</p>
@@ -24,7 +30,6 @@ and automates tasks related to operating a TiDB cluster. It makes TiDB a truly c
   <section id="LocalContent">
   <h3>Local installation using Docker in Docker</h3>
   <p>Docker in Docker (DinD) runs Docker containers as virtual machines and runs another layer of Docker containers inside the first layer of Docker containers. <code>kubeadm-dind-cluster</code> uses this technology to run the Kubernetes cluster in Docker containers. TiDB Operator uses a modified DinD script to manage the DinD Kubernetes cluster.</p>
-
   <a href="https://github.com/pingcap/tidb-operator/blob/master/docs/local-dind-tutorial.md">Continue reading tutorial on GitHub<span class="continue__arrow"></span></a>
   </section>
 </main>
