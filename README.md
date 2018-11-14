@@ -114,6 +114,13 @@
   - [Syncer](tools/syncer.md)
   - [mydumper](tools/mydumper.md)
   - [Loader](tools/loader.md)
+  + TiDB-Lightning
+    - [简介](tools/lightning-overview-architecture.md)
+    - [部署执行](tools/lightning-deployment.md)
+    - [断点续传](tools/lightning-checkpoints.md)
+    - [监控告警](tools/lightning-monitor.md)
+    - [故障诊断](tools/lightning-errors.md)
+    - [常见问题与解答](tools/lightning-faq.md)
   - [TiDB-Binlog](tools/tidb-binlog-cluster.md)
   - [PD Control](tools/pd-control.md)
   - [PD Recover](tools/pd-recover.md)
