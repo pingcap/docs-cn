@@ -48,12 +48,15 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 
 ## 注意
 
+* 需要使用 TiDB v2.0.8-binlog、v2.1.0-rc.5 及以上版本，否则不兼容该版本的 TiDB-Binlog。
 * 在运行 TiDB 时，需要保证至少一个 Pump 正常运行。
 * 通过给 TiDB 增加启动参数 enable-binlog 来开启 Binlog。
 * Drainer 不支持对 ignore schemas（在过滤列表中的 schemas）的 table 进行 rename DDL 操作。
 * 在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取 savepoint，然后导入全量备份，最后启动 Drainer 从 savepoint 开始同步增量数据。
 * Drainer 支持将 Binlog 同步到 MySQL、TiDB、Kafka 或者本地文件。如果需要将 Binlog 同步到其他类型的目的地中，可以设置 Drainer 将 Binlog 同步到 Kafka，再读取 Kafka 中的数据进行自定义处理，参考 [binlog slave client 用户文档](../tools/binlog-slave-client.md)。
+* 如果 TiDB-Binlog 用于增量恢复，可以设置下游为 `pb` 将 binlog 同步到本地文件中，再使用 [Reparo](../tools/reparo.md) 恢复增量数据。
 * Pump/Drainer 的状态需要区分已暂停（paused）和下线（offline），Ctrl + C 或者 kill 进程，Pump 和 Drainer 的状态都将变为 paused。暂停状态的 Pump 不需要将已保存的 Binlog 数据全部发送到 Drainer；如果需要较长时间退出 Pump（或不再使用该 Pump），需要使用 binlogctl 工具来下线 Pump。Drainer 同理。
+* 如果下游为 MySQL/TiDB，数据同步后可以使用 [sync-diff-inspector](../tools/sync-diff-inspector.md) 进行数据校验。
 
 ## TiDB-Binlog 部署
 
@@ -250,9 +253,9 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 #### 下载官方 Binary
 
 ```bash
-TiDB（Pump Client）
-wget https://download.pingcap.org/tidb-v2.0.8-binlog-linux-amd64.tar.gz
-wget https://download.pingcap.org/tidb-v2.0.8-binlog-linux-amd64.sha256
+TiDB（v2.0.8-binlog、v2.1.0-rc.5 及以上版本）
+wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz
+wget https://download.pingcap.org/tidb-{version}-linux-amd64.sha256
 
 # 检查文件完整性，返回 ok 则正确
 sha256sum -c tidb-v2.0.8-binlog-linux-amd64.sha256
@@ -473,7 +476,7 @@ Drainer="192.168.0.13"
 
     - 启动示例  
         
-        > **注意**：如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取 initial-commit-ts 的值，并进行全量数据的备份与恢复。详细信息参见[部署 Drainer](#部署-drainer)。
+        > **注意**：如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取 initial-commit-ts 的值，并进行全量数据的备份与恢复。详细信息参见[部署 Drainer](#第-3-步部署-drainer)。
     
         初次启动时使用参数 `initial-commit-ts`， 命令如下：
 
@@ -536,7 +539,7 @@ binlogctl 使用说明：
 
 ```
 Usage of binlogctl:
--V	
+-V
 输出 binlogctl 的版本信息
 -cmd string
     命令模式，包括 "generate_meta", "pumps", "drainers", "update-pump" ,"update-drainer", "pause-pump", "pause-drainer", "offline-pump", "offline-drainer"
@@ -602,3 +605,19 @@ Usage of binlogctl:
 使用 Ansible 部署成功后，可以进入 Grafana Web 界面（默认地址: <http://grafana_ip:3000>，默认账号：admin，密码：admin）查看 Pump 和 Drainer 的运行状态。
 
 监控指标说明：[TiDB-Binlog 监控指标说明](../tools/tidb-binlog-monitor.md)
+
+## 版本升级方法
+Cluster 版本的 TiDB-Binlog 不兼容 Kafka 版本以及 local 版本，TiDB 如果升级到新版（v2.0.8-binlog、v2.1.0-rc.5 及以上版本）后只能使用 cluster 版本的 TiDB-Binlog；如果在升级前已经使用了 Kafka／local 版本的 TiDB-Binlog，必须将其升级到 cluster 版本。
+
+升级流程：
+
+* 如果能接受重新导全量数据，则可以直接废弃老版本，按本文档部署。
+
+* 如果想从原来的 checkpoint 继续同步，则使用以下升级流程：
+    1. 部署新版本 Pump；
+    2. 暂停 TiDB 集群业务；
+    3. 更新 TiDB 以及配置，写 binlog 到新的 Pump cluster；
+    4. TiDB 集群重新接入业务；
+    5. 确认老版本的 Drainer 已经将老版本的 Pump 的数据完全同步到下游；
+    6. 启动新版本 Drainer；
+    7. 下线无用的老版本的 Pump、Drainer 以及依赖的 Kafka 和 Zookeeper。
