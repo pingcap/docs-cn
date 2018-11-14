@@ -539,7 +539,7 @@ binlogctl 使用说明：
 
 ```
 Usage of binlogctl:
--V	
+-V
 输出 binlogctl 的版本信息
 -cmd string
     命令模式，包括 "generate_meta", "pumps", "drainers", "update-pump" ,"update-drainer", "pause-pump", "pause-drainer", "offline-pump", "offline-drainer"
