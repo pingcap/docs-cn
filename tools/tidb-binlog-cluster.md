@@ -554,7 +554,7 @@ Command line parameters:
 
 ```
 Usage of binlogctl:
--V	
+-V
     Outputs the binlogctl version information
 -cmd string
     the command mode, including "generate_meta", "pumps", "drainers", "update-pump" ,"update-drainer", "pause-pump", "pause-drainer", "offline-pump", and "offline-drainer"
