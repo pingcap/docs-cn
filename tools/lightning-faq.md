@@ -7,7 +7,7 @@ category: tools
 
 ## Lightning 对 TiDB/TiKV/PD 的最低版本要求是多少？
 
-最低版本要求是 2.0.4。
+最低版本要求是 2.0.9。
 
 ## Lightning 支持导入多个库吗？
 
