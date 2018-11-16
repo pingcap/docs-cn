@@ -137,6 +137,7 @@
 + 用户案例
   - [北京银行](http://t.cn/RnY8fGn)
   - [海航](http://t.cn/REXx0Qe)
+  - [美团点评](http://t.cn/EAFCqhl)
   - [今日头条](http://t.cn/RnLfEMf)
   - [转转](http://t.cn/R1MAXEq)
   - [Mobike](http://t.cn/RT8FbP6)
