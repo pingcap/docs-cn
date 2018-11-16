@@ -172,9 +172,9 @@ Log in to the Control Machine using the `tidb` user account, and edit the `/home
 
 > **Note:** It is required to use the internal IP address to deploy. If the SSH port of the target machines is not the default 22 port, you need to add the `ansible_port` variable. For example,
 >
-> ```ini
-> dm-worker1 ansible_host=172.16.10.72 ansible_port=5555 server_id=101 mysql_host=172.16.10.72 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
-> ```
+>    ```ini
+>    dm-worker1 ansible_host=172.16.10.72 ansible_port=5555 server_id=101 mysql_host=172.16.10.72 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+>    ```
 
 You can choose one of the following two types of cluster topology according to your scenario:
 
