@@ -51,6 +51,7 @@ The server hardware requirements for development, testing, and the production en
 
 ## Notes
 
+* You need to use TiDB v2.0.8-binlog, v2.1.0-rc.5 or the later version. Otherwise, the TiDB cluster is not compatible with the cluster version of TiDB-Binlog.
 * When TiDB is running, you need to guarantee that at least one Pump is running normally.
 * To enable TiDB-Binlog, add the `enable-binlog` startup parameter to TiDB.
 * Drainer does not support the `rename` DDL operation on the table of `ignore schemas` (the schemas in the filter list).
@@ -58,6 +59,7 @@ The server hardware requirements for development, testing, and the production en
 * Drainer supports synchronizing binlogs to MySQL, TiDB, Kafka or the local files. If you need to synchronize binlogs to other destinations, you can set Drainer to synchronize the binlog to Kafka and read the data in Kafka for customization processing. See [Binlog Slave Client User Guide](../tools/binlog-slave-client.md).
 * If TiDB-Binlog is used for recovering the incremental data, you can set the downstream to `pb` to synchronize the binlog data to the local file and then use [Reparo](../tools/reparo.md) to recover the incremental data.
 * Pump/Drainer has two states: `paused` and `offline`. If you press Ctrl + C or kill the process, both Pump and Drainer become `paused`. The paused Pump do not need to send all the binlog data to Drainer. If you need to exit from Pump for a long period of time (or do not use Pump any more), use `binlogctl` to make Pump offline. The same goes for Drainer.
+* If the downstream is MySQL/TiDB, you can use [sync-diff-inspector](../tools/sync-diff-inspector.md) to verify the data after data synchronization.
 
 ## TiDB-Binlog deployment
 
@@ -261,9 +263,9 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
 #### Download the official Binary
 
 ```bash
-TiDB（Pump Client）
-wget https://download.pingcap.org/tidb-v2.0.8-binlog-linux-amd64.tar.gz
-wget https://download.pingcap.org/tidb-v2.0.8-binlog-linux-amd64.sha256
+TiDB（v2.0.8-binlog, v2.1.0-rc.5 or the later version）
+wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz
+wget https://download.pingcap.org/tidb-{version}-linux-amd64.sha256
 
 # Check the file integrity. It should return OK.
 sha256sum -c tidb-v2.0.8-binlog-linux-amd64.sha256
@@ -489,7 +491,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
 
     - The example of starting Pump:  
         
-        > **Note:** If the downstream is MySQL/TiDB, to guarantee the data integrity, you need to obtain the `initial-commit-ts` value and make a full backup of the data and restore the data before the initial start of Drainer. For details, see [Deploy Drainer](#deploy-drainer).
+        > **Note:** If the downstream is MySQL/TiDB, to guarantee the data integrity, you need to obtain the `initial-commit-ts` value and make a full backup of the data and restore the data before the initial start of Drainer. For details, see [Deploy Drainer](#step-3-deploy-drainer).
     
         When Pump is started for the first time, use the `initial-commit-ts` parameter.
 
@@ -620,3 +622,20 @@ Command example:
 After you have deployed TiDB-Binlog using Ansible successfully, you can go to the Grafana Web (default address: <http://grafana_ip:3000>, default account: admin, password: admin) to check the state of Pump and Drainer.
 
 For TiDB-Binlog monitoring metrics, see [TiDB-Binlog Monitoring Metrics](../tools/tidb-binlog-monitor.md).
+
+## TiDB-Binlog upgrade
+
+The cluster version of TiDB-Binlog is not compatible with the Kafka or local version of TiDB-Binlog. If TiDB is upgraded to a new version (v2.0.8-binlog, v2.1.0-rc.5 or later), only the cluster version of TiDB-Binlog can be used; if the Kafka or local version of TiDB-Binlog is used before upgrading, you need to upgrade TiDB-Binlog to the cluster version.
+
+### Upgrade process
+
+- If importing the full data is acceptable, you can abandon the old version and deploy TiDB-Binlog following this document.
+- If you want to resume synchronization from the original checkpoint, perform the following steps to upgrade TiDB-Binlog:
+
+    1. Deploy the new version of Pump.
+    2. Stop the TiDB cluster service.
+    3. Upgrade TiDB and the configuration, and write the binlog data to the new Pump cluster.
+    4. Reconnect the TiDB cluster to the service.
+    5. Make sure that the old version of Drainer has synchronized the data in the old version of Pump to the downstream completely.
+    6. Start the new version of Drainer.
+    7. Close the Pump and Drainer of the old versions and the dependent Kafka and Zookeeper.
