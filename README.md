@@ -116,6 +116,10 @@
   - [Syncer](tools/syncer.md)
   - [mydumper](tools/mydumper.md)
   - [Loader](tools/loader.md)
+  + Data Migration
+    - [Overview](tools/data-migration-overview.md)
+    - [Deployment](tools/data-migration-deployment.md)
+    - [Synchronize Data](tools/data-migration-practice.md)
   + TiDB-Lightning
     - [Overview](tools/lightning-overview-architecture.md)
     - [Deployment](tools/lightning-deployment.md)
