@@ -8,7 +8,7 @@ category: tools
 
 ## What is the minimum TiDB/TiKV/PD cluster version supported by Lightning?
 
-The minimum version is 2.0.4.
+The minimum version is 2.0.9.
 
 ## Does Lightning support importing multiple schemas (databases)?
 
