@@ -51,7 +51,7 @@ Delete `pd4` through pd-ctl:
 
 ```bash
 ./pd-ctl -u http://host1:2379
->> member delete pd4
+>> member delete name pd4
 ```
 
 ### Migrate a node dynamically
