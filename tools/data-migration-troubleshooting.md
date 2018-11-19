@@ -20,7 +20,7 @@ If you encounter errors while running Data Migration, try the following solution
     resume-task ${task name}
     ```
 
-However, in some cases, you need to [reset the data synchronization task](#reset-the-data-synchronization-task).
+However, you need to reset the data synchronization task in some cases. For details about when to reset and how to reset, see [Reset the data synchronization task](#reset-the-data-synchronization-task).
 
 ## Common errors
 
