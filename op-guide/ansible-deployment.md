@@ -119,23 +119,28 @@ The key's randomart image is:
 | tidb-ansible 分支 | TiDB 版本 | 备注 |
 | ---------------- | --------- | --- |
 | release-2.0 | 2.0 版本 | 最新稳定版本，可用于生产环境。 |
+| release-2.1 | 2.1 版本 | 最新 2.1 RC 版本，不建议用于生产环境。 |
 | master | master 版本 | 包含最新特性，每日更新。 |
 
 使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible 相应分支，默认的文件夹名称为 `tidb-ansible`。
 
-下载 2.0 版本：
+- 下载 2.0 版本：
 
-```
-$ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
-```
+	```
+	$ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
+	```
 
-或
+- 下载 2.1 版本：
 
-下载 master 版本：
+	```
+	$ git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
+	```
 
-```
-$ git clone https://github.com/pingcap/tidb-ansible.git
-```
+- 下载 master 版本：
+
+	```
+	$ git clone https://github.com/pingcap/tidb-ansible.git
+	```
 
 > **注**：请务必按文档操作，将 `tidb-ansible` 下载到 `/home/tidb` 目录下，权限为 `tidb` 用户，不要下载到 `/root` 下，否则会遇到权限问题。
 
