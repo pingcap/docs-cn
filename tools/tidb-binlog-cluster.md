@@ -55,6 +55,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 * 在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取 savepoint，然后导入全量备份，最后启动 Drainer 从 savepoint 开始同步增量数据。
 * Drainer 支持将 Binlog 同步到 MySQL、TiDB、Kafka 或者本地文件。如果需要将 Binlog 同步到其他类型的目的地中，可以设置 Drainer 将 Binlog 同步到 Kafka，再读取 Kafka 中的数据进行自定义处理，参考 [binlog slave client 用户文档](../tools/binlog-slave-client.md)。
 * 如果 TiDB-Binlog 用于增量恢复，可以设置下游为 `pb` 将 binlog 同步到本地文件中，再使用 [Reparo](../tools/reparo.md) 恢复增量数据。
+* 如果设置下游为 `tidb`，将使用 TiDB 的隐藏列 `_tidb_rowid` 进行同步，需要注意的是，不能有除了 Drainer 外的流量写入下游，否则数据可能会出错。
 * Pump/Drainer 的状态需要区分已暂停（paused）和下线（offline），Ctrl + C 或者 kill 进程，Pump 和 Drainer 的状态都将变为 paused。暂停状态的 Pump 不需要将已保存的 Binlog 数据全部发送到 Drainer；如果需要较长时间退出 Pump（或不再使用该 Pump），需要使用 binlogctl 工具来下线 Pump。Drainer 同理。
 * 如果下游为 MySQL/TiDB，数据同步后可以使用 [sync-diff-inspector](../tools/sync-diff-inspector.md) 进行数据校验。
 
@@ -198,7 +199,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 
         ```
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "pb", "tidb", "flash", and "kafka".
+        # Valid values are "mysql", "pb", "kafka", "flash", "tidb".
         db-type = "mysql"
 
         # the downstream MySQL protocol database
@@ -224,7 +225,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 
         ```
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "pb", "tidb", "flash", and "kafka".
+        # Valid values are "mysql", "pb", "kafka", "flash", "tidb".
         db-type = "pb"
 
         # Uncomment this if you want to use `pb` or `sql` as `db-type`.
@@ -373,7 +374,7 @@ Drainer="192.168.0.13"
         -data-dir string
             Drainer 数据存储位置路径 (默认 "data.drainer")
         -dest-db-type string
-            Drainer 下游服务类型 (默认为 mysql，支持 tidb、kafka、pb)
+            Drainer 下游服务类型 (默认为 mysql，支持 kafka、pb、flash、tidb)
         -detect-interval int
             向 PD 查询在线 Pump 的时间间隔 (默认 10，单位 秒)
         -disable-detect
@@ -440,7 +441,7 @@ Drainer="192.168.0.13"
         disable-dispatch = false
  
         # Drainer 下游服务类型（默认为 mysql）
-        # 参数有效值为 "mysql"，"pb"
+        # 参数有效值为 "mysql"，"pb"，"kafka"，"flash"，"tidb"
         db-type = "mysql"
  
         # replicate-do-db 配置的优先级高于 replicate-do-table。如果配置了相同的库名，支持使用正则表达式进行配置。
