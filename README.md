@@ -120,6 +120,7 @@
     - [Overview](tools/data-migration-overview.md)
     - [Deployment](tools/data-migration-deployment.md)
     - [Synchronize Data](tools/data-migration-practice.md)
+    - [Troubleshooting](tools/data-migration-troubleshooting.md)
   + TiDB-Lightning
     - [Overview](tools/lightning-overview-architecture.md)
     - [Deployment](tools/lightning-deployment.md)

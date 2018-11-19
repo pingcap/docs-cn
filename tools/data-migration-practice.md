@@ -14,7 +14,7 @@ It is recommended to deploy the DM cluster using DM-Ansible. For detailed deploy
 
 > **Notes**:
 > 
-> - For database related passwords in the DM configuration file, use the passwords encrypted by `dmctl`. If a database password is empty, it is unnecessary to encrypt it. See [Encrypt the upstream MySQL user password using dmctl](../tools/data-migration-deployment.md#encrypt-the-upstream-mysql-user-password-using-dmctl).
+> - For database related passwords in all the DM configuration files, use the passwords encrypted by `dmctl`. If a database password is empty, it is unnecessary to encrypt it. See [Encrypt the upstream MySQL user password using dmctl](../tools/data-migration-deployment.md#encrypt-the-upstream-mysql-user-password-using-dmctl).
 > - The user of the upstream and downstream databases must have the corresponding read and write privileges.
 
 ## Step 2: Check the cluster information
@@ -53,7 +53,9 @@ After the DM cluster is deployed using DM-Ansible, the configuration information
 
 ## Step 3: Configure the data synchronization task
 
-Assuming that you need to synchronize all the `test_table` table data in the `test_db` database of both the upstream MySQL-1 and MySQL-2 instances, to the downstream `test_table` table in the `test_db` database of TiDB, in the full data plus incremental data mode, you can edit the `task.yaml` task configuration file as follows:
+The following example assumes that you need to synchronize all the `test_table` table data in the `test_db` database of both the upstream MySQL-1 and MySQL-2 instances, to the downstream `test_table` table in the `test_db` database of TiDB, in the full data plus incremental data mode.
+
+You can refer to the `task.yaml.example` task configuration template in `{ansible deploy}/conf`, and then copy, edit, and generate the `task.yaml` task configuration file as below:
 
 ```yaml
 # The task name. You need to use a different name for each of the multiple tasks that
@@ -85,7 +87,7 @@ mysql-instances:
   instance-id: "172.16.10.81:3306"
   # The configuration item name of the black and white lists of the name of the
   # database/table to be synchronized, used to quote the global black and white
-  # lists configuration
+  # lists configuration that is set in the global black-white-list map below.
   black-white-list: "global"
   # The configuration item name of mydumper, used to quote the global mydumper configuration
   mydumper-config-name: "global"

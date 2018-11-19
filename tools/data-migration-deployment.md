@@ -312,7 +312,7 @@ dm-master ansible_host=172.16.10.71 deploy_dir=/data1/deploy
 | mysql_user | The upstream MySQL username; default "root". |
 | mysql_password | The upstream MySQL user password. You need to encrypt the password using the `dmctl` tool. See [Encrypt the upstream MySQL user password using dmctl](#encrypt-the-upstream-mysql-user-password-using-dmctl). |
 | mysql_port | The upstream MySQL port; default 3306. |
-| enable_gtid | Whether to use GTID for dm-worker to pull the binlog. The prerequisite is that the upstream MySQL has enabled the GTID mode. |
+| enable_gtid | Whether to use GTID for dm-worker to pull the binlog. It supports the MySQL (and MariaDB) GTID. The prerequisite is that the upstream MySQL has enabled the GTID mode. |
 | flavor | "flavor" indicates the release type of MySQL. For the official version, Percona, and cloud MySQL, fill in "mysql"; for MariaDB, fill in "mariadb". It is "mysql" by default. |
 
 ### Encrypt the upstream MySQL user password using dmctl
