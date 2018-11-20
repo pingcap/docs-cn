@@ -119,11 +119,11 @@ message Binlog {
 }
 ```
 
-For the definition of the data format, see [`binlog.proto`](https://github.com/pingcap/tidb-tools/blob/master/tidb_binlog/slave_binlog_proto/proto/binlog.proto).
+For the definition of the data format, see [`binlog.proto`](https://github.com/pingcap/tidb-tools/blob/master/tidb-binlog/slave_binlog_proto/proto/binlog.proto).
 
 ### Driver
 
-The [TiDB-Tools](https://github.com/pingcap/tidb-tools/) project provides [Driver](https://github.com/pingcap/tidb-tools/tree/master/tidb_binlog/driver), which is used to read the binlog data in Kafka. It has the following features:
+The [TiDB-Tools](https://github.com/pingcap/tidb-tools/) project provides [Driver](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/driver), which is used to read the binlog data in Kafka. It has the following features:
 
 * Read the Kafka data.
 * Locate the binlog stored in Kafka based on `commit ts`.
