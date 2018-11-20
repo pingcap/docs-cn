@@ -79,6 +79,7 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
     | TiDB-Ansible Branch | TiDB Version | Note |
     | ---------------- | --------- | --- |
     | release-2.0-new-binlog | 2.0 version | the latest stable version; can be used in the production environment |
+    | release-2.1 | 2.1 version | the latest 2.1 RC version; it is not recommended to use this version in the production environment |
     | master | master version | contains the latest features; updated daily |
 
 2. Use the following command to download the corresponding branch of TiDB-Ansible from the [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible) on GitHub. The default folder name is `tidb-ansible`.
@@ -87,6 +88,12 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
         
         ```
         $ git clone -b release-2.0-new-binlog https://github.com/pingcap/tidb-ansible.git
+        ```
+
+    - Download the 2.1 version:
+
+        ```
+        $ git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
         ```
 
     - Download the master version:
