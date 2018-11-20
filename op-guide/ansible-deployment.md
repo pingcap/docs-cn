@@ -126,21 +126,21 @@ The key's randomart image is:
 
 - 下载 2.0 版本：
 
-	```
-	$ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
-	```
+    ```
+    $ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
+    ```
 
 - 下载 2.1 版本：
 
-	```
-	$ git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
-	```
+    ```
+    $ git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
+    ```
 
 - 下载 master 版本：
 
-	```
-	$ git clone https://github.com/pingcap/tidb-ansible.git
-	```
+    ```
+    $ git clone https://github.com/pingcap/tidb-ansible.git
+    ```
 
 > **注**：请务必按文档操作，将 `tidb-ansible` 下载到 `/home/tidb` 目录下，权限为 `tidb` 用户，不要下载到 `/root` 下，否则会遇到权限问题。
 
