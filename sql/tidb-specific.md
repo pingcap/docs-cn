@@ -145,7 +145,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 默认值：4
 
-这个变量用来设置 Projection 算子的并发度。 
+这个变量用来设置 Projection 算子的并发度。
 
 ### tidb_hashagg_partial_concurrency
 
@@ -237,7 +237,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 作用域：SESSION
 
-默认值：32 GB 
+默认值：32 GB
 
 这个变量用来设置 MergeJoin 算子的内存使用阈值。
 如果 MergeJoin 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
@@ -246,7 +246,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 作用域：SESSION
 
-默认值：32 GB 
+默认值：32 GB
 
 这个变量用来设置 Sort 算子的内存使用阈值。
 如果 Sort 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
@@ -255,7 +255,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 作用域：SESSION
 
-默认值：32 GB 
+默认值：32 GB
 
 这个变量用来设置 TopN 算子的内存使用阈值。
 如果 TopN 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
@@ -264,7 +264,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 作用域：SESSION
 
-默认值：32 GB 
+默认值：32 GB
 
 这个变量用来设置 IndexLookupReader 算子的内存使用阈值。
 
@@ -274,7 +274,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 作用域：SESSION
 
-默认值：32 GB 
+默认值：32 GB
 
 这个变量用来设置 IndexLookupJoin 算子的内存使用阈值。
 如果 IndexLookupJoin 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
@@ -283,7 +283,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 作用域：SESSION
 
-默认值：32 GB 
+默认值：32 GB
 
 这个变量用来设置 NestedLoopApply 算子的内存使用阈值。
 如果 NestedLoopApply 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
@@ -380,7 +380,7 @@ TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comm
 
 ```SELECT /*+ TIDB_INLJ(t1, t2) */ * from t1，t2 where t1.id = t2.id```
 
-提示优化器使用 Index Nested Loop Join 算法，这个算法可能会在某些场景更快，消耗更少系统资源，有的场景会更慢，消耗更多系统资源。对于外表经过 WHERE 条件过滤后结果集较小（小于 1 万行）的场景，可以尝试使用。`TIDB_INLJ()`中的参数是建立查询计划时，驱动表（外表）的候选表。即`TIDB_INLJ(t1)`只会考虑使用t1作为驱动表构建查询计划。
+提示优化器使用 Index Nested Loop Join 算法，这个算法可能会在某些场景更快，消耗更少系统资源，有的场景会更慢，消耗更多系统资源。对于外表经过 WHERE 条件过滤后结果集较小（小于 1 万行）的场景，可以尝试使用。`TIDB_INLJ()`中的参数是建立查询计划时，内表的候选表。即`TIDB_INLJ(t1)`只会考虑使用 t1 作为内表构建查询计划。
 
 ### TIDB_HJ(t1, t2)
 
