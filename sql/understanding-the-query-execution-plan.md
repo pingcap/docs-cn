@@ -11,7 +11,7 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 
 `EXPLAIN` 语句的返回结果提供了 TiDB 执行 SQL 查询的详细信息：
 
-- `EXPLAIN` 可以和 `SELECT`，`DELETE`，`INSERT`，`REPLACE`，以及 `UPDATE` 语句一起使用；
+- `EXPLAIN` 可以和 `SELECT`，`DELETE` 语句一起使用；
 - 执行 `EXPLAIN`，TiDB 会返回被 `EXPLAIN` 的 SQL 语句经过优化器后的最终物理执行计划。也就是说，`EXPLAIN` 展示了 TiDB 执行该 SQL 语句的完整信息，比如以什么样的顺序，什么方式 JOIN 两个表，表达式树长什么样等等。详见 [`EXPLAIN` 输出格式](#explain-output-format)；
 - TiDB 目前还不支持 `EXPLAIN [options] FOR CONNECTION connection_id`，将在未来支持它，详见 [#4351](https://github.com/pingcap/tidb/issues/4351)；
 
@@ -30,7 +30,7 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 
 ### 用例
 
-使用 [bikeshare example database](../bikeshare-example-database.md):
+使用 [bikeshare example database](https://github.com/pingcap/docs/blob/master/bikeshare-example-database.md):
 
 ```
 mysql> EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59';
