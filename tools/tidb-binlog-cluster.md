@@ -615,7 +615,7 @@ Usage of binlogctl:
 监控指标说明：[TiDB-Binlog 监控指标说明](../tools/tidb-binlog-monitor.md)
 
 ## 版本升级方法
-Cluster 版本的 TiDB-Binlog 不兼容 Kafka 版本以及 local 版本，TiDB 如果升级到新版（v2.0.8-binlog、v2.1.0-rc.5 及以上版本）后只能使用 cluster 版本的 TiDB-Binlog；如果在升级前已经使用了 Kafka／local 版本的 TiDB-Binlog，必须将其升级到 cluster 版本。
+Cluster 版本的 TiDB-Binlog 不兼容 Kafka 版本以及 Local 版本，TiDB 如果升级到新版（v2.0.8-binlog、v2.1.0-rc.5 及以上版本）后只能使用 Cluster 版本的 TiDB-Binlog；如果在升级前已经使用了 Kafka／Local 版本的 TiDB-Binlog，必须将其升级到 Cluster 版本。
 
 升级流程：
 
@@ -624,7 +624,7 @@ Cluster 版本的 TiDB-Binlog 不兼容 Kafka 版本以及 local 版本，TiDB �
 * 如果想从原来的 checkpoint 继续同步，则使用以下升级流程：
     1. 部署新版本 Pump；
     2. 暂停 TiDB 集群业务；
-    3. 更新 TiDB 以及配置，写 binlog 到新的 Pump cluster；
+    3. 更新 TiDB 以及配置，写 Binlog 到新的 Pump Cluster；
     4. TiDB 集群重新接入业务；
     5. 确认老版本的 Drainer 已经将老版本的 Pump 的数据完全同步到下游；
     6. 启动新版本 Drainer；
