@@ -35,7 +35,8 @@ category: deployment
 ## 升级
 
 - [使用 Anisble 升级组件版本](ansible-deployment-rolling-update.md#升级组件版本)
-- [TiDB 2.0 升级操作指南](tidb-v2-upgrade-guide.md)
+- [TiDB 2.0 升级操作指南](tidb-v2.0-upgrade-guide.md)
+- [TiDB 2.1 升级操作指南](tidb-v2.1-upgrade-guide.md)
 
 ## 性能调优
 

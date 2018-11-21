@@ -5,7 +5,7 @@ category: advanced
 
 # TiDB-Binlog 部署方案
 
-本文档介绍如何部署 Kafka 版本的 TiDB-Binlog。如需部署 local 版本的 TiDB-Binlog，可参考 [local 版本的 TiDB-Binlog 部署文档](../tools/tidb-binlog.md)。
+本文档介绍如何部署 Kafka 版本的 TiDB-Binlog。
 
 ## TiDB-Binlog 简介
 
@@ -39,6 +39,12 @@ Kafka 集群用来存储由 Pump 写入的 Binlog 数据，并提供给 Drainer 
 > **注**：local 版本将 Binlog 存储在文件中，最新版本则使用 Kafka 存储。
 
 ## TiDB-Binlog 安装
+
+以下为 TiDB-Ansible 分支与 TiDB 版本的对应关系，版本选择可咨询官方 info@pingcap.com。
+
+    | TiDB-Ansible 分支 | TiDB 版本 | 备注 |
+    | ---------------- | --------- | --- |
+    | release-2.0 | 2.0 版本 | 最新稳定版本，可用于生产环境。 |
 
 ### 下载官方 Binary
 

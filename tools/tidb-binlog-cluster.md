@@ -5,7 +5,7 @@ category: advanced
 
 # TiDB-Binlog Cluster 版本用户文档
 
-本文档介绍 cluster 版本 TiDB-Binlog 的架构以及部署方案。如需使用 local 版本或者 Kafka 版本，可参考 [local 版本的 TiDB-Binlog 部署文档](../tools/tidb-binlog.md) 和 [Kafka 版本的 TiDB-Binlog 部署文档](../tools/tidb-binlog-kafka.md)。
+本文档介绍 cluster 版本 TiDB-Binlog 的架构以及部署方案。
 
 TiDB-Binlog 是一个用于收集 TiDB 的 Binlog，并提供实时备份和同步功能的商业工具。
 
