@@ -7,6 +7,26 @@ category: tools
 
 当 Lightning 遇到不可恢复的错误时便会异常退出，并在日志中记下错误原因。一般可在日志底部找到，也可以搜索 `[error]` 字符串找出中间发生的错误。本文主要描述一些常见的错误及其解决方法。
 
+## 导入速度太慢
+
+Lightning 的正常速度为每条线程每 5 分钟导入一个 256 MB 的 Chunk，如果速度远慢于这个数值就是有问题。导入的速度可以检查日志提及 `restore chunk … takes` 的记录，或者观察 Grafana 的监控讯息。
+
+导入速度太慢一般有几个原因：
+
+**原因 1**：`region-concurrency` 设定太高，线程间争用资源反而减低了效率。
+
+1. 从日志的开头搜寻 `region-concurrency` 能知道 Lightning 读到的参数是多少。
+2. 如果 Lightning 与其他服务（如 Importer）共用一台服务器，必需**手动**将 `region-concurrency` 设为该服务器 CPU 数量的 75%。
+3. 如果 CPU 设有限额（例如从 K8s 指定的上限），Lightning 可能无法自动判断出来，此时亦需要**手动**调整 `region-concurrency`。
+
+**原因 2**：表结构太复杂。
+
+每条索引都会额外增加 KV 对。如果有 N 条索引，实际导入的大小就差不多是 mydumper 文件的 N+1 倍。如果索引不太重要，可以考虑先从 schema 去掉，待导入完成后再使用 `CREATE INDEX` 加回去。
+
+**原因 3**：Lightning 版本太旧。
+
+试试最新的版本吧！可能会有改善。
+
 ## checksum failed: checksum mismatched remote vs local
 
 **原因**：本地数据源跟目标数据库某个表的校验和不一致。这通常有更深层的原因：
