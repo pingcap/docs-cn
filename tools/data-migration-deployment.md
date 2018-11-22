@@ -178,19 +178,19 @@ dm-worker1 ansible_host=172.16.10.72 ansible_port=5555 server_id=101 mysql_host=
 
 You can choose one of the following two types of cluster topology according to your scenario:
 
-- [The cluster topology of a single dm-worker instance on each node](#option-1-use-the-cluster-topology-of-a-single-dm-worker-instance-on-each-node)
+- [The cluster topology of a single DM-worker instance on each node](#option-1-use-the-cluster-topology-of-a-single-dm-worker-instance-on-each-node)
 
-    Generally, it is recommended to deploy one dm-worker instance on each node. Howerver, if the CPU and memory of your machine is much better than the required in [Hardware and Software Requirements](../op-guide/recommendation.md), and you have more than 2 disks in one node or the capacity of one SSD is larger than 2 TB, you can deploy no more than 2 dm-worker instances on a single node.
+    Generally, it is recommended to deploy one DM-worker instance on each node. Howerver, if the CPU and memory of your machine is much better than the required in [Hardware and Software Requirements](../op-guide/recommendation.md), and you have more than 2 disks in one node or the capacity of one SSD is larger than 2 TB, you can deploy no more than 2 DM-worker instances on a single node.
 
-- [The cluster topology of multiple dm-worker instances on each node](#option-2-use-the-cluster-topology-of-multiple-dm-worker-instances-on-each-node)
+- [The cluster topology of multiple DM-worker instances on each node](#option-2-use-the-cluster-topology-of-multiple-dm-worker-instances-on-each-node)
 
-### Option 1: Use the cluster topology of a single dm-worker instance on each node
+### Option 1: Use the cluster topology of a single DM-worker instance on each node
 
 | Name | Host IP | Services |
 | ---- | ------- | -------- |
-| node1 | 172.16.10.71 | dm-master, Prometheus, Grafana, Alertmanager |
-| node2 | 172.16.10.72 | dm-worker1 |
-| node3 | 172.16.10.73 | dm-worker2 |
+| node1 | 172.16.10.71 | DM-master, Prometheus, Grafana, Alertmanager |
+| node2 | 172.16.10.72 | DM-worker1 |
+| node3 | 172.16.10.73 | DM-worker2 |
 
 ```ini
 ## DM modules
@@ -226,13 +226,13 @@ grafana_admin_user = "admin"
 grafana_admin_password = "admin"
 ```
 
-### Option 2: Use the cluster topology of multiple dm-worker instances on each node
+### Option 2: Use the cluster topology of multiple DM-worker instances on each node
 
 | Name | Host IP | Services |
 | ---- | ------- | -------- |
-| node1 | 172.16.10.71 | dm-master, Prometheus, Grafana, Alertmanager |
-| node2 | 172.16.10.72 | dm-worker1-1, dm-worker1-2 |
-| node3 | 172.16.10.73 | dm-worker2-1, dm-worker2-2 |
+| node1 | 172.16.10.71 | DM-master, Prometheus, Grafana, Alertmanager |
+| node2 | 172.16.10.72 | DM-worker1-1, DM-worker1-2 |
+| node3 | 172.16.10.73 | DM-worker2-1, DM-worker2-2 |
 
 When you edit the `inventory.ini` file, pay attention to distinguish between the following variables: `server_id`, `deploy_dir`, `dm_worker_port`, and `dm_worker_status_port`.
 
@@ -274,7 +274,7 @@ grafana_admin_password = "admin"
 
 ## Step 8: Edit variables in the `inventory.ini` file
 
-This step shows how to edit the variable of deployment directory, and explains the global variables and dm-worker configuration parameters in the `inventory.ini` file.
+This step shows how to edit the variable of deployment directory, and explains the global variables and DM-worker configuration parameters in the `inventory.ini` file.
 
 ### Configure the deployment directory
 
@@ -303,21 +303,21 @@ dm-master ansible_host=172.16.10.71 deploy_dir=/data1/deploy
 | grafana_admin_user | The username of the Grafana administrator; default `admin` |
 | grafana_admin_password | The password of the Grafana administrator account; default `admin`; used to import Dashboard by Ansible; update this variable if you have modified it through the Grafana web |
 
-### dm-worker configuration parameters description
+### DM-worker configuration parameters description
 
 | Variable name | Description |
 | ------------- | ------- |
-| server_id | dm-worker connects to MySQL as a slave. This variable is the server_id of the slave. Keep it globally unique in the MySQL cluster, and the value range is 0 ~ 4294967295. |
+| server_id | DM-worker connects to MySQL as a slave. This variable is the server_id of the slave. Keep it globally unique in the MySQL cluster, and the value range is 0 ~ 4294967295. |
 | mysql_host | The upstream MySQL host. |
 | mysql_user | The upstream MySQL username; default "root". |
 | mysql_password | The upstream MySQL user password. You need to encrypt the password using the `dmctl` tool. See [Encrypt the upstream MySQL user password using dmctl](#encrypt-the-upstream-mysql-user-password-using-dmctl). |
 | mysql_port | The upstream MySQL port; default 3306. |
-| enable_gtid | Whether to use GTID for dm-worker to pull the binlog. It supports the MySQL (and MariaDB) GTID. The prerequisite is that the upstream MySQL has enabled the GTID mode. |
+| enable_gtid | Whether to use GTID for DM-worker to pull the binlog. It supports the MySQL (and MariaDB) GTID. The prerequisite is that the upstream MySQL has enabled the GTID mode. |
 | flavor | "flavor" indicates the release type of MySQL. For the official version, Percona, and cloud MySQL, fill in "mysql"; for MariaDB, fill in "mariadb". It is "mysql" by default. |
 
 ### Encrypt the upstream MySQL user password using dmctl
 
-Assuming that the upstream MySQL user password is `123456`, configure the generated string to the `mysql_password` variable of dm-worker.
+Assuming that the upstream MySQL user password is `123456`, configure the generated string to the `mysql_password` variable of DM-worker.
 
 ```bash
 $ cd /home/tidb/dm-ansible/resources/bin
@@ -365,7 +365,7 @@ The following example uses `tidb` as the user who runs the service.
     ansible-playbook start.yml
     ```
 
-    This operation starts all the components in the entire DM cluster in order, which include dm-master, dm-worker, and the monitoring components. You can use this command to start a DM cluster after it is stopped.
+    This operation starts all the components in the entire DM cluster in order, which include DM-master, DM-worker, and the monitoring components. You can use this command to start a DM cluster after it is stopped.
 
 ## Step 10: Stop the DM cluster
 
@@ -375,4 +375,4 @@ If you need to stop the DM cluster, run the following command:
 $ ansible-playbook stop.yml
 ```
 
-This operation stops all the components in the entire DM cluster in order, which include dm-master, dm-worker, and the monitoring components.
+This operation stops all the components in the entire DM cluster in order, which include DM-master, DM-worker, and the monitoring components.

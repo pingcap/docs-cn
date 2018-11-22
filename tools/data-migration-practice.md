@@ -25,9 +25,9 @@ After the DM cluster is deployed using DM-Ansible, the configuration information
 
     | Component | IP | Service port |
     |------| ---- | ---- |
-    | dm-worker | 172.16.10.72 | 10081 |
-    | dm-worker | 172.16.10.73 | 10081 |
-    | dm-master | 172.16.10.71 | 11080 |
+    | DM-worker | 172.16.10.72 | 10081 |
+    | DM-worker | 172.16.10.73 | 10081 |
+    | DM-master | 172.16.10.71 | 11080 |
 
 - The information of upstream and downstream database instances:
 
@@ -37,7 +37,7 @@ After the DM cluster is deployed using DM-Ansible, the configuration information
     | Upstream MySQL-2 | 172.16.10.82 | 3306 | root | VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU= |
     | Downstream TiDB | 172.16.10.83 | 4000 | root | |
 
-- The configuration in the dm-master process configuration file `{ansible deploy}/conf/dm-master.toml`:
+- The configuration in the DM-master process configuration file `{ansible deploy}/conf/dm-master.toml`:
 
     ```toml
     # Master configuration.
@@ -179,8 +179,8 @@ stop-task test
 
 Assuming that Prometheus and Grafana are successfully deployed along with the DM cluster deployment using DM-Ansible, and the Grafana address is `172.16.10.71`, you can open <http://172.16.10.71:3000> in a browser, choose the DM dashboard to check the related monitoring metrics.
 
-While the DM cluster is running, dm-master, dm-worker, and dmctl output the monitoring metrics information through logs. The log directory of each component is as follows:
+While the DM cluster is running, DM-master, DM-worker, and dmctl output the monitoring metrics information through logs. The log directory of each component is as follows:
 
-- dm-master log directory: It is specified by the `--log-file` dm-master process parameter. For DM-Ansible deployment, the log directory is `{ansible deploy}/log/dm-master.log` in the dm-master node.
-- dm-worker log directory: It is specified by the `--log-file` dm-worker process parameter. For DM-Ansible deployment, the log directory is `{ansible deploy}/log/dm-worker.log` in the dm-master node.
+- DM-master log directory: It is specified by the `--log-file` DM-master process parameter. For DM-Ansible deployment, the log directory is `{ansible deploy}/log/dm-master.log` in the DM-master node.
+- DM-worker log directory: It is specified by the `--log-file` DM-worker process parameter. For DM-Ansible deployment, the log directory is `{ansible deploy}/log/dm-worker.log` in the DM-master node.
 - dmctl log directory: It is the same as the binary directory of dmctl.
