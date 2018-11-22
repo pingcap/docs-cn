@@ -54,7 +54,7 @@ The black and white lists filtering rule of the upstream database instances is s
 
 ### Binlog event filtering
 
-Binlog event filtering is a more fine-grained filtering rule than the black and white lists filtering rule at the schema and table levels. You can use statements like `INSERT`, `TRUNCATE TABLE` to specify the Binlog events of the database(s) or table(s) that you need to synchronize or filter out.
+Binlog event filtering is a more fine-grained filtering rule than the black and white lists filtering rule at the schema and table levels. You can use statements like `INSERT` and `TRUNCATE TABLE` to specify the Binlog events of the database(s) or table(s) that you need to synchronize or filter out.
 
 ### Column mapping
 
@@ -68,4 +68,4 @@ DM supports merging the original sharded instances and tables into TiDB, with so
 
 Currently, TiDB is not compatible with all the DDL statements that MySQL supports. See [the DDL statements supported by TiDB](../sql/ddl.md).
 
-DM reports an error when it encounters an incompatible DDL statement. To solve this error, you need to manually handle it using dmctl, either skipping this DDL statement or replace it with a specified DDL statement(s). For details, see [Skip or replace abnormal SQL statements](../tools/data-migration-troubleshooting.md#skip-or-replace-abnormal-sql-statements).
+DM reports an error when it encounters an incompatible DDL statement. To solve this error, you need to manually handle it using dmctl, either skipping this DDL statement or replacing it with a specified DDL statement(s). For details, see [Skip or replace abnormal SQL statements](../tools/data-migration-troubleshooting.md#skip-or-replace-abnormal-sql-statements).
