@@ -33,6 +33,8 @@ DM-worker executes specific data synchronization tasks.
 - Orchestrating the operation of the data synchronization subtasks
 - Monitoring the running state of the data synchronization subtasks
 
+For details about DM-worker, see [DM-worker Introduction](../tools/dm-worker-intro.md).
+
 ### dmctl 
 
 dmctl is the command line tool used to control the DM cluster.
