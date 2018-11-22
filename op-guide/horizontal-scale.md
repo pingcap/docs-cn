@@ -50,7 +50,7 @@ TiDB 集群可以在不影响线上服务的情况下动态进行扩容和缩容
 
 ```bash
 ./pd-ctl -u http://host1:2379
->> member delete pd4
+>> member delete name pd4
 ```
 
 ### 动态迁移节点
