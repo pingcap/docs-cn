@@ -44,7 +44,7 @@ Kafka 集群用来存储由 Pump 写入的 Binlog 数据，并提供给 Drainer 
 
     | TiDB-Ansible 分支 | TiDB 版本 | 备注 |
     | ---------------- | --------- | --- |
-    | release-2.0 | 2.0 版本 | 最新稳定版本，可用于生产环境。 |
+    | release-2.0 | 2.0 版本 | 最新 2.0 稳定版本，可用于生产环境。 |
 
 ### 下载官方 Binary
 
@@ -219,13 +219,13 @@ ZK3="192.168.0.11"
 
     # Pump 对外提供服务的 RPC 地址("192.168.0.10:8250")
     advertise-addr = ""
-    
+
     # binlog 最大保留天数 (默认 7)，设置为 0 可永久保存
     gc = 7
- 
+
     # Pump 数据存储位置路径
     data-dir = "data.pump"
- 
+
     # ZooKeeper 地址，该选项从 ZooKeeper 中获取 Kafka 地址，若 Kafka 中配置了命名空间，则此处需同样配置
     # zookeeper-addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
     # 配置了命令空间的 ZooKeeper 地址配置示例
@@ -233,10 +233,10 @@ ZK3="192.168.0.11"
 
     # Pump 向 PD 发送心跳的间隔 (单位 秒)
     heartbeat-interval = 3
-      
+
     # PD 集群节点的地址
     pd-urls = "http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379"
- 
+
     # unix socket 模式服务监听地址 (默认 unix:///tmp/pump.sock)
     socket = "unix:///tmp/pump.sock"
     ```
