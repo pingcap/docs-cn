@@ -94,7 +94,8 @@ This document defines the roadmap for TiDB development.
 ## Tools:
 
 - [X] Tool for automating TiDB deployment
-- [X] High-Performance data import tool
-- [X] Backup and restore tool (incremental backup supported)
+- [X] High-Performance data import tool (lightning)
+- [X] Backup and restore tool (incremental backup supported by drainer, incremental restore supported by reparo)
+- [X] New TiDB-binlog with improved architecture
 - [ ] Data online migration tool (premium edition of Syncer)
 - [ ] Diagnostic tools
