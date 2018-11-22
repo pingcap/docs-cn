@@ -70,7 +70,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
     | TiDB-Ansible 分支 | TiDB 版本 | 备注 |
     | ---------------- | --------- | --- |
     | release-2.0-new-binlog | 2.0 版本 | 最新稳定版本，可用于生产环境。 |
-    | release-2.1 | 2.1 版本 | 最新 2.1 RC 版本，不建议用于生产环境。 |
+    | release-2.1 | 2.1 版本 | 最新 2.1 版本，可用于生产环境（建议）。 |
     | master | master 版本 | 包含最新特性，每日更新。 |
 
 2. 使用以下命令从 GitHub [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible 相应分支，默认的文件夹名称为 `tidb-ansible`。
@@ -338,7 +338,7 @@ Drainer="192.168.0.13"
         addr = "192.168.0.11:8250"
 
         # Pump 对外提供服务的地址
-        advertise-addr = “192.168.0.11:8250"
+        advertise-addr = "192.168.0.11:8250"
 
         # Pump 只保留多少天以内的数据 (默认 7)
         gc = 7
