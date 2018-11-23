@@ -28,7 +28,7 @@ schema = "tidb_lightning_checkpoint"
 #dsn = "root@tcp(127.0.0.1:4000)/"
 
 # 导入成功后是否保留断点。默认为删除。
-# 保留断点可用于除错，但有可能泄漏数据源的元数据。
+# 保留断点可用于调试，但有可能泄漏数据源的元数据。
 #keep-after-success = false
 ```
 
