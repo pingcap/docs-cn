@@ -975,3 +975,9 @@ update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_tim
 #### 9.2.4 ERROR 9001 (HY000): PD server timeout start timestamp may fall behind safe point
 
 这个报错一般是 TiDB 访问 PD 出了问题，TiDB 后台有个 worker 会不断地从 PD 查询 safepoint，如果超过 100s 查不成功就会报这个错。一般是因为 PD 磁盘操作过忙、反应过慢，或者 TiDB 和 PD 之间的网络有问题。TiDB 常见错误码请参考[错误码与故障诊断](sql/error.md)。
+
+### 9.3 TiDB 日志中的报错信息
+
+#### 9.3.1 EOF
+
+在客户端或者是 proxy 断开了连接时 TiDB 不会立刻察觉连接已断开，等到开始往连接返回数据时，发现连接已断开，此时日志会打印 EOF 错误。
