@@ -18,6 +18,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 - [变更组件配置](../op-guide/ansible-deployment-rolling-update.md#变更组件配置)
 - [集群扩容缩容](../op-guide/ansible-deployment-scale.md)
 - [升级组件版本](../op-guide/ansible-deployment-rolling-update.md#升级组件版本)
+- [集群开启 binlog](../tools/tidb-binlog-cluster.md)
 - [清除集群数据](../op-guide/ansible-operation.md#清除集群数据)
 - [销毁集群](../op-guide/ansible-operation.md#销毁集群)
 
@@ -118,8 +119,8 @@ The key's randomart image is:
 
 | tidb-ansible 分支 | TiDB 版本 | 备注 |
 | ---------------- | --------- | --- |
-| release-2.0 | 2.0 版本 | 最新稳定版本，可用于生产环境。 |
-| release-2.1 | 2.1 版本 | 最新 2.1 RC 版本，不建议用于生产环境。 |
+| release-2.0 | 2.0 版本 | 最新 2.0 稳定版本，可用于生产环境。 |
+| release-2.1 | 2.1 版本 | 最新 2.1 稳定版本，可用于生产环境（建议）。 |
 | master | master 版本 | 包含最新特性，每日更新。 |
 
 使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible 相应分支，默认的文件夹名称为 `tidb-ansible`。
