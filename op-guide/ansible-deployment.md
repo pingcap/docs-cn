@@ -129,6 +129,7 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
     | tidb-ansible branch | TiDB version | Note |
     | ------------------- | ------------ | ---- |
     | release-2.0 | 2.0 version | This is the latest stable version. You can use it in production. |
+    | release-2.1 | 2.1 version | The latest 2.1 RC version. It is not recommended to use it in the production environment. |
     | master | master version | This version includes the latest features with a daily update. |
 
 2. Download the corresponding TiDB-Ansible branch from the [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`.
@@ -139,6 +140,12 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
         $ git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
         ```
     
+    - Download the 2.1 version:
+    
+        ```
+        $ git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
+        ```
+
     - Download the master version:
 
         ```bash
@@ -153,7 +160,7 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
 
 Make sure you have logged in to the Control Machine using the `tidb` user account.
 
-It is required to use `pip` to install Ansible and its dependencies, otherwise a compatibility issue occurs. Currently, the TiDB 2.0 GA version and the master version are compatible with Ansible 2.4 and Ansible 2.5.
+It is required to use `pip` to install Ansible and its dependencies, otherwise a compatibility issue occurs. Currently, the release-2.0, release-2.1, and master branches of TiDB-Ansible are compatible with Ansible 2.4 and Ansible 2.5.
 
 1. Install Ansible and the dependencies on the Control Machine:
 
