@@ -18,7 +18,7 @@ This is a list of TiDB adopters in various industries.
 |[LY.com](https://www.crunchbase.com/organization/ly-com)|Travel|[Chinese](https://www.pingcap.com/cases-cn/user-case-tongcheng/)|
 |[Qunar.com](https://www.crunchbase.com/organization/qunar-com)|Travel|[Chinese](https://www.pingcap.com/cases-cn/user-case-qunar/)|
 |[Hulu](https://www.hulu.com)|Entertainment||
-|[VIPKID](https://en.wikipedia.org/wiki/VIPKID)|EdTech||
+|[VIPKID](https://www.crunchbase.com/organization/vipkid)|EdTech||
 |[Lenovo](https://en.wikipedia.org/wiki/Lenovo)|Enterprise Technology||
 |[Bank of Beijing](https://en.wikipedia.org/wiki/Bank_of_Beijing)|Banking|[Chinese](https://pingcap.com/cases-cn/user-case-beijing-bank/)|
 |[Industrial and Commercial Bank of China](https://en.wikipedia.org/wiki/Industrial_and_Commercial_Bank_of_China)|Banking||
