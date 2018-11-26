@@ -70,7 +70,7 @@ tidb-ctl schema in {database name}
 
 For example, `tidb-ctl schema in mysql` returns the following result:
 
-```text
+```json
 [
     {
         "id": 13,
@@ -92,7 +92,7 @@ The result is long and displayed in JSON. The above result is a truncated one.
 
     For example, `tidb-ctl schema in mysql -n db` returns the table schema of the `db` table in the `mysql` database:
 
-    ```text
+    ```json
     {
         "id": 9,
         "name": {

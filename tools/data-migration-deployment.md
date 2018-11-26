@@ -282,7 +282,7 @@ Edit the `deploy_dir` variable to configure the deployment directory.
 
 The global variable is set to `/home/tidb/deploy` by default, and it applies to all services. If the data disk is mounted on the `/data1` directory, you can set it to `/data1/dm`. For example:
 
-```bash
+```ini
 ## Global variables
 [all:vars]
 deploy_dir = /data1/dm
@@ -290,7 +290,7 @@ deploy_dir = /data1/dm
 
 If you need to set a separate deployment directory for a service, you can configure the host variable while configuring the service host list in the `inventory.ini` file. It is required to add the first column alias, to avoid confusion in scenarios of mixed services deployment.
 
-```bash
+```ini
 dm-master ansible_host=172.16.10.71 deploy_dir=/data1/deploy
 ```
 

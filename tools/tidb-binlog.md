@@ -88,7 +88,7 @@ cd tidb-binlog-latest-linux-amd64
 
     - Run Drainer at the `gen-savepoint` model and generate the Drainer savepoint file:  
       
-        ```
+        ```bash
         bin/drainer -gen-savepoint --data-dir= ${drainer_savepoint_dir} --pd-urls=${pd_urls}
         ```
        
@@ -96,13 +96,13 @@ cd tidb-binlog-latest-linux-amd64
     - Import the full backup to the target system.
     - Set the file path of the savepoint and start Drainer:
       
-        ```
+        ```bash
         bin/drainer --config=conf/drainer.toml --data-dir=${drainer_savepoint_dir}
         ```
 
 - The drainer outputs `pb` and you need to set the following parameters in the configuration file.  
   
-    ```
+    ```toml
     [syncer]
     db-type = "pb"
     disable-dispatch = true
@@ -234,7 +234,7 @@ Usage of Drainer:
 
 Configuration file
 
-```
+```toml
 # Drainer Configuration
 
 # addr (i.e. 'host:port') to listen on for Drainer connections

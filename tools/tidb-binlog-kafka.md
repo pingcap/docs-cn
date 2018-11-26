@@ -85,7 +85,7 @@ cd tidb-binlog-kafka-linux-amd64
 
 - The drainer outputs `pb` and you need to set the following parameters in the configuration file:
 
-    ```
+    ```toml
     [syncer]
     db-type = "pb"
     disable-dispatch = true
@@ -96,7 +96,7 @@ cd tidb-binlog-kafka-linux-amd64
 
 - The drainer outputs `kafka` and you need to set the following parameters in the configuration file:
 
-    ```
+    ```toml
     [syncer]
     db-type = "kafka"
     
@@ -134,7 +134,7 @@ cd tidb-binlog-kafka-linux-amd64
 
 Configuration example:
 
-```
+```ini
 # binlog trigger
 enable_binlog = True
 # ZooKeeper address of the Kafka cluster. Example:
@@ -150,7 +150,7 @@ A usage example:
 
 Assume that we have three PDs, three ZooKeepers, and one TiDB. The information of each node is as follows:
 
-```
+```ini
 TiDB="192.168.0.10"
 PD1="192.168.0.16"
 PD2="192.168.0.15"

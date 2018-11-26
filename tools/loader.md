@@ -138,7 +138,7 @@ To combine tables, start the `route-rules` parameter in the configuration file o
 - To use the table combination function, it is required to fill the `pattern-schema` and `target-schema`.
 - If the `pattern-table` and `target-table` are NULL, the table name is not combined or converted.
 
-```
+```toml
 [[route-rules]]
 pattern-schema = "example_db"
 pattern-table = "table_*"

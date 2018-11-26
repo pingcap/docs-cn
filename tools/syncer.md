@@ -432,7 +432,7 @@ target-table = "order_2017"
 
     Check the binlog information using the following statement:
 
-    ```
+    ```sql
     show binlog events in 'mysql-bin.000023' from 136676560 limit 10;
     ```
 

@@ -48,7 +48,7 @@ Usage of Reparo:
 
 ### Description of the configuration file
 
-```
+```toml
 # The storage directory for the binlog file in the protobuf format that Drainer outputs
 data-dir = "./data.drainer"
 

@@ -108,14 +108,14 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
 
     1. Set `enable_binlog = True` to start `binlog` of the TiDB cluster.
 
-        ```
+        ```ini
         ## binlog trigger
         enable_binlog = True
         ```
 
     2. Add the deployment machine IPs for `pump_servers`.
 
-        ```
+        ```ini
         ## Binlog Part
         [pump_servers]
         172.16.10.72
@@ -125,7 +125,7 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
 
         Pump retains the data of the latest 5 days by default. You can modify the value of the `gc` variable in the `tidb-ansible/conf/pump.yml` file and remove the related comments. Take modifying the variable value to 7 as an example:
 
-        ```
+        ```yaml
         global:
           # an integer value to control the expiry date of the binlog data, which indicates for how long (in days) the binlog data would be stored
           # must be bigger than 0
@@ -134,7 +134,7 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
 
         Make sure the space of the deployment directory is sufficient for storing Binlog. For more details, see [Configure the deployment directory](../op-guide/ansible-deployment.md#configure-the-deployment-directory). You can also set a separate deployment directory for Pump.
 
-        ```
+        ```ini
         ## Binlog Part
         [pump_servers]
         pump1 ansible_host=172.16.10.72 deploy_dir=/data1/pump
@@ -187,14 +187,14 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
 
     - Assume that the downstream is MySQL with the alias `drainer_mysql`:
 
-        ```
+        ```ini
         [drainer_servers]
         drainer_mysql ansible_host=172.16.10.71 initial_commit_ts="402899541671542785"
         ```
 
     - Assume that the downstream is `pb` with the alias `drainer_pb`:
 
-        ```
+        ```ini
         [drainer_servers]
         drainer_pb ansible_host=172.16.10.71 initial_commit_ts="402899541671542785"
         ```
@@ -213,7 +213,7 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
         
         Set `db-type` to `mysql` and configure the downstream MySQL information:
 
-        ```
+        ```toml
         # downstream storage, equal to --dest-db-type
         # Valid values are "mysql", "pb", "tidb", "flash", and "kafka".
         db-type = "mysql"
@@ -239,7 +239,7 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
 
         Set `db-type` to `pb`.
 
-        ```
+        ```toml
         # downstream storage, equal to --dest-db-type
         # Valid values are "mysql", "pb", "tidb", "flash", and "kafka".
         db-type = "pb"
@@ -339,14 +339,14 @@ The following part shows how to use Pump and Drainer based on the nodes above.
 
     - Taking deploying Pump on "192.168.0.11" as an example, the Pump configuration file is as follows:
 
-        ```
+        ```toml
         # Pump Configuration
 
         # the bound address of Pump
         addr = "192.168.0.11:8250"
 
         # the address through which Pump provides the service
-        advertise-addr = “192.168.0.11:8250"
+        advertise-addr = "192.168.0.11:8250"
 
         # the number of days to retain the data in Pump (7 by default)
         gc = 7
@@ -363,7 +363,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
 
     - The example of starting Pump:
 
-        ```
+        ```bash
         ./bin/pump -config pump.toml
         ```
   
@@ -423,7 +423,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
 
     - Taking deploying Drainer on "192.168.0.13" as an example, the Drainer configuration file is as follows:
 
-        ```
+        ```toml
         # Drainer Configuration.
  
         # the address through which Drainer provides the service ("192.168.0.13:8249")
