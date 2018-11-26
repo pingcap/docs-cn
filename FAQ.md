@@ -980,4 +980,4 @@ update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_tim
 
 #### 9.3.1 EOF
 
-在客户端或者是 proxy 断开了连接时 TiDB 不会立刻察觉连接已断开，等到开始往连接返回数据时，发现连接已断开，此时日志会打印 EOF 错误。
+当客户端或者 proxy 断开连接时，TiDB 不会立刻察觉连接已断开，而是等到开始往连接返回数据时，才发现连接已断开，此时日志会打印 EOF 错误。
