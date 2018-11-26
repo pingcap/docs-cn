@@ -37,7 +37,7 @@ address = ""
 
 ```toml
 [lightning]
-# 用于除错和 Prometheus 监控的 HTTP 端口。输入 0 关闭。
+# 用于调试和 Prometheus 监控的 HTTP 端口。输入 0 关闭。
 pprof-port = 10089
 
 ...
