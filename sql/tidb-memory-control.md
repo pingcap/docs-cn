@@ -18,7 +18,13 @@ oom-action = "log"
 
 ## Configure the memory quota of a query
 
-You can control the memory quota of a query using the following session variables. Generally, you only need to configure `tidb_mem_quota_query`. Other variables are used for advanced configuration which most users do not need to care about.
+In the configuration file, you can set the default Memory Quota for each Query. The following example sets it to 32GB:
+
+```
+mem-quota-query = 34359738368
+```
+
+In addition, you can control the memory quota of a query using the following session variables. Generally, you only need to configure `tidb_mem_quota_query`. Other variables are used for advanced configuration which most users do not need to care about.
 
 | Variable Name | Description | Unit | Default Value |
 |-----------------------------------|---------------------------------------------------|-------|-----------|
