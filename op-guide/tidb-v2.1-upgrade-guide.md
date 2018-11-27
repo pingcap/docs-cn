@@ -103,8 +103,6 @@ $ ansible-playbook rolling_update.yml
 
 ## 滚动升级 TiDB 监控组件
 
-1. 滚动升级 TiDB 监控组件：
-
-    ```
-    $ ansible-playbook rolling_update_monitor.yml
-    ```
+```
+$ ansible-playbook rolling_update_monitor.yml
+```
