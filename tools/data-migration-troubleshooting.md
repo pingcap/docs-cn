@@ -6,7 +6,7 @@ category: tools
 
 # Data Migration Troubleshooting
 
-This document summarizes some commonly encountered errors when you use Data Migration, and provides the solutions.
+This document summarizes some commonly encountered issues when you use Data Migration, and provides the solutions.
 
 If you encounter errors while running Data Migration, try the following solution:
 
@@ -36,7 +36,7 @@ In addition, the user of the upstream and downstream databases must have the cor
     - Whether `binlog_format=ROW` (DM only supports the binlog synchronization in the ROW format
     - Whether `binlog_row_image=FULL` (DM only supports `binlog_row_image=FULL`)
 
-+ The privileges of the upstream MySQL instance
++ The privileges of the upstream MySQL instance user
 
     The MySQL user in DM configuration needs to have the following privileges at least:
     
@@ -60,6 +60,21 @@ In addition, the user of the upstream and downstream databases must have the cor
         - Index
         
     - Whether the auto increment primary key that conflicts during merging exists
+
+### Incompatible DDL statements
+
+When you encounter the following error, you need to manually handle it using dmctl (skipping the DDL statement or replacing the DDL statement with a specified DDL statement). For details, see [Skip or replace abnormal SQL statements](#skip-or-replace-abnormal-sql-statements).
+
+```sql
+encountered incompatible DDL in TiDB: %s
+	please confirm your DDL statement is correct and needed.
+	for TiDB compatible DDL, please see the docs:
+	  English version: https://github.com/pingcap/docs/blob/master/sql/ddl.md
+	  Chinese version: https://github.com/pingcap/docs-cn/blob/master/sql/ddl.md
+	if the DDL is not needed, you can use dm-ctl to skip it, otherwise u also can use dm-ctl to replace it.
+```
+
+> **Note:** Currently, TiDB is not compatible with all the DDL statements that MySQL supports. See [the DDL statements supported by TiDB](../sql/ddl.md).
 
 ## Reset the data synchronization task
 

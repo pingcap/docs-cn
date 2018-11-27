@@ -37,45 +37,58 @@ Loader reads the files of Dumper and then loads these files to the downstream Ti
 
 Binlog replication/Syncer reads the binlog events of the relay log, transforms these events to SQL statements, and then applies these statements to the downstream TiDB.
 
-## Privileges DM-worker needs
+## Privileges required by DM-worker
 
-### Privileges the upstream needs
+This section describes the upstream and downstream database users' privileges required by DM-worker, and the user privileges required by the respective processing unit.
 
-The upstream (MySQL/mariaDB) needs the following privileges:
+### Upstream database user privileges
 
-- `SELECT`
-- `RELOAD`
-- `RELICATION SLAVE`
-- `REPLICATION CLIENT`
+The upstream database (MySQL/MariaDB) user must have the following privileges:
 
-```sql
-GRANT SELECT,RELOAD,REPLICATION SLAVE, REPLICATION CLIENT  ON *.* TO 'your_user'@'your_wildcard_of_host';
-```
+| Privilege | Scope |
+|----|----|
+| `SELECT` | Tables |
+| `RELOAD` | Global |
+| `REPLICATION SLAVE` | Global |
+| `REPLICATION CLIENT` | Global |
 
-#### Privileges the downstream needs
-
-The downstream (TiDB) needs the following privileges:
-
-- `SELECT` 
-- `INSERT`
-- `UPDATE`
-- `DELETE`
-- `CREATE`
-- `DROP`
-- `ALTER`
-- `INDEX`
+If you need to synchronize the data from `db1` to TiDB, execute the following `GRANT` statement:
 
 ```sql
-GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX  ON *.* TO 'your_user'@'your_wildcard_of_host';
+GRANT RELOAD,REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'your_user'@'your_wildcard_of_host'
+GRANT SELECT ON db1.* TO 'your_user'@'your_wildcard_of_host';
 ```
 
-### Minimal privilege each processing unit needs
+If you also need to synchronize the data from other databases into TiDB, make sure the same privileges are granted to the user of the respective databases.
 
-| Processing Unit | Minimal Privilege for Upstream (MySQL/MariaDB) | Minimal Privilege for Downstream (TiDB) | Minimal Privilege for the System |
-|----:|:--------------------|:------------|:----|
-| Relay log | `SELECT` (checks some upstream environment variables, like `binlog_format`)<br>`REPLICATION SLAVE` (reads the binlog)<br>`REPLICATION CLIENT` (`show master status`, `show slave status`) | NULL | Read/Write local files |
+### Downstream database user privileges
+
+The downstream database (TiDB) user must have the following privileges:
+
+| Privilege | Scope |
+|----|----|
+| `SELECT` | Tables |
+| `INSERT` | Tables |
+| `UPDATE`| Tables |
+| `DELETE` | Tables |
+| `CREATE` | Databases, tables |
+| `DROP` | Databases, tables |
+| `ALTER` | Tables |
+| `INDEX` | Tables |
+
+Execute the following `GRANT` statement for the databases or tables that you need to synchronize:
+
+```sql
+GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX  ON db.table TO 'your_user'@'your_wildcard_of_host';
+```
+
+### Minimal privilege required by each processing unit
+
+| Processing unit | Minimal upstream (MySQL/MariaDB) privilege | Minimal downstream (TiDB) privilege | Minimal system privilege |
+|----|--------------------|------------|----|
+| Relay log | `REPLICATION SLAVE` (reads the binlog)<br>`REPLICATION CLIENT` (`show master status`, `show slave status`) | NULL | Read/Write local files |
 | Dumper | `SELECT`<br>`RELOAD` (flushes tables with Read lock and unlocks tables）| NULL | Write local files |
 | Loader | NULL | `SELECT` (Query the checkpoint history)<br>`CREATE` (creates a database/table)<br>`DELETE` (deletes checkpoint)<br>`INSERT` (Inserts the Dump data) | Read/Write local files |
-| Binlog replication | `SELECT` (checks some upstream environment variables, like `binlog_format`)<br>`REPLICATION SLAVE` (reads the binlog)<br>`REPLICATION CLIENT` (`show master status`, `show slave status`) | `SELECT` (shows the index and column)<br>`INSERT` (DML)<br>`UPDATE` (DML)<br>`DELETE` (DML)<br>`CREATE` (creates a database/table)<br>`DROP` (drops databases/tables)<br>`ALTER` (alters a table)<br>`INDEX` (creates/drops an index)| Read/Write local files |
+| Binlog replication | `REPLICATION SLAVE` (reads the binlog)<br>`REPLICATION CLIENT` (`show master status`, `show slave status`) | `SELECT` (shows the index and column)<br>`INSERT` (DML)<br>`UPDATE` (DML)<br>`DELETE` (DML)<br>`CREATE` (creates a database/table)<br>`DROP` (drops databases/tables)<br>`ALTER` (alters a table)<br>`INDEX` (creates/drops an index)| Read/Write local files |
 
-> **Note:** These privileges are not static and they change as the request changes.
+> **Note:** These privileges are not immutable and they change as the request changes.
