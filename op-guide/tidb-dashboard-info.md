@@ -17,7 +17,7 @@ category: monitoring
   - Duration：SQL 执行的时间
   - Statement OPS：SQL 执行数量统计（包含 `SELECT`、`INSERT`、`UPDATE` 等）
   - QPS By Instance：每个 TiDB 上的 QPS
-    
+
 - Query Detail
   - Internal SQL OPS：TiDB 内部 SQL 语句执行数量统计
 
@@ -55,7 +55,7 @@ category: monitoring
   - KV Cmd OPS：KV 命令执行数量统计
   - Txn OPS：启动事务的数量统计
   - Load SafePoint OPS：更新 SafePoint 的数量统计
-		
+
 - PD Client
   - PD TSO OPS：TiDB 从 PD 获取 TSO 的数量
   - PD TSO Wait Duration：TiDB 从 PD 获取 TSO 的时间
