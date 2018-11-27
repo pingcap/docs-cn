@@ -70,7 +70,7 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
     *  以 gen-savepoint model 运行 drainer 生成 drainer savepint 文件，`bin/drainer -gen-savepoint --data-dir= ${drainer_savepoint_dir} --pd-urls=${pd_urls}`
     *  全量备份，例如 mydumper 备份 tidb
     *  全量导入备份到目标系统
-    *  设置 savepoint 文件路径，然后启动 drainer， `bin/drainer --config=conf/drainer.toml --data-dir=${drainer_savepoint_dir}`
+    *  设置 savepoint 文件路径，然后启动 drainer，`bin/drainer --config=conf/drainer.toml --data-dir=${drainer_savepoint_dir}`
 
 *   drainer 输出的 pb, 需要在配置文件设置下面的参数
 

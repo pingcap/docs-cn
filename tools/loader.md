@@ -132,7 +132,7 @@ Loader 需要配置文件中开启 route-rules 参数以提供合库合表功能
 + 如果使用该功能，必须填写 `pattern-schema` 与 `target-schema` 
 + 如果 `pattern-table` 与 `target-table` 为空，将不进行表名称合并或转换
 
-```
+```toml
 [[route-rules]]
 pattern-schema = "example_db"
 pattern-table = "table_*"

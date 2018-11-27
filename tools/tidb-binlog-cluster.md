@@ -99,14 +99,14 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 
     1. 设置 `enable_binlog = True`，表示 TiDB 集群开启 binlog。
 
-        ```
+        ```ini
         ## binlog trigger
         enable_binlog = True
         ```
 
     2. 为 `pump_servers` 主机组添加部署机器 IP。
 
-        ```
+        ```ini
         ## Binlog Part
         [pump_servers]
         172.16.10.72
@@ -116,7 +116,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 
         默认 Pump 保留 5 天数据，如需修改可修改 `tidb-ansible/conf/pump.yml` 文件中 `gc` 变量值，并取消注释，如修改为 7。
 
-        ```
+        ```yaml
         global:
           # an integer value to control the expiry date of the binlog data, which indicates for how long (in days) the binlog data would be stored
           # must be bigger than 0
@@ -125,7 +125,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 
         请确保部署目录有足够空间存储 binlog，详见：[部署目录调整](../op-guide/ansible-deployment.md#部署目录调整)，也可为 Pump 设置单独的部署目录。
 
-        ```
+        ```ini
         ## Binlog Part
         [pump_servers]
         pump1 ansible_host=172.16.10.72 deploy_dir=/data1/pump
@@ -178,14 +178,14 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 
     - 以下游为 MySQL 为例，别名为 `drainer_mysql`。
 
-        ```
+        ```ini
         [drainer_servers]
         drainer_mysql ansible_host=172.16.10.71 initial_commit_ts="402899541671542785"
         ```
 
     - 以下游为 pb 为例，别名为 `drainer_pb`。
 
-        ```
+        ```ini
         [drainer_servers]
         drainer_pb ansible_host=172.16.10.71 initial_commit_ts="402899541671542785"
         ```
