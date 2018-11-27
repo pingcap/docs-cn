@@ -437,7 +437,7 @@ time: 43.12698ms
 ```bash
 >> region                               // 显示所有 Region 信息
 {
-  "count": 1,
+  "count": 10,
   "regions": [
     {
       "id": 4,
