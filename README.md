@@ -120,6 +120,10 @@
     - [Overview](tools/data-migration-overview.md)
     - [Deployment](tools/data-migration-deployment.md)
     - [Synchronize Data](tools/data-migration-practice.md)
+    + Sharding Data Solution
+      - [Overview and Design Details](tools/dm-sharding-solution.md)
+      - [Sharding DDL Usage Restrictions](tools/dm-sharding-solution.md#sharding-ddl-usage-restrictions)
+      - [Troubleshooting Sharding DDL Locks](tools/troubleshooting-sharding-ddl-locks.md)
     - [Troubleshooting](tools/data-migration-troubleshooting.md)
   + TiDB-Lightning
     - [Overview](tools/lightning-overview-architecture.md)
