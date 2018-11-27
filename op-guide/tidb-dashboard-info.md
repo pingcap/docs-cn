@@ -15,7 +15,7 @@ category: monitoring
 
 - Query Summary
 	- Duration：SQL 执行的时间
-	- Statement OPS：SQL 执行数量统计（包含 select、insert、update 等）
+	- Statement OPS：SQL 执行数量统计（包含 `SELECT`、`INSERT`、`UPDATE` 等）
 	- QPS By Instance：每个 TiDB 上的 QPS
     
 - Query Detail
