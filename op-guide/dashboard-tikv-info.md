@@ -96,120 +96,120 @@ category: monitoring
     - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
     - scheduler keys read：batch_get 命令读取 key 的个数
     - scheduler keys written：batch_get 命令写入 key 的个数
-    - scheduler scan details：执行 batch_get 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details：执行 batch_get 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 batch_get 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 batch_get 命令时，扫描每个 default CF 中 key 的详细情况
+    - scheduler scan details：执行 batch_get 命令时，扫描每个 CF 中 key 的详细情况
+    - scheduelr scan details：执行 batch_get 命令时，扫描每个 lock CF 中 key 的详细情况
+    - scheduelr scan details [write]：执行 batch_get 命令时，扫描每个 write CF 中 key 的详细情况
+    - scheduelr scan details [default]：执行 batch_get 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - cleanup
     - scheduler stage total：cleanup 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - scheduler command duration：执行 cleanup 命令所需花费的时间，正常情况下，应该小于 1s
     - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
     - scheduler keys read：cleanup 命令读取 key 的个数
     - scheduler keys written：cleanup 命令写入 key 的个数
-    - scheduler scan details：执行 cleanup 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 cleanup 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 cleanup 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 cleanup 命令时，扫描每个 default CF 中 key 的详细情况
+    - scheduler scan details：执行 cleanup 命令时，扫描每个 CF 中 key 的详细情况
+    - scheduelr scan details [lock]：执行 cleanup 命令时，扫描每个 lock CF 中 key 的详细情况
+    - scheduelr scan details [write]：执行 cleanup 命令时，扫描每个 write CF 中 key 的详细情况
+    - scheduelr scan details [default]：执行 cleanup 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - commit
     - scheduler stage total：commit 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - scheduler command duration：执行 commit 命令所需花费的时间，正常情况下，应该小于 1s
     - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
     - scheduler keys read：commit 命令读取 key 的个数
     - scheduler keys written：commit 命令写入 key 的个数
-    - scheduler scan details：执行 commit 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 commit 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 commit 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 commit 命令时，扫描每个 default CF 中 key 的详细情况
+    - scheduler scan details：执行 commit 命令时，扫描每个 CF 中 key 的详细情况
+    - scheduelr scan details [lock]：执行 commit 命令时，扫描每个 lock CF 中 key 的详细情况
+    - scheduelr scan details [write]：执行 commit 命令时，扫描每个 write CF 中 key 的详细情况
+    - scheduelr scan details [default]：执行 commit 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - gc
     - scheduler stage total：gc 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - scheduler command duration：执行 gc 命令所需花费的时间，正常情况下，应该小于 1s
     - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
     - scheduler keys read：gc 命令读取 key 的个数
     - scheduler keys written：gc 命令写入 key 的个数
-    - scheduler scan details：执行 gc 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 gc 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 gc 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 gc 命令时，扫描每个 default CF 中 key 的详细情况
+    - scheduler scan details：执行 gc 命令时，扫描每个 CF 中 key 的详细情况
+    - scheduelr scan details [lock]：执行 gc 命令时，扫描每个 lock CF 中 key 的详细情况
+    - scheduelr scan details [write]：执行 gc 命令时，扫描每个 write CF 中 key 的详细情况
+    - scheduelr scan details [default]：执行 gc 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - get
     - scheduler stage total：get 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - scheduler command duration：执行 get 命令所需花费的时间，正常情况下，应该小于 1s
     - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
     - scheduler keys read：get 命令读取 key 的个数
     - scheduler keys written：get 命令写入 key 的个数
-    - scheduler scan details：执行 get 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 get 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 get 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 get 命令时，扫描每个 default CF 中 key 的详细情况
+    - scheduler scan details：执行 get 命令时，扫描每个 CF 中 key 的详细情况
+    - scheduelr scan details [lock]：执行 get 命令时，扫描每个 lock CF 中 key 的详细情况
+    - scheduelr scan details [write]：执行 get 命令时，扫描每个 write CF 中 key 的详细情况
+    - scheduelr scan details [default]：执行 get 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - key_mvcc
     - scheduler stage total：key_mvcc 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - scheduler command duration：执行 key_mvcc 命令所需花费的时间，正常情况下，应该小于 1s
     - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
     - scheduler keys read：key_mvcc 命令读取 key 的个数
     - scheduler keys written：key_mvcc 命令写入 key 的个数
-    - scheduler scan details：执行 key_mvcc 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 key_mvcc 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 key_mvcc 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 key_mvcc 命令时，扫描每个 default CF 中 key 的详细情况
+    - scheduler scan details：执行 key_mvcc 命令时，扫描每个 CF 中 key 的详细情况
+    - scheduelr scan details [lock]：执行 key_mvcc 命令时，扫描每个 lock CF 中 key 的详细情况
+    - scheduelr scan details [write]：执行 key_mvcc 命令时，扫描每个 write CF 中 key 的详细情况
+    - scheduelr scan details [default]：执行 key_mvcc 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - prewrite
     - scheduler stage total：prewrite 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - scheduler command duration：执行 prewrite 命令所需花费的时间，正常情况下，应该小于 1s
     - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
     - scheduler keys read：prewrite 命令读取 key 的个数
     - scheduler keys written：prewrite 命令写入 key 的个数
-    - scheduler scan details：执行 prewrite 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 prewrite 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 prewrite 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 prewrite 命令时，扫描每个 default CF 中 key 的详细情况
+    - scheduler scan details：执行 prewrite 命令时，扫描每个 CF 中 key 的详细情况
+    - scheduelr scan details [lock]：执行 prewrite 命令时，扫描每个 lock CF 中 key 的详细情况
+    - scheduelr scan details [write]：执行 prewrite 命令时，扫描每个 write CF 中 key 的详细情况
+    - scheduelr scan details [default]：执行 prewrite 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - resolve_lock
     - scheduler stage total：resolve_lock 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - scheduler command duration：执行 resolve_lock 命令所需花费的时间，正常情况下，应该小于 1s
     - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
     - scheduler keys read：resolve_lock 命令读取 key 的个数
     - scheduler keys written：resolve_lock 命令写入 key 的个数
-    - scheduler scan details：执行 resolve_lock 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 resolve_lock 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 resolve_lock 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 resolve_lock 命令时，扫描每个 default CF 中 key 的详细情况
+    - scheduler scan details：执行 resolve_lock 命令时，扫描每个 CF 中 key 的详细情况
+    - scheduelr scan details [lock]：执行 resolve_lock 命令时，扫描每个 lock CF 中 key 的详细情况
+    - scheduelr scan details [write]：执行 resolve_lock 命令时，扫描每个 write CF 中 key 的详细情况
+    - scheduelr scan details [default]：执行 resolve_lock 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - scan
     - scheduler stage total：scan 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - scheduler command duration：执行 scan 命令所需花费的时间，正常情况下，应该小于 1s
     - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
     - scheduler keys read：scan 命令读取 key 的个数
     - scheduler keys written：scan 命令写入 key 的个数
-    - scheduler scan details：执行 scan 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 scan 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 scan 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 scan 命令时，扫描每个 default CF 中 key 的详细情况
+    - scheduler scan details：执行 scan 命令时，扫描每个 CF 中 key 的详细情况
+    - scheduelr scan details [lock]：执行 scan 命令时，扫描每个 lock CF 中 key 的详细情况
+    - scheduelr scan details [write]：执行 scan 命令时，扫描每个 write CF 中 key 的详细情况
+    - scheduelr scan details [default]：执行 scan 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - scan_lock
     - scheduler stage total：scan_lock 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - scheduler command duration：执行 scan_lock 命令所需花费的时间，正常情况下，应该小于 1s
     - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
     - scheduler keys read：scan_lock 命令读取 key 的个数
     - scheduler keys written：scan_lock 命令写入 key 的个数
-    - scheduler scan details：执行 scan_lock 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 scan_lock 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 scan_lock 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 scan_lock 命令时，扫描每个 default CF 中 key 的详细情况
+    - scheduler scan details：执行 scan_lock 命令时，扫描每个 CF 中 key 的详细情况
+    - scheduelr scan details [lock]：执行 scan_lock 命令时，扫描每个 lock CF 中 key 的详细情况
+    - scheduelr scan details [write]：执行 scan_lock 命令时，扫描每个 write CF 中 key 的详细情况
+    - scheduelr scan details [default]：执行 scan_lock 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - start_ts_mvcc
     - scheduler stage total：start_ts_mvcc 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - scheduler command duration：执行 start_ts_mvcc 命令所需花费的时间，正常情况下，应该小于 1s
     - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
     - scheduler keys read：start_ts_mvcc 命令读取 key 的个数
     - scheduler keys written：start_ts_mvcc 命令写入 key 的个数
-    - scheduler scan details：执行 start_ts_mvcc 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 start_ts_mvcc 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 start_ts_mvcc 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 start_ts_mvcc 命令时，扫描每个 default CF 中 key 的详细情况
+    - scheduler scan details：执行 start_ts_mvcc 命令时，扫描每个 CF 中 key 的详细情况
+    - scheduelr scan details [lock]：执行 start_ts_mvcc 命令时，扫描每个 lock CF 中 key 的详细情况
+    - scheduelr scan details [write]：执行 start_ts_mvcc 命令时，扫描每个 write CF 中 key 的详细情况
+    - scheduelr scan details [default]：执行 start_ts_mvcc 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - unsafe_destroy_range
     - scheduler stage total：unsafe_destroy_range 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - scheduler command duration：执行 unsafe_destroy_range 命令所需花费的时间，正常情况下，应该小于 1s
     - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
     - scheduler keys read：unsafe_destroy_range 命令读取 key 的个数
     - scheduler keys written：unsafe_destroy_range 命令写入 key 的个数
-    - scheduler scan details：执行 unsafe_destroy_range 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 unsafe_destroy_range 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 unsafe_destroy_range 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 unsafe_destroy_range 命令时，扫描每个 default CF 中 key 的详细情况
+    - scheduler scan details：执行 unsafe_destroy_range 命令时，扫描每个 CF 中 key 的详细情况
+    - scheduelr scan details [lock]：执行 unsafe_destroy_range 命令时，扫描每个 lock CF 中 key 的详细情况
+    - scheduelr scan details [write]：执行 unsafe_destroy_range 命令时，扫描每个 write CF 中 key 的详细情况
+    - scheduelr scan details [default]：执行 unsafe_destroy_range 命令时，扫描每个 default CF 中 key 的详细情况
 - Coprocessor
     - Request Duration：处理 coprocessor 读请求所花费的时间
     - Wait Duration：coprocessor 请求的等待时间，99.99% 的情况下，应该小于 10s
