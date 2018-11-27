@@ -546,8 +546,9 @@ Encoding 格式示例：
     },
     {
       ...
-    }
-  ],
+    },
+    ...
+  ]
 }
 ```
 
@@ -561,7 +562,7 @@ Encoding 格式示例：
 >> region topread
 {
   "count": 16,
-  "regions": [...],
+  "regions": [...]
 }
 ```
 
@@ -575,7 +576,7 @@ Encoding 格式示例：
 >> region topwrite
 {
   "count": 16,
-  "regions": [...],
+  "regions": [...]
 }
 ```
 
@@ -589,7 +590,7 @@ Encoding 格式示例：
 >> region topconfver
 {
   "count": 16,
-  "regions": [...],
+  "regions": [...]
 }
 ```
 
@@ -603,7 +604,7 @@ Encoding 格式示例：
 >> region topversion
 {
   "count": 16,
-  "regions": [...],
+  "regions": [...]
 }
 ```
 
@@ -617,7 +618,7 @@ Encoding 格式示例：
 >> region topsize
 {
     "count": 16,
-    "regions": [...],
+    "regions": [...]
 }
 ```
 
@@ -637,7 +638,7 @@ Encoding 格式示例：
 >> region miss-peer
 {
   "count": 2,
-  "regions": [...],
+  "regions": [...]
 }
 ```
 
