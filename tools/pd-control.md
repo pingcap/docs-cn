@@ -375,7 +375,7 @@ config set cluster-version 1.0.8              // 设置 cluster version 为 1.0.
     ...
   ],
   "leader": {...},
-  "etcd_leader": {...},
+  "etcd_leader": {...}
 }
 >> member delete name pd2               // 下线 "pd2"
 Success!
