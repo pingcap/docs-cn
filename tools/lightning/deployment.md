@@ -73,7 +73,7 @@ This section describes two deployment methods of TiDB-Lightning:
 
 ### Deploy TiDB-Lightning using Ansible
 
-You can deploy TiDB-Lightning using Ansible together with the [deployment of the TiDB cluster itself using Ansible](../op-guide/ansible-deployment.md).
+You can deploy TiDB-Lightning using Ansible together with the [deployment of the TiDB cluster itself using Ansible](../../op-guide/ansible-deployment.md).
 
 1. Edit `inventory.ini` to add the addresses of the `tidb-lightning` and `tikv-importer` servers.
 
