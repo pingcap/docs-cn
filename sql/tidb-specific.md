@@ -424,7 +424,7 @@ ALTER TABLE 语句示例：`ALTER TABLE t SHARD_ROW_ID_BITS = 4;`
 
 示例：
 
-```
+```sql
 set tidb_slow_log_threshold = 200
 ```
 
@@ -438,6 +438,6 @@ set tidb_slow_log_threshold = 200
 
 示例：
 
-```
+```sql
 set tidb_query_log_max_len = 20
 ```
