@@ -16,323 +16,323 @@ category: monitoring
 ## 说明
 
 - Cluster
-    - store size：每个 TiKV 实例的使用的存储空间的大小
-    - available size：每个 TiKV 实例的可用的存储空间的大小
-    - capacity size：每个 TiKV 实例的存储容量的大小
-    - cpu：每个 TiKV 实例 CPU 的使用率
-    - memory：每个 TiKV 实例内存的使用情况
-    - io utilization：每个 TiKV 实例 IO 的使用率
+    - Store size：每个 TiKV 实例的使用的存储空间的大小
+    - Available size：每个 TiKV 实例的可用的存储空间的大小
+    - Capacity size：每个 TiKV 实例的存储容量的大小
+    - CPU：每个 TiKV 实例 CPU 的使用率
+    - Memory：每个 TiKV 实例内存的使用情况
+    - IO utilization：每个 TiKV 实例 IO 的使用率
     - MBps：每个 TiKV 实例写入和读取的数据量大小
     - QPS：每个 TiKV 实例上各种命令的 QPS
     - Errps：每个 TiKV 实例上 gRPC 消息失败的个数
     - leader：每个 TiKV 实例 leader 的个数
-    - region：每个 TiKV 实例 Region 的个数
+    - Region：每个 TiKV 实例 Region 的个数
 - Errors 
-    - server is busy：各种会导致 server 繁忙的事件个数，如 write stall，channel full 等，正常情况下应当为 0
-    - server report failures：server 报错的消息个数，正常情况下应当为 0
-    - raftstore error：每个 TiKV 实例上 raftstore 发生错误的个数
-    - scheduler error：每个 TiKV 实例上 scheduler 发生错误的个数
-    - coprocessor error：每个 TiKV 实例上 coprocessor 发生错误的个数
-    - grpc message error：每个 TiKV 实例上 gRPC 消息发生错误的个数
-    - leader drop：每个 TiKV 实例上 drop leader 的个数
-    - leader missing：每个 TiKV 实例上 missing leader 的个数
+    - Server is busy：各种会导致 server 繁忙的事件个数，如 write stall，channel full 等，正常情况下应当为 0
+    - Server report failures：server 报错的消息个数，正常情况下应当为 0
+    - Raftstore error：每个 TiKV 实例上 raftstore 发生错误的个数
+    - Scheduler error：每个 TiKV 实例上 scheduler 发生错误的个数
+    - Coprocessor error：每个 TiKV 实例上 coprocessor 发生错误的个数
+    - gRPC message error：每个 TiKV 实例上 gRPC 消息发生错误的个数
+    - Leader drop：每个 TiKV 实例上 drop leader 的个数
+    - Leader missing：每个 TiKV 实例上 missing leader 的个数
 - Server
-    - leader：每个 TiKV 实例 leader 的个数
-    - region：每个 TiKV 实例 Region 的个数
-    - cf size：每个 CF 的大小
-    - store size：每个 TiKV 实例的使用的存储空间的大小
-    - channel full：每个 TiKV 实例上 channel full 错误的数量，正常情况下应当为 0
-    - server report failures：server 报错的消息个数，正常情况下应当为 0
-    - region average written keys：每个 TiKV 实例上所有 Region 的平均 key 写入个数
-    - region average written bytes：每个 TiKV 实例上所有 Region 的平均写入大小
-    - active written leaders：每个 TiKV 实例上有效的 leader 个数
-    - approximate region size：每个 Region 近似的大小
+    - Leader：每个 TiKV 实例 leader 的个数
+    - Region：每个 TiKV 实例 Region 的个数
+    - CF size：每个 CF 的大小
+    - Store size：每个 TiKV 实例的使用的存储空间的大小
+    - Channel full：每个 TiKV 实例上 channel full 错误的数量，正常情况下应当为 0
+    - Server report failures：server 报错的消息个数，正常情况下应当为 0
+    - Region average written keys：每个 TiKV 实例上所有 Region 的平均 key 写入个数
+    - Region average written bytes：每个 TiKV 实例上所有 Region 的平均写入大小
+    - Active written leaders：每个 TiKV 实例上有效的 leader 个数
+    - Approximate Region size：每个 Region 近似的大小
 - Raft IO
-    - apply log duration：Raft apply 日志所花费的时间
-    - apply log duration per server：每个 TiKV 实例上 Raft apply 日志所花费的时间
-    - append log duration：Raft append 日志所花费的时间
-    - append log duration per server：每个 TiKV 实例上 Raft append 日志所花费的时间
-- Raft Process
-    - ready handled：Raft 中不同 ready 类型的个数
-    - process ready duration per server：每个 TiKV 实例处理 ready 所花费的时间，99.99% 的情况下，应该小于 2s
-    - process tick duration per server：每个 TiKV 实例处理 tick 所花费的时间
-    - 0.99 duration of raft store events：99% 的 raftstore 事件所花费的时间
-- Raft Message
-    - sent messages per server：每个 TiKV 实例发送 Raft 消息的个数
-    - flush messages per server：每个 TiKV 实例持久化 Raft 消息的个数
-    - recv messages per server：每个 TiKV 实例接受 Raft 消息的个数
-    - messages：发送不同类型的 Raft 消息的个数
-    - vote：Raft 投票消息发送的个数
-    - raft dropped messages：丢弃不同类型的 Raft 消息的个数
-- Raft Propose
-    - raft proposals per ready：在一个 mio tick 内，所有 Region proposal 的个数
-    - raft read/write proposals：不同类型的 proposal 的个数
-    - raft read proposals per server：每个 TiKV 实例发起读 proposal 的个数
-    - raft write proposals per server：每个 TiKV 实例发起写 proposal 的个数
-    - propose wait duration：每个 proposal 的等待时间
-    - propose wait duration per server：每个 TiKV 实例上每个 proposal 的等待时间
-    - raft log speed：peer propose 日志的速度
-- Raft Admin
-    - admin proposals：admin proposal 的个数
-    - admin apply：apply 命令的个数
-    - check split：split check 命令的个数
-    - 99.99% check split duration：99.99% 的情况下，split check 所需花费的时间
-- Local Reader
-    - local reader requests：所有请求的总数以及 local read 线程拒绝的请求数量
-    - local read requests duration：local read 请求的等待时间
-    - local read requests batch size：local read 请求的批量大小
+    - Apply log duration：Raft apply 日志所花费的时间
+    - Apply log duration per server：每个 TiKV 实例上 Raft apply 日志所花费的时间
+    - Append log duration：Raft append 日志所花费的时间
+    - Append log duration per server：每个 TiKV 实例上 Raft append 日志所花费的时间
+- Raft process
+    - Ready handled：Raft 中不同 ready 类型的个数
+    - Process ready duration per server：每个 TiKV 实例处理 ready 所花费的时间，99.99% 的情况下，应该小于 2s
+    - Process tick duration per server：每个 TiKV 实例处理 tick 所花费的时间
+    - 0.99 Duration of Raft store events：99% 的 raftstore 事件所花费的时间
+- Raft message
+    - Sent messages per server：每个 TiKV 实例发送 Raft 消息的个数
+    - Flush messages per server：每个 TiKV 实例持久化 Raft 消息的个数
+    - Receive messages per server：每个 TiKV 实例接受 Raft 消息的个数
+    - Messages：发送不同类型的 Raft 消息的个数
+    - Vote：Raft 投票消息发送的个数
+    - Raft dropped messages：丢弃不同类型的 Raft 消息的个数
+- Raft propose
+    - Raft proposals per ready：在一个 mio tick 内，所有 Region proposal 的个数
+    - Raft read/write proposals：不同类型的 proposal 的个数
+    - Raft read proposals per server：每个 TiKV 实例发起读 proposal 的个数
+    - Raft write proposals per server：每个 TiKV 实例发起写 proposal 的个数
+    - Propose wait duration：每个 proposal 的等待时间
+    - Propose wait duration per server：每个 TiKV 实例上每个 proposal 的等待时间
+    - Raft log speed：peer propose 日志的速度
+- Raft admin
+    - Admin proposals：admin proposal 的个数
+    - Admin apply：apply 命令的个数
+    - Check split：split check 命令的个数
+    - 99.99% Check split duration：99.99% 的情况下，split check 所需花费的时间
+- Local reader
+    - Local reader requests：所有请求的总数以及 local read 线程拒绝的请求数量
+    - Local read requests duration：local read 请求的等待时间
+    - Local read requests batch size：local read 请求的批量大小
 - Storage
-    - storage command total：收到不同命令的个数
-    - storage async request error：异步请求出错的个数
-    - storage async snapshot duration：异步处理 snapshot 所花费的时间，99% 的情况下，应该小于 1s
-    - storage async write duration：异步写所花费的时间，99% 的情况下，应该小于 1s
+    - Storage command total：收到不同命令的个数
+    - Storage async request error：异步请求出错的个数
+    - Storage async snapshot duration：异步处理 snapshot 所花费的时间，99% 的情况下，应该小于 1s
+    - Storage async write duration：异步写所花费的时间，99% 的情况下，应该小于 1s
 - Scheduler
-    - scheduler stage total：每种命令不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-    - scheduler priority commands：不同优先级命令的个数
-    - scheduler pending commands：每个 TiKV 实例上 pending 命令的个数
+    - Scheduler stage total：每种命令不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+    - Scheduler priority commands：不同优先级命令的个数
+    - Scheduler pending commands：每个 TiKV 实例上 pending 命令的个数
 - Scheduler - batch_get
-    - scheduler stage total：batch_get 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-    - scheduler command duration：执行 batch_get 命令所需花费的时间，正常情况下，应该小于 1s
-    - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-    - scheduler keys read：batch_get 命令读取 key 的个数
-    - scheduler keys written：batch_get 命令写入 key 的个数
-    - scheduler scan details：执行 batch_get 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details：执行 batch_get 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 batch_get 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 batch_get 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler stage total：batch_get 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+    - Scheduler command duration：执行 batch_get 命令所需花费的时间，正常情况下，应该小于 1s
+    - Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
+    - Scheduler keys read：batch_get 命令读取 key 的个数
+    - Scheduler keys written：batch_get 命令写入 key 的个数
+    - Scheduler scan details：执行 batch_get 命令时，扫描每个 CF 中 key 的详细情况
+    - Scheduelr scan details：执行 batch_get 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduelr scan details [write]：执行 batch_get 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduelr scan details [default]：执行 batch_get 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - cleanup
-    - scheduler stage total：cleanup 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-    - scheduler command duration：执行 cleanup 命令所需花费的时间，正常情况下，应该小于 1s
-    - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-    - scheduler keys read：cleanup 命令读取 key 的个数
-    - scheduler keys written：cleanup 命令写入 key 的个数
-    - scheduler scan details：执行 cleanup 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 cleanup 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 cleanup 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 cleanup 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler stage total：cleanup 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+    - Scheduler command duration：执行 cleanup 命令所需花费的时间，正常情况下，应该小于 1s
+    - Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
+    - Scheduler keys read：cleanup 命令读取 key 的个数
+    - Scheduler keys written：cleanup 命令写入 key 的个数
+    - Scheduler scan details：执行 cleanup 命令时，扫描每个 CF 中 key 的详细情况
+    - Scheduelr scan details [lock]：执行 cleanup 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduelr scan details [write]：执行 cleanup 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduelr scan details [default]：执行 cleanup 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - commit
-    - scheduler stage total：commit 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-    - scheduler command duration：执行 commit 命令所需花费的时间，正常情况下，应该小于 1s
-    - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-    - scheduler keys read：commit 命令读取 key 的个数
-    - scheduler keys written：commit 命令写入 key 的个数
-    - scheduler scan details：执行 commit 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 commit 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 commit 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 commit 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler stage total：commit 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+    - Scheduler command duration：执行 commit 命令所需花费的时间，正常情况下，应该小于 1s
+    - Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
+    - Scheduler keys read：commit 命令读取 key 的个数
+    - Scheduler keys written：commit 命令写入 key 的个数
+    - Scheduler scan details：执行 commit 命令时，扫描每个 CF 中 key 的详细情况
+    - Scheduelr scan details [lock]：执行 commit 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduelr scan details [write]：执行 commit 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduelr scan details [default]：执行 commit 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - gc
-    - scheduler stage total：gc 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-    - scheduler command duration：执行 gc 命令所需花费的时间，正常情况下，应该小于 1s
-    - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-    - scheduler keys read：gc 命令读取 key 的个数
-    - scheduler keys written：gc 命令写入 key 的个数
-    - scheduler scan details：执行 gc 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 gc 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 gc 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 gc 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler stage total：gc 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+    - Scheduler command duration：执行 gc 命令所需花费的时间，正常情况下，应该小于 1s
+    - Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
+    - Scheduler keys read：gc 命令读取 key 的个数
+    - Scheduler keys written：gc 命令写入 key 的个数
+    - Scheduler scan details：执行 gc 命令时，扫描每个 CF 中 key 的详细情况
+    - Scheduelr scan details [lock]：执行 gc 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduelr scan details [write]：执行 gc 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduelr scan details [default]：执行 gc 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - get
-    - scheduler stage total：get 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-    - scheduler command duration：执行 get 命令所需花费的时间，正常情况下，应该小于 1s
-    - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-    - scheduler keys read：get 命令读取 key 的个数
-    - scheduler keys written：get 命令写入 key 的个数
-    - scheduler scan details：执行 get 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 get 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 get 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 get 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler stage total：get 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+    - Scheduler command duration：执行 get 命令所需花费的时间，正常情况下，应该小于 1s
+    - Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
+    - Scheduler keys read：get 命令读取 key 的个数
+    - Scheduler keys written：get 命令写入 key 的个数
+    - Scheduler scan details：执行 get 命令时，扫描每个 CF 中 key 的详细情况
+    - Scheduelr scan details [lock]：执行 get 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduelr scan details [write]：执行 get 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduelr scan details [default]：执行 get 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - key_mvcc
-    - scheduler stage total：key_mvcc 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-    - scheduler command duration：执行 key_mvcc 命令所需花费的时间，正常情况下，应该小于 1s
-    - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-    - scheduler keys read：key_mvcc 命令读取 key 的个数
-    - scheduler keys written：key_mvcc 命令写入 key 的个数
-    - scheduler scan details：执行 key_mvcc 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 key_mvcc 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 key_mvcc 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 key_mvcc 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler stage total：key_mvcc 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+    - Scheduler command duration：执行 key_mvcc 命令所需花费的时间，正常情况下，应该小于 1s
+    - Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
+    - Scheduler keys read：key_mvcc 命令读取 key 的个数
+    - Scheduler keys written：key_mvcc 命令写入 key 的个数
+    - Scheduler scan details：执行 key_mvcc 命令时，扫描每个 CF 中 key 的详细情况
+    - Scheduelr scan details [lock]：执行 key_mvcc 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduelr scan details [write]：执行 key_mvcc 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduelr scan details [default]：执行 key_mvcc 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - prewrite
-    - scheduler stage total：prewrite 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-    - scheduler command duration：执行 prewrite 命令所需花费的时间，正常情况下，应该小于 1s
-    - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-    - scheduler keys read：prewrite 命令读取 key 的个数
-    - scheduler keys written：prewrite 命令写入 key 的个数
-    - scheduler scan details：执行 prewrite 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 prewrite 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 prewrite 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 prewrite 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler stage total：prewrite 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+    - Scheduler command duration：执行 prewrite 命令所需花费的时间，正常情况下，应该小于 1s
+    - Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
+    - Scheduler keys read：prewrite 命令读取 key 的个数
+    - Scheduler keys written：prewrite 命令写入 key 的个数
+    - Scheduler scan details：执行 prewrite 命令时，扫描每个 CF 中 key 的详细情况
+    - Scheduelr scan details [lock]：执行 prewrite 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduelr scan details [write]：执行 prewrite 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduelr scan details [default]：执行 prewrite 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - resolve_lock
-    - scheduler stage total：resolve_lock 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-    - scheduler command duration：执行 resolve_lock 命令所需花费的时间，正常情况下，应该小于 1s
-    - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-    - scheduler keys read：resolve_lock 命令读取 key 的个数
-    - scheduler keys written：resolve_lock 命令写入 key 的个数
-    - scheduler scan details：执行 resolve_lock 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 resolve_lock 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 resolve_lock 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 resolve_lock 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler stage total：resolve_lock 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+    - Scheduler command duration：执行 resolve_lock 命令所需花费的时间，正常情况下，应该小于 1s
+    - Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
+    - Scheduler keys read：resolve_lock 命令读取 key 的个数
+    - Scheduler keys written：resolve_lock 命令写入 key 的个数
+    - Scheduler scan details：执行 resolve_lock 命令时，扫描每个 CF 中 key 的详细情况
+    - Scheduelr scan details [lock]：执行 resolve_lock 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduelr scan details [write]：执行 resolve_lock 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduelr scan details [default]：执行 resolve_lock 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - scan
-    - scheduler stage total：scan 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-    - scheduler command duration：执行 scan 命令所需花费的时间，正常情况下，应该小于 1s
-    - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-    - scheduler keys read：scan 命令读取 key 的个数
-    - scheduler keys written：scan 命令写入 key 的个数
-    - scheduler scan details：执行 scan 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 scan 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 scan 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 scan 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler stage total：scan 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+    - Scheduler command duration：执行 scan 命令所需花费的时间，正常情况下，应该小于 1s
+    - Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
+    - Scheduler keys read：scan 命令读取 key 的个数
+    - Scheduler keys written：scan 命令写入 key 的个数
+    - Scheduler scan details：执行 scan 命令时，扫描每个 CF 中 key 的详细情况
+    - Scheduelr scan details [lock]：执行 scan 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduelr scan details [write]：执行 scan 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduelr scan details [default]：执行 scan 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - scan_lock
-    - scheduler stage total：scan_lock 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-    - scheduler command duration：执行 scan_lock 命令所需花费的时间，正常情况下，应该小于 1s
-    - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-    - scheduler keys read：scan_lock 命令读取 key 的个数
-    - scheduler keys written：scan_lock 命令写入 key 的个数
-    - scheduler scan details：执行 scan_lock 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 scan_lock 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 scan_lock 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 scan_lock 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler stage total：scan_lock 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+    - Scheduler command duration：执行 scan_lock 命令所需花费的时间，正常情况下，应该小于 1s
+    - Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
+    - Scheduler keys read：scan_lock 命令读取 key 的个数
+    - Scheduler keys written：scan_lock 命令写入 key 的个数
+    - Scheduler scan details：执行 scan_lock 命令时，扫描每个 CF 中 key 的详细情况
+    - Scheduelr scan details [lock]：执行 scan_lock 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduelr scan details [write]：执行 scan_lock 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduelr scan details [default]：执行 scan_lock 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - start_ts_mvcc
-    - scheduler stage total：start_ts_mvcc 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-    - scheduler command duration：执行 start_ts_mvcc 命令所需花费的时间，正常情况下，应该小于 1s
-    - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-    - scheduler keys read：start_ts_mvcc 命令读取 key 的个数
-    - scheduler keys written：start_ts_mvcc 命令写入 key 的个数
-    - scheduler scan details：执行 start_ts_mvcc 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 start_ts_mvcc 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 start_ts_mvcc 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 start_ts_mvcc 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler stage total：start_ts_mvcc 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+    - Scheduler command duration：执行 start_ts_mvcc 命令所需花费的时间，正常情况下，应该小于 1s
+    - Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
+    - Scheduler keys read：start_ts_mvcc 命令读取 key 的个数
+    - Scheduler keys written：start_ts_mvcc 命令写入 key 的个数
+    - Scheduler scan details：执行 start_ts_mvcc 命令时，扫描每个 CF 中 key 的详细情况
+    - Scheduelr scan details [lock]：执行 start_ts_mvcc 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduelr scan details [write]：执行 start_ts_mvcc 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduelr scan details [default]：执行 start_ts_mvcc 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - unsafe_destroy_range
-    - scheduler stage total：unsafe_destroy_range 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-    - scheduler command duration：执行 unsafe_destroy_range 命令所需花费的时间，正常情况下，应该小于 1s
-    - scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-    - scheduler keys read：unsafe_destroy_range 命令读取 key 的个数
-    - scheduler keys written：unsafe_destroy_range 命令写入 key 的个数
-    - scheduler scan details：执行 unsafe_destroy_range 命令时，扫描每个 CF 中 key 的详细情况
-    - scheduelr scan details [lock]：执行 unsafe_destroy_range 命令时，扫描每个 lock CF 中 key 的详细情况
-    - scheduelr scan details [write]：执行 unsafe_destroy_range 命令时，扫描每个 write CF 中 key 的详细情况
-    - scheduelr scan details [default]：执行 unsafe_destroy_range 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler stage total：unsafe_destroy_range 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+    - Scheduler command duration：执行 unsafe_destroy_range 命令所需花费的时间，正常情况下，应该小于 1s
+    - Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
+    - Scheduler keys read：unsafe_destroy_range 命令读取 key 的个数
+    - Scheduler keys written：unsafe_destroy_range 命令写入 key 的个数
+    - Scheduler scan details：执行 unsafe_destroy_range 命令时，扫描每个 CF 中 key 的详细情况
+    - Scheduelr scan details [lock]：执行 unsafe_destroy_range 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduelr scan details [write]：执行 unsafe_destroy_range 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduelr scan details [default]：执行 unsafe_destroy_range 命令时，扫描每个 default CF 中 key 的详细情况
 - Coprocessor
-    - Request Duration：处理 coprocessor 读请求所花费的时间
-    - Wait Duration：coprocessor 请求的等待时间，99.99% 的情况下，应该小于 10s
-    - Handle Duration：处理 coprocessor 请求所花费的时间
-    - 95% Request Duration by Store：95% 的情况下，每个 TiKV 实例处理 coprocessor 读请求所花费的时间
-    - 95% Wait Duration by Store：95% 的情况下，每个 TiKV 实例上 coprocessor 请求的等待时间
-    - 95% Handle Duration by Store：95% 的情况下，每个 TiKV 实例处理 coprocessor 请求所花费的时间
-    - Request Errors：下推的请求发生错误的个数，正常情况下，短时间内不应该有大量的错误
-    - DAG Executors：DAG executor 的个数
-    - Scan Keys：每个请求 scan key 的个数
-    - Scan Details：scan 每个 CF 的详细情况
+    - Request duration：处理 coprocessor 读请求所花费的时间
+    - Wait duration：coprocessor 请求的等待时间，99.99% 的情况下，应该小于 10s
+    - Handle duration：处理 coprocessor 请求所花费的时间
+    - 95% Request duration by store：95% 的情况下，每个 TiKV 实例处理 coprocessor 读请求所花费的时间
+    - 95% Wait duration by store：95% 的情况下，每个 TiKV 实例上 coprocessor 请求的等待时间
+    - 95% Handle duration by store：95% 的情况下，每个 TiKV 实例处理 coprocessor 请求所花费的时间
+    - Request errors：下推的请求发生错误的个数，正常情况下，短时间内不应该有大量的错误
+    - DAG executors：DAG executor 的个数
+    - Scan keys：每个请求 scan key 的个数
+    - Scan details：scan 每个 CF 的详细情况
     - Table Scan - Details by CF：table scan 针对每个 CF 的详细情况
     - Index Scan - Details by CF：index scan 针对每个 CF 的详细情况
     - Table Scan - Perf Statistics：执行 table sacn 的时候，根据 perf 统计的 RocksDB 内部 operation 的个数
     - Index Scan - Perf Statistics：执行 index sacn 的时候，根据 perf 统计的 RocksDB 内部 operation 的个数
 - GC
-    - MVCC Versions：每个 key 的版本个数
-    - MVCC Delete Versions：gc 删除掉的每个 key 的版本个数
-    - GC Tasks：由 gc_worker 处理的 gc 任务的个数
-    - GC Tasks Duration：执行 gc 任务时所花费的时间
-    - GC Keys (write_cf)：在 gc 过程中，write CF 中 受影响的 key 的个数
-    - TiDB GC Actions Result：TiDB Region 层面的 gc 结果
-    - TiDB GC Worker Actions：TiDB gc worker 的不同 action 的个数
-    - TiDB GC Seconds：TiDB 执行 gc 花费的时间
-    - TiDB GC Failure：TiDB gc job 失败的个数
-    - GC LifeTime：TiDB 设置的 gc lifetime
-    - GC interval：TiDB 设置的 gc 间隔
+    - MVCC versions：每个 key 的版本个数
+    - MVCC delete versions：GC 删除掉的每个 key 的版本个数
+    - GC tasks：由 gc_worker 处理的 GC 任务的个数
+    - GC tasks Duration：执行 GC 任务时所花费的时间
+    - GC keys (write CF)：在 GC 过程中，write CF 中 受影响的 key 的个数
+    - TiDB GC actions result：TiDB Region 层面的 GC 结果
+    - TiDB GC worker actions：TiDB GC worker 的不同 action 的个数
+    - TiDB GC seconds：TiDB 执行 GC 花费的时间
+    - TiDB GC failure：TiDB GC job 失败的个数
+    - GC lifetime：TiDB 设置的 GC lifetime
+    - GC interval：TiDB 设置的 GC 间隔
 - Snapshot
-    - rate snapshot message：发送 Raft snapshot 消息的速率
-    - 99% handle snapshot duration：99% 的情况下，处理 snapshot 所需花费的时间
-    - snapshot state count：不同状态的 snapshot 的个数
-    - 99.99% snapshot size：99.99% 的 snapshot 的大小
-    - 99.99% snapshot kv count：99.99% 的 snapshot 包含的 key 的个数
+    - Rate snapshot message：发送 Raft snapshot 消息的速率
+    - 99% Handle snapshot duration：99% 的情况下，处理 snapshot 所需花费的时间
+    - Snapshot state count：不同状态的 snapshot 的个数
+    - 99.99% Snapshot size：99.99% 的 snapshot 的大小
+    - 99.99% Snapshot KV count：99.99% 的 snapshot 包含的 key 的个数
 - Task
-    - Worker Handled Tasks：worker 处理的任务个数
-    - Worker Pending Tasks：当前 worker 中，pending 和 running 的任务个数，正常情况下，应该小于 1000
-    - FuturePool Handled Tasks：future pool 处理的任务个数
-    - FuturePool Pending Tasks：当前 future pool 中，pending 和 running 的任务个数
+    - Worker handled tasks：worker 处理的任务个数
+    - Worker pending tasks：当前 worker 中，pending 和 running 的任务个数，正常情况下，应该小于 1000
+    - FuturePool handled tasks：future pool 处理的任务个数
+    - FuturePool pending tasks：当前 future pool 中，pending 和 running 的任务个数
 - Thread CPU
-    - raft store CPU：raftstore 线程的 CPU 使用率，通常应低于 80%
-    - async apply CPU：async apply 线程的 CPU 使用率，通常应低于 90%
-    - scheduler CPU：scheduler 线程的 CPU 使用率，通常应低于 80%
-    - Scheduler Worker CPU：scheduler worker 线程的 CPU 使用率
-    - Storage ReadPool CPU：readpool 线程的 CPU 使用率
+    - Raft store CPU：raftstore 线程的 CPU 使用率，通常应低于 80%
+    - Async apply CPU：async apply 线程的 CPU 使用率，通常应低于 90%
+    - Scheduler CPU：scheduler 线程的 CPU 使用率，通常应低于 80%
+    - Scheduler worker CPU：scheduler worker 线程的 CPU 使用率
+    - Storage ReadPool CPU：Readpool 线程的 CPU 使用率
     - Coprocessor CPU：coprocessor 线程的 CPU 使用率
-    - snapshot work CPU：snapshot work 线程的 CPU 使用率
-    - split check CPU：split check 线程的 CPU 使用率
-    - rocksdb CPU：rocksdb 线程的 CPU 使用率
-    - grpc poll CPU：gRPC 线程的 CPU 使用率，通常应低于 80%
-- Rocksdb - kv
-    - Get Operations：get 操作的个数
-    - Get Duration：get 操作的耗时
-    - Seek Operations：seek 操作的个数
-    - Seek Duration：seek 操作的耗时
-    - Write Operations：write 操作的个数
-    - Write Duration：write 操作的耗时
-    - WAL Sync Operations：sync WAL 操作的个数
-    - WAL Sync Duration：sync WAL 操作的耗时
-    - Compaction Operations：compaction 和 flush 操作的个数
-    - Compaction Duration：compaction 和 flush 操作的耗时
-    - SST Read Duration：读取 SST 所需的时间
-    - Write Stall Duration：由于 write stall 造成的时间开销，正常情况下应为 0
-    - Memtable Size：每个 CF 的 memtable 的大小
-    - Memtable Hit：memtable 的命中率
-    - Block Cache Size：每个 CF 的 block cache 的大小
-    - Block Cache Hit：block cache 的命中率
-    - Block Cache Flow：不同 block cache 操作的流量
-    - Block Cache Operations 不同 block cache 操作的个数
-    - Keys Flow：不同操作造成的 key 的流量
-    - Total Keys：每个 CF 中 key 的个数
-    - Read Flow：不同读操作的流量
+    - Snapshot worker CPU：snapshot worker 线程的 CPU 使用率
+    - Split check CPU：split check 线程的 CPU 使用率
+    - RocksDB CPU：RocksDB 线程的 CPU 使用率
+    - gRPC poll CPU：gRPC 线程的 CPU 使用率，通常应低于 80%
+- RocksDB - kv
+    - Get operations：get 操作的个数
+    - Get duration：get 操作的耗时
+    - Seek operations：seek 操作的个数
+    - Seek duration：seek 操作的耗时
+    - Write operations：write 操作的个数
+    - Write duration：write 操作的耗时
+    - WAL sync operations：sync WAL 操作的个数
+    - WAL sync duration：sync WAL 操作的耗时
+    - Compaction operations：compaction 和 flush 操作的个数
+    - Compaction duration：compaction 和 flush 操作的耗时
+    - SST read duration：读取 SST 所需的时间
+    - Write stall duration：由于 write stall 造成的时间开销，正常情况下应为 0
+    - Memtable size：每个 CF 的 memtable 的大小
+    - Memtable hit：memtable 的命中率
+    - Block cache size：每个 CF 的 block cache 的大小
+    - Block cache hit：block cache 的命中率
+    - Block cache flow：不同 block cache 操作的流量
+    - Block cache operations 不同 block cache 操作的个数
+    - Keys flow：不同操作造成的 key 的流量
+    - Total keys：每个 CF 中 key 的个数
+    - Read flow：不同读操作的流量
     - Bytes / Read：每次读的大小
-    - Write Flow：不同写操作的流量
+    - Write flow：不同写操作的流量
     - Bytes / Write：每次写的大小
-    - Compaction Flow：compaction 相关的流量
-    - Compaction Pending Bytes：等待 compaction 的大小
-    - Read Amplification：每个 TiKV 实例的读放大
-    - Compression Ratio：每一层的压缩比
-    - Number of Snapshots：每个 TiKV 的 snapshot 的数量
-    - Oldest Snapshots Duration：最旧的 snapshot 保留的时间
+    - Compaction flow：compaction 相关的流量
+    - Compaction pending bytes：等待 compaction 的大小
+    - Read amplification：每个 TiKV 实例的读放大
+    - Compression ratio：每一层的压缩比
+    - Number of snapshots：每个 TiKV 的 snapshot 的数量
+    - Oldest snapshots duration：最旧的 snapshot 保留的时间
     - Number files at each level：每一层的文件个数
     - Ingest SST duration seconds：ingest SST 所花费的时间
     - Stall conditions changed of each CF：每个 CF stall 的原因
-- Rocksdb - raft
-    - Get Operations：get 操作的个数
-    - Get Duration：get 操作的耗时
-    - Seek Operations：seek 操作的个数
-    - Seek Duration：seek 操作的耗时
-    - Write Operations：write 操作的个数
-    - Write Duration：write 操作的耗时
-    - WAL Sync Operations：sync WAL 操作的个数
-    - WAL Sync Duration：sync WAL 操作的耗时
-    - Compaction Operations：compaction 和 flush 操作的个数
-    - Compaction Duration：compaction 和 flush 操作的耗时
-    - SST Read Duration：读取 SST 所需的时间
-    - Write Stall Duration：由于 write stall 造成的时间开销，正常情况下应为 0
-    - Memtable Size：每个 CF 的 memtable 的大小
-    - Memtable Hit：memtable 的命中率
-    - Block Cache Size：每个 CF 的 block cache 的大小
-    - Block Cache Hit：block cache 的命中率
-    - Block Cache Flow：不同 block cache 操作的流量
-    - Block Cache Operations 不同 block cache 操作的个数
-    - Keys Flow：不同操作造成的 key 的流量
-    - Total Keys：每个 CF 中 key 的个数
-    - Read Flow：不同读操作的流量
+- RocksDB - raft
+    - Get operations：get 操作的个数
+    - Get duration：get 操作的耗时
+    - Seek operations：seek 操作的个数
+    - Seek duration：seek 操作的耗时
+    - Write operations：write 操作的个数
+    - Write duration：write 操作的耗时
+    - WAL sync operations：sync WAL 操作的个数
+    - WAL sync duration：sync WAL 操作的耗时
+    - Compaction operations：compaction 和 flush 操作的个数
+    - Compaction duration：compaction 和 flush 操作的耗时
+    - SST read duration：读取 SST 所需的时间
+    - Write stall duration：由于 write stall 造成的时间开销，正常情况下应为 0
+    - Memtable size：每个 CF 的 memtable 的大小
+    - Memtable hit：memtable 的命中率
+    - Block cache size：每个 CF 的 block cache 的大小
+    - Block cache hit：block cache 的命中率
+    - Block cache flow：不同 block cache 操作的流量
+    - Block cache operations 不同 block cache 操作的个数
+    - Keys flow：不同操作造成的 key 的流量
+    - Total keys：每个 CF 中 key 的个数
+    - Read flow：不同读操作的流量
     - Bytes / Read：每次读的大小
-    - Write Flow：不同写操作的流量
+    - Write flow：不同写操作的流量
     - Bytes / Write：每次写的大小
-    - Compaction Flow：compaction 相关的流量
-    - Compaction Pending Bytes：等待 compaction 的大小
-    - Read Amplification：每个 TiKV 实例的读放大
-    - Compression Ratio：每一层的压缩比
-    - Number of Snapshots：每个 TiKV 的 snapshot 的数量
-    - Oldest Snapshots Duration：最旧的 snapshot 保留的时间
+    - Compaction flow：compaction 相关的流量
+    - Compaction pending bytes：等待 compaction 的大小
+    - Read amplification：每个 TiKV 实例的读放大
+    - Compression ratio：每一层的压缩比
+    - Number of snapshots：每个 TiKV 的 snapshot 的数量
+    - Oldest snapshots duration：最旧的 snapshot 保留的时间
     - Number files at each level：每一层的文件个数
     - Ingest SST duration seconds：ingest SST 所花费的时间
     - Stall conditions changed of each CF：每个 CF stall 的原因
 - Grpc
-    - grpc message count：每种 gRPC 消息的个数
-    - grpc message failed：失败的 gRPC 消息的个数
-    - 99% grpc message duration：在 99% gRPC 消息的执行时间
-    - grpc gc message count：gRPC gc 消息的个数
-    - 99% grpc kv_gc message duration：在 99% 情况下，gRPC gc 消息的执行时间
+    - gRPC message count：每种 gRPC 消息的个数
+    - gRPC message failed：失败的 gRPC 消息的个数
+    - 99% gRPC message duration：在 99% gRPC 消息的执行时间
+    - gRPC GC message count：gRPC GC 消息的个数
+    - 99% gRPC KV GC message duration：在 99% 情况下，gRPC GC 消息的执行时间
 - PD
     - PD requests：TiKV 发送给 PD 的请求个数
     - PD request duration (average)：TiKV 发送给 PD 的请求所需的平均时间
