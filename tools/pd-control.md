@@ -9,7 +9,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ## 源码编译
 
-1. [Go](https://golang.org/) Version 1.9 以上
+1. [Go](https://golang.org/) Version 1.11 以上
 2. 在 PD 项目根目录使用 `make` 命令进行编译，生成 bin/pd-ctl
 
 ## 简单例子
@@ -95,9 +95,9 @@ export PD_ADDR=http://127.0.0.1:2379
 {
   "max-snapshot-count": 3,
   "max-pending-peer-count": 16,
-  "max-merge-region-size": 50,
+  "max-merge-region-size": 20,
   "max-merge-region-rows": 200000,
-  "split-merge-interval": "1h",
+  "split-merge-interval": "1h0m0s",
   "patrol-region-interval": "100ms",
   "max-store-down-time": "1h0m0s",
   "leader-schedule-limit": 4,
@@ -117,15 +117,18 @@ export PD_ADDR=http://127.0.0.1:2379
   "schedulers-v2": [
     {
       "type": "balance-region",
-      "args": null
+      "args": null,
+      "disable": false
     },
     {
       "type": "balance-leader",
-      "args": null
+      "args": null,
+      "disable": false
     },
     {
       "type": "hot-region",
-      "args": null
+      "args": null,
+      "disable": false
     }
   ]
 }
@@ -135,22 +138,23 @@ export PD_ADDR=http://127.0.0.1:2379
   "leader-schedule-limit": 4,
   "region-schedule-limit": 4,
   "replica-schedule-limit": 8,
+  "merge-schedule-limit": 8,
   "max-replicas": 3,
 }
 >> config show replication                    // 显示 replication 的相关 config 信息
 {
   "max-replicas": 3,
-  "location-labels": ""
+  "location-labels": "zone,host"
 }
 >> config show cluster-version                // 显示目前集群版本，是目前集群 TiKV 节点的最低版本，并不对应 binary 的版本
-"2.0.0"
+"2.1.0"
 ```
 
 `max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。
 当需要加快补副本或 balance 速度时可以调大这个值。
 
 ```bash
->> config set max-snapshort-count 16  // 设置最大 snapshot 为 16
+>> config set max-snapshot-count 16  // 设置最大 snapshot 为 16
 ```
 
 `max-pending-peer-count` 控制单个 store 的 pending peer 上限，调度受制于这个配置来防止在部分节点产生大量日志落后的 Region。
@@ -314,11 +318,10 @@ config set cluster-version 1.0.8              // 设置 cluster version 为 1.0.
     "member_id": 13195394291058371180,
     "client_urls": [
       "http://127.0.0.1:2379"
-      ......
     ],
     "health": true
-  }
-  ......
+  },
+  ...
 ]
 
 ```
@@ -355,9 +358,24 @@ config set cluster-version 1.0.8              // 设置 cluster version 为 1.0.
 ```bash
 >> member                               // 显示所有成员的信息
 {
-  "members": [......],
-  "leader": {......},
-  "etcd_leader": {......},
+  "header": {
+    "cluster_id": 6493707687106161130
+  },
+  "members": [
+    {
+      "name": "pd1",
+      "member_id": 9724873857558226554,
+      "peer_urls": [
+        "http://127.0.0.1:2380"
+      ],
+      "client_urls": [
+        "http://127.0.0.1:2379"
+      ]
+    },
+    ...
+  ],
+  "leader": {...},
+  "etcd_leader": {...}
 }
 >> member delete name pd2               // 下线 "pd2"
 Success!
@@ -370,9 +388,9 @@ Success!
   "id": 9724873857558226554
 }
 >> member leader resign // 将 leader 从当前成员移走
-......
+Success!
 >> member leader transfer pd3 // 将 leader 迁移至指定成员
-......
+Success!
 ```
 
 ### operator [show | add | remove]
@@ -419,19 +437,36 @@ time: 43.12698ms
 ```bash
 >> region                               // 显示所有 Region 信息
 {
-  "count": 1,
-  "regions": [......]
+  "count": 10,
+  "regions": [
+    {
+      "id": 4,
+      "start_key": "",
+      "end_key": "t\\x80\\x00\\x00\\x00\\x00\\x00\\x00\\xff\\x05\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\xf8",
+      "epoch": {...},
+      "peers": [...],
+      "leader": {...},
+      "written_bytes": 251302,
+      "read_bytes": 60472,
+      "approximate_size": 1,
+      "approximate_keys": 367
+    },
+    ...
+  ]
 }
 
 >> region 2                             // 显示 Region id 为 2 的信息
 {
-  "region": {
-      "id": 2,
-      ......
-  }
-  "leader": {
-      ......
-  }
+  "id": 2,
+  "start_key": "t\\x80\\x00\\x00\\x00\\x00\\x00\\x00\\xff\\x1d\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\xf8",
+  "end_key": "",
+  "epoch": {...},
+  "peers": [...],
+  "leader": {...},
+  "written_bytes": 251302,
+  "read_bytes": 60472,
+  "approximate_size": 96,
+  "approximate_keys": 524442
 }
 ```
 
@@ -442,12 +477,18 @@ time: 43.12698ms
 Raw 格式（默认）示例：
 
 ```bash
->> region key abc
+>> region key xyz
 {
-  "region": {
-    "id": 2,
-    ......
-  }
+  "id": 2,
+  "start_key": "t\\x80\\x00\\x00\\x00\\x00\\x00\\x00\\xff\\x1d\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\xf8",
+  "end_key": "",
+  "epoch": {...},
+  "peers": [...],
+  "leader": {...},
+  "written_bytes": 251302,
+  "read_bytes": 60472,
+  "approximate_size": 96,
+  "approximate_keys": 524442
 }
 ```
 
@@ -458,7 +499,7 @@ Encoding 格式示例：
 {
   "region": {
     "id": 2,
-    ......
+    ...
   }
 }
 ```
@@ -470,11 +511,21 @@ Encoding 格式示例：
 示例：
 
 ```bash
->> region sibling 2
-{
-  "count": 2,
-  "regions": [......],
-}
+>> region sibling 28
+[
+  {
+    "id": 26,
+    "start_key": "t\\x80\\x00\\x00\\x00\\x00\\x00\\x00\\xff\\x19\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\xf8",
+    "end_key": "t\\x80\\x00\\x00\\x00\\x00\\x00\\x00\\xff\\x1b\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\xf8",
+    ...
+  },
+  {
+    "id": 2,
+    "start_key": "t\\x80\\x00\\x00\\x00\\x00\\x00\\x00\\xff\\x1d\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\xf8",
+    "end_key": "", 
+    ...
+  }
+]
 ```
 
 ### `region store <store_id>`
@@ -484,10 +535,20 @@ Encoding 格式示例：
 示例：
 
 ```bash
->> region store 2
+>> region store 1
 {
   "count": 10,
-  "regions": [......],
+  "regions": [
+    {
+      "id": 8,
+      "start_key": "t\\x80\\x00\\x00\\x00\\x00\\x00\\x00\\xff\\a\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\xf8",
+      ...
+    },
+    {
+      ...
+    },
+    ...
+  ]
 }
 ```
 
@@ -501,7 +562,7 @@ Encoding 格式示例：
 >> region topread
 {
   "count": 16,
-  "regions": [......],
+  "regions": [...]
 }
 ```
 
@@ -515,7 +576,7 @@ Encoding 格式示例：
 >> region topwrite
 {
   "count": 16,
-  "regions": [......],
+  "regions": [...]
 }
 ```
 
@@ -529,7 +590,7 @@ Encoding 格式示例：
 >> region topconfver
 {
   "count": 16,
-  "regions": [......],
+  "regions": [...]
 }
 ```
 
@@ -543,7 +604,7 @@ Encoding 格式示例：
 >> region topversion
 {
   "count": 16,
-  "regions": [......],
+  "regions": [...]
 }
 ```
 
@@ -557,7 +618,7 @@ Encoding 格式示例：
 >> region topsize
 {
     "count": 16,
-    "regions": [......],
+    "regions": [...]
 }
 ```
 
@@ -577,7 +638,7 @@ Encoding 格式示例：
 >> region miss-peer
 {
   "count": 2,
-  "regions": [......],
+  "regions": [...]
 }
 ```
 
@@ -609,9 +670,31 @@ Encoding 格式示例：
   "stores": [...]
 }
 >> store 1                      // 获取 store id 为 1 的 store
-  ......
+{
+  "store": {
+    "id": 1,
+    "address": "127.0.0.1:20160",
+    "version": "2.1.0-rc.5",
+    "state_name": "Up"
+  },
+  "status": {
+    "capacity": "10 GiB",
+    "available": "10 GiB",
+    "leader_count": 14,
+    "leader_weight": 1,
+    "leader_score": 14,
+    "leader_size": 14,
+    "region_count": 14,
+    "region_weight": 1,
+    "region_score": 14,
+    "region_size": 14,
+    "start_ts": "2018-11-26T18:59:05+08:00",
+    "last_heartbeat_ts": "2018-11-26T19:38:41.335120555+08:00",
+    "uptime": "39m36.335120555s"
+  }
+}
 >> store delete 1               // 下线 store id 为 1 的 store
-  ......
+Success!
 >> store label 1 zone cn        // 设置 store id 为 1 的 store 的键为 "zone" 的 label 的值为 "cn"
 >> store weight 1 5 10          // 设置 store id 为 1 的 store 的 leader weight 为 5，Region weight 为 10
 ```
@@ -640,7 +723,7 @@ Encoding 格式示例：
 
 ```bash
 >> tso 395181938313123110        // 解析 TSO
-system:  2017-10-09 05:50:59 +0800 CST
+system:  2017-10-09 05:50:59.507 +0800 CST
 logic:  120102
 ```
 
