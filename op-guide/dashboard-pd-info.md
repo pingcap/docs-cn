@@ -26,9 +26,9 @@ category: monitoring
     - Abnormal Stores：处于异常状态的节点数目，正常情况应当为 0
     - Current Storage Usage：TiDB 集群存储空间的使用率
     - Current Peer Count：当前集群 peer 的总量
-    - Metadata Information：记录集群 ID,时间戳和生成的 ID
+    - Metadata Information：记录集群 ID，时间戳和生成的 ID
     - Region Label Isolation Level：不同 label 所在的 level 的 Region 数量
-    - Region Health：每个 Region 的状态，通常情况下，pending 的 peer 应该少于 100， miss 的 peer 不能一直大于 0
+    - Region Health：每个 Region 的状态，通常情况下，pending 的 peer 应该少于 100，miss 的 peer 不能一直大于 0
 - Balance
     - Store capacity：每个 TiKV 实例的总的空间大小
     - Store available：每个 TiKV 实例的可用空间大小
