@@ -413,3 +413,31 @@ DELETE 语句示例：```DELETE FROM t WHERE _tidb_rowid = 1;```
 CREATE TABLE 语句示例：`CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;`
 
 ALTER TABLE 语句示例：`ALTER TABLE t SHARD_ROW_ID_BITS = 4;`
+
+## tidb_slow_log_threshold
+
+作用域：SESSION
+
+默认值：300
+
+输出慢日志的耗时阈值。当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。默认为 300ms。
+
+示例：
+
+```sql
+set tidb_slow_log_threshold = 200
+```
+
+## tidb_query_log_max_len
+
+作用域：SESSION
+
+默认值：2048 (bytes)
+
+最长的 SQL 输出长度。当语句的长度大于 query-log-max-len，将会被截断输出。
+
+示例：
+
+```sql
+set tidb_query_log_max_len = 20
+```
