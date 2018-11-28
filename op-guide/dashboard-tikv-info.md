@@ -97,9 +97,9 @@ category: monitoring
     - Scheduler keys read：batch_get 命令读取 key 的个数
     - Scheduler keys written：batch_get 命令写入 key 的个数
     - Scheduler scan details：执行 batch_get 命令时，扫描每个 CF 中 key 的详细情况
-    - Scheduelr scan details：执行 batch_get 命令时，扫描每个 lock CF 中 key 的详细情况
-    - Scheduelr scan details [write]：执行 batch_get 命令时，扫描每个 write CF 中 key 的详细情况
-    - Scheduelr scan details [default]：执行 batch_get 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler scan details：执行 batch_get 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduler scan details [write]：执行 batch_get 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduler scan details [default]：执行 batch_get 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - cleanup
     - Scheduler stage total：cleanup 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - Scheduler command duration：执行 cleanup 命令所需花费的时间，正常情况下，应该小于 1s
@@ -107,9 +107,9 @@ category: monitoring
     - Scheduler keys read：cleanup 命令读取 key 的个数
     - Scheduler keys written：cleanup 命令写入 key 的个数
     - Scheduler scan details：执行 cleanup 命令时，扫描每个 CF 中 key 的详细情况
-    - Scheduelr scan details [lock]：执行 cleanup 命令时，扫描每个 lock CF 中 key 的详细情况
-    - Scheduelr scan details [write]：执行 cleanup 命令时，扫描每个 write CF 中 key 的详细情况
-    - Scheduelr scan details [default]：执行 cleanup 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler scan details [lock]：执行 cleanup 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduler scan details [write]：执行 cleanup 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduler scan details [default]：执行 cleanup 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - commit
     - Scheduler stage total：commit 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - Scheduler command duration：执行 commit 命令所需花费的时间，正常情况下，应该小于 1s
@@ -117,9 +117,9 @@ category: monitoring
     - Scheduler keys read：commit 命令读取 key 的个数
     - Scheduler keys written：commit 命令写入 key 的个数
     - Scheduler scan details：执行 commit 命令时，扫描每个 CF 中 key 的详细情况
-    - Scheduelr scan details [lock]：执行 commit 命令时，扫描每个 lock CF 中 key 的详细情况
-    - Scheduelr scan details [write]：执行 commit 命令时，扫描每个 write CF 中 key 的详细情况
-    - Scheduelr scan details [default]：执行 commit 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler scan details [lock]：执行 commit 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduler scan details [write]：执行 commit 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduler scan details [default]：执行 commit 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - gc
     - Scheduler stage total：gc 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - Scheduler command duration：执行 gc 命令所需花费的时间，正常情况下，应该小于 1s
@@ -127,9 +127,9 @@ category: monitoring
     - Scheduler keys read：gc 命令读取 key 的个数
     - Scheduler keys written：gc 命令写入 key 的个数
     - Scheduler scan details：执行 gc 命令时，扫描每个 CF 中 key 的详细情况
-    - Scheduelr scan details [lock]：执行 gc 命令时，扫描每个 lock CF 中 key 的详细情况
-    - Scheduelr scan details [write]：执行 gc 命令时，扫描每个 write CF 中 key 的详细情况
-    - Scheduelr scan details [default]：执行 gc 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler scan details [lock]：执行 gc 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduler scan details [write]：执行 gc 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduler scan details [default]：执行 gc 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - get
     - Scheduler stage total：get 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - Scheduler command duration：执行 get 命令所需花费的时间，正常情况下，应该小于 1s
@@ -137,9 +137,9 @@ category: monitoring
     - Scheduler keys read：get 命令读取 key 的个数
     - Scheduler keys written：get 命令写入 key 的个数
     - Scheduler scan details：执行 get 命令时，扫描每个 CF 中 key 的详细情况
-    - Scheduelr scan details [lock]：执行 get 命令时，扫描每个 lock CF 中 key 的详细情况
-    - Scheduelr scan details [write]：执行 get 命令时，扫描每个 write CF 中 key 的详细情况
-    - Scheduelr scan details [default]：执行 get 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler scan details [lock]：执行 get 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduler scan details [write]：执行 get 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduler scan details [default]：执行 get 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - key_mvcc
     - Scheduler stage total：key_mvcc 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - Scheduler command duration：执行 key_mvcc 命令所需花费的时间，正常情况下，应该小于 1s
@@ -147,9 +147,9 @@ category: monitoring
     - Scheduler keys read：key_mvcc 命令读取 key 的个数
     - Scheduler keys written：key_mvcc 命令写入 key 的个数
     - Scheduler scan details：执行 key_mvcc 命令时，扫描每个 CF 中 key 的详细情况
-    - Scheduelr scan details [lock]：执行 key_mvcc 命令时，扫描每个 lock CF 中 key 的详细情况
-    - Scheduelr scan details [write]：执行 key_mvcc 命令时，扫描每个 write CF 中 key 的详细情况
-    - Scheduelr scan details [default]：执行 key_mvcc 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler scan details [lock]：执行 key_mvcc 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduler scan details [write]：执行 key_mvcc 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduler scan details [default]：执行 key_mvcc 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - prewrite
     - Scheduler stage total：prewrite 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - Scheduler command duration：执行 prewrite 命令所需花费的时间，正常情况下，应该小于 1s
@@ -157,9 +157,9 @@ category: monitoring
     - Scheduler keys read：prewrite 命令读取 key 的个数
     - Scheduler keys written：prewrite 命令写入 key 的个数
     - Scheduler scan details：执行 prewrite 命令时，扫描每个 CF 中 key 的详细情况
-    - Scheduelr scan details [lock]：执行 prewrite 命令时，扫描每个 lock CF 中 key 的详细情况
-    - Scheduelr scan details [write]：执行 prewrite 命令时，扫描每个 write CF 中 key 的详细情况
-    - Scheduelr scan details [default]：执行 prewrite 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler scan details [lock]：执行 prewrite 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduler scan details [write]：执行 prewrite 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduler scan details [default]：执行 prewrite 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - resolve_lock
     - Scheduler stage total：resolve_lock 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - Scheduler command duration：执行 resolve_lock 命令所需花费的时间，正常情况下，应该小于 1s
@@ -167,9 +167,9 @@ category: monitoring
     - Scheduler keys read：resolve_lock 命令读取 key 的个数
     - Scheduler keys written：resolve_lock 命令写入 key 的个数
     - Scheduler scan details：执行 resolve_lock 命令时，扫描每个 CF 中 key 的详细情况
-    - Scheduelr scan details [lock]：执行 resolve_lock 命令时，扫描每个 lock CF 中 key 的详细情况
-    - Scheduelr scan details [write]：执行 resolve_lock 命令时，扫描每个 write CF 中 key 的详细情况
-    - Scheduelr scan details [default]：执行 resolve_lock 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler scan details [lock]：执行 resolve_lock 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduler scan details [write]：执行 resolve_lock 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduler scan details [default]：执行 resolve_lock 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - scan
     - Scheduler stage total：scan 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - Scheduler command duration：执行 scan 命令所需花费的时间，正常情况下，应该小于 1s
@@ -177,9 +177,9 @@ category: monitoring
     - Scheduler keys read：scan 命令读取 key 的个数
     - Scheduler keys written：scan 命令写入 key 的个数
     - Scheduler scan details：执行 scan 命令时，扫描每个 CF 中 key 的详细情况
-    - Scheduelr scan details [lock]：执行 scan 命令时，扫描每个 lock CF 中 key 的详细情况
-    - Scheduelr scan details [write]：执行 scan 命令时，扫描每个 write CF 中 key 的详细情况
-    - Scheduelr scan details [default]：执行 scan 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler scan details [lock]：执行 scan 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduler scan details [write]：执行 scan 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduler scan details [default]：执行 scan 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - scan_lock
     - Scheduler stage total：scan_lock 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - Scheduler command duration：执行 scan_lock 命令所需花费的时间，正常情况下，应该小于 1s
@@ -187,9 +187,9 @@ category: monitoring
     - Scheduler keys read：scan_lock 命令读取 key 的个数
     - Scheduler keys written：scan_lock 命令写入 key 的个数
     - Scheduler scan details：执行 scan_lock 命令时，扫描每个 CF 中 key 的详细情况
-    - Scheduelr scan details [lock]：执行 scan_lock 命令时，扫描每个 lock CF 中 key 的详细情况
-    - Scheduelr scan details [write]：执行 scan_lock 命令时，扫描每个 write CF 中 key 的详细情况
-    - Scheduelr scan details [default]：执行 scan_lock 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler scan details [lock]：执行 scan_lock 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduler scan details [write]：执行 scan_lock 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduler scan details [default]：执行 scan_lock 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - start_ts_mvcc
     - Scheduler stage total：start_ts_mvcc 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - Scheduler command duration：执行 start_ts_mvcc 命令所需花费的时间，正常情况下，应该小于 1s
@@ -197,9 +197,9 @@ category: monitoring
     - Scheduler keys read：start_ts_mvcc 命令读取 key 的个数
     - Scheduler keys written：start_ts_mvcc 命令写入 key 的个数
     - Scheduler scan details：执行 start_ts_mvcc 命令时，扫描每个 CF 中 key 的详细情况
-    - Scheduelr scan details [lock]：执行 start_ts_mvcc 命令时，扫描每个 lock CF 中 key 的详细情况
-    - Scheduelr scan details [write]：执行 start_ts_mvcc 命令时，扫描每个 write CF 中 key 的详细情况
-    - Scheduelr scan details [default]：执行 start_ts_mvcc 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler scan details [lock]：执行 start_ts_mvcc 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduler scan details [write]：执行 start_ts_mvcc 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduler scan details [default]：执行 start_ts_mvcc 命令时，扫描每个 default CF 中 key 的详细情况
 - Scheduler - unsafe_destroy_range
     - Scheduler stage total：unsafe_destroy_range 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
     - Scheduler command duration：执行 unsafe_destroy_range 命令所需花费的时间，正常情况下，应该小于 1s
@@ -207,9 +207,9 @@ category: monitoring
     - Scheduler keys read：unsafe_destroy_range 命令读取 key 的个数
     - Scheduler keys written：unsafe_destroy_range 命令写入 key 的个数
     - Scheduler scan details：执行 unsafe_destroy_range 命令时，扫描每个 CF 中 key 的详细情况
-    - Scheduelr scan details [lock]：执行 unsafe_destroy_range 命令时，扫描每个 lock CF 中 key 的详细情况
-    - Scheduelr scan details [write]：执行 unsafe_destroy_range 命令时，扫描每个 write CF 中 key 的详细情况
-    - Scheduelr scan details [default]：执行 unsafe_destroy_range 命令时，扫描每个 default CF 中 key 的详细情况
+    - Scheduler scan details [lock]：执行 unsafe_destroy_range 命令时，扫描每个 lock CF 中 key 的详细情况
+    - Scheduler scan details [write]：执行 unsafe_destroy_range 命令时，扫描每个 write CF 中 key 的详细情况
+    - Scheduler scan details [default]：执行 unsafe_destroy_range 命令时，扫描每个 default CF 中 key 的详细情况
 - Coprocessor
     - Request duration：处理 coprocessor 读请求所花费的时间
     - Wait duration：coprocessor 请求的等待时间，99.99% 的情况下，应该小于 10s
