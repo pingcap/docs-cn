@@ -421,7 +421,7 @@ Drainer="192.168.0.13"
         # 向 PD 查询在线 Pump 的时间间隔 (默认 10，单位 秒)
         detect-interval = 10
 
-       # Drainer 数据存储位置路径 (默认 "data.drainer")
+        # Drainer 数据存储位置路径 (默认 "data.drainer")
         data-dir = "data.drainer"
 
         # PD 集群节点的地址
