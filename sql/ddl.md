@@ -7,7 +7,7 @@ category: user guide
 
 DDL（Data Definition Language）用于定义和管理数据库以及数据库中各种对象的语句。
 
-目前 TiDB 实现了 add index 操作和 general 操作（除了 add index 以外的 DDL 操作）在表间的并行。即在不同表之间，add index 操作和 general 操作可以并行执行。也可以认为目前有两个 worker 分别处理 add index 操作和 general 操作，当处理的请求是同一个表内的操作时，按接受到 DDL 请求的先后顺序来执行。这是功能为了初步且稳定地解决 add index 操作（当前 TiDB 中只有 add index 操作的执行时间会比较久）可能阻塞其他 DDL 操作的问题。
+目前 TiDB 实现了 add index 操作和 general 操作（除了 add index 以外的 DDL 操作）在表间的并行。即在不同表之间，add index 操作和 general 操作可以并行执行。也可以认为目前有两个 worker 分别处理 add index 操作和 general 操作，当处理的请求是同一个表内的操作时，按接受到 DDL 请求的先后顺序来执行。该功能是为了初步且稳定地解决 add index 操作（当前 TiDB 中只有 add index 操作的执行时间会比较久）可能阻塞其他 DDL 操作的问题。
 
 ## CREATE DATABASE 语法
 
