@@ -6,7 +6,7 @@ category: operations
 
 # Key Metrics
 
-If you use Ansible to deploy the TiDB cluster, the monitoring system is deployed at the same time. For more information, see [Overview of the Monitoring Framework](../op-guide/monitor-overview.md).
+If you use Ansible to deploy the TiDB cluster, the monitoring system is deployed at the same time. For more information, see [TiDB Monitoring Framework Overview](../op-guide/monitor-overview.md).
 
 The Grafana dashboard is divided into a series of sub dashboards which include Overview, PD, TiDB, TiKV, Node\_exporter, Disk Performance, and so on. A lot of metrics are there to help you diagnose.
 
@@ -24,7 +24,7 @@ PD | Storage Capacity | the total storage capacity of the TiDB cluster |
 PD | Current Storage Size | the occupied storage capacity of the TiDB cluster |
 PD | Number of Regions | the total number of Regions of the current cluster |
 PD | Leader Balance Ratio | the leader ratio difference of the nodes with the biggest leader ratio and the smallest leader ratio | It is less than 5% for a balanced situation and becomes bigger when you restart a node.
-PD | Region Balance Ratio | the region ratio difference of the nodes with the biggest Region ratio and the smallest Region ratio | It is less than 5% for a balanced situation and becomes bigger when you add or remove a node.
+PD | Region Balance Ratio | the Region ratio difference of the nodes with the biggest Region ratio and the smallest Region ratio | It is less than 5% for a balanced situation and becomes bigger when you add or remove a node.
 PD | Store Status -- Up Stores | the number of TiKV nodes that are up |
 PD | Store Status -- Disconnect Stores | the number of TiKV nodes that encounter abnormal communication within a short time |
 PD | Store Status -- LowSpace Stores | the number of TiKV nodes with an available space of less than 80% |

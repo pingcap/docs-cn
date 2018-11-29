@@ -1,10 +1,10 @@
 ---
-title: Overview of the TiDB Monitoring Framework
+title: TiDB Monitoring Framework Overview
 summary: Use Prometheus and Grafana to build the TiDB monitoring framework.
 category: operations
 ---
 
-# Overview of the Monitoring Framework
+# TiDB Monitoring Framework Overview
 
 The TiDB monitoring framework adopts two open source projects: Prometheus and Grafana. TiDB uses Prometheus to store the monitoring and performance metrics and Grafana to visualize these metrics. 
 
@@ -24,6 +24,7 @@ The diagram is as follows:
 <img src="../media/prometheus-in-tidb.png" width="500">
 
 ## About Grafana in TiDB
+
 Grafana is an open source project for analyzing and visualizing metrics. TiDB uses Grafana to display the performance metrics as follows:
 
 ![screenshot](../media/grafana-screenshot.png)

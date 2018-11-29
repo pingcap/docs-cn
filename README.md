@@ -94,8 +94,12 @@
     - [Enable TLS Authentication](op-guide/security.md)
     - [Generate Self-signed Certificates](op-guide/generate-self-signed-certificates.md)
   + Monitor
-    - [Overview of the Monitoring Framework](op-guide/monitor-overview.md)
-    - [Key Metrics](op-guide/dashboard-overview-info.md)
+    - [Monitoring Framework Overview](op-guide/monitor-overview.md)
+    + Key Monitoring Metrics
+      - [Overview](op-guide/dashboard-overview-info.md)
+      - [TiDB](op-guide/tidb-dashboard-info.md)
+      - [PD](op-guide/dashboard-pd-info.md)
+      - [TiKV](op-guide/dashboard-tikv-info.md)
     - [Monitor a TiDB Cluster](op-guide/monitor.md)
   + Scale
     - [Scale a TiDB Cluster](op-guide/horizontal-scale.md)
