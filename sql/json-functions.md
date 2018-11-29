@@ -41,6 +41,7 @@ TiDB supports most of the JSON functions that shipped with the GA release of MyS
 
 | Function Name and Syntactic Sugar | Description |
 | --------------------------------- | ----------- |
+| [JSON_DEPTH(json_doc)][json_depth] | Returns the maximum depth of a JSON document |
 | [JSON_LENGTH(json_doc[, path])][json_length] | Returns the length of a JSON document, or, if a path argument is given, the length of the value within the path |
 | [JSON_TYPE(json_val)][json_type] | Returns a string indicating the type of a JSON value |
 
@@ -50,7 +51,6 @@ The following JSON functions are unsupported in TiDB. You can track the progress
 
 * `JSON_APPEND` and its alias `JSON_ARRAY_APPEND`
 * `JSON_ARRAY_INSERT`
-* `JSON_DEPTH`
 * `JSON_MERGE_PATCH`
 * `JSON_MERGE_PRESERVE`, use the alias `JSON_MERGE` instead
 * `JSON_PRETTY`
@@ -80,3 +80,4 @@ The following JSON functions are unsupported in TiDB. You can track the progress
 [json_contains]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-contains
 [json_contains_path]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-contains-path
 [json_arrayagg]: https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_json-arrayagg
+[json_depth]: https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-depth
