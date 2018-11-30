@@ -40,6 +40,7 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。MySQL 5.7 发布
 
 | 函数及语法糖 | 功能描述 |
 | --------------------------------- | ----------- |
+| [JSON_DEPTH(json_doc)][json_depth] | 返回 JSON 文档的最大深度 |
 | [JSON_LENGTH(json_doc[, path])][json_length] | 返回 JSON 文档的长度；如果路径参数已定，则返回该路径下值的长度 |
 | [JSON_TYPE(json_val)][json_type] | 检查某 JSON 文档内部内容的类型 |
 
@@ -79,3 +80,4 @@ TiDB 暂未支持以下 JSON 函数。相关进展参见 [TiDB #7546](https://gi
 [json_contains]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-contains
 [json_contains_path]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-contains-path
 [json_arrayagg]: https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_json-arrayagg
+[json_depth]: https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-depth
