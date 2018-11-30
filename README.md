@@ -94,7 +94,11 @@
     - [生成自签名证书](op-guide/generate-self-signed-certificates.md)
   + 监控集群
     - [整体监控框架概述](op-guide/monitor-overview.md)
-    - [重要监控指标详解](op-guide/dashboard-overview-info.md)
+    + 重要监控指标详解
+      - [Overview](op-guide/dashboard-overview-info.md)
+      - [TiDB](op-guide/tidb-dashboard-info.md)
+      - [PD](op-guide/dashboard-pd-info.md)
+      - [TiKV](op-guide/dashboard-tikv-info.md)
     - [组件状态 API & 监控](op-guide/monitor.md)
   + 扩容缩容
     - [集群扩容缩容方案](op-guide/horizontal-scale.md)
