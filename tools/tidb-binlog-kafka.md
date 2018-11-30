@@ -88,7 +88,7 @@ cd tidb-binlog-kafka-linux-amd64
 
 * Drainer 输出为 pb，要在配置文件中设置如下参数：
 
-    ```
+    ```toml
     [syncer]
     db-type = "pb"
     disable-dispatch = true
@@ -99,7 +99,7 @@ cd tidb-binlog-kafka-linux-amd64
 
 * Drainer 输出为 kafka，要在配置文件中设置如下参数：
 
-    ```
+    ```toml
     [syncer]
     db-type = "kafka"
 
@@ -138,7 +138,7 @@ cd tidb-binlog-kafka-linux-amd64
 
 配置样例:
 
-```
+```ini
 # binlog trigger
 enable_binlog = True
 # ZooKeeper address of Kafka cluster, example:
@@ -154,7 +154,7 @@ zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
 
 假设我们有三个 PD，三个 ZooKeeper，一个 TiDB，各个节点信息如下：
 
-```
+```ini
 TiDB="192.168.0.10"
 PD1="192.168.0.16"
 PD2="192.168.0.15"
