@@ -167,6 +167,15 @@ Create Table: CREATE TABLE `t1` (
 
 从架构上讲，TiDB 确实支持类似 MySQL 的存储引擎抽象，在启动 TiDB（通常是 `tikv`）时 [`--store`](../sql/server-command-option.md#--store) 选项指定的引擎中创建用户表。
 
+### SQL 模式
+
+TiDB 支持 MySQL 5.7 中 **绝大多数的 SQL 模式**，以下几种模式除外：
+
+- TiDB 暂不支持 `ALLOW_INVALID_DATES` 模式。详情参见 [TiDB #8263](https://github.com/pingcap/tidb/issues/8263)。
+- TiDB 不支持兼容模式（例如 `ORACLE` 和 `POSTGRESQL`）。MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
+- TiDB 中的 `ONLY_FULL_GROUP_BY` 与 MySQL 5.7 相比有细微的 [语义差别](../sql/aggregate-group-by-functions.md#与-mysql-的区别)，此问题日后将予以解决。
+- `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` 这两种 SQL 模式用于解决兼容问题，但并不适用于 TiDB。
+
 ### EXPLAIN
 
 TiDB 的 `EXPLAIN` 命令返回的查询执行计划的输出与 MySQL 不同。更多内容参见 [理解 TiDB 执行计划](../sql/understanding-the-query-execution-plan.md)。
