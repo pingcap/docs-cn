@@ -1,9 +1,9 @@
 ---
-title: 重要监控指标详解
+title: Overview 重要监控指标详解
 category: monitoring
 ---
 
-# 重要监控指标详解
+# Overview 重要监控指标详解
 
 使用 Ansible 部署 TiDB 集群时，一键部署监控系统 (Prometheus/Grafana)，监控架构请看 [TiDB 监控框架概述](../op-guide/monitor-overview.md)。
 
