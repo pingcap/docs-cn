@@ -376,3 +376,62 @@ $ ansible-playbook stop.yml
 ```
 
 This operation stops all the components in the entire DM cluster in order, which include DM-master, DM-worker, and the monitoring components.
+
+## Common deployment issues
+
+### Service default ports
+
+| Component | Port variable | Default port | Description |
+| :-- | :-- | :-- | :-- |
+| DM-master | `dm_master_port` | 11080  | DM-master service communication port |
+| DM-master | `dm_master_status_port` | 11081  | DM-master status port |
+| DM-worker | `dm_worker_port` | 10081  | DM-worker service communication port |
+| DM-worker | `dm_worker_status_port` | 10082  | DM-worker status port |
+| Prometheus | `prometheus_port` | 9090 | Prometheus service communication port |
+| Grafana | `grafana_port` |  3000 | The port for the external service of web monitoring service and client (browser) access |
+| Alertmanager | `alertmanager_port` |  9093 | Alertmanager service communication port |
+
+### Customize ports
+
+Go to the `inventory.ini` file and add related host variable of the corresponding service port after the service IP:
+
+```
+dm_master ansible_host=172.16.10.71 dm_master_port=12080 dm_master_status_port=12081
+```
+
+### Update DM-Ansible
+
+1. Log in to the Control Machine using the `tidb` account, enter the `/home/tidb` directory, and back up the `dm-ansible` folder.
+
+    ```
+    $ cd /home/tidb
+    $ mv dm-ansible dm-ansible-bak
+    ```
+
+2. Download the latest DM-Ansible and extract it.
+
+    ```
+    $ cd /home/tidb
+    $ wget http://download.pingcap.org/dm-ansible.tar.gz
+    $ tar -xzvf dm-ansible.tar.gz
+    ```
+
+3. Migrate the `inventory.ini` configuration file.
+
+    ```
+    $ cd /home/tidb
+    $ cp dm-ansible-bak/inventory.ini dm-ansible/inventory.ini
+    ```
+
+4. Migrate the `dmctl` configuration.
+
+    ```
+    $ cd /home/tidb/dm-ansible-bak/dmctl
+    $ cp * /home/tidb/dm-ansible/dmctl/
+    ```
+
+5. Use Playbook to download the latest DM binary file, which substitutes for the binary file in the  `/home/tidb/dm-ansible/resource/bin/` directory automatically.
+
+    ```
+    $ ansible-playbook local_prepare.yml
+    ```
