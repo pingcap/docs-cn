@@ -122,10 +122,10 @@ INSERT INTO tbl_name (a,c) VALUES(1,2),(4,5),(7,8);
 通过赋值列表指定插入的数据，例如：
 
 ```sql
-INSERT INTO tbl_name a=1, b=2, c=3;
+INSERT INTO tbl_name SET a=1, b=2, c=3;
 ```
 
-这种方式每次只能插入一行数据，每列的值通过赋值列表制定。
+这种方式每次只能插入一行数据，每列的值通过赋值列表指定。
 
 * Select Statement
 
