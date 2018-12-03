@@ -13,7 +13,7 @@ For description of configuration items, see [Data Migration Task Configuration O
 
 ## Important concepts
 
-For description of important concepts including `instance-id` and the DM-worker ID, see [Description of important concepts](../tools/dm-configuration-file-overview.md#description-of-important-concepts). 
+For description of important concepts including `instance-id` and the DM-worker ID, see [Important concepts](../tools/dm-configuration-file-overview.md#important-concepts). 
 
 ## Global configuration
 
@@ -101,8 +101,8 @@ syncers:                                            # Configuration arguments of
 
 References:
 
-- For details of `user-filter-1`, see [Filter rules of binlog events](../tools/dm-task-config-argument-description.md#filter-rules-of-binlog-events).
-- For details of `instance`, see [Black white list rule](../tools/dm-task-config-argument-description.md#black-white-list-rule).
+- For details of `user-filter-1`, see [Filtering rules of binlog events](../tools/dm-task-config-argument-description.md#filtering-rules-of-binlog-events).
+- For details of `instance`, see [Black and white lists filtering rule](../tools/dm-task-config-argument-description.md#black-and-white-lists-filtering-rule).
 - For details of `instance-1` of `column-mappings`, see [Column mapping rule](../tools/dm-task-config-argument-description.md#column-mapping-rule).
 
 ## Instance configuration
