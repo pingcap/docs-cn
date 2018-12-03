@@ -9,7 +9,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 
 ## 源码编译
 
-1. [Go](https://golang.org/) Version 1.9 以上
+1. [Go](https://golang.org/) Version 1.11 以上
 2. 在 PD 项目根目录使用 `make` 命令进行编译，生成 `bin/pd-recover`
 
 ## 使用方法
