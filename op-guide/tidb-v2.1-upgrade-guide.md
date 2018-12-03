@@ -7,6 +7,10 @@ category: deployment
 
 本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 rc 版本升级到 TiDB 2.1 GA 版本。2.1 版本 TiDB-Binlog 不兼容 Kafka 版本，如果当前集群已经使用 Kafka 版本的 TiDB-Binlog，升级需要参考 [Binlog 升级方法](../tools/tidb-binlog-cluster.md#版本升级方法)。
 
+## 注意事项
+
+在升级的过程中请不要执行DDL请求，比如 `add index` 操作，否则可能会出现问题。
+
 ## 在中控机器上安装 Ansible 及其依赖
 
 TiDB-Ansible release-2.1 版本依赖 2.4.2 及以上但不高于 2.7.0 的 Ansible 版本（`ansible>=2.4.2,<2.7.0`），另依赖 Python 模块：`jinja2>=2.9.6` 和 `jmespath>=0.9.0`。为方便管理依赖，新版本使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](../op-guide/ansible-deployment.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](../op-guide/offline-ansible-deployment.md#在中控机器上离线安装-ansible-及其依赖)。
