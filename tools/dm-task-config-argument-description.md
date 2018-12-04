@@ -52,7 +52,7 @@ Taking the above code block as an example:
 ## Black and white lists filtering rule
 
 ```
-instance:						
+instance:  	
     do-dbs: ["~^test.*", "do"]         # Starts with "~", indicating it is a regular expression
     ignore-dbs: ["mysql", "ignored"]
     do-tables:

@@ -67,11 +67,11 @@ When you encounter the following error, you need to manually handle it using dmc
 
 ```sql
 encountered incompatible DDL in TiDB: %s
-	please confirm your DDL statement is correct and needed.
-	for TiDB compatible DDL, please see the docs:
-	  English version: https://github.com/pingcap/docs/blob/master/sql/ddl.md
-	  Chinese version: https://github.com/pingcap/docs-cn/blob/master/sql/ddl.md
-	if the DDL is not needed, you can use dm-ctl to skip it, otherwise u also can use dm-ctl to replace it.
+    please confirm your DDL statement is correct and needed.
+    for TiDB compatible DDL, please see the docs:
+      English version: https://github.com/pingcap/docs/blob/master/sql/ddl.md
+      Chinese version: https://github.com/pingcap/docs-cn/blob/master/sql/ddl.md
+    if the DDL is not needed, you can use dm-ctl to skip it, otherwise u also can use dm-ctl to replace it.
 ```
 
 > **Note:** Currently, TiDB is not compatible with all the DDL statements that MySQL supports. See [the DDL statements supported by TiDB](../sql/ddl.md).
