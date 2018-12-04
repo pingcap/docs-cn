@@ -215,7 +215,7 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
 
         ```toml
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "pb", "tidb", "flash", and "kafka".
+        # Valid values are "mysql", "pb", "kafka", "flash", and "tidb".
         db-type = "mysql"
 
         # the downstream MySQL protocol database
@@ -241,7 +241,7 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
 
         ```toml
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "pb", "tidb", "flash", and "kafka".
+        # Valid values are "mysql", "pb", "kafka", "flash", and "tidb".
         db-type = "pb"
 
         # Uncomment this if you want to use `pb` or `sql` as `db-type`.
@@ -390,7 +390,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
             the directory where the Drainer data is stored ("data.drainer" by default)
         -dest-db-type string
             the downstream service type of Drainer
-            The value can be "tidb", "kafka", "pb", and "mysql" ("mysql" by default).
+            The value can be "mysql", "kafka", "pb", "flash", and "tidb". ("mysql" by default)
         -detect-interval int
             the interval of checking the online Pump in PD (10 by default, in seconds)
         -disable-detect
@@ -461,7 +461,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         disable-dispatch = false
  
         # the downstream service type of Drainer ("mysql" by default)
-        # Valid value: "mysql", "pb"
+        # Valid value: "mysql", "kafka", "pb", "flash", "tidb"
         db-type = "mysql"
  
         # `replicate-do-db` has priority over `replicate-do-table`. When they have the same `db` name,
