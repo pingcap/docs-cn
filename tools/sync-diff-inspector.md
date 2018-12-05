@@ -38,9 +38,6 @@ check-thread-count = 4
 # 抽样检查的比例，如果设置为 100 则检查全部数据
 sample-percent = 100
 
-# 是否使用 TiDB 的隐藏列“_tidb_rowid”进行对比，当对比的表没有主键／唯一键且对比的两个数据库都为 TiDB 时可以开启该配置
-use-rowid = false
-
 # 通过计算 chunk 的 checksum 来对比数据，如果不开启则逐行对比数据
 use-checksum = true
 
