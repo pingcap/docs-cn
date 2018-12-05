@@ -133,6 +133,7 @@
       - [Sharding DDL Usage Restrictions](tools/dm-sharding-solution.md#sharding-ddl-usage-restrictions)
       - [Troubleshoot Sharding DDL Locks](tools/troubleshooting-sharding-ddl-locks.md)
     - [Monitor](tools/dm-monitor.md)
+    - [Common Operations](tools/common-operations-of-dm-ansible.md)
     - [Troubleshoot](tools/data-migration-troubleshooting.md)
   + TiDB-Lightning
     - [Overview](tools/lightning/overview-architecture.md)
