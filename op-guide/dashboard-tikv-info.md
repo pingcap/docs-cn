@@ -16,7 +16,7 @@ You can get an overview of the component TiKV status from the TiKV dashboard, wh
 
 To understand the key metrics displayed on the Overview dashboard, check the following table:
 
-Row name | Panel name | Description | Normal range
+Service | Panel name | Description | Normal range
 ---------------- | ---------------- | ---------------------------------- | --------------
 Cluster | Store size | The storage size of each TiKV instance |
 Cluster | Available size | The available capacity size of each TiKV instance |
@@ -310,6 +310,62 @@ PD | PD request duration (average) | The time consumed by requests that TiKV sen
 PD | PD heartbeats | The total number of PD heartbeat messages |
 PD | PD validate peers | The total number of peers validated by the PD worker |
 
-## Interface of the TiKV dashboard
+## TiKV dashboard interface
 
-![TiKV Dashboard](../media/tikv_dashboard.png)
+This section shows images of the service panels on the TiKV dashboard.
+
+### Cluster
+
+![TiKV Dashboard - Cluster metrics](../media/tikv-dashboard-cluster.png)
+
+### Errors
+
+![TiKV Dashboard - Errors metrics](../media/tikv-dashboard-errors.png)
+
+### Server
+
+![TiKV Dashboard - Server metrics](../media/tikv-dashboard-server.png)
+
+### Raft IO
+
+![TiKV Dashboard - Raft IO metrics](../media/tikv-dashboard-raftio.png)
+
+### Raft process
+
+![TiKV Dashboard - Raft process metrics](../media/tikv-dashboard-raft-process.png)
+
+### Raft message
+
+![TiKV Dashboard - Raft message metrics](../media/tikv-dashboard-raft-message.png)
+
+### Raft propose
+
+![TiKV Dashboard - Raft propose metrics](../media/tikv-dashboard-raft-propose.png)
+
+### Raft admin
+
+![TiKV Dashboard - Raft admin metrics](../media/tikv-dashboard-raft-admin.png)
+
+### Local reader
+
+![TiKV Dashboard - Local reader metrics](../media/tikv-dashboard-local-reader.png)
+
+### Storage
+
+![TiKV Dashboard - Storage metrics](../media/tikv-dashboard-storage.png)
+
+### Scheduler
+
+![TiKV Dashboard - Scheduler metrics](../media/tikv-dashboard-scheduler.png)
+
+## Scheduler - batch_get
+
+![TiKV Dashboard - Scheduler - batch_get metrics](../media/tikv-dashboard-scheduler-batch-get.png)
+
+### Scheduler - cleanup
+
+![TiKV Dashboard - Scheduler - cleanup metrics](../media/tikv-dashboard-scheduler-cleanup.png)
+
+### Scheduler - commit
+
+![TiKV Dashboard - Scheduler commit metrics](../media/tikv-dashboard-scheduler-commit.png)

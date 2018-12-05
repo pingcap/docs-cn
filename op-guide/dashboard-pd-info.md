@@ -16,7 +16,7 @@ You can get an overview of the component PD status from the PD dashboard, where 
 
 To understand the key metrics displayed on the Overview dashboard, check the following table:
 
-Row name | Panel name | Description | Normal range
+Service | Panel name | Description | Normal range
 ---------------- | ---------------- | ---------------------------------- | --------------
 Cluster | PD role | It indicates whether the current PD is the leader or a follower. |
 Cluster | Storage capacity | The total capacity size of the cluster |
@@ -88,6 +88,40 @@ Heartbeat | Region heartbeat report active | The count of the heartbeats with th
 Heartbeat | Region schedule push | The count of the corresponding schedule commands which PD sends to each TiKV instance |
 Heartbeat | 99% Region heartbeat latency | The heartbeat latency of each TiKV instance in `.99` |
 
-## Interface of the PD dashboard
+## PD dashboard interface
 
-![PD Dashboard](../media/pd_dashboard.png)
+### Cluster
+
+![PD Dashboard - Cluster metrics](../media/pd-dashboard-cluster.png)
+
+### Balance
+
+![PD Dashboard - Balance metrics](../media/pd-dashboard-balance.png)
+
+### HotRegion
+
+![PD Dashboard - HotRegion metrics](../media/pd-dashboard-hot-region.png)
+
+### Scheduler
+
+![PD Dashboard - Scheduler metrics](../media/pd-dashboard-scheduler.png)
+
+### Operator
+
+![PD Dashboard - Operator metrics](../media/pd-dashboard-operator.png)
+
+### gRPC
+
+![PD Dashboard - gRPC metrics](../media/pd-dashboard-grpc.png)
+
+### etcd
+
+![PD Dashboard - etcd metrics](../media/pd-dashboard-etcd.png)
+
+### TiDB
+
+![PD Dashboard - TiDB metrics](../media/pd-dashboard-tidb.png)
+
+### Heartbeat
+
+![PD Dashboard - Heartbeat metrics](../media/pd-dashboard-heartbeat.png)
