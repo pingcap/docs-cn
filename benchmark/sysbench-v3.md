@@ -7,7 +7,7 @@ category: benchmark
 
 ## Test purpose
 
-This test aims to compare the performances of TiDB 2.1 and TiDB 2.0 in the OLTP scenario.
+This test aims to compare the performance of TiDB 2.1 and TiDB 2.0 for OLTP where the working set fits in memory.
 
 ## Test version, time, and place
 
