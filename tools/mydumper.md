@@ -16,8 +16,6 @@ category: tools
 
 + Uses `tidb_snapshot` to provide backup consistency instead of `FLUSH TABLES WITH READ LOCK`
 
-+ Includes the hidden `_tidb_rowid` column in `INSERT` statements when present
-
 + Allows `tidb_snapshot` to be [configurable](../op-guide/history-read.md#how-tidb-reads-data-from-history-versions) (i.e. backup data as it appeared at an earlier point in time)
 
 ### New parameter description

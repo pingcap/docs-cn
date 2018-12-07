@@ -319,18 +319,7 @@ SELECT /*+ TIDB_HJ(t1, t2) */ * from t1, t2 where t1.id = t2.id
 
 This variable is used to remind the optimizer to use the `Hash Join` algorithm. This algorithm executes threads concurrently. It runs faster but takes up more memory.
 
-## _tidb_rowid
-
-This is a hidden column of TiDB, which represents the column name of the implicit ROW ID. It only exists on the tables with non-integer PK or without PK. You can execute the `SELECT`, `INSERT`, `UPDATE` and `DELETE` statements on this column, and the usage of these statements are as follows:
-
-- `SELECT`: `SELECT *, _tidb_rowid from t;`
-- `INSERT`: `INSERT t (c, _tidb_rowid) VALUES (1, 1);`
-- `UPDATE`: `UPDATE t SET c = c + 1 WHERE _tidb_rowid = 1;`
-- `DELETE`: `DELETE FROM t WHERE _tidb_rowid = 1;`
-
 ## SHARD_ROW_ID_BITS
-
-You can use this TABLE OPTION to set the bit digit of the number of implicit `_tidb_rowid` shards.
 
 For the tables with non-integer PK or without PK, TiDB uses an implicit auto-increment ROW ID. When a large number of `INSERT` operations occur, the data is written into a single Region, causing a write hot spot.
 

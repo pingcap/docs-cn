@@ -36,11 +36,6 @@ check-thread-count = 4
 # The proportion of sampling check. If you set it to 100, all the data is checked.
 sample-percent = 100
 
-# Whether to compare data using the implicit column "_tidb_rowid".
-# You can enable it when the compared tables have no primary or unique key,
-# and the two compared databases are both TiDB.
-use-rowid = false
-
 # If enabled, the chunk's checksum is calculated and data is compared by checksum.
 # If disabled, data is compared line by line.
 use-checksum = true
