@@ -101,15 +101,15 @@ admin show slow top [internal | all] N
 `recent N` 会显示最近的 N 条慢查询记录，例如：
 
 ```sql
-admin show recent 10
+admin show slow recent 10
 ```
 
 `top N` 则显示最近一段时间（大约几天）内，最慢的查询记录。如果指定 `internal` 选项，则返回查询系统内部 SQL 的慢查询记录；如果指定 `all` 选项，返回系统内部和用户 SQL 汇总以后的慢查询记录；默认只返回用户 SQL 中的慢查询记录。
 
 ```sql
-admin show top 3
-admin show top internal 3
-admin show top all 5
+admin show slow top 3
+admin show slow top internal 3
+admin show slow top all 5
 ```
 
 由于内存限制，保留的慢查询记录的条数是有限的。当命令查询的 `N` 大于记录条数时，返回的结果记录条数会小于 `N`。
