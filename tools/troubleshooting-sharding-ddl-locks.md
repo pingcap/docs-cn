@@ -6,7 +6,7 @@ category: tools
 
 # Troubleshooting Sharding DDL Locks
 
-The Data Migration tool uses a sharding DDL lock to ensure operations are applied in the correct order. This locking mechanism occurs automatically, but in some abnormal conditions you may need to perform manual operations such as force-releasing the lock.
+The Data Migration tool uses a sharding DDL lock to ensure operations are applied in the correct order. This locking mechanism works automatically, but in some abnormal conditions you might need to perform manual operations such as force-releasing the lock.
 
 This document shows how to troubleshoot sharding DDL locks in different abnormal conditions.
 
