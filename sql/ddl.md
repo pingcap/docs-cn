@@ -8,6 +8,8 @@ category: user guide
 
 DDL (Data Definition Language) is used to define the database structure or schema, and to manage the database and statements of various objects in the database.
 
+Currently, TiDB has implemented concurrent execution of the `ADD INDEX` operation and the `GENERAL` operation (namely the non-`ADD INDEX` DDL operation) across different tables. In this case, two workers process the `ADD INDEX` operation and a `GENERAL` operation respectively. When the operation requests are on the same table, workers execute these operations in the order of receiving the DDL operation requests. This feature is to guarantee the `ADD INDEX` operation (its execution time is longer than that of other operations in TiDB) does not block other DDL operations.
+
 ## CREATE DATABASE syntax
 
 ```sql
