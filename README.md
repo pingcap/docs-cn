@@ -135,6 +135,7 @@
     - [Monitor](tools/dm-monitor.md)
     - [Manage the Task](tools/data-migration-manage-task.md)
     - [Cluster Operations](tools/data-migration-cluster-operations.md)
+    - [Upgrade Loader or Syncer to DM](tools/upgrade-loader-or-syncer-to-dm.md)
     - [Troubleshoot](tools/data-migration-troubleshooting.md)
   + TiDB-Lightning
     - [Overview](tools/lightning/overview-architecture.md)
