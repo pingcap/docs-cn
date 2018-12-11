@@ -291,9 +291,9 @@ Assuming that the `172.16.10.71` machine needs to be maintained or this machine 
 
     > **Note:** If the `172.16.10.71` machine breaks down and you cannot log in via SSH, ignore this step.  
 
-        ```
-        $ ansible-playbook stop.yml --tags=dm-master
-        ```
+    ```
+    $ ansible-playbook stop.yml --tags=dm-master
+    ```
 
 3. Edit the `inventory.ini` file, comment or delete the line where the DM-master instance that you want to replace exists, and add the information of the new DM-master instance.
  
@@ -349,7 +349,7 @@ Assuming that the `172.16.10.72` machine needs to be maintained or this machine 
     
 2. Stop the DM-worker instance that you need to replace.
 
-    > **Note:** If the `172.16.10.72` machine breaks down and you cannot log in via SSH, ignore this step. 
+    > **Note:** If the `172.16.10.72` machine breaks down and you cannot log in via SSH, ignore this step.
 
     ```
     $ ansible-playbook stop.yml --tags=dm-worker -l dm_worker1
