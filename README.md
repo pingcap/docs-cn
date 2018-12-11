@@ -133,6 +133,7 @@
       - [Sharding DDL Usage Restrictions](tools/dm-sharding-solution.md#sharding-ddl-usage-restrictions)
       - [Troubleshoot Sharding DDL Locks](tools/troubleshooting-sharding-ddl-locks.md)
     - [Monitor](tools/dm-monitor.md)
+    - [Manage the Task](tools/data-migration-manage-task.md)
     - [Cluster Operations](tools/data-migration-cluster-operations.md)
     - [Troubleshoot](tools/data-migration-troubleshooting.md)
   + TiDB-Lightning

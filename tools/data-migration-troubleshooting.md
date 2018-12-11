@@ -28,38 +28,7 @@ However, you need to reset the data synchronization task in some cases. For deta
 
 For database related passwords in all the DM configuration files, use the passwords encrypted by `dmctl`. If a database password is empty, it is unnecessary to encrypt it. For how to encrypt the plaintext password, see [Encrypt the upstream MySQL user password using dmctl](../tools/data-migration-deployment.md#encrypt-the-upstream-mysql-user-password-using-dmctl).
 
-In addition, the user of the upstream and downstream databases must have the corresponding read and write privileges. Data Migration also checks the following privileges automatically while starting the data synchronization task:
-
-+ MySQL binlog configuration
-
-    - Whether the binlog is enabled (DM requires that the binlog must be enabled)
-    - Whether `binlog_format=ROW` (DM only supports the binlog synchronization in the ROW format
-    - Whether `binlog_row_image=FULL` (DM only supports `binlog_row_image=FULL`)
-
-+ The privileges of the upstream MySQL instance user
-
-    The MySQL user in DM configuration needs to have the following privileges at least:
-    
-    - REPLICATION SLAVE
-    - REPLICATION CLIENT
-    - RELOAD
-    - SELECT
-
-+ The compatibility of the upstream MySQL table schema
-
-    TiDB differs from MySQL in compatibility in the following aspects:
-
-    - Does not support the foreign key
-    - [Character set compatibility differs](../sql/character-set-support.md)
-
-+ The consistency check on the upstream MySQL multiple-instance shards
-
-    - The consistency of the table schema
-
-        - Column name, type
-        - Index
-        
-    - Whether the auto increment primary key that conflicts during merging exists
+In addition, the user of the upstream and downstream databases must have the corresponding read and write privileges. Data Migration also [checks the corresponding privileges automatically](../tools/data-migration-manage-task.md#check-the-upstream-mysql-instance-configuration) while starting the data synchronization task.
 
 ### Incompatible DDL statements
 
