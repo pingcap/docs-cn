@@ -840,7 +840,8 @@ Count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 #### 5.1.3 查看当前 DDL 的进度？
 
 通过 `admin show ddl` 查看当前 job 进度。操作如下：
-```
+
+```sql
 tidb> admin show ddl\G;
 *************************** 1. row ***************************
   SCHEMA_VER: 140
@@ -848,6 +849,7 @@ tidb> admin show ddl\G;
 RUNNING_JOBS: ID:121, Type:add index, State:running, SchemaState:write reorganization, SchemaID:1, TableID:118, RowCount:77312, ArgLen:0, start time: 2018-12-05 16:26:10.652 +0800 CST, Err:<nil>, ErrCount:0, SnapshotVersion:404749908941733890
      SELF_ID: 1a1c4174-0fcd-4ba0-add9-12d08c4077dc
 ```
+
 从上面操作结果可知，当前正在处理的是 `add index` 操作。且从 `RUNNING_JOBS` 列的 `RowCount` 字段可以知道当前 `add index` 操作已经添加了 77312 行索引。
 
 #### 5.1.4 如何查看 DDL job？
