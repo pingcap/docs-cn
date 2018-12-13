@@ -67,7 +67,7 @@ This is a list of TiDB adopters in various industries.
 |[SEA group](https://sea-group.org/?lang=en)|Gaming||
 |[Sogou](https://en.wikipedia.org/wiki/Sogou)|MediaTech||
 |[Chunyu Yisheng](https://www.crunchbase.com/organization/chunyu)|HealthTech||
-|[Meituan-Dianping](https://en.wikipedia.org/wiki/Meituan-Dianping)|Food Delivery|[Chinese](https://pingcap.com/cases-cn/user-case-meituan/)|
+|[Meituan-Dianping](https://en.wikipedia.org/wiki/Meituan-Dianping)|Food Delivery|[English](https://www.pingcap.com/success-stories/tidb-in-meituan-dianping/); [Chinese](https://pingcap.com/cases-cn/user-case-meituan/)|
 |[Qutoutiao](https://www.crunchbase.com/organization/qutoutiao)|Social Network||
 |[QuantGroup](https://www.crunchbase.com/organization/quantgroup)|FinTech||
 |[FINUP](https://www.crunchbase.com/organization/finup)|FinTech||
