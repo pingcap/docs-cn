@@ -913,9 +913,20 @@ Recommendations:
 3. Test the `count` in the case of large amount of data.
 4. Optimize the TiKV configuration. See [Performance Tuning for TiKV](op-guide/tune-tikv.md).
 
-#### How to view the progress of adding an index?
+#### How to view the progress of the current DDL job?
 
-Use `admin show ddl` to view the current job of adding an index.
+You can use `admin show ddl` to view the progress of the current DDL job. The operation is as follows:
+
+```sql
+tidb> admin show ddl\G;
+*************************** 1. row ***************************
+  SCHEMA_VER: 140
+       OWNER: 1a1c4174-0fcd-4ba0-add9-12d08c4077dc
+RUNNING_JOBS: ID:121, Type:add index, State:running, SchemaState:write reorganization, SchemaID:1, TableID:118, RowCount:77312, ArgLen:0, start time: 2018-12-05 16:26:10.652 +0800 CST, Err:<nil>, ErrCount:0, SnapshotVersion:404749908941733890
+     SELF_ID: 1a1c4174-0fcd-4ba0-add9-12d08c4077dc
+```
+
+From the above results, you can get that the `add index` operation is being processed currently. You can also get from the `RowCount` field of the `RUNNING_JOBS` column that now the `add index` operation has added 77312 rows of indexes.
 
 #### How to view the DDL job?
 
