@@ -98,50 +98,49 @@ You can use the following ways to specify the data set:
 
 - Value List
 
-  Place the values to be inserted in a Value List.
+    Place the values to be inserted in a Value List.
 
-  ```sql
-  CREATE TABLE tbl_name (
-     a int,
-     b int,
-     c int
-  );
-  INSERT INTO tbl_name VALUES(1,2,3),(4,5,6),(7,8,9);
-  ```
-     
-  In the example above, `(1,2,3),(4,5,6),(7,8,9)` are the Value Lists enclosed within parentheses and separated by commas. Each Values List means a row of data, in this example, 3 rows are inserted. You can also specify the `ColumnName List` to insert rows to some of the columns. 
-  and contains exactly as many values as are to be inserted per row.  
+    ```sql
+    CREATE TABLE tbl_name (
+        a int,
+        b int,
+        c int
+    );
+    INSERT INTO tbl_name VALUES(1,2,3),(4,5,6),(7,8,9);
+    ```
 
-  ```sql
-  INSERT INTO tbl_name (a,c) VALUES(1,2),(4,5),(7,8);
-  ```
+    In the example above, `(1,2,3),(4,5,6),(7,8,9)` are the Value Lists enclosed within parentheses and separated by commas. Each Values List means a row of data. In this example, 3 rows are inserted. You can also specify the `ColumnName List` to insert rows only to some columns.  
+
+    ```sql
+    INSERT INTO tbl_name (a,c) VALUES(1,2),(4,5),(7,8);
+    ```
   
-  In the example above, only the `a` and `c` columns are listed, the the `b` of each row will be set to `Null`.
+    In the example above, only the `a` and `c` columns are listed, the the `b` of each row will be set to `Null`.
 
 - Assignment List
 
-  Insert the values by using Assignment Statements, for example:
+    Insert the values by using Assignment Statements, for example:
 
-  ```sql
-  INSERT INTO tbl_name a=1, b=2, c=3;
-  ```
+    ```sql
+    INSERT INTO tbl_name SET a=1, b=2, c=3;
+    ```
 
-  In this way, only one row of data can be inserted at a time, and the value of each column needs the assignment statement.
+    In this way, you can insert only one row of data each time, and the value of each column is specified using the assignment list.
 
 - Select Statement
 
-  The data set to be inserted is obtained using a `SELECT` statement. The column to be inserted into is obtained from the Schema in the `SELECT` statement.
+    The data set to be inserted is obtained using a `SELECT` statement. The column to be inserted into is obtained from the Schema in the `SELECT` statement.
 
-  ```sql
-  CREATE TABLE tbl_name1 (
-     a int,
-     b int,
-     c int
-  );
-  INSERT INTO tbl_name SELECT * from tbl_name1;
-  ```
+    ```sql
+    CREATE TABLE tbl_name1 (
+        a int,
+        b int,
+        c int
+    );
+    INSERT INTO tbl_name SELECT * from tbl_name1;
+    ```
 
-  In the example above, the data is selected from `tal_name1`, and then inserted into `tbl_name`.
+    In the example above, the data is selected from `tal_name1`, and then inserted into `tbl_name`.
 
 ## DELETE
 
