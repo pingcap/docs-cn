@@ -36,8 +36,8 @@ Taking the configuration options in [Data Migration Task Configuration File](../
 | `route-rules` | `route-rules` |
 | `pattern-schema` | `schema-pattern` |
 | `pattern-table` | `table-pattern` |
-| `do-db` |	`do-dbs` of `black-white-list`. The filtering feature of databases has been refactored. For detailed configuration, see `do-dbs` in [Data Migration Task Configuration File](../tools/dm-task-configuration-file-intro.md). |  
-| `do-table` | `do-tables` of `black-white-list`. The filtering feature of tables has been refactored. For detailed configuration, see `do-tables` in [Data Migration Task Configuration File](../tools/dm-task-configuration-file-intro.md). |  
+| `do-db` | `do-dbs` of `black-white-list`. The filtering feature of databases has been refactored. For detailed configuration, see `do-dbs` in [Data Migration Task Configuration File](../tools/dm-task-configuration-file-intro.md). |
+| `do-table` | `do-tables` of `black-white-list`. The filtering feature of tables has been refactored. For detailed configuration, see `do-tables` in [Data Migration Task Configuration File](../tools/dm-task-configuration-file-intro.md). |
 | `ignore-db` | `ignore-dbs` of `black-white-list`. The filtering feature of databases has been refactored. For detailed configuration, see `ignore-dbs` in [Data Migration Task Configuration File](../tools/dm-task-configuration-file-intro.md). |
 | `ignore-table` | `ignore-tables` of `black-white-list`. The filtering feature of tables has been refactored. For detailed configuration, see `ignore-tables` in [Data Migration Task Configuration File](../tools/dm-task-configuration-file-intro.md). |
 | `rm-checkpoint` | Deprecated. A configuration option with a similar feature is `remove-meta`. |
@@ -78,14 +78,14 @@ Taking the configuration options in [Data Migration Task Configuration File](../
 | `flavor` | Transferred to `dm-worker.toml` |
 | `enable-gtid` | Transferred to `dm-worker.toml` |
 | `auto-fix-gtid` | Transferred to `dm-worker.toml` |
-| `meta` | `meta` of `mysql-instances`. `binlog-name`/`binlog-pos` of `meta` in Syncer corresponds to that of `mysql-instances`. | 
+| `meta` | `meta` of `mysql-instances`. `binlog-name`/`binlog-pos` of `meta` in Syncer corresponds to that of `mysql-instances`. |
 | `persistent-dir` | Deprecated |
-| `worker-count` | `worker-count` of `syncer` | 
-| `batch` | `batch` of `syncer` | 
-| `max-retry` | `max-retry` of `syncer` |  
+| `worker-count` | `worker-count` of `syncer` |
+| `batch` | `batch` of `syncer` |
+| `max-retry` | `max-retry` of `syncer` |
 | `do-db` | `do-dbs` of `black-white-list`. The filtering feature of databases has been refactored. For detailed configuration, see `do-dbs` in [Data Migration Task Configuration File](../tools/dm-task-configuration-file-intro.md). |
 | `do-table` | `do-tables` of `black-white-list`. The filtering feature of tables has been refactored. For detailed configuration, see `do-tables` in [Data Migration Task Configuration File](../tools/dm-task-configuration-file-intro.md). |
-| `ignore-db` | `ingore-dbs` of `black-white-list`. The filtering feature of databases has been refactored. For detailed configuration, see `ignore-dbs` in [Data Migration Task Configuration File](../tools/dm-task-configuration-file-intro.md). | 
+| `ignore-db` | `ingore-dbs` of `black-white-list`. The filtering feature of databases has been refactored. For detailed configuration, see `ignore-dbs` in [Data Migration Task Configuration File](../tools/dm-task-configuration-file-intro.md). |
 | `ignore-table` | `ignore-tables` of `black-white-list`. The filtering feature of tables has been refactored. For detailed configuration, see `ignore-tables` in [Data Migration Task Configuration File](../tools/dm-task-configuration-file-intro.md). |
 | `skip-ddls` | Deprecated. Use `filters`. |
 | `skip-sqls` | Deprecated. Use `filters`. |
@@ -96,8 +96,8 @@ Taking the configuration options in [Data Migration Task Configuration File](../
 | `pattern-table` | `table-pattern` |
 | `from` | `config` of `mysql-instances`. Keep it consistent with the upstream MySQL information during the DM-worker deployment. |
 | `to` | `target-database` |
-| `disable-detect` | `disable-detect` of `syncer` | 
-| `safe-mode` | `safe-mode` of `syncer` | 
+| `disable-detect` | `disable-detect` of `syncer` |
+| `safe-mode` | `safe-mode` of `syncer` |
 | `stop-on-ddl` | Deprecated |
 | `execute-ddl-timeout` | Deprecated |
 | `execute-dml-timeout` | Deprecated |
