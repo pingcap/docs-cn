@@ -59,8 +59,10 @@ schema = "test"
 tables = ["test1", "test2", "test3"]
 
 # 支持使用正则表达式配置检查的表，需要以‘~’开始，
-# 例如：下面的配置会检查所有表名以‘test’为前缀的表
-# tables = ["~test*"]
+# 下面的配置会检查所有表名以‘test’为前缀的表
+# tables = ["~^test.*"]
+# 下面的配置会检查配置库中所有的表
+# tables = ["~^"]
 
 # 对部分表进行特殊的配置，配置的表必须包含在 check-tables 中
 [[table-config]]
@@ -212,3 +214,7 @@ password = ""
 ``` bash
 ./bin/sync_diff_inspector --config=./config.toml
 ```
+该命令最终会在日志中输出一个检查报告，说明每个表的检查情况。如果数据存在不一致的情况，会将修复的 SQL 语句保存到 fix.sql 文件中。
+
+### 注意
+TiDB 使用的 collation 为 utf8_bin，如果对 MySQL 和 TiDB 的数据进行对比，需要注意 MySQL 中表的 collation 设置。如果表的主键／唯一键为 varchar 类型，且 MySQL 中 collation 设置与 TiDB 不同，可能会因为排序问题导致最终校验结果不正确，需要在 sync-diff-inspector 的配置文件中增加 collation 设置。

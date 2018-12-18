@@ -55,6 +55,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 * 在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取 savepoint，然后导入全量备份，最后启动 Drainer 从 savepoint 开始同步增量数据。
 * Drainer 支持将 Binlog 同步到 MySQL、TiDB、Kafka 或者本地文件。如果需要将 Binlog 同步到其他类型的目的地中，可以设置 Drainer 将 Binlog 同步到 Kafka，再读取 Kafka 中的数据进行自定义处理，参考 [binlog slave client 用户文档](../tools/binlog-slave-client.md)。
 * 如果 TiDB-Binlog 用于增量恢复，可以设置下游为 `pb` 将 binlog 同步到本地文件中，再使用 [Reparo](../tools/reparo.md) 恢复增量数据。
+* 如果下游设置为 `tidb`，将使用 TiDB 的隐藏列 `_tidb_rowid` 同步数据。
 * Pump/Drainer 的状态需要区分已暂停（paused）和下线（offline），Ctrl + C 或者 kill 进程，Pump 和 Drainer 的状态都将变为 paused。暂停状态的 Pump 不需要将已保存的 Binlog 数据全部发送到 Drainer；如果需要较长时间退出 Pump（或不再使用该 Pump），需要使用 binlogctl 工具来下线 Pump。Drainer 同理。
 * 如果下游为 MySQL/TiDB，数据同步后可以使用 [sync-diff-inspector](../tools/sync-diff-inspector.md) 进行数据校验。
 
@@ -219,7 +220,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
         # size-limit = "100000"
         ```
 
-    - 以下游为 pb 为例
+    - 以下游为 proto buffer（pb）格式的本地文件为例
 
         ```bash
         $ cd /home/tidb/tidb-ansible/conf
@@ -573,8 +574,9 @@ Usage of binlogctl:
     ```bash
     bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pumps/drainers
 
-    2018/06/21 11:24:10 nodes.go:53: [info] pump: &{NodeID:ip-192-168-199-118:8250 Host:127.0.0.1:8250 IsAlive:true IsOffline:false LatestFilePos:{Suffix:0 Offset:15320} LatestKafkaPos:{Suffix:0 Offset:382} OfflineTS:0}
+    2018/12/18 03:17:09 nodes.go:46: [info] pump: &{NodeID:1.1.1.1:8250 Addr:pump:8250 State:online IsAlive:false Score:0 Label:<nil> MaxCommitTS:405039487358599169 UpdateTS:405027205608112129}
     ```
+    注意：IsAlive，Score 以及 Label 字段目前没有使用，不需要关注这几个值。
 
 - 修改 Pump/Drainer 的状态
   
@@ -615,7 +617,7 @@ Usage of binlogctl:
 
 ## 版本升级方法
 
-Cluster 版本的 TiDB-Binlog 不兼容 Kafka 版本以及 Local 版本，TiDB 如果升级到新版（v2.0.8-binlog、v2.1.0-rc.5 及以上版本）后只能使用 Cluster 版本的 TiDB-Binlog；如果在升级前已经使用了 Kafka／Local 版本的 TiDB-Binlog，必须将其升级到 Cluster 版本。
+新版本的 TiDB（v2.0.8-binlog、v2.1.0-rc.5 及以上版本）不兼容 TiDB-Binlog 的 Kafka 版本以及 Local 版本，TiDB 如果升级到新版后只能使用 Cluster 版本的 TiDB-Binlog；如果在升级前已经使用了 Kafka／Local 版本的 TiDB-Binlog，必须将其升级到 Cluster 版本。
 
 升级流程：
 
