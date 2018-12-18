@@ -186,6 +186,7 @@ TiDB 支持 MySQL 所有的字符串类型，包括 CHAR、VARCHAR、BINARY、VA
 ### 类型定义
 
 语法：
+
 ```sql
 [NATIONAL] CHAR[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
 > 定长字符串。CHAR 列的长度固定为创建表时声明的长度。长度可以为从 0 到 255 的任何值。当保存 CHAR 值时，在它们的右边填充空格以达到指定的长度。
@@ -238,6 +239,7 @@ Json 类型可以存储 Json 这种半结构化的数据，相比于直接将 Js
 2. 多了 Json 合法性验证的步骤，只有合法的 Json 文档才可以放入这个字段中；
 
 Json 字段本身上，并不能创建索引。相反，可以对 Json 文档中的某个子字段创建索引。例如：
+
 ```sql
 CREATE TABLE city (
     id INT PRIMARY KEY,
@@ -251,6 +253,7 @@ SELECT id FROM city WHERE population >= 100;
 ## 枚举类型
 
 集合类型是一个字符串，其值必须是从一个固定集合中选取，这个固定集合在创建表的时候定义，语法是：
+
 ```sql
 ENUM('value1','value2',...) [CHARACTER SET charset_name] [COLLATE collation_name]
 
@@ -282,6 +285,7 @@ SET('1', '2') NOT NULL
 ```
 
 上面的例子中，这列的有效值可以是：
+
 ```
 ''
 '1'

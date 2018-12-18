@@ -22,8 +22,7 @@ category: deployment
 
 + 用来指定 TiDB 底层使用的存储引擎
 + 默认: "mocktikv"
-+ 你可以选择 mocktikv" 或者 "tikv"。（mocktikv 是本地存储引擎，而 tikv 是一个分布式存储引擎）
-
++ 你可以选择 "mocktikv" 或者 "tikv"。（mocktikv 是本地存储引擎，而 tikv 是一个分布式存储引擎）
 
 ### `--path`
 

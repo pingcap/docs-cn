@@ -87,7 +87,6 @@ dot xx.dot -T png -O
 
 ![Explain Dot](../media/explain_dot.png)
 
-
 ## `USE` 语句
 
 ```sql

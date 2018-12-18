@@ -1,9 +1,9 @@
 ---
-title: TiDB Ansible 部署方案
+title: TiDB-Ansible 部署方案
 category: deployment
 ---
 
-# TiDB Ansible 部署方案
+# TiDB-Ansible 部署方案
 
 ## 概述
 
