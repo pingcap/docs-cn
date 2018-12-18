@@ -6,7 +6,7 @@ category: tool
 
 # TiDB-Binlog User Guide
 
-This document describes how to deploy the Kafka version of TiDB-Binlog. If you need to deploy the local version of TiDB-Binlog, see the [TiDB-Binlog user guide for the local version](../tools/tidb-binlog.md).
+This document describes how to deploy the Kafka version of TiDB-Binlog.
 
 ## About TiDB-Binlog
 
@@ -40,6 +40,12 @@ The Kafka cluster stores the binlog data written by Pump and provides the binlog
 > **Note:** In the local version of TiDB-Binlog, the binlog is stored in files, while in the latest version, the binlog is stored using Kafka.
 
 ## Install TiDB-Binlog
+
+The corresponding relationship between the `tidb-ansible` branch and the TiDB version is as follows:
+
+| tidb-ansible branch | TiDB version | Note |
+| ------------------- | ------------ | ---- |
+| release-2.0 | 2.0 version | The latest 2.0 stable version. You can use it in the production environment. |
 
 ### Download Binary for the CentOS 7.3+ platform
 
@@ -99,15 +105,15 @@ cd tidb-binlog-kafka-linux-amd64
     ```toml
     [syncer]
     db-type = "kafka"
-    
+
     # when db-type is kafka, you can uncomment this to config the down stream kafka, or it will be the same kafka addrs where drainer pulls binlog from.
     # [syncer.to]
     # kafka-addrs = "127.0.0.1:9092"
     # kafka-version = "0.8.2.0"
     ```
-    
+
     The data which outputs to kafka follows the binlog format sorted by ts and defined by protobuf. See [driver](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/driver) to access the data and sync to the down stream.
-    
+
 - Deploy Kafka and ZooKeeper cluster before deploying TiDB-Binlog. Make sure that Kafka is 0.9 version or later.
 
 #### Recommended Kafka cluster configuration

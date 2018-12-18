@@ -106,7 +106,8 @@
     - [Scale Using Ansible](op-guide/ansible-deployment-scale.md)
   + Upgrade
     - [Upgrade the Component Version](op-guide/ansible-deployment-rolling-update.md#upgrade-the-component-version)
-    - [TiDB 2.0 Upgrade Guide](op-guide/tidb-v2-upgrade-guide.md)
+    - [TiDB 2.0 Upgrade Guide](op-guide/tidb-v2.0-upgrade-guide.md)
+    - [TiDB 2.1 Upgrade Guide](op-guide/tidb-v2.1-upgrade-guide.md)
   - [Tune Performance](op-guide/tune-tikv.md)
   + Backup and Migrate
     - [Backup and Restore](op-guide/backup-restore.md)

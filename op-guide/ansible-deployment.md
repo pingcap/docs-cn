@@ -23,6 +23,7 @@ You can use the TiDB-Ansible configuration file to set up the cluster topology a
 - [Modify component configuration](../op-guide/ansible-deployment-rolling-update.md#modify-component-configuration)
 - [Scale the TiDB cluster](../op-guide/ansible-deployment-scale.md)
 - [Upgrade the component version](../op-guide/ansible-deployment-rolling-update.md#upgrade-the-component-version)
+- [Enable the cluster binlog](../tools/tidb-binlog-cluster.md)
 - [Clean up data of the TiDB cluster](../op-guide/ansible-operation.md#clean-up-cluster-data)
 - [Destroy the TiDB cluster](../op-guide/ansible-operation.md#destroy-a-cluster)
 
@@ -128,8 +129,8 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
 
     | tidb-ansible branch | TiDB version | Note |
     | ------------------- | ------------ | ---- |
-    | release-2.0 | 2.0 version | This is the latest stable version. You can use it in production. |
-    | release-2.1 | 2.1 version | The latest 2.1 RC version. It is not recommended to use it in the production environment. |
+    | release-2.0 | 2.0 version | The latest 2.0 stable version. You can use it in the production environment. |
+    | release-2.1 | 2.1 version | The latest 2.1 stable version. You can use it in the production environment (recommended). |
     | master | master version | This version includes the latest features with a daily update. |
 
 2. Download the corresponding TiDB-Ansible branch from the [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`.
