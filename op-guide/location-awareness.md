@@ -1,9 +1,9 @@
 ---
-title: 跨机房部署方案
+title: 集群拓扑信息配置
 category: deployment
 ---
 
-# 跨机房部署方案
+# 集群拓扑信息配置
 
 ## 概述
 

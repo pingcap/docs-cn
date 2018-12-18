@@ -85,13 +85,14 @@
     - [离线 Ansible 部署方案](op-guide/offline-ansible-deployment.md)
     - [Docker 部署方案](op-guide/docker-deployment.md)
     - [Docker Compose 部署方案](op-guide/docker-compose.md)
-    - [跨机房部署方案](op-guide/location-awareness.md)
+    - [跨数据中心部署方案](op-guide/cross-dc-deployment.md)
   + 配置集群
     - [参数解释](op-guide/configuration.md)
     - [TiDB 配置项解释](op-guide/tidb-config-file.md)
     - [使用 Ansible 变更组件配置](op-guide/ansible-deployment-rolling-update.md#变更组件配置)
     - [开启 TLS 验证](op-guide/security.md)
     - [生成自签名证书](op-guide/generate-self-signed-certificates.md)
+    - [集群拓扑结构配置](op-guide/location-awareness.md)
   + 监控集群
     - [整体监控框架概述](op-guide/monitor-overview.md)
     + 重要监控指标详解
