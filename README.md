@@ -157,6 +157,7 @@
 - [Frequently Asked Questions (FAQ)](FAQ.md)
 - [TiDB Best Practices](https://pingcap.com/blog/2017-07-24-tidbbestpractice/)
 + [Releases](releases/rn.md)
+  - [2.0.10](releases/2.0.10.md)
   - [2.1.1](releases/2.1.1.md)
   - [2.1 GA](releases/2.1ga.md)
   - [2.0.9](releases/209.md)
