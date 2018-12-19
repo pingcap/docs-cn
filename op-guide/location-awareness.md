@@ -1,10 +1,10 @@
 ---
-title: Cross-Region Deployment
-summary: Learn the cross-region deployment that maximizes the capacity for disaster recovery.
+title: Cluster Topology Configuration
+summary: Learn to configure cluster topology to maximize the capacity for disaster recovery.
 category: operations
 ---
 
-# Cross-Region Deployment
+# Cluster Topology Configuration
 
 ## Overview
 

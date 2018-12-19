@@ -85,7 +85,7 @@
     - [Offline Deployment Using Ansible](op-guide/offline-ansible-deployment.md)
     - [Docker Deployment](op-guide/docker-deployment.md)
     - [Docker Compose Deployment](op-guide/docker-compose.md)
-    - [Cross-Region Deployment](op-guide/location-awareness.md)
+    - [Cross-DC Deployment Solutions](op-guide/cross-dc-deployment.md)
     - [Kubernetes Deployment](op-guide/kubernetes.md)
   + Configure
     - [Configuration Flags](op-guide/configuration.md)
@@ -93,6 +93,7 @@
     - [Modify Component Configuration Using Ansible](op-guide/ansible-deployment-rolling-update.md#modify-component-configuration)
     - [Enable TLS Authentication](op-guide/security.md)
     - [Generate Self-signed Certificates](op-guide/generate-self-signed-certificates.md)
+    - [Cluster Topology Configuration](op-guide/location-awareness.md)
   + Monitor
     - [Monitoring Framework Overview](op-guide/monitor-overview.md)
     + Key Monitoring Metrics
