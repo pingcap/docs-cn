@@ -626,6 +626,7 @@ Usage of binlogctl:
 | Local | TiDB 1.0 及更低版本 ||
 | Kafka | TiDB 1.0 ~ TiDB 2.1 RC5 | TiDB 1.0 支持 local 版本和 Kafka 版本的 TiDB-Binlog。 |
 | Cluster | TiDB v2.0.8-binlog，TiDB 2.1 RC5 及更高版本 | TiDB v2.0.8-binlog 是一个支持 Cluster 版本 TiDB-Binlog 的 2.0 特殊版本。 |
+
 升级流程：
 
 * 如果能接受重新导全量数据，则可以直接废弃老版本，按本文档部署。
