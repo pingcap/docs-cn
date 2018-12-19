@@ -617,7 +617,7 @@ Usage of binlogctl:
 
 ## 版本升级方法
 
-新版本的 TiDB（v2.0.8-binlog、v2.1.0-rc.5 及以上版本）不兼容 Kafka 版本以及 Local 版本的 TiDB-Binlog，集群升级到新版本后只能使用 Cluster 版本的 TiDB-Binlog。如果在升级前已经使用了 Kafka／Local 版本的 TiDB-Binlog，必须将其升级到 Cluster 版本。
+新版本的 TiDB（v2.0.8-binlog、v2.1.0-rc.5 及以上版本）不兼容 [Kafka 版本](../tools/tidb-binlog-kafka.md)以及 [Local 版本](../tools/tidb-binlog.md)的 TiDB-Binlog，集群升级到新版本后只能使用 Cluster 版本的 TiDB-Binlog。如果在升级前已经使用了 Kafka／Local 版本的 TiDB-Binlog，必须将其升级到 Cluster 版本。
 
 升级流程：
 
