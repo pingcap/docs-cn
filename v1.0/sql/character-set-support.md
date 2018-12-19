@@ -6,9 +6,9 @@ category: user guide
 # 字符集支持
 
 名词解释，下面的阐述中会交错使用中文或者英文，请互相对照：
+
 * Character Set：字符集
 * Collation：排序规则
-
 
 目前 `TiDB` 支持以下字符集：
 
@@ -26,7 +26,7 @@ mysql> SHOW CHARACTER SET;
 5 rows in set (0.00 sec)
 ```
 
-**注意**：在 `TiDB` 中实际上 `utf8` 被当做成了 `utf8mb4` 来处理。
+> **注意**：在 `TiDB` 中实际上 `utf8` 被当做成了 `utf8mb4` 来处理。
 
 对于字符集来说，至少会有一个 Collation（排序规则）与之对应。而大部分字符集实际上会有多个 Collation。利用以下的语句可以查看：
 
