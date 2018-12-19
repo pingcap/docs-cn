@@ -10,6 +10,8 @@ category: tools
 
 This guide introduces the key features of sync-diff-inspector and describes how to configure and use this tool. You can download it at [sync-diff-inspector-linux-amd64.tar.gz](https://download.pingcap.org/sync-diff-inspector-linux-amd64.tar.gz).
 
+> **Notes:** TiDB uses the `utf8_bin` collation. If you need to compare the data in MySQL with that in TiDB, pay attention to the collation configuration of MySQL tables. If the primary key or unique key is the `varchar` type and the collation configuration in MySQL differs from that in TiDB, then the final check result might be incorrect because of the collation issue. You need to add collation to the sync-diff-inspector configuration file.
+
 ## Key features
 
 - Compare the table schema and data
@@ -61,7 +63,9 @@ tables = ["test1", "test2", "test3"]
 # Supports using regular expressions to configure tables to be checked
 # You need to start with '~'. For example, the following configuration checks
 # all the tables with the prefix 'test' in the table name.
-# tables = ["~test*"]
+# tables = ["~^test.*"]
+# The following configuration checks all the tables in the database.
+# tables = ["~^"]
 
 # Special configuration for some tables
 # The configured table must be included in "check-tables'.
@@ -222,3 +226,5 @@ Run the following command:
 ``` bash
 ./bin/sync_diff_inspector --config=./config.toml
 ```
+
+The above command outputs a check report to the log and describes the check result of each table. If data inconsistency exists, the SQL statements used to fix inconsistency are stored to the `fix.sql` file.
