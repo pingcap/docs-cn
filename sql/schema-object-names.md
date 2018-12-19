@@ -73,4 +73,5 @@ CREATE TABLE test.t (i int);
 ```
 `table_name.col_name`
 ```
+
 更多[细节](https://dev.mysql.com/doc/refman/5.7/en/identifier-qualifiers.html)

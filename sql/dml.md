@@ -152,6 +152,7 @@ Delete 语句用于删除数据库中的数据，TiDB 兼容 MySQL Delete 语句
 这种语法用于删除的数据只会涉及一个表的情况。
 
 ### 语法定义
+
 ```sql
 DELETE [LOW_PRIORITY] [QUICK] [IGNORE] FROM tbl_name
     [WHERE where_condition]

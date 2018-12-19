@@ -148,7 +148,7 @@ echo '{"CN":"client","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gen
 将会生成以下几个文件：
 
 ```bash
-client-key.pem     
-client.csr         
-client.pem      
+client-key.pem
+client.csr
+client.pem
 ```

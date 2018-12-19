@@ -102,7 +102,6 @@ SHOW STATS_META [like_or_where]
 SHOW STATS_HISTOGRAMS [like_or_where]
 SHOW STATS_BUCKETS [like_or_where]
 
-
 like_or_where:
     LIKE 'pattern'
   | WHERE expr
