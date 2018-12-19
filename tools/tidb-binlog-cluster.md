@@ -575,6 +575,7 @@ Usage of binlogctl:
 
     2018/12/18 03:17:09 nodes.go:46: [info] pump: &{NodeID:1.1.1.1:8250 Addr:pump:8250 State:online IsAlive:false Score:0 Label:<nil> MaxCommitTS:405039487358599169 UpdateTS:405027205608112129}
     ```
+
     注意：IsAlive，Score 以及 Label 字段目前没有使用，不需要关注这几个值。
 
 - 修改 Pump/Drainer 的状态
