@@ -73,6 +73,7 @@ Use `mydumper` to backup data from TiDB.
 ```bash
 ./bin/mydumper -h 127.0.0.1 -P 4000 -u root -t 16 -F 64 -B test -T t1,t2 --skip-tz-utc -o ./var/test
 ```
+
 In this command,
 
 - `-B test`: means the data is exported from the `test` database.

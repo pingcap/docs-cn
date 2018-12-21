@@ -84,6 +84,7 @@ group by id, floor(value/100);
 TiDB extends standard SQL to permit noncolumn expressions in `GROUP BY` clauses and considers the preceding statement valid.
 
 Standard SQL also does not permit aliases in `GROUP BY` clauses. TiDB extends standard SQL to permit aliases, so another way to write the query is as follows:
+
 ```sql
 select id, floor(value/100) as val
 from tbl_name
