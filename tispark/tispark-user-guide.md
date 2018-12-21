@@ -5,9 +5,9 @@ category: tispark
 
 # TiSpark 用户指南
 
-TiSpark 是 PingCAP 为解决用户复杂 OLAP 需求而推出的产品。它借助 Spark 平台，同时融合 TiKV 分布式集群的优势，和 TiDB 一起为用户一站式解决 HTAP (Hybrid Transactional/Analytical Processing) 的需求。TiSpark 依赖于 TiKV 集群和 Placement Driver (PD)，也需要你搭建一个 Spark 集群。
+TiSpark 是 PingCAP 为解决用户复杂 OLAP 需求而推出的产品。它借助 Spark 平台，同时融合 TiKV 分布式集群的优势，和 TiDB 一起为用户一站式解决 HTAP (Hybrid Transactional/Analytical Processing) 的需求。TiSpark 依赖于 TiKV 集群和 Placement Driver (PD)，也需要额外搭建一个 Spark 集群。
 
-本文简单介绍如何部署和使用 TiSpark。本文假设你对 Spark 有基本认知。你可以参阅 [Apache Spark 官网](https://spark.apache.org/docs/latest/index.html) 了解 Spark 的相关信息。
+本文简单介绍如何部署和使用 TiSpark。本文假设用户对 Spark 有基本认知。如需更深入了解 Spark，建议可以参阅 [Apache Spark 官网](https://spark.apache.org/docs/latest/index.html) 了解 Spark 的相关信息。
 
 ## 概述
 
@@ -68,7 +68,7 @@ TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
 Spark 推荐 32G 内存以上的配额。请在配置中预留 25% 的内存给操作系统。
 
-Spark 推荐每台计算节点配备 CPU 累计 8 到 16 核以上。你可以初始设定分配所有 CPU 核给 Spark。
+Spark 推荐每台计算节点配备 CPU 累计 8 到 16 核以上。用户可以初始设定分配所有 CPU 核给 Spark。
 
 Spark 的具体配置方式也请参考[官方说明](https://spark.apache.org/docs/latest/spark-standalone.html)。以下为根据 `spark-env.sh` 配置的范例：
 
@@ -108,11 +108,11 @@ ${SPARK_INSTALL_PATH}/jars
 
 #### 下载安装包并安装
 
-你可以在[这里](https://spark.apache.org/downloads.html)下载 Apache Spark。
+可以在[这里](https://spark.apache.org/downloads.html)下载 Apache Spark。
 
-对于 Standalone 模式且无需 Hadoop 支持，则选择 Spark 2.1.x 且带有 Hadoop 依赖的 Pre-build with Apache Hadoop 2.x 任意版本。如有需要配合使用的 Hadoop 集群，则选择对应的 Hadoop 版本号。你也可以选择从源代码[自行构建](https://spark.apache.org/docs/2.1.0/building-spark.html)以配合官方 Hadoop 2.6 之前的版本。注意目前 TiSpark 仅支持 Spark 2.1.x 版本。
+对于 Standalone 模式且无需 Hadoop 支持，则选择 Spark 2.1.x 且带有 Hadoop 依赖的 Pre-build with Apache Hadoop 2.x 任意版本。如有需要配合使用的 Hadoop 集群，则选择对应的 Hadoop 版本号。如有需要，也可以选择从源代码[自行构建](https://spark.apache.org/docs/2.1.0/building-spark.html)以配合官方 Hadoop 2.6 之前的版本。注意目前 TiSpark 仅支持 Spark 2.1.x 版本。
 
-如果你已经有了 Spark 二进制文件，并且当前 PATH 为 SPARKPATH，需将 TiSpark jar 包拷贝到 `${SPARKPATH}/jars` 目录下。
+如果用户已经有了 Spark 二进制文件，并且当前 PATH 为 SPARKPATH，需将 TiSpark jar 包拷贝到 `${SPARKPATH}/jars` 目录下。
 
 #### 启动 Master
 
@@ -123,7 +123,7 @@ cd $SPARKPATH
 ./sbin/start-master.sh
 ```
 
-在这步完成以后，屏幕上会打印出一个 log 文件。检查 log 文件确认 Spark-Master 是否启动成功。你可以打开 [http://spark-master-hostname:8080](http://whereever-the-ip-is:8080`c) 查看集群信息（如果你没有改动 Spark-Master 默认 Port Numebr）。在启动 Spark-Slave 的时候，也可以通过这个面板来确认 Slave 是否已经加入集群。
+在这步完成以后，屏幕上会打印出一个 log 文件。检查 log 文件确认 Spark-Master 是否启动成功。用户可以打开 [http://spark-master-hostname:8080](http://whereever-the-ip-is:8080`c) 查看集群信息（如果用户没有改动 Spark-Master 默认 Port Numebr）。在启动 Spark-Slave 的时候，也可以通过这个面板来确认 Slave 是否已经加入集群。
 
 #### 启动 Slave
 
@@ -131,13 +131,13 @@ cd $SPARKPATH
 
     ./sbin/start-slave.sh spark://spark-master-hostname:7077
 
-命令返回以后，即可通过刚才的面板查看这个 Slave 是否已经正确地加入了 Spark 集群。在所有 Slave 节点重复刚才的命令。确认所有的 Slave 都可以正确连接 Master，这样你就拥有了一个 Standalone 模式的 Spark 集群。
+命令返回以后，即可通过刚才的面板查看这个 Slave 是否已经正确地加入了 Spark 集群。在所有 Slave 节点重复刚才的命令。确认所有的 Slave 都可以正确连接 Master，这样就拥有了一个 Standalone 模式的 Spark 集群。
 
 ## 一个使用范例
 
-假设你已经按照上述步骤成功启动了 TiSpark 集群，下面简单介绍如何使用 Spark SQL 来做 OLAP 分析。这里我们用名为 tpch 数据库中的 lineitem 表作为范例。
+假设用户已经按照上述步骤成功启动了 TiSpark 集群，下面简单介绍如何使用 Spark SQL 来做 OLAP 分析。这里我们用名为 tpch 数据库中的 lineitem 表作为范例。
 
-假设你的 PD 节点位于 192.168.1.100，端口为 2379，在`$SPARK_HOME/conf/spark-defaults.conf`加入：
+假设用户的 PD 节点位于 192.168.1.100，端口为 2379，在`$SPARK_HOME/conf/spark-defaults.conf`加入：
 
 ```
 spark.tispark.pd.addresses 192.168.1.100:2379
@@ -153,7 +153,7 @@ val ti = new TiContext(spark)
 ti.tidbMapDatabase("tpch")
 ```
 
-之后你可以直接调用 Spark SQL:
+之后用户可以直接调用 Spark SQL:
 
 ```scala
 spark.sql("select count(*) from lineitem").show
