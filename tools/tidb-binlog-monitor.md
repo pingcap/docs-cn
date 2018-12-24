@@ -5,7 +5,7 @@ category: tools
 
 # TiDB-Binlog 监控指标及告警说明
 
-本文档介绍 grafana 中 TiDB-Binlog 的各项监控指标说明，以及报警规则说明。
+本文档介绍 Grafana 中 TiDB-Binlog 的各项监控指标说明，以及报警规则说明。
 
 ## 监控指标
 
@@ -13,11 +13,11 @@ category: tools
 
 #### Storage Size
 
-- 记录磁盘的总空间大小（capacity），以及可用磁盘空间大小（avaliable）。
+- 记录磁盘的总空间大小 (capacity)，以及可用磁盘空间大小 (available)。
 
 #### Metadata
 
-- 记录每个 Pump 的可删除 binlog 的最大 tso（gc_tso），以及保存的 binlog 的最大的 commit tso（max_commit_tso）。
+- 记录每个 Pump 的可删除 binlog 的最大 tso (gc_tso)，以及保存的 binlog 的最大的 commit tso (max_commit_tso)。
 
 #### Write Binlog QPS by Instance
 
@@ -37,7 +37,7 @@ category: tools
 
 #### Pump Storage Error By Type
 
-- Pump 遇到的 error 数量，是按照 error 的类型进行统计的。
+- Pump 遇到的 error 数量，按照 error 的类型进行统计。
 
 #### Query TiKV
 
