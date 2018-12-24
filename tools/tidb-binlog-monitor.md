@@ -29,11 +29,11 @@ category: tools
 
 #### Storage Write Binlog Size
 
-- Pump 写 Binlog 数据的大小。
+- Pump 写 binlog 数据的大小。
 
 #### Storage Write Binlog Latency
 
-- Pump 写 Binlog 数据的延迟。
+- Pump 中的 storage 模块写 binlog 数据的延迟。
 
 #### Pump Storage Error By Type
 
@@ -41,13 +41,13 @@ category: tools
 
 #### Query TiKV
 
-- Pump 到 TiKV 查询事务状态的次数。
+- Pump 通过 TiKV 查询事务状态的次数。
 
 ### Drainer
 
 #### Checkpoint TSO
 
-- Drainer 已经同步到下游的最大 binlog 的 TSO 对应的时间。可以通过该指标估算同步延迟时间。
+- Drainer 已经同步到下游的 binlog 的最大 TSO 对应的时间。可以通过该指标估算同步延迟时间。
 
 #### Pump Handle TSO
 
@@ -71,7 +71,7 @@ category: tools
 
 #### Execute Time
 
-- SQL 执行到下游／数据写到下游所消耗的时间。
+- 在下游执行 SQL／写数据所消耗的时间。
 
 #### 95% Binlog Size
 
