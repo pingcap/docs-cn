@@ -5,7 +5,7 @@ category: tools
 
 # TiDB-Binlog 监控指标及告警说明
 
-本文档介绍 grafana 中 TiDB-Binlog 的各项监控指标说明，以及报警规则说明。
+本文档介绍 Grafana 中 TiDB-Binlog 的各项监控指标说明，以及报警规则说明。
 
 ## 监控指标
 
