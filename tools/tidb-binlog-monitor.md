@@ -17,7 +17,7 @@ category: tools
 
 #### Metadata
 
-- 记录每个 Pump 的可删除 binlog 的最大 tso（gc_tso），以及保存的 binlog 的最大的 commit tso（max_commit_tso）。
+- 记录每个 Pump 的可删除 binlog 的最大 tso (gc_tso)，以及保存的 binlog 的最大的 commit tso (max_commit_tso)。
 
 #### Write Binlog QPS by Instance
 
