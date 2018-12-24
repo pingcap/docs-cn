@@ -37,7 +37,7 @@ category: tools
 
 #### Pump Storage Error By Type
 
-- Pump 遇到的 error 数量，是按照 error 的类型进行统计的。
+- Pump 遇到的 error 数量，按照 error 的类型进行统计。
 
 #### Query TiKV
 
