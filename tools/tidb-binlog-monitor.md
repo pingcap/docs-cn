@@ -13,7 +13,7 @@ category: tools
 
 #### Storage Size
 
-- 记录磁盘的总空间大小（capacity），以及可用磁盘空间大小（avaliable）。
+- 记录磁盘的总空间大小 (capacity)，以及可用磁盘空间大小 (available)。
 
 #### Metadata
 
