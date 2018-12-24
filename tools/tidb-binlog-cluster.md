@@ -265,19 +265,23 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
     $ ansible-playbook start_drainer.yml
     ```
 
-### Deploy TiDB-Binlog using Binary 
+### Deploy TiDB-Binlog using Binary
 
 #### Download the official Binary
 
+Run the following command to download the binary:
+
 ```bash
-# TiDB（v2.0.8-binlog, v2.1.0-rc.5 or the later version）
 wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz
 wget https://download.pingcap.org/tidb-{version}-linux-amd64.sha256
 
 # Check the file integrity. If the result is OK, the file is correct.
 sha256sum -c tidb-{version}-binlog-linux-amd64.sha256
+```
 
-# Pump && Drainer (cluster-latest, v2.1.0-rc.5 or the later version)
+For TiDB v2.1.0 GA or later versions, Pump and Drainer are already included in the TiDB download package. For other TiDB versions, you need to download Pump and Drainer separately using the following command:
+
+```bash
 wget https://download.pingcap.org/tidb-binlog-{version}-linux-amd64.tar.gz
 wget https://download.pingcap.org/tidb-binlog-{version}-linux-amd64.sha256
 
