@@ -30,7 +30,7 @@ curl http://127.0.0.1:10080/status
 
 + `connections`：当前 TiDB Server 上的客户端连接数
  + `version`：TiDB 版本号
-+ git_hash: TiDB 当前代码的 Git Hash
+ + `git_hash`：TiDB 当前代码的 Git Hash
 
 ### PD Server
 
