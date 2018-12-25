@@ -34,7 +34,7 @@ curl http://127.0.0.1:10080/status
 
 ### PD Server
 
-PD API 地址： `http://${host}:${port}/pd/api/v1/${api_name}`。
+PD API 地址：`http://${host}:${port}/pd/api/v1/${api_name}`。
 
 其中 port 默认为 2379，各类 api_name 详细信息参见 [PD API Doc](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html)。
 
