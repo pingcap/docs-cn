@@ -209,7 +209,7 @@ success!
 
 `unsafe-recover remove-fail-stores` 命令可以将一些失败掉的机器从指定 Region 的 peers 列表中移除。这个命令只有 local 模式，而且需要目标 TiKV 先停掉服务以便释放文件锁。
 
-`-s` 选项接受多个以逗号分隔的 `store_id`，并使用 `-r` 参数来指定包含的 Region。如果要对某一个 store 上的全部 Region 都执行这个操作，则可以简单地指定 --all-regions。
+`-s` 选项接受多个以逗号分隔的 `store_id`，并使用 `-r` 参数来指定包含的 Region。如果要对某一个 store 上的全部 Region 都执行这个操作，则可以简单地指定 `--all-regions`。
 
 ```bash
 $ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 3 -r 1001,1002
@@ -224,11 +224,11 @@ $ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 4,5 --all-
 > 
 > - **这个命令只支持本地模式**。在运行成功后，会打印 `success!`。
 > - 一般来说，需要使用这个命令的地方，对于指定 Region 的 peers 所在的每个 store，均须运行这个命令。
-> - 如果使用 --all-regions，通常需要在集群剩余所有健康的 store 上执行这个命令。
+> - 如果使用 `--all-regions`，通常需要在集群剩余所有健康的 store 上执行这个命令。
 
 ### 恢复损坏的 MVCC 数据
 
-`recover-mvcc` 命令用于 MVCC 数据损坏导致 TiKV 无法正常运行的情况。为了从不同种类的不一致情况中恢复，该命令会反复检查 3 个 CF ("default", "write", "lock")。  
+`recover-mvcc` 命令用于 MVCC 数据损坏导致 TiKV 无法正常运行的情况。为了从不同种类的不一致情况中恢复，该命令会反复检查 3 个 CF ("default", "write", "lock")。
 
 `-r` 选项可以通过 `region_id` 指定包含的 Region，`-p` 选项可以指定 PD 的 endpoint。
 
