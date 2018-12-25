@@ -12,7 +12,7 @@ TiDB 集群状态监控目前有两种接口，第一种是通过 HTTP 接口对
 这类接口可以获取组件的一些基本信息，并且可以作为 keepalive 监测接口。另外 PD 的接口可以看到整个 TiKV 集群的详细信息。
 
 ### TiDB Server
-TiDB API 地址：``http://${host}:${port}``。
+TiDB API 地址：`http://${host}:${port}`。
 
 其中 port 默认为 10080，各类 api_name 详细信息参见 [TiDB API Doc](https://github.com/pingcap/tidb/blob/master/docs/tidb_http_api.md)。
 
