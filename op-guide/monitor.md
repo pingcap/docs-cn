@@ -16,7 +16,7 @@ TiDB API 地址：`http://${host}:${port}`。
 
 其中 port 默认为 10080，各类 `api_name` 详细信息参见 [TiDB API Doc](https://github.com/pingcap/tidb/blob/master/docs/tidb_http_api.md)。
 
-下面示例是通过访问  ``http://${host}:${port}/status``  获取当前 TiDB Server 的状态，以及判断是否存活。返回结果是 **Json** 格式：
+下面示例中，通过访问 `http://${host}:${port}/status` 获取当前 TiDB Server 的状态，以及判断是否存活。返回结果为 **Json** 格式：
 
 ```bash
 curl http://127.0.0.1:10080/status
