@@ -12,8 +12,11 @@ TiDB 集群状态监控目前有两种接口，第一种是通过 HTTP 接口对
 这类接口可以获取组件的一些基本信息，并且可以作为 keepalive 监测接口。另外 PD 的接口可以看到整个 TiKV 集群的详细信息。
 
 ### TiDB Server
+TiDB API 地址：``http://${host}:${port}``。
 
-TiDB 对外暴露的 HTTP 接口是 http://host:port/status ，默认的端口号是 10080 （可以通过 --status 参数设置），可以通过访问这个接口获取当前 TiDB Server 的状态，以及判断是否存活。返回结果是 **Json** 格式：
+其中 port 默认为 10080，各类 api_name 详细信息参见 [TiDB API Doc](https://github.com/pingcap/tidb/blob/master/docs/tidb_http_api.md)。
+
+下面示例是通过访问  ``http://${host}:${port}/status``  获取当前 TiDB Server 的状态，以及判断是否存活。返回结果是 **Json** 格式：
 
 ```bash
 curl http://127.0.0.1:10080/status
@@ -24,7 +27,7 @@ curl http://127.0.0.1:10080/status
 }
 ```
 
-+ connection: 当前 TiDB Server 上的客户端连接数
++ connections: 当前 TiDB Server 上的客户端连接数
 + version: TiDB 版本号
 + git_hash: TiDB 当前代码的 Git Hash
 
@@ -168,7 +171,7 @@ curl http://127.0.0.1:2379/pd/api/v1/stores
  - targets: ['host:port'] # use the Push Gateway address
 labels:
   group: 'production'
- ```
+```
 
 #### Grafana 配置
 
