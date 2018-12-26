@@ -25,9 +25,9 @@ TiDB 兼容 MySQL 的系统变量，同时定义了一些特有的系统变量�
 
 TiDB 数据存放在存储引擎中，数据目录取决于使用的存储引擎，存储引擎的选择参见 [TiDB 启动参数文档](../op-guide/configuration.md#store)。
 
-对于使用本地存储引擎的情况，数据存储在本机硬盘上，目录位置通过 [path](../op-guide/configuration.md#path) 参数控制。
+- 对于使用本地存储引擎的情况，数据存储在本机硬盘上，目录位置通过 [path](../op-guide/configuration.md#path) 参数控制。
 
-对于使用 TiKV 引擎的情况，数据存储在 TiKV 节点上，目录位置通过 [data-dir](../op-guide/configuration.md#data-dir-1) 参数控制。
+- 对于使用 TiKV 引擎的情况，数据存储在 TiKV 节点上，目录位置通过 [data-dir](../op-guide/configuration.md#data-dir-1) 参数控制。
 
 ## TiDB 服务器日志文件
 
