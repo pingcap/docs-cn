@@ -19,7 +19,7 @@ When you compile TiKV, the `tikv-ctl` command is also compiled at the same time.
     For this mode, if SSL is enabled in TiKV, `tikv-ctl` also needs to specify the related certificate file. For example:
 
     ```
-    $ tikv-ctl --ca-path ca.pem --cert-path client.pem --key-path client-key.pem --host 127.0.0.1:21060 <subcommands>
+    $ tikv-ctl --ca-path ca.pem --cert-path client.pem --key-path client-key.pem --host 127.0.0.1:20160 <subcommands>
     ```
 
     However, sometimes `tikv-ctl` communicates with PD instead of TiKV. In this case, you need to use the `--pd` option instead of `--host`. Here is an example:
@@ -57,7 +57,7 @@ Use the `raft` subcommand to view the status of the Raft state machine at a spec
 Use the `region` and `log` subcommands to obtain the above information respectively. The two subcommands both support the remote mode and the local mode at the same time. Their usage and output are as follows:
 
 ```bash
-$ tikv-ctl --host 127.0.0.1:21060 raft region -r 2
+$ tikv-ctl --host 127.0.0.1:20160 raft region -r 2
 region id: 2
 region state key: \001\003\000\000\000\000\000\000\000\002\001
 region state: Some(region {id: 2 region_epoch {conf_ver: 3 version: 1} peers {id: 3 store_id: 1} peers {id: 5 store_id: 4} peers {id: 7 store_id: 6}})
@@ -164,7 +164,7 @@ success!
 Use the `consistency-check` command to execute a consistency check among replicas in the corresponding Raft of a specific Region. If the check fails, TiKV itself panics. If the TiKV instance specified by `--host` is not the Region leader, an error is reported.
 
 ```bash
-$ tikv-ctl --host 127.0.0.1:21060 consistency-check -r 2
+$ tikv-ctl --host 127.0.0.1:20160 consistency-check -r 2
 success!
 $ tikv-ctl --host 127.0.0.1:21061 consistency-check -r 2
 DebugClient::check_region_consistency: RpcFailure(RpcStatus { status: Unknown, details: Some("StringError(\"Leader is on store 1\")") })
@@ -225,19 +225,24 @@ success!
 
 ### Force Region to recover the service from failure of multiple replicas
 
-Use the `unsafe-recover remove-fail-stores` command to remove the failed machines from the peer list of Regions. Then after you restart TiKV, these Regions can continue to provide services using the other healthy replicas. This command is usually used in circumstances where multiple TiKV stores are damaged or deleted.
+Use the `unsafe-recover remove-fail-stores` command to remove the failed machines from the peer list of the specified Regions. This command has only one mode "local". Before running this command, you need to stop the target TiKV process to release the file lock.
 
-The `-s` option accepts multiple `store_id` separated by comma and uses the `-r` flag to specify involved Regions. Otherwise, all Regions' peers located on these stores will be removed by default.
+The `-s` option accepts multiple `store_id` separated by comma and uses the `-r` flag to specify involved Regions. To recover the service from the failure of multiple replicas for all the Regions in one store, specify `--all-regions`.
 
 ```bash
 $ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 3 -r 1001,1002
 success!
+
+$ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 4,5 --all-regions
 ```
+
+Then after you restart TiKV, these Regions can continue to provide services using the other healthy replicas. This command is usually used in circumstances where multiple TiKV stores are damaged or deleted.
 
 > **Note:**
 > 
 > - This command only supports the local mode. It prints `success!` when successfully run.
-> - You must run this command for all stores where specified Regions' peers locate. If `-r` is not set, all Regions are involved, and you need to run this command for all stores.
+> - Generally, you need to run this command for all stores where the peers of the specified Regions are located.
+> - If you specify `--all-regions`, run this command for all the other healthy stores in the cluster.
 
 ### Recover from MVCC data corruption
 
