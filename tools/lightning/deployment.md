@@ -64,6 +64,22 @@ It is recommended to use the following configuration of the single machine:
 
 > **Notes:** `tidb-lightning` is a CPU intensive program. In an environment with mixed components, the resources allocated to `tidb-lightning` must be limited. Otherwise, other components might not be able to run. It is recommended to set the `region-concurrency` to 75% of CPU logical cores. For instance, if the CPU has 32 logical cores, you can set the `region-concurrency` to 24.
 
+## Export data
+
+Use the [`mydumper` tool](../../tools/mydumper.md) to export data from MySQL by using the following command:
+
+```sh
+./bin/mydumper -h 127.0.0.1 -P 3306 -u root -t 16 -F 256 -B test -T t1,t2 --skip-tz-utc -o /data/my_database/
+```
+
+In this command,
+
+- `-B test`: means the data is exported from the `test` database.
+- `-T t1,t2`: means only the `t1` and `t2` tables are exported.
+- `-t 16`: means 16 threads are used to export the data.
+- `-F 256`: means a table is partitioned into chunks and one chunk is 256 MB.
+- `--skip-tz-utc`: the purpose of adding this parameter is to ignore the inconsistency of time zone setting between MySQL and the data exporting machine, and to disable automatic conversion.
+
 ## Deploy TiDB-Lightning
 
 This section describes two deployment methods of TiDB-Lightning:
@@ -158,8 +174,9 @@ You can find deployment instructions in [TiDB Quick Start Guide](https://pingcap
 
 Download the TiDB-Lightning package (choose the same version as that of the TiDB cluster):
 
-- **v2.1**: https://download.pingcap.org/tidb-lightning-release-2.1-linux-amd64.tar.gz
-- **v2.0**: https://download.pingcap.org/tidb-lightning-release-2.0-linux-amd64.tar.gz
+- **v2.1.2**: https://download.pingcap.org/tidb-lightning-v2.1.2-linux-amd64.tar.gz
+- **v2.0.9**: https://download.pingcap.org/tidb-lightning-v2.0.9-linux-amd64.tar.gz
+- Latest unstable version: https://download.pingcap.org/tidb-lightning-latest-linux-amd64.tar.gz
 
 #### Step 3: Start `tikv-importer`
 
@@ -271,11 +288,18 @@ Download the TiDB-Lightning package (choose the same version as that of the TiDB
     enable = true
     # The schema name (database name) to store the checkpoints
     schema = "tidb_lightning_checkpoint"
-    # The data source name (DSN) in the form of "USER:PASS@tcp(HOST:PORT)/".
-    # If not specified, the TiDB server from the [tidb] section will be used to
-    # store the checkpoints. You could also specify a different MySQL-compatible
+    # Where to store the checkpoints.
+    #  - file:  store as a local file.
+    #  - mysql: store into a remote MySQL-compatible database
+    driver = "file"
+    # The data source name (DSN) indicating the location of the checkpoint storage.
+    # For the "file" driver, the DSN is a path. If the path is not specified, Lightning would
+    # default to "/tmp/CHECKPOINT_SCHEMA.pb".
+    # For the "mysql" driver, the DSN is a URL in the form of "USER:PASS@tcp(HOST:PORT)/".
+    # If the URL is not specified, the TiDB server from the [tidb] section is used to
+    # store the checkpoints. You should specify a different MySQL-compatible
     # database server to reduce the load of the target TiDB cluster.
-    #dsn = "root@tcp(127.0.0.1:4000)/"
+    #dsn = "/tmp/tidb_lightning_checkpoint.pb"
     # Whether to keep the checkpoints after all data are imported. If false, the
     # checkpoints will be deleted. Keeping the checkpoints can aid debugging but
     # will leak metadata about the data source.
@@ -288,7 +312,7 @@ Download the TiDB-Lightning package (choose the same version as that of the TiDB
     [mydumper]
     # Block size for file reading. Keep it longer than the longest string of
     # the data source.
-    read-block-size = 4096 # Byte (default = 4 KB)
+    read-block-size = 65536 # Byte (default = 64 KB)
     # Each data file is split into multiple chunks of this size. Each chunk
     # is processed in parallel.
     region-min-size = 268435456 # Byte (default = 256 MB)
@@ -298,6 +322,18 @@ Download the TiDB-Lightning package (choose the same version as that of the TiDB
     # already exist on the target TiDB cluster, and will not execute the `CREATE
     # TABLE` statements
     no-schema = false
+    # the character set of the schema files, containing CREATE TABLE statements;
+    # only supports one of:
+    #  - utf8mb4: the schema files must be encoded as UTF-8, otherwise Lightning
+    #             will emit errors
+    #  - gb18030: the schema files must be encoded as GB-18030, otherwise
+    #             Lightning will emit errors
+    #  - auto:    (default) automatically detects whether the schema is UTF-8 or
+    #             GB-18030. An error is reported if the encoding is neither.
+    #  - binary:  do not try to decode the schema files
+    # note that the *data* files are always parsed as binary regardless of
+    # schema encoding.
+    character-set = "auto"
 
     [tidb]
     # Configuration of any TiDB server from the cluster
@@ -312,13 +348,19 @@ Download the TiDB-Lightning package (choose the same version as that of the TiDB
     # tidb-lightning imports TiDB as a library and generates some logs itself.
     # This setting controls the log level of the TiDB library.
     log-level = "error"
+
     # Sets the TiDB session variable to speed up the Checksum and Analyze operations.
-    distsql-scan-concurrency = 16
+    # See https://pingcap.com/docs/sql/statistics/#control-analyze-concurrency
+    # for the meaning of each setting
+    build-stats-concurrency = 20
+    distsql-scan-concurrency = 100
+    index-serial-scan-concurrency = 20
+    checksum-table-concurrency = 16
 
     # When data importing is complete, tidb-lightning can automatically perform
     # the Checksum, Compact and Analyze operations. It is recommended to leave
     # these as true in the production environment.
-    # The execution order: Checksum -> Compact -> Analyze
+    # The execution order: Checksum -> Analyze
     [post-restore]
     # Performs `ADMIN CHECKSUM TABLE <table>` for each table to verify data integrity.
     checksum = true
@@ -326,6 +368,19 @@ Download the TiDB-Lightning package (choose the same version as that of the TiDB
     compact = true
     # Performs `ANALYZE TABLE <table>` for each table.
     analyze = true
+
+    # Configures the background periodic actions
+    # Supported units: h (hour), m (minute), s (second).
+    [cron]
+    # Duration between which Lightning automatically refreshes the import mode
+    # status. Should be shorter than the corresponding TiKV setting.
+    switch-mode = "5m"
+    # Duration between which an import progress is printed to the log.
+    log-progress = "5m"
+
+    # Table filter options. See the corresponding section for details.
+    #[black-white-list]
+    # ...
     ```
 
 4. Run `tidb-lightning`.

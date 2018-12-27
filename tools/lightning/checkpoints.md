@@ -23,11 +23,21 @@ enable = true
 # The schema name (database name) to store the checkpoints
 schema = "tidb_lightning_checkpoint"
 
-# The data source name (DSN) in the form of "USER:PASS@tcp(HOST:PORT)/".
-# If not specified, the TiDB server from the [tidb] section is used to
-# store the checkpoints. You could also specify a different MySQL-compatible
+# Where to store the checkpoints.
+#  - file:  store as a local file (requires v2.1.1 or later)
+#  - mysql: store into a remote MySQL-compatible database
+driver = "file"
+
+# The data source name (DSN) indicating the location of the checkpoint storage.
+#
+# For the "file" driver, the DSN is a path. If the path is not specified, Lightning would
+# default to "/tmp/CHECKPOINT_SCHEMA.pb".
+#
+# For the "mysql" driver, the DSN is a URL in the form of "USER:PASS@tcp(HOST:PORT)/".
+# If the URL is not specified, the TiDB server from the [tidb] section is used to
+# store the checkpoints. You should specify a different MySQL-compatible
 # database server to reduce the load of the target TiDB cluster.
-#dsn = "root@tcp(127.0.0.1:4000)/"
+#dsn = "/tmp/tidb_lightning_checkpoint.pb"
 
 # Whether to keep the checkpoints after all data are imported. If false, the
 # checkpoints are deleted. Keeping the checkpoints can aid debugging but
@@ -37,7 +47,11 @@ schema = "tidb_lightning_checkpoint"
 
 ## Checkpoints storage
 
-Checkpoints can be saved in any databases compatible with MySQL 5.7 or above, including MariaDB and TiDB. By default, the checkpoints are saved in the target database.
+Lightning supports two kinds of checkpoint storage: a local file or a remote MySQL-compatible database.
+
+* With `driver = "file"`, checkpoints are stored in a local file at the path given by the `dsn` setting. Checkpoints are updated rapidly, so we highly recommend placing the checkpoint file on a drive with very high write endurance, such as a RAM disk.
+
+* With `driver = "mysql"`, checkpoints can be saved in any databases compatible with MySQL 5.7 or later, including MariaDB and TiDB. By default, the checkpoints are saved in the target database.
 
 While using the target database as the checkpoints storage, Lightning is importing large amounts of data at the same time. This puts extra stress on the target database and sometimes leads to communication timeout. Therefore, **it is strongly recommended to install a temporary MySQL server to store these checkpoints**. This server can be installed on the same host as `tidb-lightning` and can be uninstalled after the importer progress is completed.
 
@@ -92,4 +106,4 @@ This option simply removes all checkpoint information about one table or all tab
 tidb-lightning-ctl --checkpoint-dump=output/directory
 ```
 
-This option dumps the content of the checkpoint into the given directory, which is mainly used for debugging by the technical staff.
+This option dumps the content of the checkpoint into the given directory, which is mainly used for debugging by the technical staff. This option is only enabled when `driver = "mysql"`.

@@ -110,7 +110,7 @@ Metrics provided by `tidb-lightning` are listed under the namespace `lightning_*
 
     Counting number of tables processed and their status. Labels:
 
-    - **state**: `pending` / `written` / `closed` / `imported` / `altered_auto_inc` / `checksum` / `completed`
+    - **state**: `pending` / `written` / `closed` / `imported` / `altered_auto_inc` / `checksum` / `analyzed` / `completed`
     - **result**: `success` / `failure`
 
 - **`lightning_chunks`** (Counter)
@@ -118,3 +118,31 @@ Metrics provided by `tidb-lightning` are listed under the namespace `lightning_*
     Counting number of chunks processed and their status. Labels:
 
     - **state**: `estimated` / `pending` / `running` / `finished` / `failed`
+
+- **`lightning_import_seconds`** (Histogram)
+
+    Bucketed histogram of the time needed to import a table.
+
+- **`lightning_block_read_seconds`** (Histogram)
+
+    Bucketed histogram of the time needed to read a block of SQL rows from the data source.
+
+- **`lightning_block_read_bytes`** (Histogram)
+
+    Bucketed histogram of the size of a block of SQL rows.
+
+- **`lightning_block_encode_seconds`** (Histogram)
+
+    Bucketed histogram of the time needed to encode a block of SQL rows into KV pairs.
+
+- **`lightning_block_deliver_seconds`** (Histogram)
+
+    Bucketed histogram of the time needed to deliver a block of KV pairs.
+
+- **`lightning_block_deliver_bytes`** (Histogram)
+
+    Bucketed histogram of the size of a block of KV pairs.
+
+- **`lightning_checksum_seconds`** (Histogram)
+
+    Bucketed histogram of the time taken to compute the checksum of a table.

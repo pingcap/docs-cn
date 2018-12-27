@@ -31,8 +31,8 @@ The complete import process is as follows:
 
 4. Once a full table of KV pairs are received, `tikv-importer` divides and schedules these data and imports them into the target TiKV cluster.
 
-5. `tidb-lightning` then performs a checksum comparison between the local data source and those calculated from the cluster, to ensure there is no data corruption in the process.
+5. `tidb-lightning` then performs a checksum comparison between the local data source and those calculated from the cluster, to ensure there is no data corruption in the process, and tells TiDB to `ANALYZE` all imported tables, to prepare for optimal query planning.
 
-6. After all tables are imported, `tidb-lightning` performs a global compaction on the TiKV cluster, and tells TiDB to `ANALYZE` all imported tables, to prepare for optimal query planning.
+6. After all tables are imported, `tidb-lightning` performs a global compaction on the TiKV cluster.
 
 7. Finally, `tidb-lightning` switches the TiKV cluster back to "normal mode", so the cluster resumes normal services.

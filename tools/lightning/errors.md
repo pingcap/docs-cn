@@ -12,7 +12,7 @@ This document summarizes some commonly encountered errors in the `tidb-lightning
 
 ## Import speed is too slow
 
-Normally it takes Lightning 5 minutes per thread to import a 256 MB Chunk. It is an error if the speed is much slower than this. The time taken for each chunk can be checked from the log mentioning `restore chunk … takes`. This can also be observed from metrics on Grafana.
+Normally it takes Lightning 2 minutes per thread to import a 256 MB Chunk. It is an error if the speed is much slower than this. The time taken for each chunk can be checked from the log mentioning `restore chunk … takes`. This can also be observed from metrics on Grafana.
 
 There are several reasons why Lightning becomes slow:
 
@@ -74,3 +74,23 @@ Try the latest version! Maybe there is new speed improvement.
 1. Fix the schema so that the file is entirely in either UTF-8 or GB-18030.
 
 2. Manually `CREATE` the affected tables in the target database, and then set `[mydumper] no-schema = true` to skip automatic table creation.
+
+3. Set `[mydumper] character-set = "binary"` to skip the check. Note that this might introduce mojibake into the target database.
+
+## [sql2kv] sql encode error = [types:1292]invalid time format: '{1970 1 1 0 45 0 0}'
+
+**Cause**: A table contains a column with the `timestamp` type, but the time value itself does not exist. This is either because of DST changes or the time value has exceeded the supported range (1970 Jan 1st to 2038 Jan 19th).
+
+**Solutions**:
+
+1. Ensure Lightning and the source database are using the same time zone. Lightning's time zone can be forced using the `$TZ` environment variable.
+
+    ```sh
+    # Ansible deployment, and force UTC.
+    TZ=UTC scripts/start_lightning.sh
+
+    # Manual deployment, and force Asia/Shanghai.
+    TZ='Asia/Shanghai' bin/tidb-lightning -config tidb-lightning.toml
+    ```
+
+2. When exporting data using mydumper, make sure to include the `--skip-tz-utc` flag.
