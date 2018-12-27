@@ -32,6 +32,9 @@ However, in TiDB, the following MySQL features are not supported for the time be
 + X-Protocol
 + Savepoints
 + Column-level privileges
++ `CREATE TABLE tblName AS SELECT stmt` syntax
++ `CREATE TEMPORARY TABLE` syntax
++ `XA` syntax (TiDB uses a two-phase commit internally, but this is not exposed via an SQL interface)
 
 ## Features that are different from MySQL
 
