@@ -9,12 +9,12 @@ category: advanced
 
 TiKV 最底层使用的是 RocksDB 做为持久化存储，所以 TiKV 的很多性能相关的参数都是与 RocksDB 相关的。TiKV 使用了两个 RocksDB 实例，默认 RocksDB 实例存储 KV 数据，Raft RocksDB 实例（简称 RaftDB）存储 Raft 数据。
 
-TiKV 使用了 RocksDB 的 `Column Families` 特性。
+TiKV 使用了 RocksDB 的 `Column Families` (CF) 特性。
 
 - 默认 RocksDB 实例将 KV 数据存储在内部的 `default`、`write` 和 `lock` 3 个 CF 内。
 
     - `default` CF 存储的是真正的数据，与其对应的参数位于 `[rocksdb.defaultcf]` 项中；
-    - `write` CF 存储的是数据的版本信息（MVCC）以及索引相关的数据，相关的参数位于 `[rocksdb.writecf]` 项中；
+    - `write` CF 存储的是数据的版本信息 (MVCC) 以及索引相关的数据，相关的参数位于 `[rocksdb.writecf]` 项中；
     - `lock` CF 存储的是锁信息，系统使用默认参数。
 
 - Raft RocksDB 实例存储 Raft log。
@@ -40,7 +40,7 @@ log-level = "info"
 # TiKV 每个实例之间的 gRPC 连接数
 # grpc-raft-conn-num = 10
 
-# TiDB 过来的大部分读请求都会发送到 TiKV 的 coprocessor 进行处理，该参数用于设置
+# TiDB 过来的大部分读请求都会发送到 TiKV 的 Coprocessor 进行处理，该参数用于设置
 # coprocessor 线程的个数，如果业务是读请求比较多，增加 coprocessor 的线程数，但应比系统的
 # CPU 核数小。例如：TiKV 所在的机器有 32 core，在重读的场景下甚至可以将该参数设置为 30。在没有
 # 设置该参数的情况下，TiKV 会自动将该值设置为 CPU 总核数乘以 0.8。
@@ -81,9 +81,9 @@ sync-log = true
 # raftdb-dir = "/tmp/tikv/store/raft"
 
 region-max-size = "384MB"
-# region 分裂阈值
+# Region 分裂阈值
 region-split-size = "256MB"
-# 当 region 写入的数据量超过该阈值的时候，TiKV 会检查该 region 是否需要分裂。为了减少检查过程
+# 当 Region 写入的数据量超过该阈值的时候，TiKV 会检查该 Region 是否需要分裂。为了减少检查过程
 # 中扫描数据的成本，数据过程中可以将该值设置为32MB，正常运行状态下使用默认值即可。
 region-split-check-diff = "32MB"
 
@@ -195,7 +195,7 @@ target-file-size-base = "32MB"
 
 # 在不配置该参数的情况下，TiKV 会将该值设置为系统总内存量的 15%。如果需要在单个物理机上部署多个
 # TiKV 节点，需要显式配置该参数。版本信息（MVCC）相关的数据以及索引相关的数据都记录在 write 这
-# 个 cf 里面，如果业务的场景下单表索引较多，可以将该参数设置的更大一点。
+# 个 CF 里面，如果业务的场景下单表索引较多，可以将该参数设置的更大一点。
 # block-cache-size = "256MB"
 
 [raftdb]
