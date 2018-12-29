@@ -22,7 +22,7 @@ TiSpark 是将 Spark SQL 直接运行在分布式存储引擎 TiKV 上的 OLAP �
 
 ## 环境准备
 
-现有 TiSpark 2.x 版本支持 Spark 2.3.x，且并不支持 Spark 2.3.x 以外的版本。如果希望使用 Spark 2.1.x 版本，请使用 TiSpark 1.x。
+现有 TiSpark 2.x 版本支持 Spark 2.3.x，但并不支持 Spark 2.3.x 以外的版本。如果你希望使用 Spark 2.1.x 版本，需使用 TiSpark 1.x。
 
 TiSpark 2.x 对于 Spark 2.3.x 的不同小版本做了些微的改动。默认的 TiSpark 支持 Spark 2.3.2，若希望使用 Spark 2.3.0 或者 Spark 2.3.1，则需要自行编译相关小版本的支持，以避免出现 API 的冲突。可以参见这个[文档](https://github.com/pingcap/tispark#how-to-build-from-sources)来获知如何从源码编译支持 Spark 2.3.x 的 TiSpark 。
 
@@ -59,13 +59,14 @@ SPARK_WORKER_MEMORY=32g
 SPARK_WORKER_CORES=8
 ```
 
-在`spark-defaults.conf`中，增加如下配置：
+ 在 `spark-defaults.conf` 中，增加如下配置：
+
 ```
 spark.tispark.pd.addresses $your_pd_servers
 spark.sql.extensions org.apache.spark.sql.TiExtensions
 ```
 
-`your_pd_servers` 是用逗号分隔的 PD 地址, 每个地址使用`地址:端口`的格式。
+ `your_pd_servers` 是用逗号分隔的 PD 地址，每个地址使用 `地址:端口` 的格式。
 
 例如你有一组 PD 在`10.16.20.1`，`10.16.20.2`，`10.16.20.3`，那么 PD 配置格式是`10.16.20.1:2379,10.16.20.2:2379,10.16.20.3:2379`。
 
@@ -118,8 +119,8 @@ cd $SPARKPATH
 命令返回以后，即可通过刚才的面板查看这个 Slave 是否已经正确地加入了 Spark 集群。在所有 Slave 节点重复刚才的命令。确认所有的 Slave 都可以正确连接 Master，这样你就拥有了一个 Standalone 模式的 Spark 集群。
 
 #### Spark SQL shell 和 JDBC 服务器
-当前版本的 TiSpark 可以直接使用 `spark-sql`和 Spark 的 ThriftServer JDBC 服务器。
 
+当前版本的 TiSpark 可以直接使用 `spark-sql`和 Spark 的 ThriftServer JDBC 服务器。
 
 ## 一个使用范例
 
@@ -193,8 +194,10 @@ TiSparkR 是为兼容 SparkR 而开发的组件。具体使用请参考[这份�
 TiSpark on PySpark 是为兼容 PySpark 而开发的组件。具体使用请参考[这份文档](https://github.com/pingcap/tispark/blob/master/python/README.md)。
 
 ## 和 Hive 一起使用 TiSpark
+
 TiSpark 可以和 Hive 混合使用。
 在启动 Spark 之前，需要添加 HADOOP_CONF_DIR 环境变量指向 Hadoop 配置目录并且将 `hive-site.xml` 拷贝到 `$SPARK_HOME/conf` 目录下。
+
 ```
 val tisparkDF = spark.sql("select * from tispark_table").toDF
 tisparkDF.write.saveAsTable("hive_table") // save table to hive
@@ -202,7 +205,9 @@ spark.sql("select * from hive_table a, tispark_table b where a.col1 = b.col1").s
 ```
 
 ## 通过 JDBC 将 DataFrame 写入 TiDB
+
 暂时 TiSpark 不支持直接将数据写入 TiDB 集群，但可以使用 Spark 原生的 JDBC 支持进行写入：
+
 ```scala
 import org.apache.spark.sql.execution.datasources.jdbc.JDBCOptions
 
@@ -224,9 +229,11 @@ df.write
 .option("user", "root") // TiDB user here
 .save()
 ``` 
+
 推荐将 `isolationLevel` 设置为 `NONE`，否则单一大事务有可能造成 TiDB 服务器内存溢出。
 
 ## 统计信息
+
 TiSpark 可以使用 TiDB 的统计信息：
 
 1. 选择代价最低的索引或扫表访问
@@ -234,7 +241,7 @@ TiSpark 可以使用 TiDB 的统计信息：
 
 如果希望使用统计信息支持，需要确保所涉及的表已经被分析。请阅读[这份文档](https://github.com/pingcap/docs/blob/master/sql/statistics.md)了解如何进行表分析。
 
-TiSpark 2.0开始，统计信息将会默认被读取。
+从 TiSpark 2.0 开始，统计信息将会默认被读取。
 
 统计信息将在 Spark Driver 进行缓存，请确定 Driver 内存足够缓存统计信息。
 可以在`spark-defaults.conf`中开启或关闭统计信息读取：

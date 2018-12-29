@@ -24,7 +24,7 @@ category: tispark
 
 在 [Oracle JDK 官方下载页面 ](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-javase8-2177648.html) 下载 JDK 1.8 当前最新版，本示例中下载的版本为 `jdk-8u141-linux-x64.tar.gz`。
 
-解压并根据您的 JDK 部署目录设置环境变量，
+解压并根据你的 JDK 部署目录设置环境变量，
 编辑 `~/.bashrc` 文件，比如：
 
 ```bashrc
@@ -43,7 +43,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 
 ### 导入样例数据
 
-假设 TiDB 集群已启动，其中一台 TiDB 实例服务 IP 为 192.168.0.2，端口为 4000，用户名为 root, 密码为空。
+假设 TiDB 集群已启动，其中一台 TiDB 实例服务 IP 为 192.168.0.2，端口为 4000，用户名为 root，密码为空。
 
 ```
 cd tidb-ansible/resources/bin/tispark-sample-data
@@ -55,13 +55,13 @@ cd tidb-ansible/resources/bin/tispark-sample-data
 mysql -h 192.168.0.2 -P 4000 -u root < dss.ddl
 ```
 
-执行脚本
+执行以下脚本:
 
 ```
 ./sample_data.sh
 ```
 
-> 执行脚本的机器上需要安装 MySQL client，CentOS 用户可通过 `yum -y install mysql`来安装。
+> **注意**：执行脚本的机器上需要安装 MySQL client，CentOS 用户可通过 `yum -y install mysql` 来安装。
 
 登录 TiDB 并验证数据包含 `TPCH_001` 库及以下表：
 
@@ -117,13 +117,13 @@ scala> val ti = new TiContext(spark)
 scala> ti.tidbMapDatabase("TPCH_001")
 ```
 
-之后您可以直接调用 Spark SQL:
+之后可以直接调用 Spark SQL:
 
 ```scala
 scala> spark.sql("select count(*) from lineitem").show
 ```
 
-结果为
+结果为:
 
 ```
 +--------+
