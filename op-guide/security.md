@@ -48,8 +48,8 @@ cluster-ssl-key = "/path/to/tidb-server-key.pem"
 [security]
 # set the path for certificates. Empty string means disabling secure connectoins.
 ca-path = "/path/to/ca.pem"
-cert-path = "/path/to/client.pem"
-key-path = "/path/to/client-key.pem"
+cert-path = "/path/to/tikv-server.pem"
+key-path = "/path/to/tikv-server-key.pem"
 ```
 
 ##### PD
@@ -61,9 +61,9 @@ key-path = "/path/to/client-key.pem"
 # Path of file that contains list of trusted SSL CAs. if set, following four settings shouldn't be empty
 cacert-path = "/path/to/ca.pem"
 # Path of file that contains X509 certificate in PEM format.
-cert-path = "/path/to/server.pem"
+cert-path = "/path/to/pd-server.pem"
 # Path of file that contains X509 key in PEM format.
-key-path = "/path/to/server-key.pem"
+key-path = "/path/to/pd-server-key.pem"
 ```
 
 此时 TiDB 集群各个组件间便开启了双向验证。
@@ -71,55 +71,12 @@ key-path = "/path/to/server-key.pem"
 在使用客户端连接时，需要指定 client 证书，示例：
 
 ```bash
-./pd-ctl -u https://127.0.0.1:2379 --cacert /path/to/ca.pem --cert /path/to/pd-client.pem --key /path/to/pd-client-key.pem
+./pd-ctl -u https://127.0.0.1:2379 --cacert /path/to/ca.pem --cert /path/to/client.pem --key /path/to/client-key.pem
 
 ./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/client.pem" --key-path="/path/to/clinet-key.pem"
 ```
 
 ## MySQL 与 TiDB 间开启 TLS
 
-### 准备证书
+请参考 [使用加密连接](../sql/encrypted-connections.md)。
 
-```bash
-mysql_ssl_rsa_setup --datadir=certs
-```
-
-### 配置单向认证
-
-在 TiDB 的 config 文件或命令行参数中设置：
-
-```toml
-[security]
-# Path of file that contains list of trusted SSL CAs.
-ssl-ca = ""
-# Path of file that contains X509 certificate in PEM format.
-ssl-cert = "/path/to/certs/server.pem"
-# Path of file that contains X509 key in PEM format.
-ssl-key = "/path/to/certs/server-key.pem"
-```
-
-客户端
-
-```bash
-mysql -u root --host 127.0.0.1 --port 4000 --ssl-mode=REQUIRED
-```
-
-### 配置双向认证
-
-在 TiDB 的 config 文件或命令行参数中设置：
-
-```toml
-[security]
-# Path of file that contains list of trusted SSL CAs for connection with mysql client.
-ssl-ca = "/path/to/certs/ca.pem"
-# Path of file that contains X509 certificate in PEM format for connection with mysql client.
-ssl-cert = "/path/to/certs/server.pem"
-# Path of file that contains X509 key in PEM format for connection with mysql client.
-ssl-key = "/path/to/certs/server-key.pem"
-```
-
-客户端需要指定 client 证书
-
-```bash
-mysql -u root --host 127.0.0.1 --port 4000 --ssl-cert=/path/to/certs/client-cert.pem --ssl-key=/path/to/certs/client-key.pem --ssl-ca=/path/to/certs/ca.pem --ssl-mode=VERIFY_IDENTITY
-```
