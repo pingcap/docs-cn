@@ -143,6 +143,40 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...
 
 用于查看当前 DDL 作业队列中的所有结果（包括正在运行以及等待运行的任务）以及已执行完成的 DDL 作业队列中的最近十条结果。
 
+  ```sql
+  mysql> admin show ddl jobs;
+  +--------+---------+------------+---------------+--------------+-----------+----------+-----------+-----------------------------------+---------------+
+  | JOB_ID | DB_NAME | TABLE_NAME | JOB_TYPE      | SCHEMA_STATE | SCHEMA_ID | TABLE_ID | ROW_COUNT | START_TIME                        | STATE         |
+  +--------+---------+------------+---------------+--------------+-----------+----------+-----------+-----------------------------------+---------------+
+  | 47     | test    | t1         | add index     | delete only  | 35        | 37       | 0         | 2019-01-02 13:34:31.397 +0800 CST | running       |
+  | 46     | test    | t1         | add index     | public       | 35        | 37       | 2         | 2019-01-02 13:33:50.989 +0800 CST | synced        |
+  | 45     | test    | t1         | add index     | none         | 35        | 37       | 0         | 2019-01-02 13:23:28.814 +0800 CST | rollback done |
+  | 44     | test    | t1         | add index     | none         | 35        | 37       | 0         | 2019-01-02 13:22:18.655 +0800 CST | rollback done |
+  | 43     | test    | t1         | add index     | none         | 35        | 37       | 0         | 2019-01-02 13:20:20.917 +0800 CST | rollback done |
+  | 42     | test    | t1         | add index     | none         | 35        | 37       | 0         | 2019-01-02 13:19:19.756 +0800 CST | rollback done |
+  | 41     | test    | t1         | add index     | public       | 35        | 37       | 0         | 2019-01-02 13:16:41.477 +0800 CST | synced        |
+  | 40     | test    | t1         | drop column   | none         | 35        | 37       | 0         | 2019-01-02 13:16:15.325 +0800 CST | synced        |
+  | 39     | test    | t1         | add column    | public       | 35        | 37       | 0         | 2019-01-02 13:15:45.605 +0800 CST | synced        |
+  | 38     | test    | t1         | create table  | public       | 35        | 37       | 0         | 2019-01-02 13:15:31.373 +0800 CST | synced        |
+  | 36     | test    |            | create schema | public       | 35        | 0        | 0         | 2019-01-02 13:15:24.269 +0800 CST | synced        |
+  +--------+---------+------------+---------------+--------------+-----------+----------+-----------+-----------------------------------+---------------+
+  ```
+  * `JOB_ID`: 每个 DDL 操作对应一个DDL job, `JOB_ID` 全局唯一。
+  * `DB_NAME`：DDL 操作的 database name
+  * `TABLE_NAME`: DDL 操作的 table name
+  * `JOB_TYPE`: DDL 操作的类型。
+  * `SCHEMA_STATE`: 当前 schema 的状态，如果是 add index, 就是 index 的 schema 的状态，如果是 add column, 就是 column 的转态，如果是 create table, 就是 table 的状态。
+  * `SCHEMA_ID`: 当前 DDL 操作的 database ID.
+  * `TABLE_ID`: 当前 DDL 操作的 table ID.
+  * `ROW_COUNT`: 表示在 add index 时，当前已经添加完成的数据行数。
+  * `START_TIME`:  DDL 操作的开始时间
+  * `STATE`: DDL 操作的状态
+    * `running`: 表示正在执行；
+    * `synced`: 表示已经执行成功；
+    * `rollback done`: 表示执行失败，回滚完成；
+    * `rollingback`: 表示执行失败，还在回滚过程中；
+    * `cancelling`: 表示正在取消过程中。
+
 * `ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...`
 
 用于显示 `job_id` 对应的 DDL 任务的原始 SQL 语句。这个 `job_id` 只会搜索正在执行中的任务以及 DDL 历史作业队伍中最近的十条。
