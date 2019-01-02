@@ -17,11 +17,13 @@ You can use this type of interface to monitor the basic information of the compo
 
 ### TiDB server
 
-The HTTP interface of TiDB is: `http://host:port/status`
+The TiDB API address: `http://${host}:${port}`
+ 
+The default port: `10080`
 
-The default port number is: 10080 which can be set using the `--status` flag.
-
-The interface can be used to get the current TiDB server state and to determine whether the server is alive. The result is returned in the following JSON format:
+For all `api_name` details, see [TiDB HTTP API](https://github.com/pingcap/tidb/blob/master/docs/tidb_http_api.md).
+ 
+In the following example, `http://${host}:${port}/status` is used to get the current TiDB server state and to determine whether the server is alive. The result is returned in the JSON format.
 
 ```bash
 curl http://127.0.0.1:10080/status
@@ -34,15 +36,15 @@ curl http://127.0.0.1:10080/status
 
 In this example,
 
-- connection: the current number of clients connected to the TiDB server
-- version: the TiDB version number
-- git_hash: the Git Hash of the current TiDB code
+- `connections`: the current number of clients connected to the TiDB server
+- `version`: the TiDB version number
+- `git_hash`: the Git Hash of the current TiDB code
 
 ### PD server
 
-The API address of PD is: `http://${host}:${port}/pd/api/v1/${api_name}`
+The PD API address: `http://${host}:${port}/pd/api/v1/${api_name}`
 
-The default port number is: 2379.
+The default port: `2379`
 
 See [PD API doc](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html) for detailed information about various API names.
 
@@ -199,7 +201,7 @@ Add the Pushgateway address to the yaml configuration file:
  - targets: ['host:port'] # use the Pushgateway address
 labels:
   group: 'production'
- ```
+```
 
 ### Configure Grafana
 
