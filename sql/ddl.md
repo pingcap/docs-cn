@@ -313,7 +313,7 @@ table_option:
     - 具体支持的整型类型有：`TinyInt`，`SmallInt`，`MediumInt`，`Int`，`BigInt`。
     - 具体支持的字符串类型有：`Char`，`Varchar`，`Text`，`TinyText`，`MediumText`，`LongText`。
     - 具体支持的 Blob 类型有：`Blob`，`TinyBlob`，`MediumBlob`，`LongBlob`。
-    - 在修改类型定义方面，支持的包括 `default value`，`comment`，`null`，`not null` 和 `OnUpdate`，但是不支持从 `null` 到 `not null` 的修改。
+    - 在修改类型定义方面，支持的包括 `default value`，`comment`，`null`，`not null` 和 `OnUpdate`。
     - 不支持对 `enum` 类型的列进行修改
 
 * `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}` 目前只是语法支持。
