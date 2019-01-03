@@ -165,7 +165,7 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...
   * `DB_NAME`：DDL 操作的 database name
   * `TABLE_NAME`: DDL 操作的 table name
   * `JOB_TYPE`: DDL 操作的类型。
-  * `SCHEMA_STATE`: 当前 schema 的状态，如果是 add index, 就是 index 的 schema 的状态，如果是 add column, 就是 column 的转态，如果是 create table, 就是 table 的状态。
+  * `SCHEMA_STATE`: 当前 schema 的状态，如果是 add index, 就是 index 的状态，如果是 add column, 就是 column 的状态，如果是 create table, 就是 table 的状态。
   * `SCHEMA_ID`: 当前 DDL 操作的 database ID.
   * `TABLE_ID`: 当前 DDL 操作的 table ID.
   * `ROW_COUNT`: 表示在 add index 时，当前已经添加完成的数据行数。
