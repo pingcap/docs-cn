@@ -5,56 +5,6 @@ category: user guide
 
 # 使用加密连接
 
-## 摘要
-
-### 准备证书
-
-```bash
-mysql_ssl_rsa_setup --datadir=certs
-```
-
-### 配置单向认证
-
-在 TiDB 的 config 文件或命令行参数中设置：
-
-```toml
-[security]
-# Path of file that contains list of trusted SSL CAs.
-ssl-ca = ""
-# Path of file that contains X509 certificate in PEM format.
-ssl-cert = "/path/to/certs/server-cert.pem"
-# Path of file that contains X509 key in PEM format.
-ssl-key = "/path/to/certs/server-key.pem"
-```
-
-客户端
-
-```bash
-mysql -u root --host 127.0.0.1 --port 4000 --ssl-mode=REQUIRED
-```
-
-### 配置双向认证
-
-在 TiDB 的 config 文件或命令行参数中设置：
-
-```toml
-[security]
-# Path of file that contains list of trusted SSL CAs for connection with mysql client.
-ssl-ca = "/path/to/certs/ca.pem"
-# Path of file that contains X509 certificate in PEM format for connection with mysql client.
-ssl-cert = "/path/to/certs/server-cert.pem"
-# Path of file that contains X509 key in PEM format for connection with mysql client.
-ssl-key = "/path/to/certs/server-key.pem"
-```
-
-客户端需要指定 client 证书
-
-```bash
-mysql -u root --host 127.0.0.1 --port 4000 --ssl-cert=/path/to/certs/client-cert.pem --ssl-key=/path/to/certs/client-key.pem --ssl-ca=/path/to/certs/ca.pem --ssl-mode=VERIFY_IDENTITY
-```
-
-## 介绍
-
 TiDB 服务端默认采用非加密连接，因而具备监视信道流量能力的第三方可以知悉 TiDB 服务端与客户端之间发送和接受的数据，包括但不限于查询语句内容、查询结果等。若信道是不可信的，例如客户端是通过公网连接到 TiDB 服务端的，则非加密连接容易造成信息泄露，建议使用加密连接确保安全性。
 
 TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接，协议与 MySQL 加密连接一致，现有 MySQL 客户端如 MySQL 运维工具和 MySQL 驱动等能直接支持。TLS 的前身是 SSL，因而 TLS 有时也被称为 SSL，但由于 SSL 协议有已知安全漏洞，TiDB 实际上并未支持。TiDB 支持的 TLS/SSL 协议版本为 TLS 1.0、TLS 1.1、TLS 1.2。
