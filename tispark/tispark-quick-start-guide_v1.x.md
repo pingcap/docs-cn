@@ -55,7 +55,7 @@ cd tidb-ansible/resources/bin/tispark-sample-data
 mysql -h 192.168.0.2 -P 4000 -u root < dss.ddl
 ```
 
-执行以下脚本:
+执行以下脚本：
 
 ```
 ./sample_data.sh
@@ -102,7 +102,7 @@ MySQL [TPCH_001]> show tables;
 
 ## 使用范例
 
-进入 spark 部署目录启动 spark-shell:
+进入 spark 部署目录启动 spark-shell ：
 
 ```
 $ cd spark
@@ -117,13 +117,13 @@ scala> val ti = new TiContext(spark)
 scala> ti.tidbMapDatabase("TPCH_001")
 ```
 
-之后可以直接调用 Spark SQL:
+之后可以直接调用 Spark SQL ：
 
 ```scala
 scala> spark.sql("select count(*) from lineitem").show
 ```
 
-结果为:
+结果为：
 
 ```
 +--------+
@@ -133,7 +133,7 @@ scala> spark.sql("select count(*) from lineitem").show
 +--------+
 ```
 
-下面执行另一个复杂一点的 Spark SQL:
+下面执行另一个复杂一点的 Spark SQL ：
 
 ```scala
 scala> spark.sql(
