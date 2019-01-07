@@ -89,7 +89,7 @@ TiDB implements the asynchronous schema changes algorithm in F1. The Data Manipu
     
         > **Note:** The changing/modifying column operation cannot make the length of the original type become shorter and it cannot change the unsigned/charset/collate attributes of the column.
 
-    - Supports changing the following type definitions: default value, comment, null, not null and OnUpdate, but does not support changing from null to not null.
+    - Supports changing the following type definitions: `default value`, `comment`, `null`, `not null` and `OnUpdate`.
     - Supports parsing the `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}` syntax, but there is no actual operation.
 
 + Truncate Table

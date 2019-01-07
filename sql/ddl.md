@@ -301,7 +301,7 @@ The support for specific operation types is as follows:
       - Integer types: `TinyInt`, `SmallInt`, `MediumInt`, `Int`, `BigInt`
       - String types: `Char`, `Varchar`, `Text`, `TinyText`, `MediumText`, `LongText`
       - Blob types: `Blob`, `TinyBlob`, `MediumBlob`, `LongBlob`
-  - In updating type definition, the `CHANGE/MODIFY COLUMN` supports `default value`, `comment`, `null`, `not null` and `OnUpdate`, but does not support the update from `null` to `not null`.
+  - In updating type definition, the `CHANGE/MODIFY COLUMN` supports `default value`, `comment`, `null`, `not null` and `OnUpdate`.
   - The `CHANGE/MODIFY COLUMN` does not support the update of `enum` type column.
 - `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`: is currently only supported in syntax    
 
