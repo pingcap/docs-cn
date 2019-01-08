@@ -33,6 +33,9 @@ TiDB 支持包括跨行事务、JOIN 及子查询在内的绝大多数 MySQL 5.7
 * X Protocol
 * Savepoints
 * 列级权限
+* `CREATE TABLE tblName AS SELECT stmt` 语法
+* `CREATE TEMPORARY TABLE` 语法
+* `XA` 语法（TiDB 内部使用两阶段提交，但并没有通过 SQL 接口公开）
 
 ## 与 MySQL 有差异的特性
 
