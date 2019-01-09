@@ -9,7 +9,7 @@ category: deployment
 
 ## 注意事项
 
-在升级的过程中请不要执行DDL请求，比如 `add index` 操作，否则可能会出现问题。
+在升级的过程中不要执行 DDL 请求，比如 `add index` 操作，否则可能会出现数据不一致的问题。
 
 ## 在中控机器上安装 Ansible 及其依赖
 
