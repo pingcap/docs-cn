@@ -51,8 +51,8 @@ Configure in the configuration file or command line arguments, and set the corre
 [security]
 # set the path for certificates. Empty string means disabling secure connections.
 ca-path = "/path/to/ca.pem"
-cert-path = "/path/to/client.pem"
-key-path = "/path/to/client-key.pem"
+cert-path = "/path/to/tikv-server.pem"
+key-path = "/path/to/tikv-server-key.pem"
 ```
 
 #### PD
@@ -64,9 +64,9 @@ Configure in the configuration file or command line arguments, and set the corre
 # Path of file that contains list of trusted SSL CAs. If set, following four settings shouldn't be empty
 cacert-path = "/path/to/ca.pem"
 # Path of file that contains X509 certificate in PEM format.
-cert-path = "/path/to/server.pem"
+cert-path = "/path/to/pd-server.pem"
 # Path of file that contains X509 key in PEM format.
-key-path = "/path/to/server-key.pem"
+key-path = "/path/to/pd-server-key.pem"
 ```
 
 Now mutual authentication among TiDB components is enabled. 
@@ -74,55 +74,11 @@ Now mutual authentication among TiDB components is enabled.
 When you connect the server using the client, it is required to specify the client certificate. For example:
 
 ```bash
-./pd-ctl -u https://127.0.0.1:2379 --cacert /path/to/ca.pem --cert /path/to/pd-client.pem --key /path/to/pd-client-key.pem
+./pd-ctl -u https://127.0.0.1:2379 --cacert /path/to/ca.pem --cert /path/to/client.pem --key /path/to/client-key.pem
 
 ./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/client.pem" --key-path="/path/to/clinet-key.pem"
 ```
 
 ## Enable TLS authentication between the MySQL client and TiDB server
 
-### Prepare certificates
-
-```bash
-mysql_ssl_rsa_setup --datadir=certs
-```
-
-### Configure one-way authentication
-
-Configure in the configuration file or command line arguments of TiDB:
-
-```toml
-[security]
-# Path of file that contains list of trusted SSL CAs.
-ssl-ca = ""
-# Path of file that contains X509 certificate in PEM format.
-ssl-cert = "/path/to/certs/server.pem"
-# Path of file that contains X509 key in PEM format.
-ssl-key = "/path/to/certs/server-key.pem"
-```
-
-Configure in the MySQL client:
-
-```bash
-mysql -u root --host 127.0.0.1 --port 4000 --ssl-mode=REQUIRED
-```
-
-### Configure mutual authentication
-
-Configure in the configuration file or command line arguments of TiDB:
-
-```toml
-[security]
-# Path of file that contains list of trusted SSL CAs for connection with mysql client.
-ssl-ca = "/path/to/certs/ca.pem"
-# Path of file that contains X509 certificate in PEM format for connection with mysql client.
-ssl-cert = "/path/to/certs/server.pem"
-# Path of file that contains X509 key in PEM format for connection with mysql client.
-ssl-key = "/path/to/certs/server-key.pem"
-```
-
-Specify the client certificate in the client:
-
-```bash
-mysql -u root --host 127.0.0.1 --port 4000 --ssl-cert=/path/to/certs/client-cert.pem --ssl-key=/path/to/certs/client-key.pem --ssl-ca=/path/to/certs/ca.pem --ssl-mode=VERIFY_IDENTITY
-```
+See [Use Encrypted Connections](../sql/encrypted-connections.md).
