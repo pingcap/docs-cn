@@ -178,7 +178,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
     2018/06/21 11:24:47 meta.go:117: [info] meta: &{CommitTS:400962745252184065}
     ```
 
-    该命令会生成一个文件 `{data-dir}/savepoint`，该文件中包含 tso，用该 tso 作为 Drainer 初次启动使用的 `initial-commit-ts` 参数的值。
+    该命令会输出 meta: &{CommitTS:400962745252184065}，CommitTS 的值作为 Drainer 初次启动使用的 `initial-commit-ts` 参数的值。
 
 2. 全量数据的备份与恢复
 
