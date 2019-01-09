@@ -105,3 +105,16 @@ If `tidb-lightning` abnormally exited, the cluster might be stuck in the "import
 ```sh
 tidb-lightning-ctl --switch-mode=normal
 ```
+
+## Can TiDB-Lightning be used with 1-Gigabit network card?
+
+The TiDB-Lightning toolset requires a 10-Gigabit network card. The 1-Gigabit network card is *not acceptable*, especially for `tikv-importer`.
+A 1-Gigabit network card can only provide a total bandwidth of 120 MB/s, which has to be shared among all target TiKV stores.
+TiDB-Lightning can easily saturate all bandwidth of the 1-Gigabit network, and brings down the cluster because PD is unable to contact it anymore.
+
+## Why TiDB-Lightning requires so much free space in the target TiKV cluster?
+
+With the default settings of 3 replicas, the space requirement of the target TiKV cluster is 6 times the size of SQL dump. The extra multiple of “2” is a conservative estimation because the following factors are not reflected in the SQL dump:
+
+- The space occupied by indices
+- Space amplification in RocksDB

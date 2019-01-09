@@ -21,18 +21,15 @@ Before starting TiDB-Lightning, note that:
 
 ## Hardware requirements
 
-`tidb-lightning` and `tikv-importer` are both resource-intensive programs. It is recommended to deploy them into two separate machines. If your hardware resources are limited, you can deploy `tidb-lightning` and `tikv-importer` on the same machine.
-
-### Hardware requirements of separate deployment
+`tidb-lightning` and `tikv-importer` are both resource-intensive programs. It is recommended to deploy them into two separate machines.
 
 To achieve the best performance, it is recommended to use the following hardware configuration:
 
 - `tidb-lightning`:
 
     - 32+ logical cores CPU
-    - 16 GB+ memory
-    - 1 TB+ SSD, preferring higher read speed
-    - 10 Gigabit network card
+    - An SSD large enough to store the entire SQL dump, preferring higher read speed
+    - 10 Gigabit network card (capable of transferring at ≥300 MB/s)
     - `tidb-lightning` fully consumes all CPU cores when running,
         and deploying on a dedicated machine is highly recommended.
         If not possible, `tidb-lightning` could be deployed together with other components like
@@ -42,27 +39,18 @@ To achieve the best performance, it is recommended to use the following hardware
 
     - 32+ logical cores CPU
     - 32 GB+ memory
-    - 1 TB+ SSD, preferring higher IOPS
-    - 10 Gigabit network card
+    - 1 TB+ SSD, preferring higher IOPS (≥ 8000 is recommended)
+    - 10 Gigabit network card (capable of transferring at ≥300 MB/s)
     - `tikv-importer` fully consumes all CPU, disk I/O and network bandwidth when running,
         and deploying on a dedicated machine is strongly recommended.
-        If not possible, `tikv-importer` could be deployed together with other components like
-        `tikv-server`, but the import speed might be affected.
 
 If you have sufficient machines, you can deploy multiple Lightning/Importer servers, with each working on a distinct set of tables, to import the data in parallel.
 
-### Hardware requirements of mixed deployment
-
-If your hardware resources are severely under constraint, it is possible to deploy `tidb-lightning` and `tikv-importer` and other components on the same machine, but the import performance is affected.
-
-It is recommended to use the following configuration of the single machine:
-
-- 32+ logical cores CPU
-- 32 GB+ memory
-- 1 TB+ SSD, preferring higher IOPS
-- 10 Gigabit network card
-
 > **Notes:** `tidb-lightning` is a CPU intensive program. In an environment with mixed components, the resources allocated to `tidb-lightning` must be limited. Otherwise, other components might not be able to run. It is recommended to set the `region-concurrency` to 75% of CPU logical cores. For instance, if the CPU has 32 logical cores, you can set the `region-concurrency` to 24.
+
+Additionally, the target TiKV cluster should have enough space to absorb the new data.
+Besides [the standard requirements](../../op-guide/recommendation.md), the total free space of the target TiKV cluster should be larger than **Size of SQL dump × [Number of replicas](../../FAQ.md#is-the-number-of-replicas-in-each-region-configurable-if-yes-how-to-configure-it) × 2**.
+With the default replica count of 3, this means the total free space should be at least 6 times the size of SQL dump.
 
 ## Export data
 
@@ -225,7 +213,7 @@ Download the TiDB-Lightning package (choose the same version as that of the TiDB
 
     [import]
     # The directory to store engine files.
-    import-dir = "/tmp/tikv/import"
+    import-dir = "/mnt/ssd/data.import/"
     # Number of threads to handle RPC requests.
     num-threads = 16
     # Number of concurrent import jobs.
@@ -268,10 +256,17 @@ Download the TiDB-Lightning package (choose the same version as that of the TiDB
     # This value affects the memory usage of tikv-importer.
     # Must not exceed the max-open-engines setting for tikv-importer.
     table-concurrency = 8
+
     # The concurrency number of data. It is set to the number of logical CPU
     # cores by default. When deploying together with other components, you can
     # set it to 75% of the size of logical CPU cores to limit the CPU usage.
     #region-concurrency =
+
+    # The maximum I/O concurrency. Excessive I/O concurrency causes an increase in
+    # I/O latency because the disk's internal buffer is frequently refreshed,
+    # which causes the cache miss and slows down the read speed. Depending on the storage
+    # medium, this value might need to be adjusted for optimal performance.
+    io-concurrency = 5
 
     # Logging
     level = "info"
@@ -313,9 +308,6 @@ Download the TiDB-Lightning package (choose the same version as that of the TiDB
     # Block size for file reading. Keep it longer than the longest string of
     # the data source.
     read-block-size = 65536 # Byte (default = 64 KB)
-    # Each data file is split into multiple chunks of this size. Each chunk
-    # is processed in parallel.
-    region-min-size = 268435456 # Byte (default = 256 MB)
     # mydumper local source data directory
     data-source-dir = "/data/my_database"
     # If no-schema is set to true, tidb-lightning assumes that the table skeletons

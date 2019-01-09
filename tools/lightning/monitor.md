@@ -96,9 +96,9 @@ Metrics provided by `tidb-lightning` are listed under the namespace `lightning_*
 
 - **`lightning_idle_workers`** (Gauge)
 
-    Counting idle workers. Values should be less than the `table-concurrency`/`region-concurrency` settings and are typically zero. Labels:
+    Counting idle workers. Values should be less than the `*-concurrency` settings and are typically zero. Labels:
 
-    - **name**: `table` / `region`
+    - **name**: `table` / `region` / `io`
 
 - **`lightning_kv_encoder`** (Counter)
 
@@ -143,6 +143,20 @@ Metrics provided by `tidb-lightning` are listed under the namespace `lightning_*
 
     Bucketed histogram of the size of a block of KV pairs.
 
+- **`lightning_chunk_parser_read_block_seconds`** (Histogram)
+
+    Bucketed histogram of the time needed by the data file parser to read a block.
+
+- **`lightning_chunk_parser_read_row_seconds`** (Histogram)
+
+    Bucketed histogram of the time needed by the data file parser to read a row.
+
 - **`lightning_checksum_seconds`** (Histogram)
 
     Bucketed histogram of the time taken to compute the checksum of a table.
+
+- **`lightning_apply_worker_seconds`** (Histogram)
+
+    Bucketed histogram of the time taken to acquire an idle worker. Labels:
+
+    - **name**: `table` / `region` / `io`

@@ -12,7 +12,7 @@ This document summarizes some commonly encountered errors in the `tidb-lightning
 
 ## Import speed is too slow
 
-Normally it takes Lightning 2 minutes per thread to import a 256 MB Chunk. It is an error if the speed is much slower than this. The time taken for each chunk can be checked from the log mentioning `restore chunk … takes`. This can also be observed from metrics on Grafana.
+Normally it takes Lightning 2 minutes per thread to import a 256 MB data file. It is an error if the speed is much slower than this. The time taken for each data file can be checked from the log mentioning `restore chunk … takes`. This can also be observed from metrics on Grafana.
 
 There are several reasons why Lightning becomes slow:
 
