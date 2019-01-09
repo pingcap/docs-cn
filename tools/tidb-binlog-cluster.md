@@ -138,11 +138,14 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
     
     （a）在已有的 TiDB 集群上增加 Pump 组件，需按以下步骤逐步进行
          
-         1）ansible-playbook deploy.yml -l pump_servers,monitored_servers        #部署 pump_servers 和 node_exporters
+         1）部署 pump_servers 和 node_exporters
+         ansible-playbook deploy.yml -l pump_servers,monitored_servers
          
-         2）ansible-playbook rolling_update.yml --tags=tidb      #更新 tidb_servers
+         2）更新 tidb_servers
+         ansible-playbook rolling_update.yml --tags=tidb
          
-         3）ansible-playbook rolling_update_monitor.yml      #更新监控信息
+         3）更新监控信息
+         ansible-playbook rolling_update_monitor.yml
 
     
     （b）从零开始部署 TiDB 集群
