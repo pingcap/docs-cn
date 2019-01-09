@@ -252,7 +252,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
         # Uncomment this if you want to use `pb` or `sql` as `db-type`.
         # `Compress` compresses the output file, like the `pb` and `sql` file. Now it supports the `gzip` algorithm only. 
         # The value can be `gzip`. Leave it empty to disable compression. 
-        [syncer.to]
+        #[syncer.to]
         compression = ""
         # default data directory: "{{ deploy_dir }}/data.drainer"
         # dir = "data.drainer"
