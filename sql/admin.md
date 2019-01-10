@@ -175,7 +175,7 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...
     * `synced`: 表示已经执行成功；
     * `rollback done`: 表示执行失败，回滚完成；
     * `rollingback`: 表示执行失败，还在回滚过程中；
-    * `cancelling`: 表示正在取消过程中。
+    * `cancelling`: 表示正在取消过程中。这个状态只有在用 `ADMIN CANCEL DDL JOBS` 语法取消 DDL 作业后，才会出现。
 
 * `ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...`
 
