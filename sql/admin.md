@@ -162,19 +162,19 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...
   +--------+---------+------------+---------------+--------------+-----------+----------+-----------+-----------------------------------+---------------+
   ```
   * `JOB_ID`: 每个 DDL 操作对应一个DDL job, `JOB_ID` 全局唯一。
-  * `DB_NAME`：DDL 操作的 database name
-  * `TABLE_NAME`: DDL 操作的 table name
+  * `DB_NAME`：DDL 操作的 database name 。
+  * `TABLE_NAME`: DDL 操作的 table name 。
   * `JOB_TYPE`: DDL 操作的类型。
   * `SCHEMA_STATE`: 当前 schema 的状态，如果是 add index, 就是 index 的状态，如果是 add column, 就是 column 的状态，如果是 create table, 就是 table 的状态。
-  * `SCHEMA_ID`: 当前 DDL 操作的 database ID.
-  * `TABLE_ID`: 当前 DDL 操作的 table ID.
+  * `SCHEMA_ID`: 当前 DDL 操作的 database ID 。
+  * `TABLE_ID`: 当前 DDL 操作的 table ID 。
   * `ROW_COUNT`: 表示在 add index 时，当前已经添加完成的数据行数。
-  * `START_TIME`:  DDL 操作的开始时间
-  * `STATE`: DDL 操作的状态
-    * `running`: 表示正在执行；
-    * `synced`: 表示已经执行成功；
-    * `rollback done`: 表示执行失败，回滚完成；
-    * `rollingback`: 表示执行失败，还在回滚过程中；
+  * `START_TIME`:  DDL 操作的开始时间。
+  * `STATE`: DDL 操作的状态：
+    * `running`: 表示正在执行。
+    * `synced`: 表示已经执行成功。
+    * `rollback done`: 表示执行失败，回滚完成。
+    * `rollingback`: 表示执行失败，还在回滚过程中。
     * `cancelling`: 表示正在取消过程中。这个状态只有在用 `ADMIN CANCEL DDL JOBS` 语法取消 DDL 作业后，才会出现。
 
 * `ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...`
