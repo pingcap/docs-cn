@@ -93,3 +93,13 @@ Or:
 ```sql
 ALTER USER 'jeffrey'@'localhost' IDENTIFIED BY 'mypass';
 ```
+
+## `FLUSH PRIVILEGES` 
+
+If you modified the grant tables directly, run the following command to apply changes immediately:
+
+```sql
+FLUSH PRIVILEGES;
+```
+
+For details, see [Privilege Management](../sql/privilege.md).
