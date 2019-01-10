@@ -145,28 +145,28 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...
 
   ```sql
   mysql> admin show ddl jobs;
-  +--------+---------+------------+---------------+--------------+-----------+----------+-----------+-----------------------------------+---------------+
-  | JOB_ID | DB_NAME | TABLE_NAME | JOB_TYPE      | SCHEMA_STATE | SCHEMA_ID | TABLE_ID | ROW_COUNT | START_TIME                        | STATE         |
-  +--------+---------+------------+---------------+--------------+-----------+----------+-----------+-----------------------------------+---------------+
-  | 47     | test    | t1         | add index     | delete only  | 35        | 37       | 0         | 2019-01-02 13:34:31.397 +0800 CST | running       |
-  | 46     | test    | t1         | add index     | public       | 35        | 37       | 2         | 2019-01-02 13:33:50.989 +0800 CST | synced        |
-  | 45     | test    | t1         | add index     | none         | 35        | 37       | 0         | 2019-01-02 13:23:28.814 +0800 CST | rollback done |
-  | 44     | test    | t1         | add index     | none         | 35        | 37       | 0         | 2019-01-02 13:22:18.655 +0800 CST | rollback done |
-  | 43     | test    | t1         | add index     | none         | 35        | 37       | 0         | 2019-01-02 13:20:20.917 +0800 CST | rollback done |
-  | 42     | test    | t1         | add index     | none         | 35        | 37       | 0         | 2019-01-02 13:19:19.756 +0800 CST | rollback done |
-  | 41     | test    | t1         | add index     | public       | 35        | 37       | 0         | 2019-01-02 13:16:41.477 +0800 CST | synced        |
-  | 40     | test    | t1         | drop column   | none         | 35        | 37       | 0         | 2019-01-02 13:16:15.325 +0800 CST | synced        |
-  | 39     | test    | t1         | add column    | public       | 35        | 37       | 0         | 2019-01-02 13:15:45.605 +0800 CST | synced        |
-  | 38     | test    | t1         | create table  | public       | 35        | 37       | 0         | 2019-01-02 13:15:31.373 +0800 CST | synced        |
-  | 36     | test    |            | create schema | public       | 35        | 0        | 0         | 2019-01-02 13:15:24.269 +0800 CST | synced        |
-  +--------+---------+------------+---------------+--------------+-----------+----------+-----------+-----------------------------------+---------------+
+  +--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+---------------+
+  | JOB_ID | DB_NAME | TABLE_NAME | JOB_TYPE      | SCHEMA_STATE         | SCHEMA_ID | TABLE_ID | ROW_COUNT | START_TIME                        | STATE         |
+  +--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+---------------+
+  | 45     | test    | t1         | add index     | write reorganization | 32        | 37       | 0         | 2019-01-10 12:38:36.501 +0800 CST | running       |
+  | 44     | test    | t1         | add index     | none                 | 32        | 37       | 0         | 2019-01-10 12:36:55.18 +0800 CST  | rollback done |
+  | 43     | test    | t1         | add index     | public               | 32        | 37       | 6         | 2019-01-10 12:35:13.66 +0800 CST  | synced        |
+  | 42     | test    | t1         | drop index    | none                 | 32        | 37       | 0         | 2019-01-10 12:34:35.204 +0800 CST | synced        |
+  | 41     | test    | t1         | add index     | public               | 32        | 37       | 0         | 2019-01-10 12:33:22.62 +0800 CST  | synced        |
+  | 40     | test    | t1         | drop column   | none                 | 32        | 37       | 0         | 2019-01-10 12:33:08.212 +0800 CST | synced        |
+  | 39     | test    | t1         | add column    | public               | 32        | 37       | 0         | 2019-01-10 12:32:55.42 +0800 CST  | synced        |
+  | 38     | test    | t1         | create table  | public               | 32        | 37       | 0         | 2019-01-10 12:32:41.956 +0800 CST | synced        |
+  | 36     | test    |            | drop table    | none                 | 32        | 34       | 0         | 2019-01-10 11:29:59.982 +0800 CST | synced        |
+  | 35     | test    |            | create table  | public               | 32        | 34       | 0         | 2019-01-10 11:29:40.741 +0800 CST | synced        |
+  | 33     | test    |            | create schema | public               | 32        | 0        | 0         | 2019-01-10 11:29:22.813 +0800 CST | synced        |
+  +--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+---------------+
   ```
   * `JOB_ID`: 每个 DDL 操作对应一个DDL job, `JOB_ID` 全局唯一。
   * `DB_NAME`：DDL 操作的 database name 。
   * `TABLE_NAME`: DDL 操作的 table name 。
   * `JOB_TYPE`: DDL 操作的类型。
   * `SCHEMA_STATE`: 当前 schema 的状态，如果是 add index, 就是 index 的状态，如果是 add column, 就是 column 的状态，如果是 create table, 就是 table 的状态。常见的状态有以下几种:
-    * `none`: 表示不存在。一般 drop 操作后，会是 `none` 状态。
+    * `none`: 表示不存在。一般 drop 操作或者 create 操作失败回滚后，会是 `none` 状态。
     * `delete only`, `write only`, `delete reorganization`, `write reorganization`: 这四个状态是中间状态， 这在[Online, Asynchronous Schema Change in F1](http://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/41376.pdf) 论文中有详细说明，在此不详细描述。一般操作是看不到这几种状态的，因为中间状态转换很快，除了 `add index` 操作时能看到处于 `write reorganization`, 表示正在填充索引数据。 
     * `public`: 表示存在且可用。一般 `create table`, `add index/column` 等操作完成后，会是 `public` 状态，表示新建的 table/column/index 可以正常读写了。
   * `SCHEMA_ID`: 当前 DDL 操作的 database ID 。
