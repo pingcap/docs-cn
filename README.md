@@ -210,7 +210,6 @@
   - [中国电信翼支付](http://t.cn/R3Wd9p3)
   - [某电信运营商](http://t.cn/RTYWADg)
 + 更多资源
-  - [常用工具](https://github.com/pingcap/tidb-tools)
   - [PingCAP 团队技术博客](https://pingcap.com/blog-cn/)
   - [知乎专栏](https://zhuanlan.zhihu.com/newsql)
   - [Weekly](https://pingcap.com/weekly/)
