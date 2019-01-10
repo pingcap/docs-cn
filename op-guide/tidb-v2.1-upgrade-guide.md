@@ -15,6 +15,10 @@ category: deployment
     - 停机升级，直接从早于 2.0.1 的 TiDB 版本升级到 2.1
     - 先滚动升级到 2.0.1 或者之后的 2.0.x 版本，再滚动升级到 2.1 版本
 
+## 注意事项
+
+在升级的过程中不要执行 DDL 请求，否则可能会出现行为未定义的问题。
+
 ## 在中控机器上安装 Ansible 及其依赖
 
 TiDB-Ansible release-2.1 版本依赖 2.4.2 及以上但不高于 2.7.0 的 Ansible 版本（`ansible>=2.4.2,<2.7.0`），另依赖 Python 模块：`jinja2>=2.9.6` 和 `jmespath>=0.9.0`。为方便管理依赖，新版本使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](../op-guide/ansible-deployment.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](../op-guide/offline-ansible-deployment.md#在中控机器上离线安装-ansible-及其依赖)。
