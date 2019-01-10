@@ -171,6 +171,7 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...
   * `ROW_COUNT`: 表示在 add index 时，当前已经添加完成的数据行数。
   * `START_TIME`:  DDL 操作的开始时间。
   * `STATE`: DDL 操作的状态：
+    * `none`: 表示已经放入 DDL 作业队列中，但还没开始执行，还在排队等待前面的 DDL 作业完成。
     * `running`: 表示正在执行。
     * `synced`: 表示已经执行成功。
     * `rollback done`: 表示执行失败，回滚完成。
