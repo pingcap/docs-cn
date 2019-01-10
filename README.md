@@ -204,7 +204,6 @@
 - [TiDB Roadmap](ROADMAP.md)
 - [Connect with us](community.md)
 + More Resources
-  - [Frequently Used Tools](https://github.com/pingcap/tidb-tools)
   - [PingCAP Blog](https://pingcap.com/blog/)
   - [Weekly Update](https://pingcap.com/weekly/)
 
