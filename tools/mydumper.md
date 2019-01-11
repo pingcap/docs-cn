@@ -24,6 +24,8 @@ category: tools
                        默认值：当前 TSO（SHOW MASTER STATUS 输出的 UniqueID）
                        此参数可设为 TSO 时间或有效的 datetime 时间。例如：-z "2016-10-08 16:45:26"
 ```
+### 需要的权限
+SELECT, RELOAD, LOCK TABLES, REPLICATION CLIENT
 
 ### 使用举例
 
@@ -31,6 +33,10 @@ category: tools
 
 ```bash
 ./bin/mydumper -h 127.0.0.1 -u root -P 4000
+```
+
+```bash
+./mydumper -h 127.0.0.1 -P 3306 -u backup -p cJebJ4aBmS8H -t 16 -F 64 --regex '^(?!(mysql|information_schema|sys|performance_schema))' --skip-tz-utc -o /tmp/mysql_data
 ```
 
 ## FAQ
