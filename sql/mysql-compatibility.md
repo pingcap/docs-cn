@@ -33,6 +33,9 @@ TiDB 支持包括跨行事务、JOIN 及子查询在内的绝大多数 MySQL 5.7
 * X Protocol
 * Savepoints
 * 列级权限
+* `CREATE TABLE tblName AS SELECT stmt` 语法
+* `CREATE TEMPORARY TABLE` 语法
+* `XA` 语法（TiDB 内部使用两阶段提交，但并没有通过 SQL 接口公开）
 
 ## 与 MySQL 有差异的特性
 
@@ -93,13 +96,13 @@ TiDB 实现了 F1 的异步 Schema 变更算法，DDL 执行过程中不会阻�
         * 具体支持的整型类型有：TinyInt，SmallInt，MediumInt，Int，BigInt。
         * 具体支持的字符串类型有：Char，Varchar，Text，TinyText，MediumText，LongText。
         * 具体支持的 Blob 类型有：Blob，TinyBlob，MediumBlob，LongBlob。
-    - 在修改类型定义方面，支持的包括 default value，comment，null，not null 和 OnUpdate，但是不支持从 null 到 not null 的修改。
+    - 在修改类型定义方面，支持的包括 default value，comment，null，not null 和 OnUpdate。
     - 支持 LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE} 语法，但是不做任何事情（pass through）。
     - 不支持对enum类型的列进行修改
 
 ### 事务模型
 
-TiDB 使用乐观事务模型，在执行 Update、Insert、Delete 等语句时，只有在提交过程中才会检查写写冲突，而不是像 MySQL 一样使用行锁来避免写写冲突。所以业务端在执行 SQL 语句后，需要注意检查 commit 的返回值，即使执行时没有出错，commit的时候也可能会出错。
+TiDB 使用乐观事务模型，在执行 `Update`、`Insert`、`Delete` 等语句时，只有在提交过程中才会检查写写冲突，而不是像 MySQL 一样使用行锁来避免写写冲突。类似的，诸如 `GET_LOCK()` 和 `RELEASE_LOCK()` 等函数以及 `SELECT .. FOR UPDATE` 之类的语句在 TiDB 和 MySQL 中的执行方式并不相同。所以业务端在执行 SQL 语句后，需要注意检查 commit 的返回值，即使执行时没有出错，commit 的时候也可能会出错。
 
 ### 大事务
 
@@ -166,6 +169,15 @@ Create Table: CREATE TABLE `t1` (
 ```
 
 从架构上讲，TiDB 确实支持类似 MySQL 的存储引擎抽象，在启动 TiDB（通常是 `tikv`）时 [`--store`](../sql/server-command-option.md#--store) 选项指定的引擎中创建用户表。
+
+### SQL 模式
+
+TiDB 支持 MySQL 5.7 中 **绝大多数的 SQL 模式**，以下几种模式除外：
+
+- TiDB 暂不支持 `ALLOW_INVALID_DATES` 模式。详情参见 [TiDB #8263](https://github.com/pingcap/tidb/issues/8263)。
+- TiDB 不支持兼容模式（例如 `ORACLE` 和 `POSTGRESQL`）。MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
+- TiDB 中的 `ONLY_FULL_GROUP_BY` 与 MySQL 5.7 相比有细微的 [语义差别](../sql/aggregate-group-by-functions.md#与-mysql-的区别)，此问题日后将予以解决。
+- `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` 这两种 SQL 模式用于解决兼容问题，但并不适用于 TiDB。
 
 ### EXPLAIN
 

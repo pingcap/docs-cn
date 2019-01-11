@@ -14,7 +14,7 @@ TiKV Control (tikv-ctl) 是随 TiKV 附带的一个简单的管理工具，以�
 tikv-ctl 有两种运行模式：远程模式和本地模式。前者通过 `--host` 选项接受 TiKV 的服务地址作为参数，后者则需要 `--db` 选项来指定本地 TiKV 数据目录路径。以下如无特殊说明，所有命令都同时支持这两种模式。对于远程模式，如果 TiKV 启用了 SSL，则 tikv-ctl 也需要指定相关的证书文件，例如：
 
 ```
-$ tikv-ctl --ca-path ca.pem --cert-path client.pem --key-path client-key.pem --host 127.0.0.1:21060 <subcommands>
+$ tikv-ctl --ca-path ca.pem --cert-path client.pem --key-path client-key.pem --host 127.0.0.1:20160 <subcommands>
 ```
 
 某些情况下，tikv-ctl 与 PD 进行通信，而不与 TiKV 通信。此时你需要使用 `--pd` 选项而非 `--host` 选项，例如：
@@ -46,7 +46,7 @@ AAFF
 两个子命令都同时支持远程模式和本地模式。它们的用法及输出内容如下所示：
 
 ```bash
-$ tikv-ctl --host 127.0.0.1:21060 raft region -r 2
+$ tikv-ctl --host 127.0.0.1:20160 raft region -r 2
 region id: 2
 region state key: \001\003\000\000\000\000\000\000\000\002\001
 region state: Some(region {id: 2 region_epoch {conf_ver: 3 version: 1} peers {id: 3 store_id: 1} peers {id: 5 store_id: 4} peers {id: 7 store_id: 6}})
@@ -151,7 +151,7 @@ success!
 **这个命令只支持远程模式**，它可以让某个 Region 对应的 Raft 进行一次副本之间的一致性检查。如果检查失败，TiKV 自身会 panic。如果 `--host` 指定的 TiKV 不是这个 Region 的 Leader，则会报告错误。
 
 ```bash
-$ tikv-ctl --host 127.0.0.1:21060 consistency-check -r 2
+$ tikv-ctl --host 127.0.0.1:20160 consistency-check -r 2
 success!
 $ tikv-ctl --host 127.0.0.1:21061 consistency-check -r 2
 DebugClient::check_region_consistency: RpcFailure(RpcStatus { status: Unknown, details: Some("StringError(\"Leader is on store 1\")") })
@@ -207,23 +207,28 @@ success!
 
 ### 强制 Region 从多副本失败状态恢复服务
 
-`unsafe-recover remove-fail-stores` 命令将一些失败掉的机器从所有 Region 的 peers 列表中移除。这样，这些 Region 便可以在 TiKV 重启之后以剩下的健康的副本继续提供服务了。这个命令常常用于多个 TiKV store 损坏或被删除的情况。
+`unsafe-recover remove-fail-stores` 命令可以将一些失败掉的机器从指定 Region 的 peers 列表中移除。这个命令只有 local 模式，而且需要目标 TiKV 先停掉服务以便释放文件锁。
 
-`-s` 选项接受多个以逗号分隔的 `store_id`，并使用 `-r` 参数来指定包含的 Region。否则，所有 Region 中位于这些 store 上的 peers 默认都会被移除。 
+`-s` 选项接受多个以逗号分隔的 `store_id`，并使用 `-r` 参数来指定包含的 Region。如果要对某一个 store 上的全部 Region 都执行这个操作，则可以简单地指定 `--all-regions`。
 
 ```bash
 $ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 3 -r 1001,1002
 success!
+
+$ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 4,5 --all-regions
 ```
+
+之后启动 TiKV，这些 Region 便可以以剩下的健康的副本继续提供服务了。这个命令常用于多个 TiKV store 损坏或被删除的情况。
 
 > **注意**：
 > 
 > - **这个命令只支持本地模式**。在运行成功后，会打印 `success!`。
-> - 对于指定 Region 的 peers 所在的每个 store，均须运行这个命令。如果不设置 `-r` 选项，所有的 Region 都会被包含进来，你则需要为所有的 store 都执行这个命令。
+> - 一般来说，需要使用这个命令的地方，对于指定 Region 的 peers 所在的每个 store，均须运行这个命令。
+> - 如果使用 `--all-regions`，通常需要在集群剩余所有健康的 store 上执行这个命令。
 
 ### 恢复损坏的 MVCC 数据
 
-`recover-mvcc` 命令用于 MVCC 数据损坏导致 TiKV 无法正常运行的情况。为了从不同种类的不一致情况中恢复，该命令会反复检查 3 个 CF ("default", "write", "lock")。  
+`recover-mvcc` 命令用于 MVCC 数据损坏导致 TiKV 无法正常运行的情况。为了从不同种类的不一致情况中恢复，该命令会反复检查 3 个 CF ("default", "write", "lock")。
 
 `-r` 选项可以通过 `region_id` 指定包含的 Region，`-p` 选项可以指定 PD 的 endpoint。
 

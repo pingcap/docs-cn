@@ -183,4 +183,4 @@ scala> spark.sql(
 -----------------+---------+------------+--------+-----------+
 ```
 
-更多样例请参考 https://github.com/ilovesoup/tpch/tree/master/sparksql。
+更多样例请参考 https://github.com/ilovesoup/tpch/tree/master/sparksql 

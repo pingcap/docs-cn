@@ -14,7 +14,7 @@ category: deployment
 - [Ansible 部署方案 (强烈推荐)](ansible-deployment.md)
 - [离线 Ansible 部署方案](offline-ansible-deployment.md)
 - [Docker 部署方案](docker-deployment.md)
-- [跨机房部署方案](location-awareness.md)
+- [跨数据中心部署方案](cross-dc-deployment.md)
 
 ## 配置集群
 

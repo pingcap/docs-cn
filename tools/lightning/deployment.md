@@ -63,7 +63,7 @@ category: tools
 
 ### 使用 Ansible 部署 TiDB-Lightning
 
-TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../op-guide/ansible-deployment.md)。
+TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansible-deployment.md)。
 
 1. 编辑 `inventory.ini`，分别配置一个 IP 来部署 `tidb-lightning` 和 `tikv-importer`。
 
@@ -140,7 +140,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../op-guide/ansible-
 
 #### 第 1 步：部署 TiDB 集群
 
-在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群 (版本要求 2.0.9 以上)，建议使用最新版。部署方法可参考 [TiDB 快速入门指南](../QUICKSTART.md)。
+在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群 (版本要求 2.0.9 以上)，建议使用最新版。部署方法可参考 [TiDB 快速入门指南](../../QUICKSTART.md)。
 
 #### 第 2 步：下载 TiDB-Lightning 安装包
 
@@ -228,7 +228,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../op-guide/ansible-
     # TiDB-Lightning 配置文件模版
 
     [lightning]
-    # 用于除错和 Prometheus 监控的 HTTP 端口。输入 0 关闭。
+    # 用于调试和 Prometheus 监控的 HTTP 端口。输入 0 关闭。
     pprof-port = 10089
 
     # 开始导入前先检查集群版本是否支持。
@@ -260,7 +260,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../op-guide/ansible-
     # 为避免加重目标集群的压力，建议另外使用一个兼容 MySQL 协议的数据库服务器。
     # dsn = "root@tcp(127.0.0.1:4000)/"
     # 导入成功后是否保留断点。默认为删除。
-    # 保留断点可用于除错，但有可能泄漏数据源的元数据。
+    # 保留断点可用于调试，但有可能泄漏数据源的元数据。
     # keep-after-success = false
 
     [tikv-importer]

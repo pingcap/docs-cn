@@ -13,7 +13,11 @@ TiDB 集群状态监控目前有两种接口，第一种是通过 HTTP 接口对
 
 ### TiDB Server
 
-TiDB 对外暴露的 HTTP 接口是 http://host:port/status ，默认的端口号是 10080 （可以通过 --status 参数设置），可以通过访问这个接口获取当前 TiDB Server 的状态，以及判断是否存活。返回结果是 **Json** 格式：
+TiDB API 地址：`http://${host}:${port}`。
+
+其中 port 默认为 10080，各类 `api_name` 详细信息参见 [TiDB API Doc](https://github.com/pingcap/tidb/blob/master/docs/tidb_http_api.md)。
+
+下面示例中，通过访问 `http://${host}:${port}/status` 获取当前 TiDB Server 的状态，以及判断是否存活。返回结果为 **Json** 格式：
 
 ```bash
 curl http://127.0.0.1:10080/status
@@ -24,12 +28,13 @@ curl http://127.0.0.1:10080/status
 }
 ```
 
-+ connection: 当前 TiDB Server 上的客户端连接数
-+ version: TiDB 版本号
-+ git_hash: TiDB 当前代码的 Git Hash
++ `connections`：当前 TiDB Server 上的客户端连接数
+ + `version`：TiDB 版本号
+ + `git_hash`：TiDB 当前代码的 Git Hash
 
 ### PD Server
-PD API 地址： ``http://${host}:${port}/pd/api/v1/${api_name}``。
+
+PD API 地址：`http://${host}:${port}/pd/api/v1/${api_name}`。
 
 其中 port 默认为 2379，各类 api_name 详细信息参见 [PD API Doc](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html)。
 
@@ -168,7 +173,7 @@ curl http://127.0.0.1:2379/pd/api/v1/stores
  - targets: ['host:port'] # use the Push Gateway address
 labels:
   group: 'production'
- ```
+```
 
 #### Grafana 配置
 

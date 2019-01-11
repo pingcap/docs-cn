@@ -6,6 +6,7 @@ category: tools
 # sync-diff-inspector 用户文档
 
 ## sync-diff-inspector 简介
+
 sync-diff-inspector 是一个用于校验 MySQL／TiDB 中两份数据是否一致的工具，该工具提供了修复数据的功能（适用于修复少量不一致的数据）。
 
 主要功能：
@@ -20,6 +21,7 @@ GitHub 地址：[sync-diff-inspector](https://github.com/pingcap/tidb-tools/tree
 下载地址：[sync-diff-inspector-linux-amd64.tar.gz](https://download.pingcap.org/sync-diff-inspector-linux-amd64.tar.gz)
 
 ## sync-diff-inspector 的使用
+
 ### 通用配置文件说明
 
 ``` toml
@@ -37,9 +39,6 @@ check-thread-count = 4
 
 # 抽样检查的比例，如果设置为 100 则检查全部数据
 sample-percent = 100
-
-# 是否使用 TiDB 的隐藏列“_tidb_rowid”进行对比，当对比的表没有主键／唯一键且对比的两个数据库都为 TiDB 时可以开启该配置
-use-rowid = false
 
 # 通过计算 chunk 的 checksum 来对比数据，如果不开启则逐行对比数据
 use-checksum = true
@@ -62,8 +61,10 @@ schema = "test"
 tables = ["test1", "test2", "test3"]
 
 # 支持使用正则表达式配置检查的表，需要以‘~’开始，
-# 例如：下面的配置会检查所有表名以‘test’为前缀的表
-# tables = ["~test*"]
+# 下面的配置会检查所有表名以‘test’为前缀的表
+# tables = ["~^test.*"]
+# 下面的配置会检查配置库中所有的表
+# tables = ["~^"]
 
 # 对部分表进行特殊的配置，配置的表必须包含在 check-tables 中
 [[table-config]]
@@ -134,7 +135,8 @@ password = ""
 # snapshot = "2016-10-08 16:45:26"
 ```
 
-### 分库分表场景下数据对比的配置示例：
+### 分库分表场景下数据对比的配置示例
+
 假设有两个 MySQL 实例，使用同步工具同步到一个 TiDB 中，场景如图所示：
 
 ![shard-table-sync](../media/shard-table-sync.png)
@@ -210,8 +212,15 @@ password = ""
 ```
 
 ### 运行 sync-diff-inspector
+
 执行如下命令：
 
 ``` bash
 ./bin/sync_diff_inspector --config=./config.toml
 ```
+
+该命令最终会在日志中输出一个检查报告，说明每个表的检查情况。如果数据存在不一致的情况，sync-diff-inspector 会生成 SQL 修复不一致的数据，并将这些 SQL 语句保存到 `fix.sql` 文件中。
+
+### 注意
+
+TiDB 使用的 collation 为 utf8_bin，如果对 MySQL 和 TiDB 的数据进行对比，需要注意 MySQL 中表的 collation 设置。如果表的主键／唯一键为 varchar 类型，且 MySQL 中 collation 设置与 TiDB 不同，可能会因为排序问题导致最终校验结果不正确，需要在 sync-diff-inspector 的配置文件中增加 collation 设置。

@@ -7,6 +7,10 @@ category: deployment
 
 本文档适用于从 TiDB 1.0 版本或 TiDB 2.0 rc 版本升级到 TiDB 2.0 GA 版本。
 
+## 注意事项
+
+在升级的过程中不要执行 DDL 请求，否则可能会出现行为未定义的问题。
+
 ## 在中控机器上安装 Ansible 及其依赖
 
 TiDB-Ansible release-2.0 版本依赖 Ansible 2.4.2 及以上版本，兼容最新的 Ansible 2.5 版本，另依赖 Python 模块：`jinja2>=2.9.6` 和 `jmespath>=0.9.0`。为方便管理依赖，新版本使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](../op-guide/ansible-deployment.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](../op-guide/offline-ansible-deployment.md#在中控机器上离线安装-ansible-及其依赖)。

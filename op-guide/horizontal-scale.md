@@ -102,11 +102,11 @@ TiDB 集群可以在不影响线上服务的情况下动态进行扩容和缩容
 
 我们可以通过这个 store 的 state_name 来确定这个 store 的状态：
 
-- `state_name=Up`: 这个 store 正常服务
-- `state_name=Disconnected`: 当前没有检测到这个 store 的心跳，可能是故障或网络连接中断
-- `state_name=Down`: 超过一小时（可通过 max-down-time 配置）没有收到 store 心跳，此时 PD 会为这个 store 上的数据添加副本
-- `state_name=Offline`: 这个 store 正在下线，此时 store 仍在服务中
-- `state_name=Tombstone`: 这个 store 已经完成下线，此时 store 上已经没有数据，可以关闭实例
+- Up：这个 store 正常服务
+- Disconnected：当前没有检测到这个 store 的心跳，可能是故障或网络连接中断
+- Down：超过一小时（可通过 `max-down-time` 配置）没有收到 store 心跳，此时 PD 会为这个 store 上的数据添加副本
+- Offline：这个 store 正在将其中的 Region 转移到其他节点，此时这个 store 仍在服务中
+- Tombstone：这个 store 已经完成下线，此时 store 上已经没有数据，可以关闭实例
 
 ### 动态迁移节点
 

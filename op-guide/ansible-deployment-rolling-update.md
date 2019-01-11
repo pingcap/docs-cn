@@ -1,11 +1,11 @@
 ---
-title: 使用 TiDB Ansible 升级 TiDB 集群
+title: 使用 TiDB-Ansible 升级 TiDB 集群
 category: deployment
 ---
 
-# 使用 TiDB Ansible 升级 TiDB 集群
+# 使用 TiDB-Ansible 升级 TiDB 集群
 
-滚动升级 TiDB 集群时，会串行关闭服务，更新服务 binary 和配置文件，再启动服务。在前端配置负载均衡的情况下，滚动升级期间不影响业务运行（最小环境 ：pd * 3 、tidb * 2、tikv * 3）。
+滚动升级 TiDB 集群时，会串行关闭服务，更新服务 binary 和配置文件，再启动服务。在前端配置负载均衡的情况下，滚动升级期间不影响业务运行（最小环境 ：pd * 3、tidb * 2、tikv * 3）。
 
 > **注**：如果 TiDB 集群开启了 binlog，部署了 Pump 和 Drainer 服务，升级 TiDB 服务时会升级 Pump，请先停止 Drainer 服务再执行滚动升级操作。
 

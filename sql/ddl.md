@@ -7,6 +7,8 @@ category: user guide
 
 DDL（Data Definition Language）用于定义和管理数据库以及数据库中各种对象的语句。
 
+目前 TiDB 实现了 `ADD INDEX` 操作和 `GENERAL` 操作（除了 `ADD INDEX` 以外的 DDL 操作）在表间的并行。即在不同表之间，`ADD INDEX` 操作和 `GENERAL` 操作可以并行执行。也可以认为目前有两个 worker 分别处理 `ADD INDEX` 操作和 `GENERAL` 操作，当处理的请求是同一个表内的操作时，按接受到 DDL 请求的先后顺序来执行。该功能是为了初步且稳定地解决 `ADD INDEX` 操作（当前 TiDB 中只有 `ADD INDEX` 操作的执行时间会比较久）可能阻塞其他 DDL 操作的问题。
+
 ## CREATE DATABASE 语法
 
 ```sql
@@ -311,7 +313,7 @@ table_option:
     - 具体支持的整型类型有：`TinyInt`，`SmallInt`，`MediumInt`，`Int`，`BigInt`。
     - 具体支持的字符串类型有：`Char`，`Varchar`，`Text`，`TinyText`，`MediumText`，`LongText`。
     - 具体支持的 Blob 类型有：`Blob`，`TinyBlob`，`MediumBlob`，`LongBlob`。
-    - 在修改类型定义方面，支持的包括 `default value`，`comment`，`null`，`not null` 和 `OnUpdate`，但是不支持从 `null` 到 `not null` 的修改。
+    - 在修改类型定义方面，支持的包括 `default value`，`comment`，`null`，`not null` 和 `OnUpdate`。
     - 不支持对 `enum` 类型的列进行修改
 
 * `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}` 目前只是语法支持。

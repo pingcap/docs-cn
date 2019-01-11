@@ -36,7 +36,7 @@ Usage of Reparo:
 
 ### 配置文件说明
 
-```
+```toml
 # Drainer 输出的 protobuf 格式 binlog 文件的存储路径。
 data-dir = "./data.drainer"
 

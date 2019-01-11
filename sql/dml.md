@@ -123,10 +123,10 @@ INSERT INTO tbl_name (a,c) VALUES(1,2),(4,5),(7,8);
 通过赋值列表指定插入的数据，例如：
 
 ```sql
-INSERT INTO tbl_name a=1, b=2, c=3;
+INSERT INTO tbl_name SET a=1, b=2, c=3;
 ```
 
-这种方式每次只能插入一行数据，每列的值通过赋值列表制定。
+这种方式每次只能插入一行数据，每列的值通过赋值列表指定。
 
 * Select Statement
 
@@ -152,6 +152,7 @@ Delete 语句用于删除数据库中的数据，TiDB 兼容 MySQL Delete 语句
 这种语法用于删除的数据只会涉及一个表的情况。
 
 ### 语法定义
+
 ```sql
 DELETE [LOW_PRIORITY] [QUICK] [IGNORE] FROM tbl_name
     [WHERE where_condition]

@@ -5,7 +5,19 @@ category: deployment
 
 # TiDB 2.1 升级操作指南
 
-本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 rc 版本升级到 TiDB 2.1 GA 版本。2.1 版本 TiDB-Binlog 不兼容 Kafka 版本，如果当前集群已经使用 Kafka 版本的 TiDB-Binlog，升级需要参考 [Binlog 升级方法](../tools/tidb-binlog-cluster.md#版本升级方法)。
+本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 RC 版本升级到 TiDB 2.1 GA 版本。TiDB 2.1 版本不兼容 Kafka 版本的 TiDB-Binlog，如果当前集群已经使用 [Kafka 版本的 TiDB-Binlog](../tools/tidb-binlog-kafka.md)，须参考 [Binlog 升级方法](../tools/tidb-binlog-cluster.md#版本升级方法)升级到 Cluster 版本。
+
+## 升级兼容性说明
+
+- 新版本存储引擎更新，不支持在升级后回退至 2.0.x 或更旧版本
+- 从 2.0.6 之前的版本升级到 2.1 之前，需要确认集群中是否存在正在运行中的 DDL 操作，特别是耗时的 `Add Index` 操作，等 DDL 操作完成后再执行升级操作
+- 2.1 版本启用了并行 DDL，早于 2.0.1 版本的集群，无法滚动升级到 2.1，可以选择下面两种方案：
+    - 停机升级，直接从早于 2.0.1 的 TiDB 版本升级到 2.1
+    - 先滚动升级到 2.0.1 或者之后的 2.0.x 版本，再滚动升级到 2.1 版本
+
+## 注意事项
+
+在升级的过程中不要执行 DDL 请求，否则可能会出现行为未定义的问题。
 
 ## 在中控机器上安装 Ansible 及其依赖
 
@@ -103,8 +115,6 @@ $ ansible-playbook rolling_update.yml
 
 ## 滚动升级 TiDB 监控组件
 
-1. 滚动升级 TiDB 监控组件：
-
-    ```
-    $ ansible-playbook rolling_update_monitor.yml
-    ```
+```
+$ ansible-playbook rolling_update_monitor.yml
+```

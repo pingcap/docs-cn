@@ -60,7 +60,7 @@ TiDB Controller 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，�
 
 如：`tidb-ctl schema in mysql` 将得到以下结果：
 
-```text
+```json
 [
     {
         "id": 13,
@@ -82,7 +82,7 @@ TiDB Controller 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，�
 
 如：`tidb-ctl schema in mysql -n db` 将得到 mysql 库中 db 表的表结构，结果如下：
 
-```text
+```json
 {
     "id": 9,
     "name": {

@@ -51,7 +51,7 @@ category: user guide
 
 操作符优先级显示在以下列表中，从最高优先级到最低优先级。同一行显示的操作符具有相同的优先级。
 
-``` sql
+```sql
 INTERVAL
 BINARY
 !
