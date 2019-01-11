@@ -31,23 +31,23 @@ The pattern can either be a simple name, or a regular expression in [Go dialect]
 ```toml
 [[black-white-list.do-tables]]
 db-name = "db-pattern-1"
-table-name = "table-pattern-1"
+tbl-name = "table-pattern-1"
 
 [[black-white-list.do-tables]]
 db-name = "db-pattern-2"
-table-name = "table-pattern-2"
+tbl-name = "table-pattern-2"
 
 [[black-white-list.do-tables]]
 db-name = "db-pattern-3"
-table-name = "table-pattern-3"
+tbl-name = "table-pattern-3"
 
 [[black-white-list.ignore-tables]]
 db-name = "db-pattern-4"
-table-name = "table-pattern-4"
+tbl-name = "table-pattern-4"
 
 [[black-white-list.ignore-tables]]
 db-name = "db-pattern-5"
-table-name = "table-pattern-5"
+tbl-name = "table-pattern-5"
 ```
 
 * If the `do-tables` array is not empty,
@@ -88,15 +88,15 @@ ignore-dbs = [
 
 [[black-white-list.do-tables]]      # rule D
 db-name = "logs"
-table-name = "~_2018$"
+tbl-name = "~_2018$"
 
 [[black-white-list.ignore-tables]]  # rule E
 db-name = "~.*"
-table-name = "~^messages.*"
+tbl-name = "~^messages.*"
 
 [[black-white-list.do-tables]]      # rule F
 db-name = "~^forum.*"
-table-name = "messages"
+tbl-name = "messages"
 ```
 
 First apply the database rules:
