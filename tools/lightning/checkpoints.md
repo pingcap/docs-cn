@@ -22,10 +22,19 @@ enable = true
 # 存储断点的架构名称（数据库名称）
 schema = "tidb_lightning_checkpoint"
 
-# 存储断点的数据库连接参数 (DSN)，格式为“用户:密码@tcp(地址:端口)”。
+# 存储断点的方式
+#  - file: 存放在本地文件系统（要求 v2.1.1 或以上）
+#  - mysql: 存放在兼容 MySQL 的数据库服务器
+driver = "file"
+
+# 断点的存放位置
+#
+# 若 driver = "file"，此参数为目标文件路径。默认为“/tmp/架构名称.pb”。
+#
+# 若 driver = "mysql"，此参数为数据库连接参数 (DSN)，格式为“用户:密码@tcp(地址:端口)”。
 # 默认会重用 [tidb] 设置目标数据库来存储断点。
 # 为避免加重目标集群的压力，建议另外使用一个兼容 MySQL 的数据库服务器。
-#dsn = "root@tcp(127.0.0.1:4000)/"
+#dsn = "/tmp/tidb_lightning_checkpoint.pb"
 
 # 导入成功后是否保留断点。默认为删除。
 # 保留断点可用于调试，但有可能泄漏数据源的元数据。
@@ -34,7 +43,11 @@ schema = "tidb_lightning_checkpoint"
 
 ## 断点的存储
 
-Lightning 的断点可以存放在任何兼容 MySQL 5.7 或以上的数据库中，包括 MariaDB 和 TiDB。在没有选择的情况下，默认会存在目标数据库里。
+Lightning 支持两种存储方式：本地文件或 MySQL 数据库。
+
+* 若 `driver = "file"`，断点会存放在一个本地文件，其路径由 `dsn` 参数指定。由于断点会频繁更新，建议将这个文件放到写入次数不受限制的盘上，例如 RAM disk。
+
+* 若 `driver = "mysql"`，断点可以存放在任何兼容 MySQL 5.7 或以上的数据库中，包括 MariaDB 和 TiDB。在没有选择的情况下，默认会存在目标数据库里。
 
 目标数据库在导入期间会有大量的操作，若使用目标数据库来存储断点会加重其负担，甚至有可能造成通信超时丢失数据。因此，**强烈建议另外部署一台兼容 MySQL 的临时数据库服务器**。此数据库也可以安装在 `tidb-lightning` 的主机上。导入完毕后可以删除。
 
@@ -89,4 +102,4 @@ tidb-lightning-ctl --checkpoint-remove=all
 tidb-lightning-ctl --checkpoint-dump=output/directory
 ```
 
-将所有断点备份到传入的文件夹，主要用于技术支持。
+将所有断点备份到传入的文件夹，主要用于技术支持。此选项仅于 `driver = "mysql"` 时有效。
