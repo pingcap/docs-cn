@@ -766,7 +766,7 @@ sqoop export \
 2）可以根据 Syncer 定期上报到 Prometheus 的监控信息来还原出历史同步的位置信息，该方法的位置信息在大量同步数据时由于延迟会可能不准确。
 
 ##### 4.2.1.7  syncer 下游 TiDB 数据和 MySQL 数据不一致，DML 会退出么？
-- 上游 MySQL 中存在数据，下游 TiDB 中该数据不存在，上游 MySQL 执行 update/delete 更新/删除该条数据时，syncer 同步过程即不会报错退出也没有该条数据。
+- 上游 MySQL 中存在数据，下游 TiDB 中该数据不存在，上游 MySQL 执行 `UPDATE` 或 `DELETE`（更新/删除）该条数据的操作时，Syncer 同步过程即不会报错退出也没有该条数据。
 - 下游有主键索引或是唯一索引冲突时，执行 `UPDATE` 会退出，执行 `INSERT` 不会退出。
 
 ### 4.3 业务流量迁入
