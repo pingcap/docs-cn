@@ -723,7 +723,7 @@ sqoop export \
 - 也可以选择增大 tidb 的单个事物语句数量限制，不过这个会导致内存上涨。
 
 #### 4.1.9 TiDB 有像 Oracle 那样的 Flashback Query 功能么，DDL 支持么？
-有，DDL也可以。详细参考[TiDB 历史数据回溯](https://pingcap.com/docs-cn/op-guide/history-read)。
+有，也支持 DDL。详细参考 [TiDB 历史数据回溯](op-guide/history-read)。
 
 ### 4.2 在线数据同步
 
