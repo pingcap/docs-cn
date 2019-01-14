@@ -58,7 +58,7 @@ Lightning 支持两种存储方式：本地文件或 MySQL 数据库。
 ### `--checkpoint-error-destroy`
 
 ```sh
-tidb-lightning-ctl --checkpoint-error-destroy='`schema`.`table`
+tidb-lightning-ctl --checkpoint-error-destroy='`schema`.`table`'
 ```
 
 该命令会让失败的表从头开始整个导入过程。选项中的架构和表名必须以反引号 (`` ` ``) 包裹，而且区分大小写。
