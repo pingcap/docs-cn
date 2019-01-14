@@ -252,10 +252,10 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
         # Uncomment this if you want to use `pb` or `sql` as `db-type`.
         # `Compress` compresses the output file, like the `pb` and `sql` file. Now it supports the `gzip` algorithm only. 
         # The value can be `gzip`. Leave it empty to disable compression. 
-        #[syncer.to]
+        [syncer.to]
         compression = ""
         # default data directory: "{{ deploy_dir }}/data.drainer"
-        # dir = "data.drainer"
+        dir = "data.drainer"
         ```
 
 5. 部署 Drainer
@@ -376,7 +376,7 @@ Drainer="192.168.0.13"
         ```
   
         如果命令行参数与配置文件中的参数重合，则使用命令行设置的参数的值。
-        
+
 2. 使用 binary 部署 Drainer
 
     - Drainer 命令行参数说明（以在 “192.168.0.13” 上部署为例）
