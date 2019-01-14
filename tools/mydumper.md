@@ -35,10 +35,6 @@ SELECT, RELOAD, LOCK TABLES, REPLICATION CLIENT
 ./bin/mydumper -h 127.0.0.1 -u root -P 4000
 ```
 
-```bash
-./mydumper -h 127.0.0.1 -P 3306 -u backup -p cJebJ4aBmS8H -t 16 -F 64 --regex '^(?!(mysql|information_schema|sys|performance_schema))' --skip-tz-utc -o /tmp/mysql_data
-```
-
 ## FAQ
 
 ### PingCAP 的 mydumper 的源码是否可获取？
