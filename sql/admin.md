@@ -170,7 +170,7 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...
     * `delete only`，`write only`，`delete reorganization`，`write reorganization`：这四个状态是中间状态，在[Online, Asynchronous Schema Change in F1](http://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/41376.pdf) 论文中有详细说明，在此不详细描述。一般操作中看不到这几种状态，因为中间状态转换很快，只有 `add index` 操作时能看到处于 `write reorganization` 状态，表示正在填充索引数据。 
     * `public`：表示存在且可用。一般 `create table`，`add index/column` 等操作完成后，会是 `public` 状态，表示新建的 table/column/index 可以正常读写了。
   * `SCHEMA_ID`：当前 DDL 操作的 database ID。
-  * `TABLE_ID`：当前 DDL 操作的 table ID 。
+  * `TABLE_ID`：当前 DDL 操作的 table ID。
   * `ROW_COUNT`：表示在 add index 时，当前已经添加完成的数据行数。
   * `START_TIME`：DDL 操作的开始时间。
   * `STATE`：DDL 操作的状态：
