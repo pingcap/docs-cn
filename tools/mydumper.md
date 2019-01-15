@@ -24,8 +24,13 @@ category: tools
                        默认值：当前 TSO（SHOW MASTER STATUS 输出的 UniqueID）
                        此参数可设为 TSO 时间或有效的 datetime 时间。例如：-z "2016-10-08 16:45:26"
 ```
+
 ### 需要的权限
-SELECT, RELOAD, LOCK TABLES, REPLICATION CLIENT
+
+- SELECT
+- RELOAD
+- LOCK TABLES
+- REPLICATION CLIENT
 
 ### 使用举例
 
