@@ -165,7 +165,7 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...
   * `DB_NAME`：DDL 操作的 database name。
   * `TABLE_NAME`：DDL 操作的 table name。
   * `JOB_TYPE`：DDL 操作的类型。
-  * `SCHEMA_STATE`：当前 schema 的状态，如果是 add index, 就是 index 的状态，如果是 add column, 就是 column 的状态，如果是 create table, 就是 table 的状态。常见的状态有以下几种:
+  * `SCHEMA_STATE`：当前 schema 的状态，如果是 `add index`，就是 index 的状态，如果是 `add column`，就是 column 的状态，如果是 `create table`，就是 table 的状态。常见的状态有以下几种：
     * `none`：表示不存在。一般 drop 操作或者 create 操作失败回滚后，会是 `none` 状态。
     * `delete only`，`write only`，`delete reorganization`，`write reorganization`：这四个状态是中间状态，在[Online, Asynchronous Schema Change in F1](http://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/41376.pdf) 论文中有详细说明，在此不详细描述。一般操作中看不到这几种状态，因为中间状态转换很快，只有 `add index` 操作时能看到处于 `write reorganization` 状态，表示正在填充索引数据。 
     * `public`：表示存在且可用。一般 `create table`, `add index/column` 等操作完成后，会是 `public` 状态，表示新建的 table/column/index 可以正常读写了。
