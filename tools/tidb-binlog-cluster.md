@@ -132,24 +132,33 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
         pump3 ansible_host=172.16.10.74 deploy_dir=/data1/pump
         ```
 
-2. 部署并启动含 pump 组件的 TiDB 集群
-    
-    参照上文配置完 inventory.ini 后，选择一种方式进行部署
-    
-    （a）在已有的 TiDB 集群上增加 Pump 组件，需按以下步骤逐步进行
-         
-         // 1）部署 pump_servers 和 node_exporters
-         ansible-playbook deploy.yml -l pump_servers,monitored_servers
-         
-         // 2）更新并重启 tidb_servers
-         ansible-playbook rolling_update.yml --tags=tidb
-         
-         // 3）更新监控信息
-         ansible-playbook rolling_update_monitor.yml
+2. 部署并启动含 Pump 组件的 TiDB 集群
 
+    参照上文配置完 `inventory.ini` 文件后，从以下两种方式中选择一种进行部署。
     
-    （b）从零开始部署含 pump 组件的 TiDB 集群
-        使用 Ansible 部署 TiDB 集群，方法参考 [TiDB Ansible 部署方案](../op-guide/ansible-deployment.md)。
+    **方式一**：在已有的 TiDB 集群上增加 Pump 组件，需按以下步骤逐步进行。
+    
+    1. 部署 pump_servers 和 node_exporters
+    
+        ```
+        ansible-playbook deploy.yml -l pump_servers,monitored_servers
+        ```
+        
+    2. 更新并重启 tidb_servers
+    
+        ```
+        ansible-playbook rolling_update.yml --tags=tidb
+        ```
+        
+    3. 更新监控信息
+    
+        ```
+        ansible-playbook rolling_update_monitor.yml
+        ```
+
+    **方式二**：从零开始部署含 Pump 组件的 TiDB 集群
+    
+    使用 Ansible 部署 TiDB 集群，方法参考 [TiDB Ansible 部署方案](../op-guide/ansible-deployment.md)。
 
 3. 查看 Pump 服务状态
 
@@ -178,7 +187,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
     2018/06/21 11:24:47 meta.go:117: [info] meta: &{CommitTS:400962745252184065}
     ```
 
-    该命令会输出 meta: &{CommitTS:400962745252184065}，CommitTS 的值作为 Drainer 初次启动使用的 `initial-commit-ts` 参数的值。
+    该命令会输出 `meta: &{CommitTS:400962745252184065}`，CommitTS 的值作为 Drainer 初次启动使用的 `initial-commit-ts` 参数的值。
 
 2. 全量数据的备份与恢复
 
