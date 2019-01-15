@@ -137,13 +137,13 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...
 
 * `ADMIN SHOW DDL`
 
-用于查看当前正在执行的 DDL 作业。
+    用于查看当前正在执行的 DDL 作业。
 
 * `ADMIN SHOW DDL JOBS`
 
-用于查看当前 DDL 作业队列中的所有结果（包括正在运行以及等待运行的任务）以及已执行完成的 DDL 作业队列中的最近十条结果。
+    用于查看当前 DDL 作业队列中的所有结果（包括正在运行以及等待运行的任务）以及已执行完成的 DDL 作业队列中的最近十条结果。
 
-```sql
+    ```sql
     mysql> admin show ddl jobs;
     +--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+---------------+
     | JOB_ID | DB_NAME | TABLE_NAME | JOB_TYPE      | SCHEMA_STATE         | SCHEMA_ID | TABLE_ID | ROW_COUNT | START_TIME                        | STATE         |
@@ -160,7 +160,8 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...
     | 35     | test    |            | create table  | public               | 32        | 34       | 0         | 2019-01-10 11:29:40.741 +0800 CST | synced        |
     | 33     | test    |            | create schema | public               | 32        | 0        | 0         | 2019-01-10 11:29:22.813 +0800 CST | synced        |
     +--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+---------------+
-```
+    ```
+    
     * `JOB_ID`：每个 DDL 操作对应一个DDL job，`JOB_ID` 全局唯一。
     * `DB_NAME`：DDL 操作的 database name。
     * `TABLE_NAME`：DDL 操作的 table name。
@@ -183,8 +184,8 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...
 
 * `ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...`
 
-用于显示 `job_id` 对应的 DDL 任务的原始 SQL 语句。这个 `job_id` 只会搜索正在执行中的任务以及 DDL 历史作业队伍中最近的十条。
+    用于显示 `job_id` 对应的 DDL 任务的原始 SQL 语句。这个 `job_id` 只会搜索正在执行中的任务以及 DDL 历史作业队伍中最近的十条。
 
 * `ADMIN CANCEL DDL JOBS job_id [, job_id] ...`
 
-用于取消正在执行的 DDL 作业，其返回值为对应的作业取消是否成功，如果失败会显示失败的具体原因。这个操作可以同时取消多个 DDL 作业，其中 DDL 作业 ID 可以通过 `ADMIN SHOW DDL JOBS` 语句来获取。其中如果希望取消的作业已经完成，则取消操作将会失败。
+    用于取消正在执行的 DDL 作业，其返回值为对应的作业取消是否成功，如果失败会显示失败的具体原因。这个操作可以同时取消多个 DDL 作业，其中 DDL 作业 ID 可以通过 `ADMIN SHOW DDL JOBS` 语句来获取。其中如果希望取消的作业已经完成，则取消操作将会失败。
