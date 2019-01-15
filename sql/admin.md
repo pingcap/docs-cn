@@ -171,7 +171,7 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...
     * `public`：表示存在且可用。一般 `create table`，`add index/column` 等操作完成后，会是 `public` 状态，表示新建的 table/column/index 可以正常读写了。
   * `SCHEMA_ID`：当前 DDL 操作的 database ID。
   * `TABLE_ID`：当前 DDL 操作的 table ID。
-  * `ROW_COUNT`：表示在 add index 时，当前已经添加完成的数据行数。
+  * `ROW_COUNT`：表示在 `add index` 时，当前已经添加完成的数据行数。
   * `START_TIME`：DDL 操作的开始时间。
   * `STATE`：DDL 操作的状态：
     * `none`：表示已经放入 DDL 作业队列中，但还没开始执行，还在排队等待前面的 DDL 作业完成。另一种原因可能是 drop 操作后，会变成 none 状态，但是很快会更新成 synced 状态，表示所有 TiDB 都同步到该状态了。
