@@ -143,43 +143,43 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...
 
 用于查看当前 DDL 作业队列中的所有结果（包括正在运行以及等待运行的任务）以及已执行完成的 DDL 作业队列中的最近十条结果。
 
-  ```sql
-  mysql> admin show ddl jobs;
-  +--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+---------------+
-  | JOB_ID | DB_NAME | TABLE_NAME | JOB_TYPE      | SCHEMA_STATE         | SCHEMA_ID | TABLE_ID | ROW_COUNT | START_TIME                        | STATE         |
-  +--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+---------------+
-  | 45     | test    | t1         | add index     | write reorganization | 32        | 37       | 0         | 2019-01-10 12:38:36.501 +0800 CST | running       |
-  | 44     | test    | t1         | add index     | none                 | 32        | 37       | 0         | 2019-01-10 12:36:55.18 +0800 CST  | rollback done |
-  | 43     | test    | t1         | add index     | public               | 32        | 37       | 6         | 2019-01-10 12:35:13.66 +0800 CST  | synced        |
-  | 42     | test    | t1         | drop index    | none                 | 32        | 37       | 0         | 2019-01-10 12:34:35.204 +0800 CST | synced        |
-  | 41     | test    | t1         | add index     | public               | 32        | 37       | 0         | 2019-01-10 12:33:22.62 +0800 CST  | synced        |
-  | 40     | test    | t1         | drop column   | none                 | 32        | 37       | 0         | 2019-01-10 12:33:08.212 +0800 CST | synced        |
-  | 39     | test    | t1         | add column    | public               | 32        | 37       | 0         | 2019-01-10 12:32:55.42 +0800 CST  | synced        |
-  | 38     | test    | t1         | create table  | public               | 32        | 37       | 0         | 2019-01-10 12:32:41.956 +0800 CST | synced        |
-  | 36     | test    |            | drop table    | none                 | 32        | 34       | 0         | 2019-01-10 11:29:59.982 +0800 CST | synced        |
-  | 35     | test    |            | create table  | public               | 32        | 34       | 0         | 2019-01-10 11:29:40.741 +0800 CST | synced        |
-  | 33     | test    |            | create schema | public               | 32        | 0        | 0         | 2019-01-10 11:29:22.813 +0800 CST | synced        |
-  +--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+---------------+
-  ```
-  * `JOB_ID`：每个 DDL 操作对应一个DDL job，`JOB_ID` 全局唯一。
-  * `DB_NAME`：DDL 操作的 database name。
-  * `TABLE_NAME`：DDL 操作的 table name。
-  * `JOB_TYPE`：DDL 操作的类型。
-  * `SCHEMA_STATE`：当前 schema 的状态，如果是 `add index`，就是 index 的状态，如果是 `add column`，就是 column 的状态，如果是 `create table`，就是 table 的状态。常见的状态有以下几种：
-    * `none`：表示不存在。一般 drop 操作或者 create 操作失败回滚后，会是 `none` 状态。
-    * `delete only`，`write only`，`delete reorganization`，`write reorganization`：这四个状态是中间状态，在[Online, Asynchronous Schema Change in F1](http://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/41376.pdf) 论文中有详细说明，在此不详细描述。一般操作中看不到这几种状态，因为中间状态转换很快，只有 `add index` 操作时能看到处于 `write reorganization` 状态，表示正在填充索引数据。 
-    * `public`：表示存在且可用。一般 `create table`，`add index/column` 等操作完成后，会是 `public` 状态，表示新建的 table/column/index 可以正常读写了。
-  * `SCHEMA_ID`：当前 DDL 操作的 database ID。
-  * `TABLE_ID`：当前 DDL 操作的 table ID。
-  * `ROW_COUNT`：表示在 `add index` 时，当前已经添加完成的数据行数。
-  * `START_TIME`：DDL 操作的开始时间。
-  * `STATE`：DDL 操作的状态：
-    * `none`：表示已经放入 DDL 作业队列中，但还没开始执行，还在排队等待前面的 DDL 作业完成。另一种原因可能是 drop 操作后，会变成 none 状态，但是很快会更新成 synced 状态，表示所有 TiDB 都同步到该状态了。
-    * `running`：表示正在执行。
-    * `synced`：表示已经执行成功，且所有 TiDB 都已经同步该状态了。
-    * `rollback done`：表示执行失败，回滚完成。
-    * `rollingback`：表示执行失败，还在回滚过程中。
-    * `cancelling`：表示正在取消过程中。这个状态只有在用 `ADMIN CANCEL DDL JOBS` 语法取消 DDL 作业后，才会出现。
+```sql
+    mysql> admin show ddl jobs;
+    +--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+---------------+
+    | JOB_ID | DB_NAME | TABLE_NAME | JOB_TYPE      | SCHEMA_STATE         | SCHEMA_ID | TABLE_ID | ROW_COUNT | START_TIME                        | STATE         |
+    +--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+---------------+
+    | 45     | test    | t1         | add index     | write reorganization | 32        | 37       | 0         | 2019-01-10 12:38:36.501 +0800 CST | running       |
+    | 44     | test    | t1         | add index     | none                 | 32        | 37       | 0         | 2019-01-10 12:36:55.18 +0800 CST  | rollback done |
+    | 43     | test    | t1         | add index     | public               | 32        | 37       | 6         | 2019-01-10 12:35:13.66 +0800 CST  | synced        |
+    | 42     | test    | t1         | drop index    | none                 | 32        | 37       | 0         | 2019-01-10 12:34:35.204 +0800 CST | synced        |
+    | 41     | test    | t1         | add index     | public               | 32        | 37       | 0         | 2019-01-10 12:33:22.62 +0800 CST  | synced        |
+    | 40     | test    | t1         | drop column   | none                 | 32        | 37       | 0         | 2019-01-10 12:33:08.212 +0800 CST | synced        |
+    | 39     | test    | t1         | add column    | public               | 32        | 37       | 0         | 2019-01-10 12:32:55.42 +0800 CST  | synced        |
+    | 38     | test    | t1         | create table  | public               | 32        | 37       | 0         | 2019-01-10 12:32:41.956 +0800 CST | synced        |
+    | 36     | test    |            | drop table    | none                 | 32        | 34       | 0         | 2019-01-10 11:29:59.982 +0800 CST | synced        |
+    | 35     | test    |            | create table  | public               | 32        | 34       | 0         | 2019-01-10 11:29:40.741 +0800 CST | synced        |
+    | 33     | test    |            | create schema | public               | 32        | 0        | 0         | 2019-01-10 11:29:22.813 +0800 CST | synced        |
+    +--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+---------------+
+```
+    * `JOB_ID`：每个 DDL 操作对应一个DDL job，`JOB_ID` 全局唯一。
+    * `DB_NAME`：DDL 操作的 database name。
+    * `TABLE_NAME`：DDL 操作的 table name。
+    * `JOB_TYPE`：DDL 操作的类型。
+    * `SCHEMA_STATE`：当前 schema 的状态，如果是 `add index`，就是 index 的状态，如果是 `add column`，就是 column 的状态，如果是 `create table`，就是 table 的状态。常见的状态有以下几种：
+        * `none`：表示不存在。一般 drop 操作或者 create 操作失败回滚后，会是 `none` 状态。
+        * `delete only`，`write only`，`delete reorganization`，`write reorganization`：这四个状态是中间状态，在[Online, Asynchronous Schema Change in F1](http://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/41376.pdf) 论文中有详细说明，在此不详细描述。一般操作中看不到这几种状态，因为中间状态转换很快，只有 `add index` 操作时能看到处于 `write reorganization` 状态，表示正在填充索引数据。 
+        * `public`：表示存在且可用。一般 `create table`，`add index/column` 等操作完成后，会是 `public` 状态，表示新建的 table/column/index 可以正常读写了。
+    * `SCHEMA_ID`：当前 DDL 操作的 database ID。
+    * `TABLE_ID`：当前 DDL 操作的 table ID。
+    * `ROW_COUNT`：表示在 `add index` 时，当前已经添加完成的数据行数。
+    * `START_TIME`：DDL 操作的开始时间。
+    * `STATE`：DDL 操作的状态：
+        * `none`：表示已经放入 DDL 作业队列中，但还没开始执行，还在排队等待前面的 DDL 作业完成。另一种原因可能是 drop 操作后，会变成 none 状态，但是很快会更新成 synced 状态，表示所有 TiDB 都同步到该状态了。
+        * `running`：表示正在执行。
+        * `synced`：表示已经执行成功，且所有 TiDB 都已经同步该状态了。
+        * `rollback done`：表示执行失败，回滚完成。
+        * `rollingback`：表示执行失败，还在回滚过程中。
+        * `cancelling`：表示正在取消过程中。这个状态只有在用 `ADMIN CANCEL DDL JOBS` 语法取消 DDL 作业后，才会出现。
 
 * `ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...`
 
