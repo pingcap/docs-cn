@@ -163,7 +163,7 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...
   ```
   * `JOB_ID`：每个 DDL 操作对应一个DDL job，`JOB_ID` 全局唯一。
   * `DB_NAME`：DDL 操作的 database name。
-  * `TABLE_NAME`：DDL 操作的 table name 。
+  * `TABLE_NAME`：DDL 操作的 table name。
   * `JOB_TYPE`：DDL 操作的类型。
   * `SCHEMA_STATE`：当前 schema 的状态，如果是 add index, 就是 index 的状态，如果是 add column, 就是 column 的状态，如果是 create table, 就是 table 的状态。常见的状态有以下几种:
     * `none`：表示不存在。一般 drop 操作或者 create 操作失败回滚后，会是 `none` 状态。
