@@ -7,18 +7,18 @@ about: Typo, Grammatical error, etc.。
 ## Bug 报告
 
 **This repository is ONLY used to solve problems related to DOCS-CN.
-PLease move other questions(TiDB, TiKV, etc) to [other repositories](https://github.com/pingcap/).**
+For other issues(TiDB, TiKV, etc) to [other repositories](https://github.com/pingcap/).**
 <!-- 本仓库仅用于解决与中文文档相关的问题，
 其他方面问题(如TiDB、TiKV等)请移步其他[有关仓库](https://github.com/pingcap/) -->
 
-Please answer these questions before submitting your issue. Thanks!
+Please answer the following questions before submitting your issue. Thanks!
 <!-- 非常感谢你提出相关问题，在提交你的issue之前，请回答下面几个问题: -->
 
-1. What is the document path for this problem?
+1. What is the document directory for the problem?
 <!-- 1. 该问题出现的文档路径是什么？-->
 
 
-2. How do you want to improve?
+2. How would you like to improve it?
 <!-- 2. 你希望如何改正它? -->
 
 

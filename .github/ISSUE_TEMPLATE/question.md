@@ -1,13 +1,13 @@
 ---
-name: "\U0001F914 提出问题"
-about: 询问那些没有在文档或其他参考资料中有答案的问题
+name: "\U0001F914 Question"
+about: Usage question that isn't answered in docs or discussion
 
 ---
 
-## 提出问题
+## Question
 
 **This repository is ONLY used to solve problems related to DOCS-CN.
-PLease move other questions(TiDB, TiKV, etc) to [other repositories](https://github.com/pingcap/).**
+For other issues(TiDB, TiKV, etc) to [other repositories](https://github.com/pingcap/).**  
 <!-- 本仓库仅用于解决与中文文档相关的问题，
 其他方面问题(如TiDB、TiKV等)请移步其他[有关仓库](https://github.com/pingcap/) -->
 
@@ -17,9 +17,9 @@ Before asking a question, make sure you have:
 <!-- - 在Stack Overflow等地搜索了问题。 -->
 - Googled your question.
 <!-- - 通过谷歌等搜索引擎查询了问题。  -->
-- Searched open and closed GitHub issues
+- Searched relevant GitHub issues.
 <!-- - 查阅了相关的issues。 -->
-- Read the documentation:
+- Read relevant documentation:
 <!-- - 阅读了相关文档。 -->
   - [TiDB Doc](https://github.com/pingcap/docs)
   - [TiDB Doc-cn](https://github.com/pingcap/docs-cn)
