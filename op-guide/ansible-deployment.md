@@ -282,7 +282,7 @@ As the above code shows, the current mode is `powersave` in this example.
 
 ## Step 8: Mount the data disk ext4 filesystem with options on the target machines
 
-Log in to the Control Machine using the `root` user account.
+Log in to the target machines using the `root` user account.
 
 Format your data disks to the ext4 filesystem and mount the filesystem with the `nodelalloc` and `noatime` options. It is required to mount the `nodelalloc` option, or else the Ansible deployment cannot pass the test. The `noatime` option is optional.
 
