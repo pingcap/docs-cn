@@ -257,6 +257,8 @@ You can use Docker Compose to build a TiDB cluster locally, including the cluste
 
 2. If a slow query occurs, you can locate the `tidb-server` instance where the slow query is and the slow query time point using Grafana and find the SQL statement information recorded in the log on the corresponding node.
 
+3. In addition to the log, you can also view the slow query using the `admin show slow` command. For details, see [`admin show slow` command](sql/slow-query.md#admin-show-slow-command).
+
 #### How to add the `label` configuration if `label` of TiKV was not configured when I deployed the TiDB cluster for the first time?
 
 The configuration of TiDB `label` is related to the cluster deployment architecture. It is important and is the basis for PD to execute global management and scheduling. If you did not configure `label` when deploying the cluster previously, you should adjust the deployment structure by manually adding the `location-labels` information using the PD management tool `pd-ctl`, for example, `config set location-labels "zone, rack, host"` (you should configure it based on the practical `label` level name).
@@ -749,6 +751,10 @@ CREATE TABLE if not exists mysql.user (
 INSERT INTO mysql.user VALUES ("%", "root", "", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y");
 ```
 
+#### Can TiDB provide services while Loader is running?
+ 
+ TiDB can provide services while Loader is running because Loader inserts the data logically. But do not perform the related DDL operations.
+
 #### How to export the data in TiDB?
 
 Currently, TiDB does not support `select into outfile`. You can use the following methods to export the data in TiDB:
@@ -787,6 +793,10 @@ Two solutions:
     ```
 
 - You can also increase the limited number of statements in a single TiDB transaction, but this will consume more memory.
+
+#### Does TiDB have a function like the Flashback Query in Oracle? Does it support DDL?
+
+ Yes, it does. And it supports DDL as well. For details, see [how TiDB reads data from history versions](op-guide/history-read.md).
 
 ### Migrate the data online
 
@@ -828,6 +838,11 @@ Two solutions:
 
 - Put the `syncer.meta` file in a relatively secure disk. For example, use disks with RAID 1.
 - Restore the location information of history synchronization according to the monitoring data that Syncer reports to Prometheus regularly. But the location information might be inaccurate due to the delay when a large amount of data is synchronized.
+
+##### If the downstream TiDB data is not consistent with the MySQL data during the synchronization process of Syncer, will DML operations cause exits?
+
+- If the data exists in the upstream MySQL but does not exist in the downstream TiDB, when the upstream MySQL performs the `UPDATE` or `DELETE` operation on this row of data, Syncer will not report an error and the synchronization process will not exit, and this row of data does not exist in the downstream.
+- If a conflict exists in the primary key indexes or the unique indexes in the downstream, preforming the `UPDATE` operation will cause an exit and performing the `INSERT` operation will not cause an exit.
 
 ### Migrate the traffic
 
