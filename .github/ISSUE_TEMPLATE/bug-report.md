@@ -12,7 +12,7 @@ For other issues (TiDB, TiKV, etc), please move to [other repositories](https://
 其他方面的问题（如 TiDB、TiKV 等），请移步其他[相关仓库](https://github.com/pingcap/)。 -->
 
 Please answer the following questions before submitting your issue. Thanks!
-<!-- 非常感谢你提出相关问题，在提交你的issue之前，请回答下面几个问题: -->
+<!-- 非常感谢你提出相关问题，在提交你的 issue 之前，请回答下面几个问题：-->
 
 1. What is the document directory for the problem?
 <!-- 1. 该问题出现的文档路径是什么？-->
