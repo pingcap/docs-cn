@@ -45,7 +45,7 @@ category: Roadmap
     - [ ] 减少读写冲突
     - [ ] 优化事务调度机制
     - [ ] 改善模型，降低延迟
-    - [ ] 支持最小事务（like the mini-transaction of InnoDB)
+    - [ ] 支持最小事务 (like the mini-transaction of InnoDB)
 
 ## TiKV：
 
