@@ -20,7 +20,7 @@ For other issues (TiDB, TiKV, etc), please move to [other repositories](https://
 <!-- 2. 描述你想要扩充的方面或你的建议。-->
 
 
-3. If convenient, please provide reference materials(Blog, Stack Overflow, etc).
+3. If convenient, please provide reference materials (Blog, Stack Overflow, etc).
 <!-- 3. 如果方便的话，请提供一些参考资料(如你遇到的博客、搜索到的资料等)。-->
 
 
