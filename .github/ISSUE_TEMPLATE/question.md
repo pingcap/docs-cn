@@ -14,7 +14,7 @@ For other issues(TiDB, TiKV, etc) to [other repositories](https://github.com/pin
 Before asking a question, make sure you have:
 <!-- 在提出一个问题之前，请确定你已经进行了下面的操作: -->
 - Searched existing Stack Overflow questions.
-<!-- - 在Stack Overflow等地搜索了问题。 -->
+<!-- - 已在 Stack Overflow 等平台搜索了相关问题。 -->
 - Googled your question.
 <!-- - 通过谷歌等搜索引擎查询了问题。  -->
 - Searched relevant GitHub issues.
