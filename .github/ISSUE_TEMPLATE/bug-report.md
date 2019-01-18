@@ -9,7 +9,7 @@ about: Typo, Grammatical error, etc.。
 **This repository is ONLY used to solve problems related to DOCS-CN.
 For other issues (TiDB, TiKV, etc), please move to [other repositories](https://github.com/pingcap/).**
 <!-- 本仓库仅用于解决与中文文档相关的问题，
-其他方面问题(如TiDB、TiKV等)请移步其他[有关仓库](https://github.com/pingcap/) -->
+其他方面的问题（如 TiDB、TiKV 等），请移步其他[相关仓库](https://github.com/pingcap/)。 -->
 
 Please answer the following questions before submitting your issue. Thanks!
 <!-- 非常感谢你提出相关问题，在提交你的issue之前，请回答下面几个问题: -->
