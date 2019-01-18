@@ -53,7 +53,7 @@ The server hardware requirements for development, testing, and the production en
 
 * You need to use TiDB v2.0.8-binlog, v2.1.0-rc.5 or the later version. Otherwise, the TiDB cluster is not compatible with the cluster version of TiDB-Binlog.
 * When TiDB is running, you need to guarantee that at least one Pump is running normally.
-* To enable TiDB-Binlog, add the `enable-binlog` startup parameter to TiDB.
+* To enable the TiDB-Binlog service, add the `enable-binlog` startup parameter in TiDB. Make sure that the TiDB-Binlog service is enabled in all TiDB instances in a same cluster, otherwise the upstream and downstream data inconsistency might occur during data synchronization. If you want to temporarily run a TiDB instance where the TiDB-Binlog service is not enabled, configure `run_ddl= false` in the TiDB configuration file.
 * Drainer does not support the `rename` DDL operation on the table of `ignore schemas` (the schemas in the filter list).
 * If you want to start Drainer in the existing TiDB cluster, generally, you need to make a full backup of the cluster data, obtain `savepoint`, import the data to the target database, and then start Drainer to synchronize the incremental data from `savepoint`.
 * Drainer supports synchronizing binlogs to MySQL, TiDB, Kafka or the local files. If you need to synchronize binlogs to other destinations, you can set Drainer to synchronize the binlog to Kafka and read the data in Kafka for customization processing. See [Binlog Slave Client User Guide](../tools/binlog-slave-client.md).
