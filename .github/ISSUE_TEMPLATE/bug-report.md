@@ -7,7 +7,7 @@ about: Typo, Grammatical error, etc.。
 ## Bug 报告
 
 **This repository is ONLY used to solve problems related to DOCS-CN.
-For other issues(TiDB, TiKV, etc) to [other repositories](https://github.com/pingcap/).**
+For other issues (TiDB, TiKV, etc), please move to [other repositories](https://github.com/pingcap/).**
 <!-- 本仓库仅用于解决与中文文档相关的问题，
 其他方面问题(如TiDB、TiKV等)请移步其他[有关仓库](https://github.com/pingcap/) -->
 
