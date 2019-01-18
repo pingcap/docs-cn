@@ -12,7 +12,7 @@ For other issues (TiDB, TiKV, etc), please move to [other repositories](https://
 <!-- 本仓库仅用于解决与中文文档相关的问题，
 其他方面问题（如 TiDB、TiKV 等），请移步其他[相关仓库](https://github.com/pingcap/)。 -->
 
-1. Please describe the problem that relates to your addition.
+1. Did you encounter a certain issue about the documentation? If yes, please describe the issue that relates to your feature request.
 <!-- 1. 提出的扩充文档部分，是因为你遇到了相关问题吗？如果是，请描述一下你所遇到的问题。-->
 
 
