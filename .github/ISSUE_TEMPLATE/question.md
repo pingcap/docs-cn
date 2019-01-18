@@ -19,7 +19,7 @@ Before asking a question, make sure you have:
 <!-- - 通过谷歌等搜索引擎查询了问题。  -->
 - Searched open and closed [GitHub issues](https://github.com/pingcap/docs-cn/issues?utf8=%E2%9C%93&q=is%3Aissue).
 <!-- - 查阅了相关的 issues。 -->
-- Read relevant documentation:
+- Read the documentation:
 <!-- - 阅读了相关文档。 -->
   - [TiDB Doc](https://github.com/pingcap/docs)
   - [TiDB Doc-cn](https://github.com/pingcap/docs-cn)
