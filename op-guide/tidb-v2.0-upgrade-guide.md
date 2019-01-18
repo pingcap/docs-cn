@@ -8,6 +8,10 @@ category: deployment
 
 This document describes how to upgrade from TiDB 1.0 or TiDB 2.0 RC version to TiDB 2.0 GA version.
 
+## Precaution
+
+Do not execute any DDL statements during the upgrading process, otherwise the undefined behavior error might occur.
+
 ## Step 1: Install Ansible and dependencies in the Control Machine
 
 TiDB-Ansible release-2.0 depends on Ansible 2.4.2 or later, and is compatible with the latest Ansible 2.5. In addition, TiDB-Ansible release-2.0 depends on the Python module: `jinja2>=2.9.6` and `jmespath>=0.9.0`.
