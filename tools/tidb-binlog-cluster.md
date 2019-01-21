@@ -141,7 +141,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
     1. 部署 pump_servers 和 node_exporters
     
         ```
-        ansible-playbook deploy.yml -l pump_servers,monitored_servers
+        ansible-playbook deploy.yml -l ${pump1_ip}, ${pump2_ip}, [${alias1_name}, ${alias2_name}]
         ```
         
     2. 更新并重启 tidb_servers
@@ -153,7 +153,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
     3. 更新监控信息
     
         ```
-        ansible-playbook rolling_update_monitor.yml
+        ansible-playbook rolling_update_monitor.yml --tags=prometheus
         ```
 
     **方式二**：从零开始部署含 Pump 组件的 TiDB 集群
