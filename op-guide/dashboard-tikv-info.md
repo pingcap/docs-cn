@@ -358,7 +358,7 @@ This section shows images of the service panels on the TiKV dashboard.
 
 ![TiKV Dashboard - Scheduler metrics](../media/tikv-dashboard-scheduler.png)
 
-## Scheduler - batch_get
+### Scheduler - batch_get
 
 ![TiKV Dashboard - Scheduler - batch_get metrics](../media/tikv-dashboard-scheduler-batch-get.png)
 
