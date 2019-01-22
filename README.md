@@ -123,7 +123,10 @@
   - [mydumper](tools/mydumper.md)
   - [Loader](tools/loader.md)
   + Data Migration
-    - [Overview](tools/data-migration-overview.md)
+    + Overview
+      - [Architecture](tools/data-migration-overview.md#architecture)
+      - [Features](tools/data-migration-overview.md#data-synchronization-introduction)
+      - [Restrictions](tools/data-migration-overview.md#usage-restrictions)
     - [Deploy](tools/data-migration-deployment.md)
     - [Synchronize Data](tools/data-migration-practice.md)
     + Configure

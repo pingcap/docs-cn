@@ -34,9 +34,7 @@ You can perform the following steps to create a data synchronization task based 
 
 This section shows description of some important concepts.
 
-| Concept         | Description                                                         | Configuration File                                                     |
-| ------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| `instance-id`  | Specifies a MySQL/MariaDB instance (if you deploy DM using DM-ansible, `host:port` is used to construct this ID) | `mysql-instance` of `dm-master.toml`;<br> `instance-id` of `task.yaml` |
-| DM-worker ID | Specifies a DM-worker (from the `worker-addr` parameter of `dm-worker.toml`) | `worker-addr` of `dm-worker.toml`;<br> the `-worker`/`-w` flag of the dmctl command line |
-
-> **Note:** You must keep `mysql-instance` and DM-worker at a one-to-one relationship. 
+| Concept  | Description  | Configuration File  |
+| :------ | :--------- | :------------- |
+| `source-id`  | Uniquely identifies a MySQL or MariaDB instance, or a replication group with the master-slave structure. | `source_id` of `inventory.ini`;<br> `source-id` of `dm-master.toml`;<br> `source-id` of `task.yaml` |
+| DM-worker ID | Uniquely identifies a DM-worker (by the `worker-addr` parameter of `dm-worker.toml`) | `worker-addr` of `dm-worker.toml`;<br> the `-worker`/`-w` flag of the dmctl command line |

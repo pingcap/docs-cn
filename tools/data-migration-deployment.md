@@ -106,7 +106,7 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
 2. Run the following command to download DM-Ansible.
 
     ```bash
-    $ wget http://download.pingcap.org/dm-ansible.tar.gz
+    $ wget http://download.pingcap.org/dm-ansible-latest.tar.gz
     ```
 
 ## Step 4: Install Ansible and its dependencies on the Control Machine
@@ -118,7 +118,8 @@ It is required to use `pip` to install Ansible and its dependencies, otherwise a
 1. Install Ansible and the dependencies on the Control Machine:
 
     ```bash
-    $ tar -xzvf dm-ansible.tar.gz
+    $ tar -xzvf dm-ansible-latest.tar.gz
+    $ mv dm-ansible-latest dm-ansible
     $ cd /home/tidb/dm-ansible
     $ sudo pip install -r ./requirements.txt
     ```
@@ -193,7 +194,7 @@ You can choose one of the following two types of cluster topology according to y
 | node3 | 172.16.10.73 | DM-worker2 |
 
 ```ini
-## DM modules
+## DM modules.
 [dm_master_servers]
 dm_master ansible_host=172.16.10.71
 
@@ -202,7 +203,7 @@ dm_worker1 ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql
 
 dm_worker2 ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-## Monitoring modules
+## Monitoring modules.
 [prometheus_servers]
 prometheus ansible_host=172.16.10.71
 
@@ -212,7 +213,7 @@ grafana ansible_host=172.16.10.71
 [alertmanager_servers]
 alertmanager ansible_host=172.16.10.71
 
-## Global variables
+## Global variables.
 [all:vars]
 cluster_name = test-cluster
 
@@ -234,21 +235,21 @@ grafana_admin_password = "admin"
 | node2 | 172.16.10.72 | DM-worker1-1, DM-worker1-2 |
 | node3 | 172.16.10.73 | DM-worker2-1, DM-worker2-2 |
 
-When you edit the `inventory.ini` file, pay attention to distinguish between the following variables: `server_id`, `deploy_dir`, `dm_worker_port`, and `dm_worker_status_port`.
+When you edit the `inventory.ini` file, pay attention to distinguish between the following variables: `server_id`, `deploy_dir`, and `dm_worker_port`.
 
 ```ini
-## DM modules
+## DM modules.
 [dm_master_servers]
 dm_master ansible_host=172.16.10.71
 
 [dm_worker_servers]
-dm_worker1_1 ansible_host=172.16.10.72 server_id=101 deploy_dir=/data1/dm_worker dm_worker_port=10081 dm_worker_status_port=10082 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
-dm_worker1_2 ansible_host=172.16.10.72 server_id=102 deploy_dir=/data2/dm_worker dm_worker_port=10083 dm_worker_status_port=10084 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+dm_worker1_1 ansible_host=172.16.10.72 server_id=101 deploy_dir=/data1/dm_worker dm_worker_port=8262 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+dm_worker1_2 ansible_host=172.16.10.72 server_id=102 deploy_dir=/data2/dm_worker dm_worker_port=8263 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-dm_worker2_1 ansible_host=172.16.10.73 server_id=103 deploy_dir=/data1/dm_worker dm_worker_port=10081 dm_worker_status_port=10082 mysql_host=172.16.10.83 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
-dm_worker2_2 ansible_host=172.16.10.73 server_id=104 deploy_dir=/data2/dm_worker dm_worker_port=10083 dm_worker_status_port=10084 mysql_host=172.16.10.84 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+dm_worker2_1 ansible_host=172.16.10.73 server_id=103 deploy_dir=/data1/dm_worker dm_worker_port=8262 mysql_host=172.16.10.83 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+dm_worker2_2 ansible_host=172.16.10.73 server_id=104 deploy_dir=/data2/dm_worker dm_worker_port=8263 mysql_host=172.16.10.84 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-## Monitoring modules
+## Monitoring modules.
 [prometheus_servers]
 prometheus ansible_host=172.16.10.71
 
@@ -258,7 +259,7 @@ grafana ansible_host=172.16.10.71
 [alertmanager_servers]
 alertmanager ansible_host=172.16.10.71
 
-## Global variables
+## Global variables.
 [all:vars]
 cluster_name = test-cluster
 
@@ -283,7 +284,7 @@ Edit the `deploy_dir` variable to configure the deployment directory.
 The global variable is set to `/home/tidb/deploy` by default, and it applies to all services. If the data disk is mounted on the `/data1` directory, you can set it to `/data1/dm`. For example:
 
 ```ini
-## Global variables
+## Global variables.
 [all:vars]
 deploy_dir = /data1/dm
 ```
@@ -307,12 +308,15 @@ dm-master ansible_host=172.16.10.71 deploy_dir=/data1/deploy
 
 | Variable name | Description |
 | ------------- | ------- |
-| server_id | DM-worker connects to MySQL as a slave. This variable is the server_id of the slave. Keep it globally unique in the MySQL cluster, and the value range is 0 ~ 4294967295. |
+| source_id | DM-worker binds to a unique database instance or a replication group with the master-slave architecture. When the master and slave switch, you only need to update `mysql_host` or `mysql_port` and do not need to update the `source_id`. |
+| server_id | DM-worker connects to MySQL as a slave. This variable is the `server_id` of the slave. Keep it globally unique in the MySQL cluster, and the value range is 0 ~ 4294967295. |
 | mysql_host | The upstream MySQL host. |
 | mysql_user | The upstream MySQL username; default "root". |
 | mysql_password | The upstream MySQL user password. You need to encrypt the password using the `dmctl` tool. See [Encrypt the upstream MySQL user password using dmctl](#encrypt-the-upstream-mysql-user-password-using-dmctl). |
 | mysql_port | The upstream MySQL port; default 3306. |
-| enable_gtid | Whether to use GTID for DM-worker to pull the binlog. It supports the MySQL (and MariaDB) GTID. The prerequisite is that the upstream MySQL has enabled the GTID mode. |
+| enable_gtid | Whether DM-worker uses GTID to pull the binlog. The prerequisite is that the upstream MySQL has enabled the GTID mode. |
+| relay_binlog_name | Whether DM-worker pulls the binlog starting from the specified binlog file. Only used when the local has no valid relay log. |
+| relay_binlog_gtid | Whether DM-worker pulls the binlog starting from the specified GTID. Only used when the local has no valid relay log and `enable_gtid` is true. |
 | flavor | "flavor" indicates the release type of MySQL. For the official version, Percona, and cloud MySQL, fill in "mysql"; for MariaDB, fill in "mariadb". It is "mysql" by default. |
 
 ### Encrypt the upstream MySQL user password using dmctl
@@ -325,6 +329,36 @@ $ ./dmctl -encrypt 123456
 VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=
 ```
 
+### Configure the relay log synchronization position
+
+When you start DM-worker for the first time, you need to configure `relay_binlog_name` to specify the position where DM-worker starts to pull the corresponding upstream MySQL or MariaDB binlog.
+
+```yaml
+[dm_worker_servers]
+dm-worker1 ansible_host=172.16.10.72 source_id="mysql-replica-01" server_id=101 relay_binlog_name="binlog.000011" mysql_host=172.16.10.72 mysql_user=root mysql_port=3306
+
+dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 relay_binlog_name="binlog.000002" mysql_host=172.16.10.73 mysql_user=root mysql_port=3306
+```
+
+> **Note:** If `relay_binlog_name` is not set, DM-worker pulls the binlog starting from the earliest existing binlog file of the upstream MySQL or MariaDB. In this case, it can take a long period of time to pull the latest binlog for the data synchronization task.
+
+### Enable the relay log GTID synchronization mode
+
+In a DM cluster, the relay log processing unit of DM-worker communicates with the upstream MySQL or MariaDB to pull its binlog to the local file system.
+
+You can enable the relay log GTID synchronization mode by configuring the following items. Currently, DM supports MySQL GTID and MariaDB GTID.
+
+- `enable_gtid`: to enable the relay log GTID synchronization mode to deal with scenarios like master-slave switch
+- `relay_binlog_gtid`: to specify the position where DM-worker starts to pull the corresponding upstream MySQL or MariaDB binlog
+
+```yaml
+[dm_worker_servers]
+dm-worker1 ansible_host=172.16.10.72 source_id="mysql-replica-01" server_id=101 enable_gtid=true relay_binlog_gtid="aae3683d-f77b-11e7-9e3b-02a495f8993c:1-282967971,cc97fa93-f5cf-11e7-ae19-02915c68ee2e
+:1-284361339" mysql_host=172.16.10.72 mysql_user=root mysql_port=3306
+
+dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 relay_binlog_name=binlog.000002 mysql_host=172.16.10.73 mysql_user=root mysql_port=3306
+```
+
 ## Step 9: Deploy the DM cluster
 
 When `ansible-playbook` runs Playbook, the default concurrent number is 5. If many deployment target machines are deployed, you can add the `-f` parameter to specify the concurrency, such as `ansible-playbook deploy.yml -f 10`.
@@ -334,8 +368,6 @@ The following example uses `tidb` as the user who runs the service.
 1. Edit the `dm-ansible/inventory.ini` file to make sure `ansible_user = tidb`.
 
     ```ini
-    ## Connection
-    # ssh via normal user
     ansible_user = tidb
     ```
 
@@ -383,20 +415,18 @@ This operation stops all the components in the entire DM cluster in order, which
 
 | Component | Port variable | Default port | Description |
 | :-- | :-- | :-- | :-- |
-| DM-master | `dm_master_port` | 11080  | DM-master service communication port |
-| DM-master | `dm_master_status_port` | 11081  | DM-master status port |
-| DM-worker | `dm_worker_port` | 10081  | DM-worker service communication port |
-| DM-worker | `dm_worker_status_port` | 10082  | DM-worker status port |
+| DM-master | `dm_master_port` | 8261  | DM-master service communication port |
+| DM-worker | `dm_worker_port` | 8262  | DM-worker service communication port |
 | Prometheus | `prometheus_port` | 9090 | Prometheus service communication port |
 | Grafana | `grafana_port` |  3000 | The port for the external service of web monitoring service and client (browser) access |
 | Alertmanager | `alertmanager_port` |  9093 | Alertmanager service communication port |
 
 ### Customize ports
 
-Go to the `inventory.ini` file and add related host variable of the corresponding service port after the service IP:
+Edit the `inventory.ini` file and add the related host variable of the corresponding service port after the service IP:
 
-```
-dm_master ansible_host=172.16.10.71 dm_master_port=12080 dm_master_status_port=12081
+```ini
+dm_master ansible_host=172.16.10.71 dm_master_port=18261
 ```
 
 ### Update DM-Ansible
@@ -412,8 +442,9 @@ dm_master ansible_host=172.16.10.71 dm_master_port=12080 dm_master_status_port=1
 
     ```
     $ cd /home/tidb
-    $ wget http://download.pingcap.org/dm-ansible.tar.gz
-    $ tar -xzvf dm-ansible.tar.gz
+    $ wget http://download.pingcap.org/dm-ansible-latest.tar.gz
+    $ tar -xzvf dm-ansible-latest.tar.gz
+    $ mv dm-ansible-latest dm-ansible
     ```
 
 3. Migrate the `inventory.ini` configuration file.

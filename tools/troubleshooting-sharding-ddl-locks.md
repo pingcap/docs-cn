@@ -64,7 +64,7 @@ After the DM-worker restarts and runs `start-task`, it retries to synchronize th
 
 No bad impact. After you have manually broken the lock, the subsequent sharding DDL statements can be automatically synchronized normally.
 
-## Condition three: DM-master restarts
+## Condition three: the DM-master restarts
 
 After a DM-worker sends the sharding DDL information to DM-master, this DM-worker will hang up, wait for the message from DM-master, and then decide whether to execute or skip this DDL statement.
 
