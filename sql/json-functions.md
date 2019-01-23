@@ -31,7 +31,8 @@ TiDB supports most of the JSON functions that shipped with the GA release of MyS
 | Function Name and Syntactic Sugar | Description |
 | --------------------------------- | ----------- |
 | [JSON_INSERT(json_doc, path, val[, path, val] ...)][json_insert] | Inserts data into a JSON document and returns the result |
-| [JSON_MERGE(json_doc, json_doc[, json_doc] ...)][json_merge]  | Merges two or more JSON documents and returns the merged result |
+| [JSON_MERGE(json_doc, json_doc[, json_doc] ...)][json_merge]  | A deprecated alias for `JSON_MERGE_PRESERVE` |
+| [JSON_MERGE_PRESERVE(json_doc, json_doc[, json_doc] ...)][json_merge_preserve]  | Merges two or more JSON documents and returns the merged result |
 | [JSON_REMOVE(json_doc, path[, path] ...)][json_remove]    | Removes data from a JSON document and returns the result |
 | [JSON_REPLACE(json_doc, path, val[, path, val] ...)][json_replace] | Replaces existing values in a JSON document and returns the result |
 | [JSON_SET(json_doc, path, val[, path, val] ...)][json_set]  | Inserts or updates data in a JSON document and returns the result |
@@ -52,7 +53,6 @@ The following JSON functions are unsupported in TiDB. You can track the progress
 * `JSON_APPEND` and its alias `JSON_ARRAY_APPEND`
 * `JSON_ARRAY_INSERT`
 * `JSON_MERGE_PATCH`
-* `JSON_MERGE_PRESERVE`, use the alias `JSON_MERGE` instead
 * `JSON_PRETTY`
 * `JSON_QUOTE`
 * `JSON_SEARCH`
@@ -71,6 +71,7 @@ The following JSON functions are unsupported in TiDB. You can track the progress
 [json_replace]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-replace
 [json_remove]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-remove
 [json_merge]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-merge
+[json_merge_preserve]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-merge-preserve
 [json_object]: https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-object
 [json_array]: https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-array
 [json_keys]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-keys
