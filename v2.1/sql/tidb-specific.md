@@ -351,7 +351,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 默认值：1024
 
-这个变量用来设置 DDL 操作 re-organize 阶段的 batch size 大小。
+这个变量用来设置 DDL 操作 re-organize 阶段的 batch size 大小。比如 Add Index 操作，需要回填索引数据，通过并发 tidb_ddl_reorg_worker_cnt 个 worker 一起回填数据，每个 worker 是一个 batch 一个 batch 的回填的。如果 add index 时有 update 操作或者 replace 等更新操作较多，batch size 越大，事务冲突的概率也会越大，此时建议改小 batch size 的大小，最小值是32。在没有事务冲突的情况下，batch size 可以设置大些，最大值是10240，这样回填数据的速度更快，当然 tikv 的写入压力也会变大。
 
 ### tidb_ddl_reorg_priority
 
