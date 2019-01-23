@@ -16,7 +16,7 @@ category: advanced
 |MySQL|127.0.0.1|3306|root|*|
 |TiDB|127.0.0.1|4000|root|*|
 
-在这个数据迁移过程中，我们会用到下面三个工具:
+在该数据迁移过程中，会用到下面三个工具：
 
 - mydumper 从 MySQL 导出数据
 - loader 导入数据到 TiDB
