@@ -93,7 +93,7 @@ ALTER USER 'jeffrey'@'localhost' IDENTIFIED BY 'mypass';
 
 ## `FLUSH PRIVILEGES` 
 
-如果授权表已被直接修改，运行如下命令立刻应用改动信息：
+如果授权表已被直接修改，运行如下命令可使改动立即生效：
 
 ```sql
 FLUSH PRIVILEGES;
