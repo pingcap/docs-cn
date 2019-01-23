@@ -35,6 +35,9 @@ However, in TiDB, the following MySQL features are not supported for the time be
 + `CREATE TABLE tblName AS SELECT stmt` syntax
 + `CREATE TEMPORARY TABLE` syntax
 + `XA` syntax (TiDB uses a two-phase commit internally, but this is not exposed via an SQL interface)
++ `LOCK TABLE` syntax (TiDB uses `tidb_snapshot` to [produce backups](../tools/mydumper.md))
++ `CHECK TABLE` syntax
++ `CHECKSUM TABLE` syntax
 
 ## Features that are different from MySQL
 
