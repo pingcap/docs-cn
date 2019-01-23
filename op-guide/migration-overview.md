@@ -24,7 +24,7 @@ category: advanced
 
 ## 两种迁移场景
 
-- 第一种场景：只全量导入历史数据 （需要 mydumper + loader）；
+- 第一种场景：只全量导入历史数据（需要 mydumper + Loader）；
 - 第二种场景：全量导入历史数据后，通过增量的方式同步新的数据 （需要 mydumper + loader + syncer）。该场景需要提前开启 binlog 且格式必须为 ROW。
 
 ## MySQL 开启 binlog
