@@ -681,7 +681,7 @@ loader 的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调
 
 #### 4.1.3 如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？
 
-TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提供了一个[检查工具](https://github.com/pingcap/tidb-tools/tree/master/checker)，用于检查 MySQL 中的 Schema 是否和 TiDB 兼容。
+TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。
 
 #### 4.1.4 不小心把 MySQL 的 user 表导入到 TiDB 了，或者忘记密码，无法登陆，如何处理？
 
