@@ -90,3 +90,13 @@ SET PASSWORD FOR 'root'@'%' = 'xxx';
 ```sql
 ALTER USER 'jeffrey'@'localhost' IDENTIFIED BY 'mypass';
 ```
+
+## `FLUSH PRIVILEGES` 
+
+如果授权表已被直接修改，运行如下命令可使改动立即生效：
+
+```sql
+FLUSH PRIVILEGES;
+```
+
+详情参见[权限管理](../sql/privilege.md)。
