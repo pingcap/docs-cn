@@ -1,7 +1,6 @@
 ---
 name: "\U0001F41B Bug Report"
 about: Typo, Grammatical error, etc.。
-
 ---
 
 ## Bug 报告

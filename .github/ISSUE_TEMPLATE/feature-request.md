@@ -1,7 +1,6 @@
 ---
 name: "\U0001F680 Feature Request"
 about: Any suggestion? Want to add something new?
-
 ---
 
 ## Feature Request
