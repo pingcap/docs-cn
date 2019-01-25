@@ -23,8 +23,8 @@ enable = true
 schema = "tidb_lightning_checkpoint"
 
 # 存储断点的方式
-#  - file: 存放在本地文件系统（要求 v2.1.1 或以上）
-#  - mysql: 存放在兼容 MySQL 的数据库服务器
+#  - file：存放在本地文件系统（要求 v2.1.1 或以上）
+#  - mysql：存放在兼容 MySQL 的数据库服务器
 driver = "file"
 
 # 断点的存放位置

@@ -57,7 +57,7 @@ category: tools
 
 - `-B test`：从 `test` 数据库导出。
 - `-T t1,t2`：只导出 `t1` 和 `t2` 这两个表。
-- `-t 16`：使用 16 个线程去导出数据。
+- `-t 16`：使用 16 个线程导出数据。
 - `-F 256`：将每张表切分成多个文件，每个文件大小约为 256 MB。
 - `--skip-tz-utc`：添加这个参数则会忽略掉 TiDB 与导数据的机器之间时区设置不一致的情况，禁止自动转换。
 
@@ -248,7 +248,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
     #region-concurrency =
 
     # 最大的 I/O 并发数。I/O 并发量太高时，会因硬盘内部缓存频繁被刷新而增加 I/O 等待时间，
-    # 导致缓存未命中和降低读取速度。因应不同的存储介质，此参数可能需要调整以达至最佳效率。
+    # 导致缓存未命中和降低读取速度。因应不同的存储介质，此参数可能需要调整以达到最佳效率。
     io-concurrency = 5
 
     # 日志
@@ -266,8 +266,8 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
     # 存储断点的数据库名称。
     schema = "tidb_lightning_checkpoint"
     # 存储断点的方式
-    #  - file: 存放在本地文件系统（要求 v2.1.1 或以上）
-    #  - mysql: 存放在兼容 MySQL 的数据库服务器
+    #  - file：存放在本地文件系统（要求 v2.1.1 或以上）
+    #  - mysql：存放在兼容 MySQL 的数据库服务器
     driver = "file"
     # 断点的存放位置
     # 若 driver = "file"，此参数为目标文件路径。默认为“/tmp/架构名称.pb”。
@@ -293,9 +293,9 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
     # 适用于手动创建表或者 TiDB 本来就有表结构的情况。
     no-schema = false
     # 指定包含 CREATE TABLE 语句的表结构文件的字符集。只支持下列选项：
-    #  - utf8mb4: 表结构文件必须使用 UTF-8 编码，否则 Lightning 会报错
-    #  - gb18030: 表结构文件必须使用 GB-18030 编码，否则 Lightning 会报错
-    #  - auto:（默认）自动判断文件编码是 UTF-8 还是 GB-18030，两者皆非则会报错
+    #  - utf8mb4：表结构文件必须使用 UTF-8 编码，否则 Lightning 会报错
+    #  - gb18030：表结构文件必须使用 GB-18030 编码，否则 Lightning 会报错
+    #  - auto：（默认）自动判断文件编码是 UTF-8 还是 GB-18030，两者皆非则会报错
     #  - binary：不尝试转换编码
     # 注意，此参数不影响 Lightning 读取数据文件。
     character-set = "auto"
