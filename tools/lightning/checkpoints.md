@@ -34,7 +34,7 @@ driver = "file"
 # 若 driver = "mysql"，此参数为数据库连接参数 (DSN)，格式为“用户:密码@tcp(地址:端口)”。
 # 默认会重用 [tidb] 设置目标数据库来存储断点。
 # 为避免加重目标集群的压力，建议另外使用一个兼容 MySQL 的数据库服务器。
-#dsn = "/tmp/tidb_lightning_checkpoint.pb"
+# dsn = "/tmp/tidb_lightning_checkpoint.pb"
 
 # 导入成功后是否保留断点。默认为删除。
 # 保留断点可用于调试，但有可能泄漏数据源的元数据。

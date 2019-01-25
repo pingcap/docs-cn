@@ -59,7 +59,7 @@ category: tools
 - `-T t1,t2`：只导出 `t1` 和 `t2` 这两个表。
 - `-t 16`：使用 16 个线程去导出数据。
 - `-F 256`：将每张表切分成多个文件，每个文件大小约为 256 MB。
-- `--skip-tz-utc`：添加这个参数忽略掉 TiDB 与导数据的机器之间时区设置不一致的情况，禁止自动转换。
+- `--skip-tz-utc`：添加这个参数则会忽略掉 TiDB 与导数据的机器之间时区设置不一致的情况，禁止自动转换。
 
 ## 部署 TiDB-Lightning
 
@@ -295,8 +295,8 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
     # 指定包含 CREATE TABLE 语句的表结构文件的字符集。只支持下列选项：
     #  - utf8mb4: 表结构文件必须使用 UTF-8 编码，否则 Lightning 会报错
     #  - gb18030: 表结构文件必须使用 GB-18030 编码，否则 Lightning 会报错
-    #  - auto:  （默认）自动判断文件编码是 UTF-8 还是 GB-18030，两者皆非则会报错
-    #  - binary:  不尝试转换编码
+    #  - auto:（默认）自动判断文件编码是 UTF-8 还是 GB-18030，两者皆非则会报错
+    #  - binary：不尝试转换编码
     # 注意，此参数不影响 Lightning 读取数据文件。
     character-set = "auto"
 
@@ -339,7 +339,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
     # 每经过这段时间，在日志打印当前进度。
     log-progress = "5m"
 
-    # 表库过滤设置。详情见“TiDB-Lightning 表库过滤”文档。
+    # 表库过滤设置。详情见《TiDB-Lightning 表库过滤》。
     #[black-white-list]
     # ...
 

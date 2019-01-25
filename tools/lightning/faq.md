@@ -103,9 +103,9 @@ sql-mode = ""
 tidb-lightning-ctl --switch-mode=normal
 ```
 
-## TiDB-Lightning 可以使用千兆网卡嗎？
+## TiDB-Lightning 可以使用千兆网卡吗？
 
-使用 TiDB-Lightning 必须配置万兆网卡。千兆网卡是**不能接受**的，尤其是在部署 `tikv-importer` 的机器上。千兆网卡的总带宽只有 120 MB/s，而且需要与整个 TiKV 集群共享。在使用 TiDB-Lightning 导入时，很容易就会用尽所有带宽，继而因 PD 无法联络集群使集群断连。
+使用 TiDB-Lightning 必须配置万兆网卡。**不能使用**千兆网卡，尤其是在部署 `tikv-importer` 的机器上。千兆网卡的总带宽只有 120 MB/s，而且需要与整个 TiKV 集群共享。在使用 TiDB-Lightning 导入时，极易用尽所有带宽，继而因 PD 无法联络集群使集群断连。
 
 ## 为什么 TiDB-Lightning 需要在 TiKV 集群预留这么多空间？
 

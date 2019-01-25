@@ -96,7 +96,7 @@ scrape_configs:
 
 - **`lightning_idle_workers`**（测量仪）
 
-    计算闲置的工作流程。数值应低于设置中的 `*-concurrency` 的值，而经常为零。标签：
+    计算闲置的工作流程。数值应低于设置中的 `*-concurrency` 的值，且经常为 0。标签：
 
     - **name**：`table` / `region` / `io`
 
