@@ -65,14 +65,14 @@ Assume that the schemas synchronized to the downstream are as follows:
 
     ```yaml
     routes:
-    ...
-    instance-1-user-rule:
+      ...
+      instance-1-user-rule:
         schema-pattern: "user"
         target-schema: "user_north"
-    instance-2-user-rule:
+      instance-2-user-rule:
         schema-pattern: "user"
         target-schema: "user_east"
-    instance-3-user-rule:
+      instance-3-user-rule:
         schema-pattern: "user"
         target-schema: "user_south"
     ```
@@ -81,13 +81,13 @@ Assume that the schemas synchronized to the downstream are as follows:
 
     ```yaml
     routes:
-    ...
-    instance-2-store-rule:
+      ...
+      instance-2-store-rule:
         schema-pattern: "store"
         table-pattern: "store_sz"
         target-schema: "store"
         target-table:  "store_suzhou"
-    instance-3-store-rule:
+      instance-3-store-rule:
         schema-pattern: "store"
         table-pattern: "store_sz"
         target-schema: "store"
@@ -98,13 +98,13 @@ Assume that the schemas synchronized to the downstream are as follows:
 
     ```yaml
     filters:
-    ...
-    log-filter-rule:
+      ...
+      log-filter-rule:
         schema-pattern: "user"
         table-pattern: "log"
         events: ["truncate table", "drop table", "delete"]
         action: Ignore
-    user-filter-rule:
+      user-filter-rule:
         schema-pattern: "user"
         events: ["drop database"]
         action: Ignore
@@ -114,8 +114,8 @@ Assume that the schemas synchronized to the downstream are as follows:
 
     ```yaml
     filters:
-    ...
-    store-filter-rule:
+      ...
+      store-filter-rule:
         schema-pattern: "store"
         events: ["drop database", "truncate table", "drop table", "delete"]
         action: Ignore
@@ -127,7 +127,7 @@ Assume that the schemas synchronized to the downstream are as follows:
 
     ```yaml
     black-white-list:
-    log-ignored:
+      log-ignored:
         ignore-dbs: ["log"]
     ```
 
