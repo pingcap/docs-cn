@@ -178,10 +178,9 @@ Architecturally, TiDB does support a similar storage engine abstraction to MySQL
 
 TiDB supports **all of the SQL modes** from MySQL 5.7 with minor exceptions:
 
-1. The `ALLOW_INVALID_DATES` mode is not yet supported. See [TiDB #8263](https://github.com/pingcap/tidb/issues/8263).
-2. The compatibility modes deprecated in MySQL 5.7 and removed in MySQL 8.0 are not supported (such as `ORACLE`, `POSTGRESQL` etc).
-3. The mode `ONLY_FULL_GROUP_BY` has minor [semantic differences](../sql/aggregate-group-by-functions.md#differences-from-mysql) to MySQL 5.7, which we plan to address in the future.
-4. The SQL modes `NO_DIR_IN_CREATE` and `NO_ENGINE_SUBSTITUTION` are supported for compatibility, but are not applicable to TiDB. 
+- The compatibility modes deprecated in MySQL 5.7 and removed in MySQL 8.0 are not supported (such as `ORACLE`, `POSTGRESQL` etc).
+- The mode `ONLY_FULL_GROUP_BY` has minor [semantic differences](../sql/aggregate-group-by-functions.md#differences-from-mysql) to MySQL 5.7, which we plan to address in the future.
+- The SQL modes `NO_DIR_IN_CREATE` and `NO_ENGINE_SUBSTITUTION` are supported for compatibility, but are not applicable to TiDB. 
 
 ### EXPLAIN
 
