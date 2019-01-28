@@ -61,7 +61,7 @@ Assume that the schemas synchronized to the downstream are as follows:
 
 ## Synchronization solution
 
-- To satisfy synchronization Requirements #1-i, #1-ii and #1-iii, configure the [table routing rules](../tools/dm-data-synchronization-features.md#table-routing) as follows:
+- To satisfy synchronization Requirements #1-i, #1-ii and #1-iii, configure the [table routing rules](/tools/dm/data-synchronization-features.md#table-routing) as follows:
 
     ```yaml
     routes:
@@ -77,7 +77,7 @@ Assume that the schemas synchronized to the downstream are as follows:
         target-schema: "user_south"
     ```
 
-- To satisfy the synchronization Requirement #2-i, configure the [table routing rules](../tools/dm-data-synchronization-features.md#table-routing) as follows:
+- To satisfy the synchronization Requirement #2-i, configure the [table routing rules](/tools/dm/data-synchronization-features.md#table-routing) as follows:
 
     ```yaml
     routes:
@@ -94,7 +94,7 @@ Assume that the schemas synchronized to the downstream are as follows:
         target-table:  "store_shenzhen"
     ```
 
-- To satisfy the synchronization Requirement #1-iv, configure the [binlog filtering rules](../tools/dm-data-synchronization-features.md#binlog-event-filtering) as follows:
+- To satisfy the synchronization Requirement #1-iv, configure the [binlog filtering rules](/tools/dm/data-synchronization-features.md#binlog-event-filtering) as follows:
 
     ```yaml
     filters:
@@ -110,7 +110,7 @@ Assume that the schemas synchronized to the downstream are as follows:
         action: Ignore
     ```
 
-- To satisfy the synchronization Requirement #2-ii, configure the [binlog filtering rule](../tools/dm-data-synchronization-features.md#binlog-event-filtering) as follows:
+- To satisfy the synchronization Requirement #2-ii, configure the [binlog filtering rule](/tools/dm/data-synchronization-features.md#binlog-event-filtering) as follows:
 
     ```yaml
     filters:
@@ -123,7 +123,7 @@ Assume that the schemas synchronized to the downstream are as follows:
 
     > **Note:** `store-filter-rule` is different from `log-filter-rule & user-filter-rule`. `store-filter-rule` is a rule for the whole `store` schema, while `log-filter-rule` and `user-filter-rule` are rules for the `log` table in the `user` schema.
 
-- To satisfy the synchronization Requirement #3, configure the [black and white lists](../tools/dm-data-synchronization-features.md#black-and-white-table-lists) as follows:
+- To satisfy the synchronization Requirement #3, configure the [black and white lists](/tools/dm/data-synchronization-features.md#black-and-white-table-lists) as follows:
 
     ```yaml
     black-white-list:
@@ -133,7 +133,7 @@ Assume that the schemas synchronized to the downstream are as follows:
 
 ## Synchronization task configuration
 
-The complete synchronization task configuration is shown below. For more details, see [configuration explanations](../tools/dm-task-configuration-file-intro.md).
+The complete synchronization task configuration is shown below. For more details, see [configuration explanations](/tools/dm/task-configuration-file-intro.md).
 
 ```yaml
 name: "one-tidb-slave"

@@ -6,7 +6,7 @@ category: tools
 
 # Manage the Data Synchronization Task
 
-This document describes how to manage and maintain the data synchronization task using the [dmctl](../tools/data-migration-overview.md#dmctl) component. For the Data Migration cluster deployed using DM-Ansible, the dmctl binary file is in `dm-ansible/dmctl`.
+This document describes how to manage and maintain the data synchronization task using the [dmctl](/tools/dm/overview.md#dmctl) component. For the Data Migration cluster deployed using DM-Ansible, the dmctl binary file is in `dm-ansible/dmctl`.
 
 ## dmctl basic usage
 
@@ -113,7 +113,7 @@ The user of the upstream and downstream databases must have the corresponding re
     TiDB differs from MySQL in compatibility in the following aspects:
 
     - Does not support the foreign key
-    - [Character set compatibility differs](../sql/character-set-support.md)
+    - [Character set compatibility differs](/sql/character-set-support.md)
 
 + The consistency check on the upstream MySQL multiple-instance shards
 
@@ -555,7 +555,7 @@ update-task [-w "127.0.0.1:10181"] ./task.yaml
 
 ## Manage the DDL locks
 
-See [Troubleshooting Sharding DDL Locks](../tools/troubleshooting-sharding-ddl-locks.md).
+See [Troubleshooting Sharding DDL Locks](/tools/dm/troubleshooting-sharding-ddl-locks.md).
 
 ## Refresh worker tasks
 

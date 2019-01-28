@@ -40,7 +40,7 @@ This sections describes the considerations that you need to know when you restar
 
 **In the process of full data loading:**
 
-For the SQL files during full data import, DM uses the downstream database to record the checkpoint information. When DM-worker is restarted, it checks the checkpoint information and you can use the [`start-task` command](../tools/data-migration-practice.md#step-4-start-the-data-synchronization-task) to recover the data synchronization task automatically.
+For the SQL files during full data import, DM uses the downstream database to record the checkpoint information. When DM-worker is restarted, it checks the checkpoint information and you can use the [`start-task` command](/tools/dm/practice.md#step-4-start-the-data-synchronization-task) to recover the data synchronization task automatically.
 
 **In the process of incremental data synchronization:**
 
@@ -60,7 +60,7 @@ For the binlog during incremental data import, DM uses the downstream database t
 
         At this time, DM tries again to synchronize these DDL statements that are not skipped. However, the restarted DM-worker instances will be blocked at the position of the binlog event corresponding to the DDL binlog event, because the DM-worker instance that is not restarted has executed to the place after this DDL binlog event.
 
-        To resolve this issue, follow the steps described in [Troubleshooting Sharding DDL Locks](../tools/troubleshooting-sharding-ddl-locks.md#condition-two-a-dm-worker-restarts-or-is-unreachable-temporarily)
+        To resolve this issue, follow the steps described in [Troubleshooting Sharding DDL Locks](/tools/dm/troubleshooting-sharding-ddl-locks.md#condition-two-a-dm-worker-restarts-or-is-unreachable-temporarily)
 
 #### Restarting DM-master considerations
 
@@ -71,7 +71,7 @@ The information maintained by DM-master includes the following two major types, 
 
 When DM-master is restarted, it automatically requests the task information from each DM-worker instance and rebuilds the corresponding relationship between the task and DM-worker. However, at this time, DM-worker does not resend the sharding DDL information, so it might occur that the sharding DDL lock synchronization cannot be finished automatically because of the lost lock information.
 
-To resolve this issue, follow the steps described in [Troubleshooting Sharding DDL Locks](../tools/troubleshooting-sharding-ddl-locks.md#condition-three-dm-master-restarts).
+To resolve this issue, follow the steps described in [Troubleshooting Sharding DDL Locks](/tools/dm/troubleshooting-sharding-ddl-locks.md#condition-three-dm-master-restarts).
 
 #### Restarting dmctl considerations
 
@@ -173,7 +173,7 @@ Assuming that you want to add a DM-worker instance on the `172.16.10.74` machine
 
 1. Configure the SSH mutual trust and sudo rules on the Control Machine.
 
-    1. Refer to [Configure the SSH mutual trust and sudo rules on the Control Machine](../tools/data-migration-deployment.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine), log in to the Control Machine using the `tidb` user account and add `172.16.10.74` to the `[servers]` section of the `hosts.ini` file.
+    1. Refer to [Configure the SSH mutual trust and sudo rules on the Control Machine](/tools/dm/deployment.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine), log in to the Control Machine using the `tidb` user account and add `172.16.10.74` to the `[servers]` section of the `hosts.ini` file.
 
         ```
         $ cd /home/tidb/dm-ansible
@@ -267,7 +267,7 @@ Assuming that the `172.16.10.71` machine needs to be maintained or this machine 
 
 1. Configure the SSH mutual trust and sudo rules on the Control machine.
 
-    1. Refer to [Configure the SSH mutual trust and sudo rules on the Control Machine](../tools/data-migration-deployment.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine), log in to the Control Machine using the `tidb` user account, and add `172.16.10.80` to the `[servers]` section of the `hosts.ini` file.
+    1. Refer to [Configure the SSH mutual trust and sudo rules on the Control Machine](/tools/dm/deployment.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine), log in to the Control Machine using the `tidb` user account, and add `172.16.10.80` to the `[servers]` section of the `hosts.ini` file.
 
         ```
         $ cd /home/tidb/dm-ansible
@@ -327,7 +327,7 @@ Assuming that the `172.16.10.72` machine needs to be maintained or this machine 
 
 1. Configure the SSH mutual trust and sudo rules on the Control Machine. 
 
-    1. Refer to [Configure the SSH mutual trust and sudo rules on the Control Machine](../tools/data-migration-deployment.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine), log in to the Control Machine using the `tidb` user account, and add `172.16.10.75` to the `[servers]` section of the `hosts.ini` file.
+    1. Refer to [Configure the SSH mutual trust and sudo rules on the Control Machine](/tools/dm/deployment.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine), log in to the Control Machine using the `tidb` user account, and add `172.16.10.75` to the `[servers]` section of the `hosts.ini` file.
 
         ```
         $ cd /home/tidb/dm-ansible

@@ -8,17 +8,17 @@ category: tools
 
 This document introduces the sharding solution provided by Data Migration, its background, design details, and sharding DDL restrictions.
 
-Data Migration supports merging the data of multiple sharded MySQL instances and tables into a single TiDB instance. Generally, Data Migration does it automatically and you need to do nothing. But when some abnormal conditions occur, you need to handle them manually. For details, see [Troubleshooting Sharding DDL Locks](../tools/troubleshooting-sharding-ddl-locks.md).
+Data Migration supports merging the data of multiple sharded MySQL instances and tables into a single TiDB instance. Generally, Data Migration does it automatically and you need to do nothing. But when some abnormal conditions occur, you need to handle them manually. For details, see [Troubleshooting Sharding DDL Locks](/tools/dm/troubleshooting-sharding-ddl-locks.md).
 
 ## Background
 
-Currently, [Syncer](../tools/syncer.md) adopts the `ROW` format of binlog that does not contain the column name. The `ROW` format of binlog has the nature of self-description on a single machine. In this case, only one binlog updates the target database, and the column values corresponding to the newly added or modified column can be determined according to the downstream table schema, so the DML statements can be constructed correctly.
+Currently, [Syncer](/tools/syncer.md) adopts the `ROW` format of binlog that does not contain the column name. The `ROW` format of binlog has the nature of self-description on a single machine. In this case, only one binlog updates the target database, and the column values corresponding to the newly added or modified column can be determined according to the downstream table schema, so the DML statements can be constructed correctly.
 
 However, in the case of merging multiple sharded instances and tables, multiple binlogs update the target database, and the DDL statements cannot be completely updated synchronously, so the DML statements might be inconsistent with the table schema.
 
 Here is an example:
 
-![img](../media/shard-merge.png)
+![img](/media/shard-merge.png)
 
 Assume that the table schema is as below:
 

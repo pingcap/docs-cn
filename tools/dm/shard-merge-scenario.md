@@ -58,7 +58,7 @@ Assume that the downstream schema after synchronization is as follows:
 
 ## Synchronization solution
 
-- To satisfy the synchronization Requirements #1 and #2, configure the [table routing rule](../tools/dm-data-synchronization-features.md#table-routing) as follows:
+- To satisfy the synchronization Requirements #1 and #2, configure the [table routing rule](/tools/dm/data-synchronization-features.md#table-routing) as follows:
 
     ```yaml
     routes:
@@ -68,7 +68,7 @@ Assume that the downstream schema after synchronization is as follows:
         target-schema: "user"
     ```
 
-- To satisfy the synchronization Requirement #3, configure the [table routing rule](../tools/dm-data-synchronization-features.md#table-routing) as follows:
+- To satisfy the synchronization Requirement #3, configure the [table routing rule](/tools/dm/data-synchronization-features.md#table-routing) as follows:
 
     ```yaml
     routes:
@@ -83,7 +83,7 @@ Assume that the downstream schema after synchronization is as follows:
         target-table:  "sale"
     ```
 
-- To satisfy the synchronization Requirements #4 and #5, configure the [binlog event filtering rule](../tools/dm-data-synchronization-features.md#binlog-event-filtering) as follows:
+- To satisfy the synchronization Requirements #4 and #5, configure the [binlog event filtering rule](/tools/dm/data-synchronization-features.md#binlog-event-filtering) as follows:
 
     ```yaml
     filters:
@@ -96,7 +96,7 @@ Assume that the downstream schema after synchronization is as follows:
 
     > **Note:** The synchronization Requirements #4, #5 and #7 indicate that all the deletion operations in the `user` schema are filtered out, so a schema level filtering rule is configured here. However, the deletion operations of future tables in the `user` schema will also be filtered out.
 
-- To satisfy the synchronization Requirement #6, configure the [binlog event filtering rule](../tools/dm-data-synchronization-features.md#binlog-event-filtering) as follows:
+- To satisfy the synchronization Requirement #6, configure the [binlog event filtering rule](/tools/dm/data-synchronization-features.md#binlog-event-filtering) as follows:
 
     ```yaml
     filters:
@@ -112,7 +112,7 @@ Assume that the downstream schema after synchronization is as follows:
         action: Ignore
     ```
 
-- To satisfy the synchronization Requirement #7, configure the [black and white table lists](../tools/dm-data-synchronization-features.md#black-and-white-table-lists) as follows:
+- To satisfy the synchronization Requirement #7, configure the [black and white table lists](/tools/dm/data-synchronization-features.md#black-and-white-table-lists) as follows:
 
     ```yaml
     black-white-list:
@@ -122,7 +122,7 @@ Assume that the downstream schema after synchronization is as follows:
           tbl-name: "log_bak"
     ```
 
-- To satisfy the synchronization Requirement #8, configure the [column mapping rule](../tools/dm-data-synchronization-features.md#column-mapping) as follows:
+- To satisfy the synchronization Requirement #8, configure the [column mapping rule](/tools/dm/data-synchronization-features.md#column-mapping) as follows:
 
     ```yaml
     column-mappings:
@@ -151,7 +151,7 @@ Assume that the downstream schema after synchronization is as follows:
 
 ## Synchronization task configuration
 
-The complete configuration of the synchronization task is shown as below. For more details, see [Data Migration Task Configuration File](../tools/dm-task-configuration-file-intro.md).
+The complete configuration of the synchronization task is shown as below. For more details, see [Data Migration Task Configuration File](/tools/dm/task-configuration-file-intro.md).
 
 ```yaml
 name: "shard_merge"
