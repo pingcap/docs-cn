@@ -33,7 +33,7 @@ DM-worker executes specific data synchronization tasks.
 - Orchestrating the operation of the data synchronization subtasks
 - Monitoring the running state of the data synchronization subtasks
 
-For details about DM-worker, see [DM-worker Introduction](../tools/dm-worker-intro.md).
+After DM-worker is started, it automatically synchronizes the upstream binlog to the local configuration directory (the default synchronization directory is `<deploy_dir>/relay_log` if DM is deployed using `DM-Ansible`). For details about DM-worker, see [DM-worker Introduction](../tools/dm-worker-intro.md). For details about the relay log, see [Relay Log](../tools/dm-relay-log.md).
 
 ### dmctl 
 

@@ -104,6 +104,10 @@ mydumpers:
 
 ## Step 4: Start the data synchronization task
 
+> **Note:**
+> 
+> To detect possible errors of data synchronization configuration in advance, DM provides the precheck feature. DM automatically checks the corresponding privileges and configuration while starting the data synchronization task. You can also use the `check-task` command to manually precheck whether the upstream MySQL instance configuration satisfies the DM requirements. For details about the precheck feature, see [Precheck the upstream MySQL instance configuration](../tools/data-migration-manage-task.md#precheck-the-upstream-mysql-instance-configuration).
+
 1. Come to the dmctl directory `/home/tidb/dm-ansible/resource/bin/`.
 
 2. Run the following command to start dmctl.

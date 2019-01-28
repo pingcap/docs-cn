@@ -88,6 +88,11 @@ To detect possible errors of data synchronization configuration in advance, DM p
 
 The user of the upstream and downstream databases must have the corresponding read and write privileges. DM checks the following privileges and configuration automatically while starting the data synchronization task:
 
++ Database version
+
+    - 5.5 < MySQL version < 5.8
+    - MariaDB version >= 10.1.2
+
 + MySQL binlog configuration
 
     - Whether the binlog is enabled (DM requires that the binlog must be enabled)
@@ -193,7 +198,7 @@ start-task [ -w "172.16.30.15:10081"] ./task.yaml
 
 ### Check the data synchronization task status
 
-You can use the task management command to check the status of the data synchronization task.
+You can use the `query-status` task management command to check the status of the data synchronization task. For details about the query result and subtask status, see [Query Status](../tools/dm-query-status.md).
 
 ```bash
 » help query-status
