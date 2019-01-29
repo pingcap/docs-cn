@@ -36,6 +36,9 @@ TiDB 支持包括跨行事务、JOIN 及子查询在内的绝大多数 MySQL 5.7
 * `CREATE TABLE tblName AS SELECT stmt` 语法
 * `CREATE TEMPORARY TABLE` 语法
 * `XA` 语法（TiDB 内部使用两阶段提交，但并没有通过 SQL 接口公开）
+* `LOCK TABLE` 语法（TiDB 使用 `tidb_snapshot` 来[生成备份](../tools/mydumper.md)）
+* `CHECK TABLE` 语法
+* `CHECKSUM TABLE` 语法
 
 ## 与 MySQL 有差异的特性
 
