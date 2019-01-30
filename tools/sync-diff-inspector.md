@@ -18,7 +18,7 @@ sync-diff-inspector 是一个用于校验 MySQL／TiDB 中两份数据是否一�
 
 GitHub 地址：[sync-diff-inspector](https://github.com/pingcap/tidb-tools/tree/master/sync_diff_inspector)
 
-下载地址：[sync-diff-inspector-linux-amd64.tar.gz](https://download.pingcap.org/sync-diff-inspector-linux-amd64.tar.gz)
+下载地址：[tidb-latest-linux-amd64](https://download.pingcap.org/tidb-latest-linux-amd64.tar.gz)
 
 ## sync-diff-inspector 的使用
 
@@ -237,4 +237,4 @@ instance-id = "target-1"
 
 * TiDB 使用的 collation 为 utf8_bin，如果对 MySQL 和 TiDB 的数据进行对比，需要注意 MySQL 中表的 collation 设置。如果表的主键／唯一键为 varchar 类型，且 MySQL 中 collation 设置与 TiDB 不同，可能会因为排序问题导致最终校验结果不正确，需要在 sync-diff-inspector 的配置文件中增加 collation 设置。
 * 如果设置了 `tidb-instance-id` 使用 TiDB 的统计信息来划分 chunk，需要尽量保证统计信息精确，可以在*业务空闲期*手动执行 `analyze table {table_name}`。
-* table-rule 的规则需要特殊注意，例如设置了 `schema-pattern="test1"`, `target-schema="test2"`，会对比 source 中的 `test1` 库和 target 中的 `test2` 库，如果 source 中有 `test2` 库，也会和 target 中的 `test2` 库进行对比。
+* table-rule 的规则需要特殊注意，例如设置了 `schema-pattern="test1"`, `target-schema="test2"`，会对比 source 中的 `test1` 库和 target 中的 `test2` 库；如果 source 中有 `test2` 库，该库也会和 target 中的 `test2` 库进行对比。
