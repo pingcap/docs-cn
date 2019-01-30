@@ -52,6 +52,17 @@ ignore-struct-check = false
 # 保存用于修复数据的 sql 的文件名称
 fix-sql-file = "fix.sql"
 
+# 如果需要使用 TiDB 的统计信息划分 chunk，需要设置 tidb-instance-id，值为 source-db 或者 target-db 中配置的 instance-id 的值
+# tidb-instance-id = "target-1"
+
+# 如果需要对比大量的不同库名或者表名的表的数据，可以通过 table-rule 来设置映射关系。可以只配置 schema 或者 table 的映射关系，也可以都配置
+#[[table-rules]]
+# schema-pattern 和 table-pattern 支持正则表达式
+#schema-pattern = "test_*"
+#table-pattern = "t_*"
+#target-schema = "test"
+#target-table = "t"
+
 # 配置需要对比的目标数据库中的表
 [[check-tables]]
 # 目标库中数据库的名称
@@ -209,6 +220,7 @@ host = "127.0.0.3"
 port = 4000
 user = "root"
 password = ""
+instance-id = "target-1"
 ```
 
 ### 运行 sync-diff-inspector
@@ -223,4 +235,6 @@ password = ""
 
 ### 注意
 
-TiDB 使用的 collation 为 utf8_bin，如果对 MySQL 和 TiDB 的数据进行对比，需要注意 MySQL 中表的 collation 设置。如果表的主键／唯一键为 varchar 类型，且 MySQL 中 collation 设置与 TiDB 不同，可能会因为排序问题导致最终校验结果不正确，需要在 sync-diff-inspector 的配置文件中增加 collation 设置。
+* TiDB 使用的 collation 为 utf8_bin，如果对 MySQL 和 TiDB 的数据进行对比，需要注意 MySQL 中表的 collation 设置。如果表的主键／唯一键为 varchar 类型，且 MySQL 中 collation 设置与 TiDB 不同，可能会因为排序问题导致最终校验结果不正确，需要在 sync-diff-inspector 的配置文件中增加 collation 设置。
+* 如果设置了 `tidb-instance-id` 使用 TiDB 的统计信息来划分 chunk，需要尽量保证统计信息精确，可以在*业务空闲期*手动执行 `analyze table {table_name}`。
+* table-rule 的规则需要特殊注意，例如设置了 `schema-pattern="test1"`, `target-schema="test2"`，会对比 source 中的 `test1` 库和 target 中的 `test2` 库，如果 source 中有 `test2` 库，也会和 target 中的 `test2` 库进行对比。
