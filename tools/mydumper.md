@@ -26,6 +26,13 @@ category: tools
                        Accepts either a TSO or valid datetime.  For example: -z "2016-10-08 16:45:26"
 ```
 
+### Required privileges
+
+- SELECT
+- RELOAD
+- LOCK TABLES
+- REPLICATION CLIENT
+
 ### Usage example
 
 Command line parameter:

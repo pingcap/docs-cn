@@ -142,9 +142,33 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
         pump3 ansible_host=172.16.10.74 deploy_dir=/data1/pump
         ```
 
-2. Deploy and start the TiDB cluster.
+2. Deploy and start the TiDB cluster containing Pump.
 
-    For how to use Ansible to deploy the TiDB cluster, see [Deploy TiDB Using Ansible](../op-guide/ansible-deployment.md). When Binlog is enabled, Pump is deployed and started by default.
+    After configuring the `inventory.ini` file, you can choose one method from below to deploy the TiDB cluster.
+
+    **Method #1**: Add Pump on the existing TiDB cluster.
+
+    1. Deploy `pump_servers` and `node_exporters`.
+
+        ```
+        ansible-playbook deploy.yml -l ${pump1_ip}, ${pump2_ip}, [${alias1_name}, ${alias2_name}]
+        ```
+
+    2. Update and restart `tidb_servers`.
+
+        ```
+        ansible-playbook rolling_update.yml --tags=tidb
+        ```
+
+    3. Update the monitoring data.
+
+        ```
+        ansible-playbook rolling_update_monitor.yml --tags=prometheus
+        ```
+
+    **Method #2**: Deploy a TiDB cluster containing Pump from scratch.
+
+    For how to use Ansible to deploy the TiDB cluster, see [Deploy TiDB Using Ansible](../op-guide/ansible-deployment.md).
 
 3. Check the Pump status.
 
@@ -173,7 +197,7 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
     2018/06/21 11:24:47 meta.go:117: [info] meta: &{CommitTS:400962745252184065}
     ```
 
-    After this command is executed, a file named `{data-dir}/savepoint` is generated. This file contains `tso`, whose value is used as the value of the `initial-commit-ts` parameter needed for the initial start of Drainer.
+    This command outputs `meta: &{CommitTS:400962745252184065}`, and the value of `CommitTS` is used as the value of the `initial-commit-ts` parameter needed for the initial start of Drainer.
 
 2. Back up and restore all the data.
 
@@ -250,7 +274,7 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
         [syncer.to]
         compression = ""
         # default data directory: "{{ deploy_dir }}/data.drainer"
-        # dir = "data.drainer"
+        dir = "data.drainer"
         ```
 
 5. Deploy Drainer.
