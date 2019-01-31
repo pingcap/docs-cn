@@ -30,8 +30,8 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。MySQL 5.7 发布
 | 函数及语法糖 | 功能描述 |
 | --------------------------------- | ----------- |
 | [JSON_INSERT(json_doc, path, val[, path, val] ...)][json_insert] | 在 JSON 文档中在某一路径下插入子文档 |
-| [JSON_MERGE(json_doc, json_doc[, json_doc] ...)][json_merge]  | `JSON_MERGE_PRESERVE` 的已过时的别名 |
-| [JSON_MERGE_PRESERVE(json_doc, json_doc[, json_doc] ...)][json_merge_preserve]  | 将两个或多个 JSON 文档合并成一个文档 |
+| [JSON_MERGE(json_doc, json_doc[, json_doc] ...)][json_merge]  | 已废弃的 `JSON_MERGE_PRESERVE` 别名 |
+| [JSON_MERGE_PRESERVE(json_doc, json_doc[, json_doc] ...)][json_merge_preserve]  | 将两个或多个 JSON 文档合并成一个文档，并返回合并结果 |
 | [JSON_REMOVE(json_doc, path[, path] ...)][json_remove]    | 移除 JSON 文档中某一路径下的子文档 |
 | [JSON_REPLACE(json_doc, path, val[, path, val] ...)][json_replace] | 替换 JSON 文档中的某一路径下的子文档 |
 | [JSON_SET(json_doc, path, val[, path, val] ...)][json_set]  | 在 JSON 文档中为某一路径设置子文档 |
