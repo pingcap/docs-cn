@@ -710,7 +710,7 @@ See [Loader Instructions](tools/loader.md).
  
 #### How to migrate an application running on MySQL to TiDB?
 
-Because TiDB supports most MySQL syntax, generally you can migrate your applications to TiDB without changing a single line of code in most cases. You can use [checker](https://github.com/pingcap/tidb-tools/tree/master/checker) to check whether the Schema in MySQL is compatible with TiDB.
+Because TiDB supports most MySQL syntax, generally you can migrate your applications to TiDB without changing a single line of code in most cases.
 
 #### If I accidentally import the MySQL user table into TiDB, or forget the password and cannot log in, how to deal with it?
 
