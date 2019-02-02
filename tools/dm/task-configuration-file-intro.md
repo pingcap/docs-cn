@@ -15,6 +15,11 @@ For the feature and configuration of each configuration item, see [Data Synchron
 
 For description of important concepts including `instance-id` and the DM-worker ID, see [Important concepts](/tools/dm/dm-configuration-file-overview.md#important-concepts).
 
+## Configuration order
+
+1. Edit the [global configuration](#global-configuration).
+2. Edit the [instance configuration](#global-configuration) based on the global configuration.
+
 ## Global configuration
 
 ### Basic configuration
@@ -65,15 +70,25 @@ filters:
     ​    table-pattern: "t_*"
     ​    events: ["truncate table", "drop table"]
     ​    action: Ignore
+    filter-rule-2:
+        schema-pattern: "test_*"
+        # Only execute all the DML events in the `test_*` schema.
+        events: ["All DML"]
+        action: Do
 
 # The filter rule set of the black white list of the matched table of the upstream database instance.
 black-white-list:
     bw-rule-1:
-    ​    do-dbs: ["~^test.*", "do"]
-    ​    ignore-dbs: ["mysql", "ignored"]
-    ​    do-tables:
-    ​    - db-name: "~^test.*"
-    ​      tbl-name: "~^t.*"
+    ​    do-dbs: ["~^test.*", "user"]
+        ignore-dbs: ["mysql", "account"]
+        do-tables:
+        - db-name: "~^test.*"
+          tbl-name: "~^t.*"
+        - db-name: "user"
+          tbl-name: "information"
+        ignore-tables:
+        - db-name: "user"
+          tbl-name: "log"
 
 # The column mapping rule set of the matched table of the upstream database instance.
 column-mappings:
@@ -84,6 +99,13 @@ column-mappings:
     ​    source-column: "id"
     ​    target-column: "id"
     ​    arguments: ["1", "test_", "t_"]
+    cm-rule-2:
+        schema-pattern: "test_*"
+        table-pattern: "t_*"
+        expression: "partition id"
+        source-column: "id"
+        target-column: "id"
+        arguments: ["2", "test_", "t_"]
 
 # Configuration arguments of running mydumper.
 mydumpers:

@@ -12,7 +12,7 @@ This document gives an overview of configuration files of DM (Data Migration).
 
 - `inventory.ini`: The configuration file of deploying DM using DM-Ansible. You need to edit it based on your machine topology. For details, see [Edit the `inventory.ini` file to orchestrate the DM cluster](/tools/dm/deployment.md#step-7-edit-the-inventoryini-file-to-orchestrate-the-dm-cluster).
 - `dm-master.toml`: The configuration file of running the DM-master process, including the topology information of the DM cluster and the corresponding relationship between the MySQL instance and DM-worker (must be one-to-one relationship). When you use DM-Ansible to deploy DM, `dm-master.toml` is generated automatically.
-- `dm-worker.toml`: The configuration file of running the DM-worker process, including the configuration information of upstream MySQL instance. When you use DM-Ansible to deploy DM, `dm-worker.toml` is generated automatically.
+- `dm-worker.toml`: The configuration file of running the DM-worker process, including the upstream MySQL instance configuration and the relay log configuration. When you use DM-Ansible to deploy DM, `dm-worker.toml` is generated automatically.
 
 ## DM synchronization task configuration
 

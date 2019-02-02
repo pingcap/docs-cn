@@ -51,6 +51,8 @@ After the DM cluster is deployed using DM-Ansible, the configuration information
     dm-worker = "172.16.10.73:8262"
     ```
 
+    > **Note:** The `{ansible deploy}` in `{ansible deploy}/conf/dm-master.toml` indicates the directory where DM-Ansible is deployed. It is the directory configured in the `deploy_dir` parameter.
+
 ## Step 3: Configure the data synchronization task
 
 The following example assumes that you need to synchronize all the `test_table` table data in the `test_db` database of both the upstream MySQL-1 and MySQL-2 instances, to the downstream `test_table` table in the `test_db` database of TiDB, in the full data plus incremental data mode.
@@ -104,11 +106,16 @@ mydumpers:
 
 ## Step 4: Start the data synchronization task
 
-> **Note:**
-> 
-> To detect possible errors of data synchronization configuration in advance, DM provides the precheck feature. DM automatically checks the corresponding privileges and configuration while starting the data synchronization task. You can also use the `check-task` command to manually precheck whether the upstream MySQL instance configuration satisfies the DM requirements. For details about the precheck feature, see [Precheck the upstream MySQL instance configuration](../tools/data-migration-manage-task.md#precheck-the-upstream-mysql-instance-configuration).
+To detect possible errors of data synchronization configuration in advance, DM provides the precheck feature:
 
-1. Come to the dmctl directory `/home/tidb/dm-ansible/resource/bin/`.
+- DM automatically checks the corresponding privileges and configuration while starting the data synchronization task.
+- You can also use the `check-task` command to manually precheck whether the upstream MySQL instance configuration satisfies the DM requirements.
+
+For details about the precheck feature, see [Precheck the upstream MySQL instance configuration](../tools/data-migration-manage-task.md#precheck-the-upstream-mysql-instance-configuration).
+
+> **Note:** Before starting the data synchronization task for the first time, you should have got the upstream configured. Otherwise, an error is reported while you start the task.
+
+1. Come to the dmctl directory `/home/tidb/dm-ansible/resources/bin/`.
 
 2. Run the following command to start dmctl.
 

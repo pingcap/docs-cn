@@ -23,6 +23,7 @@ Before you start, make sure you have the following machines as required.
     > **Note:** The Control Machine can be one of the target machines.
 
     - CentOS 7.3 (64-bit) or later, with Python 2.7 installed
+    - Ansible 2.5 or later installed
     - Access to the Internet
 
 ## Step 1: Install system dependencies on the Control Machine
@@ -44,7 +45,7 @@ Log in to the Control Machine using the `root` user account, and run the corresp
 
 ## Step 2: Create the `tidb` user on the Control Machine and generate the SSH key
 
-Make sure you have logged in to the Control Machine using the `root` user account, and then run the following command.
+Make sure you have logged in to the Control Machine using the `root` user account, and then perform the following steps.
 
 1. Create the `tidb` user.
 
@@ -72,7 +73,7 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
     # su - tidb
     ```
 
-    Create the SSH key for the `tidb` user account and hit the Enter key when `Enter passphrase` is prompted. After successful execution, the SSH private key file is `/home/tidb/.ssh/id_rsa`, and the SSH public key file is `/home/tidb/.ssh/id_rsa.pub`.
+    Create the SSH key for the `tidb` user account and hit the <kbd>Enter</kbd> key when `Enter passphrase` is prompted. After successful execution, the SSH private key file is `/home/tidb/.ssh/id_rsa`, and the SSH public key file is `/home/tidb/.ssh/id_rsa.pub`.
     
     ```
     $ ssh-keygen -t rsa
@@ -101,7 +102,9 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
 
 ## Step 3: Download DM-Ansible to the Control Machine
 
-1. Log in to the Control Machine using the `tidb` user account and enter the `/home/tidb` directory.
+Make sure you have logged in to the Control Machine using the `tidb` user account.
+
+1. Go to the `/home/tidb` directory.
 
 2. Run the following command to download DM-Ansible.
 
@@ -109,13 +112,13 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
     $ wget http://download.pingcap.org/dm-ansible-latest.tar.gz
     ```
 
-## Step 4: Install Ansible and its dependencies on the Control Machine
+## Step 4: Install DM-Ansible and its dependencies on the Control Machine
 
 Make sure you have logged in to the Control Machine using the `tidb` user account.
 
 It is required to use `pip` to install Ansible and its dependencies, otherwise a compatibility issue occurs. Currently, DM-Ansible is compatible with Ansible 2.5 or later.
 
-1. Install Ansible and the dependencies on the Control Machine:
+1. Install DM-Ansible and the dependencies on the Control Machine:
 
     ```bash
     $ tar -xzvf dm-ansible-latest.tar.gz
@@ -151,7 +154,7 @@ Make sure you have logged in to the Control Machine using the `tidb` user accoun
     username = tidb
     ```
 
-2. Run the following command and input the `root` user account password of your deployment target machines.
+2. Run the following command and input the password of the `root` user account of your deployment target machines.
 
     ```bash
     $ ansible-playbook -i hosts.ini create_users.yml -u root -k
@@ -181,9 +184,9 @@ You can choose one of the following two types of cluster topology according to y
 
 - [The cluster topology of a single DM-worker instance on each node](#option-1-use-the-cluster-topology-of-a-single-dm-worker-instance-on-each-node)
 
-    Generally, it is recommended to deploy one DM-worker instance on each node. Howerver, if the CPU and memory of your machine is much better than the required in [Hardware and Software Requirements](/op-guide/recommendation.md), and you have more than 2 disks in one node or the capacity of one SSD is larger than 2 TB, you can deploy no more than 2 DM-worker instances on a single node.
-
 - [The cluster topology of multiple DM-worker instances on each node](#option-2-use-the-cluster-topology-of-multiple-dm-worker-instances-on-each-node)
+
+    Generally, it is recommended to deploy one DM-worker instance on each node. However, if the CPU and memory of your machine are much better than the required in [Hardware and Software Requirements](/op-guide/recommendation.md), and you have more than 2 disks in one node or the capacity of one SSD is larger than 2 TB, you can deploy no more than 2 DM-worker instances on a single node.
 
 ### Option 1: Use the cluster topology of a single DM-worker instance on each node
 
@@ -192,18 +195,20 @@ You can choose one of the following two types of cluster topology according to y
 | node1 | 172.16.10.71 | DM-master, Prometheus, Grafana, Alertmanager |
 | node2 | 172.16.10.72 | DM-worker1 |
 | node3 | 172.16.10.73 | DM-worker2 |
+| mysql-replica-01| 172.16.10.81 | MySQL |
+| mysql-replica-02| 172.16.10.82 | MySQL |
 
 ```ini
-## DM modules.
+# DM modules.
 [dm_master_servers]
 dm_master ansible_host=172.16.10.71
 
 [dm_worker_servers]
-dm_worker1 ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+dm_worker1 ansible_host=172.16.10.72 server_id=101 source_id="mysql-replica-01" mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-dm_worker2 ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+dm_worker2 ansible_host=172.16.10.73 server_id=102 source_id="mysql-replica-02" mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-## Monitoring modules.
+# Monitoring modules.
 [prometheus_servers]
 prometheus ansible_host=172.16.10.71
 
@@ -213,7 +218,7 @@ grafana ansible_host=172.16.10.71
 [alertmanager_servers]
 alertmanager ansible_host=172.16.10.71
 
-## Global variables.
+# Global variables.
 [all:vars]
 cluster_name = test-cluster
 
@@ -226,6 +231,8 @@ deploy_dir = /data1/dm
 grafana_admin_user = "admin"
 grafana_admin_password = "admin"
 ```
+
+For details about DM-worker parameters, see [DM-worker configuration parameters description](#dm-worker-configuration-parameters-description).
 
 ### Option 2: Use the cluster topology of multiple DM-worker instances on each node
 
@@ -238,7 +245,7 @@ grafana_admin_password = "admin"
 When you edit the `inventory.ini` file, pay attention to distinguish between the following variables: `server_id`, `deploy_dir`, and `dm_worker_port`.
 
 ```ini
-## DM modules.
+# DM modules.
 [dm_master_servers]
 dm_master ansible_host=172.16.10.71
 
@@ -249,7 +256,7 @@ dm_worker1_2 ansible_host=172.16.10.72 server_id=102 deploy_dir=/data2/dm_worker
 dm_worker2_1 ansible_host=172.16.10.73 server_id=103 deploy_dir=/data1/dm_worker dm_worker_port=8262 mysql_host=172.16.10.83 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 dm_worker2_2 ansible_host=172.16.10.73 server_id=104 deploy_dir=/data2/dm_worker dm_worker_port=8263 mysql_host=172.16.10.84 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-## Monitoring modules.
+# Monitoring modules.
 [prometheus_servers]
 prometheus ansible_host=172.16.10.71
 
@@ -259,7 +266,7 @@ grafana ansible_host=172.16.10.71
 [alertmanager_servers]
 alertmanager ansible_host=172.16.10.71
 
-## Global variables.
+# Global variables.
 [all:vars]
 cluster_name = test-cluster
 
@@ -272,37 +279,6 @@ deploy_dir = /data1/dm
 grafana_admin_user = "admin"
 grafana_admin_password = "admin"
 ```
-
-## Step 8: Edit variables in the `inventory.ini` file
-
-This step shows how to edit the variable of deployment directory, and explains the global variables and DM-worker configuration parameters in the `inventory.ini` file.
-
-### Configure the deployment directory
-
-Edit the `deploy_dir` variable to configure the deployment directory.
-
-The global variable is set to `/home/tidb/deploy` by default, and it applies to all services. If the data disk is mounted on the `/data1` directory, you can set it to `/data1/dm`. For example:
-
-```ini
-## Global variables.
-[all:vars]
-deploy_dir = /data1/dm
-```
-
-If you need to set a separate deployment directory for a service, you can configure the host variable while configuring the service host list in the `inventory.ini` file. It is required to add the first column alias, to avoid confusion in scenarios of mixed services deployment.
-
-```ini
-dm-master ansible_host=172.16.10.71 deploy_dir=/data1/deploy
-```
-
-### Global variables description
-
-| Variable name            | Description                                |
-| --------------- | ---------------------------------------------------------- |
-| cluster_name | The name of a cluster, adjustable |
-| dm_version | The version of DM, configured by default |
-| grafana_admin_user | The username of the Grafana administrator; default `admin` |
-| grafana_admin_password | The password of the Grafana administrator account; default `admin`; used to import Dashboard by Ansible; update this variable if you have modified it through the Grafana web |
 
 ### DM-worker configuration parameters description
 
@@ -319,6 +295,8 @@ dm-master ansible_host=172.16.10.71 deploy_dir=/data1/deploy
 | relay_binlog_gtid | Whether DM-worker pulls the binlog starting from the specified GTID. Only used when the local has no valid relay log and `enable_gtid` is true. |
 | flavor | "flavor" indicates the release type of MySQL. For the official version, Percona, and cloud MySQL, fill in "mysql"; for MariaDB, fill in "mariadb". It is "mysql" by default. |
 
+For details about the `deploy_dir` configuration, see [Configure the deployment directory](#configure-the-deployment-directory).
+
 ### Encrypt the upstream MySQL user password using dmctl
 
 Assuming that the upstream MySQL user password is `123456`, configure the generated string to the `mysql_password` variable of DM-worker.
@@ -329,15 +307,37 @@ $ ./dmctl -encrypt 123456
 VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=
 ```
 
+## Step 8: Edit variables in the `inventory.ini` file
+
+This step shows how to edit the variable of the deployment directory, how to configure the relay log synchronization position and the relay log GTID synchronization mode, and explains the global variables in the `inventory.ini` file.
+
+### Configure the deployment directory
+
+Edit the `deploy_dir` variable to configure the deployment directory.
+
+- The global variable is set to `/home/tidb/deploy` by default, and it applies to all services. If the data disk is mounted on the `/data1` directory, you can set it to `/data1/dm`. For example:
+
+    ```ini
+    ## Global variables.
+    [all:vars]
+    deploy_dir = /data1/dm
+    ```
+
+- If you need to set a separate deployment directory for a service, you can configure the host variable while configuring the service host list in the `inventory.ini` file. It is required to add the first column alias, to avoid confusion in scenarios of mixed services deployment.
+
+    ```ini
+    dm-master ansible_host=172.16.10.71 deploy_dir=/data1/deploy
+    ```
+
 ### Configure the relay log synchronization position
 
 When you start DM-worker for the first time, you need to configure `relay_binlog_name` to specify the position where DM-worker starts to pull the corresponding upstream MySQL or MariaDB binlog.
 
 ```yaml
 [dm_worker_servers]
-dm-worker1 ansible_host=172.16.10.72 source_id="mysql-replica-01" server_id=101 relay_binlog_name="binlog.000011" mysql_host=172.16.10.72 mysql_user=root mysql_port=3306
+dm-worker1 ansible_host=172.16.10.72 source_id="mysql-replica-01" server_id=101 relay_binlog_name="binlog.000011" mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 relay_binlog_name="binlog.000002" mysql_host=172.16.10.73 mysql_user=root mysql_port=3306
+dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 relay_binlog_name="binlog.000002" mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 ```
 
 > **Note:** If `relay_binlog_name` is not set, DM-worker pulls the binlog starting from the earliest existing binlog file of the upstream MySQL or MariaDB. In this case, it can take a long period of time to pull the latest binlog for the data synchronization task.
@@ -353,11 +353,19 @@ You can enable the relay log GTID synchronization mode by configuring the follow
 
 ```yaml
 [dm_worker_servers]
-dm-worker1 ansible_host=172.16.10.72 source_id="mysql-replica-01" server_id=101 enable_gtid=true relay_binlog_gtid="aae3683d-f77b-11e7-9e3b-02a495f8993c:1-282967971,cc97fa93-f5cf-11e7-ae19-02915c68ee2e
-:1-284361339" mysql_host=172.16.10.72 mysql_user=root mysql_port=3306
+dm-worker1 ansible_host=172.16.10.72 source_id="mysql-replica-01" server_id=101 enable_gtid=true relay_binlog_gtid="aae3683d-f77b-11e7-9e3b-02a495f8993c:1-282967971,cc97fa93-f5cf-11e7-ae19-02915c68ee2e:1-284361339" mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 relay_binlog_name=binlog.000002 mysql_host=172.16.10.73 mysql_user=root mysql_port=3306
+dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 relay_binlog_name=binlog.000002 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 ```
+
+### Global variables description
+
+| Variable name            | Description                                |
+| --------------- | ---------------------------------------------------------- |
+| cluster_name | The name of a cluster, adjustable |
+| dm_version | The version of DM, configured by default |
+| grafana_admin_user | The username of the Grafana administrator; default `admin` |
+| grafana_admin_password | The password of the Grafana administrator account; default `admin`; used to import Dashboard by Ansible; update this variable if you have modified it through the Grafana web |
 
 ## Step 9: Deploy the DM cluster
 
