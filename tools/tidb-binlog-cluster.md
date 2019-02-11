@@ -597,7 +597,7 @@ Usage of binlogctl:
 
 - 查询所有的 Pump/Drainer 的状态：
 
-    设置 `cmd` 为 `pumps` 或者 `drainers` 来查看所有 Pump 或者 Drainer 的状态。例如：
+    设置 `cmd` 为 `pumps` 或者 `drainers` 来查看所有 Pump 或者 Drainer 的状态。例如：
 
     ```bash
     bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pumps
@@ -607,7 +607,7 @@ Usage of binlogctl:
 
 - 修改 Pump/Drainer 的状态
   
-    设置 `cmd` 为 `update-pump` 或者 `update-drainer` 来更新 Pump 或者 Drainer 的状态。 Pump 和 Drainer 的状态可以为：online，pausing，paused，closing 以及 offline。例如：
+    设置 `cmd` 为 `update-pump` 或者 `update-drainer` 来更新 Pump 或者 Drainer 的状态。Pump 和 Drainer 的状态可以为：online，pausing，paused，closing 以及 offline。例如：
 
     ```bash
     bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd update-pump -node-id ip-127-0-0-1:8250 -state paused
