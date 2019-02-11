@@ -147,7 +147,7 @@ DATETIME 和 TIMESTAMP 的转换：
 
 TIME 转成 DATE 也是类似过程，然后丢弃时间部分。
 
-使用 `CASE()` 函数可以显示的转换类型，比如：
+使用 `CASE()` 函数可以显式的转换类型，比如：
 
 ```
 date_col = CAST(datetime_col AS DATE)
