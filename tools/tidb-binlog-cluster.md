@@ -144,7 +144,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
         ansible-playbook deploy.yml -l ${pump1_ip}, ${pump2_ip}, [${alias1_name}, ${alias2_name}]
         ```
         
-    2. 重启 pump_servers
+    2. 启动 pump_servers
     
         ```
         ansible-playbook start.yml --tags=pump
