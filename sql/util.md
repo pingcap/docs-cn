@@ -94,3 +94,45 @@ USE db_name
 ```
 
 切换默认 Database，当 SQL 语句中的表没有显示指定 Database 时，即使用默认 Database。
+
+## `TRACE` 语句
+
+```sql
+TRACE [FORMAT = format_name] traceable_stmt
+
+format_name:
+    "json" | "row"
+
+traceable_stmt: {
+    SELECT statement
+  | DELETE statement
+  | INSERT statement
+  | REPLACE statement
+  | UPDATE statement
+}
+```
+
+```sql
+mysql> trace format = 'row' select * from mysql.user;
++---------------------------|-----------------|------------+
+| operation                 | startTS         | duration   |
++---------------------------|-----------------|------------+
+| session.getTxnFuture      | 19:54:35.310841 | 4.255µs    |
+|   ├─session.Execute       | 19:54:35.310837 | 928.349µs  |
+|   ├─session.ParseSQL      | 19:54:35.310906 | 35.379µs   |
+|   ├─executor.Compile      | 19:54:35.310972 | 420.688µs  |
+|   ├─session.runStmt       | 19:54:35.311427 | 222.431µs  |
+|   ├─session.CommitTxn     | 19:54:35.311601 | 14.696µs   |
+|   ├─recordSet.Next        | 19:54:35.311828 | 419.797µs  |
+|   ├─tableReader.Next      | 19:54:35.311834 | 379.932µs  |
+|   ├─recordSet.Next        | 19:54:35.312310 | 26.831µs   |
+|   └─tableReader.Next      | 19:54:35.312314 | 2.84µs     |
++---------------------------|-----------------|------------+
+10 rows in set (0.00 sec)
+```
+
+当 format 为 json 时，输出是一段 json 格式的内容。如果长度过大，则输出会被换行。
+
+输出的 json 内容可以在集成的 Web UI 里面查看，效果如下：
+
+![](https://user-images.githubusercontent.com/1420062/48955365-8b82dc80-ef88-11e8-9ecb-22d0bcf565c3.gif)
