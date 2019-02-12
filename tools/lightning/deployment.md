@@ -270,7 +270,8 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
     #  - mysql：存放在兼容 MySQL 的数据库服务器
     driver = "file"
     # 断点的存放位置
-    # 若 driver = "file"，此参数为目标文件路径。默认为“/tmp/架构名称.pb”。
+    # 若 driver = "file"，此参数为断点信息存放的文件路径。
+    # 如果不设置改参数则默认为“/tmp/CHECKPOINT_SCHEMA.pb”。
     # 若 driver = "mysql"，此参数为数据库连接参数 (DSN)，格式为“用户:密码@tcp(地址:端口)”。
     # 默认会重用 [tidb] 设置目标数据库来存储断点。
     # 为避免加重目标集群的压力，建议另外使用一个兼容 MySQL 的数据库服务器。
