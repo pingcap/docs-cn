@@ -182,7 +182,8 @@ This document introduces the query result and subtask status of Data Migration (
 ```
 
 For the status description and status switch relationship of "stage" of "subTaskStatus" of "workers", see [Subtask status](#subtask-status).
-For operation details of "unresolvedDDLLockID" of "subTaskStatus" of "workers", see [Troubleshooting Sharding DDL Locks](/tools/dm/troubleshooting-sharding-ddl-locks/).
+
+For operation details of "unresolvedDDLLockID" of "subTaskStatus" of "workers", see [Handle Sharding DDL Locks Manually](/tools/dm/manually-handling-sharding-ddl-locks.md).
 
 ## Subtask status
 

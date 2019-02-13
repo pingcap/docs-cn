@@ -60,18 +60,18 @@ For the binlog during incremental data import, DM uses the downstream database t
 
         At this time, DM tries again to synchronize these DDL statements that are not skipped. However, the restarted DM-worker instances will be blocked at the position of the binlog event corresponding to the DDL binlog event, because the DM-worker instance that is not restarted has executed to the place after this DDL binlog event.
 
-        To resolve this issue, follow the steps described in [Troubleshooting Sharding DDL Locks](/tools/dm/troubleshooting-sharding-ddl-locks.md#condition-two-a-dm-worker-restarts-or-is-unreachable-temporarily)
+        To resolve this issue, follow the steps described in [Handle Sharding DDL Locks Manually](/tools/dm/manually-handling-sharding-ddl-locks.md#scenario-2-some-dm-workers-restart-during-the-ddl-unlocking-process).
+
+**Conclusion:** Try to avoid restarting DM-worker in the process of sharding DDL replication.
 
 #### Restarting DM-master considerations
 
-The information maintained by DM-master includes the following two major types, and these data are not being persisted when you restart DM-master.
+The information maintained by DM-master includes the following two major types, and these data is not being persisted when you restart DM-master.
 
 - The corresponding relationship between the task and DM-worker
 - The sharding DDL lock related information
 
-When DM-master is restarted, it automatically requests the task information from each DM-worker instance and rebuilds the corresponding relationship between the task and DM-worker. However, at this time, DM-worker does not resend the sharding DDL information, so it might occur that the sharding DDL lock synchronization cannot be finished automatically because of the lost lock information.
-
-To resolve this issue, follow the steps described in [Troubleshooting Sharding DDL Locks](/tools/dm/troubleshooting-sharding-ddl-locks.md#condition-three-dm-master-restarts).
+When DM-master is restarted, it automatically requests the task information from each DM-worker instance, rebuilds the corresponding relationship between the task and DM-worker, and also re-fetches the sharding DDL information from each DM-worker instance. So the corresponding DDL lock can be correctly rebuilt and the sharding DDL lock can be automatically resolved.
 
 #### Restarting dmctl considerations
 
@@ -97,8 +97,6 @@ To restart the DM-worker component, you can use either of the following two appr
     ```
 
 ### Restart DM-master
-
-> **Note:** Try to avoid restarting DM-master during the process of synchronizing sharding DDL statements.
 
 To restart the DM-master component, you can use either of the following two approaches:
 

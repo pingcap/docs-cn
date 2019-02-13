@@ -27,8 +27,16 @@ show-ddl-locks [--worker=127.0.0.1:8262] [task-name]
 
 #### Arguments description
 
-- `worker`: flag; string; `--worker`; optional; can be specified multiple times; if it is not specified, this command queries the lock information related to all DM-workers; if it is specified, this command queries the lock information related only to the specified DM-worker.
-- `task-name`: non-flag; string; optional; if it is not specified, this command queries the lock information related to all tasks; if it is specified, this command queries the lock information related only to the specified task.
++ `worker`:
+
+    - Flag; string; `--worker`; optional
+    - It can be specified repeatedly multiple times.
+    - If it is not specified, this command queries the lock information related to all DM-workers; if it is specified, this command queries the lock information related only to the specified DM-worker.
+
++ `task-name`:
+
+    - Non-flag; string; optional
+    - If it is not specified, this command queries the lock information related to all tasks; if it is specified, this command queries the lock information related only to the specified task.
 
 #### Example of results
 
@@ -58,7 +66,7 @@ show-ddl-locks [--worker=127.0.0.1:8262] [task-name]
 
 ### `unlock-ddl-lock`
 
-This command actively asks `DM-master` to unlock the specified DDL lock, including asking the owner to execute the DDL, asking all other DM-workers that are not the owner to skip the DDL, and removing the lock information on `DM-master`.
+This command actively requests `DM-master` to unlock the specified DDL lock, including requesting the owner to execute the DDL statement, requesting all other DM-workers that are not the owner to skip the DDL statement, and removing the lock information on `DM-master`.
 
 #### Command usage
 
@@ -68,10 +76,26 @@ unlock-ddl-lock [--worker=127.0.0.1:8262] [--owner] [--force-remove] <lock-ID>
 
 #### Arguments description
 
-- `worker`: flag; string; `--worker`; optional; it can be specified multiple times; if it is not specified, this command sends requests for all DM-workers (except for the owner) that are waiting for the lock to skip the DDL; if it is specified, this command sends requests only for the specified DM-worker to skip the DDL.
-- `owner`: flag; string; `--owner`; optional; if it is not specified, this command requests for the default owner (the owner in the result of `show-ddl-locks`) to execute the DDL; if it is specified, this command requests for the DM-worker (the alternative of the default owner) to execute the DDL.
-- `force-remove`: flag; boolean; `--force-remove`; optional; if it is not specified, this command removes the lock information only when the owner succeeds to execute the DDL; if it is specified, this command forcefully removes the lock information even though the owner fails to execute the DDL (after doing this you will not be able to query or operate on the lock again).
-- `lock-ID`: non-flag; string; required; it specifies the ID of the DDL lock that needs to be unlocked (the `ID` in the result of `show-ddl-locks`).
++ `worker`:
+
+    - Flag; string; `--worker`; optional
+    - It can be specified repeatedly multiple times.
+    - If it is not specified, this command sends requests for all DM-workers (except for the owner) that are waiting for the lock to skip the DDL statement; if it is specified, this command sends requests only for the specified DM-worker to skip the DDL statement.
+
++ `owner`:
+
+    - Flag; string; `--owner`; optional
+    - If it is not specified, this command requests for the default owner (the owner in the result of `show-ddl-locks`) to execute the DDL statement; if it is specified, this command requests for the DM-worker (the alternative of the default owner) to execute the DDL statement.
+
++ `force-remove`:
+
+    - Flag; boolean; `--force-remove`; optional
+    - If it is not specified, this command removes the lock information only when the owner succeeds to execute the DDL statement; if it is specified, this command forcefully removes the lock information even though the owner fails to execute the DDL statement (after doing this you cannot query or operate on the lock again).
+
++ `lock-ID`:
+
+    - Non-flag; string; required
+    - It specifies the ID of the DDL lock that needs to be unlocked (the `ID` in the result of `show-ddl-locks`).
 
 #### Example of results
 
@@ -102,11 +126,28 @@ break-ddl-lock <--worker=127.0.0.1:8262> [--remove-id] [--exec] [--skip] <task-n
 
 #### Arguments description
 
-- `worker`: flag; string; `--worker`; required; it specifies the DM-worker that needs to execute the breaking operation.
-- `remove-id`: deprecated.
-- `exec`: flag; boolean; `--exec`; optional; cannot be specified simultaneously with the `--skip` parameter; if it is specified, this command asks the DM-worker to execute the corresponding DDL of the lock.
-- `skip`: flag; boolean; `--skip`; optional; cannot be specified simultaneously with the `--exec` parameter; if it is specified, this command asks the DM-worker to skip the corresponding DDL of the lock.
-- `task-name`: non-flag; string; required; it specifies the name of the task containing the lock that is going to execute the breaking operation (you can check whether a task contains the lock via [query-status](../../tools/dm/query-status.md)).
++ `worker`:
+
+    - Flag; string; `--worker`; required
+    - It specifies the DM-worker that needs to execute the breaking operation.
+
++ `remove-id`: deprecated.
++ `exec`:
+
+    - Flag; boolean; `--exec`; optional
+    - It cannot be specified simultaneously with the `--skip` parameter.
+    - If it is specified, this command asks the DM-worker to execute the corresponding DDL statement of the lock.
+
++ `skip`:
+
+    - flag; boolean; `--skip`; optional
+    - It cannot be specified simultaneously with the `--exec` parameter.
+    - If it is specified, this command asks the DM-worker to skip the corresponding DDL statement of the lock.
+
++ `task-name`:
+
+    - Non-flag; string; required
+    - It specifies the name of the task containing the lock that is going to execute the breaking operation (you can check whether a task contains the lock via [query-status](../../tools/dm/query-status.md)).
 
 #### Example of results
 

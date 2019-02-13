@@ -555,7 +555,7 @@ update-task [-w "127.0.0.1:10181"] ./task.yaml
 
 ## Manage the DDL locks
 
-See [Troubleshooting Sharding DDL Locks](/tools/dm/troubleshooting-sharding-ddl-locks.md).
+See [Handle Sharding DDL Locks Manually](/tools/dm/manually-handling-sharding-ddl-locks.md).
 
 ## Refresh worker tasks
 

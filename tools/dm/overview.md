@@ -95,4 +95,4 @@ Before using the DM tool, note the following restrictions:
 
     - After DM-worker is restarted, the data synchronization task cannot be automatically restored. You need to manually run `start-task`. For details, see [Manage the Data Synchronization Task](/tools/dm/manage-task.md).
 
-    - After DM-worker or DM-master is restarted, the DDL lock synchronization cannot be automatically restored in some conditions. You need to manually handle it. For details, see [Troubleshooting Sharding DDL Locks](/tools/dm/troubleshooting-sharding-ddl-locks.md).
+    - After DM-worker is restarted, the DDL lock synchronization cannot be automatically restored in some conditions. You need to manually handle it. For details, see [Handle Sharding DDL Locks Manually](/tools/dm/manually-handling-sharding-ddl-locks.md).

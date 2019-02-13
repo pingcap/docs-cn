@@ -8,7 +8,7 @@ category: tools
 
 This document introduces the sharding support feature provided by Data Migration (DM). This feature allows you to merge and replicate the data of tables with the same table schema in the upstream MySQL or MariaDB instances into one same table in the downstream TiDB. It supports not only replicating the upstream DML statements, but also coordinating to replicate the table schema modification using DDL statements in multiple upstream sharded tables.
 
-> **Note:** To merge and replicate data from the sharded tables, you must configure the `is-sharding: true` parameter in the task configuration file.
+> **Note:** To merge and replicate data from sharded tables, you must configure the `is-sharding: true` parameter in the task configuration file.
 
 ### Restrictions
 
