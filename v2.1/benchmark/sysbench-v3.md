@@ -21,7 +21,7 @@ TiDB 版本：v2.1.0-rc.2 vs. v2.0.6
 
 IDC 机器：
 
-| 类别 | 名称 |  
+| 类别 | 名称 |
 | :-: | :-: |
 | OS | Linux (CentOS 7.3.1611) |
 | CPU | 40 vCPUs, Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz |
