@@ -264,7 +264,7 @@ tbl-name = "beijing"
 db-name ="ops"
 tbl-name = "ops_user"
 
-# history 数据下有 2017_01 2017_02 ... 2017_12 / 2016_01  2016_02 ... 2016_12  等多张表,只需要同步 2017 年的数据表
+# history 数据下有 2017_01 2017_02 ... 2017_12 / 2016_01  2016_02 ... 2016_12 等多张表，只需要同步 2017 年的数据表
 [[replicate-do-table]]
 db-name ="history"
 tbl-name = "~^2017_.*"
@@ -276,12 +276,12 @@ replicate-ignore-db = ["ops","fault","~^www"]
 
 # fault 数据库下有 faults / user_feedback / ticket 等数据表
 # 忽略同步 user_feedback 数据表
-# 因 replicate-ignore-db 优先级比 replicate-ignore-table 高，所以此处设置只同步 user_feedback 表无效，实际工作会同步 fault 整个数据库
+# 因 replicate-ignore-db 优先级比 replicate-ignore-table 高，所以此处设置只忽略同步 user_feedback 表无效，实际工作会忽略同步 fault 整个数据库
 [[replicate-ignore-table]]
 db-name = "fault"
 tbl-name = "user_feedback"
 
-# order 数据下有 2017_01 2017_02 ... 2017_12 / 2016_01  2016_02 ... 2016_12  等多张表,忽略 2016 年的数据表
+# order 数据下有 2017_01 2017_02 ... 2017_12 / 2016_01  2016_02 ... 2016_12 等多张表，忽略 2016 年的数据表
 [[replicate-ignore-table]]
 db-name ="order"
 tbl-name = "~^2016_.*"
@@ -308,7 +308,7 @@ tbl-name = "~^2016_.*"
 # 数据库A 下有 order_2016 / history_2016 等多个数据库
 # 数据库B 下有 order_2017 / history_2017 等多个数据库
 # 指定同步数据库A  order_2016 数据库，数据表如下 2016_01 2016_02 ... 2016_12 
-# 指定同步数据表B  order_2017 数据库，数据表如下 2017_01 2017_02 ... 2017_12
+# 指定同步数据库B  order_2017 数据库，数据表如下 2017_01 2017_02 ... 2017_12
 # 表内使用 order_id 作为主键，数据之间主键不冲突
 # 忽略同步 history_2016 与 history_2017 数据库
 # 目标库需要为 order ，目标数据表为 order_2017 / order_2016
