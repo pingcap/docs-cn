@@ -21,12 +21,12 @@ Place: Beijing, China
  
 IDC machine       
  
-| Type | Name |  
-| -------- | --------- | 
-| OS | linux (CentOS 7.3.1611) |   
+| Type | Name |
+| -------- | --------- |
+| OS | linux (CentOS 7.3.1611) |
 | CPU | 40 vCPUs, Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz |
-| RAM | 128GB | 
-| DISK | Optane 500GB SSD * 1 |  
+| RAM | 128GB |
+| DISK | Optane 500GB SSD * 1 |
 
 Sysbench test script:
 https://github.com/pingcap/tidb-bench/tree/master/sysbench   
@@ -89,8 +89,8 @@ https://github.com/pingcap/tidb-bench/tree/master/sysbench
 
 ### Standard `Select` test 
 
-| Version | Table count | Table size | Sysbench threads |QPS | Latency (avg/.95) | 
-| :---: | :---: | :---: | :---: | :---: | :---: | 
+| Version | Table count | Table size | Sysbench threads |QPS | Latency (avg/.95) |
+| :---: | :---: | :---: | :---: | :---: | :---: |
 | v2.0.0-rc6 | 32 | 10 million | 128 * 3 |  201936 | 1.9033 ms/5.67667 ms |
 | v2.0.0-rc6 | 32 | 10 million | 256 * 3 | 208130 | 3.69333 ms/8.90333 ms  |
 | v2.0.0-rc6 | 32 | 10 million | 512 * 3 |  211788 | 7.23333 ms/15.59 ms |
@@ -104,7 +104,7 @@ According to the statistics above, the `Select` query performance of TiDB 2.0 GA
 
 ### Standard OLTP test
 
-| Version | Table count | Table size | Sysbench threads | TPS | QPS | Latency (avg/.95) | 
+| Version | Table count | Table size | Sysbench threads | TPS | QPS | Latency (avg/.95) |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---:|
 | v2.0.0-rc6 | 32 | 10 million | 128 * 3 | 5404.22 | 108084.4 | 87.2033 ms/110 ms |
 | v2.0.0-rc6 | 32 | 10 million | 256 * 3 | 5578.165 | 111563.3 | 167.673 ms/275.623 ms |
@@ -119,8 +119,8 @@ According to the statistics above, the OLTP performance of TiDB 2.0 GA and TiDB 
 
 ### Standard `Insert` test
 
-| Version | Table count | Table size | Sysbench threads | QPS | Latency (avg/.95) | 
-| :---: | :---: | :---: | :---: | :---: | :---: | 
+| Version | Table count | Table size | Sysbench threads | QPS | Latency (avg/.95) |
+| :---: | :---: | :---: | :---: | :---: | :---: |
 | v2.0.0-rc6 | 32 | 10 million | 128 * 3 | 31707.5 | 12.11 ms/21.1167 ms |
 | v2.0.0-rc6 | 32 | 10 million | 256 * 3 | 38741.2 | 19.8233 ms/39.65 ms |
 | v2.0.0-rc6 | 32 | 10 million | 512 * 3 | 45136.8 | 34.0267 ms/66.84 ms |
