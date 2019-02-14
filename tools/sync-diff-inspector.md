@@ -74,7 +74,7 @@ tables = ["test1", "test2", "test3"]
 # 支持使用正则表达式配置检查的表，需要以‘~’开始，
 # 下面的配置会检查所有表名以‘test’为前缀的表
 # tables = ["~^test.*"]
-# 下面的配置会检查配置库中所有的表
+# 下面的配置会检查配置库中所有的表
 # tables = ["~^"]
 
 # 对部分表进行特殊的配置，配置的表必须包含在 check-tables 中
@@ -181,19 +181,19 @@ is-sharding = true
 
 # 源数据表的配置
 [[table-config.source-tables]]
-# 源数据库实例的 id 
+# 源数据库实例的 id
 instance-id = "source-1"
 schema = "test"
 table  = "test1"
 
 [[table-config.source-tables]]
-# 源数据库实例的 id 
+# 源数据库实例的 id
 instance-id = "source-1"
 schema = "test"
 table  = "test2"
 
 [[table-config.source-tables]]
-# 源数据库实例的 id 
+# 源数据库实例的 id
 instance-id = "source-2"
 schema = "test"
 table  = "test3"
