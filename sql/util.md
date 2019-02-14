@@ -93,7 +93,8 @@ dot xx.dot -T png -O
 USE db_name
 ```
 
-切换默认 Database，当 SQL 语句中的表没有显示指定 Database 时，即使用默认 Database。
+
+切换默认 Database，当 SQL 语句中的表没有显式指定的 Database 时，即使用默认 Database。
 
 ## `TRACE` 语句
 

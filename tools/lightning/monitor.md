@@ -96,9 +96,9 @@ scrape_configs:
 
 - **`lightning_idle_workers`**（测量仪）
 
-    计算闲置的工作流程。数值应低于 `table-concurrency`/`region-concurrency`，而经常为零。标签：
+    计算闲置的工作流程。数值应低于设置中的 `*-concurrency` 的值，且经常为 0。标签：
 
-    - **name**：`table` / `region`
+    - **name**：`table` / `region` / `io`
 
 - **`lightning_kv_encoder`**（计数器）
 
@@ -110,7 +110,7 @@ scrape_configs:
 
     计算处理过的表及其状态。标签：
 
-    - **state**：`pending` / `written` / `closed` / `imported` / `altered_auto_inc` / `checksum` / `completed`
+    - **state**：`pending` / `written` / `closed` / `imported` / `altered_auto_inc` / `checksum` / `analyzed` / `completed`
     - **result**：`success` / `failure`
 
 - **`lightning_chunks`**（计数器）
@@ -118,3 +118,45 @@ scrape_configs:
     计算处理过的 Chunks 及其状态。标签：
 
     - **state**：`estimated` / `pending` / `running` / `finished` / `failed`
+
+- **`lightning_import_seconds`**（直方图）
+
+    导入每个表需时的直方图。
+
+- **`lightning_block_read_seconds`**（直方图）
+
+    读取每个 SQL 区块需时的直方图。
+
+- **`lightning_block_read_bytes`**（直方图）
+
+    每个 SQL 区块大小的直方图。
+
+- **`lightning_block_encode_seconds`**（直方图）
+
+    每个 SQL 区块转换成 KV 对需时的直方图。
+
+- **`lightning_block_deliver_seconds`**（直方图）
+
+    每个 KV 对区块传送到 `tikv-importer` 需时的直方图。
+
+- **`lightning_block_deliver_bytes`**（直方图）
+
+    每个 KV 对区块大小的直方图。
+
+- **`lightning_chunk_parser_read_block_seconds`**（直方图）
+
+    解析每个 SQL 区块需时的直方图。
+
+- **`lightning_chunk_parser_read_row_seconds`**（直方图）
+
+    解析每行 SQL 需时的直方图。
+
+- **`lightning_checksum_seconds`**（直方图）
+
+    计算校验和（Checksum）需时的直方图。
+
+- **`lightning_apply_worker_seconds`**（直方图）
+
+    获取闲置工作流程等待时间的直方图。标签：
+
+    - **name**: `table` / `region` / `io`

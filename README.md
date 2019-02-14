@@ -124,6 +124,7 @@
     - [简介](tools/lightning/overview-architecture.md)
     - [部署执行](tools/lightning/deployment.md)
     - [断点续传](tools/lightning/checkpoints.md)
+    - [表库过滤](tools/lightning/filter.md)
     - [监控告警](tools/lightning/monitor.md)
     - [故障诊断](tools/lightning/errors.md)
     - [常见问题与解答](tools/lightning/faq.md)

@@ -5,7 +5,7 @@ category: tispark
 
 # TiSpark 快速入门指南
 
-为了让大家快速体验 [TiSpark](../tispark/tispark-user-guide.md)，通过 TiDB-Ansible 安装的 TiDB 集群中默认已集成 Spark、TiSpark jar 包及 TiSpark sample data。
+为了让大家快速体验 [TiSpark](../tispark/tispark-user-guide_v1.x.md)，通过 TiDB-Ansible 安装的 TiDB 集群中默认已集成 Spark、TiSpark jar 包及 TiSpark sample data。
 
 ## 部署信息
 
@@ -24,7 +24,7 @@ category: tispark
 
 在 [Oracle JDK 官方下载页面 ](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-javase8-2177648.html) 下载 JDK 1.8 当前最新版，本示例中下载的版本为 `jdk-8u141-linux-x64.tar.gz`。
 
-解压并根据您的 JDK 部署目录设置环境变量，
+解压并根据你的 JDK 部署目录设置环境变量，
 编辑 `~/.bashrc` 文件，比如：
 
 ```bashrc
@@ -43,7 +43,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 
 ### 导入样例数据
 
-假设 TiDB 集群已启动，其中一台 TiDB 实例服务 IP 为 192.168.0.2，端口为 4000，用户名为 root, 密码为空。
+假设 TiDB 集群已启动，其中一台 TiDB 实例服务 IP 为 192.168.0.2，端口为 4000，用户名为 root，密码为空。
 
 ```
 cd tidb-ansible/resources/bin/tispark-sample-data
@@ -55,13 +55,13 @@ cd tidb-ansible/resources/bin/tispark-sample-data
 mysql -h 192.168.0.2 -P 4000 -u root < dss.ddl
 ```
 
-执行脚本
+执行以下脚本：
 
 ```
 ./sample_data.sh
 ```
 
-> 执行脚本的机器上需要安装 MySQL client，CentOS 用户可通过 `yum -y install mysql`来安装。
+> **注意**：执行脚本的机器上需要安装 MySQL client，CentOS 用户可通过 `yum -y install mysql` 来安装。
 
 登录 TiDB 并验证数据包含 `TPCH_001` 库及以下表：
 
@@ -102,22 +102,28 @@ MySQL [TPCH_001]> show tables;
 
 ## 使用范例
 
-
-
-进入 spark 部署目录启动 spark-shell:
+进入 spark 部署目录启动 spark-shell ：
 
 ```
 $ cd spark
 $ bin/spark-shell
 ```
 
-然后像使用原生 Spark 一样查询 TiDB 表：
+```scala
+scala> import org.apache.spark.sql.TiContext
+scala> val ti = new TiContext(spark)
+
+// Mapping all TiDB tables from `TPCH_001` database as Spark SQL tables
+scala> ti.tidbMapDatabase("TPCH_001")
+```
+
+之后可以直接调用 Spark SQL ：
 
 ```scala
 scala> spark.sql("select count(*) from lineitem").show
 ```
 
-结果为
+结果为：
 
 ```
 +--------+
@@ -127,7 +133,7 @@ scala> spark.sql("select count(*) from lineitem").show
 +--------+
 ```
 
-下面执行另一个复杂一点的 Spark SQL:
+下面执行另一个复杂一点的 Spark SQL ：
 
 ```scala
 scala> spark.sql(
@@ -177,4 +183,4 @@ scala> spark.sql(
 -----------------+---------+------------+--------+-----------+
 ```
 
-更多样例请参考 https://github.com/ilovesoup/tpch/tree/master/sparksql 
+更多样例请参考 https://github.com/ilovesoup/tpch/tree/master/sparksql。
