@@ -133,6 +133,6 @@ mysql> trace format = 'row' select * from mysql.user;
 
 当 format 为 `json` 时，输出是一段 JSON 格式的内容。如果内容过长，则输出会被换行。
 
-输出的 json 内容可以在集成的 Web UI 里面查看，效果如下：
+输出的 JSON 内容可以在集成的 Web UI 里面查看，效果如下：
 
 ![](https://user-images.githubusercontent.com/1420062/48955365-8b82dc80-ef88-11e8-9ecb-22d0bcf565c3.gif)
