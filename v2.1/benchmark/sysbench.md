@@ -24,12 +24,12 @@ Place: Beijing
 
 - IDC machines:
 
-  | Category  |  Detail       |  
-  | :--------| :---------| 
-  | OS       | Linux (CentOS 7.3.1611)       |   
+  | Category  |  Detail       |
+  | :--------| :---------|
+  | OS       | Linux (CentOS 7.3.1611)       |
   | CPU | 40 vCPUs, Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz |
-  | RAM | 128GB | 
-  | DISK | 1.5T SSD * 2  + Optane SSD * 1 |  
+  | RAM | 128GB |
+  | DISK | 1.5T SSD * 2  + Optane SSD * 1 |
 
 - Sysbench version: 1.0.6
 
@@ -96,8 +96,8 @@ max_connections = 2000
 
 - OLTP RW test
     
-    | - | Table count | Table size | Sysbench threads | TPS | QPS | Latency(avg / .95) | 
-    | :---: | :---: | :---: | :---: | :---: | :---: | :---: | 
+    | - | Table count | Table size | Sysbench threads | TPS | QPS | Latency(avg / .95) |
+    | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
     | TiDB | 32 | 1 million | 64 * 4 | 3834 | 76692 | 67.04 ms / 110.88 ms |
     | TiDB | 32 | 1 million | 128 * 4 | 4172 | 83459 | 124.00 ms / 194.21 ms  |
     | TiDB | 32 | 1 million | 256 * 4 | 4577 | 91547 | 228.36 ms / 334.02 ms |
@@ -115,8 +115,8 @@ max_connections = 2000
 
 - `Select` RW test
 
-    | - | Table count | Table size | Sysbench threads | QPS | Latency(avg / .95) | 
-    | :---: | :---: | :---: | :---: | :---: | :---: | 
+    | - | Table count | Table size | Sysbench threads | QPS | Latency(avg / .95) |
+    | :---: | :---: | :---: | :---: | :---: | :---: |
     | TiDB | 32 | 1 million | 64 * 4 |  160299 | 1.61ms / 50.06 ms |
     | TiDB | 32 | 1 million | 128 * 4 | 183347 | 2.85 ms / 8.66 ms  |
     | TiDB | 32 | 1 million | 256 * 4 |  196515 | 5.42 ms / 14.43 ms |
@@ -134,7 +134,7 @@ max_connections = 2000
 
 - `Insert` RW test
 
-    | - | Table count | Table size | Sysbench threads | QPS | Latency(avg / .95) | 
+    | - | Table count | Table size | Sysbench threads | QPS | Latency(avg / .95) |
     | :---: | :---: | :---: | :---: | :---: | :---: |
     | TiDB | 32 | 1 million | 64 * 4 | 25308 | 10.12 ms / 25.40 ms |
     | TiDB | 32 | 1 million | 128 * 4 | 28773 | 17.80 ms / 44.58 ms   |
@@ -179,8 +179,8 @@ block-cache-size = "2GB"
 
 - OLTP RW test
 
-    | - | Table count | Table size | Sysbench threads | TPS | QPS | Latency(avg / .95) | 
-    | :---: | :---: | :---: | :---: | :---: | :---: | :---: | 
+    | - | Table count | Table size | Sysbench threads | TPS | QPS | Latency(avg / .95) |
+    | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
     | 1 TiDB physical node | 32 | 1 million | 256 * 1 | 2495 | 49902 | 102.42 ms / 125.52 ms |
     | 2 TiDB physical nodes | 32 | 1 million | 256 * 2 | 5007 | 100153 | 102.23 ms / 125.52 ms  |
     | 4 TiDB physical nodes | 32 | 1 million | 256 * 4 | 8984 | 179692 | 114.96 ms / 176.73 ms |
@@ -190,8 +190,8 @@ block-cache-size = "2GB"
 
 - `Select` RW test
 
-    | - | Table count | Table size | Sysbench threads | QPS | Latency(avg / .95) | 
-    | :---: | :---: | :---: | :---: | :---: | :---: | 
+    | - | Table count | Table size | Sysbench threads | QPS | Latency(avg / .95) |
+    | :---: | :---: | :---: | :---: | :---: | :---: |
     | 1 TiDB physical node | 32 | 1 million | 256 * 1 | 71841 | 3.56 ms / 8.74 ms |
     | 2 TiDB physical nodes | 32 | 1 million | 256 * 2 | 146615 | 3.49 ms / 8.74 ms |
     | 4 TiDB physical nodes | 32 | 1 million | 256 * 4 | 289933 | 3.53 ms / 8.74 ms  |
@@ -201,8 +201,8 @@ block-cache-size = "2GB"
 
 - `Insert` RW test
 
-    | - | Table count | Table size | Sysbench threads | QPS | Latency(avg / .95) | 
-    | :---: | :---: | :---: | :---: | :---: | :---: | 
+    | - | Table count | Table size | Sysbench threads | QPS | Latency(avg / .95) |
+    | :---: | :---: | :---: | :---: | :---: | :---: |
     | 3 TiKV physical node | 32 | 1 million |256 * 3 | 40547 | 18.93 ms / 38.25 ms |
     | 5 TiKV physical nodes | 32 | 1 million | 256 * 3 | 60689 | 37.96 ms / 29.9 ms |
     | 7 TiKV physical nodes | 32 | 1 million | 256 * 3 | 80087 | 9.62 ms / 21.37 ms |
