@@ -21,7 +21,7 @@ Place: Beijing, China
 
 IDC machine:
 
-| Type | Name |  
+| Type | Name |
 | :-: | :-: |
 | OS | Linux (CentOS 7.3.1611) |
 | CPU | 40 vCPUs, Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz |
