@@ -139,6 +139,7 @@
 - [常见问题与解答(FAQ)](FAQ.md)
 - [最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
 + [版本发布历史](releases/rn.md)
+  - [2.1.4](releases/2.1.4.md)
   - [2.1.3](releases/2.1.3.md)
   - [3.0 Beta](releases/3.0beta.md)
   - [2.0.11](releases/2.0.11.md)
