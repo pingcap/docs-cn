@@ -14,6 +14,7 @@ TiDB supports most of the JSON functions that shipped with the GA release of MyS
 | --------------------------------- | ----------- |
 | [JSON_ARRAY([val[, val] ...])][json_array]  | Evaluates a (possibly empty) list of values and returns a JSON array containing those values |
 | [JSON_OBJECT(key, val[, key, val] ...)][json_object]   | Evaluates a (possibly empty) list of key-value pairs and returns a JSON object containing those pairs  |
+| [JSON_QUOTE(string)][json_quote] | Returns a string as a JSON value with quotes |
 
 ## Functions that search JSON values
 
@@ -54,7 +55,6 @@ The following JSON functions are unsupported in TiDB. You can track the progress
 * `JSON_ARRAY_INSERT`
 * `JSON_MERGE_PATCH`
 * `JSON_PRETTY`
-* `JSON_QUOTE`
 * `JSON_SEARCH`
 * `JSON_STORAGE_SIZE`
 * `JSON_VALID`
