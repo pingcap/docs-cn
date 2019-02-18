@@ -102,3 +102,14 @@ sql-mode = ""
 ```sh
 tidb-lightning-ctl --switch-mode=normal
 ```
+
+## TiDB-Lightning 可以使用千兆网卡吗？
+
+使用 TiDB-Lightning 必须配置万兆网卡。**不能使用**千兆网卡，尤其是在部署 `tikv-importer` 的机器上。千兆网卡的总带宽只有 120 MB/s，而且需要与整个 TiKV 集群共享。在使用 TiDB-Lightning 导入时，极易用尽所有带宽，继而因 PD 无法联络集群使集群断连。
+
+## 为什么 TiDB-Lightning 需要在 TiKV 集群预留这么多空间？
+
+当使用默认的 3 副本设置时，TiDB-Lightning 需要 TiKV 集群预留 SQL dump 大小 6 倍的空间。多出来的 2 倍是算上下列没储存在 SQL dump 的因素的保守估计：
+
+- 索引会占据额外的空间
+- RocksDB 的空间放大效应

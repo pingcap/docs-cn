@@ -11,11 +11,15 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 变量可以通过 SET 语句设置，例如
 
-```set @@tidb_distsql_scan_concurrency = 10 ```
+```sql
+set @@tidb_distsql_scan_concurrency = 10
+```
 
 如果需要设值全局变量，执行
 
-```set @@global.tidb_distsql_scan_concurrency = 10 ```
+```sql
+set @@global.tidb_distsql_scan_concurrency = 10
+```
 
 ### tidb_distsql_scan_concurrency
 
@@ -76,13 +80,17 @@ TiDB 在 MySQL 的 Optimizer Hint 语法上，增加了一些 TiDB 专有的 Hin
 
 ### TIDB_SMJ(t1, t2)
 
-```SELECT /*+ TIDB_SMJ(t1, t2) */ * from t1，t2 where t1.id = t2.id```
+```sql
+SELECT /*+ TIDB_SMJ(t1, t2) */ * from t1，t2 where t1.id = t2.id
+```
 
 提示优化器使用 Sort Merge Join 算法，这个算法通常会占用更少的内存，但执行时间会更久。
 当数据量太大，或系统内存不足时，建议尝试使用。
 
 ### TIDB_INLJ(t1, t2)
 
-```SELECT /*+ TIDB_INLJ(t1, t2) */ * from t1，t2 where t1.id = t2.id```
+```sql
+SELECT /*+ TIDB_INLJ(t1, t2) */ * from t1，t2 where t1.id = t2.id
+```
 
 提示优化器使用 Index Nested Loop Join 算法，这个算法可能会在某些场景更快，消耗更少系统资源，有的场景会更慢，消耗更多系统资源。对于外表经过 WHERE 条件过滤后结果集较小（小于 1 万行）的场景，可以尝试使用。`TIDB_INLJ()`中的参数是建立查询计划时，驱动表（外表）的候选表。即`TIDB_INLJ(t1)`只会考虑使用t1作为驱动表构建查询计划。

@@ -33,7 +33,7 @@ category: user guide
 
 DATE，DATETIME，TIMESTAMP 类型都是相关的。这里描述它们的共同点和区别。
 
-DATA 用于只有日期部分，没有时间部分。TiDB 按照 'YYYY-MM-DD' 格式接受和显示 DATE 类型的值。支持的值的范围是在 '1000-01-01' 到 '9999-12-31'。
+DATE 用于只有日期部分，没有时间部分。TiDB 按照 'YYYY-MM-DD' 格式接受和显示 DATE 类型的值。支持的值的范围是在 '1000-01-01' 到 '9999-12-31'。
 
 DATETIME 包含了日期和时间部分，格式是 'YYYY-MM-DD HH:MM:SS'。支持的值的范围是在 '1000-01-01 00:00:00' 到 '9999-12-31 23:59:59'。
 
@@ -147,7 +147,7 @@ DATETIME 和 TIMESTAMP 的转换：
 
 TIME 转成 DATE 也是类似过程，然后丢弃时间部分。
 
-使用 `CASE()` 函数可以显示的转换类型，比如：
+使用 `CAST()` 函数可以显式地将一个值转换成 DATE 类型，比如：
 
 ```
 date_col = CAST(datetime_col AS DATE)

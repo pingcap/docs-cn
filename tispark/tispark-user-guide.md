@@ -22,7 +22,9 @@ TiSpark 是将 Spark SQL 直接运行在分布式存储引擎 TiKV 上的 OLAP �
 
 ## 环境准备
 
-现有 TiSpark 版本支持 Spark 2.1。对于 Spark 2.0 及 Spark 2.2 尚未经过良好的测试验证，对于更低版本暂时不支持。
+现有 TiSpark 2.x 版本支持 Spark 2.3.x，但并不支持 Spark 2.3.x 以外的版本。如果你希望使用 Spark 2.1.x 版本，需使用 TiSpark 1.x。
+
+TiSpark 2.x 对于 Spark 2.3.x 的不同小版本做了些微的改动。默认的 TiSpark 支持 Spark 2.3.2，若希望使用 Spark 2.3.0 或者 Spark 2.3.1，则需要自行编译相关小版本的支持，以避免出现 API 的冲突。可以参见这个[文档](https://github.com/pingcap/tispark#how-to-build-from-sources)来获知如何从源码编译支持 Spark 2.3.x 的 TiSpark 。
 
 TiSpark 需要 JDK 1.8+ 以及 Scala 2.11（Spark2.0+ 默认 Scala 版本）。
 
@@ -40,27 +42,6 @@ TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
     普通场景可以参考 [TiDB 和 TiKV 硬件配置建议](https://github.com/pingcap/docs-cn/blob/master/op-guide/recommendation.md#tidb-集群各个组件的硬件消耗情况及推荐配置)，但是如果是偏重分析的场景，可以将 TiKV 节点增加到至少 64G 内存。
 
-+   TiKV 参数建议
-
-    ```toml
-    [server]
-    end-point-concurrency = 8  # 如果使用场景偏向分析，则可以考虑扩大这个参数
-    [raftstore]
-    sync-log = false
-    [rocksdb]
-    max-background-compactions = 6
-    max-background-flushes = 2
-    [rocksdb.defaultcf]
-    block-cache-size = "10GB"
-    [rocksdb.writecf]
-    block-cache-size = "4GB"
-    [rocksdb.raftcf]
-    block-cache-size = "1GB"
-    [rocksdb.lockcf]
-    block-cache-size = "1GB"
-    [storage]
-    scheduler-worker-pool-size = 4
-    ```
 
 ### Spark 与 TiSpark 集群独立部署的配置
 
@@ -78,29 +59,33 @@ SPARK_WORKER_MEMORY=32g
 SPARK_WORKER_CORES=8
 ```
 
+ 在 `spark-defaults.conf` 中，增加如下配置：
+
+```
+spark.tispark.pd.addresses $your_pd_servers
+spark.sql.extensions org.apache.spark.sql.TiExtensions
+```
+
+ `your_pd_servers` 是用逗号分隔的 PD 地址，每个地址使用 `地址:端口` 的格式。
+
+例如你有一组 PD 在`10.16.20.1`，`10.16.20.2`，`10.16.20.3`，那么 PD 配置格式是`10.16.20.1:2379,10.16.20.2:2379,10.16.20.3:2379`。
+
+
 ### TiSpark 与 TiKV 集群混合部署的配置
 
 对于 TiKV 与 TiSpark 混合部署的场景，需在原有 TiKV 预留资源之外累加 Spark 所需部分，并分配 25% 的内存作为系统本身占用。
 
 ## 部署 TiSpark
 
-TiSpark 的 jar 包可以在[这里](http://download.pingcap.org/tispark-0.1.0-SNAPSHOT-jar-with-dependencies.jar)下载。
+TiSpark 的 jar 包可以在[这里](http://download.pingcap.org/tispark-latest-linux-amd64.tar.gz)下载，解压并拷贝到合适的目录。
 
 ### 已有 Spark 集群的部署方式
 
 如果在已有 Spark 集群上运行 TiSpark，无需重启集群。可以使用 Spark 的 `--jars` 参数将 TiSpark 作为依赖引入：
 
 ```
-spark-shell --jars $PATH/tispark-0.1.0.jar
+spark-shell --jars $TISPARK_FOLDER/tispark-core-${version}-SNAPSHOT-jar-with-dependencies.jar
 ```
-
-如果想将 TiSpark 作为默认组件部署，只需要将 TiSpark 的 jar 包放进 Spark 集群每个节点的 jars 路径并重启 Spark 集群：
-
-```
-${SPARK_INSTALL_PATH}/jars
-```
-
-这样无论是使用 Spark-Submit 还是 Spark-Shell 都可以直接使用 TiSpark。
 
 ### 没有 Spark 集群的部署方式
 
@@ -110,7 +95,7 @@ ${SPARK_INSTALL_PATH}/jars
 
 你可以在[这里](https://spark.apache.org/downloads.html)下载 Apache Spark。
 
-对于 Standalone 模式且无需 Hadoop 支持，则选择 Spark 2.1.x 且带有 Hadoop 依赖的 Pre-build with Apache Hadoop 2.x 任意版本。如有需要配合使用的 Hadoop 集群，则选择对应的 Hadoop 版本号。你也可以选择从源代码[自行构建](https://spark.apache.org/docs/2.1.0/building-spark.html)以配合官方 Hadoop 2.6 之前的版本。注意目前 TiSpark 仅支持 Spark 2.1.x 版本。
+对于 Standalone 模式且无需 Hadoop 支持，则选择 Spark 2.3.x 且带有 Hadoop 依赖的 Pre-build with Apache Hadoop 2.x 任意版本。如有需要配合使用的 Hadoop 集群，则选择对应的 Hadoop 版本号。你也可以选择从源代码[自行构建](https://spark.apache.org/docs/2.3.0/building-spark.html)以配合官方 Hadoop 2.x 之前的版本。
 
 如果你已经有了 Spark 二进制文件，并且当前 PATH 为 SPARKPATH，需将 TiSpark jar 包拷贝到 `${SPARKPATH}/jars` 目录下。
 
@@ -133,6 +118,10 @@ cd $SPARKPATH
 
 命令返回以后，即可通过刚才的面板查看这个 Slave 是否已经正确地加入了 Spark 集群。在所有 Slave 节点重复刚才的命令。确认所有的 Slave 都可以正确连接 Master，这样你就拥有了一个 Standalone 模式的 Spark 集群。
 
+#### Spark SQL shell 和 JDBC 服务器
+
+当前版本的 TiSpark 可以直接使用 `spark-sql`和 Spark 的 ThriftServer JDBC 服务器。
+
 ## 一个使用范例
 
 假设你已经按照上述步骤成功启动了 TiSpark 集群，下面简单介绍如何使用 Spark SQL 来做 OLAP 分析。这里我们用名为 tpch 数据库中的 lineitem 表作为范例。
@@ -141,21 +130,13 @@ cd $SPARKPATH
 
 ```
 spark.tispark.pd.addresses 192.168.1.100:2379
+spark.sql.extensions org.apache.spark.sql.TiExtensions
 ```
 
-然后在 Spark-Shell 里输入下面的命令：
+然后在 Spark-Shell 里像原生 Spark 一样输入下面的命令：
 
 ```scala
-import org.apache.spark.sql.TiContext
-
-val ti = new TiContext(spark)
-
-ti.tidbMapDatabase("tpch")
-```
-
-之后你可以直接调用 Spark SQL:
-
-```scala
+spark.sql("use tpch")
 spark.sql("select count(*) from lineitem").show
 ```
 
@@ -168,6 +149,108 @@ spark.sql("select count(*) from lineitem").show
 | 600000000   |
 +-------------+
 ```
+
+Spark SQL 交互 Shell 和原生 Spark 一致：
+
+```sh
+spark-sql> use tpch;
+Time taken: 0.015 seconds
+
+spark-sql> select count(*) from lineitem;
+2000
+Time taken: 0.673 seconds, Fetched 1 row(s)
+```
+
+SQuirreLSQL 和 hive-beeline 可以使用 JDBC 连接 Thrift 服务器。
+例如，使用 beeline 连接：
+
+```sh
+./beeline
+Beeline version 1.2.2 by Apache Hive
+beeline> !connect jdbc:hive2://localhost:10000
+
+1: jdbc:hive2://localhost:10000> use testdb;
++---------+--+
+| Result  |
++---------+--+
++---------+--+
+No rows selected (0.013 seconds)
+
+select count(*) from account;
++-----------+--+
+| count(1)  |
++-----------+--+
+| 1000000   |
++-----------+--+
+1 row selected (1.97 seconds)
+```
+
+## TiSparkR
+
+TiSparkR 是为兼容 SparkR 而开发的组件。具体使用请参考[这份文档](https://github.com/pingcap/tispark/blob/master/R/README.md)。
+
+## TiSpark on PySpark
+
+TiSpark on PySpark 是为兼容 PySpark 而开发的组件。具体使用请参考[这份文档](https://github.com/pingcap/tispark/blob/master/python/README.md)。
+
+## 和 Hive 一起使用 TiSpark
+
+TiSpark 可以和 Hive 混合使用。
+在启动 Spark 之前，需要添加 HADOOP_CONF_DIR 环境变量指向 Hadoop 配置目录并且将 `hive-site.xml` 拷贝到 `$SPARK_HOME/conf` 目录下。
+
+```
+val tisparkDF = spark.sql("select * from tispark_table").toDF
+tisparkDF.write.saveAsTable("hive_table") // save table to hive
+spark.sql("select * from hive_table a, tispark_table b where a.col1 = b.col1").show // join table across Hive and Tispark
+```
+
+## 通过 JDBC 将 DataFrame 写入 TiDB
+
+暂时 TiSpark 不支持直接将数据写入 TiDB 集群，但可以使用 Spark 原生的 JDBC 支持进行写入：
+
+```scala
+import org.apache.spark.sql.execution.datasources.jdbc.JDBCOptions
+
+val customer = spark.sql("select * from customer limit 100000")
+// you might repartition source to make it balance across nodes
+// and increase concurrency
+val df = customer.repartition(32)
+df.write
+.mode(saveMode = "append")
+.format("jdbc")
+.option("driver", "com.mysql.jdbc.Driver")
+ // replace host and port as your and be sure to use rewrite batch
+.option("url", "jdbc:mysql://127.0.0.1:4000/test?rewriteBatchedStatements=true")
+.option("useSSL", "false")
+// As tested, 150 is good practice
+.option(JDBCOptions.JDBC_BATCH_INSERT_SIZE, 150)
+.option("dbtable", s"cust_test_select") // database name and table name here
+.option("isolationLevel", "NONE") // recommended to set isolationLevel to NONE if you have a large DF to load.
+.option("user", "root") // TiDB user here
+.save()
+``` 
+
+推荐将 `isolationLevel` 设置为 `NONE`，否则单一大事务有可能造成 TiDB 服务器内存溢出。
+
+## 统计信息
+
+TiSpark 可以使用 TiDB 的统计信息：
+
+1. 选择代价最低的索引或扫表访问
+2. 估算数据大小以决定是否进行广播优化
+
+如果希望使用统计信息支持，需要确保所涉及的表已经被分析。请阅读[这份文档](https://github.com/pingcap/docs/blob/master/sql/statistics.md)了解如何进行表分析。
+
+从 TiSpark 2.0 开始，统计信息将会默认被读取。
+
+统计信息将在 Spark Driver 进行缓存，请确定 Driver 内存足够缓存统计信息。
+可以在`spark-defaults.conf`中开启或关闭统计信息读取：
+  
+| Property Name | Default | Description
+| --------   | -----:   | :----: |
+| spark.tispark.statistics.auto_load | true | 是否默认进行统计信息读取 |
+
+
 
 ## TiSpark FAQ
 

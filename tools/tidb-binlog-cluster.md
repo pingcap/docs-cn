@@ -50,11 +50,11 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 
 * 需要使用 TiDB v2.0.8-binlog、v2.1.0-rc.5 及以上版本，否则不兼容该版本的 TiDB-Binlog。
 * 在运行 TiDB 时，需要保证至少一个 Pump 正常运行。
-* 通过给 TiDB 增加启动参数 enable-binlog 来开启 Binlog。
+* 通过给 TiDB 增加启动参数 enable-binlog 来开启 binlog 服务。尽量保证同一集群的所有 TiDB 都开启了 binlog 服务，否则在同步数据时可能会导致上下游数据不一致。如果要临时运行一个不开启 binlog 服务的 TiDB 实例，需要在 TiDB 的配置文件中设置 `run_ddl= false`。
 * Drainer 不支持对 ignore schemas（在过滤列表中的 schemas）的 table 进行 rename DDL 操作。
 * 在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取 savepoint，然后导入全量备份，最后启动 Drainer 从 savepoint 开始同步增量数据。
 * Drainer 支持将 Binlog 同步到 MySQL、TiDB、Kafka 或者本地文件。如果需要将 Binlog 同步到其他类型的目的地中，可以设置 Drainer 将 Binlog 同步到 Kafka，再读取 Kafka 中的数据进行自定义处理，参考 [binlog slave client 用户文档](../tools/binlog-slave-client.md)。
-* 如果 TiDB-Binlog 用于增量恢复，可以设置下游为 `pb` 将 binlog 同步到本地文件中，再使用 [Reparo](../tools/reparo.md) 恢复增量数据。
+* 如果 TiDB-Binlog 用于增量恢复，可以设置下游为 `pb`，Drainer 会将 binlog 转化为指定的 proto buffer 格式的数据，再写入到本地文件中。这样就可以使用 [Reparo](../tools/reparo.md) 恢复增量数据。
 * Pump/Drainer 的状态需要区分已暂停（paused）和下线（offline），Ctrl + C 或者 kill 进程，Pump 和 Drainer 的状态都将变为 paused。暂停状态的 Pump 不需要将已保存的 Binlog 数据全部发送到 Drainer；如果需要较长时间退出 Pump（或不再使用该 Pump），需要使用 binlogctl 工具来下线 Pump。Drainer 同理。
 * 如果下游为 MySQL/TiDB，数据同步后可以使用 [sync-diff-inspector](../tools/sync-diff-inspector.md) 进行数据校验。
 
@@ -132,9 +132,33 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
         pump3 ansible_host=172.16.10.74 deploy_dir=/data1/pump
         ```
 
-2. 部署并启动 TiDB 集群
+2. 部署并启动含 Pump 组件的 TiDB 集群
 
-    使用 Ansible 部署 TiDB 集群的具体方法参考 [TiDB Ansible 部署方案](../op-guide/ansible-deployment.md)，开启 binlog 后默认会部署和启动 Pump 服务。
+    参照上文配置完 `inventory.ini` 文件后，从以下两种方式中选择一种进行部署。
+    
+    **方式一**：在已有的 TiDB 集群上增加 Pump 组件，需按以下步骤逐步进行。
+    
+    1. 部署 pump_servers 和 node_exporters
+    
+        ```
+        ansible-playbook deploy.yml -l ${pump1_ip}, ${pump2_ip}, [${alias1_name}, ${alias2_name}]
+        ```
+        
+    2. 更新并重启 tidb_servers
+    
+        ```
+        ansible-playbook rolling_update.yml --tags=tidb
+        ```
+        
+    3. 更新监控信息
+    
+        ```
+        ansible-playbook rolling_update_monitor.yml --tags=prometheus
+        ```
+
+    **方式二**：从零开始部署含 Pump 组件的 TiDB 集群
+    
+    使用 Ansible 部署 TiDB 集群，方法参考 [TiDB Ansible 部署方案](../op-guide/ansible-deployment.md)。
 
 3. 查看 Pump 服务状态
 
@@ -143,9 +167,10 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
     ```bash
     $ cd /home/tidb/tidb-ansible
     $ resources/bin/binlogctl -pd-urls=http://172.16.10.72:2379 -cmd pumps
-    2018/09/21 16:45:54 nodes.go:46: [info] pump: &{NodeID:ip-172-16-10-72:8250 Addr:172.16.10.72:8250 State:online IsAlive:false Score:0 Label:<nil> MaxCommitTS:0 UpdateTS:403051525690884099}
-    2018/09/21 16:45:54 nodes.go:46: [info] pump: &{NodeID:ip-172-16-10-73:8250 Addr:172.16.10.73:8250 State:online IsAlive:false Score:0 Label:<nil> MaxCommitTS:0 UpdateTS:403051525703991299}
-    2018/09/21 16:45:54 nodes.go:46: [info] pump: &{NodeID:ip-172-16-10-74:8250 Addr:172.16.10.74:8250 State:online IsAlive:false Score:0 Label:<nil> MaxCommitTS:0 UpdateTS:403051525717360643}
+
+    INFO[0000] pump: {NodeID: ip-172-16-10-72:8250, Addr: 172.16.10.72:8250, State: online, MaxCommitTS: 403051525690884099, UpdateTime: 2018-12-25 14:23:37 +0800 CST}
+    INFO[0000] pump: {NodeID: ip-172-16-10-73:8250, Addr: 172.16.10.73:8250, State: online, MaxCommitTS: 403051525703991299, UpdateTime: 2018-12-25 14:23:36 +0800 CST}
+    INFO[0000] pump: {NodeID: ip-172-16-10-74:8250, Addr: 172.16.10.74:8250, State: online, MaxCommitTS: 403051525717360643, UpdateTime: 2018-12-25 14:23:35 +0800 CST}
     ```
 
 #### 第 3 步：部署 Drainer
@@ -163,11 +188,11 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
     2018/06/21 11:24:47 meta.go:117: [info] meta: &{CommitTS:400962745252184065}
     ```
 
-    该命令会生成一个文件 `{data-dir}/savepoint`，该文件中包含 tso，用该 tso 作为 Drainer 初次启动使用的 `initial-commit-ts` 参数的值。
+    该命令会输出 `meta: &{CommitTS:400962745252184065}`，CommitTS 的值作为 Drainer 初次启动使用的 `initial-commit-ts` 参数的值。
 
 2. 全量数据的备份与恢复
 
-    如果下游为 MySQL/TiDB， 需要保证数据的完整性，在 Drainer 启动前（Pump 运行后十分钟左右）进行数据的全量备份和恢复。
+    如果下游为 MySQL/TiDB，需要保证数据的完整性，在 Drainer 启动前（Pump 运行后十分钟左右）进行数据的全量备份和恢复。
 
     推荐使用 mydumper 备份 TiDB 的全量数据，再使用 loader 将备份数据导入到下游。具体使用方法参考：[备份与恢复](https://github.com/pingcap/docs-cn/blob/master/op-guide/backup-restore.md)。
 
@@ -205,7 +230,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 
         ```toml
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "pb", "kafka", "flash", "tidb".
+        # Valid values are "mysql", "pb", "kafka", "flash".
         db-type = "mysql"
 
         # the downstream MySQL protocol database
@@ -219,7 +244,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
         # size-limit = "100000"
         ```
 
-    - 以下游为 pb 为例
+    - 以下游为 proto buffer（pb）格式的本地文件为例
 
         ```bash
         $ cd /home/tidb/tidb-ansible/conf
@@ -231,7 +256,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 
         ```toml
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "pb", "kafka", "flash", "tidb".
+        # Valid values are "mysql", "pb", "kafka", "flash".
         db-type = "pb"
 
         # Uncomment this if you want to use `pb` or `sql` as `db-type`.
@@ -240,7 +265,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
         [syncer.to]
         compression = ""
         # default data directory: "{{ deploy_dir }}/data.drainer"
-        # dir = "data.drainer"
+        dir = "data.drainer"
         ```
 
 5. 部署 Drainer
@@ -260,14 +285,16 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 #### 下载官方 Binary
 
 ```bash
-TiDB（v2.0.8-binlog、v2.1.0-rc.5 及以上版本）
 wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz
 wget https://download.pingcap.org/tidb-{version}-linux-amd64.sha256
 
 # 检查文件完整性，返回 ok 则正确
 sha256sum -c tidb-{version}-linux-amd64.sha256
+```
 
-Pump && Drainer(cluster-latest、v2.1.0-rc.5 及以上版本)
+对于 v2.1.0 GA 及以上版本，Pump 和 Drainer 已经包含在 TiDB 的下载包中，其他版本需要单独下载 Pump 和 Drainer:
+
+```bash
 wget https://download.pingcap.org/tidb-binlog-{version}-linux-amd64.tar.gz
 wget https://download.pingcap.org/tidb-binlog-{version}-linux-amd64.sha256
 
@@ -380,7 +407,7 @@ Drainer="192.168.0.13"
         -data-dir string
             Drainer 数据存储位置路径 (默认 "data.drainer")
         -dest-db-type string
-            Drainer 下游服务类型 (默认为 mysql，支持 kafka、pb、flash、tidb)
+            Drainer 下游服务类型 (默认为 mysql，支持 kafka、pb、flash)
         -detect-interval int
             向 PD 查询在线 Pump 的时间间隔 (默认 10，单位 秒)
         -disable-detect
@@ -447,7 +474,7 @@ Drainer="192.168.0.13"
         disable-dispatch = false
 
         # Drainer 下游服务类型（默认为 mysql）
-        # 参数有效值为 "mysql"，"pb"，"kafka"，"flash"，"tidb"
+        # 参数有效值为 "mysql"，"pb"，"kafka"，"flash"
         db-type = "mysql"
 
         # replicate-do-db 配置的优先级高于 replicate-do-table。如果配置了相同的库名，支持使用正则表达式进行配置。
@@ -570,26 +597,30 @@ Usage of binlogctl:
 
 - 查询所有的 Pump/Drainer 的状态：
 
-    ```bash
-    bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pumps/drainers
+    设置 `cmd` 为 `pumps` 或者 `drainers` 来查看所有 Pump 或者 Drainer 的状态。例如：
 
-    2018/06/21 11:24:10 nodes.go:53: [info] pump: &{NodeID:ip-192-168-199-118:8250 Host:127.0.0.1:8250 IsAlive:true IsOffline:false LatestFilePos:{Suffix:0 Offset:15320} LatestKafkaPos:{Suffix:0 Offset:382} OfflineTS:0}
+    ```bash
+    bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pumps
+
+    INFO[0000] pump: {NodeID: ip-172-16-30-67:8250, Addr: 172.16.30.192:8250, State: online, MaxCommitTS: 405197570529820673, UpdateTime: 2018-12-25 14:23:37 +0800 CST}
     ```
 
 - 修改 Pump/Drainer 的状态
   
-    Pump/Drainer 的状态可以为：online，pausing，paused，closing 以及 offline。
+    设置 `cmd` 为 `update-pump` 或者 `update-drainer` 来更新 Pump 或者 Drainer 的状态。Pump 和 Drainer 的状态可以为：online，pausing，paused，closing 以及 offline。例如：
 
     ```bash
-    bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd update-pump/update-drainer -node-id ip-127-0-0-1:8250/{nodeID} -state {state}
+    bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd update-pump -node-id ip-127-0-0-1:8250 -state paused
     ```
 
     这条命令会修改 Pump/Drainer 保存在 pd 中的状态。
  
 - 暂停/下线 Pump/Drainer
 
+    分别设置 `cmd` 为 `pause-pump`、`pause-drainer`、`offline-pump`、`offline-drainer` 来暂停 Pump、暂停 Drainer、下线 Pump、下线 Drainer。例如：
+
     ```bash
-    bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pause-pump/pause-drainer/offline-pump/offline-drainer -node-id ip-127-0-0-1:8250/{nodeID}
+    bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pause-pump -node-id ip-127-0-0-1:8250
     ```
 
     binlogctl 会发送 HTTP 请求给 Pump/Drainer，Pump/Drainer 收到命令后会退出进程，并且将自己的状态设置为 paused/offline。
@@ -615,7 +646,15 @@ Usage of binlogctl:
 
 ## 版本升级方法
 
-Cluster 版本的 TiDB-Binlog 不兼容 Kafka 版本以及 Local 版本，TiDB 如果升级到新版（v2.0.8-binlog、v2.1.0-rc.5 及以上版本）后只能使用 Cluster 版本的 TiDB-Binlog；如果在升级前已经使用了 Kafka／Local 版本的 TiDB-Binlog，必须将其升级到 Cluster 版本。
+新版本的 TiDB（v2.0.8-binlog、v2.1.0-rc.5 及以上版本）不兼容 [Kafka 版本](../tools/tidb-binlog-kafka.md)以及 [Local 版本](../tools/tidb-binlog.md)的 TiDB-Binlog，集群升级到新版本后只能使用 Cluster 版本的 TiDB-Binlog。如果在升级前已经使用了 Kafka／Local 版本的 TiDB-Binlog，必须将其升级到 Cluster 版本。
+ 
+ TiDB-Binlog 版本与 TiDB 版本的对应关系如下：
+ 
+| TiDB-Binlog 版本 | TiDB 版本 | 说明 |
+|---|---|---|
+| Local | TiDB 1.0 及更低版本 ||
+| Kafka | TiDB 1.0 ~ TiDB 2.1 RC5 | TiDB 1.0 支持 local 版本和 Kafka 版本的 TiDB-Binlog。 |
+| Cluster | TiDB v2.0.8-binlog，TiDB 2.1 RC5 及更高版本 | TiDB v2.0.8-binlog 是一个支持 Cluster 版本 TiDB-Binlog 的 2.0 特殊版本。 |
 
 升级流程：
 

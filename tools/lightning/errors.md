@@ -9,7 +9,7 @@ category: tools
 
 ## 导入速度太慢
 
-Lightning 的正常速度为每条线程每 5 分钟导入一个 256 MB 的 Chunk，如果速度远慢于这个数值就是有问题。导入的速度可以检查日志提及 `restore chunk … takes` 的记录，或者观察 Grafana 的监控讯息。
+Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的数据文件，如果速度远慢于这个数值就是有问题。导入的速度可以检查日志提及 `restore chunk … takes` 的记录，或者观察 Grafana 的监控信息。
 
 导入速度太慢一般有几个原因：
 
@@ -65,4 +65,24 @@ Lightning 的正常速度为每条线程每 5 分钟导入一个 256 MB 的 Chun
 **解决办法**：
 
 1. 编辑数据源，保存为纯 UTF-8 或 GB-18030 的文件。
-2. 自行在目标数量库创建所有的表，然后设置 `[mydumper] no-schema = true` 跳过创建表的步骤。
+2. 手动在目标数量库创建所有的表，然后设置 `[mydumper] no-schema = true` 跳过创建表的步骤。
+3. 设置 `[mydumper] character-set = "binary"` 跳过这个检查。但是这样可能使数据库出现乱码。
+
+## [sql2kv] sql encode error = [types:1292]invalid time format: '{1970 1 1 0 45 0 0}'
+
+**原因**: 一个 `timestamp` 类型的时间戳记录了不存在的时间值。时间值不存在是由于夏时制切换或超出支持的范围（1970 年 1 月 1 日至 2038 年 1 月 19 日）。
+
+**解决办法**:
+
+1. 确保 Lightning 与数据源时区一致。
+
+    * 使用 Ansible 部署的话，修正 [`inventory.ini`] 下的 `timezone` 变量。
+
+    * 手动部署的话，在启动 Lightning 前设定 `$TZ` 环境变量。
+
+        ```sh
+        # 强制使用 Asia/Shanghai 时区
+        TZ='Asia/Shanghai' bin/tidb-lightning -config tidb-lightning.toml
+        ```
+
+2. 导出数据时，必须加上 `--skip-tz-utc` 选项。

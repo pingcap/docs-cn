@@ -30,7 +30,8 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。MySQL 5.7 发布
 | 函数及语法糖 | 功能描述 |
 | --------------------------------- | ----------- |
 | [JSON_INSERT(json_doc, path, val[, path, val] ...)][json_insert] | 在 JSON 文档中在某一路径下插入子文档 |
-| [JSON_MERGE(json_doc, json_doc[, json_doc] ...)][json_merge]  | 将多个 JSON 文档合并成一个文档，其类型为数组 |
+| [JSON_MERGE(json_doc, json_doc[, json_doc] ...)][json_merge]  | 已废弃的 `JSON_MERGE_PRESERVE` 别名 |
+| [JSON_MERGE_PRESERVE(json_doc, json_doc[, json_doc] ...)][json_merge_preserve]  | 将两个或多个 JSON 文档合并成一个文档，并返回合并结果 |
 | [JSON_REMOVE(json_doc, path[, path] ...)][json_remove]    | 移除 JSON 文档中某一路径下的子文档 |
 | [JSON_REPLACE(json_doc, path, val[, path, val] ...)][json_replace] | 替换 JSON 文档中的某一路径下的子文档 |
 | [JSON_SET(json_doc, path, val[, path, val] ...)][json_set]  | 在 JSON 文档中为某一路径设置子文档 |
@@ -52,7 +53,6 @@ TiDB 暂未支持以下 JSON 函数。相关进展参见 [TiDB #7546](https://gi
 * `JSON_ARRAY_INSERT`
 * `JSON_DEPTH`
 * `JSON_MERGE_PATCH`
-* `JSON_MERGE_PRESERVE`，使用别名 `JSON_MERGE` 替代
 * `JSON_PRETTY`
 * `JSON_QUOTE`
 * `JSON_SEARCH`
@@ -71,6 +71,7 @@ TiDB 暂未支持以下 JSON 函数。相关进展参见 [TiDB #7546](https://gi
 [json_replace]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-replace
 [json_remove]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-remove
 [json_merge]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-merge
+[json_merge_preserve]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-merge-preserve
 [json_object]: https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-object
 [json_array]: https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-array
 [json_keys]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-keys

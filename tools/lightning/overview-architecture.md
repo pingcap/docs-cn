@@ -26,8 +26,8 @@ TiDB-Lightning 整体工作原理如下：
 
 4. 当一整个表完全导入到 `tikv-importer`，它便开始对目标 TiKV 集群数据进行分裂和调度，然后导入数据到 TiKV 集群。
 
-5. 之后，`tidb-lightning` 会对比本地数据源及下游集群的校验和 (checksum)，确保导入的数据无损。
+5. 之后，`tidb-lightning` 会对比本地数据源及下游集群的校验和 (checksum)，确保导入的数据无损，以及让 TiDB 分析 (`ANALYZE`) 这些新增的数据，以优化日后的操作。
 
-6. 整个数据库完成导入后，`tidb-lightning` 便会让 TiKV 集群进行一次全局压缩，以及让 TiDB 分析 (`ANALYZE`) 这些新增的数据，以优化日后的操作。
+6. 整个数据库完成导入后，`tidb-lightning` 便会让 TiKV 集群进行一次全局压缩。
 
 7. 在所有步骤完毕后，`tidb-lightning` 自动将 TiKV 切换回“普通模式” (normal mode)，此后 TiDB 集群可以正常对外提供服务。

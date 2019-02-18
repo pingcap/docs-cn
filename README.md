@@ -85,13 +85,14 @@
     - [离线 Ansible 部署方案](op-guide/offline-ansible-deployment.md)
     - [Docker 部署方案](op-guide/docker-deployment.md)
     - [Docker Compose 部署方案](op-guide/docker-compose.md)
-    - [跨机房部署方案](op-guide/location-awareness.md)
+    - [跨数据中心部署方案](op-guide/cross-dc-deployment.md)
   + 配置集群
     - [参数解释](op-guide/configuration.md)
     - [TiDB 配置项解释](op-guide/tidb-config-file.md)
     - [使用 Ansible 变更组件配置](op-guide/ansible-deployment-rolling-update.md#变更组件配置)
     - [开启 TLS 验证](op-guide/security.md)
     - [生成自签名证书](op-guide/generate-self-signed-certificates.md)
+    - [集群拓扑结构配置](op-guide/location-awareness.md)
   + 监控集群
     - [整体监控框架概述](op-guide/monitor-overview.md)
     + 重要监控指标详解
@@ -123,6 +124,7 @@
     - [简介](tools/lightning/overview-architecture.md)
     - [部署执行](tools/lightning/deployment.md)
     - [断点续传](tools/lightning/checkpoints.md)
+    - [表库过滤](tools/lightning/filter.md)
     - [监控告警](tools/lightning/monitor.md)
     - [故障诊断](tools/lightning/errors.md)
     - [常见问题与解答](tools/lightning/faq.md)
@@ -137,6 +139,11 @@
 - [常见问题与解答(FAQ)](FAQ.md)
 - [最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
 + [版本发布历史](releases/rn.md)
+  - [2.1.4](releases/2.1.4.md)
+  - [2.1.3](releases/2.1.3.md)
+  - [3.0 Beta](releases/3.0beta.md)
+  - [2.0.11](releases/2.0.11.md)
+  - [2.1.2](releases/2.1.2.md)
   - [2.0.10](releases/2.0.10.md)
   - [2.1.1](releases/2.1.1.md)
   - [2.1 GA](releases/2.1ga.md)
@@ -207,7 +214,6 @@
   - [中国电信翼支付](http://t.cn/R3Wd9p3)
   - [某电信运营商](http://t.cn/RTYWADg)
 + 更多资源
-  - [常用工具](https://github.com/pingcap/tidb-tools)
   - [PingCAP 团队技术博客](https://pingcap.com/blog-cn/)
   - [知乎专栏](https://zhuanlan.zhihu.com/newsql)
   - [Weekly](https://pingcap.com/weekly/)

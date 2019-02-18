@@ -21,7 +21,7 @@ TiDB 版本：v1.0.8 Vs v2.0.0-rc6
 
 IDC 机器
 
-| 类别 | 名称 |  
+| 类别 | 名称 |
 | :--------: | :---------: |
 | OS | Linux (CentOS 7.3.1611) |
 | CPU | 40 vCPUs, Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz |
@@ -88,8 +88,8 @@ https://github.com/pingcap/tidb-bench/tree/master/sysbench
 
 ### 标准 Select 测试 
 
-| 版本 | table count | table size | sysbench threads |qps | latency(avg / .95) | 
-| :---: | :---: | :---: | :---: | :---: | :---: | 
+| 版本 | table count | table size | sysbench threads |qps | latency(avg / .95) |
+| :---: | :---: | :---: | :---: | :---: | :---: |
 | v2.0.0-rc6 | 32 | 1000 万 | 128 * 3 |  201936 | 1.9033 ms / 5.67667 ms |
 | v2.0.0-rc6 | 32 | 1000 万 | 256 * 3 | 208130 | 3.69333 ms / 8.90333 ms  |
 | v2.0.0-rc6 | 32 | 1000 万 | 512 * 3 |  211788 | 7.23333 ms / 15.59 ms |
@@ -103,7 +103,7 @@ GA2.0 比 GA1.0 在 Select 查询性能上，最高提升了 10% 左右。
 
 ### 标准 OLTP 测试 
 
-| 版本 | table count | table size | sysbench threads | tps | qps | latency(avg / .95) | 
+| 版本 | table count | table size | sysbench threads | tps | qps | latency(avg / .95) |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---:|
 | v2.0.0-rc6 | 32 | 1000 万 | 128 * 3 | 5404.22 | 108084.4 | 87.2033 ms / 110 ms |
 | v2.0.0-rc6 | 32 | 1000 万 | 256 * 3 | 5578.165 | 111563.3 | 167.673 ms / 275.623 ms |
@@ -118,8 +118,8 @@ GA2.0 比 GA1.0 在 OLTP 性能上，性能基本一致。
 
 ### 标准 Insert 测试 
 
-| 版本 | table count | table size | sysbench threads |qps | latency(avg / .95) | 
-| :---: | :---: | :---: | :---: | :---: | :---: | 
+| 版本 | table count | table size | sysbench threads |qps | latency(avg / .95) |
+| :---: | :---: | :---: | :---: | :---: | :---: |
 | v2.0.0-rc6 | 32 | 1000 万 | 128 * 3 | 31707.5 | 12.11 ms / 21.1167 ms |
 | v2.0.0-rc6 | 32 | 1000 万 | 256 * 3 | 38741.2 | 19.8233 ms / 39.65 ms |
 | v2.0.0-rc6 | 32 | 1000 万 | 512 * 3 | 45136.8 | 34.0267 ms / 66.84 ms |
