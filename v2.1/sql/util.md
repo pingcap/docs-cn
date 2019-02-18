@@ -96,4 +96,4 @@ If the `dot` program is not installed on your computer, copy the result to [this
 USE db_name
 ```
 
-The `USE` statement is used to switch the default database. If the table in SQL statements does not display the specified database, then use the default database.
+The `USE` statement is used to switch the default database. If the table in this SQL statement does not correspond to an explicitly specified database, then the default database is used.
