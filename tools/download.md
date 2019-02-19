@@ -10,7 +10,7 @@ This document collects the available downloads for most officially maintained ve
 
 ## TiDB-Binlog and Lightning
 
-If you want to download the latest version of [TiDB-Binlog](../tools/tidb-binlog-cluster.md) or [Lightning](https://github.com/pingcap/tidb-lightning), directly download the TiDB package, because both TiDB-Binlog and Lightning are included in the TiDB package.
+If you want to download the latest version of [TiDB-Binlog](../tools/tidb-binlog-cluster.md) or [Lightning](../tools/lightning/overview-architecture.md), directly download the TiDB package, because both TiDB-Binlog and Lightning are included in the TiDB package.
 
 In addition, the Kafka version of TiDB-Binlog is also provided.
 
