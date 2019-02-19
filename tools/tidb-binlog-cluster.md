@@ -144,13 +144,19 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
         ansible-playbook deploy.yml -l ${pump1_ip}, ${pump2_ip}, [${alias1_name}, ${alias2_name}]
         ```
         
-    2. 更新并重启 tidb_servers
+    2. 启动 pump_servers
+    
+        ```
+        ansible-playbook start.yml --tags=pump
+        ```
+        
+    3. 更新并重启 tidb_servers
     
         ```
         ansible-playbook rolling_update.yml --tags=tidb
         ```
         
-    3. 更新监控信息
+    4. 更新监控信息
     
         ```
         ansible-playbook rolling_update_monitor.yml --tags=prometheus
