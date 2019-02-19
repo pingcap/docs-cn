@@ -159,6 +159,7 @@
   - [PD Recover](tools/pd-recover.md)
   - [TiKV Control](https://github.com/tikv/tikv/blob/master/docs/tools/tikv-control.md)
   - [TiDB Controller](tools/tidb-controller.md)
+  - [Download](tools/download.md)
 + [TiKV Documentation](https://github.com/tikv/tikv/wiki)
 + TiSpark Documentation
   - [Quick Start Guide](tispark/tispark-quick-start-guide.md)
