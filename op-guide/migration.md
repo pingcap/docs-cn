@@ -147,54 +147,94 @@ The `config.toml` file for `syncer`:
 
 ```toml
 log-level = "info"
+log-file = "syncer.log"
+log-rotate = "day"
 
 server-id = 101
 
 # The file path for meta:
 meta = "./syncer.meta"
 worker-count = 16
-batch = 10
+batch = 1000
+flavor = "mysql"
 
-# The testing address for pprof. It can also be used by Prometheus to pull the syncer metrics.
-status-addr = ":10081"
+# The testing address for pprof. It can also be used by Prometheus to pull Syncer metrics.
+status-addr = ":8271"
 
-skip-sqls = ["ALTER USER", "CREATE USER"]
+# If you set its value to true, Syncer stops and exits when it encounters the DDL operation.
+stop-on-ddl = false
 
-# Support whitelist filter. You can specify the database and table to be synchronized. For example:
-# Synchronize all the tables of db1 and db2:
-replicate-do-db = ["db1","db2"]
+# max-retry is used for retry during network interruption.
+max-retry = 100
 
-# Synchronize db1.table1.
-[[replicate-do-table]]
-db-name ="db1"
-tbl-name = "table1"
+# Specify the database name to be replicated. Support regular expressions. Start with '~' to use regular expressions.
+# replicate-do-db = ["~^b.*","s1"]
 
-# Synchronize db3.table2.
-[[replicate-do-table]]
-db-name ="db3"
-tbl-name = "table2"
+# Specify the database you want to ignore in replication. Support regular expressions. Start with '~' to use regular expressions.
+# replicate-ignore-db = ["~^b.*","s1"]
 
-# Support regular expressions. Start with '~'  to use regular expressions.
-# To synchronize all the databases that start with `test`:
-replicate-do-db = ["~^test.*"]
+# skip-ddls skips the ddl statements.
+# skip-ddls = ["^OPTIMIZE\\s+TABLE"]
 
-# The sharding synchronising rules support wildcharacter.
-# 1. The asterisk character (*, also called "star") matches zero or more characters,
-#    for example, "doc*" matches "doc" and "document" but not "dodo";
-#    asterisk character must be in the end of the wildcard word,
+# skip-dmls skips the DML statements. The type value can be 'insert', 'update' and 'delete'.
+# The 'delete' statements that skip-dmls skips in the foo.bar table:
+# [[skip-dmls]]
+# db-name = "foo"
+# tbl-name = "bar"
+# type = "delete"
+#
+# The 'delete' statements that skip-dmls skips in all tables:
+# [[skip-dmls]]
+# type = "delete"
+#
+# The 'delete' statements that skip-dmls skips in all foo.* tables:
+# [[skip-dmls]]
+# db-name = "foo"
+# type = "delete"
+
+# Specify the db.table to be replicated.
+# db-name and tbl-name do not support the `db-name ="dbname, dbname2"` format.
+# [[replicate-do-table]]
+# db-name ="dbname"
+# tbl-name = "table-name"
+
+# [[replicate-do-table]]
+# db-name ="dbname1"
+# tbl-name = "table-name1"
+
+# Specify the db.table to be replicated. Support regular expressions. Start with '~' to use regular expressions.
+# [[replicate-do-table]]
+# db-name ="test"
+# tbl-name = "~^a.*"
+
+# Specify the database table you want to ignore in replication.
+# db-name and tbl-name do not support the `db-name ="dbname, dbname2"` format.
+# [[replicate-ignore-table]]
+# db-name = "your_db"
+# tbl-name = "your_table"
+
+# Specify the database table you want to ignore in replication. Support regular expressions. Start with '~' to use regular expressions.
+# [[replicate-ignore-table]]
+# db-name ="test"
+# tbl-name = "~^a.*"
+
+# The sharding replicating rules support wildcharacter.
+# 1. The asterisk character ("*", also called "star") matches zero or more characters,
+#    For example, "doc*" matches "doc" and "document" but not "dodo";
+#    The asterisk character must be in the end of the wildcard word,
 #    and there is only one asterisk in one wildcard word.
-# 2. The question mark ? matches exactly one character.
-#[[route-rules]]
-#pattern-schema = "route_*"
-#pattern-table = "abc_*"
-#target-schema = "route"
-#target-table = "abc"
+# 2. The question mark ("?") matches any single character.
+# [[route-rules]]
+# pattern-schema = "route_*"
+# pattern-table = "abc_*"
+# target-schema = "route"
+# target-table = "abc"
 
-#[[route-rules]]
-#pattern-schema = "route_*"
-#pattern-table = "xyz_*"
-#target-schema = "route"
-#target-table = "xyz"
+# [[route-rules]]
+# pattern-schema = "route_*"
+# pattern-table = "xyz_*"
+# target-schema = "route"
+# target-table = "xyz"
 
 [from]
 host = "127.0.0.1"
@@ -207,7 +247,6 @@ host = "127.0.0.1"
 user = "root"
 password = ""
 port = 4000
-
 ```
 Start `syncer`:
 
