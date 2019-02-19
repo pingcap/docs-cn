@@ -13,6 +13,7 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。MySQL 5.7 发布
 | ------------------------------------------------------------------ | ---------------------------------------------------------- |
 | [JSON_ARRAY([val[, val] ...])][json_array]                         | 根据一系列元素创建一个 JSON 文档 |
 | [JSON_OBJECT(key, val[, key, val] ...)][json_object]               | 根据一系列 K/V 对创建一个 JSON 文档 |
+| [JSON_QUOTE(string)][json_quote]                                   | 返回一个字符串，该字符串为带引号的 JSON 值 |
 
 ## 搜索 JSON 值的函数
 
@@ -35,7 +36,7 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。MySQL 5.7 发布
 | [JSON_REMOVE(json_doc, path[, path] ...)][json_remove]    | 移除 JSON 文档中某一路径下的子文档 |
 | [JSON_REPLACE(json_doc, path, val[, path, val] ...)][json_replace] | 替换 JSON 文档中的某一路径下的子文档 |
 | [JSON_SET(json_doc, path, val[, path, val] ...)][json_set]  | 在 JSON 文档中为某一路径设置子文档 |
-| [JSON_UNQUOTE(json_val)][json_unquote] |  去掉 JSON 文档外面的引号 |
+| [JSON_UNQUOTE(json_val)][json_unquote] |  去掉 JSON 值外面的引号，返回结果为字符串 |
 
 ## 返回 JSON 值属性的函数
 
@@ -54,7 +55,6 @@ TiDB 暂未支持以下 JSON 函数。相关进展参见 [TiDB #7546](https://gi
 * `JSON_DEPTH`
 * `JSON_MERGE_PATCH`
 * `JSON_PRETTY`
-* `JSON_QUOTE`
 * `JSON_SEARCH`
 * `JSON_STORAGE_SIZE`
 * `JSON_VALID`
