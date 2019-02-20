@@ -71,15 +71,23 @@ Usage of syncer:
   -c int
       syncer 处理 batch 线程数 (默认 16)
   -config string
-      指定相应配置文件启动 sycner 服务；如 `--config config.toml` 
+      指定相应配置文件启动 sycner 服务；如 `--config config.toml`
+  -enable-ansi-quotes
+      使用 ANSI_QUOTES sql_mode 来解析 sql
   -enable-gtid
       使用 gtid 模式启动 syncer；默认 false，开启前需要上游 MySQL 开启 GTID 功能
+  -flavor string
+      上游数据库实例类型，目前支持 "nysql" 和 "mariadb"
   -log-file string
       指定日志文件目录；如 `--log-file ./syncer.log`
   -log-rotate string
       指定日志切割周期, hour/day (默认 "day")
   -meta string
       指定 syncer 上游 meta 信息文件  (默认与配置文件相同目录下 "syncer.meta")
+  -persistent-dir string
+      指定同步过程中历史 schema 结构的保存文件地址，如果设置为空，则不保存历史 schema 结构；如果不为空，则根据 binlog 里面包含的数据的 column 长度选择 schema 来还原 dml
+  -safe-mode
+      指定是否开启 safe mode，让 Syncer 在任何情况下可重入
   -server-id int
      指定 MySQL slave sever-id (默认 101)
   -status-addr string
@@ -90,49 +98,57 @@ Syncer 的配置文件 `config.toml`：
 
 ```toml
 log-level = "info"
+log-file = "syncer.log"
+log-rotate = "day"
 
 server-id = 101
 
 ## meta 文件地址
 meta = "./syncer.meta"
-
 worker-count = 16
-batch = 10
+batch = 1000
+flavor = "mysql"
 
 ## pprof 调试地址, Prometheus 也可以通过该地址拉取 syncer metrics
-## 将 127.0.0.1 修改为相应主机 IP 地址
-status-addr = "127.0.0.1:10086"
+status-addr = ":8271"
 
-# 注意: skip-sqls 已经废弃, 请使用 skip-ddls.
-# skip-ddls 可以跳过与 TiDB 不兼容的 DDL 语句，支持正则语法。
-# skip-ddls = ["^CREATE\\s+USER"]
+## 如果设置为 true，Syncer 遇到 ddl 的时候就会停止退出
+stop-on-ddl = false
 
-# 注意: skip-events 已经废弃, 请使用 skip-dmls 
-# skip-dmls 用于跳过 DML 语句. type 字段取值为 'insert', 'update', 'delete'。
-# 下面的例子为跳过 foo.bar 表的所有 delete 语句。
+## 跳过 DDLs，格式为 **前缀完全匹配**，如: `DROP TABLE ABC`, 则至少需要填入`DROP TABLE`.
+# skip-ddls = ["ALTER USER", "CREATE USER"]
+
+## 在使用 route-rules 功能后，
+## replicate-do-db & replicate-ignore-db 匹配合表之后(target-schema & target-table )数值
+## 优先级关系: replicate-do-db --> replicate-do-table --> replicate-ignore-db --> replicate-ignore-table
+## 指定要同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
+#replicate-do-db = ["~^b.*","s1"]
+
+## 指定**忽略**同步数据库；支持正则匹配，表达式语句必须以 `~` 开始
+#replicate-ignore-db = ["~^b.*","s1"]
+
+# skip-dmls 支持跳过 DML binlog events. type 字段的值：'insert', 'update' and 'delete'.
+# 跳过 foo.bar 表的所有 delete 语句
 # [[skip-dmls]]
 # db-name = "foo"
 # tbl-name = "bar"
 # type = "delete"
-# 
-# 下面的例子为跳过所有表的 delete 语句。
+#
+# 跳过所有表的 delete 语句
 # [[skip-dmls]]
 # type = "delete"
-# 
-# 下面的例子为跳过 foo 库中所有表的 delete 语句。 
+#
+# 跳过 foo.* 表的 delete 语句
 # [[skip-dmls]]
 # db-name = "foo"
 # type = "delete"
-
-## 指定要同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
-#replicate-do-db = ["~^b.*","s1"]
 
 ## 指定要同步的 db.table 表
 ## db-name 与 tbl-name 不支持 `db-name ="dbname，dbname2"` 格式
 #[[replicate-do-table]]
 #db-name ="dbname"
 #tbl-name = "table-name"
- 
+
 #[[replicate-do-table]]
 #db-name ="dbname1"
 #tbl-name = "table-name1"
@@ -141,9 +157,6 @@ status-addr = "127.0.0.1:10086"
 #[[replicate-do-table]]
 #db-name ="test"
 #tbl-name = "~^a.*"
-
-## 指定**忽略**同步数据库；支持正则匹配，表达式语句必须以 `~` 开始
-#replicate-ignore-db = ["~^b.*","s1"]
 
 ## 指定**忽略**同步数据库
 ## db-name & tbl-name 不支持 `db-name ="dbname，dbname2"` 语句格式
@@ -480,35 +493,51 @@ Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。配�
 
 #### title: binlog events
 
-- metrics: `irate(syncer_binlog_events_total[1m])`
-- info: Syncer 已经同步到的 master binlog 相关信息统计，主要有 `query`，`rotate`，`update_rows`，`write_rows`，`delete_rows` 五种类型
+- metrics: `rate(syncer_binlog_event_count[1m])`
+- info: Syncer 已经收到的 binlog QPS
 
-#### title: syncer_binlog_file
+#### title: binlog event transform
 
-- metrics: `syncer_binlog_file`
-- info: Syncer 同步 master binlog 的文件数量
+- metrics: `histogram_quantile(0.8, sum(rate(syncer_binlog_event_bucket[1m])) by (le))`
+- info: Syncer 把 binlog 转换为 SQLs 的耗时 
 
-#### title: binlog pos
+#### title: transaction latency
 
-- metrics: `syncer_binlog_pos`
-- info: Syncer 同步当前 master binlog 的 binlog-pos 信息
+- metrics: `histogram_quantile(0.95, sum(rate(syncer_txn_cost_in_second_bucket[1m])) by (le))`
+- info: Syncer 在下游 TiDB 执行 transaction 的耗时
 
-#### title: syncer_gtid
+#### title: transaction tps
 
-- metrics: `syncer_gtid`
-- info: Syncer 同步当前 master binlog 的 binlog-gtid 信息
+- metrics: `rate(syncer_txn_cost_in_second_count[1m])`
+- info: 下游 TiDB 执行的 TPS
 
-#### title: syncer_binlog_file
+#### title: binlog file gap
 
 - metrics: `syncer_binlog_file{node="master"} - ON(instance, job) syncer_binlog_file{node="syncer"}`
-- info: 上游与下游同步时，相差的 binlog 文件数量，正常状态为 0，表示数据正在实时同步。数值越大，表示相差的 binlog 文件数量越多。
+- info: Syncer 同步到的 binlog 文件距离上游 MySQL 当前 binlog 文件的数据；注意 MySQL 当前 binlog 文件是定期查询，所以一些情况下该 metrics 会出现负数的情况
 
 #### title: binlog skipped events
 
-- metrics: `irate(syncer_binlog_skipped_events_total[1m])`
-- info: Syncer 同步 master binlog 文件时跳过执行 SQL 的数量统计。跳过 SQL 语句格式由 `syncer.toml` 文件中的 `skip-sqls` 参数控制。
+- metrics: `rate(syncer_binlog_skipped_events_total[1m])`
+- info: Syncer 跳过的 binlog 的个数，你可以在配置文件中配置 `skip-ddls` 和 `skip-dmls` 来跳过指定的 binlog
 
-#### title: syncer_txn_costs_gauge_in_second
+#### title: position binlog position
 
-- metrics: `syncer_txn_costs_gauge_in_second`
-- info: Syncer 处理一个 batch 的时间，单位为秒
+- metrics: `syncer_binlog_pos{node="syncer"}` and `syncer_binlog_pos{node="master"}`
+- info: 需要配合 `file number of binlog position` 一起看. `syncer_binlog_pos{node="master"}` 表示上游 MySQL 当前 binlog 位置的 position 值, `syncer_binlog_pos{node="syncer"}` 表示上游 Syncer 当前同步到的 binlog 位置的 position 值
+
+#### title: file number of binlog position
+
+- metrics: `syncer_binlog_file{node="syncer"}` and `syncer_binlog_file{node="master"}`
+- info: 需要配置 `position of binlog position` 一起看. `syncer_binlog_file{node="master"}` 表示上游 MySQL 当前 binlog 位置的文件编号, and `syncer_binlog_file{node="syncer"}` 表示上游 Syncer 当前同步到的 binlog 位置的文件编号
+
+
+#### title: execution jobs
+
+- metrics: `sum(rate(syncer_add_jobs_total[1m])) by (queueNo)`
+- info: Syncer 把 binlog 转换成 SQLs 后，将 SQLs 以 jobs 的方式加到执行队列中，这个 metrics 表示已经加入执行队列的 jobs 总数
+
+#### title: pending jobs
+
+- metrics: `sum(rate(syncer_add_jobs_total[1m]) - rate(syncer_finished_jobs_total[1m])) by (queueNo)`
+- info: 已经加入执行队列但是还没有执行的 jobs 数量
