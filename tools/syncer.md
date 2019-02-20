@@ -77,7 +77,7 @@ Usage of syncer:
   -enable-gtid
       使用 gtid 模式启动 syncer；默认 false，开启前需要上游 MySQL 开启 GTID 功能
   -flavor string
-      上游数据库实例类型，目前支持 "nysql" 和 "mariadb"
+      上游数据库实例类型，目前支持 "mysql" 和 "mariadb"
   -log-file string
       指定日志文件目录；如 `--log-file ./syncer.log`
   -log-rotate string
@@ -494,7 +494,7 @@ Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。配�
 #### title: binlog events
 
 - metrics: `rate(syncer_binlog_event_count[1m])`
-- info: Syncer 已经收到的 binlog QPS
+- info: 统计 Syncer 每秒已经收到的 binlog 个数
 
 #### title: binlog event transform
 
@@ -509,27 +509,27 @@ Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。配�
 #### title: transaction tps
 
 - metrics: `rate(syncer_txn_cost_in_second_count[1m])`
-- info: 下游 TiDB 执行的 TPS
+- info: Syncer 在下游 TiDB 每秒执行的 transaction 个数
 
 #### title: binlog file gap
 
 - metrics: `syncer_binlog_file{node="master"} - ON(instance, job) syncer_binlog_file{node="syncer"}`
-- info: Syncer 同步到的 binlog 文件距离上游 MySQL 当前 binlog 文件的数据；注意 MySQL 当前 binlog 文件是定期查询，所以一些情况下该 metrics 会出现负数的情况
+- info: Syncer 已经同步到的 binlog position 的文件编号距离上游 MySQL 当前 binlog position 的文件编号的值；注意 MySQL 当前 binlog position 是定期查询，在一些情况下该 metrics 会出现负数的情况
 
 #### title: binlog skipped events
 
 - metrics: `rate(syncer_binlog_skipped_events_total[1m])`
 - info: Syncer 跳过的 binlog 的个数，你可以在配置文件中配置 `skip-ddls` 和 `skip-dmls` 来跳过指定的 binlog
 
-#### title: position binlog position
+#### title: position of binlog position
 
 - metrics: `syncer_binlog_pos{node="syncer"}` and `syncer_binlog_pos{node="master"}`
-- info: 需要配合 `file number of binlog position` 一起看. `syncer_binlog_pos{node="master"}` 表示上游 MySQL 当前 binlog 位置的 position 值, `syncer_binlog_pos{node="syncer"}` 表示上游 Syncer 当前同步到的 binlog 位置的 position 值
+- info: 需要配合 `file number of binlog position` 一起看. `syncer_binlog_pos{node="master"}` 表示上游 MySQL 当前 binlog position 的 position 值, `syncer_binlog_pos{node="syncer"}` 表示上游 Syncer 已经同步到的 binlog position 的 position 值
 
 #### title: file number of binlog position
 
 - metrics: `syncer_binlog_file{node="syncer"}` and `syncer_binlog_file{node="master"}`
-- info: 需要配置 `position of binlog position` 一起看. `syncer_binlog_file{node="master"}` 表示上游 MySQL 当前 binlog 位置的文件编号, and `syncer_binlog_file{node="syncer"}` 表示上游 Syncer 当前同步到的 binlog 位置的文件编号
+- info: 需要配置 `position of binlog position` 一起看. `syncer_binlog_file{node="master"}` 表示上游 MySQL 当前 binlog position 的文件编号, and `syncer_binlog_file{node="syncer"}` 表示上游 Syncer 已经同步到的 binlog 位置的文件编号
 
 
 #### title: execution jobs
