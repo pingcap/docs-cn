@@ -190,6 +190,9 @@ For example, if you want to add a PD node (node103) with the IP address `172.16.
     ```
 
     1. Remove the `--initial-cluster="xxxx" \` configuration.
+
+        > **Note:** You cannot add the `#` character at the beginning of the line. Otherwise, the following configuration cannot take effect.
+
     2. Add `--join="http://172.16.10.1:2379" \`. The IP address (`172.16.10.1`) can be any of the existing PD IP address in the cluster.
     3. Manually start the PD service in the newly added PD node:
       

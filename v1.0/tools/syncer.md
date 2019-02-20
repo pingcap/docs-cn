@@ -274,7 +274,7 @@ replicate-ignore-db = ["ops","fault","~^www"]
 
 # The "fault" database includes multiple tables such as faults, user_feedback, ticket.
 # Ignore the user_feedback table in synchronization.
-# Because replicate-ignore-db has a higher priority than replicate-ignore-table, it is invalid if you only set to synchronize the user_feedback table. In fact, the whole "fault" database is synchronized.
+# Because replicate-ignore-db has a higher priority than replicate-ignore-table, it is invalid to only ignore the user_feedback table in replication. In fact, the whole "fault" database is ignored in replication.
 [[replicate-ignore-table]]
 db-name = "fault"
 tbl-name = "user_feedback"
