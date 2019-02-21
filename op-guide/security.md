@@ -104,7 +104,7 @@ token 文件存储的是密钥，用于对用户数据进行加密，以及对�
 ```toml
 [security]
 # Path to cipher file
-cipher-file: "/path/to/cipher-file-256"
+cipher-file = "/path/to/cipher-file-256"
 ```
 
 ## 使用 lightning 向集群导入数据
