@@ -170,7 +170,7 @@ status-addr = ":8271"
 ## 如果设置为 true，Syncer 遇到 DDL 语句时就会停止退出
 stop-on-ddl = false
 
-## 跳过 DDLs，格式为 **前缀完全匹配**，如: `DROP TABLE ABC`, 则至少需要填入`DROP TABLE`.
+## 跳过 DDL 语句，格式为 **前缀完全匹配**，如：`DROP TABLE ABC` 至少需要填入`DROP TABLE`
 # skip-ddls = ["ALTER USER", "CREATE USER"]
 
 ## 在使用 route-rules 功能后，
