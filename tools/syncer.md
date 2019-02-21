@@ -535,7 +535,7 @@ Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。配�
 #### title: execution jobs
 
 - metrics: `sum(rate(syncer_add_jobs_total[1m])) by (queueNo)`
-- info: Syncer 把 binlog 转换成 SQLs 后，将 SQLs 以 jobs 的方式加到执行队列中，这个 metrics 表示已经加入执行队列的 jobs 总数
+- info: Syncer 把 binlog 转换成 SQL 语句后，将 SQL 语句以 jobs 的方式加到执行队列中，这个 metrics 表示已经加入执行队列的 jobs 总数
 
 #### title: pending jobs
 
