@@ -182,7 +182,7 @@ stop-on-ddl = false
 ## 指定**忽略**同步数据库；支持正则匹配，表达式语句必须以 `~` 开始
 #replicate-ignore-db = ["~^b.*","s1"]
 
-# skip-dmls 支持跳过 DML binlog events. type 字段的值：'insert', 'update' and 'delete'.
+# skip-dmls 支持跳过 DML binlog events，type 字段的值可为：'insert'，'update' 和 'delete'
 # 跳过 foo.bar 表的所有 delete 语句
 # [[skip-dmls]]
 # db-name = "foo"
