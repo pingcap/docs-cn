@@ -8,7 +8,7 @@ category: tools
 
 Data Migration (DM) 工具的 relay log 由一组有编号的文件和一个索引文件组成。这些有编号的文件包含了描述数据库更改的事件。索引文件包含所有使用过的 relay log 的文件名。
 
-DM-worker 在启动后，会自动将上游 binlog 同步到本地配置目录（若使用 DM-Ansible 部署 DM，则同步目录默认为 `<deploy_dir> / relay_log` ）。DM-worker 在运行过程中，会将上游 binlog 实时同步到本地文件。DM-worker 的处理单元 Syncer 会实时读取本地 relay log 的 binlog events，将这些 events 转换为 SQL 语句，再将 SQL 语句同步到下游数据库。
+DM-worker 在启动后，会自动将上游 binlog 同步到本地配置目录（若使用 DM-Ansible 部署 DM，则同步目录默认为 `<deploy_dir> / relay_log` ）。DM-worker 在运行过程中，会将上游 binlog 实时同步到本地文件。DM-worker 的处理单元 Syncer 会实时读取本地 relay log 的 binlog 事件，将这些事件转换为 SQL 语句，再将 SQL 语句同步到下游数据库。
 
 本文档介绍 DM relay log 的目录结构、初始同步规则和数据清理方法。
 
@@ -35,8 +35,7 @@ Relay-log 本地存储的目录结构示例如下：
     - DM-worker 把从上游数据库同步到的 binlog 存储在同一目录下，每个目录都为一个 `subdir`。
     - `subdir` 的命名格式为 `<上游数据库 UUID>.<本地 subdir 序列号>`。
     - 在上游进行 master 和 slave 实例切换后，DM-worker 会生成一个序号递增的新 `subdir` 目录。
-      > **Note:** The link above (主从 instance 切换) is currently unavailable, since it depends on the availability of the document `cluster-operations` which will be added to the `docs-cn/tools/dm` directory later. 
-
+    
         - 在以上示例中，对于 `7e427cc0-091c-11e9-9e45-72b7c59d52d7.000001` 这一目录，`7e427cc0-091c-11e9-9e45-72b7c59d52d7` 是上游数据库的 UUID，`000001` 是本地 `subdir` 的序列号。
 
 - `server-uuid.index`：记录当前可用的 `subdir` 目录。
