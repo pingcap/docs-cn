@@ -80,7 +80,7 @@ key-path = "/path/to/pd-server-key.pem"
 
 请参考 [使用加密连接](../sql/encrypted-connections.md)。
 
-# TiKV 数据加密存储
+## 开启数据加密存储
 
 ## 概述
 
