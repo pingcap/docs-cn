@@ -1001,9 +1001,13 @@ See [Key Metrics](op-guide/dashboard-overview-info.md).
 
 The monitoring system of TiDB consists of Prometheus and Grafana. From the dashboard in Grafana, you can monitor various running metrics of TiDB which include the monitoring metrics of system resources, of client connection and SQL operation, of internal communication and Region scheduling. With these metrics, the database administrator can better understand the system running status, running bottlenecks and so on. In the practice of monitoring these metrics, we list the key metrics of each TiDB component. Generally you only need to pay attention to these common metrics. For details, see [Key Metrics](op-guide/dashboard-overview-info.md).
 
-#### The Prometheus monitoring data is deleted each month by default. Could I set it to two months or delete the monitoring data manually?
+#### The Prometheus monitoring data is deleted every 15 days by default. Could I set it to two months or delete the monitoring data manually?
 
 Yes. Find the startup script on the machine where Prometheus is started, edit the startup parameter and restart Prometheus.
+
+```
+--storage.tsdb.retention="60d"
+```
 
 #### Region Health monitor
 

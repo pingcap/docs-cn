@@ -6,7 +6,7 @@ category: tools
 
 # Data Migration Overview
 
-[TiDB-DM](https://github.com/pingcap/dm) (Data Migration) is an integrated data synchronization task management platform that supports the full data migration and the incremental data migration from MySQL/MariaDB into TiDB. It can help to reduce the operations cost and simplify the troubleshooting process.
+[DM](https://github.com/pingcap/dm) (Data Migration) is an integrated data synchronization task management platform that supports the full data migration and the incremental data migration from MySQL/MariaDB into TiDB. It can help to reduce the operations cost and simplify the troubleshooting process.
 
 ## Architecture
 

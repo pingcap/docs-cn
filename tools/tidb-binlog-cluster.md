@@ -154,13 +154,19 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
         ansible-playbook deploy.yml -l ${pump1_ip}, ${pump2_ip}, [${alias1_name}, ${alias2_name}]
         ```
 
-    2. Update and restart `tidb_servers`.
+    2. Start `pump_servers`.
+
+        ```
+        ansible-playbook start.yml --tags=pump
+        ```
+
+    3. Update and restart `tidb_servers`.
 
         ```
         ansible-playbook rolling_update.yml --tags=tidb
         ```
 
-    3. Update the monitoring data.
+    4. Update the monitoring data.
 
         ```
         ansible-playbook rolling_update_monitor.yml --tags=prometheus
