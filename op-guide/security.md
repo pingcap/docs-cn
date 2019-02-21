@@ -16,9 +16,9 @@ category: deployment
 
 MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用另外一套证书。
 
-## TiDB 集群组件间开启 TLS（双向认证）
+### TiDB 集群组件间开启 TLS（双向认证）
 
-### 准备证书
+#### 准备证书
 
 推荐为 TiDB、TiKV、PD 分别准备一个 server 证书，并保证可以相互验证，而它们的各种客户端共用 client 证书。
 
@@ -26,7 +26,7 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
 
 这里提供一个使用 `cfssl` 生成证书的示例：[生成自签名证书](../op-guide/generate-self-signed-certificates.md)。
 
-### 配置证书
+#### 配置证书
 
 ##### TiDB
 
@@ -78,7 +78,7 @@ key-path = "/path/to/pd-server-key.pem"
 ./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/client.pem" --key-path="/path/to/clinet-key.pem"
 ```
 
-## MySQL 与 TiDB 间开启 TLS
+### MySQL 与 TiDB 间开启 TLS
 
 请参考 [使用加密连接](../sql/encrypted-connections.md)。
 
