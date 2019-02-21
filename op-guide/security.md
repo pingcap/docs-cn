@@ -104,7 +104,7 @@ key-path = "/path/to/pd-server-key.pem"
     [security]
     # Cipher file 的存储路径
     cipher-file = "/path/to/cipher-file-256"
-```
+    ```
 
 ## 使用 lightning 向集群导入数据
 
