@@ -133,6 +133,7 @@
   - [PD Recover](tools/pd-recover.md)
   - [TiKV Control](tools/tikv-control.md)
   - [TiDB Controller](tools/tidb-controller.md)
+  - [工具下载](tools/download.md)
 + TiSpark 文档
   - [TiSpark 快速入门指南](tispark/tispark-quick-start-guide.md)
   - [TiSpark 用户指南](tispark/tispark-user-guide.md)
