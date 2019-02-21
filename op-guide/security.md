@@ -93,7 +93,7 @@ key-path = "/path/to/pd-server-key.pem"
     token 文件存储的是密钥，用于对用户数据进行加密，以及对已加密的数据进行解密。
 
     ```bash
-./tikv-ctl random-hex --len 256 > cipher-file-256
+    ./tikv-ctl random-hex --len 256 > cipher-file-256
 ```
 
 说明：TiKV 只接受 hex 格式的 token 文件，文件的长度必须是 2^n，并且小于等于 1024。
