@@ -7,7 +7,7 @@ category: deployment
 
 ## 概述
 
-本部分介绍 TiDB 集群如何开启 TLS 验证，其支持：
+本文档介绍 TiDB 集群如何开启 TLS 验证和数据加密存储。
 
 - TiDB 组件之间的双向验证，包括 TiDB、TiKV、PD 相互之间，TiKV Control 与 TiKV、PD Control 与 PD 的双向认证，以及 TiKV peer 之间、PD peer 之间。一旦开启，所有组件之间均使用验证，不支持只开启某一部分的验证。
 - MySQL Client 与 TiDB 之间的客户端对服务器身份的单向验证以及双向验证。
