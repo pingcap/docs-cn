@@ -100,7 +100,7 @@ key-path = "/path/to/pd-server-key.pem"
 
 2. 配置 TiKV。
 
-```toml
+    ```toml
 [security]
 # Path to cipher file
 cipher-file = "/path/to/cipher-file-256"
