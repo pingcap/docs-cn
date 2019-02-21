@@ -102,7 +102,7 @@ key-path = "/path/to/pd-server-key.pem"
 
     ```toml
     [security]
-# Path to cipher file
+    # Cipher file 的存储路径
 cipher-file = "/path/to/cipher-file-256"
 ```
 
