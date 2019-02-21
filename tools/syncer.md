@@ -499,7 +499,7 @@ Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。配�
 #### title: binlog event transform
 
 - metrics: `histogram_quantile(0.8, sum(rate(syncer_binlog_event_bucket[1m])) by (le))`
-- info: Syncer 把 binlog 转换为 SQLs 的耗时 
+- info: Syncer 把 binlog 转换为 SQL 语句的耗时 
 
 #### title: transaction latency
 
