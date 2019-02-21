@@ -134,7 +134,7 @@ CREATE UNIQUE INDEX person_num ON person (number);
 或者
 
 ```sql
-ALTER TABLE person ADD UNIQUE person_num  on (number);
+ALTER TABLE person ADD UNIQUE person_num (number);
 ```
 
 使用 `SHOW INDEX` 语句查看表内所有索引：
