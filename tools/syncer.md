@@ -73,7 +73,7 @@ Usage of syncer:
   -config string
       指定相应配置文件启动 Sycner 服务；如 `--config config.toml`
   -enable-ansi-quotes
-      使用 ANSI_QUOTES sql_mode 来解析 sql
+      使用 ANSI_QUOTES sql_mode 来解析 SQL 语句
   -enable-gtid
       使用 gtid 模式启动 syncer；默认 false，开启前需要上游 MySQL 开启 GTID 功能
   -flavor string
