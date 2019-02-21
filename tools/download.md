@@ -20,7 +20,7 @@ category: resources
 
 ## TiDB-DM (Data Migration)
 
-如需下载最新版本的 [TiDB-DM](https://github.com/pingcap/dm)，点击下表中的下载链接即可。你也可以参考 [DM Release](https://github.com/pingcap/dm/releases) 页面。
+如需下载最新版本的 [DM](https://github.com/pingcap/dm)，点击下表中的下载链接即可。你也可以参考 [DM Release](https://github.com/pingcap/dm/releases) 页面。
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
