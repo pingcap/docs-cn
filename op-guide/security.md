@@ -3,11 +3,13 @@ title: 开启 TLS 验证和数据加密存储
 category: deployment
 ---
 
-# 开启 TLS 验证
-
-## 概述
+# 开启 TLS 验证和数据加密存储
 
 本文档介绍 TiDB 集群如何开启 TLS 验证和数据加密存储。
+
+## 开启 TLS 验证
+
+本部分介绍 TiDB 集群如何开启 TLS 验证，其支持：
 
 - TiDB 组件之间的双向验证，包括 TiDB、TiKV、PD 相互之间，TiKV Control 与 TiKV、PD Control 与 PD 的双向认证，以及 TiKV peer 之间、PD peer 之间。一旦开启，所有组件之间均使用验证，不支持只开启某一部分的验证。
 - MySQL Client 与 TiDB 之间的客户端对服务器身份的单向验证以及双向验证。
@@ -82,8 +84,6 @@ key-path = "/path/to/pd-server-key.pem"
 
 ## 开启数据加密存储
 
-## 概述
-
 在 TiDB 集群中，用户的数据都存储在 TiKV 中，配置了 TiKV 数据加密存储功能，就代表 TiDB 集群已经加密存储了用户的数据。本部分主要介绍如何配置 TiKV 的加密存储功能。
 
 ### 操作流程
@@ -108,7 +108,7 @@ key-path = "/path/to/pd-server-key.pem"
 
 3. 使用 [Lightning](../tools/lightning/overview-architecture.md) 向集群导入数据。
 
-    Lightning 是 TiDB 的物理导入工具，其原理是通过用户的 SQL 查询生成 sst 文件（TiKV 的物理存储格式），然后把这些 sst 文件拷贝到 TiKV 数据目录。如果目标集群开启了加密功能，Lightning 生成的 sst 文件也必须是加密的格式。详情参见 [Lightning 导入数据流程](./TODO)
+    Lightning 是 TiDB 的物理导入工具，其原理是通过用户的 SQL 文件生成 sst 文件（TiKV 的物理存储格式），然后把这些 sst 文件拷贝到 TiKV 数据目录。如果目标集群开启了加密功能，Lightning 生成的 sst 文件也必须是加密的格式。详情参见 [Lightning 导入数据流程](./TODO)
 
 ### 使用限制
 
