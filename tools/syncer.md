@@ -71,7 +71,7 @@ Usage of syncer:
   -c int
       syncer 处理 batch 线程数 (默认 16)
   -config string
-      指定相应配置文件启动 sycner 服务；如 `--config config.toml`
+      指定相应配置文件启动 Sycner 服务；如 `--config config.toml`
   -enable-ansi-quotes
       使用 ANSI_QUOTES sql_mode 来解析 sql
   -enable-gtid
