@@ -88,7 +88,7 @@ key-path = "/path/to/pd-server-key.pem"
 
 ### 操作流程
 
-### 生成 token 文件
+1. 生成 token 文件。
 
 token 文件存储的是密钥，用于对用户数据进行加密，以及对已加密的数据进行解密。
 
