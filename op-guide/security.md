@@ -106,7 +106,7 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
     cipher-file = "/path/to/cipher-file-256"
     ```
 
-> **注意**：若使用 [Lightning](../tools/lightning/overview-architecture.md) 向集群导入数据，如果目标集群开启了加密功能，Lightning 生成的 sst 文件也必须是加密的格式。详情参见 [Lightning 导入数据流程](./TODO)
+> **注意**：若使用 [Lightning](../tools/lightning/overview-architecture.md) 向集群导入数据，如果目标集群开启了加密功能，Lightning 生成的 sst 文件也必须是加密的格式。详情参见 [Lightning 导入数据流程](./TODO)。
 
 ### 使用限制
 
