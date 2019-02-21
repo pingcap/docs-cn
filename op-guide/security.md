@@ -9,7 +9,7 @@ category: deployment
 
 ## 开启 TLS 验证
 
-本部分介绍 TiDB 集群如何开启 TLS 验证，其支持：
+本部分介绍 TiDB 集群如何开启 TLS 验证，TLS 验证支持：
 
 - TiDB 组件之间的双向验证，包括 TiDB、TiKV、PD 相互之间，TiKV Control 与 TiKV、PD Control 与 PD 的双向认证，以及 TiKV peer 之间、PD peer 之间。一旦开启，所有组件之间均使用验证，不支持只开启某一部分的验证。
 - MySQL Client 与 TiDB 之间的客户端对服务器身份的单向验证以及双向验证。
@@ -18,65 +18,65 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
 
 ### TiDB 集群组件间开启 TLS（双向认证）
 
-#### 准备证书
+1. 准备证书。
 
-推荐为 TiDB、TiKV、PD 分别准备一个 server 证书，并保证可以相互验证，而它们的各种客户端共用 client 证书。
+    推荐为 TiDB、TiKV、PD 分别准备一个 server 证书，并保证可以相互验证，而它们的各种客户端共用 client 证书。
 
-有多种工具可以生成自签名证书，如 `openssl`，`easy-rsa `，`cfssl`。
+    有多种工具可以生成自签名证书，如 `openssl`，`easy-rsa `，`cfssl`。
 
-这里提供一个使用 `cfssl` 生成证书的示例：[生成自签名证书](../op-guide/generate-self-signed-certificates.md)。
+    这里提供一个使用 `cfssl` 生成证书的示例：[生成自签名证书](../op-guide/generate-self-signed-certificates.md)。
 
-#### 配置证书
+2. 配置证书。
 
-##### TiDB
+    - TiDB
 
-在 config 文件或命令行参数中设置：
+        在 `config` 文件或命令行参数中设置：
 
-```toml
-[security]
-# Path of file that contains list of trusted SSL CAs for connection with cluster components.
-cluster-ssl-ca = "/path/to/ca.pem"
-# Path of file that contains X509 certificate in PEM format for connection with cluster components.
-cluster-ssl-cert = "/path/to/tidb-server.pem"
-# Path of file that contains X509 key in PEM format for connection with cluster components.
-cluster-ssl-key = "/path/to/tidb-server-key.pem"
-```
+        ```toml
+        [security]
+        # Path of file that contains list of trusted SSL CAs for connection with cluster components.
+        cluster-ssl-ca = "/path/to/ca.pem"
+        # Path of file that contains X509 certificate in PEM format for connection with cluster components.
+        cluster-ssl-cert = "/path/to/tidb-server.pem"
+        # Path of file that contains X509 key in PEM format for connection with cluster components.
+        cluster-ssl-key = "/path/to/tidb-server-key.pem"
+        ```
 
-##### TiKV
+    - TiKV
 
-在 config 文件或命令行参数中设置，并设置相应 url 为 https：
+        在 `config` 文件或命令行参数中设置，并设置相应的 URL 为 https：
 
-```toml
-[security]
-# set the path for certificates. Empty string means disabling secure connectoins.
-ca-path = "/path/to/ca.pem"
-cert-path = "/path/to/tikv-server.pem"
-key-path = "/path/to/tikv-server-key.pem"
-```
+        ```toml
+        [security]
+        # set the path for certificates. Empty string means disabling secure connectoins.
+        ca-path = "/path/to/ca.pem"
+        cert-path = "/path/to/tikv-server.pem"
+        key-path = "/path/to/tikv-server-key.pem"
+        ```
 
-##### PD
+    - PD
 
-在 config 文件或命令行参数中设置，并设置相应 url 为 https：
+        在 `config` 文件或命令行参数中设置，并设置相应的 URL 为 https：
 
-```toml
-[security]
-# Path of file that contains list of trusted SSL CAs. if set, following four settings shouldn't be empty
-cacert-path = "/path/to/ca.pem"
-# Path of file that contains X509 certificate in PEM format.
-cert-path = "/path/to/pd-server.pem"
-# Path of file that contains X509 key in PEM format.
-key-path = "/path/to/pd-server-key.pem"
-```
+        ```toml
+        [security]
+        # Path of file that contains list of trusted SSL CAs. if set, following four settings shouldn't be empty
+        cacert-path = "/path/to/ca.pem"
+        # Path of file that contains X509 certificate in PEM format.
+        cert-path = "/path/to/pd-server.pem"
+        # Path of file that contains X509 key in PEM format.
+        key-path = "/path/to/pd-server-key.pem"
+        ```
 
-此时 TiDB 集群各个组件间便开启了双向验证。
+    此时 TiDB 集群各个组件间已开启双向验证。
 
-在使用客户端连接时，需要指定 client 证书，示例：
+> **注意**：若 TiDB 集群各个组件间已开启 TLS，在使用 tikv-ctl 或 pd-ctl 工具连接集群时，需要指定 client 证书，示例：
 
-```bash
-./pd-ctl -u https://127.0.0.1:2379 --cacert /path/to/ca.pem --cert /path/to/client.pem --key /path/to/client-key.pem
+    ```bash
+    ./pd-ctl -u https://127.0.0.1:2379 --cacert /path/to/ca.pem --cert /path/to/client.pem --key /path/to/client-key.pem
 
-./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/client.pem" --key-path="/path/to/clinet-key.pem"
-```
+    ./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/client.pem" --key-path="/path/to/clinet-key.pem"
+    ```
 
 ### MySQL 与 TiDB 间开启 TLS
 
@@ -106,9 +106,7 @@ key-path = "/path/to/pd-server-key.pem"
     cipher-file = "/path/to/cipher-file-256"
     ```
 
-### 使用 [Lightning](../tools/lightning/overview-architecture.md) 向集群导入数据
-
-Lightning 是 TiDB 的物理导入工具，其原理是通过用户的 SQL 文件生成 sst 文件（TiKV 的物理存储格式），然后把这些 sst 文件拷贝到 TiKV 数据目录。如果目标集群开启了加密功能，Lightning 生成的 sst 文件也必须是加密的格式。详情参见 [Lightning 导入数据流程](./TODO)
+> **注意**：若使用 [Lightning](../tools/lightning/overview-architecture.md) 向集群导入数据，如果目标集群开启了加密功能，Lightning 生成的 sst 文件也必须是加密的格式。详情参见 [Lightning 导入数据流程](./TODO)
 
 ### 使用限制
 
