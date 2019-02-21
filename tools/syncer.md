@@ -112,7 +112,7 @@ flavor = "mysql"
 ## pprof 调试地址, Prometheus 也可以通过该地址拉取 syncer metrics
 status-addr = ":8271"
 
-## 如果设置为 true，Syncer 遇到 ddl 的时候就会停止退出
+## 如果设置为 true，Syncer 遇到 DDL 语句时就会停止退出
 stop-on-ddl = false
 
 ## 跳过 DDLs，格式为 **前缀完全匹配**，如: `DROP TABLE ABC`, 则至少需要填入`DROP TABLE`.
