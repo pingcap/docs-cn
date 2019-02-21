@@ -86,7 +86,7 @@ key-path = "/path/to/pd-server-key.pem"
 
 在 TiDB 集群中，用户的数据都存储在 TiKV 中，配置了 TiKV 数据加密存储功能，就代表 TiDB 集群已经加密存储了用户的数据。本部分主要介绍如何配置 TiKV 的加密存储功能。
 
-## 操作流程
+### 操作流程
 
 ### 生成 token 文件
 
