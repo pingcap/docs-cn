@@ -85,7 +85,7 @@ Usage of syncer:
   -meta string
       指定 syncer 上游 meta 信息文件  (默认与配置文件相同目录下 "syncer.meta")
   -persistent-dir string
-      指定同步过程中历史 schema 结构的保存文件地址，如果设置为空，则不保存历史 schema 结构；如果不为空，则根据 binlog 里面包含的数据的 column 长度选择 schema 来还原 dml
+      指定同步过程中历史 schema 结构的保存文件地址，如果设置为空，则不保存历史 schema 结构；如果不为空，则根据 binlog 里面包含的数据的 column 长度选择 schema 来还原 DML 语句
   -safe-mode
       指定是否开启 safe mode，让 Syncer 在任何情况下可重入
   -server-id int
