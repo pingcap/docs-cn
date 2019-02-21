@@ -131,7 +131,7 @@ CREATE UNIQUE INDEX person_num ON person (number);
 or
 
 ```sql
-ALTER TABLE person ADD UNIQUE person_num on (number);
+ALTER TABLE person ADD UNIQUE person_num (number);
 ```
 
 Use the `SHOW INDEX` to display all the indexes in a table:

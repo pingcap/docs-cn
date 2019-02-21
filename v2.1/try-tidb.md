@@ -131,7 +131,7 @@ DROP TABLE IF EXISTS person;
     or
 
     ```sql
-    ALTER TABLE person ADD UNIQUE person_num on (number);
+    ALTER TABLE person ADD UNIQUE person_num (number);
     ```
 
 ### Show the indexes

@@ -135,7 +135,7 @@ This section describes some basic CRUD operations in TiDB.
     or
 
     ```sql
-    ALTER TABLE person ADD UNIQUE person_num on (number);
+    ALTER TABLE person ADD UNIQUE person_num (number);
     ```
 
 - To show all the indexes in a table, use the `SHOW INDEX` statement:
