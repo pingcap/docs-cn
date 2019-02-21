@@ -524,7 +524,7 @@ Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。配�
 #### title: position of binlog position
 
 - metrics: `syncer_binlog_pos{node="syncer"}` and `syncer_binlog_pos{node="master"}`
-- info: 需要配合 `file number of binlog position` 一起看. `syncer_binlog_pos{node="master"}` 表示上游 MySQL 当前 binlog position 的 position 值, `syncer_binlog_pos{node="syncer"}` 表示上游 Syncer 已经同步到的 binlog position 的 position 值
+- info: 需配合 `file number of binlog position` 一起看。`syncer_binlog_pos{node="master"}` 表示上游 MySQL 当前 binlog position 的 position 值，`syncer_binlog_pos{node="syncer"}` 表示上游 Syncer 已经同步到的 binlog position 的 position 值
 
 #### title: file number of binlog position
 
