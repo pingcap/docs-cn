@@ -106,7 +106,7 @@ key-path = "/path/to/pd-server-key.pem"
     cipher-file = "/path/to/cipher-file-256"
     ```
 
-3. 使用 [Lightning](../tools/lightning/overview-architecture.md) 向集群导入数据。
+### 使用 [Lightning](../tools/lightning/overview-architecture.md) 向集群导入数据
 
     Lightning 是 TiDB 的物理导入工具，其原理是通过用户的 SQL 文件生成 sst 文件（TiKV 的物理存储格式），然后把这些 sst 文件拷贝到 TiKV 数据目录。如果目标集群开启了加密功能，Lightning 生成的 sst 文件也必须是加密的格式。详情参见 [Lightning 导入数据流程](./TODO)
 
