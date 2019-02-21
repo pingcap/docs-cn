@@ -92,7 +92,7 @@ key-path = "/path/to/pd-server-key.pem"
 
     token 文件存储的是密钥，用于对用户数据进行加密，以及对已加密的数据进行解密。
 
-```bash
+    ```bash
 ./tikv-ctl random-hex --len 256 > cipher-file-256
 ```
 
