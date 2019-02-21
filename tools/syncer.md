@@ -119,7 +119,7 @@ stop-on-ddl = false
 # skip-ddls = ["ALTER USER", "CREATE USER"]
 
 ## 在使用 route-rules 功能后，
-## replicate-do-db & replicate-ignore-db 匹配合表之后(target-schema & target-table )数值
+## replicate-do-db & replicate-ignore-db 匹配合表之后 (target-schema & target-table) 的数值
 ## 优先级关系: replicate-do-db --> replicate-do-table --> replicate-ignore-db --> replicate-ignore-table
 ## 指定要同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
 #replicate-do-db = ["~^b.*","s1"]
