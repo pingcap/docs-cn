@@ -66,7 +66,7 @@ The [column mapping](/tools/dm/data-synchronization-features.md#column-mapping) 
 
 ### Sharding support
 
-DM supports merging the original sharded instances and tables into TiDB, but with [some restrictions](/tools/dm/sharding-solution.md#sharding-ddl-usage-restrictions).
+DM supports merging the original sharded instances and tables into TiDB, but with [some restrictions](/tools/dm/shard-merge.md#restrictions).
 
 ## Usage restrictions
 
@@ -89,7 +89,7 @@ Before using the DM tool, note the following restrictions:
 
     - If conflict exists between sharded tables, *only columns with the auto increment primary key* encounter the conflict, and the *column type is bigint*, solve the conflict using [column mapping](/tools/dm/data-synchronization-features.md#column-mapping). Otherwise, data synchronization is not supported. Conflicting data can cover each other and cause data loss.
 
-    - For other sharding restrictions, see [Sharding DDL usage restrictions](/tools/dm/sharding-solution.md#sharding-ddl-usage-restrictions).
+    - For other sharding restrictions, see [Sharding DDL usage restrictions](/tools/dm/shard-merge.md#restrictions).
 
 + Operations
 
