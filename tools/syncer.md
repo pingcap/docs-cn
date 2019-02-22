@@ -347,105 +347,143 @@ target-schema = "order"
 target-table = "order_2017"
 ```
 
-### Check before importing data using Syncer
+### Check before replicating data using Syncer
 
-1. Check the `server-id` of the source database.
+Before replicating data using Syncer, check the following items:
 
-    - Check the `server-id` using the following command:
+1. Check the database version.
 
-        ```sql
-        mysql> show global variables like 'server_id';
-        +---------------+-------
-        | Variable_name | Value |
-        +---------------+-------+
-        | server_id     | 1     |
-        +---------------+-------+
-        1 row in set (0.01 sec)
-        ```
+    Use the `select @@version;` command to check your database version. Currently, Syncer supports the following versions:
+
+    - 5.5 < MySQL version < 5.8
+    - MariaDB version >= 10.1.2
+
+        In earlier versions of MariaDB, the format of some binlog field types is inconsistent with that in MySQL.
+
+2. Check the `server-id` of the source database.
+
+    Check the `server-id` using the following command:
+
+    ```sql
+    mysql> show global variables like 'server_id';
+    +---------------+-------
+    | Variable_name | Value |
+    +---------------+-------+
+    | server_id     | 1     |
+    +---------------+-------+
+    1 row in set (0.01 sec)
+    ```
 
     - If the result is null or 0, Syncer cannot replicate data.
-    - Syncer server-id must be different from MySQL server-id, and must be unique in the MySQL cluster.
+    - Syncer `server-id` must be different from the MySQL `server-id`, and must be unique in the MySQL cluster.
 
-2. Check the related binlog parameters
+3. Check binlog related parameters.
 
-    - Check whether the binlog is enabled in MySQL using the following command:
-        
+    1. Check whether the binlog is enabled in MySQL using the following command:
+
         ```sql
         mysql> show global variables like 'log_bin';
         +--------------------+---------+
-        | Variable_name | Value  |
+        | Variable_name      | Value   |
         +--------------------+---------+
-        | log_bin             | ON      |
+        | log_bin            | ON      |
         +--------------------+---------+
         1 row in set (0.00 sec)
         ```
 
-    - If the result is `log_bin = OFF`, you need to enable the binlog. See the [document about enabling the binlog](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html).
+        If the result is `log_bin = OFF`, you need to enable the binlog. See the [document about enabling the binlog](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html).
 
-3. Check whether the binlog format in MySQL is ROW.
+    2. Check whether the binlog format in MySQL is `ROW`.
 
-    - Check the binlog format using the following command:
+        Check the binlog format using the following command:
 
         ```sql
         mysql> show global variables like 'binlog_format';
         +--------------------+----------+
-        | Variable_name | Value   |
+        | Variable_name      | Value    |
         +--------------------+----------+
-        | binlog_format   | ROW   |
+        | binlog_format      | ROW      |
         +--------------------+----------+
         1 row in set (0.00 sec)
         ```
 
-    - If the binlog format is not ROW, set it to ROW using the following command:
+        - If the binlog format is not `ROW`, set it to `ROW` using the following command:
 
-        ```
-        mysql> set global binlog_format=ROW;
-        mysql>  flush logs;
-        Query OK, 0 rows affected (0.01 sec)
-        ```
+            ```sql
+            mysql> set global binlog_format=ROW;
+            mysql>  flush logs;
+            Query OK, 0 rows affected (0.01 sec)
+            ```
 
-    - If MySQL is connected, it is recommended to restart MySQL or kill all connections.
+        - If MySQL is connected, it is recommended to restart the MySQL service or kill all connections.
 
-4. Check whether MySQL `binlog_row_image` is FULL.
+    3. Check whether MySQL `binlog_row_image` is `FULL`.
 
-    - Check `binlog_row_image` using the following command:
+        Check `binlog_row_image` using the following command:
 
         ```sql
         mysql> show global variables like 'binlog_row_image';
         +--------------------------+---------+
-        | Variable_name        | Value  |
+        | Variable_name            | Value   |
         +--------------------------+---------+
-        | binlog_row_image   | FULL  |
-        +--------------------------+----------+
+        | binlog_row_image         | FULL    |
+        +--------------------------+---------+
         1 row in set (0.01 sec)
         ```
 
-    - If the result of `binlog_row_image` is not FULL, set it to FULL using the following command:
-    
+        If the result of `binlog_row_image` is not `FULL`, set it to `FULL` using the following command:
+
         ```sql
         mysql> set global binlog_row_image = FULL;
         Query OK, 0 rows affected (0.01 sec)
         ```
 
-5. Check user privileges of mydumper.
+4. Check user privileges.
 
-    - To export data using mydumper, the user must have the privilege of `select, reload`.
-    - You can add the `--no-locks` option when the operation object is RDS, to avoid applying for the privilege of `reload`.
+    1. Check the user privileges required by mydumper for full data export.
 
-6. Check user privileges of synchronizing the upstream and downstream data.
+        - To export the full data using mydumper, the user must have the privileges of `select` and `reload`.
+        - You can add the `--no-locks` option when the operation object is RDS, to avoid applying for the `reload` privilege.
 
-    - The following privileges granted by the upstream MySQL replication account at least:
+    2. Check the upstream MySQL or MariaDB user privileges required by Syncer for incremental replication.
 
-        `select, replication slave, replication client`
+        The upstream MySQL user must have the following privileges at least:
 
-    - For the downstream TiDB, you can temporarily use the root account with the same privileges.
+        ```
+        select, replication slave, replication client
+        ```
 
-7. Check the GTID and POS related information.
+    3. Check the downstream user privileges required by TiDB.
 
-    Check the binlog information using the following statement:
+        | Privileges | Scope |
+        | :--- | :--- |
+        | `SELECT` | Tables |
+        | `INSERT` | Tables |
+        | `UPDATE` | Tables |
+        | `DELETE` | Tables |
+        | `CREATE` | Databases, tables |
+        | `DROP` | Databases, tables |
+        | `ALTER` | Tables |
+        | `INDEX` | Tables |
+
+        Execute the following `GRANT` statement for the databases or tables that you need to replicate:
+
+        ```sql
+        GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX  ON db.table TO 'your_user'@'your_wildcard_of_host';
+        ```
+
+5. Check the SQL mode.
+
+    Make sure that the upstream SQL mode is consistent with the downstream SQL mode. Otherwise, the data replication error might occur.
 
     ```sql
-    show binlog events in 'mysql-bin.000023' from 136676560 limit 10;
+    mysql> show variables like '%sql_mode%';
+    +---------------+-----------------------------------------------------------------------------------+
+    | Variable_name | Value                                                                             |
+    +---------------+-----------------------------------------------------------------------------------+
+    | sql_mode      | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
+    +---------------+-----------------------------------------------------------------------------------+
+    1 row in set (0.01 sec)
     ```
 
 ## Syncer monitoring solution
