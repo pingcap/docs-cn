@@ -446,6 +446,7 @@ target-table = "order_2017"
         ```
     
     3. 下游 TiDB 需要的权限
+    
         | 权限 | 作用域 |
         |----:|:----|
         | SELECT | Tables |
