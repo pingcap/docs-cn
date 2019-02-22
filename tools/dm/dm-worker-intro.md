@@ -5,7 +5,7 @@ category: tools
 
 # DM-worker 简介
 
-DM-worker 用于将数据从 MySQL 或 MariaDB 同步到 TiDB。
+DM-worker 是 DM (Data Migration) 的一个组件，负责执行具体的数据同步任务。
 
 其主要功能如下：
 
