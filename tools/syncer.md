@@ -354,7 +354,7 @@ target-table = "order_2017"
 1. MySQL 版本 `select @@version;` Syncer 目前只支持以下版本
 
     - 5.5 < MySQL 版本 < 5.8
-    2. MariaDB:  version >= 10.1.2 （更早版本的 binlog 部分字段类型格式与 MySQL 不一致）
+    - MariaDB 版本 >= 10.1.2（更早版本的 binlog 部分字段类型格式与 MySQL 不一致）
 
 2. 源库 server-id 检查
 
