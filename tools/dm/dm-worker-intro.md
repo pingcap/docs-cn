@@ -65,7 +65,7 @@ GRANT SELECT ON db1.* TO 'your_user'@'your_wildcard_of_host';
 下游数据库 (TiDB) 用户必须拥有以下权限：
 
 | 权限 | 作用域 |
-|----|----|
+|:----|:----|
 | `SELECT` | Tables |
 | `INSERT` | Tables |
 | `UPDATE`| Tables |
