@@ -179,7 +179,7 @@ stop-on-ddl = false
 ## 指定要同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
 #replicate-do-db = ["~^b.*","s1"]
 
-## 指定**忽略**同步数据库；支持正则匹配，表达式语句必须以 `~` 开始
+## 指定 **忽略** 同步数据库；支持正则匹配，表达式语句必须以 `~` 开始
 #replicate-ignore-db = ["~^b.*","s1"]
 
 # skip-dmls 支持跳过 DML binlog events，type 字段的值可为：'insert'，'update' 和 'delete'
@@ -213,13 +213,13 @@ stop-on-ddl = false
 #db-name ="test"
 #tbl-name = "~^a.*"
 
-## 指定**忽略**同步数据库
+## 指定 **忽略** 同步数据库
 ## db-name & tbl-name 不支持 `db-name ="dbname，dbname2"` 语句格式
 #[[replicate-ignore-table]]
 #db-name = "your_db"
 #tbl-name = "your_table"
 
-## 指定要**忽略**同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
+## 指定要 **忽略** 同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
 #[[replicate-ignore-table]]
 #db-name ="test"
 #tbl-name = "~^a.*"
