@@ -153,27 +153,50 @@ binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e
 
 ```toml
 log-level = "info"
+log-file = "syncer.log"
+log-rotate = "day"
 
 server-id = 101
 
 ## meta 文件地址
 meta = "./syncer.meta"
-
 worker-count = 16
-batch = 10
+batch = 1000
+flavor = "mysql"
 
-## pprof 调试地址, Prometheus 也可以通过该地址拉取 syncer metrics
-## 将 127.0.0.1 修改为相应主机 IP 地址
-status-addr = "127.0.0.1:10086"
+## pprof 调试地址，Prometheus 也可以通过该地址拉取 Syncer metrics
+status-addr = ":8271"
 
-## 跳过 DDL 或者其他语句，格式为 **前缀完全匹配**，如: `DROP TABLE ABC`,则至少需要填入`DROP TABLE`.
-# skip-sqls = ["ALTER USER", "CREATE USER"]
+## 如果设置为 true，Syncer 遇到 DDL 语句时就会停止退出
+stop-on-ddl = false
+
+## 跳过 DDL 语句，格式为 **前缀完全匹配**，如：`DROP TABLE ABC` 至少需要填入 `DROP TABLE`
+# skip-ddls = ["ALTER USER", "CREATE USER"]
 
 ## 在使用 route-rules 功能后，
-## replicate-do-db & replicate-ignore-db 匹配合表之后(target-schema & target-table )数值
+## replicate-do-db & replicate-ignore-db 匹配合表之后 (target-schema & target-table) 数值
 ## 优先级关系: replicate-do-db --> replicate-do-table --> replicate-ignore-db --> replicate-ignore-table
 ## 指定要同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
 #replicate-do-db = ["~^b.*","s1"]
+
+## 指定 **忽略** 同步数据库；支持正则匹配，表达式语句必须以 `~` 开始
+#replicate-ignore-db = ["~^b.*","s1"]
+
+# skip-dmls 支持跳过 DML binlog events，type 字段的值可为：'insert'，'update' 和 'delete'
+# 跳过 foo.bar 表的所有 delete 语句
+# [[skip-dmls]]
+# db-name = "foo"
+# tbl-name = "bar"
+# type = "delete"
+#
+# 跳过所有表的 delete 语句
+# [[skip-dmls]]
+# type = "delete"
+#
+# 跳过 foo.* 表的 delete 语句
+# [[skip-dmls]]
+# db-name = "foo"
+# type = "delete"
 
 ## 指定要同步的 db.table 表
 ## db-name 与 tbl-name 不支持 `db-name ="dbname，dbname2"` 格式
@@ -190,20 +213,16 @@ status-addr = "127.0.0.1:10086"
 #db-name ="test"
 #tbl-name = "~^a.*"
 
-## 指定**忽略**同步数据库；支持正则匹配，表达式语句必须以 `~` 开始
-#replicate-ignore-db = ["~^b.*","s1"]
-
-## 指定**忽略**同步数据库
+## 指定 **忽略** 同步数据库
 ## db-name & tbl-name 不支持 `db-name ="dbname，dbname2"` 语句格式
 #[[replicate-ignore-table]]
 #db-name = "your_db"
 #tbl-name = "your_table"
 
-## 指定要**忽略**同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
+## 指定要 **忽略** 同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
 #[[replicate-ignore-table]]
 #db-name ="test"
 #tbl-name = "~^a.*"
-
 
 # sharding 同步规则，采用 wildcharacter
 # 1. 星号字符 (*) 可以匹配零个或者多个字符,
