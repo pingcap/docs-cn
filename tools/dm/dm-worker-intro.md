@@ -45,7 +45,7 @@ Binlog replication/Syncer 读取 relay log 处理单元的 binlog event，将这
 上游数据库 (MySQL/MariaDB) 用户必须拥有以下权限：
 
 | 权限 | 作用域 |
-|----|----|
+|:----|:----|
 | `SELECT` | Tables |
 | `RELOAD` | Global |
 | `REPLICATION SLAVE` | Global |
