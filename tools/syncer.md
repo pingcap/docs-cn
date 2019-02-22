@@ -364,7 +364,7 @@ target-table = "order_2017"
     
     ```sql
     mysql> show global variables like 'server_id';
-    +---------------+-------  
+    +---------------+-------+  
     | Variable_name | Value |
     +---------------+-------+
     | server_id     | 1     |
