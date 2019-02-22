@@ -384,9 +384,9 @@ target-table = "order_2017"
         ```sql
         mysql> show global variables like 'log_bin';
         +--------------------+---------+
-        | Variable_name | Value  |
+        | Variable_name      | Value   |
         +--------------------+---------+
-        | log_bin             | ON      |
+        | log_bin            | ON      |
         +--------------------+---------+
         1 row in set (0.00 sec)
         ```
@@ -400,9 +400,9 @@ target-table = "order_2017"
         ```sql
         mysql> show global variables like 'binlog_format';
         +--------------------+----------+
-        | Variable_name | Value   |
+        | Variable_name      | Value    |
         +--------------------+----------+
-        | binlog_format   | ROW   |
+        | binlog_format      | ROW      |
         +--------------------+----------+
         1 row in set (0.00 sec)
         ```
@@ -424,10 +424,10 @@ target-table = "order_2017"
         ```sql
         mysql> show global variables like 'binlog_row_image';
         +--------------------------+---------+
-        | Variable_name        | Value  |
+        | Variable_name            | Value   |
         +--------------------------+---------+
-        | binlog_row_image   | FULL  |
-        +--------------------------+----------+
+        | binlog_row_image         | FULL    |
+        +--------------------------+---------+
         1 row in set (0.01 sec)
         ```
 
@@ -456,7 +456,7 @@ target-table = "order_2017"
     3. 下游 TiDB 需要的权限
     
         | 权限 | 作用域 |
-        |----:|:----|
+        |----:|:------|
         | SELECT | Tables |
         | INSERT | Tables |
         | UPDATE | Tables |
