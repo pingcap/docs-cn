@@ -351,7 +351,12 @@ target-table = "order_2017"
 
 ### Syncer 同步前检查
 
-1. 源库 server-id 检查
+1. MySQL 版本 `select @@version;` Syncer 目前只支持以下版本
+
+    1. MySQL:  5.5 < version < 5.8
+    2. MariaDB:  version >= 10.1.2 （更早版本的 binlog 部分字段类型格式与 MySQL 不一致）
+
+2. 源库 server-id 检查
 
     - 可通过以下命令查看 server-id 
     - 结果为空或者为 0，Syncer 无法同步数据
@@ -367,87 +372,107 @@ target-table = "order_2017"
     1 row in set (0.01 sec)
     ```
 
-2. 检查 Binlog 相关参数
+3. 检查 Binlog 相关参数
 
-    - 检查 MySQL 是否开启 binlog
-    - 可以用如下命令确认是否开启了 binlog
-    - 如果结果是 log_bin = OFF，需要开启。开启方式请参考[官方文档](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
+    1. 检查 MySQL 是否开启 binlog
+        - 可以用如下命令确认是否开启了 binlog；如果结果是 log_bin = OFF，需要开启，开启方式请参考[官方文档](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
 
-    ```sql
-    mysql> show global variables like 'log_bin';
-    +--------------------+---------+
-    | Variable_name | Value  |
-    +--------------------+---------+
-    | log_bin             | ON      |
-    +--------------------+---------+
-    1 row in set (0.00 sec)
-    ```
+        ```sql
+        mysql> show global variables like 'log_bin';
+        +--------------------+---------+
+        | Variable_name | Value  |
+        +--------------------+---------+
+        | log_bin             | ON      |
+        +--------------------+---------+
+        1 row in set (0.00 sec)
+        ```
 
-3. 检查 MySQL binlog 格式是否为 ROW
+    2. 检查 MySQL binlog 格式是否为 ROW
 
-    - 可以用如下命令检查 binlog 格式：
+        - 可以用如下命令检查 binlog 格式：
 
-    ```sql
-    mysql> show global variables like 'binlog_format';
-    +--------------------+----------+
-    | Variable_name | Value   |
-    +--------------------+----------+
-    | binlog_format   | ROW   |
-    +--------------------+----------+
-    1 row in set (0.00 sec)
-    ```
+        ```sql
+        mysql> show global variables like 'binlog_format';
+        +--------------------+----------+
+        | Variable_name | Value   |
+        +--------------------+----------+
+        | binlog_format   | ROW   |
+        +--------------------+----------+
+        1 row in set (0.00 sec)
+        ```
 
-    - 如果发现 binlog 格式是其他格式，可以通过如下命令设置为 ROW：
-    - 如果 MySQL 有连接，建议重启 MySQL 服务或者杀掉所有连接。
+        - 如果发现 binlog 格式是其他格式，可以通过如下命令设置为 ROW：
+        - 如果 MySQL 有连接，建议重启 MySQL 服务或者杀掉所有连接。
 
-    ```sql
-    mysql> set global binlog_format=ROW;
-    mysql>  flush logs;
-    Query OK, 0 rows affected (0.01 sec)
-    ```
+        ```sql
+        mysql> set global binlog_format=ROW;
+        mysql>  flush logs;
+        Query OK, 0 rows affected (0.01 sec)
+        ```
 
-4. 检查 MySQL `binlog_row_image` 是否为 FULL
+    3. 检查 MySQL `binlog_row_image` 是否为 FULL
 
-    - 可以用如下命令检查 `binlog_row_image`
+        - 可以用如下命令检查 `binlog_row_image`
 
-    ```sql
-    mysql> show global variables like 'binlog_row_image';
-    +--------------------------+---------+
-    | Variable_name        | Value  |
-    +--------------------------+---------+
-    | binlog_row_image   | FULL  |
-    +--------------------------+----------+
-    1 row in set (0.01 sec)
-    ```
+        ```sql
+        mysql> show global variables like 'binlog_row_image';
+        +--------------------------+---------+
+        | Variable_name        | Value  |
+        +--------------------------+---------+
+        | binlog_row_image   | FULL  |
+        +--------------------------+----------+
+        1 row in set (0.01 sec)
+        ```
 
-    - 如果 binlog_row_image 结果不为 FULL，请设置为 FULL。设置方式如下：
+        - 如果 binlog_row_image 结果不为 FULL，请设置为 FULL。设置方式如下：
 
-    ```sql
-    mysql> set global binlog_row_image = FULL;
-    Query OK, 0 rows affected (0.01 sec)
-    ```
-5. 检查 mydumper 用户权限
+        ```sql
+        mysql> set global binlog_row_image = FULL;
+        Query OK, 0 rows affected (0.01 sec)
+        ```
 
-    - mydumper 导出数据至少拥有以下权限：`select, reload`
-    - mydumper 操作对象为 RDS 时，可以添加 `--no-locks` 参数，避免申请 `reload` 权限
+4. 检查用户权限
+    1. 全量导出的 mydumper 需要的用户权限
 
-6. 检查上下游同步用户权限
+        - mydumper 导出数据至少拥有以下权限：`select, reload`
+        - mydumper 操作对象为 RDS 时，可以添加 `--no-locks` 参数，避免申请 `reload` 权限
 
-    - 需要上游 MySQL 同步账号至少赋予以下权限：
+    2. 增量同步 Syncer 需要的上游 MySQL/MariaDB 用户权限
+
+        - 需要上游 MySQL 同步账号至少赋予以下权限：
         
         ```
         select , replication slave , replication client
         ```
     
-    - 下游 TiDB 可暂时采用 root 同权限账号
+    3. 下游 TiDB 需要的权限
+        | 权限 | 作用域 |
+        |----:|:----|
+        | SELECT | Tables |
+        | INSERT | Tables |
+        | UPDATE | Tables |
+        | DELETE | Tables |
+        | CREATE | Databases,tables |
+        | DROP | Databases, tables |
+        | ALTER | Tables |
+        | INDEX | Tables |
 
-7. 检查 GTID 与 POS 相关信息
-
-    - 使用以下语句查看 binlog 内容：
-        
+        在下面为你同步的数据库或者表，执行下面的 GRANT 语句
         ```sql
-        show binlog events in 'mysql-bin.000023' from 136676560 limit 10;
+        GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX  ON db.table TO 'your_user'@'your_wildcard_of_host';
         ```
+
+5. 检查 sql mode, 确认上下游的 sql mode 一致，如果不一致会出现数据同步的错误
+
+   ```sql
+    mysql> show variables like '%sql_mode%';
+    +---------------+-----------------------------------------------------------------------------------+
+    | Variable_name | Value                                                                             |
+    +---------------+-----------------------------------------------------------------------------------+
+    | sql_mode      | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
+    +---------------+-----------------------------------------------------------------------------------+
+    1 row in set (0.01 sec)
+    ```
 
 ## 监控方案
 
