@@ -439,7 +439,7 @@ target-table = "order_2017"
 
     2. 增量同步 Syncer 需要的上游 MySQL/MariaDB 用户权限
 
-        - 需要上游 MySQL 同步账号至少赋予以下权限：
+        需要上游 MySQL 同步账号至少赋予以下权限：
         
         ```
         select , replication slave , replication client
