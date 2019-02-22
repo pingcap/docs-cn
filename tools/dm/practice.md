@@ -165,7 +165,7 @@ query-status
 stop-task test
 ```
 
-## 第 6 步：监控任务与查看日志
+## 第 7 步：监控任务与查看日志
 
 如果使用 DM-Ansible 部署 DM 集群时，正确部署了 Prometheus 与 Grafana，且 Grafana 的地址为 `172.16.10.71`，可在浏览器中打开 <http://172.16.10.71:3000> 进入 Grafana，选择 DM 的 dashboard 即可查看 DM 相关监控项。
 
