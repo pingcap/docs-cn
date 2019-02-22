@@ -6,7 +6,7 @@ category: tools
 
 # Data Migration 分片合并场景
 
-本文介绍如何在分片合并场景中使用 Data Migration (DM)。使用场景中，三个上游 MySQL 实例的分片结构和分表数据需要同步至下游 TiDB 集群。
+本文介绍如何在分片合并场景中使用 Data Migration (DM)。使用场景中，三个上游 MySQL 实例的分库和分表数据需要同步至下游 TiDB 集群。
 
 ## 上游实例
 
@@ -58,7 +58,7 @@ category: tools
 
 ## 同步方案
 
-- 要满足同步需求 #1 和 #2, 配置 [表路由规则](/tools/dm/data-synchronization-features.md#表路由) 如下：
+- 要满足同步需求 #1 和 #2, 配置 [表路由规则](/tools/dm/data-synchronization-features.md##table-routing) 如下：
 
     ```yaml
     routes:
@@ -68,7 +68,7 @@ category: tools
         target-schema: "user"
     ```
 
-- 要满足同步要求 #3, 配置 [表路由规则](/tools/dm/data-synchronization-features.md#表路由) 如下：
+- 要满足同步要求 #3, 配置 [表路由规则](/tools/dm/data-synchronization-features.md##table-routing) 如下：
 
     ```yaml
     routes:
