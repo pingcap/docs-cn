@@ -1,6 +1,6 @@
 ---
-title: Data Synchronization Features
-summary: Learn about the data synchronization features provided by the Data Migration tool.
+title: 数据同步功能
+summary: DM 提供的功能和其配置介绍
 category: tools
 ---
 
