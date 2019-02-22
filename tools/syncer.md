@@ -360,50 +360,52 @@ target-table = "order_2017"
 
 2. 检查源库 `server-id`。
 
-    - 可通过以下命令查看 `server-id`：
+    可通过以下命令查看 `server-id`：
     
-        ```sql
-        mysql> show global variables like 'server_id';
-        +---------------+-------  
-        | Variable_name | Value |
-        +---------------+-------+
-        | server_id     | 1     |
-        +---------------+-------+
-        1 row in set (0.01 sec)
-        ```
+    ```sql
+    mysql> show global variables like 'server_id';
+    +---------------+-------  
+    | Variable_name | Value |
+    +---------------+-------+
+    | server_id     | 1     |
+    +---------------+-------+
+    1 row in set (0.01 sec)
+    ```
     
     - 结果为空或者为 0，Syncer 无法同步数据。
     - Syncer `server-id` 与 MySQL `server-id` 不能相同，且必须在 MySQL cluster 中唯一。
 
 3. 检查 Binlog 相关参数。
 
-    1. 检查 MySQL 是否开启 binlog。
+    1. 检查 MySQL 是否开启了 binlog。
 
-        - 可以用如下命令确认是否开启了 binlog；如果结果是 `log_bin` = `OFF`，则需要开启 binlog，开启方式请参考[官方文档](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
+        使用如下命令确认是否开启了 binlog：
 
-            ```sql
-            mysql> show global variables like 'log_bin';
-            +--------------------+---------+
-            | Variable_name | Value  |
-            +--------------------+---------+
-            | log_bin             | ON      |
-            +--------------------+---------+
-            1 row in set (0.00 sec)
-            ```
+        ```sql
+        mysql> show global variables like 'log_bin';
+        +--------------------+---------+
+        | Variable_name | Value  |
+        +--------------------+---------+
+        | log_bin             | ON      |
+        +--------------------+---------+
+        1 row in set (0.00 sec)
+        ```
+        
+        如果结果是 `log_bin` = `OFF`，则需要开启 binlog，开启方式请参考[官方文档](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)。
 
     2. 检查 MySQL binlog 格式是否为 `ROW`。
 
-        - 可以用如下命令检查 binlog 格式：
+        可以用如下命令检查 binlog 格式：
 
-            ```sql
-            mysql> show global variables like 'binlog_format';
-            +--------------------+----------+
-            | Variable_name | Value   |
-            +--------------------+----------+
-            | binlog_format   | ROW   |
-            +--------------------+----------+
-            1 row in set (0.00 sec)
-            ```
+        ```sql
+        mysql> show global variables like 'binlog_format';
+        +--------------------+----------+
+        | Variable_name | Value   |
+        +--------------------+----------+
+        | binlog_format   | ROW   |
+        +--------------------+----------+
+        1 row in set (0.00 sec)
+        ```
 
         - 如果发现 binlog 格式是其他格式，可以通过如下命令设置为 ROW：
         
@@ -417,24 +419,24 @@ target-table = "order_2017"
 
     3. 检查 MySQL `binlog_row_image` 是否为 `FULL`。
 
-        - 可以用如下命令检查 `binlog_row_image`：
+        可以用如下命令检查 `binlog_row_image`：
 
-            ```sql
-            mysql> show global variables like 'binlog_row_image';
-            +--------------------------+---------+
-            | Variable_name        | Value  |
-            +--------------------------+---------+
-            | binlog_row_image   | FULL  |
-            +--------------------------+----------+
-            1 row in set (0.01 sec)
-            ```
+        ```sql
+        mysql> show global variables like 'binlog_row_image';
+        +--------------------------+---------+
+        | Variable_name        | Value  |
+        +--------------------------+---------+
+        | binlog_row_image   | FULL  |
+        +--------------------------+----------+
+        1 row in set (0.01 sec)
+        ```
 
-        - 如果 binlog_row_image 结果不为 `FULL`，请设置为 `FULL`。设置方式如下：
+        如果 `binlog_row_image` 结果不为 `FULL`，请设置为 `FULL`。设置方式如下：
 
-            ```sql
-            mysql> set global binlog_row_image = FULL;
-            Query OK, 0 rows affected (0.01 sec)
-            ```
+        ```sql
+        mysql> set global binlog_row_image = FULL;
+        Query OK, 0 rows affected (0.01 sec)
+        ```
 
 4. 检查用户权限。
 
