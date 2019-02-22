@@ -40,7 +40,7 @@ SELECT
 |`ALL`、`DISTINCT`、`DISTINCTROW` | 查询结果集中可能会包含重复值。指定 DISTINCT/DISTINCTROW 则在查询结果中过滤掉重复的行；指定 ALL 则列出所有的行。默认为 ALL。|
 |`HIGH_PRIORITY` | 该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句|
 |`SQL_CALC_FOUND_ROWS` | TiDB 出于兼容性解析这个语法，但是不做任何处理|
-|`SQL_CACHE`、`SQL_NO_CACHE` | 是否将查询结果缓存在 TiKV 的 LRU 的缓存中。注意不是缓存在 TiDB 中|
+|`SQL_CACHE`、`SQL_NO_CACHE` | 是否强制 TiKV 不用 LRU 的缓存查询结果。注意不是 TiDB 的缓存，而是 TiKV 的缓存|
 |`STRAIGHT_JOIN`|`STRAIGHT_JOIN` 会强制优化器按照 `FROM` 子句中所使用的表的顺序做联合查询。当优化器选择的 Join 顺序并不优秀时，你可以使用这个语法来加速查询的执行|
 |`select_expr` | 投影操作列表，一般包括列名、表达式，或者是用 '\*' 表示全部列|
 |`FROM table_references` | 表示数据来源，数据来源可以是一个表（`select * from t;`）或者是多个表 (`select * from t1 join t2;`) 或者是0个表 (`select 1+1 from dual;`, 等价于 `select 1+1;`)|
