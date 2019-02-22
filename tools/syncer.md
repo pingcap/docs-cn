@@ -71,9 +71,9 @@ Usage of syncer:
   -c int
       syncer 处理 batch 线程数 (默认 16)
   -config string
-      指定相应配置文件启动 sycner 服务；如 `--config config.toml`
+      指定相应配置文件启动 Sycner 服务；如 `--config config.toml`
   -enable-ansi-quotes
-      使用 ANSI_QUOTES sql_mode 来解析 sql
+      使用 ANSI_QUOTES sql_mode 来解析 SQL 语句
   -enable-gtid
       使用 gtid 模式启动 syncer；默认 false，开启前需要上游 MySQL 开启 GTID 功能
   -flavor string
@@ -85,7 +85,7 @@ Usage of syncer:
   -meta string
       指定 syncer 上游 meta 信息文件  (默认与配置文件相同目录下 "syncer.meta")
   -persistent-dir string
-      指定同步过程中历史 schema 结构的保存文件地址，如果设置为空，则不保存历史 schema 结构；如果不为空，则根据 binlog 里面包含的数据的 column 长度选择 schema 来还原 dml
+      指定同步过程中历史 schema 结构的保存文件地址，如果设置为空，则不保存历史 schema 结构；如果不为空，则根据 binlog 里面包含的数据的 column 长度选择 schema 来还原 DML 语句
   -safe-mode
       指定是否开启 safe mode，让 Syncer 在任何情况下可重入
   -server-id int
@@ -109,17 +109,17 @@ worker-count = 16
 batch = 1000
 flavor = "mysql"
 
-## pprof 调试地址, Prometheus 也可以通过该地址拉取 syncer metrics
+## pprof 调试地址，Prometheus 也可以通过该地址拉取 Syncer metrics
 status-addr = ":8271"
 
-## 如果设置为 true，Syncer 遇到 ddl 的时候就会停止退出
+## 如果设置为 true，Syncer 遇到 DDL 语句时就会停止退出
 stop-on-ddl = false
 
-## 跳过 DDLs，格式为 **前缀完全匹配**，如: `DROP TABLE ABC`, 则至少需要填入`DROP TABLE`.
+## 跳过 DDL 语句，格式为 **前缀完全匹配**，如：`DROP TABLE ABC` 至少需要填入 `DROP TABLE`
 # skip-ddls = ["ALTER USER", "CREATE USER"]
 
 ## 在使用 route-rules 功能后，
-## replicate-do-db & replicate-ignore-db 匹配合表之后(target-schema & target-table )数值
+## replicate-do-db & replicate-ignore-db 匹配合表之后 (target-schema & target-table) 数值
 ## 优先级关系: replicate-do-db --> replicate-do-table --> replicate-ignore-db --> replicate-ignore-table
 ## 指定要同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
 #replicate-do-db = ["~^b.*","s1"]
@@ -127,7 +127,7 @@ stop-on-ddl = false
 ## 指定**忽略**同步数据库；支持正则匹配，表达式语句必须以 `~` 开始
 #replicate-ignore-db = ["~^b.*","s1"]
 
-# skip-dmls 支持跳过 DML binlog events. type 字段的值：'insert', 'update' and 'delete'.
+# skip-dmls 支持跳过 DML binlog events，type 字段的值可为：'insert'，'update' 和 'delete'
 # 跳过 foo.bar 表的所有 delete 语句
 # [[skip-dmls]]
 # db-name = "foo"
@@ -524,7 +524,7 @@ Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。配�
 #### title: binlog event transform
 
 - metrics: `histogram_quantile(0.8, sum(rate(syncer_binlog_event_bucket[1m])) by (le))`
-- info: Syncer 把 binlog 转换为 SQLs 的耗时 
+- info: Syncer 把 binlog 转换为 SQL 语句的耗时 
 
 #### title: transaction latency
 
@@ -549,18 +549,18 @@ Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。配�
 #### title: position of binlog position
 
 - metrics: `syncer_binlog_pos{node="syncer"}` and `syncer_binlog_pos{node="master"}`
-- info: 需要配合 `file number of binlog position` 一起看. `syncer_binlog_pos{node="master"}` 表示上游 MySQL 当前 binlog position 的 position 值, `syncer_binlog_pos{node="syncer"}` 表示上游 Syncer 已经同步到的 binlog position 的 position 值
+- info: 需配合 `file number of binlog position` 一起看。`syncer_binlog_pos{node="master"}` 表示上游 MySQL 当前 binlog position 的 position 值，`syncer_binlog_pos{node="syncer"}` 表示上游 Syncer 已经同步到的 binlog position 的 position 值
 
 #### title: file number of binlog position
 
 - metrics: `syncer_binlog_file{node="syncer"}` and `syncer_binlog_file{node="master"}`
-- info: 需要配置 `position of binlog position` 一起看. `syncer_binlog_file{node="master"}` 表示上游 MySQL 当前 binlog position 的文件编号, and `syncer_binlog_file{node="syncer"}` 表示上游 Syncer 已经同步到的 binlog 位置的文件编号
+- info: 需要配置 `position of binlog position` 一起看。`syncer_binlog_file{node="master"}` 表示上游 MySQL 当前 binlog position 的文件编号，`syncer_binlog_file{node="syncer"}` 表示上游 Syncer 已经同步到的 binlog 位置的文件编号
 
 
 #### title: execution jobs
 
 - metrics: `sum(rate(syncer_add_jobs_total[1m])) by (queueNo)`
-- info: Syncer 把 binlog 转换成 SQLs 后，将 SQLs 以 jobs 的方式加到执行队列中，这个 metrics 表示已经加入执行队列的 jobs 总数
+- info: Syncer 把 binlog 转换成 SQL 语句后，将 SQL 语句以 jobs 的方式加到执行队列中，这个 metrics 表示已经加入执行队列的 jobs 总数
 
 #### title: pending jobs
 
