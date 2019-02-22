@@ -63,25 +63,25 @@ Copy the `{ansible deploy}/conf/task.yaml.example` file and edit it to generate 
 # The task name. You need to use a different name for each of the multiple tasks that
 # run simultaneously.
 name: "test"
-# The full data plus incremental data (all) synchronization mode
+# The full data plus incremental data (all) synchronization mode.
 task-mode: "all"
-# The downstream TiDB configuration information
+# The downstream TiDB configuration information.
 target-database:
   host: "172.16.10.83"
   port: 4000
   user: "root"
   password: ""
 
-# Configuration of all the upstream MySQL instances required by the current data synchronization task
+# Configuration of all the upstream MySQL instances required by the current data synchronization task.
 mysql-instances:
 -
   # The ID of upstream instances or the replication group. You can refer to the configuration of `source_id` in the "inventory.ini" file or in the "dm-master.toml" file.
   source-id: "mysql-replica-01"
   # The configuration item name of the black and white lists of the name of the
   # database/table to be synchronized, used to quote the global black and white
-  # lists configuration that is set in the global black-white-list map below.
+  # lists configuration that is set in the global black-white-list below.
   black-white-list: "global"
-  # The configuration item name of mydumper, used to quote the global mydumper configuration
+  # The configuration item name of mydumper, used to quote the global mydumper configuration.
   mydumper-config-name: "global"
 
 -
@@ -111,7 +111,7 @@ To detect possible errors of data synchronization configuration in advance, DM p
 - DM automatically checks the corresponding privileges and configuration while starting the data synchronization task.
 - You can also use the `check-task` command to manually precheck whether the upstream MySQL instance configuration satisfies the DM requirements.
 
-For details about the precheck feature, see [Precheck the upstream MySQL instance configuration](../tools/data-migration-manage-task.md#precheck-the-upstream-mysql-instance-configuration).
+For details about the precheck feature, see [Precheck the upstream MySQL instance configuration](/tools/dm/manage-task.md#precheck-the-upstream-mysql-instance-configuration).
 
 > **Note:** Before starting the data synchronization task for the first time, you should have got the upstream configured. Otherwise, an error is reported while you start the task.
 
@@ -155,7 +155,7 @@ For details about the precheck feature, see [Precheck the upstream MySQL instanc
 
 ## Step 5: Check the data synchronization task
 
-If you need to check the task state or whether a certain data synchronization task is running in the DM cluster, run the following command in the dmctl directory:
+If you need to check the task state or whether a certain data synchronization task is running in the DM cluster, run the following command in dmctl:
 
 ```bash
 query-status
@@ -163,7 +163,7 @@ query-status
 
 ## Step 6: Stop the data synchronization task
 
-If you do not need to synchronize data any more, run the following command in the dmctl directory to stop the task:
+If you do not need to synchronize data any more, run the following command in dmctl to stop the task:
 
 ```bash
 # `test` is the task name that you set in the `name` configuration item of
@@ -177,6 +177,6 @@ Assuming that Prometheus and Grafana are successfully deployed along with the DM
 
 While the DM cluster is running, DM-master, DM-worker, and dmctl output the monitoring metrics information through logs. The log directory of each component is as follows:
 
-- DM-master log directory: It is specified by the `--log-file` DM-master process parameter. For DM-Ansible deployment, the log directory is `{ansible deploy}/log/dm-master.log` in the DM-master node.
-- DM-worker log directory: It is specified by the `--log-file` DM-worker process parameter. For DM-Ansible deployment, the log directory is `{ansible deploy}/log/dm-worker.log` in the DM-master node.
+- DM-master log directory: It is specified by the `--log-file` DM-master process parameter. If DM is deployed using DM-Ansible, the log directory is `{ansible deploy}/log/dm-master.log` in the DM-master node.
+- DM-worker log directory: It is specified by the `--log-file` DM-worker process parameter. If DM is deployed using DM-Ansible, the log directory is `{ansible deploy}/log/dm-worker.log` in the DM-worker node.
 - dmctl log directory: It is the same as the binary directory of dmctl.

@@ -10,7 +10,7 @@ DM-worker is a tool used to synchronize data from MySQL/MariaDB to TiDB.
 
 It has the following features:
 
-- Acts as a slave of any MySQL or MariaDB server
+- Acts as a slave of any MySQL or MariaDB instance
 - Reads the binlog events from MySQL/MariaDB and persists them to the local storage
 - A single DM-worker supports synchronizing the data of one MySQL/MariaDB instance to multiple TiDB instances
 - Multiple DM-workers support synchronizing the data of multiple MySQL/MariaDB instances to one TiDB instance
@@ -46,7 +46,7 @@ This section describes the upstream and downstream database users' privileges re
 The upstream database (MySQL/MariaDB) user must have the following privileges:
 
 | Privilege | Scope |
-|----|----|
+|:----|:----|
 | `SELECT` | Tables |
 | `RELOAD` | Global |
 | `REPLICATION SLAVE` | Global |
@@ -66,7 +66,7 @@ If you also need to synchronize the data from other databases into TiDB, make su
 The downstream database (TiDB) user must have the following privileges:
 
 | Privilege | Scope |
-|----|----|
+|:----|:----|
 | `SELECT` | Tables |
 | `INSERT` | Tables |
 | `UPDATE`| Tables |
@@ -85,7 +85,7 @@ GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX  ON db.table TO 'your_
 ### Minimal privilege required by each processing unit
 
 | Processing unit | Minimal upstream (MySQL/MariaDB) privilege | Minimal downstream (TiDB) privilege | Minimal system privilege |
-|----|--------------------|------------|----|
+|:----|:--------------------|:------------|:----|
 | Relay log | `REPLICATION SLAVE` (reads the binlog)<br>`REPLICATION CLIENT` (`show master status`, `show slave status`) | NULL | Read/Write local files |
 | Dumper | `SELECT`<br>`RELOAD` (flushes tables with Read lock and unlocks tables）| NULL | Write local files |
 | Loader | NULL | `SELECT` (Query the checkpoint history)<br>`CREATE` (creates a database/table)<br>`DELETE` (deletes checkpoint)<br>`INSERT` (Inserts the Dump data) | Read/Write local files |
