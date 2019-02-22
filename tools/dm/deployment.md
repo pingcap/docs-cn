@@ -276,9 +276,9 @@ grafana_admin_password = "admin"
 | mysql_user | 上游 MySQL 用户名，默认值为 “root”。|
 | mysql_password | 上游 MySQL 用户密码，需使用 `dmctl` 工具加密。请参考 [使用 dmctl 加密上游 MySQL 用户密码](#encrypt-the-upstream-mysql-user-password-using-dmctl). |
 | mysql_port | 上游 MySQL 端口， 默认 3306。 |
-| enable_gtid | DM-worker 是否使用 全局事务标识符 （） 拉取 binlog 信息，需在上游 MySQL 已打开 GTID 模式。 |
-| relay_binlog_name | DM-worker 是否从指定 binlog 文件位置开始拉取 binlog 信息。仅适用于本地无有效中继日志的情况。|
-| relay_binlog_gtid | DM-worker 是否从指定 GTID 位置开始拉取 binlog 信息。仅适用于本地无有效中继日志，且`enable_gtid` 设置为 true 的情况。 |
+| enable_gtid | DM-worker 是否使用全局事务标识符（GTID）拉取 binlog。需在上游 MySQL 已打开 GTID 模式。 |
+| relay_binlog_name | DM-worker 是否从指定 binlog 文件位置开始拉取 binlog。仅适用于本地无有效 relay log 的情况。|
+| relay_binlog_gtid | DM-worker 是否从指定 GTID 位置开始拉取 binlog。仅适用于本地无有效 relay log，且 `enable_gtid` 设置为 true 的情况。 |
 | flavor | 代表 MySQL 的版本发布类型。 如果是官方版本，Percona 版, 或 Cloud MySQL 版，其值为 “mysql”。 如果是 MariaDB, 其值为 "mariadb"。默认值是 "mysql"。 |
 
 关于 `deploy_dir` 配置的更多信息，请参考 [配置部署目录](#配置部署目录)。
@@ -295,7 +295,7 @@ VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=
 
 ## Step 8：编辑 `inventory.ini` 文件中的变量
 
-此步介绍如何编辑部署目录中的变量，如何配置中继日志同步位置以及中继日志GTID的同步模式。此外，还会描述 `inventory.ini` 中的全局变量。
+此步介绍如何编辑部署目录中的变量，如何配置 relay log 同步位置以及 relay log GTID的同步模式。此外，还会描述 `inventory.ini` 中的全局变量。
 
 ### 配置部署目录
 
@@ -315,7 +315,7 @@ VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=
     dm-master ansible_host=172.16.10.71 deploy_dir=/data1/deploy
     ```
 
-### 配置中继日志同步位置
+### 配置 relay log 同步位置
 
 首次启动 DM-worker 时，您需要配置 `relay_binlog_name` 变量以指定 DM-worker 拉取上游 MySQL 或 MariaDB binlog 的起始位置。
 
@@ -329,13 +329,13 @@ dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 
 > **注意**：
   如未设定 `relay_binlog_name`，DM-worker 将从上游 MySQL 或 MariaDB 现有最早时间点的 binlog 文件开始拉取 binlog。拉取到数据同步任务需要的最新 binlog 可能需要很长时间。
 
-### 打开中继日志 GTID 同步模式
+### 打开 relay log GTID 同步模式
 
-在 DM 集群中，DM-worker 的中继日志处理单元负责与上游 MySQL 或 MariaDB 通信，从而将 binlog 拉取至本地文件系统。
+在 DM 集群中，DM-worker 的 relay log 处理单元负责与上游 MySQL 或 MariaDB 通信，从而将 binlog 拉取至本地文件系统。
 
-DM 目前支持 MySQL GTID 和 MariaDB GTID。您可以通过配置以下项目开启中继日志 GTID 同步模式：
+DM 目前支持 MySQL GTID 和 MariaDB GTID。您可以通过配置以下项目开启 relay log GTID 同步模式：
 
-- `enable_gtid`：打开中继日志 GTID 同步模式以处理 master 和 slave 易位的场景
+- `enable_gtid`：打开 relay log GTID 同步模式以处理 master 和 slave 易位的场景
 
 - `relay_binlog_gtid`：指定 DM-worker 开始拉取对应上游 MySQL 或 MariaDB binlog 的起始位置
 
