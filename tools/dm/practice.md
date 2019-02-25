@@ -77,7 +77,7 @@ mysql-instances:
   source-id: "mysql-replica-01"
   # 需要同步的库名或表名的黑白名单的配置项名称，用于引用全局的黑白名单配置，全局配置见下面的 `black-white-list` 的配置。
   black-white-list: "global"
-  # Mydumper 的配置项名称，用于引用全局的 mydumper 配置。
+  # mydumper 的配置项名称，用于引用全局的 mydumper 配置。
   mydumper-config-name: "global"
 
 -
