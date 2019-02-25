@@ -58,7 +58,7 @@ category: tools
 
 ## 同步方案
 
-- 要满足同步需求 #1 和 #2, 配置 [表路由规则](/tools/dm/data-synchronization-features.md##table-routing) 如下：
+- 要满足同步需求 #1 和 #2, 配置[表路由规则](/tools/dm/data-synchronization-features.md##table-routing)如下：
 
     ```yaml
     routes:
@@ -68,7 +68,7 @@ category: tools
         target-schema: "user"
     ```
 
-- 要满足同步要求 #3, 配置 [表路由规则](/tools/dm/data-synchronization-features.md##table-routing) 如下：
+- 要满足同步要求 #3, 配置[表路由规则](/tools/dm/data-synchronization-features.md##table-routing)如下：
 
     ```yaml
     routes:
@@ -83,7 +83,7 @@ category: tools
         target-table:  "sale"
     ```
 
-- 要满足同步要求 #4 和 #5, 配置 [binlog 事件过滤规则](/tools/dm/data-synchronization-features.md#binlog-event-filtering) 如下：
+- 要满足同步要求 #4 和 #5, 配置 [binlog event 过滤规则](/tools/dm/data-synchronization-features.md#binlog-event-filtering)如下：
 
     ```yaml
     filters:
@@ -96,7 +96,7 @@ category: tools
 
     > **注意：** 同步要求 #4、#5 和 #7 中，所有对 `user` 库的删除操作都要被过滤，所以此处配置了库级别的过滤规则。但需要注意的是，`user` 库将来出现表的删除操作也都会被过滤。
 
-- 要满足同步要求 #6, 配置 [binlog 事件过滤规则](/tools/dm/data-synchronization-features.md#binlog-event-filtering) 如下：
+- 要满足同步要求 #6, 配置 [binlog event 过滤规则](/tools/dm/data-synchronization-features.md#binlog-event-filtering) 如下：
 
     ```yaml
     filters:
@@ -112,7 +112,7 @@ category: tools
         action: Ignore
     ```
 
-- 要满足同步要求 #7, 配置 [黑白表名单](/tools/dm/data-synchronization-features.md#black-and-white-table-lists) 如下：
+- 要满足同步要求 #7, 配置[黑白表名单](/tools/dm/data-synchronization-features.md#black-and-white-table-lists)如下：
 
     ```yaml
     black-white-list:
@@ -122,7 +122,7 @@ category: tools
           tbl-name: "log_bak"
     ```
 
-- 要满足同步要求 #8, 配置 [列值转换规则](/tools/dm/data-synchronization-features.md#column-mapping) 如下：
+- 要满足同步要求 #8, 配置[列值转换规则](/tools/dm/data-synchronization-features.md#column-mapping)如下：
 
     ```yaml
     column-mappings:
