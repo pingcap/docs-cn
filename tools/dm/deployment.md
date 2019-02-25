@@ -13,13 +13,13 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
 1. 部署目标机器若干，配置如下：
 
-    - CentOS 7.3 (64-bit) 或更高版本, x86_64 架构 (AMD64)
+    - CentOS 7.3 (64-bit) 或更高版本，x86_64 架构（AMD64）
     - 机器之间内网互通
     - 关闭防火墙，或开放服务端口
 
 2. 一台中控机，配置如下：
 
-    - 包含 Python 2.7 的 CentOS 7.3 (64-bit) 或更高版本
+    - 包含 Python 2.7 的 CentOS 7.3（64-bit）或更高版本
     - Ansible 2.5 或更高版本
     - 互联网访问
 
@@ -73,7 +73,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
     # su - tidb
     ```
 
-    为 `tidb` 用户创建 SSH 密钥。当提示 `Enter passphrase` 时，按 <kbd>Enter</kbd> 键。命令成功执行后，生成的 SSH 私钥文件为 `/home/tidb/.ssh/id_rsa`, SSH 公钥文件为`/home/tidb/.ssh/id_rsa.pub`。
+    为 `tidb` 用户创建 SSH 密钥。当提示 `Enter passphrase` 时，按 <kbd>Enter</kbd> 键。命令成功执行后，生成的 SSH 私钥文件为 `/home/tidb/.ssh/id_rsa`，SSH 公钥文件为`/home/tidb/.ssh/id_rsa.pub`。
 
     ```
     $ ssh-keygen -t rsa
@@ -243,7 +243,7 @@ grafana_admin_password = "admin"
 | node2 | 172.16.10.72 | DM-worker1-1, DM-worker1-2 |
 | node3 | 172.16.10.73 | DM-worker2-1, DM-worker2-2 |
 
-编辑 `inventory.ini` 文件时，请注意区分这些变量：`server_id`, `deploy_dir`, 和 `dm_worker_port`。
+编辑 `inventory.ini` 文件时，请注意区分这些变量：`server_id`，`deploy_dir`，和 `dm_worker_port`。
 
 ```ini
 # DM 模块
@@ -294,7 +294,7 @@ grafana_admin_password = "admin"
 | enable_gtid | DM-worker 是否使用全局事务标识符（GTID）拉取 binlog。使用前提是在上游 MySQL 已开启 GTID 模式。 |
 | relay_binlog_name | DM-worker 是否从指定 binlog 文件位置开始拉取 binlog。仅适用于本地无有效 relay log 的情况。|
 | relay_binlog_gtid | DM-worker 是否从指定 GTID 位置开始拉取 binlog。仅适用于本地无有效 relay log，且 `enable_gtid` 设置为 true 的情况。 |
-| flavor | 代表 MySQL 的版本发布类型。 如果是官方版本，Percona 版, 或 Cloud MySQL 版，其值为 “mysql”。 如果是 MariaDB, 其值为 "mariadb"。默认值是 "mysql"。 |
+| flavor | 代表 MySQL 的版本发布类型。 如果是官方版本，Percona 版，或 Cloud MySQL 版，其值为 “mysql”。 如果是 MariaDB，其值为 "mariadb"。默认值是 "mysql"。 |
 
 关于 `deploy_dir` 配置的更多信息，请参考[配置部署目录](#配置部署目录)。
 
