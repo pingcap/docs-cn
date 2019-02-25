@@ -6,11 +6,11 @@ category: tools
 
 # Table Selector
 
-Table Selector 提供了一种基于 [通配符](https://zh.wikipedia.org/wiki/%E9%80%9A%E9%85%8D%E7%AC%A6) 的匹配指定 `schema/table` 的功能。
+Table Selector 提供了一种基于 [通配符](https://zh.wikipedia.org/wiki/%E9%80%9A%E9%85%8D%E7%AC%A6) 来匹配指定 `schema/table` 的功能。
 
 ## 通配符
 
-table selector 在 `schema-pattern`/`table-pattern` 中使用以下两个通配符：
+table selector 在 `schema-pattern`/`table-pattern` 中可以使用以下两个通配符：
 
 + 星号(`*`)
 
@@ -19,12 +19,12 @@ table selector 在 `schema-pattern`/`table-pattern` 中使用以下两个通配�
 
 + 问号(`?`)
 
-    匹配任意一个空字符除外的字符。
+  - 匹配任意一个空字符除外的字符。
 
 ## 匹配规则
 
 - `schema-pattern` 限制不能为空;
-- `table-pattern` 可以设置为空。 设置为空时，将只根据 `schema-pattern` 对 `schema` 进行匹配，得到匹配结果;
+- `table-pattern` 可以设置为空。 设置为空时，将只根据 `schema-pattern` 对 `schema` 进行匹配，然后返回匹配结果;
 - `table-pattern` 不为空时，分别根据 `schema-pattern` 和 `table-pattern` 进行匹配，两个都匹配则结果为匹配。
 
 ## 使用示例
