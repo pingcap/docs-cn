@@ -174,7 +174,7 @@ start-task [ -w "172.16.30.15:10081"] ./task.yaml
 + `-w`：
     - 可选
     - 指定在特定的一组 DM-workers 上执行 `task.yaml`
-    - 如果设置，则只启动指定任务在该组 DM-workers 上面的子任务
+    - 如果设置，则只启动指定任务在该组 DM-workers 上的子任务
 + `config_file`：
     - 必选
     - 指定 `task.yaml` 的文件路径
@@ -348,7 +348,7 @@ pause-task [-w "127.0.0.1:10181"] task-name
 
 - `-w`：
     - 可选
-    - 指定在特定的一组 DM-workers 暂停数据同步任务的子任务
+    - 指定在特定的一组 DM-workers 上暂停数据同步任务的子任务
     - 如果设置，则只暂停该任务在指定 DM-workers 上的子任务
 - `task_name`：
     - 必选
@@ -407,8 +407,8 @@ resume-task [-w "127.0.0.1:10181"] task-name
 
 - `-w`：
     - 可选
-    - 指定在特定的一组 DM-workers 重启数据同步任务的子任务 
-    - 如果设置，则只重启该任务在指定 DM-workers 的子任务
+    - 指定在特定的一组 DM-workers 上重启数据同步任务的子任务 
+    - 如果设置，则只重启该任务在指定 DM-workers 上的子任务
 - `task_name`：
     - 必选
     - 指定任务名称
@@ -466,8 +466,8 @@ stop-task [-w "127.0.0.1:10181"]  task-name
 
 - `-w`：
     - 可选
-    - 指定在特定的一组 DM-workers 停止数据同步任务的子任务
-    - 如果设置，则只停止该任务在指定 DM-workers 上面的子任务
+    - 指定在特定的一组 DM-workers 上停止数据同步任务的子任务
+    - 如果设置，则只停止该任务在指定 DM-workers 上的子任务
 - `task_name`：
     - 必选
     - 指定任务名称
@@ -556,7 +556,7 @@ update-task [-w "127.0.0.1:10181"] ./task.yaml
 
 - `-w`：
     - 可选
-    - 指定在特定的一组 DM-workers 更新数据同步任务的子任务
+    - 指定在特定的一组 DM-workers 上更新数据同步任务的子任务
     - 如果设置，则只更新指定 DM-workers 上的子任务配置
 - `config_file`：
     - 必选
