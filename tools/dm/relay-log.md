@@ -1,12 +1,12 @@
 ---
-title: Data Migration Relay Log
+title: DM Relay Log
 summary: 了解目录结构、初始同步规则和 DM relay log 的数据清理。
 category: tools
 ---
 
-# Data Migration Relay Log
+# DM Relay Log
 
-Data Migration (DM) 工具的 relay log 由一组有编号的文件和一个索引文件组成。这些有编号的文件包含了描述数据库更改的事件。索引文件包含所有使用过的 relay log 的文件名。
+DM (Data Migration) 工具的 relay log 由一组有编号的文件和一个索引文件组成。这些有编号的文件包含了描述数据库更改的事件。索引文件包含所有使用过的 relay log 的文件名。
 
 DM-worker 在启动后，会自动将上游 binlog 同步到本地配置目录（若使用 DM-Ansible 部署 DM，则同步目录默认为 `<deploy_dir> / relay_log` ）。DM-worker 在运行过程中，会将上游 binlog 实时同步到本地文件。DM-worker 的处理单元 Syncer 会实时读取本地 relay log 的 binlog 事件，将这些事件转换为 SQL 语句，再将 SQL 语句同步到下游数据库。
 
