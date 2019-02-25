@@ -42,12 +42,13 @@ Relay-log 本地存储的目录结构示例如下：
 
 - `relay.meta`：存储每个 `subdir` 中已同步的 binlog 信息。例如，
 
-    ```bash
+    ```
     $ cat c0149e17-dff1-11e8-b6a8-0242ac110004.000001/relay.meta
-    binlog-name = "mysql-bin.000010"                            # The name of the currently synchronized binlog.
-    binlog-pos = 63083620                                       # The position of the currently synchronized binlog.
-    binlog-gtid = "c0149e17-dff1-11e8-b6a8-0242ac110004:1-3328" # GTID of the currently synchronized binlog.
-                                                                # There might be multiple GTIDs.
+    binlog-name = "mysql-bin.000010"    # 当前同步的 binlog 名
+    binlog-pos = 63083620               # 当前同步的 binlog 位置
+    binlog-gtid = "c0149e17-dff1-11e8-b6a8-0242ac110004:1-3328" # 当前同步的 binlog GTID
+
+    # 可能包含多个 GTID
     $ cat 92acbd8a-c844-11e7-94a1-1866daf8accc.000001/relay.meta
     binlog-name = "mysql-bin.018393"
     binlog-pos = 277987307
@@ -92,7 +93,7 @@ Relay log 的数据清理包括自动清理和手动清理这两种方法。
     - 默认为 "0"，表示不按 relay log 的更新时间执行数据清理。
 
 - `purge-remain-space`
-    - 剩余磁盘空间，单位为 GB。若剩余磁盘空间小于该配置，则指定的 DM-worker 机器会在后台尝试自动清理可被安全清理的 relay-log。若这一数字被设为`0` ，则表示不按剩余磁盘空间来清理数据。
+    - 剩余磁盘空间，单位为 GB。若剩余磁盘空间小于该配置，则指定的 DM-worker 机器会在后台尝试自动清理可被安全清理的 relay-log。若这一数字被设为 "0"，则表示不按剩余磁盘空间来清理数据。
     - 默认为 "15"，表示可用磁盘空间小于 15GB 时，DM-master 会尝试安全地清理 relay log。
 
 ### 手动数据清理
