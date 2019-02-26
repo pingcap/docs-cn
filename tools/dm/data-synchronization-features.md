@@ -15,7 +15,7 @@ table routing 提供将上游 MySQL/MariaDB 实例的某些表同步到下游指
 > **注意:**
 >
 > - 不支持对同一个表设置多个不同的路由规则。
-> - schema 的匹配规则需要单独设置，用来同步 create/drop schema xx，例如下面的 rule-2 [parameter configuration](#parameter-configuration)。
+> - schema 的匹配规则需要单独设置，用来同步 create/drop schema xx，例如下面的 rule-2。
 
 ### 参数配置
 
@@ -43,7 +43,7 @@ routes:
 
 假设存在分库分表场景，需要将上游两个 MySQL 实例的表 `test_{1,2,3...}`.`t_{1,2,3...}` 同步到下游 TiDB 的一张表 `test`.`t`。
 
-为了同步到下游示例的表 `test`.`t` 需要创建两个 table routing 规则：
+为了同步到下游实例的表 `test`.`t` 需要创建两个 table routing 规则：
 
 - `rule-1` 用来同步匹配上 `schema-pattern: "test_*"` 和 `table-pattern: "t_*"` 的表的 DMLs/DDLs 到下游的 `test`.`t`。
 - `rule-2` 用来同步匹配上 `schema-pattern: "test_*"` 的库的 DDLs，例如 `create/drop schema xx`。
@@ -66,9 +66,7 @@ routes:
 
 #### 分库合并
 
-假设存在分库场景，将上游两个 MySQL 实例 `test_{1,2,3...}`.`t_{1,2,3...}` 同步到下游 TiDB 的 `test`.`t_{1,2,3...}`。
-
-同步到下游的 `test`.`t_{1,2,3...}`，创建一条路由规则即可：
+假设存在分库场景，将上游两个 MySQL 实例 `test_{1,2,3...}`.`t_{1,2,3...}` 同步到下游 TiDB 的 `test`.`t_{1,2,3...}`，创建一条路由规则即可：
 
 ```yaml
   rule-1:
