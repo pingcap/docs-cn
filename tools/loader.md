@@ -10,7 +10,7 @@ category: tools
 
 Loader is a data import tool to load data to TiDB.
 
-[Download the Binary](http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz).
+It can be [downloaded](../tools/download.md) as part of the Enterprise Tools package.
 
 ## Why did we develop Loader?
 

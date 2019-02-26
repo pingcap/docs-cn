@@ -33,20 +33,9 @@ Drainer collects binlog files from each Pump node, converts them into specified 
 
 ## Install TiDB-Binlog
 
-### Download Binary for the CentOS 7.3+ platform
+### Download
 
-```bash
-# Download the tool package.
-wget http://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-binlog-latest-linux-amd64.sha256
-
-# Check the file integrity. If the result is OK, the file is correct. 
-sha256sum -c tidb-binlog-latest-linux-amd64.sha256
-
-# Extract the package.
-tar -xzf tidb-binlog-latest-linux-amd64.tar.gz
-cd tidb-binlog-latest-linux-amd64
-```
+TiDB-Binlog can be [downloaded](../tools/download.md) as part of the Enterprise Tools package.
 
 ### Deploy TiDB-Binlog
 

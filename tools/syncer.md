@@ -8,26 +8,13 @@ category: tools
 
 ## About Syncer
 
-Syncer is a tool used to import data incrementally. It is a part of the TiDB enterprise toolset. To obtain Syncer, see [Download the TiDB enterprise toolset](#download-the-tidb-enterprise-toolset-linux).
+Syncer is a tool used to import data incrementally. It is a part of the TiDB enterprise toolset. 
+
+It can be [downloaded](../tools/download.md) as part of the Enterprise Tools package.
 
 ## Syncer architecture
 
 ![syncer sharding](../media/syncer_architecture.png)
-
-## Download the TiDB enterprise toolset (Linux)
-
-```bash
-# Download the tool package.
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
-
-# Check the file integrity. If the result is OK, the file is correct.
-sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
-
-# Extract the package.
-tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
-cd tidb-enterprise-tools-latest-linux-amd64
-```
 
 ## Where to deploy Syncer
 
