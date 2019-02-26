@@ -41,7 +41,7 @@ Time: 0.006s
 
 ```SQL
 tidb > alter table t change column a a varchar(20);
-(1105, u'unsupported modify column charset utf8mb4 not match origin utf8')
+ERROR 1105 (HY000): unsupported modify column charset utf8mb4 not match origin utf8
 ```
 
 解决方案：显式指定 column charset，保持和原来的 charset 一致即可。
@@ -121,7 +121,7 @@ tidb > show create table t
 1 row in set
 Time: 0.007s
 tidb > alter table t change column a a varchar(20);
-(1105, u'unsupported modify charset from utf8mb4 to utf8')
+ERROR 1105 (HY000): unsupported modify charset from utf8mb4 to utf8
 ```
 
 因为 v2.1.3 之后支持修改 column 和  table 的 charset 了，所以这里推荐修改 table 的 charset 为 utf8mb4。
