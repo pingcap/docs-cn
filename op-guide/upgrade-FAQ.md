@@ -115,7 +115,7 @@ tidb > show create table t
 | Table | Create Table                                                       |
 +-------+--------------------------------------------------------------------+
 | t     | CREATE TABLE `t` (                                                 |
-|       |   `a` varchar(10) CHARSET UTF8MB4 COLLATE UTF8MB4_bin DEFAULT NULL |
+|       |   `a` varchar(10) CHARSET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL |
 |       | ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin              |
 +-------+--------------------------------------------------------------------+
 1 row in set
