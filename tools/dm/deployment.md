@@ -1,11 +1,11 @@
 ---
-title: DM-Ansible 数据迁移部署方案
-summary: 使用 DM-Ansible 部署 DM 集群
+title: DM-Ansible 部署方案
+summary: DM 的 Ansible 部署方案
 category: tools
 ---
 # 使用 DM-Ansible 部署 DM
 
-DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/index.html) 的 [Playbooks](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html#about-playbooks) 研发的集群部署工具。本文将展示如何使用 DM-Ansible 快速部署 Data Migration (DM)。
+DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/index.html) 的 [Playbooks](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html#about-playbooks) 研发的 DM 集群部署工具。本文将展示如何使用 DM-Ansible 快速部署 Data Migration (DM)。
 
 ## 准备工作
 
@@ -58,7 +58,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
     # passwd tidb
     ```
 
-3. 在 sudo 文件尾部加上`tidb ALL=(ALL) NOPASSWD: ALL`，为 `tidb` 用户设置免密使用 sudo。
+3. 在 sudo 文件尾部加上`tidb ALL=(ALL) NOPASSWD: ALL`，为 `tidb` 用户设置免密使用 sudo。
 
     ```
     # visudo
@@ -73,7 +73,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
     # su - tidb
     ```
 
-    为 `tidb` 用户创建 SSH 密钥。当提示 `Enter passphrase` 时，按 <kbd>Enter</kbd> 键。命令成功执行后，生成的 SSH 私钥文件为 `/home/tidb/.ssh/id_rsa`，SSH 公钥文件为`/home/tidb/.ssh/id_rsa.pub`。
+    为 `tidb` 用户创建 SSH 密钥。当提示 `Enter passphrase` 时，按 <kbd>Enter</kbd> 键。命令成功执行后，生成的 SSH 私钥文件为 `/home/tidb/.ssh/id_rsa`，SSH 公钥文件为`/home/tidb/.ssh/id_rsa.pub`。
 
     ```
     $ ssh-keygen -t rsa
@@ -100,7 +100,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
     +----[SHA256]-----+
     ```
 
-## 第 3 步：下载 DM-Ansible 至中控机
+## 第 3 步：下载 DM-Ansible 至中控机
 
 > **注意**：请确保使用 `tidb` 账户登陆中控机。
 
@@ -108,7 +108,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 2. 执行以下命令下载 DM-Ansible。
 
     ```bash
-    $ wget http://download.pingcap.org/dm-ansible-latest.tar.gz
+    $ wget http://download.pingcap.org/dm-ansible-{version}.tar.gz
     ```
 
 ## 第 4 步: 安装 DM-Ansible 及其依赖至中控机
@@ -178,7 +178,7 @@ ansible-playbook local_prepare.yml
 用 `tidb` 用户登陆中控机，打开并编辑 `/home/tidb/dm-ansible/inventory.ini` 文件如下，以管控 DM 集群。
 
 ```ini
-dm-worker1 ansible_host=172.16.10.72 ansible_port=5555 server_id=101 mysql_host=172.16.10.72 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+dm_worker1 ansible_host=172.16.10.72 server_id=101 source_id="mysql-replica-01" mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 ```
 
 根据场景需要，您可以在以下两种集群拓扑中任选一种：
@@ -285,8 +285,8 @@ grafana_admin_password = "admin"
 
 | 变量名称 | 描述 |
 | ------------- | ------- 
-| source_id | DM-worker 使用主从架构实现与唯一的数据库实例或复制组绑定。当发生主从切换时，只需更新 `mysql_host` 或 `mysql_port`，而无需更改 `source_id`。 |
-| server_id | DM-worker 伪装成一个 MySQL slave，该变量即为这个 slave 的服务器 ID，在 MySQL 集群中需保持全局唯一。取值范围 0 ~ 4294967295。|
+| source_id | DM-worker 绑定至唯一的一个数据库实例或是具有主从架构的复制组。当发生主从切换的时候，只需要更新 `mysql_host` 或 `mysql_port` 而不用更改该 ID 标识。 |
+| server_id | DM-worker 伪装成一个 MySQL slave，该变量即为这个 slave 的服务器 ID，在 MySQL 集群中需保持全局唯一。取值范围 0 ~ 4294967295。|
 | mysql_host | 上游 MySQL 主机 |
 | mysql_user | 上游 MySQL 用户名，默认值为 “root”。|
 | mysql_password | 上游 MySQL 用户密码，需使用 `dmctl` 工具加密。请参考 [使用 dmctl 加密上游 MySQL 用户密码](#encrypt-the-upstream-mysql-user-password-using-dmctl). |
@@ -396,11 +396,13 @@ dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 
     ```bash
     ansible -i inventory.ini all -m shell -a 'whoami' -b
     ```
+
 2. 修改内核参数，并部署 DM 集群组件和监控组件。
 
     ```bash
     ansible-playbook deploy.yml
     ```
+
 3. 启动 DM 集群。
 
     ```bash
@@ -408,7 +410,7 @@ dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 
     ```
     此操作会按顺序启动 DM 集群的所有组件，包括 DM-master，DM-worker，以及监控组件。当一个 DM 集群被关闭后，您可以使用该命令将其开启。
 
-## 第 10 步：关闭 DM 集群
+## 第 10 步：关闭 DM 集群
 
 如果您需要关闭一个 DM 集群，运行以下命令：
 
@@ -471,7 +473,7 @@ dm_master ansible_host=172.16.10.71 dm_master_port=18261
     $ cp * /home/tidb/dm-ansible/dmctl/
     ```
 
-5. 用 Playbook 下载最新的 DM 二进制文件。此文件会自动替换 `/home/tidb/dm-ansible/resource/bin/` 目录下的二进制文件。
+5. 用 Playbook 下载最新的 DM 二进制文件。此文件会自动替换 `/home/tidb/dm-ansible/resource/bin/` 目录下的二进制文件。
 
     ```
     $ ansible-playbook local_prepare.yml
