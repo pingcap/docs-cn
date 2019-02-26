@@ -11,7 +11,7 @@ category: deployment
 
     TiDB 在 v2.1.0 以及之前（包括v2.0 所有版本）默认字符集是 utf8，从 v2.1.1 开始，默认字符集变更为 utf8mb4。如果在 v2.1.0 之前建表时显式指定了 table 的 charset 为 utf8，那后升级到 v2.1.1 之后，执行 DDL 变更可能会失败。示例如下：
 
-    升级前：v2.1.0 以及改版本之前
+    升级前：v2.1.0 以及之前
 
     ```SQL
     tidb > create table t(a varchar(10)) charset=utf8;
@@ -29,7 +29,7 @@ category: deployment
     Time: 0.006s
     ```
 
-    升级后： v2.1.1,  v2.1.2 ( v2.1.3 以及之后不会出现下面的问题)
+    升级后： v2.1.1,  v2.1.2（v2.1.3 以及之后不会出现下面的问题）
 
     ```SQL
     tidb > alter table t change column a a varchar(20);
@@ -97,7 +97,7 @@ category: deployment
    +-------+-------------------------------------------------------+
    ```
 
-   上面 `show create table` 只 show 出了 table 的charset，但其实 column 的 charset 是 utf8mb4，这可以用 http api 获取 schema 来确认。 这是一个 bug，即此处 column 的charset 应该要和 table 保持一致为 utf8，，这个问题在  v2.1.3 后已经修复。
+   上面 `show create table` 只 show 出了 table 的charset，但其实 column 的 charset 是 utf8mb4，这可以用 http api 获取 schema 来确认。 这是一个 bug，即此处建表时 column 的charset 应该要和 table 保持一致为 utf8，这个问题在  v2.1.3 后已经修复。
 
    升级后：v2.1.3 以及之后
 
@@ -115,8 +115,6 @@ category: deployment
    tidb > alter table t change column a a varchar(20);
    (1105, u'unsupported modify charset from utf8mb4 to utf8')
    ```
-
-   
 
    因为v2.1.3 之后支持修改column 和  table 的 charset 了，所以这里推荐修改table 的charset 为 utf8mb4。
 
