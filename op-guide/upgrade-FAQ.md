@@ -7,7 +7,7 @@ category: deployment
 
 本文列出了一些升级后的可能会遇到的问题。
 
-## 做 DDL 时遇到的字符集（charset）问题
+## 执行 DDL 时遇到的字符集（charset）问题
 
 TiDB 在 v2.1.0 以及之前（包括 v2.0 所有版本）默认字符集是 UTF8，从 v2.1.1 开始，默认字符集变更为 UTF8MB4。如果在 v2.1.0 之前建表时显式指定了 table 的 charset 为 UTF8，那后升级到 v2.1.1 之后，执行 DDL 变更可能会失败。
 
@@ -50,9 +50,9 @@ ERROR 1105 (HY000): unsupported modify column charset utf8mb4 not match origin u
 alter table t change column a a varchar(22) character set utf8;
 ```
 
-根据要点1 , 此处如果不指定 column 的charset，会用默认的 UTF8MB4 ，所以需要指定 column charset 保持和原来一致。
+根据要点 1 , 此处如果不指定 column 的charset，会用默认的 UTF8MB4 ，所以需要指定 column charset 保持和原来一致。
 
-根据要点2，用 http api 获取 table 元信息，然后根据 column 名字和 Charset 关键字搜索即可找到 column 的 charset。
+根据要点 2，用 http api 获取 table 元信息，然后根据 column 名字和 Charset 关键字搜索即可找到 column 的 charset。
 
 ```shell
 ▶ curl "http://$IP:10080/schema/test/t" | python -m json.tool  # 这里用了 python 的格式化 json的工具，也可以不加，此处只是为了方便注释。
