@@ -15,7 +15,7 @@ TiDB 在 v2.1.0 以及之前（包括v2.0 所有版本）默认字符集是 utf8
 
 1. 在 v2.1.3 之前，不支持修改 column 的 charset。所以需要做 DDL 时需要新 column 的 charset 和 旧 column 的保持一致。
 
-2. v2.1.3 之前，`show create table` 不会显示 column 的 charset，即使 column 的 charset 和 table 的 charset 不一样。可以通过 http  api 拿table 的元信息查看 column 的 charset。下面会有示例。
+2. v2.1.3 之前，`show create table` 不会显示 column 的 charset，即使 column 的 charset 和 table 的 charset 不一样。可以通过 http  api 拿table 的元信息查看 column 的 charset，下面会有示例。
 
 ### 问题1: unsupported modify column charset utf8mb4 not match origin utf8
 
@@ -52,28 +52,28 @@ alter table t change column a a varchar(22) character set utf8;
 
 根据要点1 , 此处如果不指定column 的charset，会用默认的 utf8mb4 ，所以需要指定column charset 保持和原来一致。
 
-根据要点2，用 http api 获取 table 元信息，然后根据 column 名字和 Charset 关键字搜索即可找到 column 的 charset
+根据要点2，用 http api 获取 table 元信息，然后根据 column 名字和 Charset 关键字搜索即可找到 column 的 charset。
 
 ```shell
-▶ curl "http://$IP:10080/schema/test/t"
+▶ curl "http://$IP:10080/schema/test/t" | python -m json.tool  #这里用了 python 的格式化 json的工具，也可以不加，此处只是为了方便注释。
 {
     "ShardRowIDBits": 0,
     "auto_inc_id": 0,
-    "charset": "utf8",
+    "charset": "utf8",   # 这是 table 的 charset
     "collate": "",
-    "cols": [
+    "cols": [			 # 从这里开始列举 column 的相关信息
         {
             ...
             "id": 1,
             "name": {
                 "L": "a",
-                "O": "a"
+                "O": "a"   # column 的名字
             },
             "offset": 0,
             "origin_default": null,
             "state": 5,
             "type": {
-                "Charset": "utf8",
+                "Charset": "utf8",   # column a 的 charset
                 "Collate": "utf8_bin",
                 "Decimal": 0,
                 "Elems": null,
@@ -124,7 +124,7 @@ tidb > alter table t change column a a varchar(20);
 (1105, u'unsupported modify charset from utf8mb4 to utf8')
 ```
 
-因为v2.1.3 之后支持修改column 和  table 的 charset 了，所以这里推荐修改table 的charset 为 utf8mb4。
+因为v2.1.3 之后支持修改 column 和  table 的 charset 了，所以这里推荐修改table 的charset 为 utf8mb4。
 
 ```
 alter table t convert to character set utf8mb4;
