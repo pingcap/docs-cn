@@ -8,8 +8,10 @@ category: deployment
 本文列出了一些升级后的可能会遇到的问题。
 
 1. 字符集（charset）问题1: unsupported modify column charset utf8mb4 not match origin utf8
+
     TiDB 在 v2.1.0 以及之前（包括v2.0 所有版本）默认字符集是 utf8，从 v2.1.1 开始，默认字符集变更为 utf8mb4。如果在 v2.1.0 之前建表时显式指定了 table 的 charset 为 utf8，那后升级到 v2.1.1 之后，执行 DDL 变更可能会失败。示例如下：
-      v2.1.0 and before v2.1.0
+
+    v2.1.0 and before v2.1.0
 
     ```SQL
     tidb > create table t(a varchar(10)) charset=utf8;
@@ -26,7 +28,9 @@ category: deployment
     1 row in set
     Time: 0.006s
     ```
+
     after v2.1.0, before v2.1.3
+
     ```SQL
     tidb > use test
     You are now connected to database "test" as user "root"
