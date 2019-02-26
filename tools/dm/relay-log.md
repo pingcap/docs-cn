@@ -35,7 +35,7 @@ Relay-log 本地存储的目录结构示例如下：
     - DM-worker 把从上游数据库同步到的 binlog 存储在同一目录下，每个目录都为一个 `subdir`。
     - `subdir` 的命名格式为 `<上游数据库 UUID>.<本地 subdir 序列号>`。
     - 在上游进行 master 和 slave 实例切换后，DM-worker 会生成一个序号递增的新 `subdir` 目录。
-    
+
         - 在以上示例中，对于 `7e427cc0-091c-11e9-9e45-72b7c59d52d7.000001` 这一目录，`7e427cc0-091c-11e9-9e45-72b7c59d52d7` 是上游数据库的 UUID，`000001` 是本地 `subdir` 的序列号。
 
 - `server-uuid.index`：记录当前可用的 `subdir` 目录。
@@ -133,7 +133,7 @@ deb76a2b-09cc-11e9-9129-5242cf3bb246.000003
 » purge-relay -w 10.128.16.223:10081 --filename mysql-bin.000001 --sub-dir e4e0e8ab-09cc-11e9-9220-82cc35207219.000002
 
 # 执行该命令会清空 `deb76a2b-09cc-11es9-9129-5242cf3bb246.000001、e4e0e8ab-09cc-11e9-9220-82cc35207219.000002` 目录
-# while the `deb76a2b-09cc-11e9-9129-5242cf3bb246.000003` 目录保留.
+# `deb76a2b-09cc-11e9-9129-5242cf3bb246.000003` 目录保留
 
 » purge-relay -w 10.128.16.223:10081 --filename mysql-bin.000001
 ```

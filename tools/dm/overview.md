@@ -32,9 +32,9 @@ DM-worker 负责执行具体的数据同步任务。
 - 编排数据同步子任务的运行
 - 监控数据同步子任务的运行状态
 
-DM-worker 启动后，会自动同步上游 binlog 至本地配置目录（如果使用 DM-Ansible 部署 DM 集群，默认的同步目录为 `<deploy_dir>/relay_log`）。关于 DM-worker，详请参阅 [DM-worker 简介](/tools/dm/dm-worker-intro.md)。关于 relay log，详情参阅 [DM Relay Log](/tools/dm/relay-log.md)。
+DM-worker 启动后，会自动同步上游 binlog 至本地配置目录（如果使用 DM-Ansible 部署 DM 集群，默认的同步目录为 `<deploy_dir>/relay_log`）。关于 DM-worker，详见 [DM-worker 简介](/tools/dm/dm-worker-intro.md)。关于 relay log，详见 [DM Relay Log](/tools/dm/relay-log.md)。
 
-### dmctl 
+### dmctl
 
 dmctl 是用来控制 DM 集群的命令行工具。
 
@@ -80,7 +80,7 @@ DM 支持对原分库分表进行合库合表操作，但需要满足一些限�
 
 + DDL 语法
 
-    - 目前，TiDB 部分兼容 MySQL 支持的 DDL 语句。因为 DM 使用 TiDB parser 来解析处理 DDL 语句，所以目前仅支持 TiDB parser 支持的 DDL 语法。详见 [TiDB DDL 语法支持](../../sql/ddl.md).
+    - 目前，TiDB 部分兼容 MySQL 支持的 DDL 语句。因为 DM 使用 TiDB parser 来解析处理 DDL 语句，所以目前仅支持 TiDB parser 支持的 DDL 语法。详见 [TiDB DDL 语法支持](../../sql/ddl.md)。
 
     - DM 遇到不兼容的 DDL 语句时会报错。要解决此报错，需要使用 dmctl 手动处理，要么跳过该 DDL 语句，要么用指定的 DDL 语句来替换它。
 
