@@ -22,7 +22,7 @@ DM-worker 任务包含如下多个逻辑处理单元。
 
 Relay log 持久化保存从上游 MySQL 或 MariaDB 读取的 binlog，并对 binlog replication 处理单元提供读取 binlog event 的功能。
 
-其原理和功能与 MySQL slave relay log 类似，详情参见 [Slave Relay Log](https://dev.mysql.com/doc/refman/5.7/en/slave-logs-relaylog.html)。
+其原理和功能与 MySQL slave relay log 类似，详请参阅 [Slave Relay Log](https://dev.mysql.com/doc/refman/5.7/en/slave-logs-relaylog.html)。
 
 ### Dumper
 
@@ -51,7 +51,7 @@ Binlog replication/Syncer 读取 relay log 处理单元的 binlog event，将这
 | `REPLICATION SLAVE` | Global |
 | `REPLICATION CLIENT` | Global |
 
-如果要同步 `db1` 的数据到 TiDB，可执行如下的 `GRANT` 语句:
+如果要同步 `db1` 的数据到 TiDB，可执行如下的 `GRANT` 语句：
 
 ```sql
 GRANT RELOAD,REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'your_user'@'your_wildcard_of_host'
