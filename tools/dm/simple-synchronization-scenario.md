@@ -5,7 +5,7 @@ category: tools
 
 # Data Migration 简单使用场景
 
-本文介绍了 DM 工具的一个简单使用场景（非分库分表场景）：将三个上游 MySQL 实例的数据同步到一个下游 TiDB 集群中。
+本文介绍了 DM 工具的一个简单使用场景（非分库分表合并场景）：将三个上游 MySQL 实例的数据同步到一个下游 TiDB 集群中。
 
 ## 上游实例
 
@@ -45,13 +45,13 @@ category: tools
 
     3. 将实例 3 中的 `user` 库同步到下游 TiDB 的 `user_south` 库中。
 
-    4. 任何情况下都不删除 `log` 表。
+    4. 任何情况下都不删除 `log` 表的任何数据。
 
 2. 将上游 `store` 库同步到下游 `store` 库中，且同步过程中不合并表。
 
     1. 实例 2 和实例 3 中都存在 `store_sz` 表，且这两个 `store_sz` 表分别被同步到下游的 `store_suzhou` 表和 `store_shenzhen` 表中。
 
-    2. 任何情况下都不删除 `store` 库。
+    2. 任何情况下都不删除 `store` 库的任何数据。
 
 3. `log` 库需要被过滤掉。
 
