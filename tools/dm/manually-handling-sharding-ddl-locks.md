@@ -5,7 +5,7 @@ category: tools
 
 # 手动处理 Sharding DDL Lock
 
-DM (Data Migration) 使用 sharding DDL lock 来确保各项操作以正确的顺序执行。绝大多数情况下，该锁定机制可自动完成 sharding DDL lock 同步；但在部分异常情况发生时，需要使用 `unlock-ddl-lock`/`break-ddl-lock` 手动处理异常的 DDL lock。
+DM (Data Migration) 使用 sharding DDL lock 来确保分库分表的 DDL 操作可以正确执行。绝大多数情况下，该锁定机制可自动完成 sharding DDL 操作的同步；但在部分异常情况发生时，需要使用 `unlock-ddl-lock`/`break-ddl-lock` 手动处理异常的 DDL lock。
 
 > **注意**：
 >
@@ -63,7 +63,7 @@ show-ddl-locks [--worker=127.0.0.1:8262] [task-name]
 
 ### `unlock-ddl-lock`
 
-该命令用于主动请求 DM-master 解除指定的 DDL lock，包括：请求 owner 执行 DDL 操作，请求其他非 owner 的 DM-worker 跳过 DDL 操作，移除 DM-master 上的 lock 信息。
+该命令用于主动请求 DM-master 解除指定的 DDL lock，包括的操作：请求 owner 执行 DDL 操作，请求其他非 owner 的 DM-worker 跳过 DDL 操作，移除 DM-master 上的 lock 信息。
 
 #### 命令示例
 
@@ -166,7 +166,7 @@ break-ddl-lock <--worker=127.0.0.1:8262> [--remove-id] [--exec] [--skip] <task-n
 
 在 DM-master 尝试自动 unlock sharding DDL lock 之前，需要等待所有 DM-worker 的 sharding DDL events 全部到达。如果 sharding DDL 已经在同步过程中，且有部分 DM-worker 下线，并且不再计划重启它们（按业务需求移除了这部分 DM-worker），则会由于永远无法等齐所有的 DDL 而造成 lock 无法自动 unlock。
 
-> **注意**：如果当同步任务未在协调处理 sharding DDL 的过程中时需要下线 DM-worker，更好的做法是：先使用 `stop-task` 停止运行中的任务，然后下线 DM-worker 并从任务配置文件中移除对应的配置信息，最后使用 `start-task` 及新的配置文件重新启动同步任务。
+> **注意**：如果当同步任务在协调处理 sharding DDL 同步过程中时下线 DM-worker，更好的做法是：先使用 `stop-task` 停止运行中的任务，然后下线 DM-worker 并从任务配置文件中移除对应的配置信息，最后使用 `start-task` 及新的配置文件重新启动同步任务。
 
 #### 手动处理示例
 
@@ -204,7 +204,7 @@ MySQL 及 DM 操作与处理流程如下：
     ALTER TABLE shard_db_1.shard_table_2 ADD COLUMN c2 INT;
     ```
 
-2. DM-worker-1 将对应 MySQL-1 相关的 DDL 信息发送给 DM-master，DM-master 创建相应的 DDL lock。
+2. DM-worker-1 接受到两个分表的 DDL 之后，将对应 MySQL-1 相关的 DDL 信息发送给 DM-master，DM-master 创建相应的 DDL lock。
 3. 使用 `show-ddl-lock` 查看当前的 DDL lock 信息。
 
     ```bash
@@ -240,27 +240,28 @@ MySQL 及 DM 操作与处理流程如下：
 
     - 如果 DDL lock 的 owner 也已经下线，可以使用 `--owner` 参数指定其他 DM-worker 作为新 owner 来执行 DDL。
     - 当存在任意 DM-worker 报错时，`result` 将为 `false`，此时请仔细检查各 DM-worker 的错误是否是预期可接受的。
-    - 已下线的 DM-worker 会返回 `rpc error: code = Unavailable` 错误属于预期行为，可以忽略；如果其它未下线的 DM-worker 返回错误，则需要根据情况额外处理。
+        - 已下线的 DM-worker 会返回 `rpc error: code = Unavailable` 错误属于预期行为，可以忽略。
+        - 如果其它未下线的 DM-worker 返回错误，则需要根据情况额外处理。
 
-    ```bash
-    » unlock-ddl-lock test-`shard_db`.`shard_table`
-    {
-        "result": false,
-        "msg": "github.com/pingcap/tidb-enterprise-tools/dm/master/server.go:1472: DDL lock test-`shard_db`.`shard_table` owner ExecuteDDL successfully, so DDL lock removed. but some dm-workers ExecuteDDL fail, you should to handle dm-worker directly",
-        "workers": [
-            {
-                "result": true,
-                "worker": "127.0.0.1:8262",
-                "msg": ""
-            },
-            {
-                "result": false,
-                "worker": "127.0.0.1:8263",
-                "msg": "rpc error: code = Unavailable desc = all SubConns are in TransientFailure, latest connection error: connection error: desc = \"transport: Error while dialing dial tcp 127.0.0.1:8263: connect: connection refused\""
-            }
-        ]
-    }
-    ```
+        ```bash
+        » unlock-ddl-lock test-`shard_db`.`shard_table`
+        {
+            "result": false,
+            "msg": "github.com/pingcap/tidb-enterprise-tools/dm/master/server.go:1472: DDL lock test-`shard_db`.`shard_table` owner ExecuteDDL successfully, so DDL lock removed. but some dm-workers ExecuteDDL fail, you should to handle dm-worker directly",
+            "workers": [
+                {
+                    "result": true,
+                    "worker": "127.0.0.1:8262",
+                    "msg": ""
+                },
+                {
+                    "result": false,
+                    "worker": "127.0.0.1:8263",
+                    "msg": "rpc error: code = Unavailable desc = all SubConns are in TransientFailure, latest connection error: connection error: desc = \"transport: Error while dialing dial tcp 127.0.0.1:8263: connect: connection refused\""
+                }
+            ]
+        }
+        ```
 
 7. 使用 `show-dd-locks` 确认 DDL lock 是否被成功 unlock。
 
@@ -319,7 +320,7 @@ MySQL 及 DM 操作与处理流程如下：
 
 #### 手动处理示例
 
-仍然假设有 [部分 DM-worker 下线](#场景一-部分-DM-worker-下线) 示例中的上下游表结构及合表同步需求。
+仍然假设是 [部分 DM-worker 下线](#场景一部分-DM-worker-下线) 示例中的上下游表结构及合表同步需求。
 
 当在 DM-master 自动执行 unlock 操作的过程中，owner (DM-worker-1) 成功执行了 DDL 操作且开始继续进行后续同步，并移除了 DM-master 上的 DDL lock 信息；但在请求 DM-worker-2 跳过 DDL 操作的过程中，由于 DM-worker-2 发生了重启而跳过 DDL 操作失败。
 
@@ -386,13 +387,13 @@ DM-worker-2 重启后，将尝试重新同步重启前已经在等待的 DDL loc
 
 #### Lock 异常原因
 
-与 [unlock 过程中部分 DM-worker 重启](#场景二-unlock-过程中部分-DM-worker-重启) 造成 lock 异常的原因类似。当请求 DM-worker 跳过 DDL 操作时，如果该 DM-worker 临时不可达，则会造成该 DM-worker 跳过 DDL 操作失败。此时 DM-master 上的 lock 信息被移除，但该 DM-worker 将处于等待一个不再存在的 DDL lock 的状态。
+与 [unlock 过程中部分 DM-worker 重启](#场景二unlock-过程中部分-DM-worker-重启) 造成 lock 异常的原因类似。当请求 DM-worker 跳过 DDL 操作时，如果该 DM-worker 临时不可达，则会造成该 DM-worker 跳过 DDL 操作失败。此时 DM-master 上的 lock 信息被移除，但该 DM-worker 将处于等待一个不再存在的 DDL lock 的状态。
 
-场景三与[场景二](#场景二-unlock-过程中部分-DM-worker-重启)的区别在于，场景三中 DM-master 没有 lock，而场景二中 DM-master 有一个新的 lock。
+场景三与[场景二](#场景二unlock-过程中部分-DM-worker-重启)的区别在于，场景三中 DM-master 没有 lock，而场景二中 DM-master 有一个新的 lock。
 
 #### 手动处理示例
 
-仍然假设有 [部分 DM-worker 下线](#场景一-部分-DM-worker-下线) 示例中的上下游表结构及合表同步需求。
+仍然假设是 [部分 DM-worker 下线](#场景一部分-DM-worker-下线) 示例中的上下游表结构及合表同步需求。
 
 在 DM-master 自动执行 unlock 操作的过程中，owner (DM-worker-1) 成功执行了 DDL 操作且开始继续进行后续同步，并移除了 DM-master 上的 DDL lock 信息，但在请求 DM-worker-2 跳过 DDL 操作的过程中，由于网络原因等临时不可达而跳过 DDL 操作失败。
 
