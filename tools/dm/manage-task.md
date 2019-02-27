@@ -5,7 +5,7 @@ category: tools
 
 # 管理数据同步任务
 
-本文说明了如何使用 [dmctl](/tools/dm/overview.md#dmctl) 组件来进行数据同步任务的管理和维护。对于用 Ansible 部署的 DM 集群，dmctl 二进制文件路径为 `dm-ansible/dmctl`。
+本文介绍了如何使用 [dmctl](/tools/dm/overview.md#dmctl) 组件来进行数据同步任务的管理和维护。对于用 DM-Ansible 部署的 DM 集群，dmctl 二进制文件路径为 `dm-ansible/dmctl`。
 
 ## dmctl 基本用法
 
@@ -81,59 +81,6 @@ Flags:
 # 使用 `dmctl [command] --help` 来获取某个命令的更多信息
 ```
 
-## 上游 MySQL 实例配置前置检查
-
-为提前检测出数据同步任务可能存在的一些配置错误，DM 提供了前置检查功能。`check-task` 命令可用于对上游 MySQL 实例配置是否满足 DM 要求进行前置检查。
-
-上下游数据库用户必须具备相应读写权限。当数据同步任务启动时，DM 会自动检查下列权限和配置：
-
-+ 数据库版本
-
-    - 5.5 < MySQL 版本 < 5.8
-    - MariaDB 版本 >= 10.1.2
-
-+ MySQL binlog 配置
-
-    - binlog 是否开启（DM 要求 binlog 必须开启）
-    - 是否有 `binlog_format=ROW`（DM 只支持 ROW 格式的 binlog 同步）
-    - 是否有 `binlog_row_image=FULL`（DM 只支持 `binlog_row_image=FULL`）
-
-+ 上游 MySQL 实例用户的权限
-
-    DM 配置中的 MySQL 用户至少需要具备以下权限：
-
-    - REPLICATION SLAVE
-    - REPLICATION CLIENT
-    - RELOAD
-    - SELECT
-
-+ 上游 MySQL 表结构的兼容性
-
-    TiDB 和 MySQL 的兼容性存在以下一些区别：
-
-    - TiDB 不支持外键
-    - 字符集的兼容性不同，详见 [TiDB 支持的字符集](/sql/character-set-support.md)
-
-+ 上游 MySQL 多实例分库分表的一致性
-
-    + 所有分表的表结构是否一致，检查内容包括：
-
-        - Column 数量
-        - Column 名称
-        - Column 位置
-        - Column 类型
-        - 主键
-        - 唯一索引
-
-    + 分表中自增主键冲突检查
-
-        - 在两种情况下会造成检查失败：
-
-            - 分表存在自增主键，且自增主键 column 类型不为 bigint
-            - 分表存在自增主键，自增主键 column 类型为 bigint， 但没有为其配置列值转换
-
-        - 其他情况下检查将成功
-
 ## 管理数据同步任务
 
 本部分描述了如何使用不同的任务管理命令来执行以下操作：
@@ -141,13 +88,13 @@ Flags:
 - [创建数据同步任务](#创建数据同步任务)
 - [查询数据同步任务状态](#查询数据同步任务状态)
 - [暂停数据同步任务](#暂停数据同步任务)
-- [重启数据同步任务](#重启数据同步任务)
+- [恢复数据同步任务](#恢复数据同步任务)
 - [停止数据同步任务](#停止数据同步任务)
 - [更新数据同步任务](#更新数据同步任务)
 
 ### 创建数据同步任务
 
-`start-task` 命令用于创建数据同步任务。 当数据同步任务启动时，DM 将[自动对相应权限和配置进行前置检查](#上游-MySQL-实例配置前置检查)。
+`start-task` 命令用于创建数据同步任务。 当数据同步任务启动时，DM 将[自动对相应权限和配置进行前置检查](/tools/dm/precheck.md)。
 
 ```bash
 » help start-task
@@ -182,6 +129,7 @@ start-task [ -w "172.16.30.15:10081"] ./task.yaml
 #### 返回结果示例
 
 ```bash
+» start-task task.yaml
 {
 ​    "result": true,
 ​    "msg": "",
@@ -235,6 +183,8 @@ query-status
     - 如果未设置，则返回全部数据同步任务的查询结果
 
 #### 返回结果示例
+
+有关查询结果中各参数的意义，详见[查询状态结果](/tools/dm/query-status.md#查询结果)。
 
 ```bash
 » query-status
@@ -379,9 +329,9 @@ pause-task [-w "127.0.0.1:10181"] task-name
 }
 ```
 
-### 重启数据同步任务
+### 恢复数据同步任务
 
-`resume-task` 命令用于重启数据同步任务。
+`resume-task` 命令用于恢复数据同步任务。
 
 ```bash
 » help resume-task
@@ -407,8 +357,8 @@ resume-task [-w "127.0.0.1:10181"] task-name
 
 - `-w`：
     - 可选
-    - 指定在特定的一组 DM-workers 上重启数据同步任务的子任务 
-    - 如果设置，则只重启该任务在指定 DM-workers 上的子任务
+    - 指定在特定的一组 DM-workers 上恢复数据同步任务的子任务 
+    - 如果设置，则只恢复该任务在指定 DM-workers 上的子任务
 - `task_name`：
     - 必选
     - 指定任务名称
@@ -520,7 +470,7 @@ stop-task [-w "127.0.0.1:10181"]  task-name
 
 3. 使用 `update-task task.yaml` 更新任务配置。
 
-4. 使用 `resume-task <task-name>` 重启任务。
+4. 使用 `resume-task <task-name>` 恢复任务。
 
 #### 不支持更新项的更新步骤
 
@@ -530,7 +480,7 @@ stop-task [-w "127.0.0.1:10181"]  task-name
 
 2. 在 `task.yaml` 文件中更新需要修改的自定义配置或者错误配置。
 
-3. 使用 `start-task <task-name>` 重启任务。
+3. 使用 `start-task <task-name>` 恢复任务。
 
 ```bash
 » help update-task
