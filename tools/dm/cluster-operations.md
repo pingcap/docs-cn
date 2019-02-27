@@ -1,6 +1,5 @@
 ---
 title: DM 集群操作
-summary: 此文档描述 DM 集群操作以及使用 Ansible 管理 DM 集群时需要注意的事项。
 category: tools
 ---
 
@@ -208,7 +207,7 @@ $ sh dmctl.sh     # Restart dmctl
     $ ansible-playbook deploy.yml --tags=dm-worker -l dm_worker3
     ```
 
-4. 启动新 DM-worker 实例。
+4. 启用新 DM-worker 实例。
 
     ```
     $ ansible-playbook start.yml --tags=dm-worker -l dm_worker3
@@ -228,7 +227,7 @@ $ sh dmctl.sh     # Restart dmctl
 
 ## 下线 DM-worker 实例
 
-假设您想要下线 DM-worker 实例 `dm_worker3`，按以下步骤操作：
+假设您想要下线的 DM-worker 实例为 `dm_worker3`。按以下步骤操作：
 
 1. 关闭您想要下线的 DM-worker 实例。
 
@@ -285,7 +284,7 @@ $ sh dmctl.sh     # Restart dmctl
 
         该步在 `172.16.10.80` 机器上创建了一个 `tidb` 用户，设置了 sudo 规则，并为中控机与该机器配置了 SSH 互信。
 
-2. 关闭您想要替换的 DM-master 实例。
+2. 关闭待替换的 DM-master 实例。
 
     > **注意**：如果 `172.16.10.71` 已奔溃且您无法通过 SSH 登陆，请忽略此步。
 
@@ -344,7 +343,7 @@ $ sh dmctl.sh     # Restart dmctl
 
         该步在 `172.16.10.75` 上创建了一个 `tidb` 用户，设置了 sudo 规则，并为中控机与该机器配置了 SSH 互信。
     
-2. 关闭旧 DM-worker 实例。
+2. 下线待替换 DM-worker 实例。
 
     > **注意**：如果机器 `172.16.10.71` 故障，无法通过 SSH 登陆，请忽略此步。
 
@@ -354,7 +353,7 @@ $ sh dmctl.sh     # Restart dmctl
 
 3.  修改 `inventory.ini` 文件，为新 DM-worker 实例添加相关信息。
 
-    修改 `inventory.ini` 文件。注释或删除旧实 `dm_worker1` 实例所在行；同时为新 `dm_worker1` 实例添加相关信息。
+    修改 `inventory.ini` 文件。注释或删除旧 `dm_worker1` 实例所在行；同时为新 `dm_worker1` 实例添加相关信息。
 
     ```ini
     [dm_worker_servers]
@@ -370,7 +369,7 @@ $ sh dmctl.sh     # Restart dmctl
     $ ansible-playbook deploy.yml --tags=dm-worker -l dm_worker1
     ```
 
-5. 开启新 DM-worker 实例。
+5.  启动新 DM-worker 实例。
 
     ```
     $ ansible-playbook start.yml --tags=dm-worker -l dm_worker1
