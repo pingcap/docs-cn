@@ -32,16 +32,7 @@ In addition, the user of the upstream and downstream databases must have the cor
 
 ### Incompatible DDL statements
 
-When you encounter the following error, you need to manually handle it using dmctl (skipping the DDL statement or replacing the DDL statement with a specified DDL statement). For details, see [Skip or replace abnormal SQL statements](#skip-or-replace-abnormal-sql-statements).
-
-```sql
-encountered incompatible DDL in TiDB: %s
-    please confirm your DDL statement is correct and needed.
-    for TiDB compatible DDL, please see the docs:
-      English version: https://github.com/pingcap/docs/blob/master/sql/ddl.md
-      Chinese version: https://github.com/pingcap/docs-cn/blob/master/sql/ddl.md
-    if the DDL is not needed, you can use dm-ctl to skip it, otherwise u also can use dm-ctl to replace it.
-```
+When you encounter a DDL statement unsupported by TiDB, you need to manually handle it using dmctl (skipping the DDL statement or replacing the DDL statement with a specified DDL statement). For details, see [Skip or replace abnormal SQL statements](/tools/dm/skip-replace-sqls.md).
 
 > **Note:** Currently, TiDB is not compatible with all the DDL statements that MySQL supports. See [the DDL statements supported by TiDB](/sql/ddl.md).
 
@@ -64,45 +55,3 @@ Generally, at this time, the relay unit exits with an error and cannot be automa
 4. Clean up downstream synchronized data.
 5. Use Ansible to [start the entire DM cluster](/tools/dm/deployment.md#step-9-deploy-the-dm-cluster).
 6. Restart data synchronization with the new task name, or set `remove-meta` to `true` and `task-mode` to `all`.
-
-## Skip or replace abnormal SQL statements
-
-If the sync unit encounters an error while executing a SQL (DDL/DML) statement, DM supports manually skipping the SQL statement using dmctl or replacing this execution with another user-specified SQL statement.
-
-When you manually handle the SQL statement that has an error, the frequently used commands include `query-status`, `sql-skip`, and `sql-replace`.
-
-### The manual process of handling abnormal SQL statements
-
-1. Use `query-status` to query the current running status of the task.
-
-    - Whether an error caused the `Paused` status of a task in a DM-worker
-    - Whether the cause of the task error is an error in executing the SQL statement
-
-2. Record the returned binlog pos (`SyncerBinlog`) that Syncer has synchronized when executing `query-status`.
-3. According to the error condition, application scenario and so on, decide whether to skip or replace the current SQL statement that has an error.
-4. Skip or replace the current error SQL statement that has an error:
-
-    - To skip the current SQL statement that has an error, use `sql-skip` to specify the DM-worker, task name and binlog pos that need to perform SQL skip operations and perform the skip operations.
-    - To replace the current SQL statement that has an error, use `sql-replace` to specify the DM-worker, task name, binlog pos, and the new SQL statement(s) used to replace the original SQL statement. (You can specify multiple statements by separating them using `;`.)
-
-5. Use `resume-task` and specify the DM-worker and task name to restore the task on the DM-worker that was paused due to an error.
-6. Use `query-status` to check whether the SQL statement skip or replacement is successful.
-
-#### How to find the binlog pos that needs to be specified in the parameter?
-
-In `dm-worker.log`, find `current pos` corresponding to the SQL statement has an error.
-
-### Command line parameter description
-
-#### sql-skip
-
-- `worker`: flag parameter, string, `--worker`, required; specifies the DM-worker where the SQL statement that needs to perform the skip operation is located
-- `task-name`: non-flag parameter, string, required; specifies the task where the SQL statement that needs to perform the skip operation is located
-- `binlog-pos`: non-flag parameter, string, required; specifies the binlog pos where the SQL statement that needs to perform the skip operation is located; the format is `mysql-bin.000002:123` (`:` separates the binlog name and pos)
-
-#### sql-replace
-
-- `worker`: flag parameter, string, `--worker`, required; specifies the DM-worker where the SQL statement that needs to perform the replacement operation is located
-- `task-name`: non-flag parameter, string, required; specifies the task where the SQL statement that needs to perform the replacement operation is located
-- `binlog-pos`: non-flag parameter, string, required; specifies the binlog pos where the SQL statement that needs to perform the replacement operation is located; the format is `mysql-bin.000002:123` (`:` separates the binlog name and pos)
-- `sqls`: non-flag parameter, string, required; specifies new SQL statements that are used to replace the original SQL statement (You can specify multiple statements by separating them using `;`)
