@@ -50,7 +50,7 @@ category: tools
     dm-worker = "172.16.10.73:8262"
     ```
 
-    > **注意**：`{ansible deploy}/conf/dm-master.toml` 中的 `{ansible deploy}` 表示 DM-Ansible 部署的目录。该目录使用 `deploy_dir` 参数配置。
+    > **注意**：`{ansible deploy}/conf/dm-master.toml` 中的 `{ansible deploy}` 表示使用 DM-Ansible 部署 DM 时通过 `deploy_dir` 参数指定的目录。
 
 ## 第 3 步：配置任务
 
@@ -92,10 +92,10 @@ black-white-list:
     - db-name: "test_db"              # 需要同步的表的库名。
       tbl-name: "test_table"          # 需要同步的表的名称。
 
-# Mydumper 全局配置，各实例通过配置项名引用。
+# mydumper 全局配置，各实例通过配置项名引用。
 mydumpers:
   global:
-    mydumper-path: "./bin/mydumper"   # Mydumper 二进制文件的路径。
+    mydumper-path: "./bin/mydumper"   # mydumper 二进制文件的路径。
     extra-args: "-B test_db -T test_table"  # 只导出 `test_db` 库中的 `test_table` 表，可设置 mydumper 的任何参数。
 ```
 
