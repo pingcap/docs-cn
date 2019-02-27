@@ -17,7 +17,7 @@ $ ansible-playbook start.yml
 
 ## 下线集群
 
-运行以下命令以下线整个集群的所有组件（包括 DM-master、DM-worker 和监控组件）:
+运行以下命令以下线整个集群的所有组件（包括 DM-master、DM-worker 和监控组件）：
 
 ```
 $ ansible-playbook stop.yml
@@ -286,7 +286,7 @@ $ sh dmctl.sh     # Restart dmctl
 
 2. 关闭待替换的 DM-master 实例。
 
-    > **注意**：如果 `172.16.10.71` 已奔溃且您无法通过 SSH 登陆，请忽略此步。
+    > *注意**：如果机器 `172.16.10.71` 宕机，无法通过 SSH 登陆，请忽略此步。
 
     ```
     $ ansible-playbook stop.yml --tags=dm-master
@@ -345,7 +345,7 @@ $ sh dmctl.sh     # Restart dmctl
     
 2. 下线待替换 DM-worker 实例。
 
-    > **注意**：如果机器 `172.16.10.71` 故障，无法通过 SSH 登陆，请忽略此步。
+    > **注意**：如果机器 `172.16.10.71` 宕机，无法通过 SSH 登陆，请忽略此步。
 
     ```
     $ ansible-playbook stop.yml --tags=dm-worker -l dm_worker1
