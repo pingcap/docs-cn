@@ -9,7 +9,7 @@ category: tools
 
 ## 第 1 步：部署 DM 集群
 
-目前推荐使用 DM-Ansible 部署 DM 集群，具体部署方法参照 [使用 DM-Ansible 部署 DM](/tools/dm/deployment.md)。
+目前推荐使用 DM-Ansible 部署 DM 集群，具体部署方法参照 [使用 DM-Ansible 部署 DM 集群](/tools/dm/deployment.md)。
 
 > **注意**：
 > 
