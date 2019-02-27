@@ -122,18 +122,18 @@ black-white-list:
 
 ### 过滤规则
 
-判断 table `test`.`t` 是否应该被忽略的过滤流程如下：
+判断 table `test`.`t` 是否应该被过滤的过滤流程如下：
 
 1. 首先 *schema 过滤判断*
 
     - 如果 `do-dbs` 不为空，判断 `do-dbs` 中是否存在一个匹配的 schema。
 
         - 如果存在，则进入 *table 过滤判断*。
-        - 如果不存在，则忽略 `test`.`t`。
+        - 如果不存在，则过滤 `test`.`t`。
 
     - 如果 `do-dbs` 为空并且 `ignore-dbs` 不为空，判断 `ignore-dbs` 中是否存在一个匹配的 schema。
 
-        - 如果存在，则忽略 `test`.`t`。
+        - 如果存在，则过滤 `test`.`t`。
         - 如果不存在，则进入 *table 过滤判断*。
 
     - 如果 `do-dbs` 和 `ignore-dbs` 都为空，则进入 *table 过滤判断*。
@@ -143,11 +143,11 @@ black-white-list:
     1. 如果 `do-tables` 不为空，判断 `do-tables` 中是否存在一个匹配的 table。
 
         - 如果存在，则同步 `test`.`t`。
-        - 如果不存在，则忽略 `test`.`t`。
+        - 如果不存在，则过滤 `test`.`t`。
 
     2. 如果 `ignore-tables` 不为空，判断 `ignore-tables` 中是否存在一个匹配的 table。
 
-        - 如果存在，则忽略 `test`.`t`.
+        - 如果存在，则过滤 `test`.`t`.
         - 如果不存在，则同步 `test`.`t`。
 
     3. 如果 `do-tables` 和 `ignore-tables` 都为空，则同步 `test`.`t`。
@@ -196,7 +196,7 @@ black-white-list:
 | `forum_backup_2016`.`messages` | 是 | schema `forum_backup_2016` 没有匹配到 `do-dbs` 任意一项 |
 | `forum_backup_2017`.`messages` | 是 | schema `forum_backup_2017` 没有匹配到 `do-dbs` 任意一项 |
 | `forum`.`users` | 是 | 1. schema `forum` 匹配到 `do-dbs` 进入 table 过滤<br> 2. schema 和 table 没有匹配到 `do-tables` 和 `ignore-tables` 中任意一项，并且 `do-tables` 不为空，因此过滤 |
-| `forum`.`messages` | 否 | 1. schema `forum` 匹配到 `do-dbs` 进入 table 过滤<br> 2. table `messages` 在 `do-tables` 的 `db-name: "~^forum.*",tbl-name: "messages"` |
+| `forum`.`messages` | 否 | 1. schema `forum` 匹配到 `do-dbs` 进入 table 过滤<br> 2. schema 和 table 匹配到 `do-tables` 的 `db-name: "~^forum.*",tbl-name: "messages"` |
 | `forum_backup_2018`.`messages` | 否 | 1. schema `forum_backup_2018` 匹配到 `do-dbs` 进入 table 过滤<br> 2. schema 和 table 匹配到 `do-tables` 的  `db-name: "~^forum.*",tbl-name: "messages"` |
 
 ## Binlog event filtering
@@ -227,7 +227,7 @@ filters:
     | --------------- | ---- | ----------------------------- |
     | all             |      | 代表包含下面所有的 events        |
     | all dml         |      | 代表包含下面所有 DML events     |
-    | all ddl         |      | 代表包含下面所有 DML events     |
+    | all ddl         |      | 代表包含下面所有 DDL events     |
     | none            |      | 代表不包含下面所有 events        |
     | none ddl        |      | 代表不包含下面所有 DDL events    |
     | none dml        |      | 代表不包含下面所有 DML events    |
@@ -251,10 +251,10 @@ filters:
 
     - `Do`: 白名单。binlog event 如果满足下面两个条件之一就会被过滤掉：
         - 不在该 rule 的 `events` 中。
-        - 如果规则的 `sql-pattern` 不为空的话，对应的 sql 可以匹配不上 `sql-pattern` 中任意一项。
+        - 如果规则的 `sql-pattern` 不为空的话，对应的 sql 没有匹配上 `sql-pattern` 中任意一项。
     - `Ignore`: 黑名单。 如果满足下面两个条件之一就会被过滤掉：
         - 在该 rule 的 `events` 中。
-        - 如果规则的 `sql-pattern` 不为空的话，对应的 sql 可以匹配上 `sql-pattern` 中一项。
+        - 如果规则的 `sql-pattern` 不为空的话，对应的 sql 可以匹配上 `sql-pattern` 中任意一项。
 
 ### 使用示例
 
@@ -345,7 +345,7 @@ column-mappings:
 ​    arguments: ["2", "test_", "t_"]
 ```
 
-### Parameter explanation
+### 参数解释
 
 - [`schema-pattern`/`table-pattern`](/tools/dm/table-selector.md): 对匹配上该规则的上游 MySQL/MariaDB 实例的表按照指定 `expression` 进行列值修改操作。
 - `source-column`，`target-column`：对 `source-column` 列的值按照指定 `expression` 进行修改，将修改后的值赋值给 `target-column`。
@@ -365,7 +365,7 @@ column-mappings:
 - 对分库分表的规模支持限制如下
   - 支持最多 16 个 MySQL/MariaDB 实例（0 <= instance ID <= 15）
   - 每个实例支持最多 128 个 schema（0 <= schema ID  <= 127）
-  - 每个实例的每个 schema 256 个 table（0 <= table ID <= 255）
+  - 每个实例的每个 schema 支持最多 256 个 table（0 <= table ID <= 255）
   - 进行列值映射的列的范围 (0 <= ID <= 17592186044415)
   - {instance ID、schema ID、table ID} 组合需要保持唯一
 - 目前该功能是定制功能，如果需要调整请联系相关开发人员进行调整
@@ -382,7 +382,7 @@ column-mappings:
 
 `partition id` 会将 arguments 里面的数值填充自增主键 ID 的首部比特位， 计算出来一个 int64 (既 MySQL bigint) 类型的值， 具体规则如下：
 
-int64 比特表示 `[1:1 bit] [2:4 bits] [3：7 bits] [4:8 bits] [5: 44 bits]` 
+int64 比特表示 `[1:1 bit] [2:4 bits] [3:7 bits] [4:8 bits] [5:44 bits]`
 - 1： 符号位，保留
 - 2： instance ID ，默认 4 bits
 - 3： schema ID，默认 7 bits
@@ -391,7 +391,7 @@ int64 比特表示 `[1:1 bit] [2:4 bits] [3：7 bits] [4:8 bits] [5: 44 bits]`
 
 ### 使用示例
 
-假设存在分库分表场景：将上游两个 MySQL 实例 `test_{1,2,3...}`.`t_{1,2,3...}` 同步到下游 TiDB 的 `test`.`t`，并且这些表都有自增主键。
+假设存在分库分表场景：将上游两个 MySQL 实例的 `test_{1,2,3...}`.`t_{1,2,3...}` 同步到下游 TiDB 的 `test`.`t`，并且这些表都有自增主键。
 
 需要设置下面两个规则：
 
@@ -413,7 +413,7 @@ column-mappings:
 ​    arguments: ["2", "test_", "t_"]
 ```
 
-- MySQL instance 1 的表 `test_1`.`t_1` 的 `ID = 1` 的列经过转换后 ID = 1 变为 `1 << (64-1-4) | 1 << (64-1-4-7) | 1 << 44 | 1 = 580981944116838401`
+- MySQL instance 1 的表 `test_1`.`t_1` 的 `ID = 1` 的行经过转换后 ID = 1 变为 `1 << (64-1-4) | 1 << (64-1-4-7) | 1 << 44 | 1 = 580981944116838401`
 - MySQL instance 2 的表 `test_1`.`t_2` 的 `ID = 1` 的行经过转换后 ID = 2 变为 `2 << (64-1-4) | 1 << (64-1-4-7) | 2 << 44 | 2 = 1157460288606306306`
 
 ## Synchronization delay monitoring

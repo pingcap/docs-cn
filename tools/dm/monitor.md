@@ -62,6 +62,8 @@ category: tools
 
 ## binlog replication
 
+下面 metrics 仅在 `task-mode` 为 `incremental` 或者 `all` 模式下会有值。
+
 | metric 名称 | 说明  | 告警说明 |
 |----:|:------------|:----|
 | remaining time to sync | 预计 syncer 还需要多少分钟可以和 master 完全同步，单位: 分钟 | N/A |
