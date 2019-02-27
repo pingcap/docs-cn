@@ -183,7 +183,7 @@ dm_worker1 ansible_host=172.16.10.72 server_id=101 source_id="mysql-replica-01" 
 
 根据场景需要，您可以在以下两种集群拓扑中任选一种：
 
-- [单节点上单个 DM-worker 实例的集群拓扑](##选项-1使用单节点上单个-dm-worker-实例的集群拓扑)
+- [单节点上单个 DM-worker 实例的集群拓扑](#选项-1使用单节点上单个-dm-worker-实例的集群拓扑)
 
 - [单节点上多个 DM-worker 实例的集群拓扑](#选项-2使用单节点多个-dm-worker-实例的集群拓扑)
 
