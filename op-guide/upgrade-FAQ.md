@@ -136,3 +136,65 @@ alter table t convert to character set utf8mb4;
 alter table t change column a a varchar(20) character set utf8mb4;
 ```
 
+### 问题3 : ERROR 1366 (HY000): incorrect utf8 value f09f8c80(🌀) for column a
+
+TiDB 在 v2.1.1 以及之前，如果 charset 是 UTF8, 是没有对插入数据是 4-byte UTF8 unicode encoding 检查，在v2.1.2 以及之后，添加了检查。
+
+升级前：v2.1.1 以及之前
+
+```SQL
+tidb> create table t(a varchar(100) charset utf8);
+Query OK, 0 rows affected
+tidb> insert t values (unhex('f09f8c80'));
+Query OK, 1 row affected
+```
+
+升级后：v2.1.2 以及之后
+
+```SQL
+tidb> insert t values (unhex('f09f8c80'));
+ERROR 1366 (HY000): incorrect utf8 value f09f8c80(🌀) for column a
+```
+
+解决方案：
+
+v2.1.2，该版本不支持修改 column charset, 所以只能跳过 UTF8 的检查
+
+```SQL
+tidb > set @@session.tidb_skip_utf8_check=1;
+Query OK, 0 rows affected
+tidb > insert t values (unhex('f09f8c80'));
+Query OK, 1 row affected
+```
+
+v2.1.3 以及之后，建议修改 column 的 charset 为 UTF8MB4。或者也可以设置 `tidb_skip_utf8_check` 变量跳过 UTF8 的检查。
+
+```SQL
+tidb > alter table t change column a a varchar(100) character set utf8mb4;
+Query OK, 0 rows affected
+tidb > insert t values (unhex('f09f8c80'));
+Query OK, 1 row affected
+```
+
+关于 `tidb_skip_utf8_check` 变量，具体来说是指跳过 UTF8 和 UTF8MB4 类型对数据的合法性检查。如果只想跳过 UTF8 类型的检查，可以设置 `tidb_check_mb4_value_in_utf8` 变量。
+
+`tidb_check_mb4_value_in_utf8` 在 v2.1.3 版本加入 `config.toml` 文件，可以修改配置文件里面的 `check-mb4-value-in-utf8` 后重启集群生效。
+
+`tidb_check_mb4_value_in_utf8` 在 v2.1.5 版本开始可以用 http api 来设置，也可以用 session 变量来设置。
+
+* http api（http api 只在单台服务器上生效）
+```shell
+# Enabled
+curl -X POST -d "check_mb4_value_in_utf8=1" http://{TiDBIP}:10080/settings
+
+# Disable
+curl -X POST -d "check_mb4_value_in_utf8=0" http://{TiDBIP}:10080/settings
+```
+* session variable 
+```SQL
+# Enabled
+set @@session.tidb_check_mb4_value_in_utf8 = 1;
+
+# Disable
+set @@session.tidb_check_mb4_value_in_utf8 = 0;
+```
