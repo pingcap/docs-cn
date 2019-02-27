@@ -1,12 +1,11 @@
 ---
-title: DM-Ansible 部署方案
-summary: DM 的 Ansible 部署方案
+title: 使用 DM-Ansible 部署 DM 集群
 category: tools
 ---
 
-# DM-Ansible 部署方案
+# 使用 DM-Ansible 部署 DM 集群
 
-DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/index.html) 的 [Playbooks](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html#about-playbooks) 研发的 DM 集群部署工具。本文将展示如何使用 DM-Ansible 快速部署 Data Migration (DM)。
+DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/index.html) 的 [Playbooks](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html#about-playbooks) 研发的 DM (Data Migration) 集群部署工具。本文将介绍如何使用 DM-Ansible 快速部署 DM 集群。
 
 ## 准备工作
 
@@ -24,7 +23,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
     - Ansible 2.5 或更高版本
     - 互联网访问
 
-## 第 1 步: 在中控机上安装依赖包
+## 第 1 步：在中控机上安装依赖包
 
 > **注意**：请确保使用 `root` 账户登陆中控机。
 
@@ -144,7 +143,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
 1. 将您部署的目标机器的IP地址加至 `hosts.ini` 文件中的 `[servers]` 部分。
 
-   ```
+    ```
     $ cd /home/tidb/dm-ansible
     $ vi hosts.ini
     [servers]
@@ -166,7 +165,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
 ## 第 6 步: 下载 DM 及监控组件安装包至中控机
 
->**注意**: 请确保中控机接入互联网。
+>**注意**：请确保中控机接入互联网。
 
 在中控机上，运行如下命令：
 
@@ -176,7 +175,9 @@ ansible-playbook local_prepare.yml
 
 ## 第 7 步：编辑 `inventory.ini` 配置文件
 
-用 `tidb` 用户登陆中控机，打开并编辑 `/home/tidb/dm-ansible/inventory.ini` 文件如下，以管控 DM 集群。
+> **注意**：请确保使用 `tidb` 账户登陆中控机。
+
+打开并编辑 `/home/tidb/dm-ansible/inventory.ini` 文件如下，以管控 DM 集群。
 
 ```ini
 dm_worker1 ansible_host=172.16.10.72 server_id=101 source_id="mysql-replica-01" mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
@@ -384,7 +385,7 @@ dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 
     ```ini
     ansible_user = tidb
     ```
-   > **注意:** 请勿将 `ansible_user` 设为 `root`，因为 `tidb-ansible` 限制服务需以普通用户运行。
+   > **注意**：请勿将 `ansible_user` 设为 `root`，因为 `tidb-ansible` 限制服务需以普通用户运行。
 
     运行以下命令。如果所有服务都返回 `root`，则 SSH 互信配置成功。
 
@@ -436,7 +437,7 @@ $ ansible-playbook stop.yml
 
 ### 自定义端口
 
-编辑 `inventory.ini` 文件，将服务端口的相关主机变量添加在对应服务IP地址后：
+编辑 `inventory.ini` 文件，将服务端口的相关主机变量添加在对应服务 IP 地址后：
 
 ```ini
 dm_master ansible_host=172.16.10.71 dm_master_port=18261
