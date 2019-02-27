@@ -1,10 +1,10 @@
 ---
-title: DM 分片合并场景
-summary: 学习分片合并场景下如何使用 DM 同步数据
+title: DM 分库分表合并场景
+summary: 学习分库分表合并场景下如何使用 DM 同步数据
 category: tools
 ---
 
-# Data Migration 分片合并场景
+# DM 分库分表合并场景
 
 本文介绍如何在分片合并场景中使用 Data Migration (DM)。使用场景中，三个上游 MySQL 实例的分库和分表数据需要同步至下游 TiDB 集群。
 
@@ -14,7 +14,7 @@ category: tools
 
 - 实例 1
 
-    | 库 | 表 |
+    | Schema | Tables |
     |:------|:------|
     | user  | information, log_north, log_bak |
     | store_01 | sale_01, sale_02 |
@@ -22,7 +22,7 @@ category: tools
 
 - 实例 2
 
-    | 库 | 表 |
+    | Schema | Tables |
     |:------|:------|
     | user  | information, log_east, log_bak |
     | store_01 | sale_01, sale_02 |
@@ -30,7 +30,7 @@ category: tools
 
 - 实例 3
 
-    | 库 | 表 |
+    | Schema | Tables |
     |:------|:------|
     | user  | information, log_south, log_bak |
     | store_01 | sale_01, sale_02 |
@@ -45,13 +45,13 @@ category: tools
 5. 过滤掉三个实例的 `user`.`information` 表的所有删除操作。
 6. 过滤掉三个实例的 `store_{01|02}`.`sale_{01|02}` 表的所有删除操作
 7. 过滤掉三个实例的 `user`.`log_bak` 表。
-8. 因为 `store_{01|02}`.`sale_{01|02}` 表带有 bigint 型的自增主键，将其合并至 TiDB 时会引发冲突。您需要修改相应自增主键以避免冲突。
+8. 因为 `store_{01|02}`.`sale_{01|02}` 表带有 bigint 型的自增主键，将其合并至 TiDB 时会引发冲突。您需要有方案修改相应自增主键以避免冲突。
 
 ## 下游实例
 
 假设同步后下游库结构如下：
 
-| 库 | 表 |
+| Schema | Tables |
 |:------|:------|
 | user | information, log_north, log_east, log_south|
 | store | sale |
