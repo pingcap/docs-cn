@@ -123,6 +123,7 @@
   + Data Migration
     - [简介](tools/dm/overview.md)
     - [使用限制](tools/dm/overview.md#使用限制)
+    - [使用 DM 同步数据](tools/dm/practice.md)
   + TiDB-Lightning
     - [简介](tools/lightning/overview-architecture.md)
     - [部署执行](tools/lightning/deployment.md)
