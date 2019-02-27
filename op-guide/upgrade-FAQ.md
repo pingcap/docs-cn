@@ -124,7 +124,7 @@ tidb > alter table t change column a a varchar(20);
 ERROR 1105 (HY000): unsupported modify charset from utf8mb4 to utf8
 ```
 
-因为 v2.1.3 之后支持修改 column 和  table 的 charset 了，所以这里推荐修改 table 的 charset 为 UTF8MB4。
+因为 v2.1.3 之后支持修改 column 和 table 的 charset 了，所以这里推荐修改 table 的 charset 为 UTF8MB4。
 
 ```SQL
 alter table t convert to character set utf8mb4;
