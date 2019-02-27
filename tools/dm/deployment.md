@@ -451,7 +451,7 @@ dm_master ansible_host=172.16.10.71 dm_master_port=18261
     $ mv dm-ansible dm-ansible-bak
     ```
 
-2. 下载最新版本 DM-Ansible，解压。
+2. 下载指定版本 DM-Ansible，解压。
 
     ```
     $ cd /home/tidb
