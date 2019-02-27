@@ -6,7 +6,7 @@ category: tools
 
 # DM 监控指标
 
-使用 DM-Ansible 部署的 DM 集群的时候，同时会部署一套 [monitoring system](/tools/dm/practice.md#step-7-monitor-the-task-and-check-logs)。
+使用 DM-Ansible 部署 DM 集群的时候，同时会部署一套 [monitoring system](/tools/dm/practice.md#step-7-monitor-the-task-and-check-logs)。
 
 > **注意:** 目前只有 DM-worker 提供了 metrics， DM-master 暂未提供。
 

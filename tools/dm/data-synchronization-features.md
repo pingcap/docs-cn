@@ -418,7 +418,7 @@ column-mappings:
 
 ## Synchronization delay monitoring
 
-heartbeat 支持根据真实同步数据来计算每个同步任务与 MySQL/Mariadb 实时同步延迟。
+DM 支持通过 heartbeat 真实同步数据来计算每个同步任务与 MySQL/MariaDB 的实时同步延迟。
 
 > **Note:**
 >
