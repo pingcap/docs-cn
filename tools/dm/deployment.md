@@ -36,13 +36,13 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
     # yum -y install python-pip
     ```
 
-- Ubuntu:
+- Ubuntu：
 
     ```
     # apt-get -y install git curl sshpass python-pip
     ```
 
-## 第 2 步: 在中控机上创建 `tidb` 用户，并生成 SSH 密钥
+## 第 2 步：在中控机上创建 `tidb` 用户，并生成 SSH 密钥
 
 > **注意**：请确保使用 `root` 账户登陆中控机。
 
@@ -58,7 +58,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
     # passwd tidb
     ```
 
-3. 在 sudo 文件尾部加上`tidb ALL=(ALL) NOPASSWD: ALL`，为 `tidb` 用户设置免密使用 sudo。
+3. 在 sudo 文件尾部加上 `tidb ALL=(ALL) NOPASSWD: ALL`，为 `tidb` 用户设置免密使用 sudo。
 
     ```
     # visudo
@@ -111,13 +111,11 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
     $ wget http://download.pingcap.org/dm-ansible-{version}.tar.gz
     ```
 
-## 第 4 步: 安装 DM-Ansible 及其依赖至中控机
+## 第 4 步：安装 DM-Ansible 及其依赖至中控机
 
 > **注意**：
-
-- 请确保使用 `tidb` 账户登陆中控机。
-
-- 您需要使用 `pip` 方式下载安装 Ansible 及其依赖，否则可能会遇到兼容性问题。 DM-Ansible 当前与 Ansible 2.5 或更高版本兼容。
+> - 请确保使用 `tidb` 账户登陆中控机。
+> - 您需要使用 `pip` 方式下载安装 Ansible 及其依赖，否则可能会遇到兼容性问题。 DM-Ansible 当前与 Ansible 2.5 或更高版本兼容。
 
 1. 在中控机上安装 DM-Ansible 及其依赖包：
 
@@ -132,16 +130,16 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
 2. 查看 Ansible 版本：
 
-   ```bash
+    ```bash
     $ ansible --version
     ansible 2.5.0
     ```
 
 ## 第 5 步：在中控机上配置 SSH 互信和 sudo 规则
 
-> **注意**: 请确保使用 `tidb` 账户登陆至中控机。
+> **注意**：请确保使用 `tidb` 账户登陆至中控机。
 
-1. 将您部署的目标机器的IP地址加至 `hosts.ini` 文件中的 `[servers]` 部分。
+1. 将您部署的目标机器的 IP 地址加至 `hosts.ini` 文件中的 `[servers]` 部分。
 
     ```
     $ cd /home/tidb/dm-ansible
@@ -163,7 +161,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
    该步骤将在部署目标机器上创建 `tidb` 用户，创建 sudo 规则，并为中控机和部署目标机器之间配置 SSH 互信。
 
-## 第 6 步: 下载 DM 及监控组件安装包至中控机
+## 第 6 步：下载 DM 及监控组件安装包至中控机
 
 >**注意**：请确保中控机接入互联网。
 
@@ -185,13 +183,13 @@ dm_worker1 ansible_host=172.16.10.72 server_id=101 source_id="mysql-replica-01" 
 
 根据场景需要，您可以在以下两种集群拓扑中任选一种：
 
-- [单节点上单个 DM-Worker 实例的集群拓扑](#选项-1-使用单节点单个-DM-Worker-实例的集群拓扑)
+- [单节点上单个 DM-worker 实例的集群拓扑](#选项-1-使用单节点单个-DM-Worker-实例的集群拓扑)
 
-- [单节点上多个 DM-Worker 实例的集群拓扑](#选项-2-使用单节点多个-DM-Worker-实例的集群拓扑)
+- [单节点上多个 DM-worker 实例的集群拓扑](#选项-2-使用单节点多个-DM-Worker-实例的集群拓扑)
 
 通常情况下，我们推荐每个节点上部署单个 DM-Worker 实例。但如果您的机器拥有性能远超 [TiDB 软件和硬件环境要求](/op-guide/recommendation.md)中推荐配置的CPU和内存，并且每个节点配置 2 块以上的硬盘或大于 2T 的 SSD，您可以在单个节点上部署不超过 2 个 DM-Worker 实例。
 
-### 选项 1: 使用单节点上单个 DM-Worker 实例的集群拓扑
+### 选项 1：使用单节点上单个 DM-Worker 实例的集群拓扑
 
 | 节点 | 主机 IP | 服务 |
 | ---- | ------- | -------- |
@@ -374,7 +372,7 @@ dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 
 | grafana_admin_user | Grafana 管理员用户名称，默认值 `admin` |
 | grafana_admin_password | Grafana 管理员账户的密码，用于通过 Ansible 导入 Dashboard。默认值为 `admin`。如果您在 Grafana 网页端修改了密码，请更新此变量。 |
 
-## 第 9 步: 部署 DM 集群
+## 第 9 步：部署 DM 集群
 
 使用 `ansible-playbook` 运行 Playbook，默认并发数量是 5。如果部署目标机器较多，您可以使用 `-f` 参数增加并发数量，例如，`ansible-playbook deploy.yml -f 10`。
 
