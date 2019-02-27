@@ -1,6 +1,5 @@
 ---
 title: DM 分库分表合并场景
-summary: 学习分库分表合并场景下如何使用 DM 同步数据
 category: tools
 ---
 
@@ -151,7 +150,7 @@ category: tools
 
 ## 同步任务配置
 
-同步任务的完整配置如下。更多信息，请参考 [Data Migration 任务配置文件](/tools/dm/task-configuration-file-intro.md).
+同步任务的完整配置如下。详情请参阅 [Data Migration 任务配置文件](/tools/dm/task-configuration-file-intro.md)。
 
 ```yaml
 name: "shard_merge"
