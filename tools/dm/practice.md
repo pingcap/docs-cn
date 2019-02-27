@@ -106,8 +106,6 @@ mydumpers:
 - 启动数据同步任务时，DM 自动检查相应的权限和配置。
 - 也可使用 `check-task` 命令手动前置检查上游的 MySQL 实例配置是否符合 DM 的配置要求。
 
-关于前置检查功能，详情参见 [上游 MySQL 实例配置前置检查](/tools/dm/manage-task.md#上游-mysql-实例配置前置检查)。
-
 > **注意**：第一次启动数据同步任务时，必须确保上游数据库已配置。否则，启动任务时会报错。
 
 1. 进入 dmctl 目录 `/home/tidb/dm-ansible/resources/bin/`。
