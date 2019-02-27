@@ -27,7 +27,7 @@ $ ansible-playbook stop.yml
 
 在以下情况下，需要更新 DM 集群组件：
 
-- 您想要 [更新组件版本](#更新组件版本)。
+- 您想要[更新组件版本](#更新组件版本)。
 - 发生了严重的错误，您需要重启组件完成临时恢复。
 - DM 集群所在的机器由于某种原因重启。
 
@@ -35,11 +35,11 @@ $ ansible-playbook stop.yml
 
 该部分描述重启 DM 各组件时需要了解的事项。
 
-#### 重启 DM-worker 事项
+#### DM-worker 重启事项
 
 **全量数据导入过程中：**
 
-对于全量数据导入时的 SQL 文件，DM 使用下游数据库记录断点信息。DM-worker 重启时会检查断点信息。您可以使用 [`start-task` 命令](/tools/dm/practice.md#step-4-start-the-data-synchronization-task) 自动恢复数据同步。
+对于全量数据导入时的 SQL 文件，DM 使用下游数据库记录断点信息。DM-worker 重启时会检查断点信息。您可以使用 [`start-task` 命令](/tools/dm/practice.md#step-4-start-the-data-synchronization-task)自动恢复数据同步。
 
 **增量数据同步过程中：**
 
@@ -47,7 +47,7 @@ $ ansible-playbook stop.yml
 
 + 未启用 sharding DDL 同步
 
-    如果 DM-worker 上运行的任务未启用 sharding DDL 同步功能，DM-worker 重启时会检查断点信息。您可以使用 [`start-task` 命令](/tools/dm/practice.md#step-4-start-the-data-synchronization-task) 自动恢复数据同步。
+    如果 DM-worker 上运行的任务未启用 sharding DDL 同步功能，DM-worker 重启时会检查断点信息。您可以使用 [`start-task` 命令](/tools/dm/practice.md#step-4-start-the-data-synchronization-task)自动恢复数据同步。
 
 + 已启用 sharding DDL 同步
 
@@ -59,7 +59,7 @@ $ ansible-playbook stop.yml
     
       此时 DM 会再次尝试同步这些未跳过执行的 DDL 语句。然而，由于未重启的 DM-worker 实例已经执行到了此 DDL 对应的 binlog event 之后，重启的 DM-worker 实例会被阻滞在重启前 DDL binlog event 对应的位置。
 
-      要解决这个问题，请按照 [手动处理 Sharding DDL Locks](/tools/dm/manually-handling-sharding-ddl-locks.md#scenario-2-some-dm-workers-restart-during-the-ddl-unlocking-process) 中描述的步骤操作。
+      要解决这个问题，请按照[手动处理 Sharding DDL Locks](/tools/dm/manually-handling-sharding-ddl-locks.md#scenario-2-some-dm-workers-restart-during-the-ddl-unlocking-process) 中描述的步骤操作。
 
 **总结**：尽量避免在 sharding DDL 同步过程中重启 DM-worker。
 
@@ -286,7 +286,7 @@ $ sh dmctl.sh     # Restart dmctl
 
 2. 关闭待替换的 DM-master 实例。
 
-    > *注意**：如果机器 `172.16.10.71` 宕机，无法通过 SSH 登陆，请忽略此步。
+    > **注意**：如果机器 `172.16.10.71` 宕机，无法通过 SSH 登陆，请忽略此步。
 
     ```
     $ ansible-playbook stop.yml --tags=dm-master
@@ -363,7 +363,7 @@ $ sh dmctl.sh     # Restart dmctl
     dm_worker2 ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
     ```
 
-4. 部署新 DM-worker 实例.
+4. 部署新 DM-worker 实例。
 
     ```
     $ ansible-playbook deploy.yml --tags=dm-worker -l dm_worker1
