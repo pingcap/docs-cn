@@ -13,7 +13,7 @@ TiDB 在 v2.1.0 以及之前（包括 v2.0 所有版本）默认字符集是 UTF
 
 记住下面 2 个要点：
 
-1. 在 v2.1.3 之前，不支持修改 column 的 charset。所以需要做 DDL 时需要新 column 的 charset 和 旧 column 的保持一致。
+1. 在 v2.1.3 之前，不支持修改 column 的 charset。所以执行 DDL 时需要新 column 的 charset 和旧 column 的保持一致。
 
 2. v2.1.3 之前，`show create table` 不会显示 column 的 charset，即使 column 的 charset 和 table 的 charset 不一样。可以通过 http  api 拿 table 的元信息查看 column 的 charset，下面会有示例。
 
