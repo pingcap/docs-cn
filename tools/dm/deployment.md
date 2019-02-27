@@ -3,7 +3,8 @@ title: DM-Ansible 部署方案
 summary: DM 的 Ansible 部署方案
 category: tools
 ---
-# 使用 DM-Ansible 部署 DM
+
+# DM-Ansible 部署方案
 
 DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/index.html) 的 [Playbooks](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html#about-playbooks) 研发的 DM 集群部署工具。本文将展示如何使用 DM-Ansible 快速部署 Data Migration (DM)。
 
@@ -285,8 +286,8 @@ grafana_admin_password = "admin"
 
 | 变量名称 | 描述 |
 | ------------- | ------- 
-| source_id | DM-worker 绑定至唯一的一个数据库实例或是具有主从架构的复制组。当发生主从切换的时候，只需要更新 `mysql_host` 或 `mysql_port` 而不用更改该 ID 标识。 |
-| server_id | DM-worker 伪装成一个 MySQL slave，该变量即为这个 slave 的服务器 ID，在 MySQL 集群中需保持全局唯一。取值范围 0 ~ 4294967295。|
+| source_id | DM-worker 绑定到的一个数据库实例或是具有主从架构的复制组。当发生主从切换的时候，只需要更新 `mysql_host` 或 `mysql_port` 而不用更改该 ID 标识。 |
+| server_id | DM-worker 伪装成一个 MySQL slave，该变量即为这个 slave 的 server ID，在 MySQL 集群中需保持全局唯一。取值范围 0 ~ 4294967295。|
 | mysql_host | 上游 MySQL 主机 |
 | mysql_user | 上游 MySQL 用户名，默认值为 “root”。|
 | mysql_password | 上游 MySQL 用户密码，需使用 `dmctl` 工具加密。请参考 [使用 dmctl 加密上游 MySQL 用户密码](#encrypt-the-upstream-mysql-user-password-using-dmctl). |
