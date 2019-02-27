@@ -455,7 +455,7 @@ dm_master ansible_host=172.16.10.71 dm_master_port=18261
 
     ```
     $ cd /home/tidb
-    $ wget http://download.pingcap.org/dm-ansible-latest.tar.gz
+    $ wget http://download.pingcap.org/dm-ansible-{version}.tar.gz
     $ tar -xzvf dm-ansible-latest.tar.gz
     $ mv dm-ansible-latest dm-ansible
     ```
