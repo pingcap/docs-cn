@@ -11,7 +11,7 @@ category: deployment
 
 TiDB 在 v2.1.0 以及之前（包括 v2.0 所有版本）默认字符集是 UTF8，从 v2.1.1 开始，默认字符集变更为 UTF8MB4。如果在 v2.1.0 之前建表时显式指定了 table 的 charset 为 UTF8，那后升级到 v2.1.1 之后，执行 DDL 变更可能会失败。
 
-记住下面 2 个要点：
+注意下面 2 个要点：
 
 1. 在 v2.1.3 之前，不支持修改 column 的 charset。所以执行 DDL 时需要新 column 的 charset 和旧 column 的保持一致。
 
@@ -37,7 +37,7 @@ tidb > show create table t
 Time: 0.006s
 ```
 
-升级后： v2.1.1,  v2.1.2（v2.1.3 以及之后不会出现下面的问题）
+升级后：v2.1.1, v2.1.2 会出现下面的问题，v2.1.3 以及之后不会出现下面的问题
 
 ```SQL
 tidb > alter table t change column a a varchar(20);
@@ -167,7 +167,7 @@ tidb > insert t values (unhex('f09f8c80'));
 Query OK, 1 row affected
 ```
 
-v2.1.3 以及之后，建议修改 column 的 charset 为 UTF8MB4。或者也可以设置 `tidb_skip_utf8_check` 变量跳过 UTF8 的检查。
+v2.1.3 以及之后，建议修改 column 的 charset 为 UTF8MB4。或者也可以设置 `tidb_skip_utf8_check` 变量跳过 UTF8 的检查，如果跳过 UTF8 的检查，在需要 TiDB 同步数据回 MySQL 的时候，可能会失败，因为 MySQL 会做这个检查。
 
 ```SQL
 tidb > alter table t change column a a varchar(100) character set utf8mb4;
@@ -176,7 +176,7 @@ tidb > insert t values (unhex('f09f8c80'));
 Query OK, 1 row affected
 ```
 
-关于 `tidb_skip_utf8_check` 变量，具体来说是指跳过 UTF8 和 UTF8MB4 类型对数据的合法性检查。如果只想跳过 UTF8 类型的检查，可以设置 `tidb_check_mb4_value_in_utf8` 变量。
+关于 `tidb_skip_utf8_check` 变量，具体来说是指跳过 UTF8 和 UTF8MB4 类型对数据的合法性检查，如果跳过这个检查，在需要 TiDB 同步数据回 MySQL 的时候，可能会失败，因为 MySQL 会做这个检查。如果只想跳过 UTF8 类型的检查，可以设置 `tidb_check_mb4_value_in_utf8` 变量。
 
 `tidb_check_mb4_value_in_utf8` 在 v2.1.3 版本加入 `config.toml` 文件，可以修改配置文件里面的 `check-mb4-value-in-utf8` 后重启集群生效。
 
