@@ -183,9 +183,9 @@ dm_worker1 ansible_host=172.16.10.72 server_id=101 source_id="mysql-replica-01" 
 
 根据场景需要，您可以在以下两种集群拓扑中任选一种：
 
-- [单节点上单个 DM-worker 实例的集群拓扑](#选项-1-使用单节点单个-DM-Worker-实例的集群拓扑)
+- [单节点上单个 DM-worker 实例的集群拓扑](#选项-1使用单节点上单个-dm-worker-实例的集群拓扑)
 
-- [单节点上多个 DM-worker 实例的集群拓扑](#选项-2-使用单节点多个-DM-Worker-实例的集群拓扑)
+- [单节点上多个 DM-worker 实例的集群拓扑](#选项-2使用单节点上多个-dm-worker-实例的集群拓扑)
 
 通常情况下，我们推荐每个节点上部署单个 DM-Worker 实例。但如果您的机器拥有性能远超 [TiDB 软件和硬件环境要求](/op-guide/recommendation.md)中推荐配置的CPU和内存，并且每个节点配置 2 块以上的硬盘或大于 2T 的 SSD，您可以在单个节点上部署不超过 2 个 DM-Worker 实例。
 
@@ -233,7 +233,7 @@ grafana_admin_user = "admin"
 grafana_admin_password = "admin"
 ```
 
-关于 DM-worker 参数的更多信息，请参考 [DM-worker 配置及参数描述](#DM-worker-配置及参数描述)。
+关于 DM-worker 参数的更多信息，请参考 [DM-worker 配置及参数描述](#dm-worker-配置及参数描述)。
 
 ### 选项 2：使用单节点上多个 DM-worker 实例的集群拓扑
 
@@ -289,7 +289,7 @@ grafana_admin_password = "admin"
 | server_id | DM-worker 伪装成一个 MySQL slave，该变量即为这个 slave 的 server ID，在 MySQL 集群中需保持全局唯一。取值范围 0 ~ 4294967295。|
 | mysql_host | 上游 MySQL 主机 |
 | mysql_user | 上游 MySQL 用户名，默认值为 “root”。|
-| mysql_password | 上游 MySQL 用户密码，需使用 `dmctl` 工具加密。请参考 [使用 dmctl 加密上游 MySQL 用户密码](#encrypt-the-upstream-mysql-user-password-using-dmctl). |
+| mysql_password | 上游 MySQL 用户密码，需使用 `dmctl` 工具加密。请参考[使用 dmctl 加密上游 MySQL 用户密码](#使用-dmctl-加密上游-mysql-用户密码)。 |
 | mysql_port | 上游 MySQL 端口， 默认 3306。 |
 | enable_gtid | DM-worker 是否使用全局事务标识符（GTID）拉取 binlog。使用前提是在上游 MySQL 已开启 GTID 模式。 |
 | relay_binlog_name | DM-worker 是否从指定 binlog 文件位置开始拉取 binlog。仅适用于本地无有效 relay log 的情况。|
