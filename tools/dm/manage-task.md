@@ -131,20 +131,20 @@ start-task [ -w "172.16.30.15:10081"] ./task.yaml
 ```bash
 » start-task task.yaml
 {
-​    "result": true,
-​    "msg": "",
-​    "workers": [
-​        {
-​            "result": true,
-​            "worker": "172.16.30.15:10081",
-​            "msg": ""
-​        },
-​        {
-​            "result": true,
-​            "worker": "172.16.30.16:10081",
-​            "msg": ""
-​        }
-​    ]
+     "result": true,
+     "msg": "",
+     "workers": [
+         {
+             "result": true,
+             "worker": "172.16.30.15:10081",
+             "msg": ""
+         },
+         {
+             "result": true,
+             "worker": "172.16.30.16:10081",
+             "msg": ""
+         }
+     ]
 }
 ```
 
@@ -189,84 +189,84 @@ query-status
 ```bash
 » query-status
 {
-​    "result": true,
-​    "msg": "",
-​    "workers": [
-​        {
-​            "result": true,
-​            "worker": "172.16.30.15:10081",
-​            "msg": "",
-​            "subTaskStatus": [
-​                {
-​                    "name": "test",
-​                    "stage": "Running",
-​                    "unit": "Sync",
-​                    "result": null,
-​                    "unresolvedDDLLockID": "",
-​                    "sync": {
-​                        "TotalEvents": "0",
-​                        "TotalTps": "0",
-​                        "RecentTps": "0",
-​                        "MasterBinlog": "(mysql-bin.000004, 484)",
-​                        "MasterBinlogGtid": "",
-​                        "SyncerBinlog": "(mysql-bin.000004, 484)",
-​                        "SyncerBinlogGtid": "",
+     "result": true,
+     "msg": "",
+     "workers": [
+         {
+             "result": true,
+             "worker": "172.16.30.15:10081",
+             "msg": "",
+             "subTaskStatus": [
+                 {
+                     "name": "test",
+                     "stage": "Running",
+                     "unit": "Sync",
+                     "result": null,
+                     "unresolvedDDLLockID": "",
+                     "sync": {
+                         "TotalEvents": "0",
+                         "TotalTps": "0",
+                         "RecentTps": "0",
+                         "MasterBinlog": "(mysql-bin.000004, 484)",
+                         "MasterBinlogGtid": "",
+                         "SyncerBinlog": "(mysql-bin.000004, 484)",
+                         "SyncerBinlogGtid": "",
                         "blockingDDLs": [
                         ],
                         "unresolvedGroups": [
                         ]
-​                    }
-​                }
-​            ],
-​            "relayStatus": {
-​                "MasterBinlog": "(mysql-bin.000004, 484)",
-​                "MasterBinlogGtid": "",
+                     }
+                 }
+             ],
+             "relayStatus": {
+                 "MasterBinlog": "(mysql-bin.000004, 484)",
+                 "MasterBinlogGtid": "",
                 "relaySubDir": "0-1.000001",
-​                "RelayBinlog": "(mysql-bin.000004, 484)",
-​                "RelayBinlogGtid": "",
+                 "RelayBinlog": "(mysql-bin.000004, 484)",
+                 "RelayBinlogGtid": "",
                 "relayCatchUpMaster": true,
                 "stage": "Running",
                 "result": null
-​            }
-​        },
-​        {
-​            "result": true,
-​            "worker": "172.16.30.16:10081",
-​            "msg": "",
-​            "subTaskStatus": [
-​                {
-​                    "name": "test",
-​                    "stage": "Running",
-​                    "unit": "Sync",
-​                    "result": null,
-​                    "unresolvedDDLLockID": "",
-​                    "sync": {
-​                        "TotalEvents": "0",
-​                        "TotalTps": "0",
-​                        "RecentTps": "0",
-​                        "MasterBinlog": "(mysql-bin.000004, 4809)",
-​                        "MasterBinlogGtid": "",
-​                        "SyncerBinlog": "(mysql-bin.000004, 4809)",
-​                        "SyncerBinlogGtid": "",
+             }
+         },
+         {
+             "result": true,
+             "worker": "172.16.30.16:10081",
+             "msg": "",
+             "subTaskStatus": [
+                 {
+                     "name": "test",
+                     "stage": "Running",
+                     "unit": "Sync",
+                     "result": null,
+                     "unresolvedDDLLockID": "",
+                     "sync": {
+                         "TotalEvents": "0",
+                         "TotalTps": "0",
+                         "RecentTps": "0",
+                         "MasterBinlog": "(mysql-bin.000004, 4809)",
+                         "MasterBinlogGtid": "",
+                         "SyncerBinlog": "(mysql-bin.000004, 4809)",
+                         "SyncerBinlogGtid": "",
                         "blockingDDLs": [
                         ],
                         "unresolvedGroups": [
                         ]
-​                    }
-​                }
-​            ],
-​            "relayStatus": {
-​                "MasterBinlog": "(mysql-bin.000004, 4809)",
-​                "MasterBinlogGtid": "",
+                     }
+                 }
+             ],
+             "relayStatus": {
+                 "MasterBinlog": "(mysql-bin.000004, 4809)",
+                 "MasterBinlogGtid": "",
                 "relaySubDir": "0-1.000001",
-​                "RelayBinlog": "(mysql-bin.000004, 4809)",
-​                "RelayBinlogGtid": "",
+                 "RelayBinlog": "(mysql-bin.000004, 4809)",
+                 "RelayBinlogGtid": "",
                 "relayCatchUpMaster": true,
                 "stage": "Running",
                 "result": null
-​            }
-​        }
-​    ]
+             }
+         }
+     ]
 }
 ```
 
@@ -309,23 +309,23 @@ pause-task [-w "127.0.0.1:10181"] task-name
 ```bash
 » pause-task test
 {
-​    "op": "Pause",
-​    "result": true,
-​    "msg": "",
-​    "workers": [
-​        {
-​            "op": "Pause",
-​            "result": true,
-​            "worker": "172.16.30.15:10081",
-​            "msg": ""
-​        },
-​        {
-​            "op": "Pause",
-​            "result": true,
-​            "worker": "172.16.30.16:10081",
-​            "msg": ""
-​        }
-​    ]
+     "op": "Pause",
+     "result": true,
+     "msg": "",
+     "workers": [
+         {
+             "op": "Pause",
+             "result": true,
+             "worker": "172.16.30.15:10081",
+             "msg": ""
+         },
+         {
+             "op": "Pause",
+             "result": true,
+             "worker": "172.16.30.16:10081",
+             "msg": ""
+         }
+     ]
 }
 ```
 
@@ -368,23 +368,23 @@ resume-task [-w "127.0.0.1:10181"] task-name
 ```bash
 » resume-task test
 {
-​    "op": "Resume",
-​    "result": true,
-​    "msg": "",
-​    "workers": [
-​        {
-​            "op": "Resume",
-​            "result": true,
-​            "worker": "172.16.30.15:10081",
-​            "msg": ""
-​        },
-​        {
-​            "op": "Resume",
-​            "result": true,
-​            "worker": "172.16.30.16:10081",
-​            "msg": ""
-​        }
-​    ]
+     "op": "Resume",
+     "result": true,
+     "msg": "",
+     "workers": [
+         {
+             "op": "Resume",
+             "result": true,
+             "worker": "172.16.30.15:10081",
+             "msg": ""
+         },
+         {
+             "op": "Resume",
+             "result": true,
+             "worker": "172.16.30.16:10081",
+             "msg": ""
+         }
+     ]
 }
 ```
 
@@ -427,23 +427,23 @@ stop-task [-w "127.0.0.1:10181"]  task-name
 ```bash
 » stop-task test
 {
-​    "op": "Stop",
-​    "result": true,
-​    "msg": "",
-​    "workers": [
-​        {
-​            "op": "Stop",
-​            "result": true,
-​            "worker": "172.16.30.15:10081",
-​            "msg": ""
-​        },
-​        {
-​            "op": "Stop",
-​            "result": true,
-​            "worker": "172.16.30.16:10081",
-​            "msg": ""
-​        }
-​    ]
+     "op": "Stop",
+     "result": true,
+     "msg": "",
+     "workers": [
+         {
+             "op": "Stop",
+             "result": true,
+             "worker": "172.16.30.15:10081",
+             "msg": ""
+         },
+         {
+             "op": "Stop",
+             "result": true,
+             "worker": "172.16.30.16:10081",
+             "msg": ""
+         }
+     ]
 }
 ```
 
@@ -517,20 +517,20 @@ update-task [-w "127.0.0.1:10181"] ./task.yaml
 ```bash
 » update-task task_all_black.yaml
 {
-​    "result": true,
-​    "msg": "",
-​    "workers": [
-​        {
-​            "result": true,
-​            "worker": "172.16.30.15:10081",
-​            "msg": ""
-​        },
-​        {
-​            "result": true,
-​            "worker": "172.16.30.16:10081",
-​            "msg": ""
-​        }
-​    ]
+     "result": true,
+     "msg": "",
+     "workers": [
+         {
+             "result": true,
+             "worker": "172.16.30.15:10081",
+             "msg": ""
+         },
+         {
+             "result": true,
+             "worker": "172.16.30.16:10081",
+             "msg": ""
+         }
+     ]
 }
 ```
 
@@ -542,4 +542,4 @@ update-task [-w "127.0.0.1:10181"] ./task.yaml
 
 `refresh-worker-tasks` 命令用于强制刷新 DM-master 内存中维护的 `task => DM-workers` 映射关系。
 
-> **注意：** 一般不需要使用此命令。仅当已确定 `task => DM-workers` 映射关系存在，但执行其它命令时仍提示必须刷新它时，你才需要使用此命令。
+> **注意**：一般不需要使用此命令。仅当已确定 `task => DM-workers` 映射关系存在，但执行其它命令时仍提示必须刷新它时，你才需要使用此命令。
