@@ -79,6 +79,9 @@ routes:
 假设存在下面两个路由规则，`test_1_bak`.`t_1_bak` 可以匹配上 `rule-1` 和 `rule-2`，违反 table 路由的限制而报错。
 
 ```yaml
+  rule-0:
+    schema-pattern: "test_*"
+    target-schema: "test"
   rule-1:
     schema-pattern: "test_*"
     table-pattern: "t_*"
@@ -416,13 +419,13 @@ column-mappings:
 - MySQL instance 1 的表 `test_1`.`t_1` 的 `ID = 1` 的行经过转换后 ID = 1 变为 `1 << (64-1-4) | 1 << (64-1-4-7) | 1 << 44 | 1 = 580981944116838401`
 - MySQL instance 2 的表 `test_1`.`t_2` 的 `ID = 1` 的行经过转换后 ID = 2 变为 `2 << (64-1-4) | 1 << (64-1-4-7) | 2 << 44 | 2 = 1157460288606306306`
 
-## Synchronization delay monitoring
+## 同步延迟监控
 
 DM 支持通过 heartbeat 真实同步数据来计算每个同步任务与 MySQL/MariaDB 的实时同步延迟。
 
 > **注意**：
 >
-> - 同步延迟的估算的精读在秒级别。
+> - 同步延迟的估算的精度在秒级别。
 > - heartbeat 相关的 binlog 不会同步到下游，在计算延迟后会被丢弃。
 
 ### 系统权限
