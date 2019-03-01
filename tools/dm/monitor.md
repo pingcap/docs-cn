@@ -6,20 +6,20 @@ category: tools
 
 # DM 监控指标
 
-使用 DM-Ansible 部署 DM 集群的时候，同时会部署一套 [monitoring system](/tools/dm/practice.md#step-7-monitor-the-task-and-check-logs)。
+使用 DM-Ansible 部署 DM 集群的时候，会默认部署一套[监控系统](/tools/dm/practice.md#step-7-monitor-the-task-and-check-logs)。
 
-> **注意:** 目前只有 DM-worker 提供了 metrics， DM-master 暂未提供。
+> **注意**：目前只有 DM-worker 提供了 metrics，DM-master 暂未提供。
 
 ## Task
 
-### task state
+### task 状态
 
 | metric 名称 | 说明 | 告警说明 |
-|----:|:------------|:----|
+|:----|:------------|:----|
 | task state | 同步子任务的状态 | 当子任务状态处于 paused 超过 10 分钟时|
 
 
-## relay log
+## Relay log
 
 | metric 名称 | 说明 | 告警说明 |
 |----:|:------------|:----|
@@ -37,21 +37,21 @@ category: tools
 | binlog size | relay log 写到磁盘的单条 binlog 的大小 | N/A |
 
 
-## dumper
+## Dumper
 
 下面 metrics 仅在 `task-mode` 为 `full` 或者 `all` 模式下会有值。
 
 | metric 名称 | 说明 | 告警说明 |
-|----:|:------------|:----|
+|:----|:------------|:----|
 | dump process exits with error | dumper 在 DM-worker 内部遇到错误并且退出了 | 立即告警 |
 
 
-## loader
+## Loader
 
 下面 metrics 仅在 `task-mode` 为 `full` 或者 `all` 模式下会有值。
 
 | metric 名称 | 说明 | 告警说明 |
-|----:|:------------|:----|
+|:----|:------------|:----|
 | load progress | loader 导入过程的进度百分比，值变化范围为：0 %- 100 %  | N/A |
 | data file size | loader 导入的全量数据中数据文件（内含 `INSERT INTO` 语句）的总大小 | N/A |
 | load process exits with error | loader 在 DM-worker 内部遇到错误并且退出了  | 立即告警 |
@@ -60,12 +60,12 @@ category: tools
 | latency of execute transaction | loader 在执行事务的时延，单位：秒 | N/A |
 | latency of query | loader 执行 query 的耗时，单位：秒 | N/A |
 
-## binlog replication
+## Binlog replication
 
 下面 metrics 仅在 `task-mode` 为 `incremental` 或者 `all` 模式下会有值。
 
 | metric 名称 | 说明  | 告警说明 |
-|----:|:------------|:----|
+|:----|:------------|:----|
 | remaining time to sync | 预计 syncer 还需要多少分钟可以和 master 完全同步，单位: 分钟 | N/A |
 | replicate lag | master 到 syncer 的 binlog 复制延迟时间，单位：秒 | N/A |
 | process exist with error | binlog replication 在 DM-worker 内部遇到错误并且退出了 | 立即告警 |
