@@ -33,7 +33,7 @@ category: tools
 | binlog file gap between master and relay | relay 与上游 master 相比落后的 binlog file 个数 | 落后 binlog file 个数超过 1 个（不含 1 个）且持续 10 分钟时 |
 | binlog pos | relay log 最新文件的写入 offset  | N/A |
 | read binlog duration | relay log 从上游的 MySQL 读取 binlog 的时延，单位：秒 |  N/A |
-| write relay log duration | relay log 每次写 binlog 到磁盘的时延，单位: 秒。| N/A |
+| write relay log duration | relay log 每次写 binlog 到磁盘的时延，单位：秒。| N/A |
 | binlog size | relay log 写到磁盘的单条 binlog 的大小 | N/A |
 
 
