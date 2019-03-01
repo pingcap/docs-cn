@@ -202,7 +202,7 @@ import (
     "github.com/juju/errors"
     "github.com/pingcap/tidb/kv"
     "github.com/pingcap/tidb/store/tikv"
-    "github.com/pingcap/tidb/terror"
+    "github.com/pingcap/parser/terror"
 
     goctx "golang.org/x/net/context"
 )
