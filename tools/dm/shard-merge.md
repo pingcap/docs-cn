@@ -7,7 +7,7 @@ category: tools
 
 本文介绍了 DM 提供的分库分表合并同步功能。此功能用于将上游 MySQL/MariaDB 实例中结构相同的表同步到下游 TiDB 的同一个表中。DM 不仅支持同步上游的 DML 数据，也支持协调同步多个上游分表的 DDL 表结构变更。
 
-> **注意：** 要执行分库分表合并同步任务，必须在任务配置文件中设置 `is-sharding: true`。
+> **注意**：要执行分库分表合并同步任务，必须在任务配置文件中设置 `is-sharding: true`。
 
 ### 使用限制
 
@@ -36,7 +36,7 @@ DM 进行分表 DDL 的同步有以下几点使用限制：
 
 - 增量同步任务需要确认开始同步的 binlog position 上各分表的表结构必须一致，才能确保来自不同分表的 DML 语句能够同步到表结构确定的下游，并且后续各分表的 DDL 语句能够正确匹配与同步。
 
-- 如果需要变更 [table routing 规则](/tools/dm/data-synchronization-features.md#table-routing) ，必须先等所有 sharding DDL 语句同步完成。
+- 如果需要变更 [table routing 规则](/tools/dm/data-synchronization-features.md#table-routing)，必须先等所有 sharding DDL 语句同步完成。
 
     - 在 sharding DDL 语句同步过程中，使用 dmctl 尝试变更 router-rules 会报错。
 
