@@ -39,7 +39,7 @@ $ ansible-playbook stop.yml
 
 **全量数据导入过程中：**
 
-对于全量数据导入时的 SQL 文件，DM 使用下游数据库记录断点信息。DM-worker 重启时会检查断点信息。您可以使用 [`start-task` 命令](/tools/dm/practice.md#step-4-start-the-data-synchronization-task)自动恢复数据同步。
+对于全量数据导入时的 SQL 文件，DM 使用下游数据库记录断点信息。DM-worker 重启时会检查断点信息。您可以使用 [`start-task` 命令](/tools/dm/practice.md#第-4-步启动任务)自动恢复数据同步。
 
 **增量数据同步过程中：**
 
@@ -59,7 +59,7 @@ $ ansible-playbook stop.yml
     
       此时 DM 会再次尝试同步这些未跳过执行的 DDL 语句。然而，由于未重启的 DM-worker 实例已经执行到了此 DDL 对应的 binlog event 之后，重启的 DM-worker 实例会被阻滞在重启前 DDL binlog event 对应的位置。
 
-      要解决这个问题，请按照[手动处理 Sharding DDL Locks](/tools/dm/manually-handling-sharding-ddl-locks.md#scenario-2-some-dm-workers-restart-during-the-ddl-unlocking-process) 中描述的步骤操作。
+      要解决这个问题，请按照[手动处理 Sharding DDL Lock](/tools/dm/manually-handling-sharding-ddl-locks.md#场景二-unlock-过程中部分-dm-worker-重启) 中描述的步骤操作。
 
 **总结**：尽量避免在 sharding DDL 同步过程中重启 DM-worker。
 
@@ -71,10 +71,6 @@ $ ansible-playbook stop.yml
 - Sharding DDL lock 的相关信息
 
 DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重建任务与 DM-worker 直接的对应关系，并从每个 DM-worker 实例获取 sharding DDL 信息。这样，就可以准确重建相应的 DDL lock，也可以自动解除 sharding DDL lock。
-
-#### dmctl 重启事项
-
-dmctl 组件是无状态的，您可以按需随时重启。 
 
 ### 重启 DM-worker
 
@@ -111,15 +107,6 @@ dmctl 组件是无状态的，您可以按需随时重启。
     $ ansible-playbook stop.yml --tags=dm-master
     $ ansible-playbook start.yml --tags=dm-master
     ```
-
-### 重启 dmctl
-
-使用以下命令停止并重启 dmctl，无需使用 DM-Ansible。
-
-```bash
-$ exit            # Stops the running dmctl
-$ sh dmctl.sh     # Restart dmctl
-```
 
 ## 更新组件版本
 
@@ -194,11 +181,11 @@ $ sh dmctl.sh     # Restart dmctl
 
     ```
     [dm_worker_servers]
-    dm_worker1 ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker1 source-id: "instance-1" ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-    dm_worker2 ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker2  source-id: "instance-2" ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-    dm_worker3 ansible_host=172.16.10.74 server_id=103 mysql_host=172.16.10.83 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker3 source-id: "instance-3" ansible_host=172.16.10.74 server_id=103 mysql_host=172.16.10.83 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
     ```
 
 3. 部署新 DM-worker 实例。
@@ -239,11 +226,11 @@ $ sh dmctl.sh     # Restart dmctl
 
     ```
     [dm_worker_servers]
-    dm_worker1 ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker1 source-id: "instance-1" ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-    dm_worker2 ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker2 source-id: "instance-2" ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-    # dm_worker3 ansible_host=172.16.10.74 server_id=103 mysql_host=172.16.10.83 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306 # Comment or delete this line
+    # dm_worker3 source-id: "instance-3" ansible_host=172.16.10.74 server_id=103 mysql_host=172.16.10.83 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306 # Comment or delete this line
     ```
 
 3. 配置并重启 DM-master 服务。
@@ -357,10 +344,10 @@ $ sh dmctl.sh     # Restart dmctl
 
     ```ini
     [dm_worker_servers]
-    dm_worker1 ansible_host=172.16.10.75 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker1 source-id: "instance-1" ansible_host=172.16.10.75 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
     # dm_worker1 ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-    dm_worker2 ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker2 source-id: "instance-2" ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
     ```
 
 4. 部署新 DM-worker 实例。
