@@ -5,7 +5,7 @@ category: tools
 
 # DM 分库分表合并场景
 
-本文介绍如何在分片合并场景中使用 Data Migration (DM)。使用场景中，三个上游 MySQL 实例的分库和分表数据需要同步至下游 TiDB 集群。
+本文介绍如何在分库分表合并场景中使用 Data Migration (DM)。使用场景中，三个上游 MySQL 实例的分库和分表数据需要同步至下游 TiDB 集群。
 
 ## 上游实例
 
@@ -42,7 +42,7 @@ category: tools
 3. 合并三个实例中的 `store_{01|02}`.`sale_{01|02}` 表至下游TiDB中的 `store`.`sale` 表。
 4. 过滤掉三个实例的 `user`.`log_{north|south|east}` 表的所有删除操作。
 5. 过滤掉三个实例的 `user`.`information` 表的所有删除操作。
-6. 过滤掉三个实例的 `store_{01|02}`.`sale_{01|02}` 表的所有删除操作
+6. 过滤掉三个实例的 `store_{01|02}`.`sale_{01|02}` 表的所有删除操作。
 7. 过滤掉三个实例的 `user`.`log_bak` 表。
 8. 因为 `store_{01|02}`.`sale_{01|02}` 表带有 bigint 型的自增主键，将其合并至 TiDB 时会引发冲突。您需要有方案修改相应自增主键以避免冲突。
 
@@ -67,7 +67,7 @@ category: tools
         target-schema: "user"
     ```
 
-- 要满足同步需求 #3, 配置 [Table routing 规则](/tools/dm/data-synchronization-features.md#table-routing) 如下：
+- 要满足同步需求 #3, 配置 [table routing 规则](/tools/dm/data-synchronization-features.md#table-routing) 如下：
 
     ```yaml
     routes:
@@ -82,7 +82,7 @@ category: tools
         target-table:  "sale"
     ```
 
-- 要满足同步需求 #4 和 #5, 配置 [Binlog event filtering 规则](/tools/dm/data-synchronization-features.md#binlog-event-filtering) 如下：
+- 要满足同步需求 #4 和 #5, 配置 [Binlog event filter 规则](/tools/dm/data-synchronization-features.md#binlog-event-filter) 如下：
 
     ```yaml
     filters:
@@ -95,7 +95,7 @@ category: tools
 
     > **注意：** 同步需求 #4、#5 和 #7 的操作意味着过滤掉所有对 `user` 库的删除操作，所以此处配置了库级别的过滤规则。但是 `user` 库以后加入表的删除操作也都会被过滤。
 
-- 要满足同步需求 #6, 配置 [Binlog event filtering 规则](/tools/dm/data-synchronization-features.md#binlog-event-filtering) 如下：
+- 要满足同步需求 #6, 配置 [Binlog event filter 规则](/tools/dm/data-synchronization-features.md#binlog-event-filter) 如下：
 
     ```yaml
     filters:
@@ -111,7 +111,7 @@ category: tools
         action: Ignore
     ```
 
-- 要满足同步需求 #7, 配置 [Black and white table lists](/tools/dm/data-synchronization-features.md#black-and-white-table-lists) 如下：
+- 要满足同步需求 #7, 配置 [black & white table lists](/tools/dm/data-synchronization-features.md#black-&-white-table-lists) 如下：
 
     ```yaml
     black-white-list:
@@ -121,7 +121,7 @@ category: tools
           tbl-name: "log_bak"
     ```
 
-- 要满足同步需求 #8, 配置 [Column mapping 规则](/tools/dm/data-synchronization-features.md#column-mapping) 如下：
+- 要满足同步需求 #8, 配置 [column mapping 规则](/tools/dm/data-synchronization-features.md#column-mapping) 如下：
 
     ```yaml
     column-mappings:
