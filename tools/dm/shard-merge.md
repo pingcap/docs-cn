@@ -128,7 +128,7 @@ DM 进行分表 DDL 的同步有以下几点使用限制：
 
 假设在数据同步过程中，不对分表的 DDL 语句进行额外处理。当 table_1 的 DDL 语句同步到下游从而变更下游表结构后，table_2 的 DML 语句（schema V1 版本）将无法正常同步。因此，在单个 DM-worker 内部，我们也构造了与 DM-master 内类似的逻辑 sharding group，但 group 的成员是同一个上游 MySQL 实例的不同分表。
 
-DM-worker 内协调处理 sharding group 的同步不完全与 DM-master 处理 DM-worker 之间的同步时一致，主要原因包括：
+DM-worker 内协调处理 sharding group 的同步与 DM-master 处理 DM-worker 之间的同步不完全一致，主要原因包括：
 
 - 当 DM-worker 收到 table_1 分表的 DDL 语句时，同步不能暂停，需要继续解析 binlog 才能获得后续 table_2 分表的 DDL 语句，即需要从 t2 时刻继续解析直到 t3 时刻。
 
@@ -152,7 +152,7 @@ DM-worker 内部 sharding DDL 同步的简化流程为：
 
 8. 对于 table_1 的 DML 语句（schema V2 版本），正常同步到下游；对于 table_2 的 DML 语句（schema V1 版本），忽略。
 
-9. 解析第四步时保存的 binlog 位置点，可得知在第三步时被忽略的所有 DML 语句都已经重新同步到下游。
+9. 解析到达第四步时保存的 binlog 位置点，可得知在第三步时被忽略的所有 DML 语句都已经重新同步到下游。
 
 10. DM-worker 继续从 t4 时刻对应的 binlog 位置点开始正常同步。
 
