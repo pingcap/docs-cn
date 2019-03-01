@@ -383,7 +383,7 @@ column-mappings:
 
 **`partition id` 表达式规则**
 
-`partition id` 会将 arguments 里面的数值填充自增主键 ID 的首部比特位，计算出来一个 int64 (既 MySQL bigint) 类型的值， 具体规则如下：
+`partition id` 会将 arguments 里面的数值填充自增主键 ID 的首部比特位，计算出来一个 int64（即 MySQL bigint）类型的值，具体规则如下：
 
 int64 比特表示 `[1:1 bit] [2:4 bits] [3:7 bits] [4:8 bits] [5:44 bits]`
 - 1：符号位，保留
