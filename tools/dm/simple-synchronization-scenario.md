@@ -68,7 +68,7 @@ category: tools
 
 ## 同步方案
 
-- 为了满足[同步要求](#同步要求)中第一点的前三条要求，需要配置以下[表路由规则](/tools/dm/data-synchronization-features.md#table-routing)：
+- 为了满足[同步要求](#同步要求)中第一点的前三条要求，需要配置以下 [table routing 规则](/tools/dm/data-synchronization-features.md#table-routing)：
 
     ```yaml
     routes:
@@ -84,7 +84,7 @@ category: tools
         target-schema: "user_south"
     ```
 
-- 为了满足[同步要求](#同步要求)中第二点的第一条要求，需要配置以下[表路由规则](/tools/dm/data-synchronization-features.md#table-routing)：
+- 为了满足[同步要求](#同步要求)中第二点的第一条要求，需要配置以下 [table routing 规则](/tools/dm/data-synchronization-features.md#table-routing)：
 
     ```yaml
     routes:
