@@ -28,8 +28,7 @@ show-ddl-locks [--worker=127.0.0.1:8262] [task-name]
 
 + `worker`：
     - flag 参数，string，`--worker`，可选
-    - 可重复多次指定
-    - 不指定时，查询所有 DM-worker 相关的 lock 信息；指定时，仅查询与这组 DM-worker 相关的 lock 信息
+    - 不指定时，查询所有 DM-worker 相关的 lock 信息；指定时，仅查询与这组 DM-worker 相关的 lock 信息，可重复多次指定
 
 + `task-name`：
     - 非 flag 参数，string，可选
@@ -75,8 +74,7 @@ unlock-ddl-lock [--worker=127.0.0.1:8262] [--owner] [--force-remove] <lock-ID>
 
 + `worker`：
     - flag 参数，string，`--worker`，可选
-    - 可重复多次指定
-    - 不指定时，对所有已经在等待该 lock 的 DM-worker 发起跳过 DDL 操作请求；指定时，仅对这组 DM-worker 发起跳过 DDL 操作请求
+    - 不指定时，对所有已经在等待该 lock 的 DM-worker 发起跳过 DDL 操作请求；指定时，仅对这组 DM-worker 发起跳过 DDL 操作请求，可重复多次指定
 
 + `owner`：
     - flag 参数，string，`--owner`，可选
