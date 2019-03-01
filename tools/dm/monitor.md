@@ -66,7 +66,7 @@ category: tools
 
 | metric 名称 | 说明  | 告警说明 |
 |:----|:------------|:----|
-| remaining time to sync | 预计 syncer 还需要多少分钟可以和 master 完全同步，单位: 分钟 | N/A |
+| remaining time to sync | 预计 syncer 还需要多少分钟可以和 master 完全同步，单位：分钟 | N/A |
 | replicate lag | master 到 syncer 的 binlog 复制延迟时间，单位：秒 | N/A |
 | process exist with error | binlog replication 在 DM-worker 内部遇到错误并且退出了 | 立即告警 |
 | binlog file gap between master and syncer | 与上游 master 相比落后的 binlog file 个数。| 落后 binlog file 个数超过 1 个（不含 1 个）且持续 10 分钟时 |
