@@ -1,5 +1,5 @@
 ---
-title: DM 配置文件概述
+title: DM 配置文件简介
 category: tools
 ---
 
