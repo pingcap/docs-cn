@@ -22,7 +22,7 @@ category: tools
 ## Relay log
 
 | metric 名称 | 说明 | 告警说明 |
-|----:|:------------|:----|
+|:----|:------------|:----|
 | storage capacity | relay log 占有的磁盘的总容量  | N/A |
 | storage remain | relay log 占有的磁盘的剩余可用容量  | 小于 10G 的时候需要告警 |
 | process exits with error | relay log 在 DM-worker 内部遇到错误并且退出了  | 立即告警 |
