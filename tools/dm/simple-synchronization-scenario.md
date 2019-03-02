@@ -101,7 +101,7 @@ category: tools
         target-table:  "store_shenzhen"
     ```
 
-- 为了满足[同步要求](#同步要求)中第一点的第四条要求，需要配置以下 [binlog event filter](/tools/dm/data-synchronization-features.md#binlog-event-filter)：
+- 为了满足[同步要求](#同步要求)中第一点的第四条要求，需要配置以下 [binlog event filter 规则](/tools/dm/data-synchronization-features.md#binlog-event-filter)：
 
     ```yaml
     filters:
@@ -117,7 +117,7 @@ category: tools
         action: Ignore
     ```
 
-- 为了满足[同步要求](#同步要求)中第二点的第二条要求，需要配置以下[binlog event filter](/tools/dm/data-synchronization-features.md#binlog-event-filter)：
+- 为了满足[同步要求](#同步要求)中第二点的第二条要求，需要配置以下 [binlog event filter 规则](/tools/dm/data-synchronization-features.md#binlog-event-filter)：
 
     ```yaml
     filters:
@@ -130,7 +130,7 @@ category: tools
 
     > **注意**：`store-filter-rule` 不同于 `log-filter-rule` 和 `user-filter-rule`。`store-filter-rule` 是针对整个 `store` 库的规则，而 `log-filter-rule` 和 `user-filter-rule` 是针对 `user` 库中 `log` 表的规则。
 
-- 为了满足[同步要求](#同步要求)中的第三点要求，需要配置以下 [black-&-white-table-lists](/tools/dm/data-synchronization-features.md#black-&-white-table-lists)：
+- 为了满足[同步要求](#同步要求)中的第三点要求，需要配置以下 [black & white table lists 规则](/tools/dm/data-synchronization-features.md#black-&-white-table-lists)：
 
     ```yaml
     black-white-list:
