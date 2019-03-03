@@ -6,7 +6,7 @@ category: tools
 
 # 数据同步功能
 
-本文将详细介绍 DM 提供的数据同步功能，以及相关的配置选项
+本文将详细介绍 DM 提供的数据同步功能，以及相关的配置选项。
 
 ## Table routing
 
@@ -15,7 +15,7 @@ Table routing 提供将上游 MySQL/MariaDB 实例的某些表同步到下游指
 > **注意**：
 >
 > - 不支持对同一个表设置多个不同的路由规则。
-> - Schema 的匹配规则需要单独设置，用来同步 `create/drop schema xx`，例如下面的 rule-2。
+> - Schema 的匹配规则需要单独设置，用来同步 `create/drop schema xx`，例如下面[参数配置](#参数配置)中的 rule-2。
 
 ### 参数配置
 
@@ -33,7 +33,7 @@ routes:
 
 ### 参数解释
 
-将根据 [`schema-pattern`/`table-pattern`](/tools/dm/table-selector.md) 匹配上该规则的上游 MySQL/MariaDB 实例的表同步到下游的 `target-schema`/`target-table`
+将根据 [`schema-pattern`/`table-pattern`](/tools/dm/table-selector.md) 匹配上该规则的上游 MySQL/MariaDB 实例的表同步到下游的 `target-schema`/`target-table`。
 
 ### 使用示例
 
@@ -98,7 +98,7 @@ routes:
 
 上游数据库实例表的黑白名单过滤规则，可以用来过滤或者只同步某些 `database/table` 的所有操作。
 
-### 配置参数
+### 参数配置
 
 ```yaml
 black-white-list:
@@ -192,7 +192,7 @@ black-white-list:
 应用 `bw-rule` 规则后：
 
 | table | 是否过滤| 过滤的原因 |
-|----:|:----|:--------------|
+|:----|:----|:--------------|
 | `logs`.`messages_2016` | 是 | schema `logs` 没有匹配到 `do-dbs` 任意一项 |
 | `logs`.`messages_2017` | 是 | schema `logs` 没有匹配到 `do-dbs` 任意一项 |
 | `logs`.`messages_2018` | 是 | schema `logs` 没有匹配到 `do-dbs` 任意一项 |
@@ -452,4 +452,4 @@ enable-heartbeat: true
 - DM-worker 每个任务拿到 `dm_heartbeat`.`heartbeat` 的 binlog 后，更新自己的同步时间 `TS_slave_task`
 - DM-worker 每 10 秒在对应的上游 MySQL/MariaDB 的 `dm_heartbeat`.`heartbeat` 查询当前的 `TS_master`，并且对每个任务计算 `task_lag` = `TS_master` - `TS_slave_task`
 
-可以在 metrics 的 binlog replication 处理单元找到该监控 [replicate lag](/tools/dm/maintenance/metrics-alert.md#binlog-replication)
+可以在 metrics 的 [binlog replication](/tools/dm/monitor.md#binlog-replication) 处理单元找到 replicate lag 监控项。

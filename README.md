@@ -123,9 +123,26 @@
   + Data Migration
     - [简介](tools/dm/overview.md)
     - [使用限制](tools/dm/overview.md#使用限制)
+    + 核心特性
+      - [Table Routing](tools/dm/data-synchronization-features.md#table-routing)
+      - [Black & White Table Lists](tools/dm/data-synchronization-features.md#black--white-table-lists)
+      - [Binlog Event Filter](tools/dm/data-synchronization-features.md#binlog-event-filter)
+      - [Column Mapping](tools/dm/data-synchronization-features.md#column-mapping)
+      - [同步延迟监控](tools/dm/data-synchronization-features.md#同步延迟监控)
+      + Shard Support
+        - [简介](tools/dm/overview.md#shard-support)
+        - [使用限制](tools/dm/shard-merge.md#使用限制)
+        - [手动处理 Sharding DDL Lock](tools/dm/manually-handling-sharding-ddl-locks.md)
+    + 使用场景
+      - [简单的从库同步场景](tools/dm/simple-synchronization-scenario.md)
+      - [分库分表合并场景](tools/dm/shard-merge-scenario.md)
+    - [部署 DM 集群](tools/dm/deployment.md)
     - [使用 DM 同步数据](tools/dm/practice.md)
-    - 配置
-      - [任务配置](tools/dm/task-configuration-file-intro.md)
+    + DM 配置
+      - [简介](tools/dm/dm-configuration-file-overview.md)
+      - [数据同步任务配置](tools/dm/task-configuration-file-intro.md)
+    - [监控 DM 集群](tools/dm/monitor.md)
+    - [管理数据同步任务](tools/dm/manage-task.md)
   + TiDB-Lightning
     - [简介](tools/lightning/overview-architecture.md)
     - [部署执行](tools/lightning/deployment.md)

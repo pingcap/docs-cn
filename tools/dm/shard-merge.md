@@ -106,7 +106,7 @@ DM 进行分表 DDL 的同步有以下几点使用限制：
 
 - 如果 sharding group 的所有成员都收到了某一条相同的 DDL 语句，则表明上游分表在该 DDL 执行前的 DML 语句都已经同步完成，此时可以执行该 DDL 语句，并继续后续的 DML 同步。
 
-- 上游所有分表的 DDL 在经过 [table router](/tools/dm/data-synchronization-features.md#table-routing)  转换后需要保持一致，因此仅需 DDL 锁的 owner 执行一次该 DDL 语句即可，其他 DM-worker 可直接忽略对应的 DDL 语句。
+- 上游所有分表的 DDL 在经过 [table router](/tools/dm/data-synchronization-features.md#table-routing) 转换后需要保持一致，因此仅需 DDL 锁的 owner 执行一次该 DDL 语句即可，其他 DM-worker 可直接忽略对应的 DDL 语句。
 
 在上面的示例中，每个 DM-worker 对应的上游 MySQL 实例中只有一个待合并的分表。但在实际场景下，一个 MySQL 实例可能有多个分库内的多个分表需要进行合并，这种情况下，sharding DDL 的协调同步过程将更加复杂。
 
