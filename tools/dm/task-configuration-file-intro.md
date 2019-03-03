@@ -50,7 +50,7 @@ target-database:                # 下游数据库实例配置。
 全局配置主要包含下列功能配置集。
 
 ```yaml
-routes:                                             # 上游和下游表之间的路由映射规则集。
+routes:                                             # 上游和下游表之间的路由 table routing 规则集。
     route-rule-1:
          schema-pattern: "test_*"                
          table-pattern: "t_*"
@@ -60,7 +60,7 @@ routes:                                             # 上游和下游表之间�
          schema-pattern: "test_*"
          target-schema: "test"
 
-filters:                                            # 上游数据库实例匹配的表的 binlog event 过滤规则集。
+filters:                                            # 上游数据库实例匹配的表的 binlog event filter 规则集。
     filter-rule-1:
          schema-pattern: "test_*"
          table-pattern: "t_*"
@@ -71,7 +71,7 @@ filters:                                            # 上游数据库实例匹�
         events: ["all dml"]                         # 只执行 schema `test_*` 下面所有的 DML event。
         action: Do
 
-black-white-list:                                   # 该上游数据库实例匹配的表的 black white list 过滤规则集。
+black-white-list:                                   # 该上游数据库实例匹配的表的 black & white list 过滤规则集。
     bw-rule-1:
         do-dbs: ["~^test.*", "user"]
         ignore-dbs: ["mysql", "account"]
@@ -133,7 +133,7 @@ mysql-instances:
             binlog-pos: 4
 
         route-rules: ["route-rule-1", "route-rule-2"]    # 该上游数据库实例匹配的表到下游数据库的 table routing 规则名称。
-        filter-rules: ["filter-rule-1"]                  # 该上游数据库实例匹配的表的 binlog filter 规则名称。
+        filter-rules: ["filter-rule-1"]                  # 该上游数据库实例匹配的表的 binlog event filter 规则名称。
         column-mapping-rules: ["cm-rule-1"]              # 该上游数据库实例匹配的表的 column mapping 规则名称。
         black-white-list:  "bw-rule-1"                   # 该上游数据库实例匹配的表的 black & white list 过滤规则名称。
 
