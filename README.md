@@ -124,6 +124,8 @@
     - [简介](tools/dm/overview.md)
     - [使用限制](tools/dm/overview.md#使用限制)
     - [使用 DM 同步数据](tools/dm/practice.md)
+    - 配置
+      - [任务配置](tools/dm/task-configuration-file-intro.md)
   + TiDB-Lightning
     - [简介](tools/lightning/overview-architecture.md)
     - [部署执行](tools/lightning/deployment.md)
