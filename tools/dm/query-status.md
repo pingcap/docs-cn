@@ -30,7 +30,7 @@ category: tools
                         "totalEvents": "12",    # 该子任务中同步的 binlog event 总数。
                         "totalTps": "1",        # 该子任务中每秒同步的 binlog event 数量。
                         "recentTps": "1",       # 该子任务中最后一秒同步的 binlog event 数量。
-                        "masterBinlog": "(bin.000001, 3234)",                               # binlog 在上游数据库所处位置。
+                        "masterBinlog": "(bin.000001, 3234)",                               # 上游数据库当前的 binlog position。
                         "masterBinlogGtid": "c0149e17-dff1-11e8-b6a8-0242ac110004:1-14",    # 上游数据库当前的 GTID 信息。
                         "syncerBinlog": "(bin.000001, 2525)",                               # 已被 `Sync` 处理单元同步的 binlog position。
                         "syncerBinlogGtid": "",                                             # 当前版本总是为空（因为 `Sync` 处理单元暂不使用 GTID 同步数据）。
