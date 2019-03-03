@@ -23,10 +23,10 @@ category: tools
                 {
                     "name": "test",         # 子任务名称。
                     "stage": "Running",     # 子任务运行状态，包括 “New”，“Running“，”Paused“，“Stopped“ 以及 ”Finished“。
-                    "unit": "Sync",         # DM 的处理单元，包括 ”Check“，"Dump“，”Load“ 以及 ”Sync“。
+                    "unit": "Sync",         # DM 的处理单元，包括 ”Check“，“Dump“，”Load“ 以及 ”Sync“。
                     "result": null,         # 子任务失败时显示错误信息。
                     "unresolvedDDLLockID": "test-`test`.`t_target`",    # sharding DDL lock ID，可用于异常情况下手动处理 sharding DDL lock。
-                    "sync": {                   # 当前 `Sync` 处理单元的同步信息。 
+                    "sync": {                   # 当前 `Sync` 处理单元的同步信息。
                         "totalEvents": "12",    # 该子任务中同步的 binlog event 总数。
                         "totalTps": "1",        # 该子任务中每秒同步的 binlog event 数量。
                         "recentTps": "1",       # 该子任务中最后一秒同步的 binlog event 数量。
@@ -34,7 +34,7 @@ category: tools
                         "masterBinlogGtid": "c0149e17-dff1-11e8-b6a8-0242ac110004:1-14",    # 上游数据库当前的 GTID 信息。
                         "syncerBinlog": "(bin.000001, 2525)",                               # 已被 `Sync` 处理单元同步的 binlog position。
                         "syncerBinlogGtid": "",                                             # 当前版本总是为空（因为 `Sync` 处理单元暂不使用 GTID 同步数据）。
-                        "blockingDDLs": [       # 当前被阻塞的 DDL 列表。该项仅在当前 DM-worker 所有上游表都处于 “synced" 状态时才有数值，此时该列表包含的是待执行或待跳过的 sharding DDL 语句.
+                        "blockingDDLs": [       # 当前被阻塞的 DDL 列表。该项仅在当前 DM-worker 所有上游表都处于 “synced“ 状态时才有数值，此时该列表包含的是待执行或待跳过的 sharding DDL 语句.
                             "USE `test`; ALTER TABLE `test`.`t_target` DROP COLUMN `age`;"
                         ],
                         "unresolvedGroups": [   # 没有被解决的 sharding group 信息。
@@ -53,7 +53,7 @@ category: tools
                                 ]
                             }
                         ],
-                        "synced": false         # 增量同步是否已追上上游。由于后台 `Sync` 单元并不会实时刷新保存点，当前值为 "false" 并不一定代表发生了同步延迟。
+                        "synced": false         # 增量同步是否已追上上游。由于后台 `Sync` 单元并不会实时刷新保存点，当前值为 “false“ 并不一定代表发生了同步延迟。
                     }
                 }
             ],
@@ -155,20 +155,20 @@ category: tools
 
 - `Running`：正常运行状态。
 
-- `Paused`: 
+- `Paused`：
 
-    - 暂停状态。 
+    - 暂停状态。
     - 子任务发生错误，状态切换为 `Paused`。
     - 如在子任务为 `Running` 状态下执行 `pause-task` 命令，任务状态会切换为 `Paused`。
     - 如子任务处于该状态，可以使用 `resume-task` 命令恢复任务。
 
-- `Stopped`: 
+- `Stopped`：
 
     - 停止状态。
     - 如在子任务为 `Running` 或 `Paused` 状态下执行 `stop-task` 命令，任务状态会切换为 `Stopped`。
     - 如子任务处于该状态，不可使用 `resume-task` 命令恢复任务。
 
-- `Finished`: 
+- `Finished`：
 
     - 任务完成状态。
     - 只有 `task-mode` 为 `full` 的任务正常完成后，任务才会切换为该状态。
