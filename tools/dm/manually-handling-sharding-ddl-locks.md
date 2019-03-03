@@ -10,7 +10,7 @@ DM (Data Migration) 使用 sharding DDL lock 来确保分库分表的 DDL 操作
 > **注意**：
 >
 > - 不要轻易使用 `unlock-ddl-lock`/`break-ddl-lock` 命令，除非完全明确当前场景下使用这些命令可能会造成的影响，并能接受这些影响。
-> - 在手动处理异常的 DDL lock 前，请确保已经了解 DM 的[分库分表合并同步原理](/tools/dm/shard-merge.md)。
+> - 在手动处理异常的 DDL lock 前，请确保已经了解 DM 的[分库分表合并同步原理](/tools/dm/shard-merge.md#背景)。
 
 ## 命令介绍
 
@@ -162,7 +162,7 @@ break-ddl-lock <--worker=127.0.0.1:8262> [--remove-id] [--exec] [--skip] <task-n
 
 #### Lock 异常原因
 
-在 DM-master 尝试自动 unlock sharding DDL lock 之前，需要等待所有 DM-worker 的 sharding DDL events 全部到达。如果 sharding DDL 已经在同步过程中，且有部分 DM-worker 下线，并且不再计划重启它们（按业务需求移除了这部分 DM-worker），则会由于永远无法等齐所有的 DDL 而造成 lock 无法自动 unlock。
+在 DM-master 尝试自动 unlock sharding DDL lock 之前，需要等待所有 DM-worker 的 sharding DDL events 全部到达（详见[分库分表合并同步原理](/tools/dm/shard-merge.md#背景)）。如果 sharding DDL 已经在同步过程中，且有部分 DM-worker 下线，并且不再计划重启它们（按业务需求移除了这部分 DM-worker），则会由于永远无法等齐所有的 DDL 而造成 lock 无法自动 unlock。
 
 #### 手动处理示例
 
@@ -316,7 +316,7 @@ MySQL 及 DM 操作与处理流程如下：
 
 #### 手动处理示例
 
-仍然假设是 [部分 DM-worker 下线](#场景一部分-DM-worker-下线) 示例中的上下游表结构及合表同步需求。
+仍然假设是 [部分 DM-worker 下线](#场景一部分-dm-worker-下线) 示例中的上下游表结构及合表同步需求。
 
 当在 DM-master 自动执行 unlock 操作的过程中，owner (DM-worker-1) 成功执行了 DDL 操作且开始继续进行后续同步，并移除了 DM-master 上的 DDL lock 信息；但在请求 DM-worker-2 跳过 DDL 操作的过程中，由于 DM-worker-2 发生了重启而跳过 DDL 操作失败。
 
@@ -383,13 +383,13 @@ DM-worker-2 重启后，将尝试重新同步重启前已经在等待的 DDL loc
 
 #### Lock 异常原因
 
-与 [unlock 过程中部分 DM-worker 重启](#场景二unlock-过程中部分-DM-worker-重启) 造成 lock 异常的原因类似。当请求 DM-worker 跳过 DDL 操作时，如果该 DM-worker 临时不可达，则会造成该 DM-worker 跳过 DDL 操作失败。此时 DM-master 上的 lock 信息被移除，但该 DM-worker 将处于等待一个不再存在的 DDL lock 的状态。
+与 [unlock 过程中部分 DM-worker 重启](#场景二unlock-过程中部分-dm-worker-重启) 造成 lock 异常的原因类似。当请求 DM-worker 跳过 DDL 操作时，如果该 DM-worker 临时不可达，则会造成该 DM-worker 跳过 DDL 操作失败。此时 DM-master 上的 lock 信息被移除，但该 DM-worker 将处于等待一个不再存在的 DDL lock 的状态。
 
-场景三与[场景二](#场景二unlock-过程中部分-DM-worker-重启)的区别在于，场景三中 DM-master 没有 lock，而场景二中 DM-master 有一个新的 lock。
+场景三与[场景二](#场景二unlock-过程中部分-dm-worker-重启)的区别在于，场景三中 DM-master 没有 lock，而场景二中 DM-master 有一个新的 lock。
 
 #### 手动处理示例
 
-仍然假设是 [部分 DM-worker 下线](#场景一部分-DM-worker-下线) 示例中的上下游表结构及合表同步需求。
+仍然假设是 [部分 DM-worker 下线](#场景一部分-dm-worker-下线) 示例中的上下游表结构及合表同步需求。
 
 在 DM-master 自动执行 unlock 操作的过程中，owner (DM-worker-1) 成功执行了 DDL 操作且开始继续进行后续同步，并移除了 DM-master 上的 DDL lock 信息，但在请求 DM-worker-2 跳过 DDL 操作的过程中，由于网络原因等临时不可达而跳过 DDL 操作失败。
 

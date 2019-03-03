@@ -45,27 +45,27 @@ dmctl 是用来控制 DM 集群的命令行工具。
 
 ## 同步功能介绍
 
-下面简单介绍 DM 数据同步功能的五大特性。
+下面简单介绍 DM 数据同步功能的核心特性。
 
-### 库表路由
+### Table routing
 
-库表路由是指将上游 MySQL 或 MariaDB 实例的某些表同步到下游指定表的路由功能，可以用于分库分表的合并同步。
+[Table routing](/tools/dm/data-synchronization-features.md#table-routing) 是指将上游 MySQL 或 MariaDB 实例的某些表同步到下游指定表的路由功能，可以用于分库分表的合并同步。
 
-### 库表同步黑白名单
+### Black & white table lists
 
-库表同步黑白名单是指上游数据库实例表的黑白名单过滤规则。其过滤规则类似于 MySQL `replication-rules-db`/`replication-rules-table`，可以用来过滤或只同步某些数据库或某些表的所有操作。
+[Black & white table lists](/tools/dm/data-synchronization-features.md#black--white-table-lists) 是指上游数据库实例表的黑白名单过滤规则。其过滤规则类似于 MySQL `replication-rules-db`/`replication-rules-table`，可以用来过滤或只同步某些数据库或某些表的所有操作。
 
-### Binlog event 过滤
+### Binlog event filter
 
-Binlog event 过滤是比库表同步黑白名单更加细粒度的过滤规则，可以指定只同步或者过滤掉某些 `schema`/`table` 的指定类型的 binlog events，比如 `INSERT`，`TRUNCATE TABLE`。
+[Binlog event filter](/tools/dm/data-synchronization-features.md#binlog-event-filter) 是比库表同步黑白名单更加细粒度的过滤规则，可以指定只同步或者过滤掉某些 `schema`/`table` 的指定类型的 binlog events，比如 `INSERT`，`TRUNCATE TABLE`。
 
-### 列值转换
+### Column mapping
 
-列值转换是指根据用户指定的内置表达式对表的列进行转换，可以用来解决分库分表合并时自增主键 ID 的冲突。
+[Column mapping](/tools/dm/data-synchronization-features.md#column-mapping) 是指根据用户指定的内置表达式对表的列进行转换，可以用来解决分库分表合并时自增主键 ID 的冲突。
 
-### 分库分表支持
+### Shard support
 
-DM 支持对原分库分表进行合库合表操作，但需要满足一些限制。
+DM 支持对原分库分表进行合库合表操作，但需要满足一些[使用限制](/tools/dm/shard-merge.md#使用限制)。
 
 ## 使用限制
 
@@ -76,7 +76,7 @@ DM 支持对原分库分表进行合库合表操作，但需要满足一些限�
     - 5.5 < MySQL 版本 < 5.8
     - MariaDB 版本 >= 10.1.2
 
-    在使用 dmctl 启动任务时，DM 会对任务上下游数据库的配置、权限等进行前置检查。
+    在使用 dmctl 启动任务时，DM 会自动对任务上下游数据库的配置、权限等进行[前置检查](/tools/dm/precheck.md)。
 
 + DDL 语法
 
@@ -86,9 +86,10 @@ DM 支持对原分库分表进行合库合表操作，但需要满足一些限�
 
 + 分库分表
 
-    如果业务分库分表之间存在数据冲突，冲突的列**只有自增主键列**，并且**列的类型是 bigint**，可以尝试使用列值转换来解决；否则不推荐使用 DM 进行同步，如果进行同步则有冲突的数据会相互覆盖造成数据丢失。
+    - 如果业务分库分表之间存在数据冲突，冲突的列**只有自增主键列**，并且**列的类型是 bigint**，可以尝试使用 [Column mapping](/tools/dm/data-synchronization-features.md#column-mapping) 来解决；否则不推荐使用 DM 进行同步，如果进行同步则有冲突的数据会相互覆盖造成数据丢失。
+    - 关于分库分表合并场景的其它限制，参见[使用限制](/tools/dm/shard-merge.md#使用限制)。
 
 + 操作限制
 
-    - DM-worker 重启后不能自动恢复数据同步任务，需要使用 dmctl 手动执行 `start-task`。
-    - 在一些情况下，DM-worker 重启后不能自动恢复 DDL lock 同步，需要手动处理。
+    - DM-worker 重启后不能自动恢复数据同步任务，需要使用 dmctl 手动执行 `start-task`。详见[管理数据同步任务](/tools/dm/manage-task.md)。
+    - 在一些情况下，DM-worker 重启后不能自动恢复 DDL lock 同步，需要手动处理。详见[手动处理 Sharding DDL Lock](/tools/dm/manually-handling-sharding-ddl-locks.md)。

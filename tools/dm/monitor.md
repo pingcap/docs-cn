@@ -6,7 +6,7 @@ category: tools
 
 # DM 监控指标
 
-使用 DM-Ansible 部署 DM 集群的时候，会默认部署一套[监控系统](/tools/dm/practice.md#step-7-monitor-the-task-and-check-logs)。
+使用 DM-Ansible 部署 DM 集群的时候，会默认部署一套[监控系统](/tools/dm/practice.md#第-7-步监控任务与查看日志)。
 
 > **注意**：目前只有 DM-worker 提供了 metrics，DM-master 暂未提供。
 
@@ -17,7 +17,6 @@ category: tools
 | metric 名称 | 说明 | 告警说明 |
 |:----|:------------|:----|
 | task state | 同步子任务的状态 | 当子任务状态处于 paused 超过 10 分钟时|
-
 
 ## Relay log
 
@@ -36,7 +35,6 @@ category: tools
 | write relay log duration | relay log 每次写 binlog 到磁盘的时延，单位：秒。| N/A |
 | binlog size | relay log 写到磁盘的单条 binlog 的大小 | N/A |
 
-
 ## Dumper
 
 下面 metrics 仅在 `task-mode` 为 `full` 或者 `all` 模式下会有值。
@@ -44,7 +42,6 @@ category: tools
 | metric 名称 | 说明 | 告警说明 |
 |:----|:------------|:----|
 | dump process exits with error | dumper 在 DM-worker 内部遇到错误并且退出了 | 立即告警 |
-
 
 ## Loader
 

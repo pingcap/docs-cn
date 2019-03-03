@@ -124,7 +124,7 @@ syncers:                                            # syncer 处理单元运行�
 
 本小节定义具体的数据同步子任务，DM 支持从单个或者多个上游 MySQL 实例同步数据到同一个下游数据库实例。
 
-```
+```yaml
 mysql-instances:
     -
         source-id: "mysql-replica-01"           # 上游实例或者复制组 ID，参考 `inventory.ini` 的 `source_id` 或者 `dm-master.toml` 的 `source-id` 配置。
@@ -148,7 +148,7 @@ mysql-instances:
         syncer-config-name: "global"            # syncer 配置名称。
 ```
 
-关于以上配置项的更多配置细节，参见[功能配置集](#功能配置集) 的相关配置项，对应关系如下：
+关于以上配置项的更多配置细节，参见[功能配置集](#功能配置集)的相关配置项，对应关系如下：
 
 | 配置项 | 相关配置项 |
 | :------ | :------------------ |

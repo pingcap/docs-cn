@@ -111,7 +111,7 @@ category: tools
         action: Ignore
     ```
 
-- 要满足同步需求 #7，配置 [black & white table lists](/tools/dm/data-synchronization-features.md#black-&-white-table-lists) 如下：
+- 要满足同步需求 #7，配置 [Black & white table lists](/tools/dm/data-synchronization-features.md#black--white-table-lists) 如下：
 
     ```yaml
     black-white-list:
