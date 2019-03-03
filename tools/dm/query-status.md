@@ -32,7 +32,7 @@ category: tools
                         "recentTps": "1",       # 该子任务中最后一秒同步的 binlog event 数量。
                         "masterBinlog": "(bin.000001, 3234)",                               # binlog 在上游数据库所处位置。
                         "masterBinlogGtid": "c0149e17-dff1-11e8-b6a8-0242ac110004:1-14",    # 上游数据库当前的 GTID 信息。
-                        "syncerBinlog": "(bin.000001, 2525)",                               # 已被 `Sync` 处理单元同步的 binlog 位置。
+                        "syncerBinlog": "(bin.000001, 2525)",                               # 已被 `Sync` 处理单元同步的 binlog position。
                         "syncerBinlogGtid": "",                                             # 当前版本总是为空（因为 `Sync` 处理单元暂不使用 GTID 同步数据）。
                         "blockingDDLs": [       # 当前被阻塞的 DDL 列表。该项仅在当前 DM-worker 所有上游表都处于 “synced" 状态时才有数值，此时该列表包含的是待执行或待跳过的 sharding DDL 语句.
                             "USE `test`; ALTER TABLE `test`.`t_target` DROP COLUMN `age`;"
@@ -53,16 +53,15 @@ category: tools
                                 ]
                             }
                         ],
-                        "synced": false         # 增量同步是否已追上上游。由于后台 `Sync` 单元并不会实时刷新保存点，当前值为 "false"
-                                                # 并不一定代表发生了同步延迟。
+                        "synced": false         # 增量同步是否已追上上游。由于后台 `Sync` 单元并不会实时刷新保存点，当前值为 "false" 并不一定代表发生了同步延迟。
                     }
                 }
             ],
             "relayStatus": {    # relay 单元的同步状态.
-                "masterBinlog": "(bin.000001, 3234)",                               # 上游数据库的 binlog 位置。
+                "masterBinlog": "(bin.000001, 3234)",                               # 上游数据库的 binlog position。
                 "masterBinlogGtid": "c0149e17-dff1-11e8-b6a8-0242ac110004:1-14",    # 上游数据库的 binlog GTID 信息。
                 "relaySubDir": "c0149e17-dff1-11e8-b6a8-0242ac110004.000001",       # 当前使用的 relay log 子目录。
-                "relayBinlog": "(bin.000001, 3234)",                                # 已被拉取至本地存储的 binlog 位置。
+                "relayBinlog": "(bin.000001, 3234)",                                # 已被拉取至本地存储的 binlog position。
                 "relayBinlogGtid": "c0149e17-dff1-11e8-b6a8-0242ac110004:1-14",     # 已被拉取至本地存储的 binlog GTID 信息。
                 "relayCatchUpMaster": true,     # 本地 relay log 同步进度是否与上游一致。
                 "stage": "Running",             # relay 处理单元状态
@@ -98,35 +97,6 @@ category: tools
                 "result": null
             }
         },
-        {
-            "result": true,
-            "worker": "172.17.0.3:10081",
-            "msg": "",
-            "subTaskStatus": [
-                {
-                    "name": "test",
-                    "stage": "Running",
-                    "unit": "Load",
-                    "result": null,
-                    "unresolvedDDLLockID": "",
-                    "load": {                   # `Load` 处理单元的同步信息。
-                        "finishedBytes": "115", # 已加载字节数。
-                        "totalBytes": "452",    # 待加载字节数。
-                        "progress": "25.44 %"   # 加载进度。
-                    }
-                }
-            ],
-            "relayStatus": {
-                "masterBinlog": "(bin.000001, 28507)",
-                "masterBinlogGtid": "c0149e17-dff1-11e8-b6a8-0242ac110004:1-96",
-                "relaySubDir": "c0149e17-dff1-11e8-b6a8-0242ac110004.000001",
-                "relayBinlog": "(bin.000001, 28507)",
-                "relayBinlogGtid": "c0149e17-dff1-11e8-b6a8-0242ac110004:1-96",
-                "relayCatchUpMaster": true,
-                "stage": "Running",
-                "result": null
-            }
-        }
         {
             "result": true,
             "worker": "172.17.0.6:10081",
