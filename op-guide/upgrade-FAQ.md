@@ -107,7 +107,7 @@ tidb > show create table t
 
 上面 `show create table` 只显示出了 table 的 charset，但其实 column 的 charset 是 UTF8MB4，这可以通过 HTTP API 获取 schema 来确认。这是一个 bug，即此处建表时 column 的 charset 应该要和 table 保持一致为 UTF8，该问题在 v2.1.3 中已经修复。
 
-升级后：v2.1.3 以及之后
+升级后：v2.1.3 及之后版本
 
 ```SQL
 tidb > show create table t
