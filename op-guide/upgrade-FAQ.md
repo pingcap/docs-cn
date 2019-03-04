@@ -87,7 +87,7 @@ alter table t change column a a varchar(22) character set utf8;
 }
 ```
 
-### 问题2 : unsupported modify charset from utf8mb4 to utf8
+### 问题 2：`unsupported modify charset from utf8mb4 to utf8`
 
 升级前：v2.1.1，v2.1.2
 
