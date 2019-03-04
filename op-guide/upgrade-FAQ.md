@@ -158,7 +158,7 @@ ERROR 1366 (HY000): incorrect utf8 value f09f8c80(🌀) for column a
 
 解决方案：
 
-v2.1.2，该版本不支持修改 column charset, 所以只能跳过 UTF8 的检查
+- v2.1.2 版本：该版本不支持修改 column charset，所以只能跳过 UTF8 的检查。
 
 ```SQL
 tidb > set @@session.tidb_skip_utf8_check=1;
