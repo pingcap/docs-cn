@@ -167,7 +167,7 @@ tidb > insert t values (unhex('f09f8c80'));
 Query OK, 1 row affected
 ```
 
-v2.1.3 以及之后，建议修改 column 的 charset 为 UTF8MB4。或者也可以设置 `tidb_skip_utf8_check` 变量跳过 UTF8 的检查，如果跳过 UTF8 的检查，在需要 TiDB 同步数据回 MySQL 的时候，可能会失败，因为 MySQL 会做这个检查。
+- v2.1.3 及之后版本：建议修改 column 的 charset 为 UTF8MB4。或者也可以设置 `tidb_skip_utf8_check` 变量跳过 UTF8 的检查。如果跳过 UTF8 的检查，在需要将数据从 TiDB 同步回 MySQL 的时候，可能会失败，因为 MySQL 会执行该检查。
 
 ```SQL
 tidb > alter table t change column a a varchar(100) character set utf8mb4;
