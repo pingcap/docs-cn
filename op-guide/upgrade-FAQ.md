@@ -37,7 +37,7 @@ tidb > show create table t
 Time: 0.006s
 ```
 
-升级后：v2.1.1, v2.1.2 会出现下面的问题，v2.1.3 以及之后不会出现下面的问题
+升级后：v2.1.1、v2.1.2 会出现下面的问题，v2.1.3 以及之后版本不会出现下面的问题。
 
 ```SQL
 tidb > alter table t change column a a varchar(20);
