@@ -17,7 +17,7 @@ TiDB 在 v2.1.0 以及之前版本（包括 v2.0 所有版本）中，默认字�
 
 2. 在 v2.1.3 之前，即使 column 的 charset 和 table 的 charset 不一样，`show create table` 也不会显示 column 的 charset，但可以通过 HTTP API 获取 table 的元信息来查看 column 的 charset，下文提供了示例。
 
-### 问题1: unsupported modify column charset utf8mb4 not match origin utf8
+### 问题 1：`unsupported modify column charset utf8mb4 not match origin utf8`
 
 升级前：v2.1.0 以及之前
 
