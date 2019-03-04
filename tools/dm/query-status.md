@@ -22,8 +22,8 @@ category: tools
             "subTaskStatus": [              # DM-worker 所有子任务的信息。
                 {
                     "name": "test",         # 子任务名称。
-                    "stage": "Running",     # 子任务运行状态，包括 “New”，“Running“，”Paused“，“Stopped“ 以及 ”Finished“。
-                    "unit": "Sync",         # DM 的处理单元，包括 ”Check“，“Dump“，”Load“ 以及 ”Sync“。
+                    "stage": "Running",     # 子任务运行状态，包括 “New”，“Running”，“Paused”，“Stopped” 以及 “Finished”。
+                    "unit": "Sync",         # DM 的处理单元，包括 “Check”，“Dump“，“Load” 以及 “Sync”。
                     "result": null,         # 子任务失败时显示错误信息。
                     "unresolvedDDLLockID": "test-`test`.`t_target`",    # sharding DDL lock ID，可用于异常情况下手动处理 sharding DDL lock。
                     "sync": {                   # 当前 `Sync` 处理单元的同步信息。
