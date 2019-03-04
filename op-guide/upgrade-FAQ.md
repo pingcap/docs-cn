@@ -180,7 +180,7 @@ Query OK, 1 row affected
 
 `tidb_check_mb4_value_in_utf8` 在 v2.1.3 版本加入 `config.toml` 文件，可以修改配置文件里面的 `check-mb4-value-in-utf8` 后重启集群生效。
 
-`tidb_check_mb4_value_in_utf8` 在 v2.1.5 版本开始可以用 http api 来设置，也可以用 session 变量来设置。
+`tidb_check_mb4_value_in_utf8` 在 v2.1.5 版本开始可以用 HTTP API 来设置，也可以用 session 变量来设置。
 
 * HTTP API（HTTP API 只在单台服务器上生效）
 ```shell
