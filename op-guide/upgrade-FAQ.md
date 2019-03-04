@@ -1,5 +1,5 @@
 ---
-title: 升级后常见问题与解答(upgrade FAQ)
+title: 升级后常见问题与解答
 category: deployment
 ---
 
