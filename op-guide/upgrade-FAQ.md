@@ -89,7 +89,7 @@ alter table t change column a a varchar(22) character set utf8;
 
 ### 问题2 : unsupported modify charset from utf8mb4 to utf8
 
-升级前：v2.1.1, v2.1.2
+升级前：v2.1.1，v2.1.2
 
 ```SQL
 tidb > create table t(a varchar(10)) charset=utf8;
