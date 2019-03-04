@@ -149,7 +149,7 @@ tidb> insert t values (unhex('f09f8c80'));
 Query OK, 1 row affected
 ```
 
-升级后：v2.1.2 以及之后
+升级后：v2.1.2 及之后版本
 
 ```SQL
 tidb> insert t values (unhex('f09f8c80'));
