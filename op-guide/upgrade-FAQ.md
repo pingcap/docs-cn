@@ -140,7 +140,7 @@ alter table t change column a a varchar(20) character set utf8mb4;
 
 TiDB 在 v2.1.1 及之前版本中，如果 charset 是 UTF8，没有对 4-byte 的插入数据进行 UTF8 Unicode encoding 检查。在v2.1.2 及之后版本中，添加了该检查。
 
-升级前：v2.1.1 以及之前
+升级前：v2.1.1 及之前版本
 
 ```SQL
 tidb> create table t(a varchar(100) charset utf8);
