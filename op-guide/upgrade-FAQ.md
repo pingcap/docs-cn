@@ -52,7 +52,7 @@ alter table t change column a a varchar(22) character set utf8;
 
 根据要点 1，此处如果不指定 column 的 charset，会用默认的 UTF8MB4，所以需要指定 column charset 保持和原来一致。
 
-根据要点 2，用 http api 获取 table 元信息，然后根据 column 名字和 Charset 关键字搜索即可找到 column 的 charset。
+根据要点 2，用 HTTP API 获取 table 元信息，然后根据 column 名字和 Charset 关键字搜索即可找到 column 的 charset。
 
 ```shell
 ▶ curl "http://$IP:10080/schema/test/t" | python -m json.tool  # 这里用了 python 的格式化 json的工具，也可以不加，此处只是为了方便注释。
