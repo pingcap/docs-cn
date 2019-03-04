@@ -130,7 +130,7 @@ ERROR 1105 (HY000): unsupported modify charset from utf8mb4 to utf8
 alter table t convert to character set utf8mb4;
 ```
 
-也可以像问题 1 一样指定 column 的 charset，保持和 column 原来的 charset  UTF8MB4 一致即可。
+也可以像问题 1 一样指定 column 的 charset，保持和 column 原来的 charset (UTF8MB4) 一致即可。
 
 ```SQL
 alter table t change column a a varchar(20) character set utf8mb4;
