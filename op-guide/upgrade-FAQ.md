@@ -19,7 +19,7 @@ TiDB 在 v2.1.0 以及之前版本（包括 v2.0 所有版本）中，默认字�
 
 ### 问题 1：`unsupported modify column charset utf8mb4 not match origin utf8`
 
-升级前：v2.1.0 以及之前
+升级前：v2.1.0 及之前版本
 
 ```SQL
 tidb > create table t(a varchar(10)) charset=utf8;
