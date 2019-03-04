@@ -7,7 +7,7 @@ category: deployment
 
 本文列出了一些升级后的可能会遇到的问题。
 
-## 执行 DDL 时遇到的字符集（charset）问题
+## 执行 DDL 操作时遇到的字符集 (charset) 问题
 
 TiDB 在 v2.1.0 以及之前（包括 v2.0 所有版本）默认字符集是 UTF8，从 v2.1.1 开始，默认字符集变更为 UTF8MB4。如果在 v2.1.0 之前建表时显式指定了 table 的 charset 为 UTF8，那后升级到 v2.1.1 之后，执行 DDL 变更可能会失败。
 
