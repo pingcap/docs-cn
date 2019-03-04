@@ -190,7 +190,7 @@ curl -X POST -d "check_mb4_value_in_utf8=1" http://{TiDBIP}:10080/settings
 # Disable
 curl -X POST -d "check_mb4_value_in_utf8=0" http://{TiDBIP}:10080/settings
 ```
-* session variable 
+* Session 变量
 ```SQL
 # Enabled
 set @@session.tidb_check_mb4_value_in_utf8 = 1;
