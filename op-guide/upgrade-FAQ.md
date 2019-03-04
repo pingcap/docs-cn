@@ -136,7 +136,7 @@ alter table t convert to character set utf8mb4;
 alter table t change column a a varchar(20) character set utf8mb4;
 ```
 
-### 问题3 : ERROR 1366 (HY000): incorrect utf8 value f09f8c80(🌀) for column a
+### 问题 3：`ERROR 1366 (HY000): incorrect utf8 value f09f8c80(🌀) for column a`
 
 TiDB 在 v2.1.1 以及之前，如果 charset 是 UTF8, 是没有对插入数据是 4-byte UTF8 unicode encoding 检查，在v2.1.2 以及之后，添加了检查。
 
