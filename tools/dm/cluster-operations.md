@@ -70,7 +70,7 @@ $ ansible-playbook stop.yml
 - 任务与 DM-master 之间的对应关系
 - Sharding DDL lock 的相关信息
 
-DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重建任务与 DM-worker 直接的对应关系，并从每个 DM-worker 实例获取 sharding DDL 信息。这样，就可以准确重建相应的 DDL lock，也可以自动解除 sharding DDL lock。
+DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重建任务与 DM-worker 之间的对应关系，并从每个 DM-worker 实例获取 sharding DDL 信息。这样，就可以准确重建相应的 DDL lock，也可以自动解除 sharding DDL lock。
 
 ### 重启 DM-worker
 
@@ -181,11 +181,11 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
     ```
     [dm_worker_servers]
-    dm_worker1 source-id: "instance-1" ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker1 source_id: "instance-1" ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-    dm_worker2  source-id: "instance-2" ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker2  source_id: "instance-2" ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-    dm_worker3 source-id: "instance-3" ansible_host=172.16.10.74 server_id=103 mysql_host=172.16.10.83 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker3 source_id: "instance-3" ansible_host=172.16.10.74 server_id=103 mysql_host=172.16.10.83 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
     ```
 
 3. 部署新 DM-worker 实例。
@@ -226,11 +226,11 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
     ```
     [dm_worker_servers]
-    dm_worker1 source-id: "instance-1" ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker1 source_id: "instance-1" ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-    dm_worker2 source-id: "instance-2" ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker2 source_id: "instance-2" ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-    # dm_worker3 source-id: "instance-3" ansible_host=172.16.10.74 server_id=103 mysql_host=172.16.10.83 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306 # Comment or delete this line
+    # dm_worker3 source_id: "instance-3" ansible_host=172.16.10.74 server_id=103 mysql_host=172.16.10.83 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306 # Comment or delete this line
     ```
 
 3. 配置并重启 DM-master 服务。
@@ -344,10 +344,10 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
     ```ini
     [dm_worker_servers]
-    dm_worker1 source-id: "instance-1" ansible_host=172.16.10.75 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker1 source_id: "instance-1" ansible_host=172.16.10.75 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
     # dm_worker1 ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-    dm_worker2 source-id: "instance-2" ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker2 source_id: "instance-2" ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
     ```
 
 4. 部署新 DM-worker 实例。
@@ -383,7 +383,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 1. 使用 `query-status` 命令确认 relay 处理单元已获取主从切换前 master 实例的所有 binlog（`relayCatchUpMaster`）。
 2. 使用 `pause-relay` 命令暂停 relay 处理。
 3. 使用 `pause-task` 命令暂停所有运行任务。
-4. 虚拟 IP 环境下的上游主从实例执行切换。 
+4. 虚拟 IP 环境下的上游主从实例执行切换。
 5. 使用 `switch-relay-master` 命令通知 relay 处理单元进行主从切换。
 6. 使用 `resume-relay` 命令恢复 relay 处理，从新 master 实例读取 binlog。
 7. 使用 `resume-task` 命令恢复之前的同步任务。
@@ -392,6 +392,5 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
 1. 使用 `query-status` 命令确认 relay 处理单元已获取主从切换前 master 实例的所有 binlog（`relayCatchUpMaster`）。
 2. 使用 `stop-task` 停止所有运行任务。
-3. 修改 DM-worker 配置，并使用 Ansible 对 DM-worker 进行滚动升级操作。
-4. 更新 `task.yaml` 文件以及 `mysql-instances / config` 配置。
-5. 使用 `start-task` 命令重新启动同步任务。
+3. 修改 DM-worker 配置，并使用 DM-Ansible 对 DM-worker 进行滚动升级操作。
+4. 使用 `start-task` 命令重新启动同步任务。
