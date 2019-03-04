@@ -11,7 +11,7 @@ category: deployment
 
 TiDB 在 v2.1.0 以及之前版本（包括 v2.0 所有版本）中，默认字符集是 UTF8。从 v2.1.1 开始，默认字符集变更为 UTF8MB4。如果在 v2.1.0 及之前版本中，建表时显式指定了 table 的 charset 为 UTF8，那么升级到 v2.1.1 之后，执行 DDL 操作可能会失败。
 
-注意下面 2 个要点：
+要避免该问题，需注意以下两个要点：
 
 1. 在 v2.1.3 之前，不支持修改 column 的 charset。所以执行 DDL 时需要新 column 的 charset 和旧 column 的保持一致。
 
