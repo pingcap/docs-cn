@@ -56,7 +56,7 @@ For the binlog during incremental data import, DM uses the downstream database t
 
     - When DM-worker is restarted before or after synchronizing sharding DDL statements, it checks the checkpoint information and you can use the `start-task` command to recover the data synchronization task automatically.
 
-    - When DM-worker is restarted during the process of synchronizing sharding DDL statements, the issue might occur that the DM-worker owner has executed the DDL statement and successfully changed the downstream database table schema, while other DM-worker instances are restarted but fail to skip the DDL statement and update the checkpoints.
+    - When DM-worker is restarted during the process of synchronizing sharding DDL statements, the issue might occur that the owner (one of DM-worker instances) has executed the DDL statement and successfully changed the downstream database table schema, while other DM-worker instances are restarted but fail to skip the DDL statement and update the checkpoints.
 
         At this time, DM tries again to synchronize these DDL statements that are not skipped. However, the restarted DM-worker instances will be blocked at the position of the binlog event corresponding to the DDL binlog event, because the DM-worker instance that is not restarted has executed to the place after this DDL binlog event.
 
@@ -355,7 +355,7 @@ Assuming that the `172.16.10.72` machine needs to be maintained or this machine 
 
 3. Edit the `inventory.ini` file and add the new DM-worker instance.
 
-    Edit the `inventory.ini` file, comment or delete the line where the `dm_worker1` instance `172.16.10.72` that you want to replace exists, and add the `172.16.10.75` information of the new `dm_worker1` instance.
+    Edit the `inventory.ini` file, comment or delete the line where the original `dm_worker1` instance (`172.16.10.72`) that you want to replace exists, and add the information for the new `dm_worker1` instance (`172.16.10.75`).
 
     ```ini
     [dm_worker_servers]
@@ -395,7 +395,7 @@ This section describes how to switch between master and slave instances using dm
 
 ### Upstream master-slave switch behind the virtual IP
 
-1. Use `query-status` to make sure that relay catches up with the master instance before the switch (`relayCatchUpMaster`).
+1. Use `query-status` to make sure that the relay unit has caught up with the binlog status of the master instance before the switch (`relayCatchUpMaster`).
 2. Use `pause-relay` to pause relay.
 3. Use `pause-task` to pause all running tasks.
 4. The upstream master and slave instances behind the virtual IP execute the switch operation.
@@ -405,7 +405,7 @@ This section describes how to switch between master and slave instances using dm
 
 ### Master-slave switch after changing IP
 
-1. Use `query-status` to make sure that relay catches up with the master instance before the switch (`relayCatchUpMaster`).
+1. Use `query-status` to make sure that the relay unit has caught up with the binlog status of the master instance before the switch (`relayCatchUpMaster`).
 2. Use `stop-task` to stop all running tasks.
 3. Modify the DM-worker configuration, and use DM-Ansible to perform a rolling update on DM-worker.
 4. Update the `task.yaml` and `mysql-instances / config` configurations.
