@@ -182,7 +182,7 @@ Query OK, 1 row affected
 
 `tidb_check_mb4_value_in_utf8` 在 v2.1.5 版本开始可以用 http api 来设置，也可以用 session 变量来设置。
 
-* http api（http api 只在单台服务器上生效）
+* HTTP API（HTTP API 只在单台服务器上生效）
 ```shell
 # Enabled
 curl -X POST -d "check_mb4_value_in_utf8=1" http://{TiDBIP}:10080/settings
