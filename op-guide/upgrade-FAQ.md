@@ -50,7 +50,7 @@ ERROR 1105 (HY000): unsupported modify column charset utf8mb4 not match origin u
 alter table t change column a a varchar(22) character set utf8;
 ```
 
-根据要点 1 , 此处如果不指定 column 的charset，会用默认的 UTF8MB4 ，所以需要指定 column charset 保持和原来一致。
+根据要点 1，此处如果不指定 column 的 charset，会用默认的 UTF8MB4，所以需要指定 column charset 保持和原来一致。
 
 根据要点 2，用 http api 获取 table 元信息，然后根据 column 名字和 Charset 关键字搜索即可找到 column 的 charset。
 
