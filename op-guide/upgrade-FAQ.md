@@ -3,7 +3,7 @@ title: 升级后常见问题与解答
 category: deployment
 ---
 
-# 升级后常见问题与解答(upgrade FAQ)
+# 升级后常见问题与解答
 
 本文列出了一些升级后的可能会遇到的问题。
 
