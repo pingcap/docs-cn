@@ -1,6 +1,6 @@
 ---
 title: TiDB-Binlog 部署方案
-category: advanced
+category: tools
 ---
 
 # TiDB-Binlog 部署方案
