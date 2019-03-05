@@ -52,7 +52,7 @@ target-database:                # 下游数据库实例配置。
 ```yaml
 routes:                                             # 上游和下游表之间的路由 table routing 规则集。
     route-rule-1:
-         schema-pattern: "test_*"                
+         schema-pattern: "test_*"
          table-pattern: "t_*"
          target-schema: "test"
          target-table: "t"
@@ -105,7 +105,7 @@ mydumpers:                                          # mydumper 处理单元运�
         mydumper-path: "./mydumper"                 # mydumper binary 文件地址，这个无需设置，会由 Ansible 部署程序自动生成。
         threads: 16                                 # mydumper 从上游数据库实例导出数据的线程数量。
         chunk-filesize: 64                          # mydumper 生成的数据文件大小，单位为 MB。
-        skip-tz-utc: true						
+        skip-tz-utc: true
         extra-args: "-B test -T t1,t2 --no-locks"
 
 loaders:                                            # loader 处理单元运行配置参数。
