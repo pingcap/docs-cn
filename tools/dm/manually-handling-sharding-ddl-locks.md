@@ -135,7 +135,7 @@ break-ddl-lock <--worker=127.0.0.1:8262> [--remove-id] [--exec] [--skip] <task-n
 
 + `task-name`：
     - 非 flag 参数，string，必选
-    - 指定要执行 break 操作的 lock 所在的 task 名称（要查看各 task 上是否存在 lock，可通过 query-status 获得）
+    - 指定要执行 break 操作的 lock 所在的 task 名称（要查看各 task 上是否存在 lock，可通过 [query-status](/tools/dm/query-status.md) 获得）
 
 #### 返回结果示例
 
