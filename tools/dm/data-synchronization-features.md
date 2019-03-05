@@ -319,6 +319,22 @@ filters:
     action: Ignore
 ```
 
+#### 过滤 TiDB parser 不支持的 SQL 语句
+
+对于 TiDB parser 不支持的 SQL 语句，DM 无法解析获得 `schema`/`table` 信息，因此需要使用全局过滤规则：`schema-pattern: "*"`。
+
+> **注意**：全局过滤规则的设置必须尽可能严格，以避免预期之外地过滤掉需要同步的数据。
+
+可设置如下规则过滤 TiDB parser 不支持的 `PARTITION` 语句：
+
+```yaml
+filters:
+  filter-partition-rule:
+    schema-pattern: "*"
+    sql-pattern: ["ALTER\\s+TABLE[\\s\\S]*ADD\\s+PARTITION", "ALTER\\s+TABLE[\\s\\S]*DROP\\s+PARTITION"]
+    action: Ignore
+```
+
 ## Column mapping
 
 Column mapping 提供对表的列值进行修改的功能。可以根据不同的表达式对表的指定列做不同的修改操作，目前只支持 DM 提供的内置表达式。
