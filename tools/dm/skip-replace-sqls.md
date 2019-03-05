@@ -359,7 +359,7 @@ Assume that it is acceptable in the actual production environment that this DDL 
 
 4. Use `query-status` to guarantee that the `stage` of the task has changed into `Running`.
 
-5. Use `query-error` to guarantee that the original error information has been removed.
+5. Use `query-error` to guarantee that no DDL execution error exists.
 
 #### Actively replace before the replication gets interrupted 
 
