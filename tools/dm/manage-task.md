@@ -82,59 +82,6 @@ Flags:
 # Use "dmctl [command] --help" for more information about a command.
 ```
 
-## Precheck the upstream MySQL instance configuration
-
-To detect possible errors of data synchronization configuration in advance, DM provides the precheck feature. You can use the `check-task` command to precheck whether the upstream MySQL instance configuration satisfies the DM requirements.
-
-The user of the upstream and downstream databases must have the corresponding read and write privileges. DM checks the following privileges and configuration automatically while starting the data synchronization task:
-
-+ Database version
-
-    - 5.5 < MySQL version < 5.8
-    - MariaDB version >= 10.1.2
-
-+ MySQL binlog configuration
-
-    - Whether the binlog is enabled (DM requires that the binlog must be enabled)
-    - Whether `binlog_format=ROW` (DM only supports the binlog synchronization in the ROW format)
-    - Whether `binlog_row_image=FULL` (DM only supports `binlog_row_image=FULL`)
-
-+ The privileges of the upstream MySQL instance user
-
-    The MySQL user in DM configuration needs to have the following privileges at least:
-
-    - REPLICATION SLAVE
-    - REPLICATION CLIENT
-    - RELOAD
-    - SELECT
-
-+ The compatibility of the upstream MySQL table schema
-
-    TiDB differs from MySQL in compatibility in the following aspects:
-
-    - Does not support the foreign key
-    - [Character set compatibility differs](/sql/character-set-support.md)
-
-+ The consistency check on the upstream MySQL multiple-instance shards
-
-    + The schema consistency of all sharded tables
-
-        - Column size
-        - Column name
-        - Column position
-        - Column type
-        - Primary key
-        - Unique index
-
-    + The conflict of the auto increment primary keys in the sharded tables
-
-        - The check fails in the following two conditions:
-
-            - The auto increment primary key exists in the sharded tables and its column type *is not* bigint.
-            - The auto increment primary key exists in the sharded tables and its column type *is* bigint, but column mapping *is not* configured.
-
-        - The check succeeds in other conditions except the two above.
-
 ## Manage the data synchronization task
 
 This section describes how to use the task management commands to execute the following operations:

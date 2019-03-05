@@ -28,7 +28,7 @@ However, you need to reset the data synchronization task in some cases. For deta
 
 For database related passwords in all the DM configuration files, use the passwords encrypted by `dmctl`. If a database password is empty, it is unnecessary to encrypt it. For how to encrypt the plaintext password, see [Encrypt the upstream MySQL user password using dmctl](/tools/dm/deployment.md#encrypt-the-upstream-mysql-user-password-using-dmctl).
 
-In addition, the user of the upstream and downstream databases must have the corresponding read and write privileges. Data Migration also [prechecks the corresponding privileges automatically](/tools/dm/manage-task.md#precheck-the-upstream-mysql-instance-configuration) while starting the data synchronization task.
+In addition, the user of the upstream and downstream databases must have the corresponding read and write privileges. Data Migration also [prechecks the corresponding privileges automatically](/tools/dm/precheck.md) while starting the data synchronization task.
 
 ### Incompatible DDL statements
 

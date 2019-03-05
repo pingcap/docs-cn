@@ -77,7 +77,7 @@ Before using the DM tool, note the following restrictions:
     - 5.5 < MySQL version < 5.8
     - MariaDB version >= 10.1.2
 
-    Data Migration [prechecks the corresponding privileges and configuration automatically](/tools/dm/manage-task.md#precheck-the-upstream-mysql-instance-configuration) while starting the data synchronization task using dmctl.
+    Data Migration [prechecks the corresponding privileges and configuration automatically](/tools/dm/precheck.md) while starting the data synchronization task using dmctl.
 
 + DDL syntax
 

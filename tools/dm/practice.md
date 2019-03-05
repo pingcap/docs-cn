@@ -111,7 +111,7 @@ To detect possible errors of data synchronization configuration in advance, DM p
 - DM automatically checks the corresponding privileges and configuration while starting the data synchronization task.
 - You can also use the `check-task` command to manually precheck whether the upstream MySQL instance configuration satisfies the DM requirements.
 
-For details about the precheck feature, see [Precheck the upstream MySQL instance configuration](/tools/dm/manage-task.md#precheck-the-upstream-mysql-instance-configuration).
+For details about the precheck feature, see [Precheck the upstream MySQL instance configuration](/tools/dm/precheck.md).
 
 > **Note:** Before starting the data synchronization task for the first time, you should have got the upstream configured. Otherwise, an error is reported while you start the task.
 
