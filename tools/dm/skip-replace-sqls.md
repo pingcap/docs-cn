@@ -1,9 +1,9 @@
 ---
-title: 跳过（skip）或替代执行（replace）异常的 SQL 语句
+title: 跳过 (skip) 或替代执行 (replace) 异常的 SQL 语句
 category: tools
 ---
 
-# 跳过（skip）或替代执行（replace）异常的 SQL 语句
+# 跳过 (skip) 或替代执行 (replace) 异常的 SQL 语句
 
 本文介绍了如何使用 DM 来处理异常的 SQL 语句。
 
