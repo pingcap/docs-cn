@@ -339,11 +339,19 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 ### tidb_ddl_reorg_worker_cnt
 
-作用域: SESSION | GLOBAL
+作用域: GLOBAL
 
 默认值：16
 
 这个变量用来设置 DDL 操作 re-organize 阶段的并发度。
+
+### tidb_ddl_reorg_batch_size
+
+作用域: GLOBAL
+
+默认值：1024
+
+这个变量用来设置 DDL 操作 re-organize 阶段的 batch size。比如 Add Index 操作，需要回填索引数据，通过并发 tidb_ddl_reorg_worker_cnt 个 worker 一起回填数据，每个 worker 以 batch 为单位进行回填。如果 Add Index 时有较多 Update 操作或者 Replace 等更新操作，batch size 越大，事务冲突的概率也会越大，此时建议调小 batch size 的值，最小值是 32。在没有事务冲突的情况下，batch size 可设为较大值，最大值是 10240，这样回填数据的速度更快，但是 TiKV 的写入压力也会变大。
 
 ### tidb_ddl_reorg_priority
 

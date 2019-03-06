@@ -11,7 +11,7 @@ import re
 import os
 
 
-entry_file = "README.md"
+entry_file = "TOC.md"
 followups = []
 in_toc = False
 contents = []

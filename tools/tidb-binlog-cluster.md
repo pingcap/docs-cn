@@ -1,6 +1,6 @@
 ---
 title: TiDB-Binlog Cluster 版本用户文档
-category: advanced
+category: tools
 ---
 
 # TiDB-Binlog Cluster 版本用户文档

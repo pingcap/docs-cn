@@ -1,6 +1,6 @@
 ---
 title: Loader 使用文档
-category: advanced
+category: tools
 ---
 
 # Loader 使用文档
