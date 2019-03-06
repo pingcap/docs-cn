@@ -10,7 +10,7 @@ DM (Data Migration) 使用 sharding DDL lock 来确保分库分表的 DDL 操作
 > **注意**：
 >
 > - 不要轻易使用 `unlock-ddl-lock`/`break-ddl-lock` 命令，除非完全明确当前场景下使用这些命令可能会造成的影响，并能接受这些影响。
-> - 在手动处理异常的 DDL lock 前，请确保已经了解 DM 的[分库分表合并同步原理](/tools/dm/shard-merge.md#背景)。
+> - 在手动处理异常的 DDL lock 前，请确保已经了解 DM 的[分库分表合并同步原理](/tools/dm/shard-merge.md#实现原理)。
 
 ## 命令介绍
 
@@ -162,7 +162,7 @@ break-ddl-lock <--worker=127.0.0.1:8262> [--remove-id] [--exec] [--skip] <task-n
 
 #### Lock 异常原因
 
-在 DM-master 尝试自动 unlock sharding DDL lock 之前，需要等待所有 DM-worker 的 sharding DDL events 全部到达（详见[分库分表合并同步原理](/tools/dm/shard-merge.md#背景)）。如果 sharding DDL 已经在同步过程中，且有部分 DM-worker 下线，并且不再计划重启它们（按业务需求移除了这部分 DM-worker），则会由于永远无法等齐所有的 DDL 而造成 lock 无法自动 unlock。
+在 DM-master 尝试自动 unlock sharding DDL lock 之前，需要等待所有 DM-worker 的 sharding DDL events 全部到达（详见[分库分表合并同步原理](/tools/dm/shard-merge.md#实现原理)）。如果 sharding DDL 已经在同步过程中，且有部分 DM-worker 下线，并且不再计划重启它们（按业务需求移除了这部分 DM-worker），则会由于永远无法等齐所有的 DDL 而造成 lock 无法自动 unlock。
 
 #### 手动处理示例
 
