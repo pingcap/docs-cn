@@ -305,7 +305,7 @@ filters:
 
 #### Filter out the SQL statements that TiDB does not support
 
-To filter out the `PROCEDURE` statement that TiDB does not support, configure the following `filter-procedure-rule`:
+To filter out the `PROCEDURE` statements that TiDB does not support, configure the following `filter-procedure-rule`:
 
 ```yaml
 filters:
@@ -317,6 +317,22 @@ filters:
 ```
 
 `filter-procedure-rule`  filters out the `^CREATE\\s+PROCEDURE` and `^DROP\\s+PROCEDURE` statements of all tables that match the `test_*`.`t_*` pattern.
+
+#### Filter out the SQL statements that the TiDB parser does not support
+
+For the SQL statements that the TiDB parser does not support, DM cannot parse them and get the `schema`/`table` information. So you must use the global filtering rule: `schema-pattern: "*"`.
+
+> **Note:** To avoid unexpectedly filtering out data that need to be replicated, you must configure the global filtering rule as strictly as possible.
+
+To filter out the `PARTITION` statements that the TiDB parser does not support, configure the following filtering rule:
+
+```yaml
+filters:
+  filter-partition-rule:
+    schema-pattern: "*"
+    sql-pattern: ["ALTER\\s+TABLE[\\s\\S]*ADD\\s+PARTITION", "ALTER\\s+TABLE[\\s\\S]*DROP\\s+PARTITION"]
+    action: Ignore
+```
 
 ## Column mapping
 
