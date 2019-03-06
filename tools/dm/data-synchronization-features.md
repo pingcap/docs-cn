@@ -305,11 +305,24 @@ filters:
 
 #### 过滤 TiDB 不支持的 SQL 语句
 
-对于 TiDB parser 不支持的 SQL 语句，DM 无法解析获得 `schema`/`table` 信息，因此需要使用全局过滤规则（`schema-pattern: "*"`）。
+可设置如下规则过滤 TiDB 不支持的 `PROCEDURE` 语句：
 
-> **注意**：全局过滤规则的设置必须尽可能地严格，以避免不合预期地过滤需要同步的数据。
+```yaml
+filters:
+  filter-procedure-rule:
+    schema-pattern: "test_*"
+    table-pattern: "t_*"
+    sql-pattern: ["^DROP\\s+PROCEDURE", "^CREATE\\s+PROCEDURE"]
+    action: Ignore
+```
 
-设置下面的规则过滤 TiDB parser 不支持的 `PARTITION statement`：
+#### 过滤 TiDB parser 不支持的 SQL 语句
+
+对于 TiDB parser 不支持的 SQL 语句，DM 无法解析获得 `schema`/`table` 信息，因此需要使用全局过滤规则：`schema-pattern: "*"`。
+
+> **注意**：全局过滤规则的设置必须尽可能严格，以避免预期之外地过滤掉需要同步的数据。
+
+可设置如下规则过滤 TiDB parser 不支持的 `PARTITION` 语句：
 
 ```yaml
 filters:
