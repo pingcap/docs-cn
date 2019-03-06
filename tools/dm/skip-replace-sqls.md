@@ -31,7 +31,7 @@ category: tools
 - `--sharding` 仅用于对 sharding group 预设一些操作，并且必须在 DDL 语句执行之前预设，不能在 DDL 语句已经执行后预设。
 
     - `--sharding` 模式下只支持预设，并只能使用 `--sql-pattern` 来匹配 binlog event。
-    - 有关使用 DM 处理 sharding DDL 同步的原理，请参阅[分库分表合并同步](/tools/dm/shard-merge.md#实现原理)。
+    - 有关使用 DM 处理 sharding DDL 同步的原理，请参阅[分库分表合并同步原理](/tools/dm/shard-merge.md#实现原理)。
 
 #### 匹配 binlog event
 
@@ -109,7 +109,7 @@ DM 在进行增量数据同步时，简化后的流程大致为：
 
 **合库合表同步中断前使用 `sql-skip` 或 `sql-replace` 预设操作以避免同步中断的流程**
 
-1. 使用 `sql-skip` 或 `sql-replace` 为指定的 DDL pattern 注册 operator（在 DM-master 上）。
+1. 使用 `sql-skip` 或 `sql-replace`（在 DM-master 上）为指定的 DDL pattern 注册 operator。
 
 2. 各 DM-worker 从 relay log 中解析获得 binlog event。
 
@@ -163,7 +163,7 @@ query-error [--worker=127.0.0.1:8262] [task-name]
             "result": true,                      # 该 DM-worker 上 query-error 操作是否成功
             "worker": "127.0.0.1:8262",          # 该 DM-worker 的 IP:port（worker-id）
             "msg": "",                           # 该 DM-worker 上 query-error 操作失败的说明信息
-            "subTaskError": [                    #  该 DM-worker 上运行子任务的错误信息
+            "subTaskError": [                    # 该 DM-worker 上运行子任务的错误信息
                 {
                     "name": "test",              # 任务名
                     "stage": "Paused",           # 当前任务的状态
@@ -396,7 +396,7 @@ exec sqls[[USE `db2`; ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2`;]] failed,
 err:Error 1105: can't drop column c2 with index covered now
 ```
 
-**但如果在上游实际执行该 DDL 语句前，你已提前知道该 DDL 语句不被 TiDB 所支持。** 则可以使用 `sql-skip` 或 `sql-replace` 为该 DDL 语句预设一个跳过（skip）或替代执行（replace）操作。
+**但如果在上游实际执行该 DDL 语句前，你已提前知道该 DDL 语句不被 TiDB 所支持。**则可以使用 `sql-skip` 或 `sql-replace` 为该 DDL 语句预设一个跳过（skip）或替代执行（replace）操作。
 
 对于本示例中的 DDL 语句，由于 TiDB 暂时不支持 DROP 存在索引的列，因此可以使用两条新的 SQL 语句来进行替代执行操作，即可以先 DROP 索引、然后再 DROP 列 c2。
 
@@ -457,7 +457,7 @@ err:Error 1105: can't drop column c2 with index covered now
 
 6. 使用 `query-status` 确认该任务的 `stage` 持续为 `Running`。
 
-7. 使用 `query-error` 确认已不存在 DDL 执行错误。
+7. 使用 `query-error` 确认不存在 DDL 执行错误。
 
 #### 合库合表场景下同步中断后被动执行跳过操作
 
@@ -605,6 +605,6 @@ err:Error 1105: can't drop column c2 with index covered now
 
 7. 使用 `query-status` 确认任务的 `stage` 持续为 `Running`，且不存在正阻塞同步的 DDL 语句（`blockingDDLs`）与待解决的 sharding group（`unresolvedGroups`）。
 
-8. 使用 `query-error` 确认已不存在 DDL 执行错误。
+8. 使用 `query-error` 确认不存在 DDL 执行错误。
 
-9. 使用 `show-ddl-locks` 确认已不存在待解决的 DDL lock。
+9. 使用 `show-ddl-locks` 确认不存在待解决的 DDL lock。
