@@ -396,7 +396,7 @@ exec sqls[[USE `db2`; ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2`;]] failed,
 err:Error 1105: can't drop column c2 with index covered now
 ```
 
-**但如果在上游实际执行该 DDL 语句前，你已提前知道该 DDL 语句不被 TiDB 所支持。**则可以使用 `sql-skip` 或 `sql-replace` 为该 DDL 语句预设一个跳过（skip）或替代执行（replace）操作。
+**但如果在上游实际执行该 DDL 语句前，你已提前知道该 DDL 语句不被 TiDB 所支持**。则可以使用 `sql-skip` 或 `sql-replace` 为该 DDL 语句预设一个跳过（skip）或替代执行（replace）操作。
 
 对于本示例中的 DDL 语句，由于 TiDB 暂时不支持 DROP 存在索引的列，因此可以使用两条新的 SQL 语句来进行替代执行操作，即可以先 DROP 索引、然后再 DROP 列 c2。
 
@@ -515,7 +515,7 @@ exec sqls[[USE `shard_db`; ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`
 err:Error 1105: can't drop column c2 with index covered now
 ```
 
-**但如果在上游实际执行该 DDL 语句前，你已提前知道该 DDL 语句不被 TiDB 所支持。**则可以使用 `sql-skip` 或 `sql-replace` 命令为该 DDL 语句预设一个跳过/替代执行操作。
+**但如果在上游实际执行该 DDL 语句前，你已提前知道该 DDL 语句不被 TiDB 所支持**。则可以使用 `sql-skip` 或 `sql-replace` 命令为该 DDL 语句预设一个跳过/替代执行操作。
 
 对于本示例中的 DDL 语句，由于 TiDB 暂时不支持 DROP 存在索引的列，因此可以使用两条新的 SQL 语句来进行替代执行操作，即可以先 DROP 索引、然后再 DROP c2 列。
 
