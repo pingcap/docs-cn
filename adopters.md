@@ -13,6 +13,7 @@ This is a list of TiDB adopters in various industries.
 |[Mobike](https://en.wikipedia.org/wiki/Mobike)|Ridesharing|[English](https://www.pingcap.com/blog/Use-Case-TiDB-in-Mobike/); [Chinese](https://www.pingcap.com/cases-cn/user-case-mobike/)|
 |[Jinri Toutiao](https://en.wikipedia.org/wiki/Toutiao)|Mobile News Platform|[Chinese](https://www.pingcap.com/cases-cn/user-case-toutiao/)|
 |[Yiguo.com](https://www.crunchbase.com/organization/shanghai-yiguo-electron-business)|E-commerce|[English](https://www.datanami.com/2018/02/22/hybrid-database-capturing-perishable-insights-yiguo/); [Chinese](https://www.pingcap.com/cases-cn/user-case-yiguo)|
+|[Shopee](https://en.wikipedia.org/wiki/Shopee)|E-commerce|[English](https://www.pingcap.com/success-stories/tidb-in-shopee/); [Chinese](https://www.pingcap.com/cases-cn/user-case-shopee/)|
 |[Yuanfudao.com](https://www.crunchbase.com/organization/yuanfudao)|EdTech|[English](https://www.pingcap.com/blog/2017-08-08-tidbforyuanfudao/); [Chinese](https://www.pingcap.com/cases-cn/user-case-yuanfudao/)|
 |[Ele.me](https://en.wikipedia.org/wiki/Ele.me)|Food Delivery|[English](https://www.pingcap.com/blog/use-case-tidb-in-eleme/); [Chinese-1](https://www.pingcap.com/cases-cn/user-case-eleme-1/); [Chinese-2](https://pingcap.com/cases-cn/user-case-eleme-2/)|
 |[Xiaomi](https://www.mi.com/global/)|Consumer Electronics|[Chinese](https://pingcap.com/cases-cn/user-case-xiaomi/)|
