@@ -67,8 +67,8 @@ $ ansible-playbook stop.yml
 
 由 DM-master 维护的信息包括以下两种。重启 DM-master 不会持久化保存这些信息的相关数据。
 
-- 任务与 DM-master 之间的对应关系
-- Sharding DDL lock 的相关信息
+- 任务信息
+- Sharding DDL lock 信息
 
 DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重建任务与 DM-worker 之间的对应关系，并从每个 DM-worker 实例获取 sharding DDL 信息。这样，就可以准确重建相应的 DDL lock，也可以自动解除 sharding DDL lock。
 
@@ -119,7 +119,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
         $ rm -rf downloads
         ```
 
-    2. 用 Playbook 下载最新 DM 二进制文件。这会自动替换 `/home/tidb/dm-ansible/resource/bin/` 中已有文件。 
+    2. 用 Playbook 下载 inventory.ini 文件中指定版本的最新 DM 二进制文件。这会自动替换 `/home/tidb/dm-ansible/resource/bin/` 中已有文件。
 
         ```
         $ ansible-playbook local_prepare.yml
@@ -181,11 +181,11 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
     ```
     [dm_worker_servers]
-    dm_worker1 source_id="instance-1" ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker1 source_id="mysql-replica-01" ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-    dm_worker2  source_id="instance-2" ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker2  source_id="mysql-replica-02" ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-    dm_worker3 source_id="instance-3" ansible_host=172.16.10.74 server_id=103 mysql_host=172.16.10.83 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker3 source_id="mysql-replica-03" ansible_host=172.16.10.74 server_id=103 mysql_host=172.16.10.83 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
     ```
 
 3. 部署新 DM-worker 实例。
@@ -226,11 +226,11 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
     ```
     [dm_worker_servers]
-    dm_worker1 source_id="instance-1" ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker1 source_id="mysql-replica-01" ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-    dm_worker2 source_id="instance-2" ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker2 source_id="mysql-replica-02" ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-    # dm_worker3 source_id="instance-3" ansible_host=172.16.10.74 server_id=103 mysql_host=172.16.10.83 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306 # Comment or delete this line
+    # dm_worker3 source_id="mysql-replica-03" ansible_host=172.16.10.74 server_id=103 mysql_host=172.16.10.83 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306 # Comment or delete this line
     ```
 
 3. 配置并重启 DM-master 服务。
@@ -344,10 +344,10 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
     ```ini
     [dm_worker_servers]
-    dm_worker1 source_id="instance-1" ansible_host=172.16.10.75 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker1 source_id="mysql-replica-01" ansible_host=172.16.10.75 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
     # dm_worker1 ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-    dm_worker2 source_id="instance-2" ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    dm_worker2 source_id="mysql-replica-02" ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
     ```
 
 4. 部署新 DM-worker 实例。
