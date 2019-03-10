@@ -73,3 +73,23 @@ TiDB 默认使用 `SNAPSHOT ISOLATION`，可以通过下面的语句将当前 Se
 ```sql
 SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
 ```
+
+## 事务的惰性检查
+
+TiDB 中，对于普通的 `INSERT` 语句写入的值，会进行惰性检查。惰性检查的含义是，不在 `INSERT` 语句执行时，进行唯一约束的检查，而在事务提交时，
+进行唯一约束的检查。
+
+举例：
+
+```sql
+CREATE TABLE T (I INT KEY);
+INSERT INTO T VALUES (1);
+BEGIN;
+INSERT INTO T VALUES (1); -- MySQL 返回错误；TiDB 返回成功
+INSERT INTO T VALUES (2);
+COMMIT; -- MySQL 提交成功；TiDB 返回错误，事务回滚
+SELECT * FROM T; -- MySQL 返回 1 2；TiDB 返回 1
+```
+
+惰性检查的意义在于，如果对事务中每个 `INSERT` 语句都立刻进行唯一性检查约束检查，将造成很高的网络开销。而在提交时一次批量检查，将会大幅提升性能。
+注意：本优化对于 `INSERT IGNORE` 和 `INSERT ON DUPLICATE KEY UPDATE` 不会生效，仅对与普通的 `INSERT` 语句生效。
