@@ -319,7 +319,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 默认值：0
 
 这个变量用来设置是否禁用显式事务自动重试，设置为 1 时，不会自动重试，如果遇到冲突需要在应用层重试。
-是否需要禁用自动重试，请参考[自动重试的风险](./transaction-isolation.md#乐观事务注意事项)
+是否需要禁用自动重试，请参考[自动重试的风险](/sql/transaction-isolation.md#乐观事务注意事项)。
 
 ### tidb_enable_table_partition
 
