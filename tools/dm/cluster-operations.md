@@ -157,7 +157,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
 1. 为中控机设置 SSH 互信以及 sudo 规则。
 
-    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/tools/dm/deployment.md#第-5-步在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 用户登陆至中控机，并将 `172.16.10.74` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。
+    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/tools/dm/deployment.md#第-5-步-在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 用户登陆至中控机，并将 `172.16.10.74` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。
 
         ```
         $ cd /home/tidb/dm-ansible
@@ -251,7 +251,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
 1. 为中控机设置 SSH 互信以及 sudo 规则。
 
-    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/tools/dm/deployment.md#第-5-步在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 账户登陆至中控机，并将 `172.16.10.80` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。  
+    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/tools/dm/deployment.md#第-5-步-在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 账户登陆至中控机，并将 `172.16.10.80` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。  
    
         ```
         $ cd /home/tidb/dm-ansible
@@ -311,7 +311,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
 1. 为中控机设置 SSH 互信以及 sudo 规则。
 
-    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/tools/dm/deployment.md#第-5-步在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 账户登陆至中控机，并将 `172.16.10.75` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。 
+    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/tools/dm/deployment.md#第-5-步-在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 账户登陆至中控机，并将 `172.16.10.75` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。 
         ```
         $ cd /home/tidb/dm-ansible
         $ vi hosts.ini
