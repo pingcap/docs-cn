@@ -81,7 +81,7 @@ retry-limit = 10
 | Session1 | Session2   |
 | ---------------- | ------------ |
 | `begin;` | `begin;` |
-| `update t set balance = balance - 100  where id = 1;` | `delete t where id = 1;` |
+| `update t set balance = balance - 100  where id = 1;` | `delete from t where id = 1;` |
 |  | `commit;` |
 | // 使用 affected_rows 的结果决定后续的逻辑 | |
 | `if affected_rows > 100 {` | |
@@ -89,9 +89,7 @@ retry-limit = 10
 | `}` | |
 | `commit;` // 自动重试 | |
 
-因为 TiDB 自动重试机制会把事务第一次执行的所有语句重新执行一遍，当一个事务里的后续
-语句是否执行取决于前面语句执行结果的时候，自动重试无法保证最终结果符合预期。
-这种情况下，需要在应用层重试整个事务。
+因为 TiDB 自动重试机制会把事务第一次执行的所有语句重新执行一遍，当一个事务里的后续语句是否执行取决于前面语句执行结果的时候，自动重试无法保证最终结果符合预期。这种情况下，需要在应用层重试整个事务。
 
 通过配置全局变量 `tidb_disable_txn_auto_retry` 可以关掉显式事务的重试。
 
