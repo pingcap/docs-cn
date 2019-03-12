@@ -145,6 +145,7 @@
     - [监控 DM 集群](tools/dm/monitor.md)
     - [管理数据同步任务](tools/dm/manage-task.md)
     - [DM 集群操作](tools/dm/cluster-operations.md)
+    - [DM 故障诊断](tools/dm/troubleshooting.md)
   + TiDB-Lightning
     - [简介](tools/lightning/overview-architecture.md)
     - [部署执行](tools/lightning/deployment.md)
