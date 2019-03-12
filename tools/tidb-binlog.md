@@ -32,22 +32,9 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
 
 ## TiDB-Binlog 安装
 
-### 下载官方 Binary
+### TiDB-Binlog 下载
 
--   CentOS 7+
-
-    ```bash
-    # 下载压缩包
-    wget http://download.pingcap.org/tidb-binlog-local-linux-amd64.tar.gz
-    wget http://download.pingcap.org/tidb-binlog-local-linux-amd64.sha256
-
-    # 检查文件完整性，返回 ok 则正确
-    sha256sum -c tidb-binlog-local-linux-amd64.sha256
-
-    # 解开压缩包
-    tar -xzf tidb-binlog-local-linux-amd64.tar.gz
-    cd tidb-binlog-local-linux-amd64
-    ```
+TiDB-Binlog 属于 TiDB 企业版工具集，请[在此下载](../tools/download.md)。
 
 ### TiDB-Binlog 部署
 
