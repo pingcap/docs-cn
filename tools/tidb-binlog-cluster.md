@@ -208,8 +208,6 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
 
 2. Back up and restore all the data.
 
-    If the downstream is MySQL/TiDB, to guarantee the data integrity, you need to make a full backup and restore of the data before Drainer starts (about 10 minutes after Pump starts to run).
-
     It is recommended to use [mydumper](../tools/mydumper.md) to make a full backup of TiDB and then use [Loader](../tools/loader.md) to export the data to the downstream. For more details, see [Backup and Restore](../op-guide/backup-restore.md).
 
 3. Modify the `tidb-ansible/inventory.ini` file.
