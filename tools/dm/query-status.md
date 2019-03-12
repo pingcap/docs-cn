@@ -111,35 +111,6 @@ This document introduces the query result and subtask status of Data Migration (
         },
         {
             "result": true,
-            "worker": "172.17.0.3:10081",
-            "msg": "",
-            "subTaskStatus": [
-                {
-                    "name": "test",
-                    "stage": "Running",
-                    "unit": "Load",
-                    "result": null,
-                    "unresolvedDDLLockID": "",
-                    "load": {                   # The synchronization information of the `Load` processing unit.
-                        "finishedBytes": "115", # The number of bytes that have been loaded.
-                        "totalBytes": "452",    # The total number of bytes that need to be loaded.
-                        "progress": "25.44 %"   # The progress of the loading process.
-                    }
-                }
-            ],
-            "relayStatus": {
-                "masterBinlog": "(bin.000001, 28507)",
-                "masterBinlogGtid": "c0149e17-dff1-11e8-b6a8-0242ac110004:1-96",
-                "relaySubDir": "c0149e17-dff1-11e8-b6a8-0242ac110004.000001",
-                "relayBinlog": "(bin.000001, 28507)",
-                "relayBinlogGtid": "c0149e17-dff1-11e8-b6a8-0242ac110004:1-96",
-                "relayCatchUpMaster": true,
-                "stage": "Running",
-                "result": null
-            }
-        }
-                {
-            "result": true,
             "worker": "172.17.0.6:10081",
             "msg": "",
             "subTaskStatus": [

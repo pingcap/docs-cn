@@ -109,7 +109,7 @@ Make sure you have logged in to the Control Machine using the `tidb` user accoun
 2. Run the following command to download DM-Ansible.
 
     ```bash
-    $ wget http://download.pingcap.org/dm-ansible-latest.tar.gz
+    $ wget http://download.pingcap.org/dm-ansible-{version}.tar.gz
     ```
 
 ## Step 4: Install DM-Ansible and its dependencies on the Control Machine
@@ -446,11 +446,11 @@ dm_master ansible_host=172.16.10.71 dm_master_port=18261
     $ mv dm-ansible dm-ansible-bak
     ```
 
-2. Download the latest DM-Ansible and extract it.
+2. Download the specified version of DM-Ansible and extract it.
 
     ```
     $ cd /home/tidb
-    $ wget http://download.pingcap.org/dm-ansible-latest.tar.gz
+    $ wget http://download.pingcap.org/dm-ansible-{version}.tar.gz
     $ tar -xzvf dm-ansible-latest.tar.gz
     $ mv dm-ansible-latest dm-ansible
     ```

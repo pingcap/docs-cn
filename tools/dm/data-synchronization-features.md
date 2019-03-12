@@ -201,9 +201,9 @@ After using the `bw-rule` rule:
 | `forum`.`messages` | No | 1. The schema `forum` matches `do-dbs` and continues to filter at the table level.<br> 2. The table `messages` is in the `db-name: "~^forum.*",tbl-name: "messages"` of `do-tables`. |
 | `forum_backup_2018`.`messages` | No | 1. The schema `forum_backup_2018` matches `do-dbs` and continues to filter at the table level.<br> 2. The schema and table match the `db-name: "~^forum.*",tbl-name: "messages"` of `do-tables`. |
 
-## Binlog event filtering
+## Binlog event filter
 
-Binlog event filtering is a more fine-grained filtering rule than the black and white lists filtering rule. You can use statements like `INSERT` or `TRUNCATE TABLE` to specify the binlog events of `schema/table` that you need to synchronize or filter out.
+Binlog event filter is a more fine-grained filtering rule than the black and white lists filtering rule. You can use statements like `INSERT` or `TRUNCATE TABLE` to specify the binlog events of `schema/table` that you need to synchronize or filter out.
 
 > **Note:** If a same table matches multiple rules, these rules are applied in order and the black list has priority over the white list. This means if both the `Ignore` and `Do` rules are applied to a single table, the `Ignore` rule takes effect.
 

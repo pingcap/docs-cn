@@ -96,7 +96,7 @@ Assume that the downstream schema after synchronization is as follows:
 
     > **Note:** The synchronization Requirements #4, #5 and #7 indicate that all the deletion operations in the `user` schema are filtered out, so a schema level filtering rule is configured here. However, the deletion operations of future tables in the `user` schema will also be filtered out.
 
-- To satisfy the synchronization Requirement #6, configure the [binlog event filtering rule](/tools/dm/data-synchronization-features.md#binlog-event-filtering) as follows:
+- To satisfy the synchronization Requirement #6, configure the [binlog event filter rule](/tools/dm/data-synchronization-features.md#binlog-event-filter) as follows:
 
     ```yaml
     filters:
