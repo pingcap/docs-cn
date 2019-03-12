@@ -76,8 +76,7 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
 
 ## 事务的惰性检查
 
-TiDB 中，对于普通的 `INSERT` 语句写入的值，会进行惰性检查。惰性检查的含义是，不在 `INSERT` 语句执行时进行唯一约束的检查，而在事务提交时
-进行唯一约束的检查。
+TiDB 中，对于普通的 `INSERT` 语句写入的值，会进行惰性检查。惰性检查的含义是，不在 `INSERT` 语句执行时进行唯一约束的检查，而在事务提交时进行唯一约束的检查。
 
 举例：
 
