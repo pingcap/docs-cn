@@ -19,7 +19,7 @@ Before you start, make sure that you have:
 
 2. Several target machines and one Control Machine
 
-    - For system requirements and configuration, see [Prepare the environment](../op-guide/ansible-deployment.md#prerequisites).
+    - For system requirements and configuration, see [Prepare the environment](../op-guide/ansible-deployment.md#prepare).
     - It is acceptable without access to the Internet.
 
 ## Step 1: Install system dependencies on the Control Machine
@@ -117,25 +117,25 @@ Currently, the TiDB 2.0 GA version and the master version are compatible with An
 
 ## Step 5: Configure the SSH mutual trust and sudo rules on the Control Machine
 
-See [Configure the SSH mutual trust and sudo rules on the Control Machine](../op-guide/ansible-deployment.md#configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine).
+See [Configure the SSH mutual trust and sudo rules on the Control Machine](../op-guide/ansible-deployment.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine).
 
 ## Step 6: Install the NTP service on the target machines
 
-See [Install the NTP service on the target machines](../op-guide/ansible-deployment.md#install-the-ntp-service-on-the-target-machines).
+See [Install the NTP service on the target machines](../op-guide/ansible-deployment.md#step-6-install-the-ntp-service-on-the-target-machines).
 
 > **Note:** If the time and time zone of all your target machines are same, the NTP service is on and is normally synchronizing time, you can ignore this step. See [How to check whether the NTP service is normal](#how-to-check-whether-the-ntp-service-is-normal).
 
 ## Step 7: Configure the CPUfreq governor mode on the target machine 
 
-See [Configure the CPUfreq governor mode on the target machine](../op-guide/ansible-deployment.md#configure-the-cpufreq-governor-mode-on-the-target-machine).
+See [Configure the CPUfreq governor mode on the target machine](../op-guide/ansible-deployment.md#step-7-configure-the-cpufreq-governor-mode-on-the-target-machine).
 
 ## Step 8: Mount the data disk ext4 filesystem with options on the target machines
 
-See [Mount the data disk ext4 filesystem with options on the target machines](../op-guide/ansible-deployment.md#mount-the-data-disk-ext4-filesystem-with-options-on-the-target-machines).
+See [Mount the data disk ext4 filesystem with options on the target machines](../op-guide/ansible-deployment.md#step-8-mount-the-data-disk-ext4-filesystem-with-options-on-the-target-machines).
 
 ## Step 9: Edit the `inventory.ini` file to orchestrate the TiDB cluster
 
-See [Edit the `inventory.ini` file to orchestrate the TiDB cluster](../op-guide/ansible-deployment.md#edit-the-inventory.ini-file-to-orchestrate-the-tidb-cluster).
+See [Edit the `inventory.ini` file to orchestrate the TiDB cluster](../op-guide/ansible-deployment.md#step-9-edit-the-inventory-ini-file-to-orchestrate-the-tidb-cluster).
 
 ## Step 10: Deploy the TiDB cluster
 
@@ -150,7 +150,7 @@ See [Edit the `inventory.ini` file to orchestrate the TiDB cluster](../op-guide/
     $ ./install_grafana_font_rpms.sh
     ```
 
-3. See [Deploy the TiDB cluster](../op-guide/ansible-deployment.md#step-10-deploy-the-tidb-cluster).
+3. See [Deploy the TiDB cluster](../op-guide/ansible-deployment.md#step-11-deploy-the-tidb-cluster).
 
 ## Test the TiDB cluster
 
