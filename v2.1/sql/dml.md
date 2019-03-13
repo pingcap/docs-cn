@@ -35,19 +35,20 @@ SELECT
 ### Description of the syntax elements
 
 |Syntax Element|Description|
-| --------------------- | -------------------------------------------------- |
+|:--------------------- | :-------------------------------------------------- |
 |`ALL`, `DISTINCT`, `DISTINCTROW` | The `ALL`, `DISTINCT`/`DISTINCTROW` modifiers specify whether duplicate rows should be returned. ALL (the default) specifies that all matching rows should be returned.|
 |`HIGH_PRIORITY` | `HIGH_PRIORITY` gives the current statement higher priority than other statements. |
-|`SQL_CACHE`, `SQL_NO_CACHE`, `SQL_CALC_FOUND_ROWS` | To guarantee compatibility with MySQL, TiDB parses these three modifiers, but will ignore them.|
-| `STRAIGHT_JOIN` | `STRAIGHT_JOIN` forces the optimizer to execute a Join query in the order of the tables used in the `FROM` clause. You can use this syntax to speed up queries execution when the Join order chosen by the optimizer is not good. |
+|`SQL_CALC_FOUND_ROWS`| To guarantee compatibility with MySQL, TiDB parses this syntax, but will ignore it. |
+|`SQL_CACHE`, `SQL_NO_CACHE` | `SQL_CACHE` and `SQL_NO_CACHE` are used to control whether to cache the request results to the `BlockCache` of TiKV (RocksDB). For a one-time query on a large amount of data, such as the `count(*)` query, it is recommended to fill in `SQL_NO_CACHE` to avoid flushing the hot user data in `BlockCache`. |
+|`STRAIGHT_JOIN`| `STRAIGHT_JOIN` forces the optimizer to do a union query in the order of the tables used in the `FROM` clause. When the optimizer chooses a join order that is not good, you can use this syntax to speed up the execution of the query. |
 |`select_expr` | Each `select_expr` indicates a column to retrieve. including the column names and expressions. `\*` represents all the columns.|
-\|`FROM table_references` | The `FROM table_references` clause indicates the table (such as `(select * from t;)`), or tables (such as `select * from t1 join t2;)`) or even 0 tables (such as `select 1+1 from dual;` (which is equivalent to `select 1+1;')) from which to retrieve rows.|
+|`FROM table_references` | The `FROM table_references` clause indicates the table (such as `select * from t;`), or tables (such as `select * from t1 join t2;`) or even 0 tables (such as `select 1+1 from dual;` which is equivalent to `select 1+1;`) from which to retrieve rows.|
 |`WHERE where_condition` | The `WHERE` clause, if given, indicates the condition or conditions that rows must satisfy to be selected. The result contains only the data that meets the condition(s).|
 |`GROUP BY` | The `GROUP BY` statement is used to group the result-set.|
-|`HAVING where_condition` |The `HAVING` clause and the `WHERE` clause are both used to filter the results. The `HAVING` clause filters the results of `GROUP BY`, while the `WHERE` clause filter the results before aggregation |
+|`HAVING where_condition` | The `HAVING` clause and the `WHERE` clause are both used to filter the results. The `HAVING` clause filters the results of `GROUP BY`, while the `WHERE` clause filter the results before aggregation. |
 |`ORDER BY` | The `ORDER BY` clause is used to sort the data in ascending or descending order, based on columns, expressions or items in the `select_expr` list.|
 |`LIMIT` | The `LIMIT` clause can be used to constrain the number of rows. `LIMIT` takes one or two numeric arguments. With one argument, the argument specifies the maximum number of rows to return, the first row to return is the first row of the table by default; with two arguments, the first argument specifies the offset of the first row to return, and the second specifies the maximum number of rows to return.|
-|`FOR UPDATE` | All the data in the result sets are read-locked, in order to detect the concurrent updates. TiDB uses the [Optimistic Transaction Model](../sql/mysql-compatibility.md#transaction). The transaction conflicts are detected in the commit phase instead of statement execution phase. while executing the `SELECT FOR UPDATE` statement, if there are other transactions trying to update relevant data, the `SELECT FOR UPDATE` transaction will fail.|
+|`FOR UPDATE` | All the data in the result sets are read-locked, in order to detect the concurrent updates. TiDB uses the [Optimistic Transaction Model](mysql-compatibility.md#transaction). The transaction conflicts are detected in the commit phase instead of statement execution phase. while executing the `SELECT FOR UPDATE` statement, if there are other transactions trying to update relevant data, the `SELECT FOR UPDATE` transaction will fail.|
 |`LOCK IN SHARE MODE` | To guarantee compatibility, TiDB parses these three modifiers, but will ignore them.|
 
 ## INSERT
