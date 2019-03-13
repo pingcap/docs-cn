@@ -9,26 +9,11 @@ category: tools
 
 Syncer 是一个数据导入工具，能方便地将 MySQL 的数据增量导入到 TiDB。
 
-Syncer 属于 TiDB 企业版工具集，如何获取可参考[下载 TiDB 企业版工具集](#下载-tidb-企业版工具集-linux)。
+Syncer 包含在 tidb-enterprise-tools 安装包中，可[在此下载](../tools/download.md)。
 
 ## Syncer 架构
 
 ![syncer 架构](../media/syncer-architecture.png)
-
-## 下载 TiDB 企业版工具集 (Linux)
-
-```bash
-# 下载 tool 压缩包
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
-
-# 检查文件完整性，返回 ok 则正确
-sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
-
-# 解开压缩包
-tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
-cd tidb-enterprise-tools-latest-linux-amd64
-```
 
 ## Syncer 部署位置
 
