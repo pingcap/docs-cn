@@ -500,11 +500,11 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         # kafka-version = "0.8.2.0"
         ```
 
-    - The example of starting Pump:  
+    - The example of starting Drainer:
 
         > **Note:** If the downstream is MySQL/TiDB, to guarantee the data integrity, you need to obtain the `initial-commit-ts` value and make a full backup of the data and restore the data before the initial start of Drainer. For details, see [Deploy Drainer](#step-3-deploy-drainer).
 
-        When Pump is started for the first time, use the `initial-commit-ts` parameter.
+        When Drainer is started for the first time, use the `initial-commit-ts` parameter.
 
         ```bash
         ./bin/drainer -config drainer.toml -initial-commit-ts {initial-commit-ts}
