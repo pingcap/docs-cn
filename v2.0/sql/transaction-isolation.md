@@ -103,7 +103,7 @@ Example 2:
 | Session1 | Session2   |
 | ---------------- | ------------ |
 | `begin;` | `begin;` |
-| `update t set balance = balance - 100  where id = 1;` | `delete t where id = 1;` |
+| `update t set balance = balance - 100  where id = 1;` | `delete from t where id = 1;` |
 |  | `commit;` |
 | // the subsequent logic depends on the result of `affected_rows` | |
 | `if affected_rows > 100 {` | |
