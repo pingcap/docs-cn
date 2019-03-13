@@ -649,13 +649,15 @@ WAL belongs to ordered writing, and currently, we do not apply a unique configur
 - NUMA: no specific suggestion; for memory allocation strategy, you can use `interleave = all`
 - File system: ext4
 
-#### How is the write performance in the most strict data available mode of `sync-log = true`?
+#### How is the write performance in the most strict data available mode (`sync-log = true`)?
 
-Generally, enabling `sync-log` reduces about 30% of the performance. For the test about `sync-log = false`, see [Performance test result for TiDB using Sysbench](benchmark/sysbench.md).
+Generally, enabling `sync-log` reduces about 30% of the performance. For write performance when `sync-log` is set to `false`, see [Performance test result for TiDB using Sysbench](benchmark/sysbench.md).
 
-#### Can the Raft + multiple replicas in the upper layer implement complete data security? Is it required to apply the most strict mode to standalone storage?
+#### Can Raft + multiple replicas in the TiKV architecture achieve absolute data security? Is it necessary to apply the most strict mode (`sync-log = true`) to a standalone storage?
 
-Raft uses strong consistency, and only when the data has been written into more than 50% of the nodes, the application returns ACK (two out of three nodes). In this case, data consistency is guaranteed. However, theoretically, two nodes might crash. Therefore, for scenarios that have a strict requirement on data security, such as scenarios in financial industry, you need to enable the `sync-log`.
+Data is redundantly copied between TiKV nodes using the [Raft consensus algorithm](https://raft.github.io/) to ensure recoverability should a node failure occur. Only when the data has been written into more than 50% of the nodes, will the application return ACK (two out of three nodes). However, theoretically, two nodes might crash. Therefore, for scenarios with a strict requirement on data security, for example, the financial industry, you need to enable the `sync-log` mode.
+
+As an alternative to using `sync-log`, you may also consider having five nodes instead of three in your Raft group. This would allow for the failure of two nodes, while still providing data safety.
 
 #### In data writing using the Raft protocol, multiple network roundtrips occur. What is the actual write delay?
 
