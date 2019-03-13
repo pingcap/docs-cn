@@ -10,7 +10,7 @@ category: tools
 
 `mydumper` 是 [mydumper](https://github.com/maxbube/mydumper) 的 fork 项目，并添加了一些针对 TiDB 的功能。推荐使用此工具对 TiDB 进行逻辑备份。
 
-mydumper 属于 TiDB 企业版工具集，请[在此下载](../tools/download.md)。
+mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](../tools/download.md)。
 
 ## 相比于普通的 mydumper，此工具有哪些改进之处？
 

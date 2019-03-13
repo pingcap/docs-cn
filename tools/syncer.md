@@ -9,7 +9,7 @@ category: tools
 
 Syncer 是一个数据导入工具，能方便地将 MySQL 的数据增量导入到 TiDB。
 
-Syncer 属于 TiDB 企业版工具集，请[在此下载](../tools/download.md)。
+Syncer 包含在 tidb-enterprise-tools 安装包中，可[在此下载](../tools/download.md)。
 
 ## Syncer 架构
 

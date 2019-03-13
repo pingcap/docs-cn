@@ -34,7 +34,7 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
 
 ### TiDB-Binlog 下载
 
-TiDB-Binlog 属于 TiDB 企业版工具集，请[在此下载](../tools/download.md)。
+TiDB-Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](../tools/download.md)。
 
 ### TiDB-Binlog 部署
 
