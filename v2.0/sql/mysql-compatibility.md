@@ -116,3 +116,8 @@ TiDB implements an optimistic transaction model. Unlike MySQL, which uses row-le
         - On Linux: 0
         - On Windows: 1
         - On macOS: 2
+- Default value of `explicit_defaults_for_timestamp`:
+    - The default value in TiDB is `ON` and currently TiDB only supports `ON`.
+    - The default value in MySQL:
+        - For MySQL 5.7: `OFF`
+        - For MySQL 8.0: `ON`
