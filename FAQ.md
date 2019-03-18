@@ -44,11 +44,15 @@ TiDB is self-healing. All of the three components, TiDB, TiKV and PD, can tolera
 
 #### How is TiDB strongly consistent?
 
-TiDB uses the [Raft consensus algorithm](https://raft.github.io/) to ensure consistency among multiple replicas. At the bottom layer, TiDB uses a model of replication log + State Machine to replicate data. For the write requests, the data is written to a Leader and the Leader then replicates the command to its Followers in the form of log. When the majority of nodes in the cluster receive this log, this log is committed and can be applied into the State Machine. TiDB has the latest data even if a minority of the replicas are lost.
+TiDB implements Snapshot Isolation consistency, which it advertises as `REPEATABLE-READ` for compatibility with MySQL. Data is redundantly copied between TiKV nodes using the [Raft consensus algorithm](https://raft.github.io/) to ensure recoverability should a node failure occur.
+
+At the bottom layer, TiKV uses a model of replication log + State Machine to replicate data. For the write requests, the data is written to a Leader and the Leader then replicates the command to its Followers in the form of log. When the majority of nodes in the cluster receive this log, this log is committed and can be applied into the State Machine.
 
 #### Does TiDB support distributed transactions?
 
-Yes. The transaction model in TiDB is inspired by Google’s Percolator, a paper published in 2006. It’s mainly a two-phase commit protocol with some practical optimizations. This model relies on a timestamp allocator to assign monotone increasing timestamp for each transaction, so the conflicts can be detected. PD works as the timestamp allocator in a TiDB cluster.
+Yes. TiDB distributes transactions across your cluster, whether it is a few nodes in a single location or many [nodes across multiple datacenters](/op-guide/cross-dc-deployment.md).
+
+Inspired by Google's Percolator, the transaction model in TiDB is mainly a two-phase commit protocol with some practical optimizations. This model relies on a timestamp allocator to assign the monotone increasing timestamp for each transaction, so conflicts can be detected. [PD](/architecture.md#placement-driver-server) works as the timestamp allocator in a TiDB cluster.
 
 #### What programming language can I use to work with TiDB?
 
@@ -454,7 +458,7 @@ This is because the `--initial-cluster` in the PD startup parameter contains a m
 
 #### What's the maximum tolerance for time synchronization error of PD?
 
-Theoretically, the smaller of the tolerance, the better. During leader changes, if the clock goes back, the process won't proceed until it catches up with the previous leader. PD can tolerate any synchronization error, but a larger error value means a longer period of service stop during the leader change.
+Theoretically, the smaller the time synchronization error, the better. PD can tolerate any synchronization error, but a larger error value means a longer period of service stop during the leader change. If the clock goes back during a leader change, the change process will not proceed until it catches up with the previous leader.
 
 #### How does the client connection find PD?
 
@@ -615,7 +619,7 @@ TiKV implements the Column Family (CF) feature of RocksDB. By default, the KV da
 - Leaders can not reach out to followers. E.g., network problem or node failure.
 - Leader balance from PD. E.g., PD wants to transfer leaders from a hotspot node to others.
 
-#### If a node is down, will the service be affected? How long?
+#### If a node is down, will the service be affected? If yes, how long?
 
 TiDB uses Raft to synchronize data among multiple replicas and guarantees the strong consistency of data. If one replica goes wrong, the other replicas can guarantee data security. The default number of replicas in each Region is 3. Based on the Raft protocol, a leader is elected in each Region, and if a single leader fails, a follower is soon elected as Region leader after a maximum of 2 * lease time (lease time is 10 seconds).
 
@@ -659,9 +663,9 @@ Data is redundantly copied between TiKV nodes using the [Raft consensus algorith
 
 As an alternative to using `sync-log`, you may also consider having five nodes instead of three in your Raft group. This would allow for the failure of two nodes, while still providing data safety.
 
-#### In data writing using the Raft protocol, multiple network roundtrips occur. What is the actual write delay?
+#### Since TiKV uses the Raft protocol, multiple network roundtrips occur during data writing. What is the actual write delay?
 
-Theoretically, TiDB has 4 more network roundtrips than standalone databases.
+Theoretically, TiDB has a write delay of 4 more network roundtrips than standalone databases.
 
 #### Does TiDB have a InnoDB memcached plugin like MySQL which can directly use the KV interface and does not need the independent cache?
 

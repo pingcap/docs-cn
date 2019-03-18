@@ -17,7 +17,7 @@ The SQL-92 standard defines four levels of transaction isolation: Read Uncommitt
 | Repeatable Read  | Not possible | Not possible       | Not possible in  TiDB | Possible              |
 | Serializable     | Not possible | Not possible       | Not possible          | Not possible          |
 
-TiDB offers the Repeatable Read isolation level.
+TiDB implements Snapshot Isolation consistency, which it advertises as `REPEATABLE-READ` for compatibility with MySQL. This differs from the [ANSI Repeatable Read isolation level](#difference-between-tidb-and-ansi-repeatable-read) and the [MySQL Repeatable Read level](#difference-between-tidb-and-mysql-repeatable-read).
 
 TiDB uses the [Percolator transaction model](https://research.google.com/pubs/pub36726.html). A global read timestamp is obtained when the transaction is started, and a global commit timestamp is obtained when the transaction is committed. The execution order of transactions is confirmed based on the timestamps. To know more about the implementation of TiDB transaction model, see [MVCC in TiKV](https://pingcap.com/blog/2016-11-17-mvcc-in-tikv/).
 
