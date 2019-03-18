@@ -7,7 +7,7 @@ category: tools
 
 本文档主要介绍各不完全兼容的 DM (Data Migration) 版本间的升级操作步骤。
 
-假设依时间先后顺序存在 V-A、V-B、V-C 等 3 个互不兼容的版本，现在需要从 V-A 升级到 V-C。定义从 V-A 升级到 V-B 的操作为 Upgrade-A-B，从 V-B 升级到 V-C 的操作为 Upgrade-B-C。
+假设依时间先后顺序存在 V-A、V-B、V-C 3 个互不兼容的版本，现在需要从 V-A 升级到 V-C。定义从 V-A 升级到 V-B 的操作为 Upgrade-A-B，从 V-B 升级到 V-C 的操作为 Upgrade-B-C。
 
 - 如果 Upgrade-A-B 与 Upgrade-B-C 之间存在交叠（如同一个配置项的不同变更），则推荐先执行 Upgrade-A-B 升级到 V-B，升级完成后再执行 Upgrade-B-C 升级到 V-C。
 - 如果 Upgrade-A-B 与 Upgrade-B-C 之间不存在交叠，则可将 Upgrade-A-B 与 Upgrade-B-C 的操作合并为 Upgrade-A-C，执行后直接从 V-A 升级到 V-C。
