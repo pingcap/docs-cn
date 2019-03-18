@@ -97,7 +97,7 @@ Go Version: go version go1.11.2 linux/amd64
 - `source_id`：存在于 `inventory.ini` 中，用于标识一个上游 MySQL 实例或一个主从复制组。
 - `source-id`：存在于任务配置文件的 `mysql-instances` 中，其取值与 `inventory.ini` 中的 `source_id` 对应。
 
-> **注意：** 如果需要确保已有任务存储在下游数据库的断点信息能继续被使用，`source_id`/`source-id` 的值需要与对应 DM-worker 变更前的 `instance-id` 一致。
+> **注意**：如果需要确保已有任务存储在下游数据库的断点信息能继续被使用，`source_id`/`source-id` 的值需要与对应 DM-worker 变更前的 `instance-id` 一致。
 
 ### 升级操作示例
 
