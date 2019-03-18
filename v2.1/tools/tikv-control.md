@@ -131,10 +131,10 @@ The properties can be used to check whether the Region is healthy or not. If not
 
 ### Compact data of each TiKV manually
 
-Use the `compact` command to manually compact data of each TiKV. If you specify the `--from` and `--to` options, then their flags are also in the form of escaped raw key. You can use the `--db` option to specify the RocksDB that you need to compact. The optional values are `kv` and `raft`. Also, the `--threads` option allows you to specify the concurrency that you compact and its default value is 8. Generally, a higher concurrency comes with a faster compact speed, which might yet affect the service. You need to choose an appropriate concurrency based on the scenario.
+Use the `compact` command to manually compact data of each TiKV. If you specify the `--from` and `--to` options, then their flags are also in the form of escaped raw key. You can use the `--host` option to specify the TiKV that you need to compact. The `-d` option is used to specify the RocksDB that will be compacted. The optional values are `kv` and `raft`. Also, the `--threads` option allows you to specify the concurrency that you compact and its default value is 8. Generally, a higher concurrency comes with a faster compact speed, which might yet affect the service. You need to choose an appropriate concurrency based on the scenario.
 
 ```bash
-$ tikv-ctl --db /path/to/tikv/db compact -d kv
+$ tikv-ctl --host 127.0.0.1:20160 compact -d kv
 success!
 ```
 
