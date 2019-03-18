@@ -49,7 +49,7 @@ Go Version: go version go1.11.2 linux/amd64
     
     如将
     
-    ```bash
+    ```ini
     dm_worker1_1 ansible_host=172.16.10.72 server_id=101 deploy_dir=/data1/dm_worker dm_worker_port=10081 dm_worker_status_port=10082 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
     ```
     
