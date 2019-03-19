@@ -103,7 +103,7 @@ Go Version: go version go1.11.2 linux/amd64
 
 1. 变更 `inventory.ini` 的配置信息。
 
-    - 为所有 DM-worker 实例设置对应的 `source_id`。
+    为所有 DM-worker 实例设置对应的 `source_id`。
     
     如将
 
