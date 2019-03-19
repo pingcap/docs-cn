@@ -21,6 +21,7 @@ TiDB 会将执行时间超过 [slow-threshold](../op-guide/tidb-config-file.md#s
 # Query_time: 16.479155653
 # Process_time: 5.634 Wait_time: 0.002 Request_count: 2 Total_keys: 20002 Process_keys: 20000
 # DB: test
+# Index_ids: [1]
 # Is_internal: false
 # Digest: 3635413fe0c8e1aa8307f4f018fe1a9325ea0b97452500106d3f6783fcb65e33
 select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
