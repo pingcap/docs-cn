@@ -33,7 +33,9 @@ Currently, the `EXPLAIN` statement returns the following four columns: id, count
 
 ### Introduction to task
 
-Currently, the calculation task of TiDB contains two different tasks: cop task and root task. The cop task refers to the computing task that is pushed to the KV side and executed distributedly. The root task refers to the computing task that is executed at a single point in TiDB. One of the goals of SQL optimization is to push the calculation down to the KV side as much as possible.
+Currently, there are two types of task execution: cop tasks and root tasks. A cop task refers to a computing task that is executed using the TiKV coprocessor. A root task refers to a computing task that is executed in TiDB.
+
+One of the goals of SQL optimization is to push the calculation down to TiKV as much as possible. The TiKV coprocessor is able to assist in execution of SQL functions (both aggregate and scalar), SQL `LIMIT` operations, index scans, and table scans. All join operations, however, will be performed as root tasks.
 
 ### Table data and index data
 
