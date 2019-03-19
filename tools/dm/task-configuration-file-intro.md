@@ -34,7 +34,7 @@ target-database:                # 下游数据库实例配置。
     host: "192.168.0.1"
     port: 4000
     user: "root"
-    password: ""
+    password: ""                # 需经过 dmctl 加密
 ```
 
 `task-mode`
