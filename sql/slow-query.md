@@ -29,7 +29,7 @@ select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
 ### 字段解析
 
 * `Time`：表示日志打印时间。
-* `Txn_start_ts` ：表示事务的开始时间戳，也是事务的 ID, 可以用这个值在日志中 grep 出事务相关的日志。
+* `Txn_start_ts`：表示事务的开始时间戳，也是事务的 ID, 可以用这个值在日志中 grep 出事务相关的日志。
 * `User`：表示执行语句的用户名
 * `Conn_ID`：表示 connection ID，即 session ID, 可以用类似 `con:3 ` 的关键字在  TiDB 日志中 grep 出 session ID 为 3 的日志。
 * `Query_time`：表示执行这个语句花费的时间。只有执行时间超过 slow-threshold 的语句才会输出这个日志。
@@ -43,10 +43,10 @@ select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
 * `Index_ids` ：表示语句涉及到的索引的 ID
 * `Is_internal`：表示是否是 TiDB 内部 SQL。true 为TiDB 内部执行的SQL, 比如 analyze，load variable 等；false 为用户执行的 SQL 。
 * `Digest`： 表示 SQL 语句的指纹
-* `Query`: 表示 SQL 语句。
+* `Query`：表示 SQL 语句。
 
 ### 慢日志内存映射表 
-为了方便用 SQL 查询定位慢查询，TiDB 将慢日志内容解析后映射到 `INFORMATION_SCHEMA.SLOW_QUERY` 表中，表的column 名和慢日志中记录的字段名一一对应 。
+为了方便用 SQL 查询定位慢查询，TiDB 将慢日志内容解析后映射到 `INFORMATION_SCHEMA.SLOW_QUERY` 表中，表中 column 名和慢日志中记录的字段名一一对应 。
 
 ```sql
 tidb > show create table INFORMATION_SCHEMA.SLOW_QUERY;
@@ -108,7 +108,9 @@ Time: 0.001s
 
 `INFORMATION_SCHEMA.SLOW_QUERY` 表里面的内容是通过实时解析 TiDB 慢日志里面的内容得到的。每次查询这个表时都会去读取慢日志文件里面的内容，然后解析。
 
-####  用 pt-query-digest  工具分析  TiDB  日志
+####  用 pt-query-digest 工具分析 TiDB 慢日志
+
+可以用 pt-query-digest  工具分析 TiDB 慢日志，下面是示例。
 
 ```shell
 $ pt-query-digest --report tidb-slow.log
