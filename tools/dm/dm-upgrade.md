@@ -121,7 +121,7 @@ Go Version: go version go1.11.2 linux/amd64
 
 3. 变更任务配置文件 (`task.yaml`)。
     
-    - 移除其中的 `config` 与 `instance-id` 配置项，增加 `source-id` 配置项（与 `inventory.ini` 中的 `source_id` 对应）。
+    移除其中的 `config` 与 `instance-id` 配置项，增加 `source-id` 配置项（与 `inventory.ini` 中的 `source_id` 对应）。
     
     如将
     
