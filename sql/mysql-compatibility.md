@@ -202,3 +202,8 @@ TiDB 的 `EXPLAIN` 命令返回的查询执行计划的输出与 MySQL 不同。
         + Linux 系统中该值为 0
         + Windows 系统中该值为 1
         + macOS 系统中该值为 2
++ `explicit_defaults_for_timestamp` 的默认值不同：
+    + TiDB 中该值默认为 `ON`，并且目前 TiDB 只支持设置该值为 `ON`
+    + MySQL 中默认设置：
+        + MySQL 5.7：`OFF`
+        + MySQL 8.0：`ON`
