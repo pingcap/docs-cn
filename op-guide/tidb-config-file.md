@@ -57,7 +57,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `slow-query-file`
 
 + 慢查询日志的文件名。
-+ 默认: ""
++ 默认: "tidb-slow.log"
 + 设置后，慢查询日志会单独输出到该文件。
 
 ### `slow-threshold`
