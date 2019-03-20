@@ -38,7 +38,7 @@ The metrics of `tidb-lightning` can be gathered directly by Prometheus as long a
 ```toml
 [lightning]
 # HTTP port for debugging and Prometheus metrics pulling (0 to disable)
-pprof-port = 10089
+pprof-port = 8289
 
 ...
 ```
@@ -50,7 +50,7 @@ You need to configure Prometheus to make it discover the `tidb-lightning` server
 scrape_configs:
   - job_name: 'tidb-lightning'
     static_configs:
-      - targets: ['192.168.20.10:10089']
+      - targets: ['192.168.20.10:8289']
 ```
 
 ## Monitoring metrics

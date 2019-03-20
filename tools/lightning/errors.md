@@ -36,11 +36,9 @@ Try the latest version! Maybe there is new speed improvement.
 
 1. The table might already have data before. These old data can affect the final checksum.
 
-2. If the table does not have an integer PRIMARY KEY, some rows might be imported repeatedly between checkpoints. This is a known bug to be fixed in the next release.
+2. If the remote checksum is 0, which means nothing is imported, it is possible that the cluster is too hot and fails to take in any data.
 
-3. If the remote checksum is 0, which means nothing is imported, it is possible that the cluster is too hot and fails to take in any data.
-
-4. If the data is mechanically generated, ensure it respects the constrains of the table:
+3. If the data is mechanically generated, ensure it respects the constrains of the table:
 
     * `AUTO_INCREMENT` columns need to be positive, and do not contain the value "0".
     * The UNIQUE and PRIMARY KEYs must have no duplicated entries.
@@ -50,6 +48,16 @@ Try the latest version! Maybe there is new speed improvement.
 1. Delete the corrupted data with `tidb-lightning-ctl --error-checkpoint-destroy=all`, and restart Lightning to import the affected tables again.
 
 2. Consider using an external database to store the checkpoints (change `[checkpoint] dsn`) to reduce the target database's load.
+
+## Checkpoint for … has invalid status: 18
+
+**Cause**: [Checkpoint](../../tools/lightning/checkpoints.md) is enabled, and Lightning or Importer has previously abnormally exited. To prevent accidental data corruption, Lightning will not start until the error is addressed.
+
+**Solutions**:
+
+If the error was caused by invalid data source, delete the imported data using `tidb-lightning-ctl --error-checkpoint-destroy=all` and start Lightning again.
+
+See the [Checkpoints control](../../tools/lightning/checkpoints.md#checkpoints-control) section for other options.
 
 ## ResourceTemporarilyUnavailable("Too many open engines …: 8")
 
@@ -61,7 +69,7 @@ Try the latest version! Maybe there is new speed improvement.
 
     Max Memory Usage ≈ `max-open-engine` × `write-buffer-size` × `max-write-buffer-number`
 
-2. Decrease the value of `table-concurrency` so it is less than `max-open-engine`.
+2. Decrease the value of `table-concurrency` + `index-concurrency` so it is less than `max-open-engine`.
 
 3. Restart `tikv-importer` to forcefully remove all engine files. This also removes all partially imported tables, thus it is required to run `tidb-lightning-ctl --error-checkpoint-destroy=all`.
 
@@ -83,12 +91,17 @@ Try the latest version! Maybe there is new speed improvement.
 
 **Solutions**:
 
-1. Ensure Lightning and the source database are using the same time zone. Lightning's time zone can be forced using the `$TZ` environment variable.
+1. Ensure Lightning and the source database are using the same time zone. When deploying via TiDB-Ansible, the timezone is defined in `inventory.ini`.
+
+    ```ini
+    # inventory.ini
+    [all:vars]
+    timezone = Asia/Shanghai
+    ```
+
+    When executing Lightning directly, the time zone can be forced using the `$TZ` environment variable.
 
     ```sh
-    # Ansible deployment, and force UTC.
-    TZ=UTC scripts/start_lightning.sh
-
     # Manual deployment, and force Asia/Shanghai.
     TZ='Asia/Shanghai' bin/tidb-lightning -config tidb-lightning.toml
     ```

@@ -62,7 +62,7 @@ If `tidb-lightning` exits abnormally due to unrecoverable errors (e.g. data corr
 ### `--checkpoint-error-destroy`
 
 ```sh
-tidb-lightning-ctl --checkpoint-error-destroy='`schema`.`table`
+tidb-lightning-ctl --checkpoint-error-destroy='`schema`.`table`'
 ```
 
 This option allows you to restart importing the table from scratch. The schema and table names must be quoted with backquotes and are case-sensitive.

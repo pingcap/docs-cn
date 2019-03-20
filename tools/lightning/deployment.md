@@ -28,7 +28,7 @@ To achieve the best performance, it is recommended to use the following hardware
 - `tidb-lightning`:
 
     - 32+ logical cores CPU
-    - An SSD large enough to store the entire SQL dump, preferring higher read speed
+    - An SSD large enough to store the entire data source, preferring higher read speed
     - 10 Gigabit network card (capable of transferring at ≥300 MB/s)
     - `tidb-lightning` fully consumes all CPU cores when running,
         and deploying on a dedicated machine is highly recommended.
@@ -40,6 +40,7 @@ To achieve the best performance, it is recommended to use the following hardware
     - 32+ logical cores CPU
     - 32 GB+ memory
     - 1 TB+ SSD, preferring higher IOPS (≥ 8000 is recommended)
+        * The disk should be larger than the total size of the top N tables, where N = max(index-concurrency, table-concurrency).
     - 10 Gigabit network card (capable of transferring at ≥300 MB/s)
     - `tikv-importer` fully consumes all CPU, disk I/O and network bandwidth when running,
         and deploying on a dedicated machine is strongly recommended.
@@ -49,8 +50,8 @@ If you have sufficient machines, you can deploy multiple Lightning/Importer serv
 > **Notes:** `tidb-lightning` is a CPU intensive program. In an environment with mixed components, the resources allocated to `tidb-lightning` must be limited. Otherwise, other components might not be able to run. It is recommended to set the `region-concurrency` to 75% of CPU logical cores. For instance, if the CPU has 32 logical cores, you can set the `region-concurrency` to 24.
 
 Additionally, the target TiKV cluster should have enough space to absorb the new data.
-Besides [the standard requirements](../../op-guide/recommendation.md), the total free space of the target TiKV cluster should be larger than **Size of SQL dump × [Number of replicas](../../FAQ.md#is-the-number-of-replicas-in-each-region-configurable-if-yes-how-to-configure-it) × 2**.
-With the default replica count of 3, this means the total free space should be at least 6 times the size of SQL dump.
+Besides [the standard requirements](../../op-guide/recommendation.md), the total free space of the target TiKV cluster should be larger than **Size of data source × [Number of replicas](../../FAQ.md#is-the-number-of-replicas-in-each-region-configurable-if-yes-how-to-configure-it) × 2**.
+With the default replica count of 3, this means the total free space should be at least 6 times the size of data source.
 
 ## Export data
 
@@ -67,6 +68,8 @@ In this command,
 - `-t 16`: means 16 threads are used to export the data.
 - `-F 256`: means a table is partitioned into chunks and one chunk is 256 MB.
 - `--skip-tz-utc`: the purpose of adding this parameter is to ignore the inconsistency of time zone setting between MySQL and the data exporting machine, and to disable automatic conversion.
+
+If the data source consists of CSV files, see [CSV support](../../tools/lightning/csv.md) for configuration.
 
 ## Deploy TiDB-Lightning
 
@@ -100,7 +103,7 @@ You can deploy TiDB-Lightning using Ansible together with the [deployment of the
         ```yaml
         ...
         # The listening port of tikv-importer. Should be open to the tidb-lightning server.
-        tikv_importer_port: 20170
+        tikv_importer_port: 8287
         ...
         ```
 
@@ -111,9 +114,9 @@ You can deploy TiDB-Lightning using Ansible together with the [deployment of the
         dummy:
 
         # The listening port for metrics gathering. Should be open to the monitoring servers.
-        tidb_lightning_pprof_port: 10089
+        tidb_lightning_pprof_port: 8289
 
-        # The file path that tidb-lightning reads the mydumper SQL dump from.
+        # The file path that tidb-lightning reads the data source (mydumper SQL dump or CSV) from.
         data_source_dir: "{{ deploy_dir }}/mydumper"
         ```
 
@@ -162,9 +165,9 @@ You can find deployment instructions in [TiDB Quick Start Guide](https://pingcap
 
 Download the TiDB-Lightning package (choose the same version as that of the TiDB cluster):
 
-- **v2.1.2**: https://download.pingcap.org/tidb-lightning-v2.1.2-linux-amd64.tar.gz
+- **v2.1.6**: https://download.pingcap.org/tidb-v2.1.6-linux-amd64.tar.gz
 - **v2.0.9**: https://download.pingcap.org/tidb-lightning-v2.0.9-linux-amd64.tar.gz
-- Latest unstable version: https://download.pingcap.org/tidb-lightning-latest-linux-amd64.tar.gz
+- Latest unstable version: https://download.pingcap.org/tidb-lightning-test-xx-latest-linux-amd64.tar.gz
 
 #### Step 3: Start `tikv-importer`
 
@@ -183,7 +186,7 @@ Download the TiDB-Lightning package (choose the same version as that of the TiDB
     [server]
     # The listening address of tikv-importer. tidb-lightning needs to connect to
     # this address to write data.
-    addr = "0.0.0.0:20170"
+    addr = "0.0.0.0:8287"
     # Size of the thread pool for the gRPC server.
     grpc-concurrency = 16
 
@@ -221,7 +224,7 @@ Download the TiDB-Lightning package (choose the same version as that of the TiDB
     # Maximum duration to prepare Regions.
     #max-prepare-duration = "5m"
     # Split Regions into this size according to the importing data.
-    #region-split-size = "96MB"
+    #region-split-size = "512MB"
     # Stream channel window size. The stream will be blocked on channel full.
     #stream-channel-window = 128
     # Maximum number of open engines.
@@ -238,7 +241,7 @@ Download the TiDB-Lightning package (choose the same version as that of the TiDB
 
 1. Upload `bin/tidb-lightning` and `bin/tidb-lightning-ctl` from the tool set.
 
-2. Mount the mydumper SQL dump onto the same machine.
+2. Mount the data source onto the same machine.
 
 3. Configure `tidb-lightning.toml`.
 
@@ -247,14 +250,19 @@ Download the TiDB-Lightning package (choose the same version as that of the TiDB
 
     [lightning]
     # the HTTP port for debugging and Prometheus metrics pulling (0 to disable)
-    pprof-port = 10089
+    pprof-port = 8289
 
     # Checks if the cluster satisfies the minimum requirement before starting.
     #check-requirements = true
 
-    # The maximum number of tables to be handled concurrently.
-    # This value affects the memory usage of tikv-importer.
-    # Must not exceed the max-open-engines setting for tikv-importer.
+    # The maximum number of engines to be opened concurrently.
+    # Each table is split into one "index engine" to store indices, and multiple
+    # "data engines" to store row data. These settings control the maximum
+    # concurrent number for each type of engines.
+    # These values affect the memory and disk usage of tikv-importer.
+    # The sum of these two values must not exceed the max-open-engines setting
+    # for tikv-importer.
+    index-concurrency = 2
     table-concurrency = 8
 
     # The concurrency number of data. It is set to the number of logical CPU
@@ -302,12 +310,30 @@ Download the TiDB-Lightning package (choose the same version as that of the TiDB
 
     [tikv-importer]
     # The listening address of tikv-importer. Change it to the actual address.
-    addr = "172.16.31.10:20170"
+    addr = "172.16.31.10:8287"
 
     [mydumper]
     # Block size for file reading. Keep it longer than the longest string of
     # the data source.
     read-block-size = 65536 # Byte (default = 64 KB)
+
+    # Minimum size (in terms of source data file) of each batch of import.
+    # Lightning splits a large table into multiple data engine files according to this size.
+    batch-size = 107_374_182_400 # Byte (default = 100 GB)
+
+    # Engine file needs to be imported sequentially. Due to parallel processing,
+    # multiple data engines will be imported at nearly the same time, and this
+    # creates a queue and wastes resources. Therefore, Lightning slightly
+    # increases the size of the first few batches to properly distribute
+    # resources. The scale up factor is controlled by this parameter, which
+    # expresses the ratio of duration between the "import" and "write" steps
+    # with full concurrency. This can be calculated as the ratio
+    # (import duration/write duration) of a single table of size around 1 GB.
+    # The exact timing can be found in the log. If "import" is faster, the batch
+    # size anomaly is smaller, and a ratio of zero means uniform batch size.
+    # This value should be in the range (0 <= batch-import-ratio < 1).
+    batch-import-ratio = 0.75
+
     # mydumper local source data directory
     data-source-dir = "/data/my_database"
     # If no-schema is set to true, tidb-lightning assumes that the table skeletons
@@ -326,6 +352,26 @@ Download the TiDB-Lightning package (choose the same version as that of the TiDB
     # note that the *data* files are always parsed as binary regardless of
     # schema encoding.
     character-set = "auto"
+
+    # Configure how CSV files are parsed.
+    [mydumper.csv]
+    # Separator between fields, should be an ASCII character.
+    separator = ','
+    # Quoting delimiter, can either be an ASCII character or empty string.
+    delimiter = '"'
+    # Whether the CSV files contain a header.
+    # If `header` is true, the first line will be skipped.
+    header = true
+    # Whether the CSV contains any NULL value.
+    # If `not-null` is true, all columns from CSV cannot be NULL.
+    not-null = false
+    # When `not-null` is false (i.e. CSV can contain NULL),
+    # fields equal to this value will be treated as NULL.
+    null = '\N'
+    # Whether to interpret backslash escapes inside fields.
+    backslash-escape = true
+    # If a line ends with a separator, remove it.
+    trim-last-separator = false
 
     [tidb]
     # Configuration of any TiDB server from the cluster
@@ -356,8 +402,10 @@ Download the TiDB-Lightning package (choose the same version as that of the TiDB
     [post-restore]
     # Performs `ADMIN CHECKSUM TABLE <table>` for each table to verify data integrity.
     checksum = true
-    # Performs compaction on the TiKV cluster.
-    compact = true
+    # Performs level-1 compaction after importing each table.
+    level-1-compact = false
+    # Performs full compaction on the whole TiKV cluster at the end of process.
+    compact = false
     # Performs `ANALYZE TABLE <table>` for each table.
     analyze = true
 

@@ -151,6 +151,7 @@
     - [Deployment](tools/lightning/deployment.md)
     - [Checkpoints](tools/lightning/checkpoints.md)
     - [Table Filter](tools/lightning/filter.md)
+    - [CSV Support](tools/lightning/csv.md)
     - [Monitor](tools/lightning/monitor.md)
     - [Troubleshooting](tools/lightning/errors.md)
     - [FAQs](tools/lightning/faq.md)
