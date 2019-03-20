@@ -105,3 +105,23 @@ TiDB 使用乐观事务模型，在执行 Update、Insert、Delete 等语句时�
 +   事务的处理：
 
     TiDB 在执行 load data 时，默认每 2 万行记录作为一个事务进行持久化存储。如果一次 load data 操作插入的数据超过 2 万行，那么会分为多个事务进行提交。如果某个事务出错，这个事务会提交失败，但它前面的事务仍然会提交成功，在这种情况下一次 load data 操作会有部分数据插入成功，部分数据插入失败。而 MySQL 中会将一次 load data 操作视为一个事务，如果其中发生失败情况，将会导致整个 load data 操作失败。
+
+### 默认设置的区别
+
++ 默认字符集不同：
+    + TiDB 中为 `utf8`，相当于 MySQL 的 `utf8mb4`
+    + MySQL 5.7 中为 `latin1`，但在 MySQL 8.0 中修改为 `utf8mb4`
++ 默认排序规则不同：
+    + MySQL 5.7 中使用 `latin1_swedish_ci`
+    + TiDB 使用 `binary`
++ `lower_case_table_names` 的默认值不同：
+    + TiDB 中该值默认为 2，并且目前 TiDB 只支持设置该值为 2
+    + MySQL 中默认设置：
+        + Linux 系统中该值为 0
+        + Windows 系统中该值为 1
+        + macOS 系统中该值为 2
++ `explicit_defaults_for_timestamp` 的默认值不同：
+    + TiDB 中该值默认为 `ON`，并且目前 TiDB 只支持设置该值为 `ON`
+    + MySQL 中默认设置：
+        + MySQL 5.7：`OFF`
+        + MySQL 8.0：`ON`
