@@ -25,6 +25,7 @@ This is a list of TiDB adopters in various industries.
 |[Bank of Beijing](https://en.wikipedia.org/wiki/Bank_of_Beijing)|Banking|[Chinese](https://pingcap.com/cases-cn/user-case-beijing-bank/)|
 |[Industrial and Commercial Bank of China](https://en.wikipedia.org/wiki/Industrial_and_Commercial_Bank_of_China)|Banking||
 |[iQiyi](https://en.wikipedia.org/wiki/IQiyi)|Media and Entertainment|[English](https://www.pingcap.com/success-stories/tidb-in-iqiyi/); [Chinese](https://pingcap.com/cases-cn/user-case-iqiyi/)|
+|[BookMyShow](https://www.crunchbase.com/organization/bookmyshow)|Media and Entertainment|[English](https://www.pingcap.com/success-stories/tidb-in-bookmyshow/)|
 |[Yimian Data](https://www.crunchbase.com/organization/yimian-data)|Big Data|[Chinese](https://www.pingcap.com/cases-cn/user-case-yimian)|
 |[CAASDATA](https://www.caasdata.com/)|Big Data|[Chinese](https://pingcap.com/cases-cn/user-case-kasi/)|
 |[Phoenix New Media](https://www.crunchbase.com/organization/phoenix-new-media)|Media|[Chinese](https://www.pingcap.com/cases-cn/user-case-ifeng/)|
