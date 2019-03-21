@@ -9,26 +9,11 @@ category: tools
 
 Syncer 是一个数据导入工具，能方便地将 MySQL 的数据增量导入到 TiDB。
 
-Syncer 属于 TiDB 企业版工具集，如何获取可参考[下载 TiDB 企业版工具集](#下载-tidb-企业版工具集-linux)。
+Syncer 包含在 tidb-enterprise-tools 安装包中，可[在此下载](../tools/download.md)。
 
 ## Syncer 架构
 
 ![syncer 架构](../media/syncer-architecture.png)
-
-## 下载 TiDB 企业版工具集 (Linux)
-
-```bash
-# 下载 tool 压缩包
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
-
-# 检查文件完整性，返回 ok 则正确
-sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
-
-# 解开压缩包
-tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
-cd tidb-enterprise-tools-latest-linux-amd64
-```
 
 ## Syncer 部署位置
 
@@ -71,15 +56,23 @@ Usage of syncer:
   -c int
       syncer 处理 batch 线程数 (默认 16)
   -config string
-      指定相应配置文件启动 sycner 服务；如 `--config config.toml` 
+      指定相应配置文件启动 Sycner 服务；如 `--config config.toml`
+  -enable-ansi-quotes
+      使用 ANSI_QUOTES sql_mode 来解析 SQL 语句
   -enable-gtid
       使用 gtid 模式启动 syncer；默认 false，开启前需要上游 MySQL 开启 GTID 功能
+  -flavor string
+      上游数据库实例类型，目前支持 "mysql" 和 "mariadb"
   -log-file string
       指定日志文件目录；如 `--log-file ./syncer.log`
   -log-rotate string
       指定日志切割周期, hour/day (默认 "day")
   -meta string
       指定 syncer 上游 meta 信息文件  (默认与配置文件相同目录下 "syncer.meta")
+  -persistent-dir string
+      指定同步过程中历史 schema 结构的保存文件地址，如果设置为空，则不保存历史 schema 结构；如果不为空，则根据 binlog 里面包含的数据的 column 长度选择 schema 来还原 DML 语句
+  -safe-mode
+      指定是否开启 safe mode，让 Syncer 在任何情况下可重入
   -server-id int
      指定 MySQL slave sever-id (默认 101)
   -status-addr string
@@ -90,49 +83,57 @@ Syncer 的配置文件 `config.toml`：
 
 ```toml
 log-level = "info"
+log-file = "syncer.log"
+log-rotate = "day"
 
 server-id = 101
 
 ## meta 文件地址
 meta = "./syncer.meta"
-
 worker-count = 16
-batch = 10
+batch = 1000
+flavor = "mysql"
 
-## pprof 调试地址, Prometheus 也可以通过该地址拉取 syncer metrics
-## 将 127.0.0.1 修改为相应主机 IP 地址
-status-addr = "127.0.0.1:10086"
+## pprof 调试地址，Prometheus 也可以通过该地址拉取 Syncer metrics
+status-addr = ":8271"
 
-# 注意: skip-sqls 已经废弃, 请使用 skip-ddls.
-# skip-ddls 可以跳过与 TiDB 不兼容的 DDL 语句，支持正则语法。
-# skip-ddls = ["^CREATE\\s+USER"]
+## 如果设置为 true，Syncer 遇到 DDL 语句时就会停止退出
+stop-on-ddl = false
 
-# 注意: skip-events 已经废弃, 请使用 skip-dmls 
-# skip-dmls 用于跳过 DML 语句. type 字段取值为 'insert', 'update', 'delete'。
-# 下面的例子为跳过 foo.bar 表的所有 delete 语句。
+## 跳过 DDL 语句，格式为 **前缀完全匹配**，如：`DROP TABLE ABC` 至少需要填入 `DROP TABLE`
+# skip-ddls = ["ALTER USER", "CREATE USER"]
+
+## 在使用 route-rules 功能后，
+## replicate-do-db & replicate-ignore-db 匹配合表之后 (target-schema & target-table) 数值
+## 优先级关系: replicate-do-db --> replicate-do-table --> replicate-ignore-db --> replicate-ignore-table
+## 指定要同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
+#replicate-do-db = ["~^b.*","s1"]
+
+## 指定 **忽略** 同步数据库；支持正则匹配，表达式语句必须以 `~` 开始
+#replicate-ignore-db = ["~^b.*","s1"]
+
+# skip-dmls 支持跳过 DML binlog events，type 字段的值可为：'insert'，'update' 和 'delete'
+# 跳过 foo.bar 表的所有 delete 语句
 # [[skip-dmls]]
 # db-name = "foo"
 # tbl-name = "bar"
 # type = "delete"
-# 
-# 下面的例子为跳过所有表的 delete 语句。
+#
+# 跳过所有表的 delete 语句
 # [[skip-dmls]]
 # type = "delete"
-# 
-# 下面的例子为跳过 foo 库中所有表的 delete 语句。 
+#
+# 跳过 foo.* 表的 delete 语句
 # [[skip-dmls]]
 # db-name = "foo"
 # type = "delete"
-
-## 指定要同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
-#replicate-do-db = ["~^b.*","s1"]
 
 ## 指定要同步的 db.table 表
 ## db-name 与 tbl-name 不支持 `db-name ="dbname，dbname2"` 格式
 #[[replicate-do-table]]
 #db-name ="dbname"
 #tbl-name = "table-name"
- 
+
 #[[replicate-do-table]]
 #db-name ="dbname1"
 #tbl-name = "table-name1"
@@ -142,16 +143,13 @@ status-addr = "127.0.0.1:10086"
 #db-name ="test"
 #tbl-name = "~^a.*"
 
-## 指定**忽略**同步数据库；支持正则匹配，表达式语句必须以 `~` 开始
-#replicate-ignore-db = ["~^b.*","s1"]
-
-## 指定**忽略**同步数据库
+## 指定 **忽略** 同步数据库
 ## db-name & tbl-name 不支持 `db-name ="dbname，dbname2"` 语句格式
 #[[replicate-ignore-table]]
 #db-name = "your_db"
 #tbl-name = "your_table"
 
-## 指定要**忽略**同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
+## 指定要 **忽略** 同步数据库名；支持正则匹配，表达式语句必须以 `~` 开始
 #[[replicate-ignore-table]]
 #db-name ="test"
 #tbl-name = "~^a.*"
@@ -264,7 +262,7 @@ tbl-name = "beijing"
 db-name ="ops"
 tbl-name = "ops_user"
 
-# history 数据下有 2017_01 2017_02 ... 2017_12 / 2016_01  2016_02 ... 2016_12  等多张表,只需要同步 2017 年的数据表
+# history 数据下有 2017_01 2017_02 ... 2017_12 / 2016_01  2016_02 ... 2016_12 等多张表，只需要同步 2017 年的数据表
 [[replicate-do-table]]
 db-name ="history"
 tbl-name = "~^2017_.*"
@@ -276,12 +274,12 @@ replicate-ignore-db = ["ops","fault","~^www"]
 
 # fault 数据库下有 faults / user_feedback / ticket 等数据表
 # 忽略同步 user_feedback 数据表
-# 因 replicate-ignore-db 优先级比 replicate-ignore-table 高，所以此处设置只同步 user_feedback 表无效，实际工作会同步 fault 整个数据库
+# 因 replicate-ignore-db 优先级比 replicate-ignore-table 高，所以此处设置只忽略同步 user_feedback 表无效，实际工作会忽略同步 fault 整个数据库
 [[replicate-ignore-table]]
 db-name = "fault"
 tbl-name = "user_feedback"
 
-# order 数据下有 2017_01 2017_02 ... 2017_12 / 2016_01  2016_02 ... 2016_12  等多张表,忽略 2016 年的数据表
+# order 数据下有 2017_01 2017_02 ... 2017_12 / 2016_01  2016_02 ... 2016_12 等多张表，忽略 2016 年的数据表
 [[replicate-ignore-table]]
 db-name ="order"
 tbl-name = "~^2016_.*"
@@ -308,7 +306,7 @@ tbl-name = "~^2016_.*"
 # 数据库A 下有 order_2016 / history_2016 等多个数据库
 # 数据库B 下有 order_2017 / history_2017 等多个数据库
 # 指定同步数据库A  order_2016 数据库，数据表如下 2016_01 2016_02 ... 2016_12 
-# 指定同步数据表B  order_2017 数据库，数据表如下 2017_01 2017_02 ... 2017_12
+# 指定同步数据库B  order_2017 数据库，数据表如下 2017_01 2017_02 ... 2017_12
 # 表内使用 order_id 作为主键，数据之间主键不冲突
 # 忽略同步 history_2016 与 history_2017 数据库
 # 目标库需要为 order ，目标数据表为 order_2017 / order_2016
@@ -338,103 +336,140 @@ target-table = "order_2017"
 
 ### Syncer 同步前检查
 
-1. 源库 server-id 检查
+1. 检查数据库版本。
 
-    - 可通过以下命令查看 server-id 
-    - 结果为空或者为 0，Syncer 无法同步数据
-    - Syncer server-id 与 MySQL server-id 不能相同，且在 MySQL cluster 中唯一
+    使用 `select @@version;` 命令检查数据库版本。目前，Syncer 只支持以下版本：
 
+    - 5.5 < MySQL 版本 < 5.8
+    - MariaDB 版本 >= 10.1.2（更早版本的 binlog 部分字段类型格式与 MySQL 不一致）
+
+2. 检查源库 `server-id`。
+
+    可通过以下命令查看 `server-id`：
+    
     ```sql
     mysql> show global variables like 'server_id';
-    +---------------+-------  
+    +---------------+-------+  
     | Variable_name | Value |
     +---------------+-------+
     | server_id     | 1     |
     +---------------+-------+
     1 row in set (0.01 sec)
     ```
+    
+    - 结果为空或者为 0，Syncer 无法同步数据。
+    - Syncer `server-id` 与 MySQL `server-id` 不能相同，且必须在 MySQL cluster 中唯一。
 
-2. 检查 Binlog 相关参数
+3. 检查 Binlog 相关参数。
 
-    - 检查 MySQL 是否开启 binlog
-    - 可以用如下命令确认是否开启了 binlog
-    - 如果结果是 log_bin = OFF，需要开启。开启方式请参考[官方文档](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
+    1. 检查 MySQL 是否开启了 binlog。
 
-    ```sql
-    mysql> show global variables like 'log_bin';
-    +--------------------+---------+
-    | Variable_name | Value  |
-    +--------------------+---------+
-    | log_bin             | ON      |
-    +--------------------+---------+
-    1 row in set (0.00 sec)
-    ```
+        使用如下命令确认是否开启了 binlog：
 
-3. 检查 MySQL binlog 格式是否为 ROW
+        ```sql
+        mysql> show global variables like 'log_bin';
+        +--------------------+---------+
+        | Variable_name      | Value   |
+        +--------------------+---------+
+        | log_bin            | ON      |
+        +--------------------+---------+
+        1 row in set (0.00 sec)
+        ```
+        
+        如果结果是 `log_bin` = `OFF`，则需要开启 binlog，开启方式请参考[官方文档](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)。
 
-    - 可以用如下命令检查 binlog 格式：
+    2. 检查 MySQL binlog 格式是否为 `ROW`。
 
-    ```sql
-    mysql> show global variables like 'binlog_format';
-    +--------------------+----------+
-    | Variable_name | Value   |
-    +--------------------+----------+
-    | binlog_format   | ROW   |
-    +--------------------+----------+
-    1 row in set (0.00 sec)
-    ```
+        可以用如下命令检查 binlog 格式：
 
-    - 如果发现 binlog 格式是其他格式，可以通过如下命令设置为 ROW：
-    - 如果 MySQL 有连接，建议重启 MySQL 服务或者杀掉所有连接。
+        ```sql
+        mysql> show global variables like 'binlog_format';
+        +--------------------+----------+
+        | Variable_name      | Value    |
+        +--------------------+----------+
+        | binlog_format      | ROW      |
+        +--------------------+----------+
+        1 row in set (0.00 sec)
+        ```
 
-    ```sql
-    mysql> set global binlog_format=ROW;
-    mysql>  flush logs;
-    Query OK, 0 rows affected (0.01 sec)
-    ```
+        - 如果发现 binlog 格式是其他格式，可以通过如下命令设置为 ROW：
+        
+            ```sql
+            mysql> set global binlog_format=ROW;
+            mysql>  flush logs;
+            Query OK, 0 rows affected (0.01 sec)
+            ```
+        
+        - 如果 MySQL 有连接，建议重启 MySQL 服务或者杀掉所有连接。
 
-4. 检查 MySQL `binlog_row_image` 是否为 FULL
+    3. 检查 MySQL `binlog_row_image` 是否为 `FULL`。
 
-    - 可以用如下命令检查 `binlog_row_image`
+        可以用如下命令检查 `binlog_row_image`：
 
-    ```sql
-    mysql> show global variables like 'binlog_row_image';
-    +--------------------------+---------+
-    | Variable_name        | Value  |
-    +--------------------------+---------+
-    | binlog_row_image   | FULL  |
-    +--------------------------+----------+
-    1 row in set (0.01 sec)
-    ```
+        ```sql
+        mysql> show global variables like 'binlog_row_image';
+        +--------------------------+---------+
+        | Variable_name            | Value   |
+        +--------------------------+---------+
+        | binlog_row_image         | FULL    |
+        +--------------------------+---------+
+        1 row in set (0.01 sec)
+        ```
 
-    - 如果 binlog_row_image 结果不为 FULL，请设置为 FULL。设置方式如下：
+        如果 `binlog_row_image` 结果不为 `FULL`，请设置为 `FULL`。设置方式如下：
 
-    ```sql
-    mysql> set global binlog_row_image = FULL;
-    Query OK, 0 rows affected (0.01 sec)
-    ```
-5. 检查 mydumper 用户权限
+        ```sql
+        mysql> set global binlog_row_image = FULL;
+        Query OK, 0 rows affected (0.01 sec)
+        ```
 
-    - mydumper 导出数据至少拥有以下权限：`select, reload`
-    - mydumper 操作对象为 RDS 时，可以添加 `--no-locks` 参数，避免申请 `reload` 权限
+4. 检查用户权限。
 
-6. 检查上下游同步用户权限
+    1. 全量导出的 mydumper 需要的用户权限。
 
-    - 需要上游 MySQL 同步账号至少赋予以下权限：
+        - mydumper 导出数据至少拥有以下权限：`select, reload`。
+        - mydumper 操作对象为 RDS 时，可以添加 `--no-locks` 参数，避免申请 `reload` 权限。
+
+    2. 增量同步 Syncer 需要的上游 MySQL/MariaDB 用户权限。
+
+        需要上游 MySQL 同步账号至少赋予以下权限：
         
         ```
         select , replication slave , replication client
         ```
     
-    - 下游 TiDB 可暂时采用 root 同权限账号
+    3. 下游 TiDB 需要的权限
+    
+        | 权限 | 作用域 |
+        |----:|:------|
+        | SELECT | Tables |
+        | INSERT | Tables |
+        | UPDATE | Tables |
+        | DELETE | Tables |
+        | CREATE | Databases,tables |
+        | DROP | Databases, tables |
+        | ALTER | Tables |
+        | INDEX | Tables |
 
-7. 检查 GTID 与 POS 相关信息
-
-    - 使用以下语句查看 binlog 内容：
+        为所同步的数据库或者表，执行下面的 GRANT 语句：
         
         ```sql
-        show binlog events in 'mysql-bin.000023' from 136676560 limit 10;
+        GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX  ON db.table TO 'your_user'@'your_wildcard_of_host';
         ```
+
+5. 检查 SQL mode。
+
+    必须确认上下游的 SQL mode 一致；如果不一致，则会出现数据同步的错误。
+
+    ```sql
+    mysql> show variables like '%sql_mode%';
+    +---------------+-----------------------------------------------------------------------------------+
+    | Variable_name | Value                                                                             |
+    +---------------+-----------------------------------------------------------------------------------+
+    | sql_mode      | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
+    +---------------+-----------------------------------------------------------------------------------+
+    1 row in set (0.01 sec)
+    ```
 
 ## 监控方案
 
@@ -480,35 +515,51 @@ Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。配�
 
 #### title: binlog events
 
-- metrics: `irate(syncer_binlog_events_total[1m])`
-- info: Syncer 已经同步到的 master binlog 相关信息统计，主要有 `query`，`rotate`，`update_rows`，`write_rows`，`delete_rows` 五种类型
+- metrics: `rate(syncer_binlog_event_count[1m])`
+- info: 统计 Syncer 每秒已经收到的 binlog 个数
 
-#### title: syncer_binlog_file
+#### title: binlog event transform
 
-- metrics: `syncer_binlog_file`
-- info: Syncer 同步 master binlog 的文件数量
+- metrics: `histogram_quantile(0.8, sum(rate(syncer_binlog_event_bucket[1m])) by (le))`
+- info: Syncer 把 binlog 转换为 SQL 语句的耗时 
 
-#### title: binlog pos
+#### title: transaction latency
 
-- metrics: `syncer_binlog_pos`
-- info: Syncer 同步当前 master binlog 的 binlog-pos 信息
+- metrics: `histogram_quantile(0.95, sum(rate(syncer_txn_cost_in_second_bucket[1m])) by (le))`
+- info: Syncer 在下游 TiDB 执行 transaction 的耗时
 
-#### title: syncer_gtid
+#### title: transaction tps
 
-- metrics: `syncer_gtid`
-- info: Syncer 同步当前 master binlog 的 binlog-gtid 信息
+- metrics: `rate(syncer_txn_cost_in_second_count[1m])`
+- info: Syncer 在下游 TiDB 每秒执行的 transaction 个数
 
-#### title: syncer_binlog_file
+#### title: binlog file gap
 
 - metrics: `syncer_binlog_file{node="master"} - ON(instance, job) syncer_binlog_file{node="syncer"}`
-- info: 上游与下游同步时，相差的 binlog 文件数量，正常状态为 0，表示数据正在实时同步。数值越大，表示相差的 binlog 文件数量越多。
+- info: Syncer 已经同步到的 binlog position 的文件编号距离上游 MySQL 当前 binlog position 的文件编号的值；注意 MySQL 当前 binlog position 是定期查询，在一些情况下该 metrics 会出现负数的情况
 
 #### title: binlog skipped events
 
-- metrics: `irate(syncer_binlog_skipped_events_total[1m])`
-- info: Syncer 同步 master binlog 文件时跳过执行 SQL 的数量统计。跳过 SQL 语句格式由 `syncer.toml` 文件中的 `skip-sqls` 参数控制。
+- metrics: `rate(syncer_binlog_skipped_events_total[1m])`
+- info: Syncer 跳过的 binlog 的个数，你可以在配置文件中配置 `skip-ddls` 和 `skip-dmls` 来跳过指定的 binlog
 
-#### title: syncer_txn_costs_gauge_in_second
+#### title: position of binlog position
 
-- metrics: `syncer_txn_costs_gauge_in_second`
-- info: Syncer 处理一个 batch 的时间，单位为秒
+- metrics: `syncer_binlog_pos{node="syncer"}` and `syncer_binlog_pos{node="master"}`
+- info: 需配合 `file number of binlog position` 一起看。`syncer_binlog_pos{node="master"}` 表示上游 MySQL 当前 binlog position 的 position 值，`syncer_binlog_pos{node="syncer"}` 表示上游 Syncer 已经同步到的 binlog position 的 position 值
+
+#### title: file number of binlog position
+
+- metrics: `syncer_binlog_file{node="syncer"}` and `syncer_binlog_file{node="master"}`
+- info: 需要配置 `position of binlog position` 一起看。`syncer_binlog_file{node="master"}` 表示上游 MySQL 当前 binlog position 的文件编号，`syncer_binlog_file{node="syncer"}` 表示上游 Syncer 已经同步到的 binlog 位置的文件编号
+
+
+#### title: execution jobs
+
+- metrics: `sum(rate(syncer_add_jobs_total[1m])) by (queueNo)`
+- info: Syncer 把 binlog 转换成 SQL 语句后，将 SQL 语句以 jobs 的方式加到执行队列中，这个 metrics 表示已经加入执行队列的 jobs 总数
+
+#### title: pending jobs
+
+- metrics: `sum(rate(syncer_add_jobs_total[1m]) - rate(syncer_finished_jobs_total[1m])) by (queueNo)`
+- info: 已经加入执行队列但是还没有执行的 jobs 数量

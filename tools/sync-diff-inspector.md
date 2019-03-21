@@ -18,7 +18,7 @@ sync-diff-inspector 是一个用于校验 MySQL／TiDB 中两份数据是否一�
 
 GitHub 地址：[sync-diff-inspector](https://github.com/pingcap/tidb-tools/tree/master/sync_diff_inspector)
 
-下载地址：[sync-diff-inspector-linux-amd64.tar.gz](https://download.pingcap.org/sync-diff-inspector-linux-amd64.tar.gz)
+下载地址：[tidb-enterprise-tools-latest-linux-amd64](https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz)
 
 ## sync-diff-inspector 的使用
 
@@ -52,6 +52,17 @@ ignore-struct-check = false
 # 保存用于修复数据的 sql 的文件名称
 fix-sql-file = "fix.sql"
 
+# 如果需要使用 TiDB 的统计信息划分 chunk，需要设置 tidb-instance-id，值为 source-db 或者 target-db 中配置的 instance-id 的值
+# tidb-instance-id = "target-1"
+
+# 如果需要对比大量的不同库名或者表名的表的数据，可以通过 table-rule 来设置映射关系。可以只配置 schema 或者 table 的映射关系，也可以都配置
+#[[table-rules]]
+# schema-pattern 和 table-pattern 支持正则表达式
+#schema-pattern = "test_*"
+#table-pattern = "t_*"
+#target-schema = "test"
+#target-table = "t"
+
 # 配置需要对比的目标数据库中的表
 [[check-tables]]
 # 目标库中数据库的名称
@@ -63,7 +74,7 @@ tables = ["test1", "test2", "test3"]
 # 支持使用正则表达式配置检查的表，需要以‘~’开始，
 # 下面的配置会检查所有表名以‘test’为前缀的表
 # tables = ["~^test.*"]
-# 下面的配置会检查配置库中所有的表
+# 下面的配置会检查配置库中所有的表
 # tables = ["~^"]
 
 # 对部分表进行特殊的配置，配置的表必须包含在 check-tables 中
@@ -170,19 +181,19 @@ is-sharding = true
 
 # 源数据表的配置
 [[table-config.source-tables]]
-# 源数据库实例的 id 
+# 源数据库实例的 id
 instance-id = "source-1"
 schema = "test"
 table  = "test1"
 
 [[table-config.source-tables]]
-# 源数据库实例的 id 
+# 源数据库实例的 id
 instance-id = "source-1"
 schema = "test"
 table  = "test2"
 
 [[table-config.source-tables]]
-# 源数据库实例的 id 
+# 源数据库实例的 id
 instance-id = "source-2"
 schema = "test"
 table  = "test3"
@@ -209,6 +220,7 @@ host = "127.0.0.3"
 port = 4000
 user = "root"
 password = ""
+instance-id = "target-1"
 ```
 
 ### 运行 sync-diff-inspector
@@ -223,4 +235,6 @@ password = ""
 
 ### 注意
 
-TiDB 使用的 collation 为 utf8_bin，如果对 MySQL 和 TiDB 的数据进行对比，需要注意 MySQL 中表的 collation 设置。如果表的主键／唯一键为 varchar 类型，且 MySQL 中 collation 设置与 TiDB 不同，可能会因为排序问题导致最终校验结果不正确，需要在 sync-diff-inspector 的配置文件中增加 collation 设置。
+* TiDB 使用的 collation 为 utf8_bin，如果对 MySQL 和 TiDB 的数据进行对比，需要注意 MySQL 中表的 collation 设置。如果表的主键／唯一键为 varchar 类型，且 MySQL 中 collation 设置与 TiDB 不同，可能会因为排序问题导致最终校验结果不正确，需要在 sync-diff-inspector 的配置文件中增加 collation 设置。
+* 如果设置了 `tidb-instance-id` 使用 TiDB 的统计信息来划分 chunk，需要尽量保证统计信息精确，可以在*业务空闲期*手动执行 `analyze table {table_name}`。
+* table-rule 的规则需要特殊注意，例如设置了 `schema-pattern="test1"`，`target-schema="test2"`，会对比 source 中的 `test1` 库和 target 中的 `test2` 库；如果 source 中有 `test2` 库，该库也会和 target 中的 `test2` 库进行对比。

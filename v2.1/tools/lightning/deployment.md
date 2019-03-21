@@ -255,7 +255,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
     enable = true
     # 存储断点的数据库名称。
     schema = "tidb_lightning_checkpoint"
-    # 存储断点的数据库连接参数 (DSN)，格式为“用户:密码@tcp(地址:端口)”。
+    # 存储断点的数据库连接参数 (DSN)，格式为“用户:密码@tcp(地址:端口)/”。
     # 默认会重用 [tidb] 设置目标数据库来存储断点。
     # 为避免加重目标集群的压力，建议另外使用一个兼容 MySQL 协议的数据库服务器。
     # dsn = "root@tcp(127.0.0.1:4000)/"

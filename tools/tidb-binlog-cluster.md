@@ -1,6 +1,6 @@
 ---
 title: TiDB-Binlog Cluster 版本用户文档
-category: advanced
+category: tools
 ---
 
 # TiDB-Binlog Cluster 版本用户文档
@@ -144,13 +144,19 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
         ansible-playbook deploy.yml -l ${pump1_ip}, ${pump2_ip}, [${alias1_name}, ${alias2_name}]
         ```
         
-    2. 更新并重启 tidb_servers
+    2. 启动 pump_servers
+    
+        ```
+        ansible-playbook start.yml --tags=pump
+        ```
+        
+    3. 更新并重启 tidb_servers
     
         ```
         ansible-playbook rolling_update.yml --tags=tidb
         ```
         
-    3. 更新监控信息
+    4. 更新监控信息
     
         ```
         ansible-playbook rolling_update_monitor.yml --tags=prometheus
@@ -191,8 +197,6 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
     该命令会输出 `meta: &{CommitTS:400962745252184065}`，CommitTS 的值作为 Drainer 初次启动使用的 `initial-commit-ts` 参数的值。
 
 2. 全量数据的备份与恢复
-
-    如果下游为 MySQL/TiDB，需要保证数据的完整性，在 Drainer 启动前（Pump 运行后十分钟左右）进行数据的全量备份和恢复。
 
     推荐使用 mydumper 备份 TiDB 的全量数据，再使用 loader 将备份数据导入到下游。具体使用方法参考：[备份与恢复](https://github.com/pingcap/docs-cn/blob/master/op-guide/backup-restore.md)。
 
