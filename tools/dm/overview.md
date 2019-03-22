@@ -12,7 +12,7 @@ category: tools
 
 The Data Migration tool includes three components: DM-master, DM-worker, and dmctl.
 
-![Data Migration architecture](/media/dm-architecture.png)
+![Data Migration architecture](../../media/dm-architecture.png)
 
 ### DM-master
 
