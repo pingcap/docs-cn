@@ -66,7 +66,7 @@ alter table t change column a a varchar(22) character set utf8;
         "auto_inc_id": 0,
         "charset": "utf8",   # The charset of the table.
         "collate": "",
-        "cols": [			 # The relevant information about the columns.
+        "cols": [            # The relevant information about the columns.
             {
                 ...
                 "id": 1,
