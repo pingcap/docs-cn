@@ -143,7 +143,7 @@ operation: [{"ID":{"Trace":"22a6ccdaf58481ea","Span":"4f29711d1db208b4","Parent"
 
 输出的 JSON 内容可以在集成的 Web UI 里面查看（默认 10080 端口）。
 
-打开 trace viewer 页面, 将 `json` 数据填进去:
+打开 trace viewer 页面，将 `json` 数据填进去：
 
 ![](https://user-images.githubusercontent.com/1420062/54669409-46cd1380-4b2c-11e9-85f7-c56e0ef69e4c.png)
 
