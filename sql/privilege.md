@@ -60,10 +60,17 @@ DROP USER 'test'@'%';
 
 #### 忘记 root 密码
 
-使用一个特殊的启动参数启动 TiDB（需要 root 权限）：
+修改 TiDB 配置文件：
 
 ```bash
-sudo ./tidb-server -skip-grant-table=true
+[security]
+skip-grant-table = true
+```
+
+指定配置文件启动 TiDB（需要 root 权限）：
+
+```bash
+sudo ./tidb-server -config xxx.config
 ```
 
 这个参数启动，TiDB 会跳过权限系统，然后使用 root 登陆以后修改密码：
