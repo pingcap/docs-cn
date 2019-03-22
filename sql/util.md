@@ -145,6 +145,6 @@ operation: [{"ID":{"Trace":"22a6ccdaf58481ea","Span":"4f29711d1db208b4","Parent"
 
 打开 trace viewer 页面，将 `json` 数据填进去：
 
-![](https://user-images.githubusercontent.com/1420062/54669409-46cd1380-4b2c-11e9-85f7-c56e0ef69e4c.png)
+![TiDB Trace Viewer](/media/tidb-trace-viewer.png)
 
-![](https://user-images.githubusercontent.com/1420062/54669408-46cd1380-4b2c-11e9-88f3-f901bafb3ccf.png)
+![](/media/tidb-trace-viewer-2.png)
