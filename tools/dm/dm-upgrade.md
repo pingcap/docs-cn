@@ -62,7 +62,7 @@ Go Version: go version go1.11.2 linux/amd64
     将
     
     ```ini
-    dm_master ansible_host=172.16.10.71 dm_master_port=12080 dm_master_status_port=12081	
+    dm_master ansible_host=172.16.10.71 dm_master_port=12080 dm_master_status_port=12081
     ```
     
     变更为
@@ -127,10 +127,10 @@ Go Version: go version go1.11.2 linux/amd64
     
     ```yaml
     config:
-          host: "192.168.199.118"	
-          port: 4306	
-          user: "root"	
-          password: "1234"	
+          host: "192.168.199.118"
+          port: 4306
+          user: "root"
+          password: "1234"
     instance-id: "instance118-4306" # 此值具有唯一性，当保存 checkpoint、配置和其他信息时，作为 ID 使用。
     ```
     
