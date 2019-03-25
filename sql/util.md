@@ -147,6 +147,6 @@ operation: [{"ID":{"Trace":"22a6ccdaf58481ea","Span":"4f29711d1db208b4","Parent"
 
 Open the "trace viewer" page, fill the `json` output.
 
-![TiDB Trace Viewer](/media/tidb-trace-viewer.png)
+![TiDB Trace Viewer-1](../media/tidb-trace-viewer.png)
 
-![](/media/tidb-trace-viewer-2.png)
+![TiDB Trace Viewer-2](../media/tidb-trace-viewer-2.png)
