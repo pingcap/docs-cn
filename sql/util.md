@@ -93,4 +93,83 @@ dot xx.dot -T png -O
 USE db_name
 ```
 
+
 切换默认 Database，当 SQL 语句中的表没有显式指定的 Database 时，即使用默认 Database。
+
+## `TRACE` 语句
+
+```sql
+TRACE [FORMAT = format_name] traceable_stmt
+
+format_name:
+    "json" | "row"
+
+traceable_stmt: {
+    SELECT statement
+  | DELETE statement
+  | INSERT statement
+  | REPLACE statement
+  | UPDATE statement
+}
+```
+
+```sql
+mysql> trace format = 'row' select * from mysql.user;
++---------------------------|-----------------|------------+
+| operation                 | startTS         | duration   |
++---------------------------|-----------------|------------+
+| session.getTxnFuture      | 19:54:35.310841 | 4.255µs    |
+|   ├─session.Execute       | 19:54:35.310837 | 928.349µs  |
+|   ├─session.ParseSQL      | 19:54:35.310906 | 35.379µs   |
+|   ├─executor.Compile      | 19:54:35.310972 | 420.688µs  |
+|   ├─session.runStmt       | 19:54:35.311427 | 222.431µs  |
+|   ├─session.CommitTxn     | 19:54:35.311601 | 14.696µs   |
+|   ├─recordSet.Next        | 19:54:35.311828 | 419.797µs  |
+|   ├─tableReader.Next      | 19:54:35.311834 | 379.932µs  |
+|   ├─recordSet.Next        | 19:54:35.312310 | 26.831µs   |
+|   └─tableReader.Next      | 19:54:35.312314 | 2.84µs     |
++---------------------------|-----------------|------------+
+10 rows in set (0.00 sec)
+```
+
+当 format 为 `json` 时，输出是一段 JSON 格式的内容。如果内容过长，则输出会被换行。
+
+```sql
+mysql> trace format='json' select * from  t\G;
+*************************** 1. row ***************************
+operation: [
+  {"ID":{"Trace":"22a6ccdaf58481ea","Span":"4f29711d1db208b4","Parent":"64aa858bd66f5c65"},
+  "Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5nZXRUeG5GdXR1cmU="},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAxOS0wMy0yMFQxNjoxMDo1My4yNDQ5NDc1MTgrMDg6MDA="},{"Key":"Span.End","Value":"MjAxOS0wMy0yMFQxNjoxMDo1My4yNDQ5NTI1MDYrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],
+  "Sub":[
+    {"ID":{"Trace":"22a6ccdaf58481ea","Span":"5a1f3a948a72ff6f","Parent":"64aa858bd66f5c65"},
+    "Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5QYXJzZVNRTA=="},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAxOS0wMy0yMFQxNjoxMDo1My4yNDUwMTc3MzgrMDg6MDA="},{"Key":"Span.End","Value":"MjAxOS0wMy0yMFQxNjoxMDo1My4yNDUwNTczNzQrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],
+    "Sub":null},
+    {"ID":{"Trace":"22a6ccdaf58481ea","Span":"1252ea914624eff1","Parent":"64aa858bd66f5c65"},
+    "Annotations":[{"Key":"Name","Value":"ZXhlY3V0b3IuQ29tcGlsZQ=="},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAxOS0wMy0yMFQxNjoxMDo1My4yNDUxMTc3NzQrMDg6MDA="},{"Key":"Span.End","Value":"MjAxOS0wMy0yMFQxNjoxMDo1My4yNDUzNzMwNjIrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],
+    "Sub":null},
+    {"ID":{"Trace":"22a6ccdaf58481ea","Span":"1a32f23071104f0d","Parent":"64aa858bd66f5c65"},
+    "Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5Db21taXRUeG4="},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAxOS0wMy0yMFQxNjoxMDo1My4yNDU1NzIyMTkrMDg6MDA="},{"Key":"Span.End","Value":"MjAxOS0wMy0yMFQxNjoxMDo1My4yNDU1ODY4MDIrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],
+    "Sub":null},
+    {"ID":{"Trace":"22a6ccdaf58481ea","Span":"1a253a1a7e9513ca","Parent":"64aa858bd66f5c65"},
+    "Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5ydW5TdG10"},{"Key":"_schema:name","Value":null},{"Key":"Msg","Value":"eyJzcWwiOiJzZWxlY3QgKiBmcm9tICB0In0="},{"Key":"Time","Value":"MjAxOS0wMy0yMFQxNjoxMDo1My4yNDU0MTkxOCswODowMA=="},{"Key":"_schema:log","Value":null},{"Key":"Span.Start","Value":"MjAxOS0wMy0yMFQxNjoxMDo1My4yNDU0MTMxMTcrMDg6MDA="},{"Key":"Span.End","Value":"MjAxOS0wMy0yMFQxNjoxMDo1My4yNDU2MjE1MjgrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],
+    "Sub":null},
+    {"ID":{"Trace":"22a6ccdaf58481ea","Span":"0db4399b79ba58c5","Parent":"64aa858bd66f5c65"},
+    "Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5FeGVjdXRl"},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAxOS0wMy0yMFQxNjoxMDo1My4yNDQ5NDI4MSswODowMA=="},{"Key":"Span.End","Value":"MjAxOS0wMy0yMFQxNjoxMDo1My4yNDU2OTcwMzcrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],
+    "Sub":null},
+    {"ID":{"Trace":"22a6ccdaf58481ea","Span":"5fb58dc2f1f6273a","Parent":"64aa858bd66f5c65"},
+    "Annotations":[{"Key":"Name","Value":"dGFibGVSZWFkZXIuTmV4dA=="},{"Key":"_schema:name","Value":null},{"Key":"Span.End","Value":"MjAxOS0wMy0yMFQxNjoxMDo1NC4xODIxODMxODIrMDg6MDA="},{"Key":"Span.Start","Value":"MjAxOS0wMy0yMFQxNjoxMDo1My4yNDU3NTM5ODYrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],
+    "Sub":null},
+    {"ID":{"Trace":"22a6ccdaf58481ea","Span":"4c4ceeeeba9bb2eb","Parent":"64aa858bd66f5c65"},
+    "Annotations":[{"Key":"Name","Value":"cmVjb3JkU2V0Lk5leHQ="},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAxOS0wMy0yMFQxNjoxMDo1My4yNDU3NDc0NjMrMDg6MDA="},{"Key":"Span.End","Value":"MjAxOS0wMy0yMFQxNjoxMDo1NC4xODIyMDUyNTUrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],
+    "Sub":null}]
+}]
+1 row in set (0.93 sec)
+```
+
+输出的 JSON 内容可以在集成的 Web UI 里面查看（默认 10080 端口）。
+
+打开 trace viewer 页面，将 `json` 数据填进去：
+
+![TiDB Trace Viewer-1](../media/tidb-trace-viewer.png)
+
+![TiDB Trace Viewer-2](../media/tidb-trace-viewer-2.png)
