@@ -1,10 +1,10 @@
 ---
-title: FAQs After Upgrading
-summary: This document lists some FAQs and their solutions after upgrading.
+title: FAQs After Upgrade
+summary: Learn about the FAQs after upgrading TiDB.
 category: deployment
 ---
 
-# FAQs After Upgrading
+# FAQs After Upgrade
 
 This document lists some FAQs and their solutions after you upgrade TiDB.
 
