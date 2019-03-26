@@ -36,9 +36,10 @@ This document describes the options that are not involved in command line option
 
 ### `compatible-kill-query`
 
-+ To set the "kill" statement to be MySQL compatible
++ To set the `KILL` statement to be MySQL compatible
 + Default: false
-+ In TiDB, the behavior of "kill xxx" is not compatible with MySQL. A query is killed only when you are executing "kill tidb xxx". If `compatible-kill-query` is set to true, the "kill xxx" is compatible with MySQL, so no additional "tidb" is needed.
++ The behavior of `KILL xxx` in TiDB differs from the behavior in MySQL. TiDB requires the `TIDB` keyword, as in `KILL TIDB xxx`. If `compatible-kill-query` is set to true, the `TIDB` keyword is not needed.
++ This distinction is important because the default behavior of the MySQL command-line client, when the user hits Ctrl-C, is to create a new connection to the backend and execute the KILL statement in that new connection. If a load balancer or proxy has sent the new connection to a different TiDB server instance than the original session, the wrong session could be terminated, which could cause interruption to applications using the cluster. Only enable `compatible-kill-qiery` if you are certain that the connection you refer to in your `KILL` statement is on the same server to which you send the `KILL` statement.
 
 ## Log
 
