@@ -141,9 +141,9 @@ UPDATE my_table SET a='newest_value' WHERE id = 3;
 COMMIT;
 ```
 
-### Single-threaded workloads
+### Single-threaded or latency-sensitive workloads
 
-Due to its distributed nature, workloads that are single-threaded may perform worse in TiDB when compared to a single-instance deployment of MySQL. This difference is similar to the case of small transactions being potentially slower in TiDB.
+Due to its distributed nature, workloads that are single-threaded or latency-sensitive may perform worse in TiDB when compared to a single-instance deployment of MySQL. This difference is similar to the case of small transactions being potentially slower in TiDB.
 
 ### Load data
 
