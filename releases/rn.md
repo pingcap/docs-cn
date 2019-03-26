@@ -5,28 +5,36 @@ category: release
 
 # TiDB Release Notes
 
+## 3.0
+
 - [3.0.0 Beta.1](../releases/3.0.0-beta.1.md)
+- [3.0 Beta](../releases/3.0beta.md)
+
+## 2.1
+
 - [2.1.6](../releases/2.1.6.md)
 - [2.1.5](../releases/2.1.5.md)
 - [2.1.4](../releases/2.1.4.md)
 - [2.1.3](../releases/2.1.3.md)
-- [3.0 Beta](../releases/3.0beta.md)
-- [2.0.11](../releases/2.0.11.md)
 - [2.1.2](../releases/2.1.2.md)
-- [2.0.10](../releases/2.0.10.md)
 - [2.1.1](../releases/2.1.1.md)
 - [2.1 GA](../releases/2.1ga.md)
-- [2.0.9](../releases/209.md)
 - [2.1 RC5](../releases/21rc5.md)
 - [2.1 RC4](../releases/21rc4.md)
-- [2.0.8](../releases/208.md)
 - [2.1 RC3](../releases/21rc3.md)
 - [2.1 RC2](../releases/21rc2.md)
-- [2.0.7](../releases/207.md)
 - [2.1 RC1](../releases/21rc1.md)
+- [2.1 Beta](../releases/21beta.md)
+
+## 2.0
+
+- [2.0.11](../releases/2.0.11.md)
+- [2.0.10](../releases/2.0.10.md)
+- [2.0.9](../releases/209.md)
+- [2.0.8](../releases/208.md)
+- [2.0.7](../releases/207.md)
 - [2.0.6](../releases/206.md)
 - [2.0.5](../releases/205.md)
-- [2.1 Beta](../releases/21beta.md)
 - [2.0.4](../releases/204.md)
 - [2.0.3](../releases/203.md)
 - [2.0.2](../releases/202.md)
@@ -37,9 +45,12 @@ category: release
 - [2.0 RC3](../releases/2rc3.md)
 - [2.0 RC1](../releases/2rc1.md)
 - [1.1 Beta](../releases/11beta.md)
+- [1.1 Alpha](../releases/11alpha.md)
+
+## 1.0
+
 - [1.0.8](../releases/108.md)
 - [1.0.7](../releases/107.md)
-- [1.1 Alpha](../releases/11alpha.md)
 - [1.0.6](../releases/106.md)
 - [1.0.5](../releases/105.md)
 - [1.0.4](../releases/104.md)
