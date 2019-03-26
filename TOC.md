@@ -18,9 +18,11 @@
     - [The TiDB System Variables](sql/variable.md)
     - [The TiDB Specific System Variables](sql/tidb-specific.md)
     - [The TiDB Server Logs](sql/tidb-server.md#tidb-server-logs)
-    - [The TiDB Access Privilege System](sql/privilege.md)
-    - [TiDB User Account Management](sql/user-account-management.md)
-    - [Use Encrypted Connections](sql/encrypted-connections.md)
+    + Security
+      - [MySQL Compatibility](sql/security-compatibility.md)
+      - [The TiDB Access Privilege System](sql/privilege.md)
+      - [TiDB User Account Management](sql/user-account-management.md)
+      - [Use Encrypted Connections](sql/encrypted-connections.md)
   + SQL Optimization and Execution
     - [SQL Optimization Process](sql/sql-optimizer-overview.md)
     - [Understand the Query Execution Plan](sql/understanding-the-query-execution-plan.md)
