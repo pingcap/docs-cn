@@ -15,7 +15,7 @@ Based on the statistics, the TiDB optimizer chooses the most efficient query exe
 
 ### Manual collection
 
-You can run the `ANALYZE` statement to collect statistics.
+You can run the `ANALYZE` statement to collect statistics. Note that `ANALYZE TABLE` in TiDB takes considerably longer than in MySQL/InnoDB. In InnoDB, only a small number of pages are sampled, while in TiDB a comprehensive set of statistics is completely rebuilt. Scripts that were written for MySQL may naively expect `ANALYZE TABLE` will be a short-lived operation.
 
 Syntax:
 
