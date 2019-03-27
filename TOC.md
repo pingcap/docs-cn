@@ -36,7 +36,6 @@
     - [Comment Syntax](sql/comment-syntax.md)
   + Globalization
     - [Character Set Support](sql/character-set-support.md)
-    - [Character Set Configuration](sql/character-set-configuration.md)
     - [Time Zone Support](sql/time-zone.md)
   + Data Types
     - [Numeric Types](sql/datatype.md#numeric-types)
