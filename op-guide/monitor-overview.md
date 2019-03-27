@@ -6,7 +6,7 @@ category: operations
 
 # TiDB Monitoring Framework Overview
 
-The TiDB monitoring framework adopts two open source projects: Prometheus and Grafana. TiDB uses Prometheus to store the monitoring and performance metrics and Grafana to visualize these metrics. 
+The TiDB monitoring framework adopts two open source projects: Prometheus and Grafana. TiDB uses [Prometheus](https://prometheus.io) to store the monitoring and performance metrics and [Grafana](https://grafana.com/grafana) to visualize these metrics.
 
 ## About Prometheus in TiDB
 
@@ -14,10 +14,9 @@ As a time series database, Prometheus has a multi-dimensional data model and fle
 
 Prometheus consists of multiple components. Currently, TiDB uses the following of them:
 
-- The Prometheus Server to scrape and store time series data.
-- The client libraries to customize necessary metrics in the application.
-- A push GateWay to receive the data from Client Push for the Prometheus main server.
-- An AlertManager for the alerting mechanism.
+- The Prometheus Server to scrape and store time series data
+- The client libraries to customize necessary metrics in the application
+- An AlertManager for the alerting mechanism
 
 The diagram is as follows:
 
