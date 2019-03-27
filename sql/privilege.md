@@ -307,3 +307,81 @@ User 参见[用户账号名](../sql/user-account-management.md)。
 
 * `IDENTIFIED BY 'auth_string'`：设置登录密码时，`auth_string` 会被 TiDB 经过加密存储在 `mysql.user` 表中。
 * `IDENTIFIED BY PASSWORD 'hash_string'`：设置登录密码，`hash_string` 是一个类似于 `*EBE2869D7542FCE37D1C9BBC724B97BDE54428F1` 的 41 位字符串，会被 TiDB 直接存储在 `mysql.user` 表中，该字符串可以通过 `SELECT password('auth_string')` 加密得到。
+
+# TiDB 各操作需要的权限
+
+## ALTER
+
+所有的`ALTER`语句，均需要对所操作的表拥有`ALTER`权限。除`ALTER ... DROP`和`ALTER ... RENAME TO`外，均需要对所操作表拥有`INSERT`和`CREATE`权限。
+
+对于`ALTER ... DROP`需要对表拥有`DROP`权限。对于`ALTER ... RENAME TO`需要对重命名前表拥有`DROP`权限，对重命名后表拥有`CREATE`和`INSERT`权限。
+
+## CREATE DATABASE
+
+需要对数据库拥有`CREATE`权限。
+
+## CREATE INDEX
+
+需要对所操作的表拥有`INDEX`权限。
+
+## CREATE TABLE
+
+需要对所操作的表拥有`CREATE`权限；若使用`CREATE TABLE .... LIKE ....`需要对相关的表拥有`SELECT`权限。
+
+## CREATE VIEW
+
+需要拥有`CREATE VIEW`权限。
+
+## DROP DATABASE
+
+需要对数据库拥有`DROP`权限。
+
+## DROP INDEX
+
+需要对所操作的表拥有`INDEX`权限。
+
+## DROP TABLES
+
+需要对所操作的表拥有`DROP`权限。
+
+## TRUNCATE TABLE
+
+需要对所操作的表拥有`DROP`权限。
+
+## RENAME TABLE
+
+需要对重命名前的表拥有`ALTER`和`DROP`权限，对重命名后的表拥有`CREATE`和`INSERT`权限。
+
+## ANALYZE TABLE
+
+需要对所操作的表拥有`INSERT`和`SELECT`权限。
+
+## SHOW
+
+`SHOW CREATE TABLE`需要任意一种权限。
+
+`SHOW CREATE VIEW`需要`SHOWVIEW`权限。
+
+## CREATE ROLE/USER
+
+`CREATE ROLE`需要`CREATEROLE`权限。
+
+`CREATE USER`需要`CREATEUSER`权限
+
+## DROP ROLE/USER
+
+`DROP ROLE`需要`DROPROLE`权限。
+
+`DROP USER`需要`CREATEUSER`权限
+
+## ALTER USER
+
+`ALTER USER`需要`CREATEUSER`权限。
+
+## GRANT
+
+`GRANT`需要`GRANT`权限并且拥有`GRANT`所赋予的权限。
+
+## REVOKE
+
+`REVOKE`需要`SUPER`权限。
