@@ -6,6 +6,7 @@ category: release
 # TiDB 版本发布历史
 
 TiDB 历史版本发布声明如下：
+
 ## 3.0
 
   - [3.0.0 Beta.1](../releases/3.0.0-beta.1.md)
