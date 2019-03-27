@@ -99,11 +99,11 @@ TiDB implements the asynchronous schema changes algorithm in F1. The Data Manipu
 + Rename Table
 + Create Table Like
 
-### Database Administration
+### Database administration
 
 Many administrative statements in TiDB work as they do in MySQL, but there are some important differences:
 
-+ [`ANALYZE TABLE`](statistics.md#manual-collection) works differently in TiDB than in MySQL, in that it's a relatively lightweight and short-lived operation in MySQL/InnoDB, while in TiDB it completely rebuilds the statistics for a table and can take much longer to complete.
++ [`ANALYZE TABLE`](/sql/statistics.md#manual-collection) works differently in TiDB than in MySQL, in that it is a relatively lightweight and short-lived operation in MySQL/InnoDB, while in TiDB it completely rebuilds the statistics for a table and can take much longer to complete.
 
 + The output of the query execution plan returned from the `EXPLAIN` command differs from MySQL. For more information, see [Understand the Query Execution Plan](../sql/understanding-the-query-execution-plan.md).
 
@@ -183,7 +183,7 @@ Create Table: CREATE TABLE `t1` (
 
 Architecturally, TiDB does support a similar storage engine abstraction to MySQL, and user tables are created in the engine specified by the [`--store`](server-command-option.md#--store) option used when you start tidb-server (typically `tikv`).
 
-### SQL Modes
+### SQL modes
 
 TiDB supports **all of the SQL modes** from MySQL 5.7 with minor exceptions:
 
