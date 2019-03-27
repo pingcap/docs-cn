@@ -6,11 +6,11 @@ category: user guide
 
 # Compatibility with MySQL
 
-TiDB supports the majority of the MySQL 5.7 syntax, including cross-row transactions, JOIN, subquery, and so on. You can connect to TiDB directly using your own MySQL client. If your existing business is developed based on MySQL, you can replace MySQL with TiDB to power your application without changing a single line of code in most cases.
+TiDB supports both the MySQL wire protocol and the majority of its syntax. This means that you can use your existing MySQL connectors and clients, and your existing applications can often be migrated to TiDB without changing any application code.
 
-TiDB is compatible with most of the MySQL database management & administration tools such as `PHPMyAdmin`, `Navicat`, `MySQL Workbench`, and so on. It also supports the database backup tools, such as `mysqldump` and `mydumper/myloader`.
+Currently TiDB Server advertises itself as MySQL 5.7 and works with most MySQL database tools such as PHPMyAdmin, Navicat, MySQL Workbench, mysqldump, and mydumper/myloader.
 
-However, in TiDB, the following MySQL features are not supported for the time being or are different:
+> **Note:** This page refers to general differences between MySQL and TiDB. Please also see the dedicated pages for [Security Features](../sql/security-compatibility.md) and [Transaction Model](../sql/transaction-compatibility.md) compatibility.
 
 ## Unsupported features
 
@@ -43,11 +43,11 @@ However, in TiDB, the following MySQL features are not supported for the time be
 
 ### Auto-increment ID
 
-The auto-increment ID feature in TiDB is only guaranteed to be automatically incremental and unique but is not guaranteed to be allocated sequentially. Currently, TiDB is allocating IDs in batches. If data is inserted into multiple TiDB servers simultaneously, the allocated IDs are not sequential.
+In TiDB, auto-increment columns are only guaranteed to be incremental and unique but are *not* guaranteed to be allocated sequentially. Currently, TiDB allocates IDs in batches. If data is inserted into multiple TiDB servers simultaneously, the allocated IDs will not be sequential.
 
 > **Warning**:
 > 
-> If you use the auto-increment ID in a cluster with multiple tidb-server instances, do not mix the default value and the custom value, otherwise an error occurs in the following situation:
+> If you use auto-increment IDs in a cluster with multiple tidb-server instances, do not mix default values and custom values, otherwise an error will occur in the following situation:
 > 
 > Assume that you have a table with the auto-increment ID:
 > 
@@ -106,63 +106,6 @@ Many administrative statements in TiDB work as they do in MySQL, but there are s
 + [`ANALYZE TABLE`](/sql/statistics.md#manual-collection) works differently in TiDB than in MySQL, in that it is a relatively lightweight and short-lived operation in MySQL/InnoDB, while in TiDB it completely rebuilds the statistics for a table and can take much longer to complete.
 
 + The output of the query execution plan returned from the `EXPLAIN` command differs from MySQL. For more information, see [Understand the Query Execution Plan](../sql/understanding-the-query-execution-plan.md).
-
-### Transaction model
-
-TiDB implements an optimistic transaction model. Unlike MySQL, which uses row-level locking to avoid write conflict, in TiDB, the write conflict is checked only in the `commit` process during the execution of the statements like `Update`, `Insert`, `Delete`, and so on.
-
-Similarly, functions such as `GET_LOCK()` and `RELEASE_LOCK()` and statements such as `SELECT .. FOR UPDATE` do not work in the same way as in MySQL.
-
-**Note:** On the business side, remember to check the returned results of `commit` because even there is no error in the execution, there might be errors in the `commit` process.
-
-### Large transactions
-
-Due to the distributed, 2-phase commit requirement of TiDB, large transactions that modify data can be particularly problematic. TiDB intentionally sets some limits on transaction sizes to reduce this impact:
-
-* A transaction is limited to 5000 SQL statements (by default)
-* Each Key-Value entry is no more than 6MB
-* The total number of Key-Value entries is no more than 300,000
-* The total size of Key-Value entries is no more than 100MB
-
-### Small transactions
-
-Since each transaction in TiDB requires two round trips to the PD leader, small transactions may have higher latencies in TiDB than MySQL. As a hypothetical example, the following query could be improved by moving from `auto_commit` to using an explicit transaction:
-
-```sql
-# original version with auto_commit
-UPDATE my_table SET a='new_value' WHERE id = 1; 
-UPDATE my_table SET a='newer_value' WHERE id = 2;
-UPDATE my_table SET a='newest_value' WHERE id = 3;
-
-# improved version
-START TRANSACTION;
-UPDATE my_table SET a='new_value' WHERE id = 1; 
-UPDATE my_table SET a='newer_value' WHERE id = 2;
-UPDATE my_table SET a='newest_value' WHERE id = 3;
-COMMIT;
-```
-
-### Single-threaded or latency-sensitive workloads
-
-Due to its distributed nature, workloads that are single-threaded or latency-sensitive may perform worse in TiDB when compared to a single-instance deployment of MySQL. This difference is similar to the case of small transactions being potentially slower in TiDB.
-
-### Load data
-
-+ Syntax:
-
-    ```
-    LOAD DATA LOCAL INFILE 'file_name' INTO TABLE table_name
-        {FIELDS | COLUMNS} TERMINATED BY 'string' ENCLOSED BY 'char' ESCAPED BY 'char'
-        LINES STARTING BY 'string' TERMINATED BY 'string'
-        IGNORE n LINES
-        (col_name ...);
-    ```
-    
-    Currently, the supported `ESCAPED BY` characters are: `/\/\`.
-
-+ Transaction
-
-    When TiDB is in the execution of loading data, by default, a record with 20,000 rows of data is seen as a transaction for persistent storage. If a load data operation inserts more than 20,000 rows, it will be divided into multiple transactions to commit. If an error occurs in one transaction, this transaction in process will not be committed. However, transactions before that are committed successfully. In this case, a part of the load data operation is successfully inserted, and the rest of the data insertion fails. But MySQL treats a load data operation as a transaction, one error leads to the failure of the entire load data operation.
     
 ### Storage engines
 
