@@ -102,42 +102,42 @@ TiDB Controller 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，�
 
 * Prepare execute below sql
 
-```sql
-use test;
-create table t (a int, b varchar(20),c datetime default current_timestamp , d timestamp default current_timestamp, unique index(a));
-insert into t (a,b,c) values(1,"哈哈 hello",NULL);
-alter table t add column e varchar(20);
-```
+    ```sql
+    use test;
+    create table t (a int, b varchar(20),c datetime default current_timestamp , d timestamp default current_timestamp, unique index(a));
+    insert into t (a,b,c) values(1,"哈哈 hello",NULL);
+    alter table t add column e varchar(20);
+    ```
 
 * Use http api to get MVCC data
 
-```shell
-▶ curl "http://$IP:10080/mvcc/index/test/t/a/1?a=1"
-{
- "info": {
-  "writes": [
-   {
-    "start_ts": 407306449994645510,
-    "commit_ts": 407306449994645513,
-    "short_value": "AAAAAAAAAAE="    # the value of unique index a is handle_id
-   }
-  ]
- }
-}%
+    ```shell
+    ▶ curl "http://$IP:10080/mvcc/index/test/t/a/1?a=1"
+    {
+     "info": {
+      "writes": [
+       {
+        "start_ts": 407306449994645510,
+        "commit_ts": 407306449994645513,
+        "short_value": "AAAAAAAAAAE="    # the value of unique index a is handle_id
+       }
+      ]
+     }
+    }%
 
-▶ curl "http://$IP:10080/mvcc/key/test/t/1"
-{
- "info": {
-  "writes": [
-   {
-    "start_ts": 407306588892692486,
-    "commit_ts": 407306588892692489,
-    "short_value": "CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgIDwjYuu0Rk="  # the raw data of test.t where handle_id is 1.
-   }
-  ]
- }
-}% 
-```
+    ▶ curl "http://$IP:10080/mvcc/key/test/t/1"
+    {
+     "info": {
+      "writes": [
+       {
+        "start_ts": 407306588892692486,
+        "commit_ts": 407306588892692489,
+        "short_value": "CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgIDwjYuu0Rk="  # the raw data of test.t where handle_id is 1.
+       }
+      ]
+     }
+    }% 
+    ```
 
 * Use `base64decode` to decode base64 data as `uint64` value.
 
