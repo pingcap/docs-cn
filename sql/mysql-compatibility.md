@@ -133,9 +133,9 @@ UPDATE my_table SET a='newest_value' WHERE id = 3;
 COMMIT;
 ```
 
-### 单线程的 workload
+### 单线程或时延敏感型的 workload
 
-由于 TiDB 中的 workload 是分布式的，TiDB 中单线程的 workload 性能相比于单实例部署的 MySQL 较低。这与 TiDB 中的小事务延迟较高的情況类似。
+由于 TiDB 中的 workload 是分布式的，TiDB 中单线程或时延敏感型的 workload 性能相比于单实例部署的 MySQL 较低。这与 TiDB 中的小事务延迟较高的情況类似。
 
 ### Load data
 
