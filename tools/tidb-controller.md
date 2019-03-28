@@ -100,7 +100,15 @@ TiDB Controller 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，�
 
 #### base64decode 命令
 
-* Prepare execute below sql
+`base64decode`  用来解码 base64 数据。
+
+    ```shell
+    tidb-ctl base64decode [base64_data]
+    tidb-ctl base64decode [db_name.table_name] [base64_data]
+    tidb-ctl base64decode [table_id] [base64_data]
+    ```
+
+* 准备环境，执行以下SQL
 
     ```sql
     use test;
@@ -109,7 +117,7 @@ TiDB Controller 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，�
     alter table t add column e varchar(20);
     ```
 
-* Use http api to get MVCC data
+* 用 http api 接口获取 mvcc 数据
 
     ```shell
     ▶ curl "http://$IP:10080/mvcc/index/test/t/a/1?a=1"
@@ -119,7 +127,7 @@ TiDB Controller 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，�
        {
         "start_ts": 407306449994645510,
         "commit_ts": 407306449994645513,
-        "short_value": "AAAAAAAAAAE="    # the value of unique index a is handle_id
+        "short_value": "AAAAAAAAAAE="    # unique index a 存的值是对应行的 handle id.
        }
       ]
      }
@@ -132,14 +140,14 @@ TiDB Controller 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，�
        {
         "start_ts": 407306588892692486,
         "commit_ts": 407306588892692489,
-        "short_value": "CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgIDwjYuu0Rk="  # the raw data of test.t where handle_id is 1.
+        "short_value": "CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgIDwjYuu0Rk="  # handle id 为 1 的行数据。 
        }
       ]
      }
     }% 
     ```
 
-* Use `base64decode` to decode base64 data as `uint64` value.
+* 用 `base64decode` 解码 handle id (uint64).
 
   ```shell
   ▶ tidb-ctl base64decode AAAAAAAAAAE=
@@ -147,7 +155,7 @@ TiDB Controller 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，�
   uint64: 1
   ```
 
-* Use `base64decode` use to decode base64 data with table schema.
+* 用 `base64decode` 解码行数据。
 
     ```shell
     ▶ ./tidb-ctl base64decode test.t CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgIDwjYuu0Rk=
