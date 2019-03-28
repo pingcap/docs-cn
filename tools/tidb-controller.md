@@ -97,3 +97,55 @@ TiDB Controller 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，�
 这里同样做了截断。
 
 如希望指定服务地址，可以使用 `-H -P` 选项，如：`tidb-ctl -H 127.0.0.1 -P 10080 schema in mysql -n db`。
+
+
+#### base64decode 命令
+
+`base64decode` use to decode base64 data with table schema.
+`tidb-ctl base64decode db_name.table_name [base64_data]`
+
+   **prepare execute below sql**
+
+```sql
+use test;
+create table t (a int, b varchar(20),c datetime default current_timestamp , d timestamp default current_timestamp);
+insert into t (a,b,c) values(1,"哈哈 hello",NULL);
+alter table t add column e varchar(20);
+```
+
+**then you can use http api to get MVCC data**
+
+```shell
+▶ curl "http://$IP:10080/mvcc/key/test/t/1"
+{
+ "info": {
+  "writes": [
+   {
+    "start_ts": 407171055877619718,
+    "commit_ts": 407171055877619719,
+    "short_value": "CAQCGOmZiOmcnCBoZWxsbwgGAAgICYCAgIjqi6vRGQ=="
+   }
+  ]
+ }
+```
+
+**then decode table base64 raw data**
+
+```shell
+▶ ./tidb-ctl base64decode test.t CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgICI0Yyr0Rk=
+a:      1
+b:      哈哈 hello
+c is NULL
+d:      2019-03-22 06:20:17
+e not found in data
+
+
+# if the table id of test.t is 60, you can also use below command to do the same thing.
+▶ ./tidb-ctl base64decode 60 CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgICI0Yyr0Rk=
+a:      1
+b:      哈哈 hello
+c is NULL
+d:      2019-03-22 06:20:17
+e not found in data
+```
+
