@@ -100,7 +100,7 @@ TiDB Controller 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，�
 
 #### base64decode 命令
 
-   **prepare execute below sql**
+* Prepare execute below sql
 
 ```sql
 use test;
@@ -109,7 +109,7 @@ insert into t (a,b,c) values(1,"哈哈 hello",NULL);
 alter table t add column e varchar(20);
 ```
 
-**then you can use http api to get MVCC data**
+* Use http api to get MVCC data
 
 ```shell
 ▶ curl "http://$IP:10080/mvcc/index/test/t/a/1?a=1"
@@ -119,23 +119,24 @@ alter table t add column e varchar(20);
    {
     "start_ts": 407306449994645510,
     "commit_ts": 407306449994645513,
-    "short_value": "AAAAAAAAAAE="             # the value of unique index a is handle_id
+    "short_value": "AAAAAAAAAAE="    # the value of unique index a is handle_id
    }
   ]
  }
-}% 
+}%
 
 ▶ curl "http://$IP:10080/mvcc/key/test/t/1"
 {
  "info": {
   "writes": [
    {
-    "start_ts": 407171055877619718,
-    "commit_ts": 407171055877619719,
-    "short_value": "CAQCGOmZiOmcnCBoZWxsbwgGAAgICYCAgIjqi6vRGQ==" # the raw data of test.t where handle_id is 1.
+    "start_ts": 407306588892692486,
+    "commit_ts": 407306588892692489,
+    "short_value": "CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgIDwjYuu0Rk="  # the raw data of test.t where handle_id is 1.
    }
   ]
  }
+}% 
 ```
 
 * Use `base64decode` to decode base64 data as `uint64` value.
@@ -146,25 +147,22 @@ alter table t add column e varchar(20);
   uint64: 1
   ```
 
-* User `base64decode` use to decode base64 data with table schema.
+* Use `base64decode` use to decode base64 data with table schema.
 
-**then decode table base64 raw data**
+    ```shell
+    ▶ ./tidb-ctl base64decode test.t CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgIDwjYuu0Rk=
+    a:      1
+    b:      哈哈 hello
+    c is NULL
+    d:      2019-03-28 05:35:30
+    e not found in data
 
-```shell
-▶ ./tidb-ctl base64decode test.t CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgICI0Yyr0Rk=
-a:      1
-b:      哈哈 hello
-c is NULL
-d:      2019-03-22 06:20:17
-e not found in data
-
-
-# if the table id of test.t is 60, you can also use below command to do the same thing.
-▶ ./tidb-ctl base64decode 60 CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgICI0Yyr0Rk=
-a:      1
-b:      哈哈 hello
-c is NULL
-d:      2019-03-22 06:20:17
-e not found in data
-```
+    # if the table id of test.t is 60, you can also use below command to do the same thing.
+    ▶ ./tidb-ctl base64decode 60 CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgIDwjYuu0Rk=
+    a:      1
+    b:      哈哈 hello
+    c is NULL
+    d:      2019-03-28 05:35:30
+    e not found in data
+    ```
 
