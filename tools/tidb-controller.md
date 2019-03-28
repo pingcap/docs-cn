@@ -98,17 +98,13 @@ TiDB Controller 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，�
 
 如希望指定服务地址，可以使用 `-H -P` 选项，如：`tidb-ctl -H 127.0.0.1 -P 10080 schema in mysql -n db`。
 
-
 #### base64decode 命令
-
-`base64decode` use to decode base64 data with table schema.
-`tidb-ctl base64decode db_name.table_name [base64_data]`
 
    **prepare execute below sql**
 
 ```sql
 use test;
-create table t (a int, b varchar(20),c datetime default current_timestamp , d timestamp default current_timestamp);
+create table t (a int, b varchar(20),c datetime default current_timestamp , d timestamp default current_timestamp, unique index(a));
 insert into t (a,b,c) values(1,"哈哈 hello",NULL);
 alter table t add column e varchar(20);
 ```
@@ -116,6 +112,19 @@ alter table t add column e varchar(20);
 **then you can use http api to get MVCC data**
 
 ```shell
+▶ curl "http://$IP:10080/mvcc/index/test/t/a/1?a=1"
+{
+ "info": {
+  "writes": [
+   {
+    "start_ts": 407306449994645510,
+    "commit_ts": 407306449994645513,
+    "short_value": "AAAAAAAAAAE="             # the value of unique index a is handle_id
+   }
+  ]
+ }
+}% 
+
 ▶ curl "http://$IP:10080/mvcc/key/test/t/1"
 {
  "info": {
@@ -123,11 +132,21 @@ alter table t add column e varchar(20);
    {
     "start_ts": 407171055877619718,
     "commit_ts": 407171055877619719,
-    "short_value": "CAQCGOmZiOmcnCBoZWxsbwgGAAgICYCAgIjqi6vRGQ=="
+    "short_value": "CAQCGOmZiOmcnCBoZWxsbwgGAAgICYCAgIjqi6vRGQ==" # the raw data of test.t where handle_id is 1.
    }
   ]
  }
 ```
+
+* Use `base64decode` to decode base64 data as `uint64` value.
+
+  ```shell
+  ▶ tidb-ctl base64decode AAAAAAAAAAE=
+  hex: 0000000000000001
+  uint64: 1
+  ```
+
+* User `base64decode` use to decode base64 data with table schema.
 
 **then decode table base64 raw data**
 
