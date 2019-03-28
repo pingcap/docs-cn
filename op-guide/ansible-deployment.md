@@ -124,7 +124,9 @@ The key's randomart image is:
 | 3.0 版本 | v3.0.0-beta、v3.0.0-beta.1 | 目前是 beta 版本，不建议用于生产环境。 |
 | latest 版本 | None | 包含最新特性，每日更新，不建议用于生产环境。 |
 
-使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`。注意：部署和升级 TiDB 集群要使用对应的 tidb-ansible，通过改 inventory.ini 中的版本来混用可能会产生一些错误。
+使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`。
+
+> **注意**：部署和升级 TiDB 集群需使用对应的 tidb-ansible 版本，通过改 `inventory.ini` 文件中的版本来混用可能会产生一些错误。
 
 - 下载指定 tag 的 tidb-ansible：
 
