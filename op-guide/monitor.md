@@ -94,152 +94,152 @@ Assume that the TiDB cluster topology is as follows:
 | Node5 | 192.168.199.117| TiKV2, node_export |
 | Node6 | 192.168.199.118| TiKV3, node_export |
 
-1. Download the binary package.
+#### Step 1: Download the binary package.
 
-    ```bash
-    # Downloads the package.
-    $ wget https://github.com/prometheus/prometheus/releases/download/v2.2.1/prometheus-2.2.1.linux-amd64.tar.gz
-    $ wget https://github.com/prometheus/node_exporter/releases/download/v0.15.2/node_exporter-0.15.2.linux-amd64.tar.gz
-    $ wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-4.6.3.linux-x64.tar.gz
+```bash
+# Downloads the package.
+$ wget https://github.com/prometheus/prometheus/releases/download/v2.2.1/prometheus-2.2.1.linux-amd64.tar.gz
+$ wget https://github.com/prometheus/node_exporter/releases/download/v0.15.2/node_exporter-0.15.2.linux-amd64.tar.gz
+$ wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-4.6.3.linux-x64.tar.gz
 
-    # Extracts the package.
-    $ tar -xzf prometheus-2.2.1.linux-amd64.tar.gz
-    $ tar -xzf node_exporter-0.15.2.linux-amd64.tar.gz
-    $ tar -xzf grafana-4.6.3.linux-x64.tar.gz
+# Extracts the package.
+$ tar -xzf prometheus-2.2.1.linux-amd64.tar.gz
+$ tar -xzf node_exporter-0.15.2.linux-amd64.tar.gz
+$ tar -xzf grafana-4.6.3.linux-x64.tar.gz
+```
+
+#### Step 2: Start `node_exporter` on Node1, Node2, Node3, and Node4.
+
+```bash
+$ cd node_exporter-0.15.2.linux-amd64
+
+# Starts the node_exporter service.
+$ ./node_exporter --web.listen-address=":9100" \
+    --log.level="info" &
+```
+
+#### Step 3: Start Prometheus on Node1.
+
+1. Edit the Prometheus configuration file.
+
+    ```
+    $ cd prometheus-2.2.1.linux-amd64
+    $ vi prometheus.yml
+
+    ...
+
+    global:
+      scrape_interval:     15s  # By default, scrape targets every 15 seconds.
+      evaluation_interval: 15s  # By default, scrape targets every 15 seconds.
+      # scrape_timeout is set to the global default value (10s).
+        external_labels:
+          cluster: 'test-cluster'
+          monitor: "prometheus"
+
+    scrape_configs:
+      - job_name: 'overwritten-nodes'
+        honor_labels: true  # Do not overwrite job & instance labels.
+        static_configs:
+        - targets:
+          - '192.168.199.113:9100'
+          - '192.168.199.114:9100'
+          - '192.168.199.115:9100'
+          - '192.168.199.116:9100'
+          - '192.168.199.117:9100'
+          - '192.168.199.118:9100'
+
+      - job_name: 'tidb'
+        honor_labels: true  # Do not overwrite job & instance labels.
+        static_configs:
+        - targets:
+          - '192.168.199.113:10080'
+
+      - job_name: 'pd'
+        honor_labels: true  # Do not overwrite job & instance labels.
+        static_configs:
+        - targets:
+          - '192.168.199.113:2379'
+          - '192.168.199.114:2379'
+          - '192.168.199.115:2379'
+
+      - job_name: 'tikv'
+        honor_labels: true  # Do not overwrite job & instance labels.
+        static_configs:
+        - targets:
+          - '192.168.199.116:20180'
+          - '192.168.199.117:20180'
+          - '192.168.199.118:20180'
+    ...
     ```
 
-2. Start `node_exporter` on Node1, Node2, Node3, and Node4.
+2. Start the Prometheus service.
 
     ```bash
-    $ cd node_exporter-0.15.2.linux-amd64
-
-    # Starts the node_exporter service.
-    $ ./node_exporter --web.listen-address=":9100" \
-        --log.level="info" &
+    # Starts Prometheus.
+    $ ./prometheus \
+        --config.file="./prometheus.yml" \
+        --web.listen-address=":9090" \
+        --web.external-url="http://192.168.199.113:9090/" \
+        --web.enable-admin-api \
+        --log.level="info" \
+        --storage.tsdb.path="./data.metrics" \
+        --storage.tsdb.retention="15d" &
     ```
 
-3. Start Prometheus on Node1.
+#### Step 4: Start Grafana on Node1.
 
-    1. Edit the Prometheus configuration file.
+1. Edit the Grafana configuration file.
 
-        ```
-        $ cd prometheus-2.2.1.linux-amd64
-        $ vi prometheus.yml
+    ```
+    $ cd grafana-4.6.3
+    $ vi conf/grafana.ini
 
-        ...
+    ...
 
-        global:
-          scrape_interval:     15s  # By default, scrape targets every 15 seconds.
-          evaluation_interval: 15s  # By default, scrape targets every 15 seconds.
-          # scrape_timeout is set to the global default value (10s).
-          external_labels:
-            cluster: 'test-cluster'
-            monitor: "prometheus"
+    [paths]
+    data = ./data
+    logs = ./data/log
+    plugins = ./data/plugins
+    [server]
+    http_port = 3000
+    domain = 192.168.199.113
+    [database]
+    [session]
+    [analytics]
+    check_for_updates = true
+    [security]
+    admin_user = admin
+    admin_password = admin
+    [snapshots]
+    [users]
+    [auth.anonymous]
+    [auth.basic]
+    [auth.ldap]
+    [smtp]
+    [emails]
+    [log]
+    mode = file
+    [log.console]
+    [log.file]
+    level = info
+    format = text
+    [log.syslog]
+    [event_publisher]
+    [dashboards.json]
+    enabled = false
+    path = ./data/dashboards
+    [metrics]
+    [grafana_net]
+    url = https://grafana.net
+    ...
+    ```
 
-        scrape_configs:
-          - job_name: 'overwritten-nodes'
-            honor_labels: true  # Do not overwrite job & instance labels.
-            static_configs:
-            - targets:
-              - '192.168.199.113:9100'
-              - '192.168.199.114:9100'
-              - '192.168.199.115:9100'
-              - '192.168.199.116:9100'
-              - '192.168.199.117:9100'
-              - '192.168.199.118:9100'
+2. Start the Grafana service.
 
-          - job_name: 'tidb'
-            honor_labels: true  # Do not overwrite job & instance labels.
-            static_configs:
-            - targets:
-              - '192.168.199.113:10080'
-
-          - job_name: 'pd'
-            honor_labels: true  # Do not overwrite job & instance labels.
-            static_configs:
-            - targets:
-              - '192.168.199.113:2379'
-              - '192.168.199.114:2379'
-              - '192.168.199.115:2379'
-
-          - job_name: 'tikv'
-            honor_labels: true  # Do not overwrite job & instance labels.
-            static_configs:
-            - targets:
-              - '192.168.199.116:20180'
-              - '192.168.199.117:20180'
-              - '192.168.199.118:20180'
-        ...
-        ```
-
-    2. Start the Prometheus service.
-
-        ```bash
-        # Starts Prometheus.
-        $ ./prometheus \
-            --config.file="./prometheus.yml" \
-            --web.listen-address=":9090" \
-            --web.external-url="http://192.168.199.113:9090/" \
-            --web.enable-admin-api \
-            --log.level="info" \
-            --storage.tsdb.path="./data.metrics" \
-            --storage.tsdb.retention="15d" &
-        ```
-
-4. Start Grafana on Node1.
-
-    1. Edit the Grafana configuration file.
-
-        ```
-        $ cd grafana-4.6.3
-        $ vi conf/grafana.ini
-
-        ...
-
-        [paths]
-        data = ./data
-        logs = ./data/log
-        plugins = ./data/plugins
-        [server]
-        http_port = 3000
-        domain = 192.168.199.113
-        [database]
-        [session]
-        [analytics]
-        check_for_updates = true
-        [security]
-        admin_user = admin
-        admin_password = admin
-        [snapshots]
-        [users]
-        [auth.anonymous]
-        [auth.basic]
-        [auth.ldap]
-        [smtp]
-        [emails]
-        [log]
-        mode = file
-        [log.console]
-        [log.file]
-        level = info
-        format = text
-        [log.syslog]
-        [event_publisher]
-        [dashboards.json]
-        enabled = false
-        path = ./data/dashboards
-        [metrics]
-        [grafana_net]
-        url = https://grafana.net
-        ...
-        ```
-
-    2. Start the Grafana service.
-
-        ```bash
-        $ ./bin/grafana-server \
-            --config="./conf/grafana.ini"
-        ```
+    ```bash
+    $ ./bin/grafana-server \
+        --config="./conf/grafana.ini"
+    ```
 
 ### Configure Grafana
 
