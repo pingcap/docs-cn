@@ -56,5 +56,5 @@ TiDB 历史版本发布声明如下：
 - [Pre-GA](prega.md)
 - [RC4](../releases/rc4.md)
 - [RC3](../releases/rc3.md)
-- [RC2](rc2.md)
+- [RC2](../releases/rc2.md)
 - [RC1](rc1.md)
