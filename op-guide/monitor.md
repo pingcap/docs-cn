@@ -121,23 +121,24 @@ Assume that the TiDB cluster topology is as follows:
 3. Start Prometheus on Node1.
 
     1. Edit the Prometheus configuration file.
-        
+
         ```
         $ cd prometheus-2.2.1.linux-amd64
         $ vi prometheus.yml
-        
+
         ...
+
         global:
-          scrape_interval:     15s # By default, scrape targets every 15 seconds.
-          evaluation_interval: 15s # By default, scrape targets every 15 seconds.
+          scrape_interval:     15s  # By default, scrape targets every 15 seconds.
+          evaluation_interval: 15s  # By default, scrape targets every 15 seconds.
           # scrape_timeout is set to the global default value (10s).
           external_labels:
             cluster: 'test-cluster'
             monitor: "prometheus"
-        
+
         scrape_configs:
-          - job_name: "overwritten-nodes"
-            honor_labels: true # Do not overwrite job & instance labels.
+          - job_name: 'overwritten-nodes'
+            honor_labels: true  # Do not overwrite job & instance labels.
             static_configs:
             - targets:
               - '192.168.199.113:9100'
@@ -146,23 +147,23 @@ Assume that the TiDB cluster topology is as follows:
               - '192.168.199.116:9100'
               - '192.168.199.117:9100'
               - '192.168.199.118:9100'
-        
-          - job_name: "tidb"
-            honor_labels: true # Do not overwrite job & instance labels.
+
+          - job_name: 'tidb'
+            honor_labels: true  # Do not overwrite job & instance labels.
             static_configs:
             - targets:
               - '192.168.199.113:10080'
-        
-          - job_name: "pd"
-            honor_labels: true # Do not overwrite job & instance labels.
+
+          - job_name: 'pd'
+            honor_labels: true  # Do not overwrite job & instance labels.
             static_configs:
             - targets:
               - '192.168.199.113:2379'
               - '192.168.199.114:2379'
               - '192.168.199.115:2379'
-        
-          - job_name: "tikv"
-            honor_labels: true # Do not overwrite job & instance labels.
+
+          - job_name: 'tikv'
+            honor_labels: true  # Do not overwrite job & instance labels.
             static_configs:
             - targets:
               - '192.168.199.116:20180'
