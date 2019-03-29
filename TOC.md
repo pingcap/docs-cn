@@ -94,7 +94,10 @@
     - [Cross-DC Deployment Solutions](op-guide/cross-dc-deployment.md)
     - [Kubernetes Deployment](op-guide/kubernetes.md)
   + Configure
-    - [Configuration Flags](op-guide/configuration.md)
+    + By Component
+      - [tidb-server](op-guide/configuration.md)
+      - [pd-server](op-guide/pd-configuration.md)
+      - [tikv-server](op-guide/tikv-configuration.md)      
     - [Configuration File Description](op-guide/tidb-config-file.md)
     - [Modify Component Configuration Using Ansible](op-guide/ansible-deployment-rolling-update.md#modify-component-configuration)
     - [Enable TLS Authentication](op-guide/security.md)
