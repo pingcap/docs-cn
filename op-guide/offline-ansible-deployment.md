@@ -67,6 +67,15 @@ category: deployment
 
 ## 在下载机上下载 TiDB-Ansible 及 TiDB 安装包
 
+以下为 tidb-ansible 与 TiDB 的版本对应关系，版本选择可以咨询官方。
+
+| TiDB 版本 | tidb-ansible tag | 备注 |
+| -------- | ---------------- | --- |
+| 2.0 版本 | v2.0.10、v2.0.11 | 最新 2.0 稳定版本，可用于生产环境。 |
+| 2.1 版本 | v2.1.1 ~ v2.1.6 | 最新 2.1 稳定版本，可用于生产环境（建议）。 |
+| 3.0 版本 | v3.0.0-beta、v3.0.0-beta.1 | 目前是 beta 版本，不建议用于生产环境。 |
+| latest 版本 | None | 包含最新特性，每日更新，不建议用于生产环境。 |
+
 1.  在下载机上安装 Ansible
 
     请按以下方式在 CentOS 7 系统的下载机上在线安装 Ansible。安装完成后，可通过 `ansible --version` 查看版本，请务必确认是 **Ansible 2.5.0** 版本，否则会有兼容问题。
@@ -80,21 +89,21 @@ category: deployment
 
 2.  下载 tidb-ansible
 
-    使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`，以下为各版本下载示例，版本选择可以咨询官方。
+    使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`。
+    
+    > **注意**：部署和升级 TiDB 集群需使用对应的 tidb-ansible 版本，通过改 `inventory.ini` 文件中的版本来混用可能会产生一些错误。
 
-    下载 2.0 GA 版本：
+    - 下载指定 tag 的 tidb-ansible：
 
-    ```
-    git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
-    ```
+        ```
+        $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
+        ```
 
-    或
+    - 下载 latest 版本对应的 tidb-ansible：
 
-    下载 master 版本：
-
-    ```
-    git clone https://github.com/pingcap/tidb-ansible.git
-    ```
+        ```
+        $ git clone https://github.com/pingcap/tidb-ansible.git
+        ```
 
 3.  执行 `local_prepare.yml` playbook，联网下载 TiDB binary 到下载机
 
