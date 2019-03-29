@@ -57,4 +57,4 @@ TiDB 历史版本发布声明如下：
 - [RC4](../releases/rc4.md)
 - [RC3](../releases/rc3.md)
 - [RC2](../releases/rc2.md)
-- [RC1](rc1.md)
+- [RC1](../releases/rc1.md)
