@@ -1,5 +1,6 @@
 ---
 title: Deploy TiDB Using the Binary
+summary: Use the binary to deploy a TiDB cluster.
 category: operations
 ---
 
