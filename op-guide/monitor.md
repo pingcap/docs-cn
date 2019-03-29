@@ -123,7 +123,9 @@ $ ./node_exporter --web.listen-address=":9100" \
 1. Edit the Prometheus configuration file.
 
     ```
+    # Changes to the Prometheus directory.
     $ cd prometheus-2.2.1.linux-amd64
+    # Edit the Prometheus configuration file.
     $ vi prometheus.yml
 
     ...
@@ -169,6 +171,7 @@ $ ./node_exporter --web.listen-address=":9100" \
           - '192.168.199.116:20180'
           - '192.168.199.117:20180'
           - '192.168.199.118:20180'
+
     ...
     ```
 
