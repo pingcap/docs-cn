@@ -111,6 +111,7 @@ TiDB 使用乐观事务模型，在执行 `Update`、`Insert`、`Delete` 等语�
 
 由于 TiDB 分布式两阶段提交的要求，修改数据的大事务可能会出现一些问题。因此，TiDB 特意对事务大小设置了一些限制以减少这种影响：
 
+* 单个事务包含的 SQL 语句不超过 5000 条（默认）
 * 每个键值对不超过 6MB
 * 键值对的总数不超过 300,000
 * 键值对的总大小不超过 100MB
@@ -133,9 +134,9 @@ UPDATE my_table SET a='newest_value' WHERE id = 3;
 COMMIT;
 ```
 
-### 单线程的 workload
+### 单线程或时延敏感型 workload
 
-由于 TiDB 中的 workload 是分布式的，TiDB 中单线程的 workload 性能相比于单实例部署的 MySQL 较低。这与 TiDB 中的小事务延迟较高的情況类似。
+由于 TiDB 中的 workload 是分布式的，TiDB 中单线程或时延敏感型 workload 的性能相比于单实例部署的 MySQL 较低。这与 TiDB 中的小事务延迟较高的情況类似。
 
 ### Load data
 
