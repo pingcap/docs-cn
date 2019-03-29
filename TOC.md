@@ -101,12 +101,12 @@
     - [Cluster Topology Configuration](op-guide/location-awareness.md)
   + Monitor
     - [Monitoring Framework Overview](op-guide/monitor-overview.md)
+    - [Monitor a TiDB Cluster](op-guide/monitor.md)
     + Key Monitoring Metrics
       - [Overview](op-guide/dashboard-overview-info.md)
       - [TiDB](op-guide/tidb-dashboard-info.md)
       - [PD](op-guide/dashboard-pd-info.md)
       - [TiKV](op-guide/dashboard-tikv-info.md)
-    - [Monitor a TiDB Cluster](op-guide/monitor.md)
   + Scale
     - [Scale a TiDB Cluster](op-guide/horizontal-scale.md)
     - [Scale Using Ansible](op-guide/ansible-deployment-scale.md)
@@ -131,7 +131,6 @@
   + Data Migration
     - [Overview](tools/dm/overview.md)
     - [Restrictions](tools/dm/overview.md#usage-restrictions)
-    - [Deploy](tools/dm/practice.md)
     + Features
       - [Table Routing](tools/dm/data-synchronization-features.md#table-routing)
       - [Black and White Lists](tools/dm/data-synchronization-features.md#black-and-white-table-lists)
@@ -145,6 +144,8 @@
     + Usage Scenarios
       - [Simple Scenario](tools/dm/simple-synchronization-scenario.md)
       - [Shard Merge Scenario](tools/dm/shard-merge-scenario.md)
+    - [Deploy a DM Cluster](tools/dm/deployment.md)
+    - [Migrate Data Using DM](tools/dm/practice.md)
     + Configure
       - [Overview](tools/dm/dm-configuration-file-overview.md)
       - [Task Configuration](tools/dm/task-configuration-file-intro.md)
