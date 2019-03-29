@@ -15,6 +15,7 @@
     - [The TiDB Command Options](sql/server-command-option.md)
     - [The TiDB Data Directory](sql/tidb-server.md#tidb-data-directory)
     - [The TiDB System Database](sql/system-database.md)
+    - [Information Schema](sql/information-schema.md)
     - [The TiDB System Variables](sql/variable.md)
     - [The TiDB Specific System Variables](sql/tidb-specific.md)
     - [The TiDB Server Logs](sql/tidb-server.md#tidb-server-logs)
