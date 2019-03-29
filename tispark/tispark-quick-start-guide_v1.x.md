@@ -108,16 +108,24 @@ MySQL [TPCH_001]> show tables;
 
 ## Use example
 
-First start the spark-shell:
+First start the spark-shell in the spark deployment directory:
 
 ```
 $ cd spark
 $ bin/spark-shell
 ```
-Then query the TiDB table as you are using the native Spark SQL:
 
 ```scala
-scala> spark.sql("use TPCH_001")
+import org.apache.spark.sql.TiContext
+val ti = new TiContext(spark)
+
+// Mapping all TiDB tables from `TPCH_001` database as Spark SQL tables
+ti.tidbMapDatabase("TPCH_001")
+```
+
+Then you can call Spark SQL directly:
+
+```scala
 scala> spark.sql("select count(*) from lineitem").show
 ```
 
