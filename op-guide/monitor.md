@@ -173,6 +173,7 @@ $ ./node_exporter --web.listen-address=":9100" \
           - '192.168.199.118:20180'
 
     ...
+
     ```
 
 2. Start the Prometheus service.
