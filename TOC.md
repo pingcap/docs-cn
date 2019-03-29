@@ -28,6 +28,7 @@
     - [SQL Optimization Process](sql/sql-optimizer-overview.md)
     - [Understand the Query Execution Plan](sql/understanding-the-query-execution-plan.md)
     - [Introduction to Statistics](sql/statistics.md)
+    - [Optimizer Hints](sql/optimizer-hints.md)
   + Language Structure
     - [Literal Values](sql/literal-values.md)
     - [Schema Object Names](sql/schema-object-names.md)
