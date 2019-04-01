@@ -97,3 +97,78 @@ TiDB Controller 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，�
 这里同样做了截断。
 
 如希望指定服务地址，可以使用 `-H -P` 选项，如：`tidb-ctl -H 127.0.0.1 -P 10080 schema in mysql -n db`。
+
+#### base64decode 命令
+
+`base64decode`  用来解码 base64 数据。
+```shell
+tidb-ctl base64decode [base64_data]
+tidb-ctl base64decode [db_name.table_name] [base64_data]
+tidb-ctl base64decode [table_id] [base64_data]
+```
+* 准备环境，执行以下SQL
+
+    ```sql
+    use test;
+    create table t (a int, b varchar(20),c datetime default current_timestamp , d timestamp default current_timestamp, unique index(a));
+    insert into t (a,b,c) values(1,"哈哈 hello",NULL);
+    alter table t add column e varchar(20);
+    ```
+
+* 用 http api 接口获取 mvcc 数据
+
+    ```shell
+    ▶ curl "http://$IP:10080/mvcc/index/test/t/a/1?a=1"
+    {
+     "info": {
+      "writes": [
+       {
+        "start_ts": 407306449994645510,
+        "commit_ts": 407306449994645513,
+        "short_value": "AAAAAAAAAAE="    # unique index a 存的值是对应行的 handle id.
+       }
+      ]
+     }
+    }%
+
+    ▶ curl "http://$IP:10080/mvcc/key/test/t/1"
+    {
+     "info": {
+      "writes": [
+       {
+        "start_ts": 407306588892692486,
+        "commit_ts": 407306588892692489,
+        "short_value": "CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgIDwjYuu0Rk="  # handle id 为 1 的行数据。 
+       }
+      ]
+     }
+    }% 
+    ```
+
+* 用 `base64decode` 解码 handle id (uint64).
+
+  ```shell
+  ▶ tidb-ctl base64decode AAAAAAAAAAE=
+  hex: 0000000000000001
+  uint64: 1
+  ```
+
+* 用 `base64decode` 解码行数据。
+
+    ```shell
+    ▶ ./tidb-ctl base64decode test.t CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgIDwjYuu0Rk=
+    a:      1
+    b:      哈哈 hello
+    c is NULL
+    d:      2019-03-28 05:35:30
+    e not found in data
+
+    # if the table id of test.t is 60, you can also use below command to do the same thing.
+    ▶ ./tidb-ctl base64decode 60 CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgIDwjYuu0Rk=
+    a:      1
+    b:      哈哈 hello
+    c is NULL
+    d:      2019-03-28 05:35:30
+    e not found in data
+    ```
+
