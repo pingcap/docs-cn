@@ -99,13 +99,13 @@ trim-last-separator = false
 - 是否解析字段内的反斜线转义符。
 - 如果 `backslash-escape` 为 true，下列转义符会被识别并转换。 
 
-    | Sequence | Converted to             |
+    | 转义符   | 转换为            |
     |----------|--------------------------|
-    | `\0`     | Null character (U+0000)  |
-    | `\b`     | Backspace (U+0008)       |
-    | `\n`     | Line feed (U+000A)       |
-    | `\r`     | Carriage return (U+000D) |
-    | `\t`     | Tab (U+0009)             |
+    | `\0`     | 空字符 (U+0000)  |
+    | `\b`     | 退格 (U+0008)       |
+    | `\n`     | 换行 (U+000A)       |
+    | `\r`     | 回车 (U+000D) |
+    | `\t`     | 制表符 (U+0009)             |
     | `\Z`     | Windows EOF (U+001A)     |
 
     其他情况下（如 `\"`）反斜线会被移除，仅在字段中保留其后面的字符（`"`）。
@@ -131,7 +131,7 @@ trim-last-separator = false
 
 Lightning 并不完全支持 `LOAD DATA` 语句中的所有配置项。例如：
 
-* 行终止符只能是 CR（`\r`），LF（`\n`）或 CRLF （`\r\n`），也就是说，无法通过 `LINES TERMINATED BY` 自定义。
+* 行终止符只能是 CR（`\r`），LF（`\n`）或 CRLF （`\r\n`），也就是说，无法自定义 `LINES TERMINATED BY`。
 * 不可使用行前缀 （`LINES STARTING BY`）。
 * 不可跳过表头（`IGNORE n LINES`）。如有表头，必须是有效的列名。
 * 定界符和分隔符只能为单个 ASCII 字符。 
