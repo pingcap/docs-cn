@@ -27,7 +27,7 @@ category: tools
 - `tidb-lightning`
 
     - 32+ 逻辑核 CPU
-    - 足够储存整个 SQL dump 数据源的 SSD 硬盘，读取速度越快越好
+    - 足够储存整个数据源的 SSD 硬盘，读取速度越快越好
     - 使用万兆网卡，带宽需 300 MB/s 以上
     - 运行过程默认会打满 CPU，建议单独部署。条件不允许的情况下可以和其他组件 (比如 `tidb-server`) 部署在同一台机器上，然后通过配置 `region-concurrency` 限制 `tidb-lightning` 的 CPU 使用。
 
@@ -36,6 +36,7 @@ category: tools
     - 32+ 逻辑核 CPU
     - 32 GB+ 内存
     - 1 TB+ SSD 硬盘，IOPS 越高越好（要求 ≥8000）
+      * 硬盘必须大于最大的 N 个表的大小总和，其中 N = max(index-concurrency, table-concurrency)。
     - 使用万兆网卡，带宽需 300 MB/s 以上
     - 运行过程中 CPU、I/O 和网络带宽都可能打满，建议单独部署。
 
@@ -43,7 +44,7 @@ category: tools
 
 > **注意**：`tidb-lightning` 是 CPU 密集型程序，如果和其它程序混合部署，需要通过 `region-concurrency` 限制 `tidb-lightning` 的 CPU 实际占用核数，否则会影响其他程序的正常运行。建议将混合部署机器上 75% 的 CPU 分配给 `tidb-lightning`。例如，机器为 32 核，则 `tidb-lightning` 的 `region-concurrency` 可设为 24。
 
-此外，目标 TiKV 集群必须有足够空间接收新导入的数据。在[标准硬件配置](../../op-guide/recommendation.md)以外，目标 TiKV 集群的总存储空间必须大于 **SQL dump 大小 × [副本数量](../../FAQ.md#3-2-6-%E6%AF%8F%E4%B8%AA-region-%E7%9A%84-replica-%E6%95%B0%E9%87%8F%E5%8F%AF%E9%85%8D%E7%BD%AE%E5%90%97-%E8%B0%83%E6%95%B4%E7%9A%84%E6%96%B9%E6%B3%95%E6%98%AF) × 2**。例如集群默认使用 3 副本，那么总存储空间需为 SQL dump 大小的 6 倍以上。
+此外，目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](../../op-guide/recommendation.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 × [副本数量](../../FAQ.md#3-2-6-%E6%AF%8F%E4%B8%AA-region-%E7%9A%84-replica-%E6%95%B0%E9%87%8F%E5%8F%AF%E9%85%8D%E7%BD%AE%E5%90%97-%E8%B0%83%E6%95%B4%E7%9A%84%E6%96%B9%E6%B3%95%E6%98%AF) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。
 
 ## 导出数据
 
@@ -60,6 +61,8 @@ category: tools
 - `-t 16`：使用 16 个线程导出数据。
 - `-F 256`：将每张表切分成多个文件，每个文件大小约为 256 MB。
 - `--skip-tz-utc`：添加这个参数则会忽略掉 TiDB 与导数据的机器之间时区设置不一致的情况，禁止自动转换。
+
+如果数据源是 CSV 文件，请参考 [CSV 支持](../../tools/lightning/csv.md] 获取配置信息。
 
 ## 部署 TiDB-Lightning
 
@@ -90,7 +93,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
         ```yaml
         ...
         # tikv-importer 的监听端口。需对 tidb-lightning 服务器开放。
-        tikv_importer_port: 20170
+        tikv_importer_port: 8287
         ...
         ```
 
@@ -101,9 +104,9 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
         dummy:
 
         # 提供监控告警的端口。需对监控服务器 (monitoring_server) 开放。
-        tidb_lightning_pprof_port: 10089
+        tidb_lightning_pprof_port: 8289
 
-        # 获取 mydumper SQL dump 的路径。
+        # 获取数据源（mydumper SQL dump 或 CSV）的路径。
         data_source_dir: "{{ deploy_dir }}/mydumper"
         ```
 
@@ -150,9 +153,9 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
 
 通过以下链接获取 TiDB-Lightning 安装包（需选择与集群相同的版本）：
 
-- **v2.1.2**: https://download.pingcap.org/tidb-lightning-v2.1.2-linux-amd64.tar.gz
+- **v2.1.6**: https://download.pingcap.org/tidb-lightning-v2.1.6-linux-amd64.tar.gz
 - **v2.0.9**: https://download.pingcap.org/tidb-lightning-v2.0.9-linux-amd64.tar.gz
-- 最新 master 版本: https://download.pingcap.org/tidb-lightning-latest-amd64.tar.gz
+- 最新 unstable 版本：https://download.pingcap.org/tidb-lightning-test-xx-latest-linux-amd64.tar.gz
 
 #### 第 3 步：启动 `tikv-importer`
 
@@ -170,7 +173,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
 
     [server]
     # tikv-importer 监听的地址，tidb-lightning 需要连到这个地址进行数据写入。
-    addr = "0.0.0.0:20170"
+    addr = "0.0.0.0:8287"
     # gRPC 服务器的线程池大小。
     grpc-concurrency = 16
 
@@ -208,7 +211,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
     # 预处理 Region 最长时间。
     #max-prepare-duration = "5m"
     # 把要导入的数据切分为这个大小的 Region。
-    #region-split-size = "96MB"
+    #region-split-size = "512MB"
     # 流管道窗口大小，管道满时会阻塞流。
     #stream-channel-window = 128
     # 引擎文档同时打开的最大数量。
@@ -225,7 +228,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
 
 1. 从安装包上传 `bin/tidb-lightning` 及 `bin/tidb-lightning-ctl`。
 
-2. 将 mydumper SQL dump 数据源写入到同样的机器。
+2. 将数据源写入到同样的机器。
 
 3. 配置 `tidb-lightning.toml`。
 
@@ -234,13 +237,16 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
 
     [lightning]
     # 用于调试和 Prometheus 监控的 HTTP 端口。输入 0 关闭。
-    pprof-port = 10089
+    pprof-port = 8289
 
     # 开始导入前先检查集群版本是否支持。
     #check-requirements = true
 
-    # 控制同时处理的表的数量。这个值会影响 tikv-importer 的内存使用量。
-    # 不能超过 tikv-importer 中 max-open-engines 的值。
+    # 控制同时处理的最大引擎数量。
+    # 每张表被分割为一个用于储存索引的“索引引擎”和若干存储行数据的“数据引擎”。
+    # 这两项设置控制同时处理每种引擎的最大数量。设置会影响 tikv-importer 的内存和
+    # 磁盘用量。两项数值之和不能超过 tikv-importer 的 max-open-engines 的设定。
+    index-concurrency = 2
     table-concurrency = 8
 
     # 转换数据的并发数，默认为逻辑 CPU 数量，不需要配置。
@@ -282,11 +288,24 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
 
     [tikv-importer]
     # tikv-importer 的监听地址，需改成 tikv-importer 服务器的实际地址。
-    addr = "172.16.31.10:20170"
+    addr = "172.16.31.10:8287"
 
     [mydumper]
     # 文件读取区块大小。
     read-block-size = 65536 # 字节 (默认 = 64 KB)
+
+    #（源数据文件）单个导入区块大小的最小值。
+    # Lightning 根据该大小将一张大表分割为多个数据引擎文件。
+    batch-size = 107_374_182_400 # Byte (default = 100 GB)
+    # 引擎文件要按序导入。因为是并行处理，多个数据引擎几乎同时被导入，
+    # 这样形成的处理队列会造成资源浪费。因此，Lightning 稍微增大了前几个
+    # 区块的大小，从而合理分配资源。该参数也决定了向上扩展（scale up）因
+    # 数，代表在完全并发下“导入”和“写入”过程的持续时间比。这个值也可以通过
+    # 计算 1 GB 大小单张表的（导入时长/写入时长）得到。精确的时间可以在日志
+    # 里看到。如果 “导入”更快，区块大小差异就会更小；比值为 0 则说明区块大小
+    # 是一致的。取汁范围是（0 <= batch-import-ratio < 1）。
+    batch-import-ratio = 0.75
+
     # mydumper 源数据目录。
     data-source-dir = "/data/my_database"
     # 如果 no-schema 设置为 true，tidb-lightning 将直接去 tidb-server 获取表结构信息，
@@ -300,6 +319,27 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
     #  - binary：不尝试转换编码
     # 注意，此参数不影响 Lightning 读取数据文件。
     character-set = "auto"
+
+    # 配置如何解析 CSV 文件。
+    [mydumper.csv]
+    # 字段分隔符，应为单个 ASCII 字符。
+    separator = ','
+    # 引用定界符，可为单个 ASCII 字符或空字符串。
+    delimiter = '"'
+    # CSV 文件是否包含表头。
+    # 如果为 true，第一行导入时会被跳过。
+    header = true
+    # CSV 是否包含 NULL。
+    # 如果 `not-null` 为 true，CSV 所有列都不能解析为 NULL。
+    not-null = false
+    # 如果 `not-null` 为 false（CSV 可以包含 NULL）。
+    # 为以下值的字段将会被解析为 NULL。
+    null = '\N'
+    # 是否解析字段内反斜线转义符。
+    backslash-escape = true
+    # 如果有行以分隔符结尾，删除尾部分隔符。 
+    trim-last-separator = false
+
 
     [tidb]
     # 目标集群的信息。tidb-server 的监听地址，填一个即可。
@@ -327,8 +367,10 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
     [post-restore]
     # 如果设置为 true，会对每个表逐个做 `ADMIN CHECKSUM TABLE <table>` 操作。
     checksum = true
-    # 如果设置为 true，会对所有数据做一次全量 Compact。
-    compact = true
+    # 如果设置为 false，会在导入每张表后做一次 level-1 Compact。
+    level-1-compact = false
+    # 如果设置为 false，会在导入过程结束时对整个 TiKV 集群执行一次全量 Compact。
+    compact = false
     # 如果设置为 true，会对每个表逐个做 `ANALYZE TABLE <table>` 操作。
     analyze = true
 

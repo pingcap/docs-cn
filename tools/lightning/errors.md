@@ -32,9 +32,8 @@ Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的数�
 **原因**：本地数据源跟目标数据库某个表的校验和不一致。这通常有更深层的原因：
 
 1. 这张表可能本身已有数据，影响最终结果。
-2. 如果表没有整数型主键 (integer PRIMARY KEY)，在断点续传后有些行可能会被重复导入。这是已知的问题，计划在下个版本中修正。
-3. 如果目标数据库的校验和全是 0，表示什么也没导进去，有可能是集群太忙无法接收导入的指令。
-4. 如果数据源是由机器生成而不是从 mydumper 备份的，需确保数据符合表的限制，例如：
+2. 如果目标数据库的校验和全是 0，表示没有发生任何导入，有可能是集群太忙无法接收任何数据。
+3. 如果数据源是由机器生成而不是从 mydumper 备份的，需确保数据符合表的限制，例如：
 
     * 自增 (AUTO_INCREMENT) 的列需要为正数，不能为 0。
     * 单一键和主键 (UNIQUE and PRIMARY KEYs) 不能有重复的值。
@@ -43,6 +42,16 @@ Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的数�
 
 1. 使用 `tidb-lightning-ctl --error-checkpoint-destroy=all` 把出错的表删除，然后重启 Lightning 重新导入那些表。
 2. 把断点存放在外部数据库（修改 `[checkpoint] dsn`），减轻目标集群压力。
+
+## Checkpoint for … has invalid status: 18
+
+**原因**: [断点续传](../../tools/lightning/checkpoints.md) 已启用。Lightning 或 Importer 之前发生了异常退出。为了防止意外数据损害，Lighting 在错误解决以前不会启动。
+
+**解决办法**:
+
+如果错误原因是非法数据源，使用 `tidb-lightning-ctl --error-checkpoint-destroy=all` 删除已导入数据，并重启 Lightning。
+
+其他解决方法请参考[断点续传的控制](../../tools/lightning/checkpoints.md#断点续传的控制)。
 
 ## ResourceTemporarilyUnavailable("Too many open engines …: 8")
 
@@ -54,7 +63,7 @@ Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的数�
 
     最大内存使用量 ≈ `max-open-engine` × `write-buffer-size` × `max-write-buffer-number`
 
-2. 降低 `table-concurrency`，使之低于 `max-open-engine`。
+2. 降低 `table-concurrency` + `index-concurrency`，使之低于 `max-open-engine`。
 
 3. 重启 `tikv-importer` 来强制移除所有引擎文件。这样也会丢弃导入了一半的表，所以启动 Lightning 前必须使用 `tidb-lightning-ctl --error-checkpoint-destroy=all`。
 
@@ -78,7 +87,13 @@ Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的数�
 
     * 使用 Ansible 部署的话，修正 [`inventory.ini`] 下的 `timezone` 变量。
 
-    * 手动部署的话，在启动 Lightning 前设定 `$TZ` 环境变量。
+        ```ini
+        # inventory.ini
+        [all:vars]
+        timezone = Asia/Shanghai
+        ```
+
+    * 手动部署的话，通过设定 `$TZ` 环境变量强制时区设定。
 
         ```sh
         # 强制使用 Asia/Shanghai 时区
