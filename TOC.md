@@ -34,7 +34,6 @@
     - [注释语法](sql/comment-syntax.md)
   + 字符集和时区
     - [字符集支持](sql/character-set-support.md)
-    - [字符集配置](sql/character-set-configuration.md)
     - [时区](sql/time-zone.md)
   + 数据类型
     - [数值类型](sql/datatype.md#数值类型)
