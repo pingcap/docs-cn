@@ -39,8 +39,8 @@ header = true
 # CSV 是否包含 NULL。
 # 如果为 true，CSV 文件的任何列都不能解析为 NULL。
 not-null = false
-# 如果 `not-null` 为 false（CSV 可以包含 NULL），
-# 为此值的字段即解析为空。
+# 如果 `not-null` 为 false（即 CSV 可以包含 NULL），
+# 为以下值的字段将会被解析为 NULL。
 null = '\N'
 # 是否解析字段内的反斜线转义符。 
 backslash-escape = true
@@ -83,7 +83,7 @@ trim-last-separator = false
 
 - `not-null` 决定是否所有字段不能为空。
 - 如果 `not-null` 为 false，设定了 `null` 的字符串会被转换为 SQL NULL 而非具体数值。
-- 引用不会为 NULL 的字段。
+- 引用不影响字段是否为空。
 
     例如有如下 CSV 文件：
 
@@ -131,7 +131,7 @@ trim-last-separator = false
 
 Lightning 并不完全支持 `LOAD DATA` 语句中的所有配置项。例如：
 
-* 行终止符只能是 CR（`\r`），LF（`\n`）或 CRLF （`\r\n`），也就是说，无法自定义 `LINES TERMINATED BY`。
+* 行终止符只能是 CR（`\r`），LF（`\n`）或 CRLF（`\r\n`），也就是说，无法自定义 `LINES TERMINATED BY`。
 * 不可使用行前缀 （`LINES STARTING BY`）。
 * 不可跳过表头（`IGNORE n LINES`）。如有表头，必须是有效的列名。
 * 定界符和分隔符只能为单个 ASCII 字符。 
@@ -140,7 +140,7 @@ Lightning 并不完全支持 `LOAD DATA` 语句中的所有配置项。例如：
 
 ### CSV
 
-默认设置已按 RFC 4180 调整。
+默认设置已按照 RFC 4180 调整。
 
 ```toml
 [mydumper.csv]

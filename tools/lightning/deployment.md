@@ -62,7 +62,7 @@ category: tools
 - `-F 256`：将每张表切分成多个文件，每个文件大小约为 256 MB。
 - `--skip-tz-utc`：添加这个参数则会忽略掉 TiDB 与导数据的机器之间时区设置不一致的情况，禁止自动转换。
 
-如果数据源是 CSV 文件，请参考 [CSV 支持](../../tools/lightning/csv.md] 获取配置信息。
+如果数据源是 CSV 文件，请参考 [CSV 支持](../../tools/lightning/csv.md]获取配置信息。
 
 ## 部署 TiDB-Lightning
 
@@ -302,7 +302,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
     # 区块的大小，从而合理分配资源。该参数也决定了向上扩展（scale up）因
     # 数，代表在完全并发下“导入”和“写入”过程的持续时间比。这个值也可以通过
     # 计算 1 GB 大小单张表的（导入时长/写入时长）得到。精确的时间可以在日志
-    # 里看到。如果 “导入”更快，区块大小差异就会更小；比值为 0 则说明区块大小
+    # 里看到。如果“导入”更快，区块大小差异就会更小；比值为 0 则说明区块大小
     # 是一致的。取值范围是（0 <= batch-import-ratio < 1）。
     batch-import-ratio = 0.75
 
@@ -332,14 +332,13 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
     # CSV 是否包含 NULL。
     # 如果 `not-null` 为 true，CSV 所有列都不能解析为 NULL。
     not-null = false
-    # 如果 `not-null` 为 false（CSV 可以包含 NULL）。
+    # 如果 `not-null` 为 false（即 CSV 可以包含 NULL），
     # 为以下值的字段将会被解析为 NULL。
     null = '\N'
     # 是否解析字段内反斜线转义符。
     backslash-escape = true
     # 如果有行以分隔符结尾，删除尾部分隔符。 
     trim-last-separator = false
-
 
     [tidb]
     # 目标集群的信息。tidb-server 的监听地址，填一个即可。

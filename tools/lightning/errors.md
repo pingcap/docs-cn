@@ -45,7 +45,7 @@ Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的数�
 
 ## Checkpoint for … has invalid status: 18
 
-**原因**: [断点续传](../../tools/lightning/checkpoints.md) 已启用。Lightning 或 Importer 之前发生了异常退出。为了防止意外数据损害，Lighting 在错误解决以前不会启动。
+**原因**: [断点续传](../../tools/lightning/checkpoints.md)已启用。Lightning 或 Importer 之前发生了异常退出。为了防止数据意外损坏，Lighting 在错误解决以前不会启动。
 
 **解决办法**:
 
