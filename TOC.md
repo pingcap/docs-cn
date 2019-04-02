@@ -219,8 +219,6 @@
   - [今日头条](http://t.cn/RnLfEMf)
   - [转转](http://t.cn/R1MAXEq)
   - [Mobike](http://t.cn/RT8FbP6)
-  - [饿了么（一）](http://t.cn/RucuK6m)
-  - [饿了么（二）](http://t.cn/RnsqFT6)
   - [小米科技](http://t.cn/Ey2xCDK)
   - [爱奇艺](http://t.cn/EvErsc1)
   - [易果生鲜](http://t.cn/RTYVhzH)
