@@ -63,7 +63,7 @@ Starting from this version, DM-worker uses a same port (8262 by default) to prov
     and modify
     
     ```ini
-    dm_master ansible_host=172.16.10.71 dm_master_port=12080 dm_master_status_port=12081	
+    dm_master ansible_host=172.16.10.71 dm_master_port=12080 dm_master_status_port=12081
     ```
     
     to
