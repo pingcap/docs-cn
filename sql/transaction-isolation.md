@@ -16,7 +16,7 @@ sql 92标准定义了4种隔离级别，读未提交、读已提交、可重复�
 | Repeatable read  | Not possible | Not possible       | Not possible in  TiDB | Possible              |
 | Serializable     | Not possible | Not possible       | Not possible          | Not possible          |
 
-TiDB 实现了其中的可重复读。
+TiDB 实现了 snapshot 隔离级别的一致性，为与 MySQL 兼容，通常称其为可重复读。该 Snapshot 隔离级别不同于 [ANSI 可重复读隔离级别](#ansi-可重复读隔离级别)和[ MySQL 可重复读隔离级别](#mysql-可重复读隔离级别)。
 
 TiDB 使用 [Percolator 事务模型](https://research.google.com/pubs/pub36726.html)，当事务启动时会获取全局读时间戳，事务提交时也会获取全局提交时间戳，并以此确定事务的执行顺序，如果想了解 TiDB 事务模型的实现可以详细阅读以下两篇文章：[TiKV 的 MVCC (Multi-Version Concurrency Control) 机制](https://pingcap.com/blog-cn/mvcc-in-tikv/)，[Percolator 和 TiDB 事务算法](https://pingcap.com/blog-cn/percolator-and-txn/)。
 
@@ -43,7 +43,7 @@ commit;                         |
 
 尽管名称是可重复读隔离级别，但是 TiDB 中可重复读隔离级别和 ANSI 可重复隔离级别是不同的，按照 [A Critique of ANSI SQL Isolation Levels](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-95-51.pdf) 论文中的标准，TiDB 实现的是论文中的 snapshot 隔离级别，该隔离级别不会出现幻读，但是会出现写偏斜，而 ANSI 可重复读隔离级别不会出现写偏斜，会出现幻读。
 
-### 与MySQL可重复读隔离级别的区别
+### 与 MySQL 可重复读隔离级别的区别
 
 MySQL 可重复读隔离级别在更新时并不检验当前版本是否可见，也就是说，即使该行在事务启动后被更新过，同样可以继续更新。这种情况在 TiDB 会导致事务回滚并后台重试，重试最终可能会失败，导致事务最终失败，而 MySQL 是可以更新成功的。
 MySQL 的可重复读隔离级别并非 snapshot 隔离级别，MySQL 可重复读隔离级别的一致性要弱于 snapshot 隔离级别，也弱于 TiDB 的可重复读隔离级别。
