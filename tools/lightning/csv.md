@@ -92,7 +92,7 @@ trim-last-separator = false
     \N,"\N",
     ```
 
-    在默认设置（`not-null = false; null = '\N'`）下，列 `A` and `B` 导入 TiDB 后都将会转换为 NULL。列 `C` 是空字符串，但并不解析为 NULL。
+    在默认设置（`not-null = false; null = '\N'`）下，列 `A` and `B` 导入 TiDB 后都将会转换为 NULL。列 `C` 是空字符串 `''`，但并不会解析为 NULL。
 
 ### `backslash-escape`
 
