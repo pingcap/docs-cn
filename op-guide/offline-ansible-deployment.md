@@ -76,6 +76,17 @@ Currently, the TiDB 2.0 GA version and the master version are compatible with An
 
 ## Step 4: Download TiDB-Ansible and TiDB packages on the download machine
 
+The relationship between the `tidb-ansible` version and the TiDB version is as follows:
+
+| TiDB version | tidb-ansible tag | Note |
+| -------- | ---------------- | --- |
+| 2.0 version | v2.0.10, v2.0.11 | It is the latest 2.0 stable version which can be used in the production environment. |
+| 2.1 version | v2.1.1 ~ v2.1.6 | It is the latest 2.1 stable version which can be used in the production environment (recommended). |
+| 3.0 version | v3.0.0-beta, v3.0.0-beta.1 | It is currently a beta version which is not recommended to use in the production environment. |
+| `master` branch | None | It includes the newest features and is updated on a daily basis, so it is not recommended to use it in the production environment. |
+
+> **Note:** If you have questions regarding which version to use, email to info@pingcap.com for more information or [file an issue](https://github.com/pingcap/tidb-ansible/issues/new).
+
 1. Install Ansible on the download machine.
 
     Use the following method to install Ansible online on the download machine installed with the CentOS 7 system. After Ansible is installed, you can view the version using `ansible --version`.
@@ -90,21 +101,21 @@ Currently, the TiDB 2.0 GA version and the master version are compatible with An
 
 2. Download TiDB-Ansible.
 
-    Use the following command to download the corresponding version of TiDB-Ansible from the GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`. The following are examples of downloading various versions, and you can turn to the official team for advice on which version to choose.
+    Use the following command to download the corresponding version of TiDB-Ansible from the GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`.
 
-    Download the 2.0 version:
+    > **Note:** It is required to use the corresponding tidb-ansible version when you deploy and upgrade the TiDB cluster. If you deploy TiDB using a mismatched version of tidb-ansible (such as using tidb-ansible v2.1.4 to deploy TiDB v2.1.6), an error might occur.
 
-    ```
-    git clone -b release-2.0 https://github.com/pingcap/tidb-ansible.git
-    ```
+    - Download the tidb-ansible version with a specified tag:
+    
+        ```
+        $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
+        ```
 
-    or
+    - Download the tidb-ansible version that corresponds to the `master` branch of TiDB:
 
-    Download the master version:
-
-    ```
-    git clone https://github.com/pingcap/tidb-ansible.git
-    ```
+        ```
+        $ git clone https://github.com/pingcap/tidb-ansible.git
+        ```
 
 3. Run the `local_prepare.yml` playbook, and download TiDB binary online to the download machine.
 
