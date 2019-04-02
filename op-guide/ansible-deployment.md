@@ -483,6 +483,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | collect_log_recent_hours | 采集日志时，采集最近几个小时的日志，默认为 2 小时 |
 | enable_bandwidth_limit | 在中控机上从部署目标机器拉取诊断数据时，是否限速，默认为 True，与 collect_bandwidth_limit 变量结合使用 |
 | collect_bandwidth_limit | 在中控机上从部署目标机器拉取诊断数据时限速多少，单位: Kbit/s，默认 10000，即 10Mb/s，如果是单机多 TiKV 实例部署方式，需除以单机实例个数 |
+| prometheus_storage_retention | Prometheus 监控数据的保留时间（默认为 30 天）；2.1.7、3.0 以及之后的 tidb-ansible 版本中，`group_vars/monitoring_servers.yml` 文件里新增的配置 |
 
 ## 部署任务
 
