@@ -185,7 +185,7 @@ Configuration about performance.
 ### `feedback-probability`
 
 - The probability that TiDB collects the feedback statistics of each query
-- Default: 0
+- Default: 0.0
 - TiDB collects the feedback of each query at the probability of `feedback-probability`, to update statistics
 
 ## prepared-plan-cache
