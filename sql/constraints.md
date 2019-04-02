@@ -122,7 +122,7 @@ mysql> COMMIT;
 ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ```
 
-* 第一个 `INSERT` 语句不会导致重复键错误，这同 MySQL 的规则一致。该检查将推迟到事务提交时才会进行。
+* 第一条 `INSERT` 语句不会导致重复键错误，这同 MySQL 的规则一致。该检查将推迟到事务提交时才会进行。
 
 如果将 `tidb_constraint_check_in_place` 更改为 `TRUE`，则会在执行语句时就对唯一约束进行检查。例如：
 
@@ -143,4 +143,4 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ..
 ```
 
-* 第一个 `INSERT` 语句导致了重复键错误。这会造成额外的网络通信开销，并可能降低插入操作的吞吐量。
+* 第一条 `INSERT` 语句导致了重复键错误。这会造成额外的网络通信开销，并可能降低插入操作的吞吐量。
