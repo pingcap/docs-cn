@@ -2,6 +2,7 @@
 title: TiDB Introduction
 summary: An introduction to the TiDB database platform
 category: introduction
+draft: true
 ---
 
 # TiDB Introduction
