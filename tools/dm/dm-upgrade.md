@@ -128,10 +128,10 @@ Starting from this version, the above two kinds of information are removed and t
     
     ```yaml
     config:
-          host: "192.168.199.118"	
-          port: 4306	
-          user: "root"	
-          password: "1234"	
+          host: "192.168.199.118"
+          port: 4306
+          user: "root"
+          password: "1234"
     instance-id: "instance118-4306" # It is unique. It is used as the ID when storing the checkpoint, configuration and other information.
     ```
     
