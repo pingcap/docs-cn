@@ -157,6 +157,7 @@
     - [Monitor](tools/dm/monitor.md)
     - [Manage the Task](tools/dm/manage-task.md)
     - [Cluster Operations](tools/dm/cluster-operations.md)
+    - [Upgrade](tools/dm/dm-upgrade.md)
     - [Troubleshoot](tools/dm/troubleshooting.md)
   + TiDB-Lightning
     - [Overview](tools/lightning/overview-architecture.md)
