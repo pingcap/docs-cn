@@ -59,7 +59,7 @@ alter table t change column a a varchar(22) character set utf8;
     {
         "ShardRowIDBits": 0,
         "auto_inc_id": 0,
-        "charset": "utf8",   # 这是 table 的 charset
+        "charset": "utf8",   # table 的 charset
         "collate": "",
         "cols": [            # 从这里开始列举 column 的相关信息
             {
