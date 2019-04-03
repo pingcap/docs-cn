@@ -240,7 +240,7 @@ url = https://grafana.net
 
 ```bash
 $ ./bin/grafana-server \
-    --config="./conf/grafana.ini"
+    --config="./conf/grafana.ini" &
 ```
 
 ### 配置 Grafana
