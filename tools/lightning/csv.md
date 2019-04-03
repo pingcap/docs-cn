@@ -179,13 +179,12 @@ trim-last-separator = false
 示例内容：
 
 ```
-ID	Region	Count
-1	East	32
-2	South	NULL
-3	West	10
-4	North	39
+ID    Region    Count
+1     East      32
+2     South     NULL
+3     West      10
+4     North     39
 ```
-
 
 ### TPC-H DBGEN
 
