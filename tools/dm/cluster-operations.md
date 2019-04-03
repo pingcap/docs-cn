@@ -53,7 +53,7 @@ $ ansible-playbook stop.yml
 
     - DM 同步 sharding DDL 语句时，如果 DM-worker 成功执行（或跳过）sharding DDL 的 binlog event，与 DM-worker 中的 sharding DDL 语句相关的所有表的断点信息都会被更新至 DDL 语句对应的 binlog event 之后的位置。
 
-    - 当 DM-worker 重启发生在 sharding DDL 语句同步开始前或完成后，DM-worker 会根据断点信息和本地记录的任务状态自动恢复数据同步。
+    - 当 DM-worker 重启发生在 sharding DDL 语句同步开始前或完成后，DM-worker 会根据断点信息和本地记录的子任务信息自动恢复数据同步。
  
     - 当 DM-worker 重启发生在 sharding DDL 语句同步过程中，可能会出现作为 DDL lock owner 的 DM-worker 实例已执行了 DDL 语句并成功变更了下游数据库表结构，但其他 DM-worker 实例重启而无法跳过 DDL 语句也无法更新断点的情况。
     
