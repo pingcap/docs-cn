@@ -1,6 +1,6 @@
 ---
 title: 提交 Issue
-category: 
+category: report issue
 ---
 
 # 提交 Issue

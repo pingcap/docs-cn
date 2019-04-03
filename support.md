@@ -1,6 +1,6 @@
 ---
 title: 支持资源
-category: 
+category: resources
 ---
 
 # 支持资源
