@@ -36,7 +36,6 @@
     - [注释语法](sql/comment-syntax.md)
   + 字符集和时区
     - [字符集支持](sql/character-set-support.md)
-    - [字符集配置](sql/character-set-configuration.md)
     - [时区](sql/time-zone.md)
   + 数据类型
     - [数值类型](sql/datatype.md#数值类型)
@@ -73,8 +72,9 @@
   + 事务
     - [事务模型](sql/transaction-model.md)
     - [隔离级别](sql/transaction-isolation.md)  
+  - [约束](sql/constraints.md)
   - [Generated Column](sql/generated-columns.md)
-  - [Connectors 和 API](sql/connection-and-APIs.md)
+  - [连接器和 API](sql/connection-and-APIs.md)
   - [错误码与故障诊断](sql/error.md)
   - [与 MySQL 兼容性对比](sql/mysql-compatibility.md)
   - [TiDB 内存控制](sql/tidb-memory-control.md)
@@ -156,6 +156,7 @@
     - [部署执行](tools/lightning/deployment.md)
     - [断点续传](tools/lightning/checkpoints.md)
     - [表库过滤](tools/lightning/filter.md)
+    - [CSV 支持](tools/lightning/csv.md)
     - [监控告警](tools/lightning/monitor.md)
     - [故障诊断](tools/lightning/errors.md)
     - [常见问题与解答](tools/lightning/faq.md)
@@ -223,8 +224,6 @@
   - [今日头条](http://t.cn/RnLfEMf)
   - [转转](http://t.cn/R1MAXEq)
   - [Mobike](http://t.cn/RT8FbP6)
-  - [饿了么（一）](http://t.cn/RucuK6m)
-  - [饿了么（二）](http://t.cn/RnsqFT6)
   - [小米科技](http://t.cn/Ey2xCDK)
   - [爱奇艺](http://t.cn/EvErsc1)
   - [易果生鲜](http://t.cn/RTYVhzH)

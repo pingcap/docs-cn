@@ -50,7 +50,7 @@ mysql> ADMIN CHECKSUM TABLE `schema`.`table`;
 
 ## Lightning 支持哪些格式的数据源？
 
-到 v2.1.0 版本为止，只支持本地文档形式的数据源，支持 [mydumper](https://github.com/pingcap/mydumper) 格式。
+到 v2.1.6 版本为止，只支持本地文档形式的数据源，支持 [mydumper](https://github.com/pingcap/mydumper) 或 [CSV](../../tools/lightning/csv.md) 格式。
 
 ## 我已经在下游创建好库和表了，Lightning 可以忽略建库建表操作吗？
 
@@ -109,7 +109,7 @@ tidb-lightning-ctl --switch-mode=normal
 
 ## 为什么 TiDB-Lightning 需要在 TiKV 集群预留这么多空间？
 
-当使用默认的 3 副本设置时，TiDB-Lightning 需要 TiKV 集群预留 SQL dump 大小 6 倍的空间。多出来的 2 倍是算上下列没储存在 SQL dump 的因素的保守估计：
+当使用默认的 3 副本设置时，TiDB-Lightning 需要 TiKV 集群预留数据源大小 6 倍的空间。多出来的 2 倍是算上下列没储存在数据源的因素的保守估计：
 
 - 索引会占据额外的空间
 - RocksDB 的空间放大效应

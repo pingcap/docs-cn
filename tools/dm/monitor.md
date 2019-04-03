@@ -74,3 +74,5 @@ category: tools
 | total sqls jobs | 单位时间内新增的 job 数量 | N/A |
 | finished sqls jobs | 单位时间内完成的 job 数量 | N/A |
 | execution latency | syncer 执行 transaction 到下游的耗时，单位：秒 | N/A |
+| unsynced tables | 当前子任务内还未收到 shard DDL 的分表数量 | N/A |
+| shard lock resolving | 当前子任务是否正在等待 shard DDL 同步，大于 0 表示正在等待同步 | N/A |

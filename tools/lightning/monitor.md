@@ -38,7 +38,7 @@ address = ""
 ```toml
 [lightning]
 # 用于调试和 Prometheus 监控的 HTTP 端口。输入 0 关闭。
-pprof-port = 10089
+pprof-port = 8289
 
 ...
 ```
@@ -50,7 +50,7 @@ pprof-port = 10089
 scrape_configs:
   - job_name: 'tidb-lightning'
     static_configs:
-      - targets: ['192.168.20.10:10089']
+      - targets: ['192.168.20.10:8289']
 ```
 
 ## 监控指标
