@@ -241,7 +241,7 @@ Start the Grafana service:
 
 ```bash
 $ ./bin/grafana-server \
-    --config="./conf/grafana.ini"
+    --config="./conf/grafana.ini" &
 ```
 
 ### Configure Grafana
