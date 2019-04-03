@@ -17,7 +17,7 @@ Prometheus consists of multiple components. Currently, TiDB uses the following o
 - The Prometheus Server to scrape and store time series data.
 - The client libraries to customize necessary metrics in the application.
 - A push GateWay to receive the data from Client Push for the Prometheus main server.
-- An AlertManager for the alerting mechanism.
+- An Alertmanager for the alerting mechanism.
 
 The diagram is as follows:
 

@@ -441,7 +441,7 @@ The `syncer` monitoring solution contains the following components:
 
 - Prometheus, an open source time series database, used to store the monitoring and performance metrics
 - Grafana, an open source project for analyzing and visualizing metrics, used to display the performance metrics
-- AlertManager, combined with Grafana to implement the alerting mechanism
+- Alertmanager, combined with Grafana to implement the alerting mechanism
 
 See the following diagram:
 
