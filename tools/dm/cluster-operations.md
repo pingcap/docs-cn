@@ -47,7 +47,7 @@ $ ansible-playbook stop.yml
 
 + 未启用 sharding DDL 同步
 
-    如果 DM-worker 上运行的任务未启用 sharding DDL 同步功能，DM-worker 重启时会检查断点信息和本地记录的任务状态，重启前处于运行中状态的任务会自动恢复数据同步。
+    如果 DM-worker 上运行的任务未启用 sharding DDL 同步功能，DM-worker 重启时会检查断点信息和本地记录的子任务信息，重启前处于运行中状态的任务会自动恢复数据同步。
 
 + 已启用 sharding DDL 同步
 
