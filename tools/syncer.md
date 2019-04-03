@@ -67,6 +67,8 @@ Usage of syncer:
       指定日志文件目录；如 `--log-file ./syncer.log`
   -log-rotate string
       指定日志切割周期, hour/day (默认 "day")
+  -max-retry int
+      SQL 请求由于网络异常等原因出错时的最大重试次数（默认值为100）
   -meta string
       指定 syncer 上游 meta 信息文件  (默认与配置文件相同目录下 "syncer.meta")
   -persistent-dir string
@@ -74,9 +76,11 @@ Usage of syncer:
   -safe-mode
       指定是否开启 safe mode，让 Syncer 在任何情况下可重入
   -server-id int
-     指定 MySQL slave sever-id (默认 101)
+      指定 MySQL slave sever-id (默认 101)
   -status-addr string
       指定 syncer metric 信息; 如 `--status-addr 127:0.0.1:10088`
+  -timezone string
+      目标数据库使用的时区，请使用 IANA 时区标识符，如 `Asia/Shanghai`
 ```
 
 Syncer 的配置文件 `config.toml`：
@@ -99,6 +103,12 @@ status-addr = ":8271"
 
 ## 如果设置为 true，Syncer 遇到 DDL 语句时就会停止退出
 stop-on-ddl = false
+
+## SQL 请求由于网络异常等原因出错时的最大重试次数
+max-retry = 100
+
+## 指定目标数据库使用的时区，binlog 中所有 timestamp 字段会按照该时区进行转换，默认使用 syncer 本地时区
+# timezone = "Asia/Shanghai"
 
 ## 跳过 DDL 语句，格式为 **前缀完全匹配**，如：`DROP TABLE ABC` 至少需要填入 `DROP TABLE`
 # skip-ddls = ["ALTER USER", "CREATE USER"]
