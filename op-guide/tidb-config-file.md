@@ -35,9 +35,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `compatible-kill-query`
 
-+ 设置 "kill" 语句的兼容性。
++ 设置 `KILL` 语句的兼容性。
 + 默认: false
-+ 在 TiDB 里面 "kill xxx" 语句和 MySQL 行为不一致。只有执行 "kill tidb xxx" 的时候，才会真正的杀死一条查询。当 `compatible-kill-query` 设置为 true 的时候，则兼容 MySQL 的行为，不需要 "tidb" 关键字。
++ TiDB 中 `KILL xxx` 的行为和 MySQL 中的行为不相同。为杀死一条查询，在 TiDB 里需要加上 `TIDB` 关键词，即 `KILL TIDB xxx`。但如果把 `compatible-kill-query` 设置为 true，则不需要加上 `TIDB` 关键字。
++ 这种区别很重要，因为当用户按下 Ctrl-C 时，MySQL 命令行客户端的默认行为是：创建与后台的新连接、并在该新连接中执行 KILL 语句。如果负载均衡器或代理已将该新连接发送到与原始会话不同的 TiDB 服务器实例，则该错误会话可能被终止，从而中断使用 TiDB 集群的各应用。只有当您确定在 `KILL` 语句中引用的连接正好位于 `KILL` 语句发送到的服务器上，您才可以启用 `compatible-kill-query`。
 
 ## log 
 
