@@ -280,7 +280,7 @@ $ ./bin/grafana-server \
 
 3. 点击 **Upload .json File** 上传对应的 JSON 文件（下载 [TiDB Grafana 配置文件](https://github.com/pingcap/tidb-ansible/tree/master/scripts))。
 
-    > **注意：** TiKV、PD 和 TiDB 面板对应的 JSON 文件分别为：`tikv_pull.json`，`pd.json`，`tidb.json`。
+    > **注意**：TiKV、PD 和 TiDB 面板对应的 JSON 文件分别为 `tikv_pull.json`，`pd.json`，`tidb.json`。
 
 4. 点击 **Load**。
 
