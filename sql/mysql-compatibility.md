@@ -5,13 +5,13 @@ category: compatibility
 
 # 与 MySQL 兼容性对比
 
-TiDB 支持包括跨行事务、JOIN 及子查询在内的绝大多数 MySQL 5.7 的语法，用户可以直接使用现有的 MySQL 客户端连接。如果现有的业务已经基于 MySQL 开发，大多数情况不需要修改代码即可直接替换单机的 MySQL。
+TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现有的 MySQL 连接器和客户端都可以继续使用。大多数情况下您现有的应用都可以迁移至 TiDB，无需任何代码修改。
 
-包括现有的大多数 MySQL 运维工具（如 PHPMyAdmin, Navicat, MySQL Workbench 等），以及备份恢复工具（如 mysqldump, mydumper/myloader）等都可以直接使用。
+当前 TiDB 服务器官方支持的版本为 MySQL 5.7。大部分 MySQL 运维工具（如 PHPMyAdmin, Navicat, MySQL Workbench 等），以及备份恢复工具（如 mysqldump, mydumper/myloader）等都可以直接使用。
 
-不过一些特性由于在分布式环境下没法很好的实现，目前暂时不支持或者是表现与 MySQL 有差异。
+不过一些特性由于在分布式环境下没法很好的实现，目前暂时不支持或者是表现与 MySQL 有差异。一些 MySQL 语法在 TiDB 中可以解析通过，但是不会做任何后续的处理，例如 `Create Table` 语句中 `Engine` 以及 `Partition` 选项，都是解析并忽略。
 
-一些 MySQL 语法在 TiDB 中可以解析通过，但是不会做任何后续的处理，例如 Create Table 语句中 `Engine` 以及 `Partition` 选项，都是解析并忽略。更多兼容性差异请参考具体的文档。
+> **注意**：本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[与 MySQL 安全特性差异](../sql/security-compatibility.md)及[事务模型](../sql/transaction-model.md)的兼容信息请查看各自具体页面。
 
 ## 不支持的特性
 
@@ -44,7 +44,7 @@ TiDB 支持包括跨行事务、JOIN 及子查询在内的绝大多数 MySQL 5.7
 
 ### 自增 ID
 
-TiDB 的自增 ID (Auto Increment ID) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。
+TiDB 中，自增列只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配 ID 的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。
 
 在集群中有多个 tidb-server 实例时，如果表结构中有自增 ID，建议不要混用缺省值和自定义值，否则在如下情况下会遇到问题。
 
@@ -100,68 +100,16 @@ TiDB 实现了 F1 的异步 Schema 变更算法，DDL 执行过程中不会阻�
         * 具体支持的字符串类型有：Char，Varchar，Text，TinyText，MediumText，LongText。
         * 具体支持的 Blob 类型有：Blob，TinyBlob，MediumBlob，LongBlob。
     - 在修改类型定义方面，支持的包括 default value，comment，null，not null 和 OnUpdate。
-    - 支持 LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE} 语法，但是不做任何事情（pass through）。
+    - 支持 LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE} 语法，但是不做任何操作（pass through）。
     - 不支持对enum类型的列进行修改
 
 ### 数据库管理
 
 TiDB 中许多管理类语句的执行和 MySQL 中相似，但二者有以下不同：
 
-+ TiDB 中 [`ANALYZE TABLE`](/sql/statistics.md#手动收集) 语句的执行和 MySQL 中的不同：在 MySQL 及 InnoDB 中，执行 `ANALYZE TABLE` 的操作相对轻量、执行期较短；在 TiDB 中，该操作完全重构了表的统计信息，执行时间较长。
-+ TiDB 中 `EXPLAIN` 命令返回的查询执行计划的输出和 MySQL 不同。详情参见[理解 TiDB 执行计划](/sql/understanding-the-query-execution-plan.md)。
++ [`ANALYZE TABLE`](/sql/statistics.md#手动收集) 语句在 TiDB 和 MySQL 中表现不同。在 MySQL/InnoDB 中，它是一个轻量级语句，执行过程较短；而在 TiDB 中，它会完全重构表的统计数据，语句执行过程较长。
 
-### 事务模型
-
-TiDB 使用乐观事务模型，在执行 `Update`、`Insert`、`Delete` 等语句时，只有在提交过程中才会检查写写冲突，而不是像 MySQL 一样使用行锁来避免写写冲突。类似的，诸如 `GET_LOCK()` 和 `RELEASE_LOCK()` 等函数以及 `SELECT .. FOR UPDATE` 之类的语句在 TiDB 和 MySQL 中的执行方式并不相同。所以业务端在执行 SQL 语句后，需要注意检查 commit 的返回值，即使执行时没有出错，commit 的时候也可能会出错。
-
-### 大事务
-
-由于 TiDB 分布式两阶段提交的要求，修改数据的大事务可能会出现一些问题。因此，TiDB 特意对事务大小设置了一些限制以减少这种影响：
-
-* 单个事务包含的 SQL 语句不超过 5000 条（默认）
-* 每个键值对不超过 6MB
-* 键值对的总数不超过 300,000
-* 键值对的总大小不超过 100MB
-
-### 小事务
-
-由于 TiDB 中的每个事务都需要跟 PD leader 进行两次 round trip，TiDB 中的小事务相比于 MySQL 中的小事务延迟更高。以如下的 query 为例，用显式事务代替 `auto_commit`，可优化该 query 的性能。
-
-```sql
-# 使用 auto_commit 的原始版本
-UPDATE my_table SET a='new_value' WHERE id = 1; 
-UPDATE my_table SET a='newer_value' WHERE id = 2;
-UPDATE my_table SET a='newest_value' WHERE id = 3;
-
-# 优化后的版本
-START TRANSACTION;
-UPDATE my_table SET a='new_value' WHERE id = 1; 
-UPDATE my_table SET a='newer_value' WHERE id = 2;
-UPDATE my_table SET a='newest_value' WHERE id = 3;
-COMMIT;
-```
-
-### 单线程或时延敏感型 workload
-
-由于 TiDB 中的 workload 是分布式的，TiDB 中单线程或时延敏感型 workload 的性能相比于单实例部署的 MySQL 较低。这与 TiDB 中的小事务延迟较高的情況类似。
-
-### Load data
-
-+  语法：
-
-    ```sql
-    LOAD DATA LOCAL INFILE 'file_name' INTO TABLE table_name
-        {FIELDS | COLUMNS} TERMINATED BY 'string' ENCLOSED BY 'char' ESCAPED BY 'char'
-        LINES STARTING BY 'string' TERMINATED BY 'string'
-        IGNORE n LINES
-        (col_name ...);
-    ```
-
-    其中 ESCAPED BY 目前只支持 '/\/\'。
-
-+   事务的处理：
-
-    TiDB 在执行 load data 时，默认每 2 万行记录作为一个事务进行持久化存储。如果一次 load data 操作插入的数据超过 2 万行，那么会分为多个事务进行提交。如果某个事务出错，这个事务会提交失败，但它前面的事务仍然会提交成功，在这种情况下一次 load data 操作会有部分数据插入成功，部分数据插入失败。而 MySQL 中会将一次 load data 操作视为一个事务，如果其中发生失败情况，将会导致整个 load data 操作失败。
++ TiDB 的 `EXPLAIN` 命令返回的查询执行计划的输出与 MySQL 不同。更多内容参见[理解 TiDB 执行计划](../sql/understanding-the-query-execution-plan.md)。
 
 ### 存储引擎
 
@@ -188,10 +136,6 @@ TiDB 支持 MySQL 5.7 中 **绝大多数的 SQL 模式**，以下几种模式除
 - TiDB 不支持兼容模式（例如 `ORACLE` 和 `POSTGRESQL`）。MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
 - TiDB 中的 `ONLY_FULL_GROUP_BY` 与 MySQL 5.7 相比有细微的 [语义差别](../sql/aggregate-group-by-functions.md#与-mysql-的区别)，此问题日后将予以解决。
 - `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` 这两种 SQL 模式用于解决兼容问题，但并不适用于 TiDB。
-
-### EXPLAIN
-
-TiDB 的 `EXPLAIN` 命令返回的查询执行计划的输出与 MySQL 不同。更多内容参见 [理解 TiDB 执行计划](../sql/understanding-the-query-execution-plan.md)。
 
 ### 默认设置的区别
 
