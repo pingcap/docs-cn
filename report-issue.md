@@ -14,4 +14,4 @@ category: report issue
 - 常规问题 (General Questions)
 - 性能问题 (Performance Questions)
 
-请确保您完全按照 Issue 模板进行填写，以便我们做出恰当的回应。
+请确保您完全按照 Issue 模板进行填写，以便我们迅速定位问题并作出回应。
