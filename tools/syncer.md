@@ -68,7 +68,7 @@ Usage of syncer:
   -log-rotate string
       指定日志切割周期, hour/day (默认 "day")
   -max-retry int
-      SQL 请求由于网络异常等原因出错时的最大重试次数（默认值为100）
+      SQL 请求由于网络异常等原因出错时的最大重试次数（默认值为 100）
   -meta string
       指定 syncer 上游 meta 信息文件  (默认与配置文件相同目录下 "syncer.meta")
   -persistent-dir string
@@ -107,7 +107,7 @@ stop-on-ddl = false
 ## SQL 请求由于网络异常等原因出错时的最大重试次数
 max-retry = 100
 
-## 指定目标数据库使用的时区，binlog 中所有 timestamp 字段会按照该时区进行转换，默认使用 syncer 本地时区
+## 指定目标数据库使用的时区，binlog 中所有 timestamp 字段会按照该时区进行转换，默认使用 Syncer 本地时区
 # timezone = "Asia/Shanghai"
 
 ## 跳过 DDL 语句，格式为 **前缀完全匹配**，如：`DROP TABLE ABC` 至少需要填入 `DROP TABLE`
