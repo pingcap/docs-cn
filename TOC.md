@@ -17,8 +17,8 @@
     - [TiDB 系统数据库](sql/system-database.md)
     - [TiDB 系统变量](sql/variable.md)
     - [TiDB 专用系统变量和语法](sql/tidb-specific.md)
-    + 安全   
-     - [TiDB 服务器日志文件](sql/tidb-server.md#tidb-服务器日志文件)
+    - [TiDB 服务器日志文件](sql/tidb-server.md#tidb-服务器日志文件)
+    + 安全
       - [TiDB 访问权限管理](sql/privilege.md)
       - [TiDB 用户账户管理](sql/user-account-management.md)
       - [使用加密连接](sql/encrypted-connections.md)
