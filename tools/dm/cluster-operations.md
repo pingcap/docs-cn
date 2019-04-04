@@ -40,7 +40,7 @@ This sections describes the considerations that you need to know when you restar
 
 **In the process of full data loading:**
 
-For the SQL files during full data import, DM uses the downstream database to record the checkpoint information. When DM-worker is restarted, it checks the checkpoint information and you can use the [`start-task` command](/tools/dm/practice.md#step-4-start-the-data-synchronization-task) to recover the data synchronization task automatically.
+For the SQL files during full data import, DM uses the downstream database to record the checkpoint information, and DM-worker records the subtask information in the local meta file. When DM-worker is restarted, it checks the checkpoint information and the subtask information in the local record, and the running task before restarting recovers the data synchronization automatically.
 
 **In the process of incremental data synchronization:**
 
@@ -48,13 +48,13 @@ For the binlog during incremental data import, DM uses the downstream database t
 
 + Sharding DDL statements synchronization is not enabled
 
-    If the sharding DDL statements synchronization is not enabled in the task running on DM-worker, when DM-worker is restarted, it checks the checkpoint information and you can use the `start-task` command to recover the data synchronization task automatically.
+    If the sharding DDL statements synchronization is not enabled in the task running on DM-worker, when DM-worker is restarted, it checks the checkpoint information and the subtask information in the local record, and the running task before restarting recovers the data synchronization automatically.
 
 + Sharding DDL statements synchronization is enabled
 
     - When DM is synchronizing the sharding DDL statements, if DM-worker successfully executes (or skips) the sharding DDL binlog event, then the checkpoints of all tables related to sharding DDL in the DM-worker are updated to the position after the binlog event corresponding to the DDL statement.
 
-    - When DM-worker is restarted before or after synchronizing sharding DDL statements, it checks the checkpoint information and you can use the `start-task` command to recover the data synchronization task automatically.
+    - When DM-worker is restarted before or after synchronizing sharding DDL statements, it recovers the data synchronization automatically according to the checkpoint information and the subtask information in the local record.
 
     - When DM-worker is restarted during the process of synchronizing sharding DDL statements, the issue might occur that the owner (one of DM-worker instances) has executed the DDL statement and successfully changed the downstream database table schema, while other DM-worker instances are restarted but fail to skip the DDL statement and update the checkpoints.
 
