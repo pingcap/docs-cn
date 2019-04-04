@@ -42,7 +42,7 @@ TiDB 天然具备高可用特性，TiDB、TiKV、PD 这三个组件都能容忍�
 
 #### 1.1.8 TiDB 数据是强一致的吗？
 
-TiDB 实现了快照隔离（Snapshot Isolation）级别的一致性。为与 MySQL 保持一致，又称其为“可重复读“。通过使用 [Raft 一致性算法](https://raft.github.io/)，数据在各 TiKV 节点间复制为多副本，以确保某个节点挂掉时数据的安全性。
+TiDB 实现了快照隔离（Snapshot Isolation）级别的一致性。为与 MySQL 保持一致，又称其为“可重复读”。通过使用 [Raft 一致性算法](https://raft.github.io/)，数据在各 TiKV 节点间复制为多副本，以确保某个节点挂掉时数据的安全性。
 
 在底层，TiKV 使用复制日志 + 状态机 (State Machine) 的模型来复制数据。对于写入请求，数据被写入 Leader，然后 Leader 以日志的形式将命令复制到它的 Follower 中。当集群中的大多数节点收到此日志时，日志会被提交，状态机会相应作出变更。
 
