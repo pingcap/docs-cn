@@ -103,6 +103,13 @@ TiDB 实现了 F1 的异步 Schema 变更算法，DDL 执行过程中不会阻�
     - 支持 LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE} 语法，但是不做任何事情（pass through）。
     - 不支持对enum类型的列进行修改
 
+### 数据库管理
+
+TiDB 中许多管理类语句的执行和 MySQL 中相似，但二者有以下不同：
+
++ TiDB 中 [`ANALYZE TABLE`](/sql/statistics.md#手动收集) 语句的执行和 MySQL 中的不同：在 MySQL 及 InnoDB 中，执行 `ANALYZE TABLE` 的操作相对轻量、执行期较短；在 TiDB 中，该操作完全重构了表的统计信息，执行时间较长。
++ TiDB 中 `EXPLAIN` 命令返回的查询执行计划的输出和 MySQL 不同。详情参见[理解 TiDB 执行计划](/sql/understanding-the-query-execution-plan.md)。
+
 ### 事务模型
 
 TiDB 使用乐观事务模型，在执行 `Update`、`Insert`、`Delete` 等语句时，只有在提交过程中才会检查写写冲突，而不是像 MySQL 一样使用行锁来避免写写冲突。类似的，诸如 `GET_LOCK()` 和 `RELEASE_LOCK()` 等函数以及 `SELECT .. FOR UPDATE` 之类的语句在 TiDB 和 MySQL 中的执行方式并不相同。所以业务端在执行 SQL 语句后，需要注意检查 commit 的返回值，即使执行时没有出错，commit 的时候也可能会出错。
