@@ -330,7 +330,7 @@ Download the TiDB-Lightning package (choose the same version as that of the TiDB
     # with full concurrency. This can be calculated as the ratio
     # (import duration/write duration) of a single table of size around 1 GB.
     # The exact timing can be found in the log. If "import" is faster, the batch
-    # size anomaly is smaller, and a ratio of zero means uniform batch size.
+    # size variance is smaller, and a ratio of zero means a uniform batch size.
     # This value should be in the range (0 <= batch-import-ratio < 1).
     batch-import-ratio = 0.75
 
