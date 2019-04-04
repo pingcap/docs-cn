@@ -1,4 +1,10 @@
-# Compatibility with MySQL
+---
+title: Transaction Model
+summary: Learn TiDB's transaction model and its differences with MySQL.
+category: user guide
+---
+
+# Transaction Model
 
 TiDB implements an optimistic transaction model. Unlike MySQL, which uses row-level locking to avoid write conflict, in TiDB, the write conflict is checked only in the `commit` process during the execution of the statements like `Update`, `Insert`, `Delete`, and so on.
 

@@ -20,10 +20,10 @@
     - [The TiDB Specific System Variables](sql/tidb-specific.md)
     - [The TiDB Server Logs](sql/tidb-server.md#tidb-server-logs)
     + Security
-      - [MySQL Compatibility](sql/security-compatibility.md)
       - [The TiDB Access Privilege System](sql/privilege.md)
       - [TiDB User Account Management](sql/user-account-management.md)
       - [Use Encrypted Connections](sql/encrypted-connections.md)
+      - [Security Compatibility with MySQL](sql/security-compatibility.md)
   + SQL Optimization and Execution
     - [SQL Optimization Process](sql/sql-optimizer-overview.md)
     - [Understand the Query Execution Plan](sql/understanding-the-query-execution-plan.md)
@@ -72,7 +72,7 @@
     - [Utility Statements](sql/util.md)
     - [TiDB SQL Syntax Diagram](https://pingcap.github.io/sqlgram/)
   + Transactions
-    - [MySQL Compatibility](sql/transaction-compatibility.md)
+    - [Transaction Model](sql/transaction-model.md)
     - [Isolation Levels](sql/transaction-isolation.md)
   - [Constraints](sql/constraints.md)
   - [Generated Columns](sql/generated-columns.md)

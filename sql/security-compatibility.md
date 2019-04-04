@@ -1,4 +1,10 @@
-# MySQL Compatibility
+---
+title: Security Compatibility with MySQL
+summary: Learn TiDB's security compatibilities with MySQL.
+category: user guide
+---
+
+# Security Compatibility with MySQL
 
 TiDB supports similar security functionality to MySQL 5.7, with the following exceptions:
 
