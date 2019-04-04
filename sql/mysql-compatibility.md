@@ -105,6 +105,8 @@ TiDB 实现了 F1 的异步 Schema 变更算法，DDL 执行过程中不会阻�
 
 ### 数据库管理
 
+TiDB 中许多管理类语句的执行和 MySQL 中相似，但二者有以下不同：
+
 + [`ANALYZE TABLE`](/sql/statistics.md#手动收集) 语句在 TiDB 和 MySQL 中表现不同。在 MySQL/InnoDB 中，它是一个轻量级语句，执行过程较短；而在 TiDB 中，它会完全重构表的统计数据，语句执行过程较长。
 
 + TiDB 的 `EXPLAIN` 命令返回的查询执行计划的输出与 MySQL 不同。更多内容参见[理解 TiDB 执行计划](../sql/understanding-the-query-execution-plan.md)。
