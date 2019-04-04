@@ -193,4 +193,4 @@ ADMIN CHECK TABLE tbl_name [, tbl_name] ...
 
 * `ADMIN CHECK TABLE tbl_name [, tbl_name] ...`
 
-	用于对给定表中的所有数据和对应索引进行一致性校验，若通过校验，则范围空的查询结果；否则返回 `data isn't equal` 错误。
+	用于对给定表中的所有数据和对应索引进行一致性校验，若通过校验，则返回空的查询结果；否则返回 `data isn't equal` 错误。
