@@ -126,13 +126,14 @@ mysql> show master status;
 
 ## `ADMIN` 语句
 
-该语句是 TiDB 扩展语法，用于查看 TiDB 自身的状态。
+该语句是 TiDB 扩展语法，用于查看 TiDB 自身的状态，及对 TiDB 中的表数据进行校验。
 
 ```sql
 ADMIN SHOW DDL
 ADMIN SHOW DDL JOBS
 ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...
 ADMIN CANCEL DDL JOBS job_id [, job_id] ...
+ADMIN CHECK TABLE tbl_name [, tbl_name] ...
 ```
 
 * `ADMIN SHOW DDL`
@@ -161,7 +162,7 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...
     | 33     | test    |            | create schema | public               | 32        | 0        | 0         | 2019-01-10 11:29:22.813 +0800 CST | synced        |
     +--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+---------------+
     ```
-    
+
     * `JOB_ID`：每个 DDL 操作对应一个DDL job，`JOB_ID` 全局唯一。
     * `DB_NAME`：DDL 操作的 database name。
     * `TABLE_NAME`：DDL 操作的 table name。
@@ -189,3 +190,7 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...
 * `ADMIN CANCEL DDL JOBS job_id [, job_id] ...`
 
     用于取消正在执行的 DDL 作业，其返回值为对应的作业取消是否成功，如果失败会显示失败的具体原因。这个操作可以同时取消多个 DDL 作业，其中 DDL 作业 ID 可以通过 `ADMIN SHOW DDL JOBS` 语句来获取。其中如果希望取消的作业已经完成，则取消操作将会失败。
+
+* `ADMIN CHECK TABLE tbl_name [, tbl_name] ...`
+
+	用于对给定表中的所有数据和对应索引进行一致性校验，若通过校验，则范围空的查询结果；否则返回 `data isn't equal` 错误。
