@@ -17,12 +17,12 @@
     - [TiDB 系统数据库](sql/system-database.md)
     - [TiDB 系统变量](sql/variable.md)
     - [TiDB 专用系统变量和语法](sql/tidb-specific.md)
-   + 安全   
+    + 安全   
      - [TiDB 服务器日志文件](sql/tidb-server.md#tidb-服务器日志文件)
-     - [TiDB 访问权限管理](sql/privilege.md)
-     - [TiDB 用户账户管理](sql/user-account-management.md)
-     - [使用加密连接](sql/encrypted-connections.md)
-     - [与 MySQL 安全特性差异](sql/security-compatibility.md)]
+      - [TiDB 访问权限管理](sql/privilege.md)
+      - [TiDB 用户账户管理](sql/user-account-management.md)
+      - [使用加密连接](sql/encrypted-connections.md)
+      - [与 MySQL 安全特性差异](sql/security-compatibility.md)]
   + TiDB SQL 优化和执行
     - [SQL 优化流程简介](sql/sql-optimizer-overview.md)
     - [理解 TiDB 执行计划](sql/understanding-the-query-execution-plan.md)

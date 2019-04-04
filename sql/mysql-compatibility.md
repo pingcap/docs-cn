@@ -9,9 +9,9 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 
 当前 TiDB 服务器官方支持的版本为 MySQL 5.7。大部分 MySQL 运维工具（如 PHPMyAdmin, Navicat, MySQL Workbench 等），以及备份恢复工具（如 mysqldump, mydumper/myloader）等都可以直接使用。
 
-不过一些特性由于在分布式环境下没法很好的实现，目前暂时不支持或者是表现与 MySQL 有差异。一些 MySQL 语法在 TiDB 中可以解析通过，但是不会做任何后续的处理，例如 `Create Table` 语句中 `Engine` 以及 `Partition` 选项，都是解析并忽略。更多兼容性差异请参考具体的文档。
+不过一些特性由于在分布式环境下没法很好的实现，目前暂时不支持或者是表现与 MySQL 有差异。一些 MySQL 语法在 TiDB 中可以解析通过，但是不会做任何后续的处理，例如 `Create Table` 语句中 `Engine` 以及 `Partition` 选项，都是解析并忽略。
 
-> **注意：** 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[与 MySQL 安全特性差异](../sql/security-compatibility.md)及[事务模型](../sql/transaction-model.md)的兼容信息请查看各自具体页面。
+> **注意**：本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[与 MySQL 安全特性差异](../sql/security-compatibility.md)及[事务模型](../sql/transaction-model.md)的兼容信息请查看各自具体页面。
 
 ## 不支持的特性
 
@@ -36,7 +36,7 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 * `CREATE TABLE tblName AS SELECT stmt` 语法
 * `CREATE TEMPORARY TABLE` 语法
 * `XA` 语法（TiDB 内部使用两阶段提交，但并没有通过 SQL 接口公开）
-* `LOCK TABLE` 语法（TiDB 使用 `tidb_snapshot` 来[生成备份](../tools/mydumper.md)
+* `LOCK TABLE` 语法（TiDB 使用 `tidb_snapshot` 来[生成备份](../tools/mydumper.md)）
 * `CHECK TABLE` 语法
 * `CHECKSUM TABLE` 语法
 
@@ -44,7 +44,7 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 
 ### 自增 ID
 
-TiDB中，自增列只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配 ID 的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。
+TiDB 中，自增列只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配 ID 的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。
 
 在集群中有多个 tidb-server 实例时，如果表结构中有自增 ID，建议不要混用缺省值和自定义值，否则在如下情况下会遇到问题。
 
@@ -105,7 +105,7 @@ TiDB 实现了 F1 的异步 Schema 变更算法，DDL 执行过程中不会阻�
 
 ### 数据库管理
 
-+ [`ANALYZE TABLE`](/sql/statistics.md#manual-collection) 语句在 TiDB 和 MySQL 中表现不同。在 MySQL/InnoDB 中，它是一个轻量级语句，执行过程较短；而在 TiDB 中，它会完全重构表的统计数据，语句执行过程较长。
++ [`ANALYZE TABLE`](/sql/statistics.md#手动收集) 语句在 TiDB 和 MySQL 中表现不同。在 MySQL/InnoDB 中，它是一个轻量级语句，执行过程较短；而在 TiDB 中，它会完全重构表的统计数据，语句执行过程较长。
 
 + TiDB 的 `EXPLAIN` 命令返回的查询执行计划的输出与 MySQL 不同。更多内容参见[理解 TiDB 执行计划](../sql/understanding-the-query-execution-plan.md)。
 
