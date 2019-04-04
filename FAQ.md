@@ -458,7 +458,7 @@ This is because the `--initial-cluster` in the PD startup parameter contains a m
 
 #### What's the maximum tolerance for time synchronization error of PD?
 
-Theoretically, the smaller the time synchronization error, the better. PD can tolerate any synchronization error, but a larger error value means a longer period of service stop during the leader change. If the clock goes back during a leader change, the change process will not proceed until it catches up with the previous leader.
+PD can tolerate any synchronization error, but a larger error value means a larger gap between the timestamp allocated by the PD and the physical time, which will affect functions such as read of historical versions.
 
 #### How does the client connection find PD?
 
