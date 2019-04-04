@@ -18,9 +18,11 @@
     - [TiDB 系统变量](sql/variable.md)
     - [TiDB 专用系统变量和语法](sql/tidb-specific.md)
     - [TiDB 服务器日志文件](sql/tidb-server.md#tidb-服务器日志文件)
-    - [TiDB 访问权限管理](sql/privilege.md)
-    - [TiDB 用户账户管理](sql/user-account-management.md)
-    - [使用加密连接](sql/encrypted-connections.md)
+    + 安全
+      - [TiDB 访问权限管理](sql/privilege.md)
+      - [TiDB 用户账户管理](sql/user-account-management.md)
+      - [使用加密连接](sql/encrypted-connections.md)
+      - [与 MySQL 安全特性差异](sql/security-compatibility.md)
   + TiDB SQL 优化和执行
     - [SQL 优化流程简介](sql/sql-optimizer-overview.md)
     - [理解 TiDB 执行计划](sql/understanding-the-query-execution-plan.md)
@@ -67,10 +69,12 @@
     - [Prepared SQL 语句语法](sql/prepare.md)
     - [实用工具语句](sql/util.md)
     - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
+  + 事务
+    - [事务模型](sql/transaction-model.md)
+    - [隔离级别](sql/transaction-isolation.md)  
   - [约束](sql/constraints.md)
   - [Generated Column](sql/generated-columns.md)
   - [连接器和 API](sql/connection-and-APIs.md)
-  - [TiDB 事务隔离级别](sql/transaction-isolation.md)
   - [错误码与故障诊断](sql/error.md)
   - [与 MySQL 兼容性对比](sql/mysql-compatibility.md)
   - [TiDB 内存控制](sql/tidb-memory-control.md)
