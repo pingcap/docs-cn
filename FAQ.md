@@ -42,15 +42,15 @@ TiDB 天然具备高可用特性，TiDB、TiKV、PD 这三个组件都能容忍�
 
 #### 1.1.8 TiDB 数据是强一致的吗？
 
-TiDB 实现了 snapshot 隔离级别的一致性，为与 MySQL 兼容，通常称其为可重复读。通过使用 [Raft 一致性算法](https://raft.github.io/)，数据在各 TiKV 节点间复制为多副本，以确保某个节点挂掉时数据的安全性。
+TiDB 实现了快照隔离（Snapshot Isolation）级别的一致性。为与 MySQL 保持一致，又称其为“可重复读“。通过使用 [Raft 一致性算法](https://raft.github.io/)，数据在各 TiKV 节点间复制为多副本，以确保某个节点挂掉时数据的安全性。
 
-在底层，TiKV 使用复制日志 + 状态机 (State Machine) 的模型来复制数据。对于写入请求，数据被写入 Leader，然后 Leader 以日志的形式将命令复制到它的 Follower 中。当群集中的大多数节点收到此日志时，会提交此日志并将其应用于状态机。
+在底层，TiKV 使用复制日志 + 状态机 (State Machine) 的模型来复制数据。对于写入请求，数据被写入 Leader，然后 Leader 以日志的形式将命令复制到它的 Follower 中。当集群中的大多数节点收到此日志时，日志会被提交，状态机会相应作出变更。
 
 #### 1.1.9 TiDB 支持分布式事务吗？
 
 支持。无论是一个地方的几个节点，还是[跨多个数据中心的多个节点](/op-guide/cross-dc-deployment.md)，TiDB 均支持 ACID 分布式事务。
 
-TiDB 事务模型受 Google Percolator 模型的启发，主要是一个两阶段提交协议，进行了一些实际优化。该模型依赖于一个时间戳分配器，为每个事务分配单调递增的时间戳，因此可检测到冲突。在 TiDB 集群中，[PD](/architecture.md#pd-server) 承担时间戳分配器的角色。
+TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶段提交协议，并进行了一些实用的优化。该模型依赖于一个时间戳分配器，为每个事务分配单调递增的时间戳，这样就检测到事务冲突。在 TiDB 集群中，[PD](/architecture.md#pd-server) 承担时间戳分配器的角色。
 
 #### 1.1.10 TiDB 支持哪些编程语言？
 
@@ -441,7 +441,7 @@ PD 启动参数中的 `--initial-cluster` 包含了某个不属于该集群的�
 
 #### 3.2.3 PD 能容忍的时间同步误差是多少？
 
-理论上，时间同步误差越小越好。PD 可容忍任意时长的误差，但是，时间同步误差越大意味着 leader 切换时服务暂停的时间越长。切换 leader 时，如果时钟回退，切换过程就会卡住直到追上之前的 leader。
+理论上，时间同步误差越小越好。PD 可容忍任意时长的误差，但是，时间同步误差越大意味着 PD 分配的时间戳与真实的物理时间相差越大，这个差距会影响读历史版本等功能。
 
 #### 3.2.4 Client 连接是如何寻找 PD 的？
 
@@ -623,9 +623,9 @@ WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD
 
 #### 3.4.15 在最严格的 `sync-log = true` 数据可用模式下，写入性能如何？
 
-一般来说，开启 `sync-log` 会让性能损耗 30% 左右。官方有 `sync-log = false` 的基准测试，参见 [TiDB Sysbench 性能测试报告](https://github.com/pingcap/docs-cn/blob/master/benchmark/sysbench.md)。
+一般来说，开启 `sync-log` 会让性能损耗 30% 左右。关闭 `sync-log` 时的性能表现，请参见 [TiDB Sysbench 性能测试报告](https://github.com/pingcap/docs-cn/blob/master/benchmark/sysbench.md)。
 
-#### 3.4.16 是否可以利用上层的 Raft + 多副本达到完全的数据可靠，单机存储引擎是否需要最严格模式？
+#### 3.4.16 是否可以利用 TiKV 的 Raft + 多副本达到完全的数据可靠，单机存储引擎是否需要最严格模式？
 
 通过使用 [Raft 一致性算法](https://raft.github.io/)，数据在各 TiKV 节点间复制为多副本，以确保某个节点挂掉时数据的安全性。只有当数据已写入超过 50% 的节点时，应用才返回 ACK（三节点中的二节点）。但理论上两个节点也可能同时发生故障，所以在诸如金融行业对数据零容忍的场景中，还是需要开启 `sync-log`。
 
