@@ -13,7 +13,7 @@ category: contribute
 
 在提交 PR 之前，请先签署 [CLA](https://cla-assistant.io/pingcap/tidb?pullRequest=5567)。
 
-如果您想研究一个涉及范围相对较小的新想法，请遵循以下步骤：
+如果您想实践一个影响范围相对较小的新想法，请遵循以下步骤：
 
 1. 提交新 Issue，描述您对相关仓库的更改建议。
 2. 相关仓库的负责人将及时回复您的 Issue。
@@ -26,6 +26,6 @@ category: contribute
 
 我们欢迎更多贡献者来帮助改进文档！
 
-TiDB 文档使用 Markdown 语言、参考 [Google 开发者文档风格指南](https://developers.google.com/style/)进行编写。如果这些概念对您来说比较陌生，请不要担心，我们很乐意为您提供指导。
+TiDB 文档使用 Markdown 语言，并参考了 [Google 开发者文档风格指南](https://developers.google.com/style/)进行编写。如果这些概念对您来说比较陌生，请不要担心，我们很乐意为您提供指导。
 
 如要对文档仓库进行贡献，请先 fork [docs-cn 仓库](https://github.com/pingcap/docs-cn)，再提交您的 PR。
