@@ -72,3 +72,5 @@ The following metrics show only when `task-mode` is in the `incremental` or `all
 | total sqls jobs | The number of newly added jobs per unit of time | N/A |
 | finished sqls jobs | The number of finished jobs per unit of time | N/A |
 | execution latency | The time it takes Syncer to execute the transaction to the downstream (in seconds) | N/A |
+| unsynced tables | The number of tables that have not received the shard DDL statement in the current subtask | N/A |
+| shard lock resolving | Whether the current subtask is waiting for the shard DDL lock to be resolved; a value greater than 0 indicates that it is waiting for the shard DDL lock to be resolved | N/A |
