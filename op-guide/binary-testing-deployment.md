@@ -1,14 +1,14 @@
 ---
-title: Production Deployment from Binary Tarball
+title: Testing Deployment from Binary Tarball
 summary: Use the binary to deploy a TiDB cluster.
 category: operations
 ---
 
-# Production Deployment from Binary Tarball
+# Testing Deployment from Binary Tarball
 
-This guide provides installation instructions from a binary tarball on Linux. A complete TiDB cluster contains PD, TiKV, and TiDB. To start the database service, follow the order of PD -> TiKV -> TiDB. To stop the database service, follow the order of stopping TiDB -> TiKV -> PD.
+This guide provides installation instructions for all TiDB components across multiple nodes for testing purposes. It does not match the recommended usage for production systems.
 
-See also [local deployment](../op-guide/binary-local-deployment.md) and [testing enviroment](../op-guide/binary-testing-deployment.md) deployment.
+See also [local deployment](../op-guide/binary-local-deployment.md) and [production enviroment](../op-guide/binary-deployment.md) deployment.
 
 ## Prepare
 
@@ -117,69 +117,47 @@ $ tar -xzf tidb-latest-linux-amd64.tar.gz
 $ cd tidb-latest-linux-amd64
 ```
 
-## Multiple nodes cluster deployment
+## Multiple nodes cluster deployment for test
 
-For the production environment, multiple nodes cluster deployment is recommended. Before you begin, see [Software and Hardware Requirements](/op-guide/recommendation.md).
+If you want to test TiDB but have a limited number of nodes, you can use one PD instance to test the entire cluster.
 
-Assuming that you have six nodes, you can deploy 3 PD instances, 3 TiKV instances, and 1 TiDB instance. See the following table for details:
+Assuming that you have four nodes, you can deploy 1 PD instance, 3 TiKV instances, and 1 TiDB instance. See the following table for details:
 
-| Name  | Host IP | Services |
-| :-- | :-- | :-------------- |
-| Node1 | 192.168.199.113| PD1, TiDB |
-| Node2 | 192.168.199.114| PD2 |
-| Node3 | 192.168.199.115| PD3 |
-| Node4 | 192.168.199.116| TiKV1 |
-| Node5 | 192.168.199.117| TiKV2 |
-| Node6 | 192.168.199.118| TiKV3 |
+| Name | Host IP | Services |
+| :-- | :-- | :------------------- |
+| Node1 | 192.168.199.113 | PD1, TiDB |
+| Node2 | 192.168.199.114 | TiKV1 |
+| Node3 | 192.168.199.115 | TiKV2 |
+| Node4 | 192.168.199.116 | TiKV3 |
 
-Follow the steps below to start PD, TiKV, and TiDB:
+Follow the steps below to start PD, TiKV and TiDB:
 
-1. Start PD on Node1, Node2, and Node3 in sequence.
+1. Start PD on Node1.
 
     ```bash
     $ ./bin/pd-server --name=pd1 \
                     --data-dir=pd \
                     --client-urls="http://192.168.199.113:2379" \
                     --peer-urls="http://192.168.199.113:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380" \
-                    -L "info" \
-                    --log-file=pd.log &
-
-    $ ./bin/pd-server --name=pd2 \
-                    --data-dir=pd \
-                    --client-urls="http://192.168.199.114:2379" \
-                    --peer-urls="http://192.168.199.114:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380" \
-                    -L "info" \
-                    --log-file=pd.log &
-
-    $ ./bin/pd-server --name=pd3 \
-                    --data-dir=pd \
-                    --client-urls="http://192.168.199.115:2379" \
-                    --peer-urls="http://192.168.199.115:2380" \
-                    --initial-cluster="pd1=http://192.168.199.113:2380,pd2=http://192.168.199.114:2380,pd3=http://192.168.199.115:2380" \
-                    -L "info" \
+                    --initial-cluster="pd1=http://192.168.199.113:2380" \
                     --log-file=pd.log &
     ```
 
-2. Start TiKV on Node4, Node5 and Node6.
+2. Start TiKV on Node2, Node3 and Node4.
 
     ```bash
-    $ ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
+    $ ./bin/tikv-server --pd="192.168.199.113:2379" \
+                      --addr="192.168.199.114:20160" \
+                      --data-dir=tikv \
+                      --log-file=tikv.log &
+
+    $ ./bin/tikv-server --pd="192.168.199.113:2379" \
+                      --addr="192.168.199.115:20160" \
+                      --data-dir=tikv \
+                      --log-file=tikv.log &
+
+    $ ./bin/tikv-server --pd="192.168.199.113:2379" \
                       --addr="192.168.199.116:20160" \
-                      --status-addr="192.168.199.116:20180" \
-                      --data-dir=tikv \
-                      --log-file=tikv.log &
-
-    $ ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
-                      --addr="192.168.199.117:20160" \
-                      --status-addr="192.168.199.117:20180" \
-                      --data-dir=tikv \
-                      --log-file=tikv.log &
-
-    $ ./bin/tikv-server --pd="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
-                      --addr="192.168.199.118:20160" \
-                      --status-addr="192.168.199.118:20180" \
                       --data-dir=tikv \
                       --log-file=tikv.log &
     ```
@@ -188,8 +166,8 @@ Follow the steps below to start PD, TiKV, and TiDB:
 
     ```bash
     $ ./bin/tidb-server --store=tikv \
-                      --path="192.168.199.113:2379,192.168.199.114:2379,192.168.199.115:2379" \
-                      --log-file=tidb.log &
+                      --path="192.168.199.113:2379" \
+                      --log-file=tidb.log
     ```
 
 4. Use the MySQL client to connect to TiDB.
@@ -197,11 +175,3 @@ Follow the steps below to start PD, TiKV, and TiDB:
     ```sh
     $ mysql -h 192.168.199.113 -P 4000 -u root -D test
     ```
-
-> **Note**:
->
-> - If you start TiKV or deploy PD in the production environment, it is highly recommended to specify the path for the configuration file using the `--config` parameter. If the parameter is not set, TiKV or PD does not read the configuration file.
-> - To tune TiKV, see [Performance Tuning for TiKV](/op-guide/tune-tikv.md).
-> - If you use `nohup` to start the cluster in the production environment, write the startup commands in a script and then run the script. If not, the `nohup` process might abort because it receives exceptions when the Shell command exits. For more information, see [The TiDB/TiKV/PD process aborts unexpectedly](/trouble-shooting.md#the-tidbtikvpd-process-aborts-unexpectedly).
-
-For the deployment and use of TiDB monitoring services, see [Monitor a TiDB Cluster](/op-guide/monitor.md).

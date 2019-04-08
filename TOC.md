@@ -89,7 +89,10 @@
   + Deploy
     - [Ansible Deployment (Recommended)](op-guide/ansible-deployment.md)
     - [Offline Deployment Using Ansible](op-guide/offline-ansible-deployment.md)
-    - [Binary Deployment](op-guide/binary-deployment.md)
+    + Binary Deployment
+      - [Local Install](op-guide/binary-local-deployment.md)
+      - [Testing Environment](op-guide/binary-testing-deployment.md)
+      - [Production Deployment](op-guide/binary-deployment.md)
     - [Docker Deployment](op-guide/docker-deployment.md)
     - [Docker Compose Deployment](op-guide/docker-compose.md)
     - [Cross-DC Deployment Solutions](op-guide/cross-dc-deployment.md)
