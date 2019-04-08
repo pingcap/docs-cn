@@ -1,9 +1,9 @@
 ---
-title: TiDB 命令参数
+title: TiDB 命令行参数
 category: user guide
 ---
 
-# TiDB 命令参数
+# TiDB 命令行参数
 
 本文档主要介绍 TiDB 启动参数和服务器配置文件。
 
@@ -126,7 +126,7 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 
 一份配置文件的示例参见 https://github.com/pingcap/tidb/blob/master/config/config.toml.example
 
-以下是启动参数的完整描述。
+以下是配置文件的完整描述。
 
 ### host
 
