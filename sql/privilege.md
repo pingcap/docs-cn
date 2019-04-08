@@ -316,7 +316,7 @@ User 参见[用户账号名](../sql/user-account-management.md)。
 
 对于`ALTER ... DROP`需要对表拥有`DROP`权限。对于`ALTER ... RENAME TO`需要对重命名前表拥有`DROP`权限，对重命名后表拥有`CREATE`和`INSERT`权限。
 
-注： 在 MySQL 5.7 文档中，表示`ALTER`表需要`INSERT`和`CREATE`权限，但在 MySQL 5.7.25-0ubuntu0.18.04.2 版本中，仅需要`ALTER`权限。考虑到权限严格一些更安全，与 MySQL 文档同步更易追踪和明确行为。因此在此以 MySQL 文档为准。
+注： 在 MySQL 5.7 文档中，表示`ALTER`表需要`INSERT`和`CREATE`权限，但在 MySQL 5.7.25-0ubuntu0.18.04.2 版本中，仅需要`ALTER`权限。考虑到为了尽可能减少对用户的困扰，ALTER 权限目前与 MySQL 实际行为保持一致。
 
 ## CREATE DATABASE
 
