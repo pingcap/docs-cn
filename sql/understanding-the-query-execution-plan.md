@@ -13,7 +13,7 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 
 - `EXPLAIN` 可以和 `SELECT`，`DELETE` 语句一起使用；
 - 执行 `EXPLAIN`，TiDB 会返回被 `EXPLAIN` 的 SQL 语句经过优化器后的最终物理执行计划。也就是说，`EXPLAIN` 展示了 TiDB 执行该 SQL 语句的完整信息，比如以什么样的顺序，什么方式 JOIN 两个表，表达式树长什么样等等。详见 [`EXPLAIN` 输出格式](#explain-output-format)；
-- TiDB 目前还不支持 `EXPLAIN [options] FOR CONNECTION connection_id`，将在未来支持它，详见 [#4351](https://github.com/pingcap/tidb/issues/4351)；
+- TiDB 支持 `EXPLAIN [options] FOR CONNECTION connection_id`, 但与 MySQL 的 `EXPLAIN FOR`有些许区别，请参见 [`EXPLAIN FOR CONNECTION`](#explain-for-connection)；
 
 通过观察 `EXPLAIN` 的结果，你可以知道如何给数据表添加索引使得执行计划使用索引从而加速 SQL 语句的执行速度；你也可以使用 `EXPLAIN` 来检查优化器是否选择了最优的顺序来 JOIN 数据表。
 
@@ -74,6 +74,13 @@ mysql> EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 0
 ```
 
 在添加完索引后的新执行计划中，使用 `IndexScan_24` 直接读取满足条件 `start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59'` 的数据，可以看到，估算的要扫描的数据行数从之前的 `19117643.00` 降到了现在的 `8166.73`。在测试环境中显示，这个查询的执行时间从 50.41 秒降到了 0.00 秒！
+
+## <span id="explain-for-connection">`EXPLAIN FOR CONNECTION` </span>
+
+`EXPLAIN FOR CONNECTION`是用来获得一个链接中最后执行的查询的执行计划，它的输出格式与`EXPLAIN`完全一致。但我们的实现与MySQL的实现有些许不同，除了输出格式之外，还有下列不同：
+
+1. MySQL返回的是**正在执行**的查询计划，而TiDB返回的是**最后执行**的查询计划。也就是说，你还可以获得刚刚完成的查询的计划。
+2. MySQL的文档中指出，MySQL要求你的登陆用户与被查询的连接相同，或者拥有`PROCESS`权限，而TiDB则要求你的登陆用户与被查询的连接相同，或者拥有`SUPER`权限。
 
 ## 概述
 
