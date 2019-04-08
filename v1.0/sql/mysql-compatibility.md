@@ -58,10 +58,10 @@ TiDB implements the asynchronous schema changes algorithm in F1. The Data Manipu
 + Drop Database
 + Create Table
 + Drop Table
-+ Add Index: Does not support creating muliple indexs at the same time.
++ Add Index: Does not support creating multiple indexs at the same time.
 + Drop Index
 + Add Column:
-    - Does not support creating muliple columns at the same time.
+    - Does not support creating multiple columns at the same time.
     - Does not support setting a column as the primary key, or creating a unique index, or specifying auto_increment while adding it.
 + Drop Column: Does not support dropping the primary key column or index column.
 + Alter Column

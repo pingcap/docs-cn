@@ -20,7 +20,7 @@ Each client has its own time zone setting, given by the session `time_zone` vari
 mysql> SET time_zone = timezone;
 ```
 
-You can use the following statment to view the current values of the global and client-specific time zones:
+You can use the following statement to view the current values of the global and client-specific time zones:
 
 ```sql
 mysql> SELECT @@global.time_zone, @@session.time_zone;

@@ -1,10 +1,10 @@
 ---
-title: Performace test result for TiDB using Sysbench
+title: Performance test result for TiDB using Sysbench
 category: benchmark
 draft: true
 ---
 
-# Performace test result for TiDB using Sysbench
+# Performance test result for TiDB using Sysbench
 
 ## Test purpose
 

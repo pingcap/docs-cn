@@ -14,7 +14,7 @@ This test aims to test the performance of TiDB 3.0 Beta on NVMe SSD.
 ## Test version, time, and place
 
 TiDB version: 3.0 Beta
-Time: Feburary, 2019
+Time: February, 2019
 Place: Beijing
 
 ## Test environment

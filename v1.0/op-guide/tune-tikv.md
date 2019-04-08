@@ -70,7 +70,7 @@ log-level = "info"
 [metric]
 # The interval of pushing metrics to Prometheus pushgateway
 interval = "15s"
-# Prometheus pushgateway adress
+# Prometheus pushgateway address
 address = ""
 job = "tikv"
 

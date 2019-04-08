@@ -58,7 +58,7 @@ Since tools like mysqldump will take us days to migrate massive amounts of data,
 
   -p string: the account and password of TiDB
 
-  -pprof-addr string: the pprof address of Loader. It tunes the perfomance of Loader (default: ":10084")
+  -pprof-addr string: the pprof address of Loader. It tunes the performance of Loader (default: ":10084")
 
   -t int: the number of thread,increase this as TiKV nodes increase (default: 16)
 
