@@ -12,7 +12,7 @@
 + TiDB 用户文档
   + TiDB 数据库管理
     - [TiDB 服务](sql/tidb-server.md)
-    - [TiDB 命令参数](sql/server-command-option.md)
+    - [TiDB 命令行参数](sql/server-command-option.md)
     - [TiDB 数据目录](sql/tidb-server.md#tidb-数据目录)
     - [TiDB 系统数据库](sql/system-database.md)
     - [TiDB 系统变量](sql/variable.md)
