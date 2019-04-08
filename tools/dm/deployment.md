@@ -112,6 +112,8 @@ Make sure you have logged in to the Control Machine using the `tidb` user accoun
     $ wget http://download.pingcap.org/dm-ansible-{version}.tar.gz
     ```
 
+    `{version}` is the DM version that you expect to download, like `v1.0.0-alpha` and `latest`.
+
 ## Step 4: Install DM-Ansible and its dependencies on the Control Machine
 
 Make sure you have logged in to the Control Machine using the `tidb` user account.
