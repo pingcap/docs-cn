@@ -1,10 +1,10 @@
 ---
-title: Software and Hardware Requirements
-summary: Learn the software and hardware requirements for deploying and running TiDB.
+title: Software and Hardware Recommendations
+summary: Learn the software and hardware recommendations for deploying and running TiDB.
 category: operations
 ---
 
-# Software and Hardware Requirements
+# Software and Hardware Recommendations
 
 ## About
 
@@ -25,7 +25,7 @@ As an open source distributed NewSQL database with high performance, TiDB can be
 > - A large number of TiDB tests have been run on the CentOS 7.3 system, and in our community there are a lot of best practices in which TiDB is deployed on the Linux operating system. Therefore, it is recommended to deploy TiDB on CentOS 7.3 or later.
 > - The support for the Linux operating systems above includes the deployment and operation in physical servers as well as in major virtualized environments like VMware, KVM and XEN.
 
-## Server requirements
+## Server recommendations
 
 You can deploy and run TiDB on the 64-bit generic hardware server platform in the Intel x86-64 architecture. The requirements and recommendations about server hardware configuration for development, test and production environments are as follows:
 
@@ -83,4 +83,4 @@ As an open source distributed NewSQL database, TiDB requires the following netwo
 
 ## Web browser requirements
 
-Based on the Prometheus and Grafana platform, TiDB provides a visual data monitoring solution to monitor the TiDB cluster status. To access the Grafana monitor interface, it is recommended to use a higher version of Microsoft IE, Google Chrome or Mozilla Firefox.
+TiDB relies on [Grafana](https://grafana.com/) to provide visualization of database metrics. A recent version of Internet Explorer, Chrome or Firefox with Javascript enabled is sufficient.
