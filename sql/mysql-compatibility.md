@@ -67,7 +67,7 @@ Performance schema 表在 TiDB 中返回结果为空。TiDB 使用 [Prometheus �
 
 ### 查询计划
 
-TiDB的查询计划（`EXPLAIN` / `EXPLAIN FOR`）输出格式与MySQL差别较大，同时`EXPLAIN FOR`的输出内容与权限设置与MySQL的不一致，参见[理解 TiDB 执行计划](./understanding-the-query-execution-plan.md)。
+TiDB 的查询计划（`EXPLAIN` / `EXPLAIN FOR`）输出格式与 MySQL 差别较大，同时 `EXPLAIN FOR` 的输出内容与权限设置与 MySQL 不一致，参见[理解 TiDB 执行计划](./understanding-the-query-execution-plan.md)。
 
 ### 内建函数
 

@@ -77,10 +77,10 @@ mysql> EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 0
 
 ## <span id="explain-for-connection">`EXPLAIN FOR CONNECTION` </span>
 
-`EXPLAIN FOR CONNECTION`是用来获得一个链接中最后执行的查询的执行计划，它的输出格式与`EXPLAIN`完全一致。但我们的实现与MySQL的实现有些许不同，除了输出格式之外，还有下列不同：
+`EXPLAIN FOR CONNECTION` 是用来获得一个连接中最后执行的查询的执行计划，它的输出格式与 `EXPLAIN` 完全一致。但我们的实现与 MySQL 的实现有些许不同，除了输出格式之外，还有下列不同：
 
-1. MySQL返回的是**正在执行**的查询计划，而TiDB返回的是**最后执行**的查询计划。也就是说，你还可以获得刚刚完成的查询的计划。
-2. MySQL的文档中指出，MySQL要求你的登陆用户与被查询的连接相同，或者拥有`PROCESS`权限，而TiDB则要求你的登陆用户与被查询的连接相同，或者拥有`SUPER`权限。
+1. MySQL 返回的是**正在执行**的查询计划，而 TiDB 返回的是**最后执行**的查询计划。
+2. MySQL 的文档中指出，MySQL 要求你的登陆用户与被查询的连接相同，或者拥有 `PROCESS` 权限，而 TiDB 则要求你的登陆用户与被查询的连接相同，或者拥有 `SUPER` 权限。
 
 ## 概述
 
