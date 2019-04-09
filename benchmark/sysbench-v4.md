@@ -5,7 +5,7 @@ category: benchmark
 
 #  TiDB 3.0 Beta 版本 Sysbench 测试结果 - NVMe SSD
 
-测试版本为 Sysbench 1.0.14。建议使用 Sysbench 1.0 或之后的更新版本，可在 [此处](https://github.com/akopytov/sysbench/releases/tag/1.0.14)下载。
+测试版本为 Sysbench 1.0.14。建议使用 Sysbench 1.0 或之后的更新版本，可在[此处](https://github.com/akopytov/sysbench/releases/tag/1.0.14)下载。
 
 ## 测试目的
 
@@ -13,14 +13,14 @@ category: benchmark
 
 ## 测试版本、时间、地点
 
-TiDB 版本：3.0 Beta 版本 
-时间：2019年2月
-地点：北京
+TiDB 版本：3.0 Beta 版本  
+时间：2019 年 2 月 
+地点：北京 
 
 ## 测试环境
 
 - [硬件要求](https://pingcap.com/docs/op-guide/recommendation/)
-- 参考 [TiDB 部署文档](https://pingcap.com/docs/op-guide/ansible-deployment/)部署TiDB集群。在3台服务器的条件下，建议每台机器部署1个TiDB，1个PD，和1个TiKV实例。关于磁盘，以 32 张表、每张表 10M 行数据为例，建议 TiKV 的数据目录所在的磁盘空间大于 512 GB。
+- 参考 [TiDB 部署文档](https://pingcap.com/docs/op-guide/ansible-deployment/)部署 TiDB 集群。在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD，和 1 个 TiKV实例。关于磁盘，以 32 张表、每张表 10M 行数据为例，建议 TiKV 的数据目录所在的磁盘空间大于 512 GB。
 对于单个 TiDB 的并发连接数，建议控制在 500 以内，如需增加整个系统的并发压力，可以增加 TiDB 实例，具体增加的 TiDB 个数视测试压力而定。
 
 IDC 机器：
@@ -54,7 +54,7 @@ IDC 机器：
 
 ### TiDB 配置
 
-升高日志级别，可以减少打印日志数量，对TiDB的性能有积极影响。开启 TiDB 配置中的 `prepared plan cache`，以减少优化执行计划的开销。具体在 TiDB 配置文件中加入：
+升高日志级别，可以减少打印日志数量，对 TiDB 的性能有积极影响。开启 TiDB 配置中的 `prepared plan cache`，以减少优化执行计划的开销。具体在 TiDB 配置文件中加入：
 
 ```
 [log]
@@ -85,7 +85,7 @@ block-cache-size = "24GB"
 block-cache-size = "6GB"
 ```
 
-更详细的 TiKV 参数调优请参考[TiKV性能参数调优](https://pingcap.com/docs/op-guide/tune-tikv/)。
+更详细的 TiKV 参数调优请参考[ TiKV 性能参数调优](https://pingcap.com/docs/op-guide/tune-tikv/)。
  
 ## 测试过程
 
@@ -129,7 +129,9 @@ MySQL 客户端执行以下 SQL，创建数据库 `sbtest`：
 create database sbtest;
 ```
 
-调整 Sysbench 脚本创建索引的顺序。Sysbench 按照“建表->插入数据->创建索引”的顺序导入数据。该方式对于 TiDB 需要花费更多的导入时间。用户可以通过调整顺序来加速数据的导入。假设用户使用的 Sysbench 版本是 https://github.com/akopytov/sysbench/tree/1.0.14。我们可以通过以下两种方式来修改。
+调整 Sysbench 脚本创建索引的顺序。Sysbench 按照“建表->插入数据->创建索引”的顺序导入数据。该方式对于 TiDB 需要花费更多的导入时间。用户可以通过调整顺序来加速数据的导入。
+
+假设用户使用的 [Sysbench](https://github.com/akopytov/sysbench/tree/1.0.14) 版本。 我们可以通过以下两种方式来修改。
 
 1. 直接下载为 TiDB 修改好的 [oltp_common.lua](https://raw.githubusercontent.com/pingcap/tidb-bench/master/sysbench-patch/oltp_common.lua) 文件，覆盖 `/usr/share/sysbench/oltp_common.lua` 文件。 
 2. 将 `/usr/share/sysbench/oltp_common.lua` 的第 [235](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L235) 行到第[240](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L240) 移动到第198行以后。
