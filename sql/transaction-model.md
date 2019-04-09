@@ -12,7 +12,11 @@ Similarly, functions such as `GET_LOCK()` and `RELEASE_LOCK()` and statements su
 
 **Note:** On the business side, remember to check the returned results of `commit` because even there is no error in the execution, there might be errors in the `commit` process.
 
-## Behavior and Performance Differences
+## Behavior and performance differences
+
+### Transaction retry
+
+By default, transactions that fail may automatically be retried by TiDB, which may lead to lost updates. This feature can be disabled by setting both `tidb_disable_txn_auto_retry = TRUE` and `tidb_retry_limit = 0`.
 
 ### Large transactions
 
