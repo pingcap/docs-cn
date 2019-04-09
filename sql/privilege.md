@@ -334,6 +334,8 @@ User 参见[用户账号名](../sql/user-account-management.md)。
 
 需要拥有`CREATE VIEW`权限。
 
+注：如果当前登录用户与创建视图的用户不同，除需要`CREATE VIEW`权限外，我们还需要`SUPER`权限。
+
 ## DROP DATABASE
 
 需要对数据库拥有`DROP`权限。
