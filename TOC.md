@@ -13,7 +13,6 @@
   + TiDB 数据库管理
     - [TiDB 服务](sql/tidb-server.md)
     - [TiDB 命令行参数](sql/server-command-option.md)
-    - [TiDB 数据目录](sql/tidb-server.md#tidb-数据目录)
     - [TiDB 系统数据库](sql/system-database.md)
     - [TiDB 系统变量](sql/variable.md)
     - [TiDB 专用系统变量和语法](sql/tidb-specific.md)

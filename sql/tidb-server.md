@@ -1,11 +1,9 @@
 ---
-title: TiDB 数据库管理
+title: TiDB 服务
 category: user guide
 ---
 
-# TiDB 数据库管理
-
-## TiDB 服务
+# TiDB 服务
 
 TiDB 是指 TiDB 数据库系统，本篇文档涉及到 TiDB 集群的基本管理功能。
 
