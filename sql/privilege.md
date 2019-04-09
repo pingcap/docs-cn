@@ -364,13 +364,13 @@ User 参见[用户账号名](../sql/user-account-management.md)。
 
 `SHOW CREATE TABLE` 需要任意一种权限。
 
-`SHOW CREATE VIEW` 需要 `SHOWVIEW` 权限。
+`SHOW CREATE VIEW` 需要 `SHOW VIEW` 权限。
 
 ## CREATE ROLE/USER
 
-`CREATE ROLE` 需要 `CREATEROLE` 权限。
+`CREATE ROLE` 需要 `CREATE ROLE` 权限。
 
-`CREATE USER` 需要 `CREATEUSER` 权限
+`CREATE USER` 需要 `CREATE USER` 权限
 
 ## DROP ROLE/USER
 
