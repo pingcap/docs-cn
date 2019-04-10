@@ -13,7 +13,7 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 
 - `EXPLAIN` 可以和 `SELECT`，`DELETE` 语句一起使用；
 - 执行 `EXPLAIN`，TiDB 会返回被 `EXPLAIN` 的 SQL 语句经过优化器后的最终物理执行计划。也就是说，`EXPLAIN` 展示了 TiDB 执行该 SQL 语句的完整信息，比如以什么样的顺序，什么方式 JOIN 两个表，表达式树长什么样等等。详见 [`EXPLAIN` 输出格式](#explain-output-format)；
-- TiDB 支持 `EXPLAIN [options] FOR CONNECTION connection_id`, 但与 MySQL 的 `EXPLAIN FOR` 有些许区别，请参见 [`EXPLAIN FOR CONNECTION`](#explain-for-connection)。
+- TiDB 支持 `EXPLAIN [options] FOR CONNECTION connection_id`，但与 MySQL 的 `EXPLAIN FOR` 有一些区别，请参见 [`EXPLAIN FOR CONNECTION`](#explain-for-connection)。
 
 通过观察 `EXPLAIN` 的结果，你可以知道如何给数据表添加索引使得执行计划使用索引从而加速 SQL 语句的执行速度；你也可以使用 `EXPLAIN` 来检查优化器是否选择了最优的顺序来 JOIN 数据表。
 
@@ -77,10 +77,10 @@ mysql> EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 0
 
 ## <span id="explain-for-connection">`EXPLAIN FOR CONNECTION` </span>
 
-`EXPLAIN FOR CONNECTION` 是用来获得一个连接中最后执行的查询的执行计划，它的输出格式与 `EXPLAIN` 完全一致。但我们的实现与 MySQL 的实现有些许不同，除了输出格式之外，还有下列不同：
+`EXPLAIN FOR CONNECTION` 用于获得一个连接中最后执行的查询的执行计划，其输出格式与 `EXPLAIN` 完全一致。但 TiDB 中的实现与 MySQL 不同，除了输出格式之外，还有以下区别：
 
 1. MySQL 返回的是**正在执行**的查询计划，而 TiDB 返回的是**最后执行**的查询计划。
-2. MySQL 的文档中指出，MySQL 要求你的登陆用户与被查询的连接相同，或者拥有 `PROCESS` 权限，而 TiDB 则要求你的登陆用户与被查询的连接相同，或者拥有 `SUPER` 权限。
+2. MySQL 的文档中指出，MySQL 要求登录用户与被查询的连接相同，或者拥有 `PROCESS` 权限，而 TiDB 则要求登录用户与被查询的连接相同，或者拥有 `SUPER` 权限。
 
 ## 概述
 
