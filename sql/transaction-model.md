@@ -9,6 +9,10 @@ TiDB 使用乐观事务模型，在执行 `Update`、`Insert`、`Delete` 等语�
 
 ## 与 MySQL 行为及性能对比
 
+### 事务重试
+
+执行失败的事务默认由 TiDB 自动重试，这会导致更新丢失。可通过配置 `tidb_disable_txn_auto_retry = TRUE` 和 `tidb_retry_limit = 0` 关掉该项功能。
+
 ## 大事务
 
 由于 TiDB 分布式两阶段提交的要求，修改数据的大事务可能会出现一些问题。因此，TiDB 特意对事务大小设置了一些限制以减少这种影响：

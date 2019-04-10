@@ -18,6 +18,8 @@ sql 92标准定义了4种隔离级别，读未提交、读已提交、可重复�
 
 TiDB 实现了快照隔离 (Snapshot Isolation) 级别的一致性。为与 MySQL 保持一致，又称其为“可重复读”。该隔离级别不同于 [ANSI 可重复读隔离级别](#与-ansi-可重复读隔离级别的区别)和 [MySQL 可重复读隔离级别](#与-mysql-可重复读隔离级别的区别)。
 
+> **注意：** 在默认设置中，事务可能因为自动重试显示更新丢失。关于该项功能的补充信息和应如何关掉该项功能，请参考[自动重试导致的事务异常](#乐观事务注意事项)和[事务重试](#事务重试)。
+
 TiDB 使用 [Percolator 事务模型](https://research.google.com/pubs/pub36726.html)，当事务启动时会获取全局读时间戳，事务提交时也会获取全局提交时间戳，并以此确定事务的执行顺序，如果想了解 TiDB 事务模型的实现可以详细阅读以下两篇文章：[TiKV 的 MVCC (Multi-Version Concurrency Control) 机制](https://pingcap.com/blog-cn/mvcc-in-tikv/)，[Percolator 和 TiDB 事务算法](https://pingcap.com/blog-cn/percolator-and-txn/)。
 
 ## 可重复读
@@ -50,9 +52,9 @@ MySQL 的可重复读隔离级别并非 snapshot 隔离级别，MySQL 可重复�
 
 ## 事务重试
 
-对于 insert/delete/update 操作，如果事务执行失败，并且系统判断该错误为可重试，会在系统内部自动重试事务。
+执行失败的事务可能会由 TiDB 自动重试，这可能会导致更新丢失。通过设置 `tidb_disable_txn_auto_retry=TRUE` 和 `tidb_retry_limit = 0` 可关掉该项功能。
 
-通过配置参数 `retry-limit` 可控制自动重试的次数：
+另外，通过配置参数 `retry-limit` 可控制自动重试的次数：
 
 ```
 [performance]
@@ -61,9 +63,9 @@ MySQL 的可重复读隔离级别并非 snapshot 隔离级别，MySQL 可重复�
 retry-limit = 10
 ```
 
-## 乐观事务注意事项
+## 自动重试导致的事务异常
 
-因为 TiDB 使用乐观锁机制，通过显式的 `BEGIN` 语句创建的事务，在遇到冲突后自动重试可能会导致最终结果不符合预期。
+因为 TiDB 会[默认](#事务重试)自动重试事务，通过显式的 `BEGIN` 语句创建的事务，在遇到冲突后自动重试可能会导致最终结果不符合预期。
 
 比如下面这两个例子:
 
@@ -89,15 +91,16 @@ retry-limit = 10
 | `}` | |
 | `commit;` // 自动重试 | |
 
-因为 TiDB 自动重试机制会把事务第一次执行的所有语句重新执行一遍，当一个事务里的后续语句是否执行取决于前面语句执行结果的时候，自动重试无法保证最终结果符合预期。这种情况下，需要在应用层重试整个事务。
+因为 TiDB 自动重试机制会把事务第一次执行的所有语句重新执行一遍，当一个事务里的后续语句是否执行取决于前面语句执行结果的时候，自动重试会违反快照隔离，导致更新丢失。这种情况下，需要在应用层重试整个事务。
 
-通过配置全局变量 `tidb_disable_txn_auto_retry` 可以关掉显式事务的重试。
+通过配置 `tidb_disable_txn_auto_retry` 和 `tidb_retry_limit` 变量可以关掉显式事务的重试。
 
+```sql
+SET GLOBAL tidb_disable_txn_auto_retry = TRUE;
+SET GLOBAL tidb_retry_limit = 0;
 ```
-set @@global.tidb_disable_txn_auto_retry = 1;
-```
 
-这个变量不会影响 `auto_commit = 1` 的单语句的隐式事务，仍然会自动重试。
+改变 `tidb_disable_txn_auto_retry` 变量不会影响     `auto_commit = 1` 的单语句的隐式事务，因为该语句仍然会自动重试。
 
 关掉显式事务重试后，如果出现事务冲突，commit 语句会返回错误，错误信息会包含 `try again later` 这个字符串，应用层可以用来判断遇到的错误是否是可以重试的。
 
