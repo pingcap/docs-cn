@@ -28,13 +28,11 @@ We believe that being able to replicate in both directions lowers the risk when 
 
 ### Distributed Transactions with Strong Consistency
 
-TiDB internally shards table into small range-based chunks that we refer to as "regions". Each region defaults to approximately 100MiB in size, and TiDB uses a Two-phase commit internally to ensure that regions are maintained in a transactionally consistent way.
+TiDB internally shards table into small range-based chunks that we refer to as "Regions". Each Region defaults to approximately 100MiB in size, and TiDB uses a Two-phase commit internally to ensure that Regions are maintained in a transactionally consistent way.
 
-Transactions in TiDB are strongly consistent, with snapshot isolation level consistency*. This makes TiDB more comparable to traditional relational databases in semantics than some of the newer NoSQL systems using eventual consistency.
+Transactions in TiDB are strongly consistent, with snapshot isolation level consistency. For more information, see transaction [behavior and performance differences](/sql/transaction-model.md#behavior-and-performance-differences). This makes TiDB more comparable to traditional relational databases in semantics than some of the newer NoSQL systems using eventual consistency.
 
 These behaviors are transparent to your application(s), which only need to connect to TiDB using a MySQL 5.7 compatible client library.
-
-_\* See transaction [behavior and performance differences](./sql/transaction-model.md#behavior-and-performance-differences) for more information._
 
 ### Cloud Native Architecture
 
@@ -56,7 +54,7 @@ Failure and self-healing operations are also transparent to applications. TiDB s
 
 ### Automatic Rebalancing
 
-The storage in TiKV is automatically rebalanced to match changes in your workload. For example, if part of your data is more frequently accessed, this hotspot will be detected and may trigger the data to be rebalanced among other TiKV servers. Chunks of data ("regions" in TiDB terminology) will automatically be split or merged as needed.
+The storage in TiKV is automatically rebalanced to match changes in your workload. For example, if part of your data is more frequently accessed, this hotspot will be detected and may trigger the data to be rebalanced among other TiKV servers. Chunks of data ("Regions" in TiDB terminology) will automatically be split or merged as needed.
 
 This helps remove some of the headaches associated with maintaining a large database cluster and also leads to better utilization over traditional master-slave read-write splitting that is commonly used with MySQL deployments.
 
