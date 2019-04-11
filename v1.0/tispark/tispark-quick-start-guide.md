@@ -57,7 +57,7 @@ cd tidb-ansible/resources/bin/tispark-sample-data
 Edit the TiDB login information in `sample_data.sh`. For example:
 
 ```
-mysql -h 192.168.0.2 -P 4000 -u root < dss.ddl
+mysql --local-infile=1 -h 192.168.0.2 -P 4000 -u root < dss.ddl
 ```
 
 Run the script:
