@@ -310,6 +310,32 @@ User 参见[用户账号名](../sql/user-account-management.md)。
 
 # TiDB 各操作需要的权限
 
+TiDB 目前用户拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` 表中查找到。
+
+| 权限类型       |  权限变量名    | 权限简述                 |
+| :------------: | :------------: | :----------------------: |
+| ALL            | AllPriv        | 所有权限                 |
+| Drop           | DropPriv       | 删除 schema/table        |
+| Index          | IndexPriv      | 创建/删除 index          |
+| Alter          | AlterPriv      | 执行 alter 语句          |
+| Super          | SuperPriv      | 所有权限                 |
+| Grant          | GrantPriv      | 授予其他用户权限         |
+| Create         | CreatePriv     | 创建 schema/table        |
+| Select         | SelectPriv     | 读取表内容               |
+| Insert         | InsertPriv     | 插入数据到表             |
+| Update         | UpdatePriv     | 更新表中数据             |
+| Delete         | DeletePriv     | 删除表中数据             |
+| Trigger        | TriggerPriv    | 尚未使用                 |
+| Process        | ProcessPriv    | 显示正在运行的任务       |
+| Execute        | ExecutePriv    | 执行 execute 语句        |
+| Drop Role      | DropRolePriv   | 执行 drop role           |
+| Show View      | ShowViewPriv   | 执行 show create view    |
+| References     | ReferencesPriv | 尚未使用                 |
+| Create View    | CreateViewPriv | 创建视图                 |
+| Create User    | CreateUserPriv | 创建用户                 |
+| Create Role    | CreateRolePriv | 执行 create role         |
+| Show Databases | ShowDBPriv     | 显示 database 内的表情况 |
+
 ## ALTER
 
 所有的 `ALTER` 语句，均需要对所操作的表拥有 `ALTER` 权限。除 `ALTER ... DROP` 和 `ALTER ... RENAME TO` 外，均需要对所操作表拥有 `INSERT` 和 `CREATE` 权限。
