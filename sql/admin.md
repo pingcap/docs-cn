@@ -128,13 +128,14 @@ mysql> show master status;
 
 ## `ADMIN` statement
 
-This statement is a TiDB extension syntax, used to view the status of TiDB.
+This statement is a TiDB extension syntax, used to view the status of TiDB and check the data of tables in TiDB.
 
 ```sql
 ADMIN SHOW DDL
 ADMIN SHOW DDL JOBS
 ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...
 ADMIN CANCEL DDL JOBS job_id [, job_id] ...
+ADMIN CHECK TABLE tbl_name [, tbl_name] ...
 ```
 
 - `ADMIN SHOW DDL`: To view the currently running DDL jobs.
@@ -181,6 +182,7 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...
 
 - `ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...`: To view the original SQL statement of the DDL task corresponding to the `job_id`; the `job_id` only searches the running DDL job and the last ten results in the DDL history job queue
 - `ADMIN CANCEL DDL JOBS job_id [, job_id] ...`: To cancel the currently running DDL jobs and return whether the corresponding jobs are successfully cancelled. If the operation fails to cancel the jobs, specific reasons are displayed.
+- `ADMIN CHECK TABLE tbl_name [, tbl_name] ...`: To check the consistency of all the data in the specified table and corresponding indexes. If the check is passed, an empty result will be returned. On failure, an error message will indicate that data is inconsistent.
 
   > **Note**:
   >
