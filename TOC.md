@@ -128,8 +128,8 @@
     - [Backup and Restore](op-guide/backup-restore.md)
     + Migrate
       - [Migration Overview](op-guide/migration-overview.md)
-      - [Migrate All the Data](op-guide/migration.md#use-the-mydumper--loader-tool-to-export-and-import-all-the-data)
-      - [Migrate the Data Incrementally](op-guide/migration.md#use-the-syncer-tool-to-import-data-incrementally-optional)
+      - [Migrate all data](op-guide/migration.md)
+      - [Migrate data incrementally](op-guide/migration-incremental.md)
   - [TiDB-Ansible Common Operations](op-guide/ansible-operation.md)
   - [Troubleshoot](trouble-shooting.md)
 + TiDB Enterprise Tools

@@ -1,6 +1,6 @@
 ---
 title: Migrate Data from MySQL to TiDB
-summary: Use `mydumper`, `loader` and `syncer` tools to migrate data from MySQL to TiDB.
+summary: Use `mydumper` and `loader` to migrate data from MySQL to TiDB.
 category: operations
 ---
 
@@ -10,7 +10,9 @@ category: operations
 
 You can use `mydumper` to export data from MySQL and `loader` to import the data into TiDB.
 
-> **Note:** Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use it. Its performance is much lower than `mydumper` / `loader` and it takes much time to migrate large amounts of data. `mydumper`/`loader` is more powerful. For more information, see [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper).
+> **Note:** Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use it. Its performance is much lower than `mydumper` / `loader` and it takes much time to migrate large amounts of data. It is important to use the `mydumper` provided by TiDB and not the upstream `mydumper` version.  See [mydumper](../tools/mydumper.md) for more information.
+
+`Mydumper` and `loader` can be [downloaded as part of Enterprise Tools](../tools/download.md).
 
 ### Export data from MySQL
 
@@ -27,7 +29,7 @@ In this command,
 - `-F 64`: means a table is partitioned into chunks and one chunk is 64MB.
 - `--skip-tz-utc`: the purpose of adding this parameter is to ignore the inconsistency of time zone setting between MySQL and the data exporting machine and to disable automatic conversion.
 
-> **Note**: On the Cloud platforms which require the `super privilege`, such as on the Aliyun platform, add the `--no-locks` parameter to the command. If not, you might get the error message that you don't have the privilege.
+> **Note**: On the Cloud platforms which require the `super privilege`, such as on the Amazon RDS, add the `--no-locks` parameter to the command. If not, you might get the error message that you don't have the privilege.
 
 ### Import data to TiDB
 
@@ -92,203 +94,3 @@ To migrate data quickly, especially for huge amount of data, you can refer to th
  - The `-F` parameter of `mydumper` is set to 16 and the `-t` parameter of `loader` is set to 64.
 
 **Results**: It takes 11 hours to import all the data, which is 19.4G/hour.
-
-## Use the `syncer` tool to import data incrementally (optional)
-
-The previous section introduces how to import all the history data from MySQL to TiDB using `mydumper`/`loader`. But this is not applicable if the data in MySQL is updated after the migration and it is expected to import the updated data quickly.
-
-Therefore, TiDB provides the `syncer` tool for an incremental data import from MySQL to TiDB.
-
-See [Download the TiDB enterprise toolset](#download-the-tidb-enterprise-toolset-linux) to download the `syncer` tool.
-
-### Download the TiDB enterprise toolset (Linux)
-
-```bash
-# Download the enterprise tool package.
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
-
-# Check the file integrity. If the result is OK, the file is correct.
-sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
-
-# Extract the package.
-tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
-cd tidb-enterprise-tools-latest-linux-amd64
-```
-
-Assuming the data from `t1` and `t2` is already imported to TiDB using `mydumper`/`loader`. Now we hope that any updates to these two tables are synchronized to TiDB in real time.
-
-### Obtain the position to synchronize
-
-The data exported from MySQL contains a metadata file which includes the position information. Take the following metadata information as an example:
-```
-Started dump at: 2017-04-28 10:48:10
-SHOW MASTER STATUS:
-    Log: mysql-bin.000003
-    Pos: 930143241
-    GTID:
-
-Finished dump at: 2017-04-28 10:48:11
-
-```
-The position information (`Pos: 930143241`) needs to be stored in the `syncer.meta` file for `syncer` to synchronize:
-
-```bash
-# cat syncer.meta
-binlog-name = "mysql-bin.000003"
-binlog-pos = 930143241
-```
-
-> **Note:** The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is synchronized.
-
-### Start `syncer`
-
-The `config.toml` file for `syncer`:
-
-```toml
-log-level = "info"
-log-file = "syncer.log"
-log-rotate = "day"
-
-server-id = 101
-
-# The file path for meta:
-meta = "./syncer.meta"
-worker-count = 16
-batch = 1000
-flavor = "mysql"
-
-# The testing address for pprof. It can also be used by Prometheus to pull Syncer metrics.
-status-addr = ":8271"
-
-# If you set its value to true, Syncer stops and exits when it encounters the DDL operation.
-stop-on-ddl = false
-
-# max-retry is used for retry during network interruption.
-max-retry = 100
-
-# Specify the database name to be replicated. Support regular expressions. Start with '~' to use regular expressions.
-# replicate-do-db = ["~^b.*","s1"]
-
-# Specify the database you want to ignore in replication. Support regular expressions. Start with '~' to use regular expressions.
-# replicate-ignore-db = ["~^b.*","s1"]
-
-# skip-ddls skips the ddl statements.
-# skip-ddls = ["^OPTIMIZE\\s+TABLE"]
-
-# skip-dmls skips the DML statements. The type value can be 'insert', 'update' and 'delete'.
-# The 'delete' statements that skip-dmls skips in the foo.bar table:
-# [[skip-dmls]]
-# db-name = "foo"
-# tbl-name = "bar"
-# type = "delete"
-#
-# The 'delete' statements that skip-dmls skips in all tables:
-# [[skip-dmls]]
-# type = "delete"
-#
-# The 'delete' statements that skip-dmls skips in all foo.* tables:
-# [[skip-dmls]]
-# db-name = "foo"
-# type = "delete"
-
-# Specify the db.table to be replicated.
-# db-name and tbl-name do not support the `db-name ="dbname, dbname2"` format.
-# [[replicate-do-table]]
-# db-name ="dbname"
-# tbl-name = "table-name"
-
-# [[replicate-do-table]]
-# db-name ="dbname1"
-# tbl-name = "table-name1"
-
-# Specify the db.table to be replicated. Support regular expressions. Start with '~' to use regular expressions.
-# [[replicate-do-table]]
-# db-name ="test"
-# tbl-name = "~^a.*"
-
-# Specify the database table you want to ignore in replication.
-# db-name and tbl-name do not support the `db-name ="dbname, dbname2"` format.
-# [[replicate-ignore-table]]
-# db-name = "your_db"
-# tbl-name = "your_table"
-
-# Specify the database table you want to ignore in replication. Support regular expressions. Start with '~' to use regular expressions.
-# [[replicate-ignore-table]]
-# db-name ="test"
-# tbl-name = "~^a.*"
-
-# The sharding replicating rules support wildcharacter.
-# 1. The asterisk character ("*", also called "star") matches zero or more characters,
-#    For example, "doc*" matches "doc" and "document" but not "dodo";
-#    The asterisk character must be in the end of the wildcard word,
-#    and there is only one asterisk in one wildcard word.
-# 2. The question mark ("?") matches any single character.
-# [[route-rules]]
-# pattern-schema = "route_*"
-# pattern-table = "abc_*"
-# target-schema = "route"
-# target-table = "abc"
-
-# [[route-rules]]
-# pattern-schema = "route_*"
-# pattern-table = "xyz_*"
-# target-schema = "route"
-# target-table = "xyz"
-
-[from]
-host = "127.0.0.1"
-user = "root"
-password = ""
-port = 3306
-
-[to]
-host = "127.0.0.1"
-user = "root"
-password = ""
-port = 4000
-```
-Start `syncer`:
-
-```bash
-./bin/syncer -config config.toml
-2016/10/27 15:22:01 binlogsyncer.go:226: [info] begin to sync binlog from position (mysql-bin.000003, 1280)
-2016/10/27 15:22:01 binlogsyncer.go:130: [info] register slave for master server 127.0.0.1:3306
-2016/10/27 15:22:01 binlogsyncer.go:552: [info] rotate to (mysql-bin.000003, 1280)
-2016/10/27 15:22:01 syncer.go:549: [info] rotate binlog to (mysql-bin.000003, 1280)
-```
-
-### Insert data into MySQL
-
-```bash
-INSERT INTO t1 VALUES (4, 4), (5, 5);
-```
-
-### Log in TiDB and view the data
-
-```sql
-mysql -h127.0.0.1 -P4000 -uroot -p
-mysql> select * from t1;
-+----+------+
-| id | age  |
-+----+------+
-|  1 |    1 |
-|  2 |    2 |
-|  3 |    3 |
-|  4 |    4 |
-|  5 |    5 |
-+----+------+
-```
-
-`syncer` outputs the current synchronized data statistics every 30 seconds:
-
-```bash
-2017/06/08 01:18:51 syncer.go:934: [info] [syncer]total events = 15, total tps = 130, recent tps = 4,
-master-binlog = (ON.000001, 11992), master-binlog-gtid=53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-74,
-syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-17
-2017/06/08 01:19:21 syncer.go:934: [info] [syncer]total events = 15, total tps = 191, recent tps = 2,
-master-binlog = (ON.000001, 11992), master-binlog-gtid=53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-74,
-syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-35
-```
-
-You can see that by using `syncer`, the updates in MySQL are automatically synchronized in TiDB.
