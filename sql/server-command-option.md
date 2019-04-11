@@ -1,9 +1,13 @@
 ---
-title: TiDB 进程启动参数
+title: TiDB 命令行参数
 category: user guide
 ---
 
-## TiDB 进程启动参数
+# TiDB 命令行参数
+
+本文档主要介绍 TiDB 启动参数和服务器配置文件。
+
+## TiDB 启动参数
 
 启动 TiDB 进程时，可以指定一些程序启动参数。
 
@@ -64,10 +68,9 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 + 默认: ""
 + 如果没设置这个参数，log 会默认输出到 "stderr"，如果设置了， log 就会输出到对应的文件里面，在每天凌晨，log 会自动轮转使用一个新的文件，并且将以前的文件改名备份
 
-
 ### \-\-metrics-addr
 
-+ Prometheus Push Gateway 地址
++ Prometheus Pushgateway 地址
 + 默认: ""
 + 如果为空，TiDB 不会将统计信息推送给 Push Gateway ，参数格式 如 `--metrics-addr=192.168.100.115:9091`
 
@@ -106,7 +109,7 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 
 + TiDB 服务状态监听端口
 + 默认: "10080"
-+ 这个端口是为了展示 TiDB 内部数据用的。包括 [prometheus 统计](https://prometheus.io/) 以及 [pprof](https://golang.org/pkg/net/http/pprof/)
++ 这个端口是为了展示 TiDB 内部数据用的。包括 [Prometheus 统计](https://prometheus.io/) 以及 [pprof](https://golang.org/pkg/net/http/pprof/)
 + Prometheus 统计可以通过 "http://host:status_port/metrics" 访问
 + Pprof 数据可以通过 "http://host:status_port/debug/pprof" 访问
 
@@ -123,7 +126,7 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 
 一份配置文件的示例参见 https://github.com/pingcap/tidb/blob/master/config/config.toml.example
 
-以下是启动参数的完整描述。
+以下是配置文件的完整描述。
 
 ### host
 
@@ -169,13 +172,13 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 
 ### query-log-max-len
 
-+ 日志中记录最大 sql 语句长度
++ 日志中记录最大 SQL 语句长度
 + 默认: 2048
 + 过长的请求输出到 log 时会被截断
 
 ### slow-threshold int
 
-+ 大于这个值得 sql 语句将被记录
++ 大于这个值的 SQL 语句将被记录
 + 默认: 300
 + 值只能是一个整数 (int) ，单位是毫秒
 
