@@ -25,18 +25,18 @@ The following example scenarios show how you can put to use the tools mentioned 
 #### Full data migration from MySQL
 
 To migrate the full data, you can use one of the following three solutions:
-  - mydumper + Loader: use mydumper to export data from MySQL and use Loader to import the data into TiDB.
-  - mydumper + TiDB-Lightning: use mydumper to export data from MySQL and use TiDB-Lightning to import the data into TiDB.
-  - DM: use DM to export data from MySQL and import the data into TiDB.
+- mydumper + Loader: use mydumper to export data from MySQL and use Loader to import the data into TiDB.
+- mydumper + TiDB-Lightning: use mydumper to export data from MySQL and use TiDB-Lightning to import the data into TiDB.
+- DM: use DM to export data from MySQL and import the data into TiDB.
 
 For detailed operations, follow the steps in [Migrate Data from MySQL to TiDB](../op-guide/migration.md).
 
 #### Full data migration and incremental replication
 
 To migrate the full data and then replicate data incrementally, you can use one of the following three solutions:
-  - mydumper + Loader + Syncer: use mydumper to export data from MySQL, use Loader to import the data into TiDB, and then use Syncer to replicate the incremental binlog data from MySQL into TiDB.
-  - mydumper + TiDB-Lightning + Syncer: use mydumper to export data from MySQL, use TiDB-Lightning to import the data into TiDB, and then use Syncer to replicate the incremental binlog data from MySQL into TiDB.
-  - DM: use DM to migrate the full data from MySQL to TiDB and then replicate the incremental data from MySQL into TiDB.
+- mydumper + Loader + Syncer: use mydumper to export data from MySQL, use Loader to import the data into TiDB, and then use Syncer to replicate the incremental binlog data from MySQL into TiDB.
+- mydumper + TiDB-Lightning + Syncer: use mydumper to export data from MySQL, use TiDB-Lightning to import the data into TiDB, and then use Syncer to replicate the incremental binlog data from MySQL into TiDB.
+- DM: use DM to migrate the full data from MySQL to TiDB and then replicate the incremental data from MySQL into TiDB.
 
 For detailed operations, follow the steps in [Incremental Migration](../op-guide/migration-incremental.md).
     
@@ -45,7 +45,7 @@ For detailed operations, follow the steps in [Incremental Migration](../op-guide
 #### Dump and restore from database other than MySQL
 
 To import data from another database, it is recommended to:
-  - Export the data as CSV format.
-  - Import the data using TiDB-Lightning.
+- Export the data as CSV format.
+- Import the data using TiDB-Lightning.
 
 For more information, refer to [CSV support for TiDB-Lightning](../tools/lightning/csv.md).
