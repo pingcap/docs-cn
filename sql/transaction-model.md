@@ -12,7 +12,7 @@ Similarly, functions such as `GET_LOCK()` and `RELEASE_LOCK()` and statements su
 
 **Note:** On the business side, remember to check the returned results of `commit` because even there is no error in the execution, there might be errors in the `commit` process.
 
-## Behavior and performance differences
+## Differences from MySQL
 
 ### Transaction retry
 
