@@ -1,9 +1,9 @@
 ---
-title: TiDB 3.0 Beta 版本 Sysbench 测试结果 - NVMe SSD
+title: TiDB 3.0 Beta 版本在 NVMe SSD 上的 Sysbench 测试结果
 category: benchmark
 ---
 
-#  TiDB 3.0 Beta 版本 Sysbench 测试结果 - NVMe SSD
+#  TiDB 3.0 Beta 版本在 NVMe SSD 上的 Sysbench 测试结果
 
 测试版本为 Sysbench 1.0.14。建议使用 Sysbench 1.0 或之后的更新版本，可在[此处](https://github.com/akopytov/sysbench/releases/tag/1.0.14)下载。
 
@@ -225,9 +225,9 @@ sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 r
 
 ## 常见问题
 
-### 在高并发压力下，TiDB、TiKV 的配置都合理，为什么整体性能还是偏低
+### 在高并发压力下，TiDB、TiKV 的配置都合理，为什么整体性能还是偏低？
 
-这种情况可能与使用了 proxy 有关。可以尝试直接对单个 TiDB 加压，将结果加和与使用 proxy 的情况进行对比。
+这种情况可能与使用了 proxy 有关。可以尝试直接对单个 TiDB 加压，将求和后的结果与使用 proxy 的情况进行对比。
 
 以 HAproxy 为例。`nbproc` 参数可以增加其最大启动的进程数，较新版本的 HAproxy 还支持 `nbthread` 和 `cpu-map`等。这些都可以减少对其性能的不利影响。
 
@@ -241,6 +241,6 @@ TiKV 的其他模块，如 storage readpool、coprocessor 和 grpc 的最大并�
 
 ### 在高并发压力下，TiKV 也未达到 CPU 使用瓶颈，为什么 TiDB 的 CPU 利用率依然很低？
 
-在某些高端设备上，使用的是 NUMA 架构的 CPU，跨 CPU 访问远端内存将极大损耗降低性能。TiDB 默认将使用服务器所有 CPU，goroutine 的调度不可避免的会出现跨 CPU 内存访问。
+在某些高端设备上，使用的是 NUMA 架构的 CPU，跨 CPU 访问远端内存将极大降低性能。TiDB 默认将使用服务器所有 CPU，goroutine 的调度不可避免的会出现跨 CPU 内存访问。
 
-因此，建议在 NUMA 架构服务器上，部署 *n* 个 TiDB（*n* = NUMA CPU 的个数），同时将 TiDB 的 `max-procs` 设置为一个 NUMA CPU 的核数。
+因此，建议在 NUMA 架构服务器上，部署 *n* 个 TiDB（*n* = NUMA CPU 的个数），同时将 TiDB 的 `max-procs` 变量的值设置为 NUMA CPU 的核数相同。
