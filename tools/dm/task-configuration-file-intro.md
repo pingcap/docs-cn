@@ -36,7 +36,7 @@ target-database:                # Configuration of the downstream database insta
     host: "192.168.0.1"
     port: 4000
     user: "root"
-    password: ""
+    password: ""                # The dmctl encryption is needed when the password is not empty.
 ```
 
 `task-mode`
