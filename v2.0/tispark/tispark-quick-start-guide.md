@@ -50,7 +50,7 @@ cd tidb-ansible/resources/bin/tispark-sample-data
 修改 `sample_data.sh` 中 TiDB 登录信息，比如：
 
 ```
-mysql -h 192.168.0.2 -P 4000 -u root < dss.ddl
+mysql --local-infile=1 -h 192.168.0.2 -P 4000 -u root < dss.ddl
 ```
 
 执行脚本

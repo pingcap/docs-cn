@@ -65,6 +65,10 @@ TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用
 
 Performance schema 表在 TiDB 中返回结果为空。TiDB 使用 [Prometheus 和 Grafana](https://pingcap.com/docs/op-guide/monitor/#use-prometheus-and-grafana) 来监测性能指标。
 
+### 查询计划
+
+TiDB 的查询计划（`EXPLAIN`/`EXPLAIN FOR`）输出格式与 MySQL 差别较大，同时 `EXPLAIN FOR` 的输出内容与权限设置与 MySQL 不一致，参见[理解 TiDB 执行计划](/sql/understanding-the-query-execution-plan.md)。
+
 ### 内建函数
 
 TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经支持，具体请参考[语法文档](https://pingcap.github.io/sqlgram/#FunctionCallKeyword)。
