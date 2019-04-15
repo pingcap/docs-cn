@@ -71,7 +71,7 @@ category: tools
 
 #### Execute Time
 
-- 在下游执行 SQL／写数据所消耗的时间。
+- 在下游执行 SQL 语句或写数据所消耗的时间。
 
 #### 95% Binlog Size
 
