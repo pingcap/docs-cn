@@ -195,7 +195,7 @@
       - [Table Filter](tools/lightning/filter.md)
       - [CSV Support](tools/lightning/csv.md)
       - [Monitor](tools/lightning/monitor.md)
-    - [TiDB-Binlog](tools/tidb-binlog-cluster.md) (Enterprise)
+    - [TiDB-Binlog](tools/tidb-binlog-cluster.md)
     - [PD Control](tools/pd-control.md)
     - [PD Recover](tools/pd-recover.md)
     - [TiKV Control](https://github.com/tikv/tikv/blob/master/docs/tools/tikv-control.md)
