@@ -307,3 +307,111 @@ User 参见[用户账号名](../sql/user-account-management.md)。
 
 * `IDENTIFIED BY 'auth_string'`：设置登录密码时，`auth_string` 会被 TiDB 经过加密存储在 `mysql.user` 表中。
 * `IDENTIFIED BY PASSWORD 'hash_string'`：设置登录密码，`hash_string` 是一个类似于 `*EBE2869D7542FCE37D1C9BBC724B97BDE54428F1` 的 41 位字符串，会被 TiDB 直接存储在 `mysql.user` 表中，该字符串可以通过 `SELECT password('auth_string')` 加密得到。
+
+# TiDB 各操作需要的权限
+
+TiDB 目前用户拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` 表中查找到。
+
+| 权限类型       |  权限变量名    | 权限简述                 |
+| :------------: | :------------: | :----------------------: |
+| ALL            | AllPriv        | 所有权限                 |
+| Drop           | DropPriv       | 删除 schema/table        |
+| Index          | IndexPriv      | 创建/删除 index          |
+| Alter          | AlterPriv      | 执行 alter 语句          |
+| Super          | SuperPriv      | 所有权限                 |
+| Grant          | GrantPriv      | 授予其他用户权限         |
+| Create         | CreatePriv     | 创建 schema/table        |
+| Select         | SelectPriv     | 读取表内容               |
+| Insert         | InsertPriv     | 插入数据到表             |
+| Update         | UpdatePriv     | 更新表中数据             |
+| Delete         | DeletePriv     | 删除表中数据             |
+| Trigger        | TriggerPriv    | 尚未使用                 |
+| Process        | ProcessPriv    | 显示正在运行的任务       |
+| Execute        | ExecutePriv    | 执行 execute 语句        |
+| Drop Role      | DropRolePriv   | 执行 drop role           |
+| Show View      | ShowViewPriv   | 执行 show create view    |
+| References     | ReferencesPriv | 尚未使用                 |
+| Create View    | CreateViewPriv | 创建视图                 |
+| Create User    | CreateUserPriv | 创建用户                 |
+| Create Role    | CreateRolePriv | 执行 create role         |
+| Show Databases | ShowDBPriv     | 显示 database 内的表情况 |
+
+## ALTER
+
+对于所有的 `ALTER` 语句，均需要用户对所操作的表拥有 `ALTER` 权限。除 `ALTER ... DROP` 和 `ALTER ... RENAME TO` 外，均需要对所操作表拥有 `INSERT` 和 `CREATE` 权限。
+
+对于 `ALTER ... DROP` 语句，需要对表拥有 `DROP` 权限。对于 `ALTER ... RENAME TO` 语句，需要对重命名前的表拥有 `DROP` 权限，对重命名后的表拥有 `CREATE` 和 `INSERT` 权限。
+
+注：根据 MySQL 5.7 文档中的说明，`ALTER` 表需要 `INSERT` 和 `CREATE` 权限，但在 MySQL 5.7.25 版本实际情况中，`ALTER` 表仅需要 `ALTER` 权限。为了尽可能减少对用户的困扰，TiDB 中的 ALTER 权限目前与 MySQL 实际行为保持一致。
+
+## CREATE DATABASE
+
+需要对数据库拥有 `CREATE` 权限。
+
+## CREATE INDEX
+
+需要对所操作的表拥有 `INDEX` 权限。
+
+## CREATE TABLE
+
+需要对所操作的表拥有 `CREATE` 权限；若使用 `CREATE TABLE .... LIKE ....` 需要对相关的表拥有 `SELECT` 权限。
+
+## CREATE VIEW
+
+需要拥有 `CREATE VIEW` 权限。
+
+注：如果当前登录用户与创建视图的用户不同，除需要 `CREATE VIEW` 权限外，我们还需要 `SUPER` 权限。
+
+## DROP DATABASE
+
+需要对数据库拥有 `DROP` 权限。
+
+## DROP INDEX
+
+需要对所操作的表拥有 `INDEX` 权限。
+
+## DROP TABLES
+
+需要对所操作的表拥有 `DROP` 权限。
+
+## TRUNCATE TABLE
+
+需要对所操作的表拥有 `DROP` 权限。
+
+## RENAME TABLE
+
+需要对重命名前的表拥有 `ALTER` 和 `DROP` 权限，对重命名后的表拥有 `CREATE` 和 `INSERT` 权限。
+
+## ANALYZE TABLE
+
+需要对所操作的表拥有 `INSERT` 和 `SELECT` 权限。
+
+## SHOW
+
+`SHOW CREATE TABLE` 需要任意一种权限。
+
+`SHOW CREATE VIEW` 需要 `SHOW VIEW` 权限。
+
+## CREATE ROLE/USER
+
+`CREATE ROLE` 需要 `CREATE ROLE` 权限。
+
+`CREATE USER` 需要 `CREATE USER` 权限
+
+## DROP ROLE/USER
+
+`DROP ROLE` 需要 `DROPROLE` 权限。
+
+`DROP USER` 需要 `CREATEUSER` 权限
+
+## ALTER USER
+
+`ALTER USER` 需要 `CREATEUSER` 权限。
+
+## GRANT
+
+`GRANT` 需要 `GRANT` 权限并且拥有 `GRANT` 所赋予的权限。
+
+## REVOKE
+
+`REVOKE` 需要 `SUPER` 权限。
