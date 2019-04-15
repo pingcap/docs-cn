@@ -526,7 +526,7 @@ Drainer="192.168.0.13"
         # kafka-version = "0.8.2.0"
 
         # 保存 binlog 数据的 kafka 的 topic 名称，默认值为 <cluster-id>_obinlog
-        # 如果运行多个 Drainer 同步数据到同一个 kafka，每个 Drainer 的 topic-name 需要设置不同的名称
+        # 如果运行多个 Drainer 同步数据到同一个 Kafka 集群，每个 Drainer 的 topic-name 需要设置不同的名称
         # topic-name = ""
         ```
 
