@@ -66,7 +66,7 @@ Usage of syncer:
   -log-rotate string
         to specify the log file rotating cycle, hour/day (default "day")
   -max-retry int
-        to specify maximum retry times during network interruption (default 100)
+        to specify the maximum times an SQL statement should be retried. One common cause of statement retries is network interruption (default 100)
   -meta string
         to specify the meta file of the upstream of Syncer (in the same directory with the configuration file, "syncer.meta" by default)
   -persistent-dir string
@@ -77,6 +77,8 @@ Usage of syncer:
         to specify MySQL slave sever-id (default 101)
   -status-addr string
         to specify Syncer metrics (default :8271), such as `--status-addr 127:0.0.1:8271`
+  -timezone string
+        the time zone used by the target database; it is required to use the IANA time zone identifier such as `Asia/Shanghai`
 ```
 
 The `config.toml` configuration file of Syncer:
@@ -100,19 +102,25 @@ status-addr = ":8271"
 # If you set its value to true, Syncer stops and exits when it encounters the DDL operation.
 stop-on-ddl = false
 
-# max-retry is used for retry during network interruption.
+# The maximum number of times an SQL statement should be retried. One common cause of statement retries is network interruption.
 max-retry = 100
 
+# Specify the time zone used by the target database; all timestamp fields in binlog are converted according to the time zone; the local time zone of Syncer is used by default.
+# timezone = "Asia/Shanghai"
+
+# Skip the DDL statement; the format is **prefix exact match**, for example, you need to fill at least `DROP TABLE` in to skip `DROP TABLE ABC`.
+# skip-ddls = ["ALTER USER", "CREATE USER"]
+
+# After Syncer uses `route-rules` to map the upstream schema and table into `target-schema` and `target-table`, 
+# Syncer matches the mapped `target-schema` and `target-table` with do/ignore rules,
+# and the matching sequence is: replicate-do-db --> replicate-do-table --> replicate-ignore-db --> replicate-ignore-table.
 # Specify the database name to be replicated. Support regular expressions. Start with '~' to use regular expressions.
 # replicate-do-db = ["~^b.*","s1"]
 
 # Specify the database you want to ignore in replication. Support regular expressions. Start with '~' to use regular expressions.
 # replicate-ignore-db = ["~^b.*","s1"]
 
-# skip-ddls skips the ddl statements.
-# skip-ddls = ["^OPTIMIZE\\s+TABLE"]
-
-# skip-dmls skips the DML statements. The type value can be 'insert', 'update' and 'delete'.
+# skip-dmls skips the DML binlog events. The type value can be 'insert', 'update' and 'delete'.
 # The 'delete' statements that skip-dmls skips in the foo.bar table:
 # [[skip-dmls]]
 # db-name = "foo"
