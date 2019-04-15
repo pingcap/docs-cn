@@ -33,6 +33,70 @@ SET @@autocommit = 1;
 
 > **Note:** `LOCAL` and `@@local.` are the synonyms for `SESSION` and `@@session.`
 
+### The working mechanism of system variables
+
+* Session variables will only initialize their own values based on global variables when a session is created. Changing a global variable does not change the value of the system variable being used by the session that has already been created.
+
+    ```sql
+    mysql> SELECT @@GLOBAL.autocommit;
+    +---------------------+
+    | @@GLOBAL.autocommit |
+    +---------------------+
+    | ON                  |
+    +---------------------+
+    1 row in set (0.00 sec)
+    
+    mysql> SELECT @@SESSION.autocommit;
+    +----------------------+
+    | @@SESSION.autocommit |
+    +----------------------+
+    | ON                   |
+    +----------------------+
+    1 row in set (0.00 sec)
+    
+    mysql> SET GLOBAL autocommit = OFF;
+    Query OK, 0 rows affected (0.01 sec)
+    
+    mysql> SELECT @@SESSION.autocommit; -- Session variables do not change, and the transactions in the session are executed in the form of autocommit.
+    +----------------------+
+    | @@SESSION.autocommit |
+    +----------------------+
+    | ON                   |
+    +----------------------+
+    1 row in set (0.00 sec)
+    
+    mysql> SELECT @@GLOBAL.autocommit;
+    +---------------------+
+    | @@GLOBAL.autocommit |
+    +---------------------+
+    | OFF                 |
+    +---------------------+
+    1 row in set (0.00 sec)
+    
+    mysql> exit
+    Bye
+    $ mysql -h127.0.0.1 -P4000 -uroot -D test
+    Welcome to the MySQL monitor.  Commands end with ; or \g.
+    Your MySQL connection id is 3
+    Server version: 5.7.25-TiDB-None MySQL Community Server (Apache License 2.0)
+    
+    Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
+    
+    Oracle is a registered trademark of Oracle Corporation and/or its
+    affiliates. Other names may be trademarks of their respective
+    owners.
+    
+    Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+    
+    mysql> SELECT @@SESSION.autocommit; -- The newly created session uses a new global variable.
+    +----------------------+
+    | @@SESSION.autocommit |
+    +----------------------+
+    | OFF                  |
+    +----------------------+
+    1 row in set (0.00 sec)
+    ```
+
 ## The fully supported MySQL system variables in TiDB
 
 The following MySQL system variables are fully supported in TiDB and have the same behaviors as in MySQL.
