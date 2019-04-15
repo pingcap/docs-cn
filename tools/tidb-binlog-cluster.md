@@ -486,7 +486,7 @@ Drainer="192.168.0.13"
         # 参数有效值为 "mysql"，"pb"，"kafka"，"flash"
         db-type = "mysql"
 
-        # db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test"),
+        # db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test")，
         # 不支持对 ignore schemas 的 table 进行 rename DDL 操作
         ignore-schemas = "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql"
 
