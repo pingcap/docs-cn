@@ -54,9 +54,7 @@ The MySQL Repeatable Read isolation level is not the snapshot isolation level. T
 
 ## Transaction retry
 
-Transactions that fail may automatically be retried by TiDB, which may lead to lost updates. This feature can be disabled by setting both `tidb_disable_txn_auto_retry=TRUE` and `tidb_retry_limit = 0`.
-
-In addition, you can control the number of retries by configuring the `retry-limit` parameter:
+Transactions that fail may automatically be retried by TiDB, which may lead to lost updates. This feature can be disabled by setting `tidb_retry_limit = 0`.
 
 ```
 [performance]
@@ -97,10 +95,9 @@ Example 2:
 
 Under the automatic retry mechanism of TiDB, all the executed statements for the first time are re-executed again. Whether the subsequent statements are to be executed or not depends on the results of the previous statements, automatic retry can violate snapshot isolation, causing lost updates.
 
-To disable the automatic retry of explicit transactions, configure the `tidb_disable_txn_auto_retry` and `tidb_retry_limit` variables:
+To disable the automatic retry of explicit transactions, configure the `tidb_retry_limit` variable:
 
 ```sql
-SET GLOBAL tidb_disable_txn_auto_retry = TRUE;
 SET GLOBAL tidb_retry_limit = 0;
 ```
 
