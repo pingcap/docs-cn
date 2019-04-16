@@ -69,7 +69,7 @@
   + [贡献](contribute.md)
     - [为 TiDB 贡献代码](contribute.md#成为-tidb-的贡献者)
     - [帮助改进文档](contribute.md#改进文档)
-+ 参考
++ 参考资源
   + SQL
     - [支持的连接器和 API](sql/connection-and-APIs.md)
     - [与 MySQL 兼容性对比](sql/mysql-compatibility.md)
