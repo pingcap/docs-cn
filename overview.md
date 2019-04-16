@@ -23,8 +23,9 @@ The following list collects deployment guides and tutorials from the community. 
 
 - [How To Spin Up an HTAP Database in 5 Minutes with TiDB + TiSpark](https://www.pingcap.com/blog/how_to_spin_up_an_htap_database_in_5_minutes_with_tidb_tispark/)
 - [Developer install guide (single machine)](http://www.tocker.ca/this-blog-now-powered-by-wordpress-tidb.html)
--  [TiDB Best Practices](https://pingcap.com/blog/2017-07-24-tidbbestpractice/)
-_Your contribution is also welcome! Feel free to open a [pull request](https://github.com/pingcap/docs/edit/master/QUICKSTART.md) to add additional links._
+- [TiDB Best Practices](https://pingcap.com/blog/2017-07-24-tidbbestpractice/)
+
+_Your contribution is also welcome! Feel free to open a [pull request](https://github.com/pingcap/docs/edit/master/overview.md) to add additional links._
 
 ## Source Code
 
