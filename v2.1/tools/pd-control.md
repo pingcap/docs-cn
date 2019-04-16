@@ -150,7 +150,7 @@ export PD_ADDR=http://127.0.0.1:2379
 当需要加快补副本或 balance 速度时可以调大这个值。
 
 ```bash
->> config set max-snapshort-count 16  // 设置最大 snapshot 为 16
+>> config set max-snapshot-count 16  // 设置最大 snapshot 为 16
 ```
 
 `max-pending-peer-count` 控制单个 store 的 pending peer 上限，调度受制于这个配置来防止在部分节点产生大量日志落后的 Region。
