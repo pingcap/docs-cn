@@ -16,7 +16,7 @@ Grafana dashboard 默认名称为 `DM`。
 
 ### overview
 
-> overview 下包含运行当前选定 task 的所有 instances 的部分监控指标。当前默认告警规则只针对于单个 instance。
+> overview 下包含运行当前选定 task 的所有 DM-worker instances 的部分监控指标。当前默认告警规则只针对于单个 DM-worker instance。
 
 | metric 名称 | 说明 | 告警说明 |
 |:----|:------------|:----|
@@ -35,7 +35,7 @@ Grafana dashboard 默认名称为 `DM`。
 |:----|:------------|:----|
 | task state | 同步子任务的状态 | 当子任务状态处于 paused 超过 10 分钟时|
 
-## Relay log
+### Relay log
 
 | metric 名称 | 说明 | 告警说明 |
 |:----|:------------|:----|
@@ -52,7 +52,7 @@ Grafana dashboard 默认名称为 `DM`。
 | write relay log duration | relay log 每次写 binlog 到磁盘的时延，单位：秒。| N/A |
 | binlog size | relay log 写到磁盘的单条 binlog 的大小 | N/A |
 
-## Dumper
+### Dumper
 
 下面 metrics 仅在 `task-mode` 为 `full` 或者 `all` 模式下会有值。
 
@@ -60,7 +60,7 @@ Grafana dashboard 默认名称为 `DM`。
 |:----|:------------|:----|
 | dump process exits with error | dumper 在 DM-worker 内部遇到错误并且退出了 | 立即告警 |
 
-## Loader
+### Loader
 
 下面 metrics 仅在 `task-mode` 为 `full` 或者 `all` 模式下会有值。
 
@@ -74,7 +74,7 @@ Grafana dashboard 默认名称为 `DM`。
 | latency of execute transaction | loader 在执行事务的时延，单位：秒 | N/A |
 | latency of query | loader 执行 query 的耗时，单位：秒 | N/A |
 
-## Binlog replication
+### Binlog replication
 
 下面 metrics 仅在 `task-mode` 为 `incremental` 或者 `all` 模式下会有值。
 
@@ -92,4 +92,37 @@ Grafana dashboard 默认名称为 `DM`。
 | finished sqls jobs | 单位时间内完成的 job 数量 | N/A |
 | execution latency | syncer 执行 transaction 到下游的耗时，单位：秒 | N/A |
 | unsynced tables | 当前子任务内还未收到 shard DDL 的分表数量 | N/A |
+| shard lock resolving | 当前子任务是否正在等待 shard DDL 同步，大于 0 表示正在等待同步 | N/A |
+
+
+## Instances
+
+Grafana dashboard 默认名称为 `DM-instances`。
+
+> 当前默认告警规则在 [Task](#task) 部分已有说明，此处不再重复。
+
+### Relay log
+
+| metric 名称 | 说明 | 告警说明 |
+|:----|:------------|:----|
+| storage capacity | relay log 占有的磁盘的总容量  | N/A |
+| storage remain | relay log 占有的磁盘的剩余可用容量  | N/A |
+| process exits with error | relay log 在 DM-worker 内部遇到错误并且退出了  | N/A |
+| relay log data corruption | relay log 文件损坏的个数 | N/A |
+| fail to read binlog from master | relay 从上游的 mysql 读取 binlog 时遇到的错误数 | N/A |
+| fail to write relay log | relay 写 binlog 到磁盘时遇到的错误数 | N/A |
+| binlog file index | relay log 最大的文件序列号。如 value = 1 表示 relay-log.000001 | N/A |
+| binlog file gap between master and relay | relay 与上游 master 相比落后的 binlog file 个数 | N/A |
+| binlog pos | relay log 最新文件的写入 offset  | N/A |
+| read binlog duration | relay log 从上游的 MySQL 读取 binlog 的时延，单位：秒 |  N/A |
+| write relay log duration | relay log 每次写 binlog 到磁盘的时延，单位：秒。| N/A |
+| binlog size | relay log 写到磁盘的单条 binlog 的大小 | N/A |
+
+### task
+
+| metric 名称 | 说明 | 告警说明 |
+|:----|:------------|:----|
+| task state | 同步子任务的状态 | N/A |
+| load progress | loader 导入过程的进度百分比，值变化范围为：0 %- 100 %  | N/A |
+| binlog file gap between master and syncer | 与上游 master 相比落后的 binlog file 个数。| N/A |
 | shard lock resolving | 当前子任务是否正在等待 shard DDL 同步，大于 0 表示正在等待同步 | N/A |
