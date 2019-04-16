@@ -26,6 +26,7 @@
     - [SQL 优化流程简介](sql/sql-optimizer-overview.md)
     - [理解 TiDB 执行计划](sql/understanding-the-query-execution-plan.md)
     - [统计信息](sql/statistics.md)
+    - [Optimizer Hints](sql/optimizer-hints.md)
   + 语言结构
     - [字面值](sql/literal-values.md)
     - [数据库、表、索引、列和别名](sql/schema-object-names.md)
