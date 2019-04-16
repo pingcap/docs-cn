@@ -134,9 +134,9 @@ create database sbtest;
 假设用户使用的 [Sysbench](https://github.com/akopytov/sysbench/tree/1.0.14) 版本。我们可以通过以下两种方式来修改。
 
 1. 直接下载为 TiDB 修改好的 [oltp_common.lua](https://raw.githubusercontent.com/pingcap/tidb-bench/master/sysbench-patch/oltp_common.lua) 文件，覆盖 `/usr/share/sysbench/oltp_common.lua` 文件。 
-2. 将 `/usr/share/sysbench/oltp_common.lua` 的第 [235](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L235) 行到第[240](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L240) 移动到第 198 行以后。
+2. 将 `/usr/share/sysbench/oltp_common.lua` 的第 [235](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L235) 行到第 [240](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L240) 行移动到第 198 行以后。
 
-> **注意**： 此操作为可选操作，仅节约了数据导入时间。
+> **注意**：此操作为可选操作，仅节约了数据导入时间。
 
 命令行输入以下命令，开始导入数据，config 文件为上一步中配置的文件：
 
@@ -150,7 +150,7 @@ sysbench --config-file=config oltp_point_select --tables=32 --table-size=1000000
 
 Sysbench 没有提供数据预热的功能，因此需要手动进行数据预热。
 
-以 Sysbench 中某张表 sbtest7 为例，执行如下 SQL 进行数据预热：
+以 Sysbench 中某张表 sbtest7 为例，执行如下 SQL 语句 进行数据预热：
 
 ```
 SELECT COUNT(pad) FROM sbtest7 USE INDEX (k_7);
