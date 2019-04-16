@@ -472,7 +472,7 @@ Drainer="192.168.0.13"
         # 如果设置了该项，会使用该 sql-mode 解析 DDL 语句
         # sql-mode = "STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"
 
-        # 输出到下游数据库一个事务的 SQL 数量 (默认 20)
+        # 输出到下游数据库一个事务的 SQL 语句数量 (默认 20)
         txn-batch = 20
 
         # 同步下游的并发数，该值设置越高同步的吞吐性能越好 (默认 16)
