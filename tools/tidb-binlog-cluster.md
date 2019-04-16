@@ -381,6 +381,10 @@ Drainer="192.168.0.13"
 
         # PD 集群节点的地址
         pd-urls = "http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379"
+
+        # [storage]
+        # 设置为 true（默认值）来保证可靠性，确保 binlog 数据刷新到磁盘
+        # sync-log = true
         ```
 
     - 启动示例
@@ -460,18 +464,19 @@ Drainer="192.168.0.13"
         # log 文件路径
         log-file = "drainer.log"
 
+        # Drainer 从 Pump 获取 binlog 时对数据进行压缩，值可以为 "gzip"，如果不配置则不进行压缩
+        # compressor = "gzip"
+
         # Syncer Configuration
         [syncer]
+        # 如果设置了该项，会使用该 sql-mode 解析 DDL 语句
+        # sql-mode = "STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"
 
-        # db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test"),
-        # 不支持对 ignore schemas 的 table 进行 rename DDL 操作
-        ignore-schemas = "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql"
+        # 输出到下游数据库一个事务的 SQL 语句数量 (默认 20)
+        txn-batch = 20
 
-        # 输出到下游数据库一个事务的 SQL 数量 (默认 1)
-        txn-batch = 1
-
-        # 同步下游的并发数，该值设置越高同步的吞吐性能越好 (默认 1)
-        worker-count = 1
+        # 同步下游的并发数，该值设置越高同步的吞吐性能越好 (默认 16)
+        worker-count = 16
 
         # 是否禁用拆分单个 binlog 的 SQL 的功能，如果设置为 true，则按照每个 binlog
         # 顺序依次还原成单个事务进行同步（下游服务类型为 MySQL, 该项设置为 False）
@@ -480,6 +485,10 @@ Drainer="192.168.0.13"
         # Drainer 下游服务类型（默认为 mysql）
         # 参数有效值为 "mysql"，"pb"，"kafka"，"flash"
         db-type = "mysql"
+
+        # db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test")，
+        # 不支持对 ignore schemas 的 table 进行 rename DDL 操作
+        ignore-schemas = "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql"
 
         # replicate-do-db 配置的优先级高于 replicate-do-table。如果配置了相同的库名，支持使用正则表达式进行配置。
         # 以 '~' 开始声明使用正则表达式
@@ -493,6 +502,11 @@ Drainer="192.168.0.13"
         # [[syncer.replicate-do-table]]
         # db-name ="test"
         # tbl-name = "~^a.*"
+
+        # 忽略同步某些表
+        # [[syncer.ignore-table]]
+        # db-name = "test"
+        # tbl-name = "log"
 
         # db-type 设置为 mysql 时，下游数据库服务器参数
         [syncer.to]
@@ -510,6 +524,10 @@ Drainer="192.168.0.13"
         # zookeeper-addrs = "127.0.0.1:2181"
         # kafka-addrs = "127.0.0.1:9092"
         # kafka-version = "0.8.2.0"
+
+        # 保存 binlog 数据的 Kafka 集群的 topic 名称，默认值为 <cluster-id>_obinlog
+        # 如果运行多个 Drainer 同步数据到同一个 Kafka 集群，每个 Drainer 的 topic-name 需要设置不同的名称
+        # topic-name = ""
         ```
 
     - 启动示例  
