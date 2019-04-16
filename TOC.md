@@ -29,8 +29,8 @@
     - [TiDB 数据库权限管理](sql/privilege.md)
     - [TiDB 用户账户管理](sql/user-account-management.md)
     + 安全传输层协议 (TLS)
-      - [配置 MySQL 客户端启用 TLS](sql/encrypted-connections.md)
-      - [配置 TiDB 组件启用 TLS](op-guide/security.md)
+      - [为 MySQL 客户端启用 TLS](sql/encrypted-connections.md)
+      - [为 TiDB 组件启用 TLS](op-guide/security.md)
     - [生成自签名证书](op-guide/generate-self-signed-certificates.md)
   + 监控
     - [概述](op-guide/monitor-overview.md)
@@ -67,8 +67,8 @@
     - [支持渠道](support.md)
     - [反馈问题](report-issue.md)
   + [贡献](contribute.md)
-    - [为 TiDB 贡献代码](contribute.md#成为-tidb-的贡献者)
-    - [帮助改进文档](contribute.md#改进文档)
+    - [贡献代码](contribute.md#成为-tidb-的贡献者)
+    - [改进文档](contribute.md#改进文档)
 + 参考资源
   + SQL
     - [支持的连接器和 API](sql/connection-and-APIs.md)
@@ -135,7 +135,7 @@
       - [字符集](sql/character-set-support.md)
       - [内存控制](sql/tidb-memory-control.md)
       - [垃圾回收 (GC)](op-guide/gc.md)
-      - [配置参数](op-guide/configuration.md)
+      - [配置参数](op-guide/tidb-configuration.md)
     + pd-server
       - [配置参数](op-guide/pd-configuration.md)
     + tikv-server
