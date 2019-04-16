@@ -22,7 +22,7 @@
     + 跨地域冗余
       - [跨数据中心部署方案](op-guide/cross-dc-deployment.md)
       - [配置集群拓扑](op-guide/location-awareness.md)
-    - [TiSpark](tispark/tispark-quick-start-guide.md)
+    - [TiSpark 快速上手](tispark/tispark-quick-start-guide.md)
     - [使用 Ansible 部署 DM 集群](tools/dm/deployment.md)
   + 安全
     - [与 MySQL 的安全特性差异](sql/security-compatibility.md)
@@ -126,7 +126,7 @@
       - [TiDB 最佳实践](https://pingcap.com/blog/2017-07-24-tidbbestpractice/)
     - [TiDB 系统数据库](sql/system-database.md)
     - [Information Schema](sql/information-schema.md)
-    - [TiSpark](tispark/tispark-user-guide.md)
+    - [TiSpark 使用指南](tispark/tispark-user-guide.md)
   + 配置
     + tidb-server
       - [MySQL 系统变量](sql/variable.md)
