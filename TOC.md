@@ -32,7 +32,7 @@
       - [配置 MySQL 客户端启用 TLS](sql/encrypted-connections.md)
       - [配置 TiDB 组件启用 TLS](op-guide/security.md)
     - [生成自签名证书](op-guide/generate-self-signed-certificates.md)
-  + Monitor
+  + 监控
     - [概述](op-guide/monitor-overview.md)
     - [监控 TiDB 集群](op-guide/monitor.md)
     + 重要监控指标详解
