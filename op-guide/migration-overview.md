@@ -5,7 +5,7 @@ category: advanced
 
 # 数据迁移概述
 
-本文档详细介绍了如何将数据从 MySQL 或 CSV 数据源迁移到 TiDB。
+本文档介绍了 TiDB 提供的数据迁移工具，以及不同迁移场景下如何选择迁移工具，从而将数据从 MySQL 或 CSV 数据源迁移到 TiDB。
 
 ## 迁移工具
 
