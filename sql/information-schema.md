@@ -12,16 +12,16 @@ category: user guide
  `CHARACTER_SETS` 表提供[字符集](../sql/character-set-support.md)相关的信息。TiDB 默认支持并且只支持 utf8mb4。为与 MySQL 保持一致，表中也包含了其他字符集。
 
 ```sql
-mysql> select * from CHARACTER_SETS;
-+--------------------|----------------------|-----------------------|--------+
-| CHARACTER_SET_NAME | DEFAULT_COLLATE_NAME | DESCRIPTION           | MAXLEN |
-+--------------------|----------------------|-----------------------|--------+
-| ascii              | ascii_general_ci     | US ASCII              |      1 |
-| binary             | binary               | Binary pseudo charset |      1 |
-| latin1             | latin1_swedish_ci    | cp1252 West European  |      1 |
-| utf8               | utf8_general_ci      | UTF-8 Unicode         |      3 |
-| utf8mb4            | utf8mb4_general_ci   | UTF-8 Unicode         |      4 |
-+--------------------|----------------------|-----------------------|--------+
+mysql> SELECT * FROM character_sets;
++--------------------+----------------------+---------------+--------+
+| CHARACTER_SET_NAME | DEFAULT_COLLATE_NAME | DESCRIPTION   | MAXLEN |
++--------------------+----------------------+---------------+--------+
+| utf8               | utf8_bin             | UTF-8 Unicode |      3 |
+| utf8mb4            | utf8mb4_bin          | UTF-8 Unicode |      4 |
+| ascii              | ascii_bin            | US ASCII      |      1 |
+| latin1             | latin1_bin           | Latin1        |      1 |
+| binary             | binary               | binary        |      1 |
++--------------------+----------------------+---------------+--------+
 5 rows in set (0.00 sec)
 ```
 
@@ -204,16 +204,17 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 SCHEMATA 表提供了关于数据库的信息。表中的数据与 `SHOW DATABASES` 语句的执行结果等价。
 
 ```sql
-mysql> select * from SCHEMATA;
-+--------------|--------------------|----------------------------|------------------------|----------+
-| CATALOG_NAME | SCHEMA_NAME        | DEFAULT_CHARACTER_SET_NAME | DEFAULT_COLLATION_NAME | SQL_PATH |
-+--------------|--------------------|----------------------------|------------------------|----------+
-| def          | INFORMATION_SCHEMA | utf8                       | utf8_bin               | NULL     |
-| def          | mysql              | utf8                       | utf8_bin               | NULL     |
-| def          | PERFORMANCE_SCHEMA | utf8                       | utf8_bin               | NULL     |
-| def          | test               | utf8                       | utf8_bin               | NULL     |
-+--------------|--------------------|----------------------------|------------------------|----------+
-4 rows in set (0.00 sec)
+mysql> SELECT * FROM schemata; 
++--------------+--------------------+----------------------------+------------------------+----------+ 
+| CATALOG_NAME | SCHEMA_NAME        | DEFAULT_CHARACTER_SET_NAME | DEFAULT_COLLATION_NAME | SQL_PATH | 
++--------------+--------------------+----------------------------+------------------------+----------+ 
+| def          | INFORMATION_SCHEMA | utf8mb4                    | utf8mb4_bin            | NULL     | 
+| def          | mynewdb            | utf8mb4                    | utf8mb4_bin            | NULL     |
+| def          | mysql              | utf8mb4                    | utf8mb4_bin            | NULL     | 
+| def          | PERFORMANCE_SCHEMA | utf8mb4                    | utf8mb4_bin            | NULL     | 
+| def          | test               | utf8mb4                    | utf8mb4_bin            | NULL     | 
++--------------+--------------------+----------------------------+------------------------+----------+ 
+5 rows in set (0.00 sec)
 ```
 
 ## SESSION\_VARIABLES Table
