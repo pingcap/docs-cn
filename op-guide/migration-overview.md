@@ -25,17 +25,17 @@ category: advanced
 
 要将数据从 MySQL 全量迁移至 TiDB，可以采用以下三种方案中一种：
 
-- Mydumper + Loader：先使用 Mydumper 将数据从 MySQL 导出，然后使用 Loader 将数据导入至 TiDB。
-- Mydumper + TiDB-Lightning：先使用 Mydumper 将数据从 MySQL 导出，然后使用 TiDB-Lightning 将数据导入至 TiDB。
-- DM：直接使用 DM 将数据从 MySQL 导出，然后将数据导入至 TiDB。
+- **Mydumper + Loader**：先使用 Mydumper 将数据从 MySQL 导出，然后使用 Loader 将数据导入至 TiDB。
+- **Mydumper + TiDB-Lightning**：先使用 Mydumper 将数据从 MySQL 导出，然后使用 TiDB-Lightning 将数据导入至 TiDB。
+- **DM**：直接使用 DM 将数据从 MySQL 导出，然后将数据导入至 TiDB。
 
 详细操作参见 [MySQL 数据到 TiDB 的全量迁移](/op-guide/migration.md)。
 
 ### MySQL 数据的全量迁移和增量同步
 
-- Mydumper + Loader + Syncer：先使用 Mydumper 将数据从 MySQL 导出，然后使用 Loader 将数据导入至 TiDB，再使用 Syncer 将 MySQL binlog 数据增量同步至 TiDB。
-- Mydumper + TiDB-Lightning + Syncer：先使用 Mydumper 将数据从 MySQL 导出，然后使用 TiDB-Lightning 将数据导入至 TiDB，再使用 Syncer 将 MySQL binlog 数据增量同步至 TiDB。
-- DM：先使用 DM 将数据从 MySQL 全量迁移至 TiDB，然后使用 DM 将 MySQL binlog 数据增量同步至 TiDB。
+- **Mydumper + Loader + Syncer**：先使用 Mydumper 将数据从 MySQL 导出，然后使用 Loader 将数据导入至 TiDB，再使用 Syncer 将 MySQL binlog 数据增量同步至 TiDB。
+- **Mydumper + TiDB-Lightning + Syncer**：先使用 Mydumper 将数据从 MySQL 导出，然后使用 TiDB-Lightning 将数据导入至 TiDB，再使用 Syncer 将 MySQL binlog 数据增量同步至 TiDB。
+- **DM**：先使用 DM 将数据从 MySQL 全量迁移至 TiDB，然后使用 DM 将 MySQL binlog 数据增量同步至 TiDB。
 
 详细操作参见 [MySQL 数据到 TiDB 的增量同步](/op-guide/migration.md#使用-syncer-增量导入数据)。
 
