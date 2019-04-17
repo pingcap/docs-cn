@@ -9,7 +9,7 @@ category: advanced
 
 ## 迁移工具
 
-在上述数据迁移过程中，会用到如下工具：
+在上述数据迁移过程中会用到如下工具：
 
 - [Mydumper](/tools/mydumper.md)：用于从 MySQL 导出数据。建议使用 Mydumper，而非 mysqldump。
 - [Loader](/tools/loader.md)：用于将 Mydumper 导出格式的数据导入到 TiDB。
