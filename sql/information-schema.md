@@ -27,7 +27,7 @@ mysql> select * from CHARACTER_SETS;
 
 ## COLLATIONS Table
 
- `COLLATIONS` 表提供 `CHARACTER_SETS` 表中字符集对应的排序规则列表。因为 TiDB 当前仅支持二进制排序规则，包含该表仅为与 MySQL 保持一致。
+ `COLLATIONS` 表提供了 `CHARACTER_SETS` 表中字符集对应的排序规则列表。TiDB 当前仅支持二进制排序规则，包含该表仅为兼容 MySQL。
 
 ```sql
 mysql> SELECT * FROM collations WHERE character_set_name='utf8mb4';
@@ -66,7 +66,7 @@ mysql> SELECT * FROM collations WHERE character_set_name='utf8mb4';
 
 ## COLLATION\_CHARACTER\_SET\_APPLICABILITY Table
 
-`COLLATION_CHARACTER_SET_APPLICABILITY` 表将排序规则映射给适用的字符集名称。和 `COLLATIONS` 表一样，包含此表也是为了和 MySQL 保持一致。
+`COLLATION_CHARACTER_SET_APPLICABILITY` 表将排序规则映射至适用的字符集名称。和 `COLLATIONS` 表一样，包含此表也是为了兼容 MySQL。
 
 ```sql
 mysql> SELECT * FROM collation_character_set_applicability WHERE character_set_name='utf8mb4';
@@ -105,7 +105,7 @@ mysql> SELECT * FROM collation_character_set_applicability WHERE character_set_n
 
 ## COLUMNS Table
 
-COLUMNS 表提供了关于所有表的列的信息。
+COLUMNS 表提供了表的所有列的信息。
 
 ```sql
 mysql> CREATE TABLE test.t1 (a int);
@@ -150,7 +150,7 @@ mysql> SHOW COLUMNS FROM t1 FROM test;
 
 ## ENGINES Table
 
-`ENGINES` 表提供了关于存储引擎的信息。从和 MySQL 兼容性上考虑，TiDB 一直将 InnoDB 描述为唯一支持的引擎。
+`ENGINES` 表提供了关于存储引擎的信息。从和 MySQL 兼容性上考虑，TiDB 会一直将 InnoDB 描述为唯一支持的引擎。
 
 ```sql
 mysql> SELECT * FROM engines\G
@@ -166,7 +166,7 @@ TRANSACTIONS: YES
 
 ## KEY\_COLUMN\_USAGE Table
 
-`KEY_COLUMN_USAGE` 这张表描述了列的键约束，比如主键约束。
+`KEY_COLUMN_USAGE` 表描述了列的键约束，比如主键约束。
 
 ```sql
 mysql> SELECT * FROM key_column_usage WHERE table_schema='mysql' and table_name='user'\G
@@ -201,7 +201,7 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 
 ## SCHEMATA Table
 
-SCHEMATA 表提供了关于数据库的信息。表中的内容和 `SHOW DATABASES` 语句执行结果基本等价。
+SCHEMATA 表提供了关于数据库的信息。表中的数据与 `SHOW DATABASES` 语句的执行结果等价。
 
 ```sql
 mysql> select * from SCHEMATA;
@@ -241,7 +241,7 @@ mysql> SELECT * FROM session_variables LIMIT 10;
 
 ## STATISTICS Table
 
- `STATISTICS` 表提供关于表索引的信息。
+ `STATISTICS` 表提供了关于表索引的信息。
 
 ```sql
 mysql> desc statistics;
@@ -376,12 +376,12 @@ CONSTRAINT_CATALOG: def
 
 其中：
 
-* `CONSTRAINT_TYPE` 的取值可以是 `UNIQUE`, `PRIMARY KEY`, 或者 `FOREIGN KEY`。
-* `UNIQUE` 和 `PRIMARY KEY` 信息跟 `SHOW INDEX` 看到的是一样的。
+* `CONSTRAINT_TYPE` 的取值可以是 `UNIQUE`，`PRIMARY KEY`，或者 `FOREIGN KEY`。
+* `UNIQUE` 和 `PRIMARY KEY` 信息与 `SHOW INDEX` 语句的执行结果类似。
 
 ## USER\_PRIVILEGES Table
 
-USER\_PRIVILEGES 表提供了关于全局权限的信息。这张表的内容是根据 `mysql.user` 表生成的。
+USER\_PRIVILEGES 表提供了关于全局权限的信息。该表的数据根据 `mysql.user` 系统表生成。
 
 ```sql
 mysql> desc USER_PRIVILEGES;
@@ -398,7 +398,7 @@ mysql> desc USER_PRIVILEGES;
 
 ## VIEWS Table
 
-`VIEWS` 表提供关于 SQL 视图的信息。
+`VIEWS` 表提供了关于 SQL 视图的信息。
 
 ```
 mysql> create view test.v1 as select 1;

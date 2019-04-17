@@ -5,7 +5,7 @@ category: user guide
 
 # TiDB 系统数据库
 
-TiDB 的系统数据库跟 MySQL 类似，里面包含一些服务器运行时需要的信息。
+TiDB 的系统数据库跟 MySQL 类似，里面包含一些服务器运行时需要的信息。本文档主要介绍 TiDB 支持的系统表。
 
 ## 支持系统表
 
