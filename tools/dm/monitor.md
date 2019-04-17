@@ -99,7 +99,7 @@ overview 下包含运行当前选定 task 的所有 DM-worker instance 的部分
 
 Grafana dashboard 默认名称为 `DM-instances`。
 
-> 当前默认告警规则在 [Task](#task) 部分已有说明，此处不再重复。
+当前默认告警规则参见 [Task](#task) 部分。
 
 ### Relay log
 
