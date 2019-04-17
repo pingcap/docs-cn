@@ -135,7 +135,7 @@
       - [字符集](sql/character-set-support.md)
       - [内存控制](sql/tidb-memory-control.md)
       - [垃圾回收 (GC)](op-guide/gc.md)
-      - [配置参数](op-guide/tidb-configuration.md)
+      - [配置参数](op-guide/configuration.md)
     + pd-server
       - [配置参数](op-guide/pd-configuration.md)
     + tikv-server
