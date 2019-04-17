@@ -18,7 +18,6 @@
       - [使用 Ansible 部署（推荐）](op-guide/ansible-deployment.md)
       - [使用 Ansible 离线部署](op-guide/offline-ansible-deployment.md)
       - [使用 Docker 部署](op-guide/docker-deployment.md)
-      - [使用 Kubernetes 部署](op-guide/kubernetes.md)
     + 跨地域冗余
       - [跨数据中心部署方案](op-guide/cross-dc-deployment.md)
       - [配置集群拓扑](op-guide/location-awareness.md)
