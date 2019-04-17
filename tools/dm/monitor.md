@@ -12,7 +12,7 @@ category: tools
 
 ## Task
 
-Grafana dashboard 默认名称为 `DM`。 
+在 Grafana dashboard 中，DM 默认名称为 `DM`。 
 
 ### overview
 
