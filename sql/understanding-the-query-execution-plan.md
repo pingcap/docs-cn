@@ -14,7 +14,7 @@ The result of the `EXPLAIN` statement provides information about how TiDB execut
 
 - `EXPLAIN` works together with `SELECT`, `DELETE`, `INSERT`, `REPLACE`, and `UPDATE`.
 - When you run the `EXPLAIN` statement, TiDB returns the final physical execution plan which is optimized by the SQL statement of `EXPLAIN`. In other words, `EXPLAIN` displays the complete information about how TiDB executes the SQL statement, such as in which order, how tables are joined, and what the expression tree looks like. For more information, see [`EXPLAIN` output format](#explain-output-format).
-- TiDB does not support `EXPLAIN [options] FOR CONNECTION connection_id` currently. We'll do it in the future. For more information, see [#4351](https://github.com/pingcap/tidb/issues/4351).
+- TiDB also supports `EXPLAIN [options] FOR CONNECTION connection_id`, but with minor differences from MySQL. See [`EXPLAIN FOR CONNECTION`](#explain-for-connection).
 
 The results of `EXPLAIN` shed light on how to index the data tables so that the execution plan can use the index to speed up the execution of SQL statements. You can also use `EXPLAIN` to check if the optimizer chooses the optimal order to join tables.
 
@@ -92,6 +92,12 @@ mysql> EXPLAIN ANALYZE SELECT count(*) FROM trips WHERE start_date BETWEEN '2017
 +------------------------+---------+------+--------------------------------------------------------------------------------------------------+-----------------------------------+
 4 rows in set (0.08 sec)
 ```
+## `EXPLAIN FOR CONNECTION`
+
+`EXPLAIN FOR CONNECTION` provides the last query execution plan used by a given connection. The output format is totally the same as `EXPLAIN` in TiDB. The usage has the following semantic differences from MySQL: 
+
+- MySQL returns the plan for the currently **executing query** while TiDB returns the execution plan for the **last executed** query. 
+- In MySQL, executing `EXPLAIN FOR CONNECTION` for connections owned by other users requires the `PROCESS` privilege. In TiDB, this statement requires the `SUPER` privilege.   
 
 ## Overview
 
