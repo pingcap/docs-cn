@@ -95,7 +95,7 @@ retry-limit = 10
 通过配置 `tidb_retry_limit` 变量可以关掉事务的重试。
 
 ```sql
-SET GLOBAL tidb_disable_txn_auto_retry = TRUE;
+SET GLOBAL tidb_retry_limit = 0;
 ```
 
 改变 `tidb_disable_txn_auto_retry` 变量不会影响 `auto_commit = 1` 的单语句的隐式事务，因为该语句仍然会自动重试。
