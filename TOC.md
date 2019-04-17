@@ -43,7 +43,7 @@
     - [概述](op-guide/migration-overview.md)
     + 从 MySQL 迁移
       - [全量迁移](op-guide/migration.md)
-      - [增量复制](op-guide/migration-incremental.md)
+      - [增量复制](op-guide/migration.md#使用-syncer-增量导入数据)
     - [从 CSV 迁移](tools/lightning/csv.md)
   + 运维
     - [Ansible 常见运维操作](op-guide/ansible-operation.md)
