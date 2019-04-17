@@ -16,7 +16,7 @@ Grafana dashboard 默认名称为 `DM`。
 
 ### overview
 
-> overview 下包含运行当前选定 task 的所有 DM-worker instances 的部分监控指标。当前默认告警规则只针对于单个 DM-worker instance。
+overview 下包含运行当前选定 task 的所有 DM-worker instance 的部分监控指标。当前默认告警规则只针对于单个 DM-worker instance。
 
 | metric 名称 | 说明 | 告警说明 |
 |:----|:------------|:----|
