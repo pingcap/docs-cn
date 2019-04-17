@@ -52,9 +52,8 @@ MySQL 的可重复读隔离级别并非 snapshot 隔离级别，MySQL 可重复�
 
 ## 事务重试
 
-执行失败的事务可能会由 TiDB 自动重试，这可能会导致更新丢失。通过设置 `tidb_disable_txn_auto_retry=TRUE` 和 `tidb_retry_limit = 0` 可关掉该项功能。
+执行失败的事务可能会由 TiDB 自动重试，这可能会导致更新丢失。通过设置 `tidb_retry_limit = 0` 可关掉该项功能。
 
-另外，通过配置参数 `retry-limit` 可控制自动重试的次数：
 
 ```
 [performance]
@@ -93,14 +92,13 @@ retry-limit = 10
 
 因为 TiDB 自动重试机制会把事务第一次执行的所有语句重新执行一遍，当一个事务里的后续语句是否执行取决于前面语句执行结果的时候，自动重试会违反快照隔离，导致更新丢失。这种情况下，需要在应用层重试整个事务。
 
-通过配置 `tidb_disable_txn_auto_retry` 和 `tidb_retry_limit` 变量可以关掉显式事务的重试。
+通过配置 `tidb_retry_limit` 变量可以关掉事务的重试。
 
 ```sql
 SET GLOBAL tidb_disable_txn_auto_retry = TRUE;
-SET GLOBAL tidb_retry_limit = 0;
 ```
 
-改变 `tidb_disable_txn_auto_retry` 变量不会影响     `auto_commit = 1` 的单语句的隐式事务，因为该语句仍然会自动重试。
+改变 `tidb_disable_txn_auto_retry` 变量不会影响 `auto_commit = 1` 的单语句的隐式事务，因为该语句仍然会自动重试。
 
 关掉显式事务重试后，如果出现事务冲突，commit 语句会返回错误，错误信息会包含 `try again later` 这个字符串，应用层可以用来判断遇到的错误是否是可以重试的。
 
