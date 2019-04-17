@@ -27,6 +27,8 @@
   + Get Started
     + Start a Local Cluster
       - [From Binary](op-guide/binary-local-deployment.md)
+      - [From Homebrew](dev/how-to/get-started/local-cluster/install-from-homebrew.md)
+      - [From DBdeployer](dev/how-to/get-started/local-cluster/install-from-dbdeployer.md)
       - [In Kubernetes](op-guide/kubernetes-local.md)
       - [In Docker Compose](op-guide/docker-compose.md)
     - [Explore SQL with TiDB](try-tidb.md)
