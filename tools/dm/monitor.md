@@ -95,7 +95,7 @@ overview 下包含运行当前选定 task 的所有 DM-worker instance 的部分
 | shard lock resolving | 当前子任务是否正在等待 shard DDL 同步，大于 0 表示正在等待同步 | N/A |
 
 
-## Instances
+## Instance
 
 Grafana dashboard 默认名称为 `DM-instances`。
 
