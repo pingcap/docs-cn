@@ -109,7 +109,7 @@ Grafana dashboard 默认名称为 `DM-instances`。
 | storage remain | relay log 占有的磁盘的剩余可用容量  | N/A |
 | process exits with error | relay log 在 DM-worker 内部遇到错误并且退出了  | N/A |
 | relay log data corruption | relay log 文件损坏的个数 | N/A |
-| fail to read binlog from master | relay 从上游的 mysql 读取 binlog 时遇到的错误数 | N/A |
+| fail to read binlog from master | relay 从上游的 MySQL 读取 binlog 时遇到的错误数 | N/A |
 | fail to write relay log | relay 写 binlog 到磁盘时遇到的错误数 | N/A |
 | binlog file index | relay log 最大的文件序列号。如 value = 1 表示 relay-log.000001 | N/A |
 | binlog file gap between master and relay | relay 与上游 master 相比落后的 binlog file 个数 | N/A |
