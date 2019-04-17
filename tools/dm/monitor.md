@@ -43,13 +43,13 @@ overview 下包含运行当前选定 task 的所有 DM-worker instance 的部分
 | storage remain | relay log 占有的磁盘的剩余可用容量  | 小于 10G 的时候需要告警 |
 | process exits with error | relay log 在 DM-worker 内部遇到错误并且退出了  | 立即告警 |
 | relay log data corruption | relay log 文件损坏的个数 | 立即告警 |
-| fail to read binlog from master | relay 从上游的 mysql 读取 binlog 时遇到的错误数 | 立即告警 |
+| fail to read binlog from master | relay 从上游的 MySQL 读取 binlog 时遇到的错误数 | 立即告警 |
 | fail to write relay log | relay 写 binlog 到磁盘时遇到的错误数 | 立即告警 |
 | binlog file index | relay log 最大的文件序列号。如 value = 1 表示 relay-log.000001 | N/A |
 | binlog file gap between master and relay | relay 与上游 master 相比落后的 binlog file 个数 | 落后 binlog file 个数超过 1 个（不含 1 个）且持续 10 分钟时 |
 | binlog pos | relay log 最新文件的写入 offset  | N/A |
 | read binlog duration | relay log 从上游的 MySQL 读取 binlog 的时延，单位：秒 |  N/A |
-| write relay log duration | relay log 每次写 binlog 到磁盘的时延，单位：秒。| N/A |
+| write relay log duration | relay log 每次写 binlog 到磁盘的时延，单位：秒| N/A |
 | binlog size | relay log 写到磁盘的单条 binlog 的大小 | N/A |
 
 ### Dumper
@@ -66,7 +66,7 @@ overview 下包含运行当前选定 task 的所有 DM-worker instance 的部分
 
 | metric 名称 | 说明 | 告警说明 |
 |:----|:------------|:----|
-| load progress | loader 导入过程的进度百分比，值变化范围为：0 %- 100 %  | N/A |
+| load progress | loader 导入过程的进度百分比，值变化范围为：0%- 100%  | N/A |
 | data file size | loader 导入的全量数据中数据文件（内含 `INSERT INTO` 语句）的总大小 | N/A |
 | load process exits with error | loader 在 DM-worker 内部遇到错误并且退出了  | 立即告警 |
 | table count | loader 导入的全量数据中 table 的数量总和  | N/A |
