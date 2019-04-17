@@ -124,5 +124,5 @@ Grafana dashboard 默认名称为 `DM-instances`。
 |:----|:------------|:----|
 | task state | 同步子任务的状态 | N/A |
 | load progress | loader 导入过程的进度百分比，值变化范围为：0% - 100%  | N/A |
-| binlog file gap between master and syncer | 与上游 master 相比落后的 binlog file 个数。| N/A |
+| binlog file gap between master and syncer | 与上游 master 相比落后的 binlog file 个数 | N/A |
 | shard lock resolving | 当前子任务是否正在等待 shard DDL 同步，大于 0 表示正在等待同步 | N/A |
