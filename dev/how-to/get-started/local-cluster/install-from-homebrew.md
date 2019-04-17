@@ -31,7 +31,7 @@ brew install mysql-client
 mysql -h 127.0.0.1 -P4000 -uroot
 ```
 
-## Startup Item
+## Startup item
 
 TiDB can start automatically on login. This is currently only supported on macOS:
 
