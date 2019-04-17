@@ -136,7 +136,7 @@ CHARACTER_MAXIMUM_LENGTH: NULL
 1 row in set (0.01 sec)
 ```
 
-The corresponding `SHOW` statement is as follows:
+对应的 `SHOW` 语句如下：
 
 ```sql
 mysql> SHOW COLUMNS FROM t1 FROM test;
