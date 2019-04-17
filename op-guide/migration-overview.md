@@ -5,49 +5,47 @@ category: advanced
 
 # 数据迁移概述
 
-## 概述
+本文档介绍了 TiDB 提供的数据迁移工具，以及不同迁移场景下如何选择迁移工具，从而将数据从 MySQL 或 CSV 数据源迁移到 TiDB。
 
-该文档详细介绍了如何将 MySQL 的数据迁移到 TiDB。
+## 迁移工具
 
-这里我们假定 MySQL 以及 TiDB 服务信息如下：
+在上述数据迁移过程中会用到如下工具：
 
-|Name|Address|Port|User|Password|
-|----|-------|----|----|--------|
-|MySQL|127.0.0.1|3306|root|*|
-|TiDB|127.0.0.1|4000|root|*|
+- [Mydumper](/tools/mydumper.md)：用于从 MySQL 导出数据。建议使用 Mydumper，而非 mysqldump。
+- [Loader](/tools/loader.md)：用于将 Mydumper 导出格式的数据导入到 TiDB。
+- [Syncer](/tools/syncer.md)：用于将数据从 MySQL 增量同步到 TiDB。
+- [DM (Data Migration)](/tools/dm/overview.md)：集成了 Mydumper、Loader、Syncer 的功能，支持 MySQL 数据的全量导出和到 TiDB 的全量导入，还支持 MySQL binlog 数据到 TiDB 的增量同步。
+- [TiDB-Lightning](/tools/lightning/overview-architecture.md)：用于将全量数据高速导入到 TiDB 集群。例如，如果要导入超过 1TiB 的数据，使用 Loader 往往需花费几十个小时，而使用 TiDB-Lighting 的导入速度至少是 Loader 的三倍。
 
-在该数据迁移过程中，会用到下面三个工具：
+## 迁移场景
 
-- mydumper 从 MySQL 导出数据
-- loader 导入数据到 TiDB
-- syncer 增量同步 MySQL 数据到 TiDB
+本小节将通过几个示例场景来说明如何选择和使用 TiDB 的迁移工具。
 
-## 两种迁移场景
+### MySQL 数据的全量迁移
 
-- 第一种场景：只全量导入历史数据（需要 mydumper + Loader）；
-- 第二种场景：全量导入历史数据后，通过增量的方式同步新的数据（需要 mydumper + Loader + Syncer）。该场景需要提前开启 binlog 且格式必须为 ROW。
+要将数据从 MySQL 全量迁移至 TiDB，可以采用以下三种方案中一种：
 
-## MySQL 开启 binlog
+- **Mydumper + Loader**：先使用 Mydumper 将数据从 MySQL 导出，然后使用 Loader 将数据导入至 TiDB。
+- **Mydumper + TiDB-Lightning**：先使用 Mydumper 将数据从 MySQL 导出，然后使用 TiDB-Lightning 将数据导入至 TiDB。
+- **DM**：直接使用 DM 将数据从 MySQL 导出，然后将数据导入至 TiDB。
 
-**注意： 只有上文提到的第二种场景才需要在 dump 数据之前先开启 binlog**
+详细操作参见 [MySQL 数据到 TiDB 的全量迁移](/op-guide/migration.md)。
 
-+   MySQL 开启 binlog 功能，参考 [Setting the Replication Master Configuration](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
-+   Binlog 格式必须使用 `ROW` format，这也是 MySQL 5.7 之后推荐的 binlog 格式，可以使用如下语句打开:
+### MySQL 数据的全量迁移和增量同步
 
-    ```sql
-    SET GLOBAL binlog_format = ROW;
-    ```
+- **Mydumper + Loader + Syncer**：先使用 Mydumper 将数据从 MySQL 导出，然后使用 Loader 将数据导入至 TiDB，再使用 Syncer 将 MySQL binlog 数据增量同步至 TiDB。
+- **Mydumper + TiDB-Lightning + Syncer**：先使用 Mydumper 将数据从 MySQL 导出，然后使用 TiDB-Lightning 将数据导入至 TiDB，再使用 Syncer 将 MySQL binlog 数据增量同步至 TiDB。
+- **DM**：先使用 DM 将数据从 MySQL 全量迁移至 TiDB，然后使用 DM 将 MySQL binlog 数据增量同步至 TiDB。
 
-## 下载 TiDB 工具集 (Linux)
+详细操作参见 [MySQL 数据到 TiDB 的增量同步](/op-guide/migration.md#使用-syncer-增量导入数据)。
 
-```bash
-# 下载 tool 压缩包
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
+> **注意**：在将 MySQL binlog 数据增量同步至 TiDB 前，需要[在 MySQL 中开启 binlog 功能](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)，并且 binlog 必须[使用 `ROW` 格式](https://dev.mysql.com/doc/refman/5.7/en/binary-log-formats.html)。
 
-# 检查文件完整性，返回 ok 则正确
-sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
-# 解开压缩包
-tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
-cd tidb-enterprise-tools-latest-linux-amd64
-```
+### 非 MySQL 数据源的数据迁移
+
+如果源数据库不是 MySQL，建议采用以下步骤进行数据迁移：
+
+1. 将数据导出为 CSV 格式。
+2. 使用 TiDB-Lightning 将 CSV 格式的数据导入 TiDB。
+
+详细操作参见[使用 TiDB-Lightning 迁移 CSV 数据](/tools/lightning/csv.md)。
