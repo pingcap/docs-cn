@@ -122,7 +122,7 @@
       - [统计信息概述](sql/statistics.md)
       - [Optimizer Hints](sql/optimizer-hints.md)
       - [TiKV 调优](op-guide/tune-tikv.md)
-      - [TiDB 最佳实践](https://pingcap.com/blog/2017-07-24-tidbbestpractice/)
+      - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
     - [TiDB 系统数据库](sql/system-database.md)
     - [Information Schema](sql/information-schema.md)
     - [TiSpark 使用指南](tispark/tispark-user-guide.md)
