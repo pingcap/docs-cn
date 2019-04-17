@@ -66,7 +66,7 @@ overview 下包含运行当前选定 task 的所有 DM-worker instance 的部分
 
 | metric 名称 | 说明 | 告警说明 |
 |:----|:------------|:----|
-| load progress | loader 导入过程的进度百分比，值变化范围为：0%- 100%  | N/A |
+| load progress | loader 导入过程的进度百分比，值变化范围为：0% - 100%  | N/A |
 | data file size | loader 导入的全量数据中数据文件（内含 `INSERT INTO` 语句）的总大小 | N/A |
 | load process exits with error | loader 在 DM-worker 内部遇到错误并且退出了  | 立即告警 |
 | table count | loader 导入的全量数据中 table 的数量总和  | N/A |
