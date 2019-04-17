@@ -97,7 +97,7 @@ overview 下包含运行当前选定 task 的所有 DM-worker instance 的部分
 
 ## Instance
 
-Grafana dashboard 默认名称为 `DM-instances`。
+在 Grafana dashboard 中，instance 的默认名称为 `DM-instances`。
 
 当前默认告警规则参见 [Task](#task) 部分。
 
