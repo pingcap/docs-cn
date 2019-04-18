@@ -7,7 +7,7 @@
   - [TiDB 整体架构](architecture.md)
   - [TiDB 核心特性](features.md)
 + TiDB 快速入门
-  - [快速入门指南](QUICKSTART.md)
+  - [快速入门指南](op-guide/docker-compose.md)
   - [SQL 基本操作](try-tidb.md)
 + TiDB 用户文档
   + TiDB 数据库管理
