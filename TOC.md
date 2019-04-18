@@ -18,7 +18,6 @@
       - [使用 Ansible 部署（推荐）](op-guide/ansible-deployment.md)
       - [使用 Ansible 离线部署](op-guide/offline-ansible-deployment.md)
       - [使用 Docker 部署](op-guide/docker-deployment.md)
-      - [使用 Kubernetes 部署](op-guide/kubernetes.md)
     + 跨地域冗余
       - [跨数据中心部署方案](op-guide/cross-dc-deployment.md)
       - [配置集群拓扑](op-guide/location-awareness.md)
@@ -44,7 +43,7 @@
     - [概述](op-guide/migration-overview.md)
     + 从 MySQL 迁移
       - [全量迁移](op-guide/migration.md)
-      - [增量复制](op-guide/migration-incremental.md)
+      - [增量复制](op-guide/migration.md#使用-syncer-增量导入数据)
     - [从 CSV 迁移](tools/lightning/csv.md)
   + 运维
     - [Ansible 常见运维操作](op-guide/ansible-operation.md)
@@ -123,7 +122,7 @@
       - [统计信息概述](sql/statistics.md)
       - [Optimizer Hints](sql/optimizer-hints.md)
       - [TiKV 调优](op-guide/tune-tikv.md)
-      - [TiDB 最佳实践](https://pingcap.com/blog/2017-07-24-tidbbestpractice/)
+      - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
     - [TiDB 系统数据库](sql/system-database.md)
     - [Information Schema](sql/information-schema.md)
     - [TiSpark 使用指南](tispark/tispark-user-guide.md)
@@ -146,7 +145,7 @@
     - [Syncer](tools/syncer.md)
     + Data Migration
       - [概述](tools/dm/overview.md)
-      - [使用限制](tools/dm/overview.md#usage-restrictions)
+      - [使用限制](tools/dm/overview.md#使用限制)
       + [部署使用](tools/dm/practice.md)
       + 核心特性
         - [Table Routing](tools/dm/data-synchronization-features.md#table-routing)
@@ -216,7 +215,7 @@
     - [360金融](http://t.cn/RTKnTev)
     - [中国电信翼支付](http://t.cn/R3Wd9p3)
     - [某电信运营商](http://t.cn/RTYWADg)
-+ 常见问题与解答 (FAQ)
++ 常见问题 (FAQ)
   - [TiDB FAQ](FAQ.md)
   - [TiDB-Lightning FAQ](tools/lightning/faq.md)
   - [升级 FAQ](op-guide/upgrade-faq.md)
