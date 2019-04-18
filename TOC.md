@@ -2,10 +2,12 @@
 
 ## 目录
 
-+ [TiDB 简介](QUICKSTART.md)
++ [TiDB 简介](overview.md)
 + 主要概念
   - [整体架构](architecture.md)
-  + [核心特性](overview.md)
+  + [核心特性](key-features.md)
+    - [水平扩展](key-features.md#水平扩展)
+    - [高可用](key-features.md#高可用)
 + 操作指南
   + 快速上手
     + 创建本地集群
