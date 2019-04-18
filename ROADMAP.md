@@ -32,6 +32,7 @@ category: Roadmap
     - [ ] 支持 Table Lock
     - [ ] 支持 Change column type
     - [ ] 支持单条语句中多个 DDL 操作
+    - [ ] 支持不可见索引（invisible index）
 - [ ] 支持插件系统
     - [ ] 支持白名单插件
     - [ ] 支持审计日志插件
