@@ -145,7 +145,7 @@
     - [Syncer](tools/syncer.md)
     + Data Migration
       - [概述](tools/dm/overview.md)
-      - [使用限制](tools/dm/overview.md#usage-restrictions)
+      - [使用限制](tools/dm/overview.md#使用限制)
       + [部署使用](tools/dm/practice.md)
       + 核心特性
         - [Table Routing](tools/dm/data-synchronization-features.md#table-routing)
@@ -215,7 +215,7 @@
     - [360金融](http://t.cn/RTKnTev)
     - [中国电信翼支付](http://t.cn/R3Wd9p3)
     - [某电信运营商](http://t.cn/RTYWADg)
-+ 常见问题与解答 (FAQ)
++ 常见问题 (FAQ)
   - [TiDB FAQ](FAQ.md)
   - [TiDB-Lightning FAQ](tools/lightning/faq.md)
   - [升级 FAQ](op-guide/upgrade-faq.md)
