@@ -12,7 +12,7 @@ category: tools
 
 ## Task
 
-在 Grafana dashboard 中，DM 默认名称为 `DM`。 
+在 Grafana dashboard 中，DM 默认名称为 `DM-task`。 
 
 ### overview
 
@@ -83,7 +83,7 @@ overview 下包含运行当前选定 task 的所有 DM-worker instance 的部分
 | remaining time to sync | 预计 syncer 还需要多少分钟可以和 master 完全同步，单位：分钟 | N/A |
 | replicate lag | master 到 syncer 的 binlog 复制延迟时间，单位：秒 | N/A |
 | process exist with error | binlog replication 在 DM-worker 内部遇到错误并且退出了 | 立即告警 |
-| binlog file gap between master and syncer | 与上游 master 相比落后的 binlog file 个数。| 落后 binlog file 个数超过 1 个（不含 1 个）且持续 10 分钟时 |
+| binlog file gap between master and syncer | 与上游 master 相比落后的 binlog file 个数 | 落后 binlog file 个数超过 1 个（不含 1 个）且持续 10 分钟时 |
 | binlog file gap between relay and syncer | 与 relay 相比落后的 binlog file 个数 | 落后 binlog file 个数超过 1 个（不含 1 个）且持续 10 分钟时 |
 | binlog event qps | 单位时间内接收到的 binlog event 数量 (不包含需要跳过的 event) | N/A |
 | skipped binlog event qps  | 单位时间内接收到的需要跳过的 binlog event 数量  | N/A |
@@ -97,9 +97,9 @@ overview 下包含运行当前选定 task 的所有 DM-worker instance 的部分
 
 ## Instance
 
-在 Grafana dashboard 中，instance 的默认名称为 `DM-instances`。
+在 Grafana dashboard 中，instance 的默认名称为 `DM-instance`。
 
-当前默认告警规则参见 [Task](#task) 部分。
+当前默认告警规则主要以 task 为维度进行表示，参见 [Task](#task) 部分，此部分不再赘述。
 
 ### Relay log
 
@@ -124,5 +124,5 @@ overview 下包含运行当前选定 task 的所有 DM-worker instance 的部分
 |:----|:------------|:----|
 | task state | 同步子任务的状态 | N/A |
 | load progress | loader 导入过程的进度百分比，值变化范围为：0% - 100%  | N/A |
-| binlog file gap between master and syncer | 与上游 master 相比落后的 binlog file 个数 | N/A |
+| binlog file gap between master and syncer | 与上游 master 相比 binlog replication 落后的 binlog file 个数 | N/A |
 | shard lock resolving | 当前子任务是否正在等待 shard DDL 同步，大于 0 表示正在等待同步 | N/A |
