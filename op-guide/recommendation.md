@@ -1,9 +1,9 @@
 ---
-title: TiDB 软件和硬件环境要求
+title: TiDB 软件和硬件环境建议配置
 category: deployment
 ---
 
-# TiDB 软件和硬件环境要求
+# TiDB 软件和硬件环境建议配置
 
 ## 概述
 
@@ -24,7 +24,7 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运�
 > - TiDB 在 CentOS 7.3 的环境下进行过大量的测试，同时社区也有很多该操作系统部署的最佳实践，因此，建议使用 CentOS 7.3 以上的 Linux 操作系统来部署 TiDB。
 > - 以上 Linux 操作系统可运行在物理服务器以及 VMware、KVM、XEN 主流虚拟化环境上。
 
-## 服务器要求
+## 服务器建议配置
 
 TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台。对于开发，测试，及生产环境的服务器硬件配置有以下要求和建议：
 
@@ -81,4 +81,4 @@ TiDB 作为开源分布式 NewSQL 数据库，其正常运行需要网络环境�
 
 ## 客户端 Web 浏览器要求
 
-TiDB 提供了基于 Prometheus 和 Grafana 技术平台作为 TiDB 分布式数据库集群的可视化监控数据展现方案。建议用户采用高版本的微软 IE，Google Chrome，Mozilla Firefox 访问 Grafana 监控入口。
+TiDB 提供了基于 [Grafana](https://grafana.com/) 的技术平台，对数据库集群的各项指标进行可视化展现。采用支持 Javascript 的微软 IE、Google Chrome、Mozilla Firefox 的较新版本即可访问监控入口。
