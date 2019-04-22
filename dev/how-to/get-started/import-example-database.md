@@ -1,10 +1,11 @@
 ---
-title: Bikeshare Example Database
+title: Import Example Database
 summary: Install the Bikeshare example database.
-category: user guide
+category: how-to 
+aliases: ['/docs/bikeshare-example-database/']
 ---
 
-# Bikeshare Example Database
+# Import Example Database
 
 Examples used in the TiDB manual use [System Data](https://www.capitalbikeshare.com/system-data) from Capital Bikeshare, released under the [Capital Bikeshare Data License Agreement](https://www.capitalbikeshare.com/data-license-agreement).
 

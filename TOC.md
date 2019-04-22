@@ -26,14 +26,14 @@
 + How-to
   + Get Started
     + Start a Local Cluster
-      - [From Binary](op-guide/binary-local-deployment.md)
+      - [From Binary](dev/how-to/get-started/local-cluster/install-from-binary.md)
       - [From Homebrew](dev/how-to/get-started/local-cluster/install-from-homebrew.md)
       - [From DBdeployer](dev/how-to/get-started/local-cluster/install-from-dbdeployer.md)
-      - [In Kubernetes](op-guide/kubernetes-local.md)
-      - [In Docker Compose](op-guide/docker-compose.md)
-    - [Explore SQL with TiDB](try-tidb.md)
-    - [Import Sample Database](bikeshare-example-database.md)
-    - [Read Historical Data](op-guide/history-read.md)
+      - [In Kubernetes](dev/how-to/get-started/local-cluster/install-from-kubernetes.md)
+      - [In Docker Compose](dev/how-to/get-started/local-cluster/install-from-docker-compose.md)
+    - [Explore SQL with TiDB](dev/how-to/get-started/explore-sql.md)
+    - [Import Example Database](dev/how-to/get-started/import-example-database.md)
+    - [Read Historical Data](dev/how-to/get-started/read-historical-data.md)
   - Deploy
     - [Hardware Recommendations](op-guide/recommendation.md)
     + From Binary Tarball
