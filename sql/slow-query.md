@@ -128,13 +128,33 @@ tidb > select query, query_time from INFORMATION_SCHEMA.`SLOW_QUERY` where diges
 +-----------------------------+-------------+
 | query                       | query_time  |
 +-----------------------------+-------------+
-| select * from t1 where a=1; | 0.558006 |
-| select * from t1 where a=2; | 0.313532 |
+| select * from t1 where a=1; | 0.558006    |
+| select * from t1 where a=2; | 0.313532    |
 +-----------------------------+-------------+
 2 rows in set
 ```
 
+查询统计信息是 pseudo 的慢查询
+
+```sql
+tidb > select query, query_time, stats from INFORMATION_SCHEMA.`SLOW_QUERY` where is_internal=false and stats like('%pseudo%');
++-----------------------------+-------------+---------------------------------+
+| query                       | query_time  | stats                           |
++-----------------------------+-------------+---------------------------------+
+| select * from t1 where a=1; | 0.302558006 | t1:pseudo                       |
+| select * from t1 where a=2; | 0.401313532 | t1:pseudo                       |
+| select * from t1 where a>2; | 0.602011247 | t1:pseudo                       |
+| select * from t1 where a>3; | 0.50077719  | t1:pseudo                       |
+| select * from t1 join t2;   | 0.931260518 | t1:407872303825682445,t2:pseudo |
++-----------------------------+-------------+---------------------------------+
+```
+
+
+
+
+
 #### 解析其他的 TiDB 慢日志文件
+
 目前查询 `INFORMATION_SCHEMA.SLOW_QUERY`  只会解析配置文件中 `slow-query-file` 设置的慢日志文件名，默认是 "tidb-slow.log" 。 但如果想要解析其他的日志文件，可以通过设置 session 变量 `tidb_slow_query_file` 为具体的文件路径，然后查询 `INFORMATION_SCHEMA.SLOW_QUERY` 就会按照设置的路径去解析慢日志文件。
 ```sql
 /* 设置慢日志文件路径，方便解析其他的慢日志文件，tidb_slow_query_file 变量的作用域是 session */
