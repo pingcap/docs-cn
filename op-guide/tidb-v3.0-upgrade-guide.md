@@ -1,39 +1,35 @@
 ---
-title: TiDB 2.1 升级操作指南
+title: TiDB 3.0 升级操作指南
 category: deployment
 ---
 
-# TiDB 2.1 升级操作指南
+# TiDB 3.0 升级操作指南
 
-本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 RC 版本升级到 TiDB 2.1 GA 版本。TiDB 2.1 版本不兼容 Kafka 版本的 TiDB-Binlog，如果当前集群已经使用 [Kafka 版本的 TiDB-Binlog](../tools/tidb-binlog-kafka.md)，须参考 [Binlog 升级方法](../tools/tidb-binlog-cluster.md#版本升级方法)升级到 Cluster 版本。
+本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 RC 版本升级到 TiDB 3.0 GA 版本。TiDB 3.0 版本兼容 Kafka 版本的 TiDB-Binlog 以及 集群模式的 TiDB-Binlog 。
 
 ## 升级兼容性说明
 
-- 新版本存储引擎更新，不支持在升级后回退至 2.0.x 或更旧版本
-- 从 2.0.6 之前的版本升级到 2.1 之前，需要确认集群中是否存在正在运行中的 DDL 操作，特别是耗时的 `Add Index` 操作，等 DDL 操作完成后再执行升级操作
-- 2.1 版本启用了并行 DDL，早于 2.0.1 版本的集群，无法滚动升级到 2.1，可以选择下面两种方案：
-    - 停机升级，直接从早于 2.0.1 的 TiDB 版本升级到 2.1
-    - 先滚动升级到 2.0.1 或者之后的 2.0.x 版本，再滚动升级到 2.1 版本
+- loading
 
 ## 注意事项
 
-在升级的过程中不要执行 DDL 请求，否则可能会出现行为未定义的问题。
+- loading
 
 ## 在中控机器上安装 Ansible 及其依赖
 
-TiDB-Ansible release-2.1 版本依赖 2.4.2 及以上但不高于 2.7.0 的 Ansible 版本（`ansible>=2.4.2,<2.7.0`），另依赖 Python 模块：`jinja2>=2.9.6` 和 `jmespath>=0.9.0`。为方便管理依赖，新版本使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](../op-guide/ansible-deployment.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](../op-guide/offline-ansible-deployment.md#在中控机器上离线安装-ansible-及其依赖)。
+TiDB-Ansible release-3.0 版本依赖 2.5.14 Ansible 版本（`ansible=2.5.14`），另依赖 Python 模块：`jinja2>=2.9.6` 和 `jmespath>=0.9.0`。为方便管理依赖，新版本使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](../op-guide/ansible-deployment.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](../op-guide/offline-ansible-deployment.md#在中控机器上离线安装-ansible-及其依赖)。
 
 安装完成后，可通过以下命令查看版本：
 
 ```
 $ ansible --version
-ansible 2.6.8
+ansible 2.5.14
 $ pip show jinja2
 Name: Jinja2
 Version: 2.10
 $ pip show jmespath
 Name: jmespath
-Version: 0.9.3
+Version: 0.9.0
 ```
 
 > **注意**：请务必按以上文档安装 Ansible 及其依赖。确认 Jinja2 版本是否正确，否则启动 Grafana 时会报错。确认 jmespath 版本是否正确，否则滚动升级 TiKV 时会报错。
@@ -99,9 +95,9 @@ readpool:
 
 单机多 TiKV 实例情况下，需要修改这三个参数，推荐设置：`实例数 * 参数值 = CPU 核数 * 0.8`。
 
-## 下载 TiDB 2.1 binary 到中控机
+## 下载 TiDB 3.0 binary 到中控机
 
-确认 `tidb-ansible/inventory.ini` 文件中 `tidb_version = v2.1.0`，然后执行以下命令下载 TiDB 2.1 binary 到中控机。
+确认 `tidb-ansible/inventory.ini` 文件中 `tidb_version = v3.0.0`，然后执行以下命令下载 TiDB 2.1 binary 到中控机。
 
 ```
 $ ansible-playbook local_prepare.yml
@@ -109,6 +105,13 @@ $ ansible-playbook local_prepare.yml
 
 ## 滚动升级 TiDB 集群组件
 
+> **注意**：为优化 TiDB 集群组件的运维管理考虑，TiDB 3.0 版本对 `systemd` 模式下的 `PD service` 名称进行调整，注意滚动升级 TiDB 集群组件操作略有不同，注意升级前后 `process_supervision` 参数配置要保持一致。
+
+如果 `process_supervision` 变量使用默认推荐 `systemd` 参数，则通过 excessive_rolling_update.yml 滚动升级 TiDB 集群。  
+```
+$ ansible-playbook excessive_rolling_update.yml
+```
+如果 `process_supervision` 变量使用默认推荐 `supervise` 参数，则通过 rolling_update.yml 滚动升级 TiDB 集群。 
 ```
 $ ansible-playbook rolling_update.yml
 ```
