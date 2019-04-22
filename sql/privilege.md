@@ -9,72 +9,9 @@ category: user guide
 
 TiDB 的权限管理系统是按照 MySQL 的权限管理进行实现，大部分的 MySQL 的语法和权限类型都是支持的。如果发现行为跟 MySQL 不一致的地方，欢迎[提 issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
-## 示例
+## 权限相关操作
 
-### 用户账户操作
-
-TiDB 的用户账户名由一个用户名和一个主机名组成。账户名的语法为 `'user_name'@'host_name'`。
-
-- `user_name` 大小写敏感。
-- `host_name` 可以是一个主机名或 IP 地址。主机名或 IP 地址中允许使用通配符 `%` 和 `_`。例如，名为 `'%'` 的主机名可以匹配所有主机，`'192.168.1.%'` 可以匹配子网中的所有主机。
-
-#### 添加用户
-
-```sql
-CREATE USER 'test'@'127.0.0.1' IDENTIFIED BY 'xxx';
-```
-
-host 支持模糊匹配，比如：
-
-```sql
-CREATE USER 'test'@'192.168.10.%';
-```
-
-允许 `test` 用户从 `192.168.10` 子网的任何一个主机登陆。
-
-如果没有指定 host，则默认是所有 IP 均可登陆。如果没有指定密码，默认为空：
-
-```sql
-CREATE USER 'test';
-```
-
-等价于
-
-```sql
-CREATE USER 'test'@'%' IDENTIFIED BY '';
-```
-
-#### 更改密码
-
-```sql
-SET PASSWORD FOR 'root'@'%' = 'xxx';
-```
-
-#### 删除用户
-
-```sql
-DROP USER 'test'@'%';
-```
-
-这个操作会清除用户在 `mysql.user` 表里面的记录项，并且清除在授权表里面的相关记录。
-
-#### 忘记 root 密码
-
-使用一个特殊的启动参数启动 TiDB（需要 root 权限）：
-
-```bash
-sudo ./tidb-server -skip-grant-table=true
-```
-
-这个参数启动，TiDB 会跳过权限系统，然后使用 root 登陆以后修改密码：
-
-```bash
-mysql -h 127.0.0.1 -P 4000 -u root
-```
-
-### 权限相关操作
-
-#### 授予权限
+### 授予权限
 
 授予 `xxx` 用户对数据库 `test` 的读权限：
 
@@ -143,7 +80,7 @@ mysql> SELECT user,host,db FROM mysql.db WHERE user='genius';
 
 这个例子中通过 `%` 模糊匹配，所有 `te` 开头的数据库，都被授予了权限。
 
-#### 收回权限
+### 收回权限
 
 `REVOKE` 语句与 `GRANT` 对应：
 
@@ -186,7 +123,7 @@ mysql> CREATE TABLE `select` (id int);
 Query OK, 0 rows affected (0.27 sec)
 ```
 
-#### 查看为用户分配的权限
+### 查看为用户分配的权限
 
 `SHOW GRANTS` 语句可以查看为用户分配了哪些权限。例如：
 
@@ -215,9 +152,9 @@ SELECT Insert_priv FROM mysql.db WHERE user='test' AND host='%';
 SELECT table_priv FROM mysql.tables_priv WHERE user='test' AND host='%' AND db='db1';
 ```
 
-### 权限系统的实现
+## 权限系统的实现
 
-#### 授权表
+### 授权表
 
 有几张系统表是非常特殊的表，权限相关的数据全部存储在这几张表内。
 
@@ -256,13 +193,13 @@ DELETE FROM mysql.user WHERE user='test';
 DROP USER 'test';
 ```
 
-#### 连接验证
+### 连接验证
 
 当客户端发送连接请求时，TiDB 服务器会对登陆操作进行验证。验证过程先检查 `mysql.user` 表，当某条记录的 User 和 Host 和连接请求匹配上了，再去验证 Password。用户身份基于两部分信息，发起连接的客户端的 Host，以及用户名 User。如果 User不为空，则用户名必须精确匹配。
 
 User+Host 可能会匹配 `user` 表里面多行，为了处理这种情况，`user` 表的行是排序过的，客户端连接时会依次去匹配，并使用首次匹配到的那一行做权限验证。排序是按 Host 在前，User 在后。
 
-#### 请求验证
+### 请求验证
 
 连接成功之后，请求验证会检测执行操作是否拥有足够的权限。
 
@@ -276,7 +213,7 @@ User+Host 可能会匹配 `user` 表里面多行，为了处理这种情况，`u
 
 `tables_priv` 和 `columns_priv` 中使用 `%` 是类似的，但是在`Db`, `Table_name`, `Column_name` 这些列不能包含 `%`。加载进来时排序也是类似的。
 
-#### 生效时机
+### 生效时机
 
 TiDB 启动时，将一些权限检查的表加载到内存，之后使用缓存的数据来验证权限。系统会周期性的将授权表从数据库同步到缓存，生效则是由同步的周期决定，目前这个值设定的是5分钟。
 
@@ -292,23 +229,7 @@ FLUSH PRIVILEGES;
 
 现阶段对权限的支持还没有做到 column 级别。
 
-## CREATE USER 语句
-
-```sql
-CREATE USER [IF NOT EXISTS]
-    user [auth_spec] [, user [auth_spec]] ...
-auth_spec: {
-    IDENTIFIED BY 'auth_string'
-  | IDENTIFIED BY PASSWORD 'hash_string'
-}
-```
-
-User 参见[用户账号名](../sql/user-account-management.md)。
-
-* `IDENTIFIED BY 'auth_string'`：设置登录密码时，`auth_string` 会被 TiDB 经过加密存储在 `mysql.user` 表中。
-* `IDENTIFIED BY PASSWORD 'hash_string'`：设置登录密码，`hash_string` 是一个类似于 `*EBE2869D7542FCE37D1C9BBC724B97BDE54428F1` 的 41 位字符串，会被 TiDB 直接存储在 `mysql.user` 表中，该字符串可以通过 `SELECT password('auth_string')` 加密得到。
-
-# TiDB 各操作需要的权限
+## TiDB 各操作需要的权限
 
 TiDB 目前用户拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` 表中查找到。
 
@@ -336,7 +257,7 @@ TiDB 目前用户拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` �
 | Create Role    | CreateRolePriv | 执行 create role         |
 | Show Databases | ShowDBPriv     | 显示 database 内的表情况 |
 
-## ALTER
+### ALTER
 
 对于所有的 `ALTER` 语句，均需要用户对所操作的表拥有 `ALTER` 权限。除 `ALTER ... DROP` 和 `ALTER ... RENAME TO` 外，均需要对所操作表拥有 `INSERT` 和 `CREATE` 权限。
 
@@ -344,74 +265,74 @@ TiDB 目前用户拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` �
 
 注：根据 MySQL 5.7 文档中的说明，`ALTER` 表需要 `INSERT` 和 `CREATE` 权限，但在 MySQL 5.7.25 版本实际情况中，`ALTER` 表仅需要 `ALTER` 权限。为了尽可能减少对用户的困扰，TiDB 中的 ALTER 权限目前与 MySQL 实际行为保持一致。
 
-## CREATE DATABASE
+### CREATE DATABASE
 
 需要对数据库拥有 `CREATE` 权限。
 
-## CREATE INDEX
+### CREATE INDEX
 
 需要对所操作的表拥有 `INDEX` 权限。
 
-## CREATE TABLE
+### CREATE TABLE
 
 需要对所操作的表拥有 `CREATE` 权限；若使用 `CREATE TABLE .... LIKE ....` 需要对相关的表拥有 `SELECT` 权限。
 
-## CREATE VIEW
+### CREATE VIEW
 
 需要拥有 `CREATE VIEW` 权限。
 
 注：如果当前登录用户与创建视图的用户不同，除需要 `CREATE VIEW` 权限外，我们还需要 `SUPER` 权限。
 
-## DROP DATABASE
+### DROP DATABASE
 
 需要对数据库拥有 `DROP` 权限。
 
-## DROP INDEX
+### DROP INDEX
 
 需要对所操作的表拥有 `INDEX` 权限。
 
-## DROP TABLES
+### DROP TABLES
 
 需要对所操作的表拥有 `DROP` 权限。
 
-## TRUNCATE TABLE
+### TRUNCATE TABLE
 
 需要对所操作的表拥有 `DROP` 权限。
 
-## RENAME TABLE
+### RENAME TABLE
 
 需要对重命名前的表拥有 `ALTER` 和 `DROP` 权限，对重命名后的表拥有 `CREATE` 和 `INSERT` 权限。
 
-## ANALYZE TABLE
+### ANALYZE TABLE
 
 需要对所操作的表拥有 `INSERT` 和 `SELECT` 权限。
 
-## SHOW
+### SHOW
 
 `SHOW CREATE TABLE` 需要任意一种权限。
 
 `SHOW CREATE VIEW` 需要 `SHOW VIEW` 权限。
 
-## CREATE ROLE/USER
+### CREATE ROLE/USER
 
 `CREATE ROLE` 需要 `CREATE ROLE` 权限。
 
 `CREATE USER` 需要 `CREATE USER` 权限
 
-## DROP ROLE/USER
+### DROP ROLE/USER
 
 `DROP ROLE` 需要 `DROPROLE` 权限。
 
 `DROP USER` 需要 `CREATEUSER` 权限
 
-## ALTER USER
+### ALTER USER
 
 `ALTER USER` 需要 `CREATEUSER` 权限。
 
-## GRANT
+### GRANT
 
 `GRANT` 需要 `GRANT` 权限并且拥有 `GRANT` 所赋予的权限。
 
-## REVOKE
+### REVOKE
 
 `REVOKE` 需要 `SUPER` 权限。
