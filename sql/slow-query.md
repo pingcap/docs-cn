@@ -44,7 +44,7 @@ select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
 * `Index_ids` ：表示语句涉及到的索引的 ID
 * `Is_internal`：表示是否是 TiDB 内部 SQL。true 为TiDB 内部执行的SQL, 比如 analyze，load variable 等；false 为用户执行的 SQL 。
 * `Digest`： 表示 SQL 语句的指纹
-* `Query`：表示 SQL 语句。
+* `Query`：表示 SQL 语句。慢日志里面不会打印 `Query`，但映射到内存表后，对应的字段叫 `Query`。
 
 ### 慢日志内存映射表 
 为了方便用 SQL 查询定位慢查询，TiDB 将慢日志内容解析后映射到 `INFORMATION_SCHEMA.SLOW_QUERY` 表中，表中 column 名和慢日志中记录的字段名一一对应 。
@@ -75,12 +75,20 @@ tidb > show create table INFORMATION_SCHEMA.SLOW_QUERY;
 +------------+-------------------------------------------------------------+
 ```
 
-#### 查询 SLOW_QUERY 示例
+#### 实现细节
+
+`INFORMATION_SCHEMA.SLOW_QUERY` 表里面的内容是通过实时解析 TiDB 慢日志里面的内容得到的。每次查询这个表时都会去读取慢日志文件里面的内容，然后解析。
+
+### 查询 SLOW_QUERY 示例
 
 下面示例展示如何通过查询 SLOW_QUERY 表来定位慢查询。
 
+#### 查询 TopN 的慢查询
+
+查询 Top2 的用户慢查询。`Is_internal=false` 表示排除 TiDB 内部的慢查询，只看用户的慢查询。
+
 ```sql
-/* 查询用户执行的SQL, 且按执行消耗时间排序 */
+/* 查询所有用户执行的SQL, 且按执行消耗时间排序 */
 tidb > select `Query_time`, query from INFORMATION_SCHEMA.`SLOW_QUERY` where `Is_internal`=false order by `Query_time` desc limit 2;
 +--------------+------------------------------------------------------------------+
 | Query_time   | query                                                            |
@@ -90,6 +98,10 @@ tidb > select `Query_time`, query from INFORMATION_SCHEMA.`SLOW_QUERY` where `Is
 +--------------+------------------------------------------------------------------+
 2 rows in set
 Time: 0.012s
+```
+
+#### 查询 `test` 用户的 TopN 慢查询 
+```sql
 /* 查询 test 用户执行的SQL, 且按执行消耗时间排序*/
 tidb > select `Query_time`, query,  user from INFORMATION_SCHEMA.`SLOW_QUERY` where `Is_internal`=false and user like "test%" order by `Query_time` desc limit 2;
 +-------------+------------------------------------------------------------------+----------------+
@@ -99,15 +111,41 @@ tidb > select `Query_time`, query,  user from INFORMATION_SCHEMA.`SLOW_QUERY` wh
 +-------------+------------------------------------------------------------------+----------------+
 1 row in set
 Time: 0.014s
+```
+
+#### 根据 SQL 指纹来查询类似 SQL 的慢查询
+如果查询了 TopN 的SQL 后，想查询相同 SQL 指纹的查询，可以用指纹作为过滤条件。
+```sql
+tidb > select query_time, query,digest from INFORMATION_SCHEMA.`SLOW_QUERY` where `Is_internal`=false order by `Query_time` desc limit 1;
++-------------+-----------------------------+------------------------------------------------------------------+
+| query_time  | query                       | digest                                                           |
++-------------+-----------------------------+------------------------------------------------------------------+
+| 0.002558006 | select * from t1 where a=1; | 4751cb6008fda383e22dacb601fde85425dc8f8cf669338d55d944bafb46a6fa |
++-------------+-----------------------------+------------------------------------------------------------------+
+1 row in set
+Time: 0.007s
+tidb > select query, query_time from INFORMATION_SCHEMA.`SLOW_QUERY` where digest="4751cb6008fda383e22dacb601fde85425dc8f8cf669338d55d944bafb46a6fa";
++-----------------------------+-------------+
+| query                       | query_time  |
++-----------------------------+-------------+
+| select * from t1 where a=1; | 0.002558006 |
+| select * from t1 where a=2; | 0.001313532 |
++-----------------------------+-------------+
+2 rows in set
+```
+
+#### 解析其他的 TiDB 慢日志文件
+目前查询 `INFORMATION_SCHEMA.SLOW_QUERY`  只会解析配置文件中 `slow-query-file` 设置的慢日志文件名，默认是 "tidb-slow.log" 。 但如果想要解析其他的日志文件，可以通过设置 session 变量 `tidb_slow_query_file` 为具体的文件路径，然后查询 `INFORMATION_SCHEMA.SLOW_QUERY` 就会按照设置的路径去解析慢日志文件。
+```sql
 /* 设置慢日志文件路径，方便解析其他的慢日志文件，tidb_slow_query_file 变量的作用域是 session */
 mysql test@127.0.0.1:test> set tidb_slow_query_file="/path-to-log/tidb-slow.log"
 Query OK, 0 rows affected
 Time: 0.001s
 ```
 
-#### 实现细节
+#### 不足
 
-`INFORMATION_SCHEMA.SLOW_QUERY` 表里面的内容是通过实时解析 TiDB 慢日志里面的内容得到的。每次查询这个表时都会去读取慢日志文件里面的内容，然后解析。
+`INFORMATION_SCHEMA.SLOW_QUERY` 目前暂时只支持解析一个慢日志文件，如果慢日志文件超过一定大小后被 logrotate 成多个文件了，查询 `INFORMATION_SCHEMA.SLOW_QUERY` 也只会去解析一个文件。后续我们会改善这点。
 
 ####  用 pt-query-digest 工具分析 TiDB 慢日志
 
