@@ -120,7 +120,7 @@ tidb > select query_time, query,digest from INFORMATION_SCHEMA.`SLOW_QUERY` wher
 +-------------+-----------------------------+------------------------------------------------------------------+
 | query_time  | query                       | digest                                                           |
 +-------------+-----------------------------+------------------------------------------------------------------+
-| 0.558006 | select * from t1 where a=1; | 4751cb6008fda383e22dacb601fde85425dc8f8cf669338d55d944bafb46a6fa |
+| 0.302558006 | select * from t1 where a=1; | 4751cb6008fda383e22dacb601fde85425dc8f8cf669338d55d944bafb46a6fa |
 +-------------+-----------------------------+------------------------------------------------------------------+
 1 row in set
 Time: 0.007s
@@ -128,8 +128,8 @@ tidb > select query, query_time from INFORMATION_SCHEMA.`SLOW_QUERY` where diges
 +-----------------------------+-------------+
 | query                       | query_time  |
 +-----------------------------+-------------+
-| select * from t1 where a=1; | 0.558006    |
-| select * from t1 where a=2; | 0.313532    |
+| select * from t1 where a=1; | 0.302558006 |
+| select * from t1 where a=2; | 0.401313532 |
 +-----------------------------+-------------+
 2 rows in set
 ```
