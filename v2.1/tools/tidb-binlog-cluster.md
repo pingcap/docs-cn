@@ -142,9 +142,39 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
         pump3 ansible_host=172.16.10.74 deploy_dir=/data1/pump
         ```
 
-2. Deploy and start the TiDB cluster.
+2. Deploy and start the TiDB cluster with Pump components.
 
-    For how to use Ansible to deploy the TiDB cluster, see [Deploy TiDB Using Ansible](../op-guide/ansible-deployment.md). When Binlog is enabled, Pump is deployed and started by default.
+   After configuring the `inventory.ini` file as described above, choose one of the following two methods for deployment.
+
+    **Method 1**: Adding a Pump component to an existing TiDB cluster requires step-by-step steps as follows.
+
+     1. Deploy pump_servers and node_exporters
+
+         ```
+        Ansible-playbook deploy.yml -l ${pump1_ip}, ${pump2_ip}, [${alias1_name}, ${alias2_name}]
+         ```
+
+     2. Start pump_servers
+
+         ```
+         Ansible-playbook start.yml --tags=pump
+         ```
+
+     3. Update and restart tidb_servers
+
+         ```
+         Ansible-playbook rolling_update.yml --tags=tidb
+         ```
+
+     4. Update monitoring information
+
+         ```
+        Ansible-playbook rolling_update_monitor.yml --tags=prometheus
+         ```
+
+        **Method 2**: Deploy a TiDB cluster with Pump components from scratch
+
+        For how to use Ansible to deploy the TiDB cluster, see [Deploy TiDB Using Ansible](../op-guide/ansible-deployment.md).  
 
 3. Check the Pump status.
 
@@ -153,9 +183,10 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
     ```bash
     $ cd /home/tidb/tidb-ansible
     $ resources/bin/binlogctl -pd-urls=http://172.16.10.72:2379 -cmd pumps
-    2018/09/21 16:45:54 nodes.go:46: [info] pump: &{NodeID:ip-172-16-10-72:8250 Addr:172.16.10.72:8250 State:online IsAlive:false Score:0 Label:<nil> MaxCommitTS:0 UpdateTS:403051525690884099}
-    2018/09/21 16:45:54 nodes.go:46: [info] pump: &{NodeID:ip-172-16-10-73:8250 Addr:172.16.10.73:8250 State:online IsAlive:false Score:0 Label:<nil> MaxCommitTS:0 UpdateTS:403051525703991299}
-    2018/09/21 16:45:54 nodes.go:46: [info] pump: &{NodeID:ip-172-16-10-74:8250 Addr:172.16.10.74:8250 State:online IsAlive:false Score:0 Label:<nil> MaxCommitTS:0 UpdateTS:403051525717360643}
+    
+    INFO[0000] pump: {NodeID: ip-172-16-10-72:8250, Addr: 172.16.10.72:8250, State: online, MaxCommitTS: 403051525690884099, UpdateTime: 2018-12-25 14:23:37 +0800 CST}
+    INFO[0000] pump: {NodeID: ip-172-16-10-73:8250, Addr: 172.16.10.73:8250, State: online, MaxCommitTS: 403051525703991299, UpdateTime: 2018-12-25 14:23:36 +0800 CST}
+    INFO[0000] pump: {NodeID: ip-172-16-10-74:8250, Addr: 172.16.10.74:8250, State: online, MaxCommitTS: 403051525717360643, UpdateTime: 2018-12-25 14:23:35 +0800 CST}
     ```
 
 #### Step 3: Deploy Drainer
@@ -173,11 +204,9 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
     2018/06/21 11:24:47 meta.go:117: [info] meta: &{CommitTS:400962745252184065}
     ```
 
-    After this command is executed, a file named `{data-dir}/savepoint` is generated. This file contains `tso`, whose value is used as the value of the `initial-commit-ts` parameter needed for the initial start of Drainer.
+     After this command is executed, `meta: &{CommitTS:400962745252184065}` is generated. The value of CommitTS is used as the value of the `initial-commit-ts` parameter needed for the initial start of Drainer.
 
 2. Back up and restore all the data.
-
-    If the downstream is MySQL/TiDB, to guarantee the data integrity, you need to make a full backup and restore of the data before Drainer starts (about 10 minutes after Pump starts to run).
 
     It is recommended to use [mydumper](../tools/mydumper.md) to make a full backup of TiDB and then use [Loader](../tools/loader.md) to export the data to the downstream. For more details, see [Backup and Restore](../op-guide/backup-restore.md).
 
@@ -250,7 +279,7 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
         [syncer.to]
         compression = ""
         # default data directory: "{{ deploy_dir }}/data.drainer"
-        # dir = "data.drainer"
+        dir = "data.drainer"
         ```
 
 5. Deploy Drainer.
@@ -363,6 +392,10 @@ The following part shows how to use Pump and Drainer based on the nodes above.
     
         # the address of the PD cluster nodes
         pd-urls = "http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379"
+
+        # [storage]
+        # Set to true (by default) to ensure reliability. Make sure the binlog data is updated to the disk
+        # sync-log = true
         ```
 
     - The example of starting Pump:
@@ -445,19 +478,20 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         # the directory of the log file
         log-file = "drainer.log"
 
+         # Drainer compress data when the binlog is obtained form Pump.The value can be "gzip". If it is not configured, it will not be compressed.
+        # compressor = "gzip"
+
         # Syncer Configuration
         [syncer]
+         # If this item is set, it will use its sql-mode to analyze DDL statements
+        # sql-mode = "STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"
 
-        # the db filter list ("INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test" by default)
-        # Does not support the Rename DDL operation on tables of `ignore schemas`.
-        ignore-schemas = "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql"
-
-        # the number of SQL statements of a transaction which are output to the downstream database (1 by default)
-        txn-batch = 1
+        # the number of SQL statements of a transaction which are output to the downstream database (20 by default)
+        txn-batch = 20
 
         # the number of the concurrency of the downstream for synchronization. The bigger the value,
-        # the better throughput performance of the concurrency (1 by default)
-        worker-count = 1
+        # the better throughput performance of the concurrency (16 by default)
+        worker-count = 16
 
         # whether to disable the SQL feature of splitting a single binlog file. If it is set to "true",
         # each binlog file is restored to a single transaction for synchronization based on the order of binlogs.
@@ -467,6 +501,10 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         # the downstream service type of Drainer ("mysql" by default)
         # Valid value: "mysql", "kafka", "pb", "flash"
         db-type = "mysql"
+
+        # the db filter list ("INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test" by default)
+        # Does not support the Rename DDL operation on tables of `ignore schemas`.
+        ignore-schemas = "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql"
 
         # `replicate-do-db` has priority over `replicate-do-table`. When they have the same `db` name,
         # regular expressions are supported for configuration.
@@ -481,6 +519,11 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         # [[syncer.replicate-do-table]]
         # db-name ="test"
         # tbl-name = "~^a.*"
+
+        # Ignore the replication of some tables
+        # [[syncer.ignore-table]]
+        # db-name = "test"
+        # tbl-name = "log"
 
         # the server parameters of the downstream database when `db-type` is set to "mysql"
         [syncer.to]
@@ -498,6 +541,10 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         # zookeeper-addrs = "127.0.0.1:2181"
         # kafka-addrs = "127.0.0.1:9092"
         # kafka-version = "0.8.2.0"
+
+        # the topic name of the Kafka cluster that saves the binlog data. The default value is <cluster-id>_obinlog
+        # To run multiple Drainers to replicate data to the same Kafka cluster, you need to set different `topic-name`s for each Drainer.
+        # topic-name = ""
         ```
 
     - The example of starting Drainer:
@@ -590,29 +637,31 @@ Usage of binlogctl:
 Command example:
 
 - Check the state of all the Pumps or Drainers:
-
+    Set 'cmd' to 'pumps' or 'drainers' to check the state of all the Pumps or Drainers. For example:
     ```bash
-    bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pumps/drainers
+    bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pumps
 
-    2018/12/18 03:17:09 nodes.go:46: [info] pump: &{NodeID:1.1.1.1:8250 Addr:pump:8250 State:online IsAlive:false Score:0 Label:<nil> MaxCommitTS:405039487358599169 UpdateTS:405027205608112129}
+    INFO[0000] pump: {NodeID: ip-172-16-30-67:8250, Addr: 172.16.30.192:8250, State: online, MaxCommitTS: 405197570529820673, UpdateTime: 2018-12-25 14:23:37 +0800 CST}
+
     ```
-
-    > **Note:** Currently, the `IsAlive`, `Score` and `Label` fields are not used, so you do not need to pay attention to them.
 
 - Modify the Pump/Drainer state:
 
-    ```bash
-    The Pump/Drainer states include `online`, `pausing`, `paused`, `closing` and `offline`. 
+    Set 'cmd' to 'update-pump' or 'update-drainer' to update the states of Pump or Drainer.
 
-    bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd update-pump/update-drainer -node-id ip-127-0-0-1:8250/{nodeID} -state {state}
+    The Pump/Drainer states include `online`, `pausing`, `paused`, `closing` and `offline`. For example:
+
+     ```bash
+    bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd update-pump -node-id ip-127-0-0-1:8250 -state paused
     ```
 
     This command modifies the Pump/Drainer state saved in PD.
 
 - Pause or close Pump/Drainer:
+    Set 'cmd' as `pause-pump`,`pause-drainer`,`offline-pump` or `offline-drainer` to pause Pump, pause Drainer, offline Pump or offline Drainer. For example:
 
     ```bash
-    bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pause-pump/pause-drainer/offline-pump/offline-drainer -node-id ip-127-0-0-1:8250/{nodeID}
+    bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pause-pump -node-id ip-127-0-0-1:8250
     ```
 
     `binlogctl` sends the HTTP request to Pump/Drainer, and Pump/Drainer exits from the process after receiving the command and sets its state to `paused`/`offline`.
