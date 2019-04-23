@@ -27,8 +27,8 @@ TiDB 会将执行时间超过 [slow-threshold](../op-guide/tidb-config-file.md#s
 # Is_internal: false
 # Digest: 3635413fe0c8e1aa8307f4f018fe1a9325ea0b97452500106d3f6783fcb65e33
 # Num_cop_tasks: 10
-# Cop_process: Avg_time: 1s P90_time: 2s Max_time: 3s Max_addr: 10.6.131.78
-# Cop_wait: Avg_time: 10ms P90_time: 20ms Max_time: 30ms Max_Addr: 10.6.131.79
+# Cop_proc_avg: 1 Cop_proc_p90: 2 Cop_proc_max: 3 Cop_proc_addr: 10.6.131.78
+# Cop_wait_avg: 5 Cop_wait_p90: 6 Cop_wait_max: 7 Cop_wait_addr: 10.6.131.79
 # Memory_max: 4096
 select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
 ```
@@ -39,7 +39,7 @@ select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
 * `Txn_start_ts`：表示事务的开始时间戳，也是事务的 ID, 可以用这个值在日志中 grep 出事务相关的日志。
 * `User`：表示执行语句的用户名。
 * `Conn_ID`：表示 connection ID，即 session ID, 可以用类似 `con:3 ` 的关键字在  TiDB 日志中 grep 出 session ID 为 3 的日志。
-* `Query_time`：表示执行这个语句花费的时间。只有执行时间超过 slow-threshold 的语句才会输出这个日志。
+* `Query_time`：表示执行这个语句花费的时间。只有执行时间超过 slow-threshold 的语句才会输出这个日志，单位是秒，一下所有的时间字段的单位都是秒。
 * `Process_time`：执行 SQL  在 TiKV 的处理时间之和，因为数据会并行的发到 TiKV 执行，这个值可能会超过 `Query_time`。
 * `Wait_time`：表示这个语句在 TiKV 的等待时间之和，因为 TiKV 的 Coprocessor 线程数是有限的，当所有的 Coprocessor 线程都在工作的时候，请求会排队，当队列中有某些请求耗时很长的时候，后面的请求的等待时间都会增加。
 * `Backoff_time`：表示语句遇到需要重试的错误时在重试前等待的时间，常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、`tikv server is busy`。
@@ -52,8 +52,14 @@ select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
 * `Digest`：表示 SQL 语句的指纹。
 * `Memory_max`：表示执行期间做多时候使用的内存数量, 单位为byte。
 * `Num_cop_tasks`：表示cop-tasks的数目。
-* `Cop_process `：表示cop-tasks的执行时间, 一共包含`Avg_time`, `P90_time`, `Max_time`, `Max_addr`几个子字段。
-* `Cop_wait`：表示cop-tasks的请求等待时间, 一共包含`Avg_time`, `P90_time`, `Max_time`, `Max_addr`几个子字段。
+* `Cop_proc_avg`: cop-task的平均执行时间。
+* `Cop_proc_p90`: cop-task的P90分位执行时间。
+* `Cop_proc_max`: cop-task的最大执行时间。
+* `Cop_proc_addr`: 执行时间最长的cop-task所在地址。
+* `Cop_wait_avg`: cop-task的平均等待时间。
+* `Cop_wait_p90`: cop-task的P90分位等待时间。
+* `Cop_wait_max`: cop-task的最大等待时间。
+* `Cop_wait_addr`: 等待时间最长的cop-task所在地址。
 * `Query`：表示 SQL 语句。慢日志里面不会打印 `Query`，但映射到内存表后，对应的字段叫 `Query`。
 
 ### 慢日志内存映射表 
@@ -144,7 +150,7 @@ tidb > select query, query_time from INFORMATION_SCHEMA.`SLOW_QUERY` where diges
 2 rows in set
 ```
 
-查询统计信息是 pseudo 的慢查询
+## 查询统计信息是 pseudo 的慢查询
 
 ```sql
 tidb > select query, query_time, stats from INFORMATION_SCHEMA.`SLOW_QUERY` where is_internal=false and stats like('%pseudo%');
@@ -158,10 +164,6 @@ tidb > select query, query_time, stats from INFORMATION_SCHEMA.`SLOW_QUERY` wher
 | select * from t1 join t2;   | 0.931260518 | t1:407872303825682445,t2:pseudo |
 +-----------------------------+-------------+---------------------------------+
 ```
-
-
-
-
 
 #### 解析其他的 TiDB 慢日志文件
 
