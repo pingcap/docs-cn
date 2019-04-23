@@ -19,7 +19,7 @@ TiDB 的权限管理系统是按照 MySQL 的权限管理进行实现，TiDB 支
 GRANT SELECT ON test.* TO 'xxx'@'%';
 ```
 
-为 test 用户授予所有数据库，全部权限：
+为 `xxx` 用户授予所有数据库，全部权限：
 
 ```sql
 GRANT ALL PRIVILEGES ON *.* TO 'xxx'@'%';
