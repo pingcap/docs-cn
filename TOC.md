@@ -67,10 +67,7 @@
     - [TiDB-Lightning 故障诊断](tools/lightning/errors.md)
     - [支持渠道](support.md)
     - [反馈问题](report-issue.md)
-  + [贡献](contribute.md)
-    - [贡献代码](contribute.md#成为-tidb-的贡献者)
-    - [改进文档](contribute.md#改进文档)
-+ 参考资源
++ 参考手册
   + SQL
     - [支持的连接器和 API](sql/connection-and-APIs.md)
     - [与 MySQL 兼容性对比](sql/mysql-compatibility.md)
@@ -115,19 +112,19 @@
       - [表达式语法](sql/expression-syntax.md)
       - [注释语法](sql/comment-syntax.md)
     - [生成列](sql/generated-columns.md)
-    + 事务
-      - [事务模型](sql/transaction-model.md)
-      - [隔离级别](sql/transaction-isolation.md)
-    + 性能
-      - [SQL 优化流程](sql/sql-optimizer-overview.md)
-      - [基于代价的优化](sql/understanding-the-query-execution-plan.md)
-      - [统计信息概述](sql/statistics.md)
-      - [Optimizer Hints](sql/optimizer-hints.md)
-      - [TiKV 调优](op-guide/tune-tikv.md)
-      - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
     - [TiDB 系统数据库](sql/system-database.md)
     - [Information Schema](sql/information-schema.md)
     - [TiSpark 使用指南](tispark/tispark-user-guide.md)
+  + 事务
+    - [事务模型](sql/transaction-model.md)
+    - [隔离级别](sql/transaction-isolation.md)
+  + 性能
+    - [SQL 优化流程](sql/sql-optimizer-overview.md)
+    - [基于代价的优化](sql/understanding-the-query-execution-plan.md)
+    - [统计信息概述](sql/statistics.md)
+    - [Optimizer Hints](sql/optimizer-hints.md)
+    - [TiKV 调优](op-guide/tune-tikv.md)
+    - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + 配置
     + tidb-server
       - [MySQL 系统变量](sql/variable.md)
@@ -146,8 +143,10 @@
     - [Loader](tools/loader.md)
     - [Syncer](tools/syncer.md)
     + Data Migration
-      - [概述](tools/dm/overview.md)
-      - [使用限制](tools/dm/overview.md#使用限制)
+      + [概述](tools/dm/overview.md)
+        - [DM 架构](tools/dm/overview.md#dm-架构)
+        - [同步功能介绍](tools/dm/overview.md#同步功能介绍)
+        - [使用限制](tools/dm/overview.md#使用限制)
       + [部署使用](tools/dm/practice.md)
       + 核心特性
         - [Table Routing](tools/dm/data-synchronization-features.md#table-routing)
@@ -217,6 +216,9 @@
     - [360金融](http://t.cn/RTKnTev)
     - [中国电信翼支付](http://t.cn/R3Wd9p3)
     - [某电信运营商](http://t.cn/RTYWADg)
++ [成为 Contributor](contribute.md)
+  - [贡献代码](contribute.md#成为-tidb-的贡献者)
+  - [改进文档](contribute.md#改进文档)
 + 常见问题 (FAQ)
   - [TiDB FAQ](FAQ.md)
   - [TiDB-Lightning FAQ](tools/lightning/faq.md)
