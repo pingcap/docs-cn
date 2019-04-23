@@ -36,7 +36,7 @@ Drainer 从 Kafka 中收集 Binlog，并按照 TiDB 中事务的提交顺序转�
 
 Kafka 集群用来存储由 Pump 写入的 Binlog 数据，并提供给 Drainer 进行读取。
 
-> **注**：local 版本将 Binlog 存储在文件中，最新版本则使用 Kafka 存储。
+> **注意：**local 版本将 Binlog 存储在文件中，最新版本则使用 Kafka 存储。
 
 ## TiDB-Binlog 安装
 

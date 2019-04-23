@@ -22,7 +22,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 - [清除集群数据](../op-guide/ansible-operation.md#清除集群数据)
 - [销毁集群](../op-guide/ansible-operation.md#销毁集群)
 
-> **注**：对于生产环境，须使用 TiDB-Ansible 部署 TiDB 集群。如果只是用于测试 TiDB 或体验 TiDB 的特性，建议[使用 Docker Compose 在单机上快速部署 TiDB 集群](../op-guide/docker-compose.md)。
+> **注意：**对于生产环境，须使用 TiDB-Ansible 部署 TiDB 集群。如果只是用于测试 TiDB 或体验 TiDB 的特性，建议[使用 Docker Compose 在单机上快速部署 TiDB 集群](../op-guide/docker-compose.md)。
 
 ## 准备机器
 
@@ -143,7 +143,7 @@ The key's randomart image is:
     $ git clone https://github.com/pingcap/tidb-ansible.git
     ```
 
-> **注**：请务必按文档操作，将 `tidb-ansible` 下载到 `/home/tidb` 目录下，权限为 `tidb` 用户，不要下载到 `/root` 下，否则会遇到权限问题。
+> **注意：**请务必按文档操作，将 `tidb-ansible` 下载到 `/home/tidb` 目录下，权限为 `tidb` 用户，不要下载到 `/root` 下，否则会遇到权限问题。
 
 ## 在中控机器上安装 Ansible 及其依赖
 
@@ -529,7 +529,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
     ansible-playbook deploy.yml
     ```
 
-    >**注**：Grafana Dashboard 上的 Report 按钮可用来生成 PDF 文件，此功能依赖 `fontconfig` 包和英文字体。如需使用该功能，登录 **grafana_servers** 机器，用以下命令安装：
+    >**注意：**Grafana Dashboard 上的 Report 按钮可用来生成 PDF 文件，此功能依赖 `fontconfig` 包和英文字体。如需使用该功能，登录 **grafana_servers** 机器，用以下命令安装：
     >
     > ```
     > $ sudo yum install fontconfig open-sans-fonts

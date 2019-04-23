@@ -90,7 +90,7 @@ block-cache-size = "6GB"
  
 ## 测试过程
 
-> **注意**：此次测试并没有使用如 HAproxy 等负载均衡工具。在 TiDB 单一节点上进行 Sysbench 测试，并把结果相加。负载均衡工具和不同版本参数也会影响性能表现。
+> **注意：**此次测试并没有使用如 HAproxy 等负载均衡工具。在 TiDB 单一节点上进行 Sysbench 测试，并把结果相加。负载均衡工具和不同版本参数也会影响性能表现。
 
 ### Sysbench 配置
 
@@ -137,7 +137,7 @@ create database sbtest;
 1. 直接下载为 TiDB 修改好的 [oltp_common.lua](https://raw.githubusercontent.com/pingcap/tidb-bench/master/sysbench-patch/oltp_common.lua) 文件，覆盖 `/usr/share/sysbench/oltp_common.lua` 文件。 
 2. 将 `/usr/share/sysbench/oltp_common.lua` 的第 [235](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L235) 行到第 [240](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L240) 行移动到第 198 行以后。
 
-> **注意**：此操作为可选操作，仅节约了数据导入时间。
+> **注意：**此操作为可选操作，仅节约了数据导入时间。
 
 命令行输入以下命令，开始导入数据，config 文件为上一步中配置的文件：
 

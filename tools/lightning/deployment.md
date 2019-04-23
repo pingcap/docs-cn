@@ -42,7 +42,7 @@ category: tools
 
 如果机器充裕的话，可以部署多套 `tidb-lightning` + `tikv-importer`，然后将源数据以表为粒度进行切分，并发导入。
 
-> **注意**：`tidb-lightning` 是 CPU 密集型程序，如果和其它程序混合部署，需要通过 `region-concurrency` 限制 `tidb-lightning` 的 CPU 实际占用核数，否则会影响其他程序的正常运行。建议将混合部署机器上 75% 的 CPU 分配给 `tidb-lightning`。例如，机器为 32 核，则 `tidb-lightning` 的 `region-concurrency` 可设为 24。
+> **注意：**`tidb-lightning` 是 CPU 密集型程序，如果和其它程序混合部署，需要通过 `region-concurrency` 限制 `tidb-lightning` 的 CPU 实际占用核数，否则会影响其他程序的正常运行。建议将混合部署机器上 75% 的 CPU 分配给 `tidb-lightning`。例如，机器为 32 核，则 `tidb-lightning` 的 `region-concurrency` 可设为 24。
 
 此外，目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](../../op-guide/recommendation.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 × [副本数量](../../FAQ.md#3-2-6-%E6%AF%8F%E4%B8%AA-region-%E7%9A%84-replica-%E6%95%B0%E9%87%8F%E5%8F%AF%E9%85%8D%E7%BD%AE%E5%90%97-%E8%B0%83%E6%95%B4%E7%9A%84%E6%96%B9%E6%B3%95%E6%98%AF) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。
 

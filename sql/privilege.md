@@ -88,7 +88,7 @@ mysql> SELECT user,host,db FROM mysql.db WHERE user='genius';
 REVOKE ALL PRIVILEGES ON `test`.* FROM 'genius'@'localhost';
 ```
 
-> **注意**：revoke 收回权限时只做精确匹配，若找不到记录则报错。而 grant 授予权限时可以使用模糊匹配。
+> **注意：**revoke 收回权限时只做精确匹配，若找不到记录则报错。而 grant 授予权限时可以使用模糊匹配。
 
 ```sql
 mysql> REVOKE ALL PRIVILEGES ON `te%`.* FROM 'genius'@'%';
