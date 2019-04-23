@@ -173,8 +173,6 @@ Query OK, 0 rows affected
 Time: 0.001s
 ```
 
-#### 不足
-
 `INFORMATION_SCHEMA.SLOW_QUERY` 目前暂时只支持解析一个慢日志文件，如果慢日志文件超过一定大小后被 logrotate 成多个文件了，查询 `INFORMATION_SCHEMA.SLOW_QUERY` 也只会去解析一个文件。后续我们会改善这点。
 
 ####  用 pt-query-digest 工具分析 TiDB 慢日志
