@@ -68,7 +68,7 @@ category: tools
           gc: 7
         ```
 
-        请确保部署目录有足够空间存储 binlog，详见：[部署目录调整](../op-guide/ansible-deployment.md#部署目录调整)，也可为 Pump 设置单独的部署目录。
+        请确保部署目录有足够空间存储 binlog，详见：[部署目录调整](../../op-guide/ansible-deployment.md#部署目录调整)，也可为 Pump 设置单独的部署目录。
 
         ```ini
         ## Binlog Part
@@ -145,7 +145,7 @@ category: tools
 
 2. 全量数据的备份与恢复
 
-    推荐使用 mydumper 备份 TiDB 的全量数据，再使用 loader 将备份数据导入到下游。具体使用方法参考：[备份与恢复](../op-guide/backup-restore.md)。
+    推荐使用 mydumper 备份 TiDB 的全量数据，再使用 loader 将备份数据导入到下游。具体使用方法参考：[备份与恢复](../../op-guide/backup-restore.md)。
 
 3. 修改 `tidb-ansible/inventory.ini` 文件
 
