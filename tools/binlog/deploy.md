@@ -124,7 +124,7 @@ category: tools
     INFO[0000] pump: {NodeID: ip-172-16-10-73:8250, Addr: 172.16.10.73:8250, State: online, MaxCommitTS: 403051525703991299, UpdateTime: 2018-12-25 14:23:36 +0800 CST}
     INFO[0000] pump: {NodeID: ip-172-16-10-74:8250, Addr: 172.16.10.74:8250, State: online, MaxCommitTS: 403051525717360643, UpdateTime: 2018-12-25 14:23:35 +0800 CST}
     ```
-#### 第 3 步：部署 Drainer
+### 第 3 步：部署 Drainer
 <a href="#第 3 步：部署 Drainer"></a>
 
 
