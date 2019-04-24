@@ -20,8 +20,9 @@ TiDB 版本：3.0 Beta 版本
 ## 测试环境
 
 - [硬件要求](https://pingcap.com/docs/op-guide/recommendation/)
-- 参考 [TiDB 部署文档](https://pingcap.com/docs/op-guide/ansible-deployment/)部署 TiDB 集群。在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD，和 1 个 TiKV实例。关于磁盘，以 32 张表、每张表 10M 行数据为例，建议 TiKV 的数据目录所在的磁盘空间大于 512 GB。
-对于单个 TiDB 的并发连接数，建议控制在 500 以内，如需增加整个系统的并发压力，可以增加 TiDB 实例，具体增加的 TiDB 个数视测试压力而定。
+
+- 参考 [TiDB 部署文档](https://pingcap.com/docs/op-guide/ansible-deployment/)部署 TiDB 集群。在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD，和 1 个 TiKV 实例。关于磁盘，以 32 张表、每张表 10M 行数据为例，建议 TiKV 的数据目录所在的磁盘空间大于 512 GB。
+    对于单个 TiDB 的并发连接数，建议控制在 500 以内，如需增加整个系统的并发压力，可以增加 TiDB 实例，具体增加的 TiDB 个数视测试压力而定。
 
 IDC 机器：
  
@@ -89,7 +90,9 @@ block-cache-size = "6GB"
  
 ## 测试过程
 
-> **注意**：此次测试并没有使用如 HAproxy 等负载均衡工具。在 TiDB 单一节点上进行 Sysbench 测试，并把结果相加。负载均衡工具和不同版本参数也会影响性能表现。
+> **注意：**
+>
+> 此次测试并没有使用如 HAproxy 等负载均衡工具。在 TiDB 单一节点上进行 Sysbench 测试，并把结果相加。负载均衡工具和不同版本参数也会影响性能表现。
 
 ### Sysbench 配置
 
@@ -229,18 +232,18 @@ sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 r
 
 这种情况可能与使用了 proxy 有关。可以尝试直接对单个 TiDB 加压，将求和后的结果与使用 proxy 的情况进行对比。
 
-以 HAproxy 为例。`nbproc` 参数可以增加其最大启动的进程数，较新版本的 HAproxy 还支持 `nbthread` 和 `cpu-map`等。这些都可以减少对其性能的不利影响。
+以 HAproxy 为例。`nbproc` 参数可以增加其最大启动的进程数，较新版本的 HAproxy 还支持 `nbthread` 和 `cpu-map` 等。这些都可以减少对其性能的不利影响。
 
 ### 在高并发压力下，为什么 TiKV 的 CPU 利用率依然很低？
 
 TiKV 虽然整体 CPU 偏低，但部分模块的 CPU 可能已经达到了很高的利用率。
 
-TiKV 的其他模块，如 storage readpool、coprocessor 和 grpc 的最大并发度限制是可以通过 TiKV 的配置文件进行调整的。
+TiKV 的其他模块，如 storage readpool、coprocessor 和 gRPC 的最大并发度限制是可以通过 TiKV 的配置文件进行调整的。
 
 通过 Grafana 的 TiKV Thread CPU 监控面板可以观察到其实际使用率。如出现多线程模块瓶颈，可以通过增加该模块并发度进行调整。
 
 ### 在高并发压力下，TiKV 也未达到 CPU 使用瓶颈，为什么 TiDB 的 CPU 利用率依然很低？
 
-在某些高端设备上，使用的是 NUMA 架构的 CPU，跨 CPU 访问远端内存将极大降低性能。TiDB 默认将使用服务器所有 CPU，goroutine 的调度不可避免的会出现跨 CPU 内存访问。
+在某些高端设备上，使用的是 NUMA 架构的 CPU，跨 CPU 访问远端内存将极大降低性能。TiDB 默认将使用服务器所有 CPU，goroutine 的调度不可避免地会出现跨 CPU 内存访问。
 
 因此，建议在 NUMA 架构服务器上，部署 *n* 个 TiDB（*n* = NUMA CPU 的个数），同时将 TiDB 的 `max-procs` 变量的值设置为与 NUMA CPU 的核数相同。

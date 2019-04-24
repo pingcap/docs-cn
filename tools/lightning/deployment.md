@@ -153,7 +153,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
 
 通过以下链接获取 TiDB-Lightning 安装包（需选择与集群相同的版本）：
 
-- **v2.1.6**: https://download.pingcap.org/tidb-lightning-v2.1.6-linux-amd64.tar.gz
+- **v2.1.6**: https://download.pingcap.org/tidb-v2.1.6-linux-amd64.tar.gz
 - **v2.0.9**: https://download.pingcap.org/tidb-lightning-v2.0.9-linux-amd64.tar.gz
 - 最新 unstable 版本：https://download.pingcap.org/tidb-lightning-test-xx-latest-linux-amd64.tar.gz
 
