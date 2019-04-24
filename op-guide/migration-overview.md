@@ -42,7 +42,9 @@ To migrate the full data and then replicate data incrementally, you can use one 
 
 For detailed operations, follow the steps in [Incremental Migration](../op-guide/migration-incremental.md).
     
-  > **Note:** To replicate data from MySQL to TiDB, binary logging [must be enabled](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html) with the [row format](https://dev.mysql.com/doc/refman/5.7/en/binary-log-formats.html) enabled.
+  > **Note:**
+  >
+  > To replicate data from MySQL to TiDB, binary logging [must be enabled](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html) with the [row format](https://dev.mysql.com/doc/refman/5.7/en/binary-log-formats.html) enabled.
 
 #### Dump and restore from database other than MySQL
 

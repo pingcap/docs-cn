@@ -94,7 +94,9 @@ If the `ssl-ca` parameter is not specified in the TiDB server or MySQL client, t
   
 - To perform mutual authentication, meet both of the above requirements. 
 
-> **Note**: Currently, it is optional that TiDB server authenticates the client. If the client does not present its identity certificate in the TLS handshake, the TLS connection can also be successfully established.
+> **Note:**
+>
+> Currently, it is optional that TiDB server authenticates the client. If the client does not present its identity certificate in the TLS handshake, the TLS connection can also be successfully established.
 
 ## Check whether the current connection uses encryption
 

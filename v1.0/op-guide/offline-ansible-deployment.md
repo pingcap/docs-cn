@@ -55,7 +55,9 @@ Before you start, make sure that you have:
 
      ansible 2.4.2.0
     ```
-    > **Note:** Make sure that the version of Ansible is 2.4 or later, otherwise compatibility problem might occur.
+    > **Note:**
+    >
+    > Make sure that the version of Ansible is 2.4 or later, otherwise compatibility problem might occur.
 
 2. Download TiDB-Ansible.
 
@@ -74,7 +76,9 @@ Before you start, make sure that you have:
     ```
     git clone https://github.com/pingcap/tidb-ansible.git
     ```
-    > **Note:** For production environment, download TiDB-Ansible 1.0 to deploy TiDB.
+    > **Note:**
+    >
+    > For production environment, download TiDB-Ansible 1.0 to deploy TiDB.
 
 3. Run the `local_prepare.yml` playbook, and download TiDB binary online to the download machine.
 

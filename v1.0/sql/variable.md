@@ -30,7 +30,9 @@ SET @@session.autocommit = 1;
 SET @@autocommit = 1;
 ```
 
-> **Note:** `LOCAL` and `@@local.` are the synonyms for `SESSION` and `@@session.`
+> **Note:**
+>
+> `LOCAL` and `@@local.` are the synonyms for `SESSION` and `@@session.`
 
 ## The fully supported MySQL system variables in TiDB
 

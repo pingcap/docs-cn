@@ -544,4 +544,6 @@ See [Troubleshooting Sharding DDL Locks](../tools/troubleshooting-sharding-ddl-l
 
 You can use the `refresh-worker-tasks` command to forcefully refresh the `task => DM-workers` mapping maintained in the DM-master memory.
 
-> **Note:** Generally, you do not need to use it. You can use it only when you are ensured that the `task => DM-workers` mapping exists, but you are still prompted to refresh while you are executing other commands.
+> **Note:**
+>
+> Generally, you do not need to use it. You can use it only when you are ensured that the `task => DM-workers` mapping exists, but you are still prompted to refresh while you are executing other commands.

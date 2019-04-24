@@ -10,7 +10,9 @@ This guide describes how to install and deploy TiKV using Ansible. Ansible is an
 
 [TiDB-Ansible](https://github.com/pingcap/tidb-ansible) is a TiDB cluster deployment tool developed by PingCAP, based on Ansible playbook. TiDB-Ansible enables you to quickly deploy a new TiKV cluster which includes PD, TiKV, and the cluster monitoring modules.
 
-> **Note:** For the production environment, it is recommended to use TiDB-Ansible to deploy your TiDB cluster. If you only want to try TiKV out and explore the features, see [Install and Deploy TiKV using Docker Compose](../tikv/deploy-tikv-docker-compose.md) on a single machine.
+> **Note:**
+>
+> For the production environment, it is recommended to use TiDB-Ansible to deploy your TiDB cluster. If you only want to try TiKV out and explore the features, see [Install and Deploy TiKV using Docker Compose](../tikv/deploy-tikv-docker-compose.md) on a single machine.
 
 ## Prepare
 
@@ -25,11 +27,15 @@ Before you start, make sure you have:
     - CentOS 7.3 (64 bit) or later with Python 2.7 installed, x86_64 architecture (AMD64)
     - Network between machines
     
-    > **Note:** When you deploy TiKV using Ansible, use SSD disks for the data directory of TiKV and PD nodes. Otherwise, it cannot pass the check. For more details, see [Software and Hardware Requirements](../op-guide/recommendation.md).
+    > **Note:**
+    >
+    > When you deploy TiKV using Ansible, use SSD disks for the data directory of TiKV and PD nodes. Otherwise, it cannot pass the check. For more details, see [Software and Hardware Requirements](../op-guide/recommendation.md).
 
 2. A Control Machine that meets the following requirements:
 
-    > **Note:** The Control Machine can be one of the target machines.
+    > **Note:**
+    >
+    > The Control Machine can be one of the target machines.
     
     - CentOS 7.3 (64 bit) or later with Python 2.7 installed
     - Access to the Internet
@@ -122,7 +128,9 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
         $ git clone https://github.com/pingcap/tidb-ansible.git
         ```
 
-    > **Note:** It is required to download `tidb-ansible` to the `/home/tidb` directory using the `tidb` user account. If you download it to the `/root` directory, a privilege issue occurs.
+    > **Note:**
+    >
+    > It is required to download `tidb-ansible` to the `/home/tidb` directory using the `tidb` user account. If you download it to the `/root` directory, a privilege issue occurs.
 
     If you have questions regarding which version to use, email to info@pingcap.com for more information or [file an issue](https://github.com/pingcap/tidb-ansible/issues/new).
 
@@ -178,11 +186,15 @@ Make sure you have logged in to the Control Machine using the `tidb` user accoun
 
     This step creates the `tidb` user account on the target machines, and configures the sudo rules and the SSH mutual trust between the Control Machine and the target machines.
 
-> **Note:** To configure the SSH mutual trust and sudo without password manually, see [How to manually configure the SSH mutual trust and sudo without password](../op-guide/ansible-deployment.md#how-to-manually-configure-the-ssh-mutual-trust-and-sudo-without-password).
+> **Note:**
+>
+> To configure the SSH mutual trust and sudo without password manually, see [How to manually configure the SSH mutual trust and sudo without password](../op-guide/ansible-deployment.md#how-to-manually-configure-the-ssh-mutual-trust-and-sudo-without-password).
 
 ## Step 6: Install the NTP service on the target machines
 
-> **Note:** If the time and time zone of all your target machines are same, the NTP service is on and is normally synchronizing time, you can ignore this step. See [How to check whether the NTP service is normal](../op-guide/ansible-deployment.md#how-to-check-whether-the-ntp-service-is-normal).
+> **Note:**
+>
+> If the time and time zone of all your target machines are same, the NTP service is on and is normally synchronizing time, you can ignore this step. See [How to check whether the NTP service is normal](../op-guide/ansible-deployment.md#how-to-check-whether-the-ntp-service-is-normal).
 
 Make sure you have logged in to the Control Machine using the `tidb` user account, run the following command:
 
@@ -213,7 +225,9 @@ analyzing CPU 0:
 
 Taking the above code for example, the system supports the `performance` and `powersave` modes. 
 
-> **Note:** As the following shows, if it returns "Not Available", it means that the current system does not support CPUfreq configuration and you can skip this step.
+> **Note:**
+>
+> As the following shows, if it returns "Not Available", it means that the current system does not support CPUfreq configuration and you can skip this step.
 
 ```
 # cpupower frequency-info --governors
@@ -255,7 +269,9 @@ Log in to the Control Machine using the `root` user account.
 
 Format your data disks to the ext4 filesystem and mount the filesystem with the `nodelalloc` and `noatime` options. It is required to mount the `nodelalloc` option, or else the Ansible deployment cannot pass the test. The `noatime` option is optional.
 
-> **Note:** If your data disks have been formatted to ext4 and have mounted the options, you can uninstall it by running the `# umount /dev/nvme0n1` command, follow the steps starting from editing the `/etc/fstab` file, and remount the filesystem with options.
+> **Note:**
+>
+> If your data disks have been formatted to ext4 and have mounted the options, you can uninstall it by running the `# umount /dev/nvme0n1` command, follow the steps starting from editing the `/etc/fstab` file, and remount the filesystem with options.
 
 Take the `/dev/nvme0n1` data disk as an example:
 
@@ -466,7 +482,9 @@ Edit the parameters in the service configuration file:
     deploy_dir = /data1/deploy
     ```
 
-    **Note:** To separately set the deployment directory for a service, you can configure the host variable while configuring the service host list in the `inventory.ini` file. It is required to add the first column alias, to avoid confusion in scenarios of mixed services deployment.
+    > **Note:**
+    >
+    > To separately set the deployment directory for a service, you can configure the host variable while configuring the service host list in the `inventory.ini` file. It is required to add the first column alias, to avoid confusion in scenarios of mixed services deployment.
 
     ```bash
     TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
@@ -478,7 +496,9 @@ Edit the parameters in the service configuration file:
     deploy_without_tidb = True
     ```
 
-> **Note:** If you need to edit other variables, see [the variable description table](../op-guide/ansible-deployment.md#edit-other-variables-optional).
+> **Note:**
+>
+> If you need to edit other variables, see [the variable description table](../op-guide/ansible-deployment.md#edit-other-variables-optional).
 
 ## Step 11: Deploy the TiKV cluster
 
@@ -562,4 +582,6 @@ ansible-playbook stop.yml
     ansible-playbook unsafe_cleanup.yml
     ```
     
-    > **Note:** If the deployment directory is a mount point, an error might be reported, but the implementation result remains unaffected. You can just ignore the error.
+    > **Note:**
+    >
+    > If the deployment directory is a mount point, an error might be reported, but the implementation result remains unaffected. You can just ignore the error.

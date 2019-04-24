@@ -13,7 +13,9 @@ This document describes how to enable TLS authentication in the TiDB cluster. Th
 - The mutual authentication between TiDB components, including the authentication among TiDB, TiKV and PD, between TiKV Control and TiKV, between PD Control and PD, between TiKV peers, and between PD peers. Once enabled, the mutual authentication applies to all components, and it does not support applying to only part of the components.
 - The one-way and mutual authentication between the TiDB server and the MySQL Client.
 
-> **Note:** The authentication between the MySQL Client and the TiDB server uses one set of certificates, while the authentication among TiDB components uses another set of certificates.
+> **Note:**
+>
+> The authentication between the MySQL Client and the TiDB server uses one set of certificates, while the authentication among TiDB components uses another set of certificates.
 
 ## Enable mutual TLS authentication among TiDB components
 

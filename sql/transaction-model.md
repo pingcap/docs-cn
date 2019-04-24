@@ -10,7 +10,9 @@ TiDB implements an optimistic transaction model. Unlike MySQL, which uses row-le
 
 Similarly, functions such as `GET_LOCK()` and `RELEASE_LOCK()` and statements such as `SELECT .. FOR UPDATE` do not work in the same way as in MySQL.
 
-**Note:** On the business side, remember to check the returned results of `commit` because even there is no error in the execution, there might be errors in the `commit` process.
+**Note:**
+>
+> On the business side, remember to check the returned results of `commit` because even there is no error in the execution, there might be errors in the `commit` process.
 
 ## Differences from MySQL
 

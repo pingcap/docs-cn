@@ -18,7 +18,7 @@ As an open source distributed NewSQL database with high performance, TiDB can be
 | Oracle Enterprise Linux  | 7.3 and above|
 | Ubuntu LTS               | 16.04 and above|
 
-> **Note**:
+> **Note:**
 > 
 > - For Oracle Enterprise Linux, TiDB supports the Red Hat Compatible Kernel (RHCK) and does not support the Unbreakable Enterprise Kernel provided by Oracle Enterprise Linux.
 > - The support for the Linux operating systems above include the deployment and operation in physical servers as well as in major virtualized environments like VMware, KVM and XEN.
@@ -36,7 +36,7 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 | TiKV    | 8 core+   | 32 GB+  | SAS, 200 GB+ | Gigabit network card | 3       |
 |         |         |         |              | Total Server Number |  4      |
 
-> **Note**:
+> **Note:**
 > 
 > - In the test environment, the TiDB and PD can be deployed on the same server.
 > - For performance-related testing, do not use low-performance storage and network hardware configuration, in order to guarantee the correctness of the test result.
@@ -51,7 +51,7 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 | Monitor | 8 core+ | 16 GB+ | SAS | Gigabit network card | 1 |
 |     |     |     |      |  Total Server Number   |    9   |
 
-> **Note**:
+> **Note:**
 > 
 > - In the production environment, you can deploy and run TiDB and PD on the same server. If you have a higher requirement for performance and reliability, try to deploy them separately.
 > - It is strongly recommended to use higher configuration in the production environment.

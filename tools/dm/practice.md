@@ -12,7 +12,7 @@ This guide shows how to synchronize data using the Data Migration (DM) tool.
 
 It is recommended to deploy the DM cluster using DM-Ansible. For detailed deployment, see [Deploy Data Migration Using DM-Ansible](/tools/dm/deployment.md).
 
-> **Notes**:
+> **Note:**
 > 
 > - For database passwords in all the DM configuration files, use the passwords encrypted by `dmctl`. If a database password is empty, it is unnecessary to encrypt it. See [Encrypt the upstream MySQL user password using dmctl](/tools/dm/deployment.md#encrypt-the-upstream-mysql-user-password-using-dmctl).
 > - The user of the upstream and downstream databases must have the corresponding read and write privileges.
@@ -51,7 +51,9 @@ After the DM cluster is deployed using DM-Ansible, the configuration information
     dm-worker = "172.16.10.73:8262"
     ```
 
-    > **Note:** The `{ansible deploy}` in `{ansible deploy}/conf/dm-master.toml` indicates the directory where DM-Ansible is deployed. It is the directory configured in the `deploy_dir` parameter.
+    > **Note:**
+    >
+    > The `{ansible deploy}` in `{ansible deploy}/conf/dm-master.toml` indicates the directory where DM-Ansible is deployed. It is the directory configured in the `deploy_dir` parameter.
 
 ## Step 3: Configure the data synchronization task
 
@@ -113,7 +115,9 @@ To detect possible errors of data synchronization configuration in advance, DM p
 
 For details about the precheck feature, see [Precheck the upstream MySQL instance configuration](/tools/dm/precheck.md).
 
-> **Note:** Before starting the data synchronization task for the first time, you should have got the upstream configured. Otherwise, an error is reported while you start the task.
+> **Note:**
+>
+> Before starting the data synchronization task for the first time, you should have got the upstream configured. Otherwise, an error is reported while you start the task.
 
 1. Come to the dmctl directory `/home/tidb/dm-ansible/resources/bin/`.
 

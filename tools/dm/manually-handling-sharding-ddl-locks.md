@@ -176,7 +176,9 @@ Currently, the `unlock-ddl-lock` or `break-ddl-lock` command only supports handl
 
 Before `DM-master` tries to automatically unlock the sharding DDL lock, all the DM-workers need to receive the sharding DDL events (for details, see [shard merge principles](../../tools/dm/shard-merge.md#principles)). If the sharding DDL event is already in the synchronization process, and some DM-workers have gone offline and are not to be restarted (these DM-workers have been removed according to the application demand), then the sharding DDL lock cannot be automatically synchronized and unlocked because not all the DM-workers can receive the DDL event.
 
-> **Note:** If you need to make some DM-workers offline when not in the process of synchronizing sharding DDL events, a better solution is to use `stop-task` to stop the running tasks first, make the DM-workers go offline, remove the corresponding configuration information from the task configuration file, and finally use `start-task` and the new task configuration to restart the synchronization task. 
+> **Note:**
+>
+> If you need to make some DM-workers offline when not in the process of synchronizing sharding DDL events, a better solution is to use `stop-task` to stop the running tasks first, make the DM-workers go offline, remove the corresponding configuration information from the task configuration file, and finally use `start-task` and the new task configuration to restart the synchronization task. 
 
 #### Manual solution
 
@@ -309,7 +311,9 @@ Therefore, after you have manually unlocked the DDL lock, you should perform the
 2. Update the task configuration file, and remove the related information of the offline DM-worker from the configuration file.
 3. Use `start-task` and the new task configuration file to restart the task.
 
-> **Note:** After you run `unlock-ddl-lock`, if the DM-worker that went offline becomes online again and tries to synchronize the data of the sharded tables, a match error between the data and the downstream table structure might occur.
+> **Note:**
+>
+> After you run `unlock-ddl-lock`, if the DM-worker that went offline becomes online again and tries to synchronize the data of the sharded tables, a match error between the data and the downstream table structure might occur.
 
 ### Scenario 2: Some DM-workers restart during the DDL unlocking process
 

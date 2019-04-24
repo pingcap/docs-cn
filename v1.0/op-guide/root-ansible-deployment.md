@@ -5,7 +5,9 @@ category: operations
 
 # Ansible Deployment Using the Root User Account
 
-> **Note:** The remote Ansible user (the `ansible_user` in the `incentory.ini` file) can use the root user account to deploy TiDB, but it is not recommended.
+> **Note:**
+>
+> The remote Ansible user (the `ansible_user` in the `incentory.ini` file) can use the root user account to deploy TiDB, but it is not recommended.
 
 The following example uses the `tidb` user account as the user running the service.
 
@@ -38,7 +40,9 @@ To deploy TiDB using a root user account, take the following steps:
     ansible-playbook bootstrap.yml
     ```
 
-    > **Note**: If the service user does not exist, the initialization operation will automatically create the user.
+    > **Note:**
+    >
+    > If the service user does not exist, the initialization operation will automatically create the user.
 
     If the remote connection using the root user requires a password, use the `-k` (lower case) parameter. This applies to other playbooks as well:
 

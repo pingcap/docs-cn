@@ -39,4 +39,6 @@ This section shows description of some important concepts.
 | `instance-id`  | Specifies a MySQL/MariaDB instance (if you deploy DM using DM-ansible, `host:port` is used to construct this ID) | `mysql-instance` of `dm-master.toml`;<br> `instance-id` of `task.yaml` |
 | DM-worker ID | Specifies a DM-worker (from the `worker-addr` parameter of `dm-worker.toml`) | `worker-addr` of `dm-worker.toml`;<br> the `-worker`/`-w` flag of the dmctl command line |
 
-> **Note:** You must keep `mysql-instance` and DM-worker at a one-to-one relationship. 
+> **Note:**
+>
+> You must keep `mysql-instance` and DM-worker at a one-to-one relationship. 

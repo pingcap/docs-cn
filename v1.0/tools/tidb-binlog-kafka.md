@@ -36,7 +36,9 @@ Drainer collects binlog files from each Pump node, converts them into specified 
 
 The Kafka cluster stores the binlog data written by Pump and provides the binlog data to Drainer for reading.
 
-> **Note:** In the local version of TiDB-Binlog, the binlog is stored in files, while in the latest version, the binlog is stored using Kafka.
+> **Note:**
+>
+> In the local version of TiDB-Binlog, the binlog is stored in files, while in the latest version, the binlog is stored using Kafka.
 
 ## Install TiDB-Binlog
 

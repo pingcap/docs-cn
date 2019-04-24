@@ -34,7 +34,9 @@ In addition, the user of the upstream and downstream databases must have the cor
 
 When you encounter a DDL statement unsupported by TiDB, you need to manually handle it using dmctl (skipping the DDL statement or replacing the DDL statement with a specified DDL statement). For details, see [Skip or replace abnormal SQL statements](/tools/dm/skip-replace-sqls.md).
 
-> **Note:** Currently, TiDB is not compatible with all the DDL statements that MySQL supports. See [the DDL statements supported by TiDB](/sql/ddl.md).
+> **Note:**
+>
+> Currently, TiDB is not compatible with all the DDL statements that MySQL supports. See [the DDL statements supported by TiDB](/sql/ddl.md).
 
 ## Reset the data synchronization task
 

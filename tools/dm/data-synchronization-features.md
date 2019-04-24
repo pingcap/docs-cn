@@ -154,7 +154,9 @@ The filtering process is as follows:
 
     3. If both `do-tables` and `ignore-tables` are empty, synchronize `test`.`t`.
 
-> **Note:** To judge whether the schema `test` is filtered, you only need to filter at the schema level.
+> **Note:**
+>
+> To judge whether the schema `test` is filtered, you only need to filter at the schema level.
 
 ### Usage example
 
@@ -205,7 +207,9 @@ After using the `bw-rule` rule:
 
 Binlog event filter is a more fine-grained filtering rule than the black and white lists filtering rule. You can use statements like `INSERT` or `TRUNCATE TABLE` to specify the binlog events of `schema/table` that you need to synchronize or filter out.
 
-> **Note:** If a same table matches multiple rules, these rules are applied in order and the black list has priority over the white list. This means if both the `Ignore` and `Do` rules are applied to a single table, the `Ignore` rule takes effect.
+> **Note:**
+>
+> If a same table matches multiple rules, these rules are applied in order and the black list has priority over the white list. This means if both the `Ignore` and `Do` rules are applied to a single table, the `Ignore` rule takes effect.
 
 ### Parameter configuration
 
@@ -288,7 +292,9 @@ To only synchronize sharding DML statements, configure the following two filteri
 - `do-table-rule` only synchronizes the `create table`, `insert`, `update` and `delete` statements of all tables that match the `test_*`.`t_*` pattern.
 - `do-schema-rule` only synchronizes the `create database` statement of all schemas that match the `test_*` pattern.
 
-> **Note:** The reason why the `create database/table` statement is synchronized is that you can synchronize DML statements only after the schema and table are created.
+> **Note:**
+>
+> The reason why the `create database/table` statement is synchronized is that you can synchronize DML statements only after the schema and table are created.
 
 ```yaml
 filters:
@@ -322,7 +328,9 @@ filters:
 
 For the SQL statements that the TiDB parser does not support, DM cannot parse them and get the `schema`/`table` information. So you must use the global filtering rule: `schema-pattern: "*"`.
 
-> **Note:** To avoid unexpectedly filtering out data that need to be replicated, you must configure the global filtering rule as strictly as possible.
+> **Note:**
+>
+> To avoid unexpectedly filtering out data that need to be replicated, you must configure the global filtering rule as strictly as possible.
 
 To filter out the `PARTITION` statements that the TiDB parser does not support, configure the following filtering rule:
 

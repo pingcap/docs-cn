@@ -90,7 +90,9 @@ For example, if you want to add two TiDB nodes (node101, node102) with the IP ad
     ansible-playbook bootstrap.yml -l 172.16.10.101,172.16.10.102
     ```
 
-    > **Note:** If an alias is configured in the `inventory.ini` file, for example, `node101 ansible_host=172.16.10.101`, use `-1` to specify the alias when executing `ansible-playbook`. For example, `ansible-playbook bootstrap.yml -l node101,node102`. This also applies to the following steps.
+    > **Note:**
+    >
+    > If an alias is configured in the `inventory.ini` file, for example, `node101 ansible_host=172.16.10.101`, use `-1` to specify the alias when executing `ansible-playbook`. For example, `ansible-playbook bootstrap.yml -l node101,node102`. This also applies to the following steps.
 
 3. Deploy the newly added node:
 
@@ -191,7 +193,9 @@ For example, if you want to add a PD node (node103) with the IP address `172.16.
 
     1. Remove the `--initial-cluster="xxxx" \` configuration.
 
-        > **Note:** You cannot add the `#` character at the beginning of the line. Otherwise, the following configuration cannot take effect.
+        > **Note:**
+        >
+        > You cannot add the `#` character at the beginning of the line. Otherwise, the following configuration cannot take effect.
 
     2. Add `--join="http://172.16.10.1:2379" \`. The IP address (`172.16.10.1`) can be any of the existing PD IP address in the cluster.
     3. Manually start the PD service in the newly added PD node:
@@ -206,7 +210,9 @@ For example, if you want to add a PD node (node103) with the IP address `172.16.
         ./pd-ctl -u "http://172.16.10.1:2379"
         ```
     
-        > **Note:** `pd-ctl` is a command used to check the number of PD nodes.
+        > **Note:**
+        >
+        > `pd-ctl` is a command used to check the number of PD nodes.
 
 5. Apply a rolling update to the entire cluster:
     
@@ -314,7 +320,9 @@ For example, if you want to remove a TiKV node (node9) with the IP address `172.
     ./pd-ctl -u "http://172.16.10.1:2379" -d store 10
     ```
 
-    > **Note:** It takes some time to remove the node. If the status of the node you remove becomes Tombstone, then this node is successfully removed.
+    > **Note:**
+    >
+    > It takes some time to remove the node. If the status of the node you remove becomes Tombstone, then this node is successfully removed.
 
 3. After the node is successfully removed, stop the services on node9:
 

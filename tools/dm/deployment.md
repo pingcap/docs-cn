@@ -20,7 +20,9 @@ Before you start, make sure you have the following machines as required.
 
 2. A Control Machine that meets the following requirements:
 
-    > **Note:** The Control Machine can be one of the target machines.
+    > **Note:**
+    >
+    > The Control Machine can be one of the target machines.
 
     - CentOS 7.3 (64-bit) or later, with Python 2.7 installed
     - Ansible 2.5 or later installed
@@ -176,7 +178,9 @@ ansible-playbook local_prepare.yml
 
 Log in to the Control Machine using the `tidb` user account, and edit the `/home/tidb/dm-ansible/inventory.ini` file to orchestrate the DM cluster.
 
-> **Note:** It is required to use the internal IP address to deploy. If the SSH port of the target machines is not the default 22 port, you need to add the `ansible_port` variable, as shown in the following example:
+> **Note:**
+>
+> It is required to use the internal IP address to deploy. If the SSH port of the target machines is not the default 22 port, you need to add the `ansible_port` variable, as shown in the following example:
 
 ```ini
 dm-worker1 ansible_host=172.16.10.72 ansible_port=5555 server_id=101 mysql_host=172.16.10.72 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
@@ -342,7 +346,9 @@ dm-worker1 ansible_host=172.16.10.72 source_id="mysql-replica-01" server_id=101 
 dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 relay_binlog_name="binlog.000002" mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 ```
 
-> **Note:** If `relay_binlog_name` is not set, DM-worker pulls the binlog starting from the earliest existing binlog file of the upstream MySQL or MariaDB. In this case, it can take a long period of time to pull the latest binlog for the data synchronization task.
+> **Note:**
+>
+> If `relay_binlog_name` is not set, DM-worker pulls the binlog starting from the earliest existing binlog file of the upstream MySQL or MariaDB. In this case, it can take a long period of time to pull the latest binlog for the data synchronization task.
 
 ### Enable the relay log GTID synchronization mode
 
@@ -381,7 +387,9 @@ The following example uses `tidb` as the user who runs the service.
     ansible_user = tidb
     ```
 
-    > **Note:** Do not configure `ansible_user` to `root`, because `tidb-ansible` limits the user that runs the service to the normal user.
+    > **Note:**
+    >
+    > Do not configure `ansible_user` to `root`, because `tidb-ansible` limits the user that runs the service to the normal user.
 
     Run the following command and if all servers return `tidb`, then the SSH mutual trust is successfully configured:
 

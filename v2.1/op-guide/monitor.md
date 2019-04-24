@@ -136,7 +136,9 @@ See the following diagram for the deployment architecture:
 
 ![image alt text](../media/monitor-architecture.png)
 
-> **Note:** You must add the Prometheus Pushgateway addresses to the startup parameters of the TiDB, PD and TiKV components.
+> **Note:**
+>
+> You must add the Prometheus Pushgateway addresses to the startup parameters of the TiDB, PD and TiKV components.
 
 ### Set up the monitoring system
 

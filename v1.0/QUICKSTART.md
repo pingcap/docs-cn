@@ -435,7 +435,9 @@ For example, if you want to add a PD node (node103) with the IP address `172.16.
 
     1. Remove the `--initial-cluster="xxxx" \` configuration.
 
-        > **Note:** You cannot add the `#` character at the beginning of the line. Otherwise, the following configuration cannot take effect.
+        > **Note:**
+        >
+        > You cannot add the `#` character at the beginning of the line. Otherwise, the following configuration cannot take effect.
 
     2. Add `--join="http://172.16.10.1:2379" \`. The IP address (`172.16.10.1`) can be any of the existing PD IP address in the cluster.
     3. Manually start the PD service in the newly added PD node:
@@ -450,7 +452,9 @@ For example, if you want to add a PD node (node103) with the IP address `172.16.
         ./pd-ctl -u "http://172.16.10.1:2379"
         ```
     
-        > **Note:** `pd-ctl` is a command used to check the number of PD nodes.
+        > **Note:**
+        >
+        > `pd-ctl` is a command used to check the number of PD nodes.
 
 5. Roll upgrade the entire cluster:
     
@@ -558,7 +562,9 @@ For example, if you want to remove a TiKV node (node9) with the IP address `172.
     ./pd-ctl -u "http://172.16.10.1:2379" -d store 10
     ```
 
-    > **Note:** It takes some time to remove the node. If node9 does not show in the result, the node is successfully removed.
+    > **Note:** 
+    >
+    > It takes some time to remove the node. If node9 does not show in the result, the node is successfully removed.
 
 3. After the node is successfully removed, stop the services on node9:
 

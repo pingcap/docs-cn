@@ -90,7 +90,9 @@ When `TIMESTAMP` is to be stored, TiDB converts the `TIMESTAMP` value from the c
 
 Invalid `DATE`, `DATETIME`, `TIMESTAMP` values are automatically converted to the corresponding type of zero value ( '0000-00-00' or '0000-00-00 00:00:00' ). 
 
-> **Note:** In `TIMESTAMP`, zero is not permitted to appear in the month-portion or day-portion. The only exception is zero value itself '0000-00-00 00:00:00'.
+> **Note:**
+>
+> In `TIMESTAMP`, zero is not permitted to appear in the month-portion or day-portion. The only exception is zero value itself '0000-00-00 00:00:00'.
 
 ## `TIME` type
 

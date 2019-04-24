@@ -25,7 +25,9 @@ mysql> SHOW CHARACTER SET;
 5 rows in set (0.00 sec)
 ```
 
-> **Note**: In TiDB, utf8 is treated as utf8mb4.
+> **Note:**
+>
+> In TiDB, utf8 is treated as utf8mb4.
 
 Each character set has at least one collation. Most of the character sets have several collations. You can use the following statement to display the available character sets:
 
@@ -61,7 +63,9 @@ The `latin1` collations have the following meanings:
 
 Each character set has a default collation. For example, the default collation for utf8 is `utf8_bin`.
 
-> **Note**: The collations in TiDB are case sensitive.
+> **Note:**
+>
+> The collations in TiDB are case sensitive.
 
 ## Collation naming conventions
 
@@ -79,7 +83,9 @@ The collation names in TiDB follow these conventions:
     | \_cs   | Case sensitive     |
     | \_bin  | Binary             |
 
-> **Note**: Currently, TiDB only supports some of the collations in the above table.
+> **Note:**
+>
+> Currently, TiDB only supports some of the collations in the above table.
 
 ## Database character set and collation
 

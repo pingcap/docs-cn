@@ -43,7 +43,9 @@ Before you start, make sure that you have:
 
     - Create a normal `tidb` user account as the user who runs the service. The `tidb` user can sudo to the root user without a password. See [How to configure SSH mutual trust and sudo without password](#how-to-configure-ssh-mutual-trust-and-sudo-without-password).
 
-    > **Note:** When you deploy TiDB using Ansible, use SSD disks for the data directory of TiKV and PD nodes.
+    > **Note:**
+    >
+    > When you deploy TiDB using Ansible, use SSD disks for the data directory of TiKV and PD nodes.
 
 2. A Control Machine with the following requirements:
 
@@ -56,7 +58,9 @@ Before you start, make sure that you have:
 
 Use the following method to install Ansible on the Control Machine of CentOS 7 system. Installation from the EPEL source includes Ansible dependencies automatically (such as `Jinja2==2.7.2 MarkupSafe==0.11`). After installation, you can view the version using `ansible --version`.
 
-> **Note:** Make sure that the Ansible version is **Ansible 2.4** or later, otherwise a compatibility issue occurs.
+> **Note:**
+>
+> Make sure that the Ansible version is **Ansible 2.4** or later, otherwise a compatibility issue occurs.
 
 ```bash
   # yum install epel-release
@@ -87,7 +91,9 @@ cd /home/tidb
 git clone https://github.com/pingcap/tidb-ansible.git
 ```
 
-> **Note:** For the production environment, download the 1.0 version to deploy TiDB.
+> **Note:**
+>
+> For the production environment, download the 1.0 version to deploy TiDB.
 
 ## Orchestrate the TiDB cluster
 
@@ -304,7 +310,9 @@ To deploy TiDB using a normal user account, take the following steps:
     ansible-playbook start.yml
     ```
 
-> **Note:** If you want to deploy TiDB using the root user account, see [Ansible Deployment Using the Root User Account](op-guide/root-ansible-deployment.md).
+> **Note:**
+>
+> If you want to deploy TiDB using the root user account, see [Ansible Deployment Using the Root User Account](op-guide/root-ansible-deployment.md).
 
 ## Test the cluster
 
@@ -316,7 +324,9 @@ It is recommended to configure load balancing to provide uniform SQL interface.
     mysql -u root -h 172.16.10.1 -P 4000
     ```
 
-    > **Note**: The default port of TiDB service is 4000.
+    > **Note:**
+    >
+    > The default port of TiDB service is 4000.
 
 2. Access the monitoring platform using a web browser.
 
@@ -359,7 +369,9 @@ You can also download the binary manually. Use `wget` to download the binary and
 wget http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz
 ```
 
-> **Note:** Remember to replace the version number in the download link.
+> **Note:**
+>
+> Remember to replace the version number in the download link.
 
 ### Use Ansible for rolling update
 
@@ -470,7 +482,9 @@ synchronised to NTP server (85.199.214.101) at stratum 2
    polling server every 1024 s
 ```
 
-> **Note:** For the Ubuntu system, install the `ntpstat` package.
+> **Note:**
+>
+> For the Ubuntu system, install the `ntpstat` package.
 
 The following condition indicates the NTP service is not synchronized normally:
 

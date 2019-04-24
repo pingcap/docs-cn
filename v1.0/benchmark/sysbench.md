@@ -10,7 +10,9 @@ draft: true
 
 The purpose of this test is to test the performance and horizontal scalability of TiDB in OLTP scenarios.
 
-> **Note**: The results of the testing might vary based on different environmental dependencies.
+> **Note:**
+>
+> The results of the testing might vary based on different environmental dependencies.
 
 ## Test version, date and place
 

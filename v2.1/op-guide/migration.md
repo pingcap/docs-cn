@@ -10,7 +10,9 @@ category: operations
 
 You can use `mydumper` to export data from MySQL and `loader` to import the data into TiDB.
 
-> **Note:** Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use it. Its performance is much lower than `mydumper` / `loader` and it takes much time to migrate large amounts of data. `mydumper`/`loader` is more powerful. For more information, see [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper).
+> **Note:**
+>
+> Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use it. Its performance is much lower than `mydumper` / `loader` and it takes much time to migrate large amounts of data. `mydumper`/`loader` is more powerful. For more information, see [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper).
 
 ### Export data from MySQL
 
@@ -27,7 +29,9 @@ In this command,
 - `-F 64`: means a table is partitioned into chunks and one chunk is 64MB.
 - `--skip-tz-utc`: the purpose of adding this parameter is to ignore the inconsistency of time zone setting between MySQL and the data exporting machine and to disable automatic conversion.
 
-> **Note**: On the Cloud platforms which require the `super privilege`, such as on the Aliyun platform, add the `--no-locks` parameter to the command. If not, you might get the error message that you don't have the privilege.
+> **Note:**
+>
+> On the Cloud platforms which require the `super privilege`, such as on the Aliyun platform, add the `--no-locks` parameter to the command. If not, you might get the error message that you don't have the privilege.
 
 ### Import data to TiDB
 
@@ -139,7 +143,9 @@ binlog-name = "mysql-bin.000003"
 binlog-pos = 930143241
 ```
 
-> **Note:** The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is synchronized.
+> **Note:**
+>
+> The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is synchronized.
 
 ### Start `syncer`
 

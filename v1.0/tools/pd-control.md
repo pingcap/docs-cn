@@ -12,7 +12,9 @@ As a command line tool of PD, PD Control obtains the state information of the cl
 1. [Go](https://golang.org/) Version 1.7 or later
 2. In the PD root directory, use the `make` command to compile and generate `bin/pd-ctl`
 
-> **Note:** Generally, you don't need to compile source code as the PD Control tool already exists in the released Binary or Docker. However, dev users can refer to the above instruction for compiling source code.
+> **Note:**
+>
+> Generally, you don't need to compile source code as the PD Control tool already exists in the released Binary or Docker. However, dev users can refer to the above instruction for compiling source code.
 
 ## Usage
 
@@ -152,7 +154,9 @@ Usage:
 
 The configuration above is global. You can also tune the configuration by configuring different namespaces. The global configuration is used if the corresponding configuration of the namespace is not set.
 
-> **Note:** The configuration of the namespace only supports editing `leader-schedule-limit`, `region-schedule-limit`, `replica-schedule-limit` and `max-replicas`.
+> **Note:**
+>
+> The configuration of the namespace only supports editing `leader-schedule-limit`, `region-schedule-limit`, `replica-schedule-limit` and `max-replicas`.
 
     ```bash
     >> config set namespace ts1 leader-schedule-limit 4 // 4 tasks of leader scheduling at the same time at most for the namespace named ts1

@@ -2,7 +2,9 @@
 
 ## Overview
 
-Note: **The easiest way to deploy TiDB is to use the official binary package directly, see [Binary Deployment](../op-guide/binary-deployment.md).**
+> **Note:**
+>
+> The easiest way to deploy TiDB is to use the official binary package directly, see [Binary Deployment](../op-guide/binary-deployment.md).**
 
 If you want to build the TiDB project, deploy the binaries to other machines and run them, you can follow this guide.
 

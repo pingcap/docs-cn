@@ -1072,7 +1072,9 @@ The interval of `GC Life Time` is too short. The data that should have been read
 update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_time';
 ```
 
-> **Note:** "30m" means only cleaning up the data generated 30 minutes ago, which might consume some extra storage space.
+> **Note:**
+>
+> "30m" means only cleaning up the data generated 30 minutes ago, which might consume some extra storage space.
 
 ### MySQL native error messages
 

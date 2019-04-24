@@ -40,11 +40,15 @@ Before you start, make sure you have:
     - CentOS 7.3 (64 bit) or later, x86_64 architecture (AMD64)
     - Network between machines
 
-    > **Note:** When you deploy TiDB using Ansible, **use SSD disks for the data directory of TiKV and PD nodes**. Otherwise, it cannot pass the check. If you only want to try TiDB out and explore the features, it is recommended to [deploy TiDB using Docker Compose](../op-guide/docker-compose.md) on a single machine.
+    > **Note:**
+    >
+    > When you deploy TiDB using Ansible, **use SSD disks for the data directory of TiKV and PD nodes**. Otherwise, it cannot pass the check. If you only want to try TiDB out and explore the features, it is recommended to [deploy TiDB using Docker Compose](../op-guide/docker-compose.md) on a single machine.
 
 2. A Control Machine that meets the following requirements:
 
-    > **Note:** The Control Machine can be one of the target machines.
+    > **Note:**
+    >
+    > The Control Machine can be one of the target machines.
 
     - CentOS 7.3 (64 bit) or later with Python 2.7 installed
     - Access to the Internet
@@ -153,7 +157,9 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
         $ git clone https://github.com/pingcap/tidb-ansible.git
         ```
 
-    > **Note:** It is required to download `tidb-ansible` to the `/home/tidb` directory using the `tidb` user account. If you download it to the `/root` directory, a privilege issue occurs.
+    > **Note:**
+    >
+    >  It is required to download `tidb-ansible` to the `/home/tidb` directory using the `tidb` user account. If you download it to the `/root` directory, a privilege issue occurs.
 
     If you have questions regarding which version to use, email to info@pingcap.com for more information or [file an issue](https://github.com/pingcap/tidb-ansible/issues/new).
 
@@ -213,7 +219,9 @@ Make sure you have logged in to the Control Machine using the `tidb` user accoun
 
 ## Step 6: Install the NTP service on the target machines
 
-> **Note:** If the time and time zone of all your target machines are same, the NTP service is on and is normally synchronizing time, you can ignore this step. See [How to check whether the NTP service is normal](#how-to-check-whether-the-ntp-service-is-normal).
+> **Note:**
+>
+> If the time and time zone of all your target machines are same, the NTP service is on and is normally synchronizing time, you can ignore this step. See [How to check whether the NTP service is normal](#how-to-check-whether-the-ntp-service-is-normal).
 
 Make sure you have logged in to the Control Machine using the `tidb` user account, run the following command:
 
@@ -244,7 +252,9 @@ analyzing CPU 0:
 
 Taking the above code for example, the system supports the `performance` and `powersave` modes. 
 
-> **Note:** As the following shows, if it returns "Not Available", it means that the current system does not support CPUfreq configuration and you can skip this step.
+> **Note:**
+>
+> As the following shows, if it returns "Not Available", it means that the current system does not support CPUfreq configuration and you can skip this step.
 
 ```
 # cpupower frequency-info --governors
@@ -286,7 +296,9 @@ Log in to the target machines using the `root` user account.
 
 Format your data disks to the ext4 filesystem and mount the filesystem with the `nodelalloc` and `noatime` options. It is required to mount the `nodelalloc` option, or else the Ansible deployment cannot pass the test. The `noatime` option is optional.
 
-> **Note:** If your data disks have been formatted to ext4 and have mounted the options, you can uninstall it by running the `# umount /dev/nvme0n1` command, follow the steps starting from editing the `/etc/fstab` file, and remount the filesystem with options.
+> **Note:**
+>
+> If your data disks have been formatted to ext4 and have mounted the options, you can uninstall it by running the `# umount /dev/nvme0n1` command, follow the steps starting from editing the `/etc/fstab` file, and remount the filesystem with options.
 
 Take the `/dev/nvme0n1` data disk as an example:
 
@@ -355,7 +367,9 @@ Log in to the Control Machine using the `tidb` user account, and edit the `tidb-
 - Do not deploy TiKV together with TiDB or PD on the same machine.
 - Use the first TiDB machine as the monitoring machine.
 
-> **Note:** It is required to use the internal IP address to deploy. If the SSH port of the target machines is not the default 22 port, you need to add the `ansible_port` variable. For example, `TiDB1 ansible_host=172.16.10.1 ansible_port=5555`.
+> **Note:**
+>
+> It is required to use the internal IP address to deploy. If the SSH port of the target machines is not the default 22 port, you need to add the `ansible_port` variable. For example, `TiDB1 ansible_host=172.16.10.1 ansible_port=5555`.
 
 You can choose one of the following two types of cluster topology according to your scenario:
 
@@ -508,7 +522,9 @@ The global variable is set to `/home/tidb/deploy` by default, and it applies to 
 deploy_dir = /data1/deploy
 ```
 
-**Note:** To separately set the deployment directory for a service, you can configure the host variable while configuring the service host list in the `inventory.ini` file. It is required to add the first column alias, to avoid confusion in scenarios of mixed services deployment.
+> **Note:**
+>
+> To separately set the deployment directory for a service, you can configure the host variable while configuring the service host list in the `inventory.ini` file. It is required to add the first column alias, to avoid confusion in scenarios of mixed services deployment.
 
 ```bash
 TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
@@ -552,7 +568,9 @@ The following example uses `tidb` as the user who runs the service.
     ansible_user = tidb
     ```
 
-    > **Note:** Do not configure `ansible_user` to `root`, because `tidb-ansible` limits the user that runs the service to the normal user.
+    > **Note:**
+    >
+    > Do not configure `ansible_user` to `root`, because `tidb-ansible` limits the user that runs the service to the normal user.
 
     Run the following command and if all servers return `tidb`, then the SSH mutual trust is successfully configured:
 
@@ -584,7 +602,9 @@ The following example uses `tidb` as the user who runs the service.
     ansible-playbook deploy.yml
     ```
 
-    > **Note:** You can use the `Report` button on the Grafana Dashboard to generate the PDF file. This function depends on the `fontconfig` package and English fonts. To use this function, log in to the `grafana_servers` machine and install it using the following command:
+    > **Note:**
+    >
+    > You can use the `Report` button on the Grafana Dashboard to generate the PDF file. This function depends on the `fontconfig` package and English fonts. To use this function, log in to the `grafana_servers` machine and install it using the following command:
     >
     > ```
     > $ sudo yum install fontconfig open-sans-fonts
@@ -606,7 +626,9 @@ Because TiDB is compatible with MySQL, you must use the MySQL client to connect 
     mysql -u root -h 172.16.10.1 -P 4000
     ```
 
-    > **Note**: The default port of TiDB service is 4000.
+    > **Note:**
+    >
+    > The default port of TiDB service is 4000.
 
 2. Access the monitoring platform using a web browser.
 
@@ -614,7 +636,9 @@ Because TiDB is compatible with MySQL, you must use the MySQL client to connect 
     http://172.16.10.1:3000
     ```
 
-    > **Note**: The default account and password: `admin`/`admin`.
+    > **Note:**
+    >
+    > The default account and password: `admin`/`admin`.
 
 ## Deployment FAQs
 
@@ -682,7 +706,9 @@ Edit the `inventory.ini` file and add the following host variable after the IP o
     polling server every 1024 s
     ```
 
-> **Note:** For the Ubuntu system, you need to install the `ntpstat` package.
+> **Note:**
+>
+> For the Ubuntu system, you need to install the `ntpstat` package.
 
 - The following condition indicates the NTP service is not synchronizing normally:
 

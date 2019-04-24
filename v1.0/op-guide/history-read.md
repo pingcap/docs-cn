@@ -23,7 +23,9 @@ The `tidb_snapshot` system variable is introduced to support reading history dat
 - The variable is to record time in the following format: “2016-10-08 16:45:26.999”. Generally, the time can be set to seconds like in “2016-10-08 16:45:26”. 
 - When the variable is set, TiDB creates a Snapshot using its value as the timestamp, just for the data structure and there is no any overhead. After that, all the `Select` operations will read data from this Snapshot.
 
-> **Note:** Because the timestamp in TiDB transactions is allocated by Placement Driver (PD), the version of the stored data is also marked based on the timestamp allocated by PD. When a Snapshot is created, the version number is based on the value of the `tidb_snapshot` variable. If there is a large difference between the local time of the TiDB server and the PD server, use the time of the PD server.
+> **Note:**
+>
+> Because the timestamp in TiDB transactions is allocated by Placement Driver (PD), the version of the stored data is also marked based on the timestamp allocated by PD. When a Snapshot is created, the version number is based on the value of the `tidb_snapshot` variable. If there is a large difference between the local time of the TiDB server and the PD server, use the time of the PD server.
 
 After reading data from history versions, you can read data from the latest version by ending the current Session or using the `Set` statement to set the value of the `tidb_snapshot` variable to "" (empty string). 
 
@@ -56,7 +58,9 @@ Pay special attention to the following two rows:
 
 - `tikv_gc_life_time`: This row is to configure the retention time of the history version and its default value is 10m. You can use SQL statements to configure it. For example, if you want all the data within one day to be readable, set this row to 24h by using the `update mysql.tidb set variable_value='24h' where variable_name='tikv_gc_life_time'` statement. The format is: "24h", "2h30m", "2.5h". The unit of time can be: "h", "m", "s".
 
-> **Note:** If your data is updated very frequently, the following issues might occur if the value of the `tikv_gc_life_time` is set to be too large like in days or months:
+> **Note:**
+>
+> If your data is updated very frequently, the following issues might occur if the value of the `tikv_gc_life_time` is set to be too large like in days or months:
 > 
 >  - The more versions of the data, the more disk storage is occupied.
 >  - A large amount of the history versions might slow down the query, especially the range queries like `select count(*) from t`.
@@ -124,7 +128,9 @@ Pay special attention to the following two rows:
 
 6. Set the `tidb_snapshot` variable whose scope is Session. The variable is set so that the latest version before the value can be read. 
 
-    > **Note:** In this example, the value is set to be the time before the update operation.
+    > **Note:**
+    >
+    > In this example, the value is set to be the time before the update operation.
   
     ```sql
     mysql> set @@tidb_snapshot="2016-10-08 16:45:26";

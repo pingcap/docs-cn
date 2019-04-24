@@ -105,7 +105,9 @@ SELECT name, id FROM person WHERE city = 'Beijing';
 
 In this way, you can create an index. 
 
-> **Note**: In the JSON document, if the field in the specified path does not exist, the result of `JSON_EXTRACT` will be `NULL`. The value of the generated column with index is also `NULL`. If this is not what you want to see, you can add a `NOT NULL` constraint on the generated column. In this way, when the value of the `city` field is `NULL` after you insert data, it can be detected.
+> **Note:**
+>
+> In the JSON document, if the field in the specified path does not exist, the result of `JSON_EXTRACT` will be `NULL`. The value of the generated column with index is also `NULL`. If this is not what you want to see, you can add a `NOT NULL` constraint on the generated column. In this way, when the value of the `city` field is `NULL` after you insert data, it can be detected.
 
 ## Limitations
 

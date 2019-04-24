@@ -87,7 +87,9 @@ TiDB implements the asynchronous schema changes algorithm in F1. The Data Manipu
     - Supports changing/modifying the types among the following string types: Char, Varchar, Text, TinyText, MediumText, LongText
     - Support changing/modifying the types among the following string types: Blob, TinyBlob, MediumBlob, LongBlob.
     
-        > **Note:** The changing/modifying column operation cannot make the length of the original type become shorter and it cannot change the unsigned/charset/collate attributes of the column.
+        > **Note:**
+        >
+        > The changing/modifying column operation cannot make the length of the original type become shorter and it cannot change the unsigned/charset/collate attributes of the column.
 
     - Supports changing the following type definitions: `default value`, `comment`, `null`, `not null` and `OnUpdate`.
     - Supports parsing the `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}` syntax, but there is no actual operation.
@@ -102,7 +104,9 @@ TiDB implements an optimistic transaction model. Unlike MySQL, which uses row-le
 
 Similarly, functions such as `GET_LOCK()` and `RELEASE_LOCK()` and statements such as `SELECT .. FOR UPDATE` do not work in the same way as in MySQL.
 
-**Note:** On the business side, remember to check the returned results of `commit` because even there is no error in the execution, there might be errors in the `commit` process.
+> **Note:**
+>
+> On the business side, remember to check the returned results of `commit` because even there is no error in the execution, there might be errors in the `commit` process.
 
 ### Large transactions
 

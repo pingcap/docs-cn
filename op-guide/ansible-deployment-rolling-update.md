@@ -8,7 +8,9 @@ category: operations
 
 When you perform a rolling update for a TiDB cluster, the service is shut down serially and is started after you update the service binary and the configuration file. If the load balancing is configured in the front-end, the rolling update of TiDB does not impact the running applications. Minimum requirements: `pd*3, tidb*2, tikv*3`.
 
-> **Note:** If the binlog is enabled, and Pump and Drainer services are deployed in the TiDB cluster, stop the Drainer service before the rolling update. The Pump service is automatically updated in the rolling update of TiDB.
+> **Note:**
+>
+> If the binlog is enabled, and Pump and Drainer services are deployed in the TiDB cluster, stop the Drainer service before the rolling update. The Pump service is automatically updated in the rolling update of TiDB.
 
 ## Upgrade the component version
 
@@ -29,7 +31,9 @@ When you perform a rolling update for a TiDB cluster, the service is shut down s
     tidb_version = v2.0.7
     ```
 
-    > **Note:** If you use `tidb-ansible` of the master branch, you can keep `tidb_version = latest`. The installation package of the latest TiDB version is updated each day.
+    > **Note:**
+    >
+    > If you use `tidb-ansible` of the master branch, you can keep `tidb_version = latest`. The installation package of the latest TiDB version is updated each day.
 
 2. Delete the existing `downloads` directory `/home/tidb/tidb-ansible/downloads/`.
 
@@ -52,7 +56,9 @@ You can also download the binary manually. Use `wget` to download the binary and
 wget http://download.pingcap.org/tidb-v2.0.7-linux-amd64.tar.gz
 ```
 
-> **Note:** Remember to replace the version number in the download link with the one you need.
+> **Note:**
+>
+> Remember to replace the version number in the download link with the one you need.
 
 If you use `tidb-ansible` of the master branch, download the binary using the following command:
 

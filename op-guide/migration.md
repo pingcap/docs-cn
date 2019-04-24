@@ -10,7 +10,9 @@ category: operations
 
 You can use `mydumper` to export data from MySQL and `loader` to import the data into TiDB.
 
-> **Note:** Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use it. Its performance is much lower than `mydumper` / `loader` and it takes much time to migrate large amounts of data. It is important to use the `mydumper` provided by TiDB and not the upstream `mydumper` version.  See [mydumper](../tools/mydumper.md) for more information.
+> **Note:**
+>
+> Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use it. Its performance is much lower than `mydumper` / `loader` and it takes much time to migrate large amounts of data. It is important to use the `mydumper` provided by TiDB and not the upstream `mydumper` version.  See [mydumper](../tools/mydumper.md) for more information.
 
 `Mydumper` and `loader` can be [downloaded as part of Enterprise Tools](../tools/download.md).
 
@@ -29,7 +31,9 @@ In this command,
 - `-F 64`: means a table is partitioned into chunks and one chunk is 64MB.
 - `--skip-tz-utc`: the purpose of adding this parameter is to ignore the inconsistency of time zone setting between MySQL and the data exporting machine and to disable automatic conversion.
 
-> **Note**: On the Cloud platforms which require the `super privilege`, such as on the Amazon RDS, add the `--no-locks` parameter to the command. If not, you might get the error message that you don't have the privilege.
+> **Note:**
+>
+> On the Cloud platforms which require the `super privilege`, such as on the Amazon RDS, add the `--no-locks` parameter to the command. If not, you might get the error message that you don't have the privilege.
 
 ### Import data to TiDB
 

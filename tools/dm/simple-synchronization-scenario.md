@@ -121,7 +121,9 @@ Assume that the schemas synchronized to the downstream are as follows:
         action: Ignore
     ```
 
-    > **Note:** `store-filter-rule` is different from `log-filter-rule & user-filter-rule`. `store-filter-rule` is a rule for the whole `store` schema, while `log-filter-rule` and `user-filter-rule` are rules for the `log` table in the `user` schema.
+    > **Note:**
+    >
+    > `store-filter-rule` is different from `log-filter-rule & user-filter-rule`. `store-filter-rule` is a rule for the whole `store` schema, while `log-filter-rule` and `user-filter-rule` are rules for the `log` table in the `user` schema.
 
 - To satisfy the synchronization Requirement #3, configure the [black and white lists](/tools/dm/data-synchronization-features.md#black-and-white-table-lists) as follows:
 

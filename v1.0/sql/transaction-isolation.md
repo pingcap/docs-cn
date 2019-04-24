@@ -59,7 +59,9 @@ The MySQL Repeatable Read isolation level is not the snapshot isolation level. T
 
 The Read Committed isolation level differs from Repeatable Read isolation level. Read Committed only guarantees the uncommitted data cannot be read.
 
-**Note:** Because the transaction commit is a dynamic process, the Read Committed isolation level might read the data committed by part of the transaction. It is not recommended to use the Read Committed isolation level in a database that requires strict consistency.
+> **Note:**
+>
+> Because the transaction commit is a dynamic process, the Read Committed isolation level might read the data committed by part of the transaction. It is not recommended to use the Read Committed isolation level in a database that requires strict consistency.
 
 ## Transaction retry
 

@@ -68,7 +68,9 @@ For each start of DM-worker (or the relay log resuming synchronization after a p
 
     - In the GTID mode, DM-worker starts synchronization from the initial upstream GTID. 
     
-        > **Note:** If the upstream relay log is purged, an error occurs. In this case, set `relay-binlog-gtid` to specify the starting position of synchronization.
+        > **Note:**
+        >
+        > If the upstream relay log is purged, an error occurs. In this case, set `relay-binlog-gtid` to specify the starting position of synchronization.
 
 - If a valid local relay log does not exist:
 

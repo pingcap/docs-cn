@@ -10,7 +10,9 @@ TiDB on Homebrew supports a minimal installation mode of the tidb-server **witho
 
 This installation method is supported on macOS, Linux and Windows (via [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10)).
 
-> **Note**: Internally this installation uses goleveldb as the storage engine. It is much slower than TiKV, and any benchmarks will be unreliable.
+> **Note:**
+>
+> Internally this installation uses goleveldb as the storage engine. It is much slower than TiKV, and any benchmarks will be unreliable.
 
 ## Installation steps
 

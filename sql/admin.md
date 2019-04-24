@@ -109,7 +109,7 @@ like_or_where:
   | WHERE expr
 ```
 
-> **Note**:
+> **Note:**
 > 
 > - To view statistics using the `SHOW` statement, see [View Statistics](../sql/statistics.md#view-statistics).
 > - For more information about the `SHOW` statement, see [SHOW Syntax in MySQL](https://dev.mysql.com/doc/refman/5.7/en/show.html).
@@ -184,7 +184,7 @@ ADMIN CHECK TABLE tbl_name [, tbl_name] ...
 - `ADMIN CANCEL DDL JOBS job_id [, job_id] ...`: To cancel the currently running DDL jobs and return whether the corresponding jobs are successfully cancelled. If the operation fails to cancel the jobs, specific reasons are displayed.
 - `ADMIN CHECK TABLE tbl_name [, tbl_name] ...`: To check the consistency of all the data in the specified table and corresponding indexes. If the check is passed, an empty result will be returned. On failure, an error message will indicate that data is inconsistent.
 
-  > **Note**:
+  > **Note:**
   >
   > - This operation can cancel multiple DDL jobs at the same time. You can get the ID of DDL jobs using the `ADMIN SHOW DDL JOBS` statement. 
   > - If the jobs you want to cancel are finished, the cancellation operation fails. 

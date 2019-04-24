@@ -35,7 +35,9 @@ Take the following steps to install system dependencies on the Control Machine i
     # ./install_ansible_system_rpms.sh
     ```
 
-    > **Note:** This offline installation package includes `pip` and `sshpass`, and only supports the CentOS 7 system.
+    > **Note:**
+    >
+    > This offline installation package includes `pip` and `sshpass`, and only supports the CentOS 7 system.
 
 2. After the installation is finished, you can use `pip -V` to check whether it is successfully installed.
 
@@ -44,7 +46,9 @@ Take the following steps to install system dependencies on the Control Machine i
      pip 8.1.2 from /usr/lib/python2.7/site-packages (python 2.7)
     ```
 
-    > **Note:** If `pip` is already installed to your system, make sure that the version is 8.1.2 or later. Otherwise, compatibility error occurs when you install Ansible and its dependencies offline.
+    > **Note:**
+    >
+    > If `pip` is already installed to your system, make sure that the version is 8.1.2 or later. Otherwise, compatibility error occurs when you install Ansible and its dependencies offline.
 
 ## Step 2: Create the `tidb` user on the Control Machine and generate the SSH key
 
@@ -86,7 +90,9 @@ Currently, the TiDB 2.0 GA version and the master version are compatible with An
     # ansible --version
       ansible 2.5.0
     ```
-    > **Note:** Make sure that the version of Ansible is 2.5, otherwise a compatibility issue occurs.
+    > **Note:**
+    >
+    > Make sure that the version of Ansible is 2.5, otherwise a compatibility issue occurs.
 
 2. Download TiDB-Ansible.
 
@@ -123,7 +129,9 @@ See [Configure the SSH mutual trust and sudo rules on the Control Machine](../op
 
 See [Install the NTP service on the target machines](../op-guide/ansible-deployment.md#step-6-install-the-ntp-service-on-the-target-machines).
 
-> **Note:** If the time and time zone of all your target machines are same, the NTP service is on and is normally synchronizing time, you can ignore this step. See [How to check whether the NTP service is normal](#how-to-check-whether-the-ntp-service-is-normal).
+> **Note:**
+>
+> If the time and time zone of all your target machines are same, the NTP service is on and is normally synchronizing time, you can ignore this step. See [How to check whether the NTP service is normal](#how-to-check-whether-the-ntp-service-is-normal).
 
 ## Step 7: Configure the CPUfreq governor mode on the target machine 
 

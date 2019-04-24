@@ -35,7 +35,9 @@ Take the following steps to install system dependencies on the Control Machine i
     # ./install_ansible_system_rpms.sh
     ```
 
-    > **Note:** This offline installation package includes `pip` and `sshpass`, and only supports the CentOS 7 system.
+    > **Note:**
+    >
+    > This offline installation package includes `pip` and `sshpass`, and only supports the CentOS 7 system.
 
 2. After the installation is finished, you can use `pip -V` to check whether it is successfully installed.
 
@@ -44,7 +46,9 @@ Take the following steps to install system dependencies on the Control Machine i
      pip 8.1.2 from /usr/lib/python2.7/site-packages (python 2.7)
     ```
 
-    > **Note:** If `pip` is already installed to your system, make sure that the version is 8.1.2 or later. Otherwise, compatibility error occurs when you install Ansible and its dependencies offline.
+    > **Note:**
+    >
+    > If `pip` is already installed to your system, make sure that the version is 8.1.2 or later. Otherwise, compatibility error occurs when you install Ansible and its dependencies offline.
 
 ## Step 2: Create the `tidb` user on the Control Machine and generate the SSH key
 
@@ -85,7 +89,9 @@ The relationship between the `tidb-ansible` version and the TiDB version is as f
 | 3.0 version | v3.0.0-beta, v3.0.0-beta.1 | It is currently a beta version which is not recommended to use in the production environment. |
 | `master` branch | None | It includes the newest features and is updated on a daily basis, so it is not recommended to use it in the production environment. |
 
-> **Note:** If you have questions regarding which version to use, email to info@pingcap.com for more information or [file an issue](https://github.com/pingcap/tidb-ansible/issues/new).
+> **Note:**
+>
+> If you have questions regarding which version to use, email to info@pingcap.com for more information or [file an issue](https://github.com/pingcap/tidb-ansible/issues/new).
 
 1. Install Ansible on the download machine.
 
@@ -97,13 +103,17 @@ The relationship between the `tidb-ansible` version and the TiDB version is as f
     # ansible --version
       ansible 2.5.0
     ```
-    > **Note:** Make sure that the version of Ansible is 2.5, otherwise a compatibility issue occurs.
+    > **Note:**
+    >
+    > Make sure that the version of Ansible is 2.5, otherwise a compatibility issue occurs.
 
 2. Download TiDB-Ansible.
 
     Use the following command to download the corresponding version of TiDB-Ansible from the GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`.
 
-    > **Note:** It is required to use the corresponding tidb-ansible version when you deploy and upgrade the TiDB cluster. If you deploy TiDB using a mismatched version of tidb-ansible (such as using tidb-ansible v2.1.4 to deploy TiDB v2.1.6), an error might occur.
+    > **Note:**
+    >
+    > It is required to use the corresponding tidb-ansible version when you deploy and upgrade the TiDB cluster. If you deploy TiDB using a mismatched version of tidb-ansible (such as using tidb-ansible v2.1.4 to deploy TiDB v2.1.6), an error might occur.
 
     - Download the tidb-ansible version with a specified tag:
     

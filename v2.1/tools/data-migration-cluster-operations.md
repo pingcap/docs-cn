@@ -79,7 +79,9 @@ The dmctl component is stateless. You can restart it at any time you like.
 
 ### Restart DM-worker
 
-> **Note:** Try to avoid restarting DM-worker during the process of synchronizing sharding DDL statements.
+> **Note:**
+>
+> Try to avoid restarting DM-worker during the process of synchronizing sharding DDL statements.
 
 To restart the DM-worker component, you can use either of the following two approaches:
 
@@ -98,7 +100,9 @@ To restart the DM-worker component, you can use either of the following two appr
 
 ### Restart DM-master
 
-> **Note:** Try to avoid restarting DM-master during the process of synchronizing sharding DDL statements.
+> **Note:**
+>
+> Try to avoid restarting DM-master during the process of synchronizing sharding DDL statements.
 
 To restart the DM-master component, you can use either of the following two approaches:
 
@@ -289,7 +293,9 @@ Assuming that the `172.16.10.71` machine needs to be maintained or this machine 
 
 2. Stop the DM-master instance that you need to replace.
 
-    > **Note:** If the `172.16.10.71` machine breaks down and you cannot log in via SSH, ignore this step.  
+    > **Note:**
+    >
+    > If the `172.16.10.71` machine breaks down and you cannot log in via SSH, ignore this step.  
 
     ```
     $ ansible-playbook stop.yml --tags=dm-master
@@ -349,7 +355,9 @@ Assuming that the `172.16.10.72` machine needs to be maintained or this machine 
     
 2. Stop the DM-worker instance that you need to replace.
 
-    > **Note:** If the `172.16.10.72` machine breaks down and you cannot log in via SSH, ignore this step.
+    > **Note:**
+    >
+    > If the `172.16.10.72` machine breaks down and you cannot log in via SSH, ignore this step.
 
     ```
     $ ansible-playbook stop.yml --tags=dm-worker -l dm_worker1

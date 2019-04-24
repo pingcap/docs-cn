@@ -29,7 +29,9 @@ See the following for the assumed MySQL and TiDB server information:
     - `Loader`: to import data to TiDB.
     - `Syncer`: to incrementally synchronize data from MySQL to TiDB.
 
-        > **Note:** To incrementally synchronize data from MySQL to TiDB, the binary logging (binlog) must be enabled and must use the `row` format in MySQL.
+        > **Note:**
+        >
+        > To incrementally synchronize data from MySQL to TiDB, the binary logging (binlog) must be enabled and must use the `row` format in MySQL.
 
 ### Enable binary logging (binlog) in MySQL
 
@@ -90,7 +92,9 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 3. Use the `checker` tool to check one of the tables in the `test` database.
 
-    **Note:** Assuming you need to migrate the `t1` table only in this sample.
+    > **Note:**
+    >
+    > Assuming you need to migrate the `t1` table only in this sample.
 
     ```bash
     ./bin/checker -host 127.0.0.1 -port 3306 -user root test t1

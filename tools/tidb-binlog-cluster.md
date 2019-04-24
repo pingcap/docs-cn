@@ -239,7 +239,9 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
         $ vi drainer_mysql_drainer.toml
         ```
 
-        > **Note:** Name the configuration file as `alias_drainer.toml`. Otherwise, the customized configuration file cannot be found during the deployment process.
+        > **Note:**
+        >
+        > Name the configuration file as `alias_drainer.toml`. Otherwise, the customized configuration file cannot be found during the deployment process.
         
         Set `db-type` to `mysql` and configure the downstream MySQL information:
 
@@ -549,7 +551,9 @@ The following part shows how to use Pump and Drainer based on the nodes above.
 
     - Starting Drainer:
 
-        > **Note:** If the downstream is MySQL/TiDB, to guarantee the data integrity, you need to obtain the `initial-commit-ts` value and make a full backup of the data and restore the data before the initial start of Drainer. For details, see [Deploy Drainer](#step-3-deploy-drainer).
+        > **Note:**
+        >
+        > If the downstream is MySQL/TiDB, to guarantee the data integrity, you need to obtain the `initial-commit-ts` value and make a full backup of the data and restore the data before the initial start of Drainer. For details, see [Deploy Drainer](#step-3-deploy-drainer).
 
         When Drainer is started for the first time, use the `initial-commit-ts` parameter.
 
@@ -582,7 +586,7 @@ Pump/Drainer state description:
 * `closing`: in the offline process. `binlogctl` is used to get Pump/Drainer offline and Pump/Drainer is in this state before the process exits. In this state, Pump does not accept new requests of writing binlog into it and waits for all the binlog data to be used up by Drainer.
 * `offline`: becomes offline. After Pump sents all the binlog data that it saves to Drainer, its state is switched to `offline`. Drainer's state can be switched to `offline` after all the threads have exited.
 
-> **Notes:**
+> **Note:**
 >
 > * When Pump/Drainer is `pausing` or `paused`, the data synchronization is interrupted.
 > * When Pump is `closing`, you need to guarantee that all the data has been consumed by all the Drainers that are not `offline`. So before making Pump offline, you need to guarantee all the Drainers are `online`; otherwise, Pump cannot get offline normally.

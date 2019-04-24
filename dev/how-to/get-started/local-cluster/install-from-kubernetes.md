@@ -17,16 +17,22 @@ Before deploying a TiDB cluster to Kubernetes, make sure the following requireme
 
 - Resources requirement: CPU 2+, Memory 4G+
 
-    > **Note:** For macOS, you need to allocate 2+ CPU and 4G+ Memory to Docker. For details, see [Docker for Mac configuration](https://docs.docker.com/docker-for-mac/#advanced).
+    > **Note:**
+    >
+    > For macOS, you need to allocate 2+ CPU and 4G+ Memory to Docker. For details, see [Docker for Mac configuration](https://docs.docker.com/docker-for-mac/#advanced).
 
 - [Docker](https://docs.docker.com/install/): 17.03 or later
 
-    > **Note:** [Legacy Docker Toolbox](https://docs.docker.com/toolbox/toolbox_install_mac/) users must migrate to [Docker for Mac](https://store.docker.com/editions/community/docker-ce-desktop-mac) by uninstalling Legacy Docker Toolbox and installing Docker for Mac, because DinD cannot run on Docker Toolbox and Docker Machine.
+    > **Note:**
+    >
+    > [Legacy Docker Toolbox](https://docs.docker.com/toolbox/toolbox_install_mac/) users must migrate to [Docker for Mac](https://store.docker.com/editions/community/docker-ce-desktop-mac) by uninstalling Legacy Docker Toolbox and installing Docker for Mac, because DinD cannot run on Docker Toolbox and Docker Machine.
 
 - [Helm Client](https://github.com/helm/helm/blob/master/docs/install.md#installing-the-helm-client): 2.9.0 or later
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl): 1.10 or later
 
-    > **Note:** The outputs of different versions of `kubectl` might be slightly different.
+    > **Note:**
+    >
+    > The outputs of different versions of `kubectl` might be slightly different.
 
 ## Step 1: Deploy a Kubernetes cluster using DinD
 
@@ -36,7 +42,9 @@ $ cd tidb-operator
 $ manifests/local-dind/dind-cluster-v1.12.sh up
 ```
 
-> **Note:** If the cluster fails to pull Docker images during the startup due to the firewall, you can set the environment variable `KUBE_REPO_PREFIX` to `uhub.ucloud.cn/pingcap` before running the script `dind-cluster-v1.12.sh` as follows (the Docker images used are pulled from [UCloud Docker Registry](https://docs.ucloud.cn/compute/uhub/index)):
+> **Note:**
+>
+> If the cluster fails to pull Docker images during the startup due to the firewall, you can set the environment variable `KUBE_REPO_PREFIX` to `uhub.ucloud.cn/pingcap` before running the script `dind-cluster-v1.12.sh` as follows (the Docker images used are pulled from [UCloud Docker Registry](https://docs.ucloud.cn/compute/uhub/index)):
 
 ```
 $ KUBE_REPO_PREFIX=uhub.ucloud.cn/pingcap manifests/local-dind/dind-cluster-v1.12.sh up
@@ -157,7 +165,9 @@ You can scale out or scale in the TiDB cluster simply by modifying the number of
     helm upgrade tidb-cluster charts/tidb-cluster --namespace=tidb
     ```
 
-> **Note:** If you need to scale in TiKV, the consumed time depends on the volume of your existing data, because the data needs to be migrated safely.
+> **Note:**
+>
+> If you need to scale in TiKV, the consumed time depends on the volume of your existing data, because the data needs to be migrated safely.
 
 ## Upgrade the TiDB cluster
 
@@ -179,7 +189,9 @@ When you are done with your test, use the following command to destroy the TiDB 
 $ helm delete tidb-cluster --purge
 ```
 
-> **Note:** This only deletes the running pods and other resources, the data is persisted. If you do not need the data anymore, run the following commands to clean up the data. (Be careful, this permanently deletes the data).
+> **Note:**
+>
+> This only deletes the running pods and other resources, the data is persisted. If you do not need the data anymore, run the following commands to clean up the data. (Be careful, this permanently deletes the data).
 
 ```sh
 $ kubectl get pv -l app.kubernetes.io/namespace=tidb -o name | xargs -I {} kubectl patch {} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'

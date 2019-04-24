@@ -10,7 +10,9 @@ DBdeployer is designed to allow multiple versions of TiDB deployed concurrently.
 
 Similar to [Homebrew](/dev/how-to/get-started/local-cluster/install-from-homebrew.md), the DBdeployer installation method installs the tidb-server **without** the tikv-server or pd-server. This is useful for development environments, since you can test your application's compatibility with TiDB without needing to deploy a full TiDB platform.
 
-> **Note**: Internally this installation uses goleveldb as the storage engine. It is much slower than TiKV, and any benchmarks will be unreliable.
+> **Note:**
+>
+> Internally this installation uses goleveldb as the storage engine. It is much slower than TiKV, and any benchmarks will be unreliable.
 
 <main class="tabs">
   <input id="tabMacOS" type="radio" name="tabs" value="MacOSContent" checked>

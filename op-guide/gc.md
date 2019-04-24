@@ -53,7 +53,9 @@ In the table above, `tikv_gc_run_interval`, `tikv_gc_life_time` and `tikv_gc_con
 
     The duration strings are a sequence of a number with the time unit, such as 24h, 2h30m and 2.5h. The time units you can use include "h", "m" and "s".
 
-    > **Note**: When you set `tikv_gc_life_time` to a large number (like days or even months) in a scenario where data is updated frequently, some problems as follows may occur: 
+    > **Note:**
+    >
+    > When you set `tikv_gc_life_time` to a large number (like days or even months) in a scenario where data is updated frequently, some problems as follows may occur: 
         
     - The more versions of the data, the more disk storage space is occupied.
     - A large number of history versions might slow down the query. They may affect range queries like `select count(*) from t`.
@@ -73,7 +75,9 @@ The GC implementation process is complex. When the obsolete data is cleared, dat
 
 The TiDB transaction model is inspired by Google's Percolator. It's mainly a two-phase commit protocol with some practical optimizations. When the first phase is finished, all the related keys are locked. Among these locks, one is the primary lock and the others are secondary locks which contain a pointer of the primary locks; in the secondary phase, the key with the primary lock gets a write record and its lock is removed. The write record indicates the write or delete operation in the history or the transactional rollback record of this key. Replacing the primary lock with which write record indicates whether the corresponding transaction is committed successfully. Then all the secondary locks are replaced successively. If the threads fail to replace the secondary locks, these locks are retained. During GC, the lock whose timestamp is before the safe point is replaced with the corresponding write record based on the transaction committing status.
 
-> **Note**: This is a required step. Once GC has cleared the write record of the primary lock, you can never know whether this transaction is successful or not. As a result, data consistency cannot be guaranteed.
+> **Note:**
+>
+> This is a required step. Once GC has cleared the write record of the primary lock, you can never know whether this transaction is successful or not. As a result, data consistency cannot be guaranteed.
 
 ### 2. Delete ranges
 
@@ -83,4 +87,6 @@ The TiDB transaction model is inspired by Google's Percolator. It's mainly a two
 
 Clear the data before the safe point of each key and the write record. 
 
-> **Note**: If the last record in all the write records of `Put` and `Delete` types before the safe point is `Put`, this record and its data cannot be deleted directly. Otherwise, you cannot successfully perform the read operation whose timestamp is after the safe point and before the next version of the key. 
+> **Note:**
+>
+> If the last record in all the write records of `Put` and `Delete` types before the safe point is `Put`, this record and its data cannot be deleted directly. Otherwise, you cannot successfully perform the read operation whose timestamp is after the safe point and before the next version of the key. 

@@ -10,7 +10,9 @@ TiDB supports both the MySQL wire protocol and the majority of its syntax. This 
 
 Currently TiDB Server advertises itself as MySQL 5.7 and works with most MySQL database tools such as PHPMyAdmin, Navicat, MySQL Workbench, mysqldump, and mydumper/myloader.
 
-> **Note:** This page refers to general differences between MySQL and TiDB. Please also see the dedicated pages for [Security Compatibility with MySQL](../sql/security-compatibility.md) and [Transaction Model](../sql/transaction-model.md) compatibility.
+> **Note:**
+>
+> This page refers to general differences between MySQL and TiDB. Please also see the dedicated pages for [Security Compatibility with MySQL](../sql/security-compatibility.md) and [Transaction Model](../sql/transaction-model.md) compatibility.
 
 ## Unsupported features
 
@@ -94,7 +96,9 @@ TiDB implements the asynchronous schema changes algorithm in F1. The Data Manipu
     - Supports changing/modifying the types among the following string types: Char, Varchar, Text, TinyText, MediumText, LongText
     - Support changing/modifying the types among the following string types: Blob, TinyBlob, MediumBlob, LongBlob.
     
-        > **Note:** The changing/modifying column operation cannot make the length of the original type become shorter and it cannot change the unsigned/charset/collate attributes of the column.
+        > **Note:**
+        >
+        > The changing/modifying column operation cannot make the length of the original type become shorter and it cannot change the unsigned/charset/collate attributes of the column.
 
     - Supports changing the following type definitions: `default value`, `comment`, `null`, `not null` and `OnUpdate`.
     - Supports parsing the `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}` syntax, but there is no actual operation.

@@ -42,7 +42,9 @@ After you have manually unlocked the lock, it still might exist that the lock ca
 
 Therefore, after you have manually unlocked the DM-workers, you need to use `stop-task`/`start-task` and the updated task configuration that does not include offline DM-workers to restart the task.
 
-> **Note:** If the DM-workers that went offline become online again after you run `unlock-ddl-lock`, it means: These DM-workers will synchronize the unlocked DDL operation again. (Other DM-workers that were not offline have synchronized the DDL statement.) The DDL operation of these DM-workers will try to match the subsequent synchronized DDL statements of other DM-workers. A match error of synchronizing sharding DDL statements of different DM-workers might occur.
+> **Note:**
+>
+> If the DM-workers that went offline become online again after you run `unlock-ddl-lock`, it means: These DM-workers will synchronize the unlocked DDL operation again. (Other DM-workers that were not offline have synchronized the DDL statement.) The DDL operation of these DM-workers will try to match the subsequent synchronized DDL statements of other DM-workers. A match error of synchronizing sharding DDL statements of different DM-workers might occur.
 
 ## Condition two: a DM-worker restarts (or is unreachable temporarily)
 

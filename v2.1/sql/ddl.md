@@ -200,7 +200,9 @@ The `TRUNCATE TABLE` statement is used to clear all the data in the specified ta
 
 This operation is similar to deleting all the data of a specified table, but it is much faster and is not affected by the number of rows in the table.
 
-> **Note**: If you use the `TRUNCATE TABLE` statement, the value of `AUTO_INCREMENT` in the original table is reset to its starting value.
+> **Note:**
+>
+> If you use the `TRUNCATE TABLE` statement, the value of `AUTO_INCREMENT` in the original table is reset to its starting value.
 
 ## RENAME TABLE syntax
 

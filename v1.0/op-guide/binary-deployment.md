@@ -81,7 +81,9 @@ See the following table for the default ports for the optional TiDB components:
 | vm.swappiness | Set `vm.swappiness = 0` |
 
 
-> **Note**: To adjust the operating system parameters, contact your system administrator.
+> **Note:**
+>
+> To adjust the operating system parameters, contact your system administrator.
 
 ### Database running user
 
@@ -320,7 +322,7 @@ Follow the steps below to start PD, TiKV, and TiDB:
     mysql -h 192.168.199.113 -P 4000 -u root -D test
     ```
 
-> **Note**:
+> **Note:**
 >
 > - If you start TiKV or deploy PD in the production environment, it is highly recommended to specify the path for the configuration file using the `--config` parameter. If the parameter is not set, TiKV or PD does not read the configuration file.
 > - To tune TiKV, see [Performance Tuning for TiKV](./tune-TiKV.md).

@@ -9,7 +9,9 @@ category: benchmark
 
 This test aims to compare the performances of TiDB 1.0 and TiDB 2.0 in the OLAP scenario.
 
-> **Note**: Different test environments might lead to different test results.
+> **Note:**
+>
+> Different test environments might lead to different test results.
 
 ## Test environment
 

@@ -44,7 +44,9 @@ $ tikv-ctl --to-hex "\252\377"
 AAFF
 ```
 
-> **Note:** When you specify the `escaped` form of the key in a command line, it is required to enclose it in double quotes. Otherwise, bash eats the backslash and a wrong result is returned.
+> **Note:**
+>
+> When you specify the `escaped` form of the key in a command line, it is required to enclose it in double quotes. Otherwise, bash eats the backslash and a wrong result is returned.
 
 ## Subcommands, some options and flags
 
@@ -255,7 +257,7 @@ $ tikv-ctl --db /path/to/tikv/db recover-mvcc -r 1001,1002 -p 127.0.0.1:2379
 success!
 ```
 
-> **Note**:
+> **Note:**
 > 
 > - This command only supports the local mode. It prints `success!` when successfully run.
 > - The argument of the `-p` option specifies the PD endpoints without the `http` prefix. Specifying the PD endpoints is to query whether the specified `region_id` is validated or not.

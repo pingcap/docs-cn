@@ -12,7 +12,9 @@ This DM benchmark report describes the test purpose, environment, scenario, and 
 
 The purpose of this test is to test the performance of DM incremental replication.
 
-> **Note**: The results of the testing might vary based on different environmental dependencies.
+> **Note:**
+>
+> The results of the testing might vary based on different environmental dependencies.
 
 ## Test environment
 

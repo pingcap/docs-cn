@@ -115,7 +115,9 @@ mysql> SELECT user,host FROM mysql.user WHERE user='xxxx';
 
 In this example, `xxxx@%` is the user that is automatically created.
 
-> **Note:** Granting privileges to a database or table does not check if the database or table exists.
+> **Note:**
+>
+> Granting privileges to a database or table does not check if the database or table exists.
 
 ```sql
 mysql> SELECT * FROM test.xxxx;
@@ -160,7 +162,9 @@ The `REVOKE` statement corresponds with the `REVOKE` statement:
 REVOKE ALL PRIVILEGES ON `test`.* FROM 'genius'@'localhost';
 ```
 
-> **Note:** To revoke privileges, you need the exact match. If the matching result cannot be found, an error will be displayed:
+> **Note:**
+>
+> To revoke privileges, you need the exact match. If the matching result cannot be found, an error will be displayed:
 
 ```sql
 mysql> REVOKE ALL PRIVILEGES ON `te%`.* FROM 'genius'@'%';
@@ -309,7 +313,9 @@ Currently, the following privileges are not checked yet because they are less fr
 - INDEX
 - ...
 
-> **Note:** The column-level privilege is not implemented at this stage.
+> **Note:**
+>
+> The column-level privilege is not implemented at this stage.
 
 ## `CREATE USER` statement
 

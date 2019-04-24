@@ -281,7 +281,9 @@ To import a Grafana dashboard for the PD server, the TiKV server, and the TiDB s
 
 3. Click **Upload .json File** to upload a JSON file (Download [TiDB Grafana configuration file](https://github.com/pingcap/tidb-ansible/tree/master/scripts)).
 
-    > **Note:** For the TiKV, PD, and TiDB dashboards, use the `tikv_pull.json` file, the `pd.json` file, the `tidb.json` file respectively.
+    > **Note:**
+    >
+    > For the TiKV, PD, and TiDB dashboards, use the `tikv_pull.json` file, the `pd.json` file, the `tidb.json` file respectively.
 
 4. Click **Load**.
 

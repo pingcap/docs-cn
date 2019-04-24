@@ -98,7 +98,9 @@ Starting from this version, the above two kinds of information are removed and t
 - `source_id`: exists in `inventory.ini`, used to identify an upstream MySQL instance or a master-slave replication group.
 - `source-id`: exists in `mysql-instances` of the task configuration file. Its value corresponds to `source_id` of `inventory.ini`.
 
-> **Note:** To guarantee that the checkpoint information of the existing task stored in the downstream database can still be used, the value of `source_id`or `source-id` should be consistent with that of `instance-id` of the corresponding DM-worker.
+> **Note:**
+>
+> To guarantee that the checkpoint information of the existing task stored in the downstream database can still be used, the value of `source_id`or `source-id` should be consistent with that of `instance-id` of the corresponding DM-worker.
 
 ### Upgrade operation example
 

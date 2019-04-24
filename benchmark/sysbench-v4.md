@@ -92,7 +92,9 @@ For more detailed information on TiKV performance tuning, see [Tune TiKV Perform
  
 ## Test process
 
-> **Note:** This test was performed without load balancing tools such as HAproxy. We run the Sysbench test on individual TiDB node and added the results up. The load balancing tools and the parameters of different versions might also impact the performance.
+> **Note:**
+>
+> This test was performed without load balancing tools such as HAproxy. We run the Sysbench test on individual TiDB node and added the results up. The load balancing tools and the parameters of different versions might also impact the performance.
 
 ### Sysbench configuration
 
@@ -137,7 +139,9 @@ Adjust the order in which Sysbench scripts create indexes. Sysbench imports data
 1. Download the TiDB-modified [oltp_common.lua](https://raw.githubusercontent.com/pingcap/tidb-bench/master/sysbench-patch/oltp_common.lua) file and overwrite the `/usr/share/sysbench/oltp_common.lua` file with it. 
 2. Move the [235th](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L235) to [240th](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L240) lines of `/usr/share/sysbench/oltp_common.lua` to be right behind 198th lines.
 
-> **Note:** This operation is optional and is only to save the time consumed by data import. 
+> **Note:**
+>
+> This operation is optional and is only to save the time consumed by data import. 
 
 At the command line, enter the following command to start importing data. The config file is the one configured in the previous step:
 

@@ -43,7 +43,9 @@ encountered incompatible DDL in TiDB: %s
     if the DDL is not needed, you can use dm-ctl to skip it, otherwise u also can use dm-ctl to replace it.
 ```
 
-> **Note:** Currently, TiDB is not compatible with all the DDL statements that MySQL supports. See [the DDL statements supported by TiDB](../sql/ddl.md).
+> **Note:**
+>
+> Currently, TiDB is not compatible with all the DDL statements that MySQL supports. See [the DDL statements supported by TiDB](../sql/ddl.md).
 
 ## Reset the data synchronization task
 

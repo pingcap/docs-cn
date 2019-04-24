@@ -10,7 +10,7 @@ category: tools
 
 This guide introduces the key features of sync-diff-inspector and describes how to configure and use this tool. You can download it at [tidb-enterprise-tools-latest-linux-amd64](https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz).
 
-> **Notes:**
+> **Note:**
 >
 > - TiDB uses the `utf8_bin` collation. If you need to compare the data in MySQL with that in TiDB, pay attention to the collation configuration of MySQL tables. If the primary key or unique key is the `varchar` type and the collation configuration in MySQL differs from that in TiDB, then the final check result might be incorrect because of the collation issue. You need to add collation to the sync-diff-inspector configuration file.
 > - If you configure the `tidb-instance-id` to divide data into chunks according to TiDB statistics, try to guarantee the accuracy of statistics. You can manually run the `analyze table {table_name}` command when the TiDB server *workload is light*.

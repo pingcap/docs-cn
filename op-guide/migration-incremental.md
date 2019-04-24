@@ -33,7 +33,9 @@ binlog-name = "mysql-bin.000003"
 binlog-pos = 930143241
 ```
 
-> **Note:** The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is synchronized.
+> **Note:**
+>
+> The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is synchronized.
 
 ### Start `syncer`
 

@@ -145,7 +145,9 @@ Description: Configures the filtering rules for binlog events and DDL SQL statem
     - Filters a specific DDL SQL statement. 
     - The matching rule supports using an regular expression, for example, `"^DROP\\s+PROCEDURE"`.
     
-> **Note:** If `sql-pattern` is empty, no filtering operation is performed. For the filtering rules, see the `action` description.
+> **Note:**
+>
+> If `sql-pattern` is empty, no filtering operation is performed. For the filtering rules, see the `action` description.
 
 - `action` 
 

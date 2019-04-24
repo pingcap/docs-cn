@@ -40,4 +40,6 @@ $ ansible-playbook unsafe_cleanup.yml
 
 This operation stops the cluster and cleans up the data directory.
 
-> **Note:** If the deployment directory is a mount point, an error will be reported, but implementation results remain unaffected, so you can ignore it.
+> **Note:**
+>
+> If the deployment directory is a mount point, an error will be reported, but implementation results remain unaffected, so you can ignore it.
