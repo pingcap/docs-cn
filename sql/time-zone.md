@@ -37,7 +37,9 @@ mysql> SELECT @@global.time_zone, @@session.time_zone;
 
 `NOW()` 和 `CURTIME()` 的返回值都受到时区设置的影响。
 
-注意，只有 Timestamp 数据类型的值是受时区影响的。可以理解为， Timestamp 数据类型的实际表示使用的是 (字面值 + 时区信息)。其它时间和日期类型，比如 Datetime/Date/Time 是不包含时区信息的，所以也不受到时区变化的影响。
+> **注意：**
+>
+> 只有 Timestamp 数据类型的值是受时区影响的。可以理解为， Timestamp 数据类型的实际表示使用的是 (字面值 + 时区信息)。其它时间和日期类型，比如 Datetime/Date/Time 是不包含时区信息的，所以也不受到时区变化的影响。
 
 ```sql
 mysql> create table t (ts timestamp, dt datetime);

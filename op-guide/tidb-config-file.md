@@ -31,7 +31,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 这个选项可以设置 TiDB 的系统变量 `lower_case_table_names` 的值。
 + 默认: 2
 + 具体可以查看 MySQL 关于这个变量的[描述](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names)
-+ 注意：目前 TiDB 只支持将该选项的值设为 2，即按照大小写来保存表名，按照小写来比较（不区分大小写）。
+
+> **注意：**
+>
+> 目前 TiDB 只支持将该选项的值设为 2，即按照大小写来保存表名，按照小写来比较（不区分大小写）。
 
 ### `compatible-kill-query`
 

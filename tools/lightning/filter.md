@@ -56,7 +56,9 @@ tbl-name = "table-pattern-5"
 * 否则，如果表的限定名称匹配 `ignore-tables` 列表中**任何**一对，表会被略过。
 * 如果表的限定名称**同时**匹配 `do-tables` 和 `ignore-tables` 列表，表会被导入。
 
-注意，Lightning 会先执行数据库过滤规则，之后才执行表的过滤规则。所以，如果一个数据库已被 `ignore-dbs` 略过，即使其下的表匹配 `do-tables` 也不会再被导入。
+> **注意：**
+>
+> Lightning 会先执行数据库过滤规则，之后才执行表的过滤规则。所以，如果一个数据库已被 `ignore-dbs` 略过，即使其下的表匹配 `do-tables` 也不会再被导入。
 
 ## 例子
 

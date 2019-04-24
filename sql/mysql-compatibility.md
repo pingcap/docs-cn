@@ -11,7 +11,9 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 
 不过一些特性由于在分布式环境下没法很好的实现，目前暂时不支持或者是表现与 MySQL 有差异。一些 MySQL 语法在 TiDB 中可以解析通过，但是不会做任何后续的处理，例如 `Create Table` 语句中 `Engine` 以及 `Partition` 选项，都是解析并忽略。
 
-> **注意**：本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[与 MySQL 安全特性差异](../sql/security-compatibility.md)及[事务模型](../sql/transaction-model.md)的兼容信息请查看各自具体页面。
+> **注意：**
+>
+> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[与 MySQL 安全特性差异](../sql/security-compatibility.md)及[事务模型](../sql/transaction-model.md)的兼容信息请查看各自具体页面。
 
 ## 不支持的特性
 

@@ -11,7 +11,11 @@ TiDB 优化器会根据统计信息来选择最优的执行计划。统计信息
 
 ### 手动收集
 
-可以通过执行 `ANALYZE` 语句来收集统计信息。需要注意的是，在 TiDB 中执行 `ANALYZE TABLE` 语句比在 MySQL 或 InnoDB 中耗时更长。InnoDB 采样的只是少量页面，但 TiDB 会完全重构一系列统计信息。适用于 MySQL 的脚本会误以为执行 `ANALYZE TABLE` 耗时较短。
+可以通过执行 `ANALYZE` 语句来收集统计信息。
+
+> **注意：**
+>
+> 在 TiDB 中执行 `ANALYZE TABLE` 语句比在 MySQL 或 InnoDB 中耗时更长。InnoDB 采样的只是少量页面，但 TiDB 会完全重构一系列统计信息。适用于 MySQL 的脚本会误以为执行 `ANALYZE TABLE` 耗时较短。
 
 语法：
 
