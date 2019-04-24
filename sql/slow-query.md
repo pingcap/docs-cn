@@ -51,7 +51,7 @@ select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
 * `Is_internal`：表示是否是 TiDB 内部 SQL。true 为TiDB 内部执行的SQL, 比如 analyze，load variable 等；false 为用户执行的 SQL 。
 * `Digest`：表示 SQL 语句的指纹。
 * `Memory_max`：表示执行期间做多时候使用的内存数量, 单位为byte。
-* `Num_cop_tasks`：表示 cop-tasks 的数目。
+* `Num_cop_tasks`：表示 [cop-tasks](https://github.com/pingcap/docs-cn/blob/master/sql/understanding-the-query-execution-plan.md) 的数目。
 * `Cop_proc_avg`：cop-task 的平均执行时间。
 * `Cop_proc_p90`：cop-task 的P90分位执行时间。
 * `Cop_proc_max`：cop-task 的最大执行时间。
