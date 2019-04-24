@@ -87,7 +87,7 @@ retry-limit = 10
 | `update t set balance = balance - 100  where id = 1;` | `delete from t where id = 1;` |
 |  | `commit;` |
 | // 使用 affected_rows 的结果决定后续的逻辑 | |
-| `if affected_rows > 100 {` | |
+| `if affected_rows > 0 {` | |
 | `update t set balance = balance + 100 where id = 2;` | |
 | `}` | |
 | `commit;` // 自动重试 | |
