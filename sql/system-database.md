@@ -1,12 +1,12 @@
 ---
-title: The TiDB System Database
-summary: Learn tables contained in the TiDB System Database.
+title: TiDB System Tables
+summary: Learn the TiDB system tables.
 category: user guide
 ---
 
-# The TiDB System Database
+# TiDB System Tables
 
-The TiDB System Database is similar to MySQL, which contains tables that store information required by the server when it runs.
+This document introduces TiDB system tables.
 
 ## Grant system tables
 

@@ -147,7 +147,7 @@
       - [Optimizer Hints](sql/optimizer-hints.md)
       - [Tune TiKV](op-guide/tune-tikv.md)
       - [TiDB Best Practices](https://pingcap.com/blog/2017-07-24-tidbbestpractice/)
-    - [TiDB System Database](sql/system-database.md)
+    - [TiDB System Tables](sql/system-database.md)
     - [Information Schema](sql/information-schema.md)
     - [TiSpark](tispark/tispark-user-guide.md)
   + Configuration
