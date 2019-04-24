@@ -35,7 +35,6 @@ select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
 
 ### 字段解析
 
-
 #### cost_time
 
 表示执行这个语句花费的时间。只有执行时间超过 slow-threshold 的语句才会输出这个日志。
