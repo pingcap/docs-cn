@@ -26,11 +26,7 @@ IDC machine
 | OS | linux (CentOS 7.3.1611) |
 | CPU | 40 vCPUs, Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz |
 | RAM | 128GB |
-| DISK | Optane 500GB SSD * 1 |
-
-Sysbench test script:
-https://github.com/pingcap/tidb-bench/tree/master/sysbench   
-
+| DISK | Optane 500GB SSD * 1 |   
 
 ## Test plan
 

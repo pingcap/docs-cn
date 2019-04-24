@@ -28,10 +28,6 @@ IDC machine
 | RAM | 128GB |
 | DISK | Optane 500GB SSD * 1 |
 
-Sysbench test script:
-https://github.com/pingcap/tidb-bench/tree/master/sysbench   
-
-
 ## Test plan
 
 ### TiDB version information
