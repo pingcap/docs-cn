@@ -35,6 +35,7 @@ This document defines the roadmap for TiDB development.
     - [ ] Support Table Lock
     - [ ] Support Change Column Type
     - [ ] Support Multiple DDL Operations in a Single Statement
+    - [ ] Support Invisible Indexes
 + [ ] Support Plugin System
     - [ ] Support White List Plugin
     - [ ] Support Audit Log Plugin
