@@ -265,7 +265,9 @@ TiDB 目前用户拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` �
 
 对于 `ALTER ... DROP` 语句，需要对表拥有 `DROP` 权限。对于 `ALTER ... RENAME TO` 语句，需要对重命名前的表拥有 `DROP` 权限，对重命名后的表拥有 `CREATE` 和 `INSERT` 权限。
 
-注：根据 MySQL 5.7 文档中的说明，`ALTER` 表需要 `INSERT` 和 `CREATE` 权限，但在 MySQL 5.7.25 版本实际情况中，`ALTER` 表仅需要 `ALTER` 权限。为了尽可能减少对用户的困扰，TiDB 中的 ALTER 权限目前与 MySQL 实际行为保持一致。
+> **注意：**
+>
+> 根据 MySQL 5.7 文档中的说明，`ALTER` 表需要 `INSERT` 和 `CREATE` 权限，但在 MySQL 5.7.25 版本实际情况中，`ALTER` 表仅需要 `ALTER` 权限。为了尽可能减少对用户的困扰，TiDB 中的 ALTER 权限目前与 MySQL 实际行为保持一致。
 
 ### CREATE DATABASE
 
@@ -283,7 +285,9 @@ TiDB 目前用户拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` �
 
 需要拥有 `CREATE VIEW` 权限。
 
-注：如果当前登录用户与创建视图的用户不同，除需要 `CREATE VIEW` 权限外，我们还需要 `SUPER` 权限。
+> **注意：**
+>
+> 如果当前登录用户与创建视图的用户不同，除需要 `CREATE VIEW` 权限外，我们还需要 `SUPER` 权限。
 
 ### DROP DATABASE
 

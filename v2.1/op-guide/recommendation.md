@@ -18,7 +18,7 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运�
 | Oracle Enterprise Linux  | 7.3 及以上   |
 | Ubuntu LTS               | 16.04 及以上 |
 
-> **注**：
+> **注意：**
 >
 > - TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。
 > - TiDB 在 CentOS 7.3 的环境下进行过大量的测试，同时社区也有很多该操作系统部署的最佳实践，因此，建议使用 CentOS 7.3 以上的 Linux 操作系统来部署 TiDB。
@@ -36,7 +36,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | PD | 4核+ | 8 GB+ | SAS, 200 GB+ | 千兆网卡 | 1（可与 TiDB 同机器） |
 | TiKV | 8核+ | 32 GB+ | SSD, 200 GB+ | 千兆网卡 | 3 |
 
-> **注**：
+> **注意：**
 >
 > - 验证测试环境中的 TiDB 和 PD 可以部署在同一台服务器上。
 > - 如进行性能相关的测试，避免采用低性能存储和网络硬件配置，防止对测试结果的正确性产生干扰。
@@ -51,7 +51,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | TiKV | 16核+ | 32 GB+ | SSD | 万兆网卡（2块最佳） | 3 |
 | 监控 | 8核+ | 16 GB+ | SAS | 千兆网卡 | 1 |
 
-> **注**：
+> **注意：**
 >
 > - 生产环境中的 TiDB 和 PD 可以部署和运行在同服务器上，如对性能和可靠性有更高的要求，应尽可能分开部署。
 > - 生产环境强烈推荐使用更高的配置。
