@@ -35,21 +35,21 @@
     - [Import Example Database](dev/how-to/get-started/import-example-database.md)
     - [Read Historical Data](dev/how-to/get-started/read-historical-data.md)
   - Deploy
-    - [Hardware Recommendations](op-guide/recommendation.md)
+    - [Hardware Recommendations](dev/how-to/deploy/hardware-recommendations.md)
     + From Binary Tarball
-      - [For testing environments](op-guide/binary-testing-deployment.md)
-      - [For production environments](op-guide/binary-deployment.md)
+      - [For testing environments](dev/how-to/deploy/from-tarball/testing-environment.md)
+      - [For production environments](dev/how-to/deploy/from-tarball/production-environment.md)
     + Orchestrated Deployment
-      - [Ansible Deployment (Recommended)](op-guide/ansible-deployment.md)
-      - [Ansible Offline Deployment](op-guide/offline-ansible-deployment.md)
-      - [Docker Deployment](op-guide/docker-deployment.md)
-      - [Kubernetes Deployment](op-guide/kubernetes.md)
-      - [Overview of Ansible Operations](op-guide/ansible-operation.md)
+      - [Ansible Deployment (Recommended)](dev/how-to/deploy/orchestrated/ansible.md)
+      - [Ansible Offline Deployment](dev/how-to/deploy/orchestrated/offline-ansible.md)
+      - [Docker Deployment](dev/how-to/deploy/orchestrated/docker.md)
+      - [Kubernetes Deployment](dev/how-to/deploy/orchestrated/kubernetes.md)
+      - [Overview of Ansible Operations](dev/how-to/deploy/orchestrated/ansible-operations.md)
     + Geographic Redundancy
-      - [Overview](op-guide/cross-dc-deployment.md)
-      - [Configure Location Awareness](op-guide/location-awareness.md)
-    - [TiSpark](tispark/tispark-quick-start-guide.md)
-    - [Data Migration with Ansible](tools/dm/deployment.md)
+      - [Overview](dev/how-to/deploy/geographic-redundancy/overview.md)
+      - [Configure Location Awareness](dev/how-to/deploy/geographic-redundancy/location-awareness.md)
+    - [TiSpark](dev/how-to/deploy/tispark.md)
+    - [Data Migration with Ansible](dev/how-to/deploy/data-migration-with-ansible.md)
   + Secure
     - [Security Compatibility with MySQL](sql/security-compatibility.md)
     - [The TiDB Access Privilege System](sql/privilege.md)

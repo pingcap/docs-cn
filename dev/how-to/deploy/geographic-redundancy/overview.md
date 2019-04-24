@@ -1,6 +1,7 @@
 ---
 title: Cross-DC Deployment Solutions
-category: deployment
+category: how-to
+aliases: ['/docs/op-guide/cross-dc-deployment/']
 ---
 
 # Cross-DC Deployment Solutions
@@ -11,13 +12,13 @@ As a NewSQL database, TiDB excels in the best features of the traditional relati
 
 TiDB, TiKV and PD are distributed among 3 DCs, which is the most common deployment solution with the highest availability.
 
-![3-DC Deployment Architecture](../media/deploy-3dc.png)
+![3-DC Deployment Architecture](/media/deploy-3dc.png)
 
 ### Advantages
 
 All the replicas are distributed among 3 DCs. Even if one DC is down, the other 2 DCs will initiate leader election and resume service within a reasonable amount of time (within 20s in most cases) and no data is lost. See the following diagram for more information:
 
-![Disaster Recovery for 3-DC Deployment](../media/deploy-3dc-dr.png)
+![Disaster Recovery for 3-DC Deployment](/media/deploy-3dc-dr.png)
 
 ### Disadvantages
 
@@ -31,13 +32,13 @@ The performance is greatly limited by the network latency.
 
 If not all of the three DCs need to provide service to the applications, you can dispatch all the requests to one DC and configure the scheduling policy to migrate all the TiKV Region leader and PD leader to the same DC, as what we have done in the following test. In this way, neither obtaining TSO or reading TiKV Regions will be impacted by the network latency between DCs. If this DC is down, the PD leader and Region leader will be automatically elected in other surviving DCs, and you just need to switch the requests to the DC that are still online.
 
-![Read Performance Optimized 3-DC Deployment](../media/deploy-3dc-optimize.png)
+![Read Performance Optimized 3-DC Deployment](/media/deploy-3dc-optimize.png)
 
 ## 3-DC in 2 cities Deployment Solution
 
 This solution is similar to the previous 3-DC deployment solution and can be considered as an optimization based on the business scenario. The difference is that the distance between the 2 DCs within the same city is short and thus the latency is very low. In this case, we can dispatch the requests to the two DCs within the same city and configure the TiKV leader and PD leader to be in the 2 DCs in the same city.
 
-![2-DC in 2 Cities Deployment Architecture](../media/deploy-2city3dc.png)
+![2-DC in 2 Cities Deployment Architecture](/media/deploy-2city3dc.png)
 
 Compared with the 3-DC deployment, the 3-DC in 2 cities deployment has the following advantages:
 
@@ -51,11 +52,11 @@ However, the disadvantage is that if the 2 DCs within the same city goes down, w
 
 The 2-DC + Binlog synchronization is similar to the MySQL Master-Slave solution. 2 complete sets of TiDB clusters (each complete set of the TiDB cluster includes TiDB, PD and TiKV) are deployed in 2 DCs, one acts as the Master and one as the Slave. Under normal circumstances, the Master DC handle all the requests and the data written to the Master DC is asynchronously written to the Slave DC via Binlog.
 
-![Data Synchronization in 2-DC in 2 Cities Deployment](../media/deploy-binlog.png)
+![Data Synchronization in 2-DC in 2 Cities Deployment](/media/deploy-binlog.png)
 
 If the Master DC goes down, the requests can be switched to the slave cluster. Similar to MySQL, some data might be lost. But different from MySQL, this solution can ensure the high availability within the same DC: if some nodes within the DC are down, the online business won’t be impacted and no manual efforts are needed because the cluster will automatically re-elect leaders to provide services.
 
-![2-DC as a Mutual Backup Deployment](../media/deploy-backup.png)
+![2-DC as a Mutual Backup Deployment](/media/deploy-backup.png)
 
 Some of our production users also adopt the 2-DC multi-active solution, which means:
 

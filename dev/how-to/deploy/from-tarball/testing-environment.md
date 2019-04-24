@@ -1,18 +1,19 @@
 ---
 title: Testing Deployment from Binary Tarball
 summary: Use the binary to deploy a TiDB cluster.
-category: operations
+category: how-to
+aliases: ['/docs/op-guide/binary-testing-deployment/']
 ---
 
 # Testing Deployment from Binary Tarball
 
 This guide provides installation instructions for all TiDB components across multiple nodes for testing purposes. It does not match the recommended usage for production systems.
 
-See also [local deployment](../op-guide/binary-local-deployment.md) and [production enviroment](../op-guide/binary-deployment.md) deployment.
+See also [local deployment](/dev/how-to/get-started/local-cluster/install-from-binary.md) and [production environment](/dev/how-to/deploy/from-tarball/production-environment.md) deployment.
 
 ## Prepare
 
-Before you start, see [TiDB architecture](/overview.md#tidb-architecture) and [Software and Hardware Requirements](/op-guide/recommendation.md). Make sure the following requirements are satisfied:
+Before you start, see [TiDB architecture](/architecture.md) and [Software and Hardware Recommendations](/dev/how-to/deploy/hardware-recommendations.md). Make sure the following requirements are satisfied:
 
 ### Operating system
 
@@ -20,7 +21,7 @@ For the operating system, it is recommended to use RHEL/CentOS 7.3 or higher. Th
 
 | Configuration | Description |
 | :-- | :-------------------- |
-| Supported Platform | RHEL/CentOS 7.3+ ([more details](/op-guide/recommendation.md)) |
+| Supported Platform | RHEL/CentOS 7.3+ ([more details](/dev/how-to/deploy/hardware-recommendations.md)) |
 | File System  |  ext4 is recommended |
 | Swap Space  |  Should be disabled  |
 | Disk Block Size  |  Set the system disk `Block` size to `4096` |

@@ -1,18 +1,19 @@
 ---
 title: Production Deployment from Binary Tarball
 summary: Use the binary to deploy a TiDB cluster.
-category: operations
+category: how-to
+aliases: ['/docs/op-guide/binary-deployment/']
 ---
 
 # Production Deployment from Binary Tarball
 
 This guide provides installation instructions from a binary tarball on Linux. A complete TiDB cluster contains PD, TiKV, and TiDB. To start the database service, follow the order of PD -> TiKV -> TiDB. To stop the database service, follow the order of stopping TiDB -> TiKV -> PD.
 
-See also [local deployment](../op-guide/binary-local-deployment.md) and [testing enviroment](../op-guide/binary-testing-deployment.md) deployment.
+See also [local deployment](/dev/how-to/get-started/local-cluster/install-from-binary.md) and [testing environment](/dev/how-to/deploy/from-tarball/testing-environment.md) deployment.
 
 ## Prepare
 
-Before you start, see [TiDB architecture](/overview.md#tidb-architecture) and [Software and Hardware Requirements](/op-guide/recommendation.md). Make sure the following requirements are satisfied:
+Before you start, see [TiDB architecture](/architecture.md) and [Software and Hardware Recommendations](/dev/how-to/deploy/hardware-recommendations.md). Make sure the following requirements are satisfied:
 
 ### Operating system
 
@@ -20,7 +21,7 @@ For the operating system, it is recommended to use RHEL/CentOS 7.3 or higher. Th
 
 | Configuration | Description |
 | :-- | :-------------------- |
-| Supported Platform | RHEL/CentOS 7.3+ ([more details](/op-guide/recommendation.md)) |
+| Supported Platform | RHEL/CentOS 7.3+ ([more details](/dev/how-to/deploy/hardware-recommendations.md)) |
 | File System  |  ext4 is recommended |
 | Swap Space  |  Should be disabled  |
 | Disk Block Size  |  Set the system disk `Block` size to `4096` |
@@ -119,7 +120,7 @@ $ cd tidb-latest-linux-amd64
 
 ## Multiple nodes cluster deployment
 
-For the production environment, multiple nodes cluster deployment is recommended. Before you begin, see [Software and Hardware Requirements](/op-guide/recommendation.md).
+For the production environment, multiple nodes cluster deployment is recommended. Before you begin, see [Software and Hardware Recommendations](/dev/how-to/deploy/hardware-recommendations.md).
 
 Assuming that you have six nodes, you can deploy 3 PD instances, 3 TiKV instances, and 1 TiDB instance. See the following table for details:
 
