@@ -11,7 +11,7 @@ category: tools
 
 目前推荐使用 DM-Ansible 部署 DM 集群，具体部署方法参照 [使用 DM-Ansible 部署 DM 集群](/tools/dm/deployment.md)。
 
-> **注意**：
+> **注意：**
 > 
 > - 在 DM 所有的配置文件中，数据库的密码要使用 dmctl 加密后的密文。如果数据库密码为空，则不需要加密。关于如何使用 dmctl 加密明文密码，参考[使用 dmctl 加密上游 MySQL 用户密码](/tools/dm/deployment.md#使用-dmctl-加密上游-mysql-用户密码)。
 > - 上下游数据库用户必须拥有相应的读写权限。
@@ -50,7 +50,9 @@ category: tools
     dm-worker = "172.16.10.73:8262"
     ```
 
-    > **注意**：`{ansible deploy}/conf/dm-master.toml` 中的 `{ansible deploy}` 表示使用 DM-Ansible 部署 DM 时通过 `deploy_dir` 参数指定的目录。
+    > **注意：**
+    >
+    > `{ansible deploy}/conf/dm-master.toml` 中的 `{ansible deploy}` 表示使用 DM-Ansible 部署 DM 时通过 `deploy_dir` 参数指定的目录。
 
 ## 第 3 步：配置任务
 
@@ -106,7 +108,9 @@ mydumpers:
 - 启动数据同步任务时，DM 自动检查相应的权限和配置。
 - 也可使用 `check-task` 命令手动前置检查上游的 MySQL 实例配置是否符合 DM 的配置要求。
 
-> **注意**：第一次启动数据同步任务时，必须确保上游数据库已配置。否则，启动任务时会报错。
+> **注意：**
+>
+> 第一次启动数据同步任务时，必须确保上游数据库已配置。否则，启动任务时会报错。
 
 1. 进入 dmctl 目录 `/home/tidb/dm-ansible/resources/bin/`。
 

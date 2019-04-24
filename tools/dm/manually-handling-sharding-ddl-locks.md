@@ -7,7 +7,7 @@ category: tools
 
 DM (Data Migration) 使用 sharding DDL lock 来确保分库分表的 DDL 操作可以正确执行。绝大多数情况下，该锁定机制可自动完成；但在部分异常情况发生时，需要使用 `unlock-ddl-lock`/`break-ddl-lock` 手动处理异常的 DDL lock。
 
-> **注意**：
+> **注意：**
 >
 > - 不要轻易使用 `unlock-ddl-lock`/`break-ddl-lock` 命令，除非完全明确当前场景下使用这些命令可能会造成的影响，并能接受这些影响。
 > - 在手动处理异常的 DDL lock 前，请确保已经了解 DM 的[分库分表合并同步原理](/tools/dm/shard-merge.md#实现原理)。
@@ -298,7 +298,9 @@ MySQL 及 DM 操作与处理流程如下：
 2. 更新任务配置文件，将已下线 DM-worker 对应的信息从配置文件中移除。
 3. 使用 `start-task` 及新任务配置文件重新启动任务。
 
-> **注意**：在 `unlock-ddl-lock` 之后，如果已下线的 DM-worker 重新上线并尝试对其中的分表进行数据同步，则会由于数据与下游的表结构不匹配而发生错误。
+> **注意：**
+>
+> 在 `unlock-ddl-lock` 之后，如果已下线的 DM-worker 重新上线并尝试对其中的分表进行数据同步，则会由于数据与下游的表结构不匹配而发生错误。
 
 ### 场景二：unlock 过程中部分 DM-worker 重启
 

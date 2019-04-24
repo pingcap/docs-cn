@@ -91,4 +91,7 @@ SELECT * FROM T; -- MySQL 返回 1 2；TiDB 返回 1
 ```
 
 惰性检查的意义在于，如果对事务中每个 `INSERT` 语句都立刻进行唯一性约束检查，将造成很高的网络开销。而在提交时进行一次批量检查，将会大幅提升性能。
-> **注意**：本优化对于 `INSERT IGNORE` 和 `INSERT ON DUPLICATE KEY UPDATE` 不会生效，仅对与普通的 `INSERT` 语句生效。
+
+> **注意：**
+>
+> 本优化对于 `INSERT IGNORE` 和 `INSERT ON DUPLICATE KEY UPDATE` 不会生效，仅对与普通的 `INSERT` 语句生效。

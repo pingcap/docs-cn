@@ -35,7 +35,9 @@ category: tools
 
 你需要使用 dmctl 手动处理 TiDB 不兼容的 DDL 语句（包括手动跳过该 DDL 语句或使用用户指定的 DDL 语句替换原 DDL 语句，详见[跳过 (skip) 或替代执行 (replace) 异常的 SQL 语句](/tools/dm/skip-replace-sqls.md)）。
 
-> **注意：** TiDB 目前并不兼容 MySQL 支持的所有 DDL 语句，详见 [TiDB 已支持的 DDL 语句](/sql/ddl.md)。
+> **注意：**
+>
+> TiDB 目前并不兼容 MySQL 支持的所有 DDL 语句，详见 [TiDB 已支持的 DDL 语句](/sql/ddl.md)。
 
 ## 重置数据同步任务
 
