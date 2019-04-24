@@ -179,7 +179,7 @@ Time: 0.001s
 
 ####  用 pt-query-digest 工具分析 TiDB 慢日志
 
-可以用 pt-query-digest 工具分析 TiDB 慢日志。建议使用 pt-query-digest 3.0.13 及以上的版本。下面是示例：
+可以用 pt-query-digest 工具分析 TiDB 慢日志。建议使用 pt-query-digest 3.0.13 及以上版本。示例如下：
 
 ```shell
 $pt-query-digest --version
