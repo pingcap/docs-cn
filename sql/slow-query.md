@@ -5,11 +5,13 @@ category: user guide
 
 # 慢查询日志
 
+TiDB 在 V2.1.8 之后更改了慢日志格式，V2.1.8 之前的版本请看[这个文档](<https://github.com/pingcap/docs-cn/blob/master/v2.1/sql/slow-query.md>)。
+
 一条不合理的 SQL 语句会导致整个集群压力增大，响应变慢。对于这种问题，需要用慢查询日志来定位有问题的语句，解决性能问题。
 
 ### 获取日志
 
-通过在 TiDB 的日志文件上 grep `SLOW_QUERY` 这个关键字，可以得到执行时间超过 [slow-threshold](../op-guide/tidb-config-file.md#slow-threshold) 的语句日志。
+通过在 TiDB 的日志文件上 grep `SLOW_QUERY` 这个关键字，可以得到执行时间超过 [slow-threshold](../op-guide/tidb-config-file.md#slow-threshold)的语句日志。
 
 `slow-threshold` 可以通过配置文件修改，默认是 300ms。如果配置了 [slow-query-file](../op-guide/tidb-config-file.md#slow-query-file)，慢查询日志会全部写在这个文件里。
 
@@ -47,7 +49,7 @@ sql:select count(c) from sbtest1 use index (k_1)
 
 #### total_keys
 
-表示 Coprocessor 扫过的 key 的数量
+表示 Coprocessor 扫过的 key 的数量。
 
 #### processed_keys
 
@@ -55,35 +57,35 @@ sql:select count(c) from sbtest1 use index (k_1)
 
 #### succ
 
-表示请求是否执行成功
+表示请求是否执行成功。
 
 #### con
 
-表示 connection ID，即 session ID, 可以用类似 `con:3 ` 的关键字在日志中 grep 出 session ID 为 3 的日志。
+表示 connection ID，即 session ID，可以用类似 `con:3` 的关键字在日志中 grep 出 session ID 为 3 的日志。
 
 #### user
 
-表示执行语句的用户名
+表示执行语句的用户名。
 
 #### txn_start_ts
 
-表示事务的开始时间戳，也是事务的 ID, 可以用这个值在日志中 grep 出事务相关的日志。
+表示事务的开始时间戳，也是事务的 ID，可以用这个值在日志中 grep 出事务相关的日志。
 
 #### database
 
-表示当前的 database
+表示当前的 database。
 
 #### table_ids
 
-表示语句涉及到的表的 ID
+表示语句涉及到的表的 ID。
 
 #### index_ids
 
-表示语句涉及到的索引的 ID
+表示语句涉及到的索引的 ID。
 
 #### sql
 
-表示 SQL 语句
+表示 SQL 语句。
 
 ### 定位问题语句的方法
 
@@ -104,7 +106,7 @@ admin show slow top [internal | all] N
 admin show slow recent 10
 ```
 
-`top N` 则显示最近一段时间（大约几天）内，最慢的查询记录。如果指定 `internal` 选项，则返回查询系统内部 SQL 的慢查询记录；如果指定 `all` 选项，返回系统内部和用户 SQL 汇总以后的慢查询记录；默认只返回用户 SQL 中的慢查询记录。
+`top N` 则显示最近一段时间（大约几天）内，最慢的查询记录。如果指定 `internal` 选项，则返回查询系统内部 SQL 的慢查询记录：如果指定 `all` 选项，返回系统内部和用户 SQL 汇总以后的慢查询记录；默认只返回用户 SQL 中的慢查询记录。
 
 ```sql
 admin show slow top 3
