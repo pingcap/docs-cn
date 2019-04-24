@@ -88,7 +88,7 @@ Example 2:
 | `update t set balance = balance - 100  where id = 1;` | `delete from t where id = 1;` |
 |  | `commit;` |
 | // the subsequent logic depends on the result of `affected_rows` | |
-| `if affected_rows > 100 {` | |
+| `if affected_rows > 0 {` | |
 | `update t set balance = balance + 100 where id = 2;` | |
 | `}` | |
 | `commit;` // automatic retry | |
