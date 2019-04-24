@@ -1,5 +1,5 @@
 ---
-title: TiDB-Binlog Cluster 版本用户文档
+title: TiDB-Binlog Cluster 升级方法
 category: tools
 ---
 

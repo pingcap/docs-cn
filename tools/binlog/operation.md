@@ -1,5 +1,5 @@
 ---
-title: TiDB-Binlog Cluster 版本用户文档
+title: TiDB-Binlog Cluster 运维
 category: tools
 ---
 

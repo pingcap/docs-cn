@@ -1,5 +1,5 @@
 ---
-title: TiDB-Binlog 部署方案
+title: TiDB-Binlog kafka 部署方案
 category: tools
 ---
 
@@ -20,7 +20,7 @@ TiDB-Binlog 支持以下功能场景:
 
 首先介绍 TiDB-Binlog 的整体架构。
 
-![TiDB-Binlog 架构](../media/tidb_binlog_kafka_architecture.png)
+![TiDB-Binlog 架构](../../media/tidb_binlog_kafka_architecture.png)
 
 TiDB-Binlog 集群主要分为三个组件：
 
@@ -73,7 +73,7 @@ cd tidb-binlog-kafka-linux-amd64
 
     设置 TiDB 启动参数 `binlog-socket` 为对应的 Pump 参数 `socket` 所指定的 unix socket 文件路径，最终部署结构如下图所示：
 
-    ![TiDB pump 模块部署结构](../media/tidb-pump-deployment.png)
+    ![TiDB pump 模块部署结构](../../media/tidb-pump-deployment.png)
 
 * Drainer 不支持对 ignore schemas（在过滤列表中的 schemas）的 table 进行 rename DDL 操作。
 
