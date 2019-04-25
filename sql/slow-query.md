@@ -53,7 +53,7 @@ select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
 * `Memory_max`：表示执行期间做多时候使用的内存数量，单位为 byte。
 * `Num_cop_tasks`：表示 cop-tasks 的数目。
 * `Cop_proc_avg`：cop-task 的平均执行时间。
-* `Cop_proc_p90`：cop-task 的P90分位执行时间。
+* `Cop_proc_p90`：cop-task 的 P90 分位执行时间。
 * `Cop_proc_max`：cop-task 的最大执行时间。
 * `Cop_proc_addr`：执行时间最长的 cop-task 所在地址。
 * `Cop_wait_avg`：cop-task 的平均等待时间。
