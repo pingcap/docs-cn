@@ -4,7 +4,7 @@ category: tools
 ---
 
 
-# TiDB-Binlog 部署
+# TiDB-Binlog Cluster 版本部署
 
 ## 使用 TiDB-Ansible 部署 TiDB-Binlog
 
