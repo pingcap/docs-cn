@@ -60,7 +60,7 @@ Since tools like mysqldump will take us days to migrate massive amounts of data,
 
   -p string: the account and password of TiDB
 
-  -pprof-addr string: the pprof address of Loader. It tunes the performance of Loader (default: ":10084")
+  -pprof-addr string: the pprof address of Loader. It tunes the performance of Loader (default: ":8272")
 
   -t int: the number of thread,increase this as TiKV nodes increase (default: 16)
 
@@ -81,8 +81,8 @@ log-file = "loader.log"
 # Directory of the dump to import (default: "./")
 dir = "./"
 
-# Loader pprof address, used to tune the performance of Loader (default: "127.0.0.1:10084")
-pprof-addr = "127.0.0.1:10084"
+# Loader pprof address, used to tune the performance of Loader (default: ":8272")
+pprof-addr = ":8272"
 
 # The checkpoint data is saved to TiDB, and the schema name is defined here.
 checkpoint-schema = "tidb_loader"
