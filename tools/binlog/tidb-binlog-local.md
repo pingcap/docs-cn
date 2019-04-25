@@ -1,11 +1,11 @@
 ---
-title: TiDB-Binlog 部署方案
+title: TiDB-Binlog-local 部署方案
 category: tools
 ---
 
-# TiDB-Binlog 部署方案
+# TiDB-Binlog-local 部署方案
 
-## TiDB-Binlog 简介
+## TiDB-Binlog-local 简介
 
 TiDB-Binlog 用于收集 TiDB 的 Binlog，并提供实时备份和同步功能的商业工具。
 
@@ -14,7 +14,7 @@ TiDB-Binlog 支持以下功能场景:
 * **数据同步**：同步 TiDB 集群数据到其他数据库。
 * **实时备份和恢复**：备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复。
 
-## TiDB-Binlog 架构
+## TiDB-Binlog-local 架构
 
 首先介绍 TiDB-Binlog 的整体架构。
 
@@ -30,13 +30,13 @@ Pump 是一个守护进程，在每个 TiDB 的主机上后台运行。他的主
 
 Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提交顺序转化为指定数据库兼容的 SQL 语句，最后同步到目的数据库或者写到顺序文件
 
-## TiDB-Binlog 安装
+## TiDB-Binlog-local 安装
 
-### TiDB-Binlog 下载
+### TiDB-Binlog-local 下载
 
 TiDB-Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](../tools/download.md)。
 
-### TiDB-Binlog 部署
+### TiDB-Binlog-local 部署
 
 #### 注意
 
