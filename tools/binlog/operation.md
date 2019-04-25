@@ -10,8 +10,8 @@ category: tools
 Pump/Drainer 中状态的定义：
 
 * online：正常运行中；
-* pausing：暂停中，当使用 kill 或者 Ctrl+C 退出进程时，都将处于该状态；
-* paused：已暂停，处于该状态时 Pump 不接受写 binlog 的请求，也不继续为 Drainer 提供 binlog，Drainer 不再往下游同步数据。当 Pump/Drainer 安全退出了所有的线程后，将自己的状态切换为 paused，再退出进程；
+* pausing：暂停中，当使用 kill 或者 Ctrl+C 退出进程时，都将处于该状态；当 Pump/Drainer 安全退出了所有的线程后，将自己的状态切换为 paused。
+* paused：已暂停，处于该状态时 Pump 不接受写 binlog 的请求，也不继续为 Drainer 提供 binlog，Drainer 不再往下游同步数据。
 * closing：下线中，使用 binlogctl 控制 Pump/Drainer 下线，在进程退出前都处于该状态。下线时 Pump 不再接受写 binlog 的请求，等待所有的 binlog 数据被 Drainer 消费完；
 * offline：已下线，当 Pump 已经将已保存的所有 binlog 数据全部发送给 Drainer 后，该 Pump 将状态切换为 offline；Drainer 只需要等待各个线程退出后即可切换状态为 offline。
 
