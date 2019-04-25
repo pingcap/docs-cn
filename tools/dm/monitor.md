@@ -8,7 +8,9 @@ category: tools
 
 使用 DM-Ansible 部署 DM 集群的时候，会默认部署一套[监控系统](/tools/dm/practice.md#第-7-步监控任务与查看日志)。
 
-> **注意**：目前只有 DM-worker 提供了 metrics，DM-master 暂未提供。
+> **注意：**
+>
+> 目前只有 DM-worker 提供了 metrics，DM-master 暂未提供。
 
 ## Task
 

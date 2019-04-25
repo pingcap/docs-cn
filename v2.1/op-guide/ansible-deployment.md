@@ -22,7 +22,9 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 - [清除集群数据](../op-guide/ansible-operation.md#清除集群数据)
 - [销毁集群](../op-guide/ansible-operation.md#销毁集群)
 
-> **注**：对于生产环境，须使用 TiDB-Ansible 部署 TiDB 集群。如果只是用于测试 TiDB 或体验 TiDB 的特性，建议[使用 Docker Compose 在单机上快速部署 TiDB 集群](../op-guide/docker-compose.md)。
+> **注意：**
+>
+> 对于生产环境，须使用 TiDB-Ansible 部署 TiDB 集群。如果只是用于测试 TiDB 或体验 TiDB 的特性，建议[使用 Docker Compose 在单机上快速部署 TiDB 集群](../op-guide/docker-compose.md)。
 
 ## 准备机器
 
@@ -32,7 +34,9 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
     - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构 (amd64)。
     - 机器之间内网互通。
 
-    > **注：使用 Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](../op-guide/docker-compose.md)单机进行测试。
+    > **注意：**
+    >
+    > 使用 Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](../op-guide/docker-compose.md)单机进行测试。
 
 2.  部署中控机一台:
 
@@ -143,7 +147,9 @@ The key's randomart image is:
     $ git clone https://github.com/pingcap/tidb-ansible.git
     ```
 
-> **注**：请务必按文档操作，将 `tidb-ansible` 下载到 `/home/tidb` 目录下，权限为 `tidb` 用户，不要下载到 `/root` 下，否则会遇到权限问题。
+> **注意：**
+>
+> 请务必按文档操作，将 `tidb-ansible` 下载到 `/home/tidb` 目录下，权限为 `tidb` 用户，不要下载到 `/root` 下，否则会遇到权限问题。
 
 ## 在中控机器上安装 Ansible 及其依赖
 
@@ -311,8 +317,9 @@ UUID=c51eb23b-195c-4061-92a9-3fad812cc12f /data1 ext4 defaults,nodelalloc,noatim
 
 以 `tidb` 用户登录中控机，`inventory.ini` 文件路径为 `/home/tidb/tidb-ansible/inventory.ini`。
 
-> **注：** 请使用内网 IP 来部署集群，如果部署目标机器 SSH 端口非默认 22 端口，需添加 `ansible_port` 变量，如：
-> `TiDB1 ansible_host=172.16.10.1 ansible_port=5555`
+> **注意：**
+>
+> 请使用内网 IP 来部署集群，如果部署目标机器 SSH 端口非默认 22 端口，需添加 `ansible_port` 变量，如 `TiDB1 ansible_host=172.16.10.1 ansible_port=5555`。
 
 标准 TiDB 集群需要 6 台机器:
 
@@ -465,7 +472,9 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 
 #### 其他变量调整
 
-> **注：** 以下控制变量开启请使用首字母大写 `True`，关闭请使用首字母大写 `False`。
+> **注意：**
+>
+> 以下控制变量开启请使用首字母大写 `True`，关闭请使用首字母大写 `False`。
 
 | 变量            | 含义                                                        |
 | --------------- | ---------------------------------------------------------- |
@@ -529,7 +538,9 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
     ansible-playbook deploy.yml
     ```
 
-    >**注**：Grafana Dashboard 上的 Report 按钮可用来生成 PDF 文件，此功能依赖 `fontconfig` 包和英文字体。如需使用该功能，登录 **grafana_servers** 机器，用以下命令安装：
+    > **注意：**
+    >
+    > Grafana Dashboard 上的 Report 按钮可用来生成 PDF 文件，此功能依赖 `fontconfig` 包和英文字体。如需使用该功能，登录 **grafana_servers** 机器，用以下命令安装：
     >
     > ```
     > $ sudo yum install fontconfig open-sans-fonts
@@ -619,7 +630,9 @@ synchronised to NTP server (85.199.214.101) at stratum 2
    polling server every 1024 s
 ```
 
-> **注：** Ubuntu 系统需安装 ntpstat 软件包。
+> **注意：**
+>
+> Ubuntu 系统需安装 ntpstat 软件包。
 
 以下情况表示 NTP 服务未正常同步：
 

@@ -205,7 +205,10 @@ set @@global.tidb_distsql_scan_concurrency = 10
 默认值: 20000
 
 这个变量用来设置自动切分插入/待删除数据的的 batch 大小。仅在 tidb_batch_insert 或 tidb_batch_delete 开启时有效。
-需要注意的是，当单行总数据大小很大时，20k 行总数据量数据会超过单个事务大小限制。因此在这种情况下，用户应当将其设置为一个较小的值。
+
+> **注意：**
+>
+> 当单行总数据大小很大时，20k 行总数据量数据会超过单个事务大小限制。因此在这种情况下，用户应当将其设置为一个较小的值。
 
 ### tidb_max_chunk_size
 
@@ -319,6 +322,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 默认值：0
 
 这个变量用来设置是否禁用显式事务自动重试，设置为 1 时，不会自动重试，如果遇到事务冲突需要在应用层重试。
+
 是否需要禁用自动重试，请参考[自动重试的风险](/sql/transaction-isolation.md#乐观事务注意事项)。
 
 ### tidb_enable_table_partition

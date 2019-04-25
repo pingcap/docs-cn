@@ -90,4 +90,6 @@ GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX  ON db.table TO 'your_
 | Loader | 无 | `SELECT`（查询 checkpoint 历史）<br>`CREATE`（创建数据库或表）<br>`DELETE`（删除 checkpoint）<br>`INSERT`（插入 dump 数据）| 读/写本地文件 |
 | Binlog replication | `REPLICATION SLAVE`（读 binlog）<br>`REPLICATION CLIENT` (`show master status`, `show slave status`) | `SELECT`（显示索引和列）<br>`INSERT` (DML)<br>`UPDATE` (DML)<br>`DELETE` (DML)<br>`CREATE`（创建数据库或表）<br>`DROP`（删除数据库或表）<br>`ALTER`（修改表）<br>`INDEX`（创建或删除索引）| 本地读/写磁盘 |
 
-> **注意**：这些权限并非一成不变。随着需求改变，这些权限也可能会改变。
+> **注意：**
+>
+> 这些权限并非一成不变。随着需求改变，这些权限也可能会改变。

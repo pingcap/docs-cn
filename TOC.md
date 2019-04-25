@@ -112,7 +112,7 @@
       - [表达式语法](sql/expression-syntax.md)
       - [注释语法](sql/comment-syntax.md)
     - [生成列](sql/generated-columns.md)
-    - [TiDB 系统数据库](sql/system-database.md)
+    - [TiDB 系统表](sql/system-database.md)
     - [Information Schema](sql/information-schema.md)
     - [TiSpark 使用指南](tispark/tispark-user-guide.md)
   + 事务
