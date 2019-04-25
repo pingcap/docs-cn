@@ -39,7 +39,9 @@ category: advanced
 
 详细操作参见 [MySQL 数据到 TiDB 的增量同步](/op-guide/migration.md#使用-syncer-增量导入数据)。
 
-> **注意**：在将 MySQL binlog 数据增量同步至 TiDB 前，需要[在 MySQL 中开启 binlog 功能](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)，并且 binlog 必须[使用 `ROW` 格式](https://dev.mysql.com/doc/refman/5.7/en/binary-log-formats.html)。
+> **注意：**
+>
+> 在将 MySQL binlog 数据增量同步至 TiDB 前，需要[在 MySQL 中开启 binlog 功能](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)，并且 binlog 必须[使用 `ROW` 格式](https://dev.mysql.com/doc/refman/5.7/en/binary-log-formats.html)。
 
 ### 非 MySQL 数据源的数据迁移
 

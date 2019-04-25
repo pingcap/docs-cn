@@ -36,7 +36,9 @@ Name: jmespath
 Version: 0.9.3
 ```
 
-> **注意**：请务必按以上文档安装 Ansible 及其依赖。确认 Jinja2 版本是否正确，否则启动 Grafana 时会报错。确认 jmespath 版本是否正确，否则滚动升级 TiKV 时会报错。
+> **注意：**
+>
+> 请务必按以上文档安装 Ansible 及其依赖。确认 Jinja2 版本是否正确，否则启动 Grafana 时会报错。确认 jmespath 版本是否正确，否则滚动升级 TiKV 时会报错。
 
 ## 在中控机器上下载 TiDB-Ansible
 

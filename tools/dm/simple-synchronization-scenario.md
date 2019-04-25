@@ -128,7 +128,9 @@ category: tools
         action: Ignore
     ```
 
-    > **注意**：`store-filter-rule` 不同于 `log-filter-rule` 和 `user-filter-rule`。`store-filter-rule` 是针对整个 `store` 库的规则，而 `log-filter-rule` 和 `user-filter-rule` 是针对 `user` 库中 `log` 表的规则。
+    > **注意：**
+    >
+    > `store-filter-rule` 不同于 `log-filter-rule` 和 `user-filter-rule`。`store-filter-rule` 是针对整个 `store` 库的规则，而 `log-filter-rule` 和 `user-filter-rule` 是针对 `user` 库中 `log` 表的规则。
 
 - 为了满足[同步要求](#同步要求)中的第三点要求，需要配置以下 [black & white table lists 规则](/tools/dm/data-synchronization-features.md#black--white-table-lists)：
 

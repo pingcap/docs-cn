@@ -12,7 +12,7 @@ category: tools
 - 如果 Upgrade-A-B 与 Upgrade-B-C 之间存在交叠（如同一个配置项的不同变更），则推荐先执行 Upgrade-A-B 升级到 V-B，升级完成后再执行 Upgrade-B-C 升级到 V-C。
 - 如果 Upgrade-A-B 与 Upgrade-B-C 之间不存在交叠，则可将 Upgrade-A-B 与 Upgrade-B-C 的操作合并为 Upgrade-A-C，执行后直接从 V-A 升级到 V-C。
 
-> **注意**：
+> **注意：**
 >
 > - 若无特殊说明，各版本的升级操作均为从前一个有升级指引的版本向当前版本升级。
 > - 若无特殊说明，各升级操作示例均假定已经下载了对应版本的 DM 和 DM-Ansible 且 DM binary 存在于 DM-Ansible 的相应目录中（下载 DM binary 可以参考[更新组件版本](/tools/dm/cluster-operations.md#更新组件版本)）。
@@ -97,7 +97,9 @@ Go Version: go version go1.11.2 linux/amd64
 - `source_id`：存在于 `inventory.ini` 中，用于标识一个上游 MySQL 实例或一个主从复制组。
 - `source-id`：存在于任务配置文件的 `mysql-instances` 中，其取值与 `inventory.ini` 中的 `source_id` 对应。
 
-> **注意**：如果需要确保已有任务存储在下游数据库的断点信息能继续被使用，`source_id`/`source-id` 的值需要与对应 DM-worker 变更前的 `instance-id` 一致。
+> **注意：**
+>
+> 如果需要确保已有任务存储在下游数据库的断点信息能继续被使用，`source_id`/`source-id` 的值需要与对应 DM-worker 变更前的 `instance-id` 一致。
 
 ### 升级操作示例
 
