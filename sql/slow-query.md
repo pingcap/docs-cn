@@ -157,11 +157,11 @@ tidb > select query, query_time, stats from INFORMATION_SCHEMA.`SLOW_QUERY` wher
 +-----------------------------+-------------+---------------------------------+
 | query                       | query_time  | stats                           |
 +-----------------------------+-------------+---------------------------------+
-| select * from t1 where a=1; | 0.302558006 | t1: pseudo                       |
-| select * from t1 where a=2; | 0.401313532 | t1: pseudo                       |
-| select * from t1 where a>2; | 0.602011247 | t1: pseudo                       |
-| select * from t1 where a>3; | 0.50077719  | t1: pseudo                       |
-| select * from t1 join t2;   | 0.931260518 | t1: 407872303825682445,t2: pseudo |
+| select * from t1 where a=1; | 0.302558006 | t1:pseudo                       |
+| select * from t1 where a=2; | 0.401313532 | t1:pseudo                       |
+| select * from t1 where a>2; | 0.602011247 | t1:pseudo                       |
+| select * from t1 where a>3; | 0.50077719  | t1:pseudo                       |
+| select * from t1 join t2;   | 0.931260518 | t1:407872303825682445,t2: pseudo |
 +-----------------------------+-------------+---------------------------------+
 ```
 
