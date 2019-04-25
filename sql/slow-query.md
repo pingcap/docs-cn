@@ -47,7 +47,7 @@ select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
 * `Total_keys`：表示 Coprocessor 扫过的 key 的数量。
 * `Process_keys`：表示 Coprocessor 处理的 key 的数量。相比 total_keys，processed_keys 不包含 MVCC 的旧版本。如果 processed_keys 和 total_keys 相差很大，说明旧版本比较多。
 * `DB`：表示当前的 database。
-* `Index_ids`：表示语句涉及到的索引的 ID
+* `Index_ids`：表示语句涉及到的索引的 ID。
 * `Is_internal`：表示是否是 TiDB 内部 SQL。true 为TiDB 内部执行的SQL，比如 analyze，load variable 等；false 为用户执行的 SQL。
 * `Digest`：表示 SQL 语句的指纹。
 * `Memory_max`：表示执行期间做多时候使用的内存数量，单位为byte。
