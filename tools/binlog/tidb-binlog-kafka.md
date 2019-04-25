@@ -3,7 +3,7 @@ title: TiDB-Binlog kafka 部署方案
 category: tools
 ---
 
-# TiDB-Binlog 部署方案
+# TiDB-Binlog Kafka 部署方案
 
 本文档介绍如何部署 Kafka 版本的 TiDB-Binlog。
 
@@ -16,7 +16,7 @@ TiDB-Binlog 支持以下功能场景:
 * **数据同步**：同步 TiDB 集群数据到其他数据库
 * **实时备份和恢复**：备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复
 
-## TiDB-Binlog 架构
+## TiDB-Binlog Kafka 架构
 
 首先介绍 TiDB-Binlog 的整体架构。
 
@@ -103,10 +103,10 @@ cd tidb-binlog-kafka-linux-amd64
     [syncer]
     db-type = "kafka"
 
-    # when db-type is kafka, you can uncomment this to config the down stream kafka, or it will be the same kafka addrs where drainer pull binlog from.
-    #[syncer.to]
-    # kafka-addrs = "127.0.0.1:9092"
-    # kafka-version = "0.8.2.0"
+    # when db-type is kafka, you need to use this to config the down stream kafka, or it will be the same kafka addrs where drainer pull binlog from.
+    [syncer.to]
+    kafka-addrs = "127.0.0.1:9092"
+    kafka-version = "0.8.2.0"
     ```
 
     输出到 kafka 的数据为按 ts 排好序的 protobuf 定义 binlog 格式，可以参考 [driver](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/driver) 获取数据同步到下游。
