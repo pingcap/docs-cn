@@ -5,7 +5,7 @@ category: user guide
 
 # 权限管理
 
-TiDB 的权限管理系统是按照 MySQL 的权限管理进行实现，TiDB 支持大部分的 MySQL 的语法和权限类型。
+TiDB 的权限管理系统按照 MySQL 的权限管理进行实现，TiDB 支持大部分的 MySQL 的语法和权限类型。
 
 本文档主要介绍 TiDB 权限相关操作、各项操作需要的权限以及权限系统的实现。
 
