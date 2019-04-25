@@ -178,9 +178,9 @@
     + TiDB-Binlog
       - [概述](tools/binlog/overview.md)
       - [部署使用](tools/binlog/deploy.md)
-      - [版本升级](tools/binlog/upgrade.md)
-      - [运维管理](tools/binglog/operation.md)
       - [监控告警](tools/binlog/monitor.md)
+      - [运维管理](tools/binglog/operation.md)
+      - [版本升级](tools/binlog/upgrade.md)
     - [PD Control](tools/pd-control.md)
     - [PD Recover](tools/pd-recover.md)
     - [TiKV Control](https://github.com/tikv/tikv/blob/master/docs/tools/tikv-control.md)
