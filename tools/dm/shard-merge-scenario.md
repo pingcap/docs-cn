@@ -93,7 +93,9 @@ category: tools
         action: Ignore
     ```
 
-    > **注意**：同步需求 #4、#5 和 #7 的操作意味着过滤掉所有对 `user` 库的删除操作，所以此处配置了库级别的过滤规则。但是 `user` 库以后加入表的删除操作也都会被过滤。
+    > **注意：**
+    >
+    > 同步需求 #4、#5 和 #7 的操作意味着过滤掉所有对 `user` 库的删除操作，所以此处配置了库级别的过滤规则。但是 `user` 库以后加入表的删除操作也都会被过滤。
 
 - 要满足同步需求 #6，配置 [Binlog event filter 规则](/tools/dm/data-synchronization-features.md#binlog-event-filter) 如下：
 

@@ -12,7 +12,7 @@ category: tools
 
 Table routing 提供将上游 MySQL/MariaDB 实例的某些表同步到下游指定表的功能。
 
-> **注意**：
+> **注意：**
 >
 > - 不支持对同一个表设置多个不同的路由规则。
 > - Schema 的匹配规则需要单独设置，用来同步 `create/drop schema xx`，例如下面[参数配置](#参数配置)中的 rule-2。
@@ -48,7 +48,7 @@ routes:
 - `rule-1` 用来同步匹配上 `schema-pattern: "test_*"` 和 `table-pattern: "t_*"` 的表的 DML/DDL 语句到下游的 `test`.`t`。
 - `rule-2` 用来同步匹配上 `schema-pattern: "test_*"` 的库的 DDL 语句，例如 `create/drop schema xx`。
 
-> **注意**：
+> **注意：**
 >
 > - 如果下游 TiDB `schema: test` 已经存在， 并且不会被删除，则可以省略 `rule-2`。
 > - 如果下游 TiDB `schema: test` 不存在，只设置了 `rule_1`，则同步会报错 `schema test doesn't exist`。
@@ -155,7 +155,9 @@ black-white-list:
 
     3. 如果 `do-tables` 和 `ignore-tables` 都为空，则同步 `test`.`t`。
 
-> **注意**：判断 schema `test` 是否被过滤，只进行 **schema 过滤判断**
+> **注意：**
+>
+> 判断 schema `test` 是否被过滤，只进行 **schema 过滤判断**
 
 ### 使用示例
 
@@ -206,7 +208,9 @@ black-white-list:
 
 Binlog event filter 是比同步表黑白名单更加细粒度的过滤规则，可以指定只同步或者过滤掉某些 `schema / table` 的指定类型 binlog，比如 `INSERT`，`TRUNCATE TABLE`。
 
-> **注意**：同一个表匹配上多个规则，将会顺序应用这些规则，并且黑名单的优先级高于白名单，即如果同时存在规则 `Ignore` 和 `Do` 应用在某个 table 上，那么 `Ignore` 生效。
+> **注意：**
+>
+> 同一个表匹配上多个规则，将会顺序应用这些规则，并且黑名单的优先级高于白名单，即如果同时存在规则 `Ignore` 和 `Do` 应用在某个 table 上，那么 `Ignore` 生效。
 
 ### 参数配置
 
@@ -288,7 +292,9 @@ filters:
 - `do-table-rule` 只同步所有匹配到 pattern `test_*`.`t_*` 的 table 的 `create table`、`insert`、`update`、`delete` 操作。
 - `do-schema-rule` 只同步所有匹配到 pattern `test_*` 的 schema 的 `create database` 操作。
 
-> **注意**：同步 `create database/table` 的原因是创建库和表后才能同步 `DML`。
+> **注意：**
+>
+> 同步 `create database/table` 的原因是创建库和表后才能同步 `DML`。
 
 ```yaml
 filters:
@@ -320,7 +326,9 @@ filters:
 
 对于 TiDB parser 不支持的 SQL 语句，DM 无法解析获得 `schema`/`table` 信息，因此需要使用全局过滤规则：`schema-pattern: "*"`。
 
-> **注意**：全局过滤规则的设置必须尽可能严格，以避免预期之外地过滤掉需要同步的数据。
+> **注意：**
+>
+> 全局过滤规则的设置必须尽可能严格，以避免预期之外地过滤掉需要同步的数据。
 
 可设置如下规则过滤 TiDB parser 不支持的 `PARTITION` 语句：
 
@@ -336,7 +344,7 @@ filters:
 
 Column mapping 提供对表的列值进行修改的功能。可以根据不同的表达式对表的指定列做不同的修改操作，目前只支持 DM 提供的内置表达式。
 
-> **注意**：
+> **注意：**
 >
 > - 不支持修改 column 的类型和表结构。
 > - 不支持对同一个表设置多个不同的列值转换规则。
@@ -436,7 +444,7 @@ column-mappings:
 
 DM 支持通过 heartbeat 真实同步数据来计算每个同步任务与 MySQL/MariaDB 的实时同步延迟。
 
-> **注意**：
+> **注意：**
 >
 > - 同步延迟的估算的精度在秒级别。
 > - heartbeat 相关的 binlog 不会同步到下游，在计算延迟后会被丢弃。

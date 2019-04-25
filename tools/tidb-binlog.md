@@ -280,7 +280,7 @@ drainer 启动时可以设置 `--metrics-addr` 和 `--metrics-interval` 两个�
 
 +   进入 Grafana Web 界面（默认地址: `http://localhost:3000`，默认账号: admin 密码: admin）
 
-    点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息 ( 注: Type 选 Prometheus，Url 为 Prometheus 地址，根据实际情况 添加/填写 ）
+    点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息（注: Type 选 Prometheus，URL 为 Prometheus 地址，根据实际情况添加/填写）
 
 +   导入 dashboard 配置文件
 

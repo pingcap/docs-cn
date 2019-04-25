@@ -28,7 +28,9 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
     - 机器的时间、时区设置一致，开启 NTP 服务且在正常同步时间，可参考[如何检测 NTP 服务是否正常](#如何检测-ntp-服务是否正常)。
     - 创建 `tidb` 普通用户作为程序运行用户，tidb 用户可以免密码 sudo 到 root 用户，可参考[如何配置 ssh 互信及 sudo 免密码](#如何配置-ssh-互信及-sudo-免密码)。
 
-    > **注：使用 Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](docker-compose.md)单机进行测试。
+    > **注意：**
+    >
+    > 使用 Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](docker-compose.md)单机进行测试。
 
 2.  部署中控机一台:
 
@@ -68,7 +70,9 @@ cd /home/tidb
 git clone https://github.com/pingcap/tidb-ansible.git
 ```
 
-> **注：** 生产环境请下载 GA 版本部署 TiDB。
+> **注意：**
+>
+> 生产环境请下载 GA 版本部署 TiDB。
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
@@ -424,7 +428,9 @@ synchronised to NTP server (85.199.214.101) at stratum 2
    time correct to within 91 ms
    polling server every 1024 s
 ```
-> **注：**Ubuntu 系统请安装 ntpstat 软件包。
+> **注意：**
+>
+> Ubuntu 系统请安装 ntpstat 软件包。
 
 以下情况表示 NTP 服务未正常同步：
 

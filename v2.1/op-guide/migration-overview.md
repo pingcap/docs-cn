@@ -30,7 +30,9 @@ category: advanced
 
 ## MySQL 开启 binlog
 
-**注意： 只有上文提到的第二种场景才需要在 dump 数据之前先开启 binlog**
+> **注意：**
+>
+> 只有上文提到的第二种场景才需要在 dump 数据之前先开启 binlog**
 
 +   MySQL 开启 binlog 功能，参考 [Setting the Replication Master Configuration](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
 +   Binlog 格式必须使用 `ROW` format，这也是 MySQL 5.7 之后推荐的 binlog 格式，可以使用如下语句打开:

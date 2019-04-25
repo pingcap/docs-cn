@@ -61,7 +61,9 @@ mysql --local-infile=1 -h 192.168.0.2 -P 4000 -u root < dss.ddl
 ./sample_data.sh
 ```
 
-> **注意**：执行脚本的机器上需要安装 MySQL client，CentOS 用户可通过 `yum -y install mysql` 来安装。
+> **注意：**
+>
+> 执行脚本的机器上需要安装 MySQL client，CentOS 用户可通过 `yum -y install mysql` 来安装。
 
 登录 TiDB 并验证数据包含 `TPCH_001` 库及以下表：
 

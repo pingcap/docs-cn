@@ -31,7 +31,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 这个选项可以设置 TiDB 的系统变量 `lower_case_table_names` 的值。
 + 默认: 2
 + 具体可以查看 MySQL 关于这个变量的[描述](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names)
-+ 注意：目前 TiDB 只支持将该选项的值设为 2，即按照大小写来保存表名，按照小写来比较（不区分大小写）。
+
+> **注意：**
+>
+> 目前 TiDB 只支持将该选项的值设为 2，即按照大小写来保存表名，按照小写来比较（不区分大小写）。
 
 ### `compatible-kill-query`
 
@@ -58,7 +61,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `slow-query-file`
 
 + 慢查询日志的文件名。
-+ 默认: ""
++ 默认: "tidb-slow.log"，注：由于 TiDB V2.1.8 更新了慢日志格式，所以将慢日志单独输出到了慢日志文件。V2.1.8 之前的版本，该变量的默认值是 ""。
 + 设置后，慢查询日志会单独输出到该文件。
 
 ### `slow-threshold`

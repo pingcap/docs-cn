@@ -198,7 +198,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 
 2. 全量数据的备份与恢复
 
-    推荐使用 mydumper 备份 TiDB 的全量数据，再使用 loader 将备份数据导入到下游。具体使用方法参考：[备份与恢复](https://github.com/pingcap/docs-cn/blob/master/op-guide/backup-restore.md)。
+    推荐使用 mydumper 备份 TiDB 的全量数据，再使用 loader 将备份数据导入到下游。具体使用方法参考：[备份与恢复](../op-guide/backup-restore.md)。
 
 3. 修改 `tidb-ansible/inventory.ini` 文件
 
@@ -228,7 +228,9 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
         $ vi drainer_mysql_drainer.toml
         ```
 
-        > **注意：** 配置文件名命名规则为 `别名_drainer.toml`，否则部署时无法找到自定义配置文件。
+        > **注意：**
+        >
+        > 配置文件名命名规则为 `别名_drainer.toml`，否则部署时无法找到自定义配置文件。
 
         db-type 设置为 "mysql"， 配置下游 MySQL 信息。
 
@@ -532,7 +534,9 @@ Drainer="192.168.0.13"
 
     - 启动示例  
 
-        > **注意**：如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取 initial-commit-ts 的值，并进行全量数据的备份与恢复。详细信息参见[部署 Drainer](#第-3-步部署-drainer)。
+        > **注意：**
+        >
+        > 如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取 initial-commit-ts 的值，并进行全量数据的备份与恢复。详细信息参见[部署 Drainer](#第-3-步部署-drainer)。
 
         初次启动时使用参数 `initial-commit-ts`， 命令如下：
 

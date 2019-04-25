@@ -67,7 +67,9 @@ DM-worker 每次启动时（或在 DM-worker 暂停后 relay log 恢复同步）
 
     - 在 GTID 模式下，DM-worker 从初始上游 GTID 开始同步。
 
-        > **注意**：若上游的 relay log 被清理掉，则会发生错误。在这种情况下，需设置 `relay-binlog-gtid` 来指定同步的起始位置。
+        > **注意：**
+        >
+        > 若上游的 relay log 被清理掉，则会发生错误。在这种情况下，需设置 `relay-binlog-gtid` 来指定同步的起始位置。
 
 - 若不存在有效的本地 relay log：
 

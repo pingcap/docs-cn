@@ -110,7 +110,11 @@ ${SPARK_INSTALL_PATH}/jars
 
 你可以在[这里](https://spark.apache.org/downloads.html)下载 Apache Spark。
 
-对于 Standalone 模式且无需 Hadoop 支持，则选择 Spark 2.1.x 且带有 Hadoop 依赖的 Pre-build with Apache Hadoop 2.x 任意版本。如有需要配合使用的 Hadoop 集群，则选择对应的 Hadoop 版本号。你也可以选择从源代码[自行构建](https://spark.apache.org/docs/2.1.0/building-spark.html)以配合官方 Hadoop 2.6 之前的版本。注意目前 TiSpark 仅支持 Spark 2.1.x 版本。
+对于 Standalone 模式且无需 Hadoop 支持，则选择 Spark 2.1.x 且带有 Hadoop 依赖的 Pre-build with Apache Hadoop 2.x 任意版本。如有需要配合使用的 Hadoop 集群，则选择对应的 Hadoop 版本号。你也可以选择从源代码[自行构建](https://spark.apache.org/docs/2.1.0/building-spark.html)以配合官方 Hadoop 2.6 之前的版本。
+
+> **注意：**
+>
+> 目前 TiSpark 仅支持 Spark 2.1.x 版本。
 
 如果你已经有了 Spark 二进制文件，并且当前 PATH 为 SPARKPATH，需将 TiSpark jar 包拷贝到 `${SPARKPATH}/jars` 目录下。
 
