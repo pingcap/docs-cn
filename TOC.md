@@ -9,7 +9,6 @@
   + [核心特性](key-features.md)
     - [水平扩展](key-features.md#水平扩展)
     - [高可用](key-features.md#高可用)
-
 + 操作指南
   + 快速上手
     + 创建本地集群
@@ -73,7 +72,6 @@
     - [集群配置诊断](trouble-shooting.md)
     - [Data Migration 故障诊断](tools/dm/troubleshooting.md)
     - [TiDB-Lightning 故障诊断](tools/lightning/errors.md)
-
 + 参考手册
   + [与 MySQL 兼容性对比](sql/mysql-compatibility.md)
   + SQL
@@ -183,7 +181,6 @@
     - [TiKV Control](https://github.com/tikv/tikv/blob/master/docs/tools/tikv-control.md)
     - [TiDB Controller](tools/tidb-controller.md)
     - [工具下载](tools/download.md)
-
 + 常见问题 (FAQ)
   - [TiDB FAQ](FAQ.md)
   - [TiDB-Lightning FAQ](tools/lightning/faq.md)
