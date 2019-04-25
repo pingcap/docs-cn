@@ -43,7 +43,7 @@ mysql> SELECT user,host FROM mysql.user WHERE user='xxxx';
 1 row in set (0.00 sec)
 ```
 
-上述示例中，`xxxx@%` 就是自动添加的用户。
+上述示例中，`xxxx@%` 即自动添加的用户。
 
 `GRANT` 对于数据库或者表的授权，不检查数据库或表是否存在。
 
