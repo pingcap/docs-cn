@@ -8,7 +8,7 @@ aliases: ['/docs-cn/tools/tidb-binlog-cluster/']
 
 TiDB-Binlog 的整体架构：
 
-![TiDB-Binlog 架构](../../media/tidb_binlog_cluster_architecture.png)
+![TiDB-Binlog 架构](/media/tidb_binlog_cluster_architecture.png)
 
 TiDB-Binlog 集群主要分为 Pump 和 Drainer 两个组件，以及 binlogctl 工具：
 
