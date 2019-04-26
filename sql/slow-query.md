@@ -11,7 +11,7 @@ TiDB 在 V2.1.8 之后更改了慢日志格式，V2.1.8 之前的版本请看[�
 
 ### 获取日志
 
-TiDB 会将执行时间超过 [slow-threshold](../op-guide/tidb-config-file.md#slow-threshold) 的语句默认单独输出到 [slow-query-file](../op-guide/tidb-config-file.md#slow-query-file) 文件中 ，并对慢日志的格式做了兼容，可以用 `pt-query-digest` 直接分析慢日志 文件。`slow-threshold` 可以通过配置文件修改，默认是 300ms。`slow-query-file` 默认是 `tidb-slow.log`。
+TiDB 会将执行时间超过 [slow-threshold](../op-guide/tidb-config-file.md#slow-threshold) 的语句默认单独输出到 [slow-query-file](../op-guide/tidb-config-file.md#slow-query-file) 文件中 ，并对慢日志的格式做了兼容，可以用 `pt-query-digest` 直接分析慢日志文件。`slow-threshold` 可以通过配置文件修改，默认是 300ms。`slow-query-file` 默认是 `tidb-slow.log`。
 
 ### 示例
 
@@ -36,9 +36,9 @@ select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
 ### 字段解析
 
 * `Time`：表示日志打印时间。
-* `Txn_start_ts`：表示事务的开始时间戳，也是事务的 ID, 可以用这个值在日志中 grep 出事务相关的日志。
+* `Txn_start_ts`：表示事务的开始时间戳，也是事务的 ID，可以用这个值在日志中 grep 出事务相关的日志。
 * `User`：表示执行语句的用户名。
-* `Conn_ID`：表示 connection ID，即 session ID, 可以用类似 `con:3` 的关键字在 TiDB 日志中 grep 出 session ID 为 3 的日志。
+* `Conn_ID`：表示 connection ID，即 session ID，可以用类似 `con: 3` 的关键字在 TiDB 日志中 grep 出 session ID 为 3 的日志。
 * `Query_time`：表示执行这个语句花费的时间。只有执行时间超过 slow-threshold 的语句才会输出这个日志，单位是秒，以下所有的时间字段的单位都是秒。
 * `Process_time`：执行 SQL 在 TiKV 的处理时间之和，因为数据会并行的发到 TiKV 执行，这个值可能会超过 `Query_time`。
 * `Wait_time`：表示这个语句在 TiKV 的等待时间之和，因为 TiKV 的 Coprocessor 线程数是有限的，当所有的 Coprocessor 线程都在工作的时候，请求会排队；当队列中有某些请求耗时很长的时候，后面的请求的等待时间都会增加。
@@ -47,13 +47,13 @@ select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
 * `Total_keys`：表示 Coprocessor 扫过的 key 的数量。
 * `Process_keys`：表示 Coprocessor 处理的 key 的数量。相比 total_keys，processed_keys 不包含 MVCC 的旧版本。如果 processed_keys 和 total_keys 相差很大，说明旧版本比较多。
 * `DB`：表示当前的 database。
-* `Index_ids`：表示语句涉及到的索引的 ID
-* `Is_internal`：表示是否是 TiDB 内部 SQL。true 为TiDB 内部执行的SQL, 比如 analyze，load variable 等；false 为用户执行的 SQL 。
+* `Index_ids`：表示语句涉及到的索引的 ID。
+* `Is_internal`：表示是否是 TiDB 内部 SQL。true 为TiDB 内部执行的SQL，比如 analyze，load variable 等；false 为用户执行的 SQL。
 * `Digest`：表示 SQL 语句的指纹。
 * `Memory_max`：表示执行期间做多时候使用的内存数量, 单位为byte。
 * `Num_cop_tasks`：表示 [cop-tasks](/sql/understanding-the-query-execution-plan.md) 的数目。
 * `Cop_proc_avg`：cop-task 的平均执行时间。
-* `Cop_proc_p90`：cop-task 的P90分位执行时间。
+* `Cop_proc_p90`：cop-task 的 P90 分位执行时间。
 * `Cop_proc_max`：cop-task 的最大执行时间。
 * `Cop_proc_addr`：执行时间最长的 cop-task 所在地址。
 * `Cop_wait_avg`：cop-task 的平均等待时间。
@@ -104,7 +104,7 @@ tidb > show create table INFORMATION_SCHEMA.SLOW_QUERY;
 查询 Top2 的用户慢查询。`Is_internal=false` 表示排除 TiDB 内部的慢查询，只看用户的慢查询。
 
 ```sql
-/* 查询所有用户执行的SQL, 且按执行消耗时间排序 */
+/* 查询所有用户执行的SQL，且按执行消耗时间排序 */
 tidb > select `Query_time`, query from INFORMATION_SCHEMA.`SLOW_QUERY` where `Is_internal`=false order by `Query_time` desc limit 2;
 +--------------+------------------------------------------------------------------+
 | Query_time   | query                                                            |
@@ -118,7 +118,7 @@ Time: 0.012s
 
 #### 查询 `test` 用户的 TopN 慢查询 
 ```sql
-/* 查询 test 用户执行的SQL, 且按执行消耗时间排序*/
+/* 查询 test 用户执行的SQL，且按执行消耗时间排序*/
 tidb > select `Query_time`, query,  user from INFORMATION_SCHEMA.`SLOW_QUERY` where `Is_internal`=false and user like "test%" order by `Query_time` desc limit 2;
 +-------------+------------------------------------------------------------------+----------------+
 | Query_time  | query                                                            | user           |
@@ -167,7 +167,7 @@ tidb > select query, query_time, stats from INFORMATION_SCHEMA.`SLOW_QUERY` wher
 
 #### 解析其他的 TiDB 慢日志文件
 
-目前查询 `INFORMATION_SCHEMA.SLOW_QUERY` 只会解析配置文件中 `slow-query-file` 设置的慢日志文件名，默认是 "tidb-slow.log" 。 但如果想要解析其他的日志文件，可以通过设置 session 变量 `tidb_slow_query_file` 为具体的文件路径，然后查询 `INFORMATION_SCHEMA.SLOW_QUERY` 就会按照设置的路径去解析慢日志文件。
+目前查询 `INFORMATION_SCHEMA.SLOW_QUERY` 只会解析配置文件中 `slow-query-file` 设置的慢日志文件名，默认是 "tidb-slow.log"。但如果想要解析其他的日志文件，可以通过设置 session 变量 `tidb_slow_query_file` 为具体的文件路径，然后查询 `INFORMATION_SCHEMA.SLOW_QUERY` 就会按照设置的路径去解析慢日志文件。
 ```sql
 /* 设置慢日志文件路径，方便解析其他的慢日志文件，tidb_slow_query_file 变量的作用域是 session */
 tidb > set tidb_slow_query_file="/path-to-log/tidb-slow.log"
