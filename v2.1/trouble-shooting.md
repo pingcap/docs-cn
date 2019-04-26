@@ -10,7 +10,7 @@ You can use this guide to help you diagnose and solve basic problems while using
 
 - The exact error message and the operations while the error occurs
 - The state of all the components
-- The `error` / `fatal` / `panic` information in the log of the component that reports the error
+- The `error`/`fatal`/`panic` information in the log of the component that reports the error
 - The configuration and deployment topology
 - The TiDB component related issue in `dmesg`
 

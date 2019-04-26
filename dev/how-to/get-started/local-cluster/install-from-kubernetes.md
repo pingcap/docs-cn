@@ -223,4 +223,6 @@ $ sudo rm -rf data/kube-node-*
 $ manifests/local-dind/dind-cluster-v1.12.sh up
 ```
 
-> **Warning:** You must clean the data after you destroy the DinD Kubernetes cluster, otherwise the TiDB cluster would fail to start when you bring it up again.
+> **Warning:**
+>
+> You must clean the data after you destroy the DinD Kubernetes cluster, otherwise the TiDB cluster would fail to start when you bring it up again.

@@ -10,8 +10,8 @@ DM uses the sharding DDL lock to ensure operations are performed in the correct 
 
 > **Warning:**
 >
->- Do not use `unlock-ddl-lock` or `break-ddl-lock` unless you are totally aware of the possible impacts brought by the command and you can accept them.
->- Before manually handling the abnormal DDL locks, make sure that you have already read the DM [shard merge principles](../../tools/dm/shard-merge.md#principles).
+> - Do not use `unlock-ddl-lock` or `break-ddl-lock` unless you are totally aware of the possible impacts brought by the command and you can accept them.
+> - Before manually handling the abnormal DDL locks, make sure that you have already read the DM [shard merge principles](../../tools/dm/shard-merge.md#principles).
 
 ## Command
 

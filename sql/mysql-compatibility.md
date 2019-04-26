@@ -47,8 +47,8 @@ Currently TiDB Server advertises itself as MySQL 5.7 and works with most MySQL d
 
 In TiDB, auto-increment columns are only guaranteed to be incremental and unique but are *not* guaranteed to be allocated sequentially. Currently, TiDB allocates IDs in batches. If data is inserted into multiple TiDB servers simultaneously, the allocated IDs will not be sequential.
 
-> **Warning**:
-> 
+> **Warning:**
+>
 > If you use auto-increment IDs in a cluster with multiple tidb-server instances, do not mix default values and custom values, otherwise an error will occur in the following situation:
 > 
 > Assume that you have a table with the auto-increment ID:

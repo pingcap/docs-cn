@@ -568,7 +568,9 @@ ansible-playbook stop.yml
 
 ## Destroy the TiKV cluster
 
-> **Warning:** Before you clean the cluster data or destroy the TiKV cluster, make sure you do not need it any more.
+> **Warning:**
+>
+> Before you clean the cluster data or destroy the TiKV cluster, make sure you do not need it any more.
 
 - If you do not need the data any more, you can clean up the data for test using the following command:
 

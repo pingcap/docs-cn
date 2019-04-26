@@ -16,7 +16,9 @@ The possible causes of an abnormal condition include:
 - A DM-worker restarts (or is unreachable temporarily)
 - DM-master restarts
 
-> **Warning:** Do not use `unlock-ddl-lock`/`break-ddl-lock` unless you are definitely clear about the possible impacts brought by this command and you can accept the impacts.
+> **Warning:**
+>
+> Do not use `unlock-ddl-lock`/`break-ddl-lock` unless you are definitely clear about the possible impacts brought by this command and you can accept the impacts.
 
 ## Condition one: some DM-workers go offline
 
