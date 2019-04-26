@@ -145,8 +145,10 @@
     - [Loader](tools/loader.md)
     - [Syncer](tools/syncer.md)
     + Data Migration
-      - [概述](tools/dm/overview.md)
-      - [使用限制](tools/dm/overview.md#使用限制)
+      + [概述](tools/dm/overview.md)
+        - [DM 架构](tools/dm/overview.md#dm-架构)
+        - [同步功能介绍](tools/dm/overview.md#同步功能介绍)
+        - [使用限制](tools/dm/overview.md#使用限制)
       + [部署使用](tools/dm/practice.md)
       + 核心特性
         - [Table Routing](tools/dm/data-synchronization-features.md#table-routing)
