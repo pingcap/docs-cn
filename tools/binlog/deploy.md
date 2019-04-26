@@ -1,10 +1,10 @@
 ---
-title: TiDB-Binlog Cluster 版本部署
+title: TiDB-Binlog Cluster 部署
 category: tools
 ---
 
 
-# TiDB-Binlog Cluster 版本部署
+# TiDB-Binlog Cluster 部署
 
 ## 使用 TiDB-Ansible 部署 TiDB-Binlog
 

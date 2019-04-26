@@ -1,10 +1,10 @@
 ---
-title: TiDB-Binlog 简介
+title: TiDB-Binlog Cluster简介
 category: tools
 aliases: ['/docs-cn/tools/tidb-binlog-cluster/']
 ---
 
-# TiDB-Binlog 简介
+# TiDB-Binlog Cluster 简介
 
 TiDB-Binlog 的整体架构：
 

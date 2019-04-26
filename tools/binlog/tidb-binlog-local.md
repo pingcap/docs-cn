@@ -1,9 +1,9 @@
 ---
-title: TiDB-Binlog-local 部署方案
+title: TiDB-Binlog Local 部署方案
 category: tools
 ---
 
-# TiDB-Binlog-local 部署方案
+# TiDB-Binlog Local 部署方案
 
 ## TiDB-Binlog-local 简介
 

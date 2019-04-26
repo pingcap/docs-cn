@@ -3,7 +3,7 @@ title: TiDB-Binlog Cluster 监控
 category: tools
 ---
 
-# TiDB-Binlog 监控
+# TiDB-Binlog Cluster 监控
 
 使用 Ansible 部署成功后，可以进入 Grafana Web 界面（默认地址: <http://grafana_ip:3000>，默认账号：admin，密码：admin）查看 Pump 和 Drainer 的运行状态。
 
