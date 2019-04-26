@@ -11,9 +11,9 @@
 + 操作指南
   + 快速上手
     + 创建本地集群
-      - [使用 Docker Compose](op-guide/docker-compose.md)
-    - [SQL 基本操作](try-tidb.md)
-    - [读取历史数据](op-guide/history-read.md)
+      - [使用 Docker Compose](dev/how-to/get-started/local-cluster/install-from-docker-compose.md)
+    - [SQL 基本操作](dev/how-to/get-started/explore-sql.md)
+    - [读取历史数据](dev/how-to/get-started/read-historical-data.md)
   - 部署
     - [软硬件环境需求](op-guide/recommendation.md)
     + 集群部署方式
