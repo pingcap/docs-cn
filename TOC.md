@@ -3,7 +3,6 @@
 ## 目录
 
 + [关于 TiDB](overview.md)
-
 + 主要概念
   - [整体架构](architecture.md)
   + [核心特性](key-features.md)
@@ -27,12 +26,12 @@
     - [TiSpark 快速上手](tispark/tispark-quick-start-guide.md)
     - [使用 Ansible 部署 DM 集群](tools/dm/deployment.md)
   + 配置
-    + [时区](sql/time-zone.md)
-    + [内存控制](sql/tidb-memory-control.md)
+    - [时区](sql/time-zone.md)
+    - [内存控制](sql/tidb-memory-control.md)
     + 配置参数
-      + [PD](op-guide/pd-configuration.md)
-      + [TiDB](op-guide/configuration.md)
-      + [TiKV](op-guide/tikv-configuration.md)
+      - [PD](op-guide/pd-configuration.md)
+      - [TiDB](op-guide/configuration.md)
+      - [TiKV](op-guide/tikv-configuration.md)
   + 安全
     - [与 MySQL 的安全特性差异](sql/security-compatibility.md)
     - [TiDB 数据库权限管理](sql/privilege.md)
@@ -68,7 +67,7 @@
       - [升级至 TiDB 2.1](op-guide/tidb-v2.1-upgrade-guide.md)
       - [升级 Data Migration](tools/dm/dm-upgrade.md)
       - [使用 Ansible 滚动升级](op-guide/ansible-deployment-rolling-update.md)
-  - 故障诊断
+  + 故障诊断
     - [集群配置诊断](trouble-shooting.md)
     - [Data Migration 故障诊断](tools/dm/troubleshooting.md)
     - [TiDB-Lightning 故障诊断](tools/lightning/errors.md)
@@ -117,22 +116,22 @@
       - [生成列](sql/generated-columns.md)
    - [字符集](sql/character-set-support.md)
    - [约束](sql/constraints.md)
-   - 系统变量
+   + 系统变量
       - [MySQL 系统变量](sql/variable.md)
       - [TiDB 特定系统变量](sql/tidb-specific.md)
-  - 安全
-      - [与 MySQL 的安全特性差异](sql/security-compatibility.md)
-      - [TiDB 数据库权限管理](sql/privilege.md)
-      - [TiDB 用户账户管理](sql/user-account-management.md)
-   + 事务
-      - [事务模型](sql/transaction-model.md)
-      - [隔离级别](sql/transaction-isolation.md)
-    - 系统表
-        - [mysql](sql/system-database.md)
-        - [Information Schema](sql/information-schema.md)
+  + 安全
+    - [与 MySQL 的安全特性差异](sql/security-compatibility.md)
+    - [TiDB 数据库权限管理](sql/privilege.md)
+    - [TiDB 用户账户管理](sql/user-account-management.md)
+  + 事务
+    - [事务模型](sql/transaction-model.md)
+    - [隔离级别](sql/transaction-isolation.md)
+  + 系统表
+    - [mysql](sql/system-database.md)
+    - [Information Schema](sql/information-schema.md)
   - [错误码](sql/error.md)
-  + [支持的连接器和 API](sql/connection-and-APIs.md)
-  + [垃圾回收 (GC)](op-guide/gc.md)
+  - [支持的连接器和 API](sql/connection-and-APIs.md)
+  - [垃圾回收 (GC)](op-guide/gc.md)
   + 性能调优
     - [SQL 优化流程](sql/sql-optimizer-overview.md)
     - [基于代价的优化](sql/understanding-the-query-execution-plan.md)
@@ -185,18 +184,18 @@
   - [TiDB FAQ](FAQ.md)
   - [TiDB-Lightning FAQ](tools/lightning/faq.md)
   - [升级 FAQ](op-guide/upgrade-faq.md)
-- 技术支持
++ 技术支持
   - [支持渠道](support.md)
   - [反馈问题](report-issue.md)
-- [贡献](contribute.md)
++ [贡献](contribute.md)
   - [贡献代码](contribute.md#成为-tidb-的贡献者)
   - [改进文档](contribute.md#改进文档)
 - [TiDB 路线图](ROADMAP.md)
-- [版本发布历史](releases/rn.md)
-  - v3.0
++ [版本发布历史](releases/rn.md)
+  + v3.0
     - [3.0.0 Beta.1](releases/3.0.0-beta.1.md)
     - [3.0 Beta](releases/3.0beta.md)
-  - v2.1
+  + v2.1
     - [2.1.8](releases/2.1.8.md)
     - [2.1.7](releases/2.1.7.md)
     - [2.1.6](releases/2.1.6.md)
@@ -212,7 +211,7 @@
     - [2.1 RC2](releases/21rc2.md)
     - [2.1 RC1](releases/21rc1.md)
     - [2.1 Beta](releases/21beta.md)
-  - v2.0
+  + v2.0
     - [2.0.11](releases/2.0.11.md)
     - [2.0.10](releases/2.0.10.md)
     - [2.0.9](releases/209.md)
@@ -231,7 +230,7 @@
     - [2.0 RC1](releases/2rc1.md)
     - [1.1 Beta](releases/11beta.md)
     - [1.1 Alpha](releases/11alpha.md)
-  - v1.0
+  + v1.0
     - [1.0](releases/ga.md)
     - [Pre-GA](releases/prega.md)
     - [RC4](releases/rc4.md)
