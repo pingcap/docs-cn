@@ -460,7 +460,7 @@ Drainer="192.168.0.13"
         password = ""
         port = 3306
 
-        # db-type 设置为 pb 时，存放 binlog 文件的目录
+        # db-type 设置为 file 时，存放 binlog 文件的目录
         # [syncer.to]
         # dir = "data.drainer"
 
