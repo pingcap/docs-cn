@@ -154,7 +154,7 @@ category: tools
         drainer_mysql ansible_host=172.16.10.71 initial_commit_ts="402899541671542785"
         ```
 
-    - 以下游为 file 为例，别名为 `drainer_pb`。
+    - 以下游为 file 为例，别名为 `/drainer_pb/drainer_file`。
 
         ```ini
         [drainer_servers]
