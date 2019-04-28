@@ -3,7 +3,7 @@ title: TiDB-Binlog Cluster 运维
 category: tools
 ---
 
-# TiDB-Binlog Cluster 运维
+# TiDB-Binlog 集群运维
 
 ## Pump/Drainer 状态
 
