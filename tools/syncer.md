@@ -52,7 +52,7 @@ Usage of syncer:
   -auto-fix-gtid
       当 mysql master/slave 切换时，自动修复 gtid 信息；默认 false
   -b int
-      batch 事务大小 (默认 10)
+      batch 事务大小 (默认 100)
   -c int
       syncer 处理 batch 线程数 (默认 16)
   -config string
@@ -95,7 +95,7 @@ server-id = 101
 ## meta 文件地址
 meta = "./syncer.meta"
 worker-count = 16
-batch = 1000
+batch = 100
 flavor = "mysql"
 
 ## pprof 调试地址，Prometheus 也可以通过该地址拉取 Syncer metrics
