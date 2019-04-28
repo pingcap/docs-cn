@@ -25,7 +25,7 @@ Pump/Drainer 中状态的定义：
 关于 Pump/Drainer 暂停、下线、状态查询、状态修改等具体的操作方法，参考如下 binlogctl 工具的使用方法介绍。
 
 ## binlogctl 工具
-* 获取当前 ts
+* 获取 TiDB 集群当前的 TSO
 * 查看 Pump/Drainer 状态
 * 修改 Pump/Drainer 状态
 * 暂停/下线 Pump/Drainer
