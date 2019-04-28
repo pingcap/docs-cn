@@ -4,7 +4,7 @@ category: tools
 aliases: ['/docs-cn/tools/tidb-binlog-cluster/']
 ---
 
-# TiDB-Binlog Cluster 简介
+# TiDB-Binlog 简介
 
 本文档介绍 cluster 版本 TiDB-Binlog 的架构以及部署方案。
 
