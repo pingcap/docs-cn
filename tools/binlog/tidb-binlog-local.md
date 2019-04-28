@@ -70,7 +70,7 @@ TiDB-Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](../
     dir = "/path/pb-dir"
     ```
 
-#### 使用 tidb-ansible 部署 PUMP (推荐)
+#### 使用 tidb-ansible 部署 Pump (推荐)
 
 *   搭建全新的 TiDB Cluster，启动顺序 pd-server -> tikv-server -> pump -> tidb-server -> drainer
     * 修改 tidb-ansible inventory.ini 文件
@@ -85,7 +85,7 @@ TiDB-Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](../
     * 执行 ansible-playbook rolling_update.yml --tags=tidb
         * drainer 目前需要手动部署
 
-#### 使用 Binary 部署 PUMP
+#### 使用 Binary 部署 Pump
 
 1. PUMP 命令行参数说明
 
