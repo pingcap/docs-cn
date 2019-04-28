@@ -6,7 +6,16 @@ aliases: ['/docs-cn/tools/tidb-binlog-cluster/']
 
 # TiDB-Binlog Cluster 简介
 
-TiDB-Binlog 的整体架构：
+本文档介绍 cluster 版本 TiDB-Binlog 的架构以及部署方案。
+
+TiDB-Binlog 是一个用于收集 TiDB 的 Binlog，并提供实时备份和同步功能的商业工具。
+
+TiDB-Binlog 支持以下功能场景：
+
+* **数据同步**：同步 TiDB 集群数据到其他数据库
+* **实时备份和恢复**：备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复
+
+##TiDB-Binlog 的整体架构：
 
 ![TiDB-Binlog 架构](/media/tidb_binlog_cluster_architecture.png)
 
