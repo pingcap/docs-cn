@@ -360,7 +360,7 @@ Drainer="192.168.0.13"
         -data-dir string
             Drainer 数据存储位置路径 (默认 "data.drainer")
         -dest-db-type string
-            Drainer 下游服务类型 (默认为 mysql，支持 kafka、pb、flash)
+            Drainer 下游服务类型 (默认为 mysql，支持 kafka、file、flash)
         -detect-interval int
             向 PD 查询在线 Pump 的时间间隔 (默认 10，单位 秒)
         -disable-detect
