@@ -242,11 +242,11 @@ sha256sum -c tidb-{version}-linux-amd64.sha256
 对于 v2.1.0 GA 及以上版本，Pump 和 Drainer 已经包含在 TiDB 的下载包中，其他版本需要单独下载 Pump 和 Drainer:
 
 ```bash
-wget https://download.pingcap.org/tidb-binlog-{version}-linux-amd64.tar.gz
-wget https://download.pingcap.org/tidb-binlog-{version}-linux-amd64.sha256
+wget https://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz
+wget https://download.pingcap.org/tidb-binlog-latest-linux-amd64.sha256
 
 # 检查文件完整性，返回 ok 则正确
-sha256sum -c tidb-binlog-{version}-linux-amd64.sha256
+sha256sum -c tidb-binlog-latest-linux-amd64.sha256
 ```
 ### 使用样例
 假设有三个 PD，一个 TiDB，另外有两台机器用于部署 Pump，一台机器用于部署 Drainer。各个节点信息如下：
