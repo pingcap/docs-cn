@@ -88,7 +88,7 @@ message TableMutation {
 
 // DMLData 保存一个表所有的 DML 造成的数据变更
 message DMLData {
-  // `tables` 包含一个表的所有数据变更
+  // `tables` 包含事务中所有表的数据变更
   repeated Table tables = 1;
 }
 
