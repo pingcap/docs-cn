@@ -281,8 +281,6 @@ Drainer="192.168.0.13"
             如果对应的配置在命令行参数里面也存在，Pump 就会使用命令行参数的配置来覆盖配置文件里的配置。
         -data-dir string
             Pump 数据存储位置路径
-        -enable-tolerant
-            开启 tolerant 后，如果 binlog 写入失败，Pump 不会报错（默认开启）
         -gc int
             Pump 只保留多少天以内的数据 (默认 7)
         -heartbeat-interval int
