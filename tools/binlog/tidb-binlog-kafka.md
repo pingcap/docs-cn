@@ -70,7 +70,7 @@ cd tidb-binlog-kafka-linux-amd64
 
 * 需要为一个 TiDB 集群中的每台 TiDB server 部署一个 Pump，目前 TiDB server 只支持以 unix socket 的方式输出 Binlog。
 
-* 手动部署时，启动顺序为：Pump > TiDB；停止优先级为 TiDB > Pump。
+* 手动部署时，启动顺序为：Pump > TiDB；停止顺序为 TiDB > Pump。
 
     设置 TiDB 启动参数 `binlog-socket` 为对应的 Pump 参数 `socket` 所指定的 unix socket 文件路径，最终部署结构如下图所示：
 
