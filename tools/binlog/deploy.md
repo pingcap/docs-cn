@@ -181,7 +181,7 @@ category: tools
 
         ```toml
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "pb", "kafka", "flash".
+        # Valid values are "mysql", "file", "kafka", "flash".
         db-type = "mysql"
 
         # the downstream MySQL protocol database
