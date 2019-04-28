@@ -7,83 +7,41 @@ category: tools
 
 使用 Ansible 部署成功后，可以进入 Grafana Web 界面（默认地址: <http://grafana_ip:3000>，默认账号：admin，密码：admin）查看 Pump 和 Drainer 的运行状态。
 
-## 监控指标及告警说明
+## 监控指标
 
 ### Pump
 
-#### Storage Size
+| metric 名称 | 说明 |
+|:----|:------------|
+| Storage Size | 记录磁盘的总空间大小 (capacity)，以及可用磁盘空间大小 (available) |
+| Metadata | 记录每个 Pump 的可删除 binlog 的最大 tso (gc_tso)，以及保存的 binlog 的最大的 commit tso (max_commit_tso)。 |
+| Write Binlog QPS by Instance | 每个 Pump 接收到的写 binlog 请求的 QPS |
+| Write Binlog Latency | 记录每个 Pump 写 binlog 的延迟时间 |
+| Storage Write Binlog Size | Pump 写 binlog 数据的大小 |
+| Storage Write Binlog Latency | Pump 中的 storage 模块写 binlog 数据的延迟 |
+| Pump Storage Error By Type | Pump 遇到的 error 数量，按照 error 的类型进行统计 |
+| Query TiKV | Pump 通过 TiKV 查询事务状态的次数 |
 
-- 记录磁盘的总空间大小 (capacity)，以及可用磁盘空间大小 (available)。
-
-#### Metadata
-
-- 记录每个 Pump 的可删除 binlog 的最大 tso (gc_tso)，以及保存的 binlog 的最大的 commit tso (max_commit_tso)。
-
-#### Write Binlog QPS by Instance
-
-- 每个 Pump 接收到的写 binlog 请求的 QPS。
-
-#### Write Binlog Latency
-
-- 记录每个 Pump 写 binlog 的延迟时间。
-
-#### Storage Write Binlog Size
-
-- Pump 写 binlog 数据的大小。
-
-#### Storage Write Binlog Latency
-
-- Pump 中的 storage 模块写 binlog 数据的延迟。
-
-#### Pump Storage Error By Type
-
-- Pump 遇到的 error 数量，按照 error 的类型进行统计。
-
-#### Query TiKV
-
-- Pump 通过 TiKV 查询事务状态的次数。
 
 ### Drainer
 
-#### Checkpoint TSO
+| metric 名称 | 说明 |
+|:----|:------------|
+| Checkpoint TSO | Drainer 已经同步到下游的 binlog 的最大 TSO 对应的时间。可以通过该指标估算同步延迟时间 |
+| Pump Handle TSO | 记录 Drainer 从各个 Pump 获取到的 binlog 的最大 TSO 对应的时间 | | Pull Binlog QPS by Pump NodeID | Drainer 从每个 Pump 获取 binlog 的 QPS |
+| 95% Binlog Reach Duration By Pump | 记录 binlog 从写入 Pump 到被 Drainer 获取到这个过程的延迟时间 |
+| Error By Type | Drainer 遇到的 error 数量，按照 error 的类型进行统计 |
+| Drainer Event | 各种类型 event 的数量，event 包括 ddl、insert、delete、update、flush、savepoint |
+| Execute Time | 在下游执行 SQL 语句或写数据所消耗的时间 |
+| 95% Binlog Size | Drainer 从各个 Pump 获取到 binlog 数据的大小 |
+| DL Job Count | Drainer 处理的 DDL 的数量|
 
-- Drainer 已经同步到下游的 binlog 的最大 TSO 对应的时间。可以通过该指标估算同步延迟时间。
 
-#### Pump Handle TSO
-
-- 记录 Drainer 从各个 Pump 获取到的 binlog 的最大 TSO 对应的时间。
-
-#### Pull Binlog QPS by Pump NodeID
-
-- Drainer 从每个 Pump 获取 binlog 的 QPS。
-
-#### 95% Binlog Reach Duration By Pump
-
-- 记录 binlog 从写入 Pump 到被 Drainer 获取到这个过程的延迟时间。
-
-#### Error By Type
-
-- Drainer 遇到的 error 数量，按照 error 的类型进行统计。
-
-#### Drainer Event
-
-- 各种类型 event 的数量，event 包括 ddl、insert、delete、update、flush、savepoint。
-
-#### Execute Time
-
-- 在下游执行 SQL 语句或写数据所消耗的时间。
-
-#### 95% Binlog Size
-
-- Drainer 从各个 Pump 获取到 binlog 数据的大小。
-
-#### DDL Job Count
-
-- Drainer 处理的 DDL 的数量。
 
 ## 监控告警规则
 
 目前对 TiDB-Binlog 中一些比较重要的方面配置了监控，根据指标的重要程度分为 Emergency、Critical 和 Warning 三种级别。
+
 
 ### Emergency
 
