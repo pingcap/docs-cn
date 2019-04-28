@@ -203,7 +203,7 @@ category: tools
         $ vi drainer_pb_drainer.toml
         ```
 
-        db-type 设置为 "pb"。
+        db-type 设置为 "file"。
 
         ```toml
         # downstream storage, equal to --dest-db-type
