@@ -211,7 +211,7 @@ category: tools
         db-type = "file"
 
         # Uncomment this if you want to use `file` or `sql` as `db-type`.
-        # `Compress` compresses the output file, like the `pb` and `sql` file. Now it supports the `gzip` algorithm only. 
+        # `Compress` compresses the output file, like the `file` and `sql` file. Now it supports the `gzip` algorithm only. 
         # The value can be `gzip`. Leave it empty to disable compression. 
         [syncer.to]
         compression = ""
