@@ -171,7 +171,9 @@ category: tools
         $ vi drainer_mysql_drainer.toml
         ```
 
-        > **注意：** 配置文件名命名规则为 `别名_drainer.toml`，否则部署时无法找到自定义配置文件。
+        > **注意：** 
+        >
+        > 配置文件名命名规则为 `别名_drainer.toml`，否则部署时无法找到自定义配置文件。
 
         db-type 设置为 "mysql"， 配置下游 MySQL 信息。
 
