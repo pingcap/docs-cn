@@ -207,7 +207,7 @@ category: tools
 
         ```toml
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "pb", "kafka", "flash".
+        # Valid values are "mysql", "file", "kafka", "flash".
         db-type = "file"
 
         # Uncomment this if you want to use `file` or `sql` as `db-type`.
