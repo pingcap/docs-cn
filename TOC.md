@@ -179,7 +179,7 @@
       - [概述](tools/binlog/overview.md)
       - [部署使用](tools/binlog/deploy.md)
       - [监控告警](tools/binlog/monitor.md)
-      - [运维管理](tools/binglog/operation.md)
+      - [运维管理](tools/binlog/operation.md)
       - [版本升级](tools/binlog/upgrade.md)
     - [PD Control](tools/pd-control.md)
     - [PD Recover](tools/pd-recover.md)
