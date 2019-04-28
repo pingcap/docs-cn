@@ -15,15 +15,15 @@
     - [SQL 基本操作](dev/how-to/get-started/explore-sql.md)
     - [读取历史数据](dev/how-to/get-started/read-historical-data.md)
   - 部署
-    - [软硬件环境需求](op-guide/recommendation.md)
+    - [软硬件环境需求](dev/how-to/deploy/hardware-recommendations.md)
     + 集群部署方式
-      - [使用 Ansible 部署（推荐）](op-guide/ansible-deployment.md)
-      - [使用 Ansible 离线部署](op-guide/offline-ansible-deployment.md)
-      - [使用 Docker 部署](op-guide/docker-deployment.md)
+      - [使用 Ansible 部署（推荐）](dev/how-to/deploy/orchestrated/ansible.md)
+      - [使用 Ansible 离线部署](dev/how-to/deploy/orchestrated/offline-ansible.md)
+      - [使用 Docker 部署](dev/how-to/deploy/orchestrated/docker.md)
     + 跨地域冗余
-      - [跨数据中心部署方案](op-guide/cross-dc-deployment.md)
-      - [配置集群拓扑](op-guide/location-awareness.md)
-    - [TiSpark 快速上手](tispark/tispark-quick-start-guide.md)
+      - [跨数据中心部署方案](dev/how-to/deploy/geographic-redundancy/overview.md)
+      - [配置集群拓扑](dev/how-to/deploy/geographic-redundancy/location-awareness.md)
+    - [TiSpark 快速上手](dev/how-to/deploy/tispark.md)
     - [使用 Ansible 部署 DM 集群](tools/dm/deployment.md)
   + 安全
     - [与 MySQL 的安全特性差异](sql/security-compatibility.md)

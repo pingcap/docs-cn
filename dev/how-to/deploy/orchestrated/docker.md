@@ -1,6 +1,7 @@
 ---
 title: TiDB Docker 部署方案
-category: deployment
+category: how-to
+aliases: ['/docs-cn/op-guide/docker-deployment/']
 ---
 
 # TiDB Docker 部署方案
@@ -9,7 +10,7 @@ category: deployment
 
 > **注意：**
 >
-> 对于生产环境，不要使用 Docker 进行部署，而应[使用 Ansible 部署 TiDB 集群](../op-guide/ansible-deployment.md)。
+> 对于生产环境，不要使用 Docker 进行部署，而应[使用 Ansible 部署 TiDB 集群](/dev/how-to/deploy/orchestrated/ansible.md)。
 
 ## 环境准备
 
