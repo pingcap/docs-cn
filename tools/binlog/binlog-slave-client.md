@@ -125,7 +125,7 @@ message Binlog {
 TiDB-Tools 项目提供了用于读取 Kafka 中 binlog 数据的 Driver，具有如下功能：
 
 * 读取 Kafka 的数据
-* 根据 commit ts 查找到 Kafka 中存储的 binlog 的位置
+* 根据 commit ts 查找 binlog 在 kafka 中的储存位置
 
 使用该 Driver 时，用户需要配置如下信息：
 
