@@ -208,7 +208,7 @@ category: tools
         ```toml
         # downstream storage, equal to --dest-db-type
         # Valid values are "mysql", "pb", "kafka", "flash".
-        db-type = "pb"
+        db-type = "file"
 
         # Uncomment this if you want to use `pb` or `sql` as `db-type`.
         # `Compress` compresses the output file, like the `pb` and `sql` file. Now it supports the `gzip` algorithm only. 
