@@ -134,7 +134,7 @@ TiDB-Tools 项目提供了用于读取 Kafka 中 binlog 数据的 Driver，具�
 * Offset：从 Kafka 哪个 offset 开始读取，如果设置了 CommitTS 就不用配置该参数
 * ClusterID：TiDB 集群的 cluster ID
 
-用户以包的形式引用 Driver 的代码即可使用，可以参考 Driver 中提供的的示例代码来学习如何使用 Driver 以及 binlog 数据的解析，目前提供了两个例子：
+用户以包的形式引用 Driver 的代码即可使用，可以参考 Driver 中提供的示例代码来学习如何使用 Driver 以及 binlog 数据的解析，目前提供了两个例子：
 
 * 使用该 Driver 将数据同步到 MySQL，该示例包含将 binlog 转化为 SQL 的具体方法
 * 使用该 Driver 将数据打印出来
