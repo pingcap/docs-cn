@@ -188,7 +188,6 @@ category: tools
         user = "root"
         password = "123456"
         port = 3306
-        # Time and size limits for flash batch write
         # time-limit = "30s"
         # size-limit = "100000"
         ```
