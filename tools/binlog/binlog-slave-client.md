@@ -22,19 +22,6 @@ kafka-addrs = "127.0.0.1:9092"
 kafka-version = "0.8.2.0"
 ```
 
-##  配置 File Drainer
-
-修改 Drainer 的配置文件，设置输出为 File，相关配置如下：
-
-```
-[syncer]
-db-type = "file"
-
-[syncer.to]
-# binlog 文件本地存储位置
-dir = "data.drainer"
-```
-
 ## 自定义开发
 
 ### 数据格式
