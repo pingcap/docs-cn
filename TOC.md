@@ -120,7 +120,7 @@
       - [隔离级别](sql/transaction-isolation.md)
     + 性能
       - [SQL 优化流程](sql/sql-optimizer-overview.md)
-      - [基于代价的优化](sql/understanding-the-query-execution-plan.md)
+      - [理解 TiDB 执行计划](sql/understanding-the-query-execution-plan.md)
       - [统计信息概述](sql/statistics.md)
       - [Optimizer Hints](sql/optimizer-hints.md)
       - [TiKV 调优](op-guide/tune-tikv.md)
