@@ -208,11 +208,9 @@ category: tools
         # Valid values are "mysql", "file", "kafka", "flash".
         db-type = "file"
 
-        # Uncomment this if you want to use `file` or `sql` as `db-type`.
-        # `Compress` compresses the output file, like the `file` and `sql` file. Now it supports the `gzip` algorithm only. 
+        # Uncomment this if you want to use `file` or `sql` as `db-type`. 
         # The value can be `gzip`. Leave it empty to disable compression. 
         [syncer.to]
-        compression = ""
         # default data directory: "{{ deploy_dir }}/data.drainer"
         dir = "data.drainer"
         ```
