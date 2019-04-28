@@ -208,7 +208,7 @@ category: tools
         # Valid values are "mysql", "file", "kafka", "flash".
         db-type = "file"
 
-        # Uncomment this if you want to use `file` or `sql` as `db-type`. 
+        # Uncomment this if you want to use `file` as `db-type`. 
         # The value can be `gzip`. Leave it empty to disable compression. 
         [syncer.to]
         # default data directory: "{{ deploy_dir }}/data.drainer"
