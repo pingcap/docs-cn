@@ -1,5 +1,5 @@
 ---
-title: TiDB-Binlog Cluster 运维
+title: TiDB-Binlog 集群运维
 category: tools
 ---
 
