@@ -9,7 +9,7 @@ category: tools
 
 ## TiDB-Binlog 简介
 
-TiDB-Binlog 用于收集 TiDB 的 Binlog，并提供实时备份和同步功能的商业工具。
+TiDB-Binlog 是一个用于收集 TiDB 的 Binlog 并提供实时备份和同步功能的商业工具。
 
 TiDB-Binlog 支持以下功能场景:
 
