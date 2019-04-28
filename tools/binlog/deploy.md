@@ -1,5 +1,5 @@
 ---
-title: TiDB-Binlog Cluster 部署
+title: TiDB-Binlog 集群部署
 category: tools
 ---
 
