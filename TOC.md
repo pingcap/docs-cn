@@ -17,7 +17,7 @@
     - [Deployment and Orchestration with Ansible, Kubernetes, Docker](key-features.md#deployment-and-orchestration-with-ansible-kubernetes-docker)
     - [JSON Support](key-features.md#json-support)
     - [Spark Integration](key-features.md#spark-integration)
-    - [Read Historical Data without Restoring from Backup](key-features.md#read-historical-data-without-restoring-from-backup)
+    - [Read Historical Data Without Restoring from Backup](key-features.md#read-historical-data-without-restoring-from-backup)
     - [Fast Import and Restore of Data](key-features.md#fast-import-and-restore-of-data)
     - [Hybrid of Column and Row Storage](key-features.md#hybrid-of-column-and-row-storage)
     - [SQL Plan Management](key-features.md#sql-plan-management)
@@ -37,8 +37,8 @@
   - Deploy
     - [Hardware Recommendations](dev/how-to/deploy/hardware-recommendations.md)
     + From Binary Tarball
-      - [For testing environments](dev/how-to/deploy/from-tarball/testing-environment.md)
-      - [For production environments](dev/how-to/deploy/from-tarball/production-environment.md)
+      - [For Testing Environments](dev/how-to/deploy/from-tarball/testing-environment.md)
+      - [For Production Environments](dev/how-to/deploy/from-tarball/production-environment.md)
     + Orchestrated Deployment
       - [Ansible Deployment (Recommended)](dev/how-to/deploy/orchestrated/ansible.md)
       - [Ansible Offline Deployment](dev/how-to/deploy/orchestrated/offline-ansible.md)
@@ -49,7 +49,7 @@
       - [Overview](dev/how-to/deploy/geographic-redundancy/overview.md)
       - [Configure Location Awareness](dev/how-to/deploy/geographic-redundancy/location-awareness.md)
     - [TiSpark](dev/how-to/deploy/tispark.md)
-    - [Data Migration with Ansible](dev/how-to/deploy/data-migration-with-ansible.md)
+    - [Data Migration with Ansible](/tools/dm/deployment.md)
   + Secure
     - [Security Compatibility with MySQL](sql/security-compatibility.md)
     - [The TiDB Access Privilege System](sql/privilege.md)
@@ -76,12 +76,12 @@
     - [Backup and Restore](op-guide/backup-restore.md)
     + Scale
       - [Scale a TiDB Cluster](op-guide/horizontal-scale.md)
-      - [Scale using Ansible](op-guide/ansible-deployment-scale.md)
-    - [Identify slow queries](sql/slow-query.md)
+      - [Scale Using Ansible](op-guide/ansible-deployment-scale.md)
+    - [Identify Slow Queries](sql/slow-query.md)
     + Upgrade
       - [Upgrade from TiDB 2.1](op-guide/tidb-v2.1-upgrade-guide.md)
       - [Upgrade Data Migration](tools/dm/dm-upgrade.md)
-      - [Rolling updates with Ansible](op-guide/ansible-deployment-rolling-update.md)
+      - [Rolling Updates with Ansible](op-guide/ansible-deployment-rolling-update.md)
   - Troubleshoot
     - [Common Errors](sql/error.md)
     - [Troubleshoot Cluster Setup](trouble-shooting.md)
@@ -109,7 +109,7 @@
       - [Date and Time Types](sql/datatype.md#date-and-time-types)
       - [String Types](sql/datatype.md#string-types)
       - [JSON Types](sql/datatype.md#json-types)
-      - [The ENUM data type](sql/datatype.md#the-enum-data-type)
+      - [The ENUM Data Type](sql/datatype.md#the-enum-data-type)
       - [The SET Type](sql/datatype.md#the-set-type)
       - [Data Type Default Values](sql/datatype.md#data-type-default-values)
     - [Constraints](sql/constraints.md)
