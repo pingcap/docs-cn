@@ -11,7 +11,7 @@ category: user guide
 
 TiDB 将用户账户存储在 `mysql.user` 系统表里面。每个账户由用户名和 host 作为标识。每个账户可以设置一个密码。
 
-通过 MySQL 客户端连接到 TiDB 服务器，通过指定的账户和密码登陆：
+通过 MySQL 客户端连接到 TiDB 服务器，通过指定的账户和密码登录：
 
 ```
 shell> mysql --port 4000 --user xxx --password
@@ -59,9 +59,9 @@ host 支持模糊匹配，比如：
 CREATE USER 'test'@'192.168.10.%';
 ```
 
-允许 `test` 用户从 `192.168.10` 子网的任何一个主机登陆。
+允许 `test` 用户从 `192.168.10` 子网的任何一个主机登录。
 
-如果没有指定 host，则默认是所有 IP 均可登陆。如果没有指定密码，默认为空：
+如果没有指定 host，则默认是所有 IP 均可登录。如果没有指定密码，默认为空：
 
 ```sql
 CREATE USER 'test';
@@ -151,7 +151,7 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 
     这个配置参数会让 TiDB 跳过权限系统。
 
-3. 然后使用 `root` 登陆后修改密码：
+3. 然后使用 `root` 登录后修改密码：
 
     ```bash
     mysql -h 127.0.0.1 -P 4000 -u root
