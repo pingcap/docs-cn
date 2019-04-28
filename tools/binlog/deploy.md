@@ -195,7 +195,7 @@ category: tools
         # size-limit = "100000"
         ```
 
-    - 以下游为 proto buffer（pb）格式的本地文件为例
+    - 以下游为增量备份文件为例
 
         ```bash
         $ cd /home/tidb/tidb-ansible/conf
