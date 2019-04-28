@@ -59,13 +59,13 @@ category: tools
         172.16.10.74
         ```
 
-        默认 Pump 保留 5 天数据，如需修改可修改 `tidb-ansible/conf/pump.yml` 文件中 `gc` 变量值，并取消注释，如修改为 7。
+        默认 Pump 保留 7 天数据，如需修改可修改 `tidb-ansible/conf/pump.yml` 文件中 `gc` 变量值，并取消注释。
 
         ```yaml
         global:
           # an integer value to control the expiry date of the binlog data, which indicates for how long (in days) the binlog data would be stored
           # must be bigger than 0
-          gc: 7
+          # gc: 7
         ```
 
         请确保部署目录有足够空间存储 binlog，详见：[部署目录调整](../../op-guide/ansible-deployment.md#部署目录调整)，也可为 Pump 设置单独的部署目录。
