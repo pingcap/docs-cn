@@ -143,11 +143,7 @@ category: tools
 
     该命令会输出 `meta: &{CommitTS:400962745252184065}`，CommitTS 的值作为 Drainer 初次启动使用的 `initial-commit-ts` 参数的值。
 
-2. 全量数据的备份与恢复
-
-    推荐使用 mydumper 备份 TiDB 的全量数据，再使用 loader 将备份数据导入到下游。具体使用方法参考：[备份与恢复](../../op-guide/backup-restore.md)。
-
-3. 修改 `tidb-ansible/inventory.ini` 文件
+2. 修改 `tidb-ansible/inventory.ini` 文件
 
     为 `drainer_servers` 主机组添加部署机器 IP，initial_commit_ts 请设置为获取的 initial_commit_ts，仅用于 Drainer 第一次启动。
 
@@ -165,7 +161,7 @@ category: tools
         drainer_pb ansible_host=172.16.10.71 initial_commit_ts="402899541671542785"
         ```
 
-4. 修改配置文件
+3. 修改配置文件
 
     - 以下游为 MySQL 为例
 
@@ -219,13 +215,13 @@ category: tools
         dir = "data.drainer"
         ```
 
-5. 部署 Drainer
+4. 部署 Drainer
 
     ```bash
     $ ansible-playbook deploy_drainer.yml
     ```
 
-6. 启动 Drainer
+5. 启动 Drainer
 
     ```bash
     $ ansible-playbook start_drainer.yml
