@@ -42,9 +42,10 @@ Kafka 集群用来存储由 Pump 写入的 Binlog 数据，并提供给 Drainer 
 
 以下为 TiDB-Ansible 分支与 TiDB 版本的对应关系，版本选择可咨询官方 info@pingcap.com。
 
-    | TiDB-Ansible 分支 | TiDB 版本 | 备注 |
-    | ---------------- | --------- | --- |
-    | release-2.0 | 2.0 版本 | 最新 2.0 稳定版本，可用于生产环境。 |
+| TiDB-Ansible 分支 | TiDB 版本 | 备注 | 
+|:----|:----|:----|
+| release-2.0 | 2.0 版本 | 最新 2.0 稳定版本，可用于生产环境。 |
+    
 
 ### 下载官方 Binary
 
@@ -69,7 +70,7 @@ cd tidb-binlog-kafka-linux-amd64
 
 * 需要为一个 TiDB 集群中的每台 TiDB server 部署一个 Pump，目前 TiDB server 只支持以 unix socket 的方式输出 Binlog。
 
-* 手动部署时，启动优先级为：Pump > TiDB；停止优先级为 TiDB > Pump。
+* 手动部署时，启动顺序为：Pump > TiDB；停止优先级为 TiDB > Pump。
 
     设置 TiDB 启动参数 `binlog-socket` 为对应的 Pump 参数 `socket` 所指定的 unix socket 文件路径，最终部署结构如下图所示：
 
