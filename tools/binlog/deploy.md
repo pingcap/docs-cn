@@ -210,7 +210,7 @@ category: tools
         # Valid values are "mysql", "pb", "kafka", "flash".
         db-type = "file"
 
-        # Uncomment this if you want to use `pb` or `sql` as `db-type`.
+        # Uncomment this if you want to use `file` or `sql` as `db-type`.
         # `Compress` compresses the output file, like the `pb` and `sql` file. Now it supports the `gzip` algorithm only. 
         # The value can be `gzip`. Leave it empty to disable compression. 
         [syncer.to]
