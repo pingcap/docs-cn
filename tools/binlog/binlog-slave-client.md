@@ -52,7 +52,7 @@ message ColumnInfo {
   // https://dev.mysql.com/doc/refman/8.0/en/data-types.html
   // numeric 类型：int bigint smallint tinyint float double decimal bit
   // string 类型：text longtext mediumtext char tinytext varchar
-  // blob longblog mediumblog binary tinyblob varbinary
+  // blob longblog mediumblob binary tinyblob varbinary
   // enum set
   // json 类型：json
   optional string mysql_type = 2 [ (gogoproto.nullable) = false ];

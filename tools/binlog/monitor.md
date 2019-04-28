@@ -40,9 +40,6 @@ category: tools
 
 ## 监控告警规则
 
-目前对 TiDB-Binlog 中一些比较重要的方面配置了监控，根据指标的重要程度分为 Emergency、Critical 和 Warning 三种级别。
-
-
 ### Emergency
 
 #### binlog_pump_storage_error_count
