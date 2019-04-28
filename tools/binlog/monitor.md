@@ -1,5 +1,5 @@
 ---
-title: TiDB-Binlog Cluster 监控
+title: TiDB-Binlog 集群监控
 category: tools
 ---
 
