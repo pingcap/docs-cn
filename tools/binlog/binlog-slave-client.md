@@ -112,7 +112,6 @@ enum BinlogType {
 message Binlog {
   optional BinlogType type = 1 [ (gogoproto.nullable) = false ];
   optional int64 commit_ts = 2 [ (gogoproto.nullable) = false ];
-  // dml_data 是由 DML 类型的数据序列化后生成的数据
   optional DMLData dml_data = 3;
   optional DDLData ddl_data = 4;
 }
