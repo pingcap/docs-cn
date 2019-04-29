@@ -472,7 +472,7 @@ Drainer="192.168.0.13"
 
         > **注意：**
         >
-        > 如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取 `initial-commit-ts` 的值，并进行全量数据的备份与恢复。详细信息参见[部署 Drainer](#第-3-步部署-drainer)。
+        > 如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取 `initial-commit-ts` 的值，并进行全量数据的备份与恢复。详细信息参见[部署 Drainer](#第-3-步-部署-drainer)。
 
         初次启动时使用参数 `initial-commit-ts`， 命令如下：
 
