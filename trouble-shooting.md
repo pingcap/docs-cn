@@ -9,7 +9,7 @@ category: advanced
 
 ## 如何给 TiDB 开发者报告错误
 
-当使用 TiDB 遇到问题并且通过后面所列信息无法解决时，请收集以下信息并[创建新 Issue](https://github.com/pingcap/tidb/issues/new?template=bug-report.md):
+当使用 TiDB 遇到问题并且通过后面所列信息无法解决时，请收集以下信息并[创建新 Issue](https://github.com/pingcap/tidb/issues/new/choose):
 
 + 具体的出错信息以及正在执行的操作
 + 当前所有组件的状态
