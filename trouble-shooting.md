@@ -6,11 +6,11 @@ category: advanced
 
 # TiDB Cluster Troubleshooting Guide
 
-You can use this guide to help you diagnose and solve basic problems while using TiDB. If your problem is not resolved, please collect the following information and [create an issue](https://github.com/pingcap/tidb/issues/new):
+You can use this guide to help you diagnose and solve basic problems while using TiDB. If your problem is not resolved, please collect the following information and [create an issue](https://github.com/pingcap/tidb/issues/new/choose):
 
 - The exact error message and the operations while the error occurs
 - The state of all the components
-- The `error` / `fatal` / `panic` information in the log of the component that reports the error
+- The `error`/`fatal`/`panic` information in the log of the component that reports the error
 - The configuration and deployment topology
 - The TiDB component related issue in `dmesg`
 
@@ -24,7 +24,7 @@ For other information, see [Frequently Asked Questions (FAQ)](FAQ.md).
     - If a certain process is not running, see the following corresponding sections to diagnose and solve the issue.
     + If all the processes are running, check the `tidb-server` log to see if the following messages are displayed:
         - InformationSchema is out of date: This message is displayed if the `tikv-server` cannot be connected. Check the state and log of `pd-server` and `tikv-server`.
-        - panic: This message is displayed if there is an issue with the program. Please provide the detailed panic log and [create an issue](https://github.com/pingcap/tidb/issues/new).
+        - panic: This message is displayed if there is an issue with the program. Please provide the detailed panic log and [create an issue](https://github.com/pingcap/tidb/issues/new/choose).
         
 3. If the data is cleared and the services are re-deployed, make sure that:
 
@@ -75,7 +75,7 @@ See the following for the situations when the `pd-server` cannot be started:
 
 ## TiDB panic
 
-Please provide panic log and [create an issue](https://github.com/pingcap/tidb/issues/new).
+Please provide the panic log and [create an issue](https://github.com/pingcap/tidb/issues/new/choose).
 
 ## The connection is rejected
 
