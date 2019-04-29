@@ -50,7 +50,7 @@ Usage of syncer:
         log level: debug, info, warn, error, fatal (default "info")
   -V    to print Syncer version info (default false)
   -b int
-        the size of batch transactions (default 10)
+        the size of batch transactions (default 100)
   -c int
         the number of batch threads that Syncer processes (default 16)
   -config string
@@ -93,7 +93,7 @@ server-id = 101
 # The file path for meta:
 meta = "./syncer.meta"
 worker-count = 16
-batch = 1000
+batch = 100
 flavor = "mysql"
 
 # The testing address for pprof. It can also be used by Prometheus to pull Syncer metrics.
