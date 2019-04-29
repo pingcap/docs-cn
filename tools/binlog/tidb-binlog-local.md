@@ -46,7 +46,7 @@ TiDB-Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](../
 
     我们设置 TiDB 启动参数 binlog-socket 为对应的 Pump 的参数 socket 所指定的 unix socket 文件路径，最终部署结构如下图所示：
 
-    ![TiDB pump 模块部署结构](media/tidb-pump-deployment.png)
+    ![TiDB pump 模块部署结构](/media/tidb-pump-deployment.png)
 
 *   drainer 不支持对 ignore schemas（在过滤列表中的 schemas） 的 table 进行 rename DDL 操作
 
