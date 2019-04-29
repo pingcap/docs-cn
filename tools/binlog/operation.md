@@ -82,7 +82,7 @@ Usage of binlogctl:
     ```bash
     bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pumps
 
-    INFO[0000] pump: {NodeID: ip-172-16-30-67:8250, Addr: 172.16.30.192:8250, State: online, MaxCommitTS: 405197570529820673, UpdateTime: 2018-12-25 14:23:37 +0800 CST}
+    [2019/04/28 09:29:59.016 +00:00] [INFO] [nodes.go:48] ["query node"] [type=pump] [node="{NodeID: 1.1.1.1:8250, Addr: pump:8250, State: online, MaxCommitTS: 408012403141509121, UpdateTime: 2019-04-28 09:29:57 +0000 UTC}"]
     ```
 
 - 修改 Pump/Drainer 的状态
@@ -113,7 +113,7 @@ Usage of binlogctl:
     INFO[0000] [pd] create pd client with endpoints [http://192.168.199.118:32379]
     INFO[0000] [pd] leader switches to: http://192.168.199.118:32379, previous:
     INFO[0000] [pd] init cluster id 6569368151110378289
-    2018/06/21 11:24:47 meta.go:117: [info] meta: &{CommitTS:400962745252184065}
+    [2019/04/28 09:33:15.950 +00:00] [INFO] [meta.go:114] ["save meta"] [meta="commitTS: 408012454863044609"]
     ```
 
     该命令会生成一个文件 `{data-dir}/savepoint`， 该文件中保存了 Drainer 初次启动需要的 tso 信息。
