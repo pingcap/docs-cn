@@ -13,7 +13,7 @@ TiDB-Binlog 支持以下功能场景：
 * **数据同步**：同步 TiDB 集群数据到其他数据库
 * **实时备份和恢复**：备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复
 
-##TiDB-Binlog 的整体架构：
+## TiDB-Binlog 的整体架构
 
 ![TiDB-Binlog 架构](/media/tidb_binlog_cluster_architecture.png)
 
