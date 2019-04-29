@@ -98,7 +98,7 @@ category: tools
 
 #### binlog_drainer_execute_duration_time_more_than_10s
 
-- 含义：Drainer 同步到 TiDB 的 transaction 耗时；如果过大则影响 Drainer 同步
+- 含义：Drainer 同步到 TiDB 的 transaction 耗时，如果过大则影响 Drainer 同步
 - 监控规则：histogram_quantile(0.9, rate(binlog_drainer_execute_duration_time_bucket[1m])) > 10
 - 处理方法：
 

@@ -20,11 +20,11 @@ category: tools
 * 如果能接受重新导全量数据，则可以直接废弃老版本，按本文档部署。
 
 * 如果想从原来的 checkpoint 继续同步，则使用以下升级流程：
-    1. 部署新版本 Pump；
-    2. 暂停 TiDB 集群业务；
-    3. 更新 TiDB 以及配置，写 Binlog 到新的 Pump Cluster；
-    4. TiDB 集群重新接入业务；
-    5. 确认老版本的 Drainer 已经将老版本的 Pump 的数据完全同步到下游；
+    1. 部署新版本 Pump。
+    2. 暂停 TiDB 集群业务。
+    3. 更新 TiDB 以及配置，写 Binlog 到新的 Pump Cluster。
+    4. TiDB 集群重新接入业务。
+    5. 确认老版本的 Drainer 已经将老版本的 Pump 的数据完全同步到下游。
 
         查询 Drainer 的 `status` 接口，示例命令如下：
 

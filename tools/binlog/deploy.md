@@ -277,7 +277,7 @@ Drainer="192.168.0.13"
         -advertise-addr string
             Pump 对外提供服务的 RPC 地址(-advertise-addr="192.168.0.11:8250")
         -config string
-            配置文件路径，如果你指定了配置文件，Pump 会首先读取配置文件的配置；
+            配置文件路径，如果你指定了配置文件，Pump 会首先读取配置文件的配置;
             如果对应的配置在命令行参数里面也存在，Pump 就会使用命令行参数的配置来覆盖配置文件里的配置。
         -data-dir string
             Pump 数据存储位置路径

@@ -39,9 +39,9 @@ Drainer 从各个 Pump 中收集 Binlog 进行归并，再将 Binlog 转化成 S
 
 ## 主要特性
 
-* 多个 Pump 形成一个集群，可以水平扩容；
-* TiDB 通过内置的 Pump Client 将 Binlog 分发到各个 Pump；
-* Pump 负责存储 Binlog，并将 Binlog 按顺序提供给 Drainer；
+* 多个 Pump 形成一个集群，可以水平扩容。
+* TiDB 通过内置的 Pump Client 将 Binlog 分发到各个 Pump。
+* Pump 负责存储 Binlog，并将 Binlog 按顺序提供给 Drainer。
 * Drainer 负责读取各个 Pump 的 Binlog，归并排序后发送到下游。
 
 ## 服务器要求
@@ -59,5 +59,4 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 * Drainer 支持将 Binlog 同步到 MySQL、TiDB、Kafka 或者本地文件。如果需要将 Binlog 同步到其他 Drainer 不支持的类型的系统中，可以设置 Drainer 将 Binlog 同步到 Kafka，然后根据 binlog slave protocol 进行定制处理，参考 [binlog slave client 用户文档](binlog-slave-client.md)。
 * 如果 TiDB-Binlog 用于增量恢复，可以设置配置项 `db-type="file"`，Drainer 会将 binlog 转化为指定的 [proto buffer 格式](https://github.com/pingcap/tidb-binlog/blob/master/proto/binlog.proto)的数据，再写入到本地文件中。这样就可以使用 [Reparo](reparo.md) 恢复增量数据。
 * 如果下游为 MySQL/TiDB，数据同步后可以使用 [sync-diff-inspector](../../tools/sync-diff-inspector.md) 进行数据校验。
-
 

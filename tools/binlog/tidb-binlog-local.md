@@ -41,7 +41,7 @@ TiDB-Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](../
 #### 注意
 
 *   需要为一个 TiDB 集群中的每台 TiDB server 部署一个 Pump，目前 TiDB server 只支持以 unix socket 方式的输出 binlog。
-*   手动部署时， 启动顺序为： Pump > TiDB ； 停止顺序为 TiDB > Pump
+*   手动部署时， 启动顺序为： Pump > TiDB，停止顺序为 TiDB > Pump
 
 
     我们设置 TiDB 启动参数 binlog-socket 为对应的 Pump 的参数 socket 所指定的 unix socket 文件路径，最终部署结构如下图所示：
@@ -50,7 +50,7 @@ TiDB-Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](../
 
 *   drainer 不支持对 ignore schemas（在过滤列表中的 schemas） 的 table 进行 rename DDL 操作
 
-*   在已有的 TiDB 集群中启动 drainer，一般需要全量备份 并且获取 savepoint，然后导入全量备份，最后启动 drainer 从 savepoint 开始同步；
+*   在已有的 TiDB 集群中启动 drainer，一般需要全量备份 并且获取 savepoint，然后导入全量备份，最后启动 drainer 从 savepoint 开始同步。
 
     为了保证数据的完整性，在 pump 运行 10 分钟左右后按顺序进行下面的操作
 

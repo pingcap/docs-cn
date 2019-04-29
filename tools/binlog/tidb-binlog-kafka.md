@@ -70,7 +70,7 @@ cd tidb-binlog-kafka-linux-amd64
 
 * 需要为一个 TiDB 集群中的每台 TiDB server 部署一个 Pump，目前 TiDB server 只支持以 unix socket 的方式输出 Binlog。
 
-* 手动部署时，启动顺序为：Pump > TiDB；停止顺序为 TiDB > Pump。
+* 手动部署时，启动顺序为：Pump > TiDB。停止顺序为 TiDB > Pump。
 
     设置 TiDB 启动参数 `binlog-socket` 为对应的 Pump 参数 `socket` 所指定的 unix socket 文件路径，最终部署结构如下图所示：
 
@@ -78,7 +78,7 @@ cd tidb-binlog-kafka-linux-amd64
 
 * Drainer 不支持对 ignore schemas（在过滤列表中的 schemas）的 table 进行 rename DDL 操作。
 
-* 在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取 savepoint，然后导入全量备份，最后启动 Drainer 从 savepoint 开始同步；
+* 在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取 savepoint，然后导入全量备份，最后启动 Drainer 从 savepoint 开始同步。
 
     为了保证数据的完整性，在 Pump 运行 10 分钟左右后按顺序进行如下操作：
 
@@ -124,7 +124,7 @@ cd tidb-binlog-kafka-linux-amd64
 #### Kafka 配置参数推荐
 
 - `auto.create.topics.enable = true`：如果还没有创建 topic，Kafka 会在 broker 上自动创建 topic
-- `broker.id`：用来标识 Kafka 集群的必备参数，不能重复；如 `broker.id = 1`
+- `broker.id`：用来标识 Kafka 集群的必备参数，不能重复，如 `broker.id = 1`
 - `fs.file-max = 1000000`：Kafka 会使用大量文件和网络 socket，建议修改成 1000000，通过 `vi /etc/sysctl.conf` 进行修改
 - 修改以下配置为1G, 否则很容易出现事务修改数据较多导致单个消息过大写 kafka 失败
     
@@ -165,9 +165,9 @@ ZK2="192.168.0.12"
 ZK3="192.168.0.11"
 ```
 
-在 ip="192.168.0.10" 的机器上面部署 Drainer/Pump；
+在 ip="192.168.0.10" 的机器上面部署 Drainer/Pump。
 
-对应的 PD 集群的 ip="192.168.0.16,192.168.0.15,192.168.0.14"；
+对应的 PD 集群的 ip="192.168.0.16,192.168.0.15,192.168.0.14"。
 
 对应的 Kafka 集群的 ZooKeeper 的 ip="192.168.0.13,192.168.0.12,192.168.0.11"。以此为例，说明 Pump/Drainer 的使用。
 
