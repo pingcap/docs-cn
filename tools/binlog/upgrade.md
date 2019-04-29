@@ -21,7 +21,7 @@ category: tools
 
 >如果能接受重新导全量数据，则可以直接废弃老版本，按[TiDB-Binlog 集群部署](/tools/binlog/deploy.md)中的步骤重新部署。
 
-* 如果想从原来的 checkpoint 继续同步，则使用以下升级流程：
+如果想从原来的 checkpoint 继续同步，使用以下升级流程：
     1. 部署新版本 Pump。
     2. 暂停 TiDB 集群业务。
     3. 更新 TiDB 以及配置，写 Binlog 到新的 Pump Cluster。
