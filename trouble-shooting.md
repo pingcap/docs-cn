@@ -30,7 +30,7 @@ category: advanced
 
 +   panic
 
-    程序有错误，请将具体的 panic log [提供给 TiDB 开发者](https://github.com/pingcap/tidb/issues/new?template=bug-report.md)。
+    程序有错误，请将具体的 panic log [提供给 TiDB 开发者](https://github.com/pingcap/tidb/issues/new/choose)。
 
     如果是清空数据并重新部署服务，请确认以下信息：
 
