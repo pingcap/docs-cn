@@ -18,7 +18,7 @@ TiDB-Binlog 支持以下功能场景:
 
 首先介绍 TiDB-Binlog 的整体架构。
 
-![TiDB-Binlog 架构](media/architecture.jpeg)
+![TiDB-Binlog 架构](/media/architecture.jpeg)
 
 TiDB-Binlog 集群主要分为两个组件：
 
