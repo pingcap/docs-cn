@@ -154,11 +154,11 @@ category: tools
         drainer_mysql ansible_host=172.16.10.71 initial_commit_ts="402899541671542785"
         ```
 
-    - 以下游为 file 为例，别名为 `/drainer_pb/drainer_file`。
+    - 以下游为 file 为例，别名为 `drainer_file`。
 
         ```ini
         [drainer_servers]
-        drainer_pb ansible_host=172.16.10.71 initial_commit_ts="402899541671542785"
+        drainer_file ansible_host=172.16.10.71 initial_commit_ts="402899541671542785"
         ```
 
 3. 修改配置文件
@@ -196,8 +196,8 @@ category: tools
 
         ```bash
         $ cd /home/tidb/tidb-ansible/conf
-        $ cp drainer.toml drainer_pb_drainer.toml
-        $ vi drainer_pb_drainer.toml
+        $ cp drainer.toml drainer_file_drainer.toml
+        $ vi drainer_file_drainer.toml
         ```
 
         db-type 设置为 "file"。
