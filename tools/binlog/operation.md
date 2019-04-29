@@ -116,6 +116,6 @@ Usage of binlogctl:
     [2019/04/28 09:33:15.950 +00:00] [INFO] [meta.go:114] ["save meta"] [meta="commitTS: 408012454863044609"]
     ```
 
-    该命令会生成一个文件 `{data-dir}/savepoint`， 该文件中保存了 Drainer 初次启动需要的 tso 信息。
+    该命令会生成一个文件 `{data-dir}/savepoint`，该文件中保存了 Drainer 初次启动需要的 tso 信息。
 
 
