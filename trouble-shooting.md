@@ -5,7 +5,7 @@ category: advanced
 
 # TiDB 集群故障诊断
 
-当试用 TiDB 遇到问题时，请先参考本篇文档。如果问题未解决，请按文档要求收集必要的信息通过 Github [提供给 TiDB 开发者](https://github.com/pingcap/tidb/issues/new?template=bug-report.md)。
+当试用 TiDB 遇到问题时，请先参考本篇文档。如果问题未解决，请按文档要求收集必要的信息通过 Github [提供给 TiDB 开发者](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 如何给 TiDB 开发者报告错误
 
