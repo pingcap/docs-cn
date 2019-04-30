@@ -26,6 +26,7 @@ Pump/Drainer 中状态的定义：
 关于 Pump/Drainer 暂停、下线、状态查询、状态修改等具体的操作方法，参考如下 binlogctl 工具的使用方法介绍。
 
 ## binlogctl 工具
+
 * 获取 TiDB 集群当前的 TSO
 * 查看 Pump/Drainer 状态
 * 修改 Pump/Drainer 状态
@@ -83,6 +84,7 @@ Usage of binlogctl:
 -time-zone string
     如果设置时区，在 "generate_meta" 模式下会打印出获取到的 tso 对应的时间。例如"Asia/Shanghai" 为 CST 时区，"Local" 为本地时区
 ```
+
 命令示例：
 
 - 查询所有的 Pump/Drainer 的状态：
@@ -104,7 +106,7 @@ Usage of binlogctl:
     ```
 
     这条命令会修改 Pump/Drainer 保存在 PD 中的状态。
- 
+
 - 暂停/下线 Pump/Drainer
 
     分别设置 `cmd` 为 `pause-pump`、`pause-drainer`、`offline-pump`、`offline-drainer` 来暂停 Pump、暂停 Drainer、下线 Pump、下线 Drainer。例如：
@@ -127,5 +129,3 @@ Usage of binlogctl:
     ```
 
     该命令会生成一个文件 `{data-dir}/savepoint`，该文件中保存了 Drainer 初次启动需要的 tso 信息。
-
-

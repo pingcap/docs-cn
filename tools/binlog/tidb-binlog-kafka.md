@@ -9,12 +9,12 @@ category: tools
 
 ## TiDB-Binlog 简介
 
-TiDB-Binlog 是一个用于收集 TiDB 的 Binlog 并提供实时备份和同步功能的商业工具。
+TiDB-Binlog 是用于收集 TiDB 的 Binlog，并提供实时备份和同步功能的商业工具。
 
 TiDB-Binlog 支持以下功能场景:
 
-* **数据同步**：同步 TiDB 集群数据到其他数据库
-* **实时备份和恢复**：备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复
+- **数据同步**：同步 TiDB 集群数据到其他数据库
+- **实时备份和恢复**：备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复
 
 ## TiDB-Binlog Kafka 架构
 
@@ -36,16 +36,17 @@ Drainer 从 Kafka 中收集 Binlog，并按照 TiDB 中事务的提交顺序转�
 
 Kafka 集群用来存储由 Pump 写入的 Binlog 数据，并提供给 Drainer 进行读取。
 
-> **注**：local 版本将 Binlog 存储在文件中，Kafka 版本则使用 Kafka 存储。
+> **注意：**
+>
+> Local 版本将 Binlog 存储在文件中，Kafka 版本则使用 Kafka 存储。
 
 ## TiDB-Binlog 安装
 
 以下为 TiDB-Ansible 分支与 TiDB 版本的对应关系，版本选择可咨询官方 info@pingcap.com。
 
-| TiDB-Ansible 分支 | TiDB 版本 | 备注 | 
+| TiDB-Ansible 分支 | TiDB 版本 | 备注 |
 |:----|:----|:----|
 | release-2.0 | 2.0 版本 | 最新 2.0 稳定版本，可用于生产环境。 |
-    
 
 ### 下载官方 Binary
 
@@ -66,7 +67,7 @@ cd tidb-binlog-kafka-linux-amd64
 
 ### TiDB-Binlog 部署
 
-#### 注意
+#### 注意事项
 
 * 需要为一个 TiDB 集群中的每台 TiDB server 部署一个 Pump，目前 TiDB server 只支持以 unix socket 的方式输出 Binlog。
 
@@ -414,7 +415,7 @@ PbReader 使用示例
 + 进入 Grafana Web 界面（默认地址: `http://localhost:3000`，默认账号：admin，密码：admin）
 
     点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息
-    
+
     > **注意：**
     >
     > Type 选 Prometheus，URL 为 Prometheus 地址，根据实际情况添加/填写。

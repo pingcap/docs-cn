@@ -30,7 +30,7 @@ TiDB-Binlog 集群主要分为两个组件：
 
 ### TiDB-Binlog-local 下载
 
-TiDB-Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](../../tools/download.md)。
+TiDB-Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/tools/download.md)。
 
 ### TiDB-Binlog-local 部署
 
