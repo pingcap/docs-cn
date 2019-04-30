@@ -22,7 +22,6 @@ category: tools
 | Pump Storage Error By Type | Pump 遇到的 error 数量，按照 error 的类型进行统计 |
 | Query TiKV | Pump 通过 TiKV 查询事务状态的次数 |
 
-
 ### Drainer
 
 | metric 名称 | 说明 |
@@ -35,8 +34,6 @@ category: tools
 | Execute Time | 在下游执行 SQL 语句或写数据所消耗的时间 |
 | 95% Binlog Size | Drainer 从各个 Pump 获取到 binlog 数据的大小 |
 | DL Job Count | Drainer 处理的 DDL 的数量|
-
-
 
 ## 监控告警规则
 
@@ -59,12 +56,12 @@ category: tools
     - 判断从 Pump 获取数据是否太慢：
 
         监控 Pump handle tso 可以看每个 Pump 最近一条消息的时间，是不是有延迟特别大的 Pump，确认对应 Pump 正常运行
-        
+
     - 根据 Drainer event 和 Drainer execute latency 来判断是否下游同步太慢：
-        
+
         - 如果 Drainer execute time 过大，则检查到目标库网络带宽和延迟，以及目标库状态
         - 如果 Drainer execute time 不大，Drainer event 过小，则增加 work count 和 batch 进行重试
-            
+
     - 上面都不满足或者操作后没有改观，则报备开发 support@pingcap.com 进行处理
 
 ### Warning

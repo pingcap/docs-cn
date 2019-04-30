@@ -10,10 +10,10 @@ TiDB-Binlog 是一个用于收集 TiDB 的 Binlog，并提供实时备份和同�
 
 TiDB-Binlog 支持以下功能场景：
 
-* **数据同步**：同步 TiDB 集群数据到其他数据库
-* **实时备份和恢复**：备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复
+- **数据同步**：同步 TiDB 集群数据到其他数据库
+- **实时备份和恢复**：备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复
 
-## TiDB-Binlog 的整体架构
+## TiDB-Binlog 整体架构
 
 ![TiDB-Binlog 架构](/media/tidb_binlog_cluster_architecture.png)
 
@@ -36,7 +36,6 @@ Drainer 从各个 Pump 中收集 Binlog 进行归并，再将 Binlog 转化成 S
 * 修改 Pump/Drainer 状态
 * 暂停/下线 Pump/Drainer
 
-
 ## 主要特性
 
 * 多个 Pump 形成一个集群，可以水平扩容。
@@ -53,10 +52,9 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 | Pump | 3 | 8核+   | SSD, 200 GB+ | 16G |
 | Drainer | 1 | 8核+ | SAS, 100 GB+ （如果输出为本地文件，则使用 SSD，并增加磁盘大小） | 16G |
 
-## 注意
+## 注意事项
 
 * 需要使用 TiDB v2.0.8-binlog、v2.1.0-rc.5 及以上版本，否则不兼容该版本的 TiDB-Binlog。
 * Drainer 支持将 Binlog 同步到 MySQL、TiDB、Kafka 或者本地文件。如果需要将 Binlog 同步到其他 Drainer 不支持的类型的系统中，可以设置 Drainer 将 Binlog 同步到 Kafka，然后根据 binlog slave protocol 进行定制处理，参考 [binlog slave client 用户文档](/tools/binlog/binlog-slave-client.md)。
 * 如果 TiDB-Binlog 用于增量恢复，可以设置配置项 `db-type="file"`，Drainer 会将 binlog 转化为指定的 [proto buffer 格式](https://github.com/pingcap/tidb-binlog/blob/master/proto/binlog.proto)的数据，再写入到本地文件中。这样就可以使用 [Reparo](/tools/binlog/reparo.md) 恢复增量数据。
 * 如果下游为 MySQL/TiDB，数据同步后可以使用 [sync-diff-inspector](/tools/sync-diff-inspector.md) 进行数据校验。
-

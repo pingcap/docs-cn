@@ -3,7 +3,6 @@ title: TiDB-Binlog 集群部署
 category: tools
 ---
 
-
 # TiDB-Binlog 集群部署
 
 ## 使用 TiDB-Ansible 部署 TiDB-Binlog
@@ -124,9 +123,8 @@ category: tools
     INFO[0000] pump: {NodeID: ip-172-16-10-73:8250, Addr: 172.16.10.73:8250, State: online, MaxCommitTS: 403051525703991299, UpdateTime: 2018-12-25 14:23:36 +0800 CST}
     INFO[0000] pump: {NodeID: ip-172-16-10-74:8250, Addr: 172.16.10.74:8250, State: online, MaxCommitTS: 403051525717360643, UpdateTime: 2018-12-25 14:23:35 +0800 CST}
     ```
-### 第 3 步：部署 Drainer
-<a href="#第 3 步：部署 Drainer"></a>
 
+### 第 3 步：部署 Drainer
 
 1. 获取 initial_commit_ts
 
@@ -247,7 +245,9 @@ wget https://download.pingcap.org/tidb-binlog-latest-linux-amd64.sha256
 # 检查文件完整性，返回 ok 则正确
 sha256sum -c tidb-binlog-latest-linux-amd64.sha256
 ```
+
 ### 使用样例
+
 假设有三个 PD，一个 TiDB，另外有两台机器用于部署 Pump，一台机器用于部署 Drainer。各个节点信息如下：
 
 ```
@@ -482,8 +482,9 @@ Drainer="192.168.0.13"
 
         如果命令行参数与配置文件中的参数重合，则使用命令行设置的参数的值。
 
-## 注意
-* 在运行 TiDB 时，需要保证至少一个 Pump 正常运行。
-* 通过给 TiDB 增加启动参数 `enable-binlog` 来开启 binlog 服务。尽量保证同一集群的所有 TiDB 都开启了 binlog 服务，否则在同步数据时可能会导致上下游数据不一致。如果要临时运行一个不开启 binlog 服务的 TiDB 实例，需要在 TiDB 的配置文件中设置 `run_ddl= false`。
-* Drainer 不支持对 ignore schemas（在过滤列表中的 schemas）的 table 进行 rename DDL 操作。
-* 在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取 savepoint，然后导入全量备份，最后启动 Drainer 从 savepoint 开始同步增量数据。
+> **注意：**
+>
+> - 在运行 TiDB 时，需要保证至少一个 Pump 正常运行。
+> - 通过给 TiDB 增加启动参数 `enable-binlog` 来开启 binlog 服务。尽量保证同一集群的所有 TiDB 都开启了 binlog 服务，否则在同步数据时可能会导致上下游数据不一致。如果要临时运行一个不开启 binlog 服务的 TiDB 实例，需要在 TiDB 的配置文件中设置 `run_ddl= false`。
+> - Drainer 不支持对 ignore schemas（在过滤列表中的 schemas）的 table 进行 rename DDL 操作。
+> - 在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取 savepoint，然后导入全量备份，最后启动 Drainer 从 savepoint 开始同步增量数据。
