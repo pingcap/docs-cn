@@ -402,7 +402,7 @@ dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 
    >
    > 请勿将 `ansible_user` 设为 `root`，因为 `tidb-ansible` 限制服务需以普通用户运行。
 
-    运行以下命令。如果所有服务都返回 `root`，则 SSH 互信配置成功。
+    运行以下命令。如果所有服务都返回 `tidb`，则 SSH 互信配置成功。
 
     ```bash
     ansible -i inventory.ini all -m shell -a 'whoami'
