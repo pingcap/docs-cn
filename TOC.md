@@ -197,7 +197,12 @@
       - [Table Filter](tools/lightning/filter.md)
       - [CSV Support](tools/lightning/csv.md)
       - [Monitor](tools/lightning/monitor.md)
-    - [TiDB-Binlog](tools/tidb-binlog-cluster.md)
+    + TiDB-Binlog
+      - [Overview](tools/binlog/overview.md)
+      - [Deploy](tools/binlog/deploy.md)
+      - [Monitor](tools/binlog/monitor.md)
+      - [Maintain](tools/binlog/operation.md)
+      - [Upgrade](tools/binlog/upgrade.md)
     - [PD Control](tools/pd-control.md)
     - [PD Recover](tools/pd-recover.md)
     - [TiKV Control](https://github.com/tikv/tikv/blob/master/docs/tools/tikv-control.md)

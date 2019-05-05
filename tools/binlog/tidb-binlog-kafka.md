@@ -21,7 +21,7 @@ TiDB-Binlog supports the following scenarios:
 
 The TiDB-Binlog architecture is as follows:
 
-![TiDB-Binlog architecture](../media/tidb_binlog_kafka_architecture.png)
+![TiDB-Binlog architecture](/media/tidb_binlog_kafka_architecture.png)
 
 The TiDB-Binlog cluster mainly consists of three components:
 
@@ -39,7 +39,7 @@ The Kafka cluster stores the binlog data written by Pump and provides the binlog
 
 > **Note:**
 >
-> In the local version of TiDB-Binlog, the binlog is stored in files, while in the latest version, the binlog is stored using Kafka.
+> In the local version of TiDB-Binlog, the binlog is stored in files, while in the Kafka version, the binlog is stored using Kafka.
 
 ## Install TiDB-Binlog
 
@@ -74,7 +74,7 @@ cd tidb-binlog-kafka-linux-amd64
 
     We set the startup parameter `binlog-socket` as the specified unix socket file path of the corresponding parameter `socket` in Pump. The final deployment architecture is as follows:
 
-    ![TiDB Pump deployment architecture](../media/tidb_pump_deployment.jpeg)
+    ![TiDB Pump deployment architecture](/media/tidb_pump_deployment.jpeg)
 
 - Drainer does not support renaming DDL on the table of the ignored schemas (schemas in the filter list).
 
@@ -109,9 +109,9 @@ cd tidb-binlog-kafka-linux-amd64
     db-type = "kafka"
 
     # when db-type is kafka, you can uncomment this to config the down stream kafka, or it will be the same kafka addrs where drainer pulls binlog from.
-    # [syncer.to]
-    # kafka-addrs = "127.0.0.1:9092"
-    # kafka-version = "0.8.2.0"
+    [syncer.to]
+    kafka-addrs = "127.0.0.1:9092"
+    kafka-version = "0.8.2.0"
     ```
 
     The data which outputs to kafka follows the binlog format sorted by ts and defined by protobuf. See [driver](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/driver) to access the data and sync to the down stream.

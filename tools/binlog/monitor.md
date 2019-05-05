@@ -1,12 +1,12 @@
 ---
-title: TiDB-Binlog Monitoring Metrics and Alert Rules
-summary: Learn about three levels of monitoring metrics and alert rules of TiDB-Binlog.
+title: TiDB-Binlog Monitoring
+summary: Learn how to monitor the cluster version of TiDB-Binlog.
 category: tools
 ---
 
-# TiDB-Binlog Monitoring Metrics and Alert Rules
+# TiDB-Binlog Monitoring
 
-This document describes TiDB-Binlog monitoring metrics in Grafana and explains the alert rules.
+After you have deployed TiDB-Binlog using Ansible successfully, you can go to the Grafana Web (default address: <http://grafana_ip:3000>, default account: admin, password: admin) to check the state of Pump and Drainer.
 
 ## Monitoring metrics
 
@@ -17,7 +17,7 @@ TiDB-Binlog consists of two components: Pump and Drainer. This section shows the
 To understand the Pump monitoring metrics, check the following table:
 
 | Pump monitoring metrics | Description |
-|:---|:---|
+| --- | --- |
 | Storage Size | Records the total disk space (capacity) and the available disk space (available)|
 | Metadata | Records the biggest TSO (`gc_tso`) of the binlog that each Pump node can delete, and the biggest commit TSO (`max_commit_tso`) of the saved binlog |
 | Write Binlog QPS by Instance | Shows QPS of writing binlog requests received by each Pump node |
@@ -32,7 +32,7 @@ To understand the Pump monitoring metrics, check the following table:
 To understand the Drainer monitoring metrics, check the following table:
 
 | Drainer monitoring metrics | Description |
-|:---|:---|
+| --- | --- |
 | Checkpoint TSO | Shows the biggest TSO time of the binlog that Drainer has already synchronized into the downstream. You can get the lag by using the current time to subtract the binlog timestamp. But be noted that the timestamp is allocated by PD of the master cluster and is determined by the time of PD.|
 | Pump Handle TSO | Records the biggest TSO time among the binlog files that Drainer obtains from each Pump node |
 | Pull Binlog QPS by Pump NodeID | Shows the QPS when Drainer obtains binlog from each Pump node |

@@ -8,7 +8,7 @@ category: tools
 
 Reparo is a TiDB-Binlog tool, used to recover the incremental data. To back up the incremental data, you can use Drainer of TiDB-Binlog to output the binlog data in the protobuf format to files. To restore the incremental data, you can use Reparo to parse the binlog data in the files and apply the binlog in TiDB/MySQL.
 
-Download Reparo via [reparo-latest-linux-amd64.tar.gz](https://download.pingcap.org/reparo-latest-linux-amd64.tar.gz)
+Download Reparo via [tidb-binlog-cluster-latest-linux-amd64.tar.gz](http://download.pingcap.org/tidb-binlog-cluster-latest-linux-amd64.tar.gz)
 
 ## Reparo usage
 
@@ -108,15 +108,15 @@ password = ""
 ./bin/reparo -config reparo.toml
 ```
 
-### Note
-
-* `data-dir` specifies the directory for the binlog file that Drainer outputs.
-* Both `start-datatime` and `start-tso` are used to specify the time point for starting recovery, but they are different in the time format. If they are not set, the recovery process starts from the earliest binlog file by default.
-* Both `stop-datetime` and `stop-tso` are used to specify the time point for finishing recovery, but they are different in the time format. If they are not set, the recovery process ends up with the last binlog file by default.
-* `dest-type` specifies the destination type. Its value can be "mysql" and "print." 
-
-    * When it is set to｀mysql｀, the data can be recovered to MySQL or TiDB that uses or is compatible with the MySQL protocol. In this case, you need to specify the database information in `[dest-db]` of the configuration information.
-    * When it is set to ｀print｀, only the binlog information is printed. It is generally used for debugging and checking the binlog information. In this case, there is no need to specify `[dest-db]`.
-
-* `replicate-do-db` specifies the database for recovery. If it is not set, all the databases are to be recovered.
-* `replicate-do-table` specifies the table fo recovery. If it is not set, all the tables are to be recovered.
+> **Note:**
+>
+> * `data-dir` specifies the directory for the binlog file that Drainer outputs.
+> * Both `start-datatime` and `start-tso` are used to specify the time point for starting recovery, but they are different in the time format. If they are not set, the recovery process starts from the earliest binlog file by default.
+> * Both `stop-datetime` and `stop-tso` are used to specify the time point for finishing recovery, but they are different in the time format. If they are not set, the recovery process ends up with the last binlog file by default.
+> * `dest-type` specifies the destination type. Its value can be "mysql" and "print." 
+>
+>     * When it is set to `mysql`, the data can be recovered to MySQL or TiDB that uses or is compatible with the MySQL protocol. In this case, you need to specify the database information in `[dest-db]` of the configuration information.
+>     * When it is set to `print`, only the binlog information is printed. It is generally used for debugging and checking the binlog information. In this case, there is no need to specify `[dest-db]`.
+>
+> * `replicate-do-db` specifies the database for recovery. If it is not set, all the databases are to be recovered.
+> * `replicate-do-table` specifies the table for recovery. If it is not set, all the tables are to be recovered.

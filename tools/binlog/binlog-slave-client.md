@@ -1,12 +1,12 @@
 ---
 title: Binlog Slave Client User Guide
-summary: Use Binglog Slave Client to parse the binlog data and output the data in a specific format to Kafka.
+summary: Use Binlog Slave Client to consume TiDB slave binlog data from Kafka and output the data in a specific format.
 category: tools
 ---
 
 # Binlog Slave Client User Guide
 
-Binlog Slave Client is used to parse the binlog data and output the data in a specific format to Kafka. Currently, Drainer supports outputting data in multiple formats including MySQL, TiDB, TheFlash, and pb. But sometimes users have customized requirements for outputting data to other formats, for example, Elasticsearch and Hive, so this feature is introduced. After data is output to Kafka, the user writes code to read data from Kafka and then processes the data.
+Binlog Slave Client is used to consume TiDB slave binlog data from Kafka and output the data in a specific format. Currently, Drainer supports multiple kinds of down streaming, including MySQL, TiDB, file and Kafka. But sometimes users have customized requirements for outputting data to other formats, for example, Elasticsearch and Hive, so this feature is introduced.
 
 ## Configure Drainer
 
@@ -53,7 +53,7 @@ message ColumnInfo {
   // https://dev.mysql.com/doc/refman/8.0/en/data-types.html
   // for the `numeric` type: int bigint smallint tinyint float double decimal bit
   // for the `string` type: text longtext mediumtext char tinytext varchar
-  // blob longblog mediumblog binary tinyblob varbinary
+  // blob longblob mediumblob binary tinyblob varbinary
   // enum set
   // for the `json` type: json
   optional string mysql_type = 2 [ (gogoproto.nullable) = false ];
@@ -87,9 +87,9 @@ message TableMutation {
   optional Row change_row = 3;
 }
 
-// `DMLData` stores all the mutations caused by DML in a table.
+// `DMLData` stores all the mutations caused by DML in a transaction.
 message DMLData {
-  // `tables` contains all the table changes.
+  // `tables` contains all the table changes in the transaction.
   repeated Table tables = 1;
 }
 
@@ -113,7 +113,6 @@ enum BinlogType {
 message Binlog {
   optional BinlogType type = 1 [ (gogoproto.nullable) = false ];
   optional int64 commit_ts = 2 [ (gogoproto.nullable) = false ];
-  // `dml_data` is marshalled from the DML type.
   optional DMLData dml_data = 3;
   optional DDLData ddl_data = 4;
 }
@@ -132,8 +131,9 @@ You need to configure the following information when using Driver:
 
 * `KafkaAddr`: the address of the Kafka cluster
 * `CommitTS`: from which `commit ts` to start reading the binlog
-* `Offset`: from which Kafka `offset` to start reading data. If `CommitTS` is set, you needn't configure this parameter
+* `Offset`: from which Kafka `offset` to start reading data. If `CommitTS` is set, you needn't configure this parameter.
 * `ClusterID`: the cluster ID of the TiDB cluster
+* `Topic`: the topic name of Kafka. If Topic is empty, use the default name in Drainer `<ClusterID>_obinlog`.
 
 You can use Driver by quoting the Driver code in package and refer to the example code provided by Driver to learn how to use Driver and parse the binlog data. 
 

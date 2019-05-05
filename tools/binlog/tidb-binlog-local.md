@@ -1,12 +1,12 @@
 ---
-title: TiDB-Binlog user guide
+title: TiDB-Binlog Local Deployment
 summary: Learn how to install, deploy and monitor TiDB-Binlog.
 category: tools
 ---
 
-# TiDB-Binlog User Guide
+# TiDB-Binlog Local Deployment
 
-## About TiDB-Binlog
+## About TiDB-Binlog-local
 
 TiDB-Binlog is a tool for enterprise users to collect binlog files for TiDB and provide real-time backup and synchronization.
 
@@ -15,11 +15,11 @@ TiDB-Binlog supports the following scenarios:
 - **Data synchronization**: to synchronize TiDB cluster data to other databases  
 - **Real-time backup and recovery**: to back up TiDB cluster data, and recover in case of cluster outages
   
-## TiDB-Binlog architecture
+## TiDB-Binlog-local architecture
 
 The TiDB-Binlog architecture is as follows:  
 
-![TiDB-Binlog architecture](../media/architecture.jpeg) 
+![TiDB-Binlog architecture](/media/architecture.jpeg) 
 
 The TiDB-Binlog cluster mainly consists of two components:  
 
@@ -31,11 +31,11 @@ Pump is a daemon that runs on the background of each TiDB host. Its main functio
 
 Drainer collects binlog files from each Pump node, converts them into specified database-compatible SQL statements in the commit order of the transactions in TiDB, and synchronizes to the target database or writes to the file sequentially.
 
-## Install TiDB-Binlog
+## Install TiDB-Binlog-local
 
 ### Download
 
-TiDB-Binlog can be [downloaded](../tools/download.md) as part of the Enterprise Tools package.
+TiDB-Binlog can be [downloaded](/tools/download.md) as part of the Enterprise Tools package.
 
 ### Deploy TiDB-Binlog
 
@@ -65,7 +65,7 @@ TiDB-Binlog can be [downloaded](../tools/download.md) as part of the Enterprise 
   
   We set the startup parameter `binlog-socket` as the specified unix socket file path of the corresponding parameter `socket` in Pump. The final deployment architecture is as follows:  
   
-  ![TiDB pump deployment architecture](../media/tidb_pump_deployment.jpeg)  
+  ![TiDB pump deployment architecture](/media/tidb_pump_deployment.jpeg)  
    
 - Currently, you need to deploy Drainer manually.
 
