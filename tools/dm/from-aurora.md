@@ -30,7 +30,7 @@ DM 在增量同步阶段依赖 `ROW` 格式的 binlog，如果未启用 binlog �
 
 在 Aurora 集群中，binlog 相关参数是**集群参数组中的集群级参数**，有关如何为 Aurora 集群启用 binlog 支持，请参考[在复制主实例上启用二进制日志记录](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Replication.MySQL.html#AuroraMySQL.Replication.MySQL.EnableBinlog)。在使用 DM 进行数据迁移时，需要将 `binlog_format` 参数设置为 `ROW`。
 
-如果需要基于 GTID 进行数据迁移，需要将 `gtid-mode` 及 `enforce_gtid_consistency` 均设置为 `ON`。 有关如何为 Aurora 集群启用基于 GTID 的数据迁移支持，请参考[Configuring GTID-Based Replication for an Aurora MySQL Cluster](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/AuroraUserGuide/mysql-replication-gtid.html#mysql-replication-gtid.configuring-aurora)。
+如果需要基于 GTID 进行数据迁移，需要将 `gtid-mode` 及 `enforce_gtid_consistency` 均设置为 `ON`。 有关如何为 Aurora 集群启用基于 GTID 的数据迁移支持，请参考 [Configuring GTID-Based Replication for an Aurora MySQL Cluster](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/AuroraUserGuide/mysql-replication-gtid.html#mysql-replication-gtid.configuring-aurora)。
 
 > 注意：在 Aurora 管理后台中，`gtid_mode` 参数表示为 `gtid-mode`。
 
