@@ -6,7 +6,7 @@ category: tools
 
 # 从 AWS Aurora MySQL 迁移数据
 
-本文介绍如何使用 DM 从 [AWS Aurora](https://aws.amazon.com/cn/rds/aurora/) 迁移数据到 TiDB。
+本文介绍如何使用 DM 从 [AWS Aurora MySQL](https://aws.amazon.com/cn/rds/aurora/details/mysql-details/) 迁移数据到 TiDB。
 
 ## 第 1 步：在 Aurora 集群中启用 binlog
 
