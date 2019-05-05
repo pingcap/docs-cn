@@ -18,9 +18,9 @@ category: tools
 | Aurora-1 | pingcap-1-us-east-2a.h8emfqdptyc4.us-east-2.rds.amazonaws.com | 3306 | 读取器 |
 | Aurora-2 | pingcap-2.h8emfqdptyc4.us-east-2.rds.amazonaws.com | 3306 | 写入器 |
 
-DM 在增量同步阶段依赖 `ROW` 格式的 binlog，如果未启用 binlog 及设置正确的 binlog 格式，则无法正常使用 DM 进行数据同步，具体可参见 [检查内容](/tools/dm/precheck.md#检查内容)。
+DM 在增量同步阶段依赖 `ROW` 格式的 binlog，如果未启用 binlog 及设置正确的 binlog 格式，则不能正常使用 DM 进行数据同步，具体可参见[检查内容](/tools/dm/precheck.md#检查内容)。
 
-> 注意：Aurora 读取器无法开启 binlog，因此无法作为 DM 数据迁移时的上游 master server。
+> 注意：Aurora 读取器不能开启 binlog，因此不能作为 DM 数据迁移时的上游 master server。
 
 如果需要基于 GTID 进行数据迁移，还需要为 Aurora 集群启用 GTID 支持。
 
@@ -28,15 +28,15 @@ DM 在增量同步阶段依赖 `ROW` 格式的 binlog，如果未启用 binlog �
 
 ### 为 Aurora 集群修改 binlog 相关参数
 
-在 Aurora 集群中，binlog 相关参数是**集群参数组中的集群级参数**，有关如何为 Aurora 集群启用 binlog 支持，请参考 [在复制主实例上启用二进制日志记录](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Replication.MySQL.html#AuroraMySQL.Replication.MySQL.EnableBinlog)。在使用 DM 进行数据迁移时，需要将 `binlog_format` 参数设置为 `ROW`。
+在 Aurora 集群中，binlog 相关参数是**集群参数组中的集群级参数**，有关如何为 Aurora 集群启用 binlog 支持，请参考[在复制主实例上启用二进制日志记录](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Replication.MySQL.html#AuroraMySQL.Replication.MySQL.EnableBinlog)。在使用 DM 进行数据迁移时，需要将 `binlog_format` 参数设置为 `ROW`。
 
-如果需要基于 GTID 进行数据迁移，需要将 `gtid-mode` 及 `enforce_gtid_consistency` 均设置为 `ON`。 有关如何为 Aurora 集群启用基于 GTID 的数据迁移支持，请参考 [Configuring GTID-Based Replication for an Aurora MySQL Cluster](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/AuroraUserGuide/mysql-replication-gtid.html#mysql-replication-gtid.configuring-aurora)。
+如果需要基于 GTID 进行数据迁移，需要将 `gtid-mode` 及 `enforce_gtid_consistency` 均设置为 `ON`。 有关如何为 Aurora 集群启用基于 GTID 的数据迁移支持，请参考[Configuring GTID-Based Replication for an Aurora MySQL Cluster](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/AuroraUserGuide/mysql-replication-gtid.html#mysql-replication-gtid.configuring-aurora)。
 
 > 注意：在 Aurora 管理后台中，`gtid_mode` 参数表示为 `gtid-mode`。
 
 ## 第 2 步：部署 DM 集群
 
-目前推荐使用 DM-Ansible 部署 DM 集群，具体部署方法参照 [使用 DM-Ansible 部署 DM 集群](/tools/dm/deployment.md)。
+目前推荐使用 DM-Ansible 部署 DM 集群，具体部署方法参照[使用 DM-Ansible 部署 DM 集群](/tools/dm/deployment.md)。
 
 > **注意：**
 > 
@@ -125,23 +125,23 @@ mydumpers:
 
 ## 第 5 步：启动任务
 
-1. 进入 dmctl 目录 `/home/tidb/dm-ansible/resources/bin/`。
+1. 进入 dmctl 目录 `/home/tidb/dm-ansible/resources/bin/`
 
-2. 执行以下命令启动 dmctl。
+2. 执行以下命令启动 dmctl
 
     ```bash
     ./dmctl --master-addr 172.16.10.71:8261
     ```
 
-3. 执行以下命令启动数据同步任务。
+3. 执行以下命令启动数据同步任务
 
     ```bash
-    # `task.yaml` 是之前编辑的配置文件。
+    # `task.yaml` 是之前编辑的配置文件
     start-task ./task.yaml
     ```
     
     - 如果执行命令后的返回结果中不包含错误信息，则表明任务已经成功启动
-    - 如果包含以下错误信息，则表明可能含有上游 Aurora 用户拥有 TiDB 不支持的权限类型
+    - 如果包含以下错误信息，则表明上游 Aurora 用户可能拥有 TiDB 不支持的权限类型
         ```json
         {
             "id": 4,
@@ -178,11 +178,11 @@ query-status
 ```
 
 > 注意：
-> 如果查询命令的返回结果中包含以下错误信息，则表明在全量同步的 dump 阶段无法获得相应的 lock：
+> 如果查询命令的返回结果中包含以下错误信息，则表明在全量同步的 dump 阶段不能获得相应的 lock：
 >   ```bash
 >   Couldn't acquire global lock, snapshots will not be consistent: Access denied for user 'root'@'%' (using password: YES)
 >   ```
 > 此时如果能接受不使用 FTWL 来确保 dump 文件与 metadata 的一致或上游能暂时停止写入，可以通过为 `mydumpers` 下的 `extra-args` 添加 `--no-locks` 参数来进行绕过，具体方法为：
-> 1. 使用 `stop-task` 停止当前由于无法正常 dump 而已经转为 paused 的任务
+> 1. 使用 `stop-task` 停止当前由于不能正常 dump 而已经转为 paused 的任务
 > 2. 将原 task.yaml 中的 `extra-args: "-B test_db -T test_table"` 更新为 `extra-args: "-B test_db -T test_table --no-locks"`
 > 3. 使用 `start-task` 重新启动任务
