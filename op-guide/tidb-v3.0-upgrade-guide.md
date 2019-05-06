@@ -44,7 +44,7 @@ Version: 0.9.0
 $ mv tidb-ansible tidb-ansible-bak
 ```
 
-下载最新 tidb-ansible release-2.1 分支，默认的文件夹名称为 `tidb-ansible`。
+下载最新 tidb-ansible v3.0.0 或者 release-3.0 [**分支**](/op-guide/ansible-deployment.md#在中控机器上下载-tidb-ansible)，默认的文件夹名称为 `tidb-ansible`。
 
 ```
 $ git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
