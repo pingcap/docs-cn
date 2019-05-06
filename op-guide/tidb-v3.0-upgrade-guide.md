@@ -5,7 +5,7 @@ category: deployment
 
 # TiDB 3.0 升级操作指南
 
-本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 RC 版本升级到 TiDB 3.0 GA 版本。TiDB 3.0 版本兼容 Kafka 版本的 TiDB-Binlog 以及 集群模式的 TiDB-Binlog 。
+本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 RC 版本升级到 TiDB 3.0 GA 版本。TiDB 3.0 版本兼容 [Kafka 版本的 TiDB-Binlog](/tools/tidb-binlog-kafka.md) 以及[集群模式的 TiDB-Binlog](/tools/tidb-binlog-cluster.md)。
 
 ## 升级兼容性说明
 
@@ -32,11 +32,13 @@ Name: jmespath
 Version: 0.9.0
 ```
 
-> **注意**：请务必按以上文档安装 Ansible 及其依赖。确认 Jinja2 版本是否正确，否则启动 Grafana 时会报错。确认 jmespath 版本是否正确，否则滚动升级 TiKV 时会报错。
+> **注意：**
+>
+> 请务必按以上文档安装 Ansible 及其依赖。确认 Jinja2 版本是否正确，否则启动 Grafana 时会报错。确认 jmespath 版本是否正确，否则滚动升级 TiKV 时会报错。
 
 ## 在中控机器上下载 TiDB-Ansible
 
-以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录，备份 TiDB 2.0 版本或 TiDB 2.1 rc 版本的 tidb-ansible 文件夹：
+以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录，备份 TiDB 2.0 版本或 TiDB 2.1 版本的 tidb-ansible 文件夹：
 
 ```
 $ mv tidb-ansible tidb-ansible-bak
@@ -66,7 +68,7 @@ $ git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
     ansible_user = tidb
     ```
 
-    可参考[如何配置 ssh 互信及 sudo 规则](../op-guide/ansible-deployment.md#在中控机上配置部署机器-ssh-互信及-sudo-规则) 自动配置主机间互信。
+    可参考[如何配置 ssh 互信及 sudo 规则](../op-guide/ansible-deployment.md#在中控机上配置部署机器-ssh-互信及-sudo-规则)自动配置主机间互信。
 
 2. `process_supervision` 变量请与之前版本保持一致，默认推荐使用 `systemd`。
 
@@ -97,7 +99,7 @@ readpool:
 
 ## 下载 TiDB 3.0 binary 到中控机
 
-确认 `tidb-ansible/inventory.ini` 文件中 `tidb_version = v3.0.0`，然后执行以下命令下载 TiDB 2.1 binary 到中控机。
+确认 `tidb-ansible/inventory.ini` 文件中 `tidb_version = v3.0.0`，然后执行以下命令下载 TiDB 3.0 binary 到中控机。
 
 ```
 $ ansible-playbook local_prepare.yml
@@ -105,13 +107,15 @@ $ ansible-playbook local_prepare.yml
 
 ## 滚动升级 TiDB 集群组件
 
-> **注意**：为优化 TiDB 集群组件的运维管理考虑，TiDB 3.0 版本对 `systemd` 模式下的 `PD service` 名称进行调整，注意滚动升级 TiDB 集群组件操作略有不同，注意升级前后 `process_supervision` 参数配置要保持一致。
+> **注意：**
+>
+> 为优化 TiDB 集群组件的运维管理，TiDB 3.0 版本对 `systemd` 模式下的 `PD service` 名称进行了调整。与之前版本相比，滚动升级 TiDB 3.0 版本集群组件的操作略有不同，注意升级前后 `process_supervision` 参数配置须保持一致。
 
-如果 `process_supervision` 变量使用默认推荐 `systemd` 参数，则通过 excessive_rolling_update.yml 滚动升级 TiDB 集群。  
+如果 `process_supervision` 变量使用默认的 `systemd` 参数，则通过 `excessive_rolling_update.yml` 滚动升级 TiDB 集群。  
 ```
 $ ansible-playbook excessive_rolling_update.yml
 ```
-如果 `process_supervision` 变量使用默认推荐 `supervise` 参数，则通过 rolling_update.yml 滚动升级 TiDB 集群。 
+如果 `process_supervision` 变量使用 `supervise` 参数，则通过 `rolling_update.yml` 滚动升级 TiDB 集群。 
 ```
 $ ansible-playbook rolling_update.yml
 ```
