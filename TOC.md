@@ -149,7 +149,6 @@
         - [DM 架构](tools/dm/overview.md#dm-架构)
         - [同步功能介绍](tools/dm/overview.md#同步功能介绍)
         - [使用限制](tools/dm/overview.md#使用限制)
-      + [部署使用](tools/dm/practice.md)
       + 核心特性
         - [Table Routing](tools/dm/data-synchronization-features.md#table-routing)
         - [Black & White Lists](tools/dm/data-synchronization-features.md#black-white-table-lists)
@@ -163,6 +162,7 @@
       + 使用场景
         - [简单的从库同步场景](tools/dm/simple-synchronization-scenario.md)
         - [分库分表合并场景](tools/dm/shard-merge-scenario.md)
+      + [部署使用](tools/dm/practice.md)
       + 配置
         - [概述](tools/dm/dm-configuration-file-overview.md)
         - [任务配置](tools/dm/task-configuration-file-intro.md)
