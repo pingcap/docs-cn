@@ -4,7 +4,8 @@
 import sys
 import os
 from qiniu import Auth, put_file, etag, urlsafe_base64_encode
-import qiniu.config from qiniu.compat import is_py2, is_py3
+import qiniu.config
+from qiniu.compat import is_py2, is_py3
 
 
 ACCESS_KEY = os.getenv('QINIU_ACCESS_KEY')
