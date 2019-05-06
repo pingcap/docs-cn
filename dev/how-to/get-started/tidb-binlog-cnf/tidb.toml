@@ -1,0 +1,6 @@
+store="tikv"
+path="127.0.0.1:2379"
+[log.file]
+filename="tidb.log"
+[binlog]
+enable=true
