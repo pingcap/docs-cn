@@ -26,8 +26,12 @@ def upload(local_file, remote_name, ttl=3600):
     #构建鉴权对象
     q = Auth(ACCESS_KEY, SECRET_KEY)
 
+    print('after auth', q)
+
     #生成上传 Token，可以指定过期时间等
     token = q.upload_token(BUCKET_NAME, remote_name, ttl)
+
+    print('after auth', token)
 
     ret, info = put_file(token, remote_name, local_file)
     print("ret", ret)
