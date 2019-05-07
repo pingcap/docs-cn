@@ -24,16 +24,15 @@ jobs:
           name: "Generate PDF"
           command: scripts/generate_pdf.sh
 
-      # - deploy:
-      #     name: "Publish PDF"
-      #     command: |
-      #       sudo bash -c 'echo "119.188.128.5 uc.qbox.me" >> /etc/hosts';
-      #       if [ "${CIRCLE_BRANCH}" == "master" ]; then
-      #         python3 scripts/upload.py output.pdf tidb-manual-cn.pdf;
-      #       fi
-      #       if [ "${CIRCLE_BRANCH}" == "website-preview" ]; then
-      #         python3 scripts/upload.py output.pdf tidb-manual-cn-preview.pdf;
-      #       fi
+      - deploy:
+          name: "Publish PDF"
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              python3 scripts/upload.py output.pdf tidb-manual-cn.pdf;
+            fi
+            if [ "${CIRCLE_BRANCH}" == "website-preview" ]; then
+              python3 scripts/upload.py output.pdf tidb-manual-cn-preview.pdf;
+            fi
 
       - run:
           name: "Copy Generated PDF"
