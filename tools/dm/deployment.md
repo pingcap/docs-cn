@@ -27,7 +27,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
 > **注意：**
 >
-> 请确保使用 `root` 账户登陆中控机。
+> 请确保使用 `root` 账户登录中控机。
 
 根据中控机的操作系统版本，运行相应命令如下：
 
@@ -48,7 +48,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
 > **注意：**
 >
-> 请确保使用 `root` 账户登陆中控机。
+> 请确保使用 `root` 账户登录中控机。
 
 1. 创建 `tidb` 用户。
 
@@ -71,7 +71,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
 4. 生成 SSH 密钥。
 
-    执行以下 `su` 命令，将登陆用户从 `root` 切换至 `tidb`。
+    执行以下 `su` 命令，将登录用户从 `root` 切换至 `tidb`。
 
     ```
     # su - tidb
@@ -108,7 +108,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
 > **注意：**
 >
-> 请确保使用 `tidb` 账户登陆中控机。
+> 请确保使用 `tidb` 账户登录中控机。
 
 1. 打开 `/home/tidb` 目录。
 2. 执行以下命令下载 DM-Ansible。
@@ -123,7 +123,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
 > **注意：**
 >
-> - 请确保使用 `tidb` 账户登陆中控机。
+> - 请确保使用 `tidb` 账户登录中控机。
 > - 您需要使用 `pip` 方式下载安装 Ansible 及其依赖，否则可能会遇到兼容性问题。 DM-Ansible 当前与 Ansible 2.5 或更高版本兼容。
 
 1. 在中控机上安装 DM-Ansible 及其依赖包：
@@ -148,7 +148,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
 > **注意：**
 >
-> 请确保使用 `tidb` 账户登陆至中控机。
+> 请确保使用 `tidb` 账户登录至中控机。
 
 1. 将您部署的目标机器的 IP 地址加至 `hosts.ini` 文件中的 `[servers]` 部分。
 
@@ -188,7 +188,7 @@ ansible-playbook local_prepare.yml
 
 > **注意：**
 >
-> 请确保使用 `tidb` 账户登陆中控机。
+> 请确保使用 `tidb` 账户登录中控机。
 
 打开并编辑 `/home/tidb/dm-ansible/inventory.ini` 文件如下，以管控 DM 集群。
 
