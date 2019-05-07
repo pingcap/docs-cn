@@ -21,7 +21,13 @@ CREATE TABLE person (
 );
 ```
 
-为 JSON 列添加索引之前，首先必须抽取该列为 generated stored column。注意：必须是 generated stored column 上建立的索引才能被优化器使用到, 如果在 generated virtual column 上建立索引，优化器目前将无法使用这个索引，会在后续版本中改进（ISSUE [#5189](https://github.com/pingcap/tidb/issues/5189)）。下面以 `city` generated stored column 为例，你可以添加索引：
+为 JSON 列添加索引之前，首先必须抽取该列为 generated stored column。
+
+> **注意：**
+>
+> 必须是 generated stored column 上建立的索引才能被优化器使用到, 如果在 generated virtual column 上建立索引，优化器目前将无法使用这个索引，会在后续版本中改进（ISSUE [#5189](https://github.com/pingcap/tidb/issues/5189)）。
+
+以 `city` generated stored column 为例，你可以添加索引：
 
 ```sql
 CREATE TABLE person (
@@ -41,7 +47,7 @@ CREATE TABLE person (
 SELECT name, id FROM person WHERE city = 'Beijing';
 ```
 
-如果 `$.city` 路径中无数据，则 `JSON_EXTRACT` 返回 `NULL`。如果你想增加约束：`city` 列必须是`NOT NULL`，则可按照以下方式定义 virtual column：
+如果 `$.city` 路径中无数据，则 `JSON_EXTRACT` 返回 `NULL`。如果想增加约束，`city` 列必须是 `NOT NULL`，则可按照以下方式定义 virtual column：
 
 ```sql
 CREATE TABLE person (
@@ -62,7 +68,7 @@ ERROR 1048 (23000): Column 'city' cannot be null
 
 ## 使用 generated virtual column
 
-TiDB 也支持 generated virtual column , 和 generated store column 不同的是，此列按需生成，并不存储在数据库中，也不占用内存空间，因而是**虚拟**。TiDB 虽然支持在 generated virtual column 上建立索引，优化器目前将无法使用这个索引，所以这个索引将没有意义，会在后续版本中改进（ISSUE [#5189](https://github.com/pingcap/tidb/issues/5189)）。
+TiDB 也支持 generated virtual column，和 generated store column 不同的是，此列按需生成，并不存储在数据库中，也不占用内存空间，因而是**虚拟的**。TiDB 虽然支持在 generated virtual column 上建立索引，优化器目前将无法使用这个索引，所以这个索引将没有意义，会在后续版本中改进（ISSUE [#5189](https://github.com/pingcap/tidb/issues/5189)）。
 
 ```sql
 CREATE TABLE person (
