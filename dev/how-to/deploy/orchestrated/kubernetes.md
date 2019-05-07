@@ -10,10 +10,6 @@ aliases: ['/docs/op-guide/kubernetes/']
 [TiDB Operator](https://github.com/pingcap/tidb-operator) manages TiDB clusters on [Kubernetes](https://kubernetes.io) 
 and automates tasks related to operating a TiDB cluster. It makes TiDB a truly cloud-native database.
 
-> **Warning:**
->
-> Currently, TiDB Operator is work in progress [WIP] and is NOT ready for production. Use at your own risk.
-
 <main class="tabs">
   <input id="tabGoogle" type="radio" name="tabs" value="GoogleContent" checked>
   <label for="tabGoogle">
