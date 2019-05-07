@@ -25,7 +25,7 @@ CREATE TABLE person (
 
 > **注意：**
 >
-> 必须是 generated stored column 上建立的索引才能被优化器使用到, 如果在 generated virtual column 上建立索引，优化器目前将无法使用这个索引，会在后续版本中改进（ISSUE [#5189](https://github.com/pingcap/tidb/issues/5189)）。
+> 必须是 generated stored column 上建立的索引才能被优化器使用到，如果在 generated virtual column 上建立索引，优化器目前将无法使用这个索引，会在后续版本中改进（ISSUE [#5189](https://github.com/pingcap/tidb/issues/5189)）。
 
 以 `city` generated stored column 为例，你可以添加索引：
 
@@ -39,7 +39,7 @@ CREATE TABLE person (
 );
 ```
 
-该表中，`city` 列是一个 **generated stored column**。顾名思义，此列由该表的其他列生成，对此列进行插入或更新操作时，并不能对之赋值。此列按其定义的表达式生成，并存储在数据库中，这样在读取此列时，就可以直接读取，不用再读取其依赖的 address_info 列后再计算得到。`city` 列的索引**存储在数据库中**，并使用和 `varchar(64)` 类的其他索引相同的结构。
+该表中，`city` 列是一个 **generated stored column**。顾名思义，此列由该表的其他列生成，对此列进行插入或更新操作时，并不能对之赋值。此列按其定义的表达式生成，并存储在数据库中，这样在读取此列时，就可以直接读取，不用再读取其依赖的 `address_info` 列后再计算得到。`city` 列的索引**存储在数据库中**，并使用和 `varchar(64)` 类的其他索引相同的结构。
 
 可使用 generated stored column 的索引，以提高如下语句的执行速度：
 
