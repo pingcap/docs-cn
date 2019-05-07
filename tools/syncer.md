@@ -481,6 +481,10 @@ Before replicating data using Syncer, check the following items:
     1 row in set (0.01 sec)
     ```
 
+6. Check the Character Set.
+    
+    TiDB differs from MySQL in [Character Set](/sql/character-set-support.md).
+
 ## Syncer monitoring solution
 
 The `syncer` monitoring solution contains the following components:
