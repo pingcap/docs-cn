@@ -96,7 +96,7 @@ worker-count = 16
 batch = 100
 flavor = "mysql"
 
-# The testing address for pprof. It can also be used by Prometheus to pull Syncer metrics.
+# It can be used by Prometheus to pull Syncer metrics, and is also the pprof address of Syncer.
 status-addr = ":8271"
 
 # If you set its value to true, Syncer stops and exits when it encounters the DDL operation.
