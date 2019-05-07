@@ -98,7 +98,7 @@ worker-count = 16
 batch = 100
 flavor = "mysql"
 
-## pprof 调试地址，Prometheus 也可以通过该地址拉取 Syncer metrics
+## Prometheus 可以通过该地址拉取 Syncer metrics，也是 Syncer 的 pprof 调试地址
 status-addr = ":8271"
 
 ## 如果设置为 true，Syncer 遇到 DDL 语句时就会停止退出
