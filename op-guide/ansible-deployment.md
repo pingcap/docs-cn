@@ -400,7 +400,7 @@ TiKV2-2 ansible_host=172.16.10.5 deploy_dir=/data2/deploy tikv_port=20172 labels
 TiKV3-1 ansible_host=172.16.10.6 deploy_dir=/data1/deploy tikv_port=20171 labels="host=tikv3"
 TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv3"
 
-# 使用 master 分支的 tidb-ansible 部署集群，并且 group_vars/all.yml 中的 tikv_metric_method 设置为 pull，多实例场景时需要额外配置 status 端口，示例如下：
+# 部署 3.0 版本的 TiDB 集群时，多实例场景需要额外配置 status 端口，示例如下：
 # TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv1"
 # TiKV1-2 ansible_host=172.16.10.4 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv1"
 # TiKV2-1 ansible_host=172.16.10.5 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv2"
