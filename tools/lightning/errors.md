@@ -45,7 +45,11 @@ Try the latest version! Maybe there is new speed improvement.
 
 **Solutions**:
 
-1. Delete the corrupted data with `tidb-lightning-ctl --error-checkpoint-destroy=all`, and restart Lightning to import the affected tables again.
+1. Delete the corrupted data with via `tidb-lightning-ctl`, and restart Lightning to import the affected tables again.
+
+    ```sh
+    tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
+    ```
 
 2. Consider using an external database to store the checkpoints (change `[checkpoint] dsn`) to reduce the target database's load.
 
@@ -55,7 +59,11 @@ Try the latest version! Maybe there is new speed improvement.
 
 **Solutions**:
 
-If the error was caused by invalid data source, delete the imported data using `tidb-lightning-ctl --error-checkpoint-destroy=all` and start Lightning again.
+If the error was caused by invalid data source, delete the imported data using `tidb-lightning-ctl` and start Lightning again.
+
+```sh
+tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
+```
 
 See the [Checkpoints control](../../tools/lightning/checkpoints.md#checkpoints-control) section for other options.
 
@@ -65,13 +73,17 @@ See the [Checkpoints control](../../tools/lightning/checkpoints.md#checkpoints-c
 
 **Solutions**:
 
-1. Increase the value of `max-open-engine` setting in `tikv-importer.toml`. This value is typically dictated by the available memory. This could be calculated as:
+1. Increase the value of `max-open-engines` setting in `tikv-importer.toml`. This value is typically dictated by the available memory. This could be calculated as:
 
-    Max Memory Usage ≈ `max-open-engine` × `write-buffer-size` × `max-write-buffer-number`
+    Max Memory Usage ≈ `max-open-engines` × `write-buffer-size` × `max-write-buffer-number`
 
-2. Decrease the value of `table-concurrency` + `index-concurrency` so it is less than `max-open-engine`.
+2. Decrease the value of `table-concurrency` + `index-concurrency` so it is less than `max-open-engines`.
 
-3. Restart `tikv-importer` to forcefully remove all engine files. This also removes all partially imported tables, thus it is required to run `tidb-lightning-ctl --error-checkpoint-destroy=all`.
+3. Restart `tikv-importer` to forcefully remove all engine files (default to `./data.import/`). This also removes all partially imported tables, thus it is required to clear the outdated checkpoints.
+
+    ```sh
+    tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
+    ```
 
 ## cannot guess encoding for input file, please convert to UTF-8 manually
 
