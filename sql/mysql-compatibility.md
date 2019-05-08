@@ -170,7 +170,7 @@ TiDB 支持 MySQL 5.7 中 **绝大多数的 SQL 模式**，以下几种模式除
 
 #### 时区
 
-MySQL 中时区默认为本地时区，依赖于系统内置的当前的时区的规则（例如什么时候开始夏令时等）进行计算；在未[导入时区表数据](https://dev.mysql.com/doc/refman/8.0/en/time-zone-support.html#time-zone-installation)的情况下不能通过时区名称的方式指定时区。
+MySQL 默认使用本地时区，依赖于系统内置的当前的时区规则（例如什么时候开始夏令时等）进行计算；且在未[导入时区表数据](https://dev.mysql.com/doc/refman/8.0/en/time-zone-support.html#time-zone-installation)的情况下不能通过时区名称来指定时区。
 
 TiDB 不需要导入时区表数据也能使用所有时区名称，采用系统当前安装的所有时区规则计算（一般为 `tzdata` 包），且无法通过导入时区表数据的形式修改计算规则。
 
