@@ -1,6 +1,6 @@
 ---
 title: TiDB-Binlog Tutorial 
-summary: Learn to TiDB-Binlog with a simple TiDB cluster.
+summary: Learn to deploy TiDB-Binlog with a simple TiDB cluster.
 category: how-to
 ---
 
