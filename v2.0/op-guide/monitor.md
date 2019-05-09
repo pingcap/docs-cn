@@ -30,7 +30,7 @@ curl http://127.0.0.1:10080/status
 ### PD Server
 PD API 地址： ``http://${host}:${port}/pd/api/v1/${api_name}``。
 
-其中 port 默认为 2379，各类 api_name 详细信息参见 [PD API Doc](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html)。
+其中 port 默认为 2379，各类 api_name 详细信息参见 [PD API Doc](https://download.pingcap.com/pd-api-v1.html)。
 
 通过这个接口可以获取当前所有 TiKV 的状态以及负载均衡信息。其中最重要也是最常用的接口获取 TiKV 集群所有节点状态的接口，下面以一个单个 TiKV 构成的集群为例，说明一些用户需要了解的信息：
 
