@@ -20,7 +20,9 @@ category: tools
 
 DM 在增量同步阶段依赖 `ROW` 格式的 binlog，如果未启用 binlog 及设置正确的 binlog 格式，则不能正常使用 DM 进行数据同步，具体可参见[检查内容](/tools/dm/precheck.md#检查内容)。
 
-> 注意：Aurora 读取器不能开启 binlog，因此不能作为 DM 数据迁移时的上游 master server。
+> **注意：**
+>
+> Aurora 读取器不能开启 binlog，因此不能作为 DM 数据迁移时的上游 master server。
 
 如果需要基于 GTID 进行数据迁移，还需要为 Aurora 集群启用 GTID 支持。
 
