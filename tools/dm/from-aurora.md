@@ -185,7 +185,8 @@ mydumpers:
 query-status
 ```
 
-> 注意：
+> **注意：**
+>
 > 如果查询命令的返回结果中包含以下错误信息，则表明在全量同步的 dump 阶段不能获得相应的 lock：
 >   ```bash
 >   Couldn't acquire global lock, snapshots will not be consistent: Access denied for user 'root'@'%' (using password: YES)
