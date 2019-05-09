@@ -35,7 +35,7 @@
     - [Import Example Database](dev/how-to/get-started/import-example-database.md)
     - [Read Historical Data](dev/how-to/get-started/read-historical-data.md)
     - [TiDB-Binlog Tutorial](dev/how-to/get-started/tidb-binlog.md)
-  - Deploy
+  + Deploy
     - [Hardware Recommendations](dev/how-to/deploy/hardware-recommendations.md)
     + From Binary Tarball
       - [For Testing Environments](dev/how-to/deploy/from-tarball/testing-environment.md)
@@ -51,10 +51,10 @@
       - [Configure Location Awareness](dev/how-to/deploy/geographic-redundancy/location-awareness.md)
     - [TiSpark](dev/how-to/deploy/tispark.md)
     - [Data Migration with Ansible](/tools/dm/deployment.md)
+  + Configure
+    - [Time Zone](sql/time-zone.md)
+    - [Memory Control](sql/tidb-memory-control.md)
   + Secure
-    - [Security Compatibility with MySQL](sql/security-compatibility.md)
-    - [The TiDB Access Privilege System](sql/privilege.md)
-    - [TiDB User Account Management](sql/user-account-management.md)
     + Transport Layer Security (TLS)
       - [Enable TLS For MySQL Clients](sql/encrypted-connections.md)
       - [Enable TLS Between TiDB Components](op-guide/security.md)
@@ -62,11 +62,6 @@
   + Monitor
     - [Overview](op-guide/monitor-overview.md)
     - [Monitor a TiDB Cluster](op-guide/monitor.md)
-    + Key Monitoring Metrics
-      - [Overview](op-guide/dashboard-overview-info.md)
-      - [TiDB](op-guide/tidb-dashboard-info.md)
-      - [PD](op-guide/dashboard-pd-info.md)
-      - [TiKV](op-guide/dashboard-tikv-info.md)
   + Migrate
     - [Overview](op-guide/migration-overview.md)
     + Migrate from MySQL
@@ -84,19 +79,43 @@
       - [Upgrade Data Migration](tools/dm/dm-upgrade.md)
       - [Rolling Updates with Ansible](op-guide/ansible-deployment-rolling-update.md)
   - Troubleshoot
-    - [Common Errors](sql/error.md)
     - [Troubleshoot Cluster Setup](trouble-shooting.md)
     - [Troubleshoot Data Migrations](tools/dm/troubleshooting.md)
     - [Troubleshoot TiDB-Lightning](tools/lightning/errors.md)
-    - [Support Resources](support.md)
-    - [Report an Issue](report-issue.md)
-  + [Contribute](contribute.md)
-    - [Contribute to TiDB](contribute.md#contribute-to-tidb)
-    - [Improve the Docs](contribute.md#improve-the-docs)
 + Reference
+  - [MySQL Compatibility](sql/mysql-compatibility.md)
   + SQL
-    - [Supported Client Drivers](sql/connection-and-APIs.md)
-    - [MySQL Compatibility](sql/mysql-compatibility.md)
+    + SQL Language Structure
+      - [Literal Values](sql/literal-values.md)
+      - [Schema Object Names](sql/schema-object-names.md)
+      - [Keywords and Reserved Words](sql/keywords-and-reserved-words.md)
+      - [User-Defined Variables](sql/user-defined-variables.md)
+      - [Expression Syntax](sql/expression-syntax.md)
+      - [Comment Syntax](sql/comment-syntax.md)
+    + Data Types
+      - [Numeric Types](sql/datatype.md#numeric-types)
+      - [Date and Time Types](sql/datatype.md#date-and-time-types)
+      - [String Types](sql/datatype.md#string-types)
+      - [JSON Types](sql/datatype.md#json-types)
+      - [The ENUM Data Type](sql/datatype.md#the-enum-data-type)
+      - [The SET Type](sql/datatype.md#the-set-type)
+      - [Data Type Default Values](sql/datatype.md#data-type-default-values)
+    + Functions and Operators
+      - [Function and Operator Reference](sql/functions-and-operators-reference.md)
+      - [Type Conversion in Expression Evaluation](sql/type-conversion-in-expression-evaluation.md)
+      - [Operators](sql/operators.md)
+      - [Control Flow Functions](sql/control-flow-functions.md)
+      - [String Functions](sql/string-functions.md)
+      - [Numeric Functions and Operators](sql/numeric-functions-and-operators.md)
+      - [Date and Time Functions](sql/date-and-time-functions.md)
+      - [Bit Functions and Operators](sql/bit-functions-and-operators.md)
+      - [Cast Functions and Operators](sql/cast-functions-and-operators.md)
+      - [Encryption and Compression Functions](sql/encryption-and-compression-functions.md)
+      - [Information Functions](sql/information-functions.md)
+      - [JSON Functions](sql/json-functions.md)
+      - [Aggregate (GROUP BY) Functions](sql/aggregate-group-by-functions.md)
+      - [Miscellaneous Functions](sql/miscellaneous-functions.md)
+      - [Precision Math](sql/precision-math.md)
     + SQL Statements
       - [`ADD COLUMN`](dev/reference/sql/statements/add-column.md)
       - [`ADD INDEX`](dev/reference/sql/statements/add-index.md)
@@ -167,65 +186,39 @@
       - [`TRUNCATE`](dev/reference/sql/statements/truncate.md)
       - [`UPDATE`](dev/reference/sql/statements/update.md)
       - [`USE`](dev/reference/sql/statements/use.md)
-    + Data Types
-      - [Numeric Types](sql/datatype.md#numeric-types)
-      - [Date and Time Types](sql/datatype.md#date-and-time-types)
-      - [String Types](sql/datatype.md#string-types)
-      - [JSON Types](sql/datatype.md#json-types)
-      - [The ENUM Data Type](sql/datatype.md#the-enum-data-type)
-      - [The SET Type](sql/datatype.md#the-set-type)
-      - [Data Type Default Values](sql/datatype.md#data-type-default-values)
     - [Constraints](sql/constraints.md)
-    + Functions and Operators
-      - [Function and Operator Reference](sql/functions-and-operators-reference.md)
-      - [Type Conversion in Expression Evaluation](sql/type-conversion-in-expression-evaluation.md)
-      - [Operators](sql/operators.md)
-      - [Control Flow Functions](sql/control-flow-functions.md)
-      - [String Functions](sql/string-functions.md)
-      - [Numeric Functions and Operators](sql/numeric-functions-and-operators.md)
-      - [Date and Time Functions](sql/date-and-time-functions.md)
-      - [Bit Functions and Operators](sql/bit-functions-and-operators.md)
-      - [Cast Functions and Operators](sql/cast-functions-and-operators.md)
-      - [Encryption and Compression Functions](sql/encryption-and-compression-functions.md)
-      - [Information Functions](sql/information-functions.md)
-      - [JSON Functions](sql/json-functions.md)
-      - [Aggregate (GROUP BY) Functions](sql/aggregate-group-by-functions.md)
-      - [Miscellaneous Functions](sql/miscellaneous-functions.md)
-      - [Precision Math](sql/precision-math.md)
-    + SQL Language Structure
-      - [Literal Values](sql/literal-values.md)
-      - [Schema Object Names](sql/schema-object-names.md)
-      - [Keywords and Reserved Words](sql/keywords-and-reserved-words.md)
-      - [User-Defined Variables](sql/user-defined-variables.md)
-      - [Expression Syntax](sql/expression-syntax.md)
-      - [Comment Syntax](sql/comment-syntax.md)
     - [Generated Columns](sql/generated-columns.md)
-    + Transactions
-      - [Transaction Model](sql/transaction-model.md)
-      - [Isolation Levels](sql/transaction-isolation.md)
-    + Performance
-      - [Overview](sql/sql-optimizer-overview.md)
-      - [Cost-based Optimizer](sql/understanding-the-query-execution-plan.md)
-      - [Introduction to Statistics](sql/statistics.md)
-      - [Optimizer Hints](sql/optimizer-hints.md)
-      - [Tune TiKV](op-guide/tune-tikv.md)
-      - [TiDB Best Practices](https://pingcap.com/blog/2017-07-24-tidbbestpractice/)
-    - [TiDB System Tables](sql/system-database.md)
-    - [Information Schema](sql/information-schema.md)
-    - [TiSpark](tispark/tispark-user-guide.md)
+    - [Character Set](sql/character-set-support.md)
   + Configuration
     + tidb-server
       - [MySQL System Variables](sql/variable.md)
       - [TiDB Specific System Variables](sql/tidb-specific.md)
-      - [Time Zone](sql/time-zone.md)
-      - [Character Set](sql/character-set-support.md)
-      - [Memory Control](sql/tidb-memory-control.md)
-      - [Garbage Collection (GC)](op-guide/gc.md)
       - [Configuration Flags](op-guide/configuration.md)
     + pd-server
       - [Configuration Flags](op-guide/pd-configuration.md)
     + tikv-server
       - [Configuration Flags](op-guide/tikv-configuration.md)
+  + Security
+    - [Security Compatibility with MySQL](sql/security-compatibility.md)
+    - [The TiDB Access Privilege System](sql/privilege.md)
+    - [TiDB User Account Management](sql/user-account-management.md)  
+  + Transactions
+    - [Transaction Model](sql/transaction-model.md)
+    - [Isolation Levels](sql/transaction-isolation.md)
+  + System Databases
+    - [`mysql`](sql/system-database.md)
+    - [`information_schema`](sql/information-schema.md)
+  - [Errors Codes](sql/error.md)
+  - [Supported Client Drivers](sql/connection-and-APIs.md)
+  - [Garbage Collection (GC)](op-guide/gc.md)
+  + Performance
+    - [Overview](sql/sql-optimizer-overview.md)
+    - [Cost-based Optimizer](sql/understanding-the-query-execution-plan.md)
+    - [Introduction to Statistics](sql/statistics.md)
+    - [Optimizer Hints](sql/optimizer-hints.md)
+    - [Tune TiKV](op-guide/tune-tikv.md)
+    - [TiDB Best Practices](https://pingcap.com/blog/2017-07-24-tidbbestpractice/)
+  - [TiSpark](tispark/tispark-user-guide.md)
   + Tools
     - [Syncer](tools/syncer.md)
     - [mydumper](tools/mydumper.md)
@@ -271,12 +264,23 @@
     - [TiKV Control](https://github.com/tikv/tikv/blob/master/docs/tools/tikv-control.md)
     - [TiDB Controller](tools/tidb-controller.md)
     - [Download](tools/download.md)
-  - [Roadmap](ROADMAP.md)
+  + Key Monitoring Metrics
+    - [Overview](op-guide/dashboard-overview-info.md)
+    - [TiDB](op-guide/tidb-dashboard-info.md)
+    - [PD](op-guide/dashboard-pd-info.md)
+    - [TiKV](op-guide/dashboard-tikv-info.md)
   - [Adopters](adopters.md)
 + FAQs
   - [TiDB FAQs](FAQ.md)
   - [TiDB-Lightning FAQs](tools/lightning/faq.md)
   - [Upgrade FAQs](op-guide/upgrade-faq.md)
++ Support
+  - [Support Resources](support.md)
+  - [Report an Issue](report-issue.md)
++ Contribute
+  - [Contribute to TiDB](contribute.md#contribute-to-tidb)
+  - [Improve the Docs](contribute.md#improve-the-docs)
+- [Roadmap](ROADMAP.md)
 + [Releases](releases/rn.md)
   + v3.0
     - [3.0.0 Beta.1](releases/3.0.0-beta.1.md)
