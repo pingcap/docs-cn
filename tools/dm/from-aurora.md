@@ -36,7 +36,9 @@ DM 在增量同步阶段依赖 `ROW` 格式的 binlog，如果未启用 binlog �
 
 如果需要基于 GTID 进行数据迁移，需要将 `gtid-mode` 与 `enforce_gtid_consistency` 均设置为 `ON`。有关如何为 Aurora 集群启用基于 GTID 的数据迁移支持，请参考 [Configuring GTID-Based Replication for an Aurora MySQL Cluster](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/AuroraUserGuide/mysql-replication-gtid.html#mysql-replication-gtid.configuring-aurora)。
 
-> 注意：在 Aurora 管理后台中，`gtid_mode` 参数表示为 `gtid-mode`。
+> **注意：**
+>
+> 在 Aurora 管理后台中，`gtid_mode` 参数表示为 `gtid-mode`。
 
 ## 第 2 步：部署 DM 集群
 
