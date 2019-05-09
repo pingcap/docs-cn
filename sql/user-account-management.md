@@ -101,7 +101,7 @@ mysql> SHOW GRANTS FOR 'admin'@'localhost';
 使用 `DROP USER` 语句可以删除用户，例如：
 
 ```sql
-mysql> DROP USER 'jeffrey'@'localhost';
+mysql> DROP USER 'test'@'localhost';
 ```
 
 这个操作会清除用户在 `mysql.user` 表里面的记录项，并且清除在授权表里面的相关记录。
@@ -121,7 +121,7 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 - 在 `CREATE USER` 创建用户时可以通过 `IDENTIFIED BY` 指定密码：
 
     ```sql
-    CREATE USER 'jeffrey'@'localhost' IDENTIFIED BY 'mypass';
+    CREATE USER 'test'@'localhost' IDENTIFIED BY 'mypass';
     ```
 
 - 为一个已存在的账户修改密码，可以通过 `SET PASSWORD FOR` 或者 `ALTER USER` 语句完成：
@@ -133,7 +133,7 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
     或者
 
     ```sql
-    ALTER USER 'jeffrey'@'localhost' IDENTIFIED BY 'mypass';
+    ALTER USER 'test'@'localhost' IDENTIFIED BY 'mypass';
     ```
 
 ## 忘记 `root` 密码
