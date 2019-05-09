@@ -26,7 +26,9 @@ DM 在增量同步阶段依赖 `ROW` 格式的 binlog，如果未启用 binlog �
 
 如果需要基于 GTID 进行数据迁移，还需要为 Aurora 集群启用 GTID 支持。
 
-> 注意：基于 GTID 的数据迁移需要 MySQL 5.7 (Aurora 2.04.1) 或更高版本。
+> **注意：**
+>
+> 基于 GTID 的数据迁移需要 MySQL 5.7 (Aurora 2.04.1) 或更高版本。
 
 ### 为 Aurora 集群修改 binlog 相关参数
 
