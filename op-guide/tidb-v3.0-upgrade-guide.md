@@ -9,11 +9,15 @@ category: deployment
 
 ## 升级兼容性说明
 
-- loading
+- 不支持在升级后回退至 2.1.x 或更旧版本
+- 从 2.0.6 之前的版本升级到 3.0 之前，需要确认集群中是否存在正在运行中的 DDL 操作，特别是耗时的 `Add Index` 操作，等 DDL 操作完成后再执行升级操作
+- 2.1 及之后版本启用了并行 DDL，早于 2.0.1 版本的集群，无法滚动升级到 3.0，可以选择下面两种方案：
+    - 停机升级，直接从早于 2.0.1 的 TiDB 版本升级到 3.0
+    - 先滚动升级到 2.0.1 或者之后的 2.0.x 版本，再滚动升级到 3.0 版本
 
 ## 注意事项
 
-- loading
+在升级的过程中不要执行 DDL 请求，否则可能会出现行为未定义的问题。
 
 ## 在中控机器上安装 Ansible 及其依赖
 
@@ -44,10 +48,10 @@ Version: 0.9.0
 $ mv tidb-ansible tidb-ansible-bak
 ```
 
-下载最新 tidb-ansible v3.0.0 或者 release-3.0 [**分支**](/op-guide/ansible-deployment.md#在中控机器上下载-tidb-ansible)，默认的文件夹名称为 `tidb-ansible`。
+下载 TiDB 3.0 版本对应 tag 的 tidb-ansible  [**下载 TiDB-Ansible**](/op-guide/ansible-deployment.md#在中控机器上下载-tidb-ansible)，默认的文件夹名称为 `tidb-ansible`。
 
 ```
-$ git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
+$ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
 ```
 
 ## 编辑 inventory.ini 文件和配置文件
@@ -112,6 +116,7 @@ $ ansible-playbook local_prepare.yml
 > 为优化 TiDB 集群组件的运维管理，TiDB 3.0 版本对 `systemd` 模式下的 `PD service` 名称进行了调整。与之前版本相比，滚动升级 TiDB 3.0 版本集群组件的操作略有不同，注意升级前后 `process_supervision` 参数配置须保持一致。
 
 如果 `process_supervision` 变量使用默认的 `systemd` 参数，则通过 `excessive_rolling_update.yml` 滚动升级 TiDB 集群。  
+
 ```
 $ ansible-playbook excessive_rolling_update.yml
 ```
