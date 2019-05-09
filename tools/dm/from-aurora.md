@@ -169,6 +169,7 @@ mydumpers:
             "extra": "address of db instance - pingcap-1.h8emfqdptyc4.us-east-2.rds.amazonaws.com"
         }
         ```
+        
         此时可以选择以下两种处理方法中的任意一种进行处理后，再使用 `start-task` 尝试重新启动任务：
         1. 为用于进行数据迁移的 Aurora 用户移除不被 TiDB 支持的不必要的权限
         2. 如果能确保 Aurora 用户拥有 DM 所需要的权限，可以在 task.yaml 配置文件中添加如下顶级配置项以跳过启用任务时的前置权限检查
