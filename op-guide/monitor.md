@@ -36,7 +36,7 @@ curl http://127.0.0.1:10080/status
 
 - PD API address: `http://${host}:${port}/pd/api/v1/${api_name}`
 - Default port: `2379`
-- Details about API names: see [PD API doc](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html)
+- Details about API names: see [PD API doc](https://download.pingcap.com/pd-api-v1.html)
 
 The PD interface provides the state of all the TiKV servers and the information about load balancing. See the following example for the information about a single-node TiKV cluster:
 
