@@ -72,7 +72,7 @@ DM 在增量同步阶段依赖 `ROW` 格式的 binlog，如果未启用 binlog �
 - dm-master 进程配置文件 `{ansible deploy}/conf/dm-master.toml` 中的配置
 
     ```toml
-    # Master 配置
+    # Master 配置。
 
     [[deploy]]
     source-id = "mysql-replica-01"
