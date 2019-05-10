@@ -9,89 +9,216 @@ aliases: ['/docs/sql/slow-query/']
 
 The slow query log is a record of SQL statements that took a long time to perform.
 
+The slow log format is updated in TiDB v2.1.8 and later. For the slow query log information in versions earlier than v2.1.8, see [this file](https://github.com/pingcap/docs/blob/master/v2.1/sql/slow-query.md).
+
 A problematic SQL statement can increase the pressure on the entire cluster, resulting in a longer response time. To solve this problem, you can use the slow query log to identify the problematic statements and thus improve the performance.
 
-### Obtain the log
+## Obtain the log
 
-By `grep` the keyword `SLOW_QUERY` in the log file of TiDB, you can obtain the logs of statements whose execution time exceeds [slow-threshold](/op-guide/tidb-config-file.md#slow-threshold).
+In TiDB, the statements whose execution time exceeds [slow-threshold](../op-guide/tidb-config-file.md#slow-threshold) are individually output to [slow-query-file](../op-guide/tidb-config-file.md#slow-query-file) by default, the format of the slow log is compatible, and the slow log file can be directly analyzed with `pt-query-digest`. `slow-threshold` can be modified by the configuration file, which is set to 300ms by default. `slow-query-file` is set to `tidb-slow.log` by default.
 
-You can edit `slow-threshold` in the configuration file and its default value is 300ms. If you configure the [slow-query-file](/op-guide/tidb-config-file.md#slow-query-file), all the slow query logs will be written in this file. 
+## Usage example
 
-### Usage example
-
+```sql
+# Time: 2019-03-18-12:10:19.513961 +0800
+# Txn_start_ts: 407078752230047745
+# User: root@127.0.0.1
+# Conn_ID: 1
+# Query_time: 16.479155653
+# Process_time: 5.634 Wait_time: 0.002 Request_count: 2 Total_keys: 20002 Process_keys: 20000
+# DB: test
+# Index_ids: [1]
+# Is_internal: false
+# Digest: 3635413fe0c8e1aa8307f4f018fe1a9325ea0b97452500106d3f6783fcb65e33
+# Num_cop_tasks: 10
+# Cop_proc_avg: 1 Cop_proc_p90: 2 Cop_proc_max: 3 Cop_proc_addr: 10.6.131.78
+# Cop_wait_avg: 5 Cop_wait_p90: 6 Cop_wait_max: 7 Cop_wait_addr: 10.6.131.79
+# Memory_max: 4096
+select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
 ```
-2018/08/20 19:52:08.632 adapter.go:363: [warning] [SLOW_QUERY] cost_time:18.647928814s
-process_time:1m6.768s wait_time:12m11.212s backoff_time:600ms request_count:2058
-total_keys:1869712 processed_keys:1869710 succ:true con:3 user:root@127.0.0.1
-txn_start_ts:402329674704224261 database:test table_ids:[31],index_ids:[1],
-sql:select count(c) from sbtest1 use index (k_1)
+
+## Fields description
+
+* `Time`: The print time of log.
+* `Txn_start_ts`: The start timestamp of the transaction (transaction ID). You can use this value to `grep` the transaction-related logs.
+* `User`: The name of the user who executes this statement.
+* `Conn_ID`: The Connection ID (session ID). For example, you can use the keyword `con:3` to `grep` the log whose session ID is 3.
+* `Query_time`: Indicates the execution time of this statement. Only the statement whose execution time exceeds slow-threshold outputs this log (the unit is second). The unit of all the following time fields is second.
+* `Process_time`: The total processing time of this SQL statement in TiKV. Because the data is sent to TiKV concurrently, this value may exceed `Query_time`.
+* `Wait_time`: The total waiting time of this statement in TiKV. Because the Coprocessor of TiKV runs a limited number of threads, requests might queue up when all threads of Coprocessor are working. When a request in the queue takes a long time to process, the waiting time of the subsequent requests will increase.
+* `Backoff_time`: The waiting time before retry when this statement encounters errors that require a retry. The common errors as such include: `lock occurs`, `Region split`, and `tikv server is busy`.
+* `Request_count`: The number of Coprocessor requests that this statement sends.
+* `Total_keys`: The number of keys that Coprocessor has scanned.
+* `Process_keys`: The number of keys that Coprocessor has processed. Compared with `total_keys`, `processed_keys` does not include the old versions of MVCC. A great difference between `processed_keys` and `total_keys` indicates that many old versions exist.
+* `DB`: The current database.
+* `Index_ids`: The IDs of the indexes involved in the statement.
+* `Is_internal`: Whether the SQL statement is TiDB internal. `true` indicates that the SQL statement is executed internally in TiDB, such as Analyze, load variables, etc.; `false` indicates the SQL statement is executed by the user.
+* `Digest`: The fingerprint of the SQL statement.
+* `Memory_max`: Indicates the maximum memory space used during the execution period of this SQL statement (the unit is byte).
+* `Num_cop_tasks`: The number of [cop-tasks](/sql/understanding-the-query-execution-plan.md).
+* `Cop_proc_avg`: The average execution time of cop-tasks.
+* `Cop_proc_p90`: The P90 execution time of cop-tasks.
+* `Cop_proc_max`: The maximum execution time of cop-tasks.
+* `Cop_proc_addr`: The address of the cop-task with the longest execution time.
+* `Cop_wait_avg`: The average waiting time of cop-tasks.
+* `Cop_wait_p90`: The P90 waiting time of cop-tasks.
+* `Cop_wait_max`: The maximum waiting time of cop-tasks.
+* `Cop_wait_addr`: The address of the cop-task whose waiting time is the longest.
+* `Query`: A SQL statement. `Query` is not printed in the slow log, but the corresponding field is called `Query` after the slow log is mapped to the memory table.
+
+## Memory mapping in slow log
+
+To locate slow queries using SQL queries, the contents of slow logs in TiDB are parsed and then mapped to the `INFORMATION_SCHEMA.SLOW_QUERY` table. The column names in the table and the field names recorded in slow logs are in a one-to-one correspondence relationship.
+
+```sql
+tidb > show create table INFORMATION_SCHEMA.SLOW_QUERY;
++------------+-------------------------------------------------------------+
+| Table      | Create Table                                                |
++------------+-------------------------------------------------------------+
+| SLOW_QUERY | CREATE TABLE `SLOW_QUERY` (                                 |
+|            |   `Time` timestamp UNSIGNED NULL DEFAULT NULL,              |
+|            |   `Txn_start_ts` bigint(20) UNSIGNED DEFAULT NULL,          |
+|            |   `User` varchar(64) DEFAULT NULL,                          |
+|            |   `Conn_ID` bigint(20) UNSIGNED DEFAULT NULL,               |
+|            |   `Query_time` double UNSIGNED DEFAULT NULL,                |
+|            |   `Process_time` double UNSIGNED DEFAULT NULL,              |
+|            |   `Wait_time` double UNSIGNED DEFAULT NULL,                 |
+|            |   `Backoff_time` double UNSIGNED DEFAULT NULL,              |
+|            |   `Request_count` bigint(20) UNSIGNED DEFAULT NULL,         |
+|            |   `Total_keys` bigint(20) UNSIGNED DEFAULT NULL,            |
+|            |   `Process_keys` bigint(20) UNSIGNED DEFAULT NULL,          |
+|            |   `DB` varchar(64) DEFAULT NULL,                            |
+|            |   `Index_ids` varchar(100) DEFAULT NULL,                    |
+|            |   `Is_internal` tinyint(1) UNSIGNED DEFAULT NULL,           |
+|            |   `Digest` varchar(64) DEFAULT NULL,                        |
+|            |   `Query` varchar(4096) DEFAULT NULL                        |
+|            | ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin |
++------------+-------------------------------------------------------------+
 ```
 
-### Fields description
+By parsing slow logs in TiDB in real time, the contents in the `INFORMATION_SCHEMA.SLOW_QUERY` table are obtained. Every time you query this table, the contents in slow log file are read and then parsed.  
 
-This section describes fields in the slow query log based on the usage example above.
+## Query example of SLOW_QUERY
 
-#### `cost_time`
+The following examples show how to identify a slow query by querying the SLOW_QUERY table.
 
-The execution time of this statement. Only the statements whose execution time exceeds [slow-threshold](/op-guide/tidb-config-file.md#slow-threshold) output this log.
+### Top-N slow queries 
 
-#### `process_time`
+Query the Top 2 slow queries of the users. `Is_internal=false` means excluding slow queries inside TiDB and only querying slow queries from users.
 
-The total processing time of this statement in TiKV. Because data is sent to TiKV concurrently for execution, this value might exceed `cost_time`.
+```sql
+/* Query all the SQL statements executed by the user and sort them by execution run-time */
+tidb > select `Query_time`, query from INFORMATION_SCHEMA.`SLOW_QUERY` where `Is_internal`=false order by `Query_time` desc limit 2;
++--------------+------------------------------------------------------------------+
+| Query_time   | query                                                            |
++--------------+------------------------------------------------------------------+
+| 12.77583857  | select * from t_slim, t_wide where t_slim.c0=t_wide.c0;          |
+|  0.734982725 | select t0.c0, t1.c1 from t_slim t0, t_wide t1 where t0.c0=t1.c0; |
++--------------+------------------------------------------------------------------+
+2 rows in set
+Time: 0.012s
+```
 
-#### `wait_time`
+### Query the Top-N slow query of the `test` user
 
-The total waiting time of this statement in TiKV. Because the Coprocessor of TiKV runs a limited number of threads, requests might queue up when all threads of Coprocessor are working. When a request in the queue takes a long time to process, the waiting time of the subsequent requests will increase.
+```sql
+/* Query the SQL statement executed by the `test` user, and sort these statements by execution time */
+tidb > select `Query_time`, query,  user from INFORMATION_SCHEMA.`SLOW_QUERY` where `Is_internal`=false and user like "test%" order by `Query_time` desc limit 2;
++-------------+------------------------------------------------------------------+----------------+
+| Query_time  | query                                                            | user           |
++-------------+------------------------------------------------------------------+----------------+
+| 0.676408014 | select t0.c0, t1.c1 from t_slim t0, t_wide t1 where t0.c0=t1.c1; | test@127.0.0.1 |
++-------------+------------------------------------------------------------------+----------------+
+1 row in set
+Time: 0.014s
+```
 
-#### `backoff_time`
+### Query slow queries with the same SQL fingerprints
 
-The waiting time before retry when this statement encounters errors that require a retry. The common errors as such include: lock occurs, Region split, the TiKV server is busy.
+If you want to query the slow query with the same SQL fingerprint query after querying the Top-N SQL statement, you can use the fingerprint as the filter condition.
 
-#### `request_count`
+```sql
+tidb > select query_time, query,digest from INFORMATION_SCHEMA.`SLOW_QUERY` where `Is_internal`=false order by `Query_time` desc limit 1;
++-------------+-----------------------------+------------------------------------------------------------------+
+| query_time  | query                       | digest                                                           |
++-------------+-----------------------------+------------------------------------------------------------------+
+| 0.302558006 | select * from t1 where a=1; | 4751cb6008fda383e22dacb601fde85425dc8f8cf669338d55d944bafb46a6fa |
++-------------+-----------------------------+------------------------------------------------------------------+
+1 row in set
+Time: 0.007s
+tidb > select query, query_time from INFORMATION_SCHEMA.`SLOW_QUERY` where digest="4751cb6008fda383e22dacb601fde85425dc8f8cf669338d55d944bafb46a6fa";
++-----------------------------+-------------+
+| query                       | query_time  |
++-----------------------------+-------------+
+| select * from t1 where a=1; | 0.302558006 |
+| select * from t1 where a=2; | 0.401313532 |
++-----------------------------+-------------+
+2 rows in set
+```
 
-The number of Coprocessor requests that this statement sends.
+## Query the slow query with pseudo `stats`
 
-#### `total_keys`
+```sql
+tidb > select query, query_time, stats from INFORMATION_SCHEMA.`SLOW_QUERY` where is_internal=false and stats like('%pseudo%');
++-----------------------------+-------------+---------------------------------+
+| query                       | query_time  | stats                           |
++-----------------------------+-------------+---------------------------------+
+| select * from t1 where a=1; | 0.302558006 | t1:pseudo                       |
+| select * from t1 where a=2; | 0.401313532 | t1:pseudo                       |
+| select * from t1 where a>2; | 0.602011247 | t1:pseudo                       |
+| select * from t1 where a>3; | 0.50077719  | t1:pseudo                       |
+| select * from t1 join t2;   | 0.931260518 | t1:407872303825682445,t2:pseudo |
++-----------------------------+-------------+---------------------------------+
+```
 
-The number of keys that Coprocessor has scanned.
+#### Parse other TiDB slow log files
 
-#### `processed_keys`
+Currently, to query `INFORMATION_SCHEMA.SLOW_QUERY`, only the slow log file name of `slow-query-file` in the configuration file is parsed, and it is set to "tidb-slow.log" by default. But to parse other log files, you can set the `tidb_slow_query_file` session variable to a specific file path, and then query `INFORMATION_SCHEMA.SLOW_QUERY` to parse the slow log file according to the set path.
 
-The number of keys that Coprocessor has processed. Compared with `total_keys`, `processed_keys` does not include the old versions of MVCC. A great difference between `processed_keys` and `total_keys` indicates that the number of old versions are relatively large.
+```sql
+/* Set the slow log file path to facilitate so that other slow log files will be easy to be parsed. The scope of the tidb_slow_query_file variable is session. */
+tidb > set tidb_slow_query_file="/path-to-log/tidb-slow.log"
+Query OK, 0 rows affected
+Time: 0.001s
+```
 
-#### `succ`
+Currently, `INFORMATION_SCHEMA.SLOW_QUERY` only supports parsing a slow log file. If a slow log file exceeds a certain size and is logrotated into multiple files, querying `INFORMATION_SCHEMA.SLOW_QUERY` will only parse one file.
 
-Whether the execution of the request succeeds or not.
+### Parse TiDB slow logs with `pt-query-digest`
 
-#### `con`
+TiDB slow logs can be analyzed by `pt-query-digest`. It is recommended to use `pt-query-digest` 3.0.13 or later. For example:
 
-Connection ID (session ID). For example, you can use the keyword `con:3` to `grep` the log whose session ID is 3.
+```shell
+$pt-query-digest --version
+pt-query-digest 3.0.13
 
-#### `user`
+$ pt-query-digest --report tidb-slow.log
+# 320ms user time, 20ms system time, 27.00M rss, 221.32M vsz
+# Current date: Mon Mar 18 13:18:51 2019
+# Hostname: localhost.localdomain
+# Files: tidb-slow.log
+# Overall: 1.02k total, 21 unique, 0 QPS, 0x concurrency _________________
+# Time range: 2019-03-18-12:22:16 to 2019-03-18-13:08:52
+# Attribute          total     min     max     avg     95%  stddev  median
+# ============     ======= ======= ======= ======= ======= ======= =======
+# Exec time           218s    10ms     13s   213ms    30ms      1s    19ms
+# Query size       175.37k       9   2.01k  175.89  158.58  122.36  158.58
+# Commit time         46ms     2ms     7ms     3ms     7ms     1ms     3ms
+# Conn ID               71       1      16    8.88   15.25    4.06    9.83
+# Process keys     581.87k       2 103.15k  596.43  400.73   3.91k  400.73
+# Process time         31s     1ms     10s    32ms    19ms   334ms    16ms
+# Request coun       1.97k       1      10    2.02    1.96    0.33    1.96
+# Total keys       636.43k       2 103.16k  652.35  793.42   3.97k  400.73
+# Txn start ts     374.38E       0  16.00E 375.48P   1.25P  89.05T   1.25P
+# Wait time          943ms     1ms    19ms     1ms     2ms     1ms   972us
+# Write keys           978       2     477   69.86  463.90  161.64    1.96
+# Write size        89.12k     138  43.67k   6.37k  42.34k  14.76k  136.99
+.
+.
+.
+```
 
-The name of the user who executes this statement.
-
-#### `txn_start_ts`
-
-The start timestamp of the transaction, that is, the ID of the transaction. You can use this value to `grep` the transaction-related logs.
-
-#### `database`
-
-The current database.
-
-#### `table_ids`
-
-The IDs of the tables involved in the statement.
-
-#### `index_ids`
-
-The IDs of the indexes involved in the statement.
-
-#### `sql`
-
-The SQL statement.
-
-### Identify problematic SQL statements
+## Identify problematic SQL statements
 
 Not all of the `SLOW_QUERY` statements are problematic. Only those whose `process_time` is very large will increase the pressure on the entire cluster. 
 

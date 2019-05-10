@@ -60,7 +60,8 @@ Configuration about log.
 ### `slow-query-file`
 
 - The file name of the slow query log
-- Default: ""
+- Default: "tidb-slow.log"
+- The format of the slow log is updated in TiDB v2.1.8, so the slow log is output to the slow log file separately. In versions before v2.1.8, this variable is set to "" by default.
 - After you set it, the slow query log is output to this file separately
 
 ### `slow-threshold`
@@ -145,13 +146,13 @@ Configuration about performance.
 
 - The number of CPUs used by TiDB
 - Default: 0
-- The default "0" indicates using all CPUs in the machine; you can also set it to `max-procs`, and then TiDB uses `max-procs` CPUs
+- The default "0" indicates using all CPUs in the machine; you can also set it to `n`, and then TiDB uses `n` CPUs.
 
 ### `stmt-count-limit`
 
 - The maximum number of statements allowed in a single TiDB transaction
 - Default: 5000
-- If a transaction does not roll back or commit after the number of statements exceeds `stmt-count-limit`, TiDB returns the `statement count 5001 exceeds the transaction limitation, autocommit = false` error
+- If a transaction does not roll back or commit after the number of statements exceeds `stmt-count-limit`, TiDB returns the `statement count 5001 exceeds the transaction limitation, autocommit = false` error.
 
 ### `tcp-keep-alive`
 
