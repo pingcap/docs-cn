@@ -6,80 +6,13 @@ category: user guide
 
 # Privilege Management
 
-TiDB's privilege management system is implemented according to the privilege management system in MySQL. It supports most of the syntaxes and privilege types in MySQL. If you find any inconsistency with MySQL, feel free to [open an issue](https://github.com/pingcap/tidb/issues/new/choose).
+TiDB supports MySQL 5.7's privilege management system, including the syntax and privilege types. Starting with TiDB 3.0, support for SQL Roles is also available.
 
-## Examples
+This document introduces privilege-related TiDB operations, privileges required for TiDB operations and implementation of the privilege system.
 
-### User account operation
+## Privilege-related operations
 
-TiDB user account names consist of a user name and a host name. The account name syntax is `'user_name'@'host_name'`.
-
-- The `user_name` is case sensitive.
-- The `host_name` can be a host name or an IP address. The `%` and `_` wildcard characters are permitted in host name or IP address values. For example, a host value of `'%'` matches any host name and `'192.168.1.%'` matches every host on a subnet.
-
-#### Create user
-
-The `CREATE USER` statement creates new MySQL accounts.
-
-```sql
-CREATE USER 'test'@'127.0.0.1' IDENTIFIED BY 'xxx';
-```
-
-If the host name is not specified, you can log in from any IP address. If the password is not specified, it is empty by default:
-
-```sql
-CREATE USER 'test';
-```
-
-Equals:
-
-```sql
-CREATE USER 'test'@'%' IDENTIFIED BY '';
-```
-
-**Required Privilege:** To use `CREATE USER`, you must have the global `CREATE USER` privilege.
-
-#### Change the password
-
-You can use the `SET PASSWORD` syntax to assign or modify a password to a user account.
-
-```sql
-SET PASSWORD FOR 'root'@'%' = 'xxx';
-```
-
-**Required Privilege:** Operations that assign or modify passwords are permitted only to users with the `CREATE USER` privilege.
-
-#### Drop user
-
-The `DROP USER` statement removes one or more MySQL accounts and their privileges. It removes the user record entries in the `mysql.user` table and the privilege rows for the account from all grant tables.
-
-```sql
-DROP USER 'test'@'%';
-```
-
-**Required Privilege:** To use `DROP USER`, you must have the global `CREATE USER` privilege.
-
-#### Reset the root password
-
-If you forget the root password, you can skip the privilege system and use the root privilege to reset the password.
-
-To reset the root password,
-
-1. Start TiDB with a special startup option (root privilege required)：
-
-    ```bash
-    sudo ./tidb-server -skip-grant-table=true
-    ```
-
-2. Use the root account to log in and reset the password:
-
-    ```base
-    mysql -h 127.0.0.1 -P 4000 -u root
-    ```
-
-### Privilege-related operations
-
-#### Grant privileges
+### Grant privileges
 
 The `GRANT` statement grants privileges to the user accounts.
 
@@ -152,7 +85,7 @@ mysql> SELECT user,host,db FROM mysql.db WHERE user='genius';
 
 In this example, because of the `%` in `te%`, all the databases starting with `te` are granted the privilege.
 
-#### Revoke privileges
+### Revoke privileges
 
 The `REVOKE` statement enables system administrators to revoke privileges from the user accounts.
 
@@ -199,7 +132,7 @@ mysql> CREATE TABLE `select` (id int);
 Query OK, 0 rows affected (0.27 sec)
 ```
 
-#### Check privileges granted to user
+### Check privileges granted to users
 
 You can use the `SHOW GRANTS` statement to see what privileges are granted to a user. For example:
 
@@ -228,9 +161,124 @@ To be more precise, you can check the privilege information in the `Grant` table
     SELECT table_priv FROM mysql.tables_priv WHERE user='test' AND host='%' AND db='db1';
     ```
 
-### Implementation of the privilege system
+## Privileges required for TiDB operations
 
-#### Grant table
+You can check privileges of TiDB users in the `INFORMATION_SCHEMA.USER_PRIVILEGES` table.
+
+| Privilege type       |  Privilege variable    | Privilege description                 |
+| :------------ | :------------ | :---------------------- |
+| ALL            | `AllPriv`        | All the privileges                 |
+| Drop           | `DropPriv`      | Deletes a schema or table        |
+| Index          | `IndexPriv`      | Creates or deletes an index          |
+| Alter          | `AlterPriv`      | Executes the `ALTER` statement          |
+| Super          | `SuperPriv`      | All the privileges                 |
+| Grant          | `GrantPriv`      | Grants another user a privilege         |
+| Create         | `CreatePriv`     | Creates a schema or table        |
+| Select         | `SelectPriv`     | Reads the table data               |
+| Insert         | `InsertPriv`     | Inserts data to a table             |
+| Update         | `UpdatePriv`     | Updates the table data             |
+| Delete         | `DeletePriv`     | Deleted the table data             |
+| Trigger        | `TriggerPriv`    | /                 |
+| Process        | `ProcessPriv`    | Displays the running task       |
+| Execute        | `ExecutePriv`    | Executes the `EXECUTE` statement       |
+| Drop Role      | `DropRolePriv`   | Executes `DROP ROLE`           |
+| Show View      | `ShowViewPriv`   | Executes `SHOW CREATE VIEW`    |
+| References     | `ReferencesPriv` | /                |
+| Create View    | `CreateViewPriv` | Creates a View                 |
+| Create User    | `CreateUserPriv` | Creates a user                |
+| Create Role    | `CreateRolePriv` | Executes `CREATE ROLE`         |
+| Show Databases | `ShowDBPriv`     | Shows the table status in the database |
+
+### ALTER
+
+- For all `ALTER` statements, users must have the `ALTER` privilege for the corresponding table.
+- For statements except `ALTER...DROP` and `ALTER...RENAME TO`, users must have the `INSERT` and `CREATE` privileges for the corresponding table.
+- For the `ALTER...DROP` statement, users must have the `DROP` privilege for the corresponding table.
+- For the `ALTER...RENAME TO` statement, users must have the `DROP` privilege for the table before renaming, and the `CREATE` and `INSERT` privileges for the table after renaming.
+
+> **Note:**
+>
+> In MySQL 5.7 documentation, users need `INSERT` and `CREATE` privileges to perform the `ALTER` operation on a table. But in reality for MySQL 5.7.25, only the `ALTER` privilege is required in this case. Currently, the `ALTER` privilege in TiDB is consistent with the actual behavior in MySQL.
+
+### CREATE DATABASE
+
+Requires the `CREATE` privilege for the database.
+
+### CREATE INDEX
+
+Requires the `INDEX` privilege for the table.
+
+### CREATE TABLE
+
+Requires the `CREATE` privilege for the table.
+
+To execute the `CREATE TABLE...LIKE...` statement, the `SELECT` privilege for the table is required.
+
+### CREATE VIEW
+
+Requires the `CREATE VIEW` privilege.
+
+> **Note:**
+>
+> If the current user is not the user that creates the View, both the `CREATE VIEW` and `SUPER` privileges are required.
+
+### DROP DATABASE
+
+Requires the `DROP` privilege for the table.
+
+### DROP INDEX
+
+Requires the `INDEX` privilege for the table.
+
+### DROP TABLES
+
+Requires the `DROP` privilege for the table.
+
+### TRUNCATE TABLE
+
+Requires the `DROP` privilege for the table.
+
+### RENAME TABLE
+
+Requires the `ALTER` and `DROP` privileges for the table before renaming and the `CREATE` and `INSERT` privileges for the table after renaming.
+
+### ANALYZE TABLE
+
+Requires the `INSERT` and `SELECT` privileges for the table.
+
+### SHOW
+
+`SHOW CREATE TABLE` requires any single privilege to the table.
+
+`SHOW CREATE VIEW` requires the `SHOW VIEW` privilege.
+
+### CREATE ROLE/USER
+
+`CREATE ROLE` requires the `CREATE ROLE` privilege.
+
+`CREATE USER` requires the `CREATE USER` privilege.
+
+### DROP ROLE/USER
+
+`DROP ROLE` requires the `DROP ROLE` privilege.
+
+`DROP USER` requires the `CREATE USER` privilege.
+
+### ALTER USER
+
+Requires the `CREATE USER` privilege.
+
+### GRANT
+
+Requires the `GRANT` privilege with the privileges granted by `GRANT`.
+
+### REVOKE
+
+Requires the `SUPER` privilege.
+
+## Implementation of the privilege system
+
+### Grant table
 
 The following system tables are special because all the privilege-related data is stored in them:
 
@@ -269,7 +317,7 @@ However, the recommended usage is with `DROP USER`:
 DROP USER 'test';
 ```
 
-#### Connection verification
+### Connection verification
 
 When the client sends a connection request, TiDB server will verify the login operation. TiDB server first checks the `mysql.user` table. If a record of `User` and `Host` matches the connection request, TiDB server then verifies the `Password`.
 
@@ -277,7 +325,7 @@ User identity is based on two pieces of information: `Host`, the host that initi
 
 `User`+`Host` may match several rows in `user` table. To deal with this scenario, the rows in the `user` table are sorted. The table rows will be checked one by one when the client connects; the first matched row will be used to verify. When sorting, Host is ranked before User.
 
-#### Request verification
+### Request verification
 
 When the connection is successful, the request verification process checks whether the operation has the privilege.
 
@@ -291,11 +339,11 @@ Data in the `user` and `db` tables is also sorted when loaded into memory.
 
 The use of `%` in `tables_priv` and `columns_priv` is similar, but column value in `Db`, `Table_name` and `Column_name` cannot contain `%`. The sorting is also similar when loaded.
 
-#### Time of effect
+### Time of effect
 
-When TiDB starts, some privilege-check tables are loaded into memory, and then the cached data is used to verify the privileges. The system will periodically synchronize the `grant` table from database to cache. Time of effect is determined by the synchronization cycle. Currently, the value is 5 minutes.
+When TiDB starts, some privilege-check tables are loaded into memory, and then the cached data is used to verify the privileges. Executing privilege management statements such as `GRANT`, `REVOKE`, `CREATE USER`, `DROP USER` will take effect immediately.
 
-If an immediate effect is needed when you modify the `grant` table, you can run the following command:
+Manually editing tables such as `mysql.user` with statements such as `INSERT`, `DELETE`, `UPDATE` will not take effect immediately. This behavior is compatible with MySQL, and privilege cache can be updated with the following statement:
 
 ```sql
 FLUSH PRIVILEGES;
@@ -316,26 +364,3 @@ Currently, the following privileges are not checked yet because they are less fr
 > **Note:**
 >
 > The column-level privilege is not implemented at this stage.
-
-## `CREATE USER` statement
-
-```sql
-CREATE USER [IF NOT EXISTS]
-    user [auth_spec] [, user [auth_spec]] ...
-auth_spec: {
-    IDENTIFIED BY 'auth_string'
-  | IDENTIFIED BY PASSWORD 'hash_string'
-}
-```
-
-For more information about the user account, see [TiDB user account management](../sql/user-account-management.md).
-
-- `IDENTIFIED BY 'auth_string'`
-
-    It is used to set the login password. `auth_string` is encrypted by TiDB and stored in the `mysql.user` table.
-
-- `IDENTIFIED BY PASSWORD 'hash_string'`
-
-    It is also used to set the login password. `hash_string` is a 41-character string similar to `*EBE2869D7542FCE37D1C9BBC724B97BDE54428F1`, which is directly stored in the `mysql.user` table by TiDB. To get this string, use `SELECT password('auth_string')` to encrypt your password.
-
-    TiDB supports the `mysql_native_password` authentication mechanism based on SHA-1, which is the default mechanism used in MySQL 5.7. Support for additional authentication mechanisms is planned in the future.

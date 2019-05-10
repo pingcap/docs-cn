@@ -61,7 +61,7 @@ mysql> SHOW GRANTS FOR 'admin'@'localhost';
 To remove a user account, use the `DROP USER` statement:
 
 ```sql
-mysql> DROP USER 'jeffrey'@'localhost';
+mysql> DROP USER 'test'@'localhost';
 ```
 
 ## Reserved user accounts
@@ -76,23 +76,46 @@ Currently, TiDB does not support setting account resource limits.
 
 TiDB stores passwords in the `mysql.user` system database. Operations that assign or update passwords are permitted only to users with the `CREATE USER` privilege, or, alternatively, privileges for the `mysql` database (`INSERT` privilege to create new accounts, `UPDATE` privilege to update existing accounts).  
 
-To assign a password when you create a new account, use `CREATE USER` and include an `IDENTIFIED BY` clause: 
+- To assign a password when you create a new account, use `CREATE USER` and include an `IDENTIFIED BY` clause: 
 
-```sql
-CREATE USER 'jeffrey'@'localhost' IDENTIFIED BY 'mypass';
-```
+    ```sql
+    CREATE USER 'test'@'localhost' IDENTIFIED BY 'mypass';
+    ```
 
-To assign or change a password for an existing account, use `SET PASSWORD FOR` or `ALTER USER`:
+- To assign or change a password for an existing account, use `SET PASSWORD FOR` or `ALTER USER`:
 
-```sql
-SET PASSWORD FOR 'root'@'%' = 'xxx';
-```
+    ```sql
+    SET PASSWORD FOR 'root'@'%' = 'xxx';
+    ```
 
-Or:
+    Or:
 
-```sql
-ALTER USER 'jeffrey'@'localhost' IDENTIFIED BY 'mypass';
-```
+    ```sql
+    ALTER USER 'test'@'localhost' IDENTIFIED BY 'mypass';
+    ```
+
+## Forget the `root` password
+
+1. Modify the configuration file by adding `skip-grant-table` in the `security` part:
+
+    ```
+    [security]
+    skip-grant-table = true
+    ```
+
+2. Restart TiDB using the modified configuration (the `root` privilege is required):
+
+    ```bash
+    sudo ./tidb-server -skip-grant-table=true -store=tikv -path=...
+    ```
+
+    By using the `skip-grant-table` configuration parameter, TiDB skips the privilege system.
+
+3. Use `root` to log in and then modify the password:
+
+    ```bash
+    mysql -h 127.0.0.1 -P 4000 -u root
+    ```
 
 ## `FLUSH PRIVILEGES` 
 
