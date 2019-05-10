@@ -76,13 +76,14 @@ $if(listings)$
     frame=single,
     showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
     showstringspaces=false,          % underline spaces within strings only
+    columns=flexible,
     breaklines=true,
     postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{gray}\hookrightarrow\space}}
 }
 
 $endif$
 $if(lhs)$
-\lstnewenvironment{code}{\lstset{language=Haskell,basicstyle=\small\ttfamily}}{}
+\lstnewenvironment{code}{\lstset{columns=flexible,breaklines=true,language=Haskell,basicstyle=\small\ttfamily}}{}
 $endif$
 $if(highlighting-macros)$
 $highlighting-macros$
