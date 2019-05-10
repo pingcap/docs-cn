@@ -111,7 +111,7 @@ def replace_link_wrap(chapter, name):
                     if _rel_path == fpath:
                         frag = '#' + file_link_name[fpath]
             return '[%s](%s)' % (link_name, frag)
-        elif link.endswith('.png'):
+        elif link.endswith('.png') or link.endswith('.jpeg') or link.endswith('.svg') or link.endswith('.gif') or link.endswith('.jpg'):
             # special handing for pic
             img_link = re.sub(r'[\.\/]*media\/', './media/', link, count=0, flags=0)
             # print('****************', img_link)
