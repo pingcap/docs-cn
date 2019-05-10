@@ -23,7 +23,7 @@ TiKV implements `Column Families` (CF) from RocksDB.
     
     - The `default` CF stores the Raft log. The corresponding parameters are in `[raftdb.defaultcf]`.
 
-Each CF has a separate `block cache` to cache data blocks to accelerate the data reading speed in RocksDB. You can configure the size of the `block cache` by setting the `block-cache-size` parameter. The bigger the `block-cache-size`, the more hot data can be cached, and the easier to read data, in the meantime, the more system memory will be occupied.
+By default, all CFs share one block cache instance. You can configure the size of the cache by setting the `capacity` parameter under `[storage.block-cache]`. The bigger the block cache, the more hot data can be cached, and the easier to read data, in the meantime, the more system memory is occupied. To use a separate block cache instance for each CF, set `shared=false` under `[storage.block-cache]`, and configure individual block cache size for each CF. For example, you can configure the size of `write` CF by setting the `block-cache-size` parameter under `[rocksdb.writecf]`.
 
 Each CF also has a separate `write buffer`. You can configure the size by setting the `write-buffer-size` parameter.
 
@@ -61,6 +61,30 @@ log-level = "info"
 # higher. Run `top -H -p tikv-pid` and if the threads named `sched-worker-pool` are busy, set the value of parameter
 # `scheduler-worker-pool-size` higher and increase the number of write threads.
 # scheduler-worker-pool-size = 4
+
+[storage.block-cache]
+## Whether to create a shared block cache for all RocksDB column families.
+##
+## Block cache is used by RocksDB to cache uncompressed blocks. Big block cache can speed up read.
+## It is recommended to turn on shared block cache. Since only the total cache size need to be
+## set, it is easier to configure. In most cases, it should be able to auto-balance cache usage
+## between column families with standard LRU algorithm.
+##
+## The rest of config in the storage.block-cache session is effective only when shared block cache
+## is on.
+# shared = true
+
+## Size of the shared block cache. Normally it should be tuned to 30%-50% of system's total memory.
+## When the config is not set, it is decided by the sum of the following fields or their default
+## value:
+##   * rocksdb.defaultcf.block-cache-size or 25% of system's total memory
+##   * rocksdb.writecf.block-cache-size   or 15% of system's total memory
+##   * rocksdb.lockcf.block-cache-size    or  2% of system's total memory
+##   * raftdb.defaultcf.block-cache-size  or  2% of system's total memory
+##
+## To deploy multiple TiKV nodes on a single physical machine, configure this parameter explicitly.
+## Otherwise, the OOM problem might occur in TiKV.
+# capacity = "1GB"
 
 [pd]
 # PD address
@@ -184,11 +208,6 @@ max-bytes-for-level-base = "512MB"
 # and level0. `target-file-size-base` is used to control the size of a single sst file of level1-level6.
 target-file-size-base = "32MB"
 
-# When the parameter is not configured, TiKV sets the value to 40% of the system memory size. To deploy multiple
-# TiKV nodes on one physical machine, configure this parameter explicitly. Otherwise, the OOM problem might occur
-# in TiKV.
-# block-cache-size = "1GB"
-
 [rocksdb.writecf]
 # Set it the same as `rocksdb.defaultcf.compression-per-level`.
 compression-per-level = ["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
@@ -201,12 +220,6 @@ min-write-buffer-number-to-merge = 1
 # Set it the same as `rocksdb.defaultcf.max-bytes-for-level-base`.
 max-bytes-for-level-base = "512MB"
 target-file-size-base = "32MB"
-
-# When this parameter is not configured, TiKV sets this parameter value to 15% of the system memory size. To
-# deploy multiple TiKV nodes on a single physical machine, configure this parameter explicitly. The related data
-# of the version information (MVCC) and the index-related data are recorded in write CF. In scenarios that
-# include many single table indexes, set this parameter value higher.
-# block-cache-size = "256MB"
 
 [raftdb]
 # The maximum number of the file handles RaftDB can open
@@ -231,10 +244,6 @@ min-write-buffer-number-to-merge = 1
 # Set it the same as `rocksdb.defaultcf.max-bytes-for-level-base`.
 max-bytes-for-level-base = "512MB"
 target-file-size-base = "32MB"
-
-# Generally, you can set it from 256MB to 2GB. In most cases, you can use the default value. But if the system
-# resources are adequate, you can set it higher. 
-block-cache-size = "256MB"
 ```
 
 ## TiKV memory usage
