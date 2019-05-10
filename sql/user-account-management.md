@@ -5,11 +5,13 @@ category: user guide
 
 # TiDB 用户账户管理
 
+本文档主要介绍如何管理 TiDB 用户账户。
+
 ## 用户名和密码
 
 TiDB 将用户账户存储在 `mysql.user` 系统表里面。每个账户由用户名和 host 作为标识。每个账户可以设置一个密码。
 
-通过 MySQL 客户端连接到 TiDB 服务器，通过指定的账户和密码登陆：
+通过 MySQL 客户端连接到 TiDB 服务器，通过指定的账户和密码登录：
 
 ```
 shell> mysql --port 4000 --user xxx --password
@@ -25,10 +27,10 @@ shell> mysql -P 4000 -u xxx -p
 
 添加用户有两种方式：
 
-* 通过标准的用户管理的 SQL 语句创建用户以及授予权限，比如 `CREATE USER` 和 `GRANT` 。
-* 直接通过 `INSERT` ， `UPDATE` 和 `DELETE` 操作授权表。
+* 通过标准的用户管理的 SQL 语句创建用户以及授予权限，比如 `CREATE USER` 和 `GRANT`。
+* 直接通过 `INSERT`、`UPDATE` 和 `DELETE` 操作授权表。
 
-推荐的方式是使用第一种。第二种方式修改容易导致一些不完整的修改，因此不推荐。还有另一种可选方式是使用第三方工具的图形化界面工具。
+推荐使用第一种方式。第二种方式修改容易导致一些不完整的修改，因此不推荐。还有另一种可选方式是使用第三方工具的图形化界面工具。
 
 ```sql
 CREATE USER [IF NOT EXISTS]
@@ -57,9 +59,9 @@ host 支持模糊匹配，比如：
 CREATE USER 'test'@'192.168.10.%';
 ```
 
-允许 `test` 用户从 `192.168.10` 子网的任何一个主机登陆。
+允许 `test` 用户从 `192.168.10` 子网的任何一个主机登录。
 
-如果没有指定 host，则默认是所有 IP 均可登陆。如果没有指定密码，默认为空：
+如果没有指定 host，则默认是所有 IP 均可登录。如果没有指定密码，默认为空：
 
 ```sql
 CREATE USER 'test';
@@ -99,7 +101,7 @@ mysql> SHOW GRANTS FOR 'admin'@'localhost';
 使用 `DROP USER` 语句可以删除用户，例如：
 
 ```sql
-mysql> DROP USER 'jeffrey'@'localhost';
+mysql> DROP USER 'test'@'localhost';
 ```
 
 这个操作会清除用户在 `mysql.user` 表里面的记录项，并且清除在授权表里面的相关记录。
@@ -114,43 +116,46 @@ TiDB 在数据库初始化时会生成一个 `'root'@'%'` 的默认账户。
 
 ## 设置密码
 
-TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE USER` 权限，或者拥有 `mysql` 数据库权限（ `INSERT` 权限用于创建， `UPDATE` 权限用于更新）的用户才能够设置或修改密码。
+TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE USER` 权限，或者拥有 `mysql` 数据库权限（`INSERT` 权限用于创建，`UPDATE` 权限用于更新）的用户才能够设置或修改密码。
 
-在 `CREATE USER` 创建用户时可以通过 `IDENTIFIED BY` 指定密码：
+- 在 `CREATE USER` 创建用户时可以通过 `IDENTIFIED BY` 指定密码：
 
-```sql
-CREATE USER 'jeffrey'@'localhost' IDENTIFIED BY 'mypass';
-```
+    ```sql
+    CREATE USER 'test'@'localhost' IDENTIFIED BY 'mypass';
+    ```
 
-为一个已存在的账户修改密码，可以通过 `SET PASSWORD FOR` 或者 `ALTER USER` 语句完成：
+- 为一个已存在的账户修改密码，可以通过 `SET PASSWORD FOR` 或者 `ALTER USER` 语句完成：
 
-```sql
-SET PASSWORD FOR 'root'@'%' = 'xxx';
-```
+    ```sql
+    SET PASSWORD FOR 'root'@'%' = 'xxx';
+    ```
 
-或者
+    或者
 
-```sql
-ALTER USER 'jeffrey'@'localhost' IDENTIFIED BY 'mypass';
-```
-### 忘记 root 密码
+    ```sql
+    ALTER USER 'test'@'localhost' IDENTIFIED BY 'mypass';
+    ```
 
-修改配置文件，在 `security` 部分添加 `skip-grant-table`：
+## 忘记 `root` 密码
 
-> [security]
-> skip-grant-table = true
+1. 修改配置文件，在 `security` 部分添加 `skip-grant-table`：
 
-使用修改后的配置启动 TiDB（需要 root 权限）：
+    > [security]
+    > skip-grant-table = true
 
-```bash
-sudo ./tidb-server -skip-grant-table=true -store=tikv -path=...
-```
+2. 使用修改后的配置启动 TiDB（需要 `root` 权限）：
 
-这个配置参数会让 TiDB 跳过权限系统，然后使用 root 登陆后修改密码：
+    ```bash
+    sudo ./tidb-server -skip-grant-table=true -store=tikv -path=...
+    ```
 
-```bash
-mysql -h 127.0.0.1 -P 4000 -u root
-```
+    这个配置参数会让 TiDB 跳过权限系统。
+
+3. 然后使用 `root` 登录后修改密码：
+
+    ```bash
+    mysql -h 127.0.0.1 -P 4000 -u root
+    ```
 
 ## `FLUSH PRIVILEGES` 
 

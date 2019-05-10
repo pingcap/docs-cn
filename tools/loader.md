@@ -56,8 +56,8 @@ Loader 包含在 tidb-enterprise-tools 安装包中，可[在此下载](../tools
        TiDB 服务 host IP  (default "127.0.0.1")
   -p string
       TiDB 账户密码
-  -pprof-addr string
-      Loader 的 pprof 地址，用于对 Loader 进行性能调试 (默认为 ":10084")
+  -status-addr string
+      Prometheus 可以通过该地址拉取 Loader metrics, 也是 Loader 的 pprof 调试地址 (默认为 ":8272")。
   -t int
       线程数 (默认为 16). 每个线程同一时刻只能操作一个数据文件。
   -u string
@@ -78,8 +78,8 @@ log-file = "loader.log"
 # 需要导入的数据存放路径 (default "./")
 dir = "./"
 
-#  Loader 的 pprof 地址，用于对 Loader 进行性能调试 (默认为 ":10084")
-pprof-addr = "127.0.0.1:10084"
+## Prometheus 可以通过该地址拉取 Loader metrics, 也是 Loader 的 pprof 调试地址 (默认为 ":8272")。
+status-addr = ":8272"
 
 # checkpoint 数据库名，loader 在运行过程中会不断的更新这个数据库，在中断并恢复后，
 # 会通过这个库获取上次运行的进度 (默认为 "tidb_loader")

@@ -5,9 +5,9 @@ category: tools
 
 # Binlog Slave Client 用户文档
 
-目前 Drainer 提供了多种输出方式，包括 MySQL、TiDB、TheFlash、pb 格式文件等。但是用户往往有一些自定义的需求，比如输出到 Elasticsearch、Hive 等，这些需求 Drainer 现在还没有实现，因此 Drainer 增加了输出到 Kafka 的功能，将 binlog 数据解析后按一定的格式再输出到 Kafka 中，用户编写代码从 Kafka 中读出数据再进行处理。
+目前 Drainer 提供了多种输出方式，包括 MySQL、TiDB、file 等。但是用户往往有一些自定义的需求，比如输出到 Elasticsearch、Hive 等，这些需求 Drainer 现在还没有实现，因此 Drainer 增加了输出到 Kafka 的功能，将 binlog 数据解析后按一定的格式再输出到 Kafka 中，用户编写代码从 Kafka 中读出数据再进行处理。
 
-## 配置 Drainer
+## 配置 Kafka Drainer
 
 修改 Drainer 的配置文件，设置输出为 Kafka，相关配置如下：
 
@@ -52,7 +52,7 @@ message ColumnInfo {
   // https://dev.mysql.com/doc/refman/8.0/en/data-types.html
   // numeric 类型：int bigint smallint tinyint float double decimal bit
   // string 类型：text longtext mediumtext char tinytext varchar
-  // blob longblog mediumblog binary tinyblob varbinary
+  // blob longblob mediumblob binary tinyblob varbinary
   // enum set
   // json 类型：json
   optional string mysql_type = 2 [ (gogoproto.nullable) = false ];
@@ -86,9 +86,9 @@ message TableMutation {
   optional Row change_row = 3;
 }
 
-// DMLData 保存一个表所有的 DML 造成的数据变更
+// DMLData 保存一个事务所有的 DML 造成的数据变更
 message DMLData {
-  // `tables` 包含一个表的所有数据变更
+  // `tables` 包含事务中所有表的数据变更
   repeated Table tables = 1;
 }
 
@@ -112,7 +112,6 @@ enum BinlogType {
 message Binlog {
   optional BinlogType type = 1 [ (gogoproto.nullable) = false ];
   optional int64 commit_ts = 2 [ (gogoproto.nullable) = false ];
-  // dml_data 是由 DML 类型的数据序列化后生成的数据
   optional DMLData dml_data = 3;
   optional DDLData ddl_data = 4;
 }
@@ -125,7 +124,7 @@ message Binlog {
 TiDB-Tools 项目提供了用于读取 Kafka 中 binlog 数据的 Driver，具有如下功能：
 
 * 读取 Kafka 的数据
-* 根据 commit ts 查找到 Kafka 中存储的 binlog 的位置
+* 根据 commit ts 查找 binlog 在 kafka 中的储存位置
 
 使用该 Driver 时，用户需要配置如下信息：
 
@@ -133,8 +132,9 @@ TiDB-Tools 项目提供了用于读取 Kafka 中 binlog 数据的 Driver，具�
 * CommitTS：从哪个 commit ts 开始读取 binlog
 * Offset：从 Kafka 哪个 offset 开始读取，如果设置了 CommitTS 就不用配置该参数
 * ClusterID：TiDB 集群的 cluster ID
+* Topic: Kafka Topic 名称，如果 Topic 名称为空，将会使用 drainer <ClusterID>_obinlog 中的默认名称
 
-用户以包的形式引用 Driver 的代码即可使用，可以参考 Driver 中提供的的示例代码来学习如何使用 Driver 以及 binlog 数据的解析，目前提供了两个例子：
+用户以包的形式引用 Driver 的代码即可使用，可以参考 Driver 中提供的示例代码来学习如何使用 Driver 以及 binlog 数据的解析，目前提供了两个例子：
 
 * 使用该 Driver 将数据同步到 MySQL，该示例包含将 binlog 转化为 SQL 的具体方法
 * 使用该 Driver 将数据打印出来

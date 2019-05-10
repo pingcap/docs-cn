@@ -64,7 +64,7 @@ category: tools
 - `-F 256`：将每张表切分成多个文件，每个文件大小约为 256 MB。
 - `--skip-tz-utc`：添加这个参数则会忽略掉 TiDB 与导数据的机器之间时区设置不一致的情况，禁止自动转换。
 
-如果数据源是 CSV 文件，请参考 [CSV 支持](../../tools/lightning/csv.md]获取配置信息。
+如果数据源是 CSV 文件，请参考 [CSV 支持](/tools/lightning/csv.md)获取配置信息。
 
 ## 部署 TiDB-Lightning
 

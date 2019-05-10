@@ -11,9 +11,9 @@
 + 操作指南
   + 快速上手
     + 创建本地集群
-      - [使用 Docker Compose](op-guide/docker-compose.md)
-    - [SQL 基本操作](try-tidb.md)
-    - [读取历史数据](op-guide/history-read.md)
+      - [使用 Docker Compose](dev/how-to/get-started/local-cluster/install-from-docker-compose.md)
+    - [SQL 基本操作](dev/how-to/get-started/explore-sql.md)
+    - [读取历史数据](dev/how-to/get-started/read-historical-data.md)
   - 部署
     - [软硬件环境需求](op-guide/recommendation.md)
     + 集群部署方式
@@ -176,7 +176,12 @@
       - [表库过滤](tools/lightning/filter.md)
       - [CSV 支持](tools/lightning/csv.md)
       - [监控告警](tools/lightning/monitor.md)
-    - [TiDB-Binlog](tools/tidb-binlog-cluster.md)
+    + TiDB-Binlog
+      - [概述](tools/binlog/overview.md)
+      - [部署使用](tools/binlog/deploy.md)
+      - [监控告警](tools/binlog/monitor.md)
+      - [运维管理](tools/binlog/operation.md)
+      - [版本升级](tools/binlog/upgrade.md)
     - [PD Control](tools/pd-control.md)
     - [PD Recover](tools/pd-recover.md)
     - [TiKV Control](https://github.com/tikv/tikv/blob/master/docs/tools/tikv-control.md)
@@ -198,6 +203,7 @@
     - [3.0.0 Beta.1](releases/3.0.0-beta.1.md)
     - [3.0 Beta](releases/3.0beta.md)
   + v2.1
+    - [2.1.9](releases/2.1.9.md)
     - [2.1.8](releases/2.1.8.md)
     - [2.1.7](releases/2.1.7.md)
     - [2.1.6](releases/2.1.6.md)

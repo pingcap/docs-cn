@@ -114,7 +114,7 @@ TiDB 的 sql_mode 与 MySQL 的 sql_mode 设置方法有一些差别，TiDB 不�
 
 #### 1.1.24 TiDB 支持哪些认证协议，过程是怎样的？
 
-这一层跟 MySQL 一样，走的 SASL 认证协议，用于用户登陆认证，对密码的处理流程。
+这一层跟 MySQL 一样，走的 SASL 认证协议，用于用户登录认证，对密码的处理流程。
 
 客户端连接 TiDB 的时候，走的是 challenge-response（挑战-应答）的认证模式，过程如下：
 
@@ -345,9 +345,9 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 | 滚动升级除 PD 外模块 | ansible-playbook rolling\_update.yml --skip-tags=pd |
 | 滚动升级监控组件 | ansible-playbook rolling\_update\_monitor.yml |
 
-#### 3.1.2 TiDB 如何登陆？
+#### 3.1.2 TiDB 如何登录？
 
-和 MySQL 登陆方式一样，可以按照下面例子进行登陆。
+和 MySQL 登录方式一样，可以按照下面例子进行登录。
 
 `mysql -h 127.0.0.1 -uroot -P4000`
 
@@ -683,9 +683,9 @@ loader 的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调
 
 TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提供了一个[检查工具](https://github.com/pingcap/tidb-tools/tree/master/checker)，用于检查 MySQL 中的 Schema 是否和 TiDB 兼容。
 
-#### 4.1.4 不小心把 MySQL 的 user 表导入到 TiDB 了，或者忘记密码，无法登陆，如何处理？
+#### 4.1.4 不小心把 MySQL 的 user 表导入到 TiDB 了，或者忘记密码，无法登录，如何处理？
 
-重启 TiDB 服务，配置文件中增加 `-skip-grant-table=true` 参数，无密码登陆集群后，可以根据情况重建用户，或者重建 mysql.user 表，具体表结构搜索官网。
+重启 TiDB 服务，配置文件中增加 `-skip-grant-table=true` 参数，无密码登录集群后，可以根据情况重建用户，或者重建 mysql.user 表，具体表结构搜索官网。
 
 #### 4.1.5 在 Loader 运行的过程中，TiDB 可以对外提供服务吗？
 该操作进行逻辑插入，TiDB 仍可对外提供服务，但不要执行相关 DDL 操作。

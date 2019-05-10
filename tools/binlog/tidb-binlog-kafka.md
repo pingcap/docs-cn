@@ -1,26 +1,26 @@
 ---
-title: TiDB-Binlog 部署方案
+title: TiDB-Binlog kafka 部署方案
 category: tools
 ---
 
-# TiDB-Binlog 部署方案
+# TiDB-Binlog Kafka 部署方案
 
 本文档介绍如何部署 Kafka 版本的 TiDB-Binlog。
 
 ## TiDB-Binlog 简介
 
-TiDB-Binlog 用于收集 TiDB 的 Binlog，并提供实时备份和同步功能的商业工具。
+TiDB-Binlog 是用于收集 TiDB 的 Binlog，并提供实时备份和同步功能的商业工具。
 
 TiDB-Binlog 支持以下功能场景:
 
-* **数据同步**：同步 TiDB 集群数据到其他数据库
-* **实时备份和恢复**：备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复
+- **数据同步**：同步 TiDB 集群数据到其他数据库
+- **实时备份和恢复**：备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复
 
-## TiDB-Binlog 架构
+## TiDB-Binlog Kafka 架构
 
 首先介绍 TiDB-Binlog 的整体架构。
 
-![TiDB-Binlog 架构](../media/tidb_binlog_kafka_architecture.png)
+![TiDB-Binlog 架构](/media/tidb_binlog_kafka_architecture.png)
 
 TiDB-Binlog 集群主要分为三个组件：
 
@@ -36,15 +36,17 @@ Drainer 从 Kafka 中收集 Binlog，并按照 TiDB 中事务的提交顺序转�
 
 Kafka 集群用来存储由 Pump 写入的 Binlog 数据，并提供给 Drainer 进行读取。
 
-> **注**：local 版本将 Binlog 存储在文件中，最新版本则使用 Kafka 存储。
+> **注意：**
+>
+> Local 版本将 Binlog 存储在文件中，Kafka 版本则使用 Kafka 存储。
 
 ## TiDB-Binlog 安装
 
 以下为 TiDB-Ansible 分支与 TiDB 版本的对应关系，版本选择可咨询官方 info@pingcap.com。
 
-    | TiDB-Ansible 分支 | TiDB 版本 | 备注 |
-    | ---------------- | --------- | --- |
-    | release-2.0 | 2.0 版本 | 最新 2.0 稳定版本，可用于生产环境。 |
+| TiDB-Ansible 分支 | TiDB 版本 | 备注 |
+|:----|:----|:----|
+| release-2.0 | 2.0 版本 | 最新 2.0 稳定版本，可用于生产环境。 |
 
 ### 下载官方 Binary
 
@@ -65,26 +67,26 @@ cd tidb-binlog-kafka-linux-amd64
 
 ### TiDB-Binlog 部署
 
-#### 注意
+#### 注意事项
 
 * 需要为一个 TiDB 集群中的每台 TiDB server 部署一个 Pump，目前 TiDB server 只支持以 unix socket 的方式输出 Binlog。
 
-* 手动部署时，启动优先级为：Pump > TiDB；停止优先级为 TiDB > Pump。
+* 手动部署时，启动顺序为：Pump > TiDB。停止顺序为 TiDB > Pump。
 
     设置 TiDB 启动参数 `binlog-socket` 为对应的 Pump 参数 `socket` 所指定的 unix socket 文件路径，最终部署结构如下图所示：
 
-    ![TiDB pump 模块部署结构](../media/tidb-pump-deployment.png)
+    ![TiDB pump 模块部署结构](../../media/tidb-pump-deployment.png)
 
 * Drainer 不支持对 ignore schemas（在过滤列表中的 schemas）的 table 进行 rename DDL 操作。
 
-* 在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取 savepoint，然后导入全量备份，最后启动 Drainer 从 savepoint 开始同步；
+* 在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取 savepoint，然后导入全量备份，最后启动 Drainer 从 savepoint 开始同步。
 
     为了保证数据的完整性，在 Pump 运行 10 分钟左右后按顺序进行如下操作：
 
     *  使用 [tidb-tools](https://github.com/pingcap/tidb-tools) 项目中的 [binlogctl](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/binlogctl) 工具生成 Drainer 初次启动所需的 position
     *  全量备份，例如 mydumper 备份 TiDB
     *  全量导入备份到目标系统
-    *  Kafka 版本 Drainer 启动的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，如果 checkpoint 表中没有效的数据，可以通过设置 `initial-commit-ts` 启动 Drainer 从指定位置开始消费 - `bin/drainer --config=conf/drainer.toml --initial-commit-ts=${position}`
+    *  Kafka 版本 Drainer 启动的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，如果 checkpoint 表中没有有效的数据，可以通过设置 `initial-commit-ts` 启动 Drainer 从指定位置开始消费 - `bin/drainer --config=conf/drainer.toml --initial-commit-ts=${position}`
 
 * Drainer 输出为 pb，要在配置文件中设置如下参数：
 
@@ -103,10 +105,10 @@ cd tidb-binlog-kafka-linux-amd64
     [syncer]
     db-type = "kafka"
 
-    # when db-type is kafka, you can uncomment this to config the down stream kafka, or it will be the same kafka addrs where drainer pull binlog from.
-    #[syncer.to]
-    # kafka-addrs = "127.0.0.1:9092"
-    # kafka-version = "0.8.2.0"
+    # when db-type is kafka, you need to use this to config the down stream kafka, or it will be the same kafka addrs where drainer pull binlog from.
+    [syncer.to]
+    kafka-addrs = "127.0.0.1:9092"
+    kafka-version = "0.8.2.0"
     ```
 
     输出到 kafka 的数据为按 ts 排好序的 protobuf 定义 binlog 格式，可以参考 [driver](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/driver) 获取数据同步到下游。
@@ -123,7 +125,7 @@ cd tidb-binlog-kafka-linux-amd64
 #### Kafka 配置参数推荐
 
 - `auto.create.topics.enable = true`：如果还没有创建 topic，Kafka 会在 broker 上自动创建 topic
-- `broker.id`：用来标识 Kafka 集群的必备参数，不能重复；如 `broker.id = 1`
+- `broker.id`：用来标识 Kafka 集群的必备参数，不能重复，如 `broker.id = 1`
 - `fs.file-max = 1000000`：Kafka 会使用大量文件和网络 socket，建议修改成 1000000，通过 `vi /etc/sysctl.conf` 进行修改
 - 修改以下配置为1G, 否则很容易出现事务修改数据较多导致单个消息过大写 kafka 失败
     
@@ -164,9 +166,9 @@ ZK2="192.168.0.12"
 ZK3="192.168.0.11"
 ```
 
-在 ip="192.168.0.10" 的机器上面部署 Drainer/Pump；
+在 ip="192.168.0.10" 的机器上面部署 Drainer/Pump。
 
-对应的 PD 集群的 ip="192.168.0.16,192.168.0.15,192.168.0.14"；
+对应的 PD 集群的 ip="192.168.0.16,192.168.0.15,192.168.0.14"。
 
 对应的 Kafka 集群的 ZooKeeper 的 ip="192.168.0.13,192.168.0.12,192.168.0.11"。以此为例，说明 Pump/Drainer 的使用。
 
@@ -413,7 +415,7 @@ PbReader 使用示例
 + 进入 Grafana Web 界面（默认地址: `http://localhost:3000`，默认账号：admin，密码：admin）
 
     点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息
-    
+
     > **注意：**
     >
     > Type 选 Prometheus，URL 为 Prometheus 地址，根据实际情况添加/填写。

@@ -52,7 +52,7 @@ Usage of syncer:
   -auto-fix-gtid
       当 mysql master/slave 切换时，自动修复 gtid 信息；默认 false
   -b int
-      batch 事务大小 (默认 10)
+      batch 事务大小 (默认 100)
   -c int
       syncer 处理 batch 线程数 (默认 16)
   -config string
@@ -95,10 +95,10 @@ server-id = 101
 ## meta 文件地址
 meta = "./syncer.meta"
 worker-count = 16
-batch = 1000
+batch = 100
 flavor = "mysql"
 
-## pprof 调试地址，Prometheus 也可以通过该地址拉取 Syncer metrics
+## Prometheus 可以通过该地址拉取 Syncer metrics，也是 Syncer 的 pprof 调试地址
 status-addr = ":8271"
 
 ## 如果设置为 true，Syncer 遇到 DDL 语句时就会停止退出
@@ -480,6 +480,10 @@ target-table = "order_2017"
     +---------------+-----------------------------------------------------------------------------------+
     1 row in set (0.01 sec)
     ```
+6. 检查字符集。
+
+    TiDB 和 MySQL 的字符集的兼容性不同，详见 [TiDB 支持的字符集](/sql/character-set-support.md)。
+
 
 ## 监控方案
 
