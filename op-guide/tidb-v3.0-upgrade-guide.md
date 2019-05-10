@@ -1,6 +1,6 @@
 ---
 title: TiDB 3.0 升级操作指南
-category: deployment
+category: upgrade
 ---
 
 # TiDB 3.0 升级操作指南
