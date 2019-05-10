@@ -120,7 +120,9 @@ $ ansible-playbook local_prepare.yml
 ```
 $ ansible-playbook excessive_rolling_update.yml
 ```
-如果 `process_supervision` 变量使用 `supervise` 参数，则通过 `rolling_update.yml` 滚动升级 TiDB 集群。 
+
+如果 `process_supervision` 变量使用 `supervise` 参数，则通过 `rolling_update.yml` 滚动升级 TiDB 集群。
+
 ```
 $ ansible-playbook rolling_update.yml
 ```
