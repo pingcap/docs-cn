@@ -213,7 +213,7 @@
   - [Garbage Collection (GC)](op-guide/gc.md)
   + Performance
     - [Overview](sql/sql-optimizer-overview.md)
-    - [Cost-based Optimizer](sql/understanding-the-query-execution-plan.md)
+    - [Understanding the TiDB query execution plan](sql/understanding-the-query-execution-plan.md)
     - [Introduction to Statistics](sql/statistics.md)
     - [Optimizer Hints](sql/optimizer-hints.md)
     - [Tune TiKV](op-guide/tune-tikv.md)
