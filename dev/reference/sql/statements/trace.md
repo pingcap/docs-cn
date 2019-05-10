@@ -47,8 +47,85 @@ Query OK, 5 rows affected (0.02 sec)
 Records: 5  Duplicates: 0  Warnings: 0
 
 mysql> TRACE FORMAT='json' SELECT * FROM t1 WHERE id = 2\G
-*************************** 1. row ***************************
-operation: [{"ID":{"Trace":"60d20d005593de87","Span":"44e5b309242ffe2f","Parent":"79d146dac9a29a7e"},"Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5nZXRUeG5GdXR1cmU="},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE2MTQ3ODYtMDY6MDA="},{"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE2MjA0MDYtMDY6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":[{"ID":{"Trace":"60d20d005593de87","Span":"4dbf8f2ca373b4b0","Parent":"79d146dac9a29a7e"},"Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5QYXJzZVNRTA=="},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE2NjE1MTQtMDY6MDA="},{"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3MDYxNjgtMDY6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":null},{"ID":{"Trace":"60d20d005593de87","Span":"6b6d6916df809604","Parent":"79d146dac9a29a7e"},"Annotations":[{"Key":"Name","Value":"ZXhlY3V0b3IuQ29tcGlsZQ=="},{"Key":"_schema:name","Value":null},{"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3NTcyODUtMDY6MDA="},{"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3MzE0MjYtMDY6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":null},{"ID":{"Trace":"60d20d005593de87","Span":"3f1bcdd402a72911","Parent":"79d146dac9a29a7e"},"Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5Db21taXRUeG4="},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3OTgyNjItMDY6MDA="},{"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE4MDU1NzYtMDY6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":null},{"ID":{"Trace":"60d20d005593de87","Span":"58c1f7d66dc5afbc","Parent":"79d146dac9a29a7e"},"Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5ydW5TdG10"},{"Key":"_schema:name","Value":null},{"Key":"Msg","Value":"eyJzcWwiOiJTRUxFQ1QgKiBGUk9NIHQxIFdIRVJFIGlkID0gMiJ9"},{"Key":"Time","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3ODA1NjgtMDY6MDA="},{"Key":"_schema:log","Value":null},{"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE4MTk5MzMtMDY6MDA="},{"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3NzcyNDItMDY6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":null},{"ID":{"Trace":"60d20d005593de87","Span":"6bd8cc440fb31ed7","Parent":"79d146dac9a29a7e"},"Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5FeGVjdXRl"},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE2MTEwODktMDY6MDA="},{"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE4NTU0My0wNjowMA=="},{"Key":"_schema:Timespan","Value":null}],"Sub":null},{"ID":{"Trace":"60d20d005593de87","Span":"61d0b809f6cc018b","Parent":"79d146dac9a29a7e"},"Annotations":[{"Key":"Name","Value":"cmVjb3JkU2V0Lk5leHQ="},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE4NzQ1NTYtMDY6MDA="},{"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDIyOTg4NjYtMDY6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":null},{"ID":{"Trace":"60d20d005593de87","Span":"2bd2c3d47ccb1133","Parent":"79d146dac9a29a7e"},"Annotations":[{"Key":"Name","Value":"cmVjb3JkU2V0Lk5leHQ="},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDIzMjY0ODgtMDY6MDA="},{"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDIzMjkwMDMtMDY6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":null}]}]
+operation: [
+    {"ID":{"Trace":"60d20d005593de87","Span":"44e5b309242ffe2f","Parent":"79d146dac9a29a7e"},
+        "Annotations":[
+            {"Key":"Name","Value":"c2Vzc2lvbi5nZXRUeG5GdXR1cmU="},
+            {"Key":"_schema:name","Value":null},
+            {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE2MTQ3ODYtMDY6MDA="},
+            {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE2MjA0MDYtMDY6MDA="},
+            {"Key":"_schema:Timespan","Value":null}
+        ],
+        "Sub":[
+            {"ID":{"Trace":"60d20d005593de87","Span":"4dbf8f2ca373b4b0","Parent":"79d146dac9a29a7e"},
+            "Annotations":[
+                {"Key":"Name","Value":"c2Vzc2lvbi5QYXJzZVNRTA=="},
+                {"Key":"_schema:name","Value":null},
+                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE2NjE1MTQtMDY6MDA="},
+                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3MDYxNjgtMDY6MDA="},
+                {"Key":"_schema:Timespan","Value":null}
+            ],
+            "Sub":null},
+            {"ID":{"Trace":"60d20d005593de87","Span":"6b6d6916df809604","Parent":"79d146dac9a29a7e"},
+            "Annotations":[
+                {"Key":"Name","Value":"ZXhlY3V0b3IuQ29tcGlsZQ=="},
+                {"Key":"_schema:name","Value":null},
+                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3NTcyODUtMDY6MDA="},
+                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3MzE0MjYtMDY6MDA="},
+                {"Key":"_schema:Timespan","Value":null}
+            ],
+            "Sub":null},
+            {"ID":{"Trace":"60d20d005593de87","Span":"3f1bcdd402a72911","Parent":"79d146dac9a29a7e"},
+            "Annotations":[
+                {"Key":"Name","Value":"c2Vzc2lvbi5Db21taXRUeG4="},
+                {"Key":"_schema:name","Value":null},
+                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3OTgyNjItMDY6MDA="},
+                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE4MDU1NzYtMDY6MDA="},
+                {"Key":"_schema:Timespan","Value":null}
+            ],
+            "Sub":null},
+            {"ID":{"Trace":"60d20d005593de87","Span":"58c1f7d66dc5afbc","Parent":"79d146dac9a29a7e"},
+            "Annotations":[
+                {"Key":"Name","Value":"c2Vzc2lvbi5ydW5TdG10"},
+                {"Key":"_schema:name","Value":null},
+                {"Key":"Msg","Value":"eyJzcWwiOiJTRUxFQ1QgKiBGUk9NIHQxIFdIRVJFIGlkID0gMiJ9"},
+                {"Key":"Time","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3ODA1NjgtMDY6MDA="},
+                {"Key":"_schema:log","Value":null},
+                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE4MTk5MzMtMDY6MDA="},
+                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3NzcyNDItMDY6MDA="},
+                {"Key":"_schema:Timespan","Value":null}
+            ],
+            "Sub":null},
+            {"ID":{"Trace":"60d20d005593de87","Span":"6bd8cc440fb31ed7","Parent":"79d146dac9a29a7e"},
+            "Annotations":[
+                {"Key":"Name","Value":"c2Vzc2lvbi5FeGVjdXRl"},
+                {"Key":"_schema:name","Value":null},
+                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE2MTEwODktMDY6MDA="},
+                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE4NTU0My0wNjowMA=="},
+                {"Key":"_schema:Timespan","Value":null}
+            ],
+            "Sub":null},
+            {"ID":{"Trace":"60d20d005593de87","Span":"61d0b809f6cc018b","Parent":"79d146dac9a29a7e"},
+            "Annotations":[
+                {"Key":"Name","Value":"cmVjb3JkU2V0Lk5leHQ="},
+                {"Key":"_schema:name","Value":null},
+                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE4NzQ1NTYtMDY6MDA="},
+                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDIyOTg4NjYtMDY6MDA="},
+                {"Key":"_schema:Timespan","Value":null}
+            ],
+            "Sub":null},
+            {"ID":{"Trace":"60d20d005593de87","Span":"2bd2c3d47ccb1133","Parent":"79d146dac9a29a7e"},
+            "Annotations":[
+                {"Key":"Name","Value":"cmVjb3JkU2V0Lk5leHQ="},
+                {"Key":"_schema:name","Value":null},
+                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDIzMjY0ODgtMDY6MDA="},
+                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDIzMjkwMDMtMDY6MDA="},
+                {"Key":"_schema:Timespan","Value":null}
+            ],
+            "Sub":null}
+        ]
+    }
+]
 1 row in set (0.00 sec)
 ```
 
