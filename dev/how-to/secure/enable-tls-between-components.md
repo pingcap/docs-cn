@@ -1,7 +1,8 @@
 ---
 title: Enable TLS Authentication
 summary: Learn how to enable TLS authentication in a TiDB cluster.
-category: deployment
+category: how-to
+aliases: ['/docs/op-guide/security/']
 ---
 
 # Enable TLS Authentication
@@ -25,7 +26,7 @@ It is recommended to prepare a separate server certificate for TiDB, TiKV and PD
 
 You can use multiple tools to generate self-signed certificates, such as `openssl`, `easy-rsa ` and `cfssl`.
 
-See an example of [generating self-signed certificates](../op-guide/generate-self-signed-certificates.md) using `cfssl`.
+See an example of [generating self-signed certificates](/dev/how-to/secure/generate-self-signed-certificates.md) using `cfssl`.
 
 ### Configure certificates
 
@@ -83,4 +84,4 @@ When you connect the server using the client, it is required to specify the clie
 
 ## Enable TLS authentication between the MySQL client and TiDB server
 
-See [Use Encrypted Connections](../sql/encrypted-connections.md).
+See [Use Encrypted Connections](/dev/how-to/secure/enable-tls-clients.md).

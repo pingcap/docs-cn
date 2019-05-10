@@ -1,7 +1,8 @@
 ---
 title: Scale a TiDB cluster
 summary: Learn how to add or delete PD, TiKV and TiDB nodes.
-category: operations
+category: how-to
+aliases: ['/docs/op-guide/horizontal-scale/']
 ---
 
 # Scale a TiDB cluster

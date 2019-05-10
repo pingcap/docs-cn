@@ -1,7 +1,8 @@
 ---
 title: Data Migration Overview
 summary: Learn about the Data Migration tool, the architecture, the key components and features.
-category: tools
+category: how-to
+aliases: ['/docs/tools/dm/overview/']
 ---
 
 # Data Migration Overview
@@ -12,7 +13,7 @@ category: tools
 
 The Data Migration tool includes three components: DM-master, DM-worker, and dmctl.
 
-![Data Migration architecture](../../media/dm-architecture.png)
+![Data Migration architecture](/media/dm-architecture.png)
 
 ### DM-master
 
@@ -83,7 +84,7 @@ Before using the DM tool, note the following restrictions:
 
     - Currently, TiDB is not compatible with all the DDL statements that MySQL supports. Because DM uses the TiDB parser to process DDL statements, it only supports the DDL syntax supported by the TiDB parser. For details, see [the DDL statements supported by TiDB](/sql/ddl.md).
 
-    - DM reports an error when it encounters an incompatible DDL statement. To solve this error, you need to manually handle it using dmctl, either skipping this DDL statement or replacing it with a specified DDL statement(s). For details, see [Skip or replace abnormal SQL statements](/tools/dm/troubleshooting.md#skip-or-replace-abnormal-sql-statements).
+    - DM reports an error when it encounters an incompatible DDL statement. To solve this error, you need to manually handle it using dmctl, either skipping this DDL statement or replacing it with a specified DDL statement(s). For details, see [Skip or replace abnormal SQL statements](/dev/how-to/troubleshoot/data-migration.md#skip-or-replace-abnormal-sql-statements).
 
 + Sharding
 

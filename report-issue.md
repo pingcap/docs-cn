@@ -1,3 +1,9 @@
+---
+title: Report an Issue
+summary: Report an issue with your TiDB installation.
+category: support
+---
+
 # Report an Issue
 
 We strive to make TiDB compatible with MySQL 5.7. If you discover a difference in behavior that is not documented, a bug, or strange performance characteristics please [create a new issue in GitHub](https://github.com/pingcap/tidb/issues).

@@ -1,7 +1,8 @@
 ---
 title: TiDB Cluster Troubleshooting Guide
 summary: Learn how to diagnose and resolve issues when you use TiDB.
-category: advanced
+category: how-to
+aliases: ['/docs/trouble-shooting/']
 ---
 
 # TiDB Cluster Troubleshooting Guide
@@ -14,7 +15,7 @@ You can use this guide to help you diagnose and solve basic problems while using
 - The configuration and deployment topology
 - The TiDB component related issue in `dmesg`
 
-For other information, see [Frequently Asked Questions (FAQ)](FAQ.md).
+For other information, see [Frequently Asked Questions (FAQ)](/FAQ.md).
 
 ## Cannot connect to the database
 
@@ -90,7 +91,7 @@ Before starting the process, make sure the result of `ulimit -n` is large enough
 
 ## Database access times out and the system load is too high
 
-First, check the [SLOW-QUERY](sql/slow-query.md) log and see if it is because of some inappropriate SQL statement.
+First, check the [SLOW-QUERY](/dev/how-to/maintain/identify-slow-queries.md) log and see if it is because of some inappropriate SQL statement.
 If you failed to solve the problem, provide the following information:
 
 + The deployment topology

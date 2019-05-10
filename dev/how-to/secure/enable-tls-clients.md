@@ -1,10 +1,11 @@
 ---
-title: Use Encrypted Connections
+title: Enable TLS for MySQL Clients
 summary: Use the encrypted connection to ensure data security.
-category: user guide
+category: how-to
+aliases: ['/docs/sql/encrypted-connections/']
 ---
 
-# Use Encrypted Connections
+# Enable TLS for MySQL Clients
 
 It is recommended to use the encrypted connection to ensure data security because non-encrypted connection might lead to information leak.
 
@@ -27,9 +28,9 @@ In short, to use encrypted connections, both of the following conditions must be
 
 See the following desrciptions about the related parameters to enable encrypted connections:
 
-- [`ssl-cert`](../sql/server-command-option.md#ssl-cert): specifies the file path of the SSL certificate
-- [`ssl-key`](../sql/server-command-option.md#ssl-key): specifies the private key that matches the certificate
-- [`ssl-ca`](../sql/server-command-option.md#ssl-ca): (optional) specifies the file path of the trusted CA certificate
+- [`ssl-cert`](/sql/server-command-option.md#ssl-cert): specifies the file path of the SSL certificate
+- [`ssl-key`](/sql/server-command-option.md#ssl-key): specifies the private key that matches the certificate
+- [`ssl-ca`](/sql/server-command-option.md#ssl-ca): (optional) specifies the file path of the trusted CA certificate
 
 To enable encrypted connections in the TiDB server, you must specify both of the `ssl-cert` and `ssl-key` parameters in the configuration file when you start the TiDB server. You can also specify the `ssl-ca` parameter for client authentication (see [Enable authentication](#enable-authentication)).
 

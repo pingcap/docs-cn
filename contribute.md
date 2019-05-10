@@ -1,3 +1,9 @@
+---
+title: Contribute
+summary: Learn how to contribute to the TiDB database.
+category: how-to
+---
+
 # Contribute
 
 ## Contribute to TiDB

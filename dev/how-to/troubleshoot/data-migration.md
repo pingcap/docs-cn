@@ -1,7 +1,8 @@
 ---
 title: Data Migration Troubleshooting
 summary: Learn how to diagnose and resolve issues when you use Data Migration.
-category: tools
+category: how-to
+aliases: ['/docs/tools/dm/troubleshooting/']
 ---
 
 # Data Migration Troubleshooting
@@ -26,7 +27,7 @@ However, you need to reset the data synchronization task in some cases. For deta
 
 ### `Access denied for user 'root'@'172.31.43.27' (using password: YES)` shows when you query the task or check the log
 
-For database related passwords in all the DM configuration files, use the passwords encrypted by `dmctl`. If a database password is empty, it is unnecessary to encrypt it. For how to encrypt the plaintext password, see [Encrypt the upstream MySQL user password using dmctl](/tools/dm/deployment.md#encrypt-the-upstream-mysql-user-password-using-dmctl).
+For database related passwords in all the DM configuration files, use the passwords encrypted by `dmctl`. If a database password is empty, it is unnecessary to encrypt it. For how to encrypt the plaintext password, see [Encrypt the upstream MySQL user password using dmctl](/dev/how-to/deploy/data-migration-with-ansible.md#encrypt-the-upstream-mysql-user-password-using-dmctl).
 
 In addition, the user of the upstream and downstream databases must have the corresponding read and write privileges. Data Migration also [prechecks the corresponding privileges automatically](/tools/dm/precheck.md) while starting the data synchronization task.
 
@@ -48,12 +49,12 @@ You need to reset the entire data synchronization task in the following cases:
 Generally, at this time, the relay unit exits with an error and cannot be automatically restored gracefully. You need to manually restore the data synchronization and the steps are as follows:
 
 1. Use the `stop-task` command to stop all the synchronization tasks that are currently running.
-2. Use Ansible to [stop the entire DM cluster](/tools/dm/deployment.md#step-10-stop-the-dm-cluster).
+2. Use Ansible to [stop the entire DM cluster](/dev/how-to/deploy/data-migration-with-ansible.md#step-10-stop-the-dm-cluster).
 3. Manually clean up the relay log directory of the DM-worker corresponding to the MySQL master whose binlog is reset.
 
     - If the cluster is deployed using DM-Ansible, the relay log is in the `<deploy_dir>/relay_log` directory.
     - If the cluster is manually deployed using the binary, the relay log is in the directory set in the `relay-dir` parameter.
 
 4. Clean up downstream synchronized data.
-5. Use Ansible to [start the entire DM cluster](/tools/dm/deployment.md#step-9-deploy-the-dm-cluster).
+5. Use Ansible to [start the entire DM cluster](/dev/how-to/deploy/data-migration-with-ansible.md#step-9-deploy-the-dm-cluster).
 6. Restart data synchronization with the new task name, or set `remove-meta` to `true` and `task-mode` to `all`.
