@@ -1,7 +1,8 @@
 ---
 title: Monitor a TiDB Cluster
 summary: Learn how to monitor the state of a TiDB cluster.
-category: operations
+category: how-to
+aliases: ['/docs/op-guide/monitor/']
 ---
 
 # Monitor a TiDB Cluster
@@ -295,7 +296,7 @@ To import a Grafana dashboard for the PD server, the TiKV server, and the TiDB s
 
 Click **New dashboard** in the top menu and choose the dashboard you want to view.
 
-![view dashboard](../media/view-dashboard.png)
+![view dashboard](/media/view-dashboard.png)
 
 You can get the following metrics for cluster components:
 

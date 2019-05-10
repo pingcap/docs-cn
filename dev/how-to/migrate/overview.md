@@ -1,7 +1,8 @@
 ---
 title: Migration Overview
 summary: Learn how to migrate data into TiDB.
-category: operations
+category: how-to
+aliases: ['/docs/op-guide/migration-overview/']
 ---
 
 # Migration Overview
@@ -12,11 +13,11 @@ This document describes scenarios for migrating data into TiDB from either MySQL
 
 Migrations will often make use of the following tools. The following is a brief overview of their usage:
 
-- [`mydumper`](../tools/mydumper.md) exports data from MySQL. It is recommended over using mysqldump.
-- [`loader`](../tools/loader.md) imports data in mydumper format into TiDB.
-- [`syncer`](../tools/syncer.md) acts like a MySQL replication slave and pushes data from MySQL into TiDB.
-- [DM](../tools/dm/overview.md) (Data Migration) integrates the functions of mydumper, Loader and syncer to support the export and import of full-size data, as well as incremental synchronization of MySQL Binlog data, and supports data synchronization of a more complete pooled table scenario.
-- [TiDB-Lightning](../tools/lightning/overview-architecture.md) imports data to TiDB in an optimized way. For example, a 1TiB backup could take 24+ hours to import with loader, while it will typically complete at least 3 times faster in TiDB-Lightning.
+- [`mydumper`](/tools/mydumper.md) exports data from MySQL. It is recommended over using mysqldump.
+- [`loader`](/tools/loader.md) imports data in mydumper format into TiDB.
+- [`syncer`](/tools/syncer.md) acts like a MySQL replication slave and pushes data from MySQL into TiDB.
+- [DM](/tools/dm/overview.md) (Data Migration) integrates the functions of mydumper, Loader and syncer to support the export and import of full-size data, as well as incremental synchronization of MySQL Binlog data, and supports data synchronization of a more complete pooled table scenario.
+- [TiDB-Lightning](/tools/lightning/overview-architecture.md) imports data to TiDB in an optimized way. For example, a 1TiB backup could take 24+ hours to import with loader, while it will typically complete at least 3 times faster in TiDB-Lightning.
 
 ## Scenarios
 
@@ -30,7 +31,7 @@ To migrate the full data, you can use one of the following three solutions:
 - mydumper + TiDB-Lightning: use mydumper to export data from MySQL and use TiDB-Lightning to import the data into TiDB.
 - DM: use DM to export data from MySQL and import the data into TiDB.
 
-For detailed operations, follow the steps in [Migrate Data from MySQL to TiDB](../op-guide/migration.md).
+For detailed operations, follow the steps in [Migrate Data from MySQL to TiDB](/dev/how-to/migrate/from-mysql.md).
 
 #### Full data migration and incremental replication
 
@@ -40,7 +41,7 @@ To migrate the full data and then replicate data incrementally, you can use one 
 - mydumper + TiDB-Lightning + Syncer: use mydumper to export data from MySQL, use TiDB-Lightning to import the data into TiDB, and then use Syncer to replicate the incremental binlog data from MySQL into TiDB.
 - DM: use DM to migrate the full data from MySQL to TiDB and then replicate the incremental data from MySQL into TiDB.
 
-For detailed operations, follow the steps in [Incremental Migration](../op-guide/migration-incremental.md).
+For detailed operations, follow the steps in [Incremental Migration](/dev/how-to/migrate/incrementally-from-mysql.md).
     
   > **Note:**
   >
@@ -53,4 +54,4 @@ To import data from another database, it is recommended to:
 - Export the data as CSV format.
 - Import the data using TiDB-Lightning.
 
-For more information, refer to [CSV support for TiDB-Lightning](../tools/lightning/csv.md).
+For more information, refer to [CSV support for TiDB-Lightning](/tools/lightning/csv.md).

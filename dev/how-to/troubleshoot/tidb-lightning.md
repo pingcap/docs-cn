@@ -1,7 +1,8 @@
 ---
 title: TiDB-Lightning Troubleshooting
 summary: Learn about common errors and solutions of TiDB-Lightning.
-category: tools
+category: how-to
+aliases: ['/docs/tools/lightning/errors/']
 ---
 
 # TiDB-Lightning Troubleshooting
@@ -55,7 +56,7 @@ Try the latest version! Maybe there is new speed improvement.
 
 ## Checkpoint for … has invalid status: 18
 
-**Cause**: [Checkpoint](../../tools/lightning/checkpoints.md) is enabled, and Lightning or Importer has previously abnormally exited. To prevent accidental data corruption, Lightning will not start until the error is addressed.
+**Cause**: [Checkpoint](/tools/lightning/checkpoints.md) is enabled, and Lightning or Importer has previously abnormally exited. To prevent accidental data corruption, Lightning will not start until the error is addressed.
 
 **Solutions**:
 
@@ -65,7 +66,7 @@ If the error was caused by invalid data source, delete the imported data using `
 tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
 ```
 
-See the [Checkpoints control](../../tools/lightning/checkpoints.md#checkpoints-control) section for other options.
+See the [Checkpoints control](/tools/lightning/checkpoints.md#checkpoints-control) section for other options.
 
 ## ResourceTemporarilyUnavailable("Too many open engines …: 8")
 

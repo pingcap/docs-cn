@@ -1,7 +1,8 @@
 ---
 title: Upgrade Data Migration
 summary: Learn how to upgrade a Data Migration version to an incompatible version.
-category: tools
+category: how-to
+aliases: ['/docs/tools/dm/dm-upgrade/']
 ---
 
 # Upgrade Data Migration

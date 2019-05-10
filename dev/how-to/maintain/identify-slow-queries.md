@@ -1,10 +1,11 @@
 ---
-title: Slow Query Log
+title: Identify Slow Queries
 summary: Use the slow query log to identify problematic SQL statements.
-category: user guide
+category: how-to
+aliases: ['/docs/sql/slow-query/']
 ---
 
-# Slow Query Log
+# Identify Slow Queries
 
 The slow query log is a record of SQL statements that took a long time to perform.
 
@@ -12,9 +13,9 @@ A problematic SQL statement can increase the pressure on the entire cluster, res
 
 ### Obtain the log
 
-By `grep` the keyword `SLOW_QUERY` in the log file of TiDB, you can obtain the logs of statements whose execution time exceeds [slow-threshold](../op-guide/tidb-config-file.md#slow-threshold).
+By `grep` the keyword `SLOW_QUERY` in the log file of TiDB, you can obtain the logs of statements whose execution time exceeds [slow-threshold](/op-guide/tidb-config-file.md#slow-threshold).
 
-You can edit `slow-threshold` in the configuration file and its default value is 300ms. If you configure the [slow-query-file](../op-guide/tidb-config-file.md#slow-query-file), all the slow query logs will be written in this file. 
+You can edit `slow-threshold` in the configuration file and its default value is 300ms. If you configure the [slow-query-file](/op-guide/tidb-config-file.md#slow-query-file), all the slow query logs will be written in this file. 
 
 ### Usage example
 
@@ -32,7 +33,7 @@ This section describes fields in the slow query log based on the usage example a
 
 #### `cost_time`
 
-The execution time of this statement. Only the statements whose execution time exceeds [slow-threshold](../op-guide/tidb-config-file.md#slow-threshold) output this log.
+The execution time of this statement. Only the statements whose execution time exceeds [slow-threshold](/op-guide/tidb-config-file.md#slow-threshold) output this log.
 
 #### `process_time`
 

@@ -50,38 +50,38 @@
       - [Overview](dev/how-to/deploy/geographic-redundancy/overview.md)
       - [Configure Location Awareness](dev/how-to/deploy/geographic-redundancy/location-awareness.md)
     - [TiSpark](dev/how-to/deploy/tispark.md)
-    - [Data Migration with Ansible](/tools/dm/deployment.md)
+    - [Data Migration with Ansible](dev/how-to/deploy/data-migration-with-ansible.md)
   + Configure
     - [Time Zone](sql/time-zone.md)
     - [Memory Control](sql/tidb-memory-control.md)
   + Secure
     + Transport Layer Security (TLS)
-      - [Enable TLS For MySQL Clients](sql/encrypted-connections.md)
-      - [Enable TLS Between TiDB Components](op-guide/security.md)
-    - [Generate Self-signed Certificates](op-guide/generate-self-signed-certificates.md)
+      - [Enable TLS For MySQL Clients](dev/how-to/secure/enable-tls-clients.md)
+      - [Enable TLS Between TiDB Components](dev/how-to/secure/enable-tls-between-components.md)
+    - [Generate Self-signed Certificates](dev/how-to/secure/generate-self-signed-certificates.md)
   + Monitor
-    - [Overview](op-guide/monitor-overview.md)
-    - [Monitor a TiDB Cluster](op-guide/monitor.md)
+    - [Overview](dev/how-to/monitor/overview.md)
+    - [Monitor a TiDB Cluster](dev/how-to/monitor/monitor-a-cluster.md)
   + Migrate
-    - [Overview](op-guide/migration-overview.md)
+    - [Overview](dev/how-to/migrate/overview.md)
     + Migrate from MySQL
-      - [Migrate the Full Data](op-guide/migration.md)
-      - [Migrate the Incremental Data](op-guide/migration-incremental.md)
+      - [Migrate the Full Data](dev/how-to/migrate/from-mysql.md)
+      - [Migrate the Incremental Data](dev/how-to/migrate/incrementally-from-mysql.md)
     - [Migrate from CSV](tools/lightning/csv.md)
   + Maintain
-    - [Backup and Restore](op-guide/backup-restore.md)
+    - [Backup and Restore](dev/how-to/maintain/backup-and-restore.md)
     + Scale
-      - [Scale a TiDB Cluster](op-guide/horizontal-scale.md)
-      - [Scale Using Ansible](op-guide/ansible-deployment-scale.md)
-    - [Identify Slow Queries](sql/slow-query.md)
+      - [Scale a TiDB Cluster](dev/how-to/maintain/scale/horizontally.md)
+      - [Scale using Ansible](dev/how-to/maintain/scale/with-ansible.md)
+    - [Identify Slow Queries](dev/how-to/maintain/identify-slow-queries.md)
     + Upgrade
-      - [Upgrade from TiDB 2.1](op-guide/tidb-v2.1-upgrade-guide.md)
-      - [Upgrade Data Migration](tools/dm/dm-upgrade.md)
-      - [Rolling Updates with Ansible](op-guide/ansible-deployment-rolling-update.md)
+      - [Upgrade from TiDB 2.1](dev/how-to/maintain/upgrade/from-previous-version.md)
+      - [Upgrade Data Migration](dev/how-to/maintain/upgrade/data-migration.md)
+      - [Rolling updates with Ansible](dev/how-to/maintain/upgrade/rolling-updates-with-ansible.md)
   - Troubleshoot
-    - [Troubleshoot Cluster Setup](trouble-shooting.md)
-    - [Troubleshoot Data Migrations](tools/dm/troubleshooting.md)
-    - [Troubleshoot TiDB-Lightning](tools/lightning/errors.md)
+    - [Troubleshoot Cluster Setup](dev/how-to/troubleshoot/cluster-setup.md)
+    - [Troubleshoot Data Migration](dev/how-to/troubleshoot/data-migration.md)
+    - [Troubleshoot TiDB-Lightning](dev/how-to/troubleshoot/tidb-lightning.md)
 + Reference
   - [MySQL Compatibility](sql/mysql-compatibility.md)
   + SQL
@@ -274,8 +274,8 @@
   - [TiDB FAQs](FAQ.md)
   - [TiDB-Lightning FAQs](tools/lightning/faq.md)
   - [Upgrade FAQs](op-guide/upgrade-faq.md)
-+ Support
-  - [Support Resources](support.md)
++ Support  
+  - [Support Resources](support-resources.md)
   - [Report an Issue](report-issue.md)
 + Contribute
   - [Contribute to TiDB](contribute.md#contribute-to-tidb)

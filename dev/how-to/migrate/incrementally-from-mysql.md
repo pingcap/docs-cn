@@ -1,14 +1,15 @@
 ---
 title: Migrate Incrementally Using Syncer
 summary: Use `mydumper`, `loader` and `syncer` tools to migrate data from MySQL to TiDB.
-category: operations
+category: how-to
+aliases: ['/docs/op-guide/migration-incremental/']
 ---
 
 # Migrate Incrementally Using Syncer
 
-The [previous guide](../op-guide/migration.md) introduces how to import a full database from MySQL to TiDB using `mydumper`/`loader`. This methodology is not recommended for large databases with frequent updates, since it can lead to a larger downtime window during migration. It is instead recommended to use syncer.
+The [previous guide](/dev/how-to/migrate/from-mysql.md) introduces how to import a full database from MySQL to TiDB using `mydumper`/`loader`. This methodology is not recommended for large databases with frequent updates, since it can lead to a larger downtime window during migration. It is instead recommended to use syncer.
 
-Syncer can be [downloaded as part of Enterprise Tools](../tools/download.md).
+Syncer can be [downloaded as part of Enterprise Tools](/tools/download.md).
 
 Assuming the data from `t1` and `t2` is already imported to TiDB using `mydumper`/`loader`. Now we hope that any updates to these two tables are synchronized to TiDB in real time.
 
