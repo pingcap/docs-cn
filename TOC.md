@@ -57,6 +57,7 @@
       - [使用 Ansible 扩容缩容](op-guide/ansible-deployment-scale.md)
     - [定位慢查询](sql/slow-query.md)
     + 升级
+      - [升级至 TiDB 3.0](op-guide/tidb-v3.0-upgrade-guide.md)
       - [升级至 TiDB 2.1](op-guide/tidb-v2.1-upgrade-guide.md)
       - [升级 Data Migration](tools/dm/dm-upgrade.md)
       - [使用 Ansible 滚动升级](op-guide/ansible-deployment-rolling-update.md)
