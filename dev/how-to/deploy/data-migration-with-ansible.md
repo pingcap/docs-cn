@@ -1,6 +1,7 @@
 ---
 title: 使用 DM-Ansible 部署 DM 集群
-category: tools
+category: how-to
+aliases: ['/docs-cn/tools/dm/deployment/']
 ---
 
 # 使用 DM-Ansible 部署 DM 集群

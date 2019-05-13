@@ -14,28 +14,28 @@
       - [使用 Docker Compose](dev/how-to/get-started/local-cluster/install-from-docker-compose.md)
     - [SQL 基本操作](dev/how-to/get-started/explore-sql.md)
     - [读取历史数据](dev/how-to/get-started/read-historical-data.md)
-  - 部署
-    - [软硬件环境需求](op-guide/recommendation.md)
+  + 部署
+    - [软硬件环境需求](dev/how-to/deploy/hardware-recommendations.md)
     + 集群部署方式
-      - [使用 Ansible 部署（推荐）](op-guide/ansible-deployment.md)
-      - [使用 Ansible 离线部署](op-guide/offline-ansible-deployment.md)
-      - [使用 Docker 部署](op-guide/docker-deployment.md)
+      - [使用 Ansible 部署（推荐）](dev/how-to/deploy/orchestrated/ansible.md)
+      - [使用 Ansible 离线部署](dev/how-to/deploy/orchestrated/offline-ansible.md)
+      - [使用 Docker 部署](dev/how-to/deploy/orchestrated/docker.md)
     + 跨地域冗余
-      - [跨数据中心部署方案](op-guide/cross-dc-deployment.md)
-      - [配置集群拓扑](op-guide/location-awareness.md)
-    - [TiSpark 快速上手](tispark/tispark-quick-start-guide.md)
-    - [使用 Ansible 部署 DM 集群](tools/dm/deployment.md)
+      - [跨数据中心部署方案](dev/how-to/deploy/geographic-redundancy/overview.md)
+      - [配置集群拓扑](dev/how-to/deploy/geographic-redundancy/location-awareness.md)
+    - [TiSpark 快速上手](dev/how-to/deploy/tispark.md)
+    - [使用 Ansible 部署 DM 集群](dev/how-to/deploy/data-migration-with-ansible.md)
   + 配置
-    - [时区](sql/time-zone.md)
-    - [内存控制](sql/tidb-memory-control.md)
+    - [时区](dev/how-to/configure/time-zone.md)
+    - [内存控制](dev/how-to/configure/memory-control.md)
   + 安全
     + 安全传输层协议 (TLS)
-      - [为 MySQL 客户端启用 TLS](sql/encrypted-connections.md)
-      - [为 TiDB 组件启用 TLS](op-guide/security.md)
-    - [生成自签名证书](op-guide/generate-self-signed-certificates.md)
+      - [为 MySQL 客户端开启 TLS](dev/how-to/secure/enable-tls-clients.md)
+      - [为 TiDB 组件间开启 TLS](dev/how-to/secure/enable-tls-between-components.md)
+    - [生成自签名证书](dev/how-to/secure/generate-self-signed-certificates.md)
   + 监控
-    - [概述](op-guide/monitor-overview.md)
-    - [监控 TiDB 集群](op-guide/monitor.md)
+    - [概述](dev/how-to/monitor/overview.md)
+    - [监控 TiDB 集群](dev/how-to/monitor/monitor-a-cluster.md)
   + 迁移
     - [概述](op-guide/migration-overview.md)
     + 从 MySQL 迁移
