@@ -1,6 +1,7 @@
 ---
 title: TiDB 监控框架概述
-category: monitoring
+category: how-to
+aliases: ['/docs-cn/op-guide/monitor-overview/']
 ---
 
 # TiDB 监控框架概述
@@ -11,8 +12,8 @@ Prometheus 是一个拥有多维度数据模型，灵活的查询语句的时序
 
 Prometheus 提供了多个组件供用户使用。目前，我们使用 Prometheus Server，来收集和存储时间序列数据。Client 代码库，在程序中定制需要的 Metric 。Push GateWay 来接收 Client Push 上来的数据，统一供 Prometheus 主服务器抓取。以及 AlertManager 来实现报警机制。其结构如下图：
 
-![Prometheus in TiDB](../media/prometheus-in-tidb.png)
+![Prometheus in TiDB](/media/prometheus-in-tidb.png)
 
 Grafana 是一个开源的 metric 分析及可视化系统。我们使用 Grafana 来展示 TiDB 的各项性能指标 。如下图所示:
 
-![Grafana Screeshot](../media/grafana-screenshot.png)
+![Grafana Screeshot](/media/grafana-screenshot.png)
