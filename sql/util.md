@@ -23,7 +23,8 @@ explain_type:
     FORMAT = format_name
 
 format_name:
-    "DOT"
+      "DOT"
+    | "ROW"
 
 explainable_stmt: {
     SELECT statement
@@ -34,9 +35,9 @@ explainable_stmt: {
 }
 ```
 
-`EXPLAIN` 语句详细信息参考[理解 TiDB 执行计划](../sql/understanding-the-query-execution-plan.md)章节。
+如果不指定`FORMAT`，或者指定`FORMAT = "row"`，`EXPLAIN`语句将以 MySQL 标准的格式输出结果，不过结果具体字段和 MySQL 有一定差异。详细信息可参考[理解 TiDB 执行计划](../sql/understanding-the-query-execution-plan.md)章节。
 
-除了 MySQL 标准的结果格式之外，TiDB 还支持输出 DotGraph 结果，这时需要指定 `FORMAT = "dot"`，示例如下：
+除此之外，TiDB 还支持输出 DotGraph 结果，这时需要指定 `FORMAT = "dot"`，示例如下：
 
 ```sql
 create table t(a bigint, b bigint);
@@ -86,6 +87,8 @@ dot xx.dot -T png -O
 如果没有安装 `dot`，可以将结果拷贝到[这个网站](http://www.webgraphviz.com/)，可以得到一个树状图：
 
 ![Explain Dot](../media/explain_dot.png)
+
+目前 TiDB 中的`EXPLAIN`语句暂不支持 MySQL 中`JSON`格式的输出。
 
 ## `USE` 语句
 
