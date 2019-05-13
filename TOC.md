@@ -111,14 +111,14 @@
       - [TiDB 特定系统变量](sql/tidb-specific.md)
       - [配置参数](op-guide/configuration.md)
     + pd-server
-      - [PD](op-guide/pd-configuration.md)
+      - [配置参数](op-guide/pd-configuration.md)
     + tikv-server
-      - [TiKV](op-guide/tikv-configuration.md)
-  + 监控
-    - [Overview 监控指标](op-guide/dashboard-overview-info.md)
-    - [TiDB 监控指标](op-guide/tidb-dashboard-info.md)
-    - [PD 监控指标](op-guide/dashboard-pd-info.md)
-    - [TiKV 监控指标](op-guide/dashboard-tikv-info.md)
+      - [配置参数](op-guide/tikv-configuration.md)
+  + 监控指标
+    - [Overview](op-guide/dashboard-overview-info.md)
+    - [TiDB](op-guide/tidb-dashboard-info.md)
+    - [PD](op-guide/dashboard-pd-info.md)
+    - [TiKV](op-guide/dashboard-tikv-info.md)
   + 安全
     - [与 MySQL 的安全特性差异](sql/security-compatibility.md)
     - [TiDB 数据库权限管理](sql/privilege.md)
