@@ -115,10 +115,10 @@
     + tikv-server
       - [配置参数](op-guide/tikv-configuration.md)
   + 监控指标
-    - [Overview](op-guide/dashboard-overview-info.md)
-    - [TiDB](op-guide/tidb-dashboard-info.md)
-    - [PD](op-guide/dashboard-pd-info.md)
-    - [TiKV](op-guide/dashboard-tikv-info.md)
+    - [Overview 面板](op-guide/dashboard-overview-info.md)
+    - [TiDB 面板](op-guide/tidb-dashboard-info.md)
+    - [PD 面板](op-guide/dashboard-pd-info.md)
+    - [TiKV 面板](op-guide/dashboard-tikv-info.md)
   + 安全
     - [与 MySQL 的安全特性差异](sql/security-compatibility.md)
     - [TiDB 数据库权限管理](sql/privilege.md)
