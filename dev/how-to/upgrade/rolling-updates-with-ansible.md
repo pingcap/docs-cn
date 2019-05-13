@@ -2,7 +2,7 @@
 title: Upgrade TiDB Using TiDB-Ansible
 summary: Use TiDB-Ansible to perform a rolling update for a TiDB cluster.
 category: how-to
-aliases: ['/docs/op-guide/ansible-deployment-rolling-update/']
+aliases: ['/docs/op-guide/ansible-deployment-rolling-update/','/docs/dev/how-to/maintain/upgrade/rolling-updates-with-ansible/']
 ---
 
 # Upgrade TiDB Using TiDB-Ansible
