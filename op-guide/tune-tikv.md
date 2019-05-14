@@ -61,7 +61,7 @@ log-level = "info"
 # scheduler-worker-pool-size = 4
 
 [storage.block-cache]
-## 是否为 RocksDB 的所有 CF 都创建一个 shared block cache。
+## 是否为 RocksDB 的所有 CF 都创建一个 `shared block cache`。
 ##
 ## RocksDB 使用 block cache 来缓存未压缩的数据块。较大的 block cache 可以加快读取速度。
 ## 推荐开启 `shared block cache` 参数。这样只需要设置全部缓存大小，使配置过程更加方便。
@@ -69,7 +69,7 @@ log-level = "info"
 ##
 ## `storage.block-cache` 会话中的其余配置仅在开启 `shared block cache` 时起作用。
 # shared = true
-## shared block cache 的大小。正常情况下应设置为系统全部内存的 30%-50%。
+## `shared block cache` 的大小。正常情况下应设置为系统全部内存的 30%-50%。
 ## 如果未设置该参数，则由以下字段或其默认值的总和决定。
 ##
 ##   * rocksdb.defaultcf.block-cache-size 或系统全部内存的 25%
