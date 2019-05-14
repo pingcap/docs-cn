@@ -18,11 +18,11 @@ category: how-to
 
 ## TiDB-Binlog 介绍
 
-TiDB-Binlog 是一个用于收集 TiDB-Binlog 并提供实时数据备份和同步的工具。TiDB-Binlog 也用于将 TiDB 集群的数据增量更新同步到下游。
+TiDB-Binlog 是一个用于收集 TiDB-Binlog 并提供实时数据备份和同步的工具。TiDB-Binlog 也可用于将 TiDB 集群的数据增量同步到下游。
 
 TiDB-Binlog 支持以下功能场景：
 - 数据增量备份：将 TiDB 集群中的数据复制到另一个集群；或通过 Kafka 发送 TiDB 更新数据并同步到下游。
-- 数据迁移：尤其是将数据从 MySQL/MariaDB 迁移到 TiDB。
+- 数据迁移：尤其是将数据从 TiDB 迁移到 MySQL/MariaDB。
 - 数据同步：将发送到 TiDB 的应用流量同步更新到下游的 MySQl/MariaDB 实例/集群。即使流量数据迁移到 TiDB 过程中出现问题，在 MySQL/MariaDB 中也能撤回该流量数据。
 
 更多信息参考 [TiDB-Binlog Cluster 版本用户文档](https://pingcap.com/docs-cn/v2.1/tools/tidb-binlog-cluster/)。
@@ -414,6 +414,6 @@ sleep 3
 
 ## 总结
 
-该文档介绍了如何通过设置 TiDB-Binlog 、使用单个 Pump 和 Drainer 组成的集群同步 TiDB 集群的数据到下游的 MariaDB 服务器。可以发现，TiDB-Binlog 是用于获取处理 TiDB 集群中数据改变的综合性平台工具。
+该文档介绍了如何通过设置 TiDB-Binlog 、使用单个 Pump 和 Drainer 组成的集群同步 TiDB 集群的数据到下游的 MariaDB 服务。可以发现，TiDB-Binlog 是用于获取处理 TiDB 集群中数据更新的综合性平台工具。
 
-在更稳健的开发、测试或生产部署环境中，可以使用多个 TiDB 服务器以实现高可用性和扩展性。使用多个 Pump 实例可以确保发送到 TiDB 实例的应用流量不受 Pump 集群中问题的影响。或者可以使用另加的 Drainer 实例同步更新数据到不同的下游以及实现数量增量备份。
+在更稳健的开发、测试或生产部署环境中，可以使用多个 TiDB 服务器以实现高可用性和扩展性。使用多个 Pump 实例可以确保发送到 TiDB 实例的应用流量不受 Pump 集群中问题的影响。或者可以使用另加的 Drainer 实例同步数据到不同的下游以及实现数据增量备份。
