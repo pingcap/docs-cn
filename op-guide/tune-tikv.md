@@ -23,6 +23,8 @@ TiKV 使用了 RocksDB 的 `Column Families` (CF) 特性。
 
 在 TiKV 3.0 版本后，所有的 CF 默认共同使用一个 block cache 实例。通过在 `[storage.block-cache]` 下设置 `capacity` 参数，你可以配置该 block cache 的大小。block cache 越大，能够缓存的热点数据越多，读取数据越容易，同时占用的系统内存也越多。如果要为每个 CF 使用单独的 block cache 实例，需要在 `[storage.block-cache]` 下设置 `shared = false`，并为每个 CF 配置单独的 block cache 大小。例如，可以在 `[rocksdb.writecf]` 下设置 `block-cache-size` 参数来配置 `write` CF 的大小。
 
+在 TiKV 3.0 之前的版本中，不支持使用 `shared block cache`，因此需要为每个 CF 单独配置 block cache。
+
 每个 CF 有各自的 `write-buffer`，大小通过 `write-buffer-size` 控制。
 
 ## 参数说明
