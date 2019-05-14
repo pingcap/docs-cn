@@ -99,6 +99,6 @@ mysql> EXPLAIN DELETE FROM t1 WHERE c1=3;
 
 ## See also
 
-* [Understanding the Query Execution Plan](/sql/understanding-the-query-execution-plan.md)
+* [Understanding the Query Execution Plan](/dev/reference/performance/understanding-the-query-execution-plan.md)
 * [EXPLAIN ANALYZE](/dev/reference/sql/statements/explain-analyze.md)
 * [ANALYZE TABLE](/dev/reference/sql/statements/analyze-table.md)

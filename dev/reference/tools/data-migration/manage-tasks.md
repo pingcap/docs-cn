@@ -7,7 +7,7 @@ aliases: ['/docs/tools/dm/manage-task/']
 
 # Manage the Data Synchronization Task
 
-This document describes how to manage and maintain the data synchronization task using the [dmctl](/tools/dm/overview.md#dmctl) component. For the Data Migration cluster deployed using DM-Ansible, the dmctl binary file is in `dm-ansible/dmctl`.
+This document describes how to manage and maintain the data synchronization task using the [dmctl](/dev/reference/tools/data-migration/overview.md#dmctl) component. For the Data Migration cluster deployed using DM-Ansible, the dmctl binary file is in `dm-ansible/dmctl`.
 
 ## dmctl basic usage
 
@@ -503,7 +503,7 @@ update-task [-w "127.0.0.1:10181"] ./task.yaml
 
 ## Manage the DDL locks
 
-See [Handle Sharding DDL Locks Manually](/tools/dm/manually-handling-sharding-ddl-locks.md).
+See [Handle Sharding DDL Locks Manually](/dev/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md).
 
 ## Refresh worker tasks
 

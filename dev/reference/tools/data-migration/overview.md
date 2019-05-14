@@ -51,23 +51,23 @@ This section describes the data synchronization features provided by the Data Mi
 
 ### Schema and table routing
 
-The [schema and table routing](/tools/dm/data-synchronization-features.md#table-routing) feature means that DM can synchronize a certain table of the upstream MySQL or MariaDB instance to the specified table in the downstream, which can be used to merge or synchronize the sharding data.
+The [schema and table routing](/dev/reference/tools/data-migration/features/overview.md#table-routing) feature means that DM can synchronize a certain table of the upstream MySQL or MariaDB instance to the specified table in the downstream, which can be used to merge or synchronize the sharding data.
 
 ### Black and white lists synchronization at the schema and table levels
 
-The [black and white lists filtering rule](/tools/dm/data-synchronization-features.md#black-and-white-table-lists) of the upstream database instance tables is similar to MySQL `replication-rules-db`/`replication-rules-table`, which can be used to filter or only synchronize all operations of some databases or some tables.
+The [black and white lists filtering rule](/dev/reference/tools/data-migration/features/overview.md#black-and-white-table-lists) of the upstream database instance tables is similar to MySQL `replication-rules-db`/`replication-rules-table`, which can be used to filter or only synchronize all operations of some databases or some tables.
 
 ### Binlog event filtering
 
-[Binlog event filtering](/tools/dm/data-synchronization-features.md#binlog-event-filtering) is a more fine-grained filtering rule than the black and white lists filtering rule. You can use statements like `INSERT` or `TRUNCATE TABLE` to specify the binlog events of `schema/table` that you need to synchronize or filter out.
+[Binlog event filtering](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filtering) is a more fine-grained filtering rule than the black and white lists filtering rule. You can use statements like `INSERT` or `TRUNCATE TABLE` to specify the binlog events of `schema/table` that you need to synchronize or filter out.
 
 ### Column mapping
 
-The [column mapping](/tools/dm/data-synchronization-features.md#column-mapping) feature means that the table column value can be modified according to the built-in expression specified by the user, which can be used to resolve the conflicts of the sharding auto-increment primary key IDs.
+The [column mapping](/dev/reference/tools/data-migration/features/overview.md#column-mapping) feature means that the table column value can be modified according to the built-in expression specified by the user, which can be used to resolve the conflicts of the sharding auto-increment primary key IDs.
 
 ### Sharding support
 
-DM supports merging the original sharded instances and tables into TiDB, but with [some restrictions](/tools/dm/shard-merge.md#restrictions).
+DM supports merging the original sharded instances and tables into TiDB, but with [some restrictions](/dev/reference/tools/data-migration/features/shard-merge.md#restrictions).
 
 ## Usage restrictions
 
@@ -84,16 +84,16 @@ Before using the DM tool, note the following restrictions:
 
     - Currently, TiDB is not compatible with all the DDL statements that MySQL supports. Because DM uses the TiDB parser to process DDL statements, it only supports the DDL syntax supported by the TiDB parser. For details, see [the DDL statements supported by TiDB](/sql/ddl.md).
 
-    - DM reports an error when it encounters an incompatible DDL statement. To solve this error, you need to manually handle it using dmctl, either skipping this DDL statement or replacing it with a specified DDL statement(s). For details, see [Skip or replace abnormal SQL statements](/tools/dm/troubleshooting.md#skip-or-replace-abnormal-sql-statements).
+    - DM reports an error when it encounters an incompatible DDL statement. To solve this error, you need to manually handle it using dmctl, either skipping this DDL statement or replacing it with a specified DDL statement(s). For details, see [Skip or replace abnormal SQL statements](/dev/how-to/troubleshoot/data-migration.md#skip-or-replace-abnormal-sql-statements).
 
 + Sharding
 
-    - If conflict exists between sharded tables, *only columns with the auto increment primary key* encounter the conflict, and the *column type is bigint*, solve the conflict using [column mapping](/tools/dm/data-synchronization-features.md#column-mapping). Otherwise, data synchronization is not supported. Conflicting data can cover each other and cause data loss.
+    - If conflict exists between sharded tables, *only columns with the auto increment primary key* encounter the conflict, and the *column type is bigint*, solve the conflict using [column mapping](/dev/reference/tools/data-migration/features/overview.md#column-mapping). Otherwise, data synchronization is not supported. Conflicting data can cover each other and cause data loss.
 
-    - For other sharding restrictions, see [Sharding DDL usage restrictions](/tools/dm/shard-merge.md#restrictions).
+    - For other sharding restrictions, see [Sharding DDL usage restrictions](/dev/reference/tools/data-migration/features/shard-merge.md#restrictions).
 
 + Operations
 
-    - After DM-worker is restarted, the data synchronization task cannot be automatically restored. You need to manually run `start-task`. For details, see [Manage the Data Synchronization Task](/tools/dm/manage-task.md).
+    - After DM-worker is restarted, the data synchronization task cannot be automatically restored. You need to manually run `start-task`. For details, see [Manage the Data Synchronization Task](/dev/reference/tools/data-migration/manage-tasks.md).
 
-    - After DM-worker is restarted, the DDL lock synchronization cannot be automatically restored in some conditions. You need to manually handle it. For details, see [Handle Sharding DDL Locks Manually](/tools/dm/manually-handling-sharding-ddl-locks.md).
+    - After DM-worker is restarted, the DDL lock synchronization cannot be automatically restored in some conditions. You need to manually handle it. For details, see [Handle Sharding DDL Locks Manually](/dev/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md).

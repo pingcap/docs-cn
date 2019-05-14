@@ -114,4 +114,4 @@ The following MySQL system variables are fully supported in TiDB and have the sa
 
 ## TiDB Specific System Variables
 
-See [TiDB Specific System Variables](/sql/tidb-specific.md).
+See [TiDB Specific System Variables](/dev/reference/configuration/tidb-server/tidb-specific-variables.md).

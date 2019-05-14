@@ -11,7 +11,7 @@ This document collects the available downloads for most officially maintained ve
 
 ## TiDB-Binlog and Lightning
 
-If you want to download the latest version of [TiDB-Binlog](/tools/tidb-binlog-cluster.md) or [Lightning](/tools/lightning/overview-architecture.md), directly download the TiDB package, because both TiDB-Binlog and Lightning are included in the TiDB package.
+If you want to download the latest version of [TiDB-Binlog](/dev/reference/tools/tidb-binlog/overview.md) or [Lightning](/dev/reference/tools/tidb-lightning/overview.md), directly download the TiDB package, because both TiDB-Binlog and Lightning are included in the TiDB package.
 
 In addition, the Kafka version of TiDB-Binlog is also provided.
 
@@ -22,7 +22,7 @@ In addition, the Kafka version of TiDB-Binlog is also provided.
 
 ## DM (Data Migration)
 
-If you want to download the latest version of [DM](/tools/dm/overview.md), click the download link in the following table. You can also check the [DM Release](https://github.com/pingcap/dm/releases) page.
+If you want to download the latest version of [DM](/dev/reference/tools/data-migration/overview.md), click the download link in the following table. You can also check the [DM Release](https://github.com/pingcap/dm/releases) page.
 
 | Package name | OS | Architecture |  SHA256 checksum |
 |:---|:---|:---|:---|
@@ -30,7 +30,7 @@ If you want to download the latest version of [DM](/tools/dm/overview.md), click
 
 ## Syncer, Loader, and mydumper
 
-If you want to download the latest version of [Syncer](/tools/syncer.md), [Loader](/tools/loader.md), or [mydumper](/tools/mydumper.md), directly download the tidb-enterprise-tools package, because all these tools are included in this package.
+If you want to download the latest version of [Syncer](/dev/reference/tools/syncer.md), [Loader](/dev/reference/tools/loader.md), or [mydumper](/dev/reference/tools/mydumper.md), directly download the tidb-enterprise-tools package, because all these tools are included in this package.
 
 | Package name | OS | Architecture | SHA256 checksum |
 |:---|:---|:---|:---|
@@ -41,6 +41,6 @@ This enterprise tools package includes all the following tools:
 - Syncer
 - Loader
 - mydumper
-- [binlogctl](/tools/tidb-binlog-cluster.md#binlogctl-guide)
+- [binlogctl](/dev/reference/tools/tidb-binlog/overview.md#binlogctl-guide)
 - ddl_checker
 - [sync_diff_inspector](/tools/sync-diff-inspector.md)

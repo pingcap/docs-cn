@@ -13,7 +13,7 @@ Currently TiDB Server advertises itself as MySQL 5.7 and works with most MySQL d
 
 > **Note:**
 >
-> This page refers to general differences between MySQL and TiDB. Please also see the dedicated pages for [Security](/sql/security-compatibility.md) and [Transaction Model](/sql/transaction-model.md) compatibility.
+> This page refers to general differences between MySQL and TiDB. Please also see the dedicated pages for [Security](/dev/reference/security/compatibility.md) and [Transaction Model](/dev/reference/transactions/transaction-model.md) compatibility.
 
 ## Unsupported features
 
@@ -38,7 +38,7 @@ Currently TiDB Server advertises itself as MySQL 5.7 and works with most MySQL d
 + `CREATE TABLE tblName AS SELECT stmt` syntax
 + `CREATE TEMPORARY TABLE` syntax
 + `XA` syntax (TiDB uses a two-phase commit internally, but this is not exposed via an SQL interface)
-+ `LOCK TABLE` syntax (TiDB uses `tidb_snapshot` to [produce backups](/tools/mydumper.md))
++ `LOCK TABLE` syntax (TiDB uses `tidb_snapshot` to [produce backups](/dev/reference/tools/mydumper.md))
 + `CHECK TABLE` syntax
 + `CHECKSUM TABLE` syntax
 
@@ -67,11 +67,11 @@ In TiDB, auto-increment columns are only guaranteed to be incremental and unique
 
 ### Performance schema
 
-Performance schema tables return empty results in TiDB. TiDB uses a combination of [Prometheus and Grafana](/op-guide/monitor.md#use-prometheus-and-grafana) for performance metrics instead.
+Performance schema tables return empty results in TiDB. TiDB uses a combination of [Prometheus and Grafana](/dev/how-to/monitor/monitor-a-cluster.md#use-prometheus-and-grafana) for performance metrics instead.
 
 ### Query Execution Plan
 
-The output format of Query Execution Plan (`EXPLAIN`/`EXPLAIN FOR`) in TiDB is greatly different from that in MySQL. Besides, the output content and the privileges setting of `EXPLAIN FOR` are not the same as those of MySQL. See [Understand the Query Execution Plan](/sql/understanding-the-query-execution-plan.md) for more details.
+The output format of Query Execution Plan (`EXPLAIN`/`EXPLAIN FOR`) in TiDB is greatly different from that in MySQL. Besides, the output content and the privileges setting of `EXPLAIN FOR` are not the same as those of MySQL. See [Understand the Query Execution Plan](/dev/reference/performance/understanding-the-query-execution-plan.md) for more details.
 
 ### Built-in functions
 
@@ -110,7 +110,7 @@ TiDB implements the asynchronous schema changes algorithm in F1. The Data Manipu
 
 ### Analyze table
 
-+ [`ANALYZE TABLE`](/sql/statistics.md#manual-collection) works differently in TiDB than in MySQL, in that it is a relatively lightweight and short-lived operation in MySQL/InnoDB, while in TiDB it completely rebuilds the statistics for a table and can take much longer to complete.
++ [`ANALYZE TABLE`](/dev/reference/performance/statistics.md#manual-collection) works differently in TiDB than in MySQL, in that it is a relatively lightweight and short-lived operation in MySQL/InnoDB, while in TiDB it completely rebuilds the statistics for a table and can take much longer to complete.
     
 ### Storage engines
 
@@ -136,7 +136,7 @@ Architecturally, TiDB does support a similar storage engine abstraction to MySQL
 TiDB supports **all of the SQL modes** from MySQL 5.7 with minor exceptions:
 
 - The compatibility modes deprecated in MySQL 5.7 and removed in MySQL 8.0 are not supported (such as `ORACLE`, `POSTGRESQL` etc).
-- The mode `ONLY_FULL_GROUP_BY` has minor [semantic differences](/sql/aggregate-group-by-functions.md#differences-from-mysql) to MySQL 5.7, which we plan to address in the future.
+- The mode `ONLY_FULL_GROUP_BY` has minor [semantic differences](/dev/reference/sql/functions-and-operators/aggregate-group-by-functions.md#differences-from-mysql) to MySQL 5.7, which we plan to address in the future.
 - The SQL modes `NO_DIR_IN_CREATE` and `NO_ENGINE_SUBSTITUTION` are supported for compatibility, but are not applicable to TiDB. 
 
 ### Default differences

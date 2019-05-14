@@ -55,7 +55,7 @@ select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
 * `Is_internal`: Whether the SQL statement is TiDB internal. `true` indicates that the SQL statement is executed internally in TiDB, such as Analyze, load variables, etc.; `false` indicates the SQL statement is executed by the user.
 * `Digest`: The fingerprint of the SQL statement.
 * `Memory_max`: Indicates the maximum memory space used during the execution period of this SQL statement (the unit is byte).
-* `Num_cop_tasks`: The number of [cop-tasks](/sql/understanding-the-query-execution-plan.md).
+* `Num_cop_tasks`: The number of [cop-tasks](/dev/reference/performance/understanding-the-query-execution-plan.md).
 * `Cop_proc_avg`: The average execution time of cop-tasks.
 * `Cop_proc_p90`: The P90 execution time of cop-tasks.
 * `Cop_proc_max`: The maximum execution time of cop-tasks.

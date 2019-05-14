@@ -202,7 +202,7 @@ Follow the steps below to start PD, TiKV, and TiDB:
 > **Note:**
 >
 > - If you start TiKV or deploy PD in the production environment, it is highly recommended to specify the path for the configuration file using the `--config` parameter. If the parameter is not set, TiKV or PD does not read the configuration file.
-> - To tune TiKV, see [Performance Tuning for TiKV](/op-guide/tune-tikv.md).
-> - If you use `nohup` to start the cluster in the production environment, write the startup commands in a script and then run the script. If not, the `nohup` process might abort because it receives exceptions when the Shell command exits. For more information, see [The TiDB/TiKV/PD process aborts unexpectedly](/trouble-shooting.md#the-tidbtikvpd-process-aborts-unexpectedly).
+> - To tune TiKV, see [Performance Tuning for TiKV](/dev/reference/performance/tune-tikv.md).
+> - If you use `nohup` to start the cluster in the production environment, write the startup commands in a script and then run the script. If not, the `nohup` process might abort because it receives exceptions when the Shell command exits. For more information, see [The TiDB/TiKV/PD process aborts unexpectedly](/dev/how-to/troubleshoot/cluster-setup.md#the-tidbtikvpd-process-aborts-unexpectedly).
 
-For the deployment and use of TiDB monitoring services, see [Monitor a TiDB Cluster](/op-guide/monitor.md).
+For the deployment and use of TiDB monitoring services, see [Monitor a TiDB Cluster](/dev/how-to/monitor/monitor-a-cluster.md).

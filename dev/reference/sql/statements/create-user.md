@@ -50,7 +50,7 @@ Query OK, 1 row affected (0.02 sec)
 
 ## See also
 
-* [Security Compatibility with MySQL](/sql/security-compatibility.md)
+* [Security Compatibility with MySQL](/dev/reference/security/compatibility.md)
 * [DROP USER](/dev/reference/sql/statements/drop-user.md)
 * [SHOW CREATE USER](/dev/reference/sql/statements/show-create-user.md)
 * [ALTER USER](/dev/reference/sql/statements/alter-user.md)

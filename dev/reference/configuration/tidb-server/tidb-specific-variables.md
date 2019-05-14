@@ -256,7 +256,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 - Scope: SESSION | GLOBAL
 - Default: 0
-- This variable is used to set whether to disable automatic retry of explicit transactions. If you set this variable to 1, the transaction does not retry automatically. If there is a transactional conflict, the transaction needs to be retried at the application layer. To decide whether you need to disable automatic retry, see [description of optimistic transactions](/sql/transaction-isolation.md#description-of-optimistic-transactions).
+- This variable is used to set whether to disable automatic retry of explicit transactions. If you set this variable to 1, the transaction does not retry automatically. If there is a transactional conflict, the transaction needs to be retried at the application layer. To decide whether you need to disable automatic retry, see [description of optimistic transactions](/dev/reference/transactions/transaction-isolation.md#description-of-optimistic-transactions).
 
 ### tidb_enable_table_partition
 

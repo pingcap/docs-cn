@@ -476,4 +476,4 @@ enable-heartbeat: true
 - DM-worker updates the `TS_slave_task` synchronization time after each synchronization task obtains the `dm_heartbeat`.`heartbeat` binlog.
 - DM-worker queries the current `TS_master` timestamp in the corresponding upstream MySQL or MariaDB `dm_heartbeat`.`heartbeat` tables every 10 seconds, and calculates `task_lag` = `TS_master` - `TS_slave_task` for each task.
 
-See the `replicate lag` in the [binlog replication](/tools/dm/monitor.md#binlog-replication) processing unit of DM monitoring metrics.
+See the `replicate lag` in the [binlog replication](/dev/reference/tools/data-migration/monitor.md#binlog-replication) processing unit of DM monitoring metrics.

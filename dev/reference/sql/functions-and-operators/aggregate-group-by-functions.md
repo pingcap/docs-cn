@@ -56,7 +56,7 @@ mysql> select a, b, sum(c) from t group by a;
 ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'b' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
 ```
 
-TiDB does not currently enable the [`ONLY_FULL_GROUP_BY`](/sql/mysql-compatibility.md#default-differences) mode by default.
+TiDB does not currently enable the [`ONLY_FULL_GROUP_BY`](/dev/reference/mysql-compatibility.md#default-differences) mode by default.
 
 ### Differences from MySQL
 

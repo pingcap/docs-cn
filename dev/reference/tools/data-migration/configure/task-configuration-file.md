@@ -14,7 +14,7 @@ For the feature and configuration of each configuration item, see [Data Synchron
 
 ## Important concepts
 
-For description of important concepts including `source-id` and the DM-worker ID, see [Important concepts](/tools/dm/dm-configuration-file-overview.md#important-concepts).
+For description of important concepts including `source-id` and the DM-worker ID, see [Important concepts](/dev/reference/tools/data-migration/configure/overview.md#important-concepts).
 
 ## Configuration order
 

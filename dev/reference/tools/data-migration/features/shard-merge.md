@@ -29,7 +29,7 @@ DM has the following sharding DDL usage restrictions:
     - A table can only be renamed to a new name that is not used by any other table.
     - A single `RENAME TABLE` statement can only involve a single `RENAME` operation.
 - The table schema of each sharded table must be the same at the starting point of the incremental replication task, so as to make sure the DML statements of different sharded tables can be replicated into the downstream with a definite table schema, and the subsequent sharding DDL statements can be correctly matched and replicated.
-- If you need to change the [table routing](/tools/dm/data-synchronization-features.md#table-routing) rule, you have to wait for the replication of all sharding DDL statements to complete.
+- If you need to change the [table routing](/dev/reference/tools/data-migration/features/overview.md#table-routing) rule, you have to wait for the replication of all sharding DDL statements to complete.
     - During the replication of sharding DDL statements, an error is reported if you use `dmctl` to change `router-rules`.
 - If you need to `CREATE` a new table to a sharding group where DDL statements are being executed, you have to make sure that the table schema is the same as the newly modified table schema.
     - For example, both the original `table_1` and `table_2` have two columns (a, b) initially, and have three columns (a, b, c) after the sharding DDL operation, so after the replication the newly created table should also have three columns (a, b, c).
@@ -79,7 +79,7 @@ The characteristics of DM handling the sharding DDL replication among multiple D
 - After receiving the DDL statement from the binlog event, each DM-worker sends the DDL information to `DM-master`.
 - `DM-master` creates or updates the DDL lock based on the DDL information received from each DM-worker and the sharding group information.
 - If all members of the sharding group receive a same specific DDL statement, this indicates that all DML statements before the DDL execution on the upstream sharded tables have been completely replicated, and this DDL statement can be executed. Then DM can continue to replicate the subsequent DML statements.
-- After being converted by the [table router](/tools/dm/data-synchronization-features.md#table-routing), the DDL statement of the upstream sharded tables must be consistent with the DDL statement to be executed in the downstream. Therefore, this DDL statement only needs to be executed once by the DDL owner and all other DM-workers can ignore this DDL statement.
+- After being converted by the [table router](/dev/reference/tools/data-migration/features/overview.md#table-routing), the DDL statement of the upstream sharded tables must be consistent with the DDL statement to be executed in the downstream. Therefore, this DDL statement only needs to be executed once by the DDL owner and all other DM-workers can ignore this DDL statement.
 
 In the above example, only one sharded table needs to be merged in the upstream MySQL instance corresponding to each DM-worker. But in actual scenarios, there might be multiple sharded tables in multiple sharded schemas to be merged in one MySQL instance. And when this happens, it becomes more complex to coordinate the sharding DDL replication.
 

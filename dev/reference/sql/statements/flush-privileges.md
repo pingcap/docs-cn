@@ -37,4 +37,4 @@ This statement is understood to be fully compatible with MySQL. Any compatibilit
 
 * [GRANT](/dev/reference/sql/statements/grant.md)
 * [REVOKE](/dev/reference/sql/statements/revoke.md)
-* [Privilege Management](/sql/privilege.md)
+* [Privilege Management](/dev/reference/security/privilege-system.md)

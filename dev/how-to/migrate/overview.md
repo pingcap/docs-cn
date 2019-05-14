@@ -13,11 +13,11 @@ This document describes scenarios for migrating data into TiDB from either MySQL
 
 Migrations will often make use of the following tools. The following is a brief overview of their usage:
 
-- [`mydumper`](/tools/mydumper.md) exports data from MySQL. It is recommended over using mysqldump.
-- [`loader`](/tools/loader.md) imports data in mydumper format into TiDB.
-- [`syncer`](/tools/syncer.md) acts like a MySQL replication slave and pushes data from MySQL into TiDB.
-- [DM](/tools/dm/overview.md) (Data Migration) integrates the functions of mydumper, Loader and syncer to support the export and import of full-size data, as well as incremental synchronization of MySQL Binlog data, and supports data synchronization of a more complete pooled table scenario.
-- [TiDB-Lightning](/tools/lightning/overview-architecture.md) imports data to TiDB in an optimized way. For example, a 1TiB backup could take 24+ hours to import with loader, while it will typically complete at least 3 times faster in TiDB-Lightning.
+- [`mydumper`](/dev/reference/tools/mydumper.md) exports data from MySQL. It is recommended over using mysqldump.
+- [`loader`](/dev/reference/tools/loader.md) imports data in mydumper format into TiDB.
+- [`syncer`](/dev/reference/tools/syncer.md) acts like a MySQL replication slave and pushes data from MySQL into TiDB.
+- [DM](/dev/reference/tools/data-migration/overview.md) (Data Migration) integrates the functions of mydumper, Loader and syncer to support the export and import of full-size data, as well as incremental synchronization of MySQL Binlog data, and supports data synchronization of a more complete pooled table scenario.
+- [TiDB-Lightning](/dev/reference/tools/tidb-lightning/overview.md) imports data to TiDB in an optimized way. For example, a 1TiB backup could take 24+ hours to import with loader, while it will typically complete at least 3 times faster in TiDB-Lightning.
 
 ## Scenarios
 
@@ -54,4 +54,4 @@ To import data from another database, it is recommended to:
 - Export the data as CSV format.
 - Import the data using TiDB-Lightning.
 
-For more information, refer to [CSV support for TiDB-Lightning](/tools/lightning/csv.md).
+For more information, refer to [CSV support for TiDB-Lightning](/dev/reference/tools/tidb-lightning/csv.md).

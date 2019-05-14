@@ -67,4 +67,4 @@ The current limitations of JSON and generated columns are as follows:
 
 - You cannot add the generated column in the storage type of `STORED` through `ALTER TABLE`.
 - You cannot create an index on the generated column through `ALTER TABLE`. 
-- Not all [JSON functions](/sql/json-functions.md) are supported.
+- Not all [JSON functions](/dev/reference/sql/functions-and-operators/json-functions.md) are supported.
