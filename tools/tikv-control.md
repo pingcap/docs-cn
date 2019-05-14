@@ -198,14 +198,14 @@ $ tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
 
 使用 `modify-tikv-config` 命令可以动态修改配置参数，暂时仅支持对于 RocksDB 相关参数的动态更改。
 
-- `-m` 可以指定要修改的 RocksDB，有 `kvdb` 和 `raftdb` 两个值可以选择。
-- `-n` 用于指定配置名。配置名可以参考 [TiKV 配置模版](https://github.com/pingcap/tikv/blob/master/etc/config-template.toml#L213-L500)中 `[rocksdb]` 和 `[raftdb]` 下的参数，分别对应 `kvdb` 和 `raftdb`。同时，还可以通过 `default|write|lock + . + 参数名` 的形式来指定的不同 CF 的配置（对于 `kvdb` 有 `default|write|lock` 可以选择，对于 `raftdb` 仅有 `default` 可以选择。
+- `-m` 用于指定要修改的模块，有 `storage`、`kvdb` 和 `raftdb` 三个值可以选择。
+- `-n` 用于指定配置名。配置名可以参考 [TiKV 配置模版](https://github.com/pingcap/tikv/blob/master/etc/config-template.toml#L213-L500)中 `[storage]`、`[rocksdb]` 和 `[raftdb]` 下的参数，分别对应 `storage`、`kvdb` 和 `raftdb`。同时，还可以通过 `default|write|lock + . + 参数名` 的形式来指定的不同 CF 的配置（对于 `kvdb` 有 `default|write|lock` 可以选择，对于 `raftdb` 仅有 `default` 可以选择。
 - `-v` 用于指定配置值。
 
 ```bash
+$ tikv-ctl modify-tikv-config -m storage -n block_cache.capacity -v 10GB
+success!
 $ tikv-ctl modify-tikv-config -m kvdb -n max_background_jobs -v 8
-success！
-$ tikv-ctl modify-tikv-config -m kvdb -n write.block-cache-size -v 256MB
 success!
 $ tikv-ctl modify-tikv-config -m raftdb -n default.disable_auto_compactions -v true
 success!
