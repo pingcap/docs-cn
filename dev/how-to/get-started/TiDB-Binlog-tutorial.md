@@ -4,6 +4,7 @@ summary: 在单个 TiDB 集群上部署 TiDB-Binlog
 category: how-to
 ---
 
+# 部署 TiDB-Binlog
 
 本文档将先介绍，在将数据迁移到 MariaDB 实例之前，如何在 Placement Driver、TiKV、TiDB、Pump 或 Drainer 各个组件中的单个节点上部署 TiDB-Binlog。
 
