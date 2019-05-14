@@ -82,3 +82,5 @@ This statement is understood to be fully compatible with MySQL. Any compatibilit
 
 * [GRANT <privileges>](/dev/reference/sql/statements/grant-privileges.md)
 * [SHOW GRANTS](/dev/reference/sql/statements/show-grants.md)
+* [Privilege Management](/dev/reference/security/privilege-system.md)
+

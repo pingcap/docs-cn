@@ -54,3 +54,5 @@ Query OK, 1 row affected (0.02 sec)
 * [DROP USER](/dev/reference/sql/statements/drop-user.md)
 * [SHOW CREATE USER](/dev/reference/sql/statements/show-create-user.md)
 * [ALTER USER](/dev/reference/sql/statements/alter-user.md)
+* [Privilege Management](/dev/reference/security/privilege-system.md)
+

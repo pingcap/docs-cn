@@ -159,6 +159,8 @@
       - [`REVOKE <privileges>`](dev/reference/sql/statements/revoke-privileges.md)
       - [`ROLLBACK`](dev/reference/sql/statements/rollback.md)
       - [`SELECT`](dev/reference/sql/statements/select.md)
+      - [`SET [NAMES|CHARACTER SET]`](dev/reference/sql/statements/set-names.md)
+      - [`SET PASSWORD`](dev/reference/sql/statements/set-password.md)
       - [`SET TRANSACTION`](dev/reference/sql/statements/set-transaction.md)
       - [`SET [GLOBAL|SESSION] <variable>`](dev/reference/sql/statements/set-variable.md)
       - [`SHOW CHARACTER SET`](dev/reference/sql/statements/show-character-set.md)
