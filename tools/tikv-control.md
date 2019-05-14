@@ -203,7 +203,11 @@ $ tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
 - `-v` 用于指定配置值。
 
 ```bash
+# 设置 `shared block cache` 的大小.
 $ tikv-ctl modify-tikv-config -m storage -n block_cache.capacity -v 10GB
+success!
+# 当禁用 `shared block cache` 时，为 `write` CF 设置 `block cache size`
+$ tikv-ctl modify-tikv-config -m kvdb -n write.block_cache_size -v 256MB
 success!
 $ tikv-ctl modify-tikv-config -m kvdb -n max_background_jobs -v 8
 success!
