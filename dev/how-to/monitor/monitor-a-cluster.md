@@ -1,6 +1,7 @@
 ---
 title: TiDB 集群监控
-category: monitoring
+category: how-to
+aliases: ['/docs-cn/op-guide/monitor/']
 ---
 
 # TiDB 集群监控
@@ -121,11 +122,11 @@ curl http://127.0.0.1:2379/pd/api/v1/stores
 
 #### TiDB/PD/TiKV 配置
 
-+   TiDB
++ TiDB
 
     设置 \-\-metrics-addr 和 \-\-metrics-interval 两个参数，其中 metrics-addr 设为 Push Gateway 的地址，metrics-interval 为 push 的频率，单位为秒，默认值为 15
 
-+   PD
++ PD
 
     修改 toml 配置文件，填写 Push Gateway 的地址和推送频率
 

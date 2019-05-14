@@ -1,4 +1,4 @@
-# TiDB 中文技术文档
+# TiDB 中文用户文档
 
 ## 目录
 
@@ -14,33 +14,28 @@
       - [使用 Docker Compose](dev/how-to/get-started/local-cluster/install-from-docker-compose.md)
     - [SQL 基本操作](dev/how-to/get-started/explore-sql.md)
     - [读取历史数据](dev/how-to/get-started/read-historical-data.md)
-  - 部署
-    - [软硬件环境需求](op-guide/recommendation.md)
+  + 部署
+    - [软硬件环境需求](dev/how-to/deploy/hardware-recommendations.md)
     + 集群部署方式
-      - [使用 Ansible 部署（推荐）](op-guide/ansible-deployment.md)
-      - [使用 Ansible 离线部署](op-guide/offline-ansible-deployment.md)
-      - [使用 Docker 部署](op-guide/docker-deployment.md)
+      - [使用 Ansible 部署（推荐）](dev/how-to/deploy/orchestrated/ansible.md)
+      - [使用 Ansible 离线部署](dev/how-to/deploy/orchestrated/offline-ansible.md)
+      - [使用 Docker 部署](dev/how-to/deploy/orchestrated/docker.md)
     + 跨地域冗余
-      - [跨数据中心部署方案](op-guide/cross-dc-deployment.md)
-      - [配置集群拓扑](op-guide/location-awareness.md)
-    - [TiSpark 快速上手](tispark/tispark-quick-start-guide.md)
-    - [使用 Ansible 部署 DM 集群](tools/dm/deployment.md)
+      - [跨数据中心部署方案](dev/how-to/deploy/geographic-redundancy/overview.md)
+      - [配置集群拓扑](dev/how-to/deploy/geographic-redundancy/location-awareness.md)
+    - [TiSpark 快速上手](dev/how-to/deploy/tispark.md)
+    - [使用 Ansible 部署 DM 集群](dev/how-to/deploy/data-migration-with-ansible.md)
+  + 配置
+    - [时区](dev/how-to/configure/time-zone.md)
+    - [内存控制](dev/how-to/configure/memory-control.md)
   + 安全
-    - [与 MySQL 的安全特性差异](sql/security-compatibility.md)
-    - [TiDB 数据库权限管理](sql/privilege.md)
-    - [TiDB 用户账户管理](sql/user-account-management.md)
     + 安全传输层协议 (TLS)
-      - [为 MySQL 客户端启用 TLS](sql/encrypted-connections.md)
-      - [为 TiDB 组件启用 TLS](op-guide/security.md)
-    - [生成自签名证书](op-guide/generate-self-signed-certificates.md)
+      - [为 MySQL 客户端开启 TLS](dev/how-to/secure/enable-tls-clients.md)
+      - [为 TiDB 组件间开启 TLS](dev/how-to/secure/enable-tls-between-components.md)
+    - [生成自签名证书](dev/how-to/secure/generate-self-signed-certificates.md)
   + 监控
-    - [概述](op-guide/monitor-overview.md)
-    - [监控 TiDB 集群](op-guide/monitor.md)
-    + 重要监控指标详解
-      - [Overview](op-guide/dashboard-overview-info.md)
-      - [TiDB](op-guide/tidb-dashboard-info.md)
-      - [PD](op-guide/dashboard-pd-info.md)
-      - [TiKV](op-guide/dashboard-tikv-info.md)
+    - [概述](dev/how-to/monitor/overview.md)
+    - [监控 TiDB 集群](dev/how-to/monitor/monitor-a-cluster.md)
   + 迁移
     - [概述](op-guide/migration-overview.md)
     + 从 MySQL 迁移
@@ -52,37 +47,30 @@
     + 备份与恢复
       - [全量备份](op-guide/backup-restore.md)
       - [增量备份](tools/tidb-binlog-cluster.md)
-    + 扩容缩容
-      - [集群扩容缩容方案](op-guide/horizontal-scale.md)
-      - [使用 Ansible 扩容缩容](op-guide/ansible-deployment-scale.md)
     - [定位慢查询](sql/slow-query.md)
-    + 升级
-      - [升级至 TiDB 3.0](op-guide/tidb-v3.0-upgrade-guide.md)
-      - [升级至 TiDB 2.1](op-guide/tidb-v2.1-upgrade-guide.md)
-      - [升级 Data Migration](tools/dm/dm-upgrade.md)
-      - [使用 Ansible 滚动升级](op-guide/ansible-deployment-rolling-update.md)
-  - 故障诊断
-    - [错误码](sql/error.md)
+  + 扩容缩容
+    - [使用 Ansible 扩容缩容](op-guide/ansible-deployment-scale.md)
+    - [集群扩容缩容方案](op-guide/horizontal-scale.md)
+  + 升级
+    - [升级至 TiDB 3.0](op-guide/tidb-v3.0-upgrade-guide.md)
+    - [升级至 TiDB 2.1](op-guide/tidb-v2.1-upgrade-guide.md)
+    - [使用 Ansible 滚动升级](op-guide/ansible-deployment-rolling-update.md)
+    - [升级 Data Migration](tools/dm/dm-upgrade.md)
+  + 故障诊断
     - [集群配置诊断](trouble-shooting.md)
     - [Data Migration 故障诊断](tools/dm/troubleshooting.md)
     - [TiDB-Lightning 故障诊断](tools/lightning/errors.md)
-    - [支持渠道](support.md)
-    - [反馈问题](report-issue.md)
-  + [贡献](contribute.md)
-    - [贡献代码](contribute.md#成为-tidb-的贡献者)
-    - [改进文档](contribute.md#改进文档)
-+ 参考资源
++ 参考手册
+  + [与 MySQL 兼容性对比](sql/mysql-compatibility.md)
   + SQL
-    - [支持的连接器和 API](sql/connection-and-APIs.md)
-    - [与 MySQL 兼容性对比](sql/mysql-compatibility.md)
-    + SQL 语句
-      - [数据定义语句 (DDL)](sql/ddl.md)
-      - [数据操作语句 (DML)](sql/dml.md)
-      - [事务语句](sql/transaction.md)
-      - [数据库管理语句](sql/admin.md)
-      - [Prepared SQL 语句语法](sql/prepare.md)
-      - [实用工具语句](sql/util.md)
-      - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
+    - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
+    + SQL 语言结构
+      - [字面值](sql/literal-values.md)
+      - [Schema 对象名](sql/schema-object-names.md)
+      - [关键字和保留字](sql/keywords-and-reserved-words.md)
+      - [用户自定义变量](sql/user-defined-variables.md)
+      - [表达式语法](sql/expression-syntax.md)
+      - [注释语法](sql/comment-syntax.md)
     + 数据类型
       - [数值类型](sql/datatype.md#数值类型)
       - [日期和时间类型](sql/datatype.md#日期时间类型)
@@ -91,7 +79,6 @@
       - [枚举类型](sql/datatype.md#枚举类型)
       - [集合类型](sql/datatype.md#集合类型)
       - [数据类型默认值](sql/datatype.md#数据类型的默认值)
-    - [约束](sql/constraints.md)
     + 函数与操作符
       - [函数与操作符概述](sql/functions-and-operators-reference.md)
       - [表达式求值的类型转换](sql/type-conversion-in-expression-evaluation.md)
@@ -108,48 +95,60 @@
       - [GROUP BY 聚合函数](sql/aggregate-group-by-functions.md)
       - [其它函数](sql/miscellaneous-functions.md)
       - [精度数学](sql/precision-math.md)
-    + SQL 语言结构
-      - [字面值](sql/literal-values.md)
-      - [Schema 对象名](sql/schema-object-names.md)
-      - [关键字和保留字](sql/keywords-and-reserved-words.md)
-      - [用户自定义变量](sql/user-defined-variables.md)
-      - [表达式语法](sql/expression-syntax.md)
-      - [注释语法](sql/comment-syntax.md)
+    + SQL 语句
+      - [数据定义语句 (DDL)](sql/ddl.md)
+      - [数据操作语句 (DML)](sql/dml.md)
+      - [事务语句](sql/transaction.md)
+      - [数据库管理语句](sql/admin.md)
+      - [Prepared SQL 语句语法](sql/prepare.md)
+      - [实用工具语句](sql/util.md)
+    - [约束](sql/constraints.md)
     - [生成列](sql/generated-columns.md)
-    + 事务
-      - [事务模型](sql/transaction-model.md)
-      - [隔离级别](sql/transaction-isolation.md)
-    + 性能
-      - [SQL 优化流程](sql/sql-optimizer-overview.md)
-      - [理解 TiDB 执行计划](sql/understanding-the-query-execution-plan.md)
-      - [统计信息概述](sql/statistics.md)
-      - [Optimizer Hints](sql/optimizer-hints.md)
-      - [TiKV 调优](op-guide/tune-tikv.md)
-      - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
-    - [TiDB 系统表](sql/system-database.md)
-    - [Information Schema](sql/information-schema.md)
-    - [TiSpark 使用指南](tispark/tispark-user-guide.md)
+    - [字符集](sql/character-set-support.md)
   + 配置
     + tidb-server
       - [MySQL 系统变量](sql/variable.md)
       - [TiDB 特定系统变量](sql/tidb-specific.md)
-      - [时区](sql/time-zone.md)
-      - [字符集](sql/character-set-support.md)
-      - [内存控制](sql/tidb-memory-control.md)
-      - [垃圾回收 (GC)](op-guide/gc.md)
       - [配置参数](op-guide/configuration.md)
     + pd-server
       - [配置参数](op-guide/pd-configuration.md)
     + tikv-server
       - [配置参数](op-guide/tikv-configuration.md)
+  + 监控指标
+    - [Overview 面板](op-guide/dashboard-overview-info.md)
+    - [TiDB 面板](op-guide/tidb-dashboard-info.md)
+    - [PD 面板](op-guide/dashboard-pd-info.md)
+    - [TiKV 面板](op-guide/dashboard-tikv-info.md)
+  + 安全
+    - [与 MySQL 的安全特性差异](sql/security-compatibility.md)
+    - [TiDB 数据库权限管理](sql/privilege.md)
+    - [TiDB 用户账户管理](sql/user-account-management.md)
+  + 事务
+    - [事务模型](sql/transaction-model.md)
+    - [隔离级别](sql/transaction-isolation.md)
+  + 系统数据库
+    - [`mysql`](sql/system-database.md)
+    - [`information_schema`](sql/information-schema.md)
+  - [错误码](sql/error.md)
+  - [支持的连接器和 API](sql/connection-and-APIs.md)
+  - [垃圾回收 (GC)](op-guide/gc.md)
+  + 性能调优
+    - [SQL 优化流程](sql/sql-optimizer-overview.md)
+    - [理解 TiDB 执行计划](sql/understanding-the-query-execution-plan.md)
+    - [统计信息概述](sql/statistics.md)
+    - [Optimizer Hints](sql/optimizer-hints.md)
+    - [TiKV 调优](op-guide/tune-tikv.md)
+    - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
+  + [TiSpark 使用指南](tispark/tispark-user-guide.md)
   + 生态工具
     - [Mydumper](tools/mydumper.md)
     - [Loader](tools/loader.md)
     - [Syncer](tools/syncer.md)
     + Data Migration
-      - [概述](tools/dm/overview.md)
-      - [使用限制](tools/dm/overview.md#使用限制)
-      + [部署使用](tools/dm/practice.md)
+      + [概述](tools/dm/overview.md)
+        - [DM 架构](tools/dm/overview.md#dm-架构)
+        - [同步功能介绍](tools/dm/overview.md#同步功能介绍)
+        - [使用限制](tools/dm/overview.md#使用限制)
       + 核心特性
         - [Table Routing](tools/dm/data-synchronization-features.md#table-routing)
         - [Black & White Lists](tools/dm/data-synchronization-features.md#black-white-table-lists)
@@ -163,6 +162,7 @@
       + 使用场景
         - [简单的从库同步场景](tools/dm/simple-synchronization-scenario.md)
         - [分库分表合并场景](tools/dm/shard-merge-scenario.md)
+      + [部署使用](tools/dm/practice.md)
       + 配置
         - [概述](tools/dm/dm-configuration-file-overview.md)
         - [任务配置](tools/dm/task-configuration-file-intro.md)
@@ -187,46 +187,17 @@
     - [TiKV Control](https://github.com/tikv/tikv/blob/master/docs/tools/tikv-control.md)
     - [TiDB Controller](tools/tidb-controller.md)
     - [工具下载](tools/download.md)
-  - [TiDB 路线图](ROADMAP.md)
-  + 用户案例
-    - [北京银行](http://t.cn/RnY8fGn)
-    - [海航](http://t.cn/REXx0Qe)
-    - [美团点评](http://t.cn/EAFCqhl)
-    - [今日头条](http://t.cn/RnLfEMf)
-    - [转转](http://t.cn/R1MAXEq)
-    - [Mobike](http://t.cn/RT8FbP6)
-    - [小米科技](http://t.cn/Ey2xCDK)
-    - [爱奇艺](http://t.cn/EvErsc1)
-    - [易果生鲜](http://t.cn/RTYVhzH)
-    - [同程旅游（一）](http://t.cn/RmXeNKR)
-    - [同程旅游（二）](http://t.cn/EAmsF08)
-    - [去哪儿](http://t.cn/RTKnsL7)
-    - [火星文化](http://t.cn/EAuvfcs)
-    - [G7](http://t.cn/RQVePoX)
-    - [一面数据](http://t.cn/RT9r5di)
-    - [凤凰网](http://t.cn/RHRQfNT)
-    - [猿辅导](http://t.cn/RTKnKSX)
-    - [Mobikok](http://t.cn/Rm1F6lg)
-    - [二维火](http://t.cn/R8bXM2f)
-    - [客如云](http://t.cn/R1wSEJH)
-    - [Ping++](http://t.cn/RE5xYKn)
-    - [乐视云](http://t.cn/Rnv3IVs)
-    - [零氪科技](http://t.cn/REj7tSv)
-    - [威锐达测控](http://t.cn/R3CrviR)
-    - [盖娅互娱](http://t.cn/RT9r7hx)
-    - [游族网络](http://t.cn/R8k4AWB)
-    - [西山居](http://t.cn/RBP12zj)
-    - [FUNYOURS JAPAN](http://t.cn/Rnoab5D)
-    - [丰巢科技](http://t.cn/EAuvLIv)
-    - [特来电](http://t.cn/RrHzUGW)
-    - [万达网络](http://t.cn/RTKm6ds)
-    - [360金融](http://t.cn/RTKnTev)
-    - [中国电信翼支付](http://t.cn/R3Wd9p3)
-    - [某电信运营商](http://t.cn/RTYWADg)
 + 常见问题 (FAQ)
   - [TiDB FAQ](FAQ.md)
   - [TiDB-Lightning FAQ](tools/lightning/faq.md)
   - [升级 FAQ](op-guide/upgrade-faq.md)
++ 技术支持
+  - [支持渠道](support.md)
+  - [反馈问题](report-issue.md)
++ [贡献](contribute.md)
+  - [贡献代码](contribute.md#成为-tidb-的贡献者)
+  - [改进文档](contribute.md#改进文档)
+- [TiDB 路线图](ROADMAP.md)
 + [版本发布历史](releases/rn.md)
   + v3.0
     - [3.0.0-rc.1](releases/3.0.0-rc.1.md)

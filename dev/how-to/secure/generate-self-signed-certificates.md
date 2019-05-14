@@ -1,6 +1,7 @@
 ---
 title: 生成自签名证书
-category: deployment
+category: how-to
+aliases: ['/docs-cn/op-guide/generate-self-signed-certificates/']
 ---
 
 # 生成自签名证书

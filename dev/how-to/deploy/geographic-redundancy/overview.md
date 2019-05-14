@@ -1,6 +1,7 @@
 ---
 title: 跨数据中心部署方案
-category: deployment
+category: how-to
+aliases: ['/docs-cn/op-guide/cross-dc-deployment/']
 ---
 
 # 跨数据中心部署方案
@@ -11,13 +12,13 @@ category: deployment
 
 TiDB, TiKV, PD 分别分布在 3 个不同的中心，这是最常规，可用性最高的方案。
 
-![三中心部署](../media/deploy-3dc.png)
+![三中心部署](/media/deploy-3dc.png)
 
 ### 优点
 
 所有数据的副本分布在三个数据中心，任何一个数据中心失效后，另外两个数据中心会自动发起 leader election，并在合理长的时间内（通常情况 20s 以内）恢复服务，并且不会产生数据丢失。
 
-![三中心部署容灾](../media/deploy-3dc-dr.png)
+![三中心部署容灾](/media/deploy-3dc-dr.png)
 
 ### 缺点
 
@@ -31,13 +32,13 @@ TiDB, TiKV, PD 分别分布在 3 个不同的中心，这是最常规，可用�
 
 如果不需要每个数据中心同时对外提供服务，可以将业务流量全部派发到一个数据中心，并通过调度策略把 Region leader 和 PD leader 都迁移到同一个数据中心（我们在上文所述的测试中也做了这个优化）。这样一来，不管是从 PD 获取 TSO 还是读取 Region 都不受数据中心间网络的影响。当该数据中心失效后，PD leader 和 Region leader 会自动在其它数据中心选出，只需要把业务流量转移至其他存活的数据中心即可。
 
-![三中心部署读性能优化](../media/deploy-3dc-optimize.png)
+![三中心部署读性能优化](/media/deploy-3dc-optimize.png)
 
 ## 两地三中心部署方案
 
 两地三中心的方案与三数据中心类似，算是三机房方案根据业务特点进行的优化，区别是其中有两个数据中心距离很近（通常在同一个城市），网络延迟相对很小。这种场景下，我们可以把业务流量同时派发到同城的两个数据中心，同时控制 Region leader 和 PD leader 也分布在同城的两个数据中心。
 
-![两地三中心部署方案](../media/deploy-2city3dc.png)
+![两地三中心部署方案](/media/deploy-2city3dc.png)
 
 与三数据中心方案相比，两地三中心有以下优势：
 
@@ -51,11 +52,11 @@ TiDB, TiKV, PD 分别分布在 3 个不同的中心，这是最常规，可用�
 
 两数据中心 + binlog 同步类似于传统的 MySQL 中 master/slave 方案。两个数据中心分别部署一套完整的 TiDB 集群，我们称之为主集群和从集群。正常情况下所有的请求都在主集群，写入的数据通过 binlog 异步同步至从集群并写入。
 
-![binlog 同步部署方案](../media/deploy-binlog.png)
+![binlog 同步部署方案](/media/deploy-binlog.png)
 
 当主集群整个数据中心失效后，业务可以切换至从集群，与 MySQL 类似，这种情况下会有一些数据缺失。对比 MySQL，这个方案的优势是数据中心内的 HA -- 少部分节点故障时，通过重新选举 leader 自动恢复服务，不需要人工干预。
 
-![两中心 binlog 相互备份方案](../media/deploy-backup.png)
+![两中心 binlog 相互备份方案](/media/deploy-backup.png)
 
 另外部分用户采用这种方式做双数据中心多活，两个数据中心各有一个集群，将业务分为两个库，每个库服务一部分数据，每个数据中心的业务只会访问一个库，两个集群之间通过 binlog 将本数据中心业务所涉及的库中的数据变更同步到对端机房，形成环状备份。
 
