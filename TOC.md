@@ -169,6 +169,8 @@
       - [监控 DM 集群](tools/dm/monitor.md)
       - [管理数据同步任务](tools/dm/manage-task.md)
       - [DM 集群操作](tools/dm/cluster-operations.md)
+      + 从与 MySQL 兼容的数据库迁移数据
+        - [从 AWS Aurora MySQL 迁移数据](tools/dm/from-aurora.md)
     + TiDB-Lightning
       - [概述](tools/lightning/overview-architecture.md)
       - [部署执行](tools/lightning/deployment.md)
