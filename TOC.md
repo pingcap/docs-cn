@@ -196,6 +196,7 @@
       - [MySQL System Variables](dev/reference/configuration/tidb-server/mysql-variables.md)
       - [TiDB Specific System Variables](dev/reference/configuration/tidb-server/tidb-specific-variables.md)
       - [Configuration Flags](dev/reference/configuration/tidb-server/configuration.md)
+      - [Configuration File](dev/reference/configuration/tidb-server/configuration-file.md)
     + pd-server
       - [Configuration Flags](dev/reference/configuration/pd-server/configuration.md)
     + tikv-server

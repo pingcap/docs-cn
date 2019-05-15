@@ -2,7 +2,7 @@
 title: TiDB 2.1 Upgrade Guide
 summary: Learn how to upgrade from TiDB 2.0 (TiDB 2.0.1 or later) or TiDB 2.1 RC version to TiDB 2.1 GA version.
 category: how-to
-aliases: ['/docs/op-guide/tidb-v2.1-upgrade-guide/','/docs/dev/how-to/maintain/upgrade/from-previous-version/']
+aliases: ['/docs/op-guide/tidb-v2.1-upgrade-guide/','/docs/dev/how-to/maintain/upgrade/from-previous-version/','/docs/op-guide/tidb-v2.0-upgrade-guide/']
 ---
 
 # TiDB 2.1 Upgrade Guide
