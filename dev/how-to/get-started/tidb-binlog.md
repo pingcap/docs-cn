@@ -22,7 +22,7 @@ TiDB-Binlog is a solution to collect binary log data from TiDB and provide real-
 
 You can use TiDB-Binlog for incremental backups, to replicate data from one TiDB cluster to another, or to send TiDB updates through Kafka to a downstream platform of your choice.
 
-TiDB-Binlog is particularly useful when you migrate from MySQL or MariaDB to TiDB. TiDB-Binlog enables application traffic to TiDB to be pushed to a downstream MySQL or MariaDB instance/cluster. This ensures that even if the migration to TiDB encounters problems, you can easily revert the application to MySQL or MariaDB.
+TiDB-Binlog is particularly useful when you migrate data from MySQL or MariaDB to TiDB, in which case you may use the TiDB DM (Data Migration) platform to get data from a MySQL/MariaDB cluster into TiDB, and then use TiDB-Binlog to keep a separate, downstream MySQL/MariaDB instance/cluster in sync with your TiDB cluster. TiDB-Binlog enables application traffic to TiDB to be pushed to a downstream MySQL or MariaDB instance/cluster, which reduces the risk of a migration to TiDB because you can easily revert the application to MySQL or MariaDB without downtime or data loss.
 
 See [TiDB-Binlog Cluster User Guide](https://pingcap.com/docs/tools/tidb-binlog-cluster/) for more information.
 
