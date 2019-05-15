@@ -1,6 +1,7 @@
 ---
 title: 慢查询日志
-category: user guide
+category: how-to
+aliases: ['/docs-cn/sql/slow-query/']
 ---
 
 # 慢查询日志
@@ -9,11 +10,11 @@ TiDB 在 V2.1.8 之后更改了慢日志格式，V2.1.8 之前的版本请看[�
 
 一条不合理的 SQL 语句会导致整个集群压力增大，响应变慢。对于这种问题，需要用慢查询日志来定位有问题的语句，解决性能问题。
 
-### 获取日志
+## 获取日志
 
-TiDB 会将执行时间超过 [slow-threshold](../op-guide/tidb-config-file.md#slow-threshold) 的语句默认单独输出到 [slow-query-file](../op-guide/tidb-config-file.md#slow-query-file) 文件中 ，并对慢日志的格式做了兼容，可以用 `pt-query-digest` 直接分析慢日志文件。`slow-threshold` 可以通过配置文件修改，默认是 300ms。`slow-query-file` 默认是 `tidb-slow.log`。
+TiDB 会将执行时间超过 [slow-threshold](/op-guide/tidb-config-file.md#slow-threshold) 的语句默认单独输出到 [slow-query-file](/op-guide/tidb-config-file.md#slow-query-file) 文件中 ，并对慢日志的格式做了兼容，可以用 `pt-query-digest` 直接分析慢日志文件。`slow-threshold` 可以通过配置文件修改，默认是 300ms。`slow-query-file` 默认是 `tidb-slow.log`。
 
-### 示例
+## 示例
 
 ```sql
 # Time: 2019-03-18-12:10:19.513961 +0800
@@ -33,7 +34,7 @@ TiDB 会将执行时间超过 [slow-threshold](../op-guide/tidb-config-file.md#s
 select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
 ```
 
-### 字段解析
+## 字段解析
 
 * `Time`：表示日志打印时间。
 * `Txn_start_ts`：表示事务的开始时间戳，也是事务的 ID，可以用这个值在日志中 grep 出事务相关的日志。
@@ -62,7 +63,8 @@ select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
 * `Cop_wait_addr`：等待时间最长的 cop-task 所在地址。
 * `Query`：表示 SQL 语句。慢日志里面不会打印 `Query`，但映射到内存表后，对应的字段叫 `Query`。
 
-### 慢日志内存映射表 
+## 慢日志内存映射表
+
 为了方便用 SQL 查询定位慢查询，TiDB 将慢日志内容解析后映射到 `INFORMATION_SCHEMA.SLOW_QUERY` 表中，表中 column 名和慢日志中记录的字段名一一对应。
 
 ```sql
@@ -91,15 +93,15 @@ tidb > show create table INFORMATION_SCHEMA.SLOW_QUERY;
 +------------+-------------------------------------------------------------+
 ```
 
-#### 实现细节
+### 实现细节
 
 `INFORMATION_SCHEMA.SLOW_QUERY` 表里面的内容是通过实时解析 TiDB 慢日志里面的内容得到的。每次查询这个表时都会去读取慢日志文件里面的内容，然后解析。
 
-### 查询 SLOW_QUERY 示例
+## 查询 `SLOW_QUERY` 示例
 
-下面示例展示如何通过查询 SLOW_QUERY 表来定位慢查询。
+下面示例展示如何通过查询 `SLOW_QUERY` 表来定位慢查询。
 
-#### 查询 TopN 的慢查询
+### 查询 TopN 的慢查询
 
 查询 Top2 的用户慢查询。`Is_internal=false` 表示排除 TiDB 内部的慢查询，只看用户的慢查询。
 
@@ -116,7 +118,8 @@ tidb > select `Query_time`, query from INFORMATION_SCHEMA.`SLOW_QUERY` where `Is
 Time: 0.012s
 ```
 
-#### 查询 `test` 用户的 TopN 慢查询 
+### 查询 `test` 用户的 TopN 慢查询
+
 ```sql
 /* 查询 test 用户执行的SQL，且按执行消耗时间排序*/
 tidb > select `Query_time`, query,  user from INFORMATION_SCHEMA.`SLOW_QUERY` where `Is_internal`=false and user like "test%" order by `Query_time` desc limit 2;
@@ -129,8 +132,10 @@ tidb > select `Query_time`, query,  user from INFORMATION_SCHEMA.`SLOW_QUERY` wh
 Time: 0.014s
 ```
 
-#### 根据 SQL 指纹来查询类似 SQL 的慢查询
+### 根据 SQL 指纹来查询类似 SQL 的慢查询
+
 如果查询了 TopN 的SQL 后，想查询相同 SQL 指纹的查询，可以用指纹作为过滤条件。
+
 ```sql
 tidb > select query_time, query,digest from INFORMATION_SCHEMA.`SLOW_QUERY` where `Is_internal`=false order by `Query_time` desc limit 1;
 +-------------+-----------------------------+------------------------------------------------------------------+
@@ -150,7 +155,7 @@ tidb > select query, query_time from INFORMATION_SCHEMA.`SLOW_QUERY` where diges
 2 rows in set
 ```
 
-## 查询统计信息是 pseudo 的慢查询
+### 查询统计信息是 pseudo 的慢查询
 
 ```sql
 tidb > select query, query_time, stats from INFORMATION_SCHEMA.`SLOW_QUERY` where is_internal=false and stats like('%pseudo%');
@@ -165,9 +170,10 @@ tidb > select query, query_time, stats from INFORMATION_SCHEMA.`SLOW_QUERY` wher
 +-----------------------------+-------------+---------------------------------+
 ```
 
-#### 解析其他的 TiDB 慢日志文件
+## 解析其他的 TiDB 慢日志文件
 
 目前查询 `INFORMATION_SCHEMA.SLOW_QUERY` 只会解析配置文件中 `slow-query-file` 设置的慢日志文件名，默认是 "tidb-slow.log"。但如果想要解析其他的日志文件，可以通过设置 session 变量 `tidb_slow_query_file` 为具体的文件路径，然后查询 `INFORMATION_SCHEMA.SLOW_QUERY` 就会按照设置的路径去解析慢日志文件。
+
 ```sql
 /* 设置慢日志文件路径，方便解析其他的慢日志文件，tidb_slow_query_file 变量的作用域是 session */
 tidb > set tidb_slow_query_file="/path-to-log/tidb-slow.log"
@@ -177,7 +183,7 @@ Time: 0.001s
 
 `INFORMATION_SCHEMA.SLOW_QUERY` 目前暂时只支持解析一个慢日志文件，如果慢日志文件超过一定大小后被 logrotate 成多个文件了，查询 `INFORMATION_SCHEMA.SLOW_QUERY` 也只会去解析一个文件。后续我们会改善这点。
 
-####  用 pt-query-digest 工具分析 TiDB 慢日志
+### 用 pt-query-digest 工具分析 TiDB 慢日志
 
 可以用 pt-query-digest 工具分析 TiDB 慢日志。建议使用 pt-query-digest 3.0.13 及以上版本。示例如下：
 
@@ -215,7 +221,7 @@ $ pt-query-digest --report tidb-slow.log
 
 并不是所有 SLOW_QUERY 的语句都是有问题的。会造成集群整体压力增大的，是那些 process_time 很大的语句。wait_time 很大，但 process_time 很小的语句通常不是问题语句，是因为被问题语句阻塞，在执行队列等待造成的响应时间过长。
 
-### `admin show slow` 命令
+## `admin show slow` 命令
 
 除了获取 TiDB 日志，还有一种定位慢查询的方式是通过 `admin show slow` SQL 命令：
 

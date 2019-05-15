@@ -1,7 +1,7 @@
 ---
 title: TiDB-Binlog 简介
 category: tools
-aliases: ['/docs-cn/tools/tidb-binlog-cluster/']
+aliases: ['/docs-cn/tools/tidb-binlog-cluster/','/docs-cn/tools/tidb-binlog/']
 ---
 
 # TiDB-Binlog 简介

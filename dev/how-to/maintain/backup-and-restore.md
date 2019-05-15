@@ -1,13 +1,12 @@
 ---
 title: 备份与恢复
-category: advanced
+category: how-to
+aliases: ['/docs-cn/op-guide/backup-restore/']
 ---
 
 # 备份与恢复
 
-## 概述
-
-该文档详细介绍了如何对 TiDB 进行备份恢复。本文档暂时只考虑全量备份与恢复。
+本文档将详细介绍如何对 TiDB 进行全量备份与恢复。增量备份与恢复可使用 [TiDB Binlog](/tools/binlog/overview.md)。
 
 这里我们假定 TiDB 服务信息如下：
 
@@ -20,7 +19,7 @@ category: advanced
 - mydumper 从 TiDB 导出数据
 - loader 导入数据到 TiDB
 
-### 下载 TiDB 工具集 (Linux)
+## 下载 TiDB 工具集 (Linux)
 
 ```bash
 # 下载 tool 压缩包
@@ -38,7 +37,7 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 `mydumper` 是一个强大的数据备份工具，具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)。
 
-可使用 [`mydumper`](../tools/mydumper.md) 从 TiDB 导出数据进行备份，然后用 [`loader`](../tools/loader.md) 将其导入到 TiDB 里面进行恢复。
+可使用 [`mydumper`](/tools/mydumper.md) 从 TiDB 导出数据进行备份，然后用 [`loader`](/tools/loader.md) 将其导入到 TiDB 里面进行恢复。
 
 > **注意：**
 >
@@ -51,7 +50,7 @@ cd tidb-enterprise-tools-latest-linux-amd64
 * 使用 mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64 
 * loader的 `-t` 参数可以根据 tikv 的实例个数以及负载进行评估调整，例如 3个 tikv 的场景， 此值可以设为 `3 *(1 ～ n)`；当 tikv 负载过高，loader 以及 tidb 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 tikv 负载不是太高的时候，可以适当调大该值。
 
-#### 某次数据恢复示例，以及相关的配置
+数据恢复示例及相关的配置：
 
  - mydumper 导出后总数据量 214G，单表 8 列，20 亿行数据
  - 集群拓扑
@@ -62,7 +61,7 @@ cd tidb-enterprise-tools-latest-linux-amd64
  
 结果：导入时间 11 小时左右，19.4 G/小时
 
-### 从 TiDB 备份数据
+## 从 TiDB 备份数据
 
 我们使用 `mydumper` 从 TiDB 备份数据，如下:
 
@@ -76,9 +75,9 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 `--skip-tz-utc` 添加这个参数忽略掉 TiDB 与导数据的机器之间时区设置不一致的情况，禁止自动转换。
 
-### 向 TiDB 恢复数据
+## 向 TiDB 恢复数据
 
-我们使用 `loader` 将之前导出的数据导入到 TiDB，完成恢复操作。Loader 的下载和具体的使用方法见 [Loader 使用文档](../tools/loader.md)
+我们使用 `loader` 将之前导出的数据导入到 TiDB，完成恢复操作。Loader 的下载和具体的使用方法见 [Loader 使用文档](/tools/loader.md)
 
 ```bash
 ./bin/loader -h 127.0.0.1 -u root -P 4000 -t 32 -d ./var/test
