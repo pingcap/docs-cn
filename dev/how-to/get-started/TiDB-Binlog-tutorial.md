@@ -22,7 +22,7 @@ TiDB-Binlog 是一个用于收集 TiDB-Binlog 并提供实时数据备份和同�
 
 TiDB-Binlog 支持以下功能场景：
 - 数据增量备份：将 TiDB 集群中的数据复制到另一个集群；或通过 Kafka 发送 TiDB 更新数据并同步到下游。
-- 数据迁移：尤其是将数据从 TiDB 迁移到 MySQL/MariaDB。
+- 数据迁移：将数据从 TiDB 迁移到 MySQL/MariaDB。在这种情况下你可以使用 TiDB DM 从 MySQL/MariaDB 集群中获取数据，同步到 TiDB。之后可使用 TiDB-Binlog 让独立的下游 MySQL/MariaDB 实例或集群与 TiDB 集群保持同步。
 - 数据同步：将发送到 TiDB 的应用流量同步更新到下游的 MySQl/MariaDB 实例/集群。即使流量数据迁移到 TiDB 过程中出现问题，在 MySQL/MariaDB 中也能撤回该流量数据。
 
 更多信息参考 [TiDB-Binlog Cluster 版本用户文档](https://pingcap.com/docs-cn/v2.1/tools/tidb-binlog-cluster/)。
