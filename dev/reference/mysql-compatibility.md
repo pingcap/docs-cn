@@ -79,38 +79,27 @@ TiDB supports most of the MySQL built-in functions, but not all. See [TiDB SQL G
 
 ### DDL
 
-TiDB implements the asynchronous schema changes algorithm in F1. The Data Manipulation Language (DML) operations cannot be blocked during DDL the execution. Currently, the supported DDL includes:
+In TiDB DDL does not block reads or writes to tables while in operation. However, some restrictions currently apply to DDL changes:
 
-+ Create Database
-+ Drop Database
-+ Create Table
-+ Drop Table
-+ Add Index: Does not support creating multiple indexes at the same time.
-+ Drop Index
++ Add Index:
+  - Does not support creating multiple indexes at the same time.
+  - Adding an index on a generated column via `ALTER TABLE` is not supported.
 + Add Column:
-    - Does not support creating multiple columns at the same time.
-    - Does not support setting a column as the primary key, or creating a unique index, or specifying auto_increment while adding it.
-+ Drop Column: Does not support dropping the primary key column or index column.
-+ Alter Column
-+ Change/Modify Column
-    - Supports changing/modifying the types among the following integer types: TinyInt, SmallInt, MediumInt, Int, BigInt.
-    - Supports changing/modifying the types among the following string types: Char, Varchar, Text, TinyText, MediumText, LongText
-    - Support changing/modifying the types among the following string types: Blob, TinyBlob, MediumBlob, LongBlob.
-    
-        > **Note:**
-        >
-        > The changing/modifying column operation cannot make the length of the original type become shorter and it cannot change the unsigned/charset/collate attributes of the column.
+  - Does not support creating multiple columns at the same time.
+  - Does not support setting a column as the `PRIMARY KEY`, or creating a unique index, or specifying `auto_increment` while adding it.
++ Drop Column: Does not support dropping the `PRIMARY KEY` column or index column.
++ Change/Modify Column:
+  - Does not support lossy changes, such as from `BIGINT` to `INTEGER` or `VARCHAR(255)` to `VARCHAR(10)`.
+  - Does not support changing the `UNSIGNED` attribute.
+  - Only supports changing the `CHARACTER SET` attribute from `utf8` to `utf8mb4`.
++ `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`: the syntax is supported, but is not applicable to TiDB. All DDL changes that are supported do not lock the table.
++ `ALGORITHM [=] {DEFAULT|INSTANT|INPLACE|COPY}`: the syntax for `ALGORITHM=INSTANT` and `ALGORITHM=INPLACE` is fully supported, but will work differently than MySQL since some operations that are `INPLACE` in MySQL are `INSTANT` in TiDB. The syntax `ALGORITHM=COPY` is not applicable to TIDB and returns a warning. 
 
-    - Supports changing the following type definitions: `default value`, `comment`, `null`, `not null` and `OnUpdate`.
-    - Supports parsing the `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}` syntax, but there is no actual operation.
-
-+ Truncate Table
-+ Rename Table
-+ Create Table Like
+For more information, see [Online Schema Changes](/key-features.md#online-schema-changes).
 
 ### Analyze table
 
-+ [`ANALYZE TABLE`](/dev/reference/performance/statistics.md#manual-collection) works differently in TiDB than in MySQL, in that it is a relatively lightweight and short-lived operation in MySQL/InnoDB, while in TiDB it completely rebuilds the statistics for a table and can take much longer to complete.
+[`ANALYZE TABLE`](/dev/reference/performance/statistics.md#manual-collection) works differently in TiDB than in MySQL, in that it is a relatively lightweight and short-lived operation in MySQL/InnoDB, while in TiDB it completely rebuilds the statistics for a table and can take much longer to complete.
     
 ### Storage engines
 
