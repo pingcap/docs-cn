@@ -2,6 +2,7 @@
 title: CREATE TABLE | TiDB SQL Statement Reference 
 summary: An overview of the usage of CREATE TABLE for the TiDB database.
 category: reference
+aliases: ['/docs/sql/ddl/']
 ---
 
 # CREATE TABLE 
@@ -88,8 +89,11 @@ mysql> SELECT * FROM t1;
 * TiDB does not support the syntax `CREATE TEMPORARY TABLE`.
 * All of the data types except spatial types are supported.
 * `FULLTEXT`, `HASH` and `SPATIAL` indexes are not supported.
-* Descending indexes are not supported (similar to MySQL 5.7).
 * The `KEY_BLOCK_SIZE` and `ENGINE` attributes are parsed but ignored.
+* The `index_col_name` attribute supports the length option with a maximum length limit of 3072 bytes. The length limit does not change depending on the storage engine, and character set used when building the table.
+* The `index_col_name` attribute supports the index sorting options of `ASC` and `DESC`
+* The `COMMENT` attribute supports a maximum of 1024 characters and does not support the `WITH PARSER` option.
+* TiDB supports at most 512 columns in a single table. The corresponding number limit in InnoDB is 1017, and the hard limit in MySQL is 4096.
 
 ## See also
 
