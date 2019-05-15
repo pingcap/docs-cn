@@ -1,6 +1,7 @@
 ---
 title: TiDB 集群故障诊断
-category: advanced
+category: how-to
+aliases: ['/docs-cn/trouble-shooting/']
 ---
 
 # TiDB 集群故障诊断
@@ -48,8 +49,8 @@ tidb-server 无法启动的常见情况包括：
 
 +   启动参数错误
 
-    请参考[TiDB 命令行参数](op-guide/configuration.md#tidb)
-    
+    请参考[TiDB 命令行参数](/op-guide/configuration.md)
+
 +   端口被占用：`lsof -i:port`
 
     请确保 tidb-server 启动所需要的端口未被占用。
@@ -69,7 +70,7 @@ tidb-server 无法启动的常见情况包括：
 
 +   启动参数错误
 
-    请参考[TiKV 启动参数](op-guide/configuration.md#tikv)文档。
+    请参考[TiKV 启动参数](/op-guide/tikv-configuration.md)文档。
 
 +   端口被占用：`lsof -i:port`
 
@@ -89,7 +90,7 @@ tidb-server 无法启动的常见情况包括：
 
 +   启动参数错误
 
-    请参考[PD 命令行参数](op-guide/configuration.md#placement-driver-pd)文档。
+    请参考[PD 命令行参数](/op-guide/pd-configuration.md)文档。
 +   端口被占用：`lsof -i:port`
 
     请确保 pd-server 启动所需要的端口未被占用： `lsof -i:port`。
@@ -126,12 +127,11 @@ tidb-server 无法启动的常见情况包括：
 
 ## Too many open files
 
-在启动进程之前，请确保 ulimit -n 的结果足够大，推荐设为 unlimited 或者是大于 1000000。
+在启动进程之前，请确保 `ulimit -n` 的结果足够大，推荐设为 unlimited 或者是大于 1000000。
 
 ## 数据库访问超时，系统负载高
 
-首先检查 [SLOW-QUERY](sql/slow-query.md) 日志, 判断是否是因为某条 SQL 语句导致。
-如果未能解决，请提供如下信息：
+首先检查 [SLOW-QUERY](/dev/how-to/maintain/identify-slow-queries.md) 日志，判断是否是因为某条 SQL 语句导致。如果未能解决，请提供如下信息：
 
 + 部署的拓扑结构
     - tidb-server/pd-server/tikv-server 部署了几个实例
