@@ -244,7 +244,7 @@ MySQL 及 DM 操作与处理流程如下：
         » unlock-ddl-lock test-`shard_db`.`shard_table`
         {
             "result": false,
-            "msg": "github.com/pingcap/tidb-enterprise-dev/reference/tools/data-migration/master/server.go:1472: DDL lock test-`shard_db`.`shard_table` owner ExecuteDDL successfully, so DDL lock removed. but some dm-workers ExecuteDDL fail, you should to handle dm-worker directly",
+      "msg": "github.com/pingcap/tidb-enterprise-tools/dm/master/server.go:1472: DDL lock test-`shard_db`.`shard_table` owner ExecuteDDL successfully, so DDL lock removed. but some dm-workers ExecuteDDL fail, you should to handle dm-worker directly",
             "workers": [
                 {
                     "result": true,
