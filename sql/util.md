@@ -88,7 +88,7 @@ dot xx.dot -T png -O
 
 ![Explain Dot](../media/explain_dot.png)
 
-目前 TiDB 中的`EXPLAIN`语句暂不支持 MySQL 中`JSON`格式的输出。
+目前 TiDB 中的 `EXPLAIN` 语句暂不支持 MySQL 中 `JSON` 格式的输出。
 
 ## `USE` 语句
 
