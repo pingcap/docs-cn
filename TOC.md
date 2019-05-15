@@ -211,7 +211,7 @@
   + System Databases
     - [`mysql`](dev/reference/system-databases/mysql.md)
     - [`information_schema`](dev/reference/system-databases/information-schema.md)
-  - [Errors Codes](sql/error.md)
+  - [Errors Codes](dev/reference/error-codes.md)
   - [Supported Client Drivers](dev/reference/supported-clients.md)
   - [Garbage Collection (GC)](dev/reference/garbage-collection.md)
   + Performance
