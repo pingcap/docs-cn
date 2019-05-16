@@ -40,7 +40,12 @@ Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的数�
 
 **解决办法**：
 
-1. 使用 `tidb-lightning-ctl --error-checkpoint-destroy=all` 把出错的表删除，然后重启 Lightning 重新导入那些表。
+1. 使用 `tidb-lightning-ctl` 把出错的表删除，然后重启 Lightning 重新导入那些表。
+
+    ```sh
+    tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
+    ```
+
 2. 把断点存放在外部数据库（修改 `[checkpoint] dsn`），减轻目标集群压力。
 
 ## Checkpoint for … has invalid status: 18
@@ -49,7 +54,11 @@ Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的数�
 
 **解决办法**:
 
-如果错误原因是非法数据源，使用 `tidb-lightning-ctl --error-checkpoint-destroy=all` 删除已导入数据，并重启 Lightning。
+如果错误原因是非法数据源，使用 `tidb-lightning-ctl` 删除已导入数据，并重启 Lightning。
+
+    ```sh
+    tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
+    ```
 
 其他解决方法请参考[断点续传的控制](../../tools/lightning/checkpoints.md#断点续传的控制)。
 
@@ -59,13 +68,17 @@ Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的数�
 
 **解决办法**：
 
-1. 提高 `tikv-importer.toml` 内 `max-open-engine` 的值。这个设置主要由内存决定，计算公式为：
+1. 提高 `tikv-importer.toml` 内 `max-open-engines` 的值。这个设置主要由内存决定，计算公式为：
 
-    最大内存使用量 ≈ `max-open-engine` × `write-buffer-size` × `max-write-buffer-number`
+    最大内存使用量 ≈ `max-open-engines` × `write-buffer-size` × `max-write-buffer-number`
 
-2. 降低 `table-concurrency` + `index-concurrency`，使之低于 `max-open-engine`。
+2. 降低 `table-concurrency` + `index-concurrency`，使之低于 `max-open-engines`。
 
-3. 重启 `tikv-importer` 来强制移除所有引擎文件。这样也会丢弃导入了一半的表，所以启动 Lightning 前必须使用 `tidb-lightning-ctl --error-checkpoint-destroy=all`。
+3. 重启 `tikv-importer` 来强制移除所有引擎文件 (默认值为 `./data.import/`)。这样也会丢弃导入了一半的表，所以启动 Lightning 前必须清除过期的断点记录：
+
+    ```sh
+    tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
+    ```
 
 ## cannot guess encoding for input file, please convert to UTF-8 manually
 
