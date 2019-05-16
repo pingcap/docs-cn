@@ -1,6 +1,7 @@
 ---
 title: 使用 TiDB-Ansible 扩容缩容 TiDB 集群
-category: deployment
+category: how-to
+aliases: ['/docs-cn/op-guide/ansible-deployment-scale/']
 ---
 
 # 使用 TiDB-Ansible 扩容缩容 TiDB 集群
@@ -383,7 +384,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
         ```
 
     2. 从集群中移除 node2，假如 name 为 pd2：
-    
+
         ```
         /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member delete name pd2
         ```

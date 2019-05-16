@@ -38,27 +38,25 @@
     - [概述](dev/how-to/monitor/overview.md)
     - [监控 TiDB 集群](dev/how-to/monitor/monitor-a-cluster.md)
   + 迁移
-    - [概述](op-guide/migration-overview.md)
+    - [概述](dev/how-to/migrate/overview.md)
     + 从 MySQL 迁移
-      - [全量迁移](op-guide/migration.md)
-      - [增量复制](op-guide/migration.md#使用-syncer-增量导入数据)
+      - [全量迁移](dev/how-to/migrate/from-mysql.md)
+      - [增量复制](dev/how-to/migrate/incrementally-from-mysql.md)
     - [从 CSV 迁移](tools/lightning/csv.md)
   + 运维
-    - [Ansible 常见运维操作](op-guide/ansible-operation.md)
-    + 备份与恢复
-      - [全量备份](op-guide/backup-restore.md)
-      - [增量备份](tools/tidb-binlog-cluster.md)
-    - [定位慢查询](sql/slow-query.md)
+    - [Ansible 常见运维操作](dev/how-to/maintain/ansible-operations.md)
+    + [备份与恢复](dev/how-to/maintain/backup-and-restore.md)
+    - [定位慢查询](dev/how-to/maintain/identify-slow-queries.md)
   + 扩容缩容
-    - [使用 Ansible 扩容缩容](op-guide/ansible-deployment-scale.md)
-    - [集群扩容缩容方案](op-guide/horizontal-scale.md)
+    - [使用 Ansible 扩容缩容](dev/how-to/scale/with-ansible.md)
+    - [集群扩容缩容方案](dev/how-to/scale/horizontally.md)
   + 升级
-    - [升级至 TiDB 3.0](op-guide/tidb-v3.0-upgrade-guide.md)
-    - [升级至 TiDB 2.1](op-guide/tidb-v2.1-upgrade-guide.md)
-    - [使用 Ansible 滚动升级](op-guide/ansible-deployment-rolling-update.md)
+    - [升级至 TiDB 3.0](dev/how-to/upgrade/to-tidb-3.0.md)
+    - [升级至 TiDB 2.1](dev/how-to/upgrade/to-tidb-2.1.md)
+    - [使用 Ansible 滚动升级](dev/how-to/upgrade/rolling-updates-with-ansible.md)
     - [升级 Data Migration](tools/dm/dm-upgrade.md)
   + 故障诊断
-    - [集群配置诊断](trouble-shooting.md)
+    - [集群配置诊断](dev/how-to/troubleshoot/cluster-setup.md)
     - [Data Migration 故障诊断](tools/dm/troubleshooting.md)
     - [TiDB-Lightning 故障诊断](tools/lightning/errors.md)
 + 参考手册
@@ -170,6 +168,8 @@
       - [监控 DM 集群](tools/dm/monitor.md)
       - [管理数据同步任务](tools/dm/manage-task.md)
       - [DM 集群操作](tools/dm/cluster-operations.md)
+      + 从与 MySQL 兼容的数据库迁移数据
+        - [从 AWS Aurora MySQL 迁移数据](tools/dm/from-aurora.md)
     + TiDB-Lightning
       - [概述](tools/lightning/overview-architecture.md)
       - [部署执行](tools/lightning/deployment.md)

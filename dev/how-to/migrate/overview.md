@@ -1,6 +1,7 @@
 ---
 title: 数据迁移概述
-category: advanced
+category: how-to
+aliases: ['/docs-cn/op-guide/migration-overview/']
 ---
 
 # 数据迁移概述
@@ -29,7 +30,7 @@ category: advanced
 - **Mydumper + TiDB-Lightning**：先使用 Mydumper 将数据从 MySQL 导出，然后使用 TiDB-Lightning 将数据导入至 TiDB。
 - **DM**：直接使用 DM 将数据从 MySQL 导出，然后将数据导入至 TiDB。
 
-详细操作参见 [MySQL 数据到 TiDB 的全量迁移](/op-guide/migration.md)。
+详细操作参见 [MySQL 数据到 TiDB 的全量迁移](/dev/how-to/migrate/from-mysql.md)。
 
 ### MySQL 数据的全量迁移和增量同步
 
@@ -37,7 +38,7 @@ category: advanced
 - **Mydumper + TiDB-Lightning + Syncer**：先使用 Mydumper 将数据从 MySQL 导出，然后使用 TiDB-Lightning 将数据导入至 TiDB，再使用 Syncer 将 MySQL binlog 数据增量同步至 TiDB。
 - **DM**：先使用 DM 将数据从 MySQL 全量迁移至 TiDB，然后使用 DM 将 MySQL binlog 数据增量同步至 TiDB。
 
-详细操作参见 [MySQL 数据到 TiDB 的增量同步](/op-guide/migration.md#使用-syncer-增量导入数据)。
+详细操作参见 [MySQL 数据到 TiDB 的增量同步](/dev/how-to/migrate/incrementally-from-mysql.md)。
 
 > **注意：**
 >

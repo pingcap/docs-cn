@@ -1,6 +1,7 @@
 ---
 title: 使用 TiDB-Ansible 升级 TiDB 集群
-category: deployment
+category: how-to
+aliases: ['/docs-cn/op-guide/ansible-deployment-rolling-update/']
 ---
 
 # 使用 TiDB-Ansible 升级 TiDB 集群
@@ -13,7 +14,7 @@ category: deployment
 
 ## 升级组件版本
 
-跨大版本升级，必须更新 `tidb-ansible`，小版本升级，也建议更新 `tidb-ansible`，以获取最新的配置文件模板、特性及 bug 修复。从 TiDB 1.0 升级到 TiDB 2.0，参考 [TiDB 2.0 升级操作指南](../op-guide/tidb-v2.0-upgrade-guide.md)；从 TiDB 2.0 升级到 TiDB 2.1，参考 [TiDB 2.1 升级操作指南](../op-guide/tidb-v2.1-upgrade-guide.md)。
+跨大版本升级，必须更新 `tidb-ansible`，小版本升级，也建议更新 `tidb-ansible`，以获取最新的配置文件模板、特性及 bug 修复。从 TiDB 1.0 升级到 TiDB 2.0，参考 [TiDB 2.0 升级操作指南](/op-guide/tidb-v2.0-upgrade-guide.md)；从 TiDB 2.0 升级到 TiDB 2.1，参考 [TiDB 2.1 升级操作指南](/dev/how-to/upgrade/to-tidb-2.1.md)。
 
 ### 自动下载 binary
 
