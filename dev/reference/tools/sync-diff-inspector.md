@@ -1,7 +1,8 @@
 ---
 title: sync-diff-inspector User Guide
 summary: Use sync-diff-inspector to compare data and repair inconsistent data.
-category: tools
+category: reference
+aliases: ['/docs/tools/sync-diff-inspector/']
 ---
 
 # sync-diff-inspector User Guide
@@ -163,7 +164,7 @@ password = ""
 
 Assuming that you have two MySQL instances, use a synchronization tool to synchronize the data into TiDB as shown below:
 
-![shard-table-sync](../media/shard-table-sync.png)
+![shard-table-sync](/media/shard-table-sync.png)
 
 If you need to check the data consistency after synchronization, you can use the following configuration to compare data:
 

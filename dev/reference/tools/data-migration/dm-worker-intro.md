@@ -1,7 +1,8 @@
 ---
 title: DM-worker Introduction
 summary: Learn the features of DM-worker.
-category: tools
+category: reference
+aliases: ['/docs/tools/dm/dm-worker-intro/'] 
 ---
 
 # DM-worker Introduction

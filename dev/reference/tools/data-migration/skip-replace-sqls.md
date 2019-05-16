@@ -1,14 +1,15 @@
 ---
 title: Skip or Replace Abnormal SQL Statements
 summary: Learn how to skip or replace abnormal SQL statements when you use Data Migration.
-category: tools
+category: reference
+aliases: ['/docs/tools/dm/skip-replace-sqls/'] 
 ---
 
 # Skip or Replace Abnormal SQL Statements
 
 This document introduces how to handle abnormal SQL statements using Data Migration (DM). 
 
-Currently, TiDB is not completely compatible with all MySQL syntax (see [the DDL statements supported by TiDB](/sql/ddl.md)). Therefore, when DM is replicating data from MySQL to TiDB and TiDB does not support the corresponding SQL statement, an error might occur and break the replication process. In this case, there are two ways to resume the replication:
+Currently, TiDB is not completely compatible with all MySQL syntax (see [the DDL statements supported by TiDB](/dev/reference/mysql-compatibility.md#ddl)). Therefore, when DM is replicating data from MySQL to TiDB and TiDB does not support the corresponding SQL statement, an error might occur and break the replication process. In this case, there are two ways to resume the replication:
 
 - Use dmctl to manually skip the binlog event to which this SQL statement corresponds
 
@@ -19,7 +20,7 @@ If you know in advance that an unsupported SQL statement is going to be replicat
 #### Restrictions
 
 - The skip or replace operation is a one-time operation that is only used to skip or replace the SQL statement unsupported by the downstream TiDB. Do not handle other replication errors with this approach.
-    - For other replication errors, try to handle them using [Black and white table lists](/tools/dm/data-synchronization-features.md#black-and-white-table-lists) or [Binlog event filtering](/tools/dm/data-synchronization-features.md#binlog-event-filtering).
+    - For other replication errors, try to handle them using [Black and white table lists](/dev/reference/tools/data-migration/features/overview.md#black-and-white-table-lists) or [Binlog event filtering](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter).
 
 - If it is unacceptable in the actual production environment that the abnormal DDL statement is skipped in the downstream TiDB and it cannot be replaced with other DDL statements, then do not use this approach.
     - For example: `DROP PRIMARY KEY`
@@ -29,7 +30,7 @@ If you know in advance that an unsupported SQL statement is going to be replicat
 
 - `--sharding` is only used to preset the operation to the sharding group. You must preset it before executing the DDL statement and presetting it after executing the DDL is not allowed.
     - `--sharding` only supports presetting operations, and in this mode, you can only use `--sql-pattern` to match the binlog event.
-    - For the principles of replicating sharding DDL statements using DM, see [Merge and replicate data from sharded tables](/tools/dm/shard-merge.md#principles)
+    - For the principles of replicating sharding DDL statements using DM, see [Merge and replicate data from sharded tables](/dev/reference/tools/data-migration/features/shard-merge.md#principles)
 
 #### Match the binlog event
 
