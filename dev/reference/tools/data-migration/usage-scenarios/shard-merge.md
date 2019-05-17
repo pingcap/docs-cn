@@ -91,7 +91,7 @@ Assume that the downstream schema after synchronization is as follows:
       ...
       user-filter-rule:
         schema-pattern: "user"
-        events: ["truncate table", "drop table", "delete"， "drop database"]
+        events: ["truncate table", "drop table", "delete", "drop database"]
         action: Ignore
     ```
 
