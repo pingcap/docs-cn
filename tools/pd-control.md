@@ -96,7 +96,7 @@ export PD_ADDR=http://127.0.0.1:2379
   "max-snapshot-count": 3,
   "max-pending-peer-count": 16,
   "max-merge-region-size": 50,
-  "max-merge-region-rows": 200000,
+  "max-merge-region-keys": 200000,
   "split-merge-interval": "1h",
   "patrol-region-interval": "100ms",
   "max-store-down-time": "1h0m0s",
@@ -167,11 +167,11 @@ export PD_ADDR=http://127.0.0.1:2379
 >> config set max-merge-region-size 16 // 设置 Region Merge 的 size 上限为 16M
 ```
 
-`max-merge-region-rows` 控制 Region Merge 的 rowCount 上限。
-当 Region RowCount 大于指定值时 PD 不会将其与相邻的 Region 合并。
+`max-merge-region-keys` 控制 Region Merge 的 keyCount 上限。
+当 Region KeyCount 大于指定值时 PD 不会将其与相邻的 Region 合并。
 
 ```bash
->> config set max-merge-region-rows 50000 // 设置 Region Merge 的 rowCount 上限为 50k
+>> config set max-merge-region-keys 50000 // 设置 Region Merge 的 keyCount 上限为 50k
 ```
 
 `split-merge-interval` 控制对同一个 Region 做 `split` 和 `merge` 操作的间隔，即对于新 `split` 的 Region 一段时间内不会被 `merge`。
