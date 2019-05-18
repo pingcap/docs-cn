@@ -35,6 +35,7 @@
     - [Import Example Database](dev/how-to/get-started/import-example-database.md)
     - [Read Historical Data](dev/how-to/get-started/read-historical-data.md)
     - [TiDB-Binlog Tutorial](dev/how-to/get-started/tidb-binlog.md)
+    - [TiDB Data Migration Tutorial](dev/how-to/get-started/data-migration.md)
   + Deploy
     - [Hardware Recommendations](dev/how-to/deploy/hardware-recommendations.md)
     + From Binary Tarball
