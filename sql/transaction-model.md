@@ -5,13 +5,13 @@ category: user guide
 
 # 事务模型
 
-TiDB 使用乐观事务模型，在执行 `Update`、`Insert`、`Delete` 等语句时，只有在提交过程中，执行 `Update`，`Insert`，`Delete` 等语句时才会检查写写冲突，而不是像 MySQL 一样使用行锁来避免写写冲突。类似的，诸如 `GET_LOCK()` 和 `RELEASE_LOCK()` 等函数以及 `SELECT .. FOR UPDATE` 之类的语句在 TiDB 和 MySQL 中的执行方式并不相同。所以业务端在执行 SQL 语句后，需要注意检查 commit 的返回值，即使执行时没有出错，commit 的时候也可能会出错。
+TiDB 使用乐观事务模型，在执行 `Update`、`Insert`、`Delete` 等语句时，只有在提交过程中，执行 `Update`，`Insert`，`Delete` 等语句时才会检查写写冲突，而不是像 MySQL 一样使用行锁来避免写写冲突。类似的，诸如 `GET_LOCK()` 和 `RELEASE_LOCK()` 等函数以及 `SELECT .. FOR UPDATE` 之类的语句在 TiDB 和 MySQL 中的执行方式并不相同。所以业务端在执行 SQL 语句后，需要注意检查 COMMIT 的返回值，即使执行时没有出错，COMMIT 的时候也可能会出错。
 
 ## 与 MySQL 行为及性能对比
 
 ### 事务重试
 
-执行失败的事务默认由 TiDB 自动重试，这会导致更新丢失。可通过配置 `tidb_retry_limit = 0` 关掉该项功能。
+执行失败的事务默认**不会**自动重试，因为这会导致更新丢失。可通过配置 `tidb_disable_txn_auto_retry = 0` 开启该项功能。
 
 ## 大事务
 
@@ -28,13 +28,13 @@ TiDB 使用乐观事务模型，在执行 `Update`、`Insert`、`Delete` 等语�
 
 ```sql
 # 使用 auto_commit 的原始版本
-UPDATE my_table SET a='new_value' WHERE id = 1; 
+UPDATE my_table SET a='new_value' WHERE id = 1;
 UPDATE my_table SET a='newer_value' WHERE id = 2;
 UPDATE my_table SET a='newest_value' WHERE id = 3;
 
 # 优化后的版本
 START TRANSACTION;
-UPDATE my_table SET a='new_value' WHERE id = 1; 
+UPDATE my_table SET a='new_value' WHERE id = 1;
 UPDATE my_table SET a='newer_value' WHERE id = 2;
 UPDATE my_table SET a='newest_value' WHERE id = 3;
 COMMIT;
@@ -46,7 +46,7 @@ COMMIT;
 
 ### Load data
 
-+  语法：
+* 语法：
 
     ```sql
     LOAD DATA LOCAL INFILE 'file_name' INTO TABLE table_name
@@ -58,7 +58,7 @@ COMMIT;
 
     其中 ESCAPED BY 目前只支持 '/\/\'。
 
-+   事务的处理：
+* 事务的处理：
 
-    TiDB 在执行 load data 时，默认每 2 万行记录作为一个事务进行持久化存储。如果一次 load data 操作插入的数据超过 2 万行，那么会分为多个事务进行提交。如果某个事务出错，这个事务会提交失败，但它前面的事务仍然会提交成功，在这种情况下一次 load data 操作会有部分数据插入成功，部分数据插入失败。而 MySQL 中会将一次 load data 操作视为一个事务，如果其中发生失败情况，将会导致整个 load data 操作失败。
-
+    TiDB 在执行 LOAD DATA 时，默认每 2 万行记录作为一个事务进行持久化存储。如果一次 LOAD DATA 操作插入的数据超过 2 万行，那么会分为多个事务进行提交。如果某个事务出错，这个事务会提交失败，但它前面的事务仍然会提交成功，在这种情况下一次 LOAD DATA 操作会有部分数据插入成功，部分数据插入失败。而 MySQL 中会将一次 LOAD DATA 操作视为一个事务，如果其中发生失败情况，将会导致整个 LOAD DATA 操作失败。
+    **即，LOAD DATA 在 TiDB 中没有事务原子性的保证，不建议在生产环境中使用。**
