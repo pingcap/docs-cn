@@ -7,7 +7,7 @@ category: user guide
 
 事务隔离级别是数据库事务处理的基础，ACID 中 I，即 Isolation，指的就是事务的隔离性。
 
-SQL 92标准定义了4种隔离级别，读未提交、读已提交、可重复读、串行化，见下表。
+SQL 92 标准定义了 4 种隔离级别：读未提交、读已提交、可重复读、串行化。详见下表：
 
 | Isolation Level  | Dirty Write  | Dirty Read   | Fuzzy Read   | Phantom      |
 | ---------------- | ------------ | ------------ | ------------ | ------------ |

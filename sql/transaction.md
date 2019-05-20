@@ -64,7 +64,7 @@ ROLLBACK;
 
 TiDB 可以显式地使用事务（`BEGIN/COMMIT`）或者隐式的使用事务（`SET autocommit = 1`）。
 
-如果在 autocommit = 1 的状态下，通过 `BEGIN` 语句开启一个新的事务，那么在 `COMMIT`/`ROLLBACK` 之前，会禁用 autocommit，也就是变成显式事务。
+如果在 `autocommit = 1` 的状态下，通过 `BEGIN` 语句开启一个新的事务，那么在 `COMMIT`/`ROLLBACK` 之前，会禁用 autocommit，也就是变成显式事务。
 
 对于 DDL 语句，会自动提交并且不能回滚。如果运行 DDL 的时候，正在一个事务的中间过程中，会先将当前的事务提交，再执行 DDL。
 
