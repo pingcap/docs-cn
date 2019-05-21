@@ -1,51 +1,46 @@
 ---
-title: 部署 TiDB-Binlog 
-summary: 在单个 TiDB 集群上部署 TiDB-Binlog 
+title: 部署 TiDB Binlog 
 category: how-to
 ---
 
-# 部署 TiDB-Binlog
+# 部署 TiDB Binlog
 
-本文档将先介绍，在将数据迁移到 MariaDB 实例之前，如何在 Placement Driver、TiKV、TiDB、Pump 或 Drainer 各个组件中的单个节点上部署 TiDB-Binlog。
+本文档将先介绍，在将数据迁移到 MariaDB 实例之前，如何在 Placement Driver、TiKV、TiDB、Pump 或 Drainer 各个组件中的单个节点上部署 TiDB Binlog。
 
-希望上手实践 TiDB-Binlog 工具的用户需要对 [TiDB 架构]((https://pingcap.com/docs/architecture/))有一定的了解，最好有创建过 TiDB 集群的经验。阅读该文档也可以简单快速了解 TiDB-Binlog 架构。
+希望上手实践 TiDB Binlog 工具的用户需要对 [TiDB 架构](https://pingcap.com/docs/architecture/)有一定的了解，最好有创建过 TiDB 集群的经验。该文档也有助于你简单快速了解 TiDB Binlog 架构以及相关概念。
 
-> **注意**：
+> **警告：**
 >
-> 该文档中部署 TiDB 的操作指导**不适用于**在生产或研发环境中部署 TiDB的情况。
+> 该文档中部署 TiDB 的操作指导**不适用于**在生产或研发环境中部署 TiDB 的情况。
 
-该文档假设用户使用的是现代 Linux 发行版本中的 x86-64。示例中使用的是 VMware 中安装运行的 CentOS 7 minimal 版本。强烈建议在一开始就进行清洁安装，以避免受现有环境中未知情况的影响。如果不想使用本地虚拟环境，你也可以使用云服务启动 CentOS 7 VM 版本。
+该文档假设用户使用的是现代 Linux 发行版本中的 x86-64。示例中使用的是 VMware 中运行的 CentOS 7 最小化安装。建议在一开始就进行清洁安装，以避免受现有环境中未知情况的影响。如果不想使用本地虚拟环境，你也可以使用云服务启动 CentOS 7 VM。
 
-## TiDB-Binlog 介绍
+## TiDB Binlog 简介
 
-TiDB-Binlog 是一个用于收集 TiDB-Binlog 并提供实时数据备份和同步的工具。TiDB-Binlog 也可用于将 TiDB 集群的数据增量同步到下游。
+TiDB Binlog 是一个用于收集 TiDB 中二进制日志数据提供实时数据备份和同步的工具。TiDB Binlog 也可用于将 TiDB 集群的数据增量同步到下游。
 
-TiDB-Binlog 支持以下功能场景：
-- 数据增量备份：将 TiDB 集群中的数据复制到另一个集群；或通过 Kafka 发送 TiDB 更新数据并同步到下游。
-- 数据迁移：将数据从 TiDB 迁移到 MySQL/MariaDB。在这种情况下你可以使用 TiDB DM 从 MySQL/MariaDB 集群中获取数据，同步到 TiDB。之后可使用 TiDB-Binlog 让独立的下游 MySQL/MariaDB 实例或集群与 TiDB 集群保持同步。
-- 数据同步：将发送到 TiDB 的应用流量同步更新到下游的 MySQl/MariaDB 实例/集群。即使流量数据迁移到 TiDB 过程中出现问题，在 MySQL/MariaDB 中也能撤回该流量数据。
+TiDB Binlog 支持以下功能场景：
 
-更多信息参考 [TiDB-Binlog Cluster 版本用户文档](https://pingcap.com/docs-cn/v2.1/tools/tidb-binlog-cluster/)。
+- 数据增量备份：将 TiDB 集群中的数据同步到另一个集群；或通过 Kafka 发送 TiDB 更新数据并同步到下游。
+- 数据迁移：将数据从 MySQL 或者 MariaDB 迁移到 TiDB 上。在这种情况下你可以使用 TiDB Data Migration (DM) 从 MySQL 或 MariaDB 集群中获取数据，并同步到 TiDB。之后可用 TiDB Binlog 让独立的下游 MySQL 或 MariaDB 实例或集群与 TiDB 集群保持同步。
+- 数据同步：将发送到 TiDB 的应用流量同步更新到下游的 MySQL 或 MariaDB 实例或集群。即使流量数据迁移到 TiDB 过程中出现问题，在 MySQL 或 MariaDB 中也能撤回该流量数据，且不会造成宕机或数据损失。
+
+更多信息参考 [TiDB Binlog Cluster 版本用户文档](https://pingcap.com/docs-cn/v2.1/tools/TiDB Binlog-cluster/)。
 
 ## 架构
 
-TiDB-Binlog 集群由 **Pump** 和 **Drainer** 两个组件组成。一个 Pump 集群中有若干个 Pump 节点。每个 Pump 节点连接到 TiDB 实例，接收 TiDB 集群中每个 TiDB 实例的更新数据。Drainer 连接到 Pump 集群，并将接收到的更新数据转换到某个特定下游（例如另一个 TiDB 集群或 MySQL/MariaDB 服务）指定的正确格式，例如 Kafka 。 
+TiDB Binlog 集群由 **Pump** 和 **Drainer** 两个组件组成。一个 Pump 集群中有若干个 Pump 节点。每个 Pump 节点连接到 TiDB 实例，接收 TiDB 集群中每个 TiDB 实例的更新数据。Drainer 连接到 Pump 集群，并将接收到的更新数据转换到某个特定下游（例如 Kafka、另一个 TiDB 集群或 MySQL 或 MariaDB 服务器）指定的正确格式。 
 
-![TiDB-Binlog architecture](/media/tidb_binlog_cluster_architecture.png)
+![TiDB Binlog architecture](/media/tidb_binlog_cluster_architecture.png)
 
 Pump 的集群架构确保 TiDB 或 Pump 集群中有新的实例加入或退出时更新数据不会丢失。
 
 ## 安装
 
-由于 MariaDB 服务的默认包装库中包括 RHEL/CentOS 7，该示例选择的是 MariaDB。安装指令如下：
+由于 RHEL/CentOS 7 的默认包装库中包括 MariaDB server，本示例选择的是 MariaDB Server。之后的使用中，除了服务器，也需要客户端。安装指令如下：
 
 ```bash
 sudo yum install -y mariadb-server
-```
-
-```bash
-curl -L http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz | tar xzf -
-cd tidb-latest-linux-amd64
 ```
 
 预期输出：
@@ -230,7 +225,7 @@ MariaDB [(none)]> show databases;
 5 rows in set (0.01 sec)
 ```
 
-在这里可以看到包含 `checkpoint` 表格的 `tidb_binlog` 数据库。`drainer` 使用 `checkpoint` 表格，记录 TiDB 集群中使用了哪种 point binlog 。 
+在这里可以看到包含 `checkpoint` 表格的 `tidb_binlog` 数据库。`drainer` 使用 `checkpoint` 表格，记录 TiDB 集群中使用了哪种 point binlog。 
 
 ```sql
 MariaDB [tidb_binlog]> use tidb_binlog;
@@ -258,7 +253,7 @@ insert into t1 () values (),(),(),(),();
 select * from t1;
 ```
 
-预期输出
+预期输出：
 ```
 TiDB [(none)]> create database tidbtest;
 Query OK, 0 rows affected (0.12 sec)
@@ -293,7 +288,7 @@ show tables;
 select * from t1;
 ```
 
-预期输出
+预期输出：
 
 ```
 MariaDB [(none)]> use tidbtest;
@@ -322,7 +317,7 @@ MariaDB [tidbtest]> select * from t1;
 5 rows in set (0.00 sec)
 ```
 
-可以看到查询 MariaDB 时插入到 TiDB 相同的行数据。TiDB-Binlog 部署成功完成。
+可以看到查询 MariaDB 时插入到 TiDB 相同的行数据。TiDB Binlog 部署成功完成。
 
 ## binlogctl
 
@@ -335,7 +330,7 @@ MariaDB [tidbtest]> select * from t1;
 ./bin/binlogctl -cmd pumps
 ```
 
-预期输出
+预期输出：
 
 ```
 [kolbe@localhost tidb-latest-linux-amd64]$ ./bin/binlogctl -cmd drainers
@@ -352,7 +347,7 @@ pkill drainer
 ./bin/binlogctl -cmd drainers
 ```
 
-预期输出
+预期输出：
 
 ```
 [kolbe@localhost tidb-latest-linux-amd64]$ pkill drainer
@@ -362,7 +357,7 @@ pkill drainer
 
 使用 “NodeIDs” 和 `binlogctl` 可控制单个节点群。在该情况下，drainer 的节点 ID 是 “localhost.localdomain:8249”，Pump 的节点 ID 是 “localhost.localdomain:8250”。
 
-本文档中的 `binlogctl` 主要用于集群重启的场景。如果在 TiDB 集群中终止并尝试重启所有的进程（这里的进程并不包括下游的 MySQL/MariaDB 或 Drainer），由于 Pump 无法连接 Drainer 且认为 Drainer 依旧处于“正常运行中”状态，Pump 会拒绝启动。
+本文档中的 `binlogctl` 主要用于集群重启的场景。如果在 TiDB 集群中终止并尝试重启所有的进程（这里的进程并不包括下游的 MySQL 或 MariaDB 或 Drainer），由于 Pump 无法连接 Drainer 且认为 Drainer 依旧处于“正常运行中”状态，Pump 会拒绝启动。
 
 以下有三个方案可解决上述问题：
 
@@ -387,7 +382,7 @@ pkill drainer
 for p in tidb-server drainer pump tikv-server pd-server; do pkill "$p"; sleep 1; done
 ```
 
-预期输出
+预期输出：
 
 ```
 kolbe@localhost tidb-latest-linux-amd64]$ for p in tidb-server drainer pump tikv-server pd-server; do pkill "$p"; sleep 1; done
@@ -414,6 +409,6 @@ sleep 3
 
 ## 总结
 
-该文档介绍了如何通过设置 TiDB-Binlog 、使用单个 Pump 和 Drainer 组成的集群同步 TiDB 集群的数据到下游的 MariaDB 服务。可以发现，TiDB-Binlog 是用于获取处理 TiDB 集群中数据更新的综合性平台工具。
+该文档介绍了如何通过设置 TiDB Binlog 、使用单个 Pump 和 Drainer 组成的集群同步 TiDB 集群的数据到下游的 MariaDB 服务器。可以发现，TiDB Binlog 是用于获取处理 TiDB 集群中更新数据的综合性平台工具。
 
 在更稳健的开发、测试或生产部署环境中，可以使用多个 TiDB 服务器以实现高可用性和扩展性。使用多个 Pump 实例可以确保发送到 TiDB 实例的应用流量不受 Pump 集群中问题的影响。或者可以使用另加的 Drainer 实例同步数据到不同的下游以及实现数据增量备份。
