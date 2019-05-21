@@ -121,6 +121,7 @@
     + SQL Statements
       - [`ADD COLUMN`](dev/reference/sql/statements/add-column.md)
       - [`ADD INDEX`](dev/reference/sql/statements/add-index.md)
+      - [`ADMIN`](dev/reference/sql/statements/admin.md)
       - [`ALTER TABLE`](dev/reference/sql/statements/alter-table.md)
       - [`ALTER USER`](dev/reference/sql/statements/alter-user.md)
       - [`ANALYZE TABLE`](dev/reference/sql/statements/analyze-table.md)
