@@ -77,7 +77,7 @@
     - [Scale using Ansible](dev/how-to/scale/with-ansible.md)
   + Upgrade
     - [Upgrade to TiDB 3.0](dev/how-to/upgrade/from-previous-version.md)
-    - [Upgrade to TiDB 2.1](dev/how-to/maintain/upgrade/to-tidb-2.1.md)
+    - [Upgrade to TiDB 2.1](dev/how-to/upgrade/to-tidb-2.1.md)
     - [Upgrade Data Migration](dev/how-to/upgrade/data-migration.md)
     - [Rolling updates with Ansible](dev/how-to/upgrade/rolling-updates-with-ansible.md)
   - Troubleshoot
