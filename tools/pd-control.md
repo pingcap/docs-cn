@@ -84,7 +84,7 @@ export PD_ADDR=http://127.0.0.1:2379
 }
 ```
 
-### config [show | set <option> <value>]
+### config [show | set \<option> \<value>]
 
 用于显示或调整配置信息。
 
@@ -282,7 +282,7 @@ config set cluster-version 1.0.8              // 设置 cluster version 为 1.0.
 
 `disable-namespace-relocation` 用于关闭 Region 的 namespace 调度。当设置为 true 时，PD 不会把 Region 调度到它所属的 Store 上。
 
-### config delete namespace <name> [<option>]
+### config delete namespace \<name> [\<option>]
 
 用于删除 namespace 的配置信息。
 
@@ -335,7 +335,7 @@ config set cluster-version 1.0.8              // 设置 cluster version 为 1.0.
 >> hot store                            // 显示所有 store 的读写信息
 ```
 
-### label [store <name> <value>]
+### label [store \<name> \<value>]
 
 用于显示集群标签信息
 
@@ -410,7 +410,7 @@ Success!
 time: 43.12698ms
 ```
 
-### region <region_id> [--jq="<query string>"]
+### region <region_id> [--jq="\<query string>"]
 
 用于显示 Region 信息。使用 jq 格式化输出请参考[jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。
 
@@ -435,7 +435,7 @@ time: 43.12698ms
 }
 ```
 
-### region key [--format=raw|encode] <key>
+### region key [--format=raw|encode] \<key>
 
 用于查询某个 key 在哪个 Region 上，支持 raw 和 encoding 格式。使用 encoding 格式时，key 需要使用单引号。
 
@@ -596,7 +596,7 @@ Encoding 格式示例：
 >> scheduler remove grant-leader-scheduler-1  // 把对应的 scheduler 删掉
 ```
 
-### store [delete | label | weight] <store_id>  [--jq="<query string>"]
+### store [delete | label | weight] <store_id>  [--jq="\<query string>"]
 
 用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考[jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。
 
