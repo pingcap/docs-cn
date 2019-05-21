@@ -17,7 +17,7 @@ SET autocommit = {0 | 1}
 
 通过设置 autocommit 的值为 1，可以将当前 Session 设置为自动提交状态，0 则表示当前 Session 为非自动提交状态。默认情况下，autocommit 的值为 1。
 
-在自动提交状态，每条语句运行后，会将其修改自动提交到数据库中。否则，会等到运行 `COMMIT` 语句或者是 `BEGIN` 语句的时候，才会将之前的修改提交到数据库。
+在自动提交状态，每条语句运行后，会将其修改自动提交到数据库中。否则，会等到运行 `COMMIT` 语句或者是 `BEGIN` 语句的时候（`BEGIN` 语句会试图提交上一个事务，并开启一个新的事务），才会将之前的修改提交到数据库。
 
 另外 autocommit 也是一个 System Variable，所以可以通过变量赋值语句修改当前 Session 或者是 Global 的值。
 
@@ -47,11 +47,13 @@ START TRANSACTION WITH CONSISTENT SNAPSHOT;
 ```sql
 COMMIT;
 ```
+
 提交当前事务，包括从 `BEGIN` 到 `COMMIT` 之间的所有修改。
 
 ## ROLLBACK
 
 语法：
+
 ```sql
 ROLLBACK;
 ```
@@ -62,13 +64,13 @@ ROLLBACK;
 
 TiDB 可以显式地使用事务（`BEGIN/COMMIT`）或者隐式的使用事务（`SET autocommit = 1`）。
 
-如果在 autocmmit = 1 的状态下，通过 `BEGIN` 语句开启一个新的事务，那么在 `COMMIT`/`ROLLBACK` 之前，会禁用 autocommit，也就是变成显式事务。
+如果在 `autocommit = 1` 的状态下，通过 `BEGIN` 语句开启一个新的事务，那么在 `COMMIT`/`ROLLBACK` 之前，会禁用 autocommit，也就是变成显式事务。
 
-对于 DDL 语句，会自动提交并且不能回滚。如果运行 DDL 的时候，正在一个事务的中间过程中，会先将当前的事务提交，再运行 DDL。
+对于 DDL 语句，会自动提交并且不能回滚。如果运行 DDL 的时候，正在一个事务的中间过程中，会先将当前的事务提交，再执行 DDL。
 
 ## 事务隔离级别
 
-TiDB 默认使用 `SNAPSHOT ISOLATION`，可以通过下面的语句将当前 Session 的隔离级别设置为 `READ COMMITTED`。
+TiDB **只支持** `SNAPSHOT ISOLATION`，可以通过下面的语句将当前 Session 的隔离级别设置为 `READ COMMITTED`，这只是语法上的兼容，事务依旧是以 `SNAPSHOT ISOLATION` 来执行。
 
 ```sql
 SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
