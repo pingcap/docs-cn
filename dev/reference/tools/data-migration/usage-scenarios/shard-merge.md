@@ -90,7 +90,7 @@ aliases: ['/docs-cn/tools/dm/shard-merge-scenario/']
       ...
       user-filter-rule:
         schema-pattern: "user"
-        events: ["truncate table", "drop table", "delete"， "drop database"]
+        events: ["truncate table", "drop table", "delete", "drop database"]
         action: Ignore
     ```
 

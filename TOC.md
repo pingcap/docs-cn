@@ -37,27 +37,24 @@
     - [概述](dev/how-to/monitor/overview.md)
     - [监控 TiDB 集群](dev/how-to/monitor/monitor-a-cluster.md)
   + 迁移
-    - [概述](op-guide/migration-overview.md)
+    - [概述](dev/how-to/migrate/overview.md)
     + 从 MySQL 迁移
-      - [全量迁移](op-guide/migration.md)
-      - [增量复制](op-guide/migration.md#使用-syncer-增量导入数据)
+      - [全量迁移](dev/how-to/migrate/from-mysql.md)
+      - [增量复制](dev/how-to/migrate/incrementally-from-mysql.md)
     - [从 CSV 迁移](tools/lightning/csv.md)
   + 运维
-    - [Ansible 常见运维操作](op-guide/ansible-operation.md)
-    + 备份与恢复
-      - [全量备份](op-guide/backup-restore.md)
-      - [增量备份](tools/tidb-binlog-cluster.md)
-    - [定位慢查询](sql/slow-query.md)
+    - [Ansible 常见运维操作](dev/how-to/maintain/ansible-operations.md)
+    + [备份与恢复](dev/how-to/maintain/backup-and-restore.md)
+    - [定位慢查询](dev/how-to/maintain/identify-slow-queries.md)
   + 扩容缩容
-    - [使用 Ansible 扩容缩容](op-guide/ansible-deployment-scale.md)
-    - [集群扩容缩容方案](op-guide/horizontal-scale.md)
+    - [使用 Ansible 扩容缩容](dev/how-to/scale/with-ansible.md)
   + 升级
-    - [升级至 TiDB 3.0](op-guide/tidb-v3.0-upgrade-guide.md)
-    - [升级至 TiDB 2.1](op-guide/tidb-v2.1-upgrade-guide.md)
-    - [使用 Ansible 滚动升级](op-guide/ansible-deployment-rolling-update.md)
+    - [升级至 TiDB 3.0](dev/how-to/upgrade/to-tidb-3.0.md)
+    - [升级至 TiDB 2.1](dev/how-to/upgrade/to-tidb-2.1.md)
+    - [使用 Ansible 滚动升级](dev/how-to/upgrade/rolling-updates-with-ansible.md)
     - [升级 Data Migration](tools/dm/dm-upgrade.md)
   + 故障诊断
-    - [集群配置诊断](trouble-shooting.md)
+    - [集群配置诊断](dev/how-to/troubleshoot/cluster-setup.md)
     - [Data Migration 故障诊断](tools/dm/troubleshooting.md)
     - [TiDB-Lightning 故障诊断](tools/lightning/errors.md)
 + 参考手册
@@ -206,6 +203,7 @@
     - [3.0.0-beta.1](releases/3.0.0-beta.1.md)
     - [3.0.0-beta](releases/3.0beta.md)
   + v2.1
+    - [2.1.10](releases/2.1.10.md)
     - [2.1.9](releases/2.1.9.md)
     - [2.1.8](releases/2.1.8.md)
     - [2.1.7](releases/2.1.7.md)

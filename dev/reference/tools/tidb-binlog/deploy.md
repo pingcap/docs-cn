@@ -87,9 +87,13 @@ aliases: ['/docs-cn/tools/binlog/deploy']
     1. 部署 pump_servers 和 node_exporters
     
         ```
-        ansible-playbook deploy.yml -l ${pump1_ip}, ${pump2_ip}, [${alias1_name}, ${alias2_name}]
+        ansible-playbook deploy.yml -l ${pump1_ip},${pump2_ip},[${alias1_name},${alias2_name}]
         ```
         
+        > **注意：**
+        >
+        > 以上命令中，逗号后不要加空格，否则会报错。
+    
     2. 启动 pump_servers
     
         ```
