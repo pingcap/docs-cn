@@ -82,23 +82,23 @@ scrape_configs:
 
 - **`tikv_import_range_delivery_duration`** (直方图)
 
-    将 KV 对中的一个 range 发送至 `dispatch-job` 需时的直方图。
+    将一个 range 的 KV 对发送至 `dispatch-job` 需时的直方图。
 
 - **`tikv_import_split_sst_duration`** (直方图)
 
-    将 range 从引擎文件中分离到 SST 文件中需时的直方图。
+    将 range 从引擎文件中分离到单个 SST 文件中需时的直方图。
 
 - **`tikv_import_sst_delivery_duration`** (直方图)
 
-    将 SST 文件从 `dispatch-job` 发送到 `ImportSSTJob` 需时的直方图
+    将 SST 文件从 `dispatch-job` 发送到 `ImportSSTJob`任务 需时的直方图
     
 - **`tikv_import_sst_recv_duration`** (直方图)
 
-    `ImportSSTJob` 接收从 `dispatch-job` 发送过来的 SST 文件需时的直方图。
+    `ImportSSTJob`任务 接收从 `dispatch-job` 发送过来的 SST 文件需时的直方图。
    
 - **`tikv_import_sst_upload_duration`** (直方图)
 
-    从 `ImportSSTJob` 上传 SST 文件到 TiKV 节点需时的直方图。
+    从 `ImportSSTJob` 任务上传 SST 文件到 TiKV 节点需时的直方图。
    
 - **`tikv_import_sst_chunk_bytes`** (直方图)
 
@@ -110,7 +110,7 @@ scrape_configs:
 
 - **`tikv_import_each_phase`** (测量仪)
 
-    表示运行阶段。值为 1 表示在阶段内运行，值为 0 表示在阶段内运行。标签：
+    表示运行阶段。值为 1 时表示在阶段内运行，值为 0 时表示在阶段内运行。标签：
 
     - **phase**: `prepare` / `import`
 
@@ -155,7 +155,7 @@ scrape_configs:
 
 **`lightning_engines`** (计数器)
 
-    计算处理后引擎文件的数量以及他们的状态。标签：
+    计算处理后引擎文件的数量以及其状态。标签：
 
     - **state**: `pending` / `written` / `closed` / `imported` / `completed`
     - **result**: `success` / `failure`
