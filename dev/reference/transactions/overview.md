@@ -17,16 +17,16 @@ Syntax:
 SET autocommit = {0 | 1}
 ```
 
-If you set the value of `autocommit` to 1, the status of the current Session is autocommit. If you set the value of `autocommit` to 0, the status of the current Session is non-autocommit. The value of `autocommit` is 1 by default.       
+If you set the value of `autocommit` to 1, the status of the current Session is autocommit. If you set the value of `autocommit` to 0, the status of the current Session is non-autocommit. The value of `autocommit` is 1 by default.
 
-In the autocommit status, the updates are automatically committed to the database after you run each statement. Otherwise, the updates are only committed when you run the `COMMIT` or `BEGIN` statement.
+When autocommit is enabled, statements are automatically committed immediately following their execution. When autocommit is disabled, statements are only committed when you execute `COMMIT` or as part of an [implicit commit](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html). For example, executing `[BEGIN|START TRANSACTION]` implicitly commits the last transaction and starts a new transaction. This behavior is required for MySQL compatibility.
 
 `autocommit` is also a System Variable. You can update the current Session or the Global value using the following variable assignment statement:
 
 ```sql
 SET @@SESSION.autocommit = {0 | 1};
 SET @@GLOBAL.autocommit = {0 | 1};
-```   
+```
 
 ## START TRANSACTION, BEGIN
 
@@ -66,17 +66,18 @@ This statement is used to roll back the current transaction and cancels all the 
 
 TiDB supports explicit transactions (`BEGIN/COMMIT`) and implicit transactions (`SET autocommit = 1`).
 
-If you set the value of `autocommit` to 1 and start a new transaction through `BEGIN`, the autocommit is disabled before `COMMIT`/`ROLLBACK` which makes the transaction becomes explicit.
+If you set the value of `autocommit` to 1 and start a new transaction through the `[BEGIN|START TRANSACTION]` statement, the autocommit is disabled before `COMMIT`/`ROLLBACK` which makes the transaction becomes explicit.
 
-For DDL statements, the transaction is committed automatically and does not support rollback. If you run the DDL statement while the current Session is in the process of a transaction, the DDL statement is run after the current transaction is committed.
+For DDL statements, the transaction is committed automatically and does not support rollback. If you run the DDL statement while the current Session is in the process of a transaction, the DDL statement is executed after the current transaction is committed.
 
 ## Transaction isolation level
 
-TiDB uses `SNAPSHOT ISOLATION` by default. You can set the isolation level of the current Session to `READ COMMITTED` using the following statement:
+TiDB **only supports** `SNAPSHOT ISOLATION`. You can set the isolation level of the current Session to `READ COMMITTED` using the following statement. However, TiDB is only compatible with the `READ COMMITTED` isolation level in syntax and transactions are still executed at the `SNAPSHOT ISOLATION` level.
 
 ```sql
 SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
 ```
+
 ## Lazy check of constraints
 
 **Lazy check** means that by default TiDB will not check [primary key](/dev/reference/sql/constraints.md#primary-key) or [unique constraints](/dev/reference/sql/constraints.md#unique) when an `INSERT` statement is executed, but instead checks when the transaction is committed. In TiDB, the lazy check is performed for values written by ordinary `INSERT` statements.

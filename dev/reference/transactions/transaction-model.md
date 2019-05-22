@@ -13,13 +13,13 @@ Similarly, functions such as `GET_LOCK()` and `RELEASE_LOCK()` and statements su
 
 **Note:**
 >
-> On the business side, remember to check the returned results of `commit` because even there is no error in the execution, there might be errors in the `commit` process.
+> On the application side, remember to check the returned results of `COMMIT` because even there is no error in the execution, there might be errors in the `COMMIT` process.
 
 ## Differences from MySQL
 
 ### Transaction retry
 
-By default, transactions that fail may automatically be retried by TiDB, which may lead to lost updates. This feature can be disabled by setting `tidb_retry_limit = 0`.
+While the transaction retry is not enabled by default, TiDB can automatically retry failed transactions when `tidb_disable_txn_auto_retry = 0`. This feature is disabled by default because retry might lead to lost updates.
 
 ### Large transactions
 
@@ -36,13 +36,13 @@ Since each transaction in TiDB requires two round trips to the PD leader, small 
 
 ```sql
 # original version with auto_commit
-UPDATE my_table SET a='new_value' WHERE id = 1; 
+UPDATE my_table SET a='new_value' WHERE id = 1;
 UPDATE my_table SET a='newer_value' WHERE id = 2;
 UPDATE my_table SET a='newest_value' WHERE id = 3;
 
 # improved version
 START TRANSACTION;
-UPDATE my_table SET a='new_value' WHERE id = 1; 
+UPDATE my_table SET a='new_value' WHERE id = 1;
 UPDATE my_table SET a='newer_value' WHERE id = 2;
 UPDATE my_table SET a='newest_value' WHERE id = 3;
 COMMIT;
@@ -68,4 +68,8 @@ Due to its distributed nature, workloads that are single-threaded or latency-sen
 
 + Transaction
 
-    When TiDB is in the execution of loading data, by default, a record with 20,000 rows of data is seen as a transaction for persistent storage. If a load data operation inserts more than 20,000 rows, it will be divided into multiple transactions to commit. If an error occurs in one transaction, this transaction in process will not be committed. However, transactions before that are committed successfully. In this case, a part of the load data operation is successfully inserted, and the rest of the data insertion fails. But MySQL treats a load data operation as a transaction, one error leads to the failure of the entire load data operation.
+    When TiDB executes the `LOAD DATA` operation, a record with 20,000 rows of data is seen as a transaction for persistent storage by default. If one `LOAD DATA` operation inserts more than 20,000 rows, it is divided into multiple transactions to commit. If an error occurs in one transaction, this transaction in process is not committed. However, transactions before that are committed successfully. In this case, a part of the `LOAD DATA` operation is successfully inserted, and the rest of the data insertion fails. But MySQL treats a `LOAD DATA` operation as one transaction, one error leads to the failure of the entire `LOAD DATA` operation.
+
+    > **Warning:**
+    >
+    > The `LOAD DATA` operation in TiDB does not guarantee the atomicity of transactions, so it is recommended only for initial batch loading data, and not during regular usage for production environment(s).

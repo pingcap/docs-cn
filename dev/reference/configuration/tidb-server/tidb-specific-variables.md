@@ -250,13 +250,29 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 - Scope: SESSION | GLOBAL
 - Default value: 10
-- When a transaction encounters retriable errors, such as transaction conflicts and TiKV busy, this transaction can be re-executed. This variable is used to set the maximum number of the retries.
+- When a transaction encounters retriable errors (such as transaction conflicts, over slow transaction commit, or table schema changes), this transaction can be re-executed. This variable is used to set the maximum number of the retries.
 
 ### tidb_disable_txn_auto_retry
 
 - Scope: SESSION | GLOBAL
-- Default: 0
-- This variable is used to set whether to disable automatic retry of explicit transactions. If you set this variable to 1, the transaction does not retry automatically. If there is a transactional conflict, the transaction needs to be retried at the application layer. To decide whether you need to disable automatic retry, see [description of optimistic transactions](/dev/reference/transactions/transaction-isolation.md#description-of-optimistic-transactions).
+- Default: 1
+- This variable is used to set whether to disable automatic retry of explicit transactions. The default value of 1 means that transactions will not automatically retry in TiDB and `COMMIT` statements might return errors that need to be handled in the application layer.
+
+    Setting the value to 0 means that TiDB will automatically retry transactions, resulting in fewer errors from `COMMIT` statements. Be careful when making this change, because it might result in lost updates.
+
+    This variable does not affect automatically committed implicit transactions and internally executed transactions in TiDB. The maximum retry count of these transactions is determined by the value of `tidb_retry_limit`.
+
+    To decide whether you can enable automatic retry, see [description of optimistic transactions](/dev/reference/transactions/transaction-isolation.md#description-of-optimistic-transactions).
+
+### tidb_back_off_weight
+
+- Scope: SESSION | GLOBAL
+- Default value: 2
+- This variable is used to increase the weight of the maximum time of TiDB `back-off`, that is, the maximum retry time for sending a retry request when an internal network or other component (TiKV, PD) failure is encountered. This variable can be used to adjust the maximum retry time and the minimum value is 1.
+
+    For example, the base timeout for TiDB to take TSO from PD is 15 seconds. When `tidb_back_off_weight = 2`, the maximum timeout for taking TSO is: *base time * 2 = 30 seconds*.
+
+    In the case of a poor network environment, appropriately increasing the value of this variable can effectively alleviate error reporting to the application end caused by timeout. If the application end wants to receive the error information more quickly, minimize the value of this variable.
 
 ### tidb_enable_table_partition
 
