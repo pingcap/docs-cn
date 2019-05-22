@@ -82,7 +82,7 @@ scrape_configs:
 
 - **`tikv_import_range_delivery_duration`** (直方图)
 
-    将一个 range 的 KV 对发送至 `dispatch-job` 需时的直方图。
+    将一个 range 的 KV 对发送至 `dispatch-job` 任务需时的直方图。
 
 - **`tikv_import_split_sst_duration`** (直方图)
 
@@ -90,11 +90,11 @@ scrape_configs:
 
 - **`tikv_import_sst_delivery_duration`** (直方图)
 
-    将 SST 文件从 `dispatch-job` 发送到 `ImportSSTJob`任务 需时的直方图
+    将 SST 文件从 `dispatch-job` 任务发送到 `ImportSSTJob`任务需时的直方图
     
 - **`tikv_import_sst_recv_duration`** (直方图)
 
-    `ImportSSTJob`任务 接收从 `dispatch-job` 发送过来的 SST 文件需时的直方图。
+    `ImportSSTJob`任务接收从 `dispatch-job` 任务发送过来的 SST 文件需时的直方图。
    
 - **`tikv_import_sst_upload_duration`** (直方图)
 
