@@ -157,8 +157,8 @@
           - [使用限制](dev/reference/tools/data-migration/features/shard-merge.md#使用限制)
           - [手动处理 Sharding DDL Lock](dev/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)
       + 使用场景
-        - [简单的从库同步场景](dev/reference/tools/data-migration/usage-scenarios/simple-synchronization-scenario.md)
-        - [分库分表合并场景](dev/reference/tools/data-migration/usage-scenarios/shard-merge-scenario.md)
+        - [简单的从库同步场景](dev/reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
+        - [分库分表合并场景](dev/reference/tools/data-migration/usage-scenarios/shard-merge.md)
       + [部署使用](dev/reference/tools/data-migration/practice.md)
       + 配置
         - [概述](dev/reference/tools/data-migration/configure/overview.md)
@@ -172,7 +172,7 @@
       - [概述](dev/reference/tools/tidb-lightning/overview.md)
       - [部署执行](dev/reference/tools/tidb-lightning/deployment.md)
       - [断点续传](dev/reference/tools/tidb-lightning/checkpoints.md)
-      - [表库过滤](dev/reference/tools/tidb-lightning/table-filter.md)
+      - [表库过滤](dev/reference/tools/tidb-lightning/filter.md)
       - [CSV 支持](dev/reference/tools/tidb-lightning/csv.md)
       - [监控告警](dev/reference/tools/tidb-lightning/monitor.md)
     + TiDB-Binlog
@@ -184,7 +184,7 @@
     - [PD Control](dev/reference/tools/pd-control.md)
     - [PD Recover](dev/reference/tools/pd-recover.md)
     - [TiKV Control](https://github.com/tikv/tikv/blob/master/docs/tools/tikv-control.md)
-    - [TiDB Controller](dev/reference//tidb-control.md)
+    - [TiDB Controller](dev/reference/tools/tidb-control.md)
     - [工具下载](dev/reference/tools/download.md)
 + 常见问题 (FAQ)
   - [TiDB FAQ](FAQ.md)
