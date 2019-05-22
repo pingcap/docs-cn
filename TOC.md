@@ -49,7 +49,6 @@
     - [定位慢查询](dev/how-to/maintain/identify-slow-queries.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](dev/how-to/scale/with-ansible.md)
-    - [集群扩容缩容方案](dev/how-to/scale/horizontally.md)
   + 升级
     - [升级至 TiDB 3.0](dev/how-to/upgrade/to-tidb-3.0.md)
     - [升级至 TiDB 2.1](dev/how-to/upgrade/to-tidb-2.1.md)
@@ -205,6 +204,7 @@
     - [3.0.0-beta.1](releases/3.0.0-beta.1.md)
     - [3.0.0-beta](releases/3.0beta.md)
   + v2.1
+    - [2.1.10](releases/2.1.10.md)
     - [2.1.9](releases/2.1.9.md)
     - [2.1.8](releases/2.1.8.md)
     - [2.1.7](releases/2.1.7.md)
