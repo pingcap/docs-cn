@@ -78,7 +78,7 @@
       - [数据类型默认值](dev/reference/sql/data-types.md#数据类型的默认值)
     + 函数与操作符
       - [函数与操作符概述](dev/reference/sql/functions-and-operators/reference.md)
-      - [表达式求值的类型转换](dev/reference/sql/functions-and-operators/type-conversion-in-expression-evaluation.md)
+      - [表达式求值的类型转换](dev/reference/sql/functions-and-operators/type-conversion.md)
       - [操作符](dev/reference/sql/functions-and-operators/operators.md)
       - [控制流程函数](dev/reference/sql/functions-and-operators/control-flow-functions.md)
       - [字符串函数](dev/reference/sql/functions-and-operators/string-functions.md)
