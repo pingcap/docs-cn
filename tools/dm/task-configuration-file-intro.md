@@ -126,26 +126,26 @@ syncers:                                            # syncer 处理单元运行�
 
 ```yaml
 mysql-instances:
--
-  source-id: "mysql-replica-01"           # 上游实例或者复制组 ID，参考 `inventory.ini` 的 `source_id` 或者 `dm-master.toml` 的 `source-id` 配置。
-  meta:                                   # `task-mode` 为 `incremental` 且下游数据库的 `checkpoint` 不存在时 binlog 同步开始的位置; 如果 checkpoint 存在，则以 `checkpoint` 为准。
-    binlog-name: binlog-00001
-    binlog-pos: 4
+  -
+    source-id: "mysql-replica-01"           # 上游实例或者复制组 ID，参考 `inventory.ini` 的 `source_id` 或者 `dm-master.toml` 的 `source-id` 配置。
+    meta:                                   # `task-mode` 为 `incremental` 且下游数据库的 `checkpoint` 不存在时 binlog 同步开始的位置; 如果 checkpoint 存在，则以 `checkpoint` 为准。
+      binlog-name: binlog-00001
+      binlog-pos: 4
 
-  route-rules: ["route-rule-1", "route-rule-2"]    # 该上游数据库实例匹配的表到下游数据库的 table routing 规则名称。
-  filter-rules: ["filter-rule-1"]                  # 该上游数据库实例匹配的表的 binlog event filter 规则名称。
-  column-mapping-rules: ["cm-rule-1"]              # 该上游数据库实例匹配的表的 column mapping 规则名称。
-  black-white-list:  "bw-rule-1"                   # 该上游数据库实例匹配的表的 black & white list 过滤规则名称。
+    route-rules: ["route-rule-1", "route-rule-2"]    # 该上游数据库实例匹配的表到下游数据库的 table routing 规则名称。
+    filter-rules: ["filter-rule-1"]                  # 该上游数据库实例匹配的表的 binlog event filter 规则名称。
+    column-mapping-rules: ["cm-rule-1"]              # 该上游数据库实例匹配的表的 column mapping 规则名称。
+    black-white-list:  "bw-rule-1"                   # 该上游数据库实例匹配的表的 black & white list 过滤规则名称。
 
-  mydumper-config-name: "global"          # mydumper 配置名称。
-  loader-config-name: "global"            # loader 配置名称。
-  syncer-config-name: "global"            # syncer 配置名称。
+    mydumper-config-name: "global"          # mydumper 配置名称。
+    loader-config-name: "global"            # loader 配置名称。
+    syncer-config-name: "global"            # syncer 配置名称。
 
--
-  source-id: "mysql-replica-02"           # 上游实例或者复制组 ID，参考 `inventory.ini` 的 `source_id` 或者 `dm-master.toml` 的 `source-id` 配置。
-  mydumper-config-name: "global"          # mydumper 配置名称。
-  loader-config-name: "global"            # loader 配置名称。
-  syncer-config-name: "global"            # syncer 配置名称。
+  -
+    source-id: "mysql-replica-02"           # 上游实例或者复制组 ID，参考 `inventory.ini` 的 `source_id` 或者 `dm-master.toml` 的 `source-id` 配置。
+    mydumper-config-name: "global"          # mydumper 配置名称。
+    loader-config-name: "global"            # loader 配置名称。
+    syncer-config-name: "global"            # syncer 配置名称。
 ```
 
 关于以上配置项的更多配置细节，参见[功能配置集](#功能配置集)的相关配置项，对应关系如下：
