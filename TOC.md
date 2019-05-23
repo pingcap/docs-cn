@@ -110,7 +110,7 @@
     + pd-server
       - [配置参数](dev/reference/configuration/pd-server/configuration.md)
     + tikv-server
-      - [配置参数](dev/reference/configuratio/tikv-server/configuration.md)
+      - [配置参数](dev/reference/configuration/tikv-server/configuration.md)
   + 监控指标
     - [Overview 面板](dev/reference/key-monitoring-metrics/overview-dashboard.md)
     - [TiDB 面板](dev/reference/key-monitoring-metrics/tidb-dashboard.md)
