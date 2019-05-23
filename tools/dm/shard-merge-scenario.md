@@ -170,7 +170,7 @@ mysql-instances:
   -
     source-id: "instance-1"
     route-rules: ["user-route-rule", "store-route-rule", "sale-route-rule"]
-    filter-rules: ["user-filter-rule", "store-filter-rule" , "sale-filter-rule"]
+    filter-rules: ["user-filter-rule", "store-filter-rule", "sale-filter-rule"]
     column-mapping-rules: ["instance-1-sale"]
     black-white-list:  "log-bak-ignored"
     mydumper-config-name: "global"
@@ -180,7 +180,7 @@ mysql-instances:
   -
     source-id: "instance-2"
     route-rules: ["user-route-rule", "store-route-rule", "sale-route-rule"]
-    filter-rules: ["user-filter-rule", "store-filter-rule" , "sale-filter-rule"]
+    filter-rules: ["user-filter-rule", "store-filter-rule", "sale-filter-rule"]
     column-mapping-rules: ["instance-2-sale"]
     black-white-list:  "log-bak-ignored"
     mydumper-config-name: "global"
@@ -189,7 +189,7 @@ mysql-instances:
   -
     source-id: "instance-3"
     route-rules: ["user-route-rule", "store-route-rule", "sale-route-rule"]
-    filter-rules: ["user-filter-rule", "store-filter-rule" , "sale-filter-rule"]
+    filter-rules: ["user-filter-rule", "store-filter-rule", "sale-filter-rule"]
     column-mapping-rules: ["instance-3-sale"]
     black-white-list:  "log-bak-ignored"
     mydumper-config-name: "global"
