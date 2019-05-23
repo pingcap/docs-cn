@@ -222,14 +222,20 @@ For example, if you want to add a PD node (node103) with the IP address `172.16.
     ```
     ansible-playbook rolling_update.yml
     ```
-   
-6. Update the Prometheus configuration and restart the cluster:
+
+6. Start the monitor service: 
+
+    ```
+    ansible-playbook start.yml -l 172.16.10.103
+    ```
+
+7. Update the Prometheus configuration and restart the cluster:
 
     ```
     ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
-7. Monitor the status of the entire cluster and the newly added node by opening a browser to access the monitoring platform: `http://172.16.10.3:3000`.
+8. Monitor the status of the entire cluster and the newly added node by opening a browser to access the monitoring platform: `http://172.16.10.3:3000`.
 
 ## Decrease the capacity of a TiDB node
 
@@ -317,7 +323,7 @@ For example, if you want to remove a TiKV node (node9) with the IP address `172.
         ./pd-ctl -u "http://172.16.10.1:2379" -d store delete 10
         ```
         
-2. Use Grafana or `pd-ctl` to check whether the node is successfully removed:
+2. Use `pd-ctl` to check whether the node is successfully removed:
 
     ```
     ./pd-ctl -u "http://172.16.10.1:2379" -d store 10
