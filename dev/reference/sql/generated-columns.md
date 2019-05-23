@@ -1,13 +1,12 @@
 ---
-title: Generated Column
-summary: 本文档介绍如何使用 generated column
+title: 生成列
 category: reference
 aliases: ['/docs-cn/sql/generated-columns/']
 ---
 
-# Generated Column
+# 生成列
 
-为了在功能上兼容 MySQL 5.7，TiDB 支持 generated column。Generated column 的主要的作用之一：从 JSON 数据类型中解出数据，并为该数据建立索引。
+为了在功能上兼容 MySQL 5.7，TiDB 支持生成列（generated column）。生成列的主要的作用之一：从 JSON 数据类型中解出数据，并为该数据建立索引。
 
 ## 使用 generated stored column 对 JSON 建索引
 

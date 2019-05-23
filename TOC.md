@@ -117,8 +117,8 @@
     - [PD 面板](dev/reference/key-monitoring-metrics/pd-dashboard.md)
     - [TiKV 面板](dev/reference/key-monitoring-metrics/tikv-dashboard.md)
   + 安全
-    - [与 MySQL 的安全特性差异](dev/reference/security/security-compatibility.md)
-    - [TiDB 数据库权限管理](dev/reference/security/privilege.md)
+    - [与 MySQL 的安全特性差异](dev/reference/security/compatibility.md)
+    - [TiDB 数据库权限管理](dev/reference/security/privilege-system.md)
     - [TiDB 用户账户管理](dev/reference/security/user-account-management.md)
   + 事务
     - [事务模型](dev/reference/transactions/transaction-model.md)

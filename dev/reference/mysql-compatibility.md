@@ -66,7 +66,7 @@ TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用
 
 ### Performance schema
 
-Performance schema 表在 TiDB 中返回结果为空。TiDB 使用 [Prometheus 和 Grafana](https://pingcap.com/docs/op-guide/monitor/#use-prometheus-and-grafana) 来监测性能指标。
+Performance schema 表在 TiDB 中返回结果为空。TiDB 使用 [Prometheus 和 Grafana](/dev/how-to/monitor/monitor-a-cluster.md) 来监测性能指标。
 
 ### 查询计划
 
@@ -141,7 +141,7 @@ Create Table: CREATE TABLE `t1` (
 TiDB 支持 MySQL 5.7 中 **绝大多数的 SQL 模式**，以下几种模式除外：
 
 - TiDB 不支持兼容模式（例如 `ORACLE` 和 `POSTGRESQL`）。MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
-- TiDB 中的 `ONLY_FULL_GROUP_BY` 与 MySQL 5.7 相比有细微的 [语义差别](/dev/reference/sql/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)，此问题日后将予以解决。
+- TiDB 中的 `ONLY_FULL_GROUP_BY` 与 MySQL 5.7 相比有细微的[语义差别](/dev/reference/sql/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)，此问题日后将予以解决。
 - `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` 这两种 SQL 模式用于解决兼容问题，但并不适用于 TiDB。
 
 ### 默认设置的区别
