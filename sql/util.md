@@ -35,7 +35,7 @@ explainable_stmt: {
 }
 ```
 
-如果不指定 `FORMAT`，或者指定 `FORMAT = "row"`，`EXPLAIN` 语句将以 MySQL 标准的格式输出结果，不过结果具体字段和 MySQL 有一定差异。详细信息可参考[理解 TiDB 执行计划](../sql/understanding-the-query-execution-plan.md)章节。
+如果不指定 `FORMAT`，或者指定 `FORMAT = "row"`，`EXPLAIN` 语句将以表格形式输出结果。详细信息可参考[理解 TiDB 执行计划](../sql/understanding-the-query-execution-plan.md)章节。
 
 除此之外，TiDB 还支持输出 DotGraph 结果，这时需要指定 `FORMAT = "dot"`，示例如下：
 
