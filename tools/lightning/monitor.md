@@ -106,7 +106,7 @@ scrape_configs:
 
 - **`tikv_import_sst_ingest_duration`** (直方图)
 
-    采集 SST 文件到 TiKV 需时的直方图。
+    将 SST 文件传入至 TiKV 需时的直方图。
 
 - **`tikv_import_each_phase`** (测量仪)
 
