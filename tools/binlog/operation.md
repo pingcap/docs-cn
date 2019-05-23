@@ -130,7 +130,7 @@ Usage of binlogctl:
 
     该命令会生成一个文件 `{data-dir}/savepoint`，该文件中保存了 Drainer 初次启动需要的 tso 信息。
     
-    ## 使用 TiDB SQL 管理 binlog
+## 使用 TiDB SQL 管理 binlog
 
 目前支持通过在 TiDB 中执行 SQL 来查看/管理 binlog 相关的状态。
 
