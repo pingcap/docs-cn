@@ -68,6 +68,7 @@
     + Migrate from MySQL
       - [Migrate the Full Data](dev/how-to/migrate/from-mysql.md)
       - [Migrate the Incremental Data](dev/how-to/migrate/incrementally-from-mysql.md)
+    + [Migrate from Aurora](dev/how-to/migrate/from-aurora.md)
     - [Migrate from CSV](tools/lightning/csv.md)
   + Maintain
     - [Backup and Restore](dev/how-to/maintain/backup-and-restore.md)
@@ -252,6 +253,8 @@
       - [Monitor](dev/reference/tools/data-migration/monitor.md)
       - [Manage the Task](dev/reference/tools/data-migration/manage-tasks.md)
       - [Cluster Operations](dev/reference/tools/data-migration/cluster-operations.md)
+      - Migrate from MySQL compatible database 
+        - [Migrate from Aurora](dev/how-to/migrate/from-aurora.md)
     + TiDB-Lightning
       - [Overview](dev/reference/tools/tidb-lightning/overview.md)
       - [Deployment](dev/reference/tools/tidb-lightning/deployment.md)
