@@ -214,7 +214,7 @@ routes:
 filters:
   user-filter-rule:
     schema-pattern: "user"
-    events: ["truncate table", "drop table", "delete"， "drop database"]
+    events: ["truncate table", "drop table", "delete", "drop database"]
     action: Ignore
   sale-filter-rule:
     schema-pattern: "store_*"
