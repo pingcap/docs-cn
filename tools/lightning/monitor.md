@@ -134,7 +134,7 @@ scrape_configs:
 
     - **type**：`open` / `closed`
 
-- **`lightning_idle_workers`**（测量仪）
+- **`lightning_idle_workers`**（计量表盘）
 
     计算闲置的 worker。数值应低于设置中的 `*-concurrency` 的值，且经常为 0。标签：
 
