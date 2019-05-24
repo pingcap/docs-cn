@@ -43,6 +43,12 @@ sample-percent = 100
 # 通过计算 chunk 的 checksum 来对比数据，如果不开启则逐行对比数据
 use-checksum = true
 
+# 如果设置为 true 则只会通过计算 checksum 来校验数据，如果上下游的 checksum 不一致也不会查出数据再进行校验
+only-use-checksum = false
+
+# 是否使用上次校验的 checkpoint，如果开启，则只校验上次未校验以及校验失败的 chunk
+use-checkpoint = true
+
 # 不对比数据
 ignore-data-check = false
 
@@ -238,3 +244,4 @@ instance-id = "target-1"
 * TiDB 使用的 collation 为 utf8_bin，如果对 MySQL 和 TiDB 的数据进行对比，需要注意 MySQL 中表的 collation 设置。如果表的主键／唯一键为 varchar 类型，且 MySQL 中 collation 设置与 TiDB 不同，可能会因为排序问题导致最终校验结果不正确，需要在 sync-diff-inspector 的配置文件中增加 collation 设置。
 * 如果设置了 `tidb-instance-id` 使用 TiDB 的统计信息来划分 chunk，需要尽量保证统计信息精确，可以在*业务空闲期*手动执行 `analyze table {table_name}`。
 * table-rule 的规则需要特殊注意，例如设置了 `schema-pattern="test1"`，`target-schema="test2"`，会对比 source 中的 `test1` 库和 target 中的 `test2` 库；如果 source 中有 `test2` 库，该库也会和 target 中的 `test2` 库进行对比。
+* 在校验中，sync_diff_inspector 会将校验状态保存到目标数据库的 `sync_diff_inspector` 库中，需要确保数据库的用户包含相应库的读写权限。
