@@ -42,7 +42,7 @@
       - [全量迁移](dev/how-to/migrate/from-mysql.md)
       - [增量复制](dev/how-to/migrate/incrementally-from-mysql.md)
     + 从与 MySQL 兼容的数据库迁移数据
-      - [从 AWS Aurora MySQL 迁移数据](dev/how-to/migrate/from-aurora.md)
+      - [从 Amazon Aurora MySQL 迁移数据](dev/how-to/migrate/from-aurora.md)
     - [从 CSV 迁移](tools/lightning/csv.md)
   + 运维
     - [Ansible 常见运维操作](dev/how-to/maintain/ansible-operations.md)
@@ -169,7 +169,7 @@
       - [管理数据同步任务](tools/dm/manage-task.md)
       - [DM 集群操作](tools/dm/cluster-operations.md)
       + 从与 MySQL 兼容的数据库迁移数据
-        - [从 AWS Aurora MySQL 迁移数据](dev/how-to/migrate/from-aurora.md)
+        - [从 Amazon Aurora MySQL 迁移数据](dev/how-to/migrate/from-aurora.md)
     + TiDB-Lightning
       - [概述](tools/lightning/overview-architecture.md)
       - [部署执行](tools/lightning/deployment.md)
