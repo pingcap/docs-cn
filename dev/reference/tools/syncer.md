@@ -396,50 +396,22 @@ Before replicating data using Syncer, check the following items:
 
         If the result is `log_bin = OFF`, you need to enable the binlog. See the [document about enabling the binlog](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html).
 
-    2. Check whether the binlog format in MySQL is `ROW`.
-
-        Check the binlog format using the following command:
+    2. The binlog format must be `ROW` and the binary log must be written with `FULL` row images. Check both of these variables:
 
         ```sql
-        mysql> show global variables like 'binlog_format';
-        +--------------------+----------+
-        | Variable_name      | Value    |
-        +--------------------+----------+
-        | binlog_format      | ROW      |
-        +--------------------+----------+
-        1 row in set (0.00 sec)
+        mysql> select variable_name, variable_value from information_schema.global_variables where variable_name in ('binlog_format','binlog_row_image');
+        +------------------+----------------+
+        | variable_name    | variable_value |
+        +------------------+----------------+
+        | BINLOG_FORMAT    | ROW            |
+        | BINLOG_ROW_IMAGE | FULL           |
+        +------------------+----------------+
+        2 rows in set (0.001 sec)
         ```
 
-        - If the binlog format is not `ROW`, set it to `ROW` using the following command:
-
-            ```sql
-            mysql> set global binlog_format=ROW;
-            mysql>  flush logs;
-            Query OK, 0 rows affected (0.01 sec)
-            ```
-
-        - If MySQL is connected, it is recommended to restart the MySQL service or kill all connections.
-
-    3. Check whether MySQL `binlog_row_image` is `FULL`.
-
-        Check `binlog_row_image` using the following command:
-
-        ```sql
-        mysql> show global variables like 'binlog_row_image';
-        +--------------------------+---------+
-        | Variable_name            | Value   |
-        +--------------------------+---------+
-        | binlog_row_image         | FULL    |
-        +--------------------------+---------+
-        1 row in set (0.01 sec)
-        ```
-
-        If the result of `binlog_row_image` is not `FULL`, set it to `FULL` using the following command:
-
-        ```sql
-        mysql> set global binlog_row_image = FULL;
-        Query OK, 0 rows affected (0.01 sec)
-        ```
+        - If one of the settings is not correct, you should change the configuration file on disk and restart the MySQL service.
+        - It's important to persist any configuration changes to disk, so that they're reflected if the MySQL service restarts.
+        - Because existing connections will keep old values of global variables, you should *not* use the `SET` statement to dynamically change these settings.
 
 4. Check user privileges.
 
