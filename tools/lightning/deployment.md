@@ -34,7 +34,7 @@ category: tools
 - `tikv-importer`
 
     - 32+ 逻辑核 CPU
-    - 32 GB+ 内存
+    - 40 GB+ 内存
     - 1 TB+ SSD 硬盘，IOPS 越高越好（要求 ≥8000）
       * 硬盘必须大于最大的 N 个表的大小总和，其中 N = max(index-concurrency, table-concurrency)。
     - 使用万兆网卡，带宽需 300 MB/s 以上
@@ -44,7 +44,9 @@ category: tools
 
 > **注意：**
 >
-> `tidb-lightning` 是 CPU 密集型程序，如果和其它程序混合部署，需要通过 `region-concurrency` 限制 `tidb-lightning` 的 CPU 实际占用核数，否则会影响其他程序的正常运行。建议将混合部署机器上 75% 的 CPU 分配给 `tidb-lightning`。例如，机器为 32 核，则 `tidb-lightning` 的 `region-concurrency` 可设为 24。
+> - `tidb-lightning` 是 CPU 密集型程序，如果和其它程序混合部署，需要通过 `region-concurrency` 限制 `tidb-lightning` 的 CPU 实际占用核数，否则会影响其他程序的正常运行。建议将混合部署机器上 75% 的 CPU 分配给 `tidb-lightning`。例如，机器为 32 核，则 `tidb-lightning` 的 `region-concurrency` 可设为 24。
+>
+> - `tikv-importer` 将中间数据存储缓存到内存上以加速导入过程。占用内存大小可以通过 **(`max-open-engines` × `write-buffer-size` × 2) + (`num-import-jobs` × `region-split-size` × 2)** 计算得来。如果磁盘写入速度慢，缓存可能会带来更大的内存占用。
 
 此外，目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](../../op-guide/recommendation.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 × [副本数量](../../FAQ.md#3-2-6-%E6%AF%8F%E4%B8%AA-region-%E7%9A%84-replica-%E6%95%B0%E9%87%8F%E5%8F%AF%E9%85%8D%E7%BD%AE%E5%90%97-%E8%B0%83%E6%95%B4%E7%9A%84%E6%96%B9%E6%B3%95%E6%98%AF) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。
 
@@ -155,7 +157,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
 
 通过以下链接获取 TiDB-Lightning 安装包（需选择与集群相同的版本）：
 
-- **v2.1.6**: https://download.pingcap.org/tidb-v2.1.6-linux-amd64.tar.gz
+- **v2.1.9**: https://download.pingcap.org/tidb-v2.1.9-linux-amd64.tar.gz
 - **v2.0.9**: https://download.pingcap.org/tidb-lightning-v2.0.9-linux-amd64.tar.gz
 - 最新 unstable 版本：https://download.pingcap.org/tidb-lightning-test-xx-latest-linux-amd64.tar.gz
 
@@ -201,7 +203,11 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
     # 第 0 层的算法用于压缩 KV 数据。
     # 第 6 层的算法用于压缩 SST 文件。
     # 第 1 至 5 层的算法目前忽略。
-    compression-per-level = ["lz4", "no", "no", "no", "no", "no", "zstd"]
+    compression-per-level = ["lz4", "no", "no", "no", "no", "no", "lz4"]
+    
+    [rocksdb.writecf]
+    # (同上)
+    compression-per-level = ["lz4", "no", "no", "no", "no", "no", "lz4"]
 
     [import]
     # 存储引擎文档 (engine file) 的文件夹路径。
@@ -218,6 +224,11 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
     #stream-channel-window = 128
     # 引擎文档同时打开的最大数量。
     max-open-engines = 8
+    # Importer 上传至 TiKV 的最大速度 (bytes per second)。
+    #upload-speed-limit = "512MB"
+    # 目标 store 可用空间的最小比率：store_available_space / store_capacity.
+    # 如果目标存储空间的可用比率低于下值，Importer 将会暂停上传 SST 来为 PD 提供足够时间进行 regions 负载均衡。
+    min-available-ratio = 0.05
     ```
 
 3. 运行 `tikv-importer`。
@@ -249,7 +260,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](../../op-guide/ansib
     # 这两项设置控制同时处理每种引擎的最大数量。设置会影响 tikv-importer 的内存和
     # 磁盘用量。两项数值之和不能超过 tikv-importer 的 max-open-engines 的设定。
     index-concurrency = 2
-    table-concurrency = 8
+    table-concurrency = 6
 
     # 转换数据的并发数，默认为逻辑 CPU 数量，不需要配置。
     # 混合部署的情况下可以配置为逻辑 CPU 的 75% 大小。
