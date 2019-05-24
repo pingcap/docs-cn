@@ -356,6 +356,13 @@ Before replicating data using Syncer, check the following items:
 
         In earlier versions of MariaDB, the format of some binlog field types is inconsistent with that in MySQL.
 
+    > **Note:** 
+    >
+    > If there is a master-slave replication structure between the upstream MySQL/MariaDB servers, then choose the following version.
+    >
+    > - 5.7.1 < MySQL version < 5.8
+    > - MariaDB version >= 10.1.3
+
 2. Check the `server-id` of the source database.
 
     Check the `server-id` using the following command:
