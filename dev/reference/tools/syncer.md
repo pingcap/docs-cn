@@ -357,6 +357,7 @@ target-table = "order_2017"
     > **注意：**
     >
     > 如果上游 MySQL/MariaDB server 间构成主从复制结构，则
+    >
     > - 5.7.1 < MySQL 版本 < 5.8
     > - MariaDB 版本 >= 10.1.3
 
