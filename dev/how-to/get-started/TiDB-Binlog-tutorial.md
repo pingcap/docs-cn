@@ -63,110 +63,112 @@ sudo yum install -y mariadb-server
     ```bash
     printf > pd.toml %s\\n 'log-file="pd.log"' 'data-dir="pd.data"'
     printf > tikv.toml %s\\n 'log-file="tikv.log"' '[storage]' 'data-dir="tikv.data"' '[pd]' 'endpoints=["127.0.0.1:2379"]' '[rocksdb]' max-open-files=1024 '[raftdb]' max-open-files=1024 
-printf > pump.toml %s\\n 'log-file="pump.log"' 'data-dir="pump.data"' 'addr="127.0.0.1:8250"' 'advertise-addr="127.0.0.1:8250"' 'pd-urls="http://127.0.0.1:2379"'
-printf > tidb.toml %s\\n 'store="tikv"' 'path="127.0.0.1:2379"' '[log.file]' 'filename="tidb.log"' '[binlog]' 'enable=true'
-printf > drainer.toml %s\\n 'log-file="drainer.log"' '[syncer]' 'db-type="mysql"' '[syncer.to]' 'host="127.0.0.1"' 'user="root"' 'password=""' 'port=3306'
-```
+    printf > pump.toml %s\\n 'log-file="pump.log"' 'data-dir="pump.data"' 'addr="127.0.0.1:8250"' 'advertise-addr="127.0.0.1:8250"' 'pd-urls="http://127.0.0.1:2379"'
+    printf > tidb.toml %s\\n 'store="tikv"' 'path="127.0.0.1:2379"' '[log.file]' 'filename="tidb.log"' '[binlog]' 'enable=true'
+    printf > drainer.toml %s\\n 'log-file="drainer.log"' '[syncer]' 'db-type="mysql"' '[syncer.to]' 'host="127.0.0.1"' 'user="root"' 'password=""' 'port=3306'
+    ```
 
 2. 查看配置细节
 
-```bash
-for f in *.toml; do echo "$f:"; cat "$f"; echo; done
-```
+    ```bash
+    for f in *.toml; do echo "$f:"; cat "$f"; echo; done
+    ```
 
-预期输出
+    预期输出：
 
-```
-drainer.toml:
-log-file="drainer.log"
-[syncer]
-db-type="mysql"
-[syncer.to]
-host="127.0.0.1"
-user="root"
-password=""
-port=3306
+    ```
+    drainer.toml:
+    log-file="drainer.log"
+    [syncer]
+    db-type="mysql"
+    [syncer.to]
+    host="127.0.0.1"
+    user="root"
+    password=""
+    port=3306
 
-pd.toml:
-log-file="pd.log"
-data-dir="pd.data"
+    pd.toml:
+    log-file="pd.log"
+    data-dir="pd.data"
 
-pump.toml:
-log-file="pump.log"
-data-dir="pump.data"
-addr="127.0.0.1:8250"
-advertise-addr="127.0.0.1:8250"
-pd-urls="http://127.0.0.1:2379"
+    pump.toml:
+    log-file="pump.log"
+    data-dir="pump.data"
+    addr="127.0.0.1:8250"
+    advertise-addr="127.0.0.1:8250"
+    pd-urls="http://127.0.0.1:2379"
 
-tidb.toml:
-store="tikv"
-path="127.0.0.1:2379"
-[log.file]
-filename="tidb.log"
-[binlog]
-enable=true
+    tidb.toml:
+    store="tikv"
+    path="127.0.0.1:2379"
+    [log.file]
+    filename="tidb.log"
+    [binlog]
+    enable=true
 
-tikv.toml:
-log-file="tikv.log"
-[storage]
-data-dir="tikv.data"
-[pd]
-endpoints=["127.0.0.1:2379"]
-[rocksdb]
-max-open-files=1024
-[raftdb]
-max-open-files=1024
-```
+    tikv.toml:
+    log-file="tikv.log"
+    [storage]
+    data-dir="tikv.data"
+    [pd]
+    endpoints=["127.0.0.1:2379"]
+    [rocksdb]
+    max-open-files=1024
+    [raftdb]
+    max-open-files=1024
+    ```
 
 ## 启动程序
 
-现在可启动各个组件。推荐启动顺序依次为 Placement Driver（PD）、TiKV、Pump ( TiDB 发送 binlog 必须连接 Pump 服务)、TiDB。
+现在可启动各个组件。推荐启动顺序依次为 Placement Driver （PD）、TiKV、Pump（TiDB 发送 binlog 日志必须连接 Pump 服务）、TiDB。
 
 1. 启动所有服务
 
-```bash
-./bin/pd-server --config=pd.toml &>pd.out &
-./bin/tikv-server --config=tikv.toml &>tikv.out &
-./bin/pump --config=pump.toml &>pump.out &
-sleep 3
-./bin/tidb-server --config=tidb.toml &>tidb.out &
-```
+    ```bash
+    ./bin/pd-server --config=pd.toml &>pd.out &
+    ./bin/tikv-server --config=tikv.toml &>tikv.out &
+    ./bin/pump --config=pump.toml &>pump.out &
+    sleep 3
+    ./bin/tidb-server --config=tidb.toml &>tidb.out &
+    ```
 
-预期输出
+    预期输出：
 
-```
-[kolbe@localhost tidb-latest-linux-amd64]$ ./bin/pd-server --config=pd.toml &>pd.out &
-[1] 20935
-[kolbe@localhost tidb-latest-linux-amd64]$ ./bin/tikv-server --config=tikv.toml &>tikv.out &
-[2] 20944
-[kolbe@localhost tidb-latest-linux-amd64]$ ./bin/pump --config=pump.toml &>pump.out &
-[3] 21050
-[kolbe@localhost tidb-latest-linux-amd64]$ sleep 3
-[kolbe@localhost tidb-latest-linux-amd64]$ ./bin/tidb-server --config=tidb.toml &>tidb.out &
-[4] 21058
-```
+    ```
+    [kolbe@localhost tidb-latest-linux-amd64]$ ./bin/pd-server --config=pd.toml &>pd.out &
+    [1] 20935
+    [kolbe@localhost tidb-latest-linux-amd64]$ ./bin/tikv-server --config=tikv.toml &>tikv.out &
+    [2] 20944
+    [kolbe@localhost tidb-latest-linux-amd64]$ ./bin/pump --config=pump.toml &>pump.out &
+    [3] 21050
+    [kolbe@localhost tidb-latest-linux-amd64]$ sleep 3
+    [kolbe@localhost tidb-latest-linux-amd64]$ ./bin/tidb-server --config=tidb.toml &>tidb.out &
+    [4] 21058
+    ```
 
-2. 如果执行 `jobs`，运行后台程序列表如下
+2. 如果执行 `jobs`，可以看到正在运行的后台程序列表如下：
 
-```
-[kolbe@localhost tidb-latest-linux-amd64]$ jobs
-[1]   Running                 ./bin/pd-server --config=pd.toml &>pd.out &
-[2]   Running                 ./bin/tikv-server --config=tikv.toml &>tikv.out &
-[3]-  Running                 ./bin/pump --config=pump.toml &>pump.out &
-[4]+  Running                 ./bin/tidb-server --config=tidb.toml &>tidb.out &
-```
+    ```
+    [kolbe@localhost tidb-latest-linux-amd64]$ jobs
+    [1]   Running                 ./bin/pd-server --config=pd.toml &>pd.out &
+    [2]   Running                 ./bin/tikv-server --config=tikv.toml &>tikv.out &
+    [3]-  Running                 ./bin/pump --config=pump.toml &>pump.out &
+    [4]+  Running                 ./bin/tidb-server --config=tidb.toml &>tidb.out &
+    ```
 
-如果有服务启动失败（例如出现 “`Exit 1`” 而不是 “`Running`”），尝试重启单个服务。 
+    如果有服务启动失败（例如出现 “`Exit 1`” 而不是 “`Running`”），尝试重启单个服务。 
+
+    按以上步骤操作后，TiDB 的 4 个 组件应该都已开始运行。
 
 ## 连接
 
-TiDB 集群现在有 4 个运行组件，用户可以通过以下 MariaDB/MySQL 命令行客户端连接到 TiDB 服务的 4000 端口。
+使用 MariaDB/MySQL 命令行客户端通过 4000 端口连接到 TiDB 服务：
 
 ```bash
 mysql -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
 ```
 
-预期输出
+预期输出：
 
 ```
 [kolbe@localhost tidb-latest-linux-amd64]$ mysql -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
@@ -181,149 +183,150 @@ TiKV Min Version: 2.1.0-alpha.1-ff3dd160846b7d1aed9079c389fc188f7f5ea13e
 Check Table Before Drop: false
 ```
 
-此时有正在运行中的 TiDB 集群，`pump` 正读取集群中的 binlog 并在其数据目录中将其存储为 relay log。下一步是启动一个可供 `drainer` 写入的 MariaDB 服务器。
+此时，TiDB 集群已开始运行，`pump` 正读取集群中的 binlog 日志，并在其数据目录中将 binlog 日志存储为 relay log。下一步是启动一个可供 `drainer` 写入的 MariaDB 服务器。
+
 
 1. 启动 `drainer` 
 
-```bash
-sudo systemctl start mariadb
-./bin/drainer --config=drainer.toml &>drainer.out &
-```
+    ```bash
+    sudo systemctl start mariadb
+    ./bin/drainer --config=drainer.toml &>drainer.out &
+    ```
 
-你可以在更简单的运行系统中安装 MySQL，只需要保证监听 3306 端口。可以用 “root” 用户及空密码连接，必要时可调整 drainer.toml。
+    你可以在更简单的操作系统中安装 MySQL，只需要保证通过 3306 端口监听，且可作为 “root” 用户及空密码连接到 MySQL，或必要时可调整 drainer.toml。
 
-```bash
-mysql -h 127.0.0.1 -P 3306 -u root
-```
+    ```bash
+    mysql -h 127.0.0.1 -P 3306 -u root
+    ```
 
-```sql
-show databases;
-```
+    ```sql
+    show databases;
+    ```
 
-预期输出
+    预期输出：
 
-```
-[kolbe@localhost ~]$ mysql -h 127.0.0.1 -P 3306 -u root
-Welcome to the MariaDB monitor.  Commands end with ; or \g.
-Your MariaDB connection id is 20
-Server version: 5.5.60-MariaDB MariaDB Server
+    ```
+    [kolbe@localhost ~]$ mysql -h 127.0.0.1 -P 3306 -u root
+    Welcome to the MariaDB monitor.  Commands end with ; or \g.
+    Your MariaDB connection id is 20
+    Server version: 5.5.60-MariaDB MariaDB Server
 
-Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+    Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+    Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-MariaDB [(none)]> show databases;
-+--------------------+
-| Database           |
-+--------------------+
-| information_schema |
-| mysql              |
-| performance_schema |
-| test               |
-| tidb_binlog        |
-+--------------------+
-5 rows in set (0.01 sec)
-```
+    MariaDB [(none)]> show databases;
+    +--------------------+
+    | Database           |
+    +--------------------+
+    | information_schema |
+    | mysql              |
+    | performance_schema |
+    | test               |
+    | tidb_binlog        |
+    +--------------------+
+    5 rows in set (0.01 sec)
+    ```
 
-在这里可以看到包含 `checkpoint` 表格的 `tidb_binlog` 数据库。`drainer` 使用 `checkpoint` 表格，记录 TiDB 集群中使用了哪种 point binlog。 
+    在这里可以看到包含 `checkpoint` 表格的 `tidb_binlog` 数据库。`drainer` 使用 `checkpoint` 表格，记录 TiDB 集群中的 binary 日志已经应用到了哪个位置点。 
 
-```sql
-MariaDB [tidb_binlog]> use tidb_binlog;
-Database changed
-MariaDB [tidb_binlog]> select * from checkpoint;
-+---------------------+---------------------------------------------+
-| clusterID           | checkPoint                                  |
-+---------------------+---------------------------------------------+
-| 6678715361817107733 | {"commitTS":407637466476445697,"ts-map":{}} |
-+---------------------+---------------------------------------------+
-1 row in set (0.00 sec)
-```
+    ```sql
+    MariaDB [tidb_binlog]> use tidb_binlog;
+    Database changed
+    MariaDB [tidb_binlog]> select * from checkpoint;
+    +---------------------+---------------------------------------------+
+    | clusterID           | checkPoint                                  |
+    +---------------------+---------------------------------------------+
+    | 6678715361817107733 | {"commitTS":407637466476445697,"ts-map":{}} |
+    +---------------------+---------------------------------------------+
+    1 row in set (0.00 sec)
+    ```
 
-现在打开另一个连接到 TiDB 的客户端，创建一个表格并插入几行数据。我们建议用户在 GNU 屏幕中操作，从而同时打开多个客户端。
+    现在打开另一个连接到 TiDB 的客户端，创建一个表格并插入几行数据。建议在 GNU Screen 软件中操作，从而同时打开多个客户端。
 
-```bash
-mysql -h 127.0.0.1 -P 4000 --prompt='TiDB [\d]> ' -u root
-```
+    ```bash
+    mysql -h 127.0.0.1 -P 4000 --prompt='TiDB [\d]> ' -u root
+    ```
 
-```sql
-create database tidbtest;
-use tidbtest;
-create table t1 (id int unsigned not null auto_increment primary key);
-insert into t1 () values (),(),(),(),();
-select * from t1;
-```
+    ```sql
+    create database tidbtest;
+    use tidbtest;
+    create table t1 (id int unsigned not null auto_increment primary   key);
+    insert into t1 () values (),(),(),(),();
+    select * from t1;
+    ```
 
-预期输出：
-```
-TiDB [(none)]> create database tidbtest;
-Query OK, 0 rows affected (0.12 sec)
+    预期输出：
+    ```
+    TiDB [(none)]> create database tidbtest;
+    Query OK, 0 rows affected (0.12 sec)
 
-TiDB [(none)]> use tidbtest;
-Database changed
-TiDB [tidbtest]> create table t1 (id int unsigned not null auto_increment primary key);
-Query OK, 0 rows affected (0.11 sec)
+    TiDB [(none)]> use tidbtest;
+    Database changed
+    TiDB [tidbtest]> create table t1 (id int unsigned not null auto_increment primary key);
+    Query OK, 0 rows affected (0.11 sec)
 
-TiDB [tidbtest]> insert into t1 () values (),(),(),(),();
-Query OK, 5 rows affected (0.01 sec)
-Records: 5  Duplicates: 0  Warnings: 0
+    TiDB [tidbtest]> insert into t1 () values (),(),(),(),();
+    Query OK, 5 rows affected (0.01 sec)
+    Records: 5  Duplicates: 0  Warnings: 0
 
-TiDB [tidbtest]> select * from t1;
-+----+
-| id |
-+----+
-|  1 |
-|  2 |
-|  3 |
-|  4 |
-|  5 |
-+----+
-5 rows in set (0.00 sec)
-```
+    TiDB [tidbtest]> select * from t1;
+    +----+
+    | id |
+    +----+
+    |  1 |
+    |  2 |
+    |  3 |
+    |  4 |
+    |  5 |
+    +----+
+    5 rows in set (0.00 sec)
+    ```
 
-切换回 MariaDB 客户端可看到新的数据库、新的表格和最近插入的行数据。
+    切换回 MariaDB 客户端可看到新的数据库、新的表格和最近插入的行数据。
 
-```sql
-use tidbtest;
-show tables;
-select * from t1;
-```
+    ```sql
+    use tidbtest;
+    show tables;
+    select * from t1;
+    ```
 
-预期输出：
+    预期输出：
 
-```
-MariaDB [(none)]> use tidbtest;
-Reading table information for completion of table and column names
-You can turn off this feature to get a quicker startup with -A
+    ```
+    MariaDB [(none)]> use tidbtest;
+    Reading table information for completion of table and column names
+    You can turn off this feature to get a quicker startup with -A
 
-Database changed
-MariaDB [tidbtest]> show tables;
-+--------------------+
-| Tables_in_tidbtest |
-+--------------------+
-| t1                 |
-+--------------------+
-1 row in set (0.00 sec)
+    Database changed
+    MariaDB [tidbtest]> show tables;
+    +--------------------+
+    | Tables_in_tidbtest |
+    +--------------------+
+    | t1                 |
+    +--------------------+
+    1 row in set (0.00 sec)
 
-MariaDB [tidbtest]> select * from t1;
-+----+
-| id |
-+----+
-|  1 |
-|  2 |
-|  3 |
-|  4 |
-|  5 |
-+----+
-5 rows in set (0.00 sec)
-```
+    MariaDB [tidbtest]> select * from t1;
+    +----+
+    | id |
+    +----+
+    |  1 |
+    |  2 |
+    |  3 |
+    |  4 |
+    |  5 |
+    +----+
+    5 rows in set (0.00 sec)
+    ```
 
-可以看到查询 MariaDB 时插入到 TiDB 相同的行数据。TiDB Binlog 部署成功完成。
+    可以看到查询 MariaDB 时插入到 TiDB 相同的行数据。TiDB Binlog 部署成功完成。
 
 ## binlogctl
 
 加入到集群的 Pump 和 Drainer 的数据存储在 Placement Driver (PD) 中。binlogctl 可用于查询和修改状态信息。更多信息请参考 [binlogctl guide](https://pingcap.com/docs-cn/tools/binlog/operation/)。 
 
-1. 使用 `binlogctl` 查看集群中 Pump 和 Drainer 的当前状态
+使用 `binlogctl` 查看集群中 Pump 和 Drainer 的当前状态
 
 ```bash
 ./bin/binlogctl -cmd drainers
@@ -340,7 +343,7 @@ MariaDB [tidbtest]> select * from t1;
 [2019/04/11 17:44:13.904 -04:00] [INFO] [nodes.go:47] ["query node"] [type=pump] [node="{NodeID: localhost.localdomain:8250, Addr: 192.168.236.128:8250, State: online, MaxCommitTS: 407638914024079361, UpdateTime: 2019-04-11 17:44:13 -0400 EDT}"]
 ```
 
-如果 kill 掉 Drainer 进程，集群会将 Drainer 设置为“已暂停（即集群等待 Drainer 重新加入）”的状态
+如果结束掉 Drainer 进程，集群会改进程设置“已暂停（即集群等待 Drainer 重新加入）”的状态。
 
 ```bash
 pkill drainer
@@ -355,13 +358,14 @@ pkill drainer
 [2019/04/11 17:44:22.640 -04:00] [INFO] [nodes.go:47] ["query node"] [type=drainer] [node="{NodeID: localhost.localdomain:8249, Addr: 192.168.236.128:8249, State: paused, MaxCommitTS: 407638915597467649, UpdateTime: 2019-04-11 17:44:18 -0400 EDT}"]
 ```
 
-使用 “NodeIDs” 和 `binlogctl` 可控制单个节点群。在该情况下，drainer 的节点 ID 是 “localhost.localdomain:8249”，Pump 的节点 ID 是 “localhost.localdomain:8250”。
+使用 “NodeIDs” 和 `binlogctl` binlogctl 的 "NodeIDs" 可控制相应节点。在该情况下，Drainer 的节点 ID 是 "localhost.localdomain:8249"，Pump 的节点 ID 是 "localhost.localdomain:8250"。
 
-本文档中的 `binlogctl` 主要用于集群重启的场景。如果在 TiDB 集群中终止并尝试重启所有的进程（这里的进程并不包括下游的 MySQL 或 MariaDB 或 Drainer），由于 Pump 无法连接 Drainer 且认为 Drainer 依旧处于“正常运行中”状态，Pump 会拒绝启动。
+本文档中的 binlogctl 主要用于集群重启的场景。如果在 TiDB 集群中终止并尝试重启所有的进程（这里的进程并不包括下游的 MySQL 或 MariaDB 或 Drainer），由于 Pump 无法连接 Drainer 且认为 Drainer 依旧“在线”，Pump 会拒绝启动。
 
 以下有三个方案可解决上述问题：
 
-1. 使用 `binlogctl` 暂停 Drainer，而不是 kill 掉进程
+1. 使用 binlogctl 停止 Drainer，而不是结束进程
+    
     ```
     ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=drainers
     ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=offline-drainer --node-id=localhost.localdomain:8249
@@ -369,14 +373,15 @@ pkill drainer
 
 2. 启动 Pump **之前**先启动 Drainer
 
-3. 启动 PD 之后（但在启动 Drainer 和 Pump 之前）使用 `binlogctl` 更新已暂定 Drainer 的状态
+3. 启动 PD 之后（但在启动 Drainer 和 Pump 之前）使用 binlogctl 更新已暂定 Drainer 的状态
+
     ```
     ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=update-drainer --node-id=localhost.localdomain:8249 --state=offline
     ```
 
-## 清除
+## 清理
 
-在 shell 里可启动所有创建集群（例如 PD 集群、tikv 集群、pump 集群、 tidb 集群、drainer 集群）的进程。用户可以通过执行 shell 中的 `pkill -P $$` 暂停 TiDB 集群和进程。留出足够的时间给每个组件进行清除关闭，有利于根据一定的顺序暂停集群进程。
+在 shell 终端里可启动创建集群的所有进程（pd-server 、tikv-server、pump、tidb-server、drainer）。可通过在 shell 终端中执行 `pkill -P $$` 停止 TiDB 集群服务和 TiDB Binlog 进程。按一定的顺序停止这些进程有利于留出足够的时间彻底关闭每个组件。
 
 ```bash
 for p in tidb-server drainer pump tikv-server pd-server; do pkill "$p"; sleep 1; done
@@ -393,7 +398,7 @@ kolbe@localhost tidb-latest-linux-amd64]$ for p in tidb-server drainer pump tikv
 [1]+  Done                    ./bin/pd-server --config=pd.toml &>pd.out
 ```
 
-如果需要所有服务退出后重启集群，可以使用一开始启动服务的命令。在上述提及的 [`binlogctl`](#binlogctl) 部分，用户需要先启动 `tidb-server` 再启动 `pump` 之后再启动 `drainer`。
+如果需要所有服务退出后重启集群，可以使用一开始启动服务的命令。正如以上 [`binlogctl`](#binlogctl) 部分所述，需要先启动 Drainer 再启动 Pump, 最后启动 `tidb-server`。
 
 ```bash
 ./bin/pd-server --config=pd.toml &>pd.out &
@@ -405,10 +410,10 @@ sleep 3
 ./bin/tidb-server --config=tidb.toml &>tidb.out &
 ```
 
-如果有组件启动失败尝试单独重启该组件。
+如果有组件启动失败，请尝试单独重启该组件。
 
 ## 总结
 
-该文档介绍了如何通过设置 TiDB Binlog 、使用单个 Pump 和 Drainer 组成的集群同步 TiDB 集群的数据到下游的 MariaDB 服务器。可以发现，TiDB Binlog 是用于获取处理 TiDB 集群中更新数据的综合性平台工具。
+本文档介绍了如何通过设置 TiDB Binlog、使用单个 Pump 和 Drainer 组成的集群同步 TiDB 集群的数据到下游的 MariaDB 服务器。可以发现，TiDB Binlog 是用于获取处理 TiDB 集群中更新数据的综合性平台工具。
 
-在更稳健的开发、测试或生产部署环境中，可以使用多个 TiDB 服务器以实现高可用性和扩展性。使用多个 Pump 实例可以确保发送到 TiDB 实例的应用流量不受 Pump 集群中问题的影响。或者可以使用另加的 Drainer 实例同步数据到不同的下游以及实现数据增量备份。
+在更稳健的开发、测试或生产部署环境中，可以使用多个 TiDB 服务器以实现高可用性和扩展性。使用多个 Pump 实例可以确保发送到 TiDB 实例的应用流量不受 Pump 集群中问题的影响。或者可以使用另加的 Drainer 实例发送数据到不同的下游或实现数据增量备份。
