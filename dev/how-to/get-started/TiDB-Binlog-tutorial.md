@@ -56,7 +56,7 @@ sudo yum install -y mariadb-server
 
 ## 配置
 
-现在可以用 `pd-server`、`tikv-server` 和 `tidb-server` 的单个实例启动单个 TiDB 集群。 
+执行以下步骤配置一个 TiDB 集群，该集群包括 `pd-server`、`tikv-server` 和 `tidb-server` 各组件的单个实例。
 
 1. 填充配置文件
 
