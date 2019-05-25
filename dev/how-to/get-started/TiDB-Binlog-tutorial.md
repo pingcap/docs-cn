@@ -25,7 +25,7 @@ TiDB Binlog 支持以下功能场景：
 - 数据迁移：将数据从 MySQL 或者 MariaDB 迁移到 TiDB 上。在这种情况下你可以使用 TiDB Data Migration (DM) 从 MySQL 或 MariaDB 集群中获取数据，并同步到 TiDB。之后可用 TiDB Binlog 让独立的下游 MySQL 或 MariaDB 实例或集群与 TiDB 集群保持同步。
 - 数据同步：将发送到 TiDB 的应用流量同步更新到下游的 MySQL 或 MariaDB 实例或集群。即使流量数据迁移到 TiDB 过程中出现问题，在 MySQL 或 MariaDB 中也能撤回该流量数据，且不会造成宕机或数据损失。
 
-更多信息参考 [TiDB Binlog Cluster 版本用户文档](https://pingcap.com/docs-cn/v2.1/tools/TiDB Binlog-cluster/)。
+更多信息参考 [TiDB Binlog Cluster 版本用户文档](https://pingcap.com/docs-cn/v2.1/tools/TiDB-Binlog-cluster/)。
 
 ## 架构
 
@@ -358,7 +358,7 @@ pkill drainer
 [2019/04/11 17:44:22.640 -04:00] [INFO] [nodes.go:47] ["query node"] [type=drainer] [node="{NodeID: localhost.localdomain:8249, Addr: 192.168.236.128:8249, State: paused, MaxCommitTS: 407638915597467649, UpdateTime: 2019-04-11 17:44:18 -0400 EDT}"]
 ```
 
-使用 “NodeIDs” 和 `binlogctl` binlogctl 的 "NodeIDs" 可控制相应节点。在该情况下，Drainer 的节点 ID 是 "localhost.localdomain:8249"，Pump 的节点 ID 是 "localhost.localdomain:8250"。
+使用 binlogctl 的 "NodeIDs" 可控制相应节点。在该情况下，Drainer 的节点 ID 是 "localhost.localdomain:8249"，Pump 的节点 ID 是 "localhost.localdomain:8250"。
 
 本文档中的 binlogctl 主要用于集群重启的场景。如果在 TiDB 集群中终止并尝试重启所有的进程（这里的进程并不包括下游的 MySQL 或 MariaDB 或 Drainer），由于 Pump 无法连接 Drainer 且认为 Drainer 依旧“在线”，Pump 会拒绝启动。
 
