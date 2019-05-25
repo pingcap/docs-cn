@@ -37,7 +37,7 @@ Pump 的集群架构确保 TiDB 或 Pump 集群中有新的实例加入或退出
 
 ## 安装
 
-由于 RHEL/CentOS 7 的默认包装库中包括 MariaDB server，本示例选择的是 MariaDB Server。之后的使用中，除了服务器，也需要客户端。安装指令如下：
+由于 RHEL/CentOS 7 的默认包装库中包括 MariaDB Server，本示例选择的是 MariaDB Server。之后的使用中，除了服务器，也需要客户端。安装指令如下：
 
 ```bash
 sudo yum install -y mariadb-server
