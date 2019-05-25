@@ -49,7 +49,7 @@ aliases: ['/docs-cn/tools/lightning/deployment/']
 >
 > - `tikv-importer` 将中间数据存储缓存到内存上以加速导入过程。占用内存大小可以通过 **(`max-open-engines` × `write-buffer-size` × 2) + (`num-import-jobs` × `region-split-size` × 2)** 计算得来。如果磁盘写入速度慢，缓存可能会带来更大的内存占用。
 
-此外，目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](/dev/how-to/deploy/hardware-recommendations.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 × [副本数量](/FAQ.md#3-2-6-%E6%AF%8F%E4%B8%AA-region-%E7%9A%84-replica-%E6%95%B0%E9%87%8F%E5%8F%AF%E9%85%8D%E7%BD%AE%E5%90%97-%E8%B0%83%E6%95%B4%E7%9A%84%E6%96%B9%E6%B3%95%E6%98%AF) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。
+此外，目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](/dev/how-to/deploy/hardware-recommendations.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 × [副本数量](/FAQ.md#3-2-6-每个-region-的-replica-数量可配置吗-调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。
 
 ## 导出数据
 
