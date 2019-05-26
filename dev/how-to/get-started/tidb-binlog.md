@@ -7,7 +7,7 @@ category: how-to
 
 本文档将先介绍，在将数据迁移到 MariaDB 实例之前，如何在 Placement Driver、TiKV、TiDB、Pump 或 Drainer 各个组件中的单个节点上部署 TiDB Binlog。
 
-希望上手实践 TiDB Binlog 工具的用户需要对 [TiDB 架构](https://pingcap.com/docs/architecture/)有一定的了解，最好有创建过 TiDB 集群的经验。该文档也有助于你简单快速了解 TiDB Binlog 架构以及相关概念。
+希望上手实践 TiDB Binlog 工具的用户需要对 [TiDB 架构](/architecture.md)有一定的了解，最好有创建过 TiDB 集群的经验。该文档也有助于你简单快速了解 TiDB Binlog 架构以及相关概念。
 
 > **警告：**
 >
@@ -25,7 +25,7 @@ TiDB Binlog 支持以下功能场景：
 - 数据迁移：将数据从 MySQL 或者 MariaDB 迁移到 TiDB 上。在这种情况下你可以使用 TiDB Data Migration (DM) 从 MySQL 或 MariaDB 集群中获取数据，并同步到 TiDB。之后可用 TiDB Binlog 让独立的下游 MySQL 或 MariaDB 实例或集群与 TiDB 集群保持同步。
 - 数据同步：将发送到 TiDB 的应用流量同步更新到下游的 MySQL 或 MariaDB 实例或集群。即使流量数据迁移到 TiDB 过程中出现问题，在 MySQL 或 MariaDB 中也能撤回该流量数据，且不会造成宕机或数据损失。
 
-更多信息参考 [TiDB Binlog Cluster 版本用户文档](https://pingcap.com/docs-cn/v2.1/tools/TiDB-Binlog-cluster/)。
+更多信息参考 [TiDB Binlog Cluster 版本用户文档](https://pingcap.com/docs-cn/tools/tidb-binlog-cluster/)。
 
 ## 架构
 
@@ -193,7 +193,7 @@ Check Table Before Drop: false
     ./bin/drainer --config=drainer.toml &>drainer.out &
     ```
 
-    你可以在更简单的操作系统中安装 MySQL，只需要保证通过 3306 端口监听，且可作为 “root” 用户及空密码连接到 MySQL，或必要时可调整 drainer.toml。
+    你可以在更简单的操作系统中安装 MySQL，只需要保证通过 3306 端口监听，且可作为 "root" 用户及空密码连接到 MySQL，或必要时可调整 `drainer.toml`。
 
     ```bash
     mysql -h 127.0.0.1 -P 3306 -u root
@@ -257,6 +257,7 @@ Check Table Before Drop: false
     ```
 
     预期输出：
+
     ```
     TiDB [(none)]> create database tidbtest;
     Query OK, 0 rows affected (0.12 sec)
@@ -324,7 +325,7 @@ Check Table Before Drop: false
 
 ## binlogctl
 
-加入到集群的 Pump 和 Drainer 的数据存储在 Placement Driver (PD) 中。binlogctl 可用于查询和修改状态信息。更多信息请参考 [binlogctl guide](https://pingcap.com/docs-cn/tools/binlog/operation/)。 
+加入到集群的 Pump 和 Drainer 的数据存储在 Placement Driver (PD) 中。binlogctl 可用于查询和修改状态信息。更多信息请参考 [binlogctl guide](https://pingcap.com/docs-cn/tools/binlog/operation/#binlogctl-工具)。 
 
 使用 `binlogctl` 查看集群中 Pump 和 Drainer 的当前状态
 
