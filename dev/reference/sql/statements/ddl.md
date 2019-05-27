@@ -201,10 +201,10 @@ DROP TABLE [IF EXISTS]
 ## RECOVER TABLE 语法
 
 ```sql
-// 根据表名恢复删除的表。
+# 根据表名恢复删除的表。
 RECOVER TABLE tbl_name
 
-// 根据drop table 时的 DDL job ID 来恢复删除的表。
+# 根据drop table 时的 DDL job ID 来恢复删除的表。
 RECOVER TABLE BY JOB job_id
 ```
 
