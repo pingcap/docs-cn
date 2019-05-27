@@ -33,7 +33,7 @@ DM-worker 负责执行具体的数据同步任务。
 - 编排数据同步子任务的运行
 - 监控数据同步子任务的运行状态
 
-DM-worker 启动后，会自动同步上游 binlog 至本地配置目录（如果使用 DM-Ansible 部署 DM 集群，默认的同步目录为 `<deploy_dir>/relay_log`）。关于 DM-worker，详见 [DM-worker 简介](dev/reference/tools/data-migration/dm-worker-intro.md)。关于 relay log，详见 [DM Relay Log](/dev/referernce/tools/data-migration/relay-log.md)。
+DM-worker 启动后，会自动同步上游 binlog 至本地配置目录（如果使用 DM-Ansible 部署 DM 集群，默认的同步目录为 `<deploy_dir>/relay_log`）。关于 DM-worker，详见 [DM-worker 简介](/dev/reference/tools/data-migration/dm-worker-intro.md)。关于 relay log，详见 [DM Relay Log](/dev/reference/tools/data-migration/relay-log.md)。
 
 ### dmctl
 
