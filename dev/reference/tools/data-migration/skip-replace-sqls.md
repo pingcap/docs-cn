@@ -8,7 +8,7 @@ aliases: ['/docs-cn/tools/dm/skip-replace-sqls/']
 
 本文介绍了如何使用 DM 来处理异常的 SQL 语句。
 
-目前，TiDB 并不完全兼容所有的 MySQL 语法（详见 [TiDB 已支持的 DDL 语句](/dev/reference/sql/ddl.md)）。当使用 DM 从 MySQL 同步数据到 TiDB 时，如果 TiDB 不支持对应的 SQL 语句，可能会造成错误并中断同步任务。在这种情况下，DM 提供以下两种方式来恢复同步：
+目前，TiDB 并不完全兼容所有的 MySQL 语法（详见 [TiDB 已支持的 DDL 语句](/dev/reference/sql/statements/ddl.md)）。当使用 DM 从 MySQL 同步数据到 TiDB 时，如果 TiDB 不支持对应的 SQL 语句，可能会造成错误并中断同步任务。在这种情况下，DM 提供以下两种方式来恢复同步：
 
 - 使用 dmctl 来手动跳过该 SQL 语句对应的 binlog event。
 
@@ -20,7 +20,7 @@ aliases: ['/docs-cn/tools/dm/skip-replace-sqls/']
 
 - 跳过/替代执行操作只适合用于一次性跳过/替代执行**下游 TiDB 不支持执行的 SQL 语句**，其它同步错误请不要使用此方式进行处理。
 
-    - 其它同步错误可尝试使用 [black & white table lists](/dev/reference/tools/data-migration/features/overview.md#black--white-table-lists) 或 [binlog event filter](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)。
+    - 其它同步错误可尝试使用 [black & white table lists](/dev/reference/tools/data-migration/features/overview.md#black-white-table-lists) 或 [binlog event filter](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)。
 
 - 如果业务不能接受下游 TiDB 跳过异常的 DDL 语句，也不接受使用其他 DDL 语句作为替代，则不适合使用此方式进行处理。
 

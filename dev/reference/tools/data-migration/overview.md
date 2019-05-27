@@ -50,11 +50,11 @@ dmctl 是用来控制 DM 集群的命令行工具。
 
 ### Table routing
 
-[Table routing](/dev/reference/tools/data-migration/features/overview#table-routing) 是指将上游 MySQL 或 MariaDB 实例的某些表同步到下游指定表的路由功能，可以用于分库分表的合并同步。
+[Table routing](/dev/reference/tools/data-migration/features/overview.md#table-routing) 是指将上游 MySQL 或 MariaDB 实例的某些表同步到下游指定表的路由功能，可以用于分库分表的合并同步。
 
 ### Black & white table lists
 
-[Black & white table lists](/dev/reference/tools/data-migration/features/overview.md#black--white-table-lists) 是指上游数据库实例表的黑白名单过滤规则。其过滤规则类似于 MySQL `replication-rules-db`/`replication-rules-table`，可以用来过滤或只同步某些数据库或某些表的所有操作。
+[Black & white table lists](/dev/reference/tools/data-migration/features/overview.md#black-white-table-lists) 是指上游数据库实例表的黑白名单过滤规则。其过滤规则类似于 MySQL `replication-rules-db`/`replication-rules-table`，可以用来过滤或只同步某些数据库或某些表的所有操作。
 
 ### Binlog event filter
 
@@ -80,6 +80,7 @@ DM 支持对原分库分表进行合库合表操作，但需要满足一些[使�
     > **注意：**
     >
     > 如果上游 MySQL/MariaDB server 间构成主从复制结构，则
+    > 
     > - 5.7.1 < MySQL 版本 < 5.8
     > - MariaDB 版本 >= 10.1.3
 
