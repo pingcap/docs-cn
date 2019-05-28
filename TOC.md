@@ -125,6 +125,7 @@
   + 事务
     - [事务模型](dev/reference/transactions/transaction-model.md)
     - [隔离级别](dev/reference/transactions/transaction-isolation.md)
+    - [悲观事务](dev/reference/transactions/transaction-pessimistic.md)
   + 系统数据库
     - [`mysql`](dev/reference/system-databases/mysql.md)
     - [`information_schema`](dev/reference/system-databases/information-schema.md)
