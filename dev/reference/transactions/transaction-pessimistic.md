@@ -1,6 +1,6 @@
 ---
 title: TiDB 悲观事务模式
-category: user guide
+category: reference
 ---
 
 # TiDB 悲观事务模式
