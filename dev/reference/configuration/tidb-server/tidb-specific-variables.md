@@ -389,3 +389,46 @@ set @@global.tidb_distsql_scan_concurrency = 10
 这个变量用于改变 TiDB server 上执行的语句的默认优先级。例如，你可以通过设置该变量来确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
 
 可设置为 `NO_PRIORITY`、`LOW_PRIORITY`、`DELAYED` 或 `HIGH_PRIORITY`。
+
+### SHARD_ROW_ID_BITS
+
+对于 PK 非整数或没有 PK 的表，TiDB 会使用一个隐式的自增 rowid，大量 `INSERT` 时会把数据集中写入单个 Region，造成写入热点。
+
+通过设置 `SHARD_ROW_ID_BITS`，可以把 rowid 打散写入多个不同的 Region，缓解写入热点问题。但是设置的过大会造成 RPC 请求数放大，增加 CPU 和网络开销。
+
+- `SHARD_ROW_ID_BITS = 4` 表示 16 个分片
+- `SHARD_ROW_ID_BITS = 6` 表示 64 个分片
+- `SHARD_ROW_ID_BITS = 0` 表示默认值 1 个分片
+
+语句示例：
+
+- `CREATE TABLE`：`CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;`
+- `ALTER TABLE`：`ALTER TABLE t SHARD_ROW_ID_BITS = 4;`
+
+### tidb_slow_log_threshold
+
+作用域：SESSION
+
+默认值：300
+
+输出慢日志的耗时阈值。当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。默认为 300ms。
+
+示例：
+
+```sql
+set tidb_slow_log_threshold = 200
+```
+
+### tidb_query_log_max_len
+
+作用域：SESSION
+
+默认值：2048 (bytes)
+
+最长的 SQL 输出长度。当语句的长度大于 query-log-max-len，将会被截断输出。
+
+示例：
+
+```sql
+set tidb_query_log_max_len = 20
+```
