@@ -191,5 +191,3 @@ Query OK, 0 rows affected (0.01 sec)
 > 1. 查看 binlog 开启状态以及Pump/Drainer 状态的功能在 TiDB v2.1.7 及以上版本支持。
 > 2. 修改 Pump/Drainer 状态的功能在 TiDB v3.0.0-rc.1 及以上版本支持。该功能只修改 PD 中存储的 Pump/Drainer 状态，如果需要暂停/下线节点，仍然需要使用 `binlogctl`。
 
-1. 查看 binlog 开启状态以及Pump/Drainer 状态的功能在 TiDB v2.1.7 及以上版本支持。
-2. 修改 Pump/Drainer 状态的功能在 TiDB v3.0.0-rc.1 及以上版本支持。该功能只修改 PD 中存储的 Pump/Drainer 状态，如果需要暂停/下线节点，仍然需要使用 `binlogctl`。
