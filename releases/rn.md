@@ -7,6 +7,7 @@ category: release
 
 ## 3.0
 
+- [3.0.0-rc.2](../releases/3.0.0-rc.2.md)
 - [3.0.0-rc.1](../releases/3.0.0-rc.1.md)
 - [3.0.0-beta.1](../releases/3.0.0-beta.1.md)
 - [3.0.0-beta](../releases/3.0beta.md)
