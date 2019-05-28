@@ -227,7 +227,7 @@ password = ""
 port = 3307
 ```
 
-The `flavor` option should be set to `"mysql"` (the default) if migrating from MySQL Server, Percona Server, Percona XtraDB Cluster, or Amazon Aurora or RDS. If migrating from MariaDB Server or MariaDB (Galera) Cluster, use `flavor = "mariadb"` (only MariaDB versions greater than 10.1.2 are supported).
+The `flavor` option should be set to `"mysql"` (the default value, and 5.5 < MySQL versions < 8.0 are supported) if migrating from MySQL Server, Percona Server, Percona XtraDB Cluster, or Amazon Aurora or RDS. If migrating from MariaDB Server or MariaDB (Galera) Cluster, use `flavor = "mariadb"` (only MariaDB versions greater than 10.1.2 are supported).
 
 Tasks are defined in YAML files. First, let's look at dmtask1.yaml: 
 
