@@ -119,7 +119,7 @@ aliases: ['/docs-cn/tools/dm/shard-merge-scenario/']
     ```yaml
     black-white-list:
       log-bak-ignored:
-        ignore-tales:
+        ignore-tables:
         - db-name: "user"
           tbl-name: "log_bak"
     ```
@@ -229,7 +229,7 @@ filters:
 
 black-white-list:
   log-bak-ignored:
-    ignore-tales:
+    ignore-tables:
     - db-name: "user"
       tbl-name: "log_bak"
 
