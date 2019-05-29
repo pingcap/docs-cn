@@ -43,7 +43,7 @@ select count(1) from t_slim, t_wide where t_slim.c0>t_wide.c0 and t_slim.c1>t_wi
 * `User`：表示执行语句的用户名。
 * `Conn_ID`：表示 connection ID，即 session ID, 可以用类似 `con:3` 的关键字在 TiDB 日志中 grep 出 session ID 为 3 的日志。
 * `DB`：表示当前的 database。
-* `Index_ids`：表示语句涉及到的索引的 ID
+* `Index_ids`：表示语句涉及到的索引的 ID。
 * `Is_internal`：表示是否是 TiDB 内部 SQL。true 为TiDB 内部执行的SQL, 比如 analyze，load variable 等；false 为用户执行的 SQL 。
 * `Digest`：表示 SQL 语句的指纹。
 * `Memory_max`：表示执行期间 TiDB 最多时候使用的内存数量, 单位为byte。
