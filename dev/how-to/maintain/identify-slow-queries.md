@@ -47,7 +47,7 @@ select count(1) from t_slim, t_wide where t_slim.c0>t_wide.c0 and t_slim.c1>t_wi
 * `Index_ids`：表示语句涉及到的索引的 ID。
 * `Is_internal`：表示是否为 TiDB 内部的 SQL 语句。`true` 表示 TiDB 内部执行的 SQL 语句，比如 `analyze`，`load variable` 等；`false` 表示用户执行的 SQL 语句。
 * `Digest`：表示 SQL 语句的指纹。
-* `Memory_max`：表示执行期间 TiDB 最多使用的内存数量，单位为 byte。
+* `Memory_max`：表示执行期间 TiDB 最大使用的内存数量，单位为 byte。
 * `Query_time`：表示执行这个语句花费的时间。只有执行时间超过 slow-threshold 的语句才会输出这个日志，单位是秒，以下所有的时间字段的单位都是秒。
 * `Process_time`：执行 SQL 在 TiKV 的处理时间之和，因为数据会并行的发到 TiKV 执行，这个值可能会超过 `Query_time`。
 * `Wait_time`：表示这个语句在 TiKV 的等待时间之和，因为 TiKV 的 Coprocessor 线程数是有限的，当所有的 Coprocessor 线程都在工作的时候，请求会排队；当队列中有某些请求耗时很长的时候，后面的请求的等待时间都会增加。
