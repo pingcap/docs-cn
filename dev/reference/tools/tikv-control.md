@@ -1,6 +1,6 @@
 ---
 title: TiKV Control 使用说明
-category: tools
+category: reference
 ---
 
 # TiKV Control 使用说明
