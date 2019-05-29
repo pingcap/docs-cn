@@ -9,7 +9,7 @@ category: user guide
 
 TiDB 将用户账户存储在 `mysql.user` 系统表里面。每个账户由用户名和 host 作为标识。每个账户可以设置一个密码。
 
-通过 MySQL 客户端连接到 TiDB 服务器，通过指定的账户和密码登陆：
+通过 MySQL 客户端连接到 TiDB 服务器，通过指定的账户和密码登录：
 
 ```
 shell> mysql --port 4000 --user xxx --password

@@ -9,11 +9,15 @@ TiDB 历史版本发布声明如下：
 
 ## 3.0
 
-- [3.0.0 Beta.1](../releases/3.0.0-beta.1.md)
-- [3.0 Beta](../releases/3.0beta.md)
+- [3.0.0-rc.2](../releases/3.0.0-rc.2.md)
+- [3.0.0-rc.1](../releases/3.0.0-rc.1.md)
+- [3.0.0-beta.1](../releases/3.0.0-beta.1.md)
+- [3.0.0-beta](../releases/3.0beta.md)
 
 ## 2.1
 
+- [2.1.10](../releases/2.1.10.md)
+- [2.1.9](../releases/2.1.9.md)
 - [2.1.8](../releases/2.1.8.md)
 - [2.1.7](../releases/2.1.7.md)
 - [2.1.6](../releases/2.1.6.md)

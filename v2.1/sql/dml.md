@@ -48,7 +48,7 @@ SELECT
 |`HAVING where_condition` | Having 子句与 Where 子句作用类似，Having 子句可以让过滤 GroupBy 后的各种数据，Where 子句用于在聚合前过滤记录。|
 |`ORDER BY` | OrderBy 子句用于指定结果排序顺序，可以按照列、表达式或者是 `select_expr` 列表中某个位置的字段进行排序。|
 |`LIMIT` | Limit 子句用于限制结果条数。Limit 接受一个或两个数字参数，如果只有一个参数，那么表示返回数据的最大行数；如果是两个参数，那么第一个参数表示返回数据的第一行的偏移量（第一行数据的偏移量是 0），第二个参数指定返回数据的最大条目数。|
-|`FOR UPDATE` | 对查询结果集所有数据上读锁，以监测其他事务对这些的并发修改。TiDB 使用[乐观事务模型](../sql/mysql-compatibility.md#事务)在语句执行期间不会检测锁冲突，在事务的提交阶段才会检测事务冲突，如果执行 Select For Update 期间，有其他事务修改相关的数据，那么包含 Select For Update 语句的事务会提交失败。|
+|`FOR UPDATE` | 对查询结果集所有数据上读锁（对于在查询条件内，但是不在结果集的数据，将不会加锁，如事务启动后由其他事务写入的数据），以监测其他事务对这些的并发修改。TiDB 使用[乐观事务模型](../sql/mysql-compatibility.md#事务)在语句执行期间不会检测锁冲突，在事务的提交阶段才会检测事务冲突，如果执行 Select For Update 期间，有其他事务修改相关的数据，那么包含 Select For Update 语句的事务会提交失败。|
 |`LOCK IN SHARE MODE` | TiDB 出于兼容性解析这个语法，但是不做任何处理|
 
 ## Insert 语句
