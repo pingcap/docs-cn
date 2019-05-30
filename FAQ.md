@@ -911,7 +911,7 @@ ID 没什么规律，只要是唯一就行，不过生成的时候，是有一�
 
 #### 6.1.2 如何打散热点
 
-TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指的是 Region 的读写访问热点。而 TiDB 中对于 PK 非整数或没有 PK 的表，可以通过设置 `SHARD_ROW_ID_BITS` 来适度分解 Region 分片，以达到打散 Region 热点的效果。详情可参考官网 [TiDB 专用系统变量和语法](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#shard_row_id_bits)中 `SHARD_ROW_ID_BITS` 的介绍。
+TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指的是 Region 的读写访问热点。而 TiDB 中对于 PK 非整数或没有 PK 的表，可以通过设置 `SHARD_ROW_ID_BITS` 来适度分解 Region 分片，以达到打散 Region 热点的效果。详情可参考官网 [TiDB 专用系统变量和语法](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#shard-row-id-bits)中 `SHARD_ROW_ID_BITS` 的介绍。
 
 ### 6.2 TiKV
 
