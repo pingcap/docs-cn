@@ -399,7 +399,7 @@ kolbe@localhost tidb-latest-linux-amd64]$ for p in tidb-server drainer pump tikv
 [1]+  Done                    ./bin/pd-server --config=pd.toml &>pd.out
 ```
 
-如果需要所有服务退出后重启集群，可以使用一开始启动服务的命令。正如以上 [`binlogctl`](#binlogctl) 部分所述，需要先启动 Drainer 再启动 Pump, 最后启动 `tidb-server`。
+如果需要所有服务退出后重启集群，可以使用一开始启动服务的命令。正如以上 [`binlogctl`](#binlogctl) 部分所述，需要先启动 Drainer 再启动 Pump，最后启动 `tidb-server`。
 
 ```bash
 ./bin/pd-server --config=pd.toml &>pd.out &
