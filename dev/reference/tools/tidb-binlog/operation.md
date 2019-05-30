@@ -133,7 +133,7 @@ Usage of binlogctl:
 
 ## 使用 TiDB SQL 管理 Pump/Drainer
 
-目前支持通过在 TiDB 中执行 SQL 来查看/管理 binlog 相关的状态。
+目前支持通过在 TiDB 中执行 SQL 语句来查看和管理 binlog 相关的状态。
 
 - 查看 TiDB 是否开启 binlog
 
