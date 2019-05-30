@@ -48,11 +48,11 @@ To achieve the best performance, it is recommended to use the following hardware
 
 If you have sufficient machines, you can deploy multiple Lightning/Importer servers, with each working on a distinct set of tables, to import the data in parallel.
 
-> **Notes:**
+> **Note:**
 >
-> `tidb-lightning` is a CPU intensive program. In an environment with mixed components, the resources allocated to `tidb-lightning` must be limited. Otherwise, other components might not be able to run. It is recommended to set the `region-concurrency` to 75% of CPU logical cores. For instance, if the CPU has 32 logical cores, you can set the `region-concurrency` to 24.
+> - `tidb-lightning` is a CPU intensive program. In an environment with mixed components, the resources allocated to `tidb-lightning` must be limited. Otherwise, other components might not be able to run. It is recommended to set the `region-concurrency` to 75% of CPU logical cores. For instance, if the CPU has 32 logical cores, you can set the `region-concurrency` to 24.
 >
-> `tikv-importer` stores intermediate data on the RAM to speed up process. The typical memory usage can be calculated from configuration as **(`max-open-engines` × `write-buffer-size` × 2) + (`num-import-jobs` × `region-split-size` × 2)**. If the speed of writing to disk is slow, the memory usage could be even higher due to buffering.
+> - `tikv-importer` stores intermediate data on the RAM to speed up the import process. The typical memory usage can be calculated by using **(`max-open-engines` × `write-buffer-size` × 2) + (`num-import-jobs` × `region-split-size` × 2)**. If the speed of writing to disk is slow, the memory usage could be even higher due to buffering.
 
 Additionally, the target TiKV cluster should have enough space to absorb the new data.
 Besides [the standard requirements](/dev/how-to/deploy/hardware-recommendations.md), the total free space of the target TiKV cluster should be larger than **Size of data source × [Number of replicas](/faq/tidb.md#is-the-number-of-replicas-in-each-region-configurable-if-yes-how-to-configure-it) × 2**.
@@ -240,10 +240,10 @@ Download the TiDB-Lightning package (choose the same version as that of the TiDB
     # Maximum number of open engines.
     max-open-engines = 8
     # Maximum upload speed (bytes per second) from Importer to TiKV.
-    #upload-speed-limit = "512MB"
-    # minimum ratio of target store available space: store_available_space / store_capacity.
+    # upload-speed-limit = "512MB"
+    # Minimum ratio of available space on the target store: `store_available_space`/`store_capacity`.
     # Importer pauses uploading SST if the availability ratio of the target store is less than this
-    # value, to give PD enough time to balance regions.
+    # value, to allow enough time for PD to balance Regions.
     min-available-ratio = 0.05
     ```
 
@@ -343,7 +343,7 @@ Download the TiDB-Lightning package (choose the same version as that of the TiDB
     # increases the size of the first few batches to properly distribute
     # resources. The scale up factor is controlled by this parameter, which
     # expresses the ratio of duration between the "import" and "write" steps
-    # with full concurrency. This can be calculated as the ratio
+    # with full concurrency. This can be calculated by using the ratio
     # (import duration/write duration) of a single table of size around 1 GB.
     # The exact timing can be found in the log. If "import" is faster, the batch
     # size variance is smaller, and a ratio of zero means a uniform batch size.

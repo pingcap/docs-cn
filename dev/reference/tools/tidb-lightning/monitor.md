@@ -64,60 +64,60 @@ Metrics provided by `tikv-importer` are listed under the namespace `tikv_import_
 
 - **`tikv_import_rpc_duration`** (Histogram)
 
-    Bucketed histogram of total duration needed to complete an RPC action. Labels:
+    Bucketed histogram for the duration of an RPC action. Labels:
 
-    - **request**: `switch_mode` / `open_engine` / `write_engine` / `close_engine` / `import_engine` / `cleanup_engine` / `compact_cluster` / `upload` / `ingest` / `compact`
-    - **result**: `ok` / `error`
+    - **request**: `switch_mode`/`open_engine`/`write_engine`/`close_engine`/`import_engine`/`cleanup_engine`/`compact_cluster`/`upload`/`ingest`/`compact`
+    - **result**: `ok`/`error`
 
 - **`tikv_import_write_chunk_bytes`** (Histogram)
 
-    Bucketed histogram of the uncompressed size of a block of KV pairs received from Lightning.
+    Bucketed histogram for the uncompressed size of a block of KV pairs received from Lightning.
 
 - **`tikv_import_write_chunk_duration`** (Histogram)
 
-    Bucketed histogram of the time needed to receive a block of KV pairs from Lightning.
+    Bucketed histogram for the time needed to receive a block of KV pairs from Lightning.
 
 - **`tikv_import_upload_chunk_bytes`** (Histogram)
 
-    Bucketed histogram of the compressed size of a chunk of SST file uploaded to TiKV.
+    Bucketed histogram for the compressed size of a chunk of SST file uploaded to TiKV.
 
 - **`tikv_import_upload_chunk_duration`** (Histogram)
 
-    Bucketed histogram of the time needed to upload a chunk of SST file to TiKV.
+    Bucketed histogram for the time needed to upload a chunk of SST file to TiKV.
 
 - **`tikv_import_range_delivery_duration`** (Histogram)
 
-    Bucketed histogram of the time needed to deliver a range of KV pairs into a `dispatch-job`.
+    Bucketed histogram for the time needed to deliver a range of KV pairs into a `dispatch-job`.
 
 - **`tikv_import_split_sst_duration`** (Histogram)
 
-    Bucketed histogram of the time needed to split off a range from the engine file into a single SST file.
+    Bucketed histogram for the time needed to split off a range from the engine file into a single SST file.
 
 - **`tikv_import_sst_delivery_duration`** (Histogram)
 
-    Bucketed histogram of the time needed to deliver an SST file from a `dispatch-job` to an `ImportSSTJob`.
+    Bucketed histogram for the time needed to deliver an SST file from a `dispatch-job` to an `ImportSSTJob`.
 
 - **`tikv_import_sst_recv_duration`** (Histogram)
 
-    Bucketed histogram of the time needed to receive an SST file from a `dispatch-job` in an `ImportSSTJob`.
+    Bucketed histogram for the time needed to receive an SST file from a `dispatch-job` in an `ImportSSTJob`.
 
 - **`tikv_import_sst_upload_duration`** (Histogram)
 
-    Bucketed histogram of the time needed to upload an SST file from an `ImportSSTJob` to a TiKV node.
+    Bucketed histogram for the time needed to upload an SST file from an `ImportSSTJob` to a TiKV node.
 
 - **`tikv_import_sst_chunk_bytes`** (Histogram)
 
-    Bucketed histogram of the compressed size of the SST file uploaded to a TiKV node.
+    Bucketed histogram for the compressed size of the SST file uploaded to a TiKV node.
 
 - **`tikv_import_sst_ingest_duration`** (Histogram)
 
-    Bucketed histogram of the time needed to ingest an SST file into TiKV.
+    Bucketed histogram for the time needed to ingest an SST file into TiKV.
 
 - **`tikv_import_each_phase`** (Gauge)
 
-    Indicates the running phase. Values can be 1, meaning running inside the phase, or 0, meaning outside the phase. Labels:
+    Indicates the running phase. Possible values are 1, meaning running inside the phase, and 0, meaning outside the phase. Labels:
 
-    - **phase**: `prepare` / `import`
+    - **phase**: `prepare`/`import`
 
 - **`tikv_import_wait_store_available_count`** (Counter)
 
@@ -131,76 +131,76 @@ Metrics provided by `tidb-lightning` are listed under the namespace `lightning_*
 
 - **`lightning_importer_engine`** (Counter)
 
-    Counting open and closed engine files. Labels:
+    Counts open and closed engine files. Labels:
 
-    - **type**: `open` / `closed`
+    - **type**: `open`/`closed`
 
 - **`lightning_idle_workers`** (Gauge)
 
-    Counting idle workers. Values should be less than the `*-concurrency` settings and are typically zero. Labels:
+    Counts idle workers. Values should be less than the `*-concurrency` settings and are typically zero. Labels:
 
-    - **name**: `table` / `index` / `region` / `io` / `closed-engine`
+    - **name**: `table`/`index`/`region`/`io`/`closed-engine`
 
 - **`lightning_kv_encoder`** (Counter)
 
-    Counting open and closed KV encoders. KV encoders are in-memory TiDB instances that convert SQL `INSERT` statements into KV pairs. The net values need to be bounded in a healthy situation. Labels:
+    Counts open and closed KV encoders. KV encoders are in-memory TiDB instances that convert SQL `INSERT` statements into KV pairs. The net values need to be bounded in a healthy situation. Labels:
 
-    - **type**: `open` / `closed`
+    - **type**: `open`/`closed`
 
 * **`lightning_tables`** (Counter)
 
-    Counting number of tables processed and their status. Labels:
+    Counts number of tables processed and their status. Labels:
 
-    - **state**: `pending` / `written` / `closed` / `imported` / `altered_auto_inc` / `checksum` / `analyzed` / `completed`
-    - **result**: `success` / `failure`
+    - **state**: `pending`/`written`/`closed`/`imported`/`altered_auto_inc`/`checksum`/`analyzed`/`completed`
+    - **result**: `success`/`failure`
 
 * **`lightning_engines`** (Counter)
 
-    Counting number of engine files processed and their status. Labels:
+    Counts number of engine files processed and their status. Labels:
 
-    - **state**: `pending` / `written` / `closed` / `imported` / `completed`
-    - **result**: `success` / `failure`
+    - **state**: `pending`/`written`/`closed`/`imported`/`completed`
+    - **result**: `success`/`failure`
 
 - **`lightning_chunks`** (Counter)
 
-    Counting number of chunks processed and their status. Labels:
+    Counts number of chunks processed and their status. Labels:
 
-    - **state**: `estimated` / `pending` / `running` / `finished` / `failed`
+    - **state**: `estimated`/`pending`/`running`/`finished`/`failed`
 
 - **`lightning_import_seconds`** (Histogram)
 
-    Bucketed histogram of the time needed to import a table.
+    Bucketed histogram for the time needed to import a table.
 
 - **`lightning_row_read_bytes`** (Histogram)
 
-    Bucketed histogram of the size of a single SQL row.
+    Bucketed histogram for the size of a single SQL row.
 
 - **`lightning_row_encode_seconds`** (Histogram)
 
-    Bucketed histogram of the time needed to encode a single SQL row into KV pairs.
+    Bucketed histogram for the time needed to encode a single SQL row into KV pairs.
 
 - **`lightning_row_kv_deliver_seconds`** (Histogram)
 
-    Bucketed histogram of the time needed to deliver a set KV pairs corresponding to one single SQL row.
+    Bucketed histogram for the time needed to deliver a set of KV pairs corresponding to one single SQL row.
 
 - **`lightning_block_deliver_seconds`** (Histogram)
 
-    Bucketed histogram of the time needed to deliver of a block of KV pairs to Importer.
+    Bucketed histogram for the time needed to deliver a block of KV pairs to Importer.
 
 - **`lightning_block_deliver_bytes`** (Histogram)
 
-    Bucketed histogram of the uncompressed size of a block of KV pairs delivered to Importer.
+    Bucketed histogram for the uncompressed size of a block of KV pairs delivered to Importer.
 
 - **`lightning_chunk_parser_read_block_seconds`** (Histogram)
 
-    Bucketed histogram of the time needed by the data file parser to read a block.
+    Bucketed histogram for the time needed by the data file parser to read a block.
 
 - **`lightning_checksum_seconds`** (Histogram)
 
-    Bucketed histogram of the time taken to compute the checksum of a table.
+    Bucketed histogram for the time needed to compute the checksum of a table.
 
 - **`lightning_apply_worker_seconds`** (Histogram)
 
-    Bucketed histogram of the time taken to acquire an idle worker. Labels:
+    Bucketed histogram for the time needed to acquire an idle worker. Labels:
 
-    - **name**: `table` / `index` / `region` / `io` / `closed-engine`
+    - **name**: `table`/`index`/`region`/`io`/`closed-engine`

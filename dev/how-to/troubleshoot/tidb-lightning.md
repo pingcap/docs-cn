@@ -73,13 +73,13 @@ See the [Checkpoints control](/dev/reference/tools/tidb-lightning/checkpoints.md
 
 **Solutions**:
 
-1. Increase the value of `max-open-engines` setting in `tikv-importer.toml`. This value is typically dictated by the available memory. This could be calculated as:
+1. Increase the value of `max-open-engines` setting in `tikv-importer.toml`. This value is typically dictated by the available memory. This could be calculated by using:
 
     Max Memory Usage ≈ `max-open-engines` × `write-buffer-size` × `max-write-buffer-number`
 
 2. Decrease the value of `table-concurrency` + `index-concurrency` so it is less than `max-open-engines`.
 
-3. Restart `tikv-importer` to forcefully remove all engine files (default to `./data.import/`). This also removes all partially imported tables, thus it is required to clear the outdated checkpoints.
+3. Restart `tikv-importer` to forcefully remove all engine files (default to `./data.import/`). This also removes all partially imported tables, which requires Lightning to clear the outdated checkpoints.
 
     ```sh
     tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
