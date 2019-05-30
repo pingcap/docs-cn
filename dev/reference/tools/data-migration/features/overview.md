@@ -362,14 +362,14 @@ column-mappings:
 ​    expression: "partition id"
 ​    source-column: "id"
 ​    target-column: "id"
-​    arguments: ["1", "test_", "t_"]
+​    arguments: ["1", "test", "t", "_"]
   rule-2:
 ​    schema-pattern: "test_*"
 ​    table-pattern: "t_*"
 ​    expression: "partition id"
 ​    source-column: "id"
 ​    target-column: "id"
-​    arguments: ["2", "test_", "t_"]
+​    arguments: ["2", "test", "t", "_"]
 ```
 
 ### Parameter explanation
@@ -386,35 +386,48 @@ column-mappings:
 
 Note the following restrictions:
 
-- The `partition id` expression only supports the bigint type of atuo-increment primary key.
-- The schema name format must be `the schema prefix + number (the schema ID)`. For example, it supports `s_1`, but does not support `s_a`.
-- The table name format must be `the table name + number (the table ID)`.
+- The `partition id` expression only supports the bigint type of auto-increment primary key.
+- If the `schema prefix` is not empty, the schema name format must be `schema prefix` or `schema prefix + separator + number (the schema ID)`. For example, it supports `s` and `s_1`, but does not support `s_a`.
+- If the `table prefix` is not empty, the table name format must be `table prefix` or `table prefix + separator + number (the table ID)`.
+- If the schema/table name does not contain the `… + separator + number` part, the corresponding ID is considered as 0.
 - Restrictions on sharding size:
     - It supports 16 MySQL or MariaDB instances at most (0 <= instance ID <= 15).
     - Each instance supports 128 schemas at most (0 <= schema ID  <= 127).
     - Each schema of each instance supports 256 tables at most (0 <= table ID <= 255).
     - The ID range of the auto-increment primary key is "0 <= ID <= 17592186044415".
-    - The `{instance ID、schema ID、table ID}` group must be unique.
+    - The `{instance ID, schema ID, table ID}` group must be unique.
 - Currently, the `partition id` expression is a customized feature. If you want to modify this feature, contact the corresponding developers.
 
 **`partition id` arguments configuration**
 
-Configure the following three arguments in order:
+Configure the following three or four arguments in order:
 
 - `instance_id`: the ID of the upstream sharded MySQL or MariaDB instance (0 <= instance ID <= 15)
-- The schema prefix: used to parse the schema name and get the `schema ID`
-- The table prefix: used to parse the table name and get the `table ID`
+- `schema prefix`: used to parse the schema name and get the `schema ID`
+- `table prefix`: used to parse the table name and get the `table ID`
+- The separator: used to separate between the prefix and the IDs, and can be omitted to use an empty string as separator
+
+Any of `instance_id`, `schema prefix` and `table prefix` can be set to an empty string (`""`) to indicate that the corresponding parts will not be encoded into the partition ID.
 
 **`partition id` expression rules**
 
 `partition id` fills the beginning bit of the auto-increment primary key ID with the argument number, and computes an int64 (MySQL bigint) type of value. The specific rules are as follows:
 
-- int64 bit indicates `[1:1 bit] [2:4 bits] [3：7 bits] [4:8 bits] [5: 44 bits]`.
-- `1`: the sign bit, reserved
-- `2`: the instance ID, 4 bits by default
-- `3`: the schema ID, 7 bits by default
-- `4`: the table ID, 8 bits by default
-- `5`: the auto-increment primary key ID, 44 bits by default
+| instance_id | schema prefix | table prefix | Encoding |
+|:------------|:--------------|:-------------|---------:|
+| ☑ defined   | ☑ defined     | ☑ defined    | [`S`: 1 bit] [`I`: 4 bits] [`D`: 7 bits] [`T`: 8 bits] [`P`: 44 bits] |
+| ☐ empty     | ☑ defined     | ☑ defined    | [`S`: 1 bit] [`D`: 7 bits] [`T`: 8 bits] [`P`: 48 bits] |
+| ☑ defined   | ☐ empty       | ☑ defined    | [`S`: 1 bit] [`I`: 4 bits] [`T`: 8 bits] [`P`: 51 bits] |
+| ☑ defined   | ☑ defined     | ☐ empty      | [`S`: 1 bit] [`I`: 4 bits] [`D`: 7 bits] [`P`: 52 bits] |
+| ☐ empty     | ☐ empty       | ☑ defined    | [`S`: 1 bit] [`T`: 8 bits] [`P`: 55 bits] |
+| ☐ empty     | ☑ defined     | ☐ empty      | [`S`: 1 bit] [`D`: 7 bits] [`P`: 56 bits] |
+| ☑ defined   | ☐ empty       | ☐ empty      | [`S`: 1 bit] [`I`: 4 bits] [`P`: 59 bits] |
+
+- `S`: the sign bit, reserved
+- `I`: the instance ID, 4 bits by default if set
+- `D`: the schema ID, 7 bits by default if set
+- `T`: the table ID, 8 bits by default if set
+- `P`: the auto-increment primary key ID, occupying the rest of bits (≥44 bits)
 
 ### Usage example
 
@@ -430,14 +443,14 @@ column-mappings:
 ​    expression: "partition id"
 ​    source-column: "id"
 ​    target-column: "id"
-​    arguments: ["1", "test_", "t_"]
+​    arguments: ["1", "test", "t", "_"]
   rule-2:
 ​    schema-pattern: "test_*"
 ​    table-pattern: "t_*"
 ​    expression: "partition id"
 ​    source-column: "id"
 ​    target-column: "id"
-​    arguments: ["2", "test_", "t_"]
+​    arguments: ["2", "test", "t", "_"]
 ```
 
 - The column ID of the MySQL instance 1 table `test_1`.`t_1` is converted from `1` to `1 << (64-1-4) | 1 << (64-1-4 -7) | 1 << 44 | 1 = 580981944116838401`.
