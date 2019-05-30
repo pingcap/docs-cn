@@ -48,7 +48,7 @@ Syncer 的命令行参数说明：
 Usage of syncer:
   -L string
       日志等级: debug, info, warn, error, fatal (默认为 "info")
-  -V  
+  -V
       输出 syncer 版本；默认 false
   -auto-fix-gtid
       当 mysql master/slave 切换时，自动修复 gtid 信息；默认 false
@@ -248,7 +248,7 @@ syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-
 
 本部分将通过实际案例描述 Syncer 同步数据库参数的优先级关系。
 
-- 如果使用 route-rules 规则，参考 [Sharding 同步支持](#sharding-同步支持) 
+- 如果使用 route-rules 规则，参考 [Sharding 同步支持](#sharding-同步支持)
 - 优先级：replicate-do-db --> replicate-do-table --> replicate-ignore-db --> replicate-ignore-table
 
 ```toml
@@ -316,7 +316,7 @@ tbl-name = "~^2016_.*"
 # 场景如下:
 # 数据库A 下有 order_2016 / history_2016 等多个数据库
 # 数据库B 下有 order_2017 / history_2017 等多个数据库
-# 指定同步数据库A  order_2016 数据库，数据表如下 2016_01 2016_02 ... 2016_12 
+# 指定同步数据库A  order_2016 数据库，数据表如下 2016_01 2016_02 ... 2016_12
 # 指定同步数据库B  order_2017 数据库，数据表如下 2017_01 2017_02 ... 2017_12
 # 表内使用 order_id 作为主键，数据之间主键不冲突
 # 忽略同步 history_2016 与 history_2017 数据库
@@ -353,7 +353,7 @@ target-table = "order_2017"
 
     - 5.5 < MySQL 版本 < 5.8
     - MariaDB 版本 >= 10.1.2（更早版本的 binlog 部分字段类型格式与 MySQL 不一致）
-    
+
     > **注意：**
     >
     > 如果上游 MySQL/MariaDB server 间构成主从复制结构，则
@@ -364,17 +364,17 @@ target-table = "order_2017"
 2. 检查源库 `server-id`。
 
     可通过以下命令查看 `server-id`：
-    
+
     ```sql
     mysql> show global variables like 'server_id';
-    +---------------+-------+  
+    +---------------+-------+
     | Variable_name | Value |
     +---------------+-------+
     | server_id     | 1     |
     +---------------+-------+
     1 row in set (0.01 sec)
     ```
-    
+
     - 结果为空或者为 0，Syncer 无法同步数据。
     - Syncer `server-id` 与 MySQL `server-id` 不能相同，且必须在 MySQL cluster 中唯一。
 
@@ -393,53 +393,25 @@ target-table = "order_2017"
         +--------------------+---------+
         1 row in set (0.00 sec)
         ```
-        
+
         如果结果是 `log_bin` = `OFF`，则需要开启 binlog，开启方式请参考[官方文档](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)。
 
-    2. 检查 MySQL binlog 格式是否为 `ROW`。
-
-        可以用如下命令检查 binlog 格式：
+    2. binlog 格式必须为 `ROW`，且参数 `binlog_row_image` 必须设置为 `FULL`, 可使用如下命令设置参数：
 
         ```sql
-        mysql> show global variables like 'binlog_format';
-        +--------------------+----------+
-        | Variable_name      | Value    |
-        +--------------------+----------+
-        | binlog_format      | ROW      |
-        +--------------------+----------+
-        1 row in set (0.00 sec)
+        mysql> select variable_name, variable_value from information_schema.global_variables where variable_name in ('binlog_format','binlog_row_image');
+        +------------------+----------------+
+        | variable_name    | variable_value |
+        +------------------+----------------+
+        | BINLOG_FORMAT    | ROW            |
+        | BINLOG_ROW_IMAGE | FULL           |
+        +------------------+----------------+
+        2 rows in set (0.001 sec)
         ```
 
-        - 如果发现 binlog 格式是其他格式，可以通过如下命令设置为 ROW：
-        
-            ```sql
-            mysql> set global binlog_format=ROW;
-            mysql>  flush logs;
-            Query OK, 0 rows affected (0.01 sec)
-            ```
-        
-        - 如果 MySQL 有连接，建议重启 MySQL 服务或者杀掉所有连接。
-
-    3. 检查 MySQL `binlog_row_image` 是否为 `FULL`。
-
-        可以用如下命令检查 `binlog_row_image`：
-
-        ```sql
-        mysql> show global variables like 'binlog_row_image';
-        +--------------------------+---------+
-        | Variable_name            | Value   |
-        +--------------------------+---------+
-        | binlog_row_image         | FULL    |
-        +--------------------------+---------+
-        1 row in set (0.01 sec)
-        ```
-
-        如果 `binlog_row_image` 结果不为 `FULL`，请设置为 `FULL`。设置方式如下：
-
-        ```sql
-        mysql> set global binlog_row_image = FULL;
-        Query OK, 0 rows affected (0.01 sec)
-        ```
+        - 如果以上设置出现错误，可在磁盘上修改配置文件，之后重启 MySQL。
+        - 将配置改变保存在磁盘中很重要，这样 MySQL 重启之后可以显示配置改变。
+        - 由于现有连接会保留全局变量原先的值，**不可以**使用 `SET` 语句动态改变设置。
 
 4. 检查用户权限。
 
@@ -451,13 +423,13 @@ target-table = "order_2017"
     2. 增量同步 Syncer 需要的上游 MySQL/MariaDB 用户权限。
 
         需要上游 MySQL 同步账号至少赋予以下权限：
-        
+
         ```
         select , replication slave , replication client
         ```
-    
+
     3. 下游 TiDB 需要的权限
-    
+
         | 权限 | 作用域 |
         |----:|:------|
         | SELECT | Tables |
@@ -470,7 +442,7 @@ target-table = "order_2017"
         | INDEX | Tables |
 
         为所同步的数据库或者表，执行下面的 GRANT 语句：
-        
+
         ```sql
         GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX  ON db.table TO 'your_user'@'your_wildcard_of_host';
         ```
@@ -533,7 +505,7 @@ Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。配�
 
     点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 Dashboard [配置文件](https://github.com/pingcap/docs/tree/master/etc)上传 -> 选择对应的 data source
 
-### Grafana Syncer metrics 说明 
+### Grafana Syncer metrics 说明
 
 #### title: binlog events
 
@@ -543,7 +515,7 @@ Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。配�
 #### title: binlog event transform
 
 - metrics: `histogram_quantile(0.8, sum(rate(syncer_binlog_event_bucket[1m])) by (le))`
-- info: Syncer 把 binlog 转换为 SQL 语句的耗时 
+- info: Syncer 把 binlog 转换为 SQL 语句的耗时
 
 #### title: transaction latency
 
