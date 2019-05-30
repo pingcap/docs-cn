@@ -21,15 +21,14 @@ TiDB Binlog 用于收集 TiDB 中二进制日志数据、提供实时数据备�
 
 TiDB Binlog 支持以下功能场景：
 
-- 数据增量备份：将 TiDB 集群中的数据增量同步到另一个集群；或通过 Kafka 发送 TiDB 更新数据并同步到下游。
-- 数据迁移：将数据从 MySQL 或者 MariaDB 迁移到 TiDB 上。在这种情况下可以使用 TiDB Data Migration (DM) 从 MySQL 或 MariaDB 集群中获取数据，并同步到 TiDB。之后可用 TiDB Binlog 让独立的下游 MySQL 或 MariaDB 实例或集群与 TiDB 集群保持同步。
-- 数据同步：将发送到 TiDB 的应用流量同步更新到下游的 MySQL 或 MariaDB 实例或集群。即使流量数据迁移到 TiDB 过程中出现问题，在 MySQL 或 MariaDB 中也能撤回该流量数据，且不会造成宕机或数据损失。
+- 增量备份，将 TiDB 集群中的数据增量同步到另一个集群，或通过 Kafka 增量同步到选择的下游。
+- 当使用 TiDB DM (Data Migration) 将数据从上游 MySQL 或者 MariaDB 迁移到 TiDB 集群时，可使用 TiDB Binlog 保持 TiDB 集群与其一个独立下游 MySQL 或 MariaDB 实例或集群同步。当 TiDB 集群上游数据迁移过程中出现问题，下游数据同步过程中可使用 TiDB Binlog 恢复数据到原先的状态。
 
 更多信息参考 [TiDB Binlog Cluster 版本用户文档](https://pingcap.com/docs-cn/tools/tidb-binlog-cluster/)。
 
 ## 架构
 
-TiDB Binlog 集群由 **Pump** 和 **Drainer** 两个组件组成。一个 Pump 集群中有若干个 Pump 节点。每个 Pump 节点连接到 TiDB 实例，接收 TiDB 集群中每个 TiDB 实例的更新数据。Drainer 连接到 Pump 集群，并将接收到的更新数据转换到某个特定下游（例如 Kafka、另一个 TiDB 集群或 MySQL 或 MariaDB Server）指定的正确格式。
+TiDB Binlog 集群由 **Pump** 和 **Drainer** 两个组件组成。一个 Pump 集群中有若干个 Pump 节点。TiDB 实例连接到各个 Pump 节点并发送 binlog 数据到 Pump 节点。Pump 集群连接到 Drainer 节点，Drainer 将接收到的更新数据转换到某个特定下游（例如 Kafka、另一个 TiDB 集群或 MySQL 或 MariaDB Server）指定的正确格式。
 
 ![TiDB Binlog architecture](/media/tidb_binlog_cluster_architecture.png)
 
@@ -368,7 +367,7 @@ pkill drainer
 
     ```
     ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=drainers
-    ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=offline-drainer --node-id=localhost.localdomain:8249
+    ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=pause-drainer --node-id=localhost.localdomain:8249
     ```
 
 2. 在启动 Pump **之前**先启动 Drainer
@@ -376,7 +375,7 @@ pkill drainer
 3. 在启动 PD 之后但在启动 Drainer 和 Pump 之前，使用 binlogctl 更新已暂定 Drainer 的状态
 
     ```
-    ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=update-drainer --node-id=localhost.localdomain:8249 --state=offline
+    ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=update-drainer --node-id=localhost.localdomain:8249 --state=paused
     ```
 
 ## 清理
