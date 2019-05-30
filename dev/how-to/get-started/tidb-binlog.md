@@ -228,7 +228,7 @@ Check Table Before Drop: false
     5 rows in set (0.01 sec)
     ```
 
-    在这里可以看到包含 `checkpoint` 表格的 `tidb_binlog` 数据库。`drainer` 使用 `checkpoint` 表格，记录 TiDB 集群中的 binary 日志已经应用到了哪个位置点。 
+    在这里可以看到包含 `checkpoint` 表格的 `tidb_binlog` 数据库。`drainer` 使用 `checkpoint` 表格，记录 TiDB 集群中的 binlog 已经应用到了哪个位置点。
 
     ```sql
     MariaDB [tidb_binlog]> use tidb_binlog;
