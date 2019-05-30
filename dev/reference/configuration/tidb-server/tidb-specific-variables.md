@@ -55,7 +55,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 默认值: 0
 
-这个变量用来设置优化器是否执行 in-子查询展开的优化操作。
+这个变量用来设置优化器是否执行 `in-` 子查询展开的优化操作。
 
 ### tidb_build_stats_concurrency
 

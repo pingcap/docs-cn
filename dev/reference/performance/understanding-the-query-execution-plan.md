@@ -39,7 +39,7 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 
 ### 用例
 
-使用 [bikeshare example database](https://github.com/pingcap/docs/blob/master/bikeshare-example-database.md):
+使用 [bikeshare example database](https://github.com/pingcap/docs/blob/master/dev/how-to/get-started/import-example-database.md):
 
 ```
 mysql> EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59';
