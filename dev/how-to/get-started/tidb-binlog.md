@@ -1,19 +1,19 @@
 ---
-title: 部署 TiDB Binlog 
+title: TiDB Binlog 教程
 category: how-to
 ---
 
-# 部署 TiDB Binlog
+# TiDB Binlog 教程
 
-本文档将先介绍，在将数据迁移到 MariaDB 实例之前，如何在 Placement Driver、TiKV、TiDB、Pump 或 Drainer 各个组件中的单个节点上部署 TiDB Binlog。
+本文档主要介绍如何使用 TiDB Binlog 将数据从 TiDB 推送到 MariaDB 实例。文中的 TiDB Binlog 集群包含 Pump 和 Drainer 的单个节点，TiDB 集群包含 TiDB、TiKV 和 Placement Driver (PD) 各组件的单个节点。
 
-希望上手实践 TiDB Binlog 工具的用户需要对 [TiDB 架构](/architecture.md)有一定的了解，最好有创建过 TiDB 集群的经验。该文档也有助于你简单快速了解 TiDB Binlog 架构以及相关概念。
+希望上手实践 TiDB Binlog 工具的用户需要对 [TiDB 架构](/architecture.md)有一定的了解，最好有创建过 TiDB 集群的经验。该文档也有助于简单快速了解 TiDB Binlog 架构以及相关概念。
 
 > **警告：**
 >
 > 该文档中部署 TiDB 的操作指导**不适用于**在生产或研发环境中部署 TiDB 的情况。
 
-该文档假设用户使用的是现代 Linux 发行版本中的 x86-64。示例中使用的是 VMware 中运行的 CentOS 7 最小化安装。建议在一开始就进行清洁安装，以避免受现有环境中未知情况的影响。如果不想使用本地虚拟环境，你也可以使用云服务启动 CentOS 7 VM。
+该文档假设用户使用的是现代 Linux 发行版本中的 x86-64。示例中使用的是 VMware 中运行的 CentOS 7 最小化安装。建议在一开始就进行清洁安装，以避免受现有环境中未知情况的影响。如果不想使用本地虚拟环境，也可以使用云服务启动 CentOS 7 VM。
 
 ## TiDB Binlog 简介
 
@@ -22,7 +22,7 @@ TiDB Binlog 是一个用于收集 TiDB 中二进制日志数据提供实时数�
 TiDB Binlog 支持以下功能场景：
 
 - 数据增量备份：将 TiDB 集群中的数据同步到另一个集群；或通过 Kafka 发送 TiDB 更新数据并同步到下游。
-- 数据迁移：将数据从 MySQL 或者 MariaDB 迁移到 TiDB 上。在这种情况下你可以使用 TiDB Data Migration (DM) 从 MySQL 或 MariaDB 集群中获取数据，并同步到 TiDB。之后可用 TiDB Binlog 让独立的下游 MySQL 或 MariaDB 实例或集群与 TiDB 集群保持同步。
+- 数据迁移：将数据从 MySQL 或者 MariaDB 迁移到 TiDB 上。在这种情况下可以使用 TiDB Data Migration (DM) 从 MySQL 或 MariaDB 集群中获取数据，并同步到 TiDB。之后可用 TiDB Binlog 让独立的下游 MySQL 或 MariaDB 实例或集群与 TiDB 集群保持同步。
 - 数据同步：将发送到 TiDB 的应用流量同步更新到下游的 MySQL 或 MariaDB 实例或集群。即使流量数据迁移到 TiDB 过程中出现问题，在 MySQL 或 MariaDB 中也能撤回该流量数据，且不会造成宕机或数据损失。
 
 更多信息参考 [TiDB Binlog Cluster 版本用户文档](https://pingcap.com/docs-cn/tools/tidb-binlog-cluster/)。
@@ -43,7 +43,7 @@ Pump 的集群架构确保 TiDB 或 Pump 集群中有新的实例加入或退出
 sudo yum install -y mariadb-server
 ```
 
-预期输出：
+预期输出
 
 ```
 [kolbe@localhost ~]$ curl -LO http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz | tar xzf -
@@ -74,7 +74,7 @@ sudo yum install -y mariadb-server
     for f in *.toml; do echo "$f:"; cat "$f"; echo; done
     ```
 
-    预期输出：
+    预期输出
 
     ```
     drainer.toml:
@@ -120,7 +120,7 @@ sudo yum install -y mariadb-server
 
 ## 启动程序
 
-现在可启动各个组件。推荐启动顺序依次为 Placement Driver （PD）、TiKV、Pump（TiDB 发送 binlog 日志必须连接 Pump 服务）、TiDB。
+现在可启动各个组件。推荐启动顺序依次为 Placement Driver (PD)、TiKV、Pump（TiDB 发送 binlog 日志必须连接 Pump 服务）、TiDB。
 
 1. 启动所有服务
 
@@ -132,7 +132,7 @@ sudo yum install -y mariadb-server
     ./bin/tidb-server --config=tidb.toml &>tidb.out &
     ```
 
-    预期输出：
+    预期输出
 
     ```
     [kolbe@localhost tidb-latest-linux-amd64]$ ./bin/pd-server --config=pd.toml &>pd.out &
@@ -156,9 +156,9 @@ sudo yum install -y mariadb-server
     [4]+  Running                 ./bin/tidb-server --config=tidb.toml &>tidb.out &
     ```
 
-    如果有服务启动失败（例如出现 “`Exit 1`” 而不是 “`Running`”），尝试重启单个服务。 
+    如果有服务启动失败（例如出现 “`Exit 1`” 而不是 “`Running`”），尝试重启单个服务。
 
-    按以上步骤操作后，TiDB 的 4 个 组件应该都已开始运行。
+    按以上步骤操作后，TiDB 的 4 个组件应该都已开始运行。
 
 ## 连接
 
@@ -168,7 +168,7 @@ sudo yum install -y mariadb-server
 mysql -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
 ```
 
-预期输出：
+预期输出
 
 ```
 [kolbe@localhost tidb-latest-linux-amd64]$ mysql -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
@@ -186,14 +186,14 @@ Check Table Before Drop: false
 此时，TiDB 集群已开始运行，`pump` 正读取集群中的 binlog 日志，并在其数据目录中将 binlog 日志存储为 relay log。下一步是启动一个可供 `drainer` 写入的 MariaDB 服务器。
 
 
-1. 启动 `drainer` 
+1. 启动 `drainer`
 
     ```bash
     sudo systemctl start mariadb
     ./bin/drainer --config=drainer.toml &>drainer.out &
     ```
 
-    你可以在更简单的操作系统中安装 MySQL，只需要保证通过 3306 端口监听，且可作为 "root" 用户及空密码连接到 MySQL，或必要时可调整 `drainer.toml`。
+    可以在更简单的操作系统中安装 MySQL，只需要保证通过 3306 端口监听，且可作为使用空密码的 "root" 用户连接到 MySQL，或必要时可调整 `drainer.toml`。
 
     ```bash
     mysql -h 127.0.0.1 -P 3306 -u root
@@ -203,7 +203,7 @@ Check Table Before Drop: false
     show databases;
     ```
 
-    预期输出：
+    预期输出
 
     ```
     [kolbe@localhost ~]$ mysql -h 127.0.0.1 -P 3306 -u root
@@ -256,7 +256,7 @@ Check Table Before Drop: false
     select * from t1;
     ```
 
-    预期输出：
+    预期输出
 
     ```
     TiDB [(none)]> create database tidbtest;
@@ -292,7 +292,7 @@ Check Table Before Drop: false
     select * from t1;
     ```
 
-    预期输出：
+    预期输出
 
     ```
     MariaDB [(none)]> use tidbtest;
@@ -325,7 +325,7 @@ Check Table Before Drop: false
 
 ## binlogctl
 
-加入到集群的 Pump 和 Drainer 的数据存储在 Placement Driver (PD) 中。binlogctl 可用于查询和修改状态信息。更多信息请参考 [binlogctl guide](https://pingcap.com/docs-cn/tools/binlog/operation/#binlogctl-工具)。 
+加入到集群的 Pump 和 Drainer 的数据存储在 Placement Driver (PD) 中。binlogctl 可用于查询和修改状态信息。更多信息请参考 [binlogctl guide](https://pingcap.com/docs-cn/tools/binlog/operation/#binlogctl-工具)。
 
 使用 `binlogctl` 查看集群中 Pump 和 Drainer 的当前状态
 
@@ -334,7 +334,7 @@ Check Table Before Drop: false
 ./bin/binlogctl -cmd pumps
 ```
 
-预期输出：
+预期输出
 
 ```
 [kolbe@localhost tidb-latest-linux-amd64]$ ./bin/binlogctl -cmd drainers
@@ -351,7 +351,7 @@ pkill drainer
 ./bin/binlogctl -cmd drainers
 ```
 
-预期输出：
+预期输出
 
 ```
 [kolbe@localhost tidb-latest-linux-amd64]$ pkill drainer
@@ -366,7 +366,7 @@ pkill drainer
 以下有三个方案可解决上述问题：
 
 1. 使用 binlogctl 停止 Drainer，而不是结束进程
-    
+
     ```
     ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=drainers
     ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=offline-drainer --node-id=localhost.localdomain:8249
@@ -382,13 +382,13 @@ pkill drainer
 
 ## 清理
 
-在 shell 终端里可启动创建集群的所有进程（pd-server 、tikv-server、pump、tidb-server、drainer）。可通过在 shell 终端中执行 `pkill -P $$` 停止 TiDB 集群服务和 TiDB Binlog 进程。按一定的顺序停止这些进程有利于留出足够的时间彻底关闭每个组件。
+在 shell 终端里可启动创建集群的所有进程（`pd-server` 、`tikv-server`、`pump`、`tidb-server`、`drainer`）。可通过在 shell 终端中执行 `pkill -P $$` 停止 TiDB 集群服务和 TiDB Binlog 进程。按一定的顺序停止这些进程有利于留出足够的时间彻底关闭每个组件。
 
 ```bash
 for p in tidb-server drainer pump tikv-server pd-server; do pkill "$p"; sleep 1; done
 ```
 
-预期输出：
+预期输出
 
 ```
 kolbe@localhost tidb-latest-linux-amd64]$ for p in tidb-server drainer pump tikv-server pd-server; do pkill "$p"; sleep 1; done
