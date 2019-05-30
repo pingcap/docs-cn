@@ -14,7 +14,7 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 
 > **注意：**
 >
-> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[与 MySQL 安全特性差异](/dev/reference/security/compatibility.md)及[事务模型](/dev/reference/transactions/transaction-model.md)的兼容信息请查看各自具体页面。
+> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[安全特性](/dev/reference/security/compatibility.md)及[事务模型](/dev/reference/transactions/transaction-model.md)的兼容信息请查看各自具体页面。
 
 ## 不支持的特性
 
