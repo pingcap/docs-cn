@@ -8,6 +8,10 @@ aliases: ['/docs-cn/sql/slow-query/']
 
 TiDB 在 V2.1.8 之后更改了慢日志格式，V2.1.8 之前的版本请看[这个文档](<https://github.com/pingcap/docs-cn/blob/master/v2.1/sql/slow-query.md>)。
 
+> **注：**
+>
+> TiDB 2.1.8 版本中慢日志中的字段信息较少，部分下面提到的字段是在新版本 3.0.0 加入的。
+
 一条不合理的 SQL 语句会导致整个集群压力增大，响应变慢。对于这种问题，需要用慢查询日志来定位有问题的语句，解决性能问题。
 
 ## 获取日志
@@ -17,21 +21,20 @@ TiDB 会将执行时间超过 [slow-threshold](/op-guide/tidb-config-file.md#slo
 ## 示例
 
 ```sql
-# Time: 2019-03-18-12:10:19.513961 +0800
-# Txn_start_ts: 407078752230047745
+# Time: 2019-04-25-15:06:54.247985 +0800
+# Txn_start_ts: 407942204372287489
 # User: root@127.0.0.1
-# Conn_ID: 1
-# Query_time: 16.479155653
-# Process_time: 5.634 Wait_time: 0.002 Request_count: 2 Total_keys: 20002 Process_keys: 20000
+# Conn_ID: 2
+# Query_time: 2.6649544670000003
+# Process_time: 0.066 Wait_time: 0.014 Request_count: 8 Total_keys: 20008 Process_keys: 20000
 # DB: test
-# Index_ids: [1]
 # Is_internal: false
-# Digest: 3635413fe0c8e1aa8307f4f018fe1a9325ea0b97452500106d3f6783fcb65e33
-# Num_cop_tasks: 10
-# Cop_proc_avg: 1 Cop_proc_p90: 2 Cop_proc_max: 3 Cop_proc_addr: 10.6.131.78
-# Cop_wait_avg: 5 Cop_wait_p90: 6 Cop_wait_max: 7 Cop_wait_addr: 10.6.131.79
-# Memory_max: 4096
-select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
+# Digest: edb16a8f28d9c48790925fd1c868fdae3feb49bc58481dda7df228625a5ba6e1
+# Stats: t_slim:407941901863354370,t_wide:407941920305971202
+# Cop_proc_avg: 0.00825 Cop_proc_p90: 0.013 Cop_proc_max: 0.013 Cop_proc_addr: 127.0.0.1:22160
+# Cop_wait_avg: 0.00175 Cop_wait_p90: 0.002 Cop_wait_max: 0.002 Cop_wait_addr: 127.0.0.1:22160
+# Mem_max: 195802
+select count(1) from t_slim, t_wide where t_slim.c0>t_wide.c0 and t_slim.c1>t_wide.c1 and t_wide.c0 > 5000;
 ```
 
 ## 字段解析
@@ -39,7 +42,12 @@ select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
 * `Time`：表示日志打印时间。
 * `Txn_start_ts`：表示事务的开始时间戳，也是事务的 ID，可以用这个值在日志中 grep 出事务相关的日志。
 * `User`：表示执行语句的用户名。
-* `Conn_ID`：表示 connection ID，即 session ID，可以用类似 `con: 3` 的关键字在 TiDB 日志中 grep 出 session ID 为 3 的日志。
+* `Conn_ID`：表示 connection ID，即 session ID, 可以用类似 `con:3` 的关键字在 TiDB 日志中 grep 出 session ID 为 3 的日志。
+* `DB`：表示当前的 database。
+* `Index_ids`：表示语句涉及到的索引的 ID。
+* `Is_internal`：表示是否为 TiDB 内部的 SQL 语句。`true` 表示 TiDB 内部执行的 SQL 语句，比如 `analyze`，`load variable` 等；`false` 表示用户执行的 SQL 语句。
+* `Digest`：表示 SQL 语句的指纹。
+* `Memory_max`：表示执行期间 TiDB 最大使用的内存数量，单位为 byte。
 * `Query_time`：表示执行这个语句花费的时间。只有执行时间超过 slow-threshold 的语句才会输出这个日志，单位是秒，以下所有的时间字段的单位都是秒。
 * `Process_time`：执行 SQL 在 TiKV 的处理时间之和，因为数据会并行的发到 TiKV 执行，这个值可能会超过 `Query_time`。
 * `Wait_time`：表示这个语句在 TiKV 的等待时间之和，因为 TiKV 的 Coprocessor 线程数是有限的，当所有的 Coprocessor 线程都在工作的时候，请求会排队；当队列中有某些请求耗时很长的时候，后面的请求的等待时间都会增加。
@@ -47,12 +55,6 @@ select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
 * `Request_count`：表示这个语句发送的 Coprocessor 请求的数量。
 * `Total_keys`：表示 Coprocessor 扫过的 key 的数量。
 * `Process_keys`：表示 Coprocessor 处理的 key 的数量。相比 total_keys，processed_keys 不包含 MVCC 的旧版本。如果 processed_keys 和 total_keys 相差很大，说明旧版本比较多。
-* `DB`：表示当前的 database。
-* `Index_ids`：表示语句涉及到的索引的 ID。
-* `Is_internal`：表示是否是 TiDB 内部 SQL。true 为TiDB 内部执行的SQL，比如 analyze，load variable 等；false 为用户执行的 SQL。
-* `Digest`：表示 SQL 语句的指纹。
-* `Memory_max`：表示执行期间做多时候使用的内存数量, 单位为byte。
-* `Num_cop_tasks`：表示 [cop-tasks](/sql/understanding-the-query-execution-plan.md) 的数目。
 * `Cop_proc_avg`：cop-task 的平均执行时间。
 * `Cop_proc_p90`：cop-task 的 P90 分位执行时间。
 * `Cop_proc_max`：cop-task 的最大执行时间。
@@ -68,26 +70,35 @@ select * from t_slim, t_wide where t_slim.c0=t_wide.c0;
 为了方便用 SQL 查询定位慢查询，TiDB 将慢日志内容解析后映射到 `INFORMATION_SCHEMA.SLOW_QUERY` 表中，表中 column 名和慢日志中记录的字段名一一对应。
 
 ```sql
-tidb > show create table INFORMATION_SCHEMA.SLOW_QUERY;
 +------------+-------------------------------------------------------------+
 | Table      | Create Table                                                |
 +------------+-------------------------------------------------------------+
 | SLOW_QUERY | CREATE TABLE `SLOW_QUERY` (                                 |
-|            |   `Time` timestamp UNSIGNED NULL DEFAULT NULL,              |
-|            |   `Txn_start_ts` bigint(20) UNSIGNED DEFAULT NULL,          |
+|            |   `Time` timestamp unsigned NULL DEFAULT NULL,              |
+|            |   `Txn_start_ts` bigint(20) unsigned DEFAULT NULL,          |
 |            |   `User` varchar(64) DEFAULT NULL,                          |
-|            |   `Conn_ID` bigint(20) UNSIGNED DEFAULT NULL,               |
-|            |   `Query_time` double UNSIGNED DEFAULT NULL,                |
-|            |   `Process_time` double UNSIGNED DEFAULT NULL,              |
-|            |   `Wait_time` double UNSIGNED DEFAULT NULL,                 |
-|            |   `Backoff_time` double UNSIGNED DEFAULT NULL,              |
-|            |   `Request_count` bigint(20) UNSIGNED DEFAULT NULL,         |
-|            |   `Total_keys` bigint(20) UNSIGNED DEFAULT NULL,            |
-|            |   `Process_keys` bigint(20) UNSIGNED DEFAULT NULL,          |
+|            |   `Conn_ID` bigint(20) unsigned DEFAULT NULL,               |
+|            |   `Query_time` double unsigned DEFAULT NULL,                |
+|            |   `Process_time` double unsigned DEFAULT NULL,              |
+|            |   `Wait_time` double unsigned DEFAULT NULL,                 |
+|            |   `Backoff_time` double unsigned DEFAULT NULL,              |
+|            |   `Request_count` bigint(20) unsigned DEFAULT NULL,         |
+|            |   `Total_keys` bigint(20) unsigned DEFAULT NULL,            |
+|            |   `Process_keys` bigint(20) unsigned DEFAULT NULL,          |
 |            |   `DB` varchar(64) DEFAULT NULL,                            |
 |            |   `Index_ids` varchar(100) DEFAULT NULL,                    |
-|            |   `Is_internal` tinyint(1) UNSIGNED DEFAULT NULL,           |
+|            |   `Is_internal` tinyint(1) unsigned DEFAULT NULL,           |
 |            |   `Digest` varchar(64) DEFAULT NULL,                        |
+|            |   `Stats` varchar(512) DEFAULT NULL,                        |
+|            |   `Cop_proc_avg` double unsigned DEFAULT NULL,              |
+|            |   `Cop_proc_p90` double unsigned DEFAULT NULL,              |
+|            |   `Cop_proc_max` double unsigned DEFAULT NULL,              |
+|            |   `Cop_proc_addr` varchar(64) DEFAULT NULL,                 |
+|            |   `Cop_wait_avg` double unsigned DEFAULT NULL,              |
+|            |   `Cop_wait_p90` double unsigned DEFAULT NULL,              |
+|            |   `Cop_wait_max` double unsigned DEFAULT NULL,              |
+|            |   `Cop_wait_addr` varchar(64) DEFAULT NULL,                 |
+|            |   `Mem_max` bigint(20) unsigned DEFAULT NULL,               |
 |            |   `Query` varchar(4096) DEFAULT NULL                        |
 |            | ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin |
 +------------+-------------------------------------------------------------+
@@ -210,8 +221,6 @@ $ pt-query-digest --report tidb-slow.log
 # Total keys       636.43k       2 103.16k  652.35  793.42   3.97k  400.73
 # Txn start ts     374.38E       0  16.00E 375.48P   1.25P  89.05T   1.25P
 # Wait time          943ms     1ms    19ms     1ms     2ms     1ms   972us
-# Write keys           978       2     477   69.86  463.90  161.64    1.96
-# Write size        89.12k     138  43.67k   6.37k  42.34k  14.76k  136.99
 .
 .
 .
