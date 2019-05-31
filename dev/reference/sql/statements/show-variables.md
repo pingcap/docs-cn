@@ -103,6 +103,3 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'time_zone%';
 
 This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/report-issue.md) on GitHub.
 
-## See also
-
-* [SET](/dev/reference/sql/statements/set-session-variable.md)

@@ -67,7 +67,6 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 * [ADD COLUMN](/dev/reference/sql/statements/add-column.md)
 * [DROP COLUMN](/dev/reference/sql/statements/drop-column.md)
-* [RENAME COLUMN](/dev/reference/sql/statements/rename-column.md)
 * [ADD INDEX](/dev/reference/sql/statements/add-index.md)
 * [DROP INDEX](/dev/reference/sql/statements/drop-index.md)
 * [RENAME INDEX](/dev/reference/sql/statements/rename-index.md)
