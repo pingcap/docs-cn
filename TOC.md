@@ -14,6 +14,7 @@
       - [使用 Docker Compose](dev/how-to/get-started/local-cluster/install-from-docker-compose.md)
     - [SQL 基本操作](dev/how-to/get-started/explore-sql.md)
     - [读取历史数据](dev/how-to/get-started/read-historical-data.md)
+    - [TiDB Binlog 教程](dev/how-to/get-started/tidb-binlog.md)
   + 部署
     - [软硬件环境需求](dev/how-to/deploy/hardware-recommendations.md)
     + 集群部署方式
