@@ -656,7 +656,7 @@ WAL belongs to ordered writing, and currently, we do not apply a unique configur
 
 #### How is the write performance in the most strict data available mode (`sync-log = true`)?
 
-Generally, enabling `sync-log` reduces about 30% of the performance. For write performance when `sync-log` is set to `false`, see [Performance test result for TiDB using Sysbench](/benchmark/sysbench.md).
+Generally, enabling `sync-log` reduces about 30% of the performance. For write performance when `sync-log` is set to `false`, see [Performance test result for TiDB using Sysbench](https://github.com/pingcap/docs/blob/master/benchmark/sysbench.md).
 
 #### Can Raft + multiple replicas in the TiKV architecture achieve absolute data security? Is it necessary to apply the most strict mode (`sync-log = true`) to a standalone storage?
 
