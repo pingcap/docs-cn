@@ -212,6 +212,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
     ```
     ansible-playbook start.yml -l 172.16.10.103
     ```
+    
 7. 更新 Prometheus 配置并重启：
 
     ```
