@@ -1,21 +1,11 @@
 ---
-title: TiDB 3.0 Beta 版本在 NVMe SSD 上的 Sysbench 测试结果
+title: 如何用 Sysbench 测试 TiDB
 category: benchmark
 ---
 
-#  TiDB 3.0 Beta 版本在 NVMe SSD 上的 Sysbench 测试结果
+# 如何进行 Sysbench 测试（以 TiDB 3.0 Beta 版本为例）
 
 测试版本为 Sysbench 1.0.14。建议使用 Sysbench 1.0 或之后的更新版本，可在[此处](https://github.com/akopytov/sysbench/releases/tag/1.0.14)下载。
-
-## 测试目的
-
-测试 TiDB 3.0 Beta 版本在 NVMe SSD 上的性能。
-
-## 测试版本、时间、地点
-
-TiDB 版本：3.0 Beta 版本   
-时间：2019 年 2 月  
-地点：北京 
 
 ## 测试环境
 
@@ -25,7 +15,7 @@ TiDB 版本：3.0 Beta 版本
     对于单个 TiDB 的并发连接数，建议控制在 500 以内，如需增加整个系统的并发压力，可以增加 TiDB 实例，具体增加的 TiDB 个数视测试压力而定。
 
 IDC 机器：
- 
+
 | 类别 | 名称 |
 |:---- |:---- |
 | OS | Linux (CentOS 7.3.1611) |
@@ -36,7 +26,7 @@ IDC 机器：
 
 ## 测试方案
 
-### TiDB 版本信息 
+### TiDB 版本信息
 
 | 组件 | GitHash |
 |:---- |:---- |
@@ -57,7 +47,7 @@ IDC 机器：
 
 升高日志级别，可以减少打印日志数量，对 TiDB 的性能有积极影响。开启 TiDB 配置中的 `prepared plan cache`，以减少优化执行计划的开销。具体在 TiDB 配置文件中加入：
 
-```
+```toml
 [log]
 level = "error"
 [prepared-plan-cache]
@@ -76,7 +66,7 @@ Default CF : Write CF = 4 : 1
 
 在 TiKV 中需要根据机器内存大小配置 RocksDB 的 block cache，以充分利用内存。以 40 GB 内存的虚拟机部署一个 TiKV 为例，其 block cache 建议配置如下:
 
-```
+```toml
 log-level = "error"
 [raftstore]
 sync-log = false
@@ -87,7 +77,7 @@ block-cache-size = "6GB"
 ```
 
 更详细的 TiKV 参数调优请参考 [TiKV 性能参数调优](https://pingcap.com/docs/op-guide/tune-tikv/)。
- 
+
 ## 测试过程
 
 > **注意：**
@@ -98,7 +88,7 @@ block-cache-size = "6GB"
 
 以下为 Sysbench 配置文件样例：
 
-``` 
+```txt
 mysql-host={TIDB_HOST}
 mysql-port=4000
 mysql-user=root
@@ -113,7 +103,7 @@ db-driver=mysql
 
 **配置文件**参考示例如下：
 
-```
+```txt
 mysql-host=172.16.30.33
 mysql-port=4000
 mysql-user=root
@@ -126,9 +116,17 @@ db-driver=mysql
 
 ### 数据导入
 
-MySQL 客户端执行以下 SQL 语句，创建数据库 `sbtest`：
+在数据导入前，需要对 TiDB 进行简单设置。在 MySQL 客户端中执行，
 
+```sql
+set global tidb_disable_txn_auto_retry = off;
 ```
+
+然后，退出客户端。TiDB 使用乐观事务模型，当发现并发冲突时，会回滚事务。将 `tidb_disable_txn_auto_retry` 设置为 `off` 会开启事务冲突后的自动重试机制，可以尽可能避免事务冲突报错导致 Sysbench 程序退出的问题。
+
+重新启动 MySQL 客户端执行以下 SQL 语句，创建数据库 `sbtest`：
+
+```sql
 create database sbtest;
 ```
 
@@ -136,7 +134,7 @@ create database sbtest;
 
 假设用户使用的 [Sysbench](https://github.com/akopytov/sysbench/tree/1.0.14) 版本。我们可以通过以下两种方式来修改。
 
-1. 直接下载为 TiDB 修改好的 [oltp_common.lua](https://raw.githubusercontent.com/pingcap/tidb-bench/master/sysbench/sysbench-patch/oltp_common.lua) 文件，覆盖 `/usr/share/sysbench/oltp_common.lua` 文件。 
+1. 直接下载为 TiDB 修改好的 [oltp_common.lua](https://raw.githubusercontent.com/pingcap/tidb-bench/master/sysbench/sysbench-patch/oltp_common.lua) 文件，覆盖 `/usr/share/sysbench/oltp_common.lua` 文件。
 2. 将 `/usr/share/sysbench/oltp_common.lua` 的第 [235](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L235) 行到第 [240](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L240) 行移动到第 198 行以后。
 
 > **注意：**
@@ -145,7 +143,7 @@ create database sbtest;
 
 命令行输入以下命令，开始导入数据，config 文件为上一步中配置的文件：
 
-```
+```bash
 sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 prepare
 ```
 
@@ -157,31 +155,31 @@ Sysbench 没有提供数据预热的功能，因此需要手动进行数据预�
 
 以 Sysbench 中某张表 sbtest7 为例，执行如下 SQL 语句 进行数据预热：
 
-```
+```sql
 SELECT COUNT(pad) FROM sbtest7 USE INDEX (k_7);
 ```
 
 统计信息收集有助于优化器选择更为准确的执行计划，可以通过 `analyze` 命令来收集表 sbtest 的统计信息，每个表都需要统计。
 
-```
+```sql
 ANALYZE TABLE sbtest7;
 ```
 
 ### Point select 测试命令
 
-```
+```bash
 sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 run
 ```
 
 ### Update index 测试命令
 
-```
+```bash
 sysbench --config-file=config oltp_update_index --tables=32 --table-size=10000000 run
 ```
 
 ### Read-only 测试命令
 
-```
+```bash
 sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 run
 ```
 
@@ -201,7 +199,7 @@ sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 r
 | point_select | 3\*64 | 195218.54 | 195218.54 | 0.98 | 2.14 | 21.82 |
 | point_select | 3\*128 | 208189.53 | 208189.53 | 1.84 | 4.33 | 31.02 |
 
-![](../media/oltp_point_select.png)
+![oltp_point_select](../media/oltp_point_select.png)
 
 ### oltp_update_index
 
@@ -213,8 +211,8 @@ sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 r
 | oltp_update_index | 3\*64 | 18697.17 | 18697.17 | 10.34 | 17.63 | 4539.04 |
 | oltp_update_index | 3\*128 | 20446.81 | 20446.81 | 18.98 | 40.37 | 5394.75 |
 | oltp_update_index | 3\*256 | 23563.03 | 23563.03 | 32.86 | 78.60 | 5530.69 |
- 
-![](../media/oltp_update_index.png)
+
+![oltp_update_index](../media/oltp_update_index.png)
 
 ### oltp_read_only
 
@@ -225,8 +223,8 @@ sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 r
 | oltp_read_only | 3\*32 | 5066.88 | 81070.16 | 19.42 | 26.20 | 123.41 |
 | oltp_read_only | 3\*64 | 5466.36 | 87461.81 | 34.65 | 63.20 | 231.19 |
 | oltp_read_only | 3\*128 | 6684.16 | 106946.59 | 57.29 | 97.55 | 180.85 |
- 
-![](../media/oltp_read_only.png)
+
+![oltp_read_only](../media/oltp_read_only.png)
 
 ## 常见问题
 
