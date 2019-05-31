@@ -207,13 +207,19 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
     ansible-playbook rolling_update.yml
     ```
 
-6. 更新 Prometheus 配置并重启：
+6. 启动监控服务：
+
+    ```
+    ansible-playbook start.yml -l 172.16.10.103
+    ```
+    
+7. 更新 Prometheus 配置并重启：
 
     ```
     ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
-7. 打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群和新增节点的状态。
+8. 打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群和新增节点的状态。
 
 ## 缩容 TiDB 节点
 
@@ -389,7 +395,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
         /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member delete name pd2
         ```
 
-2. 使用 Grafana 或者 `pd-ctl` 检查节点是否下线成功（PD 下线会很快，结果中没有 node2 节点信息即为下线成功）：
+2. 使用 `pd-ctl` 检查节点是否下线成功（PD 下线会很快，结果中没有 node2 节点信息即为下线成功）：
 
     ```
     /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member
