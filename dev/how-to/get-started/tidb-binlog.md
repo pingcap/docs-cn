@@ -42,7 +42,7 @@ Pump 的集群架构能确保 TiDB 或 Pump 集群中有新的实例加入或退
 sudo yum install -y mariadb-server
 ```
 
-预期输出
+预期输出：
 
 ```
 [kolbe@localhost ~]$ curl -LO http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz | tar xzf -
@@ -57,7 +57,7 @@ sudo yum install -y mariadb-server
 
 通过执行以下步骤配置一个 TiDB 集群，该集群包括 `pd-server`、`tikv-server` 和 `tidb-server` 各组件的单个实例。
 
-1. 填充配置文件
+1. 填充配置文件：
 
     ```bash
     printf > pd.toml %s\\n 'log-file="pd.log"' 'data-dir="pd.data"'
@@ -67,13 +67,13 @@ sudo yum install -y mariadb-server
     printf > drainer.toml %s\\n 'log-file="drainer.log"' '[syncer]' 'db-type="mysql"' '[syncer.to]' 'host="127.0.0.1"' 'user="root"' 'password=""' 'port=3306'
     ```
 
-2. 查看配置细节
+2. 查看配置细节：
 
     ```bash
     for f in *.toml; do echo "$f:"; cat "$f"; echo; done
     ```
 
-    预期输出
+    预期输出：
 
     ```
     drainer.toml:
@@ -121,7 +121,7 @@ sudo yum install -y mariadb-server
 
 现在可启动各个组件。推荐启动顺序依次为 Placement Driver (PD)、TiKV、Pump（TiDB 发送 binlog 日志必须连接 Pump 服务）、TiDB。
 
-1. 启动所有服务
+1. 启动所有服务：
 
     ```bash
     ./bin/pd-server --config=pd.toml &>pd.out &
@@ -131,7 +131,7 @@ sudo yum install -y mariadb-server
     ./bin/tidb-server --config=tidb.toml &>tidb.out &
     ```
 
-    预期输出
+    预期输出：
 
     ```
     [kolbe@localhost tidb-latest-linux-amd64]$ ./bin/pd-server --config=pd.toml &>pd.out &
@@ -166,7 +166,7 @@ sudo yum install -y mariadb-server
 mysql -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
 ```
 
-预期输出
+预期输出：
 
 ```
 [kolbe@localhost tidb-latest-linux-amd64]$ mysql -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
@@ -184,7 +184,7 @@ Check Table Before Drop: false
 连接后TiDB 集群已开始运行，`pump` 读取集群中的 binlog 数据，并在其数据目录中将 binlog 数据存储为 relay log。下一步是启动一个可供 `drainer` 写入的 MariaDB Server。
 
 
-1. 启动 `drainer`
+1. 启动 `drainer`：
 
     ```bash
     sudo systemctl start mariadb
@@ -201,7 +201,7 @@ Check Table Before Drop: false
     show databases;
     ```
 
-    预期输出
+    预期输出：
 
     ```
     [kolbe@localhost ~]$ mysql -h 127.0.0.1 -P 3306 -u root
@@ -254,7 +254,7 @@ Check Table Before Drop: false
     select * from t1;
     ```
 
-    预期输出
+    预期输出：
 
     ```
     TiDB [(none)]> create database tidbtest;
@@ -290,7 +290,7 @@ Check Table Before Drop: false
     select * from t1;
     ```
 
-    预期输出
+    预期输出：
 
     ```
     MariaDB [(none)]> use tidbtest;
@@ -325,14 +325,14 @@ Check Table Before Drop: false
 
 加入到集群的 Pump 和 Drainer 的数据存储在 Placement Driver (PD) 中。binlogctl 可用于查询和修改状态信息。更多信息请参考 [binlogctl guide](https://pingcap.com/docs-cn/tools/binlog/operation/#binlogctl-工具)。
 
-使用 `binlogctl` 查看集群中 Pump 和 Drainer 的当前状态
+使用 `binlogctl` 查看集群中 Pump 和 Drainer 的当前状态：
 
 ```bash
 ./bin/binlogctl -cmd drainers
 ./bin/binlogctl -cmd pumps
 ```
 
-预期输出
+预期输出：
 
 ```
 [kolbe@localhost tidb-latest-linux-amd64]$ ./bin/binlogctl -cmd drainers
@@ -349,7 +349,7 @@ pkill drainer
 ./bin/binlogctl -cmd drainers
 ```
 
-预期输出
+预期输出：
 
 ```
 [kolbe@localhost tidb-latest-linux-amd64]$ pkill drainer
@@ -363,16 +363,16 @@ pkill drainer
 
 以下有三个方案可解决上述问题：
 
-1. 使用 binlogctl 停止 Drainer，而不是结束进程
+- 使用 binlogctl 停止 Drainer，而不是结束进程：
 
     ```
     ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=drainers
     ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=pause-drainer --node-id=localhost.localdomain:8249
     ```
 
-2. 在启动 Pump **之前**先启动 Drainer
+- 在启动 Pump **之前**先启动 Drainer。
 
-3. 在启动 PD 之后但在启动 Drainer 和 Pump 之前，使用 binlogctl 更新已暂定 Drainer 的状态
+- 在启动 PD 之后但在启动 Drainer 和 Pump 之前，使用 binlogctl 更新已暂定 Drainer 的状态。
 
     ```
     ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=update-drainer --node-id=localhost.localdomain:8249 --state=paused
@@ -386,7 +386,7 @@ pkill drainer
 for p in tidb-server drainer pump tikv-server pd-server; do pkill "$p"; sleep 1; done
 ```
 
-预期输出
+预期输出：
 
 ```
 kolbe@localhost tidb-latest-linux-amd64]$ for p in tidb-server drainer pump tikv-server pd-server; do pkill "$p"; sleep 1; done
