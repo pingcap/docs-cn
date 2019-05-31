@@ -9,7 +9,7 @@ aliases: ['/docs/sql/constraints/']
 
 ## Overview
 
-TiDB supports the same basic constraints supported in MySQL with the follwing exceptions:
+TiDB supports the same basic constraints supported in MySQL with the following exceptions:
 
 - `PRIMARY KEY` and `UNIQUE` constraints are checked lazily by default. By batching checks until when the transaction commits, TiDB is able to reduce network communication. This behavior can be changed by setting `tidb_constraint_check_in_place` to `TRUE`.
 
