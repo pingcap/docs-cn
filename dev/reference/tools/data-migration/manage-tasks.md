@@ -146,7 +146,7 @@ start-task [ -w "172.16.30.15:10081"] ./task.yaml
 
 ### Check the data synchronization task status
 
-You can use the `query-status` task management command to check the status of the data synchronization task. For details about the query result and subtask status, see [Query Status](/tools/dm-query-status.md).
+You can use the `query-status` task management command to check the status of the data synchronization task. For details about the query result and subtask status, see [Query Status](/dev/reference/tools/data-migration/query-status.md).
 
 ```bash
 » help query-status
