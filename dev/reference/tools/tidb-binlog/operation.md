@@ -133,7 +133,7 @@ Usage of binlogctl:
 
 ## 使用 TiDB SQL 管理 Pump/Drainer
 
-目前支持通过在 TiDB 中执行 SQL 语句来查看和管理 binlog 相关的状态。
+要查看和管理 binlog 相关的状态，可在 TiDB 中执行相应的 SQL 语句。
 
 - 查看 TiDB 是否开启 binlog
 
@@ -146,7 +146,7 @@ Usage of binlogctl:
     +---------------+-------+
     ```
 
-值为 `ON` 时表示 TiDB 开启了 binlog。
+    值为 `ON` 时表示 TiDB 开启了 binlog。
 
 - 查看 Pump/Drainer 状态
 
@@ -186,5 +186,5 @@ Usage of binlogctl:
 
 > **注意：**
 >
-> 1. 查看 binlog 开启状态以及Pump/Drainer 状态的功能在 TiDB v2.1.7 及以上版本支持。
-> 2. 修改 Pump/Drainer 状态的功能在 TiDB v3.0.0-rc.1 及以上版本支持。该功能只修改 PD 中存储的 Pump/Drainer 状态，如果需要暂停/下线节点，仍然需要使用 `binlogctl`。
+> 1. 查看 binlog 开启状态以及 Pump/Drainer 状态的功能在 TiDB v2.1.7 及以上版本中支持。
+> 2. 修改 Pump/Drainer 状态的功能在 TiDB v3.0.0-rc.1 及以上版本中支持。该功能只修改 PD 中存储的 Pump/Drainer 状态，如果需要暂停/下线节点，仍然需要使用 `binlogctl`。
