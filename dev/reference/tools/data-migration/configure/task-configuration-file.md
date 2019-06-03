@@ -92,14 +92,14 @@ column-mappings:                                    # 上游数据库实例匹�
     expression: "partition id"
     source-column: "id"
     target-column: "id"
-    arguments: ["1", "test_", "t_"]
+    arguments: ["1", "test", "t", "_"]
   cm-rule-2:
     schema-pattern: "test_*"
     table-pattern: "t_*"
     expression: "partition id"
     source-column: "id"
     target-column: "id"
-    arguments: ["2", "test_", "t_"]
+    arguments: ["2", "test", "t", "_"]
 
 mydumpers:                                          # mydumper 处理单元运行配置参数。
   global:
