@@ -6,7 +6,7 @@ aliases: ['/docs-cn/sql/transaction/']
 
 # TiDB 事务语句
 
-TiDB 支持分布式事务。涉及到事务的语句包括 `autocommit` 变量、 `[BEGIN|START TRANSACTION]`、 `COMMIT` 以及 `ROLLBACK`。
+TiDB 支持分布式事务。涉及到事务的语句包括 `autocommit` 变量、`[BEGIN|START TRANSACTION]`、`COMMIT` 以及 `ROLLBACK`。
 
 ## 自动提交
 
