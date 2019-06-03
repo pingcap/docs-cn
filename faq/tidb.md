@@ -972,7 +972,7 @@ Cloud TiDB 目前已经在腾讯云、UCloud 上线，都是数据库一级入�
 
 #### 9.1.1 ERROR 8005 (HY000) : Write Conflict, txnStartTS is stale
 
-可以检查 `tidb_disable_txn_auto_retry` 是否为 on，如是，将其设置为 off，如已经是 off，将 `tidb_retry_limit` 调大到不再发生该错误。
+可以检查 `tidb_disable_txn_auto_retry` 是否为 on。如是，将其设置为 off；如已经是 off，将 `tidb_retry_limit` 调大到不再发生该错误。
 
 #### 9.1.2 ERROR 9001 (HY000) : PD Server Timeout
 

@@ -116,13 +116,13 @@ db-driver=mysql
 
 ### 数据导入
 
-在数据导入前，需要对 TiDB 进行简单设置。在 MySQL 客户端中执行，
+在数据导入前，需要对 TiDB 进行简单设置。在 MySQL 客户端中执行如下命令：
 
 ```sql
 set global tidb_disable_txn_auto_retry = off;
 ```
 
-然后，退出客户端。TiDB 使用乐观事务模型，当发现并发冲突时，会回滚事务。将 `tidb_disable_txn_auto_retry` 设置为 `off` 会开启事务冲突后的自动重试机制，可以尽可能避免事务冲突报错导致 Sysbench 程序退出的问题。
+然后退出客户端。TiDB 使用乐观事务模型，当发现并发冲突时，会回滚事务。将 `tidb_disable_txn_auto_retry` 设置为 `off` 会开启事务冲突后的自动重试机制，可以尽可能避免事务冲突报错导致 Sysbench 程序退出的问题。
 
 重新启动 MySQL 客户端执行以下 SQL 语句，创建数据库 `sbtest`：
 
@@ -199,7 +199,7 @@ sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 r
 | point_select | 3\*64 | 195218.54 | 195218.54 | 0.98 | 2.14 | 21.82 |
 | point_select | 3\*128 | 208189.53 | 208189.53 | 1.84 | 4.33 | 31.02 |
 
-![oltp_point_select](../media/oltp_point_select.png)
+![oltp_point_select](/media/oltp_point_select.png)
 
 ### oltp_update_index
 
@@ -212,7 +212,7 @@ sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 r
 | oltp_update_index | 3\*128 | 20446.81 | 20446.81 | 18.98 | 40.37 | 5394.75 |
 | oltp_update_index | 3\*256 | 23563.03 | 23563.03 | 32.86 | 78.60 | 5530.69 |
 
-![oltp_update_index](../media/oltp_update_index.png)
+![oltp_update_index](/media/oltp_update_index.png)
 
 ### oltp_read_only
 
@@ -224,7 +224,7 @@ sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 r
 | oltp_read_only | 3\*64 | 5466.36 | 87461.81 | 34.65 | 63.20 | 231.19 |
 | oltp_read_only | 3\*128 | 6684.16 | 106946.59 | 57.29 | 97.55 | 180.85 |
 
-![oltp_read_only](../media/oltp_read_only.png)
+![oltp_read_only](/media/oltp_read_only.png)
 
 ## 常见问题
 
