@@ -323,6 +323,7 @@
     - [3.0.0-beta.1](releases/3.0.0-beta.1.md)
     - [3.0.0-beta](releases/3.0beta.md)
   + v2.1
+    - [2.1.11](releases/2.1.11.md)
     - [2.1.10](releases/2.1.10.md)
     - [2.1.9](releases/2.1.9.md)
     - [2.1.8](releases/2.1.8.md)
