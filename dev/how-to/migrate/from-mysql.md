@@ -18,19 +18,19 @@ aliases: ['/docs-cn/op-guide/migration/']
 
 * mydumper 导出数据至少要拥有 `SELECT`，`RELOAD`，`LOCK TABLES` 权限
 * 使用 mydumper 导出来的数据文件尽可能的小，最好不要超过 64M，可以设置参数 -F 64
-* loader的 -t 参数可以根据 tikv 的实例个数以及负载进行评估调整，例如 3个 tikv 的场景，此值可以设为 3 *（1 ～ n)；当 tikv 负载过高，loader 以及 tidb 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 tikv 负载不是太高的时候，可以适当调大该值。
+* loader的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调整，例如 3个 TiKV 的场景，此值可以设为 3 *（1 ～ n)；当 TiKV 负载过高，loader 以及 TiDB 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 TiKV 负载不是太高的时候，可以适当调大该值。
 
 导入示例及相关配置：
-
-- mydumper 导出后总数据量 214G，单表 8 列，20 亿行数据
-- 集群拓扑
-    - TIKV * 12
-    - TIDB * 4
+```
+# - mydumper 导出后总数据量 214G，单表 8 列，20 亿行数据
+# - 集群拓扑
+    - TiKV * 12
+    - TiDB * 4
     - PD * 3
-- mydumper -F 设置为 16, loader -t 参数 64
+# - mydumper -F 设置为 16, loader -t 参数 64
 
-结果：导入时间 11 小时左右，19.4 G/小时
-
+# 结果：导入时间 11 小时左右，19.4 G/小时
+```
 ## 从 MySQL 导出数据
 
 我们使用 `mydumper` 从 MySQL 导出数据，如下:
