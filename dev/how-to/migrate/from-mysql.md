@@ -18,7 +18,7 @@ aliases: ['/docs-cn/op-guide/migration/']
 
 * mydumper 导出数据至少要拥有 `SELECT`，`RELOAD`，`LOCK TABLES` 权限
 * 使用 mydumper 导出来的数据文件尽可能的小，最好不要超过 64M，可以设置参数 -F 64
-* loader的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调整，例如 3个 TiKV 的场景，此值可以设为 3 *（1 ～ n)；当 TiKV 负载过高，loader 以及 TiDB 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 TiKV 负载不是太高的时候，可以适当调大该值。
+* loader的 `-t` 参数可以根据 TiKV 的实例个数以及负载进行评估调整，例如 3个 TiKV 的场景，此值可以设为 `3 *（1 ～ n)`；当 TiKV 负载过高，loader 以及 TiDB 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 TiKV 负载不是太高的时候，可以适当调大该值。
 
 导入示例及相关配置：
 ```
