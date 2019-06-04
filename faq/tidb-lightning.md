@@ -58,7 +58,7 @@ or [CSV files](/tools/lightning/csv.md) stored in the local filesystem.
 
 ## Could Lightning skip creating schema and tables?
 
-Yes. If you have already created the tables in the target database, you could set `no-schema = true` in the `[data-source]` section in `tidb-lightning.toml`. This makes Lightning skip the
+Yes. If you have already created the tables in the target database, you could set `no-schema = true` in the `[mydumper]` section in `tidb-lightning.toml`. This makes Lightning skip the
 `CREATE TABLE` invocations and fetch the metadata directly from the target database. Lightning will exit with error if a table is actually missing.
 
 ## Can the Strict SQL Mode be disabled to allow importing invalid data?
