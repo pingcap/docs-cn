@@ -21,16 +21,15 @@ aliases: ['/docs-cn/op-guide/migration/']
 * loader的 `-t` 参数可以根据 TiKV 的实例个数以及负载进行评估调整，例如 3个 TiKV 的场景，此值可以设为 `3 *（1 ～ n)`；当 TiKV 负载过高，loader 以及 TiDB 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 TiKV 负载不是太高的时候，可以适当调大该值。
 
 导入示例及相关配置：
-```
-# - mydumper 导出后总数据量 214G，单表 8 列，20 亿行数据
-# - 集群拓扑
+- mydumper 导出后总数据量 214G，单表 8 列，20 亿行数据
+- 集群拓扑
     - TiKV * 12
     - TiDB * 4
     - PD * 3
 - mydumper `-F` 设置为 16，Loader `-t` 参数设置为 64
 
-# 结果：导入时间 11 小时左右，19.4 G/小时
-```
+结果：导入时间 11 小时左右，19.4 G/小时
+
 ## 从 MySQL 导出数据
 
 我们使用 `mydumper` 从 MySQL 导出数据，如下:
