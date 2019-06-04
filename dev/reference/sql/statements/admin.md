@@ -110,7 +110,7 @@ like_or_where:
 
 说明：
 
-* 通过 `SHOW` 语句展示统计信息请参考[统计信息说明](https://github.com/pingcap/docs-cn/blob/master/sql/statistics.md#统计信息的查看)。
+* 通过 `SHOW` 语句展示统计信息请参考[统计信息说明](/dev/reference/performance/statistics.md#统计信息的查看)。
 * 关于 `SHOW` 语句更多信息请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/5.7/en/show.html)
 
 在 TiDB 中，`SHOW MASTER STATUS` 语句返回的 `UniqueID` 实际上是从 `PD` 获取的当前 `TSO` 时间，这个时间在做 binlog 增量同步过程中需要使用。
