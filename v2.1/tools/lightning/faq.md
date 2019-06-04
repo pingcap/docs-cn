@@ -54,7 +54,7 @@ mysql> ADMIN CHECKSUM TABLE `schema`.`table`;
 
 ## 我已经在下游创建好库和表了，Lightning 可以忽略建库建表操作吗？
 
-可以。在配置文档中的 `[data-source]` 将 `no-schema` 设置为 `true` 即可。`no-schema=true` 会默认下游已经创建好所需的数据库和表，如果没有创建，会报错。
+可以。在配置文档中的 `[mydumper]` 将 `no-schema` 设置为 `true` 即可。`no-schema=true` 会默认下游已经创建好所需的数据库和表，如果没有创建，会报错。
 
 ## 有些不合法的数据，能否通过关掉严格 SQL 模式 (Strict SQL MOde) 来导入？
 
