@@ -188,7 +188,8 @@ set @@global.tidb_distsql_scan_concurrency = 10
 默认值: 0
 
 这个变量用来设置是否自动切分插入数据。仅在 autocommit 开启时有效。
-当插入大量数据时，可以将其设置为 true，这样插入数据会被自动切分为多个 batch，每个 batch 使用一个单独的事务进行插入。
+当插入大量数据时，可以将其设置为 1，这样插入数据会被自动切分为多个 batch，每个 batch 使用一个单独的事务进行插入。
+该用法破坏了事务的原子性，因此，不建议在生产环境中使用。
 
 ### tidb_batch_delete
 
@@ -196,8 +197,9 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 默认值: 0
 
-这个变量用来设置是否自动切分待删除的数据。仅在 autocommit 开启时有效。
-当删除大量数据时，可以将其设置为 true，这样待删除数据会被自动切分为多个 batch，每个 batch 使用一个单独的事务进行删除。
+这个变量用来设置是否自动切分待删除的数据。仅在 autocommit 开启，并且是单表删除的 SQL 时有效。关于单表删除的 SQL 的定义，详见[这里](https://dev.mysql.com/doc/refman/8.0/en/delete.html)。
+当删除大量数据时，可以将其设置为 1，这样待删除数据会被自动切分为多个 batch，每个 batch 使用一个单独的事务进行删除。
+该用法破坏了事务的原子性，因此，不建议在生产环境中使用。
 
 ### tidb_dml_batch_size
 
