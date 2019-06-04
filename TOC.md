@@ -191,9 +191,9 @@
     - [TiDB Controller](dev/reference/tools/tidb-control.md)
     - [工具下载](dev/reference/tools/download.md)
 + 常见问题 (FAQ)
-  - [TiDB FAQ](FAQ.md)
-  - [TiDB-Lightning FAQ](tools/lightning/faq.md)
-  - [升级 FAQ](op-guide/upgrade-faq.md)
+  - [TiDB FAQ](faq/tidb.md)
+  - [TiDB-Lightning FAQ](faq/tidb-lightning.md)
+  - [升级 FAQ](faq/upgrades.md)
 + 技术支持
   - [支持渠道](support.md)
   - [反馈问题](report-issue.md)
