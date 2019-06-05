@@ -134,21 +134,21 @@ aliases: ['/docs-cn/tools/dm/shard-merge-scenario/']
         expression: "partition id"
         source-column: "id"
         target-column: "id"
-        arguments: ["1", "store_", "sale_"]
+        arguments: ["1", "store", "sale", "_"]
       instance-2-sale:
         schema-pattern: "store_*"
         table-pattern: "sale_*"
         expression: "partition id"
         source-column: "id"
         target-column: "id"
-        arguments: ["2", "store_", "sale_"]
+        arguments: ["2", "store", "sale", "_"]
       instance-3-sale:
         schema-pattern: "store_*"
         table-pattern: "sale_*"
         expression: "partition id"
         source-column: "id"
         target-column: "id"
-        arguments: ["3", "store_", "sale_"]
+        arguments: ["3", "store", "sale", "_"]
     ```
 
 ## 同步任务配置
@@ -240,21 +240,21 @@ column-mappings:
     expression: "partition id"
     source-column: "id"
     target-column: "id"
-    arguments: ["1", "store_", "sale_"]
+    arguments: ["1", "store", "sale", "_"]
   instance-2-sale:
     schema-pattern: "store_*"
     table-pattern: "sale_*"
     expression: "partition id"
     source-column: "id"
     target-column: "id"
-    arguments: ["2", "store_", "sale_"]
+    arguments: ["2", "store", "sale", "_"]
   instance-3-sale:
     schema-pattern: "store_*"
     table-pattern: "sale_*"
     expression: "partition id"
     source-column: "id"
     target-column: "id"
-    arguments: ["3", "store_", "sale_"]
+    arguments: ["3", "store", "sale", "_"]
 
 mydumpers:
   global:
