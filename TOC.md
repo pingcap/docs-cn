@@ -180,8 +180,8 @@
       - [表库过滤](dev/reference/tools/tidb-lightning/filter.md)
       - [CSV 支持](dev/reference/tools/tidb-lightning/csv.md)
       - [监控告警](dev/reference/tools/tidb-lightning/monitor.md)
-      - [TiDB-Lightning 故障诊断](dev/how-to/troubleshoot/tidb-lightning.md)
-      - [TiDB-Lightning FAQ](faq/tidb-lightning.md)
+      - [故障诊断](dev/how-to/troubleshoot/tidb-lightning.md)
+      - [FAQ](faq/tidb-lightning.md)
     + TiDB-Binlog
       - [概述](dev/reference/tools/tidb-binlog/overview.md)
       - [部署使用](dev/reference/tools/tidb-binlog/deploy.md)
