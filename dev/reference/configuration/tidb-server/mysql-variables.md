@@ -110,4 +110,4 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
 
 ## TiDB 特有的系统变量
 
-参见 [TiDB 专用系统变量](/dev/reference/sql/statements/tidb-specific-variables.md#tidb-专用系统变量和语法)。
+参见 [TiDB 专用系统变量](/dev/reference/configuration/tidb-server/tidb-specific-variables.md)。

@@ -803,11 +803,11 @@ TiDB 读流量可以通过增加 TiDB server 进行扩展，总读容量无限�
 
 在 Google 的 Cloud Spanner 上面，也有类似的[限制](https://cloud.google.com/spanner/docs/limits)。
 
-#### 4.3.4 如何批量导入?
+#### 4.3.4 如何批量导入？
 
 导入数据的时候，可以分批插入，每批最好不要超过 1w 行。
 
-对于 insert 和 select，可以开启 `set @@session.tidb_batch_insert=1;` 隐藏参数，insert 会把大事务分批执行。这样不会因为事务太大而超时，但是可能会导致事务原子性的丢失。如果事务执行过程中报错，会导致只完成一部分事务的插入。所以建议只有在需要的时候，在 session 中使用，这样不会影响其他语句。事务完成以后，可以用 `set @@session.tidb_batch_insert=0` 关闭。
+对于 insert 和 select，可以开启 `set @@session.tidb_batch_insert=1;` 隐藏参数，insert 会把大事务分批执行。这样不会因为事务太大而超时，但是可能会导致事务原子性的丢失，因此不建议在生产环境中使用。如果事务执行过程中报错，会导致只完成一部分事务的插入。所以建议只有在需要的时候，在 session 中使用，这样不会影响其他语句。事务完成以后，可以用 `set @@session.tidb_batch_insert=0` 关闭。
 
 对 delete 和 update 语句，可以使用 limit 加循环的方式进行操作。
 

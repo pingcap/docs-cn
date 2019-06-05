@@ -131,8 +131,8 @@
     - [`mysql`](dev/reference/system-databases/mysql.md)
     - [`information_schema`](dev/reference/system-databases/information-schema.md)
   - [错误码](dev/reference/error-codes.md)
-  - [支持的连接器和 API](dev/reference/connectors-and-APIs.md)
-  - [垃圾回收 (GC)](dev/reference/gc.md)
+  - [支持的连接器和 API](dev/reference/supported-clients.md)
+  - [垃圾回收 (GC)](dev/reference/garbage-collection.md)
   + 性能调优
     - [SQL 优化流程](dev/reference/performance/sql-optimizer-overview.md)
     - [理解 TiDB 执行计划](dev/reference/performance/understanding-the-query-execution-plan.md)
@@ -208,6 +208,7 @@
     - [3.0.0-beta.1](releases/3.0.0-beta.1.md)
     - [3.0.0-beta](releases/3.0beta.md)
   + v2.1
+    - [2.1.11](releases/2.1.11.md)
     - [2.1.10](releases/2.1.10.md)
     - [2.1.9](releases/2.1.9.md)
     - [2.1.8](releases/2.1.8.md)
