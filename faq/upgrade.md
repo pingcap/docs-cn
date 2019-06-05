@@ -1,6 +1,7 @@
 ---
 title: 升级后常见问题
-category: deployment
+category: FAQ
+aliases: ['/docs-cn/op-guide/upgrade-faq/']
 ---
 
 # 升级后常见问题
