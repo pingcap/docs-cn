@@ -59,7 +59,7 @@
   + 故障诊断
     - [集群配置诊断](dev/how-to/troubleshoot/cluster-setup.md)
     - [Data Migration 故障诊断](dev/how-to/troubleshoot/data-migration.md)
-    - [TiDB-Lightning 故障诊断](dev/how-to/troubleshoot/tidb-lightning.md)
+    - [TiDB Lightning 故障诊断](dev/how-to/troubleshoot/tidb-lightning.md)
 + 参考手册
   + [与 MySQL 兼容性对比](dev/reference/mysql-compatibility.md)
   + SQL
@@ -173,7 +173,7 @@
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](dev/how-to/migrate/from-aurora.md)
       - [Data Migration 故障诊断](dev/how-to/troubleshoot/data-migration.md)
-    + TiDB-Lightning
+    + TiDB Lightning
       - [概述](dev/reference/tools/tidb-lightning/overview.md)
       - [部署执行](dev/reference/tools/tidb-lightning/deployment.md)
       - [断点续传](dev/reference/tools/tidb-lightning/checkpoints.md)
@@ -182,7 +182,7 @@
       - [监控告警](dev/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](dev/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](faq/tidb-lightning.md)
-    + TiDB-Binlog
+    + TiDB Binlog
       - [概述](dev/reference/tools/tidb-binlog/overview.md)
       - [部署使用](dev/reference/tools/tidb-binlog/deploy.md)
       - [监控告警](dev/reference/tools/tidb-binlog/monitor.md)
