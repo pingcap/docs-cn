@@ -385,15 +385,15 @@ column-mappings:
 注意下面的限制：
 
 - 只支持类型为 bigint 的列，通常为自增主键，联合主键或者联合唯一索引的其中一列
-- 如果 `schema 前缀`不为空，则库名的组成必须为 `schema 前缀`或者 `schema 前缀 + 分隔符 + 数字（即 schema ID）`，例如：支持 `s` 和 `s_1`，不支持 `s_a`
-- 如果 `table 前缀`不为空，则表名的组成必须为 `table 前缀`或者 `table 前缀 + 分隔符 + 数字（即 table ID）`
-- 如果库名/表名不包含 `… + 分隔符 + 数字`部分，则对应的 ID 默认为 0
+- 如果 `schema 前缀` 不为空，则库名的组成必须为 `schema 前缀` 或者 `schema 前缀 + 分隔符 + 数字（即 schema ID）`，例如：支持 `s` 和 `s_1`，不支持 `s_a`
+- 如果 `table 前缀` 不为空，则表名的组成必须为 `table 前缀` 或者 `table 前缀 + 分隔符 + 数字（即 table ID）`
+- 如果库名/表名不包含 `… + 分隔符 + 数字` 部分，则对应的 ID 默认为 0
 - 对分库分表的规模支持限制如下
   - 支持最多 16 个 MySQL/MariaDB 实例（0 <= instance ID <= 15）
   - 每个实例支持最多 128 个 schema（0 <= schema ID  <= 127）
   - 每个实例的每个 schema 支持最多 256 个 table（0 <= table ID <= 255）
   - 进行列值映射的列的范围 (0 <= ID <= 17592186044415)
-  - {instance ID, schema ID, table ID} 组合需要保持唯一
+  - `{instance ID, schema ID, table ID}` 组合需要保持唯一
 - 目前该功能是定制功能，如果需要调整请联系相关开发人员进行调整
 
 **`partition id` 参数配置**
