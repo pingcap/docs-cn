@@ -52,14 +52,14 @@ mysql> admin show ddl jobs;
 * `TABLE_NAME`: the name of the table on which the DDL operations are performed.
 * `JOB_TYPE`: the type of the DDL operations.
 * `SCHEMA_STATE`: the current state of the schema. If the `JOB_TYPE` is `add index`, it is the state of the index; if the `JOB_TYPE` is `add column`, it is the state of the column; if the `JOB_TYPE` is `create table`, it is the state of the table. The common states include:
-  * `none`: it indicates not existing. When the `drop` or `create` operation fails and rolls back, it usually becomes the `none` state.
-  * `delete only`, `write only`, `delete reorganization`, `write reorganization`: these four states are intermediate states. For details, see the paper [Online, Asynchronous Schema Change in F1](http://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/41376.pdf). These states are not visible in common operations, because the conversion from the intermediate states is so quick. You can see the `write reorganization` state only in `add index` operations, which means that the index data is being added.
-  * `public`: it indicates existing and usable. When operations like `create table` and `add index/column` are finished, it usually becomes the `public` state, which means that the created table/column/index can be normally read and written now.
-  * `SCHEMA_ID`: the ID of the database on which the DDL operations are performed.
-  * `TABLE_ID`: the ID of the table on which the DDL operations are performed.
-  * `ROW_COUNT`: the number of the data rows that have been added when running the `add index` operation.
-  * `START_TIME`: the start time of the DDL operations.
-  * `STATE`: the state of the DDL operations. The common states include:
+    * `none`: it indicates not existing. When the `drop` or `create` operation fails and rolls back, it usually becomes the `none` state.
+    * `delete only`, `write only`, `delete reorganization`, `write reorganization`: these four states are intermediate states. For details, see the paper [Online, Asynchronous Schema Change in F1](http://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/41376.pdf). These states are not visible in common operations, because the conversion from the intermediate states is so quick. You can see the `write reorganization` state only in `add index` operations, which means that the index data is being added.
+    * `public`: it indicates existing and usable. When operations like `create table` and `add index/column` are finished, it usually becomes the `public` state, which means that the created table/column/index can be normally read and written now.
+* `SCHEMA_ID`: the ID of the database on which the DDL operations are performed.
+* `TABLE_ID`: the ID of the table on which the DDL operations are performed.
+* `ROW_COUNT`: the number of the data rows that have been added when running the `add index` operation.
+* `START_TIME`: the start time of the DDL operations.
+* `STATE`: the state of the DDL operations. The common states include:
     * `none`: it indicates that the operation task has been put in the DDL job queue but has not been performed yet, because it is waiting for the previous tasks to complete. Another reason might be that it becomes the `none` state after running the drop operation, but it will soon be updated to the `synced` state, which means that all TiDB instances have been synced to this state.
     * `running`: it indicates that the operation is being performed.
     * `synced`: it indicates that the operation has been performed successfully and all TiDB instances have been synced to this state.
@@ -69,12 +69,13 @@ mysql> admin show ddl jobs;
 
 - `ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...`: To view the original SQL statement of the DDL task corresponding to the `job_id`; the `job_id` only searches the running DDL job and the last ten results in the DDL history job queue
 - `ADMIN CANCEL DDL JOBS job_id [, job_id] ...`: To cancel the currently running DDL jobs and return whether the corresponding jobs are successfully cancelled. If the operation fails to cancel the jobs, specific reasons are displayed.
-- `ADMIN CHECK TABLE tbl_name [, tbl_name] ...`: To check the consistency of all the data in the specified table and corresponding indexes. If the check is passed, an empty result will be returned. On failure, an error message will indicate that data is inconsistent.
 
-  > **Note:**
-  >
-  > - This operation can cancel multiple DDL jobs at the same time. You can get the ID of DDL jobs using the `ADMIN SHOW DDL JOBS` statement. 
-  > - If the jobs you want to cancel are finished, the cancellation operation fails. 
+    > **Note:**
+    >
+    > - This operation can cancel multiple DDL jobs at the same time. You can get the ID of DDL jobs using the `ADMIN SHOW DDL JOBS` statement. 
+    > - If the jobs you want to cancel are finished, the cancellation operation fails. 
+
+- `ADMIN CHECK TABLE tbl_name [, tbl_name] ...`: To check the consistency of all the data in the specified table and corresponding indexes. If the check is passed, an empty result will be returned. On failure, an error message will indicate that data is inconsistent.
 
 ## MySQL compatibility
 
