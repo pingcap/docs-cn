@@ -23,8 +23,8 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 | 9004 | 当数据库上承载的业务存在大量的事务冲突时，会遇到这种错误，请检查业务代码 |
 | 9005 | 某个 Raft Group 不可用，如副本数目不足，出现在 TiKV 比较繁忙或者是 TiKV 节点停机的时候，请检查 TiKV Server 状态/监控/日志 |
 | 9006 | GC Life Time 间隔时间过短，长事务本应读到的数据可能被清理了，应增加 GC Life Time |
-| 9500 | 单个事务过大，原因及解决方法请参考[这里](faq/tidb.md#出现-transaction-too-large-报错怎么办) |
+| 9500 | 单个事务过大，原因及解决方法请参考[这里](/faq/tidb.md#出现-transaction-too-large-报错怎么办) |
 
 ## 故障诊断
 
-参见[故障诊断文档](/dev/how-to/troubleshoot/cluster-setup.md)以及 [FAQ](faq/tidb.md)。
+参见[故障诊断文档](/dev/how-to/troubleshoot/cluster-setup.md)以及 [FAQ](/faq/tidb.md)。
