@@ -114,3 +114,7 @@ tidb-lightning-ctl --switch-mode=normal
 
 - 索引会占据额外的空间
 - RocksDB 的空间放大效应
+
+## TiDB-Lightning 使用过程中是否可以重启 TiKV-Importer？
+
+不能，Importer 会保存一些 Engine 的信息在内存中，Importer 重启后，Lightning 必须重启。
