@@ -240,7 +240,7 @@ TiSpark 可以使用 TiDB 的统计信息：
 1. 选择代价最低的索引或扫表访问
 2. 估算数据大小以决定是否进行广播优化
 
-如果希望使用统计信息支持，需要确保所涉及的表已经被分析。请阅读[这份文档](https://github.com/pingcap/docs/blob/master/sql/statistics.md)了解如何进行表分析。
+如果希望使用统计信息支持，需要确保所涉及的表已经被分析。请阅读[这份文档](https://pingcap.com/docs/dev/reference/performance/statistics/)了解如何进行表分析。
 
 从 TiSpark 2.0 开始，统计信息将会默认被读取。
 
