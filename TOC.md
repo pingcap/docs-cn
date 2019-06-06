@@ -34,8 +34,9 @@
     - [Explore SQL with TiDB](dev/how-to/get-started/explore-sql.md)
     - [Import Example Database](dev/how-to/get-started/import-example-database.md)
     - [Read Historical Data](dev/how-to/get-started/read-historical-data.md)
-    - [TiDB-Binlog Tutorial](dev/how-to/get-started/tidb-binlog.md)
+    - [TiDB Binlog Tutorial](dev/how-to/get-started/tidb-binlog.md)
     - [TiDB Data Migration Tutorial](dev/how-to/get-started/data-migration.md)
+    - [TiSpark Quick Start Guide](dev/how-to/deploy/tispark.md)
   + Deploy
     - [Hardware Recommendations](dev/how-to/deploy/hardware-recommendations.md)
     + From Binary Tarball
@@ -46,11 +47,9 @@
       - [Ansible Offline Deployment](dev/how-to/deploy/orchestrated/offline-ansible.md)
       - [Docker Deployment](dev/how-to/deploy/orchestrated/docker.md)
       - [Kubernetes Deployment](dev/how-to/deploy/orchestrated/kubernetes.md)
-      - [Overview of Ansible Operations](dev/how-to/deploy/orchestrated/ansible-operations.md)
     + Geographic Redundancy
       - [Overview](dev/how-to/deploy/geographic-redundancy/overview.md)
       - [Configure Location Awareness](dev/how-to/deploy/geographic-redundancy/location-awareness.md)
-    - [TiSpark](dev/how-to/deploy/tispark.md)
     - [Data Migration with Ansible](dev/how-to/deploy/data-migration-with-ansible.md)
   + Configure
     - [Time Zone](dev/how-to/configure/time-zone.md)
@@ -71,20 +70,21 @@
     + [Migrate from Aurora](dev/how-to/migrate/from-aurora.md)
     - [Migrate from CSV](tools/lightning/csv.md)
   + Maintain
+    - [Common Ansible Operations](dev/how-to/deploy/orchestrated/ansible-operations.md)
     - [Backup and Restore](dev/how-to/maintain/backup-and-restore.md)
     - [Identify Slow Queries](dev/how-to/maintain/identify-slow-queries.md)
   + Scale
-    - [Scale a TiDB Cluster](dev/how-to/scale/horizontally.md)
     - [Scale using Ansible](dev/how-to/scale/with-ansible.md)
+    - [Scale a TiDB Cluster](dev/how-to/scale/horizontally.md)
   + Upgrade
     - [Upgrade to TiDB 3.0](dev/how-to/upgrade/from-previous-version.md)
     - [Upgrade to TiDB 2.1](dev/how-to/upgrade/to-tidb-2.1.md)
-    - [Upgrade Data Migration](dev/how-to/upgrade/data-migration.md)
     - [Rolling updates with Ansible](dev/how-to/upgrade/rolling-updates-with-ansible.md)
+    - [Upgrade TiDB Data Migration](dev/how-to/upgrade/data-migration.md)
   - Troubleshoot
     - [Troubleshoot Cluster Setup](dev/how-to/troubleshoot/cluster-setup.md)
-    - [Troubleshoot Data Migration](dev/how-to/troubleshoot/data-migration.md)
-    - [Troubleshoot TiDB-Lightning](dev/how-to/troubleshoot/tidb-lightning.md)
+    - [Troubleshoot TiDB Data Migration](dev/how-to/troubleshoot/data-migration.md)
+    - [Troubleshoot TiDB Lightning](dev/how-to/troubleshoot/tidb-lightning.md)
 + Reference
   - [MySQL Compatibility](dev/reference/mysql-compatibility.md)
   + SQL
@@ -128,7 +128,7 @@
         - [`LONGBLOB`](dev/reference/sql/data-types/string.md#longblob-type)
         - [`ENUM`](dev/reference/sql/data-types/string.md#enum-type)
         - [`SET`](dev/reference/sql/data-types/string.md#set-type)
-      - [`JSON` Type](dev/reference/sql/data-types/json.md)
+      - [JSON Type](dev/reference/sql/data-types/json.md)
     + Functions and Operators
       - [Function and Operator Reference](dev/reference/sql/functions-and-operators/reference.md)
       - [Type Conversion in Expression Evaluation](dev/reference/sql/functions-and-operators/type-conversion.md)
@@ -250,16 +250,15 @@
     - [Introduction to Statistics](dev/reference/performance/statistics.md)
     - [Optimizer Hints](dev/reference/performance/optimizer-hints.md)
     - [Tune TiKV](dev/reference/performance/tune-tikv.md)
-    - [TiDB Best Practices](https://pingcap.com/blog/2017-07-24-tidbbestpractice/)
+  - [Best Practices](https://pingcap.com/blog/2017-07-24-tidbbestpractice/)
   - [TiSpark](dev/reference/tispark.md)
   + Tools
+    - [Mydumper](dev/reference/tools/mydumper.md)
     - [Syncer](dev/reference/tools/syncer.md)
-    - [mydumper](dev/reference/tools/mydumper.md)
     - [Loader](dev/reference/tools/loader.md)
-    + Data Migration
+    + TiDB Data Migration
       - [Overview](dev/reference/tools/data-migration/overview.md)
       - [Restrictions](dev/reference/tools/data-migration/overview.md#usage-restrictions)
-      - [Deploy](dev/reference/tools/data-migration/deploy.md)
       + Features
         - [Table Routing](dev/reference/tools/data-migration/features/overview.md#table-routing)
         - [Black and White Lists](dev/reference/tools/data-migration/features/overview.md#black-and-white-table-lists)
@@ -273,22 +272,26 @@
       + Usage Scenarios
         - [Simple Scenario](dev/reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
         - [Shard Merge Scenario](dev/reference/tools/data-migration/usage-scenarios/shard-merge.md)
+      - [Deploy](dev/reference/tools/data-migration/deploy.md)
       + Configure
         - [Overview](dev/reference/tools/data-migration/configure/overview.md)
         - [Task Configuration](dev/reference/tools/data-migration/configure/task-configuration-file.md)
       - [Monitor](dev/reference/tools/data-migration/monitor.md)
       - [Manage the Task](dev/reference/tools/data-migration/manage-tasks.md)
       - [Cluster Operations](dev/reference/tools/data-migration/cluster-operations.md)
-      - Migrate from MySQL compatible database 
+      + Migrate from MySQL compatible database
         - [Migrate from Aurora](dev/how-to/migrate/from-aurora.md)
-    + TiDB-Lightning
+      - [Troubleshoot](dev/how-to/troubleshoot/data-migration.md)
+    + TiDB Lightning
       - [Overview](dev/reference/tools/tidb-lightning/overview.md)
       - [Deployment](dev/reference/tools/tidb-lightning/deployment.md)
       - [Checkpoints](dev/reference/tools/tidb-lightning/checkpoints.md)
       - [Table Filter](dev/reference/tools/tidb-lightning/table-filter.md)
       - [CSV Support](dev/reference/tools/tidb-lightning/csv.md)
       - [Monitor](dev/reference/tools/tidb-lightning/monitor.md)
-    + TiDB-Binlog
+      - [Troubleshoot](dev/how-to/troubleshoot/tidb-lightning.md)
+      - [FAQ](faq/tidb-lightning.md)
+    + TiDB Binlog
       - [Overview](dev/reference/tools/tidb-binlog/overview.md)
       - [Deploy](dev/reference/tools/tidb-binlog/deploy.md)
       - [Monitor](dev/reference/tools/tidb-binlog/monitor.md)
@@ -307,7 +310,7 @@
   - [Adopters](adopters.md)
 + FAQs
   - [TiDB FAQs](faq/tidb.md)
-  - [TiDB-Lightning FAQs](faq/tidb-lightning.md)
+  - [TiDB Lightning FAQs](faq/tidb-lightning.md)
   - [Upgrade FAQs](faq/upgrades.md)
 + Support  
   - [Support Resources](support-resources.md)
