@@ -15,6 +15,7 @@
     - [SQL 基本操作](dev/how-to/get-started/explore-sql.md)
     - [读取历史数据](dev/how-to/get-started/read-historical-data.md)
     - [TiDB Binlog 教程](dev/how-to/get-started/tidb-binlog.md)
+    - [TiSpark 教程](dev/how-to/get-started/tispark.md)
   + 部署
     - [软硬件环境需求](dev/how-to/deploy/hardware-recommendations.md)
     + 集群部署方式
@@ -24,7 +25,6 @@
     + 跨地域冗余
       - [跨数据中心部署方案](dev/how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](dev/how-to/deploy/geographic-redundancy/location-awareness.md)
-    - [TiSpark 快速上手](dev/how-to/deploy/tispark.md)
     - [使用 Ansible 部署 DM 集群](dev/how-to/deploy/data-migration-with-ansible.md)
   + 配置
     - [时区](dev/how-to/configure/time-zone.md)
@@ -42,8 +42,7 @@
     + 从 MySQL 迁移
       - [全量迁移](dev/how-to/migrate/from-mysql.md)
       - [增量复制](dev/how-to/migrate/incrementally-from-mysql.md)
-    + 从与 MySQL 兼容的数据库迁移数据
-      - [从 Amazon Aurora MySQL 迁移数据](dev/how-to/migrate/from-aurora.md)
+    - [从 Amazon Aurora MySQL 迁移数据](dev/how-to/migrate/from-aurora.md)
     - [从 CSV 迁移](tools/lightning/csv.md)
   + 运维
     - [Ansible 常见运维操作](dev/how-to/maintain/ansible-operations.md)
