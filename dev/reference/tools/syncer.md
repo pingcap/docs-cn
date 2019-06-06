@@ -396,7 +396,7 @@ target-table = "order_2017"
 
         如果结果是 `log_bin` = `OFF`，则需要开启 binlog，开启方式请参考[官方文档](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)。
 
-    2. binlog 格式必须为 `ROW`，且参数 `binlog_row_image` 必须设置为 `FULL`, 可使用如下命令设置参数：
+    2. binlog 格式必须为 `ROW`，且参数 `binlog_row_image` 必须设置为 `FULL`, 可使用如下命令查看参数设置：
 
         ```sql
         mysql> select variable_name, variable_value from information_schema.global_variables where variable_name in ('binlog_format','binlog_row_image');
@@ -409,9 +409,9 @@ target-table = "order_2017"
         2 rows in set (0.001 sec)
         ```
 
-        - 如果以上设置出现错误，可在磁盘上修改配置文件，之后重启 MySQL。
-        - 将配置改变保存在磁盘中很重要，这样 MySQL 重启之后可以显示配置改变。
-        - 由于现有连接会保留全局变量原先的值，**不可以**使用 `SET` 语句动态改变设置。
+        - 如果以上设置出现错误，则需要修改磁盘上的配置文件，然后重启 MySQL。
+        - 将配置的更改持久化存储在磁盘上很重要，这样在 MySQL 重启之后才能显示相应更改。
+        - 由于现有的连接会保留全局变量原先的值，所以**不可以**使用 `SET` 语句动态修改这些设置。
 
 4. 检查用户权限。
 
