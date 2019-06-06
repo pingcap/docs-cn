@@ -42,7 +42,7 @@ enable = true
 `enable` 设置为 `true` 以后，默认的事务模式仍然是乐观事务模式，要进入悲观事务模式有以下三种方式：
 
 - 执行 `BEGIN PESSIMISTIC;` 语句开启的事务，会进入悲观事务模式。
-可以通过写成注释的形式 `BEGIN /*!90000 PESSIMISTIC */;`来兼容 MySQL 语法。
+可以通过写成注释的形式 `BEGIN /*!90000 PESSIMISTIC */;` 来兼容 MySQL 语法。
 
 - 执行 `set @@tidb_txn_mode = 'pessimistic';`，使这个 session 执行的所有事务都会进入悲观事务模式。
 
