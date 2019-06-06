@@ -120,3 +120,7 @@ With the default settings of 3 replicas, the space requirement of the target TiK
 
 - The space occupied by indices
 - Space amplification in RocksDB
+
+## Can TiKV-Importer be restarted while TiDB-Lightning is running?
+
+No. Importer stores some information of engines in memory. If Importer is restarted, Lightning must be restarted.
