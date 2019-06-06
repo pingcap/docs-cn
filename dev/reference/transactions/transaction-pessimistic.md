@@ -57,7 +57,7 @@ default = true
 在配置了默认启用悲观事务的情况下，可以用以下两种方式使事务进入乐观事务模式：
 
 - 执行 `BEGIN OPTIMISTIC;` 语句开启的事务，会进入乐观事务模式。
-可以通过写成注释的形式 `BEGIN /*!90000 OPTIMISTIC */;`来兼容 MySQL 语法。
+可以通过写成注释的形式 `BEGIN /*!90000 OPTIMISTIC */;` 来兼容 MySQL 语法。
 
 - 通过执行 `set @@tidb_txn_mode = 'optimistic';`，使当前的 session 执行的事务进入乐观事务模式。
 
