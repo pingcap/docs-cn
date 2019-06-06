@@ -15,6 +15,7 @@
     - [SQL 基本操作](dev/how-to/get-started/explore-sql.md)
     - [读取历史数据](dev/how-to/get-started/read-historical-data.md)
     - [TiDB Binlog 教程](dev/how-to/get-started/tidb-binlog.md)
+    - [TiSpark 教程](dev/how-to/get-started/tispark.md)
   + 部署
     - [软硬件环境需求](dev/how-to/deploy/hardware-recommendations.md)
     + 集群部署方式
@@ -24,7 +25,6 @@
     + 跨地域冗余
       - [跨数据中心部署方案](dev/how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](dev/how-to/deploy/geographic-redundancy/location-awareness.md)
-    - [TiSpark 快速上手](dev/how-to/deploy/tispark.md)
     - [使用 Ansible 部署 DM 集群](dev/how-to/deploy/data-migration-with-ansible.md)
   + 配置
     - [时区](dev/how-to/configure/time-zone.md)
