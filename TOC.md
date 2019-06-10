@@ -197,7 +197,7 @@
   - [TiDB-Lightning FAQ](faq/tidb-lightning.md)
   - [升级 FAQ](faq/upgrade.md)
 + 技术支持
-  - [支持渠道](support.md)
+  - [支持渠道](support-resources.md)
   - [反馈问题](report-issue.md)
 + [贡献](contribute.md)
   - [贡献代码](contribute.md#成为-tidb-的贡献者)
