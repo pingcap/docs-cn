@@ -4,6 +4,7 @@ category: user guide
 ---
 
 # 基于角色的访问控制
+
 TiDB 的角色访问控制系统参考 MySQL 的角色访问控制系统进行实现。TiDB 兼容大部分 MySQL 角色访问控制的语法。
 
 本文档主要介绍 TiDB 角色访问控制相关操作及实现。
@@ -12,12 +13,11 @@ TiDB 的角色访问控制系统参考 MySQL 的角色访问控制系统进行�
 
 ### 角色
 
-角色是一系列权限的集合。用户可以创建角色，删除角色，将权限赋予给角色；用户也可以将角色授予给其他用户，
-被授予的用户在启用角色后，可以得到角色所包含的权限。
+角色是一系列权限的集合。用户可以创建角色、删除角色、将权限赋予给角色；用户也可以将角色授予给其他用户，被授予的用户在启用角色后，可以得到角色所包含的权限。
 
 ### 创建角色
 
-创建角色 r_1, r_2：
+创建角色 r_1 和 r_2：
 
 ```sql
 CREATE ROLE `r_1`@`%`, `r_2`@`%`;
@@ -30,7 +30,7 @@ CREATE ROLE `r_1`@`%`, `r_2`@`%`;
 
 ### 删除角色
 
-删除角色 r_1, r_2：
+删除角色 r_1 和 r_2：
 
 ```sql
 DROP ROLE `r_1`@`%`, `r_2`@`%`;
@@ -41,15 +41,15 @@ DROP ROLE `r_1`@`%`, `r_2`@`%`;
 
 ### 授予角色权限
 
-为角色授予权限和为用户授予权限操作相同，可参考 [TiDB 用户账户管理](privilege.md)。
+为角色授予权限和为用户授予权限操作相同，可参考 [TiDB 权限管理](privilege-system.md)。
 
-授予 `xxx` 角色对数据库 `test` 的读权限：
+为 `xxx` 角色授予数据库 `test` 的读权限：
 
 ```sql
 GRANT SELECT ON test.* TO 'xxx'@'%';
 ```
 
-为 `xxx` 角色授予所有数据库，全部权限：
+为 `xxx` 角色授予所有数据库的全部权限：
 
 ```sql
 GRANT ALL PRIVILEGES ON *.* TO 'xxx'@'%';
@@ -67,7 +67,7 @@ REVOKE ALL PRIVILEGES ON `test`.* FROM 'genius'@'localhost';
 
 ### 将角色授予给用户
 
-将角色 role1, role2 授予给用户 `user1@localhost`, `user2@localhost`。 
+将角色 role1 和 role2 授予给用户 `user1@localhost` 和 `user2@localhost`。 
 
 ```sql
 GRANT 'role1', 'role2' TO 'user1'@'localhost', 'user2'@'localhost';
@@ -93,13 +93,13 @@ TiDB 允许这种多层授权关系存在，可以使用多层授权关系实现
 
 ### 收回角色
 
-解除角色 role1, role2 与用户 `user1@localhost`, `user2@localhost` 的授权关系。 
+解除角色 role1、role2 与用户 `user1@localhost`、`user2@localhost` 的授权关系。 
 
 ```sql
 REVOKE 'role1', 'role2' FROM 'user1'@'localhost', 'user2'@'localhost';
 ```
 
-解除角色授权具有原子性，如果在撤销授权操作中失败会滚回。
+解除角色授权具有原子性，如果在撤销授权操作中失败会回滚。
 
 ### 设置默认启用角色
 
@@ -107,26 +107,25 @@ REVOKE 'role1', 'role2' FROM 'user1'@'localhost', 'user2'@'localhost';
 
 可以对用户设置默认启用的角色；用户在登陆时，默认启用的角色会被自动启用。
 
-
 ```sql
 SET DEFAULT ROLE
     {NONE | ALL | role [, role ] ...}
     TO user [, user ]
 ```
 
-比如将 administrator, developer 设置为 `test@localhost` 的默认启用角色：
+比如将 administrator 和 developer 设置为 `test@localhost` 的默认启用角色：
 
 ```sql
 SET DEFAULT ROLE administrator, developer TO 'test'@'localhost';
 ```
 
-将所有授予给 `test@localhost` 的角色，设为其默认启用角色
+将所有授予给 `test@localhost` 的角色，设为其默认启用角色。
 
 ```sql
 SET DEFAULT ROLE ALL TO 'test'@'localhost';
 ```
 
-关闭所有 `test@localhost` 的默认启用角色。
+关闭 `test@localhost` 的所有默认启用角色。
 
 ```sql
 SET DEFAULT ROLE NONE TO 'test'@'localhost';
@@ -157,10 +156,10 @@ SET ROLE 'role1', 'role2';
 除此之外，还有其他的用法。
 
 ```sql
-SET ROLE DEFAULT --启用当前用户的默认角色
-SET ROLE ALL --启用授予给当前用户的所有角色
-SET ROLE NONE --不启用任何角色
-SET ROLE ALL EXCEPT 'role1', 'role2' --启用除 role1, role2 外的角色。
+SET ROLE DEFAULT --启用当前用户的默认角色。
+SET ROLE ALL --启用授予给当前用户的所有角色。
+SET ROLE NONE --不启用任何角色。
+SET ROLE ALL EXCEPT 'role1', 'role2' --启用除 role1 和 role2 外的角色。
 ```
 
 要注意，使用 `SET ROLE` 启用的角色只有在当前 session 才会有效。
@@ -255,7 +254,7 @@ mysql> select * from mysql.role_edges;
 1 row in set (0.00 sec)
 ```
 
-其中 `FROM_HOST`, `FROM_USER` 分别表示角色的主机名和用户名，`TO_HOST`, `TO_USER` 分别表示被授予角色的用户的主机名和用户名。
+其中 `FROM_HOST` 和 `FROM_USER` 分别表示角色的主机名和用户名，`TO_HOST` 和 `TO_USER` 分别表示被授予角色的用户的主机名和用户名。
 
 `mysql.default_roles` 中包含了每个用户默认启用了哪些角色。
 
@@ -270,11 +269,11 @@ mysql> select * from mysql.default_roles;
 2 rows in set (0.00 sec)
 ```
 
-`HOST`, `USER` 分别表示用户的主机名和用户名，`DEFAULT_ROLE_HOST`, `DEFAULT_ROLE_USER` 分别表示默认启用的角色的主机名和用户名。
+`HOST` 和 `USER` 分别表示用户的主机名和用户名，`DEFAULT_ROLE_HOST` 和 `DEFAULT_ROLE_USER` 分别表示默认启用的角色的主机名和用户名。
 
 ### 其他
 
-因为角色访问控制模块和用户管理以及权限管理结合十分紧密，一些操作的细节需要参考：
+由于角色访问控制模块和用户管理以及权限管理结合十分紧密，因此需要参考一些操作的细节：
 
-- [TiDB 权限管理](privilege.md)。
+- [TiDB 权限管理](privilege-system.md)。
 - [TiDB 用户账户管理](user-account-management.md)
