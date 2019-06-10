@@ -26,9 +26,20 @@ GRANT SELECT ON test.* TO 'xxx'@'%';
 GRANT ALL PRIVILEGES ON *.* TO 'xxx'@'%';
 ```
 
-如果 `GRANT` 的目标用户不存在，TiDB 会自动创建用户。
+`GRANT` 为一个不存在的用户授予权限时，默认并不会自动创建用户。该行为受 SQL Mode 中的 `NO_AUTO_CREATE_USER` 控制。
+如果从 SQL Mode 中去掉 `NO_AUTO_CREATE_USER` 后，当 `GRANT` 的目标用户不存在时，则 TiDB 会自动创建用户。
 
 ```sql
+mysql> select @@sql_mode;                                                                                                                                                                             +-------------------------------------------------------------------------------------------------------------------------------------------+
+| @@sql_mode                                                                                                                                |
++-------------------------------------------------------------------------------------------------------------------------------------------+
+| ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
++-------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> set @@sql_mode='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+Query OK, 0 rows affected (0.00 sec)
+
 mysql> SELECT * FROM mysql.user WHERE user='xxxx';
 Empty set (0.00 sec)
 
