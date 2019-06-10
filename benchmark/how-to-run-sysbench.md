@@ -1,5 +1,5 @@
 ---
-title: 如何用 Sysbench 测试 TiDB
+title: 如何进行 Sysbench 测试（以 TiDB 3.0 Beta 版本为例）
 category: benchmark
 ---
 
