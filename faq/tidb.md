@@ -1006,7 +1006,7 @@ update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_tim
 
 #### 9.1.8 ERROR 9007 (HY000) : Write Conflict
 
-可以检查 `tidb_disable_txn_auto_retry` 是否为 on，如是，将其设置为 off，如已经是 off，将 `tidb_retry_limit` 调大到不再发生该错误。
+可以检查 `tidb_disable_txn_auto_retry` 是否为 on。如是，将其设置为 off；如已经是 off，将 `tidb_retry_limit` 调大到不再发生该错误。
 
 ### 9.2 MySQL 原生报错汇总
 
