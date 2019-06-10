@@ -14,6 +14,8 @@
       - [使用 Docker Compose](dev/how-to/get-started/local-cluster/install-from-docker-compose.md)
     - [SQL 基本操作](dev/how-to/get-started/explore-sql.md)
     - [读取历史数据](dev/how-to/get-started/read-historical-data.md)
+    - [TiDB Binlog 教程](dev/how-to/get-started/tidb-binlog.md)
+    - [TiSpark 教程](dev/how-to/get-started/tispark.md)
   + 部署
     - [软硬件环境需求](dev/how-to/deploy/hardware-recommendations.md)
     + 集群部署方式
@@ -23,7 +25,6 @@
     + 跨地域冗余
       - [跨数据中心部署方案](dev/how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](dev/how-to/deploy/geographic-redundancy/location-awareness.md)
-    - [TiSpark 快速上手](dev/how-to/deploy/tispark.md)
     - [使用 Ansible 部署 DM 集群](dev/how-to/deploy/data-migration-with-ansible.md)
   + 配置
     - [时区](dev/how-to/configure/time-zone.md)
@@ -41,8 +42,7 @@
     + 从 MySQL 迁移
       - [全量迁移](dev/how-to/migrate/from-mysql.md)
       - [增量复制](dev/how-to/migrate/incrementally-from-mysql.md)
-    + 从与 MySQL 兼容的数据库迁移数据
-      - [从 Amazon Aurora MySQL 迁移数据](dev/how-to/migrate/from-aurora.md)
+    - [从 Amazon Aurora MySQL 迁移数据](dev/how-to/migrate/from-aurora.md)
     - [从 CSV 迁移](tools/lightning/csv.md)
   + 运维
     - [Ansible 常见运维操作](dev/how-to/maintain/ansible-operations.md)
@@ -51,14 +51,14 @@
   + 扩容缩容
     - [使用 Ansible 扩容缩容](dev/how-to/scale/with-ansible.md)
   + 升级
-    - [升级至 TiDB 3.0](dev/how-to/upgrade/to-tidb-3.0.md)
+    - [升级至 TiDB 3.0](dev/how-to/upgrade/from-previous-version.md)
     - [升级至 TiDB 2.1](dev/how-to/upgrade/to-tidb-2.1.md)
     - [使用 Ansible 滚动升级](dev/how-to/upgrade/rolling-updates-with-ansible.md)
     - [升级 Data Migration](tools/dm/dm-upgrade.md)
   + 故障诊断
     - [集群配置诊断](dev/how-to/troubleshoot/cluster-setup.md)
-    - [Data Migration 故障诊断](tools/dm/troubleshooting.md)
-    - [TiDB-Lightning 故障诊断](tools/lightning/errors.md)
+    - [Data Migration 故障诊断](dev/how-to/troubleshoot/data-migration.md)
+    - [TiDB Lightning 故障诊断](dev/how-to/troubleshoot/tidb-lightning.md)
 + 参考手册
   + [与 MySQL 兼容性对比](dev/reference/mysql-compatibility.md)
   + SQL
@@ -125,12 +125,13 @@
   + 事务
     - [事务模型](dev/reference/transactions/transaction-model.md)
     - [隔离级别](dev/reference/transactions/transaction-isolation.md)
+    - [悲观事务](dev/reference/transactions/transaction-pessimistic.md)
   + 系统数据库
     - [`mysql`](dev/reference/system-databases/mysql.md)
     - [`information_schema`](dev/reference/system-databases/information-schema.md)
   - [错误码](dev/reference/error-codes.md)
-  - [支持的连接器和 API](dev/reference/connectors-and-APIs.md)
-  - [垃圾回收 (GC)](dev/reference/gc.md)
+  - [支持的连接器和 API](dev/reference/supported-clients.md)
+  - [垃圾回收 (GC)](dev/reference/garbage-collection.md)
   + 性能调优
     - [SQL 优化流程](dev/reference/performance/sql-optimizer-overview.md)
     - [理解 TiDB 执行计划](dev/reference/performance/understanding-the-query-execution-plan.md)
@@ -170,14 +171,17 @@
       - [DM 集群操作](dev/reference/tools/data-migration/cluster-operations.md)
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](dev/how-to/migrate/from-aurora.md)
-    + TiDB-Lightning
+      - [DM 故障诊断](dev/how-to/troubleshoot/data-migration.md)
+    + TiDB Lightning
       - [概述](dev/reference/tools/tidb-lightning/overview.md)
       - [部署执行](dev/reference/tools/tidb-lightning/deployment.md)
       - [断点续传](dev/reference/tools/tidb-lightning/checkpoints.md)
       - [表库过滤](dev/reference/tools/tidb-lightning/filter.md)
       - [CSV 支持](dev/reference/tools/tidb-lightning/csv.md)
       - [监控告警](dev/reference/tools/tidb-lightning/monitor.md)
-    + TiDB-Binlog
+      - [故障诊断](dev/how-to/troubleshoot/tidb-lightning.md)
+      - [FAQ](faq/tidb-lightning.md)
+    + TiDB Binlog
       - [概述](dev/reference/tools/tidb-binlog/overview.md)
       - [部署使用](dev/reference/tools/tidb-binlog/deploy.md)
       - [监控告警](dev/reference/tools/tidb-binlog/monitor.md)
@@ -189,9 +193,9 @@
     - [TiDB Controller](dev/reference/tools/tidb-control.md)
     - [工具下载](dev/reference/tools/download.md)
 + 常见问题 (FAQ)
-  - [TiDB FAQ](FAQ.md)
-  - [TiDB-Lightning FAQ](tools/lightning/faq.md)
-  - [升级 FAQ](op-guide/upgrade-faq.md)
+  - [TiDB FAQ](faq/tidb.md)
+  - [TiDB-Lightning FAQ](faq/tidb-lightning.md)
+  - [升级 FAQ](faq/upgrade.md)
 + 技术支持
   - [支持渠道](support.md)
   - [反馈问题](report-issue.md)
@@ -201,10 +205,12 @@
 - [TiDB 路线图](ROADMAP.md)
 + [版本发布历史](releases/rn.md)
   + v3.0
+    - [3.0.0-rc.2](releases/3.0.0-rc.2.md)
     - [3.0.0-rc.1](releases/3.0.0-rc.1.md)
     - [3.0.0-beta.1](releases/3.0.0-beta.1.md)
     - [3.0.0-beta](releases/3.0beta.md)
   + v2.1
+    - [2.1.11](releases/2.1.11.md)
     - [2.1.10](releases/2.1.10.md)
     - [2.1.9](releases/2.1.9.md)
     - [2.1.8](releases/2.1.8.md)

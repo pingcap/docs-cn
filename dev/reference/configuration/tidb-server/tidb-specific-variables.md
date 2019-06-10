@@ -55,7 +55,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 默认值: 0
 
-这个变量用来设置优化器是否执行 in-子查询展开的优化操作。
+这个变量用来设置优化器是否执行 `in-` 子查询展开的优化操作。
 
 ### tidb_auto_analyze_ratio
 
@@ -212,7 +212,8 @@ set @@global.tidb_distsql_scan_concurrency = 10
 默认值: 0
 
 这个变量用来设置是否自动切分插入数据。仅在 autocommit 开启时有效。
-当插入大量数据时，可以将其设置为 true，这样插入数据会被自动切分为多个 batch，每个 batch 使用一个单独的事务进行插入。
+当插入大量数据时，可以将其设置为 1，这样插入数据会被自动切分为多个 batch，每个 batch 使用一个单独的事务进行插入。
+该用法破坏了事务的原子性，因此，不建议在生产环境中使用。
 
 ### tidb_batch_delete
 
@@ -220,8 +221,9 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 默认值: 0
 
-这个变量用来设置是否自动切分待删除的数据。仅在 autocommit 开启时有效。
-当删除大量数据时，可以将其设置为 true，这样待删除数据会被自动切分为多个 batch，每个 batch 使用一个单独的事务进行删除。
+这个变量用来设置是否自动切分待删除的数据。仅在 autocommit 开启，并且是单表删除的 SQL 时有效。关于单表删除的 SQL 的定义，详见[这里](https://dev.mysql.com/doc/refman/8.0/en/delete.html)。
+当删除大量数据时，可以将其设置为 1，这样待删除数据会被自动切分为多个 batch，每个 batch 使用一个单独的事务进行删除。
+该用法破坏了事务的原子性，因此，不建议在生产环境中使用。
 
 ### tidb_dml_batch_size
 
@@ -348,6 +350,8 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 这个变量用来设置是否禁用显式事务自动重试，设置为 1 时，不会自动重试，如果遇到事务冲突需要在应用层重试。
 
+这个变量不会影响自动提交的隐式事务和 TiDB 内部执行的事务，它们依旧会根据 `tidb_retry_limit` 的值来决定最大重试次数。
+
 是否需要禁用自动重试，请参考[自动重试的风险](/dev/reference/transactions/transaction-isolation.md#乐观事务注意事项)。
 
 ### tidb_back_off_weight
@@ -420,4 +424,45 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 这个变量用来设置是否允许 insert、replace 和 update 操作 _tidb_rowid 列，默认是不允许操作。该选项仅用于 TiDB 工具导数据时使用。
 
+### SHARD_ROW_ID_BITS
 
+对于 PK 非整数或没有 PK 的表，TiDB 会使用一个隐式的自增 rowid，大量 `INSERT` 时会把数据集中写入单个 Region，造成写入热点。
+
+通过设置 `SHARD_ROW_ID_BITS`，可以把 rowid 打散写入多个不同的 Region，缓解写入热点问题。但是设置的过大会造成 RPC 请求数放大，增加 CPU 和网络开销。
+
+- `SHARD_ROW_ID_BITS = 4` 表示 16 个分片
+- `SHARD_ROW_ID_BITS = 6` 表示 64 个分片
+- `SHARD_ROW_ID_BITS = 0` 表示默认值 1 个分片
+
+语句示例：
+
+- `CREATE TABLE`：`CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;`
+- `ALTER TABLE`：`ALTER TABLE t SHARD_ROW_ID_BITS = 4;`
+
+### tidb_slow_log_threshold
+
+作用域：SESSION
+
+默认值：300
+
+输出慢日志的耗时阈值。当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。默认为 300ms。
+
+示例：
+
+```sql
+set tidb_slow_log_threshold = 200
+```
+
+### tidb_query_log_max_len
+
+作用域：SESSION
+
+默认值：2048 (bytes)
+
+最长的 SQL 输出长度。当语句的长度大于 query-log-max-len，将会被截断输出。
+
+示例：
+
+```sql
+set tidb_query_log_max_len = 20
+```

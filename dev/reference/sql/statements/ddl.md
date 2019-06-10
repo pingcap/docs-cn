@@ -359,7 +359,7 @@ index_type:
 
 * 支持 `UNIQUE` 索引，不支持 `FULLTEXT` 和 `SPATIAL` 索引。
 
-* `index_col_name` 支持长度选项，最大长度限制为3072字节，该长度限制不根据建表时使用的存储引擎、字符集而变。这是因为 TiDB 并非使用 Innodb 、 MyISAM 等存储引擎，因此，仅对建表时的存储引擎选项进行了 MySQL 语法上的兼容。对于字符集，TiDB 使用的是 utf8mb4 字符集，对于建表时的字符集选项同样仅有 MySQL 语法上的兼容。详见[与 MySQL 兼容性对比](mysql-compatibility.md)章节。
+* `index_col_name` 支持长度选项，最大长度限制为3072字节，该长度限制不根据建表时使用的存储引擎、字符集而变。这是因为 TiDB 并非使用 Innodb 、 MyISAM 等存储引擎，因此，仅对建表时的存储引擎选项进行了 MySQL 语法上的兼容。对于字符集，TiDB 使用的是 utf8mb4 字符集，对于建表时的字符集选项同样仅有 MySQL 语法上的兼容。详见[与 MySQL 兼容性对比](/dev/reference/mysql-compatibility.md)章节。
 
 * `index_col_name` 支持索引排序选项 `ASC` 和 `DESC`。 排序选项行为与 MySQL 一致，仅支持语法解析，内部所有索引都是以正序排列。详见 MySQL 的 [CREATE INDEX Syntax](https://dev.mysql.com/doc/refman/5.7/en/create-index.html) 章节。
 
