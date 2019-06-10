@@ -418,6 +418,6 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 默认值：0
 
-这个变量用来设置是否允许 insert、replace 和 update 操作 _tidb_rowid 列，默认是不允许操作。该选项仅用于 TiDB 工具导数据时使用。
+这个变量用来设置是否允许 insert、replace 和 update 操作 `_tidb_rowid` 列，默认是不允许操作。该选项仅用于 TiDB 工具导数据时使用。
 
 
