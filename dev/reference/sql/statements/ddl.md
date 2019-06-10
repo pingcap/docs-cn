@@ -208,7 +208,7 @@ RECOVER TABLE tbl_name
 RECOVER TABLE BY JOB job_id
 ```
 
-用来恢复被删除的表。能够恢复的前提条件是还没有超过GC时间。因为超过 GC 时间数据被 GC 后，就无法恢复了。
+用来恢复被删除的表。能够恢复的前提条件是还没有超过 GC 时间。因为超过 GC 时间后数据会被 GC，就无法恢复了。
 
 ## TRUNCATE TABLE 语法
 
