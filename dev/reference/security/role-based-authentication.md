@@ -23,7 +23,7 @@ TiDB 的角色访问控制系统参考 MySQL 的角色访问控制系统进行�
 CREATE ROLE `r_1`@`%`, `r_2`@`%`;
 ```
 
-角色名的格式和规范可以参考用户名规则 [TiDB 用户账户管理](user-account-management.md)。
+角色名的格式和规范可以参考 [TiDB 用户账户管理](user-account-management.md)。
 
 角色会被保存在 `mysql.user` 表中，如果表中有同名角色或用户，角色会创建失败并报错。
 创建角色的用户需要拥有 `CREATE ROLE` 或 `CREATE USER` 权限。
@@ -67,7 +67,7 @@ REVOKE ALL PRIVILEGES ON `test`.* FROM 'genius'@'localhost';
 
 ### 将角色授予给用户
 
-将角色 role1 和 role2 授予给用户 `user1@localhost` 和 `user2@localhost`。 
+将角色 role1 和 role2 同时授予给用户 `user1@localhost` 和 `user2@localhost`。 
 
 ```sql
 GRANT 'role1', 'role2' TO 'user1'@'localhost', 'user2'@'localhost';
@@ -275,5 +275,5 @@ mysql> select * from mysql.default_roles;
 
 由于角色访问控制模块和用户管理以及权限管理结合十分紧密，因此需要参考一些操作的细节：
 
-- [TiDB 权限管理](privilege-system.md)。
+- [TiDB 权限管理](privilege-system.md)
 - [TiDB 用户账户管理](user-account-management.md)
