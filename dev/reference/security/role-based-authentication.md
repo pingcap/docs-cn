@@ -63,7 +63,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'xxx'@'%';
 REVOKE ALL PRIVILEGES ON `test`.* FROM 'genius'@'localhost';
 ```
 
-具体可参考 [TiDB 用户账户管理](privilege.md)。
+具体可参考 [TiDB 权限管理](privilege-system.md)。
 
 ### 将角色授予给用户
 
