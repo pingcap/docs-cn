@@ -204,7 +204,7 @@ DROP TABLE [IF EXISTS]
 # 根据表名来恢复删除的表。
 RECOVER TABLE tbl_name
 
-# 根据drop table 时的 DDL job ID 来恢复删除的表。
+# 根据 drop table 时的 DDL job ID 来恢复删除的表。
 RECOVER TABLE BY JOB job_id
 ```
 
