@@ -15,4 +15,4 @@ category: resources
 + Reddit: [https://www.reddit.com/r/TiDB](https://www.reddit.com/r/TiDB)
 + GitHub: [https://github.com/pingcap/tidb/issues](https://github.com/pingcap/tidb/issues)
 
-有关企业支持合同的信息，请[联系我们](https://pingcap.com/contact-us/)。
+有关企业支持合同的信息，请[联系我们](mailto:info@pingcap.com)。
