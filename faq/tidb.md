@@ -547,7 +547,7 @@ replace HIGH_PRIORITY | LOW_PRIORITY into table_name;
 
 触发策略：新表达到 1000 条，并且在 1 分钟内没有写入，会自动触发。
 
-当表的（修改数/当前总行数）大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 analyze 语句。`tidb_auto_analyze_ratio` 的默认值为 0，即关闭此功能。为了保险起见，在开启此功能的时候，保证了其最小值为 0.3。但是不能大于等于 `pseudo-estimate-ratio`（默认值为 0.7），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
+当表的（修改数/当前总行数）大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 `analyze` 语句。`tidb_auto_analyze_ratio` 的默认值为 0.5，即默认开启此功能。为了保险起见，在开启此功能的时候，保证了其最小值为 0.3。但是不能大于等于 `pseudo-estimate-ratio`（默认值为 0.8），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
 
 #### 3.3.12 SQL 中如何通过 hint 使用一个具体的 index？
 
