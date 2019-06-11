@@ -198,6 +198,18 @@ DROP TABLE [IF EXISTS]
 
 关键字 RESTRICT 和 CASCADE 没有实际效果。其作用是与其他数据库兼容。
 
+## RECOVER TABLE 语法
+
+```sql
+# 根据表名来恢复删除的表。
+RECOVER TABLE tbl_name
+
+# 根据 drop table 时的 DDL job ID 来恢复删除的表。
+RECOVER TABLE BY JOB job_id
+```
+
+用来恢复被删除的表。能够恢复的前提条件是还没有超过 GC 时间。因为超过 GC 时间后数据会被 GC，就无法恢复了。
+
 ## TRUNCATE TABLE 语法
 
 ```sql

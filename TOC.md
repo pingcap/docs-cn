@@ -162,7 +162,7 @@
       + 使用场景
         - [简单的从库同步场景](dev/reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
         - [分库分表合并场景](dev/reference/tools/data-migration/usage-scenarios/shard-merge.md)
-      + [部署使用](dev/reference/tools/data-migration/practice.md)
+      + [部署使用](dev/reference/tools/data-migration/deploy.md)
       + 配置
         - [概述](dev/reference/tools/data-migration/configure/overview.md)
         - [任务配置](dev/reference/tools/data-migration/configure/task-configuration-file.md)
@@ -197,7 +197,7 @@
   - [TiDB-Lightning FAQ](faq/tidb-lightning.md)
   - [升级 FAQ](faq/upgrade.md)
 + 技术支持
-  - [支持渠道](support.md)
+  - [支持渠道](support-resources.md)
   - [反馈问题](report-issue.md)
 + [贡献](contribute.md)
   - [贡献代码](contribute.md#成为-tidb-的贡献者)

@@ -57,6 +57,30 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 这个变量用来设置优化器是否执行 `in-` 子查询展开的优化操作。
 
+### tidb_auto_analyze_ratio
+
+作用域: GLOBAL
+
+默认值: 0.5
+
+这个变量用来设置自动 ANALYZE 更新的阈值。当某个表 `tbl` 的修改行数与总行数的比值大于 tidb_auto_analyze_ratio，并且当前时间在 tidb_auto_analyze_start_time 和 tidb_auto_analyze_end_time 之间时，TiDB 会在后台执行 `ANALYZE TABLE tbl` 语句以自动更新该表的统计信息。注意：只有在 TiDB 的启动配置文件中开启了 run-auto-analyze 选项，该 TiDB 才会触发 auto_analyze。
+
+### tidb_auto_analyze_start_time
+
+作用域: GLOBAL
+
+默认值: 00:00 +0000
+
+这个变量用来设置一天中允许自动 ANALYZE 更新的开始时间。
+
+### tidb_auto_analyze_end_time
+
+作用域: GLOBAL
+
+默认值: 23:59 +0000	
+
+这个变量用来设置一天中允许自动 ANALYZE 更新的结束时间。
+
 ### tidb_build_stats_concurrency
 
 作用域: SESSION
@@ -326,6 +350,8 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 这个变量用来设置是否禁用显式事务自动重试，设置为 1 时，不会自动重试，如果遇到事务冲突需要在应用层重试。
 
+如果将该变量的值设为 0，TiDB 将会自动重试事务，这样在事务提交时遇到的错误更少。需要注意的是，这样可能会导致数据更新丢失。
+
 这个变量不会影响自动提交的隐式事务和 TiDB 内部执行的事务，它们依旧会根据 `tidb_retry_limit` 的值来决定最大重试次数。
 
 是否需要禁用自动重试，请参考[自动重试的风险](/dev/reference/transactions/transaction-isolation.md#乐观事务注意事项)。
@@ -391,6 +417,14 @@ set @@global.tidb_distsql_scan_concurrency = 10
 这个变量用于改变 TiDB server 上执行的语句的默认优先级。例如，你可以通过设置该变量来确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
 
 可设置为 `NO_PRIORITY`、`LOW_PRIORITY`、`DELAYED` 或 `HIGH_PRIORITY`。
+
+### tidb_opt_write_row_id
+
+作用域：SESSION
+
+默认值：0
+
+这个变量用来设置是否允许 insert、replace 和 update 操作 `_tidb_rowid` 列，默认是不允许操作。该选项仅用于 TiDB 工具导数据时使用。
 
 ### SHARD_ROW_ID_BITS
 
