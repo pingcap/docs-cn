@@ -202,7 +202,7 @@
 + [贡献](contribute.md)
   - [贡献代码](contribute.md#成为-tidb-的贡献者)
   - [改进文档](contribute.md#改进文档)
-- [TiDB 路线图](ROADMAP.md)
+- [TiDB 路线图](roadmap.md)
 + [版本发布历史](releases/rn.md)
   + v3.0
     - [3.0.0-rc.2](releases/3.0.0-rc.2.md)
