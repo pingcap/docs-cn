@@ -34,12 +34,21 @@ TiDB Controller 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，�
 
 ### 连接
 
-`tidb-ctl -H/--host { TiDB 服务地址} -P/--port { TiDB 服务端口}`
+`tidb-ctl` 与连接相关的参数有 4 个，分别为：
 
-如不添加地址和端口将使用默认值，默认的地址是 127.0.0.1 (服务地址只能使用 IP 地址)，默认的端口是 10080。**连接选项是顶级选项，适用于以下所有命令。**
+- `--host` TiDB 服务地址
+- `--port` TiDB 服务端口
+- `--pdhost` PD 服务地址
+- `--pdport` PD 服务端口
 
-目前，TiDB Controller 可以获取四类信息，分别通过以下四个命令获得：
+其中 `--pdhost` 和 `--pdport` 主要是用于 `etcd` 子命令，例如：`tidb-ctl etcd ddlinfo`。如不添加地址和端口将使用默认值，TiDB/PD 服务默认的地址是 127.0.0.1 (服务地址只能使用 IP 地址)，TiDB 服务端口默认的端口是 10080，PD 服务端口默认的端口是 2379 **连接选项是全局选项，适用于以下所有命令。**
 
+目前，TiDB Controller 包含以下子命令，各个子命令的具体用法可以使用 `tidb SUBCOMMAND --help` 获取使用帮助：
+
+* `tidb-ctl base64decode` BASE64 解码
+* `tidb-ctl decoder` 用于 KEY 解码
+* `tidb-ctl etcd` 用于操作 etcd
+* `tidb-ctl log` 格式化日志文件，将单行的堆栈信息展开
 * `tidb-ctl mvcc` - MVCC 信息
 * `tidb-ctl region` - Region 信息
 * `tidb-ctl schema` - Schema 信息
@@ -97,9 +106,9 @@ TiDB Controller 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，�
 
 这里同样做了截断。
 
-如希望指定服务地址，可以使用 `-H -P` 选项，如：`tidb-ctl -H 127.0.0.1 -P 10080 schema in mysql -n db`。
+如使用的 TiDB 地址不为默认地址和端口，可以使用命令行参数 `--host`, `--port` 选项，如：`tidb-ctl --host 172.16.55.88 --port 8898 schema in mysql -n db`。
 
-#### base64decode 命令
+#### base64decode 子命令
 
 `base64decode`  用来解码 base64 数据。
 ```shell
@@ -173,3 +182,30 @@ tidb-ctl base64decode [table_id] [base64_data]
     e not found in data
     ```
 
+#### decoder 子命令
+
+* 以下示例解码 row key，index key 类似。
+
+    ```shell
+    ▶ ./tidb-ctl decoder -f table_row -k "t\x00\x00\x00\x00\x00\x00\x00\x1c_r\x00\x00\x00\x00\x00\x00\x00\xfa"
+    table_id: -9223372036854775780
+    row_id: -9223372036854775558
+    ```
+
+* 以下示例解码 value
+
+    ```shell
+    ▶ ./tidb-ctl decoder -f value -k AhZoZWxsbyB3b3JsZAiAEA==
+    type: bytes, value: hello world
+    type: bigint, value: 1024
+    ```
+
+#### etcd 子命令
+
+* `tidb-ctl etcd ddlinfo` 获取 DDL 信息。
+* `tidb-ctl etcd delkey` 删除 etcd 中的 KEY，只有前缀以 `/tidb/ddl/fg/owner/` 和 `/tidb/ddl/all_schema_versions/` 开头才允许被删除。
+* `tidb-ctl etcd putkey KEY VALUE` 添加 KEY VALUE 到 etcd。
+
+#### log 子命令
+
+TiDB 错误日志的堆栈信息是一行的格式，可以使用 `tidb-ctl log` 将堆栈信息格式化成多行形式。
