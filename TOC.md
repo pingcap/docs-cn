@@ -122,7 +122,7 @@
     - [与 MySQL 的安全特性差异](dev/reference/security/compatibility.md)
     - [TiDB 数据库权限管理](dev/reference/security/privilege-system.md)
     - [TiDB 用户账户管理](dev/reference/security/user-account-management.md)
-    - [基于角色的访问控制](dev/reference/security/role-based-authentication.md)
+    - [基于角色的访问控制](dev/reference/security/role-based-authorization.md)
   + 事务
     - [事务模型](dev/reference/transactions/transaction-model.md)
     - [隔离级别](dev/reference/transactions/transaction-isolation.md)
