@@ -73,8 +73,12 @@ TiKV 实例迁移较慢，并且会对集群造成一定的数据迁移负载，
 
 针对短期维护，我们可以通过调整 PD 集群的 `max-store-down-time` 配置来增大集群所允许的 TiKV 实例下线时间，在此时间内维护完毕恢复 Kubernetes 节点后，所有该节点上的 TiKV 实例会自动恢复。
 
-调整 `max-store-donw-time` 到合理的的值后，后续的操作方式与 [维护 PD/TiDB 实例所在节点](#维护-pdtidb-实例所在节点) 相同。 
+    ```shell
+    $ kubectl port-forward svc/${CLUSTER_NAME}-pd 2379:2379
+    $ pd-ctl -d 
+    ```
 
+调整 `max-store-donw-time` 到合理的的值后，后续的操作方式与 [维护 PD/TiDB 实例所在节点](#维护-pdtidb-实例所在节点) 相同。 
 
 ### 短期内不可恢复的节点维护
 
