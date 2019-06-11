@@ -311,7 +311,7 @@
 + FAQs
   - [TiDB FAQs](faq/tidb.md)
   - [TiDB Lightning FAQs](faq/tidb-lightning.md)
-  - [Upgrade FAQs](faq/upgrades.md)
+  - [Upgrade FAQs](faq/upgrade.md)
 + Support  
   - [Support Resources](support-resources.md)
   - [Report an Issue](report-issue.md)
