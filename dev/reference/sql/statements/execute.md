@@ -1,19 +1,22 @@
 ---
-title: PREPARE
-summary: TiDB 数据库中 PREPARE 的使用概况。
+title: EXECUTE
+summary: TiDB 数据库中 EXECUTE 的使用概况。
 category: reference
-aliases: ['/docs/sql/prepare/']
 ---
 
-# PREPARE
+# EXECUTE
 
-`PREPARE` 语句为服务器端预处理语句提供 SQL 接口。
+`EXECUTE` 语句为服务器端预处理语句提供 SQL 接口。
 
 ## 总览
 
-**PreparedStmt:**
+**ExecuteStmt:**
 
-![PreparedStmt](/media/sqlgram/PreparedStmt.png)
+![ExecuteStmt](/media/sqlgram/ExecuteStmt.png)
+
+**Identifier:**
+
+![Identifier](/media/sqlgram/Identifier.png)
 
 ## 实例
 
@@ -38,9 +41,9 @@ Query OK, 0 rows affected (0.00 sec)
 
 ## MySQL 兼容性
 
-`PREPARE` 语句可视为与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上 提交 [issue](/report-issue.md)。
+`EXECUTE` 语句可视为与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上 提交 [issue](/report-issue.md)。
 
 ## 另请参阅
 
-* [EXECUTE](/dev/reference/sql/statements/execute.md)
+* [PREPARE](/dev/reference/sql/statements/prepare.md)
 * [DEALLOCATE](/dev/reference/sql/statements/deallocate.md)
