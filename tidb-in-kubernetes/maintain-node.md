@@ -7,6 +7,8 @@ category: how-to
 
 TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正常运行，因此，我们可以安全地对底层 Kubernetes 节点进行停机维护。在具体操作时，针对 PD/TiKV/TiDB 实例的不同特性，我们还需要采取不同的操作策略。本文档将详细介绍如何对 Kuberentes 节点进行临时或长期的维护操作。
 
+环境准备：除了常规的 `kubectl`, `tkctl` 外，下面的操作还会用到 `jq`，可以参考 [Download jq](https://stedolan.github.io/jq/download/) 进行安装。
+
 > **注意：**
 >
 > 长期维护节点前，需要保证 Kubernetes 集群的剩余资源足够运行 TiDB 集群。
@@ -124,7 +126,7 @@ TiKV 实例迁移较慢，并且会对集群造成一定的数据迁移负载，
     $ kubectl get -n ${namespace} pod ${pod_name} -ojson | jq '.spec.volumes | .[] | select (.name == "tikv") | .persistentVolumeClaim.claimName'
     
     # 删除该 PesistentVolumeClaim
-    $ kubectl delete pvc ${pvc_name}
+    $ kubectl delete -n ${namespace} pvc ${pvc_name}
     ```
 		
 6. 删除 TiKV 实例：
