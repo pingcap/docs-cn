@@ -176,7 +176,7 @@
       - [概述](dev/reference/tools/tidb-lightning/overview.md)
       - [部署执行](dev/reference/tools/tidb-lightning/deployment.md)
       - [断点续传](dev/reference/tools/tidb-lightning/checkpoints.md)
-      - [表库过滤](dev/reference/tools/tidb-lightning/filter.md)
+      - [表库过滤](dev/reference/tools/tidb-lightning/table-filter.md)
       - [CSV 支持](dev/reference/tools/tidb-lightning/csv.md)
       - [监控告警](dev/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](dev/how-to/troubleshoot/tidb-lightning.md)
@@ -202,7 +202,7 @@
 + [贡献](contribute.md)
   - [贡献代码](contribute.md#成为-tidb-的贡献者)
   - [改进文档](contribute.md#改进文档)
-- [TiDB 路线图](ROADMAP.md)
+- [TiDB 路线图](roadmap.md)
 + [版本发布历史](releases/rn.md)
   + v3.0
     - [3.0.0-rc.2](releases/3.0.0-rc.2.md)
