@@ -99,7 +99,7 @@ category: reference
 
 + 访问 Ceph 对象存储时使用的凭据
 + 默认：""
-+_该 Kubernetes Secret 中需要存储访问 Ceph 时使用的 `access_key` 和 `secret_key`。你可以使用下面的命令来创建这个 Secret：
++ 该 Kubernetes Secret 中需要存储访问 Ceph 时使用的 `access_key` 和 `secret_key`。可使用如下命令来创建这个 Secret：
 
     ```shell
     $ kubectl create secret generic ceph-backup-secret -n ${namespace} --from-literal=access_key=<access-key> --from-literal=secret_key=<secret-key>
