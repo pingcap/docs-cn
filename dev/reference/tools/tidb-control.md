@@ -43,7 +43,7 @@ TiDB Controller 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，�
 
 其中 `--pdhost` 和 `--pdport` 主要是用于 `etcd` 子命令，例如：`tidb-ctl etcd ddlinfo`。如不添加地址和端口将使用默认值，TiDB/PD 服务默认的地址是 127.0.0.1 (服务地址只能使用 IP 地址)，TiDB 服务端口默认的端口是 10080，PD 服务端口默认的端口是 2379 **连接选项是全局选项，适用于以下所有命令。**
 
-目前，TiDB Controller 包含以下子命令，各个子命令的具体用法可以使用 `tidb SUBCOMMAND --help` 获取使用帮助：
+目前，TiDB Controller 包含以下子命令，各个子命令的具体用法可以使用 `tidb-ctl SUBCOMMAND --help` 获取使用帮助：
 
 * `tidb-ctl base64decode` BASE64 解码
 * `tidb-ctl decoder` 用于 KEY 解码
