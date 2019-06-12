@@ -303,16 +303,16 @@
     - [TiDB Control](dev/reference/tools/tidb-control.md)
     - [Download](dev/reference/tools/download.md)
   + Key Monitoring Metrics
-    - [Overview](dev/reference/key-monitoring-metrics/overview.md)
-    - [TiDB](dev/reference/key-monitoring-metrics/tidb.md)
-    - [PD](dev/reference/key-monitoring-metrics/pd.md)
-    - [TiKV](dev/reference/key-monitoring-metrics/tikv.md)
+    - [Overview](dev/reference/key-monitoring-metrics/overview-dashboard.md)
+    - [TiDB](dev/reference/key-monitoring-metrics/tidb-dashboard.md)
+    - [PD](dev/reference/key-monitoring-metrics/pd-dashboard.md)
+    - [TiKV](dev/reference/key-monitoring-metrics/tikv-dashboard.md)
   - [Adopters](adopters.md)
 + FAQs
   - [TiDB FAQs](faq/tidb.md)
   - [TiDB Lightning FAQs](faq/tidb-lightning.md)
   - [Upgrade FAQs](faq/upgrade.md)
-+ Support  
++ Support
   - [Support Resources](support-resources.md)
   - [Report an Issue](report-issue.md)
 + Contribute

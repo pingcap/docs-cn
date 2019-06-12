@@ -2,7 +2,7 @@
 title: Key Metrics
 summary: Learn some key metrics displayed on the Grafana Overview dashboard.
 category: reference
-aliases: ['/docs/op-guide/dashboard-overview-info/']
+aliases: ['/docs/op-guide/dashboard-overview-info/','/docs/dev/reference/key-monitoring-metrics/overview/']
 ---
 
 # Key Metrics
