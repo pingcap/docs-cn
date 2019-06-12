@@ -91,7 +91,7 @@ category: reference
 
 ## `ceph.bucket`
 
-+ Ceph 对象存储的 buckt 名字
++ Ceph 对象存储的 bucket 名字
 + 默认：""
 + 用于存储数据到 Ceph 对象存储上
 
