@@ -85,7 +85,7 @@ SPLIT TABLE t INDEX idx BETWEEN (-9223372036854775808) AND (9223372036854775807)
 如果索引 idx1 的列是 varchar 类型，希望根据前缀字母来切分索引数据
 
 ```sql
-SPLIT TABLE t INDEX idx1 BETWEEN ("a") and ("z") regions 26;
+SPLIT TABLE t INDEX idx1 BETWEEN ("a") AND ("z") REGIONS 26;
 ```
 
 上面SQL会把表 t 中 idx1 索引数据的region 从 a ~ z 切成 26 个 region，region1 的范围是 [minIndexValue , b), region 2 的范围是 [b , c) ...... region 26 的范围是 [y , minIndexValue] 。对于 idx 索引以 a 为前缀的数据都会写到 region1, 以 b 为前缀的索引数据都会写到 region 2，以此类推。
@@ -106,7 +106,7 @@ SPLIT TABLE t INDEX idx2 BETWEEN ("2010-01-01 00:00:00") AND ("2020-01-01 00:00:
 比如对于索引 `idx3 (a, b)`，他包含2列，a 是 timestamp, b 是 int。 如果只想根据 a 列做时间范围的切分，可以用切分单列时间索引的SQL 语句来切分，`lower_value` 和 `upper_velue` 中不指定 b 列的值即可。
 
 ```sql
-SPLIT TABLE t INDEX idx3 BETWEEN ("2010-01-01 00:00:00") and ("2020-01-01 00:00:00") regions 10;
+SPLIT TABLE t INDEX idx3 BETWEEN ("2010-01-01 00:00:00") AND ("2020-01-01 00:00:00") REGIONS 10;
 
 ```
 
