@@ -11,7 +11,7 @@ category: how-to
 
 ## 升级 TiDB 版本
 
-1. 修改集群的 `values.yaml` 文件中的 `tidb.image`, `tikv.image`, `pd.image` 的值为新版本镜像；
+1. 修改集群的 `values.yaml` 文件中的 `tidb.image`、`tikv.image`、`pd.image` 的值为新版本镜像；
 2. 执行 `helm upgrade` 命令进行升级：
 
     ```shell
