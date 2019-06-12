@@ -38,7 +38,7 @@ binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e
 > **注意：**
 >
 > - `syncer.meta` 只需要第一次使用的时候配置，后续 Syncer 同步新的 binlog 之后会自动将其更新到最新的 position。
-> - 如果使用 binlog position 同步则只需要配置 `binlog-name` 和 `binlog-pos`; 如果使用 `binlog-gtid` 同步则需要设置 `binlog-gtid`，且启动 Syncer 时带有 `--enable-gtid`。
+> - 如果使用 binlog position 同步则只需要配置 `binlog-name` 和 `binlog-pos`；如果使用 `binlog-gtid` 同步则需要设置 `binlog-gtid`，且启动 Syncer 时带有 `--enable-gtid`。
 
 ### 启动 Syncer
 
@@ -396,7 +396,7 @@ target-table = "order_2017"
 
         如果结果是 `log_bin` = `OFF`，则需要开启 binlog，开启方式请参考[官方文档](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)。
 
-    2. binlog 格式必须为 `ROW`，且参数 `binlog_row_image` 必须设置为 `FULL`, 可使用如下命令查看参数设置：
+    2. binlog 格式必须为 `ROW`，且参数 `binlog_row_image` 必须设置为 `FULL`，可使用如下命令查看参数设置：
 
         ```sql
         mysql> select variable_name, variable_value from information_schema.global_variables where variable_name in ('binlog_format','binlog_row_image');
