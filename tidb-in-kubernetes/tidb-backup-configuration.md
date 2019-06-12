@@ -5,7 +5,7 @@ category: reference
 
 # TiDB Backup 配置参数
 
-`TiDB-Backup` 是一个用于 TiDB 集群备份和恢复的 Helm Chart, 这篇文章将详细介绍 `TiDB-Backup` 的可配置参数。参考[备份与恢复](/dev/how-to/maintain/backup-and-restore.md)了解如何使用 `TiDB-Backup` 进行集群备份恢复。
+TiDB-Backup 是一个用于 TiDB 集群备份和恢复的 Helm Chart, 这篇文章将详细介绍 TiDB-Backup 的可配置参数。参考[备份与恢复](/dev/how-to/maintain/backup-and-restore.md)了解如何使用 TiDB-Backup 进行集群备份恢复。
 
 阅读本文档前，请参考 [Helm 使用说明](/TODO/to-helm-guide) 来了解如何修改这些配置项。 
 
