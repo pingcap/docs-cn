@@ -30,7 +30,7 @@ category: reference
 ## `secretName`
 
 + 访问目标集群时使用的凭据
-+ 默认： "backup-secret"
++ 默认："backup-secret"
 + 该 Kubernetes Secret 中需要存储目标集群的登录用户名和密码，你可以通过以下命令来创建这个 Secret：
     ```shell
     $ kubectl create secret generic backup-secret -n ${namespace} --from-literal=user=root --from-literal=password=<password>
