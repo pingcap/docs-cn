@@ -2,7 +2,7 @@
 title: FAQs After Upgrade
 summary: Learn about the FAQs after upgrading TiDB.
 category: faq
-aliases: ['/docs/op-guide/upgrade-faq/']
+aliases: ['/docs/op-guide/upgrade-faq/','/docs/faq/upgrades/']
 ---
 
 # FAQs After Upgrade
