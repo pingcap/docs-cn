@@ -24,7 +24,7 @@ category: reference
 ## `name`
 
 + 备份名
-+ 默认值： "fullbackup-${date}"，`date` 是备份的开始时间，精确到分钟
++ 默认值："fullbackup-${date}"，`date` 是备份的开始时间，精确到分钟
 + 备份名用于区分不同的备份数据
 
 ## `secretName`
