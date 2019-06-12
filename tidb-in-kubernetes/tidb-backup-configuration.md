@@ -50,7 +50,7 @@ category: reference
 ## `backupOptions`
 
 + 备份参数
-+ 默认： "--chunk-filesize=100"
++ 默认："--chunk-filesize=100"
 + 为备份数据时使用的 [mydumper](/dev/reference/tools/mydumper.md) 指定额外的运行参数
 
 ## `restoreOptions`
