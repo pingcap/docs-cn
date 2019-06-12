@@ -99,3 +99,6 @@ TiDB 支持 SQL92 标准并兼容 MySQL 语法，为了帮您更好地使用 TiD
 ## 与 MySQL 兼容性对比
 - [与 MySQL 兼容性对比](mysql-compatibility.md)
 
+## 利用 SQL 排查问题或查询 TiDB 集训的状态信息
+- [利用 SQL 排查问题或查询 TiDB 集训的状态信息](sql-diagnostic-kit.md)
+
