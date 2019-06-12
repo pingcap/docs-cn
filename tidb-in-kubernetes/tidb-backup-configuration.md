@@ -18,7 +18,7 @@ category: reference
 ## `clusterName`
 
 + 目标集群名字
-+ 默认： "demo"
++ 默认："demo"
 + 指定要从哪个集群进行备份或将数据恢复到哪个集群中
 
 ## `name`
