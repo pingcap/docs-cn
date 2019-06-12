@@ -19,7 +19,7 @@ Similarly, functions such as `GET_LOCK()` and `RELEASE_LOCK()` and statements su
 
 ### Transaction retry
 
-While the transaction retry is not enabled by default, TiDB can automatically retry failed transactions when `tidb_disable_txn_auto_retry = 0`. This feature is disabled by default because retry might lead to lost updates.
+While the transaction retry is not enabled by default, TiDB can automatically retry failed transactions when `tidb_disable_txn_auto_retry = off`. This feature is disabled by default because retry might lead to lost updates.
 
 ### Large transactions
 
