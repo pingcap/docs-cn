@@ -24,17 +24,17 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 ### tidb_snapshot
 
-作用域: SESSION
+作用域：SESSION
 
-默认值: 空字符串
+默认值：空字符串
 
 这个变量用来设置当前会话期待读取的历史数据所处时刻。比如当设置为 "2017-11-11 20:20:20" 时或者一个 TSO 数字 "400036290571534337"，当前会话将能读取到该时刻的数据。
 
 ### tidb_import_data
 
-作用域: SESSION
+作用域：SESSION
 
-默认值: 0
+默认值：0
 
 这个变量用来表示当前状态是否为从 dump 文件中导入数据。
 当这个变量被设置为 1 时，唯一索引约束不被检查以加速导入速度。
@@ -42,117 +42,117 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 ### tidb_opt_agg_push_down
 
-作用域: SESSION
+作用域：SESSION
 
-默认值: 0
+默认值：0
 
 这个变量用来设置优化器是否执行聚合函数下推到 Join 之前的优化操作。
 当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
 
 ### tidb_opt_insubquery_unfold
 
-作用域: SESSION
+作用域：SESSION
 
-默认值: 0
+默认值：0
 
 这个变量用来设置优化器是否执行 `in-` 子查询展开的优化操作。
 
 ### tidb_auto_analyze_ratio
 
-作用域: GLOBAL
+作用域：GLOBAL
 
-默认值: 0.5
+默认值：0.5
 
 这个变量用来设置自动 ANALYZE 更新的阈值。当某个表 `tbl` 的修改行数与总行数的比值大于 tidb_auto_analyze_ratio，并且当前时间在 tidb_auto_analyze_start_time 和 tidb_auto_analyze_end_time 之间时，TiDB 会在后台执行 `ANALYZE TABLE tbl` 语句以自动更新该表的统计信息。注意：只有在 TiDB 的启动配置文件中开启了 run-auto-analyze 选项，该 TiDB 才会触发 auto_analyze。
 
 ### tidb_auto_analyze_start_time
 
-作用域: GLOBAL
+作用域：GLOBAL
 
-默认值: 00:00 +0000
+默认值：00:00 +0000
 
 这个变量用来设置一天中允许自动 ANALYZE 更新的开始时间。
 
 ### tidb_auto_analyze_end_time
 
-作用域: GLOBAL
+作用域：GLOBAL
 
-默认值: 23:59 +0000	
+默认值：23:59 +0000
 
 这个变量用来设置一天中允许自动 ANALYZE 更新的结束时间。
 
 ### tidb_build_stats_concurrency
 
-作用域: SESSION
+作用域：SESSION
 
-默认值: 4
+默认值：4
 
 这个变量用来设置 ANALYZE 语句执行时并发度。
 当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
 
 ### tidb_checksum_table_concurrency
 
-作用域: SESSION
+作用域：SESSION
 
-默认值: 4
+默认值：4
 
 这个变量用来设置 ADMIN CHECKSUM TABLE 语句执行时扫描索引的并发度。
 当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
 
 ### tidb_current_ts
 
-作用域: SESSION
+作用域：SESSION
 
-默认值: 0
+默认值：0
 
 这个变量是一个只读变量，用来获取当前事务的时间戳。
 
 ### tidb_config
 
-作用域: SESSION
+作用域：SESSION
 
-默认值: 空字符串
+默认值：空字符串
 
 这个变量是一个只读变量，用来获取当前 TiDB Server 的配置信息。
 
 ### tidb_distsql_scan_concurrency
 
-作用域: SESSION | GLOBAL
+作用域：SESSION | GLOBAL
 
-默认值: 15
+默认值：15
 
 这个变量用来设置 scan 操作的并发度，AP 类应用适合较大的值，TP 类应用适合较小的值。
 对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
 
 ### tidb_index_lookup_size
 
-作用域: SESSION | GLOBAL
+作用域：SESSION | GLOBAL
 
-默认值: 20000
+默认值：20000
 
 这个变量用来设置 index lookup 操作的 batch 大小，AP 类应用适合较大的值，TP 类应用适合较小的值。
 
 ### tidb_index_lookup_concurrency
 
-作用域: SESSION | GLOBAL
+作用域：SESSION | GLOBAL
 
-默认值: 4
+默认值：4
 
 这个变量用来设置 index lookup 操作的并发度，AP 类应用适合较大的值，TP 类应用适合较小的值。
 
 ### tidb_index_lookup_join_concurrency
 
-作用域: SESSION | GLOBAL
+作用域：SESSION | GLOBAL
 
-默认值: 4
+默认值：4
 
 这个变量用来设置 index lookup join 算法的并发度。
 
 ### tidb_hash_join_concurrency
 
-作用域: SESSION | GLOBAL
+作用域：SESSION | GLOBAL
 
-默认值: 5
+默认值：5
 
 这个变量用来设置 hash join 算法的并发度。
 
@@ -198,18 +198,18 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 ### tidb_skip_utf8_check
 
-作用域: SESSION | GLOBAL
+作用域：SESSION | GLOBAL
 
-默认值: 0
+默认值：0
 
 这个变量用来设置是否跳过 UTF-8 字符的验证。
 验证 UTF-8 字符需要消耗一定的性能，当可以确认输入的字符串为有效的 UTF-8 字符时，可以将其设置为 1。
 
 ### tidb_batch_insert
 
-作用域: SESSION
+作用域：SESSION
 
-默认值: 0
+默认值：0
 
 这个变量用来设置是否自动切分插入数据。仅在 autocommit 开启时有效。
 当插入大量数据时，可以将其设置为 1，这样插入数据会被自动切分为多个 batch，每个 batch 使用一个单独的事务进行插入。
@@ -217,9 +217,9 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 ### tidb_batch_delete
 
-作用域: SESSION
+作用域：SESSION
 
-默认值: 0
+默认值：0
 
 这个变量用来设置是否自动切分待删除的数据。仅在 autocommit 开启，并且是单表删除的 SQL 时有效。关于单表删除的 SQL 的定义，详见[这里](https://dev.mysql.com/doc/refman/8.0/en/delete.html)。
 当删除大量数据时，可以将其设置为 1，这样待删除数据会被自动切分为多个 batch，每个 batch 使用一个单独的事务进行删除。
@@ -227,9 +227,9 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 ### tidb_dml_batch_size
 
-作用域: SESSION
+作用域：SESSION
 
-默认值: 20000
+默认值：20000
 
 这个变量用来设置自动切分插入/待删除数据的的 batch 大小。仅在 tidb_batch_insert 或 tidb_batch_delete 开启时有效。
 
@@ -239,9 +239,9 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 ### tidb_max_chunk_size
 
-作用域: SESSION | GLOBAL
+作用域：SESSION | GLOBAL
 
-默认值: 1024
+默认值：1024
 
 这个变量用来设置执行过程中一个 chunk 最大的行数。
 
@@ -386,7 +386,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 ### tidb_ddl_reorg_worker_cnt
 
-作用域: GLOBAL
+作用域：GLOBAL
 
 默认值：16
 
@@ -394,7 +394,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 ### tidb_ddl_reorg_batch_size
 
-作用域: GLOBAL
+作用域：GLOBAL
 
 默认值：1024
 
