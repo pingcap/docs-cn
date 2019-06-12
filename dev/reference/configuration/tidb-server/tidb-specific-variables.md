@@ -35,7 +35,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 - Default value: 0
 - This variable indicates whether to import data from the dump file currently.
 - To speed up importing, the unique index constraint is not checked when the variable is set to 1.
-- This variable is only used by Lightning. Do not modify it.  
+- This variable is only used by Lightning. Do not modify it.
 
 ### tidb_opt_agg_push_down
 
@@ -76,45 +76,45 @@ set @@global.tidb_distsql_scan_concurrency = 10
 - Default value: ""
 - This variable is read-only. It is used to obtain the configuration information of the current TiDB server.
 
-### tidb_distsql_scan_concurrency 
+### tidb_distsql_scan_concurrency
 
 - Scope: SESSION | GLOBAL
 - Default value: 15
-- This variable is used to set the concurrency of the `scan` operation. 
-- Use a bigger value in OLAP scenarios, and a smaller value in OLTP scenarios. 
+- This variable is used to set the concurrency of the `scan` operation.
+- Use a bigger value in OLAP scenarios, and a smaller value in OLTP scenarios.
 - For OLAP scenarios, the maximum value cannot exceed the number of CPU cores of all the TiKV nodes.
- 
+
 ### tidb_index_lookup_size
 
 - Scope: SESSION | GLOBAL
 - Default value: 20000
-- This variable is used to set the batch size of the `index lookup` operation. 
+- This variable is used to set the batch size of the `index lookup` operation.
 - Use a bigger value in OLAP scenarios, and a smaller value in OLTP scenarios.
- 
+
 ### tidb_index_lookup_concurrency
 
 - Scope: SESSION | GLOBAL
 - Default value: 4
-- This variable is used to set the concurrency of the `index lookup` operation. 
+- This variable is used to set the concurrency of the `index lookup` operation.
 - Use a bigger value in OLAP scenarios, and a smaller value in OLTP scenarios.
 
 ### tidb_index_lookup_join_concurrency
 
 - Scope: SESSION | GLOBAL
 - Default value: 4
-- This variable is used to set the concurrency of the `index lookup join` algorithm. 
+- This variable is used to set the concurrency of the `index lookup join` algorithm.
 
 ### tidb_hash_join_concurrency
 
 - Scope: SESSION | GLOBAL
 - Default value: 5
-- This variable is used to set the concurrency of the `hash join` algorithm. 
+- This variable is used to set the concurrency of the `hash join` algorithm.
 
 ### tidb_index_serial_scan_concurrency
 
 - Scope: SESSION | GLOBAL
 - Default value: 1
-- This variable is used to set the concurrency of the `serial scan` operation. 
+- This variable is used to set the concurrency of the `serial scan` operation.
 - Use a bigger value in OLAP scenarios, and a smaller value in OLTP scenarios.
 
 ### tidb_projection_concurrency
@@ -141,7 +141,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 - Scope: SESSION | GLOBAL
 - Default value: 25000
-- This variable is used to set the batch size of the `index lookup join` operation. 
+- This variable is used to set the batch size of the `index lookup join` operation.
 - Use a bigger value in OLAP scenarios, and a smaller value in OLTP scenarios.
 
 ### tidb_skip_utf8_check
@@ -156,14 +156,16 @@ set @@global.tidb_distsql_scan_concurrency = 10
 - Scope: SESSION
 - Default value: 0
 - This variable is used to set whether to divide the inserted data automatically. It is valid only when `autocommit` is enabled.
-- When inserting a large amount of data, you can set the variable value to true. Then the inserted data is automatically divided into multiple batches and each batch is inserted by a single transaction.
+- When inserting a large amount of data, you can set the variable value to 1. Then the inserted data is automatically divided into multiple batches and each batch is inserted by a single transaction.
+- This operation might lead to a loss of transaction atomicity. Therefore, it is not recommended to use this parameter in the production environment.
 
 ### tidb_batch_delete
 
 - Scope: SESSION
 - Default value: 0
-- This variable is used to set whether to divide the data for deletion automatically. It is valid only when `autocommit` is enabled.
-- When deleting a large amount of data, you can set the variable value to true. Then the data for deletion is automatically divided into multiple batches and each batch is deleted by a single transaction.
+- This variable is used to set whether to divide the data for deletion automatically. It is valid only when you delete from a single table and `autocommit` is enabled. For the definition of single-table DELETE statement, see [here](https://dev.mysql.com/doc/refman/8.0/en/delete.html).
+- When deleting a large amount of data, you can set the variable value to 1. Then the data for deletion is automatically divided into multiple batches and each batch is deleted by a single transaction.
+- This operation might lead to a loss of transaction atomicity. Therefore, it is not recommended to use this parameter in the production environment.
 
 ### tidb_dml_batch_size
 
@@ -183,21 +185,21 @@ set @@global.tidb_distsql_scan_concurrency = 10
 - Scope: SESSION
 - Default value: 32 GB
 - This variable is used to set the threshold value of memory quota for a query.
-- If the memory quota of a query during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file. 
+- If the memory quota of a query during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file.
 
 ### tidb_mem_quota_hashjoin
 
 - Scope: SESSION
 - Default value: 32 GB
 - This variable is used to set the threshold value of memory quota for the `HashJoin` operator.
-- If the memory quota of the `HashJoin` operator during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file. 
+- If the memory quota of the `HashJoin` operator during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file.
 
 ### tidb_mem_quota_mergejoin
 
 - Scope: SESSION
 - Default value: 32 GB
 - This variable is used to set the threshold value of memory quota for the `MergeJoin` operator.
-- If the memory quota of the `MergeJoin` operator during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file. 
+- If the memory quota of the `MergeJoin` operator during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file.
 
 ### tidb_mem_quota_sort
 
