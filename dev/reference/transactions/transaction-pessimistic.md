@@ -92,6 +92,6 @@ default = true
 
 ## 已知的局限
 
-- 不支持 GAP Lock 和 Next Key Lock。在悲观事务内通过范围条件来更新多行数据的时候，其他的事务可以在这个范围内插入数据而不会被阻塞。
+- 不支持 GAP Lock 和 Next Key Lock 在悲观事务内通过范围条件来更新多行数据的时候，其他的事务可以在这个范围内插入数据而不会被阻塞。
 
 - 不支持 SELECT LOCK IN SHARE MODE。
