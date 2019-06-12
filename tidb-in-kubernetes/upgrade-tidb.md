@@ -50,7 +50,7 @@ category: how-to
 
 > **注意：**
 > 
-> 将 `enableConfigMapRollout` 特性从关闭状态打开时，即使没有配置变更，也会触发一次 PD/TiKV/TiDB 的滚动更新
+> 将 `enableConfigMapRollout` 特性从关闭状态打开时，即使没有配置变更，也会触发一次 PD、TiKV、TiDB 的滚动更新。
 
 > **注意：**
 >
