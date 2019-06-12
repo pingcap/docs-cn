@@ -203,8 +203,20 @@ tidb-ctl base64decode [table_id] [base64_data]
 #### etcd 子命令
 
 * `tidb-ctl etcd ddlinfo` 获取 DDL 信息。
+* `tidb-ctl etcd putkey KEY VALUE` 添加 KEY VALUE 到 etcd (所有的 KEY 会添加到 `/tidb/ddl/all_schema_versions/` 之下)。
+
+    ```shell
+    tidb-ctl etcd putkey "foo" "bar"
+    ```
+
+    实际是添加 KEY 为 `/tidb/ddl/all_schema_versions/foo`，VALUE 为 `bar` 的键值对到 etcd 中。
+
 * `tidb-ctl etcd delkey` 删除 etcd 中的 KEY，只有前缀以 `/tidb/ddl/fg/owner/` 和 `/tidb/ddl/all_schema_versions/` 开头才允许被删除。
-* `tidb-ctl etcd putkey KEY VALUE` 添加 KEY VALUE 到 etcd。
+
+    ```shell
+    tidb-ctl etcd delkey "/tidb/ddl/fg/owner/foo"
+    tidb-ctl etcd delkey "/tidb/ddl/all_schema_versions/bar"
+    ```
 
 #### log 子命令
 
