@@ -40,7 +40,7 @@ category: reference
 
 + Kubernetes StorageClass 
 + 默认： "local-storage"
-+ 备份任务需要绑定一个持久卷来永久或临时存储备份数据，`StorageClass` 用于声明持久卷使用的存储类型,，你需要确保该 `StorageClass` 在 Kubernetes 集群中存在。 
++ 备份任务需要绑定一个持久卷 (Persistent Volume, PV) 来永久或临时存储备份数据，`StorageClass` 用于声明持久卷使用的存储类型，需要确保该 `StorageClass` 在 Kubernetes 集群中存在。 
 
 ## `storage.size`
 
