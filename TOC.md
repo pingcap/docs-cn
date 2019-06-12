@@ -97,7 +97,6 @@
     + SQL 语句
       - [数据定义语句 (DDL)](dev/reference/sql/statements/ddl.md)
       - [数据操作语句 (DML)](dev/reference/sql/statements/dml.md)
-      - [事务语句](dev/reference/sql/statements/transaction.md)
       - [Prepared SQL 语句语法](dev/reference/sql/statements/prepare.md)
       - [实用工具语句](dev/reference/sql/statements/util.md)
     - [约束](dev/reference/sql/constraints.md)
