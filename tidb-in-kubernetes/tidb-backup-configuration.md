@@ -12,7 +12,7 @@ category: reference
 ## `mode`
 
 + 运行模式
-+ 默认： "backup"
++ 默认："backup"
 + 可选值为 `backup`(备份集群数据) 和 `restore`(恢复集群数据)
 
 ## `clusterName`
