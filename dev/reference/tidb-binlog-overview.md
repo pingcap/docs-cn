@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tools/binlog/overview/','docs-cn/tools/tidb-binlog-cluster/'
 
 # TiDB Binlog 简介
 
-TiDB Binlog 是一个用于收集 TiDB 的 binlog，并提供实时备份和同步功能的商业工具。
+TiDB Binlog 是一个用于收集 TiDB 的 binlog，并提供准实时备份和同步功能的商业工具。
 
 TiDB Binlog 支持以下功能场景：
 
