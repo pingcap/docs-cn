@@ -7,7 +7,7 @@ category: reference
 
 > **Note:** 为了方便阅读，本文后面用 `values.yaml` 指代 `charts/tidb-cluster/values.yaml`
 
-TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有配置项都在下面列表中. 另外 tidb-cluster 默认的 `values.yaml` 文件默认提供了基本的配置,通过这个基本配置，可以快速得启动一个 TiDB Cluster, 但是如果用户需要特殊配置或是用于生产环境，你需要根据下面列表手动配置对应的配置项.
+TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有配置项都在下面列表中。 另外 tidb-cluster 默认的 `values.yaml` 文件默认提供了基本的配置，通过这个基本配置，可以快速得启动一个 TiDB Cluster， 但是如果用户需要特殊配置或是用于生产环境，你需要根据下面列表手动配置对应的配置项。
 
 | 参数名 | 说明 | 默认值 |
 | ----- | ---- | ----- |
@@ -30,8 +30,8 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有�
 | `pd.image` | PD 镜像 | `pingcap/pd:v3.0.0-rc.1` |
 | `pd.imagePullPolicy` | PD 镜像的拉取策略 | `IfNotPresent` |
 | `pd.logLevel` | PD 日志级别 | `info` |
-| `pd.storageClassName` | PD 使用的 storageClass, storageClassName 指代一种由 Kubernetes 集群提供的存储类型,不同的类可能映射到服务质量级别、备份策略或集群管理员确定的任意策略。详细参考：[storage-classes](https://kubernetes.io/docs/concepts/storage/storage-classes) | `local-storage` |
-| `pd.maxStoreDownTime` | `pd.maxStoreDownTime` 指一个 store 节点断开连接多长时间后状态会被标记为 `down`, 如果状态变为 `down` 后, store 节点开始迁移数据到其它 store 节点 |  |
+| `pd.storageClassName` | PD 使用的 storageClass， storageClassName 指代一种由 Kubernetes 集群提供的存储类型，不同的类可能映射到服务质量级别、备份策略或集群管理员确定的任意策略。详细参考：[storage-classes](https://kubernetes.io/docs/concepts/storage/storage-classes) | `local-storage` |
+| `pd.maxStoreDownTime` | `pd.maxStoreDownTime` 指一个 store 节点断开连接多长时间后状态会被标记为 `down`， 如果状态变为 `down` 后， store 节点开始迁移数据到其它 store 节点 |  |
 | `pd.maxReplicas` | `pd.maxReplicas` 是 TiDB 集群的数据的副本数 | `3` |
 | `pd.resources.limits.cpu` | 每个 PD Pod 的 CPU 资源限额 |  |
 | `pd.resources.limits.memory` | 每个 PD Pod 的内存资源限额 |  |
@@ -39,7 +39,7 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有�
 | `pd.resources.requests.cpu` | 每个 PD Pod 的 CPU 资源请求 |  |
 | `pd.resources.requests.memory` | 每个 PD Pod 的内存资源请求 |  |
 | `pd.resources.requests.storage` | 每个 PD Pod 的存储容量请求 |  |
-| `pd.affinity` | `pd.affinity` 定义 PD 的调度规则和偏好,详细请参考：[affinity-and-anti-affinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity) | `{}` |
+| `pd.affinity` | `pd.affinity` 定义 PD 的调度规则和偏好，详细请参考：[affinity-and-anti-affinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity) | `{}` |
 | `pd.nodeSelector` | `pd.nodeSelector` 确保 PD Pods 只调度到以该键值对作为标签的节点，详情参考：[nodeselector](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#nodeselector) | `{}` |
 | `pd.tolerations` | `pd.tolerations` 应用于 PD Pods，允许 PD Pods 调度到含有指定 taints 的节点上，详情参考：[taint-and-toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration) | `{}` |
 | `pd.annotations` | 为 PD Pods 添加特定的 `annotations` | `{}` |
@@ -47,23 +47,23 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有�
 | `tikv.image` | TiKV 的镜像 | `pingcap/tikv:v3.0.0-rc.1` |
 | `tikv.imagePullPolicy` | TiKV 的镜像拉取策略 | `IfNotPresent` |
 | `tikv.logLevel` | TiKV 的日志级别 | `info` |
-| `tikv.storageClassName` | TiKV 使用的 storageClass, storageClassName 指代一种由 Kubernetes 集群提供的存储类型,不同的类可能映射到服务质量级别、备份策略或集群管理员确定的任意策略。详细参考：[storage-classes](https://kubernetes.io/docs/concepts/storage/storage-classes) | `local-storage` |
-| `tikv.syncLog` | syncLog 指是否启用 raft 日志同步功能,启用该功能能保证在断电时数据不丢失 | `true` |
+| `tikv.storageClassName` | TiKV 使用的 storageClass， storageClassName 指代一种由 Kubernetes 集群提供的存储类型，不同的类可能映射到服务质量级别、备份策略或集群管理员确定的任意策略。详细参考：[storage-classes](https://kubernetes.io/docs/concepts/storage/storage-classes) | `local-storage` |
+| `tikv.syncLog` | syncLog 指是否启用 raft 日志同步功能，启用该功能能保证在断电时数据不丢失 | `true` |
 | `tikv.resources.limits.cpu` | 每个 TiKV Pod 的 CPU 资源限额 |  |
 | `tikv.resources.limits.memory` | 每个 TiKV Pod 的内存资源限额 |  |
 | `tikv.resources.limits.storage` | 每个 TiKV Pod 的存储容量限额 |  |
 | `tikv.resources.requests.cpu` | 每个 TiKV Pod 的 CPU 资源请求 |  |
 | `tikv.resources.requests.memory` | 每个 TiKV Pod 的内存资源请求 |  |
 | `tikv.resources.requests.storage` | 每个 TiKV Pod 的存储容量请求 |  |
-| `tikv.affinity` | `tikv.affinity` 定义 TiKV 的调度规则和偏好,详细请参考：[affinity-and-anti-affinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity) | `{}` |
+| `tikv.affinity` | `tikv.affinity` 定义 TiKV 的调度规则和偏好，详细请参考：[affinity-and-anti-affinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity) | `{}` |
 | `tikv.nodeSelector` | `tikv.nodeSelector`确保 TiKV Pods 只调度到以该键值对作为标签的节点，详情参考：[nodeselector](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#nodeselector) | `{}` |
 | `tikv.tolerations` | `tikv.tolerations` 应用于 TiKV Pods，允许 TiKV Pods 调度到含有指定 taints 的节点上，详情参考：[taint-and-toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration) | `{}` |
 | `tikv.annotations` | 为 TiKV Pods 添加特定的 `annotations` | `{}` |
 | `tikv.defaultcfBlockCacheSize` | 指定 block 缓存大小，block 缓存用于缓存未压缩的 block，较大的 block 缓存设置可以加快读取速度。一般推荐设置为 `tikv.resources.limits.memory` 的 30%-50% | `1GB` |
-| `tikv.writecfBlockCacheSize` | 指定 writecf 的 block 缓存大小，一般推荐设置为 tikv.resources.limits.memory 的 10%-30% | `256MB` |
+| `tikv.writecfBlockCacheSize` | 指定 writecf 的 block 缓存大小，一般推荐设置为 `tikv.resources.limits.memory` 的 10%-30% | `256MB` |
 | `tikv.readpoolStorageConcurrency` | TiKV 存储的高优先级/普通优先级/低优先级操作的线程池大小 | `4` |
-| `tikv.readpoolCoprocessorConcurrency` | 一般如果 `tikv.resources.limits.cpu` > 8,则 `tikv.readpoolCoprocessorConcurrency` 设置为`tikv.resources.limits.cpu` * 0.8 | `8` |
-| `tikv.storageSchedulerWorkerPoolSize` | TiKV 调度程序的工作池大小，应在重写情况下增加，同时应小于总 CPU 核心。 | `4` |
+| `tikv.readpoolCoprocessorConcurrency` | 一般如果 `tikv.resources.limits.cpu` > 8，则 `tikv.readpoolCoprocessorConcurrency` 设置为`tikv.resources.limits.cpu` * 0.8 | `8` |
+| `tikv.storageSchedulerWorkerPoolSize` | TiKV 调度程序的工作池大小，应在重写情况下增加，同时应小于总 CPU 核心 | `4` |
 | `tidb.replicas` | TiDB 的 Pod 数 | `2` |
 | `tidb.image` | TiDB 的镜像 | `pingcap/tidb:v3.0.0-rc.1` |  |
 | `tidb.imagePullPolicy` | TiDB 的镜像拉取策略 | `IfNotPresent` |  |
@@ -74,7 +74,7 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有�
 | `tidb.resources.requests.cpu` | 每个 TiDB Pod 的 CPU 资源请求 |  |
 | `tidb.resources.requests.memory` | 每个 TiDB Pod 的内存资源请求 |  |
 | `tidb.resources.requests.storage` | 每个 TiDB Pod 的存储容量请求 |  |
-| `tidb.affinity` | `tidb.affinity` 定义 TiDB 的调度规则和偏好,详细请参考：[affinity-and-anti-affinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity) | `{}` |
+| `tidb.affinity` | `tidb.affinity` 定义 TiDB 的调度规则和偏好，详细请参考：[affinity-and-anti-affinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity) | `{}` |
 | `tidb.nodeSelector` | `tidb.nodeSelector`确保 TiDB Pods 只调度到以该键值对作为标签的节点，详情参考：[nodeselector](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#nodeselector) | `{}` |
 | `tidb.tolerations` | `tidb.tolerations` 应用于 TiDB Pods，允许 TiDB Pods 调度到含有指定 taints 的节点上，详情参考：[taint-and-toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration) | `{}` |
 | `tidb.annotations` | 为 TiDB Pods 添加特定的 `annotations` | `{}` |
@@ -95,7 +95,7 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有�
 | `tidb.plugin.list` | 指定 TiDB 加载的插件列表，plugin ID 命名规则：插件名-版本，例如：'conn_limit-1' | `[]` |
 | `tidb.preparedPlanCacheEnabled` |   | `false` |
 | `tidb.preparedPlanCacheCapacity` |   | `100` |
-| `tidb.txnLocalLatchesEnabled` | 为事务启用本地锁存,当事务之间存在大量冲突时启用它 | `false` |
+| `tidb.txnLocalLatchesEnabled` | 为事务启用本地锁存，当事务之间存在大量冲突时启用它 | `false` |
 | `tidb.txnLocalLatchesCapacity` |   | `10240000` |
 | `tidb.tokenLimit` | TiDB 并发执行会话的限制 | `1000` |
 | `tidb.memQuotaQuery` | TiDB 查询的内存限额，默认 32GB | `34359738368` |
@@ -104,23 +104,23 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有�
 | `tidb.enableBatchDml` | `tidb.enableBatchDml` 为 DML 启用批提交 | `false` |
 | `tidb.checkMb4ValueInUtf8` | `tidb.checkMb4ValueInUtf8` | 用于控制当字符集为utf8时是否检查mb4字符 | `true` |
 | `tidb.treatOldVersionUtf8AsUtf8mb4` | `tidb.treatOldVersionUtf8AsUtf8mb4`用于升级兼容性。设置为`true`将把旧版本的表/列 utf8 字符集视为 utf8mb4 | `true` |
-| `tidb.lease` | `tidb.lease`是 TiDB Schema lease 的期限，更改是非常危险的,除非你知道想要做什么 | `45s` |
+| `tidb.lease` | `tidb.lease`是 TiDB Schema lease 的期限，更改是非常危险的，除非你知道想要做什么 | `45s` |
 | `tidb.maxProcs` | 最大可使用的CPU核数，0 代表机器/Pod 上的 CPU 数量 | `0` |
 
 ## 资源配置说明
 
-部署前需要根据实际情况和需求，为 TiDB 集群各个组件配置资源，每个资源配置包括 requests 和 limits。以下是各个组件的资源配置说明
-PD/TiKV/TiDB 是 TiDB 集群的核心服务组件，在生产环境下它们的资源配置需要按组件要求指定，具体参考：[资源配置推荐]()
-保证资源的 limits 大于等于 requests, 建议 limits 等于 requests，这样可以保证服务获得 Guaranteed 级别的 QoS。如果是测试环境，可以无需配置资源直接使用 `values.yaml` 中默认的配置。
+部署前需要根据实际情况和需求，为 TiDB 集群各个组件配置资源，如上面列表中所述每个组件的资源配置包括 requests 和 limits，分别指资源的最低要求和最大限额，资源的 limits 要大于等于 requests，建议 limits 等于 requests，这样可以保证服务获得 Guaranteed 级别的 QoS。
+其中 PD/TiKV/TiDB 是 TiDB 集群的核心服务组件，在生产环境下它们的资源配置需要按组件要求指定，具体参考：[资源配置推荐]()
+如果是测试环境，可以无需配置资源直接使用 `values.yaml` 中默认的配置。
 
 ## 容灾配置说明
 
-TiDB 是分布式数据库,它的容灾需要做到在任一个物理拓扑节点发生故障时， 不仅服务不受影响，还要保证数据也是完整和可用。
+TiDB 是分布式数据库，它的容灾需要做到在任一个物理拓扑节点发生故障时， 不仅服务不受影响，还要保证数据也是完整和可用。
 
 ### TiDB 服务的容灾
 
-TiDB Operator 提供了自定义的调度器，该调度器通过指定的调度算法能在 host 层面,保证 TiDB 服务的容灾。目前 TiDB Cluster 使用该调度器作为默认调度器，设置项是 values.yaml 中的 schedulerName。
-其它层面的容灾（e.g. rack, zone, region）是通过 Affinity 的 PodAntiAffinity 来保证，通过 PodAntiAffinity 能尽量避免同一组件的不同实例部署到同一个物理拓扑节点上，从而达到容灾的目的，Affinity 的使用参考：[Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity) 。下面是一个典型的容灾设置例子：
+TiDB Operator 提供了自定义的调度器，该调度器通过指定的调度算法能在 host 层面，保证 TiDB 服务的容灾。目前 TiDB Cluster 使用该调度器作为默认调度器，设置项是 values.yaml 中的 schedulerName。
+其它层面的容灾（e.g. rack， zone， region）是通过 Affinity 的 PodAntiAffinity 来保证，通过 PodAntiAffinity 能尽量避免同一组件的不同实例部署到同一个物理拓扑节点上，从而达到容灾的目的，Affinity 的使用参考：[Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity) 。下面是一个典型的容灾设置例子：
 
 ```shell
 affinity:
@@ -171,7 +171,7 @@ affinity:
 ### 数据的容灾
 
 数据的容灾由 TiDB Cluster 自身的数据调度算法保证，TiDB Operator 唯一要做的是从 TiKV 运行的节点上收集拓扑信息，并调用 PD 接口将这些信息设置为 TiKV 的 store labels 信息，这样 TiDB Cluster 就能基于这些信息来调度数据副本。
-目前 Operator 只能识别特定的几个 label,所以只能使用下面的标签来设置 Node 的拓扑信息：
+目前 Operator 只能识别特定的几个 label，所以只能使用下面的标签来设置 Node 的拓扑信息：
 * `region` 该 Node 节点所在的 region
 * `zone` 该 Node 节点所在的 zone
 * `rack` 该 Node 节点所在的 rack
