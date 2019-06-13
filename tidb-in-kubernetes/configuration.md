@@ -110,7 +110,7 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有�
 ## 资源配置说明
 
 部署前需要根据实际情况和需求，为 TiDB 集群各个组件配置资源，如上面列表中所述每个组件的资源配置包括 requests 和 limits，分别指资源的最低要求和最大限额，资源的 limits 要大于等于 requests，建议 limits 等于 requests，这样可以保证服务获得 Guaranteed 级别的 QoS。
-其中 PD/TiKV/TiDB 是 TiDB 集群的核心服务组件，在生产环境下它们的资源配置需要按组件要求指定，具体参考：[资源配置推荐]()
+其中 PD/TiKV/TiDB 是 TiDB 集群的核心服务组件，在生产环境下它们的资源配置需要按组件要求指定，具体参考：[资源配置推荐]()。
 如果是测试环境，可以无需配置资源直接使用 `values.yaml` 中默认的配置。
 
 ## 容灾配置说明
@@ -120,7 +120,8 @@ TiDB 是分布式数据库，它的容灾需要做到在任一个物理拓扑节
 ### TiDB 服务的容灾
 
 TiDB Operator 提供了自定义的调度器，该调度器通过指定的调度算法能在 host 层面，保证 TiDB 服务的容灾。目前 TiDB Cluster 使用该调度器作为默认调度器，设置项是 values.yaml 中的 schedulerName。
-其它层面的容灾（e.g. rack， zone， region）是通过 Affinity 的 PodAntiAffinity 来保证，通过 PodAntiAffinity 能尽量避免同一组件的不同实例部署到同一个物理拓扑节点上，从而达到容灾的目的，Affinity 的使用参考：[Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity) 。下面是一个典型的容灾设置例子：
+其它层面的容灾（e.g. rack， zone， region）是通过 Affinity 的 PodAntiAffinity 来保证，通过 PodAntiAffinity 能尽量避免同一组件的不同实例部署到同一个物理拓扑节点上，从而达到容灾的目的，Affinity 的使用参考：[Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity) 。
+下面是一个典型的容灾设置例子：
 
 ```shell
 affinity:
