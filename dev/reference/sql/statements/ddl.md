@@ -21,7 +21,7 @@ create_specification:
   | [DEFAULT] COLLATE [=] collation_name
 ```
 
-`CREATE DATABASE` 用于创建数据库，并可以指定数据库的默认属性（如数据库默认字符集,校验规则。`CREATE SCHEMA` 跟 `CREATE DATABASE` 操作效果一样。
+`CREATE DATABASE` 用于创建数据库，并可以指定数据库的默认属性（如数据库默认字符集，校验规则。`CREATE SCHEMA` 跟 `CREATE DATABASE` 操作效果一样。
 
 当创建已存在的数据库且不指定使用 `IF NOT EXISTS` 时会报错。
 
@@ -33,7 +33,7 @@ create_specification:
 DROP {DATABASE | SCHEMA} [IF EXISTS] db_name
 ```
 
-`DROP DATABASE` 用于删除指定数据库以及它其中的所用表格。
+`DROP DATABASE` 用于删除指定数据库以及它其中的所有表格。
 
 `IF EXISTS` 用于防止当数据库不存在时发生错误。
 
