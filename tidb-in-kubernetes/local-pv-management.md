@@ -5,7 +5,7 @@ category: how-to
 
 # 本地 PV 管理
 
-TiDB 是高可用数据库，存储层 TiKV 会对数据进行复制，容忍节点不可用。TiKV 使用高
+TiDB 是一款高可用的数据库。TiDB 的存储层 TiKV 对数据进行复制，容忍节点不可用。TiKV 使用高
 IOPS、吞吐量的本地存储，比如 Local SSDs 时，可提高数据库性能。
 
 Kubernetes 当前支持静态分配的本地存储。可使用
