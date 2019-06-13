@@ -1,5 +1,5 @@
 ---
-title: 本地 PV 管理
+title: 管理本地 PV
 category: how-to
 ---
 
