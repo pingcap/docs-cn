@@ -4,7 +4,7 @@ category: reference
 aliases: ['/docs-cn/sql/diagnostic-kit']
 ---
 
-# SQL diagnostic kit
+# SQL Diagnostic Kit
 
 为了方便排查问题，TiDB 中提供了一些 SQL 和系统表来方便的查询到一些有用的信息。
 
@@ -20,7 +20,7 @@ aliases: ['/docs-cn/sql/diagnostic-kit']
 
 除此之外，还有一些其他的命令也可以获得对于排查问题或者查询集群状态相关的有用信息。
 
-- `ADMIN SHOW DDL` 可以获得是 `DDL owner` 角色的 TiDB 的 ID, `IP:ADDRESS` 等具体的信息。
+- `ADMIN SHOW DDL` 可以获得是 `DDL owner` 角色的 TiDB 的 ID, `IP:PORT` 等具体的信息。
 - `SHOW ANALYZE STATUS`， 和 [`INFORMATION_SCHEMA.ANALYZE_STATUS`](../dev/reference/system-databases/information-schema.md#ANALYZE\_STATUS) 表的功能相同.
 - 特殊的 `EXPLAIN` 语句
 	- `EXPLAIN ANALYZE` 这个语句可以获得一个 SQL 执行中的一些具体信息

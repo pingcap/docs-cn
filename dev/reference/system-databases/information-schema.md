@@ -425,11 +425,10 @@ COLLATION_CONNECTION: utf8_general_ci
 `TIDB_INDEXES` 表提供了 TiDB 中索引的一些信息。
 
 ```
-mysql> show create table tidb_indexes;
-+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Table        | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| TIDB_INDEXES | CREATE TABLE `TIDB_INDEXES` (
+mysql> show create table tidb_indexes\G
+*************************** 1. row ***************************
+       Table: TIDB_INDEXES
+Create Table: CREATE TABLE `TIDB_INDEXES` (
   `TABLE_SCHEMA` varchar(64) DEFAULT NULL,
   `TABLE_NAME` varchar(64) DEFAULT NULL,
   `NON_UNIQUE` bigint(21) unsigned DEFAULT NULL,
@@ -439,33 +438,45 @@ mysql> show create table tidb_indexes;
   `SUB_PART` bigint(21) unsigned DEFAULT NULL,
   `INDEX_COMMENT` varchar(2048) DEFAULT NULL,
   `INDEX_ID` bigint(21) unsigned DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin |
-+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
 1 row in set (0.00 sec)
 ```
 
 其中 `INDEX_ID` 是 TiDB 为每个索引分配的一个 ID，在其他的表格中或者 API 中获取到的 `INDEX_ID` 信息都和这里的信息保持一致。只获得到 `INDEX_ID` 时，可以来这个表中做一些查询来获得更加具体的信息。
+如，我们在 [SLOW_QUERY 表](#SLOW\_QUERY)中得到了某条 SQL 涉及的 `TABLE_ID` 以及 `INDEX_ID`，这时我们可以通过如下的 SQL 来获取索引的信息：
+```
+select
+   tidb_indexes.*
+from
+   tidb_indexes,
+   tables
+where
+   tables.tidb_table_id = ?
+   and tidb_indexes.table_schema = tables.table_schema
+   and tidb_indexes.table_name = tidb_indexes.table_name
+   and index_id = ?
+```
 
 ## TIDB\_HOT\_REGIONS Table
 
 `TIDB_HOT_REGIONS` 表提供了当前 TiKV 中热点 region 的信息。
 
 ```
-mysql> desc tidb_hot_regions;
-+----------------+---------------------+------+------+---------+-------+
-| Field          | Type                | Null | Key  | Default | Extra |
-+----------------+---------------------+------+------+---------+-------+
-| TABLE_ID       | bigint(21) unsigned | YES  |      | NULL    |       |
-| INDEX_ID       | bigint(21) unsigned | YES  |      | NULL    |       |
-| DB_NAME        | varchar(64)         | YES  |      | NULL    |       |
-| TABLE_NAME     | varchar(64)         | YES  |      | NULL    |       |
-| INDEX_NAME     | varchar(64)         | YES  |      | NULL    |       |
-| TYPE           | varchar(64)         | YES  |      | NULL    |       |
-| MAX_HOT_DEGREE | bigint(21) unsigned | YES  |      | NULL    |       |
-| REGION_COUNT   | bigint(21) unsigned | YES  |      | NULL    |       |
-| FLOW_BYTES     | bigint(21) unsigned | YES  |      | NULL    |       |
-+----------------+---------------------+------+------+---------+-------+
-9 rows in set (0.01 sec)
+mysql> show create table tidb_hot_regions\G
+*************************** 1. row ***************************
+       Table: TIDB_HOT_REGIONS
+Create Table: CREATE TABLE `TIDB_HOT_REGIONS` (
+  `TABLE_ID` bigint(21) unsigned DEFAULT NULL,
+  `INDEX_ID` bigint(21) unsigned DEFAULT NULL,
+  `DB_NAME` varchar(64) DEFAULT NULL,
+  `TABLE_NAME` varchar(64) DEFAULT NULL,
+  `INDEX_NAME` varchar(64) DEFAULT NULL,
+  `TYPE` varchar(64) DEFAULT NULL,
+  `MAX_HOT_DEGREE` bigint(21) unsigned DEFAULT NULL,
+  `REGION_COUNT` bigint(21) unsigned DEFAULT NULL,
+  `FLOW_BYTES` bigint(21) unsigned DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+1 row in set (0.00 sec)
 ```
 
 其中，`TABLE_ID`, `INDEX_ID` 是 TiDB 为每个表和索引生成的 ID。
@@ -477,10 +488,10 @@ mysql> desc tidb_hot_regions;
 
 ```
 mysql> show create table TIKV_STORE_STATUS;
-+-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Table             | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-+-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| TIKV_STORE_STATUS | CREATE TABLE `TIKV_STORE_STATUS` (
+mysql> show create table tikv_store_status\G
+*************************** 1. row ***************************
+       Table: TIKV_STORE_STATUS
+Create Table: CREATE TABLE `TIKV_STORE_STATUS` (
   `STORE_ID` bigint(21) unsigned DEFAULT NULL,
   `ADDRESS` varchar(64) DEFAULT NULL,
   `STORE_STATE` bigint(21) unsigned DEFAULT NULL,
@@ -500,8 +511,7 @@ mysql> show create table TIKV_STORE_STATUS;
   `START_TS` datetime unsigned DEFAULT NULL,
   `LAST_HEARTBEAT_TS` datetime unsigned DEFAULT NULL,
   `UPTIME` varchar(64) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin |
-+-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
 1 row in set (0.01 sec)
 ```
 
@@ -510,11 +520,10 @@ mysql> show create table TIKV_STORE_STATUS;
 `TIKV_REGION_STATUS` 表通过 PD 的 API，展示 TiKV 中 Region 的一些基础信息。
 
 ```
-mysql> show create table TIKV_REGION_STATUS;
-+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Table              | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| TIKV_REGION_STATUS | CREATE TABLE `TIKV_REGION_STATUS` (
+mysql> show create table tikv_region_status\G
+*************************** 1. row ***************************
+       Table: TIKV_REGION_STATUS
+Create Table: CREATE TABLE `TIKV_REGION_STATUS` (
   `REGION_ID` bigint(21) unsigned DEFAULT NULL,
   `START_KEY` text DEFAULT NULL,
   `END_KEY` text DEFAULT NULL,
@@ -524,8 +533,7 @@ mysql> show create table TIKV_REGION_STATUS;
   `READ_BYTES` bigint(21) unsigned DEFAULT NULL,
   `APPROXIMATE_SIZE` bigint(21) unsigned DEFAULT NULL,
   `APPROXIMATE_KEYS` bigint(21) unsigned DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin |
-+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
 1 row in set (0.00 sec)
 ```
 
@@ -536,11 +544,10 @@ mysql> show create table TIKV_REGION_STATUS;
 `TIKV_REGION_PEERS` 通过 PD 的 API，展示了 TikV 中 单个 Region 节点的一些详细信息。诸如是否是 learner，是否是 leader等。
 
 ```
-mysql> show create table TIKV_REGION_PEERS;
-+-------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Table             | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                        |
-+-------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| TIKV_REGION_PEERS | CREATE TABLE `TIKV_REGION_PEERS` (
+mysql> show create table tikv_region_peers\G
+*************************** 1. row ***************************
+       Table: TIKV_REGION_PEERS
+Create Table: CREATE TABLE `TIKV_REGION_PEERS` (
   `REGION_ID` bigint(21) unsigned DEFAULT NULL,
   `PEER_ID` bigint(21) unsigned DEFAULT NULL,
   `STORE_ID` bigint(21) unsigned DEFAULT NULL,
@@ -548,8 +555,7 @@ mysql> show create table TIKV_REGION_PEERS;
   `IS_LEADER` tinyint(1) unsigned DEFAULT NULL,
   `STATUS` varchar(10) DEFAULT NULL,
   `DOWN_SECONDS` bigint(21) unsigned DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin |
-+-------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
 1 row in set (0.00 sec)
 ```
 
@@ -558,11 +564,10 @@ mysql> show create table TIKV_REGION_PEERS;
 `ANALYZE_STATUS` 表展示了当前集群 `ANALYZE` 命令的执行情况。
 
 ```
-mysql> show create table analyze_status;
-+----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Table          | Create Table                                                                                                                                                                                                                                                                                                                                                                                               |
-+----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ANALYZE_STATUS | CREATE TABLE `ANALYZE_STATUS` (
+mysql> show create table analyze_status\G
+*************************** 1. row ***************************
+       Table: ANALYZE_STATUS
+Create Table: CREATE TABLE `ANALYZE_STATUS` (
   `TABLE_SCHEMA` varchar(64) DEFAULT NULL,
   `TABLE_NAME` varchar(64) DEFAULT NULL,
   `PARTITION_NAME` varchar(64) DEFAULT NULL,
@@ -570,12 +575,51 @@ mysql> show create table analyze_status;
   `PROCESSED_ROWS` bigint(20) unsigned DEFAULT NULL,
   `START_TIME` datetime unsigned DEFAULT NULL,
   `STATE` varchar(64) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin |
-+----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
 1 row in set (0.00 sec)
 ```
 
 其中 STATE 列表明了一个具体的 analyze 任务的执行情况，可能有如下四个值 `pending`, `running`, `finished`, `failed`。
+
+## SLOW\_QUERY
+
+`SLOW_QUERY` 表是映射了慢查询日志的表。其列名均和慢查询日志中的字段名一一对应。具体信息可以查看[慢查询日志](../../how-to/maintain/identify-slow-queries.md)
+
+```
+mysql> show create table slow_query\G
+*************************** 1. row ***************************
+       Table: SLOW_QUERY
+Create Table: CREATE TABLE `SLOW_QUERY` (
+  `Time` timestamp unsigned NULL DEFAULT NULL,
+  `Txn_start_ts` bigint(20) unsigned DEFAULT NULL,
+  `User` varchar(64) DEFAULT NULL,
+  `Host` varchar(64) DEFAULT NULL,
+  `Conn_ID` bigint(20) unsigned DEFAULT NULL,
+  `Query_time` double unsigned DEFAULT NULL,
+  `Process_time` double unsigned DEFAULT NULL,
+  `Wait_time` double unsigned DEFAULT NULL,
+  `Backoff_time` double unsigned DEFAULT NULL,
+  `Request_count` bigint(20) unsigned DEFAULT NULL,
+  `Total_keys` bigint(20) unsigned DEFAULT NULL,
+  `Process_keys` bigint(20) unsigned DEFAULT NULL,
+  `DB` varchar(64) DEFAULT NULL,
+  `Index_ids` varchar(100) DEFAULT NULL,
+  `Is_internal` tinyint(1) unsigned DEFAULT NULL,
+  `Digest` varchar(64) DEFAULT NULL,
+  `Stats` varchar(512) DEFAULT NULL,
+  `Cop_proc_avg` double unsigned DEFAULT NULL,
+  `Cop_proc_p90` double unsigned DEFAULT NULL,
+  `Cop_proc_max` double unsigned DEFAULT NULL,
+  `Cop_proc_addr` varchar(64) DEFAULT NULL,
+  `Cop_wait_avg` double unsigned DEFAULT NULL,
+  `Cop_wait_p90` double unsigned DEFAULT NULL,
+  `Cop_wait_max` double unsigned DEFAULT NULL,
+  `Cop_wait_addr` varchar(64) DEFAULT NULL,
+  `Mem_max` bigint(20) unsigned DEFAULT NULL,
+  `Query` varchar(4096) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+1 row in set (0.00 sec)
+```
 
 ## 不支持的 Information Schema 表
 
