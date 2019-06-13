@@ -6,7 +6,7 @@ aliases: ['/docs-cn/sql/window-functions/']
 
 # 窗口函数
 
-TiDB 中窗口函数的使用方法与 MySQL 基本一致，详情参见: [Window Functions](https://dev.mysql.com/doc/refman/8.0/en/window-functions.html)。使用窗口函数时需将 `tidb_enable_window_function` (默认值为 `0`) 设置为 `1`。
+TiDB 中窗口函数的使用方法与 MySQL 基本一致，详情可参见 [MySQL 窗口函数](https://dev.mysql.com/doc/refman/8.0/en/window-functions.html)。使用窗口函数时需将 `tidb_enable_window_function` 设置为 `1`，其默认值为 `0`。
 
 TiDB 支持的窗口函数如下所示：
 
