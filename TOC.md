@@ -122,6 +122,7 @@
     - [TiDB 数据库权限管理](dev/reference/security/privilege-system.md)
     - [TiDB 用户账户管理](dev/reference/security/user-account-management.md)
   + 事务
+    - [事务语句](dev/reference/transactions/overview.md)
     - [事务模型](dev/reference/transactions/transaction-model.md)
     - [隔离级别](dev/reference/transactions/transaction-isolation.md)
     - [悲观事务](dev/reference/transactions/transaction-pessimistic.md)
