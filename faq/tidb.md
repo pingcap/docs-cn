@@ -683,7 +683,7 @@ This is because the disk space is not enough. You need to add nodes or enlarge t
 
 #### Why does the OOM (Out of Memory) error occur frequently in TiKV?
 
-The memory usage of TiKV mainly comes from the block-cache of RocksDB, which is 40% of the system memory size by default. When the OOM error occurs frequently in TiKV, you should check whether the value of `block-cache-size` is set too high. In addition, when multiple TiKV instances are deployed on a single machine, you need to explicitly configure the parameter to prevent multiple instances from using too much system memory that results in the OOM error. 
+The memory usage of TiKV mainly comes from the block-cache of RocksDB, which is 40% of the system memory size by default. When the OOM error occurs frequently in TiKV, you should check whether the value of `block-cache-size` is set too high. In addition, when multiple TiKV instances are deployed on a single machine, you need to explicitly configure the parameter to prevent multiple instances from using too much system memory that results in the OOM error.
 
 ### TiDB test
 
@@ -725,7 +725,7 @@ See [mydumper Instructions](/tools/mydumper.md).
 
 #### Loader
 See [Loader Instructions](/tools/loader.md).
- 
+
 #### How to migrate an application running on MySQL to TiDB?
 
 Because TiDB supports most MySQL syntax, generally you can migrate your applications to TiDB without changing a single line of code in most cases.
@@ -770,8 +770,8 @@ INSERT INTO mysql.user VALUES ("%", "root", "", "Y", "Y", "Y", "Y", "Y", "Y", "Y
 ```
 
 #### Can TiDB provide services while Loader is running?
- 
- TiDB can provide services while Loader is running because Loader inserts the data logically. But do not perform the related DDL operations.
+
+TiDB can provide services while Loader is running because Loader inserts the data logically. But do not perform the related DDL operations.
 
 #### How to export the data in TiDB?
 
@@ -799,7 +799,7 @@ Two solutions:
 
 - Add the `-Dsqoop.export.records.per.statement=10` option as follows:
 
-    ```
+    ```bash
     sqoop export \
         -Dsqoop.export.records.per.statement=10 \
         --connect jdbc:mysql://mysql.example.com/sqoop \
@@ -1023,7 +1023,7 @@ The monitoring system of TiDB consists of Prometheus and Grafana. From the dashb
 
 Yes. Find the startup script on the machine where Prometheus is started, edit the startup parameter and restart Prometheus.
 
-```
+```config
 --storage.tsdb.retention="60d"
 ```
 
@@ -1044,6 +1044,10 @@ The `Statement OPS` statistics is only about applications related SQL statements
 ## Troubleshoot
 
 ### TiDB custom error messages
+
+#### ERROR 8005 (HY000): Write Conflict, txnStartTS is stale
+
+Check whether `tidb_disable_txn_auto_retry` is set to `on`. If so, set it to `off`; if it is already `off`, increase the value of `tidb_retry_limit` until the error no longer occurs.
 
 #### ERROR 9001 (HY000): PD Server Timeout
 
@@ -1069,13 +1073,17 @@ The accessed Region is not available. A Raft Group is not available, with possib
 
 The interval of `GC Life Time` is too short. The data that should have been read by long transactions might be deleted. You can add `GC Life Time` using the following command:
 
-```
+```sql
 update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_time';
 ```
 
 > **Note:**
 >
 > "30m" means only cleaning up the data generated 30 minutes ago, which might consume some extra storage space.
+
+#### ERROR 9007 (HY000): Write Conflict
+
+Check whether `tidb_disable_txn_auto_retry` is set to `on`. If so, set it to `off`; if it is already `off`, increase the value of `tidb_retry_limit` until the error no longer occurs.
 
 ### MySQL native error messages
 
