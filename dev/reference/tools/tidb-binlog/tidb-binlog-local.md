@@ -1,39 +1,39 @@
 ---
-title: TiDB-Binlog Local 部署方案
+title: TiDB Binlog Local 部署方案
 category: reference
 aliases: ['/docs-cn/tools/binlog/tidb-binlog-local/']
 ---
 
-# TiDB-Binlog Local 部署方案
+# TiDB Binlog Local 部署方案
 
-## TiDB-Binlog-local 简介
+## TiDB Binlog Local 简介
 
-TiDB-Binlog 是用于收集 TiDB 的 Binlog，并提供实时备份和同步功能的商业工具。
+TiDB Binlog 是用于收集 TiDB 的 Binlog，并提供实时备份和同步功能的商业工具。
 
-TiDB-Binlog 支持以下功能场景:
+TiDB Binlog 支持以下功能场景:
 
 * **数据同步**：同步 TiDB 集群数据到其他数据库。
 * **实时备份和恢复**：备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复。
 
-## TiDB-Binlog-local 架构
+## TiDB Binlog Local 架构
 
-下图为 TiDB-Binlog 的整体架构。
+下图为 TiDB Binlog Local的整体架构。
 
-![TiDB-Binlog 架构](/media/architecture.jpeg)
+![TiDB Binlog 架构](/media/architecture.jpeg)
 
-TiDB-Binlog 集群主要分为两个组件：
+TiDB Binlog Local 主要分为两个组件：
 
 - **Pump** 是一个守护进程，在每个 TiDB 的主机上后台运行。他的主要功能是实时记录 TiDB 产生的 Binlog 并顺序写入磁盘文件
 
 - **Drainer** 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提交顺序转化为指定数据库兼容的 SQL 语句，最后同步到目的数据库或者写到顺序文件
 
-## TiDB-Binlog-local 安装
+## TiDB Binlog Local 安装
 
-### TiDB-Binlog-local 下载
+### TiDB Binlog Local 下载
 
-TiDB-Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/dev/reference/tools/download.md)。
+TiDB Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/dev/reference/tools/download.md)。
 
-### TiDB-Binlog-local 部署
+### TiDB Binlog Local 部署
 
 #### 注意
 
@@ -67,7 +67,7 @@ TiDB-Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/de
     dir = "/path/pb-dir"
     ```
 
-#### 使用 tidb-ansible 部署 Pump (推荐)
+#### 使用 TiDB Ansible 部署 Pump (推荐)
 
 *   搭建全新的 TiDB Cluster，启动顺序 pd-server -> tikv-server -> pump -> tidb-server -> drainer
     * 修改 tidb-ansible inventory.ini 文件
@@ -263,9 +263,9 @@ TiDB-Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/de
     ./bin/drainer -config drainer.toml
     ```
 
-## TiDB-Binlog 监控
+## TiDB Binlog Local 监控
 
-这部分主要对 TiDB-Binlog 的状态、性能做监控，通过 Prometheus + Grafana 展现 metrics 数据，
+这部分主要对 TiDB Binlog 的状态、性能做监控，通过 Prometheus + Grafana 展现 metrics 数据，
 
 ### pump/drainer 配置
 

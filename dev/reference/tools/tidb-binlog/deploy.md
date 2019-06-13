@@ -1,24 +1,24 @@
 ---
-title: TiDB-Binlog 集群部署
+title: TiDB Binlog 集群部署
 category: reference
 aliases: ['/docs-cn/tools/binlog/deploy/']
 ---
 
-# TiDB-Binlog 集群部署
+# TiDB Binlog 集群部署
 
-## 使用 TiDB-Ansible 部署 TiDB-Binlog
+## 使用 TiDB Ansible 部署 TiDB Binlog
 
-### 第 1 步：下载 TiDB-Ansible
+### 第 1 步：下载 TiDB Ansible
 
-1. 以 TiDB 用户登录中控机并进入 `/home/tidb` 目录。以下为 TiDB-Ansible 分支与 TiDB 版本的对应关系，版本选择可咨询官方 info@pingcap.com。
+1. 以 TiDB 用户登录中控机并进入 `/home/tidb` 目录。以下为 TiDB Ansible 分支与 TiDB 版本的对应关系，版本选择可咨询官方 info@pingcap.com。
 
-    | TiDB-Ansible 分支 | TiDB 版本 | 备注 |
+    | TiDB Ansible 分支 | TiDB 版本 | 备注 |
     | ---------------- | --------- | --- |
     | release-2.0-new-binlog | 2.0 版本 | 最新 2.0 稳定版本，可用于生产环境。 |
     | release-2.1 | 2.1 版本 | 最新 2.1 稳定版本，可用于生产环境（建议）。 |
     | master | master 版本 | 包含最新特性，每日更新。 |
 
-2. 使用以下命令从 GitHub [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible 相应分支，默认的文件夹名称为 `tidb-ansible`。
+2. 使用以下命令从 GitHub [TiDB Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB Ansible 相应分支，默认的文件夹名称为 `tidb-ansible`。
 
     - 下载 2.0 版本：
 
@@ -229,7 +229,7 @@ aliases: ['/docs-cn/tools/binlog/deploy/']
     $ ansible-playbook start_drainer.yml
     ```
 
-## 使用 Binary 部署 TiDB-Binlog
+## 使用 Binary 部署 TiDB Binlog
 
 ### 下载官方 Binary
 

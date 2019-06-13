@@ -1,10 +1,10 @@
 ---
-title: TiDB-Binlog 集群运维
+title: TiDB Binlog 集群运维
 category: reference
 aliases: ['/docs-cn/tools/binlog/operation/']
 ---
 
-# TiDB-Binlog 集群运维
+# TiDB Binlog 集群运维
 
 ## Pump/Drainer 状态
 

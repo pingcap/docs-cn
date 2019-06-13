@@ -1,26 +1,26 @@
 ---
-title: TiDB-Binlog Cluster 版本升级方法
+title: TiDB Binlog Cluster 版本升级方法
 category: reference
 aliases: ['/docs-cn/tools/binlog/upgrade/']
 ---
 
-# TiDB-Binlog Cluster 版本升级方法
+# TiDB Binlog Cluster 版本升级方法
 
 新版本的 TiDB（v2.0.8-binlog、v2.1.0-rc.5 及以上版本）不兼容 [Kafka 版本](/dev/reference/tools/tidb-binlog/tidb-binlog-kafka.md)以及 [Local 版本](/dev/reference/tools/tidb-binlog/tidb-binlog-local.md)的 TiDB-Binlog，集群升级到新版本后只能使用 Cluster 版本的 TiDB-Binlog。如果在升级前已经使用了 Kafka／Local 版本的 TiDB-Binlog，必须将其升级到 Cluster 版本。
 
-TiDB-Binlog 版本与 TiDB 版本的对应关系如下：
+TiDB Binlog 版本与 TiDB 版本的对应关系如下：
 
-| TiDB-Binlog 版本 | TiDB 版本 | 说明 |
+| TiDB Binlog 版本 | TiDB 版本 | 说明 |
 |---|---|---|
 | Local | TiDB 1.0 及更低版本 ||
-| Kafka | TiDB 1.0 ~ TiDB 2.1 RC5 | TiDB 1.0 支持 local 版本和 Kafka 版本的 TiDB-Binlog。 |
-| Cluster | TiDB v2.0.8-binlog，TiDB 2.1 RC5 及更高版本 | TiDB v2.0.8-binlog 是一个支持 Cluster 版本 TiDB-Binlog 的 2.0 特殊版本。 |
+| Kafka | TiDB 1.0 ~ TiDB 2.1 RC5 | TiDB 1.0 支持 local 版本和 Kafka 版本的 TiDB Binlog。 |
+| Cluster | TiDB v2.0.8-binlog，TiDB 2.1 RC5 及更高版本 | TiDB v2.0.8-binlog 是一个支持 Cluster 版本 TiDB Binlog 的 2.0 特殊版本。 |
 
 ## 升级流程
 
 > **注意：**
 >
-> 如果能接受重新导全量数据，则可以直接废弃老版本，按 [TiDB-Binlog 集群部署](/dev/reference/tools/tidb-binlog/deploy.md)中的步骤重新部署。
+> 如果能接受重新导全量数据，则可以直接废弃老版本，按 [TiDB Binlog 集群部署](/dev/reference/tools/tidb-binlog/deploy.md)中的步骤重新部署。
 
 如果想从原来的 checkpoint 继续同步，使用以下升级流程：
 
