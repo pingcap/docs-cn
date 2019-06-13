@@ -15,4 +15,4 @@ local-volume-provisioner 程序创建本地存储对象。流程如下：
  1. 参考 Kubernetes 提供的 [操作文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md)，在 TiKV 集群节点中预分配本地存储。
 2. 参考 Helm 的 [部署案例](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/tree/master/helm)，部署 local-volume-provisioner 程序。
 
-更多可了解 [Kubernetes 本地存储](https://kubernetes.io/docs/concepts/storage/volumes/#local) 和 [local-static-provisioner 文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner#overview)。
+更多信息，可参阅 [Kubernetes 本地存储](https://kubernetes.io/docs/concepts/storage/volumes/#local) 和 [local-static-provisioner 文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner#overview)。
