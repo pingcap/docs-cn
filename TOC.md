@@ -26,7 +26,7 @@
       - [跨数据中心部署方案](dev/how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](dev/how-to/deploy/geographic-redundancy/location-awareness.md)
     - [使用 Ansible 部署 DM 集群](dev/how-to/deploy/data-migration-with-ansible.md)
-    - [TiDB-Binlog 集群部署](dev/how-to/deploy/tidb-binlog.deploy.md)
+    - [TiDB-Binlog 集群部署](dev/how-to/deploy/tidb-binlog-deploy.md)
   + 配置
     - [时区](dev/how-to/configure/time-zone.md)
     - [内存控制](dev/how-to/configure/memory-control.md)
@@ -38,7 +38,7 @@
   + 监控
     - [概述](dev/how-to/monitor/overview.md)
     - [监控 TiDB 集群](dev/how-to/monitor/monitor-a-cluster.md)
-    - [TiDB Binlog 集群监控](dev/how-to/monitor/tidb-binlog.monitor.md)
+    - [TiDB Binlog 集群监控](dev/how-to/monitor/tidb-binlog-monitor.md)
   + 迁移
     - [概述](dev/how-to/migrate/overview.md)
     + 从 MySQL 迁移
@@ -50,7 +50,7 @@
     - [Ansible 常见运维操作](dev/how-to/maintain/ansible-operations.md)
     + [备份与恢复](dev/how-to/maintain/backup-and-restore.md)
     - [定位慢查询](dev/how-to/maintain/identify-slow-queries.md)
-    - [TiDB Binlog 集群运维](dev/how-to/maintain/tidb-binlog.operation.md)
+    - [TiDB Binlog 集群运维](dev/how-to/maintain/tidb-binlog-operation.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](dev/how-to/scale/with-ansible.md)
   + 升级
@@ -58,7 +58,7 @@
     - [升级至 TiDB 2.1](dev/how-to/upgrade/to-tidb-2.1.md)
     - [使用 Ansible 滚动升级](dev/how-to/upgrade/rolling-updates-with-ansible.md)
     - [升级 Data Migration](tools/dm/dm-upgrade.md)
-    - [TiDB Binlog Cluster 版本升级方法](dev/how-to/upgrade/tidb-binlog.upgrade.md)
+    - [TiDB Binlog Cluster 版本升级方法](dev/how-to/upgrade/tidb-binlog-upgrade.md)
   + 故障诊断
     - [集群配置诊断](dev/how-to/troubleshoot/cluster-setup.md)
     - [Data Migration 故障诊断](dev/how-to/troubleshoot/data-migration.md)
@@ -186,12 +186,6 @@
       - [监控告警](dev/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](dev/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](faq/tidb-lightning.md)
-    + TiDB Binlog
-      - [概述](dev/reference/tools/tidb-binlog/overview.md)
-      - [部署使用](dev/reference/tools/tidb-binlog/deploy.md)
-      - [监控告警](dev/reference/tools/tidb-binlog/monitor.md)
-      - [运维管理](dev/reference/tools/tidb-binlog/operation.md)
-      - [版本升级](dev/reference/tools/tidb-binlog/upgrade.md)
     - [PD Control](dev/reference/tools/pd-control.md)
     - [PD Recover](dev/reference/tools/pd-recover.md)
     - [TiKV Control](https://github.com/tikv/tikv/blob/master/docs/tools/tikv-control.md)
