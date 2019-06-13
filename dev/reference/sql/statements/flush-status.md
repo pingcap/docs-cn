@@ -8,7 +8,7 @@ category: reference
 
 `FLUSH STATUS` 语句用于提供 MySQL 兼容性，但在 TiDB 上并无作用。因为 TiDB 使用 Prometheus 和 Grafana 而非 `SHOW STATUS` 来进行集中度量收集。
 
-## 总览
+## 语法图
 
 **FlushStmt:**
 
@@ -22,7 +22,7 @@ category: reference
 
 ![FlushOption](/media/sqlgram/FlushOption.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> show status;

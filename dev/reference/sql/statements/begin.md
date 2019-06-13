@@ -11,13 +11,13 @@ category: reference
 在没有 `BEGIN` 语句的情况下，每个语句默认在各自的事务中自动提交，从而确保 MySQL 兼容性。
 
 
-## 总览
+## 语法图
 
 **BeginTransactionStmt:**
 
 ![BeginTransactionStmt](/media/sqlgram/BeginTransactionStmt.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (a int NOT NULL PRIMARY KEY);

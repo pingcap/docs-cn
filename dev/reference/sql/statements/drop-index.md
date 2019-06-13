@@ -8,7 +8,7 @@ category: reference
 
 `DROP INDEX` 语句用于从指定的表中删除索引，在 TiKV 中将空间标记为释放。
 
-## 总览
+## 语法图
 
 **AlterTableStmt:**
 
@@ -26,7 +26,7 @@ category: reference
 
 ![Identifier](/media/sqlgram/Identifier.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);

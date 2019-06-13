@@ -8,7 +8,7 @@ category: reference
 
 从语义上看，`REPLACE` 语句是 `DELETE` 语句和 `INSERT` 语句的结合，可用于简化应用程序代码。
 
-## 总览
+## 语法图
 
 **ReplaceIntoStmt:**
 
@@ -30,7 +30,7 @@ category: reference
 
 ![InsertValues](/media/sqlgram/InsertValues.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);

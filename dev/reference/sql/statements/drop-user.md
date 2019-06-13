@@ -8,7 +8,7 @@ category: reference
 
 `DROP USER` 语句用于从 TiDB 系统数据库中删除用户。如果用户不存在，使用关键词 `IF EXISTS` 可避免出现警告。
 
-## 总览
+## 语法图
 
 **DropUserStmt:**
 
@@ -19,7 +19,7 @@ category: reference
 ![Username](/media/sqlgram/Username.png)
 
 
-## 实例
+## 示例
 
 ```sql
 mysql> DROP USER idontexist;

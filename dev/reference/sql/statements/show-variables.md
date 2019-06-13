@@ -8,7 +8,7 @@ category: reference
 
 `SHOW [GLOBAL|SESSION] VARIABLES` 语句用于显示 `GLOBAL` 或 `SESSION` 范围的变量列表。如果未指定范围，则应用默认范围 `SESSION`。
 
-## 总览
+## 语法图
 
 **ShowStmt:**
 
@@ -22,7 +22,7 @@ category: reference
 
 ![GlobalScope](/media/sqlgram/GlobalScope.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> SHOW GLOBAL VARIABLES LIKE 'tidb%';

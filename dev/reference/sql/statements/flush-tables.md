@@ -8,7 +8,7 @@ category: reference
 
 `FLUSH TABLES` 语句用于提供 MySQL 兼容性，但在 TiDB 中并无有效用途。
 
-## 总览
+## 语法图
 
 **FlushStmt:**
 
@@ -34,7 +34,7 @@ category: reference
 
 ![WithReadLockOpt](/media/sqlgram/WithReadLockOpt.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> FLUSH TABLES;

@@ -8,7 +8,7 @@ category: reference
 
 `CREATE TABLE LIKE` 语句用于复制已有表的定义，但不复制任何数据。
 
-## 总览
+## 语法图
 
 **CreateTableStmt:**
 
@@ -22,7 +22,7 @@ category: reference
 
 ![TableName](/media/sqlgram/TableName.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (a INT NOT NULL);

@@ -11,7 +11,7 @@ category: reference
 * [`ADD`](/dev/reference/sql/statements/add-index.md)，[`DROP`](/dev/reference/sql/statements/drop-index.md)，或 [`RENAME`](/dev/reference/sql/statements/rename-index.md) 索引
 * [`ADD`](/dev/reference/sql/statements/add-column.md)，[`DROP`](/dev/reference/sql/statements/drop-column.md)，[`MODIFY`](/dev/reference/sql/statements/modify-column.md) 或 [`CHANGE`](/dev/reference/sql/statements/change-column.md) 列
 
-## 总览
+## 语法图
 
 **AlterTableStmt:**
 
@@ -25,7 +25,7 @@ category: reference
 
 ![AlterTableSpec](/media/sqlgram/AlterTableSpec.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);

@@ -8,13 +8,13 @@ category: reference
 
 `SHOW PRIVILEGES` 语句用于显示 TiDB 中可分配权限的列表。此列表为静态列表，不反映当前用户的权限。
 
-## 总览
+## 语法图
 
 **ShowStmt:**
 
 ![ShowStmt](/media/sqlgram/ShowStmt.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> show privileges;

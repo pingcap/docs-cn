@@ -9,7 +9,7 @@ aliases: ['/docs-cn/sql/dml/']
 
 `SELECT` 语句用于从 TiDB 读取数据。
 
-## 总览
+## 语法图
 
 **SelectStmt:**
 
@@ -59,7 +59,7 @@ aliases: ['/docs-cn/sql/dml/']
 
 ![SelectLockOpt](/media/sqlgram/SelectLockOpt.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);

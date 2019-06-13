@@ -8,13 +8,13 @@ category: reference
 
 `ROLLBACK` 语句用于还原 TiDB 内当前事务中的所有更改，作用与 `COMMIT` 语句相反。
 
-## 总览
+## 语法图
 
 **Statement:**
 
 ![Statement](/media/sqlgram/Statement.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (a int NOT NULL PRIMARY KEY);

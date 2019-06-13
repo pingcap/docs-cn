@@ -8,7 +8,7 @@ category: reference
 
 `SHOW CREATE USER` 语句用于显示如何使用 `CREATE USER` 语法来重新创建用户。
 
-## 总览
+## 语法图
 
 **ShowStmt:**
 
@@ -18,7 +18,7 @@ category: reference
 
 ![Username](/media/sqlgram/Username.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> SHOW CREATE USER 'root';

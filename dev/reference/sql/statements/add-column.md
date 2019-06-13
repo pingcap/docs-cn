@@ -8,7 +8,7 @@ category: reference
 
 `ALTER TABLE.. ADD COLUMN` 语句用于在已有表中添加列。在 TiDB 中，`ADD COLUMN`为在线操作，不会阻塞表中的数据读写。
 
-## 总览
+## 语法图
 
 **AlterTableStmt:**
 

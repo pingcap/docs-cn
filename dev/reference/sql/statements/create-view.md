@@ -8,7 +8,7 @@ category: reference
 
 使用 `CREATE VIEW` 语句将 `SELECT` 语句保存为类似于表的可查询对象。TiDB 中的视图是非物化的，这意味着在查询视图时，TiDB 将在内部重写查询，以将视图定义与 SQL 查询结合起来。
 
-## 总览
+## 语法图
 
 **CreateViewStmt:**
 
@@ -42,7 +42,7 @@ category: reference
 
 ![ViewCheckOption](/media/sqlgram/ViewCheckOption.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);

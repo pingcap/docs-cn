@@ -8,13 +8,13 @@ category: reference
 
 `SHOW ENGINES` 语句仅提供 MySQL 兼容性。
 
-## 总览
+## 语法图
 
 ```sql
 SHOW ENGINES
 ```
 
-## 实例
+## 示例
 
 ```sql
 mysql> SHOW ENGINES;

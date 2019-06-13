@@ -8,7 +8,7 @@ category: reference
 
 `CREATE DATABASE` 语句用于在 TiDB 上创建新数据库。按照 SQL 标准，“数据库” 一词在 MySQL 术语中最接近 “schema”。
 
-## 总览
+## 语法图
 
 **CreateDatabaseStmt:**
 
@@ -30,7 +30,7 @@ category: reference
 
 ![DatabaseOptionListOpt](/media/sqlgram/DatabaseOptionListOpt.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE DATABASE mynewdatabase;

@@ -8,7 +8,7 @@ category: reference
 
 `REVOKE <privileges>` 语句用于删除已有用户的权限。
 
-## 总览
+## 语法图
 
 **GrantStmt:**
 
@@ -38,7 +38,7 @@ category: reference
 
 ![UserSpecList](/media/sqlgram/UserSpecList.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE USER newuser IDENTIFIED BY 'mypassword';

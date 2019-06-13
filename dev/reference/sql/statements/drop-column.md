@@ -6,9 +6,9 @@ category: reference
 
 # DROP COLUMN
 
-`DROP COLUMN` 语句用于从指定的表中删除列。在 TiDB 中，`COLUMN`为在线操作，不会影响表中的数据读写。
+`DROP COLUMN` 语句用于从指定的表中删除列。在 TiDB 中，`COLUMN`为在线操作，不会阻塞表中的数据读写。
 
-## 总览
+## 语法图
 
 **AlterTableStmt:**
 
@@ -27,7 +27,7 @@ category: reference
 ![ColumnName](/media/sqlgram/ColumnName.png)
 
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, col1 INT NOT NULL, col2 INT NOT NULL);

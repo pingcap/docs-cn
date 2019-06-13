@@ -8,7 +8,7 @@ category: reference
 
 `ALTER TABLE.. CHANGE COLUMN` 语句用于在已有表上更改列，包括对列进行重命名，和将数据改为兼容类型。
 
-## 总览
+## 语法图
 
 **AlterTableStmt:**
 
@@ -34,7 +34,7 @@ category: reference
 
 ![ColumnPosition](/media/sqlgram/ColumnPosition.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (id int not null primary key auto_increment, col1 INT);

@@ -10,7 +10,7 @@ category: reference
 
 `SHOW [FULL] FIELDS FROM`，`DESC <table>`，`DESCRIBE <table>` 和 `EXPLAIN <table>` 语句都是 `SHOW [FULL] COLUMNS FROM` 的别名。
 
-## 总览
+## 语法图
 
 **ShowStmt:**
 
@@ -24,7 +24,7 @@ category: reference
 
 ![OptFull](/media/sqlgram/OptFull.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> create view v1 as select 1;

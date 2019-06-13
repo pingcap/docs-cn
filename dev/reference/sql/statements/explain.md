@@ -11,7 +11,7 @@ aliases: ['/docs/sql/util/']
 
 语句 `DESC` 和 `DESCRIBE` 是 `EXPLAIN` 的别名。`EXPLAIN <tableName>` 的替代用法记录在 [`SHOW [FULL] COLUMNS FROM`](/dev/reference/sql/statements/show-columns-from.md) 下。
 
-## 总览
+## 语法图
 
 **ExplainSym:**
 
@@ -25,7 +25,7 @@ aliases: ['/docs/sql/util/']
 
 ![ExplainableStmt](/media/sqlgram/ExplainableStmt.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> EXPLAIN SELECT 1;

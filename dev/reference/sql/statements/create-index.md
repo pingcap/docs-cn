@@ -8,7 +8,7 @@ category: reference
 
 `CREATE INDEX` 语句用于在已有表中添加新索引。`CREATE INDEX` 是 `ALTER TABLE .. ADD INDEX` 的替代语法，用于提供 MySQL 兼容性。
 
-## 总览
+## 语法图
 
 **CreateIndexStmt:**
 
@@ -43,7 +43,7 @@ category: reference
 ![IndexOption](/media/sqlgram/IndexOption.png)
 
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);

@@ -8,7 +8,7 @@ category: reference
 
 `SHOW [FULL] PROCESSLIST` 语句列出连接到相同 TiDB 服务器的当前会话。`Info` 列包含查询文本，除非指定可选关键字 `FULL`，否则文本会被截断。
 
-## 总览
+## 语法图
 
 **ShowStmt:**
 
@@ -18,7 +18,7 @@ category: reference
 
 ![OptFull](/media/sqlgram/OptFull.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> SHOW PROCESSLIST;

@@ -8,13 +8,13 @@ category: reference
 
 `SET PASSWORD` 语句用于更改 TiDB 系统数据库中的用户密码。
 
-## 总览
+## 语法图
 
 **SetStmt:**
 
 ![SetStmt](/media/sqlgram/SetStmt.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> SET PASSWORD='test'; -- change my password

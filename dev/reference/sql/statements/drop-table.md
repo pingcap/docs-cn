@@ -10,7 +10,7 @@ category: reference
 
 按照设计，`DROP TABLE` 也会删除视图，因为视图与表共享相同的命名空间。
 
-## 总览
+## 语法图
 
 **DropTableStmt:**
 
@@ -24,7 +24,7 @@ category: reference
 
 ![TableNameList](/media/sqlgram/TableNameList.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (a INT);

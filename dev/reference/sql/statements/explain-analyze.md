@@ -8,7 +8,7 @@ category: reference
 
 `EXPLAIN ANALYZE` 语句的工作方式类似于 `EXPLAIN`，主要区别在于前者实际上会执行语句。这样可以将查询计划中的估计值与执行时所遇到的实际值进行比较。如果估计值与实际值显著不同，那么应考虑在受影响的表上运行 `ANALYZE TABLE`。
 
-## 总览
+## 语法图
 
 **ExplainSym:**
 
@@ -22,7 +22,7 @@ category: reference
 
 ![ExplainableStmt](/media/sqlgram/ExplainableStmt.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);

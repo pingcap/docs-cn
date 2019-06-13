@@ -10,7 +10,7 @@ category: reference
 
 > **注意:** TiDB 目前仅支持二进制排序规则。
 
-## 总览
+## 语法图
 
 **ShowStmt:**
 
@@ -20,7 +20,7 @@ category: reference
 
 ![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> SHOW COLLATION;

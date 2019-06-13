@@ -8,7 +8,7 @@ category: reference
 
 `SHOW INDEXES [FROM|IN]` 语句用于列出指定表上的索引。`SHOW INDEX [FROM | IN]` 和 `SHOW KEYS [FROM | IN]` 是该语句的别名，用于提供 MySQL 兼容性。
 
-## 总览
+## 语法图
 
 **ShowStmt:**
 
@@ -30,7 +30,7 @@ category: reference
 
 ![TableName](/media/sqlgram/TableName.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (id int not null primary key auto_increment, col1 INT, INDEX(col1));

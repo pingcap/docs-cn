@@ -8,13 +8,13 @@ category: reference
 
 `LOAD DATA` 语句用于将数据批量加载到 TiDB 表中。
 
-## 总览
+## 语法图
 
 **LoadDataStmt:**
 
 ![LoadDataStmt](/media/sqlgram/LoadDataStmt.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE trips (

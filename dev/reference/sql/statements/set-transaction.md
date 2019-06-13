@@ -8,7 +8,7 @@ category: reference
 
 `SET TRANSACTION` 语句用于在 `GLOBAL` 或 `SESSION` 的基础上更改当前的隔离级别，是 `SET transaction_isolation ='new-value'` 的替代语句，提供 MySQL 和 SQL 标准的兼容性。
 
-## 总览
+## 语法图
 
 **SetStmt:**
 
@@ -22,7 +22,7 @@ category: reference
 
 ![IsolationLevel](/media/sqlgram/IsolationLevel.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> SHOW SESSION VARIABLES like 'transaction_isolation';

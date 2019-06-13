@@ -10,13 +10,13 @@ category: reference
 
 按照设计，`KILL TIDB` 语句默认与 MySQL 不兼容。负载均衡器后面通常放有多个 TiDB 服务器，这种默认不兼容有助于防止在错误的 TiDB 服务器上终止连接。
 
-## 总览
+## 语法图
 
 **KillStmt:**
 
 ![KillStmt](/media/sqlgram/KillStmt.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> SHOW PROCESSLIST;

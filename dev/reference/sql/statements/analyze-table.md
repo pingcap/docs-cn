@@ -10,7 +10,7 @@ category: reference
 
 当 TiDB 逐渐发现这些统计数据与预估不一致时，也会自动更新其统计数据。
 
-## 总览
+## 语法图
 
 **AnalyzeTableStmt:**
 
@@ -24,7 +24,7 @@ category: reference
 
 ![TableName](/media/sqlgram/TableName.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);

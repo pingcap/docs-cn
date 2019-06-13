@@ -9,7 +9,7 @@ aliases: ['/docs-cn/sql/ddl/'],['/docs-cn/dev/reference/sql/statements/ddl/']
 
 `CREATE TABLE` 语句用于在当前所选数据库中创建新表。另可参阅单独的 `CREATE TABLE AS` 文档。
 
-## 总览
+## 语法图
 
 **CreateTableStmt:**
 
@@ -55,7 +55,7 @@ aliases: ['/docs-cn/sql/ddl/'],['/docs-cn/dev/reference/sql/statements/ddl/']
 
 ![TableOptionListOpt](/media/sqlgram/TableOptionListOpt.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (a int);

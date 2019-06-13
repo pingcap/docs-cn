@@ -8,7 +8,7 @@ category: reference
 
 `CREATE USER` 语句用于创建带有指定密码的新用户。在 MySQL 权限系统中，用户是用户名和用户名所连接主机的组合。因此，可创建一个用户 `'newuser2'@'192.168.1.1'`，使其只能通过 IP 地址 `192.168.1.1` 进行连接。拥有相同用户部分的两位用户，从不同主机登录时可能会拥有不同的权限。
 
-## 总览
+## 语法图
 
 **CreateUserStmt:**
 
@@ -34,7 +34,7 @@ category: reference
 
 ![StringName](/media/sqlgram/StringName.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE USER 'newuser' IDENTIFIED BY 'newuserpassword';

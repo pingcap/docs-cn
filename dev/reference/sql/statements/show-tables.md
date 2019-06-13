@@ -10,7 +10,7 @@ category: reference
 
 若要在不同的数据库中显示表，可使用 `SHOW TABLES IN DatabaseName` 语句。
 
-## 总览
+## 语法图
 
 **ShowStmt:**
 
@@ -24,7 +24,7 @@ category: reference
 
 ![ShowDatabaseNameOpt](/media/sqlgram/ShowDatabaseNameOpt.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (a int);

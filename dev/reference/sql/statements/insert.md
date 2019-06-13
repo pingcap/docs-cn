@@ -8,7 +8,7 @@ category: reference
 
 使用 `INSERT` 语句在表中插入新行。
 
-## 总览
+## 语法图
 
 **InsertIntoStmt:**
 
@@ -34,7 +34,7 @@ category: reference
 
 ![InsertValues](/media/sqlgram/InsertValues.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (a int);

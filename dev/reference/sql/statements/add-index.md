@@ -6,9 +6,9 @@ category: reference
 
 # ADD INDEX
 
-`ALTER TABLE.. ADD INDEX` 语句用于在已有表中添加一个索引。在 TiDB 中，`ADD INDEX` 为在线操作，不会影响表中的数据读写。
+`ALTER TABLE.. ADD INDEX` 语句用于在已有表中添加一个索引。在 TiDB 中，`ADD INDEX` 为在线操作，不会阻塞表中的数据读写。
 
-## 总览
+## 语法图
 
 **AlterTableStmt:**
 

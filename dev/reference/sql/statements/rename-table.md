@@ -8,7 +8,7 @@ category: reference
 
 `RENAME TABLE` 语句用于对已有表进行重命名。
 
-## 总览
+## 语法图
 
 **RenameTableStmt:**
 
@@ -18,7 +18,7 @@ category: reference
 
 ![TableToTable](/media/sqlgram/TableToTable.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (a int);

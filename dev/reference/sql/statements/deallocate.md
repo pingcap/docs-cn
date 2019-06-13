@@ -8,7 +8,7 @@ category: reference
 
 `DEALLOCATE` 语句用于为服务器端预处理语句提供 SQL 接口。
 
-## 总览
+## 语法图
 
 **DeallocateStmt:**
 
@@ -22,7 +22,7 @@ category: reference
 
 ![Identifier](/media/sqlgram/Identifier.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> PREPARE mystmt FROM 'SELECT ? as num FROM DUAL';

@@ -8,13 +8,13 @@ category: reference
 
 `SET NAMES`，`SET CHARACTER SET` 和 `SET CHARSET` 语句用于修改当前连接的变量 `character_set_client`，`character_set_results` 和 `character_set_connection`。
 
-## 总览
+## 语法图
 
 **SetStmt:**
 
 ![SetStmt](/media/sqlgram/SetStmt.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> SHOW VARIABLES LIKE 'character_set%';

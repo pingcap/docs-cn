@@ -8,7 +8,7 @@ category: reference
 
 `SHOW CREATE TABLE` 语句用于显示用 SQL 重新创建已有表的确切语句。
 
-## 总览
+## 语法图
 
 **ShowStmt:**
 
@@ -18,7 +18,7 @@ category: reference
 
 ![TableName](/media/sqlgram/TableName.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (a INT);

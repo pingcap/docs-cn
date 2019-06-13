@@ -8,7 +8,7 @@ category: reference
 
 `FLUSH PRIVILEGES` 语句可触发 TiDB 从权限表中重新加载权限的内存副本。在对如 `mysql.user` 一类的表进行手动编辑后，应当执行 `FLUSH PRIVILEGES`。使用如 `GRANT` 或 `REVOKE` 一类的权限语句后，不需要执行 `FLUSH PRIVILEGES` 语句。
 
-## 总览
+## 语法图
 
 **FlushStmt:**
 
@@ -22,7 +22,7 @@ category: reference
 
 ![FlushOption](/media/sqlgram/FlushOption.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> FLUSH PRIVILEGES;

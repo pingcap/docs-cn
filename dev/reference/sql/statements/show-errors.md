@@ -10,7 +10,7 @@ category: reference
 
 当前的 `sql_mode` 很大程度决定了哪些语句会产生错误与警告。
 
-## 总览
+## 语法图
 
 **ShowStmt:**
 
@@ -20,7 +20,7 @@ category: reference
 
 ![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> select invalid;

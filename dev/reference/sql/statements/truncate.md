@@ -10,7 +10,7 @@ category: reference
 
 `TRUNCATE TABLE tableName` 和 `TRUNCATE tableName` 均为有效语法。
 
-## 总览
+## 语法图
 
 **TruncateTableStmt:**
 
@@ -24,7 +24,7 @@ category: reference
 
 ![TableName](/media/sqlgram/TableName.png)
 
-## 实例
+## 示例
 
 ```sql
 mysql> CREATE TABLE t1 (a INT NOT NULL PRIMARY KEY);
