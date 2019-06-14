@@ -94,7 +94,7 @@ tidb-ctl schema in {数据库名}
 
 结果将以 json 形式展示，内容较长，这里做了截断。
 
-* 如希望指定表名，可以使用 `tidb-ctl schema in {数据库名} -n {表名}` 进行过滤。
+如希望指定表名，可以使用 `tidb-ctl schema in {数据库名} -n {表名}` 进行过滤。
 
     如：`tidb-ctl schema in mysql -n db` 将得到 mysql 库中 db 表的表结构，结果如下：
 
