@@ -874,6 +874,7 @@ The total read capacity has no limit. You can increase the read capacity by addi
 
 As distributed transactions need to conduct two-phase commit and the bottom layer performs Raft replication, if a transaction is very large, the commit process would be quite slow and the following Raft replication flow is thus struck. To avoid this problem, we limit the transaction size:
 
+- A transaction is limited to 5000 SQL statements (by default)
 - Each Key-Value entry is no more than 6MB
 - The total number of Key-Value entry is no more than 300,000 rows
 - The total size of Key-Value entry is no more than 100MB
