@@ -7,7 +7,7 @@ category: reference
 
 > **Note:** 为了方便阅读，本文后面用 `values.yaml` 指代 `charts/tidb-cluster/values.yaml`
 
-TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有配置项都在下面列表中。 另外 tidb-cluster 默认的 `values.yaml` 文件默认提供了基本的配置，通过这个基本配置，可以快速得启动一个 TiDB Cluster， 但是如果用户需要特殊配置或是用于生产环境，你需要根据下面列表手动配置对应的配置项。
+TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有配置项都在下面列表中。tidb-cluster 默认的 `values.yaml` 文件默认提供了基本的配置，通过这个基本配置，可以快速得启动一个 TiDB Cluster，但是如果用户需要特殊配置或是用于生产环境，你需要根据下面列表手动配置对应的配置项。
 
 | 参数名 | 说明 | 默认值 |
 | ----- | ---- | ----- |
@@ -25,13 +25,13 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有�
 | `discovery.resoureces.limits.memory` | 服务发现组件的内存资源限额 |  |
 | `discovery.resoureces.requests.cpu` | 服务发现组件的 CPU 资源请求 |  |
 | `discovery.resoureces.requests.memory` | 服务发现组件的内存资源请求 |  |
-| `enableConfigMapRollout` | 是否开启 TiDB 集群自动滚动更新。如果启用，则 TiDB 集群的 ConfigMap 变更时，TiDB 集群自动更新对应组件。该配置只在 tidb-operator v1.0 版本或更高版本才支持 | `false` |
+| `enableConfigMapRollout` | 是否开启 TiDB 集群自动滚动更新。如果启用，则 TiDB 集群的 ConfigMap 变更时，TiDB 集群自动更新对应组件。该配置只在 tidb-operator v1.0 及以上版本才支持 | `false` |
 | `pd.replicas` | PD 的 Pod 数 | `3` |
 | `pd.image` | PD 镜像 | `pingcap/pd:v3.0.0-rc.1` |
 | `pd.imagePullPolicy` | PD 镜像的拉取策略 | `IfNotPresent` |
 | `pd.logLevel` | PD 日志级别 | `info` |
 | `pd.storageClassName` | PD 使用的 storageClass， storageClassName 指代一种由 Kubernetes 集群提供的存储类型，不同的类可能映射到服务质量级别、备份策略或集群管理员确定的任意策略。详细参考：[storage-classes](https://kubernetes.io/docs/concepts/storage/storage-classes) | `local-storage` |
-| `pd.maxStoreDownTime` | `pd.maxStoreDownTime` 指一个 store 节点断开连接多长时间后状态会被标记为 `down`， 如果状态变为 `down` 后， store 节点开始迁移数据到其它 store 节点 |  |
+| `pd.maxStoreDownTime` | `pd.maxStoreDownTime` 指一个 store 节点断开连接多长时间后状态会被标记为 `down`， 如果状态变为 `down` 后， store 节点开始迁移数据到其它 store 节点 | `30m` |
 | `pd.maxReplicas` | `pd.maxReplicas` 是 TiDB 集群的数据的副本数 | `3` |
 | `pd.resources.limits.cpu` | 每个 PD Pod 的 CPU 资源限额 |  |
 | `pd.resources.limits.memory` | 每个 PD Pod 的内存资源限额 |  |
@@ -80,8 +80,8 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有�
 | `tidb.annotations` | 为 TiDB Pods 添加特定的 `annotations` | `{}` |
 | `tidb.maxFailoverCount` | TiDB 最大的故障转移数量，假设为 3 即最多支持同时 3 个 TiDB 实例故障转移 | `3` |
 | `tidb.service.type` | TiDB 服务对外暴露类型 | `NodePort` |
-| `tidb.service.externalTrafficPolicy` |  |  |
-| `tidb.service.loadBalancerIP` |  |  |
+| `tidb.service.externalTrafficPolicy` | 表示此服务是否希望将外部流量路由到节点本地或集群范围的端点。有两个可用选项：`Cluster`（默认）和 `Local`。`Cluster` 隐藏了客户端源 IP，可能导致第二跳到另一个节点，但具有良好的整体负载分布。 `Local` 保留客户端源 IP 并避免 LoadBalancer 和 NodePort 类型服务的第二跳，但存在潜在的不均衡流量传播风险。详细参考：[外部负载均衡器](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip) |  |
+| `tidb.service.loadBalancerIP` | 指定 tidb 负载均衡 IP，某些云提供程序允许您指定loadBalancerIP。在这些情况下，将使用用户指定的loadBalancerIP创建负载平衡器。如果未指定loadBalancerIP字段，则将使用临时IP地址设置loadBalancer。如果指定loadBalancerIP但云提供程序不支持该功能，则将忽略您设置的loadbalancerIP字段 |  |
 | `tidb.service.mysqlNodePort` | TiDB 服务暴露的 mysql NodePort 端口 |  |
 | `tidb.service.exposeStatus` | TiDB 服务是否暴露状态端口 | `true` |
 | `tidb.service.statusNodePort` | 指定 TiDB 服务的状态端口暴露的 `NodePort` |  |
@@ -90,12 +90,12 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有�
 | `tidb.slowLogTailer.resources.limits.memory` | 每个 TiDB Pod 的 slowLogTailer 的内存资源限额 | `50Mi` |
 | `tidb.slowLogTailer.resources.requests.cpu` | 每个 TiDB Pod 的 slowLogTailer 的 CPU 资源请求 | `20m` |
 | `tidb.slowLogTailer.resources.requests.memory` | 每个 TiDB Pod 的 slowLogTailer 的内存资源请求 | `5Mi` |
-| `tidb.plugin.enable` | TiDB 插件功能是否启用 | `false` |
+| `tidb.plugin.enable` | 是否启用 TiDB 插件功能 | `false` |
 | `tidb.plugin.directory` | 指定 TiDB 插件所在的目录 | `/plugins` |
 | `tidb.plugin.list` | 指定 TiDB 加载的插件列表，plugin ID 命名规则：插件名-版本，例如：'conn_limit-1' | `[]` |
-| `tidb.preparedPlanCacheEnabled` |   | `false` |
-| `tidb.preparedPlanCacheCapacity` |   | `100` |
-| `tidb.txnLocalLatchesEnabled` | 为事务启用本地锁存，当事务之间存在大量冲突时启用它 | `false` |
+| `tidb.preparedPlanCacheEnabled` | 是否启用 TiDB 的 prefare plan 缓存 | `false` |
+| `tidb.preparedPlanCacheCapacity` | TiDB 的 prefared plan 缓存数量 | `100` |
+| `tidb.txnLocalLatchesEnabled` | 是否启用事务的本地锁存，当事务之间存在大量冲突时启用它 | `false` |
 | `tidb.txnLocalLatchesCapacity` |   | `10240000` |
 | `tidb.tokenLimit` | TiDB 并发执行会话的限制 | `1000` |
 | `tidb.memQuotaQuery` | TiDB 查询的内存限额，默认 32GB | `34359738368` |
@@ -109,17 +109,17 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有�
 
 ## 资源配置说明
 
-部署前需要根据实际情况和需求，为 TiDB 集群各个组件配置资源，如上面列表中所述每个组件的资源配置包括 requests 和 limits，分别指资源的最低要求和最大限额，资源的 limits 要大于等于 requests，建议 limits 等于 requests，这样可以保证服务获得 Guaranteed 级别的 QoS。
-其中 PD/TiKV/TiDB 是 TiDB 集群的核心服务组件，在生产环境下它们的资源配置需要按组件要求指定，具体参考：[资源配置推荐]()。
+部署前需要根据实际情况和需求，为 TiDB 集群各个组件配置资源，上面列表中所述每个组件的资源配置包括 requests 和 limits，分别指资源的最低要求和最大限额，资源的 limits 要大于等于 requests，建议 limits 等于 requests，这样可以保证服务获得 Guaranteed 级别的 QoS。
+其中 PD/TiKV/TiDB 是 TiDB 集群的核心服务组件，在生产环境下它们的资源配置需要按组件要求指定，具体参考：[资源配置推荐](https://pingcap.com/docs/dev/how-to/deploy/hardware-recommendations/#software-and-hardware-recommendations)。
 如果是测试环境，可以无需配置资源直接使用 `values.yaml` 中默认的配置。
 
 ## 容灾配置说明
 
-TiDB 是分布式数据库，它的容灾需要做到在任一个物理拓扑节点发生故障时， 不仅服务不受影响，还要保证数据也是完整和可用。
+TiDB 是分布式数据库，它的容灾需要做到在任一个物理拓扑节点发生故障时，不仅服务不受影响，还要保证数据也是完整和可用。下面分别具体说明这两种容灾的配置。
 
 ### TiDB 服务的容灾
 
-TiDB Operator 提供了自定义的调度器，该调度器通过指定的调度算法能在 host 层面，保证 TiDB 服务的容灾。目前 TiDB Cluster 使用该调度器作为默认调度器，设置项是 values.yaml 中的 schedulerName。
+TiDB 服务容灾本质上基于 Kubernetes 的调度功能来实现的，为了优化调度，TiDB Operator 提供了自定义的调度器，该调度器通过指定的调度算法能在 host 层面，保证 TiDB 服务的容灾，而且目前 TiDB Cluster 使用该调度器作为默认调度器，设置项是上述列表中的 `schedulerName` 配置项。
 其它层面的容灾（e.g. rack， zone， region）是通过 Affinity 的 PodAntiAffinity 来保证，通过 PodAntiAffinity 能尽量避免同一组件的不同实例部署到同一个物理拓扑节点上，从而达到容灾的目的，Affinity 的使用参考：[Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity) 。
 下面是一个典型的容灾设置例子：
 
