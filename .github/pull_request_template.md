@@ -8,7 +8,7 @@
 
 <!--Provide a reference link that is related to your change. For example, a link in the pingcap/docs repository. -->
 
-### Which version does your change affect?
+### Which version does your change affect? <!--REMOVE this item if it is not applicable-->
 
 <!--Specify the version or versions that your change affects by adding a label at the right-hand side of this page. For example, v3.0 -->
 
