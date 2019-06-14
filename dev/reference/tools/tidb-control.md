@@ -211,7 +211,7 @@ tidb-ctl base64decode [table_id] [base64_data]
 #### etcd 子命令
 
 * `tidb-ctl etcd ddlinfo` 获取 DDL 信息。
-* `tidb-ctl etcd putkey KEY VALUE` 添加 KEY VALUE 到 etcd （所有的 KEY 会添加到 `/tidb/ddl/all_schema_versions/` 之下）。
+* `tidb-ctl etcd putkey KEY VALUE` 添加 KEY VALUE 到 etcd（所有的 KEY 会添加到 `/tidb/ddl/all_schema_versions/` 之下）。
 
     ```shell
     tidb-ctl etcd putkey "foo" "bar"
