@@ -88,7 +88,7 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有�
 | `tidb.service.exposeStatus` | TiDB 服务是否暴露状态端口 | `true` |
 | `tidb.service.statusNodePort` | 指定 TiDB 服务的状态端口暴露的 `NodePort` |  |
 | `tidb.separateSlowLog` | 是否以 sidecar 方式运行独立容器输出 TiDB 的 SlowLog | `false` |
-| `tidb.slowLogTailer.image` | TiDB 的 slowLogTailer 的镜像，slowLogTailer 是一个 sidecar 类型的容器，用于输出 TiDB 日志 | `busybox:1.26.2` |
+| `tidb.slowLogTailer.image` | TiDB 的 slowLogTailer 的镜像，slowLogTailer 是一个 sidecar 类型的容器，用于输出 TiDB 的 SlowLog，该配置仅在 `tidb.separateSlowLog`=`true` 时生效 | `busybox:1.26.2` |
 | `tidb.slowLogTailer.resources.limits.cpu` | 每个 TiDB Pod 的 slowLogTailer 的 CPU 资源限额 | `100m` |
 | `tidb.slowLogTailer.resources.limits.memory` | 每个 TiDB Pod 的 slowLogTailer 的内存资源限额 | `50Mi` |
 | `tidb.slowLogTailer.resources.requests.cpu` | 每个 TiDB Pod 的 slowLogTailer 的 CPU 资源请求 | `20m` |
