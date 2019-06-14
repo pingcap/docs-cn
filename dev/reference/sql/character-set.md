@@ -27,10 +27,6 @@ mysql> SHOW CHARACTER SET;
 5 rows in set (0.00 sec)
 ```
 
-> **注意：**
->
-> 在 `TiDB` 中实际上 `utf8` 被当做成了 `utf8mb4` 来处理。
-
 对于字符集来说，至少会有一个 Collation（排序规则）与之对应。而大部分字符集实际上会有多个 Collation。利用以下的语句可以查看：
 
 ```sql
@@ -91,15 +87,19 @@ mysql> SHOW COLLATION WHERE Charset = 'latin1';
 
 ## 数据库 Character Set 和 Collation
 
-每个数据库都有相应的 Character Set 和 Collation，`CREATE DATABASE` 可以指定数据库的字符集和排序规则：
+每个数据库都有相应的 Character Set 和 Collation，数据库的 Character Set 和 Collation 可以通过以下语句来设置：
 
 ```sql
 CREATE DATABASE db_name
     [[DEFAULT] CHARACTER SET charset_name]
     [[DEFAULT] COLLATE collation_name]
+
+ALTER DATABASE db_name
+    [[DEFAULT] CHARACTER SET charset_name]
+    [[DEFAULT] COLLATE collation_name]
 ```
 
-在这里 `SCHEMA` 可以跟 `DATABASE` 互换使用。
+在这里 `DATABASE` 可以跟 `SCEHMA` 互换使用。
 
 不同的数据库之间可以使用不一样的字符集和排序规则。
 
@@ -161,7 +161,7 @@ mysql> CREATE TABLE t1(a int) CHARACTER SET utf8 COLLATE utf8_general_ci;
 Query OK, 0 rows affected (0.08 sec)
 ```
 
-如果 Column 的字符集和排序规则没有设置，那么表的字符集和排序规则就作为其默认值。
+如果表的字符集和排序规则没有设置，那么数据库的字符集和排序规则就作为其默认值。
 
 ## 列的 Character Set 和 Collation
 
@@ -176,6 +176,8 @@ col_name {ENUM | SET} (val_list)
     [CHARACTER SET charset_name]
     [COLLATE collation_name]
 ```
+
+如果列的字符集和排序规则没有设置，那么表的字符集和排序规则就作为其默认值。
 
 ## 客户端连接的 Character Sets 和 Collations
 

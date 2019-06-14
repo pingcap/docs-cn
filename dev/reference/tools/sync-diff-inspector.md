@@ -26,7 +26,7 @@ GitHub 地址：[sync-diff-inspector](https://github.com/pingcap/tidb-tools/tree
 ### 通用配置文件说明
 
 ``` toml
-# diff Configuration.
+# Diff Configuration.
 
 # 日志级别，可以设置为 info、debug
 log-level = "info"
