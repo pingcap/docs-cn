@@ -1,6 +1,6 @@
 <!--Thanks for your contribution to TiDB documentation. See [CONTRIBUTING](https://github.com/pingcap/community/blob/master/CONTRIBUTING.md) before filing this PR.-->
 
-### What is changed, added or deleted?
+### What is changed, added or deleted? <!--Required-->
 
 <!--Tell us what you did and why-->
 
@@ -12,7 +12,7 @@
 
 <!--Specify the version or versions that your change affects by adding a label at the right-hand side of this page. For example, v3.0 -->
 
-### Check list
+### Check list <!--REMOVE the items that are not applicable-->
 
 - Add a new file to `TOC.md`
 - No Tab spaces anywhere <!--Use ordinary spaces because Tab spaces can lead to CircleCI failure.-->
