@@ -6,7 +6,7 @@ category: reference
 
 # CREATE INDEX
 
-`CREATE INDEX` 语句用于在已有表中添加新索引。`CREATE INDEX` 是 `ALTER TABLE .. ADD INDEX` 的替代语法。包含该语句提供了 MySQL 兼容性。
+`CREATE INDEX` 语句用于在已有表中添加新索引，功能等同于 `ALTER TABLE .. ADD INDEX`。包含该语句提供了 MySQL 兼容性。
 
 ## 语法图
 
