@@ -12,7 +12,7 @@ TiDB 使用乐观事务模型，在执行 `UPDATE`、`INSERT`、`DELETE` 等语�
 
 ### 事务重试
 
-执行失败的事务默认**不会**自动重试，因为这会导致更新丢失。可通过配置 `tidb_disable_txn_auto_retry = 0` 开启该项功能。
+执行失败的事务默认**不会**自动重试，因为这会导致更新丢失。可通过配置 `tidb_disable_txn_auto_retry = off` 开启该项功能。
 
 ## 大事务
 

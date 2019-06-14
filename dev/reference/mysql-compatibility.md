@@ -80,16 +80,20 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 
 在 TiDB 中，运行的 DDL 操作不会影响对表的读取或写入。但是，目前 DDL 变更有如下一些限制：
 
-+ Add Index 
++ Add Index
   - 不支持同时创建多个索引
   - 不支持通过 `ALTER TABLE` 在所生成的列上添加索引
 + Add Column
-  - 不支持同时创建多个列 
+  - 不支持同时创建多个列
   - 不支持将新创建的列设为主键或唯一索引，也不支持将此列设成 auto_increment 属性
 + Drop Column: 不支持删除主键列或索引列
 + Change/Modify Column
   - 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`
   - 不支持更改 `UNSIGNED` 属性
+  - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
++ Alter Table
+  - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
++ Alter Database
   - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
 + `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`: TiDB 支持的语法，但是在 TiDB 中不会生效。所有支持的 DDL 变更都不会锁表。
 + `ALGORITHM [=] {DEFAULT|INSTANT|INPLACE|COPY}`: TiDB 完全支持 `ALGORITHM=INSTANT` 和 `ALGORITHM=INPLACE` 语法，但运行过程与 MySQL 有所不同，因为 MySQL 中的一些 `INPLACE` 操作实际上是 TiDB 中的 `INSTANT` 操作。`ALGORITHM=COPY` 语法在 TiDB 中不会生效，会返回警告信息。
@@ -126,12 +130,13 @@ TiDB 支持 MySQL 5.7 中 **绝大多数的 SQL 模式**，以下几种模式除
 
 ### 默认设置的区别
 
-+ 默认字符集不同：
-    + TiDB 中为 `utf8`，相当于 MySQL 的 `utf8mb4`
-    + MySQL 5.7 中为 `latin1`，但在 MySQL 8.0 中修改为 `utf8mb4`
++ 默认字符集与 MySQL 不同：
+    + TiDB 中为 `utf8mb4`
+    + MySQL 5.7 中为 `latin1`，MySQL 8.0 中修改为 `utf8mb4`
 + 默认排序规则不同：
-    + MySQL 5.7 中使用 `latin1_swedish_ci`
-    + TiDB 使用 `binary`
+    + TiDB 中，`utf8mb4` 的默认排序规则为 `utf8mb4_bin`
+    + MySQL 5.7 中，`utf8mb4` 的默认排序规则为 `utf8mb4_general_ci`，MySQL 8.0 中修改为 `utf8mb4_0900_ai_ci`
+    + 请使用 [`SHOW CHARACTER SET`](/dev/reference/sql/statements/admin.md## `SHOW` 语句) 语句查看所有字符集的默认排序规则
 + 默认 SQL mode 不同：
     + TiDB 中为 `STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION`
     + MySQL 中为 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`
