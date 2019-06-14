@@ -6,7 +6,7 @@ category: reference
 
 # DROP INDEX
 
-`DROP INDEX` 语句用于从指定的表中删除索引，在 TiKV 中将空间标记为释放。
+`DROP INDEX` 语句用于从指定的表中删除索引，并在 TiKV 中将空间标记为释放。
 
 ## 语法图
 

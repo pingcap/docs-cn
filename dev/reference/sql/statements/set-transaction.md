@@ -60,7 +60,7 @@ mysql> SHOW SESSION VARIABLES like 'transaction_isolation';
 
 * TiDB 支持仅在语法中将事务设置为只读的功能。
 * 不支持隔离级别 `READ-UNCOMMITTED` 和 `SERIALIZABLE`。
-* 隔离级别 `REPEATABLE-READ` 在技术上属于快照隔离。`REPEATABLE-READ` 这一名称用于提供 MySQL 兼容性。
+* 隔离级别 `REPEATABLE-READ` 在技术上属于快照隔离（Snapshot Isolation）。在 TiDB 中称为 `REPEATABLE-READ` 是为了和 MySQL 保持一致。
 
 ## 另请参阅
 
