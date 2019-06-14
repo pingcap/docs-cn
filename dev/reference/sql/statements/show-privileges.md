@@ -59,7 +59,7 @@ mysql> show privileges;
 
 ## MySQL 兼容性
 
-`SHOW PRIVILEGES` 语句可视为与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上 提交 [issue](/report-issue.md)。
+`SHOW PRIVILEGES` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上 提交 [issue](/report-issue.md)。
 
 ## 另请参阅
 

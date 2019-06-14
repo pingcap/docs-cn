@@ -38,7 +38,7 @@ Query OK, 0 rows affected (0.00 sec)
 
 ## MySQL 兼容性
 
-`PREPARE` 语句可视为与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上 提交 [issue](/report-issue.md)。
+`PREPARE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上 提交 [issue](/report-issue.md)。
 
 ## 另请参阅
 

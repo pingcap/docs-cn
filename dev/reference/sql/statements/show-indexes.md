@@ -6,7 +6,7 @@ category: reference
 
 # SHOW INDEXES [FROM|IN]
 
-`SHOW INDEXES [FROM|IN]` 语句用于列出指定表上的索引。`SHOW INDEX [FROM | IN]` 和 `SHOW KEYS [FROM | IN]` 是该语句的别名，用于提供 MySQL 兼容性。
+`SHOW INDEXES [FROM|IN]` 语句用于列出指定表上的索引。`SHOW INDEX [FROM | IN]` 和 `SHOW KEYS [FROM | IN]` 是该语句的别名。包含该语句提供了 MySQL 兼容性。
 
 ## 语法图
 
@@ -66,7 +66,7 @@ mysql> SHOW KEYS FROM t1;
 
 ## MySQL 兼容性
 
-`SHOW INDEXES [FROM|IN]` 语句可视为与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上 提交 [issue](/report-issue.md)。
+`SHOW INDEXES [FROM|IN]` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上 提交 [issue](/report-issue.md)。
 
 ## 另请参阅
 

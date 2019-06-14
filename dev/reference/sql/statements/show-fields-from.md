@@ -6,4 +6,4 @@ category: reference
 
 # SHOW [FULL] FIELDS FROM
 
-`SHOW [FULL] FIELDS FROM` 是 [`SHOW [FULL] COLUMNS FROM`](/dev/reference/sql/statements/show-columns-from.md) 的别名，用于提供 MySQL 兼容性。
+`SHOW [FULL] FIELDS FROM` 是 [`SHOW [FULL] COLUMNS FROM`](/dev/reference/sql/statements/show-columns-from.md) 的别名。包含该语句提供了 MySQL 兼容性。
