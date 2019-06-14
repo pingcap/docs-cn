@@ -74,6 +74,8 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有�
 | `tidb.resources.requests.cpu` | 每个 TiDB Pod 的 CPU 资源请求 |  |
 | `tidb.resources.requests.memory` | 每个 TiDB Pod 的内存资源请求 |  |
 | `tidb.resources.requests.storage` | 每个 TiDB Pod 的存储容量请求 |  |
+| `tidb.passwordSecretName`| 存放 TiDB 用户名及密码的 Secret 的名字，该 Secret 可以使用以下命令创建机密：`kubectl create secret generic tidb secret--from literal=root=<root password>--namespace=<namespace>`，如果没有设置，则 TiDB 根密码为空 |  |
+| `tidb.initSql`| 在 TiDB 集群启动成功后，会执行的初始化脚本 |  |
 | `tidb.affinity` | `tidb.affinity` 定义 TiDB 的调度规则和偏好，详细请参考：[affinity-and-anti-affinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity) | `{}` |
 | `tidb.nodeSelector` | `tidb.nodeSelector`确保 TiDB Pods 只调度到以该键值对作为标签的节点，详情参考：[nodeselector](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#nodeselector) | `{}` |
 | `tidb.tolerations` | `tidb.tolerations` 应用于 TiDB Pods，允许 TiDB Pods 调度到含有指定 taints 的节点上，详情参考：[taint-and-toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration) | `{}` |
@@ -85,6 +87,7 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有�
 | `tidb.service.mysqlNodePort` | TiDB 服务暴露的 mysql NodePort 端口 |  |
 | `tidb.service.exposeStatus` | TiDB 服务是否暴露状态端口 | `true` |
 | `tidb.service.statusNodePort` | 指定 TiDB 服务的状态端口暴露的 `NodePort` |  |
+| `tidb.separateSlowLog` | 是否以 sidecar 方式运行独立容器输出 TiDB 的 SlowLog | `false` |
 | `tidb.slowLogTailer.image` | TiDB 的 slowLogTailer 的镜像，slowLogTailer 是一个 sidecar 类型的容器，用于输出 TiDB 日志 | `busybox:1.26.2` |
 | `tidb.slowLogTailer.resources.limits.cpu` | 每个 TiDB Pod 的 slowLogTailer 的 CPU 资源限额 | `100m` |
 | `tidb.slowLogTailer.resources.limits.memory` | 每个 TiDB Pod 的 slowLogTailer 的内存资源限额 | `50Mi` |
