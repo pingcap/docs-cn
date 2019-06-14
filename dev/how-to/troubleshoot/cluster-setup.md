@@ -15,7 +15,7 @@ You can use this guide to help you diagnose and solve basic problems while using
 - The configuration and deployment topology
 - The TiDB component related issue in `dmesg`
 
-For other information, see [Frequently Asked Questions (FAQ)](/faq/tidb.md).
+For other information, see [Frequently Asked Questions (FAQ)](/dev/faq/tidb.md).
 
 ## Cannot connect to the database
 

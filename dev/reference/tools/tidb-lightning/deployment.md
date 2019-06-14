@@ -55,7 +55,7 @@ If you have sufficient machines, you can deploy multiple Lightning/Importer serv
 > - `tikv-importer` stores intermediate data on the RAM to speed up the import process. The typical memory usage can be calculated by using **(`max-open-engines` × `write-buffer-size` × 2) + (`num-import-jobs` × `region-split-size` × 2)**. If the speed of writing to disk is slow, the memory usage could be even higher due to buffering.
 
 Additionally, the target TiKV cluster should have enough space to absorb the new data.
-Besides [the standard requirements](/dev/how-to/deploy/hardware-recommendations.md), the total free space of the target TiKV cluster should be larger than **Size of data source × [Number of replicas](/faq/tidb.md#is-the-number-of-replicas-in-each-region-configurable-if-yes-how-to-configure-it) × 2**.
+Besides [the standard requirements](/dev/how-to/deploy/hardware-recommendations.md), the total free space of the target TiKV cluster should be larger than **Size of data source × [Number of replicas](/dev/faq/tidb.md#is-the-number-of-replicas-in-each-region-configurable-if-yes-how-to-configure-it) × 2**.
 
 With the default replica count of 3, this means the total free space should be at least 6 times the size of data source.
 
@@ -404,7 +404,7 @@ Download the TiDB-Lightning package (choose the same version as that of the TiDB
     log-level = "error"
 
     # Sets the TiDB session variable to speed up the Checksum and Analyze operations.
-    # See https://pingcap.com/docs/sql/statistics/#control-analyze-concurrency
+    # See https://pingcap.com/docs/dev/reference/performance/statistics/#control-analyze-concurrency
     # for the meaning of each setting
     build-stats-concurrency = 20
     distsql-scan-concurrency = 100

@@ -29,15 +29,15 @@ However, you need to reset the data synchronization task in some cases. For deta
 
 For database related passwords in all the DM configuration files, use the passwords encrypted by `dmctl`. If a database password is empty, it is unnecessary to encrypt it. For how to encrypt the plaintext password, see [Encrypt the upstream MySQL user password using dmctl](/dev/how-to/deploy/data-migration-with-ansible.md#encrypt-the-upstream-mysql-user-password-using-dmctl).
 
-In addition, the user of the upstream and downstream databases must have the corresponding read and write privileges. Data Migration also [prechecks the corresponding privileges automatically](/tools/dm/precheck.md) while starting the data synchronization task.
+In addition, the user of the upstream and downstream databases must have the corresponding read and write privileges. Data Migration also [prechecks the corresponding privileges automatically](/dev/reference/tools/data-migration/precheck.md) while starting the data synchronization task.
 
 ### Incompatible DDL statements
 
-When you encounter a DDL statement unsupported by TiDB, you need to manually handle it using dmctl (skipping the DDL statement or replacing the DDL statement with a specified DDL statement). For details, see [Skip or replace abnormal SQL statements](/tools/dm/skip-replace-sqls.md).
+When you encounter a DDL statement unsupported by TiDB, you need to manually handle it using dmctl (skipping the DDL statement or replacing the DDL statement with a specified DDL statement). For details, see [Skip or replace abnormal SQL statements](/dev/reference/tools/data-migration/skip-replace-sqls.md).
 
 > **Note:**
 >
-> Currently, TiDB is not compatible with all the DDL statements that MySQL supports. See [the DDL statements supported by TiDB](/sql/ddl.md).
+> Currently, TiDB is not compatible with all the DDL statements that MySQL supports. See [MySQL Compatibility](/dev/reference/mysql-compatibility.md#ddl).
 
 ## Reset the data synchronization task
 

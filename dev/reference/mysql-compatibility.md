@@ -120,7 +120,7 @@ Create Table: CREATE TABLE `t1` (
 1 row in set (0.00 sec)
 ```
 
-Architecturally, TiDB does support a similar storage engine abstraction to MySQL, and user tables are created in the engine specified by the [`--store`](/sql/server-command-option.md#--store) option used when you start tidb-server (typically `tikv`).
+Architecturally, TiDB does support a similar storage engine abstraction to MySQL, and user tables are created in the engine specified by the [`--store`](/dev/reference/configuration/tidb-server/configuration.md#store) option used when you start tidb-server (typically `tikv`).
 
 ### SQL modes
 

@@ -21,7 +21,7 @@ Prometheus consists of multiple components. Currently, TiDB uses the following o
 
 The diagram is as follows:
 
-<img src="/media/prometheus-in-tidb.png" width="500">
+![diagram](/media/prometheus-in-tidb.png)
 
 ## About Grafana in TiDB
 

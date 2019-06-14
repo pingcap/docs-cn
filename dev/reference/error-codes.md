@@ -26,8 +26,9 @@ TiDB is compatible with the error codes in MySQL, and in most cases returns the 
 | 9004 | This error occurs when a large number of transactional conflicts exist in the database. | Check the code of application. |
 | 9005 | A certain Raft Group is not available, such as the number of replicas is not enough. This error usually occurs when the TiKV server is busy or the TiKV node is down. | Check the state/monitor/log of the TiKV server. |
 | 9006 | The interval of GC Life Time is too short and the data that should be read by the long transactions might be cleared. | Extend the interval of GC Life Time. |
-| 9007 | Transactions in TiKV encounter write conflicts. | See [here](/faq/tidb.md#troubleshoot) for the cause and solution. |
+| 9500 | A single transaction is too large. | See [here](/dev/faq/tidb.md#the-error-message-transaction-too-large-is-displayed) for the solution. |
+| 9007 | Transactions in TiKV encounter write conflicts. | See [here](/dev/faq/tidb.md#troubleshoot) for the cause and solution. |
 
 ## Troubleshooting
 
-See the [troubleshooting](/dev/how-to/troubleshoot/cluster-setup.md) and [FAQ](/faq/tidb.md) documents.
+See the [troubleshooting](/dev/how-to/troubleshoot/cluster-setup.md) and [FAQ](/dev/faq/tidb.md) documents.
