@@ -45,7 +45,7 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有�
 | `pd.annotations` | 为 PD Pods 添加特定的 `annotations` | `{}` |
 | `tikv.replicas` | TiKV 的 Pod 数 | `3` |
 | `tikv.image` | TiKV 的镜像 | `pingcap/tikv:v3.0.0-rc.1` |
-| `tikv.imagePullPolicy` | TiKV 的镜像拉取策略 | `IfNotPresent` |
+| `tikv.imagePullPolicy` | TiKV 镜像的拉取策略 | `IfNotPresent` |
 | `tikv.logLevel` | TiKV 的日志级别 | `info` |
 | `tikv.storageClassName` | TiKV 使用的 storageClass， storageClassName 指代一种由 Kubernetes 集群提供的存储类型，不同的类可能映射到服务质量级别、备份策略或集群管理员确定的任意策略。详细参考：[storage-classes](https://kubernetes.io/docs/concepts/storage/storage-classes) | `local-storage` |
 | `tikv.syncLog` | syncLog 指是否启用 raft 日志同步功能，启用该功能能保证在断电时数据不丢失 | `true` |
@@ -66,7 +66,7 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有�
 | `tikv.storageSchedulerWorkerPoolSize` | TiKV 调度程序的工作池大小，应在重写情况下增加，同时应小于总 CPU 核心 | `4` |
 | `tidb.replicas` | TiDB 的 Pod 数 | `2` |
 | `tidb.image` | TiDB 的镜像 | `pingcap/tidb:v3.0.0-rc.1` |  |
-| `tidb.imagePullPolicy` | TiDB 的镜像拉取策略 | `IfNotPresent` |  |
+| `tidb.imagePullPolicy` | TiDB 镜像的拉取策略 | `IfNotPresent` |  |
 | `tidb.logLevel` | TiDB 的日志级别 | `info` |
 | `tidb.resources.limits.cpu` | 每个 TiDB Pod 的 CPU 资源限额 |  |
 | `tidb.resources.limits.memory` | 每个 TiDB Pod 的内存资源限额 |  |
