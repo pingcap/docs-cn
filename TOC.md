@@ -239,6 +239,7 @@
     - [Overview](dev/reference/transactions/overview.md)
     - [Transaction Model](dev/reference/transactions/transaction-model.md)
     - [Isolation Levels](dev/reference/transactions/transaction-isolation.md)
+    - [Pessimistic Transactions](dev/reference/transactions/transaction-pessimistic.md)
   + System Databases
     - [`mysql`](dev/reference/system-databases/mysql.md)
     - [`information_schema`](dev/reference/system-databases/information-schema.md)
