@@ -93,7 +93,7 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有�
 | `tidb.plugin.enable` | 是否启用 TiDB 插件功能 | `false` |
 | `tidb.plugin.directory` | 指定 TiDB 插件所在的目录 | `/plugins` |
 | `tidb.plugin.list` | 指定 TiDB 加载的插件列表，plugin ID 命名规则：插件名-版本，例如：'conn_limit-1' | `[]` |
-| `tidb.preparedPlanCacheEnabled` | 是否启用 TiDB 的 prefare plan 缓存 | `false` |
+| `tidb.preparedPlanCacheEnabled` | 是否启用 TiDB 的 prefared plan 缓存 | `false` |
 | `tidb.preparedPlanCacheCapacity` | TiDB 的 prefared plan 缓存数量 | `100` |
 | `tidb.txnLocalLatchesEnabled` | 是否启用事务的本地锁存，当事务之间存在大量冲突时启用它 | `false` |
 | `tidb.txnLocalLatchesCapacity` |   | `10240000` |
