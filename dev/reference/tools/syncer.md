@@ -545,7 +545,7 @@ Syncer provides the metric interface, and requires Prometheus to actively obtain
 #### title: binlog skipped events
 
 - metrics: `rate(syncer_binlog_skipped_events_total[1m])`
-- info: the total number of SQL statements that Syncer skips when the upstream synchronizes binlog files with the downstream; you can configure the format of SQL statements skipped by Syncer using the `skip-ddls` and `skip-dmls` parameters in the `syncer.toml` file.
+- info: the total number of SQL statements that Syncer skips when the upstream replicates binlog files with the downstream; you can configure the format of SQL statements skipped by Syncer using the `skip-ddls` and `skip-dmls` parameters in the `syncer.toml` file.
 
 #### title: position binlog position
 

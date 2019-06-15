@@ -82,7 +82,7 @@ The following metrics show only when `task-mode` is in the `incremental` or `all
 
 | Metric name | Description | Alert |
 |:----|:------------|:----|
-| remaining time to sync | The predicted remaining time it takes `syncer` to be completely synchronized with the master (in minutes) | N/A |
+| remaining time to sync | The predicted remaining time it takes `syncer` to be completely replicated with the master (in minutes) | N/A |
 | replicate lag | The latency time it takes to replicate the binlog from master to `syncer` (in seconds) | N/A |
 | process exist with error | The binlog replication process encounters an error within the DM-worker and exits | Immediate alerts |
 | binlog file gap between master and syncer | The number of binlog files by which the `syncer` processing unit is behind the master | An alert occurs when the number of binlog files by which the `syncer` processing unit is behind the master exceeds one (>1) and the condition lasts over 10 minutes |

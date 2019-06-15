@@ -1,6 +1,6 @@
 ---
 title: Data Migration Monitoring Metrics
-summary: Learn about the monitoring metrics when you use Data Migration to synchronize data.
+summary: Learn about the monitoring metrics when you use Data Migration to replicate data.
 category: operations
 ---
 
@@ -63,7 +63,7 @@ The following metrics show only when `task-mode` is in the `incremental` or `all
 
 | Metric name | Description | Alert |
 |----|------------|----|
-| remaining time to sync | The predicted remaining time it takes Syncer to be completely synchronized with the master (in minutes) | N/A |
+| remaining time to sync | The predicted remaining time it takes Syncer to be completely replicated with the master (in minutes) | N/A |
 | replicate lag | The latency time it takes to replicate the binlog from master to Syncer (in seconds) | N/A |
 | process exist with error | The binlog replication process encounters an error within the DM-worker and exits. | Immediate alerts |
 | binlog file gap between master and syncer | The number of binlog files in Syncer that are behind the master | When the number of binlog files in Syncer that are behind the master exceeds one (>1) and the condition lasts over 10 minutes |

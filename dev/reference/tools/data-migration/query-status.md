@@ -29,24 +29,24 @@ This document introduces the query result and subtask status of Data Migration (
                     "result": null,         # Displays the error information if a subtask fails.
                     "unresolvedDDLLockID": "test-`test`.`t_target`",    # The sharding DDL lock ID, used for manually handling the sharding DDL 
                                                                         # lock in the abnormal condition.
-                    "sync": {                   # The synchronization information of the `Sync` processing unit. This information is about the 
+                    "sync": {                   # The replication information of the `Sync` processing unit. This information is about the 
                                                 # same component with the current processing unit.
-                        "totalEvents": "12",    # The total number of binlog events that are synchronized in this subtask.
-                        "totalTps": "1",        # The number of binlog events that are synchronized in this subtask per second.
-                        "recentTps": "1",       # The number of binlog events that are synchronized in this subtask in the last one second.
+                        "totalEvents": "12",    # The total number of binlog events that are replicated in this subtask.
+                        "totalTps": "1",        # The number of binlog events that are replicated in this subtask per second.
+                        "recentTps": "1",       # The number of binlog events that are replicated in this subtask in the last one second.
                         "masterBinlog": "(bin.000001, 3234)",                               # The binlog position in the upstream database.
                         "masterBinlogGtid": "c0149e17-dff1-11e8-b6a8-0242ac110004:1-14",    # The GTID information in the upstream database.
-                        "syncerBinlog": "(bin.000001, 2525)",                               # The position of the binlog that has been synchronized
+                        "syncerBinlog": "(bin.000001, 2525)",                               # The position of the binlog that has been replicated
                                                                                             # in the `Sync` processing unit.
                         "syncerBinlogGtid": "",                                             # It is always empty because `Sync` does not use GTID to
-                                                                                            # synchronize data.
+                                                                                            # replicate data.
                         "blockingDDLs": [       # The DDL list that is blocked currently. It is not empty only when all the upstream tables of this 
                                                 # DM-worker are in the "synced" status. In this case, it indicates the sharding DDL statements to be executed or that are skipped.
                             "USE `test`; ALTER TABLE `test`.`t_target` DROP COLUMN `age`;"
                         ],
                         "unresolvedGroups": [   # The sharding group that is not resolved.
                             {
-                                "target": "`test`.`t_target`",                  # The downstream database table to be synchronized.
+                                "target": "`test`.`t_target`",                  # The downstream database table to be replicated.
                                 "DDLs": [
                                     "USE `test`; ALTER TABLE `test`.`t_target` DROP COLUMN `age`;"
                                 ],
@@ -57,25 +57,25 @@ This document introduces the query result and subtask status of Data Migration (
                                     "`test`.`t1`"
                                 ],
                                 "unsynced": [                                   # The upstream table that has not executed this sharding DDL
-                                                                                # statement. If any upstream tables have not finished synchronization,  
+                                                                                # statement. If any upstream tables have not finished replication,  
                                                                                 # `blockingDDLs` is empty.
                                 ]
                             }
                         ],
-                        "synced": false         # Whether the incremental synchronization catches up with the upstream and has the same binlog position as that in the 
+                        "synced": false         # Whether the incremental replication catches up with the upstream and has the same binlog position as that in the 
                                                 # upstream. The save point is not refreshed in real time in the `Sync` background, so "false" of "synced" 
-                                                # does not always mean a synchronization delay exits.
+                                                # does not always mean a replication delay exits.
                     }
                 }
             ],
-            "relayStatus": {    # The synchronization status of the relay log.
+            "relayStatus": {    # The replication status of the relay log.
                 "masterBinlog": "(bin.000001, 3234)",                               # The binlog position of the upstream database.
                 "masterBinlogGtid": "c0149e17-dff1-11e8-b6a8-0242ac110004:1-14",    # The binlog GTID information of the upstream database.
                 "relaySubDir": "c0149e17-dff1-11e8-b6a8-0242ac110004.000001",       # The currently used subdirectory of the relay log.
                 "relayBinlog": "(bin.000001, 3234)",                                # The position of the binlog that has been pulled to the local storage.
                 "relayBinlogGtid": "c0149e17-dff1-11e8-b6a8-0242ac110004:1-14",     # The GTID information of the binlog that has been pulled to the local 
                                                                                     # storage.
-                "relayCatchUpMaster": true,     # Whether the progress of synchronizing the relay log in the local storage has been the same as that in 
+                "relayCatchUpMaster": true,     # Whether the progress of replicating the relay log in the local storage has been the same as that in 
                                                 # the upstream.
                 "stage": "Running",             # The status of the `Sync` processing unit of the relay log.
                 "result": null
@@ -92,7 +92,7 @@ This document introduces the query result and subtask status of Data Migration (
                     "unit": "Load",
                     "result": null,
                     "unresolvedDDLLockID": "",
-                    "load": {                   # The synchronization information of the `Load` processing unit.
+                    "load": {                   # The replication information of the `Load` processing unit.
                         "finishedBytes": "115", # The number of bytes that have been loaded.
                         "totalBytes": "452",    # The total number of bytes that need to be loaded.
                         "progress": "25.44 %"   # The progress of the loading process.
@@ -184,7 +184,7 @@ For operation details of "unresolvedDDLLockID" of "subTaskStatus" of "workers", 
 - `Finished`: 
 
     - The finished subtask status.
-    - Only when the full synchronization subtask is finished normally, the task is switched to this status.
+    - Only when the full replication subtask is finished normally, the task is switched to this status.
 
 ### Status switch diagram
 

@@ -21,7 +21,7 @@ This guide introduces the key features of sync-diff-inspector and describes how 
 
 - Compare the table schema and data
 - Generate the SQL statements used to repair data if the data inconsistency exists
-- Support comparing the data of multiple tables with the data of a single table (for the scenario of synchronizing data from sharded tables into the combined table)
+- Support comparing the data of multiple tables with the data of a single table (for the scenario of replicating data from sharded tables into the combined table)
 - Support comparing the data of different schemas or tables with different names
 
 ## Description of common configuration
@@ -162,11 +162,11 @@ password = ""
 
 ## Configuration of data comparison in the sharding scenario
 
-Assuming that you have two MySQL instances, use a synchronization tool to synchronize the data into TiDB as shown below:
+Assuming that you have two MySQL instances, use a replication tool to replicate the data into TiDB as shown below:
 
 ![shard-table-sync](/media/shard-table-sync.png)
 
-If you need to check the data consistency after synchronization, you can use the following configuration to compare data:
+If you need to check the data consistency after replication, you can use the following configuration to compare data:
 
 ```toml
 # Diff Configuration

@@ -1,13 +1,13 @@
 ---
 title: Data Migration Shard Merge Scenario
-summary: Learn how to use Data Migration to synchronize data in the shard merge scenario.
+summary: Learn how to use Data Migration to replicate data in the shard merge scenario.
 category: reference
 aliases: ['/docs/tools/dm/shard-merge-scenario/']
 ---
 
 # Data Migration Shard Merge Scenario
 
-This document shows how to use Data Migration (DM) in the shard merge scenario where the sharded schemas and sharded tables data of three upstream MySQL instances need to be synchronized to a downstream TiDB cluster.
+This document shows how to use Data Migration (DM) in the shard merge scenario where the sharded schemas and sharded tables data of three upstream MySQL instances need to be replicated to a downstream TiDB cluster.
 
 ## Upstream instances
 
@@ -37,7 +37,7 @@ Assume that the upstream schemas are as follows:
     | store_01 | sale_01, sale_02 |
     | store_02 | sale_01, sale_02 |
 
-## Synchronization requirements
+## Replication requirements
 
 1. Merge the `user`.`information` table of three upstream instances to the downstream `user`.`information` table in TiDB.
 2. Merge the `user`.`log_{north|south|east}` table of three upstream instances to the downstream `user`.`log_{north|south|east}` table in TiDB.
@@ -50,16 +50,16 @@ Assume that the upstream schemas are as follows:
 
 ## Downstream instances
 
-Assume that the downstream schema after synchronization is as follows:
+Assume that the downstream schema after replication is as follows:
 
 | Schema | Tables |
 |:------|:------|
 | user | information, log_north, log_east, log_south|
 | store | sale |
 
-## Synchronization solution
+## Replication solution
 
-- To satisfy the synchronization Requirements #1 and #2, configure the [table routing rule](/dev/reference/tools/data-migration/features/overview.md#table-routing) as follows:
+- To satisfy the replication Requirements #1 and #2, configure the [table routing rule](/dev/reference/tools/data-migration/features/overview.md#table-routing) as follows:
 
     ```yaml
     routes:
@@ -69,7 +69,7 @@ Assume that the downstream schema after synchronization is as follows:
         target-schema: "user"
     ```
 
-- To satisfy the synchronization Requirement #3, configure the [table routing rule](/dev/reference/tools/data-migration/features/overview.md#table-routing) as follows:
+- To satisfy the replication Requirement #3, configure the [table routing rule](/dev/reference/tools/data-migration/features/overview.md#table-routing) as follows:
 
     ```yaml
     routes:
@@ -84,7 +84,7 @@ Assume that the downstream schema after synchronization is as follows:
         target-table:  "sale"
     ```
 
-- To satisfy the synchronization Requirements #4 and #5, configure the [binlog event filtering rule](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filtering) as follows:
+- To satisfy the replication Requirements #4 and #5, configure the [binlog event filtering rule](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filtering) as follows:
 
     ```yaml
     filters:
@@ -97,9 +97,9 @@ Assume that the downstream schema after synchronization is as follows:
 
     > **Note:**
     >
-    > The synchronization Requirements #4, #5 and #7 indicate that all the deletion operations in the `user` schema are filtered out, so a schema level filtering rule is configured here. However, the deletion operations of future tables in the `user` schema will also be filtered out.
+    > The replication Requirements #4, #5 and #7 indicate that all the deletion operations in the `user` schema are filtered out, so a schema level filtering rule is configured here. However, the deletion operations of future tables in the `user` schema will also be filtered out.
 
-- To satisfy the synchronization Requirement #6, configure the [binlog event filter rule](/tools/dm/data-synchronization-features.md#binlog-event-filter) as follows:
+- To satisfy the replication Requirement #6, configure the [binlog event filter rule](/tools/dm/data-synchronization-features.md#binlog-event-filter) as follows:
 
     ```yaml
     filters:
@@ -115,7 +115,7 @@ Assume that the downstream schema after synchronization is as follows:
         action: Ignore
     ```
 
-- To satisfy the synchronization Requirement #7, configure the [black and white table lists](/dev/reference/tools/data-migration/features/overview.md#black-and-white-table-lists) as follows:
+- To satisfy the replication Requirement #7, configure the [black and white table lists](/dev/reference/tools/data-migration/features/overview.md#black-and-white-table-lists) as follows:
 
     ```yaml
     black-white-list:
@@ -125,7 +125,7 @@ Assume that the downstream schema after synchronization is as follows:
           tbl-name: "log_bak"
     ```
 
-- To satisfy the synchronization Requirement #8, configure the [column mapping rule](/dev/reference/tools/data-migration/features/overview.md#column-mapping) as follows:
+- To satisfy the replication Requirement #8, configure the [column mapping rule](/dev/reference/tools/data-migration/features/overview.md#column-mapping) as follows:
 
     ```yaml
     column-mappings:
@@ -152,9 +152,9 @@ Assume that the downstream schema after synchronization is as follows:
         arguments: ["3", "store", "sale", "_"]
     ```
 
-## Synchronization task configuration
+## Replication task configuration
 
-The complete configuration of the synchronization task is shown as below. For more details, see [Data Migration Task Configuration File](/dev/reference/tools/data-migration/configure/task-configuration-file.md).
+The complete configuration of the replication task is shown as below. For more details, see [Data Migration Task Configuration File](/dev/reference/tools/data-migration/configure/task-configuration-file.md).
 
 ```yaml
 name: "shard_merge"

@@ -1,6 +1,6 @@
 ---
 title: Data Migration Relay Log
-summary: Learn the directory structure, initial synchronization rules and data purge of DM relay logs.
+summary: Learn the directory structure, initial replication rules and data purge of DM relay logs.
 category: reference
 aliases: ['/docs/tools/dm/relay-log/'] 
 ---
@@ -9,9 +9,9 @@ aliases: ['/docs/tools/dm/relay-log/']
 
 The Data Migration (DM) relay log consists of a set of numbered files containing events that describe database changes, and an index file that contains the names of all used relay log files.
 
-After DM-worker is started, it automatically synchronizes the upstream binlog to the local configuration directory (the default synchronization directory is `<deploy_dir>/relay_log` if DM is deployed using `DM-Ansible`). When DM-worker is running, it synchronizes the upstream binlog to the local file in real time. Syncer, a processing unit of DM-worker, reads the binlog events of the local relay log in real time, transforms these events to SQL statements, and then synchronizes these statements to the downstream database.
+After DM-worker is started, it automatically replicates the upstream binlog to the local configuration directory (the default replication directory is `<deploy_dir>/relay_log` if DM is deployed using `DM-Ansible`). When DM-worker is running, it replicates the upstream binlog to the local file in real time. Syncer, a processing unit of DM-worker, reads the binlog events of the local relay log in real time, transforms these events to SQL statements, and then replicates these statements to the downstream database.
 
-This document introduces the directory structure, initial synchronization rules and data purge of DM relay logs.
+This document introduces the directory structure, initial replication rules and data purge of DM relay logs.
 
 ## Directory structure
 
@@ -33,7 +33,7 @@ An example of the directory structure of the local storage for a relay log:
 
 - `subdir`: 
 
-    - DM-worker stores the binlog synchronized from the upstream database in the same directory. Each directory is a `subdir`.
+    - DM-worker stores the binlog replicated from the upstream database in the same directory. Each directory is a `subdir`.
 
     - `subdir` is named `<Upstream database UUID>.<Local subdir serial number>`.
 
@@ -43,13 +43,13 @@ An example of the directory structure of the local storage for a relay log:
 
 - `server-uuid.index`: Records a list of names of currently available `subdir` directory.
 
-- `relay.meta`: Stores the information of the synchronized binlog in each `subdir`. For example,
+- `relay.meta`: Stores the information of the replicated binlog in each `subdir`. For example,
 
     ```bash
     $ cat c0149e17-dff1-11e8-b6a8-0242ac110004.000001/relay.meta
-    binlog-name = "mysql-bin.000010"                            # The name of the currently synchronized binlog.
-    binlog-pos = 63083620                                       # The position of the currently synchronized binlog.
-    binlog-gtid = "c0149e17-dff1-11e8-b6a8-0242ac110004:1-3328" # GTID of the currently synchronized binlog.
+    binlog-name = "mysql-bin.000010"                            # The name of the currently replicated binlog.
+    binlog-pos = 63083620                                       # The position of the currently replicated binlog.
+    binlog-gtid = "c0149e17-dff1-11e8-b6a8-0242ac110004:1-3328" # GTID of the currently replicated binlog.
                                                                 # There might be multiple GTIDs.
     $ cat 92acbd8a-c844-11e7-94a1-1866daf8accc.000001/relay.meta
     binlog-name = "mysql-bin.018393"
@@ -57,26 +57,26 @@ An example of the directory structure of the local storage for a relay log:
     binlog-gtid = "3ccc475b-2343-11e7-be21-6c0b84d59f30:1-14,406a3f61-690d-11e7-87c5-6c92bf46f384:1-94321383,53bfca22-690d-11e7-8a62-18ded7a37b78:1-495,686e1ab6-c47e-11e7-a42c-6c92bf46f384:1-34981190,03fc0263-28c7-11e7-a653-6c0b84d59f30:1-7041423,05474d3c-28c7-11e7-8352-203db246dd3d:1-170,10b039fc-c843-11e7-8f6a-1866daf8d810:1-308290454"
     ```
 
-## Initial synchronization rules
+## Initial replication rules
 
-For each start of DM-worker (or the relay log resuming synchronization after a pause), the starting position of synchronization includes the following conditions:
+For each start of DM-worker (or the relay log resuming replication after a pause), the starting position of replication includes the following conditions:
 
-- If a valid local relay log (a valid relay log is a relay log with valid `server-uuid.index`, `subdir` and `relay.meta` files), DM-worker resumes synchronization from a position recorded by `relay.meta`.
+- If a valid local relay log (a valid relay log is a relay log with valid `server-uuid.index`, `subdir` and `relay.meta` files), DM-worker resumes replication from a position recorded by `relay.meta`.
 
 - If a valid local relay log does not exist, and `relay-binlog-name` or `relay-binlog-gtid` is not specified in the DM configuration file:
 
-    - In the non-GTID mode, DM-worker starts synchronization from the initial upstream binlog and synchronizes all the upstream binlog files to the latest successively.
+    - In the non-GTID mode, DM-worker starts replication from the initial upstream binlog and replicates all the upstream binlog files to the latest successively.
 
-    - In the GTID mode, DM-worker starts synchronization from the initial upstream GTID. 
+    - In the GTID mode, DM-worker starts replication from the initial upstream GTID. 
     
         > **Note:**
         >
-        > If the upstream relay log is purged, an error occurs. In this case, set `relay-binlog-gtid` to specify the starting position of synchronization.
+        > If the upstream relay log is purged, an error occurs. In this case, set `relay-binlog-gtid` to specify the starting position of replication.
 
 - If a valid local relay log does not exist:
 
-    - In the non-GTID mode, if `relay-binlog-name` is specified, DM-worker starts synchronization from the specified binlog file.
-    - In the GTID mode, if `relay-binlog-gtid` is specified, DM-worker starts synchronization from the specified GTID.
+    - In the non-GTID mode, if `relay-binlog-name` is specified, DM-worker starts replication from the specified binlog file.
+    - In the GTID mode, if `relay-binlog-gtid` is specified, DM-worker starts replication from the specified GTID.
 
 ## Data purge
 

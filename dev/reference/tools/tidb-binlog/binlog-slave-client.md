@@ -140,7 +140,7 @@ You can use Driver by quoting the Driver code in package and refer to the exampl
 
 Currently, two examples are provided:
 
-* Using Driver to synchronize data to MySQL. This example shows how to convert a binlog to SQL
+* Using Driver to replicate data to MySQL. This example shows how to convert a binlog to SQL
 * Using Driver to print data
 
 > **Note:**

@@ -119,9 +119,9 @@ tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
 cd tidb-enterprise-tools-latest-linux-amd64
 ```
 
-Assuming the data from `t1` and `t2` is already imported to TiDB using `mydumper`/`loader`. Now we hope that any updates to these two tables are synchronised to TiDB in real time.
+Assuming the data from `t1` and `t2` is already imported to TiDB using `mydumper`/`loader`. Now we hope that any updates to these two tables are replicated to TiDB in real time.
 
-### Obtain the position to synchronise
+### Obtain the position to replicate
 
 The data exported from MySQL contains a metadata file which includes the position information. Take the following metadata information as an example:
 ```
@@ -134,7 +134,7 @@ SHOW MASTER STATUS:
 Finished dump at: 2017-04-28 10:48:11
 
 ```
-The position information (`Pos: 930143241`) needs to be stored in the `syncer.meta` file for `syncer` to synchronize:
+The position information (`Pos: 930143241`) needs to be stored in the `syncer.meta` file for `syncer` to replicate:
 
 ```bash
 # cat syncer.meta
@@ -144,7 +144,7 @@ binlog-pos = 930143241
 
 > **Note:**
 >
-> The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is synchronised.
+> The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is replicated.
 
 ### Start `syncer`
 
@@ -165,25 +165,25 @@ status-addr = ":10081"
 
 skip-sqls = ["ALTER USER", "CREATE USER"]
 
-# Support whitelist filter. You can specify the database and table to be synchronised. For example:
-# Synchronise all the tables of db1 and db2:
+# Support whitelist filter. You can specify the database and table to be replicated. For example:
+# Replicate all the tables of db1 and db2:
 replicate-do-db = ["db1","db2"]
 
-# Synchronise db1.table1.
+# Replicate db1.table1.
 [[replicate-do-table]]
 db-name ="db1"
 tbl-name = "table1"
 
-# Synchronise db3.table2.
+# Replicate db3.table2.
 [[replicate-do-table]]
 db-name ="db3"
 tbl-name = "table2"
 
 # Support regular expressions. Start with '~'  to use regular expressions.
-# To synchronise all the databases that start with `test`:
+# To replicate all the databases that start with `test`:
 replicate-do-db = ["~^test.*"]
 
-# The sharding synchronising rules support wildcharacter.
+# The sharding replicating rules support wildcharacter.
 # 1. The asterisk character (*, also called "star") matches zero or more characters,
 #    for example, "doc*" matches "doc" and "document" but not "dodo";
 #    asterisk character must be in the end of the wildcard word,
@@ -246,7 +246,7 @@ mysql> select * from t1;
 +----+------+
 ```
 
-`syncer` outputs the current synchronised data statistics every 30 seconds:
+`syncer` outputs the current replicated data statistics every 30 seconds:
 
 ```bash
 2017/06/08 01:18:51 syncer.go:934: [info] [syncer]total events = 15, total tps = 130, recent tps = 4,
@@ -257,4 +257,4 @@ master-binlog = (ON.000001, 11992), master-binlog-gtid=53ea0ed1-9bf8-11e6-8bea-6
 syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-35
 ```
 
-You can see that by using `syncer`, the updates in MySQL are automatically synchronised in TiDB.
+You can see that by using `syncer`, the updates in MySQL are automatically replicated in TiDB.

@@ -8,11 +8,11 @@ category: tools
 
 This document introduces the architecture and the deployment of TiDB-Binlog of the cluster version.
 
-TiDB-Binlog is an enterprise tool used to collect the binlog data of TiDB and provide real-time backup and synchronization.
+TiDB-Binlog is an enterprise tool used to collect the binlog data of TiDB and provide real-time backup and replication.
 
 TiDB-Binlog has the following features:
 
-* **Data synchronization:** synchronize the data in the TiDB cluster to other databases
+* **Data replication:** replicate the data in the TiDB cluster to other databases
 * **Real-time backup and restoration:** back up the data in the TiDB cluster and restore the TiDB cluster when the cluster fails
 
 ## TiDB-Binlog architecture
@@ -29,7 +29,7 @@ Pump is used to record the binlogs generated in TiDB, sort the binlogs based on 
 
 ### Drainer
 
-Drainer collects and merges binlogs from each Pump, converts the binlog to SQL or data of a specific format, and synchronizes the data to the downstream.
+Drainer collects and merges binlogs from each Pump, converts the binlog to SQL or data of a specific format, and replicates the data to the downstream.
 
 ## Main features
 
@@ -55,11 +55,11 @@ The server hardware requirements for development, testing, and the production en
 * When TiDB is running, you need to guarantee that at least one Pump is running normally.
 * To enable TiDB-Binlog, add the `enable-binlog` startup parameter to TiDB.
 * Drainer does not support the `rename` DDL operation on the table of `ignore schemas` (the schemas in the filter list).
-* If you want to start Drainer in the existing TiDB cluster, generally, you need to make a full backup of the cluster data, obtain `savepoint`, import the data to the target database, and then start Drainer to synchronize the incremental data from `savepoint`.
-* Drainer supports synchronizing binlogs to MySQL, TiDB, Kafka or the local files. If you need to synchronize binlogs to other destinations, you can set Drainer to synchronize the binlog to Kafka and read the data in Kafka for customization processing. See [Binlog Slave Client User Guide](../tools/binlog-slave-client.md).
+* If you want to start Drainer in the existing TiDB cluster, generally, you need to make a full backup of the cluster data, obtain `savepoint`, import the data to the target database, and then start Drainer to replicate the incremental data from `savepoint`.
+* Drainer supports replicating binlogs to MySQL, TiDB, Kafka or the local files. If you need to replicate binlogs to other destinations, you can set Drainer to replicate the binlog to Kafka and read the data in Kafka for customization processing. See [Binlog Slave Client User Guide](../tools/binlog-slave-client.md).
 * If TiDB-Binlog is used for recovering the incremental data, you can set the downstream to `pb` (local files in the proto buffer format). Drainer converts the binlog to data in the specified proto buffer format and writes the data to local files. In this way, you can use [Reparo](../tools/reparo.md) to recover the incremental data.
 * Pump/Drainer has two states: `paused` and `offline`. If you press Ctrl + C or kill the process, both Pump and Drainer become `paused`. The paused Pump do not need to send all the binlog data to Drainer. If you need to exit from Pump for a long period of time (or do not use Pump any more), use `binlogctl` to make Pump offline. The same goes for Drainer.
-* If the downstream is MySQL/TiDB, you can use [sync-diff-inspector](../tools/sync-diff-inspector.md) to verify the data after data synchronization.
+* If the downstream is MySQL/TiDB, you can use [sync-diff-inspector](../tools/sync-diff-inspector.md) to verify the data after data replication.
 
 ## TiDB-Binlog deployment
 
@@ -421,7 +421,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         -addr string
             the address through which Drainer provides the service (-addr="192.168.0.13:8249")
         -c int
-            the number of the concurrency of the downstream for synchronization. The bigger the value, the better throughput performance of the concurrency (1 by default).
+            the number of the concurrency of the downstream for replication. The bigger the value, the better throughput performance of the concurrency (1 by default).
         -config string
             the directory of the configuration file. Drainer reads the configuration file first.
             If the corresponding configuration exists in the command line parameters, Drainer uses the configuration of the command line parameters to cover that of the configuration file.
@@ -435,7 +435,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         -disable-detect
             whether to disable the conflict monitoring
         -disable-dispatch
-            whether to disable the SQL feature of splitting a single binlog file. If it is set to "true", each binlog file is restored to a single transaction for synchronization based on the order of binlogs. 
+            whether to disable the SQL feature of splitting a single binlog file. If it is set to "true", each binlog file is restored to a single transaction for replication based on the order of binlogs. 
             It is set to "False", when the downstream is MySQL.
         -ignore-schemas string
             the db filter list ("INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test" by default)
@@ -491,12 +491,12 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         # the number of SQL statements of a transaction which are output to the downstream database (20 by default)
         txn-batch = 20
 
-        # the number of the concurrency of the downstream for synchronization. The bigger the value,
+        # the number of the concurrency of the downstream for replication. The bigger the value,
         # the better throughput performance of the concurrency (16 by default)
         worker-count = 16
 
         # whether to disable the SQL feature of splitting a single binlog file. If it is set to "true",
-        # each binlog file is restored to a single transaction for synchronization based on the order of binlogs.
+        # each binlog file is restored to a single transaction for replication based on the order of binlogs.
         # If the downstream service is MySQL, set it to "False".
         disable-dispatch = false
 
@@ -571,13 +571,13 @@ Pump/Drainer state description:
 
 * `online`: running normally.
 * `pausing`: in the pausing process. It turns into this state after you use `kill` or press Ctrl + C to exit from the process.
-* `paused`: has been stopped. While Pump is in this state, it rejects the request of writing binlog into it and does not provide the binlog for Drainer any more. When Drainer is in this state, it does not synchronize data to the downstream. After Pump and Drainer exit normally from all the threads, they switch the state to `paused` and then exits from the process.
+* `paused`: has been stopped. While Pump is in this state, it rejects the request of writing binlog into it and does not provide the binlog for Drainer any more. When Drainer is in this state, it does not replicate data to the downstream. After Pump and Drainer exit normally from all the threads, they switch the state to `paused` and then exits from the process.
 * `closing`: in the offline process. `binlogctl` is used to get Pump/Drainer offline and Pump/Drainer is in this state before the process exits. In this state, Pump does not accept new requests of writing binlog into it and waits for all the binlog data to be used up by Drainer.
 * `offline`: becomes offline. After Pump sents all the binlog data that it saves to Drainer, its state is switched to `offline`. Drainer's state can be switched to `offline` after all the threads have exited.
 
 > **Note:**
 >
-> * When Pump/Drainer is `pausing` or `paused`, the data synchronization is interrupted.
+> * When Pump/Drainer is `pausing` or `paused`, the data replication is interrupted.
 > * When Pump is `closing`, you need to guarantee that all the data has been consumed by all the Drainers that are not `offline`. So before making Pump offline, you need to guarantee all the Drainers are `online`; otherwise, Pump cannot get offline normally.
 > * The binlog data that Pump saves is processed by GC only when it has been consumed by all the Drainers that are not `offline`.
 > * Close Drainer only when it will not be used any more.
@@ -597,7 +597,7 @@ For how to pause, close, check, and modify the state of Drainer, see the [binlog
 
 * It is the first time you run Drainer and you need to obtain the current `ts`.
 * When Pump/Drainer exits abnormally, its state is not updated and the service is affected. You can use this tool to modify the state.
-* An error occurs during synchronization and you need to check the running status and the Pump/Drainer state.
+* An error occurs during replication and you need to check the running status and the Pump/Drainer state.
 * While maintaining the cluster, you need to pause or close Pump/Drainer.
 
 #### Download `binlogctl`
@@ -704,12 +704,12 @@ The corresponding relationship between TiDB-Binlog versions and TiDB versions is
 ### Upgrade process
 
 - If importing the full data is acceptable, you can abandon the old version and deploy TiDB-Binlog following this document.
-- If you want to resume synchronization from the original checkpoint, perform the following steps to upgrade TiDB-Binlog:
+- If you want to resume replication from the original checkpoint, perform the following steps to upgrade TiDB-Binlog:
 
     1. Deploy the new version of Pump.
     2. Stop the TiDB cluster service.
     3. Upgrade TiDB and the configuration, and write the binlog data to the new Pump cluster.
     4. Reconnect the TiDB cluster to the service.
-    5. Make sure that the old version of Drainer has synchronized the data in the old version of Pump to the downstream completely.
+    5. Make sure that the old version of Drainer has replicated the data in the old version of Pump to the downstream completely.
     6. Start the new version of Drainer.
     7. Close the Pump and Drainer of the old versions and the dependent Kafka and Zookeeper.

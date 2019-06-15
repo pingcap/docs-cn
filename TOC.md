@@ -266,13 +266,13 @@
         - [Black and White Lists](dev/reference/tools/data-migration/features/overview.md#black-and-white-table-lists)
         - [Binlog Event Filter](dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)
         - [Column Mapping](dev/reference/tools/data-migration/features/overview.md#column-mapping)
-        - [Synchronization Delay Monitoring](dev/reference/tools/data-migration/features/overview.md#synchronization-delay-monitoring)
+        - [Replication Delay Monitoring](dev/reference/tools/data-migration/features/overview.md#replication-delay-monitoring)
         + Sharding Support
           - [Introduction](dev/reference/tools/data-migration/features/shard-merge.md)
           - [Restrictions](dev/reference/tools/data-migration/features/shard-merge.md#restrictions)
           - [Handle Sharding DDL Locks Manually](dev/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)
       + Usage Scenarios
-        - [Simple Scenario](dev/reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
+        - [Simple Scenario](dev/reference/tools/data-migration/usage-scenarios/simple-replication.md)
         - [Shard Merge Scenario](dev/reference/tools/data-migration/usage-scenarios/shard-merge.md)
       - [Deploy](dev/reference/tools/data-migration/deploy.md)
       + Configure

@@ -34,7 +34,7 @@ To understand the Drainer monitoring metrics, check the following table:
 
 | Drainer monitoring metrics | Description |
 | --- | --- |
-| Checkpoint TSO | Shows the biggest TSO time of the binlog that Drainer has already synchronized into the downstream. You can get the lag by using the current time to subtract the binlog timestamp. But be noted that the timestamp is allocated by PD of the master cluster and is determined by the time of PD.|
+| Checkpoint TSO | Shows the biggest TSO time of the binlog that Drainer has already replicated into the downstream. You can get the lag by using the current time to subtract the binlog timestamp. But be noted that the timestamp is allocated by PD of the master cluster and is determined by the time of PD.|
 | Pump Handle TSO | Records the biggest TSO time among the binlog files that Drainer obtains from each Pump node |
 | Pull Binlog QPS by Pump NodeID | Shows the QPS when Drainer obtains binlog from each Pump node |
 | 95% Binlog Reach Duration By Pump | Records the delay from the time when binlog is written into Pump to the time when the binlog is obtained by Drainer |
@@ -64,7 +64,7 @@ Currently, TiDB-Binlog monitoring metrics are divided into the following three t
 
 #### binlog_drainer_checkpoint_high_delay
 
-- Description: The delay of Drainer synchronization exceeds one hour
+- Description: The delay of Drainer replication exceeds one hour
 - Monitoring rule: `(time() - binlog_drainer_checkpoint_tso / 1000)` > 3600
 - Solutions:
 
@@ -72,7 +72,7 @@ Currently, TiDB-Binlog monitoring metrics are divided into the following three t
 
         You can check `handle tso` of Pump to get the time for the latest message of each Pump. Check whether a high latency exists for Pump and make sure the corresponding Pump is running normally
 
-    - Check whether it is too slow to synchronize data in the downstream based on Drainer `event` and Drainer `execute latency`:
+    - Check whether it is too slow to replicate data in the downstream based on Drainer `event` and Drainer `execute latency`:
 
         - If Drainer `execute time` is too large, check the network bandwidth and latency between the machine with Drainer deployed and the machine with the target database deployed, and the state of the target database
         - If Drainer `execute time` is not too large and Drainer `event` is too small, add `work count` and `batch` and retry
@@ -110,7 +110,7 @@ Currently, TiDB-Binlog monitoring metrics are divided into the following three t
 
 #### binlog_drainer_execute_duration_time_more_than_10s
 
-- Description: The transaction time it takes Drainer to synchronize data to TiDB. If it is too large, the Drainer synchronization of data is affected
+- Description: The transaction time it takes Drainer to replicate data to TiDB. If it is too large, the Drainer replication of data is affected
 - Monitoring rule: `histogram_quantile(0.9, rate(binlog_drainer_execute_duration_time_bucket[1m]))` > 10
 - Solutions:
 

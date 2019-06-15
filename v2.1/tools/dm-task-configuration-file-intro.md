@@ -25,7 +25,7 @@ task-mode: all                  # The task mode. Can be set to `full`/`increment
 is-sharding: true               # Whether it is a sharding task
 meta-schema: "dm_meta"          # The downstream database that stores the `meta` information
 remove-meta: false              # Whether to remove the `meta` information (`checkpoint` and `onlineddl`) before starting the 
-                                # synchronization task 
+                                # replication task 
 
 target-database:                # Configuration of the downstream database instance
     host: "192.168.0.1"
@@ -92,10 +92,10 @@ loaders:                                            # Configuration arguments of
 
 syncers:                                            # Configuration arguments of running Syncer
     global:
-        worker-count: 16                            # The number of threads that synchronize binlog events concurrently in Syncer
+        worker-count: 16                            # The number of threads that replicate binlog events concurrently in Syncer
         batch: 1000                                 # The number of SQL statements in a transaction batch that Syncer 
-                                                    # synchronizes to the downstream database
-        max-retry: 100                              # The retry times of the transactions with an error that Syncer synchronizes
+                                                    # replicates to the downstream database
+        max-retry: 100                              # The retry times of the transactions with an error that Syncer replicates
                                                     # to the downstream database (only for DML operations)
 ```
 
@@ -107,7 +107,7 @@ References:
 
 ## Instance configuration
 
-This part defines the subtask of data synchronization. DM supports synchronizing data from one or multiple MySQL instances to the same instance.
+This part defines the subtask of data replication. DM supports replicating data from one or multiple MySQL instances to the same instance.
 
 ```
 mysql-instances:
@@ -121,7 +121,7 @@ mysql-instances:
                                                    # not allowed to set it to an ID of a MySQL instance that is not within the 
                                                    # DM-master cluster topology.
 
-        meta:                                      # The position where the binlog synchronization starts when the checkpoint of 
+        meta:                                      # The position where the binlog replication starts when the checkpoint of 
                                                    # the downstream database does not exist. If the checkpoint exits, this 
                                                    # configuration does not work. 
             binlog-name: binlog-00001
@@ -165,7 +165,7 @@ mysql-instances:
     
         syncer:                                                            # The Syncer configuration. You cannot set it and 
                                                                            # `syncer-config-name` at the same time.
-            worker-count: 32                                               # The number of threads that synchronize binlog events 
+            worker-count: 32                                               # The number of threads that replicate binlog events 
                                                                            # concurrently in Syncer
             batch: 2000
             max-retry: 200

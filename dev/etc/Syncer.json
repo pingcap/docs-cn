@@ -765,7 +765,7 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_TIDB-CLUSTER}",
-          "description": "he total number of SQL statements that Syncer skips when the upstream synchronizes binlog files with the downstream; you can configure the format of SQL statements skipped by Syncer using the `skip-ddls` and `skip-dmls` parameters in the `syncer.toml` file.",
+          "description": "The total number of SQL statements that Syncer skips when the upstream replicates binlog files with the downstream; you can configure the format of SQL statements skipped by Syncer using the `skip-ddls` and `skip-dmls` parameters in the `syncer.toml` file.",
           "fill": 1,
           "id": 3,
           "legend": {

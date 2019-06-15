@@ -1,13 +1,13 @@
 ---
-title: Manage the Data Synchronization Task
-summary: Use dmctl to manage the data synchronization task.
+title: Manage the Data Replication Task
+summary: Use dmctl to manage the data replication task.
 category: reference
 aliases: ['/docs/tools/dm/manage-task/']
 ---
 
-# Manage the Data Synchronization Task
+# Manage the Data Replication Task
 
-This document describes how to manage and maintain the data synchronization task using the [dmctl](/dev/reference/tools/data-migration/overview.md#dmctl) component. For the Data Migration cluster deployed using DM-Ansible, the dmctl binary file is in `dm-ansible/dmctl`.
+This document describes how to manage and maintain the data replication task using the [dmctl](/dev/reference/tools/data-migration/overview.md#dmctl) component. For the Data Migration cluster deployed using DM-Ansible, the dmctl binary file is in `dm-ansible/dmctl`.
 
 ## dmctl basic usage
 
@@ -83,20 +83,20 @@ Flags:
 # Use "dmctl [command] --help" for more information about a command.
 ```
 
-## Manage the data synchronization task
+## Manage the data replication task
 
 This section describes how to use the task management commands to execute the following operations:
 
-- [Create the data synchronization task](#create-the-data-synchronization-task)
-- [Check the data synchronization task status](#check-the-data-synchronization-task-status)
-- [Pause the data synchronization task](#pause-the-data-synchronization-task)
-- [Restart the data synchronization task](#restart-the-data-synchronization-task)
-- [Stop the data synchronization task](#stop-the-data-synchronization-task)
-- [Update the data synchronization task](#update-the-data-synchronization-task)
+- [Create the data replication task](#create-the-data-replication-task)
+- [Check the data replication task status](#check-the-data-replication-task-status)
+- [Pause the data replication task](#pause-the-data-replication-task)
+- [Restart the data replication task](#restart-the-data-replication-task)
+- [Stop the data replication task](#stop-the-data-replication-task)
+- [Update the data replication task](#update-the-data-replication-task)
 
-### Create the data synchronization task
+### Create the data replication task
 
-You can use the task management command to create the data synchronization task. Data Migration [prechecks the corresponding privileges and configuration automatically](#precheck-the-upstream-mysql-instance-configuration) while starting the data synchronization.
+You can use the task management command to create the data replication task. Data Migration [prechecks the corresponding privileges and configuration automatically](#precheck-the-upstream-mysql-instance-configuration) while starting the data replication.
 
 ```bash
 » help start-task
@@ -144,9 +144,9 @@ start-task [ -w "172.16.30.15:10081"] ./task.yaml
 }
 ```
 
-### Check the data synchronization task status
+### Check the data replication task status
 
-You can use the `query-status` task management command to check the status of the data synchronization task. For details about the query result and subtask status, see [Query Status](/dev/reference/tools/data-migration/query-status.md).
+You can use the `query-status` task management command to check the status of the data replication task. For details about the query result and subtask status, see [Query Status](/dev/reference/tools/data-migration/query-status.md).
 
 ```bash
 » help query-status
@@ -170,8 +170,8 @@ query-status
 
 #### Flags description
 
-- `-w`: (Optional) This flag specifies the group of DM-workers where the subtasks of the synchronization task (that you want to query) run.
-- `task_name`: (Optional) This flag specifies the task name. If it is not set, the results of all data synchronization tasks are returned.
+- `-w`: (Optional) This flag specifies the group of DM-workers where the subtasks of the replication task (that you want to query) run.
+- `task_name`: (Optional) This flag specifies the task name. If it is not set, the results of all data replication tasks are returned.
 
 #### Returned results
 
@@ -259,9 +259,9 @@ query-status
 }
 ```
 
-### Pause the data synchronization task
+### Pause the data replication task
 
-You can use the task management command to pause the data synchronization task.
+You can use the task management command to pause the data replication task.
 
 ```bash
 » help pause-task
@@ -285,7 +285,7 @@ pause-task [-w "127.0.0.1:10181"] task-name
 
 #### Flags description
 
-- `-w`: (Optional) This flag specifies the group of DM-workers where the subtasks of the synchronization task (that you want to pause) run. If it is set, only subtasks on the specified DM-workers are paused.
+- `-w`: (Optional) This flag specifies the group of DM-workers where the subtasks of the replication task (that you want to pause) run. If it is set, only subtasks on the specified DM-workers are paused.
 - `task_name`: (Required) This flag specifies the task name.
 
 #### Returned results
@@ -313,9 +313,9 @@ pause-task [-w "127.0.0.1:10181"] task-name
 }
 ```
 
-### Restart the data synchronization task
+### Restart the data replication task
 
-You can use the task management command to restart the data synchronization task.
+You can use the task management command to restart the data replication task.
 
 ```bash
 » help resume-task
@@ -339,7 +339,7 @@ resume-task [-w "127.0.0.1:10181"] task-name
 
 #### Flags description
 
-- `-w`: (Optional) This flag specifies the group of DM-workers where the subtasks of the synchronization task (that you want to restart) run. If it is set, only subtasks on the specified DM-workers are restarted.
+- `-w`: (Optional) This flag specifies the group of DM-workers where the subtasks of the replication task (that you want to restart) run. If it is set, only subtasks on the specified DM-workers are restarted.
 - `task_name`: (Required) This flag specifies the task name.
 
 #### Returned results
@@ -367,9 +367,9 @@ resume-task [-w "127.0.0.1:10181"] task-name
 }
 ```
 
-### Stop the data synchronization task
+### Stop the data replication task
 
-You can use the task management command to stop the data synchronization task.
+You can use the task management command to stop the data replication task.
 
 ```bash
 » help stop-task
@@ -393,7 +393,7 @@ stop-task [-w "127.0.0.1:10181"]  task-name
 
 #### Flags description
 
-- `-w`: (Optional) This flag specifies the group of DM-workers where the subtasks of the synchronization task (that you want to stop) run. If it is set, only subtasks on the specified DM-workers are stopped.
+- `-w`: (Optional) This flag specifies the group of DM-workers where the subtasks of the replication task (that you want to stop) run. If it is set, only subtasks on the specified DM-workers are stopped.
 - `task_name`: (Required) This flag specifies the task name.
 
 #### Returned results
@@ -421,9 +421,9 @@ stop-task [-w "127.0.0.1:10181"]  task-name
 }
 ```
 
-### Update the data synchronization task
+### Update the data replication task
 
-You can use the task management command to update the data synchronization task. The following items support online update, while all other items do not support online update.
+You can use the task management command to update the data replication task. The following items support online update, while all other items do not support online update.
 
 - table route rules
 - black white list
@@ -432,7 +432,7 @@ You can use the task management command to update the data synchronization task.
 
 #### Update items that support online update
 
-1. Check the status of the corresponding data synchronization task using `query-status <task-name>`.
+1. Check the status of the corresponding data replication task using `query-status <task-name>`.
 
     If `stage` is not `Paused`, use `pause-task <task-name>` to pause the task.
 
@@ -444,7 +444,7 @@ You can use the task management command to update the data synchronization task.
 
 #### Update items that do not support online update
 
-1. Check the status of the corresponding data synchronization task using `query-status <task-name>`.
+1. Check the status of the corresponding data replication task using `query-status <task-name>`.
 
     If the task exists, use `stop-task <task-name>` to stop the task.
 
@@ -476,7 +476,7 @@ update-task [-w "127.0.0.1:10181"] ./task.yaml
 
 #### Flags description
 
-- `-w`: (Optional) This flag specifies the group of DM-workers where the subtasks of the synchronization task (that you want to update) run. If it is set, only subtasks on the specified DM-workers are updated.
+- `-w`: (Optional) This flag specifies the group of DM-workers where the subtasks of the replication task (that you want to update) run. If it is set, only subtasks on the specified DM-workers are updated.
 - `config_file`: (Required) This flag specifies the file path of `task.yaml`.
 
 #### Returned results

@@ -7,14 +7,14 @@ aliases: ['/docs/tools/dm/dm-worker-intro/']
 
 # DM-worker Introduction
 
-DM-worker is a tool used to synchronize data from MySQL/MariaDB to TiDB. 
+DM-worker is a tool used to replicate data from MySQL/MariaDB to TiDB. 
 
 It has the following features:
 
 - Acts as a slave of any MySQL or MariaDB instance
 - Reads the binlog events from MySQL/MariaDB and persists them to the local storage
-- A single DM-worker supports synchronizing the data of one MySQL/MariaDB instance to multiple TiDB instances
-- Multiple DM-workers support synchronizing the data of multiple MySQL/MariaDB instances to one TiDB instance
+- A single DM-worker supports replicating the data of one MySQL/MariaDB instance to multiple TiDB instances
+- Multiple DM-workers support replicating the data of multiple MySQL/MariaDB instances to one TiDB instance
 
 ## DM-worker processing unit
 
@@ -53,14 +53,14 @@ The upstream database (MySQL/MariaDB) user must have the following privileges:
 | `REPLICATION SLAVE` | Global |
 | `REPLICATION CLIENT` | Global |
 
-If you need to synchronize the data from `db1` to TiDB, execute the following `GRANT` statement:
+If you need to replicate the data from `db1` to TiDB, execute the following `GRANT` statement:
 
 ```sql
 GRANT RELOAD,REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'your_user'@'your_wildcard_of_host'
 GRANT SELECT ON db1.* TO 'your_user'@'your_wildcard_of_host';
 ```
 
-If you also need to synchronize the data from other databases into TiDB, make sure the same privileges are granted to the user of the respective databases.
+If you also need to replicate the data from other databases into TiDB, make sure the same privileges are granted to the user of the respective databases.
 
 ### Downstream database user privileges
 
@@ -77,7 +77,7 @@ The downstream database (TiDB) user must have the following privileges:
 | `ALTER` | Tables |
 | `INDEX` | Tables |
 
-Execute the following `GRANT` statement for the databases or tables that you need to synchronize:
+Execute the following `GRANT` statement for the databases or tables that you need to replicate:
 
 ```sql
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX  ON db.table TO 'your_user'@'your_wildcard_of_host';

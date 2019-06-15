@@ -1,13 +1,13 @@
 ---
-title: Synchronize Data Using Data Migration
-summary: Use the Data Migration tool to synchronize the full data and the incremental data.
+title: Replicate Data Using Data Migration
+summary: Use the Data Migration tool to replicate the full data and the incremental data.
 category: reference
 aliases: ['/docs/tools/dm/practice/']
 ---
 
-# Synchronize Data Using Data Migration
+# Replicate Data Using Data Migration
 
-This guide shows how to synchronize data using the Data Migration (DM) tool.
+This guide shows how to replicate data using the Data Migration (DM) tool.
 
 ## Step 1: Deploy the DM cluster
 
@@ -56,9 +56,9 @@ After the DM cluster is deployed using DM-Ansible, the configuration information
     >
     > The `{ansible deploy}` in `{ansible deploy}/conf/dm-master.toml` indicates the directory where DM-Ansible is deployed. It is the directory configured in the `deploy_dir` parameter.
 
-## Step 3: Configure the data synchronization task
+## Step 3: Configure the data replication task
 
-The following example assumes that you need to synchronize all the `test_table` table data in the `test_db` database of both the upstream MySQL-1 and MySQL-2 instances, to the downstream `test_table` table in the `test_db` database of TiDB, in the full data plus incremental data mode.
+The following example assumes that you need to replicate all the `test_table` table data in the `test_db` database of both the upstream MySQL-1 and MySQL-2 instances, to the downstream `test_table` table in the `test_db` database of TiDB, in the full data plus incremental data mode.
 
 Copy the `{ansible deploy}/conf/task.yaml.example` file and edit it to generate the `task.yaml` task configuration file as below:
 
@@ -66,7 +66,7 @@ Copy the `{ansible deploy}/conf/task.yaml.example` file and edit it to generate 
 # The task name. You need to use a different name for each of the multiple tasks that
 # run simultaneously.
 name: "test"
-# The full data plus incremental data (all) synchronization mode.
+# The full data plus incremental data (all) replication mode.
 task-mode: "all"
 # The downstream TiDB configuration information.
 target-database:
@@ -75,13 +75,13 @@ target-database:
   user: "root"
   password: ""
 
-# Configuration of all the upstream MySQL instances required by the current data synchronization task.
+# Configuration of all the upstream MySQL instances required by the current data replication task.
 mysql-instances:
 -
   # The ID of upstream instances or the replication group. You can refer to the configuration of `source_id` in the "inventory.ini" file or in the "dm-master.toml" file.
   source-id: "mysql-replica-01"
   # The configuration item name of the black and white lists of the name of the
-  # database/table to be synchronized, used to quote the global black and white
+  # database/table to be replicated, used to quote the global black and white
   # lists configuration that is set in the global black-white-list below.
   black-white-list: "global"
   # The configuration item name of mydumper, used to quote the global mydumper configuration.
@@ -96,9 +96,9 @@ mysql-instances:
 # configuration item name.
 black-white-list:
   global:
-    do-tables:                        # The white list of upstream tables to be synchronized.
-    - db-name: "test_db"              # The database name of the table to be synchronized.
-      tbl-name: "test_table"          # The name of the table to be synchronized.
+    do-tables:                        # The white list of upstream tables to be replicated.
+    - db-name: "test_db"              # The database name of the table to be replicated.
+      tbl-name: "test_table"          # The name of the table to be replicated.
 
 # mydumper global configuration. Each instance can quote it by the configuration item name.
 mydumpers:
@@ -107,18 +107,18 @@ mydumpers:
     extra-args: "-B test_db -T test_table"  # Only dumps the "test_table" table of the "test_db" database. It can configure any mydumper argument.
 ```
 
-## Step 4: Start the data synchronization task
+## Step 4: Start the data replication task
 
-To detect possible errors of data synchronization configuration in advance, DM provides the precheck feature:
+To detect possible errors of data replication configuration in advance, DM provides the precheck feature:
 
-- DM automatically checks the corresponding privileges and configuration while starting the data synchronization task.
+- DM automatically checks the corresponding privileges and configuration while starting the data replication task.
 - You can also use the `check-task` command to manually precheck whether the upstream MySQL instance configuration satisfies the DM requirements.
 
 For details about the precheck feature, see [Precheck the upstream MySQL instance configuration](/tools/dm/precheck.md).
 
 > **Note:**
 >
-> Before starting the data synchronization task for the first time, you should have got the upstream configured. Otherwise, an error is reported while you start the task.
+> Before starting the data replication task for the first time, you should have got the upstream configured. Otherwise, an error is reported while you start the task.
 
 1. Come to the dmctl directory `/home/tidb/dm-ansible/resources/bin/`.
 
@@ -128,7 +128,7 @@ For details about the precheck feature, see [Precheck the upstream MySQL instanc
     ./dmctl --master-addr 172.16.10.71:8261
     ```
 
-3. Run the following command to start the data synchronization tasks.
+3. Run the following command to start the data replication tasks.
 
     ```bash
     # `task.yaml` is the configuration file that is edited above.
@@ -156,19 +156,19 @@ For details about the precheck feature, see [Precheck the upstream MySQL instanc
         }
         ```
 
-    - If you fail to start the data synchronization task, modify the configuration according to the returned prompt and then run the `start-task task.yaml` command to restart the task.
+    - If you fail to start the data replication task, modify the configuration according to the returned prompt and then run the `start-task task.yaml` command to restart the task.
 
-## Step 5: Check the data synchronization task
+## Step 5: Check the data replication task
 
-If you need to check the task state or whether a certain data synchronization task is running in the DM cluster, run the following command in dmctl:
+If you need to check the task state or whether a certain data replication task is running in the DM cluster, run the following command in dmctl:
 
 ```bash
 query-status
 ```
 
-## Step 6: Stop the data synchronization task
+## Step 6: Stop the data replication task
 
-If you do not need to synchronize data any more, run the following command in dmctl to stop the task:
+If you do not need to replicate data any more, run the following command in dmctl to stop the task:
 
 ```bash
 # `test` is the task name that you set in the `name` configuration item of

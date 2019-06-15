@@ -114,7 +114,7 @@ like_or_where:
 > - To view statistics using the `SHOW` statement, see [View Statistics](../sql/statistics.md#view-statistics).
 > - For more information about the `SHOW` statement, see [SHOW Syntax in MySQL](https://dev.mysql.com/doc/refman/5.7/en/show.html).
 
-The `UniqueID` field returned from `SHOW MASTER STATUS` is the current `TSO` obtained directly from `PD`. The `TSO` is used during binlog increment and [`mydumper`](../tools/mydumper.md) synchronization.
+The `UniqueID` field returned from `SHOW MASTER STATUS` is the current `TSO` obtained directly from `PD`. The `TSO` is used during binlog increment and [`mydumper`](../tools/mydumper.md) replication.
 
 ```sql
 mysql> show master status;

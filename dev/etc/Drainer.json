@@ -661,7 +661,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "synchronization delay",
+          "title": "replication delay",
           "tooltip": {
             "msResolution": false,
             "shared": true,

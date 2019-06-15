@@ -11,11 +11,11 @@ This document describes how to deploy the Kafka version of TiDB-Binlog.
 
 ## About TiDB-Binlog
 
-TiDB-Binlog is a tool for enterprise users to collect binlog files for TiDB and provide real-time backup and synchronization.
+TiDB-Binlog is a tool for enterprise users to collect binlog files for TiDB and provide real-time backup and replication.
 
 TiDB-Binlog supports the following scenarios:
 
-- **Data synchronization**: to synchronize TiDB cluster data to other databases  
+- **Data replication**: to replicate TiDB cluster data to other databases  
 - **Real-time backup and recovery**: to back up TiDB cluster data, and recover in case of cluster outages
 
 ## TiDB-Binlog architecture
@@ -32,7 +32,7 @@ Pump is a daemon that runs on the background of each TiDB host. Its main functio
 
 ### Drainer
 
-Drainer collects binlog files from each Pump node, converts them into specified database-compatible SQL statements in the commit order of the transactions in TiDB, and synchronizes to the target database or writes to the file sequentially.
+Drainer collects binlog files from each Pump node, converts them into specified database-compatible SQL statements in the commit order of the transactions in TiDB, and replicates to the target database or writes to the file sequentially.
 
 ### Kafka & ZooKeeper
 
@@ -79,7 +79,7 @@ cd tidb-binlog-kafka-linux-amd64
 
 - Drainer does not support renaming DDL on the table of the ignored schemas (schemas in the filter list).
 
-- To start Drainer in the existing TiDB cluster, usually you need to do a full backup, get the savepoint, import the full backup, and start Drainer and synchronize from the savepoint.
+- To start Drainer in the existing TiDB cluster, usually you need to do a full backup, get the savepoint, import the full backup, and start Drainer and replicate from the savepoint.
 
     To guarantee the integrity of data, perform the following operations 10 minutes after Pump is started:
 
@@ -266,7 +266,7 @@ This example describes how to use Pump/Drainer.
     -addr string
         the address that Drainer provides service (default "192.168.0.10:8249")
     -c int
-        to synchronize the downstream concurrency number, and a bigger value means better throughput performance (default 1)
+        to replicate the downstream concurrency number, and a bigger value means better throughput performance (default 1)
     -config string
         to configure the file path of Drainer; if you specifies the configuration file, Drainer reads the configuration first; if the corresponding configuration also exists in the command line argument, Pump uses the command line configuration to cover that in the configuration file
     -data-dir string
@@ -278,7 +278,7 @@ This example describes how to use Pump/Drainer.
     -detect-interval int
         the interval of detecting Pump's status from PD (default 10, unit: second)
     -disable-dispatch
-        whether to disable dispatching sqls in a single binlog; if you set the value to true, it is restored into a single transaction to synchronize in the order of each binlog (If the downstream service type is "mysql", set the value to false)
+        whether to disable dispatching sqls in a single binlog; if you set the value to true, it is restored into a single transaction to replicate in the order of each binlog (If the downstream service type is "mysql", set the value to false)
     -ignore-schemas string
         the DB filtering list (default "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test"); does not support the rename DDL operation on the table of ignore schemas
     -initial-commit-ts (default 0)
@@ -332,11 +332,11 @@ This example describes how to use Pump/Drainer.
     # the number of SQL statements in a single transaction that is output to the downstream database (default 1)
     txn-batch = 1
 
-    # to synchronize the downstream concurrency number, and a bigger value means better throughput performance (default 1)
+    # to replicate the downstream concurrency number, and a bigger value means better throughput performance (default 1)
     worker-count = 1
 
     # whether to disable dispatching sqls in a single binlog; 
-    # if you set the value to true, it is restored into a single transaction to synchronize in the order of each binlog (If the downstream service type is "mysql", set the value to false)
+    # if you set the value to true, it is restored into a single transaction to replicate in the order of each binlog (If the downstream service type is "mysql", set the value to false)
     disable-dispatch = false
 
     # the downstream service type of Drainer (default "mysql")

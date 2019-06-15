@@ -18,11 +18,11 @@ To upgrade Loader to DM, perform the following steps:
 
 1. [Deploy the DM cluster](../tools/data-migration-deployment.md).
 2. Refer to [Loader configuration change](#loader-configuration-change) and generate the corresponding task configuration file.
-3. [Use dmctl to start the task](../tools/data-migration-manage-task.md#create-the-data-synchronization-task).
+3. [Use dmctl to start the task](../tools/data-migration-manage-task.md#create-the-data-replication-task).
 
 ### Loader Configuration change 
 
-Loader uses the TOML file to define the process-related operation parameters and synchronization task parameters; DM uses the YAML file to define task configuration file parameters.
+Loader uses the TOML file to define the process-related operation parameters and replication task parameters; DM uses the YAML file to define task configuration file parameters.
 
 Taking the configuration options in [Data Migration Task Configuration File](../tools/dm-task-configuration-file-intro.md) as examples, the corresponding relationship of task configuration options between Loader and DM is as follows:
 
@@ -58,17 +58,17 @@ Other options are specified using `extra-args` of `mydumper`. Their usage in DM 
 
 ## Upgrade Syncer to Data Migration
 
-Syncer is a tool used to import data incrementally. The task Syncer executes is corresponding to the synchronization task with `incremental` `task-mode` in DM. The `syncer` processing unit feature of dm-worker in DM is corresponding to the Syncer feature.
+Syncer is a tool used to import data incrementally. The task Syncer executes is corresponding to the replication task with `incremental` `task-mode` in DM. The `syncer` processing unit feature of dm-worker in DM is corresponding to the Syncer feature.
 
 To upgrade Syncer to DM, perform the following steps:
 
 1. [Deploy the DM cluster](../tools/data-migration-deployment.md).
 2. Refer to [Syncer configuration change](#syncer-configuration-change) and generate the corresponding task configuration file.
-3. [Use dmctl to start the task](../tools/data-migration-manage-task.md#create-the-data-synchronization-task).
+3. [Use dmctl to start the task](../tools/data-migration-manage-task.md#create-the-data-replication-task).
 
 ### Syncer Configuration change
 
-Syncer uses the TOML file to define the process-related operation parameters and synchronization task parameters; DM uses the YAML file to define task configuration file parameters.
+Syncer uses the TOML file to define the process-related operation parameters and replication task parameters; DM uses the YAML file to define task configuration file parameters.
 
 Taking the configuration options in [Data Migration Task Configuration File](../tools/dm-task-configuration-file-intro.md) as examples, the corresponding relationship of task configuration options between Syncer and DM is as follows:
 

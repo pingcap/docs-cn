@@ -10,7 +10,7 @@ aliases: ['/docs/tools/dm/task-configuration-file-intro/']
 This document introduces the task configuration file of Data Migration --
 [`task.yaml`](https://github.com/pingcap/dm/blob/master/dm/master/task.yaml), including [Global configuration](#global-configuration) and [Instance configuration](#instance-configuration).
 
-For the feature and configuration of each configuration item, see [Data Synchronization Features](/tools/dm/data-synchronization-features.md).
+For the feature and configuration of each configuration item, see [Data replication features](/dev/reference/tools/data-migration/features/overview.md).
 
 ## Important concepts
 
@@ -30,7 +30,7 @@ name: test                      # The name of the task. Should be globally uniqu
 task-mode: all                  # The task mode. Can be set to `full`/`incremental`/`all`.
 is-sharding: true               # Whether it is a task to merge the shards.
 meta-schema: "dm_meta"          # The downstream database that stores the `meta` information.
-remove-meta: false              # Whether to remove the `meta` information (`checkpoint` and `onlineddl`) corresponding to the task name before starting the synchronization task.
+remove-meta: false              # Whether to remove the `meta` information (`checkpoint` and `onlineddl`) corresponding to the task name before starting the replication task.
 enable-heartbeat: false         # Whether to enable the heartbeat feature.
 
 target-database:                # Configuration of the downstream database instance.
@@ -42,7 +42,7 @@ target-database:                # Configuration of the downstream database insta
 
 `task-mode`
 
-- Description: the task mode that can be used to specify the data synchronization task to be executed.
+- Description: the task mode that can be used to specify the data replication task to be executed.
 - Value: string (`full`, `incremental`, or `all`).
     - `full` only makes a full backup of the upstream database and then imports the full data to the downstream database.
     - `incremental`: Only replicates the incremental data of the upstream database to the downstream database using the binlog. You can set the `meta` configuration item of the instance configuration to specify the starting position of incremental replication.
@@ -131,23 +131,23 @@ loaders:
 # Configuration arguments of running Syncer.
 syncers:
   global:
-    # The number of threads that synchronize binlog events concurrently in Syncer.
+    # The number of threads that replicate binlog events concurrently in Syncer.
     worker-count: 16
-    # The number of SQL statements in a transaction batch that Syncer synchronizes to the downstream database.
+    # The number of SQL statements in a transaction batch that Syncer replicates to the downstream database.
     batch: 1000
-    # The retry times of the transactions with an error that Syncer synchronizes to the downstream database (only for DML operations).
+    # The retry times of the transactions with an error that Syncer replicates to the downstream database (only for DML operations).
     max-retry: 100
 ```
 
 ## Instance configuration
 
-This part defines the subtask of data synchronization. DM supports synchronizing data from one or multiple MySQL instances to the same instance.
+This part defines the subtask of data replication. DM supports replicating data from one or multiple MySQL instances to the same instance.
 
 ```
 mysql-instances:
   -
     source-id: "mysql-replica-01"                                      # The ID of the upstream instance or replication group ID. It can be configured by referring to the `source_id` in the `inventory.ini` file or the `source-id` in the `dm-master.toml` file.
-    meta:                                                              # The position where the binlog synchronization starts when `task-mode` is `incremental` and the downstream database checkpoint does not exist. If the checkpoint exists, the checkpoint is used.
+    meta:                                                              # The position where the binlog replication starts when `task-mode` is `incremental` and the downstream database checkpoint does not exist. If the checkpoint exists, the checkpoint is used.
 
       binlog-name: binlog-00001
       binlog-pos: 4

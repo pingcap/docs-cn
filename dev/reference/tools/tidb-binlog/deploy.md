@@ -357,7 +357,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         -addr string
             the address through which Drainer provides the service (-addr="192.168.0.13:8249")
         -c int
-            the number of the concurrency of the downstream for synchronization. The bigger the value, the better throughput performance of the concurrency (1 by default).
+            the number of the concurrency of the downstream for replication. The bigger the value, the better throughput performance of the concurrency (1 by default).
         -config string
             the directory of the configuration file. Drainer reads the configuration file first.
             If the corresponding configuration exists in the command line parameters, Drainer uses the configuration of the command line parameters to cover that of the configuration file.
@@ -371,7 +371,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         -disable-detect
             whether to disable the conflict monitoring
         -disable-dispatch
-            whether to disable the SQL feature of splitting a single binlog file. If it is set to "true", each binlog file is restored to a single transaction for synchronization based on the order of binlogs. 
+            whether to disable the SQL feature of splitting a single binlog file. If it is set to "true", each binlog file is restored to a single transaction for replication based on the order of binlogs. 
             It is set to "False", when the downstream is MySQL.
         -ignore-schemas string
             the db filter list ("INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test" by default)
@@ -427,12 +427,12 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         # the number of SQL statements of a transaction that are output to the downstream database (20 by default)
         txn-batch = 20
     
-        # the number of the concurrency of the downstream for synchronization. The bigger the value,
+        # the number of the concurrency of the downstream for replication. The bigger the value,
         # the better throughput performance of the concurrency (16 by default)
         worker-count = 16
 
         # whether to disable the SQL feature of splitting a single binlog file. If it is set to "true",
-        # each binlog file is restored to a single transaction for synchronization based on the order of binlogs.
+        # each binlog file is restored to a single transaction for replication based on the order of binlogs.
         # If the downstream service is MySQL, set it to "False".
         disable-dispatch = false
 
@@ -513,6 +513,6 @@ The following part shows how to use Pump and Drainer based on the nodes above.
 > 
 > - When TiDB is running, you need to guarantee that at least one Pump is running normally.
 > - To enable the TiDB-Binlog service in TiDB server, use the `-enable-binlog` startup parameter in TiDB, or add enable=true to the [binlog] section of the TiDB server configuration file.
-> - Make sure that the TiDB-Binlog service is enabled in all TiDB instances in a same cluster, otherwise upstream and downstream data inconsistency might occur during data synchronization. If you want to temporarily run a TiDB instance where the TiDB-Binlog service is not enabled, set `run_ddl=false` in the TiDB configuration file.
+> - Make sure that the TiDB-Binlog service is enabled in all TiDB instances in a same cluster, otherwise upstream and downstream data inconsistency might occur during data replication. If you want to temporarily run a TiDB instance where the TiDB-Binlog service is not enabled, set `run_ddl=false` in the TiDB configuration file.
 > - Drainer does not support the `rename` DDL operation on the table of `ignore schemas` (the schemas in the filter list).
-> - If you want to start Drainer in an existing TiDB cluster, generally you need to make a full backup of the cluster data, obtain `savepoint`, import the data to the target database, and then start Drainer to synchronize the incremental data from `savepoint`.
+> - If you want to start Drainer in an existing TiDB cluster, generally you need to make a full backup of the cluster data, obtain `savepoint`, import the data to the target database, and then start Drainer to replicate the incremental data from `savepoint`.

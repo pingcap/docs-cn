@@ -8,11 +8,11 @@ aliases: ['/docs/tools/binlog/overview/', 'docs/tools/tidb-binlog-cluster/']
 
 This document introduces the architecture and the deployment of the cluster version of TiDB-Binlog.
 
-TiDB-Binlog is tool used to collect binlog data from TiDB and provide real-time backup and synchronization to downstream platforms.
+TiDB-Binlog is tool used to collect binlog data from TiDB and provide real-time backup and replication to downstream platforms.
 
 TiDB-Binlog has the following features:
 
-* **Data synchronization:** synchronize the data in the TiDB cluster to other databases
+* **Data replication:** replicate the data in the TiDB cluster to other databases
 * **Real-time backup and restoration:** back up the data in the TiDB cluster and restore the TiDB cluster when the cluster fails
 
 ## TiDB-Binlog architecture
@@ -29,7 +29,7 @@ Pump is used to record the binlogs generated in TiDB, sort the binlogs based on 
 
 ### Drainer
 
-Drainer collects and merges binlogs from each Pump, converts the binlog to SQL or data of a specific format, and synchronizes the data to a specific downstream platform.
+Drainer collects and merges binlogs from each Pump, converts the binlog to SQL or data of a specific format, and replicates the data to a specific downstream platform.
 
 ### `binlogctl` guide
 
@@ -62,7 +62,7 @@ The server hardware requirements for development, testing, and the production en
 
 * You need to use TiDB v2.0.8-binlog, v2.1.0-rc.5 or a later version. Older versions of TiDB cluster are not compatible with the cluster version of TiDB-Binlog.
 
-* Drainer supports synchronizing binlogs to MySQL, TiDB, Kafka or local files. If you need to synchronize binlogs to other Drainer unsuppored destinations, you can set Drainer to synchronize the binlog to Kafka and read the data in Kafka for customized processing according to binlog slave protocol. See [Binlog Slave Client User Guide](/tools/binlog/binlog-slave-client.md).
+* Drainer supports replicating binlogs to MySQL, TiDB, Kafka or local files. If you need to replicate binlogs to other Drainer unsuppored destinations, you can set Drainer to replicate the binlog to Kafka and read the data in Kafka for customized processing according to binlog slave protocol. See [Binlog Slave Client User Guide](/tools/binlog/binlog-slave-client.md).
 
 * To use TiDB-Binlog for recovering incremental data, set the config `db-type` to `file` (local files in the proto buffer format). Drainer converts the binlog to data in the specified [proto buffer format](https://github.com/pingcap/tidb-binlog/blob/master/proto/binlog.proto) and writes the data to local files. In this way, you can use [Reparo](/tools/binlog/reparo.md) to recover data incrementally.
 
@@ -71,4 +71,4 @@ The server hardware requirements for development, testing, and the production en
     - If your TiDB version is earlier than 2.1.9, set `db-type="pb"`.
     - If your TiDB version is 2.1.9 or later, set `db-type="file"` or `db-type="pb"`.
 
-* If the downstream is MySQL, MariaDB, or another TiDB cluster, you can use [sync-diff-inspector](/tools/sync-diff-inspector.md) to verify the data after data synchronization.
+* If the downstream is MySQL, MariaDB, or another TiDB cluster, you can use [sync-diff-inspector](/tools/sync-diff-inspector.md) to verify the data after data replication.

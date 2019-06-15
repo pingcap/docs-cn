@@ -316,7 +316,7 @@ VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=
 
 ## Step 8: Edit variables in the `inventory.ini` file
 
-This step shows how to edit the variable of the deployment directory, how to configure the relay log synchronization position and the relay log GTID synchronization mode, and explains the global variables in the `inventory.ini` file.
+This step shows how to make configuration changes to the `inventory.ini` file.
 
 ### Configure the deployment directory
 
@@ -336,7 +336,7 @@ Edit the `deploy_dir` variable to configure the deployment directory.
     dm-master ansible_host=172.16.10.71 deploy_dir=/data1/deploy
     ```
 
-### Configure the relay log synchronization position
+### Configure the relay log position
 
 When you start DM-worker for the first time, you need to configure `relay_binlog_name` to specify the position where DM-worker starts to pull the corresponding upstream MySQL or MariaDB binlog.
 
@@ -349,15 +349,15 @@ dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 
 
 > **Note:**
 >
-> If `relay_binlog_name` is not set, DM-worker pulls the binlog starting from the earliest existing binlog file of the upstream MySQL or MariaDB. In this case, it can take a long period of time to pull the latest binlog for the data synchronization task.
+> If `relay_binlog_name` is not set, DM-worker pulls the binlog starting from the earliest existing binlog file of the upstream MySQL or MariaDB. In this event, it may take a significant amount of time to retrieve all of the binlog files.
 
-### Enable the relay log GTID synchronization mode
+### Enable the relay log GTID replication mode
 
 In a DM cluster, the relay log processing unit of DM-worker communicates with the upstream MySQL or MariaDB to pull its binlog to the local file system.
 
-You can enable the relay log GTID synchronization mode by configuring the following items. Currently, DM supports MySQL GTID and MariaDB GTID.
+You can enable the relay log GTID replication mode by configuring the following items. Currently, DM supports MySQL GTID and MariaDB GTID.
 
-- `enable_gtid`: to enable the relay log GTID synchronization mode to deal with scenarios like master-slave switch
+- `enable_gtid`: to enable the GTID mode. This helps improve the handling of replication topology changes, such as a switch between master and slave
 - `relay_binlog_gtid`: to specify the position where DM-worker starts to pull the corresponding upstream MySQL or MariaDB binlog
 
 ```yaml

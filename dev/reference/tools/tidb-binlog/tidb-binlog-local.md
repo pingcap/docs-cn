@@ -9,11 +9,11 @@ aliases: ['/docs/tools/binlog/tidb-binlog-local/']
 
 ## About TiDB-Binlog-local
 
-TiDB-Binlog is a tool for enterprise users to collect binlog files for TiDB and provide real-time backup and synchronization.
+TiDB-Binlog is a tool for enterprise users to collect binlog files for TiDB and provide real-time backup and replication.
 
 TiDB-Binlog supports the following scenarios:  
 
-- **Data synchronization**: to synchronize TiDB cluster data to other databases  
+- **Data replication**: to replicate TiDB cluster data to other databases  
 - **Real-time backup and recovery**: to back up TiDB cluster data, and recover in case of cluster outages
   
 ## TiDB-Binlog-local architecture
@@ -30,7 +30,7 @@ Pump is a daemon that runs on the background of each TiDB host. Its main functio
 
 ### Drainer
 
-Drainer collects binlog files from each Pump node, converts them into specified database-compatible SQL statements in the commit order of the transactions in TiDB, and synchronizes to the target database or writes to the file sequentially.
+Drainer collects binlog files from each Pump node, converts them into specified database-compatible SQL statements in the commit order of the transactions in TiDB, and replicates to the target database or writes to the file sequentially.
 
 ## Install TiDB-Binlog-local
 
@@ -72,7 +72,7 @@ TiDB-Binlog can be [downloaded](/dev/reference/tools/download.md) as part of the
 
 - Drainer does not support renaming DDL on the table of the ignored schemas (schemas in the filter list).
 
-- To start Drainer in the existing TiDB cluster, usually you need to do a full backup, get the savepoint, import the full backup, and start Drainer and synchronize from the savepoint.
+- To start Drainer in the existing TiDB cluster, usually you need to do a full backup, get the savepoint, import the full backup, and start Drainer and replicate from the savepoint.
   
 - To guarantee the integrity of data, perform the following operations 10 minutes after Pump is started:  
 
@@ -207,7 +207,7 @@ Usage of Drainer:
 -gen-savepoint
     generate the savepoint from cluster 
 -ignore-schemas string
-    disable synchronizing those schemas (default "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql")
+    disable replicating those schemas (default "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql")
 -log-file string
     log file path
 -log-rotate string
@@ -245,7 +245,7 @@ log-file = "drainer.log"
 # syncer Configuration
 [syncer]
 
-# disable synchronizing these schemas
+# disable replicating these schemas
 ignore-schemas = "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql"
 
 # number of binlog events in a transaction batc

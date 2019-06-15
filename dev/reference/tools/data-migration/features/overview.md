@@ -1,22 +1,22 @@
 ---
-title: Data Synchronization Features
-summary: Learn about the data synchronization features provided by the Data Migration tool.
+title: Data Replication Features
+summary: Learn about the data replication features provided by the Data Migration tool.
 category: reference
 aliases: ['/docs/tools/dm/data-synchronization-features/']
 ---
 
-# Data Synchronization Features
+# Data Replication Features
 
-This document describes the data synchronization features provided by the Data Migration tool and explains the configuration of corresponding parameters.
+This document describes the data replication features provided by the Data Migration tool and explains the configuration of corresponding parameters.
 
 ## Table routing
 
-The table routing feature enables DM to synchronize a certain table of the upstream MySQL or MariaDB instance to the specified table in the downstream.
+The table routing feature enables DM to replicate a certain table of the upstream MySQL or MariaDB instance to the specified table in the downstream.
 
 > **Note:**
 >
 > - Configuring multiple different routing rules for a single table is not supported.
-> - The match rule of schema needs to be configured separately, which is used to synchronize `create/drop schema xx`, as shown in `rule-2` of the [parameter configuration](#parameter-configuration).
+> - The match rule of schema needs to be configured separately, which is used to replicate `create/drop schema xx`, as shown in `rule-2` of the [parameter configuration](#parameter-configuration).
 
 ### Parameter configuration
 
@@ -34,7 +34,7 @@ routes:
 
 ### Parameter explanation
 
-DM synchronizes the upstream MySQL or MariaDB instance table that matches the [`schema-pattern`/`table-pattern` rule provided by Table selector](/tools/dm/table-selector.md) to the downstream `target-schema`/`target-table`.
+DM replicates the upstream MySQL or MariaDB instance table that matches the [`schema-pattern`/`table-pattern` rule provided by Table selector](/tools/dm/table-selector.md) to the downstream `target-schema`/`target-table`.
 
 ### Usage examples
 
@@ -42,17 +42,17 @@ This sections shows the usage examples in different scenarios.
 
 #### Merge sharded schemas and tables
 
-Assuming in the scenario of sharded schemas and tables, you want to synchronize the `test_{1,2,3...}`.`t_{1,2,3...}` tables in two upstream MySQL instances to the `test`.`t` table in the downstream TiDB instance.
+Assuming in the scenario of sharded schemas and tables, you want to replicate the `test_{1,2,3...}`.`t_{1,2,3...}` tables in two upstream MySQL instances to the `test`.`t` table in the downstream TiDB instance.
 
-To synchronize the upstream instances to the downstream `test`.`t`, you must create two routing rules:
+To replicate the upstream instances to the downstream `test`.`t`, you must create two routing rules:
 
-- `rule-1` is used to synchronize DML or DDL statements of the table that matches `schema-pattern: "test_*"` and `table-pattern: "t_*"` to the downstream `test`.`t`.
-- `rule-2` is used to synchronize DDL statements of the schema that matches `schema-pattern: "test_*"`, such as `create/drop schema xx`.
+- `rule-1` is used to replicate DML or DDL statements of the table that matches `schema-pattern: "test_*"` and `table-pattern: "t_*"` to the downstream `test`.`t`.
+- `rule-2` is used to replicate DDL statements of the schema that matches `schema-pattern: "test_*"`, such as `create/drop schema xx`.
 
 > **Note:**
 >
 > - If the downstream `schema: test` already exists and will not be deleted, you can omit `rule-2`.
-> - If the downstream `schema: test` does not exist and only `rule-1` is configured, then it reports the `schema test doesn't exist` error during synchronization.
+> - If the downstream `schema: test` does not exist and only `rule-1` is configured, then it reports the `schema test doesn't exist` error during replication.
 
 ```yaml
   rule-1:
@@ -67,9 +67,9 @@ To synchronize the upstream instances to the downstream `test`.`t`, you must cre
 
 #### Merge sharded schemas
 
-Assuming in the scenario of sharded schemas, you want to synchronize the `test_{1,2,3...}`.`t_{1,2,3...}` tables in the two upstream MySQL instances to the `test`.`t_{1,2,3...}` tables in the downstream TiDB instance.
+Assuming in the scenario of sharded schemas, you want to replicate the `test_{1,2,3...}`.`t_{1,2,3...}` tables in the two upstream MySQL instances to the `test`.`t_{1,2,3...}` tables in the downstream TiDB instance.
 
-To synchronize the upstream schemas to the downstream `test`.`t_[1,2,3]`, you only need to create one routing rule.
+To replicate the upstream schemas to the downstream `test`.`t_[1,2,3]`, you only need to create one routing rule.
 
 ```yaml
   rule-1:
@@ -96,7 +96,7 @@ Assuming that the following two routing rules are configured and `test_1_bak`.`t
 
 ## Black and white table lists
 
-The black and white lists filtering rule of the upstream database instance tables is similar to MySQL replication-rules-db/tables, which can be used to filter or only synchronize all operations of some databases or some tables.
+The black and white lists filtering rule of the upstream database instance tables is similar to MySQL replication-rules-db/tables, which can be used to filter or only replicate all operations of some databases or some tables.
 
 ### Parameter configuration
 
@@ -117,10 +117,10 @@ black-white-list:
 
 ### Parameter explanation
 
-- `do-dbs`: white lists of the schemas to be synchronized
-- `ignore-dbs`: black lists of the schemas to be synchronized
-- `do-tables`: white lists of the tables to be synchronized
-- `ignore-tables`: black lists of the tables to be synchronized
+- `do-dbs`: white lists of the schemas to be replicated
+- `ignore-dbs`: black lists of the schemas to be replicated
+- `do-tables`: white lists of the tables to be replicated
+- `ignore-tables`: black lists of the tables to be replicated
 - In black and white lists, starting with the "~" character indicates it is a [regular expression](https://golang.org/pkg/regexp/syntax/#hdr-Syntax).
 
 ### Filtering process
@@ -145,15 +145,15 @@ The filtering process is as follows:
 
     1. If `do-tables` is not empty, judge whether a matched table exists in `do-tables`.  
 
-        - If yes, synchronize `test`.`t`.
+        - If yes, replicate `test`.`t`.
         - If not, filter `test`.`t`.
 
     2. If `ignore-tables` is not empty, judge whether a matched table exists in `ignore-tables`.
 
         - If yes, filter `test`.`t`.
-        - If not, synchronize `test`.`t`.
+        - If not, replicate `test`.`t`.
 
-    3. If both `do-tables` and `ignore-tables` are empty, synchronize `test`.`t`.
+    3. If both `do-tables` and `ignore-tables` are empty, replicate `test`.`t`.
 
 > **Note:**
 >
@@ -206,7 +206,7 @@ After using the `bw-rule` rule:
 
 ## Binlog event filter
 
-Binlog event filter is a more fine-grained filtering rule than the black and white lists filtering rule. You can use statements like `INSERT` or `TRUNCATE TABLE` to specify the binlog events of `schema/table` that you need to synchronize or filter out.
+Binlog event filter is a more fine-grained filtering rule than the black and white lists filtering rule. You can use statements like `INSERT` or `TRUNCATE TABLE` to specify the binlog events of `schema/table` that you need to replicate or filter out.
 
 > **Note:**
 >
@@ -286,16 +286,16 @@ filters:
     action: Ignore
 ```
 
-#### Only synchronize sharding DML statements
+#### Only replicate sharding DML statements
 
-To only synchronize sharding DML statements, configure the following two filtering rules:
+To only replicate sharding DML statements, configure the following two filtering rules:
 
-- `do-table-rule` only synchronizes the `create table`, `insert`, `update` and `delete` statements of all tables that match the `test_*`.`t_*` pattern.
-- `do-schema-rule` only synchronizes the `create database` statement of all schemas that match the `test_*` pattern.
+- `do-table-rule` only replicates the `create table`, `insert`, `update` and `delete` statements of all tables that match the `test_*`.`t_*` pattern.
+- `do-schema-rule` only replicates the `create database` statement of all schemas that match the `test_*` pattern.
 
 > **Note:**
 >
-> The reason why the `create database/table` statement is synchronized is that you can synchronize DML statements only after the schema and table are created.
+> The reason why the `create database/table` statement is replicated is that you can replicate DML statements only after the schema and table are created.
 
 ```yaml
 filters:
@@ -431,7 +431,7 @@ Any of `instance_id`, `schema prefix` and `table prefix` can be set to an empty 
 
 ### Usage example
 
-Assuming in the sharding scenario where all tables have the auto-increment primary key, you want to synchronize two upstream MySQL instances `test_{1,2,3...}`.`t_{1,2,3...}` to the downstream TiDB instances `test`.`t`.
+Assuming in the sharding scenario where all tables have the auto-increment primary key, you want to replicate two upstream MySQL instances `test_{1,2,3...}`.`t_{1,2,3...}` to the downstream TiDB instances `test`.`t`.
 
 Configure the following two rules:
 
@@ -456,14 +456,14 @@ column-mappings:
 - The column ID of the MySQL instance 1 table `test_1`.`t_1` is converted from `1` to `1 << (64-1-4) | 1 << (64-1-4 -7) | 1 << 44 | 1 = 580981944116838401`.
 - The row ID of the MySQL instance 2 table `test_1`.`t_2` is converted from `2` to `2 << (64-1-4) | 1 << (64-1-4 -7) | 2 << 44 | 2 = 1157460288606306306`.
 
-## Synchronization delay monitoring
+## Replication delay monitoring
 
-The heartbeat feature supports calculating the real-time synchronization delay between each synchronization task and MySQL or MariaDB based on real synchronization data.
+The heartbeat feature supports calculating the real-time replication delay between each replication task and MySQL or MariaDB based on real replication data.
 
 > **Note:**
 >
-> - The estimation accuracy of the synchronization delay is at the second level.
-> - The heartbeat related binlog will not be synchronized into the downstream, which is discarded after calculating the synchronization delay.
+> - The estimation accuracy of the replication delay is at the second level.
+> - The heartbeat related binlog will not be replicated into the downstream, which is discarded after calculating the replication delay.
 
 ### System privileges
 
@@ -486,7 +486,7 @@ enable-heartbeat: true
 - DM-worker creates the `dm_heartbeat` (currently unconfigurable) schema in the corresponding upstream MySQL or MariaDB.
 - DM-worker creates the `heartbeat` (currently unconfigurable) table in the corresponding upstream MySQL or MariaDB.
 - DM-worker uses `replace statement` to update the current `TS_master` timestamp every second (currently unconfigurable) in the corresponding upstream MySQL or MariaDB `dm_heartbeat`.`heartbeat` tables.
-- DM-worker updates the `TS_slave_task` synchronization time after each synchronization task obtains the `dm_heartbeat`.`heartbeat` binlog.
+- DM-worker updates the `TS_slave_task` replication time after each replication task obtains the `dm_heartbeat`.`heartbeat` binlog.
 - DM-worker queries the current `TS_master` timestamp in the corresponding upstream MySQL or MariaDB `dm_heartbeat`.`heartbeat` tables every 10 seconds, and calculates `task_lag` = `TS_master` - `TS_slave_task` for each task.
 
 See the `replicate lag` in the [binlog replication](/dev/reference/tools/data-migration/monitor.md#binlog-replication) processing unit of DM monitoring metrics.

@@ -126,7 +126,7 @@
   + Data Migration
     - [Overview](tools/data-migration-overview.md)
     - [Deploy](tools/data-migration-deployment.md)
-    - [Synchronize Data](tools/data-migration-practice.md)
+    - [Replicate Data](tools/data-migration-practice.md)
     + Configure
       - [Configuration Overview](tools/dm-configuration-file-overview.md)
       - [Task Configuration File](tools/dm-task-configuration-file-intro.md)

@@ -23,15 +23,15 @@ See the following for the assumed MySQL and TiDB server information:
     - `Mydumper`: to export data from MySQL.
     - `Loader`: to import data to TiDB.
 
-+ To incrementally synchronise data after all the history data is imported. This needs the following tools:
++ To incrementally replicate data after all the history data is imported. This needs the following tools:
     - `Checker`: to check if the shema is compatible with TiDB.
     - `Mydumper`: to export data from MySQL.
     - `Loader`: to import data to TiDB.
-    - `Syncer`: to incrementally synchronize data from MySQL to TiDB.
+    - `Syncer`: to incrementally replicate data from MySQL to TiDB.
 
         > **Note:**
         >
-        > To incrementally synchronize data from MySQL to TiDB, the binary logging (binlog) must be enabled and must use the `row` format in MySQL.
+        > To incrementally replicate data from MySQL to TiDB, the binary logging (binlog) must be enabled and must use the `row` format in MySQL.
 
 ### Enable binary logging (binlog) in MySQL
 

@@ -21,7 +21,7 @@ If you encounter errors while running Data Migration, try the following solution
     resume-task ${task name}
     ```
 
-However, you need to reset the data synchronization task in some cases. For details about when to reset and how to reset, see [Reset the data synchronization task](#reset-the-data-synchronization-task).
+However, you need to reset the data replication task in some cases. For details about when to reset and how to reset, see [Reset the data replication task](#reset-the-data-replication-task).
 
 ## Common errors
 
@@ -29,7 +29,7 @@ However, you need to reset the data synchronization task in some cases. For deta
 
 For database related passwords in all the DM configuration files, use the passwords encrypted by `dmctl`. If a database password is empty, it is unnecessary to encrypt it. For how to encrypt the plaintext password, see [Encrypt the upstream MySQL user password using dmctl](/dev/how-to/deploy/data-migration-with-ansible.md#encrypt-the-upstream-mysql-user-password-using-dmctl).
 
-In addition, the user of the upstream and downstream databases must have the corresponding read and write privileges. Data Migration also [prechecks the corresponding privileges automatically](/dev/reference/tools/data-migration/precheck.md) while starting the data synchronization task.
+In addition, the user of the upstream and downstream databases must have the corresponding read and write privileges. Data Migration also [prechecks the corresponding privileges automatically](/dev/reference/tools/data-migration/precheck.md) while starting the data replication task.
 
 ### Incompatible DDL statements
 
@@ -39,22 +39,22 @@ When you encounter a DDL statement unsupported by TiDB, you need to manually han
 >
 > Currently, TiDB is not compatible with all the DDL statements that MySQL supports. See [MySQL Compatibility](/dev/reference/mysql-compatibility.md#ddl).
 
-## Reset the data synchronization task
+## Reset the data replication task
 
-You need to reset the entire data synchronization task in the following cases:
+You need to reset the entire data replication task in the following cases:
 
-- `RESET MASTER` is artificially executed in the upstream database, which causes an error in the relay log synchronization.
+- `RESET MASTER` is accidentally executed in the upstream database.
 - The relay log or the upstream binlog is corrupted or lost.
 
-Generally, at this time, the relay unit exits with an error and cannot be automatically restored gracefully. You need to manually restore the data synchronization and the steps are as follows:
+Generally, at this time, the relay unit exits with an error and cannot be automatically restored gracefully. You need to manually restore the data replication and the steps are as follows:
 
-1. Use the `stop-task` command to stop all the synchronization tasks that are currently running.
+1. Use the `stop-task` command to stop all the replication tasks that are currently running.
 2. Use Ansible to [stop the entire DM cluster](/dev/how-to/deploy/data-migration-with-ansible.md#step-10-stop-the-dm-cluster).
 3. Manually clean up the relay log directory of the DM-worker corresponding to the MySQL master whose binlog is reset.
 
     - If the cluster is deployed using DM-Ansible, the relay log is in the `<deploy_dir>/relay_log` directory.
     - If the cluster is manually deployed using the binary, the relay log is in the directory set in the `relay-dir` parameter.
 
-4. Clean up downstream synchronized data.
+4. Clean up downstream replicated data.
 5. Use Ansible to [start the entire DM cluster](/dev/how-to/deploy/data-migration-with-ansible.md#step-9-deploy-the-dm-cluster).
-6. Restart data synchronization with the new task name, or set `remove-meta` to `true` and `task-mode` to `all`.
+6. Restart data replication with the new task name, or set `remove-meta` to `true` and `task-mode` to `all`.

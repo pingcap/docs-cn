@@ -40,25 +40,25 @@ This sections describes the considerations that you need to know when you restar
 
 **In the process of full data loading:**
 
-For the SQL files during full data import, DM uses the downstream database to record the checkpoint information. When DM-worker is restarted, it checks the checkpoint information and you can use the [`start-task` command](../tools/data-migration-practice.md#step-4-start-the-data-synchronization-task) to recover the data synchronization task automatically.
+For the SQL files during full data import, DM uses the downstream database to record the checkpoint information. When DM-worker is restarted, it checks the checkpoint information and you can use the [`start-task` command](../tools/data-migration-practice.md#step-4-start-the-data-replication-task) to recover the data replication task automatically.
 
-**In the process of incremental data synchronization:**
+**In the process of incremental data replication:**
 
-For the binlog during incremental data import, DM uses the downstream database to record the checkpoint information, and enables the safe mode within the first 5 minutes after the synchronization task is started or recovered.
+For the binlog during incremental data import, DM uses the downstream database to record the checkpoint information, and enables the safe mode within the first 5 minutes after the replication task is started or recovered.
 
-+ Sharding DDL statements synchronization is not enabled
++ Sharding DDL statements replication is not enabled
 
-    If the sharding DDL statements synchronization is not enabled in the task running on DM-worker, when DM-worker is restarted, it checks the checkpoint information and you can use the `start-task` command to recover the data synchronization task automatically.
+    If the sharding DDL statements replication is not enabled in the task running on DM-worker, when DM-worker is restarted, it checks the checkpoint information and you can use the `start-task` command to recover the data replication task automatically.
 
-+ Sharding DDL statements synchronization is enabled
++ Sharding DDL statements replication is enabled
 
-    - When DM is synchronizing the sharding DDL statements, if DM-worker successfully executes (or skips) the sharding DDL binlog event, then the checkpoints of all tables related to sharding DDL in the DM-worker are updated to the position after the binlog event corresponding to the DDL statement.
+    - When DM is replicating the sharding DDL statements, if DM-worker successfully executes (or skips) the sharding DDL binlog event, then the checkpoints of all tables related to sharding DDL in the DM-worker are updated to the position after the binlog event corresponding to the DDL statement.
 
-    - When DM-worker is restarted before or after synchronizing sharding DDL statements, it checks the checkpoint information and you can use the `start-task` command to recover the data synchronization task automatically.
+    - When DM-worker is restarted before or after replicating sharding DDL statements, it checks the checkpoint information and you can use the `start-task` command to recover the data replication task automatically.
 
-    - When DM-worker is restarted during the process of synchronizing sharding DDL statements, the issue might occur that the DM-worker owner has executed the DDL statement and successfully changed the downstream database table schema, while other DM-worker instances are restarted but fail to skip the DDL statement and update the checkpoints.
+    - When DM-worker is restarted during the process of replicating sharding DDL statements, the issue might occur that the DM-worker owner has executed the DDL statement and successfully changed the downstream database table schema, while other DM-worker instances are restarted but fail to skip the DDL statement and update the checkpoints.
 
-        At this time, DM tries again to synchronize these DDL statements that are not skipped. However, the restarted DM-worker instances will be blocked at the position of the binlog event corresponding to the DDL binlog event, because the DM-worker instance that is not restarted has executed to the place after this DDL binlog event.
+        At this time, DM tries again to replicate these DDL statements that are not skipped. However, the restarted DM-worker instances will be blocked at the position of the binlog event corresponding to the DDL binlog event, because the DM-worker instance that is not restarted has executed to the place after this DDL binlog event.
 
         To resolve this issue, follow the steps described in [Troubleshooting Sharding DDL Locks](../tools/troubleshooting-sharding-ddl-locks.md#condition-two-a-dm-worker-restarts-or-is-unreachable-temporarily)
 
@@ -69,7 +69,7 @@ The information maintained by DM-master includes the following two major types, 
 - The corresponding relationship between the task and DM-worker
 - The sharding DDL lock related information
 
-When DM-master is restarted, it automatically requests the task information from each DM-worker instance and rebuilds the corresponding relationship between the task and DM-worker. However, at this time, DM-worker does not resend the sharding DDL information, so it might occur that the sharding DDL lock synchronization cannot be finished automatically because of the lost lock information.
+When DM-master is restarted, it automatically requests the task information from each DM-worker instance and rebuilds the corresponding relationship between the task and DM-worker. However, at this time, DM-worker does not resend the sharding DDL information, so it might occur that the sharding DDL lock replication cannot be finished automatically because of the lost lock information.
 
 To resolve this issue, follow the steps described in [Troubleshooting Sharding DDL Locks](../tools/troubleshooting-sharding-ddl-locks.md#condition-three-dm-master-restarts).
 
@@ -81,7 +81,7 @@ The dmctl component is stateless. You can restart it at any time you like.
 
 > **Note:**
 >
-> Try to avoid restarting DM-worker during the process of synchronizing sharding DDL statements.
+> Try to avoid restarting DM-worker during the process of replicating sharding DDL statements.
 
 To restart the DM-worker component, you can use either of the following two approaches:
 
@@ -102,7 +102,7 @@ To restart the DM-worker component, you can use either of the following two appr
 
 > **Note:**
 >
-> Try to avoid restarting DM-master during the process of synchronizing sharding DDL statements.
+> Try to avoid restarting DM-master during the process of replicating sharding DDL statements.
 
 To restart the DM-master component, you can use either of the following two approaches:
 
@@ -411,7 +411,7 @@ This section describes how to switch between master and slave instances using dm
 4. The upstream master and slave instances behind the virtual IP execute the switch operation.
 5. Use `switch-relay-master` to tell relay to execute the master-slave switch.
 6. Use `resume-relay` to make relay resume to read binlog from the new master instance.
-7. Use `resume-task` to resume the previous synchronization task.
+7. Use `resume-task` to resume the previous replication task.
 
 ### Master-slave switch after changing IP
 
@@ -419,4 +419,4 @@ This section describes how to switch between master and slave instances using dm
 2. Use `stop-task` to stop all running tasks.
 3. Modify the DM-worker configuration, and use DM-Ansible to perform a rolling update on DM-worker.
 4. Update the `task.yaml` and `mysql-instances / config` configurations.
-5. Use `start-task` to restart the synchronization task.
+5. Use `start-task` to restart the replication task.

@@ -97,7 +97,7 @@ user = "root"
 password = ""
 port = 4000
 
-# The sharding synchronising rules support wildcharacter.
+# The sharding replicating rules support wildcharacter.
 # 1. The asterisk character (*, also called "star") matches zero or more characters,
 #    for example, "doc*" matches "doc" and "document" but not "dodo";
 #    asterisk character must be in the end of the wildcard word,
@@ -126,9 +126,9 @@ Or use configuration file "config.toml":
 
 ## FAQ
 
-### The scenario of synchronising data from sharded tables
+### The scenario of replicating data from sharded tables
 
-Loader supports importing data from sharded tables into one table within one database according to the route-rules. Before synchronising, check the following items:
+Loader supports importing data from sharded tables into one table within one database according to the route-rules. Before replicating, check the following items:
 
 - Whether the sharding rules can be represented using the `route-rules` syntax.
 - Whether the sharded tables contain monotone increasing primary keys, or whether there are conflicts in the unique indexes or the primary keys after the combination.

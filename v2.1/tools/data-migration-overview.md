@@ -6,7 +6,7 @@ category: tools
 
 # Data Migration Overview
 
-Data Migration (DM) is an integrated data synchronization task management platform that supports the full data migration and the incremental data migration from MySQL/MariaDB into TiDB. It can help to reduce the operations cost and simplify the troubleshooting process.
+Data Migration (DM) is an integrated data replication task management platform that supports the full data migration and the incremental data migration from MySQL/MariaDB into TiDB. It can help to reduce the operations cost and simplify the troubleshooting process.
 
 ## Architecture
 
@@ -16,22 +16,22 @@ The Data Migration tool includes three components: DM-master, DM-worker, and dmc
 
 ### DM-master
 
-DM-master manages and schedules the operation of data synchronization tasks.
+DM-master manages and schedules the operation of data replication tasks.
 
 - Storing the topology information of the DM cluster
 - Monitoring the running state of DM-worker processes
-- Monitoring the running state of data synchronization tasks
-- Providing a unified portal for the management of data synchronization tasks
-- Coordinating the DDL synchronization of sharded tables in each instance under the sharding scenario
+- Monitoring the running state of data replication tasks
+- Providing a unified portal for the management of data replication tasks
+- Coordinating the DDL replication of sharded tables in each instance under the sharding scenario
 
 ### DM-worker
 
-DM-worker executes specific data synchronization tasks.
+DM-worker executes specific data replication tasks.
 
 - Persisting the binlog data to the local storage
-- Storing the configuration information of the data synchronization subtasks
-- Orchestrating the operation of the data synchronization subtasks
-- Monitoring the running state of the data synchronization subtasks
+- Storing the configuration information of the data replication subtasks
+- Orchestrating the operation of the data replication subtasks
+- Monitoring the running state of the data replication subtasks
 
 For details about DM-worker, see [DM-worker Introduction](../tools/dm-worker-intro.md).
 
@@ -39,22 +39,22 @@ For details about DM-worker, see [DM-worker Introduction](../tools/dm-worker-int
 
 dmctl is the command line tool used to control the DM cluster.
 
-- Creating/Updating/Dropping data synchronization tasks
-- Checking the state of data synchronization tasks
-- Handling the errors during data synchronization tasks
-- Verifying the configuration correctness of data synchronization tasks
+- Creating/Updating/Dropping data replication tasks
+- Checking the state of data replication tasks
+- Handling the errors during data replication tasks
+- Verifying the configuration correctness of data replication tasks
 
-## Data synchronization introduction
+## Data replication introduction
 
-This section describes the data synchronization feature provided by Data Migration in detail.
+This section describes the data replication feature provided by Data Migration in detail.
 
-### Black and white lists synchronization at the schema and table levels
+### Black and white lists replication at the schema and table levels
 
-The black and white lists filtering rule of the upstream database instances is similar to MySQL replication-rules-db/tables, which can be used to filter or only synchronize all operations of some databases or some tables.
+The black and white lists filtering rule of the upstream database instances is similar to MySQL replication-rules-db/tables, which can be used to filter or only replicate all operations of some databases or some tables.
 
 ### Binlog event filtering
 
-Binlog event filtering is a more fine-grained filtering rule than the black and white lists filtering rule at the schema and table levels. You can use statements like `INSERT` and `TRUNCATE TABLE` to specify the Binlog events of the database(s) or table(s) that you need to synchronize or filter out.
+Binlog event filtering is a more fine-grained filtering rule than the black and white lists filtering rule at the schema and table levels. You can use statements like `INSERT` and `TRUNCATE TABLE` to specify the Binlog events of the database(s) or table(s) that you need to replicate or filter out.
 
 ### Column mapping
 
