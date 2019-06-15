@@ -26,7 +26,7 @@ The following list collects deployment guides and tutorials from the community. 
 - [Developer install guide (single machine)](http://www.tocker.ca/this-blog-now-powered-by-wordpress-tidb.html)
 - [TiDB Best Practices](https://pingcap.com/blog/2017-07-24-tidbbestpractice/)
 
-_Your contribution is also welcome! Feel free to open a [pull request](https://github.com/pingcap/docs/edit/master/overview.md) to add additional links._
+_Your contribution is also welcome! Feel free to open a [pull request](https://github.com/pingcap/docs/blob/master/dev/overview.md) to add additional links._
 
 ## Source Code
 
