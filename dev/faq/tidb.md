@@ -12,7 +12,7 @@ aliases: ['/docs-cn/FAQ/','/docs-cn/faq/tidb/']
 
 #### 1.1.1 TiDB 整体架构
 
-[https://pingcap.com/docs-cn/dev/overview/](dev/overview.md#tidb-简介)
+[https://pingcap.com/docs-cn/dev/overview/](/dev/overview.md#tidb-简介)
 
 #### 1.1.2 TiDB 是什么？
 
@@ -36,11 +36,11 @@ TiDB 使用起来很简单，可以将 TiDB 集群当成 MySQL 来用，你可�
 
 TiDB 目前还不支持触发器、存储过程、自定义函数、外键，除此之外，TiDB 支持绝大部分 MySQL 5.7 的语法。
 
-详情参见[与 MySQL 兼容性对比](dev/reference/mysql-compatibility.md)。
+详情参见[与 MySQL 兼容性对比](/dev/reference/mysql-compatibility.md)。
 
 #### 1.1.7 TiDB 具备高可用的特性吗？
 
-TiDB 天然具备高可用特性，TiDB、TiKV、PD 这三个组件都能容忍部分实例失效，不影响整个集群的可用性。具体见 [TiDB 高可用性](dev/key-features/#高可用)。
+TiDB 天然具备高可用特性，TiDB、TiKV、PD 这三个组件都能容忍部分实例失效，不影响整个集群的可用性。具体见 [TiDB 高可用性](/dev/key-features/#高可用)。
 
 #### 1.1.8 TiDB 数据是强一致的吗？
 
@@ -52,7 +52,7 @@ TiDB 实现了快照隔离 (Snapshot Isolation) 级别的一致性。为与 MySQ
 
 支持。无论是一个地方的几个节点，还是[跨多个数据中心的多个节点](/op-guide/cross-dc-deployment.md)，TiDB 均支持 ACID 分布式事务。
 
-TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶段提交协议，并进行了一些实用的优化。该模型依赖于一个时间戳分配器，为每个事务分配单调递增的时间戳，这样就检测到事务冲突。在 TiDB 集群中，[PD](dev/architecture.md#pd-server) 承担时间戳分配器的角色。q
+TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶段提交协议，并进行了一些实用的优化。该模型依赖于一个时间戳分配器，为每个事务分配单调递增的时间戳，这样就检测到事务冲突。在 TiDB 集群中，[PD](/dev/architecture.md#pd-server) 承担时间戳分配器的角色。q
 
 #### 1.1.10 TiDB 支持哪些编程语言？
 
@@ -68,7 +68,7 @@ TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶�
 
 #### 1.1.13 除了官方文档，有没有其他 TiDB 知识获取途径？
 
-目前[官方文档](dev/verview.md#tidb-简介)是获取 TiDB 相关知识最主要、最及时的发布途径。除此之外，我们也有一些技术沟通群，如有需求可发邮件至 [info@pingcap.com](mailto:info@pingcap.com) 获取。
+目前[官方文档](/dev/verview.md#tidb-简介)是获取 TiDB 相关知识最主要、最及时的发布途径。除此之外，我们也有一些技术沟通群，如有需求可发邮件至 [info@pingcap.com](mailto:info@pingcap.com) 获取。
 
 #### 1.1.14 TiDB 对哪些 MySQL variables 兼容？
 
@@ -205,17 +205,17 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 - PD 里面存了集群元信息，会有频繁的读写请求，对磁盘 I/O 要求相对比较高，磁盘太差会影响整个集群性能，推荐 SSD 磁盘，空间不用太大。另外集群 Region 数量越多对 CPU、内存的要求越高；
 - TiKV 对 CPU、内存、磁盘要求都比较高，一定要用 SSD 磁盘。
 
-详情可参考 [TiDB 软硬件环境需求](dev/how-to/deploy/hardware-recommendations.md)。
+详情可参考 [TiDB 软硬件环境需求](/dev/how-to/deploy/hardware-recommendations.md)。
 
 ### 2.2 安装部署
 
 #### 2.2.1 Ansible 部署方式（强烈推荐）
 
-详细可参考 [TiDB Ansible 部署方案](dev/how-to/deploy/orchestrated/ansible.md)。
+详细可参考 [TiDB Ansible 部署方案](/dev/how-to/deploy/orchestrated/ansible.md)。
 
 ##### 2.2.1.1 为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？
 
-这种情况一般是因为没有使用 `--config` 参数来指定配置文件（目前只会出现在 binary 部署的场景），TiKV/PD 会按默认值来设置。如果要使用配置文件，请设置 TiKV/PD 的 `--config` 参数。对于 TiKV 组件，修改配置后重启服务即可；对于 PD 组件，只会在第一次启动时读取配置文件，之后可以使用 pd-ctl 的方式来修改配置，详情可参考 [这里](dev/reference/configuration/pd-server/configuration.md)。
+这种情况一般是因为没有使用 `--config` 参数来指定配置文件（目前只会出现在 binary 部署的场景），TiKV/PD 会按默认值来设置。如果要使用配置文件，请设置 TiKV/PD 的 `--config` 参数。对于 TiKV 组件，修改配置后重启服务即可；对于 PD 组件，只会在第一次启动时读取配置文件，之后可以使用 pd-ctl 的方式来修改配置，详情可参考 [这里](/dev/reference/configuration/pd-server/configuration.md)。
 
 ##### 2.2.1.2 TiDB 监控框架 Prometheus + Grafana 监控机器建议单独还是多台部署？
 
@@ -363,7 +363,7 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 
 #### 3.1.4 TiDB (TiKV) 有哪些数据目录？
 
-默认在 ${[data-dir](dev/reference/configuration/tikv-server/configuration/#data-dir}/data/ 目录下，其中包括 backup、db、raft、snap 四个目录，分别存储备份、数据、raft 数据及镜像数据。
+默认在 ${[data-dir](/dev/reference/configuration/tikv-server/configuration/#data-dir}/data/ 目录下，其中包括 backup、db、raft、snap 四个目录，分别存储备份、数据、raft 数据及镜像数据。
 
 #### 3.1.5 TiDB 有哪些系统表？
 
@@ -750,7 +750,7 @@ sqoop export \
 
 ##### 4.2.1.1 Syncer 使用文档
 
-详细参考 [Syncer 使用文档](dev/reference/tools/syncer.md)。
+详细参考 [Syncer 使用文档](/dev/reference/tools/syncer.md)。
 
 ##### 4.2.1.2 如何配置监控 Syncer 运行情况？
 
@@ -850,11 +850,11 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 ### 5.1 TiDB 执行计划解读
 
-详细解读 [理解 TiDB 执行计划](dev/reference/performance/understanding-the-query-execution-plan.md)。
+详细解读 [理解 TiDB 执行计划](/dev/reference/performance/understanding-the-query-execution-plan.md)。
 
 #### 5.1.1 统计信息收集
 
-详细解读 [统计信息](dev/reference/performance/statistics.md)。
+详细解读 [统计信息](/dev/reference/performance/statistics.md)。
 
 #### 5.1.2 Count 如何加速？
 
@@ -865,7 +865,7 @@ Count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 - 建议提升硬件配置，可以参考[部署建议](op-guide/recommendation.md)。
 - 提升并发度，默认是 10，可以提升到 50 试试，但是一般提升在 2-4 倍之间。
 - 测试大数据量的 count。
-- 调优 TiKV 配置，可以参考[性能调优](dev/reference/performance/tune-tikv.md)。
+- 调优 TiKV 配置，可以参考[性能调优](/dev/reference/performance/tune-tikv.md)。
 
 #### 5.1.3 查看当前 DDL 的进度？
 
@@ -899,11 +899,11 @@ RUNNING_JOBS: ID:121, Type:add index, State:running, SchemaState:write reorganiz
 
 #### 5.1.7 SQL 的执行计划展开成了树，ID 的序号有什么规律吗？这棵树的执行顺序会是怎么样的？
 
-ID 没什么规律，只要是唯一就行，不过生成的时候，是有一个计数器，生成一个 plan 就加一，执行的顺序和序号无关，整个执行计划是一颗树，执行时从根节点开始，不断地向上返回数据。执行计划的理解，请参考[理解 TiDB 执行计划](dev/reference/performance/understanding-the-query-execution-plan.md)。
+ID 没什么规律，只要是唯一就行，不过生成的时候，是有一个计数器，生成一个 plan 就加一，执行的顺序和序号无关，整个执行计划是一颗树，执行时从根节点开始，不断地向上返回数据。执行计划的理解，请参考[理解 TiDB 执行计划](/dev/reference/performance/understanding-the-query-execution-plan.md)。
 
 #### 5.1.8 TiDB 执行计划中，task cop 在一个 root 下，这个是并行的么？
 
-目前 TiDB 的计算任务隶属于两种不同的 task：cop task 和 root task。cop task 是指被下推到 KV 端分布式执行的计算任务，root task 是指在 TiDB 端单点执行的计算任务。一般来讲 root task 的输入数据是来自于 cop task 的；但是 root task 在处理数据的时候，TiKV 上的 cop task 也可以同时处理数据，等待 TiDB 的 root task 拉取，所以从这个观点上来看，他们是并行的；但是存在数据上下游关系；在执行的过程中，某些时间段其实也是并行的，第一个 cop task 在处理 [100, 200] 的数据，第二个 cop task 在处理 [1, 100] 的数据。执行计划的理解，请参考[理解 TiDB 执行计划](dev/reference/performance/understanding-the-query-execution-plan.md)。
+目前 TiDB 的计算任务隶属于两种不同的 task：cop task 和 root task。cop task 是指被下推到 KV 端分布式执行的计算任务，root task 是指在 TiDB 端单点执行的计算任务。一般来讲 root task 的输入数据是来自于 cop task 的；但是 root task 在处理数据的时候，TiKV 上的 cop task 也可以同时处理数据，等待 TiDB 的 root task 拉取，所以从这个观点上来看，他们是并行的；但是存在数据上下游关系；在执行的过程中，某些时间段其实也是并行的，第一个 cop task 在处理 [100, 200] 的数据，第二个 cop task 在处理 [1, 100] 的数据。执行计划的理解，请参考[理解 TiDB 执行计划](/dev/reference/performance/understanding-the-query-execution-plan.md)。
 
 ## 六、数据库优化
 
@@ -911,27 +911,27 @@ ID 没什么规律，只要是唯一就行，不过生成的时候，是有一�
 
 #### 6.1.1 TiDB 参数及调整
 
-详情参考 [TiDB 配置参数](dev/reference/configuration/tidb-server/configuration.md)。
+详情参考 [TiDB 配置参数](/dev/reference/configuration/tidb-server/configuration.md)。
 
 #### 6.1.2 如何打散热点
 
-TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指的是 Region 的读写访问热点。而 TiDB 中对于 PK 非整数或没有 PK 的表，可以通过设置 `SHARD_ROW_ID_BITS` 来适度分解 Region 分片，以达到打散 Region 热点的效果。详情可参考官网 [TiDB 专用系统变量和语法](dev/reference/configuration/tidb-server/tidb-specific-variables.md#shard-row-id-bits)中 `SHARD_ROW_ID_BITS` 的介绍。
+TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指的是 Region 的读写访问热点。而 TiDB 中对于 PK 非整数或没有 PK 的表，可以通过设置 `SHARD_ROW_ID_BITS` 来适度分解 Region 分片，以达到打散 Region 热点的效果。详情可参考官网 [TiDB 专用系统变量和语法](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#shard-row-id-bits)中 `SHARD_ROW_ID_BITS` 的介绍。
 
 ### 6.2 TiKV
 
 #### 6.2.1 TiKV 性能参数调优
 
-详情参考 [TiKV 性能参数调优](dev/reference/performance/tune-tikv.md)。
+详情参考 [TiKV 性能参数调优](/dev/reference/performance/tune-tikv.md)。
 
 ## 七、监控
 
 ### 7.1 Prometheus 监控框架
 
-详细参考 [TiDB 监控框架概述](dev/how-to/monitor/overview/)。
+详细参考 [TiDB 监控框架概述](/dev/how-to/monitor/overview/)。
 
 ### 7.2 监控指标解读
 
-详细参考 [重要监控指标详解](dev/reference/key-monitoring-metrics/overview-dashboard.md)。
+详细参考 [重要监控指标详解](/dev/reference/key-monitoring-metrics/overview-dashboard.md)。
 
 #### 7.2.1 目前的监控使用方式及主要监控指标，有没有更好看的监控？
 
