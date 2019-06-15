@@ -43,7 +43,7 @@
       - [全量迁移](dev/how-to/migrate/from-mysql.md)
       - [增量复制](dev/how-to/migrate/incrementally-from-mysql.md)
     - [从 Amazon Aurora MySQL 迁移数据](dev/how-to/migrate/from-aurora.md)
-    - [从 CSV 迁移](dev/tools/lightning/csv.md)
+    - [从 CSV 迁移](dev/reference/tools/tidb-lightning/csv.md)
   + 运维
     - [Ansible 常见运维操作](dev/how-to/maintain/ansible-operations.md)
     + [备份与恢复](dev/how-to/maintain/backup-and-restore.md)
@@ -54,7 +54,7 @@
     - [升级至 TiDB 3.0](dev/how-to/upgrade/from-previous-version.md)
     - [升级至 TiDB 2.1](dev/how-to/upgrade/to-tidb-2.1.md)
     - [使用 Ansible 滚动升级](dev/how-to/upgrade/rolling-updates-with-ansible.md)
-    - [升级 Data Migration](dev/tools/dm/dm-upgrade.md)
+    - [升级 Data Migration](dev/reference/tools/data-migration/dm-upgrade.md)
   + 故障诊断
     - [集群配置诊断](dev/how-to/troubleshoot/cluster-setup.md)
     - [Data Migration 故障诊断](dev/how-to/troubleshoot/data-migration.md)
@@ -62,7 +62,7 @@
 + 参考手册
   + [与 MySQL 兼容性对比](dev/reference/mysql-compatibility.md)
   + SQL
-    - [TiDB SQL 语法图](dev/https://pingcap.github.io/sqlgram/)
+    - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
     + SQL 语言结构
       - [字面值](dev/reference/sql/language-structure/literal-values.md)
       - [Schema 对象名](dev/reference/sql/language-structure/schema-object-names.md)
@@ -138,7 +138,7 @@
     - [统计信息概述](dev/reference/performance/statistics.md)
     - [Optimizer Hints](dev/reference/performance/optimizer-hints.md)
     - [TiKV 调优](dev/reference/performance/tune-tikv.md)
-    - [TiDB 最佳实践](dev/https://pingcap.com/blog-cn/tidb-best-practice/)
+    - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + [TiSpark 使用指南](dev/reference/tispark.md)
   + 生态工具
     - [Mydumper](dev/reference/tools/mydumper.md)
@@ -189,7 +189,7 @@
       - [版本升级](dev/reference/tools/tidb-binlog/upgrade.md)
     - [PD Control](dev/reference/tools/pd-control.md)
     - [PD Recover](dev/reference/tools/pd-recover.md)
-    - [TiKV Control](dev/https://github.com/tikv/tikv/blob/master/docs/tools/tikv-control.md)
+    - [TiKV Control](https://github.com/tikv/tikv/blob/master/docs/tools/tikv-control.md)
     - [TiDB Controller](dev/reference/tools/tidb-control.md)
     - [工具下载](dev/reference/tools/download.md)
 + 常见问题 (FAQ)
