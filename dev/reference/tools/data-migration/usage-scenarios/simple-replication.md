@@ -2,7 +2,7 @@
 title: Data Migration Simple Usage Scenario
 summary: Learn how to use Data Migration to replicate data in a simple scenario.
 category: reference
-aliases: ['/docs/tools/dm/simple-synchronization-scenario/'],['/docs/dev/reference/tools/data-migration/usage-scenarios/simple-synchronization/']
+aliases: ['/docs/tools/dm/simple-synchronization-scenario/', '/docs/dev/reference/tools/data-migration/usage-scenarios/simple-synchronization/']
 ---
 
 # Data Migration Simple Usage Scenario
