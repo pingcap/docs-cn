@@ -1,10 +1,10 @@
 ---
-title: DO | TiDB SQL Statement Reference 
+title: DO | TiDB SQL Statement Reference
 summary: TiDB 数据库中 DO 的使用概况。
 category: reference
 ---
 
-# DO 
+# DO
 
 `DO` 语句用于执行表达式，而不返回结果。在 MySQL 中，`DO` 的一个常见用例是执行存储的程序，而无需处理结果。但是 TiDB 不提供存储例程，因此该功能的使用较为受限。
 
