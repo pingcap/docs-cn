@@ -92,6 +92,7 @@
       - [信息函数](dev/reference/sql/functions-and-operators/information-functions.md)
       - [JSON 函数](dev/reference/sql/functions-and-operators/json-functions.md)
       - [GROUP BY 聚合函数](dev/reference/sql/functions-and-operators/aggregate-group-by-functions.md)
+      - [窗口函数](dev/reference/sql/functions-and_operators/window-functions.md)
       - [其它函数](dev/reference/sql/functions-and-operators/miscellaneous-functions.md)
       - [精度数学](dev/reference/sql/functions-and-operators/precision-math.md)
     + SQL 语句
