@@ -1,6 +1,6 @@
 ---
-title: 集群意外删除后恢复
-category: troubleshooting
+title: K8s 环境下 TiDB 集群故障诊断
+category: how-to
 ---
 
 # 集群意外删除后恢复
