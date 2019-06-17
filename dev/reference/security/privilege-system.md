@@ -46,6 +46,8 @@ mysql> SELECT user,host FROM mysql.user WHERE user='xxxx';
 
 上述示例中，`xxxx@%` 即自动添加的用户。
 
+**Note:**
+
 `GRANT` 对于数据库或者表的授权，不检查数据库或表是否存在。
 
 ```sql
@@ -341,6 +343,16 @@ FLUSH PRIVILEGES;
 
 ### 限制和约束
 
-一些使用频率偏低的权限当前版本的实现中还未做检查，比如 `FILE`/`USAGE`/`SHUTDOWN`/`EXECUTE`/`PROCESS`/`INDEX` 等等，未来会陆续完善。
+一些使用频率偏低的权限当前版本的实现中还未做检查，未来会陆续完善。例如：
+
+- FILE
+- USAGE
+- SHUTDOWN
+- EXECUTE
+- PROCESS
+- INDEX
+- ...
+
+**Note:**
 
 现阶段对权限的支持还没有做到 column 级别。
