@@ -18,7 +18,9 @@ TiDB 优化器会根据统计信息来选择最优的执行计划。统计信息
 
 > **注意：**
 >
-> 在 TiDB 中执行 `ANALYZE TABLE` 语句比在 MySQL 或 InnoDB 中耗时更长。InnoDB 采样的只是少量页面，但 TiDB 会完全重构一系列统计信息。适用于 MySQL 的脚本会误以为执行 `ANALYZE TABLE` 耗时较短。如果需要更快的分析速度，可以通过设置 `tidb_enable_fast_analyze`(默认值为 `0`) 为 `1` 打开快速分析功能。
+> 在 TiDB 中执行 `ANALYZE TABLE` 语句比在 MySQL 或 InnoDB 中耗时更长。InnoDB 采样的只是少量页面，但 TiDB 会完全重构一系列统计信息。适用于 MySQL 的脚本会误以为执行 `ANALYZE TABLE` 耗时较短。
+>
+> 如果需要更快的分析速度，可以通过设置 `tidb_enable_fast_analyze` 为 `1` 打开快速分析功能，其默认值为 `0`。快速分析功能会随机采样少量行的数据来构建统计信息，因此在数据分布不均匀的情况下统计信息的准确度会比较差，推荐在可以接受普通 Analyze 语句执行时间的情况下关闭快速分析的功能。
 
 语法：
 
@@ -106,7 +108,7 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere]
 | job_info | 任务具体信息，如果分析的是索引会包含索引名 |
 | row_count | 已经分析的行数 |
 | start_time | 任务开始执行的时间 |
-| state | 任务状态，包括等待、正在执行、执行成功和执行失败|
+| state | 任务状态，包括 pending(等待)、running(正在执行)、finished(执行成功)和 failed(执行失败)|
 
 ## 统计信息的查看
 
@@ -207,10 +209,10 @@ http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${tabl
 > 通过该接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 的 json 格式的统计信息。
 
 http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${table_name}/${yyyyMMddHHmmss}
-> 通过该接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 在指定时间的 json 格式的统计信息。
+> 通过该接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 在指定时间的 json 格式的统计信息。指定的时间需在 GC SafePoint 之后。
 
 http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${table_name}/${yyyy-MM-dd HH:mm:ss}
-> 通过该接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 在指定时间的 json 格式的统计信息。
+> 通过该接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 在指定时间的 json 格式的统计信息。指定的时间需在 GC SafePoint 之后。
 ```
 
 ### 导入统计信息
