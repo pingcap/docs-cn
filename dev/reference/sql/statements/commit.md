@@ -8,7 +8,7 @@ category: reference
 
 `COMMIT` 语句用于在 TiDB 服务器内部提交事务。
 
-在没有 `BEGIN` 或 `START TRANSACTION` 语句的情况下，每个语句都为各自的事务和自动提交，这是 TiDB 的默认行为，确保了 MySQL 兼容性。
+在不使用 `BEGIN` 或 `START TRANSACTION` 语句的情况下，TiDB 中每一个查询语句本身也会默认作为事务处理，自动提交，确保了与 MySQL 的兼容。
 
 ## 语法图
 
