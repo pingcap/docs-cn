@@ -33,7 +33,8 @@ $ mv tkctl /usr/local/bin/tkctl
 
 你可以配置 `tkctl` 的自动补全来简化使用：
 
-BASH（BASH 需要预选安装 [bash-completion](https://github.com/scop/bash-completion))
+BASH（需要预选安装 [bash-completion](https://github.com/scop/bash-completion)）
+
 ```shell
 # 在当前 shell 中设置自动补全
 source <(tkctl completion bash)
