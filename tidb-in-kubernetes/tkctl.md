@@ -46,6 +46,7 @@ echo "if hash tkctl 2>/dev/null; then source <(tkctl completion bash); fi" >> ~/
 为 ZSH 配置自动补全：
 
 
+
 ```shell
 # 在当前 shell 中设置自动补全。
 source <(tkctl completion zsh)
