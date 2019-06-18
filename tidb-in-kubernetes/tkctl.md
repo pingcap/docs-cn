@@ -206,7 +206,7 @@ $ gdb /proc/${pid:-1}/root/tikv-server 1
 (gdb) info threads
 ```
 
-#### Perf (以及火焰图)
+#### Perf（以及火焰图）
 
 使用 `perf` 命令和 `run-flamegraph.sh` 脚本时，需要将目标容器的可执行文件拷贝到 Debug 容器中：
 
