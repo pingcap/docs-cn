@@ -99,7 +99,7 @@ TiKV 实例迁移较慢，并且会对集群造成一定的数据迁移负载，
 2. 查看待维护节点上的 TiKV 实例:
 
     ```shell
-	$ tkctl get -A tikv | grep <node-name>
+    $ tkctl get -A tikv | grep <node-name>
     ```
 
 3. 使用 `pd-ctl` 主动下线 TiKV 实例 
