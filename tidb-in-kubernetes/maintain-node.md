@@ -153,7 +153,7 @@ TiKV 实例迁移较慢，并且会对集群造成一定的数据迁移负载，
     $ kubectl drain <node-name> --ignore-daemonsets --delete-local-data
     ```
 
-9. 再次确认节点不再有任何 TiKV/TiDB/PD 实例运行：
+9. 再次确认节点不再有任何 TiKV、TiDB 和 PD 实例运行：
 
     ```shell
     $ kubectl get pod --all-namespaces | grep <node-name>
