@@ -9,7 +9,7 @@ tkctl(TiDB Kubernetes Controltkctl) 为 TiDB in Kubernetes 设计的命令行工
 
 ## 安装
 
-安装 tkctl 时，可以直接下载预编译的可执行文件，也可以自行从源码进行编译。
+安装 `tkctl` 时，可以直接下载预编译的可执行文件，也可以自行从源码进行编译。
 
 ### 下载预编译的可执行文件
 
