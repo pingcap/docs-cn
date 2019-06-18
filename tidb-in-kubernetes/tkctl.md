@@ -39,7 +39,7 @@ BASH（需要预选安装 [bash-completion](https://github.com/scop/bash-complet
 # 在当前 shell 中设置自动补全。
 source <(tkctl completion bash)
 
-# 永久设置自动补全
+# 永久设置自动补全。
 echo "if hash tkctl 2>/dev/null; then source <(tkctl completion bash); fi" >> ~/.bashrc
 ```
 
