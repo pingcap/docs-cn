@@ -109,7 +109,7 @@ Tidb cluster switched to foo/demo-cluster
 
 ### tkctl info
 
-该命令用于展示 TiDB 集群的信息
+该命令用于展示 TiDB 集群的信息。
 
 | 参数           | 缩写      | 说明                                       |
 | -----          | --------- | -----------                                |
