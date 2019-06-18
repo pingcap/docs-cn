@@ -106,7 +106,7 @@ TiKV 实例迁移较慢，并且会对集群造成一定的数据迁移负载，
 
     > **注意：**
     > 
-    > 下线 TiKV 实例前，需要保证集群中剩余的 TiKV 实例数不少于 PD 配置中的 TiKV 数据副本数（配置项：max-replicas）。假如不符合该条件，需要先操作[扩容 TiKV](/TODO/link-to-scaling)。
+    > 下线 TiKV 实例前，需要保证集群中剩余的 TiKV 实例数不少于 PD 配置中的 TiKV 数据副本数（配置项：`max-replicas`）。假如不符合该条件，需要先操作[扩容 TiKV](/TODO/link-to-scaling)。
 
     ```shell
     # 查看 TiKV 实例的 `store-id`。
