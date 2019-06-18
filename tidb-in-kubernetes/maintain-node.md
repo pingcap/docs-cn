@@ -126,7 +126,7 @@ TiKV 实例迁移较慢，并且会对集群造成一定的数据迁移负载，
 5. 解除 TiKV 实例与节点本地盘的绑定：
 
     ```shell
-    # 查询 Pod 使用的 PesistentVolumeClaim
+    # 查询 Pod 使用的 `PesistentVolumeClaim`。
     $ kubectl get -n ${namespace} pod ${pod_name} -ojson | jq '.spec.volumes | .[] | select (.name == "tikv") | .persistentVolumeClaim.claimName'
     
     # 删除该 PesistentVolumeClaim
