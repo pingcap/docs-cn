@@ -50,7 +50,7 @@ TiDB 实现了快照隔离 (Snapshot Isolation) 级别的一致性。为与 MySQ
 
 #### 1.1.9 TiDB 支持分布式事务吗？
 
-支持。无论是一个地方的几个节点，还是[跨多个数据中心的多个节点](/op-guide/cross-dc-deployment.md)，TiDB 均支持 ACID 分布式事务。
+支持。无论是一个地方的几个节点，还是[跨多个数据中心的多个节点](/dev/how-to/deploy/geographic-redundancy/overview.md)，TiDB 均支持 ACID 分布式事务。
 
 TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶段提交协议，并进行了一些实用的优化。该模型依赖于一个时间戳分配器，为每个事务分配单调递增的时间戳，这样就检测到事务冲突。在 TiDB 集群中，[PD](/dev/architecture.md#pd-server) 承担时间戳分配器的角色。q
 
@@ -72,7 +72,7 @@ TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶�
 
 #### 1.1.14 TiDB 对哪些 MySQL variables 兼容？
 
-详细可参考[系统变量](sql/variable.md)。
+详细可参考[系统变量](/dev/reference/configuration/tidb-server/mysql-variables.md)。
 
 #### 1.1.15 TiDB 是否支持 select for update？
 
@@ -102,17 +102,17 @@ MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiD
 
 TiDB 的 `show processlist` 与 MySQL 的 `show processlist` 显示内容基本一样，不会显示系统进程号，而 ID 表示当前的 session ID。其中 TiDB 的 `show processlist` 和 MySQL 的 `show processlist` 区别如下：
 
-1）由于 TiDB 是分布式数据库，tidb-server 实例是无状态的 SQL 解析和执行引擎（详情可参考 [TiDB 整体架构](overview.md#tidb-整体架构)），用户使用 MySQL 客户端登录的是哪个 tidb-server，`show processlist` 就会显示当前连接的这个 tidb-server 中执行的 session 列表，不是整个集群中运行的全部 session 列表；而 MySQL 是单机数据库，`show processlist` 列出的是当前整个 MySQL 数据库的全部执行 SQL 列表。
+1）由于 TiDB 是分布式数据库，tidb-server 实例是无状态的 SQL 解析和执行引擎（详情可参考 [TiDB 整体架构](/dev/overview.md#tidb-整体架构)），用户使用 MySQL 客户端登录的是哪个 tidb-server，`show processlist` 就会显示当前连接的这个 tidb-server 中执行的 session 列表，不是整个集群中运行的全部 session 列表；而 MySQL 是单机数据库，`show processlist` 列出的是当前整个 MySQL 数据库的全部执行 SQL 列表。
 
 2）TiDB 的 `show processlist` 显示内容比起 MySQL 来讲，多了一个当前 session 使用内存的估算值（单位 Byte）。
 
 #### 1.1.21 如何修改用户名密码和权限？
 
-TiDB 作为分布式数据库，在 TiDB 中修改用户密码建议使用 `set password for 'root'@'%' = '0101001';` 或 `alter` 方法，不推荐使用 `update mysql.user` 的方法进行，这种方法可能会造成其它节点刷新不及时的情况。修改权限也一样，都建议采用官方的标准语法。详情可参考 [TiDB 用户账户管理](sql/user-account-management.md)。
+TiDB 作为分布式数据库，在 TiDB 中修改用户密码建议使用 `set password for 'root'@'%' = '0101001';` 或 `alter` 方法，不推荐使用 `update mysql.user` 的方法进行，这种方法可能会造成其它节点刷新不及时的情况。修改权限也一样，都建议采用官方的标准语法。详情可参考 [TiDB 用户账户管理](/dev/reference/security/user-account-management.md)。
 
 #### 1.1.22 TiDB 中，为什么出现后插入数据的自增 ID 反而小？
 
-TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 tidb-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考[数据定义语句](sql/ddl.md)。
+TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 tidb-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考[CREATE TABLE 语法](/dev/reference/mysql-compatibility/#auto-increment-id)。
 
 #### 1.1.23 sql_mode 默认除了通过命令 set 修改，配置文件怎么修改？
 
@@ -166,7 +166,7 @@ TiDB 的 sql_mode 与 MySQL 的 sql_mode 设置方法有一些差别，TiDB 不�
 
 ##### 2.1.1.1  为什么要在 CentOS 7 上部署 TiDB 集群？
 
-TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运行在 Intel 架构服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络，作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境，具体可以参考 TiDB 的[官方部署要求](op-guide/recommendation.md)。其中 TiDB 在 CentOS 7.3 的环境下进行大量的测试，同时也有很多这个操作系统的部署最佳实践，因此，我们推荐客户在部署 TiDB 的时候使用 CentOS 7.3+ 以上的Linux 操作系统。
+TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运行在 Intel 架构服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络，作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境，具体可以参考 TiDB 的[官方部署要求](/dev/how-to/deploy/hardware-recommendations.md)。其中 TiDB 在 CentOS 7.3 的环境下进行大量的测试，同时也有很多这个操作系统的部署最佳实践，因此，我们推荐客户在部署 TiDB 的时候使用 CentOS 7.3+ 以上的Linux 操作系统。
 
 #### 2.1.2 硬件要求
 
@@ -253,11 +253,11 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 #### 2.2.2 TiDB 离线 Ansible 部署方案
 
-首先这不是我们建议的方式，如果中控机没有外网，也可以通过离线 Ansible 部署方式，详情可参考 [这里](op-guide/offline-ansible-deployment.md)。
+首先这不是我们建议的方式，如果中控机没有外网，也可以通过离线 Ansible 部署方式，详情可参考[这里](op-guide/offline-ansible-deployment.md)。
 
 #### 2.2.3 Docker Compose 快速构建集群（单机部署）
 
-使用 docker-compose 在本地一键拉起一个集群，包括集群监控，还可以根据需求自定义各个组件的软件版本和实例个数，以及自定义配置文件，这种只限于开发环境，详细可参考[官方文档](op-guide/docker-compose.md)。
+使用 docker-compose 在本地一键拉起一个集群，包括集群监控，还可以根据需求自定义各个组件的软件版本和实例个数，以及自定义配置文件，这种只限于开发环境，详细可参考[官方文档](/dev/how-to/get-started/local-cluster/install-from-docker-compose.md)。
 
 #### 2.2.4 如何单独记录 TiDB 中的慢查询日志，如何定位慢查询 SQL？
 
@@ -270,13 +270,13 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 2）如果出现了慢查询，可以从 Grafana 监控定位到出现慢查询的 tidb-server 以及时间点，然后在对应节点查找日志中记录的 SQL 信息。
 
-3）除了日志，还可以通过 `admin show slow` 命令查看，详情可参考 [`admin show slow` 命令](sql/slow-query.md#admin-show-slow-命令)。
+3）除了日志，还可以通过 `admin show slow` 命令查看，详情可参考 [`admin show slow` 命令](/dev/how-to/maintain/identify-slow-queries/#admin-show-slow-命令)。
 
 #### 2.2.5 首次部署 TiDB 集群时，没有配置 tikv 的 Label 信息，在后续如何添加配置 Label？
 
 TiDB 的 Label 设置是与集群的部署架构相关的，是集群部署中的重要内容，是 PD 进行全局管理和调度的依据。如果集群在初期部署过程中没有设置 Label，需要在后期对部署结构进行调整，就需要手动通过 PD 的管理工具 pd-ctl 来添加 location-labels 信息，例如：`config set location-labels "zone, rack, host"`（根据实际的 label 层级名字配置）。
 
-pd-ctl 的使用参考 [PD Control 使用说明](tools/pd-control.md)。
+pd-ctl 的使用参考 [PD Control 使用说明](/dev/reference/tools/pd-control.md)。
 
 #### 2.2.6 为什么测试磁盘的 dd 命令用 oflag=direct 这个选项？
 
@@ -300,7 +300,7 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 有两种可能性：
 
-- ssh 互信的准备工作未做好，建议严格参照我们的官方文档步骤配置互信（[详情可参考](op-guide/ansible-deployment.md)），并使用命令 `ansible -i inventory.ini all -m shell -a 'whoami' -b` 来验证互信配置是否成功。
+- ssh 互信的准备工作未做好，建议严格参照我们的[官方文档步骤](dev/how-to/deploy/orchestrated/ansible.md)配置互信，并使用命令 `ansible -i inventory.ini all -m shell -a 'whoami' -b` 来验证互信配置是否成功。
 
 - 如果涉及到单服务器分配了多角色的场景，例如多组件混合部署或单台服务器部署了多个 TiKV 实例，可能是由于 ssh 复用的机制引起这个报错，可以使用 `ansible … -f 1` 的选项来规避这个报错。
 
@@ -367,7 +367,7 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 
 #### 3.1.5 TiDB 有哪些系统表？
 
-和 MySQL 类似，TiDB 中也有系统表，用于存放数据库运行时所需信息，具体信息参考 [TiDB 系统数据库](sql/system-database.md)文档。
+和 MySQL 类似，TiDB 中也有系统表，用于存放数据库运行时所需信息，具体信息参考 [TiDB 系统数据库](/dev/reference/system-databases/mysql.md)文档。
 
 #### 3.1.6 TiDB 各节点服务器下是否有日志文件，如何管理？
 
@@ -380,7 +380,7 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 #### 3.1.8 TiDB 里面可以执行 kill 命令吗？
 
 - 可以 kill DML 语句，首先使用 `show processlist`，找到对应 session 的 id，然后执行 `kill tidb [session id]`。
-- 可以 kill DDL 语句，首先使用 `admin show ddl jobs`，查找需要 kill 的 DDL job ID，然后执行 `admin cancel ddl jobs 'job_id' [, 'job_id'] ...`。具体可以参考 [admin 操作](sql/admin.md#admin-语句)。
+- 可以 kill DDL 语句，首先使用 `admin show ddl jobs`，查找需要 kill 的 DDL job ID，然后执行 `admin cancel ddl jobs 'job_id' [, 'job_id'] ...`。具体可以参考 [admin 操作](/dev/reference/sql/statements/admin.md)。
 
 #### 3.1.9 TiDB 是否支持会话超时？
 
@@ -456,7 +456,7 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 #### 3.2.6 每个 region 的 replica 数量可配置吗？调整的方法是？
 
-可以，目前只能调整全局的 replica 数量。首次启动时 PD 会读配置文件（conf/pd.yml），使用其中的 max-replicas 配置，之后修改需要使用 pd-ctl 配置命令 `config set max-replicas $num`，配置后可通过 `config show all` 来查看已生效的配置。调整的时候，不会影响业务，会在后台添加，注意总 TiKV 实例数总是要大于等于设置的副本数，例如 3 副本需要至少 3 个 TiKV。增加副本数量之前需要预估额外的存储需求。pd-ctl 的详细用法可参考 [PD Control 使用说明](tools/pd-control.md)。
+可以，目前只能调整全局的 replica 数量。首次启动时 PD 会读配置文件（conf/pd.yml），使用其中的 max-replicas 配置，之后修改需要使用 pd-ctl 配置命令 `config set max-replicas $num`，配置后可通过 `config show all` 来查看已生效的配置。调整的时候，不会影响业务，会在后台添加，注意总 TiKV 实例数总是要大于等于设置的副本数，例如 3 副本需要至少 3 个 TiKV。增加副本数量之前需要预估额外的存储需求。pd-ctl 的详细用法可参考 [PD Control 使用说明](/dev/reference/tools/pd-control.md)。
 
 #### 3.2.7 缺少命令行集群管理工具，整个集群的健康度当前是否正常，不好确认？
 
@@ -501,7 +501,7 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 #### 3.3.5 Information_schema 能否支持更多真实信息？
 
-Information_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。当前 TiDB 支持的 Information\_schema 请参考 [TiDB 系统数据库说明文档](sql/system-database.md)。
+Information_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。当前 TiDB 支持的 Information\_schema 请参考 [TiDB 系统数据库说明文档](/dev/reference/system-databases/information-schema.md)。
 
 #### 3.3.6 TiDB Backoff type 主要原因?
 
@@ -525,12 +525,12 @@ TiDB 在执行 SQL 时，预估出来每个 operator 处理了超过 10000 条�
 
 #### 3.3.10 在 TiDB 中如何控制或改变 SQL 提交的执行优先级？
 
-TiDB 支持改变 [per-session](sql/tidb-specific.md#tidb_force_priority)、[全局](sql/server-command-option.md#force-priority)或[单个语句](sql/dml.md)的优先级。优先级包括：
+TiDB 支持改变 [per-session](/dev/reference/configuration/tidb-server/tidb-specific-variables#tidb_force_priority)、[全局](sq(/dev/reference/configuration/tidb-server/server-command-option.md#force-priority)或[单个语句](/dev/reference/sql/statements/dml.md)的优先级。优先级包括：
 
 - HIGH_PRIORITY：该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句
 - LOW_PRIORITY：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
 
-以上两种参数可以结合 TiDB 的 DML 语言进行使用，具体使用方式可以参考[官方文档](sql/dml.md)，使用方法举例如下：
+以上两种参数可以结合 TiDB 的 DML 语言进行使用，具体使用方式可以参考[官方文档](/dev/reference/sql/statements/dml.md)，使用方法举例如下：
 
 1）通过在数据库中写 SQL 的方式来调整优先级：
 
@@ -677,7 +677,7 @@ TiDB 设计的目标就是针对 MySQL 单台容量限制而被迫做的分库�
 
 #### 3.6.1 TiDB 主要备份方式？
 
-目前，推荐的备份方式是使用 [PingCAP fork 的 mydumper](tools/mydumper.md)。尽管 TiDB 也支持使用 MySQL 官方工具 `mysqldump` 进行数据备份、恢复，但其性能低于 [`mydumper`](tools/mydumper.md)/[`loader`](tools/loader.md)，并且该工具备份、恢复大量数量时，要耗费更多时间。
+目前，推荐的备份方式是使用 [PingCAP fork 的 mydumper](/dev/reference/tools/mydumper.md)。尽管 TiDB 也支持使用 MySQL 官方工具 `mysqldump` 进行数据备份、恢复，但其性能低于 [`mydumper`](/dev/reference/tools/mydumper.md)/[`loader`](/dev/reference/tools/loader.md)，并且该工具备份、恢复大量数量时，要耗费更多时间。
 
 使用 mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64；
 
@@ -689,11 +689,11 @@ loader 的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调
 
 #### 4.1.1 Mydumper
 
-参见 [mydumper 使用文档](tools/mydumper.md)。
+参见 [mydumper 使用文档](/dev/reference/tools/mydumper.md)。
 
 #### 4.1.2 Loader
 
-参见 [Loader 使用文档](tools/loader.md)。
+参见 [Loader 使用文档](/dev/reference/tools/loader.md)。
 
 #### 4.1.3 如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？
 
@@ -740,7 +740,7 @@ sqoop export \
 
 #### 4.1.9 TiDB 有像 Oracle 那样的 Flashback Query 功能么，DDL 支持么？
 
-有，也支持 DDL。详细参考 [TiDB 历史数据回溯](op-guide/history-read.md)。
+有，也支持 DDL。详细参考 [TiDB 历史数据回溯](/dev/how-to/get-started/read-historical-data.md)。
 
 ### 4.2 在线数据同步
 
@@ -768,7 +768,7 @@ sqoop export \
 
 ##### 4.2.1.4 利用 Syncer 做数据同步的时候是否支持只同步部分表？
 
-支持，具体参考 Syncer 使用手册 [Syncer 使用文档](tools/syncer.md)
+支持，具体参考 Syncer 使用手册 [Syncer 使用文档](/dev/reference/tools/syncer.md)
 
 ##### 4.2.1.5 频繁的执行 DDL 会影响 Syncer 同步速度吗？
 
@@ -839,7 +839,7 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 主要有两个方面：
 
-- 目前已开发分布式导入工具 [Lightning](tools/lightning/overview-architecture.md)，需要注意的是数据导入过程中为了性能考虑，不会执行完整的事务流程，所以没办法保证导入过程中正在导入的数据的 ACID 约束，只能保证整个导入过程结束以后导入数据的 ACID 约束。因此适用场景主要为新数据的导入（比如新的表或者新的索引），或者是全量的备份恢复（先 Truncate 原表再导入）。
+- 目前已开发分布式导入工具 [Lightning](/dev/reference/tools/tidb-lightning/overview.md)，需要注意的是数据导入过程中为了性能考虑，不会执行完整的事务流程，所以没办法保证导入过程中正在导入的数据的 ACID 约束，只能保证整个导入过程结束以后导入数据的 ACID 约束。因此适用场景主要为新数据的导入（比如新的表或者新的索引），或者是全量的备份恢复（先 Truncate 原表再导入）。
 - TiDB 的数据加载与磁盘以及整体集群状态相关，加载数据时应关注该主机的磁盘利用率，TiClient Error/Backoff/Thread CPU 等相关 metric，可以分析相应瓶颈。
 
 #### 4.3.11 对数据做删除操作之后，空间回收比较慢，如何处理？
@@ -862,7 +862,7 @@ Count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 
 提升建议：
 
-- 建议提升硬件配置，可以参考[部署建议](op-guide/recommendation.md)。
+- 建议提升硬件配置，可以参考[部署建议](/dev/how-to/deploy/hardware-recommendations.md)。
 - 提升并发度，默认是 10，可以提升到 50 试试，但是一般提升在 2-4 倍之间。
 - 测试大数据量的 count。
 - 调优 TiKV 配置，可以参考[性能调优](/dev/reference/performance/tune-tikv.md)。
@@ -935,7 +935,7 @@ TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指�
 
 #### 7.2.1 目前的监控使用方式及主要监控指标，有没有更好看的监控？
 
-TiDB 使用 Prometheus + Grafana 组成 TiDB 数据库系统的监控系统，用户在 Grafana 上通过 dashboard 可以监控到 TiDB 的各类运行指标，包括系统资源的监控指标，包括客户端连接与 SQL 运行的指标，包括内部通信和 Region 调度的指标，通过这些指标，可以让数据库管理员更好的了解到系统的运行状态，运行瓶颈等内容。在监控指标的过程中，我们按照 TiDB 不同的模块，分别列出了各个模块重要的指标项，一般用户只需要关注这些常见的指标项。具体指标请参见[官方文档](op-guide/dashboard-overview-info.md)。
+TiDB 使用 Prometheus + Grafana 组成 TiDB 数据库系统的监控系统，用户在 Grafana 上通过 dashboard 可以监控到 TiDB 的各类运行指标，包括系统资源的监控指标，包括客户端连接与 SQL 运行的指标，包括内部通信和 Region 调度的指标，通过这些指标，可以让数据库管理员更好的了解到系统的运行状态，运行瓶颈等内容。在监控指标的过程中，我们按照 TiDB 不同的模块，分别列出了各个模块重要的指标项，一般用户只需要关注这些常见的指标项。具体指标请参见[官方文档](/dev/reference/key-monitoring-metrics/overview-dashboard/)。
 
 #### 7.2.2 Prometheus 监控数据默认 15 天自动清除一次，可以自己设定成 2 个月或者手动删除吗？
 
@@ -1027,7 +1027,7 @@ update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_tim
 
 #### 9.2.4 ERROR 9001 (HY000): PD server timeout start timestamp may fall behind safe point
 
-这个报错一般是 TiDB 访问 PD 出了问题，TiDB 后台有个 worker 会不断地从 PD 查询 safepoint，如果超过 100s 查不成功就会报这个错。一般是因为 PD 磁盘操作过忙、反应过慢，或者 TiDB 和 PD 之间的网络有问题。TiDB 常见错误码请参考[错误码与故障诊断](sql/error.md)。
+这个报错一般是 TiDB 访问 PD 出了问题，TiDB 后台有个 worker 会不断地从 PD 查询 safepoint，如果超过 100s 查不成功就会报这个错。一般是因为 PD 磁盘操作过忙、反应过慢，或者 TiDB 和 PD 之间的网络有问题。TiDB 常见错误码请参考[错误码与故障诊断](/dev/reference/error-codes.md)。
 
 ### 9.3 TiDB 日志中的报错信息
 

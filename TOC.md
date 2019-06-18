@@ -105,7 +105,7 @@
     - [字符集](dev/reference/sql/character-set.md)
   + 配置
     + tidb-server
-      - [MySQL 系统变量](dev/reference/configuration/tidb-server//mysql-variables.md)
+      - [MySQL 系统变量](dev/reference/configuration/tidb-server/mysql-variables.md)
       - [TiDB 特定系统变量](dev/reference/configuration/tidb-server/tidb-specific-variables.md)
       - [配置参数](dev/reference/configuration/tidb-server/configuration.md)
       - [配置文件描述](dev/reference/configuration/tidb-server/configuration-file.md)
