@@ -4,6 +4,8 @@ category: how-to
 aliases: ['/docs-cn/sql/identify-slow-queries/']
 ---
 
+# 如何找到查询慢的原因
+
 ## 简介
 
 TiDB 慢查询日志中记录了所有执行时间超过 [`slow-threshold`](/op-guide/tidb-config-file.md#slow-threshold) 的查询。从慢查询日志中找到一个慢查询后，接下来需要做的是分析它为什么慢，怎么优化。本文会从 TiDB SQL 执行原理层面列列举有哪些情况导致查询慢以及如何改进。
@@ -19,6 +21,7 @@ TiDB 慢查询日志中记录了所有执行时间超过 [`slow-threshold`](/op-
 2. 它大部分的 cop task 执行时间都很长
 
 可以通过下面的查询从慢查询日志中找出 Cop Task 的执行时间最长的前 10 种用户 SQL：
+
 ```sql
 SELECT MAX(cop_proc_p90) AS max_cop_proc_p90,
        digest
@@ -32,6 +35,7 @@ LIMIT 10;
 如果通过上面的查询没有发现执行时间比较大的 SQL，那么很可能集群某个 Region 成为了热点，这个 Region 上的请求非常多，导致 Cop Task 排队比较严重，查询的时间主要开销在了排队上
 
 如果发现了执行时间比较大的 SQL，那么可以再通过下面的查询看看具体是哪些 SQL 执行的慢：
+
 ```sql
 SELECT query
 FROM information_schema.slow_query
@@ -54,6 +58,7 @@ WHERE digest = ?;
 ### 全表扫描
 
 通过下面的查询能够发现那些有全表扫的慢查询 SQL：
+
 ```sql
 SELECT digest,
        count(*) AS no_index_count
@@ -66,6 +71,7 @@ LIMIT 10;
 ```
 
 然后再根据下面的查询找出这些具体的 SQL：
+
 ```sql
 SELECT query
 FROM information_schema.slow_query
@@ -77,6 +83,7 @@ WHERE digest = ?;
 ### 优化器异常
 
 优化器异常通常是统计信息过时导致的。统计信息过时后，TiDB 优化器会使用一个基于经验假设的代价估算逻辑对表上的查询进行代价估算。可以通过如下查询发现那些统计信息过时导致的慢查询：
+
 ```sql
 SELECT digest,
        count(*) AS no_index_count
@@ -89,6 +96,7 @@ LIMIT 10;
 ```
 
 然后根据查询出来的 digest 值反查哪些表使用了 pseudo 的统计信息：
+
 ```sql
 SELECT query, stats
 FROM information_schema.slow_query
@@ -109,6 +117,7 @@ TODO: 参考对 `TIDB_HOT_REGIONS` 表的查询
 2. MVCC 旧版本过多
 
 频繁的修改数据，比如 `INSERT`/`DELETE`/`UPDATE`/`REPLACE` 等语句，会导致数据的版本过多。MVCC 版本过多会导致查询处理时，TiKV 上扫描的 `Total_keys` 远大于 `Process_keys`。可以通过如下查询找到这类慢 SQL：
+
 ```sql
 SELECT digest,
        MAX(total_keys/process_keys) AS max_avg_version
@@ -122,6 +131,7 @@ LIMIT 10;
 3. 事务冲突
 
 冲突会导致事务回退重试，可以通过下面的查询找到这类慢 SQL：
+
 ```sql
 SELECT digest,
        MAX(backoff_time) AS max_backoff_time
