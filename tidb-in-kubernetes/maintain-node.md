@@ -162,7 +162,7 @@ TiKV 实例迁移较慢，并且会对集群造成一定的数据迁移负载，
 10. 最后（可选），假如是长期下线节点，建议将节点从 Kubernetes 集群中删除：
 	
     ```shell
-	$ kuebctl delete node <node-name>
+    $ kuebctl delete node <node-name>
     ```
 
 至此，操作完成。
