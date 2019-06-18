@@ -144,7 +144,7 @@ Endpoints(NodePort):
 | --tidb-cluster | -t | 指定 TiDB 集群，默认为当前使用的 TiDB 集群 |
 | --output | -o | 输出格式，可选值有 `default`、`json` 和 `yaml`，默认值为 `default` |
 
-例子：
+示例如下：
 
 ```shell
 $ tkctl get tikv
