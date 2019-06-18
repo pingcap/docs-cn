@@ -245,6 +245,7 @@ $ tkctl help debug
 该命令用于展示 `tkctl` 的所有的全局参数。
 
 例子：
+
 ```
 $ tkctl options
 The following options can be passed to any command:
