@@ -129,7 +129,7 @@ TiKV 实例迁移较慢，并且会对集群造成一定的数据迁移负载，
     # 查询 Pod 使用的 `PesistentVolumeClaim`。
     $ kubectl get -n ${namespace} pod ${pod_name} -ojson | jq '.spec.volumes | .[] | select (.name == "tikv") | .persistentVolumeClaim.claimName'
     
-    # 删除该 PesistentVolumeClaim
+    # 删除该 `PesistentVolumeClaim`。
     $ kubectl delete -n ${namespace} pvc ${pvc_name}
     ```
 		
