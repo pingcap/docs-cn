@@ -112,7 +112,7 @@ TiKV 实例迁移较慢，并且会对集群造成一定的数据迁移负载，
     # 查看 TiKV 实例的 `store-id`。
     $ kubectl get tc ${CLUSTER_NAME} -ojson | jq '.status.tikv.stores | .[] | select ( .podName == "${POD_NAME}" ) | .id'
 
-    # 下线实例
+    # 下线实例。
     $ kubectl port-forward svc/${CLUSTER_NAME}-pd 2379:2379
     $ pd-ctl -d store delete ${ID}
     ```
