@@ -45,9 +45,6 @@ echo "if hash tkctl 2>/dev/null; then source <(tkctl completion bash); fi" >> ~/
 
 为 ZSH 配置自动补全：
 
-
-
-
 ```shell
 # 在当前 shell 中设置自动补全。
 source <(tkctl completion zsh)
@@ -185,7 +182,6 @@ local-pv-e54c122a   pd-demo-cluster-pd-2       Bound    1476Gi     172.16.4.156 
 
 例子：
 
-
 ```
 $ tkctl debug demo-cluster-tikv-0
 $ ps -ef
@@ -253,10 +249,6 @@ $ tkctl help debug
 该命令用于展示 `tkctl` 的所有的全局参数。
 
 例子：
-
-
-
-
 
 ```
 $ tkctl options
