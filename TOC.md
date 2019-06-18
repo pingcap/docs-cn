@@ -26,7 +26,7 @@
       - [跨数据中心部署方案](dev/how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](dev/how-to/deploy/geographic-redundancy/location-awareness.md)
     - [使用 Ansible 部署 DM 集群](dev/how-to/deploy/data-migration-with-ansible.md)
-    - [TiDB-Binlog 集群部署](dev/how-to/deploy/tidb-binlog-deploy.md)
+    - [部署 TiDB Binlog 集群](dev/how-to/deploy/tidb-binlog.md)
   + 配置
     - [时区](dev/how-to/configure/time-zone.md)
     - [内存控制](dev/how-to/configure/memory-control.md)
