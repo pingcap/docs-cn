@@ -45,10 +45,34 @@ TiDB 集群有 PD/TiKV/TiDB 三个组件，它们各自的故障转移策略又�
 
 ## TiKV 故障转移策略：
 
-当一个 TiKV 节点无法正常工作后，该 TiKV 节点的状态会变为 Disconnected，30 分钟（可在部署集群时通过修改 `pd.maxStoreDownTime` 来配置）后会变成 Down 状态，Operator 会在此基础上再等待 5 分钟（tikvFailoverPeriod 可配置），如果该 TiKV 节点仍不能恢复，就会新起一个 TiKV 节点。待挂掉的 TiKV 节点恢复后，Operator 不会自动删除新起的节点，用户需要通过手工减少 TiKV 节点，恢复成原来的节点数，操作方法如下：
+当一个 TiKV 节点无法正常工作后，该 TiKV 节点的状态会变为 Disconnected，30 分钟（可在部署集群时通过修改 `pd.maxStoreDownTime` 来配置）后会变成 Down 状态，Operator 会在此基础上再等待 5 分钟（tikvFailoverPeriod 可配置），如果该 TiKV 节点仍不能恢复，就会新起一个 TiKV 节点。待挂掉的 TiKV 节点恢复后，Operator 不会自动删除新起的节点，用户需要通过手工减少 TiKV 节点，恢复成原来的节点数，操作方法是将该 TiKV 节点从 `TidbCluster` 对象的 `status.tikv.failureStores` 字段中删除：
 
 ```shell
-kubectl patch tc -n <namespace> <clusterName> --type='json' -p='[{"op": "remove", "path": "/status/tikv/failureStores"}]'
+kubectl edit tc -n <namespace> <clusterName>
+...
+status
+  tikv:
+    failureStores:
+      "1":
+        podName: cluster1-tikv-0
+        storeID: "1"
+      "2":
+        podName: cluster1-tikv-1
+        storeID: "2"
+...
+```
+
+`cluster1-tikv-0` 节点恢复后，将其删除后变为：
+
+```shell
+...
+status
+  tikv:
+    failureStores:
+      "2":
+        podName: cluster1-tikv-1
+        storeID: "2"
+...
 ```
 
 ## TiDB 故障转移策略：
