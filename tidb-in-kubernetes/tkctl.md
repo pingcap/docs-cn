@@ -5,7 +5,7 @@ category: reference
 
 # tkctl 使用说明
 
-tkctl(TiDB Kubernetes Controltkctl) 为 TiDB in Kubernetes 设计的命令行工具，用于运维集群和诊断集群问题。
+`tkctl`(TiDB Kubernetes Controltk) 是为 TiDB in Kubernetes 设计的命令行工具，用于运维集群和诊断集群问题。
 
 ## 安装
 
@@ -33,7 +33,7 @@ $ mv tkctl /usr/local/bin/tkctl
 
 你可以配置 `tkctl` 的自动补全来简化使用：
 
-BASH（需要预选安装 [bash-completion](https://github.com/scop/bash-completion)）
+为 BASH 配置自动补全（需要预先安装 [bash-completion](https://github.com/scop/bash-completion)）：
 
 ```shell
 # 在当前 shell 中设置自动补全。
@@ -43,7 +43,7 @@ source <(tkctl completion bash)
 echo "if hash tkctl 2>/dev/null; then source <(tkctl completion bash); fi" >> ~/.bashrc
 ```
 
-ZSH
+为 ZSH 配置自动补全：
 
 ```shell
 # 在当前 shell 中设置自动补全。
