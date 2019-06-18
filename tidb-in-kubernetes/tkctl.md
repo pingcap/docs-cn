@@ -201,7 +201,7 @@ $ gdb /proc/${pid:-1}/root/tikv-server 1
 # 因此在 `tidb-debug` 中，假如目标容易的 pid 为 1，则下面的命令可以省略。
 (gdb) set sysroot /proc/${pid}/root/
 
-# 开始调试 
+# 开始调试。
 (gdb) thread apply all bt
 (gdb) info threads
 ```
