@@ -186,7 +186,7 @@ $ tkctl debug demo-cluster-tikv-0
 $ ps -ef
 ```
 
-由于 debug 容器和目标容器拥有不同的根文件系统，在 `tidb-debug` 容器中使用 GDB 和 perf 等工具时可能会碰到一些问题，下面将额外说明如何解决这些问题：
+由于 debug 容器和目标容器拥有不同的根文件系统，在 `tidb-debug` 容器中使用 GDB 和 perf 等工具时可能会碰到一些问题，下面将补充说明如何解决这些问题。
 
 #### GDB
 
