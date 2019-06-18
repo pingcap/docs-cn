@@ -17,7 +17,7 @@ tkctl(TiDB Kubernetes Controltkctl) 为 TiDB in Kubernetes 设计的命令行工
 - [Linux](http://download.pingcap.org/tkctl-linux-amd64-latest.tgz)
 - [Windows](http://download.pingcap.org/tkctl-windows-amd64-latest.tgz)
 
-下载解压后，将 `tkctl` 可执行文件加入到可执行文件路径(`PATH`)中即完成安装。
+下载解压后，将 `tkctl` 可执行文件加入到可执行文件路径 (`PATH`) 中即完成安装。
 
 ### 源码编译
 
