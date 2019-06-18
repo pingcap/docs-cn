@@ -172,20 +172,19 @@ table_option:
 
 * `index_option` 中 `KEY_BLOCK_SIZE` 目前只是语法上支持。
 
-* `table_option` 目前支持的只有 `AUTO_INCREMENT`, `SHARD_ROW_ID_BITS`(详情可参考 [TiDB 专用系统变量和语法](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#shard_row_id_bits) 中的介绍),
- `PRE_SPLIT_REGIONS`，`CHARACTER SET` 和 `COMMENT`，其它只是语法上支持。具体内容参考下表，各个子句之间用逗号隔开。
+* `table_option` 目前支持的只有 `AUTO_INCREMENT`、`SHARD_ROW_ID_BITS`(详情介绍请参考 [TiDB 专用系统变量和语法](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#shard_row_id_bits) 中的介绍),
+ `PRE_SPLIT_REGIONS`、`CHARACTER SET` 和 `COMMENT`，其它只是语法上支持。具体内容参考下表，各个子句之间用逗号隔开。
 
     | 参数           |含义                                  |举例                        |
     |----------------|--------------------------------------|----------------------------|
     |`AUTO_INCREMENT`|自增字段初始值                        |`AUTO_INCREMENT` = 5|
     |`SHARD_ROW_ID_BITS`|用来设置隐式 _tidb_rowid 的分片数量的 bit 位数 |`SHARD_ROW_ID_BITS` = 4|
-    |`PRE_SPLIT_REGIONS`|用来设置预先建立 Region 的个数 |`PRE_SPLIT_REGIONS` = 4|
+    |`PRE_SPLIT_REGIONS`|用来在建表时预先均匀切分 2^(PRE_SPLIT_REGIONS-1) 个 Region |`PRE_SPLIT_REGIONS` = 4|
     |`CHARACTER SET` |指定该表的字符串编码。目前支持 UTF8MB4| `CHARACTER SET` =  'utf8mb4'|
     |`COMMENT`       |注释信息                              | `COMMENT` = 'comment info' |
 
 
 * `split-table` 配置项默认情况下会开启，在此配置项开启时，建表操作会为每个表建立单独的 Region。
-
 
 ### AUTO_INCREMENT 说明
 
