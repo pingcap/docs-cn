@@ -115,7 +115,7 @@ Tidb cluster switched to foo/demo-cluster
 | -----          | --------- | -----------                                |
 | --tidb-cluster | -t        | 指定 TiDB 集群，默认为当前使用的 TiDB 集群 |
 
-例子：
+示例如下：
 
 ```shell
 $ tkctl info
