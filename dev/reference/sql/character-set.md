@@ -99,7 +99,7 @@ ALTER DATABASE db_name
     [[DEFAULT] COLLATE collation_name]
 ```
 
-在这里 `DATABASE` 可以跟 `SCEHMA` 互换使用。
+在这里 `DATABASE` 可以跟 `SCHEMA` 互换使用。
 
 不同的数据库之间可以使用不一样的字符集和排序规则。
 
