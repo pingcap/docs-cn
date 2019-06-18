@@ -1,5 +1,5 @@
 ---
-title: 基于角色的访问控制
+title: 基于角色的访问控制（该功能还在测试中）
 category: user guide
 ---
 
