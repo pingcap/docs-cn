@@ -97,7 +97,7 @@ TiDB 2.1：
 | 21        | 389.883709908s | 361.034544945s |
 | 22        | 64.0494630337s | 65.7153418064s |
 
-![TPC-H Query Result](media//tpch-query-result-v2.png)
+![TPC-H Query Result](media/tpch-query-result-v2.png)
 
 说明：
 - 图中橙色为 Release 2.1，蓝色为 Release 2.0，纵坐标是 Query 的处理时间，越低越好
