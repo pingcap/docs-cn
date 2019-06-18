@@ -8,11 +8,12 @@ category: how-to
 Kubernetes 集群内访问 TiDB 使用 TiDB service 域名 `<tidbcluster-name>.<namespace>` 即可。若需要集群外访问，则需将 TiDB 服务端口暴露出去。在 tidb-cluster helm chart 中，通过 values 文件中 `tidb.service` 字段配置：
 
 ```yaml
-service:
-  type: NodePort
-  # externalTrafficPolicy: Cluster
-  # annotations:
-  # cloud.google.com/load-balancer-type: Internal
+tidb:
+  service:
+    type: NodePort
+    # externalTrafficPolicy: Cluster
+    # annotations:
+    # cloud.google.com/load-balancer-type: Internal
 ```
 
 ## NodePort
