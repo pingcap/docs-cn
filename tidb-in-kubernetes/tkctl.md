@@ -180,7 +180,7 @@ local-pv-e54c122a   pd-demo-cluster-pd-2       Bound    1476Gi     172.16.4.156 
 >
 > Debug 容器使用的默认镜像包含了绝大多数的诊断工具，因此体积较大，假如只需要 `pd-ctl` 和 `tidb-ctl`，可以使用 `--image=pingcap/tidb-control:latest` 来指定使用 `tidb-control` 镜像。
 
-例子：
+示例如下：
 
 ```
 $ tkctl debug demo-cluster-tikv-0
