@@ -16,7 +16,7 @@ aliases: ['/docs-cn/sql/execution-plan-bind/']
 CREATE [GLOBAL | SESSION] BINDING FOR SelectStmt USING SelectStmt
 ```
 
-该语句可以在 GLOBAL 或者 SESSION 作用域内创建执行计划绑定。原始 SQL 会被参数化后存储下来，后续查询语句只需和原始 SQL 在参数化后一致即可使用在绑定 SQL 上添加的 Hint。
+该语句可以在 GLOBAL 或者 SESSION 作用域内创建执行计划绑定。原始 SQL 会被参数化后存储下来，后续查询语句只需和原始 SQL 在参数化后一致即可使用在绑定 SQL 上添加的 Hint，其中参数化是指把 SQL 中的常量变成变量，例如 `select * from t where a > 1` 参数化后会变成 `select * from t where a > ？`。
 
 需要注意的是原始 SQL 和绑定 SQL 在参数化以及去掉 Hint 后文本必须相同，否则创建会失败，例如：
 ```sql
