@@ -190,7 +190,7 @@ $ ps -ef
 
 #### GDB
 
-使用 GDB 调试目标容器中的进程时，需要将 `program` 参数设置为目标容器中的可执行文件，假如是在 `tidb-debug` 以外的其它 debug 容器中进行调试，或者调试的目标进行 pid 不为 1，还需要使用 `set sysroot` 命令调整动态链接库的加载位置。操作如下：
+使用 GDB 调试目标容器中的进程时，需要将 `program` 参数设置为目标容器中的可执行文件。假如是在 `tidb-debug` 以外的其它 debug 容器中进行调试，或者调试的目标进行 pid 不为 1，则需要使用 `set sysroot` 命令调整动态链接库的加载位置。操作如下：
 
 ```shell
 $ tkctl debug demo-cluster-tikv-0
