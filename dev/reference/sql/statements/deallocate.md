@@ -4,7 +4,7 @@ summary: TiDB 数据库中 DEALLOCATE 的使用概况。
 category: reference
 ---
 
-# DEALLOCATE 
+# DEALLOCATE
 
 `DEALLOCATE` 语句用于为服务器端预处理语句提供 SQL 接口。
 
