@@ -69,7 +69,7 @@ $ tkctl version
 
 该命令用于展示本地 **tkctl** 和集群中 **tidb-operator** 的版本： 
 
-例子：
+示例如下：
 
 ```shell
 $ tkctl version
