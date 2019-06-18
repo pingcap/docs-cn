@@ -87,7 +87,7 @@ TiDB Scheduler Version: pingcap/tidb-operator:latest
 | --all-namespaces | -A        | 是否查询所有的 Kubernetes Namespace                        |
 | --output         | -o        | 输出格式，可选值有 [default,json,yaml]，默认值为 `default` |
 
-例子：
+示例如下：
 
 ```shell
 $ tkctl list -A
