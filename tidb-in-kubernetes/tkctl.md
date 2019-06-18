@@ -49,7 +49,7 @@ ZSH
 # 在当前 shell 中设置自动补全。
 source <(tkctl completion zsh)
 
-# 永久设置自动补全
+# 永久设置自动补全。
 echo "if hash tkctl 2>/dev/null; then source <(tkctl completion zsh); fi" >> ~/.zshrc
 ```
 
