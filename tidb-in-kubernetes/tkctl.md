@@ -5,7 +5,7 @@ category: reference
 
 # tkctl 使用说明
 
-`tkctl`(TiDB Kubernetes Controltk) 是为 TiDB in Kubernetes 设计的命令行工具，用于运维集群和诊断集群问题。
+`tkctl`(TiDB Kubernetes Control) 是为 TiDB in Kubernetes 设计的命令行工具，用于运维集群和诊断集群问题。
 
 ## 安装
 
