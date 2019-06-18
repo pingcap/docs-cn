@@ -36,7 +36,7 @@ $ mv tkctl /usr/local/bin/tkctl
 BASH（需要预选安装 [bash-completion](https://github.com/scop/bash-completion)）
 
 ```shell
-# 在当前 shell 中设置自动补全
+# 在当前 shell 中设置自动补全。
 source <(tkctl completion bash)
 
 # 永久设置自动补全
