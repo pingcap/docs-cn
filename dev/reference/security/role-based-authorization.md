@@ -234,6 +234,9 @@ mysql> SHOW GRANTS FOR 'u1'@'localhost' USING 'r1', 'r2';
 +---------------------------------------------------------------------+
 ```
 
+可以使用 `SHOW GRANTS` 或 `SHOW GRANTS FOR CURRENT_USER()` 查看当前用户的权限。
+这两个语句有细微的差异，`SHOW GRANTS` 会显示当前用户的启用角色的权限，而 `SHOW GRANTS FOR CURRENT_USER()` 则不会显示启用角色的权限。
+
 ### 授权表
 
 在原有的四张系统表的基础上，角色访问控制引入了三张新的系统表：
