@@ -55,7 +55,7 @@ echo "if hash tkctl 2>/dev/null; then source <(tkctl completion zsh); fi" >> ~/.
 
 ## Kubernetes 配置
 
-`tkctl` 复用了 `kubeconfig` 文件(默认位置是 `~/.kube/config`) 来连接 Kubernetes 集群。你可以通过下面的命令来验证 `kubeconfig` 是否设置正确：
+`tkctl` 复用了 `kubeconfig` 文件（默认位置是 `~/.kube/config`）来连接 Kubernetes 集群。你可以通过下面的命令来验证 `kubeconfig` 是否设置正确：
 
 ```shell
 $ tkctl version
