@@ -227,7 +227,7 @@ $ ./run_flamegraph.sh 1
 | --image         |           | 指定 ctop 的镜像，默认为 `quay.io/vektorlab/ctop:0.7.2` |
 | --docker-socket |           | 指定 ctop 使用的 Docker Socket，默认为 `/var/run/docker.sock` |
 
-例子：
+示例如下：
 
 ```
 $ tkctl ctop demo-cluster-tikv-0
