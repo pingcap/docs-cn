@@ -5,7 +5,7 @@ category: how-to
 
 # 维护节点
 
-TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正常运行，因此，我们可以安全地对底层 Kubernetes 节点进行停机维护。在具体操作时，针对 PD/TiKV/TiDB 实例的不同特性，我们还需要采取不同的操作策略。本文档将详细介绍如何对 Kuberentes 节点进行临时或长期的维护操作。
+TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正常运行，因此，我们可以安全地对底层 Kubernetes 节点进行停机维护。在具体操作时，针对 PD、TiKV 和 TiDB 实例的不同特性，我们需要采取不同的操作策略。本文档将详细介绍如何对 Kuberentes 节点进行临时或长期的维护操作。
 
 环境准备：除了常规的 `kubectl`, `tkctl` 外，下面的操作还会用到 `jq`，可以参考 [Download jq](https://stedolan.github.io/jq/download/) 进行安装。
 
