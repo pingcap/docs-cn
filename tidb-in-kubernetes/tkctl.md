@@ -220,7 +220,7 @@ $ ./run_flamegraph.sh 1
 
 命令的完整形式：`tkctl ctop [pod_name | node/node_name ]`。
 
-该命令用于查看集群中 Pod 或 Node 的实时监控信息，相比于 `kubectl top`，`tkctl ctop` 还会展示网络和磁盘的使用信息。
+该命令用于查看集群中 Pod 或 Node 的实时监控信息，和 `kubectl top` 相比，`tkctl ctop` 还会展示网络和磁盘的使用信息。
 
 | 参数            | 简写      | 描述                                                                         |
 | -----           | --------- | -----------                                                                  |
