@@ -182,6 +182,7 @@ local-pv-e54c122a   pd-demo-cluster-pd-2       Bound    1476Gi     172.16.4.156 
 
 例子：
 
+
 ```
 $ tkctl debug demo-cluster-tikv-0
 $ ps -ef
