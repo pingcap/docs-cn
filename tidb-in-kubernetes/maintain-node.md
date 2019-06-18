@@ -61,7 +61,7 @@ PD 和 TiDB 实例的迁移较快，可以采取主动驱逐实例到其它节�
     $ kubectl uncordon <node-name>
     ```
 
-6. 观察 Pod 是否全部恢复正常运行
+6. 观察 Pod 是否全部恢复正常运行：
 
     ```shell
     $ watch kubectl get -n $namespace pod -o wide
