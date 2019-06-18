@@ -60,7 +60,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'xxx'@'%';
 `REVOKE` 语句与 `GRANT` 对应：
 
 ```sql
-REVOKE ALL PRIVILEGES ON `test`.* FROM 'genius'@'localhost';
+REVOKE ALL PRIVILEGES ON `test`.* FROM 'xxx'@'%';
 ```
 
 具体可参考 [TiDB 权限管理](/dev/reference/security/privilege-system.md)。
@@ -119,7 +119,7 @@ SET DEFAULT ROLE
 SET DEFAULT ROLE administrator, developer TO 'test'@'localhost';
 ```
 
-将所有授予给 `test@localhost` 的角色，设为其默认启用角色。
+将 `test@localhost` 的所有角色，设为其默认启用角色。
 
 ```sql
 SET DEFAULT ROLE ALL TO 'test'@'localhost';
@@ -195,6 +195,7 @@ mysql> SET ROLE 'r1'; SELECT CURRENT_ROLE();
 ### 查看角色拥有的权限
 
 可以通过 `SHOW GRANTS` 语句查看用户被授予了哪些角色。
+当用户查看其他用户权限相关信息时，需要对 `mysql` 数据库拥有 `SELECT` 权限。
 
 ```sql
 mysql> SHOW GRANTS FOR 'u1'@'localhost';
