@@ -117,7 +117,7 @@ TiKV 实例迁移较慢，并且会对集群造成一定的数据迁移负载，
     $ pd-ctl -d store delete ${ID}
     ```
 
-4. 等待 store 状态(`state_name`)转移为 `Tombstone`：
+4. 等待 store 状态（`state_name`）转移为 `Tombstone`：
 
     ```shell
     $ watch pd-ctl -d store ${ID}
