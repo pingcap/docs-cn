@@ -100,7 +100,7 @@ bar       demo-cluster   3/3   3/3    1/2    11m
 
 该命令用于指定当前 `tkctl` 操作的 TiDB 集群，在使用该命令设置当前操作的 TiDB 集群后，所有针对集群的操作命令会自动选定该集群，从而可以略去 `--tidbcluster` 参数。
 
-例子：
+示例如下：
 
 ```shell
 $ tkctl use --namespace=foo demo-cluster
