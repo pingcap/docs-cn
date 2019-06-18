@@ -65,7 +65,7 @@ PD 和 TiDB 实例的迁移较快，可以采取主动驱逐实例到其它节�
 
     ```shell
     $ watch kubectl get -n $namespace pod -o wide
-    # 或者
+    # 或者：
     $ watch tkctl get all
     ```
 
