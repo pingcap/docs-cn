@@ -31,7 +31,7 @@ $ mv tkctl /usr/local/bin/tkctl
 
 ## 命令自动补全
 
-你可以配置 `tkctl` 的自动补全来简化使用：
+你可以配置 `tkctl` 的自动补全以简化使用。
 
 为 BASH 配置自动补全（需要预先安装 [bash-completion](https://github.com/scop/bash-completion)）：
 
