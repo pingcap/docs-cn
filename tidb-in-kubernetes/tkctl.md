@@ -137,7 +137,7 @@ Endpoints(NodePort):
 
 该命令用于获取 TiDB 集群中组件的详细信息。
 
-可选的组件(`component`)有： `pd`, `tikv`, `tidb`, `volume`, `all`(用于同时查询所有组件)
+可选的组件 (`component`) 有： `pd`、`tikv`、`tidb`、`volume` 和 `all`（用于同时查询所有组件）。
 
 | 参数 | 缩写 | 说明 |
 | ----- | --------- | ----------- |
