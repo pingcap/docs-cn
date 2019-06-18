@@ -20,7 +20,7 @@ TiDB 优化器会根据统计信息来选择最优的执行计划。统计信息
 >
 > 在 TiDB 中执行 `ANALYZE TABLE` 语句比在 MySQL 或 InnoDB 中耗时更长。InnoDB 采样的只是少量页面，但 TiDB 会完全重构一系列统计信息。适用于 MySQL 的脚本会误以为执行 `ANALYZE TABLE` 耗时较短。
 >
-> 如果需要更快的分析速度，可以通过设置 `tidb_enable_fast_analyze` 为 `1` 打开快速分析功能，其默认值为 `0`。快速分析功能会随机采样少量行的数据来构建统计信息，因此在数据分布不均匀的情况下统计信息的准确度会比较差，推荐在可以接受普通 Analyze 语句执行时间的情况下关闭快速分析的功能。
+> 如需更快的分析速度，可将 `tidb_enable_fast_analyze` 设置为 `1` 来打开快速分析功能。该参数的默认值为 `0`。快速分析功能会随机采样少量行的数据来构建统计信息。因此在数据分布不均匀的情况下，统计信息的准确度会比较差。如果可以接受普通 `Analyze` 语句的执行时间，则推荐关闭快速分析功能。
 
 语法：
 
@@ -42,7 +42,11 @@ ANALYZE TABLE TableName PARTITION PartitionNameList [IndexNameList] [WITH NUM BU
 
 #### 增量收集
 
-对于类似时间列这样的单调不减列，在进行全量收集后，可以使用增量收集来只分析新增的部分，提高分析的速度。注意，使用增量收集时需保证表上只有插入操作，并且索引列上的值是单调不减的，否则会导致统计信息不准。
+对于类似时间列这样的单调不减列，在进行全量收集后，可以使用增量收集来单独分析新增的部分，以提高分析的速度。
+
+> **注意：** 
+>
+> 使用增量收集时，必须保证表上只有插入操作，且索引列上的值是单调不减的。否则会导致统计信息不准。
 
 语法：
 
@@ -89,13 +93,13 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList [IndexNameList] 
 
 ### 查看 ANALYZE 状态
 
-在执行 ANALYZE 时，可以通过 SQL 语句来查看当前 ANALYZE 状态。
+在执行 `ANALYZE` 时，可以通过 SQL 语句来查看当前 `ANALYZE` 的状态。
 
 语法：
 
 ```sql
 SHOW ANALYZE STATUS [ShowLikeOrWhere]
-> 该语句会输出 ANALYZE 的状态，可以通过使用 ShowLikeOrWhere 来筛选需要的信息。
+> 该语句会输出 `ANALYZE` 的状态，可以通过使用 `ShowLikeOrWhere` 来筛选需要的信息。
 ```
 
 目前 `SHOW ANALYZE STATUS` 会输出 7 列，具体如下
@@ -105,10 +109,10 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere]
 | table_schema  |  数据库名    |
 | table_name | 表名 |
 | partition_name| 分区名 |
-| job_info | 任务具体信息，如果分析的是索引会包含索引名 |
+| job_info | 任务具体信息。如果分析索引则会包含索引名 |
 | row_count | 已经分析的行数 |
 | start_time | 任务开始执行的时间 |
-| state | 任务状态，包括 pending(等待)、running(正在执行)、finished(执行成功)和 failed(执行失败)|
+| state | 任务状态，包括 pending(等待)、running(正在执行)、finished(执行成功) 和 failed(执行失败)|
 
 ## 统计信息的查看
 
@@ -209,10 +213,10 @@ http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${tabl
 > 通过该接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 的 json 格式的统计信息。
 
 http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${table_name}/${yyyyMMddHHmmss}
-> 通过该接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 在指定时间的 json 格式的统计信息。指定的时间需在 GC SafePoint 之后。
+> 通过该接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 在指定时间上的 json 格式统计信息。指定的时间应在 GC SafePoint 之后。
 
 http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${table_name}/${yyyy-MM-dd HH:mm:ss}
-> 通过该接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 在指定时间的 json 格式的统计信息。指定的时间需在 GC SafePoint 之后。
+> 通过该接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 在指定时间上的 json 格式统计信息。指定的时间应在 GC SafePoint 之后。
 ```
 
 ### 导入统计信息
