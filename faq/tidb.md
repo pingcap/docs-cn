@@ -533,7 +533,7 @@ TiDB 支持改变 [per-session](sql/tidb-specific.md#tidb_force_priority)、[全
 
 1）通过在数据库中写 SQL 的方式来调整优先级：
 
-```
+```sql
 select HIGH_PRIORITY | LOW_PRIORITY count(*) from table_name;
 insert HIGH_PRIORITY | LOW_PRIORITY into table_name insert_values;
 delete HIGH_PRIORITY | LOW_PRIORITY from table_name;
@@ -547,7 +547,7 @@ replace HIGH_PRIORITY | LOW_PRIORITY into table_name;
 
 触发策略：新表达到 1000 条，并且在 1 分钟内没有写入，会自动触发。
 
-当表的（修改数/当前总行数）大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 analyze 语句。`tidb_auto_analyze_ratio` 的默认值为 0，即关闭此功能。为了保险起见，在开启此功能的时候，保证了其最小值为 0.3。但是不能大于等于 `pseudo-estimate-ratio`（默认值为 0.7），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
+当表的（修改数/当前总行数）大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 `analyze` 语句。`tidb_auto_analyze_ratio` 的默认值为 0.5，即默认开启此功能。为了保险起见，在开启此功能的时候，保证了其最小值为 0.3。但是不能大于等于 `pseudo-estimate-ratio`（默认值为 0.8），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
 
 #### 3.3.12 SQL 中如何通过 hint 使用一个具体的 index？
 
@@ -722,9 +722,9 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 #### 4.1.8 用 Sqoop 批量写入 TiDB 数据，虽然配置了 `--batch` 选项，但还是会遇到 `java.sql.BatchUpdateExecption:statement count 5001 exceeds the transaction limitation` 的错误，该如何解决？
 
-- 在 Sqoop 中，`--batch` 是指每个批次提交 100 条 statement，但是默认每个 statement 包含 100 条 SQL 语句，所以此时 100 * 100 = 10000 条 SQL 语句，超出了 TiDB 的事务限制 5000 条，可以增加选项 `-Dsqoop.export.records.per.statement=10 ` 来解决这个问题，完整的用法如下：
+- 在 Sqoop 中，`--batch` 是指每个批次提交 100 条 statement，但是默认每个 statement 包含 100 条 SQL 语句，所以此时 100 * 100 = 10000 条 SQL 语句，超出了 TiDB 的事务限制 5000 条，可以增加选项 `-Dsqoop.export.records.per.statement=10` 来解决这个问题，完整的用法如下：
 
-```
+```bash
 sqoop export \
     -Dsqoop.export.records.per.statement=10 \
     --connect jdbc:mysql://mysql.example.com/sqoop \
@@ -738,6 +738,7 @@ sqoop export \
 - 也可以选择增大 tidb 的单个事物语句数量限制，不过这个会导致内存上涨。
 
 #### 4.1.9 TiDB 有像 Oracle 那样的 Flashback Query 功能么，DDL 支持么？
+
 有，也支持 DDL。详细参考 [TiDB 历史数据回溯](op-guide/history-read.md)。
 
 ### 4.2 在线数据同步
@@ -781,6 +782,7 @@ sqoop export \
 2）可以根据 Syncer 定期上报到 Prometheus 的监控信息来还原出历史同步的位置信息，该方法的位置信息在大量同步数据时由于延迟会可能不准确。
 
 ##### 4.2.1.7  Syncer 下游 TiDB 数据和 MySQL 数据不一致，DML 会退出么？
+
 - 上游 MySQL 中存在数据，下游 TiDB 中该数据不存在，上游 MySQL 执行 `UPDATE` 或 `DELETE`（更新/删除）该条数据的操作时，Syncer 同步过程即不会报错退出也没有该条数据。
 - 下游有主键索引或是唯一索引冲突时，执行 `UPDATE` 会退出，执行 `INSERT` 不会退出。
 
@@ -798,6 +800,7 @@ TiDB 读流量可以通过增加 TiDB server 进行扩展，总读容量无限�
 
 由于分布式事务要做两阶段提交，并且底层还需要做 Raft 复制，如果一个事务非常大，会使得提交过程非常慢，并且会卡住下面的 Raft 复制流程。为了避免系统出现被卡住的情况，我们对事务的大小做了限制：
 
+- 单个事务包含的 SQL 语句不超过 5000 条（默认）
 - 单条 KV entry 不超过 6MB
 - KV entry 的总条数不超过 30w
 - KV entry 的总大小不超过 100MB
@@ -937,6 +940,7 @@ TiDB 使用 Prometheus + Grafana 组成 TiDB 数据库系统的监控系统，�
 #### 7.2.2 Prometheus 监控数据默认 15 天自动清除一次，可以自己设定成 2 个月或者手动删除吗？
 
 可以的，在 Prometheus 启动的机器上，找到启动脚本，然后修改启动参数，然后重启 Prometheus 生效。
+
 ```config
 --storage.tsdb.retention="60d"
 ```
@@ -967,35 +971,43 @@ Cloud TiDB 目前已经在腾讯云、UCloud 上线，都是数据库一级入�
 
 ### 9.1 TiDB 自定义报错汇总
 
-#### 9.1.1 ERROR 9001 (HY000) : PD Server Timeout
+#### 9.1.1 ERROR 8005 (HY000) : Write Conflict, txnStartTS is stale
+
+可以检查 `tidb_disable_txn_auto_retry` 是否为 on。如是，将其设置为 off；如已经是 off，将 `tidb_retry_limit` 调大到不再发生该错误。
+
+#### 9.1.2 ERROR 9001 (HY000) : PD Server Timeout
 
 请求 PD 超时，请检查 PD Server 状态/监控/日志以及 TiDB Server 与 PD Server 之间的网络。
 
-#### 9.1.2 ERROR 9002 (HY000) : TiKV Server Timeout
+#### 9.1.3 ERROR 9002 (HY000) : TiKV Server Timeout
 
 请求 TiKV 超时，请检查 TiKV Server 状态/监控/日志以及 TiDB Server 与 TiKV Server 之间的网络。
 
-#### 9.1.3 ERROR 9003 (HY000) : TiKV Server is Busy
+#### 9.1.4 ERROR 9003 (HY000) : TiKV Server is Busy
 
 TiKV 操作繁忙，一般出现在数据库负载比较高时，请检查 TiKV Server 状态/监控/日志。
 
-#### 9.1.4 ERROR 9004 (HY000) : Resolve Lock Timeout
+#### 9.1.5 ERROR 9004 (HY000) : Resolve Lock Timeout
 
 清理锁超时，当数据库上承载的业务存在大量的事务冲突时，会遇到这种错误，请检查业务代码是否有锁争用。
 
-#### 9.1.5 ERROR 9005 (HY000) : Region is unavailable
+#### 9.1.6 ERROR 9005 (HY000) : Region is unavailable
 
 访问的 Region 不可用，某个 Raft Group 不可用，如副本数目不足，出现在 TiKV 比较繁忙或者是 TiKV 节点停机的时候，请检查 TiKV Server 状态/监控/日志。
 
-#### 9.1.6 ERROR 9006 (HY000) : GC life time is shorter than transaction duration
+#### 9.1.7 ERROR 9006 (HY000) : GC life time is shorter than transaction duration
 
 `GC Life Time` 间隔时间过短，长事务本应读到的数据可能被清理了，可使用如下命令增加 `GC Life Time`：
 
-```
+```sql
 update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_time';
 ```
 
 其中 30m 代表仅清理 30 分钟前的数据，这可能会额外占用一定的存储空间。
+
+#### 9.1.8 ERROR 9007 (HY000) : Write Conflict
+
+可以检查 `tidb_disable_txn_auto_retry` 是否为 on。如是，将其设置为 off；如已经是 off，将 `tidb_retry_limit` 调大到不再发生该错误。
 
 ### 9.2 MySQL 原生报错汇总
 
