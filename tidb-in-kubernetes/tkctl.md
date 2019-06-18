@@ -257,6 +257,7 @@ $ tkctl help debug
 
 
 
+
 ```
 $ tkctl options
 The following options can be passed to any command:
