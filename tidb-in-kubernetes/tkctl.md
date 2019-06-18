@@ -242,7 +242,7 @@ $ tkctl help debug
 
 ### tkctl options
 
-该命令用于展示 `tkctl` 的所有的全局参数：
+该命令用于展示 `tkctl` 的所有的全局参数。
 
 例子：
 ```
