@@ -176,7 +176,9 @@ local-pv-e54c122a   pd-demo-cluster-pd-2       Bound    1476Gi     172.16.4.156 
 | --docker-socket |           | 指定目标节点上的 Docker Socket，默认为 `/var/run/docker.sock`                                                                   |
 | --privileged    |           | 是否为 debug 容器开启 [privileged](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities) 模式 |
 
-Debug 容器使用默认的镜像包含了绝大多数的诊断工具，因此体积较大，假如只需要 `pd-ctl` 和 `tidb-ctl`，可以使用 `--image=pingcap/tidb-control:latest` 来指定使用 `tidb-control` 镜像。
+> **注意：**
+>
+> Debug 容器使用的默认镜像包含了绝大多数的诊断工具，因此体积较大，假如只需要 `pd-ctl` 和 `tidb-ctl`，可以使用 `--image=pingcap/tidb-control:latest` 来指定使用 `tidb-control` 镜像。
 
 例子：
 ```
