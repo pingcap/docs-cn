@@ -208,7 +208,7 @@ SET ROLE NONE
 {{< copyable "sql" >}}
 
 ```sql
-SET ROLE ALL EXCEPT 'role1', 'role2' --
+SET ROLE ALL EXCEPT 'role1', 'role2'
 ```
 
 > **注意：**
