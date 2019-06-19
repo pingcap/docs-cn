@@ -12,7 +12,7 @@
 
 <!--Specify the version or versions that your change affects by adding a label at the right-hand side of this page. For example, v3.0 -->
 
-### Check list <!--Check the box before the applicable item by using "- [x]"-->
+### Checklist <!--Check the box before the applicable item by using "- [x]"-->
 
 - [ ] Add a new file to `TOC.md`
 - [ ] No Tab spaces anywhere <!--Use ordinary spaces because Tab spaces can lead to CircleCI failure.-->
