@@ -61,7 +61,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere]
 | original_sql  |  参数化后的原始 SQL |
 | bind_sql | 带 Hint 的绑定 SQL |
 | default_db | 默认数据库名 |
-| status | 状态，包括 using(正在使用)、deleted(已删除)和 invalid(无效) |
+| status | 状态，包括 using（正在使用）、deleted（已删除）和 invalid（无效）|
 | create_time | 创建时间 |
 | update_time | 更新时间 |
 | charset | 字符集 |
