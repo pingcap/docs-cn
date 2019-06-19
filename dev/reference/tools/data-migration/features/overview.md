@@ -360,14 +360,14 @@ column-mappings:
 ​    expression: "partition id"
 ​    source-column: "id"
 ​    target-column: "id"
-​    arguments: ["1", "test_", "t_"]
+​    arguments: ["1", "test", "t", "_"]
   rule-2:
 ​    schema-pattern: "test_*"
 ​    table-pattern: "t_*"
 ​    expression: "partition id"
 ​    source-column: "id"
 ​    target-column: "id"
-​    arguments: ["2", "test_", "t_"]
+​    arguments: ["2", "test", "t", "_"]
 ```
 
 ### 参数解释
@@ -378,41 +378,54 @@ column-mappings:
 
 #### `partition id` 表达式
 
-`partition id` 目的是为了解决分库分表合并同步的自增主键的冲突
+`partition id` 目的是为了解决分库分表合并同步的自增主键的冲突。
 
 **`partition id` 限制**
 
 注意下面的限制：
 
 - 只支持类型为 bigint 的列，通常为自增主键，联合主键或者联合唯一索引的其中一列
-- 库名的组成必须为 `schema 前缀 + 数字（即 schema ID）`，例如：支持 `s_1`, 不支持 `s_a`
-- 表名的组成必须为 `table 前缀 + 数字（即 table ID）`
+- 如果 `schema 前缀` 不为空，则库名的组成必须为 `schema 前缀` 或者 `schema 前缀 + 分隔符 + 数字（即 schema ID）`，例如：支持 `s` 和 `s_1`，不支持 `s_a`
+- 如果 `table 前缀` 不为空，则表名的组成必须为 `table 前缀` 或者 `table 前缀 + 分隔符 + 数字（即 table ID）`
+- 如果库名/表名不包含 `… + 分隔符 + 数字` 部分，则对应的 ID 默认为 0
 - 对分库分表的规模支持限制如下
   - 支持最多 16 个 MySQL/MariaDB 实例（0 <= instance ID <= 15）
   - 每个实例支持最多 128 个 schema（0 <= schema ID  <= 127）
   - 每个实例的每个 schema 支持最多 256 个 table（0 <= table ID <= 255）
   - 进行列值映射的列的范围 (0 <= ID <= 17592186044415)
-  - {instance ID、schema ID、table ID} 组合需要保持唯一
+  - `{instance ID, schema ID, table ID}` 组合需要保持唯一
 - 目前该功能是定制功能，如果需要调整请联系相关开发人员进行调整
 
 **`partition id` 参数配置**
 
-用户需要在 arguments 里面顺序设置三个参数：
+用户需要在 arguments 里面按顺序设置以下三个或四个参数：
 
-- instance_id: 客户指定的上游分库分表的 MySQL/MariaDB instance ID（0 <= instance ID <= 15）
-- schema 前缀: 用来解析库名获取 `schema ID`
-- table 前缀： 用来解释表名获取 `table ID`
+- `instance_id`：客户指定的上游分库分表的 MySQL/MariaDB instance ID（0 <= instance ID <= 15）
+- `schema 前缀`：用来解析库名并获取 `schema ID`
+- `table 前缀`：用来解释表名并获取 `table ID`
+- 分隔符：用来分隔前缀与 ID，可省略，省略时分隔符默认为空字符串
+
+`instance_id`、`schema 前缀` 和 `table 前缀` 这三个参数均可被设置为空字符串（`""`），表示对应的部分不会被编码进 `partition id`。
 
 **`partition id` 表达式规则**
 
-`partition id` 会将 arguments 里面的数值填充自增主键 ID 的首部比特位，计算出来一个 int64（即 MySQL bigint）类型的值，具体规则如下：
+`partition id` 会用 arguments 里面的数字来填充自增主键 ID 的首个比特位，计算出来一个 int64（即 MySQL bigint）类型的值，具体规则如下：
 
-int64 比特表示 `[1:1 bit] [2:4 bits] [3:7 bits] [4:8 bits] [5:44 bits]`
-- 1：符号位，保留
-- 2：instance ID，默认 4 bits
-- 3：schema ID，默认 7 bits
-- 4：table ID，默认 8 bits
-- 5：自增主键 ID，默认 44 bits
+| instance_id | schema 前缀 | table 前缀 | 编码 |
+|:------------|:--------------|:-------------|---------:|
+| ☑ 已定义   | ☑ 已定义     | ☑ 已定义    | [`S`: 1 比特位] [`I`: 4 比特位] [`D`: 7 比特位] [`T`: 8 比特位] [`P`: 44 比特位] |
+| ☐ 空     | ☑ 已定义     | ☑ 已定义    | [`S`: 1 比特位] [`D`: 7 比特位] [`T`: 8 比特位] [`P`: 48 比特位] |
+| ☑ 已定义   | ☐ 空       | ☑ 已定义    | [`S`: 1 比特位] [`I`: 4 比特位] [`T`: 8 比特位] [`P`: 51 比特位] |
+| ☑ 已定义   | ☑ 已定义     | ☐ 空      | [`S`: 1 比特位] [`I`: 4 比特位] [`D`: 7 比特位] [`P`: 52 比特位] |
+| ☐ 空     | ☐ 空       | ☑ 已定义    | [`S`: 1 比特位] [`T`: 8 比特位] [`P`: 55 比特位] |
+| ☐ 空     | ☑ 已定义     | ☐ 空      | [`S`: 1 比特位] [`D`: 7 比特位] [`P`: 56 比特位] |
+| ☑ 已定义   | ☐ 空       | ☐ 空      | [`S`: 1 比特位] [`I`: 4 比特位] [`P`: 59 比特位] |
+
+- `S`：符号位，保留
+- `I`：instance ID，默认 4 比特位
+- `D`：schema ID，默认 7 比特位
+- `T`：table ID，默认 8 比特位
+- `P`：自增主键 ID，占据剩下的比特位（≥44 比特位）
 
 ### 使用示例
 
@@ -428,14 +441,14 @@ column-mappings:
 ​    expression: "partition id"
 ​    source-column: "id"
 ​    target-column: "id"
-​    arguments: ["1", "test_", "t_"]
+​    arguments: ["1", "test", "t", "_"]
   rule-2:
 ​    schema-pattern: "test_*"
 ​    table-pattern: "t_*"
 ​    expression: "partition id"
 ​    source-column: "id"
 ​    target-column: "id"
-​    arguments: ["2", "test_", "t_"]
+​    arguments: ["2", "test", "t", "_"]
 ```
 
 - MySQL instance 1 的表 `test_1`.`t_1` 的 `ID = 1` 的行经过转换后 ID = 1 变为 `1 << (64-1-4) | 1 << (64-1-4-7) | 1 << 44 | 1 = 580981944116838401`

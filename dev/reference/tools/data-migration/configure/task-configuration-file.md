@@ -92,14 +92,14 @@ column-mappings:                                    # 上游数据库实例匹�
     expression: "partition id"
     source-column: "id"
     target-column: "id"
-    arguments: ["1", "test_", "t_"]
+    arguments: ["1", "test", "t", "_"]
   cm-rule-2:
     schema-pattern: "test_*"
     table-pattern: "t_*"
     expression: "partition id"
     source-column: "id"
     target-column: "id"
-    arguments: ["2", "test_", "t_"]
+    arguments: ["2", "test", "t", "_"]
 
 mydumpers:                                          # mydumper 处理单元运行配置参数。
   global:
@@ -121,7 +121,7 @@ syncers:                                            # syncer 处理单元运行�
     max-retry: 100                                  # syncer 同步到下游数据库出错的事务的重试次数（仅限于 DML 操作）。
 ```
 
-## 实例配置
+## 示例配置
 
 本小节定义具体的数据同步子任务，DM 支持从单个或者多个上游 MySQL 实例同步数据到同一个下游数据库实例。
 
