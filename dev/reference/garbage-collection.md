@@ -18,8 +18,13 @@ TiDB 会周期性地进行 GC。每个 TiDB Server 启动后都会在后台运�
 
 GC 相关的配置和运行状态记录在 `mysql.tidb` 这张系统表中，可以通过 SQL 语句进行检测和配置：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb;
+select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb;
+```
+
+```
 +-----------------------+------------------------------------------------------------------------------------------------+
 | VARIABLE_NAME         | VARIABLE_VALUE                                                                                 |
 +-----------------------+------------------------------------------------------------------------------------------------+
@@ -40,6 +45,8 @@ mysql> select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb;
 其中，`tikv_gc_run_interval`，`tikv_gc_life_time`，`tikv_gc_concurrency` 这三条记录可以手动配置。其余带有 `tikv_gc` 前缀的记录为当前运行状态的记录， TiDB 会自动更新这些记录，请勿手动修改。
 
 `tikv_gc_run_interval` 是 GC 运行时间间隔。`tikv_gc_life_time` 是历史版本的保留时间，每次进行 GC 时，会清理超过该时间的历史数据。这两项配置不应低于 10 分钟，默认值均为 10 分钟。可以直接用 SQL 修改其数值来进行配置。比如，如果想保留一天以内的历史数据，就可以执行：
+
+{{< copyable "sql" >}}
 
 ```sql
 update mysql.tidb set VARIABLE_VALUE = '24h' where VARIABLE_NAME = 'tikv_gc_life_time';

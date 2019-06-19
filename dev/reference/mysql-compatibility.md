@@ -53,6 +53,8 @@ TiDB 中，自增列只保证自增且唯一，并不保证连续分配。TiDB �
 
 假设有这样一个带有自增 ID 的表：
 
+{{< copyable "sql" >}}
+
 ```sql
 create table t(id int unique key auto_increment, c int);
 ```
@@ -105,10 +107,23 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 
 出于兼容性原因，TiDB 支持使用备用存储引擎创建表的语法。元数据命令将表描述为 InnoDB 存储引擎：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE TABLE t1 (a INT) ENGINE=MyISAM;
+CREATE TABLE t1 (a INT) ENGINE=MyISAM;
+```
+
+```
 Query OK, 0 rows affected (0.14 sec)
- mysql> SHOW CREATE TABLE t1\G
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW CREATE TABLE t1;
+```
+
+```
 *************************** 1. row ***************************
        Table: t1
 Create Table: CREATE TABLE `t1` (
