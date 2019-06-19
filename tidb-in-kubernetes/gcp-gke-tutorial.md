@@ -2,9 +2,9 @@
 
 本文档描述如何使用个人电脑 (Linux or macOS) 在 GCP GKE 上部署 TiDB Operator 和 TiDB 集群用于开发或者测试。
 
-## 环境需求
+## 部署环境
 
-部署之前请确认满足以下软件需求:
+部署前，确认已安装以下软件：
 
 * [Google Cloud SDK](https://cloud.google.com/sdk/install)
 * [terraform](https://www.terraform.io/downloads.html) >= 0.12
@@ -14,15 +14,15 @@
 
 ## 配置
 
-为保证顺利部署，需要进行一些配置。
+为保证部署顺利，需要提前进行一些配置。
 
 ### 配置 Google Cloud SDK
 
 安装 Google Cloud SDK 后，需要执行 `gcloud init` 进行 [初始化](https://cloud.google.com/sdk/docs/initializing)。
 
-### 配置 APIs
+### 配置 API
 
-如果使用的 GCP 项目是新项目，请启用相关的 APIs：
+如果使用的 GCP 项目是新项目，确保以下 API 已启用：
 
 ```bash
 gcloud services enable cloudresourcemanager.googleapis.com && \
@@ -34,39 +34,41 @@ gcloud services enable container.googleapis.com
 
 ### 配置 Terraform
 
-Terraform 脚本执行需要 3 个环境变量，你可以等 Terraform 提示你输入或者提前 `export`。需要的 3 个环境变量如下：
+执行 Terraform 脚本需要 3 个环境变量。可以等 Terraform 提示输入，或提前 `export` 变量。所需的 3 个环境变量如下：
 
-* `TF_VAR_GCP_CREDENTIALS_PATH`: GCP 证书文件路径
-    - 建议给 Terraform 新建服务账号使用，参考 [服务账号](https://cloud.google.com/iam/docs/creating-managing-service-accounts) 创建服务账号并给它授予 `Project Editor` 权限。
-    - 参考 [服务账号密钥](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) 创建服务账号密钥，创建过程中选择 `JSON` 类型密钥，创建完成后，自动下载的 `JSON` 文件就是需要的证书文件。
-* `TF_VAR_GCP_REGION`: 创建资源的区域，比如: `us-west1`。
-* `TF_VAR_GCP_PROJECT`: GCP 项目。
+* `TF_VAR_GCP_CREDENTIALS_PATH`：GCP 证书文件路径
+    - 建议另建服务账号给 Terraform 使用。参考 [服务账号](https://cloud.google.com/iam/docs/creating-managing-service-accounts) 来创建服务账号并授予账号 `Project Editor` 权限。
+    - 参考 [服务账号密钥](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) 来创建服务账号密钥。创建过程中选择 `JSON` 类型密钥。创建完成后，自动下载的 `JSON` 文件就是所需的证书文件。
+* `TF_VAR_GCP_REGION`：创建资源所在的区域，例如：`us-west1`。
+* `TF_VAR_GCP_PROJECT`：GCP 项目的名称。
 
-你可以在终端中设置这 3 个环境变量：
+要设置这 3 个环境变量，可在终端中输入如下示例：
 
 ```bash
-# 替换下面信息为正确的信息
+# 将下面的值替换为所下载 JSON 文件的路径、GCP 区域和 GCP 项目名称。
 export TF_VAR_GCP_CREDENTIALS_PATH="/Path/to/my-project.json"
 export TF_VAR_GCP_REGION="us-west1"
 export TF_VAR_GCP_PROJECT="my-project"
 ```
 
-也可以将上面的命令追加到 `~/.bash_profile` 这样下次登录会自动 `export`。
+也可以将以上命令追加到 `~/.bash_profile`， 以便下次登录时自动 `export` 以上命令。
 
 ## 部署
 
-默认部署会创建一个新的 VPC，两个子网，一个 f1-micro 实例作为堡垒机，和包含如下实例作为工作节点的 GKE 集群：
+默认部署会创建一个新的 VPC、两个子网、一个 f1-micro 实例作为堡垒机和包含以下实例作为工作节点的 GKE 集群：
 
 * 3 台 n1-standard-4 实例，部署 PD
 * 3 台 n1-highmem-8 实例，部署 TiKV
 * 3 台 n1-standard-16 实例，部署 TiDB
 * 3 台 n1-standard-2 实例，部署监控组件
 
-> **注意**: 工作节点的数量取决于指定 region 中可用区的数量，大部分 region 有 3 个可用区，但是 us-central1 有 4 个。参考 [Regions and Zones](https://cloud.google.com/compute/docs/regions-zones/) 获取更多信息，参考 [自定义](#自定义) 部分自定义区域集群的节点池。
+>**注意：**
+>
+>工作节点的数量取决于指定 region 中可用区的数量。大部分 region 有 3 个可用区，但是 us-central1 有 4 个。参考 [Regions and Zones](https://cloud.google.com/compute/docs/regions-zones/) 以获取更多信息。参考 [自定义](#自定义) 部分来自定义区域集群的节点池。
 
-如上所述，默认部署需要 91 个 CPU，超过了 GCP 项目的默认配额，可以参考 [配额](https://cloud.google.com/compute/quotas) 增加项目配额。如果你要扩容，同样需要更多的 CPU。
+如上所述，默认部署需要 91 个 CPU，超过了 GCP 项目的默认配额。可以参考 [配额](https://cloud.google.com/compute/quotas) 来增加项目配额。扩容同样需要更多 CPU。
 
-现在你已经配置好所有信息，你可以启动脚本，部署 TiDB 集群：
+所有信息现已配置好，可以启动脚本来部署 TiDB 集群：
 
 ```bash
 git clone --depth=1 https://github.com/pingcap/tidb-operator
@@ -75,9 +77,9 @@ terraform init
 terraform apply
 ```
 
-如果你之前没有 `export` 那 3 个环境变量，执行 `terraform apply` 过程中会提示你设置，详情请参考 [配置 Terraform](#配置-terraform)。
+如果未提前 `export` 上述 3 个环境变量，执行 `terraform apply` 过程中会有提示出现，要求对 3 个变量进行设置。详情请参考 [配置 Terraform](#配置-terraform)。
 
-整个过程可能需要 10 分钟甚至更长时间。`terraform apply` 执行成功后，会输出类似如下信息:
+整个过程可能至少需要 10 分钟。`terraform apply` 执行成功后，会输出类似如下的信息:
 
 ```
 Apply complete! Resources: 17 added, 0 changed, 0 destroyed.
@@ -99,14 +101,14 @@ tidb_version = v3.0.0-rc.1
 
 ## 访问数据库
 
-要访问部署的 TiDB 集群，通过下面命令，首先 `ssh` 到堡垒机，然后通过 MySQL client（用上面输出的信息替换 `<>` 部分内容) 访问 TiDB：
+`terraform apply` 完成后，可先通过 `ssh` 远程连接到堡垒机，再通过 MySQL client 来访问 TiDB 集群。所需命令如下（用上面的输出信息替换 `<>` 部分内容)：
 
 ```bash
 gcloud compute ssh bastion --zone <zone>
 mysql -h <tidb_ilb_ip> -P 4000 -u root
 ```
 
-## 集群交互
+## 与集群交互
 
 你可以通过 `kubectl` 和 `helm` 使用 kubeconfig 文件 `credentials/kubeconfig_<cluster_name>` 和 GKE 集群交互。`cluster_name` 默认为 `my-cluster`，可以通过 `variables.tf` 修改。
 
@@ -123,9 +125,9 @@ helm ls
 
 # 升级 TiDB 集群
 
-编辑 `variables.tf` 文件，修改 `tidb_version` 变量到更高版本，然后运行 `terraform apply` 就可以升级 TiDB 集群。
+要升级 TiDB 集群，可编辑 `variables.tf` 文件，修改 `tidb_version` 变量到更高版本，然后运行 `terraform apply`。
 
-比如，要升级 TiDB 集群到 3.0.0-rc.2，修改 `tidb_version` 为 `v3.0.0-rc.2`：
+例如，要升级 TiDB 集群到 3.0.0-rc.2，可修改 `tidb_version` 为 `v3.0.0-rc.2`：
 
 ```
 variable "tidb_version" {
@@ -134,9 +136,9 @@ variable "tidb_version" {
 }
 ```
 
-升级过程会持续一段时间，你可以通过命令持续观察升级进度: `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb --watch`。
+升级过程会持续一段时间。你可以通过 `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb --watch` 命令来持续观察升级进度。
 
-然后你可以 [访问数据库](#访问数据库) 并通过 `tidb_version()` 确认集群是否升级成功:
+然后你可以 [访问数据库](#访问数据库) 并通过 `tidb_version()` 确认集群是否升级成功：
 
 ```sql
 MySQL [(none)]> select tidb_version();
@@ -154,11 +156,11 @@ Check Table Before Drop: false
 
 ## 扩容
 
-按需修改 `variables.tf` 文件中的 `tikv_count`，`tikv_replica_count`，`tidb_count` 和 `tidb_replica_count` 变量，然后运行 `terraform apply` 升级 TiDB 集群。
+若要扩容 TiDB 集群，可按需修改 `variables.tf` 文件中的 `tikv_count`、`tikv_replica_count`、`tidb_count` 和 `tidb_replica_count` 变量，然后运行 `terraform apply`。
 
-由于缩容过程中无法确定哪个节点会被删除，因此目前不支持集群缩容。扩容过程会持续几分钟，你可以通过命令持续观察进度: `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb --watch`。
+由于缩容过程中无法确定哪个节点会被删除，因此目前不支持集群缩容。扩容过程会持续几分钟，你可以通过 `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb --watch` 命令来持续观察进度。
 
-比如，可以将 `tidb_count` 从 1 改为 2 扩容 TiDB:
+例如，可以将 `tidb_count` 从 1 改为 2 来扩容 TiDB：
 
 ```
 variable "tidb_count" {
@@ -167,11 +169,13 @@ variable "tidb_count" {
 }
 ```
 
-> **注意**: 增加节点数量会在每个可用区都增加节点。
+>**注意：**
+>
+>增加节点数量会在每个可用区都增加节点。
 
 ## 自定义
 
-你可以按需修改 `variables.tf` 文件中的默认值，比如集群名称和镜像版本等。
+你可以按需修改 `variables.tf` 文件中的默认值，例如集群名称和镜像版本等。
 
 ### 自定义 GCP 资源
 
@@ -183,11 +187,13 @@ GCP 允许 `n1-standard-1` 或者更大的实例类型挂载本地 SSD，这提�
 
 ### 自定义节点池
 
-集群是按区域创建的，而不是按可用区，也就是说 GKE 在区域内每个可用区创建同样的节点池，这是为了达到更高的可用性，但是对于监控服务，比如 Grafana，就没有太大必要。你可以通过 `gcloud` 手动删除节点。
+集群是按区域 (regional) 而非按可用区 (zonal) 创建的。也就是说，GKE 向每个可用区复制相同的节点池，以实现更高的可用性。但对于 Grafana 这样的监控服务来说，这可能就没有必要了。可以通过 `gcloud` 手动删除节点。
 
-> **注意**: GKE 节点池通过实例组管理，如果你通过 `gcloud compute instances delete` 删除某个节点，GKE 会自动重新创建节点并加到集群。
+>**注意：**
+>
+>GKE 节点池通过实例组管理。如果你通过 `gcloud compute instances delete` 删除某个节点，GKE 会自动重新创建节点并添加到集群。
 
-假如你需要从监控节点池中删掉一个节点，首先:
+假如需要从监控节点池中删掉一个节点，首先输入命令：
 
 ```bash
 gcloud compute instance-groups managed list | grep monitor
@@ -216,7 +222,7 @@ NAME                                       ZONE        STATUS   ACTION  INSTANCE
 gke-my-cluster-monitor-pool-08578e18-c7vd  us-west1-b  RUNNING  NONE    gke-my-cluster-monitor-pool-08578e18
 ```
 
-现在你可以通过指定托管的实例组和实例的名称删掉这个实例：
+现在你可以通过指定托管的实例组和实例的名称来删掉这个实例。例如：
 
 ```bash
 gcloud compute instance-groups managed delete-instances gke-my-cluster-monitor-pool-08578e18-grp --instances=gke-my-cluster-monitor-pool-08578e18-c7vd --zone us-west1-b
@@ -230,9 +236,11 @@ gcloud compute instance-groups managed delete-instances gke-my-cluster-monitor-p
 terraform destroy
 ```
 
-如果你不再需要之前的数据，执行完 `terraform destroy` 后，你可以通过 Google Cloud 控制台或者 `gcloud` 删除磁盘。
+如果你不再需要之前的数据，执行完 `terraform destroy` 后，可通过 Google Cloud 控制台或者 `gcloud` 删除磁盘。
 
-> **注意**: 执行 `terraform destroy` 过程中，可能发生如下错误： `Error reading Container Cluster "my-cluster": Cluster "my-cluster" has status "RECONCILING" with message""`。当 GCP 升级 kubernetes master 节点时，会出现这个问题。当这个问题出现，集群无法删除，需要等待 GCP 升级结束，再次执行 `terraform destroy`。
+>**注意：**
+>
+>在执行 `terraform destroy` 过程中，可能发生错误： `Error reading Container Cluster "my-cluster": Cluster "my-cluster" has status "RECONCILING" with message""`。当 GCP 升级 kubernetes master 节点时，就会出现该问题。一旦问题出现，就无法删除集群，需要等待 GCP 升级结束，再次执行 `terraform destroy`。
 
 
 ## 更多信息
