@@ -34,7 +34,7 @@ Query OK, 0 rows affected (0.00 sec)
 
 ## MySQL 兼容性
 
-* `KILL TIDB` 语句是 TiDB 的扩展语法。如果正尝试终止的会话位于同一个 TiDB 服务器上，可在配置文件里设置 [`compatible-kill-query = true`](/op-guide/tidb-config-file.md#compatible-kill-query)。
+* `KILL TIDB` 语句是 TiDB 的扩展语法。如果正尝试终止的会话位于同一个 TiDB 服务器上，可在配置文件里设置 [`compatible-kill-query = true`](/dev/reference/configuration/tidb-server/configuration-file.md#compatible-kill-query)。
 
 ## 另请参阅
 
