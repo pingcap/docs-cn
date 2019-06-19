@@ -92,12 +92,12 @@
       - [信息函数](dev/reference/sql/functions-and-operators/information-functions.md)
       - [JSON 函数](dev/reference/sql/functions-and-operators/json-functions.md)
       - [GROUP BY 聚合函数](dev/reference/sql/functions-and-operators/aggregate-group-by-functions.md)
+      - [窗口函数](dev/reference/sql/functions-and-operators/window-functions.md)
       - [其它函数](dev/reference/sql/functions-and-operators/miscellaneous-functions.md)
       - [精度数学](dev/reference/sql/functions-and-operators/precision-math.md)
     + SQL 语句
       - [数据定义语句 (DDL)](dev/reference/sql/statements/ddl.md)
       - [数据操作语句 (DML)](dev/reference/sql/statements/dml.md)
-      - [事务语句](dev/reference/sql/statements/transaction.md)
       - [Prepared SQL 语句语法](dev/reference/sql/statements/prepare.md)
       - [实用工具语句](dev/reference/sql/statements/util.md)
     - [约束](dev/reference/sql/constraints.md)
@@ -122,7 +122,9 @@
     - [与 MySQL 的安全特性差异](dev/reference/security/compatibility.md)
     - [TiDB 数据库权限管理](dev/reference/security/privilege-system.md)
     - [TiDB 用户账户管理](dev/reference/security/user-account-management.md)
+    - [基于角色的访问控制](dev/reference/security/role-based-authorization.md)
   + 事务
+    - [事务语句](dev/reference/transactions/overview.md)
     - [事务模型](dev/reference/transactions/transaction-model.md)
     - [隔离级别](dev/reference/transactions/transaction-isolation.md)
     - [悲观事务](dev/reference/transactions/transaction-pessimistic.md)
