@@ -5,7 +5,7 @@ category: reference
 
 # 窗口函数
 
-TiDB 中窗口函数的使用方法与 MySQL 基本一致，详情可参见 [MySQL 窗口函数](https://dev.mysql.com/doc/refman/8.0/en/window-functions.html)。由于窗口函数会使用一些保留关键字，可能导致原先可以正常执行的 SQL 语句在升级 TiDB 后无法被语法解析，此时可以将 `tidb_enable_window_function` 设置为 `0`，其默认值为 `1`。
+TiDB 中窗口函数的使用方法与 MySQL 基本一致，详情可参见 [MySQL 窗口函数](https://dev.mysql.com/doc/refman/8.0/en/window-functions.html)。由于窗口函数会使用一些保留关键字，可能导致原先可以正常执行的 SQL 语句在升级 TiDB 后无法被解析语法，此时可以将 `tidb_enable_window_function` 设置为 `0`，该参数的默认值为 `1`。
 
 TiDB 支持的窗口函数如下所示：
 
