@@ -10,7 +10,7 @@ aliases: ['/docs-cn/sql/information-schema/']
 
 ## CHARACTER\_SETS Table
 
- `CHARACTER_SETS` 表提供[字符集](/dev/reference/sql/character-set.md)相关的信息。TiDB 默认支持并且只支持 utf8mb4。为与 MySQL 保持一致，表中也包含了其他字符集。
+ `CHARACTER_SETS` 表提供[字符集](/dev/reference/sql/character-set.md)相关的信息。TiDB 目前仅支持部分字符集。
 
 ```sql
 mysql> SELECT * FROM character_sets;

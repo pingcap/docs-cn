@@ -16,26 +16,74 @@ TiDB 的权限管理系统按照 MySQL 的权限管理进行实现，TiDB 支持
 
 授予 `xxx` 用户对数据库 `test` 的读权限：
 
+{{< copyable "sql" >}}
+
 ```sql
 GRANT SELECT ON test.* TO 'xxx'@'%';
 ```
 
 为 `xxx` 用户授予所有数据库，全部权限：
 
+{{< copyable "sql" >}}
+
 ```sql
 GRANT ALL PRIVILEGES ON *.* TO 'xxx'@'%';
 ```
 
-如果 `GRANT` 的目标用户不存在，TiDB 会自动创建用户。
+`GRANT` 为一个不存在的用户授予权限时，默认并不会自动创建用户。该行为受 SQL Mode 中的 `NO_AUTO_CREATE_USER` 控制。
+如果从 SQL Mode 中去掉 `NO_AUTO_CREATE_USER`，当 `GRANT` 的目标用户不存在时，TiDB 会自动创建用户。
+
+{{< copyable "sql" >}}
 
 ```sql
-mysql> SELECT * FROM mysql.user WHERE user='xxxx';
-Empty set (0.00 sec)
+mysql> select @@sql_mode;
+```
 
-mysql> GRANT ALL PRIVILEGES ON test.* TO 'xxxx'@'%' IDENTIFIED BY 'yyyyy';
+```+-------------------------------------------------------------------------------------------------------------------------------------------+
+| @@sql_mode                                                                                                                                |
++-------------------------------------------------------------------------------------------------------------------------------------------+
+| ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
++-------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+set @@sql_mode='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> SELECT user,host FROM mysql.user WHERE user='xxxx';
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM mysql.user WHERE user='xxxx';
+```
+
+```
+Empty set (0.00 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+GRANT ALL PRIVILEGES ON test.* TO 'xxxx'@'%' IDENTIFIED BY 'yyyyy';
+```
+
+```
+Query OK, 0 rows affected (0.00 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT user,host FROM mysql.user WHERE user='xxxx';
+```
+
+```
 +------|------+
 | user | host |
 +------|------+
@@ -48,14 +96,33 @@ mysql> SELECT user,host FROM mysql.user WHERE user='xxxx';
 
 `GRANT` 对于数据库或者表的授权，不检查数据库或表是否存在。
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SELECT * FROM test.xxxx;
+SELECT * FROM test.xxxx;
+```
+
+```
 ERROR 1146 (42S02): Table 'test.xxxx' doesn't exist
+```
 
-mysql> GRANT ALL PRIVILEGES ON test.xxxx TO xxxx;
+{{< copyable "sql" >}}
+
+```sql
+GRANT ALL PRIVILEGES ON test.xxxx TO xxxx;
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
+{{< copyable "sql" >}}
+
+```sql
 mysql> SELECT user,host FROM mysql.tables_priv WHERE user='xxxx';
+```
+
+```
 +------|------+
 | user | host |
 +------|------+
@@ -66,11 +133,23 @@ mysql> SELECT user,host FROM mysql.tables_priv WHERE user='xxxx';
 
 `GRANT` 可以模糊匹配地授予数据库和表：
 
+{{< copyable "sql" >}}
+
 ```sql
 mysql> GRANT ALL PRIVILEGES ON `te%`.* TO genius;
-Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> SELECT user,host,db FROM mysql.db WHERE user='genius';
+```
+Query OK, 0 rows affected (0.00 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT user,host,db FROM mysql.db WHERE user='genius';
+```
+
+```
 +--------|------|-----+
 | user   | host | db  |
 +--------|------|-----+
@@ -85,6 +164,8 @@ mysql> SELECT user,host,db FROM mysql.db WHERE user='genius';
 
 `REVOKE` 语句与 `GRANT` 对应：
 
+{{< copyable "sql" >}}
+
 ```sql
 REVOKE ALL PRIVILEGES ON `test`.* FROM 'genius'@'localhost';
 ```
@@ -93,15 +174,25 @@ REVOKE ALL PRIVILEGES ON `test`.* FROM 'genius'@'localhost';
 >
 > `REVOKE` 收回权限时只做精确匹配，若找不到记录则报错。而 `GRANT` 授予权限时可以使用模糊匹配。
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> REVOKE ALL PRIVILEGES ON `te%`.* FROM 'genius'@'%';
+REVOKE ALL PRIVILEGES ON `te%`.* FROM 'genius'@'%';
+```
+
+```
 ERROR 1141 (42000): There is no such grant defined for user 'genius' on host '%'
 ```
 
 关于模糊匹配和转义，字符串和 identifier：
 
+{{< copyable "sql" >}}
+
 ```sql
 mysql> GRANT ALL PRIVILEGES ON `te\%`.* TO 'genius'@'localhost';
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
 ```
 
@@ -109,20 +200,37 @@ Query OK, 0 rows affected (0.00 sec)
 
 以单引号包含的部分，是一个字符串。以反引号包含的部分，是一个 identifier。注意下面的区别：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> GRANT ALL PRIVILEGES ON 'test'.* TO 'genius'@'localhost';
+GRANT ALL PRIVILEGES ON 'test'.* TO 'genius'@'localhost';
+```
+
+```
 ERROR 1064 (42000): You have an error in your SQL syntax; check the
 manual that corresponds to your MySQL server version for the right
 syntax to use near ''test'.* to 'genius'@'localhost'' at line 1
+```
 
-mysql> GRANT ALL PRIVILEGES ON `test`.* TO 'genius'@'localhost';
+{{< copyable "sql" >}}
+
+```sql
+GRANT ALL PRIVILEGES ON `test`.* TO 'genius'@'localhost';
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
 ```
 
 如果想将一些特殊的关键字做为表名，可以用反引号包含起来。比如：
 
+{{< copyable "sql" >}}
+
 ```sql
 mysql> CREATE TABLE `select` (id int);
+```
+
+```
 Query OK, 0 rows affected (0.27 sec)
 ```
 
@@ -130,14 +238,27 @@ Query OK, 0 rows affected (0.27 sec)
 
 `SHOW GRANTS` 语句可以查看为用户分配了哪些权限。例如：
 
+查看当前用户的权限：
+
+{{< copyable "sql" >}}
+
 ```sql
-SHOW GRANTS; # 查看当前用户的权限
-SHOW GRANTS for 'root'@'%'; # 查看某个特定用户的权限
+SHOW GRANTS;
+```
+
+查看某个特定用户的权限：
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW GRANTS for 'root'@'%';
 ```
 
 更精确的方式，可以通过直接查看授权表的数据实现。比如想知道，名为 `test@%` 的用户是否拥有对 `db1.t` 的 `Insert` 权限：
 
 1. 先查看该用户是否拥有全局 `Insert` 权限：
+
+    {{< copyable "sql" >}}
 
     ```sql
     SELECT Insert_priv FROM mysql.user WHERE user='test' AND host='%';
@@ -145,11 +266,15 @@ SHOW GRANTS for 'root'@'%'; # 查看某个特定用户的权限
 
 2. 如果没有，再查看该用户是否拥有 `db1` 数据库级别的 `Insert` 权限：
 
+    {{< copyable "sql" >}}
+
     ```sql
     SELECT Insert_priv FROM mysql.db WHERE user='test' AND host='%';
     ```
 
 3. 如果仍然没有，则继续判断是否拥有 `db1.t` 这张表的 `Insert` 权限：
+
+    {{< copyable "sql" >}}
 
     ```sql
     SELECT table_priv FROM mysql.tables_priv WHERE user='test' AND host='%' AND db='db1';
@@ -281,8 +406,13 @@ TiDB 用户目前拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` �
 
 这几张表包含了数据的生效范围和权限信息。例如，`mysql.user` 表的部分数据：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SELECT User,Host,Select_priv,Insert_priv FROM mysql.user LIMIT 1;
+SELECT User,Host,Select_priv,Insert_priv FROM mysql.user LIMIT 1;
+```
+
+```
 +------|------|-------------|-------------+
 | User | Host | Select_priv | Insert_priv |
 +------|------|-------------|-------------+
@@ -299,11 +429,15 @@ mysql> SELECT User,Host,Select_priv,Insert_priv FROM mysql.user LIMIT 1;
 
 实现层面其实也只是包装了一层语法糖。例如删除用户会执行：
 
+{{< copyable "sql" >}}
+
 ```sql
 DELETE FROM mysql.user WHERE user='test';
 ```
 
 但是，不推荐手动修改授权表，建议使用 `DROP USER` 语句：
+
+{{< copyable "sql" >}}
 
 ```sql
 DROP USER 'test';
@@ -334,6 +468,8 @@ User+Host 可能会匹配 `user` 表里面多行，为了处理这种情况，`u
 TiDB 启动时，将一些权限检查的表加载到内存，之后使用缓存的数据来验证权限。系统会周期性的将授权表从数据库同步到缓存，生效则是由同步的周期决定，目前这个值设定的是 5 分钟。
 
 修改了授权表，如果需要立即生效，可以手动调用：
+
+{{< copyable "sql" >}}
 
 ```sql
 FLUSH PRIVILEGES;

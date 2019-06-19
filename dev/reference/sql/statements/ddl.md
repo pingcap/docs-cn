@@ -21,11 +21,26 @@ create_specification:
   | [DEFAULT] COLLATE [=] collation_name
 ```
 
-`CREATE DATABASE` 用于创建数据库，并可以指定数据库的默认属性（如数据库默认字符集,校验规则。`CREATE SCHEMA` 跟 `CREATE DATABASE` 操作效果一样。
+`CREATE DATABASE` 用于创建数据库，并可以指定数据库的默认属性（如数据库默认字符集、排序规则）。`CREATE SCHEMA` 跟 `CREATE DATABASE` 操作效果一样。
 
 当创建已存在的数据库且不指定使用 `IF NOT EXISTS` 时会报错。
 
-`create_specification` 选项用于指定数据库具体的 `CHARACTER SET` 和 `COLLATE`。目前这个选项只是语法支持。
+`create_specification` 选项用于指定数据库具体的 `CHARACTER SET` 和 `COLLATE`。目前 TiDB 只支持部分的字符集和排序规则，请参照[字符集支持](/dev/reference/sql/character-set.md)。
+
+## ALTER DATABASE 语法
+
+```sql
+ALTER {DATABASE | SCHEMA} [db_name]
+    alter_specification ...
+
+alter_specification:
+    [DEFAULT] CHARACTER SET [=] charset_name
+  | [DEFAULT] COLLATE [=] collation_name
+```
+
+`ALTER DATABASE` 用于修改或指定当前数据库的默认字符集和排序规则。`ALTER SCHEMA` 跟 `ALTER DATABASE` 操作效果一样。
+
+`alter_specification` 选项用于指定数据库具体的 `CHARACTER SET` 和 `COLLATE`。目前 TiDB 只支持部分的字符集和排序规则，请参照[字符集支持](/dev/reference/sql/character-set.md)。
 
 ## DROP DATABASE 语法
 
@@ -33,7 +48,7 @@ create_specification:
 DROP {DATABASE | SCHEMA} [IF EXISTS] db_name
 ```
 
-`DROP DATABASE` 用于删除指定数据库以及它其中的所用表格。
+`DROP DATABASE` 用于删除指定数据库以及它其中的所有表格。
 
 `IF EXISTS` 用于防止当数据库不存在时发生错误。
 
@@ -138,6 +153,8 @@ table_options:
 table_option:
     AUTO_INCREMENT [=] value
   | AVG_ROW_LENGTH [=] value
+  | SHARD_ROW_ID_BITS [=] value
+  | PRE_SPLIT_REGIONS [=] value
   | [DEFAULT] CHARACTER SET [=] charset_name
   | CHECKSUM [=] {0 | 1}
   | [DEFAULT] COLLATE [=] collation_name
@@ -170,13 +187,18 @@ table_option:
 
 * `index_option` 中 `KEY_BLOCK_SIZE` 目前只是语法上支持。
 
-* `table_option` 目前支持的只有 `AUTO_INCREMENT`，`CHARACTER SET` 和 `COMMENT`，其它只是语法上支持。具体内容参考下表，各个子句之间用逗号隔开。
+* `table_option` 目前支持的只有 `AUTO_INCREMENT`、`SHARD_ROW_ID_BITS`（详情介绍请参考 [TiDB 专用系统变量和语法](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#shard_row_id_bits)）、`PRE_SPLIT_REGIONS`、`CHARACTER SET`、`COLLATE`  和 `COMMENT`，其它只是语法上支持。具体内容参考下表，各个子句之间用逗号隔开。
 
     | 参数           |含义                                  |举例                        |
     |----------------|--------------------------------------|----------------------------|
     |`AUTO_INCREMENT`|自增字段初始值                        |`AUTO_INCREMENT` = 5|
-    |`CHARACTER SET` |指定该表的字符串编码。目前支持 UTF8MB4| `CHARACTER SET` =  'utf8mb4'|
+    |`SHARD_ROW_ID_BITS`|用来设置隐式 _tidb_rowid 的分片数量的 bit 位数 |`SHARD_ROW_ID_BITS` = 4|
+    |`PRE_SPLIT_REGIONS`|用来在建表时预先均匀切分 2^(PRE_SPLIT_REGIONS-1) 个 Region |`PRE_SPLIT_REGIONS` = 4|
+    |`CHARACTER SET` |指定该表所使用的字符集                | `CHARACTER SET` = 'utf8mb4'|
+    |`COLLATE`       |指定该表所使用的字符集排序规则        | `COLLATE` = 'utf8mb4_bin'|
     |`COMMENT`       |注释信息                              | `COMMENT` = 'comment info' |
+
+* `split-table` 配置项默认情况下会开启，在此配置项开启时，建表操作会为每个表建立单独的 Region。
 
 ### AUTO_INCREMENT 说明
 
