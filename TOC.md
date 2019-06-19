@@ -38,7 +38,7 @@
   + 监控
     - [概述](dev/how-to/monitor/overview.md)
     - [监控 TiDB 集群](dev/how-to/monitor/monitor-a-cluster.md)
-    - [TiDB Binlog 集群监控](dev/how-to/monitor/tidb-binlog-monitor.md)
+    - [TiDB Binlog 集群监控](dev/how-to/monitor/tidb-binlog.md)
   + 迁移
     - [概述](dev/how-to/migrate/overview.md)
     + 从 MySQL 迁移
