@@ -424,7 +424,7 @@ COLLATION_CONNECTION: utf8_general_ci
 
 `TIDB_INDEXES` 表提供了 TiDB 中索引的一些信息。
 
-```
+```sql
 mysql> show create table tidb_indexes\G
 *************************** 1. row ***************************
        Table: TIDB_INDEXES
@@ -442,18 +442,19 @@ Create Table: CREATE TABLE `TIDB_INDEXES` (
 1 row in set (0.00 sec)
 ```
 
-其中 `INDEX_ID` 是 TiDB 为每个索引分配的一个 ID，在其他的表格中或者 API 中获取到的 `INDEX_ID` 信息都和这里的信息保持一致。只获得到 `INDEX_ID` 时，可以来这个表中做一些查询来获得更加具体的信息。
+其中 `INDEX_ID` 是 TiDB 为每个索引分配的唯一 ID，这个 ID 也可以在其他系统表和 API 中获取。有了 `INDEX_ID` 后，可以和这个表做一些关联查询来获得更加有用的信息。
 如，我们在 [SLOW_QUERY 表](#SLOW\_QUERY)中得到了某条 SQL 涉及的 `TABLE_ID` 以及 `INDEX_ID`，这时我们可以通过如下的 SQL 来获取索引的信息：
-```
+
+```sql
 select
    tidb_indexes.*
 from
    tidb_indexes,
    tables
 where
-   tables.tidb_table_id = ?
-   and tidb_indexes.table_schema = tables.table_schema
+   tidb_indexes.table_schema = tables.table_schema
    and tidb_indexes.table_name = tidb_indexes.table_name
+   and tables.tidb_table_id = ?
    and index_id = ?
 ```
 
@@ -461,7 +462,7 @@ where
 
 `TIDB_HOT_REGIONS` 表提供了当前 TiKV 中热点 region 的信息。
 
-```
+```sql
 mysql> show create table tidb_hot_regions\G
 *************************** 1. row ***************************
        Table: TIDB_HOT_REGIONS
@@ -486,8 +487,7 @@ Create Table: CREATE TABLE `TIDB_HOT_REGIONS` (
 
 `TIKV_STORE_STATUS` 表通过 PD 的 API，展示了 TiKV 节点的一些基本信息。
 
-```
-mysql> show create table TIKV_STORE_STATUS;
+```sql
 mysql> show create table tikv_store_status\G
 *************************** 1. row ***************************
        Table: TIKV_STORE_STATUS
@@ -519,7 +519,7 @@ Create Table: CREATE TABLE `TIKV_STORE_STATUS` (
 
 `TIKV_REGION_STATUS` 表通过 PD 的 API，展示 TiKV 中 Region 的一些基础信息。
 
-```
+```sql
 mysql> show create table tikv_region_status\G
 *************************** 1. row ***************************
        Table: TIKV_REGION_STATUS
@@ -537,13 +537,17 @@ Create Table: CREATE TABLE `TIKV_REGION_STATUS` (
 1 row in set (0.00 sec)
 ```
 
-通过在列 `EPOCH_CONF_VER`, `WRITTEN_BYTES`, `READ_BYTES` 等列上做 `ORDER BY X LIMIT Y` 操作，可以实现 PD-CTL 中 `top confver`, `top read`, `top write` 等操作。
+通过在列 `EPOCH_CONF_VER`, `WRITTEN_BYTES`, `READ_BYTES` 等列上做 `ORDER BY X LIMIT Y` 操作，可以实现 PD-CTL 中 `top confver`, `top read`, `top write` 等操作。如要找写入量最大的 3 个 region，可以用如下的 SQL 实现：
+
+```
+select * from tikv_region_status order by written_bytes desc limit 3;
+```
 
 ## TIKV\_REGION\_PEERS
 
-`TIKV_REGION_PEERS` 通过 PD 的 API，展示了 TikV 中 单个 Region 节点的一些详细信息。诸如是否是 learner，是否是 leader等。
+`TIKV_REGION_PEERS` 通过 PD 的 API，展示了 TikV 中 单个 Region 节点的一些详细信息。诸如是否是 learner，是否是 leader 等。
 
-```
+```sql
 mysql> show create table tikv_region_peers\G
 *************************** 1. row ***************************
        Table: TIKV_REGION_PEERS
@@ -559,11 +563,36 @@ Create Table: CREATE TABLE `TIKV_REGION_PEERS` (
 1 row in set (0.00 sec)
 ```
 
+如，我们想要知道 `WRITTEN_BYTES` 最高的三个 region 分别在哪些 TiKV 上，可以通过如下的 SQL 实现：
+
+```sql
+select
+   address,
+   tikv.address,
+   region.region_id,
+from
+   tikv_store_status tikv,
+   tikv_region_peers peer,
+   (
+      select
+         *
+      from
+         tikv_region_status region
+      order by
+         written_bytes desc limit 3
+   )
+   region
+where
+   region.region_id = peer.region_id
+   and peer.is_leader = 1
+   and peer.store_id = tikv.region_id
+```
+
 ## ANALYZE\_STATUS
 
 `ANALYZE_STATUS` 表展示了当前集群 `ANALYZE` 命令的执行情况。
 
-```
+```sql
 mysql> show create table analyze_status\G
 *************************** 1. row ***************************
        Table: ANALYZE_STATUS
@@ -585,7 +614,7 @@ Create Table: CREATE TABLE `ANALYZE_STATUS` (
 
 `SLOW_QUERY` 表是映射了慢查询日志的表。其列名均和慢查询日志中的字段名一一对应。具体信息可以查看[慢查询日志](../../how-to/maintain/identify-slow-queries.md)
 
-```
+```sql
 mysql> show create table slow_query\G
 *************************** 1. row ***************************
        Table: SLOW_QUERY
