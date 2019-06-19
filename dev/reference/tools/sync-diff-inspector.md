@@ -151,7 +151,7 @@ password = ""
 
 假设有两个 MySQL 实例，使用同步工具同步到一个 TiDB 中，场景如图所示：
 
-![shard-table-sync](../media/shard-table-sync.png)
+![shard-table-sync](/media/shard-table-sync.png)
 
 如果需要检查同步后数据是否一致，可以使用如下的配置对比数据：
 
