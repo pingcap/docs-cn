@@ -12,10 +12,10 @@
 
 <!--Specify the version or versions that your change affects by adding a label at the right-hand side of this page. For example, v3.0 -->
 
-### Check list <!--REMOVE the items that are not applicable-->
+### Checklist <!--Check the box before the applicable item by using "- [x]"-->
 
-- Add a new file to `TOC.md`
-- No Tab spaces anywhere <!--Use ordinary spaces because Tab spaces can lead to CircleCI failure.-->
-- Leave a blank line both before and after a code block
-- Keep the first level heading consistent with `title` in metadata
-- Use *four* spaces for each level of indentation except that in `TOC.md`
+- [ ] Add a new file to `TOC.md`
+- [ ] No Tab spaces anywhere <!--Use ordinary spaces because Tab spaces can lead to CircleCI failure.-->
+- [ ] Leave a blank line both before and after a code block
+- [ ] Keep the first level heading consistent with `title` in metadata
+- [ ] Use *four* spaces for each level of indentation except that in `TOC.md`
