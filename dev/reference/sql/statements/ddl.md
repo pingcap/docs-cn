@@ -187,7 +187,7 @@ table_option:
 
 * `index_option` 中 `KEY_BLOCK_SIZE` 目前只是语法上支持。
 
-* `table_option` 目前支持的只有 `AUTO_INCREMENT`、`SHARD_ROW_ID_BITS`(详情介绍请参考 [TiDB 专用系统变量和语法](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#shard_row_id_bits) 中的介绍),
+* `table_option` 目前支持的只有 `AUTO_INCREMENT`、`SHARD_ROW_ID_BITS`（详情介绍请参考 [TiDB 专用系统变量和语法](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#shard_row_id_bits)），
  `PRE_SPLIT_REGIONS`、`CHARACTER SET`、`COLLATE`  和 `COMMENT`，其它只是语法上支持。具体内容参考下表，各个子句之间用逗号隔开。
 
     | 参数           |含义                                  |举例                        |
