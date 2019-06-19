@@ -198,7 +198,6 @@ table_option:
     |`COLLATE`       |指定该表所使用的字符集排序规则        | `COLLATE` = 'utf8mb4_bin'|
     |`COMMENT`       |注释信息                              | `COMMENT` = 'comment info' |
 
-
 * `split-table` 配置项默认情况下会开启，在此配置项开启时，建表操作会为每个表建立单独的 Region。
 
 ### AUTO_INCREMENT 说明
