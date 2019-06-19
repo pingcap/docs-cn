@@ -8,16 +8,39 @@ aliases: ['/docs-cn/sql/admin/']
 
 `ADMIN` 语句是 TiDB 扩展语法，用于查看 TiDB 自身的状态，并对 TiDB 中的表数据进行校验。
 
+{{< copyable "sql" >}}
+
 ```sql
 ADMIN SHOW DDL
-ADMIN SHOW DDL JOBS
-ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...
-ADMIN CANCEL DDL JOBS job_id [, job_id] ...
-ADMIN CHECK TABLE tbl_name [, tbl_name] ...
 ```
 
-- `ADMIN SHOW DDL`：用于查看当前正在执行的 DDL 作业。
-- `ADMIN SHOW DDL JOBS`：用于查看当前 DDL 作业队列中的所有结果（包括正在运行以及等待运行的任务）以及已执行完成的 DDL 作业队列中的最近十条结果。
+`ADMIN SHOW DDL` 用于查看当前正在执行的 DDL 作业。
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN SHOW DDL JOBS
+```
+
+`ADMIN SHOW DDL JOBS` 用于查看当前 DDL 作业队列中的所有结果（包括正在运行以及等待运行的任务）以及已执行完成的 DDL 作业队列中的最近十条结果。
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...
+```
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN CANCEL DDL JOBS job_id [, job_id] ...
+```
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN CHECK TABLE tbl_name [, tbl_name] ...
+```
 
 ## 语句概览
 
@@ -27,8 +50,13 @@ ADMIN CHECK TABLE tbl_name [, tbl_name] ...
 
 ## 使用示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> admin show ddl jobs;
+admin show ddl jobs;
+```
+
+```
 +--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+---------------+
 | JOB_ID | DB_NAME | TABLE_NAME | JOB_TYPE      | SCHEMA_STATE         | SCHEMA_ID | TABLE_ID | ROW_COUNT | START_TIME                        | STATE         |
 +--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+---------------+
