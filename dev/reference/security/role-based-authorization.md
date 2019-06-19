@@ -21,6 +21,8 @@ TiDB 的角色访问控制系统参考 MySQL 的角色访问控制系统进行�
 
 创建角色 r_1 和 r_2：
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE ROLE `r_1`@`%`, `r_2`@`%`;
 ```
@@ -33,6 +35,8 @@ CREATE ROLE `r_1`@`%`, `r_2`@`%`;
 ### 删除角色
 
 删除角色 r_1 和 r_2：
+
+{{< copyable "sql" >}}
 
 ```sql
 DROP ROLE `r_1`@`%`, `r_2`@`%`;
@@ -47,11 +51,15 @@ DROP ROLE `r_1`@`%`, `r_2`@`%`;
 
 为 `xxx` 角色授予数据库 `test` 的读权限：
 
+{{< copyable "sql" >}}
+
 ```sql
 GRANT SELECT ON test.* TO 'xxx'@'%';
 ```
 
 为 `xxx` 角色授予所有数据库的全部权限：
+
+{{< copyable "sql" >}}
 
 ```sql
 GRANT ALL PRIVILEGES ON *.* TO 'xxx'@'%';
@@ -60,6 +68,8 @@ GRANT ALL PRIVILEGES ON *.* TO 'xxx'@'%';
 ### 收回权限
 
 `REVOKE` 语句与 `GRANT` 对应：
+
+{{< copyable "sql" >}}
 
 ```sql
 REVOKE ALL PRIVILEGES ON `test`.* FROM 'xxx'@'%';
@@ -70,6 +80,8 @@ REVOKE ALL PRIVILEGES ON `test`.* FROM 'xxx'@'%';
 ### 将角色授予给用户
 
 将角色 role1 和 role2 同时授予给用户 `user1@localhost` 和 `user2@localhost`。 
+
+{{< copyable "sql" >}}
 
 ```sql
 GRANT 'role1', 'role2' TO 'user1'@'localhost', 'user2'@'localhost';
@@ -97,6 +109,8 @@ TiDB 允许这种多层授权关系存在，可以使用多层授权关系实现
 
 解除角色 role1、role2 与用户 `user1@localhost`、`user2@localhost` 的授权关系。 
 
+{{< copyable "sql" >}}
+
 ```sql
 REVOKE 'role1', 'role2' FROM 'user1'@'localhost', 'user2'@'localhost';
 ```
@@ -109,6 +123,8 @@ REVOKE 'role1', 'role2' FROM 'user1'@'localhost', 'user2'@'localhost';
 
 可以对用户设置默认启用的角色；用户在登陆时，默认启用的角色会被自动启用。
 
+{{< copyable "sql" >}}
+
 ```sql
 SET DEFAULT ROLE
     {NONE | ALL | role [, role ] ...}
@@ -117,17 +133,23 @@ SET DEFAULT ROLE
 
 比如将 administrator 和 developer 设置为 `test@localhost` 的默认启用角色：
 
+{{< copyable "sql" >}}
+
 ```sql
 SET DEFAULT ROLE administrator, developer TO 'test'@'localhost';
 ```
 
-将 `test@localhost` 的所有角色，设为其默认启用角色。
+将 `test@localhost` 的所有角色，设为其默认启用角色：
+
+{{< copyable "sql" >}}
 
 ```sql
 SET DEFAULT ROLE ALL TO 'test'@'localhost';
 ```
 
-关闭 `test@localhost` 的所有默认启用角色。
+关闭 `test@localhost` 的所有默认启用角色：
+
+{{< copyable "sql" >}}
 
 ```sql
 SET DEFAULT ROLE NONE TO 'test'@'localhost';
@@ -149,44 +171,91 @@ SET ROLE {
 }
 ```
 
-例如，为当前用户启用角色 role1 和 role2 ，仅在当前 session 有效。
+例如，为当前用户启用角色 role1 和 role2 ，仅在当前 session 有效：
+
+{{< copyable "sql" >}}
 
 ```sql
 SET ROLE 'role1', 'role2';
 ```
 
-除此之外，还有其他的用法。
+启用当前用户的默认角色：
+
+{{< copyable "sql" >}}
 
 ```sql
-SET ROLE DEFAULT --启用当前用户的默认角色。
-SET ROLE ALL --启用授予给当前用户的所有角色。
-SET ROLE NONE --不启用任何角色。
-SET ROLE ALL EXCEPT 'role1', 'role2' --启用除 role1 和 role2 外的角色。
+SET ROLE DEFAULT
 ```
 
-要注意，使用 `SET ROLE` 启用的角色只有在当前 session 才会有效。
+启用授予给当前用户的所有角色：
+
+{{< copyable "sql" >}}
+
+```sql
+SET ROLE ALL
+```
+
+不启用任何角色：
+
+{{< copyable "sql" >}}
+
+```sql
+SET ROLE NONE
+```
+
+启用除 role1 和 role2 外的角色：
+
+{{< copyable "sql" >}}
+
+```sql
+SET ROLE ALL EXCEPT 'role1', 'role2' --
+```
+
+> **注意：**
+>
+> 使用 `SET ROLE` 启用的角色只有在当前 session 才会有效。
 
 ### 查看当前启用角色
 
 当前用户可以通过 `CURRENT_ROLE()` 函数查看当前用户启用了哪些角色。
 
-例如，先对 `u1'@'localhost` 授予角色。
+例如，先对 `u1'@'localhost` 授予角色：
+
+{{< copyable "sql" >}}
 
 ```sql
 GRANT 'r1', 'r2' TO 'u1'@'localhost';
+```
+
+{{< copyable "sql" >}}
+
+```sql
 SET DEFAULT ROLE ALL TO 'u1'@'localhost';
 ```
 
 在 u1 登陆后：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SELECT CURRENT_ROLE();
+SELECT CURRENT_ROLE();
+```
+
+```
 +-------------------+
 | CURRENT_ROLE()    |
 +-------------------+
 | `r1`@`%`,`r2`@`%` |
 +-------------------+
-mysql> SET ROLE 'r1'; SELECT CURRENT_ROLE();
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SET ROLE 'r1'; SELECT CURRENT_ROLE();
+```
+
+```
 +----------------+
 | CURRENT_ROLE() |
 +----------------+
@@ -199,8 +268,13 @@ mysql> SET ROLE 'r1'; SELECT CURRENT_ROLE();
 可以通过 `SHOW GRANTS` 语句查看用户被授予了哪些角色。
 当用户查看其他用户权限相关信息时，需要对 `mysql` 数据库拥有 `SELECT` 权限。
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW GRANTS FOR 'u1'@'localhost';
+SHOW GRANTS FOR 'u1'@'localhost';
+```
+
+```
 +---------------------------------------------+
 | Grants for u1@localhost                     |
 +---------------------------------------------+
@@ -211,8 +285,13 @@ mysql> SHOW GRANTS FOR 'u1'@'localhost';
 
 可以通过使用 `SHOW GRANTS` 的 `USING` 选项来查看角色对应的权限。
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW GRANTS FOR 'u1'@'localhost' USING 'r1';
+SHOW GRANTS FOR 'u1'@'localhost' USING 'r1';
+```
+
+```
 +---------------------------------------------+
 | Grants for u1@localhost                     |
 +---------------------------------------------+
@@ -220,7 +299,15 @@ mysql> SHOW GRANTS FOR 'u1'@'localhost' USING 'r1';
 | GRANT Select ON `db1`.* TO `u1`@`localhost` |
 | GRANT `r1`@`%`,`r2`@`%` TO `u1`@`localhost` |
 +---------------------------------------------+
-mysql> SHOW GRANTS FOR 'u1'@'localhost' USING 'r2';
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW GRANTS FOR 'u1'@'localhost' USING 'r2';
+```
+
+```
 +-------------------------------------------------------------+
 | Grants for u1@localhost                                     |
 +-------------------------------------------------------------+
@@ -228,7 +315,15 @@ mysql> SHOW GRANTS FOR 'u1'@'localhost' USING 'r2';
 | GRANT Insert, Update, Delete ON `db1`.* TO `u1`@`localhost` |
 | GRANT `r1`@`%`,`r2`@`%` TO `u1`@`localhost`                 |
 +-------------------------------------------------------------+
-mysql> SHOW GRANTS FOR 'u1'@'localhost' USING 'r1', 'r2';
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW GRANTS FOR 'u1'@'localhost' USING 'r1', 'r2';
+```
+
+```
 +---------------------------------------------------------------------+
 | Grants for u1@localhost                                             |
 +---------------------------------------------------------------------+
@@ -250,8 +345,13 @@ mysql> SHOW GRANTS FOR 'u1'@'localhost' USING 'r1', 'r2';
 
 以下是 `mysql.role_edges` 所包含的数据。
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> select * from mysql.role_edges;
+select * from mysql.role_edges;
+```
+
+```
 +-----------+-----------+---------+---------+-------------------+
 | FROM_HOST | FROM_USER | TO_HOST | TO_USER | WITH_ADMIN_OPTION |
 +-----------+-----------+---------+---------+-------------------+
@@ -264,8 +364,13 @@ mysql> select * from mysql.role_edges;
 
 `mysql.default_roles` 中包含了每个用户默认启用了哪些角色。
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> select * from mysql.default_roles;
+select * from mysql.default_roles;
+```
+
+```
 +------+------+-------------------+-------------------+
 | HOST | USER | DEFAULT_ROLE_HOST | DEFAULT_ROLE_USER |
 +------+------+-------------------+-------------------+
