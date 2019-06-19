@@ -2,7 +2,7 @@
 title: EXPLAIN
 summary: TiDB 数据库中 EXPLAIN 的使用概况。
 category: reference
-aliases: ['/docs/sql/util/']
+aliases: ['/docs-cn/sql/util/']
 ---
 
 # EXPLAIN
