@@ -23,33 +23,51 @@ category: reference
 
 要求：[Go](https://golang.org/) 版本 1.11 及以上
 
+{{< copyable "shell-regular" >}}
+
 ```shell
-$ git clone https://github.com/pingcap/tidb-operator.git
-$ GOOS=${YOUR_GOOS} make cli
-$ mv tkctl /usr/local/bin/tkctl
+git clone https://github.com/pingcap/tidb-operator.git && \
+GOOS=${YOUR_GOOS} make cli && \
+mv tkctl /usr/local/bin/tkctl
 ```
 
 ## 命令自动补全
 
 你可以配置 `tkctl` 的自动补全以简化使用。
 
-为 BASH 配置自动补全（需要预先安装 [bash-completion](https://github.com/scop/bash-completion)）：
+为 BASH 配置自动补全（需要预先安装 [bash-completion](https://github.com/scop/bash-completion)）的方法如下。
+
+在当前 shell 中设置自动补全：
+
+{{< copyable "shell-regular" >}}
 
 ```shell
-# 在当前 shell 中设置自动补全。
 source <(tkctl completion bash)
+```
 
-# 永久设置自动补全。
+永久设置自动补全：
+
+{{< copyable "shell-regular" >}}
+
+```shell
 echo "if hash tkctl 2>/dev/null; then source <(tkctl completion bash); fi" >> ~/.bashrc
 ```
 
-为 ZSH 配置自动补全：
+为 ZSH 配置自动补全的方法如下。
+
+在当前 shell 中设置自动补全：
+
+{{< copyable "shell-regular" >}}
 
 ```shell
-# 在当前 shell 中设置自动补全。
 source <(tkctl completion zsh)
+```
 
-# 永久设置自动补全。
+永久设置自动补全：
+
+{{< copyable "shell-regular" >}}
+
+```shell
 echo "if hash tkctl 2>/dev/null; then source <(tkctl completion zsh); fi" >> ~/.zshrc
 ```
 
@@ -57,8 +75,10 @@ echo "if hash tkctl 2>/dev/null; then source <(tkctl completion zsh); fi" >> ~/.
 
 `tkctl` 复用了 `kubeconfig` 文件（默认位置是 `~/.kube/config`）来连接 Kubernetes 集群。你可以通过下面的命令来验证 `kubeconfig` 是否设置正确：
 
+{{< copyable "shell-regular" >}}
+
 ```shell
-$ tkctl version
+tkctl version
 ```
 
 假如上面的命令正确输出服务端的 TiDB Operator 版本，则 `kubeconfig` 配置正确。
@@ -71,8 +91,13 @@ $ tkctl version
 
 示例如下：
 
+{{< copyable "shell-regular" >}}
+
 ```shell
-$ tkctl version
+tkctl version
+```
+
+```
 Client Version: v1.0.0-beta.1-p2-93-g6598b4d3e75705-dirty
 TiDB Controller Manager Version: pingcap/tidb-operator:latest
 TiDB Scheduler Version: pingcap/tidb-operator:latest
@@ -89,8 +114,13 @@ TiDB Scheduler Version: pingcap/tidb-operator:latest
 
 示例如下：
 
+{{< copyable "shell-regular" >}}
+
 ```shell
-$ tkctl list -A
+tkctl list -A
+```
+
+```
 NAMESPACE NAME           PD    TIKV   TIDB   AGE
 foo       demo-cluster   3/3   3/3    2/2    11m
 bar       demo-cluster   3/3   3/3    1/2    11m
@@ -102,8 +132,13 @@ bar       demo-cluster   3/3   3/3    1/2    11m
 
 示例如下：
 
+{{< copyable "shell-regular" >}}
+
 ```shell
-$ tkctl use --namespace=foo demo-cluster
+tkctl use --namespace=foo demo-cluster
+```
+
+```
 Tidb cluster switched to foo/demo-cluster
 ```
 
@@ -117,8 +152,13 @@ Tidb cluster switched to foo/demo-cluster
 
 示例如下：
 
+{{< copyable "shell-regular" >}}
+
 ```shell
-$ tkctl info
+tkctl info
+```
+
+```
 Name:               demo-cluster
 Namespace:          foo
 CreationTimestamp:  2019-04-17 17:33:41 +0800 CST
@@ -146,8 +186,13 @@ Endpoints(NodePort):
 
 示例如下：
 
+{{< copyable "shell-regular" >}}
+
 ```shell
-$ tkctl get tikv
+tkctl get tikv
+```
+
+```
 NAME                  READY   STATUS    MEMORY          CPU   RESTARTS   AGE     NODE
 demo-cluster-tikv-0   2/2     Running   2098Mi/4196Mi   2/2   0          3m19s   172.16.4.155
 demo-cluster-tikv-1   2/2     Running   2098Mi/4196Mi   2/2   0          4m8s    172.16.4.160
@@ -182,9 +227,16 @@ local-pv-e54c122a   pd-demo-cluster-pd-2       Bound    1476Gi     172.16.4.156 
 
 示例如下：
 
+{{< copyable "shell-regular" >}}
+
+```shell
+tkctl debug demo-cluster-tikv-0
 ```
-$ tkctl debug demo-cluster-tikv-0
-$ ps -ef
+
+{{< copyable "shell-regular" >}}
+
+```shell
+ps -ef
 ```
 
 由于 debug 容器和目标容器拥有不同的根文件系统，在 `tidb-debug` 容器中使用 GDB 和 perf 等工具时可能会碰到一些问题，下面将补充说明如何解决这些问题。
@@ -193,16 +245,37 @@ $ ps -ef
 
 使用 GDB 调试目标容器中的进程时，需要将 `program` 参数设置为目标容器中的可执行文件。假如是在 `tidb-debug` 以外的其它 debug 容器中进行调试，或者调试的目标进行 pid 不为 1，则需要使用 `set sysroot` 命令调整动态链接库的加载位置。操作如下：
 
+{{< copyable "shell-regular" >}}
+
 ```shell
-$ tkctl debug demo-cluster-tikv-0
-$ gdb /proc/${pid:-1}/root/tikv-server 1
+tkctl debug demo-cluster-tikv-0
+```
 
-# `tidb-debug` 中预配置的 `.gdbinit` 会将 `sysroot` 设置为 `/proc/1/root/`，
-# 因此在 `tidb-debug` 中，假如目标容易的 pid 为 1，则下面的命令可以省略。
+{{< copyable "shell-regular" >}}
+
+```shell
+gdb /proc/${pid:-1}/root/tikv-server 1
+```
+
+`tidb-debug` 中预配置的 `.gdbinit` 会将 `sysroot` 设置为 `/proc/1/root/`，因此在 `tidb-debug` 中，假如目标容易的 pid 为 1，则下面的命令可以省略。
+
+{{< copyable "shell-regular" >}}
+
+```shell
 (gdb) set sysroot /proc/${pid}/root/
+```
 
-# 开始调试。
+开始调试：
+
+{{< copyable "shell-regular" >}}
+
+```shell
 (gdb) thread apply all bt
+```
+
+{{< copyable "shell-regular" >}}
+
+```shell
 (gdb) info threads
 ```
 
@@ -210,10 +283,22 @@ $ gdb /proc/${pid:-1}/root/tikv-server 1
 
 使用 `perf` 命令和 `run-flamegraph.sh` 脚本时，需要将目标容器的可执行文件拷贝到 Debug 容器中：
 
+{{< copyable "shell-regular" >}}
+
 ```shell
-$ tkctl debug demo-cluster-tikv-0
-$ cp /proc/1/root/tikv-server /
-$ ./run_flamegraph.sh 1
+tkctl debug demo-cluster-tikv-0
+```
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cp /proc/1/root/tikv-server /
+```
+
+{{< copyable "shell-regular" >}}
+
+```shell
+./run_flamegraph.sh 1
 ```
 
 ### tkctl ctop
@@ -229,9 +314,16 @@ $ ./run_flamegraph.sh 1
 
 示例如下：
 
+{{< copyable "shell-regular" >}}
+
+```shell
+tkctl ctop demo-cluster-tikv-0
 ```
-$ tkctl ctop demo-cluster-tikv-0
-$ tkctl ctop node/172.16.4.155
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tkctl ctop node/172.16.4.155
 ```
 
 ### tkctl help [command]
@@ -240,8 +332,10 @@ $ tkctl ctop node/172.16.4.155
 
 示例如下：
 
-```
-$ tkctl help debug
+{{< copyable "shell-regular" >}}
+
+```shell
+tkctl help debug
 ```
 
 ### tkctl options
@@ -250,8 +344,13 @@ $ tkctl help debug
 
 示例如下：
 
+{{< copyable "shell-regular" >}}
+
+```shell
+tkctl options
 ```
-$ tkctl options
+
+```
 The following options can be passed to any command:
 
       --alsologtostderr=false: log to standard error as well as files
