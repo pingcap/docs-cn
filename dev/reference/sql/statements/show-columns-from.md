@@ -117,7 +117,7 @@ mysql> show full columns from mysql.user;
 
 ## MySQL 兼容性
 
-`SHOW [FULL] COLUMNS FROM` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上 提交 [issue](/report-issue.md)。
+`SHOW [FULL] COLUMNS FROM` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/dev/report-issue.md)。
 
 ## 另请参阅
 
