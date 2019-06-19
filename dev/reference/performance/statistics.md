@@ -115,7 +115,7 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere]
 | job_info | 任务具体信息。如果分析索引则会包含索引名 |
 | row_count | 已经分析的行数 |
 | start_time | 任务开始执行的时间 |
-| state | 任务状态，包括 pending(等待)、running(正在执行)、finished(执行成功) 和 failed(执行失败)|
+| state | 任务状态，包括 pending（等待）、running（正在执行）、finished（执行成功）和 failed（执行失败）|
 
 ## 统计信息的查看
 
