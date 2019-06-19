@@ -89,9 +89,8 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 + Drop Column: 不支持删除主键列或索引列
 + Change/Modify Column
   - 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`
+  - 不支持修改 `DECIMAL` 类型的精度
   - 不支持更改 `UNSIGNED` 属性
-  - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
-+ Alter Table
   - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
 + Alter Database
   - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
