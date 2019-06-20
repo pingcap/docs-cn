@@ -83,7 +83,7 @@ SPLIT TABLE t INDEX idx BETWEEN (-9223372036854775808) AND (9223372036854775807)
 
 该语句会把表 t 中 idx 索引数据 region 从 `minInt64` 到 `maxInt64` 之间均匀切割出 16 个 region。
 
-如果索引 idx1 的列是 varchar 类型，希望根据前缀字母来切分索引数据
+如果索引 idx1 的列是 varchar 类型，希望根据前缀字母来切分索引数据：
 
 ```sql
 SPLIT TABLE t INDEX idx1 BETWEEN ("a") AND ("z") REGIONS 26;
