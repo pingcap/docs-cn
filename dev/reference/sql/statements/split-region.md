@@ -69,7 +69,7 @@ SPLIT TABLE t BETWEEN (0) AND (1000000000) REGIONS 16;
 
 #### 不均匀切分
 
-如果已知数据不是均匀分布的，比如想要 -inf~10000 切一个 region，10000~90000 切一个 region，90000~+inf 切一个 region ，可以通过手动指定点来切分 region，示例如下：
+如果已知数据不是均匀分布的，比如想要 -inf ~ 10000 切一个 region，10000 ~ 90000 切一个 region，90000 ~ +inf 切一个 region ，可以通过手动指定点来切分 region，示例如下：
 
 {{< copyable "sql" >}}
 
@@ -117,7 +117,10 @@ SPLIT TABLE t INDEX idx BETWEEN (-9223372036854775808) AND (9223372036854775807)
 SPLIT TABLE t INDEX idx1 BETWEEN ("a") AND ("z") REGIONS 26;
 ```
 
-该语句会把表 t 中 idx1 索引数据的 region 从 a~z 切成 26 个 region，region1 的范围是 [minIndexValue, b)，region 2 的范围是 [b, c)，……，region 26 的范围是 [y, minIndexValue]。对于 idx 索引以 a 为前缀的数据都会写到 region1，以 b 为前缀的索引数据都会写到 region 2，以此类推。
+该语句会把表 t 中 idx1 索引数据的 region 从 a
+
+
+z 切成 26 个 region，region1 的范围是 [minIndexValue, b)，region 2 的范围是 [b, c)，……，region 26 的范围是 [y, minIndexValue]。对于 idx 索引以 a 为前缀的数据都会写到 region1，以 b 为前缀的索引数据都会写到 region 2，以此类推。
 
 如果索引 idx2 的列是 timestamp/datatime 等时间类型，希望根据时间区间来切分索引数据：
 
