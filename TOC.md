@@ -285,7 +285,7 @@
       - [版本升级](dev/reference/tools/tidb-binlog/upgrade.md)
     - [PD Control](dev/reference/tools/pd-control.md)
     - [PD Recover](dev/reference/tools/pd-recover.md)
-    - [TiKV Control](https://github.com/tikv/tikv/blob/master/docs/tools/tikv-control.md)
+    - [TiKV Control](dev/reference/tools/tikv-control.md)
     - [TiDB Controller](dev/reference/tools/tidb-control.md)
     - [工具下载](dev/reference/tools/download.md)
 + 常见问题 (FAQ)
