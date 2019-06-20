@@ -104,7 +104,7 @@ SPLIT TABLE t INDEX idx2 BETWEEN ("2010-01-01 00:00:00") AND ("2020-01-01 00:00:
 
 对于联合索引的数据 region 切分，唯一不同的是指定的值可以指定多个 column 的值。
 
-比如对于索引 `idx3 (a, b)`，他包含2列，a 是 timestamp, b 是 int。 如果只想根据 a 列做时间范围的切分，可以用切分单列时间索引的SQL 语句来切分，`lower_value` 和 `upper_velue` 中不指定 b 列的值即可。
+比如索引 `idx3 (a, b)` 包含 2 列，a 是 timestamp，b 是 int。 如果只想根据 a 列做时间范围的切分，可以用切分单列时间索引的 SQL 语句来切分，`lower_value` 和 `upper_velue` 中不指定 b 列的值即可。
 
 ```sql
 SPLIT TABLE t INDEX idx3 BETWEEN ("2010-01-01 00:00:00") AND ("2020-01-01 00:00:00") REGIONS 10;
