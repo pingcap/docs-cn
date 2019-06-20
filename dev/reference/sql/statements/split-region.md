@@ -122,7 +122,8 @@ SPLIT TABLE t INDEX idx3 BETWEEN ("2010-01-01 00:00:00", "a") AND ("2010-01-01 0
 #### 不均匀切分
 
 索引数据也可以根据用用户指定的索引值来做切分。
-假如 idx4 (a,b), a 列是 varchar 类型， b 列是 timestamp 类型。
+
+假如有 idx4 (a,b)，其中 a 列是 varchar 类型， b 列是 timestamp 类型。
 
 ```sql
 SPLIT TABLE t1 INDEX idx4 ("a", "2000-01-01 00:00:01"), ("b", "2019-04-17 14:26:19"), ("c", "");  
