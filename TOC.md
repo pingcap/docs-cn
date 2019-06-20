@@ -281,9 +281,6 @@
       - [CSV 支持](dev/reference/tools/tidb-lightning/csv.md)
       - [监控告警](dev/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](dev/how-to/troubleshoot/tidb-lightning.md)
-<<<<<<< HEAD
-      - [FAQ](faq/tidb-lightning.md)
-=======
       - [FAQ](dev/faq/tidb-lightning.md)
     + TiDB Binlog
       - [概述](dev/reference/tools/tidb-binlog/overview.md)
@@ -291,7 +288,6 @@
       - [监控告警](dev/reference/tools/tidb-binlog/monitor.md)
       - [运维管理](dev/reference/tools/tidb-binlog/operation.md)
       - [版本升级](dev/reference/tools/tidb-binlog/upgrade.md)
->>>>>>> docs-cn/master
     - [PD Control](dev/reference/tools/pd-control.md)
     - [PD Recover](dev/reference/tools/pd-recover.md)
     - [TiKV Control](dev/reference/tools/tikv-control.md)
