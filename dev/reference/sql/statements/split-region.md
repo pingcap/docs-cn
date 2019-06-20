@@ -129,7 +129,7 @@ SPLIT TABLE t1 INDEX idx4 ("a", "2000-01-01 00:00:01"),  ("b", "2019-04-17 14:26
 
 ```
 
-上面 SQL 指定了3个值，会切分出4个region， 每个region 的范围如下。
+该 SQL 语句指定了 3 个值，会切分出 4 个 region， 每个 region 的范围如下。
 
 ```
 region1  [ minIndexValue               , ("a", "2000-01-01 00:00:01"))
