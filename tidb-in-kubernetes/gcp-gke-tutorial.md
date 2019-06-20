@@ -324,8 +324,3 @@ terraform destroy
 > **注意：**
 >
 > 在执行 `terraform destroy` 过程中，可能发生错误：`Error reading Container Cluster "my-cluster": Cluster "my-cluster" has status "RECONCILING" with message""`。当 GCP 升级 kubernetes master 节点时会出现该问题。一旦问题出现，就无法删除集群，需要等待 GCP 升级结束，再次执行 `terraform destroy`。
-
-
-## 更多信息
-
-请参考 [operation guide](./operation-guide.md)。
