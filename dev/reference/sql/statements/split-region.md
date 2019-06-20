@@ -126,7 +126,6 @@ SPLIT TABLE t INDEX idx3 BETWEEN ("2010-01-01 00:00:00", "a") AND ("2010-01-01 0
 
 ```sql
 SPLIT TABLE t1 INDEX idx4 ("a", "2000-01-01 00:00:01"),  ("b", "2019-04-17 14:26:19"),  ("c", "");  
-
 ```
 
 该 SQL 语句指定了 3 个值，会切分出 4 个 region， 每个 region 的范围如下。
