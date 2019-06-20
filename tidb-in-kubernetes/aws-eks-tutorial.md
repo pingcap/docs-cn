@@ -148,41 +148,41 @@ mysql -h <tidb_dns> -P <tidb_port> -u root
 
 `cluster_name` 默认为 `my-cluster`。如果 DNS 名字无法解析，请耐心等待几分钟。
 
-你还可以通过 `kubectl` 和 `helm` 命令使用 kubeconfig 文件 `credentials/kubeconfig_<cluster_name>` 和 EKS 集群交互。
+你还可以通过 `kubectl` 和 `helm` 命令使用 kubeconfig 文件 `credentials/kubeconfig_<cluster_name>` 和 EKS 集群交互，主要有两种方式，如下所示。
 
-指定 --kubeconfig 参数：
+- 指定 --kubeconfig 参数：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb
-```
+    ```shell
+    kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb
+    ```
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-helm --kubeconfig credentials/kubeconfig_<cluster_name> ls
-```
+    ```shell
+    helm --kubeconfig credentials/kubeconfig_<cluster_name> ls
+    ```
 
-或者设置 KUBECONFIG 环境变量：
+- 或者，设置 KUBECONFIG 环境变量：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-export KUBECONFIG=$PWD/credentials/kubeconfig_<cluster_name>
-```
+    ```shell
+    export KUBECONFIG=$PWD/credentials/kubeconfig_<cluster_name>
+    ```
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl get po -n tidb
-```
+    ```shell
+    kubectl get po -n tidb
+    ```
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-helm ls
-```
+    ```shell
+    helm ls
+    ```
 
 ## Grafana 监控
 
