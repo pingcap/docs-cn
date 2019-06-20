@@ -18,7 +18,7 @@ SPLIT TABLE table_name [INDEX index_name] BETWEEN (lower_value) AND (upper_value
 SPLIT TABLE table_name [INDEX index_name] BY (value_list) [, (value_list)] ...
 ```
 
-`BETWEEN lower_value AND upper_value REGIONS region_num` 语法是通过指定上、下边界和region数量，然后在上、下边界之间均匀切分出 `region_num` 个 region。
+`BETWEEN lower_value AND upper_value REGIONS region_num` 语法是通过指定上、下边界和 region 数量，然后在上、下边界之间均匀切分出 `region_num` 个 region。
 
 `BY value_list…` 语法是手动指定要切的一系列的点，然后根据指定的点做切分 region，适用于数据不均匀分布的场景。
 
