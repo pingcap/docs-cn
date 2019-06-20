@@ -24,7 +24,7 @@ SPLIT TABLE table_name [INDEX index_name] BY (value_list) [, (value_list)] ...
 
 ### Split Table region
 
-表中行数据的 key 由 table_id 和 row_id 编码组成，格式如下：
+表中行数据的 key 由 `table_id` 和 `row_id` 编码组成，格式如下：
 
 ```go
 t[table_id]_r[row_id]
