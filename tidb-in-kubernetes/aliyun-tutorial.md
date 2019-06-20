@@ -3,7 +3,9 @@
 ## 环境需求
 
 - [aliyun-cli](https://github.com/aliyun/aliyun-cli) >= 3.0.15 并且[配置 aliyun-cli](https://www.alibabacloud.com/help/doc-detail/90766.htm?spm=a2c63.l28256.a3.4.7b52a893EFVglq)
-> **注意：** Access Key 需要具有操作相应资源的权限
+> **注意：** 
+>
+> Access Key 需要具有操作相应资源的权限
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.12
 - [helm](https://github.com/helm/helm/blob/master/docs/install.md#installing-the-helm-client) >= 2.9.1 且 <= 2.11.0
 - [jq](https://stedolan.github.io/jq/download/) >= 1.6
@@ -31,7 +33,7 @@
 - 一个新的 VPC；
 - 一台 ECS 实例作为堡垒机；
 - 一个托管版 ACK(阿里云 Kubernetes)集群以及一系列 worker 节点：
-  - 属于一个伸缩组的 2 台 ECS 实例(2核2G), 托管版 Kubernetes 的默认伸缩组中必须至少有两台实例, 用于承载整个的系统服务, 比如 CoreDNS
+  - 属于一个伸缩组的 2 台 ECS 实例(2核2G), 托管版 Kubernetes 的默认伸缩组中必须至少有两台实例, 用于承载整个的系统服务, 例如 CoreDNS
   - 属于一个伸缩组的 3 台 `ecs.i2.xlarge` 实例, 用于部署 PD
   - 属于一个伸缩组的 3 台 `ecs.i2.2xlarge` 实例, 用于部署 TiKV
   - 属于一个伸缩组的 2 台 ECS 实例(16核32G)用于部署 TiDB
@@ -60,7 +62,7 @@ $ terraform init
 $ terraform apply
 ```
 
-假如在运行 `terraform apply` 时出现报错, 请根据报错信息(比如缺少权限)进行修复后再次运行 `terraform apply`
+假如在运行 `terraform apply` 时出现报错, 请根据报错信息(例如缺少权限)进行修复后再次运行 `terraform apply`
 
 整个安装过程大约需要 5 至 10 分钟，安装完成后会输出集群的关键信息(想要重新查看这些信息，可以运行 `terraform output`)：
 
@@ -106,7 +108,9 @@ $ mysql -h <tidb_slb_ip> -P <tidb_port> -u root
     - 用户名：admin
     - 密码：admin
 
-> **警告:** 出于安全考虑，假如你已经或将要配置 VPN 用于访问 VPC, 强烈建议将 `monitor_slb_network_type` 设置为 `intranet` 以禁止监控服务的公网访问。
+> **警告:**
+>
+> 出于安全考虑，假如你已经或将要配置 VPN 用于访问 VPC, 强烈建议将 `monitor_slb_network_type` 设置为 `intranet` 以禁止监控服务的公网访问。
 
 ## 升级 TiDB 集群
 
@@ -115,7 +119,7 @@ $ mysql -h <tidb_slb_ip> -P <tidb_port> -u root
 升级操作可能会执行较长时间，可以通过以下命令来持续观察进度：
 
 ```
-watch kubectl get pods --namespace tidb -o wide
+kubectl get pods --namespace tidb -o wide --watch
 ```
 
 ## TiDB 集群水平伸缩
@@ -137,7 +141,9 @@ $ terraform state rm module.ack.alicloud_cs_managed_kubernetes.k8s
 
 销毁集群操作需要执行较长时间。
 
-> **注意:** 监控组件挂载的云盘需要在阿里云管理控制台中手动删除。
+> **注意:**
+>
+> 监控组件挂载的云盘需要在阿里云管理控制台中手动删除。
 
 ## 自定义
 
@@ -148,7 +154,7 @@ $ terraform state rm module.ack.alicloud_cs_managed_kubernetes.k8s
 实例的规格可以通过两种方式进行定义：
 
 1. 通过声明实例规格名；
-2. 通过声明实例的配置，比如 CPU 核数和内存大小。
+2. 通过声明实例的配置，例如 CPU 核数和内存大小。
 
 由于阿里云在不同地域会提供不同的规格类型，并且部分规格有售罄的情况，我们推荐使用第二种办法来定义更通用的实例规格。你可以在 `variables.tf` 中找到相关的配置项。
 
