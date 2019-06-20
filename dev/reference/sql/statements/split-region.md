@@ -153,7 +153,8 @@ create table t (a int, b int,index idx1(a)) shard_row_id_bits = 4 pre_split_regi
 
 该语句在建表后，会对这个表 t 预切分出 4 + 1 个 region。4 (4=2^(3-1)) 个 regions 是用来存 table 的行数据的，1 个 region 是用来存 idx1 索引的数据。
 
-4个 table region 的范围区间如下：
+4 个 table region 的范围区间如下：
+
 ```
 region1:   [ -inf      ,  1<<61 )  
 region2:   [ 1<<61     ,  2<<61 )
