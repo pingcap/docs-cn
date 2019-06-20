@@ -2,7 +2,7 @@
 
 ## 背景
 
-在 TiDB 新建一个表后，默认会单独 split 出一个 region 来存储这个表的数据，这个默认行为由配置文件中的 `split-table` 控制。当这个 region 中的数据超过默认 region 大小限制后，这个 region 会开始分裂成2个 region。
+在 TiDB 中新建一个表后，默认会单独切分出 1 个 region 来存储这个表的数据，这个默认行为由配置文件中的 `split-table` 控制。当这个 region 中的数据超过默认 region 大小限制后，这个 region 会开始分裂成 2 个 region。
 
 上述情况在刚建完表后，如果有大批量写入时，会有热点存在，因为开始只有一个 region，所有的写请求都在那个 region 所在的那台 TiKV 上。
 
