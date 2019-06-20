@@ -60,7 +60,7 @@ SPLIT TABLE t BY (10000), (90000);
 
 ### Split Index region
 
-表中索引数据的 key 由 table_id, index_id，以及索引列的值编码组成，格式如下：
+表中索引数据的 key 由 `table_id`、`index_id` 以及索引列的值编码组成，格式如下：
 
 ```
 t[table_id]_i[index_id][index_value]
