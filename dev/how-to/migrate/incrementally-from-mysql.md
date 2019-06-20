@@ -1,7 +1,7 @@
 ---
 title: 增量数据复制
 category: how-to
-aliases: ['/docs-cn/op-guide/migration/#使用-syncer-增量导入数据']
+aliases: ['/docs-cn/op-guide/migration/']
 ---
 
 # 增量数据复制
