@@ -133,7 +133,7 @@ tidb_version = v3.0.0-rc.1
 
 `terraform apply` 完成后，可先通过 `ssh` 远程连接到堡垒机，再通过 MySQL client 来访问 TiDB 集群。
 
-所需命令如下（用上面的输出信息替换 `<>` 部分内容)：
+所需命令如下（用上面的输出信息替换 `<>` 部分内容）：
 
 {{< copyable "shell-regular" >}}
 
