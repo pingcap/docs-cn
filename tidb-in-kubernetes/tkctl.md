@@ -257,7 +257,7 @@ tkctl debug demo-cluster-tikv-0
 gdb /proc/${pid:-1}/root/tikv-server 1
 ```
 
-`tidb-debug` 中预配置的 `.gdbinit` 会将 `sysroot` 设置为 `/proc/1/root/`，因此在 `tidb-debug` 中，假如目标容易的 pid 为 1，则下面的命令可以省略。
+`tidb-debug` 中预配置的 `.gdbinit` 会将 `sysroot` 设置为 `/proc/1/root/`，因此在 `tidb-debug` 中，假如目标容器的 pid 为 1，则下面的命令可以省略。
 
 {{< copyable "shell-regular" >}}
 
