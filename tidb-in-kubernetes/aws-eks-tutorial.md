@@ -32,15 +32,15 @@ category: how-to
     
     > **注意：**
     >
-    > Access key 必须至少具有以下权限：创建 VPC，创建 EBS，创建 EC2 和创建 Role。
+    > Access key 必须至少具有以下权限：创建 VPC、创建 EBS、创建 EC2 和创建 Role。
     
 * [terraform](https://learn.hashicorp.com/terraform/getting-started/install.html)
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.11
-* [helm](https://github.com/helm/helm/blob/master/docs/install.md#installing-the-helm-client) >= 2.9.0 并且 < 3.0.0
+* [helm](https://github.com/helm/helm/blob/master/docs/install.md#installing-the-helm-client) >= 2.9.0 且 < 3.0.0
 * [jq](https://stedolan.github.io/jq/download/)
 * [aws-iam-authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)，AWS 权限鉴定工具，确保安装在 `PATH` 路径下。
 
-    最简单的安装方法是下载编译好的二进制文件 `aws-iam-authenticator`：
+    最简单的安装方法是下载编译好的二进制文件 `aws-iam-authenticator`，如下所示。
 
     Linux 用户下载二进制文件：
     
@@ -83,7 +83,7 @@ category: how-to
 {{< copyable "shell-regular" >}}
 
 ``` shell
-git clone --depth=1 https://github.com/pingcap/tidb-operator
+git clone --depth=1 https://github.com/pingcap/tidb-operator && \
 cd tidb-operator/deploy/aws
 ```
 
@@ -186,7 +186,7 @@ helm ls
 
 ## Grafana 监控
 
-可以通过浏览器访问 `monitor_endpoint` 地址查看 Grafana 监控指标。
+你可以通过浏览器访问 `monitor_endpoint` 地址查看 Grafana 监控指标。
 
 Grafana 默认登录信息：
 
@@ -224,7 +224,8 @@ Grafana 默认登录信息：
 
 > **注意：**
 >
-> 由于缩容过程中无法确定会缩掉哪个节点，目前还不支持 TiDB 集群的缩容。扩容过程会持续几分钟，你可以通过 `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb --watch` 命令持续观察进度。
+> - 由于缩容过程中无法确定会缩掉哪个节点，目前还不支持 TiDB 集群的缩容。
+> - 扩容过程会持续几分钟，你可以通过 `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb --watch` 命令持续观察进度。
 
 ## 自定义
 
