@@ -52,7 +52,7 @@ SPLIT TABLE t BETWEEN (0) AND (1000000000) REGIONS 16;
 
 #### 不均匀切分
 
-如果已知数据不是均匀分布的，比如想要 -inf ~ 10000 切一个region， 10000 ~ 90000 切一个 region，90000 ~ +inf 切一个 region ，可以通过手动指定点做切分 region，示例如下：
+如果已知数据不是均匀分布的，比如想要 -inf~10000 切一个 region，10000~90000 切一个 region，90000~+inf 切一个 region ，可以通过手动指定点来切分 region，示例如下：
 
 ```sql
 SPLIT TABLE t BY (10000), (90000);
