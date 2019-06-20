@@ -75,7 +75,7 @@ t22_i5abc # table_id 是22, index_id 是5， index_value 是 abc
 索引均匀切分与行数据均匀切分的原理一样，只是计算 step 的值复杂一些，因为 `index_value` 可能不是整数。 `upper` 和 `lower` 的值会先编码成 byte 数组，去掉 `lower` 和 `upper` byte 数组的最长公共前缀后，从 `lower`, `upper` 各取前 8 字节转成 uint64，再去计算 `step = (upper - lower)/num`。计算出 step 后再将 step 编码成 byte
 数组，添加到之前 `upper`和 `lower`的最长公共前缀后面组成一个 key 后去做切分。示例如下：
 
-如果索引 idx 的列也是整数类型，可以用下面 SQL 切分索引数据
+如果索引 idx 的列也是整数类型，可以用如下 SQL 语句切分索引数据：
 
 ```sql
 SPLIT TABLE t INDEX idx BETWEEN (-9223372036854775808) AND (9223372036854775807) REGIONS 16;
