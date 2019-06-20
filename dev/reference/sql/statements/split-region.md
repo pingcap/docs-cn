@@ -36,7 +36,7 @@ t22_r11 # table_id 是22， row_id 是11
 
 #### 均匀切分
 
-由于 `row_id` 肯定是整数，所以根据用户指定的 `lower_value` 和 `upper_value` 以及 `region_num`， 就可以很容易的计算出需要 split 的 key。先计算出 step，`step = ( upper_value - lower)/num`，然后在 `lower` 和 `upper` 之间每隔 step 区间就切一次，最终切出 `num` 个 region。下面是示例：
+由于 `row_id` 是整数，所以根据用户指定的 `lower_value`、`upper_value` 以及 `region_num`，可以很容易地计算出需要切分的 key。先计算出 step（`step = (upper_value - lower)/num`），然后在 `lower` 和 `upper` 之间每隔 step 区间就切一次，最终切出 `num` 个 region。示例如下：
 
 对于表 t，如果想要从`minInt64` ~ `maxInt64` 之间 均匀切割出 16 个 region ，可以用以下语句
 
