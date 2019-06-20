@@ -71,7 +71,7 @@ export TF_VAR_GCP_PROJECT="my-project"
 
 也可以将以上命令追加到 `~/.bash_profile`，以便下次登录时自动 `export` 以上命令。
 
-## 部署
+## 部署集群
 
 默认部署会创建一个新的 VPC、两个子网、一个 f1-micro 实例作为堡垒机和包含以下实例作为工作节点的 GKE 集群：
 
@@ -149,45 +149,45 @@ mysql -h <tidb_ilb_ip> -P 4000 -u root
 
 ## 与集群交互
 
-你可以通过 `kubectl` 和 `helm` 使用 kubeconfig 文件 `credentials/kubeconfig_<cluster_name>` 和 GKE 集群交互。
+你可以通过 `kubectl` 和 `helm` 使用 kubeconfig 文件 `credentials/kubeconfig_<cluster_name>` 和 GKE 集群交互。主要有两种方式进行交互，如下所示。
 
-指定 --kubeconfig 参数：
+- 指定 --kubeconfig 参数：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```bash
-kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb
-```
+    ```bash
+    kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb
+    ```
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```bash
-helm --kubeconfig credentials/kubeconfig_<cluster_name> ls
-```
+    ```bash
+    helm --kubeconfig credentials/kubeconfig_<cluster_name> ls
+    ```
 
-或者设置 KUBECONFIG 环境变量：
+- 或者设置 KUBECONFIG 环境变量：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```bash
-export KUBECONFIG=$PWD/credentials/kubeconfig_<cluster_name>
-```
+    ```bash
+    export KUBECONFIG=$PWD/credentials/kubeconfig_<cluster_name>
+    ```
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```bash
-kubectl get po -n tidb
-```
+    ```bash
+    kubectl get po -n tidb
+    ```
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```bash
-helm ls
-```
+    ```bash
+    helm ls
+    ```
 
 其中，`cluster_name` 默认为 `my-cluster`，可以通过 `variables.tf` 修改。
 
-# 升级 TiDB 集群
+## 升级 TiDB 集群
 
 要升级 TiDB 集群，可编辑 `variables.tf` 文件，修改 `tidb_version` 变量到更高版本，然后运行 `terraform apply`。
 
