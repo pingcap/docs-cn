@@ -162,4 +162,4 @@ region3:   [ 2<<61     ,  3<<61 )
 region4:   [ 3<<61     ,  +inf  )
 ```
 
-关于为什么是 切割 2^(pre_split_regions-1) 个regions，因为使用 shard_row_id_bits 时，只会分配正数给 _tidb_rowid，所以就没有必要给负数的那段区间做 split region 了。
+关于为什么是切割 2^(pre_split_regions-1) 个 regions，因为使用 shard_row_id_bits 时，只会分配正数给 `_tidb_rowid`，所以就没有必要给负数的那段区间做 split region 了。
