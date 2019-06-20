@@ -9,7 +9,7 @@ category: reference
 
 上述情况中，如果在新建的表上发生大批量写入，则会造成热点，因为开始只有一个 region，所有的写请求都发生在该 region 所在的那台 TiKV 上。
 
-为解决上述场景中的热点问题，TiDB 引入了预切分 region 的功能，即可以根据用户指定的参数，预先为某个表切分出多个 region。
+为解决上述场景中的热点问题，TiDB 引入了预切分 region 的功能，即可以根据用户指定的参数，预先为某个表切分出多个 region，并打散到各个 TiKV 上去。
 
 ## Split region 的使用
 
@@ -203,3 +203,23 @@ region4:   [ 3<<61     ,  +inf  )
 ```
 
 关于为什么是切割 2^(pre_split_regions-1) 个 regions，因为使用 shard_row_id_bits 时，只会分配正数给 `_tidb_rowid`，所以就没有必要给负数的那段区间做 split region 了。
+
+## 相关 session variable
+
+### tidb_wait_split_region_finish
+
+作用域：SESSION
+
+默认值：1
+
+由于打散 region 的时间可能比较长，主要由 PD 调度以及 TiKV 的负载情况所决定。这个变量用来设置在执行 `SPLIT REGION` 语句时，是否同步等待所有 region 都打散完成后再返回结果给客户端。默认 1 代表等待打散完成后再返回结果。0 代表不等待 region 打散完成就返回。
+
+需要注意的是，在 region 打散期间，对正在打散 region 上的写入和读取的性能会有一定影响，对比批量写入，导数据等场景，还是建议等待 region 打散完成后再开始导数据。
+
+### tidb_wait_split_region_timeout
+
+作用域：SESSION
+
+默认值：300
+
+这个变量用来设置 `SPLIT REGION` 语句的执行超时时间，单位是秒，默认值是 300 秒，如果超时还未完成，就返回一个超时错误。

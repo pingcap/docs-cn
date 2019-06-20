@@ -100,6 +100,7 @@
       - [事务语句](dev/reference/sql/statements/transaction.md)
       - [Prepared SQL 语句语法](dev/reference/sql/statements/prepare.md)
       - [实用工具语句](dev/reference/sql/statements/util.md)
+      - [Split Region 语句](dev/reference/sql/statements/split-region.md)
     - [约束](dev/reference/sql/constraints.md)
     - [生成列](dev/reference/sql/generated-columns.md)
     - [字符集](dev/reference/sql/character-set.md)
