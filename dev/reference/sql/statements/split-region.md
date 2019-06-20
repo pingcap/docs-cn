@@ -68,7 +68,7 @@ eg
 t22_i5abc # table_id 是22, index_id 是5， index_value 是 abc 
 ```
 
-同一表中的同一索引数据的 table_id 和 index_id 是一样的，所以切分索引 region 要根据 index_value 来切分region。
+同一表中的同一索引数据的 `table_id` 和 `index_id` 是一样的，所以切分索引 region 要根据 `index_value` 来切分 region。
 
 #### 均匀切分
 
