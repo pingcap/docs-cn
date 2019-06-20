@@ -57,7 +57,7 @@
     - [升级至 TiDB 3.0](dev/how-to/upgrade/from-previous-version.md)
     - [升级至 TiDB 2.1](dev/how-to/upgrade/to-tidb-2.1.md)
     - [使用 Ansible 滚动升级](dev/how-to/upgrade/rolling-updates-with-ansible.md)
-    - [升级 Data Migration](tools/dm/dm-upgrade.md)
+    - [升级 Data Migration](dev/reference/tools/data-migration/dm-upgrade.md)
     - [TiDB Binlog Cluster 版本升级方法](dev/how-to/upgrade/tidb-binlog.md)
   + 故障诊断
     - [集群配置诊断](dev/how-to/troubleshoot/cluster-setup.md)
