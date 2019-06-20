@@ -44,7 +44,7 @@ t22_r11 # table_id 是22， row_id 是11
 SPLIT TABLE t BETWEEN (-9223372036854775808) AND (9223372036854775807) REGIONS 16;
 ```
 
-上面SQL会把表t 从minInt64 到 maxInt64 之间均匀切割出16个 region。如果已知主键的范围并没有这么大，比如只会在 0 ~ 1000000000 之间，那可以用 0 和 1000000000 分别代替上面的 minInt64 和 maxInt64 来切分 region。
+以上 SQL 语句会把表 t 从 minInt64 到 maxInt64 之间均匀切割出 16 个 region。如果已知主键的范围没有这么大，比如只会在 0~1000000000 之间，那可以用 0 和 1000000000 分别代替上面的 minInt64 和 maxInt64 来切分 region。
 
 ```sql
 SPLIT TABLE t BETWEEN (0) AND (1000000000) REGIONS 16;
