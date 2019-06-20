@@ -5,9 +5,9 @@ category: reference
 
 # TiKV Control 使用说明
 
-TiKV Control (tikv-ctl) 是随 TiKV 的命令行工具，用于管理 TiKV 集群。以下简称 `tikv-ctl`。
+TiKV Control（以下简称 tikv-ctl）是 TiKV 的命令行工具，用于管理 TiKV 集群。
 
-在编译 TiKV 时，tikv-ctl 命令也会同时被编译出来，而通过 Ansible 部署的集群，在对应的 `tidb-ansible/resources/bin` 目录下也会有这个二进制文件。如集群使用二进制文件安装部署，bin 文件夹里会包含 `tikv-ctl` 文件及其他文件如 `tidb-server`、`pd-server`、以及 `tikv-server` 等。
+编译 TiKV 的同时也会编译 tikv-ctl 命令。如果通过 Ansible 部署集群，则对应的 `tidb-ansible/resources/bin` 目录下会存在 `tikv-ctl` 二进制文件。如果使用二进制文件部署集群，bin 目录下会包含 `tikv-ctl` 文件及 `tidb-server`、`pd-server`、以及 `tikv-server` 等其他文件。
 
 ## 通用参数
 
@@ -26,7 +26,7 @@ tikv-ctl 提供以下两种运行模式：
     store:"127.0.0.1:20160" compact db:KV cf:default range:([], []) success!
     ```
 
-- **本地模式**。通过 `--db` 选项来指定本地 TiKV 数据目录路径。
+- **本地模式**。通过 `--db` 选项来指定本地 TiKV 数据的目录路径。
 
 以下如无特殊说明，所有命令都同时支持这两种模式。
 
@@ -49,9 +49,9 @@ AAFF
 
 ### 查看 Raft 状态机的信息
 
-`raft` 子命令可以查看 Raft 状态机在某一时刻的状态。状态信息包括 **RegionLocalState**，**RaftLocalState**，**RegionApplyState** 三个结构体，及某一条 log 对应的 Entries。
+`raft` 子命令可以查看 Raft 状态机在某一时刻的状态。状态信息包括 **RegionLocalState**、**RaftLocalState** 和 **RegionApplyState** 三个结构体，及某一条 log 对应的 Entries。
 
-您可以使用 `region` 和 `log` 两个子命令分查询以上信息。两条子命令都同时支持远程模式和本地模式。它们的用法及输出内容如下所示：
+您可以使用 `region` 和 `log` 两个子命令分别查询以上信息。两条子命令都同时支持远程模式和本地模式。它们的用法及输出内容如下所示：
 
 ```bash
 $ tikv-ctl --host 127.0.0.1:20160 raft region -r 2
@@ -154,11 +154,11 @@ success!
 > **注意：**
 >
 > - **该命令只支持本地模式**
-> - `-p` 选项的参数指定 PD 的 endpoints，无需 `http` 前缀。指定 PD 的 endpoints 目的是需要询问 PD 是否可以安全切换至 Tombstone 状态。因此，在将 PD 置为 Tombstone 之前往往还需要在 `pd-ctl` 中把该 Region 在机器上的对应 Peer 拿掉。
+> - `-p` 选项的参数指定 PD 的 endpoints，无需 `http` 前缀。指定 PD 的 endpoints 是为了询问 PD 是否可以安全切换至 Tombstone 状态。因此，在将 PD 置为 Tombstone 之前往往还需要在 `pd-ctl` 中把该 Region 在机器上的对应 Peer 拿掉。
 
 ### 向 TiKV 发出 consistency-check 请求
 
-可以通过 `consistency-check` 命令让某个 Region 对应的 Raft 进行副本之间的一致性检查。如果检查失败，TiKV 自身会 panic。如果 `--host` 指定的 TiKV 不是这个 Region 的 Leader，则会报告错误。
+`consistency-check` 命令用于在某个 Region 对应的 Raft 副本之间进行一致性检查。如果检查失败，TiKV 自身会 panic。如果 `--host` 指定的 TiKV 不是这个 Region 的 Leader，则会报告错误。
 
 ```bash
 $ tikv-ctl --host 127.0.0.1:20160 consistency-check -r 2
@@ -170,24 +170,24 @@ DebugClient::check_region_consistency: RpcFailure(RpcStatus { status: Unknown, d
 > **注意：**
 >
 > - **该命令只支持远程模式**。
-> - 即使该命令返回了成功，也需要去检查是否有 TiKV panic 了。因为该命令只是给 Leader 发起一个 Consistency-check 的 proposal，至于整个检查流程成功与否并不能在客户端知道。
+> - 即使该命令返回了成功信息，也需要检查是否有 TiKV panic 了。因为该命令只是向 Leader 请求进行一致性检查，但整个检查流程是否成功并不能在客户端知道。
 
-### Dump snapshot 元信息
+### Dump snapshot 元文件
 
 这条子命令可以用于解析指定路径下的 Snapshot 元文件并打印结果。
 
 ### 打印 Raft 状态机出错的 Region
 
-前面 `tombstone` 命令可以将 Raft 状态机出错的 Region 设置为 Tombstone 状态，避免 TiKV 启动时对它们进行检查。在运行 `tombstone` 命令之前，可使用 `bad-regions` 命令可以找出出错了的 Region，以便将多个工具组合起来进行自动化的处理。
+前面 `tombstone` 命令可以将 Raft 状态机出错的 Region 设置为 Tombstone 状态，避免 TiKV 启动时对它们进行检查。在运行 `tombstone` 命令之前，可使用 `bad-regions` 命令找到出错的 Region，以便将多个工具组合起来进行自动化的处理。
 
 ```bash
 $ tikv-ctl --db /path/to/tikv/db bad-regions
 all regions are healthy
 ```
 
-命令执行成功会打印以上信息，否则会打印出有错误的 Region 列表。目前可以检出的错误包括 `last index`、`commit index` 和 `apply index` 之间的不匹配，以及 Raft log 的丢失。其他一些情况，比如 Snapshot 文件损坏等仍然需要后续的支持。
+命令执行成功后会打印以上信息，否则会打印出有错误的 Region 列表。目前可以检出的错误包括 `last index`、`commit index` 和 `apply index` 之间的不匹配，以及 Raft log 的丢失。其他一些情况，比如 Snapshot 文件损坏等仍然需要后续的支持。
 
-### 查看 Region 信息
+### 查看 Region 属性
 
 本地查看部署在 `/path/to/tikv` 的 tikv 上面 Region 2 的 properties 信息：
 
@@ -206,7 +206,7 @@ $ tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
 使用 `modify-tikv-config` 命令可以动态修改配置参数，暂时仅支持对于 RocksDB 相关参数的动态更改。
 
 - `-m` 用于指定要修改的模块，有 `storage`、`kvdb` 和 `raftdb` 三个值可以选择。
-- `-n` 用于指定配置名。配置名可以参考 [TiKV 配置模版](https://github.com/pingcap/tikv/blob/master/etc/config-template.toml#L213-L500)中 `[storage]`、`[rocksdb]` 和 `[raftdb]` 下的参数，分别对应 `storage`、`kvdb` 和 `raftdb`。同时，还可以通过 `default|write|lock + . + 参数名` 的形式来指定的不同 CF 的配置。对于 `kvdb` 有 `default`,`write`、`lock` 可以选择，对于 `raftdb` 仅有 `default` 可以选择。
+- `-n` 用于指定配置名。配置名可以参考 [TiKV 配置模版](https://github.com/pingcap/tikv/blob/master/etc/config-template.toml#L213-L500)中 `[storage]`、`[rocksdb]` 和 `[raftdb]` 下的参数，分别对应 `storage`、`kvdb` 和 `raftdb`。同时，还可以通过 `default|write|lock + . + 参数名` 的形式来指定的不同 CF 的配置。对于 `kvdb` 有 `default`、`write` 和 `lock` 可以选择，对于 `raftdb` 仅有 `default` 可以选择。
 - `-v` 用于指定配置值。
 
 ```bash
@@ -224,7 +224,7 @@ success!
 
 ### 强制 Region 从多副本失败状态恢复服务
 
-`unsafe-recover remove-fail-stores` 命令可以将故障机器从指定 Region 的 peers 列表中移除。运行命令之前，需要目标 TiKV 先停掉服务以便释放文件锁。
+`unsafe-recover remove-fail-stores` 命令可以将故障机器从指定 Region 的 peer 列表中移除。运行命令之前，需要目标 TiKV 先停掉服务以便释放文件锁。
 
 `-s` 选项接受多个以逗号分隔的 `store_id`，并使用 `-r` 参数来指定包含的 Region。如果要对某一个 store 上的全部 Region 都执行这个操作，可简单指定 `--all-regions`。
 
@@ -265,7 +265,7 @@ success!
 
 ldb 命令行工具提供多种数据访问以及数据库管理命令。下方列出了一些示例用法。详细信息请在运行 `tikv-ctl ldb` 命令时查看帮助消息或查阅 RocksDB 文档。
 
-数据访问序列示例： 
+数据访问序列示例如下。
 
 用 HEX 格式 dump 现有 RocksDB 数据:
 
@@ -281,5 +281,5 @@ $ tikv-ctl ldb --hex manifest_dump --path=/tmp/db/MANIFEST-000001
 
 您可以通过 `--column_family=<string>` 指定查询的目标列族。
 
-通过 `--try_load_options` 命令加载数据库选项文件以打开数据库。数据库运行的时候，建议您保持该命令为开启的状态。如果您使用默认配置打开数据库，LSM-tree 存储组织可能会出现混乱，且无法自动恢复。
+通过 `--try_load_options` 命令加载数据库选项文件以打开数据库。在数据库运行时，建议您保持该命令为开启的状态。如果您使用默认配置打开数据库，LSM-tree 存储组织可能会出现混乱，且无法自动恢复。
 
