@@ -32,7 +32,7 @@ eg:
 t22_r11 # table_id 是22， row_id 是11
 ```
 
-同一 table 中行数据的 table_id 是一样的，但是 row_id 肯定是不一样的，所以可以根据 row_id 来切分 region。
+同一表中行数据的 `table_id` 是一样的，但 `row_id` 肯定是不一样的，所以可以根据 `row_id` 来切分 region。
 
 #### 均匀切分
 
