@@ -199,7 +199,6 @@
       - [`TRUNCATE`](dev/reference/sql/statements/truncate.md)
       - [`UPDATE`](dev/reference/sql/statements/update.md)
       - [`USE`](dev/reference/sql/statements/use.md)
-      - [`Split Region`](dev/reference/sql/statements/split-region.md)
     - [约束](dev/reference/sql/constraints.md)
     - [生成列](dev/reference/sql/generated-columns.md)
     - [字符集](dev/reference/sql/character-set.md)
