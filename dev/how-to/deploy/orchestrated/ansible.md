@@ -14,14 +14,14 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 - 初始化操作系统参数
 - 部署 TiDB 集群（包括 PD、TiDB、TiKV 等组件和监控组件）
-- [启动集群](/op-guide/ansible-operation.md#启动集群)
-- [关闭集群](/op-guide/ansible-operation.md#关闭集群)
-- [变更组件配置](/op-guide/ansible-deployment-rolling-update.md#变更组件配置)
-- [集群扩容缩容](/op-guide/ansible-deployment-scale.md)
-- [升级组件版本](/op-guide/ansible-deployment-rolling-update.md#升级组件版本)
-- [集群开启 binlog](/tools/tidb-binlog-cluster.md)
-- [清除集群数据](/op-guide/ansible-operation.md#清除集群数据)
-- [销毁集群](/op-guide/ansible-operation.md#销毁集群)
+- [启动集群](/dev/how-to/maintain/ansible-operations.md#启动集群)
+- [关闭集群](/dev/how-to/maintain/ansible-operations.md#关闭集群)
+- [变更组件配置](/dev/how-to/upgrade/rolling-updates-with-ansible.md#变更组件配置)
+- [集群扩容缩容](/dev/how-to/scale/with-ansible.md)
+- [升级组件版本](/dev/how-to/upgrade/rolling-updates-with-ansible.md#升级组件版本)
+- [集群开启 binlog](/dev/reference/tidb-binlog-overview.md)
+- [清除集群数据](/dev/how-to/maintain/ansible-operations.md#清除集群数据)
+- [销毁集群](/dev/how-to/maintain/ansible-operations.md#销毁集群)
 
 > **注意：**
 >

@@ -1,43 +1,46 @@
 ---
-title: Prepared SQL 语句语法
+title: PREPARE
+summary: TiDB 数据库中 PREPARE 的使用概况。
 category: reference
 aliases: ['/docs-cn/sql/prepare/']
 ---
 
-# Prepared SQL 语句语法
+# PREPARE
 
-TiDB 支持服务器端的 Prepared 语句，这种方式可以降低语句解析以及查询优化的开销，提高执行效率。有两种方式可以使用 Prepared 语句：
+`PREPARE` 语句为服务器端预处理语句提供 SQL 接口。
 
-## 通过应用程序
+## 语法图
 
-大多数 MySQL Driver 都支持 Prepared 语句，比如 [MySQL Connector/C](https://dev.mysql.com/doc/connector-c/en/)。这种方式可以通过 Binary 协议直接调用 Prepared 语句 API。
+**PreparedStmt:**
 
-## 通过 SQL 语句
+![PreparedStmt](/media/sqlgram/PreparedStmt.png)
 
-通过 `PREPARE`，`EXECUTE` 以及 `DEALLOCATE PREPARE` 这三个语句也可以实现 Prepared 语句，这种方式不如第一种方式效率高，但是不需要写程序即可使用。
-
-### `PREPARE` 语句
+## 示例
 
 ```sql
-PREPARE stmt_name FROM preparable_stmt
+mysql> PREPARE mystmt FROM 'SELECT ? as num FROM DUAL';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SET @number = 5;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> EXECUTE mystmt USING @number;
++------+
+| num  |
++------+
+| 5    |
++------+
+1 row in set (0.00 sec)
+
+mysql> DEALLOCATE PREPARE mystmt;
+Query OK, 0 rows affected (0.00 sec)
 ```
 
-`PREPARE` 语句对 `preparable_stmt` 做预处理（语法解析、语义检查、查询优化）并将其处理结果命名为 `stmt_name`，后面的操作可以通过 `stmt_name` 来引用。处理好的语句可以通过 `EXECUTE` 语句执行或者是通过 `DEALLOCATE PREPARE` 语句释放。
+## MySQL 兼容性
 
-### `EXECUTE` 语句
+`PREPARE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/dev/report-issue.md)。
 
-```sql
-EXECUTE stmt_name [USING @var_name [, @var_name] ...]
-```
+## 另请参阅
 
-`EXECUTE` 语句执行名字为 `stmt_name` 的预处理语句。如果预处理语句中有参数，则可以通过 `USING` 子句中的 User Variable 列表给参数赋值。
-
-### `DEALLOCATE PREPARE` 语句
-
-```sql
-{DEALLOCATE | DROP} PREPARE stmt_name
-```
-
-`DEALLOCATE PREPARE` 语句删除 `PREPARE` 产生的预处理语句结果。
-
-更多信息请参考 [MySQL Prepared Statement Syntax](https://dev.mysql.com/doc/refman/5.7/en/sql-syntax-prepared-statements.html)。
+* [EXECUTE](/dev/reference/sql/statements/execute.md)
+* [DEALLOCATE](/dev/reference/sql/statements/deallocate.md)
