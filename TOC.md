@@ -328,6 +328,7 @@
     - [3.0.0-beta.1](dev/releases/3.0.0-beta.1.md)
     - [3.0.0-beta](dev/releases/3.0beta.md)
   + v2.1
+    - [2.1.13](dev/releases/2.1.13.md)
     - [2.1.12](dev/releases/2.1.12.md)
     - [2.1.11](dev/releases/2.1.11.md)
     - [2.1.10](dev/releases/2.1.10.md)
