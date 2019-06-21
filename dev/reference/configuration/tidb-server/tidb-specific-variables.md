@@ -225,6 +225,16 @@ set @@global.tidb_distsql_scan_concurrency = 10
 当删除大量数据时，可以将其设置为 1，这样待删除数据会被自动切分为多个 batch，每个 batch 使用一个单独的事务进行删除。
 该用法破坏了事务的原子性，因此，不建议在生产环境中使用。
 
+### tidb_batch_commit
+
+作用域：SESSION
+
+默认值：0
+
+TiDB 有一个事务限制是单个事务里面执行的语句数量不能超过 `stmt-count-limit` 个。`stmt-count-limit` 在配置文件中设置，默认值是 5000。
+
+这个变量用来设置事务中，如果执行的语句数量超过 `stmt-count-limit` 后，自动提交当前事务，并新起一个事务执行后面的语句。默认值是 0 ，即不启用这个功能。注意，开启 `tidb_batch_commit` 后，会把一个大事务拆分成多个小事务来执行。
+
 ### tidb_dml_batch_size
 
 作用域：SESSION
@@ -372,9 +382,11 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 作用域：SESSION
 
-默认值：0
+默认值："auto"
 
-这个变量用来设置是否开启 TABLE PARTITION 特性。
+这个变量用来设置是否开启 TABLE PARTITION 特性。默认值 `auto` 表示开启 range partition 和 hash partion。`off` 表示关闭 TABLE PARTITION 的特性，此时语法还是会依旧兼容，只是建立的 partition table 实际上并不是真正的 partition table, 和普通的 table 一样。`on` 表示开启，目前的作用和 `auto` 一样。
+
+注意，目前 TiDB 只支持 range partition 和 hash partition。
 
 ### tidb_backoff_lock_fast
 
@@ -468,3 +480,21 @@ set tidb_slow_log_threshold = 200
 ```sql
 set tidb_query_log_max_len = 20
 ```
+
+### tidb_txn_mode
+
+作用域：SESSION
+
+默认值：""
+
+这个变量用于设置当前 session 的事务模式，默认是乐观锁模式。 TiDB 3.0 加入了悲观锁模式，将 `tidb_txn_mode` 设置为 `'pessimistic'` 后，这个 session 执行的所有事务都会进入悲观事务模式。更多关于悲观锁的细节，可以参考 [TiDB 悲观事务模式](../../transactions/transaction-pessimistic.md)。
+
+### tidb_check_mb4_value_in_utf8
+
+作用域：SESSION
+
+默认值：true
+
+这个变量用来设置是否开启对字符集为 UTF8 类型的数据做合法性检查，默认值 `true` 表示开启检查。这个默认行为和 MySQL 是兼容的。
+
+注意，如果是旧版本升级时，可能需要关闭该选项，否则由于旧版本（v2.1.1以及之前）没有对数据做合法性检查，所以旧版本写入非法字符串是可以写入成功的，但是新版本加入合法性检查后会报写入失败。具体可以参考[升级后常见问题](../../../faq/upgrade.md)。
