@@ -117,10 +117,7 @@ SPLIT TABLE t INDEX idx BETWEEN (-9223372036854775808) AND (9223372036854775807)
 SPLIT TABLE t INDEX idx1 BETWEEN ("a") AND ("z") REGIONS 26;
 ```
 
-该语句会把表 t 中 idx1 索引数据的 region 从 a
-
-
-z 切成 26 个 region，region1 的范围是 [minIndexValue, b)，region 2 的范围是 [b, c)，……，region 26 的范围是 [y, minIndexValue]。对于 idx 索引以 a 为前缀的数据都会写到 region1，以 b 为前缀的索引数据都会写到 region 2，以此类推。
+该语句会把表 t 中 idx1 索引数据的 region 从 a~z 切成 26 个 region，region1 的范围是 [minIndexValue, b)，region 2 的范围是 [b, c)，……，region 26 的范围是 [y, minIndexValue]。对于 idx 索引以 a 为前缀的数据都会写到 region1，以 b 为前缀的索引数据都会写到 region 2，以此类推。
 
 如果索引 idx2 的列是 timestamp/datatime 等时间类型，希望根据时间区间来切分索引数据：
 
@@ -206,4 +203,4 @@ region4:   [ 3<<61     ,  +inf  )
 
 ## 相关 session variable
 
-和 SPLIT REGION 相关的 session variable 有 `tidb_wait_split_region_finish`，`tidb_wait_split_region_timeout`, 具体可以见 [tidb session variable 文档](../../configuration/tidb-server/tidb-specific-variables.md)。
+和 SPLIT REGION 相关的 session variable 有 `tidb_wait_split_region_finish`，`tidb_wait_split_region_timeout`, 具体可以见 [TiDB 专用系统变量和语法](/dev/reference/configuration/tidb-server/tidb-specific-variables.md)。
