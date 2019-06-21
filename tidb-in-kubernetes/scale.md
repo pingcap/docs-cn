@@ -1,5 +1,5 @@
 ---
-title: 扩容/缩容 TiDB 集群
+title: 扩缩容 TiDB 集群
 category: how-to
 ---
 
@@ -40,7 +40,7 @@ category: how-to
 
  > **注意：**
 > 
-> PD、TiKV 组件在缩容过程中被删除的节点的 PVC 会保留，并且由于 PV 的 `Reclaim Policy` 设置为 `Retain`,即使 PVC 被删除，数据依然可以找回。
+> PD、TiKV 组件在缩容过程中被删除的节点的 PVC 会保留，并且由于 PV 的 `Reclaim Policy` 设置为 `Retain`，即使 PVC 被删除，数据依然可以找回。
 
  # 垂直扩缩容：
 
