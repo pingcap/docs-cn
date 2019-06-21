@@ -17,7 +17,7 @@ category: how-to
      {{< copyable "shell-regular" >}}
 
      ```shell
-    helm upgrade ${releaseName} pingcap/tidb-cluster -f values.yaml
+    helm upgrade ${releaseName} pingcap/tidb-cluster -f values.yaml --version=v1.0.0-beta.3
     ```
 
 3. 查看集群水平扩缩容状态：
@@ -54,7 +54,7 @@ category: how-to
      {{< copyable "shell-regular" >}}
 
      ```shell
-    helm upgrade ${releaseName} pingcap/tidb-cluster -f values.yaml
+    helm upgrade ${releaseName} pingcap/tidb-cluster -f values.yaml --version=v1.0.0-beta.3
     ```
 
 3. 查看升级进度：
