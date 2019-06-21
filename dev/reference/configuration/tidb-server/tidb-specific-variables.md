@@ -477,7 +477,7 @@ set tidb_query_log_max_len = 20
 
 由于打散 region 的时间可能比较长，主要由 PD 调度以及 TiKV 的负载情况所决定。这个变量用来设置在执行 `SPLIT REGION` 语句时，是否同步等待所有 region 都打散完成后再返回结果给客户端。默认 1 代表等待打散完成后再返回结果。0 代表不等待 region 打散完成就返回。
 
-需要注意的是，在 region 打散期间，对正在打散 region 上的写入和读取的性能会有一定影响，对比批量写入，导数据等场景，还是建议等待 region 打散完成后再开始导数据。
+需要注意的是，在 region 打散期间，对正在打散 region 上的写入和读取的性能会有一定影响，对于批量写入，导数据等场景，还是建议等待 region 打散完成后再开始导数据。
 
 ### tidb_wait_split_region_timeout
 
