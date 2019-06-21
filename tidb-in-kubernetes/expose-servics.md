@@ -20,7 +20,7 @@ tidb:
 
 在没有 LoadBalancer 时，可选择通过 NodePort 暴露。NodePort 有两种模式：
 
-- `externalTrafficPolicy=Cluster`: 集群所有的机器都会给 TiDB 分配 TCP
+- `externalTrafficPolicy=Cluster`：集群所有的机器都会给 TiDB 分配 TCP
   端口，此为默认值
 - `externalTrafficPolicy=Local`: 只有运行 TiDB 的机器会分配 TCP 端口，用于访问本地的 TiDB 实例
 
