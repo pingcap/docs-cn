@@ -48,7 +48,7 @@ category: how-to
 
  ## 扩缩容操作
 
-1. 修改 `values.yaml` 文件中的 `tidb.resources.limit`、`tikv.resources.limit`、`pd.resources.limit` 至期望值；
+1. 修改 `values.yaml` 文件中的 `tidb.resources`、`tikv.resources`、`pd.resources` 至期望值；
 2. 执行 `helm upgrade` 命令进行升级：
 
      {{< copyable "shell-regular" >}}
