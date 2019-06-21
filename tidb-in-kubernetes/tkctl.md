@@ -13,9 +13,9 @@ category: reference
 
 ### 下载预编译的可执行文件
 
-- [MacOS](http://download.pingcap.org/tkctl-darwin-amd64-latest.tgz)
-- [Linux](http://download.pingcap.org/tkctl-linux-amd64-latest.tgz)
-- [Windows](http://download.pingcap.org/tkctl-windows-amd64-latest.tgz)
+- [MacOS](https://download.pingcap.org/tkctl-darwin-amd64-latest.tgz)
+- [Linux](https://download.pingcap.org/tkctl-linux-amd64-latest.tgz)
+- [Windows](https://download.pingcap.org/tkctl-windows-amd64-latest.tgz)
 
 下载解压后，将 `tkctl` 可执行文件加入到可执行文件路径 (`PATH`) 中即完成安装。
 
@@ -279,7 +279,7 @@ gdb /proc/${pid:-1}/root/tikv-server 1
 (gdb) info threads
 ```
 
-#### Perf（以及火焰图）
+#### Perf 以及火焰图
 
 使用 `perf` 命令和 `run-flamegraph.sh` 脚本时，需要将目标容器的可执行文件拷贝到 Debug 容器中：
 
@@ -300,6 +300,8 @@ cp /proc/1/root/tikv-server /
 ```shell
 ./run_flamegraph.sh 1
 ```
+
+该脚本会自动将生成的火焰图（SVG 格式）上传至 transfer.sh，通过访问脚本输出的链接即可下载火焰图。
 
 ### tkctl ctop
 
