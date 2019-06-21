@@ -7,24 +7,24 @@ category: reference
 
 > **Note:** 为了方便阅读，本文后面用 `values.yaml` 指代 `charts/tidb-cluster/values.yaml`
 
-TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有配置项都在下面列表中。tidb-cluster 默认的 `values.yaml` 文件默认提供了基本的配置，通过这个基本配置，可以快速的启动一个 TiDB Cluster，但是如果用户需要特殊配置或是用于生产环境，你需要根据下面列表手动配置对应的配置项。
+TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的部署配置项都在下面列表中。tidb-cluster 的 `values.yaml` 文件默认提供了基本的配置，通过这个基本配置，可以快速的启动一个 TiDB Cluster，但是如果用户需要特殊配置或是用于生产环境，你需要根据下面列表手动配置对应的配置项。
 
 | 参数名 | 说明 | 默认值 |
 | ----- | ---- | ----- |
 | `rbac.create` | 是否启用 Kubernetes 的 RBAC | `true` |
-| `clusterName` | TiDB 集群名 | 默认不启用该变量，直接用 helm 的 `RealeaseName` 代替 |  |
+| `clusterName` | TiDB 集群名，默认不设置该变量，tidb-cluster 会直接用执行安装时的 `RealeaseName` 代替 | `nil` |
 | `extraLabels` | TiDB 集群附加的自定义标签 参考: [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) | `{}` |
 | `schedulerName` | TiDB 集群使用的调度器 | `tidb-scheduler` |
 | `timezone` | TiDB 集群默认时区 | `UTC` |
 | `pvReclaimPolicy` | TiDB 集群使用的 PV (Persistent Volume)的 reclaim policy | `Retain` |
-| `services[0].name` | TiDB 集群对外暴露服务的名字 |  |
-| `services[0].type` | TiDB 集群对外暴露服务的类型，(从 `ClusterIP`、`NodePort`、`LoadBalancer` 中选择) |  |
-| `discovery.image` | TiDB 集群 PD 服务发现组件的镜像 | `pingcap/tidb-operator:v1.0.0-beta.3` |
-| `discovery.imagePullPolicy` | 服务发现组件镜像的拉取策略 | `IfNotPresent` |
-| `discovery.resoureces.limits.cpu` | 服务发现组件的 CPU 资源限额 |  |
-| `discovery.resoureces.limits.memory` | 服务发现组件的内存资源限额 |  |
-| `discovery.resoureces.requests.cpu` | 服务发现组件的 CPU 资源请求 |  |
-| `discovery.resoureces.requests.memory` | 服务发现组件的内存资源请求 |  |
+| `services[0].name` | TiDB 集群对外暴露服务的名字 | `nil` |
+| `services[0].type` | TiDB 集群对外暴露服务的类型，(从 `ClusterIP`、`NodePort`、`LoadBalancer` 中选择) | `nil` |
+| `discovery.image` | TiDB 集群 PD 服务发现组件的镜像, 该组件用于在 PD 集群第一次启动时，为各个 PD 实例提供服务发现功能以协调启动顺序 | `pingcap/tidb-operator:v1.0.0-beta.3` |
+| `discovery.imagePullPolicy` | PD 服务发现组件镜像的拉取策略 | `IfNotPresent` |
+| `discovery.resoureces.limits.cpu` | PD 服务发现组件的 CPU 资源限额 | `250m` |
+| `discovery.resoureces.limits.memory` | PD 服务发现组件的内存资源限额 | `150Mi` |
+| `discovery.resoureces.requests.cpu` | PD 服务发现组件的 CPU 资源请求 | `80m` |
+| `discovery.resoureces.requests.memory` | PD 服务发现组件的内存资源请求 | `50Mi` |
 | `enableConfigMapRollout` | 是否开启 TiDB 集群自动滚动更新。如果启用，则 TiDB 集群的 ConfigMap 变更时，TiDB 集群自动更新对应组件。该配置只在 tidb-operator v1.0 及以上版本才支持 | `false` |
 | `pd.replicas` | PD 的 Pod 数 | `3` |
 | `pd.image` | PD 镜像 | `pingcap/pd:v3.0.0-rc.1` |
@@ -33,12 +33,12 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有�
 | `pd.storageClassName` | PD 使用的 storageClass， storageClassName 指代一种由 Kubernetes 集群提供的存储类型，不同的类可能映射到服务质量级别、备份策略或集群管理员确定的任意策略。详细参考：[storage-classes](https://kubernetes.io/docs/concepts/storage/storage-classes) | `local-storage` |
 | `pd.maxStoreDownTime` | `pd.maxStoreDownTime` 指一个 store 节点断开连接多长时间后状态会被标记为 `down`， 如果状态变为 `down` 后， store 节点开始迁移数据到其它 store 节点 | `30m` |
 | `pd.maxReplicas` | `pd.maxReplicas` 是 TiDB 集群的数据的副本数 | `3` |
-| `pd.resources.limits.cpu` | 每个 PD Pod 的 CPU 资源限额 |  |
-| `pd.resources.limits.memory` | 每个 PD Pod 的内存资源限额 |  |
-| `pd.resources.limits.storage` | 每个 PD Pod 的存储容量限额 |  |
-| `pd.resources.requests.cpu` | 每个 PD Pod 的 CPU 资源请求 |  |
-| `pd.resources.requests.memory` | 每个 PD Pod 的内存资源请求 |  |
-| `pd.resources.requests.storage` | 每个 PD Pod 的存储容量请求 |  |
+| `pd.resources.limits.cpu` | 每个 PD Pod 的 CPU 资源限额 | `nil` |
+| `pd.resources.limits.memory` | 每个 PD Pod 的内存资源限额 | `nil` |
+| `pd.resources.limits.storage` | 每个 PD Pod 的存储容量限额 | `nil` |
+| `pd.resources.requests.cpu` | 每个 PD Pod 的 CPU 资源请求 | `nil` |
+| `pd.resources.requests.memory` | 每个 PD Pod 的内存资源请求 | `nil` |
+| `pd.resources.requests.storage` | 每个 PD Pod 的存储容量请求 | `1Gi` |
 | `pd.affinity` | `pd.affinity` 定义 PD 的调度规则和偏好，详细请参考：[affinity-and-anti-affinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity) | `{}` |
 | `pd.nodeSelector` | `pd.nodeSelector` 确保 PD Pods 只调度到以该键值对作为标签的节点，详情参考：[nodeselector](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#nodeselector) | `{}` |
 | `pd.tolerations` | `pd.tolerations` 应用于 PD Pods，允许 PD Pods 调度到含有指定 taints 的节点上，详情参考：[taint-and-toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration) | `{}` |
@@ -49,12 +49,12 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有�
 | `tikv.logLevel` | TiKV 的日志级别 | `info` |
 | `tikv.storageClassName` | TiKV 使用的 storageClass， storageClassName 指代一种由 Kubernetes 集群提供的存储类型，不同的类可能映射到服务质量级别、备份策略或集群管理员确定的任意策略。详细参考：[storage-classes](https://kubernetes.io/docs/concepts/storage/storage-classes) | `local-storage` |
 | `tikv.syncLog` | syncLog 指是否启用 raft 日志同步功能，启用该功能能保证在断电时数据不丢失 | `true` |
-| `tikv.resources.limits.cpu` | 每个 TiKV Pod 的 CPU 资源限额 |  |
-| `tikv.resources.limits.memory` | 每个 TiKV Pod 的内存资源限额 |  |
-| `tikv.resources.limits.storage` | 每个 TiKV Pod 的存储容量限额 |  |
-| `tikv.resources.requests.cpu` | 每个 TiKV Pod 的 CPU 资源请求 |  |
-| `tikv.resources.requests.memory` | 每个 TiKV Pod 的内存资源请求 |  |
-| `tikv.resources.requests.storage` | 每个 TiKV Pod 的存储容量请求 |  |
+| `tikv.resources.limits.cpu` | 每个 TiKV Pod 的 CPU 资源限额 | `nil` |
+| `tikv.resources.limits.memory` | 每个 TiKV Pod 的内存资源限额 | `nil` |
+| `tikv.resources.limits.storage` | 每个 TiKV Pod 的存储容量限额 | `nil` |
+| `tikv.resources.requests.cpu` | 每个 TiKV Pod 的 CPU 资源请求 | `nil` |
+| `tikv.resources.requests.memory` | 每个 TiKV Pod 的内存资源请求 | `nil` |
+| `tikv.resources.requests.storage` | 每个 TiKV Pod 的存储容量请求 | `10Gi` |
 | `tikv.affinity` | `tikv.affinity` 定义 TiKV 的调度规则和偏好，详细请参考：[affinity-and-anti-affinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity) | `{}` |
 | `tikv.nodeSelector` | `tikv.nodeSelector`确保 TiKV Pods 只调度到以该键值对作为标签的节点，详情参考：[nodeselector](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#nodeselector) | `{}` |
 | `tikv.tolerations` | `tikv.tolerations` 应用于 TiKV Pods，允许 TiKV Pods 调度到含有指定 taints 的节点上，详情参考：[taint-and-toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration) | `{}` |
@@ -65,17 +65,15 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有�
 | `tikv.readpoolCoprocessorConcurrency` | 一般如果 `tikv.resources.limits.cpu` > 8，则 `tikv.readpoolCoprocessorConcurrency` 设置为`tikv.resources.limits.cpu` * 0.8 | `8` |
 | `tikv.storageSchedulerWorkerPoolSize` | TiKV 调度程序的工作池大小，应在重写情况下增加，同时应小于总 CPU 核心 | `4` |
 | `tidb.replicas` | TiDB 的 Pod 数 | `2` |
-| `tidb.image` | TiDB 的镜像 | `pingcap/tidb:v3.0.0-rc.1` |  |
-| `tidb.imagePullPolicy` | TiDB 镜像的拉取策略 | `IfNotPresent` |  |
+| `tidb.image` | TiDB 的镜像 | `pingcap/tidb:v3.0.0-rc.1` |
+| `tidb.imagePullPolicy` | TiDB 镜像的拉取策略 | `IfNotPresent` |
 | `tidb.logLevel` | TiDB 的日志级别 | `info` |
-| `tidb.resources.limits.cpu` | 每个 TiDB Pod 的 CPU 资源限额 |  |
-| `tidb.resources.limits.memory` | 每个 TiDB Pod 的内存资源限额 |  |
-| `tidb.resources.limits.storage` | 每个 TiDB Pod 的存储容量限额 |  |
-| `tidb.resources.requests.cpu` | 每个 TiDB Pod 的 CPU 资源请求 |  |
-| `tidb.resources.requests.memory` | 每个 TiDB Pod 的内存资源请求 |  |
-| `tidb.resources.requests.storage` | 每个 TiDB Pod 的存储容量请求 |  |
-| `tidb.passwordSecretName`| 存放 TiDB 用户名及密码的 Secret 的名字，该 Secret 可以使用以下命令创建机密：`kubectl create secret generic tidb secret--from literal=root=<root password>--namespace=<namespace>`，如果没有设置，则 TiDB 根密码为空 |  |
-| `tidb.initSql`| 在 TiDB 集群启动成功后，会执行的初始化脚本 |  |
+| `tidb.resources.limits.cpu` | 每个 TiDB Pod 的 CPU 资源限额 | `nil` |
+| `tidb.resources.limits.memory` | 每个 TiDB Pod 的内存资源限额 | `nil` |
+| `tidb.resources.requests.cpu` | 每个 TiDB Pod 的 CPU 资源请求 | `nil` |
+| `tidb.resources.requests.memory` | 每个 TiDB Pod 的内存资源请求 | `nil` |
+| `tidb.passwordSecretName`| 存放 TiDB 用户名及密码的 Secret 的名字，该 Secret 可以使用以下命令创建机密：`kubectl create secret generic tidb secret--from literal=root=<root password>--namespace=<namespace>`，如果没有设置，则 TiDB 根密码为空 | `nil` |
+| `tidb.initSql`| 在 TiDB 集群启动成功后，会执行的初始化脚本 | `nil` |
 | `tidb.affinity` | `tidb.affinity` 定义 TiDB 的调度规则和偏好，详细请参考：[affinity-and-anti-affinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity) | `{}` |
 | `tidb.nodeSelector` | `tidb.nodeSelector`确保 TiDB Pods 只调度到以该键值对作为标签的节点，详情参考：[nodeselector](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#nodeselector) | `{}` |
 | `tidb.tolerations` | `tidb.tolerations` 应用于 TiDB Pods，允许 TiDB Pods 调度到含有指定 taints 的节点上，详情参考：[taint-and-toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration) | `{}` |
