@@ -1,5 +1,5 @@
 ---
-title: 如何找到查询慢的原因
+title: 定位慢查询
 category: how-to
 aliases: ['/docs-cn/sql/identify-slow-queries/']
 ---
