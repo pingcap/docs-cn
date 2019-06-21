@@ -29,4 +29,4 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 ## erro message
 > [!WARNING]
- We cannot open this file for you.
+ We cannot open this file for you. please try again later.
