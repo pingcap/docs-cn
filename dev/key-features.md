@@ -27,3 +27,7 @@ aliases: ['/docs-cn/features/','/docs-cn/key-features/']
 - TiKV
 
     TiKV 是一个集群，通过 Raft 协议保持数据的一致性（副本数量可配置，默认保存三副本），并通过 PD 做负载均衡调度。单个节点失效时，会影响这个节点上存储的所有 Region。对于 Region 中的 Leader 结点，会中断服务，等待重新选举；对于 Region 中的 Follower 节点，不会影响服务。当某个 TiKV 节点失效，并且在一段时间内（默认 30 分钟）无法恢复，PD 会将其上的数据迁移到其他的 TiKV 节点上。
+    
+## TiDB Binlog
+TiDB Binlog 组件用于收集 TiDB 的 binlog，并准实时同步给下游，如：TiDB/MySQL等。该组件在功能上类似于 MySQL 的主从复制，会收集各个 TiDB 实例产生的 binlog，并按事务提交的时间排序，全局有序的将数据同步至下游。利用 TiDB Binlog 可以实现数据准实时同步到其他数据库，以及 TiDB 数据准实时的备份与恢复。
+ 
