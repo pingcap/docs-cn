@@ -30,7 +30,9 @@ PD 和 TiDB 实例的迁移较快，可以采取主动驱逐实例到其它节�
     ```shell
     kubectl get pod --all-namespaces -o wide | grep <node-name>
     ```
-	
+
+    假如存在 TiKV 实例，请参考[维护 TiKV 实例所在节点](#维护-tikv-实例所在节点)。
+    
 2. 使用 `kubectl cordon` 命令防止新的 Pod 调度到待维护节点上：
 
     {{< copyable "shell-regular" >}}
