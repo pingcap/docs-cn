@@ -193,7 +193,7 @@ pd-ctl -d
     ```shell
     kubectl delete -n ${namespace} pvc ${pvc_name}
     ```
-		
+
 6. 删除 TiKV 实例：
 
     {{< copyable "shell-regular" >}}
@@ -209,7 +209,7 @@ pd-ctl -d
     ```shell
     watch kubectl -n ${namespace} get pod -o wide
     ```
-	
+
     假如待维护节点上还有其它 TiKV 实例，则重复同样的操作步骤直到所有的 TiKV 实例都迁移到其它节点上。
 
 8. 确认节点不再有 TiKV 实例后，再逐出节点上的其它实例：
