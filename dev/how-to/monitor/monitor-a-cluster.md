@@ -110,7 +110,7 @@ curl http://127.0.0.1:2379/pd/api/v1/stores
 
 整个架构如下图所示，在 TiDB/PD/TiKV 三个组件的启动参数中添加 Prometheus Pushgateway 地址:
 
-![Deployment Architecture](../media/monitor-architecture.png)
+![Deployment Architecture](/media/monitor-architecture.png)
 
 ### 搭建监控系统
 
