@@ -5,7 +5,7 @@ category: reference
 
 # TiDB Backup 配置参数
 
-TiDB-Backup 是一个用于 TiDB 集群备份和恢复的 Helm Chart, 这篇文章将详细介绍 TiDB-Backup 的可配置参数。参考[备份与恢复](/dev/how-to/maintain/backup-and-restore.md)了解如何使用 TiDB-Backup 进行集群备份恢复。
+TiDB-Backup 是一个用于 TiDB 集群备份和恢复的 Helm Chart。本文详细介绍了 TiDB-Backup 的可配置参数。了解如何使用 TiDB-Backup 进行集群备份恢复，请参考[备份与恢复](/dev/how-to/maintain/backup-and-restore.md)。
 
 阅读本文档前，请参考 Helm 使用说明来了解如何修改这些配置项。 
 
@@ -41,7 +41,7 @@ TiDB-Backup 是一个用于 TiDB 集群备份和恢复的 Helm Chart, 这篇文�
 
 ## `storage.className`
 
-+ Kubernetes StorageClass 
++ Kubernetes StorageClass
 + 默认："local-storage"
 + 备份任务需要绑定一个持久卷 (Persistent Volume, PV) 来永久或临时存储备份数据，`StorageClass` 用于声明持久卷使用的存储类型，需要确保该 `StorageClass` 在 Kubernetes 集群中存在。 
 
