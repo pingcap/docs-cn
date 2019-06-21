@@ -16,7 +16,7 @@ TiDB 在 V2.1.8 之后更改了慢日志格式，V2.1.8 之前的版本请看[�
 
 ## 获取日志
 
-TiDB 会将执行时间超过 [slow-threshold](/op-guide/tidb-config-file.md#slow-threshold) 的语句默认单独输出到 [slow-query-file](/op-guide/tidb-config-file.md#slow-query-file) 文件中 ，并对慢日志的格式做了兼容，可以用 `pt-query-digest` 直接分析慢日志文件。`slow-threshold` 可以通过配置文件修改，默认是 300ms。`slow-query-file` 默认是 `tidb-slow.log`。
+TiDB 会将执行时间超过 [slow-threshold](/dev/reference/configuration/tidb-server/configuration-file.md#slow-threshold) 的语句默认单独输出到 [slow-query-file](/dev/reference/configuration/tidb-server/configuration-file.md#slow-query-file) 文件中 ，并对慢日志的格式做了兼容，可以用 `pt-query-digest` 直接分析慢日志文件。`slow-threshold` 可以通过配置文件修改，默认是 300ms。`slow-query-file` 默认是 `tidb-slow.log`。
 
 ## 示例
 
