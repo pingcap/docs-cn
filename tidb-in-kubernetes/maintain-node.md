@@ -49,7 +49,7 @@ PD 和 TiDB 实例的迁移较快，可以采取主动驱逐实例到其它节�
     kubectl drain <node-name> --ignore-daemonsets --delete-local-data
     ```
 
-    运行后，该节点上的 TiDB 实例会自动迁移到其它可用节点上，PD 实例则会在 5 分钟后触发[自动故障转移](/TODO/link-to-auto-failover)补齐节点。
+    运行后，该节点上的 TiDB 实例会自动迁移到其它可用节点上，PD 实例则会在 5 分钟后触发自动故障转移补齐节点。
 
 4. 此时，假如希望下线该 Kubernetes 节点，则可以将该节点删除：
 
@@ -144,7 +144,7 @@ pd-ctl -d
 
     > **注意：**
     > 
-    > 下线 TiKV 实例前，需要保证集群中剩余的 TiKV 实例数不少于 PD 配置中的 TiKV 数据副本数（配置项：`max-replicas`）。假如不符合该条件，需要先操作[扩容 TiKV](/TODO/link-to-scaling)。
+    > 下线 TiKV 实例前，需要保证集群中剩余的 TiKV 实例数不少于 PD 配置中的 TiKV 数据副本数（配置项：`max-replicas`）。假如不符合该条件，需要先操作扩容 TiKV。
 
     查看 TiKV 实例的 `store-id`：
     
