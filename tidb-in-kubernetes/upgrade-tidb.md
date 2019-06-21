@@ -52,8 +52,6 @@ category: how-to
     
     当所有 Pod 都重建完毕进入 `Running` 状态后，升级完成。
 
-配置文件的滚动更新机制与升级版本相同，不会影响业务正常运行。
-
 > **注意：**
 > 
 > 将 `enableConfigMapRollout` 特性从关闭状态打开时，即使没有配置变更，也会触发一次 PD、TiKV、TiDB 的滚动更新。
