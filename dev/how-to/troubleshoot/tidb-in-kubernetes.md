@@ -10,5 +10,5 @@ TiDB Operator 使用 PV(Persistent Volume)/PVC(Persistent Volume Claim) 来存�
 此时集群恢复的办法就是使用 `helm install` 命令来创建一个同名的集群，之前保留下来未被删除的 PV/PVC 以及数据会被复用：
 
 ```shell
-helm install charts/tidb-cluster -n ${releaseName} --namespace=${namespace}
+helm install pingcap/tidb-cluster -n ${releaseName} --namespace=${namespace} --version=v1.0.0-beta.3 -f values.yaml
 ```
