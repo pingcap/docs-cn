@@ -44,7 +44,9 @@ category: how-to
 
  # 垂直扩缩容：
 
- 垂直扩缩容操作指的是通过增加或减少节点的资源限制，来达到集群扩缩容的目的。垂直扩缩容本质上是节点滚动升级的过程。操作步骤如下：
+ 垂直扩缩容操作指的是通过增加或减少节点的资源限制，来达到集群扩缩容的目的。垂直扩缩容本质上是节点滚动升级的过程。
+
+ ## 扩缩容操作
 
 1. 修改 `values.yaml` 文件中的 `tidb.resources.limit`、`tikv.resources.limit`、`pd.resources.limit` 至期望值；
 2. 执行 `helm upgrade` 命令进行升级：
@@ -63,7 +65,7 @@ category: how-to
     watch kubectl -n ${namespace} get pod -o wide
     ```
 
-     当所有 Pod 都重建完毕进入 `Running` 状态后，升级完成。
+     当所有 Pod 都重建完毕进入 `Running` 状态后，垂直扩缩容完成。
 
  > **注意：**
 > 
