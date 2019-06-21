@@ -18,11 +18,15 @@ category: how-to
 1. 修改集群的 `values.yaml` 文件中的 `tidb.image`、`tikv.image`、`pd.image` 的值为新版本镜像；
 2. 执行 `helm upgrade` 命令进行升级：
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
     helm upgrade ${releaseName} pingcap/tidb-cluster -f values.yaml --version=v1.0.0-beta.3
     ```
 
 3. 查看升级进度：
+
+    {{< copyable "shell-regular" >}}
 
     ```shell
     watch kubectl -n ${namespace} get pod -o wide
@@ -40,11 +44,15 @@ category: how-to
 2. 根据需求修改 `values.yaml` 中需要调整的集群配置项；
 3. 执行 `helm upgrade` 命令进行升级：
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
     helm upgrade ${releaseName} pingcap/tidb-cluster -f values.yaml --version=v1.0.0-beta.3
     ```
 
 4. 查看升级进度：
+
+    {{< copyable "shell-regular" >}}
 
     ```shell
     watch kubectl -n ${namespace} get pod -o wide
