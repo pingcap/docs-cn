@@ -68,6 +68,6 @@ kubectl -n ${namespace} get svc ${release}-tidb -ojsonpath="{.spec.ports[?(@.nam
 
 ## LoadBalancer
 
-若运行在有 LoadBalancer 的环境，比如 GCP/AWS 平台，建议使用云平台 LoadBalancer 特性。
+若运行在有 LoadBalancer 的环境，比如 GCP/AWS 平台，建议使用云平台的 LoadBalancer 特性。
 
 访问 [Kubernetes Service 文档](https://kubernetes.io/docs/concepts/services-networking/service/)，了解更多 Service 特性以及云平台 Load Balancer 支持。
