@@ -25,7 +25,7 @@ tidb:
 - `externalTrafficPolicy=Cluster`：集群所有的机器都会给 TiDB 分配 TCP
 - `externalTrafficPolicy=Local`：只有运行 TiDB 的机器会分配 TCP 端口，用于访问本地的 TiDB 实例
 
-使用 Local 模式时，建议打开 tidb-scheduler 的 `StableScheduling` 特性。tidb-scheduler 会尽可能在升级过程中将新 TiDB 实例调度到原机器，这样集群外客户端不用在 TiDB 重启后更新配置。
+    使用 Local 模式时，建议打开 tidb-scheduler 的 `StableScheduling` 特性。tidb-scheduler 会尽可能在升级过程中将新 TiDB 实例调度到原机器，这样集群外的客户端便不需要在 TiDB 重启后更新配置。
 
 ### 查看 NodePort 模式下对外暴露的 IP/PORT
 
