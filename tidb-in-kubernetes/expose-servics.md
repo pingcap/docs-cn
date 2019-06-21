@@ -7,6 +7,8 @@ category: how-to
 
 Kubernetes 集群内访问 TiDB 使用 TiDB service 域名 `<tidbcluster-name>-tidb.<namespace>` 即可。若需要集群外访问，则需将 TiDB 服务端口暴露出去。在 tidb-cluster helm chart 中，通过 values 文件中 `tidb.service` 字段配置：
 
+{{< copyable "" >}}
+
 ```yaml
 tidb:
   service:
@@ -30,10 +32,22 @@ tidb:
 
 查看 Service 分配的 Node Port，可通过获取 TiDB 的 Service 对象来获知：
 
+{{< copyable "shell-regular" >}}
+
 ```shell
-$ namespace=<your-tidb-namesapce>
-$ release=<your-tidb-release-name>
-$ kubectl -n ${namespace} get svc ${release}-tidb -ojsonpath="{.spec.ports[?(@.name=='mysql-client')].nodePort}{'\n'}"
+namespace=<your-tidb-namesapce>
+```
+
+{{< copyable "shell-regular" >}}
+
+```shell
+release=<your-tidb-release-name>
+```
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl -n ${namespace} get svc ${release}-tidb -ojsonpath="{.spec.ports[?(@.name=='mysql-client')].nodePort}{'\n'}"
 ```
 
 查看可通过哪些节点的 IP 访问 TiDB 服务，有两种情况：
@@ -41,10 +55,17 @@ $ kubectl -n ${namespace} get svc ${release}-tidb -ojsonpath="{.spec.ports[?(@.n
 - `externalTrafficPolicy` 为 `Cluster` 时，所有节点 IP 均可
 - `externalTrafficPolicy` 为 `Local` 时，可通过以下命令获取指定集群的 TiDB 实例所在的节点
 
-```shell
-$ release=<your-tidb-release-name>
-$ kubectl -n stability-cluster1 get pods -l "app.kubernetes.io/component=tidb,app.kubernetes.io/instance=${release}" -ojsonpath="{range .items[*]}{.spec.nodeName}{'\n'}{end}"
-```
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    release=<your-tidb-release-name>
+    ```
+    
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl -n stability-cluster1 get pods -l "app.kubernetes.io/component=tidb,app.kubernetes.io/instance=${release}" -ojsonpath="{range .items[*]}{.spec.nodeName}{'\n'}{end}"
+    ```
 
 ## LoadBalancer
 
