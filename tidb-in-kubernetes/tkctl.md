@@ -197,8 +197,15 @@ NAME                  READY   STATUS    MEMORY          CPU   RESTARTS   AGE    
 demo-cluster-tikv-0   2/2     Running   2098Mi/4196Mi   2/2   0          3m19s   172.16.4.155
 demo-cluster-tikv-1   2/2     Running   2098Mi/4196Mi   2/2   0          4m8s    172.16.4.160
 demo-cluster-tikv-2   2/2     Running   2098Mi/4196Mi   2/2   0          4m45s   172.16.4.157
-$ tkctl get volume
+```
+
+{{< copyable "shell-regular" >}}
+
+```shell
 tkctl get volume
+```
+
+```
 VOLUME              CLAIM                      STATUS   CAPACITY   NODE           LOCAL
 local-pv-d5dad2cf   tikv-demo-cluster-tikv-0   Bound    1476Gi     172.16.4.155   /mnt/disks/local-pv56
 local-pv-5ade8580   tikv-demo-cluster-tikv-1   Bound    1476Gi     172.16.4.160   /mnt/disks/local-pv33
