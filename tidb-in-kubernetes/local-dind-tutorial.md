@@ -8,7 +8,7 @@ category: how-to
 
 本文介绍了如何在个人电脑（Linux 或 macOS 系统）上使用 Kubernetes 部署 TiDB Operator 和 TiDB 集群，以达到开发或测试目的。
 
-[Docker in Docker](https://hub.docker.com/_/docker/) (DinD) 将 Docker 容器作为虚拟机一样，在第一层 Dokcer 容器里再运行一层 Docker 容器。[kubeadm-dind-cluster](https://github.com/kubernetes-sigs/kubeadm-dind-cluster) 使用这项技术在 Docker 容器中运行 Kubernetes 集群。TiDB Operator 通过完善过的一套 DinD 脚本管理 DinD Kubernetes 集群。
+ [kubeadm-dind-cluster](https://github.com/kubernetes-sigs/kubeadm-dind-cluster) 使用 [Docker in Docker](https://hub.docker.com/_/docker/)（DinD）技术在 Docker 容器中运行 Kubernetes 集群。TiDB Operator 通过完善过的一套 DinD 脚本管理 DinD Kubernetes 集群。
 
 ## 环境准备
 
