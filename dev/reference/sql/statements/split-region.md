@@ -69,7 +69,7 @@ SPLIT TABLE t BETWEEN (0) AND (1000000000) REGIONS 16;
 
 #### 不均匀切分
 
-如果已知数据不是均匀分布的，比如想要 -inf ~ 10000 切一个 region，10000 ~ 90000 切一个 region，90000 ~ +inf 切一个 region ，可以通过手动指定点来切分 region，示例如下：
+如果已知数据不是均匀分布的，比如想要 -inf ~ 10000 切一个 region，10000 ~ 90000 切一个 region，90000 ~ +inf 切一个 region，可以通过手动指定点来切分 region，示例如下：
 
 {{< copyable "sql" >}}
 
@@ -117,7 +117,7 @@ SPLIT TABLE t INDEX idx BETWEEN (-9223372036854775808) AND (9223372036854775807)
 SPLIT TABLE t INDEX idx1 BETWEEN ("a") AND ("z") REGIONS 26;
 ```
 
-该语句会把表 t 中 idx1 索引数据的 region 从 a~z 切成 26 个 region，region1 的范围是 [minIndexValue, b)，region 2 的范围是 [b, c)，……，region 26 的范围是 [y, minIndexValue]。对于 idx 索引以 a 为前缀的数据都会写到 region1，以 b 为前缀的索引数据都会写到 region 2，以此类推。
+该语句会把表 t 中 idx1 索引数据的 region 从 a~z 切成 26 个 region，region1 的范围是 [minIndexValue, b)，region2 的范围是 [b, c)，……，region26 的范围是 [y, minIndexValue]。对于 idx 索引以 a 为前缀的数据都会写到 region1，以 b 为前缀的索引数据都会写到 region2，以此类推。
 
 如果索引 idx2 的列是 timestamp/datatime 等时间类型，希望根据时间区间来切分索引数据：
 
@@ -174,7 +174,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
 ## pre_split_regions
 
-使用带有 `shard_row_id_bits` 的表时，如果希望建表时就做均匀切分 region，可以考虑配合 `pre_split_regions` 一起使用，用来在建表成功后就开始预均匀切分 `2^(pre_split_regions-1)` 个 regions。
+使用带有 `shard_row_id_bits` 的表时，如果希望建表时就做均匀切分 region，可以考虑配合 `pre_split_regions` 一起使用，用来在建表成功后就开始预均匀切分 `2^(pre_split_regions-1)` 个 region。
 
 > **注意：**
 >
@@ -199,8 +199,8 @@ region3:   [ 2<<61     ,  3<<61 )
 region4:   [ 3<<61     ,  +inf  )
 ```
 
-关于为什么是切割 2^(pre_split_regions-1) 个 regions，因为使用 shard_row_id_bits 时，只会分配正数给 `_tidb_rowid`，所以就没有必要给负数的那段区间做 split region 了。
+关于为什么是切割 2^(pre_split_regions-1) 个 region，因为使用 shard_row_id_bits 时，只会分配正数给 `_tidb_rowid`，所以就没有必要给负数的那段区间做 split region 了。
 
-## 相关 session variable
+## 相关 session 变量
 
-和 SPLIT REGION 相关的 session variable 有 `tidb_wait_split_region_finish`，`tidb_wait_split_region_timeout`, 具体可以见 [TiDB 专用系统变量和语法](/dev/reference/configuration/tidb-server/tidb-specific-variables.md)。
+和 `SPLIT REGION` 语句相关的 session 变量有 `tidb_wait_split_region_finish` 和 `tidb_wait_split_region_timeout`，具体可参考 [TiDB 专用系统变量和语法](/dev/reference/configuration/tidb-server/tidb-specific-variables.md)。
