@@ -216,7 +216,7 @@ local-pv-e54c122a   pd-demo-cluster-pd-2       Bound    1476Gi     172.16.4.156 
 
 | 参数            | 缩写      | 描述                                                                                                                            |
 | -----           | --------- | -----------                                                                                                                     |
-| --image         |           | 指定 debug 容器使用的镜像，默认为 `pingcap/tidb-debug:lastest`                                                                  |
+| --image         |           | 指定 debug 容器使用的镜像，默认为 `pingcap/tidb-debug:latest`                                                                  |
 | --container     | -c        | 选择需要诊断的容器，默认为 Pod 定义中的第一个容器                                                                               |
 | --docker-socket |           | 指定目标节点上的 Docker Socket，默认为 `/var/run/docker.sock`                                                                   |
 | --privileged    |           | 是否为 debug 容器开启 [privileged](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities) 模式 |
