@@ -7,7 +7,7 @@ category: reference
 
 > **Note:** 为了方便阅读，本文后面用 `values.yaml` 指代 `charts/tidb-cluster/values.yaml`
 
-TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有配置项都在下面列表中。tidb-cluster 默认的 `values.yaml` 文件默认提供了基本的配置，通过这个基本配置，可以快速得启动一个 TiDB Cluster，但是如果用户需要特殊配置或是用于生产环境，你需要根据下面列表手动配置对应的配置项。
+TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的所有配置项都在下面列表中。tidb-cluster 默认的 `values.yaml` 文件默认提供了基本的配置，通过这个基本配置，可以快速的启动一个 TiDB Cluster，但是如果用户需要特殊配置或是用于生产环境，你需要根据下面列表手动配置对应的配置项。
 
 | 参数名 | 说明 | 默认值 |
 | ----- | ---- | ----- |
