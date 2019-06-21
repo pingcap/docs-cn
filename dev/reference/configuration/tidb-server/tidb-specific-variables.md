@@ -243,7 +243,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 默认值：32
 
-这个变量用来设置执行过程中初始 chunk 的行数。默认值是32。
+这个变量用来设置执行过程中初始 chunk 的行数。默认值是 32。
 
 ### tidb_max_chunk_size
 
