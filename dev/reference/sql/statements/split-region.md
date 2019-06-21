@@ -91,7 +91,7 @@ t[table_id]_i[index_id][index_value]
 t22_i5abc
 ```
 
-同一表中同一索引数据的 `table_id` 和 `index_id` 是一样的，所以切分索引 region 要根据 `index_value` 来切分 region。
+同一表中同一索引数据的 `table_id` 和 `index_id` 是一样的，所以要根据 `index_value` 切分索引 region。
 
 #### 均匀切分
 
@@ -119,7 +119,7 @@ SPLIT TABLE t INDEX idx1 BETWEEN ("a") AND ("z") REGIONS 26;
 
 该语句会把表 t 中 idx1 索引数据的 region 从 a~z 切成 26 个 region，region1 的范围是 [minIndexValue, b)，region2 的范围是 [b, c)，……，region26 的范围是 [y, minIndexValue]。对于 idx 索引以 a 为前缀的数据都会写到 region1，以 b 为前缀的索引数据都会写到 region2，以此类推。
 
-如果索引 idx2 的列是 timestamp/datatime 等时间类型，希望根据时间区间来切分索引数据：
+如果索引 idx2 的列是 timestamp/datetime 等时间类型，希望根据时间区间来切分索引数据：
 
 {{< copyable "sql" >}}
 
