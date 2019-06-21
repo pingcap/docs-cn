@@ -23,7 +23,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 
 PD 和 TiDB 实例的迁移较快，可以采取主动驱逐实例到其它节点上的策略进行节点维护：
 
-1. 检查待维护节点上是否有 TiKV 实例，假如存在 TiKV 实例，请参考[维护 TiKV 实例所在节点](#维护-tikv-实例所在节点)：
+1. 检查待维护节点上是否有 TiKV 实例：
     
     {{< copyable "shell-regular" >}}
     
@@ -69,7 +69,7 @@ PD 和 TiDB 实例的迁移较快，可以采取主动驱逐实例到其它节�
     
     观察到节点进入 `Ready` 状态后，继续操作。
 
-5. 使用 `kubectl uncordon` 命令解除节点的调度限制:
+5. 使用 `kubectl uncordon` 命令解除节点的调度限制：
 
     {{< copyable "shell-regular" >}}
     
