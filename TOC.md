@@ -235,6 +235,7 @@
   + 性能调优
     - [SQL 优化流程](dev/reference/performance/sql-optimizer-overview.md)
     - [理解 TiDB 执行计划](dev/reference/performance/understanding-the-query-execution-plan.md)
+    - [执行计划绑定](dev/reference/performance/execution-plan-bind.md)
     - [统计信息概述](dev/reference/performance/statistics.md)
     - [Optimizer Hints](dev/reference/performance/optimizer-hints.md)
     - [TiKV 调优](dev/reference/performance/tune-tikv.md)
