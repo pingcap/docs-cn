@@ -197,6 +197,7 @@
     - [约束](dev/reference/sql/constraints.md)
     - [生成列](dev/reference/sql/generated-columns.md)
     - [字符集](dev/reference/sql/character-set.md)
+    - [SQL模式](dev/reference/sql/sql-mode.md)
   + 配置
     + tidb-server
       - [MySQL 系统变量](dev/reference/configuration/tidb-server/mysql-variables.md)
