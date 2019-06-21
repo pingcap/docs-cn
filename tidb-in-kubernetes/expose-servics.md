@@ -28,7 +28,7 @@ tidb:
 
 ### 查看 NodePort 模式下对外暴露的 IP/PORT
 
-查看 Service 分配的 Node Port，可通过 kubectl 获取 TiDB 的 service 对象获知。
+查看 Service 分配的 Node Port，可通过获取 TiDB 的 Service 对象来获知：
 
 ```shell
 $ namespace=<your-tidb-namesapce>
