@@ -225,16 +225,6 @@ set @@global.tidb_distsql_scan_concurrency = 10
 当删除大量数据时，可以将其设置为 1，这样待删除数据会被自动切分为多个 batch，每个 batch 使用一个单独的事务进行删除。
 该用法破坏了事务的原子性，因此，不建议在生产环境中使用。
 
-### tidb_batch_commit
-
-作用域：SESSION
-
-默认值：0
-
-TiDB 有一个事务限制是单个事务里面执行的语句数量不能超过 `stmt-count-limit` 个。`stmt-count-limit` 在配置文件中设置，默认值是 5000。
-
-这个变量用来设置事务中，如果执行的语句数量超过 `stmt-count-limit` 后，自动提交当前事务，并新起一个事务执行后面的语句。默认值是 0 ，即不启用这个功能。注意，开启 `tidb_batch_commit` 后，会把一个大事务拆分成多个小事务来执行。
-
 ### tidb_dml_batch_size
 
 作用域：SESSION
@@ -246,6 +236,14 @@ TiDB 有一个事务限制是单个事务里面执行的语句数量不能超过
 > **注意：**
 >
 > 当单行总数据大小很大时，20k 行总数据量数据会超过单个事务大小限制。因此在这种情况下，用户应当将其设置为一个较小的值。
+
+### tidb_init_chunk_size
+
+作用域：SESSION | GLOBAL
+
+默认值：32
+
+这个变量用来设置执行过程中初始 chunk 的行数。默认值是32。
 
 ### tidb_max_chunk_size
 
@@ -420,6 +418,14 @@ TiDB 有一个事务限制是单个事务里面执行的语句数量不能超过
 
 这个变量用来设置 `ADD INDEX` 操作 re-organize 阶段的执行优先级，可设置为 PRIORITY_LOW/PRIORITY_NORMAL/PRIORITY_HIGH。
 
+### tidb_ddl_error_count_limit
+
+作用域：GLOBAL
+
+默认值：512
+
+这个变量用来控制 DDL 操作失败重试的次数。失败重试次数超过该参数的值后，会取消出错的 DDL 操作。
+
 ### tidb_force_priority
 
 作用域：SESSION
@@ -489,12 +495,127 @@ set tidb_query_log_max_len = 20
 
 这个变量用于设置当前 session 的事务模式，默认是乐观锁模式。 TiDB 3.0 加入了悲观锁模式，将 `tidb_txn_mode` 设置为 `'pessimistic'` 后，这个 session 执行的所有事务都会进入悲观事务模式。更多关于悲观锁的细节，可以参考 [TiDB 悲观事务模式](../../transactions/transaction-pessimistic.md)。
 
+### tidb_constraint_check_in_place
+
+作用域：SESSION | GLOBAL
+
+默认值：0
+
+TiDB 默认采用乐观的事务模型，在执行写入时，假设不存在冲突，冲突检查是在最后 commit 提交时才去检查。这里的检查指 unique key 检查。
+
+这个变量用来控制是否每次写入一行时就执行一次唯一性检查。注意，开启该变量后，在大批量写入场景下，对性能会有影响。
+
+示例：
+
+默认关闭 tidb_constraint_check_in_place 时的行为：
+
+```sql
+tidb >create table t (i int key)
+tidb >insert into t values (1);
+tidb >begin
+tidb >insert into t values (1);
+Query OK, 1 row affected
+tidb >commit; -- commit 时才去做检查
+ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+```
+
+打开 tidb_constraint_check_in_place 后：
+
+```sql
+tidb >set @@tidb_constraint_check_in_place=1
+tidb >begin
+tidb >insert into t values (1);
+ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+```
+
 ### tidb_check_mb4_value_in_utf8
+
+作用域：SERVER
+
+默认值：1
+
+这个变量用来设置是否开启对字符集为 UTF8 类型的数据做合法性检查，默认值 `1` 表示开启检查。这个默认行为和 MySQL 是兼容的。
+
+注意，如果是旧版本升级时，可能需要关闭该选项，否则由于旧版本（v2.1.1以及之前）没有对数据做合法性检查，所以旧版本写入非法字符串是可以写入成功的，但是新版本加入合法性检查后会报写入失败。具体可以参考[升级后常见问题](../../../faq/upgrade.md)。
+
+### tidb_opt_insubq_to_join_and_agg
+
+作用域：SESSION | GLOBAL
+
+默认值：1
+
+这个用来设置是否开启优化规则：将子查询转成 join 和 aggregation。
+
+示例：
+
+打开这个优化规则后，会将下面子查询做如下变化：
+
+```sql
+select * from t where t.a in (select aa from t1)
+```
+
+将子查询转成 join 如下：
+
+```sql
+select * from t, (select aa from t1 group by aa) tmp_t where t.a = tmp_t.aa
+```
+
+如果 t1 在列 aa 上有 unique 且 not null 的限制，可以直接改写为如下，不需要添加 aggregation。
+
+```sql
+select * from t, t1 where t.a=t1.a
+```
+
+### tidb_opt_correlation_threshold
+
+作用域：SESSION | GLOBAL
+
+默认值：0.9
+
+这个变量用来设置优化器启用交叉估算 row count 方法的阈值。如果列和 handle 列之间的顺序相关性超过这个阈值，就会启用交叉估算方法。
+
+交叉估算方法可以简单理解为，利用这个列的直方图来估算 handle 列需要扫的行数。
+
+### tidb_opt_correlation_exp_factor
+
+作用域：SESSION | GLOBAL
+
+默认值：1
+
+当交叉估算方法不可用时候，会采用启发式估算方法。这个变量用来控制启发式方法的行为。当值为 0 时不用启发式估算方法，大于 0 时，该变量值越大，启发式估算方法越倾向 index scan ，越小越倾向 table scan。
+
+### tidb_enable_window_function
+
+作用域：SESSION | GLOBAL
+
+默认值：1
+
+这个变量用来控制是否开启窗口函数的支持。默认值 1 代表开启窗口函数的功能。
+
+由于窗口函数会使用一些保留关键字，可能导致原先可以正常执行的 SQL 语句在升级 TiDB 后无法被解析语法，此时可以将 `tidb_enable_window_function` 设置为 `0`。
+
+### tidb_slow_query_file
 
 作用域：SESSION
 
-默认值：true
+默认值：""
 
-这个变量用来设置是否开启对字符集为 UTF8 类型的数据做合法性检查，默认值 `true` 表示开启检查。这个默认行为和 MySQL 是兼容的。
+查询 `INFORMATION_SCHEMA.SLOW_QUERY` 只会解析配置文件中 `slow-query-file` 设置的慢日志文件名，默认是 "tidb-slow.log"。但如果想要解析其他的日志文件，可以通过设置 session 变量 `tidb_slow_query_file` 为具体的文件路径，然后查询 `INFORMATION_SCHEMA.SLOW_QUERY` 就会按照设置的路径去解析慢日志文件。更多详情可以参考 [SLOW_QUERY 文档](../../../how-to/maintain/identify-slow-queries.md)。
 
-注意，如果是旧版本升级时，可能需要关闭该选项，否则由于旧版本（v2.1.1以及之前）没有对数据做合法性检查，所以旧版本写入非法字符串是可以写入成功的，但是新版本加入合法性检查后会报写入失败。具体可以参考[升级后常见问题](../../../faq/upgrade.md)。
+### tidb_enable_fast_analyze
+
+作用域：SESSION | GLOBAL
+
+默认值：0
+
+这个变量用来控制是否启用统计信息快速分析功能。默认值 0 表示不开启。
+
+快速分析功能开启后，TiDB 会随机采样约 10000 行的数据来构建统计信息。因此在数据分布不均匀或者数据量比较少的情况下，统计信息的准确度会比较差。可能导致执行计划不优，比如选错索引。如果可以接受普通 `ANALYZE` 语句的执行时间，则推荐关闭快速分析功能。
+
+### tidb_expensive_query_time_threshold
+
+作用域：SERVER
+
+默认值：60
+
+这个变量用来控制打印 expensive query 日志的阈值时间，单位是秒，默认值是 60 秒。expensive query 日志和慢日志的差别是，慢日志是在语句执行完后才打印，expensive query 日志可以把正在执行中的语句且执行时间超过阈值的语句及其相关信息打印出来。
