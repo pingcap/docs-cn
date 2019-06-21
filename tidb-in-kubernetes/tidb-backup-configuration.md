@@ -32,9 +32,11 @@ TiDB-Backup 是一个用于 TiDB 集群备份和恢复的 Helm Chart, 这篇文�
 + 访问目标集群时使用的凭据
 + 默认："backup-secret"
 + 该 Kubernetes Secret 中需要存储目标集群的登录用户名和密码，你可以通过以下命令来创建这个 Secret：
+
+    {{< copyable "shell-regular" >}}
     
     ```shell
-    $ kubectl create secret generic backup-secret -n ${namespace} --from-literal=user=root --from-literal=password=<password>
+    kubectl create secret generic backup-secret -n ${namespace} --from-literal=user=root --from-literal=password=<password>
     ```
 
 ## `storage.className`
@@ -76,8 +78,10 @@ TiDB-Backup 是一个用于 TiDB 集群备份和恢复的 Helm Chart, 这篇文�
 + 默认：""
 + 该 Kubernetes Secret 中需要存储 GCP 的 Service Account 凭据，你可以参考 [Google Cloud Documentation](https://cloud.google.com/docs/authentication/production#obtaining_and_providing_service_account_credentials_manually) 来下载凭据文件，然后通过下面的命令创建 Secret：
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
-    $ kubectl create secret generic gcp-backup-secret -n ${namespace} --from-file=./credentials.json
+    kubectl create secret generic gcp-backup-secret -n ${namespace} --from-file=./credentials.json
     ```
 
 ## `ceph.endpoint`
@@ -102,7 +106,8 @@ TiDB-Backup 是一个用于 TiDB 集群备份和恢复的 Helm Chart, 这篇文�
 + 默认：""
 + 该 Kubernetes Secret 中需要存储访问 Ceph 时使用的 `access_key` 和 `secret_key`。可使用如下命令来创建这个 Secret：
 
+    {{< copyable "shell-regular" >}}
+    
     ```shell
-    $ kubectl create secret generic ceph-backup-secret -n ${namespace} --from-literal=access_key=<access-key> --from-literal=secret_key=<secret-key>
+    kubectl create secret generic ceph-backup-secret -n ${namespace} --from-literal=access_key=<access-key> --from-literal=secret_key=<secret-key>
     ```
-
