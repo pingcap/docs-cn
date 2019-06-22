@@ -294,4 +294,4 @@ gcloud container clusters delete tidb
 
 ## 更多信息
 
-我们还提供简单的 [基于 Terraform 的部署方案](/dev/how-to/deploy/orchestrated/gcp-gke.md)。
+我们还提供简单的[基于 Terraform 的部署方案](/dev/how-to/deploy/orchestrated/gcp-gke.md)。
