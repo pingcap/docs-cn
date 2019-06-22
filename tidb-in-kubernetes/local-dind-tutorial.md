@@ -415,7 +415,7 @@ demo-tikv-2                       1/1       Running     0          1m
 
         任意一个（或者所有）容器 IP 可以配置为反向代理的 upstream。你可以使用任何支持 TCP (TiDB) 或者 HTTP (Grafana 和 Prometheus) 的反向代理提供远程访问。HAPROXY 和 NGINX 是两个常用的选择。
 
-## 水平伸缩 TiDB 集群
+## 水平扩缩容 TiDB 集群
 
 你可以通过简单地修改 `replicas` 来扩容或者缩容 TiDB 集群。
 
