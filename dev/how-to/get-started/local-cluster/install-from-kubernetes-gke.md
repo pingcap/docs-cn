@@ -6,7 +6,9 @@ category: how-to
 
 # 在 GCP 上通过 Kubernetes 部署 TiDB 集群
 
-本文介绍如何使用 [TiDB Operator](https://github.com/pingcap/tidb-operator) 在 GCP 上部署 TiDB 集群。本教程需要在 [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/pingcap/tidb-operator&tutorial=docs/google-kubernetes-tutorial.md) 上运行。所包含的步骤如下：
+本文介绍如何使用 [TiDB Operator](https://github.com/pingcap/tidb-operator) 在 GCP 上部署 TiDB 集群。本教程需要在 [Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/pingcap/tidb-operator&tutorial=docs/google-kubernetes-tutorial.md) 上运行。
+
+所包含的步骤如下：
 
 - 启动一个包含 3 个节点的 Kubernetes 集群（可选）
 - 安装 Kubernetes 包管理工具 Helm
@@ -292,4 +294,4 @@ gcloud container clusters delete tidb
 
 ## 更多信息
 
-我们还提供简单的 [基于 Terraform 的部署方案](./gcp-gke-tutorial.md)。
+我们还提供简单的 [基于 Terraform 的部署方案](/dev/how-to/deploy/orchestrated/gcp-gke.md)。

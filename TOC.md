@@ -11,6 +11,10 @@
 + 操作指南
   + 快速上手
     + 创建本地集群
+      + 使用 Kubernetes
+        - [DinD](dev/how-to/get-started/local-cluster/install-from-kubernetes-dind.md)
+        - [Minikube](dev/how-to/get-started/local-cluster/install-from-kubernetes-minikube.md)
+        - [GKE](dev/how-to/get-started/local-cluster/install-from-kubernetes-gke.md)
       - [使用 Docker Compose](dev/how-to/get-started/local-cluster/install-from-docker-compose.md)
     - [SQL 基本操作](dev/how-to/get-started/explore-sql.md)
     - [读取历史数据](dev/how-to/get-started/read-historical-data.md)
@@ -22,6 +26,10 @@
       - [使用 Ansible 部署（推荐）](dev/how-to/deploy/orchestrated/ansible.md)
       - [使用 Ansible 离线部署](dev/how-to/deploy/orchestrated/offline-ansible.md)
       - [使用 Docker 部署](dev/how-to/deploy/orchestrated/docker.md)
+      + 使用 Kubernetes 部署
+        - [阿里云](dev/how-to/deploy/orchestrated/alibaba-cloud.md)
+        - [AWS EKS](dev/how-to/deploy/orchestrated/aws-eks.md)
+        - [GCP](dev/how-to/deploy/orchestrated/gcp-gke.md)
     + 跨地域冗余
       - [跨数据中心部署方案](dev/how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](dev/how-to/deploy/geographic-redundancy/location-awareness.md)
