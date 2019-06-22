@@ -18,7 +18,7 @@ category: how-to
 
 ## 选择一个项目
 
-本教程会启动一个包含 3 个 `n1-standard-1` 类型节点的 Kubernetes 集群。价格信息可以参考 [这里](https://cloud.google.com/compute/pricing)。
+本教程会启动一个包含 3 个 `n1-standard-1` 类型节点的 Kubernetes 集群。价格信息可以参考[这里](https://cloud.google.com/compute/pricing)。
 
 继续之前请选择一个项目：
 
@@ -34,7 +34,7 @@ category: how-to
 
 ## 配置 gcloud
 
-这一步配置 glcoud 默认访问你要用的项目和 [可用区](https://cloud.google.com/compute/docs/regions-zones/)，可以简化后面用到的命令：
+这一步配置 glcoud 默认访问你要用的项目和[可用区](https://cloud.google.com/compute/docs/regions-zones/)，可以简化后面用到的命令：
 
 {{< copyable "shell-regular" >}}
 
@@ -257,7 +257,7 @@ kubectl get po -n tidb
 kubectl -n tidb port-forward svc/demo-grafana 3000:3000 &>/dev/null &
 ```
 
-在 Cloud Shell 中，点击 Web Preview 按钮并输入端口 3000，将打开一个新的浏览器标签页访问 Grafana 面板。 或者也可以在新浏览器标签或者窗口中直接访问 URL https://ssh.cloud.google.com/devshell/proxy?port=3000。
+在 Cloud Shell 中，点击 Web Preview 按钮并输入端口 3000，将打开一个新的浏览器标签页访问 Grafana 面板。或者也可以在新浏览器标签或者窗口中直接访问 URL https://ssh.cloud.google.com/devshell/proxy?port=3000。
 
 如果没有使用 Cloud Shell，可以在浏览器中访问 `localhost:3000`。
 
