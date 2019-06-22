@@ -396,17 +396,17 @@ demo-tikv-2                       1/1       Running     0          1m
 
         ```
         addresses:
-        - address: 10.192.0.2
-        - address: kube-master
+        address: 10.192.0.2
+        address: kube-master
         addresses:
-        - address: 10.192.0.3
-        - address: kube-node-1
+        address: 10.192.0.3
+        address: kube-node-1
         addresses:
-        - address: 10.192.0.4
-        - address: kube-node-2
+        address: 10.192.0.4
+        address: kube-node-2
         addresses:
-        - address: 10.192.0.5
-        - address: kube-node-3
+        address: 10.192.0.5
+        address: kube-node-3
         ```
 
         在反向代理中使用这些 IP 地址。
@@ -460,28 +460,28 @@ demo-tikv-2                       1/1       Running     0          1m
     helm upgrade demo pingcap/tidb-cluster --namespace=tidb -f /home/tidb/demo/values-demo.yaml --version=${chartVersion}
     ```
 
-通过 `kubectl get pod -n tidb` 命令确认所有 Pod 处于 `Running` 状态。然后你可以访问数据库并通过 `tidb_version()` 确认版本：
+    通过 `kubectl get pod -n tidb` 命令确认所有 Pod 处于 `Running` 状态。然后你可以访问数据库并通过 `tidb_version()` 确认版本：
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-``` sql
-select tidb_version();
-```
+    ``` sql
+    select tidb_version();
+    ```
 
-输出类似如下内容：
+    输出类似如下内容：
 
-```
-*************************** 1. row ***************************
-tidb_version(): Release Version: v3.0.0-rc.2
-Git Commit Hash: 06f3f63d5a87e7f0436c0618cf524fea7172eb93
-Git Branch: HEAD
-UTC Build Time: 2019-05-28 12:48:52
-GoVersion: go version go1.12 linux/amd64
-Race Enabled: false
-TiKV Min Version: 2.1.0-alpha.1-ff3dd160846b7d1aed9079c389fc188f7f5ea13e
-Check Table Before Drop: false
-1 row in set (0.001 sec)
-```
+    ```
+    *************************** 1. row ***************************
+    tidb_version(): Release Version: v3.0.0-rc.2
+    Git Commit Hash: 06f3f63d5a87e7f0436c0618cf524fea7172eb93
+    Git Branch: HEAD
+    UTC Build Time: 2019-05-28 12:48:52
+    GoVersion: go version go1.12 linux/amd64
+    Race Enabled: false
+    TiKV Min Version: 2.1.0-alpha.1-ff3dd160846b7d1aed9079c389fc188f7f5ea13e
+    Check Table Before Drop: false
+    1 row in set (0.001 sec)
+    ```
 
 ## 销毁 TiDB 集群
 
