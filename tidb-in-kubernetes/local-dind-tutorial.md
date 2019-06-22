@@ -1,14 +1,14 @@
 ---
-title: 在个人电脑上通过 Kubernetes 部署 TiDB 集群
-summary: 在个人电脑上通过 Kubernetes 部署 TiDB 集群
+title: 使用 DinD 在 Kubernetes 上部署 TiDB 集群
+summary: 使用 DinD 在 Kubernetes 上部署 TiDB 集群
 category: how-to
 ---
 
-# 在个人电脑上通过 Kubernetes 部署 TiDB 集群
+# 使用 DinD 在 Kubernetes 上部署 TiDB 集群
 
-本文介绍了如何在个人电脑（Linux 或 macOS 系统）上使用 Kubernetes 部署 TiDB Operator 和 TiDB 集群，以达到开发或测试目的。
+本文介绍了如何在个人电脑（Linux 或 macOS 系统）上采用 [Docker in Docker](https://hub.docker.com/_/docker/) (DinD) 方式在 Kubernetes 上部署 [TiDB Operator](https://github.com/pingcap/tidb-operator) 和 TiDB 集群。
 
- [kubeadm-dind-cluster](https://github.com/kubernetes-sigs/kubeadm-dind-cluster) 使用 [Docker in Docker](https://hub.docker.com/_/docker/)（DinD）技术在 Docker 容器中运行 Kubernetes 集群。TiDB Operator 通过完善过的一套 DinD 脚本管理 DinD Kubernetes 集群。
+DinD 将 Docker 容器作为虚拟机运行，并在第一层 Docker 容器中运行另一层 Docker 容器。[kubeadm-dind-cluster](https://github.com/kubernetes-sigs/kubeadm-dind-cluster) 使用 DinD 技术在 Docker 容器中运行 Kubernetes 集群。TiDB Operator 通过完善过的一套 DinD 脚本来管理 DinD Kubernetes 集群。
 
 ## 环境准备
 
@@ -24,11 +24,8 @@ category: how-to
 
     > **注意：**
     >
-    > 由于 DinD 不能在 Docker Toolbox 或者 Docker Machine 上运行，[Legacy Docker Toolbox](https://docs.docker.com/toolbox/toolbox_install_mac/) 用户必须卸载 Legacy Docker Toolbox 并安装 [Docker for Mac](https://store.docker.com/editions/community/docker-ce-desktop-mac)。
-
-    > **注意：**
-    >
-    > 安装过程中，`kubeadm` 会检查 Docker 版本。如果 Docker 版本比 18.06 更新，安装过程会打印警告信息。集群可能仍然能正常工作，但是为保证更好的兼容性，建议 Docker 版本在 17.03 和 18.06 之间。你可以在 [这里](https://download.docker.com/) 下载旧版本 Docker。
+    > - 由于 DinD 不能在 Docker Toolbox 或者 Docker Machine 上运行，[Legacy Docker Toolbox](https://docs.docker.com/toolbox/toolbox_install_mac/) 用户必须卸载 Legacy Docker Toolbox 并安装 [Docker for Mac](https://store.docker.com/editions/community/docker-ce-desktop-mac)。
+    > - 安装过程中，`kubeadm` 会检查 Docker 版本。如果 Docker 版本比 18.06 更新，安装过程会打印警告信息。集群可能仍然能正常工作，但是为保证更好的兼容性，建议 Docker 版本在 17.03 和 18.06 之间。你可以在 [这里](https://download.docker.com/) 下载旧版本 Docker。
 
 - [Helm Client](https://github.com/helm/helm/blob/master/docs/install.md#installing-the-helm-client): 版本 >= 2.9.0 并且 < 3.0.0
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl): 至少 1.10，建议 1.13 或更高版本
@@ -81,7 +78,7 @@ category: how-to
     systemctl start docker.service
     ```
 
-## 第一步：通过 DinD 部署 Kubernetes 集群
+## 第 1 步：通过 DinD 部署 Kubernetes 集群
 
 首先，请确认 Docker 进程正常运行，你可以通过代码库中的脚本使用 DinD 为 TiDB Operator 部署一套 Kubernentes 集群（1.12 版本）。
 
@@ -145,7 +142,7 @@ kubernetes-dashboard is running at http://127.0.0.1:8080/api/v1/namespaces/kube-
 kubectl get nodes -o wide
 ```
 
-输出类似下面内容：
+输出类似如下内容：
 
 ```
 NAME          STATUS   ROLES    AGE     VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                       KERNEL-VERSION               CONTAINER-RUNTIME
@@ -155,50 +152,51 @@ kube-node-2   Ready    <none>   9m32s   v1.12.5   10.192.0.4    <none>        De
 kube-node-3   Ready    <none>   9m32s   v1.12.5   10.192.0.5    <none>        Debian GNU/Linux 9 (stretch)   3.10.0-957.12.1.el7.x86_64   docker://18.9.0
 ```
 
-## 第二步：在 DinD Kubernetes 集群中部署 TiDB Operator
+## 第 2 步：在 DinD Kubernetes 集群中部署 TiDB Operator
 
 > **注意：**
 >
 > ${chartVersion} 在后续文档中代表 chart 版本，例如 `v1.0.0-beta.3`。
 
-如果 k8s 集群启动并正常运行，我们可以通过 `helm` 添加 chart 仓库并安装 TiDB Operator。
-添加 Helm chart 仓库：
+如果 K8s 集群启动并正常运行，可以通过 `helm` 添加 chart 仓库并安装 TiDB Operator。
 
-{{< copyable "shell-regular" >}}
+1. 添加 Helm chart 仓库：
 
-``` shell
-helm repo add pingcap http://charts.pingcap.org/ && \
-helm repo list && \
-helm repo update && \
-helm search tidb-cluster -l && \
-helm search tidb-operator -l
-```
+    {{< copyable "shell-regular" >}}
 
-安装 TiDB Operator：
+    ``` shell
+    helm repo add pingcap http://charts.pingcap.org/ && \
+    helm repo list && \
+    helm repo update && \
+    helm search tidb-cluster -l && \
+    helm search tidb-operator -l
+    ```
 
-{{< copyable "shell-regular" >}}
+2. 安装 TiDB Operator：
 
-``` shell
-helm install pingcap/tidb-operator --name=tidb-operator --namespace=tidb-admin --set scheduler.kubeSchedulerImageName=mirantis/hypokube --set scheduler.kubeSchedulerImageTag=final --version=${chartVersion}
-```
+    {{< copyable "shell-regular" >}}
 
-然后等待几分钟确保 TiDB Operator 正常运行：
+    ``` shell
+    helm install pingcap/tidb-operator --name=tidb-operator --namespace=tidb-admin --set scheduler.kubeSchedulerImageName=mirantis/hypokube --set scheduler.kubeSchedulerImageTag=final --version=${chartVersion}
+    ```
 
-{{< copyable "shell-regular" >}}
+    然后等待几分钟确保 TiDB Operator 正常运行：
 
-``` shell
-kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
-```
+    {{< copyable "shell-regular" >}}
 
-输出类似下面内容：
+    ``` shell
+    kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
+    ```
 
-```
-NAME                                       READY     STATUS    RESTARTS   AGE
-tidb-controller-manager-5cd94748c7-jlvfs   1/1       Running   0          1m
-tidb-scheduler-56757c896c-clzdg            2/2       Running   0          1m
-```
+    输出类似如下内容：
 
-## 第三步：在 DinD Kubernetes 集群中部署 TiDB 集群
+    ```
+    NAME                                       READY     STATUS    RESTARTS   AGE
+    tidb-controller-manager-5cd94748c7-jlvfs   1/1       Running   0          1m
+    tidb-scheduler-56757c896c-clzdg            2/2       Running   0          1m
+    ```
+
+## 第 3 步：在 DinD Kubernetes 集群中部署 TiDB 集群
 
 通过 `helm` 和 TiDB Operator，我们可以很轻松的部署一套 TiDB 集群：
 
@@ -382,11 +380,11 @@ demo-tikv-2                       1/1       Running     0          1m
         demo-tidb         NodePort    10.102.165.13    <none>        4000:32714/TCP,10080:32680/TCP   1m
         ```
 
-        在这个输出示例中，各服务的 NodePort 为： Grafana：32503、 Prometheus：32448、TiDB：32714。
+        在这个输出示例中，各服务的 NodePort 为：Grafana 32503、Prometheus 32448、TiDB 32714。
 
     2. 列出集群的节点 IP 地址。
 
-        DinD 是在 Docker 容器中运行的 k8s 集群，所以服务端口暴露到了容器地址上，而不是主机上。可以通过下面命令列出 Docker 容器的 IP 地址：
+        DinD 是在 Docker 容器中运行的 K8s 集群，所以服务端口暴露到了容器地址上，而不是主机上。可以通过下面命令列出 Docker 容器的 IP 地址：
 
         {{< copyable "shell-regular" >}}
 
@@ -441,6 +439,7 @@ demo-tikv-2                       1/1       Running     0          1m
     ``` shell
     helm upgrade demo pingcap/tidb-cluster --namespace=tidb -f /home/tidb/demo/values-demo.yaml --version=${chartVersion}
     ```
+
 > **注意：**
 >
 > 如果要缩容 TiKV，因为要安全地迁移数据，缩容需要的时间取决于已有数据量的大小。
@@ -461,7 +460,7 @@ demo-tikv-2                       1/1       Running     0          1m
     helm upgrade demo pingcap/tidb-cluster --namespace=tidb -f /home/tidb/demo/values-demo.yaml --version=${chartVersion}
     ```
 
-通过 `kubectl get pod -n tidb` 命令确认所有 pod 处于 `Running` 状态。然后你可以访问数据库并通过 `tidb_version()` 确认版本：
+通过 `kubectl get pod -n tidb` 命令确认所有 Pod 处于 `Running` 状态。然后你可以访问数据库并通过 `tidb_version()` 确认版本：
 
 {{< copyable "sql" >}}
 
