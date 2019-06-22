@@ -6,7 +6,7 @@
 
 - [aliyun-cli](https://github.com/aliyun/aliyun-cli) >= 3.0.15 并且[配置 aliyun-cli](https://www.alibabacloud.com/help/doc-detail/90766.htm?spm=a2c63.l28256.a3.4.7b52a893EFVglq)
 
-    > **注意：** 
+    > **注意：**
     >
     > Access Key 需要具有操作相应资源的权限。
 
