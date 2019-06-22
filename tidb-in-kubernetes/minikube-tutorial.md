@@ -6,21 +6,17 @@ category: how-to
 
 # 在 Minikube 集群上部署 TiDB 集群
 
-本文介绍了如何在 [Minikube](https://kubernetes.io/docs/setup/minikube/) 集群上部署 TiDB 集群。
+本文介绍如何在 [Minikube](https://kubernetes.io/docs/setup/minikube/) 集群上部署 TiDB 集群。
 
-## 通过 Minikube 创建 Kubernetes 集群
-
-### 什么是 Minikube?
-
-[Minikube](https://kubernetes.io/docs/setup/minikube/) 可以在你个人电脑上的一个虚拟机中创建一个 Kubernetes 集群。它可以在 macOS、Linux 和 Windows 上工作。
+[Minikube](https://kubernetes.io/docs/setup/minikube/) 可以让你在个人电脑上的虚拟机中创建一个 Kubernetes 集群，支持 macOS、Linux 和 Windows 系统。
 
 > **注意：**
 >
-> 尽管 Minikube 支持通过 `--vm-driver=none` 选项使用主机 docker 而不使用虚拟机，但是我们并没有针对 TiDB Operator 做过全面的测试，有可能会无法正常工作。如果你想在不支持虚拟化的系统（例如，VPS）上试用 TiDB Operator，可以考虑使用 [DinD](local-dind-tutorial.md)。
+> 尽管 Minikube 支持通过 `--vm-driver=none` 选项使用主机 Docker 而不使用虚拟机，但是目前尚没有针对 TiDB Operator 做过全面的测试，可能会无法正常工作。如果你想在不支持虚拟化的系统（例如，VPS）上试用 TiDB Operator，可以考虑使用 [DinD](local-dind-tutorial.md)。
 
-### 安装 Minikube 并启动一个 Kubernetes 集群
+## 安装 Minikube 并启动 Kubernetes 集群
 
-参考 [安装 Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) 在你的机器上安装 Minikube（1.0.0+）。
+参考 [安装 Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) 在你的机器上安装 Minikube 1.0.0+。
 
 安装完 Minikube 后，可以执行下面命令启动一个 Kubernetes 集群：
 
@@ -38,9 +34,9 @@ minikube start
 minikube start --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
 ```
 
-或者给 Docker 配置 HTTP/HTTPS 代理：
+或者给 Docker 配置 HTTP/HTTPS 代理。
 
-替换下面命令中的 127.0.0.1:1086 为你自己的 HTTP/HTTPS 代理地址。
+将下面命令中的 `127.0.0.1:1086` 替换为你自己的 HTTP/HTTPS 代理地址：
 
 {{< copyable "shell-regular" >}}
 
@@ -55,12 +51,11 @@ minikube start --docker-env https_proxy=http://127.0.0.1:1086 \
 
 参考 [Minikube setup](https://kubernetes.io/docs/setup/minikube/) 查看配置虚拟机和 Kubernetes 集群的更多选项。
 
-### 安装 kubectl 访问集群
+## 安装 kubectl 访问集群
 
-Kubernetes 命令行工具
-[kubectl](https://kubernetes.io/docs/user-guide/kubectl/)，可以让你执行命令访问 Kubernetes 集群。
+Kubernetes 命令行工具 [kubectl](https://kubernetes.io/docs/user-guide/kubectl/)，可以让你执行命令访问 Kubernetes 集群。
 
-参考 [文档](https://kubernetes.io/docs/tasks/tools/install-kubectl/) 安装和配置 kubectl。
+参考[文档](https://kubernetes.io/docs/tasks/tools/install-kubectl/) 安装和配置 kubectl。
 
 kubectl 安装完成后，测试 Minikube Kubernetes 集群：
 
@@ -70,11 +65,11 @@ kubectl 安装完成后，测试 Minikube Kubernetes 集群：
 kubectl cluster-info
 ```
 
-## 安装 TiDB operator 并运行一个 TiDB 集群
+## 安装 TiDB operator 并运行 TiDB 集群
 
-### 安装 helm
+### 安装 Helm
 
-Helm 是 Kubernetes 包管理工具，通过 Helm 可以一键安装 TiDB 的所有分布式组件。安装 Helm 需要同时安装服务端和客户端组件。
+[Helm](https://helm.sh/) 是 Kubernetes 包管理工具，通过 Helm 可以一键安装 TiDB 的所有分布式组件。安装 Helm 需要同时安装服务端和客户端组件。
 
 {{< copyable "shell-regular" >}}
 
@@ -106,7 +101,7 @@ helm init --upgrade --tiller-image registry.cn-hangzhou.aliyuncs.com/google_cont
 helm version
 ```
 
-输出类似下面内容：
+输出类似如下内容：
 
 ```
 Client: &version.Version{SemVer:"v2.13.1",
@@ -115,7 +110,7 @@ Server: &version.Version{SemVer:"v2.13.1",
 GitCommit:"618447cbf203d147601b4b9bd7f8c37a5d39fbb4", GitTreeState:"clean"}
 ```
 
-如果只显示客户端版本，表示 `helm` 无法连接到服务端。 通过 `kubectl` 查看 tiller pod 是否在运行：
+如果只显示客户端版本，表示 `helm` 无法连接到服务端。通过 `kubectl` 查看 tiller pod 是否在运行：
 
 {{< copyable "shell-regular" >}}
 
@@ -160,7 +155,7 @@ kubectl apply -f ./manifests/crd.yaml && \
 helm install pingcap/tidb-operator --name tidb-operator --namespace tidb-admin --version=${chartVersion}
 ```
 
-然后，可以通过下面命令查看 TiDB Operator 启动情况：
+然后，可以通过如下命令查看 TiDB Operator 的启动情况：
 
 {{< copyable "shell-regular" >}}
 
@@ -168,7 +163,7 @@ helm install pingcap/tidb-operator --name tidb-operator --namespace tidb-admin -
 kubectl get pods --namespace tidb-admin -o wide --watch
 ```
 
-如果无法访问 gcr.io（Pod 由于 ErrImagePull 无法启动），你可以尝试从 mirror 仓库中拉取 kube-scheduler 镜像。 可以通过下面命令升级 tidb-operator：
+如果无法访问 gcr.io（Pod 由于 ErrImagePull 无法启动），可以尝试从 mirror 仓库中拉取 kube-scheduler 镜像。可以通过以下命令升级 tidb-operator：
 
 {{< copyable "shell-regular" >}}
 
@@ -177,11 +172,11 @@ helm upgrade tidb-operator pingcap/tidb-operator --namespace tidb-admin --set \
   scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler --version=${chartVersion}
 ```
 
-如果 tidb-scheduler 和 tidb-controller-manager 都进入 running 状态，你可以继续下一步启动一个 TiDB 集群！
+如果 tidb-scheduler 和 tidb-controller-manager 都进入 running 状态，你可以继续下一步启动一个 TiDB 集群。
 
-### 启动一个 TiDB 集群
+### 启动 TiDB 集群
 
-通过下面命令启动一个 TiDB 集群： 
+通过下面命令启动 TiDB 集群： 
 
 {{< copyable "shell-regular" >}}
 
@@ -200,7 +195,7 @@ kubectl get pods --namespace default -l app.kubernetes.io/instance=demo -o wide 
 
 通过 <kbd>Ctrl</kbd>+<kbd>C</kbd> 停止观察。
 
-### 测试 TiDB 集群
+## 测试 TiDB 集群
 
 测试 TiDB 集群之前，请确保已经安装 MySQL 客户端。从 pod 启动、运行到服务可以访问有一些延时，可以通过下面命令查看服务：
 
@@ -216,51 +211,51 @@ kubectl get svc --watch
 
 1. 转发本地端口到 TiDB 端口。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-``` shell
-kubectl port-forward svc/demo-tidb 4000:4000
-```
+    ``` shell
+    kubectl port-forward svc/demo-tidb 4000:4000
+    ```
 
 2. 在另一个终端窗口中，通过 MySQL 客户端访问 TiDB：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-``` shell
-mysql -h 127.0.0.1 -P 4000 -uroot
-```
+    ``` shell
+    mysql -h 127.0.0.1 -P 4000 -uroot
+    ```
 
-或者可以直接执行 SQL 命令：
+    或者可以直接执行 SQL 命令：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-``` shell
-mysql -h 127.0.0.1 -P 4000 -uroot -e 'select tidb_version();'
-```
+    ``` shell
+    mysql -h 127.0.0.1 -P 4000 -uroot -e 'select tidb_version();'
+    ```
 
-### 监控 TiDB 集群
+## 监控 TiDB 集群
 
-按照下面步骤监控 TiDB 集群状态：
+按照以下步骤监控 TiDB 集群状态：
 
 1. 转发本地端口到 Grafana 端口。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-``` shell
-kubectl port-forward svc/demo-grafana 3000:3000
-```
+    ``` shell
+    kubectl port-forward svc/demo-grafana 3000:3000
+    ```
 
-2. 打开浏览器，通过 `http://localhost:3000` 访问Grafana
+2. 打开浏览器，通过 `http://localhost:3000` 访问 Grafana。
 
-或者，Minikube 提供 `minikube service` 方式暴露 Grafana 服务，可以更方便的接入。
+    或者，Minikube 提供了 `minikube service` 的方式暴露 Grafana 服务，可以更方便的接入。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-``` shell
-minikube service demo-grafana
-```
+    ``` shell
+    minikube service demo-grafana
+    ```
 
-上述命令会自动搭建代理并在浏览器中打开 Grafana。
+    上述命令会自动搭建代理并在浏览器中打开 Grafana。
 
 ### 删除 TiDB 集群
 
@@ -288,7 +283,7 @@ kubectl get pv -l app.kubernetes.io/instance=demo -o name | xargs -I {} kubectl 
 kubectl delete pvc -l app.kubernetes.io/managed-by=tidb-operator
 ```
 
-## FAQs
+## FAQ
 
 ### Minikube 上的 TiDB 集群不响应或者响应非常慢
 
