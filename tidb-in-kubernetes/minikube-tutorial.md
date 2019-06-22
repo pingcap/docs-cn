@@ -6,9 +6,7 @@ category: how-to
 
 # 在 Minikube 集群上部署 TiDB 集群
 
-本文介绍如何在 [Minikube](https://kubernetes.io/docs/setup/minikube/) 集群上部署 TiDB 集群。
-
-[Minikube](https://kubernetes.io/docs/setup/minikube/) 可以让你在个人电脑上的虚拟机中创建一个 Kubernetes 集群，支持 macOS、Linux 和 Windows 系统。
+[Minikube](https://kubernetes.io/docs/setup/minikube/) 可以让你在个人电脑上的虚拟机中创建一个 Kubernetes 集群，支持 macOS、Linux 和 Windows 系统。本文介绍如何在 [Minikube](https://kubernetes.io/docs/setup/minikube/) 集群上部署 TiDB 集群。
 
 > **注意：**
 >
@@ -16,7 +14,7 @@ category: how-to
 
 ## 安装 Minikube 并启动 Kubernetes 集群
 
-参考 [安装 Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) 在你的机器上安装 Minikube 1.0.0+。
+参考[安装 Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)，在你的机器上安装 Minikube 1.0.0+。
 
 安装完 Minikube 后，可以执行下面命令启动一个 Kubernetes 集群：
 
@@ -51,7 +49,7 @@ minikube start --docker-env https_proxy=http://127.0.0.1:1086 \
 
 参考 [Minikube setup](https://kubernetes.io/docs/setup/minikube/) 查看配置虚拟机和 Kubernetes 集群的更多选项。
 
-## 安装 kubectl 访问集群
+## 安装 kubectl 并访问集群
 
 Kubernetes 命令行工具 [kubectl](https://kubernetes.io/docs/user-guide/kubectl/)，可以让你执行命令访问 Kubernetes 集群。
 
@@ -119,7 +117,7 @@ kubectl -n kube-system get pods -l app=helm
 ```
 ### 添加 Helm 仓库
 
-Helm 仓库 (http://charts.pingcap.org/) 存放着 PingCAP 发布的 charts，例如 tidb-operator、tidb-cluster 和 tidb-backup 等等。使用下面命令添加仓库：
+[Helm 仓库](http://charts.pingcap.org/) 存放着 PingCAP 发布的 charts，例如 tidb-operator、tidb-cluster 和 tidb-backup 等等。可使用以下命令添加仓库：
 
 {{< copyable "shell-regular" >}}
 
@@ -128,7 +126,7 @@ helm repo add pingcap http://charts.pingcap.org/ && \
 helm repo list
 ```
 
-然后你可以查看可用的 chart：
+然后可以查看可用的 chart：
 
 {{< copyable "shell-regular" >}}
 
@@ -197,7 +195,7 @@ kubectl get pods --namespace default -l app.kubernetes.io/instance=demo -o wide 
 
 ## 测试 TiDB 集群
 
-测试 TiDB 集群之前，请确保已经安装 MySQL 客户端。从 pod 启动、运行到服务可以访问有一些延时，可以通过下面命令查看服务：
+测试 TiDB 集群之前，请确保已经安装 MySQL 客户端。从 Pod 启动、运行到服务可以访问有一些延时，可以通过下面命令查看服务：
 
 {{< copyable "shell-regular" >}}
 
