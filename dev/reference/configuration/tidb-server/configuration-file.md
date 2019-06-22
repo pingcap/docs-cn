@@ -22,6 +22,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认："log"
 + 现在合法的选项是 ["log", "cancel"]，如果为 "log"，仅仅是打印日志，不作实质处理。如果为 "cancel"，我们会取消执行这个操作，并且输出日志。
 
+### `mem-quota-query`
++ 单条 SQL 语句可以占用的最大内存阈值。
++ 默认：34359738368
++ 超过该值的请求会被 `oom-action` 定义的行为所处理。
+
 ### `enable-streaming`
 
 + 开启 coprocessor 的 streaming 获取数据模式。
@@ -37,12 +42,28 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 >
 > 目前 TiDB 只支持将该选项的值设为 2，即按照大小写来保存表名，按照小写来比较（不区分大小写）。
 
+### `lease`
+
++ DDL 租约超时时间。
++ 默认：45s
++ 单位：秒
+
 ### `compatible-kill-query`
 
 + 设置 `KILL` 语句的兼容性。
 + 默认：false
 + TiDB 中 `KILL xxx` 的行为和 MySQL 中的行为不相同。为杀死一条查询，在 TiDB 里需要加上 `TIDB` 关键词，即 `KILL TIDB xxx`。但如果把 `compatible-kill-query` 设置为 true，则不需要加上 `TIDB` 关键词。
 + 这种区别很重要，因为当用户按下 <kbd>Ctrl</kbd>+<kbd>C</kbd> 时，MySQL 命令行客户端的默认行为是：创建与后台的新连接，并在该新连接中执行 `KILL` 语句。如果负载均衡器或代理已将该新连接发送到与原始会话不同的 TiDB 服务器实例，则该错误会话可能被终止，从而导致使用 TiDB 集群的业务中断。只有当您确定在 `KILL` 语句中引用的连接正好位于 `KILL` 语句发送到的服务器上时，才可以启用 `compatible-kill-query`。
+
+### `check-mb4-value-in-utf8`
+
++ 开启检查 utf8mb4 字符的开关，如果开启此功能，字符集是 utf8，且在 utf8 插入 mb4 字符，系统将会报错。
++ 默认：true
+
+### `treat-old-version-utf8-as-utf8mb4`
+
++ 将旧表中的 utf8 字符集当成 utf8mb4的开关。
++ + 默认：true
 
 ## log 
 
@@ -139,6 +160,26 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认：""
 + 目前 TiDB 不支持加载由密码保护的私钥。
 
+### `cluster-ssl-ca`
+
++ CA 根证书，用于用 tls 连接 tikv/pd
++ 默认：""
+
+### `cluster-ssl-cert`
+
++ ssl 证书文件路径，用于用 tls 连接 tikv/pd
++ 默认：""
+
+### `cluster-ssl-key`
+
++ ssl 私钥文件路径，用于用 tls 连接 tikv/pd
++ 默认：""
+
+### `skip-grant-table`
+
++ 是否跳过权限检查
++ 默认：false
+
 ## performance
 
 性能相关配置。
@@ -148,6 +189,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + TiDB 的 CPU 使用数量。
 + 默认：0
 + 默认为 0 表示使用机器上所有的 CPU，也可以设置成 n，那么 TiDB 会使用 n 个 CPU 数量。
+
+### `max-memory`
+
++ Prepare cache LRU 使用的最大内存限制，超过 performance.max-memory * (1 - prepared-plan-cache.memory-guard-ratio)会 剔除 LRU 中的元素。 
++ 默认：0
++ 这个配置只有在 prepared-plan-cache.enabled 为 true 的情况才会生效。在 LRU 的 size 大于 prepared-plan-cache.capacity 的情况下，也会剔除 LRU 中的元素。
 
 ### `stmt-count-limit`
 
@@ -191,6 +238,23 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认：0.0
 + 对于每一个查询，TiDB 会以 `feedback-probability` 的概率收集查询的反馈，用于更新统计信息。
 
+### `query-feedback-limit`
+
++ 在内存中缓存的最大 Query Feedback 数量，超过这个数量的 Feedback 会被丢弃。
++ 默认：1024
+
+### `pseudo-estimate-ratio`
+
++ 修改过的行数/表的总行数的比值，超过该值时系统会认为统计信息已经过期，会采用 pseudo 的统计信息。
++ 默认：0.8
++ 最小值为 0；最大值为 1。
+
+### `force-priority`
+
++ 把所有的语句优先级设置为 force-priority 的值。
++ 默认：NO_PRIORITY
++ 可选值：NO_PRIORITY, LOW_PRIORITY, HIGH_PRIORITY, DELAYED。
+
 ## prepared-plan-cache
 
 prepare 语句的 Plan cache 设置。
@@ -205,6 +269,12 @@ prepare 语句的 Plan cache 设置。
 + 缓存语句的数量。
 + 默认：100
 
+### `memory-guard-ratio`
+
++ 用于防止超过 performance.max-memory, 超过 max-proc * (1 - prepared-plan-cache.memory-guard-ratio)会剔除 LRU 中的元素。
++ 默认：0.1
++ 最小值为 0；最大值为 1。
+
 ## tikv-client
 
 ### `grpc-connection-count`
@@ -212,11 +282,51 @@ prepare 语句的 Plan cache 设置。
 + 跟每个 TiKV 之间建立的最大连接数。
 + 默认：16
 
+### `grpc-keepalive-time`
+
++ tidb 与 tikv 节点之间 rpc 连接 keepalive 时间间隔，如果超过该值没有网络包，grpc client 会 ping 一下 tikv 查看是否存活。
++ 默认：10
++ 单位：秒
+
+### `grpc-keepalive-timeout`
+
++ tidb 与 tikv 节点  rpc keepalive 检查的超时时间
++ 默认：3
++ 单位：秒
+
 ### `commit-timeout`
 
 + 执行事务提交时，最大的超时时间。
 + 默认：41s
 + 这个值必须是大于两倍 Raft 选举的超时时间。
+
+### `max-txn-time-use`
+
++ 单个事务允许的最大执行时间。
++ 默认：590
++ 单位：秒
+
+### `max-batch-size`
+
++ 批量发送 rpc 封包的最大数量，如果不为 0，将使用 BatchCommands api 发送请求到 tikv，可以在并发度高的情况降低 rpc 的延迟，推荐不修改该值。
++ 默认：128
+
+### `max-batch-wait-time`
+
++ 等待 max-batch-wait-time 纳秒批量将此期间的数据包封装成一个大包发送给 tikv 节点，仅在 tikv-client.max-batch-size  值大于 0  时有效，推荐不修改该值。
++ 默认：0
++ 单位：纳秒
+
+### `batch-wait-size`
+
++ 批量向 tikv 发送的封包最大数量，推荐不修改该值。
++ 默认：8
++ 若此值为 0 表示关闭此功能。
+
+### `overload-threshold`
+
++ tikv 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 tikv 的压力。仅在 tikv-client.max-batch-size  值大于 0  时有效，推荐不修改该值
++ 默认：200
 
 ## txn-local-latches
 
@@ -231,3 +341,43 @@ prepare 语句的 Plan cache 设置。
 
 + Hash 对应的 slot 数，会自动向上调整为 2 的指数倍。每个 slot 占 32 Bytes 内存。当写入数据的范围比较广时（如导数据），设置过小会导致变慢，性能下降。
 + 默认：1024000
+
+## binlog
+
+TiDB Binlog 相关配置。
+
+### `enable`
+
++ 开启 binlog 开关。
++ 默认：false
+
+### `write-timeout`
+
++ 写 binlog 的超时时间，推荐不修改该值。
++ 默认：15s
++ 单位：秒
+
+### `ignore-error`
+
++ 忽略写 binlog 发生的错误时处理开关，推荐不修改该值。
++ 默认：false
++ "true"，发生错误时，停止写入 binlog, 并且在监控项 tidb_server_critical_error_total 上计数加1；"false": 写入 binlog 失败，会停止整个 TiDB 的服务。
+
+### `binlog-socket`
+
++ binlog 输出网络地址。
++ 默认：""
+
+### `strategy`
+
++ binlog 输出时选择 pump 的策略，仅支持 hash ，range 方法。
++ 默认："range"
+
+## status
+
+TiDB 服务状态相关配置。
+
+### `record-db-qps`
+
++ 输与 database 相关的 QPS metrics 到 promethus的开关。
++ 默认：false
