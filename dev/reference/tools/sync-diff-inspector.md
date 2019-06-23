@@ -163,7 +163,7 @@ password = ""
 # 库的名称
 schema = "test"
 
-# table list which need check in target database. 
+# table list which need check in target database.
 # in sharding mode, you must set config for every table in table-config, otherwise will not check the table.
 # 需要检查的表的名称
 tables = ["test"]

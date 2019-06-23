@@ -118,7 +118,7 @@ watch "kubectl get pods --namespace kube-system | grep tiller"
 
 ## 添加 Helm 仓库
 
-Helm 仓库 (http://charts.pingcap.org/) 存放着 PingCAP 发布的 charts，例如 tidb-operator、tidb-cluster 和 tidb-backup 等等。使用下面命令添加仓库：
+Helm 仓库 (`http://charts.pingcap.org/`) 存放着 PingCAP 发布的 charts，例如 tidb-operator、tidb-cluster 和 tidb-backup 等等。使用下面命令添加仓库：
 
 {{< copyable "shell-regular" >}}
 
@@ -180,6 +180,7 @@ helm install pingcap/tidb-cluster -n demo --namespace=tidb --set pd.storageClass
 ``` shell
 kubectl get pods --namespace tidb -o wide --watch
 ```
+
 TiDB 集群包含 2 个 TiDB pod，3 个 TiKV pod 和 3 个 PD pod。如果所有 pod 状态都为 `Running`，<kbd>Ctrl</kbd>+<kbd>C</kbd> 停止并继续！
 
 ## 访问 TiDB 集群
@@ -191,6 +192,7 @@ TiDB 集群包含 2 个 TiDB pod，3 个 TiKV pod 和 3 个 PD pod。如果所�
 ``` shell
 kubectl get svc -n tidb --watch
 ```
+
 如果看到 `demo-tidb` 出现，说明服务已经可以访问，可以 <kbd>Ctrl</kbd>+<kbd>C</kbd> 停止。
 
 要访问 Kubernetes 集群中的 TiDB 服务，可以在 TiDB 服务和 Google Cloud Shell 之间建立一条隧道。建议这种方式只用于调试，因为如果 Google Cloud Shell 重启，隧道不会自动重新建立。要建立隧道：
@@ -217,6 +219,7 @@ mysql -h 127.0.0.1 -u root -P 4000
 ``` sql
 select tidb_version();
 ```
+
 如果用 Helm 安装的过程中没有指定密码，现在可以设置：
 
 {{< copyable "sql" >}}
@@ -259,7 +262,7 @@ kubectl get po -n tidb
 kubectl -n tidb port-forward svc/demo-grafana 3000:3000 &>/dev/null &
 ```
 
-在 Cloud Shell 中，点击 Web Preview 按钮并输入端口 3000，将打开一个新的浏览器标签页访问 Grafana 面板。或者也可以在新浏览器标签或者窗口中直接访问 URL https://ssh.cloud.google.com/devshell/proxy?port=3000。
+在 Cloud Shell 中，点击 Web Preview 按钮并输入端口 3000，将打开一个新的浏览器标签页访问 Grafana 面板。或者也可以在新浏览器标签或者窗口中直接访问 URL [https://ssh.cloud.google.com/devshell/proxy?port=3000](https://ssh.cloud.google.com/devshell/proxy?port=3000)。
 
 如果没有使用 Cloud Shell，可以在浏览器中访问 `localhost:3000`。
 

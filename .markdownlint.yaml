@@ -1,0 +1,42 @@
+comment: 'Rules for PingCAP docs-cn'
+
+# disable all by default
+default: false
+
+heading-increment: true
+heading-style:
+  style: atx
+no-trailing-spaces: true
+no-hard-tabs:
+  code_blocks: false
+no-multiple-blanks: true
+# commands-show-output: true
+no-missing-space-atx: true
+no-multiple-space-atx: true
+blanks-around-headings: true
+heading-start-left: true
+no-duplicate-heading: 
+  siblings_only: true
+single-title:
+  front_matter_title: ''
+no-trailing-punctuation:
+  punctuation: '.,;:!。，；：！'
+no-multiple-space-blockquote: true
+ol-prefix:
+  style: ordered
+list-marker-space: true
+blanks-around-fences: true
+blanks-around-lists: true
+no-bare-urls: true
+no-space-in-emphasis: true
+no-space-in-code: true
+no-space-in-links: true
+no-empty-links: true
+proper-names:
+  name: ['TiDB', 'TiKV', 'PingCAP']
+  code_blocks: false
+no-alt-text: true
+code-block-style:
+  style: fenced
+single-trailing-newline: true
+

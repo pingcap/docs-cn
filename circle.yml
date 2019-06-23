@@ -1,6 +1,27 @@
 version: 2
 
 jobs:
+  lint:
+    docker:
+      - image: circleci/ruby:2.4.1-node
+    working_directory: ~/pingcap/docs-cn
+    steps:
+      - checkout
+
+      - run:
+          name: "Install markdownlint"
+          command: |
+            sudo npm install -g markdownlint-cli
+            markdownlint --version
+
+      - run:
+          name: "Lint README"
+          command: markdownlint README.md
+
+      - run:
+          name: "Lint dev"
+          command: markdownlint dev/
+
   build:
     docker:
       - image: andelf/doc-build:0.1.9

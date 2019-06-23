@@ -26,7 +26,6 @@ category: reference
 
 ![ColumnName](/media/sqlgram/ColumnName.png)
 
-
 ## 示例
 
 ```sql

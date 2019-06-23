@@ -39,10 +39,9 @@ TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
 对于 TiKV 与 TiSpark 分开部署的场景，可以参考如下建议配置：
 
-+   硬件配置建议
++ 硬件配置建议
 
     普通场景可以参考 [TiDB 和 TiKV 硬件配置建议](https://github.com/pingcap/docs-cn/blob/master/op-guide/recommendation.md#tidb-集群各个组件的硬件消耗情况及推荐配置)，但是如果是偏重分析的场景，可以将 TiKV 节点增加到至少 64G 内存。
-
 
 ### Spark 与 TiSpark 集群独立部署的配置
 
@@ -70,7 +69,6 @@ spark.sql.extensions org.apache.spark.sql.TiExtensions
  `your_pd_servers` 是用逗号分隔的 PD 地址，每个地址使用 `地址:端口` 的格式。
 
 例如你有一组 PD 在`10.16.20.1`，`10.16.20.2`，`10.16.20.3`，那么 PD 配置格式是`10.16.20.1:2379,10.16.20.2:2379,10.16.20.3:2379`。
-
 
 ### TiSpark 与 TiKV 集群混合部署的配置
 
@@ -115,7 +113,9 @@ cd $SPARKPATH
 
 类似地，可以用如下命令启动 Spark-Slave 节点：
 
-    ./sbin/start-slave.sh spark://spark-master-hostname:7077
+```
+./sbin/start-slave.sh spark://spark-master-hostname:7077
+```
 
 命令返回以后，即可通过刚才的面板查看这个 Slave 是否已经正确地加入了 Spark 集群。在所有 Slave 节点重复刚才的命令。确认所有的 Slave 都可以正确连接 Master，这样你就拥有了一个 Standalone 模式的 Spark 集群。
 
@@ -229,7 +229,7 @@ df.write
 .option("isolationLevel", "NONE") // recommended to set isolationLevel to NONE if you have a large DF to load.
 .option("user", "root") // TiDB user here
 .save()
-``` 
+```
 
 推荐将 `isolationLevel` 设置为 `NONE`，否则单一大事务有可能造成 TiDB 服务器内存溢出。
 
@@ -251,14 +251,12 @@ TiSpark 可以使用 TiDB 的统计信息：
 | --------   | -----:   | :----: |
 | spark.tispark.statistics.auto_load | true | 是否默认进行统计信息读取 |
 
-
-
 ## TiSpark FAQ
 
--   Q. 是独立部署还是和现有 Spark／Hadoop 集群共用资源？
+- Q. 是独立部署还是和现有 Spark／Hadoop 集群共用资源？
 
-    A. 可以利用现有 Spark 集群无需单独部署，但是如果现有集群繁忙，TiSpark 将无法达到理想速度。
+  A. 可以利用现有 Spark 集群无需单独部署，但是如果现有集群繁忙，TiSpark 将无法达到理想速度。
 
--   Q. 是否可以和 TiKV 混合部署？
+- Q. 是否可以和 TiKV 混合部署？
 
-    A. 如果 TiDB 以及 TiKV 负载较高且运行关键的线上任务，请考虑单独部署 TiSpark；并且考虑使用不同的网卡保证 OLTP 的网络资源不被侵占而影响线上业务。如果线上业务要求不高或者机器负载不大，可以考虑与 TiKV 混合部署。
+  A. 如果 TiDB 以及 TiKV 负载较高且运行关键的线上任务，请考虑单独部署 TiSpark；并且考虑使用不同的网卡保证 OLTP 的网络资源不被侵占而影响线上业务。如果线上业务要求不高或者机器负载不大，可以考虑与 TiKV 混合部署。

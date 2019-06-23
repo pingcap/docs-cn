@@ -5,7 +5,7 @@ category: reference
 aliases: ['/docs-cn/sql/ddl/','/docs-cn/dev/reference/sql/statements/ddl/']
 ---
 
-# CREATE TABLE 
+# CREATE TABLE
 
 `CREATE TABLE` 语句用于在当前所选数据库中创建新表。另可参阅单独的 `CREATE TABLE AS` 文档。
 

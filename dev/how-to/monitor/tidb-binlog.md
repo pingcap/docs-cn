@@ -85,7 +85,7 @@ aliases: ['/docs-cn/tools/binlog/monitor/','/docs-cn/dev/reference/tools/tidb-bi
 #### binlog_pump_storage_available_size_less_than_20G
 
 - 含义：Pump 剩余可用磁盘空间不足 20G
-- 监控规则：binlog_pump_storage_storage_size_bytes{type="available"} < 20 * 1024 * 1024 * 1024
+- 监控规则：binlog_pump_storage_storage_size_bytes{type="available"} < 20 \* 1024 \* 1024 \* 1024
 - 处理方法：监控确认 Pump gc_tso 正常，需要的话调整 Pump gc 时间配置或者下线对应 Pump
 
 #### binlog_drainer_checkpoint_tso_no_change_for_1m

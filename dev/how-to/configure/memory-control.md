@@ -19,6 +19,7 @@ oom-action = "log"
 ## 如何配置一条 SQL 执行过程中的内存使用阈值
 
 可以在配置文件中设置每个 Query 默认的 Memory Quota，例如将其设置为 32GB：
+
 ```
 mem-quota-query = 34359738368
 ```

@@ -45,7 +45,7 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
     | ON                  |
     +---------------------+
     1 row in set (0.00 sec)
-    
+
     mysql> SELECT @@SESSION.autocommit;
     +----------------------+
     | @@SESSION.autocommit |
@@ -53,10 +53,10 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
     | ON                   |
     +----------------------+
     1 row in set (0.00 sec)
-    
+
     mysql> SET GLOBAL autocommit = OFF;
     Query OK, 0 rows affected (0.01 sec)
-    
+
     mysql> SELECT @@SESSION.autocommit; -- 会话范围的系统变量不会改变，会话中执行的事务依旧是以自动提交的形式来进行。
     +----------------------+
     | @@SESSION.autocommit |
@@ -64,7 +64,7 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
     | ON                   |
     +----------------------+
     1 row in set (0.00 sec)
-    
+
     mysql> SELECT @@GLOBAL.autocommit;
     +---------------------+
     | @@GLOBAL.autocommit |
@@ -72,22 +72,22 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
     | OFF                 |
     +---------------------+
     1 row in set (0.00 sec)
-    
+
     mysql> exit
     Bye
     $ mysql -h127.0.0.1 -P4000 -uroot -D test
     Welcome to the MySQL monitor.  Commands end with ; or \g.
     Your MySQL connection id is 3
     Server version: 5.7.25-TiDB-None MySQL Community Server (Apache License 2.0)
-    
+
     Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
-    
+
     Oracle is a registered trademark of Oracle Corporation and/or its
     affiliates. Other names may be trademarks of their respective
     owners.
-    
+
     Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-    
+
     mysql> SELECT @@SESSION.autocommit; -- 新建的会话会使用新的全局变量。
     +----------------------+
     | @@SESSION.autocommit |

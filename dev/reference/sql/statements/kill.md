@@ -4,7 +4,7 @@ summary: TiDB 数据库中 KILL [TIDB] 的使用概况。
 category: reference
 ---
 
-# KILL [TIDB] 
+# KILL [TIDB]
 
 `KILL TIDB` 语句用于终止 TiDB 中的连接。
 

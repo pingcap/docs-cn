@@ -200,6 +200,7 @@ SET character_set_client = charset_name;
 SET character_set_results = charset_name;
 SET character_set_connection = charset_name;
 ```
+
 `COLLATE` 是可选的，如果没有提供，将会用 charset_name 默认的 Collation。
 
 * `SET CHARACTER SET 'charset_name'`

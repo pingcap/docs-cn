@@ -8,7 +8,7 @@ aliases: ['/docs-cn/releases/ga/']
 
 2017 年 10 月 16 日，TiDB 发布 GA 版（TiDB 1.0）。该版本对 MySQL 兼容性、SQL 优化器、系统稳定性、性能做了大量的工作。
 
-## TiDB:
+## TiDB
 
 + SQL 查询优化器
   - 调整代价模型
@@ -21,12 +21,12 @@ aliases: ['/docs-cn/releases/ga/']
 + 重构 Hash Aggregator 算子，降低内存使用
 + 支持 Stream Aggragator 算子
 
-## PD:
+## PD
 
 + 支持基于读流量的热点调度
 + 支持设置 Store 权重，以及基于权重的调度
 
-## TiKV:
+## TiKV
 
 + Coprocessor 支持更多下推函数
 + 支持取样操作下推
@@ -34,7 +34,7 @@ aliases: ['/docs-cn/releases/ga/']
 + 提升性能和稳定性
 + 增加 Debug API，方便调试
 
-## TiSpark Beta Release:
+## TiSpark Beta Release
 
 + 支持可配置框架
 + 支持 ThriftSever/JDBC 和 Spark SQL 脚本入口
@@ -54,7 +54,7 @@ aliases: ['/docs-cn/releases/ga/']
 - 腾讯云
 - 韩国三星研究院
 
-### 感谢以下组织/个人提供出色的开源软件/服务：
+### 感谢以下组织/个人提供出色的开源软件/服务
 
 - Asta Xie
 - CNCF

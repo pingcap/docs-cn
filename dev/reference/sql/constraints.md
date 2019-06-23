@@ -43,7 +43,7 @@ TiDB 也支持使用 `ALTER TABLE` 命令来删除外键（`DROP FOREIGN KEY`）
 
 ```
 ALTER TABLE orders DROP FOREIGN KEY fk_user_id;
-ALTER TABLE orders ADD FOREIGN KEY fk_user_id (user_id) REFERENCES users(id); 
+ALTER TABLE orders ADD FOREIGN KEY fk_user_id (user_id) REFERENCES users(id);
 ```
 
 目前，外键约束并不作为 DML 操作的一部分而进行强制实施。例如，即使 `users` 表中不存在 `id=123` 的记录，在 TiDB 中下列事务也能提交成功：

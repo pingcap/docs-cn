@@ -185,7 +185,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 4. 登录新增的 PD 节点，编辑启动脚本：`{deploy_dir}/scripts/run_pd.sh`
 
-    1.  移除 `--initial-cluster="xxxx" \` 配置，注意这里不能在行开头加注释符 #。
+    1. 移除 `--initial-cluster="xxxx" \` 配置，注意这里不能在行开头加注释符 #。
 
     2. 添加 `--join="http://172.16.10.1:2379" \`，IP 地址 （172.16.10.1） 可以是集群内现有 PD IP 地址中的任意一个。
 
@@ -196,7 +196,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
         ```
 
     4. 使用 `pd-ctl` 检查新节点是否添加成功：
-    
+
         ```
         /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member
         ```
@@ -212,7 +212,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
     ```
     ansible-playbook start.yml -l 172.16.10.103
     ```
-    
+
 7. 更新 Prometheus 配置并重启：
 
     ```
@@ -302,7 +302,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
         ```
 
     2. 从集群中移除 node9，假如 store id 为 10：
-    
+
         ```
         /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d store delete 10
         ```

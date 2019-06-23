@@ -45,7 +45,7 @@ DM 在增量同步阶段依赖 `ROW` 格式的 binlog，如果未启用 binlog �
 目前推荐使用 DM-Ansible 部署 DM 集群，具体部署方法参照[使用 DM-Ansible 部署 DM 集群](/tools/dm/deployment.md)。
 
 > **注意：**
-> 
+>
 > - 在 DM 所有的配置文件中，数据库的密码要使用 dmctl 加密后的密文。如果数据库密码为空，则不需要加密。关于如何使用 dmctl 加密明文密码，参考[使用 dmctl 加密上游 MySQL 用户密码](/tools/dm/deployment.md#使用-dmctl-加密上游-mysql-用户密码)。
 > - 上下游数据库用户必须拥有相应的读写权限。
 
@@ -145,10 +145,10 @@ mydumpers:
     # `task.yaml` 是之前编辑的配置文件
     start-task ./task.yaml
     ```
-    
+
     - 如果执行命令后的返回结果中不包含错误信息，则表明任务已经成功启动
     - 如果包含以下错误信息，则表明上游 Aurora 用户可能拥有 TiDB 不支持的权限类型
-        
+
         ```json
         {
             "id": 4,
@@ -169,10 +169,11 @@ mydumpers:
             "extra": "address of db instance - pingcap-1.h8emfqdptyc4.us-east-2.rds.amazonaws.com"
         }
         ```
-        
+
         此时可以选择以下两种处理方法中的任意一种进行处理后，再使用 `start-task` 尝试重新启动任务：
         1. 为用于进行数据迁移的 Aurora 用户移除不被 TiDB 支持的不必要的权限
         2. 如果能确保 Aurora 用户拥有 DM 所需要的权限，可以在 `task.yaml` 配置文件中添加如下顶级配置项以跳过启用任务时的前置权限检查
+
             ```yaml
             ignore-checking-items: ["dump_privilege", "replication_privilege"]
             ```

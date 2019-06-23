@@ -9,12 +9,12 @@ category: tispark
 
 ## 部署信息
 
--   Spark 默认部署在 TiDB 实例部署目录下 spark 目录中
--   TiSpark jar 包默认部署在 Spark 部署目录 jars 文件夹下：
+- Spark 默认部署在 TiDB 实例部署目录下 spark 目录中
+- TiSpark jar 包默认部署在 Spark 部署目录 jars 文件夹下：
 
     spark/jars/tispark-SNAPSHOT-jar-with-dependencies.jar
 
--   TiSpark sample data 及导入脚本默认部署在 TiDB-Ansible 目录下：
+- TiSpark sample data 及导入脚本默认部署在 TiDB-Ansible 目录下：
 
     tidb-ansible/resources/bin/tispark-sample-data
 
@@ -22,7 +22,7 @@ category: tispark
 
 ### 在 TiDB 实例上安装 JDK
 
-在 [Oracle JDK 官方下载页面 ](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-javase8-2177648.html) 下载 JDK 1.8 当前最新版，本示例中下载的版本为 `jdk-8u141-linux-x64.tar.gz`。
+在 [Oracle JDK 官方下载页面](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-javase8-2177648.html) 下载 JDK 1.8 当前最新版，本示例中下载的版本为 `jdk-8u141-linux-x64.tar.gz`。
 
 解压并根据你的 JDK 部署目录设置环境变量，
 编辑 `~/.bashrc` 文件，比如：
@@ -185,4 +185,4 @@ scala> spark.sql(
 -----------------+---------+------------+--------+-----------+
 ```
 
-更多样例请参考 https://github.com/ilovesoup/tpch/tree/master/sparksql。
+更多样例请参考 [https://github.com/ilovesoup/tpch/tree/master/sparksql](https://github.com/ilovesoup/tpch/tree/master/sparksql)。

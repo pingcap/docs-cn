@@ -99,8 +99,8 @@ TiDB 通过命令行参数或环境变量配置。默认的 TiDB 端口为 4000�
 + TiDB 服务状态监听端口
 + 默认："10080"
 + 这个端口是为了展示 TiDB 内部数据用的。包括 [prometheus 统计](https://prometheus.io/) 以及 [pprof](https://golang.org/pkg/net/http/pprof/)
-+ Prometheus 统计可以通过 "http://host:status_port/metrics" 访问
-+ Pprof 数据可以通过 "http://host:status_port/debug/pprof" 访问
++ Prometheus 统计可以通过 `http://host:status_port/metrics` 访问
++ Pprof 数据可以通过 `http://host:status_port/debug/pprof` 访问
 
 ## `--metrics-addr`
 
