@@ -389,7 +389,7 @@ If the cluster is deployed using Ansible, you can use the `ansible-playbook stop
 
 #### Does TiDB support session timeout?
 
-Currently, TiDB does not support session timeout in the database level. If you want to implement session timeout, use the session ID started by side records in the absence of LB (Load Balancing), and customize the session timeout on the application. After timeout, kill SQL using `kill tidb [session id]` on the node that starts the query. It is currently recommended to implement session timeout using applications. When the timeout time is reached, the application layer reports an exception and continues to execute subsequent program segments.
+TiDB supports the MySQL configuration settings `wait_timeout` and `interactive_timeout`. By configuring these settings, it is possible to have sessions automatically timeout after an idle period.
 
 #### What is the TiDB version management strategy for production environment? How to avoid frequent upgrade?
 

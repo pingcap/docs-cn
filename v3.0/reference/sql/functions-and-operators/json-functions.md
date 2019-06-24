@@ -27,11 +27,14 @@ TiDB supports most of the JSON functions that shipped with the GA release of MyS
 | [->][json_short_extract]  | Returns the value from a JSON column after the evaluating path; the syntactic sugar of `JSON_EXTRACT(doc, path_literal)`   |
 | [->>][json_short_extract_unquote]  | Returns the value from a JSON column after the evaluating path and unquoting the result; the syntactic sugar of `JSON_UNQUOTE(JSON_EXTRACT(doc, path_literal))` |
 | [JSON_KEYS(json_doc[, path])][json_keys] | Returns the keys from the top-level value of a JSON object as a JSON array, or, if a path argument is given, the top-level keys from the selected path |
+| [JSON_SEARCH(json_doc, one_or_all, search_string)][json_search] | Seach a JSON document for one or all matches of a string |
 
 ## Functions that modify JSON values
 
 | Function Name and Syntactic Sugar | Description |
 | --------------------------------- | ----------- |
+| [JSON_APPEND(json_doc, path, value)][json_append] | An alias to `JSON_ARRAY_APPEND` |
+| [JSON_ARRAY_APPEND(json_doc, path, value)][json_array_append] | Appends a value to the end of a JSON array at a specified path |
 | [JSON_INSERT(json_doc, path, val[, path, val] ...)][json_insert] | Inserts data into a JSON document and returns the result |
 | [JSON_MERGE(json_doc, json_doc[, json_doc] ...)][json_merge]  | A deprecated alias for `JSON_MERGE_PRESERVE` |
 | [JSON_MERGE_PRESERVE(json_doc, json_doc[, json_doc] ...)][json_merge_preserve]  | Merges two or more JSON documents and returns the merged result |
@@ -52,11 +55,9 @@ TiDB supports most of the JSON functions that shipped with the GA release of MyS
 
 The following JSON functions are unsupported in TiDB. You can track the progress in adding them in [TiDB #7546](https://github.com/pingcap/tidb/issues/7546):
 
-* `JSON_APPEND` and its alias `JSON_ARRAY_APPEND`
 * `JSON_ARRAY_INSERT`
 * `JSON_MERGE_PATCH`
 * `JSON_PRETTY`
-* `JSON_SEARCH`
 * `JSON_STORAGE_SIZE`
 * `JSON_VALID`
 * `JSON_ARRAYAGG`
@@ -83,3 +84,6 @@ The following JSON functions are unsupported in TiDB. You can track the progress
 [json_contains_path]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-contains-path
 [json_arrayagg]: https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_json-arrayagg
 [json_depth]: https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-depth
+[json_search]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-search
+[json_append]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-append
+[json_array_append]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-append
