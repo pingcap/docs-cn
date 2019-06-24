@@ -102,6 +102,7 @@
       - [实用工具语句](dev/reference/sql/statements/util.md)
     - [约束](dev/reference/sql/constraints.md)
     - [生成列](dev/reference/sql/generated-columns.md)
+    - [分区表](dev/reference/sql/partitioning.md)
     - [字符集](dev/reference/sql/character-set.md)
   + 配置
     + tidb-server
