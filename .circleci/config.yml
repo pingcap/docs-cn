@@ -13,14 +13,14 @@ jobs:
           command: |
             sudo npm install -g markdownlint-cli
             markdownlint --version
+            
+      - run:
+          name: "Lint dev"
+          command: markdownlint dev/
 
       - run:
           name: "Lint README"
           command: markdownlint README.md
-
-      - run:
-          name: "Lint dev"
-          command: markdownlint dev/
 
   build:
     docker:
