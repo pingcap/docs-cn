@@ -4,6 +4,9 @@ jobs:
   lint:
     docker:
       - image: circleci/ruby:2.4.1-node
+    branches:
+      ignore:
+        - master
     working_directory: ~/pingcap/docs-cn
     steps:
       - checkout
