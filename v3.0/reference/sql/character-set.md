@@ -29,63 +29,62 @@ mysql> SHOW CHARACTER SET;
 >
 > In TiDB, utf8 is treated as utf8mb4.
 
-Each character set has at least one collation. Most of the character sets have several collations. You can use the following statement to display the available character sets:
+## Collation support
+
+TiDB only supports binary collations. This means that unlike MySQL, in TiDB string comparisons are both case sensitive and accent sensitive:
 
 ```sql
-mysql> SHOW COLLATION WHERE Charset = 'latin1';
-+-------------------|---------|------|---------|----------|---------+
-| Collation         | Charset | Id   | Default | Compiled | Sortlen |
-+-------------------|---------|------|---------|----------|---------+
-| latin1_german1_ci | latin1  |    5 |         | Yes      |       1 |
-| latin1_swedish_ci | latin1  |    8 | Yes     | Yes      |       1 |
-| latin1_danish_ci  | latin1  |   15 |         | Yes      |       1 |
-| latin1_german2_ci | latin1  |   31 |         | Yes      |       1 |
-| latin1_bin        | latin1  |   47 |         | Yes      |       1 |
-| latin1_general_ci | latin1  |   48 |         | Yes      |       1 |
-| latin1_general_cs | latin1  |   49 |         | Yes      |       1 |
-| latin1_spanish_ci | latin1  |   94 |         | Yes      |       1 |
-+-------------------|---------|------|---------|----------|---------+
-8 rows in set (0.00 sec)
+mysql> SELECT * FROM information_schema.collations;
++----------------+--------------------+------+------------+-------------+---------+
+| COLLATION_NAME | CHARACTER_SET_NAME | ID   | IS_DEFAULT | IS_COMPILED | SORTLEN |
++----------------+--------------------+------+------------+-------------+---------+
+| utf8mb4_bin    | utf8mb4            |   46 | Yes        | Yes         |       1 |
+| latin1_bin     | latin1             |   47 | Yes        | Yes         |       1 |
+| binary         | binary             |   63 | Yes        | Yes         |       1 |
+| ascii_bin      | ascii              |   65 | Yes        | Yes         |       1 |
+| utf8_bin       | utf8               |   83 | Yes        | Yes         |       1 |
++----------------+--------------------+------+------------+-------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> SHOW COLLATION WHERE Charset = 'utf8mb4';
++-------------+---------+------+---------+----------+---------+
+| Collation   | Charset | Id   | Default | Compiled | Sortlen |
++-------------+---------+------+---------+----------+---------+
+| utf8mb4_bin | utf8mb4 |   46 | Yes     | Yes      |       1 |
++-------------+---------+------+---------+----------+---------+
+1 row in set (0.00 sec)
 ```
 
-The `latin1` collations have the following meanings:
+For compatibility with MySQL, TiDB will allow other collation names to be used:
 
-| Collation           | Meaning                                             |
-|:--------------------|:----------------------------------------------------|
-| `latin1_bin`        | Binary according to `latin1` encoding               |
-| `latin1_danish_ci`  | Danish/Norwegian                                    |
-| `latin1_general_ci` | Multilingual (Western European)                     |
-| `latin1_general_cs` | Multilingual (ISO Western European), case sensitive |
-| `latin1_german1_ci` | German DIN-1 (dictionary order)                     |
-| `latin1_german2_ci` | German DIN-2 (phone book order)                     |
-| `latin1_spanish_ci` | Modern Spanish                                      |
-| `latin1_swedish_ci` | Swedish/Finnish                                     |
+```sql
+mysql> CREATE TABLE t1 (a INT NOT NULL PRIMARY KEY auto_increment, b VARCHAR(10)) COLLATE utf8mb4_unicode_520_ci;
+Query OK, 0 rows affected (0.00 sec)
 
-Each character set has a default collation. For example, the default collation for utf8 is `utf8_bin`.
+mysql> INSERT INTO t1 VALUES (1, 'a');
+Query OK, 1 row affected (0.00 sec)
 
-> **Note:**
->
-> The collations in TiDB are case sensitive.
+mysql> SELECT * FROM t1 WHERE b = 'a';
++---+------+
+| a | b    |
++---+------+
+| 1 | a    |
++---+------+
+1 row in set (0.00 sec)
 
-## Collation naming conventions
+mysql> SELECT * FROM t1 WHERE b = 'A';
+Empty set (0.00 sec)
 
-The collation names in TiDB follow these conventions:
-
-- The prefix of a collation is its corresponding character set, generally followed by one or more suffixes indicating other collation characteristic.  For example, `utf8_general_ci` and `latin1_swedish_ci` are collations for the utf8 and latin1 character sets, respectively. The `binary` character set has a single collation, also named `binary`, with no suffixes.
-- A language-specific collation includes a language name. For example, `utf8_turkish_ci` and `utf8_hungarian_ci` sort characters for the utf8 character set using the rules of Turkish and Hungarian, respectively.
-- Collation suffixes indicate whether a collation is case and accent sensitive, or binary. The following table shows the suffixes used to indicate these characteristics.
-
-    | Suffix | Meaning            |
-    |:-------|:-------------------|
-    | \_ai   | Accent insensitive |
-    | \_as   | Accent sensitive   |
-    | \_ci   | Case insensitive   |
-    | \_cs   | Case sensitive     |
-    | \_bin  | Binary             |
-
-> **Note:**
->
-> Currently, TiDB only supports some of the collations in the above table.
+mysql> SHOW CREATE TABLE t1\G
+*************************** 1. row ***************************
+       Table: t1
+Create Table: CREATE TABLE `t1` (
+  `a` int(11) NOT NULL AUTO_INCREMENT,
+  `b` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  PRIMARY KEY (`a`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci AUTO_INCREMENT=30002
+1 row in set (0.00 sec)
+```
 
 ## Database character set and collation
 
