@@ -301,6 +301,7 @@
 + 常见问题 (FAQ)
   - [TiDB FAQ](faq/tidb.md)
   - [TiDB-Lightning FAQ](faq/tidb-lightning.md)
+  - [Data Migration FAQ](faq/data-migration.md)
   - [升级 FAQ](faq/upgrade.md)
 + 技术支持
   - [支持渠道](support-resources.md)
