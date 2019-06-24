@@ -460,7 +460,7 @@ mysql> SELECT store_id, COUNT(department_id) AS c
 2 rows in set (0.00 sec)
 ```
 
-分支选择支持所有类型的分区表，无论是 range 分区或是 hash 分区等。对于 hash 分区，如果没有指定分区名，会自动使用 `p0,p1,p2...pN-1** 作为分区名。
+分支选择支持所有类型的分区表，无论是 range 分区或是 hash 分区等。对于 hash 分区，如果没有指定分区名，会自动使用 `p0`、`p1`、`p2`……或 `pN-1` 作为分区名。
 
 在 `INSERT ... SELECT** 的 `SELECT** 中也是可以使用分区选择的。
 
