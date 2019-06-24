@@ -6,7 +6,7 @@ aliases: ['/docs-cn/sql/information-schema/']
 
 # Information Schema
 
-为了和 MySQL 保持兼容，TiDB 支持很多 `INFORMATION\_SCHEMA` 表，其中有不少表都支持相应的 `SHOW` 命令。查询 `INFORMATION_SCHEMA` 表也为表的连接操作提供了可能。
+为了和 MySQL 保持兼容，TiDB 支持很多 `INFORMATION_SCHEMA` 表，其中有不少表都支持相应的 `SHOW` 命令。查询 `INFORMATION_SCHEMA` 表也为表的连接操作提供了可能。
 
 ## ANALYZE_STATUS Table
 
@@ -27,7 +27,7 @@ mysql>select * from `ANALYZE_STATUS`
 6 rows in set
 ```
 
-## CHARACTER\_SETS Table
+## CHARACTER_SETS Table
 
  `CHARACTER_SETS` 表提供[字符集](/dev/reference/sql/character-set.md)相关的信息。TiDB 目前仅支持部分字符集。
 
@@ -84,7 +84,7 @@ mysql> SELECT * FROM collations WHERE character_set_name='utf8mb4';
 26 rows in set (0.00 sec)
 ```
 
-## COLLATION\_CHARACTER\_SET\_APPLICABILITY Table
+## COLLATION_CHARACTER_SET_APPLICABILITY Table
 
 `COLLATION_CHARACTER_SET_APPLICABILITY` 表将排序规则映射至适用的字符集名称。和 `COLLATIONS` 表一样，包含此表也是为了兼容 MySQL。
 
@@ -184,7 +184,7 @@ TRANSACTIONS: YES
 1 row in set (0.00 sec)
 ```
 
-## KEY\_COLUMN\_USAGE Table
+## KEY_COLUMN_USAGE Table
 
 `KEY_COLUMN_USAGE` 表描述了列的键约束，比如主键约束。
 
@@ -251,9 +251,9 @@ mysql> SELECT * FROM schemata;
 5 rows in set (0.00 sec)
 ```
 
-## SESSION\_VARIABLES Table
+## SESSION_VARIABLES Table
 
-`SESSION\_VARIABLES` 表提供了关于 session 变量的信息。表中的数据跟 `SHOW SESSION VARIABLES` 语句执行结果类似。
+`SESSION_VARIABLES` 表提供了关于 session 变量的信息。表中的数据跟 `SHOW SESSION VARIABLES` 语句执行结果类似。
 
 ```sql
 mysql> SELECT * FROM session_variables LIMIT 10;
@@ -397,9 +397,9 @@ SHOW TABLES
   [LIKE 'wild']
 ```
 
-## TABLE\_CONSTRAINTS Table
+## TABLE_CONSTRAINTS Table
 
-`TABLE\_CONSTRAINTS` 表记录了表的约束信息。
+`TABLE_CONSTRAINTS` 表记录了表的约束信息。
 
 ```sql
 mysql> SELECT * FROM table_constraints WHERE constraint_type='UNIQUE'\G
@@ -565,9 +565,9 @@ mysql>desc TIKV_STORE_STATUS;
 +-------------------+---------------------+------+-----+---------+-------+
 ```
 
-## USER\_PRIVILEGES Table
+## USER_PRIVILEGES Table
 
-USER\_PRIVILEGES 表提供了关于全局权限的信息。该表的数据根据 `mysql.user` 系统表生成。
+USER_PRIVILEGES 表提供了关于全局权限的信息。该表的数据根据 `mysql.user` 系统表生成。
 
 ```sql
 mysql> desc USER_PRIVILEGES;
