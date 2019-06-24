@@ -1,0 +1,5 @@
+log-file="pump.log"
+data-dir="pump.data"
+addr="127.0.0.1:8250"
+advertise-addr="127.0.0.1:8250"
+pd-urls="http://127.0.0.1:2379"

@@ -1,0 +1,8 @@
+log-file="drainer.log"
+[syncer]
+db-type="mysql"
+[syncer.to]
+host="127.0.0.1"
+user="root"
+password=""
+port=3306

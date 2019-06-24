@@ -1,0 +1,175 @@
+---
+title: Compatibility with MySQL
+summary: Learn about the compatibility of TiDB with MySQL, and the unsupported and different features.
+category: reference
+aliases: ['/docs/sql/mysql-compatibility/']
+---
+
+# Compatibility with MySQL
+
+TiDB supports both the MySQL wire protocol and the majority of its syntax. This means that you can use your existing MySQL connectors and clients, and your existing applications can often be migrated to TiDB without changing any application code.
+
+Currently TiDB Server advertises itself as MySQL 5.7 and works with most MySQL database tools such as PHPMyAdmin, Navicat, MySQL Workbench, mysqldump, and mydumper/myloader.
+
+> **Note:**
+>
+> This page refers to general differences between MySQL and TiDB. Please also see the dedicated pages for [Security](/reference/security/compatibility.md) and [Transaction Model](/reference/transactions/transaction-model.md) compatibility.
+
+## Unsupported features
+
++ Stored procedures and functions
++ Views
++ Triggers
++ Events
++ User-defined functions
++ `FOREIGN KEY` constraints
++ `FULLTEXT` functions and indexes
++ `SPATIAL` functions and indexes
++ Character sets other than `utf8`
++ Collations other than `BINARY`
++ Add primary key
++ Drop primary key
++ SYS schema
++ Optimizer trace
++ XML Functions
++ X-Protocol
++ Savepoints
++ Column-level privileges
++ `CREATE TABLE tblName AS SELECT stmt` syntax
++ `CREATE TEMPORARY TABLE` syntax
++ `XA` syntax (TiDB uses a two-phase commit internally, but this is not exposed via an SQL interface)
++ `LOCK TABLE` syntax (TiDB uses `tidb_snapshot` to [produce backups](/reference/tools/mydumper.md))
++ `CHECK TABLE` syntax
++ `CHECKSUM TABLE` syntax
+
+## Features that are different from MySQL
+
+### Auto-increment ID
+
+In TiDB, auto-increment columns are only guaranteed to be incremental and unique but are *not* guaranteed to be allocated sequentially. Currently, TiDB allocates IDs in batches. If data is inserted into multiple TiDB servers simultaneously, the allocated IDs will not be sequential.
+
+> **Note:**
+>
+> If you use auto-increment IDs in a cluster with multiple tidb-server instances, do not mix default values and custom values. Otherwise, an error might occur in the following situation.
+
+Assume that you have a table with the auto-increment ID:
+
+```sql
+create table t(id int unique key auto_increment, c int);
+```
+
+The principle of the auto-increment ID in TiDB is that each tidb-server instance caches a section of ID values (currently 30000 IDs are cached) for allocation and fetches the next section after this section is used up.
+
+Assume that the cluster contains two tidb-server instances, namely Instance A and Instance B. Instance A caches the auto-increment ID of [1, 30000], while Instance B caches the auto-increment ID of [30001, 60000].
+
+The operations are executed as follows:
+
+1. The client issues the `insert into t values (1, 1)` statement to Instance B which sets the `id` to 1 and the statement is executed successfully.
+2. The client issues the `insert into t (c) (1)` statement to Instance A. This statement does not specify the value of `id`, so Instance A allocates the value. Currently, Instances A caches the auto-increment ID of [1, 30000], so it allocates the `id` value to 1 and adds 1 to the local counter. However, at this time the data with the `id` of 1 already exists in the cluster, therefore it reports `Duplicated Error`.
+
+### Performance schema
+
+Performance schema tables return empty results in TiDB. TiDB uses a combination of [Prometheus and Grafana](/how-to/monitor/monitor-a-cluster.md#use-prometheus-and-grafana) for performance metrics instead.
+
+### Query Execution Plan
+
+The output format of Query Execution Plan (`EXPLAIN`/`EXPLAIN FOR`) in TiDB is greatly different from that in MySQL. Besides, the output content and the privileges setting of `EXPLAIN FOR` are not the same as those of MySQL. See [Understand the Query Execution Plan](/reference/performance/understanding-the-query-execution-plan.md) for more details.
+
+### Built-in functions
+
+TiDB supports most of the MySQL built-in functions, but not all. See [TiDB SQL Grammar](https://pingcap.github.io/sqlgram/#FunctionCallKeyword) for the supported functions.
+
+### DDL
+
+In TiDB DDL does not block reads or writes to tables while in operation. However, some restrictions currently apply to DDL changes:
+
++ Add Index:
+  - Does not support creating multiple indexes at the same time.
+  - Adding an index on a generated column via `ALTER TABLE` is not supported.
++ Add Column:
+  - Does not support creating multiple columns at the same time.
+  - Does not support setting a column as the `PRIMARY KEY`, or creating a unique index, or specifying `auto_increment` while adding it.
++ Drop Column: Does not support dropping the `PRIMARY KEY` column or index column.
++ Change/Modify Column:
+  - Does not support lossy changes, such as from `BIGINT` to `INTEGER` or `VARCHAR(255)` to `VARCHAR(10)`.
+  - Does not support changing the `UNSIGNED` attribute.
+  - Only supports changing the `CHARACTER SET` attribute from `utf8` to `utf8mb4`.
++ `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`: the syntax is supported, but is not applicable to TiDB. All DDL changes that are supported do not lock the table.
++ `ALGORITHM [=] {DEFAULT|INSTANT|INPLACE|COPY}`: the syntax for `ALGORITHM=INSTANT` and `ALGORITHM=INPLACE` is fully supported, but will work differently than MySQL since some operations that are `INPLACE` in MySQL are `INSTANT` in TiDB. The syntax `ALGORITHM=COPY` is not applicable to TIDB and returns a warning. 
+
+For more information, see [Online Schema Changes](/key-features.md#online-schema-changes).
+
+### Analyze table
+
+[`ANALYZE TABLE`](/reference/performance/statistics.md#manual-collection) works differently in TiDB than in MySQL, in that it is a relatively lightweight and short-lived operation in MySQL/InnoDB, while in TiDB it completely rebuilds the statistics for a table and can take much longer to complete.
+
+### Storage engines
+
+For compatibility reasons, TiDB supports the syntax to create tables with alternative storage engines. Metadata commands describe tables as being of engine InnoDB:
+
+```sql
+mysql> CREATE TABLE t1 (a INT) ENGINE=MyISAM;
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> SHOW CREATE TABLE t1\G
+*************************** 1. row ***************************
+       Table: t1
+Create Table: CREATE TABLE `t1` (
+  `a` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+1 row in set (0.00 sec)
+```
+
+Architecturally, TiDB does support a similar storage engine abstraction to MySQL, and user tables are created in the engine specified by the [`--store`](/reference/configuration/tidb-server/configuration.md#store) option used when you start tidb-server (typically `tikv`).
+
+### SQL modes
+
+TiDB supports **all of the SQL modes** from MySQL 5.7 with minor exceptions:
+
+- The compatibility modes deprecated in MySQL 5.7 and removed in MySQL 8.0 are not supported (such as `ORACLE`, `POSTGRESQL` etc).
+- The mode `ONLY_FULL_GROUP_BY` has minor [semantic differences](/reference/sql/functions-and-operators/aggregate-group-by-functions.md#differences-from-mysql) to MySQL 5.7, which we plan to address in the future.
+- The SQL modes `NO_DIR_IN_CREATE` and `NO_ENGINE_SUBSTITUTION` are supported for compatibility, but are not applicable to TiDB.
+
+### Default differences
+
+- Default character set:
+    - The default value in TiDB is `utf8` which is equivalent to `utf8mb4` in MySQL.
+    - The default value in MySQL 5.7 is `latin1`, but changes to `utf8mb4` in MySQL 8.0.
+- Default collation: `latin1_swedish_ci` in MySQL 5.7, while `binary` in TiDB.
+- Default SQL mode:
+    - The default value in TiDB is `STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION`.
+    - The default value in MySQL 5.7 is `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`.
+- Default value of `lower_case_table_names`:
+    - The default value in TiDB is 2 and currently TiDB only supports 2.
+    - The default value in MySQL:
+        - On Linux: 0
+        - On Windows: 1
+        - On macOS: 2
+- Default value of `explicit_defaults_for_timestamp`:
+    - The default value in TiDB is `ON` and currently TiDB only supports `ON`.
+    - The default value in MySQL:
+        - For MySQL 5.7: `OFF`
+        - For MySQL 8.0: `ON`
+
+### Date and Time
+
+#### Named timezone
+
+TiDB supports named timezones such as `America/Los_Angeles` without having to load the [time zone information tables](https://dev.mysql.com/doc/refman/8.0/en/time-zone-support.html#time-zone-installation) as in MySQL.
+
+Because they are built-in, named time zones in TiDB might behave slightly differently to MySQL, and cannot be modified. For example, in TiDB the names are case-sensitive [#8087](https://github.com/pingcap/tidb/issues/8087).
+
+> **Note:**
+>
+> TiKV calculates time-related expressions that can be pushed down to it. This calculation uses the built-in time zone rule and does not depend on the time zone rule installed in the system. If the time zone rule installed in the system does not match the version of the built-in time zone rule in TiKV, the time data that can be inserted might result in a statement error in a few cases.
+>
+> For example, if the tzdata 2018a time zone rule is installed in the system, the time `1988-04-17 02:00:00` can be inserted into TiDB of the 3.0.0-rc.1 version when the time zone is set to Asia/Shanghai or the time zone is set to the local time zone and the local time zone is Asia/Shanghai. But reading this record might result in a statement error because this time does not exist in the Asia/Shanghai time zone according to the tzdata 2018i time zone rule used by TiKV 3.0.0-rc.1. Daylight saving time is one hour late.
+>
+> The named timezone rules in TiKV of two versions are as follows:
+>
+> - 3.0.0 RC.1 and later: [tzdata 2018i](https://github.com/eggert/tz/tree/2018i)
+> - 2.1.0 RC.1 and later: [tzdata 2018e](https://github.com/eggert/tz/tree/2018e)
+
+#### Zero month and zero day
+
+It is not recommended to unset the `NO_ZERO_DATE` and `NO_ZERO_IN_DATE` SQL modes, which are enabled by default in TiDB as in MySQL. While TiDB supports operating with these modes disabled, the TiKV coprocessor does not. Executing certain statements that push down date and time processing functions to TiKV might result in a statement error.

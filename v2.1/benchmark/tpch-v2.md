@@ -96,7 +96,7 @@ TiDB 2.1:
 | 21        | 389.883709908s | 361.034544945s |
 | 22        | 64.0494630337s | 65.7153418064s |
 
-![TPC-H Query Result](../media/tpch-query-result-v2.png)
+![TPC-H Query Result](/media/tpch-query-result-v2.png)
 
 It should be noted that:
 

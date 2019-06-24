@@ -41,6 +41,7 @@ def upload(local_file, remote_name, ttl=3600):
 if __name__ == "__main__":
     local_file = sys.argv[1]
     remote_name = sys.argv[2]
+    print(local_file, remote_name)
     upload(local_file, remote_name)
 
     print("http://download.pingcap.org/{}".format(remote_name))

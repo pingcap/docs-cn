@@ -98,7 +98,7 @@ TiDB 2.0:
 | 21        | 31.466s            | OOM              |
 | 22        | 31.539s            | 125.471s         |
 
-![TPC-H Query Result](../media/tpch-query-result.png)
+![TPC-H Query Result](/media/tpch-query-result.png)
 
 It should be noted that:
 

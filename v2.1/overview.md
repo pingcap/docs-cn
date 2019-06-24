@@ -1,41 +1,38 @@
 ---
 title: TiDB Introduction
-summary: An introduction to the TiDB database platform
+summary: Learn how to quickly start a TiDB cluster.
 category: introduction
 ---
 
 # TiDB Introduction
 
-TiDB (The pronunciation is: /'taɪdiːbi:/ tai-D-B, etymology: titanium) is an open-source distributed scalable Hybrid Transactional and Analytical Processing (HTAP) database. It features horizontal scalability, strong consistency, and high availability. TiDB is MySQL compatible and serves as a one-stop data warehouse for both OLTP (Online Transactional Processing) and OLAP (Online Analytical Processing) workloads.
+TiDB ("Ti" stands for Titanium) is an open-source NewSQL database that supports Hybrid Transactional and Analytical Processing (HTAP) workloads. It is MySQL compatible and features horizontal scalability, strong consistency, and high availability.
 
-- __Horizontal scalability__
+TiDB can be deployed on-premise or in-cloud. The following deployment options are officially supported by PingCAP:
 
-    TiDB provides horizontal scalability simply by adding new nodes. Never worry about infrastructure capacity ever again.
+- [Ansible Deployment](/how-to/deploy/orchestrated/ansible.md): This guide describes how to deploy TiDB using Ansible. It is strongly recommended for production deployment.
+- [Ansible Offline Deployment](/how-to/deploy/orchestrated/offline-ansible.md): If your environment has no access to the internet, you can follow this guide to see how to deploy a TiDB cluster offline using Ansible.
+- [Docker Deployment](/how-to/deploy/orchestrated/docker.md): This guide describes how to deploy TiDB using Docker.
+- [Docker Compose Deployment](/how-to/get-started/local-cluster/install-from-docker-compose.md): This guide describes how to deploy TiDB using Docker compose. You can follow this guide to quickly deploy a TiDB cluster for testing and development on your local drive.
+- [Kubernetes Deployment (beta)](/how-to/get-started/local-cluster/install-from-kubernetes.md): This guide describes how to deploy TiDB on Kubernetes using [TiDB Operator](https://github.com/pingcap/tidb-operator). You can follow this guide to see how to deploy TiDB on Google Kubernetes Engine or deploy TiDB locally using Docker in Docker.
+- [Binary Tarball Deployment](/how-to/deploy/from-tarball/production-environment.md): This guide describes how to deploy TiDB from a binary tarball in production. Guides for [development](/how-to/get-started/local-cluster/install-from-binary.md) and [testing](/how-to/deploy/from-tarball/testing-environment.md) environments are also available.
 
-- __MySQL compatibility__
+## Community Provided Blog Posts & Tutorials
 
-    Easily replace MySQL with TiDB to power your applications without changing a single line of code [in most cases](https://www.pingcap.com/docs/sql/mysql-compatibility/) and still benefit from the MySQL ecosystem.
+The following list collects deployment guides and tutorials from the community. The content is subject to change by the contributors.
 
-- __Distributed transaction__
+- [How To Spin Up an HTAP Database in 5 Minutes with TiDB + TiSpark](https://www.pingcap.com/blog/how_to_spin_up_an_htap_database_in_5_minutes_with_tidb_tispark/)
+- [Developer install guide (single machine)](http://www.tocker.ca/this-blog-now-powered-by-wordpress-tidb.html)
+- [TiDB Best Practices](https://pingcap.com/blog/2017-07-24-tidbbestpractice/)
 
-    TiDB is your source of truth, guaranteeing ACID compliance, so your data is accurate and reliable anytime, anywhere.
+_Your contribution is also welcome! Feel free to open a [pull request](https://github.com/pingcap/docs/blob/master/dev/overview.md) to add additional links._
 
-- __Cloud Native__
+## Source Code
 
-    TiDB is designed to work in the cloud -- public, private, or hybrid -- making deployment, provisioning, and maintenance drop-dead simple.
+Source code for [all components of the TiDB platform](https://github.com/pingcap) is available on GitHub.
 
-- __Minimize ETL__
-
-    ETL (Extract, Transform and Load) is no longer necessary with TiDB's hybrid OLTP/OLAP architecture, enabling you to create new values for your users, easier and faster.
-
-- __High availability__
-
-    With TiDB, your data and applications are always on and continuously available, so your users are never disappointed.
-
-TiDB is designed to support both OLTP and OLAP scenarios. For complex OLAP scenarios, use [TiSpark](tispark/tispark-user-guide.md).
-
-Read the following three articles to understand TiDB techniques:
-
-- [Data Storage](https://pingcap.github.io/blog/2017/07/11/tidbinternal1/)
-- [Computing](https://pingcap.github.io/blog/2017/07/11/tidbinternal2/)
-- [Scheduling](https://pingcap.github.io/blog/2017/07/20/tidbinternal3/)
+- [TiDB](https://github.com/pingcap/tidb)
+- [TiKV](https://github.com/tikv/tikv)
+- [PD](https://github.com/pingcap/pd)
+- [TiSpark](https://github.com/pingcap/tispark)
+- [TiDB Operator](https://github.com/pingcap/tidb-operator)

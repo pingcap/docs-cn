@@ -1,0 +1,9 @@
+log-file="tikv.log"
+[storage]
+data-dir="tikv.data"
+[pd]
+endpoints=["127.0.0.1:2379"]
+[rocksdb]
+max-open-files=1024
+[raftdb]
+max-open-files=1024

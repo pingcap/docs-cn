@@ -99,7 +99,7 @@ block-cache-size = "20GB"
 | v2.0 | 512  | 121350.61 | 11.65 |
 | v2.0 | 1024 | 150036.31 | 17.32 |
 
-![point select](../media/sysbench_v3_point_select.png)
+![point select](/media/sysbench_v3_point_select.png)
 
 According to the statistics above, the `Point Select` query performance of TiDB 2.1 has increased by **50%** than that of TiDB 2.0.
 
@@ -118,7 +118,7 @@ According to the statistics above, the `Point Select` query performance of TiDB 
 | v2.0 | 512  | 25994.33 | 46.63  |
 | v2.0 | 1024 | 27917.52 | 92.42  |
 
-![update non-index](../media/sysbench_v3_update_non_index.png)
+![update non-index](/media/sysbench_v3_update_non_index.png)
 
 According to the statistics above, the `Update Non-Index` write performance of TiDB 2.1 and TiDB 2.0 is almost the same.
 
@@ -137,6 +137,6 @@ According to the statistics above, the `Update Non-Index` write performance of T
 | v2.0 | 512  | 11162.63 | 104.84 |
 | v2.0 | 1024 | 12067.63 | 179.94 |
 
-![update index](../media/sysbench_v3_update_index.png)
+![update index](/media/sysbench_v3_update_index.png)
 
 According to the statistics above, the `Update Index` write performance of TiDB 2.1 and TiDB 2.0 is almost the same.

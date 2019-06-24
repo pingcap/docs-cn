@@ -1,0 +1,37 @@
+name: dmtask1
+task-mode: all
+is-sharding: true
+enable-heartbeat: true
+ignore-checking-items: ["auto_increment_ID"]
+
+mysql-instances:
+  - source-id: "mysql1"
+    server-id: 1
+    black-white-list: "dmtest1"
+    loader-config-name: "loader1"
+  - source-id: "mysql2"
+    server-id: 2
+    black-white-list: "dmtest1"
+    loader-config-name: "loader2"
+  - source-id: "mysql3"
+    server-id: 3
+    black-white-list: "dmtest1"
+    loader-config-name: "loader3"
+
+black-white-list:
+  dmtest1:
+    do-dbs: ["dmtest1"]
+
+loaders:
+  loader1:
+    dir: "data/dump1"
+  loader2:
+    dir: "data/dump2"
+  loader3:
+    dir: "data/dump3"
+
+target-database:
+  host: "127.0.0.1"
+  port: 4000
+  user: "root"
+  password: ""

@@ -15,7 +15,17 @@ _version_tag="$(date '+%Y%m%d')"
 # default version: `pandoc --latex-engine=xelatex doc.md -s -o output2.pdf`
 # used to debug template setting error
 
-pandoc -N --toc --smart --latex-engine=xelatex \
+
+docs_versions=(dev v3.0 v2.1)
+
+for i in "${docs_versions[@]}"
+do
+   echo "$i"
+   version="$i/doc.md"
+   echo "$version"
+   output_path="$i/output.pdf"
+
+   pandoc -N --toc --smart --latex-engine=xelatex \
     --template=templates/template.tex \
     --columns=80 \
     --listings \
@@ -26,4 +36,5 @@ pandoc -N --toc --smart --latex-engine=xelatex \
     -V fontsize=12pt \
     -V geometry:margin=1in \
     -V include-after="\\input{templates/copyright.tex}" \
-    doc.md -s -o output.pdf
+    $version -s -o $output_path
+done

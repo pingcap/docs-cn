@@ -111,9 +111,9 @@ max_connections = 2000
     | Mysql | 32 | 5 million | 256 | 1902 | 38045 | 134.56 ms / 363.18 ms |
     | Mysql | 32 | 10 million | 256 | 1770 | 35416 | 144.55 ms / 383.33 ms  |
 
-![](../media/sysbench-01.png)
+![](/media/sysbench-01.png)
 
-![](../media/sysbench-02.png)
+![](/media/sysbench-02.png)
 
 - `Select` RW test
 
@@ -130,9 +130,9 @@ max_connections = 2000
     | Mysql | 32 | 5 million | 256 |  386866 | 0.66 ms / 1.64 ms |
     | Mysql | 32 | 10 million | 256 |  388273 | 0.66 ms / 1.64 ms  |
 
-![](../media/sysbench-03.png)
+![](/media/sysbench-03.png)
 
-![](../media/sysbench-04.png)
+![](/media/sysbench-04.png)
 
 - `Insert` RW test
 
@@ -149,9 +149,9 @@ max_connections = 2000
     | Mysql | 32 | 5 million | 256 | 10593 | 24.16 ms / 82.96 ms  |
     | Mysql | 32 | 10 million | 256 | 9813 | 26.08 ms / 94.10 ms  |  
  
-![](../media/sysbench-05.png)
+![](/media/sysbench-05.png)
 
-![](../media/sysbench-06.png)   
+![](/media/sysbench-06.png)   
 
 ### Scenario two: TiDB horizontal scalability test
 
@@ -188,7 +188,7 @@ block-cache-size = "2GB"
     | 4 TiDB physical nodes | 32 | 1 million | 256 * 4 | 8984 | 179692 | 114.96 ms / 176.73 ms |
     | 6 TiDB physical nodes | 32 | 5 million | 256 * 6 | 12953 | 259072 | 117.80 ms / 200.47 ms  |
 
-![](../media/sysbench-07.png)
+![](/media/sysbench-07.png)
 
 - `Select` RW test
 
@@ -199,7 +199,7 @@ block-cache-size = "2GB"
     | 4 TiDB physical nodes | 32 | 1 million | 256 * 4 | 289933 | 3.53 ms / 8.74 ms  |
     | 6 TiDB physical nodes | 32 | 5 million | 256 * 6 | 435313 | 3.55 ms / 9.17 ms  |
 
-![](../media/sysbench-08.png)
+![](/media/sysbench-08.png)
 
 - `Insert` RW test
 
@@ -209,4 +209,4 @@ block-cache-size = "2GB"
     | 5 TiKV physical nodes | 32 | 1 million | 256 * 3 | 60689 | 37.96 ms / 29.9 ms |
     | 7 TiKV physical nodes | 32 | 1 million | 256 * 3 | 80087 | 9.62 ms / 21.37 ms |
 
-![](../media/sysbench-09.png)
+![](/media/sysbench-09.png)

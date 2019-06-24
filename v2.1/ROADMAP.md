@@ -11,40 +11,45 @@ This document defines the roadmap for TiDB development.
 ## TiDB:
 
 + [ ] Optimizer
-    - [x] Refactor Ranger
-    - [x] Optimize the cost model
-    - [ ] Cascades model planner
-    - [ ] Join Reorder
-+ [ ] Statistics
-    - [x] Update statistics dynamically according to the query feedback
-    - [x] Analyze table automatically
-    - [x] Improve the accuracy of Row Count estimation
+    - [ ] Statistics Optimization
+    - [ ] Multi-Column Statistics
+    - [ ] Cascades Planner
+    - [ ] Plan Management
+    - [ ] SQL Tuning Advisor
+    - [ ] Robust Access Path Selection: add the heuristic rule and improve the accuracy of index selection in OLTP scenarios
+    - [ ] Adaptive Query Optimization
 + [ ] Execution Engine
-    - [ ] Push down the Projection operator to the Coprocessor
-    - [x] Improve the performance of the HashJoin operator
-    + [ ] Parallel Operators
-        - [x] Projection
-        - [x] Aggregation
-        - [ ] Sort
-    - [x] Compact Row Format to reduce memory usage
-    - [ ] File Sort
-- [ ] View
-- [ ] Window Function
-- [ ] Common Table Expression
-+ [ ] Table Partition
-    - [x] Range Partition
-    - [ ] Hash Partition
-- [ ] Cluster Index
-- [ ] New storage row format
-- [ ] Query Tracing
+    - [ ] Parallel Operators
+    - [ ] Memory Control
+    - [ ] Concurrency Control
+    - [ ] Shuffle Operators
+    - [ ] Vectorized Expression Evaluation
+    - [ ] UDF
++ [ ] SQL Features
+    - [ ] Support Views
+    - [ ] Support Window Functions
+    - [ ] Support Common Table Expressions
+    - [ ] Support Hash Partitioned Tables
+    - [ ] Support the utf8mb4_0900_ai_ci Collation
 + [ ] Improve DDL
-    - [x] Speed up Add Index operation
-    - [x] Parallel DDL
-    - [ ] Support locking table
-    - [ ] Support modifying the column type
-    - [ ] Support modifying the primary key
-    - [ ] Support multiple DDL operations in a single statement
-- [ ] Support `utf8_general_ci` collation
+    - [ ] Support Table Lock
+    - [ ] Support Change Column Type
+    - [ ] Support Multiple DDL Operations in a Single Statement
+    - [ ] Support Invisible Indexes
++ [ ] Support Plugin System
+    - [ ] Support White List Plugin
+    - [ ] Support Audit Log Plugin
+    - [ ] Support RBAC Plugin
+    - [ ] Support Diagnostic Plugin
++ [ ] Support Query Tracing
++ [ ] Support Hybrid Column/Row-oriented Storage Engine
++ [ ] Support New Storage Row Format: improve performance and reduce memory usage
++ [ ] Support Non-integer Type of RowID
++ [ ] Transaction
+    - [ ] Reduce Read-write Conflicts
+    - [ ] Optimize Transaction Scheduling Mechanism
+    - [ ] Refine Model and Reduce Latency
+    - [ ] Support Minimal Transaction (like the mini-transaction of InnoDB)
 
 ## TiKV:
 

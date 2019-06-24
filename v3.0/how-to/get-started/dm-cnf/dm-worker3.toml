@@ -1,0 +1,16 @@
+# Worker Configuration.
+
+server-id = 3
+source-id = "mysql3"
+flavor = "mysql"
+worker-addr = ":8264"
+log-file = "logs/worker3.log"
+relay-dir = "data/relay3"
+meta-dir = "data/meta3"
+dir = "data/dump3"
+
+[from]
+host = "127.0.0.1"
+user = "root"
+password = ""
+port = 3309

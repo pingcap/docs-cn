@@ -1,0 +1,16 @@
+# Worker Configuration.
+
+server-id = 2
+source-id = "mysql2"
+flavor = "mysql"
+worker-addr = ":8263"
+log-file = "logs/worker2.log"
+relay-dir = "data/relay2"
+meta-dir = "data/meta2"
+dir = "data/dump2"
+
+[from]
+host = "127.0.0.1"
+user = "root"
+password = ""
+port = 3308
