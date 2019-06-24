@@ -8,7 +8,7 @@ aliases: ['/docs-cn/sql/diagnostic-kit']
 
 为了方便排查问题，TiDB 中提供了一些 SQL 和系统表来方便的查询到一些有用的信息。
 
-在 `INFORMATION\_SCHEMA` 这个系统数据库中，有如下的表可供使用。
+`INFORMATION\_SCHEMA` 中提供了如下几个系统表，用于查询集群状态，诊断常见的集群问题。
 
 - [TABLES](../dev/reference/system-databases/information-schema.md#TABLES-Table)
 - [TIDB\_INDEXES](../dev/reference/system-databases/information-schema.md#TIDB\_INDEXES)
