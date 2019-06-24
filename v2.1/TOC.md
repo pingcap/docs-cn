@@ -70,7 +70,8 @@
   + Maintain
     - [Common Ansible Operations](how-to/deploy/orchestrated/ansible-operations.md)
     - [Backup and Restore](how-to/maintain/backup-and-restore.md)
-    - [Identify Slow Queries](how-to/maintain/identify-slow-queries.md)
+    - [Identify Slow Queries (2.1.8+)](how-to/maintain/identify-slow-queries.md)
+    - [Identify Slow Queries (earlier)](how-to/maintain/identify-slow-queries-21.md)
   + Scale
     - [Scale using Ansible](how-to/scale/with-ansible.md)
     - [Scale a TiDB Cluster](how-to/scale/horizontally.md)
