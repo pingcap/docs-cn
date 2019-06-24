@@ -219,8 +219,10 @@
       - [配置文件描述](dev/reference/configuration/tidb-server/configuration-file.md)
     + pd-server
       - [配置参数](dev/reference/configuration/pd-server/configuration.md)
+      - [配置文件描述](dev/reference/configuration/pd-server/configuration-file.md)
     + tikv-server
       - [配置参数](dev/reference/configuration/tikv-server/configuration.md)
+      - [配置文件描述](dev/reference/configuration/tikv-server/configuration-file.md)
   + 监控指标
     - [Overview 面板](dev/reference/key-monitoring-metrics/overview-dashboard.md)
     - [TiDB 面板](dev/reference/key-monitoring-metrics/tidb-dashboard.md)
