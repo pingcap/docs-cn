@@ -11,6 +11,10 @@
 + 操作指南
   + 快速上手
     + 创建本地集群
+      + 使用 Kubernetes
+        - [DinD](dev/how-to/get-started/local-cluster/install-from-kubernetes-dind.md)
+        - [Minikube](dev/how-to/get-started/local-cluster/install-from-kubernetes-minikube.md)
+        - [GKE](dev/how-to/get-started/local-cluster/install-from-kubernetes-gke.md)
       - [使用 Docker Compose](dev/how-to/get-started/local-cluster/install-from-docker-compose.md)
     - [SQL 基本操作](dev/how-to/get-started/explore-sql.md)
     - [读取历史数据](dev/how-to/get-started/read-historical-data.md)
@@ -22,10 +26,15 @@
       - [使用 Ansible 部署（推荐）](dev/how-to/deploy/orchestrated/ansible.md)
       - [使用 Ansible 离线部署](dev/how-to/deploy/orchestrated/offline-ansible.md)
       - [使用 Docker 部署](dev/how-to/deploy/orchestrated/docker.md)
+      + 使用 Kubernetes 部署
+        - [阿里云](dev/how-to/deploy/orchestrated/alibaba-cloud.md)
+        - [AWS EKS](dev/how-to/deploy/orchestrated/aws-eks.md)
+        - [GCP](dev/how-to/deploy/orchestrated/gcp-gke.md)
     + 跨地域冗余
       - [跨数据中心部署方案](dev/how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](dev/how-to/deploy/geographic-redundancy/location-awareness.md)
     - [使用 Ansible 部署 DM 集群](dev/how-to/deploy/data-migration-with-ansible.md)
+    - [部署 TiDB Binlog 集群](dev/how-to/deploy/tidb-binlog.md)
   + 配置
     - [时区](dev/how-to/configure/time-zone.md)
     - [内存控制](dev/how-to/configure/memory-control.md)
@@ -37,6 +46,7 @@
   + 监控
     - [概述](dev/how-to/monitor/overview.md)
     - [监控 TiDB 集群](dev/how-to/monitor/monitor-a-cluster.md)
+    - [TiDB Binlog 集群监控](dev/how-to/monitor/tidb-binlog.md)
   + 迁移
     - [概述](dev/how-to/migrate/overview.md)
     + 从 MySQL 迁移
@@ -48,6 +58,7 @@
     - [Ansible 常见运维操作](dev/how-to/maintain/ansible-operations.md)
     + [备份与恢复](dev/how-to/maintain/backup-and-restore.md)
     - [定位慢查询](dev/how-to/maintain/identify-slow-queries.md)
+    - [TiDB Binlog 集群运维](dev/how-to/maintain/tidb-binlog.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](dev/how-to/scale/with-ansible.md)
   + 升级
@@ -55,6 +66,7 @@
     - [升级至 TiDB 2.1](dev/how-to/upgrade/to-tidb-2.1.md)
     - [使用 Ansible 滚动升级](dev/how-to/upgrade/rolling-updates-with-ansible.md)
     - [升级 Data Migration](dev/reference/tools/data-migration/dm-upgrade.md)
+    - [升级 TiDB Binlog Cluster 版本](dev/how-to/upgrade/tidb-binlog.md)
   + 故障诊断
     - [集群配置诊断](dev/how-to/troubleshoot/cluster-setup.md)
     - [Data Migration 故障诊断](dev/how-to/troubleshoot/data-migration.md)
@@ -189,6 +201,7 @@
       - [`SHOW TABLE STATUS`](dev/reference/sql/statements/show-table-status.md)
       - [`SHOW [GLOBAL|SESSION] VARIABLES`](dev/reference/sql/statements/show-variables.md)
       - [`SHOW WARNINGS`](dev/reference/sql/statements/show-warnings.md)
+      - [`SPLIT REGION`](dev/reference/sql/statements/split-region.md)
       - [`START TRANSACTION`](dev/reference/sql/statements/start-transaction.md)
       - [`TRACE`](dev/reference/sql/statements/trace.md)
       - [`TRUNCATE`](dev/reference/sql/statements/truncate.md)
@@ -232,11 +245,13 @@
   + 性能调优
     - [SQL 优化流程](dev/reference/performance/sql-optimizer-overview.md)
     - [理解 TiDB 执行计划](dev/reference/performance/understanding-the-query-execution-plan.md)
+    - [执行计划绑定](dev/reference/performance/execution-plan-bind.md)
     - [统计信息概述](dev/reference/performance/statistics.md)
     - [Optimizer Hints](dev/reference/performance/optimizer-hints.md)
     - [TiKV 调优](dev/reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + [TiSpark 使用指南](dev/reference/tispark.md)
+  + [TiDB Binlog 简介](dev/reference/tidb-binlog-overview.md)
   + 生态工具
     - [Mydumper](dev/reference/tools/mydumper.md)
     - [Loader](dev/reference/tools/loader.md)
@@ -278,12 +293,6 @@
       - [监控告警](dev/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](dev/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](dev/faq/tidb-lightning.md)
-    + TiDB Binlog
-      - [概述](dev/reference/tools/tidb-binlog/overview.md)
-      - [部署使用](dev/reference/tools/tidb-binlog/deploy.md)
-      - [监控告警](dev/reference/tools/tidb-binlog/monitor.md)
-      - [运维管理](dev/reference/tools/tidb-binlog/operation.md)
-      - [版本升级](dev/reference/tools/tidb-binlog/upgrade.md)
     - [PD Control](dev/reference/tools/pd-control.md)
     - [PD Recover](dev/reference/tools/pd-recover.md)
     - [TiKV Control](dev/reference/tools/tikv-control.md)
@@ -302,11 +311,13 @@
 - [TiDB 路线图](dev/roadmap.md)
 + [版本发布历史](dev/releases/rn.md)
   + v3.0
+    - [3.0.0-rc.3](dev/releases/3.0.0-rc.3.md)
     - [3.0.0-rc.2](dev/releases/3.0.0-rc.2.md)
     - [3.0.0-rc.1](dev/releases/3.0.0-rc.1.md)
     - [3.0.0-beta.1](dev/releases/3.0.0-beta.1.md)
     - [3.0.0-beta](dev/releases/3.0beta.md)
   + v2.1
+    - [2.1.13](dev/releases/2.1.13.md)    
     - [2.1.12](dev/releases/2.1.12.md)
     - [2.1.11](dev/releases/2.1.11.md)
     - [2.1.10](dev/releases/2.1.10.md)
