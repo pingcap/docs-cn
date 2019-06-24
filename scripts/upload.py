@@ -5,6 +5,7 @@ import sys
 import os
 from qiniu import Auth, put_file, etag, urlsafe_base64_encode
 import qiniu.config
+from qiniu.compat import is_py2, is_py3
 
 
 ACCESS_KEY = os.getenv('QINIU_ACCESS_KEY')
@@ -26,14 +27,22 @@ def upload(local_file, remote_name, ttl=3600):
     #生成上传 Token，可以指定过期时间等
     token = q.upload_token(BUCKET_NAME, remote_name, ttl)
 
-    ret, info = put_file(token, remote_name, local_file, progress_handler=progress_handler)
-    print(info)
-    assert ret['key'] == remote_name
+    ret, info = put_file(token, remote_name, local_file)
+    print("ret", ret)
+    print("info", info)
+    # assert ret['key'] == remote_name
+    if is_py2:
+      assert ret['key'].encode('utf-8') == remote_name
+    elif is_py3:
+      assert ret['key'] == remote_name
+
     assert ret['hash'] == etag(local_file)
 
 if __name__ == "__main__":
+    print('hello')
     local_file = sys.argv[1]
     remote_name = sys.argv[2]
+    print(local_file, remote_name)
     upload(local_file, remote_name)
 
     print("http://download.pingcap.org/{}".format(remote_name))

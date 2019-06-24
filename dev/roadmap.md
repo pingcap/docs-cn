@@ -1,7 +1,6 @@
 ---
 title: TiDB 路线图
 category: Roadmap
-aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 ---
 
 # TiDB 路线图

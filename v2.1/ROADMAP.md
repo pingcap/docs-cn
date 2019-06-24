@@ -8,40 +8,45 @@ category: Roadmap
 ## TiDB：
 
 - [ ] 优化器
-    - [x] 重构 Ranger
-    - [x] 代价模型优化
-    - [ ] Cascades model planner
-    - [ ] Join Reorder
-- [ ] 统计信息
-    - [x] 基于 Query Feedback 动态更新统计信息
-    - [x] 自动 Analyze
-    - [x] 提升 Row Count 估算精度
+    - [ ] 统计信息优化
+    - [ ] Multi-Column Statistics
+    - [ ] Cascades Planner
+    - [ ] Plan Management
+    - [ ] SQL Tuning Advisor
+    - [ ] Robust Access Path Selection：增加启发式规则，提升 OLTP 场景中索引选择正确率
+    - [ ] Adaptive Query Optimization
 - [ ] 执行引擎
-    - [ ] 下推 Projection 到 Coprocessor
-    - [x] 优化 HashJoin 算子执行速度
     - [ ] 算子并行化
-        - [x] 并行 Projection
-        - [x] 并行聚合
-        - [ ] 并行 Sort
-    - [x] Compact Row Format，节省内存占用
-    - [ ] File Sort
-- [ ] View
-- [ ] 窗口函数
-- [ ] Common Table Expression
-- [ ] 分区表
-    - [x] Range 分区
-    - [ ] Hash 分区
-- [ ] 聚簇索引
-- [ ] 新的 storage row format
-- [ ] Query Tracing
+    - [ ] 内存控制
+    - [ ] 并发控制
+    - [ ] Shuffle 算子
+    - [ ] Vectorized 表达式计算
+    - [ ] UDF
+- [ ] SQL 功能
+    - [ ] 支持 View
+    - [ ] 支持窗口函数
+    - [ ] 支持 Common Table Expression
+    - [ ] 支持 Hash 分区表
+    - [ ] 支持 utf8_general_ci collation
 - [ ] DDL 改进
-    - [x] Add Index 加速
-    - [x] 并行 DDL
-    - [ ] 支持锁表
-    - [ ] 支持改变 column 类型
-    - [ ] 支持修改主键
-    - [ ] 支持一条语句中多个 DDL 操作
-- [ ] 支持 `utf8_general_ci` collation
+    - [ ] 支持 Table Lock
+    - [ ] 支持 Change column type
+    - [ ] 支持单条语句中多个 DDL 操作
+    - [ ] 支持不可见索引（invisible index）
+- [ ] 支持插件系统
+    - [ ] 支持白名单插件
+    - [ ] 支持审计日志插件
+    - [ ] 支持 RBAC 插件
+    - [ ] 支持诊断插件 
+- [ ] 支持 Query Tracing
+- [ ] 支持行列混合存储引擎
+- [ ] 支持 New Storage Row Format，提升性能并减小内存占用
+- [ ] RowID 实现非整数类型
+- [ ] 事务
+    - [ ] 减少读写冲突
+    - [ ] 优化事务调度机制
+    - [ ] 改善模型，降低延迟
+    - [ ] 支持最小事务 (like the mini-transaction of InnoDB)
 
 ## TiKV：
 
