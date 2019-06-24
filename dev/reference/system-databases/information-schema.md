@@ -222,6 +222,8 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 ## PROCESSLIST Table
 
  `PROCESSLIST` 和 `show processlist` 的功能一样，都是查看当前正在处理的请求。
+ 
+ `PROCESSLIST` 表会比 `show processlist` 多一个 `MEM` 列，`MEM` 是指正在处理的请求已使用的内存，单位是 byte。
 
 ```sql
 +----+------+------+--------------------+---------+------+-------+---------------------------+-----+
