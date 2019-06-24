@@ -63,3 +63,17 @@ jobs:
 
       - store_artifacts:
           path: /tmp/artifacts
+
+workflows:
+  version: 2
+  lint:
+    jobs:
+      - lint
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
+                - website-preview
