@@ -27,8 +27,6 @@
   + Get Started
     + Start a Local Cluster
       - [From Binary](how-to/get-started/local-cluster/install-from-binary.md)
-      - [From Homebrew](how-to/get-started/local-cluster/install-from-homebrew.md)
-      - [From DBdeployer](how-to/get-started/local-cluster/install-from-dbdeployer.md)
       - [In Kubernetes](how-to/get-started/local-cluster/install-from-kubernetes.md)
       - [In Docker Compose](how-to/get-started/local-cluster/install-from-docker-compose.md)
     - [Explore SQL with TiDB](how-to/get-started/explore-sql.md)
@@ -77,8 +75,7 @@
     - [Scale using Ansible](how-to/scale/with-ansible.md)
     - [Scale a TiDB Cluster](how-to/scale/horizontally.md)
   + Upgrade
-    - [Upgrade to TiDB 3.0](how-to/upgrade/from-previous-version.md)
-    - [Upgrade to TiDB 2.1](how-to/upgrade/to-tidb-2.1.md)
+    - [Upgrade to TiDB 2.1](how-to/upgrade/from-previous-version.md)
     - [Rolling updates with Ansible](how-to/upgrade/rolling-updates-with-ansible.md)
     - [Upgrade TiDB Data Migration](how-to/upgrade/data-migration.md)
   - Troubleshoot
@@ -239,7 +236,6 @@
     - [Overview](reference/transactions/overview.md)
     - [Transaction Model](reference/transactions/transaction-model.md)
     - [Isolation Levels](reference/transactions/transaction-isolation.md)
-    - [Pessimistic Transactions](reference/transactions/transaction-pessimistic.md)
   + System Databases
     - [`mysql`](reference/system-databases/mysql.md)
     - [`information_schema`](reference/system-databases/information-schema.md)

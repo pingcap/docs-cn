@@ -78,7 +78,6 @@
     - [Scale a TiDB Cluster](how-to/scale/horizontally.md)
   + Upgrade
     - [Upgrade to TiDB 3.0](how-to/upgrade/from-previous-version.md)
-    - [Upgrade to TiDB 2.1](how-to/upgrade/to-tidb-2.1.md)
     - [Rolling updates with Ansible](how-to/upgrade/rolling-updates-with-ansible.md)
     - [Upgrade TiDB Data Migration](how-to/upgrade/data-migration.md)
   - Troubleshoot
