@@ -129,6 +129,28 @@ TiDB supports **all of the SQL modes** from MySQL 5.7 with minor exceptions:
 - The mode `ONLY_FULL_GROUP_BY` has minor [semantic differences](/reference/sql/functions-and-operators/aggregate-group-by-functions.md#differences-from-mysql) to MySQL 5.7, which we plan to address in the future.
 - The SQL modes `NO_DIR_IN_CREATE` and `NO_ENGINE_SUBSTITUTION` are supported for compatibility, but are not applicable to TiDB.
 
+### Version-specific comments
+
+TiDB executes all MySQL version-specific comments, regardless of the version they apply to. For example, the comment `/*!90000 */` would instruct a MySQL server less than 9.0 to not execute code. In TiDB this code will always be executed:
+
+```sql
+mysql 8.0.16> SELECT /*!90000 "I should not run", */ "I should run" FROM dual;
++--------------+
+| I should run |
++--------------+
+| I should run |
++--------------+
+1 row in set (0.00 sec)
+
+tidb> SELECT /*!90000 "I should not run", */ "I should run" FROM dual;
++------------------+--------------+
+| I should not run | I should run |
++------------------+--------------+
+| I should not run | I should run |
++------------------+--------------+
+1 row in set (0.00 sec)
+```
+
 ### Default differences
 
 - Default character set:
