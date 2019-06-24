@@ -253,7 +253,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 #### 2.2.2 TiDB 离线 Ansible 部署方案
 
-首先这不是我们建议的方式，如果中控机没有外网，也可以通过离线 Ansible 部署方式，详情可参考[这里](op-guide/offline-ansible-deployment.md)。
+首先这不是我们建议的方式，如果中控机没有外网，也可以通过离线 Ansible 部署方式，详情可参考[这里](/how-to/deploy/orchestrated/offline-ansible.md)。
 
 #### 2.2.3 Docker Compose 快速构建集群（单机部署）
 
