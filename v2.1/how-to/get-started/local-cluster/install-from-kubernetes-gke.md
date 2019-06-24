@@ -118,7 +118,7 @@ watch "kubectl get pods --namespace kube-system | grep tiller"
 
 ## 添加 Helm 仓库
 
-Helm 仓库 (http://charts.pingcap.org/) 存放着 PingCAP 发布的 charts，例如 tidb-operator、tidb-cluster 和 tidb-backup 等等。使用下面命令添加仓库：
+PingCAP Helm 仓库中存放着 PingCAP 发布的 charts，例如 tidb-operator、tidb-cluster 和 tidb-backup 等等。使用下面命令添加仓库：
 
 {{< copyable "shell-regular" >}}
 
