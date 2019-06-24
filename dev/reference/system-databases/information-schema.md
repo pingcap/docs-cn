@@ -276,7 +276,7 @@ mysql> SELECT * FROM session_variables LIMIT 10;
 
 ## SLOW_QUERY Table
 
- `SLOW_QUERY` 提供了慢查询相关的一些信息。表里面的内容是通过解析 TiDB 慢日志文件的数据而来的，表中列名和慢日志中的字段名是一一对应了。更多操作可以参考 [慢查询日志文档](../../how-to/maintain/identify-slow-queries.md)。
+ `SLOW_QUERY` 提供了慢查询相关的一些信息。表里面的内容是通过解析 TiDB 慢日志文件的数据而来的，表中列名和慢日志中的字段名是一一对应的关系。更多操作可以参考 [慢查询日志文档](../../how-to/maintain/identify-slow-queries.md)。
 
 ```sql
  mysql>desc SLOW_QUERY;
