@@ -16,7 +16,7 @@ aliases: ['/docs-cn/sql/diagnostic-kit']
 - [`TIDB\_HOT\_REGIONS`](/dev/reference/system-databases/information-schema.md#TIDB\_HOT\_REGIONS-表)
 - [`TIKV\_STORE\_STATUS`](/dev/reference/system-databases/information-schema.md#TIKV\_STORE\_STATUS-表)
 - [`TIKV\_REGION\_STATUS`](/dev/reference/system-databases/information-schema.md#TIKV\_REGION\_STATUS-表)
-- [TIKV\_REGION\_PEERS](../dev/reference/system-databases/information-schema.md#TIKV\_REGION\_PEERS)
+- [`TIKV\_REGION\_PEERS`](/dev/reference/system-databases/information-schema.md#TIKV\_REGION\_PEERS-表)
 
 除此之外，以下命令可用于获得对排查问题或查询集群状态有用的信息：
 
