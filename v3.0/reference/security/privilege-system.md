@@ -29,25 +29,58 @@ Use the following statement to grant the `xxx` user all privileges on all databa
 GRANT ALL PRIVILEGES ON *.* TO 'xxx'@'%';
 ```
 
-If the granted user does not exist, TiDB will automatically create a user.
+By default, `GRANT` statements will return an error if the user specified does not exist. This behavior depends on if the SQL Mode `NO_AUTO_CREATE_USER` is specified:
 
 ```sql
-mysql> SELECT * FROM mysql.user WHERE user='xxxx';
-Empty set (0.00 sec)
-
-mysql> GRANT ALL PRIVILEGES ON test.* TO 'xxxx'@'%' IDENTIFIED BY 'yyyyy';
+mysql> SET sql_mode=DEFAULT;
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> SELECT user,host FROM mysql.user WHERE user='xxxx';
-+------|------+
-| user | host |
-+------|------+
-| xxxx | %    |
-+------|------+
+mysql> SELECT @@sql_mode;
++-------------------------------------------------------------------------------------------------------------------------------------------+
+| @@sql_mode                                                                                                                                |
++-------------------------------------------------------------------------------------------------------------------------------------------+
+| ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
++-------------------------------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
+
+mysql> SELECT * FROM mysql.user WHERE user='idontexist';
+Empty set (0.00 sec)
+
+mysql> GRANT ALL PRIVILEGES ON test.* TO 'idontexist';
+ERROR 1105 (HY000): You are not allowed to create a user with GRANT
+
+mysql> SELECT user,host,password FROM mysql.user WHERE user='idontexist';
+Empty set (0.00 sec)
 ```
 
-In this example, `xxxx@%` is the user that is automatically created.
+In the following example, the user `idontexist` is automatically created with an empty password because the SQL Mode `NO_AUTO_CREATE_USER` was not set. This is **not recommended** since it presents a security risk: miss-spelling a username will result in a new user created with an empty password:
+
+```sql
+mysql> SET @@sql_mode='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT @@sql_mode;
++-----------------------------------------------------------------------------------------------------------------------+
+| @@sql_mode                                                                                                            |
++-----------------------------------------------------------------------------------------------------------------------+
+| ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION |
++-----------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM mysql.user WHERE user='idontexist';
+Empty set (0.00 sec)
+
+mysql> GRANT ALL PRIVILEGES ON test.* TO 'idontexist';
+Query OK, 1 row affected (0.05 sec)
+
+mysql> SELECT user,host,password FROM mysql.user WHERE user='idontexist';
++------------+------+----------+
+| user       | host | password |
++------------+------+----------+
+| idontexist | %    |          |
++------------+------+----------+
+1 row in set (0.00 sec)
+```
 
 > **Note:**
 >
@@ -283,10 +316,10 @@ Requires the `SUPER` privilege.
 
 The following system tables are special because all the privilege-related data is stored in them:
 
-- mysql.user (user account, global privilege)
-- mysql.db (database-level privilege)
-- mysql.tables_priv (table-level privilege)
-- mysql.columns_priv (column-level privilege; not currently supported)
+- `mysql.user` (user account, global privilege)
+- `mysql.db` (database-level privilege)
+- `mysql.tables_priv` (table-level privilege)
+- `mysql.columns_priv` (column-level privilege; not currently supported)
 
 These tables contain the effective range and privilege information of the data. For example, in the `mysql.user` table:
 
@@ -304,19 +337,9 @@ In this record, `Host` and `User` determine that the connection request sent by 
 
 `Host` and `User` in `mysql.db` determine which databases users can access. The effective range is the database.
 
-In theory, all privilege-related operations can be done directly by the CRUD operations on the grant table.
-
-On the implementation level, only a layer of syntactic sugar is added. For example, you can use the following command to remove a user:
-
-```sql
-DELETE FROM mysql.user WHERE user='test';
-```
-
-However, the recommended usage is with `DROP USER`:
-
-```sql
-DROP USER 'test';
-```
+> **Note:**
+>
+> It is recommended to only update the privilege tables via the supplied syntax such as `GRANT`, `CREATE USER` and `DROP USER`. Making direct edits to the underlying privilege tables will not automatially update the privilege cache, leading to unpredictable behavior until `FLUSH PRIVILEGES` is executed.
 
 ### Connection verification
 
@@ -334,7 +357,7 @@ For database-related requests (`INSERT`, `UPDATE`), the request verification pro
 
 The `user` table has global privileges regardless of the default database. For example, the `DELETE` privilege in `user` can apply to any row, table, or database.
 
-In the `Db` table, an empty user is to match the anonymous user name. Wildcards are not allowed in the `User` column. The value for the `Host` and `Db` columns can use `%` and `_`, which can use pattern matching.
+In the `db` table, an empty user is to match the anonymous user name. Wildcards are not allowed in the `User` column. The value for the `Host` and `Db` columns can use `%` and `_`, which can use pattern matching.
 
 Data in the `user` and `db` tables is also sorted when loaded into memory.
 

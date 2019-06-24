@@ -336,19 +336,9 @@ In this record, `Host` and `User` determine that the connection request sent by 
 
 `Host` and `User` in `mysql.db` determine which databases users can access. The effective range is the database.
 
-In theory, all privilege-related operations can be done directly by the CRUD operations on the grant table.
-
-On the implementation level, only a layer of syntactic sugar is added. For example, you can use the following command to remove a user:
-
-```sql
-DELETE FROM mysql.user WHERE user='test';
-```
-
-However, the recommended usage is with `DROP USER`:
-
-```sql
-DROP USER 'test';
-```
+> **Note:**
+>
+> It is recommended to only update the privilege tables via the supplied syntax such as `GRANT`, `CREATE USER` and `DROP USER`. Making direct edits to the underlying privilege tables will not automatially update the privilege cache, leading to unpredictable behavior until `FLUSH PRIVILEGES` is executed.
 
 ### Connection verification
 

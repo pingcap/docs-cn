@@ -14,39 +14,23 @@ This document introduces privilege-related TiDB operations, privileges required 
 
 ### Grant privileges
 
-The `GRANT` statement grants privileges to the user accounts.
-
-For example, use the following statement to grant the `xxx` user the privilege to read the `test` database.
+The `GRANT` statement grants privileges to user accounts. It is recommended to first create a user, and then grant privileges. For example, use the following statement to grant the `developer` user the privilege to read the `test` database:
 
 ```sql
-GRANT SELECT ON test.* TO 'xxx'@'%';
+CREATE USER developer IDENTIFIED BY 'mypassword';
+GRANT SELECT ON test.* TO 'developer';
 ```
 
-Use the following statement to grant the `xxx` user all privileges on all databases:
+Use the following statement to grant the `developer` user all privileges on all databases:
 
 ```sql
-GRANT ALL PRIVILEGES ON *.* TO 'xxx'@'%';
+GRANT ALL PRIVILEGES ON *.* TO 'developer';
 ```
 
-If the granted user does not exist, TiDB will automatically create a user.
-
-```sql
-mysql> SELECT * FROM mysql.user WHERE user='xxxx';
-Empty set (0.00 sec)
-
-mysql> GRANT ALL PRIVILEGES ON test.* TO 'xxxx'@'%' IDENTIFIED BY 'yyyyy';
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> SELECT user,host FROM mysql.user WHERE user='xxxx';
-+------|------+
-| user | host |
-+------|------+
-| xxxx | %    |
-+------|------+
-1 row in set (0.00 sec)
-```
-
-In this example, `xxxx@%` is the user that is automatically created.
+> **Warning：**
+>
+> TiDB 2.1 does not support the `NO_AUTO_CREATE_USER` SQL Mode. This means that TiDB will automatically create a new user if one does not already exist.
+> This is particularly risky, since typos can lead to users created with an empty password. While this behavior is compatible with earlier releases of MySQL, it is recommended to upgrade to TiDB 3.0 to prevent this issue.
 
 > **Note:**
 >
@@ -303,19 +287,9 @@ In this record, `Host` and `User` determine that the connection request sent by 
 
 `Host` and `User` in `mysql.db` determine which databases users can access. The effective range is the database.
 
-In theory, all privilege-related operations can be done directly by the CRUD operations on the grant table.
-
-On the implementation level, only a layer of syntactic sugar is added. For example, you can use the following command to remove a user:
-
-```sql
-DELETE FROM mysql.user WHERE user='test';
-```
-
-However, the recommended usage is with `DROP USER`:
-
-```sql
-DROP USER 'test';
-```
+> **Note:**
+>
+> It is recommended to only update the privilege tables via the supplied syntax such as `GRANT`, `CREATE USER` and `DROP USER`. Making direct edits to the underlying privilege tables will not automatially update the privilege cache, leading to unpredictable behavior until `FLUSH PRIVILEGES` is executed.
 
 ### Connection verification
 
