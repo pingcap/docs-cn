@@ -425,7 +425,7 @@ COLLATION_CONNECTION: utf8_general_ci
 `TIDB_INDEXES` 表提供了 TiDB 中索引的一些信息。
 
 ```sql
-mysql> show create table tidb_indexes\G
+mysql> desc tidb_indexes\G
 *************************** 1. row ***************************
        Table: TIDB_INDEXES
 Create Table: CREATE TABLE `TIDB_INDEXES` (
@@ -442,7 +442,7 @@ Create Table: CREATE TABLE `TIDB_INDEXES` (
 1 row in set (0.00 sec)
 ```
 
-其中 `INDEX_ID` 是 TiDB 为每个索引分配的唯一 ID，这个 ID 也可以在其他系统表和 API 中获取。有了 `INDEX_ID` 后，可以和这个表做一些关联查询来获得更加有用的信息。
+其中 `INDEX_ID` 是 TiDB 为每个索引分配的唯一 ID，可以用来合其他表格中或者 API 中获取到的 `INDEX_ID` 做关联。
 如，我们在 [SLOW_QUERY 表](#SLOW\_QUERY)中得到了某条 SQL 涉及的 `TABLE_ID` 以及 `INDEX_ID`，这时我们可以通过如下的 SQL 来获取索引的信息：
 
 ```sql
@@ -463,7 +463,7 @@ where
 `TIDB_HOT_REGIONS` 表提供了当前 TiKV 中热点 region 的信息。
 
 ```sql
-mysql> show create table tidb_hot_regions\G
+mysql> desc tidb_hot_regions\G
 *************************** 1. row ***************************
        Table: TIDB_HOT_REGIONS
 Create Table: CREATE TABLE `TIDB_HOT_REGIONS` (
@@ -485,10 +485,10 @@ Create Table: CREATE TABLE `TIDB_HOT_REGIONS` (
 
 ## TIKV\_STORE\_STATUS
 
-`TIKV_STORE_STATUS` 表通过 PD 的 API，展示了 TiKV 节点的一些基本信息。
+`TIKV_STORE_STATUS` 表通过 PD 的 API，展示了 TiKV 节点的一些基本信息。诸如在集群中被分配的 ID、地址及端口、当前节点的状态、容量、有多少 Region leader 等。
 
 ```sql
-mysql> show create table tikv_store_status\G
+mysql> desc tikv_store_status\G
 *************************** 1. row ***************************
        Table: TIKV_STORE_STATUS
 Create Table: CREATE TABLE `TIKV_STORE_STATUS` (
@@ -517,10 +517,10 @@ Create Table: CREATE TABLE `TIKV_STORE_STATUS` (
 
 ## TIKV\_REGION\_STATUS
 
-`TIKV_REGION_STATUS` 表通过 PD 的 API，展示 TiKV 中 Region 的一些基础信息。
+`TIKV_REGION_STATUS` 表通过 PD 的 API，展示 TiKV 中 Region 的一些基础信息。诸如 Region ID、起始和结束的键值，读写流量等。
 
 ```sql
-mysql> show create table tikv_region_status\G
+mysql> desc tikv_region_status\G
 *************************** 1. row ***************************
        Table: TIKV_REGION_STATUS
 Create Table: CREATE TABLE `TIKV_REGION_STATUS` (
@@ -548,7 +548,7 @@ select * from tikv_region_status order by written_bytes desc limit 3;
 `TIKV_REGION_PEERS` 通过 PD 的 API，展示了 TikV 中 单个 Region 节点的一些详细信息。诸如是否是 learner，是否是 leader 等。
 
 ```sql
-mysql> show create table tikv_region_peers\G
+mysql> desc tikv_region_peers\G
 *************************** 1. row ***************************
        Table: TIKV_REGION_PEERS
 Create Table: CREATE TABLE `TIKV_REGION_PEERS` (
@@ -593,7 +593,7 @@ where
 `ANALYZE_STATUS` 表展示了当前集群 `ANALYZE` 命令的执行情况。
 
 ```sql
-mysql> show create table analyze_status\G
+mysql> desc analyze_status\G
 *************************** 1. row ***************************
        Table: ANALYZE_STATUS
 Create Table: CREATE TABLE `ANALYZE_STATUS` (
@@ -615,7 +615,7 @@ Create Table: CREATE TABLE `ANALYZE_STATUS` (
 `SLOW_QUERY` 表是映射了慢查询日志的表。其列名均和慢查询日志中的字段名一一对应。具体信息可以查看[慢查询日志](../../how-to/maintain/identify-slow-queries.md)
 
 ```sql
-mysql> show create table slow_query\G
+mysql> desc slow_query\G
 *************************** 1. row ***************************
        Table: SLOW_QUERY
 Create Table: CREATE TABLE `SLOW_QUERY` (

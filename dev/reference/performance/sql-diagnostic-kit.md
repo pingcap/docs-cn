@@ -23,7 +23,7 @@ aliases: ['/docs-cn/sql/diagnostic-kit']
 - `ADMIN SHOW DDL` 可以获得是 `DDL owner` 角色的 TiDB 的 ID, `IP:PORT` 等具体的信息。
 - `SHOW ANALYZE STATUS`， 和 [`INFORMATION_SCHEMA.ANALYZE_STATUS`](../dev/reference/system-databases/information-schema.md#ANALYZE\_STATUS) 表的功能相同.
 - 特殊的 `EXPLAIN` 语句
-	- `EXPLAIN ANALYZE` 这个语句可以获得一个 SQL 执行中的一些具体信息
-	- `EXPLAIN FOR CONNECTION` 可以获得一个连接中最后执行的查询的执行计划。可以配合 `SHOW PROCESSLIST` 来获得一些具体的信息。
-	- `EXPLAIN` 相关的更具体的信息可以在文档中[理解 TiDB 执行计划](../dev/reference/performance/understanding-the-query-execution-plan.md)查看。
+	- `EXPLAIN ANALYZE` 这个语句可以获得一个 SQL 执行中的一些具体信息。
+	- `EXPLAIN FOR CONNECTION` 可以获得一个连接中最后执行的查询的执行计划。可以配合 `SHOW PROCESSLIST` 来使用。
+	- `EXPLAIN` 相关的更具体的信息参考文档[理解 TiDB 执行计划](../dev/reference/performance/understanding-the-query-execution-plan.md)查看。
 
