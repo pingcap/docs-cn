@@ -18,10 +18,10 @@ aliases: ['/docs-cn/sql/diagnostic-kit']
 - [`TIKV\_REGION\_STATUS`](/dev/reference/system-databases/information-schema.md#TIKV\_REGION\_STATUS-表)
 - [`TIKV\_REGION\_PEERS`](/dev/reference/system-databases/information-schema.md#TIKV\_REGION\_PEERS-表)
 
-除此之外，以下命令可用于获得对排查问题或查询集群状态有用的信息：
+除此之外，执行下列语句也可获得对排查问题或查询集群状态有用的信息：
 
 - `ADMIN SHOW DDL` 可以获得是 `DDL owner` 角色的 TiDB 的 ID 及 `IP:PORT` 等具体信息。
-- `SHOW ANALYZE STATUS` 和 [`INFORMATION_SCHEMA.ANALYZE_STATUS`](/dev/reference/system-databases/information-schema.md#ANALYZE\_STATUS-表) 表的功能相同。
+- `SHOW ANALYZE STATUS` 和 [`ANALYZE_STATUS`](/dev/reference/system-databases/information-schema.md#ANALYZE\_STATUS-表) 表的功能相同。
 - 特殊的 `EXPLAIN` 语句
     - `EXPLAIN ANALYZE` 语句可以获得一个 SQL 语句执行中的一些具体信息。
     - `EXPLAIN FOR CONNECTION` 可以获得一个连接中最后执行的查询的执行计划。可以配合 `SHOW PROCESSLIST` 使用。
