@@ -18,14 +18,13 @@ Currently TiDB Server advertises itself as MySQL 5.7 and works with most MySQL d
 ## Unsupported features
 
 + Stored procedures and functions
-+ Views
 + Triggers
 + Events
 + User-defined functions
 + `FOREIGN KEY` constraints
 + `FULLTEXT` functions and indexes
 + `SPATIAL` functions and indexes
-+ Character sets other than `utf8`
++ Character sets other than `utf8mb4`
 + Collations other than `BINARY`
 + Add primary key
 + Drop primary key
@@ -103,6 +102,10 @@ For more information, see [Online Schema Changes](/key-features.md#online-schema
 
 [`ANALYZE TABLE`](/reference/performance/statistics.md#manual-collection) works differently in TiDB than in MySQL, in that it is a relatively lightweight and short-lived operation in MySQL/InnoDB, while in TiDB it completely rebuilds the statistics for a table and can take much longer to complete.
 
+### Views
+
+Views in TiDB are currently non-insertable and non-updatable.
+
 ### Storage engines
 
 For compatibility reasons, TiDB supports the syntax to create tables with alternative storage engines. Metadata commands describe tables as being of engine InnoDB:
@@ -116,7 +119,7 @@ mysql> SHOW CREATE TABLE t1\G
        Table: t1
 Create Table: CREATE TABLE `t1` (
   `a` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
 1 row in set (0.00 sec)
 ```
 
@@ -155,12 +158,12 @@ tidb> SELECT /*!90000 "I should not run", */ "I should run" FROM dual;
 ### Default differences
 
 - Default character set:
-    - The default value in TiDB is `utf8` which is equivalent to `utf8mb4` in MySQL.
+    - The default value in TiDB is `utf8mb4`.
     - The default value in MySQL 5.7 is `latin1`, but changes to `utf8mb4` in MySQL 8.0.
 - Default collation: `latin1_swedish_ci` in MySQL 5.7, while `binary` in TiDB.
-- Default SQL mode:
-    - The default value in TiDB is `STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION`.
-    - The default value in MySQL 5.7 is `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`.
+- Default value of `foreign_key_checks`:
+    - The default value in TiDB is `OFF` and currently TiDB only supports `OFF`.
+    - The default value in MySQL 5.7 is `ON`.
 - Default value of `lower_case_table_names`:
     - The default value in TiDB is 2 and currently TiDB only supports 2.
     - The default value in MySQL:
