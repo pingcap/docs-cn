@@ -33,5 +33,5 @@ DM 配置的关键概念如下：
 
 | 概念         | 解释          | 配置文件        |
 | :------------ | :------------ | :------------------ |
-| source-id  | 唯一确定一个 MySQL 或 MariaDB 实例，或者一个具有主从结构的复制组 | `inventory.ini` 的 `source_id`；<br> `dm-master.toml` 的 `source-id`；<br> `task.yaml` 的 `source-id` |
+| source-id  | 唯一确定一个 MySQL 或 MariaDB 实例，或者一个具有主从结构的复制组，字符串长度不大于 32 | `inventory.ini` 的 `source_id`；<br> `dm-master.toml` 的 `source-id`；<br> `task.yaml` 的 `source-id` |
 | DM-worker ID | 唯一确定一个 DM-worker（取值于 `dm-worker.toml` 的 `worker-addr` 参数） | `dm-worker.toml` 的 `worker-addr`；<br> dmctl 命令行的 `-worker` / `-w` flag |
