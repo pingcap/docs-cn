@@ -6,7 +6,7 @@ category: reference
 
 # Bit Functions and Operators
 
-In TiDB, the usage of bit functions and operators is similar to MySQL. See [Bit Functions and Operators](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html).
+TiDB supports all of the [bit functions and operators](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html) available in MySQL 5.7.
 
 **Bit functions and operators**
 

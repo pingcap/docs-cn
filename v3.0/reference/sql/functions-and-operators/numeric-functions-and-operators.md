@@ -7,7 +7,7 @@ aliases: ['/docs/sql/numeric-functions-and-operators/']
 
 # Numeric Functions and Operators
 
-This document describes the arithmetic operators and mathematical functions.
+TiDB supports all of the [numeric functions and operators](https://dev.mysql.com/doc/refman/5.7/en/numeric-functions.html) available in MySQL 5.7.
 
 ## Arithmetic operators
 

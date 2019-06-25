@@ -7,6 +7,8 @@ aliases: ['/docs/sql/control-flow-functions/']
 
 # Control Flow Functions
 
+TiDB supports all of the [control flow functions](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html) available in MySQL 5.7.
+
 | Name                                                                                            | Description                       |
 |:--------------------------------------------------------------------------------------------------|:----------------------------------|
 | [`CASE`](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html#operator_case)       | Case operator                     |

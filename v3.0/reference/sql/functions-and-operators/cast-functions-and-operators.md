@@ -7,6 +7,7 @@ aliases: ['/docs/sql/cast-functions-and-operators/']
 
 # Cast Functions and Operators
 
+TiDB supports all of the [cast functions and operators](https://dev.mysql.com/doc/refman/5.7/en/cast-functions.html) available in MySQL 5.7.
 
 | Name                                     | Description                      |
 | ---------------------------------------- | -------------------------------- |
@@ -15,5 +16,3 @@ aliases: ['/docs/sql/cast-functions-and-operators/']
 | [`CONVERT()`](https://dev.mysql.com/doc/refman/5.7/en/cast-functions.html#function_convert) | Cast a value as a certain type   |
 
 Cast functions and operators enable conversion of values from one data type to another.
-
-For details, see [here](https://dev.mysql.com/doc/refman/5.7/en/cast-functions.html).

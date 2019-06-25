@@ -7,7 +7,7 @@ aliases: ['/docs/sql/date-and-time-functions/']
 
 # Date and Time Functions
 
-The usage of date and time functions is similar to MySQL. For more information, see [here](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-types.html).
+TiDB supports all of the [date and time functions](https://dev.mysql.com/doc/refman/5.7/en/numeric-functions.html) available in MySQL 5.7.
 
 **Date/Time functions**
 

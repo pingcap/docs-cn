@@ -6,6 +6,10 @@ category: reference
 
 # Encryption and Compression Functions
 
+TiDB supports most of the [encryption and compression functions](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html) available in MySQL 5.7.
+
+## Supported functions
+
 | Name                                                                                                                                               | Description                                       |
 |:------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------|
 | [`MD5()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_md5)                                                             | Calculate MD5 checksum                            |
@@ -27,3 +31,10 @@ category: reference
 | [`ASYMMETRIC_ENCRYPT()`](https://dev.mysql.com/doc/refman/5.7/en/enterprise-encryption-functions.html#function_asymmetric-encrypt)                    | Encrypt cleartext using private or public key     |
 | [`ASYMMETRIC_SIGN()`](https://dev.mysql.com/doc/refman/5.7/en/enterprise-encryption-functions.html#function_asymmetric-sign)                          | Generate signature from digest                    |
 | [`ASYMMETRIC_VERIFY()`](https://dev.mysql.com/doc/refman/5.7/en/enterprise-encryption-functions.html#function_asymmetric-verify)                      | Verify that signature matches digest              |
+
+## Unsupported functions
+
+* `DES_DECRYPT()`, `DES_ENCRYPT()`, `OLD_PASSWORD()`, `ENCRYPT()`: these functions were deprecated in MySQL 5.7 and removed in 8.0.
+* `VALIDATE_PASSWORD_STRENGTH()`
+* Functions only available in MySQL Enterprise [Issue #2632](^[[200~https://github.com/pingcap/tidb/issues/2632)
+
