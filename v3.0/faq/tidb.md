@@ -661,7 +661,7 @@ TiKV 的内存占用主要来自于 RocksDB 的 block-cache，默认为系统总
 很多用户在接触 TiDB 都习惯做一个基准测试或者 TiDB 与 MySQL 的对比测试，官方也做了一个类似测试，汇总很多测试结果后，我们发现虽然测试的数据有一定的偏差，但结论或者方向基本一致，由于 TiDB 与 MySQL 由于架构上的差别非常大，很多方面是很难找到一个基准点，所以官方的建议两点：
 
 - 大家不要用过多精力纠结这类基准测试上，应该更多关注 TiDB 的场景上的区别。
-- 大家可以直接参考官方相关测试。官方 Sysbench 测试及 TiDB 与 MySQL 对比测试请参考 [https://github.com/pingcap/docs-cn/blob/master/v3.0/benchmark/how-to-run-sysbench.md](https://github.com/pingcap/docs-cn/blob/master/v3.0/benchmark/how-to-run-sysbench.md)。
+- - 大家可以直接参考官方相关测试。官方 Sysbench 测试及 TiDB 与 MySQL 对比测试请参考 [TiDB Sysbench 性能测试报告](https://github.com/pingcap/docs-cn/blob/master/v3.0/benchmark/how-to-run-sysbench.md)。
 
 #### 3.5.2 TiDB 集群容量 QPS 与节点数之间关系如何，和 MySQL 对比如何？
 
