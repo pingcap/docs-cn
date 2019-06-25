@@ -6,11 +6,11 @@ aliases: ['/docs-cn/sql/information-schema/']
 
 # Information Schema
 
-为了和 MySQL 保持兼容，TiDB 支持很多 `INFORMATION\_SCHEMA` 表，其中有不少表都支持相应的 `SHOW` 命令。查询 `INFORMATION_SCHEMA` 表也为表的连接操作提供了可能。
+为了和 MySQL 保持兼容，TiDB 支持很多 `INFORMATION_SCHEMA` 表，其中有不少表都支持相应的 `SHOW` 命令。查询 `INFORMATION_SCHEMA` 表也为表的连接操作提供了可能。
 
-## CHARACTER\_SETS Table
+## CHARACTER\_SETS 表
 
- `CHARACTER_SETS` 表提供[字符集](/dev/reference/sql/character-set.md)相关的信息。TiDB 目前仅支持部分字符集。
+`CHARACTER_SETS` 表提供[字符集](/reference/sql/character-set.md)相关的信息。TiDB 目前仅支持部分字符集。
 
 ```sql
 mysql> SELECT * FROM character_sets;
@@ -26,9 +26,9 @@ mysql> SELECT * FROM character_sets;
 5 rows in set (0.00 sec)
 ```
 
-## COLLATIONS Table
+## COLLATIONS 表
 
- `COLLATIONS` 表提供了 `CHARACTER_SETS` 表中字符集对应的排序规则列表。TiDB 当前仅支持二进制排序规则，包含该表仅为兼容 MySQL。
+`COLLATIONS` 表提供了 `CHARACTER_SETS` 表中字符集对应的排序规则列表。TiDB 当前仅支持二进制排序规则，包含该表仅为兼容 MySQL。
 
 ```sql
 mysql> SELECT * FROM collations WHERE character_set_name='utf8mb4';
@@ -65,7 +65,7 @@ mysql> SELECT * FROM collations WHERE character_set_name='utf8mb4';
 26 rows in set (0.00 sec)
 ```
 
-## COLLATION\_CHARACTER\_SET\_APPLICABILITY Table
+## COLLATION\_CHARACTER\_SET\_APPLICABILITY 表
 
 `COLLATION_CHARACTER_SET_APPLICABILITY` 表将排序规则映射至适用的字符集名称。和 `COLLATIONS` 表一样，包含此表也是为了兼容 MySQL。
 
@@ -104,9 +104,9 @@ mysql> SELECT * FROM collation_character_set_applicability WHERE character_set_n
 26 rows in set (0.00 sec)
 ```
 
-## COLUMNS Table
+## COLUMNS 表
 
-COLUMNS 表提供了表的所有列的信息。
+`COLUMNS` 表提供了表的所有列的信息。
 
 ```sql
 mysql> CREATE TABLE test.t1 (a int);
@@ -149,7 +149,7 @@ mysql> SHOW COLUMNS FROM t1 FROM test;
 1 row in set (0.00 sec)
 ```
 
-## ENGINES Table
+## ENGINES 表
 
 `ENGINES` 表提供了关于存储引擎的信息。从和 MySQL 兼容性上考虑，TiDB 会一直将 InnoDB 描述为唯一支持的引擎。
 
@@ -165,7 +165,7 @@ TRANSACTIONS: YES
 1 row in set (0.00 sec)
 ```
 
-## KEY\_COLUMN\_USAGE Table
+## KEY\_COLUMN\_USAGE 表
 
 `KEY_COLUMN_USAGE` 表描述了列的键约束，比如主键约束。
 
@@ -200,9 +200,9 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 2 rows in set (0.00 sec)
 ```
 
-## SCHEMATA Table
+## SCHEMATA 表
 
-SCHEMATA 表提供了关于数据库的信息。表中的数据与 `SHOW DATABASES` 语句的执行结果等价。
+`SCHEMATA` 表提供了关于数据库的信息。表中的数据与 `SHOW DATABASES` 语句的执行结果等价。
 
 ```sql
 mysql> SELECT * FROM schemata; 
@@ -218,9 +218,9 @@ mysql> SELECT * FROM schemata;
 5 rows in set (0.00 sec)
 ```
 
-## SESSION\_VARIABLES Table
+## SESSION\_VARIABLES 表
 
-`SESSION\_VARIABLES` 表提供了关于 session 变量的信息。表中的数据跟 `SHOW SESSION VARIABLES` 语句执行结果类似。
+`SESSION_VARIABLES` 表提供了关于 session 变量的信息。表中的数据跟 `SHOW SESSION VARIABLES` 语句执行结果类似。
 
 ```sql
 mysql> SELECT * FROM session_variables LIMIT 10;
@@ -241,9 +241,9 @@ mysql> SELECT * FROM session_variables LIMIT 10;
 10 rows in set (0.00 sec)
 ```
 
-## STATISTICS Table
+## STATISTICS 表
 
- `STATISTICS` 表提供了关于表索引的信息。
+`STATISTICS` 表提供了关于表索引的信息。
 
 ```sql
 mysql> desc statistics;
@@ -281,7 +281,7 @@ SHOW INDEX
   FROM db_name
 ```
 
-## TABLES Table
+## TABLES 表
 
 `TABLES` 表提供了数据库里面关于表的信息。
 
@@ -325,9 +325,9 @@ SHOW TABLES
   [LIKE 'wild']
 ```
 
-## TABLE\_CONSTRAINTS Table
+## TABLE\_CONSTRAINTS 表
 
-`TABLE\_CONSTRAINTS` 表记录了表的约束信息。
+`TABLE_CONSTRAINTS` 表记录了表的约束信息。
 
 ```sql
 mysql> SELECT * FROM table_constraints WHERE constraint_type='UNIQUE'\G
@@ -381,9 +381,9 @@ CONSTRAINT_CATALOG: def
 * `CONSTRAINT_TYPE` 的取值可以是 `UNIQUE`，`PRIMARY KEY`，或者 `FOREIGN KEY`。
 * `UNIQUE` 和 `PRIMARY KEY` 信息与 `SHOW INDEX` 语句的执行结果类似。
 
-## USER\_PRIVILEGES Table
+## USER\_PRIVILEGES 表
 
-USER\_PRIVILEGES 表提供了关于全局权限的信息。该表的数据根据 `mysql.user` 系统表生成。
+`USER_PRIVILEGES` 表提供了关于全局权限的信息。该表的数据根据 `mysql.user` 系统表生成。
 
 ```sql
 mysql> desc USER_PRIVILEGES;
@@ -443,7 +443,7 @@ Create Table: CREATE TABLE `TIDB_INDEXES` (
 ```
 
 其中 `INDEX_ID` 是 TiDB 为每个索引分配的唯一 ID，可以用来和其他表格中或者 API 中获取到的 `INDEX_ID` 做关联。
-例如，先在 [`SLOW_QUERY` 表](#SLOW\_QUERY-表) 中获得某个慢查询涉及的 `TABLE_ID` 和 `INDEX_ID`，然后通过如下 SQL 语句进一步获取具体的索引信息：
+例如，先在 [`SLOW_QUERY` 表](#slow-query-表) 中获得某个慢查询涉及的 `TABLE_ID` 和 `INDEX_ID`，然后通过如下 SQL 语句进一步获取具体的索引信息：
 
 ```sql
 select
@@ -545,7 +545,7 @@ select * from tikv_region_status order by written_bytes desc limit 3;
 
 ## TIKV\_REGION\_PEERS 表
 
-`TIKV_REGION_PEERS` 通过 PD 的 API，展示了 TikV 中单个 Region 节点的一些详细信息，诸如是否是 learner，是否是 leader 等。
+`TIKV_REGION_PEERS` 通过 PD 的 API，展示了 TiKV 中单个 Region 节点的一些详细信息，诸如是否是 learner，是否是 leader 等。
 
 ```sql
 mysql> desc tikv_region_peers\G
@@ -612,7 +612,7 @@ Create Table: CREATE TABLE `ANALYZE_STATUS` (
 
 ## SLOW\_QUERY 表
 
-`SLOW_QUERY` 表是映射了慢查询日志的表。其列名均和慢查询日志中的字段名一一对应。具体信息可以查看[慢查询日志](../../how-to/maintain/identify-slow-queries.md)
+`SLOW_QUERY` 表是映射了慢查询日志的表。其列名均和慢查询日志中的字段名一一对应。具体信息可以查看[慢查询日志](/how-to/maintain/identify-slow-queries.md#identify-slow-queries)。
 
 ```sql
 mysql> desc slow_query\G
