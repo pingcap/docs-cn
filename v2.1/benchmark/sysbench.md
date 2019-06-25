@@ -145,7 +145,7 @@ max_connections = 2000
 | Mysql | 32 | 100 万 | 128 | 14884 | 8.58  ms / 21.11 ms |
 | Mysql | 32 | 100 万 | 256 | 14508 | 17.64 ms / 44.98 ms  |
 | Mysql | 32 | 500 万 | 256 | 10593 | 24.16 ms / 82.96 ms  |
-| Mysql | 32 | 1000 万 | 256 | 9813 | 26.08 ms / 94.10 ms  |  
+| Mysql | 32 | 1000 万 | 256 | 9813 | 26.08 ms / 94.10 ms  |
  
 ![](http://7xnp02.com1.z0.glb.clouddn.com/threads_insert.png?imageView2/2/w/700/q/75|imageslim)
 

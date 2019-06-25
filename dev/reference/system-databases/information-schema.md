@@ -1,7 +1,6 @@
 ---
 title: Information Schema
 category: reference
-aliases: ['/docs-cn/sql/information-schema/']
 ---
 
 # Information Schema
