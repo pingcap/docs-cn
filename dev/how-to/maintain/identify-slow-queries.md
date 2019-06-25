@@ -1,9 +1,9 @@
 ---
-title: 定位慢查询
+title: 慢查询的原因
 category: how-to
 ---
 
-# 定位慢查询
+# 慢查询的原因
 
 TiDB 慢查询日志中记录了所有执行时间超过 [`slow-threshold`](/reference/configuration/tidb-server/configuration-file.md#slow-threshold) 的查询。从慢查询日志中找到一个慢查询后，接下来需要做的是分析它为什么慢，怎么优化。本文会从 TiDB SQL 执行原理层面列列举有哪些情况导致查询慢以及如何改进。
 
@@ -126,31 +126,31 @@ WHERE stats like "%pseudo%"
 
 2. MVCC 旧版本过多
 
-频繁的修改数据，比如 `INSERT`/`DELETE`/`UPDATE`/`REPLACE` 等语句，会导致数据的版本过多。MVCC 版本过多会导致查询处理时，TiKV 上扫描的 `Total_keys` 远大于 `Process_keys`。可以通过如下查询找到这类慢 SQL 语句：
+    频繁的修改数据，比如 `INSERT`/`DELETE`/`UPDATE`/`REPLACE` 等语句，会导致数据的版本过多。MVCC 版本过多会导致查询处理时，TiKV 上扫描的 `Total_keys` 远大于 `Process_keys`。可以通过如下查询找到这类慢 SQL 语句：
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-SELECT digest,
-       MAX(total_keys/process_keys) AS max_avg_version
-FROM information_schema.slow_query
-WHERE is_internal = false
-GROUP BY digest
-ORDER BY max_avg_version DESC
-LIMIT 10;
-```
+    ```sql
+    SELECT digest,
+           MAX(total_keys/process_keys) AS max_avg_version
+    FROM information_schema.slow_query
+    WHERE is_internal = false
+    GROUP BY digest
+    ORDER BY max_avg_version DESC
+    LIMIT 10;
+    ```
 
 3. 事务冲突
 
-冲突会导致事务回退重试，可以通过下面的查询找到这类慢 SQL 语句：
+    冲突会导致事务回退重试，可以通过下面的查询找到这类慢 SQL 语句：
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-SELECT digest,
-       MAX(backoff_time) AS max_backoff_time
-FROM information_schema.slow_query
-GROUP BY digest
-ORDER BY max_backoff_time DESC
-LIMIT 10;
-```
+    ```sql
+    SELECT digest,
+           MAX(backoff_time) AS max_backoff_time
+    FROM information_schema.slow_query
+    GROUP BY digest
+    ORDER BY max_backoff_time DESC
+    LIMIT 10;
+    ```
