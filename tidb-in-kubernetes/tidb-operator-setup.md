@@ -185,7 +185,7 @@ helm upgrade tidb-operator pingcap/tidb-operator --version=${chartVersion} -f /h
 
 ## 升级 TiDB Operator
 
-升级 TiDB Operator 和自定义 TiDB Operator 类似，修改 values.yaml 中的镜像版本，然后执行 `helm upgrade`：
+升级 TiDB Operator 和自定义 TiDB Operator 类似，修改 `values.yaml` 中的镜像版本，然后执行 `helm upgrade`：
 
 {{< copyable "shell-regular" >}}
 
