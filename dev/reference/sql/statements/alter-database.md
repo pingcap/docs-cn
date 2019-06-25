@@ -1,12 +1,12 @@
 ---
-title: ALTER DATABASE
-summary: TiDB 数据库中 ALTER DATABASE 的使用概况。
+title: ALTER DATABASE | TiDB SQL Statement Reference 
+summary: An overview of the usage of ALTER DATABASE for the TiDB database.
 category: reference
 ---
 
 # ALTER DATABASE
 
-`ALTER DATABASE` is used to specify or modify the default character set and collation of the current database. `ALTER SCHEMA` has the same effect as `ALTER DATABASE`.
+`ALTER DATABASE` 用于修改指定或当前数据库的默认字符集和排序规则。`ALTER SCHEMA` 跟 `ALTER DATABASE` 操作效果一样。
 
 ## Examples
 
@@ -18,7 +18,7 @@ alter_specification:
   | [DEFAULT] COLLATE [=] collation_name
 ```
 
-The `alter_specification` option specifies the `CHARACTER SET` and `COLLATE` of a specified database. Currently, TiDB only supports some character sets and collations. See [Character Set Support](/dev/reference/sql/character-set.md) for details.
+`alter_specification` 选项用于指定数据库具体的 `CHARACTER SET` 和 `COLLATE`。目前 TiDB 只支持部分的字符集和排序规则，请参照[字符集支持](/dev/reference/sql/character-set.md)。
 
 ## See also
 
