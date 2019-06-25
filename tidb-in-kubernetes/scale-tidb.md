@@ -16,7 +16,7 @@ category: how-to
 
      {{< copyable "shell-regular" >}}
 
-     ```shell
+    ```shell
     helm upgrade ${releaseName} pingcap/tidb-cluster -f values.yaml --version=v1.0.0-beta.3
     ```
 
@@ -24,7 +24,7 @@ category: how-to
 
      {{< copyable "shell-regular" >}}
 
-     ```shell
+    ```shell
     watch kubectl -n ${namespace} get pod -o wide
     ```
 
@@ -53,7 +53,7 @@ category: how-to
 
      {{< copyable "shell-regular" >}}
 
-     ```shell
+    ```shell
     helm upgrade ${releaseName} pingcap/tidb-cluster -f values.yaml --version=v1.0.0-beta.3
     ```
 
@@ -61,7 +61,7 @@ category: how-to
 
      {{< copyable "shell-regular" >}}
 
-     ```shell
+    ```shell
     watch kubectl -n ${namespace} get pod -o wide
     ```
 
