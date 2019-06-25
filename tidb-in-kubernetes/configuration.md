@@ -1,16 +1,18 @@
 ---
-title: TiDB 集群配置
+title: TiDB in K8s 集群配置
 category: reference
 ---
 
-# TiDB 集群配置
+# TiDB in K8s 集群配置
 
-> **Note:** 为了方便阅读，本文后面用 `values.yaml` 指代 `charts/tidb-cluster/values.yaml`
+TiDB Operator 使用 Helm 部署和管理 TiDB 集群，TiDB 集群的部署配置项见如下列表。`tidb-cluster` 的 `charts/tidb-cluster/values.yaml` 文件默认提供了基本的配置，通过这个基本配置，可以快速启动一个 TiDB 集群，但是如果用户需要特殊配置或是用于生产环境，则需要根据以下列表手动配置对应的配置项。
 
-TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的部署配置项都在下面列表中。tidb-cluster 的 `values.yaml` 文件默认提供了基本的配置，通过这个基本配置，可以快速的启动一个 TiDB Cluster，但是如果用户需要特殊配置或是用于生产环境，你需要根据下面列表手动配置对应的配置项。
+> **注意：**
+>
+> 下文用 `values.yaml` 指代 `charts/tidb-cluster/values.yaml`。
 
 | 参数名 | 说明 | 默认值 |
-| ----- | ---- | ----- |
+| :----- | :---- | :----- |
 | `rbac.create` | 是否启用 Kubernetes 的 RBAC | `true` |
 | `clusterName` | TiDB 集群名，默认不设置该变量，tidb-cluster 会直接用执行安装时的 `RealeaseName` 代替 | `nil` |
 | `extraLabels` | TiDB 集群附加的自定义标签 参考: [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) | `{}` |
@@ -111,8 +113,8 @@ TiDB Operator 使用 helm 部署和管理 TiDB Cluster，TiDB Cluster 的部署�
 ## 资源配置说明
 
 部署前需要根据实际情况和需求，为 TiDB 集群各个组件配置资源，上面列表中所述每个组件的资源配置包括 requests 和 limits，分别指资源的最低要求和最大限额，资源的 limits 要大于等于 requests，建议 limits 等于 requests，这样可以保证服务获得 Guaranteed 级别的 QoS。
-其中 PD/TiKV/TiDB 是 TiDB 集群的核心服务组件，在生产环境下它们的资源配置需要按组件要求指定，具体参考：[资源配置推荐](https://pingcap.com/docs/dev/how-to/deploy/hardware-recommendations/#software-and-hardware-recommendations)。
-如果是测试环境，可以无需配置资源直接使用 `values.yaml` 中默认的配置。
+
+其中 PD/TiKV/TiDB 是 TiDB 集群的核心服务组件，在生产环境下它们的资源配置需要按组件要求指定，具体参考：[资源配置推荐](/how-to/deploy/hardware-recommendations.md)。如果是测试环境，可以无需配置资源直接使用 `values.yaml` 中默认的配置。
 
 ## 容灾配置说明
 
@@ -121,8 +123,12 @@ TiDB 是分布式数据库，它的容灾需要做到在任一个物理拓扑节
 ### TiDB 服务的容灾
 
 TiDB 服务容灾本质上基于 Kubernetes 的调度功能来实现的，为了优化调度，TiDB Operator 提供了自定义的调度器，该调度器通过指定的调度算法能在 host 层面，保证 TiDB 服务的容灾，而且目前 TiDB Cluster 使用该调度器作为默认调度器，设置项是上述列表中的 `schedulerName` 配置项。
-其它层面的容灾（e.g. rack， zone， region）是通过 Affinity 的 PodAntiAffinity 来保证，通过 PodAntiAffinity 能尽量避免同一组件的不同实例部署到同一个物理拓扑节点上，从而达到容灾的目的，Affinity 的使用参考：[Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity) 。
+
+其它层面的容灾（例如 rack，zone，region）是通过 Affinity 的 `PodAntiAffinity` 来保证，通过 `PodAntiAffinity` 能尽量避免同一组件的不同实例部署到同一个物理拓扑节点上，从而达到容灾的目的，Affinity 的使用参考：[Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity) 。
+
 下面是一个典型的容灾设置例子：
+
+{{< copyable "shell-regular" >}}
 
 ```shell
 affinity:
@@ -172,17 +178,21 @@ affinity:
 
 ### 数据的容灾
 
-数据的容灾由 TiDB Cluster 自身的数据调度算法保证，TiDB Operator 唯一要做的是从 TiKV 运行的节点上收集拓扑信息，并调用 PD 接口将这些信息设置为 TiKV 的 store labels 信息，这样 TiDB Cluster 就能基于这些信息来调度数据副本。
-目前 Operator 只能识别特定的几个 label，所以只能使用下面的标签来设置 Node 的拓扑信息：
-* `region` 该 Node 节点所在的 region
-* `zone` 该 Node 节点所在的 zone
-* `rack` 该 Node 节点所在的 rack
-* `kubernetes.io/hostname` 该 node 节点的 host 名字
+数据的容灾由 TiDB 集群自身的数据调度算法保证，TiDB Operator 唯一要做的是从 TiKV 运行的节点上收集拓扑信息，并调用 PD 接口将这些信息设置为 TiKV 的 store labels 信息，这样 TiDB 集群就能基于这些信息来调度数据副本。
+
+目前 TiDB Operator 只能识别特定的几个 label，所以只能使用下面的标签来设置 Node 的拓扑信息：
+
+* `region`：该 Node 节点所在的 Region
+* `zone`：该 Node 节点所在的 zone
+* `rack`：该 Node 节点所在的 rack
+* `kubernetes.io/hostname`：该 node 节点的 host 名字
 
 可以通过下面的命令给 node 打标签：
 
+{{< copyable "shell-regular" >}}
+
 ```shell
-# 下面的标签不是全部必须设置的，可根据实际情况选择
 $ kubectl label node <nodeName> region=<regionName> zone=<zoneName> rack=<rackName> kubernetes.io/hostname=<hostName>
 ```
 
+上述命令中的标签并非全部必须设置，可根据实际情况进行选择。
