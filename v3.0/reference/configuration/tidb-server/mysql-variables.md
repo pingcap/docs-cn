@@ -1,7 +1,6 @@
 ---
 title: 系统变量
 category: reference
-aliases: ['/docs-cn/sql/variable/']
 ---
 
 # 系统变量
