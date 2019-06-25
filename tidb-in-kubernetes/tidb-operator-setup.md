@@ -8,7 +8,7 @@ category: how-to
 
 本文介绍如何在 Kubernetes 上部署 TiDB Operator。
 
-## 环境准备
+## 准备环境
 
 TiDB Operator 部署前，请确认以下软件需求：
 
@@ -48,7 +48,7 @@ sudo vim /etc/systemd/system/docker.service
 
 设置 `LimitNOFILE` 大于等于 `1048576`。
 
-## Helm
+## 安装 Helm
 
 可以根据 Helm [官方文档](https://helm.sh)在你的 Kubernetes 集群上安装 Helm。步骤如下：
 
@@ -102,12 +102,11 @@ sudo vim /etc/systemd/system/docker.service
     helm search tidb-operator -l
     ```
 
-## 本地持久化卷
+## 本地 PV (Persistent Volume)
 
 ### 准备本地卷
 
-参考 [Operations 文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md)在节点上搭建或者清理本地卷。
-还有生产环境的[最佳实践](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/best-practices.md)。
+参考 [Operations 文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md)以及生产环境的[最佳实践](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/best-practices.md)，在节点上搭建或者清理本地卷。
 
 ### 部署 local-static-provisioner
 
