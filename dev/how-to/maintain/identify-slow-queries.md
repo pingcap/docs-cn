@@ -1,7 +1,6 @@
 ---
 title: 定位慢查询
 category: how-to
-aliases: ['/docs-cn/sql/slow-query/']
 ---
 
 # 定位慢查询
