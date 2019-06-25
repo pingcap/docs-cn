@@ -1,10 +1,12 @@
 ---
-title: TiDB Operator 部署
+title: 在 Kubernetes 上部署 TiDB Operator
 summary: TiDB Operator 部署
 category: how-to
 ---
 
-# TiDB Operator 部署
+# 在 Kubernetes 上部署 TiDB Operator
+
+本文介绍如何在 Kubernetes 上部署 TiDB Operator。
 
 ## 环境准备
 
@@ -19,27 +21,24 @@ TiDB Operator 部署前，请确认以下软件需求：
 
 > **注意：**
 >
-> 尽管 TiDB Operator 可以使用网络卷持久化 TiDB 数据，但是由于备份复制，通常会比较慢。强烈建议搭建[本地卷](https://kubernetes.io/docs/concepts/storage/volumes/#local)以提高性能。
+> - 尽管 TiDB Operator 可以使用网络卷持久化 TiDB 数据，但是由于备份复制，通常会比较慢。强烈建议搭建[本地卷](https://kubernetes.io/docs/concepts/storage/volumes/#local)以提高性能。
+> - 跨多可用区的网络卷需要 Kubernetes v1.12 或者更高版本。在 `tidb-backup` chart 配置中，建议使用网络卷存储备份数据。
 
-> **注意：**
->
-> 跨多可用区的网络卷需要 Kubernetes v1.12 或者更高版本。在 tidb-backup chart 配置中，我们建议使用网络卷存储备份数据。
-
-## Kubernetes
+## 部署 Kubernetes 集群
 
 TiDB Operator 运行在 Kubernetes 集群，你可以使用[这里](https://v1-14.docs.kubernetes.io/docs/setup/pick-right-solution/)列出的任何一种方法搭建一套 Kubernetes 集群。只要保证 Kubernetes 版本大于等于 v1.10。如果你使用 AWS、GKE 或者 本机，下面是快速上手教程：
 
-* [Local DinD 教程](./local-dind-tutorial.md)
-* [Google GKE 教程](./google-kubernetes-tutorial.md)
-* [AWS EKS 教程](./aws-eks-tutorial.md)
+* [Local DinD 教程](/how-to/get-started/local-cluster/install-from-kubernetes-dind.md)
+* [Google GKE 教程](/how-to/get-started/local-cluster/install-from-kubernetes-gke.md)
+* [AWS EKS 教程](/how-to/deploy/orchestrated/aws-eks.md)
 
 如果你要使用不同环境，必须在 Kubernetes 集群中安装 DNS 插件。可以根据[官方文档](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/)搭建 DNS 插件。
 
 TiDB Operator 使用[持久化卷](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)持久化 TiDB 集群数据（包括数据库，监控和备份数据），所以 Kubernetes 集群必须提供至少一种持久化卷。为提高性能，建议使用本地 SSD 盘作为持久化卷。可以根据[这一步](#本地持久化卷)自动配置本地持久化卷。
 
-Kubernetes 集群建议启用 [RBAC](https://kubernetes.io/docs/admin/authorization/rbac)。否则，需要在 tidb-operator 和 tidb-cluster chart values.yaml 中设置 `rbac.create` 为 `false`。
+Kubernetes 集群建议启用 [RBAC](https://kubernetes.io/docs/admin/authorization/rbac)。否则，需要在 `tidb-operator` 和 `tidb-cluster` chart 的 `values.yaml` 中设置 `rbac.create` 为 `false`。
 
-TiDB 默认会使用很多文件描述符，[工作节点](https://access.redhat.com/solutions/61334)和上面的 Docker 进程的 ulimit 必须设置大于等于 1048576：
+TiDB 默认会使用很多文件描述符，[工作节点](https://access.redhat.com/solutions/61334)和上面的 Docker 进程的 ulimit 必须设置大于等于 `1048576`：
 
 {{< copyable "shell-regular" >}}
 
@@ -47,13 +46,13 @@ TiDB 默认会使用很多文件描述符，[工作节点](https://access.redhat
 sudo vim /etc/systemd/system/docker.service
 ```
 
-设置 `LimitNOFILE` 大于等于 1048576。
+设置 `LimitNOFILE` 大于等于 `1048576`。
 
 ## Helm
 
-可以根据 Helm [官方文档](https://helm.sh)在你的 Kubernetes 集群上安装 Helm。 下面步骤可以作为快速参考：
+可以根据 Helm [官方文档](https://helm.sh)在你的 Kubernetes 集群上安装 Helm。步骤如下：
 
-1. 安装 helm 客户端
+1. 安装 Helm 客户端
 
     {{< copyable "shell-regular" >}}
 
@@ -63,7 +62,7 @@ sudo vim /etc/systemd/system/docker.service
 
     如果使用 macOS，可以通过 homebrew 安装 Helm：`brew install kubernetes-helm`。
 
-2. 安装 helm 服务端
+2. 安装 Helm 服务端
 
     {{< copyable "shell-regular" >}}
 
@@ -133,7 +132,7 @@ local-volume-provisioner 为每一块挂载的磁盘创建一个卷。注意，�
 
 ## 安装 TiDB Operator
 
-TiDB Operator 使用 [CRD](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/) 扩展 Kubernetes，所以要使用 TiDB Operator，必须先创建 `TidbCluster` 自定义资源。只需要在你的 Kubernetes 集群上创建一次就可以：
+TiDB Operator 使用 [CRD](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/) 扩展 Kubernetes，所以要使用 TiDB Operator，必须先创建 `TidbCluster` 自定义资源。只需要在你的 Kubernetes 集群上创建一次即可：
 
 {{< copyable "shell-regular" >}}
 
@@ -142,13 +141,13 @@ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/
 kubectl get crd tidbclusters.pingcap.com
 ```
 
-`TidbCluster` 自定义资源创建后，可以在 Kubernetes 集群上安装TiDB Operator。
+`TidbCluster` 自定义资源创建后，可以在 Kubernetes 集群上安装 TiDB Operator。
 
 > **注意：**
 >
 > ${chartVersion} 在后续文档中代表 chart 版本，例如 `v1.0.0-beta.3`。
 
-获取你要安装的 tidb-operator chart 中的 values.yaml：
+获取你要安装的 `tidb-operator` chart 中的 `values.yaml` 文件：
 
 {{< copyable "shell-regular" >}}
 
@@ -175,9 +174,9 @@ TiDB Operator 有两个组件：
 * tidb-controller-manager
 * tidb-scheduler
 
-这两个组件是无状态的，通过 `Deployment` 部署。你可以在 values.yaml 中自定义资源 limit、request 和 `replicas`。
+这两个组件是无状态的，通过 `Deployment` 部署。你可以在 `values.yaml` 中自定义资源 limit、request 和 `replicas`。
 
-修改为 values.yaml 后，执行下面命令使配置生效：
+修改为 `values.yaml` 后，执行下面命令使配置生效：
 
 {{< copyable "shell-regular" >}}
 
@@ -195,10 +194,10 @@ helm upgrade tidb-operator pingcap/tidb-operator --version=${chartVersion} -f /h
 helm upgrade tidb-operator pingcap/tidb-operator --version=${chartVersion} -f /home/tidb/tidb-operator/values-tidb-operator.yaml
 ```
 
-当新版本 tidb-operator 发布，只要更新 values.yaml 中的 `operatorImage` 然后执行上述命令就可以。但是安全起见，最好从新版本 tidb-operator chart 中获取新版本 values.yaml 并和旧版本 values.yaml 合并生成新的 values.yaml，然后升级。
+当新版本 tidb-operator 发布，只要更新 `values.yaml` 中的 `operatorImage` 然后执行上述命令就可以。但是安全起见，最好从新版本 `tidb-operator` chart 中获取新版本 `values.yaml` 并和旧版本 `values.yaml` 合并生成新的 `values.yaml`，然后升级。
 
 TiDB Operator 是用来管理 TiDB 集群的，也就是说，如果 TiDB 集群已经启动并正常运行，你甚至可以停掉 TiDB Operator，而 TiDB 集群仍然能正常工作，直到你需要维护 TiDB 集群，比如伸缩、升级等等。
 
 ## 升级 Kubernetes
 
-当你的 Kubernetes 集群有版本升级，请确保 kubeSchedulerImageTag 与之匹配。默认情况下，这个值是由 helm 在安装或者升级过程中生成的，要修改它你需要执行 helm upgrade。
+当你的 Kubernetes 集群有版本升级，请确保 `kubeSchedulerImageTag` 与之匹配。默认情况下，这个值是由 Helm 在安装或者升级过程中生成的，要修改它你需要执行 helm upgrade。
