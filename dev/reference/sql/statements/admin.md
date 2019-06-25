@@ -1,5 +1,5 @@
 ---
-title: ADMIN 语句
+title: ADMIN
 category: reference
 ---
 
