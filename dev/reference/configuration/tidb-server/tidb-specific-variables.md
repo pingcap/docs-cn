@@ -243,7 +243,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 默认值：32
 
-这个变量用来设置执行过程中初始 chunk 的行数。默认值是32。
+这个变量用来设置执行过程中初始 chunk 的行数。默认值是 32。
 
 ### tidb_max_chunk_size
 
@@ -382,7 +382,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 默认值："auto"
 
-这个变量用来设置是否开启 TABLE PARTITION 特性。默认值 `auto` 表示开启 range partition 和 hash partion。`off` 表示关闭 TABLE PARTITION 的特性，此时语法还是会依旧兼容，只是建立的 partition table 实际上并不是真正的 partition table, 和普通的 table 一样。`on` 表示开启，目前的作用和 `auto` 一样。
+这个变量用来设置是否开启 TABLE PARTITION 特性。默认值 `auto` 表示开启 range partition 和 hash partion。`off` 表示关闭 TABLE PARTITION 的特性，此时语法还是会依旧兼容，只是建立的 partition table 实际上并不是真正的 partition table，而是和普通的 table 一样。`on` 表示开启，目前的作用和 `auto` 一样。
 
 注意，目前 TiDB 只支持 range partition 和 hash partition。
 
@@ -493,7 +493,7 @@ set tidb_query_log_max_len = 20
 
 默认值：""
 
-这个变量用于设置当前 session 的事务模式，默认是乐观锁模式。 TiDB 3.0 加入了悲观锁模式，将 `tidb_txn_mode` 设置为 `'pessimistic'` 后，这个 session 执行的所有事务都会进入悲观事务模式。更多关于悲观锁的细节，可以参考 [TiDB 悲观事务模式](../../transactions/transaction-pessimistic.md)。
+这个变量用于设置当前 session 的事务模式，默认是乐观锁模式。 TiDB 3.0 加入了悲观锁模式（实验性），应该非 autocommit，才会启用悲观事务。将 `tidb_txn_mode` 设置为 `'pessimistic'` 后，这个 session 执行的所有事务都会进入悲观事务模式。更多关于悲观锁的细节，可以参考 [TiDB 悲观事务模式](../../transactions/transaction-pessimistic.md)。
 
 ### tidb_constraint_check_in_place
 
@@ -501,7 +501,7 @@ set tidb_query_log_max_len = 20
 
 默认值：0
 
-TiDB 默认采用乐观的事务模型，在执行写入时，假设不存在冲突，冲突检查是在最后 commit 提交时才去检查。这里的检查指 unique key 检查。
+TiDB 默认采用乐观事务模型，即在执行写入时，假设不存在冲突。冲突检查是在最后 commit 提交时才去检查。这里的检查指 unique key 检查。
 
 这个变量用来控制是否每次写入一行时就执行一次唯一性检查。注意，开启该变量后，在大批量写入场景下，对性能会有影响。
 
@@ -536,7 +536,7 @@ ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
 
 这个变量用来设置是否开启对字符集为 UTF8 类型的数据做合法性检查，默认值 `1` 表示开启检查。这个默认行为和 MySQL 是兼容的。
 
-注意，如果是旧版本升级时，可能需要关闭该选项，否则由于旧版本（v2.1.1以及之前）没有对数据做合法性检查，所以旧版本写入非法字符串是可以写入成功的，但是新版本加入合法性检查后会报写入失败。具体可以参考[升级后常见问题](../../../faq/upgrade.md)。
+注意，如果是旧版本升级时，可能需要关闭该选项，否则由于旧版本（v2.1.1 以及之前）没有对数据做合法性检查，所以旧版本写入非法字符串是可以写入成功的，但是新版本加入合法性检查后会报写入失败。具体可以参考[升级后常见问题](../../../faq/upgrade.md)。
 
 ### tidb_opt_insubq_to_join_and_agg
 
@@ -582,7 +582,7 @@ select * from t, t1 where t.a=t1.a
 
 默认值：1
 
-当交叉估算方法不可用时候，会采用启发式估算方法。这个变量用来控制启发式方法的行为。当值为 0 时不用启发式估算方法，大于 0 时，该变量值越大，启发式估算方法越倾向 index scan ，越小越倾向 table scan。
+当交叉估算方法不可用时，会采用启发式估算方法。这个变量用来控制启发式方法的行为。当值为 0 时不用启发式估算方法，大于 0 时，该变量值越大，启发式估算方法越倾向 index scan，越小越倾向 table scan。
 
 ### tidb_enable_window_function
 
@@ -610,7 +610,7 @@ select * from t, t1 where t.a=t1.a
 
 这个变量用来控制是否启用统计信息快速分析功能。默认值 0 表示不开启。
 
-快速分析功能开启后，TiDB 会随机采样约 10000 行的数据来构建统计信息。因此在数据分布不均匀或者数据量比较少的情况下，统计信息的准确度会比较差。可能导致执行计划不优，比如选错索引。如果可以接受普通 `ANALYZE` 语句的执行时间，则推荐关闭快速分析功能。
+快速分析功能开启后，TiDB 会随机采样约 10000 行的数据来构建统计信息。因此在数据分布不均匀或者数据量比较少的情况下，统计信息的准确度会比较低。这可能导致执行计划不优，比如选错索引。如果可以接受普通 `ANALYZE` 语句的执行时间，则推荐关闭快速分析功能。
 
 ### tidb_expensive_query_time_threshold
 
