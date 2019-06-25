@@ -7,7 +7,7 @@ category: how-to
 
 TiDB 慢查询日志中记录了所有执行时间超过 [`slow-threshold`](/reference/configuration/tidb-server/configuration-file.md#slow-threshold) 的查询。从慢查询日志中找到一个慢查询后，接下来需要做的是分析它为什么慢，怎么优化。本文会从 TiDB SQL 执行原理层面列列举有哪些情况导致查询慢以及如何改进。
 
-## 找到慢查询
+## 定位慢查询
 
 需要注意的是，慢查询可以分为两类：
 
