@@ -17,7 +17,7 @@ _version_tag="$(date '+%Y%m%d')"
 
 # add docs versions
 # generate PDF for each version
-docs_versions=(dev v3.0 v2.1)
+docs_versions=(dev)
 
 for i in "${docs_versions[@]}"
 do

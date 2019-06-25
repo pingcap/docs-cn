@@ -30,19 +30,15 @@ jobs:
           command: |
             sudo bash -c 'echo "222.222.95.49 uc.qbox.me" >> /etc/hosts';
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              python3 scripts/upload.py dev/output.pdf tidb-manual-cn-dev.pdf;
-              python3 scripts/upload.py v3.0/output.pdf tidb-manual-cn-v3.0.pdf;
-              python3 scripts/upload.py v2.1/output.pdf tidb-manual-cn-v2.1.pdf;
+              python3 scripts/upload.py dev/output.pdf tidb-manual-cn.pdf;
             fi
             if [ "${CIRCLE_BRANCH}" == "website-preview" ]; then
-              python3 scripts/upload.py dev/output.pdf tidb-manual-cn-dev-preview.pdf;
-              python3 scripts/upload.py v3.0/output.pdf tidb-manual-cn-v3.0-preview.pdf;
-              python3 scripts/upload.py v2.1/output.pdf tidb-manual-cn-v2.1-preview.pdf;
+              python3 scripts/upload.py dev/output.pdf tidb-manual-cn-preview.pdf;
             fi
 
       - run:
           name: "Copy Generated PDF"
-          command: mkdir /tmp/artifacts && cp dev/output.pdf dev/doc.md v3.0/output.pdf v3.0/doc.md v2.1/output.pdf v2.1/doc.md /tmp/artifacts
+          command: mkdir /tmp/artifacts && cp dev/output.pdf dev/doc.md /tmp/artifacts
 
       - store_artifacts:
           path: /tmp/artifacts
