@@ -2,7 +2,7 @@
 title: TiDB Adopters
 summary: Learn about the list of TiDB adopters in various industries.
 category: adopters
-i8n_link: "https://www.pingcap.com/cases-cn/"
+i18n_link: "https://www.pingcap.com/cases-cn/"
 ---
 
 # TiDB Adopters
