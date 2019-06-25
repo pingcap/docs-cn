@@ -1,30 +1,33 @@
 ---
-title: TiDB 集群运维文档
+title: Kubernetes 上的 TiDB 集群运维
 summary: TiDB 集群运维文档
 category: how-to
 ---
-# TiDB 集群运维文档
+
+# Kubernetes 上的 TiDB 集群运维
 
 TiDB Operator 可以在同一个 Kubernetes 集群上管理多个 TiDB 集群。
 
-下面的变量会在后续文档中用到：
+以下变量会在后续文档中用到：
 
 ```
 releaseName="demo"
 namespace="tidb"
 chartVersion="v1.0.0-beta.3"
 ```
-Helm 安装完成后，通过下面命令获取要安装的 tidb-cluster chart 的 values.yaml 配置文件：
+
+Helm 安装完成后，通过下面命令获取要安装的 tidb-cluster chart 的 `values.yaml` 配置文件：
 
 {{< copyable "shell-regular" >}}
 
-``` shell
+```shell
 mkdir -p /home/tidb/${releaseName} && \
 helm inspect values pingcap/tidb-cluster --version=${chartVersion} > /home/tidb/${releaseName}/values-${releaseName}.yaml
 ```
+
 > **注意：**
 >
-> "/home/tidb" 可以替换为你想用的目录。后续文档中会用 `values.yaml` 指代 `/home/tidb/${releaseName}/values-${releaseName}.yaml`。
+> `/home/tidb` 可以替换为你想用的目录，下文会用 `values.yaml` 指代 `/home/tidb/${releaseName}/values-${releaseName}.yaml`。
 
 ## 配置
 
@@ -34,7 +37,7 @@ TiDB Operator 把 `values.yaml` 作为 TiDB 集群的配置文件。`values.yaml
 
     * CPU & Memory
 
-        默认部署并没有为任何 Pod 设置 CPU 或者 Memory 的 request 或者 limit，这样 TiDB 集群可以运行在小的 Kubernetes 集群，例如 DinD 或者默认的 GKE 集群，以方便测试。但是对于生产环境，最好根据[推荐配置](https://pingcap.com/docs/dev/how-to/deploy/hardware-recommendations/#software-and-hardware-recommendations)调整 CPU、Memory 和存储资源。
+        默认部署并没有为任何 Pod 设置 CPU 或者 Memory 的 request 或者 limit，这样 TiDB 集群可以运行在小的 Kubernetes 集群，例如 DinD 或者默认的 GKE 集群，以方便测试。但是对于生产环境，最好根据[推荐配置](/how-to/deploy/hardware-recommendations.md)调整 CPU、Memory 和存储资源。
 
         资源 limit 应该大于等于资源 request，建议设置 limit 等于 request，这样可以获得 [`Guaranteed` QoS]( https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/#create-a-pod-that-gets-assigned-a-qos-class-of-guaranteed)。
 
@@ -52,26 +55,24 @@ TiDB Operator 把 `values.yaml` 作为 TiDB 集群的配置文件。`values.yaml
 
 * 容灾配置
 
-    TiDB 是一个分布式数据库。容灾意味着任何一个物理节点宕机，不仅要保证 TiDB 服务可用还要保证数据的完整性和可用性。
+    TiDB 是一个分布式数据库。容灾意味着任何一个物理节点宕机，不仅要保证 TiDB 服务可用，还要保证数据的完整性和可用性。
 
-    如何在 Kubernetes 集群上保证 TiDB 集群的容灾？
-
-    我们主要通过服务和数据的调度解决这个问题。
+    要在 Kubernetes 集群上保证 TiDB 集群的容灾，可通过服务和数据的调度解决这个问题。
 
     * TiDB 实例容灾
 
         TiDB Operator 通过扩展调度器保证 PD、TiKV 和 TiDB 主机级别的容灾。TiDB 集群设置这个扩展调度器作为默认调度器，具体配置为 `values.yaml` 中的 `schedulerName` 变量。
 
-        另一方面，通过 `affinity` 中的 `PodAntiAffinity` 配置保证其他拓扑级别（例如，机架、可用区、区域）的容灾。详细配置可参看 [pod affnity & anti affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature)，另外，`values.yaml` 中 `pd.affinity` 字段以注释形式提供了一个典型的容灾配置示例。
+        另一方面，通过 `affinity` 中的 `PodAntiAffinity` 配置保证其他拓扑级别（例如，机架、可用区、区域）的容灾。详细配置可参看 [pod affnity & anti affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature)。另外，`values.yaml` 中 `pd.affinity` 字段以注释形式提供了一个典型的容灾配置示例。
 
     * 数据容灾
 
         数据容灾是由 TiDB 集群自己保证的。TiDB Operator 只需要通过 TiKV Pod 所在的节点的特定标签获取拓扑信息，然后 PD 会根据拓扑信息自动调度数据副本。由于目前 TiDB Operator 只能识别特定标签，因此你只能通过下面标签设置拓扑信息：
 
-        * `region`: 节点所在区域
-        * `zone`: 节点所在可用区
-        * `rack`: 节点所在机架
-        * `kubernetes.io/hostname`: 节点 hostname
+        * `region`：节点所在区域
+        * `zone`：节点所在可用区
+        * `rack`：节点所在机架
+        * `kubernetes.io/hostname`：节点 hostname
 
         你需要通过下面命令给节点打上拓扑信息标签（不一定要打上所有标签）：
 
@@ -83,12 +84,11 @@ TiDB Operator 把 `values.yaml` 作为 TiDB 集群的配置文件。`values.yaml
 
 对于其他设置，`values.yaml` 文件中的变量都带有自解释的注释，你可以在安装之前按需修改。
 
-
 ## GKE
 
-在 GKE 上，本地 SSD 卷默认大小限制为 375 GB，性能还比永久性磁盘差。
+在 GKE 上，本地 SSD 卷默认大小限制为 375 GB，性能比永久性磁盘要差。
 
-为提高性能，你必须：
+为提高性能，你必须保证以下两点：
 
 * 安装 Linux Guest Environment，只能用于 Ubuntu 系统，不能用于 COS。
 * 确保 SSD 挂载选项中包含 `nobarrier`。
@@ -148,7 +148,7 @@ echo ${PASSWORD}
 
 * 在 Kubernetes 集群内访问 TiDB
 
-    如果你的应用部署在同一个 Kubernetes 集群，你可以通过域名 `demo-tidb.tidb.svc` 和端口  `4000` 访问 TiDB。`demo` 是 `releaseName`，后面的 `tidb` 是你通过 `helm install` 部署 TiDB 集群时指定的 namespace。
+    如果你的应用部署在同一个 Kubernetes 集群，你可以通过域名 `demo-tidb.tidb.svc` 和端口  `4000` 访问 TiDB。`demo` 是 `releaseName`，后面的 `tidb` 是通过 `helm install` 部署 TiDB 集群时指定的 namespace。
 
 * 在 Kubernetes 集群外访问 TiDB
 
@@ -176,14 +176,11 @@ echo ${PASSWORD}
 
 ## TiDB 集群伸缩
 
-TiDB Operator 支持垂直和水平伸缩，但是存储的垂直伸缩有一些需要注意的地方。
+TiDB Operator 支持垂直和水平伸缩。存储的垂直伸缩需要注意以下各项：
 
-* Kubernetes v1.11 或者更高版本，请参考[官方博客](https://kubernetes.io/blog/2018/07/12/resizing-persistent-volumes-using-kubernetes/)
-* 后端 StorageClass 支持调整大小（目前只有少数几个网络 StorageClass 支持调整大小）
-
-当使用本地持久化存储卷，即使 CPU 和 Memory 的垂直伸缩也可能有问题，因为节点上可能资源不够。
-
-因此，当负载增加时，建议做水平伸缩而不是垂直伸缩。
+* 使用 Kubernetes v1.11 或者更高版本，请参考[官方博客](https://kubernetes.io/blog/2018/07/12/resizing-persistent-volumes-using-kubernetes/)。
+* 后端 StorageClass 支持调整大小（目前只有少数几个网络 StorageClass 支持调整大小）。
+* 当使用本地持久化存储卷，即使 CPU 和 Memory 的垂直伸缩也可能有问题，因为节点上可能资源不够。因此，当负载增加时，建议做水平伸缩而不是垂直伸缩。
 
 ### 水平伸缩
 
@@ -201,7 +198,7 @@ helm upgrade ${releaseName} pingcap/tidb-cluster --version=${chartVersion} -f /h
 
 > **注意：**
 >
-> 请阅读上面垂直伸缩的注意事项。在问题 [#35](https://github.com/pingcap/tidb-operator/issues/35) 解决之前，你必须在 `values.yaml` 中手动为 TiKV 配置 BlockCacheSize。
+> 请阅读上面垂直伸缩的注意事项。在 issue [#35](https://github.com/pingcap/tidb-operator/issues/35) 解决之前，你必须在 `values.yaml` 中手动为 TiKV 配置 `BlockCacheSize`。
 
 ## 升级 TiDB 集群
 
@@ -213,21 +210,21 @@ helm upgrade ${releaseName} pingcap/tidb-cluster --version=${chartVersion} -f /h
 helm upgrade ${releaseName} pingcap/tidb-cluster --version=${chartVersion} -f /home/tidb/${releaseName}/values-${releaseName}.yaml
 ```
 
-对于小版本升级，更新 `image` 就可以。但是对于大版本升级，最好是根据文档开始部分介绍的步骤，从新版本 chart 中获取新版本 values.yaml，和旧版本 values.yaml 合并成新的 values.yaml，然后执行上述升级命令。
+对于小版本升级，更新 `image` 就可以。但是对于大版本升级，最好是根据文档开始部分介绍的步骤，从新版本 chart 中获取新版本 `values.yaml`，和旧版本 `values.yaml` 合并成新的 `values.yaml`，然后执行上述升级命令。
 
 ## 修改 TiDB 集群配置
 
-从 `v1.0.0` 版本开始，TiDB operator 支持配置更新后滚动升级集群。为了后向兼容，这个特性默认关闭，你可以在 values.yaml 中设置 `enableConfigMapRollout` 为 `true` 启用它。
+从 `v1.0.0` 版本开始，TiDB Operator 支持配置更新后滚动升级集群。为了后向兼容，这个特性默认关闭，你可以在 `values.yaml` 中设置 `enableConfigMapRollout` 为 `true` 启用它。
 
 > **注意：**
 >
 > 如果集群已经在运行，即使没有配置修改，打开这个参数并运行 `helm upgrade` 也会触发 PD、TiKV 和 TiDB 滚动升级。
 >
-> 目前，集群创建后修改 PD 的 `schedule` 和 `replication` 配置（`values.yaml` 中的`maxStoreDownTime` 和 `maxReplicas` 参数，PD 配置文件中所有 `[schedule]` 和 `[replication]` 部分的配置 ）然后运行 `helm upgrade` 无法生效。集群创建后，你必须通过  `pd-ctl` 配置这些参数，请参考：[pd-ctl](https://pingcap.com/docs/dev/reference/tools/pd-control/)。
+> 目前，集群创建后修改 PD 的 `schedule` 和 `replication` 配置（`values.yaml` 中的`maxStoreDownTime` 和 `maxReplicas` 参数，PD 配置文件中所有 `[schedule]` 和 `[replication]` 部分的配置 ）然后运行 `helm upgrade` 无法生效。集群创建后，你必须通过 `pd-ctl` 配置这些参数，请参考：[pd-ctl](/reference/tools/pd-control/)。
 
 ## 销毁 TiDB 集群
 
-执行下面命令销毁 TiDB 集群：
+要销毁 TiDB 集群，执行以下命令：
 
 {{< copyable "shell-regular" >}}
 
@@ -244,13 +241,13 @@ kubectl delete pvc -n ${namespace} -l app.kubernetes.io/instance=${releaseName},
 kubectl get pv -l app.kubernetes.io/namespace=${namespace},app.kubernetes.io/managed-by=tidb-operator,app.kubernetes.io/instance=${releaseName} -o name | xargs -I {} kubectl patch {} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
 ```
 
-> **注意：** 
+> **警告：** 
 >
-> 上述命令会彻底删除数据，请考虑清楚再执行。
+> 上述命令会彻底删除数据，务必考虑清楚再执行。
 
 ## 监控
 
-我们通过 Prometheus 和 Grafana 监控 TiDB 集群。TiDB 集群创建时，会同时创建、配置 Prometheus 和 Grafana pod 收集并展示监控指标。
+TiDB 通过 Prometheus 和 Grafana 监控 TiDB 集群。TiDB 集群创建时，会同时创建、配置 Prometheus 和 Grafana pod 收集并展示监控指标。
 
 监控数据默认没有持久化，如果由于某些原因监控容器重启，数据会丢失。可以在 `values.yaml` 中设置 `monitor.persistent` 为 `true` 来持久化监控数据。
 
@@ -301,6 +298,4 @@ stern -n ${namespace} tidb -c slowlog
 
 ## 备份和恢复
 
-TiDB Operator 为 TiDB 集群提供高度自动化的备份和恢复操作。你可以方便地为 TiDB 集群执行全量备份或者增量备份，也可以在集群宕机的情况下恢复 TiDB 集群。
-
-要了解备份和恢复的具体操作，请参考[备份和恢复 TiDB 集群]。
+TiDB Operator 为 TiDB 集群提供高度自动化的备份和恢复操作。你可以方便地为 TiDB 集群执行全量备份或者增量备份，也可以在集群宕机的情况下恢复 TiDB 集群。要了解备份和恢复的具体操作，请参考[备份和恢复 TiDB 集群]。
