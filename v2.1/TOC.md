@@ -11,10 +11,6 @@
 + 操作指南
   + 快速上手
     + 创建本地集群
-      + 使用 Kubernetes
-        - [DinD](how-to/get-started/local-cluster/install-from-kubernetes-dind.md)
-        - [Minikube](how-to/get-started/local-cluster/install-from-kubernetes-minikube.md)
-        - [GKE](how-to/get-started/local-cluster/install-from-kubernetes-gke.md)
       - [使用 Docker Compose](how-to/get-started/local-cluster/install-from-docker-compose.md)
     - [SQL 基本操作](how-to/get-started/explore-sql.md)
     - [读取历史数据](how-to/get-started/read-historical-data.md)
@@ -26,10 +22,6 @@
       - [使用 Ansible 部署（推荐）](how-to/deploy/orchestrated/ansible.md)
       - [使用 Ansible 离线部署](how-to/deploy/orchestrated/offline-ansible.md)
       - [使用 Docker 部署](how-to/deploy/orchestrated/docker.md)
-      + 使用 Kubernetes 部署
-        - [阿里云](how-to/deploy/orchestrated/alibaba-cloud.md)
-        - [AWS EKS](how-to/deploy/orchestrated/aws-eks.md)
-        - [GCP](how-to/deploy/orchestrated/gcp-gke.md)
     + 跨地域冗余
       - [跨数据中心部署方案](how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](how-to/deploy/geographic-redundancy/location-awareness.md)
@@ -130,7 +122,6 @@
       - [信息函数](reference/sql/functions-and-operators/information-functions.md)
       - [JSON 函数](reference/sql/functions-and-operators/json-functions.md)
       - [GROUP BY 聚合函数](reference/sql/functions-and-operators/aggregate-group-by-functions.md)
-      - [窗口函数](reference/sql/functions-and-operators/window-functions.md)
       - [其它函数](reference/sql/functions-and-operators/miscellaneous-functions.md)
       - [精度数学](reference/sql/functions-and-operators/precision-math.md)
     + SQL 语句
@@ -229,12 +220,10 @@
     - [与 MySQL 的安全特性差异](reference/security/compatibility.md)
     - [TiDB 数据库权限管理](reference/security/privilege-system.md)
     - [TiDB 用户账户管理](reference/security/user-account-management.md)
-    - [基于角色的访问控制](reference/security/role-based-authorization.md)
   + 事务
     - [事务语句](reference/transactions/overview.md)
     - [事务模型](reference/transactions/transaction-model.md)
     - [隔离级别](reference/transactions/transaction-isolation.md)
-    - [悲观事务](reference/transactions/transaction-pessimistic.md)
   + 系统数据库
     - [`mysql`](reference/system-databases/mysql.md)
     - [`information_schema`](reference/system-databases/information-schema.md)
