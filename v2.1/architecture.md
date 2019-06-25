@@ -7,7 +7,7 @@ category: introduction
 
 要深入了解 TiDB 的水平扩展和高可用特点，首先需要了解 TiDB 的整体架构。TiDB 集群主要包括三个核心组件：TiDB Server，PD Server 和 TiKV Server。此外，还有用于解决用户复杂 OLAP 需求的 [TiSpark](https://github.com/pingcap/tispark/) 组件。
 
-![TiDB Architecture](media/tidb-architecture.png)
+![TiDB Architecture](/media/tidb-architecture.png)
 
 ## TiDB Server
 
@@ -17,7 +17,7 @@ TiDB Server 负责接收 SQL 请求，处理 SQL 相关的逻辑，并通过 PD 
 
 Placement Driver (简称 PD) 是整个集群的管理模块，其主要工作有三个：一是存储集群的元信息（某个 Key 存储在哪个 TiKV 节点）；二是对 TiKV 集群进行调度和负载均衡（如数据的迁移、Raft group leader 的迁移等）；三是分配全局唯一且递增的事务 ID。
 
-PD 是一个集群，需要部署奇数个节点，一般线上推荐至少部署 3 个节点。
+PD 通过 Raft 协议保证数据的安全性。Raft 的 leader server 负责处理所有操作，其余的 PD server 仅用于保证高可用。建议部署奇数个 PD 节点。
 
 ## TiKV Server
 

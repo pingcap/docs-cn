@@ -66,4 +66,4 @@ category: how-to
 
 > **注意：**
 >
-> 目前 PD 的 `scheduler` 和 `replication` 配置（`values.yaml` 中的 `maxStoreDownTime` 和 `maxReplicas` 字段）在集群安装完成后无法自动更新，需要通过 [pd-ctl](/dev/reference/tools/pd-control.md) 手动更新。
+> 目前 PD 的 `scheduler` 和 `replication` 配置（`values.yaml` 中的 `maxStoreDownTime` 和 `maxReplicas` 字段）在集群安装完成后无法自动更新，需要通过 [pd-ctl](/reference/tools/pd-control.md) 手动更新。
