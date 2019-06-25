@@ -14,7 +14,7 @@ TiDB 启动之后采用 `SET [ SESSION | GLOBAL ] sql_mode='modes' `设置 SQL �
 
 Modesis是用逗号 (', ') 间隔开的一系列不同的模式。使用 `SELECT @@sql_mode` 语句查询当前 SQL 模式，SQL 模式默认值：""。
 
-## 主要重要 sql_mode 值为：
+## 重要的 sql_mode 值
 
 * ANSI: 符合标准 SQL ，对数据进行校验，如果不符合定义类型或长度，对数据类型调整或截断保存，且返回warning警告。
 * STRICT_TRANS_TABLES:  严格模式，对数据进严格校验，但数据出现错误时，插入到表中，并且返回错误。
