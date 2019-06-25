@@ -315,7 +315,7 @@ prepare 语句的 Plan cache 设置。
 
 ### `max-batch-wait-time`
 
-+ 等待 max-batch-wait-time 纳秒批量将此期间的数据包封装成一个大包发送给 tikv 节点，仅在 tikv-client.max-batch-size  值大于 0  时有效，推荐不修改该值。
++ 等待 `max-batch-wait-time` 纳秒批量将此期间的数据包封装成一个大包发送给 TiKV 节点，仅在 `tikv-client.max-batch-size`  值大于 0 时有效，不推荐修改该值。
 + 默认值：0
 + 单位：纳秒
 
