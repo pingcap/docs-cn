@@ -1,7 +1,6 @@
 ---
 title: 字符集支持
 category: reference
-aliases: ['/docs-cn/sql/character-set-support/']
 ---
 
 # 字符集支持
