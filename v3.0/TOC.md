@@ -209,6 +209,7 @@
       - [`USE`](reference/sql/statements/use.md)
     - [约束](reference/sql/constraints.md)
     - [生成列](reference/sql/generated-columns.md)
+    - [分区表](dev/reference/sql/partitioning.md)
     - [字符集](reference/sql/character-set.md)
   + 配置
     + tidb-server
