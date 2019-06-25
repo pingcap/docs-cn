@@ -3,9 +3,11 @@ title: 分区表
 category: reference
 ---
 
+# 分区表
+
 ## 分区类型
 
-本节介绍在 TiDB 中的分区的类型。当前支持的类型包括 Range 分区和 Hash 分区。Range 分区可以用于解决业务中大量删除带来的性能问题，支持快速删除分区。Hash 分区则可以用于大量写入场景下的数据打散。
+本节介绍在 TiDB 中的分区类型。当前支持的类型包括 Range 分区和 Hash 分区。Range 分区可以用于解决业务中大量删除带来的性能问题，支持快速删除分区。Hash 分区则可以用于大量写入场景下的数据打散。
 
 ### Range 分区
 
@@ -110,7 +112,7 @@ PARTITION BY RANGE ( YEAR(separated) ) (
 );
 ```
 
-在 range 分区中，可以基于 `timestamp` 列的值分区，使用 `unix_timestamp()` 函数，例如：
+在 range 分区中，可以基于 `timestamp` 列的值分区，并使用 `unix_timestamp()` 函数，例如：
 
 ```SQL
 CREATE TABLE quarterly_report_status (
@@ -182,7 +184,7 @@ PARTITIONS 4;
 
 最高效的 hash 函数是作用在单列上，并且函数的单调性是跟列的值是一样递增或者递减的，因为这种情况可以像 range 分区一样裁剪。
 
-例如， `date_col` 是类型为 `DATE` 的列，表达式 `TO_DAYS(date_col)` 的值是直接随 `date_col` 的值变化的。`YEAR(date_col)` 跟 `TO_DAYS(date_col)` 就不太一样，因为不是每次 `date_col` 变化时 `YEAR(date_col)` 都会得到不同的值。即使如此，`YEAR(date_col)` 也仍然是一个比如好的 hash 函数，因为它的结果是随着 `date_col` 的值的比例变化的。
+例如，`date_col` 是类型为 `DATE` 的列，表达式 `TO_DAYS(date_col)` 的值是直接随 `date_col` 的值变化的。`YEAR(date_col)` 跟 `TO_DAYS(date_col)` 就不太一样，因为不是每次 `date_col` 变化时 `YEAR(date_col)` 都会得到不同的值。即使如此，`YEAR(date_col)` 也仍然是一个比如好的 hash 函数，因为它的结果是随着 `date_col` 的值的比例变化的。
 
 作为对比，假设我们有一个类型是 INT 的 `int_col` 的列。考虑一下表达式 `POW(5-int_col,3) + 6`，这并不是一个比较好的 hash 函数，因为随着 `int_col` 的值的变化，表达式的结果不会成比例地变化。改变 `int_col` 的值会使表达式的结果的值变化巨大。例如，`int_col` 从 5 变到 6 表达式的结果变化是 -1，但是从 6 变到 7 的时候表达式的值的变化是 -7。
 
