@@ -209,7 +209,7 @@
       - [`USE`](reference/sql/statements/use.md)
     - [约束](reference/sql/constraints.md)
     - [生成列](reference/sql/generated-columns.md)
-    - [分区表](dev/reference/sql/partitioning.md)
+    - [分区表](reference/sql/partitioning.md)
     - [字符集](reference/sql/character-set.md)
   + 配置
     + tidb-server
@@ -230,7 +230,7 @@
     - [与 MySQL 的安全特性差异](reference/security/compatibility.md)
     - [TiDB 数据库权限管理](reference/security/privilege-system.md)
     - [TiDB 用户账户管理](reference/security/user-account-management.md)
-    - [基于角色的访问控制](reference/security/role-based-authorization.md)
+    - [基于角色的访问控制](reference/security/role-based-access-control.md)
   + 事务
     - [事务语句](reference/transactions/overview.md)
     - [事务模型](reference/transactions/transaction-model.md)
