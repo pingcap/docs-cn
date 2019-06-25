@@ -6,13 +6,13 @@ category: reference
 
 # Transaction Model
 
-TiDB implements an optimistic transaction model. Unlike MySQL, which uses row-level locking to avoid write conflict, in TiDB, the write conflict is checked only in the `commit` process during the execution of the statements like `Update`, `Insert`, `Delete`, and so on.
+TiDB defaults to an optimistic transaction model. This means that unlike MySQL where statements may block waiting to acquire row-locks, TiDB will allow modifications to occur and detect the conflict at the transaction attempts to commit.
 
-Similarly, functions such as `GET_LOCK()` and `RELEASE_LOCK()` and statements such as `SELECT .. FOR UPDATE` do not work in the same way as in MySQL.
+Similarly, statements such as `SELECT .. FOR UPDATE` do not work in the same way as in MySQL.
 
 > **Note:**
 >
-> On the application side, remember to check the returned results of `COMMIT` because even there is no error in the execution, there might be errors in the `COMMIT` process.
+> Experimental support for [pessimistic locking](/reference/transactions/transaction-pessimistic.md) is now available. When enabled, TiDB will behave behave similar to the InnoDB storage engine.
 
 ## Differences from MySQL
 
@@ -46,6 +46,10 @@ UPDATE my_table SET a='newer_value' WHERE id = 2;
 UPDATE my_table SET a='newest_value' WHERE id = 3;
 COMMIT;
 ```
+
+### SELECT .. FOR UPDATE
+
+Due to optimistic locking, `SELECT .. FOR UPDATE` statements do not block other sessions from modifying data. Instead, the `SELECT .. FOR UPDATE` statement will cause the transaction to fail if rows have been modified by another transaction. Similarly, the `SELECT .. FOR UPDATE` statement disables any transaction retry.
 
 ### Single-threaded or latency-sensitive workloads
 

@@ -40,6 +40,7 @@ Currently TiDB Server advertises itself as MySQL 5.7 and works with most MySQL d
 + `LOCK TABLE` syntax (TiDB uses `tidb_snapshot` to [produce backups](/reference/tools/mydumper.md))
 + `CHECK TABLE` syntax
 + `CHECKSUM TABLE` syntax
++ `GET_LOCK` and `RELEASE_LOCK` functions
 
 ## Features that are different from MySQL
 

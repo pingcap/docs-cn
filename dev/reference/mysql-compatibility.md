@@ -36,9 +36,9 @@ Currently TiDB Server advertises itself as MySQL 5.7 and works with most MySQL d
 + `CREATE TABLE tblName AS SELECT stmt` syntax
 + `CREATE TEMPORARY TABLE` syntax
 + `XA` syntax (TiDB uses a two-phase commit internally, but this is not exposed via an SQL interface)
-+ `LOCK TABLE` syntax (TiDB uses `tidb_snapshot` to [produce backups](/reference/tools/mydumper.md))
 + `CHECK TABLE` syntax
 + `CHECKSUM TABLE` syntax
++ `GET_LOCK` and `RELEASE_LOCK` functions
 
 ## Features that are different from MySQL
 
@@ -153,6 +153,12 @@ tidb> SELECT /*!90000 "I should not run", */ "I should run" FROM dual;
 +------------------+--------------+
 1 row in set (0.00 sec)
 ```
+
+### Lock tables
+
+Support for `LOCK TABLE` syntax is currently experimental, and must be explicitly enabled ([TiDB #10343](https://github.com/pingcap/tidb/pull/10343)).
+
+It is recommended to use the historical reads feature of `tidb_snapshot` to produce consistent reads, instead of `FLUSH TABLES WITH READ LOCK`. Support for `tidb_snapshot` is available in [mydumper](/reference/tools/mydumper.md)).
 
 ### Default differences
 

@@ -9,17 +9,17 @@ aliases: ['/docs/sql/transaction-model/']
 
 TiDB implements an optimistic transaction model. Unlike MySQL, which uses row-level locking to avoid write conflict, in TiDB, the write conflict is checked only in the `commit` process during the execution of the statements like `Update`, `Insert`, `Delete`, and so on.
 
-Similarly, functions such as `GET_LOCK()` and `RELEASE_LOCK()` and statements such as `SELECT .. FOR UPDATE` do not work in the same way as in MySQL.
-
-> **Note:**
->
-> On the application side, remember to check the returned results of `COMMIT` because even there is no error in the execution, there might be errors in the `COMMIT` process.
+Similarly, statements such as `SELECT .. FOR UPDATE` do not work in the same way as in MySQL.
 
 ## Differences from MySQL
 
 ### Transaction retry
 
 While the transaction retry is not enabled by default, TiDB can automatically retry failed transactions when `tidb_disable_txn_auto_retry = off`. This feature is disabled by default because retry might lead to lost updates.
+
+> **Warning:**
+>
+> TiDB 2.1 previously retried transactions by default, leading to potentially lost updates. TiDB 3.0 switches to transaction retry being disabled by default.  This means it is important to remember to check the returned results of commit statements, because even if there is no error in execution, there might be errors during the `COMMIT` process.
 
 ### Large transactions
 
@@ -47,6 +47,10 @@ UPDATE my_table SET a='newer_value' WHERE id = 2;
 UPDATE my_table SET a='newest_value' WHERE id = 3;
 COMMIT;
 ```
+
+### SELECT .. FOR UPDATE
+
+Due to optimistic locking, `SELECT .. FOR UPDATE` statements do not block other sessions from modifying data. Instead, the `SELECT .. FOR UPDATE` statement will cause the transaction to fail if rows have been modified by another transaction. Similarly, the `SELECT .. FOR UPDATE` statement disables any transaction retry.
 
 ### Single-threaded or latency-sensitive workloads
 
