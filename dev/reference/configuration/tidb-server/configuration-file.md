@@ -2,6 +2,7 @@
 title: TiDB 配置文件描述
 category: reference
 aliases: ['/docs-cn/op-guide/tidb-config-file/']
+
 ---
 
 # TiDB 配置文件描述
