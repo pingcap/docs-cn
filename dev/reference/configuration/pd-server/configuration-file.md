@@ -8,7 +8,7 @@ aliases: ['/docs-cn/op-guide/pd-config-file/']
 
 PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/config.toml](https://github.com/pingcap/pd/blob/master/conf/config.toml) 找到默认的配置文件。
 
-本文档只阐述未包含在命令行参数中的参数，命令行参数参见[这里](/dev/reference/configuration/pd/configuration.md)。
+本文档只阐述未包含在命令行参数中的参数，命令行参数参见[这里](/reference/configuration/pd/configuration.md)。
 
 ### `lease`
 
