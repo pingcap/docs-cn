@@ -10,10 +10,10 @@ aliases: ['/docs-cn/sql/information-schema/']
 
 ## ANALYZE_STATUS Table
 
- `ANALYZE_STATUS` 表提供正在执行的收集统计信息的任务以及有限条历史任务记录。
+`ANALYZE_STATUS` 表提供正在执行的收集统计信息的任务以及有限条历史任务记录。
 
 ```sql
-mysql>select * from `ANALYZE_STATUS`
+mysql> select * from `ANALYZE_STATUS`
 +--------------+------------+----------------+-------------------+----------------+---------------------+----------+
 | TABLE_SCHEMA | TABLE_NAME | PARTITION_NAME | JOB_INFO          | PROCESSED_ROWS | START_TIME          | STATE    |
 +--------------+------------+----------------+-------------------+----------------+---------------------+----------+
@@ -29,7 +29,7 @@ mysql>select * from `ANALYZE_STATUS`
 
 ## CHARACTER_SETS Table
 
- `CHARACTER_SETS` 表提供[字符集](/dev/reference/sql/character-set.md)相关的信息。TiDB 目前仅支持部分字符集。
+`CHARACTER_SETS` 表提供[字符集](/dev/reference/sql/character-set.md)相关的信息。TiDB 目前仅支持部分字符集。
 
 ```sql
 mysql> SELECT * FROM character_sets;
@@ -47,7 +47,7 @@ mysql> SELECT * FROM character_sets;
 
 ## COLLATIONS Table
 
- `COLLATIONS` 表提供了 `CHARACTER_SETS` 表中字符集对应的排序规则列表。TiDB 当前仅支持二进制排序规则，包含该表仅为兼容 MySQL。
+`COLLATIONS` 表提供了 `CHARACTER_SETS` 表中字符集对应的排序规则列表。TiDB 当前仅支持二进制排序规则，包含该表仅为兼容 MySQL。
 
 ```sql
 mysql> SELECT * FROM collations WHERE character_set_name='utf8mb4';
@@ -221,9 +221,9 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 
 ## PROCESSLIST Table
 
- `PROCESSLIST` 和 `show processlist` 的功能一样，都是查看当前正在处理的请求。
+`PROCESSLIST` 和 `show processlist` 的功能一样，都是查看当前正在处理的请求。
  
- `PROCESSLIST` 表会比 `show processlist` 多一个 `MEM` 列，`MEM` 是指正在处理的请求已使用的内存，单位是 byte。
+`PROCESSLIST` 表会比 `show processlist` 多一个 `MEM` 列，`MEM` 是指正在处理的请求已使用的内存，单位是 byte。
 
 ```sql
 +----+------+------+--------------------+---------+------+-------+---------------------------+-----+
@@ -232,8 +232,6 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 | 1  | root | ::1  | INFORMATION_SCHEMA | Query   | 0    | 2     | select * from PROCESSLIST | 0   |
 +----+------+------+--------------------+---------+------+-------+---------------------------+-----+
 ```
-
-
 
 ## SCHEMATA Table
 
@@ -278,7 +276,7 @@ mysql> SELECT * FROM session_variables LIMIT 10;
 
 ## SLOW_QUERY Table
 
- `SLOW_QUERY` 提供了慢查询相关的一些信息。表里面的内容是通过解析 TiDB 慢日志文件的数据而来的，表中列名和慢日志中的字段名是一一对应的关系。更多操作可以参考 [慢查询日志文档](../../how-to/maintain/identify-slow-queries.md)。
+`SLOW_QUERY` 提供了慢查询相关的一些信息。表里面的内容是通过解析 TiDB 慢日志文件的数据而来的，表中列名和慢日志中的字段名是一一对应的关系。更多操作可以参考[慢查询日志文档](/how-to/maintain/identify-slow-queries.md)。
 
 ```sql
  mysql>desc SLOW_QUERY;
@@ -317,7 +315,7 @@ mysql> SELECT * FROM session_variables LIMIT 10;
 
 ## STATISTICS Table
 
- `STATISTICS` 表提供了关于表索引的信息。
+`STATISTICS` 表提供了关于表索引的信息。
 
 ```sql
 mysql> desc statistics;
@@ -456,10 +454,11 @@ CONSTRAINT_CATALOG: def
 * `UNIQUE` 和 `PRIMARY KEY` 信息与 `SHOW INDEX` 语句的执行结果类似。
 
 ## TIDB_HOT_REGIONS Table
- `TIDB_HOT_REGIONS` 表提供了关于热点 REGION 的相关信息。
+
+`TIDB_HOT_REGIONS` 表提供了关于热点 REGION 的相关信息。
 
 ```sql
-mysql>desc TIDB_HOT_REGIONS;
+mysql> desc TIDB_HOT_REGIONS;
 +----------------+---------------------+------+-----+---------+-------+
 | Field          | Type                | Null | Key | Default | Extra |
 +----------------+---------------------+------+-----+---------+-------+
@@ -477,7 +476,7 @@ mysql>desc TIDB_HOT_REGIONS;
 
 ## TIDB_INDEXES Table
 
- `TIDB_INDEXES` 记录了所有表中的 INDEX 信息。
+`TIDB_INDEXES` 记录了所有表中的 INDEX 信息。
 
 ```sql
 mysql>desc TIDB_INDEXES;
@@ -498,10 +497,10 @@ mysql>desc TIDB_INDEXES;
 
 ## TIKV_REGION_PEERS Table
 
- `TIKV_REGION_PEERS` 表提供了所有 REGION 的 peer 信息。
+`TIKV_REGION_PEERS` 表提供了所有 REGION 的 peer 信息。
 
 ```sql
-mysql>desc TIKV_REGION_PEERS;
+mysql> desc TIKV_REGION_PEERS;
 +--------------+---------------------+------+-----+---------+-------+
 | Field        | Type                | Null | Key | Default | Extra |
 +--------------+---------------------+------+-----+---------+-------+
@@ -517,10 +516,10 @@ mysql>desc TIKV_REGION_PEERS;
 
 ## TIKV_REGION_STATUS Table
 
- `TIKV_REGION_STATUS` 表提供了所有 REGION 的状态信息。
+`TIKV_REGION_STATUS` 表提供了所有 REGION 的状态信息。
 
 ```sql
-mysql>desc TIKV_REGION_STATUS;
+mysql> desc TIKV_REGION_STATUS;
 +------------------+---------------------+------+-----+---------+-------+
 | Field            | Type                | Null | Key | Default | Extra |
 +------------------+---------------------+------+-----+---------+-------+
@@ -538,10 +537,10 @@ mysql>desc TIKV_REGION_STATUS;
 
 ## TIKV_STORE_STATUS Table
 
- `TIKV_STORE_STATUS` 表提供了所有 TiKV Store 的状态信息。
+`TIKV_STORE_STATUS` 表提供了所有 TiKV Store 的状态信息。
 
 ```sql
-mysql>desc TIKV_STORE_STATUS;
+mysql> desc TIKV_STORE_STATUS;
 +-------------------+---------------------+------+-----+---------+-------+
 | Field             | Type                | Null | Key | Default | Extra |
 +-------------------+---------------------+------+-----+---------+-------+
