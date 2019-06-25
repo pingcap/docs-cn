@@ -63,7 +63,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `treat-old-version-utf8-as-utf8mb4`
 
 + 将旧表中的 utf8 字符集当成 utf8mb4的开关。
-+ + 默认值：true
++ 默认值：true
 
 ## log 
 
