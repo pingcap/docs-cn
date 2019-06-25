@@ -327,7 +327,7 @@ prepare 语句的 Plan cache 设置。
 
 ### `overload-threshold`
 
-+ tikv 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 tikv 的压力。仅在 tikv-client.max-batch-size  值大于 0  时有效，推荐不修改该值
++ TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
 + 默认值：200
 
 ## txn-local-latches
