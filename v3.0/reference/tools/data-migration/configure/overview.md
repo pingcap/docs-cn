@@ -37,5 +37,5 @@ This section shows description of some important concepts.
 
 | Concept  | Description  | Configuration File  |
 | :------ | :--------- | :------------- |
-| `source-id`  | Uniquely identifies a MySQL or MariaDB instance, or a replication group with the master-slave structure. | `source_id` of `inventory.ini`;<br> `source-id` of `dm-master.toml`;<br> `source-id` of `task.yaml` |
+| `source-id`  | Uniquely identifies a MySQL or MariaDB instance, or a replication group with the master-slave structure. The maximum length of `source-id` is 32. | `source_id` of `inventory.ini`;<br> `source-id` of `dm-master.toml`;<br> `source-id` of `task.yaml` |
 | DM-worker ID | Uniquely identifies a DM-worker (by the `worker-addr` parameter of `dm-worker.toml`) | `worker-addr` of `dm-worker.toml`;<br> the `-worker`/`-w` flag of the dmctl command line |
