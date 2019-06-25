@@ -103,3 +103,19 @@ PD 可以通过命令行参数或环境变量配置。
 + 指定 PD 使用的 namespace 分类器。
 + 默认："table"
 + 如果 TiKV 不与 TiDB 集群配合运行，建议配置为 'default'。
+
+## `--metrics-addr`
+
++ 指定 Prometheus Pushgateway 的地址。
++ 默认：""
++ 如果留空，则不开启 Prometheus Push。
+
+## `--force-new-cluster`
+
++ 强制使用当前节点创建新的集群。
++ 默认：false
++ 仅用于在 PD 丢失多数副本的情况下恢复服务，可能会产生部分数据丢失。
+
+## `-V`, `--version`
+
++ 输出版本信息并退出。
