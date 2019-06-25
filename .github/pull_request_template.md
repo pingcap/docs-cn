@@ -2,7 +2,7 @@
 
 ### What is changed, added or deleted? <!--Required-->
 
-<!--Tell us what you did and why-->
+<!--Tell us what you did and why.-->
 
 ### What is the related PR or file link(s)? <!--REMOVE this item if it is not applicable-->
 
@@ -10,9 +10,9 @@
 
 ### Which version does your change affect? <!--REMOVE this item if it is not applicable-->
 
-<!--Specify the version or versions that your change affects by adding a label at the right-hand side of this page. For example, v3.0 -->
+<!--Specify the version or versions that your change affect by adding a label at the right-hand side of this page. "dev" indicates the latest development version. "v3.0"/"v2.1" indicates the documentation of TiDB 3.0/2.1. If your change affects multiple versions, please update the documents for ALL the necessary versions.-->
 
-### Check list <!--Check the box before the applicable item by using "- [x]"-->
+### Checklist <!--Check the box before the applicable item by using "- [x]"-->
 
 - [ ] Add a new file to `TOC.md`
 - [ ] No Tab spaces anywhere <!--Use ordinary spaces because Tab spaces can lead to CircleCI failure.-->
