@@ -15,13 +15,13 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群，TiDB 集群的部署配�
 | :----- | :---- | :----- |
 | `rbac.create` | 是否启用 Kubernetes 的 RBAC | `true` |
 | `clusterName` | TiDB 集群名，默认不设置该变量，tidb-cluster 会直接用执行安装时的 `RealeaseName` 代替 | `nil` |
-| `extraLabels` | TiDB 集群附加的自定义标签 参考: [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) | `{}` |
+| `extraLabels` | TiDB 集群附加的自定义标签 参考：[labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) | `{}` |
 | `schedulerName` | TiDB 集群使用的调度器 | `tidb-scheduler` |
 | `timezone` | TiDB 集群默认时区 | `UTC` |
 | `pvReclaimPolicy` | TiDB 集群使用的 PV (Persistent Volume)的 reclaim policy | `Retain` |
 | `services[0].name` | TiDB 集群对外暴露服务的名字 | `nil` |
 | `services[0].type` | TiDB 集群对外暴露服务的类型，(从 `ClusterIP`、`NodePort`、`LoadBalancer` 中选择) | `nil` |
-| `discovery.image` | TiDB 集群 PD 服务发现组件的镜像, 该组件用于在 PD 集群第一次启动时，为各个 PD 实例提供服务发现功能以协调启动顺序 | `pingcap/tidb-operator:v1.0.0-beta.3` |
+| `discovery.image` | TiDB 集群 PD 服务发现组件的镜像，该组件用于在 PD 集群第一次启动时，为各个 PD 实例提供服务发现功能以协调启动顺序 | `pingcap/tidb-operator:v1.0.0-beta.3` |
 | `discovery.imagePullPolicy` | PD 服务发现组件镜像的拉取策略 | `IfNotPresent` |
 | `discovery.resoureces.limits.cpu` | PD 服务发现组件的 CPU 资源限额 | `250m` |
 | `discovery.resoureces.limits.memory` | PD 服务发现组件的内存资源限额 | `150Mi` |
@@ -32,8 +32,8 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群，TiDB 集群的部署配�
 | `pd.image` | PD 镜像 | `pingcap/pd:v3.0.0-rc.1` |
 | `pd.imagePullPolicy` | PD 镜像的拉取策略 | `IfNotPresent` |
 | `pd.logLevel` | PD 日志级别 | `info` |
-| `pd.storageClassName` | PD 使用的 storageClass， storageClassName 指代一种由 Kubernetes 集群提供的存储类型，不同的类可能映射到服务质量级别、备份策略或集群管理员确定的任意策略。详细参考：[storage-classes](https://kubernetes.io/docs/concepts/storage/storage-classes) | `local-storage` |
-| `pd.maxStoreDownTime` | `pd.maxStoreDownTime` 指一个 store 节点断开连接多长时间后状态会被标记为 `down`， 如果状态变为 `down` 后， store 节点开始迁移数据到其它 store 节点 | `30m` |
+| `pd.storageClassName` | PD 使用的 storageClass，storageClassName 指代一种由 Kubernetes 集群提供的存储类型，不同的类可能映射到服务质量级别、备份策略或集群管理员确定的任意策略。详细参考：[storage-classes](https://kubernetes.io/docs/concepts/storage/storage-classes) | `local-storage` |
+| `pd.maxStoreDownTime` | `pd.maxStoreDownTime` 指一个 store 节点断开连接多长时间后状态会被标记为 `down`，如果状态变为 `down` 后，store 节点开始迁移数据到其它 store 节点 | `30m` |
 | `pd.maxReplicas` | `pd.maxReplicas` 是 TiDB 集群的数据的副本数 | `3` |
 | `pd.resources.limits.cpu` | 每个 PD Pod 的 CPU 资源限额 | `nil` |
 | `pd.resources.limits.memory` | 每个 PD Pod 的内存资源限额 | `nil` |
@@ -49,7 +49,7 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群，TiDB 集群的部署配�
 | `tikv.image` | TiKV 的镜像 | `pingcap/tikv:v3.0.0-rc.1` |
 | `tikv.imagePullPolicy` | TiKV 镜像的拉取策略 | `IfNotPresent` |
 | `tikv.logLevel` | TiKV 的日志级别 | `info` |
-| `tikv.storageClassName` | TiKV 使用的 storageClass， storageClassName 指代一种由 Kubernetes 集群提供的存储类型，不同的类可能映射到服务质量级别、备份策略或集群管理员确定的任意策略。详细参考：[storage-classes](https://kubernetes.io/docs/concepts/storage/storage-classes) | `local-storage` |
+| `tikv.storageClassName` | TiKV 使用的 storageClass，storageClassName 指代一种由 Kubernetes 集群提供的存储类型，不同的类可能映射到服务质量级别、备份策略或集群管理员确定的任意策略。详细参考：[storage-classes](https://kubernetes.io/docs/concepts/storage/storage-classes) | `local-storage` |
 | `tikv.syncLog` | syncLog 指是否启用 raft 日志同步功能，启用该功能能保证在断电时数据不丢失 | `true` |
 | `tikv.resources.limits.cpu` | 每个 TiKV Pod 的 CPU 资源限额 | `nil` |
 | `tikv.resources.limits.memory` | 每个 TiKV Pod 的内存资源限额 | `nil` |
@@ -82,7 +82,7 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群，TiDB 集群的部署配�
 | `tidb.annotations` | 为 TiDB Pods 添加特定的 `annotations` | `{}` |
 | `tidb.maxFailoverCount` | TiDB 最大的故障转移数量，假设为 3 即最多支持同时 3 个 TiDB 实例故障转移 | `3` |
 | `tidb.service.type` | TiDB 服务对外暴露类型 | `NodePort` |
-| `tidb.service.externalTrafficPolicy` | 表示此服务是否希望将外部流量路由到节点本地或集群范围的端点。有两个可用选项：`Cluster`（默认）和 `Local`。`Cluster` 隐藏了客户端源 IP，可能导致第二跳到另一个节点，但具有良好的整体负载分布。 `Local` 保留客户端源 IP 并避免 LoadBalancer 和 NodePort 类型服务的第二跳，但存在潜在的不均衡流量传播风险。详细参考：[外部负载均衡器](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip) | `nil` |
+| `tidb.service.externalTrafficPolicy` | 表示此服务是否希望将外部流量路由到节点本地或集群范围的端点。有两个可用选项：`Cluster`（默认）和 `Local`。`Cluster` 隐藏了客户端源 IP，可能导致第二跳到另一个节点，但具有良好的整体负载分布。`Local` 保留客户端源 IP 并避免 LoadBalancer 和 NodePort 类型服务的第二跳，但存在潜在的不均衡流量传播风险。详细参考：[外部负载均衡器](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip) | `nil` |
 | `tidb.service.loadBalancerIP` | 指定 tidb 负载均衡 IP，某些云提供程序允许您指定loadBalancerIP。在这些情况下，将使用用户指定的loadBalancerIP创建负载平衡器。如果未指定loadBalancerIP字段，则将使用临时IP地址设置loadBalancer。如果指定loadBalancerIP但云提供程序不支持该功能，则将忽略您设置的loadbalancerIP字段 | `nil` |
 | `tidb.service.mysqlNodePort` | TiDB 服务暴露的 mysql NodePort 端口 |  |
 | `tidb.service.exposeStatus` | TiDB 服务是否暴露状态端口 | `true` |
@@ -102,13 +102,13 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群，TiDB 集群的部署配�
 | `tidb.txnLocalLatchesCapacity` |   | `10240000` |
 | `tidb.tokenLimit` | TiDB 并发执行会话的限制 | `1000` |
 | `tidb.memQuotaQuery` | TiDB 查询的内存限额，默认 32GB | `34359738368` |
-| `tidb.txnEntryCountLimit` | 一个事务中条目的数目限制。如果使用 TiKV 作为存储，则条目表示键/值对。警告：不要将该值设置得太大，否则会对 TiKV 集群造成很大影响。请仔细调整此配置 | `300000` |
-| `tidb.txnTotalSizeLimit` | 一个事务中各条目的字节大小限制。如果使用 TiKV 作为存储，则条目表示键/值对。警告：不要将该值设置得太大，否则会对 TiKV 集群造成很大影响。请仔细调整此配置 | `104857600` |
+| `tidb.txnEntryCountLimit` | 一个事务中条目的数目限制。如果使用 TiKV 作为存储，则条目表示键/值对。**警告**：不要将该值设置得太大，否则会对 TiKV 集群造成很大影响。请仔细调整此配置 | `300000` |
+| `tidb.txnTotalSizeLimit` | 一个事务中各条目的字节大小限制。如果使用 TiKV 作为存储，则条目表示键/值对。**警告**：不要将该值设置得太大，否则会对 TiKV 集群造成很大影响。请仔细调整此配置 | `104857600` |
 | `tidb.enableBatchDml` | `tidb.enableBatchDml` 为 DML 启用批提交 | `false` |
 | `tidb.checkMb4ValueInUtf8` | `tidb.checkMb4ValueInUtf8` | 用于控制当字符集为utf8时是否检查mb4字符 | `true` |
-| `tidb.treatOldVersionUtf8AsUtf8mb4` | `tidb.treatOldVersionUtf8AsUtf8mb4`用于升级兼容性。设置为`true`将把旧版本的表/列 utf8 字符集视为 utf8mb4 | `true` |
-| `tidb.lease` | `tidb.lease`是 TiDB Schema lease 的期限，更改是非常危险的，除非你知道想要做什么 | `45s` |
-| `tidb.maxProcs` | 最大可使用的CPU核数，0 代表机器/Pod 上的 CPU 数量 | `0` |
+| `tidb.treatOldVersionUtf8AsUtf8mb4` | `tidb.treatOldVersionUtf8AsUtf8mb4`用于升级兼容性。设置为`true`将把旧版本的表/列 `utf8` 字符集视为 `utf8mb4` | `true` |
+| `tidb.lease` | `tidb.lease`是 TiDB Schema lease 的期限，对其更改是非常危险的，除非你明确知道可能产生的结果，否则不建议更改。 | `45s` |
+| `tidb.maxProcs` | 最大可使用的 CPU 核数，0 代表机器/Pod 上的 CPU 数量 | `0` |
 
 ## 资源配置说明
 
