@@ -5,7 +5,7 @@ category: benchmark
 
 # 如何对 TiDB 进行 TPC-C 测试
 
-本文介绍如何对 TiDB 进行 [TPC-C](http://www.tpc.org/tpcc/) 测试
+本文介绍如何对 TiDB 进行 [TPC-C](http://www.tpc.org/tpcc/) 测试。
 
 ## 准备测试程序
 
@@ -29,7 +29,7 @@ TPC-C 是一个对 OLTP（联机交易处理）系统进行测试的规范，使
 
 TPC-C 使用 tpmC 值（Transactions per Minute）来衡量系统最大有效吞吐量（MQTh，Max Qualified Throughput），其中 Transactions 以 NewOrder Transaction 为准，即最终衡量单位为每分钟处理的新订单数。
 
-本文使用开源的 BenchmarkSQL 5.0 作为 TPC-C 测试实现并做修改添加对 MySQL 协议支持， 可以通过以下命令下载测试程序:
+本文使用开源的 BenchmarkSQL 5.0 作为 TPC-C 测试实现并做修改添加对 MySQL 协议支持，可以通过以下命令下载测试程序:
 
 ```shell
 git clone -b 5.0-mysql-support-opt https://github.com/pingcap/benchmarksql.git
@@ -52,7 +52,7 @@ ant
 
 对于 1000 WAREHOUSE 我们将在 3 台服务器上进行部署。
 
-参考 TiDB 部署文档部署 TiDB 集群。在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB, 1 个 PD, 1 个 TiKV 实例。关于磁盘，以 32 张表、每张表 10M 行数据为例，建议 TiKV 的数据目录所在的磁盘空间大于 512 GB。
+参考 TiDB 部署文档部署 TiDB 集群。在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD，1 个 TiKV 实例。关于磁盘，以 32 张表、每张表 10M 行数据为例，建议 TiKV 的数据目录所在的磁盘空间大于 512 GB。
 
 机器硬件配置: 3 台机器
 CPU 40 core
@@ -67,27 +67,27 @@ TiDB 集群部署：6 * TiDB、3 * TiKV、3 * PD
 | node2 | 2 | 1 | 1 |
 | node3 | 2 | 1 | 1 |
 
-对于 NUMA 建议先用 `taskset` 进行绑核, 首先用 `lscpu` 查看 NUMA node, 比如:
+对于 NUMA 建议先用 `taskset` 进行绑核，首先用 `lscpu` 查看 NUMA node，比如：
 
 ```text
 NUMA node0 CPU(s):     0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38
 NUMA node1 CPU(s):     1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39
 ```
 
-可以通过下面的命令来启动 TiDB
+可以通过下面的命令来启动 TiDB：
 
 ```shell
 nohup taskset -c 0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38 bin/tidb-server
 nohup taskset -c 1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39 bin/tidb-server
 ```
 
-最后，可以选择部署一个 Haproxy 来进行多个 TiDB node 的负载均衡， 推荐配置 nbproc 为 cpu 核数。
+最后，可以选择部署一个 Haproxy 来进行多个 TiDB node 的负载均衡，推荐配置 nbproc 为 CPU 核数。
 
 ## 配置调整
 
 ### TiDB 配置
 
-调整主要减少日志输出，处理绑定核， 开启 Prepare Plan Cache。
+调整主要减少日志输出，处理绑定核，开启 Prepare Plan Cache。
 
 ```toml
 [log]
@@ -104,11 +104,11 @@ enabled = true
 
 ### TiKV 配置
 
-开始可以使用基本的配置， 压测运行后可以通过 Grafana 参考 TiKV 调优说明 看进行调整。
+开始可以使用基本的配置，压测运行后可以通过 Grafana 参考 [TiKV 调优说明](https://github.com/pingcap/docs-cn/blob/master/v3.0/reference/performance/tune-tikv.md)进行调整。
 
 ### BenchmarkSQL 配置
 
-修改 `benchmarksql/run/props.mysql`
+修改 `benchmarksql/run/props.mysql`：
 
 ```text
 conn=jdbc:mysql://{TIDB-HOST}:{TIDB-PORT}/tpcc?useSSL=false&useServerPrepStmts=true&useConfigs=maxPerformance&sessionVariables=tidb_batch_commit=1
@@ -117,17 +117,17 @@ terminals=500 # 使用 500 个终端
 loadWorkers=32 # 导入数据的并发数
 ```
 
-主要是配置被压测服务地址并开启 Prepare, 并在导入数据时开 `tidb_batch_commit=1` 和设置导入并发来加快导入。
+主要是配置被压测服务地址并开启 Prepare，并在导入数据时开 `tidb_batch_commit=1` 和设置导入并发来加快导入。
 
 ## 导入数据
 
-首先用 mysql 客户端连接到 TiDB-Server 并执行
+首先用 mysql 客户端连接到 TiDB-Server 并执行：
 
 ```sql
 create database tpcc
 ```
 
-之后在 shell 中运行 BenchmarkSQL 建表脚本  
+之后在 shell 中运行 BenchmarkSQL 建表脚本： 
 
 ```shell
 cd run
@@ -145,13 +145,13 @@ cd run
 
 ## 运行测试
 
-执行 BenchmarkSQL 测试脚本
+执行 BenchmarkSQL 测试脚本：
 
 ```shell
 nohup ./runBenchmark.sh props.mysql &> test.log &
 ```
 
-运行结束后通过 test.log  查看结果
+运行结束后通过 `test.log` 查看结果：
 
 ```text
 07:09:53,455 [Thread-351] INFO   jTPCC : Term-00, Measured tpmC (NewOrders) = 77373.25
