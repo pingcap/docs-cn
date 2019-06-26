@@ -31,9 +31,10 @@ Sysbench 版本：1.0.17
 
 ## 测试方案
 
-使用 Sysbench 向集群导入 **16 张表，每张数据 1000 万**。起 3 个 sysbench 分别向 3 个 tidb 发压，请求并发数逐步增加，单次测试时间 5 分钟。
+使用 Sysbench 向集群导入 **16 张表，每张数据 1000 万**。起 3 个 sysbench 分别向 3 个 TiDB 发压，请求并发数逐步增加，单次测试时间 5 分钟。
 
 准备数据命令：
+
 ```sh
 sysbench oltp_common \
     --threads=16 \
@@ -47,6 +48,7 @@ sysbench oltp_common \
 ```
 
 执行测试命令：
+
 ```sh
 sysbench $testname \
     --threads=$threads \
@@ -83,11 +85,14 @@ sysbench $testname \
 ### TiDB 参数配置
 
 2.1 和 3.0 中设置全局变量：
+
 ```sql
 set global tidb_hashagg_final_concurrency=1;
 set global tidb_hashagg_partial_concurrency=1;
 ```
+
 3.0 还做了如下配置修改：
+
 ```toml
 [prepared-plan-cache]
 enabled = true
@@ -98,13 +103,16 @@ max-batch-wait-time = 1000000
 ### TiKV 参数配置
 
 2.1 和 3.0 使用如下配置：
+
 ```toml
 [readpool.storage]
 normal-concurrency = 12
 [server]
 grpc-concurrency = 8
 ```
+
 3.0 还做了如下配置：
+
 ```toml
 [raftstore]
 apply-pool-size = 4
@@ -214,7 +222,6 @@ store-pool-size = 4
 | 900     | 4527.28 | 90545.70 |          272.27 |
 | 1200    | 4726.97 | 94539.33 |          350.33 |
 | 1500    | 4869.35 | 97386.99 |          427.07 |
-
 
 **v3.0**
 
