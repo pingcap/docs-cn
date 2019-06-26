@@ -5,7 +5,7 @@ category: how-to
 
 # 慢查询日志
 
-TiDB 在 V2.1.8 之后更改了慢日志格式，V2.1.8 之前的版本请看[这个文档](<https://github.com/pingcap/docs-cn/blob/master/v2.1-legacy/sql/slow-query.md>)。
+TiDB 在 V2.1.8 之后更改了慢日志格式，V2.1.8 之前的版本请看[这个文档](https://github.com/pingcap/docs-cn/blob/master/v2.1-legacy/sql/slow-query.md)。
 
 一条不合理的 SQL 语句会导致整个集群压力增大，响应变慢。对于这种问题，需要用慢查询日志来定位有问题的语句，解决性能问题。
 

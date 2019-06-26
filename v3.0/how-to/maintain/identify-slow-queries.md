@@ -6,7 +6,7 @@ aliases: ['/docs-cn/sql/slow-query/']
 
 # 慢查询日志
 
-TiDB 在 V2.1.8 之后更改了慢日志格式，V2.1.8 之前的版本请看[这个文档](<https://github.com/pingcap/docs-cn/blob/master/v2.1-legacy/sql/slow-query.md>)。
+TiDB 在 V2.1.8 之后更改了慢日志格式，V2.1.8 之前的版本请看[这个文档](https://github.com/pingcap/docs-cn/blob/master/v2.1-legacy/sql/slow-query.md)。
 
 > **注意：**
 >
