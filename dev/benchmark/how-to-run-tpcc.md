@@ -29,13 +29,13 @@ TPC-C 是一个对 OLTP（联机交易处理）系统进行测试的规范，使
 
 TPC-C 使用 tpmC 值（Transactions per Minute）来衡量系统最大有效吞吐量（MQTh, Max Qualified Throughput），其中 Transactions 以 NewOrder Transaction 为准，即最终衡量单位为每分钟处理的新订单数。
 
-本文使用开源的 BenchmarkSQL 5.0 作为 TPC-C 测试实现并做修改添加对 MySQL 协议支持，可以通过以下命令下载测试程序:
+本文使用开源的 BenchmarkSQL 5.0 作为 TPC-C 测试实现并添加了对 MySQL 协议的支持，可以通过以下命令下载测试程序:
 
 ```shell
 git clone -b 5.0-mysql-support-opt https://github.com/pingcap/benchmarksql.git
 ```
 
-并安装 java 和 ant, 以 CentOS 为例, 可以执行以下命令进行安装
+安装 java 和 ant, 以 CentOS 为例, 可以执行以下命令进行安装
 
 ```shell
 sudo yum install -y java ant
@@ -50,7 +50,7 @@ ant
 
 ## 部署 TiDB 集群
 
-对于 1000 WAREHOUSE 我们将在 3 台服务器上进行部署集群。
+对于 1000 WAREHOUSE 我们将在 3 台服务器上部署集群。
 
 在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD 和 1 个 TiKV 实例。
 
@@ -61,7 +61,7 @@ ant
 | OS | Linux (CentOS 7.3.1611) |
 | CPU | 40 vCPUs, Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz |
 | RAM | 128GB |
-| DISK | Optane 500GB SSD \* 1 |  
+| DISK | Optane 500GB SSD |
 
 对于采用了 NUMA 架构的服务器建议先用 `taskset` 进行绑核，首先用 `lscpu` 查看 NUMA node，比如：
 
@@ -82,8 +82,6 @@ nohup taskset -c 1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39 bin/tidb
 ## 配置调整
 
 ### TiDB 配置
-
-调整主要减少日志输出，处理绑定核，开启 Prepare Plan Cache。
 
 ```toml
 [log]
@@ -109,8 +107,8 @@ enabled = true
 ```text
 conn=jdbc:mysql://{TIDB-HOST}:{TIDB-PORT}/tpcc?useSSL=false&useServerPrepStmts=true&useConfigs=maxPerformance&sessionVariables=tidb_batch_commit=1
 warehouses=1000 # 使用 1000 个 warehouse
-terminals=500 # 使用 500 个终端
-loadWorkers=32 # 导入数据的并发数
+terminals=500   # 使用 500 个终端
+loadWorkers=32  # 导入数据的并发数
 ```
 
 ## 导入数据
