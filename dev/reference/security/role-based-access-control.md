@@ -5,7 +5,7 @@ category: user guide
 
 # 基于角色的访问控制
 
-TiDB 的基于角色的访问控制系统参考 MySQL 的基于角色的访问控制系统进行实现。TiDB 兼容大部分 MySQL 基于角色的访问控制系统的语法。
+TiDB 的基于角色的访问控制 (RBAC) 系统的实现类似于 MySQL 的 RBAC 系统。TiDB 兼容大部分 MySQL RBAC 系统的语法。
 
 本文档主要介绍 TiDB 基于角色的访问控制相关操作及实现。
 
@@ -15,7 +15,7 @@ TiDB 的基于角色的访问控制系统参考 MySQL 的基于角色的访问�
 
 ## 角色访问控制相关操作
 
-角色是一系列权限的集合。用户可以创建角色、删除角色、将权限赋予给角色；也可以将角色授予给其他用户，被授予的用户在启用角色后，可以得到角色所包含的权限。
+角色是一系列权限的集合。用户可以创建角色、删除角色、将权限赋予角色；也可以将角色授予给其他用户，被授予的用户在启用角色后，可以得到角色所包含的权限。
 
 ### 创建角色
 
@@ -338,7 +338,7 @@ SHOW GRANTS FOR 'u1'@'localhost' USING 'r1', 'r2';
 
 ### 授权表
 
-在原有的四张系统权限表的基础上（参考：[系统权限表](/dev/reference/security/privilege-system.md#授权表)），角色访问控制引入了两张新的系统表：
+在原有的四张[系统权限表](reference/security/privilege-system.md#授权表)的基础上，角色访问控制引入了两张新的系统表：
 
 - `mysql.role_edges`：记录角色与用户的授权关系
 - `mysql.default_roles`：记录每个用户默认启用的角色
@@ -386,5 +386,5 @@ select * from mysql.default_roles;
 
 由于基于角色的访问控制模块和用户管理以及权限管理结合十分紧密，因此需要参考一些操作的细节：
 
-- [TiDB 权限管理](/dev/reference/security/privilege-system.md)
-- [TiDB 用户账户管理](/dev/reference/security/user-account-management.md)
+- [TiDB 权限管理](/reference/security/privilege-system.md)
+- [TiDB 用户账户管理](/reference/security/user-account-management.md)
