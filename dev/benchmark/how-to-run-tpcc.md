@@ -1,0 +1,165 @@
+---
+title: 如何对 TiDB 进行 TPC-C 测试
+category: benchmark
+---
+
+# 如何对 TiDB 进行 TPC-C 测试
+
+本文介绍如何对 TiDB 进行 [TPC-C](http://www.tpc.org/tpcc/) 测试
+
+## 准备测试程序
+
+TPC-C 是一个对 OLTP（联机交易处理）系统进行测试的规范，使用一个商品销售模型对 OLTP 系统进行测试，其中包含五类事务：
+
+* NewOrder – 新订单的生成
+* Payment – 订单付款
+* OrderStatus – 最近订单查询
+* Delivery – 配送
+* StockLevel – 库存缺货状态分析
+
+在测试开始前，TPC-C Benchmark 规定了数据库的初始状态，也就是数据库中数据生成的规则，其中 ITEM 表中固定包含 10 万种商品，仓库的数量可进行调整，假设 WAREHOUSE 表中有 W 条记录，那么：
+
+* STOCK 表中应有 W×10 万条记录(每个仓库对应 10 万种商品的库存数据)
+* DISTRICT 表中应有 W×10 条记录(每个仓库为 10 个地区提供服务)
+* CUSTOMER 表中应有 W×10×3000 条记录(每个地区有 3000 个客户)
+* HISTORY 表中应有 W×10×3000 条记录(每个客户一条交易历史)
+* ORDER 表中应有 W×10×3000 条记录(每个地区 3000 个订单)，并且最后生成的 900 个订单被添加到 NEW-ORDER 表中，每个订单随机生成 5 ~ 15 条 ORDER-LINE 记录。
+
+我们将以 1000 WAREHOUSE 为例进行测试。
+
+TPC-C 使用 tpmC 值（Transactions per Minute）来衡量系统最大有效吞吐量（MQTh，Max Qualified Throughput），其中 Transactions 以 NewOrder Transaction 为准，即最终衡量单位为每分钟处理的新订单数。
+
+本文使用开源的 BenchmarkSQL 5.0 作为 TPC-C 测试实现并做修改添加对 MySQL 协议支持， 可以通过以下命令下载测试程序:
+
+```shell
+git clone -b 5.0-mysql-support-opt https://github.com/pingcap/benchmarksql.git
+```
+
+并安装 java 和 ant, 以 CentOS 为例, 可以执行以下命令进行安装
+
+```shell
+sudo yum install -y java ant
+```
+
+进入 benchmarksql 目录并执行 ant 构建
+
+```shell
+cd benchmarksql
+ant
+```
+
+## 部署 TiDB 集群
+
+对于 1000 WAREHOUSE 我们将在 3 台服务器上进行部署。
+
+参考 TiDB 部署文档部署 TiDB 集群。在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB, 1 个 PD, 1 个 TiKV 实例。关于磁盘，以 32 张表、每张表 10M 行数据为例，建议 TiKV 的数据目录所在的磁盘空间大于 512 GB。
+
+机器硬件配置: 3 台机器
+CPU 40 core
+内存 126G
+存储 59G SSD * 3
+网卡万兆网卡
+TiDB 集群部署：6 * TiDB、3 * TiKV、3 * PD
+
+| | TiDB | TiKV | PD |
+| :- | :- | :- | :- |
+| node1 | 2 | 1 | 1 |
+| node2 | 2 | 1 | 1 |
+| node3 | 2 | 1 | 1 |
+
+对于 NUMA 建议先用 `taskset` 进行绑核, 首先用 `lscpu` 查看 NUMA node, 比如:
+
+```text
+NUMA node0 CPU(s):     0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38
+NUMA node1 CPU(s):     1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39
+```
+
+可以通过下面的命令来启动 TiDB
+
+```shell
+nohup taskset -c 0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38 bin/tidb-server
+nohup taskset -c 1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39 bin/tidb-server
+```
+
+最后，可以选择部署一个 Haproxy 来进行多个 TiDB node 的负载均衡， 推荐配置 nbproc 为 cpu 核数。
+
+## 配置调整
+
+### TiDB 配置
+
+调整主要减少日志输出，处理绑定核， 开启 Prepare Plan Cache。
+
+```toml
+[log]
+level = "error"
+
+performance:
+  # Max CPUs to use, 0 use number of CPUs in the machine. 
+  --根据机绑定核的 CPU 核数设置
+  max-procs: 20
+  
+prepared_plan_cache:
+  --开启 TiDB 配置中的 prepared plan cache，以减少优化执行计划的开销
+  enabled: true
+```
+
+### TiKV 配置
+
+开始可以使用基本的配置， 压测运行后可以通过 Grafana 参考 TiKV 调优说明 看进行调整。
+
+### BenchmarkSQL 配置
+
+修改 `benchmarksql/run/props.mysql`
+
+```text
+conn=jdbc:mysql://{TIDB-HOST}:{TIDB-PORT}/tpcc?useSSL=false&useServerPrepStmts=true&useConfigs=maxPerformance&sessionVariables=tidb_batch_commit=1
+warehouses=1000 # 使用 1000 个 warehouse
+terminals=500 # 使用 500 个终端
+loadWorkers=32 # 导入数据的并发数
+```
+
+主要是配置被压测服务地址并开启 Prepare, 并在导入数据时开 `tidb_batch_commit=1` 和设置导入并发来加快导入。
+
+## 导入数据
+
+首先用 mysql 客户端连接到 TiDB-Server 并执行
+
+```sql
+create database tpcc;
+```
+
+之后在 shell 中运行 BenchmarkSQL 建表脚本  
+
+```shell
+cd run
+./runSQL.sh props.mysql sql.mysql/tableCreates.sql
+./runSQL.sh props.mysql sql.mysql/indexCreates.sql
+```
+
+运行导入数据脚本
+
+```shell
+./runLoader.sh props.mysql
+```
+
+根据机器配置这个过程会持续几个小时。
+
+## 运行测试
+
+执行 BenchmarkSQL 测试脚本
+
+```shell
+nohup ./runBenchmark.sh props.mysql &> test.log &
+```
+
+运行结束后通过 test.log  查看结果
+
+```text
+07:09:53,455 [Thread-351] INFO   jTPCC : Term-00, Measured tpmC (NewOrders) = 77373.25
+07:09:53,455 [Thread-351] INFO   jTPCC : Term-00, Measured tpmTOTAL = 171959.88
+07:09:53,455 [Thread-351] INFO   jTPCC : Term-00, Session Start     = 2019-03-21 07:07:52
+07:09:53,456 [Thread-351] INFO   jTPCC : Term-00, Session End       = 2019-03-21 07:09:53
+07:09:53,456 [Thread-351] INFO   jTPCC : Term-00, Transaction Count = 345240
+```
+
+tpmC 部分即为测试结果。
