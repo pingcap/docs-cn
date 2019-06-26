@@ -93,14 +93,13 @@ nohup taskset -c 1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39 bin/tidb
 [log]
 level = "error"
 
-performance:
-  # Max CPUs to use, 0 use number of CPUs in the machine. 
-  --根据机绑定核的 CPU 核数设置
-  max-procs: 20
-  
-prepared_plan_cache:
-  --开启 TiDB 配置中的 prepared plan cache，以减少优化执行计划的开销
-  enabled: true
+[performance]
+# 根据机绑定核的 CPU 核数设置
+max-procs: 20
+
+[prepared_plan_cache]
+# 开启 TiDB 配置中的 prepared plan cache，以减少优化执行计划的开销
+enabled: true
 ```
 
 ### TiKV 配置
@@ -125,7 +124,7 @@ loadWorkers=32 # 导入数据的并发数
 首先用 mysql 客户端连接到 TiDB-Server 并执行
 
 ```sql
-create database tpcc;
+create database tpcc
 ```
 
 之后在 shell 中运行 BenchmarkSQL 建表脚本  
