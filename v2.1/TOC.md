@@ -65,8 +65,8 @@
     + Migrate from MySQL
       - [Migrate the Full Data](how-to/migrate/from-mysql.md)
       - [Migrate the Incremental Data](how-to/migrate/incrementally-from-mysql.md)
-    + [Migrate from Aurora](how-to/migrate/from-aurora.md)
-    - [Migrate from CSV](tools/lightning/csv.md)
+    - [Migrate from Aurora](how-to/migrate/from-aurora.md)
+    - [Migrate from CSV](reference/tools/tidb-lightning/csv.md)
   + Maintain
     - [Common Ansible Operations](how-to/deploy/orchestrated/ansible-operations.md)
     - [Backup and Restore](how-to/maintain/backup-and-restore.md)
