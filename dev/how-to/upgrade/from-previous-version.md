@@ -5,7 +5,7 @@ category: how-to
 
 # TiDB 3.0 升级操作指南
 
-本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 RC 版本升级到 TiDB 3.0 版本。TiDB 3.0 版本兼容 [Kafka 版本的 TiDB-Binlog](/tools/binlog/tidb-binlog-kafka.md) 以及[集群模式的 TiDB-Binlog](/tools/binlog/overview.md)。
+本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 RC 版本升级到 TiDB 3.0 版本。TiDB 3.0 版本兼容 [Kafka 版本的 TiDB Binlog](/reference/tools/binlog/tidb-binlog-kafka.md) 以及[TiDB Binlog Cluster 版本升级方法](/how-to/upgrade/tidb-binlog.md)。
 
 ## 升级兼容性说明
 
