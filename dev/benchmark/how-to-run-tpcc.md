@@ -54,7 +54,7 @@ ant
 
 在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD 和 1 个 TiKV 实例。
 
-机器硬件配置:
+比如这里采用的机器硬件配置是:
 
 | 类别 | 名称 |
 | :-: | :-: |
@@ -63,14 +63,14 @@ ant
 | RAM | 128GB |
 | DISK | Optane 500GB SSD |
 
-对于采用了 NUMA 架构的服务器建议先用 `taskset` 进行绑核，首先用 `lscpu` 查看 NUMA node，比如：
+因为该型号 CPU 是 NUMA 架构, 建议先用 `taskset` 进行绑核，首先用 `lscpu` 查看 NUMA node，比如：
 
 ```text
 NUMA node0 CPU(s):     0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38
 NUMA node1 CPU(s):     1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39
 ```
 
-可以通过下面的命令来启动 TiDB：
+之后可以通过下面的命令来启动 TiDB：
 
 ```shell
 nohup taskset -c 0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38 bin/tidb-server
@@ -105,7 +105,7 @@ enabled = true
 修改 `benchmarksql/run/props.mysql`：
 
 ```text
-conn=jdbc:mysql://{TIDB-HOST}:{TIDB-PORT}/tpcc?useSSL=false&useServerPrepStmts=true&useConfigs=maxPerformance&sessionVariables=tidb_batch_commit=1
+conn=jdbc:mysql://{HAPROXY-HOST}:{HAPROXY-PORT}/tpcc?useSSL=false&useServerPrepStmts=true&useConfigs=maxPerformance&sessionVariables=tidb_batch_commit=1
 warehouses=1000 # 使用 1000 个 warehouse
 terminals=500   # 使用 500 个终端
 loadWorkers=32  # 导入数据的并发数
