@@ -250,6 +250,7 @@
     - [Understanding the Query Execution Plan](reference/performance/understanding-the-query-execution-plan.md)
     - [Introduction to Statistics](reference/performance/statistics.md)
     - [Optimizer Hints](reference/performance/optimizer-hints.md)
+    - [Execution Plan Binding](reference/performance/execution-plan-bind.md)
     - [Tune TiKV](reference/performance/tune-tikv.md)
   - [Best Practices](https://pingcap.com/blog/2017-07-24-tidbbestpractice/)
   - [TiSpark](reference/tispark.md)
