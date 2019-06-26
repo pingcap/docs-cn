@@ -82,12 +82,12 @@ sysbench $testname \
 
 ### TiDB 参数配置
 
-2.1 和 3.0 中设置全局变量:
+2.1 和 3.0 中设置全局变量：
 ```sql
 set global tidb_hashagg_final_concurrency=1;
 set global tidb_hashagg_partial_concurrency=1;
 ```
-3.0 还做了如下配置修改:
+3.0 还做了如下配置修改：
 ```toml
 [prepared-plan-cache]
 enabled = true
