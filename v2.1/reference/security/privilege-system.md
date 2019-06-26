@@ -262,7 +262,7 @@ Requires the `SUPER` privilege.
 
 ## Implementation of the privilege system
 
-### Grant table
+### Privilege table
 
 The following system tables are special because all the privilege-related data is stored in them:
 
