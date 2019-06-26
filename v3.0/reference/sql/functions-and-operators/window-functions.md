@@ -14,9 +14,9 @@ TiDB 支持的窗口函数如下所示：
 | [`CUME_DIST()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_cume-dist) | 返回一组值中的累积分布 |
 | [`DENSE_RANK()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_dense-rank) | 返回分区中当前行的排名，并且排名是连续的|
 | [`FIRST_VALUE()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_first-value) | 当前窗口中第一行的表达式值 |
-| [`LAG()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_lag) | 分区中当前行后面第 N 行的表达式值|
+| [`LAG()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_lag) | 分区中当前行前面第 N 行的表达式值|
 | [`LAST_VALUE()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_last-value) | 当前窗口中最后一行的表达式值 |
-| [`LEAD()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_lead) | 分区中当前行前面第 N 行的表达式值 |
+| [`LEAD()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_lead) | 分区中当前行后面第 N 行的表达式值 |
 | [`NTH_VALUE()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_nth-value) | 当前窗口中第 N 行的表达式值 |
 | [`NTILE()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_ntile)| 将分区划分为 N 桶，为分区中的每一行分配桶号 |
 | [`PERCENT_RANK()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_percent-rank)|返回分区中小于当前行的百分比 |
