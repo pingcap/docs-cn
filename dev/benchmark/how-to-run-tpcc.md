@@ -95,11 +95,11 @@ level = "error"
 
 [performance]
 # 根据机绑定核的 CPU 核数设置
-max-procs: 20
+max-procs = 20
 
 [prepared_plan_cache]
 # 开启 TiDB 配置中的 prepared plan cache，以减少优化执行计划的开销
-enabled: true
+enabled = true
 ```
 
 ### TiKV 配置
