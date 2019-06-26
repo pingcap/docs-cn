@@ -14,11 +14,11 @@ Similarly, statements such as `SELECT .. FOR UPDATE` do not work in the same way
 
 ### Transaction retry
 
-TiDB will automatically retry failed transactions by default. It is recommended that you disable this feature by setting `tidb_disable_txn_auto_retry = ON`, since retry might lead to lost updates.
+TiDB will automatically retry failed transactions by default. It is recommended that you disable this feature by setting `tidb_disable_txn_auto_retry = on`, since retry might lead to lost updates.
 
 > **Warning:**
 >
-> TiDB 2.1 will retry transactions by default, leading to potentially lost updates. TiDB 3.0 switches to transaction retry being disabled by default.  This means it is important to remember to check the returned results of commit statements, because even if there is no error in execution, there might be errors during the `COMMIT` process.
+> TiDB 2.1 will retry transactions by default, leading to potentially lost updates. TiDB 3.0 switches to transaction retry being disabled by default. This means it is important to remember to check the returned results of commit statements, because even if there is no error in execution, there might be errors during the `COMMIT` process.
 
 ### Large transactions
 

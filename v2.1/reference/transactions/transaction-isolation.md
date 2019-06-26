@@ -21,7 +21,7 @@ TiDB implements Snapshot Isolation consistency, which it advertises as `REPEATAB
 
 > **Note:**
 >
-> In the default configuration of TiDB 3.0, the automatic transaction retry is disabled. For additional context on this feature and how to enable it, see [Transactional anomalies caused by automatic retries](#transactional-anomalies-caused-by-automatic-retries) and [Transaction Retry](#transaction-retry).
+> In the default configuration of TiDB 2.1, the automatic transaction retry is enabled. For additional context on this feature and how to disable it, see [Transactional anomalies caused by automatic retries](#transactional-anomalies-caused-by-automatic-retries) and [Transaction Retry](#transaction-retry).
 
 TiDB uses the [Percolator transaction model](https://research.google.com/pubs/pub36726.html). A global read timestamp is obtained when the transaction is started, and a global commit timestamp is obtained when the transaction is committed. The execution order of transactions is confirmed based on the timestamps. To know more about the implementation of TiDB transaction model, see [MVCC in TiKV](https://pingcap.com/blog/2016-11-17-mvcc-in-tikv/).
 
@@ -56,13 +56,13 @@ The MySQL Repeatable Read isolation level is not the snapshot isolation level. T
 
 ## Transaction retry
 
-By default TiDB will not retry transactions because this might lead to lost updates. If your application can tolerate lost updates, and does not require Snapshot Isolation consistency, you can enable **this feature** by setting `tidb_disable_txn_auto_retry = 0`. This has the benefit of fewer `COMMIT` statements generating errors.
+By default TiDB will retry transactions but this might lead to lost updates. If your application can tolerate lost updates, and does not require Snapshot Isolation consistency, you can keep **this feature** enabled. Enabling automatic retry has the benefit of fewer `COMMIT` statements generating errors.
 
-The value of `tidb_retry_limit` cannot be 0. Otherwise, the automatic retry is also disabled.
+To disable automatic retry, set `tidb_disable_txn_auto_retry = on`. If you set the value of `tidb_retry_limit` to 0, the automatic retry is also disabled.
 
 ## Transactional anomalies caused by automatic retries
 
-By default TiDB will not retry transactions because this might lead to lost updates. If your application can tolerate lost updates, and does not require Snapshot Isolation consistency, you can enable **this feature** by setting `tidb_disable_txn_auto_retry = 0`. This has the benefit of fewer `COMMIT` statements generating errors.
+By default TiDB will retry transactions because this might lead to lost updates. If your application can tolerate lost updates, and does not require Snapshot Isolation consistency, you can keep **this feature** enabled. This has the benefit of fewer `COMMIT` statements generating errors.
 
 Example 1:
 
