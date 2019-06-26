@@ -19,15 +19,15 @@ TPC-C 是一个对 OLTP（联机交易处理）系统进行测试的规范，使
 
 在测试开始前，TPC-C Benchmark 规定了数据库的初始状态，也就是数据库中数据生成的规则，其中 ITEM 表中固定包含 10 万种商品，仓库的数量可进行调整，假设 WAREHOUSE 表中有 W 条记录，那么：
 
-* STOCK 表中应有 W×10 万条记录(每个仓库对应 10 万种商品的库存数据)
-* DISTRICT 表中应有 W×10 条记录(每个仓库为 10 个地区提供服务)
-* CUSTOMER 表中应有 W×10×3000 条记录(每个地区有 3000 个客户)
-* HISTORY 表中应有 W×10×3000 条记录(每个客户一条交易历史)
-* ORDER 表中应有 W×10×3000 条记录(每个地区 3000 个订单)，并且最后生成的 900 个订单被添加到 NEW-ORDER 表中，每个订单随机生成 5 ~ 15 条 ORDER-LINE 记录。
+* STOCK 表中应有 W×10 万条记录（每个仓库对应 10 万种商品的库存数据）
+* DISTRICT 表中应有 W×10 条记录（每个仓库为 10 个地区提供服务）
+* CUSTOMER 表中应有 W×10×3000 条记录（每个地区有 3000 个客户）
+* HISTORY 表中应有 W×10×3000 条记录（每个客户一条交易历史）
+* ORDER 表中应有 W×10×3000 条记录（每个地区 3000 个订单），并且最后生成的 900 个订单被添加到 NEW-ORDER 表中，每个订单随机生成 5 ~ 15 条 ORDER-LINE 记录。
 
 我们将以 1000 WAREHOUSE 为例进行测试。
 
-TPC-C 使用 tpmC 值（Transactions per Minute）来衡量系统最大有效吞吐量（MQTh，Max Qualified Throughput），其中 Transactions 以 NewOrder Transaction 为准，即最终衡量单位为每分钟处理的新订单数。
+TPC-C 使用 tpmC 值（Transactions per Minute）来衡量系统最大有效吞吐量（MQTh, Max Qualified Throughput），其中 Transactions 以 NewOrder Transaction 为准，即最终衡量单位为每分钟处理的新订单数。
 
 本文使用开源的 BenchmarkSQL 5.0 作为 TPC-C 测试实现并做修改添加对 MySQL 协议支持，可以通过以下命令下载测试程序:
 
