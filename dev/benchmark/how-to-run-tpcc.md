@@ -104,7 +104,7 @@ enabled = true
 
 ### TiKV 配置
 
-开始可以使用基本的配置，压测运行后可以通过 Grafana 参考 [TiKV 调优说明](reference/performance/tune-tikv.md)进行调整。
+开始可以使用基本的配置，压测运行后可以通过 Grafana 参考 [TiKV 调优说明](../reference/performance/tune-tikv.md)进行调整。
 
 ### BenchmarkSQL 配置
 
