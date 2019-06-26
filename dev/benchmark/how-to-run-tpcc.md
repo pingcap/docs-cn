@@ -19,11 +19,11 @@ TPC-C 是一个对 OLTP（联机交易处理）系统进行测试的规范，使
 
 在测试开始前，TPC-C Benchmark 规定了数据库的初始状态，也就是数据库中数据生成的规则，其中 ITEM 表中固定包含 10 万种商品，仓库的数量可进行调整，假设 WAREHOUSE 表中有 W 条记录，那么：
 
-* STOCK 表中应有 W×10 万条记录（每个仓库对应 10 万种商品的库存数据）
-* DISTRICT 表中应有 W×10 条记录（每个仓库为 10 个地区提供服务）
-* CUSTOMER 表中应有 W×10×3000 条记录（每个地区有 3000 个客户）
-* HISTORY 表中应有 W×10×3000 条记录（每个客户一条交易历史）
-* ORDER 表中应有 W×10×3000 条记录（每个地区 3000 个订单），并且最后生成的 900 个订单被添加到 NEW-ORDER 表中，每个订单随机生成 5 ~ 15 条 ORDER-LINE 记录。
+* STOCK 表中应有 W \* 10 万条记录（每个仓库对应 10 万种商品的库存数据）
+* DISTRICT 表中应有 W \* 10 条记录（每个仓库为 10 个地区提供服务）
+* CUSTOMER 表中应有 W \* 10 \* 3000 条记录（每个地区有 3000 个客户）
+* HISTORY 表中应有 W \* 10 \* 3000 条记录（每个客户一条交易历史）
+* ORDER 表中应有 W \* 10 \* 3000 条记录（每个地区 3000 个订单），并且最后生成的 900 个订单被添加到 NEW-ORDER 表中，每个订单随机生成 5 ~ 15 条 ORDER-LINE 记录。
 
 我们将以 1000 WAREHOUSE 为例进行测试。
 
@@ -50,24 +50,20 @@ ant
 
 ## 部署 TiDB 集群
 
-对于 1000 WAREHOUSE 我们将在 3 台服务器上进行部署。
+对于 1000 WAREHOUSE 我们将在 3 台服务器上进行部署集群。
 
-参考 TiDB 部署文档部署 TiDB 集群。在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD，1 个 TiKV 实例。关于磁盘，以 32 张表、每张表 10M 行数据为例，建议 TiKV 的数据目录所在的磁盘空间大于 512 GB。
+在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD 和 1 个 TiKV 实例。
 
-机器硬件配置: 3 台机器
-CPU 40 core
-内存 126G
-存储 59G SSD * 3
-网卡万兆网卡
-TiDB 集群部署：6 * TiDB、3 * TiKV、3 * PD
+机器硬件配置:
 
-| | TiDB | TiKV | PD |
-| :- | :- | :- | :- |
-| node1 | 2 | 1 | 1 |
-| node2 | 2 | 1 | 1 |
-| node3 | 2 | 1 | 1 |
+| 类别 | 名称 |
+| :-: | :-: |
+| OS | Linux (CentOS 7.3.1611) |
+| CPU | 40 vCPUs, Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz |
+| RAM | 128GB |
+| DISK | Optane 500GB SSD \* 1 |  
 
-对于 NUMA 建议先用 `taskset` 进行绑核，首先用 `lscpu` 查看 NUMA node，比如：
+对于采用了 NUMA 架构的服务器建议先用 `taskset` 进行绑核，首先用 `lscpu` 查看 NUMA node，比如：
 
 ```text
 NUMA node0 CPU(s):     0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38
@@ -81,7 +77,7 @@ nohup taskset -c 0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38 bin/tidb
 nohup taskset -c 1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39 bin/tidb-server
 ```
 
-最后，可以选择部署一个 Haproxy 来进行多个 TiDB node 的负载均衡，推荐配置 nbproc 为 CPU 核数。
+最后，可以选择部署一个 HAproxy 来进行多个 TiDB node 的负载均衡，推荐配置 nbproc 为 CPU 核数。
 
 ## 配置调整
 
@@ -94,7 +90,7 @@ nohup taskset -c 1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39 bin/tidb
 level = "error"
 
 [performance]
-# 根据机绑定核的 CPU 核数设置
+# 根据 NUMA 配置，设置单个 TiDB 最大使用的 CPU 核数
 max-procs = 20
 
 [prepared_plan_cache]
@@ -104,7 +100,7 @@ enabled = true
 
 ### TiKV 配置
 
-开始可以使用基本的配置，压测运行后可以通过 Grafana 参考 [TiKV 调优说明](../reference/performance/tune-tikv.md)进行调整。
+开始可以使用基本的配置，压测运行后可以通过观察 Grafana 并参考 [TiKV 调优说明](../reference/performance/tune-tikv.md)进行调整。
 
 ### BenchmarkSQL 配置
 
@@ -117,8 +113,6 @@ terminals=500 # 使用 500 个终端
 loadWorkers=32 # 导入数据的并发数
 ```
 
-主要是配置被压测服务地址并开启 Prepare，并在导入数据时开 `tidb_batch_commit=1` 和设置导入并发来加快导入。
-
 ## 导入数据
 
 首先用 mysql 客户端连接到 TiDB-Server 并执行：
@@ -127,7 +121,7 @@ loadWorkers=32 # 导入数据的并发数
 create database tpcc
 ```
 
-之后在 shell 中运行 BenchmarkSQL 建表脚本： 
+之后在 shell 中运行 BenchmarkSQL 建表脚本：
 
 ```shell
 cd run
