@@ -12,15 +12,15 @@ The `EXPLAIN ANALYZE` statement works similar to `EXPLAIN`, with the major diffe
 
 **ExplainSym:**
 
-![ExplainSym](/media/sqlgram/ExplainSym.png)
+![ExplainSym](/media/sqlgram-v3.0/ExplainSym.png)
 
 **ExplainStmt:**
 
-![ExplainStmt](/media/sqlgram/ExplainStmt.png)
+![ExplainStmt](/media/sqlgram-v3.0/ExplainStmt.png)
 
 **ExplainableStmt:**
 
-![ExplainableStmt](/media/sqlgram/ExplainableStmt.png)
+![ExplainableStmt](/media/sqlgram-v3.0/ExplainableStmt.png)
 
 ## Examples
 

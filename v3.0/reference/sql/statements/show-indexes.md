@@ -12,23 +12,23 @@ The statement `SHOW INDEXES [FROM|IN]` lists the indexes on a specified table.  
 
 **ShowStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+![ShowStmt](/media/sqlgram-v3.0/ShowStmt.png)
 
 **ShowTargetFilterable:**
 
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
+![ShowTargetFilterable](/media/sqlgram-v3.0/ShowTargetFilterable.png)
 
 **ShowIndexKwd:**
 
-![ShowIndexKwd](/media/sqlgram/ShowIndexKwd.png)
+![ShowIndexKwd](/media/sqlgram-v3.0/ShowIndexKwd.png)
 
 **FromOrIn:**
 
-![FromOrIn](/media/sqlgram/FromOrIn.png)
+![FromOrIn](/media/sqlgram-v3.0/FromOrIn.png)
 
 **TableName:**
 
-![TableName](/media/sqlgram/TableName.png)
+![TableName](/media/sqlgram-v3.0/TableName.png)
 
 ## Examples
 

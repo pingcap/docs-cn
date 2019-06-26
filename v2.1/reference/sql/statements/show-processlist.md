@@ -12,11 +12,11 @@ This statement lists the current sessions connected to the same TiDB server. The
 
 **ShowStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+![ShowStmt](/media/sqlgram-v2.1/ShowStmt.png)
 
 **OptFull:**
 
-![OptFull](/media/sqlgram/OptFull.png)
+![OptFull](/media/sqlgram-v2.1/OptFull.png)
 
 ## Examples
 

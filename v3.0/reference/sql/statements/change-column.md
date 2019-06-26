@@ -12,27 +12,27 @@ The `ALTER TABLE.. CHANGE COLUMN` statement changes a column on an existing tabl
 
 **AlterTableStmt:**
 
-![AlterTableStmt](/media/sqlgram/AlterTableStmt.png)
+![AlterTableStmt](/media/sqlgram-v3.0/AlterTableStmt.png)
 
 **AlterTableSpec:**
 
-![AlterTableSpec](/media/sqlgram/AlterTableSpec.png)
+![AlterTableSpec](/media/sqlgram-v3.0/AlterTableSpec.png)
 
 **ColumnKeywordOpt:**
 
-![ColumnKeywordOpt](/media/sqlgram/ColumnKeywordOpt.png)
+![ColumnKeywordOpt](/media/sqlgram-v3.0/ColumnKeywordOpt.png)
 
 **ColumnName:**
 
-![ColumnName](/media/sqlgram/ColumnName.png)
+![ColumnName](/media/sqlgram-v3.0/ColumnName.png)
 
 **ColumnDef:**
 
-![ColumnDef](/media/sqlgram/ColumnDef.png)
+![ColumnDef](/media/sqlgram-v3.0/ColumnDef.png)
 
 **ColumnPosition:**
 
-![ColumnPosition](/media/sqlgram/ColumnPosition.png)
+![ColumnPosition](/media/sqlgram-v3.0/ColumnPosition.png)
 
 ## Examples
 

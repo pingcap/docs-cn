@@ -12,15 +12,15 @@ This statement executes an expression, without returning a result. In MySQL, a c
 
 **DoStmt:**
 
-![DoStmt](/media/sqlgram/DoStmt.png)
+![DoStmt](/media/sqlgram-dev/DoStmt.png)
 
 **ExpressionList:**
 
-![ExpressionList](/media/sqlgram/ExpressionList.png)
+![ExpressionList](/media/sqlgram-dev/ExpressionList.png)
 
 **Expression:**
 
-![Expression](/media/sqlgram/Expression.png)
+![Expression](/media/sqlgram-dev/Expression.png)
 
 ## Examples
 

@@ -12,15 +12,15 @@ This statement copies the definition of an existing table, without copying any d
 
 **CreateTableStmt:**
 
-![CreateTableStmt](/media/sqlgram/CreateTableStmt.png)
+![CreateTableStmt](/media/sqlgram-v3.0/CreateTableStmt.png)
 
 **LikeTableWithOrWithoutParen:**
 
-![LikeTableWithOrWithoutParen](/media/sqlgram/LikeTableWithOrWithoutParen.png)
+![LikeTableWithOrWithoutParen](/media/sqlgram-v3.0/LikeTableWithOrWithoutParen.png)
 
 **TableName:**
 
-![TableName](/media/sqlgram/TableName.png)
+![TableName](/media/sqlgram-v3.0/TableName.png)
 
 ## Examples
 

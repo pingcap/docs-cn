@@ -12,31 +12,31 @@ This statement allocates privileges to a pre-existing user in TiDB. The privileg
 
 **GrantStmt:**
 
-![GrantStmt](/media/sqlgram/GrantStmt.png)
+![GrantStmt](/media/sqlgram-v2.1/GrantStmt.png)
 
 **PrivElemList:**
 
-![PrivElemList](/media/sqlgram/PrivElemList.png)
+![PrivElemList](/media/sqlgram-v2.1/PrivElemList.png)
 
 **PrivElem:**
 
-![PrivElem](/media/sqlgram/PrivElem.png)
+![PrivElem](/media/sqlgram-v2.1/PrivElem.png)
 
 **PrivType:**
 
-![PrivType](/media/sqlgram/PrivType.png)
+![PrivType](/media/sqlgram-v2.1/PrivType.png)
 
 **ObjectType:**
 
-![ObjectType](/media/sqlgram/ObjectType.png)
+![ObjectType](/media/sqlgram-v2.1/ObjectType.png)
 
 **PrivLevel:**
 
-![PrivLevel](/media/sqlgram/PrivLevel.png)
+![PrivLevel](/media/sqlgram-v2.1/PrivLevel.png)
 
 **UserSpecList:**
 
-![UserSpecList](/media/sqlgram/UserSpecList.png)
+![UserSpecList](/media/sqlgram-v2.1/UserSpecList.png)
 
 ## Examples
 

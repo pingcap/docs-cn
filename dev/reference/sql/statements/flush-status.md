@@ -12,15 +12,15 @@ This statement is included for compatibility with MySQL. It has no effect on TiD
 
 **FlushStmt:**
 
-![FlushStmt](/media/sqlgram/FlushStmt.png)
+![FlushStmt](/media/sqlgram-dev/FlushStmt.png)
 
 **NoWriteToBinLogAliasOpt:**
 
-![NoWriteToBinLogAliasOpt](/media/sqlgram/NoWriteToBinLogAliasOpt.png)
+![NoWriteToBinLogAliasOpt](/media/sqlgram-dev/NoWriteToBinLogAliasOpt.png)
 
 **FlushOption:**
 
-![FlushOption](/media/sqlgram/FlushOption.png)
+![FlushOption](/media/sqlgram-dev/FlushOption.png)
 
 ## Examples
 

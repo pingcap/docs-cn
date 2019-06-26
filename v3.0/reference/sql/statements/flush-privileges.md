@@ -12,15 +12,15 @@ This statement triggers TiDB to reload the in-memory copy of privileges from the
 
 **FlushStmt:**
 
-![FlushStmt](/media/sqlgram/FlushStmt.png)
+![FlushStmt](/media/sqlgram-v3.0/FlushStmt.png)
 
 **NoWriteToBinLogAliasOpt:**
 
-![NoWriteToBinLogAliasOpt](/media/sqlgram/NoWriteToBinLogAliasOpt.png)
+![NoWriteToBinLogAliasOpt](/media/sqlgram-v3.0/NoWriteToBinLogAliasOpt.png)
 
 **FlushOption:**
 
-![FlushOption](/media/sqlgram/FlushOption.png)
+![FlushOption](/media/sqlgram-v3.0/FlushOption.png)
 
 ## Examples
 

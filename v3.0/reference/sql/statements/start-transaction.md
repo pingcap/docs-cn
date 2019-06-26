@@ -14,7 +14,7 @@ In the absense of a `START TRANSACTION` statement, every statement will by defau
 
 **BeginTransactionStmt:**
 
-![BeginTransactionStmt](/media/sqlgram/BeginTransactionStmt.png)
+![BeginTransactionStmt](/media/sqlgram-v3.0/BeginTransactionStmt.png)
 
 ## Examples
 

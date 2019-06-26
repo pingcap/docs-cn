@@ -13,47 +13,47 @@ This statement creates a new table in the currently selected database. See also 
 
 **CreateTableStmt:**
 
-![CreateTableStmt](/media/sqlgram/CreateTableStmt.png)
+![CreateTableStmt](/media/sqlgram-v3.0/CreateTableStmt.png)
 
 **IfNotExists:**
 
-![IfNotExists](/media/sqlgram/IfNotExists.png)
+![IfNotExists](/media/sqlgram-v3.0/IfNotExists.png)
 
 **TableName:**
 
-![TableName](/media/sqlgram/TableName.png)
+![TableName](/media/sqlgram-v3.0/TableName.png)
 
 **TableElementListOpt:**
 
-![TableElementListOpt](/media/sqlgram/TableElementListOpt.png)
+![TableElementListOpt](/media/sqlgram-v3.0/TableElementListOpt.png)
 
 **TableElement:**
 
-![TableElement](/media/sqlgram/TableElement.png)
+![TableElement](/media/sqlgram-v3.0/TableElement.png)
 
 **PartitionOpt:**
 
-![PartitionOpt](/media/sqlgram/PartitionOpt.png)
+![PartitionOpt](/media/sqlgram-v3.0/PartitionOpt.png)
 
 **ColumnDef:**
 
-![ColumnDef](/media/sqlgram/ColumnDef.png)
+![ColumnDef](/media/sqlgram-v3.0/ColumnDef.png)
 
 **ColumnName:**
 
-![ColumnName](/media/sqlgram/ColumnName.png)
+![ColumnName](/media/sqlgram-v3.0/ColumnName.png)
 
 **Type:**
 
-![Type](/media/sqlgram/Type.png)
+![Type](/media/sqlgram-v3.0/Type.png)
 
 **ColumnOptionListOpt:**
 
-![ColumnOptionListOpt](/media/sqlgram/ColumnOptionListOpt.png)
+![ColumnOptionListOpt](/media/sqlgram-v3.0/ColumnOptionListOpt.png)
 
 **TableOptionListOpt:**
 
-![TableOptionListOpt](/media/sqlgram/TableOptionListOpt.png)
+![TableOptionListOpt](/media/sqlgram-v3.0/TableOptionListOpt.png)
 
 ## Examples
 

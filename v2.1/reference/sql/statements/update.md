@@ -12,23 +12,23 @@ The `UPDATE` statement is used to modify data in a specified table.
 
 **UpdateStmt:**
 
-![UpdateStmt](/media/sqlgram/UpdateStmt.png)
+![UpdateStmt](/media/sqlgram-v2.1/UpdateStmt.png)
 
 **TableRef:**
 
-![TableRef](/media/sqlgram/TableRef.png)
+![TableRef](/media/sqlgram-v2.1/TableRef.png)
 
 **TableRefs:**
 
-![TableRefs](/media/sqlgram/TableRefs.png)
+![TableRefs](/media/sqlgram-v2.1/TableRefs.png)
 
 **AssignmentList:**
 
-![AssignmentList](/media/sqlgram/AssignmentList.png)
+![AssignmentList](/media/sqlgram-v2.1/AssignmentList.png)
 
 **WhereClauseOptional:**
 
-![WhereClauseOptional](/media/sqlgram/WhereClauseOptional.png)
+![WhereClauseOptional](/media/sqlgram-v2.1/WhereClauseOptional.png)
 
 ## Examples
 

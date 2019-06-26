@@ -12,15 +12,15 @@ This statement drops an view object from the currently selected database. It doe
 
 **DropViewStmt:**
 
-![DropViewStmt](/media/sqlgram/DropViewStmt.png)
+![DropViewStmt](/media/sqlgram-v3.0/DropViewStmt.png)
 
 **TableNameList:**
 
-![TableNameList](/media/sqlgram/TableNameList.png)
+![TableNameList](/media/sqlgram-v3.0/TableNameList.png)
 
 **TableName:**
 
-![TableName](/media/sqlgram/TableName.png)
+![TableName](/media/sqlgram-v3.0/TableName.png)
 
 ## Examples
 

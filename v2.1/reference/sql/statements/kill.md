@@ -14,7 +14,7 @@ By design, this statement is not compatible with MySQL by default. This helps pr
 
 **KillStmt:**
 
-![KillStmt](/media/sqlgram/KillStmt.png)
+![KillStmt](/media/sqlgram-v2.1/KillStmt.png)
 
 ## Examples
 

@@ -12,19 +12,19 @@ This statement drops a column from a specified table. `DROP COLUMN` is online in
 
 **AlterTableStmt:**
 
-![AlterTableStmt](/media/sqlgram/AlterTableStmt.png)
+![AlterTableStmt](/media/sqlgram-dev/AlterTableStmt.png)
 
 **AlterTableSpec:**
 
-![AlterTableSpec](/media/sqlgram/AlterTableSpec.png)
+![AlterTableSpec](/media/sqlgram-dev/AlterTableSpec.png)
 
 **ColumnKeywordOpt:**
 
-![ColumnKeywordOpt](/media/sqlgram/ColumnKeywordOpt.png)
+![ColumnKeywordOpt](/media/sqlgram-dev/ColumnKeywordOpt.png)
 
 **ColumnName:**
 
-![ColumnName](/media/sqlgram/ColumnName.png)
+![ColumnName](/media/sqlgram-dev/ColumnName.png)
 
 
 ## Examples

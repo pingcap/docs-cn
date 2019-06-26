@@ -12,11 +12,11 @@ The statement `ALTER TABLE .. RENAME INDEX` renames an existing index to a new n
 
 **AlterTableStmt:**
 
-![AlterTableStmt](/media/sqlgram/AlterTableStmt.png)
+![AlterTableStmt](/media/sqlgram-v3.0/AlterTableStmt.png)
 
 **KeyOrIndex:**
 
-![KeyOrIndex](/media/sqlgram/KeyOrIndex.png)
+![KeyOrIndex](/media/sqlgram-v3.0/KeyOrIndex.png)
 
 ## Examples
 

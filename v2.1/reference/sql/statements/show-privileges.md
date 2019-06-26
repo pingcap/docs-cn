@@ -12,7 +12,7 @@ This statement shows a list of assignable privileges in TiDB. It is a static lis
 
 **ShowStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+![ShowStmt](/media/sqlgram-v2.1/ShowStmt.png)
 
 ## Examples
 

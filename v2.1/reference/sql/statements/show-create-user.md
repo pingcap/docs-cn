@@ -12,11 +12,11 @@ This statement shows how to re-create a user using the `CREATE USER` syntax.
 
 **ShowStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+![ShowStmt](/media/sqlgram-v2.1/ShowStmt.png)
 
 **Username:**
 
-![Username](/media/sqlgram/Username.png)
+![Username](/media/sqlgram-v2.1/Username.png)
 
 ## Examples
 

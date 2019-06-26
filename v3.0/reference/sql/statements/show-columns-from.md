@@ -14,15 +14,15 @@ The statements `SHOW [FULL] FIELDS FROM`, `DESC <table>`, `DESCRIBE <table>` and
 
 **ShowStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+![ShowStmt](/media/sqlgram-v3.0/ShowStmt.png)
 
 **ShowTargetFilterable:**
 
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
+![ShowTargetFilterable](/media/sqlgram-v3.0/ShowTargetFilterable.png)
 
 **OptFull:**
 
-![OptFull](/media/sqlgram/OptFull.png)
+![OptFull](/media/sqlgram-v3.0/OptFull.png)
 
 ## Examples
 

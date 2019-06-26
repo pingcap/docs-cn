@@ -12,11 +12,11 @@ The `USE` statement selects a current database for the user session.
 
 **UseStmt:**
 
-![UseStmt](/media/sqlgram/UseStmt.png)
+![UseStmt](/media/sqlgram-v3.0/UseStmt.png)
 
 **DBName:**
 
-![DBName](/media/sqlgram/DBName.png)
+![DBName](/media/sqlgram-v3.0/DBName.png)
 
 ## Examples
 

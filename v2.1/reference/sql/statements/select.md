@@ -12,51 +12,51 @@ The `SELECT` statement is used to read data from TiDB.
 
 **SelectStmt:**
 
-![SelectStmt](/media/sqlgram/SelectStmt.png)
+![SelectStmt](/media/sqlgram-v2.1/SelectStmt.png)
 
 **FromDual:**
 
-![FromDual](/media/sqlgram/FromDual.png)
+![FromDual](/media/sqlgram-v2.1/FromDual.png)
 
 **WhereClauseOptional:**
 
-![WhereClauseOptional](/media/sqlgram/WhereClauseOptional.png)
+![WhereClauseOptional](/media/sqlgram-v2.1/WhereClauseOptional.png)
 
 **SelectStmtOpts:**
 
-![SelectStmtOpts](/media/sqlgram/SelectStmtOpts.png)
+![SelectStmtOpts](/media/sqlgram-v2.1/SelectStmtOpts.png)
 
 **SelectStmtFieldList:**
 
-![SelectStmtFieldList](/media/sqlgram/SelectStmtFieldList.png)
+![SelectStmtFieldList](/media/sqlgram-v2.1/SelectStmtFieldList.png)
 
 **TableRefsClause:**
 
-![TableRefsClause](/media/sqlgram/TableRefsClause.png)
+![TableRefsClause](/media/sqlgram-v2.1/TableRefsClause.png)
 
 **WhereClauseOptional:**
 
-![WhereClauseOptional](/media/sqlgram/WhereClauseOptional.png)
+![WhereClauseOptional](/media/sqlgram-v2.1/WhereClauseOptional.png)
 
 **SelectStmtGroup:**
 
-![SelectStmtGroup](/media/sqlgram/SelectStmtGroup.png)
+![SelectStmtGroup](/media/sqlgram-v2.1/SelectStmtGroup.png)
 
 **HavingClause:**
 
-![HavingClause](/media/sqlgram/HavingClause.png)
+![HavingClause](/media/sqlgram-v2.1/HavingClause.png)
 
 **OrderByOptional:**
 
-![OrderByOptional](/media/sqlgram/OrderByOptional.png)
+![OrderByOptional](/media/sqlgram-v2.1/OrderByOptional.png)
 
 **SelectStmtLimit:**
 
-![SelectStmtLimit](/media/sqlgram/SelectStmtLimit.png)
+![SelectStmtLimit](/media/sqlgram-v2.1/SelectStmtLimit.png)
 
 **SelectLockOpt:**
 
-![SelectLockOpt](/media/sqlgram/SelectLockOpt.png)
+![SelectLockOpt](/media/sqlgram-v2.1/SelectLockOpt.png)
 
 ## Description of the syntax elements
 

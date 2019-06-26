@@ -12,27 +12,27 @@ This statement creates a new user, specified with a password. In the MySQL privi
 
 **CreateUserStmt:**
 
-![CreateUserStmt](/media/sqlgram/CreateUserStmt.png)
+![CreateUserStmt](/media/sqlgram-dev/CreateUserStmt.png)
 
 **IfNotExists:**
 
-![IfNotExists](/media/sqlgram/IfNotExists.png)
+![IfNotExists](/media/sqlgram-dev/IfNotExists.png)
 
 **UserSpecList:**
 
-![UserSpecList](/media/sqlgram/UserSpecList.png)
+![UserSpecList](/media/sqlgram-dev/UserSpecList.png)
 
 **UserSpec:**
 
-![UserSpec](/media/sqlgram/UserSpec.png)
+![UserSpec](/media/sqlgram-dev/UserSpec.png)
 
 **AuthOption:**
 
-![AuthOption](/media/sqlgram/AuthOption.png)
+![AuthOption](/media/sqlgram-dev/AuthOption.png)
 
 **StringName:**
 
-![StringName](/media/sqlgram/StringName.png)
+![StringName](/media/sqlgram-dev/StringName.png)
 
 ## Examples
 
