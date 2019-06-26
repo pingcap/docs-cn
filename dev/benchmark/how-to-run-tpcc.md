@@ -27,7 +27,7 @@ TPC-C 是一个对 OLTP（联机交易处理）系统进行测试的规范，使
 
 我们将以 1000 WAREHOUSE 为例进行测试。
 
-TPC-C 使用 tpmC 值（Transactions per Minute）来衡量系统最大有效吞吐量（MQTh, Max Qualified Throughput），其中 Transactions 以 NewOrder Transaction 为准，即最终衡量单位为每分钟处理的新订单数。
+TPC-C 使用 tpmC 值（Transactions per Minute）来衡量系统最大有效吞吐量 (MQTh, Max Qualified Throughput)，其中 Transactions 以 NewOrder Transaction 为准，即最终衡量单位为每分钟处理的新订单数。
 
 本文使用开源的 BenchmarkSQL 5.0 作为 TPC-C 测试实现并添加了对 MySQL 协议的支持，可以通过以下命令下载测试程序:
 
@@ -35,7 +35,7 @@ TPC-C 使用 tpmC 值（Transactions per Minute）来衡量系统最大有效吞
 git clone -b 5.0-mysql-support-opt https://github.com/pingcap/benchmarksql.git
 ```
 
-安装 java 和 ant, 以 CentOS 为例, 可以执行以下命令进行安装
+安装 java 和 ant，以 CentOS 为例，可以执行以下命令进行安装
 
 ```shell
 sudo yum install -y java ant
@@ -54,7 +54,7 @@ ant
 
 在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD 和 1 个 TiKV 实例。
 
-比如这里采用的机器硬件配置是:
+比如这里采用的机器硬件配置是：
 
 | 类别 | 名称 |
 | :-: | :-: |
@@ -63,7 +63,7 @@ ant
 | RAM | 128GB |
 | DISK | Optane 500GB SSD |
 
-因为该型号 CPU 是 NUMA 架构, 建议先用 `taskset` 进行绑核，首先用 `lscpu` 查看 NUMA node，比如：
+因为该型号 CPU 是 NUMA 架构，建议先用 `taskset` 进行绑核，首先用 `lscpu` 查看 NUMA node，比如：
 
 ```text
 NUMA node0 CPU(s):     0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38
@@ -127,7 +127,7 @@ cd run
 ./runSQL.sh props.mysql sql.mysql/indexCreates.sql
 ```
 
-运行导入数据脚本
+运行导入数据脚本：
 
 ```shell
 ./runLoader.sh props.mysql
