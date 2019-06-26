@@ -5,9 +5,9 @@ category: user guide
 
 # 基于角色的访问控制
 
-TiDB 的角色访问控制系统参考 MySQL 的角色访问控制系统进行实现。TiDB 兼容大部分 MySQL 角色访问控制的语法。
+TiDB 的基于角色的访问控制系统参考 MySQL 的基于角色的访问控制系统进行实现。TiDB 兼容大部分 MySQL 基于角色的访问控制系统的语法。
 
-本文档主要介绍 TiDB 角色访问控制相关操作及实现。
+本文档主要介绍 TiDB 基于角色的访问控制相关操作及实现。
 
 > **警告：**
 >
@@ -338,10 +338,10 @@ SHOW GRANTS FOR 'u1'@'localhost' USING 'r1', 'r2';
 
 ### 授权表
 
-在原有的四张系统表的基础上，角色访问控制引入了三张新的系统表：
+在原有的四张系统权限表的基础上（参考：[系统权限表](/dev/reference/security/privilege-system.md#授权表)），角色访问控制引入了两张新的系统表：
 
 - `mysql.role_edges`：记录角色与用户的授权关系
-- `mysql.default_role`：记录每个用户默认启用的角色
+- `mysql.default_roles`：记录每个用户默认启用的角色
 
 以下是 `mysql.role_edges` 所包含的数据。
 
@@ -384,7 +384,7 @@ select * from mysql.default_roles;
 
 ### 其他
 
-由于角色访问控制模块和用户管理以及权限管理结合十分紧密，因此需要参考一些操作的细节：
+由于基于角色的访问控制模块和用户管理以及权限管理结合十分紧密，因此需要参考一些操作的细节：
 
-- [TiDB 权限管理](/reference/security/privilege-system.md)
-- [TiDB 用户账户管理](/reference/security/user-account-management.md)
+- [TiDB 权限管理](/dev/reference/security/privilege-system.md)
+- [TiDB 用户账户管理](/dev/reference/security/user-account-management.md)
