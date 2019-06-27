@@ -26,6 +26,10 @@ category: reference
 
 ![DBName](/media/sqlgram/DBName.png)
 
+## 语法说明
+
+
+
 ## 示例
 
 ```sql
