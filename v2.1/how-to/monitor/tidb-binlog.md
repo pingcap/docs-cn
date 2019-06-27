@@ -2,7 +2,6 @@
 title: TiDB Binlog Monitoring
 summary: Learn how to monitor the cluster version of TiDB Binlog.
 category: reference
-
 ---
 
 # TiDB Binlog Monitoring

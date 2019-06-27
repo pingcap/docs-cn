@@ -83,7 +83,7 @@
     - [Upgrade to Development Series](how-to/upgrade/from-previous-version.md)
     - [Rolling updates with Ansible](how-to/upgrade/rolling-updates-with-ansible.md)
     - [Upgrade TiDB Data Migration](how-to/upgrade/data-migration.md)
-    - [TiDB Binlog Cluster Upgrade](how-to/upgrade/tidb-binlog.md)
+    - [Upgrade TiDB Binlog Cluster](how-to/upgrade/tidb-binlog.md)
   - Troubleshoot
     - [Troubleshoot Cluster Setup](how-to/troubleshoot/cluster-setup.md)
     - [Troubleshoot TiDB Data Migration](how-to/troubleshoot/data-migration.md)
