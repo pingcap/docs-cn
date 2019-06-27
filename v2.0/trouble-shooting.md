@@ -23,7 +23,7 @@ category: advanced
 
 如果所有的进程都在，请查看 tidb-server 的日志，看是否有报错？常见的错误包括：
 
-+   InfomationSchema is out of date
++   InformationSchema is out of date
 
     无法连接 tikv-server，请检查 pd-server 以及 tikv-server 的状态和日志。
 +   panic
