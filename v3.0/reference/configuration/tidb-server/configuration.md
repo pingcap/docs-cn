@@ -2,7 +2,6 @@
 title: TiDB 配置参数
 category: reference
 aliases: ['/docs-cn/op-guide/configuration/','/docs-cn/sql/server-command-option/','/docs-cn/sql/tidb-server/']
-
 ---
 
 # TiDB 配置参数

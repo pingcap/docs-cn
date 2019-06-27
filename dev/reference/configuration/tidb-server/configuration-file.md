@@ -1,7 +1,6 @@
 ---
 title: TiDB 配置文件描述
 category: reference
-
 ---
 
 # TiDB 配置文件描述
