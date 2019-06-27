@@ -750,7 +750,7 @@ rocksdb defaultcf 相关的配置项。
 
 ### `block-cache-size`
 
-+ rocksdb block cache size。
++ 设置 rocksdb block 缓存大小。
 + 默认值：机器总内存 / 4
 + 最小值：0
 + 单位：KB|MB|GB
