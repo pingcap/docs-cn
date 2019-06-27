@@ -5,8 +5,6 @@ category: tools
 
 # sync-diff-inspector 用户文档
 
-## sync-diff-inspector 简介
-
 sync-diff-inspector 是一个用于校验 MySQL／TiDB 中两份数据是否一致的工具，该工具提供了修复数据的功能（适用于修复少量不一致的数据）。
 
 主要功能：
