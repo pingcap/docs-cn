@@ -728,7 +728,7 @@ Titan 相关的配置项。
 
 ### `disable-gc`
 
-+ 关闭 Titan 对 Blob 文件的 GC 的开关。
++ 控制是否关闭 Titan 对 Blob 文件的 GC。
 + 默认值：false
 
 ### `max-background-gc`
