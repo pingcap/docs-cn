@@ -106,5 +106,5 @@ PD 可以通过命令行参数或环境变量配置。
 
 ## `--metrics-addr`
 
-+ prometheus pushgateway 的地址，默认不向 promethus 推送数据.
++ Prometheus Pushgateway 的地址，默认不向 Promethus 推送数据.
 + 默认：""
