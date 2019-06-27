@@ -718,7 +718,7 @@ Titan 相关的配置项。
 
 ### `enabled`
 
-+ 开启 Titan 开关。
++ 开启或关闭 Titan。
 + 默认值：false
 
 ### `dirname`
