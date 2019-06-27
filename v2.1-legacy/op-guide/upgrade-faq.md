@@ -203,7 +203,8 @@ TiDB 在 v2.1.1 及之前版本中，如果 charset 是 UTF8，没有对 4-byte 
         # Disabled.
         set @@session.tidb_check_mb4_value_in_utf8 = 0;
         ```
-- v2.1.7 及之后版本，如果对表和 column 的字符集没有严格的要求为 UTF8，也不想修改客户端代码去跳过 UTF8 检查或者手动修改 column 的 charset，可以在配置文件中把 `treat-old-version-utf8-as-utf8mb4` 打开，这个配置的作用是把 v2.1.7 版本之前创建的旧版本的表，自动把旧版本的表和 column 的 UTF8 字符集转成 UTF8MB4。这个转换是在 TiDB load schema 时在内存中把 UTF8 转成 UTF8MB4，不会对实际存储的数据做任何修改。所以在配置文件中关闭 `treat-old-version-utf8-as-utf8mb4`，重启 TiDB 后，以前字符集为 UTF8 的表和 column 的字符集任然还是 UTF8。
+
+- v2.1.7 及之后版本，如果对表和 column 的字符集没有严格的要求为 UTF8，也不想修改客户端代码去跳过 UTF8 检查或者手动修改 column 的 charset，可以在配置文件中把 `treat-old-version-utf8-as-utf8mb4` 打开，这个配置的作用是把 v2.1.7 版本之前创建的旧版本的表，自动把旧版本的表和 column 的 UTF8 字符集转成 UTF8MB4。这个转换是在 TiDB load schema 时在内存中把 UTF8 转成 UTF8MB4，不会对实际存储的数据做任何修改。在配置文件中关闭 `treat-old-version-utf8-as-utf8mb4` 并重启 TiDB 后，以前字符集为 UTF8 的表和 column 的字符集仍然还是 UTF8。
 
     注意：`treat-old-version-utf8-as-utf8mb4` 这个参数默认是打开的，如果客户端强制需要用 UTF8 而不用 UTF8MB4，需要在配置文件中关闭。
 
