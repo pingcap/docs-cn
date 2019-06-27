@@ -28,7 +28,7 @@ mysql> SHOW CHARACTER SET;
 > **注意：**
 > 
 > - 在 `TiDB` 中 `utf8` 被当做成了 `utf8mb4` 来处理。
-> - 每种字符集都对应一个默认的Collation，当前有且仅有一个
+> - 每种字符集都对应一个默认的 Collation，当前有且仅有一个。
 
 对于字符集来说，至少会有一个 Collation（排序规则）与之对应。而大部分字符集实际上会有多个 Collation。利用以下的语句可以查看：
 
