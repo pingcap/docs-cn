@@ -629,7 +629,7 @@ rocksdb 相关的配置项。
 
 ### `stats-dump-period`
 
-+ 开启 Pipelined Write 的开关。
++ 开启或关闭 Pipelined Write。
 + 默认值：true
 
 ### `compaction-readahead-size`
