@@ -25,10 +25,6 @@ mysql> SHOW CHARACTER SET;
 5 rows in set (0.00 sec)
 ```
 
-> **Note:**
->
-> In TiDB, utf8 is treated as utf8mb4.
-
 ## Collation support
 
 TiDB only supports binary collations. This means that unlike MySQL, in TiDB string comparisons are both case sensitive and accent sensitive:
@@ -88,14 +84,19 @@ Create Table: CREATE TABLE `t1` (
 
 ## Database character set and collation
 
-Each database has a character set and a collation. You can use the `CREATE DATABASE` statement to specify the database character set and collation:
+Each database has a character set and a collation. You can use the following statements to specify the database character set and collation:
 
 ```sql
 CREATE DATABASE db_name
     [[DEFAULT] CHARACTER SET charset_name]
     [[DEFAULT] COLLATE collation_name]
+
+ALTER DATABASE db_name
+    [[DEFAULT] CHARACTER SET charset_name]
+    [[DEFAULT] COLLATE collation_name]
 ```
-Where `DATABASE` can be replaced with `SCHEMA`.
+
+`DATABASE` can be replaced with `SCHEMA` here.
 
 Different databases can use different character sets and collations. Use the `character_set_database` and  `collation_database` to see the character set and collation of the current database:
 
@@ -154,7 +155,8 @@ For example:
 mysql> CREATE TABLE t1(a int) CHARACTER SET utf8 COLLATE utf8_general_ci;
 Query OK, 0 rows affected (0.08 sec)
 ```
-The table character set and collation are used as the default values for column definitions if the column character set and collation are not specified in individual column definitions.
+
+The database character set and collation are used as the default values for table definitions if the table character set and collation are not specified in individual column definitions.
 
 ## Column character set and collation
 
@@ -169,6 +171,8 @@ col_name {ENUM | SET} (val_list)
     [CHARACTER SET charset_name]
     [COLLATE collation_name]
 ```
+
+The table character set and collation are used as the default values for column definitions if the column character set and collation are not specified in individual column definitions.
 
 ## Connection character sets and collations
 

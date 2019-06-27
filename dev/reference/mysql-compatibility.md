@@ -82,16 +82,18 @@ TiDB supports most of the MySQL built-in functions, but not all. See [TiDB SQL G
 In TiDB DDL does not block reads or writes to tables while in operation. However, some restrictions currently apply to DDL changes:
 
 + Add Index:
-  - Does not support creating multiple indexes at the same time.
-  - Adding an index on a generated column via `ALTER TABLE` is not supported.
+    - Does not support creating multiple indexes at the same time.
+    - Adding an index on a generated column via `ALTER TABLE` is not supported.
 + Add Column:
-  - Does not support creating multiple columns at the same time.
-  - Does not support setting a column as the `PRIMARY KEY`, or creating a unique index, or specifying `auto_increment` while adding it.
+    - Does not support creating multiple columns at the same time.
+    - Does not support setting a column as the `PRIMARY KEY`, or creating a unique index, or specifying `auto_increment` while adding it.
 + Drop Column: Does not support dropping the `PRIMARY KEY` column or index column.
 + Change/Modify Column:
-  - Does not support lossy changes, such as from `BIGINT` to `INTEGER` or `VARCHAR(255)` to `VARCHAR(10)`.
-  - Does not support changing the `UNSIGNED` attribute.
-  - Only supports changing the `CHARACTER SET` attribute from `utf8` to `utf8mb4`.
+    - Does not support lossy changes, such as from `BIGINT` to `INTEGER` or `VARCHAR(255)` to `VARCHAR(10)`.
+    - Does not support changing the `UNSIGNED` attribute.
+    - Only supports changing the `CHARACTER SET` attribute from `utf8` to `utf8mb4`.
++ Alter Database
+    - Only supports changing the `CHARACTER SET` attribute from `utf8` to `utf8mb4`.
 + `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`: the syntax is supported, but is not applicable to TiDB. All DDL changes that are supported do not lock the table.
 + `ALGORITHM [=] {DEFAULT|INSTANT|INPLACE|COPY}`: the syntax for `ALGORITHM=INSTANT` and `ALGORITHM=INPLACE` is fully supported, but will work differently than MySQL since some operations that are `INPLACE` in MySQL are `INSTANT` in TiDB. The syntax `ALGORITHM=COPY` is not applicable to TIDB and returns a warning. 
 
@@ -165,7 +167,10 @@ It is recommended to use the historical reads feature of `tidb_snapshot` to prod
 - Default character set:
     - The default value in TiDB is `utf8mb4`.
     - The default value in MySQL 5.7 is `latin1`, but changes to `utf8mb4` in MySQL 8.0.
-- Default collation: `latin1_swedish_ci` in MySQL 5.7, while `binary` in TiDB.
+- Default collation:
+    - The default collation of `utf8mb4` in TiDB is `utf8mb4_bin`.
+    - The default collation of `utf8mb4` in MySQL 5.7 is `utf8mb4_general_ci`, but changes to `utf8mb4_0900_ai_ci` in MySQL 8.0.
+    - You can use the [`SHOW CHARACTER SET`](/dev/reference/sql/statements/show-character-set.md) statement to check the default collations of all character sets.
 - Default value of `foreign_key_checks`:
     - The default value in TiDB is `OFF` and currently TiDB only supports `OFF`.
     - The default value in MySQL 5.7 is `ON`.
