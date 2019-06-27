@@ -5,7 +5,7 @@ category: user guide
 
 # 基于角色的访问控制
 
-TiDB 的基于角色的访问控制 (RBAC) 系统的实现类似于 MySQL 的 RBAC 系统。TiDB 兼容大部分 MySQL RBAC 系统的语法。
+TiDB 的基于角色的访问控制 (RBAC) 系统的实现类似于 MySQL 8.0 的 RBAC 系统。TiDB 兼容大部分 MySQL RBAC 系统的语法。
 
 本文档主要介绍 TiDB 基于角色的访问控制相关操作及实现。
 
@@ -49,20 +49,20 @@ DROP ROLE `r_1`@`%`, `r_2`@`%`;
 
 为角色授予权限和为用户授予权限操作相同，可参考 [TiDB 权限管理](/reference/security/privilege-system.md)。
 
-为 `xxx` 角色授予数据库 `test` 的读权限：
+为 `analyst` 角色授予数据库 `test` 的读权限：
 
 {{< copyable "sql" >}}
 
 ```sql
-GRANT SELECT ON test.* TO 'xxx'@'%';
+GRANT SELECT ON test.* TO 'analyst'@'%';
 ```
 
-为 `xxx` 角色授予所有数据库的全部权限：
+为 `analyst` 角色授予所有数据库的全部权限：
 
 {{< copyable "sql" >}}
 
 ```sql
-GRANT ALL PRIVILEGES ON *.* TO 'xxx'@'%';
+GRANT ALL PRIVILEGES ON *.* TO 'analyst'@'%';
 ```
 
 ### 收回权限
@@ -72,7 +72,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'xxx'@'%';
 {{< copyable "sql" >}}
 
 ```sql
-REVOKE ALL PRIVILEGES ON `test`.* FROM 'xxx'@'%';
+REVOKE ALL PRIVILEGES ON `test`.* FROM 'analyst'@'%';
 ```
 
 具体可参考 [TiDB 权限管理](/reference/security/privilege-system.md)。
