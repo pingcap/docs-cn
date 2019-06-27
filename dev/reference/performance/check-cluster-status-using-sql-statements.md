@@ -1,9 +1,9 @@
 ---
-title: SQL 语句诊断
+title: 使用 SQL 语句检查 TiDB 集群状态
 category: reference
 ---
 
-# SQL 语句诊断
+# 使用 SQL 语句检查 TiDB 集群状态
 
 为了方便排查问题，TiDB 提供了一些 SQL 语句和系统表以查询一些有用的信息。
 
@@ -21,7 +21,7 @@ category: reference
 
 - `ADMIN SHOW DDL` 可以获得是 `DDL owner` 角色的 TiDB 的 ID 及 `IP:PORT` 等具体信息。
 - `SHOW ANALYZE STATUS` 和 [`ANALYZE_STATUS`](/reference/system-databases/information-schema.md#analyze-status-表) 表的功能相同。
-- 特殊的 `EXPLAIN` 语句
+- 特殊的 `EXPLAIN` 语句：
     - `EXPLAIN ANALYZE` 语句可以获得一个 SQL 语句执行中的一些具体信息。
     - `EXPLAIN FOR CONNECTION` 可以获得一个连接中最后执行的查询的执行计划。可以配合 `SHOW PROCESSLIST` 使用。
     - 关于 `EXPLAIN` 相关的更具体的信息，参考文档[理解 TiDB 执行计划](/reference/performance/understanding-the-query-execution-plan.md)。
