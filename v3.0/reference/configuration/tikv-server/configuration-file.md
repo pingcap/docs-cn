@@ -1,7 +1,6 @@
 ---
 title: TiKV 配置文件描述
 category: reference
-
 ---
 
 # TiKV 配置文件描述
