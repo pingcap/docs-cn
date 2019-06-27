@@ -138,7 +138,7 @@
     - [理解 TiDB 执行计划](dev/reference/performance/understanding-the-query-execution-plan.md)
     - [统计信息概述](dev/reference/performance/statistics.md)
     - [Optimizer Hints](dev/reference/performance/optimizer-hints.md)
-    - [利用 SQL 语句排查问题或查询 TiDB 集群的状态信息](dev/reference/performance/sql-diagnostic-kit.md)
+    - [使用 SQL 语句检查 TiDB 集群状态](dev/reference/performance/check-cluster-status-using-sql-statements.md)
     - [TiKV 调优](dev/reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + [TiSpark 使用指南](dev/reference/tispark.md)
