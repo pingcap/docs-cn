@@ -5,7 +5,7 @@ category: how-to
 
 # TiDB 2.1 升级操作指南
 
-本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 RC 版本升级到 TiDB 2.1 GA 版本。TiDB 2.1 版本不兼容 Kafka 版本的 TiDB-Binlog，如果当前集群已经使用 [Kafka 版本的 TiDB-Binlog](/reference/tools/tidb-binlog/tidb-binlog-kafka.md)，须参考 [TiDB Binlog Cluster 版本升级方法](/how-to/upgrade/tidb-binlog.md) 升级到 Cluster 版本。
+本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 RC 版本升级到 TiDB 2.1 GA 版本。TiDB 2.1 版本不兼容 Kafka 版本的 TiDB Binlog，如果当前集群已经使用 [Kafka 版本的 TiDB-Binlog](/reference/tools/tidb-binlog/tidb-binlog-kafka.md)，须参考 [TiDB Binlog Cluster 版本升级方法](/how-to/upgrade/tidb-binlog.md) 升级到 Cluster 版本。
 
 ## 升级兼容性说明
 
