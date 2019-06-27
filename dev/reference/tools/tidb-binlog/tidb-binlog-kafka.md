@@ -20,7 +20,7 @@ TiDB Binlog 支持以下功能场景:
 
 首先介绍 TiDB Binlog 的整体架构。
 
-![TiDB-Binlog 架构](/media/tidb_binlog_kafka_architecture.png)
+![TiDB Binlog 架构](/media/tidb_binlog_kafka_architecture.png)
 
 TiDB Binlog 集群主要分为三个组件：
 

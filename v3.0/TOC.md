@@ -10,7 +10,7 @@
     - [高可用](key-features.md#高可用)
 + 操作指南
   + 快速上手
-    + 创建本地集群
+    + 创建集群
       + 使用 Kubernetes
         - [DinD](how-to/get-started/local-cluster/install-from-kubernetes-dind.md)
         - [Minikube](how-to/get-started/local-cluster/install-from-kubernetes-minikube.md)
@@ -74,7 +74,6 @@
 + 参考手册
   + [与 MySQL 兼容性对比](reference/mysql-compatibility.md)
   + SQL
-    - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
     + SQL 语言结构
       - [字面值](reference/sql/language-structure/literal-values.md)
       - [Schema 对象名](reference/sql/language-structure/schema-object-names.md)
@@ -137,6 +136,7 @@
       - [`ADD COLUMN`](reference/sql/statements/add-column.md)
       - [`ADD INDEX`](reference/sql/statements/add-index.md)
       - [`ADMIN`](reference/sql/statements/admin.md)
+      - [`ALTER DATABASE`](reference/sql/statements/alter-database.md)
       - [`ALTER TABLE`](reference/sql/statements/alter-table.md)
       - [`ALTER USER`](reference/sql/statements/alter-user.md)
       - [`ANALYZE TABLE`](reference/sql/statements/analyze-table.md)
@@ -211,6 +211,7 @@
     - [生成列](reference/sql/generated-columns.md)
     - [分区表](reference/sql/partitioning.md)
     - [字符集](reference/sql/character-set.md)
+    - [SQL模式](reference/sql/sql-mode.md)
   + 配置
     + tidb-server
       - [MySQL 系统变量](reference/configuration/tidb-server/mysql-variables.md)
@@ -219,8 +220,10 @@
       - [配置文件描述](reference/configuration/tidb-server/configuration-file.md)
     + pd-server
       - [配置参数](reference/configuration/pd-server/configuration.md)
+      - [配置文件描述](reference/configuration/pd-server/configuration-file.md)
     + tikv-server
       - [配置参数](reference/configuration/tikv-server/configuration.md)
+      - [配置文件描述](reference/configuration/tikv-server/configuration-file.md)
   + 监控指标
     - [Overview 面板](reference/key-monitoring-metrics/overview-dashboard.md)
     - [TiDB 面板](reference/key-monitoring-metrics/tidb-dashboard.md)

@@ -628,7 +628,7 @@ rocksdb 相关的配置项。
 
 ### `stats-dump-period`
 
-+ 开启 Pipelined Write 的开关。
++ 开启或关闭 Pipelined Write。
 + 默认值：true
 
 ### `compaction-readahead-size`
@@ -717,7 +717,7 @@ Titan 相关的配置项。
 
 ### `enabled`
 
-+ 开启 Titan 开关。
++ 开启或关闭 Titan。
 + 默认值：false
 
 ### `dirname`
@@ -727,7 +727,7 @@ Titan 相关的配置项。
 
 ### `disable-gc`
 
-+ 关闭 Titan 对 Blob 文件的 GC 的开关。
++ 控制是否关闭 Titan 对 Blob 文件的 GC。
 + 默认值：false
 
 ### `max-background-gc`
@@ -742,26 +742,26 @@ rocksdb defaultcf 相关的配置项。
 
 ### `block-size`
 
-+ rocksdb block size。
++ 设置 rocksdb block 大小。
 + 默认值：64KB
 + 最小值：1KB
 + 单位：KB|MB|GB
 
 ### `block-cache-size`
 
-+ rocksdb block cache size。
++ 设置 rocksdb block 缓存大小。
 + 默认值：机器总内存 / 4
 + 最小值：0
 + 单位：KB|MB|GB
 
 ### `disable-block-cache`
 
-+ 开启 block cache 开关。
++ 开启或关闭 block cache。
 + 默认值：false
 
 ### `cache-index-and-filter-blocks`
 
-+ 开启 缓存 index 和 filter 的开关。
++ 开启或关闭缓存 index 和 filter。
 + 默认值：true 
 
 ### `pin-l0-filter-and-index-blocks`

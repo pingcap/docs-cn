@@ -1,8 +1,6 @@
 ---
 title: TiDB 配置文件描述
 category: reference
-aliases: ['/docs-cn/op-guide/tidb-config-file/']
-
 ---
 
 # TiDB 配置文件描述
@@ -165,17 +163,17 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `cluster-ssl-ca`
 
-+ CA 根证书，用于用 tls 连接 tikv/pd
++ CA 根证书，用于用 tls 连接 TiKV/PD
 + 默认值：""
 
 ### `cluster-ssl-cert`
 
-+ ssl 证书文件路径，用于用 tls 连接 tikv/pd
++ ssl 证书文件路径，用于用 tls 连接 TiKV/PD
 + 默认值：""
 
 ### `cluster-ssl-key`
 
-+ ssl 私钥文件路径，用于用 tls 连接 tikv/pd
++ ssl 私钥文件路径，用于用 tls 连接 TiKV/PD
 + 默认值：""
 
 ### `skip-grant-table`
@@ -287,13 +285,13 @@ prepare 语句的 Plan cache 设置。
 
 ### `grpc-keepalive-time`
 
-+ tidb 与 tikv 节点之间 rpc 连接 keepalive 时间间隔，如果超过该值没有网络包，grpc client 会 ping 一下 tikv 查看是否存活。
++ TiDB 与 TiKV 节点之间 rpc 连接 keepalive 时间间隔，如果超过该值没有网络包，grpc client 会 ping 一下 TiKV 查看是否存活。
 + 默认值：10
 + 单位：秒
 
 ### `grpc-keepalive-timeout`
 
-+ tidb 与 tikv 节点  rpc keepalive 检查的超时时间
++ TiDB 与 TiKV 节点  rpc keepalive 检查的超时时间
 + 默认值：3
 + 单位：秒
 
@@ -311,7 +309,7 @@ prepare 语句的 Plan cache 设置。
 
 ### `max-batch-size`
 
-+ 批量发送 rpc 封包的最大数量，如果不为 0，将使用 BatchCommands api 发送请求到 tikv，可以在并发度高的情况降低 rpc 的延迟，推荐不修改该值。
++ 批量发送 rpc 封包的最大数量，如果不为 0，将使用 BatchCommands api 发送请求到 TiKV，可以在并发度高的情况降低 rpc 的延迟，推荐不修改该值。
 + 默认值：128
 
 ### `max-batch-wait-time`
@@ -337,7 +335,7 @@ prepare 语句的 Plan cache 设置。
 
 ### `enable`
 
-+ 开启
++ 开启或关闭事务内存锁
 + 默认值：false
 
 ### `capacity`
@@ -351,7 +349,7 @@ TiDB Binlog 相关配置。
 
 ### `enable`
 
-+ 开启 binlog 开关。
++ binlog 开关。
 + 默认值：false
 
 ### `write-timeout`
