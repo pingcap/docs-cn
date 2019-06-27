@@ -1,7 +1,6 @@
 ---
 title: SQL Mode
 category: reference
-
 ---
 
 # SQL 模式
