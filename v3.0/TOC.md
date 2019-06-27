@@ -137,6 +137,7 @@
       - [`ADD COLUMN`](reference/sql/statements/add-column.md)
       - [`ADD INDEX`](reference/sql/statements/add-index.md)
       - [`ADMIN`](reference/sql/statements/admin.md)
+      - [`ALTER DATABASE`](reference/sql/statements/alter-database.md)
       - [`ALTER TABLE`](reference/sql/statements/alter-table.md)
       - [`ALTER USER`](reference/sql/statements/alter-user.md)
       - [`ANALYZE TABLE`](reference/sql/statements/analyze-table.md)
@@ -211,6 +212,7 @@
     - [生成列](reference/sql/generated-columns.md)
     - [分区表](reference/sql/partitioning.md)
     - [字符集](reference/sql/character-set.md)
+    - [SQL模式](reference/sql/sql-mode.md)
   + 配置
     + tidb-server
       - [MySQL 系统变量](reference/configuration/tidb-server/mysql-variables.md)
@@ -219,8 +221,10 @@
       - [配置文件描述](reference/configuration/tidb-server/configuration-file.md)
     + pd-server
       - [配置参数](reference/configuration/pd-server/configuration.md)
+      - [配置文件描述](reference/configuration/pd-server/configuration-file.md)
     + tikv-server
       - [配置参数](reference/configuration/tikv-server/configuration.md)
+      - [配置文件描述](reference/configuration/tikv-server/configuration-file.md)
   + 监控指标
     - [Overview 面板](reference/key-monitoring-metrics/overview-dashboard.md)
     - [TiDB 面板](reference/key-monitoring-metrics/tidb-dashboard.md)

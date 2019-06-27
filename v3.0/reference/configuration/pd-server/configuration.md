@@ -103,3 +103,8 @@ PD 可以通过命令行参数或环境变量配置。
 + 指定 PD 使用的 namespace 分类器。
 + 默认："table"
 + 如果 TiKV 不与 TiDB 集群配合运行，建议配置为 'default'。
+
+## `--metrics-addr`
+
++ prometheus pushgateway 的地址，默认不向 promethus 推送数据.
++ 默认：""
