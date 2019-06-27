@@ -1,6 +1,7 @@
 ---
 title: 慢查询日志
 category: how-to
+aliases: ['/docs-cn/sql/slow-query/']
 
 ---
 
