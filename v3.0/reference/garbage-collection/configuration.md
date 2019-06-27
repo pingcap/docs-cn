@@ -19,7 +19,6 @@ update mysql.tidb set VARIABLE_VALUE="30m" where VARIABLE_NAME="tikv_gc_run_inte
 > - `tikv_gc_last_run_time`：上次 GC 运行时间
 > - `tikv_gc_safe_point`：当前的 GC safe point
 
-
 ## `tikv_gc_enable`
 
 - 控制是否启用 GC。
@@ -63,4 +62,4 @@ GC concurrency 将用于 [Resolve Locks](/reference/garbage-collection/overview.
 ## `tikv_gc_concurrency`
 
 - V3.0 起，当 [`tikv_gc_auto_concurrency`](#tikv_gc_auto_concurrency) 为 `false` 时，将使用该值作为 GC concurrency。对于 2.x 版本，将直接使用该值作为 GC concurrency。
-- 默认值： 2
+- 默认值：2
