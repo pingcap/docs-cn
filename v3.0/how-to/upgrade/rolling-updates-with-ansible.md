@@ -2,6 +2,7 @@
 title: 使用 TiDB-Ansible 升级 TiDB 集群
 category: how-to
 aliases: ['/docs-cn/op-guide/ansible-deployment-rolling-update/']
+
 ---
 
 # 使用 TiDB-Ansible 升级 TiDB 集群
