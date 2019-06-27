@@ -350,7 +350,7 @@ TiDB Binlog 相关配置。
 
 ### `enable`
 
-+ 开启 binlog 开关。
++ binlog 开关。
 + 默认值：false
 
 ### `write-timeout`
