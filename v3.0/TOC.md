@@ -10,7 +10,7 @@
     - [高可用](key-features.md#高可用)
 + 操作指南
   + 快速上手
-    + 创建本地集群
+    + 创建集群
       + 使用 Kubernetes
         - [DinD](how-to/get-started/local-cluster/install-from-kubernetes-dind.md)
         - [Minikube](how-to/get-started/local-cluster/install-from-kubernetes-minikube.md)
@@ -74,7 +74,6 @@
 + 参考手册
   + [与 MySQL 兼容性对比](reference/mysql-compatibility.md)
   + SQL
-    - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
     + SQL 语言结构
       - [字面值](reference/sql/language-structure/literal-values.md)
       - [Schema 对象名](reference/sql/language-structure/schema-object-names.md)
