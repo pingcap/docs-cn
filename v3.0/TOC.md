@@ -51,6 +51,7 @@
       - [Overview](how-to/deploy/geographic-redundancy/overview.md)
       - [Configure Location Awareness](how-to/deploy/geographic-redundancy/location-awareness.md)
     - [Data Migration with Ansible](how-to/deploy/data-migration-with-ansible.md)
+    - [TiDB Binlog Cluster Deployment](how-to/deploy/tidb-binlog.md)
   + Configure
     - [Time Zone](how-to/configure/time-zone.md)
     - [Memory Control](how-to/configure/memory-control.md)
@@ -62,6 +63,7 @@
   + Monitor
     - [Overview](how-to/monitor/overview.md)
     - [Monitor a TiDB Cluster](how-to/monitor/monitor-a-cluster.md)
+    - [TiDB Binlog Monitoring](how-to/monitor/tidb-binlog.md)
   + Migrate
     - [Overview](how-to/migrate/overview.md)
     + Migrate from MySQL
@@ -73,6 +75,7 @@
     - [Common Ansible Operations](how-to/deploy/orchestrated/ansible-operations.md)
     - [Backup and Restore](how-to/maintain/backup-and-restore.md)
     - [Identify Slow Queries](how-to/maintain/identify-slow-queries.md)
+    - [TiDB Binlog Cluster Operations](how-to/maintain/tidb-binlog.md)
   + Scale
     - [Scale using Ansible](how-to/scale/with-ansible.md)
     - [Scale a TiDB Cluster](how-to/scale/horizontally.md)
@@ -80,6 +83,7 @@
     - [Upgrade to TiDB 3.0](how-to/upgrade/from-previous-version.md)
     - [Rolling updates with Ansible](how-to/upgrade/rolling-updates-with-ansible.md)
     - [Upgrade TiDB Data Migration](how-to/upgrade/data-migration.md)
+    - [TiDB Binlog Cluster Upgrade](how-to/upgrade/tidb-binlog.md)
   - Troubleshoot
     - [Troubleshoot Cluster Setup](how-to/troubleshoot/cluster-setup.md)
     - [Troubleshoot TiDB Data Migration](how-to/troubleshoot/data-migration.md)
@@ -254,6 +258,7 @@
     - [Tune TiKV](reference/performance/tune-tikv.md)
   - [Best Practices](https://pingcap.com/blog/2017-07-24-tidbbestpractice/)
   - [TiSpark](reference/tispark.md)
+  - [TiDB Binlog Cluster Overview](reference/tidb-binlog-overview.md)
   + Tools
     - [Mydumper](reference/tools/mydumper.md)
     - [Syncer](reference/tools/syncer.md)
@@ -293,12 +298,6 @@
       - [Monitor](reference/tools/tidb-lightning/monitor.md)
       - [Troubleshoot](how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](faq/tidb-lightning.md)
-    + TiDB Binlog
-      - [Overview](reference/tools/tidb-binlog/overview.md)
-      - [Deploy](reference/tools/tidb-binlog/deploy.md)
-      - [Monitor](reference/tools/tidb-binlog/monitor.md)
-      - [Maintain](reference/tools/tidb-binlog/operation.md)
-      - [Upgrade](reference/tools/tidb-binlog/upgrade.md)
     - [PD Control](reference/tools/pd-control.md)
     - [PD Recover](reference/tools/pd-recover.md)
     - [TiKV Control](https://github.com/tikv/tikv/blob/master/docs/tools/tikv-control.md)

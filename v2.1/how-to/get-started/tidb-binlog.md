@@ -16,7 +16,7 @@ This tutorial is targeted toward users who have some familiarity with the [TiDB 
 
 This tutorial assumes you're using a modern Linux distribution on x86-64. A minimal CentOS 7 installation running in VMware is used in this tutorial for the examples. It's recommended that you start from a clean install, so that you aren't impacted by quirks of your existing environment. If you don't want to use local virtualization, you can easily start a CentOS 7 VM using your cloud service.
 
-## TiDB-Binlog Overview
+## TiDB Binlog Overview
 
 TiDB-Binlog is a solution to collect binary log data from TiDB and provide real-time data backup and replication. It pushes incremental data updates from a TiDB Server cluster into downstream platforms.
 
@@ -24,13 +24,13 @@ You can use TiDB-Binlog for incremental backups, to replicate data from one TiDB
 
 TiDB-Binlog is particularly useful when you migrate data from MySQL or MariaDB to TiDB, in which case you may use the TiDB DM (Data Migration) platform to get data from a MySQL/MariaDB cluster into TiDB, and then use TiDB-Binlog to keep a separate, downstream MySQL/MariaDB instance/cluster in sync with your TiDB cluster. TiDB-Binlog enables application traffic to TiDB to be pushed to a downstream MySQL or MariaDB instance/cluster, which reduces the risk of a migration to TiDB because you can easily revert the application to MySQL or MariaDB without downtime or data loss.
 
-See [TiDB-Binlog Cluster User Guide](/reference/tools/tidb-binlog/overview.md) for more information.
+See [TiDB Binlog Cluster User Guide](/reference/tidb-binlog-overview.md) for more information.
 
 ## Architecture
 
 TiDB-Binlog comprises two components: the **Pump** and the **Drainer**. Several Pump nodes make up a pump cluster. Each Pump node connects to TiDB Server instances and receives updates made to each of the TiDB Server instances in a cluster. A Drainer connects to the Pump cluster and transforms the received updates into the correct format for a particular downstream destination, for example, Kafka, another TiDB Cluster or a MySQL/MariaDB server.
 
-![TiDB-Binlog architecture](/media/tidb_binlog_cluster_architecture.png)
+![TiDB Binlog architecture](/media/tidb_binlog_cluster_architecture.png)
 
 The clustered architecture of Pump ensures that updates won't be lost as new TiDB Server instances join or leave the TiDB Cluster or Pump nodes join or leave the Pump cluster.
 
@@ -327,7 +327,7 @@ You should see the same rows that you inserted into TiDB when querying the Maria
 
 ## binlogctl
 
-Information about Pumps and Drainers that have joined the cluster is stored in PD. You can use the binlogctl tool query and manipulate information about their states. See [binlogctl guide](/reference/tools/tidb-binlog/operation.md#binlogctl-guide) for more information.
+Information about Pumps and Drainers that have joined the cluster is stored in PD. You can use the binlogctl tool query and manipulate information about their states. See [binlogctl guide](/reference/tidb-binlog-overview.md#binlogctl-guide) for more information.
 
 Use `binlogctl` to get a view of the current status of Pumps and Drainers in the cluster:
 

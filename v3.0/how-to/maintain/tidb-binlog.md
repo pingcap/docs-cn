@@ -1,11 +1,12 @@
 ---
-title: TiDB-Binlog Cluster Operations
-summary: Learn how to operate the cluster version of TiDB-Binlog.
+title: TiDB Binlog Cluster Operations
+summary: Learn how to operate the cluster version of TiDB Binlog.
 category: reference
-aliases: ['/docs/tools/binlog/operation/']
+aliases: ['/docs/tools/binlog/operation/','/docs/dev/reference/tools/tidb-binlog/operation/']
+
 ---
 
-# TiDB-Binlog Cluster Operations
+# TiDB Binlog Cluster Operations
 
 ## Pump or Drainer state
 
@@ -29,7 +30,7 @@ For how to pause, close, check, and modify the state of Drainer, see the [binlog
 
 ## `binlogctl` guide
 
-[`binlogctl`](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/binlogctl) is an operations tool for TiDB-Binlog with the following features:
+[`binlogctl`](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/binlogctl) is an operations tool for TiDB Binlog with the following features:
 
 * Obtaining the current `tso` of TiDB cluster
 * Checking the state of Pump or Drainer
@@ -45,7 +46,7 @@ For how to pause, close, check, and modify the state of Drainer, see the [binlog
 
 ### Download `binlogctl`
 
-Your distribution of TiDB or TiDB-Binlog may already include binlogctl. If not, download `binlogctl`:
+Your distribution of TiDB or TiDB Binlog may already include binlogctl. If not, download `binlogctl`:
 
 ```bash
 wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz

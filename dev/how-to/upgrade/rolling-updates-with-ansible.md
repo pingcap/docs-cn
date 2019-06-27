@@ -152,3 +152,4 @@ This section describes how to modify component configuration using Ansible.
     ```
 
 2. After modifying the component configuration, you need to perform a rolling update using Ansible. See [Perform a rolling update using Ansible](#perform-a-rolling-update-using-ansible).
+w

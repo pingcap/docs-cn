@@ -1,27 +1,27 @@
 ---
-title: TiDB-Binlog Local Deployment
-summary: Learn how to install, deploy and monitor TiDB-Binlog.
+title: TiDB Binlog Local Deployment
+summary: Learn how to install, deploy and monitor TiDB Binlog.
 category: reference
 ---
 
-# TiDB-Binlog Local Deployment
+# TiDB Binlog Local Deployment
 
-## About TiDB-Binlog-local
+## About TiDB Binlog Local
 
-TiDB-Binlog is a tool for enterprise users to collect binlog files for TiDB and provide real-time backup and replication.
+TiDB Binlog is a tool for enterprise users to collect binlog files for TiDB and provide real-time backup and replication.
 
-TiDB-Binlog supports the following scenarios:  
+TiDB Binlog supports the following scenarios:  
 
 - **Data replication**: to replicate TiDB cluster data to other databases  
 - **Real-time backup and recovery**: to back up TiDB cluster data, and recover in case of cluster outages
   
-## TiDB-Binlog-local architecture
+## TiDB Binlog Local architecture
 
-The TiDB-Binlog architecture is as follows:  
+The TiDB Binlog architecture is as follows:  
 
-![TiDB-Binlog architecture](/media/architecture.jpeg) 
+![TiDB Binlog architecture](/media/architecture.jpeg) 
 
-The TiDB-Binlog cluster mainly consists of two components:  
+The TiDB Binlog cluster mainly consists of two components:  
 
 ### Pump
 
@@ -31,13 +31,13 @@ Pump is a daemon that runs on the background of each TiDB host. Its main functio
 
 Drainer collects binlog files from each Pump node, converts them into specified database-compatible SQL statements in the commit order of the transactions in TiDB, and replicates to the target database or writes to the file sequentially.
 
-## Install TiDB-Binlog-local
+## Install TiDB Binlog Local
 
 ### Download
 
-TiDB-Binlog can be [downloaded](/reference/tools/download.md) as part of the Enterprise Tools package.
+TiDB Binlog can be [downloaded](/reference/tools/download.md) as part of the Enterprise Tools package.
 
-### Deploy TiDB-Binlog
+### Deploy TiDB Binlog
 
 - It is recommended to deploy Pump using Ansible.
 - Build a new TiDB cluster with a startup order of pd-server -> tikv-server -> pump -> tidb-server -> drainer.  
@@ -282,9 +282,9 @@ port = 3306
 # dir = "data.drainer"
 ```
 
-## Monitor TiDB-Binlog
+## Monitor TiDB Binlog
 
-This section introduces how to monitor TiDB-Binlog's status and performance, and display the metrics using Prometheus and Grafana.
+This section introduces how to monitor TiDB Binlog's status and performance, and display the metrics using Prometheus and Grafana.
 
 ### Configure Pump/Drainer
 

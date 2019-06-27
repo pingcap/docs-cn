@@ -1,30 +1,30 @@
 ---
-title: TiDB-Binlog user guide
-summary: Learn how to deploy the Kafka version of TiDB-Binlog.
+title: TiDB Binlog user guide
+summary: Learn how to deploy the Kafka version of TiDB Binlog.
 category: reference
 aliases: ['/docs/tools/binlog/tidb-binlog-kafka/']
 ---
 
-# TiDB-Binlog User Guide
+# TiDB Binlog User Guide
 
-This document describes how to deploy the Kafka version of TiDB-Binlog.
+This document describes how to deploy the Kafka version of TiDB Binlog.
 
-## About TiDB-Binlog
+## About TiDB Binlog
 
-TiDB-Binlog is a tool for enterprise users to collect binlog files for TiDB and provide real-time backup and replication.
+TiDB Binlog is a tool for enterprise users to collect binlog files for TiDB and provide real-time backup and replication.
 
-TiDB-Binlog supports the following scenarios:
+TiDB Binlog supports the following scenarios:
 
 - **Data replication**: to replicate TiDB cluster data to other databases  
 - **Real-time backup and recovery**: to back up TiDB cluster data, and recover in case of cluster outages
 
-## TiDB-Binlog architecture
+## TiDB Binlog architecture
 
-The TiDB-Binlog architecture is as follows:
+The TiDB Binlog architecture is as follows:
 
-![TiDB-Binlog architecture](/media/tidb_binlog_kafka_architecture.png)
+![TiDB Binlog architecture](/media/tidb_binlog_kafka_architecture.png)
 
-The TiDB-Binlog cluster mainly consists of three components:
+The TiDB Binlog cluster mainly consists of three components:
 
 ### Pump
 
@@ -40,13 +40,13 @@ The Kafka cluster stores the binlog data written by Pump and provides the binlog
 
 > **Note:**
 >
-> In the local version of TiDB-Binlog, the binlog is stored in files, while in the Kafka version, the binlog is stored using Kafka.
+> In the local version of TiDB Binlog, the binlog is stored in files, while in the Kafka version, the binlog is stored using Kafka.
 
-## Install TiDB-Binlog
+## Install TiDB Binlog
 
 The corresponding relationship between the `tidb-ansible` branch and the TiDB version is as follows:
 
-| tidb-ansible branch | TiDB version | Note |
+| TiDB Ansible branch | TiDB version | Note |
 | ------------------- | ------------ | ---- |
 | release-2.0 | 2.0 version | The latest 2.0 stable version. You can use it in the production environment. |
 
@@ -65,7 +65,7 @@ tar -xzf tidb-binlog-kafka-linux-amd64.tar.gz
 cd tidb-binlog-kafka-linux-amd64
 ```
 
-## Deploy TiDB-Binlog
+## Deploy TiDB Binlog
 
 ### Note
 
@@ -117,7 +117,7 @@ cd tidb-binlog-kafka-linux-amd64
 
     The data which outputs to kafka follows the binlog format sorted by ts and defined by protobuf. See [driver](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/driver) to access the data and sync to the down stream.
 
-- Deploy Kafka and ZooKeeper cluster before deploying TiDB-Binlog. Make sure that Kafka is 0.9 version or later.
+- Deploy Kafka and ZooKeeper cluster before deploying TiDB Binlog. Make sure that Kafka is 0.9 version or later.
 
 #### Recommended Kafka cluster configuration
 
@@ -136,10 +136,10 @@ cd tidb-binlog-kafka-linux-amd64
     - `replica.fetch.max.bytes=1073741824`
     - `fetch.message.max.bytes=1073741824`
 
-### Deploy Pump using TiDB-Ansible
+### Deploy Pump using TiDB Ansible
 
-- If you have not deployed the Kafka cluster, use the [Kafka-Ansible](https://github.com/pingcap/thirdparty-ops/tree/master/kafka-ansible) to deploy.
-- When you deploy the TiDB cluster using [TiDB-Ansible](https://github.com/pingcap/tidb-ansible), edit the `tidb-ansible/inventory.ini` file, set `enable_binlog = True`, and configure the `zookeeper_addrs` variable as the ZooKeeper address of the Kafka cluster. In this way, Pump is deployed while you deploy the TiDB cluster.
+- If you have not deployed the Kafka cluster, use the [Kafka Ansible](https://github.com/pingcap/thirdparty-ops/tree/master/kafka-ansible) to deploy.
+- When you deploy the TiDB cluster using [TiDB Ansible](https://github.com/pingcap/tidb-ansible), edit the `tidb-ansible/inventory.ini` file, set `enable_binlog = True`, and configure the `zookeeper_addrs` variable as the ZooKeeper address of the Kafka cluster. In this way, Pump is deployed while you deploy the TiDB cluster.
 
 Configuration example:
 
@@ -400,9 +400,9 @@ The PbReader usage example
 ./bin/pbReader -binlog-file=${path}/binlog-0000000000000000
 ```
 
-## Monitor TiDB-Binlog
+## Monitor TiDB Binlog
 
-This section introduces how to monitor TiDB-Binlog's status and performance, and display the metrics using Prometheus and Grafana.
+This section introduces how to monitor TiDB Binlog's status and performance, and display the metrics using Prometheus and Grafana.
 
 ### Configure Pump/Drainer
 

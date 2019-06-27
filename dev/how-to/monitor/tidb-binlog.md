@@ -1,16 +1,17 @@
 ---
-title: TiDB-Binlog Monitoring
-summary: Learn how to monitor the cluster version of TiDB-Binlog.
+title: TiDB Binlog Monitoring
+summary: Learn how to monitor the cluster version of TiDB Binlog.
 category: reference
+
 ---
 
-# TiDB-Binlog Monitoring
+# TiDB Binlog Monitoring
 
-After you have deployed TiDB-Binlog using Ansible successfully, you can go to the Grafana Web (default address: <http://grafana_ip:3000>, default account: admin, password: admin) to check the state of Pump and Drainer.
+After you have deployed TiDB Binlog using Ansible successfully, you can go to the Grafana Web (default address: <http://grafana_ip:3000>, default account: admin, password: admin) to check the state of Pump and Drainer.
 
 ## Monitoring metrics
 
-TiDB-Binlog consists of two components: Pump and Drainer. This section shows the monitoring metrics of Pump and Drainer.
+TiDB Binlog consists of two components: Pump and Drainer. This section shows the monitoring metrics of Pump and Drainer.
 
 ### Pump monitoring metrics
 
@@ -45,7 +46,7 @@ To understand the Drainer monitoring metrics, check the following table:
 
 ## Alert rules
 
-Currently, TiDB-Binlog monitoring metrics are divided into the following three types based on the level of importance:
+Currently, TiDB Binlog monitoring metrics are divided into the following three types based on the level of importance:
 
 - [Emergency](#emergency)
 - [Critical](#critical)

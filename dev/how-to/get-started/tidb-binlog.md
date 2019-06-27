@@ -24,7 +24,8 @@ You can use TiDB-Binlog for incremental backups, to replicate data from one TiDB
 
 TiDB-Binlog is particularly useful when you migrate data from MySQL or MariaDB to TiDB, in which case you may use the TiDB DM (Data Migration) platform to get data from a MySQL/MariaDB cluster into TiDB, and then use TiDB-Binlog to keep a separate, downstream MySQL/MariaDB instance/cluster in sync with your TiDB cluster. TiDB-Binlog enables application traffic to TiDB to be pushed to a downstream MySQL or MariaDB instance/cluster, which reduces the risk of a migration to TiDB because you can easily revert the application to MySQL or MariaDB without downtime or data loss.
 
-See [TiDB-Binlog Cluster User Guide](/reference/tools/tidb-binlog/overview.md) for more information.
+
+See [TiDB Binlog Cluster User Guide](/reference/tidb-binlog-overview.md) for more information.
 
 ## Architecture
 
@@ -327,7 +328,7 @@ You should see the same rows that you inserted into TiDB when querying the Maria
 
 ## binlogctl
 
-Information about Pumps and Drainers that have joined the cluster is stored in PD. You can use the binlogctl tool query and manipulate information about their states. See [binlogctl guide](/reference/tools/tidb-binlog/operation.md#binlogctl-guide) for more information.
+Information about Pumps and Drainers that have joined the cluster is stored in PD. You can use the binlogctl tool query and manipulate information about their states. See [binlogctl guide](/how-to/maintain/tidb-binlog.md#binlogctl-guide) for more information.
 
 Use `binlogctl` to get a view of the current status of Pumps and Drainers in the cluster:
 

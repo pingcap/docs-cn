@@ -1,21 +1,23 @@
 ---
-title: TiDB-Binlog Cluster Deployment
-summary: Learn how to deploy TiDB-Binlog cluster.
+title: TiDB Binlog Cluster Deployment
+summary: Learn how to deploy TiDB Binlog cluster.
 category: reference
+aliases: ['/docs/tools/binlog/deploy/','/docs/dev/reference/tools/tidb-binlog/deploy/']
+
 ---
 
-# TiDB-Binlog Cluster Deployment
+# TiDB Binlog Cluster Deployment
 
-This document describes two methods of deploying TiDB-Binlog:
+This document describes two methods of deploying TiDB Binlog:
 
-- [Deploy TiDB-Binlog using TiDB-Ansible](#deploy-tidb-binlog-using-tidb-ansible)
-- [Deploy TiDB-Binlog using a Binary package](#deploy-tidb-binlog-using-a-binary-package)
+- [Deploy TiDB Binlog using TiDB-Ansible](#deploy-tidb-binlog-using-tidb-ansible)
+- [Deploy TiDB Binlog using a Binary package](#deploy-tidb-binlog-using-a-binary-package)
 
-It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to do a simple testing, you can deploy TiDB-Binlog using a Binary package.
+It is recommended to deploy TiDB Binlog using TiDB-Ansible. If you just want to do a simple testing, you can deploy TiDB Binlog using a Binary package.
 
-## Deploy TiDB-Binlog using TiDB-Ansible 
+## Deploy TiDB Binlog using TiDB Ansible 
 
-### Step 1: Download TiDB-Ansible
+### Step 1: Download TiDB Ansible
 
 1. Use the TiDB user account to log in to the central control machine and go to the `/home/tidb` directory. The information about the branch of TiDB-Ansible and the corresponding TiDB version is as follows. If you have questions regarding which version to use, email to [info@pingcap.com](mailto:info@pingcap.com) for more information or [file an issue](https://github.com/pingcap/tidb-ansible/issues/new).
 
@@ -234,7 +236,7 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
     $ ansible-playbook start_drainer.yml
     ```
 
-## Deploy TiDB-Binlog using a Binary package
+## Deploy TiDB Binlog using a Binary package
 
 ### Download the official Binary package
 
@@ -511,7 +513,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
 > **Note:**
 > 
 > - When TiDB is running, you need to guarantee that at least one Pump is running normally.
-> - To enable the TiDB-Binlog service in TiDB server, use the `-enable-binlog` startup parameter in TiDB, or add enable=true to the [binlog] section of the TiDB server configuration file.
-> - Make sure that the TiDB-Binlog service is enabled in all TiDB instances in a same cluster, otherwise upstream and downstream data inconsistency might occur during data replication. If you want to temporarily run a TiDB instance where the TiDB-Binlog service is not enabled, set `run_ddl=false` in the TiDB configuration file.
+> - To enable the TiDB Binlog service in TiDB server, use the `-enable-binlog` startup parameter in TiDB, or add enable=true to the [binlog] section of the TiDB server configuration file.
+> - Make sure that the TiDB Binlog service is enabled in all TiDB instances in a same cluster, otherwise upstream and downstream data inconsistency might occur during data replication. If you want to temporarily run a TiDB instance where the TiDB Binlog service is not enabled, set `run_ddl=false` in the TiDB configuration file.
 > - Drainer does not support the `rename` DDL operation on the table of `ignore schemas` (the schemas in the filter list).
 > - If you want to start Drainer in an existing TiDB cluster, generally you need to make a full backup of the cluster data, obtain `savepoint`, import the data to the target database, and then start Drainer to replicate the incremental data from `savepoint`.
