@@ -45,8 +45,8 @@ git clone -b 5.0-mysql-support-opt https://github.com/pingcap/benchmarksql.git
 | 组件 | GitHash |
 | :-: | :-: |
 | TiDB | 08e56cd3bae166b2af3c2f52354fbc9818717f62 |
-| TiKV | 57e684016dafb17dc8a6837d30224be66cbc7246 |
-| PD | 6a7832d2d6e5b2923c79683183e63d030f954563 |
+| TiKV | a467f410d235fa9c5b3c355e3b620f81d3ac0e0c |
+| PD | 70aaa5eee830e21068f1ba2d4c9bae59153e5ca3 |
 
 ### v2.1.13
 
