@@ -743,7 +743,7 @@ rocksdb defaultcf 相关的配置项。
 
 ### `block-size`
 
-+ rocksdb block size。
++ 设置 rocksdb block 大小。
 + 默认值：64KB
 + 最小值：1KB
 + 单位：KB|MB|GB
