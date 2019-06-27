@@ -6,7 +6,7 @@ aliases: ['/docs-cn/sql/slow-query/']
 
 # 慢查询日志
 
-TiDB 在 V2.1.8 之后更改了慢日志格式，V2.1.8 之前的版本请看[这个文档](<https://github.com/pingcap/docs-cn/blob/master/v2.1/sql/slow-query.md>)。
+TiDB 在 V2.1.8 之后更改了慢日志格式，V2.1.8 之前的版本请看[这个文档](https://github.com/pingcap/docs-cn/blob/master/v2.1-legacy/sql/slow-query.md)。
 
 > **注意：**
 >
@@ -254,3 +254,21 @@ admin show slow top all 5
 ```
 
 由于内存限制，保留的慢查询记录的条数是有限的。当命令查询的 `N` 大于记录条数时，返回的结果记录条数会小于 `N`。
+
+输出内容详细说明，如下:
+   
+| 列名 | 描述 |
+|:------|:---- |
+| start | SQL 语句执行开始时间 |
+| duration | SQL 语句执行持续时间 |
+| details | 执行语句的详细信息 |
+| succ | SQL 语句执行是否成功，1: 成功，0: 失败 |
+| conn_id | session 连接 ID |
+| transcation_ts | 事务提交的 commit ts |
+| user | 执行该语句的用户名 |
+| db | 执行该 SQL 涉及到 database |
+| table_ids | 执行该 SQL 涉及到表的 ID |
+| index_ids | 执行该 SQL 涉及到索引 ID |
+| internal | 表示为 TiDB 内部的 SQL 语句 |
+| digest | 表示 SQL 语句的指纹 |
+| sql | 执行的 SQL 语句 |

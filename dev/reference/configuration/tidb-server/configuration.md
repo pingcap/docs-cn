@@ -101,6 +101,11 @@ TiDB 通过命令行参数或环境变量配置。默认的 TiDB 端口为 4000�
 + Prometheus 统计可以通过 "http://host:status_port/metrics" 访问
 + Pprof 数据可以通过 "http://host:status_port/debug/pprof" 访问
 
+## `--status-host`
+
++ TiDB 服务状态监听 host
++ 默认："0.0.0.0" 
+
 ## `--metrics-addr`
 
 + Prometheus Pushgateway 地址
@@ -134,3 +139,7 @@ TiDB 通过命令行参数或环境变量配置。默认的 TiDB 端口为 4000�
 > **注意：**
 >
 > 请不要配置成 0，除非特殊情况，一般使用默认值即可。
+
+## `--cors`
++ 用于设置 TiDB HTTP 状态服务的 Access-Control-Allow-Origin
++ 默认：""
