@@ -762,7 +762,7 @@ rocksdb defaultcf 相关的配置项。
 
 ### `cache-index-and-filter-blocks`
 
-+ 开启 缓存 index 和 filter 的开关。
++ 开启或关闭缓存 index 和 filter。
 + 默认值：true 
 
 ### `pin-l0-filter-and-index-blocks`
