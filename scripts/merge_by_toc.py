@@ -11,7 +11,6 @@ from __future__ import print_function, unicode_literals
 import re
 import os
 
-
 followups = []
 in_toc = False
 contents = []
@@ -25,6 +24,9 @@ level_pattern = re.compile(r'(\s*[\-\+]+)\s')
 heading_patthern = re.compile(r'(^#+|\n#+)\s')
 
 for version in docs_versions:
+    contents = []
+    followups = []
+    in_toc = False
     entry_file = version + "/TOC.md"
 
     # stage 1, parse toc
@@ -50,15 +52,15 @@ for version in docs_versions:
                 if matches:
                     for match in matches:
                         fpath = match[2]
-                        if fpath.endswith('.md'):
+                        if fpath.startswith('http'):
+                            ## remove list format character `- `, `+ `
+                            followups.append(('TOC', level, line.strip()[2:]))
+                        elif fpath.endswith('.md'):
                             fpath = version + '/' + fpath
                             key = ('FILE', level, fpath)
                             if key not in followups:
                                 print(key)
                                 followups.append(key)
-                        elif fpath.startswith('http'):
-                            ## remove list format character `- `, `+ `
-                            followups.append(('TOC', level, line.strip()[2:]))
                 else:
                     name = line.strip().split(None, 1)[-1]
                     key = ('TOC', level, name)
@@ -176,3 +178,4 @@ for version in docs_versions:
     target_doc_file = version + '/doc.md'
     with open(target_doc_file, 'w') as fp:
         fp.write('\n'.join(contents))
+        contents = []
