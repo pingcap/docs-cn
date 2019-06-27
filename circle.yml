@@ -42,7 +42,7 @@ jobs:
 
       - run:
           name: "Copy Generated PDF"
-          command: mkdir /tmp/artifacts && cp dev/output.pdf dev/doc.md v3.0/output.pdf v3.0/doc.md v2.1/output.pdf v2.1/doc.md /tmp/artifacts
+          command: mkdir /tmp/artifacts && cp dev/output.pdf dev/doc.md /tmp/artifacts && cp v3.0/output.pdf v3.0/doc.md /tmp/artifacts && cp v2.1/output.pdf v2.1/doc.md /tmp/artifacts
 
       - store_artifacts:
           path: /tmp/artifacts
