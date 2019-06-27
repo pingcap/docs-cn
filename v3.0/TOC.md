@@ -241,7 +241,9 @@
     - [`information_schema`](reference/system-databases/information-schema.md)
   - [错误码](reference/error-codes.md)
   - [支持的连接器和 API](reference/supported-clients.md)
-  - [垃圾回收 (GC)](reference/garbage-collection.md)
+  + 垃圾回收 (GC)
+    - [GC 机制简介](reference/garbage-collection/overview.md)
+    - [GC 配置](reference/garbage-collection/configuration.md)
   + 性能调优
     - [SQL 优化流程](reference/performance/sql-optimizer-overview.md)
     - [理解 TiDB 执行计划](reference/performance/understanding-the-query-execution-plan.md)
