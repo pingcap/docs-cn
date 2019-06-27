@@ -146,6 +146,7 @@
       - [Information Functions](reference/sql/functions-and-operators/information-functions.md)
       - [JSON Functions](reference/sql/functions-and-operators/json-functions.md)
       - [Aggregate (GROUP BY) Functions](reference/sql/functions-and-operators/aggregate-group-by-functions.md)
+      - [Window Functions](reference/sql/functions-and-operators/window-functions.md)
       - [Miscellaneous Functions](reference/sql/functions-and-operators/miscellaneous-functions.md)
       - [Precision Math](reference/sql/functions-and-operators/precision-math.md)
     + SQL Statements
