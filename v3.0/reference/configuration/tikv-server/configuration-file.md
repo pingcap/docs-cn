@@ -757,7 +757,7 @@ rocksdb defaultcf 相关的配置项。
 
 ### `disable-block-cache`
 
-+ 开启 block cache 开关。
++ 开启或关闭 block cache。
 + 默认值：false
 
 ### `cache-index-and-filter-blocks`
