@@ -336,7 +336,7 @@ prepare 语句的 Plan cache 设置。
 
 ### `enable`
 
-+ 开启
++ 开启或关闭事务内存锁
 + 默认值：false
 
 ### `capacity`
