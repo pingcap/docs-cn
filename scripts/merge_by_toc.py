@@ -25,6 +25,9 @@ heading_patthern = re.compile(r'(^#+|\n#+)\s')
 
 for version in docs_versions:
     entry_file = version + "/TOC.md"
+    followups = []
+    in_toc = False
+    contents = []
 
     # stage 1, parse toc
     with open(entry_file) as fp:
