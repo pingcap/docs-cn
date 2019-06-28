@@ -36,7 +36,7 @@
     - [使用 Ansible 部署 DM 集群](how-to/deploy/data-migration-with-ansible.md)
     - [部署 TiDB Binlog 集群](how-to/deploy/tidb-binlog.md)
     - [部署 TiDB Operator](how-to/deploy/tidb-operator.md)
-    - [访问 Kubernetes 上的 TiDB 集群](how-to/deploy/tidb-in-kubernetes/access-tidb.md)
+    - [访问 Kubernetes 上的 TiDB 集群](how-to/deploy/orchestrated/tidb-in-kubernetes/access-tidb.md)
   + 配置
     - [时区](how-to/configure/time-zone.md)
     - [内存控制](how-to/configure/memory-control.md)
