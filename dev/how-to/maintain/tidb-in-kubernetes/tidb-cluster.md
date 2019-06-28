@@ -261,7 +261,7 @@ kubectl port-forward -n ${namespace} svc/${releaseName}-grafana 3000:3000 &>/tmp
 
 然后在浏览器中打开 [http://localhost:3000](http://localhost:3000)，默认用户名和密码都为 `admin`。
 
-Grafana 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持负载均衡器，你可以修改为 `LoadBalancer`，然后通过负载均衡器访问面板。
+Grafana 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持负载均衡器，你可以修改为 `LoadBalancer`，然后通过负载均衡器访问面板。详请参阅[访问 Kubernetes 上的 TiDB 集群](/how-to/deploy/orchestrated/tidb-in-kubernetes/access-tidb.md)。
 
 ### 查看 TiDB 慢查询日志
 

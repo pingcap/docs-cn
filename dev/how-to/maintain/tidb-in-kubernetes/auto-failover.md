@@ -5,9 +5,9 @@ category: how-to
 
 # Kubernetes 上的 TiDB 集群故障自动转移
 
-故障自动转移是指在 TiDB 集群的某些节点出现故障时，TiDB Operator 会自动添加一个节点，保证 TiDB 集群的高可用，类似于 K8s 的 Deployment 行为。
+故障自动转移是指在 TiDB 集群的某些节点出现故障时，TiDB Operator 会自动添加一个节点，保证 TiDB 集群的高可用，类似于 K8s 的 `Deployment` 行为。
 
-由于 TiDB Operator 基于 StatefulSet 来管理 Pod，但 StatefulSet 在某些 Pod 发生故障时不会自动创建新节点来替换旧节点，所以，TiDB Operator 扩展了 StatefulSet 的这种行为，添加了 failover 功能。
+由于 TiDB Operator 基于 `StatefulSet` 来管理 Pod，但 `StatefulSet` 在某些 Pod 发生故障时不会自动创建新节点来替换旧节点，所以，TiDB Operator 扩展了 `StatefulSet` 的这种行为，添加了 failover 功能。
 
 Auto Failover 功能在 TiDB Operator 中默认关闭，需要在部署 TiDB Operator 时开启，开启方法为设置 `charts/tidb-operator/values.yaml` 文件的 `controllerManager.autoFailover` 为 `true`：
 
@@ -83,4 +83,4 @@ status
 
 ### TiDB 故障转移策略
 
-假设 TiDB 集群有 3 个节点，TiDB 的故障转移策略跟 K8s Deployment 的是一致的，如果一个 TiDB 节点挂掉超过 5 分钟（`tidbFailoverPeriod` 可配置），TiDB Operator 会添加一个新的 TiDB 节点。此时会有 4 个 Pod 同时存在，待挂掉的 TiDB 节点恢复后，Operator 会将新启动的节点删除掉，恢复成原来的 3 个节点。
+假设 TiDB 集群有 3 个节点，TiDB 的故障转移策略跟 K8s `Deployment` 的是一致的，如果一个 TiDB 节点挂掉超过 5 分钟（`tidbFailoverPeriod` 可配置），TiDB Operator 会添加一个新的 TiDB 节点。此时会有 4 个 Pod 同时存在，待挂掉的 TiDB 节点恢复后，TiDB Operator 会将新启动的节点删除掉，恢复成原来的 3 个节点。
