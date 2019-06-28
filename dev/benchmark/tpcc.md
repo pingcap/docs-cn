@@ -69,18 +69,7 @@ enabled = true
 
 ### TiKV 参数配置
 
-```txt
-[readpool.storage]
-normal-concurrency = 8
-[server]
-grpc-concurrency = 8
-[raftstore]
-sync-log = false
-[rocksdb.defaultcf]
-block-cache-size = "60GB"
-[rocksdb.writecf]
-block-cache-size = "20GB"
-```
+默认配置
 
 ### 集群拓扑
 
