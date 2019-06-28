@@ -23,7 +23,7 @@ TiDB 版本：v3.0.0 vs. v2.1.13
 测试在 AWS EC2 上进行，使用 CentOS-7.6.1810-Nitro (ami-028946f4cffc8b916) 镜像，各组件实例类型如下：
 
 | 组件  |  实例类型  |
-| :---: | :--------- |
+| :--- | :--------- |
 |  PD   | r5d.xlarge |
 | TiKV  | c5d.xlarge |
 | TiDB  | c5.xlarge  |
