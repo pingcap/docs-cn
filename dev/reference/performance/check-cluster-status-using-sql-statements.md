@@ -7,7 +7,7 @@ category: reference
 
 为了方便排查问题，TiDB 提供了一些 SQL 语句和系统表以查询一些有用的信息。
 
-`INFORMATION\_SCHEMA` 中提供了如下几个系统表，用于查询集群状态，诊断常见的集群问题。
+`INFORMATION_SCHEMA` 中提供了如下几个系统表，用于查询集群状态，诊断常见的集群问题。
 
 - [`TABLES`](/reference/system-databases/information-schema.md#tables-表)
 - [`TIDB_INDEXES`](/reference/system-databases/information-schema.md#tidb-indexes-表)
