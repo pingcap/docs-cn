@@ -240,6 +240,7 @@
     - [Security Compatibility with MySQL](reference/security/compatibility.md)
     - [The TiDB Access Privilege System](reference/security/privilege-system.md)
     - [TiDB User Account Management](reference/security/user-account-management.md)
+    - [Role-Based Access Control](reference/security/role-based-access-control.md)
   + Transactions
     - [Overview](reference/transactions/overview.md)
     - [Transaction Model](reference/transactions/transaction-model.md)
