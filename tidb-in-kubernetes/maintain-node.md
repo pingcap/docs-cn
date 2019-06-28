@@ -115,10 +115,10 @@ kubectl port-forward svc/${CLUSTER_NAME}-pd 2379:2379
 {{< copyable "shell-regular" >}}
 
 ```shell
-pd-ctl -d 
+pd-ctl -d config set max-store-down-time 10m
 ```
 
-调整 `max-store-donw-time` 到合理的值后，后续的操作方式与[维护 PD 和 TiDB 实例所在节点](#维护-pd-和-tidb-实例所在节点)相同。 
+调整 `max-store-down-time` 到合理的值后，后续的操作方式与[维护 PD 和 TiDB 实例所在节点](#维护-pd-和-tidb-实例所在节点)相同。 
 
 ### 维护短期内不可恢复的节点
 
