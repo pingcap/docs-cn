@@ -6,7 +6,7 @@ category: reference
 
 # CREATE TABLE 
 
-This statement creates a new table in the currently selected database. See also `CREATE TABLE AS`, which is documented separately.
+This statement creates a new table in the currently selected database. See also `CREATE TABLE LIKE`, which is documented separately.
 
 ## Synopsis
 

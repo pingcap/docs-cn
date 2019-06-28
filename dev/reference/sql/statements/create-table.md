@@ -6,7 +6,7 @@ category: reference
 
 # CREATE TABLE 
 
-This statement creates a new table in the currently selected database. See also `CREATE TABLE AS`, which is documented separately.
+This statement creates a new table in the currently selected database. See also `CREATE TABLE LIKE`, which is documented separately.
 
 ## Synopsis
 
@@ -53,6 +53,122 @@ This statement creates a new table in the currently selected database. See also 
 **TableOptionListOpt:**
 
 ![TableOptionListOpt](/media/sqlgram-dev/TableOptionListOpt.png)
+
+## Syntax
+
+```sql
+CREATE TABLE [IF NOT EXISTS] tbl_name
+    (create_definition,...)
+    [table_options]
+
+CREATE TABLE [IF NOT EXISTS] tbl_name
+    { LIKE old_tbl_name | (LIKE old_tbl_name) }
+
+create_definition:
+    col_name column_definition
+  | [CONSTRAINT [symbol]] PRIMARY KEY [index_type] (index_col_name,...)
+      [index_option] ...
+  | {INDEX|KEY} [index_name] [index_type] (index_col_name,...)
+      [index_option] ...
+  | [CONSTRAINT [symbol]] UNIQUE [INDEX|KEY]
+      [index_name] [index_type] (index_col_name,...)
+      [index_option] ...
+  | {FULLTEXT} [INDEX|KEY] [index_name] (index_col_name,...)
+      [index_option] ...
+  | [CONSTRAINT [symbol]] FOREIGN KEY
+      [index_name] (index_col_name,...) reference_definition
+
+column_definition:
+    data_type [NOT NULL | NULL] [DEFAULT default_value]
+      [AUTO_INCREMENT] [UNIQUE [KEY] | [PRIMARY] KEY]
+      [COMMENT 'string']
+      [reference_definition]
+  | data_type [GENERATED ALWAYS] AS (expression)
+      [VIRTUAL | STORED] [UNIQUE [KEY]] [COMMENT comment]
+      [NOT NULL | NULL] [[PRIMARY] KEY]
+
+data_type:
+    BIT[(length)]
+  | TINYINT[(length)] [UNSIGNED] [ZEROFILL]
+  | SMALLINT[(length)] [UNSIGNED] [ZEROFILL]
+  | MEDIUMINT[(length)] [UNSIGNED] [ZEROFILL]
+  | INT[(length)] [UNSIGNED] [ZEROFILL]
+  | INTEGER[(length)] [UNSIGNED] [ZEROFILL]
+  | BIGINT[(length)] [UNSIGNED] [ZEROFILL]
+  | REAL[(length,decimals)] [UNSIGNED] [ZEROFILL]
+  | DOUBLE[(length,decimals)] [UNSIGNED] [ZEROFILL]
+  | FLOAT[(length,decimals)] [UNSIGNED] [ZEROFILL]
+  | DECIMAL[(length[,decimals])] [UNSIGNED] [ZEROFILL]
+  | NUMERIC[(length[,decimals])] [UNSIGNED] [ZEROFILL]
+  | DATE
+  | TIME[(fsp)]
+  | TIMESTAMP[(fsp)]
+  | DATETIME[(fsp)]
+  | YEAR
+  | CHAR[(length)] [BINARY]
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | VARCHAR(length) [BINARY]
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | BINARY[(length)]
+  | VARBINARY(length)
+  | TINYBLOB
+  | BLOB
+  | MEDIUMBLOB
+  | LONGBLOB
+  | TINYTEXT [BINARY]
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | TEXT [BINARY]
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | MEDIUMTEXT [BINARY]
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | LONGTEXT [BINARY]
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | ENUM(value1,value2,value3,...)
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | SET(value1,value2,value3,...)
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | JSON
+
+index_col_name:
+    col_name [(length)] [ASC | DESC]
+
+index_type:
+    USING {BTREE | HASH}
+
+index_option:
+    KEY_BLOCK_SIZE [=] value
+  | index_type
+  | COMMENT 'string'
+
+reference_definition:
+    REFERENCES tbl_name (index_col_name,...)
+      [MATCH FULL | MATCH PARTIAL | MATCH SIMPLE]
+      [ON DELETE reference_option]
+      [ON UPDATE reference_option]
+
+reference_option:
+    RESTRICT | CASCADE | SET NULL | NO ACTION | SET DEFAULT
+
+table_options:
+    table_option [[,] table_option] ...
+
+table_option:
+    AUTO_INCREMENT [=] value
+  | AVG_ROW_LENGTH [=] value
+  | [DEFAULT] CHARACTER SET [=] charset_name
+  | CHECKSUM [=] {0 | 1}
+  | [DEFAULT] COLLATE [=] collation_name
+  | COMMENT [=] 'string'
+  | COMPRESSION [=] {'ZLIB'|'LZ4'|'NONE'}
+  | CONNECTION [=] 'connect_string'
+  | DELAY_KEY_WRITE [=] {0 | 1}
+  | ENGINE [=] engine_name
+  | KEY_BLOCK_SIZE [=] value
+  | MAX_ROWS [=] value
+  | MIN_ROWS [=] value
+  | ROW_FORMAT [=] {DEFAULT|DYNAMIC|FIXED|COMPRESSED|REDUNDANT|COMPACT}
+  | STATS_PERSISTENT [=] {DEFAULT|0|1}
+```
 
 ## Examples
 
