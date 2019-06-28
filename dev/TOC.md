@@ -27,16 +27,16 @@
       - [使用 Ansible 离线部署](how-to/deploy/orchestrated/offline-ansible.md)
       - [使用 Docker 部署](how-to/deploy/orchestrated/docker.md)
       + 使用 Kubernetes 部署
-        - [阿里云](how-to/deploy/orchestrated/tidb-in-kubernetes-alibaba-cloud.md)
-        - [AWS EKS](how-to/deploy/orchestrated/tidb-in-kubernetes-aws-eks.md)
-        - [GCP](how-to/deploy/orchestrated/tidb-in-kubernetes-gcp-gke.md)
+        - [阿里云](how-to/deploy/orchestrated/tidb-in-kubernetes/alibaba-cloud.md)
+        - [AWS EKS](how-to/deploy/orchestrated/tidb-in-kubernetes/aws-eks.md)
+        - [GCP](how-to/deploy/orchestrated/tidb-in-kubernetes/gcp-gke.md)
     + 跨地域冗余
       - [跨数据中心部署方案](how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](how-to/deploy/geographic-redundancy/location-awareness.md)
     - [使用 Ansible 部署 DM 集群](how-to/deploy/data-migration-with-ansible.md)
     - [部署 TiDB Binlog 集群](how-to/deploy/tidb-binlog.md)
     - [部署 TiDB Operator](how-to/deploy/tidb-operator.md)
-    - [访问 Kubernetes 上的 TiDB 集群](how-to/deploy/access-tidb-in-kubernetes.md)
+    - [访问 Kubernetes 上的 TiDB 集群](how-to/deploy/tidb-in-kubernetes/access-tidb.md)
   + 配置
     - [时区](how-to/configure/time-zone.md)
     - [内存控制](how-to/configure/memory-control.md)
