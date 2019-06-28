@@ -1,13 +1,13 @@
 ---
-title: 维护节点
+title: 维护 Kubernetes 上的 TiDB 集群节点
 category: how-to
 ---
 
-# 维护节点
+# 维护 Kubernetes 上的 TiDB 集群节点
 
 TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正常运行，因此，我们可以安全地对底层 Kubernetes 节点进行停机维护。在具体操作时，针对 PD、TiKV 和 TiDB 实例的不同特性，我们需要采取不同的操作策略。
 
-本文档将详细介绍如何对 Kuberentes 节点进行临时或长期的维护操作。
+本文档将详细介绍如何对 Kubernetes 节点进行临时或长期的维护操作。
 
 环境准备：
 
@@ -115,10 +115,10 @@ kubectl port-forward svc/${CLUSTER_NAME}-pd 2379:2379
 {{< copyable "shell-regular" >}}
 
 ```shell
-pd-ctl -d 
+pd-ctl -d
 ```
 
-调整 `max-store-donw-time` 到合理的值后，后续的操作方式与[维护 PD 和 TiDB 实例所在节点](#维护-pd-和-tidb-实例所在节点)相同。 
+调整 `max-store-donw-time` 到合理的值后，后续的操作方式与[维护 PD 和 TiDB 实例所在节点](#维护-pd-和-tidb-实例所在节点)相同。
 
 ### 维护短期内不可恢复的节点
 
@@ -127,7 +127,7 @@ pd-ctl -d
 1. 使用 `kubectl cordon` 命令防止新的 Pod 调度到待维护节点上：
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     kubectl cordon <node-name>
     ```
@@ -135,7 +135,7 @@ pd-ctl -d
 2. 查看待维护节点上的 TiKV 实例：
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     tkctl get -A tikv | grep <node-name>
     ```
@@ -143,27 +143,27 @@ pd-ctl -d
 3. 使用 `pd-ctl` 主动下线 TiKV 实例。
 
     > **注意：**
-    > 
+    >
     > 下线 TiKV 实例前，需要保证集群中剩余的 TiKV 实例数不少于 PD 配置中的 TiKV 数据副本数（配置项：`max-replicas`）。假如不符合该条件，需要先操作扩容 TiKV。
 
     查看 TiKV 实例的 `store-id`：
-    
+
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     kubectl get tc ${CLUSTER_NAME} -ojson | jq '.status.tikv.stores | .[] | select ( .podName == "${POD_NAME}" ) | .id'
     ```
-    
+
     下线实例：
-    
+
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     kubectl port-forward svc/${CLUSTER_NAME}-pd 2379:2379
     ```
-    
+
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     pd-ctl -d store delete ${ID}
     ```
@@ -171,7 +171,7 @@ pd-ctl -d
 4. 等待 store 状态（`state_name`）转移为 `Tombstone`：
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     $ watch pd-ctl -d store ${ID}
     ```
@@ -237,4 +237,3 @@ pd-ctl -d
     ```
 
 至此，操作完成。
-

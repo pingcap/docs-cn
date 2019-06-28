@@ -1,9 +1,9 @@
 ---
-title: tkctl 使用说明
+title: tkctl 使用指南
 category: reference
 ---
 
-# tkctl 使用说明
+# tkctl 使用指南
 
 `tkctl` (TiDB Kubernetes Control) 是为 TiDB in Kubernetes 设计的命令行工具，用于运维集群和诊断集群问题。
 
@@ -389,8 +389,7 @@ should contain a corresponding time unit (e.g. 1s, 2m, 3h). A value of zero mean
       --vmodule=: comma-separated list of pattern=N settings for file-filtered logging
 ```
 
-这些参数主要用于指定如何连接 Kubernetes 集群，其中最常用的参数是： 
+这些参数主要用于指定如何连接 Kubernetes 集群，其中最常用的参数是：
 
 - `--context`：指定目标 Kubernetes 集群
 - `--namespace`：指定 Namespace
-

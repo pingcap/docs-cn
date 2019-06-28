@@ -1,9 +1,9 @@
 ---
-title: TiDB in K8s 集群配置
+title: Kubernetes 上的 TiDB 集群配置
 category: reference
 ---
 
-# TiDB in K8s 集群配置
+# Kubernetes 上的 TiDB 集群配置
 
 TiDB Operator 使用 Helm 部署和管理 TiDB 集群，TiDB 集群的部署配置项见如下列表。`tidb-cluster` 的 `charts/tidb-cluster/values.yaml` 文件默认提供了基本的配置，通过这个基本配置，可以快速启动一个 TiDB 集群，但是如果用户需要特殊配置或是用于生产环境，则需要根据以下列表手动配置对应的配置项。
 
@@ -14,7 +14,7 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群，TiDB 集群的部署配�
 | 参数名 | 说明 | 默认值 |
 | :----- | :---- | :----- |
 | `rbac.create` | 是否启用 Kubernetes 的 RBAC | `true` |
-| `clusterName` | TiDB 集群名，默认不设置该变量，tidb-cluster 会直接用执行安装时的 `RealeaseName` 代替 | `nil` |
+| `clusterName` | TiDB 集群名，默认不设置该变量，`tidb-cluster` 会直接用执行安装时的 `RealeaseName` 代替 | `nil` |
 | `extraLabels` | TiDB 集群附加的自定义标签 参考：[labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) | `{}` |
 | `schedulerName` | TiDB 集群使用的调度器 | `tidb-scheduler` |
 | `timezone` | TiDB 集群默认时区 | `UTC` |

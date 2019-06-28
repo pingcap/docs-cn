@@ -1,11 +1,11 @@
 ---
-title: 服务暴露
+title: Kubernetes 上的 TiDB 服务暴露
 category: how-to
 ---
 
-# 服务暴露
+# Kubernetes 上的 TiDB 服务暴露
 
-在 Kubernetes 集群内访问 TiDB 时，使用 TiDB service 域名 `<tidbcluster-name>-tidb.<namespace>` 即可。若需要在集群外访问，则需将 TiDB 服务端口暴露出去。在 tidb-cluster helm chart 中，通过 values 文件中的 `tidb.service` 字段进行配置：
+在 Kubernetes 集群内访问 TiDB 时，使用 TiDB service 域名 `<tidbcluster-name>-tidb.<namespace>` 即可。若需要在集群外访问，则需将 TiDB 服务端口暴露出去。在 `tidb-cluster` Helm chart 中，通过 `values.yaml` 文件中的 `tidb.service` 字段进行配置：
 
 {{< copyable "" >}}
 

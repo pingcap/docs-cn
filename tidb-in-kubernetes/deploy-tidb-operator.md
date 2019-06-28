@@ -38,7 +38,7 @@ TiDB Operator 使用[持久化卷](https://kubernetes.io/docs/concepts/storage/p
 
 Kubernetes 集群建议启用 [RBAC](https://kubernetes.io/docs/admin/authorization/rbac)。否则，需要在 `tidb-operator` 和 `tidb-cluster` chart 的 `values.yaml` 中设置 `rbac.create` 为 `false`。
 
-TiDB 默认会使用很多文件描述符，[工作节点](https://access.redhat.com/solutions/61334)和上面的 Docker 进程的 ulimit 必须设置大于等于 `1048576`：
+TiDB 默认会使用很多文件描述符，[工作节点](https://access.redhat.com/solutions/61334)和上面的 Docker 进程的 `ulimit` 必须设置大于等于 `1048576`：
 
 {{< copyable "shell-regular" >}}
 
@@ -199,4 +199,4 @@ TiDB Operator 是用来管理 TiDB 集群的，也就是说，如果 TiDB 集群
 
 ## 升级 Kubernetes
 
-当你的 Kubernetes 集群有版本升级，请确保 `kubeSchedulerImageTag` 与之匹配。默认情况下，这个值是由 Helm 在安装或者升级过程中生成的，要修改它你需要执行 helm upgrade。
+当你的 Kubernetes 集群有版本升级，请确保 `kubeSchedulerImageTag` 与之匹配。默认情况下，这个值是由 Helm 在安装或者升级过程中生成的，要修改它你需要执行 `helm upgrade`。

@@ -241,7 +241,7 @@ kubectl delete pvc -n ${namespace} -l app.kubernetes.io/instance=${releaseName},
 kubectl get pv -l app.kubernetes.io/namespace=${namespace},app.kubernetes.io/managed-by=tidb-operator,app.kubernetes.io/instance=${releaseName} -o name | xargs -I {} kubectl patch {} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
 ```
 
-> **警告：** 
+> **警告：**
 >
 > 上述命令会彻底删除数据，务必考虑清楚再执行。
 
@@ -259,7 +259,7 @@ TiDB 通过 Prometheus 和 Grafana 监控 TiDB 集群。TiDB 集群创建时，�
 kubectl port-forward -n ${namespace} svc/${releaseName}-grafana 3000:3000 &>/tmp/portforward-grafana.log
 ```
 
-然后在浏览器中打开 http://localhost:3000，默认用户名和密码都为 `admin`。
+然后在浏览器中打开 [http://localhost:3000](http://localhost:3000)，默认用户名和密码都为 `admin`。
 
 Grafana 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持负载均衡器，你可以修改为 `LoadBalancer`，然后通过负载均衡器访问面板。
 

@@ -1,9 +1,9 @@
 ---
-title: 扩缩容 TiDB 集群
+title: Kubernetes 上的 TiDB 集群扩缩容
 category: how-to
 ---
 
-# 扩缩容 TiDB 集群
+# Kubernetes 上的 TiDB 集群扩缩容
 
 本文介绍 TiDB 在 Kubernetes 中如何进行水平扩缩容和垂直扩缩容。
 
@@ -66,6 +66,6 @@ TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达
     当所有 Pod 都重建完毕进入 `Running` 状态后，垂直扩缩容完成。
 
 > **注意：**
-> 
+>
 > - 如果在垂直扩容时修改了资源的 `requests` 字段，由于 PD、TiKV 使用了 `Local PV`，升级后还需要调度回原节点，如果原节点资源不够，则会导致 Pod 一直处于 `Pending` 状态而影响服务。
 > - TiDB 作为一个可水平扩展的数据库，推荐发挥 TiDB 集群可水平扩展的优势，而不是类似传统数据库仅仅是进行资源的叠加。
