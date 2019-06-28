@@ -1,6 +1,6 @@
 ---
 title: 基于角色的访问控制
-category: user guide
+category: reference
 ---
 
 # 基于角色的访问控制
