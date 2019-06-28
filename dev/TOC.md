@@ -62,12 +62,12 @@
     - [定位慢查询](how-to/maintain/identify-slow-queries.md)
     - [TiDB Binlog 集群运维](how-to/maintain/tidb-binlog.md)
     + Kubernetes 上的 TiDB 集群运维
-      - [管理 TiDB 集群](how-to/maintain/tidb-cluster-in-kubernetes.md)
-      - [维护 TiDB 节点](how-to/maintain/tidb-node-in-kubernetes.md)
-      - [集群故障自动转移](how-to/maintain/tidb-in-kubernetes-auto-failover.md)
+      - [管理 TiDB 集群](how-to/maintain/tidb-in-kubernetes/tidb-cluster.md)
+      - [维护 TiDB 节点](how-to/maintain/tidb-in-kubernetes/tidb-node.md)
+      - [集群故障自动转移](how-to/maintain/tidb-in-kubernetes/auto-failover.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](how-to/scale/with-ansible.md)
-    - [扩容缩容 Kubernetes 上的 TiDB 集群](how-to/scale/tidb-in-kubernetes.md)
+    - [Kubernetes 上的 TiDB 集群扩缩容](how-to/scale/tidb-in-kubernetes.md)
   + 升级
     - [升级至 TiDB 3.0](how-to/upgrade/from-previous-version.md)
     - [升级至 TiDB 2.1](how-to/upgrade/to-tidb-2.1.md)
@@ -235,9 +235,9 @@
       - [配置参数](reference/configuration/tikv-server/configuration.md)
       - [配置文件描述](reference/configuration/tikv-server/configuration-file.md)
     + Kubernetes 上的 TiDB 配置
-      - [配置 TiDB 集群](reference/configuration/tidb-in-kubernetes/cluster-configuration.md)
-      - [配置数据备份](reference/configuration/tidb-in-kubernetes/backup-configuration.md)
-      - [配置本地 PV](reference/configuration/tidb-in-kubernetes/local-pv-configuration.md)
+      - [TiDB 集群配置](reference/configuration/tidb-in-kubernetes/cluster-configuration.md)
+      - [备份配置参数](reference/configuration/tidb-in-kubernetes/backup-configuration.md)
+      - [本地 PV 配置](reference/configuration/tidb-in-kubernetes/local-pv-configuration.md)
   + 监控指标
     - [Overview 面板](reference/key-monitoring-metrics/overview-dashboard.md)
     - [TiDB 面板](reference/key-monitoring-metrics/tidb-dashboard.md)
@@ -270,6 +270,7 @@
   + [TiSpark 使用指南](reference/tispark.md)
   + [TiDB Binlog 简介](reference/tidb-binlog-overview.md)
   + 生态工具
+    - [tkctl](reference/tools/tkctl.md)
     - [Mydumper](reference/tools/mydumper.md)
     - [Loader](reference/tools/loader.md)
     - [Syncer](reference/tools/syncer.md)
@@ -314,7 +315,6 @@
     - [PD Recover](reference/tools/pd-recover.md)
     - [TiKV Control](reference/tools/tikv-control.md)
     - [TiDB Controller](reference/tools/tidb-control.md)
-    - [tkctl](reference/tools/tkctl.md)
     - [工具下载](reference/tools/download.md)
 + 常见问题 (FAQ)
   - [TiDB FAQ](faq/tidb.md)

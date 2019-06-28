@@ -1,6 +1,6 @@
 ---
 title: 在 Kubernetes 上部署 TiDB Operator
-summary: TiDB Operator 部署
+summary: 了解如何在 Kubernetes 上部署 TiDB Operator
 category: how-to
 ---
 
