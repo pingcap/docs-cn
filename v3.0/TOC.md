@@ -283,6 +283,7 @@
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](how-to/migrate/from-aurora.md)
       - [DM 故障诊断](how-to/troubleshoot/data-migration.md)
+      - [FAQ](faq/data-migration.md)
     + TiDB Lightning
       - [概述](reference/tools/tidb-lightning/overview.md)
       - [部署执行](reference/tools/tidb-lightning/deployment.md)
@@ -300,6 +301,7 @@
 + 常见问题 (FAQ)
   - [TiDB FAQ](faq/tidb.md)
   - [TiDB-Lightning FAQ](faq/tidb-lightning.md)
+  - [Data Migration FAQ](faq/data-migration.md)
   - [升级 FAQ](faq/upgrade.md)
 + 技术支持
   - [支持渠道](support-resources.md)
