@@ -260,3 +260,5 @@ store-pool-size = 3
 | 600     | 141430.86 |          114.72 |
 | 900     | 144371.76 |          170.48 |
 | 1200    | 143344.37 |          223.34 |
+
+![read write](../../media/sysbench_v4_read_write.png)
