@@ -166,7 +166,7 @@ tidb> SELECT /*!90000 "I should not run", */ "I should run" FROM dual;
 - Default collation:
     - The default collation of `utf8mb4` in TiDB is `utf8mb4_bin`.
     - The default collation of `utf8mb4` in MySQL 5.7 is `utf8mb4_general_ci`, but changes to `utf8mb4_0900_ai_ci` in MySQL 8.0.
-    - You can use the [`SHOW CHARACTER SET`](/dev/reference/sql/statements/show-character-set.md) statement to check the default collations of all character sets.
+    - You can use the [`SHOW CHARACTER SET`](/reference/sql/statements/show-character-set.md) statement to check the default collations of all character sets.
 - Default value of `foreign_key_checks`:
     - The default value in TiDB is `OFF` and currently TiDB only supports `OFF`.
     - The default value in MySQL 5.7 is `ON`.
