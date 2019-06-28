@@ -49,7 +49,7 @@ t22_r11
 
 #### 均匀切分
 
-由于 `row_id` 是整数，所以根据用户指定的 `lower_value`、`upper_value` 以及 `region_num`，可以很容易地计算出需要切分的 key。先计算出 step（`step = (upper_value - lower)/num`），然后在 `lower` 和 `upper` 之间每隔 step 区间切一次，最终切出 `num` 个 Region。
+由于 `row_id` 是整数，所以根据用户指定的 `lower_value`、`upper_value` 以及 `region_num`，可以很容易地计算出需要切分的 key。先计算出 step（`step = (upper_value - lower_value)/num`），然后在 `lower_value` 和 `upper_value` 之间每隔 step 区间切一次，最终切出 `num` 个 Region。
 
 例如，对于表 t，如果想要从 `minInt64`~`maxInt64` 之间均匀切割出 16 个 Region，可以用以下语句：
 
@@ -117,7 +117,7 @@ SPLIT TABLE t INDEX idx BETWEEN (-9223372036854775808) AND (9223372036854775807)
 SPLIT TABLE t INDEX idx1 BETWEEN ("a") AND ("z") REGIONS 26;
 ```
 
-该语句会把表 t 中 idx1 索引数据的 Region 从 a~z 切成 26 个 Region，region1 的范围是 [minIndexValue, b)，region2 的范围是 [b, c)，……，region26 的范围是 [y, minIndexValue]。对于 idx 索引以 a 为前缀的数据都会写到 region1，以 b 为前缀的索引数据都会写到 region2，以此类推。
+该语句会把表 t 中 idx1 索引数据的 Region 从 a~z 切成 26 个 Region，region1 的范围是 [minIndexValue, b)，region2 的范围是 [b, c)，……，region26 的范围是 [z, maxIndexValue)。对于 idx 索引以 a 为前缀的数据都会写到 region1，以 b 为前缀的索引数据都会写到 region2，以此类推。
 
 如果索引 idx2 的列是 timestamp/datetime 等时间类型，希望根据时间区间来切分索引数据：
 
