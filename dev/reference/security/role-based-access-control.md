@@ -338,7 +338,7 @@ SHOW GRANTS FOR 'u1'@'localhost' USING 'r1', 'r2';
 
 ### 授权表
 
-在原有的四张[系统权限表](reference/security/privilege-system.md#授权表)的基础上，角色访问控制引入了两张新的系统表：
+在原有的四张[系统权限表](/reference/security/privilege-system.md#授权表)的基础上，角色访问控制引入了两张新的系统表：
 
 - `mysql.role_edges`：记录角色与用户的授权关系
 - `mysql.default_roles`：记录每个用户默认启用的角色
