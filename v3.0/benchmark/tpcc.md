@@ -92,4 +92,4 @@ enabled = true
 
 ![tpcc](/media/tpcc-2.1-3.0.png)
 
-v3.0 比 v2.1 在 TPC-C 性能上，**提升了 400%**。
+v3.0 比 v2.1 在 TPC-C 性能上，**提升了 450%**。
