@@ -211,7 +211,7 @@
     - [生成列](reference/sql/generated-columns.md)
     - [分区表](reference/sql/partitioning.md)
     - [字符集](reference/sql/character-set.md)
-    - [SQL模式](reference/sql/sql-mode.md)
+    - [SQL 模式](reference/sql/sql-mode.md)
   + 配置
     + tidb-server
       - [MySQL 系统变量](reference/configuration/tidb-server/mysql-variables.md)
