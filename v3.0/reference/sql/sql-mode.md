@@ -23,7 +23,7 @@ Modesis是用逗号 (', ') 间隔开的一系列不同的模式。使用 `SELECT
 
 | 名称 | 含义 |
 | --- | --- |
-| PIPES_AS_CONCAT | 将 `||` 视为字符串连接操作符（＋）(同CONCAT())，而不视为OR（支持) |
+| PIPES_AS_CONCAT | 将 "\|\|" 视为字符串连接操作符（＋）(同CONCAT())，而不视为OR（支持) |
 | ANSI_QUOTES | 将 `"` 视为识别符，如果启用 ANSI_QUOTES，只单引号内的会被认为是 String Literals，双引号被解释为识别符，因此不能用双引号来引用字符串（支持）|
 | IGNORE_SPACE | 若开启该模式，系统忽略空格。例如：“user” 和 “user “ 是相同的（支持）|
 | ONLY_FULL_GROUP_BY | 如果 GROUP BY 出现的列并没有在 SELECT，HAVING，ORDER BY 中出现，此 SQL 不合法，因为不在 GROUP BY 中的列被查询展示出来不符合正常现象 （支持) |
