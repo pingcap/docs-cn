@@ -211,7 +211,7 @@
     - [生成列](reference/sql/generated-columns.md)
     - [分区表](reference/sql/partitioning.md)
     - [字符集](reference/sql/character-set.md)
-    - [SQL模式](reference/sql/sql-mode.md)
+    - [SQL 模式](reference/sql/sql-mode.md)
   + 配置
     + tidb-server
       - [MySQL 系统变量](reference/configuration/tidb-server/mysql-variables.md)
@@ -314,6 +314,7 @@
 - [TiDB 路线图](roadmap.md)
 + [版本发布历史](releases/rn.md)
   + v3.0
+    - [3.0 GA](releases/3.0-ga.md)
     - [3.0.0-rc.3](releases/3.0.0-rc.3.md)
     - [3.0.0-rc.2](releases/3.0.0-rc.2.md)
     - [3.0.0-rc.1](releases/3.0.0-rc.1.md)
