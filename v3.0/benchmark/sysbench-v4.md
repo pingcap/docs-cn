@@ -24,8 +24,8 @@ This test runs on AWS EC2 and uses the CentOS-7.6.1810-Nitro (ami-028946f4cffc8b
 | Component  |  Instance type  |
 | :--- | :-------- |
 |  PD   | r5d.xlarge |
-| TiKV  | c5d.xlarge |
-| TiDB  | c5.xlarge |
+| TiKV  | c5d.4xlarge |
+| TiDB  | c5.4xlarge |
 
 Sysbench version: 1.0.17
 
