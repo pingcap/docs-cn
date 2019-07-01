@@ -9,7 +9,7 @@ category: how-to
 
 由于 TiDB Operator 基于 `StatefulSet` 来管理 Pod，但 `StatefulSet` 在某些 Pod 发生故障时不会自动创建新节点来替换旧节点，所以，TiDB Operator 扩展了 `StatefulSet` 的这种行为，添加了 failover 功能。
 
-Auto Failover 功能在 TiDB Operator 中默认关闭，需要在部署 TiDB Operator 时开启，开启方法为设置 `charts/tidb-operator/values.yaml` 文件的 `controllerManager.autoFailover` 为 `true`：
+AAuto Failover 功能在 TiDB Operator 中默认关闭。部署 TiDB Operator 时，可通过设置 `charts/tidb-operator/values.yaml` 文件的 `controllerManager.autoFailover` 为 `true` 开启该功能：
 
 ```
 controllerManager:

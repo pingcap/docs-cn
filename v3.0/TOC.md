@@ -234,8 +234,8 @@
     + tikv-server
       - [配置参数](reference/configuration/tikv-server/configuration.md)
       - [配置文件描述](reference/configuration/tikv-server/configuration-file.md)
-    + Kubernetes 上的 TiDB 配置
-      - [TiDB 集群配置](reference/configuration/tidb-in-kubernetes/cluster-configuration.md)
+    + Kubernetes 上的 TiDB
+      - [集群配置](reference/configuration/tidb-in-kubernetes/cluster-configuration.md)
       - [备份配置参数](reference/configuration/tidb-in-kubernetes/backup-configuration.md)
       - [本地 PV 配置](reference/configuration/tidb-in-kubernetes/local-pv-configuration.md)
   + 监控指标
