@@ -1,6 +1,11 @@
-# 在阿里云上部署 TiDB Operator 和 TiDB 集群
+---
+title: 在阿里云上部署 TiDB 集群
+category: how-to
+---
 
-本文介绍了如何使用个人电脑（Linux 或 macOS 系统）在阿里云上部署 TiDB Operator 和 TiDB 集群。
+# 在阿里云上部署 TiDB 集群
+
+本文介绍了如何使用个人电脑（Linux 或 macOS 系统）在阿里云上部署 TiDB 集群。
 
 ## 环境需求
 

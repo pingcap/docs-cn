@@ -2,6 +2,7 @@
 title: 在 Minikube 集群上部署 TiDB 集群
 summary: 在 Minikube 集群上部署 TiDB 集群
 category: how-to
+aliases: ['/docs-cn/v3.0/how-to/get-started/local-cluster/install-from-kubernetes-minikube/']
 ---
 
 # 在 Minikube 集群上部署 TiDB 集群

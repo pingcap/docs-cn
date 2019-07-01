@@ -1,9 +1,9 @@
 ---
-title: 滚动更新 TiDB 集群
+title: 滚动升级 Kubernetes 上的 TiDB 集群
 category: how-to
 ---
 
-# 滚动更新 TiDB 集群
+# 滚动升级 Kubernetes 上的 TiDB 集群
 
 滚动更新 TiDB 集群时，会按 PD、TiKV、TiDB 的顺序，串行删除 Pod，并创建新版本的 Pod，当新版本的 Pod 正常运行后，再处理下一个 Pod。
 
@@ -57,13 +57,10 @@ category: how-to
     ```shell
     watch kubectl -n ${namespace} get pod -o wide
     ```
-    
+
     当所有 Pod 都重建完毕进入 `Running` 状态后，升级完成。
 
 > **注意：**
-> 
-> 将 `enableConfigMapRollout` 特性从关闭状态打开时，即使没有配置变更，也会触发一次 PD、TiKV、TiDB 的滚动更新。
-
-> **注意：**
 >
-> 目前 PD 的 `scheduler` 和 `replication` 配置（`values.yaml` 中的 `maxStoreDownTime` 和 `maxReplicas` 字段）在集群安装完成后无法自动更新，需要通过 [pd-ctl](/reference/tools/pd-control.md) 手动更新。
+> - 将 `enableConfigMapRollout` 特性从关闭状态打开时，即使没有配置变更，也会触发一次 PD、TiKV、TiDB 的滚动更新。
+> - 目前 PD 的 `scheduler` 和 `replication` 配置（`values.yaml` 中的 `maxStoreDownTime` 和 `maxReplicas` 字段）在集群安装完成后无法自动更新，需要通过 [pd-ctl](/reference/tools/pd-control.md) 手动更新。

@@ -12,10 +12,10 @@
   + 快速上手
     + 创建集群
       + 使用 Kubernetes
-        - [DinD](how-to/get-started/local-cluster/install-from-kubernetes-dind.md)
-        - [Minikube](how-to/get-started/local-cluster/install-from-kubernetes-minikube.md)
-        - [GKE](how-to/get-started/local-cluster/install-from-kubernetes-gke.md)
-      - [使用 Docker Compose](how-to/get-started/local-cluster/install-from-docker-compose.md)
+        - [DinD](how-to/get-started/deploy-tidb-from-kubernetes-dind.md)
+        - [Minikube](how-to/get-started/deploy-tidb-from-kubernetes-minikube.md)
+        - [GKE](how-to/get-started/deploy-tidb-from-kubernetes-gke.md)
+      - [使用 Docker Compose](how-to/get-started/deploy-tidb-from-docker-compose.md)
     - [SQL 基本操作](how-to/get-started/explore-sql.md)
     - [读取历史数据](how-to/get-started/read-historical-data.md)
     - [TiDB Binlog 教程](how-to/get-started/tidb-binlog.md)
@@ -27,14 +27,16 @@
       - [使用 Ansible 离线部署](how-to/deploy/orchestrated/offline-ansible.md)
       - [使用 Docker 部署](how-to/deploy/orchestrated/docker.md)
       + 使用 Kubernetes 部署
-        - [阿里云](how-to/deploy/orchestrated/alibaba-cloud.md)
-        - [AWS EKS](how-to/deploy/orchestrated/aws-eks.md)
-        - [GCP](how-to/deploy/orchestrated/gcp-gke.md)
+        - [阿里云](how-to/deploy/orchestrated/tidb-in-kubernetes/alibaba-cloud.md)
+        - [AWS EKS](how-to/deploy/orchestrated/tidb-in-kubernetes/aws-eks.md)
+        - [GCP](how-to/deploy/orchestrated/tidb-in-kubernetes/gcp-gke.md)
     + 跨地域冗余
       - [跨数据中心部署方案](how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](how-to/deploy/geographic-redundancy/location-awareness.md)
     - [使用 Ansible 部署 DM 集群](how-to/deploy/data-migration-with-ansible.md)
     - [部署 TiDB Binlog 集群](how-to/deploy/tidb-binlog.md)
+    - [部署 TiDB Operator](how-to/deploy/tidb-operator.md)
+    - [访问 Kubernetes 上的 TiDB 集群](how-to/deploy/orchestrated/tidb-in-kubernetes/access-tidb.md)
   + 配置
     - [时区](how-to/configure/time-zone.md)
     - [内存控制](how-to/configure/memory-control.md)
@@ -46,7 +48,7 @@
   + 监控
     - [概述](how-to/monitor/overview.md)
     - [监控 TiDB 集群](how-to/monitor/monitor-a-cluster.md)
-    - [TiDB Binlog 集群监控](how-to/monitor/tidb-binlog.md)
+    - [监控 TiDB Binlog 集群](how-to/monitor/tidb-binlog.md)
   + 迁移
     - [概述](how-to/migrate/overview.md)
     + 从 MySQL 迁移
@@ -59,14 +61,22 @@
     + [备份与恢复](how-to/maintain/backup-and-restore.md)
     - [定位慢查询](how-to/maintain/identify-slow-queries.md)
     - [TiDB Binlog 集群运维](how-to/maintain/tidb-binlog.md)
+    + Kubernetes 上的 TiDB 集群运维
+      - [管理 TiDB 集群](how-to/maintain/tidb-in-kubernetes/tidb-cluster.md)
+      - [维护 TiDB 节点](how-to/maintain/tidb-in-kubernetes/tidb-node.md)
+      - [集群故障自动转移](how-to/maintain/tidb-in-kubernetes/auto-failover.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](how-to/scale/with-ansible.md)
+    - [Kubernetes 上的 TiDB 集群扩缩容](how-to/scale/tidb-in-kubernetes.md)
   + 升级
     - [升级至 TiDB 3.0](how-to/upgrade/from-previous-version.md)
     - [升级至 TiDB 2.1](how-to/upgrade/to-tidb-2.1.md)
     - [使用 Ansible 滚动升级](how-to/upgrade/rolling-updates-with-ansible.md)
-    - [升级 Data Migration](reference/tools/data-migration/dm-upgrade.md)
     - [升级 TiDB Binlog Cluster 版本](how-to/upgrade/tidb-binlog.md)
+    - 升级 Kubernetes 上的 TiDB 集群
+      - [升级 TiDB](how-to/upgrade/tidb-in-kubernetes.md)
+      - [升级 TiDB Operator](how-to/upgrade/tidb-operator.md)
+    - [升级 Data Migration](reference/tools/data-migration/dm-upgrade.md)
   + 故障诊断
     - [集群配置诊断](how-to/troubleshoot/cluster-setup.md)
     - [Data Migration 故障诊断](how-to/troubleshoot/data-migration.md)
@@ -224,6 +234,10 @@
     + tikv-server
       - [配置参数](reference/configuration/tikv-server/configuration.md)
       - [配置文件描述](reference/configuration/tikv-server/configuration-file.md)
+    + Kubernetes 上的 TiDB
+      - [集群配置](reference/configuration/tidb-in-kubernetes/cluster-configuration.md)
+      - [备份配置](reference/configuration/tidb-in-kubernetes/backup-configuration.md)
+      - [本地 PV 配置](reference/configuration/tidb-in-kubernetes/local-pv-configuration.md)
   + 监控指标
     - [Overview 面板](reference/key-monitoring-metrics/overview-dashboard.md)
     - [TiDB 面板](reference/key-monitoring-metrics/tidb-dashboard.md)
@@ -256,6 +270,7 @@
   + [TiSpark 使用指南](reference/tispark.md)
   + [TiDB Binlog 简介](reference/tidb-binlog-overview.md)
   + 生态工具
+    - [tkctl](reference/tools/tkctl.md)
     - [Mydumper](reference/tools/mydumper.md)
     - [Loader](reference/tools/loader.md)
     - [Syncer](reference/tools/syncer.md)
