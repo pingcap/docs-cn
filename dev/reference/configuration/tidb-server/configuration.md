@@ -1,7 +1,6 @@
 ---
 title: TiDB 配置参数
 category: reference
-aliases: ['/docs-cn/op-guide/configuration/','/docs-cn/sql/server-command-option/','/docs-cn/sql/tidb-server/']
 ---
 
 # TiDB 配置参数
@@ -17,7 +16,7 @@ TiDB 通过命令行参数或环境变量配置。默认的 TiDB 端口为 4000�
 
 + 配置文件
 + 默认：""
-+ 如果你指定了配置文件，TiDB 会首先读取配置文件的配置。然后如果对应的配置在命令行参数里面也存在，TiDB 就会使用命令行参数的配置来覆盖配置文件里面的。详细的配置项可以看看[这里](/dev/reference/configuration/tidb-server/configuration.md)
++ 如果你指定了配置文件，TiDB 会首先读取配置文件的配置。然后如果对应的配置在命令行参数里面也存在，TiDB 就会使用命令行参数的配置来覆盖配置文件里面的。详细的配置项可以看看[这里](/reference/configuration/tidb-server/configuration.md)
 
 ## `--store`
 
@@ -102,6 +101,11 @@ TiDB 通过命令行参数或环境变量配置。默认的 TiDB 端口为 4000�
 + Prometheus 统计可以通过 "http://host:status_port/metrics" 访问
 + Pprof 数据可以通过 "http://host:status_port/debug/pprof" 访问
 
+## `--status-host`
+
++ TiDB 服务状态监听 host
++ 默认："0.0.0.0" 
+
 ## `--metrics-addr`
 
 + Prometheus Pushgateway 地址
@@ -135,3 +139,7 @@ TiDB 通过命令行参数或环境变量配置。默认的 TiDB 端口为 4000�
 > **注意：**
 >
 > 请不要配置成 0，除非特殊情况，一般使用默认值即可。
+
+## `--cors`
++ 用于设置 TiDB HTTP 状态服务的 Access-Control-Allow-Origin
++ 默认：""

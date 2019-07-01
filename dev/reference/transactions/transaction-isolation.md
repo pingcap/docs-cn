@@ -1,7 +1,6 @@
 ---
 title: TiDB 事务隔离级别
 category: reference
-aliases: ['/docs-cn/sql/transaction-isolation/']
 ---
 
 # TiDB 事务隔离级别

@@ -1,7 +1,6 @@
 ---
 title: TiDB 软件和硬件环境建议配置
 category: how-to
-aliases: ['/docs-cn/op-guide/recommendation/']
 ---
 
 # TiDB 软件和硬件环境建议配置
@@ -41,7 +40,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 >
 > - 验证测试环境中的 TiDB 和 PD 可以部署在同一台服务器上。
 > - 如进行性能相关的测试，避免采用低性能存储和网络硬件配置，防止对测试结果的正确性产生干扰。
-> - 如果仅验证功能，建议使用 [Docker Compose 部署方案](/dev/how-to/get-started/local-cluster/install-from-docker-compose.md)单机进行测试。
+> - 如果仅验证功能，建议使用 [Docker Compose 部署方案](/how-to/get-started/deploy-tidb-from-docker-compose.md)单机进行测试。
 > - TiDB 对于磁盘的使用以存放日志为主，因此在测试环境中对于磁盘类型和容量并无特殊要求。
 
 ### 生产环境
