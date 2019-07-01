@@ -44,7 +44,7 @@ TiDB Operator 把 `values.yaml` 作为 TiDB 集群的配置文件。`values.yaml
     * 存储
 
         `values.yaml` 中的变量 `pd.storageClassName` 和 `tikv.storageClassName` 用于配置 PD 和 TiKV 的 `StorageClass`，默认配置为最小需求的 `local-storage`。
-        
+
         如果你不想使用默认的 `StorageClass` 或者你的 Kubernetes 集群不支持 `local-storage`，可以通过下面命令找到可用的 `StorageClass` 并选择来配置 TiDB 集群。
 
         {{< copyable "shell-regular" >}}
@@ -249,52 +249,11 @@ kubectl get pv -l app.kubernetes.io/namespace=${namespace},app.kubernetes.io/man
 
 TiDB 通过 Prometheus 和 Grafana 监控 TiDB 集群。TiDB 集群创建时，会同时创建、配置 Prometheus 和 Grafana pod 收集并展示监控指标。
 
-监控数据默认没有持久化，如果由于某些原因监控容器重启，数据会丢失。可以在 `values.yaml` 中设置 `monitor.persistent` 为 `true` 来持久化监控数据。
+配置与访问监控系统的细节请参阅[监控系统部署](monitoring.md)。
 
-可以通过 `kubectl portforward` 查看监控面板：
+## 日志
 
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl port-forward -n ${namespace} svc/${releaseName}-grafana 3000:3000 &>/tmp/portforward-grafana.log
-```
-
-然后在浏览器中打开 [http://localhost:3000](http://localhost:3000)，默认用户名和密码都为 `admin`。
-
-Grafana 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持负载均衡器，你可以修改为 `LoadBalancer`，然后通过负载均衡器访问面板。详请参阅[访问 Kubernetes 上的 TiDB 集群](/how-to/deploy/orchestrated/tidb-in-kubernetes/access-tidb.md)。
-
-### 查看 TiDB 慢查询日志
-
-默认情况下，TiDB 会打印慢查询日志到标准输出，和正常日志混在一起。你可以通过 `grep` 关键词 `SLOW_QUERY` 查看慢查询日志：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl logs -n ${namespace} ${tidbPodName} | grep SLOW_QUERY
-```
-
-或者，你也可以配置 `separateSlowLog` 输出慢查询日志到一个sidecar 容器：
-
-```yaml
-# Uncomment the following line to enable separate output of the slow query log
-    # separateSlowLog: true
-```
-
-运行 `helm upgrade` 使配置生效，然后你可以通过名为 `slowlog` 的 sidecar 容器查看慢查询日志：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl logs -n ${namespace} ${tidbPodName} -c slowlog
-```
-
-如果要从多个 Pod 获取日志，推荐 [`stern`](https://github.com/wercker/stern)。
-
-{{< copyable "shell-regular" >}}
-
-```shell
-stern -n ${namespace} tidb -c slowlog
-```
+查看与收集日志的方法请参阅[日志收集](log-collecting.md)文档。
 
 ## 备份和恢复
 
