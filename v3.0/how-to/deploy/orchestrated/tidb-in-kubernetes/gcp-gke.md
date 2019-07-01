@@ -1,6 +1,7 @@
 ---
 title: 在 GCP GKE 上部署 TiDB Operator 和 TiDB 集群
 category: how-to
+aliases: ['/docs-cn/v3.0/how-to/deploy/orchestrated/gcp-gke/']
 ---
 
 # 在 GCP GKE 上部署 TiDB Operator 和 TiDB 集群
