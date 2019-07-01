@@ -46,7 +46,7 @@ update mysql.tidb set VARIABLE_VALUE="30m" where VARIABLE_NAME="tikv_gc_run_inte
 
 指定 GC 模式。可选值如下：
 
-- `"distributed"`（默认）: GC 的第三阶段 ，GC leader 向 PD 发送 safe point 即可结束，每个 TiKV 节点各自获取该 safe point 并对所有 leader 在本机上的 Region 进行 GC。请参考 [GC 机制简介](/reference/garbage-collection/overview.md)。
+- `"distributed"`（默认）：GC 的第三阶段，GC leader 向 PD 发送 safe point 即可结束，每个 TiKV 节点各自获取该 safe point 并对所有 leader 在本机上的 Region 进行 GC。请参考 [GC 机制简介](/reference/garbage-collection/overview.md)。
 
 - `"central"`：GC 的第三阶段采用 2.X 版本所使用的旧的 GC 方式，即由 GC leader 向所有的 Region 发送 GC 请求。
 
