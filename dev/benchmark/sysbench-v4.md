@@ -24,8 +24,8 @@ TiDB 版本：v3.0.0 vs. v2.1.13
 | 组件  |  实例类型  |
 | :--- | :--------- |
 |  PD   | r5d.xlarge |
-| TiKV  | c5d.xlarge |
-| TiDB  | c5.xlarge  |
+| TiKV  | c5d.4xlarge |
+| TiDB  | c5.4xlarge  |
 
 Sysbench 版本：1.0.17
 
