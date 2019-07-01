@@ -52,7 +52,7 @@ update mysql.tidb set VARIABLE_VALUE="30m" where VARIABLE_NAME="tikv_gc_run_inte
 
 ## `tikv_gc_auto_concurrency`
 
-控制是否由 TiDB 自动决定 GC concurrency，即同时进行 GC 的线程数。 。
+控制是否由 TiDB 自动决定 GC concurrency，即同时进行 GC 的线程数。
 
 GC concurrency 将用于 [Resolve Locks](/reference/garbage-collection/overview.md#resolve-locks)。当 [`tikv_gc_mode`](#tikv_gc_mode) 配置为 `"central"` 时，也将被用于 [Do GC](/reference/garbage-collection/overview.md#do-gc) 阶段。
 
