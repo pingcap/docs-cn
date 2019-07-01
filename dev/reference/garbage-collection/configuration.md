@@ -13,9 +13,9 @@ update mysql.tidb set VARIABLE_VALUE="30m" where VARIABLE_NAME="tikv_gc_run_inte
 
 > **注意：**
 >
-> `mysql.tidb` 系统表中除了下文将要列出列出的 GC 的配置以外，还包含一些 TiDB 用于储存部分集群状态（包括 GC 状态）的记录。其中，与 GC 有关的记录如下：
+> `mysql.tidb` 系统表中除了下文将要列出列出的 GC 的配置以外，还包含一些 TiDB 用于储存部分集群状态（包括 GC 状态）的记录。请勿手动更改这些记录。其中，与 GC 有关的记录如下：
 >
-> - `tikv_gc_leader_uuid`，`tikv_gc_leader_desc` 和 `tikv_gc_leader_lease`：用于记录 GC leader 的状态和进行 GC leader 的选举
+> - `tikv_gc_leader_uuid`，`tikv_gc_leader_desc` 和 `tikv_gc_leader_lease` 用于记录 GC leader 的状态和进行 GC leader 的选举
 > - `tikv_gc_last_run_time`：上次 GC 运行时间
 > - `tikv_gc_safe_point`：当前的 GC safe point
 
