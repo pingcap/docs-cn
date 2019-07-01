@@ -1,10 +1,10 @@
 ---
-title: Kubernetes 上的 TiDB 集群运维
+title: 管理 Kubernetes 上的 TiDB 集群
 summary: TiDB 集群运维文档
 category: how-to
 ---
 
-# Kubernetes 上的 TiDB 集群运维
+# 管理 Kubernetes 上的 TiDB 集群
 
 TiDB Operator 可以在同一个 Kubernetes 集群上管理多个 TiDB 集群。
 
