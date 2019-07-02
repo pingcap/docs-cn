@@ -39,7 +39,7 @@ TiDB Operator 把 `values.yaml` 作为 TiDB 集群的配置文件。`values.yaml
 
         默认部署并没有为任何 Pod 设置 CPU 或者 Memory 的 request 或者 limit，这样 TiDB 集群可以运行在小的 Kubernetes 集群，例如 DinD 或者默认的 GKE 集群，以方便测试。但是对于生产环境，最好根据[推荐配置](/how-to/deploy/hardware-recommendations.md)调整 CPU、Memory 和存储资源。
 
-        资源 limit 应该大于等于资源 request，建议设置 limit 等于 request，这样可以获得 [`Guaranteed` QoS]( https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/#create-a-pod-that-gets-assigned-a-qos-class-of-guaranteed)。
+        资源 limit 应该大于等于资源 request，建议设置 limit 等于 request，这样可以获得 [`Guaranteed` QoS](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/#create-a-pod-that-gets-assigned-a-qos-class-of-guaranteed)。
 
     * 存储
 
@@ -298,4 +298,4 @@ stern -n ${namespace} tidb -c slowlog
 
 ## 备份和恢复
 
-TiDB Operator 为 TiDB 集群提供高度自动化的备份和恢复操作。你可以方便地为 TiDB 集群执行全量备份或者增量备份，也可以在集群宕机的情况下恢复 TiDB 集群。要了解备份和恢复的具体操作，请参考[备份和恢复 TiDB 集群]()。
+TiDB Operator 为 TiDB 集群提供高度自动化的备份和恢复操作。你可以方便地为 TiDB 集群执行全量备份或者增量备份，也可以在集群宕机的情况下恢复 TiDB 集群。
