@@ -257,7 +257,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 #### 2.2.3 Docker Compose 快速构建集群（单机部署）
 
-使用 docker-compose 在本地一键拉起一个集群，包括集群监控，还可以根据需求自定义各个组件的软件版本和实例个数，以及自定义配置文件，这种只限于开发环境，详细可参考[官方文档](/how-to/get-started/local-cluster/install-from-docker-compose.md)。
+使用 docker-compose 在本地一键拉起一个集群，包括集群监控，还可以根据需求自定义各个组件的软件版本和实例个数，以及自定义配置文件，这种只限于开发环境，详细可参考[官方文档](/how-to/get-started/deploy-tidb-from-docker-compose.md)。
 
 #### 2.2.4 如何单独记录 TiDB 中的慢查询日志，如何定位慢查询 SQL？
 
@@ -625,7 +625,7 @@ WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD
 
 #### 3.4.15 在最严格的 `sync-log = true` 数据可用模式下，写入性能如何？
 
-一般来说，开启 `sync-log` 会让性能损耗 30% 左右。关闭 `sync-log` 时的性能表现，请参见 [TiDB Sysbench 性能测试报告](https://github.com/pingcap/docs-cn/blob/master/v3.0/benchmark/how-to-run-sysbench.md)。
+一般来说，开启 `sync-log` 会让性能损耗 30% 左右。关闭 `sync-log` 时的性能表现，请参见 [TiDB Sysbench 性能测试报告](https://github.com/pingcap/docs-cn/blob/master/v3.0/benchmark/sysbench-v4.md)。
 
 #### 3.4.16 是否可以利用 TiKV 的 Raft + 多副本达到完全的数据可靠，单机存储引擎是否需要最严格模式？
 
@@ -661,7 +661,7 @@ TiKV 的内存占用主要来自于 RocksDB 的 block-cache，默认为系统总
 很多用户在接触 TiDB 都习惯做一个基准测试或者 TiDB 与 MySQL 的对比测试，官方也做了一个类似测试，汇总很多测试结果后，我们发现虽然测试的数据有一定的偏差，但结论或者方向基本一致，由于 TiDB 与 MySQL 由于架构上的差别非常大，很多方面是很难找到一个基准点，所以官方的建议两点：
 
 - 大家不要用过多精力纠结这类基准测试上，应该更多关注 TiDB 的场景上的区别。
-- - 大家可以直接参考官方相关测试。官方 Sysbench 测试及 TiDB 与 MySQL 对比测试请参考 [TiDB Sysbench 性能测试报告](https://github.com/pingcap/docs-cn/blob/master/v3.0/benchmark/how-to-run-sysbench.md)。
+- 大家可以直接参考 [TiDB Sysbench 性能测试报告](https://github.com/pingcap/docs-cn/blob/master/v3.0/benchmark/sysbench-v4.md)。
 
 #### 3.5.2 TiDB 集群容量 QPS 与节点数之间关系如何，和 MySQL 对比如何？
 
