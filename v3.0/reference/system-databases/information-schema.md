@@ -29,7 +29,7 @@ mysql> select * from `ANALYZE_STATUS`
 
 ## CHARACTER_SETS Table
 
-`CHARACTER_SETS` 表提供[字符集](/dev/reference/sql/character-set.md)相关的信息。TiDB 目前仅支持部分字符集。
+`CHARACTER_SETS` 表提供[字符集](/reference/sql/character-set.md)相关的信息。TiDB 目前仅支持部分字符集。
 
 ```sql
 mysql> SELECT * FROM character_sets;
