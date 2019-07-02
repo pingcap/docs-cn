@@ -435,6 +435,239 @@ COLLATION_CONNECTION: utf8_general_ci
 1 row in set (0.00 sec)
 ```
 
+## TIDB\_INDEXES table
+
+The `TIDB_INDEXES` table provides index-related information.
+
+```sql
+mysql> desc tidb_indexes\G
+*************************** 1. row ***************************
+       Table: TIDB_INDEXES
+Create Table: CREATE TABLE `TIDB_INDEXES` (
+  `TABLE_SCHEMA` varchar(64) DEFAULT NULL,
+  `TABLE_NAME` varchar(64) DEFAULT NULL,
+  `NON_UNIQUE` bigint(21) unsigned DEFAULT NULL,
+  `KEY_NAME` varchar(64) DEFAULT NULL,
+  `SEQ_IN_INDEX` bigint(21) unsigned DEFAULT NULL,
+  `COLUMN_NAME` varchar(64) DEFAULT NULL,
+  `SUB_PART` bigint(21) unsigned DEFAULT NULL,
+  `INDEX_COMMENT` varchar(2048) DEFAULT NULL,
+  `INDEX_ID` bigint(21) unsigned DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+1 row in set (0.00 sec)
+```
+
+`INDEX_ID` is the unique ID that TiDB allocates for each index. It can be used to do a join operation with `INDEX_ID` obtained from another table or API.
+
+For example, you can obtain `TABLE_ID` and `INDEX_ID` that are involved in some slow query in the [`SLOW_QUERY` table](#slow-query-table) and then obtain the specific index information using the following SQL statements:
+
+```sql
+select
+   tidb_indexes.*
+from
+   tidb_indexes,
+   tables
+where
+   tidb_indexes.table_schema = tables.table_schema
+   and tidb_indexes.table_name = tidb_indexes.table_name
+   and tables.tidb_table_id = ?
+   and index_id = ?
+```
+
+## TIDB\_HOT\_REGIONS table
+
+The `TIDB_HOT_REGIONS` table provides the hot Region information in the current TiKV instance.
+
+```sql
+mysql> desc tidb_hot_regions\G
+*************************** 1. row ***************************
+       Table: TIDB_HOT_REGIONS
+Create Table: CREATE TABLE `TIDB_HOT_REGIONS` (
+  `TABLE_ID` bigint(21) unsigned DEFAULT NULL,
+  `INDEX_ID` bigint(21) unsigned DEFAULT NULL,
+  `DB_NAME` varchar(64) DEFAULT NULL,
+  `TABLE_NAME` varchar(64) DEFAULT NULL,
+  `INDEX_NAME` varchar(64) DEFAULT NULL,
+  `TYPE` varchar(64) DEFAULT NULL,
+  `MAX_HOT_DEGREE` bigint(21) unsigned DEFAULT NULL,
+  `REGION_COUNT` bigint(21) unsigned DEFAULT NULL,
+  `FLOW_BYTES` bigint(21) unsigned DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+1 row in set (0.00 sec)
+```
+
+- `TABLE_ID` and `INDEX_ID` are IDs generated for the corresponding table and index in TiDB.
+- `TYPE` is the type for a hot Region. Its value can be `READ` or `WRITE`.
+
+## TIKV\_STORE\_STATUS table
+
+The `TIKV_STORE_STATUS` table shows some basic information of TiKV nodes via PD's API, like the ID allocated in the cluster, address and port, and status, capacity, and the number of Region leaders of the current node.
+
+```sql
+mysql> desc tikv_store_status\G
+*************************** 1. row ***************************
+       Table: TIKV_STORE_STATUS
+Create Table: CREATE TABLE `TIKV_STORE_STATUS` (
+  `STORE_ID` bigint(21) unsigned DEFAULT NULL,
+  `ADDRESS` varchar(64) DEFAULT NULL,
+  `STORE_STATE` bigint(21) unsigned DEFAULT NULL,
+  `STORE_STATE_NAME` varchar(64) DEFAULT NULL,
+  `LABEL` json unsigned DEFAULT NULL,
+  `VERSION` varchar(64) DEFAULT NULL,
+  `CAPACITY` varchar(64) DEFAULT NULL,
+  `AVAILABLE` varchar(64) DEFAULT NULL,
+  `LEADER_COUNT` bigint(21) unsigned DEFAULT NULL,
+  `LEADER_WEIGHT` bigint(21) unsigned DEFAULT NULL,
+  `LEADER_SCORE` bigint(21) unsigned DEFAULT NULL,
+  `LEADER_SIZE` bigint(21) unsigned DEFAULT NULL,
+  `REGION_COUNT` bigint(21) unsigned DEFAULT NULL,
+  `REGION_WEIGHT` bigint(21) unsigned DEFAULT NULL,
+  `REGION_SCORE` bigint(21) unsigned DEFAULT NULL,
+  `REGION_SIZE` bigint(21) unsigned DEFAULT NULL,
+  `START_TS` datetime unsigned DEFAULT NULL,
+  `LAST_HEARTBEAT_TS` datetime unsigned DEFAULT NULL,
+  `UPTIME` varchar(64) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+1 row in set (0.01 sec)
+```
+
+## TIKV\_REGION\_STATUS table
+
+The `TIKV_REGION_STATUS` table shows some basic information of TiKV Regions via PD's API, like the Region ID, starting and ending key-values, and read and write traffic.
+
+```sql
+mysql> desc tikv_region_status\G
+*************************** 1. row ***************************
+       Table: TIKV_REGION_STATUS
+Create Table: CREATE TABLE `TIKV_REGION_STATUS` (
+  `REGION_ID` bigint(21) unsigned DEFAULT NULL,
+  `START_KEY` text DEFAULT NULL,
+  `END_KEY` text DEFAULT NULL,
+  `EPOCH_CONF_VER` bigint(21) unsigned DEFAULT NULL,
+  `EPOCH_VERSION` bigint(21) unsigned DEFAULT NULL,
+  `WRITTEN_BYTES` bigint(21) unsigned DEFAULT NULL,
+  `READ_BYTES` bigint(21) unsigned DEFAULT NULL,
+  `APPROXIMATE_SIZE` bigint(21) unsigned DEFAULT NULL,
+  `APPROXIMATE_KEYS` bigint(21) unsigned DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+1 row in set (0.00 sec)
+```
+
+You can implement the `top confver`, `top read` and `top write` operations in pd-ctl via the `ORDER BY X LIMIT Y` operation on the `EPOCH_CONF_VER`, `WRITTEN_BYTES` and `READ_BYTES` columns. 
+
+You can query the top 3 Regions with the most write data using the following SQL statement:
+
+```
+select * from tikv_region_status order by written_bytes desc limit 3;
+```
+
+## TIKV\_REGION\_PEERS table
+
+The `TIKV_REGION_PEERS` table shows detailed information of a single Region node in TiKV, like whether it is a learner or leader.
+
+```sql
+mysql> desc tikv_region_peers\G
+*************************** 1. row ***************************
+       Table: TIKV_REGION_PEERS
+Create Table: CREATE TABLE `TIKV_REGION_PEERS` (
+  `REGION_ID` bigint(21) unsigned DEFAULT NULL,
+  `PEER_ID` bigint(21) unsigned DEFAULT NULL,
+  `STORE_ID` bigint(21) unsigned DEFAULT NULL,
+  `IS_LEARNER` tinyint(1) unsigned DEFAULT NULL,
+  `IS_LEADER` tinyint(1) unsigned DEFAULT NULL,
+  `STATUS` varchar(10) DEFAULT NULL,
+  `DOWN_SECONDS` bigint(21) unsigned DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+1 row in set (0.00 sec)
+```
+
+For example, you can query the specific TiKV addresses for the top 3 Regions with the maximum value of `WRITTEN_BYTES` using the following SQL statement:
+
+```sql
+select
+   address,
+   tikv.address,
+   region.region_id,
+from
+   tikv_store_status tikv,
+   tikv_region_peers peer,
+   (
+      select
+         *
+      from
+         tikv_region_status region
+      order by
+         written_bytes desc limit 3
+   )
+   region
+where
+   region.region_id = peer.region_id
+   and peer.is_leader = 1
+   and peer.store_id = tikv.region_id
+```
+
+## ANALYZE\_STATUS table
+
+The `ANALYZE_STATUS` table shows the execution status of the `ANALYZE` command in the current cluster.
+
+```sql
+mysql> desc analyze_status\G
+*************************** 1. row ***************************
+       Table: ANALYZE_STATUS
+Create Table: CREATE TABLE `ANALYZE_STATUS` (
+  `TABLE_SCHEMA` varchar(64) DEFAULT NULL,
+  `TABLE_NAME` varchar(64) DEFAULT NULL,
+  `PARTITION_NAME` varchar(64) DEFAULT NULL,
+  `JOB_INFO` varchar(64) DEFAULT NULL,
+  `PROCESSED_ROWS` bigint(20) unsigned DEFAULT NULL,
+  `START_TIME` datetime unsigned DEFAULT NULL,
+  `STATE` varchar(64) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+1 row in set (0.00 sec)
+```
+
+The `STATE` column shows the execution status of a specific `ANALYZE` task. Its value can be `pending`, `running`,`finished` or `failed`.
+
+## SLOW\_QUERY table
+
+The `SLOW_QUERY` table maps slow query logs. Its column names and field names of slow query logs have an one-to-one corresponse relationship. For details, see [Identify Slow Queries](/how-to/maintain/identify-slow-queries.md/#identify-slow-queries).
+
+```sql
+mysql> desc slow_query\G
+*************************** 1. row ***************************
+       Table: SLOW_QUERY
+Create Table: CREATE TABLE `SLOW_QUERY` (
+  `Time` timestamp unsigned NULL DEFAULT NULL,
+  `Txn_start_ts` bigint(20) unsigned DEFAULT NULL,
+  `User` varchar(64) DEFAULT NULL,
+  `Host` varchar(64) DEFAULT NULL,
+  `Conn_ID` bigint(20) unsigned DEFAULT NULL,
+  `Query_time` double unsigned DEFAULT NULL,
+  `Process_time` double unsigned DEFAULT NULL,
+  `Wait_time` double unsigned DEFAULT NULL,
+  `Backoff_time` double unsigned DEFAULT NULL,
+  `Request_count` bigint(20) unsigned DEFAULT NULL,
+  `Total_keys` bigint(20) unsigned DEFAULT NULL,
+  `Process_keys` bigint(20) unsigned DEFAULT NULL,
+  `DB` varchar(64) DEFAULT NULL,
+  `Index_ids` varchar(100) DEFAULT NULL,
+  `Is_internal` tinyint(1) unsigned DEFAULT NULL,
+  `Digest` varchar(64) DEFAULT NULL,
+  `Stats` varchar(512) DEFAULT NULL,
+  `Cop_proc_avg` double unsigned DEFAULT NULL,
+  `Cop_proc_p90` double unsigned DEFAULT NULL,
+  `Cop_proc_max` double unsigned DEFAULT NULL,
+  `Cop_proc_addr` varchar(64) DEFAULT NULL,
+  `Cop_wait_avg` double unsigned DEFAULT NULL,
+  `Cop_wait_p90` double unsigned DEFAULT NULL,
+  `Cop_wait_max` double unsigned DEFAULT NULL,
+  `Cop_wait_addr` varchar(64) DEFAULT NULL,
+  `Mem_max` bigint(20) unsigned DEFAULT NULL,
+  `Query` varchar(4096) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+1 row in set (0.00 sec)
+```
+
 ## Unsupported Information Schema Tables
 
 The following `INFORMATION_SCHEMA` tables are present in TiDB, but will always return zero rows:
