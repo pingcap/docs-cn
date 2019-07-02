@@ -5,7 +5,7 @@ category: how-to
 
 # Kubernetes 上的 TiDB 集群故障诊断
 
-本文介绍 Kubernetes 上的 TiDB 集群的一些常见故障以及如何诊断解决。
+本文介绍了 Kubernetes 上 TiDB 集群的一些常见故障以及诊断解决方案。
 
 ## 集群意外删除后恢复
 
