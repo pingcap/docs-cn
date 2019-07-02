@@ -46,20 +46,20 @@ update mysql.tidb set VARIABLE_VALUE="30m" where VARIABLE_NAME="tikv_gc_run_inte
 
 指定 GC 模式。可选值如下：
 
-- `"distributed"`（默认）: GC 的第三阶段 ，GC leader 向 PD 发送 safe point 即可结束，每个 TiKV 节点各自获取该 safe point 并对所有 leader 在本机上的 Region 进行 GC。请参考 [GC 机制简介](/reference/garbage-collection/overview.md)。
+- `"distributed"`（默认）：分布式 GC 模式。在此模式下，[Do GC](/reference/garbage-collection/overview.md#do-gc) 阶段由 TiDB 上的 GC leader 向 PD 发送 safe point，每个 TiKV 节点各自获取该 safe point 并对所有当前节点上作为 leader 的 Region 进行 GC。此模式于 TiDB 3.0 引入。
 
-- `"central"`：GC 的第三阶段采用 2.X 版本所使用的旧的 GC 方式，即由 GC leader 向所有的 Region 发送 GC 请求。
+- `"central"`：集中 GC 模式。在此模式下，[Do GC](/reference/garbage-collection/overview.md#do-gc) 阶段由 GC leader 向所有的 Region 发送 GC 请求。TiDB 2.1 及更早版本采用此 GC 模式。
 
 ## `tikv_gc_auto_concurrency`
 
 控制是否由 TiDB 自动决定 GC concurrency，即同时进行 GC 的线程数。
 
-GC concurrency 将用于 [Resolve Locks](/reference/garbage-collection/overview.md#resolve-locks)。当 [`tikv_gc_mode`](#tikv_gc_mode) 配置为 `"central"` 时，也将被用于 [Do GC](/reference/garbage-collection/overview.md#do-gc) 阶段。
+当 `tikv_gc_mode` 设为 `"distributed"`，GC concurrency 将应用于 [Resolve Locks](/reference/garbage-collection/overview.md#resolve-locks) 阶段。当 [`tikv_gc_mode`](#tikv_gc_mode) 设为 `"central"` 时，GC concurrency 将应用于 Resolve Locks 以及 [Do GC](/reference/garbage-collection/overview.md#do-gc) 两个阶段。
 
-- `true`（默认）：TiDB 将以 TiKV 节点的个数作为 GC concurrency
-- `false`：使用 [`tikv_gc_concurrency`](#tikv-gc-concurrency) 的值作为 GC concurrency
+- `true`（默认）：自动以 TiKV 节点的个数作为 GC concurrency
+- `false`：使用 [`tikv_gc_concurrency`](#tikv-gc-concurrency) 的值作为 GC 并发数
 
 ## `tikv_gc_concurrency`
 
-- V3.0 起，当 [`tikv_gc_auto_concurrency`](#tikv-gc-auto-concurrency) 为 `false` 时，将使用该值作为 GC concurrency。对于 2.x 版本，将直接使用该值作为 GC concurrency。
+- 手动设置 GC concurrency。要使用该参数，必须将 [`tikv_gc_auto_concurrency`](#tikv-gc-auto-concurrency) 设为 `false` 。
 - 默认值：2
