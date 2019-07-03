@@ -11,7 +11,11 @@ category: how-to
 
 TiDB 通过 Prometheus 和 Grafana 监控 TiDB 集群。在通过 TiDB Operator 创建新的 TiDB 集群时，对于每个 TiDB 集群，会同时创建、配置一套独立的监控系统，与 TiDB 集群运行在同一 Namespace, 包括 Prometheus 和 Grafana 两个组件。
 
-监控数据默认没有持久化，如果由于某些原因监控容器重启，已有的监控数据会丢失。可以在 `values.yaml` 中设置 `monitor.persistent` 为 `true` 来持久化监控数据。
+监控数据默认没有持久化，如果由于某些原因监控容器重启，已有的监控数据会丢失。可以在 `values.yaml` 中设置 `monitor.persistent` 为 `true` 来持久化监控数据。开启此选项时应将 `storageClass` 设置为一个当前集群中已有的存储，并且此存储应当支持将数据持久化，否则仍然会存在数据丢失的风险。
+
+在 [TiDB 集群监控](monitor-a-cluster.md)中有一些监控系统配置的细节可供参考。
+
+### 查看监控面板
 
 可以通过 `kubectl port-forward` 查看监控面板：
 
@@ -23,7 +27,23 @@ kubectl port-forward -n ${namespace} svc/${releaseName}-grafana 3000:3000 &>/tmp
 
 然后在浏览器中打开 http://localhost:3000，默认用户名和密码都为 `admin`。
 
-Grafana 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持负载均衡器，你可以修改为 `LoadBalancer`，然后通过负载均衡器访问面板。
+Grafana 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持负载均衡器，你可以在 `values.yaml` 中将 `monitor.grafana.service.type` 修改为 `LoadBalancer`，然后在执行 `helm upgrade` 后通过负载均衡器访问面板。
+
+如果不需要使用 Grafana, 可以在部署时在 `values.yaml` 中将 `monitor.grafana.create` 设置为 `false` 来节省资源。这一情况下需要使用其他已有或新部署的数据可视化工具直接访问监控数据来完成可视化。
+
+### 访问监控数据
+
+对于需要直接访问监控数据的情况，可以通过 `kubectl port-forward` 来访问 Prometheus:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl port-forward -n ${namespace} svc/${releaseName}-prometheus 9090:9090 &>/tmp/portforward-prometheus.log
+```
+
+然后在浏览器中打开 http://localhost:9090, 或通过客户端工具访问此地址即可。
+
+Prometheus 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持负载均衡器，你可以在 `values.yaml` 中将 `monitor.prometheus.service.type` 修改为 `LoadBalancer`，然后在执行 `helm upgrade` 后通过负载均衡器访问监控数据。
 
 ## Kubernetes 的监控
 
@@ -57,3 +77,21 @@ Grafana 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持负
 由于 TiDB Operator 实际上是运行于 Kubernetes 中的容器，选择任一可以覆盖对 Kubernetes 容器状态及资源进行监控的监控系统即可覆盖对 TiDB Operator 的监控，无需再额外部署监控组件。
 
 我们推荐通过 [Prometheus Operator](https://github.com/coreos/prometheus-operator) 部署基于 [Node Exporter](https://github.com/prometheus/node_exporter) 和 Prometheus 的宿主机监控系统，这一方案同时可以兼容并用于对宿主机资源的监控。
+
+## 报警配置
+### TiDB 集群报警
+
+在随 TiDB 集群部署 Prometheus 时，会自动导入一些默认的报警规则，可以通过浏览器访问 Prometheus 的 Alerts 页面查看当前系统中的所有报警规则和状态。
+
+如果需要修改或新增报警规则，可编辑 `charts/tidb-cluster/templates/config/_alert-rules-config.tpl` 文件进行设置，新的配置将在执行 `helm upgrade` 后生效。
+
+默认的 Prometheus 和报警配置不能发送报警消息，如需发送报警消息，可以使用任意支持 Prometheus 报警的工具与其集成。我们推荐通过 [AlertManager](https://prometheus.io/docs/alerting/alertmanager/) 管理与发送报警消息。
+
+如果在你的现有基础设施中已经有可用的 AlertManager 服务，可以在 `values.yaml` 中修改 `monitor.prometheus.alertmanagerURL` 配置其地址供 Prometheus 使用；如果没有可用的 AlertManager 服务，或者希望部署一套独立的服务，可以参考官方的[说明](https://github.com/prometheus/alertmanager)部署。
+
+### Kubernetes 报警
+
+如果使用 Prometheus Operator 部署针对 Kubernetes 宿主机和服务的监控，会默认配置一些告警规则，并且会部署一个 AlertManager 服务，具体的设置方法请参阅 [kube-prometheus](https://github.com/coreos/kube-prometheus) 的说明。
+
+如果使用其他的工具或服务对 Kubernetes 宿主机和服务进行监控，请查阅该工具或服务提供商的对应资料。
+
