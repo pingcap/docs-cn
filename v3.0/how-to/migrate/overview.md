@@ -15,8 +15,8 @@ aliases: ['/docs-cn/op-guide/migration-overview/']
 - [Mydumper](/reference/tools/mydumper.md)：用于从 MySQL 导出数据。建议使用 Mydumper，而非 mysqldump。
 - [Loader](/reference/tools/loader.md)：用于将 Mydumper 导出格式的数据导入到 TiDB。
 - [Syncer](/reference/tools/syncer.md)：用于将数据从 MySQL 增量同步到 TiDB。
-- [DM (Data Migration)](/reference/tools/dm/overview.md)：集成了 Mydumper、Loader、Syncer 的功能，支持 MySQL 数据的全量导出和到 TiDB 的全量导入，还支持 MySQL binlog 数据到 TiDB 的增量同步。
-- [TiDB-Lightning](/reference/tools/lightning/overview-architecture.md)：用于将全量数据高速导入到 TiDB 集群。例如，如果要导入超过 1TiB 的数据，使用 Loader 往往需花费几十个小时，而使用 TiDB-Lighting 的导入速度至少是 Loader 的三倍。
+- [DM (Data Migration)](/reference/tools/data-migration/overview.md)：集成了 Mydumper、Loader、Syncer 的功能，支持 MySQL 数据的全量导出和到 TiDB 的全量导入，还支持 MySQL binlog 数据到 TiDB 的增量同步。
+- [TiDB-Lightning](/reference/tools/tidb-lightning/overview.md)：用于将全量数据高速导入到 TiDB 集群。例如，如果要导入超过 1TiB 的数据，使用 Loader 往往需花费几十个小时，而使用 TiDB-Lighting 的导入速度至少是 Loader 的三倍。
 
 ## 迁移场景
 
@@ -51,4 +51,4 @@ aliases: ['/docs-cn/op-guide/migration-overview/']
 1. 将数据导出为 CSV 格式。
 2. 使用 TiDB-Lightning 将 CSV 格式的数据导入 TiDB。
 
-详细操作参见[使用 TiDB-Lightning 迁移 CSV 数据](/tools/lightning/csv.md)。
+详细操作参见[使用 TiDB-Lightning 迁移 CSV 数据](/reference/tools/tidb-lightning/csv.md)。
