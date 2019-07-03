@@ -13,7 +13,7 @@ TiDB 通过 Prometheus 和 Grafana 监控 TiDB 集群。在通过 TiDB Operator 
 
 监控数据默认没有持久化，如果由于某些原因监控容器重启，已有的监控数据会丢失。可以在 `values.yaml` 中设置 `monitor.persistent` 为 `true` 来持久化监控数据。
 
-可以通过 `kubectl portforward` 查看监控面板：
+可以通过 `kubectl port-forward` 查看监控面板：
 
 {{< copyable "shell-regular" >}}
 

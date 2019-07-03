@@ -3,7 +3,7 @@ title: 日志收集
 category: how-to
 ---
 
-# 日志的收集
+# 日志收集
 
 系统与程序的运行日志对排查问题以及实现一些自动化操作可能非常有用。本文将简要说明收集 TiDB 及相关组件日志的方法。
 
@@ -13,16 +13,16 @@ category: how-to
 
 如果在你的现有基础设施中已经有用于收集日志的系统，只需要通过常规方法将 Kubernetes 所在的宿主机上的 `/var/log/containers/*.log` 文件加入采集范围即可；如果没有可用的日志收集系统，或者希望部署一套独立的系统用于收集相关日志，也可以使用你熟悉的任意日志收集系统或方案。
 
-Kubernetes 官方文档中提供了 [ElasticSerach](https://kubernetes.io/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/) 和 [Stackdriver](https://kubernetes.io/docs/tasks/debug-application-cluster/logging-stackdriver/) 两种日志收集方案可供参考。
+Kubernetes 官方文档中提供了 [ElasticSearch](https://kubernetes.io/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/) 和 [Stackdriver](https://kubernetes.io/docs/tasks/debug-application-cluster/logging-stackdriver/) 两种日志收集方案可供参考。
 
 常见的可用于收集 Kubernetes 日志的开源工具有：
  - Filebeat
- - Filebit
  - Fluentd
  - Fluent-bit
+ - Logstash
  - ...
 
-收集到的日志通常可以汇总存储在某一特定的服务器上，或存放到 ElasticSerach 等专用的存储、分析系统当中。
+收集到的日志通常可以汇总存储在某一特定的服务器上，或存放到 ElasticSearch 等专用的存储、分析系统当中。
 
 一些云服务商或专门的性能监控服务提供商也有各自的免费或收费的日志收集方案可以选择。
 
