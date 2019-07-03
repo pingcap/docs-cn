@@ -461,7 +461,7 @@ target-table = "order_2017"
     ```
 6. 检查字符集。
 
-    TiDB 和 MySQL 的字符集的兼容性不同，详见 [TiDB 支持的字符集](/sql/character-set-support.md)。
+    TiDB 和 MySQL 的字符集的兼容性不同，详见 [TiDB 支持的字符集](/reference/sql/character-set.md)。
 
 
 ## 监控方案
