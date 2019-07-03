@@ -173,7 +173,7 @@ pd-ctl -d config set max-store-down-time 10m
     {{< copyable "shell-regular" >}}
 
     ```shell
-    $ watch pd-ctl -d store ${ID}
+    watch pd-ctl -d store ${ID}
     ```
 
 5. 解除 TiKV 实例与节点本地盘的绑定。
