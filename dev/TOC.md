@@ -81,6 +81,7 @@
     - [集群配置诊断](how-to/troubleshoot/cluster-setup.md)
     - [Data Migration 故障诊断](how-to/troubleshoot/data-migration.md)
     - [TiDB Lightning 故障诊断](how-to/troubleshoot/tidb-lightning.md)
+    - [Kubernetes 上的 TiDB 集群故障诊断](how-to/troubleshoot/tidb-in-kubernetes.md)
 + 参考手册
   + [与 MySQL 兼容性对比](reference/mysql-compatibility.md)
   + SQL

@@ -81,6 +81,7 @@
     - [集群配置诊断](how-to/troubleshoot/cluster-setup.md)
     - [Data Migration 故障诊断](how-to/troubleshoot/data-migration.md)
     - [TiDB Lightning 故障诊断](how-to/troubleshoot/tidb-lightning.md)
+    - [Kubernetes 上的 TiDB 集群故障诊断](how-to/troubleshoot/tidb-in-kubernetes.md)
 + 参考手册
   + [与 MySQL 兼容性对比](reference/mysql-compatibility.md)
   + SQL
@@ -236,7 +237,7 @@
       - [配置文件描述](reference/configuration/tikv-server/configuration-file.md)
     + Kubernetes 上的 TiDB
       - [集群配置](reference/configuration/tidb-in-kubernetes/cluster-configuration.md)
-      - [备份配置参数](reference/configuration/tidb-in-kubernetes/backup-configuration.md)
+      - [备份配置](reference/configuration/tidb-in-kubernetes/backup-configuration.md)
       - [本地 PV 配置](reference/configuration/tidb-in-kubernetes/local-pv-configuration.md)
   + 监控指标
     - [Overview 面板](reference/key-monitoring-metrics/overview-dashboard.md)
