@@ -52,7 +52,7 @@ aliases: ['/docs-cn/op-guide/migration/']
 
 > **注意：**
 >
-> 目前 TiDB 支持 UTF8mb4 [字符编码](/sql/character-set-support.md)，假设 mydumper 导出数据为 latin1 字符编码，请使用 `iconv -f latin1 -t utf-8 $file -o /data/imdbload/$basename` 命令转换，$file 为已有文件，$basename 为转换后文件。
+> 目前 TiDB 支持 UTF8mb4 [字符编码](/reference/sql/character-set.md)，假设 mydumper 导出数据为 latin1 字符编码，请使用 `iconv -f latin1 -t utf-8 $file -o /data/imdbload/$basename` 命令转换，$file 为已有文件，$basename 为转换后文件。
 
 > **注意：**
 >
