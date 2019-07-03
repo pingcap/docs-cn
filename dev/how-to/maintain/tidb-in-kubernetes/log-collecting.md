@@ -16,10 +16,10 @@ category: how-to
 Kubernetes 官方文档中提供了 [ElasticSearch](https://kubernetes.io/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/) 和 [Stackdriver](https://kubernetes.io/docs/tasks/debug-application-cluster/logging-stackdriver/) 两种日志收集方案可供参考。
 
 常见的可用于收集 Kubernetes 日志的开源工具有：
- - Filebeat
- - Fluentd
- - Fluent-bit
- - Logstash
+ - [Fluentd](https://www.fluentd.org/)
+ - [Fluent-bit](https://fluentbit.io/)
+ - [Filebeat](https://www.elastic.co/products/beats/filebeat)
+ - [Logstash](https://www.elastic.co/products/logstash)
  - ...
 
 收集到的日志通常可以汇总存储在某一特定的服务器上，或存放到 ElasticSearch 等专用的存储、分析系统当中。
