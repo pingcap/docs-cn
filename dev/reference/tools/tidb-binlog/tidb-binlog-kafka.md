@@ -1,29 +1,28 @@
 ---
-title: TiDB-Binlog kafka 部署方案
+title: TiDB Binlog kafka 部署方案
 category: reference
-aliases: ['/docs-cn/tools/binlog/tidb-binlog-kafka/']
 ---
 
-# TiDB-Binlog Kafka 部署方案
+# TiDB Binlog Kafka 部署方案
 
-本文档介绍如何部署 Kafka 版本的 TiDB-Binlog。
+本文档介绍如何部署 Kafka 版本的 TiDB Binlog。
 
-## TiDB-Binlog 简介
+## TiDB Binlog 简介
 
-TiDB-Binlog 是用于收集 TiDB 的 Binlog，并提供实时备份和同步功能的商业工具。
+TiDB Binlog 是用于收集 TiDB 的 Binlog，并提供实时备份和同步功能的商业工具。
 
-TiDB-Binlog 支持以下功能场景:
+TiDB Binlog 支持以下功能场景:
 
 - **数据同步**：同步 TiDB 集群数据到其他数据库
 - **实时备份和恢复**：备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复
 
-## TiDB-Binlog Kafka 架构
+## TiDB Binlog Kafka 架构
 
-首先介绍 TiDB-Binlog 的整体架构。
+首先介绍 TiDB Binlog 的整体架构。
 
-![TiDB-Binlog 架构](/media/tidb_binlog_kafka_architecture.png)
+![TiDB Binlog 架构](/media/tidb_binlog_kafka_architecture.png)
 
-TiDB-Binlog 集群主要分为三个组件：
+TiDB Binlog 集群主要分为三个组件：
 
 ### Pump
 
@@ -41,11 +40,11 @@ Kafka 集群用来存储由 Pump 写入的 Binlog 数据，并提供给 Drainer 
 >
 > Local 版本将 Binlog 存储在文件中，Kafka 版本则使用 Kafka 存储。
 
-## TiDB-Binlog 安装
+## TiDB Binlog 安装
 
-以下为 TiDB-Ansible 分支与 TiDB 版本的对应关系，版本选择可咨询官方 info@pingcap.com。
+以下为 TiDB Ansible 分支与 TiDB 版本的对应关系，版本选择可咨询官方 info@pingcap.com。
 
-| TiDB-Ansible 分支 | TiDB 版本 | 备注 |
+| TiDB Ansible 分支 | TiDB 版本 | 备注 |
 |:----|:----|:----|
 | release-2.0 | 2.0 版本 | 最新 2.0 稳定版本，可用于生产环境。 |
 
@@ -66,7 +65,7 @@ tar -xzf tidb-binlog-kafka-linux-amd64.tar.gz
 cd tidb-binlog-kafka-linux-amd64
 ```
 
-### TiDB-Binlog 部署
+### TiDB Binlog 部署
 
 #### 注意事项
 
@@ -76,7 +75,7 @@ cd tidb-binlog-kafka-linux-amd64
 
     设置 TiDB 启动参数 `binlog-socket` 为对应的 Pump 参数 `socket` 所指定的 unix socket 文件路径，最终部署结构如下图所示：
 
-    ![TiDB pump 模块部署结构](../../media/tidb-pump-deployment.png)
+    ![TiDB pump 模块部署结构](/media/tidb-pump-deployment.png)
 
 * Drainer 不支持对 ignore schemas（在过滤列表中的 schemas）的 table 进行 rename DDL 操作。
 
@@ -114,7 +113,7 @@ cd tidb-binlog-kafka-linux-amd64
 
     输出到 kafka 的数据为按 ts 排好序的 protobuf 定义 binlog 格式，可以参考 [driver](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/driver) 获取数据同步到下游。
 
-* Kafka 和 ZooKeeper 集群需要在部署 TiDB-Binlog 之前部署好。Kafka 需要 0.9 及以上版本。
+* Kafka 和 ZooKeeper 集群需要在部署 TiDB Binlog 之前部署好。Kafka 需要 0.9 及以上版本。
 
 #### Kafka 集群配置推荐
 
@@ -134,7 +133,7 @@ cd tidb-binlog-kafka-linux-amd64
     * `replica.fetch.max.bytes=1073741824`
     * `fetch.message.max.bytes=1073741824`
 
-#### 使用 tidb-ansible 部署 Pump
+#### 使用 TiDB Ansible 部署 Pump
 
 - 如无 Kafka 集群，可使用 [kafka-ansible](https://github.com/pingcap/thirdparty-ops/tree/master/kafka-ansible) 部署 Kafka 集群。
 - 使用 [tidb-ansible](https://github.com/pingcap/tidb-ansible) 部署 TiDB 集群时，修改 `tidb-ansible/inventory.ini` 文件，设置 `enable_binlog = True`，并配置 `zookeeper_addrs` 变量为 Kafka 集群的 ZooKeeper 地址，这样部署 TiDB 集群时会部署 Pump。
@@ -400,9 +399,9 @@ PbReader 使用示例
 ./bin/pbReader -binlog-file=${path}/binlog-0000000000000000
 ```
 
-## TiDB-Binlog 监控
+## TiDB Binlog 监控
 
-本部分主要介绍如何对 TiDB-Binlog 的状态、性能做监控，并通过 Prometheus + Grafana 展现 metrics 数据。
+本部分主要介绍如何对 TiDB Binlog 的状态、性能做监控，并通过 Prometheus + Grafana 展现 metrics 数据。
 
 ### Pump/Drainer 配置
 

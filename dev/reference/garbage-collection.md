@@ -1,7 +1,6 @@
 ---
 title: TiDB 垃圾回收 (GC)
 category: reference
-aliases: ['/docs-cn/op-guide/gc/']
 ---
 
 # TiDB 垃圾回收 (GC)
