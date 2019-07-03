@@ -26,13 +26,15 @@ Kubernetes 官方文档中提供了 [ElasticSearch](https://kubernetes.io/docs/t
 
 一些云服务商或专门的性能监控服务提供商也有各自的免费或收费的日志收集方案可以选择。
 
-如果不通过单独的日志收集工具汇总日志，你也可以直接使用 `kubectl` 工具查看某个容器的运行日志，这一方法无法查看已销毁容器的日志或者容器重启之前的日志：
+如果不通过单独的日志收集工具汇总日志，你也可以直接使用 `kubectl` 工具查看某个容器的运行日志，这一方法无法查看已销毁容器的日志：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 kubectl logs -n ${namespace} ${tidbPodName}
 ```
+
+若需查看容器重启之前的日志，可以在执行上述命令时添加 `-p` 参数。
 
 如果需要从多个 Pod 获取日志，可以使用 [`stern`](https://github.com/wercker/stern).
 
@@ -44,7 +46,7 @@ stern -n ${namespace} tidb -c slowlog
 
 ## TiDB 慢查询日志
 
-默认情况下，TiDB 会打印慢查询日志到标准输出，和正常日志混在一起。你可以通过关键字 `SLOW_QUERY` 来筛选慢查询日志，例如：
+对于 3.0 之前的版本，在默认情况下，TiDB 会打印慢查询日志到标准输出，和应用日志混在一起。你可以通过关键字 `SLOW_QUERY` 来筛选慢查询日志，例如：
 
 {{< copyable "shell-regular" >}}
 
@@ -52,9 +54,9 @@ stern -n ${namespace} tidb -c slowlog
 kubectl logs -n ${namespace} ${tidbPodName} | grep SLOW_QUERY
 ```
 
-在一些情况下，你可能希望使用一些工具或自动化系统对日志内容进行解析。TiDB 各组件的应用日志使用了[统一的日志格式](https://github.com/tikv/rfcs/blob/master/text/2018-12-19-unified-log-format.md)所以解析通常不是问题，但由于慢查询日志使用了与 MySQL 兼容的多行格式，与应用日志混在一起时可能会对解析造成困难。
+在一些情况下，你可能希望使用一些工具或自动化系统对日志内容进行分析、处理。TiDB 各组件的应用日志使用了[统一的日志格式](https://github.com/tikv/rfcs/blob/master/text/2018-12-19-unified-log-format.md)以便于程序解析，但由于慢查询日志使用的是与 MySQL 兼容的多行格式，与应用日志混在一起时可能会对解析造成困难。
 
-在 `values.yaml` 文件是配置 `separateSlowLog` 参数可以将慢查询日志输出到一个专用的旁路容器中，这样慢查询日志在宿主机上会被输出到一个单独的文件，和应用日志分开。
+在 `values.yaml` 文件中配置 `separateSlowLog` 参数可以将慢查询日志输出到一个专用的旁路容器中，这样慢查询日志在宿主机上会被输出到一个单独的文件，和应用日志分开。
 
 修改方法为编辑 `values.yaml` 文件，将 `separateSlowLog` 参数设置为 `true`:
 
@@ -63,13 +65,15 @@ kubectl logs -n ${namespace} ${tidbPodName} | grep SLOW_QUERY
     separateSlowLog: true
 ```
 
-之后再运行 `helm upgrade` 使配置生效，然后你可以通过名为 `slowlog` 的 sidecar 容器查看慢查询日志：
+之后再运行 `helm upgrade` 使配置生效，然后可以通过名为 `slowlog` 的 sidecar 容器查看慢查询日志：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 kubectl logs -n ${namespace} ${tidbPodName} -c slowlog
 ```
+
+对于 3.0 及更新的版本，TiDB 将慢查询日志输出到独立的 `slowlog.log` 文件中，并且 `separateSlowLog` 是默认开启的，所以可以直接通过 sidecar 容器查看慢查询日志，无需额外设置。
 
 > **注意：**
 >
