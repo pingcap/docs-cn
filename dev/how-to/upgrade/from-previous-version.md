@@ -29,7 +29,7 @@ TiDB-Ansible release-3.0 版本依赖 Ansible 2.4.2 及以上版本（`ansible>=
 
 ```
 $ ansible --version
-ansible 2.5.14
+ansible 2.7.11
 $ pip show jinja2
 Name: Jinja2
 Version: 2.10
