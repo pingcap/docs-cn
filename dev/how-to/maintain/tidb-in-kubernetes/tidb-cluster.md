@@ -265,36 +265,38 @@ Grafana 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持负
 
 ### 查看 TiDB 慢查询日志
 
-默认情况下，TiDB 会打印慢查询日志到标准输出，和正常日志混在一起。你可以通过 `grep` 关键词 `SLOW_QUERY` 查看慢查询日志：
+* 如果 `values.yaml` 中没有显示配置 `separateSlowLog: true`，那么 TiDB 会打印慢查询日志到标准输出，和正常日志混在一起。
 
-{{< copyable "shell-regular" >}}
+    如果 TiDB 版本 <= v2.1.7，你可以通过 `grep` 关键词 `SLOW_QUERY` 查看慢查询日志：
 
-```shell
-kubectl logs -n ${namespace} ${tidbPodName} | grep SLOW_QUERY
-```
+    {{< copyable "shell-regular" >}}
 
-或者，你也可以配置 `separateSlowLog` 输出慢查询日志到一个sidecar 容器：
+    ```shell
+    kubectl logs -n ${namespace} ${tidbPodName} | grep SLOW_QUERY
+    ```
+    如果 TiDB 版本 >= v2.1.8，由于慢查询日志格式发生变化，不太方便分离慢查询日志，建议参考下面内容配置 `separateSlowLog: true` 单独查看慢查询日志。
 
-```yaml
-# Uncomment the following line to enable separate output of the slow query log
-    # separateSlowLog: true
-```
+* 配置 `separateSlowLog: true` 输出慢查询日志到一个 sidecar 容器：
 
-运行 `helm upgrade` 使配置生效，然后你可以通过名为 `slowlog` 的 sidecar 容器查看慢查询日志：
+    ```yaml
+    separateSlowLog: true
+    ```
 
-{{< copyable "shell-regular" >}}
+    运行 `helm upgrade` 使配置生效，然后你可以通过名为 `slowlog` 的 sidecar 容器查看慢查询日志：
 
-```shell
-kubectl logs -n ${namespace} ${tidbPodName} -c slowlog
-```
+    {{< copyable "shell-regular" >}}
 
-如果要从多个 Pod 获取日志，推荐 [`stern`](https://github.com/wercker/stern)。
+    ```shell
+    kubectl logs -n ${namespace} ${tidbPodName} -c slowlog
+    ```
 
-{{< copyable "shell-regular" >}}
+    如果要从多个 Pod 获取日志，推荐 [`stern`](https://github.com/wercker/stern)。
 
-```shell
-stern -n ${namespace} tidb -c slowlog
-```
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    stern -n ${namespace} tidb -c slowlog
+    ```
 
 ## 备份和恢复
 
