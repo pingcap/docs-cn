@@ -308,7 +308,7 @@
       - [FAQ](faq/tidb-lightning.md)
     - [PD Control](reference/tools/pd-control.md)
     - [PD Recover](reference/tools/pd-recover.md)
-    - [TiKV Control](https://github.com/tikv/tikv/blob/master/docs/tools/tikv-control.md)
+    - [TiKV Control](reference/tools/tikv-control.md)
     - [TiDB Control](reference/tools/tidb-control.md)
     - [Download](reference/tools/download.md)
   + Key Monitoring Metrics

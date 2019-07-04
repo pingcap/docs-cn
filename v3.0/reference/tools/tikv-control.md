@@ -20,19 +20,19 @@ When you compile TiKV, the `tikv-ctl` command is also compiled at the same time.
     For this mode, if SSL is enabled in TiKV, `tikv-ctl` also needs to specify the related certificate file. For example:
 
     ```
-    $ tikv-ctl --ca-path ca.pem --cert-path client.pem --key-path client-key.pem --host 127.0.0.1:20160 <subcommands>
+    $ tikv-ctl --ca-path ca.pem --cert-path client.pem --key-path client-key.pem --host 127.0.0.1:21060 <subcommands>
     ```
 
     However, sometimes `tikv-ctl` communicates with PD instead of TiKV. In this case, you need to use the `--pd` option instead of `--host`. Here is an example:
-    
+
     ```
     $ tikv-ctl --pd 127.0.0.1:2379 compact-cluster
     store:"127.0.0.1:20160" compact db:KV cf:default range:([], []) success!
     ```
 
-- Local mode: use the `--db` option to specify the local TiKV data directory path
+- Local mode: Use the `--db` option to specify the local TiKV data directory path
 
-Unless otherwise noted, all commands supports both the remote mode and the local mode.
+Unless otherwise noted, all commands support both the remote mode and the local mode.
 
 Additionally, `tikv-ctl` has two simple commands `--to-hex` and `--to-escaped`, which are used to make simple changes to the form of the key.
 
@@ -46,7 +46,7 @@ AAFF
 ```
 
 > **Note:**
->
+> 
 > When you specify the `escaped` form of the key in a command line, it is required to enclose it in double quotes. Otherwise, bash eats the backslash and a wrong result is returned.
 
 ## Subcommands, some options and flags
@@ -60,7 +60,7 @@ Use the `raft` subcommand to view the status of the Raft state machine at a spec
 Use the `region` and `log` subcommands to obtain the above information respectively. The two subcommands both support the remote mode and the local mode at the same time. Their usage and output are as follows:
 
 ```bash
-$ tikv-ctl --host 127.0.0.1:20160 raft region -r 2
+$ tikv-ctl --host 127.0.0.1:21060 raft region -r 2
 region id: 2
 region state key: \001\003\000\000\000\000\000\000\000\002\001
 region state: Some(region {id: 2 region_epoch {conf_ver: 3 version: 1} peers {id: 3 store_id: 1} peers {id: 5 store_id: 4} peers {id: 7 store_id: 6}})
@@ -108,6 +108,21 @@ key: zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\00
 
 In this command, the key is also the escaped form of raw key.
 
+### Scan raw keys
+
+The `raw-scan` command scans directly from the RocksDB. Note that to scan data keys you need to add a `'z'` prefix to keys.
+
+Use `--from` and `--to` options to specify the range to scan (unbounded by default). Use `--limit` to limit at most how
+many keys to print out (30 by default). Use `--cf` to specify which cf to scan (can be `default`, `write` or `lock`).
+
+```bash
+$ ./tikv-ctl --db /var/lib/tikv/db/ raw-scan --from 'zt' --limit 2 --cf default
+key: "zt\200\000\000\000\000\000\000\377\005_r\200\000\000\000\000\377\000\000\001\000\000\000\000\000\372\372b2,^\033\377\364", value: "\010\002\002\002%\010\004\002\010root\010\006\002\000\010\010\t\002\010\n\t\002\010\014\t\002\010\016\t\002\010\020\t\002\010\022\t\002\010\024\t\002\010\026\t\002\010\030\t\002\010\032\t\002\010\034\t\002\010\036\t\002\010 \t\002\010\"\t\002\010$\t\002\010&\t\002\010(\t\002\010*\t\002\010,\t\002\010.\t\002\0100\t\002\0102\t\002\0104\t\002"
+key: "zt\200\000\000\000\000\000\000\377\025_r\200\000\000\000\000\377\000\000\023\000\000\000\000\000\372\372b2,^\033\377\364", value: "\010\002\002&slow_query_log_file\010\004\002P/usr/local/mysql/data/localhost-slow.log"
+
+Total scanned keys: 2
+```
+
 ### Print a specific key value
 
 To print the value of a key, use the `print` command.
@@ -134,10 +149,10 @@ The properties can be used to check whether the Region is healthy or not. If not
 
 ### Compact data of each TiKV manually
 
-Use the `compact` command to manually compact data of each TiKV. If you specify the `--from` and `--to` options, then their flags are also in the form of escaped raw key. You can use the `--host` option to specify the TiKV that you need to compact. The `-d` option is used to specify the RocksDB that will be compacted. The optional values are `kv` and `raft`. Also, the `--threads` option allows you to specify the concurrency that you compact and its default value is 8. Generally, a higher concurrency comes with a faster compact speed, which might yet affect the service. You need to choose an appropriate concurrency based on the scenario.
+Use the `compact` command to manually compact data of each TiKV. If you specify the `--from` and `--to` options, then their flags are also in the form of escaped raw key. You can use the `--db` option to specify the RocksDB that you need to compact. The optional values are `kv` and `raft`. Also, the `--threads` option allows you to specify the concurrency that you compact and its default value is 8. Generally, a higher concurrency comes with a faster compact speed, which might yet affect the service. You need to choose an appropriate concurrency based on the scenario.
 
 ```bash
-$ tikv-ctl --host 127.0.0.1:20160 compact -d kv
+$ tikv-ctl --db /path/to/tikv/db compact -d kv
 success!
 ```
 
@@ -167,7 +182,7 @@ success!
 Use the `consistency-check` command to execute a consistency check among replicas in the corresponding Raft of a specific Region. If the check fails, TiKV itself panics. If the TiKV instance specified by `--host` is not the Region leader, an error is reported.
 
 ```bash
-$ tikv-ctl --host 127.0.0.1:20160 consistency-check -r 2
+$ tikv-ctl --host 127.0.0.1:21060 consistency-check -r 2
 success!
 $ tikv-ctl --host 127.0.0.1:21061 consistency-check -r 2
 DebugClient::check_region_consistency: RpcFailure(RpcStatus { status: Unknown, details: Some("StringError(\"Leader is on store 1\")") })
@@ -211,20 +226,16 @@ If the command is successfully executed, it prints the above information. If the
 
 You can use the `modify-tikv-config` command to dynamically modify the configuration arguments. Currently, it only supports dynamically modifying RocksDB related arguments. 
 
-- `-m` is used to specify the target module. You can set it to one of `storage`, `kvdb` or `raftdb`.
+- `-m` is used to specify the target RocksDB. You can set it to `kvdb` or `raftdb`.
 - `-n` is used to specify the configuration name. 
-    You can refer to the arguments of `[storage]`, `[rocksdb]` and `[raftdb]` (corresponding to `storage`, `kvdb` and `raftdb`) in the [TiKV configuration template](https://github.com/pingcap/tikv/blob/master/etc/config-template.toml#L213-L500).
+    You can refer to the arguments of `[rocksdb]` and `[raftdb]` (corresponding to `kvdb` and `raftdb`) in the [TiKV configuration template](https://github.com/tikv/tikv/blob/master/etc/config-template.toml#L213-L500).
     You can use `default|write|lock + . + argument name` to specify the configuration of different CFs. For `kvdb`, you can set it to `default`, `write`, or `lock`; for `raftdb`, you can only set it to `default`.
 - `-v` is used to specify the configuration value.
 
 ```bash
-# Set shared block cache size.
-$ tikv-ctl modify-tikv-config -m storage -n block_cache.capacity -v 10GB
-success!
-# Set block cache size for write CF when shared block cache is not used.
-$ tikv-ctl modify-tikv-config -m kvdb -n write.block_cache_size -v 256MB
-success!
 $ tikv-ctl modify-tikv-config -m kvdb -n max_background_jobs -v 8
+success！
+$ tikv-ctl modify-tikv-config -m kvdb -n write.block-cache-size -v 256MB
 success!
 $ tikv-ctl modify-tikv-config -m raftdb -n default.disable_auto_compactions -v true
 success!
@@ -232,24 +243,19 @@ success!
 
 ### Force Region to recover the service from failure of multiple replicas
 
-Use the `unsafe-recover remove-fail-stores` command to remove the failed machines from the peer list of the specified Regions. This command has only one mode "local". Before running this command, you need to stop the target TiKV process to release the file lock.
+Use the `unsafe-recover remove-fail-stores` command to remove the failed machines from the peer list of Regions. Then after you restart TiKV, these Regions can continue to provide services using the other healthy replicas. This command is usually used in circumstances where multiple TiKV stores are damaged or deleted.
 
-The `-s` option accepts multiple `store_id` separated by comma and uses the `-r` flag to specify involved Regions. To recover the service from the failure of multiple replicas for all the Regions in one store, specify `--all-regions`.
+The `-s` option accepts multiple `store_id` separated by comma and uses the `-r` flag to specify involved Regions. Otherwise, all Regions' peers located on these stores will be removed by default.
 
 ```bash
 $ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 3 -r 1001,1002
 success!
-
-$ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 4,5 --all-regions
 ```
 
-Then after you restart TiKV, these Regions can continue to provide services using the other healthy replicas. This command is usually used in circumstances where multiple TiKV stores are damaged or deleted.
-
 > **Note:**
-> 
+>
 > - This command only supports the local mode. It prints `success!` when successfully run.
-> - Generally, you need to run this command for all stores where the peers of the specified Regions are located.
-> - If you specify `--all-regions`, run this command for all the other healthy stores in the cluster.
+> - You must run this command for all stores where specified Regions' peers are located. If `-r` is not set, all Regions are involved, and you need to run this command for all stores.
 
 ### Recover from MVCC data corruption
 
@@ -262,8 +268,31 @@ $ tikv-ctl --db /path/to/tikv/db recover-mvcc -r 1001,1002 -p 127.0.0.1:2379
 success!
 ```
 
-> **Note:**
-> 
+> **Note**:
+>
 > - This command only supports the local mode. It prints `success!` when successfully run.
 > - The argument of the `-p` option specifies the PD endpoints without the `http` prefix. Specifying the PD endpoints is to query whether the specified `region_id` is validated or not.
-> - You need to run this command for all stores where specified Regions' peers locate.
+> - You need to run this command for all stores where specified Regions' peers are located.
+
+### Ldb Command
+
+The ldb command line tool offers multiple data access and database administration commands. Some examples are listed below.
+For more information, refer to the help message displayed when running `tikv-ctl ldb` or check the documents from RocksDB.
+
+Examples of data access sequence:
+
+To dump an existing RocksDB in HEX:
+
+```bash
+$ tikv-ctl ldb --hex --db=/tmp/db dump
+```
+
+To dump the manifest of an existing RocksDB:
+
+```bash
+$ tikv-ctl ldb --hex manifest_dump --path=/tmp/db/MANIFEST-000001
+```
+
+You can specify the column family that your query is against using the `--column_family=<string>` command line.
+
+`--try_load_options` loads the database options file to open the database. It is recommended to always keep this option on when the database is running. If you open the database with default options, the LSM-tree might be messed up, which cannot be recovered automatically.
