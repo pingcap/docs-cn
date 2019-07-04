@@ -33,14 +33,14 @@ category: how-to
 {{< copyable "shell-regular" >}}
 
 ```shell
-$ lsmod|grep br_netfilter
+lsmod|grep br_netfilter
 ```
 如果没有加载则执行如下命令加载：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-$ modprobe br_netfilter
+modprobe br_netfilter
 ```
 
 同时还需要关闭每个部署 k8s 节点的 swap，执行命令如下：
@@ -48,7 +48,7 @@ $ modprobe br_netfilter
 {{< copyable "shell-regular" >}}
 
 ```shell
-$ swapofff -a
+swapofff -a
 ```
 
 执行如下命令检查 swap 已经关闭：
@@ -57,7 +57,7 @@ $ swapofff -a
 
 ```shell
 ## 执行命令后输出显示 swap 一列全是 0 则表明 swap 已经关闭
-$ free -m
+free -m
 ```
 
 同时为了永久性的关闭 swap, 还应该将 `/etc/fstab` 中 swap 相关的条目全部删除
@@ -68,7 +68,7 @@ $ free -m
 
 ##  k8s 系统资源要求
 
-1. 每个机器上的需要一块比较大的 SAS 盘(至少 1T)，这块盘用来存 docker 和 kubelet 的数据目录，docker 的数据主要包括镜像和容器日志数据，kubelet 主要占盘的数据是 emptyDir 所使用的数据。
+1. 每个机器上的需要一块比较大的 SAS 盘(至少 1T)，这块盘用来存 docker 和 kubelet 的数据目录，docker 的数据主要包括镜像和容器日志数据，kubelet 主要占盘的数据是 [emptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) 所使用的数据。
 2. 如果需要部署 k8s 集群的监控系统, 且监控数据需要落盘，则也需要考虑为 prometheus 准备一块 SAS 盘，后面日志监控系统也需要大的 SAS 盘，同时考虑到机器采购最好是同构的这一因素，因此每台机器最好有两块大的 SAS 盘。生产环境建议给这两种类型的盘做 RAID5，至于使用多少块来做 RAID5 用户自己决定。
 3. etcd 的分布建议是和 k8s master 节点保持一致，也就是多少个 master 节点就部署多少个 etcd 节点，etcd 数据建议使用 SSD 盘存放。
 
