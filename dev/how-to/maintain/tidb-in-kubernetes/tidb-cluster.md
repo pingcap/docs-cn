@@ -249,7 +249,7 @@ kubectl get pv -l app.kubernetes.io/namespace=${namespace},app.kubernetes.io/man
 
 TiDB 通过 Prometheus 和 Grafana 监控 TiDB 集群。TiDB 集群创建时，会同时创建、配置 Prometheus 和 Grafana pod 收集并展示监控指标。
 
-配置与访问监控系统的细节请参阅[监控系统部署](monitoring.md)。
+配置与访问监控系统的细节请参阅[监控系统部署](/how-to/monitor/tidb-in-kubernetes.md)。
 
 ## 日志
 
