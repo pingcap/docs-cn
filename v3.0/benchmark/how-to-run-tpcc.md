@@ -135,7 +135,7 @@ cd run
 
 根据机器配置这个过程可能会持续几个小时。
 
-数据导入完成之后，可以运行 `sql.common/test.sql` 进行数据正确性验证，如果所有 SQL 都返回结果为空，即为数据导入正确。
+数据导入完成之后，可以运行 `sql.common/test.sql` 进行数据正确性验证，如果所有 SQL 语句都返回结果为空，即为数据导入正确。
 
 ## 运行测试
 
@@ -157,4 +157,4 @@ nohup ./runBenchmark.sh props.mysql &> test.log &
 
 tpmC 部分即为测试结果。
 
-测试完成之后，也可以运行 `sql.common/test.sql` 进行数据正确性验证，如果所有 SQL 都返回结果为空，即为数据测试过程正确。
+测试完成之后，也可以运行 `sql.common/test.sql` 进行数据正确性验证，如果所有 SQL 语句都返回结果为空，即为数据测试过程正确。
