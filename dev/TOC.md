@@ -81,6 +81,7 @@
     - [集群配置诊断](how-to/troubleshoot/cluster-setup.md)
     - [Data Migration 故障诊断](how-to/troubleshoot/data-migration.md)
     - [TiDB Lightning 故障诊断](how-to/troubleshoot/tidb-lightning.md)
+    - [Kubernetes 上的 TiDB 集群故障诊断](how-to/troubleshoot/tidb-in-kubernetes.md)
 + 参考手册
   + [与 MySQL 兼容性对比](reference/mysql-compatibility.md)
   + SQL
@@ -258,13 +259,16 @@
     - [`information_schema`](reference/system-databases/information-schema.md)
   - [错误码](reference/error-codes.md)
   - [支持的连接器和 API](reference/supported-clients.md)
-  - [垃圾回收 (GC)](reference/garbage-collection.md)
+  + 垃圾回收 (GC)
+    - [GC 机制简介](reference/garbage-collection/overview.md)
+    - [GC 配置](reference/garbage-collection/configuration.md)
   + 性能调优
     - [SQL 优化流程](reference/performance/sql-optimizer-overview.md)
     - [理解 TiDB 执行计划](reference/performance/understanding-the-query-execution-plan.md)
     - [执行计划绑定](reference/performance/execution-plan-bind.md)
     - [统计信息概述](reference/performance/statistics.md)
     - [Optimizer Hints](reference/performance/optimizer-hints.md)
+    - [使用 SQL 语句检查 TiDB 集群状态](dev/reference/performance/check-cluster-status-using-sql-statements.md)
     - [TiKV 调优](reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + [TiSpark 使用指南](reference/tispark.md)
@@ -302,6 +306,7 @@
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](how-to/migrate/from-aurora.md)
       - [DM 故障诊断](how-to/troubleshoot/data-migration.md)
+      - [FAQ](faq/data-migration.md)
     + TiDB Lightning
       - [概述](reference/tools/tidb-lightning/overview.md)
       - [部署执行](reference/tools/tidb-lightning/deployment.md)
@@ -319,6 +324,7 @@
 + 常见问题 (FAQ)
   - [TiDB FAQ](faq/tidb.md)
   - [TiDB-Lightning FAQ](faq/tidb-lightning.md)
+  - [Data Migration FAQ](faq/data-migration.md)
   - [升级 FAQ](faq/upgrade.md)
 + 技术支持
   - [支持渠道](support-resources.md)
