@@ -276,11 +276,10 @@ Grafana 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持负
     ```
     如果 TiDB 版本 >= v2.1.8，由于慢查询日志格式发生变化，不太方便分离慢查询日志，建议参考下面内容配置 `separateSlowLog: true` 单独查看慢查询日志。
 
-* 配置 `separateSlowLog: true` 输出慢查询日志到一个sidecar 容器：
+* 配置 `separateSlowLog: true` 输出慢查询日志到一个 sidecar 容器：
 
     ```yaml
-    # Uncomment the following line to enable separate output of the slow query log
-        separateSlowLog: true
+    separateSlowLog: true
     ```
 
     运行 `helm upgrade` 使配置生效，然后你可以通过名为 `slowlog` 的 sidecar 容器查看慢查询日志：

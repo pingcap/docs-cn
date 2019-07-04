@@ -279,7 +279,7 @@ Grafana 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持负
 * 配置 `separateSlowLog: true` 输出慢查询日志到一个 sidecar 容器：
 
     ```yaml
-separateSlowLog: true
+    separateSlowLog: true
     ```
 
     运行 `helm upgrade` 使配置生效，然后你可以通过名为 `slowlog` 的 sidecar 容器查看慢查询日志：
