@@ -5,6 +5,8 @@ category: reference
 
 # Kubernetes 上的 TiDB 集群配置
 
+## 配置参数表
+
 TiDB Operator 使用 Helm 部署和管理 TiDB 集群，TiDB 集群的部署配置项见如下列表。`tidb-cluster` 的 `charts/tidb-cluster/values.yaml` 文件默认提供了基本的配置，通过这个基本配置，可以快速启动一个 TiDB 集群，但是如果用户需要特殊配置或是用于生产环境，则需要根据以下列表手动配置对应的配置项。
 
 > **注意：**
@@ -61,6 +63,7 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群，TiDB 集群的部署配�
 | `tikv.nodeSelector` | `tikv.nodeSelector`确保 TiKV Pods 只调度到以该键值对作为标签的节点，详情参考：[nodeselector](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#nodeselector) | `{}` |
 | `tikv.tolerations` | `tikv.tolerations` 应用于 TiKV Pods，允许 TiKV Pods 调度到含有指定 taints 的节点上，详情参考：[taint-and-toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration) | `{}` |
 | `tikv.annotations` | 为 TiKV Pods 添加特定的 `annotations` | `{}` |
+| `tikv.storeLabels` | 用于指定 TiKV 的位置信息的 Labels，PD 基于这些标签来调度 TiKV 的数据副本，标签的优先级按照他们的顺序递减，比如`["zone","rack"]`表示优先把数据副本调度到位于不同的 `zone` 的 TiKV 上，如果 `zone` 数量不够，再调度到位于不同的 `rack` 的 TiKV 上。如果不指定，系统会设置 `["region", "zone", "rack", "host"]` 作为默认值。这些标签生效前提是 Kubernetes 的 Node 上也含有这些标签。**Note：** 目前不支持该标签名中包含 `/`。| `nil` |
 | `tikv.defaultcfBlockCacheSize` | 指定 block 缓存大小，block 缓存用于缓存未压缩的 block，较大的 block 缓存设置可以加快读取速度。一般推荐设置为 `tikv.resources.limits.memory` 的 30%-50% | `1GB` |
 | `tikv.writecfBlockCacheSize` | 指定 writecf 的 block 缓存大小，一般推荐设置为 `tikv.resources.limits.memory` 的 10%-30% | `256MB` |
 | `tikv.readpoolStorageConcurrency` | TiKV 存储的高优先级/普通优先级/低优先级操作的线程池大小 | `4` |
