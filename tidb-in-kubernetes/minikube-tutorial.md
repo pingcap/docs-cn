@@ -1,4 +1,10 @@
-# Deploy TiDB in the minikube cluster
+---
+title: Deploy TiDB in the Minikube Cluster
+summary: Learn how to deploy TiDB in the minikube cluster.
+category: how-to
+---
+
+# Deploy TiDB in the Minikube Cluster
 
 This document describes how to deploy a TiDB cluster in the [minikube](https://kubernetes.io/docs/setup/minikube/) cluster.
 
@@ -16,19 +22,19 @@ See [Installing Minikube](https://kubernetes.io/docs/tasks/tools/install-minikub
 
 After you installed minikube, you can run the following command to start a Kubernetes cluster.
 
-```
+```shell
 minikube start
 ```
 
 For Chinese mainland users, you may use local gcr.io mirrors such as `registry.cn-hangzhou.aliyuncs.com/google_containers`.
 
-```
+```shell
 minikube start --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
 ```
 
 Or you can configure HTTP/HTTPS proxy environments in your Docker:
 
-```
+```shell
 # change 127.0.0.1:1086 to your http/https proxy server IP:PORT
 minikube start --docker-env https_proxy=http://127.0.0.1:1086 \
   --docker-env http_proxy=http://127.0.0.1:1086
@@ -48,7 +54,7 @@ Install kubectl according to the instructions in [Install and Set Up kubectl](ht
 
 After kubectl is installed, test your minikube Kubernetes cluster:
 
-```
+```shell
 kubectl cluster-info
 ```
 
@@ -58,25 +64,25 @@ kubectl cluster-info
 
 Helm is the package manager for Kubernetes and is what allows us to install all of the distributed components of TiDB in a single step. Helm requires both a server-side and a client-side component to be installed.
 
-```
+```shell
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get | bash
 ```
 
 Install helm tiller:
 
-```
+```shell
 helm init
 ```
 
 If you have limited access to gcr.io, you can try a mirror. For example:
 
-```
+```shell
 helm init --upgrade --tiller-image registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:$(helm version --client --short | grep -P -o 'v\d+\.\d+\.\d')
 ```
 
 Once it is installed, running `helm version` returns both the client and server version. For example:
 
-```
+```shell
 $ helm version
 Client: &version.Version{SemVer:"v2.13.1",
 GitCommit:"618447cbf203d147601b4b9bd7f8c37a5d39fbb4", GitTreeState:"clean"}
@@ -86,21 +92,22 @@ GitCommit:"618447cbf203d147601b4b9bd7f8c37a5d39fbb4", GitTreeState:"clean"}
 
 If it shows only the client version, `helm` cannot yet connect to the server. Use `kubectl` to see if any tiller pods are running.
 
-```
+```shell
 kubectl -n kube-system get pods -l app=helm
 ```
+
 ### Add Helm repo
 
 Helm repo (http://charts.pingcap.org/) houses PingCAP managed charts, such as tidb-operator, tidb-cluster and tidb-backup, etc. Add and check the repo with following commands:
 
-```
+```shell
 helm repo add pingcap http://charts.pingcap.org/
 helm repo list
 ```
 
 Then you can check the avaliable charts:
 
-```
+```shell
 helm repo update
 helm search tidb-cluster -l
 helm search tidb-operator -l
@@ -108,11 +115,13 @@ helm search tidb-operator -l
 
 ### Install TiDB operator in the Kubernetes cluster
 
-> **Note:** ${chartVersion} will be used in the rest of the document to represent the chart version, e.g. `v1.0.0-beta.3`.
+> **Note:**
+> 
+> ${chartVersion} will be used in the rest of the document to represent the chart version, e.g. `v1.0.0-beta.3`.
 
 Clone tidb-operator repository:
 
-```
+```shell
 git clone --depth=1 https://github.com/pingcap/tidb-operator
 cd tidb-operator
 kubectl apply -f ./manifests/crd.yaml
@@ -121,7 +130,7 @@ helm install pingcap/tidb-operator --name tidb-operator --namespace tidb-admin -
 
 Now, you can watch the operator come up using the following command:
 
-```
+```shell
 kubectl get pods --namespace tidb-admin -o wide --watch
 ```
 
@@ -131,7 +140,7 @@ kubectl get pods --namespace tidb-admin -o wide --watch
 
 If you have limited access to gcr.io (pods failed with ErrImagePull), you can try a mirror of kube-scheduler image. You can upgrade tidb-operator like this:
 
-```
+```shell
 helm upgrade tidb-operator pingcap/tidb-operator --namespace tidb-admin --set \
   scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler --version=${chartVersion}
 ```
@@ -142,14 +151,14 @@ When you see both tidb-scheduler and tidb-controller-manager are running, you ca
 
 To launch a TiDB cluster, use the following command: 
 
-```
+```shell
 helm install pingcap/tidb-cluster --name demo --set \
   schedulerName=default-scheduler,pd.storageClassName=standard,tikv.storageClassName=standard,pd.replicas=1,tikv.replicas=1,tidb.replicas=1 --version=${chartVersion}
 ```
 
 You can watch the cluster up and running using:
 
-```
+```shell
 kubectl get pods --namespace default -l app.kubernetes.io/instance=demo -o wide --watch
 ```
 
@@ -159,7 +168,7 @@ Use Ctrl+C to quit the watch mode.
 
 Before you start testing your TiDB cluster, make sure you have installed a MySQL client. Note that there can be a small delay between the time when the pod is up and running, and when the service is available. You can watch the list of available services with:
 
-```
+```shell
 kubectl get svc --watch
 ```
 
@@ -169,19 +178,19 @@ To connect your MySQL client to the TiDB server, take the following steps:
 
 1. Forward a local port to the TiDB port.
 
-    ```
+    ```shell
     kubectl port-forward svc/demo-tidb 4000:4000
     ```
 
 2. In another terminal window, connect the TiDB server with a MySQL client:
 
-    ```
+    ```shell
     mysql -h 127.0.0.1 -P 4000 -uroot
     ```
 
     Or you can run a SQL command directly:
 
-    ```
+    ```shell
     mysql -h 127.0.0.1 -P 4000 -uroot -e 'select tidb_version();'
     ```
 
@@ -191,7 +200,7 @@ To monitor the status of the TiDB cluster, take the following steps.
 
 1. Forward a local port to the Grafana port.
 
-    ```
+    ```shell
     kubectl port-forward svc/demo-grafana 3000:3000
     ```
 
@@ -199,7 +208,7 @@ To monitor the status of the TiDB cluster, take the following steps.
 
     Alternatively, Minikube provides `minikube service` that exposes Grafana as a service for you to access more conveniently. 
 
-    ```
+    ```shell
     minikube service demo-grafana
     ```
 
@@ -209,7 +218,7 @@ To monitor the status of the TiDB cluster, take the following steps.
 
 Use the following commands to delete the demo cluster:
 
-```
+```shell
 helm delete --purge demo
 
 # update reclaim policy of PVs used by demo to Delete
@@ -225,7 +234,7 @@ kubectl delete pvc -l app.kubernetes.io/managed-by=tidb-operator
 
 The minikube VM is configured by default to only use 2048MB of memory and 2 CPUs. You can allocate more resources during `minikube start` using the `--memory` and `--cpus` flag. Note that you'll need to recreate minikube VM for this to take effect.
 
-```
+```shell
 minikube delete
 minikube start --cpus 4 --memory 4096 ...
 ```

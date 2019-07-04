@@ -1,3 +1,9 @@
+---
+title: Deploy TiDB in Kubernetes on Your Laptop
+summary: Learn how to deploy TiDB in Kubernetes on Your Laptop.
+category: how-to
+---
+
 # Deploy TiDB in Kubernetes on Your Laptop
 
 This document describes how to deploy a TiDB cluster in Kubernetes on your laptop (Linux or macOS) for development or testing.
@@ -79,7 +85,7 @@ $ manifests/local-dind/dind-cluster-v1.12.sh up
 
 If the cluster fails to pull Docker images during setup, you can set the environment variable `KUBE_REPO_PREFIX` to `uhub.ucloud.cn/pingcap` before running the script `dind-cluster-v1.12.sh` as follows (the Docker images are pulled from [UCloud Docker Registry](https://docs.ucloud.cn/compute/uhub/index) instead):
 
-```
+```sh
 $ KUBE_REPO_PREFIX=uhub.ucloud.cn/pingcap manifests/local-dind/dind-cluster-v1.12.sh up
 ```
 
@@ -118,30 +124,30 @@ kube-node-3   Ready    <none>   9m32s   v1.12.5   10.192.0.5    <none>        De
 
 Once the K8s cluster is up and running, we can add chart repo and install TiDB Operator into it using `helm`:
 
-1. Add the Hlem chart repo.
+1. Add the Helm chart repo:
 
-```sh
-$ helm repo add pingcap http://charts.pingcap.org/
-$ helm repo list
-$ helm repo update
-$ helm search tidb-cluster -l
-$ helm search tidb-operator -l
-```
+    ```sh
+    $ helm repo add pingcap http://charts.pingcap.org/
+    $ helm repo list
+    $ helm repo update
+    $ helm search tidb-cluster -l
+    $ helm search tidb-operator -l
+    ```
 
-2. Install TiDB operator.
+2. Install TiDB operator:
 
-```sh
-$ helm install pingcap/tidb-operator --name=tidb-operator --namespace=tidb-admin --set scheduler.kubeSchedulerImageName=mirantis/hypokube --set scheduler.kubeSchedulerImageTag=final --version=${chartVersion}
-```
+    ```sh
+    $ helm install pingcap/tidb-operator --name=tidb-operator --namespace=tidb-admin --set scheduler.kubeSchedulerImageName=mirantis/hypokube --set scheduler.kubeSchedulerImageTag=final --version=${chartVersion}
+    ```
 
 3. Wait a few minutes until TiDB Operator is running:
 
-```sh
-$ kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
-NAME                                       READY     STATUS    RESTARTS   AGE
-tidb-controller-manager-5cd94748c7-jlvfs   1/1       Running   0          1m
-tidb-scheduler-56757c896c-clzdg            2/2       Running   0          1m
-```
+    ```sh
+    $ kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
+    NAME                                       READY     STATUS    RESTARTS   AGE
+    tidb-controller-manager-5cd94748c7-jlvfs   1/1       Running   0          1m
+    tidb-scheduler-56757c896c-clzdg            2/2       Running   0          1m
+    ```
 
 ## Step 3: Deploy a TiDB cluster in the DinD Kubernetes cluster
 
