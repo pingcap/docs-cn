@@ -224,12 +224,12 @@ helm upgrade ${releaseName} pingcap/tidb-cluster --version=${chartVersion} -f /h
 
 > **注意：**
 >
-> 如果 PD 集群不可用，[TiDB 集群伸缩](#TiDB-集群伸缩)，[升级 TiDB 集群](#升级-TiDB-集群)和[修改 TiDB 集群配置](#修改-TiDB-集群配置)都无法操作，从 TiDB Operator 版本 > v1.0.0-beta.3 开始，支持 `forceUpgrade`，在 PD 集群不可用的情况下，允许用户通过下面步骤强制升级集群以恢复集群功能：
+> 如果 PD 集群不可用，[TiDB 集群伸缩](#TiDB-集群伸缩)，[升级 TiDB 集群](#升级-TiDB-集群)和[修改 TiDB 集群配置](#修改-TiDB-集群配置)都无法操作，从 TiDB Operator 版本 > v1.0.0-beta.3 开始，支持 `force-upgrade`，在 PD 集群不可用的情况下，允许用户通过下面步骤强制升级集群以恢复集群功能：
 >
 > {{< copyable "shell-regular" >}}
 >
 > ```shell
-> kubectl annotate --overwrite tc ${releaseName} -n ${namespace} tidb.pingcap.com/forceUpgrade=true
+> kubectl annotate --overwrite tc ${releaseName} -n ${namespace} tidb.pingcap.com/force-upgrade=true
 > ```
 > 然后执行对应操作中的 `helm upgrade` 命令。
 >
@@ -238,7 +238,7 @@ helm upgrade ${releaseName} pingcap/tidb-cluster --version=${chartVersion} -f /h
 > {{< copyable "shell-regular" >}}
 >
 > ```shell
-> kubectl annotate tc ${releaseName} -n ${namespace} tidb.pingcap.com/forceUpgrade-
+> kubectl annotate tc ${releaseName} -n ${namespace} tidb.pingcap.com/force-upgrade-
 > ```
 
 ## 销毁 TiDB 集群
