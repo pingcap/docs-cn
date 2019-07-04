@@ -2,7 +2,6 @@
 title: Deploy TiDB in the Minikube Cluster
 summary: Learn how to deploy TiDB in the minikube cluster.
 category: how-to
-draft: true
 ---
 
 # Deploy TiDB in the Minikube Cluster
@@ -15,7 +14,7 @@ This document describes how to deploy a TiDB cluster in the [minikube](https://k
 
 > **Note:**
 >
-> Although Minikube supports `--vm-driver=none` that uses host docker instead of VM, it is not fully tested with TiDB Operator and may not work. If you want to try TiDB Operator on a system without virtualization support (e.g., on a VPS), you might consider using [DinD] instead.
+> Although Minikube supports `--vm-driver=none` that uses host docker instead of VM, it is not fully tested with TiDB Operator and may not work. If you want to try TiDB Operator on a system without virtualization support (e.g., on a VPS), you might consider using [DinD](local-dind-tutorial.md) instead.
 
 ### Install minikube and start a Kubernetes cluster
 
