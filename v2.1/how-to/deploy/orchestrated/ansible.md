@@ -449,7 +449,15 @@ location_labels = ["host"]
         - 推荐设置：实例数*参数值 = CPU 核数 * 0.8。
 
     3.  如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
-        - `capacity` = 磁盘总容量 / TiKV 实例数量，例如 "100GB"
+
+        ```
+        raftstore:
+          capacity: 0
+        ```
+
+        > 推荐配置：`capacity` = 磁盘总容量 / TiKV 实例数量
+        >
+        > 例如：`capacity: "100GB"`
 
 ### inventory.ini 变量调整
 

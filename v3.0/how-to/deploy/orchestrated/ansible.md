@@ -429,11 +429,17 @@ location_labels = ["host"]
 
 - 服务配置文件参数调整
 
-    1.  多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中的 `block-cache-size` 参数:
-        - `rocksdb defaultcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 30%
-        - `rocksdb writecf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 45%
-        - `rocksdb lockcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
-        - `raftdb defaultcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
+    1.  多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中 `block-cache-size` 下面的 `capacity` 参数:
+
+        ```
+        storage:
+          block-cache:
+            capacity: "1GB"
+        ```
+    
+        > TiKV 实例数量指每个服务器上 TiKV 的进程数量
+        >
+        > 推荐设置：`capacity` = MEM_TOTAL * 0.5 / TiKV 实例数量
 
     2.  多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中 `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数：
 
@@ -447,10 +453,18 @@ location_labels = ["host"]
             # low-concurrency: 8
         ```
 
-        - 推荐设置：实例数*参数值 = CPU 核数 * 0.8。
+        > 推荐设置：TiKV 实例数量 * 参数值 = CPU 核心数量 * 0.8
 
     3.  如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
-        - `capacity` = 磁盘总容量 / TiKV 实例数量，例如 "100GB"
+
+        ```
+        raftstore:
+          capacity: 0
+        ```
+
+        > 推荐配置：`capacity` = 磁盘总容量 / TiKV 实例数量
+        >
+        > 例如：`capacity: "100GB"`
 
 ### inventory.ini 变量调整
 
