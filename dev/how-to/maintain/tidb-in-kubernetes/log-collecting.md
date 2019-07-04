@@ -20,7 +20,6 @@ Kubernetes 官方文档中提供了 [ElasticSearch](https://kubernetes.io/docs/t
  - [Fluent-bit](https://fluentbit.io/)
  - [Filebeat](https://www.elastic.co/products/beats/filebeat)
  - [Logstash](https://www.elastic.co/products/logstash)
- - ...
 
 收集到的日志通常可以汇总存储在某一特定的服务器上，或存放到 ElasticSearch 等专用的存储、分析系统当中。
 
@@ -56,7 +55,7 @@ kubectl logs -n ${namespace} ${tidbPodName} | grep SLOW_QUERY
 
 在一些情况下，你可能希望使用一些工具或自动化系统对日志内容进行分析、处理。TiDB 各组件的应用日志使用了[统一的日志格式](https://github.com/tikv/rfcs/blob/master/text/2018-12-19-unified-log-format.md)以便于程序解析，但由于慢查询日志使用的是与 MySQL 兼容的多行格式，与应用日志混在一起时可能会对解析造成困难。
 
-在 `values.yaml` 文件中配置 `separateSlowLog` 参数可以将慢查询日志输出到一个专用的旁路容器中，这样慢查询日志在宿主机上会被输出到一个单独的文件，和应用日志分开。
+如果希望将慢查询日志和应用日志区分开，可以在 `values.yaml` 文件中配置 `separateSlowLog` 参数，将慢查询日志输出到一个专用的旁路容器中，这样慢查询日志在宿主机上会被输出到一个单独的文件，和应用日志分开。
 
 修改方法为编辑 `values.yaml` 文件，将 `separateSlowLog` 参数设置为 `true`：
 

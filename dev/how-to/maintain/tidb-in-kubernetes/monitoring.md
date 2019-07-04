@@ -62,7 +62,6 @@ Prometheus 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持
  - [Nagios](https://www.nagios.org/)
  - [Prometheus](http://prometheus.io/) & [node_exporter](https://github.com/prometheus/node_exporter)
  - [Zabbix](https://www.zabbix.com/)
- - ...
 
 一些云服务商或专门的性能监控服务提供商也有各自的免费或收费的监控解决方案可以选择。
 
