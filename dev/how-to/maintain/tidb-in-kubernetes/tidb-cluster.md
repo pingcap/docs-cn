@@ -253,7 +253,7 @@ TiDB 通过 Prometheus 和 Grafana 监控 TiDB 集群。TiDB 集群创建时，�
 
 ## 日志
 
-查看与收集日志的方法请参阅[日志收集](log-collecting.md)文档。
+查看与收集日志的方法请参阅[日志收集](/how-to/maintain/tidb-in-kubernetes/log-collecting.md)文档。
 
 ## 备份和恢复
 
