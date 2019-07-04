@@ -1,6 +1,12 @@
-# Deploy TiDB Operator and TiDB Cluster on Alibaba Cloud Kubernetes
+---
+title: Deploy TiDB on Alibaba Cloud Kubernetes
+summary: Learn how to deploy a TiDB cluster on Alibaba Cloud Kubernetes.
+category: how-to
+---
 
-This document introduces how to use your laptop (Linux or macOS) to deploy TiDB Operator and TiDB Cluster on Alibaba Cloud Kubernetes.
+# Deploy TiDB on Alibaba Cloud Kubernetes
+
+This document describes how to deploy a TiDB cluster on Alibaba Cloud Kubernetes with your laptop (Linux or macOS) for development or testing.
 
 ## Prerequisites
 
@@ -15,9 +21,9 @@ This document introduces how to use your laptop (Linux or macOS) to deploy TiDB 
 - [jq](https://stedolan.github.io/jq/download/) >= 1.6
 - [terraform](https://learn.hashicorp.com/terraform/getting-started/install.html) 0.11.*
 
-### Permissions
+### Privileges
 
-The following permissions are required to deploy a TiDB cluster:
+To deploy a TiDB cluster, make sure you have the following privileges: 
 
 - AliyunECSFullAccess
 - AliyunESSFullAccess
@@ -105,7 +111,7 @@ $ kubectl version
 $ helm ls
 ```
 
-## Access the DB
+## Access the cluster
 
 You can connect the TiDB cluster via the bastion instance, all necessary information are in the output printed after installation is finished (replace the `<>` parts with values from the output):
 

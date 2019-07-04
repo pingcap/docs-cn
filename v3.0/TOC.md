@@ -47,6 +47,10 @@
       - [Ansible Offline Deployment](how-to/deploy/orchestrated/offline-ansible.md)
       - [Docker Deployment](how-to/deploy/orchestrated/docker.md)
       - [Kubernetes Deployment](how-to/deploy/orchestrated/kubernetes.md)
+      + TiDB in Kubernetes
+        - [AWS EKS](how-to/deploy/orchestrated/tidb-in-kubernetes/aws-eks.md)
+        - [GCP](how-to/deploy/orchestrated/tidb-in-kubernetes/gcp-gke.md)
+        - [Alibaba Cloud](how-to/deploy/orchestrated/tidb-in-kubernetes/alibaba-cloud.md)
     + Geographic Redundancy
       - [Overview](how-to/deploy/geographic-redundancy/overview.md)
       - [Configure Location Awareness](how-to/deploy/geographic-redundancy/location-awareness.md)
