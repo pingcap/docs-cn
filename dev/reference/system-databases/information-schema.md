@@ -586,9 +586,10 @@ mysql> desc USER_PRIVILEGES;
 
 `VIEWS` 表提供了关于 SQL 视图的信息。
 
-```
+```sql
 mysql> create view test.v1 as select 1;
 Query OK, 0 rows affected (0.00 sec)
+
 mysql> select * from views\G
 *************************** 1. row ***************************
        TABLE_CATALOG: def
