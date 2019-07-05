@@ -175,11 +175,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + TiDB 重载统计信息，更新表行数，检查是否需要自动 analyze，利用 feedback 更新统计信息以及加载列的统计信息的时间间隔。
 + 默认：3s
     - 每隔 `stats-lease` 时间，TiDB 会检查统计信息是否有更新，如果有会将其更新到内存中
-    - 每隔 `20 * stats-lease` 时间，TiDB 会将 DML 产生的总行数以及修改的行数变化持久化下来
+    - 每隔 `20 * stats-lease` 时间，TiDB 会将 DML 产生的总行数以及修改的行数变化更新到系统表中
     - 每隔 `stats-lease` 时间，TiDB 会检查是否有表或者索引需要自动 analyze
     - 每隔 `stats-lease` 时间，TiDB 会检查是否有列的统计信息需要被加载到内存中
     - 每隔 `200 * stats-lease` 时间，TiDB 会将内存中缓存的 feedback 写入系统表中
-    - 每隔 `5 * stats-lease` 时间，TiDB 会读取系统表中的 feedback，更新统计信息
+    - 每隔 `5 * stats-lease` 时间，TiDB 会读取系统表中的 feedback，更新内存中缓存的统计信息
 + 当 `stats-lease` 为 0 时， TiDB 会以 3s 的时间间隔去读取最新的统计信息到内存中，但和统计信息更新相关的操作，例如维护总行数和修改行数，自动 analyze 以及 feedback 等操作都不会再进行。
 
 ### `run-auto-analyze`
