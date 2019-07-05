@@ -461,7 +461,7 @@ target-table = "order_2017"
     ```
 6. 检查字符集。
 
-    TiDB 和 MySQL 的字符集的兼容性不同，详见 [TiDB 支持的字符集](/sql/character-set-support.md)。
+    TiDB 和 MySQL 的字符集的兼容性不同，详见 [TiDB 支持的字符集](/reference/sql/character-set.md)。
 
 
 ## 监控方案
@@ -502,7 +502,7 @@ Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。配�
 
 + 导入 dashboard 配置文件
 
-    点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 Dashboard [配置文件](https://github.com/pingcap/docs/tree/master/etc)上传 -> 选择对应的 data source
+    点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 Dashboard [配置文件](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json)上传 -> 选择对应的 data source
 
 ### Grafana Syncer metrics 说明
 
