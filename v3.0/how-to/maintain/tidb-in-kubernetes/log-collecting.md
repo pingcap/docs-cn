@@ -45,13 +45,17 @@ stern -n ${namespace} tidb -c slowlog
 
 ## TiDB 慢查询日志
 
-对于 3.0 之前的版本，在默认情况下，TiDB 会打印慢查询日志到标准输出，和应用日志混在一起。你可以通过关键字 `SLOW_QUERY` 来筛选慢查询日志，例如：
+对于 3.0 之前的版本，在默认情况下，TiDB 会打印慢查询日志到标准输出，和应用日志混在一起。
 
-{{< copyable "shell-regular" >}}
+    如果 TiDB 版本 <= v2.1.7，你可以通过关键字 `SLOW_QUERY` 来筛选慢查询日志，例如：
 
-```shell
-kubectl logs -n ${namespace} ${tidbPodName} | grep SLOW_QUERY
-```
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl logs -n ${namespace} ${tidbPodName} | grep SLOW_QUERY
+    ```
+
+   如果 TiDB 版本 >= v2.1.8，由于慢查询日志格式发生变化，不太方便分离慢查询日志，建议参考下面内容配置 `separateSlowLog: true` 单独查看慢查询日志。
 
 在一些情况下，你可能希望使用一些工具或自动化系统对日志内容进行分析、处理。TiDB 各组件的应用日志使用了[统一的日志格式](https://github.com/tikv/rfcs/blob/master/text/2018-12-19-unified-log-format.md)以便于程序解析，但由于慢查询日志使用的是与 MySQL 兼容的多行格式，与应用日志混在一起时可能会对解析造成困难。
 
