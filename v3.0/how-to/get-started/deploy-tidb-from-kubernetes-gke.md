@@ -1,12 +1,17 @@
 ---
 title: Deploy TiDB to Kubernetes on Google Cloud
-summary: Learn how to deploy TiDB on Google Cloud using Kubernetes.
+summary: Learn how to quickly deploy a TiDB cluster on Google Cloud using Kubernetes.
 category: how-to
+aliases: ['/docs/op-guide/kubernetes/','/docs/v3.0/how-to/deploy/orchestrated/kubernetes/']
 ---
 
 # Deploy TiDB to Kubernetes on Google Cloud
 
-This tutorial is designed to be [run in Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/pingcap/tidb-operator&tutorial=docs/google-kubernetes-tutorial.md). It takes you through these steps:
+This tutorial is designed to directly [run in Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/pingcap/tidb-operator&tutorial=docs/google-kubernetes-tutorial.md).
+
+<a href="https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/pingcap/tidb-operator&tutorial=docs/google-kubernetes-tutorial.md"><img src="https://gstatic.com/cloudssh/images/open-btn.png"/></a>
+
+It takes you through the following steps:
 
 - Launch a new 3-node Kubernetes cluster (optional)
 - Install the Helm package manager for Kubernetes

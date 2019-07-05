@@ -1,10 +1,11 @@
 ---
-title: Install from Homebrew 
+title: Deploy a TiDB Cluster from Homebrew
 summary: Install TiDB using the Homebrew package manager.
 category: how-to
+aliases: ['/docs/v3.0/how-to/get-started/local-cluster/install-from-homebrew/']
 ---
 
-# Install from Homebrew
+# Deploy a TiDB Cluster from Homebrew
 
 TiDB on Homebrew supports a minimal installation mode of the tidb-server **without** the tikv-server or pd-server. This is useful for development environments, since you can test your application's compatibility with TiDB without needing to deploy a full TiDB platform.
 

@@ -1,10 +1,11 @@
 ---
-title: Deploy TiDB to Kubernetes Locally
-summary: Use TiDB Operator to quickly deploy a TiDB cluster on Kubernetes
+title: Deploy TiDB in Kubernetes Using DinD
+summary: Learn how to quickly deploy a TiDB cluster in Kubernetes Using DinD.
 category: how-to
+aliases: ['/docs/op-guide/kubernetes-local/','/docs/v3.0/how-to/get-started/local-cluster/install-from-kubernetes/']
 ---
 
-# Deploy TiDB to Kubernetes Locally
+# Deploy TiDB in Kubernetes Using DinD
 
 This document describes how to deploy a TiDB cluster to Kubernetes on your laptop (Linux or macOS) for development or testing.
 

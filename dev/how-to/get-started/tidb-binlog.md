@@ -43,7 +43,7 @@ We're using MariaDB Server in this case instead of MySQL Server because RHEL/Cen
 sudo yum install -y mariadb-server
 ```
 
-Even if you've already started a TiDB cluster, it will be easier to follow along with this tutorial where we will set up a new, simple cluster. We will install from a tarball, using a simplified form of the [Local Deployment](/how-to/get-started/local-cluster/install-from-binary.md) guide. You may also wish to refer to [Testing Deployment from Binary Tarball](/how-to/deploy/from-tarball/testing-environment.md) for best practices of establishing a real testing deployment, but that goes beyond the scope of this tutorial.
+Even if you've already started a TiDB cluster, it will be easier to follow along with this tutorial where we will set up a new, simple cluster. We will install from a tarball, using a simplified form of the [Local Deployment](/how-to/get-started/deploy-tidb-from-binary.md) guide. You may also wish to refer to [Testing Deployment from Binary Tarball](/how-to/deploy/from-tarball/testing-environment.md) for best practices of establishing a real testing deployment, but that goes beyond the scope of this tutorial.
 
 ```bash
 curl -L http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz | tar xzf -

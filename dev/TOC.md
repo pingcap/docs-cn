@@ -25,12 +25,15 @@
     - [Online Schema Changes](key-features.md#online-schema-changes)
 + How-to
   + Get Started
-    + Start a Local Cluster
-      - [From Binary](how-to/get-started/local-cluster/install-from-binary.md)
-      - [From Homebrew](how-to/get-started/local-cluster/install-from-homebrew.md)
-      - [From DBdeployer](how-to/get-started/local-cluster/install-from-dbdeployer.md)
-      - [In Kubernetes](how-to/get-started/local-cluster/install-from-kubernetes.md)
-      - [In Docker Compose](how-to/get-started/local-cluster/install-from-docker-compose.md)
+    + Start a Cluster
+      - [From Binary](how-to/get-started/deploy-tidb-from-binary.md)
+      - [From Homebrew](how-to/get-started/deploy-tidb-from-homebrew.md)
+      - [From DBdeployer](how-to/get-started/deploy-tidb-from-dbdeployer.md)
+      + In Kubernetes
+        - [DinD](how-to/get-started/deploy-tidb-from-kubernetes-dind.md)
+        - [Minikube](how-to/get-started/deploy-tidb-from-kubernetes-minikube.md)
+        - [GKE](how-to/get-started/deploy-tidb-from-kubernetes-gke.md)
+      - [In Docker Compose](how-to/get-started/deploy-tidb-from-docker-compose.md)
     - [Explore SQL with TiDB](how-to/get-started/explore-sql.md)
     - [Import Example Database](how-to/get-started/import-example-database.md)
     - [Read Historical Data](how-to/get-started/read-historical-data.md)
@@ -46,7 +49,6 @@
       - [Ansible Deployment (Recommended)](how-to/deploy/orchestrated/ansible.md)
       - [Ansible Offline Deployment](how-to/deploy/orchestrated/offline-ansible.md)
       - [Docker Deployment](how-to/deploy/orchestrated/docker.md)
-      - [Kubernetes Deployment](how-to/deploy/orchestrated/kubernetes.md)
       + TiDB in Kubernetes
         - [AWS EKS](how-to/deploy/orchestrated/tidb-in-kubernetes/aws-eks.md)
         - [GCP](how-to/deploy/orchestrated/tidb-in-kubernetes/gcp-gke.md)
