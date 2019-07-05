@@ -8,7 +8,26 @@ aliases: ['/docs-cn/sql/information-schema/']
 
 为了和 MySQL 保持兼容，TiDB 支持很多 `INFORMATION_SCHEMA` 表，其中有不少表都支持相应的 `SHOW` 命令。查询 `INFORMATION_SCHEMA` 表也为表的连接操作提供了可能。
 
-## CHARACTER\_SETS 表
+## ANALYZE_STATUS 表
+
+`ANALYZE_STATUS` 表提供正在执行的收集统计信息的任务以及有限条历史任务记录。
+
+```sql
+mysql> select * from `ANALYZE_STATUS`
++--------------+------------+----------------+-------------------+----------------+---------------------+----------+
+| TABLE_SCHEMA | TABLE_NAME | PARTITION_NAME | JOB_INFO          | PROCESSED_ROWS | START_TIME          | STATE    |
++--------------+------------+----------------+-------------------+----------------+---------------------+----------+
+| test         | t          |                | analyze index idx | 2              | 2019-06-21 19:51:14 | finished |
+| test         | t          |                | analyze columns   | 2              | 2019-06-21 19:51:14 | finished |
+| test         | t1         | p0             | analyze columns   | 0              | 2019-06-21 19:51:15 | finished |
+| test         | t1         | p3             | analyze columns   | 0              | 2019-06-21 19:51:15 | finished |
+| test         | t1         | p1             | analyze columns   | 0              | 2019-06-21 19:51:15 | finished |
+| test         | t1         | p2             | analyze columns   | 1              | 2019-06-21 19:51:15 | finished |
++--------------+------------+----------------+-------------------+----------------+---------------------+----------+
+6 rows in set
+```
+
+## CHARACTER_SETS 表
 
 `CHARACTER_SETS` 表提供[字符集](/reference/sql/character-set.md)相关的信息。TiDB 目前仅支持部分字符集。
 
@@ -65,7 +84,7 @@ mysql> SELECT * FROM collations WHERE character_set_name='utf8mb4';
 26 rows in set (0.00 sec)
 ```
 
-## COLLATION\_CHARACTER\_SET\_APPLICABILITY 表
+## COLLATION_CHARACTER_SET_APPLICABILITY 表
 
 `COLLATION_CHARACTER_SET_APPLICABILITY` 表将排序规则映射至适用的字符集名称。和 `COLLATIONS` 表一样，包含此表也是为了兼容 MySQL。
 
@@ -165,7 +184,7 @@ TRANSACTIONS: YES
 1 row in set (0.00 sec)
 ```
 
-## KEY\_COLUMN\_USAGE 表
+## KEY_COLUMN_USAGE 表
 
 `KEY_COLUMN_USAGE` 表描述了列的键约束，比如主键约束。
 
@@ -200,6 +219,20 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 2 rows in set (0.00 sec)
 ```
 
+## PROCESSLIST 表
+
+`PROCESSLIST` 和 `show processlist` 的功能一样，都是查看当前正在处理的请求。
+
+`PROCESSLIST` 表会比 `show processlist` 多一个 `MEM` 列，`MEM` 是指正在处理的请求已使用的内存，单位是 byte。
+
+```sql
++----+------+------+--------------------+---------+------+-------+---------------------------+-----+
+| ID | USER | HOST | DB                 | COMMAND | TIME | STATE | INFO                      | MEM |
++----+------+------+--------------------+---------+------+-------+---------------------------+-----+
+| 1  | root | ::1  | INFORMATION_SCHEMA | Query   | 0    | 2     | select * from PROCESSLIST | 0   |
++----+------+------+--------------------+---------+------+-------+---------------------------+-----+
+```
+
 ## SCHEMATA 表
 
 `SCHEMATA` 表提供了关于数据库的信息。表中的数据与 `SHOW DATABASES` 语句的执行结果等价。
@@ -218,7 +251,7 @@ mysql> SELECT * FROM schemata;
 5 rows in set (0.00 sec)
 ```
 
-## SESSION\_VARIABLES 表
+## SESSION_VARIABLES 表
 
 `SESSION_VARIABLES` 表提供了关于 session 变量的信息。表中的数据跟 `SHOW SESSION VARIABLES` 语句执行结果类似。
 
@@ -239,6 +272,45 @@ mysql> SELECT * FROM session_variables LIMIT 10;
 | max_binlog_cache_size            | 18446744073709547520 |
 +----------------------------------+----------------------+
 10 rows in set (0.00 sec)
+```
+
+## SLOW_QUERY 表
+
+`SLOW_QUERY` 提供了慢查询相关的一些信息。表的内容通过解析 TiDB 慢日志文件的数据而来，表中列名和慢日志中的字段名是一一对应的关系。更多操作可以参考[慢查询日志文档](/how-to/maintain/identify-slow-queries.md)。
+
+```sql
+mysql>desc SLOW_QUERY;
++---------------+---------------------+------+-----+---------+-------+
+| Field         | Type                | Null | Key | Default | Extra |
++---------------+---------------------+------+-----+---------+-------+
+| Time          | timestamp unsigned  | YES  |     | <null>  |       |
+| Txn_start_ts  | bigint(20) unsigned | YES  |     | <null>  |       |
+| User          | varchar(64)         | YES  |     | <null>  |       |
+| Host          | varchar(64)         | YES  |     | <null>  |       |
+| Conn_ID       | bigint(20) unsigned | YES  |     | <null>  |       |
+| Query_time    | double unsigned     | YES  |     | <null>  |       |
+| Process_time  | double unsigned     | YES  |     | <null>  |       |
+| Wait_time     | double unsigned     | YES  |     | <null>  |       |
+| Backoff_time  | double unsigned     | YES  |     | <null>  |       |
+| Request_count | bigint(20) unsigned | YES  |     | <null>  |       |
+| Total_keys    | bigint(20) unsigned | YES  |     | <null>  |       |
+| Process_keys  | bigint(20) unsigned | YES  |     | <null>  |       |
+| DB            | varchar(64)         | YES  |     | <null>  |       |
+| Index_ids     | varchar(100)        | YES  |     | <null>  |       |
+| Is_internal   | tinyint(1) unsigned | YES  |     | <null>  |       |
+| Digest        | varchar(64)         | YES  |     | <null>  |       |
+| Stats         | varchar(512)        | YES  |     | <null>  |       |
+| Cop_proc_avg  | double unsigned     | YES  |     | <null>  |       |
+| Cop_proc_p90  | double unsigned     | YES  |     | <null>  |       |
+| Cop_proc_max  | double unsigned     | YES  |     | <null>  |       |
+| Cop_proc_addr | varchar(64)         | YES  |     | <null>  |       |
+| Cop_wait_avg  | double unsigned     | YES  |     | <null>  |       |
+| Cop_wait_p90  | double unsigned     | YES  |     | <null>  |       |
+| Cop_wait_max  | double unsigned     | YES  |     | <null>  |       |
+| Cop_wait_addr | varchar(64)         | YES  |     | <null>  |       |
+| Mem_max       | bigint(20) unsigned | YES  |     | <null>  |       |
+| Query         | varchar(4096)       | YES  |     | <null>  |       |
++---------------+---------------------+------+-----+---------+-------+
 ```
 
 ## STATISTICS 表
@@ -325,7 +397,7 @@ SHOW TABLES
   [LIKE 'wild']
 ```
 
-## TABLE\_CONSTRAINTS 表
+## TABLE_CONSTRAINTS 表
 
 `TABLE_CONSTRAINTS` 表记录了表的约束信息。
 
@@ -381,7 +453,120 @@ CONSTRAINT_CATALOG: def
 * `CONSTRAINT_TYPE` 的取值可以是 `UNIQUE`，`PRIMARY KEY`，或者 `FOREIGN KEY`。
 * `UNIQUE` 和 `PRIMARY KEY` 信息与 `SHOW INDEX` 语句的执行结果类似。
 
-## USER\_PRIVILEGES 表
+## TIDB_HOT_REGIONS 表
+
+`TIDB_HOT_REGIONS` 表提供了关于热点 REGION 的相关信息。
+
+```sql
+mysql> desc TIDB_HOT_REGIONS;
++----------------+---------------------+------+-----+---------+-------+
+| Field          | Type                | Null | Key | Default | Extra |
++----------------+---------------------+------+-----+---------+-------+
+| TABLE_ID       | bigint(21) unsigned | YES  |     | <null>  |       |
+| INDEX_ID       | bigint(21) unsigned | YES  |     | <null>  |       |
+| DB_NAME        | varchar(64)         | YES  |     | <null>  |       |
+| TABLE_NAME     | varchar(64)         | YES  |     | <null>  |       |
+| INDEX_NAME     | varchar(64)         | YES  |     | <null>  |       |
+| TYPE           | varchar(64)         | YES  |     | <null>  |       |
+| MAX_HOT_DEGREE | bigint(21) unsigned | YES  |     | <null>  |       |
+| REGION_COUNT   | bigint(21) unsigned | YES  |     | <null>  |       |
+| FLOW_BYTES     | bigint(21) unsigned | YES  |     | <null>  |       |
++----------------+---------------------+------+-----+---------+-------+
+```
+
+## TIDB_INDEXES 表
+
+`TIDB_INDEXES` 记录了所有表中的 INDEX 信息。
+
+```sql
+mysql>desc TIDB_INDEXES;
++---------------+---------------------+------+-----+---------+-------+
+| Field         | Type                | Null | Key | Default | Extra |
++---------------+---------------------+------+-----+---------+-------+
+| TABLE_SCHEMA  | varchar(64)         | YES  |     | <null>  |       |
+| TABLE_NAME    | varchar(64)         | YES  |     | <null>  |       |
+| NON_UNIQUE    | bigint(21) unsigned | YES  |     | <null>  |       |
+| KEY_NAME      | varchar(64)         | YES  |     | <null>  |       |
+| SEQ_IN_INDEX  | bigint(21) unsigned | YES  |     | <null>  |       |
+| COLUMN_NAME   | varchar(64)         | YES  |     | <null>  |       |
+| SUB_PART      | bigint(21) unsigned | YES  |     | <null>  |       |
+| INDEX_COMMENT | varchar(2048)       | YES  |     | <null>  |       |
+| INDEX_ID      | bigint(21) unsigned | YES  |     | <null>  |       |
++---------------+---------------------+------+-----+---------+-------+
+```
+
+## TIKV_REGION_PEERS 表
+
+`TIKV_REGION_PEERS` 表提供了所有 REGION 的 peer 信息。
+
+```sql
+mysql> desc TIKV_REGION_PEERS;
++--------------+---------------------+------+-----+---------+-------+
+| Field        | Type                | Null | Key | Default | Extra |
++--------------+---------------------+------+-----+---------+-------+
+| REGION_ID    | bigint(21) unsigned | YES  |     | <null>  |       |
+| PEER_ID      | bigint(21) unsigned | YES  |     | <null>  |       |
+| STORE_ID     | bigint(21) unsigned | YES  |     | <null>  |       |
+| IS_LEARNER   | tinyint(1) unsigned | YES  |     | <null>  |       |
+| IS_LEADER    | tinyint(1) unsigned | YES  |     | <null>  |       |
+| STATUS       | varchar(10)         | YES  |     | <null>  |       |
+| DOWN_SECONDS | bigint(21) unsigned | YES  |     | <null>  |       |
++--------------+---------------------+------+-----+---------+-------+
+```
+
+## TIKV_REGION_STATUS 表
+
+`TIKV_REGION_STATUS` 表提供了所有 REGION 的状态信息。
+
+```sql
+mysql> desc TIKV_REGION_STATUS;
++------------------+---------------------+------+-----+---------+-------+
+| Field            | Type                | Null | Key | Default | Extra |
++------------------+---------------------+------+-----+---------+-------+
+| REGION_ID        | bigint(21) unsigned | YES  |     | <null>  |       |
+| START_KEY        | text                | YES  |     | <null>  |       |
+| END_KEY          | text                | YES  |     | <null>  |       |
+| EPOCH_CONF_VER   | bigint(21) unsigned | YES  |     | <null>  |       |
+| EPOCH_VERSION    | bigint(21) unsigned | YES  |     | <null>  |       |
+| WRITTEN_BYTES    | bigint(21) unsigned | YES  |     | <null>  |       |
+| READ_BYTES       | bigint(21) unsigned | YES  |     | <null>  |       |
+| APPROXIMATE_SIZE | bigint(21) unsigned | YES  |     | <null>  |       |
+| APPROXIMATE_KEYS | bigint(21) unsigned | YES  |     | <null>  |       |
++------------------+---------------------+------+-----+---------+-------+
+```
+
+## TIKV_STORE_STATUS 表
+
+`TIKV_STORE_STATUS` 表提供了所有 TiKV Store 的状态信息。
+
+```sql
+mysql> desc TIKV_STORE_STATUS;
++-------------------+---------------------+------+-----+---------+-------+
+| Field             | Type                | Null | Key | Default | Extra |
++-------------------+---------------------+------+-----+---------+-------+
+| STORE_ID          | bigint(21) unsigned | YES  |     | <null>  |       |
+| ADDRESS           | varchar(64)         | YES  |     | <null>  |       |
+| STORE_STATE       | bigint(21) unsigned | YES  |     | <null>  |       |
+| STORE_STATE_NAME  | varchar(64)         | YES  |     | <null>  |       |
+| LABEL             | json unsigned       | YES  |     | <null>  |       |
+| VERSION           | varchar(64)         | YES  |     | <null>  |       |
+| CAPACITY          | varchar(64)         | YES  |     | <null>  |       |
+| AVAILABLE         | varchar(64)         | YES  |     | <null>  |       |
+| LEADER_COUNT      | bigint(21) unsigned | YES  |     | <null>  |       |
+| LEADER_WEIGHT     | bigint(21) unsigned | YES  |     | <null>  |       |
+| LEADER_SCORE      | bigint(21) unsigned | YES  |     | <null>  |       |
+| LEADER_SIZE       | bigint(21) unsigned | YES  |     | <null>  |       |
+| REGION_COUNT      | bigint(21) unsigned | YES  |     | <null>  |       |
+| REGION_WEIGHT     | bigint(21) unsigned | YES  |     | <null>  |       |
+| REGION_SCORE      | bigint(21) unsigned | YES  |     | <null>  |       |
+| REGION_SIZE       | bigint(21) unsigned | YES  |     | <null>  |       |
+| START_TS          | datetime unsigned   | YES  |     | <null>  |       |
+| LAST_HEARTBEAT_TS | datetime unsigned   | YES  |     | <null>  |       |
+| UPTIME            | varchar(64)         | YES  |     | <null>  |       |
++-------------------+---------------------+------+-----+---------+-------+
+```
+
+## USER_PRIVILEGES 表
 
 `USER_PRIVILEGES` 表提供了关于全局权限的信息。该表的数据根据 `mysql.user` 系统表生成。
 
@@ -398,7 +583,7 @@ mysql> desc USER_PRIVILEGES;
 4 rows in set (0.00 sec)
 ```
 
-## VIEWS Table
+## VIEWS 表
 
 `VIEWS` 表提供了关于 SQL 视图的信息。
 
@@ -417,236 +602,6 @@ mysql> select * from views\G
        SECURITY_TYPE: DEFINER
 CHARACTER_SET_CLIENT: utf8
 COLLATION_CONNECTION: utf8_general_ci
-1 row in set (0.00 sec)
-```
-
-## TIDB\_INDEXES 表
-
-`TIDB_INDEXES` 表提供了 TiDB 中一些索引相关的信息。
-
-```sql
-mysql> desc tidb_indexes\G
-*************************** 1. row ***************************
-       Table: TIDB_INDEXES
-Create Table: CREATE TABLE `TIDB_INDEXES` (
-  `TABLE_SCHEMA` varchar(64) DEFAULT NULL,
-  `TABLE_NAME` varchar(64) DEFAULT NULL,
-  `NON_UNIQUE` bigint(21) unsigned DEFAULT NULL,
-  `KEY_NAME` varchar(64) DEFAULT NULL,
-  `SEQ_IN_INDEX` bigint(21) unsigned DEFAULT NULL,
-  `COLUMN_NAME` varchar(64) DEFAULT NULL,
-  `SUB_PART` bigint(21) unsigned DEFAULT NULL,
-  `INDEX_COMMENT` varchar(2048) DEFAULT NULL,
-  `INDEX_ID` bigint(21) unsigned DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
-1 row in set (0.00 sec)
-```
-
-其中 `INDEX_ID` 是 TiDB 为每个索引分配的唯一 ID，可以用来和其他表格中或者 API 中获取到的 `INDEX_ID` 做关联。
-例如，先在 [`SLOW_QUERY` 表](#slow-query-表) 中获得某个慢查询涉及的 `TABLE_ID` 和 `INDEX_ID`，然后通过如下 SQL 语句进一步获取具体的索引信息：
-
-```sql
-select
-   tidb_indexes.*
-from
-   tidb_indexes,
-   tables
-where
-   tidb_indexes.table_schema = tables.table_schema
-   and tidb_indexes.table_name = tidb_indexes.table_name
-   and tables.tidb_table_id = ?
-   and index_id = ?
-```
-
-## TIDB\_HOT\_REGIONS 表
-
-`TIDB_HOT_REGIONS` 表提供了当前 TiKV 中热点 Region 的信息。
-
-```sql
-mysql> desc tidb_hot_regions\G
-*************************** 1. row ***************************
-       Table: TIDB_HOT_REGIONS
-Create Table: CREATE TABLE `TIDB_HOT_REGIONS` (
-  `TABLE_ID` bigint(21) unsigned DEFAULT NULL,
-  `INDEX_ID` bigint(21) unsigned DEFAULT NULL,
-  `DB_NAME` varchar(64) DEFAULT NULL,
-  `TABLE_NAME` varchar(64) DEFAULT NULL,
-  `INDEX_NAME` varchar(64) DEFAULT NULL,
-  `TYPE` varchar(64) DEFAULT NULL,
-  `MAX_HOT_DEGREE` bigint(21) unsigned DEFAULT NULL,
-  `REGION_COUNT` bigint(21) unsigned DEFAULT NULL,
-  `FLOW_BYTES` bigint(21) unsigned DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
-1 row in set (0.00 sec)
-```
-
-其中，`TABLE_ID`、`INDEX_ID` 是 TiDB 为每个表和索引生成的 ID。
-`TYPE` 是热点的类型，值可以是 `READ` 或 `WRITE`。
-
-## TIKV\_STORE\_STATUS 表
-
-`TIKV_STORE_STATUS` 表通过 PD 的 API，展示了 TiKV 节点的一些基本信息，诸如在集群中被分配的 ID、地址及端口、当前节点的状态、容量以及 Region leader 的数量。
-
-```sql
-mysql> desc tikv_store_status\G
-*************************** 1. row ***************************
-       Table: TIKV_STORE_STATUS
-Create Table: CREATE TABLE `TIKV_STORE_STATUS` (
-  `STORE_ID` bigint(21) unsigned DEFAULT NULL,
-  `ADDRESS` varchar(64) DEFAULT NULL,
-  `STORE_STATE` bigint(21) unsigned DEFAULT NULL,
-  `STORE_STATE_NAME` varchar(64) DEFAULT NULL,
-  `LABEL` json unsigned DEFAULT NULL,
-  `VERSION` varchar(64) DEFAULT NULL,
-  `CAPACITY` varchar(64) DEFAULT NULL,
-  `AVAILABLE` varchar(64) DEFAULT NULL,
-  `LEADER_COUNT` bigint(21) unsigned DEFAULT NULL,
-  `LEADER_WEIGHT` bigint(21) unsigned DEFAULT NULL,
-  `LEADER_SCORE` bigint(21) unsigned DEFAULT NULL,
-  `LEADER_SIZE` bigint(21) unsigned DEFAULT NULL,
-  `REGION_COUNT` bigint(21) unsigned DEFAULT NULL,
-  `REGION_WEIGHT` bigint(21) unsigned DEFAULT NULL,
-  `REGION_SCORE` bigint(21) unsigned DEFAULT NULL,
-  `REGION_SIZE` bigint(21) unsigned DEFAULT NULL,
-  `START_TS` datetime unsigned DEFAULT NULL,
-  `LAST_HEARTBEAT_TS` datetime unsigned DEFAULT NULL,
-  `UPTIME` varchar(64) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
-1 row in set (0.01 sec)
-```
-
-## TIKV\_REGION\_STATUS 表
-
-`TIKV_REGION_STATUS` 表通过 PD 的 API，展示 TiKV 中 Region 的一些基本信息，诸如 Region ID、起始和结束的键值以及读写流量。
-
-```sql
-mysql> desc tikv_region_status\G
-*************************** 1. row ***************************
-       Table: TIKV_REGION_STATUS
-Create Table: CREATE TABLE `TIKV_REGION_STATUS` (
-  `REGION_ID` bigint(21) unsigned DEFAULT NULL,
-  `START_KEY` text DEFAULT NULL,
-  `END_KEY` text DEFAULT NULL,
-  `EPOCH_CONF_VER` bigint(21) unsigned DEFAULT NULL,
-  `EPOCH_VERSION` bigint(21) unsigned DEFAULT NULL,
-  `WRITTEN_BYTES` bigint(21) unsigned DEFAULT NULL,
-  `READ_BYTES` bigint(21) unsigned DEFAULT NULL,
-  `APPROXIMATE_SIZE` bigint(21) unsigned DEFAULT NULL,
-  `APPROXIMATE_KEYS` bigint(21) unsigned DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
-1 row in set (0.00 sec)
-```
-
-通过在 `EPOCH_CONF_VER`、`WRITTEN_BYTES` 及 `READ_BYTES` 等列上做 `ORDER BY X LIMIT Y` 操作，可以实现 pd-ctl 中 `top confver`、`top read` 及 `top write` 等操作。如要查询写入量最大的 3 个 Region，可用如下的 SQL 语句实现：
-
-```
-select * from tikv_region_status order by written_bytes desc limit 3;
-```
-
-## TIKV\_REGION\_PEERS 表
-
-`TIKV_REGION_PEERS` 通过 PD 的 API，展示了 TiKV 中单个 Region 节点的一些详细信息，诸如是否是 learner，是否是 leader 等。
-
-```sql
-mysql> desc tikv_region_peers\G
-*************************** 1. row ***************************
-       Table: TIKV_REGION_PEERS
-Create Table: CREATE TABLE `TIKV_REGION_PEERS` (
-  `REGION_ID` bigint(21) unsigned DEFAULT NULL,
-  `PEER_ID` bigint(21) unsigned DEFAULT NULL,
-  `STORE_ID` bigint(21) unsigned DEFAULT NULL,
-  `IS_LEARNER` tinyint(1) unsigned DEFAULT NULL,
-  `IS_LEADER` tinyint(1) unsigned DEFAULT NULL,
-  `STATUS` varchar(10) DEFAULT NULL,
-  `DOWN_SECONDS` bigint(21) unsigned DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
-1 row in set (0.00 sec)
-```
-
-例如，若要查询 `WRITTEN_BYTES` 值最高的三个 Region 分别在哪些 TiKV 上，可以通过如下的 SQL 语句实现：
-
-```sql
-select
-   address,
-   tikv.address,
-   region.region_id,
-from
-   tikv_store_status tikv,
-   tikv_region_peers peer,
-   (
-      select
-         *
-      from
-         tikv_region_status region
-      order by
-         written_bytes desc limit 3
-   )
-   region
-where
-   region.region_id = peer.region_id
-   and peer.is_leader = 1
-   and peer.store_id = tikv.region_id
-```
-
-## ANALYZE\_STATUS 表
-
-`ANALYZE_STATUS` 表展示了当前集群中 `ANALYZE` 命令的执行情况。
-
-```sql
-mysql> desc analyze_status\G
-*************************** 1. row ***************************
-       Table: ANALYZE_STATUS
-Create Table: CREATE TABLE `ANALYZE_STATUS` (
-  `TABLE_SCHEMA` varchar(64) DEFAULT NULL,
-  `TABLE_NAME` varchar(64) DEFAULT NULL,
-  `PARTITION_NAME` varchar(64) DEFAULT NULL,
-  `JOB_INFO` varchar(64) DEFAULT NULL,
-  `PROCESSED_ROWS` bigint(20) unsigned DEFAULT NULL,
-  `START_TIME` datetime unsigned DEFAULT NULL,
-  `STATE` varchar(64) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
-1 row in set (0.00 sec)
-```
-
-其中 STATE 列表明了一个具体的 `ANALYZE` 任务的执行情况，可能有如下四个值：`pending`、`running`、`finished`、`failed`。
-
-## SLOW\_QUERY 表
-
-`SLOW_QUERY` 表是映射了慢查询日志的表。其列名均和慢查询日志中的字段名一一对应。具体信息可以查看[慢查询日志](/how-to/maintain/identify-slow-queries.md#identify-slow-queries)。
-
-```sql
-mysql> desc slow_query\G
-*************************** 1. row ***************************
-       Table: SLOW_QUERY
-Create Table: CREATE TABLE `SLOW_QUERY` (
-  `Time` timestamp unsigned NULL DEFAULT NULL,
-  `Txn_start_ts` bigint(20) unsigned DEFAULT NULL,
-  `User` varchar(64) DEFAULT NULL,
-  `Host` varchar(64) DEFAULT NULL,
-  `Conn_ID` bigint(20) unsigned DEFAULT NULL,
-  `Query_time` double unsigned DEFAULT NULL,
-  `Process_time` double unsigned DEFAULT NULL,
-  `Wait_time` double unsigned DEFAULT NULL,
-  `Backoff_time` double unsigned DEFAULT NULL,
-  `Request_count` bigint(20) unsigned DEFAULT NULL,
-  `Total_keys` bigint(20) unsigned DEFAULT NULL,
-  `Process_keys` bigint(20) unsigned DEFAULT NULL,
-  `DB` varchar(64) DEFAULT NULL,
-  `Index_ids` varchar(100) DEFAULT NULL,
-  `Is_internal` tinyint(1) unsigned DEFAULT NULL,
-  `Digest` varchar(64) DEFAULT NULL,
-  `Stats` varchar(512) DEFAULT NULL,
-  `Cop_proc_avg` double unsigned DEFAULT NULL,
-  `Cop_proc_p90` double unsigned DEFAULT NULL,
-  `Cop_proc_max` double unsigned DEFAULT NULL,
-  `Cop_proc_addr` varchar(64) DEFAULT NULL,
-  `Cop_wait_avg` double unsigned DEFAULT NULL,
-  `Cop_wait_p90` double unsigned DEFAULT NULL,
-  `Cop_wait_max` double unsigned DEFAULT NULL,
-  `Cop_wait_addr` varchar(64) DEFAULT NULL,
-  `Mem_max` bigint(20) unsigned DEFAULT NULL,
-  `Query` varchar(4096) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
 1 row in set (0.00 sec)
 ```
 
