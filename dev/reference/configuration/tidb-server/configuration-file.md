@@ -193,7 +193,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `max-memory`
 
-+ Prepare cache LRU 使用的最大内存限制，超过 performance.max-memory * (1 - prepared-plan-cache.memory-guard-ratio)会 剔除 LRU 中的元素。 
++ Prepare cache LRU 使用的最大内存限制，超过 performance.max-memory * (1 - prepared-plan-cache.memory-guard-ratio)会 剔除 LRU 中的元素。
 + 默认值：0
 + 这个配置只有在 prepared-plan-cache.enabled 为 true 的情况才会生效。在 LRU 的 size 大于 prepared-plan-cache.capacity 的情况下，也会剔除 LRU 中的元素。
 
@@ -221,20 +221,18 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `stats-lease`
 
-<<<<<<< HEAD
 + TiDB 重载统计信息，更新表行数，检查是否需要自动 analyze，利用 feedback 更新统计信息以及加载列的统计信息的时间间隔。
-+ 默认：3s
-=======
-+ TiDB 重载统计信息，更新表行数，检查是否需要自动 analyze 以及加载列的统计信息的时间间隔。
 + 默认值：3s
->>>>>>> 8587f4adb23f5c18f98cca008536cbee5c1e2109
     - 每隔 `stats-lease` 时间，TiDB 会检查统计信息是否有更新，如果有会将其更新到内存中
     - 每隔 `20 * stats-lease` 时间，TiDB 会将 DML 产生的总行数以及修改的行数变化更新到系统表中
     - 每隔 `stats-lease` 时间，TiDB 会检查是否有表或者索引需要自动 analyze
     - 每隔 `stats-lease` 时间，TiDB 会检查是否有列的统计信息需要被加载到内存中
     - 每隔 `200 * stats-lease` 时间，TiDB 会将内存中缓存的 feedback 写入系统表中
     - 每隔 `5 * stats-lease` 时间，TiDB 会读取系统表中的 feedback，更新内存中缓存的统计信息
-+ 当 `stats-lease` 为 0 时， TiDB 会以 3s 的时间间隔去读取最新的统计信息到内存中，但和统计信息更新相关的操作，例如维护总行数和修改行数，自动 analyze 以及 feedback 等操作都不会再进行。
++ 当 `stats-lease` 为 0 时，TiDB 会以 3s 的时间间隔周期性的读取系统表中的统计信息更新内存中缓存的统计信息。但不会自动修改统计信息相关系统表，具体来说，TiDB 不再自动修改这些表：
+    - `mysql.stats_meta`：TiDB 不再自动记录事务中对某张表的修改行数，也不会更新到这个系统表中
+    - `mysql.stats_histograms`/`mysql.stats_buckets` 和 `mysql.stats_top_n`：TiDB 不再自动 Analyze，主动更新统计信息
+    - `mysql.stats_feedback`：TiDB 不再根据被查询的数据反馈的部分统计信息更新表和索引的统计信息
 
 ### `run-auto-analyze`
 
@@ -244,11 +242,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `feedback-probability`
 
 + TiDB 对查询收集统计信息反馈的概率。
-<<<<<<< HEAD
-+ 默认：0.05
-=======
-+ 默认值：0.0
->>>>>>> 8587f4adb23f5c18f98cca008536cbee5c1e2109
++ 默认值：0.05
 + 对于每一个查询，TiDB 会以 `feedback-probability` 的概率收集查询的反馈，用于更新统计信息。
 
 ### `query-feedback-limit`
