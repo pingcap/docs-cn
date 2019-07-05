@@ -238,3 +238,4 @@ The minikube VM is configured by default to only use 2048MB of memory and 2 CPUs
 minikube delete
 minikube start --cpus 4 --memory 4096 ...
 ```
+
