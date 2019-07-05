@@ -38,7 +38,7 @@ aliases: ['/docs-cn/tools/dm/troubleshooting/']
 
 > **注意：**
 >
-> TiDB 目前并不兼容 MySQL 支持的所有 DDL 语句，详见 [TiDB 已支持的 DDL 语句](/sql/ddl.md)。
+> TiDB 目前并不兼容 MySQL 支持的所有 DDL 语句。
 
 ## 重置数据同步任务
 

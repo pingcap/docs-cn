@@ -10,7 +10,7 @@
     - [高可用](key-features.md#高可用)
 + 操作指南
   + 快速上手
-    + 创建本地集群
+    + 创建集群
       - [使用 Docker Compose](how-to/get-started/local-cluster/install-from-docker-compose.md)
     - [SQL 基本操作](how-to/get-started/explore-sql.md)
     - [读取历史数据](how-to/get-started/read-historical-data.md)
@@ -66,7 +66,6 @@
 + 参考手册
   + [与 MySQL 兼容性对比](reference/mysql-compatibility.md)
   + SQL
-    - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
     + SQL 语言结构
       - [字面值](reference/sql/language-structure/literal-values.md)
       - [Schema 对象名](reference/sql/language-structure/schema-object-names.md)
@@ -299,13 +298,16 @@
 - [TiDB 路线图](roadmap.md)
 + [版本发布历史](releases/rn.md)
   + v3.0
+  +   
+    - [3.0 GA](releases/3.0-ga.md)
     - [3.0.0-rc.3](releases/3.0.0-rc.3.md)
     - [3.0.0-rc.2](releases/3.0.0-rc.2.md)
     - [3.0.0-rc.1](releases/3.0.0-rc.1.md)
     - [3.0.0-beta.1](releases/3.0.0-beta.1.md)
     - [3.0.0-beta](releases/3.0beta.md)
   + v2.1
-    - [2.1.13](releases/2.1.13.md)    
+    - [2.1.14](releases/2.1.14.md)
+    - [2.1.13](releases/2.1.13.md)
     - [2.1.12](releases/2.1.12.md)
     - [2.1.11](releases/2.1.11.md)
     - [2.1.10](releases/2.1.10.md)

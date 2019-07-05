@@ -39,10 +39,8 @@ def upload(local_file, remote_name, ttl=3600):
     assert ret['hash'] == etag(local_file)
 
 if __name__ == "__main__":
-    print('hello')
     local_file = sys.argv[1]
     remote_name = sys.argv[2]
-    print(local_file, remote_name)
     upload(local_file, remote_name)
 
     print("http://download.pingcap.org/{}".format(remote_name))

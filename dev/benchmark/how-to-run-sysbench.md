@@ -76,6 +76,16 @@ block-cache-size = "24GB"
 block-cache-size = "6GB"
 ```
 
+对于 3.0 及以后的版本，还可以使用共享 block cache 的方式进行设置：
+
+```toml
+log-level = "error"
+[raftstore]
+sync-log = false
+[storage.block-cache]
+capacity = "30GB"
+```
+
 更详细的 TiKV 参数调优请参考 [TiKV 性能参数调优](/reference/performance/tune-tikv.md)。
 
 ## 测试过程
@@ -151,7 +161,7 @@ sysbench --config-file=config oltp_point_select --tables=32 --table-size=1000000
 
 数据预热可将磁盘中的数据载入内存的 block cache 中，预热后的数据对系统整体的性能有较大的改善，建议在每次重启集群后进行一次数据预热。
 
-Sysbench 没有提供数据预热的功能，因此需要手动进行数据预热。
+Sysbench 1.0.14 没有提供数据预热的功能，因此需要手动进行数据预热。如果使用更新的 Sysbench 版本，可以使用自带的预热功能。
 
 以 Sysbench 中某张表 sbtest7 为例，执行如下 SQL 语句 进行数据预热：
 

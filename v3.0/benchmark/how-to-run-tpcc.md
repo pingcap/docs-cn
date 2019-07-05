@@ -32,7 +32,7 @@ TPC-C 使用 tpmC 值（Transactions per Minute）来衡量系统最大有效吞
 本文使用开源的 BenchmarkSQL 5.0 作为 TPC-C 测试实现并添加了对 MySQL 协议的支持，可以通过以下命令下载测试程序:
 
 ```shell
-git clone -b 5.0-mysql-support-opt https://github.com/pingcap/benchmarksql.git
+git clone -b 5.0-mysql-support-opt-2.1 https://github.com/pingcap/benchmarksql.git
 ```
 
 安装 java 和 ant，以 CentOS 为例，可以执行以下命令进行安装
@@ -105,7 +105,7 @@ enabled = true
 修改 `benchmarksql/run/props.mysql`：
 
 ```text
-conn=jdbc:mysql://{HAPROXY-HOST}:{HAPROXY-PORT}/tpcc?useSSL=false&useServerPrepStmts=true&useConfigs=maxPerformance&sessionVariables=tidb_batch_commit=1
+conn=jdbc:mysql://{HAPROXY-HOST}:{HAPROXY-PORT}/tpcc?useSSL=false&useServerPrepStmts=true&useConfigs=maxPerformance
 warehouses=1000 # 使用 1000 个 warehouse
 terminals=500   # 使用 500 个终端
 loadWorkers=32  # 导入数据的并发数
@@ -133,7 +133,9 @@ cd run
 ./runLoader.sh props.mysql
 ```
 
-根据机器配置这个过程会持续几个小时。
+根据机器配置这个过程可能会持续几个小时。
+
+数据导入完成之后，可以运行 `sql.common/test.sql` 进行数据正确性验证，如果所有 SQL 语句都返回结果为空，即为数据导入正确。
 
 ## 运行测试
 
@@ -154,3 +156,5 @@ nohup ./runBenchmark.sh props.mysql &> test.log &
 ```
 
 tpmC 部分即为测试结果。
+
+测试完成之后，也可以运行 `sql.common/test.sql` 进行数据正确性验证，如果所有 SQL 语句都返回结果为空，即为数据测试过程正确。

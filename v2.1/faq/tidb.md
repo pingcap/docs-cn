@@ -51,7 +51,7 @@ TiDB 实现了快照隔离 (Snapshot Isolation) 级别的一致性。为与 MySQ
 
 支持。无论是一个地方的几个节点，还是[跨多个数据中心的多个节点](/how-to/deploy/geographic-redundancy/overview.md)，TiDB 均支持 ACID 分布式事务。
 
-TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶段提交协议，并进行了一些实用的优化。该模型依赖于一个时间戳分配器，为每个事务分配单调递增的时间戳，这样就检测到事务冲突。在 TiDB 集群中，[PD](/architecture.md#pd-server) 承担时间戳分配器的角色。q
+TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶段提交协议，并进行了一些实用的优化。该模型依赖于一个时间戳分配器，为每个事务分配单调递增的时间戳，这样就检测到事务冲突。在 TiDB 集群中，[PD](/architecture.md#pd-server) 承担时间戳分配器的角色。
 
 #### 1.1.10 TiDB 支持哪些编程语言？
 
@@ -624,7 +624,7 @@ WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD
 
 #### 3.4.15 在最严格的 `sync-log = true` 数据可用模式下，写入性能如何？
 
-一般来说，开启 `sync-log` 会让性能损耗 30% 左右。关闭 `sync-log` 时的性能表现，请参见 [TiDB Sysbench 性能测试报告](https://github.com/pingcap/docs-cn/blob/master/v2.1/benchmark/how-to-run-sysbench.md)。
+一般来说，开启 `sync-log` 会让性能损耗 30% 左右。关闭 `sync-log` 时的性能表现，请参见 [TiDB Sysbench 性能测试报告](https://github.com/pingcap/docs-cn/blob/master/v2.1/benchmark/sysbench-v3.md)。
 
 #### 3.4.16 是否可以利用 TiKV 的 Raft + 多副本达到完全的数据可靠，单机存储引擎是否需要最严格模式？
 
@@ -660,7 +660,7 @@ TiKV 的内存占用主要来自于 RocksDB 的 block-cache，默认为系统总
 很多用户在接触 TiDB 都习惯做一个基准测试或者 TiDB 与 MySQL 的对比测试，官方也做了一个类似测试，汇总很多测试结果后，我们发现虽然测试的数据有一定的偏差，但结论或者方向基本一致，由于 TiDB 与 MySQL 由于架构上的差别非常大，很多方面是很难找到一个基准点，所以官方的建议两点：
 
 - 大家不要用过多精力纠结这类基准测试上，应该更多关注 TiDB 的场景上的区别。
-- 大家可以直接参考官方相关测试。官方 Sysbench 测试及 TiDB 与 MySQL 对比测试请参考 [TiDB Sysbench 性能测试报告](https://github.com/pingcap/docs-cn/blob/master/v2.1/benchmark/how-to-run-sysbench.md)。
+- 大家可以直接参考 [TiDB Sysbench 性能测试报告](https://github.com/pingcap/docs-cn/blob/master/v2.1/benchmark/sysbench-v3.md)。
 
 #### 3.5.2 TiDB 集群容量 QPS 与节点数之间关系如何，和 MySQL 对比如何？
 
@@ -753,7 +753,7 @@ sqoop export \
 
 ##### 4.2.1.2 如何配置监控 Syncer 运行情况？
 
-下载 [Syncer Json](https://github.com/pingcap/docs/blob/master/etc/Syncer.json) 导入到 Grafana，修改 Prometheus 配置文件，添加以下内容：
+下载 [Syncer Json](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json) 导入到 Grafana，修改 Prometheus 配置文件，添加以下内容：
 
 - job_name: &#39;syncer_ops&#39; // 任务名字
     static_configs:
