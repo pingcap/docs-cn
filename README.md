@@ -10,7 +10,7 @@ TiDB 具备如下特性：
 
 - 高度兼容 MySQL
     
-    [大多数情况下](https://www.pingcap.com/docs-cn/sql/mysql-compatibility/)，无需修改代码即可从 MySQL 轻松迁移至 TiDB，分库分表后的 MySQL 集群亦可通过 TiDB 工具进行实时迁移。
+    [大多数情况下](/v3.0/reference/mysql-compatibility.md)，无需修改代码即可从 MySQL 轻松迁移至 TiDB，分库分表后的 MySQL 集群亦可通过 TiDB 工具进行实时迁移。
 
 - 水平弹性扩展
 
