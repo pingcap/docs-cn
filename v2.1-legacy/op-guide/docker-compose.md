@@ -160,4 +160,4 @@ docker-compose exec tispark-master /opt/spark/bin/pyspark
 docker-compose exec tispark-master /opt/spark/bin/sparkR
 ```
 
-更多关于 TiSpark 的信息，参见 [TiSpark 的详细文档](/how-to/get-started/tispark.md)。
+更多关于 TiSpark 的信息，参见 [TiSpark 的详细文档](/v2.1-legacy/how-to/get-started/tispark.md)。
