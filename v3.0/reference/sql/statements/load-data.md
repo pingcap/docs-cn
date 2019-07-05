@@ -41,6 +41,10 @@ Records: 815264  Deleted: 0  Skipped: 0  Warnings: 0
 
 * 默认情况下，TiDB 每 20,000 行会进行一次提交。这类似于 MySQL NDB Cluster，但并非 InnoDB 存储引擎的默认配置。
 
+> **注意：**
+>
+> 这种拆分事务提交的方式是以打破事务的原子性为代价的，因此，不建议在生产环境中使用。
+
 ## 另请参阅
 
 * [INSERT](/reference/sql/statements/insert.md)
