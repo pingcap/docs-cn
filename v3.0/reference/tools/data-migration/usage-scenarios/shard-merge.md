@@ -99,7 +99,7 @@ Assume that the downstream schema after replication is as follows:
     >
     > The replication Requirements #4, #5 and #7 indicate that all the deletion operations in the `user` schema are filtered out, so a schema level filtering rule is configured here. However, the deletion operations of future tables in the `user` schema will also be filtered out.
 
-- To satisfy the replication Requirement #6, configure the [binlog event filter rule](/tools/dm/data-synchronization-features.md#binlog-event-filter) as follows:
+- To satisfy the replication Requirement #6, configure the [binlog event filter rule](/reference/tools/data-migration/features/overview.md#binlog-event-filter) as follows:
 
     ```yaml
     filters:

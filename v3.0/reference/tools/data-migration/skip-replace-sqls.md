@@ -129,7 +129,7 @@ When you use dmctl to manually handle the SQL statements unsupported by TiDB, th
 
 #### query-status
 
-`query-status` allows you to query the current status of items such as the subtask and the relay unit in each DM-worker. For details, see [query status](/tools/dm/query-status.md).  
+`query-status` allows you to query the current status of items such as the subtask and the relay unit in each DM-worker. For details, see [query status](/reference/tools/data-migration/query-status.md).  
 
 #### query-error
 

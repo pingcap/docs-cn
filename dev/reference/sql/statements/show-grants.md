@@ -54,4 +54,4 @@ This statement is understood to be fully compatible with MySQL. Any compatibilit
 ## See also
 
 * [SHOW CREATE USER](/reference/sql/statements/show-create-user.md)
-* [GRANT](/reference/sql/statements/grant.md)
+* [GRANT](/reference/sql/statements/grant-privileges.md)

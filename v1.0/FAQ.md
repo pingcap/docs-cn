@@ -616,7 +616,7 @@ See [Syncer User Guide](docs/tools/syncer.md).
 
 ##### How to configure to monitor Syncer status?
 
-Download and import [Syncer Json](https://github.com/pingcap/docs/blob/master/etc/Syncer.json) to Grafana. Edit the Prometheus configuration file and add the following content:
+Download and import [Syncer Json](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json) to Grafana. Edit the Prometheus configuration file and add the following content:
 
 ```
 - job_name: ‘syncer_ops’ // task name

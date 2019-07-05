@@ -512,7 +512,7 @@ Syncer provides the metric interface, and requires Prometheus to actively obtain
 
 2. Import the configuration file of Grafana dashboard.
 
-    Click the Grafana Logo -> click Dashboards -> click Import -> choose and import the dashboard [configuration file](https://github.com/pingcap/docs/tree/master/etc) -> choose the corresponding data source.
+    Click the Grafana Logo -> click Dashboards -> click Import -> choose and import the dashboard [configuration file](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json) -> choose the corresponding data source.
 
 ### Description of Grafana Syncer metrics
 

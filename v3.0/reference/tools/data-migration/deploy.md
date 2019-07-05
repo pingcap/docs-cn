@@ -114,7 +114,7 @@ To detect possible errors of data replication configuration in advance, DM provi
 - DM automatically checks the corresponding privileges and configuration while starting the data replication task.
 - You can also use the `check-task` command to manually precheck whether the upstream MySQL instance configuration satisfies the DM requirements.
 
-For details about the precheck feature, see [Precheck the upstream MySQL instance configuration](/tools/dm/precheck.md).
+For details about the precheck feature, see [Precheck the upstream MySQL instance configuration](/reference/tools/data-migration/precheck.md).
 
 > **Note:**
 >

@@ -6,7 +6,7 @@ category: User Guide
 
 # TiSpark Quick Start Guide
 
-To make it easy to [try TiSpark](/tispark/tispark-user-guide.md), the TiDB cluster installed using TiDB-Ansible integrates Spark, TiSpark jar package and TiSpark sample data by default.
+To make it easy to [try TiSpark](/reference/tispark.md), the TiDB cluster installed using TiDB-Ansible integrates Spark, TiSpark jar package and TiSpark sample data by default.
 
 ## Deployment information
 

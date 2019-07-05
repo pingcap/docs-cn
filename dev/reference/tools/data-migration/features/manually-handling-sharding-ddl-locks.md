@@ -147,7 +147,7 @@ break-ddl-lock <--worker=127.0.0.1:8262> [--remove-id] [--exec] [--skip] <task-n
 + `task-name`:
 
     - Non-flag; string; required
-    - It specifies the name of the task containing the lock that is going to execute the breaking operation (you can check whether a task contains the lock via [query-status](/tools/dm/query-status.md)).
+    - It specifies the name of the task containing the lock that is going to execute the breaking operation (you can check whether a task contains the lock via [query-status](/reference/tools/data-migration/query-status.md)).
 
 #### Example of results
 

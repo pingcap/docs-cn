@@ -34,7 +34,7 @@ routes:
 
 ### Parameter explanation
 
-DM replicates the upstream MySQL or MariaDB instance table that matches the [`schema-pattern`/`table-pattern` rule provided by Table selector](/tools/dm/table-selector.md) to the downstream `target-schema`/`target-table`.
+DM replicates the upstream MySQL or MariaDB instance table that matches the [`schema-pattern`/`table-pattern` rule provided by Table selector](/reference/tools/data-migration/table-selector.md) to the downstream `target-schema`/`target-table`.
 
 ### Usage examples
 
@@ -226,7 +226,7 @@ filters:
 
 ### Parameter explanation
 
-- [`schema-pattern`/`table-pattern`](/tools/dm/table-selector.md): the binlog events or DDL SQL statements of upstream MySQL or MariaDB instance tables that match `schema-pattern`/`table-pattern` are filtered by the rules below.
+- [`schema-pattern`/`table-pattern`](/reference/tools/data-migration/table-selector.md): the binlog events or DDL SQL statements of upstream MySQL or MariaDB instance tables that match `schema-pattern`/`table-pattern` are filtered by the rules below.
 
 - `events`: the binlog event array.
 
@@ -374,7 +374,7 @@ column-mappings:
 
 ### Parameter explanation
 
-- [`schema-pattern`/`table-pattern`](/tools/dm/table-selector.md): to execute column value modifying operations on the upstream MySQL or MariaDB instance tables that match the `schema-pattern`/`table-pattern` filtering rule.
+- [`schema-pattern`/`table-pattern`](/reference/tools/data-migration/table-selector.md): to execute column value modifying operations on the upstream MySQL or MariaDB instance tables that match the `schema-pattern`/`table-pattern` filtering rule.
 - `source-column`, `target-column`: to modify the value of the `source-column` column according to specified `expression` and assign the new value to `target-column`.
 - `expression`: the expression used to modify data. Currently, only the `partition id` built-in expression is supported.
 

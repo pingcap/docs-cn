@@ -33,7 +33,7 @@ DM-worker executes specific data replication tasks.
 - Orchestrating the operation of the data replication subtasks
 - Monitoring the running state of the data replication subtasks
 
-For details about DM-worker, see [DM-worker Introduction](../tools/dm-worker-intro.md).
+For details about DM-worker, see [DM-worker Introduction](/reference/tools/data-migration/dm-worker-intro.md).
 
 ### dmctl 
 
