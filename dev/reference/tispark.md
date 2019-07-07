@@ -1,7 +1,6 @@
 ---
 title: TiSpark 用户指南
 category: reference
-aliases: ['/docs-cn/tispark/tispark-user-guide/']
 ---
 
 # TiSpark 用户指南
@@ -41,7 +40,7 @@ TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
 + 硬件配置建议
 
-    普通场景可以参考 [TiDB 和 TiKV 硬件配置建议](https://github.com/pingcap/docs-cn/blob/master/op-guide/recommendation.md#tidb-集群各个组件的硬件消耗情况及推荐配置)，但是如果是偏重分析的场景，可以将 TiKV 节点增加到至少 64G 内存。
+    普通场景可以参考 [TiDB 和 TiKV 硬件配置建议](/how-to/deploy/hardware-recommendations.md)，但是如果是偏重分析的场景，可以将 TiKV 节点增加到至少 64G 内存。
 
 ### Spark 与 TiSpark 集群独立部署的配置
 

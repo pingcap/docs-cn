@@ -1,6 +1,6 @@
 ---
 title: CREATE TABLE LIKE
-summary: TiDB 数据库中 CREATE TABLE AS 的使用概况。
+summary: TiDB 数据库中 CREATE TABLE LIKE 的使用概况。
 category: reference
 ---
 
@@ -53,9 +53,9 @@ Empty set (0.00 sec)
 
 ## MySQL 兼容性
 
-`CREATE TABLE LIKE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/dev/report-issue.md)。
+`CREATE TABLE LIKE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
 
 ## 另请参阅
 
-* [CREATE TABLE](/dev/reference/sql/statements/create-table.md)
-* [SHOW CREATE TABLE](/dev/reference/sql/statements/show-create-table.md)
+* [CREATE TABLE](/reference/sql/statements/create-table.md)
+* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)

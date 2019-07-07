@@ -101,8 +101,8 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'time_zone%';
 
 ## MySQL 兼容性
 
-`SHOW [GLOBAL|SESSION] VARIABLES` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/dev/report-issue.md)。
+`SHOW [GLOBAL|SESSION] VARIABLES` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
 
 ## 另请参阅
 
-* [SET](/dev/reference/sql/statements/set-session-variable.md)
+* [SET](/reference/sql/statements/set-session-variable.md)

@@ -65,5 +65,5 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 ## 另请参阅
 
-* [EXPLAIN](/dev/reference/sql/statements/explain.md)
-* [EXPLAIN ANALYZE](/dev/reference/sql/statements/explain-analyze.md)
+* [EXPLAIN](/reference/sql/statements/explain.md)
+* [EXPLAIN ANALYZE](/reference/sql/statements/explain-analyze.md)

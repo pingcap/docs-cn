@@ -1,7 +1,6 @@
 ---
 title: TiDB-Lightning 简介
 category: reference
-aliases: ['/docs-cn/tools/lightning/overview-architecture']
 ---
 
 # TiDB-Lightning 简介

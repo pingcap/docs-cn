@@ -1,7 +1,6 @@
 ---
 title: TiDB 用户账户管理
 category: reference
-aliases: ['/docs-cn/sql/user-account-management/']
 ---
 
 # TiDB 用户账户管理
@@ -236,4 +235,4 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 FLUSH PRIVILEGES;
 ```
 
-详情参见[权限管理](/dev/reference/security/privilege-system.md)。
+详情参见[权限管理](/reference/security/privilege-system.md)。

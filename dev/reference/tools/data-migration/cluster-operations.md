@@ -1,7 +1,6 @@
 ---
 title: DM 集群操作
 category: reference
-aliases: ['/docs-cn/tools/dm/cluster-operations/']
 ---
 
 # DM 集群操作
@@ -12,7 +11,7 @@ aliases: ['/docs-cn/tools/dm/cluster-operations/']
 
 运行以下命令以启动整个集群的所有组件（包括 DM-master、DM-worker 和监控组件）：
 
-```
+```bash
 $ ansible-playbook start.yml
 ```
 
@@ -20,7 +19,7 @@ $ ansible-playbook start.yml
 
 运行以下命令以下线整个集群的所有组件（包括 DM-master、DM-worker 和监控组件）：
 
-```
+```bash
 $ ansible-playbook stop.yml
 ```
 
@@ -60,7 +59,7 @@ $ ansible-playbook stop.yml
 
       此时 DM 会再次尝试同步这些未跳过执行的 DDL 语句。然而，由于未重启的 DM-worker 实例已经执行到了此 DDL 对应的 binlog event 之后，重启的 DM-worker 实例会被阻滞在重启前 DDL binlog event 对应的位置。
 
-      要解决这个问题，请按照[手动处理 Sharding DDL Lock](/dev/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md#场景二unlock-过程中部分-dm-worker-重启) 中描述的步骤操作。
+      要解决这个问题，请按照[手动处理 Sharding DDL Lock](/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md#场景二unlock-过程中部分-dm-worker-重启) 中描述的步骤操作。
 
 **总结**：尽量避免在 sharding DDL 同步过程中重启 DM-worker。
 
@@ -117,14 +116,14 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
     1. 从 `downloads` 目录删除已有文件。
 
-        ```
+        ```bash
         $ cd /home/tidb/dm-ansible
         $ rm -rf downloads
         ```
 
     2. 用 Playbook 下载 inventory.ini 文件中指定版本的最新 DM 二进制文件。这会自动替换 `/home/tidb/dm-ansible/resource/bin/` 中已有文件。
 
-        ```
+        ```bash
         $ ansible-playbook local_prepare.yml
         ```
 
@@ -132,25 +131,25 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
     1. 对 DM-worker 实例执行滚动升级：
 
-        ```
+        ```bash
         ansible-playbook rolling_update.yml --tags=dm-worker
         ```
 
     2. 对 DM-master 实例执行滚动升级：
 
-        ```
+        ```bash
         ansible-playbook rolling_update.yml --tags=dm-master
         ```
 
     3. 升级 dmctl：
 
-        ```
+        ```bash
         ansible-playbook rolling_update.yml --tags=dmctl
         ```
 
     4. 对 DM-worker， DM-master， 以及 dmctl 整体执行滚动升级：
 
-        ```
+        ```bash
         ansible-playbook rolling_update.yml
         ```
 
@@ -160,9 +159,9 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
 1. 为中控机设置 SSH 互信以及 sudo 规则。
 
-    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/dev/how-to/deploy/data-migration-with-ansible.md#第-5-步-在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 用户登录至中控机，并将 `172.16.10.74` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。
+    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/how-to/deploy/data-migration-with-ansible.md#第-5-步-在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 用户登录至中控机，并将 `172.16.10.74` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。
 
-        ```
+        ```bash
         $ cd /home/tidb/dm-ansible
         $ vi hosts.ini
         [servers]
@@ -174,7 +173,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
     2. 运行以下命令。根据屏幕提示，输入 `root` 用户密码以部署 `172.16.10.74`。
 
-        ```
+        ```bash
         $ ansible-playbook -i hosts.ini create_users.yml -u root -k
         ```
 
@@ -193,25 +192,25 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
 3. 部署新 DM-worker 实例。
 
-    ```
+    ```bash
     $ ansible-playbook deploy.yml --tags=dm-worker -l dm_worker3
     ```
 
 4. 启用新 DM-worker 实例。
 
-    ```
+    ```bash
     $ ansible-playbook start.yml --tags=dm-worker -l dm_worker3
     ```
 
 5. 配置并重启 DM-master 服务。
 
-    ```
+    ```bash
     $ ansible-playbook rolling_update.yml --tags=dm-master
     ```
 
 6. 配置并重启 Prometheus 服务。
 
-    ```
+    ```bash
     $ ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
@@ -221,7 +220,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
 1. 关闭您想要下线的 DM-worker 实例。
 
-    ```
+    ```bash
     $ ansible-playbook stop.yml --tags=dm-worker -l dm_worker3
     ```
 
@@ -238,13 +237,13 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
 3. 配置并重启 DM-master 服务。
 
-    ```
+    ```bash
     $ ansible-playbook rolling_update.yml --tags=dm-master
     ```
 
 4. 配置并重启 Prometheus 服务。
 
-    ```
+    ```bash
     $ ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
@@ -254,9 +253,9 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
 1. 为中控机设置 SSH 互信以及 sudo 规则。
 
-    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/dev/how-to/deploy/data-migration-with-ansible.md#第-5-步-在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 账户登录至中控机，并将 `172.16.10.80` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。  
-
-        ```
+    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/how-to/deploy/data-migration-with-ansible.md#第-5-步-在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 账户登录至中控机，并将 `172.16.10.80` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。  
+   
+        ```bash
         $ cd /home/tidb/dm-ansible
         $ vi hosts.ini
         [servers]
@@ -268,7 +267,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
      2. 运行以下命令。根据屏幕提示，输入 `root` 用户密码以部署 `172.16.10.80`。
 
-        ```
+        ```bash
         $ ansible-playbook -i hosts.ini create_users.yml -u root -k
         ```
 
@@ -294,19 +293,19 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
 4. 部署新 DM-master 实例。
 
-    ```
+    ```bash
     $ ansible-playbook deploy.yml --tags=dm-master
     ```
 
 5. 启用新 DM-master 实例。
 
-    ```
+    ```bash
     $ ansible-playbook start.yml --tags=dm-master
     ```
 
 6. 更新 dmctl 配置文件。
 
-    ```
+    ```bash
     ansible-playbook rolling_update.yml --tags=dmctl
     ```
 
@@ -316,9 +315,9 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
 1. 为中控机设置 SSH 互信以及 sudo 规则。
 
-    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/dev/how-to/deploy/data-migration-with-ansible.md#第-5-步-在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 账户登录至中控机，并将 `172.16.10.75` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。
+    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/how-to/deploy/data-migration-with-ansible.md#第-5-步-在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 账户登录至中控机，并将 `172.16.10.75` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。
 
-        ```
+        ```bash
         $ cd /home/tidb/dm-ansible
         $ vi hosts.ini
         [servers]
@@ -330,7 +329,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
     2. 运行以下命令。根据屏幕提示，输入 `root` 用户密码以部署 `172.16.10.85`。
 
-        ```
+        ```bash
         $ ansible-playbook -i hosts.ini create_users.yml -u root -k
         ```
 
@@ -342,7 +341,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
     >
     > 如果机器 `172.16.10.71` 宕机，无法通过 SSH 登录，请忽略此步。
 
-    ```
+    ```bash
     $ ansible-playbook stop.yml --tags=dm-worker -l dm_worker1
     ```
 
@@ -360,25 +359,25 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
 4. 部署新 DM-worker 实例。
 
-    ```
+    ```bash
     $ ansible-playbook deploy.yml --tags=dm-worker -l dm_worker1
     ```
 
 5. 启动新 DM-worker 实例。
 
-    ```
+    ```bash
     $ ansible-playbook start.yml --tags=dm-worker -l dm_worker1
     ```
 
 6. 配置并重启 DM-master 服务。
 
-    ```
+    ```bash
     $ ansible-playbook rolling_update.yml --tags=dm-master
     ```
 
 7. 配置并重启 Prometheus 服务。
 
-    ```
+    ```bash
     $ ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 

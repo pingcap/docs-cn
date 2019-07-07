@@ -1,7 +1,6 @@
 ---
 title: TiDB Binlog kafka 部署方案
 category: reference
-aliases: ['/docs-cn/tools/binlog/tidb-binlog-kafka/']
 ---
 
 # TiDB Binlog Kafka 部署方案
@@ -21,7 +20,7 @@ TiDB Binlog 支持以下功能场景:
 
 首先介绍 TiDB Binlog 的整体架构。
 
-![TiDB-Binlog 架构](/media/tidb_binlog_kafka_architecture.png)
+![TiDB Binlog 架构](/media/tidb_binlog_kafka_architecture.png)
 
 TiDB Binlog 集群主要分为三个组件：
 
@@ -423,4 +422,4 @@ PbReader 使用示例
 
 + 导入 dashboard 配置文件
 
-    点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 [dashboard 配置文件](https://github.com/pingcap/docs/tree/master/etc)上传 -> 选择对应的 data source
+    点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 [dashboard 配置文件](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json)上传 -> 选择对应的 data source

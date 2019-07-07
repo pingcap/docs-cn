@@ -1,7 +1,6 @@
 ---
 title: 表达式语法
 category: reference
-aliases: ['/docs-cn/sql/expression-syntax/']
 ---
 
 # 表达式语法 (Expression Syntax)

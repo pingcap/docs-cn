@@ -1,10 +1,9 @@
 ---
-title: ADMIN 语句
+title: ADMIN
 category: reference
-aliases: ['/docs-cn/sql/admin/']
 ---
 
-# `ADMIN` 语句
+# ADMIN
 
 `ADMIN` 语句是 TiDB 扩展语法，用于查看 TiDB 自身的状态，并对 TiDB 中的表数据进行校验。示例如下。
 

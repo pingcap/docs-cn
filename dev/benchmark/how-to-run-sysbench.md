@@ -1,7 +1,6 @@
 ---
 title: 如何用 Sysbench 测试 TiDB
 category: benchmark
-aliases: ['/docs-cn/benchmark/sysbench-v4/','/docs-cn/benchmark/how-to-run-sysbench']
 ---
 
 # 如何用 Sysbench 测试 TiDB
@@ -10,9 +9,9 @@ aliases: ['/docs-cn/benchmark/sysbench-v4/','/docs-cn/benchmark/how-to-run-sysbe
 
 ## 测试环境
 
-- [硬件要求](/dev/how-to/deploy/hardware-recommendations.md)
+- [硬件要求](/how-to/deploy/hardware-recommendations.md)
 
-- 参考 [TiDB 部署文档](/dev/how-to/deploy/orchestrated/ansible.md)部署 TiDB 集群。在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD，和 1 个 TiKV 实例。关于磁盘，以 32 张表、每张表 10M 行数据为例，建议 TiKV 的数据目录所在的磁盘空间大于 512 GB。
+- 参考 [TiDB 部署文档](/how-to/deploy/orchestrated/ansible.md)部署 TiDB 集群。在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD，和 1 个 TiKV 实例。关于磁盘，以 32 张表、每张表 10M 行数据为例，建议 TiKV 的数据目录所在的磁盘空间大于 512 GB。
     对于单个 TiDB 的并发连接数，建议控制在 500 以内，如需增加整个系统的并发压力，可以增加 TiDB 实例，具体增加的 TiDB 个数视测试压力而定。
 
 IDC 机器：
@@ -77,7 +76,17 @@ block-cache-size = "24GB"
 block-cache-size = "6GB"
 ```
 
-更详细的 TiKV 参数调优请参考 [TiKV 性能参数调优](/dev/reference/performance/tune-tikv.md)。
+对于 3.0 及以后的版本，还可以使用共享 block cache 的方式进行设置：
+
+```toml
+log-level = "error"
+[raftstore]
+sync-log = false
+[storage.block-cache]
+capacity = "30GB"
+```
+
+更详细的 TiKV 参数调优请参考 [TiKV 性能参数调优](/reference/performance/tune-tikv.md)。
 
 ## 测试过程
 
@@ -152,7 +161,7 @@ sysbench --config-file=config oltp_point_select --tables=32 --table-size=1000000
 
 数据预热可将磁盘中的数据载入内存的 block cache 中，预热后的数据对系统整体的性能有较大的改善，建议在每次重启集群后进行一次数据预热。
 
-Sysbench 没有提供数据预热的功能，因此需要手动进行数据预热。
+Sysbench 1.0.14 没有提供数据预热的功能，因此需要手动进行数据预热。如果使用更新的 Sysbench 版本，可以使用自带的预热功能。
 
 以 Sysbench 中某张表 sbtest7 为例，执行如下 SQL 语句 进行数据预热：
 

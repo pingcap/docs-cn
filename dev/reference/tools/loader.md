@@ -1,7 +1,6 @@
 ---
 title: Loader 使用文档
 category: reference
-aliases: ['/docs-cn/tools/loader/']
 ---
 
 # Loader 使用文档
@@ -10,7 +9,7 @@ aliases: ['/docs-cn/tools/loader/']
 
 Loader 是由 PingCAP 开发的数据导入工具，用于向 TiDB 中导入数据。
 
-Loader 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/dev/reference/tools/download.md)。
+Loader 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/reference/tools/download.md)。
 
 ## 为什么我们要做这个工具
 

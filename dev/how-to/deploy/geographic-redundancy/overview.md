@@ -1,7 +1,6 @@
 ---
 title: 跨数据中心部署方案
 category: how-to
-aliases: ['/docs-cn/op-guide/cross-dc-deployment/']
 ---
 
 # 跨数据中心部署方案

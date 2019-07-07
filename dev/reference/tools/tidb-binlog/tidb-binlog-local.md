@@ -1,7 +1,6 @@
 ---
 title: TiDB Binlog Local 部署方案
 category: reference
-aliases: ['/docs-cn/tools/binlog/tidb-binlog-local/']
 ---
 
 # TiDB Binlog Local 部署方案
@@ -31,7 +30,7 @@ TiDB Binlog Local 主要分为两个组件：
 
 ### TiDB Binlog Local 下载
 
-TiDB Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/dev/reference/tools/download.md)。
+TiDB Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/reference/tools/download.md)。
 
 ### TiDB Binlog Local 部署
 
@@ -280,4 +279,4 @@ drainer 启动时可以设置 `--metrics-addr` 和 `--metrics-interval` 两个�
 
 + 导入 dashboard 配置文件
 
-    点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 [dashboard 配置文件](https://github.com/pingcap/docs/tree/master/etc)上传 -> 选择对应的 data source
+    点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 [dashboard 配置文件](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json)上传 -> 选择对应的 data source

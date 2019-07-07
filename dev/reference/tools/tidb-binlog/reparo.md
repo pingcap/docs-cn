@@ -1,7 +1,6 @@
 ---
 title: Reparo 使用文档
 category: reference
-aliases: ['/docs-cn/tools/binlog/reparo/']
 ---
 
 # Reparo 使用文档

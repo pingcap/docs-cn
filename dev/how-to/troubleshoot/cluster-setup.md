@@ -1,7 +1,6 @@
 ---
 title: TiDB 集群故障诊断
 category: how-to
-aliases: ['/docs-cn/trouble-shooting/']
 ---
 
 # TiDB 集群故障诊断
@@ -48,7 +47,7 @@ tidb-server 无法启动的常见情况包括：
 
 + 启动参数错误
 
-    请参考[TiDB 命令行参数](/dev/reference/configuration/tidb-server/configuration.md)
+    请参考[TiDB 命令行参数](/reference/configuration/tidb-server/configuration.md)
 
 + 端口被占用：`lsof -i:port`
 
@@ -69,7 +68,7 @@ tidb-server 无法启动的常见情况包括：
 
 + 启动参数错误
 
-    请参考[TiKV 启动参数](/dev/reference/configuration/tikv-server/configuration.md)文档。
+    请参考[TiKV 启动参数](/reference/configuration/tikv-server/configuration.md)文档。
 
 + 端口被占用：`lsof -i:port`
 
@@ -89,8 +88,9 @@ tidb-server 无法启动的常见情况包括：
 
 + 启动参数错误
 
-    请参考[PD 命令行参数](/dev/reference/configuration/pd-server/configuration.md)文档。
-+ 端口被占用：`lsof -i:port`
+    请参考 [PD 命令行参数](/reference/configuration/pd-server/configuration.md)文档。
+
++   端口被占用：`lsof -i:port`
 
     请确保 pd-server 启动所需要的端口未被占用： `lsof -i:port`。
 
@@ -99,9 +99,11 @@ tidb-server 无法启动的常见情况包括：
 + 进程是否是启动在前台
 
     当前终端退出给其所有子进程发送 HUP 信号，从而导致进程退出。
+
 + 是否是在命令行用过 `nohup+&` 方式直接运行
 
     这样依然可能导致进程因终端连接突然中断，作为终端 SHELL 的子进程被杀掉。
+
     推荐将启动命令写在脚本中，通过脚本运行（相当于二次 fork 启动）。
 
 ## TiKV 进程异常重启
@@ -130,7 +132,7 @@ tidb-server 无法启动的常见情况包括：
 
 ## 数据库访问超时，系统负载高
 
-首先检查 [SLOW-QUERY](/dev/how-to/maintain/identify-slow-queries.md) 日志，判断是否是因为某条 SQL 语句导致。如果未能解决，请提供如下信息：
+首先检查 [SLOW-QUERY](/how-to/maintain/identify-slow-queries.md) 日志，判断是否是因为某条 SQL 语句导致。如果未能解决，请提供如下信息：
 
 + 部署的拓扑结构
     - tidb-server/pd-server/tikv-server 部署了几个实例

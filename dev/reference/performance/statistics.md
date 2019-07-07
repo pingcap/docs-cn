@@ -1,7 +1,6 @@
 ---
 title: 统计信息简介
 category: reference
-aliases: ['/docs-cn/sql/statistics/']
 ---
 
 # 统计信息简介

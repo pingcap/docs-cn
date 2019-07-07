@@ -2,12 +2,11 @@
 title: CREATE TABLE
 summary: TiDB 数据库中 CREATE TABLE 的使用概况
 category: reference
-aliases: ['/docs-cn/sql/ddl/','/docs-cn/dev/reference/sql/statements/ddl/']
 ---
 
 # CREATE TABLE
 
-`CREATE TABLE` 语句用于在当前所选数据库中创建新表。另可参阅单独的 `CREATE TABLE AS` 文档。
+`CREATE TABLE` 语句用于在当前所选数据库中创建新表。另可参阅单独的 `CREATE TABLE LIKE` 文档。
 
 ## 语法图
 
@@ -97,6 +96,6 @@ mysql> SELECT * FROM t1;
 
 ## 另请参阅
 
-* [DROP TABLE](/dev/reference/sql/statements/drop-table.md)
-* [CREATE TABLE LIKE](/dev/reference/sql/statements/create-table-like.md)
-* [SHOW CREATE TABLE](/dev/reference/sql/statements/show-create-table.md)
+* [DROP TABLE](/reference/sql/statements/drop-table.md)
+* [CREATE TABLE LIKE](/reference/sql/statements/create-table-like.md)
+* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)

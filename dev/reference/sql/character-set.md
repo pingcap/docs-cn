@@ -1,7 +1,6 @@
 ---
 title: 字符集支持
 category: reference
-aliases: ['/docs-cn/sql/character-set-support/']
 ---
 
 # 字符集支持
@@ -26,6 +25,10 @@ mysql> SHOW CHARACTER SET;
 +---------|---------------|-------------------|--------+
 5 rows in set (0.00 sec)
 ```
+> **注意：**
+> 
+> - 在 `TiDB` 中 `utf8` 被当做成了 `utf8mb4` 来处理。
+> - 每种字符集都对应一个默认的 Collation，当前有且仅有一个。
 
 对于字符集来说，至少会有一个 Collation（排序规则）与之对应。而大部分字符集实际上会有多个 Collation。利用以下的语句可以查看：
 
@@ -63,7 +66,7 @@ mysql> SHOW COLLATION WHERE Charset = 'latin1';
 
 > **注意：**
 >
-> `TiDB` 目前的 Collation 都是区分大小写的。
+> `TiDB` 目前的 Collation 只支持区分大小写的比较排序规则。
 
 ## Collation 命名规则
 
@@ -84,6 +87,10 @@ mysql> SHOW COLLATION WHERE Charset = 'latin1';
 > **注意：**
 >
 > 目前为止 TiDB 只支持部分以上提到的 Collation。
+
+## 集群 Character Set 和 Collation
+
+暂不支持
 
 ## 数据库 Character Set 和 Collation
 
@@ -179,6 +186,28 @@ col_name {ENUM | SET} (val_list)
 
 如果列的字符集和排序规则没有设置，那么表的字符集和排序规则就作为其默认值。
 
+## 字符串 Character Sets 和 Collation
+
+每一字符串字符文字有一个字符集和一个比较排序规则，在使用字符串时指，此选项可选，如下：
+
+```sql
+[_charset_name]'string' [COLLATE collation_name]
+```
+
+示例，如下：
+
+```
+SELECT 'string';
+SELECT _latin1'string';
+SELECT _latin1'string' COLLATE latin1_danish_ci;
+```
+
+规则，如下：
+
+* 规则1： 指定 CHARACTER SET charset_name 和 COLLATE collation_name，则直接使用 CHARACTER SET charset_name 和COLLATE collation_name。
+* 规则2:    指定 CHARACTER SET charset_name 且未指定 COLLATE collation_name，则使用 CHARACTER SET charset_name 和 CHARACTER SET charset_name 默认的排序比较规则。
+* 规则3:   CHARACTER SET charset_name 和 COLLATE collation_name 都未指定，则使用 character_set_connection 和 collation_connection 系统变量给出的字符集和比较排序规则。
+
 ## 客户端连接的 Character Sets 和 Collations
 
 * 服务器的字符集和排序规则可以通过系统变量 `character_set_server` 和 `collation_server` 获取。
@@ -212,5 +241,15 @@ SET character_set_client = charset_name;
 SET character_set_results = charset_name;
 SET collation_connection = @@collation_database;
 ```
+
+## 集群，服务器，数据库，表，列，字符串 Character Sets 和 Collation 优化级
+
+字符串 => 列 => 表 => 数据库 => 服务器 => 集群
+
+## Character Sets 和 Collation 通用选择规则
+
+* 规则1： 指定 CHARACTER SET charset_name 和 COLLATE collation_name，则直接使用 CHARACTER SET charset_name 和COLLATE collation_name。
+* 规则2:    指定 CHARACTER SET charset_name 且未指定 COLLATE collation_name，则使用 CHARACTER SET charset_name 和 CHARACTER SET charset_name 默认的排序比较规则。
+* 规则3:   CHARACTER SET charset_name 和 COLLATE collation_name 都未指定，则使用更高优化级给出的字符集和排序比较规则。
 
 更多细节，参考 [Connection Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-connection.html)。

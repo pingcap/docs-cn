@@ -1,7 +1,6 @@
 ---
 title: TiDB Binlog 集群部署
 category: reference
-aliases: ['/docs-cn/tools/binlog/deploy/','/docs-cn/dev/reference/tools/tidb-binlog/deploy/']
 ---
 
 # TiDB Binlog 集群部署
@@ -68,7 +67,7 @@ aliases: ['/docs-cn/tools/binlog/deploy/','/docs-cn/dev/reference/tools/tidb-bin
           # gc: 7
         ```
 
-        请确保部署目录有足够空间存储 binlog，详见：[部署目录调整](/dev/how-to/deploy/orchestrated/ansible.md#部署目录调整)，也可为 Pump 设置单独的部署目录。
+        请确保部署目录有足够空间存储 binlog，详见：[部署目录调整](/how-to/deploy/orchestrated/ansible.md#部署目录调整)，也可为 Pump 设置单独的部署目录。
 
         ```ini
         ## Binlog Part
@@ -113,8 +112,8 @@ aliases: ['/docs-cn/tools/binlog/deploy/','/docs-cn/dev/reference/tools/tidb-bin
         ```
 
     **方式二**：从零开始部署含 Pump 组件的 TiDB 集群
-
-    使用 Ansible 部署 TiDB 集群，方法参考 [TiDB Ansible 部署方案](/dev/how-to/deploy/orchestrated/ansible.md)。
+    
+    使用 Ansible 部署 TiDB 集群，方法参考 [TiDB Ansible 部署方案](/how-to/deploy/orchestrated/ansible.md)。
 
 3. 查看 Pump 服务状态
 

@@ -2,12 +2,11 @@
 title: DM 监控指标
 summary: 介绍 DM 的监控指标
 category: reference
-aliases: ['/docs-cn/tools/dm/monitor/']
 ---
 
 # DM 监控指标
 
-使用 DM-Ansible 部署 DM 集群的时候，会默认部署一套[监控系统](/dev/reference/tools/data-migration/deploy.md#第-7-步-监控任务与查看日志)。
+使用 DM-Ansible 部署 DM 集群的时候，会默认部署一套[监控系统](/reference/tools/data-migration/deploy.md#第-7-步-监控任务与查看日志)。
 
 > **注意：**
 >
