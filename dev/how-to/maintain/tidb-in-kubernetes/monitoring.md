@@ -82,7 +82,7 @@ Prometheus 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持
 
 在随 TiDB 集群部署 Prometheus 时，会自动导入一些默认的报警规则，可以通过浏览器访问 Prometheus 的 Alerts 页面查看当前系统中的所有报警规则和状态。
 
-如果需要修改或新增报警规则，可编辑 `charts/tidb-cluster/templates/config/_alert-rules-config.tpl` 文件进行设置，新的配置将在执行 `helm upgrade` 后生效。
+我们目前暂不支持报警规则的自定义配置，如果确实需要修改报警规则，可以手动下载 charts 进行修改。
 
 默认的 Prometheus 和报警配置不能发送报警消息，如需发送报警消息，可以使用任意支持 Prometheus 报警的工具与其集成。推荐通过 [AlertManager](https://prometheus.io/docs/alerting/alertmanager/) 管理与发送报警消息。
 
