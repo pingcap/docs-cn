@@ -9,23 +9,21 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 
 当前 TiDB 服务器官方支持的版本为 MySQL 5.7。大部分 MySQL 运维工具（如 PHPMyAdmin, Navicat, MySQL Workbench 等），以及备份恢复工具（如 mysqldump, mydumper/myloader）等都可以直接使用。
 
-不过一些特性由于在分布式环境下没法很好的实现，目前暂时不支持或者是表现与 MySQL 有差异。一些 MySQL 语法在 TiDB 中可以解析通过，但是不会做任何后续的处理，例如 `Create Table` 语句中 `Engine` 以及 `Partition` 选项，都是解析并忽略。
+不过一些特性由于在分布式环境下没法很好的实现，目前暂时不支持或者是表现与 MySQL 有差异。一些 MySQL 语法在 TiDB 中可以解析通过，但是不会做任何后续的处理，例如 `Create Table` 语句中 `Engine`，是解析并忽略。
 
 > **注意：**
 >
 > 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[安全特性](/reference/security/compatibility.md)及[事务模型](/reference/transactions/transaction-model.md)的兼容信息请查看各自具体页面。
 
 ## 不支持的特性
-
 * 存储过程与函数
-* 视图
 * 触发器
 * 事件
 * 自定义函数
 * 外键约束
 * 全文函数与索引
 * 空间函数与索引
-* 非 `utf8` 字符集
+* 非 `utf8`/`utf8mb4` 字符集
 * `BINARY` 之外的排序规则
 * 增加主键
 * 删除主键
@@ -38,7 +36,6 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 * `CREATE TABLE tblName AS SELECT stmt` 语法
 * `CREATE TEMPORARY TABLE` 语法
 * `XA` 语法（TiDB 内部使用两阶段提交，但并没有通过 SQL 接口公开）
-* `LOCK TABLE` 语法（TiDB 使用 `tidb_snapshot` 来[生成备份](/reference/tools/mydumper.md)
 * `CHECK TABLE` 语法
 * `CHECKSUM TABLE` 语法
 
@@ -112,11 +109,11 @@ Query OK, 0 rows affected (0.14 sec)
        Table: t1
 Create Table: CREATE TABLE `t1` (
   `a` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
 1 row in set (0.00 sec)
 ```
 
-从架构上讲，TiDB 确实支持类似 MySQL 的存储引擎抽象，在启动 TiDB（通常是 `tikv`）时 [`--store`](/sql/server-command-option.md#--store) 选项指定的引擎中创建用户表。
+从架构上讲，TiDB 确实支持类似 MySQL 的存储引擎抽象，在启动 TiDB（通常是 `tikv`）时 [`--store`](/reference/configuration/tidb-server/configuration.md#store) 选项指定的引擎中创建用户表。
 
 ### SQL 模式
 
@@ -134,7 +131,7 @@ TiDB 支持 MySQL 5.7 中 **绝大多数的 SQL 模式**，以下几种模式除
 + 默认排序规则不同：
     + TiDB 中，`utf8mb4` 的默认排序规则为 `utf8mb4_bin`
     + MySQL 5.7 中，`utf8mb4` 的默认排序规则为 `utf8mb4_general_ci`，MySQL 8.0 中修改为 `utf8mb4_0900_ai_ci`
-    + 请使用 [`SHOW CHARACTER SET`](/reference/sql/statements/admin.md#-show-语句) 语句查看所有字符集的默认排序规则
+    + 请使用 [`SHOW CHARACTER SET`](/reference/sql/statements/show-character-set.md) 语句查看所有字符集的默认排序规则
 + 默认 SQL mode 不同：
     + TiDB 中为 `STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION`
     + MySQL 中为 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`

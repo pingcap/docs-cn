@@ -5,12 +5,12 @@ category: reference
 
 # 窗口函数
 
-TiDB 中窗口函数的使用方法与 MySQL 基本一致，详情可参见 [MySQL 窗口函数](https://dev.mysql.com/doc/refman/8.0/en/window-functions.html)。由于窗口函数会使用一些保留关键字，可能导致原先可以正常执行的 SQL 语句在升级 TiDB 后无法被解析语法，此时可以将 `tidb_enable_window_function` 设置为 `0`，该参数的默认值为 `1`。
+TiDB 中窗口函数的使用方法与 MySQL 8.0 基本一致，详情可参见 [MySQL 窗口函数](https://dev.mysql.com/doc/refman/8.0/en/window-functions.html)。由于窗口函数会使用一些保留关键字，可能导致原先可以正常执行的 SQL 语句在升级 TiDB 后无法被解析语法，此时可以将 `tidb_enable_window_function` 设置为 `0`，该参数的默认值为 `1`。
 
 TiDB 支持的窗口函数如下所示：
 
 | 函数名 | 功能描述 |
-| -------------- | ------------------------------------- |
+| :-------------- | :------------------------------------- |
 | [`CUME_DIST()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_cume-dist) | 返回一组值中的累积分布 |
 | [`DENSE_RANK()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_dense-rank) | 返回分区中当前行的排名，并且排名是连续的|
 | [`FIRST_VALUE()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_first-value) | 当前窗口中第一行的表达式值 |
