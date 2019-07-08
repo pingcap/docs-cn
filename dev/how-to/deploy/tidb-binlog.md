@@ -112,7 +112,7 @@ category: reference
         ```
 
     **方式二**：从零开始部署含 Pump 组件的 TiDB 集群
-    
+
     使用 Ansible 部署 TiDB 集群，方法参考 [TiDB Ansible 部署方案](/how-to/deploy/orchestrated/ansible.md)。
 
 3. 查看 Pump 服务状态

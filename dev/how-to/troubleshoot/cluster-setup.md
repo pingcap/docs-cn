@@ -90,7 +90,7 @@ tidb-server 无法启动的常见情况包括：
 
     请参考 [PD 命令行参数](/reference/configuration/pd-server/configuration.md)文档。
 
-+   端口被占用：`lsof -i:port`
++ 端口被占用：`lsof -i:port`
 
     请确保 pd-server 启动所需要的端口未被占用： `lsof -i:port`。
 
