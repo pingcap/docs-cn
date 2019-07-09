@@ -16,7 +16,6 @@ namespace="tidb"
 chartVersion="v1.0.0-beta.3"
 ```
 
-
 ## GKE
 
 在 GKE 上，本地 SSD 卷默认大小限制为 375 GB，性能比永久性磁盘要差。
@@ -224,6 +223,7 @@ Grafana 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持负
     ```shell
     kubectl logs -n ${namespace} ${tidbPodName} | grep SLOW_QUERY
     ```
+    
     如果 TiDB 版本 >= v2.1.8，由于慢查询日志格式发生变化，不太方便分离慢查询日志，建议参考下面内容配置 `separateSlowLog: true` 单独查看慢查询日志。
 
 * 配置 `separateSlowLog: true` 输出慢查询日志到一个 sidecar 容器：
