@@ -51,7 +51,7 @@ helm inspect values pingcap/tidb-cluster --version=${chartVersion} > /home/tidb/
 
 ## 部署 TiDB 集群
 
-TiDB Operator 部署完成并配置完成，可以通过下面命令部署 TiDB 集群：
+TiDB Operator 部署并配置完成后，可以通过下面命令部署 TiDB 集群：
 
 {{< copyable "shell-regular" >}}
 
