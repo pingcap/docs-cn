@@ -625,7 +625,7 @@ SELECT store_id, COUNT(department_id) AS c
 
 本节讨论分区键，主键和唯一键之间的关系。一句话总结它们之间的关系要满足的规则：**分区表的每个唯一列，必须包含分区表达式中用到的所有列**。
 
->  every unique key on the table must use every column in the table's partitioning expression.
+> every unique key on the table must use every column in the table's partitioning expression.
 
 这里所指的唯一也包含了主键，因为根据主键的定义，主键必须是唯一的。例如，下面这些建表语句就是无效的：
 

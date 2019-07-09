@@ -73,7 +73,7 @@ default = true
 
 相关配置都在 `[pessimistic-txn]` 类别下，除了前面介绍过的 `enable` 和 `default`，还可配置以下参数：
 
-- `ttl` 
+- `ttl`
 
     ```
     ttl = "30s"

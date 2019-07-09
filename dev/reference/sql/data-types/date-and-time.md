@@ -7,6 +7,7 @@ category: reference
 
 TiDB 支持 MySQL 所有的日期和时间类型，包括 DATE、DATETIME、TIMESTAMP、TIME 以及 YEAR，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-types.html)文档。
 
+<!-- markdownlint-disable MD001 -->
 ### 类型定义
 
 #### `DATE` 类型
