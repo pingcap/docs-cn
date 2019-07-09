@@ -43,7 +43,7 @@ TiDB Operator 把 `values.yaml` 作为 TiDB 集群的配置文件。`values.yaml
     * 存储
 
         `values.yaml` 中的变量 `pd.storageClassName` 和 `tikv.storageClassName` 用于配置 PD 和 TiKV 的 `StorageClass`，默认配置为最小需求的 `local-storage`。
-        
+
         如果你不想使用默认的 `StorageClass` 或者你的 Kubernetes 集群不支持 `local-storage`，可以通过下面命令找到可用的 `StorageClass` 并选择来配置 TiDB 集群。
 
         {{< copyable "shell-regular" >}}
@@ -291,6 +291,7 @@ Grafana 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持负
     ```shell
     kubectl logs -n ${namespace} ${tidbPodName} | grep SLOW_QUERY
     ```
+
     如果 TiDB 版本 >= v2.1.8，由于慢查询日志格式发生变化，不太方便分离慢查询日志，建议参考下面内容配置 `separateSlowLog: true` 单独查看慢查询日志。
 
 * 配置 `separateSlowLog: true` 输出慢查询日志到一个 sidecar 容器：
