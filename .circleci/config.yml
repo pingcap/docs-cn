@@ -22,6 +22,10 @@ jobs:
           name: "Lint README"
           command: markdownlint README.md
 
+      - run:
+          name: "Lint editted file"
+          command: markdownlint $(git diff-tree --name-only --no-commit-id -r master..HEAD) -- '*.md'
+
   build:
     docker:
       - image: andelf/doc-build:0.1.9
