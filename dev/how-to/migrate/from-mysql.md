@@ -20,6 +20,7 @@ category: how-to
 * loader的 `-t` 参数可以根据 TiKV 的实例个数以及负载进行评估调整，例如 3个 TiKV 的场景，此值可以设为 `3 *（1 ～ n)`；当 TiKV 负载过高，loader 以及 TiDB 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 TiKV 负载不是太高的时候，可以适当调大该值。
 
 导入示例及相关配置：
+
 - mydumper 导出后总数据量 214G，单表 8 列，20 亿行数据
 - 集群拓扑
     - TiKV * 12
@@ -51,13 +52,13 @@ category: how-to
 
 > **注意：**
 >
-> 目前 TiDB 支持 UTF8mb4 [字符编码](/sql/character-set-support.md)，假设 mydumper 导出数据为 latin1 字符编码，请使用 `iconv -f latin1 -t utf-8 $file -o /data/imdbload/$basename` 命令转换，$file 为已有文件，$basename 为转换后文件。
+> 目前 TiDB 支持 UTF8mb4 [字符编码](/reference/sql/character-set.md)，假设 mydumper 导出数据为 latin1 字符编码，请使用 `iconv -f latin1 -t utf-8 $file -o /data/imdbload/$basename` 命令转换，$file 为已有文件，$basename 为转换后文件。
 
 > **注意：**
 >
 > 如果 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。
 
-我们使用 `loader` 将之前导出的数据导入到 TiDB。Loader 的下载和具体的使用方法见 [Loader 使用文档](/tools/loader.md)
+我们使用 `loader` 将之前导出的数据导入到 TiDB。Loader 的下载和具体的使用方法见 [Loader 使用文档](/reference/tools/loader.md)
 
 ```bash
 ./bin/loader -h 127.0.0.1 -u root -P 4000 -t 32 -d ./var/test

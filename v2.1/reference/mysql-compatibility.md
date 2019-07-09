@@ -116,7 +116,7 @@ Create Table: CREATE TABLE `t1` (
 1 row in set (0.00 sec)
 ```
 
-从架构上讲，TiDB 确实支持类似 MySQL 的存储引擎抽象，在启动 TiDB（通常是 `tikv`）时 [`--store`](/sql/server-command-option.md#--store) 选项指定的引擎中创建用户表。
+从架构上讲，TiDB 确实支持类似 MySQL 的存储引擎抽象，在启动 TiDB（通常是 `tikv`）时 [`--store`](/reference/configuration/tidb-server/configuration.md#store) 选项指定的引擎中创建用户表。
 
 ### SQL 模式
 
