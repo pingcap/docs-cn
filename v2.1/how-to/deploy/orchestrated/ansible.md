@@ -416,13 +416,13 @@ location_labels = ["host"]
 
 - 服务配置文件参数调整
 
-    1.  多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中的 `block-cache-size` 参数:
-        - `rocksdb defaultcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 30%
-        - `rocksdb writecf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 45%
-        - `rocksdb lockcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
-        - `raftdb defaultcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
+    1. 多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中的 `block-cache-size` 参数:
+        - `rocksdb defaultcf block-cache-size(GB)` = MEM \* 80% / TiKV 实例数量 * 30%
+        - `rocksdb writecf block-cache-size(GB)` = MEM \* 80% / TiKV 实例数量 * 45%
+        - `rocksdb lockcf block-cache-size(GB)` = MEM \* 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
+        - `raftdb defaultcf block-cache-size(GB)` = MEM \* 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
 
-    2.  多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中 `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数：
+    2. 多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中 `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数：
 
         ```
         readpool:
@@ -434,9 +434,9 @@ location_labels = ["host"]
             # low-concurrency: 8
         ```
 
-        - 推荐设置：实例数*参数值 = CPU 核数 * 0.8。
+        - 推荐设置：实例数 \* 参数值 = CPU 核数 \* 0.8。
 
-    3.  如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
+    3. 如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
         - `capacity` = 磁盘总容量 / TiKV 实例数量，例如 "100GB"
 
 ### inventory.ini 变量调整
@@ -488,7 +488,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 
 > ansible-playbook 执行 Playbook 时默认并发为 5，部署目标机器较多时可添加 -f 参数指定并发，如 `ansible-playbook deploy.yml -f 10`
 
-1.  确认 `tidb-ansible/inventory.ini` 文件中 `ansible_user = tidb`，本例使用 `tidb` 用户作为服务运行用户，配置如下：
+1. 确认 `tidb-ansible/inventory.ini` 文件中 `ansible_user = tidb`，本例使用 `tidb` 用户作为服务运行用户，配置如下：
 
     > `ansible_user` 不要设置成 `root` 用户，`tidb-ansible` 限制了服务以普通用户运行。
 
@@ -499,28 +499,30 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
     ```
 
     执行以下命令如果所有 server 返回 `tidb` 表示 ssh 互信配置成功。
+
     ```
     ansible -i inventory.ini all -m shell -a 'whoami'
     ```
 
     执行以下命令如果所有 server 返回 `root` 表示 `tidb` 用户 sudo 免密码配置成功。
+
     ```
     ansible -i inventory.ini all -m shell -a 'whoami' -b
     ```
 
-2.  执行 `local_prepare.yml` playbook，联网下载 TiDB binary 到中控机：
+2. 执行 `local_prepare.yml` playbook，联网下载 TiDB binary 到中控机：
 
     ```
     ansible-playbook local_prepare.yml
     ```
 
-3.  初始化系统环境，修改内核参数
+3. 初始化系统环境，修改内核参数
 
     ```
     ansible-playbook bootstrap.yml
     ```
 
-4.  部署 TiDB 集群软件
+4. 部署 TiDB 集群软件
 
     ```
     ansible-playbook deploy.yml
@@ -534,7 +536,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
     > $ sudo yum install fontconfig open-sans-fonts
     > ```
 
-5.  启动 TiDB 集群
+5. 启动 TiDB 集群
 
     ```
     ansible-playbook start.yml
@@ -544,19 +546,20 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 
 > 测试连接 TiDB 集群，推荐在 TiDB 前配置负载均衡来对外统一提供 SQL 接口。
 
--   使用 MySQL 客户端连接测试，TCP 4000 端口是 TiDB 服务默认端口。
+- 使用 MySQL 客户端连接测试，TCP 4000 端口是 TiDB 服务默认端口。
 
     ```sql
     mysql -u root -h 172.16.10.1 -P 4000
     ```
 
--   通过浏览器访问监控平台。
+- 通过浏览器访问监控平台。
 
     地址：`http://172.16.10.1:3000`  默认帐号密码是：`admin`/`admin`
 
 ## 常见部署问题
 
 ### 如何自定义端口
+
 修改 `inventory.ini` 文件，在相应服务 IP 后添加以下主机变量即可：
 
 | 组件 | 端口变量 | 默认端口 | 说明 |
