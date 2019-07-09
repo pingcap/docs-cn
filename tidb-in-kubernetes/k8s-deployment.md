@@ -9,7 +9,7 @@ category: how-to
 | --- | --- |
 | Docker | docker-ce 18.09.6 |
 | K8s |  v1.12.2 |
-| CentOS | 7.3 或以上 |
+| CentOS |  7.6 and kernel 3.10.0-957 or later |
 
 # 内核参数设置
 | 配置项 | 设置值 |
