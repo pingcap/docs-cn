@@ -32,7 +32,7 @@ category: reference
 + 该 Kubernetes Secret 中需要存储目标集群的登录用户名和密码，你可以通过以下命令来创建这个 Secret：
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     kubectl create secret generic backup-secret -n ${namespace} --from-literal=user=root --from-literal=password=<password>
     ```
@@ -41,7 +41,7 @@ category: reference
 
 + Kubernetes StorageClass
 + 默认："local-storage"
-+ 备份任务需要绑定一个持久卷 (Persistent Volume, PV) 来永久或临时存储备份数据，`StorageClass` 用于声明持久卷使用的存储类型，需要确保该 `StorageClass` 在 Kubernetes 集群中存在。 
++ 备份任务需要绑定一个持久卷 (Persistent Volume, PV) 来永久或临时存储备份数据，`StorageClass` 用于声明持久卷使用的存储类型，需要确保该 `StorageClass` 在 Kubernetes 集群中存在。
 
 ## `storage.size`
 
@@ -58,7 +58,7 @@ category: reference
 
 + 恢复参数
 + 默认："-t 16"
-+ 为恢复数据时使用的 [Loader](/dev/reference/tools/loader.md) 指定额外的运行参数 
++ 为恢复数据时使用的 [Loader](/dev/reference/tools/loader.md) 指定额外的运行参数
 
 ## `gcp.bucket`
 
@@ -105,7 +105,7 @@ category: reference
 + 该 Kubernetes Secret 中需要存储访问 Ceph 时使用的 `access_key` 和 `secret_key`。可使用如下命令来创建这个 Secret：
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     kubectl create secret generic ceph-backup-secret -n ${namespace} --from-literal=access_key=<access-key> --from-literal=secret_key=<secret-key>
     ```

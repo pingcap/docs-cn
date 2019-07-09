@@ -379,9 +379,11 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     [post-restore]
     # 如果设置为 true，会对每个表逐个做 `ADMIN CHECKSUM TABLE <table>` 操作。
     checksum = true
-    # 如果设置为 false，会在导入每张表后做一次 level-1 Compact。
+    # 如果设置为 true，会在导入每张表后做一次 level-1 Compact。
+    # 如果不填写，则默认为 false。
     level-1-compact = false
-    # 如果设置为 false，会在导入过程结束时对整个 TiKV 集群执行一次全量 Compact。
+    # 如果设置为 true，会在导入过程结束时对整个 TiKV 集群执行一次全量 Compact。
+    # 如果不填写，则默认为 false。
     compact = false
     # 如果设置为 true，会对每个表逐个做 `ANALYZE TABLE <table>` 操作。
     analyze = true

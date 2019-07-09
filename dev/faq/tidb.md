@@ -295,7 +295,7 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
     ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randread_write_test.txt -name='fio mixed randread and sequential write test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_write_test.json
     ```
 
-#### 2.2.8 使用 TiDB Ansible 部署 TiDB 集群的时候，遇到 `UNREACHABLE! "msg": "Failed to connect to the host via ssh: " ` 报错是什么原因？
+#### 2.2.8 使用 TiDB Ansible 部署 TiDB 集群的时候，遇到 `UNREACHABLE! "msg": "Failed to connect to the host via ssh: "` 报错是什么原因？
 
 有两种可能性：
 
@@ -317,7 +317,7 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 #### 2.3.2 滚动升级有那些影响?
 
-滚动升级 TiDB 服务，滚动升级期间不影响业务运行，需要配置最小集群拓扑（TiDB * 2、PD * 3、TiKV * 3），如果集群环境中有 Pump/Drainer 服务，建议先停止 Drainer 后滚动升级（升级 TiDB 时会升级 Pump）。
+滚动升级 TiDB 服务，滚动升级期间不影响业务运行，需要配置最小集群拓扑（TiDB \* 2、PD \* 3、TiKV \* 3），如果集群环境中有 Pump/Drainer 服务，建议先停止 Drainer 后滚动升级（升级 TiDB 时会升级 Pump）。
 
 #### 2.3.3 Binary 如何升级？
 
@@ -703,6 +703,7 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。
 重启 TiDB 服务，配置文件中增加 `-skip-grant-table=true` 参数，无密码登录集群后，可以根据情况重建用户，或者重建 mysql.user 表，具体表结构搜索官网。
 
 #### 4.1.5 在 Loader 运行的过程中，TiDB 可以对外提供服务吗？
+
 该操作进行逻辑插入，TiDB 仍可对外提供服务，但不要执行相关 DDL 操作。
 
 #### 4.1.6 如何导出 TiDB 数据？
@@ -753,7 +754,7 @@ sqoop export \
 
 ##### 4.2.1.2 如何配置监控 Syncer 运行情况？
 
-下载 [Syncer Json](https://github.com/pingcap/docs/blob/master/etc/Syncer.json) 导入到 Grafana，修改 Prometheus 配置文件，添加以下内容：
+下载 [Syncer Json](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json) 导入到 Grafana，修改 Prometheus 配置文件，添加以下内容：
 
 - job_name: &#39;syncer_ops&#39; // 任务名字
     static_configs:
