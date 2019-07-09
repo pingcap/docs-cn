@@ -16,10 +16,6 @@ namespace="tidb"
 chartVersion="v1.0.0-beta.3"
 ```
 
-> **注意：**
->
-> `/home/tidb` 可以替换为你想用的目录，下文会用 `values.yaml` 指代 `/home/tidb/${releaseName}/values-${releaseName}.yaml`。
-
 ## GKE
 
 在 GKE 上，本地 SSD 卷默认大小限制为 375 GB，性能比永久性磁盘要差。
@@ -46,6 +42,10 @@ Helm 安装完成后，通过下面命令获取要安装的 tidb-cluster chart �
 mkdir -p /home/tidb/${releaseName} && \
 helm inspect values pingcap/tidb-cluster --version=${chartVersion} > /home/tidb/${releaseName}/values-${releaseName}.yaml
 ```
+
+> **注意：**
+>
+> `/home/tidb` 可以替换为你想用的目录，下文会用 `values.yaml` 指代 `/home/tidb/${releaseName}/values-${releaseName}.yaml`。
 
 有关配置信息请参考 [TiDB 集群部署配置文档](/reference/configuration/tidb-in-kubernetes/cluster-configuration.md)。
 
