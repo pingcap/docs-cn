@@ -60,7 +60,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 * 如果 TiDB Binlog 用于增量恢复，可以设置配置项 `db-type="file"`，Drainer 会将 binlog 转化为指定的 [proto buffer 格式](https://github.com/pingcap/tidb-binlog/blob/master/proto/binlog.proto)的数据，再写入到本地文件中。这样就可以使用 [Reparo](/reference/tools/tidb-binlog/reparo.md) 恢复增量数据。
 
     关于 `db-type` 的取值，应注意：
-    
+
     - 如果 TiDB 版本 < 2.1.9，则 `db-type="pb"`。
     - 如果 TiDB 版本 > = 2.1.9，则 `db-type="file"` 或 `db-type="pb"`。
 
