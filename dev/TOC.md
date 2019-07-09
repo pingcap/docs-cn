@@ -2,6 +2,7 @@
 
 ## 目录
 
+<!-- markdownlint-disable MD007 -->
 + [关于 TiDB](overview.md)
 + 主要概念
   - [整体架构](architecture.md)
@@ -326,13 +327,15 @@
   - [TiDB-Lightning FAQ](faq/tidb-lightning.md)
   - [Data Migration FAQ](faq/data-migration.md)
   - [升级 FAQ](faq/upgrade.md)
+  - [Kubernetes 上的 TiDB FAQ](faq/tidb-in-kubernetes.md)
 + 技术支持
   - [支持渠道](support-resources.md)
   - [反馈问题](report-issue.md)
 + [贡献](contribute.md)
   - [贡献代码](contribute.md#成为-tidb-的贡献者)
   - [改进文档](contribute.md#改进文档)
-- [TiDB 路线图](roadmap.md)
+
++ [TiDB 路线图](roadmap.md)
 + [版本发布历史](releases/rn.md)
   + v3.0
     - [3.0 GA](releases/3.0-ga.md)

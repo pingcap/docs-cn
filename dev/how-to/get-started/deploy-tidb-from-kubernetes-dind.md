@@ -353,7 +353,7 @@ demo-tikv-2                       1/1       Running     0          1m
         >
         > 如果代理建立成功，会打印类似输出：`Forwarding from 0.0.0.0:3000 -> 3000`。测试完成后按 `Ctrl + C` 停止代理并退出。
 
-    2. 然后，在浏览器中打开 http://localhost:3000 访问 Grafana 监控面板：
+    2. 然后，在浏览器中打开 `http://localhost:3000` 访问 Grafana 监控面板：
 
         * 默认用户名：admin
         * 默认密码：admin
