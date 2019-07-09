@@ -257,7 +257,9 @@
     - [`information_schema`](reference/system-databases/information-schema.md)
   - [Errors Codes](reference/error-codes.md)
   - [Supported Client Drivers](reference/supported-clients.md)
-  - [Garbage Collection (GC)](reference/garbage-collection.md)
+  + Garbage Collection (GC)
+    - [GC Overview](reference/garbage-collection/overview.md)
+    - [GC Configuration](reference/garbage-collection/configuration.md)
   + Performance
     - [Overview](reference/performance/sql-optimizer-overview.md)
     - [Understanding the Query Execution Plan](reference/performance/understanding-the-query-execution-plan.md)
