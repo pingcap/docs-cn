@@ -38,6 +38,7 @@ category: how-to
 2. 部署集群
 
     创建 Secret 之后，通过下面命令部署集群：
+
     {{< copyable "shell-regular" >}}
 
     ```shell
