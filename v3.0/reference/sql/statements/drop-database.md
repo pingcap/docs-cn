@@ -62,4 +62,3 @@ mysql> SHOW DATABASES;
 
 * [CREATE DATABASE](/reference/sql/statements/create-database.md)
 * [ALTER DATABASE](/reference/sql/statements/alter-database.md)
-* [SHOW CREATE DATABASE](/reference/sql/statements/show-create-database.md)

@@ -52,7 +52,7 @@ TiDB 实现了快照隔离 (Snapshot Isolation) 级别的一致性。为与 MySQ
 
 支持。无论是一个地方的几个节点，还是[跨多个数据中心的多个节点](/how-to/deploy/geographic-redundancy/overview.md)，TiDB 均支持 ACID 分布式事务。
 
-TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶段提交协议，并进行了一些实用的优化。该模型依赖于一个时间戳分配器，为每个事务分配单调递增的时间戳，这样就检测到事务冲突。在 TiDB 集群中，[PD](/architecture.md#pd-server) 承担时间戳分配器的角色。q
+TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶段提交协议，并进行了一些实用的优化。该模型依赖于一个时间戳分配器，为每个事务分配单调递增的时间戳，这样就检测到事务冲突。在 TiDB 集群中，[PD](/architecture.md#pd-server) 承担时间戳分配器的角色。
 
 #### 1.1.10 TiDB 支持哪些编程语言？
 
@@ -754,7 +754,7 @@ sqoop export \
 
 ##### 4.2.1.2 如何配置监控 Syncer 运行情况？
 
-下载 [Syncer Json](https://github.com/pingcap/docs/blob/master/etc/Syncer.json) 导入到 Grafana，修改 Prometheus 配置文件，添加以下内容：
+下载 [Syncer Json](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json) 导入到 Grafana，修改 Prometheus 配置文件，添加以下内容：
 
 - job_name: &#39;syncer_ops&#39; // 任务名字
     static_configs:

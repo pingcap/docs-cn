@@ -79,7 +79,7 @@ REVOKE ALL PRIVILEGES ON `test`.* FROM 'analyst'@'%';
 
 ### 将角色授予给用户
 
-将角色 role1 和 role2 同时授予给用户 `user1@localhost` 和 `user2@localhost`。 
+将角色 role1 和 role2 同时授予给用户 `user1@localhost` 和 `user2@localhost`。
 
 {{< copyable "sql" >}}
 
@@ -107,7 +107,7 @@ TiDB 允许这种多层授权关系存在，可以使用多层授权关系实现
 
 ### 收回角色
 
-解除角色 role1、role2 与用户 `user1@localhost`、`user2@localhost` 的授权关系。 
+解除角色 role1、role2 与用户 `user1@localhost`、`user2@localhost` 的授权关系。
 
 {{< copyable "sql" >}}
 
