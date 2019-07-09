@@ -36,7 +36,7 @@ category: reference
     - 32+ 逻辑核 CPU
     - 40 GB+ 内存
     - 1 TB+ SSD 硬盘，IOPS 越高越好（要求 ≥8000）
-      * 硬盘必须大于最大的 N 个表的大小总和，其中 N = max(index-concurrency, table-concurrency)。
+        * 硬盘必须大于最大的 N 个表的大小总和，其中 N = max(index-concurrency, table-concurrency)。
     - 使用万兆网卡，带宽需 300 MB/s 以上
     - 运行过程中 CPU、I/O 和网络带宽都可能打满，建议单独部署。
 
@@ -157,9 +157,9 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
 
 通过以下链接获取 TiDB-Lightning 安装包（需选择与集群相同的版本）：
 
-- **v2.1.9**: https://download.pingcap.org/tidb-v2.1.9-linux-amd64.tar.gz
-- **v2.0.9**: https://download.pingcap.org/tidb-lightning-v2.0.9-linux-amd64.tar.gz
-- 最新 unstable 版本：https://download.pingcap.org/tidb-lightning-test-xx-latest-linux-amd64.tar.gz
+- **v2.1.9**: [https://download.pingcap.org/tidb-v2.1.9-linux-amd64.tar.gz](https://download.pingcap.org/tidb-v2.1.9-linux-amd64.tar.gz)
+- **v2.0.9**: [https://download.pingcap.org/tidb-lightning-v2.0.9-linux-amd64.tar.gz](https://download.pingcap.org/tidb-lightning-v2.0.9-linux-amd64.tar.gz)
+- 最新 unstable 版本：[https://download.pingcap.org/tidb-lightning-test-xx-latest-linux-amd64.tar.gz](https://download.pingcap.org/tidb-lightning-test-xx-latest-linux-amd64.tar.gz)
 
 #### 第 3 步：启动 `tikv-importer`
 
@@ -204,7 +204,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     # 第 6 层的算法用于压缩 SST 文件。
     # 第 1 至 5 层的算法目前忽略。
     compression-per-level = ["lz4", "no", "no", "no", "no", "no", "lz4"]
-    
+
     [rocksdb.writecf]
     # (同上)
     compression-per-level = ["lz4", "no", "no", "no", "no", "no", "lz4"]
@@ -350,7 +350,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     null = '\N'
     # 是否解析字段内反斜线转义符。
     backslash-escape = true
-    # 如果有行以分隔符结尾，删除尾部分隔符。 
+    # 如果有行以分隔符结尾，删除尾部分隔符。
     trim-last-separator = false
 
     [tidb]

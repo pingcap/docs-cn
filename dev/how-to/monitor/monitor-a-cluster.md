@@ -170,7 +170,6 @@ scrape_configs:
       - '192.168.199.118:20180'
 
 ...
-
 ```
 
 启动 Grafana 服务：
@@ -251,7 +250,7 @@ $ ./bin/grafana-server \
 
 1. 登录 Grafana 界面。
 
-    - 默认地址：http://localhost:3000
+    - 默认地址：`http://localhost:3000`
     - 默认账户：admin
     - 默认密码：admin
 
