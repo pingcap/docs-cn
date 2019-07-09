@@ -36,7 +36,7 @@ category: reference
     - 32+ 逻辑核 CPU
     - 40 GB+ 内存
     - 1 TB+ SSD 硬盘，IOPS 越高越好（要求 ≥8000）
-      * 硬盘必须大于最大的 N 个表的大小总和，其中 N = max(index-concurrency, table-concurrency)。
+        * 硬盘必须大于最大的 N 个表的大小总和，其中 N = max(index-concurrency, table-concurrency)。
     - 使用万兆网卡，带宽需 300 MB/s 以上
     - 运行过程中 CPU、I/O 和网络带宽都可能打满，建议单独部署。
 

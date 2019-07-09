@@ -9,6 +9,8 @@ heading-style:
 no-trailing-spaces: true
 no-hard-tabs:
   code_blocks: false
+ul-indent:
+  indent: 4
 no-multiple-blanks: true
 # commands-show-output: true
 no-missing-space-atx: true
@@ -39,4 +41,5 @@ no-alt-text: true
 code-block-style:
   style: fenced
 single-trailing-newline: true
+first-line-heading: true
 

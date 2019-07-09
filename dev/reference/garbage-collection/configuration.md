@@ -39,8 +39,8 @@ update mysql.tidb set VARIABLE_VALUE="30m" where VARIABLE_NAME="tikv_gc_run_inte
 > - `tikv_gc_life_time` 的值必须大于 TiDB 的配置文件中的 [`max-txn-time-use`](/reference/configuration/tidb-server/configuration-file#max-txn-time-use) 的值至少 10 秒，且不低于 10 分钟。
 >
 > - 在数据更新频繁的场景下，如果将 `tikv_gc_life_time` 设置得比较大（如数天甚至数月），可能会有一些潜在的问题，如：
->    - 磁盘空间占用较多。
->    - 大量的历史版本会在一定程度上影响性能，尤其是范围查询（如 `select count(*) from t`）。
+>     - 磁盘空间占用较多。
+>     - 大量的历史版本会在一定程度上影响性能，尤其是范围查询（如 `select count(*) from t`）。
 
 ## `tikv_gc_mode`
 

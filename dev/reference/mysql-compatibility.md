@@ -78,19 +78,19 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 在 TiDB 中，运行的 DDL 操作不会影响对表的读取或写入。但是，目前 DDL 变更有如下一些限制：
 
 + Add Index
-  - 不支持同时创建多个索引
-  - 不支持通过 `ALTER TABLE` 在所生成的列上添加索引
+    - 不支持同时创建多个索引
+    - 不支持通过 `ALTER TABLE` 在所生成的列上添加索引
 + Add Column
-  - 不支持同时创建多个列
-  - 不支持将新创建的列设为主键或唯一索引，也不支持将此列设成 auto_increment 属性
+    - 不支持同时创建多个列
+    - 不支持将新创建的列设为主键或唯一索引，也不支持将此列设成 auto_increment 属性
 + Drop Column: 不支持删除主键列或索引列
 + Change/Modify Column
-  - 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`
-  - 不支持修改 `DECIMAL` 类型的精度
-  - 不支持更改 `UNSIGNED` 属性
-  - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
+    - 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`
+    - 不支持修改 `DECIMAL` 类型的精度
+    - 不支持更改 `UNSIGNED` 属性
+    - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
 + Alter Database
-  - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
+    - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
 + `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`: TiDB 支持的语法，但是在 TiDB 中不会生效。所有支持的 DDL 变更都不会锁表。
 + `ALGORITHM [=] {DEFAULT|INSTANT|INPLACE|COPY}`: TiDB 完全支持 `ALGORITHM=INSTANT` 和 `ALGORITHM=INPLACE` 语法，但运行过程与 MySQL 有所不同，因为 MySQL 中的一些 `INPLACE` 操作实际上是 TiDB 中的 `INSTANT` 操作。`ALGORITHM=COPY` 语法在 TiDB 中不会生效，会返回警告信息。
 

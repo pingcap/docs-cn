@@ -10,9 +10,9 @@ category: Releases
 ## TiDB
 
 + SQL 查询优化器
-  - 调整代价模型
-  - Analyze 下推
-  - 函数签名下推
+    - 调整代价模型
+    - Analyze 下推
+    - 函数签名下推
 
 + 优化内部数据格式，减小中间结果大小
 + 提升 MySQL 兼容性

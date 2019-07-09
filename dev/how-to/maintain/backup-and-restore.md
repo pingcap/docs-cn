@@ -51,12 +51,12 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 数据恢复示例及相关的配置：
 
- - mydumper 导出后总数据量 214G，单表 8 列，20 亿行数据
- - 集群拓扑
-     - TIKV * 12
-     - TIDB * 4
-     - PD * 3
- - mydumper -F 设置为 16, loader -t 参数 64
+- mydumper 导出后总数据量 214G，单表 8 列，20 亿行数据
+- 集群拓扑
+    - TIKV * 12
+    - TIDB * 4
+    - PD * 3
+- mydumper -F 设置为 16, loader -t 参数 64
 
 结果：导入时间 11 小时左右，19.4 G/小时
 
