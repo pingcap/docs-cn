@@ -260,7 +260,6 @@ success!
 > - `-p` 选项指定 PD 的 endpoint，不使用 `http` 前缀，用于查询指定的 `region_id` 是否有效。
 > - 对于指定 Region 的 peers 所在的每个 store，均须执行该命令。
 
-
 ### Ldb 命令
 
 ldb 命令行工具提供多种数据访问以及数据库管理命令。下方列出了一些示例用法。详细信息请在运行 `tikv-ctl ldb` 命令时查看帮助消息或查阅 RocksDB 文档。
@@ -282,4 +281,3 @@ $ tikv-ctl ldb --hex manifest_dump --path=/tmp/db/MANIFEST-000001
 您可以通过 `--column_family=<string>` 指定查询的目标列族。
 
 通过 `--try_load_options` 命令加载数据库选项文件以打开数据库。在数据库运行时，建议您保持该命令为开启的状态。如果您使用默认配置打开数据库，LSM-tree 存储组织可能会出现混乱，且无法自动恢复。
-
