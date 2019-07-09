@@ -612,7 +612,7 @@ $ sudo systemctl status ntpd.service
    Active: active (running) since 一 2017-12-18 13:13:19 CST; 3s ago
 ```
 
-执行 ntpstat 命令，输出 synchronised to NTP server(正在与 NTP server 同步)表示在正常同步：
+执行 ntpstat 命令，输出 synchronised to NTP server（正在与 NTP server 同步）表示在正常同步：
 
 ```
 $ ntpstat
