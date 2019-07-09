@@ -16,7 +16,7 @@ TiDB 通过命令行参数或环境变量配置。默认的 TiDB 端口为 4000�
 
 + 配置文件
 + 默认：""
-+ 如果你指定了配置文件，TiDB 会首先读取配置文件的配置。然后如果对应的配置在命令行参数里面也存在，TiDB 就会使用命令行参数的配置来覆盖配置文件里面的。详细的配置项可以看看[这里](/reference/configuration/tidb-server/configuration.md)
++ 如果你指定了配置文件，TiDB 会首先读取配置文件的配置。然后如果对应的配置在命令行参数里面也存在，TiDB 就会使用命令行参数的配置来覆盖配置文件里面的。详细的配置项请参阅 [TiDB 配置文件描述](/reference/configuration/tidb-server/configuration-file.md)。
 
 ## `--store`
 
@@ -104,7 +104,7 @@ TiDB 通过命令行参数或环境变量配置。默认的 TiDB 端口为 4000�
 ## `--status-host`
 
 + TiDB 服务状态监听 host
-+ 默认："0.0.0.0"
++ 默认：`"0.0.0.0"`
 
 ## `--metrics-addr`
 
