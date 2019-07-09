@@ -326,6 +326,7 @@
   - [TiDB-Lightning FAQ](faq/tidb-lightning.md)
   - [Data Migration FAQ](faq/data-migration.md)
   - [升级 FAQ](faq/upgrade.md)
+  - [Kubernetes 上的 TiDB FAQ](faq/tidb-in-kubernetes.md)
 + 技术支持
   - [支持渠道](support-resources.md)
   - [反馈问题](report-issue.md)
