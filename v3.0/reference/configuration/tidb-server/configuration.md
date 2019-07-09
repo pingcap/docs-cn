@@ -105,7 +105,7 @@ TiDB 通过命令行参数或环境变量配置。默认的 TiDB 端口为 4000�
 ## `--status-host`
 
 + TiDB 服务状态监听 host
-+ 默认："0.0.0.0" 
++ 默认：`"0.0.0.0"`
 
 ## `--metrics-addr`
 
@@ -142,5 +142,6 @@ TiDB 通过命令行参数或环境变量配置。默认的 TiDB 端口为 4000�
 > 请不要配置成 0，除非特殊情况，一般使用默认值即可。
 
 ## `--cors`
+
 + 用于设置 TiDB HTTP 状态服务的 Access-Control-Allow-Origin
 + 默认：""
