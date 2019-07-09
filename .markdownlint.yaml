@@ -7,8 +7,7 @@ heading-increment: true
 heading-style:
   style: atx
 no-trailing-spaces: true
-no-hard-tabs:
-  code_blocks: false
+no-hard-tabs: true
 ul-indent:
   indent: 4
 no-multiple-blanks: true
