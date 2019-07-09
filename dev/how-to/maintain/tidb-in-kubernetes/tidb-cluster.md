@@ -47,7 +47,7 @@ mkdir -p /home/tidb/${releaseName} && \
 helm inspect values pingcap/tidb-cluster --version=${chartVersion} > /home/tidb/${releaseName}/values-${releaseName}.yaml
 ```
 
-有关配置信息请参考：[TiDB 集群部署配置文档](/reference/configuration/tidb-in-kubernetes/cluster-configuration/)
+有关配置信息请参考 [TiDB 集群部署配置文档](/reference/configuration/tidb-in-kubernetes/cluster-configuration.md)。
 
 ## 部署 TiDB 集群
 
