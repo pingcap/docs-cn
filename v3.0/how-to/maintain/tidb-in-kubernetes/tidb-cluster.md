@@ -1,6 +1,5 @@
 ---
 title: 管理 Kubernetes 上的 TiDB 集群
-summary: TiDB 集群运维文档
 category: how-to
 ---
 
