@@ -59,7 +59,7 @@ kubectl -n ${namespace} get svc ${release}-tidb -ojsonpath="{.spec.ports[?(@.nam
     ```shell
     release=<your-tidb-release-name>
     ```
-    
+
     {{< copyable "shell-regular" >}}
 
     ```shell

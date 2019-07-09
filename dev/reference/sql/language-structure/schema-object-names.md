@@ -65,7 +65,7 @@ CREATE TABLE test.t (i int);
 如果你要引用这个 identifier，那么请使用：
 
 ```
-`table_name`.`col_name` 
+`table_name`.`col_name`
 ```
 
 而不是：

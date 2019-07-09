@@ -25,8 +25,9 @@ mysql> SHOW CHARACTER SET;
 +---------|---------------|-------------------|--------+
 5 rows in set (0.00 sec)
 ```
+
 > **注意：**
-> 
+>
 > - 在 `TiDB` 中 `utf8` 被当做成了 `utf8mb4` 来处理。
 > - 每种字符集都对应一个默认的 Collation，当前有且仅有一个。
 
@@ -229,6 +230,7 @@ SET character_set_client = charset_name;
 SET character_set_results = charset_name;
 SET character_set_connection = charset_name;
 ```
+
 `COLLATE` 是可选的，如果没有提供，将会用 charset_name 默认的 Collation。
 
 * `SET CHARACTER SET 'charset_name'`
