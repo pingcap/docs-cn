@@ -1,9 +1,9 @@
 ---
-title: 部署 k8s
+title: Kubernetes 上的 TiDB 集群环境需求
 category: how-to
 ---
-
-# 软件版本要求
+# Kubernetes 上的 TiDB 集群环境需求
+## 软件版本要求
 
 | 软件名称 | 版本 |
 | --- | --- |
