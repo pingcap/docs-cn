@@ -251,7 +251,6 @@ filters:
     | drop index      | DDL  | drop index event              |
     | alter table     | DDL  | alter table event             |
 
-
 - `sql-pattern`：用于过滤指定的 DDL SQL 语句，支持正则表达式匹配，例如上面示例 `"^DROP\\s+PROCEDURE"`。
 
 - `action`：string(`Do` / `Ignore`)；进行下面规则判断，满足其中之一则过滤，否则不过滤。
@@ -388,11 +387,11 @@ column-mappings:
 - 如果 `table 前缀` 不为空，则表名的组成必须为 `table 前缀` 或者 `table 前缀 + 分隔符 + 数字（即 table ID）`
 - 如果库名/表名不包含 `… + 分隔符 + 数字` 部分，则对应的 ID 默认为 0
 - 对分库分表的规模支持限制如下
-  - 支持最多 16 个 MySQL/MariaDB 实例（0 <= instance ID <= 15）
-  - 每个实例支持最多 128 个 schema（0 <= schema ID  <= 127）
-  - 每个实例的每个 schema 支持最多 256 个 table（0 <= table ID <= 255）
-  - 进行列值映射的列的范围 (0 <= ID <= 17592186044415)
-  - `{instance ID, schema ID, table ID}` 组合需要保持唯一
+    - 支持最多 16 个 MySQL/MariaDB 实例（0 <= instance ID <= 15）
+    - 每个实例支持最多 128 个 schema（0 <= schema ID  <= 127）
+    - 每个实例的每个 schema 支持最多 256 个 table（0 <= table ID <= 255）
+    - 进行列值映射的列的范围 (0 <= ID <= 17592186044415)
+    - `{instance ID, schema ID, table ID}` 组合需要保持唯一
 - 目前该功能是定制功能，如果需要调整请联系相关开发人员进行调整
 
 **`partition id` 参数配置**
