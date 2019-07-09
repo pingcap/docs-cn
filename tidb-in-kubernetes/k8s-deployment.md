@@ -1,5 +1,5 @@
 ---
-title: 部署 k8s
+title: Kubernetes 上的 TiDB 集群环境需求
 category: how-to
 ---
 
