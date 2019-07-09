@@ -17,7 +17,9 @@ category: reference
 
 下列场景中，假设你要创建一个人事记录的表：
 
-```SQL
+{{< copyable "sql" >}}
+
+```sql
 CREATE TABLE employees (
     id INT NOT NULL,
     fname VARCHAR(30),
@@ -31,7 +33,9 @@ CREATE TABLE employees (
 
 你可以根据需求按各种方式进行 range 分区。其中一种方式是按 `store_id` 列进行分区。你可以这样做：
 
-```SQL
+{{< copyable "sql" >}}
+
+```sql
 CREATE TABLE employees (
     id INT NOT NULL,
     fname VARCHAR(30),
@@ -41,6 +45,7 @@ CREATE TABLE employees (
     job_code INT NOT NULL,
     store_id INT NOT NULL
 )
+
 PARTITION BY RANGE (store_id) (
     PARTITION p0 VALUES LESS THAN (6),
     PARTITION p1 VALUES LESS THAN (11),
@@ -53,7 +58,9 @@ PARTITION BY RANGE (store_id) (
 
 新插入一行数据 `(72, 'Mitchell', 'Wilson', '1998-06-25', NULL, 13)` 将会落到分区 `p2` 里面。但如果你插入一条 `store_id` 大于 20 的记录，则会报错，因为 TiDB 无法知晓应该将它插入到哪个分区。这种情况下，可以在建表时使用最大值：
 
-```SQL
+{{< copyable "sql" >}}
+
+```sql
 CREATE TABLE employees (
     id INT NOT NULL,
     fname VARCHAR(30),
@@ -63,6 +70,7 @@ CREATE TABLE employees (
     job_code INT NOT NULL,
     store_id INT NOT NULL
 )
+
 PARTITION BY RANGE (store_id) (
     PARTITION p0 VALUES LESS THAN (6),
     PARTITION p1 VALUES LESS THAN (11),
@@ -75,7 +83,9 @@ PARTITION BY RANGE (store_id) (
 
 你也可以按员工的职位编号进行分区，也就是使用 `job_code` 列的值进行分区。假设两位数字编号是用于普通员工，三位数字编号是用于办公室以及客户支持，四位数字编号是管理层职位，那么你可以这样建表：
 
-```SQL
+{{< copyable "sql" >}}
+
+```sql
 CREATE TABLE employees (
     id INT NOT NULL,
     fname VARCHAR(30),
@@ -85,6 +95,7 @@ CREATE TABLE employees (
     job_code INT NOT NULL,
     store_id INT NOT NULL
 )
+
 PARTITION BY RANGE (job_code) (
     PARTITION p0 VALUES LESS THAN (100),
     PARTITION p1 VALUES LESS THAN (1000),
@@ -96,7 +107,9 @@ PARTITION BY RANGE (job_code) (
 
 除了可以按 `store_id` 切分，你还可以按日期切分。例如，假设按员工离职的年份进行分区：
 
-```SQL
+{{< copyable "sql" >}}
+
+```sql
 CREATE TABLE employees (
     id INT NOT NULL,
     fname VARCHAR(30),
@@ -106,6 +119,7 @@ CREATE TABLE employees (
     job_code INT,
     store_id INT
 )
+
 PARTITION BY RANGE ( YEAR(separated) ) (
     PARTITION p0 VALUES LESS THAN (1991),
     PARTITION p1 VALUES LESS THAN (1996),
@@ -116,12 +130,15 @@ PARTITION BY RANGE ( YEAR(separated) ) (
 
 在 range 分区中，可以基于 `timestamp` 列的值分区，并使用 `unix_timestamp()` 函数，例如：
 
-```SQL
+{{< copyable "sql" >}}
+
+```sql
 CREATE TABLE quarterly_report_status (
     report_id INT NOT NULL,
     report_status VARCHAR(20) NOT NULL,
     report_updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )
+
 PARTITION BY RANGE ( UNIX_TIMESTAMP(report_updated) ) (
     PARTITION p0 VALUES LESS THAN ( UNIX_TIMESTAMP('2008-01-01 00:00:00') ),
     PARTITION p1 VALUES LESS THAN ( UNIX_TIMESTAMP('2008-04-01 00:00:00') ),
@@ -148,11 +165,13 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
 Hash 分区主要用于保证数据均匀地分散到一定数量的分区里面。在 range 分区中你必须为每个分区指定值的范围；在 hash 分区中，你只需要指定分区的数量。
 
-使用 hash 分区时，需要在 `CREATE TABLE` 后面添加 `PARTITION BY HASH (expr)`，其中 `expr` 是一个返回整数的表达式。它可以是一个列名，如果这一列的类型是整数类型。此外，你很可能还需要加上 `PARTITIONS num`，其中 `num` 是一个正整数，表示将表划分多少分区。
+使用 hash 分区时，需要在 `CREATE TABLE` 后面添加 `PARTITION BY HASH (expr)`，其中 `expr` 是一个返回整数的表达式。当这一列的类型是整数类型时，它可以是一个列名。此外，你很可能还需要加上 `PARTITIONS num`，其中 `num` 是一个正整数，表示将表划分多少分区。
 
 下面的语句将创建一个 hash 分区表，按 `store_id` 分成 4 个分区：
 
-```
+{{< copyable "sql" >}}
+
+```sql
 CREATE TABLE employees (
     id INT NOT NULL,
     fname VARCHAR(30),
@@ -162,6 +181,7 @@ CREATE TABLE employees (
     job_code INT,
     store_id INT
 )
+
 PARTITION BY HASH(store_id)
 PARTITIONS 4;
 ```
@@ -170,7 +190,9 @@ PARTITIONS 4;
 
 你也可以使用一个返回整数的 SQL 表达式。例如，你可以按入职年份分区：
 
-```
+{{< copyable "sql" >}}
+
+```sql
 CREATE TABLE employees (
     id INT NOT NULL,
     fname VARCHAR(30),
@@ -180,13 +202,14 @@ CREATE TABLE employees (
     job_code INT,
     store_id INT
 )
+
 PARTITION BY HASH( YEAR(hired) )
 PARTITIONS 4;
 ```
 
 最高效的 hash 函数是作用在单列上，并且函数的单调性是跟列的值是一样递增或者递减的，因为这种情况可以像 range 分区一样裁剪。
 
-例如，`date_col` 是类型为 `DATE` 的列，表达式 `TO_DAYS(date_col)` 的值是直接随 `date_col` 的值变化的。`YEAR(date_col)` 跟 `TO_DAYS(date_col)` 就不太一样，因为不是每次 `date_col` 变化时 `YEAR(date_col)` 都会得到不同的值。即使如此，`YEAR(date_col)` 也仍然是一个比如好的 hash 函数，因为它的结果是随着 `date_col` 的值的比例变化的。
+例如，`date_col` 是类型为 `DATE` 的列，表达式 `TO_DAYS(date_col)` 的值是直接随 `date_col` 的值变化的。`YEAR(date_col)` 跟 `TO_DAYS(date_col)` 就不太一样，因为不是每次 `date_col` 变化时 `YEAR(date_col)` 都会得到不同的值。即使如此，`YEAR(date_col)` 也仍然是一个比较好的 hash 函数，因为它的结果是随着 `date_col` 的值的比例变化的。
 
 作为对比，假设我们有一个类型是 INT 的 `int_col` 的列。考虑一下表达式 `POW(5-int_col,3) + 6`，这并不是一个比较好的 hash 函数，因为随着 `int_col` 的值的变化，表达式的结果不会成比例地变化。改变 `int_col` 的值会使表达式的结果的值变化巨大。例如，`int_col` 从 5 变到 6 表达式的结果变化是 -1，但是从 6 变到 7 的时候表达式的值的变化是 -7。
 
@@ -196,7 +219,9 @@ PARTITIONS 4;
 
 使用 `PARTITIION BY HASH` 的时候，TiDB 通过表达式的结果做“取余”运算，决定数据落在哪个分区。换句话说，如果分区表达式是 `expr`，分区数是 `num`，则由 `MOD(expr, num)` 决定存储的分区。假设 `t1` 定义如下：
 
-```SQL
+{{< copyable "sql" >}}
+
+```sql
 CREATE TABLE t1 (col1 INT, col2 CHAR(5), col3 DATE)
     PARTITION BY HASH( YEAR(col3) )
     PARTITIONS 4;
@@ -218,40 +243,79 @@ TiDB 允许计算结果为 NULL 的分区表达式。注意，NULL 不是一个�
 
 如果插入一行到 range 分区表，它的分区列的计算结果是 NULL，那么这一行会被插入到最小的那个分区。
 
-```SQL
-mysql> CREATE TABLE t1 (
-    ->     c1 INT,
-    ->     c2 VARCHAR(20)
-    -> )
-    -> PARTITION BY RANGE(c1) (
-    ->     PARTITION p0 VALUES LESS THAN (0),
-    ->     PARTITION p1 VALUES LESS THAN (10),
-    ->     PARTITION p2 VALUES LESS THAN MAXVALUE
-    -> );
-Query OK, 0 rows affected (0.09 sec)
+{{< copyable "sql" >}}
 
-mysql> select * from t1 partition(p0);
+```sql
+CREATE TABLE t1 (
+    c1 INT,
+    c2 VARCHAR(20)
+)
+
+PARTITION BY RANGE(c1) (
+    PARTITION p0 VALUES LESS THAN (0),
+    PARTITION p1 VALUES LESS THAN (10),
+    PARTITION p2 VALUES LESS THAN MAXVALUE
+);
+```
+
+```
+Query OK, 0 rows affected (0.09 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+select * from t1 partition(p0);
+```
+
+```
 +------|--------+
 | c1   | c2     |
 +------|--------+
 | NULL | mothra |
 +------|--------+
 1 row in set (0.00 sec)
+```
 
-mysql> select * from t1 partition(p1);
+{{< copyable "sql" >}}
+
+```sql
+select * from t1 partition(p1);
+```
+
+```
 Empty set (0.00 sec)
+```
 
-mysql> select * from t1 partition(p2);
+{{< copyable "sql" >}}
+
+```sql
+select * from t1 partition(p2);
+```
+
+```
 Empty set (0.00 sec)
 ```
 
 删除 `p0` 后验证：
 
-```
-mysql> alter table t1 drop partition p0;
-Query OK, 0 rows affected (0.08 sec)
+{{< copyable "sql" >}}
 
-mysql> select * from t1;
+```sql
+alter table t1 drop partition p0;
+```
+
+```
+Query OK, 0 rows affected (0.08 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+select * from t1;
+```
+
+```
 Empty set (0.00 sec)
 ```
 
@@ -259,19 +323,39 @@ Empty set (0.00 sec)
 
 在 Hash 分区中 NULL 值的处理有所不同，如果分区表达式的计算结果为 NULL，它会被当作 0 值处理。
 
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE th (
+    c1 INT,
+    c2 VARCHAR(20)
+)
+
+PARTITION BY HASH(c1)
+PARTITIONS 2;
 ```
-mysql> CREATE TABLE th (
-    ->     c1 INT,
-    ->     c2 VARCHAR(20)
-    -> )
-    -> PARTITION BY HASH(c1)
-    -> PARTITIONS 2;
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> INSERT INTO th VALUES (NULL, 'mothra'), (0, 'gigan');
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO th VALUES (NULL, 'mothra'), (0, 'gigan');
+```
+
+```
 Query OK, 2 rows affected (0.04 sec)
+```
 
-mysql> select * from th partition (p0);
+{{< copyable "sql" >}}
+
+```sql
+select * from th partition (p0);
+```
+
+```
 +------|--------+
 | c1   | c2     |
 +------|--------+
@@ -279,8 +363,15 @@ mysql> select * from th partition (p0);
 |    0 | gigan  |
 +------|--------+
 2 rows in set (0.00 sec)
+```
 
-mysql> select * from th partition (p1);
+{{< copyable "sql" >}}
+
+```sql
+select * from th partition (p1);
+```
+
+```
 Empty set (0.00 sec)
 ```
 
@@ -294,13 +385,16 @@ Empty set (0.00 sec)
 
 创建分区表：
 
-```
+{{< copyable "sql" >}}
+
+```sql
 CREATE TABLE members (
     id INT,
     fname VARCHAR(25),
     lname VARCHAR(25),
     dob DATE
 )
+
 PARTITION BY RANGE( YEAR(dob) ) (
     PARTITION p0 VALUES LESS THAN (1980),
     PARTITION p1 VALUES LESS THAN (1990),
@@ -310,15 +404,25 @@ PARTITION BY RANGE( YEAR(dob) ) (
 
 删除分区：
 
-```SQL
-mysql> ALTER TABLE members DROP PARTITION p2;
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE members DROP PARTITION p2;
+```
+
+```
 Query OK, 0 rows affected (0.03 sec)
 ```
 
 清空分区：
 
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE members TRUNCATE PARTITION p1;
 ```
-mysql> ALTER TABLE members TRUNCATE PARTITION p1;
+
+```
 Query OK, 0 rows affected (0.03 sec)
 ```
 
@@ -328,16 +432,23 @@ Query OK, 0 rows affected (0.03 sec)
 
 添加分区：
 
-```SQL
+{{< copyable "sql" >}}
+
+```sql
 ALTER TABLE members ADD PARTITION (PARTITION p3 VALUES LESS THAN (2010));
 ```
 
 Range 分区中，`ADD PARTITION` 只能在分区列表的最后面添加，如果是添加到已存在的分区范围则会报错：
 
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE members
+    ADD PARTITION (
+    PARTITION n VALUES LESS THAN (1970));
 ```
-mysql> ALTER TABLE members
-     >     ADD PARTITION (
-     >     PARTITION n VALUES LESS THAN (1970));
+
+```
 ERROR 1463 (HY000): VALUES LESS THAN value must be strictly »
    increasing for each partition
 ```
@@ -354,13 +465,16 @@ ERROR 1463 (HY000): VALUES LESS THAN value must be strictly »
 
 假设创建一个分区表 `t1`：
 
-```SQL
+{{< copyable "sql" >}}
+
+```sql
 CREATE TABLE t1 (
     fname VARCHAR(50) NOT NULL,
     lname VARCHAR(50) NOT NULL,
     region_code TINYINT UNSIGNED NOT NULL,
     dob DATE NOT NULL
 )
+
 PARTITION BY RANGE( region_code ) (
     PARTITION p0 VALUES LESS THAN (64),
     PARTITION p1 VALUES LESS THAN (128),
@@ -371,7 +485,9 @@ PARTITION BY RANGE( region_code ) (
 
 如果你想获得这个 select 语句的结果：
 
-```SQL
+{{< copyable "sql" >}}
+
+```sql
 SELECT fname, lname, region_code, dob
     FROM t1
     WHERE region_code > 125 AND region_code < 130;
@@ -388,19 +504,22 @@ SELECT fname, lname, region_code, dob
 
 SELECT 语句中支持分区选择。实现通过使用一个 `PARTITION` 选项实现。
 
-```SQL
+{{< copyable "sql" >}}
+
+```sql
 CREATE TABLE employees  (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     fname VARCHAR(25) NOT NULL,
     lname VARCHAR(25) NOT NULL,
     store_id INT NOT NULL,
     department_id INT NOT NULL
-) 
-    PARTITION BY RANGE(id)  (
-        PARTITION p0 VALUES LESS THAN (5),
-        PARTITION p1 VALUES LESS THAN (10),
-        PARTITION p2 VALUES LESS THAN (15),
-        PARTITION p3 VALUES LESS THAN MAXVALUE
+)
+
+PARTITION BY RANGE(id)  (
+    PARTITION p0 VALUES LESS THAN (5),
+    PARTITION p1 VALUES LESS THAN (10),
+    PARTITION p2 VALUES LESS THAN (15),
+    PARTITION p3 VALUES LESS THAN MAXVALUE
 );
 
 INSERT INTO employees VALUES
@@ -417,8 +536,13 @@ INSERT INTO employees VALUES
 
 你可以查看存储在分区 `p1` 中的行：
 
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM employees PARTITION (p1);
 ```
-mysql> SELECT * FROM employees PARTITION (p1);
+
+```
 +----|-------|--------|----------|---------------+
 | id | fname | lname  | store_id | department_id |
 +----|-------|--------|----------|---------------+
@@ -435,9 +559,14 @@ mysql> SELECT * FROM employees PARTITION (p1);
 
 使用分区选择时，仍然可以使用 where 条件，以及 ORDER BY 和 LIMIT 等选项。使用 HAVING 和 GROUP BY 等聚合选项也是支持的。
 
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM employees PARTITION (p0, p2)
+    WHERE lname LIKE 'S%';
 ```
-mysql> SELECT * FROM employees PARTITION (p0, p2)
-    ->     WHERE lname LIKE 'S%';
+
+```
 +----|-------|-------|----------|---------------+
 | id | fname | lname | store_id | department_id |
 +----|-------|-------|----------|---------------+
@@ -445,9 +574,16 @@ mysql> SELECT * FROM employees PARTITION (p0, p2)
 | 11 | Jill  | Stone |        1 |             4 |
 +----|-------|-------|----------|---------------+
 2 rows in set (0.00 sec)
+```
 
-mysql> SELECT id, CONCAT(fname, ' ', lname) AS name
-    ->     FROM employees PARTITION (p0) ORDER BY lname;
+{{< copyable "sql" >}}
+
+```sql
+SELECT id, CONCAT(fname, ' ', lname) AS name
+    FROM employees PARTITION (p0) ORDER BY lname;
+```
+
+```
 +----|----------------+
 | id | name           |
 +----|----------------+
@@ -457,10 +593,17 @@ mysql> SELECT id, CONCAT(fname, ' ', lname) AS name
 |  2 | Frank Williams |
 +----|----------------+
 4 rows in set (0.06 sec)
+```
 
-mysql> SELECT store_id, COUNT(department_id) AS c
-    ->     FROM employees PARTITION (p1,p2,p3)
-    ->     GROUP BY store_id HAVING c > 4;
+{{< copyable "sql" >}}
+
+```sql
+SELECT store_id, COUNT(department_id) AS c
+    FROM employees PARTITION (p1,p2,p3)
+    GROUP BY store_id HAVING c > 4;
+```
+
+```
 +---|----------+
 | c | store_id |
 +---|----------+
@@ -470,7 +613,7 @@ mysql> SELECT store_id, COUNT(department_id) AS c
 2 rows in set (0.00 sec)
 ```
 
-分支选择支持所有类型的分区表，无论是 range 分区或是 hash 分区等。对于 hash 分区，如果没有指定分区名，会自动使用 `p0`、`p1`、`p2`……或 `pN-1` 作为分区名。
+分支选择支持所有类型的分区表，无论是 range 分区或是 hash 分区等。对于 hash 分区，如果没有指定分区名，会自动使用 `p0`、`p1`、`p2`、……、或 `pN-1` 作为分区名。
 
 在 `INSERT ... SELECT` 的 `SELECT` 中也是可以使用分区选择的。
 
@@ -480,13 +623,15 @@ mysql> SELECT store_id, COUNT(department_id) AS c
 
 ### 分区键，主键和唯一键
 
-本节讨论分区键，主键和唯一键之间的关系。一句话总结它们之间的关系要满足的规则：**分区表的每个唯一列，必须包含分区表达式中用到的所有列**
+本节讨论分区键，主键和唯一键之间的关系。一句话总结它们之间的关系要满足的规则：**分区表的每个唯一列，必须包含分区表达式中用到的所有列**。
 
->  every unique key on the table must use every column in the table's partitioning expression
+> every unique key on the table must use every column in the table's partitioning expression.
 
 这里所指的唯一也包含了主键，因为根据主键的定义，主键必须是唯一的。例如，下面这些建表语句就是无效的：
 
-```SQL
+{{< copyable "sql" >}}
+
+```sql
 CREATE TABLE t1 (
     col1 INT NOT NULL,
     col2 DATE NOT NULL,
@@ -494,6 +639,7 @@ CREATE TABLE t1 (
     col4 INT NOT NULL,
     UNIQUE KEY (col1, col2)
 )
+
 PARTITION BY HASH(col3)
 PARTITIONS 4;
 
@@ -505,6 +651,7 @@ CREATE TABLE t2 (
     UNIQUE KEY (col1),
     UNIQUE KEY (col3)
 )
+
 PARTITION BY HASH(col1 + col3)
 PARTITIONS 4;
 ```
@@ -513,7 +660,9 @@ PARTITIONS 4;
 
 下面是一些合法的语句的例子：
 
-```SQL
+{{< copyable "sql" >}}
+
+```sql
 CREATE TABLE t1 (
     col1 INT NOT NULL,
     col2 DATE NOT NULL,
@@ -521,6 +670,7 @@ CREATE TABLE t1 (
     col4 INT NOT NULL,
     UNIQUE KEY (col1, col2, col3)
 )
+
 PARTITION BY HASH(col3)
 PARTITIONS 4;
 
@@ -531,23 +681,30 @@ CREATE TABLE t2 (
     col4 INT NOT NULL,
     UNIQUE KEY (col1, col3)
 )
+
 PARTITION BY HASH(col1 + col3)
 PARTITIONS 4;
 ```
 
 下例中会产生一个报错：
 
-```SQL
-mysql> CREATE TABLE t3 (
-    ->     col1 INT NOT NULL,
-    ->     col2 DATE NOT NULL,
-    ->     col3 INT NOT NULL,
-    ->     col4 INT NOT NULL,
-    ->     UNIQUE KEY (col1, col2),
-    ->     UNIQUE KEY (col3)
-    -> )
-    -> PARTITION BY HASH(col1 + col3)
-    -> PARTITIONS 4;
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t3 (
+    col1 INT NOT NULL,
+    col2 DATE NOT NULL,
+    col3 INT NOT NULL,
+    col4 INT NOT NULL,
+    UNIQUE KEY (col1, col2),
+    UNIQUE KEY (col3)
+)
+
+PARTITION BY HASH(col1 + col3)
+    PARTITIONS 4;
+```
+
+```
 ERROR 1491 (HY000): A PRIMARY KEY must include all columns in the table's partitioning function
 ```
 
@@ -555,7 +712,9 @@ ERROR 1491 (HY000): A PRIMARY KEY must include all columns in the table's partit
 
 下面这个表就没法做分区了，因为无论如何都不可能找到满足条件的分区键：
 
-```SQL
+{{< copyable "sql" >}}
+
+```sql
 CREATE TABLE t4 (
     col1 INT NOT NULL,
     col2 INT NOT NULL,
@@ -568,7 +727,9 @@ CREATE TABLE t4 (
 
 根据定义，主键也是唯一键，下面两个建表语句是无效的：
 
-```SQL
+{{< copyable "sql" >}}
+
+```sql
 CREATE TABLE t5 (
     col1 INT NOT NULL,
     col2 DATE NOT NULL,
@@ -576,6 +737,7 @@ CREATE TABLE t5 (
     col4 INT NOT NULL,
     PRIMARY KEY(col1, col2)
 )
+
 PARTITION BY HASH(col3)
 PARTITIONS 4;
 
@@ -587,6 +749,7 @@ CREATE TABLE t6 (
     PRIMARY KEY(col1, col3),
     UNIQUE KEY(col2)
 )
+
 PARTITION BY HASH( YEAR(col2) )
 PARTITIONS 4;
 ```
@@ -597,14 +760,19 @@ PARTITIONS 4;
 
 DDL 变更时，添加唯一索引也需要考虑到这个限制。比如创建了这样一个表：
 
-```SQL
-mysql> CREATE TABLE t_no_pk (c1 INT, c2 INT)
-    ->     PARTITION BY RANGE(c1) (
-    ->         PARTITION p0 VALUES LESS THAN (10),
-    ->         PARTITION p1 VALUES LESS THAN (20),
-    ->         PARTITION p2 VALUES LESS THAN (30),
-    ->         PARTITION p3 VALUES LESS THAN (40)
-    ->     );
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t_no_pk (c1 INT, c2 INT)
+    PARTITION BY RANGE(c1) (
+        PARTITION p0 VALUES LESS THAN (10),
+        PARTITION p1 VALUES LESS THAN (20),
+        PARTITION p2 VALUES LESS THAN (30),
+        PARTITION p3 VALUES LESS THAN (40)
+    );
+```
+
+```
 Query OK, 0 rows affected (0.12 sec)
 ```
 
@@ -654,31 +822,63 @@ INFORMATION_SCHEMA.PARTITION 表暂不支持。
 
 Load Data 暂时不支持分区选择。
 
-```
+{{< copyable "sql" >}}
+
+```sql
 create table t (id int, val int) partition by hash(id) partitions 4;
-
-load local data infile "xxx" into t ... // 支持普通的 Load Data 操作
-load local data infile "xxx" into t partition (p1)... // Load Data 不支持分区选择操作。
 ```
 
-对于分区表，`select * from t` 的返回结果是分区间无序的。这跟 MySQL 不同，MySQL 的返回结果是分区之间有序，分区内部无序。
+普通的 Load Data 操作在 TiDB 中是支持的，如下：
+
+{{< copyable "sql" >}}
+
+```sql
+load local data infile "xxx" into t ...
+```
+
+但 Load Data 不支持分区选择操作：
+
+{{< copyable "sql" >}}
+
+```sql
+load local data infile "xxx" into t partition (p1)...
+```
+
+对于分区表，`select * from t` 的返回结果是分区之间无序的。这跟 MySQL 不同，MySQL 的返回结果是分区之间有序，分区内部无序。
+
+{{< copyable "sql" >}}
+
+```sql
+create table t (id int, val int) partition by range (id) (
+    partition p0 values less than (3),
+    partition p1 values less than (7),
+    partition p2 values less than (11));
+```
 
 ```
-mysql> create table t (id int, val int) partition by range (id) (
-  partition p0 values less than (3),
-  partition p1 values less than (7),
-  partition p2 values less than (11));
 Query OK, 0 rows affected (0.10 sec)
+```
 
-mysql> insert into t values (1, 2), (3, 4),(5, 6),(7,8),(9,10);
+{{< copyable "sql" >}}
+
+```sql
+insert into t values (1, 2), (3, 4),(5, 6),(7,8),(9,10);
+```
+
+```
 Query OK, 5 rows affected (0.01 sec)
 Records: 5  Duplicates: 0  Warnings: 0
 ```
 
 TiDB 每次返回结果会不同，例如：
 
+{{< copyable "sql" >}}
+
 ```
-mysql> select * from t;
+select * from t;
+```
+
+```
 +------|------+
 | id   | val  |
 +------|------+
@@ -693,8 +893,13 @@ mysql> select * from t;
 
 MySQL 的返回结果：
 
+{{< copyable "sql" >}}
+
 ```
-mysql> select * from t;
+select * from t;
+```
+
+```
 +------|------+
 | id   | val  |
 +------|------+

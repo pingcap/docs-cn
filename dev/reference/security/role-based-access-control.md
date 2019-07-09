@@ -1,13 +1,13 @@
 ---
 title: 基于角色的访问控制
-category: user guide
+category: reference
 ---
 
 # 基于角色的访问控制
 
-TiDB 的角色访问控制系统参考 MySQL 的角色访问控制系统进行实现。TiDB 兼容大部分 MySQL 角色访问控制的语法。
+TiDB 的基于角色的访问控制 (RBAC) 系统的实现类似于 MySQL 8.0 的 RBAC 系统。TiDB 兼容大部分 MySQL RBAC 系统的语法。
 
-本文档主要介绍 TiDB 角色访问控制相关操作及实现。
+本文档主要介绍 TiDB 基于角色的访问控制相关操作及实现。
 
 > **警告：**
 >
@@ -15,7 +15,7 @@ TiDB 的角色访问控制系统参考 MySQL 的角色访问控制系统进行�
 
 ## 角色访问控制相关操作
 
-角色是一系列权限的集合。用户可以创建角色、删除角色、将权限赋予给角色；也可以将角色授予给其他用户，被授予的用户在启用角色后，可以得到角色所包含的权限。
+角色是一系列权限的集合。用户可以创建角色、删除角色、将权限赋予角色；也可以将角色授予给其他用户，被授予的用户在启用角色后，可以得到角色所包含的权限。
 
 ### 创建角色
 
@@ -49,20 +49,20 @@ DROP ROLE `r_1`@`%`, `r_2`@`%`;
 
 为角色授予权限和为用户授予权限操作相同，可参考 [TiDB 权限管理](/reference/security/privilege-system.md)。
 
-为 `xxx` 角色授予数据库 `test` 的读权限：
+为 `analyst` 角色授予数据库 `test` 的读权限：
 
 {{< copyable "sql" >}}
 
 ```sql
-GRANT SELECT ON test.* TO 'xxx'@'%';
+GRANT SELECT ON test.* TO 'analyst'@'%';
 ```
 
-为 `xxx` 角色授予所有数据库的全部权限：
+为 `analyst` 角色授予所有数据库的全部权限：
 
 {{< copyable "sql" >}}
 
 ```sql
-GRANT ALL PRIVILEGES ON *.* TO 'xxx'@'%';
+GRANT ALL PRIVILEGES ON *.* TO 'analyst'@'%';
 ```
 
 ### 收回权限
@@ -72,14 +72,14 @@ GRANT ALL PRIVILEGES ON *.* TO 'xxx'@'%';
 {{< copyable "sql" >}}
 
 ```sql
-REVOKE ALL PRIVILEGES ON `test`.* FROM 'xxx'@'%';
+REVOKE ALL PRIVILEGES ON `test`.* FROM 'analyst'@'%';
 ```
 
 具体可参考 [TiDB 权限管理](/reference/security/privilege-system.md)。
 
 ### 将角色授予给用户
 
-将角色 role1 和 role2 同时授予给用户 `user1@localhost` 和 `user2@localhost`。 
+将角色 role1 和 role2 同时授予给用户 `user1@localhost` 和 `user2@localhost`。
 
 {{< copyable "sql" >}}
 
@@ -107,7 +107,7 @@ TiDB 允许这种多层授权关系存在，可以使用多层授权关系实现
 
 ### 收回角色
 
-解除角色 role1、role2 与用户 `user1@localhost`、`user2@localhost` 的授权关系。 
+解除角色 role1、role2 与用户 `user1@localhost`、`user2@localhost` 的授权关系。
 
 {{< copyable "sql" >}}
 
@@ -338,10 +338,10 @@ SHOW GRANTS FOR 'u1'@'localhost' USING 'r1', 'r2';
 
 ### 授权表
 
-在原有的四张系统表的基础上，角色访问控制引入了三张新的系统表：
+在原有的四张[系统权限表](/reference/security/privilege-system.md#授权表)的基础上，角色访问控制引入了两张新的系统表：
 
 - `mysql.role_edges`：记录角色与用户的授权关系
-- `mysql.default_role`：记录每个用户默认启用的角色
+- `mysql.default_roles`：记录每个用户默认启用的角色
 
 以下是 `mysql.role_edges` 所包含的数据。
 
@@ -384,7 +384,7 @@ select * from mysql.default_roles;
 
 ### 其他
 
-由于角色访问控制模块和用户管理以及权限管理结合十分紧密，因此需要参考一些操作的细节：
+由于基于角色的访问控制模块和用户管理以及权限管理结合十分紧密，因此需要参考一些操作的细节：
 
 - [TiDB 权限管理](/reference/security/privilege-system.md)
 - [TiDB 用户账户管理](/reference/security/user-account-management.md)

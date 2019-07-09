@@ -57,7 +57,7 @@ binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e
 
 ## 启动 `syncer`
 
-启动 syncer 服务之前请详细阅读 [Syncer 增量导入](/tools/syncer.md )
+启动 syncer 服务之前请详细阅读 [Syncer 增量导入](/reference/tools/syncer.md )
 
 `syncer` 的配置文件 `config.toml`:
 
@@ -200,7 +200,6 @@ mysql> select * from t1;
 ```
 
 `syncer` 每隔 30s 会输出当前的同步统计，如下
-
 
 ```bash
 2017/06/08 01:18:51 syncer.go:934: [info] [syncer]total events = 15, total tps = 130, recent tps = 4,

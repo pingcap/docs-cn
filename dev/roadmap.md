@@ -5,7 +5,7 @@ category: Roadmap
 
 # TiDB 路线图
 
-## TiDB：
+## TiDB
 
 - [ ] 优化器
     - [ ] 统计信息优化
@@ -37,7 +37,7 @@ category: Roadmap
     - [ ] 支持白名单插件
     - [ ] 支持审计日志插件
     - [ ] 支持 RBAC 插件
-    - [ ] 支持诊断插件 
+    - [ ] 支持诊断插件
 - [ ] 支持 Query Tracing
 - [ ] 支持行列混合存储引擎
 - [ ] 支持 New Storage Row Format，提升性能并减小内存占用
@@ -48,7 +48,7 @@ category: Roadmap
     - [ ] 改善模型，降低延迟
     - [ ] 支持最小事务 (like the mini-transaction of InnoDB)
 
-## TiKV：
+## TiKV
 
 + Raft
     - [x] Region Merge - 合并小的 Region 以减少开销
@@ -77,7 +77,7 @@ category: Roadmap
     - [ ] 提供 Rust 版本的 TiKV client
     - [ ] gRPC 消息批量化 - 减少消息交互的开销
 
-## PD：
+## PD
 
 - [x] Namespace 完善
     - [x] 不同 Namespace 或者 Table 配置不同的副本策略
@@ -86,14 +86,14 @@ category: Roadmap
 - [ ] 使用机器学习优化调度
 - [ ] 优化 Region 元信息存储 - 把元信息存储在一个独立的存储引擎里
 
-## TiSpark：
+## TiSpark
 
 - [ ] Limit/Order 下推
 - [x] DAG 接口接入（废除 Select 接口）
 - [ ] Index Join 和并行 merge join
 - [ ] Data Federation（桥接其他数据源，最好能和社区同步，这个接进来可以比较好扩展 Usecase，如果再做一个 InputFormat 适配就可以接 Hive 和 Presto 这些 Hadoop 上的数仓）
 
-## Tools:
+## Tools
 
 - [x] 集群部署工具
 - [X] 高性能数据导入工具（lightning）

@@ -2,6 +2,7 @@
 
 ## 目录
 
+<!-- markdownlint-disable MD007 -->
 + [关于 TiDB](overview.md)
 + 主要概念
   - [整体架构](architecture.md)
@@ -10,12 +11,12 @@
     - [高可用](key-features.md#高可用)
 + 操作指南
   + 快速上手
-    + 创建本地集群
+    + 创建集群
       + 使用 Kubernetes
-        - [DinD](how-to/get-started/local-cluster/install-from-kubernetes-dind.md)
-        - [Minikube](how-to/get-started/local-cluster/install-from-kubernetes-minikube.md)
-        - [GKE](how-to/get-started/local-cluster/install-from-kubernetes-gke.md)
-      - [使用 Docker Compose](how-to/get-started/local-cluster/install-from-docker-compose.md)
+        - [DinD](how-to/get-started/deploy-tidb-from-kubernetes-dind.md)
+        - [Minikube](how-to/get-started/deploy-tidb-from-kubernetes-minikube.md)
+        - [GKE](how-to/get-started/deploy-tidb-from-kubernetes-gke.md)
+      - [使用 Docker Compose](how-to/get-started/deploy-tidb-from-docker-compose.md)
     - [SQL 基本操作](how-to/get-started/explore-sql.md)
     - [读取历史数据](how-to/get-started/read-historical-data.md)
     - [TiDB Binlog 教程](how-to/get-started/tidb-binlog.md)
@@ -27,14 +28,16 @@
       - [使用 Ansible 离线部署](how-to/deploy/orchestrated/offline-ansible.md)
       - [使用 Docker 部署](how-to/deploy/orchestrated/docker.md)
       + 使用 Kubernetes 部署
-        - [阿里云](how-to/deploy/orchestrated/alibaba-cloud.md)
-        - [AWS EKS](how-to/deploy/orchestrated/aws-eks.md)
-        - [GCP](how-to/deploy/orchestrated/gcp-gke.md)
+        - [阿里云](how-to/deploy/orchestrated/tidb-in-kubernetes/alibaba-cloud.md)
+        - [AWS EKS](how-to/deploy/orchestrated/tidb-in-kubernetes/aws-eks.md)
+        - [GCP](how-to/deploy/orchestrated/tidb-in-kubernetes/gcp-gke.md)
     + 跨地域冗余
       - [跨数据中心部署方案](how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](how-to/deploy/geographic-redundancy/location-awareness.md)
     - [使用 Ansible 部署 DM 集群](how-to/deploy/data-migration-with-ansible.md)
     - [部署 TiDB Binlog 集群](how-to/deploy/tidb-binlog.md)
+    - [部署 TiDB Operator](how-to/deploy/tidb-operator.md)
+    - [访问 Kubernetes 上的 TiDB 集群](how-to/deploy/orchestrated/tidb-in-kubernetes/access-tidb.md)
   + 配置
     - [时区](how-to/configure/time-zone.md)
     - [内存控制](how-to/configure/memory-control.md)
@@ -46,7 +49,7 @@
   + 监控
     - [概述](how-to/monitor/overview.md)
     - [监控 TiDB 集群](how-to/monitor/monitor-a-cluster.md)
-    - [TiDB Binlog 集群监控](how-to/monitor/tidb-binlog.md)
+    - [监控 TiDB Binlog 集群](how-to/monitor/tidb-binlog.md)
   + 迁移
     - [概述](how-to/migrate/overview.md)
     + 从 MySQL 迁移
@@ -59,22 +62,30 @@
     + [备份与恢复](how-to/maintain/backup-and-restore.md)
     - [定位慢查询](how-to/maintain/identify-slow-queries.md)
     - [TiDB Binlog 集群运维](how-to/maintain/tidb-binlog.md)
+    + Kubernetes 上的 TiDB 集群运维
+      - [管理 TiDB 集群](how-to/maintain/tidb-in-kubernetes/tidb-cluster.md)
+      - [维护 TiDB 节点](how-to/maintain/tidb-in-kubernetes/tidb-node.md)
+      - [集群故障自动转移](how-to/maintain/tidb-in-kubernetes/auto-failover.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](how-to/scale/with-ansible.md)
+    - [Kubernetes 上的 TiDB 集群扩缩容](how-to/scale/tidb-in-kubernetes.md)
   + 升级
     - [升级至 TiDB 3.0](how-to/upgrade/from-previous-version.md)
     - [升级至 TiDB 2.1](how-to/upgrade/to-tidb-2.1.md)
     - [使用 Ansible 滚动升级](how-to/upgrade/rolling-updates-with-ansible.md)
-    - [升级 Data Migration](reference/tools/data-migration/dm-upgrade.md)
     - [升级 TiDB Binlog Cluster 版本](how-to/upgrade/tidb-binlog.md)
+    - 升级 Kubernetes 上的 TiDB 集群
+      - [升级 TiDB](how-to/upgrade/tidb-in-kubernetes.md)
+      - [升级 TiDB Operator](how-to/upgrade/tidb-operator.md)
+    - [升级 Data Migration](reference/tools/data-migration/dm-upgrade.md)
   + 故障诊断
     - [集群配置诊断](how-to/troubleshoot/cluster-setup.md)
     - [Data Migration 故障诊断](how-to/troubleshoot/data-migration.md)
     - [TiDB Lightning 故障诊断](how-to/troubleshoot/tidb-lightning.md)
+    - [Kubernetes 上的 TiDB 集群故障诊断](how-to/troubleshoot/tidb-in-kubernetes.md)
 + 参考手册
   + [与 MySQL 兼容性对比](reference/mysql-compatibility.md)
   + SQL
-    - [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/)
     + SQL 语言结构
       - [字面值](reference/sql/language-structure/literal-values.md)
       - [Schema 对象名](reference/sql/language-structure/schema-object-names.md)
@@ -137,6 +148,7 @@
       - [`ADD COLUMN`](reference/sql/statements/add-column.md)
       - [`ADD INDEX`](reference/sql/statements/add-index.md)
       - [`ADMIN`](reference/sql/statements/admin.md)
+      - [`ALTER DATABASE`](reference/sql/statements/alter-database.md)
       - [`ALTER TABLE`](reference/sql/statements/alter-table.md)
       - [`ALTER USER`](reference/sql/statements/alter-user.md)
       - [`ANALYZE TABLE`](reference/sql/statements/analyze-table.md)
@@ -211,6 +223,7 @@
     - [生成列](reference/sql/generated-columns.md)
     - [分区表](reference/sql/partitioning.md)
     - [字符集](reference/sql/character-set.md)
+    - [SQL 模式](reference/sql/sql-mode.md)
   + 配置
     + tidb-server
       - [MySQL 系统变量](reference/configuration/tidb-server/mysql-variables.md)
@@ -219,8 +232,14 @@
       - [配置文件描述](reference/configuration/tidb-server/configuration-file.md)
     + pd-server
       - [配置参数](reference/configuration/pd-server/configuration.md)
+      - [配置文件描述](reference/configuration/pd-server/configuration-file.md)
     + tikv-server
       - [配置参数](reference/configuration/tikv-server/configuration.md)
+      - [配置文件描述](reference/configuration/tikv-server/configuration-file.md)
+    + Kubernetes 上的 TiDB
+      - [集群配置](reference/configuration/tidb-in-kubernetes/cluster-configuration.md)
+      - [备份配置](reference/configuration/tidb-in-kubernetes/backup-configuration.md)
+      - [本地 PV 配置](reference/configuration/tidb-in-kubernetes/local-pv-configuration.md)
   + 监控指标
     - [Overview 面板](reference/key-monitoring-metrics/overview-dashboard.md)
     - [TiDB 面板](reference/key-monitoring-metrics/tidb-dashboard.md)
@@ -241,18 +260,22 @@
     - [`information_schema`](reference/system-databases/information-schema.md)
   - [错误码](reference/error-codes.md)
   - [支持的连接器和 API](reference/supported-clients.md)
-  - [垃圾回收 (GC)](reference/garbage-collection.md)
+  + 垃圾回收 (GC)
+    - [GC 机制简介](reference/garbage-collection/overview.md)
+    - [GC 配置](reference/garbage-collection/configuration.md)
   + 性能调优
     - [SQL 优化流程](reference/performance/sql-optimizer-overview.md)
     - [理解 TiDB 执行计划](reference/performance/understanding-the-query-execution-plan.md)
     - [执行计划绑定](reference/performance/execution-plan-bind.md)
     - [统计信息概述](reference/performance/statistics.md)
     - [Optimizer Hints](reference/performance/optimizer-hints.md)
+    - [使用 SQL 语句检查 TiDB 集群状态](dev/reference/performance/check-cluster-status-using-sql-statements.md)
     - [TiKV 调优](reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + [TiSpark 使用指南](reference/tispark.md)
   + [TiDB Binlog 简介](reference/tidb-binlog-overview.md)
   + 生态工具
+    - [tkctl](reference/tools/tkctl.md)
     - [Mydumper](reference/tools/mydumper.md)
     - [Loader](reference/tools/loader.md)
     - [Syncer](reference/tools/syncer.md)
@@ -284,6 +307,7 @@
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](how-to/migrate/from-aurora.md)
       - [DM 故障诊断](how-to/troubleshoot/data-migration.md)
+      - [FAQ](faq/data-migration.md)
     + TiDB Lightning
       - [概述](reference/tools/tidb-lightning/overview.md)
       - [部署执行](reference/tools/tidb-lightning/deployment.md)
@@ -301,23 +325,28 @@
 + 常见问题 (FAQ)
   - [TiDB FAQ](faq/tidb.md)
   - [TiDB-Lightning FAQ](faq/tidb-lightning.md)
+  - [Data Migration FAQ](faq/data-migration.md)
   - [升级 FAQ](faq/upgrade.md)
+  - [Kubernetes 上的 TiDB FAQ](faq/tidb-in-kubernetes.md)
 + 技术支持
   - [支持渠道](support-resources.md)
   - [反馈问题](report-issue.md)
 + [贡献](contribute.md)
   - [贡献代码](contribute.md#成为-tidb-的贡献者)
   - [改进文档](contribute.md#改进文档)
-- [TiDB 路线图](roadmap.md)
+
++ [TiDB 路线图](roadmap.md)
 + [版本发布历史](releases/rn.md)
   + v3.0
+    - [3.0 GA](releases/3.0-ga.md)
     - [3.0.0-rc.3](releases/3.0.0-rc.3.md)
     - [3.0.0-rc.2](releases/3.0.0-rc.2.md)
     - [3.0.0-rc.1](releases/3.0.0-rc.1.md)
     - [3.0.0-beta.1](releases/3.0.0-beta.1.md)
     - [3.0.0-beta](releases/3.0beta.md)
   + v2.1
-    - [2.1.13](releases/2.1.13.md)    
+    - [2.1.14](releases/2.1.14.md)
+    - [2.1.13](releases/2.1.13.md)
     - [2.1.12](releases/2.1.12.md)
     - [2.1.11](releases/2.1.11.md)
     - [2.1.10](releases/2.1.10.md)
