@@ -43,7 +43,7 @@ minikube start --docker-env https_proxy=http://127.0.0.1:1086 \
   --docker-env http_proxy=http://127.0.0.1:1086
 ```
 
-> **注意：** 
+> **注意：**
 >
 > 由于 Minikube 通过虚拟机（默认）运行，`127.0.0.1` 是虚拟机本身，有些情况下你可能想要使用你的主机的实际 IP。
 
@@ -115,6 +115,7 @@ GitCommit:"618447cbf203d147601b4b9bd7f8c37a5d39fbb4", GitTreeState:"clean"}
 ``` shell
 kubectl -n kube-system get pods -l app=helm
 ```
+
 ### 添加 Helm 仓库
 
 [Helm 仓库](http://charts.pingcap.org/)存放着 PingCAP 发布的 charts，例如 tidb-operator、tidb-cluster 和 tidb-backup 等等。可使用以下命令添加仓库：
@@ -174,7 +175,7 @@ helm upgrade tidb-operator pingcap/tidb-operator --namespace tidb-admin --set \
 
 ### 启动 TiDB 集群
 
-通过下面命令启动 TiDB 集群： 
+通过下面命令启动 TiDB 集群：
 
 {{< copyable "shell-regular" >}}
 
