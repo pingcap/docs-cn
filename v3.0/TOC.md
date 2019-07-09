@@ -1,5 +1,8 @@
 # TiDB 中文用户文档
 
+<!-- markdownlint-disable MD007 -->
+<!-- markdownlint-disable MD032 -->
+
 ## 目录
 
 + [关于 TiDB](overview.md)

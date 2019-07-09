@@ -1,8 +1,10 @@
 # TiDB 中文用户文档
 
+<!-- markdownlint-disable MD007 -->
+<!-- markdownlint-disable MD032 -->
+
 ## 目录
 
-<!-- markdownlint-disable MD007 -->
 + [关于 TiDB](overview.md)
 + 主要概念
   - [整体架构](architecture.md)
