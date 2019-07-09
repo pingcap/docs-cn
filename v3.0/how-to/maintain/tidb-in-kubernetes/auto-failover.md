@@ -11,7 +11,7 @@ category: how-to
 
 Auto Failover 功能在 TiDB Operator 中默认关闭。部署 TiDB Operator 时，可通过设置 `charts/tidb-operator/values.yaml` 文件的 `controllerManager.autoFailover` 为 `true` 开启该功能：
 
-```
+```yaml
 controllerManager:
  serviceAccount: tidb-controller-manager
  logLevel: 2
