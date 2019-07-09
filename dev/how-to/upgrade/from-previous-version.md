@@ -105,7 +105,7 @@ $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
 
     > 单机多 TiKV 实例（进程）情况下，需要修改这三个参数
     >
-    > 推荐设置：TiKV 实例数量 * 参数值 = CPU 核心数量 * 0.8
+    > 推荐设置：TiKV 实例数量 \* 参数值 = CPU 核心数量 * 0.8
 
 - TiKV 配置中不同 CF 中的 `block-cache-size` 参数变更为 `block-cache`
 
@@ -114,7 +114,7 @@ $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
       block-cache:
         capacity: "1GB"
     ```
-    
+
     > 单机多 TiKV 实例（进程）情况下，需要修改 `capacity` 参数
     >
     > 推荐设置：`capacity` = (MEM_TOTAL * 0.5 / TiKV 实例数量)
