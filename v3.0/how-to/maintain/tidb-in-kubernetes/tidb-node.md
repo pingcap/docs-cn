@@ -1,9 +1,9 @@
 ---
-title: 维护 Kubernetes 上的 TiDB 集群节点
+title: 维护 TiDB 集群所在的 Kubernetes 节点
 category: how-to
 ---
 
-# 维护 Kubernetes 上的 TiDB 集群节点
+# 维护 TiDB 集群所在的 Kubernetes 节点
 
 TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正常运行，因此，我们可以安全地对底层 Kubernetes 节点进行停机维护。在具体操作时，针对 PD、TiKV 和 TiDB 实例的不同特性，我们需要采取不同的操作策略。
 
@@ -12,7 +12,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 环境准备：
 
 - [`kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-- [`tkctl`](/tidb-in-kubernetes/tkctl.md)
+- [`tkctl`](/reference/tools/tkctl.md)
 - [`jq`](https://stedolan.github.io/jq/download/)
 
 > **注意：**
@@ -41,7 +41,7 @@ PD 和 TiDB 实例的迁移较快，可以采取主动驱逐实例到其它节�
     kubectl cordon <node-name>
     ```
 
-3. 使用 `kubectl drain` 命令将待维护节点上的数据库实例迁移到其它实例上：
+3. 使用 `kubectl drain` 命令将待维护节点上的数据库实例迁移到其它节点上：
 
     {{< copyable "shell-regular" >}}
     
@@ -173,7 +173,7 @@ pd-ctl -d config set max-store-down-time 10m
     {{< copyable "shell-regular" >}}
 
     ```shell
-    $ watch pd-ctl -d store ${ID}
+    watch pd-ctl -d store ${ID}
     ```
 
 5. 解除 TiKV 实例与节点本地盘的绑定。
