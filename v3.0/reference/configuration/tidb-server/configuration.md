@@ -99,8 +99,8 @@ TiDB 通过命令行参数或环境变量配置。默认的 TiDB 端口为 4000�
 + TiDB 服务状态监听端口
 + 默认："10080"
 + 这个端口是为了展示 TiDB 内部数据用的。包括 [prometheus 统计](https://prometheus.io/) 以及 [pprof](https://golang.org/pkg/net/http/pprof/)
-+ Prometheus 统计可以通过 "http://host:status_port/metrics" 访问
-+ Pprof 数据可以通过 "http://host:status_port/debug/pprof" 访问
++ Prometheus 统计可以通过 `http://host:status_port/metrics` 访问
++ Pprof 数据可以通过 `http://host:status_port/debug/pprof` 访问
 
 ## `--metrics-addr`
 
@@ -124,7 +124,7 @@ TiDB 通过命令行参数或环境变量配置。默认的 TiDB 端口为 4000�
 
 + PROXY Protocol 允许的代理服务器地址列表，如果需要配置多个地址用`,`分隔。
 + 默认：""
-+ 如果为空，TiDB 会禁用 PROXY Protocol 功能。地址可以使用 IP 地址（192.168.1.50）或者 CIDR （192.168.1.0/24），`*` 代表所有地址。
++ 如果为空，TiDB 会禁用 PROXY Protocol 功能。地址可以使用 IP 地址（192.168.1.50）或者 CIDR (192.168.1.0/24)，`*` 代表所有地址。
 
 ## `--proxy-protocol-header-timeout`
 
