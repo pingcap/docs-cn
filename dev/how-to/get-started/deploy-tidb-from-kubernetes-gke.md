@@ -180,6 +180,7 @@ helm install pingcap/tidb-cluster -n demo --namespace=tidb --set pd.storageClass
 ``` shell
 kubectl get pods --namespace tidb -o wide --watch
 ```
+
 TiDB 集群包含 2 个 TiDB pod，3 个 TiKV pod 和 3 个 PD pod。如果所有 pod 状态都为 `Running`，<kbd>Ctrl</kbd>+<kbd>C</kbd> 停止并继续！
 
 ## 访问 TiDB 集群
@@ -191,6 +192,7 @@ TiDB 集群包含 2 个 TiDB pod，3 个 TiKV pod 和 3 个 PD pod。如果所�
 ``` shell
 kubectl get svc -n tidb --watch
 ```
+
 如果看到 `demo-tidb` 出现，说明服务已经可以访问，可以 <kbd>Ctrl</kbd>+<kbd>C</kbd> 停止。
 
 要访问 Kubernetes 集群中的 TiDB 服务，可以在 TiDB 服务和 Google Cloud Shell 之间建立一条隧道。建议这种方式只用于调试，因为如果 Google Cloud Shell 重启，隧道不会自动重新建立。要建立隧道：
@@ -217,6 +219,7 @@ mysql -h 127.0.0.1 -u root -P 4000
 ``` sql
 select tidb_version();
 ```
+
 如果用 Helm 安装的过程中没有指定密码，现在可以设置：
 
 {{< copyable "sql" >}}
