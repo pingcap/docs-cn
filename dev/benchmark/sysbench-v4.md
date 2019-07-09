@@ -34,6 +34,7 @@ Sysbench 版本：1.0.17
 使用 Sysbench 向集群导入 **16 张表，每张数据 1000 万**。起 3 个 sysbench 分别向 3 个 TiDB 发压，请求并发数逐步增加，单次测试时间 5 分钟。
 
 准备数据命令：
+
 ```sh
 sysbench oltp_common \
     --threads=16 \
@@ -47,6 +48,7 @@ sysbench oltp_common \
 ```
 
 执行测试命令：
+
 ```sh
 sysbench $testname \
     --threads=$threads \
@@ -88,6 +90,7 @@ sysbench $testname \
 [prepared-plan-cache]
 enabled = true
 ```
+
 并设置全局变量：
 
 ```sql
@@ -106,6 +109,7 @@ max-batch-wait-time = 2000000
 ### TiKV 参数配置
 
 2.1 和 3.0 使用如下配置：
+
 ```toml
 log-level = "error"
 [readpool.storage]
@@ -121,6 +125,7 @@ block-cache-size = "1GB"
 ```
 
 3.0 还做了如下配置：
+
 ```toml
 [raftstore]
 apply-pool-size = 3

@@ -201,7 +201,6 @@ mysql> select * from t1;
 
 `syncer` 每隔 30s 会输出当前的同步统计，如下
 
-
 ```bash
 2017/06/08 01:18:51 syncer.go:934: [info] [syncer]total events = 15, total tps = 130, recent tps = 4,
 master-binlog = (ON.000001, 11992), master-binlog-gtid=53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-74,

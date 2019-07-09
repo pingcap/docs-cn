@@ -169,7 +169,25 @@ helm upgrade ${releaseName} pingcap/tidb-cluster --version=${chartVersion} -f /h
 >
 > 如果集群已经在运行，即使没有配置修改，打开这个参数并运行 `helm upgrade` 也会触发 PD、TiKV 和 TiDB 滚动升级。
 >
-> 目前，集群创建后修改 PD 的 `schedule` 和 `replication` 配置（`values.yaml` 中的`maxStoreDownTime` 和 `maxReplicas` 参数，PD 配置文件中所有 `[schedule]` 和 `[replication]` 部分的配置 ）然后运行 `helm upgrade` 无法生效。集群创建后，你必须通过 `pd-ctl` 配置这些参数，请参考：[pd-ctl](/reference/tools/pd-control/)。
+> 目前，集群创建后修改 PD 的 `schedule` 和 `replication` 配置（`values.yaml` 中的 `maxStoreDownTime` 和 `maxReplicas` 参数，PD 配置文件中所有 `[schedule]` 和 `[replication]` 部分的配置）然后运行 `helm upgrade` 无法生效。集群创建后，你必须通过 `pd-ctl` 配置这些参数，请参考 [pd-ctl](/reference/tools/pd-control/)。
+
+如果 PD 集群不可用，[TiDB 集群伸缩](#tidb-集群伸缩)、[升级 TiDB 集群](#升级-tidb-集群)和[修改 TiDB 集群配置](#修改-tidb-集群配置)都无法操作，从 TiDB Operator 版本 > v1.0.0-beta.3 开始，支持 `force-upgrade`，在 PD 集群不可用的情况下，允许用户通过下面步骤强制升级集群以恢复集群功能：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl annotate --overwrite tc ${releaseName} -n ${namespace} tidb.pingcap.com/force-upgrade=true
+```
+
+然后执行对应操作中的 `helm upgrade` 命令。
+
+PD 集群恢复后，**必须**执行下面命令禁用强制升级功能，否则下次升级过程可能会出现异常：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl annotate tc ${releaseName} -n ${namespace} tidb.pingcap.com/force-upgrade-
+```
 
 ## 销毁 TiDB 集群
 
@@ -223,6 +241,7 @@ Grafana 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持负
     ```shell
     kubectl logs -n ${namespace} ${tidbPodName} | grep SLOW_QUERY
     ```
+
     如果 TiDB 版本 >= v2.1.8，由于慢查询日志格式发生变化，不太方便分离慢查询日志，建议参考下面内容配置 `separateSlowLog: true` 单独查看慢查询日志。
 
 * 配置 `separateSlowLog: true` 输出慢查询日志到一个 sidecar 容器：
