@@ -16,7 +16,7 @@ TiDB 通过命令行参数或环境变量配置。默认的 TiDB 端口为 4000�
 
 + 配置文件
 + 默认：""
-+ 如果你指定了配置文件，TiDB 会首先读取配置文件的配置。然后如果对应的配置在命令行参数里面也存在，TiDB 就会使用命令行参数的配置来覆盖配置文件里面的。详细的配置项可以看看[这里](/reference/configuration/tidb-server/configuration.md)
++ 如果你指定了配置文件，TiDB 会首先读取配置文件的配置。然后如果对应的配置在命令行参数里面也存在，TiDB 就会使用命令行参数的配置来覆盖配置文件里面的。详细的配置项请参阅 [TiDB 配置文件描述](/reference/configuration/tidb-server/configuration-file.md)。
 
 ## `--store`
 
@@ -98,8 +98,8 @@ TiDB 通过命令行参数或环境变量配置。默认的 TiDB 端口为 4000�
 + TiDB 服务状态监听端口
 + 默认："10080"
 + 这个端口是为了展示 TiDB 内部数据用的。包括 [prometheus 统计](https://prometheus.io/) 以及 [pprof](https://golang.org/pkg/net/http/pprof/)
-+ Prometheus 统计可以通过 "http://host:status_port/metrics" 访问
-+ Pprof 数据可以通过 "http://host:status_port/debug/pprof" 访问
++ Prometheus 统计可以通过 `http://host:status_port/metrics` 访问
++ Pprof 数据可以通过 `http://host:status_port/debug/pprof` 访问
 
 ## `--metrics-addr`
 
