@@ -15,74 +15,6 @@ namespace="tidb"
 chartVersion="v1.0.0-beta.3"
 ```
 
-Helm 安装完成后，通过下面命令获取要安装的 tidb-cluster chart 的 `values.yaml` 配置文件：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-mkdir -p /home/tidb/${releaseName} && \
-helm inspect values pingcap/tidb-cluster --version=${chartVersion} > /home/tidb/${releaseName}/values-${releaseName}.yaml
-```
-
-> **注意：**
->
-> `/home/tidb` 可以替换为你想用的目录，下文会用 `values.yaml` 指代 `/home/tidb/${releaseName}/values-${releaseName}.yaml`。
-
-## 配置
-
-TiDB Operator 把 `values.yaml` 作为 TiDB 集群的配置文件。`values.yaml` 提供了默认基本配置，你可以直接用它来快速部署，但是如果你有特殊配置需求或者要部署生产环境，你可以手动修改 `values.yaml` 中的变量。
-
-* 资源配置
-
-    * CPU & Memory
-
-        默认部署并没有为任何 Pod 设置 CPU 或者 Memory 的 request 或者 limit，这样 TiDB 集群可以运行在小的 Kubernetes 集群，例如 DinD 或者默认的 GKE 集群，以方便测试。但是对于生产环境，最好根据[推荐配置](/how-to/deploy/hardware-recommendations.md)调整 CPU、Memory 和存储资源。
-
-        资源 limit 应该大于等于资源 request，建议设置 limit 等于 request，这样可以获得 [`Guaranteed` QoS](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/#create-a-pod-that-gets-assigned-a-qos-class-of-guaranteed)。
-
-    * 存储
-
-        `values.yaml` 中的变量 `pd.storageClassName` 和 `tikv.storageClassName` 用于配置 PD 和 TiKV 的 `StorageClass`，默认配置为最小需求的 `local-storage`。
-        
-        如果你不想使用默认的 `StorageClass` 或者你的 Kubernetes 集群不支持 `local-storage`，可以通过下面命令找到可用的 `StorageClass` 并选择来配置 TiDB 集群。
-
-        {{< copyable "shell-regular" >}}
-
-        ``` shell
-        kubectl get sc
-        ```
-
-* 容灾配置
-
-    TiDB 是一个分布式数据库。容灾意味着任何一个物理节点宕机，不仅要保证 TiDB 服务可用，还要保证数据的完整性和可用性。
-
-    要在 Kubernetes 集群上保证 TiDB 集群的容灾，可通过服务和数据的调度解决这个问题。
-
-    * TiDB 实例容灾
-
-        TiDB Operator 通过扩展调度器保证 PD、TiKV 和 TiDB 主机级别的容灾。TiDB 集群设置这个扩展调度器作为默认调度器，具体配置为 `values.yaml` 中的 `schedulerName` 变量。
-
-        另一方面，通过 `affinity` 中的 `PodAntiAffinity` 配置保证其他拓扑级别（例如，机架、可用区、区域）的容灾。详细配置可参看 [pod affnity & anti affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature)。另外，`values.yaml` 中 `pd.affinity` 字段以注释形式提供了一个典型的容灾配置示例。
-
-    * 数据容灾
-
-        数据容灾是由 TiDB 集群自己保证的。TiDB Operator 只需要通过 TiKV Pod 所在的节点的特定标签获取拓扑信息，然后 PD 会根据拓扑信息自动调度数据副本。由于目前 TiDB Operator 只能识别特定标签，因此你只能通过下面标签设置拓扑信息：
-
-        * `region`：节点所在区域
-        * `zone`：节点所在可用区
-        * `rack`：节点所在机架
-        * `kubernetes.io/hostname`：节点 hostname
-
-        你需要通过下面命令给节点打上拓扑信息标签（不一定要打上所有标签）：
-
-        {{< copyable "shell-regular" >}}
-
-        ``` shell
-        kubectl label node <nodeName> region=<regionName> zone=<zoneName> rack=<rackName> kubernetes.io/hostname=<hostName>
-        ```
-
-对于其他设置，`values.yaml` 文件中的变量都带有自解释的注释，你可以在安装之前按需修改。
-
 ## GKE
 
 在 GKE 上，本地 SSD 卷默认大小限制为 375 GB，性能比永久性磁盘要差。
@@ -99,9 +31,26 @@ TiDB Operator 把 `values.yaml` 作为 TiDB 集群的配置文件。`values.yaml
 >
 > 整合多块本地 SSD 盘的部署方式假设一个虚拟机上只有一个进程需要使用本地 SSD。
 
+## 配置
+
+Helm 安装完成后，通过下面命令获取要安装的 tidb-cluster chart 的 `values.yaml` 配置文件：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+mkdir -p /home/tidb/${releaseName} && \
+helm inspect values pingcap/tidb-cluster --version=${chartVersion} > /home/tidb/${releaseName}/values-${releaseName}.yaml
+```
+
+> **注意：**
+>
+> `/home/tidb` 可以替换为你想用的目录，下文会用 `values.yaml` 指代 `/home/tidb/${releaseName}/values-${releaseName}.yaml`。
+
+有关配置信息请参考 [TiDB 集群部署配置文档](/reference/configuration/tidb-in-kubernetes/cluster-configuration.md)。
+
 ## 部署 TiDB 集群
 
-TiDB Operator 和 Helm 部署完成并配置完成，可以通过下面命令部署 TiDB 集群：
+TiDB Operator 部署并配置完成后，可以通过下面命令部署 TiDB 集群：
 
 {{< copyable "shell-regular" >}}
 
@@ -291,6 +240,7 @@ Grafana 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持负
     ```shell
     kubectl logs -n ${namespace} ${tidbPodName} | grep SLOW_QUERY
     ```
+
     如果 TiDB 版本 >= v2.1.8，由于慢查询日志格式发生变化，不太方便分离慢查询日志，建议参考下面内容配置 `separateSlowLog: true` 单独查看慢查询日志。
 
 * 配置 `separateSlowLog: true` 输出慢查询日志到一个 sidecar 容器：
