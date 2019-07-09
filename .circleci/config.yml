@@ -23,7 +23,7 @@ jobs:
           command: markdownlint README.md
 
       - run:
-          name: "Lint editted file"
+          name: "Lint edited files"
           command: |
             git remote add upstream https://github.com/pingcap/docs-cn.git
             git fetch upstream
