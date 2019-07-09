@@ -34,9 +34,9 @@ no-space-in-emphasis: true
 no-space-in-code: true
 no-space-in-links: true
 no-empty-links: true
-proper-names:
-  name: ['TiDB', 'TiKV', 'PingCAP']
-  code_blocks: false
+# proper-names:
+#   names: ['TiDB', 'TiKV', 'PingCAP']
+#   code_blocks: false
 no-alt-text: true
 code-block-style:
   style: fenced
