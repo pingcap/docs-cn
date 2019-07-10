@@ -3,6 +3,8 @@ title: TiDB 配置文件描述
 category: reference
 ---
 
+<!-- markdownlint-disable MD001 -->
+
 # TiDB 配置文件描述
 
 TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认的配置文件，重命名为 config.toml 即可。
