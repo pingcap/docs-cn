@@ -106,5 +106,16 @@ PD 可以通过命令行参数或环境变量配置。
 
 ## `--metrics-addr`
 
-+ Prometheus Pushgateway 的地址，默认不向 Promethus 推送数据.
++ 指定 Prometheus Pushgateway 的地址。
 + 默认：""
++ 如果留空，则不开启 Prometheus Push。
+
+## `--force-new-cluster`
+
++ 强制使用当前节点创建新的集群。
++ 默认：false
++ 仅用于在 PD 丢失多数副本的情况下恢复服务，可能会产生部分数据丢失。
+
+## `-V`, `--version`
+
++ 输出版本信息并退出。
