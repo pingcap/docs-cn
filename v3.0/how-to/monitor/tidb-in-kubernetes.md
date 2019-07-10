@@ -58,10 +58,11 @@ Prometheus 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持
 新部署的监控系统可以运行于独立的服务器、直接运行于 Kubernetes 所在的宿主机，或运行于 Kubernetes 集群内，不同部署方式除在安装配置与资源利用上存在少许差异，在使用上并没有重大区别。
 
 常见的可用于监控服务器资源的开源监控系统有：
- - [CollectD](https://collectd.org/)
- - [Nagios](https://www.nagios.org/)
- - [Prometheus](http://prometheus.io/) & [node_exporter](https://github.com/prometheus/node_exporter)
- - [Zabbix](https://www.zabbix.com/)
+
+- [CollectD](https://collectd.org/)
+- [Nagios](https://www.nagios.org/)
+- [Prometheus](http://prometheus.io/) & [node_exporter](https://github.com/prometheus/node_exporter)
+- [Zabbix](https://www.zabbix.com/)
 
 一些云服务商或专门的性能监控服务提供商也有各自的免费或收费的监控解决方案可以选择。
 
@@ -94,4 +95,3 @@ Prometheus 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持
 如果使用 Prometheus Operator 部署针对 Kubernetes 宿主机和服务的监控，会默认配置一些告警规则，并且会部署一个 AlertManager 服务，具体的设置方法请参阅 [kube-prometheus](https://github.com/coreos/kube-prometheus) 的说明。
 
 如果使用其他的工具或服务对 Kubernetes 宿主机和服务进行监控，请查阅该工具或服务提供商的对应资料。
-
