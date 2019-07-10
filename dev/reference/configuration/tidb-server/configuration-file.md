@@ -3,6 +3,8 @@ title: TiDB 配置文件描述
 category: reference
 ---
 
+<!-- markdownlint-disable MD001 -->
+
 # TiDB 配置文件描述
 
 TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认值的配置文件，重命名为 config.toml 即可。
@@ -22,6 +24,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 现在合法的选项是 ["log", "cancel"]，如果为 "log"，仅仅是打印日志，不作实质处理。如果为 "cancel"，我们会取消执行这个操作，并且输出日志。
 
 ### `mem-quota-query`
+
 + 单条 SQL 语句可以占用的最大内存阈值。
 + 默认值：34359738368
 + 超过该值的请求会被 `oom-action` 定义的行为所处理。
