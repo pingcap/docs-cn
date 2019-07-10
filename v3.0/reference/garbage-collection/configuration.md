@@ -37,7 +37,7 @@ update mysql.tidb set VARIABLE_VALUE="30m" where VARIABLE_NAME="tikv_gc_run_inte
 
     > **Note:**
     >
-    > - The value of `tikv_gc_life_time` must be greater than that of [`max-txn-time-use`](/reference/configuration/tidb-server/configuration-file#max-txn-time-use) in the TiDB configuration file by at least 10 seconds, and must than or equal to 10 minutes.
+    > - The value of `tikv_gc_life_time` must be greater than that of [`max-txn-time-use`](/reference/configuration/tidb-server/configuration-file.md#max-txn-time-use) in the TiDB configuration file by at least 10 seconds, and must than or equal to 10 minutes.
     > - In scenarios of frequent updates, a large value (days or even months) for `tikv_gc_life_time` may cause potential issues, such as:
     >    - Larger storage use
     >    - A large amount of history data may affect performance to a certain degree, especially for range queries such as `select count(*) from t`

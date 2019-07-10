@@ -14,7 +14,7 @@ This document describes how to deploy a TiDB cluster in the [minikube](https://k
 
 > **Note:**
 >
-> Although Minikube supports `--vm-driver=none` that uses host docker instead of VM, it is not fully tested with TiDB Operator and may not work. If you want to try TiDB Operator on a system without virtualization support (e.g., on a VPS), you might consider using [DinD](local-dind-tutorial.md) instead.
+> Although Minikube supports `--vm-driver=none` that uses host docker instead of VM, it is not fully tested with TiDB Operator and may not work. If you want to try TiDB Operator on a system without virtualization support (e.g., on a VPS), you might consider using [DinD](/how-to/get-started/deploy-tidb-from-kubernetes-dind.md) instead.
 
 ### Install minikube and start a Kubernetes cluster
 

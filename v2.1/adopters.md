@@ -44,7 +44,7 @@ This is a list of TiDB adopters in various industries.
 |[Hoodinn](https://www.crunchbase.com/organization/hoodinn)|Gaming||
 |[Ping++](https://www.crunchbase.com/organization/ping-5)|Mobile Payment|[Chinese](https://pingcap.com/cases-cn/user-case-ping++/)|
 |[Hainan eKing Technology](https://www.crunchbase.com/organization/hainan-eking-technology)|Enterprise Technology|[Chinese](https://pingcap.com/cases-cn/user-case-ekingtech/)|
-|[LianLian Tech](http://www.10030.com.cn/web/)|Mobile Payment||
+|[LianLian Tech](https://www.crunchbase.com/organization/lianlian-pay)|Mobile Payment||
 |[Tongdun Technology](https://www.crunchbase.com/organization/tongdun-technology)|FinTech||
 |[Wacai](https://www.crunchbase.com/organization/wacai)|FinTech||
 |[Tree Finance](https://www.treefinance.com.cn/)|FinTech||

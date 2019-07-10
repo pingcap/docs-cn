@@ -16,7 +16,7 @@ When you perform a rolling update for a TiDB cluster, the service is shut down s
 
 - To upgrade between large versions, you must upgrade [`tidb-ansible`](https://github.com/pingcap/tidb-ansible).
 
-    - To upgrade TiDB 2.0 (TiDB 2.0.1 or later) or TiDB 2.1 RC version to TiDB 2.1 GA version, see [TiDB 2.1 Upgrade Guide](/v2.1/how-to/upgrade/from-previous-version.md).
+    - To upgrade TiDB 2.0 (TiDB 2.0.1 or later) or TiDB 2.1 RC version to TiDB 2.1 GA version, see [TiDB 2.1 Upgrade Guide](https://pingcap.com/docs/v2.1/how-to/upgrade/from-previous-version/).
     - To upgrade TiDB 2.0 (TiDB 2.0.1 or later) or TiDB 2.1 RC to TiDB 3.0, see [TiDB 3.0 Upgrade Guide](/how-to/upgrade/from-previous-version.md).
 
 - For a minor upgrade, it is also recommended to update `tidb-ansible` for the latest configuration file templates, features, and bug fixes.

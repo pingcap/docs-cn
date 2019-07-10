@@ -34,7 +34,7 @@ DM-worker executes specific data replication tasks.
 - Orchestrating the operation of the data replication subtasks
 - Monitoring the running state of the data replication subtasks
 
-After DM-worker is started, it automatically replicates the upstream binlog to the local configuration directory (the default replication directory is `<deploy_dir>/relay_log` if DM is deployed using `DM-Ansible`). For details about DM-worker, see [DM-worker Introduction](/reference/tools/data-migration/dm-worker-intro.md). For details about the relay log, see [Relay Log](/tools/dm/relay-log.md).
+After DM-worker is started, it automatically replicates the upstream binlog to the local configuration directory (the default replication directory is `<deploy_dir>/relay_log` if DM is deployed using `DM-Ansible`). For details about DM-worker, see [DM-worker Introduction](/reference/tools/data-migration/dm-worker-intro.md). For details about the relay log, see [Relay Log](/reference/tools/data-migration/relay-log.md).
 
 ### dmctl 
 
