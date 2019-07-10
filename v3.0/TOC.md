@@ -1,5 +1,8 @@
 # TiDB 中文用户文档
 
+<!-- markdownlint-disable MD007 -->
+<!-- markdownlint-disable MD032 -->
+
 ## 目录
 
 + [关于 TiDB](overview.md)
@@ -268,7 +271,7 @@
     - [执行计划绑定](reference/performance/execution-plan-bind.md)
     - [统计信息概述](reference/performance/statistics.md)
     - [Optimizer Hints](reference/performance/optimizer-hints.md)
-    - [使用 SQL 语句检查 TiDB 集群状态](dev/reference/performance/check-cluster-status-using-sql-statements.md)
+    - [使用 SQL 语句检查 TiDB 集群状态](reference/performance/check-cluster-status-using-sql-statements.md)
     - [TiKV 调优](reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + [TiSpark 使用指南](reference/tispark.md)
@@ -326,6 +329,7 @@
   - [TiDB-Lightning FAQ](faq/tidb-lightning.md)
   - [Data Migration FAQ](faq/data-migration.md)
   - [升级 FAQ](faq/upgrade.md)
+  - [Kubernetes 上的 TiDB FAQ](faq/tidb-in-kubernetes.md)
 + 技术支持
   - [支持渠道](support-resources.md)
   - [反馈问题](report-issue.md)

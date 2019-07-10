@@ -9,6 +9,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 本文档只阐述未包含在命令行参数中的参数，命令行参数参见[这里](/reference/configuration/pd/configuration.md)。
 
+<!-- markdownlint-disable MD001 -->
 ### `lease`
 
 + PD Leader Key 租约超时时间，超时系统重新选举 Leader。
@@ -65,7 +66,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 开启独立的 region 存储。
 + 默认：false
 
-## log 
+## log
 
 日志相关的配置项。
 
@@ -182,7 +183,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 设置 store 空间不足的阈值。
 + 默认：0.8
 + 最小值：大于 0
-+ 最大值：小于 
++ 最大值：小于
 
 ### `tolerant-size-ratio`
 

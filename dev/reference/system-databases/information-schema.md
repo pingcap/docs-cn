@@ -147,11 +147,11 @@ CHARACTER_MAXIMUM_LENGTH: NULL
       CHARACTER_SET_NAME: NULL
           COLLATION_NAME: NULL
              COLUMN_TYPE: int(11)
-              COLUMN_KEY: 
-                   EXTRA: 
+              COLUMN_KEY:
+                   EXTRA:
               PRIVILEGES: select,insert,update,references
-          COLUMN_COMMENT: 
-   GENERATION_EXPRESSION: 
+          COLUMN_COMMENT:
+   GENERATION_EXPRESSION:
 1 row in set (0.01 sec)
 ```
 
@@ -237,16 +237,16 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 `SCHEMATA` 表提供了关于数据库的信息。表中的数据与 `SHOW DATABASES` 语句的执行结果等价。
 
 ```sql
-mysql> SELECT * FROM schemata; 
-+--------------+--------------------+----------------------------+------------------------+----------+ 
-| CATALOG_NAME | SCHEMA_NAME        | DEFAULT_CHARACTER_SET_NAME | DEFAULT_COLLATION_NAME | SQL_PATH | 
-+--------------+--------------------+----------------------------+------------------------+----------+ 
-| def          | INFORMATION_SCHEMA | utf8mb4                    | utf8mb4_bin            | NULL     | 
+mysql> SELECT * FROM schemata;
++--------------+--------------------+----------------------------+------------------------+----------+
+| CATALOG_NAME | SCHEMA_NAME        | DEFAULT_CHARACTER_SET_NAME | DEFAULT_COLLATION_NAME | SQL_PATH |
++--------------+--------------------+----------------------------+------------------------+----------+
+| def          | INFORMATION_SCHEMA | utf8mb4                    | utf8mb4_bin            | NULL     |
 | def          | mynewdb            | utf8mb4                    | utf8mb4_bin            | NULL     |
-| def          | mysql              | utf8mb4                    | utf8mb4_bin            | NULL     | 
-| def          | PERFORMANCE_SCHEMA | utf8mb4                    | utf8mb4_bin            | NULL     | 
-| def          | test               | utf8mb4                    | utf8mb4_bin            | NULL     | 
-+--------------+--------------------+----------------------------+------------------------+----------+ 
+| def          | mysql              | utf8mb4                    | utf8mb4_bin            | NULL     |
+| def          | PERFORMANCE_SCHEMA | utf8mb4                    | utf8mb4_bin            | NULL     |
+| def          | test               | utf8mb4                    | utf8mb4_bin            | NULL     |
++--------------+--------------------+----------------------------+------------------------+----------+
 5 rows in set (0.00 sec)
 ```
 
@@ -378,8 +378,8 @@ MAX_DATA_LENGTH: 0
      CHECK_TIME: NULL
 TABLE_COLLATION: utf8mb4_bin
        CHECKSUM: NULL
- CREATE_OPTIONS: 
-  TABLE_COMMENT: 
+ CREATE_OPTIONS:
+  TABLE_COMMENT:
   TIDB_TABLE_ID: 5
 1 row in set (0.00 sec)
 ```
@@ -586,9 +586,10 @@ mysql> desc USER_PRIVILEGES;
 
 `VIEWS` 表提供了关于 SQL 视图的信息。
 
-```
+```sql
 mysql> create view test.v1 as select 1;
 Query OK, 0 rows affected (0.00 sec)
+
 mysql> select * from views\G
 *************************** 1. row ***************************
        TABLE_CATALOG: def
