@@ -78,6 +78,7 @@ Prometheus 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持
 我们推荐通过 [Prometheus Operator](https://github.com/coreos/prometheus-operator) 部署基于 [Node Exporter](https://github.com/prometheus/node_exporter) 和 Prometheus 的宿主机监控系统，这一方案同时可以兼容并用于对宿主机资源的监控。
 
 ## 报警配置
+
 ### TiDB 集群报警
 
 在随 TiDB 集群部署 Prometheus 时，会自动导入一些默认的报警规则，可以通过浏览器访问 Prometheus 的 Alerts 页面查看当前系统中的所有报警规则和状态。
