@@ -35,7 +35,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'xxx'@'%';
 {{< copyable "sql" >}}
 
 ```sql
-mysql> select @@sql_mode;
+select @@sql_mode;
 ```
 
 ```+-------------------------------------------------------------------------------------------------------------------------------------------+
@@ -118,7 +118,7 @@ Query OK, 0 rows affected (0.00 sec)
 {{< copyable "sql" >}}
 
 ```sql
-mysql> SELECT user,host FROM mysql.tables_priv WHERE user='xxxx';
+SELECT user,host FROM mysql.tables_priv WHERE user='xxxx';
 ```
 
 ```
@@ -135,7 +135,7 @@ mysql> SELECT user,host FROM mysql.tables_priv WHERE user='xxxx';
 {{< copyable "sql" >}}
 
 ```sql
-mysql> GRANT ALL PRIVILEGES ON `te%`.* TO genius;
+GRANT ALL PRIVILEGES ON `te%`.* TO genius;
 ```
 
 ```
@@ -188,7 +188,7 @@ ERROR 1141 (42000): There is no such grant defined for user 'genius' on host '%'
 {{< copyable "sql" >}}
 
 ```sql
-mysql> GRANT ALL PRIVILEGES ON `te\%`.* TO 'genius'@'localhost';
+GRANT ALL PRIVILEGES ON `te\%`.* TO 'genius'@'localhost';
 ```
 
 ```
@@ -226,7 +226,7 @@ Query OK, 0 rows affected (0.00 sec)
 {{< copyable "sql" >}}
 
 ```sql
-mysql> CREATE TABLE `select` (id int);
+CREATE TABLE `select` (id int);
 ```
 
 ```
