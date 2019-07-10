@@ -38,7 +38,7 @@ TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
 对于 TiKV 与 TiSpark 分开部署的场景，可以参考如下建议配置：
 
-+   硬件配置建议
++ 硬件配置建议
 
     普通场景可以参考 [TiDB 和 TiKV 硬件配置建议](/how-to/deploy/hardware-recommendations.md)，但是如果是偏重分析的场景，可以将 TiKV 节点增加到至少 64G 内存。
 
@@ -287,7 +287,7 @@ df.write
 .option("isolationLevel", "NONE") // recommended to set isolationLevel to NONE if you have a large DF to load.
 .option("user", "root") // TiDB user here
 .save()
-``` 
+```
 
 推荐将 `isolationLevel` 设置为 `NONE`，否则单一大事务有可能造成 TiDB 服务器内存溢出。
 
@@ -311,10 +311,10 @@ TiSpark 可以使用 TiDB 的统计信息：
 
 ## TiSpark FAQ
 
--   Q. 是独立部署还是和现有 Spark／Hadoop 集群共用资源？
+- Q. 是独立部署还是和现有 Spark／Hadoop 集群共用资源？
 
-    A. 可以利用现有 Spark 集群无需单独部署，但是如果现有集群繁忙，TiSpark 将无法达到理想速度。
+  A. 可以利用现有 Spark 集群无需单独部署，但是如果现有集群繁忙，TiSpark 将无法达到理想速度。
 
--   Q. 是否可以和 TiKV 混合部署？
+- Q. 是否可以和 TiKV 混合部署？
 
-    A. 如果 TiDB 以及 TiKV 负载较高且运行关键的线上任务，请考虑单独部署 TiSpark；并且考虑使用不同的网卡保证 OLTP 的网络资源不被侵占而影响线上业务。如果线上业务要求不高或者机器负载不大，可以考虑与 TiKV 混合部署。
+  A. 如果 TiDB 以及 TiKV 负载较高且运行关键的线上任务，请考虑单独部署 TiSpark；并且考虑使用不同的网卡保证 OLTP 的网络资源不被侵占而影响线上业务。如果线上业务要求不高或者机器负载不大，可以考虑与 TiKV 混合部署。
