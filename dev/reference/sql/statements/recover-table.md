@@ -53,6 +53,8 @@ RECOVER TABLE BY JOB ddl_job_id
     ADMIN SHOW DDL JOBS 1; -- 查找删除表 t 时的 DDL JOB ID，这里是 53。
     ```
 
+查找删除表 t 时的 DDL JOB ID，这里是 53。
+
     ```
     +--------+---------+------------+------------+--------------+-----------+----------+-----------+-----------------------------------+--------+
     | JOB_ID | DB_NAME | TABLE_NAME | JOB_TYPE   | SCHEMA_STATE | SCHEMA_ID | TABLE_ID | ROW_COUNT | START_TIME                        | STATE  |
