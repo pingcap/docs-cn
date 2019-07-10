@@ -56,9 +56,9 @@ Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的数�
 
 如果错误原因是非法数据源，使用 `tidb-lightning-ctl` 删除已导入数据，并重启 Lightning。
 
-    ```sh
-    tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
-    ```
+```sh
+tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
+```
 
 其他解决方法请参考[断点续传的控制](/reference/tools/tidb-lightning/checkpoints.md#断点续传的控制)。
 
