@@ -209,4 +209,3 @@ TiDB 在 v2.1.1 及之前版本中，如果 charset 是 UTF8，没有对 4-byte 
     > **注意：**
     >
     > `treat-old-version-utf8-as-utf8mb4` 参数默认打开，如果客户端强制需要用 UTF8 而不用 UTF8MB4，需要在配置文件中关闭。
-
