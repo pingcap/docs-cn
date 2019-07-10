@@ -249,7 +249,7 @@ kubectl logs -f ${tidb-pod-name} -n ${namespace}
     {{< copyable "shell-regular" >}}
 
     ```shell
-    iptables-save |grep ${clusterIP}
+    iptables-save -t nat |grep ${clusterIP}
     ```
 
     * 检查对应的 endpoint 是否正确
