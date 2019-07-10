@@ -11,8 +11,13 @@ category: reference
 
 `ANALYZE_STATUS` 表提供正在执行的收集统计信息的任务以及有限条历史任务记录。
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> select * from `ANALYZE_STATUS`
+select * from `ANALYZE_STATUS`
+```
+
+```
 +--------------+------------+----------------+-------------------+----------------+---------------------+----------+
 | TABLE_SCHEMA | TABLE_NAME | PARTITION_NAME | JOB_INFO          | PROCESSED_ROWS | START_TIME          | STATE    |
 +--------------+------------+----------------+-------------------+----------------+---------------------+----------+
@@ -330,8 +335,13 @@ SELECT * FROM session_variables LIMIT 10;
 
 `SLOW_QUERY` 提供了慢查询相关的一些信息。表的内容通过解析 TiDB 慢日志文件的数据而来，表中列名和慢日志中的字段名是一一对应的关系。更多操作可以参考[慢查询日志文档](/how-to/maintain/identify-slow-queries.md)。
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql>desc SLOW_QUERY;
+desc SLOW_QUERY;
+```
+
+```
 +---------------+---------------------+------+-----+---------+-------+
 | Field         | Type                | Null | Key | Default | Extra |
 +---------------+---------------------+------+-----+---------+-------+
@@ -539,7 +549,10 @@ CONSTRAINT_CATALOG: def
 {{< copyable "sql" >}}
 
 ```sql
-mysql> desc TIDB_HOT_REGIONS;
+desc TIDB_HOT_REGIONS;
+```
+
+```
 +----------------+---------------------+------+-----+---------+-------+
 | Field          | Type                | Null | Key | Default | Extra |
 +----------------+---------------------+------+-----+---------+-------+
@@ -559,8 +572,13 @@ mysql> desc TIDB_HOT_REGIONS;
 
 `TIDB_INDEXES` 记录了所有表中的 INDEX 信息。
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> desc TIDB_INDEXES;
+desc TIDB_INDEXES;
+```
+
+```
 +---------------+---------------------+------+-----+---------+-------+
 | Field         | Type                | Null | Key | Default | Extra |
 +---------------+---------------------+------+-----+---------+-------+
@@ -580,8 +598,13 @@ mysql> desc TIDB_INDEXES;
 
 `TIKV_REGION_PEERS` 表提供了所有 REGION 的 peer 信息。
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> desc TIKV_REGION_PEERS;
+desc TIKV_REGION_PEERS;
+```
+
+```
 +--------------+---------------------+------+-----+---------+-------+
 | Field        | Type                | Null | Key | Default | Extra |
 +--------------+---------------------+------+-----+---------+-------+
@@ -599,8 +622,13 @@ mysql> desc TIKV_REGION_PEERS;
 
 `TIKV_REGION_STATUS` 表提供了所有 REGION 的状态信息。
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> desc TIKV_REGION_STATUS;
+desc TIKV_REGION_STATUS;
+```
+
+```
 +------------------+---------------------+------+-----+---------+-------+
 | Field            | Type                | Null | Key | Default | Extra |
 +------------------+---------------------+------+-----+---------+-------+
@@ -620,8 +648,13 @@ mysql> desc TIKV_REGION_STATUS;
 
 `TIKV_STORE_STATUS` 表提供了所有 TiKV Store 的状态信息。
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> desc TIKV_STORE_STATUS;
+desc TIKV_STORE_STATUS;
+```
+
+```
 +-------------------+---------------------+------+-----+---------+-------+
 | Field             | Type                | Null | Key | Default | Extra |
 +-------------------+---------------------+------+-----+---------+-------+
@@ -651,8 +684,13 @@ mysql> desc TIKV_STORE_STATUS;
 
 `USER_PRIVILEGES` 表提供了关于全局权限的信息。该表的数据根据 `mysql.user` 系统表生成。
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> desc USER_PRIVILEGES;
+desc USER_PRIVILEGES;
+```
+
+```
 +----------------|--------------|------|------|---------|-------+
 | Field          | Type         | Null | Key  | Default | Extra |
 +----------------|--------------|------|------|---------|-------+
@@ -668,11 +706,23 @@ mysql> desc USER_PRIVILEGES;
 
 `VIEWS` 表提供了关于 SQL 视图的信息。
 
-```sql
-mysql> create view test.v1 as select 1;
-Query OK, 0 rows affected (0.00 sec)
+{{< copyable "sql" >}}
 
-mysql> select * from views\G
+```sql
+create view test.v1 as select 1;
+```
+
+```
+Query OK, 0 rows affected (0.00 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+select * from views;
+```
+
+```
 *************************** 1. row ***************************
        TABLE_CATALOG: def
         TABLE_SCHEMA: test
