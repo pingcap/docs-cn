@@ -203,3 +203,4 @@ TiDB 在 v2.1.1 及之前版本中，如果 charset 是 UTF8，没有对 4-byte 
         # Disabled.
         set @@session.tidb_check_mb4_value_in_utf8 = 0;
         ```
+        
