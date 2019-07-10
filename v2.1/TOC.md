@@ -1,5 +1,8 @@
 # TiDB 中文用户文档
 
+<!-- markdownlint-disable MD007 -->
+<!-- markdownlint-disable MD032 -->
+
 ## 目录
 
 + [关于 TiDB](overview.md)
@@ -295,7 +298,6 @@
 - [TiDB 路线图](roadmap.md)
 + [版本发布历史](releases/rn.md)
   + v3.0
-  +   
     - [3.0 GA](releases/3.0-ga.md)
     - [3.0.0-rc.3](releases/3.0.0-rc.3.md)
     - [3.0.0-rc.2](releases/3.0.0-rc.2.md)
