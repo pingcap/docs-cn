@@ -6,7 +6,7 @@ category: reference
 
 # SHOW TABLE STATUS
 
-`SHOW TABLE STATUS` 语句用于显示 TiDB 中表的各种统计信息。如果显示统计信息过期，建议运行 [`ANALYZE TABLE`](/dev/reference/sql/statements/analyze-table.md)。
+`SHOW TABLE STATUS` 语句用于显示 TiDB 中表的各种统计信息。如果显示统计信息过期，建议运行 [`ANALYZE TABLE`](/reference/sql/statements/analyze-table.md)。
 
 ## 语法图
 
@@ -49,9 +49,9 @@ Max_data_length: 0
     Update_time: NULL
      Check_time: NULL
       Collation: utf8mb4_bin
-       Checksum: 
- Create_options: 
-        Comment: 
+       Checksum:
+ Create_options:
+        Comment:
 1 row in set (0.00 sec)
 
 mysql> analyze table t1;
@@ -74,19 +74,19 @@ Max_data_length: 0
     Update_time: NULL
      Check_time: NULL
       Collation: utf8mb4_bin
-       Checksum: 
- Create_options: 
-        Comment: 
+       Checksum:
+ Create_options:
+        Comment:
 1 row in set (0.00 sec)
 ```
 
 ## MySQL 兼容性
 
-`SHOW TABLE STATUS` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/dev/report-issue.md)。
+`SHOW TABLE STATUS` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW TABLES](/dev/reference/sql/statements/show-tables.md)
-* [CREATE TABLE](/dev/reference/sql/statements/create-table.md)
-* [DROP TABLE](/dev/reference/sql/statements/drop-table.md)
-* [SHOW CREATE TABLE](/dev/reference/sql/statements/show-create-table.md)
+* [SHOW TABLES](/reference/sql/statements/show-tables.md)
+* [CREATE TABLE](/reference/sql/statements/create-table.md)
+* [DROP TABLE](/reference/sql/statements/drop-table.md)
+* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)

@@ -6,7 +6,7 @@ category: reference
 
 # SET [GLOBAL|SESSION] <variable>
 
-`SET [GLOBAL|SESSION]` 语句用于在 `SESSION` 或 ` GLOBAL` 的范围内，对某个 TiDB 的内置变量进行更改。需注意，对 `GLOBAL` 变量的更改不适用于已有连接或本地连接，这与 MySQL 类似。只有新会话才会反映值的变化。
+`SET [GLOBAL|SESSION]` 语句用于在 `SESSION` 或 `GLOBAL` 的范围内，对某个 TiDB 的内置变量进行更改。需注意，对 `GLOBAL` 变量的更改不适用于已有连接或本地连接，这与 MySQL 类似。只有新会话才会反映值的变化。
 
 ## 语法图
 
@@ -66,8 +66,8 @@ mysql> SHOW SESSION VARIABLES LIKE 'sql_mode';
 
 ## MySQL 兼容性
 
-`SET [GLOBAL|SESSION]` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/dev/report-issue.md)。
+`SET [GLOBAL|SESSION]` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW \[GLOBAL|SESSION\] VARIABLES](/dev/reference/sql/statements/show-variables.md)
+* [SHOW \[GLOBAL|SESSION\] VARIABLES](/reference/sql/statements/show-variables.md)

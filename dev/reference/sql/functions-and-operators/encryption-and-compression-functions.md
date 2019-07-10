@@ -1,11 +1,9 @@
 ---
 title: 加密和压缩函数
 category: reference
-aliases: ['/docs-cn/sql/encryption-and-compression-functions/']
 ---
 
 # 加密和压缩函数
-
 
 | 函数名      | 功能描述      |
 |:-----------|:----------------------------|

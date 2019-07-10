@@ -42,7 +42,6 @@ category: reference
 
 ![IndexOption](/media/sqlgram/IndexOption.png)
 
-
 ## 示例
 
 ```sql
@@ -63,7 +62,7 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 +---------------------+----------+------+-------------------------------------------------------------+
 3 rows in set (0.00 sec)
 
-mysql> CREATE INDEX c1 ON t1 (c1); 
+mysql> CREATE INDEX c1 ON t1 (c1);
 Query OK, 0 rows affected (0.30 sec)
 
 mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
@@ -90,9 +89,9 @@ Query OK, 0 rows affected (0.31 sec)
 
 ## 另请参阅
 
-* [ADD INDEX](/dev/reference/sql/statements/add-index.md)
-* [DROP INDEX](/dev/reference/sql/statements/drop-index.md)
-* [RENAME INDEX](/dev/reference/sql/statements/rename-index.md)
-* [ADD COLUMN](/dev/reference/sql/statements/add-column.md)
-* [CREATE TABLE](/dev/reference/sql/statements/create-table.md)
-* [EXPLAIN](/dev/reference/sql/statements/explain.md)
+* [ADD INDEX](/reference/sql/statements/add-index.md)
+* [DROP INDEX](/reference/sql/statements/drop-index.md)
+* [RENAME INDEX](/reference/sql/statements/rename-index.md)
+* [ADD COLUMN](/reference/sql/statements/add-column.md)
+* [CREATE TABLE](/reference/sql/statements/create-table.md)
+* [EXPLAIN](/reference/sql/statements/explain.md)

@@ -46,7 +46,7 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 +---------------------+----------+------+-------------------------------------------------------------+
 3 rows in set (0.00 sec)
 
-mysql> CREATE INDEX c1 ON t1 (c1); 
+mysql> CREATE INDEX c1 ON t1 (c1);
 Query OK, 0 rows affected (0.30 sec)
 
 mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
@@ -68,7 +68,7 @@ Query OK, 0 rows affected (0.30 sec)
 
 ## 另请参阅
 
-* [SHOW INDEX](/dev/reference/sql/statements/show-index.md)
-* [CREATE INDEX](/dev/reference/sql/statements/create-index.md)
-* [ADD INDEX](/dev/reference/sql/statements/add-index.md)
-* [RENAME INDEX](/dev/reference/sql/statements/rename-index.md)
+* [SHOW INDEX](/reference/sql/statements/show-index.md)
+* [CREATE INDEX](/reference/sql/statements/create-index.md)
+* [ADD INDEX](/reference/sql/statements/add-index.md)
+* [RENAME INDEX](/reference/sql/statements/rename-index.md)

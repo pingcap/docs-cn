@@ -1,7 +1,6 @@
 ---
 title: 用户自定义变量
 category: reference
-aliases: ['/docs-cn/sql/user-defined-variables/']
 ---
 
 # 用户自定义变量
@@ -14,7 +13,7 @@ aliases: ['/docs-cn/sql/user-defined-variables/']
 
 ```sql
 SET @var_name = expr [, @var_name = expr] ...
-或 
+或
 SET @var_name := expr
 ```
 

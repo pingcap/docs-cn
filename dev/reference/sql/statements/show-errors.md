@@ -26,7 +26,7 @@ category: reference
 mysql> select invalid;
 ERROR 1054 (42S22): Unknown column 'invalid' in 'field list'
 mysql> create invalid;
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 14 near "invalid" 
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 14 near "invalid"
 mysql> SHOW ERRORS;
 +-------+------+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Level | Code | Message                                                                                                                                                   |
@@ -37,7 +37,7 @@ mysql> SHOW ERRORS;
 2 rows in set (0.00 sec)
 
 mysql> CREATE invalid2;
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 15 near "invalid2" 
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 15 near "invalid2"
 mysql> SELECT 1;
 +------+
 | 1    |
@@ -52,8 +52,8 @@ Empty set (0.00 sec)
 
 ## MySQL 兼容性
 
-`SHOW ERRORS` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/dev/report-issue.md)。
+`SHOW ERRORS` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW WARNINGS](/dev/reference/sql/statements/show-warnings.md)
+* [SHOW WARNINGS](/reference/sql/statements/show-warnings.md)

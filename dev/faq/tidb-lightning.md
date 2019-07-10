@@ -1,7 +1,6 @@
 ---
 title: TiDB-Lightning 常见问题
 category: FAQ
-aliases: ['/docs-cn/tools/lightning/faq/','/docs-cn/faq/tidb-lightning/']
 ---
 
 # TiDB-Lightning 常见问题
@@ -51,7 +50,7 @@ mysql> ADMIN CHECKSUM TABLE `schema`.`table`;
 
 ## Lightning 支持哪些格式的数据源？
 
-到 v2.1.6 版本为止，只支持本地文档形式的数据源，支持 [mydumper](/dev/reference/tools/mydumper.md) 或 [CSV](/dev/reference/tools/tidb-lightning/csv.md) 格式。
+到 v2.1.6 版本为止，只支持本地文档形式的数据源，支持 [mydumper](/reference/tools/mydumper.md) 或 [CSV](/reference/tools/tidb-lightning/csv.md) 格式。
 
 ## 我已经在下游创建好库和表了，Lightning 可以忽略建库建表操作吗？
 

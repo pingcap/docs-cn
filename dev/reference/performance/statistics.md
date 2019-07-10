@@ -1,7 +1,6 @@
 ---
 title: 统计信息简介
 category: reference
-aliases: ['/docs-cn/sql/statistics/']
 ---
 
 # 统计信息简介
@@ -291,4 +290,3 @@ LOAD STATS 'file_name'
 ```
 
 `file_name` 为要导入的统计信息的文件名。
-

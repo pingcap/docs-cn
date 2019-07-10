@@ -1,7 +1,6 @@
 ---
 title: Syncer 使用文档
 category: reference
-aliases: ['/docs-cn/tools/syncer/']
 ---
 
 # Syncer 使用文档
@@ -10,7 +9,7 @@ aliases: ['/docs-cn/tools/syncer/']
 
 Syncer 是一个数据导入工具，能方便地将 MySQL 的数据增量导入到 TiDB。
 
-Syncer 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/dev/reference/tools/download.md)。
+Syncer 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/reference/tools/download.md)。
 
 ## Syncer 架构
 
@@ -353,7 +352,7 @@ target-table = "order_2017"
 
     - 5.5 < MySQL 版本 < 5.8
     - MariaDB 版本 >= 10.1.2（更早版本的 binlog 部分字段类型格式与 MySQL 不一致）
-    
+
     > **注意：**
     >
     > 如果上游 MySQL/MariaDB server 间构成主从复制结构，则
@@ -460,10 +459,10 @@ target-table = "order_2017"
     +---------------+-----------------------------------------------------------------------------------+
     1 row in set (0.01 sec)
     ```
+
 6. 检查字符集。
 
-    TiDB 和 MySQL 的字符集的兼容性不同，详见 [TiDB 支持的字符集](/sql/character-set-support.md)。
-
+    TiDB 和 MySQL 的字符集的兼容性不同，详见 [TiDB 支持的字符集](/reference/sql/character-set.md)。
 
 ## 监控方案
 
@@ -499,11 +498,11 @@ Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。配�
 
 #### Grafana 配置
 
-+ 进入 Grafana Web 界面（默认地址: http://localhost:3000 ，默认账号: admin 密码: admin）
++ 进入 Grafana Web 界面（默认地址: `http://localhost:3000` ，默认账号: admin 密码: admin）
 
 + 导入 dashboard 配置文件
 
-    点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 Dashboard [配置文件](https://github.com/pingcap/docs/tree/master/etc)上传 -> 选择对应的 data source
+    点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 Dashboard [配置文件](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json)上传 -> 选择对应的 data source
 
 ### Grafana Syncer metrics 说明
 
@@ -546,7 +545,6 @@ Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。配�
 
 - metrics: `syncer_binlog_file{node="syncer"}` and `syncer_binlog_file{node="master"}`
 - info: 需要配置 `position of binlog position` 一起看。`syncer_binlog_file{node="master"}` 表示上游 MySQL 当前 binlog position 的文件编号，`syncer_binlog_file{node="syncer"}` 表示上游 Syncer 已经同步到的 binlog 位置的文件编号
-
 
 #### title: execution jobs
 

@@ -4,7 +4,7 @@ summary: TiDB 数据库中 ANALYZE TABLE 的使用概况。
 category: reference
 ---
 
-# ANALYZE TABLE 
+# ANALYZE TABLE
 
 `ANALYZE TABLE` 语句用于更新 TiDB 在表和索引上留下的统计信息。执行大批量更新或导入记录后，或查询执行计划不是最佳时，建议运行 `ANALYZE TABLE`。
 
@@ -65,5 +65,5 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 ## 另请参阅
 
-* [EXPLAIN](/dev/reference/sql/statements/explain.md)
-* [EXPLAIN ANALYZE](/dev/reference/sql/statements/explain-analyze.md)
+* [EXPLAIN](/reference/sql/statements/explain.md)
+* [EXPLAIN ANALYZE](/reference/sql/statements/explain-analyze.md)

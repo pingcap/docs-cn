@@ -1,7 +1,6 @@
 ---
 title: TiDB-Lightning 错误排解
 category: reference
-aliases: ['/docs-cn/tools/lightning/errors/']
 ---
 
 # TiDB-Lightning 错误排解
@@ -51,17 +50,17 @@ Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的数�
 
 ## Checkpoint for … has invalid status: 18
 
-**原因**: [断点续传](/dev/reference/tools/tidb-lightning/checkpoints.md)已启用。Lightning 或 Importer 之前发生了异常退出。为了防止数据意外损坏，Lighting 在错误解决以前不会启动。
+**原因**: [断点续传](/reference/tools/tidb-lightning/checkpoints.md)已启用。Lightning 或 Importer 之前发生了异常退出。为了防止数据意外损坏，Lighting 在错误解决以前不会启动。
 
 **解决办法**:
 
 如果错误原因是非法数据源，使用 `tidb-lightning-ctl` 删除已导入数据，并重启 Lightning。
 
-    ```sh
-    tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
-    ```
+```sh
+tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
+```
 
-其他解决方法请参考[断点续传的控制](/dev/reference/tools/tidb-lightning/checkpoints.md#断点续传的控制)。
+其他解决方法请参考[断点续传的控制](/reference/tools/tidb-lightning/checkpoints.md#断点续传的控制)。
 
 ## ResourceTemporarilyUnavailable("Too many open engines …: 8")
 

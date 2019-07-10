@@ -1,12 +1,11 @@
 ---
 title: Reparo 使用文档
 category: reference
-aliases: ['/docs-cn/tools/binlog/reparo/']
 ---
 
 # Reparo 使用文档
 
-Reparo 是 TiDB-Binlog 的一个配套工具，用于增量的恢复。使用 TiDB-Binlog 中的 Drainer 将 binlog 按照 protobuf 格式输出到文件，通过这种方式来备份增量数据。当需要恢复增量数据时，使用 Reparo 解析文件中的 binlog，并将其应用到 TiDB／MySQL 中。
+Reparo 是 TiDB Binlog 的一个配套工具，用于增量的恢复。使用 TiDB Binlog 中的 Drainer 将 binlog 按照 protobuf 格式输出到文件，通过这种方式来备份增量数据。当需要恢复增量数据时，使用 Reparo 解析文件中的 binlog，并将其应用到 TiDB／MySQL 中。
 
 下载链接：[tidb-binlog-cluster-latest-linux-amd64.tar.gz](http://download.pingcap.org/tidb-binlog-cluster-latest-linux-amd64.tar.gz)
 

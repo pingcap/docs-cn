@@ -1,7 +1,6 @@
 ---
 title: 字面值
 category: reference
-aliases: ['/docs-cn/sql/literal-values/']
 ---
 
 # 字面值
@@ -53,17 +52,17 @@ SELECT _utf8'some text';
 
 转义字符：
 
-- \\0: ASCII NUL (X'00') 字符 
-- \\': 单引号 
-- \\": 双引号 
-- \\b: 退格符号 
-- \\n: 换行符 
-- \\r: 回车符 
+- \\0: ASCII NUL (X'00') 字符
+- \\': 单引号
+- \\": 双引号
+- \\b: 退格符号
+- \\n: 换行符
+- \\r: 回车符
 - \\t: tab 符（制表符）
-- \\z: ASCII 26 (Ctrl + Z) 
-- \\\\: 反斜杠 \\ 
-- \\%: \% 
-- \\_: \_ 
+- \\z: ASCII 26 (Ctrl + Z)
+- \\\\: 反斜杠 \\
+- \\%: \%
+- \\_: \_
 
 如果要在 string literal 中使用 `'` 或者 `"`，有以下几种办法：
 
@@ -213,7 +212,6 @@ mysql> SELECT TRUE, true, tRuE, FALSE, FaLsE, false;
 * b'01'
 * B'01'
 * 0b01
-
 
 非法的 Bit-value：
 

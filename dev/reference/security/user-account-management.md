@@ -1,7 +1,6 @@
 ---
 title: TiDB 用户账户管理
 category: reference
-aliases: ['/docs-cn/sql/user-account-management/']
 ---
 
 # TiDB 用户账户管理
@@ -226,7 +225,7 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
     mysql -h 127.0.0.1 -P 4000 -u root
     ```
 
-## `FLUSH PRIVILEGES` 
+## `FLUSH PRIVILEGES`
 
 如果授权表已被直接修改，运行如下命令可使改动立即生效：
 
@@ -236,4 +235,4 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 FLUSH PRIVILEGES;
 ```
 
-详情参见[权限管理](/dev/reference/security/privilege-system.md)。
+详情参见[权限管理](/reference/security/privilege-system.md)。

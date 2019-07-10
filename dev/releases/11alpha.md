@@ -1,14 +1,13 @@
 ---
 title: TiDB 1.1 Alpha Release Notes
 category: Releases
-aliases: ['/docs-cn/releases/11alpha/']
 ---
 
 # TiDB 1.1 Alpha Release Notes
 
 2018 年 1 月 19 日，TiDB 发布 1.1 Alpha 版。该版本对 MySQL 兼容性、SQL 优化器、系统稳定性、性能做了大量的工作。
 
-## TiDB：
+## TiDB
 
 - SQL parser
     - 兼容更多语法
@@ -29,7 +28,7 @@ aliases: ['/docs-cn/releases/11alpha/']
 - Server
     - 支持 PROXY protocol
 
-## PD：
+## PD
 
 - 增加更多的 API
 - 支持 TLS
@@ -37,7 +36,7 @@ aliases: ['/docs-cn/releases/11alpha/']
 - 调度适应不同的 Region size
 - Fix 了一些调度的 bug
 
-## TiKV：
+## TiKV
 
 - 支持 Raft learner
 - 优化 Raft Snapshot，减少 I/O 开销

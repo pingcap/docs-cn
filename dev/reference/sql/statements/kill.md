@@ -4,7 +4,7 @@ summary: TiDB 数据库中 KILL [TIDB] 的使用概况。
 category: reference
 ---
 
-# KILL [TIDB] 
+# KILL [TIDB]
 
 `KILL TIDB` 语句用于终止 TiDB 中的连接。
 
@@ -34,8 +34,8 @@ Query OK, 0 rows affected (0.00 sec)
 
 ## MySQL 兼容性
 
-* `KILL TIDB` 语句是 TiDB 的扩展语法。如果正尝试终止的会话位于同一个 TiDB 服务器上，可在配置文件里设置 [`compatible-kill-query = true`](/dev/reference/configuration/tidb-server/configuration-file.md#compatible-kill-query)。
+* `KILL TIDB` 语句是 TiDB 的扩展语法。如果正尝试终止的会话位于同一个 TiDB 服务器上，可在配置文件里设置 [`compatible-kill-query = true`](/reference/configuration/tidb-server/configuration-file.md#compatible-kill-query)。
 
 ## 另请参阅
 
-* [SHOW \[FULL\] PROCESSLIST](/dev/reference/sql/statements/show-processlist.md)
+* [SHOW \[FULL\] PROCESSLIST](/reference/sql/statements/show-processlist.md)
