@@ -81,39 +81,39 @@ aliases: ['/docs-cn/tools/binlog/deploy/','/docs-cn/dev/reference/tools/tidb-bin
 2. 部署并启动含 Pump 组件的 TiDB 集群
 
     参照上文配置完 `inventory.ini` 文件后，从以下两种方式中选择一种进行部署。
-    
+
     **方式一**：在已有的 TiDB 集群上增加 Pump 组件，需按以下步骤逐步进行。
-    
+
     1. 部署 pump_servers 和 node_exporters
-    
+
         ```
         ansible-playbook deploy.yml -l ${pump1_ip},${pump2_ip},[${alias1_name},${alias2_name}]
         ```
-        
+
         > **注意：**
         >
         > 以上命令中，逗号后不要加空格，否则会报错。
-    
+
     2. 启动 pump_servers
-    
+
         ```
         ansible-playbook start.yml --tags=pump
         ```
-        
+
     3. 更新并重启 tidb_servers
-    
+
         ```
         ansible-playbook rolling_update.yml --tags=tidb
         ```
-        
+
     4. 更新监控信息
-    
+
         ```
         ansible-playbook rolling_update_monitor.yml --tags=prometheus
         ```
 
     **方式二**：从零开始部署含 Pump 组件的 TiDB 集群
-    
+
     使用 Ansible 部署 TiDB 集群，方法参考 [TiDB Ansible 部署方案](/how-to/deploy/orchestrated/ansible.md)。
 
 3. 查看 Pump 服务状态
@@ -174,13 +174,14 @@ aliases: ['/docs-cn/tools/binlog/deploy/','/docs-cn/dev/reference/tools/tidb-bin
         $ vi drainer_mysql_drainer.toml
         ```
 
-        > **注意：** 
+        > **注意：**
         >
         > 配置文件名命名规则为 `别名_drainer.toml`，否则部署时无法找到自定义配置文件。
 
         db-type 设置为 "mysql"， 配置下游 MySQL 信息。
 
         ```toml
+        [syncer]
         # downstream storage, equal to --dest-db-type
         # Valid values are "mysql", "file", "kafka", "flash".
         db-type = "mysql"
@@ -206,12 +207,13 @@ aliases: ['/docs-cn/tools/binlog/deploy/','/docs-cn/dev/reference/tools/tidb-bin
         db-type 设置为 "file"。
 
         ```toml
+        [syncer]
         # downstream storage, equal to --dest-db-type
         # Valid values are "mysql", "file", "kafka", "flash".
         db-type = "file"
 
-        # Uncomment this if you want to use `file` as `db-type`. 
-        # The value can be `gzip`. Leave it empty to disable compression. 
+        # Uncomment this if you want to use `file` as `db-type`.
+        # The value can be `gzip`. Leave it empty to disable compression.
         [syncer.to]
         # default data directory: "{{ deploy_dir }}/data.drainer"
         dir = "data.drainer"

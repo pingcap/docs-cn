@@ -180,6 +180,7 @@ category: reference
         db-type 设置为 "mysql"， 配置下游 MySQL 信息。
 
         ```toml
+        [syncer]
         # downstream storage, equal to --dest-db-type
         # Valid values are "mysql", "file", "kafka", "flash".
         db-type = "mysql"
@@ -205,6 +206,7 @@ category: reference
         db-type 设置为 "file"。
 
         ```toml
+        [syncer]
         # downstream storage, equal to --dest-db-type
         # Valid values are "mysql", "file", "kafka", "flash".
         db-type = "file"
