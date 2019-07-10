@@ -103,8 +103,8 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群，TiDB 集群的部署配�
 | `tidb.plugin.list` | 指定 TiDB 加载的插件列表，plugin ID 命名规则：插件名-版本，例如：'conn_limit-1' | `[]` |
 | `tidb.preparedPlanCacheEnabled` | 是否启用 TiDB 的 prefared plan 缓存 | `false` |
 | `tidb.preparedPlanCacheCapacity` | TiDB 的 prefared plan 缓存数量 | `100` |
-| `tidb.txnLocalLatchesEnabled` | 是否启用事务的本地锁存，当事务之间存在大量冲突时启用它 | `false` |
-| `tidb.txnLocalLatchesCapacity` |   | `10240000` |
+| `tidb.txnLocalLatchesEnabled` | 是否启用事务内存锁，当本地事务冲突比较多时建议开启 | `false` |
+| `tidb.txnLocalLatchesCapacity` | 事务内存锁的容量，Hash 对应的 slot 数，会自动向上调整为 2 的指数倍。每个 slot 占 32 Bytes 内存。当写入数据的范围比较广时（如导数据），设置过小会导致变慢，性能下降。 | `10240000` |
 | `tidb.tokenLimit` | TiDB 并发执行会话的限制 | `1000` |
 | `tidb.memQuotaQuery` | TiDB 查询的内存限额，默认 32GB | `34359738368` |
 | `tidb.txnEntryCountLimit` | 一个事务中条目的数目限制。如果使用 TiKV 作为存储，则条目表示键/值对。**警告**：不要将该值设置得太大，否则会对 TiKV 集群造成很大影响。请仔细调整此配置 | `300000` |
