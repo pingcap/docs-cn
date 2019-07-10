@@ -9,6 +9,7 @@ category: reference
 `TRACE` 语句用于提供查询执行的详细信息，可通过 TiDB 服务器状态端口所公开的图形界面进行查看。
 
 ## 语法图
+
 **TraceStmt:**
 
 ![TraceStmt](/media/sqlgram/TraceStmt.png)

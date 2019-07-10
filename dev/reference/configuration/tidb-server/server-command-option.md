@@ -64,14 +64,13 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 + 默认: ""
 + 如果没设置这个参数，log 会默认输出到 "stderr"，如果设置了， log 就会输出到对应的文件里面，在每天凌晨，log 会自动轮转使用一个新的文件，并且将以前的文件改名备份
 
-
 ### \-\-metrics-addr
 
 + Prometheus Push Gateway 地址
 + 默认: ""
 + 如果为空，TiDB 不会将统计信息推送给 Push Gateway ，参数格式 如 `--metrics-addr=192.168.100.115:9091`
 
-### \-\-metrics-intervel
+### \-\-metrics-interval
 
 + 推送统计信息到 Prometheus Push Gateway 的时间间隔
 + 默认: 15s
@@ -107,8 +106,8 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 + TiDB 服务状态监听端口
 + 默认: "10080"
 + 这个端口是为了展示 TiDB 内部数据用的。包括 [prometheus 统计](https://prometheus.io/) 以及 [pprof](https://golang.org/pkg/net/http/pprof/)
-+ Prometheus 统计可以通过 "http://host:status_port/metrics" 访问
-+ Pprof 数据可以通过 "http://host:status_port/debug/pprof" 访问
++ Prometheus 统计可以通过 `http://host:status_port/metrics` 访问
++ Pprof 数据可以通过 `http://host:status_port/debug/pprof` 访问
 
 ### \-\-store
 
@@ -121,7 +120,7 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 
 启动 TiDB 服务器时，通过 `--config path` 可以指定服务器的配置文件。对于配置中重叠的选项，命令行启动参数的优先级高于配置文件。
 
-一份配置文件的示例参见 https://github.com/pingcap/tidb/blob/master/config/config.toml.example
+一份配置文件的示例参见 [https://github.com/pingcap/tidb/blob/master/config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)
 
 以下是启动参数的完整描述。
 

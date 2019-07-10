@@ -16,10 +16,11 @@ category: how-to
 Kubernetes 官方文档中提供了 [ElasticSearch](https://kubernetes.io/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/) 和 [Stackdriver](https://kubernetes.io/docs/tasks/debug-application-cluster/logging-stackdriver/) 两种日志收集方案可供参考。
 
 常见的可用于收集 Kubernetes 日志的开源工具有：
- - [Fluentd](https://www.fluentd.org/)
- - [Fluent-bit](https://fluentbit.io/)
- - [Filebeat](https://www.elastic.co/products/beats/filebeat)
- - [Logstash](https://www.elastic.co/products/logstash)
+
+- [Fluentd](https://www.fluentd.org/)
+- [Fluent-bit](https://fluentbit.io/)
+- [Filebeat](https://www.elastic.co/products/beats/filebeat)
+- [Logstash](https://www.elastic.co/products/logstash)
 
 收集到的日志通常可以汇总存储在某一特定的服务器上，或存放到 ElasticSearch 等专用的存储、分析系统当中。
 
@@ -47,7 +48,7 @@ stern -n ${namespace} tidb -c slowlog
 
 对于 3.0 之前的版本，在默认情况下，TiDB 会打印慢查询日志到标准输出，和应用日志混在一起。
 
-    如果 TiDB 版本 <= v2.1.7，你可以通过关键字 `SLOW_QUERY` 来筛选慢查询日志，例如：
+- 如果 TiDB 版本 <= v2.1.7，你可以通过关键字 `SLOW_QUERY` 来筛选慢查询日志，例如：
 
     {{< copyable "shell-regular" >}}
 
@@ -55,7 +56,7 @@ stern -n ${namespace} tidb -c slowlog
     kubectl logs -n ${namespace} ${tidbPodName} | grep SLOW_QUERY
     ```
 
-   如果 TiDB 版本 >= v2.1.8，由于慢查询日志格式发生变化，不太方便分离慢查询日志，建议参考下面内容配置 `separateSlowLog: true` 单独查看慢查询日志。
+- 如果 TiDB 版本 >= v2.1.8，由于慢查询日志格式发生变化，不太方便分离慢查询日志，建议参考下面内容配置 `separateSlowLog: true` 单独查看慢查询日志。
 
 在一些情况下，你可能希望使用一些工具或自动化系统对日志内容进行分析、处理。TiDB 各组件的应用日志使用了[统一的日志格式](https://github.com/tikv/rfcs/blob/master/text/2018-12-19-unified-log-format.md)以便于程序解析，但由于慢查询日志使用的是与 MySQL 兼容的多行格式，与应用日志混在一起时可能会对解析造成困难。
 
@@ -87,4 +88,3 @@ kubectl logs -n ${namespace} ${tidbPodName} -c slowlog
 系统日志可以通过常规方法在 Kubernetes 宿主机上收集，如果在你的现有基础设施中已经有用于收集日志的系统，只需要通过常规方法将相关服务器和日志文件添加到收集范围即可；如果没有可用的日志收集系统，或者希望部署一套独立的系统用于收集相关日志，也可以使用你熟悉的任意日志收集系统或方案。
 
 上文提到的几种常见日志收集工具均支持对系统日志的收集，一些云服务商或专门的性能监控服务提供商也有各自的免费或收费的日志收集方案可以选择。
-
