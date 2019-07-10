@@ -68,7 +68,7 @@ TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶�
 
 #### 1.1.13 除了官方文档，有没有其他 TiDB 知识获取途径？
 
-目前[官方文档](/verview.md#tidb-简介)是获取 TiDB 相关知识最主要、最及时的发布途径。除此之外，我们也有一些技术沟通群，如有需求可发邮件至 [info@pingcap.com](mailto:info@pingcap.com) 获取。
+目前[官方文档](/overview.md#tidb-简介)是获取 TiDB 相关知识最主要、最及时的发布途径。除此之外，我们也有一些技术沟通群，如有需求可发邮件至 [info@pingcap.com](mailto:info@pingcap.com) 获取。
 
 #### 1.1.14 TiDB 对哪些 MySQL variables 兼容？
 
@@ -318,7 +318,7 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 #### 2.3.2 滚动升级有那些影响?
 
-滚动升级 TiDB 服务，滚动升级期间不影响业务运行，需要配置最小集群拓扑（TiDB \* 2、PD \* 3、TiKV \* 3），如果集群环境中有 Pump/Drainer 服务，建议先停止 Drainer 后滚动升级（升级 TiDB 时会升级 Pump）。
+滚动升级 TiDB 服务，滚动升级期间不影响业务运行，需要配置最小集群拓扑（TiDB \* 2、PD * 3、TiKV * 3），如果集群环境中有 Pump/Drainer 服务，建议先停止 Drainer 后滚动升级（升级 TiDB 时会升级 Pump）。
 
 #### 2.3.3 Binary 如何升级？
 

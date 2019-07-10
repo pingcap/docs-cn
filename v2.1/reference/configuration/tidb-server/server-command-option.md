@@ -70,7 +70,7 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 + 默认: ""
 + 如果为空，TiDB 不会将统计信息推送给 Push Gateway ，参数格式 如 `--metrics-addr=192.168.100.115:9091`
 
-### \-\-metrics-intervel
+### \-\-metrics-interval
 
 + 推送统计信息到 Prometheus Push Gateway 的时间间隔
 + 默认: 15s
@@ -120,7 +120,7 @@ TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的
 
 启动 TiDB 服务器时，通过 `--config path` 可以指定服务器的配置文件。对于配置中重叠的选项，命令行启动参数的优先级高于配置文件。
 
-一份配置文件的示例参见 <https://github.com/pingcap/tidb/blob/master/config/config.toml.example>。
+配置文件的示例参见 <https://github.com/pingcap/tidb/blob/master/config/config.toml.example>。
 
 以下是启动参数的完整描述。
 

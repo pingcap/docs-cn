@@ -41,21 +41,35 @@ Pump/Drainer 中状态的定义：
 
 binlogctl 下载链接：
 
-```bash
-wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz
-wget https://download.pingcap.org/tidb-{version}-linux-amd64.sha256
+{{< copyable "shell-regular" >}}
 
-# 检查文件完整性，返回 ok 则正确
+```bash
+wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz && \
+wget https://download.pingcap.org/tidb-{version}-linux-amd64.sha256
+```
+
+检查文件完整性，返回 ok 则正确：
+
+{{< copyable "shell-regular" >}}
+
+```bash
 sha256sum -c tidb-{version}-linux-amd64.sha256
 ```
 
 对于 v2.1.0 GA 及以上版本，binlogctl 已经包含在 TiDB 的下载包中，其他版本需要单独下载 binlogctl:
 
-```bash
-wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
-wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
+{{< copyable "shell-regular" >}}
 
-# 检查文件完整性，返回 ok 则正确
+```bash
+wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz && \
+wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
+```
+
+检查文件完整性，返回 ok 则正确：
+
+{{< copyable "shell-regular" >}}
+
+```bash
 sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
 ```
 
@@ -91,15 +105,21 @@ Usage of binlogctl:
 
     设置 `cmd` 为 `pumps` 或者 `drainers` 来查看所有 Pump 或者 Drainer 的状态。例如：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pumps
+    ```
 
+    ```
     [2019/04/28 09:29:59.016 +00:00] [INFO] [nodes.go:48] ["query node"] [type=pump] [node="{NodeID: 1.1.1.1:8250, Addr: pump:8250, State: online, MaxCommitTS: 408012403141509121, UpdateTime: 2019-04-28 09:29:57 +0000 UTC}"]
     ```
 
 - 修改 Pump/Drainer 的状态
   
     设置 `cmd` 为 `update-pump` 或者 `update-drainer` 来更新 Pump 或者 Drainer 的状态。Pump 和 Drainer 的状态可以为：online，pausing，paused，closing 以及 offline。例如：
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd update-pump -node-id ip-127-0-0-1:8250 -state paused
@@ -111,6 +131,8 @@ Usage of binlogctl:
 
     分别设置 `cmd` 为 `pause-pump`、`pause-drainer`、`offline-pump`、`offline-drainer` 来暂停 Pump、暂停 Drainer、下线 Pump、下线 Drainer。例如：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pause-pump -node-id ip-127-0-0-1:8250
     ```
@@ -119,9 +141,13 @@ Usage of binlogctl:
 
 - 生成 Drainer 启动需要的 meta 文件
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd generate_meta
+    ```
 
+    ```
     INFO[0000] [pd] create pd client with endpoints [http://192.168.199.118:32379]
     INFO[0000] [pd] leader switches to: http://192.168.199.118:32379, previous:
     INFO[0000] [pd] init cluster id 6569368151110378289
@@ -136,8 +162,13 @@ Usage of binlogctl:
 
 - 查看 TiDB 是否开启 binlog
 
-    ```bash
-    mysql> show variables like "log_bin";
+    {{< copyable "sql" >}}
+
+    ```sql
+    show variables like "log_bin";
+    ```
+
+    ```
     +---------------+-------+
     | Variable_name | Value |
     +---------------+-------+
@@ -149,8 +180,13 @@ Usage of binlogctl:
 
 - 查看 Pump/Drainer 状态
 
-    ```bash
-    mysql> show pump status;
+    {{< copyable "sql" >}}
+
+    ```sql
+    show pump status;
+    ```
+
+    ```
     +--------|----------------|--------|--------------------|---------------------|
     | NodeID |     Address    | State  |   Max_Commit_Ts    |    Update_Time      |
     +--------|----------------|--------|--------------------|---------------------|
@@ -160,8 +196,13 @@ Usage of binlogctl:
     +--------|----------------|--------|--------------------|---------------------|
     ```
 
-    ```bash
-    mysql> show drainer status;
+    {{< copyable "sql" >}}
+
+    ```sql
+    show drainer status;
+    ```
+
+    ```
     +----------|----------------|--------|--------------------|---------------------|
     |  NodeID  |     Address    | State  |   Max_Commit_Ts    |    Update_Time      |
     +----------|----------------|--------|--------------------|---------------------|
@@ -173,13 +214,23 @@ Usage of binlogctl:
 
 - 修改 Pump/Drainer 状态
 
-    ```bach
-    mysql> change pump to node_state ='paused' for node_id 'pump1'";
+    {{< copyable "sql" >}}
+
+    ```sql
+    change pump to node_state ='paused' for node_id 'pump1'";
+    ```
+
+    ```
     Query OK, 0 rows affected (0.01 sec)
     ```
 
-    ```bach
-    mysql> change drainer to node_state ='paused' for node_id 'drainer1'";
+    {{< copyable "sql" >}}
+
+    ```sql
+    change drainer to node_state ='paused' for node_id 'drainer1'";
+    ```
+
+    ```
     Query OK, 0 rows affected (0.01 sec)
     ```
 
