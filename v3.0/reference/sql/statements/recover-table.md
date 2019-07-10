@@ -31,9 +31,7 @@ RECOVER TABLE t;
 
 根据表名恢复被删除的表，会找到最近历史 DDL JOB 中的第一个是 DROP TABLE 类型的 DDL 且 DROP TABLE 的表名等于 RECOVER TABLE 语句中指定的表名的表进行恢复。
 
-
 2. 根据删除表时的 DDL JOB ID 恢复被删除的表。
-
 
 {{< copyable "sql" >}}
 
@@ -73,4 +71,3 @@ TiDB 在删除表时，实际上只删除了表的元信息，并将需要删除
 * 上下游数据库的 GC life time 不一样。
 
 * 上下游数据库的同步延迟。
-
