@@ -67,7 +67,11 @@ free -m
 
 ## 硬件和部署要求
 
-和部署 tidb binary 集群的服务器要求一致，选用 Intel x86-64 架构的 64 位通用硬件服务器，网卡使用万兆网卡。具体 tidb 集群在物理机上的部署需求参考[这里](https://github.com/pingcap/docs-cn/blob/master/dev/how-to/deploy/hardware-recommendations.md), 对于服务器 disk、memory、cpu 的选择要看对集群的容量规划以及部署拓扑来定。线上 k8s 集群部署为了保证搞可用一般需要部署三个 master 节点，三个 etcd 节点，若干个 work 节点，同时为了充分的利用机器资源，master 节点一般也充当 work 节点(也就是 master 节点上也可以调度负载)，通过 kubelet 设置[预留资源](https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/) 来保证机器上的系统进程以及 k8s 的核心进程在工作负载很高的情况下仍然有足够的资源来运行，从而保证整个系统的稳定。下面按 3 k8s master + 3 etcd + 若干 work 节点部署方案分析。k8s 的多 master 节点高可用部署参考[官方文档](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/)
+和部署 tidb binary 集群的服务器要求一致，选用 Intel x86-64 架构的 64 位通用硬件服务器，网卡使用万兆网卡。具体 tidb 集群在物理机上的部署需求参考[这里](https://github.com/pingcap/docs-cn/blob/master/dev/how-to/deploy/hardware-recommendations.md)。
+
+对于服务器 disk、memory、cpu 的选择要看对集群的容量规划以及部署拓扑来定。线上 k8s 集群部署为了保证高可用一般需要部署三个 master 节点，三个 etcd 节点，若干个 work 节点，同时为了充分的利用机器资源，master 节点一般也充当 work 节点（也就是 master 节点上也可以调度负载），通过 kubelet 设置[预留资源](https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/) 来保证机器上的系统进程以及 k8s 的核心进程在工作负载很高的情况下仍然有足够的资源来运行，从而保证整个系统的稳定。
+
+下面按 3 k8s master + 3 etcd + 若干 work 节点部署方案分析。k8s 的多 master 节点高可用部署参考[官方文档](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/)。
 
 ## k8s 系统资源要求
 
