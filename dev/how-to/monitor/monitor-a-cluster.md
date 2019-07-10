@@ -35,7 +35,7 @@ curl http://127.0.0.1:10080/status
 
 - PD API 地址：`http://${host}:${port}/pd/api/v1/${api_name}`
 - 默认端口：2379
-- 各类 `api_name` 详细信息：参见 [PD API Doc](https://cdn.rawgit.com/pingcap/docs/master/op-guide/pd-api-v1.html)
+- 各类 `api_name` 详细信息：参见 [PD API Doc](https://download.pingcap.com/pd-api-doc.html)
 
 通过该接口可以获取当前所有 TiKV 节点的状态以及负载均衡信息。下面以一个单节点的 TiKV 集群为例，说明用户需要了解的信息：
 
@@ -170,7 +170,6 @@ scrape_configs:
       - '192.168.199.118:20180'
 
 ...
-
 ```
 
 启动 Grafana 服务：
@@ -251,7 +250,7 @@ $ ./bin/grafana-server \
 
 1. 登录 Grafana 界面。
 
-    - 默认地址：http://localhost:3000
+    - 默认地址：`http://localhost:3000`
     - 默认账户：admin
     - 默认密码：admin
 
