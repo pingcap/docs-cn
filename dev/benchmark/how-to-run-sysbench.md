@@ -60,7 +60,7 @@ enabled = true
 
 由于 TiKV 是以集群形式部署的，在 Raft 算法的作用下，能保证大多数节点已经写入数据。因此，除了对数据安全极端敏感的场景之外，raftstore 中的 `sync-log` 选项可以关闭。
 
-TiKV 集群存在两个 Column Family（Default CF 和 Write CF），主要用于存储不同类型的数据。对于 Sysbench 测试，导入数据的 Column Family 在 TiDB 集群中的比例是固定的。这个比例是： 
+TiKV 集群存在两个 Column Family（Default CF 和 Write CF），主要用于存储不同类型的数据。对于 Sysbench 测试，导入数据的 Column Family 在 TiDB 集群中的比例是固定的。这个比例是：
 
 Default CF : Write CF = 4 : 1
 
@@ -74,6 +74,16 @@ sync-log = false
 block-cache-size = "24GB"
 [rocksdb.writecf]
 block-cache-size = "6GB"
+```
+
+对于 3.0 及以后的版本，还可以使用共享 block cache 的方式进行设置：
+
+```toml
+log-level = "error"
+[raftstore]
+sync-log = false
+[storage.block-cache]
+capacity = "30GB"
 ```
 
 更详细的 TiKV 参数调优请参考 [TiKV 性能参数调优](/reference/performance/tune-tikv.md)。
@@ -153,7 +163,7 @@ sysbench --config-file=config oltp_point_select --tables=32 --table-size=1000000
 
 数据预热可将磁盘中的数据载入内存的 block cache 中，预热后的数据对系统整体的性能有较大的改善，建议在每次重启集群后进行一次数据预热。
 
-Sysbench 没有提供数据预热的功能，因此需要手动进行数据预热。
+Sysbench 1.0.14 没有提供数据预热的功能，因此需要手动进行数据预热。如果使用更新的 Sysbench 版本，可以使用自带的预热功能。
 
 以 Sysbench 中某张表 sbtest7 为例，执行如下 SQL 语句 进行数据预热：
 
@@ -207,7 +217,7 @@ sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 r
 
 | 类型 | Thread | TPS | QPS | avg.latency(ms) | .95.latency(ms) | max.latency(ms) |
 |:---- |:---- |:---- |:---- |:----------------|:----------------- |:---- |
-| oltp_update_index | 3\*8 | 9668.98 | 9668.98 | 2.51 | 3.19 | 103.88| 
+| oltp_update_index | 3\*8 | 9668.98 | 9668.98 | 2.51 | 3.19 | 103.88|
 | oltp_update_index | 3\*16 | 12834.99 | 12834.99 | 3.79 | 5.47 | 176.90 |
 | oltp_update_index | 3\*32 | 15955.77 | 15955.77 | 6.07 | 9.39 | 4787.14 |
 | oltp_update_index | 3\*64 | 18697.17 | 18697.17 | 10.34 | 17.63 | 4539.04 |

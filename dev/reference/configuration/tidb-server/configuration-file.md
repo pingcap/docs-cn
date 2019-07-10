@@ -3,6 +3,8 @@ title: TiDB 配置文件描述
 category: reference
 ---
 
+<!-- markdownlint-disable MD001 -->
+
 # TiDB 配置文件描述
 
 TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认值的配置文件，重命名为 config.toml 即可。
@@ -22,6 +24,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 现在合法的选项是 ["log", "cancel"]，如果为 "log"，仅仅是打印日志，不作实质处理。如果为 "cancel"，我们会取消执行这个操作，并且输出日志。
 
 ### `mem-quota-query`
+
 + 单条 SQL 语句可以占用的最大内存阈值。
 + 默认值：34359738368
 + 超过该值的请求会被 `oom-action` 定义的行为所处理。
@@ -64,7 +67,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 将旧表中的 utf8 字符集当成 utf8mb4的开关。
 + 默认值：true
 
-## log 
+## log
 
 日志相关的配置项。
 
@@ -193,7 +196,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `max-memory`
 
-+ Prepare cache LRU 使用的最大内存限制，超过 performance.max-memory * (1 - prepared-plan-cache.memory-guard-ratio)会 剔除 LRU 中的元素。 
++ Prepare cache LRU 使用的最大内存限制，超过 performance.max-memory * (1 - prepared-plan-cache.memory-guard-ratio)会 剔除 LRU 中的元素。
 + 默认值：0
 + 这个配置只有在 prepared-plan-cache.enabled 为 true 的情况才会生效。在 LRU 的 size 大于 prepared-plan-cache.capacity 的情况下，也会剔除 LRU 中的元素。
 
