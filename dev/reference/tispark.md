@@ -86,7 +86,7 @@ TiSpark 的 jar 包可以在[这里](http://download.pingcap.org/tispark-latest-
 {{< copyable "" >}}
 
 ```
-spark-shell --jars $TISPARK_FOLDER/tispark-core-${version-SNAPSHOT-jar-with-dependencies.jar
+spark-shell --jars $TISPARK_FOLDER/tispark-core-${version}-SNAPSHOT-jar-with-dependencies.jar
 ```
 
 ### 没有 Spark 集群的部署方式
