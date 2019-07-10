@@ -2,7 +2,6 @@
 title: Table Selector
 summary: 介绍 DM 的 Table Selector
 category: reference
-aliases: ['/docs-cn/tools/dm/table-selector/']
 ---
 
 # Table Selector
@@ -15,12 +14,12 @@ table selector 在 `schema-pattern`/`table-pattern` 中可以使用以下两个�
 
 + 星号(`*`)
 
-  - 匹配零个或者多个字符。例如， `doc*` 匹配 `doc` 和 `document`，但是不匹配 `dodo`。
-  - `*` 只能放在 pattern 的最后一位，例如，支持 `doc*`，但是不支持 `do*c`。
+    - 匹配零个或者多个字符。例如， `doc*` 匹配 `doc` 和 `document`，但是不匹配 `dodo`。
+    - `*` 只能放在 pattern 的最后一位，例如，支持 `doc*`，但是不支持 `do*c`。
 
 + 问号(`?`)
 
-  - 匹配任意一个空字符除外的字符。
+    - 匹配任意一个空字符除外的字符。
 
 ## 匹配规则
 

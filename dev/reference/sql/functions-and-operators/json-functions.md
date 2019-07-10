@@ -1,7 +1,6 @@
 ---
 title: JSON 函数及语法糖
 category: reference
-aliases: ['/docs-cn/sql/json-functions/']
 ---
 
 # JSON 函数及语法糖
@@ -48,7 +47,7 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。MySQL 5.7 发布
 | [JSON_TYPE(json_val)][json_type] | 检查某 JSON 文档内部内容的类型 |
 
 ## 未支持的函数
- 
+
 TiDB 暂未支持以下 JSON 函数。相关进展参见 [TiDB #7546](https://github.com/pingcap/tidb/issues/7546):
 
 * `JSON_APPEND` 及其别名 `JSON_ARRAY_APPEND`

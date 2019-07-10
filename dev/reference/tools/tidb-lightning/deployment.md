@@ -1,7 +1,6 @@
 ---
 title: TiDB-Lightning 部署与执行
 category: reference
-aliases: ['/docs-cn/tools/lightning/deployment/']
 ---
 
 # TiDB-Lightning 部署与执行
@@ -37,7 +36,7 @@ aliases: ['/docs-cn/tools/lightning/deployment/']
     - 32+ 逻辑核 CPU
     - 40 GB+ 内存
     - 1 TB+ SSD 硬盘，IOPS 越高越好（要求 ≥8000）
-      * 硬盘必须大于最大的 N 个表的大小总和，其中 N = max(index-concurrency, table-concurrency)。
+        * 硬盘必须大于最大的 N 个表的大小总和，其中 N = max(index-concurrency, table-concurrency)。
     - 使用万兆网卡，带宽需 300 MB/s 以上
     - 运行过程中 CPU、I/O 和网络带宽都可能打满，建议单独部署。
 
@@ -49,11 +48,11 @@ aliases: ['/docs-cn/tools/lightning/deployment/']
 >
 > - `tikv-importer` 将中间数据存储缓存到内存上以加速导入过程。占用内存大小可以通过 **(`max-open-engines` × `write-buffer-size` × 2) + (`num-import-jobs` × `region-split-size` × 2)** 计算得来。如果磁盘写入速度慢，缓存可能会带来更大的内存占用。
 
-此外，目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](/dev/how-to/deploy/hardware-recommendations.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 × [副本数量](/faq/tidb.md#3-2-6-每个-region-的-replica-数量可配置吗-调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。
+此外，目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](/how-to/deploy/hardware-recommendations.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 × [副本数量](/faq/tidb.md#3-2-6-每个-region-的-replica-数量可配置吗-调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。
 
 ## 导出数据
 
-我们使用 [`mydumper`](/dev/reference/tools/mydumper.md) 从 MySQL 导出数据，如下：
+我们使用 [`mydumper`](/reference/tools/mydumper.md) 从 MySQL 导出数据，如下：
 
 ```sh
 ./bin/mydumper -h 127.0.0.1 -P 3306 -u root -t 16 -F 256 -B test -T t1,t2 --skip-tz-utc -o /data/my_database/
@@ -67,7 +66,7 @@ aliases: ['/docs-cn/tools/lightning/deployment/']
 - `-F 256`：将每张表切分成多个文件，每个文件大小约为 256 MB。
 - `--skip-tz-utc`：添加这个参数则会忽略掉 TiDB 与导数据的机器之间时区设置不一致的情况，禁止自动转换。
 
-如果数据源是 CSV 文件，请参考 [CSV 支持](/dev/reference/tools/tidb-lightning/csv.md)获取配置信息。
+如果数据源是 CSV 文件，请参考 [CSV 支持](/reference/tools/tidb-lightning/csv.md)获取配置信息。
 
 ## 部署 TiDB-Lightning
 
@@ -75,7 +74,7 @@ aliases: ['/docs-cn/tools/lightning/deployment/']
 
 ### 使用 Ansible 部署 TiDB-Lightning
 
-TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/orchestrated/ansible.md)。
+TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orchestrated/ansible.md)。
 
 1. 编辑 `inventory.ini`，分别配置一个 IP 来部署 `tidb-lightning` 和 `tikv-importer`。
 
@@ -158,9 +157,9 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/o
 
 通过以下链接获取 TiDB-Lightning 安装包（需选择与集群相同的版本）：
 
-- **v2.1.9**: https://download.pingcap.org/tidb-v2.1.9-linux-amd64.tar.gz
-- **v2.0.9**: https://download.pingcap.org/tidb-lightning-v2.0.9-linux-amd64.tar.gz
-- 最新 unstable 版本：https://download.pingcap.org/tidb-lightning-test-xx-latest-linux-amd64.tar.gz
+- **v2.1.9**: [https://download.pingcap.org/tidb-v2.1.9-linux-amd64.tar.gz](https://download.pingcap.org/tidb-v2.1.9-linux-amd64.tar.gz)
+- **v2.0.9**: [https://download.pingcap.org/tidb-lightning-v2.0.9-linux-amd64.tar.gz](https://download.pingcap.org/tidb-lightning-v2.0.9-linux-amd64.tar.gz)
+- 最新 unstable 版本：[https://download.pingcap.org/tidb-lightning-test-xx-latest-linux-amd64.tar.gz](https://download.pingcap.org/tidb-lightning-test-xx-latest-linux-amd64.tar.gz)
 
 #### 第 3 步：启动 `tikv-importer`
 
@@ -205,7 +204,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/o
     # 第 6 层的算法用于压缩 SST 文件。
     # 第 1 至 5 层的算法目前忽略。
     compression-per-level = ["lz4", "no", "no", "no", "no", "no", "lz4"]
-    
+
     [rocksdb.writecf]
     # (同上)
     compression-per-level = ["lz4", "no", "no", "no", "no", "no", "lz4"]
@@ -351,7 +350,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/o
     null = '\N'
     # 是否解析字段内反斜线转义符。
     backslash-escape = true
-    # 如果有行以分隔符结尾，删除尾部分隔符。 
+    # 如果有行以分隔符结尾，删除尾部分隔符。
     trim-last-separator = false
 
     [tidb]
@@ -380,9 +379,11 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/o
     [post-restore]
     # 如果设置为 true，会对每个表逐个做 `ADMIN CHECKSUM TABLE <table>` 操作。
     checksum = true
-    # 如果设置为 false，会在导入每张表后做一次 level-1 Compact。
+    # 如果设置为 true，会在导入每张表后做一次 level-1 Compact。
+    # 如果不填写，则默认为 false。
     level-1-compact = false
-    # 如果设置为 false，会在导入过程结束时对整个 TiKV 集群执行一次全量 Compact。
+    # 如果设置为 true，会在导入过程结束时对整个 TiKV 集群执行一次全量 Compact。
+    # 如果不填写，则默认为 false。
     compact = false
     # 如果设置为 true，会对每个表逐个做 `ANALYZE TABLE <table>` 操作。
     analyze = true

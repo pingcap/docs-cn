@@ -1,7 +1,6 @@
 ---
 title: 事务模型 
 category: reference
-aliases: ['/docs-cn/sql/transaction-model/']
 ---
 
 # 事务模型

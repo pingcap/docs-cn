@@ -1,7 +1,6 @@
 ---
 title: 使用 DM-Ansible 部署 DM 集群
 category: how-to
-aliases: ['/docs-cn/tools/dm/deployment/']
 ---
 
 # 使用 DM-Ansible 部署 DM 集群
@@ -166,7 +165,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
     ```
 
 2. 运行如下命令，然后输入部署目标机器的 `root` 用户密码。
-   
+
     ```bash
     $ ansible-playbook -i hosts.ini create_users.yml -u root -k
     ```
@@ -202,7 +201,7 @@ dm_worker1 ansible_host=172.16.10.72 server_id=101 source_id="mysql-replica-01" 
 - [单节点上单个 DM-worker 实例的集群拓扑](#选项-1使用单节点上单个-dm-worker-实例的集群拓扑)
 - [单节点上多个 DM-worker 实例的集群拓扑](#选项-2使用单节点上多个-dm-worker-实例的集群拓扑)
 
-通常情况下，我们推荐每个节点上部署单个 DM-Worker 实例。但如果您的机器拥有性能远超 [TiDB 软件和硬件环境要求](/op-guide/recommendation.md)中推荐配置的 CPU 和内存，并且每个节点配置 2 块以上的硬盘或大于 2T 的 SSD，您可以在单个节点上部署不超过 2 个 DM-Worker 实例。
+通常情况下，我们推荐每个节点上部署单个 DM-Worker 实例。但如果您的机器拥有性能远超 [TiDB 软件和硬件环境要求](/how-to/deploy/hardware-recommendations.md)中推荐配置的 CPU 和内存，并且每个节点配置 2 块以上的硬盘或大于 2T 的 SSD，您可以在单个节点上部署不超过 2 个 DM-Worker 实例。
 
 ### 选项 1：使用单节点上单个 DM-Worker 实例的集群拓扑
 
@@ -296,10 +295,10 @@ grafana_admin_user = "admin"
 grafana_admin_password = "admin"
 ```
 
-### DM-worker 配置及参数描述 
+### DM-worker 配置及参数描述
 
 | 变量名称 | 描述 |
-| ------------- | ------- 
+| ------------- | -------
 | source_id | DM-worker 绑定到的一个数据库实例或是具有主从架构的复制组。当发生主从切换的时候，只需要更新 `mysql_host` 或 `mysql_port` 而不用更改该 ID 标识。 |
 | server_id | DM-worker 伪装成一个 MySQL slave，该变量即为这个 slave 的 server ID，在 MySQL 集群中需保持全局唯一。取值范围 0 ~ 4294967295。|
 | mysql_host | 上游 MySQL 主机 |
@@ -399,6 +398,7 @@ dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 
     ```ini
     ansible_user = tidb
     ```
+
    > **注意：**
    >
    > 请勿将 `ansible_user` 设为 `root`，因为 `tidb-ansible` 限制服务需以普通用户运行。
@@ -426,6 +426,7 @@ dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 
     ```bash
     ansible-playbook start.yml
     ```
+
     此操作会按顺序启动 DM 集群的所有组件，包括 DM-master，DM-worker，以及监控组件。当一个 DM 集群被关闭后，您可以使用该命令将其开启。
 
 ## 第 10 步：关闭 DM 集群
@@ -441,7 +442,6 @@ $ ansible-playbook stop.yml
 ## 常见部署问题
 
 ### 默认服务端口
-
 
 | 组件 | 端口变量 | 默认端口 | 描述 |
 | :-- | :-- | :-- | :-- |

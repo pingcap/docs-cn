@@ -1,12 +1,11 @@
 ---
 title: 管理数据同步任务
 category: reference
-aliases: ['/docs-cn/tools/dm/manage-task/']
 ---
 
 # 管理数据同步任务
 
-本文介绍了如何使用 [dmctl](/dev/reference/tools/data-migration/overview.md#dmctl) 组件来进行数据同步任务的管理和维护。对于用 DM-Ansible 部署的 DM 集群，dmctl 二进制文件路径为 `dm-ansible/dmctl`。
+本文介绍了如何使用 [dmctl](/reference/tools/data-migration/overview.md#dmctl) 组件来进行数据同步任务的管理和维护。对于用 DM-Ansible 部署的 DM 集群，dmctl 二进制文件路径为 `dm-ansible/dmctl`。
 
 ## dmctl 基本用法
 
@@ -95,7 +94,7 @@ Flags:
 
 ### 创建数据同步任务
 
-`start-task` 命令用于创建数据同步任务。 当数据同步任务启动时，DM 将[自动对相应权限和配置进行前置检查](/dev/reference/tools/data-migration/precheck.md)。
+`start-task` 命令用于创建数据同步任务。 当数据同步任务启动时，DM 将[自动对相应权限和配置进行前置检查](/reference/tools/data-migration/precheck.md)。
 
 ```bash
 » help start-task
@@ -151,7 +150,7 @@ start-task [ -w "172.16.30.15:10081"] ./task.yaml
 
 ### 查询数据同步任务状态
 
-`query-status` 命令用于查询数据同步任务状态。有关查询结果及子任务状态，详见[查询状态](/dev/reference/tools/data-migration/query-status.md)。
+`query-status` 命令用于查询数据同步任务状态。有关查询结果及子任务状态，详见[查询状态](/reference/tools/data-migration/query-status.md)。
 
 ```bash
 » help query-status
@@ -179,13 +178,13 @@ query-status
     - 可选
     - 查询在指定的一组 DM-workers 上运行的数据同步任务的子任务
 - `task_name`：
-    - 可选 
-    - 指定任务名称 
+    - 可选
+    - 指定任务名称
     - 如果未设置，则返回全部数据同步任务的查询结果
 
 #### 返回结果示例
 
-有关查询结果中各参数的意义，详见[查询状态结果](/dev/reference/tools/data-migration/query-status.md#查询结果)。
+有关查询结果中各参数的意义，详见[查询状态结果](/reference/tools/data-migration/query-status.md#查询结果)。
 
 ```bash
 » query-status
@@ -358,7 +357,7 @@ resume-task [-w "127.0.0.1:10181"] task-name
 
 - `-w`：
     - 可选
-    - 指定在特定的一组 DM-workers 上恢复数据同步任务的子任务 
+    - 指定在特定的一组 DM-workers 上恢复数据同步任务的子任务
     - 如果设置，则只恢复该任务在指定 DM-workers 上的子任务
 - `task_name`：
     - 必选
@@ -537,7 +536,7 @@ update-task [-w "127.0.0.1:10181"] ./task.yaml
 
 ## 管理 DDL lock
 
-详见[手动处理 sharding DDL lock](/dev/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)。
+详见[手动处理 sharding DDL lock](/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)。
 
 ## 强制刷新 `task => DM-workers` 映射关系
 

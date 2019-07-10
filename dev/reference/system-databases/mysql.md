@@ -1,7 +1,6 @@
 ---
 title: TiDB 系统表
 category: reference
-aliases: ['/docs-cn/sql/system-database/']
 ---
 
 # TiDB 系统表
@@ -29,7 +28,7 @@ aliases: ['/docs-cn/sql/system-database/']
 
 ## GC Worker 相关系统表
 
-* `gc_delete_range` 
+* `gc_delete_range`
 
 ## 其它系统表
 

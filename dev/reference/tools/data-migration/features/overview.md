@@ -2,7 +2,6 @@
 title: 数据同步功能
 summary: DM 提供的功能及其配置介绍
 category: reference
-aliases: ['/docs-cn/tools/dm/data-synchronization-features/']
 ---
 
 # 数据同步功能
@@ -34,7 +33,7 @@ routes:
 
 ### 参数解释
 
-将根据 [`schema-pattern`/`table-pattern`](/dev/reference/tools/data-migration/table-selector.md) 匹配上该规则的上游 MySQL/MariaDB 实例的表同步到下游的 `target-schema`/`target-table`。
+将根据 [`schema-pattern`/`table-pattern`](/reference/tools/data-migration/table-selector.md) 匹配上该规则的上游 MySQL/MariaDB 实例的表同步到下游的 `target-schema`/`target-table`。
 
 ### 使用示例
 
@@ -227,7 +226,7 @@ filters:
 
 ### 参数解释
 
-- [`schema-pattern`/`table-pattern`](/dev/reference/tools/data-migration/table-selector.md)：对匹配上的上游 MySQL/MariaDB 实例的表的 binlog events 或者 DDL SQL 语句进行以下规则过滤。
+- [`schema-pattern`/`table-pattern`](/reference/tools/data-migration/table-selector.md)：对匹配上的上游 MySQL/MariaDB 实例的表的 binlog events 或者 DDL SQL 语句进行以下规则过滤。
 
 - `events`：binlog events 数组。
 
@@ -251,7 +250,6 @@ filters:
     | rename table    | DDL  | rename table event            |
     | drop index      | DDL  | drop index event              |
     | alter table     | DDL  | alter table event             |
-
 
 - `sql-pattern`：用于过滤指定的 DDL SQL 语句，支持正则表达式匹配，例如上面示例 `"^DROP\\s+PROCEDURE"`。
 
@@ -372,7 +370,7 @@ column-mappings:
 
 ### 参数解释
 
-- [`schema-pattern`/`table-pattern`](/dev/reference/tools/data-migration/table-selector.md)：对匹配上该规则的上游 MySQL/MariaDB 实例的表按照指定 `expression` 进行列值修改操作。
+- [`schema-pattern`/`table-pattern`](/reference/tools/data-migration/table-selector.md)：对匹配上该规则的上游 MySQL/MariaDB 实例的表按照指定 `expression` 进行列值修改操作。
 - `source-column`，`target-column`：对 `source-column` 列的值按照指定 `expression` 进行修改，将修改后的值赋值给 `target-column`。
 - `expression`：对数据进行转换的表达式，目前只支持下面的内置计算表达式。
 
@@ -389,11 +387,11 @@ column-mappings:
 - 如果 `table 前缀` 不为空，则表名的组成必须为 `table 前缀` 或者 `table 前缀 + 分隔符 + 数字（即 table ID）`
 - 如果库名/表名不包含 `… + 分隔符 + 数字` 部分，则对应的 ID 默认为 0
 - 对分库分表的规模支持限制如下
-  - 支持最多 16 个 MySQL/MariaDB 实例（0 <= instance ID <= 15）
-  - 每个实例支持最多 128 个 schema（0 <= schema ID  <= 127）
-  - 每个实例的每个 schema 支持最多 256 个 table（0 <= table ID <= 255）
-  - 进行列值映射的列的范围 (0 <= ID <= 17592186044415)
-  - `{instance ID, schema ID, table ID}` 组合需要保持唯一
+    - 支持最多 16 个 MySQL/MariaDB 实例（0 <= instance ID <= 15）
+    - 每个实例支持最多 128 个 schema（0 <= schema ID  <= 127）
+    - 每个实例的每个 schema 支持最多 256 个 table（0 <= table ID <= 255）
+    - 进行列值映射的列的范围 (0 <= ID <= 17592186044415)
+    - `{instance ID, schema ID, table ID}` 组合需要保持唯一
 - 目前该功能是定制功能，如果需要调整请联系相关开发人员进行调整
 
 **`partition id` 参数配置**
@@ -487,4 +485,4 @@ enable-heartbeat: true
 - DM-worker 每个任务拿到 `dm_heartbeat`.`heartbeat` 的 binlog 后，更新自己的同步时间 `TS_slave_task`
 - DM-worker 每 10 秒在对应的上游 MySQL/MariaDB 的 `dm_heartbeat`.`heartbeat` 查询当前的 `TS_master`，并且对每个任务计算 `task_lag` = `TS_master` - `TS_slave_task`
 
-可以在 metrics 的 [binlog replication](/dev/reference/tools/data-migration/monitor.md#binlog-replication) 处理单元找到 replicate lag 监控项。
+可以在 metrics 的 [binlog replication](/reference/tools/data-migration/monitor.md#binlog-replication) 处理单元找到 replicate lag 监控项。

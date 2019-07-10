@@ -1,7 +1,6 @@
 ---
 title: TiDB-Ansible 部署方案
 category: how-to
-aliases: ['/docs-cn/op-guide/ansible-deployment/']
 ---
 
 # TiDB-Ansible 部署方案
@@ -14,30 +13,30 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 - 初始化操作系统参数
 - 部署 TiDB 集群（包括 PD、TiDB、TiKV 等组件和监控组件）
-- [启动集群](/op-guide/ansible-operation.md#启动集群)
-- [关闭集群](/op-guide/ansible-operation.md#关闭集群)
-- [变更组件配置](/op-guide/ansible-deployment-rolling-update.md#变更组件配置)
-- [集群扩容缩容](/op-guide/ansible-deployment-scale.md)
-- [升级组件版本](/op-guide/ansible-deployment-rolling-update.md#升级组件版本)
-- [集群开启 binlog](/tools/tidb-binlog-cluster.md)
-- [清除集群数据](/op-guide/ansible-operation.md#清除集群数据)
-- [销毁集群](/op-guide/ansible-operation.md#销毁集群)
+- [启动集群](/how-to/maintain/ansible-operations.md#启动集群)
+- [关闭集群](/how-to/maintain/ansible-operations.md#关闭集群)
+- [变更组件配置](/how-to/upgrade/rolling-updates-with-ansible.md#变更组件配置)
+- [集群扩容缩容](/how-to/scale/with-ansible.md)
+- [升级组件版本](/how-to/upgrade/rolling-updates-with-ansible.md#升级组件版本)
+- [集群开启 binlog](/reference/tidb-binlog-overview.md)
+- [清除集群数据](/how-to/maintain/ansible-operations.md#清除集群数据)
+- [销毁集群](/how-to/maintain/ansible-operations.md#销毁集群)
 
 > **注意：**
 >
-> 对于生产环境，须使用 TiDB-Ansible 部署 TiDB 集群。如果只是用于测试 TiDB 或体验 TiDB 的特性，建议[使用 Docker Compose 在单机上快速部署 TiDB 集群](/dev/how-to/get-started/local-cluster/install-from-docker-compose.md)。
+> 对于生产环境，须使用 TiDB-Ansible 部署 TiDB 集群。如果只是用于测试 TiDB 或体验 TiDB 的特性，建议[使用 Docker Compose 在单机上快速部署 TiDB 集群](/how-to/get-started/deploy-tidb-from-docker-compose.md)。
 
 ## 准备机器
 
 1. 部署目标机器若干
 
-    - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见[部署建议](/dev/how-to/deploy/hardware-recommendations.md)。
+    - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见[部署建议](/how-to/deploy/hardware-recommendations.md)。
     - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构 (amd64)。
     - 机器之间内网互通。
 
     > **注意：**
     >
-    > 使用 Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](/dev/how-to/get-started/local-cluster/install-from-docker-compose.md)单机进行测试。
+    > 使用 Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](/how-to/get-started/deploy-tidb-from-docker-compose.md)单机进行测试。
 
 2. 部署中控机一台:
 
@@ -327,7 +326,7 @@ UUID=c51eb23b-195c-4061-92a9-3fad812cc12f /data1 ext4 defaults,nodelalloc,noatim
 - 3 个 PD 节点
 - 3 个 TiKV 节点，第一台 TiDB 机器同时用作监控机
 
-默认情况下，单台机器上只需部署一个 TiKV 实例。如果你的 TiKV 部署机器 CPU 及内存配置是[部署建议](/dev/how-to/deploy/hardware-recommendations.md)的两倍或以上，并且拥有两块 SSD 硬盘或单块容量超 2T 的 SSD 硬盘，可以考虑部署两实例，但不建议部署两个以上实例。
+默认情况下，单台机器上只需部署一个 TiKV 实例。如果你的 TiKV 部署机器 CPU 及内存配置是[部署建议](/how-to/deploy/hardware-recommendations.md)的两倍或以上，并且拥有两块 SSD 硬盘或单块容量超 2T 的 SSD 硬盘，可以考虑部署两实例，但不建议部署两个以上实例。
 
 ### 单机单 TiKV 实例集群拓扑
 
@@ -429,13 +428,13 @@ location_labels = ["host"]
 
 - 服务配置文件参数调整
 
-    1.  多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中的 `block-cache-size` 参数:
-        - `rocksdb defaultcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 30%
-        - `rocksdb writecf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 45%
-        - `rocksdb lockcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
-        - `raftdb defaultcf block-cache-size(GB)` = MEM * 80% / TiKV 实例数量 * 2.5% (最小 128 MB)
+    1. 多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中的 `block-cache-size` 参数:
+        - `rocksdb defaultcf block-cache-size(GB)` = MEM \* 80% / TiKV 实例数量 \* 30%
+        - `rocksdb writecf block-cache-size(GB)` = MEM \* 80% / TiKV 实例数量 \* 45%
+        - `rocksdb lockcf block-cache-size(GB)` = MEM \* 80% / TiKV 实例数量 \* 2.5% (最小 128 MB)
+        - `raftdb defaultcf block-cache-size(GB)` = MEM \* 80% / TiKV 实例数量 \* 2.5% (最小 128 MB)
 
-    2.  多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中 `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数：
+    2. 多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中 `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数：
 
         ```
         readpool:
@@ -447,9 +446,9 @@ location_labels = ["host"]
             # low-concurrency: 8
         ```
 
-        - 推荐设置：实例数*参数值 = CPU 核数 * 0.8。
+        - 推荐设置：实例数 \* 参数值 = CPU 核数 \* 0.8。
 
-    3.  如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
+    3. 如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
         - `capacity` = 磁盘总容量 / TiKV 实例数量，例如 "100GB"
 
 ### inventory.ini 变量调整
@@ -482,7 +481,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | tidb_version | TiDB 版本，TiDB-Ansible 各分支默认已配置 |
 | process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
 | timezone | 新安装 TiDB 集群第一次启动 bootstrap（初始化）时，将 TiDB 全局默认时区设置为该值。TiDB 使用的时区后续可通过 `time_zone` 全局变量和 session 变量来修改，参考[时区支持](../sql/time-zone.md)。 默认为 `Asia/Shanghai`，可选值参考 [timzone 列表](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)。 |
-| enable_firewalld | 开启防火墙，默认不开启，如需开启，请将[部署建议-网络要求](/dev/how-to/deploy/hardware-recommendations.md#网络要求) 中的端口加入白名单 |
+| enable_firewalld | 开启防火墙，默认不开启，如需开启，请将[部署建议-网络要求](/how-to/deploy/hardware-recommendations.md#网络要求) 中的端口加入白名单 |
 | enable_ntpd | 检测部署目标机器 NTP 服务，默认为 True，请勿关闭 |
 | set_hostname | 根据 IP 修改部署目标机器主机名，默认为 False |
 | enable_binlog | 是否部署 pump 并开启 binlog，默认为 False，依赖 Kafka 集群，参见 `zookeeper_addrs` 变量 |
@@ -501,7 +500,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 
 > ansible-playbook 执行 Playbook 时默认并发为 5，部署目标机器较多时可添加 -f 参数指定并发，如 `ansible-playbook deploy.yml -f 10`
 
-1.  确认 `tidb-ansible/inventory.ini` 文件中 `ansible_user = tidb`，本例使用 `tidb` 用户作为服务运行用户，配置如下：
+1. 确认 `tidb-ansible/inventory.ini` 文件中 `ansible_user = tidb`，本例使用 `tidb` 用户作为服务运行用户，配置如下：
 
     > `ansible_user` 不要设置成 `root` 用户，`tidb-ansible` 限制了服务以普通用户运行。
 
@@ -512,28 +511,30 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
     ```
 
     执行以下命令如果所有 server 返回 `tidb` 表示 ssh 互信配置成功。
+
     ```
     ansible -i inventory.ini all -m shell -a 'whoami'
     ```
 
     执行以下命令如果所有 server 返回 `root` 表示 `tidb` 用户 sudo 免密码配置成功。
+
     ```
     ansible -i inventory.ini all -m shell -a 'whoami' -b
     ```
 
-2.  执行 `local_prepare.yml` playbook，联网下载 TiDB binary 到中控机：
+2. 执行 `local_prepare.yml` playbook，联网下载 TiDB binary 到中控机：
 
     ```
     ansible-playbook local_prepare.yml
     ```
 
-3.  初始化系统环境，修改内核参数
+3. 初始化系统环境，修改内核参数
 
     ```
     ansible-playbook bootstrap.yml
     ```
 
-4.  部署 TiDB 集群软件
+4. 部署 TiDB 集群软件
 
     ```
     ansible-playbook deploy.yml
@@ -547,7 +548,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
     > $ sudo yum install fontconfig open-sans-fonts
     > ```
 
-5.  启动 TiDB 集群
+5. 启动 TiDB 集群
 
     ```
     ansible-playbook start.yml
@@ -557,19 +558,20 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 
 > 测试连接 TiDB 集群，推荐在 TiDB 前配置负载均衡来对外统一提供 SQL 接口。
 
--   使用 MySQL 客户端连接测试，TCP 4000 端口是 TiDB 服务默认端口。
+- 使用 MySQL 客户端连接测试，TCP 4000 端口是 TiDB 服务默认端口。
 
     ```sql
     mysql -u root -h 172.16.10.1 -P 4000
     ```
 
--   通过浏览器访问监控平台。
+- 通过浏览器访问监控平台。
 
     地址：`http://172.16.10.1:3000`  默认帐号密码是：`admin`/`admin`
 
 ## 常见部署问题
 
 ### 如何自定义端口
+
 修改 `inventory.ini` 文件，在相应服务 IP 后添加以下主机变量即可：
 
 | 组件 | 端口变量 | 默认端口 | 说明 |

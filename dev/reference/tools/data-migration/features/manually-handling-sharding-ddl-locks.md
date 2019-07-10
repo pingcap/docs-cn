@@ -1,7 +1,6 @@
 ---
 title: 手动处理 Sharding DDL Lock
 category: reference
-aliases: ['/docs-cn/tools/dm/manually-handling-sharding-ddl-locks/']
 ---
 
 # 手动处理 Sharding DDL Lock
@@ -11,7 +10,7 @@ DM (Data Migration) 使用 sharding DDL lock 来确保分库分表的 DDL 操作
 > **注意：**
 >
 > - 不要轻易使用 `unlock-ddl-lock`/`break-ddl-lock` 命令，除非完全明确当前场景下使用这些命令可能会造成的影响，并能接受这些影响。
-> - 在手动处理异常的 DDL lock 前，请确保已经了解 DM 的[分库分表合并同步原理](/dev/reference/tools/data-migration/usage-scenarios/shard-merge.md#实现原理)。
+> - 在手动处理异常的 DDL lock 前，请确保已经了解 DM 的[分库分表合并同步原理](/reference/tools/data-migration/usage-scenarios/shard-merge.md#实现原理)。
 
 ## 命令介绍
 
@@ -136,7 +135,7 @@ break-ddl-lock <--worker=127.0.0.1:8262> [--remove-id] [--exec] [--skip] <task-n
 
 + `task-name`：
     - 非 flag 参数，string，必选
-    - 指定要执行 break 操作的 lock 所在的 task 名称（要查看各 task 上是否存在 lock，可通过 [query-status](/dev/reference/tools/data-migration/query-status.md) 获得）
+    - 指定要执行 break 操作的 lock 所在的 task 名称（要查看各 task 上是否存在 lock，可通过 [query-status](/reference/tools/data-migration/query-status.md) 获得）
 
 #### 返回结果示例
 
@@ -163,7 +162,7 @@ break-ddl-lock <--worker=127.0.0.1:8262> [--remove-id] [--exec] [--skip] <task-n
 
 #### Lock 异常原因
 
-在 DM-master 尝试自动 unlock sharding DDL lock 之前，需要等待所有 DM-worker 的 sharding DDL events 全部到达（详见[分库分表合并同步原理](/dev/reference/tools/data-migration/usage-scenarios/shard-merge.md#实现原理)）。如果 sharding DDL 已经在同步过程中，且有部分 DM-worker 下线，并且不再计划重启它们（按业务需求移除了这部分 DM-worker），则会由于永远无法等齐所有的 DDL 而造成 lock 无法自动 unlock。
+在 DM-master 尝试自动 unlock sharding DDL lock 之前，需要等待所有 DM-worker 的 sharding DDL events 全部到达（详见[分库分表合并同步原理](/reference/tools/data-migration/usage-scenarios/shard-merge.md#实现原理)）。如果 sharding DDL 已经在同步过程中，且有部分 DM-worker 下线，并且不再计划重启它们（按业务需求移除了这部分 DM-worker），则会由于永远无法等齐所有的 DDL 而造成 lock 无法自动 unlock。
 
 #### 手动处理示例
 
@@ -229,7 +228,7 @@ MySQL 及 DM 操作与处理流程如下：
     ```
 
 4. 由于业务需要，DM-worker-2 对应的 MySQL-2 的数据不再需要同步到下游 TiDB，对 DM-worker-2 执行了下线处理。
-5. DM-master 上 ID 为 ``` test-`shard_db`.`shard_table` ``` 的 lock 无法等到 DM-worker-2 的 DDL 操作信息。
+5. DM-master 上 ID 为 ```test-`shard_db`.`shard_table` ``` 的 lock 无法等到 DM-worker-2 的 DDL 操作信息。
 
     `show-ddl-locks` 返回的 `unsynced` 中一直包含 DM-worker-2 的信息（`127.0.0.1:8263`）。
 

@@ -1,12 +1,11 @@
 ---
 title: 使用 TiDB-Ansible 升级 TiDB 集群
 category: how-to
-aliases: ['/docs-cn/op-guide/ansible-deployment-rolling-update/']
 ---
 
 # 使用 TiDB-Ansible 升级 TiDB 集群
 
-滚动升级 TiDB 集群时，会串行关闭服务，更新服务 binary 和配置文件，再启动服务。在前端配置负载均衡的情况下，滚动升级期间不影响业务运行（最小环境 ：pd * 3、tidb * 2、tikv * 3）。
+滚动升级 TiDB 集群时，会串行关闭服务，更新服务 binary 和配置文件，再启动服务。在前端配置负载均衡的情况下，滚动升级期间不影响业务运行（最小环境 ：pd \* 3、tidb \* 2、tikv \* 3）。
 
 > **注意：**
 >
@@ -16,8 +15,8 @@ aliases: ['/docs-cn/op-guide/ansible-deployment-rolling-update/']
 
 跨大版本升级，必须更新 `tidb-ansible`，小版本升级，也建议更新 `tidb-ansible`，以获取最新的配置文件模板、特性及 bug 修复。
 
-- 从 TiDB 1.0 升级到 TiDB 2.1，参考 [TiDB 2.1 升级操作指南](/dev/how-to/upgrade/to-tidb-2.1.md)。
-- 从 TiDB 2.1 升级到 TiDB 3.0，参考 [TiDB 3.0 升级操作指南](/dev/how-to/upgrade/from-previous-version.md)。
+- 从 TiDB 1.0 升级到 TiDB 2.1，参考 [TiDB 2.1 升级操作指南](/how-to/upgrade/to-tidb-2.1.md)。
+- 从 TiDB 2.1 升级到 TiDB 3.0，参考 [TiDB 3.0 升级操作指南](/how-to/upgrade/from-previous-version.md)。
 
 ### 自动下载 binary
 
@@ -31,14 +30,14 @@ aliases: ['/docs-cn/op-guide/ansible-deployment-rolling-update/']
     >
     > 如果使用 master 分支的 tidb-ansible，`tidb_version = latest` 保持不变即可，latest 版本的 TiDB 安装包会每日更新。
 
-2.  删除原有的 downloads 目录 `/home/tidb/tidb-ansible/downloads/`
+2. 删除原有的 downloads 目录 `/home/tidb/tidb-ansible/downloads/`
 
     ```
     $ cd /home/tidb/tidb-ansible
     $ rm -rf downloads
     ```
 
-3.  使用 playbook 下载 TiDB binary，自动替换 binary 到 `/home/tidb/tidb-ansible/resource/bin/`
+3. 使用 playbook 下载 TiDB binary，自动替换 binary 到 `/home/tidb/tidb-ansible/resource/bin/`
 
     ```
     $ ansible-playbook local_prepare.yml
@@ -65,7 +64,7 @@ $ wget http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz
     ```
     $ ansible-playbook rolling_update.yml --tags=pd
     ```
-   
+
     如果 PD 实例数大于等于 3，滚动升级 PD leader 实例时，Ansible 会先迁移 PD leader 到其他节点再关闭该实例。
 
 - 滚动升级 TiKV 节点（只升级 TiKV 服务）

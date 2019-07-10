@@ -44,7 +44,7 @@ enable = true
 - 执行 `BEGIN PESSIMISTIC;` 语句开启的事务，会进入悲观事务模式。
 可以通过写成注释的形式 `BEGIN /*!90000 PESSIMISTIC */;` 来兼容 MySQL 语法。
 
-- 执行 `set @@tidb_txn_mode = 'pessimistic';`，使这个 session 执行的所有事务都会进入悲观事务模式。
+- 执行 `set @@tidb_txn_mode = 'pessimistic';`，使这个 session 执行的所有显式事务（即非 autocommit 的事务）都会进入悲观事务模式。
 
 - 在配置文件设置中默认启用悲观事务模式，使除了自动提交的单语句事务之外的所有事务都会进入悲观事务模式。
 
@@ -73,7 +73,7 @@ default = true
 
 相关配置都在 `[pessimistic-txn]` 类别下，除了前面介绍过的 `enable` 和 `default`，还可配置以下参数：
 
-- `ttl` 
+- `ttl`
 
     ```
     ttl = "30s"

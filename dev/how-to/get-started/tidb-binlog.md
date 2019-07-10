@@ -24,7 +24,7 @@ TiDB Binlog 支持以下功能场景：
 - 增量备份，将 TiDB 集群中的数据增量同步到另一个集群，或通过 Kafka 增量同步到选择的下游。
 - 当使用 TiDB DM (Data Migration) 将数据从上游 MySQL 或者 MariaDB 迁移到 TiDB 集群时，可使用 TiDB Binlog 保持 TiDB 集群与其一个独立下游 MySQL 或 MariaDB 实例或集群同步。当 TiDB 集群上游数据迁移过程中出现问题，下游数据同步过程中可使用 TiDB Binlog 恢复数据到原先的状态。
 
-更多信息参考 [TiDB Binlog Cluster 版本用户文档](https://pingcap.com/docs-cn/tools/tidb-binlog-cluster/)。
+更多信息参考 [TiDB Binlog Cluster 版本用户文档](/reference/tidb-binlog-overview.md)。
 
 ## 架构
 
@@ -61,7 +61,7 @@ sudo yum install -y mariadb-server
 
     ```bash
     printf > pd.toml %s\\n 'log-file="pd.log"' 'data-dir="pd.data"'
-    printf > tikv.toml %s\\n 'log-file="tikv.log"' '[storage]' 'data-dir="tikv.data"' '[pd]' 'endpoints=["127.0.0.1:2379"]' '[rocksdb]' max-open-files=1024 '[raftdb]' max-open-files=1024 
+    printf > tikv.toml %s\\n 'log-file="tikv.log"' '[storage]' 'data-dir="tikv.data"' '[pd]' 'endpoints=["127.0.0.1:2379"]' '[rocksdb]' max-open-files=1024 '[raftdb]' max-open-files=1024
     printf > pump.toml %s\\n 'log-file="pump.log"' 'data-dir="pump.data"' 'addr="127.0.0.1:8250"' 'advertise-addr="127.0.0.1:8250"' 'pd-urls="http://127.0.0.1:2379"'
     printf > tidb.toml %s\\n 'store="tikv"' 'path="127.0.0.1:2379"' '[log.file]' 'filename="tidb.log"' '[binlog]' 'enable=true'
     printf > drainer.toml %s\\n 'log-file="drainer.log"' '[syncer]' 'db-type="mysql"' '[syncer.to]' 'host="127.0.0.1"' 'user="root"' 'password=""' 'port=3306'
@@ -157,7 +157,6 @@ sudo yum install -y mariadb-server
 
     如果有服务启动失败（例如出现 “`Exit 1`” 而不是 “`Running`”），尝试重启单个组件。
 
-
 ## 连接
 
 按以上步骤操作后，TiDB 的 4 个组件开始运行。接下来可以使用以下 MariaDB 或 MySQL 命令行客户端，通过 4000 端口连接到 TiDB 服务：
@@ -182,7 +181,6 @@ Check Table Before Drop: false
 ```
 
 连接后TiDB 集群已开始运行，`pump` 读取集群中的 binlog 数据，并在其数据目录中将 binlog 数据存储为 relay log。下一步是启动一个可供 `drainer` 写入的 MariaDB Server。
-
 
 1. 启动 `drainer`：
 
@@ -323,7 +321,7 @@ Check Table Before Drop: false
 
 ## binlogctl
 
-加入到集群的 Pump 和 Drainer 的数据存储在 Placement Driver (PD) 中。binlogctl 可用于查询和修改状态信息。更多信息请参考 [binlogctl guide](https://pingcap.com/docs-cn/tools/binlog/operation/#binlogctl-工具)。
+加入到集群的 Pump 和 Drainer 的数据存储在 Placement Driver (PD) 中。binlogctl 可用于查询和修改状态信息。更多信息请参考 [binlogctl guide](/how-to/maintain/tidb-binlog.md#binlogctl-工具)。
 
 使用 `binlogctl` 查看集群中 Pump 和 Drainer 的当前状态：
 

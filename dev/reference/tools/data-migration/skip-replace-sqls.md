@@ -1,14 +1,13 @@
 ---
 title: 跳过 (skip) 或替代执行 (replace) 异常的 SQL 语句
 category: reference
-aliases: ['/docs-cn/tools/dm/skip-replace-sqls/']
 ---
 
 # 跳过 (skip) 或替代执行 (replace) 异常的 SQL 语句
 
 本文介绍了如何使用 DM 来处理异常的 SQL 语句。
 
-目前，TiDB 并不完全兼容所有的 MySQL 语法（详见 [TiDB 已支持的 DDL 语句](/dev/reference/sql/statements/ddl.md)）。当使用 DM 从 MySQL 同步数据到 TiDB 时，如果 TiDB 不支持对应的 SQL 语句，可能会造成错误并中断同步任务。在这种情况下，DM 提供以下两种方式来恢复同步：
+目前，TiDB 并不完全兼容所有的 MySQL 语法（详见 [TiDB 已支持的 DDL 语句](/reference/sql/statements/ddl.md)）。当使用 DM 从 MySQL 同步数据到 TiDB 时，如果 TiDB 不支持对应的 SQL 语句，可能会造成错误并中断同步任务。在这种情况下，DM 提供以下两种方式来恢复同步：
 
 - 使用 dmctl 来手动跳过该 SQL 语句对应的 binlog event。
 
@@ -16,11 +15,12 @@ aliases: ['/docs-cn/tools/dm/skip-replace-sqls/']
 
 如果提前预知将要同步 TiDB 不支持的 SQL 语句，也可以使用 dmctl 来手动预设跳过/替代执行操作。当 DM 尝试将该 SQL 语句对应的 binlog event 同步到下游时，该预设的操作将自动执行，从而避免同步过程被中断。
 
+<!-- markdownlint-disable MD001 -->
 #### 使用限制
 
 - 跳过/替代执行操作只适合用于一次性跳过/替代执行**下游 TiDB 不支持执行的 SQL 语句**，其它同步错误请不要使用此方式进行处理。
 
-    - 其它同步错误可尝试使用 [black & white table lists](/dev/reference/tools/data-migration/features/overview.md#black-white-table-lists) 或 [binlog event filter](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)。
+    - 其它同步错误可尝试使用 [black & white table lists](/reference/tools/data-migration/features/overview.md#black-white-table-lists) 或 [binlog event filter](/reference/tools/data-migration/features/overview.md#binlog-event-filter)。
 
 - 如果业务不能接受下游 TiDB 跳过异常的 DDL 语句，也不接受使用其他 DDL 语句作为替代，则不适合使用此方式进行处理。
 
@@ -32,7 +32,7 @@ aliases: ['/docs-cn/tools/dm/skip-replace-sqls/']
 - `--sharding` 仅用于对 sharding group 预设一些操作，并且必须在 DDL 语句执行之前预设，不能在 DDL 语句已经执行后预设。
 
     - `--sharding` 模式下只支持预设，并只能使用 `--sql-pattern` 来匹配 binlog event。
-    - 有关使用 DM 处理 sharding DDL 同步的原理，请参阅[分库分表合并同步原理](/dev/reference/tools/data-migration/features/shard-merge.md#实现原理)。
+    - 有关使用 DM 处理 sharding DDL 同步的原理，请参阅[分库分表合并同步原理](/reference/tools/data-migration/features/shard-merge.md#实现原理)。
 
 #### 匹配 binlog event
 
@@ -50,7 +50,7 @@ aliases: ['/docs-cn/tools/dm/skip-replace-sqls/']
 
 2. DDL pattern：（仅限于 DDL 语句的）正则表达式匹配模式
 
-    - DDL pattern 在命令中使用 `--sql-pattern` 参数传入，如要匹配 ``` ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2` ```，则对应的正则表达式为 ``` ~(?i)ALTER\s+TABLE\s+`db2`.`tbl2`\s+DROP\s+COLUMN\s+`c2` ```。
+    - DDL pattern 在命令中使用 `--sql-pattern` 参数传入，如要匹配 ```ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2` ```，则对应的正则表达式为 ```~(?i)ALTER\s+TABLE\s+`db2`.`tbl2`\s+DROP\s+COLUMN\s+`c2` ```。
     - 正则表达式必须以 `~` 为前缀，且不包含任何原始空格（正则表达式字符串中的空格均以 `\s` 或 `\s+` 表示）。
 
 对于合库合表场景，如果需要由 DM 自动选择 DDL lock owner 来执行跳过/替代执行操作，则由于不同 DM-worker 上 DDL 语句对应的 binlog position 无逻辑关联且难以确定，因此只能使用 DDL pattern 匹配模式。
@@ -131,7 +131,7 @@ DM 在进行增量数据同步时，简化后的流程大致为：
 
 #### query-status
 
-`query-status` 命令用于查询当前 DM-worker 内子任务及 relay 单元等的状态，详见[查询状态](/dev/reference/tools/data-migration/query-status.md)。
+`query-status` 命令用于查询当前 DM-worker 内子任务及 relay 单元等的状态，详见[查询状态](/reference/tools/data-migration/query-status.md)。
 
 #### query-error
 
@@ -218,7 +218,7 @@ sql-skip <--worker=127.0.0.1:8262> [--binlog-pos=mysql-bin|000001.000003:3270] [
 + `sql-pattern`：
     - flag 参数，string，`--sql-pattern`；
     - `--sql-pattern` 与 `binlog-pos` 必须指定其中一个，且只能指定其中一个。
-    - 在指定时表示操作将在 `sql-pattern` 与 binlog event 对应的（经过可选的 router-rule 转换后的）DDL 语句匹配时生效。格式为以 `~` 为前缀的正则表达式，如 ``` ~(?i)ALTER\s+TABLE\s+`db1`.`tbl1`\s+ADD\s+COLUMN\s+col1\s+INT ```。
+    - 在指定时表示操作将在 `sql-pattern` 与 binlog event 对应的（经过可选的 router-rule 转换后的）DDL 语句匹配时生效。格式为以 `~` 为前缀的正则表达式，如 ```~(?i)ALTER\s+TABLE\s+`db1`.`tbl1`\s+ADD\s+COLUMN\s+col1\s+INT```。
         - 暂时不支持正则表达式中包含原始空格，需要使用 `\s` 或 `\s+` 替代空格。
         - 正则表达式必须以 `~` 为前缀，详见[正则表达式语法](https://golang.org/pkg/regexp/syntax/#hdr-Syntax)。
         - 正则表达式中的库名和表名必须是经过可选的 router-rule 转换后的名字，即对应下游的目标库名和表名。如上游为 ``` `shard_db_1`.`shard_tbl_1` ```，下游为 ``` `shard_db`.`shard_tbl` ```，则应该尝试匹配 ``` `shard_db`.`shard_tbl` ```。
@@ -262,7 +262,7 @@ sql-replace <--worker=127.0.0.1:8262> [--binlog-pos=mysql-bin|000001.000003:3270
 
 + `SQLs`：
     - 非 flag 参数，string，必选；
-    - `SQLs` 指定将用于替代原 binlog event 的新的 SQL 语句。多条 SQL 语句间以 `;` 分隔，如 ``` ALTER TABLE shard_db.shard_table drop index idx_c2;ALTER TABLE shard_db.shard_table DROP COLUMN c2; ```。
+    - `SQLs` 指定将用于替代原 binlog event 的新的 SQL 语句。多条 SQL 语句间以 `;` 分隔，如 ```ALTER TABLE shard_db.shard_table drop index idx_c2;ALTER TABLE shard_db.shard_table DROP COLUMN c2;```。
 
 ### 使用示例
 
@@ -294,7 +294,7 @@ ALTER TABLE db1.tbl1 CHANGE c2 c2 DECIMAL (10, 3);
 则会由于 TiDB 不支持该 DDL 语句而导致 DM 同步任务中断且报如下错误：
 
 ```bash
-exec sqls[[USE `db1`; ALTER TABLE `db1`.`tbl1` CHANGE COLUMN `c2` `c2` decimal(10,3);]] failed, 
+exec sqls[[USE `db1`; ALTER TABLE `db1`.`tbl1` CHANGE COLUMN `c2` `c2` decimal(10,3);]] failed,
 err:Error 1105: unsupported modify column length 10 is less than origin 11
 ```
 
@@ -330,7 +330,7 @@ err:Error 1105: unsupported modify column length 10 is less than origin 11
     对应 DM-worker 节点中也可以看到类似如下日志：
 
     ```bash
-    2018/12/28 11:17:51 operator.go:121: [info] [sql-operator] set a new operator 
+    2018/12/28 11:17:51 operator.go:121: [info] [sql-operator] set a new operator
     uuid: 6bfcf30f-2841-4d70-9a34-28d7082bdbd7, pos: (mysql-bin|000001.000003, 34642), op: SKIP, args:
     on replication unit
     ```
@@ -357,7 +357,7 @@ err:Error 1105: unsupported modify column length 10 is less than origin 11
     对应 DM-worker 节点中也可以看到类似如下日志：
 
     ```bash
-    2018/12/28 11:27:46 operator.go:158: [info] [sql-operator] binlog-pos (mysql-bin|000001.000003, 34642) matched, 
+    2018/12/28 11:27:46 operator.go:158: [info] [sql-operator] binlog-pos (mysql-bin|000001.000003, 34642) matched,
     applying operator uuid: 6bfcf30f-2841-4d70-9a34-28d7082bdbd7, pos: (mysql-bin|000001.000003, 34642), op: SKIP, args:
     ```
 
@@ -394,7 +394,7 @@ ALTER TABLE db2.tbl2 DROP COLUMN c2;
 当同步该 DDL 语句对应的 binlog event 到下游时，会由于 TiDB 不支持该 DDL 语句而导致 DM 同步任务中断且报如下错误：
 
 ```bash
-exec sqls[[USE `db2`; ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2`;]] failed, 
+exec sqls[[USE `db2`; ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2`;]] failed,
 err:Error 1105: can't drop column c2 with index covered now
 ```
 
@@ -438,8 +438,8 @@ err:Error 1105: can't drop column c2 with index covered now
     对应 DM-worker 节点中也可以看到类似如下日志：
 
     ```bash
-    2018/12/28 15:33:13 operator.go:121: [info] [sql-operator] set a new operator 
-    uuid: c699a18a-8e75-47eb-8e7e-0e5abde2053c, pattern: ~(?i)ALTER\s+TABLE\s+`db2`.`tbl2`\s+DROP\s+COLUMN\s+`c2`, 
+    2018/12/28 15:33:13 operator.go:121: [info] [sql-operator] set a new operator
+    uuid: c699a18a-8e75-47eb-8e7e-0e5abde2053c, pattern: ~(?i)ALTER\s+TABLE\s+`db2`.`tbl2`\s+DROP\s+COLUMN\s+`c2`,
     op: REPLACE, args: ALTER TABLE `db2`.`tbl2` DROP INDEX idx_c2; ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2`
     on replication unit
     ```
@@ -449,11 +449,11 @@ err:Error 1105: can't drop column c2 with index covered now
 5. 观察下游表结构是否变更成功，对应 DM-worker 节点中也可以看到类似如下日志：
 
     ```bash
-    2018/12/28 15:33:45 operator.go:158: [info] [sql-operator] 
-    sql-pattern ~(?i)ALTER\s+TABLE\s+`db2`.`tbl2`\s+DROP\s+COLUMN\s+`c2` matched SQL 
-    USE `db2`; ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2`;, 
-    applying operator uuid: c699a18a-8e75-47eb-8e7e-0e5abde2053c, 
-    pattern: ~(?i)ALTER\s+TABLE\s+`db2`.`tbl2`\s+DROP\s+COLUMN\s+`c2`, 
+    2018/12/28 15:33:45 operator.go:158: [info] [sql-operator]
+    sql-pattern ~(?i)ALTER\s+TABLE\s+`db2`.`tbl2`\s+DROP\s+COLUMN\s+`c2` matched SQL
+    USE `db2`; ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2`;,
+    applying operator uuid: c699a18a-8e75-47eb-8e7e-0e5abde2053c,
+    pattern: ~(?i)ALTER\s+TABLE\s+`db2`.`tbl2`\s+DROP\s+COLUMN\s+`c2`,
     op: REPLACE, args: ALTER TABLE `db2`.`tbl2` DROP INDEX idx_c2; ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2`
     ```
 
@@ -552,13 +552,13 @@ err:Error 1105: can't drop column c2 with index covered now
     ```
 
     **DM-master** 节点中也可以看到类似如下日志：
-    
+
     ```bash
-    2018/12/28 16:53:33 operator.go:105: [info] [sql-operator] set a new operator 
-    uuid: eba35acd-6c5e-4bc3-b0b0-ae8bd1232351, request: name:"test" 
-    op:REPLACE args:"ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2;" 
-    args:"ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`" 
-    sqlPattern:"~(?i)ALTER\\s+TABLE\\s+`shard_db`.`shard_table`\\s+DROP\\s+COLUMN\\s+`c2`" 
+    2018/12/28 16:53:33 operator.go:105: [info] [sql-operator] set a new operator
+    uuid: eba35acd-6c5e-4bc3-b0b0-ae8bd1232351, request: name:"test"
+    op:REPLACE args:"ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2;"
+    args:"ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`"
+    sqlPattern:"~(?i)ALTER\\s+TABLE\\s+`shard_db`.`shard_table`\\s+DROP\\s+COLUMN\\s+`c2`"
     sharding:true
     ```
 
@@ -567,41 +567,41 @@ err:Error 1105: can't drop column c2 with index covered now
 6. 观察下游表结构是否变更成功，对应的 DDL lock **owner** 节点中也可以看到类似如下日志：
 
     ```bash
-    2018/12/28 16:54:35 operator.go:121: [info] [sql-operator] set a new operator 
-    uuid: c959f2fb-f1c2-40c7-a1fa-e73cd51736dd, 
-    pattern: ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2`, 
+    2018/12/28 16:54:35 operator.go:121: [info] [sql-operator] set a new operator
+    uuid: c959f2fb-f1c2-40c7-a1fa-e73cd51736dd,
+    pattern: ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2`,
     op: REPLACE, args: ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2; ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`
     on replication unit
     ```
 
     ```bash
-    2018/12/28 16:54:35 operator.go:158: [info] [sql-operator] 
-    sql-pattern ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2` matched SQL 
-    USE `shard_db`; ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`;, 
-    applying operator uuid: c959f2fb-f1c2-40c7-a1fa-e73cd51736dd, 
-    pattern: ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2`, 
+    2018/12/28 16:54:35 operator.go:158: [info] [sql-operator]
+    sql-pattern ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2` matched SQL
+    USE `shard_db`; ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`;,
+    applying operator uuid: c959f2fb-f1c2-40c7-a1fa-e73cd51736dd,
+    pattern: ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2`,
     op: REPLACE, args: ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2; ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`
     ```
 
     另外，**DM-master** 节点中也可以看到类似如下日志：
 
     ```bash
-    2018/12/28 16:54:35 operator.go:122: [info] [sql-operator] get an operator 
-    uuid: eba35acd-6c5e-4bc3-b0b0-ae8bd1232351, request: name:"test" op:REPLACE 
-    args:"ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2;" 
-    args:"ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`" 
-    sqlPattern:"~(?i)ALTER\\s+TABLE\\s+`shard_db`.`shard_table`\\s+DROP\\s+COLUMN\\s+`c2`" 
+    2018/12/28 16:54:35 operator.go:122: [info] [sql-operator] get an operator
+    uuid: eba35acd-6c5e-4bc3-b0b0-ae8bd1232351, request: name:"test" op:REPLACE
+    args:"ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2;"
+    args:"ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`"
+    sqlPattern:"~(?i)ALTER\\s+TABLE\\s+`shard_db`.`shard_table`\\s+DROP\\s+COLUMN\\s+`c2`"
     sharding:true  
-    with key ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2` matched SQL 
+    with key ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2` matched SQL
     USE `shard_db`; ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`;
     ```
 
     ```bash
-    2018/12/28 16:54:36 operator.go:145: [info] [sql-operator] remove an operator 
-    uuid: eba35acd-6c5e-4bc3-b0b0-ae8bd1232351, request: name:"test" op:REPLACE 
-    args:"ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2;" 
-    args:"ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`" 
-    sqlPattern:"~(?i)ALTER\\s+TABLE\\s+`shard_db`.`shard_table`\\s+DROP\\s+COLUMN\\s+`c2`" 
+    2018/12/28 16:54:36 operator.go:145: [info] [sql-operator] remove an operator
+    uuid: eba35acd-6c5e-4bc3-b0b0-ae8bd1232351, request: name:"test" op:REPLACE
+    args:"ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2;"
+    args:"ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`"
+    sqlPattern:"~(?i)ALTER\\s+TABLE\\s+`shard_db`.`shard_table`\\s+DROP\\s+COLUMN\\s+`c2`"
     sharding:true
     ```
 

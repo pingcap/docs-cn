@@ -1,7 +1,6 @@
 ---
 title: TiDB 用户账户管理
 category: reference
-aliases: ['/docs-cn/sql/user-account-management/']
 ---
 
 # TiDB 用户账户管理
@@ -14,14 +13,18 @@ TiDB 将用户账户存储在 `mysql.user` 系统表里面。每个账户由用�
 
 通过 MySQL 客户端连接到 TiDB 服务器，通过指定的账户和密码登录：
 
+{{< copyable "shell-regular" >}}
+
 ```
-shell> mysql --port 4000 --user xxx --password
+mysql --port 4000 --user xxx --password
 ```
 
 使用缩写的命令行参数则是：
 
+{{< copyable "shell-regular" >}}
+
 ```
-shell> mysql -P 4000 -u xxx -p
+mysql -P 4000 -u xxx -p
 ```
 
 ## 添加用户
@@ -33,9 +36,16 @@ shell> mysql -P 4000 -u xxx -p
 
 推荐使用第一种方式。第二种方式修改容易导致一些不完整的修改，因此不推荐。还有另一种可选方式是使用第三方工具的图形化界面工具。
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE USER [IF NOT EXISTS]
     user [auth_spec] [, user [auth_spec]] ...
+```
+
+{{< copyable "sql" >}}
+
+```sql
 auth_spec: {
     IDENTIFIED BY 'auth_string'
   | IDENTIFIED BY PASSWORD 'hash_string'
@@ -44,6 +54,8 @@ auth_spec: {
 
 * `IDENTIFIED BY 'auth_string'`：设置登录密码时，`auth_string` 会被 TiDB 经过加密存储在 `mysql.user` 表中。
 * `IDENTIFIED BY PASSWORD 'hash_string'`：设置登录密码，`hash_string` 是一个类似于 `*EBE2869D7542FCE37D1C9BBC724B97BDE54428F1` 的 41 位字符串，会被 TiDB 直接存储在 `mysql.user` 表中，该字符串可以通过 `SELECT password('auth_string')` 加密得到。
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE USER 'test'@'127.0.0.1' IDENTIFIED BY 'xxx';
@@ -56,6 +68,8 @@ TiDB 的用户账户名由一个用户名和一个主机名组成。账户名的
 
 host 支持模糊匹配，比如：
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE USER 'test'@'192.168.10.%';
 ```
@@ -64,11 +78,15 @@ CREATE USER 'test'@'192.168.10.%';
 
 如果没有指定 host，则默认是所有 IP 均可登录。如果没有指定密码，默认为空：
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE USER 'test';
 ```
 
-等价于
+等价于：
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE USER 'test'@'%' IDENTIFIED BY '';
@@ -76,20 +94,57 @@ CREATE USER 'test'@'%' IDENTIFIED BY '';
 
 下面的例子用 `CREATE USER` 和 `GRANT` 语句创建了四个账户：
 
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER 'finley'@'localhost' IDENTIFIED BY 'some_pass';
 ```
-mysql> CREATE USER 'finley'@'localhost' IDENTIFIED BY 'some_pass';
-mysql> GRANT ALL PRIVILEGES ON *.* TO 'finley'@'localhost' WITH GRANT OPTION;
-mysql> CREATE USER 'finley'@'%' IDENTIFIED BY 'some_pass';
-mysql> GRANT ALL PRIVILEGES ON *.* TO 'finley'@'%' WITH GRANT OPTION;
-mysql> CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin_pass';
-mysql> GRANT RELOAD,PROCESS ON *.* TO 'admin'@'localhost';
-mysql> CREATE USER 'dummy'@'localhost';
+
+{{< copyable "sql" >}}
+
+```sql
+GRANT ALL PRIVILEGES ON *.* TO 'finley'@'localhost' WITH GRANT OPTION;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER 'finley'@'%' IDENTIFIED BY 'some_pass';
+```
+
+{{< copyable "sql" >}}
+
+```sql
+GRANT ALL PRIVILEGES ON *.* TO 'finley'@'%' WITH GRANT OPTION;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin_pass';
+```
+
+{{< copyable "sql" >}}
+
+```sql
+GRANT RELOAD,PROCESS ON *.* TO 'admin'@'localhost';
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER 'dummy'@'localhost';
 ```
 
 使用 `SHOW GRANTS` 可以看到为一个用户授予的权限：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW GRANTS FOR 'admin'@'localhost';
+SHOW GRANTS FOR 'admin'@'localhost';
+```
+
+```
 +-----------------------------------------------------+
 | Grants for admin@localhost                          |
 +-----------------------------------------------------+
@@ -101,8 +156,10 @@ mysql> SHOW GRANTS FOR 'admin'@'localhost';
 
 使用 `DROP USER` 语句可以删除用户，例如：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> DROP USER 'test'@'localhost';
+DROP USER 'test'@'localhost';
 ```
 
 这个操作会清除用户在 `mysql.user` 表里面的记录项，并且清除在授权表里面的相关记录。
@@ -121,17 +178,23 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 
 - 在 `CREATE USER` 创建用户时可以通过 `IDENTIFIED BY` 指定密码：
 
+    {{< copyable "sql" >}}
+
     ```sql
     CREATE USER 'test'@'localhost' IDENTIFIED BY 'mypass';
     ```
 
 - 为一个已存在的账户修改密码，可以通过 `SET PASSWORD FOR` 或者 `ALTER USER` 语句完成：
 
+    {{< copyable "sql" >}}
+
     ```sql
     SET PASSWORD FOR 'root'@'%' = 'xxx';
     ```
 
-    或者
+    或者：
+
+    {{< copyable "sql" >}}
 
     ```sql
     ALTER USER 'test'@'localhost' IDENTIFIED BY 'mypass';
@@ -146,6 +209,8 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 
 2. 使用修改后的配置启动 TiDB（需要 `root` 权限）：
 
+    {{< copyable "shell-root" >}}
+
     ```bash
     sudo ./tidb-server -skip-grant-table=true -store=tikv -path=...
     ```
@@ -154,16 +219,20 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 
 3. 然后使用 `root` 登录后修改密码：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     mysql -h 127.0.0.1 -P 4000 -u root
     ```
 
-## `FLUSH PRIVILEGES` 
+## `FLUSH PRIVILEGES`
 
 如果授权表已被直接修改，运行如下命令可使改动立即生效：
+
+{{< copyable "sql" >}}
 
 ```sql
 FLUSH PRIVILEGES;
 ```
 
-详情参见[权限管理](/dev/reference/security/privilege-system.md)。
+详情参见[权限管理](/reference/security/privilege-system.md)。
