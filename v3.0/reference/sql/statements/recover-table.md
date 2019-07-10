@@ -54,7 +54,7 @@ RECOVER TABLE BY JOB 53;
 
 ## 原理
 
-TiDB 在删除表时，实际上只删除了表的元信息，并将需要删除的表数据（行数据和索引数据）写一条数据到 `mysql.gc_delete_range` 表。TiDB 后台的 GC Worker 会定期从 `mysql.gc_delete_range` 表中取出超过 gc life time 相关范围的 key 进行删除。
+TiDB 在删除表时，实际上只删除了表的元信息，并将需要删除的表数据（行数据和索引数据）写一条数据到 `mysql.gc_delete_range` 表。TiDB 后台的 GC Worker 会定期从 `mysql.gc_delete_range` 表中取出超过 GC life time 相关范围的 key 进行删除。
 
 所以，RECOVER TABLE 只需要在 GC Worker 还没删除表数据前，恢复表的元信息并删除 `mysql.gc_delete_range` 表中相应的行记录就可以了。恢复表的元信息可以用 TiDB 的快照读实现。具体的快照读内容可以参考 [读取历史数据](../../../how-to/get-started/read-historical-data.md) 文档。
 
@@ -62,4 +62,15 @@ TiDB 在删除表时，实际上只删除了表的元信息，并将需要删除
 
 > **注意：**
 >
-> 如果删除表后并过了 gc life time，就不能再用 RECOVER TABLE 来恢复被删除的表了，执行 RECOVER TABLE 语句会返回类似错误：`snapshot is older than GC safe point 2019-07-10 13:45:57 +0800 CST`。
+> 如果删除表后并过了 GC life time，就不能再用 RECOVER TABLE 来恢复被删除的表了，执行 RECOVER TABLE 语句会返回类似错误：`snapshot is older than GC safe point 2019-07-10 13:45:57 +0800 CST`。
+
+## 注意事项
+
+如果 TiDB 有用类似 Binlog 的同步工具，上游 TiDB 使用 RECOVER TABLE 后，经过 Binlog 同步后下游可能会失败导致同步失败，失败可能有以下几个原因：
+
+* 下游数据库不支持 RECOVER TABLE 语句。
+
+* 上下游数据库的 GC life time 不一样。
+
+* 上下游数据库的同步延迟。
+
