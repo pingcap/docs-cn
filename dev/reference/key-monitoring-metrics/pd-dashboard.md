@@ -80,7 +80,7 @@ category: reference
 - Scheduler is running：所有正在运行的 scheduler
 - Balance leader movement：leader 移动的详细情况
 - Balance Region movement：Region 移动的详细情况
-- Balance leader event：balance leader 的事件数量 
+- Balance leader event：balance leader 的事件数量
 - Balance Region event：balance Region 的事件数量
 - Balance leader scheduler：balance-leader scheduler 的状态
 - Balance Region scheduler：balance-region scheduler 的状态

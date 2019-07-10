@@ -47,7 +47,7 @@ PD 可以通过命令行参数或环境变量配置。
 ## `--initial-cluster`
 
 + 初始化 PD 集群配置。
-+ 默认："{name}=http://{advertise-peer-url}"
++ 默认：`"{name}=http://{advertise-peer-url}"`
 + 例如，如果 name 是 "pd", 并且 `advertise-peer-urls` 是 `http://192.168.100.113:2380`, 那么 `initial-cluster` 就是 `pd=http://192.168.100.113:2380`。
 + 如果你需要启动三台 PD，那么 `initial-cluster` 可能就是
   `pd1=http://192.168.100.113:2380, pd2=http://192.168.100.114:2380, pd3=192.168.100.115:2380`。
@@ -102,3 +102,8 @@ PD 可以通过命令行参数或环境变量配置。
 + 指定 PD 使用的 namespace 分类器。
 + 默认："table"
 + 如果 TiKV 不与 TiDB 集群配合运行，建议配置为 'default'。
+
+## `--metrics-addr`
+
++ Prometheus Pushgateway 的地址，默认不向 Promethus 推送数据.
++ 默认：""

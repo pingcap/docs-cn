@@ -4,9 +4,9 @@ summary: TiDB 数据库中 CREATE TABLE 的使用概况
 category: reference
 ---
 
-# CREATE TABLE 
+# CREATE TABLE
 
-`CREATE TABLE` 语句用于在当前所选数据库中创建新表。另可参阅单独的 `CREATE TABLE AS` 文档。
+`CREATE TABLE` 语句用于在当前所选数据库中创建新表。另可参阅单独的 `CREATE TABLE LIKE` 文档。
 
 ## 语法图
 
