@@ -219,6 +219,10 @@ table_option:
 
 `split-table` 配置项默认情况下会开启，在此配置项开启时，建表操作会为每个表建立单独的 Region。
 
+> **注意：**
+>
+> 在 TiDB 2.1 版本中，`SHARD_ROW_ID_BITS`、`PRE_SPLIT_REGIONS 和 `COLLATE` 这三个功能都是从 2.1.13 版本（包括 2.1.13）开始支持的。
+
 ## 示例
 
 ```sql
