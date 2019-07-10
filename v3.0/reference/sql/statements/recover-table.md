@@ -19,7 +19,7 @@ RECOVER TABLE BY JOB ddl_job_id
 
 ## 示例
 
-1. 根据表名恢复被删除的表。
+- 根据表名恢复被删除的表。
 
 {{< copyable "sql" >}}
 
@@ -31,7 +31,7 @@ RECOVER TABLE t;
 
 根据表名恢复被删除的表，会找到最近历史 DDL JOB 中的第一个是 DROP TABLE 类型的 DDL 且 DROP TABLE 的表名等于 RECOVER TABLE 语句中指定的表名的表进行恢复。
 
-2. 根据删除表时的 DDL JOB ID 恢复被删除的表。
+- 根据删除表时的 DDL JOB ID 恢复被删除的表。
 
 {{< copyable "sql" >}}
 
