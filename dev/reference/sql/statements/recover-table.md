@@ -41,6 +41,8 @@ RECOVER TABLE BY JOB ddl_job_id
 
 - 根据删除表时的 DDL JOB ID 恢复被删除的表。
 
+    如果第一次删除表 t 后，又新建了一个表 t，然后又把新建的表 t 删除了，此时如果想恢复最开始删除的表 t, 就需要用到指定 DDL JOB ID 的语法了。
+
     {{< copyable "sql" >}}
 
     ```sql
