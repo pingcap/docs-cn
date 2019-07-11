@@ -73,7 +73,7 @@ free -m
 
 下面按 3 Kubernetes master + 3 etcd + 若干 work 节点部署方案分析。Kubernetes 的多 master 节点高可用部署参考[官方文档](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/)。
 
-## k8s 系统资源要求
+## Kubernetes 系统资源要求
 
 1. 每个机器上的需要一块比较大的 SAS 盘(至少 1T)，这块盘用来存 docker 和 kubelet 的数据目录，docker 的数据主要包括镜像和容器日志数据，kubelet 主要占盘的数据是 [emptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) 所使用的数据。
 2. 如果需要部署 k8s 集群的监控系统, 且监控数据需要落盘，则也需要考虑为 prometheus 准备一块 SAS 盘，后面日志监控系统也需要大的 SAS 盘，同时考虑到机器采购最好是同构的这一因素，因此每台机器最好有两块大的 SAS 盘。生产环境建议给这两种类型的盘做 RAID5，至于使用多少块来做 RAID5 用户自己决定。
