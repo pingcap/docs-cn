@@ -42,11 +42,11 @@ aliases: ['/docs-cn/releases/21beta/']
     - 添加 `tidb_disable_txn_auto_retry` 系统变量控制事务是否自动重试
     - 修复写入 `time` 类型的数据精度问题
     - 支持本地冲突事务排队，优化冲突事务性能
-    - 修复 `UPDATE` 语句的 `Affected Rows` 
+    - 修复 `UPDATE` 语句的 `Affected Rows`
     - 优化 `insert ignore on duplicate key update` 语句性能
     - 优化 `Create Table` 语句的执行速度
     - 优化 `Add index` 的速度，在某些场景下速度大幅提升
-    - 修复 `Alter table add column` 增加列超过表的列数限制的问题 
+    - 修复 `Alter table add column` 增加列超过表的列数限制的问题
     - 修复在某些异常情况下 DDL 任务重试导致 TiKV 压力增加的问题
     - 修复在某些异常情况下 TiDB 不断重载 Schema 信息的问题
 - DDL
@@ -66,7 +66,7 @@ aliases: ['/docs-cn/releases/21beta/']
 - `region merge` 调度时跳过数据行数较多的 Region
 - 默认开启 `raft learner` 功能，降低调度时出现宕机导致数据不可用的风险
 - `pd-recover` 移除 max-replica 参数
-- 增加 `Filter `相关的 metrics
+- 增加 `Filter` 相关的 metrics
 - 修复 tikv-ctl unsafe recovery 之后 Region 信息没更新的问题
 - 修复某些场景下副本迁移导致 TiKV 磁盘空间耗尽的问题
 - 兼容性提示
