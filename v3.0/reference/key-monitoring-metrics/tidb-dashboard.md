@@ -26,7 +26,7 @@ aliases: ['/docs-cn/op-guide/tidb-dashboard-info/']
     - Connection count：每个 TiDB 的连接数
     - Failed Query OPM：失败 SQL 的统计，例如语法错误、主键冲突等
     - Heap Memory Usage：每个 TiDB 使用的堆内存大小
-    - Events OPM：统计关键事件，例如 start，close，gracefull-shutdown，kill，hang 等
+    - Events OPM：统计关键事件，例如 start，close，graceful-shutdown，kill，hang 等
     - Uncommon Error OPM：TiDB 非正常错误的统计，包括 panic，binlog 写失败等
 
 - Transaction
