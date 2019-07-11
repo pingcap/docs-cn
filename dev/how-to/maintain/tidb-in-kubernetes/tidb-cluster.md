@@ -21,7 +21,7 @@ chartVersion="v1.0.0-beta.3"
 
 为提高性能，你必须保证以下两点：
 
-* 安装 Linux Guest Environment，只能用于 Ubuntu 系统，不能用于 COS。
+* 安装 Linux Guest Environment，只能用于 Ubuntu 系统，不能用于 Container-Optimized OS。
 * 确保 SSD 挂载选项中包含 `nobarrier`。
 
 我们提供一个解决上述问题的 [Daemonset](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/gke/local-ssd-optimize.yaml)。还提供一个解决上述性能问题并且将多块 SSD 盘配置成一个 LVM 的
