@@ -9,7 +9,7 @@ category: how-to
 | 软件名称 | 版本 |
 | --- | --- |
 | Docker | docker-ce 18.09.6 |
-| K8s |  v1.12.2 |
+| Kubernetes |  v1.12.2 |
 | CentOS |  7.6 and kernel 3.10.0-957 or later |
 
 ## 内核参数设置
