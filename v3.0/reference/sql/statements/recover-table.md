@@ -5,7 +5,7 @@ category: reference
 
 # RECOVER TABLE
 
-RECOVER TABLE 的功能是恢复被删除的表及其数据。在 DROP TABLE 后，在 GC life time 时间内，可以用 RECOVER TABLE 语句恢复被删除的表以及其数据。
+`RECOVER TABLE` 的功能是恢复被删除的表及其数据。在 `DROP TABLE` 后，在 GC life time 时间内，可以用 `RECOVER TABLE` 语句恢复被删除的表以及其数据。
 
 ## 语法
 
@@ -61,7 +61,7 @@ Binlog 在 3.0.1 支持 `RECOVER TABLE` 后，可在下面的情况下使用 `RE
     RECOVER TABLE t;
     ```
 
-    根据表名恢复被删除的表，会找到最近历史 DDL JOB 中的第一个是 DROP TABLE 类型的 DDL 且 DROP TABLE 的表名等于 RECOVER TABLE 语句中指定的表名的表进行恢复。
+    根据表名恢复被删除的表，会找到最近历史 DDL JOB 中的第一个是 `DROP TABLE` 类型的 DDL 且 `DROP TABLE` 的表名等于 `RECOVER TABLE` 语句中指定的表名的表进行恢复。
 
 - 根据删除表时的 DDL JOB ID 恢复被删除的表。
 
@@ -95,7 +95,7 @@ Binlog 在 3.0.1 支持 `RECOVER TABLE` 后，可在下面的情况下使用 `RE
     RECOVER TABLE BY JOB 53;
     ```
 
-    根据删除表时的 DDL JOB ID 恢复被删除的表，会直接用 DDL JOB ID 找到被删除表进行恢复。如果指定的 DDL JOB ID 的 DDL JOB 不是 DROP TABLE 类型，会报错。
+    根据删除表时的 DDL JOB ID 恢复被删除的表，会直接用 DDL JOB ID 找到被删除表进行恢复。如果指定的 DDL JOB ID 的 DDL JOB 不是 `DROP TABLE` 类型，会报错。
 
 ## 原理
 
@@ -103,4 +103,4 @@ TiDB 在删除表时，实际上只删除了表的元信息，并将需要删除
 
 所以，RECOVER TABLE 只需要在 GC Worker 还没删除表数据前，恢复表的元信息并删除 `mysql.gc_delete_range` 表中相应的行记录就可以了。恢复表的元信息可以用 TiDB 的快照读实现。具体的快照读内容可以参考[读取历史数据](/how-to/get-started/read-historical-data.md)文档。
 
-恢复表的元信息是通过快照读获取表的元信息后，再走一次类似于 `CREATE TABLE` 的建表流程，所以 RECOVER TABLE 实际上也是一种 DDL。
+恢复表的元信息是通过快照读获取表的元信息后，再走一次类似于 `CREATE TABLE` 的建表流程，所以 `RECOVER TABLE` 实际上也是一种 DDL。
