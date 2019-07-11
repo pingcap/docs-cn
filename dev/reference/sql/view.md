@@ -14,6 +14,7 @@ TiDB 支持视图，视图是一张虚拟表，该虚拟表的结构由创建视
 ## 样例
 
 下例创建一个视图，并在该视图上进行查询，最后删除该视图。
+
 ``` sql
 tidb> create table t(a int, b int);
 Query OK, 0 rows affected (0.01 sec)
