@@ -38,7 +38,7 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
     - [ ] 支持白名单插件
     - [ ] 支持审计日志插件
     - [ ] 支持 RBAC 插件
-    - [ ] 支持诊断插件 
+    - [ ] 支持诊断插件
 - [ ] 支持 Query Tracing
 - [ ] 支持行列混合存储引擎
 - [ ] 支持 New Storage Row Format，提升性能并减小内存占用
