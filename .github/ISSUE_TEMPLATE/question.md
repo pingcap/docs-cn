@@ -19,6 +19,6 @@ Before asking a question, make sure you have:
 - Searched open and closed [GitHub issues](https://github.com/pingcap/docs-cn/issues?utf8=%E2%9C%93&q=is%3Aissue).
 <!-- - 查阅了相关的 issues。 -->
 - Read the documentation:
-    - [TiDB Doc](https://github.com/pingcap/docs)
+    - [TiDB Docs](https://github.com/pingcap/docs)
     - [TiDB Doc-cn](https://github.com/pingcap/docs-cn)
 <!-- - 阅读了相关文档。 -->
