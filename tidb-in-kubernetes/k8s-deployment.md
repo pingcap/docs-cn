@@ -102,7 +102,7 @@ tidb 集群由 PD、TiKV、TiDB 三个组件组成，在做容量规划的时候
 
 * 3 PD (3 \* 2C 3 \* 4GB) + 2 TiKV (2 \* 8C 2 \* 32GB) + 2 TiDB (2 \* 8C 2 \* 32GB)  总共是 38C 140GB
 * 一块 SSD 盘给三个 PD 实例
-* 做了 RAID5 的 SAS 盘，给 docker 和 kubelet 做数据盘
+* 做了 RAID5 的 SAS 盘，给 Docker 和 kubelet 做数据盘
 * 两块 NVMe 盘给 TiKV 实例
 
 从上面的分析来看要支持 5 套 tidb 集群容量共需要 7 台物理机，其中三台为 master 兼 work 节点，其余四台为 work 节点，机器配置需求如下。
