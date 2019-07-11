@@ -21,7 +21,7 @@ RECOVER TABLE table_name
 RECOVER TABLE BY JOB ddl_job_id
 ```
 
-## **注意事项**
+## 注意事项
 
 如果删除表后并过了 GC life time，就不能再用 RECOVER TABLE 来恢复被删除的表了，执行 RECOVER TABLE 语句会返回类似错误：`snapshot is older than GC safe point 2019-07-10 13:45:57 +0800 CST`。
 
