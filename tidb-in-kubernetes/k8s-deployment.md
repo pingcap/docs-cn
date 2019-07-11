@@ -63,7 +63,7 @@ swapofff -a
 free -m
 ```
 
-同时为了永久性的关闭 swap, 还应该将 `/etc/fstab` 中 swap 相关的条目全部删除
+同时为了永久性地关闭 swap，还应该将 `/etc/fstab` 中 swap 相关的条目全部删除。
 
 ## 硬件和部署要求
 
