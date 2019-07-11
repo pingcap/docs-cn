@@ -100,7 +100,7 @@ tidb 集群由 PD、TiKV、TiDB 三个组件组成，在做容量规划的时候
 
 单个 work 节点:
 
-* 3 PD(3 \* 2C 3 \* 4GB) + 2 TiKV (2 \* 8C 2 \* 32GB) + 2 TiDB (2 \* 8C 2 \* 32GB)  总共是 38C 140GB
+* 3 PD (3 \* 2C 3 \* 4GB) + 2 TiKV (2 \* 8C 2 \* 32GB) + 2 TiDB (2 \* 8C 2 \* 32GB)  总共是 38C 140GB
 * 一块 SSD 盘给三个 PD 实例
 * 做了 RAID5 的 SAS 盘，给 docker 和 kubelet 做数据盘
 * 两块 NVMe 盘给 TiKV 实例
