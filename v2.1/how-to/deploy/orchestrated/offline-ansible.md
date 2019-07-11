@@ -83,7 +83,7 @@ category: how-to
     ```bash
     # yum install epel-release
     # yum install ansible curl
-    # ansible --version   
+    # ansible --version
       ansible 2.5.0
     ```
 
