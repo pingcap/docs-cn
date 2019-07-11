@@ -3,10 +3,6 @@ name: "\U0001F41B Bug Report"
 about: Typo, Grammatical error, etc.。
 ---
 
-<!-- markdownlint-disable MD012 -->
-<!-- markdownlint-disable MD029 -->
-<!-- markdownlint-disable MD041 -->
-
 ## Bug 报告
 
 **This repository is ONLY used to solve problems related to DOCS-CN.

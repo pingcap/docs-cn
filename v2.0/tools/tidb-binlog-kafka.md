@@ -159,7 +159,7 @@ ZK3="192.168.0.11"
     -data-dir string
         Pump 数据存储位置路径
     -enable-tolerant
-        开启 tolerant 后，如果 binlog 写入失败，Pump 不会报错（默认开启）
+        开启 tolerant 后，如果 binlog 写入失败，Pump 不会报错（默认开启）
     -zookeeper-addrs string (-zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181")
         ZooKeeper 地址，该选项从 ZooKeeper 中获取 Kafka 地址
     -gc int

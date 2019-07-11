@@ -3,8 +3,6 @@ name: "\U0001F914 Question"
 about: Usage question that isn't answered in docs or discussion
 ---
 
-<!-- markdownlint-disable MD041 -->
-
 ## Question
 
 **This repository is ONLY used to solve problems related to DOCS-CN.
