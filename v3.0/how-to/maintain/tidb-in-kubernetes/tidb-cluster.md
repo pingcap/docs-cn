@@ -9,7 +9,7 @@ TiDB Operator 可以在同一个 Kubernetes 集群上管理多个 TiDB 集群。
 
 以下变量会在后续文档中用到：
 
-```
+```plain
 releaseName="demo"
 namespace="tidb"
 chartVersion="v1.0.0-beta.3"
