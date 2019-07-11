@@ -532,17 +532,17 @@ TiDB 支持改变 [per-session](/reference/configuration/tidb-server/tidb-specif
 
 以上两种参数可以结合 TiDB 的 DML 语言进行使用，使用方法举例如下：
 
-1）通过在数据库中写 SQL 的方式来调整优先级：
+1. 通过在数据库中写 SQL 的方式来调整优先级：
 
-```sql
-select HIGH_PRIORITY | LOW_PRIORITY count(*) from table_name;
-insert HIGH_PRIORITY | LOW_PRIORITY into table_name insert_values;
-delete HIGH_PRIORITY | LOW_PRIORITY from table_name;
-update HIGH_PRIORITY | LOW_PRIORITY table_reference set assignment_list where where_condition;
-replace HIGH_PRIORITY | LOW_PRIORITY into table_name;
-```
+    ```sql
+    select HIGH_PRIORITY | LOW_PRIORITY count(*) from table_name;
+    insert HIGH_PRIORITY | LOW_PRIORITY into table_name insert_values;
+    delete HIGH_PRIORITY | LOW_PRIORITY from table_name;
+    update HIGH_PRIORITY | LOW_PRIORITY table_reference set assignment_list where where_condition;
+    replace HIGH_PRIORITY | LOW_PRIORITY into table_name;
+    ```
 
-2）全表扫会自动调整为低优先级，analyze 也是默认低优先级。
+2. 全表扫会自动调整为低优先级，analyze 也是默认低优先级。
 
 #### 3.3.11 在 TiDB 中 auto analyze 的触发策略是怎样的？
 
