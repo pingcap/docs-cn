@@ -83,7 +83,7 @@ free -m
 
 TiDB 集群由 PD、TiKV、TiDB 三个组件组成，在做容量规划的时候一般按照可以支持多少套 TiDB 集群来算。这里按照标准的 tidb 集群 3个 PD + 3 个 TiKV + 2 个 TiDB 来算，下面是对每个组件规划的一种建议：
 
-1. PD 组件。PD 占用资源较少，这种集群规模下分配 2C 4GB 即可，占用少量本地盘，为了便于管理，我们可以将所有集群的 PD 都放在 master 节点，比如需要支持 5套 tidb 集群，则可以规划三个 master 节点上每个支持部署 5 个 pd 实例，5 个 pd 实例使用同一块 SSD 盘即可(两三百 GB 的盘即可)，通过 bind mount 的方式在这块 SSD 上创建 5个目录作为挂载点，操作方式见 [文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)。如果后面集群添加了更多的机器需要支持更多的 tidb 集群时，可以在 master 上用这种方式继续增加 PD 实例，如果 master 上资源耗尽可以找其它的 work 节点机器用同样的方式添加 PD 实例，这种方式的好处就是方便规划和管理 PD 实例，坏处就是由于 PD 实例过于集中，这些机器中如果有两台宕机会导致所有的 tidb 集群不可用。因此我们这里的建议是从所有集群里面的机器都拿出一块 SSD 盘像 master 节点一样提供 PD 实例。比如总共 7 台机器，要支持 7 套 tidb 标准集群的情况下，则需要每台机器上都能支持部署3个 PD 实例，如果后续有集群需要通过扩容机器增加容量，我们也只需要在新的机器上创建 PD 实例即可。
+1. PD 组件。PD 占用资源较少，这种集群规模下分配 2C 4GB 即可，占用少量本地盘，为了便于管理，我们可以将所有集群的 PD 都放在 master 节点，比如需要支持 5 套 TiDB 集群，则可以规划三个 master 节点上每个支持部署 5 个 PD 实例，5 个 PD 实例使用同一块 SSD 盘即可（两三百 GB 的盘即可），通过 bind mount 的方式在这块 SSD 上创建 5 个目录作为挂载点，操作方式见 [文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)。如果后面集群添加了更多的机器需要支持更多的 TiDB 集群时，可以在 master 上用这种方式继续增加 PD 实例，如果 master 上资源耗尽可以找其它的 work 节点机器用同样的方式添加 PD 实例，这种方式的好处就是方便规划和管理 PD 实例，坏处就是由于 PD 实例过于集中，这些机器中如果有两台宕机会导致所有的 TiDB 集群不可用。因此这里建议从所有集群里面的机器都拿出一块 SSD 盘像 master 节点一样提供 PD 实例。比如总共 7 台机器，要支持 7 套 TiDB 标准集群的情况下，则需要每台机器上都能支持部署3个 PD 实例，如果后续有集群需要通过扩容机器增加容量，也只需要在新的机器上创建 PD 实例。
 2. TiKV 组件，TiKV 组件的性能因为很依赖磁盘IO 且数据量一般较大，因此这里建议每个 TiKV 实例独占一块 NVMe 的盘，资源配置为 8C 32GB，如果想要在一个机器上支持部署 多个 TiKV 实例，则参考这些参数去选择合适的机器，同时在规划容量的时候应当预留出足够的 buffer。
 3. TiDB 组件，TiDB 组件因为不占用磁盘，因此在规划的时候只需要考虑其占用的 cpu 和 内存资源即可，这里我们也按 8C 32 GB 的容量来计算。
 
