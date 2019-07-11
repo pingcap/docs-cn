@@ -928,7 +928,7 @@ TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指�
 
 ### 7.1 Prometheus 监控框架
 
-详细参考 [TiDB 监控框架概述](/how-to/monitor/overview/)。
+详细参考 [TiDB 监控框架概述](/how-to/monitor/overview.md)。
 
 ### 7.2 监控指标解读
 
