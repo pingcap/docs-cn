@@ -26,7 +26,7 @@ kubectl annotate pod ${pod_name} -n ${namespace} runmode=debug
 {{< copyable "shell-regular" >}}
 
 ```shell
-watch kubectl get pod ${pod_name}
+watch kubectl get pod ${pod_name} -n ${namespace}
 ```
 
 下面是使用 `kubectl exec` 进入容器进行诊断工作的例子:
@@ -34,13 +34,13 @@ watch kubectl get pod ${pod_name}
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl exec -it ${pod_name} -- /bin/bash
+kubectl exec -it ${pod_name} -n ${namespace} -- /bin/bash
 ```
 
 诊断完毕，修复问题后，删除 Pod：
 
 ```shell
-kubectl delete pod ${pod_name}
+kubectl delete pod ${pod_name} -n ${namespace}
 ```
 
 Pod 重建后会自动回到正常运行模式。
