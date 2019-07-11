@@ -82,9 +82,9 @@ category: reference
     参照上文配置完 `inventory.ini` 文件后，从以下两种方式中选择一种进行部署。
 
     **方式一**：在已有的 TiDB 集群上增加 Pump 组件，需按以下步骤逐步进行。
-  
+
     1. 部署 pump_servers 和 node_exporters
-  
+
         ```
         ansible-playbook deploy.yml -l ${pump1_ip},${pump2_ip},[${alias1_name},${alias2_name}]
         ```
@@ -336,7 +336,7 @@ Drainer="192.168.0.13"
         ```bash
         ./bin/pump -config pump.toml
         ```
-  
+
         如果命令行参数与配置文件中的参数重合，则使用命令行设置的参数的值。
 
 2. 使用 binary 部署 Drainer
@@ -474,7 +474,7 @@ Drainer="192.168.0.13"
         # topic-name = ""
         ```
 
-    - 启动示例  
+    - 启动示例
 
         > **注意：**
         >

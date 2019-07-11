@@ -551,7 +551,7 @@ err:Error 1105: can't drop column c2 with index covered now
     ```
 
     **DM-master** 节点中也可以看到类似如下日志：
-  
+
     ```bash
     2018/12/28 16:53:33 operator.go:105: [info] [sql-operator] set a new operator
     uuid: eba35acd-6c5e-4bc3-b0b0-ae8bd1232351, request: name:"test"

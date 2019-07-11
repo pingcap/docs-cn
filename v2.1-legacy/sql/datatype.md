@@ -31,6 +31,7 @@ TiDB 支持 MySQL 所有的数值类型，按照精度可以分为:
 TiDB 支持 MySQL 所有的整数类型，包括 INTEGER/INT、TINYINT、SMALLINT、MEDIUMINT 以及 BIGINT，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/numeric-type-overview.html)文档。
 
 #### 类型定义
+
 语法：
 
 ```sql
@@ -93,7 +94,7 @@ FLOAT[(M,D)] [UNSIGNED] [ZEROFILL]
 
 DOUBLE[(M,D)] [UNSIGNED] [ZEROFILL]
 > 双精度浮点数。允许的值范围为：-2^1024 ~ +2^1024，也即是 -1.7976931348623157E+308 到 -2.2250738585072014E-308、0 和 2.2250738585072014E-308 到 1.7976931348623157E+308。这些是理论限制，基于 IEEE 标准。实际的范围根据硬件或操作系统的不同可能稍微小些。
- 
+
 DOUBLE PRECISION [(M,D)] [UNSIGNED] [ZEROFILL], REAL[(M,D)] [UNSIGNED] [ZEROFILL]
 > 为 DOUBLE 的同义词。
 
@@ -119,7 +120,6 @@ FLOAT(p) [UNSIGNED] [ZEROFILL]
 | `FLOAT`     | 4        |
 | `FLOAT(p)`  | 如果 0 <= p <= 24 为 4 个字节, 如果 25 <= p <= 53 为 8 个字节|
 | `DOUBLE`    | 8        |
-
 
 ### 定点类型
 
