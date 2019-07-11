@@ -24,7 +24,14 @@ chartVersion="v1.0.0-beta.3"
 * 安装 Linux Guest Environment，只能用于 Ubuntu 系统，不能用于 Container-Optimized OS。
 * 确保 SSD 挂载选项中包含 `nobarrier`。
 
-[Daemonset](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/gke/local-ssd-optimize.yaml) 提供了一个解决上述性能问题的方案，并且将多块 SSD 盘配置成一个 LVM。通过 Terraform 部署的时候会进行自动安装。
+TiDB 提供的 [Daemonset](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/gke/local-ssd-provision/local-ssd-provision.yaml) 能够：
+
++ 解决性能问题
++ 使用 UUID 重新安装本地 SSD 磁盘，以提高安全性
++ 在 Ubuntu 上使用 LVM 工具将所有本地 SSD 磁盘组合成一个大磁盘
++ 运行 local-volume-provisioner
+
+terraform 部署将自动安装该 Daemonset。
 
 > **注意：**
 >
