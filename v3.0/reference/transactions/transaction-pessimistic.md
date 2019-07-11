@@ -67,13 +67,13 @@ default = true
 
 - 其次是 session 变量 `tidb_txn_mode`。
 
-- 最后是配置文件里的 `default`，当使用普通的 `BEGIN` 语句，且 `tidb_txn_mode` 的值为空字符串 `''` 时，根据 `default` 来决定启用悲观事务还是乐观事务。  
+- 最后是配置文件里的 `default`，当使用普通的 `BEGIN` 语句，且 `tidb_txn_mode` 的值为空字符串 `''` 时，根据 `default` 来决定启用悲观事务还是乐观事务。
 
 ## 相关配置参数
 
 相关配置都在 `[pessimistic-txn]` 类别下，除了前面介绍过的 `enable` 和 `default`，还可配置以下参数：
 
-- `ttl` 
+- `ttl`
 
     ```
     ttl = "30s"

@@ -60,7 +60,7 @@ aliases: ['/docs-cn/v3.0/how-to/get-started/local-cluster/install-from-docker-co
     ```
 
     如果是 Mac 系统，也可以通过 Homebrew 安装：
-    
+
     ```
     brew install kubernetes-helm
     ```

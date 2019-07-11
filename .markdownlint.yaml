@@ -16,7 +16,7 @@ no-missing-space-atx: true
 no-multiple-space-atx: true
 blanks-around-headings: true
 heading-start-left: true
-no-duplicate-heading: 
+no-duplicate-heading:
   siblings_only: true
 single-title:
   front_matter_title: ''

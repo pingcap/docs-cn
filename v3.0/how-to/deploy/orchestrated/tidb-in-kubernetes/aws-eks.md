@@ -17,24 +17,24 @@ aliases: ['/docs-cn/v3.0/how-to/deploy/orchestrated/aws-eks/']
     要与 AWS 交互，必须[配置 `awscli`](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)。最快的方式是使用 `aws configure` 命令:
 
     {{< copyable "shell-regular" >}}
-    
+
     ``` shell
     aws configure
     ```
-    
+
     替换下面的 AWS Access Key ID 和 AWS Secret Access Key：
-    
+
     ```
     AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE
     AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
     Default region name [None]: us-west-2
     Default output format [None]: json
     ```
-    
+
     > **注意：**
     >
     > Access key 必须至少具有以下权限：创建 VPC、创建 EBS、创建 EC2 和创建 Role。
-    
+
 * [terraform](https://learn.hashicorp.com/terraform/getting-started/install.html)
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.11
 * [helm](https://github.com/helm/helm/blob/master/docs/install.md#installing-the-helm-client) >= 2.9.0 且 < 3.0.0
@@ -44,25 +44,25 @@ aliases: ['/docs-cn/v3.0/how-to/deploy/orchestrated/aws-eks/']
     最简单的安装方法是下载编译好的二进制文件 `aws-iam-authenticator`，如下所示。
 
     Linux 用户下载二进制文件：
-    
+
     {{< copyable "shell-regular" >}}
-    
+
     ``` shell
     curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.12.7/2019-03-27/bin/linux/amd64/aws-iam-authenticator
     ```
 
     macOS 用户下载二进制文件：
-    
+
     {{< copyable "shell-regular" >}}
-    
+
     ``` shell
     curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.12.7/2019-03-27/bin/darwin/amd64/aws-iam-authenticator
     ```
-    
+
     二进制文件下载完成后，执行以下操作：
-    
+
     {{< copyable "shell-regular" >}}
-    
+
     ``` shell
     chmod +x ./aws-iam-authenticator && \
     sudo mv ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
