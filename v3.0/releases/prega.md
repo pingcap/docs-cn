@@ -8,7 +8,7 @@ aliases: ['/docs-cn/releases/prega/']
 
 2017 年 8 月 30 日，TiDB 发布 Pre-GA 版。该版本对 MySQL 兼容性、SQL 优化器、系统稳定性、性能做了大量的工作。
 
-## TiDB:
+## TiDB
 
 + SQL 查询优化器
     - 调整代价模型
@@ -21,18 +21,18 @@ aliases: ['/docs-cn/releases/prega/']
 + 支持在 SQL 语句中设置优先级，并根据查询类型自动设置部分语句的优先级
 + 完成表达式重构，执行速度提升 30% 左右
 
-## PD:
+## PD
 
 + 支持手动切换 PD 集群 Leader
 
-## TiKV:
+## TiKV
 
 + Raft Log 使用独立的 RocksDB 实例
 + 使用 DeleteRange 加快删除副本速度
 + Coprocessor 支持更多运算符下推
 + 提升性能，提升稳定性
 
-## TiSpark Beta Release:
+## TiSpark Beta Release
 
 + 支持谓词下推
 + 支持聚合下推
