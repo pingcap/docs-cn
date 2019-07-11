@@ -480,11 +480,6 @@ Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。配�
 - metrics: `irate(syncer_binlog_events_total[1m])`
 - info: Syncer 已经同步到的 master binlog 相关信息统计，主要有 `query`，`rotate`，`update_rows`，`write_rows`，`delete_rows` 五种类型
 
-#### title: syncer_binlog_file
-
-- metrics: `syncer_binlog_file`
-- info: Syncer 同步 master binlog 的文件数量
-
 #### title: binlog pos
 
 - metrics: `syncer_binlog_pos`
@@ -495,7 +490,7 @@ Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。配�
 - metrics: `syncer_gtid`
 - info: Syncer 同步当前 master binlog 的 binlog-gtid 信息
 
-#### title: syncer_binlog_file (new)
+#### title: syncer_binlog_file
 
 - metrics: `syncer_binlog_file{node="master"} - ON(instance, job) syncer_binlog_file{node="syncer"}`
 - info: 上游与下游同步时，相差的 binlog 文件数量，正常状态为 0，表示数据正在实时同步。数值越大，表示相差的 binlog 文件数量越多。
