@@ -35,7 +35,7 @@ Binlog 在 3.0.1 支持 `RECOVER TABLE` 后，可在下面的情况下使用 `RE
 
 ### TiDB Binlog 同步错误处理
 
-当使用 TiDB Binlog 同步工具时，上游 TiDB 使用 `RECOVER TABLE` 后，TiDB Binlog 可能会因为下面几个原因造成同步终端：
+当使用 TiDB Binlog 同步工具时，上游 TiDB 使用 `RECOVER TABLE` 后，TiDB Binlog 可能会因为下面几个原因造成同步中断：
 
 * 下游数据库不支持 `RECOVER TABLE` 语句。类似错误：`check the manual that corresponds to your MySQL server version for the right syntax to use near 'RECOVER TABLE table_name'`。
 
@@ -43,7 +43,7 @@ Binlog 在 3.0.1 支持 `RECOVER TABLE` 后，可在下面的情况下使用 `RE
 
 * 上下游数据库的同步延迟。类似错误：`snapshot is older than GC safe point 2019-07-10 13:45:57 +0800 CST`。
 
-只能通过重新[全量导入被删除的表](/v3.0/how-to/migrate/overview.md#mysql-数据的全量迁移)来恢复 TiDB Binlog 的数据同步。
+只能通过重新[全量导入被删除的表](/how-to/migrate/overview.md#mysql-数据的全量迁移)来恢复 TiDB Binlog 的数据同步。
 
 ## 示例
 
@@ -101,6 +101,6 @@ Binlog 在 3.0.1 支持 `RECOVER TABLE` 后，可在下面的情况下使用 `RE
 
 TiDB 在删除表时，实际上只删除了表的元信息，并将需要删除的表数据（行数据和索引数据）写一条数据到 `mysql.gc_delete_range` 表。TiDB 后台的 GC Worker 会定期从 `mysql.gc_delete_range` 表中取出超过 GC life time 相关范围的 key 进行删除。
 
-所以，RECOVER TABLE 只需要在 GC Worker 还没删除表数据前，恢复表的元信息并删除 `mysql.gc_delete_range` 表中相应的行记录就可以了。恢复表的元信息可以用 TiDB 的快照读实现。具体的快照读内容可以参考 [读取历史数据](/how-to/get-started/read-historical-data.md) 文档。
+所以，RECOVER TABLE 只需要在 GC Worker 还没删除表数据前，恢复表的元信息并删除 `mysql.gc_delete_range` 表中相应的行记录就可以了。恢复表的元信息可以用 TiDB 的快照读实现。具体的快照读内容可以参考[读取历史数据](/how-to/get-started/read-historical-data.md)文档。
 
-恢复表的元信息是通过快照读获取表的元信息后，再走一次类似于 CREATE TABLE 的建表流程，所以 RECOVER TABLE 实际上也是一种 DDL。
+恢复表的元信息是通过快照读获取表的元信息后，再走一次类似于 `CREATE TABLE` 的建表流程，所以 RECOVER TABLE 实际上也是一种 DDL。
