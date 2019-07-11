@@ -84,7 +84,7 @@ aliases: ['/docs-cn/op-guide/offline-ansible-deployment/']
     ```bash
     # yum install epel-release
     # yum install ansible curl
-    # ansible --version   
+    # ansible --version
       ansible 2.5.0
     ```
 
