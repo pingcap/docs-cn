@@ -111,7 +111,7 @@ master 兼 work 节点:
 
 * 48C 192GB  2 块 SSD 盘，一块做了 RAID5 的 SAS 盘，三块 NVMe 盘
 
-work 节点:
+work 节点：
 
 * 48C 192GB 1 块 SSD 盘，一块做了 RAID5 的 SAS 盘，两块 NVMe 盘
 
