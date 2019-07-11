@@ -54,7 +54,7 @@ modprobe br_netfilter
 swapofff -a
 ```
 
-执行如下命令检查 swap 已经关闭：
+执行如下命令检查 swap 是否已经关闭：
 
 {{< copyable "shell-regular" >}}
 
