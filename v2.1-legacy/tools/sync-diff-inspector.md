@@ -151,11 +151,10 @@ password = ""
 # 库的名称
 schema = "test"
 
-# table list which need check in target database. 
+# table list which need check in target database.
 # in sharding mode, you must set config for every table in table-config, otherwise will not check the table.
 # 需要检查的表的名称
 tables = ["test"]
-
 
 # 配置该表对应的分表的相关配置
 [[table-config]]
@@ -170,19 +169,19 @@ is-sharding = true
 
 # 源数据表的配置
 [[table-config.source-tables]]
-# 源数据库实例的 id 
+# 源数据库实例的 id
 instance-id = "source-1"
 schema = "test"
 table  = "test1"
 
 [[table-config.source-tables]]
-# 源数据库实例的 id 
+# 源数据库实例的 id
 instance-id = "source-1"
 schema = "test"
 table  = "test2"
 
 [[table-config.source-tables]]
-# 源数据库实例的 id 
+# 源数据库实例的 id
 instance-id = "source-2"
 schema = "test"
 table  = "test3"

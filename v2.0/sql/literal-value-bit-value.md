@@ -13,7 +13,6 @@ category: user guide
 * B'01'
 * 0b01
 
-
 非法的 Bit-value：
 
 * b'2' (2 不是二进制数值, 必须为 0 或 1)

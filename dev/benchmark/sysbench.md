@@ -49,7 +49,7 @@ CREATE TABLE `sbtest` (
   `pad` char(60) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `k_1` (`k`)
-) ENGINE=InnoDB  
+) ENGINE=InnoDB
 ```
 
 部署方案以及配置参数
@@ -59,7 +59,7 @@ CREATE TABLE `sbtest` (
 172.16.20.4    4*tikv    1*tidb    1*sysbench
 172.16.20.6    4*tikv    1*tidb    1*sysbench
 172.16.20.7    4*tikv    1*tidb    1*sysbench
-172.16.10.8    1*tidb    1*pd      1*sysbench  
+172.16.10.8    1*tidb    1*pd      1*sysbench
 
 // 每个物理节点有三块盘：
 data3: 2 tikv  (Optane SSD)
@@ -89,8 +89,8 @@ Mysql version: 5.6.37
 thread_cache_size = 64
 innodb_buffer_pool_size = 64G
 innodb_file_per_table = 1
-innodb_flush_log_at_trx_commit = 0  
-datadir = /data3/mysql  
+innodb_flush_log_at_trx_commit = 0
+datadir = /data3/mysql
 max_connections = 2000
 ```
 
