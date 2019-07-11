@@ -105,4 +105,4 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'time_zone%';
 
 ## 另请参阅
 
-* [SET](/reference/sql/statements/set-session-variable.md)
+* [SET [GLOBAL|SESSION]](/reference/sql/statements/set-variable.md)
