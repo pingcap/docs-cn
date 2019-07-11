@@ -116,7 +116,7 @@ Usage of binlogctl:
     ```
 
 - 修改 Pump/Drainer 的状态
-  
+
     设置 `cmd` 为 `update-pump` 或者 `update-drainer` 来更新 Pump 或者 Drainer 的状态。Pump 和 Drainer 的状态可以为：online，pausing，paused，closing 以及 offline。例如：
 
     {{< copyable "shell-regular" >}}

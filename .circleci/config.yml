@@ -13,7 +13,7 @@ jobs:
           command: |
             sudo npm install -g markdownlint-cli
             markdownlint --version
-            
+
       - run:
           name: "Lint dev"
           command: markdownlint dev/

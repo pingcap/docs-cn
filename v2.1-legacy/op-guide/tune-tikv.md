@@ -18,7 +18,7 @@ TiKV 使用了 RocksDB 的 `Column Families` (CF) 特性。
     - `lock` CF 存储的是锁信息，系统使用默认参数。
 
 - Raft RocksDB 实例存储 Raft log。
-    
+
     - `default` CF 主要存储的是 Raft log，与其对应的参数位于 `[raftdb.defaultcf]` 项中。
 
 每个 CF 都有单独的 `block-cache`，用于缓存数据块，加速 RocksDB 的读取速度，block-cache 的大小通过参数 `block-cache-size` 控制，block-cache-size 越大，能够缓存的热点数据越多，对读取操作越有利，同时占用的系统内存也会越多。
@@ -232,11 +232,8 @@ block-cache-size = "256MB"
 1.  需预留一些内存作为系统的 page cache
 2.  TiKV 在处理大的查询的时候（例如 `select * from ...`）会读取数据然后在内存中生成对应的数据结构返回给 TiDB，这个过程中 TiKV 会占用一部分内存
 
-
 ## TiKV 机器配置推荐
 
 1.  生产环境中，不建议将 TiKV 部署在 CPU 核数小于 8 或内存低于 32GB 的机器上
 2.  如果对写入吞吐要求比较高，建议使用吞吐能力比较好的磁盘
 3.  如果对读写的延迟要求非常高，建议使用 IOPS 比较高的 SSD 盘
-
-

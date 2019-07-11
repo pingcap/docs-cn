@@ -49,7 +49,7 @@ binlog-pos = 930143241
 binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e-487b6bd31bf7:1-4"
 ```
 
-> **注：** 
+> **注：**
 >
 > - `syncer.meta` 只需要第一次使用的时候配置，后续 Syncer 同步新的 binlog 之后会自动将其更新到最新的 position。
 > - 如果使用 binlog position 同步则只需要配置 binlog-name binlog-pos; 使用 gtid 同步则需要设置 gtid，且启动 Syncer 时带有 `--enable-gtid`。
@@ -62,7 +62,7 @@ Syncer 的命令行参数说明：
 Usage of syncer:
   -L string
       日志等级: debug, info, warn, error, fatal (默认为 "info")
-  -V  
+  -V
       输出 syncer 版本；默认 false
   -auto-fix-gtid
       当 mysql master/slave 切换时，自动修复 gtid 信息；默认 false
@@ -71,7 +71,7 @@ Usage of syncer:
   -c int
       syncer 处理 batch 线程数 (默认 16)
   -config string
-      指定相应配置文件启动 sycner 服务；如 `--config config.toml` 
+      指定相应配置文件启动 sycner 服务；如 `--config config.toml`
   -enable-gtid
       使用 gtid 模式启动 syncer；默认 false，开启前需要上游 MySQL 开启 GTID 功能
   -log-file string
@@ -107,19 +107,19 @@ status-addr = "127.0.0.1:10086"
 # skip-ddls 可以跳过与 TiDB 不兼容的 DDL 语句，支持正则语法。
 # skip-ddls = ["^CREATE\\s+USER"]
 
-# 注意: skip-events 已经废弃, 请使用 skip-dmls 
+# 注意: skip-events 已经废弃, 请使用 skip-dmls
 # skip-dmls 用于跳过 DML 语句. type 字段取值为 'insert', 'update', 'delete'。
 # 下面的例子为跳过 foo.bar 表的所有 delete 语句。
 # [[skip-dmls]]
 # db-name = "foo"
 # tbl-name = "bar"
 # type = "delete"
-# 
+#
 # 下面的例子为跳过所有表的 delete 语句。
 # [[skip-dmls]]
 # type = "delete"
-# 
-# 下面的例子为跳过 foo 库中所有表的 delete 语句。 
+#
+# 下面的例子为跳过 foo 库中所有表的 delete 语句。
 # [[skip-dmls]]
 # db-name = "foo"
 # type = "delete"
@@ -132,7 +132,7 @@ status-addr = "127.0.0.1:10086"
 #[[replicate-do-table]]
 #db-name ="dbname"
 #tbl-name = "table-name"
- 
+
 #[[replicate-do-table]]
 #db-name ="dbname1"
 #tbl-name = "table-name1"
@@ -239,7 +239,7 @@ syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-
 
 本部分将通过实际案例描述 Syncer 同步数据库参数的优先级关系。
 
-- 如果使用 route-rules 规则，参考 [Sharding 同步支持](#sharding-同步支持) 
+- 如果使用 route-rules 规则，参考 [Sharding 同步支持](#sharding-同步支持)
 - 优先级：replicate-do-db --> replicate-do-table --> replicate-ignore-db --> replicate-ignore-table
 
 ```toml
@@ -307,7 +307,7 @@ tbl-name = "~^2016_.*"
 # 场景如下:
 # 数据库A 下有 order_2016 / history_2016 等多个数据库
 # 数据库B 下有 order_2017 / history_2017 等多个数据库
-# 指定同步数据库A  order_2016 数据库，数据表如下 2016_01 2016_02 ... 2016_12 
+# 指定同步数据库A  order_2016 数据库，数据表如下 2016_01 2016_02 ... 2016_12
 # 指定同步数据表B  order_2017 数据库，数据表如下 2017_01 2017_02 ... 2017_12
 # 表内使用 order_id 作为主键，数据之间主键不冲突
 # 忽略同步 history_2016 与 history_2017 数据库
@@ -340,13 +340,13 @@ target-table = "order_2017"
 
 1. 源库 server-id 检查
 
-    - 可通过以下命令查看 server-id 
+    - 可通过以下命令查看 server-id
     - 结果为空或者为 0，Syncer 无法同步数据
     - Syncer server-id 与 MySQL server-id 不能相同，且在 MySQL cluster 中唯一
 
     ```
     mysql> show global variables like 'server_id';
-    +---------------+-------  
+    +---------------+-------
     | Variable_name | Value |
     +---------------+-------+
     | server_id     | 1     |
@@ -413,6 +413,7 @@ target-table = "order_2017"
     mysql> set global binlog_row_image = FULL;
     Query OK, 0 rows affected (0.01 sec)
     ```
+
 5. 检查 mydumper 用户权限
 
     - mydumper 导出数据至少拥有以下权限：`select, reload`
@@ -421,15 +422,15 @@ target-table = "order_2017"
 6. 检查上下游同步用户权限
 
     - 需要上游 MySQL 同步账号至少赋予以下权限：
-        
-        ` select , replication slave , replication client`
-    
+
+        `select, replication slave, replication client`
+
     - 下游 TiDB 可暂时采用 root 同权限账号
 
 7. 检查 GTID 与 POS 相关信息
 
     - 使用以下语句查看 binlog 内容：
-        
+
         `show binlog events in 'mysql-bin.000023' from 136676560 limit 10;`
 
 ## 监控方案
@@ -466,13 +467,13 @@ Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。配�
 
 #### Grafana 配置
 
-+ 进入 Grafana Web 界面（默认地址: http://localhost:3000 ，默认账号: admin 密码: admin）
++ 进入 Grafana Web 界面（默认地址: `http://localhost:3000`，默认账号: admin，密码: admin）
 
 + 导入 dashboard 配置文件
 
     点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 Dashboard [配置文件](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json)上传 -> 选择对应的 data source
 
-### Grafana Syncer metrics 说明 
+### Grafana Syncer metrics 说明
 
 #### title: binlog events
 
@@ -494,7 +495,7 @@ Syncer 对外提供 metric 接口，需要 Prometheus 主动获取数据。配�
 - metrics: `syncer_gtid`
 - info: Syncer 同步当前 master binlog 的 binlog-gtid 信息
 
-#### title: syncer_binlog_file
+#### title: syncer_binlog_file (new)
 
 - metrics: `syncer_binlog_file{node="master"} - ON(instance, job) syncer_binlog_file{node="syncer"}`
 - info: 上游与下游同步时，相差的 binlog 文件数量，正常状态为 0，表示数据正在实时同步。数值越大，表示相差的 binlog 文件数量越多。

@@ -128,7 +128,7 @@ cd tidb-binlog-kafka-linux-amd64
 - `broker.id`：用来标识 Kafka 集群的必备参数，不能重复，如 `broker.id = 1`
 - `fs.file-max = 1000000`：Kafka 会使用大量文件和网络 socket，建议修改成 1000000，通过 `vi /etc/sysctl.conf` 进行修改
 - 修改以下配置为1G, 否则很容易出现事务修改数据较多导致单个消息过大写 kafka 失败
-    
+
     * `message.max.bytes=1073741824`
     * `replica.fetch.max.bytes=1073741824`
     * `fetch.message.max.bytes=1073741824`

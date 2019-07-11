@@ -293,7 +293,7 @@ ALTER TABLE db1.tbl1 CHANGE c2 c2 DECIMAL (10, 3);
 则会由于 TiDB 不支持该 DDL 语句而导致 DM 同步任务中断且报如下错误：
 
 ```bash
-exec sqls[[USE `db1`; ALTER TABLE `db1`.`tbl1` CHANGE COLUMN `c2` `c2` decimal(10,3);]] failed, 
+exec sqls[[USE `db1`; ALTER TABLE `db1`.`tbl1` CHANGE COLUMN `c2` `c2` decimal(10,3);]] failed,
 err:Error 1105: unsupported modify column length 10 is less than origin 11
 ```
 
@@ -329,7 +329,7 @@ err:Error 1105: unsupported modify column length 10 is less than origin 11
     对应 DM-worker 节点中也可以看到类似如下日志：
 
     ```bash
-    2018/12/28 11:17:51 operator.go:121: [info] [sql-operator] set a new operator 
+    2018/12/28 11:17:51 operator.go:121: [info] [sql-operator] set a new operator
     uuid: 6bfcf30f-2841-4d70-9a34-28d7082bdbd7, pos: (mysql-bin|000001.000003, 34642), op: SKIP, args:
     on replication unit
     ```
@@ -356,7 +356,7 @@ err:Error 1105: unsupported modify column length 10 is less than origin 11
     对应 DM-worker 节点中也可以看到类似如下日志：
 
     ```bash
-    2018/12/28 11:27:46 operator.go:158: [info] [sql-operator] binlog-pos (mysql-bin|000001.000003, 34642) matched, 
+    2018/12/28 11:27:46 operator.go:158: [info] [sql-operator] binlog-pos (mysql-bin|000001.000003, 34642) matched,
     applying operator uuid: 6bfcf30f-2841-4d70-9a34-28d7082bdbd7, pos: (mysql-bin|000001.000003, 34642), op: SKIP, args:
     ```
 
@@ -393,7 +393,7 @@ ALTER TABLE db2.tbl2 DROP COLUMN c2;
 当同步该 DDL 语句对应的 binlog event 到下游时，会由于 TiDB 不支持该 DDL 语句而导致 DM 同步任务中断且报如下错误：
 
 ```bash
-exec sqls[[USE `db2`; ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2`;]] failed, 
+exec sqls[[USE `db2`; ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2`;]] failed,
 err:Error 1105: can't drop column c2 with index covered now
 ```
 
@@ -437,8 +437,8 @@ err:Error 1105: can't drop column c2 with index covered now
     对应 DM-worker 节点中也可以看到类似如下日志：
 
     ```bash
-    2018/12/28 15:33:13 operator.go:121: [info] [sql-operator] set a new operator 
-    uuid: c699a18a-8e75-47eb-8e7e-0e5abde2053c, pattern: ~(?i)ALTER\s+TABLE\s+`db2`.`tbl2`\s+DROP\s+COLUMN\s+`c2`, 
+    2018/12/28 15:33:13 operator.go:121: [info] [sql-operator] set a new operator
+    uuid: c699a18a-8e75-47eb-8e7e-0e5abde2053c, pattern: ~(?i)ALTER\s+TABLE\s+`db2`.`tbl2`\s+DROP\s+COLUMN\s+`c2`,
     op: REPLACE, args: ALTER TABLE `db2`.`tbl2` DROP INDEX idx_c2; ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2`
     on replication unit
     ```
@@ -448,11 +448,11 @@ err:Error 1105: can't drop column c2 with index covered now
 5. 观察下游表结构是否变更成功，对应 DM-worker 节点中也可以看到类似如下日志：
 
     ```bash
-    2018/12/28 15:33:45 operator.go:158: [info] [sql-operator] 
-    sql-pattern ~(?i)ALTER\s+TABLE\s+`db2`.`tbl2`\s+DROP\s+COLUMN\s+`c2` matched SQL 
-    USE `db2`; ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2`;, 
-    applying operator uuid: c699a18a-8e75-47eb-8e7e-0e5abde2053c, 
-    pattern: ~(?i)ALTER\s+TABLE\s+`db2`.`tbl2`\s+DROP\s+COLUMN\s+`c2`, 
+    2018/12/28 15:33:45 operator.go:158: [info] [sql-operator]
+    sql-pattern ~(?i)ALTER\s+TABLE\s+`db2`.`tbl2`\s+DROP\s+COLUMN\s+`c2` matched SQL
+    USE `db2`; ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2`;,
+    applying operator uuid: c699a18a-8e75-47eb-8e7e-0e5abde2053c,
+    pattern: ~(?i)ALTER\s+TABLE\s+`db2`.`tbl2`\s+DROP\s+COLUMN\s+`c2`,
     op: REPLACE, args: ALTER TABLE `db2`.`tbl2` DROP INDEX idx_c2; ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2`
     ```
 
@@ -551,13 +551,13 @@ err:Error 1105: can't drop column c2 with index covered now
     ```
 
     **DM-master** 节点中也可以看到类似如下日志：
-    
+
     ```bash
-    2018/12/28 16:53:33 operator.go:105: [info] [sql-operator] set a new operator 
-    uuid: eba35acd-6c5e-4bc3-b0b0-ae8bd1232351, request: name:"test" 
-    op:REPLACE args:"ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2;" 
-    args:"ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`" 
-    sqlPattern:"~(?i)ALTER\\s+TABLE\\s+`shard_db`.`shard_table`\\s+DROP\\s+COLUMN\\s+`c2`" 
+    2018/12/28 16:53:33 operator.go:105: [info] [sql-operator] set a new operator
+    uuid: eba35acd-6c5e-4bc3-b0b0-ae8bd1232351, request: name:"test"
+    op:REPLACE args:"ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2;"
+    args:"ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`"
+    sqlPattern:"~(?i)ALTER\\s+TABLE\\s+`shard_db`.`shard_table`\\s+DROP\\s+COLUMN\\s+`c2`"
     sharding:true
     ```
 
@@ -566,41 +566,41 @@ err:Error 1105: can't drop column c2 with index covered now
 6. 观察下游表结构是否变更成功，对应的 DDL lock **owner** 节点中也可以看到类似如下日志：
 
     ```bash
-    2018/12/28 16:54:35 operator.go:121: [info] [sql-operator] set a new operator 
-    uuid: c959f2fb-f1c2-40c7-a1fa-e73cd51736dd, 
-    pattern: ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2`, 
+    2018/12/28 16:54:35 operator.go:121: [info] [sql-operator] set a new operator
+    uuid: c959f2fb-f1c2-40c7-a1fa-e73cd51736dd,
+    pattern: ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2`,
     op: REPLACE, args: ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2; ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`
     on replication unit
     ```
 
     ```bash
-    2018/12/28 16:54:35 operator.go:158: [info] [sql-operator] 
-    sql-pattern ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2` matched SQL 
-    USE `shard_db`; ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`;, 
-    applying operator uuid: c959f2fb-f1c2-40c7-a1fa-e73cd51736dd, 
-    pattern: ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2`, 
+    2018/12/28 16:54:35 operator.go:158: [info] [sql-operator]
+    sql-pattern ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2` matched SQL
+    USE `shard_db`; ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`;,
+    applying operator uuid: c959f2fb-f1c2-40c7-a1fa-e73cd51736dd,
+    pattern: ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2`,
     op: REPLACE, args: ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2; ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`
     ```
 
     另外，**DM-master** 节点中也可以看到类似如下日志：
 
     ```bash
-    2018/12/28 16:54:35 operator.go:122: [info] [sql-operator] get an operator 
-    uuid: eba35acd-6c5e-4bc3-b0b0-ae8bd1232351, request: name:"test" op:REPLACE 
-    args:"ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2;" 
-    args:"ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`" 
-    sqlPattern:"~(?i)ALTER\\s+TABLE\\s+`shard_db`.`shard_table`\\s+DROP\\s+COLUMN\\s+`c2`" 
-    sharding:true  
-    with key ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2` matched SQL 
+    2018/12/28 16:54:35 operator.go:122: [info] [sql-operator] get an operator
+    uuid: eba35acd-6c5e-4bc3-b0b0-ae8bd1232351, request: name:"test" op:REPLACE
+    args:"ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2;"
+    args:"ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`"
+    sqlPattern:"~(?i)ALTER\\s+TABLE\\s+`shard_db`.`shard_table`\\s+DROP\\s+COLUMN\\s+`c2`"
+    sharding:true
+    with key ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2` matched SQL
     USE `shard_db`; ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`;
     ```
 
     ```bash
-    2018/12/28 16:54:36 operator.go:145: [info] [sql-operator] remove an operator 
-    uuid: eba35acd-6c5e-4bc3-b0b0-ae8bd1232351, request: name:"test" op:REPLACE 
-    args:"ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2;" 
-    args:"ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`" 
-    sqlPattern:"~(?i)ALTER\\s+TABLE\\s+`shard_db`.`shard_table`\\s+DROP\\s+COLUMN\\s+`c2`" 
+    2018/12/28 16:54:36 operator.go:145: [info] [sql-operator] remove an operator
+    uuid: eba35acd-6c5e-4bc3-b0b0-ae8bd1232351, request: name:"test" op:REPLACE
+    args:"ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2;"
+    args:"ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`"
+    sqlPattern:"~(?i)ALTER\\s+TABLE\\s+`shard_db`.`shard_table`\\s+DROP\\s+COLUMN\\s+`c2`"
     sharding:true
     ```
 

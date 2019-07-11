@@ -3,8 +3,11 @@ name: "\U0001F680 Feature Request"
 about: Any suggestion? Want to add something new?
 ---
 
-## Feature Request
+<!-- markdownlint-disable MD012 -->
+<!-- markdownlint-disable MD029 -->
+<!-- markdownlint-disable MD041 -->
 
+## Feature Request
 
 **This repository is ONLY used to solve problems related to DOCS-CN.
 For other issues (TiDB, TiKV, etc), please move to [other repositories](https://github.com/pingcap/).**

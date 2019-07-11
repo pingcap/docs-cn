@@ -91,15 +91,15 @@ scrape_configs:
 - **`tikv_import_sst_delivery_duration`** (直方图)
 
     将 SST 文件从 `dispatch-job` 任务发送到 `ImportSSTJob`任务需时的直方图
-    
+
 - **`tikv_import_sst_recv_duration`** (直方图)
 
     `ImportSSTJob`任务接收从 `dispatch-job` 任务发送过来的 SST 文件需时的直方图。
-   
+
 - **`tikv_import_sst_upload_duration`** (直方图)
 
     从 `ImportSSTJob` 任务上传 SST 文件到 TiKV 节点需时的直方图。
-   
+
 - **`tikv_import_sst_chunk_bytes`** (直方图)
 
     上传到 TiKV 节点的 SST 文件（压缩）大小的直方图。
@@ -181,7 +181,7 @@ scrape_configs:
 - **`lightning_row_kv_deliver_seconds`**（直方图）
 
     发送一组与单行 SQL 数据对应的 KV 对需时的直方图。
-    
+
 - **`lightning_block_deliver_seconds`**（直方图）
 
     每个 KV 对中的区块传送到 `tikv-importer` 需时的直方图。

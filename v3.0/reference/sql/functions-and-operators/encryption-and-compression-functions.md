@@ -6,7 +6,6 @@ aliases: ['/docs-cn/sql/encryption-and-compression-functions/']
 
 # 加密和压缩函数
 
-
 | 函数名      | 功能描述      |
 |:-----------|:----------------------------|
 | [`MD5()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_md5)                                                             | 计算字符串的 MD5 校验和        |

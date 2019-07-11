@@ -204,7 +204,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     # 第 6 层的算法用于压缩 SST 文件。
     # 第 1 至 5 层的算法目前忽略。
     compression-per-level = ["lz4", "no", "no", "no", "no", "no", "lz4"]
-    
+
     [rocksdb.writecf]
     # (同上)
     compression-per-level = ["lz4", "no", "no", "no", "no", "no", "lz4"]

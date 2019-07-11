@@ -591,7 +591,7 @@ err:Error 1105: can't drop column c2 with index covered now
     args:"ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2;"
     args:"ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`"
     sqlPattern:"~(?i)ALTER\\s+TABLE\\s+`shard_db`.`shard_table`\\s+DROP\\s+COLUMN\\s+`c2`"
-    sharding:true  
+    sharding:true
     with key ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2` matched SQL
     USE `shard_db`; ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`;
     ```

@@ -160,7 +160,7 @@ SPLIT TABLE t INDEX idx3 BETWEEN ("2010-01-01 00:00:00", "a") AND ("2010-01-01 0
 {{< copyable "sql" >}}
 
 ```sql
-SPLIT TABLE t1 INDEX idx4 ("a", "2000-01-01 00:00:01"), ("b", "2019-04-17 14:26:19"), ("c", "");  
+SPLIT TABLE t1 INDEX idx4 ("a", "2000-01-01 00:00:01"), ("b", "2019-04-17 14:26:19"), ("c", "");
 ```
 
 该语句指定了 3 个值，会切分出 4 个 Region，每个 Region 的范围如下。
@@ -193,7 +193,7 @@ create table t (a int, b int,index idx1(a)) shard_row_id_bits = 4 pre_split_regi
 4 个 table Region 的范围区间如下：
 
 ```
-region1:   [ -inf      ,  1<<61 )  
+region1:   [ -inf      ,  1<<61 )
 region2:   [ 1<<61     ,  2<<61 )
 region3:   [ 2<<61     ,  3<<61 )
 region4:   [ 3<<61     ,  +inf  )
