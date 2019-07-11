@@ -7,7 +7,7 @@ category: reference
 
 本文介绍了如何使用 DM 来处理异常的 SQL 语句。
 
-目前，TiDB 并不完全兼容所有的 MySQL 语法（详见 [TiDB 已支持的 DDL 语句](/reference/sql/statements/ddl.md)）。当使用 DM 从 MySQL 同步数据到 TiDB 时，如果 TiDB 不支持对应的 SQL 语句，可能会造成错误并中断同步任务。在这种情况下，DM 提供以下两种方式来恢复同步：
+目前，TiDB 并不完全兼容所有的 MySQL 语法（详见 [TiDB 已支持的 DDL 语句](/reference/mysql-compatibility.md#ddl)）。当使用 DM 从 MySQL 同步数据到 TiDB 时，如果 TiDB 不支持对应的 SQL 语句，可能会造成错误并中断同步任务。在这种情况下，DM 提供以下两种方式来恢复同步：
 
 - 使用 dmctl 来手动跳过该 SQL 语句对应的 binlog event。
 
@@ -591,7 +591,7 @@ err:Error 1105: can't drop column c2 with index covered now
     args:"ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2;"
     args:"ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`"
     sqlPattern:"~(?i)ALTER\\s+TABLE\\s+`shard_db`.`shard_table`\\s+DROP\\s+COLUMN\\s+`c2`"
-    sharding:true  
+    sharding:true
     with key ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2` matched SQL
     USE `shard_db`; ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`;
     ```

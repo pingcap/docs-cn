@@ -79,7 +79,7 @@ admin show ddl jobs;
 * `JOB_TYPE`：DDL 操作的类型。
 * `SCHEMA_STATE`：schema 的当前状态。如果 `JOB_TYPE` 是 `add index`，则为 index 的状态；如果是 `add column`，则为 column 的状态，如果是 `create table`，则为 table 的状态。常见的状态有以下几种：
     * `none`：表示不存在。一般 `drop` 操作或者 `create` 操作失败回滚后，会变为 `none` 状态。
-    * `delete only`、`write only`、`delete reorganization`、`write reorganization`：这四种状态是中间状态，在[ Online, Asynchronous Schema Change in F1](http://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/41376.pdf) 论文中有详细说明，在此不再赘述。由于中间状态转换很快，一般操作中看不到这几种状态，只有执行 `add index` 操作时能看到处于 `write reorganization` 状态，表示正在添加索引数据。
+    * `delete only`、`write only`、`delete reorganization`、`write reorganization`：这四种状态是中间状态，在 [Online, Asynchronous Schema Change in F1](http://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/41376.pdf) 论文中有详细说明，在此不再赘述。由于中间状态转换很快，一般操作中看不到这几种状态，只有执行 `add index` 操作时能看到处于 `write reorganization` 状态，表示正在添加索引数据。
     * `public`：表示存在且可用。一般 `create table` 和 `add index/column` 等操作完成后，会变为 `public` 状态，表示新建的 table/column/index 可以正常读写了。
 * `SCHEMA_ID`：执行 DDL 操作的数据库的 ID。
 * `TABLE_ID`：执行 DDL 操作的表的 ID。
@@ -105,4 +105,4 @@ admin show ddl jobs;
 
 ## MySQL 兼容性
 
-ADMIN 语句是 TiDB 对于 MySQL 语法的扩展。   
+ADMIN 语句是 TiDB 对于 MySQL 语法的扩展。
