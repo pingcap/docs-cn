@@ -531,7 +531,7 @@ TiDB 支持改变 [per-session](/reference/configuration/tidb-server/tidb-specif
 
 以上两种参数可以结合 TiDB 的 DML 语言进行使用，使用方法举例如下：
 
-1）通过在数据库中写 SQL 的方式来调整优先级：
+1. 通过在数据库中写 SQL 的方式来调整优先级：
 
 ```sql
 select HIGH_PRIORITY | LOW_PRIORITY count(*) from table_name;
