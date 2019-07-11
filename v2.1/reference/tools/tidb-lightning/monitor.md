@@ -153,7 +153,7 @@ scrape_configs:
     - **state**：`pending` / `written` / `closed` / `imported` / `altered_auto_inc` / `checksum` / `analyzed` / `completed`
     - **result**：`success` / `failure`
 
-**`lightning_engines`** (计数器)
+- **`lightning_engines`** (计数器)
 
     计算处理后引擎文件的数量以及其状态。标签：
 
