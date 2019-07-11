@@ -27,7 +27,7 @@ jobs:
           command: |
             git remote add upstream https://github.com/pingcap/docs-cn.git
             git fetch upstream
-            markdownlint $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md')
+            markdownlint $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
 
 
   build:
