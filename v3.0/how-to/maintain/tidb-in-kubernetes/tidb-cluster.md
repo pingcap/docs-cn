@@ -168,7 +168,7 @@ helm upgrade ${releaseName} pingcap/tidb-cluster --version=${chartVersion} -f /h
 >
 > 如果集群已经在运行，即使没有配置修改，打开这个参数并运行 `helm upgrade` 也会触发 PD、TiKV 和 TiDB 滚动升级。
 >
-> 目前，集群创建后修改 PD 的 `schedule` 和 `replication` 配置（`values.yaml` 中的 `maxStoreDownTime` 和 `maxReplicas` 参数，PD 配置文件中所有 `[schedule]` 和 `[replication]` 部分的配置）然后运行 `helm upgrade` 无法生效。集群创建后，你必须通过 `pd-ctl` 配置这些参数，请参考 [pd-ctl](/reference/tools/pd-control/)。
+> 目前，集群创建后修改 PD 的 `schedule` 和 `replication` 配置（`values.yaml` 中的 `maxStoreDownTime` 和 `maxReplicas` 参数，PD 配置文件中所有 `[schedule]` 和 `[replication]` 部分的配置）然后运行 `helm upgrade` 无法生效。集群创建后，你必须通过 `pd-ctl` 配置这些参数，请参考 [pd-ctl](/reference/tools/pd-control.md)。
 
 如果 PD 集群不可用，[TiDB 集群伸缩](#tidb-集群伸缩)、[升级 TiDB 集群](#升级-tidb-集群)和[修改 TiDB 集群配置](#修改-tidb-集群配置)都无法操作，从 TiDB Operator 版本 > v1.0.0-beta.3 开始，支持 `force-upgrade`，在 PD 集群不可用的情况下，允许用户通过下面步骤强制升级集群以恢复集群功能：
 
