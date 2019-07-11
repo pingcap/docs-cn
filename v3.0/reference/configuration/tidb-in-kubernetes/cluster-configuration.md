@@ -7,7 +7,7 @@ category: reference
 
 本文介绍 Kubernetes 上 TiDB 集群的配置参数、资源配置，以及容灾配置。
 
-## 配置参数表
+## 配置参数
 
 TiDB Operator 使用 Helm 部署和管理 TiDB 集群，TiDB 集群的部署配置项见如下列表。`tidb-cluster` 的 `charts/tidb-cluster/values.yaml` 文件默认提供了基本的配置，通过这个基本配置，可以快速启动一个 TiDB 集群，但是如果用户需要特殊配置或是用于生产环境，则需要根据以下列表手动配置对应的配置项。
 
