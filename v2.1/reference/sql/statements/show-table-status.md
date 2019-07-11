@@ -49,9 +49,9 @@ Max_data_length: 0
     Update_time: NULL
      Check_time: NULL
       Collation: utf8mb4_bin
-       Checksum: 
- Create_options: 
-        Comment: 
+       Checksum:
+ Create_options:
+        Comment:
 1 row in set (0.00 sec)
 
 mysql> analyze table t1;
@@ -74,9 +74,9 @@ Max_data_length: 0
     Update_time: NULL
      Check_time: NULL
       Collation: utf8mb4_bin
-       Checksum: 
- Create_options: 
-        Comment: 
+       Checksum:
+ Create_options:
+        Comment:
 1 row in set (0.00 sec)
 ```
 

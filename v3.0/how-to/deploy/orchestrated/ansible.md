@@ -193,7 +193,6 @@ $ ansible-playbook -i hosts.ini create_users.yml -u root -k
 ## 在部署目标机器上安装 NTP 服务
 
 > 如果你的部署目标机器时间、时区设置一致，已开启 NTP 服务且在正常同步时间，此步骤可忽略。可参考[如何检测 NTP 服务是否正常](#如何检测-ntp-服务是否正常)。
-
 > 该步骤将在部署目标机器上使用系统自带软件源联网安装并启动 NTP 服务，服务使用安装包默认的 NTP server 列表，见配置文件 `/etc/ntp.conf` 中 server 参数，如果使用默认的 NTP server，你的机器需要连接外网。
 > 为了让 NTP 尽快开始同步，启动 NTP 服务前，系统会 ntpdate `hosts.ini` 文件中的 `ntp_server` 一次，默认为 `pool.ntp.org`，也可替换为你的 NTP server。
 
@@ -429,19 +428,19 @@ location_labels = ["host"]
 
 - 服务配置文件参数调整
 
-    1.  多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中 `block-cache-size` 下面的 `capacity` 参数:
+    1. 多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中 `block-cache-size` 下面的 `capacity` 参数:
 
         ```
         storage:
           block-cache:
             capacity: "1GB"
         ```
-    
+
         > TiKV 实例数量指每个服务器上 TiKV 的进程数量
         >
         > 推荐设置：`capacity` = MEM_TOTAL * 0.5 / TiKV 实例数量
 
-    2.  多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中 `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数：
+    2. 多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中 `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数：
 
         ```
         readpool:
@@ -455,7 +454,7 @@ location_labels = ["host"]
 
         > 推荐设置：TiKV 实例数量 * 参数值 = CPU 核心数量 * 0.8
 
-    3.  如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
+    3. 如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
 
         ```
         raftstore:
@@ -515,7 +514,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 
 > ansible-playbook 执行 Playbook 时默认并发为 5，部署目标机器较多时可添加 -f 参数指定并发，如 `ansible-playbook deploy.yml -f 10`
 
-1.  确认 `tidb-ansible/inventory.ini` 文件中 `ansible_user = tidb`，本例使用 `tidb` 用户作为服务运行用户，配置如下：
+1. 确认 `tidb-ansible/inventory.ini` 文件中 `ansible_user = tidb`，本例使用 `tidb` 用户作为服务运行用户，配置如下：
 
     > `ansible_user` 不要设置成 `root` 用户，`tidb-ansible` 限制了服务以普通用户运行。
 
@@ -526,28 +525,30 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
     ```
 
     执行以下命令如果所有 server 返回 `tidb` 表示 ssh 互信配置成功。
+
     ```
     ansible -i inventory.ini all -m shell -a 'whoami'
     ```
 
     执行以下命令如果所有 server 返回 `root` 表示 `tidb` 用户 sudo 免密码配置成功。
+
     ```
     ansible -i inventory.ini all -m shell -a 'whoami' -b
     ```
 
-2.  执行 `local_prepare.yml` playbook，联网下载 TiDB binary 到中控机：
+2. 执行 `local_prepare.yml` playbook，联网下载 TiDB binary 到中控机：
 
     ```
     ansible-playbook local_prepare.yml
     ```
 
-3.  初始化系统环境，修改内核参数
+3. 初始化系统环境，修改内核参数
 
     ```
     ansible-playbook bootstrap.yml
     ```
 
-4.  部署 TiDB 集群软件
+4. 部署 TiDB 集群软件
 
     ```
     ansible-playbook deploy.yml
@@ -561,7 +562,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
     > $ sudo yum install fontconfig open-sans-fonts
     > ```
 
-5.  启动 TiDB 集群
+5. 启动 TiDB 集群
 
     ```
     ansible-playbook start.yml
@@ -571,19 +572,20 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 
 > 测试连接 TiDB 集群，推荐在 TiDB 前配置负载均衡来对外统一提供 SQL 接口。
 
--   使用 MySQL 客户端连接测试，TCP 4000 端口是 TiDB 服务默认端口。
+- 使用 MySQL 客户端连接测试，TCP 4000 端口是 TiDB 服务默认端口。
 
     ```sql
     mysql -u root -h 172.16.10.1 -P 4000
     ```
 
--   通过浏览器访问监控平台。
+- 通过浏览器访问监控平台。
 
     地址：`http://172.16.10.1:3000`  默认帐号密码是：`admin`/`admin`
 
 ## 常见部署问题
 
 ### 如何自定义端口
+
 修改 `inventory.ini` 文件，在相应服务 IP 后添加以下主机变量即可：
 
 | 组件 | 端口变量 | 默认端口 | 说明 |
