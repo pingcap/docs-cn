@@ -42,7 +42,7 @@ aliases: ['/docs-cn/releases/rc3/']
     - 通过 Key 获取 Region 信息
     - 添加、删除 scheduler 和 operator
     - 获取集群 label 信息
-    
+
 ## TiKV
 
 + 支持 Async Apply  提升整体写入性能

@@ -54,7 +54,7 @@ cfssl print-defaults csr > ca-csr.json
 
 ### 配置 CA 选项
 
-根据实际需求修改 `ca-config.json`：  
+根据实际需求修改 `ca-config.json`：
 
 ```json
 {
@@ -85,7 +85,7 @@ cfssl print-defaults csr > ca-csr.json
 }
 ```
 
-根据实际需求修改 `ca-csr.json` ：  
+根据实际需求修改 `ca-csr.json` ：
 
 ```json
 {

@@ -22,7 +22,7 @@ TiDB-Binlog 支持以下功能场景:
 
 TiDB-Binlog 集群主要分为两个组件：
 
-#### Pump
+### Pump
 
 Pump 是一个守护进程，在每个 TiDB 的主机上后台运行。他的主要功能是实时记录 TiDB 产生的 Binlog 并顺序写入磁盘文件
 
@@ -34,7 +34,7 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
 
 ### 下载官方 Binary
 
--   CentOS 7+
+- CentOS 7+
 
     ```bash
     # 下载压缩包
@@ -53,26 +53,25 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
 
 #### 注意
 
-*   需要为一个 TiDB 集群中的每台 TiDB server 部署一个 Pump，目前 TiDB server 只支持以 unix socket 方式的输出 binlog。
-*   手动部署时， 启动优先级为： Pump > TiDB ； 停止优先级为 TiDB > Pump
-
+* 需要为一个 TiDB 集群中的每台 TiDB server 部署一个 Pump，目前 TiDB server 只支持以 unix socket 方式的输出 binlog。
+* 手动部署时， 启动优先级为： Pump > TiDB ； 停止优先级为 TiDB > Pump
 
     我们设置 TiDB 启动参数 binlog-socket 为对应的 Pump 的参数 socket 所指定的 unix socket 文件路径，最终部署结构如下图所示：
 
     ![TiDB pump 模块部署结构](../media/tidb-pump-deployment.png)
 
-*   drainer 不支持对 ignore schemas（在过滤列表中的 schemas） 的 table 进行 rename DDL 操作
+* drainer 不支持对 ignore schemas（在过滤列表中的 schemas） 的 table 进行 rename DDL 操作
 
-*   在已有的 TiDB 集群中启动 drainer，一般需要全量备份 并且获取 savepoint，然后导入全量备份，最后启动 drainer 从 savepoint 开始同步；
+* 在已有的 TiDB 集群中启动 drainer，一般需要全量备份 并且获取 savepoint，然后导入全量备份，最后启动 drainer 从 savepoint 开始同步；
 
     为了保证数据的完整性，在 pump 运行 10 分钟左右后按顺序进行下面的操作
 
-    *  以 gen-savepoint model 运行 drainer 生成 drainer savepint 文件，`bin/drainer -gen-savepoint --data-dir= ${drainer_savepoint_dir} --pd-urls=${pd_urls}`
-    *  全量备份，例如 mydumper 备份 tidb
-    *  全量导入备份到目标系统
-    *  设置 savepoint 文件路径，然后启动 drainer，`bin/drainer --config=conf/drainer.toml --data-dir=${drainer_savepoint_dir}`
+    * 以 gen-savepoint model 运行 drainer 生成 drainer savepint 文件，`bin/drainer -gen-savepoint --data-dir= ${drainer_savepoint_dir} --pd-urls=${pd_urls}`
+    * 全量备份，例如 mydumper 备份 tidb
+    * 全量导入备份到目标系统
+    * 设置 savepoint 文件路径，然后启动 drainer，`bin/drainer --config=conf/drainer.toml --data-dir=${drainer_savepoint_dir}`
 
-*   drainer 输出的 pb, 需要在配置文件设置下面的参数
+* drainer 输出的 pb, 需要在配置文件设置下面的参数
 
     ```toml
     [syncer]
@@ -85,14 +84,14 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
 
 #### 使用 tidb-ansible 部署 PUMP (推荐)
 
-*   搭建全新的 TiDB Cluster，启动顺序 pd-server -> tikv-server -> pump -> tidb-server -> drainer
+* 搭建全新的 TiDB Cluster，启动顺序 pd-server -> tikv-server -> pump -> tidb-server -> drainer
     * 修改 tidb-ansible inventory.ini 文件
         * enable_binlog = True
     * 执行 ansible-playbook deploy.yml
     * 执行 ansible-playbook start.yml
         * drainer 目前需要手动部署
 
-*   对已有的 TiDB Cluster 部署 binlog
+* 对已有的 TiDB Cluster 部署 binlog
     * 修改 tidb-ansible inventory.ini 文件
         * enable_binlog = True
     * 执行 ansible-playbook rolling_update.yml --tags=tidb
@@ -163,7 +162,7 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
 
 #### 使用 Binary 部署 Drainer
 
-1.  Drainer 命令行参数说明
+1. Drainer 命令行参数说明
 
     ```
     Usage of drainer:
@@ -291,10 +290,10 @@ drainer 启动时可以设置 `--metrics-addr` 和 `--metrics-interval` 两个�
 
 ### Grafana 配置
 
-+   进入 Grafana Web 界面（默认地址: `http://localhost:3000`，默认账号: admin 密码: admin）
++ 进入 Grafana Web 界面（默认地址: `http://localhost:3000`，默认账号: admin 密码: admin）
 
     点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息 ( 注: Type 选 Prometheus，Url 为 Prometheus 地址，根据实际情况 添加/填写 ）
 
-+   导入 dashboard 配置文件
++ 导入 dashboard 配置文件
 
     点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 [dashboard 配置文件](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json)上传 -> 选择对应的 data source
