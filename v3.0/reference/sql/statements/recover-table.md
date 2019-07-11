@@ -54,7 +54,7 @@ RECOVER TABLE BY JOB ddl_job_id
     ```sql
     ADMIN SHOW DDL JOBS 1;
     ```
-    
+
     上面这个语句用来查找删除表 t 时的 DDL JOB ID，这里是 53：
 
     ```
