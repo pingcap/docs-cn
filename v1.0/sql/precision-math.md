@@ -105,7 +105,6 @@ INSERT INTO t SET i = 1/0;
 | `ERROR_FOR_DIVISION_BY_ZERO` | 有 warning，没有 error，i 被设为 NULL |
 | strict, `ERROR_FOR_DIVISION_BY_ZERO` | 有 error，插入失败 |
 
-
 ## 数值修约
 
 `round()` 函数的结果取决于他的参数是否是精确值：
