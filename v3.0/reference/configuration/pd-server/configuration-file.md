@@ -9,63 +9,63 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 本文档只阐述未包含在命令行参数中的参数，命令行参数参见[这里](/reference/configuration/pd-server/configuration.md)。
 
-### `lease`
+## `lease`
 
 + PD Leader Key 租约超时时间，超时系统重新选举 Leader。
 + 默认：3
 + 单位：秒
 
-### `tso-save-interval`
+## `tso-save-interval`
 
 + TSO 分配的时间窗口,实时持久存储。
 + 默认：3s
 
-### `initial-cluster-state`
+## `initial-cluster-state`
 
 + 集群初始状态
 + 默认：new
 
-### `enable-prevote`
+## `enable-prevote`
 
 + 开启 raft prevote 的开关。
 + 默认：true
 
-### `quota-backend-bytes`
+## `quota-backend-bytes`
 
 + 元信息数据库存储空间的大小，默认 2GB。
 + 默认：2147483648
 
-### `auto-compaction-mod`
+## `auto-compaction-mod`
 
 + 元信息数据库自动压缩的模式，可选项为 periodic（按周期），revision（按版本数）。
 + 默认：periodic
 
-### `auto-compaction-retention`
+## `auto-compaction-retention`
 
 + compaction-mode 为 periodic 时为元信息数据库自动压缩的间隔时间；compaction-mode 设置为 revision 时为自动压缩的版本数。
 + 默认：1h
 
-### `force-new-cluster`
+## `force-new-cluster`
 
 + 强制让该 PD 以一个新集群启动，且修改 raft 成员数为 1。
 + 默认：false
 
-### `tick-interval`
+## `tick-interval`
 
 + etcd raft 的 tick 周期。
 + 默认：100ms
 
-### `election-interval`
+## `election-interval`
 
 + etcd leader 选举的超时时间。
 + 默认：3s
 
-### `use-region-storage`
+## `use-region-storage`
 
 + 开启独立的 region 存储。
 + 默认：false
 
-## log 
+## log
 
 日志相关的配置项。
 
