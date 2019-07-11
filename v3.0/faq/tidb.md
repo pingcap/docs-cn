@@ -525,12 +525,12 @@ TiDB 在执行 SQL 时，预估出来每个 operator 处理了超过 10000 条�
 
 #### 3.3.10 在 TiDB 中如何控制或改变 SQL 提交的执行优先级？
 
-TiDB 支持改变 [per-session](/reference/configuration/tidb-server/tidb-specific-variables#tidb_force_priority)、[全局](sq(/reference/configuration/tidb-server/server-command-option.md#force-priority)或[单个语句](/reference/sql/statements/dml.md)的优先级。优先级包括：
+TiDB 支持改变 [per-session](/reference/configuration/tidb-server/tidb-specific-variables#tidb_force_priority)、[全局](sq(/reference/configuration/tidb-server/server-command-option.md#force-priority)或单个语句的优先级。优先级包括：
 
 - HIGH_PRIORITY：该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句
 - LOW_PRIORITY：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
 
-以上两种参数可以结合 TiDB 的 DML 语言进行使用，具体使用方式可以参考[官方文档](/reference/sql/statements/dml.md)，使用方法举例如下：
+以上两种参数可以结合 TiDB 的 DML 语言进行使用，使用方法举例如下：
 
 1）通过在数据库中写 SQL 的方式来调整优先级：
 
