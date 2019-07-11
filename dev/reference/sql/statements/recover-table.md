@@ -23,11 +23,11 @@ RECOVER TABLE BY JOB ddl_job_id
 
 ## 注意事项
 
-如果删除表后并过了 GC life time，就不能再用 RECOVER TABLE 来恢复被删除的表了，执行 RECOVER TABLE 语句会返回类似错误：`snapshot is older than GC safe point 2019-07-10 13:45:57 +0800 CST`。
+如果删除表后并过了 GC life time，就不能再用 `RECOVER TABLE` 来恢复被删除的表了，执行 `RECOVER TABLE` 语句会返回类似错误：`snapshot is older than GC safe point 2019-07-10 13:45:57 +0800 CST`。
 
-对于 3.0.0 及之后的 TiDB 版本，不推荐在使用 binlog 的情况下使用 recover table 功能。
+对于 3.0.0 及之后的 TiDB 版本，不推荐在使用 binlog 的情况下使用 `RECOVER TABLE` 功能。
 
-binlog 在 3.0.1 支持 recover table 后，可在下面的情况下使用 recover table：
+Binlog 在 3.0.1 支持 `RECOVER TABLE` 后，可在下面的情况下使用 `RECOVER TABLE`：
 
 * 3.0.1+ 版本 binlog
 * 主从集群都使用 TiDB 3.0
@@ -35,15 +35,15 @@ binlog 在 3.0.1 支持 recover table 后，可在下面的情况下使用 recov
 
 ### TiDB Binlog 同步错误处理
 
-当使用 TiDB Binlog 同步工具时，上游 TiDB 使用 RECOVER TABLE 后，TiDB Binlog 可能会因为下面几个原因造成同步终端：
+当使用 TiDB Binlog 同步工具时，上游 TiDB 使用 `RECOVER TABLE` 后，TiDB Binlog 可能会因为下面几个原因造成同步终端：
 
-* 下游数据库不支持 RECOVER TABLE 语句。 类似错误： `check the manual that corresponds to your MySQL server version for the right syntax to use near 'RECOVER TABLE table_name'`
+* 下游数据库不支持 `RECOVER TABLE` 语句。类似错误：`check the manual that corresponds to your MySQL server version for the right syntax to use near 'RECOVER TABLE table_name'`。
 
-* 上下游数据库的 GC life time 不一样。 类似错误： `snapshot is older than GC safe point 2019-07-10 13:45:57 +0800 CST`。
+* 上下游数据库的 GC life time 不一样。类似错误：`snapshot is older than GC safe point 2019-07-10 13:45:57 +0800 CST`。
 
 * 上下游数据库的同步延迟。类似错误：`snapshot is older than GC safe point 2019-07-10 13:45:57 +0800 CST`。
 
-只能通过重新 [全量导入被删除的表](/v3.0/how-to/migrate/overview.md#mysql-数据的全量迁移) 来恢复 TiDB Binlog 的数据同步
+只能通过重新[全量导入被删除的表](/how-to/migrate/overview.md#mysql-数据的全量迁移)来恢复 TiDB Binlog 的数据同步。
 
 ## 示例
 
