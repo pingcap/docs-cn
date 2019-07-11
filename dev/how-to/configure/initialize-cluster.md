@@ -13,7 +13,7 @@ category: how-to
 
 ## 设置初始化账号和密码
 
-集群创建时默认会创建 `root` 账号，但是密码为空，这会带来一些安全性问题。可以通过如下步骤为 `root` 账号设置初始密码
+集群创建时默认会创建 `root` 账号，但是密码为空，这会带来一些安全性问题。可以通过如下步骤为 `root` 账号设置初始密码：
 
 1. 创建 `Secret`
 
@@ -61,11 +61,11 @@ tidb:
     GRANT ALL PRIVILEGES ON app.* TO 'developer'@'%';
 ```
 
-将上述内容保存到 values.yaml 文件，然后执行下面命令部署集群：
+将上述内容保存到 `values.yaml` 文件，然后执行下面命令部署集群：
 
 {{< copyable "shell-regular" >}}
 
-```
+```bash
 helm install pingcap/tidb-cluster -f values.yaml --name=<release-name> --namespace=<namespace> --version=v1.0.0-beta.3
 ```
 

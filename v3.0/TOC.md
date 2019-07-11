@@ -43,7 +43,7 @@
   + 配置
     - [时区](how-to/configure/time-zone.md)
     - [内存控制](how-to/configure/memory-control.md)
-	- [初始化集群](how-to/configure/initialize-cluster.md)
+    - [初始化集群](how-to/configure/initialize-cluster.md)
   + 安全
     + 安全传输层协议 (TLS)
       - [为 MySQL 客户端开启 TLS](how-to/secure/enable-tls-clients.md)
@@ -186,6 +186,7 @@
       - [`LOAD DATA`](reference/sql/statements/load-data.md)
       - [`MODIFY COLUMN`](reference/sql/statements/modify-column.md)
       - [`PREPARE`](reference/sql/statements/prepare.md)
+      - [`RECOVER TABLE`](reference/sql/statements/recover-table.md)
       - [`RENAME INDEX`](reference/sql/statements/rename-index.md)
       - [`RENAME TABLE`](reference/sql/statements/rename-table.md)
       - [`REPLACE`](reference/sql/statements/replace.md)
@@ -272,7 +273,7 @@
     - [执行计划绑定](reference/performance/execution-plan-bind.md)
     - [统计信息概述](reference/performance/statistics.md)
     - [Optimizer Hints](reference/performance/optimizer-hints.md)
-    - [使用 SQL 语句检查 TiDB 集群状态](dev/reference/performance/check-cluster-status-using-sql-statements.md)
+    - [使用 SQL 语句检查 TiDB 集群状态](reference/performance/check-cluster-status-using-sql-statements.md)
     - [TiKV 调优](reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + [TiSpark 使用指南](reference/tispark.md)
