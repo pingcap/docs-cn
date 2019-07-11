@@ -14,10 +14,10 @@ category: FAQ
 * 第一次部署集群
 
     在 TiDB 集群的 `values.yaml` 文件中，修改 `timezone` 配置，例如：`timezone: Asia/Shanghai`，然后部署 TiDB 集群。
-    
+
 * 集群已经在运行
 
     如果 TiDB 集群已经在运行，需要做如下修改：
-    
+
     * 在 TiDB 集群的 `values.yaml` 文件中，修改 `timezone` 配置，例如：`timezone: Asia/Shanghai`，然后升级 TiDB 集群。
     * 参考[时区支持](/how-to/configure/time-zone.md)，修改 TiDB 服务时区配置。

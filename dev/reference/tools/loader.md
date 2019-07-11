@@ -33,7 +33,7 @@ Loader 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/referen
 
 如果 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。
 
-如果使用默认的 `checkpoint-schema` 参数，在导完一个 database 数据库后，请 `drop database tidb_loader` 后再开始导入下一个 database。  
+如果使用默认的 `checkpoint-schema` 参数，在导完一个 database 数据库后，请 `drop database tidb_loader` 后再开始导入下一个 database。
 
 推荐数据库开始导入的时候，明确指定 `checkpoint-schema = "tidb_loader"` 参数。
 
@@ -125,7 +125,7 @@ port = 4000
 ## FAQ
 
 ### 合库合表场景案例说明
-  
+
 根据配置文件的 route-rules 可以支持将分库分表的数据导入到同一个库同一个表中，但是在开始前需要检查分库分表规则：
 
 + 是否可以利用 route-rules 的语义规则表示

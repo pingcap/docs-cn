@@ -193,7 +193,7 @@ create table t (a int, b int,index idx1(a)) shard_row_id_bits = 4 pre_split_regi
 4 个 table Region 的范围区间如下：
 
 ```
-region1:   [ -inf      ,  1<<61 )  
+region1:   [ -inf      ,  1<<61 )
 region2:   [ 1<<61     ,  2<<61 )
 region3:   [ 2<<61     ,  3<<61 )
 region4:   [ 3<<61     ,  +inf  )
