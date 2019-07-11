@@ -107,7 +107,7 @@ tidb 集群由 PD、TiKV、TiDB 三个组件组成，在做容量规划的时候
 
 从上面的分析来看要支持 5 套 tidb 集群容量共需要 7 台物理机，其中三台为 master 兼 work 节点，其余四台为 work 节点，机器配置需求如下。
 
-master 兼 work 节点:
+master 兼 work 节点：
 
 * 48C 192GB  2 块 SSD 盘，一块做了 RAID5 的 SAS 盘，三块 NVMe 盘
 
