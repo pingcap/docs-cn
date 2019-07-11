@@ -161,7 +161,7 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...
     | 33     | test    |            | create schema | public               | 32        | 0        | 0         | 2019-01-10 11:29:22.813 +0800 CST | synced        |
     +--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+---------------+
     ```
-    
+
     * `JOB_ID`：每个 DDL 操作对应一个DDL job，`JOB_ID` 全局唯一。
     * `DB_NAME`：DDL 操作的 database name。
     * `TABLE_NAME`：DDL 操作的 table name。

@@ -204,7 +204,6 @@ status-addr = "127.0.0.1:10086"
 #db-name ="test"
 #tbl-name = "~^a.*"
 
-
 # sharding 同步规则，采用 wildcharacter
 # 1. 星号字符 (*) 可以匹配零个或者多个字符,
 #    例子, doc* 匹配 doc 和 document, 但是和 dodo 不匹配;
@@ -271,7 +270,6 @@ mysql> select * from t1;
 ```
 
 `syncer` 每隔 30s 会输出当前的同步统计，如下
-
 
 ```bash
 2017/06/08 01:18:51 syncer.go:934: [info] [syncer]total events = 15, total tps = 130, recent tps = 4,
