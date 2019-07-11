@@ -39,6 +39,6 @@ no-empty-links: true
 no-alt-text: true
 code-block-style:
   style: fenced
-single-trailing-newline: true
+# single-trailing-newline: true
 first-line-heading: true
 

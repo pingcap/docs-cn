@@ -79,7 +79,7 @@ DM 支持对原分库分表进行合库合表操作，但需要满足一些[使�
     > **注意：**
     >
     > 如果上游 MySQL/MariaDB server 间构成主从复制结构，则
-    > 
+    >
     > - 5.7.1 < MySQL 版本 < 5.8
     > - MariaDB 版本 >= 10.1.3
 
@@ -87,7 +87,7 @@ DM 支持对原分库分表进行合库合表操作，但需要满足一些[使�
 
 + DDL 语法
 
-    - 目前，TiDB 部分兼容 MySQL 支持的 DDL 语句。因为 DM 使用 TiDB parser 来解析处理 DDL 语句，所以目前仅支持 TiDB parser 支持的 DDL 语法。详见 [TiDB DDL 语法支持](/reference/sql/statements/ddl.md)。
+    - 目前，TiDB 部分兼容 MySQL 支持的 DDL 语句。因为 DM 使用 TiDB parser 来解析处理 DDL 语句，所以目前仅支持 TiDB parser 支持的 DDL 语法。详见 [TiDB DDL 语法支持](/reference/mysql-compatibility.md#ddl)。
 
     - DM 遇到不兼容的 DDL 语句时会报错。要解决此报错，需要使用 dmctl 手动处理，要么跳过该 DDL 语句，要么用指定的 DDL 语句来替换它。
 
