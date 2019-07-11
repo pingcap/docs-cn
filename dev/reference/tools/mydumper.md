@@ -15,7 +15,7 @@ mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/refer
 ## 相比于普通的 mydumper，此工具有哪些改进之处？
 
 + 使用 `tidb_snapshot` 而非 `FLUSH TABLES WITH READ LOCK` 提供备份一致性
-+ [允许设置](/how-to/get-started/read-historical-data.md#操作流程) `tidb_snapshot` 的值（即可备份不同时间点的数据）  
++ [允许设置](/how-to/get-started/read-historical-data.md#操作流程) `tidb_snapshot` 的值（即可备份不同时间点的数据）
 
 ### 新添参数
 

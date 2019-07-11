@@ -18,7 +18,6 @@ category: reference
 
 ![Username](/media/sqlgram/Username.png)
 
-
 ## 示例
 
 ```sql
