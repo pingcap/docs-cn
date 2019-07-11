@@ -20,5 +20,5 @@ Before asking a question, make sure you have:
 <!-- - 查阅了相关的 issues。 -->
 - Read the documentation:
     - [TiDB Docs](https://github.com/pingcap/docs)
-    - [TiDB Doc-cn](https://github.com/pingcap/docs-cn)
+    - [TiDB Docs-cn](https://github.com/pingcap/docs-cn)
 <!-- - 阅读了相关文档。 -->
