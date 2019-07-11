@@ -89,7 +89,7 @@ TiDB 集群由 PD、TiKV、TiDB 三个组件组成，在做容量规划的时候
 
 ## TiDB 集群规划例子
 
-通过上面的分析，这里给出一个支持部署 5 套规模为 3个 PD + 3 个 TiKV + 2 个 TiDB 集群的例子，其中 PD 配置为 2C 4GB，TiDB 配置为 8C 32GB，TiKV 配置为 8C 32GB。 k8s 节点有 7 个，其中三个节点既是 master 又是 work 节点，另外三个是纯 work 节点。下面是各组件分布情况。
+通过上面的分析，这里给出一个支持部署 5 套规模为 3个 PD + 3 个 TiKV + 2 个 TiDB 集群的例子，其中 PD 配置为 2C 4GB，TiDB 配置为 8C 32GB，TiKV 配置为 8C 32GB。Kubernetes 节点有 7 个，其中三个节点既是 master 又是 work 节点，另外三个是纯 work 节点。下面是各组件分布情况。
 
 单个 master 节点:
 
