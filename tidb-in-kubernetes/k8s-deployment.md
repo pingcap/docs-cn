@@ -46,7 +46,7 @@ lsmod|grep br_netfilter
 modprobe br_netfilter
 ```
 
-同时还需要关闭每个部署 k8s 节点的 swap，执行命令如下：
+同时还需要关闭每个部署 Kubernetes 节点的 swap，执行命令如下：
 
 {{< copyable "shell-regular" >}}
 
