@@ -151,7 +151,7 @@
   - [TiDB-Binlog](tools/tidb-binlog-cluster.md)
   - [PD Control](tools/pd-control.md)
   - [PD Recover](tools/pd-recover.md)
-  - [TiKV Control](https://github.com/tikv/tikv/blob/master/docs/tools/tikv-control.md)
+  - [TiKV Control](https://github.com/tikv/tikv/blob/master/docs/reference/tools/tikv-control.md)
   - [TiDB Controller](tools/tidb-controller.md)
 + [TiKV Documentation](https://github.com/tikv/tikv/wiki)
 + TiSpark Documentation

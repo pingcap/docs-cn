@@ -164,7 +164,7 @@ Same as the "run-ddl" startup option
 - Default: `NO_PRIORITY`
 - TiDB supports the priorities `NO_PRIORITY` | `LOW_PRIORITY` | `DELAYED` | `HIGH_PRIORITY` for statements. One use case for changing the priority, is you may choose to dedicate a pool of servers for OLAP queries and set the value to `LOW_PRIORITY` to ensure that TiKV servers will provide priority to OLTP workloads which are routed to a different pool of TiDB servers. This helps ensure more uniform OLTP performance at the risk of slightly slower OLAP performance.
   
-TiDB will automatically set table scans to `LOW_PRIORITY` and overwriting priority on a per-statement basis is possible by using the `HIGH PRIORITY` or `LOW PRIORITY` [DML modifier](dml.md).
+TiDB will automatically set table scans to `LOW_PRIORITY` and overwriting priority on a per-statement basis is possible by using the `HIGH PRIORITY` or `LOW PRIORITY` DML modifier.
 
 ### join-concurrency
 
