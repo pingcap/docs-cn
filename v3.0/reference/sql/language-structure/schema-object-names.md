@@ -61,12 +61,12 @@ CREATE TABLE t (i int);
 CREATE TABLE test.t (i int);
 ```
 
-对于 `.` 左右两端可以出现空格，`table_name.col_name` 等于 `table_name . col_name`。  
+对于 `.` 左右两端可以出现空格，`table_name.col_name` 等于 `table_name . col_name`。
 
 如果你要引用这个 identifier，那么请使用：
 
 ```
-`table_name`.`col_name` 
+`table_name`.`col_name`
 ```
 
 而不是：
