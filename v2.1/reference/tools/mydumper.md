@@ -1,5 +1,5 @@
 ---
-title: mydumper 使用文档 
+title: mydumper 使用文档
 summary: 使用 mydumper 从 TiDB 导出数据。
 category: reference
 ---
