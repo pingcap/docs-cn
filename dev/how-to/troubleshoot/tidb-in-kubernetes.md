@@ -185,7 +185,7 @@ kubectl -n ${namespace} logs -f ${pod_name}
 kubectl -n ${namespace} logs -p ${pod_name}
 ```
 
-确认日志中的错误信息后，可以根据 [tidb-server 启动报错](/how-to/troubleshoot/cluster-setup.md#tidb-server-启动报错)，[tikv-server 启动报错](/how-to/troubleshoot/cluster-setup.md#tikv-server-启动报错)，[pd-server 启动报错](/how-to/troubleshoot/cluster-setup.md#pd-server-启动报错) 中的指引信息进行进一步排查解决。
+确认日志中的错误信息后，可以根据 [tidb-server 启动报错](/how-to/troubleshoot/cluster-setup.md#tidb-server-启动报错)，[tikv-server 启动报错](/how-to/troubleshoot/cluster-setup.md#tikv-server-启动报错)，[pd-server 启动报错](/how-to/troubleshoot/cluster-setup.md#pd-server-启动报错)中的指引信息进行进一步排查解决。
 
 另外，TiKV 在 ulimit 不足时也会发生启动失败的状况，对于这种情况，可以修改 Kubernetes 节点的 `/etc/security/limits.conf` 调大 ulimit：
 
