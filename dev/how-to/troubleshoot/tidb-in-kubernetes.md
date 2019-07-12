@@ -157,7 +157,7 @@ kubectl describe po -n ${namespace} ${pod_name}
 
 如果是 CPU 或内存资源不足，可以通过降低对应组件的 CPU或内存资源申请使其能够得到调度，或是增加新的 Kubernetes 节点。
 
-如果是 PVC 的 StorageClass 找不到，则需要将 TiDB 删除，并且将对应 PVC 也都删除，然后在 `values.yaml` 里面将 `StorageClassName` 修改为集群中可用的 StorageClass 名字，可以通过下面命令获取集群中可用的 StorageClass：
+如果是 PVC 的 StorageClass 找不到，则需要将 TiDB 删除，并且将对应的 PVC 也都删除，然后在 `values.yaml` 里面将 `StorageClassName` 修改为集群中可用的 StorageClass 名字，可以通过以下命令获取集群中可用的 StorageClass：
 
 {{< copyable "shell-regular" >}}
 
