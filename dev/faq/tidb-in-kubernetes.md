@@ -30,7 +30,7 @@ TiDB 集群目前还不支持 HPA（Horizontal Pod Autoscaling，自动水平扩
 
 如果不考虑 Kubernetes 集群本身的运维，TiDB Operator 存在以下可能需要人工介入的场景：
 
-* TiKV 自动故障转移之后的集群调整，参考 [自动故障转移](/how-to/maintain/tidb-in-kubernetes/auto-failover.md)；
+* TiKV 自动故障转移之后的集群调整，参考[自动故障转移](/how-to/maintain/tidb-in-kubernetes/auto-failover.md)；
 * 维护或下线指定的 Kubernetes 节点，参考 [维护节点](/how-to/maintain/tidb-in-kubernetes/tidb-node.md) 。
 
 ## 在公有云上使用 TiDB Operator 编排 TiDB 集群时，推荐的部署拓扑是怎样的？
