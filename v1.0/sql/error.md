@@ -21,7 +21,6 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 | 9006 | GC Life Time 间隔时间过短，长事务本应读到的数据可能被清理了,应增加GC Life Time |
 | 9500 | 单个事务过大，原因及解决方法请参考[这里](../FAQ.md#出现-transaction-too-large-报错怎么办) |
 
-
 ## 故障诊断
 
 参见[故障诊断文档](../trouble-shooting.md)以及 [FAQ](../FAQ.md)。

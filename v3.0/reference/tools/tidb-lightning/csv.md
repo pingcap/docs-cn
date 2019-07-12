@@ -16,7 +16,7 @@ TiDB-Lightning 支持读取 CSV（逗号分隔值）的数据源，以及其他�
 
 文件扩展名必须为 `*.csv`，即使文件的内容并非逗号分隔。
 
-## 表结构 
+## 表结构
 
 CSV 文件是没有表结构的。要导入 TiDB，就必须为其提供表结构。可以通过以下任一方法实现：
 
@@ -43,7 +43,7 @@ not-null = false
 # 如果 `not-null` 为 false（即 CSV 可以包含 NULL），
 # 为以下值的字段将会被解析为 NULL。
 null = '\N'
-# 是否解析字段内的反斜线转义符。 
+# 是否解析字段内的反斜线转义符。
 backslash-escape = true
 # 是否移除以分隔符结束的行。
 trim-last-separator = false
@@ -57,7 +57,7 @@ trim-last-separator = false
 - 必须为单个 ASCII 字符。
 - 常用值：
 
-    * CSV 用 `','` 
+    * CSV 用 `','`
     * TSV 用 `"\t"`
 
 - 对应 LOAD DATA 语句中的 `FIELDS TERMINATED BY` 项。
@@ -70,7 +70,7 @@ trim-last-separator = false
 
     * `'"'` 使用双引号引用字段，和 [RFC 4180] 一致。
     * `''` 不引用
- 
+
 - 对应 LOAD DATA 语句中的 `FIELDS ENCLOSED BY` 项。
 
 [RFC 4180]: https://tools.ietf.org/html/rfc4180
@@ -98,7 +98,7 @@ trim-last-separator = false
 ### `backslash-escape`
 
 - 是否解析字段内的反斜线转义符。
-- 如果 `backslash-escape` 为 true，下列转义符会被识别并转换。 
+- 如果 `backslash-escape` 为 true，下列转义符会被识别并转换。
 
     | 转义符   | 转换为            |
     |----------|--------------------------|
@@ -135,7 +135,7 @@ Lightning 并不完全支持 `LOAD DATA` 语句中的所有配置项。例如：
 * 行终止符只能是 CR（`\r`），LF（`\n`）或 CRLF（`\r\n`），也就是说，无法自定义 `LINES TERMINATED BY`。
 * 不可使用行前缀 （`LINES STARTING BY`）。
 * 不可跳过表头（`IGNORE n LINES`）。如有表头，必须是有效的列名。
-* 定界符和分隔符只能为单个 ASCII 字符。 
+* 定界符和分隔符只能为单个 ASCII 字符。
 
 ## 通用配置
 

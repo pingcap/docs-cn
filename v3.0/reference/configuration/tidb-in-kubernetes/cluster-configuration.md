@@ -5,6 +5,10 @@ category: reference
 
 # Kubernetes 上的 TiDB 集群配置
 
+本文介绍 Kubernetes 上 TiDB 集群的配置参数、资源配置，以及容灾配置。
+
+## 配置参数
+
 TiDB Operator 使用 Helm 部署和管理 TiDB 集群，TiDB 集群的部署配置项见如下列表。`tidb-cluster` 的 `charts/tidb-cluster/values.yaml` 文件默认提供了基本的配置，通过这个基本配置，可以快速启动一个 TiDB 集群，但是如果用户需要特殊配置或是用于生产环境，则需要根据以下列表手动配置对应的配置项。
 
 > **注意：**
@@ -64,6 +68,7 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群，TiDB 集群的部署配�
 | `tikv.nodeSelector` | `tikv.nodeSelector`确保 TiKV Pods 只调度到以该键值对作为标签的节点，详情参考：[nodeselector](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#nodeselector) | `{}` |
 | `tikv.tolerations` | `tikv.tolerations` 应用于 TiKV Pods，允许 TiKV Pods 调度到含有指定 taints 的节点上，详情参考：[taint-and-toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration) | `{}` |
 | `tikv.annotations` | 为 TiKV Pods 添加特定的 `annotations` | `{}` |
+| `tikv.storeLabels` | 用于指定 TiKV 位置信息的 Labels，PD 基于这些标签来调度 TiKV 的数据副本，标签的优先级按照其顺序递减。比如，`["zone","rack"]` 表示优先把数据副本调度到位于不同 `zone` 的 TiKV 上，如果 `zone` 数量不够，再调度到位于不同 `rack` 的 TiKV 上。如果不指定，系统会设置 `["region", "zone", "rack", "host"]` 作为默认值。这些标签生效的前提是 Kubernetes 的 Node 上也含有这些标签。**注意**：目前不支持该标签名中包含 `/`。| `nil` |
 | `tikv.defaultcfBlockCacheSize` | 指定 block 缓存大小，block 缓存用于缓存未压缩的 block，较大的 block 缓存设置可以加快读取速度。一般推荐设置为 `tikv.resources.limits.memory` 的 30%-50%<br>如果 TiDB Operator 版本 > v1.0.0-beta.3，请通过 `tikv.config` 配置：<br>`[rocksdb.defaultcf]`<br>`block-cache-size = "1GB"`<br>从 TiKV v3.0.0 开始，不再需要配置 `[rocksdb.defaultcf].block-cache-size` 和 `[rocksdb.writecf].block-cache-size`，改为配置 `[storage.block-cache].capacity` | `1GB` |
 | `tikv.writecfBlockCacheSize` | 指定 writecf 的 block 缓存大小，一般推荐设置为 `tikv.resources.limits.memory` 的 10%-30%<br>如果 TiDB Operator 版本 > v1.0.0-beta.3，请通过 `tikv.config` 配置：<br>`[rocksdb.writecf]`<br>`block-cache-size = "256MB"`<br>从 TiKV v3.0.0 开始，不再需要配置 `[rocksdb.defaultcf].block-cache-size` 和 `[rocksdb.writecf].block-cache-size`，改为配置 `[storage.block-cache].capacity` | `256MB` |
 | `tikv.readpoolStorageConcurrency` | TiKV 存储的高优先级/普通优先级/低优先级操作的线程池大小<br>如果 TiDB Operator 版本 > v1.0.0-beta.3，请通过 `tikv.config` 配置：<br>`[readpool.storage]`<br>`high-concurrency = 4`<br>`normal-concurrency = 4`<br>`low-concurrency = 4` | `4` |
@@ -86,7 +91,7 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群，TiDB 集群的部署配�
 | `tidb.annotations` | 为 TiDB Pods 添加特定的 `annotations` | `{}` |
 | `tidb.maxFailoverCount` | TiDB 最大的故障转移数量，假设为 3 即最多支持同时 3 个 TiDB 实例故障转移 | `3` |
 | `tidb.service.type` | TiDB 服务对外暴露类型 | `NodePort` |
-| `tidb.service.externalTrafficPolicy` | 表示此服务是否希望将外部流量路由到节点本地或集群范围的端点。有两个可用选项：`Cluster`（默认）和 `Local`。`Cluster` 隐藏了客户端源 IP，可能导致第二跳到另一个节点，但具有良好的整体负载分布。`Local` 保留客户端源 IP 并避免 LoadBalancer 和 NodePort 类型服务的第二跳，但存在潜在的不均衡流量传播风险。详细参考：[外部负载均衡器](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip) | `nil` |
+| `tidb.service.externalTrafficPolicy` | 表示此服务是否希望将外部流量路由到节点本地或集群范围的端点。有两个可用选项：`Cluster`（默认）和 `Local`。`Cluster` 隐藏了客户端源 IP，可能导致流量需要二次跳转到另一个节点，但具有良好的整体负载分布。`Local` 保留客户端源 IP 并避免 LoadBalancer 和 NodePort 类型服务流量的第二次跳转，但存在潜在的不均衡流量传播风险。详细参考：[外部负载均衡器](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip) | `nil` |
 | `tidb.service.loadBalancerIP` | 指定 tidb 负载均衡 IP，某些云提供程序允许您指定loadBalancerIP。在这些情况下，将使用用户指定的loadBalancerIP创建负载平衡器。如果未指定loadBalancerIP字段，则将使用临时IP地址设置loadBalancer。如果指定loadBalancerIP但云提供程序不支持该功能，则将忽略您设置的loadbalancerIP字段 | `nil` |
 | `tidb.service.mysqlNodePort` | TiDB 服务暴露的 mysql NodePort 端口 |  |
 | `tidb.service.exposeStatus` | TiDB 服务是否暴露状态端口 | `true` |

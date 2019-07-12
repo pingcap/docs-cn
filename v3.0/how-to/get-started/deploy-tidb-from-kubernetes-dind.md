@@ -428,7 +428,7 @@ demo-tikv-2                       1/1       Running     0          1m
     mkdir -p /home/tidb/demo && \
     helm inspect values pingcap/tidb-cluster --version=${chartVersion} > /home/tidb/demo/values-demo.yaml
     ```
-  
+
 2. 编辑 `/home/tidb/demo/values-demo.yaml`。
 
     例如，要扩容集群，可以将 TiKV `replicas` 从 3 修改为 5，或者将 TiDB `replicas` 从 2 修改为 3。
