@@ -30,11 +30,11 @@ TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达
     ```shell
     watch kubectl -n ${namespace} get pod -o wide
     ```
-    
+
     当所有组件的 Pod 数量都达到了预设值，并且都进入  `Running` 状态后，水平扩缩容完成。
 
 > **注意：**
-> 
+>
 > - PD、TiKV 组件在滚动升级的过程中不会触发扩缩容操作。
 > - PD、TiKV 组件在缩容过程中都会调用接口下线正在删除的 PD、TiKV 组件在下线时会涉及到数据迁移的操作，所以会消耗比较长的时间。
 > - PD、TiKV 组件在缩容过程中被删除的节点的 PVC 会保留，并且由于 PV 的 `Reclaim Policy` 设置为 `Retain`，即使 PVC 被删除，数据依然可以找回。

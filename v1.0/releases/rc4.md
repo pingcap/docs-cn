@@ -8,7 +8,7 @@ category: Releases
 8 月 4 日，TiDB 正式发布 RC4 版。该版本对 MySQL 兼容性、SQL 优化器、系统稳定性、性能做了大量的工作。性能方面重点优化了写入速度，计算任务调度支持优先级，避免分析型大事务影响在线事务。SQL 优化器全新改版，查询代价估算更加准确，且能够自动选择 Join 物理算子。功能方面进一步 MySQL 兼容性。
 同时为了更好的支持 OLAP 业务，开源了 TiSpark 项目，可以通过 Spark 读取和分析 TiKV 中的数据。
 
-## TiDB:
+## TiDB
 
 + SQL 查询优化器重构
     - 更好的支持 TopN 查询
@@ -22,7 +22,7 @@ category: Releases
 + 支持 Json 类型及其操作
 + 支持查询优先级、隔离级别的设置
 
-## PD:
+## PD
 
 + 支持通过 PD 设置 TiKV location labels
 + 调度优化
@@ -31,7 +31,7 @@ category: Releases
     - 优化 balance 算法
 + 优化数据加载，加快 failover 速度
 
-## TiKV:
+## TiKV
 
 + 支持查询优先级设置
 + 支持 RC 隔离级别
@@ -40,8 +40,8 @@ category: Releases
 + Coprocessor 支持更多下推函数
 + 提升性能，提升稳定性
 
-## TiSpark Beta Release:
-    
+## TiSpark Beta Release
+
 + 支持谓词下推
 + 支持聚合下推
 + 支持范围裁剪
