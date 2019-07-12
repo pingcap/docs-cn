@@ -215,6 +215,10 @@ table_option:
 |`COLLATE`       |指定该表所使用的字符集排序规则        | `COLLATE` = 'utf8mb4_bin'|
 |`COMMENT`       |注释信息                              | `COMMENT` = 'comment info'|
 
+> **注意：**
+>
+> 在 TiDB 2.1 版本中，`SHARD_ROW_ID_BITS`、`PRE_SPLIT_REGIONS` 和 `COLLATE` 这三个功能都是从 2.1.13 版本（包括 2.1.13）开始支持的。
+
 ## 示例
 
 ```sql
