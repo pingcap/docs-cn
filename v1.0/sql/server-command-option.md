@@ -7,7 +7,7 @@ category: user guide
 
 启动 TiDB 进程时，可以指定一些程序启动参数。
 
-TiDB 接受许多的启动参数，执行这个命令可以得到一个简要的说明：
+TiDB 接受许多的启动参数，执行以下命令可以得到一个简要的说明：
 
 ```shell
 ./tidb-server --help
