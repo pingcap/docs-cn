@@ -113,7 +113,7 @@ kubectl describe statefulsets -n ${namespace} ${cluster-name}-pd
     ping ${TARGET_IP}
     ```
 
-    假如 ping 检查失败，请参照 [诊断 Kubernetes 网络](https://www.praqma.com/stories/debugging-kubernetes-networking/) 进行故障排除。
+    假如 ping 检查失败，请参照[诊断 Kubernetes 网络](https://www.praqma.com/stories/debugging-kubernetes-networking/)进行故障排除。
 
     假如 ping 检查正常，继续使用 `telnet` 检查目标端口是否打开：
 
