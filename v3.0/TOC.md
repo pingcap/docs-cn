@@ -1,5 +1,8 @@
 # TiDB 中文用户文档
 
+<!-- markdownlint-disable MD007 -->
+<!-- markdownlint-disable MD032 -->
+
 ## 目录
 
 + [关于 TiDB](overview.md)
@@ -40,6 +43,7 @@
   + 配置
     - [时区](how-to/configure/time-zone.md)
     - [内存控制](how-to/configure/memory-control.md)
+    - [初始化集群](how-to/configure/initialize-cluster.md)
   + 安全
     + 安全传输层协议 (TLS)
       - [为 MySQL 客户端开启 TLS](how-to/secure/enable-tls-clients.md)
@@ -49,6 +53,7 @@
     - [概述](how-to/monitor/overview.md)
     - [监控 TiDB 集群](how-to/monitor/monitor-a-cluster.md)
     - [监控 TiDB Binlog 集群](how-to/monitor/tidb-binlog.md)
+    - [监控 Kubernetes 上的 TiDB 集群](how-to/monitor/tidb-in-kubernetes.md)
   + 迁移
     - [概述](how-to/migrate/overview.md)
     + 从 MySQL 迁移
@@ -64,6 +69,7 @@
     + Kubernetes 上的 TiDB 集群运维
       - [管理 TiDB 集群](how-to/maintain/tidb-in-kubernetes/tidb-cluster.md)
       - [维护 TiDB 节点](how-to/maintain/tidb-in-kubernetes/tidb-node.md)
+      - [收集日志](how-to/maintain/tidb-in-kubernetes/log-collecting.md)
       - [集群故障自动转移](how-to/maintain/tidb-in-kubernetes/auto-failover.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](how-to/scale/with-ansible.md)
@@ -81,6 +87,7 @@
     - [集群配置诊断](how-to/troubleshoot/cluster-setup.md)
     - [Data Migration 故障诊断](how-to/troubleshoot/data-migration.md)
     - [TiDB Lightning 故障诊断](how-to/troubleshoot/tidb-lightning.md)
+    - [Kubernetes 上的 TiDB 集群故障诊断](how-to/troubleshoot/tidb-in-kubernetes.md)
 + 参考手册
   + [与 MySQL 兼容性对比](reference/mysql-compatibility.md)
   + SQL
@@ -181,6 +188,7 @@
       - [`LOAD DATA`](reference/sql/statements/load-data.md)
       - [`MODIFY COLUMN`](reference/sql/statements/modify-column.md)
       - [`PREPARE`](reference/sql/statements/prepare.md)
+      - [`RECOVER TABLE`](reference/sql/statements/recover-table.md)
       - [`RENAME INDEX`](reference/sql/statements/rename-index.md)
       - [`RENAME TABLE`](reference/sql/statements/rename-table.md)
       - [`REPLACE`](reference/sql/statements/replace.md)
@@ -236,7 +244,7 @@
       - [配置文件描述](reference/configuration/tikv-server/configuration-file.md)
     + Kubernetes 上的 TiDB
       - [集群配置](reference/configuration/tidb-in-kubernetes/cluster-configuration.md)
-      - [备份配置参数](reference/configuration/tidb-in-kubernetes/backup-configuration.md)
+      - [备份配置](reference/configuration/tidb-in-kubernetes/backup-configuration.md)
       - [本地 PV 配置](reference/configuration/tidb-in-kubernetes/local-pv-configuration.md)
   + 监控指标
     - [Overview 面板](reference/key-monitoring-metrics/overview-dashboard.md)
@@ -258,13 +266,16 @@
     - [`information_schema`](reference/system-databases/information-schema.md)
   - [错误码](reference/error-codes.md)
   - [支持的连接器和 API](reference/supported-clients.md)
-  - [垃圾回收 (GC)](reference/garbage-collection.md)
+  + 垃圾回收 (GC)
+    - [GC 机制简介](reference/garbage-collection/overview.md)
+    - [GC 配置](reference/garbage-collection/configuration.md)
   + 性能调优
     - [SQL 优化流程](reference/performance/sql-optimizer-overview.md)
     - [理解 TiDB 执行计划](reference/performance/understanding-the-query-execution-plan.md)
     - [执行计划绑定](reference/performance/execution-plan-bind.md)
     - [统计信息概述](reference/performance/statistics.md)
     - [Optimizer Hints](reference/performance/optimizer-hints.md)
+    - [使用 SQL 语句检查 TiDB 集群状态](reference/performance/check-cluster-status-using-sql-statements.md)
     - [TiKV 调优](reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + [TiSpark 使用指南](reference/tispark.md)
@@ -275,7 +286,7 @@
     - [Loader](reference/tools/loader.md)
     - [Syncer](reference/tools/syncer.md)
     + Data Migration
-      + [概述](reference/tools/data-migration/overview.md)
+      + 概述
         - [DM 架构](reference/tools/data-migration/overview.md#dm-架构)
         - [同步功能介绍](reference/tools/data-migration/overview.md#同步功能介绍)
         - [使用限制](reference/tools/data-migration/overview.md#使用限制)
@@ -322,6 +333,7 @@
   - [TiDB-Lightning FAQ](faq/tidb-lightning.md)
   - [Data Migration FAQ](faq/data-migration.md)
   - [升级 FAQ](faq/upgrade.md)
+  - [Kubernetes 上的 TiDB FAQ](faq/tidb-in-kubernetes.md)
 + 技术支持
   - [支持渠道](support-resources.md)
   - [反馈问题](report-issue.md)
@@ -338,7 +350,8 @@
     - [3.0.0-beta.1](releases/3.0.0-beta.1.md)
     - [3.0.0-beta](releases/3.0beta.md)
   + v2.1
-    - [2.1.13](releases/2.1.13.md)    
+    - [2.1.14](releases/2.1.14.md)
+    - [2.1.13](releases/2.1.13.md)
     - [2.1.12](releases/2.1.12.md)
     - [2.1.11](releases/2.1.11.md)
     - [2.1.10](releases/2.1.10.md)

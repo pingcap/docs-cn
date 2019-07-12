@@ -24,15 +24,15 @@ TiDB-Binlog 支持以下功能场景:
 
 TiDB-Binlog 集群主要分为三个组件：
 
-#### Pump
+### Pump
 
 Pump 是一个守护进程，在每个 TiDB 主机的后台运行。其主要功能是实时记录 TiDB 产生的 Binlog 并顺序写入 Kafka 中。
 
-#### Drainer
+### Drainer
 
 Drainer 从 Kafka 中收集 Binlog，并按照 TiDB 中事务的提交顺序转化为指定数据库兼容的 SQL 语句，最后同步到目的数据库或者写到顺序文件。
 
-#### Kafka & ZooKeeper
+### Kafka & ZooKeeper
 
 Kafka 集群用来存储由 Pump 写入的 Binlog 数据，并提供给 Drainer 进行读取。
 
@@ -44,9 +44,9 @@ Kafka 集群用来存储由 Pump 写入的 Binlog 数据，并提供给 Drainer 
 
 以下为 TiDB-Ansible 分支与 TiDB 版本的对应关系，版本选择可咨询官方 info@pingcap.com。
 
-    | TiDB-Ansible 分支 | TiDB 版本 | 备注 |
-    | ---------------- | --------- | --- |
-    | release-2.0 | 2.0 版本 | 最新 2.0 稳定版本，可用于生产环境。 |
+| TiDB-Ansible 分支 | TiDB 版本 | 备注 |
+| ---------------- | --------- | --- |
+| release-2.0 | 2.0 版本 | 最新 2.0 稳定版本，可用于生产环境。 |
 
 ### 下载官方 Binary
 
@@ -83,10 +83,10 @@ cd tidb-binlog-kafka-linux-amd64
 
     为了保证数据的完整性，在 Pump 运行 10 分钟左右后按顺序进行如下操作：
 
-    *  使用 [tidb-tools](https://github.com/pingcap/tidb-tools) 项目中的 [binlogctl](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/binlogctl) 工具生成 Drainer 初次启动所需的 position
-    *  全量备份，例如 mydumper 备份 TiDB
-    *  全量导入备份到目标系统
-    *  Kafka 版本 Drainer 启动的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，如果 checkpoint 表中没有效的数据，可以通过设置 `initial-commit-ts` 启动 Drainer 从指定位置开始消费 - `bin/drainer --config=conf/drainer.toml --initial-commit-ts=${position}`
+    * 使用 [tidb-tools](https://github.com/pingcap/tidb-tools) 项目中的 [binlogctl](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/binlogctl) 工具生成 Drainer 初次启动所需的 position
+    * 全量备份，例如 mydumper 备份 TiDB
+    * 全量导入备份到目标系统
+    * Kafka 版本 Drainer 启动的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，如果 checkpoint 表中没有效的数据，可以通过设置 `initial-commit-ts` 启动 Drainer 从指定位置开始消费 - `bin/drainer --config=conf/drainer.toml --initial-commit-ts=${position}`
 
 * Drainer 输出为 pb，要在配置文件中设置如下参数：
 
@@ -128,7 +128,7 @@ cd tidb-binlog-kafka-linux-amd64
 - `broker.id`：用来标识 Kafka 集群的必备参数，不能重复；如 `broker.id = 1`
 - `fs.file-max = 1000000`：Kafka 会使用大量文件和网络 socket，建议修改成 1000000，通过 `vi /etc/sysctl.conf` 进行修改
 - 修改以下配置为1G, 否则很容易出现事务修改数据较多导致单个消息过大写 kafka 失败
-    
+
     * `message.max.bytes=1073741824`
     * `replica.fetch.max.bytes=1073741824`
     * `fetch.message.max.bytes=1073741824`
@@ -415,11 +415,11 @@ PbReader 使用示例
 + 进入 Grafana Web 界面（默认地址: `http://localhost:3000`，默认账号：admin，密码：admin）
 
     点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息
-    
+
     > **注意：**
     >
     > Type 选 Prometheus，URL 为 Prometheus 地址，根据实际情况添加/填写。
 
 + 导入 dashboard 配置文件
 
-    点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 [dashboard 配置文件](https://github.com/pingcap/docs/tree/master/etc)上传 -> 选择对应的 data source
+    点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 [dashboard 配置文件](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json)上传 -> 选择对应的 data source

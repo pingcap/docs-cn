@@ -10,8 +10,8 @@ TiDB 是 PingCAP 公司设计的开源分布式 HTAP (Hybrid Transactional and A
 TiDB 具备如下特性：
 
 - 高度兼容 MySQL
-    
-    [大多数情况下](https://www.pingcap.com/docs-cn/sql/mysql-compatibility/)，无需修改代码即可从 MySQL 轻松迁移至 TiDB，分库分表后的 MySQL 集群亦可通过 TiDB 工具进行实时迁移。
+
+    [大多数情况下](/v3.0/reference/mysql-compatibility.md)，无需修改代码即可从 MySQL 轻松迁移至 TiDB，分库分表后的 MySQL 集群亦可通过 TiDB 工具进行实时迁移。
 
 - 水平弹性扩展
 
@@ -33,7 +33,7 @@ TiDB 具备如下特性：
 
     TiDB 是为云而设计的数据库，支持公有云、私有云和混合云，使部署、配置和维护变得十分简单。
 
-TiDB 的设计目标是 100% 的 OLTP 场景和 80% 的 OLAP 场景，更复杂的 OLAP 分析可以通过 [TiSpark 项目](tispark/tispark-user-guide.md)来完成。
+TiDB 的设计目标是 100% 的 OLTP 场景和 80% 的 OLAP 场景，更复杂的 OLAP 分析可以通过 [TiSpark 项目](/v3.0/reference/tispark.md)来完成。
 
 TiDB 对业务没有任何侵入性，能优雅的替换传统的数据库中间件、数据库分库分表等 Sharding 方案。同时它也让开发运维人员不用关注数据库 Scale 的细节问题，专注于业务开发，极大的提升研发的生产力。
 

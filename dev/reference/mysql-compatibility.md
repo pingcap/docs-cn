@@ -9,7 +9,7 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 
 当前 TiDB 服务器官方支持的版本为 MySQL 5.7。大部分 MySQL 运维工具（如 PHPMyAdmin, Navicat, MySQL Workbench 等），以及备份恢复工具（如 mysqldump, mydumper/myloader）等都可以直接使用。
 
-不过一些特性由于在分布式环境下没法很好的实现，目前暂时不支持或者是表现与 MySQL 有差异。一些 MySQL 语法在 TiDB 中可以解析通过，但是不会做任何后续的处理，例如 `Create Table` 语句中 `Engine` 以及 `Partition` 选项，都是解析并忽略。
+不过一些特性由于在分布式环境下没法很好的实现，目前暂时不支持或者是表现与 MySQL 有差异。一些 MySQL 语法在 TiDB 中可以解析通过，但是不会做任何后续的处理，例如 `Create Table` 语句中 `Engine`，是解析并忽略。
 
 > **注意：**
 >
@@ -18,14 +18,13 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 ## 不支持的特性
 
 * 存储过程与函数
-* 视图
 * 触发器
 * 事件
 * 自定义函数
 * 外键约束
 * 全文函数与索引
 * 空间函数与索引
-* 非 `utf8` 字符集
+* 非 `utf8`/`utf8mb4` 字符集
 * `BINARY` 之外的排序规则
 * 增加主键
 * 删除主键
@@ -38,7 +37,6 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 * `CREATE TABLE tblName AS SELECT stmt` 语法
 * `CREATE TEMPORARY TABLE` 语法
 * `XA` 语法（TiDB 内部使用两阶段提交，但并没有通过 SQL 接口公开）
-* `LOCK TABLE` 语法（TiDB 使用 `tidb_snapshot` 来[生成备份](/reference/tools/mydumper.md)
 * `CHECK TABLE` 语法
 * `CHECKSUM TABLE` 语法
 
@@ -51,6 +49,8 @@ TiDB 中，自增列只保证自增且唯一，并不保证连续分配。TiDB �
 在集群中有多个 tidb-server 实例时，如果表结构中有自增 ID，建议不要混用缺省值和自定义值，否则在如下情况下会遇到问题。
 
 假设有这样一个带有自增 ID 的表：
+
+{{< copyable "sql" >}}
 
 ```sql
 create table t(id int unique key auto_increment, c int);
@@ -80,19 +80,19 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 在 TiDB 中，运行的 DDL 操作不会影响对表的读取或写入。但是，目前 DDL 变更有如下一些限制：
 
 + Add Index
-  - 不支持同时创建多个索引
-  - 不支持通过 `ALTER TABLE` 在所生成的列上添加索引
+    - 不支持同时创建多个索引
+    - 不支持通过 `ALTER TABLE` 在所生成的列上添加索引
 + Add Column
-  - 不支持同时创建多个列
-  - 不支持将新创建的列设为主键或唯一索引，也不支持将此列设成 auto_increment 属性
+    - 不支持同时创建多个列
+    - 不支持将新创建的列设为主键或唯一索引，也不支持将此列设成 auto_increment 属性
 + Drop Column: 不支持删除主键列或索引列
 + Change/Modify Column
-  - 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`
-  - 不支持修改 `DECIMAL` 类型的精度
-  - 不支持更改 `UNSIGNED` 属性
-  - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
+    - 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`
+    - 不支持修改 `DECIMAL` 类型的精度
+    - 不支持更改 `UNSIGNED` 属性
+    - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
 + Alter Database
-  - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
+    - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
 + `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`: TiDB 支持的语法，但是在 TiDB 中不会生效。所有支持的 DDL 变更都不会锁表。
 + `ALGORITHM [=] {DEFAULT|INSTANT|INPLACE|COPY}`: TiDB 完全支持 `ALGORITHM=INSTANT` 和 `ALGORITHM=INPLACE` 语法，但运行过程与 MySQL 有所不同，因为 MySQL 中的一些 `INPLACE` 操作实际上是 TiDB 中的 `INSTANT` 操作。`ALGORITHM=COPY` 语法在 TiDB 中不会生效，会返回警告信息。
 
@@ -104,19 +104,32 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 
 出于兼容性原因，TiDB 支持使用备用存储引擎创建表的语法。元数据命令将表描述为 InnoDB 存储引擎：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE TABLE t1 (a INT) ENGINE=MyISAM;
+CREATE TABLE t1 (a INT) ENGINE=MyISAM;
+```
+
+```
 Query OK, 0 rows affected (0.14 sec)
- mysql> SHOW CREATE TABLE t1\G
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW CREATE TABLE t1;
+```
+
+```
 *************************** 1. row ***************************
        Table: t1
 Create Table: CREATE TABLE `t1` (
   `a` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
 1 row in set (0.00 sec)
 ```
 
-从架构上讲，TiDB 确实支持类似 MySQL 的存储引擎抽象，在启动 TiDB（通常是 `tikv`）时 [`--store`](/sql/server-command-option.md#--store) 选项指定的引擎中创建用户表。
+从架构上讲，TiDB 确实支持类似 MySQL 的存储引擎抽象，在启动 TiDB（通常是 `tikv`）时 [`--store`](/reference/configuration/tidb-server/configuration.md#store) 选项指定的引擎中创建用户表。
 
 ### SQL 模式
 
@@ -161,9 +174,9 @@ TiDB 不需要导入时区表数据也能使用所有时区名称，采用系统
 > **注意：**
 >
 > 能下推到 TiKV 的时间相关表达式会由 TiKV 进行计算。TiKV 总是采用 TiKV 内置时区规则计算，而不依赖于系统所安装的时区规则。若系统安装的时区规则与 TiKV 内置的时区规则版本不匹配，则在少数情况下可能发生能插入的时间数据无法再读出来的问题。例如，若系统上安装了 tzdata 2018a 时区规则，则在时区设置为 Asia/Shanghai 或时区设置为本地时区且本地时区为 Asia/Shanghai 的情况下，时间 `1988-04-17 02:00:00` 可以被正常插入 TiDB 3.0 RC.1，但该记录对于特定类型 SQL 则无法再读出来，原因是 TiKV 3.0 RC.1 依据的 tzdata 2018i 规则中该时间在 Asia/Shanghai 时区中不存在（夏令时时间后移一小时）。
-> 
+>
 > TiKV 各个版本内置的时区规则如下：
-> 
+>
 > - 3.0.0 RC.1 及以后：[tzdata 2018i](https://github.com/eggert/tz/tree/2018i)
 > - 2.1.0 RC.1 及以后：[tzdata 2018e](https://github.com/eggert/tz/tree/2018e)
 

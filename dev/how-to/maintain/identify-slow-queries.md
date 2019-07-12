@@ -115,9 +115,15 @@ select count(1) from t_slim, t_wide where t_slim.c0>t_wide.c0 and t_slim.c1>t_wi
 
 查询 Top2 的用户慢查询。`Is_internal=false` 表示排除 TiDB 内部的慢查询，只看用户的慢查询。
 
+查询所有用户执行的 SQL，且按执行消耗时间排序：
+
+{{< copyable "sql" >}}
+
 ```sql
-/* 查询所有用户执行的SQL，且按执行消耗时间排序 */
-tidb > select `Query_time`, query from INFORMATION_SCHEMA.`SLOW_QUERY` where `Is_internal`=false order by `Query_time` desc limit 2;
+select `Query_time`, query from INFORMATION_SCHEMA.`SLOW_QUERY` where `Is_internal`=false order by `Query_time` desc limit 2;
+```
+
+```
 +--------------+------------------------------------------------------------------+
 | Query_time   | query                                                            |
 +--------------+------------------------------------------------------------------+
@@ -130,9 +136,15 @@ Time: 0.012s
 
 ### 查询 `test` 用户的 TopN 慢查询
 
+查询 test 用户执行的SQL，且按执行消耗时间排序：
+
+{{< copyable "sql" >}}
+
 ```sql
-/* 查询 test 用户执行的SQL，且按执行消耗时间排序*/
-tidb > select `Query_time`, query,  user from INFORMATION_SCHEMA.`SLOW_QUERY` where `Is_internal`=false and user like "test%" order by `Query_time` desc limit 2;
+select `Query_time`, query,  user from INFORMATION_SCHEMA.`SLOW_QUERY` where `Is_internal`=false and user like "test%" order by `Query_time` desc limit 2;
+```
+
+```
 +-------------+------------------------------------------------------------------+----------------+
 | Query_time  | query                                                            | user           |
 +-------------+------------------------------------------------------------------+----------------+
@@ -146,8 +158,13 @@ Time: 0.014s
 
 如果查询了 TopN 的SQL 后，想查询相同 SQL 指纹的查询，可以用指纹作为过滤条件。
 
+{{< copyable "sql" >}}
+
 ```sql
-tidb > select query_time, query,digest from INFORMATION_SCHEMA.`SLOW_QUERY` where `Is_internal`=false order by `Query_time` desc limit 1;
+select query_time, query,digest from INFORMATION_SCHEMA.`SLOW_QUERY` where `Is_internal`=false order by `Query_time` desc limit 1;
+```
+
+```
 +-------------+-----------------------------+------------------------------------------------------------------+
 | query_time  | query                       | digest                                                           |
 +-------------+-----------------------------+------------------------------------------------------------------+
@@ -155,7 +172,15 @@ tidb > select query_time, query,digest from INFORMATION_SCHEMA.`SLOW_QUERY` wher
 +-------------+-----------------------------+------------------------------------------------------------------+
 1 row in set
 Time: 0.007s
-tidb > select query, query_time from INFORMATION_SCHEMA.`SLOW_QUERY` where digest="4751cb6008fda383e22dacb601fde85425dc8f8cf669338d55d944bafb46a6fa";
+```
+
+{{< copyable "sql" >}}
+
+```sql
+select query, query_time from INFORMATION_SCHEMA.`SLOW_QUERY` where digest="4751cb6008fda383e22dacb601fde85425dc8f8cf669338d55d944bafb46a6fa";
+```
+
+```
 +-----------------------------+-------------+
 | query                       | query_time  |
 +-----------------------------+-------------+
@@ -167,8 +192,13 @@ tidb > select query, query_time from INFORMATION_SCHEMA.`SLOW_QUERY` where diges
 
 ### 查询统计信息是 pseudo 的慢查询
 
+{{< copyable "sql" >}}
+
 ```sql
-tidb > select query, query_time, stats from INFORMATION_SCHEMA.`SLOW_QUERY` where is_internal=false and stats like('%pseudo%');
+select query, query_time, stats from INFORMATION_SCHEMA.`SLOW_QUERY` where is_internal=false and stats like('%pseudo%');
+```
+
+```
 +-----------------------------+-------------+---------------------------------+
 | query                       | query_time  | stats                           |
 +-----------------------------+-------------+---------------------------------+
@@ -184,9 +214,15 @@ tidb > select query, query_time, stats from INFORMATION_SCHEMA.`SLOW_QUERY` wher
 
 目前查询 `INFORMATION_SCHEMA.SLOW_QUERY` 只会解析配置文件中 `slow-query-file` 设置的慢日志文件名，默认是 "tidb-slow.log"。但如果想要解析其他的日志文件，可以通过设置 session 变量 `tidb_slow_query_file` 为具体的文件路径，然后查询 `INFORMATION_SCHEMA.SLOW_QUERY` 就会按照设置的路径去解析慢日志文件。
 
+设置慢日志文件路径，方便解析其他的慢日志文件，tidb_slow_query_file 变量的作用域是 session：
+
+{{< copyable "sql" >}}
+
 ```sql
-/* 设置慢日志文件路径，方便解析其他的慢日志文件，tidb_slow_query_file 变量的作用域是 session */
-tidb > set tidb_slow_query_file="/path-to-log/tidb-slow.log"
+set tidb_slow_query_file="/path-to-log/tidb-slow.log";
+```
+
+```
 Query OK, 0 rows affected
 Time: 0.001s
 ```
@@ -197,11 +233,23 @@ Time: 0.001s
 
 可以用 pt-query-digest 工具分析 TiDB 慢日志。建议使用 pt-query-digest 3.0.13 及以上版本。示例如下：
 
-```shell
-$pt-query-digest --version
-pt-query-digest 3.0.13
+{{< copyable "shell-regular" >}}
 
-$ pt-query-digest --report tidb-slow.log
+```shell
+pt-query-digest --version
+```
+
+```
+pt-query-digest 3.0.13
+```
+
+{{< copyable "shell-regular" >}}
+
+```shell
+pt-query-digest --report tidb-slow.log
+```
+
+```
 # 320ms user time, 20ms system time, 27.00M rss, 221.32M vsz
 # Current date: Mon Mar 18 13:18:51 2019
 # Hostname: localhost.localdomain
@@ -240,22 +288,36 @@ admin show slow top [internal | all] N
 
 `recent N` 会显示最近的 N 条慢查询记录，例如：
 
+{{< copyable "sql" >}}
+
 ```sql
 admin show slow recent 10
 ```
 
 `top N` 则显示最近一段时间（大约几天）内，最慢的查询记录。如果指定 `internal` 选项，则返回查询系统内部 SQL 的慢查询记录；如果指定 `all` 选项，返回系统内部和用户 SQL 汇总以后的慢查询记录；默认只返回用户 SQL 中的慢查询记录。
 
+{{< copyable "sql" >}}
+
 ```sql
 admin show slow top 3
+```
+
+{{< copyable "sql" >}}
+
+```sql
 admin show slow top internal 3
+```
+
+{{< copyable "sql" >}}
+
+```sql
 admin show slow top all 5
 ```
 
 由于内存限制，保留的慢查询记录的条数是有限的。当命令查询的 `N` 大于记录条数时，返回的结果记录条数会小于 `N`。
 
 输出内容详细说明，如下：
-   
+
 | 列名 | 描述 |
 |:------|:---- |
 | start | SQL 语句执行开始时间 |

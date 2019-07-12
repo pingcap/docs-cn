@@ -14,7 +14,7 @@ TiDB 集群可以在不影响线上服务的情况下动态进行扩容和缩容
 
 下面分别介绍如何增加或者删除 PD，TiKV 以及 TiDB 的节点。
 
-下面用到的 pd-ctl 文档可以参考 [pd-control](/tools/pd-control.md)。
+下面用到的 pd-ctl 文档可以参考 [pd-control](/reference/tools/pd-control.md)。
 
 ## PD
 
@@ -22,9 +22,9 @@ TiDB 集群可以在不影响线上服务的情况下动态进行扩容和缩容
 
 |Name|ClientUrls|PeerUrls|
 |----|----------|--------|
-|pd1|http://host1:2379|http://host1:2380|
-|pd2|http://host2:2379|http://host2:2380|
-|pd3|http://host3:2379|http://host3:2380|
+|pd1|`http://host1:2379|http://host1:2380`|
+|pd2|`http://host2:2379|http://host2:2380`|
+|pd3|`http://host3:2379|http://host3:2380`|
 
 我们可以通过 pd-ctl 来查看当前所有 PD 节点的信息：
 

@@ -14,7 +14,7 @@ aliases: ['/docs-cn/sql/user-defined-variables/']
 
 ```sql
 SET @var_name = expr [, @var_name = expr] ...
-或 
+或
 SET @var_name := expr
 ```
 

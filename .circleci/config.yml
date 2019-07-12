@@ -1,6 +1,35 @@
 version: 2
 
 jobs:
+  lint:
+    docker:
+      - image: circleci/ruby:2.4.1-node
+    working_directory: ~/pingcap/docs-cn
+    steps:
+      - checkout
+
+      - run:
+          name: "Install markdownlint"
+          command: |
+            sudo npm install -g markdownlint-cli
+            markdownlint --version
+
+      - run:
+          name: "Lint dev"
+          command: markdownlint dev/
+
+      - run:
+          name: "Lint README"
+          command: markdownlint README.md
+
+      - run:
+          name: "Lint edited files"
+          command: |
+            git remote add upstream https://github.com/pingcap/docs-cn.git
+            git fetch upstream
+            markdownlint $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*' ':(exclude)v1.0/*' ':(exclude)v2.0/*' ':(exclude)v2.1-legacy/*')
+
+
   build:
     docker:
       - image: andelf/doc-build:0.1.9
@@ -46,3 +75,17 @@ jobs:
 
       - store_artifacts:
           path: /tmp/artifacts
+
+workflows:
+  version: 2
+  lint:
+    jobs:
+      - lint
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
+                - website-preview

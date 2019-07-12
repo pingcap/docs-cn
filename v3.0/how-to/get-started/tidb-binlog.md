@@ -45,12 +45,12 @@ sudo yum install -y mariadb-server
 预期输出：
 
 ```
-[kolbe@localhost ~]$ curl -LO http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz | tar xzf -
+[kolbe@localhost ~]$ curl -LO http://download.pingcap.org/tidb-v3.0-linux-amd64.tar.gz | tar xzf -
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100  368M  100  368M    0     0  8394k      0  0:00:44  0:00:44 --:--:-- 11.1M
-[kolbe@localhost ~]$ cd tidb-latest-linux-amd64
-[kolbe@localhost tidb-latest-linux-amd64]$
+100  279M  100  279M    0     0  4983k      0  0:00:57  0:00:57 --:--:-- 3638k
+[kolbe@localhost ~]$ cd tidb-v3.0-linux-amd64/
+[kolbe@localhost tidb-v3.0-linux-amd64]$
 ```
 
 ## 配置
@@ -61,7 +61,7 @@ sudo yum install -y mariadb-server
 
     ```bash
     printf > pd.toml %s\\n 'log-file="pd.log"' 'data-dir="pd.data"'
-    printf > tikv.toml %s\\n 'log-file="tikv.log"' '[storage]' 'data-dir="tikv.data"' '[pd]' 'endpoints=["127.0.0.1:2379"]' '[rocksdb]' max-open-files=1024 '[raftdb]' max-open-files=1024 
+    printf > tikv.toml %s\\n 'log-file="tikv.log"' '[storage]' 'data-dir="tikv.data"' '[pd]' 'endpoints=["127.0.0.1:2379"]' '[rocksdb]' max-open-files=1024 '[raftdb]' max-open-files=1024
     printf > pump.toml %s\\n 'log-file="pump.log"' 'data-dir="pump.data"' 'addr="127.0.0.1:8250"' 'advertise-addr="127.0.0.1:8250"' 'pd-urls="http://127.0.0.1:2379"'
     printf > tidb.toml %s\\n 'store="tikv"' 'path="127.0.0.1:2379"' '[log.file]' 'filename="tidb.log"' '[binlog]' 'enable=true'
     printf > drainer.toml %s\\n 'log-file="drainer.log"' '[syncer]' 'db-type="mysql"' '[syncer.to]' 'host="127.0.0.1"' 'user="root"' 'password=""' 'port=3306'
@@ -134,21 +134,21 @@ sudo yum install -y mariadb-server
     预期输出：
 
     ```
-    [kolbe@localhost tidb-latest-linux-amd64]$ ./bin/pd-server --config=pd.toml &>pd.out &
+    [kolbe@localhost tidb-v3.0-linux-amd64]$ ./bin/pd-server --config=pd.toml &>pd.out &
     [1] 20935
-    [kolbe@localhost tidb-latest-linux-amd64]$ ./bin/tikv-server --config=tikv.toml &>tikv.out &
+    [kolbe@localhost tidb-v3.0-linux-amd64]$ ./bin/tikv-server --config=tikv.toml &>tikv.out &
     [2] 20944
-    [kolbe@localhost tidb-latest-linux-amd64]$ ./bin/pump --config=pump.toml &>pump.out &
+    [kolbe@localhost tidb-v3.0-linux-amd64]$ ./bin/pump --config=pump.toml &>pump.out &
     [3] 21050
-    [kolbe@localhost tidb-latest-linux-amd64]$ sleep 3
-    [kolbe@localhost tidb-latest-linux-amd64]$ ./bin/tidb-server --config=tidb.toml &>tidb.out &
+    [kolbe@localhost tidb-v3.0-linux-amd64]$ sleep 3
+    [kolbe@localhost tidb-v3.0-linux-amd64]$ ./bin/tidb-server --config=tidb.toml &>tidb.out &
     [4] 21058
     ```
 
 2. 如果执行 `jobs`，可以看到后台正在运行的程序，列表如下：
 
     ```
-    [kolbe@localhost tidb-latest-linux-amd64]$ jobs
+    [kolbe@localhost tidb-v3.0-linux-amd64]$ jobs
     [1]   Running                 ./bin/pd-server --config=pd.toml &>pd.out &
     [2]   Running                 ./bin/tikv-server --config=tikv.toml &>tikv.out &
     [3]-  Running                 ./bin/pump --config=pump.toml &>pump.out &
@@ -156,7 +156,6 @@ sudo yum install -y mariadb-server
     ```
 
     如果有服务启动失败（例如出现 “`Exit 1`” 而不是 “`Running`”），尝试重启单个组件。
-
 
 ## 连接
 
@@ -169,12 +168,12 @@ mysql -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
 预期输出：
 
 ```
-[kolbe@localhost tidb-latest-linux-amd64]$ mysql -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
+[kolbe@localhost tidb-v3.0-linux-amd64]$ mysql -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
 *************************** 1. row ***************************
-tidb_version(): Release Version: v3.0.0-beta.1-154-gd5afff70c
-Git Commit Hash: d5afff70cdd825d5fab125c8e52e686cc5fb9a6e
-Git Branch: master
-UTC Build Time: 2019-04-24 03:10:00
+tidb_version(): Release Version: v3.0.0
+Git Commit Hash: 60965b006877ca7234adaced7890d7b029ed1306
+Git Branch: HEAD
+UTC Build Time: 2019-06-28 12:14:07
 GoVersion: go version go1.12 linux/amd64
 Race Enabled: false
 TiKV Min Version: 2.1.0-alpha.1-ff3dd160846b7d1aed9079c389fc188f7f5ea13e
@@ -182,7 +181,6 @@ Check Table Before Drop: false
 ```
 
 连接后TiDB 集群已开始运行，`pump` 读取集群中的 binlog 数据，并在其数据目录中将 binlog 数据存储为 relay log。下一步是启动一个可供 `drainer` 写入的 MariaDB Server。
-
 
 1. 启动 `drainer`：
 
@@ -335,10 +333,10 @@ Check Table Before Drop: false
 预期输出：
 
 ```
-[kolbe@localhost tidb-latest-linux-amd64]$ ./bin/binlogctl -cmd drainers
+[kolbe@localhost tidb-v3.0-linux-amd64]$ ./bin/binlogctl -cmd drainers
 [2019/04/11 17:44:10.861 -04:00] [INFO] [nodes.go:47] ["query node"] [type=drainer] [node="{NodeID: localhost.localdomain:8249, Addr: 192.168.236.128:8249, State: online, MaxCommitTS: 407638907719778305, UpdateTime: 2019-04-11 17:44:10 -0400 EDT}"]
 
-[kolbe@localhost tidb-latest-linux-amd64]$ ./bin/binlogctl -cmd pumps
+[kolbe@localhost tidb-v3.0-linux-amd64]$ ./bin/binlogctl -cmd pumps
 [2019/04/11 17:44:13.904 -04:00] [INFO] [nodes.go:47] ["query node"] [type=pump] [node="{NodeID: localhost.localdomain:8250, Addr: 192.168.236.128:8250, State: online, MaxCommitTS: 407638914024079361, UpdateTime: 2019-04-11 17:44:13 -0400 EDT}"]
 ```
 
@@ -352,8 +350,8 @@ pkill drainer
 预期输出：
 
 ```
-[kolbe@localhost tidb-latest-linux-amd64]$ pkill drainer
-[kolbe@localhost tidb-latest-linux-amd64]$ ./bin/binlogctl -cmd drainers
+[kolbe@localhost tidb-v3.0-linux-amd64]$ pkill drainer
+[kolbe@localhost tidb-v3.0-linux-amd64]$ ./bin/binlogctl -cmd drainers
 [2019/04/11 17:44:22.640 -04:00] [INFO] [nodes.go:47] ["query node"] [type=drainer] [node="{NodeID: localhost.localdomain:8249, Addr: 192.168.236.128:8249, State: paused, MaxCommitTS: 407638915597467649, UpdateTime: 2019-04-11 17:44:18 -0400 EDT}"]
 ```
 
@@ -389,7 +387,7 @@ for p in tidb-server drainer pump tikv-server pd-server; do pkill "$p"; sleep 1;
 预期输出：
 
 ```
-kolbe@localhost tidb-latest-linux-amd64]$ for p in tidb-server drainer pump tikv-server pd-server; do pkill "$p"; sleep 1; done
+kolbe@localhost tidb-v3.0-linux-amd64]$ for p in tidb-server drainer pump tikv-server pd-server; do pkill "$p"; sleep 1; done
 [4]-  Done                    ./bin/tidb-server --config=tidb.toml &>tidb.out
 [5]+  Done                    ./bin/drainer --config=drainer.toml &>drainer.out
 [3]+  Done                    ./bin/pump --config=pump.toml &>pump.out

@@ -45,16 +45,16 @@ cfssl print-defaults csr > ca-csr.json
 
 ## 生成证书
 
-#### 证书介绍
+### 证书介绍
 
 - tidb-server certificate 由 TiDB 使用，为其他组件和客户端验证 TiDB 身份。
 - tikv-server certificate 由 TiKV 使用，为其他组件和客户端验证 TiKV 身份。
 - pd-server certificate 由 PD 使用，为其他组件和客户端验证 PD 身份。
 - client certificate 用于通过 PD、TiKV、TiDB 验证客户端。例如 `pd-ctl`，`tikv-ctl`，`pd-recover`。
 
-#### 配置 CA 选项
+### 配置 CA 选项
 
-根据实际需求修改 `ca-config.json`：  
+根据实际需求修改 `ca-config.json`：
 
 ```json
 {
@@ -85,7 +85,7 @@ cfssl print-defaults csr > ca-csr.json
 }
 ```
 
-根据实际需求修改 `ca-csr.json` ：  
+根据实际需求修改 `ca-csr.json` ：
 
 ```json
 {
@@ -105,7 +105,7 @@ cfssl print-defaults csr > ca-csr.json
 }
 ```
 
-#### 生成 CA 证书
+### 生成 CA 证书
 
 ```bash
 cfssl gencert -initca ca-csr.json | cfssljson -bare ca -
@@ -119,7 +119,7 @@ ca.csr
 ca.pem
 ```
 
-#### 生成服务器端证书
+### 生成服务器端证书
 
 `hostname` 中为各组件的 IP 地址，以及 `127.0.0.1`
 
@@ -139,7 +139,7 @@ tidb-server.csr         tikv-server.csr          pd-server.csr
 tidb-server.pem         tikv-server.pem          pd-server.pem
 ```
 
-#### 生成客户端证书
+### 生成客户端证书
 
 ```bash
 echo '{"CN":"client","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=client -hostname="" - | cfssljson -bare client

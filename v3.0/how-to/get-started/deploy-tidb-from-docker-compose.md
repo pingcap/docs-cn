@@ -60,7 +60,7 @@ aliases: ['/docs-cn/v3.0/how-to/get-started/local-cluster/install-from-docker-co
     ```
 
     如果是 Mac 系统，也可以通过 Homebrew 安装：
-    
+
     ```
     brew install kubernetes-helm
     ```
@@ -161,4 +161,4 @@ docker-compose exec tispark-master /opt/spark/bin/pyspark
 docker-compose exec tispark-master /opt/spark/bin/sparkR
 ```
 
-更多关于 TiSpark 的信息，参见 [TiSpark 的详细文档](/tispark/tispark-quick-start-guide.md)。
+更多关于 TiSpark 的信息，参见 [TiSpark 的详细文档](/how-to/get-started/tispark.md)。
