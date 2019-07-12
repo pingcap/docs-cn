@@ -196,7 +196,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认：true
 + 由于统计信息更新操作的周期由 `stats-lease` 决定，因此该参数只在 `stats-lease` 不为 0 的情况下生效。当 `enable-update-stats` 为 false 时，TiDB 不再自动修改这些表：
     - `mysql.stats_meta`：TiDB 不再自动记录事务中对某张表的修改行数，也不会更新到这个系统表中
-    - `mysql.stats_histograms` 和 `mysql.stats_buckets`：TiDB 不再自动 Analyze 和主动更新统计信息
+    - `mysql.stats_histograms` 和 `mysql.stats_buckets`：TiDB 不再自动 analyze 和主动更新统计信息
     - `mysql.stats_feedback`：TiDB 不再根据被查询的数据反馈的部分统计信息更新表和索引的统计信息
 
 ### `run-auto-analyze`
