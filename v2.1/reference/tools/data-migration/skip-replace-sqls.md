@@ -7,10 +7,9 @@ category: reference
 
 本文介绍了如何使用 DM 来处理异常的 SQL 语句。
 
-目前，TiDB 并不完全兼容所有的 MySQL 语法（详见 [TiDB 已支持的 DDL 语句](/reference/mysql-compatibility.md#ddl)）。当使用 DM 从 MySQL 同步数据到 TiDB 时，如果 TiDB 不支持对应的 SQL 语句，可能会造成错误并中断同步任务。在这种情况下，DM 提供以下两种方式来恢复同步：
+目前，TiDB 并不完全兼容所有的 MySQL 语法。当使用 DM 从 MySQL 同步数据到 TiDB 时，如果 TiDB 不支持对应的 SQL 语句，可能会造成错误并中断同步任务。在这种情况下，DM 提供以下两种方式来恢复同步：
 
 - 使用 dmctl 来手动跳过该 SQL 语句对应的 binlog event。
-
 - 使用 dmctl 来手动指定其他 SQL 语句来替代该 SQL 语句对应的 binlog event，并向下游执行。
 
 如果提前预知将要同步 TiDB 不支持的 SQL 语句，也可以使用 dmctl 来手动预设跳过/替代执行操作。当 DM 尝试将该 SQL 语句对应的 binlog event 同步到下游时，该预设的操作将自动执行，从而避免同步过程被中断。

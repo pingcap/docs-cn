@@ -5,6 +5,8 @@ category: reference
 
 # TiDB 配置文件描述
 
+<!-- markdownlint-disable MD001 -->
+
 TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认的配置文件，重命名为 config.toml 即可。
 
 本文档只阐述未包含在命令行参数中的参数，命令行参数参见[这里](/reference/configuration/tidb-server/configuration.md)。
@@ -43,7 +45,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + TiDB 中 `KILL xxx` 的行为和 MySQL 中的行为不相同。为杀死一条查询，在 TiDB 里需要加上 `TIDB` 关键词，即 `KILL TIDB xxx`。但如果把 `compatible-kill-query` 设置为 true，则不需要加上 `TIDB` 关键词。
 + 这种区别很重要，因为当用户按下 <kbd>Ctrl</kbd>+<kbd>C</kbd> 时，MySQL 命令行客户端的默认行为是：创建与后台的新连接，并在该新连接中执行 `KILL` 语句。如果负载均衡器或代理已将该新连接发送到与原始会话不同的 TiDB 服务器实例，则该错误会话可能被终止，从而导致使用 TiDB 集群的业务中断。只有当您确定在 `KILL` 语句中引用的连接正好位于 `KILL` 语句发送到的服务器上时，才可以启用 `compatible-kill-query`。
 
-## log 
+## log
 
 日志相关的配置项。
 

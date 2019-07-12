@@ -52,13 +52,13 @@ category: reference
 
 + 备份参数
 + 默认："--chunk-filesize=100"
-+ 为备份数据时使用的 [mydumper](/dev/reference/tools/mydumper.md) 指定额外的运行参数
++ 为备份数据时使用的 [mydumper](/reference/tools/mydumper.md) 指定额外的运行参数
 
 ## `restoreOptions`
 
 + 恢复参数
 + 默认："-t 16"
-+ 为恢复数据时使用的 [Loader](/dev/reference/tools/loader.md) 指定额外的运行参数
++ 为恢复数据时使用的 [Loader](/reference/tools/loader.md) 指定额外的运行参数
 
 ## `gcp.bucket`
 
