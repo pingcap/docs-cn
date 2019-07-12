@@ -41,7 +41,7 @@ TiDB 集群目前还不支持 HPA（Horizontal Pod Autoscaling，自动水平扩
 
 * 将 TiDB 集群与业务服务部署在同一个 VPC 中的同一个 Kubernetes 集群上；
 * 将 TiDB 集群与业务服务部署在同一个 VPC 中的不同 Kubernetes 集群上；
-* 将 TiDB 集群与业务服务部署在不同 VPC 中的不同 Kubernetes 集群上；
+* 将 TiDB 集群与业务服务部署在不同 VPC 中的不同 Kubernetes 集群上。
 
 ## TiDB Operator 支持 TiSpark 吗？
 
