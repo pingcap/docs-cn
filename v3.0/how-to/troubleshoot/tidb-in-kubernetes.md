@@ -9,7 +9,7 @@ category: how-to
 
 ## 诊断模式
 
-当 Pod 处于 `CrashLoopBackoff` 状态时，Pod 内会容器不断退出，导致无法正常使用 `kubectl exec` 或 `tkctl debug`，给诊断带来不便。为了解决这个问题，TiDB on Kubernetes 提供了 Pod 诊断模式。在诊断模式下，Pod 内的容器启动后会直接挂起，不会再进入重复 Crash 的状态，此时，我们便可以通过 `kubectl exec` 或 `tkctl debug` 连接 Pod 内的容器进行诊断。  
+当 Pod 处于 `CrashLoopBackoff` 状态时，Pod 内会容器不断退出，导致无法正常使用 `kubectl exec` 或 `tkctl debug`，给诊断带来不便。为了解决这个问题，TiDB in Kubernetes 提供了 Pod 诊断模式。在诊断模式下，Pod 内的容器启动后会直接挂起，不会再进入重复 Crash 的状态，此时，便可以通过 `kubectl exec` 或 `tkctl debug` 连接 Pod 内的容器进行诊断。  
 
 操作方式：
 
@@ -21,7 +21,7 @@ category: how-to
 kubectl annotate pod ${pod_name} -n ${namespace} runmode=debug
 ```
 
-在 Pod 内的容器下次重启时，会检测到该 Annotation，进入诊断模式。等待 Pod 进入 Running 状态就能开始诊断：
+在 Pod 内的容器下次重启时，会检测到该 Annotation，进入诊断模式。等待 Pod 进入 Running 状态即可开始诊断：
 
 {{< copyable "shell-regular" >}}
 
@@ -29,7 +29,7 @@ kubectl annotate pod ${pod_name} -n ${namespace} runmode=debug
 watch kubectl get pod ${pod_name} -n ${namespace}
 ```
 
-下面是使用 `kubectl exec` 进入容器进行诊断工作的例子:
+下面是使用 `kubectl exec` 进入容器进行诊断工作的例子：
 
 {{< copyable "shell-regular" >}}
 
@@ -59,7 +59,7 @@ helm install pingcap/tidb-cluster -n ${releaseName} --namespace=${namespace} --v
 
 ## Pod 未正常创建
 
-通过 helm install 创建集群后，如果 Pod 没有创建，则可以通过下面方式进行诊断
+通过 `helm install` 创建集群后，如果 Pod 没有创建，则可以通过以下方式进行诊断：
 
 {{< copyable "shell-regular" >}}
 
@@ -71,7 +71,7 @@ kubectl describe statefulsets -n ${namespace} ${cluster-name}-pd
 
 ## Pod 之间网络不通
 
-针对 TiDB 集群而言，绝大部分 Pod 间的访问均通过 Pod 的域名（使用 Headless Service 分配）进行，例外的情况是 TiDB Operator 在收集集群信息或下发控制指令时，会通过 PD Service 的 ServiceName 访问 PD 集群。
+针对 TiDB 集群而言，绝大部分 Pod 间的访问均通过 Pod 的域名（使用 Headless Service 分配）进行，例外的情况是 TiDB Operator 在收集集群信息或下发控制指令时，会通过 PD Service 的 `ServiceName` 访问 PD 集群。
 
 当通过日志或监控确认 Pod 间存在网络连通性问题，或根据故障情况推断出 Pod 间网络连接可能不正常时，可以按照下面的流程进行诊断，逐步缩小问题范围：
 
@@ -87,7 +87,7 @@ kubectl describe statefulsets -n ${namespace} ${cluster-name}-pd
     kubectl -n ${namespace} get endpoints ${cluster_name}-tidb-peer
     ```
 
-    以上命令展示的 `ENDPOINTS` 字段中，应当是由逗号分隔的 cluster_ip:port 列表。假如字段为空或不正确，请检查 Pod 的健康状态以及 `kube-controller-manager` 是否正常工作。
+    以上命令展示的 `ENDPOINTS` 字段中，应当是由逗号分隔的 `cluster_ip:port` 列表。假如字段为空或不正确，请检查 Pod 的健康状态以及 `kube-controller-manager` 是否正常工作。
 
 2. 进入 Pod 的 Network Namespace 诊断网络问题：
 
@@ -113,7 +113,7 @@ kubectl describe statefulsets -n ${namespace} ${cluster-name}-pd
     ping ${TARGET_IP}
     ```
 
-    假如 ping 检查失败，请参照 [诊断 Kubernetes 网络](https://www.praqma.com/stories/debugging-kubernetes-networking/) 进行故障排除。
+    假如 ping 检查失败，请参照[诊断 Kubernetes 网络](https://www.praqma.com/stories/debugging-kubernetes-networking/)进行故障排除。
 
     假如 ping 检查正常，继续使用 `telnet` 检查目标端口是否打开：
 
@@ -157,7 +157,7 @@ kubectl describe po -n ${namespace} ${pod_name}
 
 如果是 CPU 或内存资源不足，可以通过降低对应组件的 CPU或内存资源申请使其能够得到调度，或是增加新的 Kubernetes 节点。
 
-如果是 PVC 的 StorageClass 找不到，则需要将 TiDB 删除，并且将对应 PVC 也都删除，然后在 `values.yaml` 里面将 `StorageClassName` 修改为集群中可用的 StorageClass 名字，可以通过下面命令获取集群中可用的 StorageClass：
+如果是 PVC 的 StorageClass 找不到，则需要将 TiDB 删除，并且将对应的 PVC 也都删除，然后在 `values.yaml` 里面将 `StorageClassName` 修改为集群中可用的 StorageClass 名字，可以通过以下命令获取集群中可用的 StorageClass：
 
 {{< copyable "shell-regular" >}}
 
@@ -165,7 +165,7 @@ kubectl describe po -n ${namespace} ${pod_name}
 kubectl get storageclass
 ```
 
-如果集群中有 StorageClass，但可用的 PV 不足，则需要添加对应的 PV 资源。对于 Local PV，可以参考 [本地 PV 配置](/reference/configuration/tidb-in-kubernetes/local-pv-configuration.md) 进行扩充。
+如果集群中有 StorageClass，但可用的 PV 不足，则需要添加对应的 PV 资源。对于 Local PV，可以参考[本地 PV 配置](/reference/configuration/tidb-in-kubernetes/local-pv-configuration.md)进行扩充。
 
 ## Pod 处于 CrashLoopBackOff 状态
 
@@ -177,7 +177,7 @@ Pod 处于 CrashLoopBackOff 状态意味着 Pod 内的容器重复地异常退�
 kubectl -n ${namespace} logs -f ${pod_name}
 ```
 
-假如本次日志没有能够帮助诊断的有效信息，可以添加 -p 参数输出容器上次启动时的日志信息:
+假如本次日志没有能够帮助诊断的有效信息，可以添加 `-p` 参数输出容器上次启动时的日志信息：
 
 {{< copyable "shell-regular" >}}
 
@@ -185,7 +185,7 @@ kubectl -n ${namespace} logs -f ${pod_name}
 kubectl -n ${namespace} logs -p ${pod_name}
 ```
 
-确认日志中的错误信息后，可以根据 [tidb-server 启动报错](/how-to/troubleshoot/cluster-setup.md#tidb-server-启动报错)，[tikv-server 启动报错](/how-to/troubleshoot/cluster-setup.md#tikv-server-启动报错)，[pd-server 启动报错](/how-to/troubleshoot/cluster-setup.md#pd-server-启动报错) 中的指引信息进行进一步排查解决。
+确认日志中的错误信息后，可以根据 [tidb-server 启动报错](/how-to/troubleshoot/cluster-setup.md#tidb-server-启动报错)，[tikv-server 启动报错](/how-to/troubleshoot/cluster-setup.md#tikv-server-启动报错)，[pd-server 启动报错](/how-to/troubleshoot/cluster-setup.md#pd-server-启动报错)中的指引信息进行进一步排查解决。
 
 另外，TiKV 在 ulimit 不足时也会发生启动失败的状况，对于这种情况，可以修改 Kubernetes 节点的 `/etc/security/limits.conf` 调大 ulimit：
 
@@ -196,7 +196,7 @@ root        soft        core          unlimited
 root        soft        stack         10240
 ```
 
-假如通过日志无法确认失败原因，ulimit 也设置正常，那么可以通过 [诊断模式](#诊断模式) 进行进一步排查。
+假如通过日志无法确认失败原因，ulimit 也设置正常，那么可以通过[诊断模式](#诊断模式)进行进一步排查。
 
 ## 无法访问 TiDB 服务
 
@@ -223,34 +223,34 @@ kubectl logs -f ${tidb-pod-name} -n ${namespace}
 1. 如果你是通过 `NodePort` 方式访问不了 TiDB 服务，请在 node 上尝试使用 service domain 或 clusterIP 访问 TiDB 服务，假如 serviceName 或 clusterIP 的方式能访问，基本判断 Kubernetes 集群内的网络是正常的，问题可能出在下面两个方面：
 
     * 客户端到 node 节点的网络不通。
-    * 查看 TiDB service 的 externalTrafficPolicy 属性是否为 Local。如果是 Local 则客户端必须通过 TiDB Pod 所在 node 的 IP 来访问。
+    * 查看 TiDB service 的 `externalTrafficPolicy` 属性是否为 Local。如果是 Local 则客户端必须通过 TiDB Pod 所在 node 的 IP 来访问。
 
 2. 如果 service domain 或 clusterIP 方式也访问不了 TiDB 服务，尝试用 TiDB服务后端的 `${PodIP}:4000` 连接看是否可以访问，如果通过 PodIP 可以访问 TiDB 服务，可以确认问题出在 service domain 或 clusterIP 到 PodIP 之间的连接上，排查项如下：
 
-    * 检查 dns 服务是否正常：
+    * 检查 DNS 服务是否正常：
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl get po -n kube-system -l k8s-app=kube-dns
-    dig ${tidb-service-domain}
-    ```
+        ```shell
+        kubectl get po -n kube-system -l k8s-app=kube-dns
+        dig ${tidb-service-domain}
+        ```
 
     * 检查各个 node 上的 kube-proxy 是否正常运行：
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl get po -n kube-system -l k8s-app=kube-proxy
-    ```
+        ```shell
+        kubectl get po -n kube-system -l k8s-app=kube-proxy
+        ```
 
     * 检查 node 上的 iptables 规则中 TiDB 服务的规则是否正确
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    iptables-save -t nat |grep ${clusterIP}
-    ```
+        ```shell
+        iptables-save -t nat |grep ${clusterIP}
+        ```
 
     * 检查对应的 endpoint 是否正确
 

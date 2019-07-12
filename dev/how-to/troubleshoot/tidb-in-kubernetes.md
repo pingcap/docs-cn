@@ -229,28 +229,28 @@ kubectl logs -f ${tidb-pod-name} -n ${namespace}
 
     * 检查 DNS 服务是否正常：
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl get po -n kube-system -l k8s-app=kube-dns
-    dig ${tidb-service-domain}
-    ```
+        ```shell
+        kubectl get po -n kube-system -l k8s-app=kube-dns
+        dig ${tidb-service-domain}
+        ```
 
     * 检查各个 node 上的 kube-proxy 是否正常运行：
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl get po -n kube-system -l k8s-app=kube-proxy
-    ```
+        ```shell
+        kubectl get po -n kube-system -l k8s-app=kube-proxy
+        ```
 
     * 检查 node 上的 iptables 规则中 TiDB 服务的规则是否正确
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    iptables-save -t nat |grep ${clusterIP}
-    ```
+        ```shell
+        iptables-save -t nat |grep ${clusterIP}
+        ```
 
     * 检查对应的 endpoint 是否正确
 
