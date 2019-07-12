@@ -177,7 +177,7 @@ Pod 处于 CrashLoopBackOff 状态意味着 Pod 内的容器重复地异常退�
 kubectl -n ${namespace} logs -f ${pod_name}
 ```
 
-假如本次日志没有能够帮助诊断的有效信息，可以添加 -p 参数输出容器上次启动时的日志信息:
+假如本次日志没有能够帮助诊断的有效信息，可以添加 `-p` 参数输出容器上次启动时的日志信息：
 
 {{< copyable "shell-regular" >}}
 
