@@ -19,7 +19,7 @@ TiKV 使用了 RocksDB 的 `Column Families` (CF) 特性。
     - `lock` CF 存储的是锁信息，系统使用默认参数。
 
 - Raft RocksDB 实例存储 Raft log。
-    
+
     - `default` CF 主要存储的是 Raft log，与其对应的参数位于 `[raftdb.defaultcf]` 项中。
 
 在 TiKV 3.0 版本后，所有的 CF 默认共同使用一个 block cache 实例。通过在 `[storage.block-cache]` 下设置 `capacity` 参数，你可以配置该 block cache 的大小。block cache 越大，能够缓存的热点数据越多，读取数据越容易，同时占用的系统内存也越多。如果要为每个 CF 使用单独的 block cache 实例，需要在 `[storage.block-cache]` 下设置 `shared=false`，并为每个 CF 配置单独的 block cache 大小。例如，可以在 `[rocksdb.writecf]` 下设置 `block-cache-size` 参数来配置 `write` CF 的大小。
@@ -76,9 +76,9 @@ log-level = "info"
 ## 如果未设置该参数，则由以下字段或其默认值的总和决定。
 ##
 ##   * rocksdb.defaultcf.block-cache-size 或系统全部内存的 25%
-##   * rocksdb.writecf.block-cache-size 或系统全部内存的 15% 
-##   * rocksdb.lockcf.block-cache-size 或系统全部内存的 2% 
-##   * raftdb.defaultcf.block-cache-size 或系统全部内存的 2% 
+##   * rocksdb.writecf.block-cache-size 或系统全部内存的 15%
+##   * rocksdb.lockcf.block-cache-size 或系统全部内存的 2%
+##   * raftdb.defaultcf.block-cache-size 或系统全部内存的 2%
 ##
 ## 要在单个物理机上部署多个 TiKV 节点，需要显式配置该参数。
 ## 否则，TiKV 中可能会出现 OOM 错误。
@@ -241,14 +241,11 @@ target-file-size-base = "32MB"
 
 除了以上列出的 `block-cache` 以及 `write-buffer` 会占用系统内存外：
 
-1.  需预留一些内存作为系统的 page cache
-2.  TiKV 在处理大的查询的时候（例如 `select * from ...`）会读取数据然后在内存中生成对应的数据结构返回给 TiDB，这个过程中 TiKV 会占用一部分内存
-
+1. 需预留一些内存作为系统的 page cache
+2. TiKV 在处理大的查询的时候（例如 `select * from ...`）会读取数据然后在内存中生成对应的数据结构返回给 TiDB，这个过程中 TiKV 会占用一部分内存
 
 ## TiKV 机器配置推荐
 
-1.  生产环境中，不建议将 TiKV 部署在 CPU 核数小于 8 或内存低于 32GB 的机器上
-2.  如果对写入吞吐要求比较高，建议使用吞吐能力比较好的磁盘
-3.  如果对读写的延迟要求非常高，建议使用 IOPS 比较高的 SSD 盘
-
-
+1. 生产环境中，不建议将 TiKV 部署在 CPU 核数小于 8 或内存低于 32GB 的机器上
+2. 如果对写入吞吐要求比较高，建议使用吞吐能力比较好的磁盘
+3. 如果对读写的延迟要求非常高，建议使用 IOPS 比较高的 SSD 盘

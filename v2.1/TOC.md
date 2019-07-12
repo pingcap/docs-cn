@@ -131,6 +131,7 @@
       - [`ADD INDEX`](reference/sql/statements/add-index.md)
       - [`ADMIN`](reference/sql/statements/admin.md)
       - [`ALTER TABLE`](reference/sql/statements/alter-table.md)
+      - [`ALTER DATABASE`](reference/sql/statements/alter-database.md)
       - [`ALTER USER`](reference/sql/statements/alter-user.md)
       - [`ANALYZE TABLE`](reference/sql/statements/analyze-table.md)
       - [`BEGIN`](reference/sql/statements/begin.md)
@@ -244,7 +245,7 @@
     - [Loader](reference/tools/loader.md)
     - [Syncer](reference/tools/syncer.md)
     + Data Migration
-      + [概述](reference/tools/data-migration/overview.md)
+      + 概述
         - [DM 架构](reference/tools/data-migration/overview.md#dm-架构)
         - [同步功能介绍](reference/tools/data-migration/overview.md#同步功能介绍)
         - [使用限制](reference/tools/data-migration/overview.md#使用限制)

@@ -171,7 +171,6 @@ schema = "test"
 # 需要检查的表的名称
 tables = ["test"]
 
-
 # 配置该表对应的分表的相关配置
 [[table-config]]
 # 目标库的名称
