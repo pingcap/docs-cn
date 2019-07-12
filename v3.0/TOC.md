@@ -53,6 +53,7 @@
     - [概述](how-to/monitor/overview.md)
     - [监控 TiDB 集群](how-to/monitor/monitor-a-cluster.md)
     - [监控 TiDB Binlog 集群](how-to/monitor/tidb-binlog.md)
+    - [监控 Kubernetes 上的 TiDB 集群](how-to/monitor/tidb-in-kubernetes.md)
   + 迁移
     - [概述](how-to/migrate/overview.md)
     + 从 MySQL 迁移
@@ -68,6 +69,7 @@
     + Kubernetes 上的 TiDB 集群运维
       - [管理 TiDB 集群](how-to/maintain/tidb-in-kubernetes/tidb-cluster.md)
       - [维护 TiDB 节点](how-to/maintain/tidb-in-kubernetes/tidb-node.md)
+      - [收集日志](how-to/maintain/tidb-in-kubernetes/log-collecting.md)
       - [集群故障自动转移](how-to/maintain/tidb-in-kubernetes/auto-failover.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](how-to/scale/with-ansible.md)

@@ -1,9 +1,9 @@
 ---
-title: 监控系统部署
+title: Kubernetes 上的 TiDB 集群监控
 category: how-to
 ---
 
-# 监控系统部署
+# Kubernetes 上的 TiDB 集群监控
 
 基于 Kubernetes 环境部署的 TiDB 集群监控可以大体分为两个部分：对 TiDB 集群本身的监控、对 Kubernetes 集群及 TiDB Operator 的监控。本文将对两者进行简要说明。
 
