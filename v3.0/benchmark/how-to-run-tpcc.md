@@ -32,7 +32,7 @@ TPC-C uses tpmC (transactions per minute) to measure the maximum qualified throu
 This testing uses the open-source BenchmarkSQL 5.0 as the TPC-C testing tool and adds the support for the MySQL protocol. You can download the testing program by using the following command:
 
 ```shell
-git clone -b 5.0-mysql-support-opt https://github.com/pingcap/benchmarksql.git
+git clone -b 5.0-mysql-support-opt-2.1 https://github.com/pingcap/benchmarksql.git
 ```
 
 To install Java and Ant, run the following command (take CentOS as an example):
@@ -103,7 +103,7 @@ You can use the basic configuration at the beginning. Then after the test is run
 Edit the `benchmarksql/run/props.mysql` file:
 
 ```text
-conn=jdbc:mysql://{HAPROXY-HOST}:{HAPROXY-PORT}/tpcc?useSSL=false&useServerPrepStmts=true&useConfigs=maxPerformance&sessionVariables=tidb_batch_commit=1
+conn=jdbc:mysql://{HAPROXY-HOST}:{HAPROXY-PORT}/tpcc?useSSL=false&useServerPrepStmts=true&useConfigs=maxPerformance
 warehouses=1000 # Uses 1,000 warehouses.
 terminals=500   # Uses 500 terminals.
 loadWorkers=32  # The number of concurrent workers that load data.
@@ -131,7 +131,9 @@ loadWorkers=32  # The number of concurrent workers that load data.
     ./runLoader.sh props.mysql
     ```
 
-This process can last for several hours depending on the machine configuration.
+This process might last for several hours depending on the machine configuration.
+
+After importing data, you can run `sql.common/test.sql` to validate the correctness of the data. If all SQL statements return an empty result, then the data is correctly imported.
 
 ## Run the test
 
@@ -152,3 +154,5 @@ After the execution is finished, view the result using `test.log`:
 ```
 
 The value in the tpmC section is the testing result.
+
+After the test completes, you can also run `sql.common/test.sql` to validate the correctness of the data. If all SQL statements return an empty result, then the testing of the data is correctly performed.
