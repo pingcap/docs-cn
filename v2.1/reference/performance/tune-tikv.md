@@ -21,7 +21,7 @@ TiKV 使用了 RocksDB 的 `Column Families` (CF) 特性。
 
     - `default` CF 主要存储的是 Raft log，与其对应的参数位于 `[raftdb.defaultcf]` 项中。
 
-每个 CF 都有单独的 `block-cache`，用于缓存数据块，加速 RocksDB 的读取速度，block-cache 的大小通过参数 `block-cache-size` 控制，block-cache-size 越大，能够缓存的热点数据越多，对读取操作越有利，同时占用的系统内存也会越多。
+每个 CF 都有单独的 `block-cache`，用于缓存数据块，加速 RocksDB 的读取速度，block-cache 的大小通过参数 `block-cache-size` 控制，`block-cache-size` 越大，能够缓存的热点数据越多，对读取操作越有利，同时占用的系统内存也会越多。
 
 每个 CF 有各自的 `write-buffer`，大小通过 `write-buffer-size` 控制。
 
