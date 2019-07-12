@@ -29,7 +29,7 @@ kubectl annotate pod ${pod_name} -n ${namespace} runmode=debug
 watch kubectl get pod ${pod_name} -n ${namespace}
 ```
 
-下面是使用 `kubectl exec` 进入容器进行诊断工作的例子:
+下面是使用 `kubectl exec` 进入容器进行诊断工作的例子：
 
 {{< copyable "shell-regular" >}}
 
