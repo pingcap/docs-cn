@@ -26,7 +26,7 @@ IDC 机器：
 | OS | Linux (CentOS 7.3.1611) |
 | CPU | 40 vCPUs, Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz |
 | RAM | 128GB |
-| DISK | 1.5TB SSD \* 2 |  
+| DISK | 1.5TB SSD \* 2 |
 
 本文使用开源的 BenchmarkSQL 5.0 作为 TPC-C 测试工具并添加对 MySQL 协议支持， 可以通过以下命令下载测试程序:
 
