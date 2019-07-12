@@ -62,7 +62,7 @@ log-level = "info"
 # 下游服务类型。 取值为 print, mysql（默认值：print）。当值为 print 时，只做解析打印到标准输出，不执行 SQL；如果为 mysql，则需要在 [dest-db] 中配置 host、port、user、password 等信息。
 dest-type = "mysql"
 
-# 安全模式配置。取值为 true, false (默认值：false)。当值为 true 时，Reparo 会将 update 语句拆分为 delete + replace 语句。
+# 安全模式配置。取值为 true 或 false（默认值：false）。当值为 true 时，Reparo 会将 update 语句拆分为 delete + replace 语句。
 safe-mode = false
 
 # replicate-do-db 和 replicate-do-table 用于指定恢复的库和表，replicate-do-db 的优先级高于 replicate-do-table。支持使用正则表达式来配置，需要以 '~' 开始声明使用正则表达式。
