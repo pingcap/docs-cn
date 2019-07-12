@@ -21,7 +21,7 @@ category: how-to
 kubectl annotate pod ${pod_name} -n ${namespace} runmode=debug
 ```
 
-在 Pod 内的容器下次重启时，会检测到该 Annotation，进入诊断模式。等待 Pod 进入 Running 状态就能开始诊断：
+在 Pod 内的容器下次重启时，会检测到该 Annotation，进入诊断模式。等待 Pod 进入 Running 状态即可开始诊断：
 
 {{< copyable "shell-regular" >}}
 
