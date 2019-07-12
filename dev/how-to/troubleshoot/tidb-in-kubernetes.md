@@ -59,7 +59,7 @@ helm install pingcap/tidb-cluster -n ${releaseName} --namespace=${namespace} --v
 
 ## Pod 未正常创建
 
-通过 helm install 创建集群后，如果 Pod 没有创建，则可以通过下面方式进行诊断
+通过 `helm install` 创建集群后，如果 Pod 没有创建，则可以通过以下方式进行诊断：
 
 {{< copyable "shell-regular" >}}
 
