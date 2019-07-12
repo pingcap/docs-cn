@@ -21,9 +21,7 @@ TiKV 使用了 RocksDB 的 `Column Families` (CF) 特性。
 
     - `default` CF 主要存储的是 Raft log，与其对应的参数位于 `[raftdb.defaultcf]` 项中。
 
-在 TiKV 3.0 版本后，所有的 CF 默认共同使用一个 block cache 实例。通过在 `[storage.block-cache]` 下设置 `capacity` 参数，你可以配置该 block cache 的大小。block cache 越大，能够缓存的热点数据越多，读取数据越容易，同时占用的系统内存也越多。如果要为每个 CF 使用单独的 block cache 实例，需要在 `[storage.block-cache]` 下设置 `shared=false`，并为每个 CF 配置单独的 block cache 大小。例如，可以在 `[rocksdb.writecf]` 下设置 `block-cache-size` 参数来配置 `write` CF 的大小。
-
-在 TiKV 3.0 之前的版本中，不支持使用 `shared block cache`，因此需要为每个 CF 单独配置 block cache。
+每个 CF 都有单独的 `block-cache`，用于缓存数据块，加速 RocksDB 的读取速度，block-cache 的大小通过参数 `block-cache-size` 控制，block-cache-size 越大，能够缓存的热点数据越多，对读取操作越有利，同时占用的系统内存也会越多。
 
 每个 CF 有各自的 `write-buffer`，大小通过 `write-buffer-size` 控制。
 
@@ -62,27 +60,6 @@ log-level = "info"
 # 参数调大，增加写线程的个数。
 # scheduler-worker-pool-size = 4
 
-[storage.block-cache]
-## 是否为 RocksDB 的所有 CF 都创建一个 `shared block cache`。
-##
-## RocksDB 使用 block cache 来缓存未压缩的数据块。较大的 block cache 可以加快读取速度。
-## 推荐开启 `shared block cache` 参数。这样只需要设置全部缓存大小，使配置过程更加方便。
-## 在大多数情况下，可以通过 LRU 算法在各 CF 间自动平衡缓存用量。
-##
-## `storage.block-cache` 会话中的其余配置仅在开启 `shared block cache` 时起作用。
-# shared = true
-## `shared block cache` 的大小。正常情况下应设置为系统全部内存的 30%-50%。
-## 如果未设置该参数，则由以下字段或其默认值的总和决定。
-##
-##   * rocksdb.defaultcf.block-cache-size 或系统全部内存的 25%
-##   * rocksdb.writecf.block-cache-size 或系统全部内存的 15%
-##   * rocksdb.lockcf.block-cache-size 或系统全部内存的 2%
-##   * raftdb.defaultcf.block-cache-size 或系统全部内存的 2%
-##
-## 要在单个物理机上部署多个 TiKV 节点，需要显式配置该参数。
-## 否则，TiKV 中可能会出现 OOM 错误。
-# capacity = "1GB"
-
 [pd]
 # pd 的地址
 # endpoints = ["127.0.0.1:2379","127.0.0.2:2379","127.0.0.3:2379"]
@@ -90,7 +67,7 @@ log-level = "info"
 [metric]
 # 将 metrics 推送给 Prometheus pushgateway 的时间间隔
 interval = "15s"
-# Prometheus pushgateway 的地址
+# Prometheus Pushgateway 的地址
 address = ""
 job = "tikv"
 
@@ -199,6 +176,10 @@ max-bytes-for-level-base = "512MB"
 # 影响，target-file-size-base 参数用于控制 level1-level6 单个 sst 文件的大小。
 target-file-size-base = "32MB"
 
+# 在不配置该参数的情况下，TiKV 会将该值设置为系统总内存量的 40%。如果需要在单个物理机上部署多个
+# TiKV 节点，需要显式配置该参数，否则 TiKV 容易出现 OOM 的问题。
+# block-cache-size = "1GB"。
+
 [rocksdb.writecf]
 # 保持和 rocksdb.defaultcf.compression-per-level 一致。
 compression-per-level = ["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
@@ -211,6 +192,11 @@ min-write-buffer-number-to-merge = 1
 # 保持和 rocksdb.defaultcf.max-bytes-for-level-base 一致。
 max-bytes-for-level-base = "512MB"
 target-file-size-base = "32MB"
+
+# 在不配置该参数的情况下，TiKV 会将该值设置为系统总内存量的 15%。如果需要在单个物理机上部署多个
+# TiKV 节点，需要显式配置该参数。版本信息（MVCC）相关的数据以及索引相关的数据都记录在 write 这
+# 个 CF 里面，如果业务的场景下单表索引较多，可以将该参数设置的更大一点。
+# block-cache-size = "256MB"
 
 [raftdb]
 # RaftDB 能够打开的最大文件句柄数。
@@ -234,6 +220,9 @@ min-write-buffer-number-to-merge = 1
 # 保持和 rocksdb.defaultcf.max-bytes-for-level-base 一致。
 max-bytes-for-level-base = "512MB"
 target-file-size-base = "32MB"
+
+# 通常配置在 256MB 到 2GB 之间，通常情况下使用默认值就可以了，但如果系统资源比较充足可以适当调大点。
+block-cache-size = "256MB"
 ```
 
 ## TiKV 内存使用情况
