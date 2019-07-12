@@ -24,7 +24,7 @@ category: FAQ
 
 ## TiDB 相关组件可以配置 HPA 或 VPA 么？
 
-TiDB 集群目前还不支持 HPA (自动水平扩缩容）和 VPA（自动垂直扩缩容），因为对于数据库这种有状态应用而言，实现自动扩缩容还是有很大的难度的，不能单单以 CPU 和 memory 监控数据来简单地实现。
+TiDB 集群目前还不支持 HPA（Horizontal Pod Autoscaling，自动水平扩缩容）和 VPA（Vertical Pod Autoscaling，自动垂直扩缩容），因为对于数据库这种有状态应用而言，实现自动扩缩容难度较大，不能单以 CPU 和 memory 监控数据来简单地实现。
 
 ## 使用 TiDB Operator 编排 TiDB 集群时，有什么场景需要人工介入操作吗？
 
