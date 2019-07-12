@@ -87,7 +87,7 @@ kubectl describe statefulsets -n ${namespace} ${cluster-name}-pd
     kubectl -n ${namespace} get endpoints ${cluster_name}-tidb-peer
     ```
 
-    以上命令展示的 `ENDPOINTS` 字段中，应当是由逗号分隔的 cluster_ip:port 列表。假如字段为空或不正确，请检查 Pod 的健康状态以及 `kube-controller-manager` 是否正常工作。
+    以上命令展示的 `ENDPOINTS` 字段中，应当是由逗号分隔的 `cluster_ip:port` 列表。假如字段为空或不正确，请检查 Pod 的健康状态以及 `kube-controller-manager` 是否正常工作。
 
 2. 进入 Pod 的 Network Namespace 诊断网络问题：
 
