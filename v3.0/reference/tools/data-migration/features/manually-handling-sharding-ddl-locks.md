@@ -229,7 +229,7 @@ MySQL 及 DM 操作与处理流程如下：
     ```
 
 4. 由于业务需要，DM-worker-2 对应的 MySQL-2 的数据不再需要同步到下游 TiDB，对 DM-worker-2 执行了下线处理。
-5. DM-master 上 ID 为 ``` test-`shard_db`.`shard_table` ``` 的 lock 无法等到 DM-worker-2 的 DDL 操作信息。
+5. DM-master 上 ID 为 ```test-`shard_db`.`shard_table` ``` 的 lock 无法等到 DM-worker-2 的 DDL 操作信息。
 
     `show-ddl-locks` 返回的 `unsynced` 中一直包含 DM-worker-2 的信息（`127.0.0.1:8263`）。
 
