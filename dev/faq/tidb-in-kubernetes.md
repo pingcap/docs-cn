@@ -35,7 +35,7 @@ TiDB 集群目前还不支持 HPA（Horizontal Pod Autoscaling，自动水平扩
 
 ## 在公有云上使用 TiDB Operator 编排 TiDB 集群时，推荐的部署拓扑是怎样的？
 
-首先，为了实现高可用和数据安全，我们推荐生产环境的 TiDB 集群至少部署在三个可用区(Available Zone) 中。
+首先，为了实现高可用和数据安全，我们推荐生产环境的 TiDB 集群至少部署在三个可用区 (Available Zone) 中。
 
 当考虑 TiDB 集群与业务服务的部署拓扑关系时，TiDB Operator 支持下面几种部署形态。它们有各自的优势与劣势，具体选型需要根据实际业务需求进行权衡：
 
