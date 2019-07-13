@@ -1,10 +1,10 @@
 ---
-title: TiDB-Lightning 错误排解
+title: TiDB Lightning 错误排解
 category: reference
 aliases: ['/docs-cn/tools/lightning/errors/']
 ---
 
-# TiDB-Lightning 错误排解
+# TiDB Lightning 错误排解
 
 当 Lightning 遇到不可恢复的错误时便会异常退出，并在日志中记下错误原因。一般可在日志底部找到，也可以搜索 `[error]` 字符串找出中间发生的错误。本文主要描述一些常见的错误及其解决方法。
 

@@ -1,25 +1,25 @@
 ---
-title: TiDB-Lightning 简介
+title: TiDB Lightning 简介
 category: reference
 ---
 
-# TiDB-Lightning 简介
+# TiDB Lightning 简介
 
-TiDB-Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，有以下两个主要的使用场景：一是大量新数据的快速导入；二是全量数据的备份恢复。目前，支持 mydumper 或 CSV 输出格式的数据源。您可以在以下两种场景下使用 Lightning：
+TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，有以下两个主要的使用场景：一是大量新数据的快速导入；二是全量数据的备份恢复。目前，支持 mydumper 或 CSV 输出格式的数据源。您可以在以下两种场景下使用 Lightning：
 
 - **迅速**导入**大量新**数据。
 - 备份恢复所有数据。
 
-## TiDB-Lightning 整体架构
+## TiDB Lightning 整体架构
 
-TiDB-Lightning 主要包含两个部分:
+TiDB Lightning 主要包含两个部分:
 
 - **`tidb-lightning`**（“前端”）：主要完成适配工作，通过读取数据源，在下游 TiDB 集群建表、将数据转换成键/值对 (KV 对) 发送到 `tikv-importer`、检查数据完整性等。
 - **`tikv-importer`**（“后端”）：主要完成将数据导入 TiKV 集群的工作，把 `tidb-lightning` 写入的 KV 对缓存、排序、切分并导入到 TiKV 集群。
 
-![TiDB-Lightning 其整体架构](/media/tidb-lightning-architecture.png)
+![TiDB Lightning 其整体架构](/media/tidb-lightning-architecture.png)
 
-TiDB-Lightning 整体工作原理如下：
+TiDB Lightning 整体工作原理如下：
 
 1. 在导数据之前，`tidb-lightning` 会自动将 TiKV 集群切换为“导入模式” (import mode)，优化写入效率并停止自动压缩 (compaction)。
 

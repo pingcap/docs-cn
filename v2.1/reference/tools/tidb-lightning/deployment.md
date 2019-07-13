@@ -1,17 +1,17 @@
 ---
-title: TiDB-Lightning 部署与执行
+title: TiDB Lightning 部署与执行
 category: reference
 ---
 
-# TiDB-Lightning 部署与执行
+# TiDB Lightning 部署与执行
 
-本文主要介绍 TiDB-Lightning 单独部署与混合部署的硬件需求，Ansible 部署与手动部署这两种部署方式，以及启动与执行。
+本文主要介绍 TiDB Lightning 单独部署与混合部署的硬件需求，Ansible 部署与手动部署这两种部署方式，以及启动与执行。
 
 ## 注意事项
 
-在使用 TiDB-Lightning 前，需注意以下事项：
+在使用 TiDB Lightning 前，需注意以下事项：
 
-- TiDB-Lightning 运行后，TiDB 集群将无法正常对外提供服务。
+- TiDB Lightning 运行后，TiDB 集群将无法正常对外提供服务。
 - 若 `tidb-lightning` 崩溃，集群会留在“导入模式”。若忘记转回“普通模式”，集群会产生大量未压缩的文件，继而消耗 CPU 并导致迟延 (stall)。此时，需要使用 `tidb-lightning-ctl` 手动将集群转回“普通模式”：
 
     ```sh
