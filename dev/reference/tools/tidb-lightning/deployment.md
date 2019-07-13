@@ -79,11 +79,11 @@ category: reference
 
 如果数据源是 CSV 文件，请参考 [CSV 支持](/reference/tools/tidb-lightning/csv.md)获取配置信息。
 
-## 部署 TiDB-Lightning
+## 部署 TiDB Lightning
 
 本节介绍 TiDB Lightning 的两种部署方式：[使用 Ansible 部署](#使用-ansible-部署-tidb-lightning)和[手动部署](#手动部署-tidb-lightning)。
 
-### 使用 Ansible 部署 TiDB-Lightning
+### 使用 Ansible 部署 TiDB Lightning
 
 TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orchestrated/ansible.md)。
 
@@ -164,7 +164,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
 
 在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群 (版本要求 2.0.9 以上)，建议使用最新版。部署方法可参考 [TiDB 快速入门指南](/overview.md#部署方式)。
 
-#### 第 2 步：下载 TiDB-Lightning 安装包
+#### 第 2 步：下载 TiDB Lightning 安装包
 
 通过以下链接获取 TiDB Lightning 安装包（需选择与集群相同的版本）：
 
