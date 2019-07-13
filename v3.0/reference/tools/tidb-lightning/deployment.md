@@ -18,6 +18,17 @@ aliases: ['/docs-cn/tools/lightning/deployment/']
     ```sh
     bin/tidb-lightning-ctl -switch-mode=normal
     ```
+- TiDB Lightning 需要下游 TiDB 的权限
+
+  | 权限 | 作用域 |
+  |----:|:------|
+  | SELECT | Tables |
+  | INSERT | Tables |
+  | UPDATE | Tables |
+  | DELETE | Tables |
+  | CREATE | Databases,tables |
+  | DROP | Databases, tables |
+  | ALTER | Tables |
 
 ## 硬件需求
 
