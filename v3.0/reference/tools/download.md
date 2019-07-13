@@ -8,7 +8,7 @@ aliases: ['/docs-cn/tools/download/']
 
 本页面汇总了 TiDB 周边工具官方维护版本的下载链接。
 
-## TiDB-Binlog 和 Lightning
+## TiDB-Binlog
 
 如需下载最新版本的 [TiDB Binlog](/reference/tidb-binlog-overview.md)，直接下载 TiDB 安装包即可，因为 TiDB Binlog 包含在 TiDB 安装包中。
 

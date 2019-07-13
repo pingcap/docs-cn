@@ -7,7 +7,7 @@ category: reference
 
 本页面汇总了 TiDB 周边工具官方维护版本的下载链接。
 
-## TiDB Binlog 
+## TiDB Binlog
 
 如需下载最新版本的 [TiDB Binlog](/reference/tidb-binlog-overview.md)，直接下载 TiDB 安装包即可，因为 TiDB Binlog 包含在 TiDB 安装包中。
 
@@ -25,7 +25,6 @@ category: reference
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
 | [tidb-toolkit-latest-linux-amd64.tar.gz](http://download.pingcap.org/tidb-toolkit-latest-linux-amd64.tar.gz) | Linux | amd64 | [tidb-toolkit-latest-linux-amd64.sha256](http://download.pingcap.org/tidb-toolkit-latest-linux-amd64.sha256) |
-
 
 ## TiDB-DM (Data Migration)
 
