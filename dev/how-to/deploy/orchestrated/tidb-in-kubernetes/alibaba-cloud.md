@@ -44,11 +44,11 @@ category: how-to
 - 一台 ECS 实例作为堡垒机
 - 一个托管版 ACK（阿里云 Kubernetes）集群以及一系列 worker 节点：
     - 属于一个伸缩组的 2 台 ECS 实例（2 核 2G）托管版 Kubernetes 的默认伸缩组中必须至少有两台实例，用于承载整个的系统服务，例如 CoreDNS
-    - 属于一个伸缩组的 3 台 `ecs.i2.xlarge` 实例，用于部署 PD
+    - 属于一个伸缩组的 3 台 `ecs.g5.large` 实例，用于部署 PD
     - 属于一个伸缩组的 3 台 `ecs.i2.2xlarge` 实例，用于部署 TiKV
-    - 属于一个伸缩组的 2 台 ECS 实例（16 核 32G）用于部署 TiDB
-    - 属于一个伸缩组的 1 台 ECS 实例（4 核 8G）用于部署监控组件
-    - 一块 500GB 的云盘用作监控数据存储
+    - 属于一个伸缩组的 2 台 `ecs.c5.4xlarge` 实例用于部署 TiDB
+    - 属于一个伸缩组的 1 台 `ecs.c5.xlarge` 实例用于部署监控组件
+    - 一块 100GB 的云盘用作监控数据存储
 
 除了默认伸缩组之外的其它所有实例都是跨可用区部署的。而伸缩组 (Auto-scaling Group) 能够保证集群的健康实例数等于期望数值。因此，当发生节点故障甚至可用区故障时，伸缩组能够自动为我们创建新实例来确保服务可用性。
 
@@ -82,17 +82,15 @@ category: how-to
 
     Outputs:
 
-    bastion_ip = 1.2.3.4
-    bastion_key_file = /root/tidb-operator/deploy/aliyun/credentials/tidb-cluster-bastion-key.pem
-    cluster_id = ca57c6071f31f458da66965ceddd1c31b
-    kubeconfig_file = /root/tidb-operator/deploy/aliyun/.terraform/modules/a2078f76522ae433133fc16e24bd21ae/kubeconfig_tidb-cluster
-    monitor_endpoint = 1.2.3.4:3000
+    bastion_ip = 47.96.174.214
+    cluster_id = c2d9b20854a194f158ef2bc8ea946f20e
+    kubeconfig_file = /tidb-operator/deploy/aliyun/credentials/kubeconfig
+    monitor_endpoint = 121.199.195.236:3000
     region = cn-hangzhou
-    tidb_port = 4000
-    tidb_slb_ip = 192.168.5.53
-    tidb_version = v3.0.0-rc.1
-    vpc_id = vpc-bp16wcbu0xhbg833fymmc
-    worker_key_file = /root/tidb-operator/deploy/aliyun/credentials/tidb-cluster-node-key.pem
+    ssh_key_file = /tidb-operator/deploy/aliyun/credentials/my-cluster-keyZ.pem
+    tidb_endpoint = 172.21.5.171:4000
+    tidb_version = v3.0.0
+    vpc_id = vpc-bp1v8i5rwsc7yh8dwyep5
     ```
 
 3. 用 `kubectl` 或 `helm` 对集群进行操作（其中 `cluster_name` 默认值为 `tidb-cluster`）：
@@ -108,8 +106,8 @@ category: how-to
 通过堡垒机可连接 TiDB 集群进行测试，相关信息在安装完成后的输出中均可找到：
 
 ```shell
-$ ssh -i credentials/<cluster_name>-bastion-key.pem root@<bastion_ip>
-$ mysql -h <tidb_slb_ip> -P <tidb_port> -u root
+$ ssh -i credentials/<cluster_name>-key.pem root@<bastion_ip>
+$ mysql -h <tidb_host> -P <tidb_port> -u root
 ```
 
 ## 监控
@@ -156,23 +154,147 @@ $ terraform state rm module.ack.alicloud_cs_managed_kubernetes.k8s
 >
 > 监控组件挂载的云盘需要在阿里云管理控制台中手动删除。
 
-## 自定义集群
+## 配置
 
-默认配置下，Terraform 脚本会创建一个新的 VPC，假如要使用现有的 VPC，可以在 `variable.tf` 中设置 `vpc_id`。注意，当使用现有 VPC 时，没有设置 vswitch 的可用区将不会部署 Kubernetes 节点。
+### 配置 TiDB Operator
 
-出于安全考虑，TiDB 服务的 SLB 只对内网暴露，因此默认配置下还会创建一台堡垒机用于运维操作。堡垒机上还会安装 mysql-cli 和 sysbench 以便于使用和测试。假如不需要堡垒机，可以设置 `variables.tf` 中的 `create_bastion` 参数来关闭。
+通过调整 `variables.tf` 内的值来配置 TiDB Operator，大多数配置项均能按照 `variable` 的注释理解语义后进行修改。需要注意的是 `operator_helm_values` 配置项，该配置项允许为 TiDB Operator 提供一个自定义的 `values.yaml` 配置文件，示例如下：
 
-实例的规格可以通过两种方式进行定义：
+```hcl
+variable "operator_helm_values" {
+  default     = file("my-operator-values.yaml")
+}
+```
 
-1. 通过声明实例规格名；
-2. 通过声明实例的配置，例如 CPU 核数和内存大小。
+同时，在默认配置下 Terraform 脚本会创建一个新的 VPC，假如要使用现有的 VPC，可以在 `variable.tf` 中设置 `vpc_id`。注意，当使用现有 VPC 时，没有设置 vswitch 的可用区将不会部署 Kubernetes 节点。
 
-由于阿里云在不同地域会提供不同的规格类型，并且部分规格有售罄的情况，我们推荐使用第二种办法来定义更通用的实例规格。你可以在 `variables.tf` 中找到相关的配置项。
+### 配置 TiDB 集群
 
-特殊地，由于 PD 和 TiKV 节点强需求本地 SSD 存储，脚本中不允许直接声明 PD 和 TiKV 的规格名，你可以通过设置 `*_instance_type_family` 来选择 PD 或 TiKV 的规格族（只能在三个拥有本地 SSD 的规格族中选择），再通过内存大小来筛选符合需求的型号。
+TiDB 集群会使用 `./my-cluster.yaml` 作为集群的 `values.yaml` 配置文件，修改该文件即可配置 TiDB 集群。支持的配置项可参考 [Kubernetes 上的 TiDB 集群配置](/reference/configuration/tidb-in-kubernetes/cluster-configuration.md)。
 
-更多自定义配置相关的内容，请直接参考项目中的 `variables.tf` 文件。
+## 管理多个 TiDB 集群
+
+需要在一个 Kubernetes 集群下管理多个 TiDB 集群时，需要编辑 `./main.tf`，按实际需要新增 `tidb-cluster` 声明，示例如下：
+
+```hcl
+module "tidb-cluster-dev" {
+  source = "../modules/aliyun/tidb-cluster"
+  providers = {
+    helm = helm.default
+  }
+
+  cluster_name = "another-cluster"
+  ack          = module.tidb-operator
+
+  pd_count                   = 1
+  tikv_count                 = 1
+  tidb_count                 = 1
+  override_values            = file("dev-cluster.yaml")
+}
+
+module "tidb-cluster-staging" {
+  source = "../modules/aliyun/tidb-cluster"
+  providers = {
+    helm = helm.default
+  }
+
+  cluster_name = "another-cluster"
+  ack          = module.tidb-operator
+
+  pd_count                   = 3
+  tikv_count                 = 3
+  tidb_count                 = 2
+  override_values            = file("staging-cluster.yaml")
+}
+```
+
+注意，多个 TiDB 集群之间 `cluster_name` 必须保持唯一。下面是 `tidb-cluster` 模块的所有可配置参数：
+
+| 参数名 | 说明 | 默认值 |
+| :----- | :---- | :----- |
+| `ack` | 封装目标 Kubernetes 集群信息的结构体，必填 | `nil` |
+| `cluster_name` | TiDB 集群名，必填且必须唯一 | `nil` |
+| `tidb_version` | TiDB 集群版本 | `v3.0.0` |
+| `tidb_cluster_chart_version` | `tidb-cluster` helm chart 的版本 | `v1.0.0-beta.3"` |
+| `pd_count` | PD 节点数 | 3 |
+| `pd_instance_type` | PD 实例类型 | `ecs.g5.large` |
+| `tikv_count` | TiKV 节点数 | 3 |
+| `tikv_instance_type` | TiKV 实例类型 | `ecs.i2.2xlarge` |
+| `tidb_count` | TiDB 节点数 | 2 |
+| `tidb_instance_type` | TiDB 实例类型 | `ecs.c5.4xlarge` |
+| `monitor_instance_type` | 监控组件的实例类型 | `ecs.c5.xlarge` |
+| `override_values` | TiDB 集群的 `values.yaml` 配置文件，通常通过 `file()` 函数从文件中读取 | `nil` |
+| `local_exec_interpreter` | 执行命令行指令的解释器  | `["/bin/sh", "-c"]` |
+
+## 管理多个 Kubernetes 集群
+
+推荐针对每个 Kubernetes 集群都使用单独的 Terraform 模块进行管理（一个 Terraform Module 即一个包含 `.tf` 脚本的目录）。
+
+`deploy/aliyun` 实际上是将 `deploy/modules` 中的数个可复用的 Terraform 脚本组合在了一起。当管理多个集群时（下面的操作在 `tidb-operator` 项目根目录下进行）：
+
+1. 首先针对每个集群创建一个目录，如：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    mkdir -p deploy/aliyun/aliyun-staging
+    ```
+
+2. 参考 `deploy/aliyun` 的 `main.tf`，编写自己的脚本，下面是一个最简单的例子：
+
+    ```hcl
+    provider "alicloud" {
+        region     = <YOUR_REGION>
+        access_key = <YOUR_ACCESS_KEY>
+        secret_key = <YOUR_SECRET_KEY>
+    }
+
+    module "tidb-operator" {
+        source     = "../modules/aliyun/tidb-operator"
+
+        region          = <YOUR_REGION>
+        access_key      = <YOUR_ACCESS_KEY>
+        secret_key      = <YOUR_SECRET_KEY>
+        cluster_name    = "example-cluster"
+        key_file        = "ssh-key.pem"
+        kubeconfig_file = "kubeconfig"
+    }
+
+    provider "helm" {
+        alias    = "default"
+        insecure = true
+        install_tiller = false
+        kubernetes {
+            config_path = module.tidb-operator.kubeconfig_filename
+        }
+    }
+
+    module "tidb-cluster" {
+        source = "../modules/aliyun/tidb-cluster"
+        providers = {
+            helm = helm.default
+        }
+
+        cluster_name = "example-cluster"
+        ack          = module.tidb-operator
+    }
+
+    module "bastion" {
+        source = "../modules/aliyun/bastion"
+
+        bastion_name             = "example-bastion"
+        key_name                 = module.tidb-operator.key_name
+        vpc_id                   = module.tidb-operator.vpc_id
+        vswitch_id               = module.tidb-operator.vswitch_ids[0]
+        enable_ssh_to_worker     = true
+        worker_security_group_id = module.tidb-operator.security_group_id
+    }
+    ```
+
+上面的脚本可以自由定制，比如，假如不需要堡垒机则可以移除 `module "bastion"` 相关声明。
+
+你也可以直接拷贝 `deploy/aliyun` 目录，但要注意不能拷贝已经运行了 `terraform apply` 的目录，最好的办法是重新 clone 仓库再进行拷贝。
 
 ## 使用限制
 
-目前，pod cidr，service cid 和节点型号等配置在集群创建后均无法修改。
+目前，`pod cidr`，`service cidr` 和节点型号等配置在集群创建后均无法修改。
