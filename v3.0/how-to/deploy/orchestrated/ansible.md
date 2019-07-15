@@ -452,7 +452,7 @@ location_labels = ["host"]
             # low-concurrency: 8
         ```
 
-        > 推荐设置：TiKV 实例数量 * 参数值 = CPU 核心数量 * 0.8
+        > 推荐设置：TiKV 实例数量 \* 参数值 = CPU 核心数量 \* 0.8
 
     3. 如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
 
