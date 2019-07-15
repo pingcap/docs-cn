@@ -27,7 +27,7 @@ aliases: ['/docs-cn/tools/lightning/deployment/']
   | INSERT | Tables |
   | UPDATE | Tables |
   | DELETE | Tables |
-  | CREATE | Databases,tables |
+  | CREATE | Databases, tables |
   | DROP | Databases, tables |
   | ALTER | Tables |
 
