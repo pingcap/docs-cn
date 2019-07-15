@@ -135,35 +135,35 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 2. 部署并启动含 Pump 组件的 TiDB 集群
 
     参照上文配置完 `inventory.ini` 文件后，从以下两种方式中选择一种进行部署。
-    
+
     **方式一**：在已有的 TiDB 集群上增加 Pump 组件，需按以下步骤逐步进行。
-    
+
     1. 部署 pump_servers 和 node_exporters
-    
+
         ```
         ansible-playbook deploy.yml -l ${pump1_ip}, ${pump2_ip}, [${alias1_name}, ${alias2_name}]
         ```
-        
+
     2. 启动 pump_servers
-    
+
         ```
         ansible-playbook start.yml --tags=pump
         ```
-        
+
     3. 更新并重启 tidb_servers
-    
+
         ```
         ansible-playbook rolling_update.yml --tags=tidb
         ```
-        
+
     4. 更新监控信息
-    
+
         ```
         ansible-playbook rolling_update_monitor.yml --tags=prometheus
         ```
 
     **方式二**：从零开始部署含 Pump 组件的 TiDB 集群
-    
+
     使用 Ansible 部署 TiDB 集群，方法参考 [TiDB Ansible 部署方案](../op-guide/ansible-deployment.md)。
 
 3. 查看 Pump 服务状态
@@ -266,8 +266,8 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
         db-type = "pb"
 
         # Uncomment this if you want to use `pb` or `sql` as `db-type`.
-        # `Compress` compresses the output file, like the `pb` and `sql` file. Now it supports the `gzip` algorithm only. 
-        # The value can be `gzip`. Leave it empty to disable compression. 
+        # `Compress` compresses the output file, like the `pb` and `sql` file. Now it supports the `gzip` algorithm only.
+        # The value can be `gzip`. Leave it empty to disable compression.
         [syncer.to]
         compression = ""
         # default data directory: "{{ deploy_dir }}/data.drainer"
@@ -394,7 +394,7 @@ Drainer="192.168.0.13"
         ```bash
         ./bin/pump -config pump.toml
         ```
-  
+
         如果命令行参数与配置文件中的参数重合，则使用命令行设置的参数的值。
 
 2. 使用 binary 部署 Drainer
@@ -532,7 +532,7 @@ Drainer="192.168.0.13"
         # topic-name = ""
         ```
 
-    - 启动示例  
+    - 启动示例
 
         > **注意：**
         >
@@ -632,7 +632,7 @@ Usage of binlogctl:
     ```
 
 - 修改 Pump/Drainer 的状态
-  
+
     设置 `cmd` 为 `update-pump` 或者 `update-drainer` 来更新 Pump 或者 Drainer 的状态。Pump 和 Drainer 的状态可以为：online，pausing，paused，closing 以及 offline。例如：
 
     ```bash
@@ -640,7 +640,7 @@ Usage of binlogctl:
     ```
 
     这条命令会修改 Pump/Drainer 保存在 pd 中的状态。
- 
+
 - 暂停/下线 Pump/Drainer
 
     分别设置 `cmd` 为 `pause-pump`、`pause-drainer`、`offline-pump`、`offline-drainer` 来暂停 Pump、暂停 Drainer、下线 Pump、下线 Drainer。例如：
@@ -673,9 +673,9 @@ Usage of binlogctl:
 ## 版本升级方法
 
 新版本的 TiDB（v2.0.8-binlog、v2.1.0-rc.5 及以上版本）不兼容 [Kafka 版本](../tools/tidb-binlog-kafka.md)以及 [Local 版本](../tools/tidb-binlog.md)的 TiDB-Binlog，集群升级到新版本后只能使用 Cluster 版本的 TiDB-Binlog。如果在升级前已经使用了 Kafka／Local 版本的 TiDB-Binlog，必须将其升级到 Cluster 版本。
- 
+
  TiDB-Binlog 版本与 TiDB 版本的对应关系如下：
- 
+
 | TiDB-Binlog 版本 | TiDB 版本 | 说明 |
 |---|---|---|
 | Local | TiDB 1.0 及更低版本 ||

@@ -32,6 +32,9 @@ Usage of Reparo:
     用于指定开始恢复的时间点，格式为 “2006-01-02 15:04:05”。如果不设置该参数则从最早的 binlog 文件开始恢复。
 -stop-datetime string
     用于指定结束恢复的时间点，格式同上。如果不设置该参数则恢复到最后一个 binlog 文件。
+-safe-mode bool
+    指定是否开启安全模式，开启后可支持反复同步。
+
 ```
 
 ### 配置文件说明
@@ -58,6 +61,9 @@ log-level = "info"
 
 # 下游服务类型。 取值为 print, mysql（默认值：print）。当值为 print 时，只做解析打印到标准输出，不执行 SQL；如果为 mysql，则需要在 [dest-db] 中配置 host、port、user、password 等信息。
 dest-type = "mysql"
+
+# 安全模式配置。取值为 true 或 false（默认值：false）。当值为 true 时，Reparo 会将 update 语句拆分为 delete + replace 语句。
+safe-mode = false
 
 # replicate-do-db 和 replicate-do-table 用于指定恢复的库和表，replicate-do-db 的优先级高于 replicate-do-table。支持使用正则表达式来配置，需要以 '~' 开始声明使用正则表达式。
 # 注：replicate-do-db 和 replicate-do-table 使用方式与 Drainer 的使用方式一致。
