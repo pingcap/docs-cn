@@ -132,11 +132,11 @@ kubectl describe statefulsets -n ${namespace} ${cluster-name}-pd
     kubectl -n ${namespace} get po ${pod_name} -ojson | jq '.spec.containers[].ports[].containerPort'
 
     # 检查应用是否被正确配置服务于指定端口上
-    # PD
+    # PD, 未配置时默认为 2379 端口
     kubectl -n ${namespace} -it exec ${pod_name} -- cat /etc/pd/pd.toml | grep client-urls
-    # TiKV
+    # TiKV, 未配置时默认为 20160 端口
     kubectl -n ${namespace} -it exec ${pod_name} -- cat /etc/tikv/tikv.toml | grep addr
-    # TiDB
+    # TiDB, 未配置时默认为 4000 端口
     kubectl -n ${namespace} -it exec ${pod_name} -- cat /etc/tidb/tidb.toml | grep port
     ```
 
@@ -157,7 +157,7 @@ kubectl describe po -n ${namespace} ${pod_name}
 
 如果是 CPU 或内存资源不足，可以通过降低对应组件的 CPU或内存资源申请使其能够得到调度，或是增加新的 Kubernetes 节点。
 
-如果是 PVC 的 StorageClass 找不到，则需要将 TiDB 删除，并且将对应的 PVC 也都删除，然后在 `values.yaml` 里面将 `StorageClassName` 修改为集群中可用的 StorageClass 名字，可以通过以下命令获取集群中可用的 StorageClass：
+如果是 PVC 的 StorageClass 找不到，则需要将 TiDB Pod 删除，并且将对应的 PVC 也都删除，然后在 `values.yaml` 里面将 `StorageClassName` 修改为集群中可用的 StorageClass 名字，可以通过以下命令获取集群中可用的 StorageClass：
 
 {{< copyable "shell-regular" >}}
 
