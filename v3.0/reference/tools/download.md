@@ -21,7 +21,7 @@ aliases: ['/docs-cn/tools/download/']
 
 ## TiDB Lightning
 
-如需下载最新版本的 [TiDB Lightning](/reference/tools/tidb-lightning/overview.md), 点击下表中的下载链接即可。
+如需下载最新版本的 [TiDB Lightning](/reference/tools/tidb-lightning/overview.md)，点击下表中的下载链接即可。
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
