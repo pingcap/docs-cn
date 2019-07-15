@@ -53,7 +53,7 @@ Query OK, 0 rows affected (0.02 sec)
 
 - 不支持物化视图。
 - TiDB 中视图为只读视图，不支持对视图进行 `UPDATE`、`INSERT`、`DELETE` 等写入操作。
-- 对已创建的视图仅支持一种 DDL 操作，即 `DROP [VIEW | TABLE]`。
+- 对已创建的视图仅支持 `DROP` 的 DDL 操作，即 `DROP [VIEW | TABLE]`。
 
 ## 扩展阅读
 

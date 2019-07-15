@@ -11,7 +11,7 @@ TiDB 启动之前采用修改 `--sql-mode="modes"` 配项设置 SQL 模式。
 
 TiDB 启动之后采用 `SET [ SESSION | GLOBAL ] sql_mode='modes'`设置 SQL 模式。设置 GLOBAL 级别的 SQL 模式时用户需要有 SUPER 权限，并且只会影响到从设置 SQL 模式开始后续新建立的连接（注：老连接不受影响)。 SESSION 级别的 SQL 模式的变化只会影响当前的客户端。
 
-Modes 是用逗号 (',') 间隔开的一系列不同的模式。使用 `SELECT @@sql_mode` 语句查询当前 SQL 模式，SQL 模式默认值：`""`。
+Modes 是用逗号 (',') 间隔开的一系列不同的模式。使用 `SELECT @@sql_mode` 语句查询当前 SQL 模式，SQL 模式默认值：`ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`。
 
 ## 重要的 sql_mode 值
 
