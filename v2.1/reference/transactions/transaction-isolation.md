@@ -92,10 +92,10 @@ Example 2:
 
 Under the automatic retry mechanism of TiDB, all the executed statements for the first time are re-executed again. Whether the subsequent statements are to be executed or not depends on the results of the previous statements, automatic retry can violate snapshot isolation, causing lost updates.
 
-To disable the automatic retry of explicit transactions, configure the `tidb_disable_txn_auto_retry` variable:
+To disable the automatic retry of explicit transactions, configure `tidb_disable_txn_auto_retry = on`:
 
 ```sql
-SET GLOBAL tidb_disable_txn_auto_retry = 1;
+SET GLOBAL tidb_disable_txn_auto_retry = on;
 ```
 
 Changing the variable `tidb_disable_txn_auto_retry` does not affect the implicit single statement with `auto_commit = 1`, because the automatic retry of this statement does not cause anomalies like update loss and does not break the isolation of a transaction.

@@ -95,10 +95,10 @@ Example 2:
 
 Under the automatic retry mechanism of TiDB, all the executed statements for the first time are re-executed again. When whether the subsequent statements are to be executed or not depends on the results of the previous statements, automatic retry cannot guarantee the final result is as expected.
 
-To disable the automatic retry of explicit transactions, configure the `tidb_disable_txn_auto_retry` global variable:
+To disable the automatic retry of explicit transactions, configure `tidb_disable_txn_auto_retry = on`:
 
-```
-set @@global.tidb_disable_txn_auto_retry = 1;
+```sql
+set @@global.tidb_disable_txn_auto_retry = on;
 ```
 
 This variable does not affect the implicit single statement with `auto_commit = 1`, so this type of statement still automatically retries.
