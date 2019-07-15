@@ -9,7 +9,7 @@ TiDB Operator 可以在同一个 Kubernetes 集群上管理多个 TiDB 集群。
 
 以下变量会在后续文档中用到：
 
-```
+```plain
 releaseName="demo"
 namespace="tidb"
 chartVersion="v1.0.0-beta.3"
@@ -19,21 +19,27 @@ chartVersion="v1.0.0-beta.3"
 
 在 GKE 上，本地 SSD 卷默认大小限制为 375 GB，性能比永久性磁盘要差。
 
-为提高性能，你必须保证以下两点：
+为提高性能，必须保证以下两点：
 
-* 安装 Linux Guest Environment，只能用于 Ubuntu 系统，不能用于 COS。
+* 安装 Linux Guest Environment，只能用于 Ubuntu 系统，不能用于 Container-Optimized OS。
 * 确保 SSD 挂载选项中包含 `nobarrier`。
 
-我们提供一个解决上述问题的 [Daemonset](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/gke/local-ssd-optimize.yaml)。还提供一个解决上述性能问题并且将多块 SSD 盘配置成一个 LVM 的
-[Daemonset](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/gke/local-ssd-provision/local-ssd-provision.yaml)。通过 Terraform 部署的时候会自动安装。
+TiDB 提供的 [Daemonset](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/gke/local-ssd-provision/local-ssd-provision.yaml) 能够：
+
++ 解决性能问题
++ 使用 UUID 重新安装本地 SSD 磁盘，以提高安全性
++ 在 Ubuntu 上使用 LVM 工具将所有本地 SSD 磁盘组合成一个大磁盘
++ 运行 local-volume-provisioner
+
+terraform 部署将自动安装该 Daemonset。
 
 > **注意：**
 >
-> 整合多块本地 SSD 盘的部署方式假设一个虚拟机上只有一个进程需要使用本地 SSD。
+> 整合多块本地 SSD 盘的部署方式。假设一个虚拟机上只有一个进程，则需要使用本地 SSD。
 
 ## 配置
 
-Helm 安装完成后，通过下面命令获取要安装的 tidb-cluster chart 的 `values.yaml` 配置文件：
+Helm 安装完成后，通过下面命令获取待安装的 tidb-cluster chart 的 `values.yaml` 配置文件：
 
 {{< copyable "shell-regular" >}}
 
@@ -44,7 +50,7 @@ helm inspect values pingcap/tidb-cluster --version=${chartVersion} > /home/tidb/
 
 > **注意：**
 >
-> `/home/tidb` 可以替换为你想用的目录，下文会用 `values.yaml` 指代 `/home/tidb/${releaseName}/values-${releaseName}.yaml`。
+> `/home/tidb` 可以替换为你想用的目录。下文会用 `values.yaml` 指代 `/home/tidb/${releaseName}/values-${releaseName}.yaml`。
 
 有关配置信息请参考 [TiDB 集群部署配置文档](/reference/configuration/tidb-in-kubernetes/cluster-configuration.md)。
 
@@ -68,7 +74,7 @@ kubectl get po -n ${namespace} -l app.kubernetes.io/instance=${releaseName}
 
 ## 访问 TiDB 集群
 
-默认情况下，TiDB 服务通过 [`NodePort`](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport) 暴露。可以通过修改为 `ClusterIP` 禁止集群外访问或者如果 Kubernetes 集群支持，可以修改为 [`LoadBalancer`](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer) 对外暴露服务。
+默认情况下，TiDB 服务通过 [`NodePort`](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport) 暴露。可以通过修改为 `ClusterIP` 禁止集群外访问。如果 Kubernetes 集群支持，可以修改为 [`LoadBalancer`](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer) 对外暴露服务。
 
 {{< copyable "shell-regular" >}}
 
@@ -76,7 +82,7 @@ kubectl get po -n ${namespace} -l app.kubernetes.io/instance=${releaseName}
 kubectl get svc -n ${namespace}
 ```
 
-TiDB 集群默认没有设置 root 密码。在 Helm 中设置密码不安全，你可以在 `values.yaml` 中给 `tidb.passwordSecretName` 设置一个 K8s secret。注意，这仅用于初始化用户：一旦 TiDB 集群初始化完成，你可以删除这个 secret。secret 的格式为 `user=password`，你可以通过下面命令设置 root 用户密码：
+TiDB 集群默认没有设置 root 密码。在 Helm 中设置密码不安全，因此可以在 `values.yaml` 中给 `tidb.passwordSecretName` 设置一个 K8s secret。注意，这仅用于初始化用户：一旦 TiDB 集群初始化完成，你可以删除这个 secret。secret 的格式为 `user=password`。你可以通过下面命令设置 root 用户密码：
 
 {{< copyable "shell-regular" >}}
 
@@ -124,7 +130,7 @@ echo ${PASSWORD}
 
 ## TiDB 集群伸缩
 
-TiDB Operator 支持垂直和水平伸缩。存储的垂直伸缩需要注意以下各项：
+TiDB Operator 支持垂直和水平伸缩。存储的垂直伸缩需要注意以下事项：
 
 * 使用 Kubernetes v1.11 或者更高版本，请参考[官方博客](https://kubernetes.io/blog/2018/07/12/resizing-persistent-volumes-using-kubernetes/)。
 * 后端 StorageClass 支持调整大小（目前只有少数几个网络 StorageClass 支持调整大小）。
@@ -168,7 +174,7 @@ helm upgrade ${releaseName} pingcap/tidb-cluster --version=${chartVersion} -f /h
 >
 > 如果集群已经在运行，即使没有配置修改，打开这个参数并运行 `helm upgrade` 也会触发 PD、TiKV 和 TiDB 滚动升级。
 >
-> 目前，集群创建后修改 PD 的 `schedule` 和 `replication` 配置（`values.yaml` 中的 `maxStoreDownTime` 和 `maxReplicas` 参数，PD 配置文件中所有 `[schedule]` 和 `[replication]` 部分的配置）然后运行 `helm upgrade` 无法生效。集群创建后，你必须通过 `pd-ctl` 配置这些参数，请参考 [pd-ctl](/reference/tools/pd-control/)。
+> 目前，集群创建后修改 PD 的 `schedule` 和 `replication` 配置（`values.yaml` 中的 `maxStoreDownTime` 和 `maxReplicas` 参数，PD 配置文件中所有 `[schedule]` 和 `[replication]` 部分的配置）然后运行 `helm upgrade` 无法生效。集群创建后，你必须通过 `pd-ctl` 配置这些参数，请参考 [pd-ctl](/reference/tools/pd-control.md)。
 
 如果 PD 集群不可用，[TiDB 集群伸缩](#tidb-集群伸缩)、[升级 TiDB 集群](#升级-tidb-集群)和[修改 TiDB 集群配置](#修改-tidb-集群配置)都无法操作，从 TiDB Operator 版本 > v1.0.0-beta.3 开始，支持 `force-upgrade`，在 PD 集群不可用的情况下，允许用户通过下面步骤强制升级集群以恢复集群功能：
 
@@ -215,55 +221,11 @@ kubectl get pv -l app.kubernetes.io/namespace=${namespace},app.kubernetes.io/man
 
 TiDB 通过 Prometheus 和 Grafana 监控 TiDB 集群。TiDB 集群创建时，会同时创建、配置 Prometheus 和 Grafana pod 收集并展示监控指标。
 
-监控数据默认没有持久化，如果由于某些原因监控容器重启，数据会丢失。可以在 `values.yaml` 中设置 `monitor.persistent` 为 `true` 来持久化监控数据。
+配置与访问监控系统的细节请参阅[监控系统部署](/how-to/monitor/tidb-in-kubernetes.md)。
 
-可以通过 `kubectl portforward` 查看监控面板：
+## 日志
 
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl port-forward -n ${namespace} svc/${releaseName}-grafana 3000:3000 &>/tmp/portforward-grafana.log
-```
-
-然后在浏览器中打开 [http://localhost:3000](http://localhost:3000)，默认用户名和密码都为 `admin`。
-
-Grafana 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持负载均衡器，你可以修改为 `LoadBalancer`，然后通过负载均衡器访问面板。详请参阅[访问 Kubernetes 上的 TiDB 集群](/how-to/deploy/orchestrated/tidb-in-kubernetes/access-tidb.md)。
-
-### 查看 TiDB 慢查询日志
-
-* 如果 `values.yaml` 中没有显示配置 `separateSlowLog: true`，那么 TiDB 会打印慢查询日志到标准输出，和正常日志混在一起。
-
-    如果 TiDB 版本 <= v2.1.7，你可以通过 `grep` 关键词 `SLOW_QUERY` 查看慢查询日志：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl logs -n ${namespace} ${tidbPodName} | grep SLOW_QUERY
-    ```
-
-    如果 TiDB 版本 >= v2.1.8，由于慢查询日志格式发生变化，不太方便分离慢查询日志，建议参考下面内容配置 `separateSlowLog: true` 单独查看慢查询日志。
-
-* 配置 `separateSlowLog: true` 输出慢查询日志到一个 sidecar 容器：
-
-    ```yaml
-    separateSlowLog: true
-    ```
-
-    运行 `helm upgrade` 使配置生效，然后你可以通过名为 `slowlog` 的 sidecar 容器查看慢查询日志：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl logs -n ${namespace} ${tidbPodName} -c slowlog
-    ```
-
-    如果要从多个 Pod 获取日志，推荐 [`stern`](https://github.com/wercker/stern)。
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    stern -n ${namespace} tidb -c slowlog
-    ```
+查看与收集日志的方法请参阅[日志收集](/how-to/maintain/tidb-in-kubernetes/log-collecting.md)文档。
 
 ## 备份和恢复
 
