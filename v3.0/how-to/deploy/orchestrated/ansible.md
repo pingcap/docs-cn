@@ -654,6 +654,7 @@ Edit the `inventory.ini` file and add the following host variable after the IP o
 | TiDB          | tidb_port          | 4000         | the communication port for the application and DBA tools |
 | TiDB          | tidb_status_port   | 10080        | the communication port to report TiDB status |
 | TiKV          | tikv_port          | 20160        | the TiKV communication port |
+| TiKV          | tikv_status_port   | 20180        | the communication port to report the TiKV status |
 | PD            | pd_client_port     | 2379         | the communication port between TiDB and PD |
 | PD            | pd_peer_port       | 2380         | the inter-node communication port within the PD cluster |
 | Pump          | pump_port          | 8250         | the pump communication port |
