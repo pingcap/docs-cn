@@ -8,6 +8,7 @@ aliases: ['/docs/releases/rn/']
 
 ## 3.0
 
+- [3.0.1](/releases/3.0.1.md)
 - [3.0 GA](/releases/3.0-ga.md)
 - [3.0.0-rc.3](/releases/3.0.0-rc.3.md)
 - [3.0.0-rc.2](/releases/3.0.0-rc.2.md)
