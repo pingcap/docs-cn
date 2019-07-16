@@ -293,7 +293,7 @@ module "tidb-cluster-staging" {
 
 上面的脚本可以自由定制，比如，假如不需要堡垒机则可以移除 `module "bastion"` 相关声明。
 
-你也可以直接拷贝 `deploy/aliyun` 目录，但要注意不能拷贝已经运行了 `terraform apply` 的目录，最好的办法是重新 clone 仓库再进行拷贝。
+你也可以直接拷贝 `deploy/aliyun` 目录，但要注意不能拷贝已经运行了 `terraform apply` 的目录，建议重新 clone 仓库再进行拷贝。
 
 ## 使用限制
 
