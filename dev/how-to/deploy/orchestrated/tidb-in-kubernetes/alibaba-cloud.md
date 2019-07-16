@@ -97,13 +97,23 @@ category: how-to
     vpc_id = vpc-bp1v8i5rwsc7yh8dwyep5
     ```
 
-3. 用 `kubectl` 或 `helm` 对集群进行操作（其中 `cluster_name` 默认值为 `tidb-cluster`）：
+3. 用 `kubectl` 或 `helm` 对集群进行操作（其中 `cluster_name` 默认值为 `my-cluster`）：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
     export KUBECONFIG=$PWD/credentials/kubeconfig_<cluster_name>
+    ```
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
     kubectl version
+    ```
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
     helm ls
     ```
 
@@ -114,8 +124,13 @@ category: how-to
 {{< copyable "shell-regular" >}}
 
 ```shell
-ssh -i credentials/<cluster_name>-key.pem root@<bastion_ip>
-mysql -h <tidb_host> -P <tidb_port> -u root
+ssh -i credentials/<cluster_name>-bastion-key.pem root@<bastion_ip>
+```
+
+{{< copyable "shell-regular" >}}
+
+```shell
+mysql -h <tidb_slb_ip> -P <tidb_port> -u root
 ```
 
 ## 监控
@@ -176,7 +191,7 @@ terraform state rm module.ack.alicloud_cs_managed_kubernetes.k8s
 
 ```hcl
 variable "operator_helm_values" {
-  default     = file("my-operator-values.yaml")
+  default = file("my-operator-values.yaml")
 }
 ```
 
