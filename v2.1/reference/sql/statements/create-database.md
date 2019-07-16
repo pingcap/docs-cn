@@ -30,6 +30,23 @@ This statement creates a new database in TiDB. The MySQL terminology for 'databa
 
 ![DatabaseOptionListOpt](/media/sqlgram-v2.1/DatabaseOptionListOpt.png)
 
+## Syntax
+
+The `CREATE DATABASE` statement is used to create a database, and to specify the default properties of the database, such as the default character set and validation rules. `CREATE SCHEMA` is a synonym for `CREATE DATABASE`.
+
+```sql
+CREATE {DATABASE | SCHEMA} [IF NOT EXISTS] db_name
+    [create_specification] ...
+
+create_specification:
+    [DEFAULT] CHARACTER SET [=] charset_name
+  | [DEFAULT] COLLATE [=] collation_name
+```
+
+If you create an existing database and does not specify `IF NOT EXISTS`, an error is displayed.
+
+The `create_specification` option is used to specify the specific `CHARACTER SET` and `COLLATE` in the database. Currently, the option is only supported in syntax.
+
 ## Examples
 
 ```sql
@@ -57,4 +74,6 @@ This statement is understood to be fully compatible with MySQL. Any compatibilit
 ## See also
 
 * [USE](/reference/sql/statements/use.md)
+* [ALTER DATABASE](/reference/sql/statements/alter-database.md)
 * [DROP DATABASE](/reference/sql/statements/drop-database.md)
+* [SHOW DATABASES](/reference/sql/statements/show-databases.md)

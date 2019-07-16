@@ -54,6 +54,172 @@ This statement creates a new table in the currently selected database. See also 
 
 ![TableOptionListOpt](/media/sqlgram-v2.1/TableOptionListOpt.png)
 
+## Syntax
+
+The `CREATE TABLE` statement is used to create a table. Currently, it does not support temporary tables, `CHECK` constraints, or importing data from other tables while creating tables. It supports some of the `Partition_options` in syntax.
+
+Here are some options about the `CREATE TABLE` syntax:
+
+```sql
+CREATE TABLE [IF NOT EXISTS] tbl_name
+    (create_definition,...)
+    [table_options]
+```
+
+When you create an existing table, if you specify `IF NOT EXIST`, it does not report an error. Otherwise, it reports an error.
+
+```sql
+CREATE TABLE [IF NOT EXISTS] tbl_name
+    { LIKE old_tbl_name | (LIKE old_tbl_name) }
+```
+
+Use `LIKE` to create an empty table based on the definition of another table including its column and index properties.
+
+```sql
+create_definition:
+    col_name column_definition
+  | [CONSTRAINT [symbol]] PRIMARY KEY [index_type] (index_col_name,...)
+      [index_option] ...
+  | {INDEX|KEY} [index_name] [index_type] (index_col_name,...)
+      [index_option] ...
+  | [CONSTRAINT [symbol]] UNIQUE [INDEX|KEY]
+      [index_name] [index_type] (index_col_name,...)
+      [index_option] ...
+  | {FULLTEXT} [INDEX|KEY] [index_name] (index_col_name,...)
+      [index_option] ...
+  | [CONSTRAINT [symbol]] FOREIGN KEY
+      [index_name] (index_col_name,...) reference_definition
+```
+
+The `FULLTEXT` and `FOREIGN KEY` in `create_definition` are currently only supported in syntax.
+
+```sql
+column_definition:
+    data_type [NOT NULL | NULL] [DEFAULT default_value]
+      [AUTO_INCREMENT] [UNIQUE [KEY] | [PRIMARY] KEY]
+      [COMMENT 'string']
+      [reference_definition]
+  | data_type [GENERATED ALWAYS] AS (expression)
+      [VIRTUAL | STORED] [UNIQUE [KEY]] [COMMENT comment]
+      [NOT NULL | NULL] [[PRIMARY] KEY]
+
+data_type:
+    BIT[(length)]
+  | TINYINT[(length)] [UNSIGNED] [ZEROFILL]
+  | SMALLINT[(length)] [UNSIGNED] [ZEROFILL]
+  | MEDIUMINT[(length)] [UNSIGNED] [ZEROFILL]
+  | INT[(length)] [UNSIGNED] [ZEROFILL]
+  | INTEGER[(length)] [UNSIGNED] [ZEROFILL]
+  | BIGINT[(length)] [UNSIGNED] [ZEROFILL]
+  | REAL[(length,decimals)] [UNSIGNED] [ZEROFILL]
+  | DOUBLE[(length,decimals)] [UNSIGNED] [ZEROFILL]
+  | FLOAT[(length,decimals)] [UNSIGNED] [ZEROFILL]
+  | DECIMAL[(length[,decimals])] [UNSIGNED] [ZEROFILL]
+  | NUMERIC[(length[,decimals])] [UNSIGNED] [ZEROFILL]
+  | DATE
+  | TIME[(fsp)]
+  | TIMESTAMP[(fsp)]
+  | DATETIME[(fsp)]
+  | YEAR
+  | CHAR[(length)] [BINARY]
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | VARCHAR(length) [BINARY]
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | BINARY[(length)]
+  | VARBINARY(length)
+  | TINYBLOB
+  | BLOB
+  | MEDIUMBLOB
+  | LONGBLOB
+  | TINYTEXT [BINARY]
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | TEXT [BINARY]
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | MEDIUMTEXT [BINARY]
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | LONGTEXT [BINARY]
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | ENUM(value1,value2,value3,...)
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | SET(value1,value2,value3,...)
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | JSON
+```
+
+For the `data_type`, see [Data Types](/reference/sql/data-types/overview.md).
+
+```sql
+index_col_name:
+    col_name [(length)] [ASC | DESC]
+```
+
+The `[ASC | DESC]` in `index_col_name` is currently only supported in syntax.
+
+```sql
+index_type:
+    USING {BTREE | HASH}
+```
+
+The `index_type` is currently only supported in syntax.
+
+```sql
+index_option:
+    KEY_BLOCK_SIZE [=] value
+  | index_type
+  | COMMENT 'string'
+```
+
+The `KEY_BLOCK_SIZE` in `index_option` is currently only supported in syntax.
+
+```sql
+reference_definition:
+    REFERENCES tbl_name (index_col_name,...)
+      [MATCH FULL | MATCH PARTIAL | MATCH SIMPLE]
+      [ON DELETE reference_option]
+      [ON UPDATE reference_option]
+
+reference_option:
+    RESTRICT | CASCADE | SET NULL | NO ACTION | SET DEFAULT
+```
+
+```sql
+table_options:
+    table_option [[,] table_option] ...
+
+table_option:
+    AUTO_INCREMENT [=] value
+  | AVG_ROW_LENGTH [=] value
+  | SHARD_ROW_ID_BITS [=] value
+  | PRE_SPLIT_REGIONS [=] value
+  | [DEFAULT] CHARACTER SET [=] charset_name
+  | CHECKSUM [=] {0 | 1}
+  | [DEFAULT] COLLATE [=] collation_name
+  | COMMENT [=] 'string'
+  | COMPRESSION [=] {'ZLIB'|'LZ4'|'NONE'}
+  | CONNECTION [=] 'connect_string'
+  | DELAY_KEY_WRITE [=] {0 | 1}
+  | ENGINE [=] engine_name
+  | KEY_BLOCK_SIZE [=] value
+  | MAX_ROWS [=] value
+  | MIN_ROWS [=] value
+  | ROW_FORMAT [=] {DEFAULT|DYNAMIC|FIXED|COMPRESSED|REDUNDANT|COMPACT}
+  | STATS_PERSISTENT [=] {DEFAULT|0|1}
+```
+
+The `table_option` currently only supports `AUTO_INCREMENT`, `SHARD_ROW_ID_BITS` (see [TiDB Specific System Variables](/reference/configuration/tidb-server/tidb-specific-variables.md#shard-row-id-bits) for details), `PRE_SPLIT_REGIONS`, `CHARACTER SET`, `COLLATE`, and `COMMENT`, while the others are only supported in syntax. The clauses are separated by a comma `,`. See the following table for details:
+
+| Parameters | Description | Example |
+| ---------- | ---------- | ------- |
+| `AUTO_INCREMENT` | The initial value of the increment field | `AUTO_INCREMENT` = 5 |
+| `SHARD_ROW_ID_BITS` | To set the number of bits for the implicit `_tidb_rowid` shards |`SHARD_ROW_ID_BITS` = 4|
+| `PRE_SPLIT_REGIONS` | To pre-split 2^(PRE_SPLIT_REGIONS-1) Regions when creating a table |`PRE_SPLIT_REGIONS` = 4|
+| `CHARACTER SET` | To specify the string code for the table; currently only support UTF8MB4 | `CHARACTER SET` =  'utf8mb4' |
+| `COMMENT` | The comment information | `COMMENT` = 'comment info' |
+
+> **Note:**
+>
+> In TiDB 2.1 versions, the three features `SHARD_ROW_ID_BITS`, `PRE_SPLIT_REGIONS` and `COLLATE` are supported starting from the 2.1.13 version (including 2.1.13).
+
 ## Examples
 
 ```sql

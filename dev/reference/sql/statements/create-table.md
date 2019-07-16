@@ -56,14 +56,26 @@ This statement creates a new table in the currently selected database. See also 
 
 ## Syntax
 
+The `CREATE TABLE` statement is used to create a table. Currently, it does not support temporary tables, `CHECK` constraints, or importing data from other tables while creating tables. It supports some of the `Partition_options` in syntax.
+
+Here are some options about the `CREATE TABLE` syntax:
+
 ```sql
 CREATE TABLE [IF NOT EXISTS] tbl_name
     (create_definition,...)
     [table_options]
+```
 
+When you create an existing table, if you specify `IF NOT EXIST`, it does not report an error. Otherwise, it reports an error.
+
+```sql
 CREATE TABLE [IF NOT EXISTS] tbl_name
     { LIKE old_tbl_name | (LIKE old_tbl_name) }
+```
 
+Use `LIKE` to create an empty table based on the definition of another table including its column and index properties.
+
+```sql
 create_definition:
     col_name column_definition
   | [CONSTRAINT [symbol]] PRIMARY KEY [index_type] (index_col_name,...)
@@ -77,7 +89,11 @@ create_definition:
       [index_option] ...
   | [CONSTRAINT [symbol]] FOREIGN KEY
       [index_name] (index_col_name,...) reference_definition
+```
 
+The `FULLTEXT` and `FOREIGN KEY` in `create_definition` are currently only supported in syntax.
+
+```sql
 column_definition:
     data_type [NOT NULL | NULL] [DEFAULT default_value]
       [AUTO_INCREMENT] [UNIQUE [KEY] | [PRIMARY] KEY]
@@ -128,18 +144,34 @@ data_type:
   | SET(value1,value2,value3,...)
       [CHARACTER SET charset_name] [COLLATE collation_name]
   | JSON
+```
 
+For the `data_type`, see [Data Types](/reference/sql/data-types/overview.md).
+
+```sql
 index_col_name:
     col_name [(length)] [ASC | DESC]
+```
 
+The `[ASC | DESC]` in `index_col_name` is currently only supported in syntax.
+
+```sql
 index_type:
     USING {BTREE | HASH}
+```
 
+The `index_type` is currently only supported in syntax.
+
+```sql
 index_option:
     KEY_BLOCK_SIZE [=] value
   | index_type
   | COMMENT 'string'
+```
 
+The `KEY_BLOCK_SIZE` in `index_option` is currently only supported in syntax.
+
+```sql
 reference_definition:
     REFERENCES tbl_name (index_col_name,...)
       [MATCH FULL | MATCH PARTIAL | MATCH SIMPLE]
@@ -148,13 +180,17 @@ reference_definition:
 
 reference_option:
     RESTRICT | CASCADE | SET NULL | NO ACTION | SET DEFAULT
+```
 
+```sql
 table_options:
     table_option [[,] table_option] ...
 
 table_option:
     AUTO_INCREMENT [=] value
   | AVG_ROW_LENGTH [=] value
+  | SHARD_ROW_ID_BITS [=] value
+  | PRE_SPLIT_REGIONS [=] value
   | [DEFAULT] CHARACTER SET [=] charset_name
   | CHECKSUM [=] {0 | 1}
   | [DEFAULT] COLLATE [=] collation_name
@@ -169,6 +205,18 @@ table_option:
   | ROW_FORMAT [=] {DEFAULT|DYNAMIC|FIXED|COMPRESSED|REDUNDANT|COMPACT}
   | STATS_PERSISTENT [=] {DEFAULT|0|1}
 ```
+
+The `table_option` currently only supports `AUTO_INCREMENT`, `SHARD_ROW_ID_BITS` (see [TiDB Specific System Variables](/reference/configuration/tidb-server/tidb-specific-variables.md#shard-row-id-bits) for details), `PRE_SPLIT_REGIONS`, `CHARACTER SET`, `COLLATE`, and `COMMENT`, while the others are only supported in syntax. The clauses are separated by a comma `,`. See the following table for details:
+
+| Parameters | Description | Example |
+| ---------- | ---------- | ------- |
+| `AUTO_INCREMENT` | The initial value of the increment field | `AUTO_INCREMENT` = 5 |
+|`SHARD_ROW_ID_BITS`| To set the number of bits for the implicit `_tidb_rowid` shards |`SHARD_ROW_ID_BITS` = 4|
+|`PRE_SPLIT_REGIONS`| To pre-split 2^(PRE_SPLIT_REGIONS-1) Regions when creating a table |`PRE_SPLIT_REGIONS` = 4|
+| `CHARACTER SET` | To specify the string code for the table; currently only support UTF8MB4 | `CHARACTER SET` =  'utf8mb4' |
+| `COMMENT` | The comment information | `COMMENT` = 'comment info' |
+
+The `split-table` configuration option is enabled by default. When it is enabled, a separate Region is created for each newly created table.
 
 ## Examples
 
