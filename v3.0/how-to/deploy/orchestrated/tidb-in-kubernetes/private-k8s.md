@@ -7,7 +7,7 @@ category: how-to
 
 ## 前置条件
 
-* TiDB Operator [部署文档](/how-to/deploy/tidb-operator/)
+* [TiDB Operator](/how-to/deploy/tidb-operator/) 部署完成 
 
 ## 配置
 
