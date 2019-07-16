@@ -35,7 +35,7 @@ category: reference
 
 - Schedule operator create：新创建的不同 operator 的数量
 - Schedule operator check：已检查的 operator 的数量，主要检查是否当前步骤已经执行完成，如果是，则执行下一个步骤
-- Schedule operator finish：已完成的 operator 的数量
+- Schedule operator finish：已完成调度的 operator 的数量
 - Schedule operator timeout：已超时的 operator 的数量
 - Schedule operator replaced or canceled：已取消或者被替换的 operator 的数量
 - Schedule operators count by state：不同状态的 operator 的数量
@@ -71,7 +71,7 @@ category: reference
 - Hot read Region's leader distribution：每个 TiKV 实例上是读取热点的 leader 的数量
 - Hot read Region's peer distribution：每个 TiKV 实例上是读取热点的 peer 的数量
 - Hot read Region's leader read bytes：每个 TiKV 实例上热点的 leader 的读取大小
-- Hot read Region's peer read bytes：每个 TiKV 实例上热点的 peer 的读取大小
+- Hot read Region's peer read bytes：每个 TiKV 实例上热点的 peer 的读取字节数
 
 ![PD Dashboard - Hotspot metrics](/media/pd-dashboard-hotspot.png)
 
@@ -87,8 +87,8 @@ category: reference
 - Namespace checker：namespace checker 的状态
 - Replica checker：replica checker 的状态
 - Region merge checker：merge checker 的状态
-- Filter target：尝试选择 Store 作为调度 taget 时没有通过 Filter 的记数
-- Filter source：尝试选择 Store 作为调度 source 时没有通过 Filter 的记数
+- Filter target：尝试选择 Store 作为调度 taget 时没有通过 Filter 的计数
+- Filter source：尝试选择 Store 作为调度 source 时没有通过 Filter 的计数
 - Balance Direction：Store 被选作调度 target 或 source 的次数
 - Store Limit：Store 生成的调度是否通过 limit 检查的统计
 
