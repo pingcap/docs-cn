@@ -7,7 +7,7 @@ category: how-to
 
 ## 前置条件
 
-* [TiDB Operator](/how-to/deploy/tidb-operator/) 部署完成 
+* [TiDB Operator](/how-to/deploy/tidb-operator.md) 部署完成
 
 ## 配置
 
@@ -26,7 +26,7 @@ helm inspect values pingcap/tidb-cluster --version=${chartVersion} > /home/tidb/
 
 有关配置信息请参考 [TiDB 集群部署配置文档](/reference/configuration/tidb-in-kubernetes/cluster-configuration.md)。
 
-## 部署 
+## 部署
 
 TiDB Operator 部署并配置完成后，可以通过下面命令部署 TiDB 集群：
 
@@ -43,4 +43,3 @@ helm install pingcap/tidb-cluster --name=${releaseName} --namespace=${namespace}
 ``` shell
 kubectl get po -n ${namespace} -l app.kubernetes.io/instance=${releaseName}
 ```
-
