@@ -240,7 +240,7 @@ module "tidb-cluster-staging" {
     mkdir -p deploy/aliyun/aliyun-staging
     ```
 
-2. 参考 `deploy/aliyun` 的 `main.tf`，编写自己的脚本，下面是一个最简单的例子：
+2. 参考 `deploy/aliyun` 的 `main.tf`，编写自己的脚本，下面是一个简单的例子：
 
     ```hcl
     provider "alicloud" {
