@@ -158,7 +158,7 @@ $ terraform state rm module.ack.alicloud_cs_managed_kubernetes.k8s
 
 ### 配置 TiDB Operator
 
-通过调整 `variables.tf` 内的值来配置 TiDB Operator，大多数配置项均能按照 `variable` 的注释理解语义后进行修改。需要注意的是 `operator_helm_values` 配置项，该配置项允许为 TiDB Operator 提供一个自定义的 `values.yaml` 配置文件，示例如下：
+通过调整 `variables.tf` 内的值来配置 TiDB Operator，大多数配置项均能按照 `variable` 的注释理解语义后进行修改。需要注意的是，`operator_helm_values` 配置项允许为 TiDB Operator 提供一个自定义的 `values.yaml` 配置文件，示例如下：
 
 ```hcl
 variable "operator_helm_values" {
