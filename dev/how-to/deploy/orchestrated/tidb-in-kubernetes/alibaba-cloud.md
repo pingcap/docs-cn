@@ -56,6 +56,8 @@ category: how-to
 
 1. 设置目标 Region 和阿里云密钥（也可以在运行 `terraform` 命令时根据命令提示输入）：
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
     export TF_VAR_ALICLOUD_REGION=<YOUR_REGION>
     export TF_VAR_ALICLOUD_ACCESS_KEY=<YOUR_ACCESS_KEY>
@@ -66,11 +68,13 @@ category: how-to
 
 2. 使用 Terraform 进行安装：
 
+    {{< copyable "shell-regular" >}
+
     ```shell
-    $ git clone --depth=1 https://github.com/pingcap/tidb-operator
-    $ cd tidb-operator/deploy/aliyun
-    $ terraform init
-    $ terraform apply
+    git clone --depth=1 https://github.com/pingcap/tidb-operator
+    cd tidb-operator/deploy/aliyun
+    terraform init
+    terraform apply
     ```
 
     假如在运行 `terraform apply` 时出现报错，可根据报错信息（例如缺少权限）进行修复后再次运行 `terraform apply`。
@@ -95,19 +99,23 @@ category: how-to
 
 3. 用 `kubectl` 或 `helm` 对集群进行操作（其中 `cluster_name` 默认值为 `tidb-cluster`）：
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
-    $ export KUBECONFIG=$PWD/credentials/kubeconfig_<cluster_name>
-    $ kubectl version
-    $ helm ls
+    export KUBECONFIG=$PWD/credentials/kubeconfig_<cluster_name>
+    kubectl version
+    helm ls
     ```
 
 ## 连接数据库
 
 通过堡垒机可连接 TiDB 集群进行测试，相关信息在安装完成后的输出中均可找到：
 
+{{< copyable "shell-regular" >}}
+
 ```shell
-$ ssh -i credentials/<cluster_name>-key.pem root@<bastion_ip>
-$ mysql -h <tidb_host> -P <tidb_port> -u root
+ssh -i credentials/<cluster_name>-key.pem root@<bastion_ip>
+mysql -h <tidb_host> -P <tidb_port> -u root
 ```
 
 ## 监控
@@ -127,6 +135,8 @@ $ mysql -h <tidb_host> -P <tidb_port> -u root
 
 升级操作可能会执行较长时间，可以通过以下命令来持续观察进度：
 
+{{< copyable "shell-regular" >}}
+
 ```
 kubectl get pods --namespace tidb -o wide --watch
 ```
@@ -137,15 +147,19 @@ kubectl get pods --namespace tidb -o wide --watch
 
 ## 销毁集群
 
+{{< copyable "shell-regular" >}}
+
 ```shell
-$ terraform destroy
+terraform destroy
 ```
 
 假如 Kubernetes 集群没有创建成功，那么在 destroy 时会出现报错，无法进行正常清理。此时需要手动将 kubernetes 资源从本地状态中移除：
 
+{{< copyable "shell-regular" >}}
+
 ```shell
-$ terraform state list
-$ terraform state rm module.ack.alicloud_cs_managed_kubernetes.k8s
+terraform state list
+terraform state rm module.ack.alicloud_cs_managed_kubernetes.k8s
 ```
 
 销毁集群操作需要执行较长时间。
