@@ -33,6 +33,7 @@
         - [阿里云](how-to/deploy/orchestrated/tidb-in-kubernetes/alibaba-cloud.md)
         - [AWS EKS](how-to/deploy/orchestrated/tidb-in-kubernetes/aws-eks.md)
         - [GCP](how-to/deploy/orchestrated/tidb-in-kubernetes/gcp-gke.md)
+        - [私有 Kubernetes 集群](how-to/deploy/orchestrated/tidb-in-kubernetes/private-k8s.md)
     + 跨地域冗余
       - [跨数据中心部署方案](how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](how-to/deploy/geographic-redundancy/location-awareness.md)
@@ -340,7 +341,8 @@
 + [贡献](contribute.md)
   - [贡献代码](contribute.md#成为-tidb-的贡献者)
   - [改进文档](contribute.md#改进文档)
-- [TiDB 路线图](roadmap.md)
+
++ [TiDB 路线图](roadmap.md)
 + [版本发布历史](releases/rn.md)
   + v3.0
     - [3.0 GA](releases/3.0-ga.md)
