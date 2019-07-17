@@ -255,7 +255,7 @@ Terraform 脚本中为运行在 EKS 上的 TiDB 集群提供了合理的默认�
 
 ### Customized TiDB Operator
 
-你可以通过 `variables.tf` 中的 `operator_values` 参数传入自定义的 `values.yaml` 内容来配置 TiDB Operator（推荐使用 Terraform 的 `file()` 函数从本地文件中读取内容）。例子：
+你可以通过 `variables.tf` 中的 `operator_values` 参数传入自定义的 `values.yaml` 内容来配置 TiDB Operator（推荐使用 Terraform 的 `file()` 函数从本地文件中读取内容）。示例如下：
 
 ```hcl
 variable "operator_values" {
@@ -307,9 +307,9 @@ module example-cluster {
 
 > **注意：**
 >
-> `cluster_name` 必须是唯一的
+> `cluster_name` 必须是唯一的。
 
-你可以通过 `kubectl` 获取新集群的监控系统地址与 TiDB 地址，假如你希望让 Terraform 脚本输出这些地址，可以通过在 `outputs.tf` 中增加相关的输出项实现：
+你可以通过 `kubectl` 获取新集群的监控系统地址与 TiDB 地址。假如你希望让 Terraform 脚本输出这些地址，可以通过在 `outputs.tf` 中增加相关的输出项实现：
 
 ```hcl
 output "example-cluster_tidb-hostname" {
@@ -349,7 +349,7 @@ terraform destroy
 
 - `tidb-operator` 模块，用于创建 EKS 集群并在 EKS 集群上安装配置 [TiDB Operator](how-to/deploy/tidb-operator.md)。
 - `tidb-cluster` 模块，用于创建 TiDB 集群所需的资源池并部署 TiDB 集群。
-- 以及 EKS 上的 TiDB 集群专用的 `vpc` 模块、`key-pair`模块和`bastion` 模块
+- EKS 上的 TiDB 集群专用的 `vpc` 模块、`key-pair`模块和`bastion` 模块
 
 管理多个 Kubernetes 集群的最佳实践是为每个 Kubernetes 集群创建一个单独的目录，并在新目录中自行组合上述 Terraform 模块。这种方式能够保证多个集群间的 Terraform 状态不会互相影响，也便于自由定制和扩展。下面是一个例子：
 
@@ -473,7 +473,7 @@ output "bastion_ip" {
 
 > **注意：**
 >
-> 由于 Terraform 本身的限制（[hashicorp/terraform#2430](https://github.com/hashicorp/terraform/issues/2430#issuecomment-370685911)），在你自己的 Terraform 脚本中，也需要保留上述例子中对 `helm provider` 的特殊处理
+> 由于 Terraform 本身的限制（[hashicorp/terraform#2430](https://github.com/hashicorp/terraform/issues/2430#issuecomment-370685911)），在你自己的 Terraform 脚本中，也需要保留上述例子中对 `helm provider` 的特殊处理。
 
 > **注意：**
 >
