@@ -57,7 +57,7 @@ sync-diff-inspector 需要获取表结构信息、查询数据、建 checkpoint 
 
     RELOAD (查看表结构)
 
-### 通用配置文件说明
+### 配置文件说明
 
 sync-diff-inspector 的配置总共分为三个部分：
 
