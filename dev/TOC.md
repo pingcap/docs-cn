@@ -301,6 +301,7 @@
       + Migrate from MySQL compatible database
         - [Migrate from Aurora](how-to/migrate/from-aurora.md)
       - [Troubleshoot](how-to/troubleshoot/data-migration.md)
+      - [FAQ](faq/data-migration.md)
     + TiDB Lightning
       - [Overview](reference/tools/tidb-lightning/overview.md)
       - [Deployment](reference/tools/tidb-lightning/deployment.md)
@@ -324,6 +325,7 @@
 + FAQs
   - [TiDB FAQs](faq/tidb.md)
   - [TiDB Lightning FAQs](faq/tidb-lightning.md)
+  - [Data Migration FAQ](faq/data-migration.md)
   - [Upgrade FAQs](faq/upgrade.md)
 + Support
   - [Support Resources](support-resources.md)
