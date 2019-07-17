@@ -68,7 +68,7 @@ category: how-to
 
 2. 使用 Terraform 进行安装：
 
-    {{< copyable "shell-regular" >}
+    {{< copyable "shell-regular" >}}
 
     ```shell
     git clone --depth=1 https://github.com/pingcap/tidb-operator
