@@ -68,7 +68,7 @@
     - [定位慢查询](how-to/maintain/identify-slow-queries.md)
     - [TiDB Binlog 集群运维](how-to/maintain/tidb-binlog.md)
     + Kubernetes 上的 TiDB 集群运维
-      - [管理 TiDB 集群](how-to/maintain/tidb-in-kubernetes/tidb-cluster.md)
+      - [销毁 TiDB 集群](how-to/maintain/tidb-in-kubernetes/delete-cluster.md)
       - [维护 TiDB 节点](how-to/maintain/tidb-in-kubernetes/tidb-node.md)
       - [收集日志](how-to/maintain/tidb-in-kubernetes/log-collecting.md)
       - [集群故障自动转移](how-to/maintain/tidb-in-kubernetes/auto-failover.md)

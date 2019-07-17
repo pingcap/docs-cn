@@ -7,11 +7,32 @@ category: how-to
 
 ## 前置条件
 
-* [TiDB Operator](/how-to/deploy/tidb-operator.md) 部署完成
+### TiDB Operator 部署完成
+
+如果该 Kubernetes 集群中尚未部署 TiDB Operator， 请参考：[TiDB Operator](/how-to/deploy/tidb-operator.md) 完成 TiDB Operator 的部署
+
+### Helm 添加仓库
+
+{{< copyable "shell-regular" >}}
+
+``` shell
+helm repo add pingcap http://charts.pingcap.org/ && \
+helm repo list
+```
+
+然后可以查看可用的 chart：
+
+{{< copyable "shell-regular" >}}
+
+``` shell
+helm repo update && \
+helm search tidb-cluster -l && \
+helm search tidb-operator -l
+```
 
 ## 配置
 
-Helm 安装完成后，通过下面命令获取待安装的 tidb-cluster chart 的 `values.yaml` 配置文件：
+通过下面命令获取待安装的 tidb-cluster chart 的 `values.yaml` 配置文件：
 
 {{< copyable "shell-regular" >}}
 
@@ -24,7 +45,7 @@ helm inspect values pingcap/tidb-cluster --version=${chartVersion} > /home/tidb/
 >
 > `/home/tidb` 可以替换为你想用的目录。下文会用 `values.yaml` 指代 `/home/tidb/${releaseName}/values-${releaseName}.yaml`。
 
-有关配置信息请参考 [TiDB 集群部署配置文档](/reference/configuration/tidb-in-kubernetes/cluster-configuration.md)。
+根据需要修改上述配置文件，有关配置信息请参考 [TiDB 集群部署配置文档](/reference/configuration/tidb-in-kubernetes/cluster-configuration.md)。
 
 ## 部署
 
