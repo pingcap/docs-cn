@@ -157,11 +157,11 @@ tidb-ctl base64decode [table_id] [base64_data]
 
 3. 用 `base64decode` 解码 handle id (uint64).
 
-    ```shell
+     ```shell
     ▶ tidb-ctl base64decode AAAAAAAAAAE=
     hex: 0000000000000001
     uint64: 1
-    ```
+     ```
 
 4. 用 `base64decode` 解码行数据。
 
