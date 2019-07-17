@@ -25,6 +25,7 @@
     - [TiSpark 教程](how-to/get-started/tispark.md)
   + 部署
     - [软硬件环境需求](how-to/deploy/hardware-recommendations.md)
+    - [Kubernetes 上的 TiDB 集群环境需求](how-to/deploy/tidb-in-kubernetes-prerequisites.md)
     + 集群部署方式
       - [使用 Ansible 部署（推荐）](how-to/deploy/orchestrated/ansible.md)
       - [使用 Ansible 离线部署](how-to/deploy/orchestrated/offline-ansible.md)
