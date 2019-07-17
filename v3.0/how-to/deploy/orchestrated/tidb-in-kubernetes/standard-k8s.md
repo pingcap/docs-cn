@@ -1,5 +1,5 @@
 ---
-title: 在私有 Kubernetes 上部署 TiDB 集群
+title: 在标准 Kubernetes 上部署 TiDB 集群
 category: how-to
 ---
 
