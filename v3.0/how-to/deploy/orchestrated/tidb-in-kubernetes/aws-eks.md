@@ -255,7 +255,7 @@ Terraform 脚本中为运行在 EKS 上的 TiDB 集群提供了合理的默认�
 
 ### Customized TiDB Operator
 
-你可以通过 `variables.tf` 中的 `operator_values` 参数传入自定义的 `values.yaml` 内容来配置 TiDB Operator（推荐使用 Terraform 的 `file()` 函数从本地文件中读取内容）。例子：
+你可以通过 `variables.tf` 中的 `operator_values` 参数传入自定义的 `values.yaml` 内容来配置 TiDB Operator（推荐使用 Terraform 的 `file()` 函数从本地文件中读取内容）。示例如下：
 
 ```hcl
 variable "operator_values" {
@@ -307,9 +307,9 @@ module example-cluster {
 
 > **注意：**
 >
-> `cluster_name` 必须是唯一的
+> `cluster_name` 必须是唯一的。
 
-你可以通过 `kubectl` 获取新集群的监控系统地址与 TiDB 地址，假如你希望让 Terraform 脚本输出这些地址，可以通过在 `outputs.tf` 中增加相关的输出项实现：
+你可以通过 `kubectl` 获取新集群的监控系统地址与 TiDB 地址。假如你希望让 Terraform 脚本输出这些地址，可以通过在 `outputs.tf` 中增加相关的输出项实现：
 
 ```hcl
 output "example-cluster_tidb-hostname" {
@@ -335,11 +335,8 @@ terraform destroy
 
 > **注意：**
 >
-> 该操作会销毁 EKS 集群以及部署在该 EKS 集群上的所有 TiDB 集群。
-
-> **注意：**
->
-> 如果你不再需要存储卷中的数据，在执行 `terraform destroy` 后，你需要在 AWS 控制台手动删除 EBS 卷。
+> * 该操作会销毁 EKS 集群以及部署在该 EKS 集群上的所有 TiDB 集群。
+> * 如果你不再需要存储卷中的数据，在执行 `terraform destroy` 后，你需要在 AWS 控制台手动删除 EBS 卷。
 
 ## 管理多个 Kubernetes 集群
 
@@ -349,7 +346,7 @@ terraform destroy
 
 - `tidb-operator` 模块，用于创建 EKS 集群并在 EKS 集群上安装配置 [TiDB Operator](how-to/deploy/tidb-operator.md)。
 - `tidb-cluster` 模块，用于创建 TiDB 集群所需的资源池并部署 TiDB 集群。
-- 以及 EKS 上的 TiDB 集群专用的 `vpc` 模块、`key-pair`模块和`bastion` 模块
+- EKS 上的 TiDB 集群专用的 `vpc` 模块、`key-pair`模块和`bastion` 模块
 
 管理多个 Kubernetes 集群的最佳实践是为每个 Kubernetes 集群创建一个单独的目录，并在新目录中自行组合上述 Terraform 模块。这种方式能够保证多个集群间的 Terraform 状态不会互相影响，也便于自由定制和扩展。下面是一个例子：
 
@@ -411,7 +408,7 @@ provider "helm" {
 # 在上面的 EKS 集群上创建一个 TiDB 集群
 module "tidb-cluster-a" {
   source = "../modules/aws/tidb-cluster"
-  providers = { 
+  providers = {
     helm = "helm.eks"
   }
 
@@ -473,14 +470,8 @@ output "bastion_ip" {
 
 > **注意：**
 >
-> 由于 Terraform 本身的限制（[hashicorp/terraform#2430](https://github.com/hashicorp/terraform/issues/2430#issuecomment-370685911)），在你自己的 Terraform 脚本中，也需要保留上述例子中对 `helm provider` 的特殊处理
-
-> **注意：**
->
-> 创建新目录时，需要注意与 Terraform 模块之间的相对路径，这会影响调用模块时的 `source` 参数。
-
-> **注意：**
->
-> 假如你想在 tidb-operator 项目之外使用这些模块，你需要确保 `modules` 目录中的所有模块的相对路径保持不变。
+> * 由于 Terraform 本身的限制（[hashicorp/terraform#2430](https://github.com/hashicorp/terraform/issues/2430#issuecomment-370685911)），在你自己的 Terraform 脚本中，也需要保留上述例子中对 `helm provider` 的特殊处理。
+> * 创建新目录时，需要注意与 Terraform 模块之间的相对路径，这会影响调用模块时的 `source` 参数。
+> * 假如你想在 tidb-operator 项目之外使用这些模块，你需要确保 `modules` 目录中的所有模块的相对路径保持不变。
 
 假如你不想自己写 Terraform 代码，也可以直接拷贝 `deploy/aws` 目录来创建新的 Kubernetes 集群。但要注意不能拷贝已经运行过 `terraform apply` 的目录（已经有 Terraform 的本地状态）。这种情况下，推荐在拷贝前克隆一个新的仓库。

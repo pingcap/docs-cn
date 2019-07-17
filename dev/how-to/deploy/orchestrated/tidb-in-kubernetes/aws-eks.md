@@ -335,11 +335,8 @@ terraform destroy
 
 > **注意：**
 >
-> 该操作会销毁 EKS 集群以及部署在该 EKS 集群上的所有 TiDB 集群。
-
-> **注意：**
->
-> 如果你不再需要存储卷中的数据，在执行 `terraform destroy` 后，你需要在 AWS 控制台手动删除 EBS 卷。
+> * 该操作会销毁 EKS 集群以及部署在该 EKS 集群上的所有 TiDB 集群。
+> * 如果你不再需要存储卷中的数据，在执行 `terraform destroy` 后，你需要在 AWS 控制台手动删除 EBS 卷。
 
 ## 管理多个 Kubernetes 集群
 
@@ -411,7 +408,7 @@ provider "helm" {
 # 在上面的 EKS 集群上创建一个 TiDB 集群
 module "tidb-cluster-a" {
   source = "../modules/aws/tidb-cluster"
-  providers = { 
+  providers = {
     helm = "helm.eks"
   }
 
@@ -473,14 +470,8 @@ output "bastion_ip" {
 
 > **注意：**
 >
-> 由于 Terraform 本身的限制（[hashicorp/terraform#2430](https://github.com/hashicorp/terraform/issues/2430#issuecomment-370685911)），在你自己的 Terraform 脚本中，也需要保留上述例子中对 `helm provider` 的特殊处理。
-
-> **注意：**
->
-> 创建新目录时，需要注意与 Terraform 模块之间的相对路径，这会影响调用模块时的 `source` 参数。
-
-> **注意：**
->
-> 假如你想在 tidb-operator 项目之外使用这些模块，你需要确保 `modules` 目录中的所有模块的相对路径保持不变。
+> * 由于 Terraform 本身的限制（[hashicorp/terraform#2430](https://github.com/hashicorp/terraform/issues/2430#issuecomment-370685911)），在你自己的 Terraform 脚本中，也需要保留上述例子中对 `helm provider` 的特殊处理。
+> * 创建新目录时，需要注意与 Terraform 模块之间的相对路径，这会影响调用模块时的 `source` 参数。
+> * 假如你想在 tidb-operator 项目之外使用这些模块，你需要确保 `modules` 目录中的所有模块的相对路径保持不变。
 
 假如你不想自己写 Terraform 代码，也可以直接拷贝 `deploy/aws` 目录来创建新的 Kubernetes 集群。但要注意不能拷贝已经运行过 `terraform apply` 的目录（已经有 Terraform 的本地状态）。这种情况下，推荐在拷贝前克隆一个新的仓库。
