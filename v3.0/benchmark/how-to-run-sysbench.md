@@ -61,7 +61,7 @@ enabled = true
 
 由于 TiKV 是以集群形式部署的，在 Raft 算法的作用下，能保证大多数节点已经写入数据。因此，除了对数据安全极端敏感的场景之外，raftstore 中的 `sync-log` 选项可以关闭。
 
-TiKV 集群存在两个 Column Family（Default CF 和 Write CF），主要用于存储不同类型的数据。对于 Sysbench 测试，导入数据的 Column Family 在 TiDB 集群中的比例是固定的。这个比例是： 
+TiKV 集群存在两个 Column Family（Default CF 和 Write CF），主要用于存储不同类型的数据。对于 Sysbench 测试，导入数据的 Column Family 在 TiDB 集群中的比例是固定的。这个比例是：
 
 Default CF : Write CF = 4 : 1
 
@@ -216,7 +216,7 @@ sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 r
 
 | 类型 | Thread | TPS | QPS | avg.latency(ms) | .95.latency(ms) | max.latency(ms) |
 |:---- |:---- |:---- |:---- |:----------------|:----------------- |:---- |
-| oltp_update_index | 3\*8 | 9668.98 | 9668.98 | 2.51 | 3.19 | 103.88| 
+| oltp_update_index | 3\*8 | 9668.98 | 9668.98 | 2.51 | 3.19 | 103.88|
 | oltp_update_index | 3\*16 | 12834.99 | 12834.99 | 3.79 | 5.47 | 176.90 |
 | oltp_update_index | 3\*32 | 15955.77 | 15955.77 | 6.07 | 9.39 | 4787.14 |
 | oltp_update_index | 3\*64 | 18697.17 | 18697.17 | 10.34 | 17.63 | 4539.04 |
