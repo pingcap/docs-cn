@@ -91,14 +91,14 @@ aliases: ['/docs-cn/op-guide/dashboard-pd-info/']
 - Filter target：尝试选择 Store 作为调度 taget 时没有通过 Filter 的计数
 - Filter source：尝试选择 Store 作为调度 source 时没有通过 Filter 的计数
 - Balance Direction：Store 被选作调度 target 或 source 的次数
-- Store Limit：Store 生成的调度是否通过 limit 检查的统计
+- Store Limit：Store 的调度限流状态
 
 ![PD Dashboard - Scheduler metrics](/media/pd-dashboard-scheduler-v2.png)
 
 ## gRPC
 
 - Completed commands rate：gRPC 命令的完成速率
-- 99% Completed commands duration：99% 的情况下，命令的完成时间
+- 99% Completed commands duration：99% 记录的最长消耗时间
 
 ![PD Dashboard - gRPC metrics](/media/pd-dashboard-grpc-v2.png)
 
