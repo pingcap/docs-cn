@@ -3,6 +3,8 @@ title: TiKV 配置文件描述
 category: reference
 ---
 
+<!-- markdownlint-disable MD001 -->
+
 # TiKV 配置文件描述
 
 TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/config-template.toml](https://github.com/tikv/tikv/blob/master/etc/config-template.toml) 找到默认值的配置文件，重命名为 config.toml 即可。
@@ -532,7 +534,6 @@ raftstore 相关的配置项。
 + 开启按 table 分裂 Region的开关，建议仅在 TiDB 模式下使用。
 + 默认值：true
 
-
 ### `batch-split-limit`
 
 + 批量分裂 Region 的阈值，调大该值可加速分裂 Region。
@@ -762,31 +763,32 @@ rocksdb defaultcf 相关的配置项。
 ### `cache-index-and-filter-blocks`
 
 + 开启或关闭缓存 index 和 filter。
-+ 默认值：true 
++ 默认值：true
 
 ### `pin-l0-filter-and-index-blocks`
 
 + 是否 pin 住 L0 的 index 和 filter。
-+ 默认值：true 
++ 默认值：true
 
 ### `use-bloom-filter`
 
 + 开启 bloom filter 的开关。
-+ 默认值：true 
++ 默认值：true
 
 ### `optimize-filters-for-hits`
 
 + 开启优化 filter 的命中率的开关。
-+ 默认值：true 
++ 默认值：true
 
 ### `whole_key_filtering`
 
 + 开启将整个 key 放到 bloom filter 中的开关。
-+ 默认值：true 
++ 默认值：true
 
 ### `bloom-filter-bits-per-key`
 
 bloom filter 为每个 key 预留的长度。
+
 + 默认值：10
 + 单位：字节
 
@@ -824,7 +826,6 @@ bloom filter 为每个 key 预留的长度。
 + 触发 flush 的最小 memtable 个数。
 + 默认值：1
 + 最小值：0
-
 
 ### `max-bytes-for-level-base`
 
@@ -869,6 +870,7 @@ bloom filter 为每个 key 预留的长度。
 
 Compaction 优先类型，默认：3（MinOverlappingRatio），0（ByCompensatedSize），
 1（OldestLargestSeqFirst），2（OldestSmallestSeqFirst）。
+
 + 默认值：3
 
 ### `dynamic-level-bytes`
@@ -1042,4 +1044,3 @@ import 相关的配置项。
 + 并发导入工作任务数。
 + 默认值：8
 + 最小值：1
-

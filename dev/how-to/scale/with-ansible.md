@@ -117,7 +117,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 例如，如果要添加一个 PD 节点（node103），IP 地址为 172.16.10.103，可以进行如下操作：
 
-1. 编辑 `inventory.ini` 文件，添加节点信息置于 `[pd_servers]` 主机组最后一行：  
+1. 编辑 `inventory.ini` 文件，添加节点信息置于 `[pd_servers]` 主机组最后一行：
 
     ```ini
     [tidb_servers]

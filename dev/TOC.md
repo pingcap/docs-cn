@@ -8,7 +8,7 @@
 + [关于 TiDB](overview.md)
 + 主要概念
   - [整体架构](architecture.md)
-  + [核心特性](key-features.md)
+  + 核心特性
     - [水平扩展](key-features.md#水平扩展)
     - [高可用](key-features.md#高可用)
 + 操作指南
@@ -43,6 +43,7 @@
   + 配置
     - [时区](how-to/configure/time-zone.md)
     - [内存控制](how-to/configure/memory-control.md)
+    - [初始化集群](how-to/configure/initialize-cluster.md)
   + 安全
     + 安全传输层协议 (TLS)
       - [为 MySQL 客户端开启 TLS](how-to/secure/enable-tls-clients.md)
@@ -52,6 +53,7 @@
     - [概述](how-to/monitor/overview.md)
     - [监控 TiDB 集群](how-to/monitor/monitor-a-cluster.md)
     - [监控 TiDB Binlog 集群](how-to/monitor/tidb-binlog.md)
+    - [监控 Kubernetes 上的 TiDB 集群](how-to/monitor/tidb-in-kubernetes.md)
   + 迁移
     - [概述](how-to/migrate/overview.md)
     + 从 MySQL 迁移
@@ -67,6 +69,7 @@
     + Kubernetes 上的 TiDB 集群运维
       - [管理 TiDB 集群](how-to/maintain/tidb-in-kubernetes/tidb-cluster.md)
       - [维护 TiDB 节点](how-to/maintain/tidb-in-kubernetes/tidb-node.md)
+      - [收集日志](how-to/maintain/tidb-in-kubernetes/log-collecting.md)
       - [集群故障自动转移](how-to/maintain/tidb-in-kubernetes/auto-failover.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](how-to/scale/with-ansible.md)
@@ -185,6 +188,7 @@
       - [`LOAD DATA`](reference/sql/statements/load-data.md)
       - [`MODIFY COLUMN`](reference/sql/statements/modify-column.md)
       - [`PREPARE`](reference/sql/statements/prepare.md)
+      - [`RECOVER TABLE`](reference/sql/statements/recover-table.md)
       - [`RENAME INDEX`](reference/sql/statements/rename-index.md)
       - [`RENAME TABLE`](reference/sql/statements/rename-table.md)
       - [`REPLACE`](reference/sql/statements/replace.md)
@@ -226,6 +230,7 @@
     - [分区表](reference/sql/partitioning.md)
     - [字符集](reference/sql/character-set.md)
     - [SQL 模式](reference/sql/sql-mode.md)
+    - [视图](reference/sql/view.md)
   + 配置
     + tidb-server
       - [MySQL 系统变量](reference/configuration/tidb-server/mysql-variables.md)
@@ -282,7 +287,7 @@
     - [Loader](reference/tools/loader.md)
     - [Syncer](reference/tools/syncer.md)
     + Data Migration
-      + [概述](reference/tools/data-migration/overview.md)
+      + 概述
         - [DM 架构](reference/tools/data-migration/overview.md#dm-架构)
         - [同步功能介绍](reference/tools/data-migration/overview.md#同步功能介绍)
         - [使用限制](reference/tools/data-migration/overview.md#使用限制)
@@ -340,6 +345,7 @@
 + [TiDB 路线图](roadmap.md)
 + [版本发布历史](releases/rn.md)
   + v3.0
+    - [3.0.1](releases/3.0.1.md)
     - [3.0 GA](releases/3.0-ga.md)
     - [3.0.0-rc.3](releases/3.0.0-rc.3.md)
     - [3.0.0-rc.2](releases/3.0.0-rc.2.md)
