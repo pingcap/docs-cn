@@ -357,7 +357,7 @@ category: reference
 - Write stall duration：由于 write stall 造成的时间开销，正常情况下应为 0
 - Memtable size：每个 CF 的 memtable 的大小
 - Memtable hit：memtable 的命中率
-- Block cache size：block cache 的大小。如果将 `shared block cache` 禁用，即为每个 CF 的 block cache 的大小
+- Block cache size：block cache 的大小
 - Block cache hit：block cache 的命中率
 - Block cache flow：不同 block cache 操作的流量
 - Block cache operations 不同 block cache 操作的个数
@@ -393,7 +393,7 @@ category: reference
 - Write stall duration：由于 write stall 造成的时间开销，正常情况下应为 0
 - Memtable size：每个 CF 的 memtable 的大小
 - Memtable hit：memtable 的命中率
-- Block cache size：block cache 的大小。如果将 `shared block cache` 禁用，即为每个 CF 的 block cache 的大小
+- Block cache size：block cache 的大小
 - Block cache hit：block cache 的命中率
 - Block cache flow：不同 block cache 操作的流量
 - Block cache operations 不同 block cache 操作的个数

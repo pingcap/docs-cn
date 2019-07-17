@@ -1,11 +1,14 @@
 # TiDB 中文用户文档
 
+<!-- markdownlint-disable MD007 -->
+<!-- markdownlint-disable MD032 -->
+
 ## 目录
 
 + [关于 TiDB](overview.md)
 + 主要概念
   - [整体架构](architecture.md)
-  + [核心特性](key-features.md)
+  + 核心特性
     - [水平扩展](key-features.md#水平扩展)
     - [高可用](key-features.md#高可用)
 + 操作指南
@@ -128,6 +131,7 @@
       - [`ADD INDEX`](reference/sql/statements/add-index.md)
       - [`ADMIN`](reference/sql/statements/admin.md)
       - [`ALTER TABLE`](reference/sql/statements/alter-table.md)
+      - [`ALTER DATABASE`](reference/sql/statements/alter-database.md)
       - [`ALTER USER`](reference/sql/statements/alter-user.md)
       - [`ANALYZE TABLE`](reference/sql/statements/analyze-table.md)
       - [`BEGIN`](reference/sql/statements/begin.md)
@@ -137,7 +141,6 @@
       - [`CREATE TABLE LIKE`](reference/sql/statements/create-table-like.md)
       - [`CREATE TABLE`](reference/sql/statements/create-table.md)
       - [`CREATE USER`](reference/sql/statements/create-user.md)
-      - [`CREATE VIEW`](reference/sql/statements/create-view.md)
       - [`DEALLOCATE`](reference/sql/statements/deallocate.md)
       - [`DELETE`](reference/sql/statements/delete.md)
       - [`DESC`](reference/sql/statements/desc.md)
@@ -148,7 +151,6 @@
       - [`DROP INDEX`](reference/sql/statements/drop-index.md)
       - [`DROP TABLE`](reference/sql/statements/drop-table.md)
       - [`DROP USER`](reference/sql/statements/drop-user.md)
-      - [`DROP VIEW`](reference/sql/statements/drop-view.md)
       - [`EXECUTE`](reference/sql/statements/execute.md)
       - [`EXPLAIN ANALYZE`](reference/sql/statements/explain-analyze.md)
       - [`EXPLAIN`](reference/sql/statements/explain.md)
@@ -191,7 +193,6 @@
       - [`SHOW TABLE STATUS`](reference/sql/statements/show-table-status.md)
       - [`SHOW [GLOBAL|SESSION] VARIABLES`](reference/sql/statements/show-variables.md)
       - [`SHOW WARNINGS`](reference/sql/statements/show-warnings.md)
-      - [`SPLIT REGION`](reference/sql/statements/split-region.md)
       - [`START TRANSACTION`](reference/sql/statements/start-transaction.md)
       - [`TRACE`](reference/sql/statements/trace.md)
       - [`TRUNCATE`](reference/sql/statements/truncate.md)
@@ -244,7 +245,7 @@
     - [Loader](reference/tools/loader.md)
     - [Syncer](reference/tools/syncer.md)
     + Data Migration
-      + [概述](reference/tools/data-migration/overview.md)
+      + 概述
         - [DM 架构](reference/tools/data-migration/overview.md#dm-架构)
         - [同步功能介绍](reference/tools/data-migration/overview.md#同步功能介绍)
         - [使用限制](reference/tools/data-migration/overview.md#使用限制)
@@ -298,7 +299,6 @@
 - [TiDB 路线图](roadmap.md)
 + [版本发布历史](releases/rn.md)
   + v3.0
-  +   
     - [3.0 GA](releases/3.0-ga.md)
     - [3.0.0-rc.3](releases/3.0.0-rc.3.md)
     - [3.0.0-rc.2](releases/3.0.0-rc.2.md)

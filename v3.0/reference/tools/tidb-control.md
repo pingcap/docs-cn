@@ -111,11 +111,13 @@ TiDB Controller 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，�
 #### base64decode 子命令
 
 `base64decode`  用来解码 base64 数据。
+
 ```shell
 tidb-ctl base64decode [base64_data]
 tidb-ctl base64decode [db_name.table_name] [base64_data]
 tidb-ctl base64decode [table_id] [base64_data]
 ```
+
 1. 准备环境，执行以下SQL
 
     ```sql
@@ -148,11 +150,11 @@ tidb-ctl base64decode [table_id] [base64_data]
        {
         "start_ts": 407306588892692486,
         "commit_ts": 407306588892692489,
-        "short_value": "CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgIDwjYuu0Rk="  # handle id 为 1 的行数据。 
+        "short_value": "CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgIDwjYuu0Rk="  # handle id 为 1 的行数据。
        }
       ]
      }
-    }% 
+    }%
     ```
 
 3. 用 `base64decode` 解码 handle id (uint64).

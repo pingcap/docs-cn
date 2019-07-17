@@ -579,6 +579,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | TiDB | tidb_port | 4000  | 应用及 DBA 工具访问通信端口 |
 | TiDB | tidb_status_port | 10080  | TiDB 状态信息上报通信端口 |
 | TiKV | tikv_port | 20160 |  TiKV 通信端口  |
+| TiKV | tikv_status_port   | 20180     | 上报 TiKV 状态的通信端口 |
 | PD | pd_client_port | 2379 | 提供 TiDB 和 PD 通信端口 |
 | PD | pd_peer_port | 2380 | PD 集群节点间通信端口 |
 | Pump | pump_port | 8250  | Pump 通信端口 |

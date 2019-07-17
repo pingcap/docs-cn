@@ -5,7 +5,6 @@ about: Any suggestion? Want to add something new?
 
 ## Feature Request
 
-
 **This repository is ONLY used to solve problems related to DOCS-CN.
 For other issues (TiDB, TiKV, etc), please move to [other repositories](https://github.com/pingcap/).**
 <!-- 本仓库仅用于解决与中文文档相关的问题，

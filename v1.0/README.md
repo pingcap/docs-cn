@@ -1,11 +1,13 @@
 # TiDB 中文技术文档
 
+<!-- markdownlint-disable MD007 -->
+
 ## 目录
 
 + TiDB 简介与整体架构
   - [TiDB 简介](overview.md#tidb-简介)
   - [TiDB 整体架构](overview.md#tidb-整体架构)
-- [TiDB 快速入门指南](QUICKSTART.md)
++ [TiDB 快速入门指南](QUICKSTART.md)
 + TiDB 用户文档
   + TiDB 数据库管理
     - [TiDB 服务](sql/tidb-server.md)
@@ -73,7 +75,7 @@
     - [历史数据回溯](op-guide/history-read.md)
 + TiDB 运维文档
   - [软硬件环境需求](op-guide/recommendation.md)
-  + 部署集群 
+  + 部署集群
     - [Ansible 部署方案（强烈推荐）](op-guide/ansible-deployment.md)
     - [离线 Ansible 部署方案](op-guide/offline-ansible-deployment.md)
     - [Docker 部署方案](op-guide/docker-deployment.md)
@@ -108,10 +110,10 @@
 + TiSpark 文档
   - [TiSpark 快速入门指南](tispark/tispark-quick-start-guide.md)
   - [TiSpark 用户指南](tispark/tispark-user-guide.md)
-- [常见问题与解答(FAQ)](FAQ.md)
-- [最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
-- [版本发布历史](releases/README.md)
-- [TiDB 路线图](https://github.com/pingcap/docs-cn/blob/master/ROADMAP.md)
++ [常见问题与解答(FAQ)](FAQ.md)
++ [最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
++ [版本发布历史](releases/README.md)
++ [TiDB 路线图](https://github.com/pingcap/docs-cn/blob/master/ROADMAP.md)
 + 用户案例
   - [海航](http://t.cn/REXx0Qe)
   - [Mobike](http://t.cn/RT8FbP6)
@@ -136,8 +138,6 @@
   - [知乎专栏](https://zhuanlan.zhihu.com/newsql)
   - [Weekly](https://pingcap.com/weekly/)
   - [英文文档](https://pingcap.com/docs)
-
-
 
 ## TiDB 简介
 
@@ -195,14 +195,14 @@ TiKV Server 负责存储数据，从外部看 TiKV 是一个分布式的提供�
 
 高可用是 TiDB 的另一大特点，TiDB/TiKV/PD 这三个组件都能容忍部分实例失效，不影响整个集群的可用性。下面分别说明这三个组件的可用性、单个实例失效后的后果以及如何恢复。
 
-+   TiDB
++ TiDB
 
     TiDB 是无状态的，推荐至少部署两个实例，前端通过负载均衡组件对外提供服务。当单个实例失效时，会影响正在这个实例上进行的 Session，从应用的角度看，会出现单次请求失败的情况，重新连接后即可继续获得服务。单个实例失效后，可以重启这个实例或者部署一个新的实例。
 
-+   PD
++ PD
 
     PD 是一个集群，通过 Raft 协议保持数据的一致性，单个实例失效时，如果这个实例不是 Raft 的 leader，那么服务完全不受影响；如果这个实例是 Raft 的 leader，会重新选出新的 Raft leader，自动恢复服务。PD 在选举的过程中无法对外提供服务，这个时间大约是3秒钟。推荐至少部署三个 PD 实例，单个实例失效后，重启这个实例或者添加新的实例。
 
-+   TiKV
++ TiKV
 
     TiKV 是一个集群，通过 Raft 协议保持数据的一致性（副本数量可配置，默认保存三副本），并通过 PD 做负载均衡调度。单个节点失效时，会影响这个节点上存储的所有 Region。对于 Region 中的 Leader 节点，会中断服务，等待重新选举；对于 Region 中的 Follower 节点，不会影响服务。当某个 TiKV 节点失效，并且在一段时间内（默认 10 分钟）无法恢复，PD 会将其上的数据迁移到其他的 TiKV 节点上。
