@@ -43,12 +43,12 @@ category: how-to
 - 一个新的 VPC
 - 一台 ECS 实例作为堡垒机
 - 一个托管版 ACK（阿里云 Kubernetes）集群以及一系列 worker 节点：
-    - 属于一个伸缩组的 2 台 ECS 实例（2 核 2G）托管版 Kubernetes 的默认伸缩组中必须至少有两台实例，用于承载整个的系统服务，例如 CoreDNS
+    - 属于一个伸缩组的 2 台 ECS 实例（2 核 2 GB）托管版 Kubernetes 的默认伸缩组中必须至少有两台实例，用于承载整个的系统服务，例如 CoreDNS
     - 属于一个伸缩组的 3 台 `ecs.g5.large` 实例，用于部署 PD
     - 属于一个伸缩组的 3 台 `ecs.i2.2xlarge` 实例，用于部署 TiKV
     - 属于一个伸缩组的 2 台 `ecs.c5.4xlarge` 实例用于部署 TiDB
     - 属于一个伸缩组的 1 台 `ecs.c5.xlarge` 实例用于部署监控组件
-    - 一块 100GB 的云盘用作监控数据存储
+    - 一块 100 GB 的云盘用作监控数据存储
 
 除了默认伸缩组之外的其它所有实例都是跨可用区部署的。而伸缩组 (Auto-scaling Group) 能够保证集群的健康实例数等于期望数值。因此，当发生节点故障甚至可用区故障时，伸缩组能够自动为我们创建新实例来确保服务可用性。
 
@@ -168,7 +168,7 @@ kubectl get pods --namespace tidb -o wide --watch
 terraform destroy
 ```
 
-假如 Kubernetes 集群没有创建成功，那么在 destroy 时会出现报错，无法进行正常清理。此时需要手动将 kubernetes 资源从本地状态中移除：
+假如 Kubernetes 集群没有创建成功，那么在 destroy 时会出现报错，无法进行正常清理。此时需要手动将 Kubernetes 资源从本地状态中移除：
 
 {{< copyable "shell-regular" >}}
 
@@ -244,7 +244,7 @@ module "tidb-cluster-staging" {
 | `ack` | 封装目标 Kubernetes 集群信息的结构体，必填 | `nil` |
 | `cluster_name` | TiDB 集群名，必填且必须唯一 | `nil` |
 | `tidb_version` | TiDB 集群版本 | `v3.0.0` |
-| `tidb_cluster_chart_version` | `tidb-cluster` helm chart 的版本 | `v1.0.0-beta.3"` |
+| `tidb_cluster_chart_version` | `tidb-cluster` helm chart 的版本 | `v1.0.0-beta.3` |
 | `pd_count` | PD 节点数 | 3 |
 | `pd_instance_type` | PD 实例类型 | `ecs.g5.large` |
 | `tikv_count` | TiKV 节点数 | 3 |
