@@ -64,4 +64,4 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
     - 如果 TiDB 版本 < 2.1.9，则 `db-type="pb"`。
     - 如果 TiDB 版本 > = 2.1.9，则 `db-type="file"` 或 `db-type="pb"`。
 
-* 如果下游为 MySQL/TiDB，数据同步后可以使用 [sync-diff-inspector](/reference/tools/sync-diff-inspector.md) 进行数据校验。
+* 如果下游为 MySQL/TiDB，数据同步后可以使用 [sync-diff-inspector](/reference/tools/sync-diff-inspector/sync-diff-inspector.md) 进行数据校验。
