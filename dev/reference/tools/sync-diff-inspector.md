@@ -15,6 +15,7 @@ This guide introduces the key features of sync-diff-inspector and describes how 
 > - TiDB uses the `utf8_bin` collation. If you need to compare the data in MySQL with that in TiDB, pay attention to the collation configuration of MySQL tables. If the primary key or unique key is the `varchar` type and the collation configuration in MySQL differs from that in TiDB, then the final check result might be incorrect because of the collation issue. You need to add collation to the sync-diff-inspector configuration file.
 > - If you configure the `tidb-instance-id` to divide data into chunks according to TiDB statistics, try to guarantee the accuracy of statistics. You can manually run the `analyze table {table_name}` command when the TiDB server *workload is light*.
 > - Pay special attention to `table-rules`. If you configure `schema-pattern="test1"` and `target-schema="test2"`, the `test1` schema in the source database and the `test2` schema in the target database are compared. If the source database has a `test2` schema, this `test2` schema is also compared with the `test2` schema in the target database.
+> - sync_diff_inspector saves the check status to the `sync_diff_inspector` schema in the target database during checking. You need to ensure that database users have read and write privileges of corresponding schemas.
 
 ## Key features
 
@@ -33,7 +34,7 @@ log-level = "info"
 
 # sync-diff-inspector divides the data into multiple chunks based on the primary key,
 # unique key, or the index, and then compares the data of each chunk.
-# Use "chunk-size" to set the size of a chunk.
+# Compare data in each chunk. Use "chunk-size" to set the size of a chunk.
 chunk-size = 1000
 
 # The number of goroutines created to check data
@@ -46,10 +47,17 @@ sample-percent = 100
 # If disabled, data is compared line by line.
 use-checksum = true
 
-# If set to true, data check is ignored. If set false, data is checked.
-ignore-data-check = false
+# If it is set to true, data is checked only by calculating checksum. Data is not checked after inspection, even if the upstream and downstream checksums are inconsistent.
+only-use-checksum = false
 
-# If set to true, the table struct comparison is ignored.
+# Whether to use the checkpoint of the last check. If it is enabled, the inspector only checks the last unverified chunks and chunks that failed the verification.
+use-checkpoint = true
+
+# If it is set to true, data check is ignored.
+# If it is set to false, data is checked.
+ignore-struct-check = false
+
+# If it is set to true, the table struct comparison is ignored.
 # If set to false, the table struct is compared.
 ignore-struct-check = false
 
