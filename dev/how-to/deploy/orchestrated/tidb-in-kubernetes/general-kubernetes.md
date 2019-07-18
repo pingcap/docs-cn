@@ -9,7 +9,7 @@ category: how-to
 
 ## 前置条件
 
-### TiDB Operator 部署完成
+### TiDB Operator 已部署
 
 如果该 Kubernetes 集群中尚未部署 TiDB Operator，请参考：[TiDB Operator](/how-to/deploy/tidb-operator.md) 完成 TiDB Operator 的部署
 
