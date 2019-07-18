@@ -9,45 +9,45 @@ category: how-to
 
 ## 前置条件
 
-### TiDB Operator 已部署
+* TiDB Operator 已部署
 
-如果该 Kubernetes 集群中尚未部署 TiDB Operator，请参考：[TiDB Operator](/how-to/deploy/tidb-operator.md) 完成 TiDB Operator 的部署
+    如果该 Kubernetes 集群中尚未部署 TiDB Operator，请参考：[TiDB Operator](/how-to/deploy/tidb-operator.md) 完成 TiDB Operator 的部署
 
-### Helm 添加仓库
+* Helm 添加仓库
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-``` shell
-helm repo add pingcap http://charts.pingcap.org/
-```
+    ``` shell
+    helm repo add pingcap http://charts.pingcap.org/
+    ```
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-``` shell
-helm repo list
-```
+    ``` shell
+    helm repo list
+    ```
 
-然后可以查看可用的 chart：
+    然后可以查看可用的 chart：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-``` shell
-helm repo update
-```
+    ``` shell
+    helm repo update
+    ```
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-``` shell
-helm search tidb-cluster -l
-```
+    ``` shell
+    helm search tidb-cluster -l
+    ```
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-``` shell
-helm search tidb-operator -l
-```
+    ``` shell
+    helm search tidb-operator -l
+    ```
 
-## 配置
+## 配置 TiDB 集群
 
 通过下面命令获取待安装的 tidb-cluster chart 的 `values.yaml` 配置文件：
 
@@ -64,7 +64,7 @@ helm inspect values pingcap/tidb-cluster --version=<chartVersion> > /home/tidb/<
 
 根据需要修改上述配置文件，有关配置信息请参考 [TiDB 集群部署配置文档](/reference/configuration/tidb-in-kubernetes/cluster-configuration.md)。
 
-## 部署
+## 部署 TiDB 集群
 
 TiDB Operator 部署并配置完成后，可以通过下面命令部署 TiDB 集群：
 
