@@ -9,11 +9,11 @@ category: reference
 
 ## 配置参数
 
-TiDB Operator 使用 Helm 部署和管理 TiDB 集群，TiDB 集群的部署配置项见如下列表。`tidb-cluster` 的 `charts/tidb-cluster/values.yaml` 文件默认提供了基本的配置，通过这个基本配置，可以快速启动一个 TiDB 集群，但是如果用户需要特殊配置或是用于生产环境，则需要根据以下列表手动配置对应的配置项。
+TiDB Operator 使用 Helm 部署和管理 TiDB 集群，TiDB 集群的部署配置项见如下列表。通过 Helm 获取的配置文件默认提供了基本的配置，通过这个基本配置，可以快速启动一个 TiDB 集群，但是如果用户需要特殊配置或是用于生产环境，则需要根据以下列表手动配置对应的配置项。
 
 > **注意：**
 >
-> 下文用 `values.yaml` 指代 `charts/tidb-cluster/values.yaml`。
+> 下文用 `values.yaml` 指代要修改的 TiDB 集群配置文件。
 
 | 参数名 | 说明 | 默认值 |
 | :----- | :---- | :----- |
@@ -186,21 +186,27 @@ affinity:
 
 ### 数据的容灾
 
-数据的容灾由 TiDB 集群自身的数据调度算法保证，TiDB Operator 唯一要做的是从 TiKV 运行的节点上收集拓扑信息，并调用 PD 接口将这些信息设置为 TiKV 的 store labels 信息，这样 TiDB 集群就能基于这些信息来调度数据副本。
+在开始数据容灾配置前，首先请阅读[集群拓扑信息配置](/how-to/deploy/geographic-redundancy/location-awareness.md)（该文档描述了 TiDB 集群数据容灾的实现原理）。
 
-目前 TiDB Operator 只能识别特定的几个 label，所以只能使用下面的标签来设置 Node 的拓扑信息：
+在 Kubernetes 上集成该功能，需要如下操作：
 
-* `region`：该 Node 节点所在的 Region
-* `zone`：该 Node 节点所在的 zone
-* `rack`：该 Node 节点所在的 rack
-* `kubernetes.io/hostname`：该 node 节点的 host 名字
+* 为 PD 设置拓扑位置 Label 集合
 
-可以通过下面的命令给 node 打标签：
+    > **注意：**
+    >
+    > 目前 PD 暂不支持名字中带 `/` 的 Label
 
-{{< copyable "shell-regular" >}}
+    用 Kubernetes 集群 Node 节点上描述拓扑位置的 Label 集合替换 `pd.config` 配置项中里的 `location-labels` 信息。
 
-```shell
-$ kubectl label node <nodeName> region=<regionName> zone=<zoneName> rack=<rackName> kubernetes.io/hostname=<hostName>
-```
+    如果当前 Kubernetes 集群的 Node 节点没有表示拓扑位置的 Label，或者 Label 名字中带有 `/`，可以通过下面的命令手动给 Node 增加标签：
 
-上述命令中的标签并非全部必须设置，可根据实际情况进行选择。
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    $ kubectl label node <nodeName> region=<regionName> zone=<zoneName> rack=<rackName> kubernetes.io/hostname=<hostName>
+    ```
+
+* 为 TiKV 节点设置所在的 Node 节点的拓扑信息
+
+    TiDB Operator 会自动为 TiKV 获取其所在 Node 节点的拓扑信息，并调用 PD 接口将这些信息设置为 TiKV 的 store labels 信息，这样 TiDB 集群就能基于这些信息来调度数据副本。
+
