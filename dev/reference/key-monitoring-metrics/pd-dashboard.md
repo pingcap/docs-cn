@@ -39,10 +39,10 @@ category: reference
 - Schedule operator timeout：已超时的 operator 的数量
 - Schedule operator replaced or canceled：已取消或者被替换的 operator 的数量
 - Schedule operators count by state：不同状态的 operator 的数量
-- 99% Operator finish duration：已完成的 operator 中，99% 所需花费的时间
-- 50% Operator finish duration：已完成的 operator 中，50% 所需花费的时间
-- 99% Operator step duration：已完成的 operator 的步骤中，99% 所需花费的时间
-- 50% Operator step duration：已完成的 operator 的步骤中，50% 所需花费的时间
+- 99% Operator finish duration：99% 已完成 operator 所花费的最长时间
+- 50% Operator finish duration：50% 已完成 operator 所花费的最长时间
+- 99% Operator step duration：99% 已完成的 operator 步骤所花费的最长时间
+- 50% Operator step duration：50% 已完成的 operator 步骤所花费的最长时间
 
 ![PD Dashboard - Operator metrics](/media/pd-dashboard-operator-v2.png)
 
@@ -97,7 +97,7 @@ category: reference
 ## gRPC
 
 - Completed commands rate：gRPC 命令的完成速率
-- 99% Completed commands duration：99% 记录的最长消耗时间
+- 99% Completed commands duration：99% 命令的最长消耗时间
 
 ![PD Dashboard - gRPC metrics](/media/pd-dashboard-grpc-v2.png)
 
