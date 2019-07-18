@@ -17,7 +17,8 @@ In addition, the Kafka version of TiDB-Binlog is also provided.
 
 | Package name | OS | Architecture | SHA256 checksum |
 |:---|:---|:---|:---|
-| [tidb-latest-linux-amd64.tar.gz](http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz) (TiDB-Binlog, Lightning) | Linux | amd64 |[tidb-latest-linux-amd64.sha256](http://download.pingcap.org/tidb-latest-linux-amd64.sha256)|
+| [tidb-v3.0-linux-amd64.tar.gz](http://download.pingcap.org/tidb-v3.0-linux-amd64.tar.gz) (stable TiDB-Binlog, Lightning) | Linux | amd64 |[tidb-v3.0-linux-amd64.sha256](http://download.pingcap.org/tidb-v3.0-linux-amd64.sha256)|
+| [tidb-latest-linux-amd64.tar.gz](http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz) (unstable TiDB-Binlog, Lightning) | Linux | amd64 |[tidb-latest-linux-amd64.sha256](http://download.pingcap.org/tidb-latest-linux-amd64.sha256)|
 | [tidb-binlog-kafka-linux-amd64.tar.gz](http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.tar.gz) (the Kafka version of TiDB-Binlog) | Linux | amd64 |[tidb-binlog-kafka-linux-amd64.sha256](http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.sha256)|
 
 ## DM (Data Migration)

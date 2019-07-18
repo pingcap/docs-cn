@@ -22,25 +22,18 @@ It is recommended to deploy TiDB Binlog using TiDB-Ansible. If you just want to 
 
     | tidb-ansible branch | TiDB version | Note |
     | ------------------- | ------------ | ---- |
-    | release-2.0 | 2.0 version | The latest 2.0 stable version. You can use it in the production environment. |
-    | release-2.1 | 2.1 version | The latest 2.1 stable version. You can use it in the production environment (recommended). |
-    | master | master version | This version includes the latest features with a daily update. |
+    | release-3.0 | 3.0 stable | The latest 3.0 stable version. For use in production environments (recommended). |
+    | master | 3.0 unstable | This version includes the latest features with a daily update. |
 
 2. Use the following command to download the corresponding branch of TiDB-Ansible from the [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible) on GitHub. The default folder name is `tidb-ansible`.
 
-    - Download the 2.0 version:
-        
-        ```bash
-        $ git clone -b release-2.0-new-binlog https://github.com/pingcap/tidb-ansible.git
-        ```
-
-    - Download the 2.1 version:
+    - Download the 3.0 branch:
 
         ```bash
-        $ git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
+        $ git clone -b release-3.0 https://github.com/pingcap/tidb-ansible.git
         ```
 
-    - Download the master version:
+    - Download the master branch:
 
         ```bash
         $ git clone https://github.com/pingcap/tidb-ansible.git
@@ -242,20 +235,19 @@ It is recommended to deploy TiDB Binlog using TiDB-Ansible. If you just want to 
 Run the following commands to download the packages:
 
 ```bash
+version="v3.0" for latest stable release of TiDB 3.0
+wget https://download.pingcap.org/tidb-v3.0-linux-amd64.{tar.gz,sha256}
+
+# Check the file integrity. If the result is OK, the file is correct.
+sha256sum -c tidb-v3.0-linux-amd64.sha256
+```
+
+```bash
 version="latest" for nightly builds
 wget https://download.pingcap.org/tidb-latest-linux-amd64.{tar.gz,sha256}
 
 # Check the file integrity. If the result is OK, the file is correct.
 sha256sum -c tidb-latest-linux-amd64.sha256
-```
-
-For TiDB v2.1.0 GA or later versions, Pump and Drainer are already included in the TiDB download package. For other TiDB versions, you need to download Pump and Drainer separately using the following command:
-
-```bash
-wget https://download.pingcap.org/tidb-binlog-$version-linux-amd64.{tar.gz,sha256}
-
-# Check the file integrity. If the result is OK, the file is correct.
-sha256sum -c tidb-binlog-$version-linux-amd64.sha256
 ```
 
 ### The usage example

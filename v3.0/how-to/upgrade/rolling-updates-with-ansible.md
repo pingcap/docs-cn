@@ -17,8 +17,7 @@ When you perform a rolling update for a TiDB cluster, the service is shut down s
 
 - To upgrade between large versions, you must upgrade [`tidb-ansible`](https://github.com/pingcap/tidb-ansible).
 
-    - To upgrade TiDB 2.0 (TiDB 2.0.1 or later) or TiDB 2.1 RC version to TiDB 2.1 GA version, see [TiDB 2.1 Upgrade Guide](https://pingcap.com/docs/v2.1/how-to/upgrade/from-previous-version/).
-    - To upgrade TiDB 2.0 (TiDB 2.0.1 or later) or TiDB 2.1 RC to TiDB 3.0, see [TiDB 3.0 Upgrade Guide](/how-to/upgrade/from-previous-version.md).
+    - To upgrade TiDB 2.0 (TiDB 2.0.1 or later) or TiDB 2.1 to TiDB 3.0, see [TiDB 3.0 Upgrade Guide](/how-to/upgrade/from-previous-version.md).
 
 - For a minor upgrade, it is also recommended to update `tidb-ansible` for the latest configuration file templates, features, and bug fixes.
 
@@ -26,10 +25,10 @@ When you perform a rolling update for a TiDB cluster, the service is shut down s
 
 1. Edit the value of the `tidb_version` parameter in the `/home/tidb/tidb-ansible/inventory.ini` file, and specify the version number you need to upgrade to.
 
-    For example, to upgrade from `v2.0.6` to `v2.0.7`:
+    For example, to upgrade from `v3.0.0` to `v3.0.1`:
 
     ```
-    tidb_version = v2.0.7
+    tidb_version = v3.0.1
     ```
 
     > **Note:**
@@ -54,12 +53,18 @@ When you perform a rolling update for a TiDB cluster, the service is shut down s
 You can also download the binary manually. Use `wget` to download the binary and replace the existing binary in `/home/tidb/tidb-ansible/resource/bin/` with it manually.
 
 ```
-wget http://download.pingcap.org/tidb-v2.0.7-linux-amd64.tar.gz
+wget http://download.pingcap.org/tidb-v3.0.1-linux-amd64.tar.gz
 ```
 
 > **Note:**
 >
 > Remember to replace the version number in the download link with the one you need.
+
+To download the most recent stable release of TiDB 3.0, you can use the version `v3.0`, like this:
+
+```
+wget http://download.pingcap.org/tidb-v3.0-linux-amd64.tar.gz
+```
 
 If you use `tidb-ansible` of the master branch, download the binary using the following command:
 

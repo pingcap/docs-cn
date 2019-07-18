@@ -134,10 +134,8 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
 
     | TiDB version | tidb-ansible tag | Note |
     | :-------- | :---------------- | :--- |
-    | 2.0 version | v2.0.10, v2.0.11 | It is the latest 2.0 stable version which can be used in the production environment. |
-    | 2.1 version | v2.1.1 ~ v2.1.8 | It is the latest 2.1 stable version which can be used in the production environment (recommended). |
-    | 3.0 version | v3.0.0-beta, v3.0.0-beta.1 | It is currently a beta version which is not recommended to use in the production environment. |
-    | `master` branch | None | It includes the newest features and is updated on a daily basis, so it is not recommended to use it in the production environment. |
+    | 3.0 version | v3.0.0 | TiDB v3.0 GA release (recommended) |
+    | `master` branch | None | Includes the newest features and is updated on a daily basis (not recommended to use in a production environment) |
 
 2. Download the [corresponding TiDB-Ansible versions](https://github.com/pingcap/tidb-ansible/tags) from the [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`.
 
@@ -145,7 +143,7 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
     >
     > It is required to use the corresponding tidb-ansible version when you deploy and upgrade the TiDB cluster. If you deploy TiDB using a mismatched version of tidb-ansible (such as using tidb-ansible v2.1.4 to deploy TiDB v2.1.6), an error might occur.
     
-    - Download the tidb-ansible version with a specified tag:
+    - Download the tidb-ansible version with a specified tag or branch:
     
         ```
         $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
