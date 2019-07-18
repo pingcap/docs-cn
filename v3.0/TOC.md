@@ -233,6 +233,7 @@
       - [`USE`](reference/sql/statements/use.md)
     - [Constraints](reference/sql/constraints.md)
     - [Generated Columns](reference/sql/generated-columns.md)
+    - [Partitioning](reference/sql/partitioning.md)
     - [Character Set](reference/sql/character-set.md)
   + Configuration
     + tidb-server

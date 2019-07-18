@@ -1,6 +1,6 @@
 ---
 title: Generated Columns
-summary: Learn how to use generated columns
+summary: Learn how to use generated columns.
 category: reference
 ---
 
