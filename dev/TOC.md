@@ -33,7 +33,7 @@
         - [阿里云](how-to/deploy/orchestrated/tidb-in-kubernetes/alibaba-cloud.md)
         - [AWS EKS](how-to/deploy/orchestrated/tidb-in-kubernetes/aws-eks.md)
         - [GCP](how-to/deploy/orchestrated/tidb-in-kubernetes/gcp-gke.md)
-        - [标准 Kubernetes 集群](how-to/deploy/orchestrated/tidb-in-kubernetes/general-k8s.md)
+        - [标准 Kubernetes 集群](how-to/deploy/orchestrated/tidb-in-kubernetes/general-kubernetes.md)
     + 跨地域冗余
       - [跨数据中心部署方案](how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](how-to/deploy/geographic-redundancy/location-awareness.md)

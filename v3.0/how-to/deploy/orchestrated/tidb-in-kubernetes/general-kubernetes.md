@@ -5,11 +5,13 @@ category: how-to
 
 # 部署 TiDB 集群
 
+本文主要描述了如何在一般的 Kubernetes 集群上通过 TiDB Operator 部署 TiDB 集群
+
 ## 前置条件
 
 ### TiDB Operator 部署完成
 
-如果该 Kubernetes 集群中尚未部署 TiDB Operator， 请参考：[TiDB Operator](/how-to/deploy/tidb-operator.md) 完成 TiDB Operator 的部署
+如果该 Kubernetes 集群中尚未部署 TiDB Operator，请参考：[TiDB Operator](/how-to/deploy/tidb-operator.md) 完成 TiDB Operator 的部署
 
 ### Helm 添加仓库
 

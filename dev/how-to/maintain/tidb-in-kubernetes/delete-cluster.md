@@ -3,11 +3,9 @@ title: 销毁 Kubernetes 上的 TiDB 集群
 category: how-to
 ---
 
-# 销毁 TiDB 集群
+# 销毁 Kubernetes 上的 TiDB 集群
 
-> **警告：**
->
-> 下列命令会彻底删除数据，务必考虑清楚再执行。
+本文描述了如何销毁 Kubernetes 集群上的 TiDB 集群
 
 要销毁 TiDB 集群，执行以下命令：
 
@@ -18,6 +16,10 @@ helm delete ${releaseName} --purge
 ```
 
 上述命令只是删除运行的 Pod，数据仍然会保留。如果你不再需要那些数据，可以通过下面命令清除数据：
+
+> **警告：**
+>
+> 下列命令会彻底删除数据，务必考虑清楚再执行。
 
 {{< copyable "shell-regular" >}}
 
