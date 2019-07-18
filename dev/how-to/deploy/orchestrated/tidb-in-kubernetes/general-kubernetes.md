@@ -47,7 +47,7 @@ helm search tidb-cluster -l
 helm search tidb-operator -l
 ```
 
-## 配置
+## 配置 TiDB 集群
 
 通过下面命令获取待安装的 tidb-cluster chart 的 `values.yaml` 配置文件：
 
