@@ -64,7 +64,7 @@ helm inspect values pingcap/tidb-cluster --version=<chartVersion> > /home/tidb/<
 
 根据需要修改上述配置文件，有关配置信息请参考 [TiDB 集群部署配置文档](/reference/configuration/tidb-in-kubernetes/cluster-configuration.md)。
 
-## 部署
+## 部署 TiDB 集群
 
 TiDB Operator 部署并配置完成后，可以通过下面命令部署 TiDB 集群：
 
