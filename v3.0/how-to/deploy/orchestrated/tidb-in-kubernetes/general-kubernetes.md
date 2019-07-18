@@ -18,7 +18,12 @@ category: how-to
 {{< copyable "shell-regular" >}}
 
 ``` shell
-helm repo add pingcap http://charts.pingcap.org/ && \
+helm repo add pingcap http://charts.pingcap.org/
+```
+
+{{< copyable "shell-regular" >}}
+
+``` shell
 helm repo list
 ```
 
@@ -27,8 +32,18 @@ helm repo list
 {{< copyable "shell-regular" >}}
 
 ``` shell
-helm repo update && \
-helm search tidb-cluster -l && \
+helm repo update
+```
+
+{{< copyable "shell-regular" >}}
+
+``` shell
+helm search tidb-cluster -l
+```
+
+{{< copyable "shell-regular" >}}
+
+``` shell
 helm search tidb-operator -l
 ```
 
