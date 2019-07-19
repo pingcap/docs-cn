@@ -436,6 +436,8 @@ location_labels = ["host"]
             capacity: "1GB"
         ```
 
+        > **注意**
+        >
         > TiKV 实例数量指每个服务器上 TiKV 的进程数量
         >
         > 推荐设置：`capacity` = MEM_TOTAL * 0.5 / TiKV 实例数量
@@ -452,6 +454,8 @@ location_labels = ["host"]
             # low-concurrency: 8
         ```
 
+        > **注意**
+        >
         > 推荐设置：TiKV 实例数量 \* 参数值 = CPU 核心数量 \* 0.8
 
     3. 如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
@@ -461,6 +465,8 @@ location_labels = ["host"]
           capacity: 0
         ```
 
+        > **注意**
+        >
         > 推荐配置：`capacity` = 磁盘总容量 / TiKV 实例数量
         >
         > 例如：`capacity: "100GB"`

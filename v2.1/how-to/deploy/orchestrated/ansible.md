@@ -456,6 +456,8 @@ location_labels = ["host"]
           capacity: 0
         ```
 
+        > **注意**
+        >
         > 推荐配置：`capacity` = 磁盘总容量 / TiKV 实例数量
         >
         > 例如：`capacity: "100GB"`

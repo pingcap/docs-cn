@@ -103,6 +103,8 @@ $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
         # low-concurrency: 8
     ```
 
+    > **注意**
+    >
     > 单机多 TiKV 实例（进程）情况下，需要修改这三个参数
     >
     > 推荐设置：TiKV 实例数量 \* 参数值 = CPU 核心数量 * 0.8
@@ -115,6 +117,8 @@ $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
         capacity: "1GB"
     ```
 
+    > **注意**
+    >
     > 单机多 TiKV 实例（进程）情况下，需要修改 `capacity` 参数
     >
     > 推荐设置：`capacity` = (MEM_TOTAL * 0.5 / TiKV 实例数量)
