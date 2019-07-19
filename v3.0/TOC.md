@@ -229,6 +229,7 @@
       - [`SHOW TABLE STATUS`](reference/sql/statements/show-table-status.md)
       - [`SHOW [GLOBAL|SESSION] VARIABLES`](reference/sql/statements/show-variables.md)
       - [`SHOW WARNINGS`](reference/sql/statements/show-warnings.md)
+      - [`SPLIT REGION`](reference/sql/statements/split-region.md)
       - [`START TRANSACTION`](reference/sql/statements/start-transaction.md)
       - [`TRACE`](reference/sql/statements/trace.md)
       - [`TRUNCATE`](reference/sql/statements/truncate.md)
