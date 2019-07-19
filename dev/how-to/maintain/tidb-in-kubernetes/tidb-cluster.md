@@ -1,9 +1,9 @@
 ---
-title: TiDB Cluster Operation Guide
-summary: TiDB Cluster Operation Guide
+title: Manage the TiDB Cluster in Kubernetes
+summary: Learn how to manage the TiDB cluster in Kubernetes.
 category: how-to
 ---
-# TiDB Cluster Operation Guide
+# Manage the TiDB Cluster in Kubernetes
 
 TiDB Operator can manage multiple clusters in the same Kubernetes cluster.
 
@@ -47,11 +47,11 @@ After Helm is deployed, get the values.yaml of current tidb-cluster chart:
 mkdir -p /home/tidb/${releaseName} && \
 helm inspect values pingcap/tidb-cluster --version=${chartVersion} > /home/tidb/${releaseName}/values-${releaseName}.yaml
 ```
-> **Note:** 
+> **Note:**
 >
 > The rest of the document will use `values.yaml` to reference `/home/tidb/${releaseName}/values-${releaseName}.yaml`
 
-## Deploy TiDB cluster
+## Deploy the TiDB cluster
 
 After TiDB Operator and Helm are deployed correctly and configuration completed, TiDB cluster can be deployed using following command:
 
@@ -69,7 +69,7 @@ Check Pod status with following command:
 kubectl get po -n ${namespace} -l app.kubernetes.io/instance=${releaseName}
 ```
 
-## Access TiDB cluster
+## Access the TiDB cluster
 
 By default TiDB service is exposed using [`NodePort`](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport). You can modify it to `ClusterIP` which will disable access from outside of the cluster. Or modify it to [`LoadBalancer`](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer) if the underlining Kubernetes supports this kind of service.
 
@@ -114,7 +114,7 @@ echo ${PASSWORD}
         Access TiDB:
 
         {{< copyable "shell-regular" >}}
-        
+
         ```shell
         mysql -h 127.0.0.1 -P 4000 -u root -p
         ```
@@ -127,7 +127,7 @@ echo ${PASSWORD}
 
         You can access TiDB via any node's IP with tidb service node port. The node port is the port after `4000`, usually greater than `30000`.
 
-## Scale TiDB cluster
+## Scale the TiDB cluster
 
 TiDB Operator supports both horizontal and vertical scaling, but there are some caveats for storage vertical scaling.
 
@@ -156,7 +156,7 @@ To scale up/down TiDB cluster, modify the cpu/memory/storage limits and requests
 >
 > See the above caveats of vertical scaling. Before [#35](https://github.com/pingcap/tidb-operator/issues/35) is fixed, you have to manually configure the block cache size for TiKV in `values.yaml`.
 
-## Upgrade TiDB cluster
+## Upgrade the TiDB cluster
 
 Upgrade TiDB cluster is similar to scale TiDB cluster, but by changing `image` of PD, TiKV and TiDB to different image versions in `values.yaml`. And then run the following command:
 
@@ -168,7 +168,7 @@ helm upgrade ${releaseName} pingcap/tidb-cluster --version=${chartVersion} -f /h
 
 For minor version upgrade, updating the `image` should be enough. When TiDB major version is out, the better way to update is to fetch the new values.yaml from new tidb-operator chart as described in the beginning and then merge the old values.yaml with new values.yaml. And then upgrade as above.
 
-## Change TiDB cluster Configuration
+## Change the TiDB cluster Configuration
 
 Since `v1.0.0`, TiDB operator can perform rolling-update on configuration updates. This feature is disabled by default in favor of backward compatibility, you can enable it by setting `enableConfigMapRollout` to `true` in your helm values file.
 
@@ -180,7 +180,7 @@ Since `v1.0.0`, TiDB operator can perform rolling-update on configuration update
 >
 > Changing this variable against a running cluster will trigger an rolling-update of PD/TiKV/TiDB pods even if there's no configuration change.
 
-## Destroy TiDB cluster
+## Destroy the TiDB cluster
 
 To destroy TiDB cluster, run the following command:
 

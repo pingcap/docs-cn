@@ -1,10 +1,10 @@
 ---
-title: Manage Local PV
+title: Local PV Configuration
 summary: Learn how to manage local PV (Persistent Volume).
 category: how-to
 ---
 
-# Manage Local PV
+# Local PV Configuration
 
 TiDB is a database with high availability. Data is stored and replicated on TiKV, the storage layer of TiDB, which can tolerate the inavailability of nodes. TiKV uses local storage with high IOPS and high throughput, such as Local SSDs, to enhance database capacity.
 
