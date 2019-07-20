@@ -5,7 +5,7 @@ category: how-to
 
 # 部署 TiDB 集群
 
-本文主要描述了如何在一般的 Kubernetes 集群上通过 TiDB Operator 部署 TiDB 集群
+本文主要描述了如何在标准的 Kubernetes 集群上通过 TiDB Operator 部署 TiDB 集群
 
 ## 前置条件
 
