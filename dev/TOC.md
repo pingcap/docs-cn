@@ -98,6 +98,7 @@
   + Scale
     - [Scale using Ansible](how-to/scale/with-ansible.md)
     - [Scale a TiDB Cluster](how-to/scale/horizontally.md)
+    - [Scale in Kubernetes](how-to/scale/in-kubernetes.md)
   + Upgrade
     - [Upgrade to Development Series](how-to/upgrade/from-previous-version.md)
     - [Rolling updates with Ansible](how-to/upgrade/rolling-updates-with-ansible.md)
