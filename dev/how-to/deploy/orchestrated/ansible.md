@@ -436,7 +436,7 @@ location_labels = ["host"]
             capacity: "1GB"
         ```
 
-        > **注意**
+        > **注意：**
         >
         > TiKV 实例数量指每个服务器上 TiKV 的进程数量
         >
