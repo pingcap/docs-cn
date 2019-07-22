@@ -339,6 +339,7 @@
   - [TiDB Lightning FAQs](faq/tidb-lightning.md)
   - [Data Migration FAQ](faq/data-migration.md) 
   - [Upgrade FAQs](faq/upgrade.md)
+  - [TiDB FAQs in Kubernetes](faq/tidb-in-kubernetes.md)
 + Support
   - [Support Resources](support-resources.md)
   - [Report an Issue](report-issue.md)
