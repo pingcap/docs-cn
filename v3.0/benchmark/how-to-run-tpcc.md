@@ -1,9 +1,9 @@
 ---
-title: How to Test TiDB Using TPC-C
+title: How to Run TPC-C Test on TiDB
 category: benchmark
 ---
 
-# How to Test TiDB Using TPC-C
+# How to Run TPC-C Test on TiDB
 
 This document describes how to test TiDB using [TPC-C](http://www.tpc.org/tpcc/).
 
