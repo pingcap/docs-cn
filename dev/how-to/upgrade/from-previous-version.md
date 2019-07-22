@@ -105,7 +105,7 @@ $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
 
     > **注意：**
     >
-    > 单机多 TiKV 实例（进程）情况下，需要修改这三个参数
+    > 单机多 TiKV 实例（进程）情况下，需要修改这三个参数。
     >
     > 推荐设置：TiKV 实例数量 \* 参数值 = CPU 核心数量 * 0.8
 
