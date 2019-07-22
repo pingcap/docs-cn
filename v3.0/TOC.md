@@ -5,7 +5,13 @@
 
 ## 目录
 
-+ [关于 TiDB](overview.md)
++ 关于 TiDB
+  - [TiDB 简介](overview.md)
+  + Benchmark 测试
+    - [如何用 Sysbench 测试 TiDB](benchmark/how-to-run-sysbench.md)
+    - [如何对 TiDB 进行 TPC-C 测试](benchmark/how-to-run-tpcc.md)
+    - [Sysbench 性能对比 - v3.0 对比 v2.1](benchmark/sysbench-v4.md)
+    - [TPC-C 性能对比 - v3.0 对比 v2.1](benchmark/tpcc.md)
 + 主要概念
   - [整体架构](architecture.md)
   + 核心特性
@@ -356,6 +362,7 @@
     - [3.0.0-beta.1](releases/3.0.0-beta.1.md)
     - [3.0.0-beta](releases/3.0beta.md)
   + v2.1
+    - [2.1.15](releases/2.1.15.md)
     - [2.1.14](releases/2.1.14.md)
     - [2.1.13](releases/2.1.13.md)
     - [2.1.12](releases/2.1.12.md)
