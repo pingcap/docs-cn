@@ -119,7 +119,7 @@ $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
         capacity: "1GB"
     ```
 
-    > **注意**
+    > **注意：**
     >
     > 单机多 TiKV 实例（进程）情况下，需要修改 `capacity` 参数
     >
