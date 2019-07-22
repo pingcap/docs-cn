@@ -63,6 +63,7 @@
   + Configure
     - [Time Zone](how-to/configure/time-zone.md)
     - [Memory Control](how-to/configure/memory-control.md)
+    - [Cluster Initialization](how-to/configure/initialize-cluster.md)
   + Secure
     + Transport Layer Security (TLS)
       - [Enable TLS For MySQL Clients](how-to/secure/enable-tls-clients.md)
