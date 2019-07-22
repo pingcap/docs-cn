@@ -100,6 +100,7 @@
     - [Troubleshoot Cluster Setup](how-to/troubleshoot/cluster-setup.md)
     - [Troubleshoot TiDB Data Migration](how-to/troubleshoot/data-migration.md)
     - [Troubleshoot TiDB Lightning](how-to/troubleshoot/tidb-lightning.md)
+    - [Troubleshoot TiDB in Kubernetes](how-to/troubleshoot/tidb-in-kubernetes.md)
 + Reference
   - [MySQL Compatibility](reference/mysql-compatibility.md)
   + SQL
