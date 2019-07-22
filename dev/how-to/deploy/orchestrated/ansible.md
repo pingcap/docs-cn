@@ -428,7 +428,7 @@ location_labels = ["host"]
 
 - 服务配置文件参数调整
 
-    1. 多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中 `block-cache-size` 下面的 `capacity` 参数:
+    1. 多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中 `block-cache-size` 下面的 `capacity` 参数：
 
         ```
         storage:
@@ -458,7 +458,7 @@ location_labels = ["host"]
         >
         > 推荐设置：TiKV 实例数量 \* 参数值 = CPU 核心数量 \* 0.8
 
-    3. 如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
+    3. 如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数：
 
         ```
         raftstore:
@@ -475,7 +475,7 @@ location_labels = ["host"]
 
 #### 部署目录调整
 
-部署目录通过 `deploy_dir` 变量控制，默认全局变量已设置为 `/home/tidb/deploy`，对所有服务生效。如数据盘挂载目录为 `/data1`，可设置为 `/data1/deploy`，样例如下:
+部署目录通过 `deploy_dir` 变量控制，默认全局变量已设置为 `/home/tidb/deploy`，对所有服务生效。如数据盘挂载目录为 `/data1`，可设置为 `/data1/deploy`，样例如下：
 
 ```
 ## Global variables
