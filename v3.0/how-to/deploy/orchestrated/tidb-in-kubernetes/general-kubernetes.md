@@ -3,7 +3,7 @@ title: 在标准 Kubernetes 上部署 TiDB 集群
 category: how-to
 ---
 
-# 部署 TiDB 集群
+# 在标准 Kubernetes 上部署 TiDB 集群
 
 本文主要描述了如何在标准的 Kubernetes 集群上通过 TiDB Operator 部署 TiDB 集群
 
