@@ -169,7 +169,7 @@ The first TiDB component we are going to install is the TiDB Operator, using a H
 
 ```shell
 kubectl apply -f ./manifests/crd.yaml && \
-kubectl apply -f ./manifests/gke/persistent-disk.yml && \
+kubectl apply -f ./manifests/gke/persistent-disk.yaml && \
 helm install pingcap/tidb-operator -n tidb-admin --namespace=tidb-admin --version=${chartVersion}
 ```
 
