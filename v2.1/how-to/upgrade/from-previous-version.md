@@ -121,7 +121,7 @@ $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
 
     > **注意：**
     >
-    > 单机多 TiKV 实例（进程）情况下，需要修改 `capacity` 参数
+    > 单机多 TiKV 实例（进程）情况下，需要修改 `capacity` 参数。
     >
     > 推荐设置：`capacity` = (MEM_TOTAL * 0.5 / TiKV 实例数量)
 
