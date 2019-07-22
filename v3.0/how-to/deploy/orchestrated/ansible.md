@@ -428,7 +428,7 @@ location_labels = ["host"]
 
 - 服务配置文件参数调整
 
-    1. 多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中 `block-cache-size` 下面的 `capacity` 参数:
+    1. 多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中 `block-cache-size` 下面的 `capacity` 参数：
 
         ```
         storage:
