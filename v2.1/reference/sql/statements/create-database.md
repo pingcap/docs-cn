@@ -76,3 +76,4 @@ mysql> SHOW TABLES;
 * [USE](/reference/sql/statements/use.md)
 * [ALTER DATABASE](/reference/sql/statements/alter-database.md)
 * [DROP DATABASE](/reference/sql/statements/drop-database.md)
+* [SHOW DATABASES](/reference/sql/statements/show-databases.md)
