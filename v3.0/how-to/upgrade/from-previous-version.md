@@ -22,6 +22,8 @@ aliases: ['/docs-cn/op-guide/tidb-v3.0-upgrade-guide/']
 
 ## 在中控机器上安装 Ansible 及其依赖
 
+> **注意：**
+>
 > 如果已经安装了 Ansible 及其依赖，可跳过该步骤。
 
 TiDB-Ansible release-3.0 版本依赖 Ansible 2.4.2 及以上版本（`ansible>=2.4.2`，最好是 2.7.11 版本），另依赖 Python 模块：`jinja2>=2.9.6` 和 `jmespath>=0.9.0`。为方便管理依赖，建议使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-ansible-及其依赖)。
