@@ -454,7 +454,7 @@ location_labels = ["host"]
             # low-concurrency: 8
         ```
 
-        > **注意**
+        > **注意：**
         >
         > 推荐设置：TiKV 实例数量 \* 参数值 = CPU 核心数量 \* 0.8
 
