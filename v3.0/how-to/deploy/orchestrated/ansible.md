@@ -438,7 +438,7 @@ location_labels = ["host"]
 
         > **注意：**
         >
-        > TiKV 实例数量指每个服务器上 TiKV 的进程数量
+        > TiKV 实例数量指每个服务器上 TiKV 的进程数量。
         >
         > 推荐设置：`capacity` = MEM_TOTAL * 0.5 / TiKV 实例数量
 
