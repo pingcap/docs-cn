@@ -91,7 +91,7 @@ $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
 
 如之前自定义过 TiDB 集群组件配置文件，请参照备份文件修改 `/home/tidb/tidb-ansible/conf` 下对应配置文件。
 
-**注意以下参数变更**
+**注意以下参数变更：**
 
 - TiKV 配置中 `end-point-concurrency` 变更为 `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数：
 
