@@ -3,8 +3,6 @@ title: TiDB 配置文件描述
 category: reference
 ---
 
-<!-- markdownlint-disable MD001 -->
-
 # TiDB 配置文件描述
 
 <!-- markdownlint-disable MD001 -->
