@@ -450,7 +450,17 @@ location_labels = ["host"]
         - 推荐设置：实例数 \* 参数值 = CPU 核数 * 0.8。
 
     3. 如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
-        - `capacity` = 磁盘总容量 / TiKV 实例数量，例如 "100GB"
+
+        ```
+        raftstore:
+          capacity: 0
+        ```
+
+        > **注意：**
+        >
+        > 推荐配置：`capacity` = 磁盘总容量 / TiKV 实例数量
+        >
+        > 例如：`capacity: "100GB"`
 
 ### inventory.ini 变量调整
 
@@ -580,6 +590,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | TiDB | tidb_port | 4000  | 应用及 DBA 工具访问通信端口 |
 | TiDB | tidb_status_port | 10080  | TiDB 状态信息上报通信端口 |
 | TiKV | tikv_port | 20160 |  TiKV 通信端口  |
+| TiKV | tikv_status_port   | 20180     | 上报 TiKV 状态的通信端口 |
 | PD | pd_client_port | 2379 | 提供 TiDB 和 PD 通信端口 |
 | PD | pd_peer_port | 2380 | PD 集群节点间通信端口 |
 | Pump | pump_port | 8250  | Pump 通信端口 |
@@ -616,11 +627,11 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 
 ### 如何检测 NTP 服务是否正常
 
-执行以下命令输出 `running` 表示 NTP 服务正在运行:
+执行以下命令输出 `running` 表示 NTP 服务正在运行：
 
 ```
 $ sudo systemctl status ntpd.service
-● ntpd.service - Network Time Service
+  ntpd.service - Network Time Service
    Loaded: loaded (/usr/lib/systemd/system/ntpd.service; disabled; vendor preset: disabled)
    Active: active (running) since 一 2017-12-18 13:13:19 CST; 3s ago
 ```

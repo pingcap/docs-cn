@@ -149,7 +149,7 @@ helm search tidb-operator -l
 
 ``` shell
 kubectl apply -f ./manifests/crd.yaml && \
-kubectl apply -f ./manifests/gke/persistent-disk.yml && \
+kubectl apply -f ./manifests/gke/persistent-disk.yaml && \
 helm install pingcap/tidb-operator -n tidb-admin --namespace=tidb-admin --version=${chartVersion}
 ```
 
