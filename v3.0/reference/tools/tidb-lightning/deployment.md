@@ -30,6 +30,8 @@ aliases: ['/docs-cn/tools/lightning/deployment/']
   | CREATE | Databases, tables |
   | DROP | Databases, tables |
   | ALTER | Tables |
+  
+  如果 TiDB Lightning 配置项 `checksum = true`，需要下游 TiDB admin 用户权限。
 
 ## 硬件需求
 
