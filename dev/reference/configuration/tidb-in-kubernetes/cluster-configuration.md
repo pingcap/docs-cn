@@ -194,7 +194,7 @@ affinity:
 
     > **注意：**
     >
-    > 目前 PD 暂不支持名字中带 `/` 的 Label，除了 `kubernetes.io/hostname`
+    > 除 `kubernetes.io/hostname` 外，目前 PD 暂不支持名字中带 `/` 的 Label。
 
     用 Kubernetes 集群 Node 节点上描述拓扑位置的 Label 集合替换 `pd.config` 配置项中里的 `location-labels` 信息。
 
