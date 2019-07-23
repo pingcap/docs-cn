@@ -186,7 +186,7 @@ affinity:
 
 ### 数据的容灾
 
-在开始数据容灾配置前，首先请阅读[集群拓扑信息配置](/how-to/deploy/geographic-redundancy/location-awareness.md)（该文档描述了 TiDB 集群数据容灾的实现原理）。
+在开始数据容灾配置前，首先请阅读[集群拓扑信息配置](/how-to/deploy/geographic-redundancy/location-awareness.md)。该文档描述了 TiDB 集群数据容灾的实现原理。
 
 在 Kubernetes 上集成该功能，需要如下操作：
 
