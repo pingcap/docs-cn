@@ -20,13 +20,13 @@ category: reference
 
 ## TiDB Lightning
 
-如需下载最新版本的 [TiDB Lightning](/reference/tools/tidb-lightning/overview.md), 点击下表中的下载链接即可。
+如需下载最新版本的 [TiDB Lightning](/reference/tools/tidb-lightning/overview.md)，点击下表中的下载链接即可。
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
 | [tidb-toolkit-latest-linux-amd64.tar.gz](http://download.pingcap.org/tidb-toolkit-latest-linux-amd64.tar.gz) | Linux | amd64 | [tidb-toolkit-latest-linux-amd64.sha256](http://download.pingcap.org/tidb-toolkit-latest-linux-amd64.sha256) |
 
-## TiDB-DM (Data Migration)
+## TiDB DM (Data Migration)
 
 如需下载最新版本的 [DM](https://github.com/pingcap/dm)，点击下表中的下载链接即可。你也可以参考 [DM Release](https://github.com/pingcap/dm/releases) 页面。
 
