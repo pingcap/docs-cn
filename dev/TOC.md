@@ -80,6 +80,7 @@
     - [Overview](how-to/monitor/overview.md)
     - [Monitor a TiDB Cluster](how-to/monitor/monitor-a-cluster.md)
     - [TiDB Binlog Monitoring](how-to/monitor/tidb-binlog.md)
+    - [Monitor a TiDB Cluster in Kubernetes](how-to/monitor/tidb-in-kubernetes.md)
   + Migrate
     - [Overview](how-to/migrate/overview.md)
     + Migrate from MySQL
