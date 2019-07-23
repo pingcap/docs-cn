@@ -10,22 +10,22 @@ aliases: ['/docs-cn/tools/download/']
 
 ## TiDB Binlog
 
-如需下载最新版本的 [TiDB Binlog](/reference/tidb-binlog-overview.md)，直接下载 TiDB 安装包即可，因为 TiDB Binlog 包含在 TiDB 安装包中。
+如需下载 V3.0 版本的 [TiDB Binlog](/reference/tidb-binlog-overview.md)，直接下载 TiDB 安装包即可，因为 TiDB Binlog 包含在 TiDB 安装包中。
 
 以下表格中也提供了 Kafka 版本的 TiDB Binlog 下载链接。
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
-| [tidb-latest-linux-amd64.tar.gz](http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz) (TiDB Binlog) | Linux | amd64 |[tidb-latest-linux-amd64.sha256](http://download.pingcap.org/tidb-latest-linux-amd64.sha256)|
+| [tidb-v3.0.0-linux-amd64.tar.gz](http://download.pingcap.org/tidb-v3.0.0-linux-amd64.tar.gz) (TiDB Binlog) | Linux | amd64 |[tidb-v3.0.0-linux-amd64.sha256](http://download.pingcap.org/tidb-v3.0.0-linux-amd64.sha256)|
 | [tidb-binlog-kafka-linux-amd64.tar.gz](http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.tar.gz)（Kafka 版本的 TiDB Binlog）| Linux | amd64 |[tidb-binlog-kafka-linux-amd64.sha256](http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.sha256)|
 
 ## TiDB Lightning
 
-如需下载最新版本的 [TiDB Lightning](/reference/tools/tidb-lightning/overview.md)，点击下表中的下载链接即可。
+如需下载 V3.0 版本的 [TiDB Lightning](/reference/tools/tidb-lightning/overview.md)，点击下表中的下载链接即可。
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
-| [tidb-toolkit-latest-linux-amd64.tar.gz](http://download.pingcap.org/tidb-toolkit-latest-linux-amd64.tar.gz) | Linux | amd64 | [tidb-toolkit-latest-linux-amd64.sha256](http://download.pingcap.org/tidb-toolkit-latest-linux-amd64.sha256) |
+| [tidb-toolkit-v3.0.0-linux-amd64.tar.gz](http://download.pingcap.org/tidb-toolkit-v3.0.0-linux-amd64.tar.gz) | Linux | amd64 | [tidb-toolkit-v3.0.0-linux-amd64.sha256](http://download.pingcap.org/tidb-toolkit-v3.0.0-linux-amd64.sha256) |
 
 ## TiDB DM (Data Migration)
 
