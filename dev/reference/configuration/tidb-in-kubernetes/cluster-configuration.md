@@ -9,7 +9,7 @@ category: reference
 
 ## 配置参数
 
-TiDB Operator 使用 Helm 部署和管理 TiDB 集群，TiDB 集群的部署配置项见如下列表。通过 Helm 获取的配置文件默认提供了基本的配置，通过这个基本配置，可以快速启动一个 TiDB 集群，但是如果用户需要特殊配置或是用于生产环境，则需要根据以下列表手动配置对应的配置项。
+TiDB Operator 使用 Helm 部署和管理 TiDB 集群，通过 Helm 获取的配置文件默认提供了基本的配置，通过这个基本配置，可以快速启动一个 TiDB 集群，但是如果用户需要特殊配置或是用于生产环境，则需要根据以下配置参数列表手动配置对应的配置项。
 
 > **注意：**
 >
@@ -194,19 +194,21 @@ affinity:
 
     > **注意：**
     >
-    > 目前 PD 暂不支持名字中带 `/` 的 Label
+    > 目前 PD 暂不支持名字中带 `/` 的 Label，除了 `kubernetes.io/hostname`
 
     用 Kubernetes 集群 Node 节点上描述拓扑位置的 Label 集合替换 `pd.config` 配置项中里的 `location-labels` 信息。
 
-    如果当前 Kubernetes 集群的 Node 节点没有表示拓扑位置的 Label，或者 Label 名字中带有 `/`，可以通过下面的命令手动给 Node 增加标签：
+* 为 TiKV 节点设置所在的 Node 节点的拓扑信息
+
+    TiDB Operator 会自动为 TiKV 获取其所在 Node 节点的拓扑信息，并调用 PD 接口将这些信息设置为 TiKV 的 store labels 信息，这样 TiDB 集群就能基于这些信息来调度数据副本。
+
+    如果当前 Kubernetes 集群的 Node 节点没有表示拓扑位置的 Label，或者已有的拓扑 Label 名字中带有 `/`，可以通过下面的命令手动给 Node 增加标签：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
     $ kubectl label node <nodeName> region=<regionName> zone=<zoneName> rack=<rackName> kubernetes.io/hostname=<hostName>
     ```
-
-* 为 TiKV 节点设置所在的 Node 节点的拓扑信息
-
-    TiDB Operator 会自动为 TiKV 获取其所在 Node 节点的拓扑信息，并调用 PD 接口将这些信息设置为 TiKV 的 store labels 信息，这样 TiDB 集群就能基于这些信息来调度数据副本。
+    
+    其中 `region`、`zone`、`rack`、`kubernetes.io/hostname` 只是举例，要添加的 Label 名字和数量可以任意定义，只要符合规范且和 `pd.config` 里的 `location-labels` 设置的 Labels 保持一致即可
 
