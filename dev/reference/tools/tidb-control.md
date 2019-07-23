@@ -1,6 +1,7 @@
 ---
 title: TiDB Controller 使用说明
 category: reference
+aliases: ['/docs-cn/tools/tidb-controller/']
 ---
 
 # TiDB Controller 使用说明
@@ -117,7 +118,7 @@ tidb-ctl base64decode [db_name.table_name] [base64_data]
 tidb-ctl base64decode [table_id] [base64_data]
 ```
 
-* 准备环境，执行以下SQL
+1. 准备环境，执行以下SQL
 
     ```sql
     use test;
@@ -126,7 +127,7 @@ tidb-ctl base64decode [table_id] [base64_data]
     alter table t add column e varchar(20);
     ```
 
-* 用 http api 接口获取 mvcc 数据
+2. 用 http api 接口获取 mvcc 数据
 
     ```shell
     ▶ curl "http://$IP:10080/mvcc/index/test/t/a/1?a=1"
@@ -156,15 +157,15 @@ tidb-ctl base64decode [table_id] [base64_data]
     }%
     ```
 
-* 用 `base64decode` 解码 handle id (uint64).
+3. 用 `base64decode` 解码 handle id (uint64).
 
-  ```shell
-  ▶ tidb-ctl base64decode AAAAAAAAAAE=
-  hex: 0000000000000001
-  uint64: 1
-  ```
+    ```shell
+    ▶ tidb-ctl base64decode AAAAAAAAAAE=
+    hex: 0000000000000001
+    uint64: 1
+    ```
 
-* 用 `base64decode` 解码行数据。
+4. 用 `base64decode` 解码行数据。
 
     ```shell
     ▶ ./tidb-ctl base64decode test.t CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgIDwjYuu0Rk=
