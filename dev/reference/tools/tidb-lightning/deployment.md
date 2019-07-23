@@ -18,7 +18,7 @@ category: reference
     bin/tidb-lightning-ctl -switch-mode=normal
     ```
 
-- TiDB Lightning 需要下游 TiDB 的权限：
+- TiDB Lightning 需要下游 TiDB 有如下权限：
 
   | 权限 | 作用域 |
   |----:|:------|
