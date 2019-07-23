@@ -5,10 +5,16 @@
 
 ## 目录
 
-+ [关于 TiDB](overview.md)
++ 关于 TiDB
+  - [TiDB 简介](overview.md)
+  + Benchmark 测试
+    - [如何用 Sysbench 测试 TiDB](benchmark/how-to-run-sysbench.md)
+    - [如何对 TiDB 进行 TPC-C 测试](benchmark/how-to-run-tpcc.md)
+    - [Sysbench 性能对比 - v3.0 对比 v2.1](benchmark/sysbench-v4.md)
+    - [TPC-C 性能对比 - v3.0 对比 v2.1](benchmark/tpcc.md)
 + 主要概念
   - [整体架构](architecture.md)
-  + [核心特性](key-features.md)
+  + 核心特性
     - [水平扩展](key-features.md#水平扩展)
     - [高可用](key-features.md#高可用)
 + 操作指南
@@ -25,6 +31,7 @@
     - [TiSpark 教程](how-to/get-started/tispark.md)
   + 部署
     - [软硬件环境需求](how-to/deploy/hardware-recommendations.md)
+    - [Kubernetes 上的 TiDB 集群环境需求](how-to/deploy/tidb-in-kubernetes-prerequisites.md)
     + 集群部署方式
       - [使用 Ansible 部署（推荐）](how-to/deploy/orchestrated/ansible.md)
       - [使用 Ansible 离线部署](how-to/deploy/orchestrated/offline-ansible.md)
@@ -33,6 +40,7 @@
         - [阿里云](how-to/deploy/orchestrated/tidb-in-kubernetes/alibaba-cloud.md)
         - [AWS EKS](how-to/deploy/orchestrated/tidb-in-kubernetes/aws-eks.md)
         - [GCP](how-to/deploy/orchestrated/tidb-in-kubernetes/gcp-gke.md)
+        - [标准 Kubernetes 集群](how-to/deploy/orchestrated/tidb-in-kubernetes/general-kubernetes.md)
     + 跨地域冗余
       - [跨数据中心部署方案](how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](how-to/deploy/geographic-redundancy/location-awareness.md)
@@ -67,8 +75,8 @@
     - [定位慢查询](how-to/maintain/identify-slow-queries.md)
     - [TiDB Binlog 集群运维](how-to/maintain/tidb-binlog.md)
     + Kubernetes 上的 TiDB 集群运维
-      - [管理 TiDB 集群](how-to/maintain/tidb-in-kubernetes/tidb-cluster.md)
-      - [维护 TiDB 节点](how-to/maintain/tidb-in-kubernetes/tidb-node.md)
+      - [销毁 TiDB 集群](how-to/maintain/tidb-in-kubernetes/delete-cluster.md)
+      - [维护 TiDB 集群所在节点](how-to/maintain/tidb-in-kubernetes/k8s-node-for-tidb.md)
       - [收集日志](how-to/maintain/tidb-in-kubernetes/log-collecting.md)
       - [集群故障自动转移](how-to/maintain/tidb-in-kubernetes/auto-failover.md)
   + 扩容缩容
@@ -230,6 +238,7 @@
     - [分区表](reference/sql/partitioning.md)
     - [字符集](reference/sql/character-set.md)
     - [SQL 模式](reference/sql/sql-mode.md)
+    - [视图](reference/sql/view.md)
   + 配置
     + tidb-server
       - [MySQL 系统变量](reference/configuration/tidb-server/mysql-variables.md)
@@ -344,6 +353,7 @@
 + [TiDB 路线图](roadmap.md)
 + [版本发布历史](releases/rn.md)
   + v3.0
+    - [3.0.1](releases/3.0.1.md)
     - [3.0 GA](releases/3.0-ga.md)
     - [3.0.0-rc.3](releases/3.0.0-rc.3.md)
     - [3.0.0-rc.2](releases/3.0.0-rc.2.md)
@@ -351,6 +361,7 @@
     - [3.0.0-beta.1](releases/3.0.0-beta.1.md)
     - [3.0.0-beta](releases/3.0beta.md)
   + v2.1
+    - [2.1.15](releases/2.1.15.md)
     - [2.1.14](releases/2.1.14.md)
     - [2.1.13](releases/2.1.13.md)
     - [2.1.12](releases/2.1.12.md)

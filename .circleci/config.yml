@@ -34,10 +34,7 @@ jobs:
     docker:
       - image: andelf/doc-build:0.1.9
     working_directory: ~/pingcap/docs-cn
-    branches:
-      only:
-        - master
-        - website-preview
+
     steps:
       - checkout
 
