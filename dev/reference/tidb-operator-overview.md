@@ -14,7 +14,7 @@ TiDB Operator 是 Kubernetes 上的 TiDB 集群自动运维系统，提供包括
 TiDB Operator 包含自定义资源 `TidbCluster`、`tidb-controller-manager` 组件、`tidb-scheduler` 组件、以及 `tkctl` 命令行工具：
 
 * `TidbCluster` 是使用 CRD（`CustomResourceDefinition`）定义的自定义资源，用于描述用户期望的 TiDB 集群 状态；
-* `tidb-controller-manager` 是一组 Kubernetes 上的自定义控制器，这些控制器会不断对比 `TidbCluster` 对象中记录的期望状态与 TiDB 集群的实际状态，并调整 Kubernetes 中的资源驱动 TiDB 集群满足期望状态；
+* `tidb-controller-manager` 是一组 Kubernetes 上的自定义控制器。这些控制器会不断对比 `TidbCluster` 对象中记录的期望状态与 TiDB 集群的实际状态，并调整 Kubernetes 中的资源以驱动 TiDB 集群满足期望状态；
 * `tidb-scheduler` 是一个 Kubernetes 调度器扩展，它为 Kubernetes 调度器注入 TiBD 集群特有的调度逻辑；
 * `tkctl` 是 Kubernetes 上 TiDB 集群的命令行接口，用于运维集群和诊断集群问题。
 
@@ -40,7 +40,7 @@ TiDB Operator 提供了多种方式来部署 Kubernetes 上的 TiDB 集群：
 
 + 生产环境：
     - 公有云：参考 [AWS 部署文档](/deploy/orchestrated/tidb-in-kubernetes/aws-eks.md)、[GCP 部署文档](how-to/deploy/orchestrated/tidb-in-kubernetes/gcp-gke.md)或[阿里云部署文档](how-to/deploy/orchestrated/tidb-in-kubernetes/alibaba-cloud.md)在对应的公有云上一键部署生产可用的 TiDB 集群并进行后续的运维管理；
-    - 现有 Kubernetes 集群：首先按照[部署 TiDB Operator](how-to/deploy/tidb-operator.md)在集群中安装 TiDB Operator，再根据[在标准 Kubernetes 集群上部署 TiDB 集群](#未merge)来部署你的 TiDB 集群。 对于生产级 TiDB 集群，你还需要参考 [TiDB 集群环境要求](reference/configuration/tidb-in-kubernetes/local-pv-configuration.md)调整 Kubernetes 集群配置并根据[本地 PV 配置](reference/configuration/tidb-in-kubernetes/local-pv-configuration.md)为你的 Kubernetes 集群配置本地 PV，以满足 TiKV 的低延迟本地存储需求。
+    - 现有 Kubernetes 集群：首先按照[部署 TiDB Operator](how-to/deploy/tidb-operator.md)在集群中安装 TiDB Operator，再根据[在标准 Kubernetes 集群上部署 TiDB 集群](how-to/deploy/orchestrated/tidb-in-kubernetes/general-kubernetes.md)来部署你的 TiDB 集群。对于生产级 TiDB 集群，你还需要参考 [TiDB 集群环境要求](reference/configuration/tidb-in-kubernetes/local-pv-configuration.md)调整 Kubernetes 集群配置并根据[本地 PV 配置](reference/configuration/tidb-in-kubernetes/local-pv-configuration.md)为你的 Kubernetes 集群配置本地 PV，以满足 TiKV 的低延迟本地存储需求。
 
 在任何环境上部署前，都可以参考 [TiDB 集群配置](reference/configuration/tidb-in-kubernetes/cluster-configuration.md)来自定义 TiDB 配置。
 
@@ -58,12 +58,12 @@ TiDB Operator 提供了多种方式来部署 Kubernetes 上的 TiDB 集群：
 
 当集群出现问题需要进行诊断时，你可以：
 
-+ 查阅[Kubernetes 上的 TiDB FAQ](faq/tidb-in-kubernetes.md) 寻找是否存在现成的解决办法；
-+ 参考[Kubernetes 上的 TiDB 故障诊断](how-to/troubleshoot/tidb-in-kubernetes.md)解决故障。
++ 查阅 [Kubernetes 上的 TiDB FAQ](faq/tidb-in-kubernetes.md) 寻找是否存在现成的解决办法；
++ 参考 [Kubernetes 上的 TiDB 故障诊断](how-to/troubleshoot/tidb-in-kubernetes.md)解决故障。
 
 Kubernetes 上的 TiDB 提供了专用的命令行工具 `tkctl` 用于集群管理和辅助诊断，同时，在 Kubernetes 上，TiDB 的部分生态工具的使用方法也有所不同，你可以：
 
-+ 参考[tkctl 使用指南](reference/tools/tkctl.md) 来使用 `tkctl`；
-+ 参考[Kubernetes 上的 TiDB 相关工具使用](#未提交) 来了解 TiDB 生态工具在 Kubernetes 上的使用方法。
++ 参考 [`tkctl` 使用指南](reference/tools/tkctl.md) 来使用 `tkctl`；
++ 参考 [Kubernetes 上的 TiDB 相关工具使用](#未提交) 来了解 TiDB 生态工具在 Kubernetes 上的使用方法。
 
 最后，当 TiDB Operator 发布新版本时，你可以参考[升级 TiDB Operator](how-to/upgrade/tidb-operator.md) 进行版本更新。
