@@ -32,12 +32,13 @@
   + 部署
     - [软硬件环境需求](how-to/deploy/hardware-recommendations.md)
     + 使用 Kubernetes 部署
-      - [阿里云](how-to/deploy/orchestrated/tidb-in-kubernetes/alibaba-cloud.md)
-      - [AWS EKS](how-to/deploy/orchestrated/tidb-in-kubernetes/aws-eks.md)
-      - [GCP](how-to/deploy/orchestrated/tidb-in-kubernetes/gcp-gke.md)
       - [Kubernetes 上的 TiDB 集群环境需求](how-to/deploy/tidb-in-kubernetes-prerequisites.md)
       - [部署 TiDB Operator](how-to/deploy/tidb-operator.md)
       - [访问 Kubernetes 上的 TiDB 集群](how-to/deploy/orchestrated/tidb-in-kubernetes/access-tidb.md)
+      - [标准 Kubernetes 集群](how-to/deploy/orchestrated/tidb-in-kubernetes/general-kubernetes.md)
+      - [阿里云](how-to/deploy/orchestrated/tidb-in-kubernetes/alibaba-cloud.md)
+      - [AWS EKS](how-to/deploy/orchestrated/tidb-in-kubernetes/aws-eks.md)
+      - [GCP](how-to/deploy/orchestrated/tidb-in-kubernetes/gcp-gke.md)
     + 集群部署方式
       - [使用 Ansible 部署（推荐）](how-to/deploy/orchestrated/ansible.md)
       - [使用 Ansible 离线部署](how-to/deploy/orchestrated/offline-ansible.md)
@@ -74,8 +75,8 @@
     - [定位慢查询](how-to/maintain/identify-slow-queries.md)
     - [TiDB Binlog 集群运维](how-to/maintain/tidb-binlog.md)
     + Kubernetes 上的 TiDB 集群运维
-      - [管理 TiDB 集群](how-to/maintain/tidb-in-kubernetes/tidb-cluster.md)
-      - [维护 TiDB 节点](how-to/maintain/tidb-in-kubernetes/tidb-node.md)
+      - [销毁 TiDB 集群](how-to/maintain/tidb-in-kubernetes/delete-cluster.md)
+      - [维护 TiDB 集群所在节点](how-to/maintain/tidb-in-kubernetes/k8s-node-for-tidb.md)
       - [收集日志](how-to/maintain/tidb-in-kubernetes/log-collecting.md)
       - [集群故障自动转移](how-to/maintain/tidb-in-kubernetes/auto-failover.md)
   + 扩容缩容
