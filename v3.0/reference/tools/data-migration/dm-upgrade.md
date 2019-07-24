@@ -41,8 +41,8 @@ Go Version: go version go1.11.2 linux/amd64
 启动 dm-master/dm-worker 前确保废弃的配置信息已经删除，且没有多余的配置项，否则会启动失败。可根据失败信息删除多余的配置。
 可能遗留的废弃配置:
 
-- dm-worker.toml中的 `meta-file`
-- task.yaml中的 `mysql-instances` 中的 `server-id`
+- dm-worker.toml 中的 `meta-file`
+- task.yaml 中的 `mysql-instances` 中的 `server-id`
 
 ## 升级到 v1.0.0-143-gcd753da
 
