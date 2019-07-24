@@ -19,6 +19,30 @@ category: reference
 > - 若无特殊说明，各升级操作示例均假定升级前已停止所有同步任务，升级完成后手动重新启动所有同步任务。
 > - 以下版本升级指引逆序展示。
 
+## 升级到 v1.0.0-rc.1-12-gaa39ff9
+
+### 版本信息
+
+```bash
+Release Version: v1.0.0-rc.1-12-gaa39ff9
+Git Commit Hash: aa39ff981dfb3e8c0fa4180127246b253604cc34
+Git Branch: dm-master
+UTC Build Time: 2019-07-24 02:26:08
+Go Version: go version go1.11.2 linux/amd64
+```
+
+### 主要变更
+
+从此版本开始，所有的配置进行严格的检查，遇到不识别的配置会报错，这样的目的是为了确保用户始终准确的了解自己的配置。
+
+### 升级操作示例
+
+启动 dm-master/dm-worker 前确保废弃的配置信息已经删除，且没有多余的配置项，否则会启动失败。可根据失败信息删除多余的配置。
+可能遗留的废弃配置:
+
+- dm-worker.toml中的 `meta-file`
+- task.yaml中的 `mysql-instances` 中的 `server-id`
+
 ## 升级到 v1.0.0-143-gcd753da
 
 ### 版本信息
