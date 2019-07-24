@@ -9,11 +9,11 @@ category: reference
 
 ## 配置参数
 
-TiDB Operator 使用 Helm 部署和管理 TiDB 集群，TiDB 集群的部署配置项见如下列表。`tidb-cluster` 的 `charts/tidb-cluster/values.yaml` 文件默认提供了基本的配置，通过这个基本配置，可以快速启动一个 TiDB 集群，但是如果用户需要特殊配置或是用于生产环境，则需要根据以下列表手动配置对应的配置项。
+TiDB Operator 使用 Helm 部署和管理 TiDB 集群。通过 Helm 获取的配置文件默认提供了基本的配置，通过这个基本配置，可以快速启动一个 TiDB 集群。但是如果用户需要特殊配置或是用于生产环境，则需要根据以下配置参数列表手动配置对应的配置项。
 
 > **注意：**
 >
-> 下文用 `values.yaml` 指代 `charts/tidb-cluster/values.yaml`。
+> 下文用 `values.yaml` 指代要修改的 TiDB 集群配置文件。
 
 | 参数名 | 说明 | 默认值 |
 | :----- | :---- | :----- |
@@ -68,7 +68,6 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群，TiDB 集群的部署配�
 | `tikv.nodeSelector` | `tikv.nodeSelector`确保 TiKV Pods 只调度到以该键值对作为标签的节点，详情参考：[nodeselector](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#nodeselector) | `{}` |
 | `tikv.tolerations` | `tikv.tolerations` 应用于 TiKV Pods，允许 TiKV Pods 调度到含有指定 taints 的节点上，详情参考：[taint-and-toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration) | `{}` |
 | `tikv.annotations` | 为 TiKV Pods 添加特定的 `annotations` | `{}` |
-| `tikv.storeLabels` | 用于指定 TiKV 位置信息的 Labels，PD 基于这些标签来调度 TiKV 的数据副本，标签的优先级按照其顺序递减。比如，`["zone","rack"]` 表示优先把数据副本调度到位于不同 `zone` 的 TiKV 上，如果 `zone` 数量不够，再调度到位于不同 `rack` 的 TiKV 上。如果不指定，系统会设置 `["region", "zone", "rack", "host"]` 作为默认值。这些标签生效的前提是 Kubernetes 的 Node 上也含有这些标签。**注意**：目前不支持该标签名中包含 `/`。| `nil` |
 | `tikv.defaultcfBlockCacheSize` | 指定 block 缓存大小，block 缓存用于缓存未压缩的 block，较大的 block 缓存设置可以加快读取速度。一般推荐设置为 `tikv.resources.limits.memory` 的 30%-50%<br>如果 TiDB Operator 版本 > v1.0.0-beta.3，请通过 `tikv.config` 配置：<br>`[rocksdb.defaultcf]`<br>`block-cache-size = "1GB"`<br>从 TiKV v3.0.0 开始，不再需要配置 `[rocksdb.defaultcf].block-cache-size` 和 `[rocksdb.writecf].block-cache-size`，改为配置 `[storage.block-cache].capacity` | `1GB` |
 | `tikv.writecfBlockCacheSize` | 指定 writecf 的 block 缓存大小，一般推荐设置为 `tikv.resources.limits.memory` 的 10%-30%<br>如果 TiDB Operator 版本 > v1.0.0-beta.3，请通过 `tikv.config` 配置：<br>`[rocksdb.writecf]`<br>`block-cache-size = "256MB"`<br>从 TiKV v3.0.0 开始，不再需要配置 `[rocksdb.defaultcf].block-cache-size` 和 `[rocksdb.writecf].block-cache-size`，改为配置 `[storage.block-cache].capacity` | `256MB` |
 | `tikv.readpoolStorageConcurrency` | TiKV 存储的高优先级/普通优先级/低优先级操作的线程池大小<br>如果 TiDB Operator 版本 > v1.0.0-beta.3，请通过 `tikv.config` 配置：<br>`[readpool.storage]`<br>`high-concurrency = 4`<br>`normal-concurrency = 4`<br>`low-concurrency = 4` | `4` |
@@ -187,21 +186,28 @@ affinity:
 
 ### 数据的容灾
 
-数据的容灾由 TiDB 集群自身的数据调度算法保证，TiDB Operator 唯一要做的是从 TiKV 运行的节点上收集拓扑信息，并调用 PD 接口将这些信息设置为 TiKV 的 store labels 信息，这样 TiDB 集群就能基于这些信息来调度数据副本。
+在开始数据容灾配置前，首先请阅读[集群拓扑信息配置](/how-to/deploy/geographic-redundancy/location-awareness.md)。该文档描述了 TiDB 集群数据容灾的实现原理。
 
-目前 TiDB Operator 只能识别特定的几个 label，所以只能使用下面的标签来设置 Node 的拓扑信息：
+在 Kubernetes 上支持数据容灾的功能，需要如下操作：
 
-* `region`：该 Node 节点所在的 Region
-* `zone`：该 Node 节点所在的 zone
-* `rack`：该 Node 节点所在的 rack
-* `kubernetes.io/hostname`：该 node 节点的 host 名字
+* 为 PD 设置拓扑位置 Label 集合
 
-可以通过下面的命令给 node 打标签：
+    > **注意：**
+    >
+    > 除 `kubernetes.io/hostname` 外，目前 PD 暂不支持名字中带 `/` 的 Label。
 
-{{< copyable "shell-regular" >}}
+    用 Kubernetes 集群 Node 节点上描述拓扑位置的 Label 集合替换 `pd.config` 配置项中里的 `location-labels` 信息。
 
-```shell
-$ kubectl label node <nodeName> region=<regionName> zone=<zoneName> rack=<rackName> kubernetes.io/hostname=<hostName>
-```
+* 为 TiKV 节点设置所在的 Node 节点的拓扑信息
 
-上述命令中的标签并非全部必须设置，可根据实际情况进行选择。
+    TiDB Operator 会自动为 TiKV 获取其所在 Node 节点的拓扑信息，并调用 PD 接口将这些信息设置为 TiKV 的 store labels 信息，这样 TiDB 集群就能基于这些信息来调度数据副本。
+
+    如果当前 Kubernetes 集群的 Node 节点没有表示拓扑位置的 Label，或者已有的拓扑 Label 名字中带有 `/`，可以通过下面的命令手动给 Node 增加标签：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    $ kubectl label node <nodeName> region=<regionName> zone=<zoneName> rack=<rackName> kubernetes.io/hostname=<hostName>
+    ```
+
+    其中 `region`、`zone`、`rack`、`kubernetes.io/hostname` 只是举例，要添加的 Label 名字和数量可以任意定义，只要符合规范且和 `pd.config` 里的 `location-labels` 设置的 Labels 保持一致即可
