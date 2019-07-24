@@ -21,15 +21,15 @@ aliases: ['/docs-cn/tools/lightning/deployment/']
 
 - TiDB Lightning 需要下游 TiDB 的权限：
 
-  | 权限 | 作用域 |
-  |----:|:------|
-  | SELECT | Tables |
-  | INSERT | Tables |
-  | UPDATE | Tables |
-  | DELETE | Tables |
-  | CREATE | Databases, tables |
-  | DROP | Databases, tables |
-  | ALTER | Tables |
+    | 权限 | 作用域 |
+    |----:|:------|
+    | SELECT | Tables |
+    | INSERT | Tables |
+    | UPDATE | Tables |
+    | DELETE | Tables |
+    | CREATE | Databases, tables |
+    | DROP | Databases, tables |
+    | ALTER | Tables |
   
   如果 TiDB Lightning 配置项 `checksum = true`，则 TiDB Lightning 需要有下游 TiDB admin 用户权限。
 
