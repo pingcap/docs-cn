@@ -33,7 +33,7 @@ category: how-to
 | net.bridge.bridge-nf-call-arptables | 1 |
 | net.bridge.bridge-nf-call-ip6tables | 1 |
 
-在设置 `net.bridge.bridge-nf-call-*` 这几项参数时，如果选项不报错，则你可通过如下命令检查是否已经加载该模块：
+在设置 `net.bridge.bridge-nf-call-*` 这几项参数时，如果选项报错，则你可通过如下命令检查是否已经加载该模块：
 
 {{< copyable "shell-regular" >}}
 
