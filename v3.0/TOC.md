@@ -89,6 +89,8 @@
     - [Migrate from Aurora](how-to/migrate/from-aurora.md)
     - [Migrate from CSV](reference/tools/tidb-lightning/csv.md)
   + Maintain
+    + TiDB in Kubernetes
+      - [Maintain Kubernetes Nodes](how-to/maintain/tidb-in-kubernetes/tidb-node.md)
     - [Common Ansible Operations](how-to/deploy/orchestrated/ansible-operations.md)
     - [Backup and Restore](how-to/maintain/backup-and-restore.md)
     - [Identify Slow Queries](how-to/maintain/identify-slow-queries.md)
