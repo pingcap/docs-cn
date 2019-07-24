@@ -297,6 +297,7 @@
   - [TiSpark](reference/tispark.md)
   - [TiDB Binlog Cluster Overview](reference/tidb-binlog-overview.md)
   + Tools
+    - [tkctl](reference/tools/tkctl.md)
     - [Mydumper](reference/tools/mydumper.md)
     - [Syncer](reference/tools/syncer.md)
     - [Loader](reference/tools/loader.md)
