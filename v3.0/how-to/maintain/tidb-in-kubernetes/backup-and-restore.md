@@ -27,10 +27,8 @@ Kubernetes 上的 TiDB 集群支持两种备份策略：
 ### 定时全量备份
 
 定时全量备份是一个与 TiDB 集群一同创建的定时任务，它会像 `crontab` 任务那样周期性地运行。
-Scheduled full backup is created alongside the TiDB cluster, and it runs periodically like the crontab job.
 
 你可以修改 TiDB 集群的 `values.yaml` 文件来配置定时全量备份：
-To configure a scheduled full backup, modify the `scheduledBackup` section in the `values.yaml` file of the TiDB cluster:
 
 * 将 `scheduledBackup.create` 设置为 `true`；
 * 将 `scheduledBackup.storageClassName` 设置为用于存储数据的 PV 的 `storageClass`；
