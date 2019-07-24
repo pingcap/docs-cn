@@ -193,7 +193,6 @@ $ ansible-playbook -i hosts.ini create_users.yml -u root -k
 ## 在部署目标机器上安装 NTP 服务
 
 > 如果你的部署目标机器时间、时区设置一致，已开启 NTP 服务且在正常同步时间，此步骤可忽略。可参考[如何检测 NTP 服务是否正常](#如何检测-ntp-服务是否正常)。
-
 > 该步骤将在部署目标机器上使用系统自带软件源联网安装并启动 NTP 服务，服务使用安装包默认的 NTP server 列表，见配置文件 `/etc/ntp.conf` 中 server 参数，如果使用默认的 NTP server，你的机器需要连接外网。
 > 为了让 NTP 尽快开始同步，启动 NTP 服务前，系统会 ntpdate `hosts.ini` 文件中的 `ntp_server` 一次，默认为 `pool.ntp.org`，也可替换为你的 NTP server。
 
@@ -429,11 +428,19 @@ location_labels = ["host"]
 
 - 服务配置文件参数调整
 
-    1. 多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中的 `block-cache-size` 参数:
-        - `rocksdb defaultcf block-cache-size(GB)` = MEM \* 80% / TiKV 实例数量 \* 30%
-        - `rocksdb writecf block-cache-size(GB)` = MEM \* 80% / TiKV 实例数量 \* 45%
-        - `rocksdb lockcf block-cache-size(GB)` = MEM \* 80% / TiKV 实例数量 \* 2.5% (最小 128 MB)
-        - `raftdb defaultcf block-cache-size(GB)` = MEM \* 80% / TiKV 实例数量 \* 2.5% (最小 128 MB)
+    1. 多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中 `block-cache-size` 下面的 `capacity` 参数：
+
+        ```
+        storage:
+          block-cache:
+            capacity: "1GB"
+        ```
+
+        > **注意：**
+        >
+        > TiKV 实例数量指每个服务器上 TiKV 的进程数量。
+        >
+        > 推荐设置：`capacity` = MEM_TOTAL * 0.5 / TiKV 实例数量
 
     2. 多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中 `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数：
 
@@ -447,10 +454,22 @@ location_labels = ["host"]
             # low-concurrency: 8
         ```
 
-        - 推荐设置：实例数 \* 参数值 = CPU 核数 * 0.8。
+        > **注意：**
+        >
+        > 推荐设置：TiKV 实例数量 \* 参数值 = CPU 核心数量 \* 0.8
 
     3. 如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
-        - `capacity` = 磁盘总容量 / TiKV 实例数量，例如 "100GB"
+
+        ```
+        raftstore:
+          capacity: 0
+        ```
+
+        > **注意：**
+        >
+        > 推荐配置：`capacity` = 磁盘总容量 / TiKV 实例数量
+        >
+        > 例如：`capacity: "100GB"`
 
 ### inventory.ini 变量调整
 
