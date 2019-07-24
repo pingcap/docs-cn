@@ -1,19 +1,19 @@
 ---
-title: TiDB-Lightning 常见问题
+title: TiDB Lightning 常见问题
 category: FAQ
 ---
 
-# TiDB-Lightning 常见问题
+# TiDB Lightning 常见问题
 
-## Lightning 对 TiDB/TiKV/PD 的最低版本要求是多少？
+## TiDB Lightning 对 TiDB/TiKV/PD 的最低版本要求是多少？
 
 最低版本要求是 2.0.9。
 
-## Lightning 支持导入多个库吗？
+## TiDB Lightning 支持导入多个库吗？
 
 支持。
 
-## Lightning 对下游数据库的账号权限要求是怎样的？
+## TiDB Lightning 对下游数据库的账号权限要求是怎样的？
 
 Lightning 需要以下权限：
 
@@ -23,12 +23,14 @@ Lightning 需要以下权限：
 * CREATE
 * DROP
 
-另外，存储断点的数据库额外需要以下权限：
+存储断点的数据库额外需要以下权限：
 
 * INSERT
 * DELETE
 
-## Lightning 在导数据过程中某个表报错了，会影响其他表吗？进程会马上退出吗？
+如果 TiDB Lightning 配置项 `checksum = true`，则 TiDB Lightning 需要有下游 TiDB admin 用户权限。
+
+## TiDB Lightning 在导数据过程中某个表报错了，会影响其他表吗？进程会马上退出吗？
 
 如果只是个别表报错，不会影响整体。报错的那个表会停止处理，继续处理其他的表。
 
@@ -48,7 +50,7 @@ mysql> ADMIN CHECKSUM TABLE `schema`.`table`;
 1 row in set (0.01 sec)
 ```
 
-## Lightning 支持哪些格式的数据源？
+## TiDB Lightning 支持哪些格式的数据源？
 
 到 v2.1.6 版本为止，只支持本地文档形式的数据源，支持 [mydumper](/reference/tools/mydumper.md) 或 [CSV](/reference/tools/tidb-lightning/csv.md) 格式。
 
@@ -95,7 +97,7 @@ sql-mode = ""
 
 不推荐直接在命令行中使用 `nohup` 启动进程，而应该把 `nohup` 这行命令放到一个脚本中运行。
 
-## 为什么用过 Lightning 之后，TiDB 集群变得又慢又耗 CPU？
+## 为什么用过 TiDB Lightning 之后，TiDB 集群变得又慢又耗 CPU？
 
 如果 `tidb-lightning` 曾经异常退出，集群可能仍留在“导入模式” (import mode)，不适合在生产环境工作。此时需要强制切换回“普通模式” (normal mode)：
 
@@ -103,17 +105,17 @@ sql-mode = ""
 tidb-lightning-ctl --switch-mode=normal
 ```
 
-## TiDB-Lightning 可以使用千兆网卡吗？
+## TiDB Lightning 可以使用千兆网卡吗？
 
 使用 TiDB-Lightning 必须配置万兆网卡。**不能使用**千兆网卡，尤其是在部署 `tikv-importer` 的机器上。千兆网卡的总带宽只有 120 MB/s，而且需要与整个 TiKV 集群共享。在使用 TiDB-Lightning 导入时，极易用尽所有带宽，继而因 PD 无法联络集群使集群断连。
 
-## 为什么 TiDB-Lightning 需要在 TiKV 集群预留这么多空间？
+## 为什么 TiDB Lightning 需要在 TiKV 集群预留这么多空间？
 
 当使用默认的 3 副本设置时，TiDB-Lightning 需要 TiKV 集群预留数据源大小 6 倍的空间。多出来的 2 倍是算上下列没储存在数据源的因素的保守估计：
 
 - 索引会占据额外的空间
 - RocksDB 的空间放大效应
 
-## TiDB-Lightning 使用过程中是否可以重启 TiKV-Importer？
+## TiDB Lightning 使用过程中是否可以重启 TiKV Importer？
 
 不能，Importer 会保存一些 Engine 的信息在内存中，Importer 重启后，Lightning 必须重启。

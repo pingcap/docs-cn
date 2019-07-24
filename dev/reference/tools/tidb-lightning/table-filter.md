@@ -1,12 +1,12 @@
 ---
-title: TiDB-Lightning 表库过滤
+title: TiDB Lightning 表库过滤
 summary: 使用黑白名单把一些表剔出要导入的范围。
 category: reference
 ---
 
-# TiDB-Lightning 表库过滤
+# TiDB Lightning 表库过滤
 
-TiDB-Lightning 支持使用黑名单和白名单来过滤掉某些数据库和表。这可以用来跳过一些用作暂存、毋须迁移的表，或用来手动切分数据源，让多机同时导入。
+TiDB Lightning 支持使用黑名单和白名单来过滤掉某些数据库和表。这可以用来跳过一些用作暂存、毋须迁移的表，或用来手动切分数据源，让多机同时导入。
 
 这些过滤规则与 MySQL 的 `replication-rules-db`/`replication-rules-table` 类似。
 

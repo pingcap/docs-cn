@@ -5,7 +5,7 @@ category: reference
 
 # CSV 支持
 
-TiDB-Lightning 支持读取 CSV（逗号分隔值）的数据源，以及其他定界符格式如 TSV（制表符分隔值）。
+TiDB Lightning 支持读取 CSV（逗号分隔值）的数据源，以及其他定界符格式如 TSV（制表符分隔值）。
 
 ## 文件名
 

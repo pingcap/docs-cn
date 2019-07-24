@@ -293,7 +293,7 @@
     - [工具下载](reference/tools/download.md)
 + 常见问题 (FAQ)
   - [TiDB FAQ](faq/tidb.md)
-  - [TiDB-Lightning FAQ](faq/tidb-lightning.md)
+  - [TiDB Lightning FAQ](faq/tidb-lightning.md)
   - [升级 FAQ](faq/upgrade.md)
 + 技术支持
   - [支持渠道](support-resources.md)

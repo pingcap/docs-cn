@@ -339,7 +339,7 @@
     - [工具下载](reference/tools/download.md)
 + 常见问题 (FAQ)
   - [TiDB FAQ](faq/tidb.md)
-  - [TiDB-Lightning FAQ](faq/tidb-lightning.md)
+  - [TiDB Lightning FAQ](faq/tidb-lightning.md)
   - [Data Migration FAQ](faq/data-migration.md)
   - [升级 FAQ](faq/upgrade.md)
   - [Kubernetes 上的 TiDB FAQ](faq/tidb-in-kubernetes.md)
