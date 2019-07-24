@@ -28,7 +28,7 @@ Lightning 需要以下权限：
 * INSERT
 * DELETE
 
-如果 TiDB Lightning 配置项 `checksum = true`，需要下游 TiDB admin 用户权限。
+如果 TiDB Lightning 配置项 `checksum = true`，则 TiDB Lightning 需要有下游 TiDB admin 用户权限。
 
 ## TiDB Lightning 在导数据过程中某个表报错了，会影响其他表吗？进程会马上退出吗？
 
