@@ -13,11 +13,11 @@ category: how-to
 TiDB Operator 部署前，请确认以下软件需求：
 
 * Kubernetes v1.10 或者更高版本
+* 如果要使用 zone-aware 持久化卷, 则需要 Kubernetes v1.12 或者更高版本
 * [DNS 插件](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/)
 * [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 * [RBAC](https://kubernetes.io/docs/admin/authorization/rbac) 启用（可选）
 * [Helm](https://helm.sh) 版本 >= v2.8.2 && < v3.0.0
-* Kubernetes v1.12 或者更高版本，如果要使用 zone-aware 持久化卷。
 
 > **注意：**
 >
@@ -34,7 +34,7 @@ TiDB Operator 运行在 Kubernetes 集群，你可以使用[这里](https://kube
 
 如果你要使用不同环境，必须在 Kubernetes 集群中安装 DNS 插件。可以根据[官方文档](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/)搭建 DNS 插件。
 
-TiDB Operator 使用[持久化卷](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)持久化 TiDB 集群数据（包括数据库，监控和备份数据），所以 Kubernetes 集群必须提供至少一种持久化卷。为提高性能，建议使用本地 SSD 盘作为持久化卷。可以根据[这一步](#本地持久化卷)自动配置本地持久化卷。
+TiDB Operator 使用[持久化卷](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)持久化 TiDB 集群数据（包括数据库，监控和备份数据），所以 Kubernetes 集群必须提供至少一种持久化卷。为提高性能，建议使用本地 SSD 盘作为持久化卷。可以根据[这一步](#配置本地持久化卷)自动配置本地持久化卷。
 
 Kubernetes 集群建议启用 [RBAC](https://kubernetes.io/docs/admin/authorization/rbac)。否则，需要在 `tidb-operator` 和 `tidb-cluster` chart 的 `values.yaml` 中设置 `rbac.create` 为 `false`。
 
@@ -50,63 +50,13 @@ sudo vim /etc/systemd/system/docker.service
 
 ## 安装 Helm
 
-可以根据 Helm [官方文档](https://helm.sh)在你的 Kubernetes 集群上安装 Helm。步骤如下：
+参考 [使用 Helm](/reference/tools/tools-in-kubernetes.md#使用-helm) 安装 Helm 并配置 PingCAP 官方 chart 仓库。
 
-1. 安装 Helm 客户端
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
-    ```
-
-    如果使用 macOS，可以通过 homebrew 安装 Helm：`brew install kubernetes-helm`。
-
-2. 安装 Helm 服务端
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/tiller-rbac.yaml && \
-    helm init --service-account=tiller --upgrade
-    ```
-
-    通过下面命令确认 tiller pod 进入 running 状态：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl get po -n kube-system -l name=tiller
-    ```
-
-    如果 Kubernetes 集群没有启用 `RBAC`，那么 `helm init --upgrade` 就可以。
-
-3. 添加 Helm 仓库
-
-    PingCAP Helm 仓库存放着 PingCAP 发布的 charts，例如 tidb-operator、tidb-cluster 和 tidb-backup 等等。使用下面命令添加仓库：
-
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    helm repo add pingcap http://charts.pingcap.org/ && \
-    helm repo list
-    ```
-
-    然后你可以查看可用的 chart：
-
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    helm repo update && \
-    helm search tidb-cluster -l && \
-    helm search tidb-operator -l
-    ```
-
-## 本地 PV (Persistent Volume)
+## 配置本地持久化卷
 
 ### 准备本地卷
 
-参考 [Operations 文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md)以及生产环境的[最佳实践](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/best-practices.md)，在节点上搭建或者清理本地卷。
+参考 [本地 PV 配置](/reference/configuration/tidb-in-kubernetes/local-pv-configuration.md) 在你的 Kubernetes 集群中配置本地持久化卷。
 
 ### 部署 local-static-provisioner
 
