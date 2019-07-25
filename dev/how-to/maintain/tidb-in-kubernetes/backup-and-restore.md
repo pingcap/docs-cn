@@ -28,15 +28,15 @@ Kubernetes 上的 TiDB 集群支持两种备份策略：
 
 你可以修改 TiDB 集群的 `values.yaml` 文件来配置定时全量备份：
 
-* 将 `scheduledBackup.create` 设置为 `true`；
-* 将 `scheduledBackup.storageClassName` 设置为用于存储数据的 PV 的 `storageClass`；
+1. 将 `scheduledBackup.create` 设置为 `true`；
+2. 将 `scheduledBackup.storageClassName` 设置为用于存储数据的 PV 的 `storageClass`；
 
     > **注意：**
     >
     > 你必须将定时全量备份使用的 PV 的 [reclaim policy](https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy) 设置为 `Retain` 来确保你的数据安全。
 
-* 按照 `[Cron](https://en.wikipedia.org/wiki/Cron)` 格式设置 `scheduledBackup.schedule` 来定义任务的执行周期与时间；
-* 创建一个包含数据库用户名和密码的 Kubernetes [Secret](https://kubernetes.io/docs/concepts/configuration/secret/) 该用户必须拥有数据备份所需的数据库相关权限，同时，将 `scheduledBackup.secretName` 设置为该 `Secret` 的名字（默认为 `backup-secret`）：
+3. 按照 `[Cron](https://en.wikipedia.org/wiki/Cron)` 格式设置 `scheduledBackup.schedule` 来定义任务的执行周期与时间；
+4. 创建一个包含数据库用户名和密码的 Kubernetes [Secret](https://kubernetes.io/docs/concepts/configuration/secret/) 该用户必须拥有数据备份所需的数据库相关权限，同时，将 `scheduledBackup.secretName` 设置为该 `Secret` 的名字（默认为 `backup-secret`）：
 
     {{< copyable "shell-regular" >}}
 
@@ -44,7 +44,7 @@ Kubernetes 上的 TiDB 集群支持两种备份策略：
     kubectl create secret generic backup-secret -n <namespace> --from-literal=user=<user> --from-literal=password=<password>
     ```
 
-* 通过 `helm install` 创建一个配置了定时全量备份的 TiDB 集群，针对现有集群，则使用 `helm upgrade` 为集群打开定时全量备份：
+5. 通过 `helm install` 创建一个配置了定时全量备份的 TiDB 集群，针对现有集群，则使用 `helm upgrade` 为集群打开定时全量备份：
 
     {{< copyable "shell-regular" >}}
 
@@ -68,7 +68,7 @@ Ad-hoc 全量备份封装在 `pingcap/tidb-backup` 这个 Helm chart 中。根�
     >
     > 你必须将 Ad-hoc 全量备份使用的 PV 的 [reclaim policy](https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy) 设置为 `Retain` 来确保你的数据安全。
 
-* 创建一个包含数据库用户名和密码的 Kubernetes [Secret](https://kubernetes.io/docs/concepts/configuration/secret/)，该用户必须拥有数据备份所需的数据库相关权限，同时，将 `values.yaml` 中的 `secretName` 设置为该 `Secret` 的名字（默认为 `backup-secret`）：
+2. 创建一个包含数据库用户名和密码的 Kubernetes [Secret](https://kubernetes.io/docs/concepts/configuration/secret/)，该用户必须拥有数据备份所需的数据库相关权限，同时，将 `values.yaml` 中的 `secretName` 设置为该 `Secret` 的名字（默认为 `backup-secret`）：
 
     {{< copyable "shell-regular" >}}
 
@@ -76,7 +76,7 @@ Ad-hoc 全量备份封装在 `pingcap/tidb-backup` 这个 Helm chart 中。根�
     kubectl create secret generic backup-secret -n <namespace> --from-literal=user=<user> --from-literal=password=<password>
     ```
 
-* 使用下面的命令执行一次 Ad-hoc 全量备份：
+3. 使用下面的命令执行一次 Ad-hoc 全量备份：
 
     {{< copyable "shell-regular" >}}
 
@@ -104,7 +104,7 @@ kubectl get pvc -n <namespace> -l app.kubernetes.io/component=backup,pingcap.com
     * 将 `clusterName` 设置为目标 TiDB 集群名；
     * 将 `mode` 设置为 `restore`；
     * 将 `name`  设置为用于恢复的备份名字（你可以参考[查看备份](#查看备份)来寻找可用的备份数据）。假如备份数据存储在 [Google Cloud Storage](https://cloud.google.com/storage/)，[Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/) 或 [Amazon S3](https://aws.amazon.com/s3/) 中，你必须保证这些存储的相关配置与执行[全量备份](#全量备份)时一致。
-* 创建一个包含数据库用户名和密码的 Kubernetes [Secret](https://kubernetes.io/docs/concepts/configuration/secret/)，该用户必须拥有数据备份所需的数据库相关权限，同时，将 `values.yaml` 中的 `secretName` 设置为该 `Secret` 的名字（默认为 `backup-secret`，假如你在[全量备份](#全量备份)时已经创建了该 Secret，则可以跳过这步）：
+2. 创建一个包含数据库用户名和密码的 Kubernetes [Secret](https://kubernetes.io/docs/concepts/configuration/secret/)，该用户必须拥有数据备份所需的数据库相关权限，同时，将 `values.yaml` 中的 `secretName` 设置为该 `Secret` 的名字（默认为 `backup-secret`，假如你在[全量备份](#全量备份)时已经创建了该 Secret，则可以跳过这步）：
 
     {{< copyable "shell-regular" >}}
 
@@ -112,7 +112,7 @@ kubectl get pvc -n <namespace> -l app.kubernetes.io/component=backup,pingcap.com
     kubectl create secret generic backup-secret -n <namespace> --from-literal=user=<user> --from-literal=password=<password>
     ```
 
-* 恢复数据：
+3. 恢复数据：
 
     {{< copyable "shell-regular" >}}
 
