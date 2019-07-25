@@ -22,7 +22,7 @@ TiSpark 是将 Spark SQL 直接运行在分布式存储引擎 TiKV 上的 OLAP �
 
 ## 环境准备
 
-现有 TiSpark 版本支持 Spark 2.1。对于 Spark 2.0 及 Spark 2.2 尚未经过良好的测试验证，对于更低版本暂时不支持。
+现有 TiSpark 2.x 版本支持 Spark 2.3.x和Spark 2.4.x。如果你希望使用 Spark 2.1.x 版本，需使用 TiSpark 1.x。
 
 TiSpark 需要 JDK 1.8+ 以及 Scala 2.11（Spark2.0+ 默认 Scala 版本）。
 
@@ -84,14 +84,14 @@ SPARK_WORKER_CORES=8
 
 ## 部署 TiSpark
 
-TiSpark 的 jar 包可以在[这里](http://download.pingcap.org/tispark-0.1.0-SNAPSHOT-jar-with-dependencies.jar)下载。
+TiSpark 的 jar 包可以在[这里](https://github.com/pingcap/tispark/releases)下载。
 
 ### 已有 Spark 集群的部署方式
 
 如果在已有 Spark 集群上运行 TiSpark，无需重启集群。可以使用 Spark 的 `--jars` 参数将 TiSpark 作为依赖引入：
 
 ```
-spark-shell --jars $PATH/tispark-0.1.0.jar
+spark-shell --jars $PATH/tispark-${name}.jar
 ```
 
 如果想将 TiSpark 作为默认组件部署，只需要将 TiSpark 的 jar 包放进 Spark 集群每个节点的 jars 路径并重启 Spark 集群：
@@ -110,11 +110,7 @@ ${SPARK_INSTALL_PATH}/jars
 
 你可以在[这里](https://spark.apache.org/downloads.html)下载 Apache Spark。
 
-对于 Standalone 模式且无需 Hadoop 支持，则选择 Spark 2.1.x 且带有 Hadoop 依赖的 Pre-build with Apache Hadoop 2.x 任意版本。如有需要配合使用的 Hadoop 集群，则选择对应的 Hadoop 版本号。你也可以选择从源代码[自行构建](https://spark.apache.org/docs/2.1.0/building-spark.html)以配合官方 Hadoop 2.6 之前的版本。
-
-> **注意：**
->
-> 目前 TiSpark 仅支持 Spark 2.1.x 版本。
+对于 Standalone 模式且无需 Hadoop 支持，则选择 Spark 2.3.x 或者 Spark 2.4.x 且带有 Hadoop 依赖的 Pre-build with Apache Hadoop 2.x 任意版本。如有需要配合使用的 Hadoop 集群，则选择对应的 Hadoop 版本号。你也可以选择从源代码[自行构建](https://spark.apache.org/docs/latest/building-spark.html)以配合官方 Hadoop 2.x 之前的版本。
 
 如果你已经有了 Spark 二进制文件，并且当前 PATH 为 SPARKPATH，需将 TiSpark jar 包拷贝到 `${SPARKPATH}/jars` 目录下。
 
@@ -152,11 +148,7 @@ spark.tispark.pd.addresses 192.168.1.100:2379
 然后在 Spark-Shell 里输入下面的命令：
 
 ```scala
-import org.apache.spark.sql.TiContext
-
-val ti = new TiContext(spark)
-
-ti.tidbMapDatabase("tpch")
+spark.sql("use tpch")
 ```
 
 之后你可以直接调用 Spark SQL:

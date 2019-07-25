@@ -12,7 +12,7 @@ category: tispark
 - Spark 默认部署在 TiDB 实例部署目录下 spark 目录中
 - TiSpark jar 包默认部署在 Spark 部署目录 jars 文件夹下：
 
-    spark/jars/tispark-SNAPSHOT-jar-with-dependencies.jar
+    spark/jars/tispark-${name}.jar
 
 - TiSpark sample data 及导入脚本默认部署在 TiDB-Ansible 目录下：
 
@@ -112,11 +112,7 @@ $ bin/spark-shell
 ```
 
 ```scala
-scala> import org.apache.spark.sql.TiContext
-scala> val ti = new TiContext(spark)
-
-// Mapping all TiDB tables from `TPCH_001` database as Spark SQL tables
-scala> ti.tidbMapDatabase("TPCH_001")
+scala> spark.sql("use TPCH_001")
 ```
 
 之后可以直接调用 Spark SQL ：
@@ -185,4 +181,4 @@ scala> spark.sql(
 -----------------+---------+------------+--------+-----------+
 ```
 
-更多样例请参考 [https://github.com/ilovesoup/tpch/tree/master/sparksql](https://github.com/ilovesoup/tpch/tree/master/sparksql)。
+更多样例请参考 [https://github.com/pingcap/tispark-test/tree/master/tpch/sparksql](https://github.com/pingcap/tispark-test/tree/master/tpch/sparksql)
