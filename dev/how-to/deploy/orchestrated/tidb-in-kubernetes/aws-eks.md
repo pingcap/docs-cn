@@ -242,7 +242,7 @@ Grafana 默认登录信息：
 > - 由于 AWS 和 Terraform 的限制，还不支持复用已有 EKS 集群的 VPC 和 subnets，所以请确保只在你手动创建 VPC 的情况下修改该参数；
 > - EKS Node 上的 CNI 插件会为每个节点预留一部分 IP 资源，因此 IP 消耗较大，在手动创建 VPC 时，建议将每个 subnet 的掩码长度设置在 18~20 以确保 IP 资源充足；
 
-由于 TiDB 服务通过 [Internal Elastic Load Balancer](https://aws.amazon.com/blogs/aws/internal-elastic-load-balancers/) 暴露，默认情况下，会创建一个 ec2 实例作为堡垒机，访问创建的 TiDB 集群。堡垒机上预装了 MySQL 和 Sysbench，所以你可以 SSH 到堡垒机然后通过 ELB 访问 TiDB。如果你的 VPC 中已经有了类似的 ec2 实例，你可以通过设置 `create_bastion` 为 `false` 禁掉堡垒机的创建。
+由于 TiDB 服务通过 [Internal Elastic Load Balancer](https://aws.amazon.com/blogs/aws/internal-elastic-load-balancers/) 暴露，默认情况下，会创建一个 Amazon EC2 实例作为堡垒机，访问创建的 TiDB 集群。堡垒机上预装了 MySQL 和 Sysbench，所以你可以通过 SSH 方式登陆到堡垒机后通过 ELB 访问 TiDB。如果你的 VPC 中已经有了类似的 EC2 实例，你可以通过设置 `create_bastion` 为 `false` 禁掉堡垒机的创建。
 
 TiDB 版本和组件数量也可以在 `variables.tf` 中修改，你可以按照自己的需求配置。
 
@@ -256,7 +256,7 @@ Terraform 脚本中为运行在 EKS 上的 TiDB 集群提供了合理的默认�
 
 值得注意的是，在 EKS 上部分配置项无法在 `values.yaml` 中进行修改，包括集群版本、副本数、`NodeSelector` 以及 `Tolerations`。这些配置项由 Terraform 直接管理以确保基础设施与 TiDB 集群之间的一致性。你可以通过修改 `cluster.tf` 文件中的 `tidb-cluster` module 参数来自定义这些配置。
 
-### Customized TiDB Operator
+### 自定义 TiDB Operator
 
 你可以通过 `variables.tf` 中的 `operator_values` 参数传入自定义的 `values.yaml` 内容来配置 TiDB Operator（推荐使用 Terraform 的 `file()` 函数从本地文件中读取内容）。示例如下：
 
