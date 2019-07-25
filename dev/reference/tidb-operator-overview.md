@@ -27,7 +27,7 @@ TiDB Operator 包含以下组件：
 3. Kubernetes 的原生控制器根据 `StatefulSet`、`Deployment`、`CronJob` 等对象创建更新或删除对应的 `Pod`；
 4. PD、TiKV、TiDB 的 `Pod` 声明中会指定使用 `tidb-scheduler` 调度器，`tidb-scheduler` 会在调度对应 `Pod` 时应用 TiDB 的特定调度逻辑。
 
-基于上述的声明式控制流程，TiDB Operator 能够自动进行集群节点健康检查和故障恢复，部署、升级、扩缩容等操作也可以通过修改 `TidbCluster` 对象声明“一键”完成。
+基于上述的声明式控制流程，TiDB Operator 能够自动进行集群节点健康检查和故障恢复。部署、升级、扩缩容等操作也可以通过修改 `TidbCluster` 对象声明“一键”完成。
 
 ## 使用 TiDB Operator 管理 TiDB 集群
 
