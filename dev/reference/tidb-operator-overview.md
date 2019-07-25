@@ -11,7 +11,7 @@ TiDB Operator 是 Kubernetes 上的 TiDB 集群自动运维系统，提供包括
 
 ![TiDB Operator Overview](/media/tidb-operator-overview.png)
 
-TiDB Operator 包含自定义资源 `TidbCluster`、`tidb-controller-manager` 组件、`tidb-scheduler` 组件、以及 `tkctl` 命令行工具：
+TiDB Operator 包含以下组件：
 
 * `TidbCluster` 是使用 CRD（`CustomResourceDefinition`）定义的自定义资源，用于描述用户期望的 TiDB 集群 状态；
 * `tidb-controller-manager` 是一组 Kubernetes 上的自定义控制器。这些控制器会不断对比 `TidbCluster` 对象中记录的期望状态与 TiDB 集群的实际状态，并调整 Kubernetes 中的资源以驱动 TiDB 集群满足期望状态；
