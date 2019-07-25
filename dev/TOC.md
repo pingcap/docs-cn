@@ -97,6 +97,7 @@
     - [TiDB Binlog Cluster Operations](how-to/maintain/tidb-binlog.md)
     + TiDB in Kubernetes
       - [Manage the TiDB Cluster](how-to/maintain/tidb-in-kubernetes/tidb-cluster.md)
+      - [Backup and Restore](how-to/maintain/tidb-in-kubernetes/backup-and-restore.md)
       - [Collect Logs](how-to/maintain/tidb-in-kubernetes/log-collecting.md)
       - [Automatic Failover](how-to/maintain/tidb-in-kubernetes/auto-failover.md)
   + Scale
