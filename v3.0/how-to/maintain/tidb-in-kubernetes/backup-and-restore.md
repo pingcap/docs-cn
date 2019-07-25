@@ -11,8 +11,8 @@ category: how-to
 
 Kubernetes 上的 TiDB 集群支持两种备份策略：
 
-* [全量备份](#全量备份)（定时执行或 Ad-hoc）：使用 [`mydumper`](https://www.pingcap.com/docs/dev/reference/tools/mydumper/) 获取集群的逻辑备份；
-* [增量备份](#增量备份)：使用 [`TiDB Binlog`](https://www.pingcap.com/docs/dev/reference/tools/tidb-binlog/overview/) 将 TiDB 集群的数据实时复制到其它数据库中或实时获得增量数据备份；
+* [全量备份](#全量备份)（定时执行或 Ad-hoc）：使用 [`mydumper`](/reference/tools/mydumper.md) 获取集群的逻辑备份；
+* [增量备份](#增量备份)：使用 [`TiDB Binlog`](/reference/tools/tidb-binlog/overview.md) 将 TiDB 集群的数据实时复制到其它数据库中或实时获得增量数据备份；
 
 目前，Kubernetes 上的 TiDB 集群只对 `mydumper` 获取的全量备份数据提供自动化的数据恢复操作。恢复 `TiDB-Binlog` 获取的增量数据需要手动进行。
 
@@ -56,7 +56,7 @@ Kubernetes 上的 TiDB 集群支持两种备份策略：
 
 ### Ad-hoc 全量备份
 
-Ad-hoc 全量备份封装在 `pingcap/tidb-backup` 这个 Helm chart 中。根据 `values.yaml` 文件中的 `mode`  配置，该 chart 可以执行全量备份或数据恢复。我们会在 [数据恢复](#数据恢复) 一节中描述如何执行数据恢复。
+Ad-hoc 全量备份封装在 `pingcap/tidb-backup` 这个 Helm chart 中。根据 `values.yaml` 文件中的 `mode` 配置，该 chart 可以执行全量备份或数据恢复。我们会在 [数据恢复](#数据恢复) 一节中描述如何执行数据恢复。
 
 你可以通过下面的步骤执行一次 Ad-hoc 全量备份：
 
