@@ -22,6 +22,6 @@ category: FAQ
 
 ## 同步任务中断并包含 `get binlog error ERROR 1236 (HY000)`, `binlog checksum mismatch, data may be corrupted` 等 binlog 获取或解析失败错误
 
-在 DM 进行增量同步过程中，如果遇到了上游超过 4G 的 binlog 文件，并且 DM 在处理这个 binlog 过程中出现了同步中断（包括正常的 pause/stop 任务，异常的原因发生的中断时），DM 需要保存同步 checkpoint 信息，因为 MySQL position 使用 uint32 存储，所以超过 4G 部分的断点位置值会溢出，存储的是一个不合法的断点值，遇到这种情况需要手动进行恢复。恢复方法：
-- 首先判断出错发生在 relay log 写入时还是 binlog replication unit 同步，如果错误发生在 relay log 写入，binlog replication 保存的断点都是正确的情况，可以先停止任务，停止 DM-worker，手动调节 relay meta 的 binlog-position 到 4，重启 DM-worker 重新拉取 relay log ，relay log 写入正常后启动任务会自动从断点继续同步。
+在 DM 进行增量同步过程中，如果遇到了上游超过 4G 的 binlog 文件，并且 DM 在处理这个 binlog 过程中出现了同步中断（包括正常的 pause/stop 任务，异常的原因发生的中断时），DM 需要保存同步 checkpoint 信息，因为 MySQL position 使用 uint32 存储，所以超过 4G 部分的断点位置值会溢出，存储的是一个不合法的断点值，使用该值重新解析 binlog/relay log 就会出错，遇到这种情况需要手动进行恢复。恢复方法：
+- 首先判断出错发生在 relay log 写入还是 binlog replication unit 同步，如果错误发生在 relay log 写入，binlog replication 保存的断点都是正确的情况，可以先停止任务，停止 DM-worker，手动调节 relay meta 的 binlog-position 到 4，重启 DM-worker 重新拉取 relay log ，relay log 写入正常后启动任务会自动从断点继续同步。
 - 如果 relay log 写入正常，已经写到了下一个文件，错误发生在 binlog replication unit 读取当前超过 4G relay log 文件的一个不合法 position，这时候可以停止任务，手动调节该任务的 checkpoint 信息到该 relay log 的一个合法 position，比如 4，注意需要同时调整 global checkpoint 和每张表的 checkpoint（如果某张表的 checkpoint 是比当前 relay log 更旧的 relay log，则不需要修改）。设置任务的 sage-mode 为 true ，保证可重入执行，这之后就可以重新启动同步任务，观察同步状态。
