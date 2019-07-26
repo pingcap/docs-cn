@@ -73,14 +73,14 @@ spark.sql.extensions org.apache.spark.sql.TiExtensions
 
 ## 部署 TiSpark
 
-TiSpark 的 jar 包可以在[这里](https://github.com/pingcap/tispark/releases)下载对应版本的jar包并拷贝到合适的目录。
+TiSpark 的 jar 包可以在[这里](https://github.com/pingcap/tispark/releases)下载对应版本的 jar 包并拷贝到合适的目录。
 
 ### 已有 Spark 集群的部署方式
 
 如果在已有 Spark 集群上运行 TiSpark，无需重启集群。可以使用 Spark 的 `--jars` 参数将 TiSpark 作为依赖引入：
 
 ```
-spark-shell --jars $TISPARK_FOLDER/tispark-${name}.jar
+spark-shell --jars $TISPARK_FOLDER/tispark-${name_with_version}.jar
 ```
 
 ### 没有 Spark 集群的部署方式
