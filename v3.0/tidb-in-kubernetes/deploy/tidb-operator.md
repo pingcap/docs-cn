@@ -29,9 +29,9 @@ Before deploying TiDB Operator, make sure the following items are installed on y
 
 TiDB Operator runs in Kubernetes cluster. You can use one of the methods listed [here](https://kubernetes.io/docs/setup/pick-right-solution/) to set up a Kubernetes cluster. Make sure that the Kubernetes version is v1.10 or higher. If you are using AWS, GKE or local machine, here are quick-start tutorials:
 
-* [Local DinD tutorial](/how-to/get-started/deploy-tidb-from-kubernetes-dind.md)
-* [Google GKE tutorial](/how-to/get-started/deploy-tidb-from-kubernetes-gke.md)
-* [AWS EKS tutorial](/how-to/deploy/orchestrated/tidb-in-kubernetes/aws-eks.md)
+* [Local DinD tutorial](/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
+* [Google GKE tutorial](/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
+* [AWS EKS tutorial](/tidb-in-kubernetes/deploy/aws-eks.md)
 
 If you are deploying in a different environment, a proper DNS addon must be installed in the Kubernetes cluster. You can follow the [official documentation](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/) to set up a DNS addon.
 

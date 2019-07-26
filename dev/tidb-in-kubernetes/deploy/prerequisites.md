@@ -141,4 +141,4 @@ The above recommended configuration leaves plenty of available resources in addi
 
 > **Note:**
 >
-> In a production environment, avoid deploying TiDB instances on a master node due to the network card bandwidth. If the network card of the master node works at full capacity, the heartbeat report between the worker node and the master node will be affected and might lead to serious problems.
+> In a production environment, avoid deploying TiDB instances on a master node due to the NIC bandwidth. If the NIC of the master node works at full capacity, the heartbeat report between the worker node and the master node will be affected and might lead to serious problems.

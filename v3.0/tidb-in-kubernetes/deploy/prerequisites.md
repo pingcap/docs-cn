@@ -72,7 +72,7 @@ In addition, to permanently disable swaps, remove all the swap-related entries i
 
 ## Hardware and deployment requirements
 
-+ 64-bit generic hardware server platform in the Intel x86-64 architecture and 10 Gigabit network card, which are the same as the server requirements for deploying a TiDB cluster using binary. For details, refer to [Hardware recommendations](/how-to/deploy/hardware-recommendations.md).
++ 64-bit generic hardware server platform in the Intel x86-64 architecture and 10 Gigabit NIC (network interface card), which are the same as the server requirements for deploying a TiDB cluster using binary. For details, refer to [Hardware recommendations](/how-to/deploy/hardware-recommendations.md).
 
 + The server's disk, memory and CPU choices depend on the capacity planning of the cluster and the deployment topology. It is recommended to deploy three master nodes, three etcd nodes, and several worker nodes to ensure high availability of the online Kubernetes cluster.
 
@@ -141,4 +141,4 @@ The above recommended configuration leaves plenty of available resources in addi
 
 > **Note:**
 >
-> In a production environment, avoid deploying TiDB instances on a master node due to the network card bandwidth. If the network card of the master node works at full capacity, the heartbeat report between the worker node and the master node will be affected and might lead to serious problems.
+> In a production environment, avoid deploying TiDB instances on a master node due to the NIC bandwidth. If the NIC of the master node works at full capacity, the heartbeat report between the worker node and the master node will be affected and might lead to serious problems.
