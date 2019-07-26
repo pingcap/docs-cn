@@ -9,17 +9,24 @@ aliases: ['/docs/tools/download/']
 
 This document collects the available downloads for most officially maintained versions of TiDB enterprise tools.
 
-## TiDB-Binlog and Lightning
+## TiDB Binlog
 
-If you want to download the latest version of [TiDB Binlog](/reference/tidb-binlog-overview.md) or [Lightning](/reference/tools/tidb-lightning/overview.md), directly download the TiDB package, because both TiDB-Binlog and Lightning are included in the TiDB package.
+If you want to download the v3.0 version of [TiDB Binlog](/reference/tidb-binlog-overview.md), directly download the TiDB package, because TiDB Binlog is included in the TiDB package.
 
-In addition, the Kafka version of TiDB-Binlog is also provided.
+In addition, the Kafka version of TiDB Binlog is also provided.
 
 | Package name | OS | Architecture | SHA256 checksum |
 |:---|:---|:---|:---|
-| [tidb-v3.0-linux-amd64.tar.gz](http://download.pingcap.org/tidb-v3.0-linux-amd64.tar.gz) (stable TiDB-Binlog, Lightning) | Linux | amd64 |[tidb-v3.0-linux-amd64.sha256](http://download.pingcap.org/tidb-v3.0-linux-amd64.sha256)|
-| [tidb-latest-linux-amd64.tar.gz](http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz) (unstable TiDB-Binlog, Lightning) | Linux | amd64 |[tidb-latest-linux-amd64.sha256](http://download.pingcap.org/tidb-latest-linux-amd64.sha256)|
-| [tidb-binlog-kafka-linux-amd64.tar.gz](http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.tar.gz) (the Kafka version of TiDB-Binlog) | Linux | amd64 |[tidb-binlog-kafka-linux-amd64.sha256](http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.sha256)|
+| [tidb-v3.0.0-linux-amd64.tar.gz](http://download.pingcap.org/tidb-v3.0.0-linux-amd64.tar.gz) (TiDB Binlog) | Linux | amd64 |[tidb-v3.0.0-linux-amd64.sha256](http://download.pingcap.org/tidb-v3.0.0-linux-amd64.sha256)|
+| [tidb-binlog-kafka-linux-amd64.tar.gz](http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.tar.gz) (the Kafka version of TiDB Binlog) | Linux | amd64 |[tidb-binlog-kafka-linux-amd64.sha256](http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.sha256)|
+
+## TiDB Lightning
+
+If you want to download the v3.0 version of [TiDB Lightning](/reference/tools/tidb-lightning/overview.md), click the download link in the following table.
+
+| Package name | OS | Architecture |  SHA256 checksum |
+|:---|:---|:---|:---|
+| [tidb-toolkit-v3.0-linux-amd64.tar.gz](http://download.pingcap.org/tidb-toolkit-v3.0-linux-amd64.tar.gz) | Linux | amd64 | [tidb-toolkit-v3.0.0-linux-amd64.sha256](http://download.pingcap.org/tidb-toolkit-v3.0.0-linux-amd64.sha256) |
 
 ## DM (Data Migration)
 
