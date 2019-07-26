@@ -6,7 +6,7 @@ category: introduction
 
 # TiDB Architecture
 
-The TiDB platform is comprised of three key components: the TiDB server, the PD server, and the TiKV server. In addition, TiDB also provides the [TiSpark](https://github.com/pingcap/tispark/) component for complex OLAP requirements.
+The TiDB platform is comprised of three key components: the TiDB server, the PD server, and the TiKV server. In addition, TiDB also provides the [TiSpark](https://github.com/pingcap/tispark/) component for complex OLAP requirements and the [TiDB Operator](/reference/tidb-operator-overview.md) to make things simpler for the deployment and management on cloud.
 
 ![image alt text](/media/tidb-architecture.png)
 
@@ -45,3 +45,15 @@ The TiKV server is responsible for storing data. From an external view, TiKV is 
 ## TiSpark
 
 TiSpark deals with the complex OLAP requirements. TiSpark makes Spark SQL directly run on the storage layer of the TiDB cluster, combines the advantages of the distributed TiKV cluster, and integrates into the big data ecosystem. With TiSpark, TiDB can support both OLTP and OLAP scenarios in one cluster, so the users never need to worry about data replication.
+
+## TiDB Operator
+
+TiDB Operator empowers TiDB users to deploy and manage TiDB clusters on mainstream cloud infrastructure (Kubernetes).
+
+TiDB Operator:
+
++ Combines the best practices of the container orchestration from the cloud-native community with the know-how of TiDB operation and maintenance.
+
++ Capable of quick deployment, mixed deployment among multiple clusters, automatic operation and maintenance, automatic fail-over, etc.
+
++ Makes it user-friendly to use and manage TiDB.
