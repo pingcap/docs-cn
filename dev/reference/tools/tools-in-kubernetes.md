@@ -185,7 +185,7 @@ Kubernetes 应用在 helm 中被打包为 chart，PingCAP 针对 Kubernetes 上�
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm repo add pingcap http://charts.pingcap.org/
+helm repo add pingcap https://charts.pingcap.org/
 ```
 
 添加完成后，可以使用 `helm search` 搜索 PingCAP 提供的 chart：
