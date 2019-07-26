@@ -210,7 +210,7 @@ module "tidb-cluster-dev" {
     helm = helm.default
   }
 
-  cluster_name = "another-cluster"
+  cluster_name = "dev-cluster"
   ack          = module.tidb-operator
   
   pd_count                   = 1
@@ -225,7 +225,7 @@ module "tidb-cluster-staging" {
     helm = helm.default
   }
 
-  cluster_name = "another-cluster"
+  cluster_name = "staging-cluster"
   ack          = module.tidb-operator
 
   pd_count                   = 3
@@ -268,7 +268,7 @@ It is recommended to use a separate Terraform module to manage a specific Kubern
     {{< copyable "shell-regular" >}}
 
     ```shell
-    mkdir -p deploy/aliyun/aliyun-staging
+    mkdir -p deploy/aliyun-staging
     ```
 
 2. Refer to `main.tf` in `deploy/aliyun` and write your own script. For example:
