@@ -12,8 +12,7 @@ category: how-to
 
 TiDB Operator 部署前，请确认以下软件需求：
 
-* Kubernetes v1.10 或者更高版本
-* 如果要使用 zone-aware 持久化卷, 则需要 Kubernetes v1.12 或者更高版本
+* Kubernetes v1.12 或者更高版本
 * [DNS 插件](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/)
 * [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 * [RBAC](https://kubernetes.io/docs/admin/authorization/rbac) 启用（可选）
