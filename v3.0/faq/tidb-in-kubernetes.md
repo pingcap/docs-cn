@@ -53,28 +53,28 @@ TiDB Operator 尚不支持自动编排 TiSpark。
 
 ## 如何查看 TiDB 集群配置
 
-如果需要查看当前集群的 PD/TiKV/TiDB 组件的配置信息，可以执行下列命令
+如果需要查看当前集群的 PD、TiKV、TiDB 组件的配置信息，可以执行下列命令:
 
-查看 PD 配置文件
+* 查看 PD 配置文件
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl exec -it <pdPodName> -n <namespace> -- cat /etc/pd/pd.toml
-```
+    ```shell
+    kubectl exec -it <pdPodName> -n <namespace> -- cat /etc/pd/pd.toml
+    ```
 
-查看 TiKV 配置文件
+* 查看 TiKV 配置文件
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl exec -it <tikvPodName> -n <namespace> -- cat /etc/tikv/tikv.toml
-```
+    ```shell
+    kubectl exec -it <tikvPodName> -n <namespace> -- cat /etc/tikv/tikv.toml
+    ```
 
-查看 TiDB 配置文件
+* 查看 TiDB 配置文件
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl exec -it <tidbPodName> -c tidb -n <namespace> -- cat /etc/tidb/tidb.toml
-```
+    ```shell
+    kubectl exec -it <tidbPodName> -c tidb -n <namespace> -- cat /etc/tidb/tidb.toml
+    ```
