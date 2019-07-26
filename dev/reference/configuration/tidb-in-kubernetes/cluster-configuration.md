@@ -18,7 +18,7 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群。通过 Helm 获取的配
 | 参数名 | 说明 | 默认值 |
 | :----- | :---- | :----- |
 | `rbac.create` | 是否启用 Kubernetes 的 RBAC | `true` |
-| `clusterName` | TiDB 集群名，默认不设置该变量，`tidb-cluster` 会直接用执行安装时的 `RealeaseName` 代替 | `nil` |
+| `clusterName` | TiDB 集群名，默认不设置该变量，`tidb-cluster` 会直接用执行安装时的 `ReleaseName` 代替 | `nil` |
 | `extraLabels` | TiDB 集群附加的自定义标签 参考：[labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) | `{}` |
 | `schedulerName` | TiDB 集群使用的调度器 | `tidb-scheduler` |
 | `timezone` | TiDB 集群默认时区 | `UTC` |
