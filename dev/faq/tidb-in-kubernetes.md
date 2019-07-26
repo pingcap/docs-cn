@@ -55,7 +55,7 @@ TiDB Operator 尚不支持自动编排 TiSpark。
 
 如果需要查看当前集群的 PD、TiKV、TiDB 组件的配置信息，可以执行下列命令：
 
-查看 PD 配置文件
+* 查看 PD 配置文件：
 
 {{< copyable "shell-regular" >}}
 
