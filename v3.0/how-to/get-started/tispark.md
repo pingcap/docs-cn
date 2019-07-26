@@ -1,7 +1,6 @@
 ---
 title: TiSpark 快速入门指南
 category: how-to
-aliases: ['/docs-cn/tispark/tispark-quick-start-guide/']
 ---
 
 # TiSpark 快速入门指南
@@ -11,7 +10,7 @@ aliases: ['/docs-cn/tispark/tispark-quick-start-guide/']
 ## 部署信息
 
 - Spark 默认部署在 TiDB 实例部署目录下 spark 目录中
-- TiSpark jar 包默认部署在 Spark 部署目录 jars 文件夹下：`spark/jars/tispark-SNAPSHOT-jar-with-dependencies.jar`
+- TiSpark jar 包默认部署在 Spark 部署目录 jars 文件夹下：`spark/jars/tispark-${name}.jar`
 - TiSpark sample data 及导入脚本默认部署在 TiDB-Ansible 目录下：`tidb-ansible/resources/bin/tispark-sample-data`
 
 ## 环境准备
@@ -171,4 +170,4 @@ scala> spark.sql(
 -----------------+---------+------------+--------+-----------+
 ```
 
-更多样例请参考 <https://github.com/ilovesoup/tpch/tree/master/sparksql>
+更多样例请参考 [https://github.com/pingcap/tispark-test/tree/master/tpch/sparksql](https://github.com/pingcap/tispark-test/tree/master/tpch/sparksql)
