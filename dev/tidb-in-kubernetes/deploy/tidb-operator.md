@@ -19,7 +19,7 @@ Before deploying TiDB Operator, make sure the following items are installed on y
 * [RBAC](https://kubernetes.io/docs/admin/authorization/rbac) enabled (optional)
 * [Helm](https://helm.sh) version >= v2.8.2 and < v3.0.0
 
-> **Note:** 
+> **Note:**
 >
 > + Although TiDB Operator can use network volume to persist TiDB data, this process could be very slow due to the redundant replication. It is highly recommended to set up [local volume](https://kubernetes.io/docs/concepts/storage/volumes/#local) for better performance.
 >
@@ -40,7 +40,6 @@ TiDB Operator uses [Persistent Volume](https://kubernetes.io/docs/concepts/stora
 It is suggested to enable [RBAC](https://kubernetes.io/docs/admin/authorization/rbac) in the Kubernetes cluster. Otherwise, you need to set `rbac.create` to `false` in the `values.yaml` of both `tidb-operator` and `tidb-cluster` charts.
 
 Because TiDB uses many file descriptors by default, the [worker node](https://access.redhat.com/solutions/61334) and its Docker daemon's `ulimit` must be configured to `1048576` or bigger:
-
 
 {{< copyable "shell-regular" >}}
 
@@ -94,7 +93,7 @@ kubectl get crd tidbclusters.pingcap.com
 
 After `TidbCluster` custom resource is created, install TiDB Operator in your Kubernetes cluster.
 
-> **Note:** 
+> **Note:**
 >
 > `${chartVersion}` will be used in the rest sections of the documents to represent the chart version. For example, `v1.0.0-beta.3`.
 
