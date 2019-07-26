@@ -6,7 +6,7 @@ category: reference
 
 # Overview of TiDB Operator
 
-TiDB Operator is an automatic operation and maintenance system for TiDB clusters in Kubernetes. It provides a full management life-cycle for TiDB including deployment, upgrades, scaling, backup, fail-over, and configuration changes. With TiDB Operator, TiDB can run seamlessly in the Kubernetes clusters deployed on a public or private cloud.
+TiDB Operator is an automatic operation system for TiDB clusters in Kubernetes. It provides a full management life-cycle for TiDB including deployment, upgrades, scaling, backup, fail-over, and configuration changes. With TiDB Operator, TiDB can run seamlessly in the Kubernetes clusters deployed on a public or private cloud.
 
 ## Architecture of TiDB Operator
 
@@ -17,7 +17,7 @@ TiDB Operator consists of the following components:
 * `TidbCluster` is a custom resource defined using CRD (`CustomResourceDefinition`) to describe the desired state of the TiDB cluster;
 * `tidb-controller-manager` is a set of custom controllers in Kubernetes. These controllers constantly compare the desired state recorded in the `TidbCluster` object with the actual state of the TiDB cluster. They adjust the resources in Kubernetes to drive the TiDB cluster to meet the desired state;
 * `tidb-scheduler` is a Kubernetes scheduler extension that injects the TiDB specific scheduling policies to the Kubernetes scheduler;
-* `tkctl` is the command-line interface for TiDB clusters in Kubernetes. It is used for cluster maintenance operations and troubleshooting cluster issues.
+* `tkctl` is the command-line interface for TiDB clusters in Kubernetes. It is used for cluster operations and troubleshooting cluster issues.
 
 ![TiDB Operator Control Flow](/media/tidb-operator-control-flow.png)
 
@@ -40,7 +40,7 @@ TiDB Operator provides several ways to deploy TiDB clusters in Kubernetes:
     - [GKE](tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md): Deploy TiDB clusters on GKE using TiDB Operator
 
 + For production environment:
-    - On public cloud: see [Deploy TiDB on AWS EKS](tidb-in-kubernetes/deploy/aws-eks.md), [Deploy TiDB on GCP GKE](tidb-in-kubernetes/deploy/gcp-gke.md), or [Deploy TiDB on Alibaba Cloud Kubernetes](tidb-in-kubernetes/deploy/alibaba-cloud.md) to deploy TiDB clusters for a production environment on a specific public cloud and perform subsequent operation and maintenance tasks;
+    - On public cloud: see [Deploy TiDB on AWS EKS](tidb-in-kubernetes/deploy/aws-eks.md), [Deploy TiDB on GCP GKE](tidb-in-kubernetes/deploy/gcp-gke.md), or [Deploy TiDB on Alibaba Cloud Kubernetes](tidb-in-kubernetes/deploy/alibaba-cloud.md) to deploy TiDB clusters for a production environment on a specific public cloud and perform subsequent operation tasks;
     - In an existing Kubernetes cluster: first install TiDB Operator in a Kubernetes cluster according to [Deploy TiDB Operator in Kubernetes](tidb-in-kubernetes/deploy/tidb-operator.md), then deploy your TiDB clusters according to [TiDB in General Kubernetes](tidb-in-kubernetes/deploy/general-kubernetes.md). You also need to adjust the configuration of the Kubernetes cluster based on [Prerequisites for TiDB in Kubernetes](tidb-in-kubernetes/deploy/prerequisites.md) and configure the local PV for your Kubernetes cluster to achieve low latency of local storage for TiKV according to [Local PV Configuration](tidb-in-kubernetes/reference/configuration/local-pv.md).
 
 Before deploying TiDB on any of the above two environments, you can always refer to [TiDB Cluster Configuration Document](/tidb-in-kubernetes/reference/configuration/tidb-cluster.md) to customize TiDB configurations.

@@ -2,7 +2,6 @@
 title: Deploy TiDB on Google Cloud
 summary: Learn how to quickly deploy a TiDB cluster on Google Cloud using Kubernetes.
 category: how-to
-aliases: ['/docs/op-guide/kubernetes/','/docs/v3.0/how-to/deploy/orchestrated/kubernetes/']
 ---
 
 # Deploy TiDB on Google Cloud

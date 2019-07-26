@@ -13,11 +13,11 @@ This document describes how to deploy TiDB Operator in Kubernetes.
 Before deploying TiDB Operator, make sure the following items are installed on your machine:
 
 * Kubernetes >= v1.10
+* Kubernetes v1.12 or later version is required for zone-aware persistent volumes
 * [DNS addons](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/)
 * [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 * [RBAC](https://kubernetes.io/docs/admin/authorization/rbac) enabled (optional)
 * [Helm](https://helm.sh) version >= v2.8.2 and < v3.0.0
-* Kubernetes v1.12 or later version is required for zone-aware persistent volumes.
 
 > **Note:** 
 >
@@ -35,7 +35,7 @@ TiDB Operator runs in Kubernetes cluster. You can use one of the methods listed 
 
 If you are deploying in a different environment, a proper DNS addon must be installed in the Kubernetes cluster. You can follow the [official documentation](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/) to set up a DNS addon.
 
-TiDB Operator uses [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) to persist the data of TiDB cluster (including the database, monitoring data, backup data), so the Kubernetes cluster must provide at least one kind of persistent volume. For better performance, it is recommended to use local SSD disk as the volumes. Follow [this step](#local-persistent-volume) to auto-provision local persistent volumes.
+TiDB Operator uses [Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) to persist the data of TiDB cluster (including the database, monitoring data, backup data), so the Kubernetes cluster must provide at least one kind of persistent volume. For better performance, it is recommended to use local SSD disk as the volumes. Follow [this step](#configure-local-persistent-volume) to auto-provision local persistent volumes.
 
 It is suggested to enable [RBAC](https://kubernetes.io/docs/admin/authorization/rbac) in the Kubernetes cluster. Otherwise, you need to set `rbac.create` to `false` in the `values.yaml` of both `tidb-operator` and `tidb-cluster` charts.
 
@@ -52,67 +52,13 @@ Set `LimitNOFILE` to `1048576` or bigger.
 
 ## Install Helm
 
-You can follow the Helm [official documentation](https://helm.sh) to install Helm in your Kubernetes cluster. The following instructions are listed here for quick reference:
+Refer to [Use Helm](/tidb-in-kubernetes/reference/tools-in-kubernetes.md#use-helm) to install Helm and configre it with the official PingCAP chart Repo.
 
-1. Install helm client
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
-    ```
-
-    Or if on macOS, you can use homebrew to install Helm by `brew install kubernetes-helm`.
-
-2. Install Helm server
-
-   Make sure that tiller pod is running.
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/tiller-rbac.yaml && \
-    helm init --service-account=tiller --upgrade
-    ```
-   
-   Confirm that the tiller pod is in the `running` state by the following command:
-   
-   {{< copyable "shell-regular" >}}
-   
-    ```shell
-    kubectl get po -n kube-system -l name=tiller
-    ```
-
-   If `RBAC` is not enabled for the Kubernetes cluster, then `helm init --upgrade` should be enough.
-   
-3. Add Helm repo
-
-   PingCAP Helm repo houses PingCAP managed charts, such as tidb-operator, tidb-cluster and tidb-backup, etc. Add and check the repo with following commands:
-   
-    {{< copyable "shell-regular" >}}
-   
-    ```shell
-    helm repo add pingcap http://charts.pingcap.org/ && \
-    helm repo list
-    ```
-
-   Then you can check the avaliable charts:
-   
-    {{< copyable "shell-regular" >}}
-   
-    ```shell
-    helm repo update && \
-    helm search tidb-cluster -l && \
-    helm search tidb-operator -l
-    ```
-    
-## Local Persistent Volume
+## Configure Local Persistent Volume
 
 ### Prepare local volumes
 
-See the [operation guide in sig-storage-local-static-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md) which explains how to set up and clean up local volumes on the nodes.
-
-Also see [best practices](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/best-practices.md) for production environment.
+Refer to [Local PV Configuration](/tidb-in-kubernetes/reference/configuration/local-pv.md) to set up local persistent volumes in your Kubernetes cluster.
 
 ### Deploy local-static-provisioner
 
