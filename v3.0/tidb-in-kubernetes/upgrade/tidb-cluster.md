@@ -19,7 +19,7 @@ When you perform a rolling update to a TiDB cluster in Kubernetes, the Pod is sh
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm upgrade ${releaseName} pingcap/tidb-cluster -f values.yaml --version=v1.0.0-beta.3
+    helm upgrade <releaseName> pingcap/tidb-cluster -f values.yaml --version=<chart_version>
     ```
 
 3. Check the upgrade progress:
@@ -27,7 +27,7 @@ When you perform a rolling update to a TiDB cluster in Kubernetes, the Pod is sh
     {{< copyable "shell-regular" >}}
 
     ```shell
-    watch kubectl -n ${namespace} get pod -o wide
+    watch kubectl -n <namespace> get pod -o wide
     ```
 
 ## Change the configuration of TiDB cluster
@@ -43,7 +43,7 @@ You can change the configuration of TiDB cluster through the following steps:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm upgrade ${releaseName} pingcap/tidb-cluster -f values.yaml --version=v1.0.0-beta.3
+    helm upgrade <releaseName> pingcap/tidb-cluster -f values.yaml --version=<chart_version>
     ```
 
 4. Check the upgrade process:
@@ -51,7 +51,7 @@ You can change the configuration of TiDB cluster through the following steps:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    watch kubectl -n ${namespace} get pod -o wide
+    watch kubectl -n <namespace> get pod -o wide
     ```
 
 > **Note:**

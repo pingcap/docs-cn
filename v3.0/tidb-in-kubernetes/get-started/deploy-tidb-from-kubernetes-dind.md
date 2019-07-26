@@ -181,7 +181,7 @@ kube-node-3   Ready    <none>   9m32s   v1.12.5   10.192.0.5    <none>        De
 
 > **Note:**
 >
-> ${chartVersion} will be used in the rest of the document to represent the chart version, e.g. `v1.0.0-beta.3`.
+> <chartVersion> will be used in the rest of the document to represent the chart version, e.g. `v1.0.0-rc.1`.
 
 Once the K8s cluster is up and running, we can add chart repo and install TiDB Operator into it using `helm`:
 
@@ -190,7 +190,7 @@ Once the K8s cluster is up and running, we can add chart repo and install TiDB O
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm repo add pingcap http://charts.pingcap.org/ && \
+    helm repo add pingcap https://charts.pingcap.org/ && \
     helm repo list && \
     helm repo update && \
     helm search tidb-cluster -l && \
@@ -202,7 +202,7 @@ Once the K8s cluster is up and running, we can add chart repo and install TiDB O
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install pingcap/tidb-operator --name=tidb-operator --namespace=tidb-admin --set scheduler.kubeSchedulerImageName=mirantis/hypokube --set scheduler.kubeSchedulerImageTag=final --version=${chartVersion}
+    helm install pingcap/tidb-operator --name=tidb-operator --namespace=tidb-admin --set scheduler.kubeSchedulerImageName=mirantis/hypokube --set scheduler.kubeSchedulerImageTag=final --version=<chartVersion>
     ```
 
 3. Wait a few minutes until TiDB Operator is running:
@@ -226,7 +226,7 @@ By using `helm` along with TiDB Operator, we can easily set up a TiDB cluster:
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm install pingcap/tidb-cluster --name=demo --namespace=tidb --version=${chartVersion}
+helm install pingcap/tidb-cluster --name=demo --namespace=tidb --version=<chartVersion>
 ```
 
 Wait a few minutes for all TiDB components to be created and ready:
@@ -436,7 +436,7 @@ You can scale out or scale in the TiDB cluster simply by modifying the number of
 
     ```shell
     mkdir -p /home/tidb/demo && \
-    helm inspect values pingcap/tidb-cluster --version=${chartVersion} > /home/tidb/demo/values-demo.yaml
+    helm inspect values pingcap/tidb-cluster --version=<chartVersion> > /home/tidb/demo/values-demo.yaml
     ```
 
 2. Edit the `/home/tidb/demo/values-demo.yaml` file with your preferred text editor.
@@ -448,7 +448,7 @@ You can scale out or scale in the TiDB cluster simply by modifying the number of
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm upgrade demo pingcap/tidb-cluster --namespace=tidb -f /home/tidb/demo/values-demo.yaml --version=${chartVersion}
+    helm upgrade demo pingcap/tidb-cluster --namespace=tidb -f /home/tidb/demo/values-demo.yaml --version=<chartVersion>
     ```
 > **Note:**
 >
@@ -467,7 +467,7 @@ Use `kubectl get pod -n tidb` to verify the number of each compoments equal to v
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm upgrade demo pingcap/tidb-cluster --namespace=tidb -f /home/tidb/demo/values-demo.yaml --version=${chartVersion}
+    helm upgrade demo pingcap/tidb-cluster --namespace=tidb -f /home/tidb/demo/values-demo.yaml --version=<chartVersion>
     ```
 
 Use `kubectl get pod -n tidb` to verify whether all pods are in the `Running` state. Then you can connect to the database and use `tidb_version()` function to verify the version:

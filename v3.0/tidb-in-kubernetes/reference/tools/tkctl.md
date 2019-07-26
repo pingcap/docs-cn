@@ -28,7 +28,7 @@ Requirement: [Go](https://golang.org/) >= the 1.11 version or later
 
 ```shell
 git clone --depth=1 https://github.com/pingcap/tidb-operator.git && \
-GOOS=${YOUR_GOOS} make cli &&\
+GOOS=<YOUR_GOOS> make cli &&\
 mv tkctl /usr/local/bin/tkctl
 ```
 

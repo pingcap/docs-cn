@@ -98,10 +98,10 @@ kubectl -n kube-system get pods -l app=helm
 
 ### Add Helm repo
 
-Helm repo (http://charts.pingcap.org/) houses PingCAP managed charts, such as tidb-operator, tidb-cluster and tidb-backup, etc. Add and check the repo with following commands:
+Helm repo (https://charts.pingcap.org/) houses PingCAP managed charts, such as tidb-operator, tidb-cluster and tidb-backup, etc. Add and check the repo with following commands:
 
 ```shell
-helm repo add pingcap http://charts.pingcap.org/
+helm repo add pingcap https://charts.pingcap.org/
 helm repo list
 ```
 
@@ -117,7 +117,7 @@ helm search tidb-operator -l
 
 > **Note:**
 > 
-> ${chartVersion} will be used in the rest of the document to represent the chart version, e.g. `v1.0.0-beta.3`.
+> <chartVersion> will be used in the rest of the document to represent the chart version, e.g. `v1.0.0-rc.1`.
 
 Clone tidb-operator repository:
 
@@ -125,7 +125,7 @@ Clone tidb-operator repository:
 git clone --depth=1 https://github.com/pingcap/tidb-operator
 cd tidb-operator
 kubectl apply -f ./manifests/crd.yaml
-helm install pingcap/tidb-operator --name tidb-operator --namespace tidb-admin --version=${chartVersion}
+helm install pingcap/tidb-operator --name tidb-operator --namespace tidb-admin --version=<chartVersion>
 ```
 
 Now, you can watch the operator come up using the following command:
@@ -142,7 +142,7 @@ If you have limited access to gcr.io (pods failed with ErrImagePull), you can tr
 
 ```shell
 helm upgrade tidb-operator pingcap/tidb-operator --namespace tidb-admin --set \
-  scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler --version=${chartVersion}
+  scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler --version=<chartVersion>
 ```
 
 When you see both tidb-scheduler and tidb-controller-manager are running, you can process to launch a TiDB cluster!
@@ -153,7 +153,7 @@ To launch a TiDB cluster, use the following command:
 
 ```shell
 helm install pingcap/tidb-cluster --name demo --set \
-  schedulerName=default-scheduler,pd.storageClassName=standard,tikv.storageClassName=standard,pd.replicas=1,tikv.replicas=1,tidb.replicas=1 --version=${chartVersion}
+  schedulerName=default-scheduler,pd.storageClassName=standard,tikv.storageClassName=standard,pd.replicas=1,tikv.replicas=1,tidb.replicas=1 --version=<chartVersion>
 ```
 
 You can watch the cluster up and running using:

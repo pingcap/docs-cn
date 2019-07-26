@@ -12,8 +12,7 @@ This document describes how to deploy TiDB Operator in Kubernetes.
 
 Before deploying TiDB Operator, make sure the following items are installed on your machine:
 
-* Kubernetes >= v1.10
-* Kubernetes v1.12 or later version is required for zone-aware persistent volumes
+* Kubernetes >= v1.12
 * [DNS addons](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/)
 * [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 * [RBAC](https://kubernetes.io/docs/admin/authorization/rbac) enabled (optional)
@@ -95,7 +94,7 @@ After `TidbCluster` custom resource is created, install TiDB Operator in your Ku
 
 > **Note:**
 >
-> `${chartVersion}` will be used in the rest sections of the documents to represent the chart version. For example, `v1.0.0-beta.3`.
+> `<chartVersion>` will be used in the rest sections of the documents to represent the chart version. For example, `v1.0.0-beta.3`.
 
 Use the following command to get the `values.yaml` file of the `tidb-operator` chart you want to install:
 
@@ -103,7 +102,7 @@ Use the following command to get the `values.yaml` file of the `tidb-operator` c
 
 ```shell
 mkdir -p /home/tidb/tidb-operator && \
-helm inspect values pingcap/tidb-operator --version=${chartVersion} > /home/tidb/tidb-operator/values-tidb-operator.yaml
+helm inspect values pingcap/tidb-operator --version=<chartVersion> > /home/tidb/tidb-operator/values-tidb-operator.yaml
 ```
 
 Set `scheduler.kubeSchedulerImage` in the `/home/tidb/tidb-operator/values-tidb-operator.yaml` file as same as the image of your kubernetes cluster.
@@ -111,7 +110,7 @@ Set `scheduler.kubeSchedulerImage` in the `/home/tidb/tidb-operator/values-tidb-
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm install pingcap/tidb-operator --name=tidb-operator --namespace=tidb-admin --version=${chartVersion} -f /home/tidb/tidb-operator/values-tidb-operator.yaml && \
+helm install pingcap/tidb-operator --name=tidb-operator --namespace=tidb-admin --version=<chartVersion> -f /home/tidb/tidb-operator/values-tidb-operator.yaml && \
 kubectl get po -n tidb-admin -l app.kubernetes.io/name=tidb-operator
 ```
 
@@ -131,5 +130,5 @@ After modifying `values.yaml`, run the following command to apply this modificat
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm upgrade tidb-operator pingcap/tidb-operator --version=${chartVersion} -f /home/tidb/tidb-operator/values-tidb-operator.yaml
+helm upgrade tidb-operator pingcap/tidb-operator --version=<chartVersion> -f /home/tidb/tidb-operator/values-tidb-operator.yaml
 ```

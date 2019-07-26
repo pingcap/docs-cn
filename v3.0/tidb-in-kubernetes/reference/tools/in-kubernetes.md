@@ -26,12 +26,20 @@ After the above command is executed, you can access the PD service via `127.0.0.
 pd-ctl -d config show
 ```
 
-Assume that your local port `2379` has been occupied and you want to switch to another port. Then you need to explicitly assign a PD port for `pd-ctl`:
+Assume that your local port `2379` has been occupied and you want to switch to another port:
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-pd-ctl -u 127.0.0.1:<port> -d config show
+kubectl port-forward -n <namespace> svc/<cluster-name>-pd <local-port>:2379 &>/tmp/portforward-pd.log
+```
+ 
+Then you need to explicitly assign a PD port for `pd-ctl`:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+pd-ctl -u 127.0.0.1:<local-port> -d config show
 ```
 
 ## Use TiKV Control in Kubernetes
@@ -57,7 +65,7 @@ pd-ctl -u 127.0.0.1:<port> -d config show
     {{< copyable "shell-regular" >}}
 
     ```shell
-    $ tikv-ctl --ca-path ca.pem --cert-path client.pem --key-path client-key.pem --host 127.0.0.1:20160 <subcommands>
+    $ tikv-ctl --host 127.0.0.1:20160 <subcommands>
     ```
 
     {{< copyable "shell-regular" >}}
@@ -175,12 +183,12 @@ Kubernetes applications are packed as chart in Helm. PingCAP provides three helm
 * `tidb-cluster`: used to deploy TiDB clusters;
 * `tidb-backup`: used to backup or restore TiDB clusters;
 
-These charts are hosted in the Helm chart repository `http://charts.pingcap.org/` maintained by PingCAP. You can add this repository to your local using the following command:
+These charts are hosted in the Helm chart repository `https://charts.pingcap.org/` maintained by PingCAP. You can add this repository to your local using the following command:
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm repo add pingcap http://charts.pingcap.org/
+helm repo add pingcap https://charts.pingcap.org/
 ```
 
 After adding, use `helm search` to search for the charts provided by PingCAP:

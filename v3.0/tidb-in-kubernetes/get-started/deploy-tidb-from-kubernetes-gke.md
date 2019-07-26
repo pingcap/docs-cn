@@ -129,12 +129,12 @@ When you see `Running`, it's time to hit <kbd>Ctrl</kbd>+<kbd>C</kbd> and procee
 
 ## Add Helm repo
 
-Helm repo (http://charts.pingcap.org/) houses PingCAP managed charts, such as tidb-operator, tidb-cluster and tidb-backup, etc. Add and check the repo with following commands:
+Helm repo (https://charts.pingcap.org/) houses PingCAP managed charts, such as tidb-operator, tidb-cluster and tidb-backup, etc. Add and check the repo with following commands:
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm repo add pingcap http://charts.pingcap.org/ && \
+helm repo add pingcap https://charts.pingcap.org/ && \
 helm repo list
 ```
 
@@ -160,7 +160,7 @@ helm search tidb-operator -l
 
 ## Deploy TiDB Operator
 
-Note that `${chartVersion}` is used in the rest of the document to represent the chart version, e.g. `v1.0.0-beta.3`.
+Note that `<chartVersion>` is used in the rest of the document to represent the chart version, e.g. `v1.0.0-rc.1`.
 
 The first TiDB component we are going to install is the TiDB Operator, using a Helm Chart. TiDB Operator is the management system that works with Kubernetes to bootstrap your TiDB cluster and keep it running. This step assumes you are in the `tidb-operator` working directory:
 
@@ -169,7 +169,7 @@ The first TiDB component we are going to install is the TiDB Operator, using a H
 ```shell
 kubectl apply -f ./manifests/crd.yaml && \
 kubectl apply -f ./manifests/gke/persistent-disk.yaml && \
-helm install pingcap/tidb-operator -n tidb-admin --namespace=tidb-admin --version=${chartVersion}
+helm install pingcap/tidb-operator -n tidb-admin --namespace=tidb-admin --version=<chartVersion>
 ```
 
 We can watch the operator come up with:
@@ -189,7 +189,7 @@ Now with a single command we can bring-up a full TiDB cluster:
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm install pingcap/tidb-cluster -n demo --namespace=tidb --set pd.storageClassName=pd-ssd,tikv.storageClassName=pd-ssd --version=${chartVersion}
+helm install pingcap/tidb-cluster -n demo --namespace=tidb --set pd.storageClassName=pd-ssd,tikv.storageClassName=pd-ssd --version=<chartVersion>
 ```
 
 It takes a few minutes to launch. You can monitor the progress with:
@@ -260,7 +260,7 @@ With a single command we can easily scale out the TiDB cluster. To scale out TiK
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm upgrade demo pingcap/tidb-cluster --set pd.storageClassName=pd-ssd,tikv.storageClassName=pd-ssd,tikv.replicas=5 --version=${chartVersion}
+helm upgrade demo pingcap/tidb-cluster --set pd.storageClassName=pd-ssd,tikv.storageClassName=pd-ssd,tikv.replicas=5 --version=<chartVersion>
 ```
 
 Now the number of TiKV pods is increased from the default 3 to 5. You can check it with:

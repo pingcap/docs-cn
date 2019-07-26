@@ -32,7 +32,7 @@ If you do not aggregate logs via a separate log collection tool, you can also us
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl logs -n ${namespace} ${tidbPodName}
+kubectl logs -n <namespace> <tidbPodName>
 ```
 
 > **Note:**
@@ -44,7 +44,7 @@ If you need to collect logs from multiple Pods, you can use [`stern`](https://gi
 {{< copyable "shell-regular" >}}
 
 ```shell
-stern -n ${namespace} tidb -c slowlog
+stern -n <namespace> tidb -c slowlog
 ```
 
 ## Collect TiDB slow query logs
@@ -56,7 +56,7 @@ For versions prior to 3.0, by default, TiDB prints slow query logs to standard o
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl logs -n ${namespace} ${tidbPodName} | grep SLOW_QUERY
+    kubectl logs -n <namespace> <tidbPodName> | grep SLOW_QUERY
     ```
 
 - For the TiDB version >= 2.1.8, it is not so easy to separate the slow query log due to changes to the slow query log format. For this reason, it is recommended to configure `separateSlowLog: true` as described below to view the slow query log separately.
@@ -81,7 +81,7 @@ To do this, follow the steps below:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl logs -n ${namespace} ${tidbPodName} -c slowlog
+    kubectl logs -n <namespace> <tidbPodName> -c slowlog
     ```
 
 For 3.0 and the later versions, TiDB outputs slow query logs to a separate `slowlog.log` file, and `separateSlowLog` is enabled by default, so you can view slow query logs directly from the sidecar container without additional settings.

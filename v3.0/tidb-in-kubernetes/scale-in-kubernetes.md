@@ -23,7 +23,7 @@ To perform a horizontal scaling operation:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    Helm upgrade ${releaseName} pingcap/tidb-cluster -f values.yaml --version=v1.0.0-beta.3
+    Helm upgrade <release_name> pingcap/tidb-cluster -f values.yaml --version=<chart_version>
     ```
 
 3. View the cluster's scaling status:
@@ -31,7 +31,7 @@ To perform a horizontal scaling operation:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    Watch kubectl -n ${namespace} get pod -o wide
+    Watch kubectl -n <namespace> get pod -o wide
     ```
 
     When the number of Pods for all components reaches the preset value and all components are in the `Running` state, the horizontal scaling is completed.
@@ -57,7 +57,7 @@ To perform a vertical scaling operation:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    Helm upgrade ${releaseName} pingcap/tidb-cluster -f values.yaml --version=v1.0.0-beta.3
+    Helm upgrade <release_name> pingcap/tidb-cluster -f values.yaml --version=<chart_version>
     ```
 
 3. View the progress of the upgrade:
@@ -65,7 +65,7 @@ To perform a vertical scaling operation:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    Watch kubectl -n ${namespace} get pod -o wide
+    Watch kubectl -n <namespace> get pod -o wide
     ```
 
     When all Pods are rebuilt and in the `Running` state, the vertical scaling is completed.

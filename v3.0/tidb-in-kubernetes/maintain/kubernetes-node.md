@@ -110,7 +110,7 @@ For a short-term maintenance, you can increase the TiKV instance downtime that t
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl port-forward svc/${CLUSTER_NAME}-pd 2379:2379
+kubectl port-forward svc/<CLUSTER_NAME>-pd 2379:2379
 ```
 
 {{< copyable "shell-regular" >}}
@@ -152,7 +152,7 @@ For the maintenance on an node that cannot be recovered in a short term (for exa
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get tc ${CLUSTER_NAME} -ojson | jq '.status.tikv.stores | .[] | select ( .podName == "${POD_NAME}" ) | .id'
+    kubectl get tc <CLUSTER_NAME> -ojson | jq '.status.tikv.stores | .[] | select ( .podName == "<POD_NAME>" ) | .id'
     ```
 
     Make the TiKV instance offline:
@@ -160,13 +160,13 @@ For the maintenance on an node that cannot be recovered in a short term (for exa
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl port-forward svc/${CLUSTER_NAME}-pd 2379:2379
+    kubectl port-forward svc/<CLUSTER_NAME>-pd 2379:2379
     ```
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    pd-ctl -d store delete ${ID}
+    pd-ctl -d store delete <ID>
     ```
 
 4. Wait for the store to change its status from `state_name` to `Tombstone`:
@@ -174,7 +174,7 @@ For the maintenance on an node that cannot be recovered in a short term (for exa
     {{< copyable "shell-regular" >}}
 
     ```shell
-    watch pd-ctl -d store ${ID}
+    watch pd-ctl -d store <ID>
     ```
 
 5. Unbind the TiKV instance from the local drive of the node:
@@ -184,7 +184,7 @@ For the maintenance on an node that cannot be recovered in a short term (for exa
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get -n ${namespace} pod ${pod_name} -ojson | jq '.spec.volumes | .[] | select (.name == "tikv") | .persistentVolumeClaim.claimName'
+    kubectl get -n <namespace> pod <pod_name> -ojson | jq '.spec.volumes | .[] | select (.name == "tikv") | .persistentVolumeClaim.claimName'
     ```
 
     Delete the `PesistentVolumeClaim`:
@@ -192,7 +192,7 @@ For the maintenance on an node that cannot be recovered in a short term (for exa
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl delete -n ${namespace} pvc ${pvc_name}
+    kubectl delete -n <namespace> pvc <pvc_name>
     ```
 
 6. Delete the TiKV instance:
@@ -200,7 +200,7 @@ For the maintenance on an node that cannot be recovered in a short term (for exa
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl delete -n ${namespace} pod ${pod_name}
+    kubectl delete -n <namespace> pod <pod_name>
     ```
 
 7. Check whether the TiKV instance is normally scheduled to another node:
@@ -208,7 +208,7 @@ For the maintenance on an node that cannot be recovered in a short term (for exa
     {{< copyable "shell-regular" >}}
 
     ```shell
-    watch kubectl -n ${namespace} get pod -o wide
+    watch kubectl -n <namespace> get pod -o wide
     ```
 
     If there are more TiKV instances on the maintenance node, you need to follow the above steps until all instances are migrated to other nodes.

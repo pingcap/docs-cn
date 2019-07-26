@@ -21,7 +21,7 @@ To use the diagnostic mode for troubleshooting:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl annotate pod ${pod_name} -n ${namespace} runmode=debug
+    kubectl annotate pod <pod_name> -n <namespace> runmode=debug
     ```
 
     The next time the container in the Pod is restarted, it detects this annotation and enters the diagnostic mode.
@@ -31,7 +31,7 @@ To use the diagnostic mode for troubleshooting:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    watch kubectl get pod ${pod_name} -n ${namespace}
+    watch kubectl get pod <pod_name> -n <namespace>
     ```
 
 3. Start the diagnosis.
@@ -41,13 +41,13 @@ To use the diagnostic mode for troubleshooting:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl exec -it ${pod_name} -n ${namespace} -- /bin/bash
+    kubectl exec -it <pod_name> -n <namespace> -- /bin/bash
     ```
 
 4. After finishing the diagnosis and resolving the problem, delete the Pod.
 
     ```shell
-    kubectl delete pod ${pod_name} -n ${namespace}
+    kubectl delete pod <pod_name> -n <namespace>
     ```
 
     After the Pod is rebuilt, it automatically returns to the normal mode.
@@ -61,7 +61,7 @@ To restore the cluster at this time, use the `helm install` command to create a 
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm install pingcap/tidb-cluster -n ${releaseName} --namespace=${namespace} --version=v1.0.0-beta.3 -f values.yaml
+helm install pingcap/tidb-cluster -n <release_name> --namespace=<namespace> --version=<chart_version> -f values.yaml
 ```
 
 ## Pod is not created normally
@@ -71,9 +71,9 @@ After creating a cluster using `helm install`, if the Pod is not created, you ca
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl get tidbclusters -n ${namespace}
-kubectl get statefulsets -n ${namespace}
-kubectl describe statefulsets -n ${namespace} ${cluster-name}-pd
+kubectl get tidbclusters -n <namespace>
+kubectl get statefulsets -n <namespace>
+kubectl describe statefulsets -n <namespace> <cluster_name>-pd
 ```
 
 ## Network connection failure between Pods
@@ -87,11 +87,11 @@ When you find some network connection issues between Pods from the log or monito
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl -n ${namespace} get endpoints ${cluster_name}-pd
-    kubectl -n ${namespace} get endpoints ${cluster_name}-tidb
-    kubectl -n ${namespace} get endpoints ${cluster_name}-pd-peer
-    kubectl -n ${namespace} get endpoints ${cluster_name}-tikv-peer
-    kubectl -n ${namespace} get endpoints ${cluster_name}-tidb-peer
+    kubectl -n <namespace> get endpoints <cluster_name>-pd
+    kubectl -n <namespace> get endpoints <cluster_name>-tidb
+    kubectl -n <namespace> get endpoints <cluster_name>-pd-peer
+    kubectl -n <namespace> get endpoints <cluster_name>-tikv-peer
+    kubectl -n <namespace> get endpoints <cluster_name>-tidb-peer
     ```
 
     The `ENDPOINTS` field shown in the above command should be a comma-separated list of `cluster_ip:port`. If the field is empty or incorrect, check the health of the Pod and whether `kube-controller-manager` is working properly.
@@ -101,7 +101,7 @@ When you find some network connection issues between Pods from the log or monito
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tkctl debug -n ${namespace} ${pod_name}
+    tkctl debug -n <namespace> <pod_name>
     ```
 
     After the remote shell is started, use the `dig` command to diagnose the DNS resolution. If the DNS resolution is abnormal, refer to [Debugging DNS Resolution](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/) for troubleshooting.
@@ -109,7 +109,7 @@ When you find some network connection issues between Pods from the log or monito
     {{< copyable "shell-regular" >}}
 
     ```shell
-    dig ${HOSTNAME}
+    dig <HOSTNAME>
     ```
 
     Use the `ping` command to diagnose the connection with the destination IP (the ClusterIP resolved using `dig`):
@@ -117,7 +117,7 @@ When you find some network connection issues between Pods from the log or monito
     {{< copyable "shell-regular" >}}
 
     ```shell
-    ping ${TARGET_IP}
+    ping <TARGET_IP>
     ```
 
     - If the `ping` check fails, refer to [Debugging Kubernetes Networking](https://www.praqma.com/stories/debugging-kubernetes-networking/) for troubleshooting.
@@ -127,7 +127,7 @@ When you find some network connection issues between Pods from the log or monito
         {{< copyable "shell-regular" >}}
 
         ```shell
-        telnet ${TARGET_IP} ${TARGET_PORT}
+        telnet <target_ip> <target_port>
         ```
 
         If the `telnet` check fails, check whether the port corresponding to the Pod is correctly exposed and whether the applied port is correctly configured:
@@ -136,15 +136,15 @@ When you find some network connection issues between Pods from the log or monito
 
         ```shell
         # Checks whether the ports are consistent.
-        kubectl -n ${namespace} get po ${pod_name} -ojson | jq '.spec.containers[].ports[].containerPort'
+        kubectl -n <namespace> get po <pod_name> -ojson | jq '.spec.containers[].ports[].containerPort'
 
         # Checks whether the application is correctly configured to serve the specified port.
         # The default port of PD is 2379 when not configured.
-        kubectl -n ${namespace} -it exec ${pod_name} -- cat /etc/pd/pd.toml | grep client-urls
+        kubectl -n <namespace> -it exec <pod_name> -- cat /etc/pd/pd.toml | grep client-urls
         # The default port of PD is 20160 when not configured.
-        kubectl -n ${namespace} -it exec ${pod_name} -- cat /etc/tikv/tikv.toml | grep addr
+        kubectl -n <namespace> -it exec <pod_name> -- cat /etc/tikv/tikv.toml | grep addr
         # The default port of TiDB is 4000 when not configured.
-        kubectl -n ${namespace} -it exec ${pod_name} -- cat /etc/tidb/tidb.toml | grep port
+        kubectl -n <namespace> -it exec <pod_name> -- cat /etc/tidb/tidb.toml | grep port
         ```
 
 ## The Pod is in the Pending state
@@ -159,7 +159,7 @@ You can check the specific reason for Pending by using the `kubectl describe pod
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl describe po -n ${namespace} ${pod_name}
+kubectl describe po -n <namespace> <pod_name>
 ```
 
 - If the CPU or memory resources are insufficient, you can lower the CPU or memory resources requested by the corresponding component for scheduling, or add a new Kubernetes node.
@@ -181,7 +181,7 @@ A Pod in the `CrashLoopBackOff` state means that the container in the Pod repeat
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl -n ${namespace} logs -f ${pod_name}
+kubectl -n <namespace> logs -f <pod_name>
 ```
 
 If the log fails to help diagnose the problem, you can add the `-p` parameter to output the log information when the container was last started:
@@ -189,7 +189,7 @@ If the log fails to help diagnose the problem, you can add the `-p` parameter to
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl -n ${namespace} logs -p ${pod_name}
+kubectl -n <namespace> logs -p <pod_name>
 ```
 
 After checking the error messages in the log, you can refer to [Cannot start `tidb-server`](/how-to/troubleshoot/cluster-setup.md#cannot-start-tidb-server), [Cannot start `tikv-server`](/how-to/troubleshoot/cluster-setup.md#cannot-start-tikv-server), and [Cannot start `pd-server`](/how-to/troubleshoot/cluster-setup.md#cannot-start-pd-server) for further troubleshooting.
@@ -214,7 +214,7 @@ If you cannot access the TiDB service, first check whether the TiDB service is d
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get po -n ${namespace}
+    kubectl get po -n <namespace>
     ```
 
 2. Check the log of TiDB components to see whether errors are reported.
@@ -222,7 +222,7 @@ If you cannot access the TiDB service, first check whether the TiDB service is d
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl logs -f ${tidb-pod-name} -n ${namespace}
+    kubectl logs -f <tidb-pod-name> -n <namespace>
     ```
 
 If the cluster is successfully deployed, check the network using the following steps:
@@ -232,7 +232,7 @@ If the cluster is successfully deployed, check the network using the following s
     - Network failure exists between the client and the node.
     - Check whether the `externalTrafficPolicy` attribute of the TiDB service is `Local`. If it is `Local`, you must access the client using the IP of the node where the TiDB Pod is located.
 
-2. If you still cannot access the TiDB service using the service domain or `clusterIP`, connect using `${PodIP}:4000` on the TiDB service backend. If the `PodIP` works, you can confirm that the problem is in the connection between the service domain and `PodIP` or between `clusterIP` and `PodIP`. Check the following items:
+2. If you still cannot access the TiDB service using the service domain or `clusterIP`, connect using `<PodIP>:4000` on the TiDB service backend. If the `PodIP` works, you can confirm that the problem is in the connection between the service domain and `PodIP` or between `clusterIP` and `PodIP`. Check the following items:
 
     - Check whether the DNS service works well.
 
@@ -240,7 +240,7 @@ If the cluster is successfully deployed, check the network using the following s
 
         ```shell
         kubectl get po -n kube-system -l k8s-app=kube-dns
-        dig ${tidb-service-domain}
+        dig <tidb-service-domain>
         ```
 
     - Check whether `kube-proxy` on each node is working.
@@ -256,7 +256,7 @@ If the cluster is successfully deployed, check the network using the following s
         {{< copyable "shell-regular" >}}
 
         ```shell
-        iptables-save -t nat |grep ${clusterIP}
+        iptables-save -t nat |grep <clusterIP>
         ```
 
     - Check whether the corresponding endpoint is correct.

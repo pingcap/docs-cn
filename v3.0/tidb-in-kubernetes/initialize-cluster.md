@@ -43,7 +43,7 @@ When a cluster is created, a default account `root` is created with no password.
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install pingcap/tidb-cluster --name=<release-name> --namespace=<namespace> --version=v1.0.0-beta.3 --set tidb.passwordSecretName=tidb-secret
+    helm install pingcap/tidb-cluster --name=<release-name> --namespace=<namespace> --version=<chart_version> --set tidb.passwordSecretName=tidb-secret
     ```
 
     After specifying `tidb.passwordSecretName`, the above command sets up a cluster with an initialization job created automatically. Using the available `secret`, this job creates the password for the `root` account, and creates other user accounts and passwords if specified. The password specified here is required when you login to the MySQL client.
@@ -71,7 +71,7 @@ Save the above configuration to the `values.yaml` file and run the following com
 {{< copyable "shell-regular" >}}
 
 ```bash
-helm install pingcap/tidb-cluster -f values.yaml --name=<release-name> --namespace=<namespace> --version=v1.0.0-beta.3
+helm install pingcap/tidb-cluster -f values.yaml --name=<release-name> --namespace=<namespace> --version=<chart_version>
 ```
 
 > **Note:**
