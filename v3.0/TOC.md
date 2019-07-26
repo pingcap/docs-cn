@@ -4,7 +4,7 @@
 
 + Introduction
   - [TiDB Introduction](overview.md)
-  + Benchmark Test
+  + Benchmarks
     - [How to Test TiDB Using Sysbench](benchmark/how-to-run-sysbench.md)
     - [How to Run TPC-C Test on TiDB](benchmark/how-to-run-tpcc.md)
     - [Sysbench Performance Test - v3.0 vs. v2.1](benchmark/sysbench-v4.md)
