@@ -258,4 +258,4 @@ kubectl logs -f <tidb-pod-name> -n <namespace>
 
     * 检查 node 上的相关 route 规则是否正确
     * 检查网络插件服务是否正常
-    * 参考上面的[Pod 之间网络不通](#Pod-之间网络不通)章节
+    * 参考上面的[Pod 之间网络不通](#pod-之间网络不通)章节
