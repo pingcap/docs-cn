@@ -18,7 +18,7 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群。通过 Helm 获取的配
 | 参数名 | 说明 | 默认值 |
 | :----- | :---- | :----- |
 | `rbac.create` | 是否启用 Kubernetes 的 RBAC | `true` |
-| `clusterName` | TiDB 集群名，默认不设置该变量，`tidb-cluster` 会直接用执行安装时的 `RealeaseName` 代替 | `nil` |
+| `clusterName` | TiDB 集群名，默认不设置该变量，`tidb-cluster` 会直接用执行安装时的 `ReleaseName` 代替 | `nil` |
 | `extraLabels` | TiDB 集群附加的自定义标签 参考：[labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) | `{}` |
 | `schedulerName` | TiDB 集群使用的调度器 | `tidb-scheduler` |
 | `timezone` | TiDB 集群默认时区 | `UTC` |
@@ -27,10 +27,10 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群。通过 Helm 获取的配
 | `services[0].type` | TiDB 集群对外暴露服务的类型，(从 `ClusterIP`、`NodePort`、`LoadBalancer` 中选择) | `nil` |
 | `discovery.image` | TiDB 集群 PD 服务发现组件的镜像，该组件用于在 PD 集群第一次启动时，为各个 PD 实例提供服务发现功能以协调启动顺序 | `pingcap/tidb-operator:v1.0.0-beta.3` |
 | `discovery.imagePullPolicy` | PD 服务发现组件镜像的拉取策略 | `IfNotPresent` |
-| `discovery.resoureces.limits.cpu` | PD 服务发现组件的 CPU 资源限额 | `250m` |
-| `discovery.resoureces.limits.memory` | PD 服务发现组件的内存资源限额 | `150Mi` |
-| `discovery.resoureces.requests.cpu` | PD 服务发现组件的 CPU 资源请求 | `80m` |
-| `discovery.resoureces.requests.memory` | PD 服务发现组件的内存资源请求 | `50Mi` |
+| `discovery.resources.limits.cpu` | PD 服务发现组件的 CPU 资源限额 | `250m` |
+| `discovery.resources.limits.memory` | PD 服务发现组件的内存资源限额 | `150Mi` |
+| `discovery.resources.requests.cpu` | PD 服务发现组件的 CPU 资源请求 | `80m` |
+| `discovery.resources.requests.memory` | PD 服务发现组件的内存资源请求 | `50Mi` |
 | `enableConfigMapRollout` | 是否开启 TiDB 集群自动滚动更新。如果启用，则 TiDB 集群的 ConfigMap 变更时，TiDB 集群自动更新对应组件。该配置只在 tidb-operator v1.0 及以上版本才支持 | `false` |
 | `pd.config` | 配置文件格式的 PD 的配置，请参考[链接](https://github.com/pingcap/pd/blob/master/conf/config.toml)查看默认 PD 配置文件（选择对应 PD 版本的 tag），可以参考[文档](https://pingcap.com/docs-cn/v3.0/reference/configuration/pd-server/configuration-file/)查看配置参数的具体介绍（请选择对应的文档版本），这里只需要**按照配置文件中的格式修改配置** | TiDB Operator 版本 <= v1.0.0-beta.3，默认值为：<br>`nil`<br>TiDB Operator 版本 > v1.0.0-beta.3，默认值为：<br>`[log]`<br>`level = "info"`<br>`[replication]`<br>`location-labels = ["region", "zone", "rack", "host"]`<br>配置示例：<br>&nbsp;&nbsp;`config:` \|<br>&nbsp;&nbsp;&nbsp;&nbsp;`[log]`<br>&nbsp;&nbsp;&nbsp;&nbsp;`level = "info"`<br>&nbsp;&nbsp;&nbsp;&nbsp;`[replication]`<br>&nbsp;&nbsp;&nbsp;&nbsp;`location-labels = ["region", "zone", "rack", "host"]` |
 | `pd.replicas` | PD 的 Pod 数 | `3` |
@@ -142,7 +142,7 @@ TiDB 服务容灾本质上基于 Kubernetes 的调度功能来实现的，为了
 affinity:
  podAntiAffinity:
    preferredDuringSchedulingIgnoredDuringExecution:
-   # this term work when the nodes have the label named region
+   # this term works when the nodes have the label named region
    - weight: 10
      podAffinityTerm:
        labelSelector:
@@ -152,7 +152,7 @@ affinity:
        topologyKey: "region"
        namespaces:
        - <helm namespace>
-   # this term work when the nodes have the label named zone
+   # this term works when the nodes have the label named zone
    - weight: 20
      podAffinityTerm:
        labelSelector:
@@ -162,7 +162,7 @@ affinity:
        topologyKey: "zone"
        namespaces:
        - <helm namespace>
-   # this term work when the nodes have the label named rack
+   # this term works when the nodes have the label named rack
    - weight: 40
      podAffinityTerm:
        labelSelector:
@@ -172,7 +172,7 @@ affinity:
        topologyKey: "rack"
        namespaces:
        - <helm namespace>
-   # this term work when the nodes have the label named kubernetes.io/hostname
+   # this term works when the nodes have the label named kubernetes.io/hostname
    - weight: 80
      podAffinityTerm:
        labelSelector:
@@ -207,7 +207,7 @@ affinity:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    $ kubectl label node <nodeName> region=<regionName> zone=<zoneName> rack=<rackName> kubernetes.io/hostname=<hostName>
+    kubectl label node <nodeName> region=<regionName> zone=<zoneName> rack=<rackName> kubernetes.io/hostname=<hostName>
     ```
 
     其中 `region`、`zone`、`rack`、`kubernetes.io/hostname` 只是举例，要添加的 Label 名字和数量可以任意定义，只要符合规范且和 `pd.config` 里的 `location-labels` 设置的 Labels 保持一致即可。
