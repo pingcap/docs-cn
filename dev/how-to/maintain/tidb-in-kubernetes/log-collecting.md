@@ -31,7 +31,7 @@ Kubernetes 官方文档中提供了 [ElasticSearch](https://kubernetes.io/docs/t
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl logs -n ${namespace} ${tidbPodName}
+kubectl logs -n <namespace> <tidbPodName>
 ```
 
 若需查看容器重启之前的日志，可以在执行上述命令时添加 `-p` 参数。
@@ -41,7 +41,7 @@ kubectl logs -n ${namespace} ${tidbPodName}
 {{< copyable "shell-regular" >}}
 
 ```shell
-stern -n ${namespace} tidb -c slowlog
+stern -n <namespace> tidb -c slowlog
 ```
 
 ## TiDB 慢查询日志
@@ -53,7 +53,7 @@ stern -n ${namespace} tidb -c slowlog
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl logs -n ${namespace} ${tidbPodName} | grep SLOW_QUERY
+    kubectl logs -n <namespace> <tidbPodName> | grep SLOW_QUERY
     ```
 
 - 如果 TiDB 版本 >= v2.1.8，由于慢查询日志格式发生变化，不太方便分离慢查询日志，建议参考下面内容配置 `separateSlowLog: true` 单独查看慢查询日志。
@@ -74,7 +74,7 @@ stern -n ${namespace} tidb -c slowlog
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl logs -n ${namespace} ${tidbPodName} -c slowlog
+kubectl logs -n <namespace> <tidbPodName> -c slowlog
 ```
 
 对于 3.0 及更新的版本，TiDB 将慢查询日志输出到独立的 `slowlog.log` 文件中，并且 `separateSlowLog` 是默认开启的，所以可以直接通过 sidecar 容器查看慢查询日志，无需额外设置。

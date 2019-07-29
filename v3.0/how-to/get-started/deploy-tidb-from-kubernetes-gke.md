@@ -2,7 +2,6 @@
 title: 在 GCP 上通过 Kubernetes 部署 TiDB 集群
 summary: 在 GCP 上通过 Kubernetes 部署 TiDB 集群教程
 category: how-to
-aliases: ['/docs-cn/v3.0/how-to/get-started/local-cluster/install-from-kubernetes-gke/']
 ---
 
 # 在 GCP 上通过 Kubernetes 部署 TiDB 集群
@@ -142,7 +141,7 @@ helm search tidb-operator -l
 
 > **注意：**
 >
-> ${chartVersion} 在后面文档中代表 chart 版本，例如 `v1.0.0-beta.3`。
+> `<chartVersion>` 在后面文档中代表 chart 版本，例如 `v1.0.0-beta.3`。
 
 第一个要安装的 TiDB 组件是 TiDB Operator，TiDB Operator 是管理组件，结合 Kubernetes 启动 TiDB 集群并保证集群正常运行。执行下面命令之前请确保在 `tidb-operator` 目录下：
 
@@ -151,7 +150,7 @@ helm search tidb-operator -l
 ``` shell
 kubectl apply -f ./manifests/crd.yaml && \
 kubectl apply -f ./manifests/gke/persistent-disk.yaml && \
-helm install pingcap/tidb-operator -n tidb-admin --namespace=tidb-admin --version=${chartVersion}
+helm install pingcap/tidb-operator -n tidb-admin --namespace=tidb-admin --version=<chartVersion>
 ```
 
 可以通过下面命令观察 Operator 启动情况：
@@ -171,7 +170,7 @@ kubectl get pods --namespace tidb-admin -o wide --watch
 {{< copyable "shell-regular" >}}
 
 ``` shell
-helm install pingcap/tidb-cluster -n demo --namespace=tidb --set pd.storageClassName=pd-ssd,tikv.storageClassName=pd-ssd --version=${chartVersion}
+helm install pingcap/tidb-cluster -n demo --namespace=tidb --set pd.storageClassName=pd-ssd,tikv.storageClassName=pd-ssd --version=<chartVersion>
 ```
 
 集群启动需要几分钟时间，可以通过下面命令观察状态：
@@ -242,7 +241,7 @@ SET PASSWORD FOR 'root'@'%' = '<change-to-your-password>';
 {{< copyable "shell-regular" >}}
 
 ``` shell
-helm upgrade demo pingcap/tidb-cluster --set pd.storageClassName=pd-ssd,tikv.storageClassName=pd-ssd,tikv.replicas=5 --version=${chartVersion}
+helm upgrade demo pingcap/tidb-cluster --set pd.storageClassName=pd-ssd,tikv.storageClassName=pd-ssd,tikv.replicas=5 --version=<chartVersion>
 ```
 
 TiKV 的 Pod 数量从 3 增加到了 5。可以通过下面命令查看：

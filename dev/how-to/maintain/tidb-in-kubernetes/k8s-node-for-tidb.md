@@ -109,7 +109,7 @@ TiKV 实例迁移较慢，并且会对集群造成一定的数据迁移负载，
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl port-forward svc/${CLUSTER_NAME}-pd 2379:2379
+kubectl port-forward svc/<CLUSTER_NAME>-pd 2379:2379
 ```
 
 {{< copyable "shell-regular" >}}
@@ -151,7 +151,7 @@ pd-ctl -d config set max-store-down-time 10m
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get tc ${CLUSTER_NAME} -ojson | jq '.status.tikv.stores | .[] | select ( .podName == "${POD_NAME}" ) | .id'
+    kubectl get tc <CLUSTER_NAME> -ojson | jq '.status.tikv.stores | .[] | select ( .podName == "<POD_NAME>" ) | .id'
     ```
 
     下线实例：
@@ -159,13 +159,13 @@ pd-ctl -d config set max-store-down-time 10m
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl port-forward svc/${CLUSTER_NAME}-pd 2379:2379
+    kubectl port-forward svc/<CLUSTER_NAME>-pd 2379:2379
     ```
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    pd-ctl -d store delete ${ID}
+    pd-ctl -d store delete <ID>
     ```
 
 4. 等待 store 状态（`state_name`）转移为 `Tombstone`：
@@ -173,7 +173,7 @@ pd-ctl -d config set max-store-down-time 10m
     {{< copyable "shell-regular" >}}
 
     ```shell
-    watch pd-ctl -d store ${ID}
+    watch pd-ctl -d store <ID>
     ```
 
 5. 解除 TiKV 实例与节点本地盘的绑定。
@@ -183,7 +183,7 @@ pd-ctl -d config set max-store-down-time 10m
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get -n ${namespace} pod ${pod_name} -ojson | jq '.spec.volumes | .[] | select (.name == "tikv") | .persistentVolumeClaim.claimName'
+    kubectl get -n <namespace> pod <pod_name> -ojson | jq '.spec.volumes | .[] | select (.name == "tikv") | .persistentVolumeClaim.claimName'
     ```
 
     删除该 `PesistentVolumeClaim`：
@@ -191,7 +191,7 @@ pd-ctl -d config set max-store-down-time 10m
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl delete -n ${namespace} pvc ${pvc_name}
+    kubectl delete -n <namespace> pvc <pvc_name>
     ```
 
 6. 删除 TiKV 实例：
@@ -199,7 +199,7 @@ pd-ctl -d config set max-store-down-time 10m
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl delete -n ${namespace} pod ${pod_name}
+    kubectl delete -n <namespace> pod <pod_name>
     ```
 
 7. 观察该 TiKV 实例是否正常调度到其它节点上：
@@ -207,7 +207,7 @@ pd-ctl -d config set max-store-down-time 10m
     {{< copyable "shell-regular" >}}
 
     ```shell
-    watch kubectl -n ${namespace} get pod -o wide
+    watch kubectl -n <namespace> get pod -o wide
     ```
 
     假如待维护节点上还有其它 TiKV 实例，则重复同样的操作步骤直到所有的 TiKV 实例都迁移到其它节点上。

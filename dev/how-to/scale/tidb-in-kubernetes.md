@@ -20,7 +20,7 @@ TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm upgrade ${releaseName} pingcap/tidb-cluster -f values.yaml --version=v1.0.0-beta.3
+    helm upgrade <releaseName> pingcap/tidb-cluster -f values.yaml --version=v1.0.0-beta.3
     ```
 
 3. 查看集群水平扩缩容状态：
@@ -28,7 +28,7 @@ TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达
     {{< copyable "shell-regular" >}}
 
     ```shell
-    watch kubectl -n ${namespace} get pod -o wide
+    watch kubectl -n <namespace> get pod -o wide
     ```
 
     当所有组件的 Pod 数量都达到了预设值，并且都进入  `Running` 状态后，水平扩缩容完成。
@@ -52,7 +52,7 @@ TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm upgrade ${releaseName} pingcap/tidb-cluster -f values.yaml --version=v1.0.0-beta.3
+    helm upgrade <releaseName> pingcap/tidb-cluster -f values.yaml --version=v1.0.0-beta.3
     ```
 
 3. 查看升级进度：
@@ -60,7 +60,7 @@ TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达
     {{< copyable "shell-regular" >}}
 
     ```shell
-    watch kubectl -n ${namespace} get pod -o wide
+    watch kubectl -n <namespace> get pod -o wide
     ```
 
     当所有 Pod 都重建完毕进入 `Running` 状态后，垂直扩缩容完成。

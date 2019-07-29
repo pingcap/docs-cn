@@ -2,7 +2,6 @@
 title: 使用 DinD 在 Kubernetes 上部署 TiDB 集群
 summary: 使用 DinD 在 Kubernetes 上部署 TiDB 集群
 category: how-to
-aliases: ['/docs-cn/v3.0/how-to/get-started/local-cluster/install-from-kubernetes-dind/']
 ---
 
 # 使用 DinD 在 Kubernetes 上部署 TiDB 集群
@@ -157,7 +156,7 @@ kube-node-3   Ready    <none>   9m32s   v1.12.5   10.192.0.5    <none>        De
 
 > **注意：**
 >
-> ${chartVersion} 在后续文档中代表 chart 版本，例如 `v1.0.0-beta.3`。
+> `<chartVersion>` 在后续文档中代表 chart 版本，例如 `v1.0.0-beta.3`。
 
 如果 K8s 集群启动并正常运行，可以通过 `helm` 添加 chart 仓库并安装 TiDB Operator。
 
@@ -178,7 +177,7 @@ kube-node-3   Ready    <none>   9m32s   v1.12.5   10.192.0.5    <none>        De
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    helm install pingcap/tidb-operator --name=tidb-operator --namespace=tidb-admin --set scheduler.kubeSchedulerImageName=mirantis/hypokube --set scheduler.kubeSchedulerImageTag=final --version=${chartVersion}
+    helm install pingcap/tidb-operator --name=tidb-operator --namespace=tidb-admin --set scheduler.kubeSchedulerImageName=mirantis/hypokube --set scheduler.kubeSchedulerImageTag=final --version=<chartVersion>
     ```
 
     然后等待几分钟确保 TiDB Operator 正常运行：
@@ -204,7 +203,7 @@ kube-node-3   Ready    <none>   9m32s   v1.12.5   10.192.0.5    <none>        De
 {{< copyable "shell-regular" >}}
 
 ``` shell
-helm install pingcap/tidb-cluster --name=demo --namespace=tidb --version=${chartVersion}
+helm install pingcap/tidb-cluster --name=demo --namespace=tidb --version=<chartVersion>
 ```
 
 等待几分钟，确保 TiDB 所有组件正常创建并进入 `ready` 状态，可以通过下面命令持续观察：
@@ -426,7 +425,7 @@ demo-tikv-2                       1/1       Running     0          1m
 
     ``` shell
     mkdir -p /home/tidb/demo && \
-    helm inspect values pingcap/tidb-cluster --version=${chartVersion} > /home/tidb/demo/values-demo.yaml
+    helm inspect values pingcap/tidb-cluster --version=<chartVersion> > /home/tidb/demo/values-demo.yaml
     ```
 
 2. 编辑 `/home/tidb/demo/values-demo.yaml`。
@@ -438,7 +437,7 @@ demo-tikv-2                       1/1       Running     0          1m
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    helm upgrade demo pingcap/tidb-cluster --namespace=tidb -f /home/tidb/demo/values-demo.yaml --version=${chartVersion}
+    helm upgrade demo pingcap/tidb-cluster --namespace=tidb -f /home/tidb/demo/values-demo.yaml --version=<chartVersion>
     ```
 
 > **注意：**
@@ -458,7 +457,7 @@ demo-tikv-2                       1/1       Running     0          1m
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    helm upgrade demo pingcap/tidb-cluster --namespace=tidb -f /home/tidb/demo/values-demo.yaml --version=${chartVersion}
+    helm upgrade demo pingcap/tidb-cluster --namespace=tidb -f /home/tidb/demo/values-demo.yaml --version=<chartVersion>
     ```
 
     通过 `kubectl get pod -n tidb` 命令确认所有 Pod 处于 `Running` 状态。然后你可以访问数据库并通过 `tidb_version()` 确认版本：

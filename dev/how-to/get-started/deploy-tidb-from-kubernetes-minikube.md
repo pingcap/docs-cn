@@ -141,7 +141,7 @@ helm search tidb-operator -l
 
 > **注意：**
 >
-> ${chartVersion} 在后面文档中代表 chart 版本，例如 `v1.0.0-beta.3`。
+> `<chartVersion>` 在后面文档中代表 chart 版本，例如 `v1.0.0-beta.3`。
 
 克隆 tidb-operator 代码库并安装 TiDB Operator：
 
@@ -151,7 +151,7 @@ helm search tidb-operator -l
 git clone --depth=1 https://github.com/pingcap/tidb-operator && \
 cd tidb-operator && \
 kubectl apply -f ./manifests/crd.yaml && \
-helm install pingcap/tidb-operator --name tidb-operator --namespace tidb-admin --version=${chartVersion}
+helm install pingcap/tidb-operator --name tidb-operator --namespace tidb-admin --version=<chartVersion>
 ```
 
 然后，可以通过如下命令查看 TiDB Operator 的启动情况：
@@ -168,7 +168,7 @@ kubectl get pods --namespace tidb-admin -o wide --watch
 
 ``` shell
 helm upgrade tidb-operator pingcap/tidb-operator --namespace tidb-admin --set \
-  scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler --version=${chartVersion}
+  scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler --version=<chartVersion>
 ```
 
 如果 tidb-scheduler 和 tidb-controller-manager 都进入 running 状态，你可以继续下一步启动一个 TiDB 集群。
@@ -181,7 +181,7 @@ helm upgrade tidb-operator pingcap/tidb-operator --namespace tidb-admin --set \
 
 ``` shell
 helm install pingcap/tidb-cluster --name demo --set \
-  schedulerName=default-scheduler,pd.storageClassName=standard,tikv.storageClassName=standard,pd.replicas=1,tikv.replicas=1,tidb.replicas=1 --version=${chartVersion}
+  schedulerName=default-scheduler,pd.storageClassName=standard,tikv.storageClassName=standard,pd.replicas=1,tikv.replicas=1,tidb.replicas=1 --version=<chartVersion>
 ```
 
 可以通过下面命令观察集群的状态：

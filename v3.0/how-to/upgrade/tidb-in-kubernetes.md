@@ -21,7 +21,7 @@ category: how-to
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm upgrade ${releaseName} pingcap/tidb-cluster -f values.yaml --version=v1.0.0-beta.3
+    helm upgrade <releaseName> pingcap/tidb-cluster -f values.yaml --version=v1.0.0-beta.3
     ```
 
 3. 查看升级进度：
@@ -29,7 +29,7 @@ category: how-to
     {{< copyable "shell-regular" >}}
 
     ```shell
-    watch kubectl -n ${namespace} get pod -o wide
+    watch kubectl -n <namespace> get pod -o wide
     ```
 
     当所有 Pod 都重建完毕进入 `Running` 状态后，升级完成。
@@ -47,7 +47,7 @@ category: how-to
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm upgrade ${releaseName} pingcap/tidb-cluster -f values.yaml --version=v1.0.0-beta.3
+    helm upgrade <releaseName> pingcap/tidb-cluster -f values.yaml --version=v1.0.0-beta.3
     ```
 
 4. 查看升级进度：
@@ -55,7 +55,7 @@ category: how-to
     {{< copyable "shell-regular" >}}
 
     ```shell
-    watch kubectl -n ${namespace} get pod -o wide
+    watch kubectl -n <namespace> get pod -o wide
     ```
 
     当所有 Pod 都重建完毕进入 `Running` 状态后，升级完成。

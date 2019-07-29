@@ -46,7 +46,7 @@ release=<your-tidb-release-name>
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl -n ${namespace} get svc ${release}-tidb -ojsonpath="{.spec.ports[?(@.name=='mysql-client')].nodePort}{'\n'}"
+kubectl -n <namespace> get svc <release>-tidb -ojsonpath="{.spec.ports[?(@.name=='mysql-client')].nodePort}{'\n'}"
 ```
 
 查看可通过哪些节点的 IP 访问 TiDB 服务，有两种情况：
@@ -63,7 +63,7 @@ kubectl -n ${namespace} get svc ${release}-tidb -ojsonpath="{.spec.ports[?(@.nam
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl -n stability-cluster1 get pods -l "app.kubernetes.io/component=tidb,app.kubernetes.io/instance=${release}" -ojsonpath="{range .items[*]}{.spec.nodeName}{'\n'}{end}"
+    kubectl -n stability-cluster1 get pods -l "app.kubernetes.io/component=tidb,app.kubernetes.io/instance=<release>" -ojsonpath="{range .items[*]}{.spec.nodeName}{'\n'}{end}"
     ```
 
 ## LoadBalancer
