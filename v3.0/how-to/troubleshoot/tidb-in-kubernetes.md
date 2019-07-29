@@ -54,7 +54,7 @@ TiDB Operator 使用 PV (Persistent Volume)、PVC (Persistent Volume Claim) 来�
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm install pingcap/tidb-cluster -n <releaseName> --namespace=<namespace> --version=v1.0.0-beta.3 -f values.yaml
+helm install pingcap/tidb-cluster -n <releaseName> --namespace=<namespace> --version=<chart-version> -f values.yaml
 ```
 
 ## Pod 未正常创建

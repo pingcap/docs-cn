@@ -5,7 +5,7 @@ category: reference
 
 # Kubernetes 上的 TiDB 工具指南
 
-Kubernetes 上的 TiDB 运维管理需要使用一些开源工具，同时，在 Kubernetes 上使用 TiDB 生态工具时，也有特殊的操作要求。本文档详细描述 Kubernetes 上的 TiDB 相关的工具及其使用方法。
+Kubernetes 上的 TiDB 运维管理需要使用一些开源工具。同时，在 Kubernetes 上使用 TiDB 生态工具时，也有特殊的操作要求。本文档详细描述 Kubernetes 上的 TiDB 相关的工具及其使用方法。
 
 ## 在 Kubernetes 上使用 PD Control
 
@@ -33,7 +33,7 @@ pd-ctl -d config show
 kubectl port-forward -n <namespace> svc/<cluster-name>-pd <local-port>:2379 &>/tmp/portforward-pd.log
 ```
 
-此时，需要为 `pd-ctl`  命令显式指定 PD 端口：
+此时，需要为 `pd-ctl` 命令显式指定 PD 端口：
 
 {{< copyable "shell-regular" >}}
 
@@ -43,7 +43,7 @@ pd-ctl -u 127.0.0.1:<local-port> -d config show
 
 ## 在 Kubernetes 上使用 TiKV Control
 
-[TiKV Control](reference/tools/tikv-control.md) 是 TiKV 的命令行工具，在使用 TiKV Control 操作 Kubernetes 上的 TiDB 集群时，针对 TiKV Control 的不同操作形式，有不同的操作步骤。
+[TiKV Control](reference/tools/tikv-control.md) 是 TiKV 的命令行工具。在使用 TiKV Control 操作 Kubernetes 上的 TiDB 集群时，针对 TiKV Control 的不同操作模式，有不同的操作步骤。
 
 * **远程模式**：此模式下 `tikv-ctl` 命令需要通过网络访问 TiKV 服务或 PD 服务，因此需要先使用 `kubectl port-forward` 打开本地到 PD 服务以及目标 TiKV 节点的连接：
 
@@ -174,13 +174,13 @@ tidb-ctl schema in mysql
     helm init --upgrade
     ```
 
-Kubernetes 应用在 helm 中被打包为 chart，PingCAP 针对 Kubernetes 上的 TiDB 部署运维提供了三个 helm chart：
+Kubernetes 应用在 helm 中被打包为 chart。PingCAP 针对 Kubernetes 上的 TiDB 部署运维提供了三个 Helm chart：
 
 * `tidb-operator`：用于部署 TiDB Operator；
 * `tidb-cluster`：用于部署 TiDB 集群；
 * `tidb-backup`：用于 TiDB 集群备份恢复；
 
-这些 chart 都托管在 PingCAP 维护的 helm chart 仓库 `http://charts.pingcap.org/` 中，你可以通过下面的命令添加该仓库：
+这些 chart 都托管在 PingCAP 维护的 helm chart 仓库 `https://charts.pingcap.org/` 中，你可以通过下面的命令添加该仓库：
 
 {{< copyable "shell-regular" >}}
 
@@ -211,7 +211,7 @@ pingcap/tidb-operator   v1.0.0-rc.1                 tidb-operator Helm chart for
 helm repo update
 ```
 
-Helm 的常用操作有部署（`helm install`）、升级（`helm upgrade`)、销毁（`helm del`)、查询（`helm ls`）。Helm chart 往往都有很多可配置参数，通过命令行进行配置比较繁琐，因此推荐使用 YAML 文件的形式来编写这些配置项，基于 Helm 社区约定俗称的称呼方式，我们在文档中将用于配置 chart 的 YAML 文件称为 `values.yaml` 文件。
+Helm 的常用操作有部署（`helm install`）、升级（`helm upgrade`)、销毁（`helm del`)、查询（`helm ls`）。Helm chart 往往都有很多可配置参数，通过命令行进行配置比较繁琐，因此推荐使用 YAML 文件的形式来编写这些配置项，基于 Helm 社区约定俗称的命名方式，我们在文档中将用于配置 chart 的 YAML 文件称为 `values.yaml` 文件。
 
 执行部署、升级、销毁等操作前，可以使用 `helm ls` 查看集群中已部署的应用：
 
@@ -221,7 +221,7 @@ Helm 的常用操作有部署（`helm install`）、升级（`helm upgrade`)、�
 helm ls
 ```
 
-在执行部署和升级操作时，必须指定使用的 chart 名字（`chart-name`）和部署后的应用名（`release-name`），还可以指定一个或多个 `values.yaml` 文件来配置 chart，此外，假如有特定的版本需求，则需要通过 `--version` 参数指定 `chart-version` (默认为最新的 GA 版本）。命令形式如下：
+在执行部署和升级操作时，必须指定使用的 chart 名字（`chart-name`）和部署后的应用名（`release-name`），还可以指定一个或多个 `values.yaml` 文件来配置 chart。此外，假如对 chart 有特定的版本需求，则需要通过 `--version` 参数指定 `chart-version` (默认为最新的 GA 版本）。命令形式如下：
 
 * 执行安装：
 
@@ -251,6 +251,6 @@ helm del --purge <release-name>
 
 ## 使用 Terraform
 
-[Terraform](https://www.terraform.io/) 是一个基础设施即代码管理工具。它允许用户使用声明式的风格描述自己的基础设施，并针对描述生成执行计划来创建或调整真实世界的计算资源。Kubernetes 上的 TiDB 使用 Terraform 来在公有云上创建和管理 TiDB 集群。
+[Terraform](https://www.terraform.io/) 是一个基础设施即代码（Infrastructore as Code）管理工具。它允许用户使用声明式的风格描述自己的基础设施，并针对描述生成执行计划来创建或调整真实世界的计算资源。Kubernetes 上的 TiDB 使用 Terraform 来在公有云上创建和管理 TiDB 集群。
 
 你可以参考[Terraform 官方文档](https://www.terraform.io/downloads.html) 来安装 Terraform。

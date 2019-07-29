@@ -123,7 +123,7 @@ PingCAP Helm 仓库中存放着 PingCAP 发布的 charts，例如 tidb-operator�
 {{< copyable "shell-regular" >}}
 
 ``` shell
-helm repo add pingcap http://charts.pingcap.org/ && \
+helm repo add pingcap https://charts.pingcap.org/ && \
 helm repo list
 ```
 
@@ -141,7 +141,7 @@ helm search tidb-operator -l
 
 > **注意：**
 >
-> `<chartVersion>` 在后面文档中代表 chart 版本，例如 `v1.0.0-beta.3`。
+> `<chartVersion>` 在后面文档中代表 chart 版本，例如 `v1.0.0`。
 
 第一个要安装的 TiDB 组件是 TiDB Operator，TiDB Operator 是管理组件，结合 Kubernetes 启动 TiDB 集群并保证集群正常运行。执行下面命令之前请确保在 `tidb-operator` 目录下：
 

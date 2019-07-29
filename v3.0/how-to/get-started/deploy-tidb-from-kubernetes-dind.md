@@ -156,7 +156,7 @@ kube-node-3   Ready    <none>   9m32s   v1.12.5   10.192.0.5    <none>        De
 
 > **注意：**
 >
-> `<chartVersion>` 在后续文档中代表 chart 版本，例如 `v1.0.0-beta.3`。
+> `<chartVersion>` 在后续文档中代表 chart 版本，例如 `v1.0.0`。
 
 如果 K8s 集群启动并正常运行，可以通过 `helm` 添加 chart 仓库并安装 TiDB Operator。
 
@@ -165,7 +165,7 @@ kube-node-3   Ready    <none>   9m32s   v1.12.5   10.192.0.5    <none>        De
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    helm repo add pingcap http://charts.pingcap.org/ && \
+    helm repo add pingcap https://charts.pingcap.org/ && \
     helm repo list && \
     helm repo update && \
     helm search tidb-cluster -l && \
