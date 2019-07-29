@@ -18,7 +18,7 @@ category: how-to
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl annotate pod ${pod_name} -n ${namespace} runmode=debug
+kubectl annotate pod <pod_name> -n <namespace> runmode=debug
 ```
 
 在 Pod 内的容器下次重启时，会检测到该 Annotation，进入诊断模式。等待 Pod 进入 Running 状态即可开始诊断：
@@ -26,7 +26,7 @@ kubectl annotate pod ${pod_name} -n ${namespace} runmode=debug
 {{< copyable "shell-regular" >}}
 
 ```shell
-watch kubectl get pod ${pod_name} -n ${namespace}
+watch kubectl get pod <pod_name> -n <namespace>
 ```
 
 下面是使用 `kubectl exec` 进入容器进行诊断工作的例子：
@@ -34,13 +34,13 @@ watch kubectl get pod ${pod_name} -n ${namespace}
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl exec -it ${pod_name} -n ${namespace} -- /bin/bash
+kubectl exec -it <pod_name> -n <namespace> -- /bin/bash
 ```
 
 诊断完毕，修复问题后，删除 Pod：
 
 ```shell
-kubectl delete pod ${pod_name} -n ${namespace}
+kubectl delete pod <pod_name> -n <namespace>
 ```
 
 Pod 重建后会自动回到正常运行模式。
@@ -54,7 +54,7 @@ TiDB Operator 使用 PV (Persistent Volume)、PVC (Persistent Volume Claim) 来�
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm install pingcap/tidb-cluster -n ${releaseName} --namespace=${namespace} --version=v1.0.0-beta.3 -f values.yaml
+helm install pingcap/tidb-cluster -n <releaseName> --namespace=<namespace> --version=v1.0.0-beta.3 -f values.yaml
 ```
 
 ## Pod 未正常创建
@@ -64,9 +64,9 @@ helm install pingcap/tidb-cluster -n ${releaseName} --namespace=${namespace} --v
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl get tidbclusters -n ${namespace}
-kubectl get statefulsets -n ${namespace}
-kubectl describe statefulsets -n ${namespace} ${cluster-name}-pd
+kubectl get tidbclusters -n <namespace>
+kubectl get statefulsets -n <namespace>
+kubectl describe statefulsets -n <namespace> <cluster-name>-pd
 ```
 
 ## Pod 之间网络不通
@@ -80,11 +80,11 @@ kubectl describe statefulsets -n ${namespace} ${cluster-name}-pd
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl -n ${namespace} get endpoints ${cluster_name}-pd
-    kubectl -n ${namespace} get endpoints ${cluster_name}-tidb
-    kubectl -n ${namespace} get endpoints ${cluster_name}-pd-peer
-    kubectl -n ${namespace} get endpoints ${cluster_name}-tikv-peer
-    kubectl -n ${namespace} get endpoints ${cluster_name}-tidb-peer
+    kubectl -n <namespace> get endpoints <cluster_name>-pd
+    kubectl -n <namespace> get endpoints <cluster_name>-tidb
+    kubectl -n <namespace> get endpoints <cluster_name>-pd-peer
+    kubectl -n <namespace> get endpoints <cluster_name>-tikv-peer
+    kubectl -n <namespace> get endpoints <cluster_name>-tidb-peer
     ```
 
     以上命令展示的 `ENDPOINTS` 字段中，应当是由逗号分隔的 `cluster_ip:port` 列表。假如字段为空或不正确，请检查 Pod 的健康状态以及 `kube-controller-manager` 是否正常工作。
@@ -94,7 +94,7 @@ kubectl describe statefulsets -n ${namespace} ${cluster-name}-pd
     {{< copyable "shell-regular" >}}
 
     ```
-    tkctl debug -n ${namespace} ${pod_name}
+    tkctl debug -n <namespace> <pod_name>
     ```
 
     远端 shell 启动后，使用 `dig` 命令诊断 DNS 解析，假如 DNS 解析异常，请参照 [诊断 Kubernetes DNS 解析](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/) 进行故障排除：
@@ -102,7 +102,7 @@ kubectl describe statefulsets -n ${namespace} ${cluster-name}-pd
     {{< copyable "shell-regular" >}}
 
     ```shell
-    dig ${HOSTNAME}
+    dig <HOSTNAME>
     ```
 
     使用 `ping` 命令诊断到目的 IP 的三层网络是否连通（目的 IP 为使用 `dig` 解析出的 ClusterIP）:
@@ -110,7 +110,7 @@ kubectl describe statefulsets -n ${namespace} ${cluster-name}-pd
     {{< copyable "shell-regular" >}}
 
     ```shell
-    ping ${TARGET_IP}
+    ping <TARGET_IP>
     ```
 
     假如 ping 检查失败，请参照[诊断 Kubernetes 网络](https://www.praqma.com/stories/debugging-kubernetes-networking/)进行故障排除。
@@ -120,7 +120,7 @@ kubectl describe statefulsets -n ${namespace} ${cluster-name}-pd
     {{< copyable "shell-regular" >}}
 
     ```shell
-    telnet ${TARGET_IP} ${TARGET_PORT}
+    telnet <TARGET_IP> <TARGET_PORT>
     ```
 
     假如 `telnet` 检查失败，则需要验证 Pod 的对应端口是否正确暴露以及应用的端口是否配置正确：
@@ -129,15 +129,15 @@ kubectl describe statefulsets -n ${namespace} ${cluster-name}-pd
 
     ```shell
     # 检查端口是否一致
-    kubectl -n ${namespace} get po ${pod_name} -ojson | jq '.spec.containers[].ports[].containerPort'
+    kubectl -n <namespace> get po <pod_name> -ojson | jq '.spec.containers[].ports[].containerPort'
 
     # 检查应用是否被正确配置服务于指定端口上
     # PD, 未配置时默认为 2379 端口
-    kubectl -n ${namespace} -it exec ${pod_name} -- cat /etc/pd/pd.toml | grep client-urls
+    kubectl -n <namespace> -it exec <pod_name> -- cat /etc/pd/pd.toml | grep client-urls
     # TiKV, 未配置时默认为 20160 端口
-    kubectl -n ${namespace} -it exec ${pod_name} -- cat /etc/tikv/tikv.toml | grep addr
+    kubectl -n <namespace> -it exec <pod_name> -- cat /etc/tikv/tikv.toml | grep addr
     # TiDB, 未配置时默认为 4000 端口
-    kubectl -n ${namespace} -it exec ${pod_name} -- cat /etc/tidb/tidb.toml | grep port
+    kubectl -n <namespace> -it exec <pod_name> -- cat /etc/tidb/tidb.toml | grep port
     ```
 
 ## Pod 处于 Pending 状态
@@ -152,7 +152,7 @@ Pod 处于 Pending 状态，通常都是资源不满足导致的，比如：
 {{< copyable "shell-regular" >}}
 
 ```
-kubectl describe po -n ${namespace} ${pod_name}
+kubectl describe po -n <namespace> <pod_name>
 ```
 
 如果是 CPU 或内存资源不足，可以通过降低对应组件的 CPU或内存资源申请使其能够得到调度，或是增加新的 Kubernetes 节点。
@@ -174,7 +174,7 @@ Pod 处于 CrashLoopBackOff 状态意味着 Pod 内的容器重复地异常退�
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl -n ${namespace} logs -f ${pod_name}
+kubectl -n <namespace> logs -f <pod_name>
 ```
 
 假如本次日志没有能够帮助诊断的有效信息，可以添加 `-p` 参数输出容器上次启动时的日志信息：
@@ -182,7 +182,7 @@ kubectl -n ${namespace} logs -f ${pod_name}
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl -n ${namespace} logs -p ${pod_name}
+kubectl -n <namespace> logs -p <pod_name>
 ```
 
 确认日志中的错误信息后，可以根据 [tidb-server 启动报错](/how-to/troubleshoot/cluster-setup.md#tidb-server-启动报错)，[tikv-server 启动报错](/how-to/troubleshoot/cluster-setup.md#tikv-server-启动报错)，[pd-server 启动报错](/how-to/troubleshoot/cluster-setup.md#pd-server-启动报错)中的指引信息进行进一步排查解决。
@@ -207,7 +207,7 @@ TiDB 服务访问不了时，首先确认 TiDB 服务是否部署成功，确认
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl get po -n ${namespace}
+kubectl get po -n <namespace>
 ```
 
 检查 TiDB 组件的日志，看日志是否有报错。
@@ -215,7 +215,7 @@ kubectl get po -n ${namespace}
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl logs -f ${tidb-pod-name} -n ${namespace}
+kubectl logs -f <tidb-pod-name> -n <namespace>
 ```
 
 如果确定集群部署成功，则进行网络检查：
@@ -225,7 +225,7 @@ kubectl logs -f ${tidb-pod-name} -n ${namespace}
     * 客户端到 node 节点的网络不通。
     * 查看 TiDB service 的 `externalTrafficPolicy` 属性是否为 Local。如果是 Local 则客户端必须通过 TiDB Pod 所在 node 的 IP 来访问。
 
-2. 如果 service domain 或 clusterIP 方式也访问不了 TiDB 服务，尝试用 TiDB服务后端的 `${PodIP}:4000` 连接看是否可以访问，如果通过 PodIP 可以访问 TiDB 服务，可以确认问题出在 service domain 或 clusterIP 到 PodIP 之间的连接上，排查项如下：
+2. 如果 service domain 或 clusterIP 方式也访问不了 TiDB 服务，尝试用 TiDB服务后端的 `<PodIP>:4000` 连接看是否可以访问，如果通过 PodIP 可以访问 TiDB 服务，可以确认问题出在 service domain 或 clusterIP 到 PodIP 之间的连接上，排查项如下：
 
     * 检查 DNS 服务是否正常：
 
@@ -233,7 +233,7 @@ kubectl logs -f ${tidb-pod-name} -n ${namespace}
 
         ```shell
         kubectl get po -n kube-system -l k8s-app=kube-dns
-        dig ${tidb-service-domain}
+        dig <tidb-service-domain>
         ```
 
     * 检查各个 node 上的 kube-proxy 是否正常运行：
@@ -249,7 +249,7 @@ kubectl logs -f ${tidb-pod-name} -n ${namespace}
         {{< copyable "shell-regular" >}}
 
         ```shell
-        iptables-save -t nat |grep ${clusterIP}
+        iptables-save -t nat |grep <clusterIP>
         ```
 
     * 检查对应的 endpoint 是否正确

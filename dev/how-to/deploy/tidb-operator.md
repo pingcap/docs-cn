@@ -144,7 +144,7 @@ kubectl get crd tidbclusters.pingcap.com
 
 > **注意：**
 >
-> ${chartVersion} 在后续文档中代表 chart 版本，例如 `v1.0.0-beta.3`。
+> `<chartVersion>` 在后续文档中代表 chart 版本，例如 `v1.0.0-beta.3`。
 
 获取你要安装的 `tidb-operator` chart 中的 `values.yaml` 文件：
 
@@ -152,7 +152,7 @@ kubectl get crd tidbclusters.pingcap.com
 
 ```shell
 mkdir -p /home/tidb/tidb-operator && \
-helm inspect values pingcap/tidb-operator --version=${chartVersion} > /home/tidb/tidb-operator/values-tidb-operator.yaml
+helm inspect values pingcap/tidb-operator --version=<chartVersion> > /home/tidb/tidb-operator/values-tidb-operator.yaml
 ```
 
 配置 `/home/tidb/tidb-operator/values-tidb-operator.yaml` 文件中的 `scheduler.kubeSchedulerImage` 为你的 Kubernetes 集群中的镜像。
@@ -160,7 +160,7 @@ helm inspect values pingcap/tidb-operator --version=${chartVersion} > /home/tidb
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm install pingcap/tidb-operator --name=tidb-operator --namespace=tidb-admin --version=${chartVersion} -f /home/tidb/tidb-operator/values-tidb-operator.yaml && \
+helm install pingcap/tidb-operator --name=tidb-operator --namespace=tidb-admin --version=<chartVersion> -f /home/tidb/tidb-operator/values-tidb-operator.yaml && \
 kubectl get po -n tidb-admin -l app.kubernetes.io/name=tidb-operator
 ```
 
@@ -180,5 +180,5 @@ TiDB Operator 有两个组件：
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm upgrade tidb-operator pingcap/tidb-operator --version=${chartVersion} -f /home/tidb/tidb-operator/values-tidb-operator.yaml
+helm upgrade tidb-operator pingcap/tidb-operator --version=<chartVersion> -f /home/tidb/tidb-operator/values-tidb-operator.yaml
 ```
