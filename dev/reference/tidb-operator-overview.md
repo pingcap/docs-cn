@@ -15,8 +15,9 @@ TiDB Operator 包含以下组件：
 
 * `TidbCluster` 是使用 CRD（`CustomResourceDefinition`）定义的自定义资源，用于描述用户期望的 TiDB 集群 状态；
 * `tidb-controller-manager` 是一组 Kubernetes 上的自定义控制器。这些控制器会不断对比 `TidbCluster` 对象中记录的期望状态与 TiDB 集群的实际状态，并调整 Kubernetes 中的资源以驱动 TiDB 集群满足期望状态；
-* `tidb-scheduler` 是一个 Kubernetes 调度器扩展，它为 Kubernetes 调度器注入 TiBD 集群特有的调度逻辑；
-* `tkctl` 是 Kubernetes 上 TiDB 集群的命令行接口，用于运维集群和诊断集群问题。
+* `tidb-scheduler` 是一个 Kubernetes 调度器扩展，它为 Kubernetes 调度器注入 TiBD 集群特有的调度逻辑。
+
+此外，TiDB Operator 还为 Kubernetes 上的 TiDB 集群提供了命令行接口 `tkctl`，用于运维集群和诊断集群问题。
 
 ![TiDB Operator Control Flow](/media/tidb-operator-control-flow.png)
 

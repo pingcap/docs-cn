@@ -11,12 +11,13 @@ TiDB Operator 是 Kubernetes 上的 TiDB 集群自动运维系统，提供包括
 
 ![TiDB Operator Overview](/media/tidb-operator-overview.png)
 
-TiDB Operator 包含自定义资源 `TidbCluster`、`tidb-controller-manager` 组件、`tidb-scheduler` 组件、以及 `tkctl` 命令行工具：
+TiDB Operator 包含以下组件：
 
 * `TidbCluster` 是使用 CRD（`CustomResourceDefinition`）定义的自定义资源，用于描述用户期望的 TiDB 集群 状态；
 * `tidb-controller-manager` 是一组 Kubernetes 上的自定义控制器。这些控制器会不断对比 `TidbCluster` 对象中记录的期望状态与 TiDB 集群的实际状态，并调整 Kubernetes 中的资源以驱动 TiDB 集群满足期望状态；
-* `tidb-scheduler` 是一个 Kubernetes 调度器扩展，它为 Kubernetes 调度器注入 TiBD 集群特有的调度逻辑；
-* `tkctl` 是 Kubernetes 上 TiDB 集群的命令行接口，用于运维集群和诊断集群问题。
+* `tidb-scheduler` 是一个 Kubernetes 调度器扩展，它为 Kubernetes 调度器注入 TiBD 集群特有的调度逻辑。
+
+此外，TiDB Operator 还为 Kubernetes 上的 TiDB 集群提供了命令行接口 `tkctl`，用于运维集群和诊断集群问题。
 
 ![TiDB Operator Control Flow](/media/tidb-operator-control-flow.png)
 
@@ -27,7 +28,7 @@ TiDB Operator 包含自定义资源 `TidbCluster`、`tidb-controller-manager` �
 3. Kubernetes 的原生控制器根据 `StatefulSet`、`Deployment`、`CronJob` 等对象创建更新或删除对应的 `Pod`；
 4. PD、TiKV、TiDB 的 `Pod` 声明中会指定使用 `tidb-scheduler` 调度器，`tidb-scheduler` 会在调度对应 `Pod` 时应用 TiDB 的特定调度逻辑。
 
-基于上述的声明式控制流程，TiDB Operator 能够自动进行集群节点健康检查和故障恢复，部署、升级、扩缩容等操作也可以通过修改 `TidbCluster` 对象声明“一键”完成。
+基于上述的声明式控制流程，TiDB Operator 能够自动进行集群节点健康检查和故障恢复。部署、升级、扩缩容等操作也可以通过修改 `TidbCluster` 对象声明“一键”完成。
 
 ## 使用 TiDB Operator 管理 TiDB 集群
 
@@ -51,7 +52,7 @@ TiDB Operator 提供了多种方式来部署 Kubernetes 上的 TiDB 集群：
 + [TiDB 集群扩缩容](/how-to/scale/tidb-in-kubernetes.md)
 + [TiDB 集群升级](/how-to/upgrade/tidb-in-kubernetes.md#升级-tidb-版本)
 + [TiDB 集群配置变更](/how-to/upgrade/tidb-in-kubernetes.md#更新-tidb-集群配置)
-+ [TiDB 集群备份恢复](#未merge)
++ [TiDB 集群备份恢复](/how-to/maintain/tidb-in-kubernetes/backup-and-restore.md)
 + [配置 TiDB 集群故障自动转移](how-to/maintain/tidb-in-kubernetes/auto-failover.md)
 + [监控 TiDB 集群](how-to/monitor/tidb-in-kubernetes.md)
 + [TiDB 集群日志收集](how-to/maintain/tidb-in-kubernetes/log-collecting.md)
