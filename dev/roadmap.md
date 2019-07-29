@@ -1,10 +1,17 @@
-#TiDB V4.0
+---
+title: TiDB Roadmap
+category: Roadmap
+aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
+---
 
-##TiDB
 
-###TiDB
+# TiDB V4.0 Roadmap
 
-####功能
+## TiDB
+
+### TiDB
+
+#### 功能
 
 * 支持 TiFlash 存储引擎
 * Optimizer Trace
@@ -15,7 +22,7 @@
 * SQL Tuning Advisor
 * SQL Plan Management
 
-####性能
+#### 性能
 
 *  提升 load CSV/data 性能
 * 提升 Prepare 语句性能
@@ -35,7 +42,7 @@
 * 优化执行引擎并发模型
 * 支持新 Cascades 优化器，支持 Cascades Planner，扩大优化器的搜索空间
 
-####易用性
+#### 易用性
 
 * 完善 Optimizer Hint 功能
 * 快速修复数据库或者表元信息及数据
@@ -49,13 +56,13 @@
 * 标准 SQL 管理集群
 * 多个 Ctrl 工具合并一个工具
 
-####高可用
+#### 高可用
 
 * Binlog 支持服务高可用
 
-###TiKV
+### TiKV
 
-####功能
+#### 功能
 
 * 集群规模最大支持 200+节点
 * 全量物理备份恢复
@@ -74,45 +81,45 @@
   * 事务内不限制语句数量
   * 支持 10GB 事务
 
-####性能
+#### 性能
 
 * 提升 Scan 性能
 * 动态扩展工作线程数量
 * 弹性扩展只读副本
 * 优化调度系统确保 QPS 不抖动
 
-####易用性
+#### 易用性
 
 * 重构日志内容
 
 
 
-##Data Migration
+## Data Migration
 
-####功能
+#### 功能
 
 * 完善前向检查
 * 可视化管理同步规则
 * 可视化管理同步任务
 
-####易用性
+#### 易用性
 
 * Ctrl 工具集成数据一致性校验功能
 * Ctrl 工具输出任务详细信息
 * 重构日志格式及内容
 
-####高可用
+#### 高可用
 
 * 支持服务高可用
 
-##TiDB Toolkit
+## TiDB Toolkit
 
-####功能
+#### 功能
 
 * Loader 集成到 TiDB
 * TiDB Lightning 集成到 TiDB
 
-####性能
+#### 性能
 
 * TiDB Lightning 支持并行导入
 * TiDB Lightning 优化导入回放路径
