@@ -5,7 +5,7 @@ category: introduction
 
 # TiDB 整体架构
 
-要深入了解 TiDB 的水平扩展和高可用特点，首先需要了解 TiDB 的整体架构。TiDB 集群主要包括三个核心组件：TiDB Server，PD Server 和 TiKV Server。此外，还有用于解决用户复杂 OLAP 需求的 [TiSpark](https://github.com/pingcap/tispark/) 组件。
+要深入了解 TiDB 的水平扩展和高可用特点，首先需要了解 TiDB 的整体架构。TiDB 集群主要包括三个核心组件：TiDB Server，PD Server 和 TiKV Server。此外，还有用于解决用户复杂 OLAP 需求的 [TiSpark](https://github.com/pingcap/tispark/) 组件和简化云上部署管理的 [TiDB Operator](/reference/tidb-operator-overview.md) 组件。
 
 ![TiDB Architecture](/media/tidb-architecture.png)
 
@@ -26,3 +26,7 @@ TiKV Server 负责存储数据，从外部看 TiKV 是一个分布式的提供�
 ## TiSpark
 
 TiSpark 作为 TiDB 中解决用户复杂 OLAP 需求的主要组件，将 Spark SQL 直接运行在 TiDB 存储层上，同时融合 TiKV 分布式集群的优势，并融入大数据社区生态。至此，TiDB 可以通过一套系统，同时支持 OLTP 与 OLAP，免除用户数据同步的烦恼。
+
+## TiDB Operator
+
+TiDB Operator 提供在主流云基础设施（Kubernetes）上部署管理 TiDB 集群的能力。它结合云原生社区的容器编排最佳实践与 TiDB 的专业运维知识，集成一键部署、多集群混部、自动运维、故障自愈等能力，极大地降低了用户使用和管理 TiDB 的门槛与成本。

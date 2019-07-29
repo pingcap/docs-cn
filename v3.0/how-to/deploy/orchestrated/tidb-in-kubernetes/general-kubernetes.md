@@ -9,43 +9,8 @@ category: how-to
 
 ## 前置条件
 
-* TiDB Operator 已部署
-
-    如果该 Kubernetes 集群中尚未部署 TiDB Operator，请参考：[TiDB Operator](/how-to/deploy/tidb-operator.md) 完成 TiDB Operator 的部署
-
-* Helm 添加仓库
-
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    helm repo add pingcap http://charts.pingcap.org/
-    ```
-
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    helm repo list
-    ```
-
-    然后可以查看可用的 chart：
-
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    helm repo update
-    ```
-
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    helm search tidb-cluster -l
-    ```
-
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    helm search tidb-operator -l
-    ```
+* 参考 [TiDB Operator](/how-to/deploy/tidb-operator.md) 完成集群中的 TiDB Operator 部署；
+* 参考 [使用 Helm](/reference/tools/tools-in-kubernetes.md#使用-helm) 安装 Helm 并配置 PingCAP 官方 chart 仓库。
 
 ## 配置 TiDB 集群
 
