@@ -300,6 +300,7 @@
   + [TiDB Binlog 简介](reference/tidb-binlog-overview.md)
   + 生态工具
     - [tkctl](reference/tools/tkctl.md)
+    - [Kubernetes 上的工具使用](reference/tools/tools-in-kubernetes.md)
     - [Mydumper](reference/tools/mydumper.md)
     - [Loader](reference/tools/loader.md)
     - [Syncer](reference/tools/syncer.md)
