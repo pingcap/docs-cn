@@ -9,7 +9,7 @@ category: contribute
 
 我们推荐您先尝试解决带 [help-wanted](https://github.com/pingcap/tidb/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) 标签的现有 Issue，这些问题非常适合新的贡献者。
 
-一旦您提交给 [TiDB/TiKV/TiSpark/PD/Docs/Docs-cn](https://github.com/pingcap) 项目的 PR (Pull Request) 被批准且合并，您即成为 TiDB 的贡献者。
+一旦您提交给 [TiDB/TiKV/TiSpark/PD/TiDB-Operator/Docs/Docs-cn](https://github.com/pingcap) 项目的 PR (Pull Request) 被批准且合并，您即成为 TiDB 的贡献者。
 
 在提交 PR 之前，请先签署 [CLA](https://cla-assistant.io/pingcap/tidb?pullRequest=5567)。
 
