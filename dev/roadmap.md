@@ -69,13 +69,8 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 * 动态 Split,Merge 热点 Region
 * 精细的内存控制
 * Raft
-  * 链式复制数据
-  * Witness Role
   * Joint consensus
   * 只读副本
-* 存储引擎
-  * RocksDB Gaurd，compaction 按特定逻辑切分 SST
-  * 冷热数据分离
 * 事务
   * 悲观锁 GA
   * 事务内不限制语句数量
@@ -92,6 +87,25 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 
 * 重构日志内容
 
+
+### TiFlash
+
+#### 功能
+
+* 列式存储
+
+* 通过 Raft learner 从 TiKV 同步数据
+
+* snapshot read
+
+
+### TiSpark
+
+#### 功能
+
+* 支持 batch write 
+
+* 接入 TiFlash
 
 
 ## Data Migration
@@ -173,6 +187,12 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 - 分级存储
 - 精细的 QoS 控制
 - 按 Region 配置副本数及分布策
+- Raft
+  - 链式复制数据
+  - Witness Role
+- 存储引擎
+  - RocksDB Gaurd，compaction 按特定逻辑切分 SST
+  - 冷热数据分离
 
 #### 性能
 
