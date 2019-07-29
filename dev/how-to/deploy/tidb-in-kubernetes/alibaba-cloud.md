@@ -59,8 +59,8 @@ category: how-to
     {{< copyable "shell-regular" >}}
 
     ```shell
-    export TF_VAR_ALICLOUD_REGION=<YOUR_REGION>
-    export TF_VAR_ALICLOUD_ACCESS_KEY=<YOUR_ACCESS_KEY>
+    export TF_VAR_ALICLOUD_REGION=<YOUR_REGION> && \
+    export TF_VAR_ALICLOUD_ACCESS_KEY=<YOUR_ACCESS_KEY> && \
     export TF_VAR_ALICLOUD_SECRET_KEY=<YOUR_SECRET_KEY>
     ```
 
@@ -71,9 +71,21 @@ category: how-to
     {{< copyable "shell-regular" >}}
 
     ```shell
-    git clone --depth=1 https://github.com/pingcap/tidb-operator
+    git clone --depth=1 https://github.com/pingcap/tidb-operator && \
     cd tidb-operator/deploy/aliyun
+    ```
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
     terraform init
+    ```
+
+    `apply` 过程中需要输入 `yes` 来确认执行：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
     terraform apply
     ```
 
@@ -174,6 +186,11 @@ terraform destroy
 
 ```shell
 terraform state list
+```
+
+{{< copyable "shell-regular" >}}
+
+```shell
 terraform state rm module.ack.alicloud_cs_managed_kubernetes.k8s
 ```
 
@@ -212,7 +229,7 @@ module "tidb-cluster-dev" {
     helm = helm.default
   }
 
-  cluster_name = "another-cluster"
+  cluster_name = "dev-cluster"
   ack          = module.tidb-operator
 
   pd_count                   = 1
@@ -227,7 +244,7 @@ module "tidb-cluster-staging" {
     helm = helm.default
   }
 
-  cluster_name = "another-cluster"
+  cluster_name = "staging-cluster"
   ack          = module.tidb-operator
 
   pd_count                   = 3
@@ -266,7 +283,7 @@ module "tidb-cluster-staging" {
     {{< copyable "shell-regular" >}}
 
     ```shell
-    mkdir -p deploy/aliyun/aliyun-staging
+    mkdir -p deploy/aliyun-staging
     ```
 
 2. 参考 `deploy/aliyun` 的 `main.tf`，编写自己的脚本，下面是一个简单的例子：
