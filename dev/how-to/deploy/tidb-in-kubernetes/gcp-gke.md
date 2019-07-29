@@ -9,7 +9,8 @@ category: how-to
 
   > **注意：**
   >
-  > 当前功能处于 ALPHA 状态，不适用生产环境。
+  > 当前多磁盘聚合功能[存在一些已知问题](https://github.com/pingcap/tidb-operator/issues/684)，不建议生产环境中每节点配置一块以上磁盘。
+  > 我们正在修复此问题。
 
 ## 环境准备
 
