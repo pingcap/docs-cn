@@ -8,6 +8,10 @@ aliases: ['/docs-cn/v3.0/how-to/deploy/orchestrated/gcp-gke/']
 
 本文介绍了如何使用个人电脑（Linux 或 macOS 系统）在 GCP GKE 上部署 TiDB 集群。
 
+  > **注意：**
+  >
+  > 当前功能处于 ALPHA 状态，不适用生产环境。
+
 ## 环境准备
 
 部署前，确认已安装以下软件：
