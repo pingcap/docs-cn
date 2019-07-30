@@ -38,7 +38,7 @@
       - [标准 Kubernetes 集群](how-to/deploy/tidb-in-kubernetes/general-kubernetes.md)
       - [阿里云](how-to/deploy/tidb-in-kubernetes/alibaba-cloud.md)
       - [AWS EKS](how-to/deploy/tidb-in-kubernetes/aws-eks.md)
-      - [GCP](how-to/deploy/tidb-in-kubernetes/gcp-gke.md)
+      - [GCP GKE](how-to/deploy/tidb-in-kubernetes/gcp-gke.md)
     + 集群部署方式
       - [使用 Ansible 部署（推荐）](how-to/deploy/orchestrated/ansible.md)
       - [使用 Ansible 离线部署](how-to/deploy/orchestrated/offline-ansible.md)
