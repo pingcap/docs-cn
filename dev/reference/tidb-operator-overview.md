@@ -64,6 +64,6 @@ TiDB Operator 提供了多种方式来部署 Kubernetes 上的 TiDB 集群：
 Kubernetes 上的 TiDB 提供了专用的命令行工具 `tkctl` 用于集群管理和辅助诊断，同时，在 Kubernetes 上，TiDB 的部分生态工具的使用方法也有所不同，你可以：
 
 + 参考 [`tkctl` 使用指南](reference/tools/tkctl.md) 来使用 `tkctl`；
-+ 参考 [Kubernetes 上的 TiDB 相关工具使用](/reference/tools/tools-in-kubernetes.md) 来了解 TiDB 生态工具在 Kubernetes 上的使用方法。
++ 参考 [Kubernetes 上的 TiDB 相关工具使用](reference/tools/tools-in-kubernetes.md) 来了解 TiDB 生态工具在 Kubernetes 上的使用方法。
 
 最后，当 TiDB Operator 发布新版本时，你可以参考[升级 TiDB Operator](how-to/upgrade/tidb-operator.md) 进行版本更新。
