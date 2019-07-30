@@ -304,7 +304,7 @@ module example-cluster {
   # Monitor instance type
   monitor_instance_type         = "t2.xlarge"
   # The version of tidb-cluster helm chart
-  tidb_cluster_chart_version    = "v1.0.0-rc.1"
+  tidb_cluster_chart_version    = "v1.0.0"
 }
 ```
 
