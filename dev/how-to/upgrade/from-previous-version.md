@@ -1,6 +1,7 @@
 ---
 title: TiDB 3.0 升级操作指南
 category: how-to
+aliases: ['/docs-cn/op-guide/tidb-v3.0-upgrade-guide/']
 ---
 
 # TiDB 3.0 升级操作指南
@@ -109,7 +110,7 @@ $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
     >
     > 单机多 TiKV 实例（进程）情况下，需要修改这三个参数。
     >
-    > 推荐设置：TiKV 实例数量 \* 参数值 = CPU 核心数量 * 0.8
+    > 推荐设置：TiKV 实例数量 \* 参数值 = CPU 核心数量 \* 0.8
 
 - TiKV 配置中不同 CF 中的 `block-cache-size` 参数变更为 `block-cache`
 
@@ -137,13 +138,17 @@ $ ansible-playbook local_prepare.yml
 
 > **注意：**
 >
-> 为优化 TiDB 集群组件的运维管理，TiDB 3.0 版本对 `systemd` 模式下的 `PD service` 名称进行了调整。与之前版本相比，滚动升级 TiDB 3.0 版本集群组件的操作略有不同，注意升级前后 `process_supervision` 参数配置须保持一致。
+> 为优化 TiDB 集群组件的运维管理，TiDB 3.0 版本对 `systemd` 模式下的 `PD service` 名称进行了调整。如当前版本**小于** TiDB 3.0 版本，滚动升级到 TiDB 3.0 版本集群组件的操作略有不同，注意升级前后 `process_supervision` 参数配置须保持一致。
+
 
 如果 `process_supervision` 变量使用默认的 `systemd` 参数，则通过 `excessive_rolling_update.yml` 滚动升级 TiDB 集群。
 
 ```
 $ ansible-playbook excessive_rolling_update.yml
 ```
+>  **注意：**
+> 
+> 如当前版本**大于或等于** TiDB 3.0 版本在滚动升级及日常滚动重启 TiDB 集群仍然使用 `rolling_update.yml` 操作。
 
 如果 `process_supervision` 变量使用 `supervise` 参数，则通过 `rolling_update.yml` 滚动升级 TiDB 集群。
 
