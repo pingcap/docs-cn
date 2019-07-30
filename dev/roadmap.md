@@ -4,7 +4,6 @@ category: Roadmap
 aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 ---
 
-
 # TiDB V4.0 Roadmap
 
 ## TiDB
@@ -24,18 +23,18 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 
 #### 性能
 
-*  提升 load CSV/data 性能
+* 提升 load CSV/data 性能
 * 提升 Prepare 语句性能
 * Generated Column 支持 Index
 * 优化 SQL 引擎部份算子
-  * 提升通过索引回表查询的性能
-  * Index Join 拆分为 Index Merge Join 和 Index Hash Join
-  * Radix Hash Join
-  * Index Merge
-  * Parallel Stream Aggregate
-  * Parallel Merge Sort
-  * Parallel Merge Join
-  * Full Vectorized Expression Evaluation
+    + 提升通过索引回表查询的性能
+    + Index Join 拆分为 Index Merge Join 和 Index Hash Join
+    + Radix Hash Join
+    + Index Merge
+    + Parallel Stream Aggregate
+    + Parallel Merge Sort
+    + Parallel Merge Join
+    + Full Vectorized Expression Evaluation
 * Indexes on Expressions
 * Multi-Index Scan
 * Join,Aggregate,Sort 算子支持外部存储
@@ -69,12 +68,12 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 * 动态 Split,Merge 热点 Region
 * 精细的内存控制
 * Raft
-  * Joint consensus
-  * 只读副本
++ Joint consensus
++ 只读副本
 * 事务
-  * 悲观锁 GA
-  * 事务内不限制语句数量
-  * 支持 10GB 事务
+    + 悲观锁 GA
+    + 事务内不限制语句数量
+    + 支持 10GB 事务
 
 #### 性能
 
@@ -138,8 +137,6 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 * TiDB Lightning 支持并行导入
 * TiDB Lightning 优化导入回放路径
 
-
-
 # TiDB 未来规划
 
 ## TiDB
@@ -148,27 +145,27 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 
 #### 功能
 
-- Common Table Expression
-- Invisible Index
-- 支持修改列类型
-- 分区表支持二级分区
-- Table Partition 与 普通表相互转换
-- 视图支持写入及更新
-- Mutil-Schema Change
-- 按 Table 配置副本数及分布策略
-- 精细的 QoS 控制
-- 闪回到任意时间点
+* Common Table Expression
+* Invisible Index
+* 支持修改列类型
+* 分区表支持二级分区
+* Table Partition 与 普通表相互转换
+* 视图支持写入及更新
+* Mutil-Schema Change
+* 按 Table 配置副本数及分布策略
+* 精细的 QoS 控制
+* 闪回到任意时间点
 
 #### 性能
 
-- Coprocessor Cache
-- 新 Row 存储格式
-- Distributed Execution Engine
+* Coprocessor Cache
+* 新 Row 存储格式
+* Distributed Execution Engine
 
 #### 易用性
 
-- 全链路 Trace 工具
-- Help 信息补齐
+* 全链路 Trace 工具
+* Help 信息补齐
 
 #### 安全
 
@@ -176,40 +173,38 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 
 #### 高可靠用
 
-- Binlog 支持数据高可靠
+* Binlog 支持数据高可靠
 
 ### TiKV
 
 #### 功能
 
-- 增量物理备份恢复
-- 闪回到任意时间点
-- 分级存储
-- 精细的 QoS 控制
-- 按 Region 配置副本数及分布策
-- Raft
-  - 链式复制数据
-  - Witness Role
-- 存储引擎
-  - RocksDB Gaurd，compaction 按特定逻辑切分 SST
-  - 冷热数据分离
+* 增量物理备份恢复
+* 闪回到任意时间点
+* 分级存储
+* 精细的 QoS 控制
+* 按 Region 配置副本数及分布策
+* Raft
+    + 链式复制数据
+    + Witness Role
+* 存储引擎
+    + RocksDB Gaurd，compaction 按特定逻辑切分 SST
+    + 冷热数据分离
 
 #### 性能
 
-- 提升物理备份性能
-- 提升增量物理备份性能
-- 1PC
-- 支持 Storage Class Memory 硬件
-- 新 Raft 引擎
-
-
+* 提升物理备份性能
+* 提升增量物理备份性能
+* 1PC
+* 支持 Storage Class Memory 硬件
+* 新 Raft 引擎
 
 ## Data Migration
 
 #### 功能
 
-- 下游支持 Oracle
+* 下游支持 Oracle
 
 #### 高可靠
 
-- 支持数据高可靠
+* 支持数据高可靠
