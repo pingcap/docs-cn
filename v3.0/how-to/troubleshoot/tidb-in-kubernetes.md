@@ -97,7 +97,7 @@ kubectl describe statefulsets -n <namespace> <cluster-name>-pd
     tkctl debug -n <namespace> <pod_name>
     ```
 
-    远端 shell 启动后，使用 `dig` 命令诊断 DNS 解析，假如 DNS 解析异常，请参照 [诊断 Kubernetes DNS 解析](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/) 进行故障排除：
+    远端 shell 启动后，使用 `dig` 命令诊断 DNS 解析，假如 DNS 解析异常，请参照[诊断 Kubernetes DNS 解析](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/)进行故障排除：
 
     {{< copyable "shell-regular" >}}
 
@@ -258,4 +258,4 @@ kubectl logs -f <tidb-pod-name> -n <namespace>
 
     * 检查 node 上的相关 route 规则是否正确
     * 检查网络插件服务是否正常
-    * 参考上面的[Pod 之间网络不通](#pod-之间网络不通)章节
+    * 参考上面的 [Pod 之间网络不通](#pod-之间网络不通)章节
