@@ -8,9 +8,11 @@ category: how-to
 
 [Minikube](https://kubernetes.io/docs/setup/minikube/) 可以让你在个人电脑上的虚拟机中创建一个 Kubernetes 集群，支持 macOS、Linux 和 Windows 系统。本文介绍如何在 [Minikube](https://kubernetes.io/docs/setup/minikube/) 集群上部署 TiDB 集群。
 
-> **注意：**
+> **警告：**
 >
-> 尽管 Minikube 支持通过 `--vm-driver=none` 选项使用主机 Docker 而不使用虚拟机，但是目前尚没有针对 TiDB Operator 做过全面的测试，可能会无法正常工作。如果你想在不支持虚拟化的系统（例如，VPS）上试用 TiDB Operator，可以考虑使用 [DinD](/how-to/get-started/deploy-tidb-from-kubernetes-dind.md)。
+> - 对于生产环境，不要使用此方式进行部署。
+>
+> - 尽管 Minikube 支持通过 `--vm-driver=none` 选项使用主机 Docker 而不使用虚拟机，但是目前尚没有针对 TiDB Operator 做过全面的测试，可能会无法正常工作。如果你想在不支持虚拟化的系统（例如，VPS）上试用 TiDB Operator，可以考虑使用 [DinD](/how-to/get-started/deploy-tidb-from-kubernetes-dind.md)。
 
 ## 安装 Minikube 并启动 Kubernetes 集群
 

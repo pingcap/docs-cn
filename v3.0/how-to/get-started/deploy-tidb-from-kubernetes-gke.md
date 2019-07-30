@@ -18,6 +18,10 @@ category: how-to
 - 扩容 TiDB 集群
 - 删除 Kubernetes 集群（可选）
 
+> **警告：**
+>
+> 对于生产环境，不要使用此方式进行部署。
+
 ## 选择一个项目
 
 本教程会启动一个包含 3 个 `n1-standard-1` 类型节点的 Kubernetes 集群。价格信息可以参考[这里](https://cloud.google.com/compute/pricing)。
