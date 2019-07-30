@@ -246,7 +246,7 @@ All the configurable parameters in `tidb-cluster` are as follows:
 | `ack` | The structure that enwraps the target Kubernetes cluster information (required) | `nil` |
 | `cluster_name` | The TiDB cluster name (required and unique) | `nil` |
 | `tidb_version` | The TiDB cluster version | `v3.0.0` |
-| `tidb_cluster_chart_version` | `tidb-cluster` helm chart version | `v1.0.0-beta.3` |
+| `tidb_cluster_chart_version` | `tidb-cluster` helm chart version | `v1.0.0` |
 | `pd_count` | The number of PD nodes | 3 |
 | `pd_instance_type` | The PD instance type | `ecs.g5.large` |
 | `tikv_count` | The number of TiKV nodes | 3 |

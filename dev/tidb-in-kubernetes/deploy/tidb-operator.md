@@ -94,7 +94,7 @@ After `TidbCluster` custom resource is created, install TiDB Operator in your Ku
 
 > **Note:**
 >
-> `<chartVersion>` will be used in the rest sections of the documents to represent the chart version. For example, `v1.0.0-beta.3`.
+> `<chartVersion>` will be used in the rest sections of the documents to represent the chart version. For example, `v1.0.0`.
 
 Use the following command to get the `values.yaml` file of the `tidb-operator` chart you want to install:
 
