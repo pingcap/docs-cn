@@ -265,4 +265,4 @@ If the cluster is successfully deployed, check the network using the following s
 
     - Check whether the relevant route rules on the node are correct.
     - Check whether the network plugin service works well.
-    - Refer to [the network connection issue between Pods](#the-network-connection-issue-between-pods) section.
+    - Refer to [network connection failure between Pods](#network-connection-failure-between-pods) section.
