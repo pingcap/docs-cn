@@ -12,12 +12,12 @@ TiDB Operator is an automatic operation system for TiDB clusters in Kubernetes. 
 
 ![TiDB Operator Overview](/media/tidb-operator-overview.png)
 
-TiDB Operator consists of the following components:
+`TidbCluster` is a custom resource defined by CRD (`CustomResourceDefinition`) and is used to describe the desired state of the TiDB cluster. The following components are responsible for the orchestration and scheduling logic in a TiDB cluster:
 
-* `TidbCluster` is a custom resource defined using CRD (`CustomResourceDefinition`) to describe the desired state of the TiDB cluster;
 * `tidb-controller-manager` is a set of custom controllers in Kubernetes. These controllers constantly compare the desired state recorded in the `TidbCluster` object with the actual state of the TiDB cluster. They adjust the resources in Kubernetes to drive the TiDB cluster to meet the desired state;
 * `tidb-scheduler` is a Kubernetes scheduler extension that injects the TiDB specific scheduling policies to the Kubernetes scheduler;
-* `tkctl` is the command-line interface for TiDB clusters in Kubernetes. It is used for cluster operations and troubleshooting cluster issues.
+
+In addition, TiDB Operator also provides `tkctl`, the command-line interface for TiDB clusters in Kubernetes. It is used for cluster operations and troubleshooting cluster issues.
 
 ![TiDB Operator Control Flow](/media/tidb-operator-control-flow.png)
 
