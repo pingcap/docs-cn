@@ -8,7 +8,6 @@ category: reference
 当前版本的 DM 的提供了丰富多样的功能特性，包括 [Table routing](/reference/tools/data-migration/features/overview.md#table-routing)，[Black & white table lists](/reference/tools/data-migration/features/overview.md#black-white-table-lists)，[Binlog event filter](/reference/tools/data-migration/features/overview.md#binlog-event-filter)，[Column mapping](/reference/tools/data-migration/features/overview.md#column-mapping) 等。但这些功能特性同时也增加了用户使用 DM 的复杂度，尤其在编写 [DM 任务配置](/reference/tools/data-migration/configure/task-configuration-file/) 时候。
 针对这个问题，我们提供了一个非常精简的小网页程序  DM Portal，能够帮助用户以可视化的方式去配置需要的同步任务，并且生成可以直接让 DM 直接执行的 task.yaml 文件。
 
-
 ## 功能描述
 
 ### 同步模式配置
@@ -53,14 +52,14 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 ### DM Ansible 部署
 
-可以使用 DM Ansible 部署 DM Portal，具体部署方法参照 [使用 DM Ansible 部署 DM 集群](/how-to/deploy/data-migration-with-ansible.md)。 
-
+可以使用 DM Ansible 部署 DM Portal，具体部署方法参照 [使用 DM Ansible 部署 DM 集群](/how-to/deploy/data-migration-with-ansible.md)。
 
 ## 使用说明
 
 ### 新建规则
 
 #### 功能描述
+
 用于新建一个 task.yaml 文件，需要选择同步模式、配置上下游实例、配置库表路由，配置 binlog 过滤。
 
 #### 操作步骤
@@ -82,7 +81,6 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 * 填写任务名称。
 * 选择任务类型。
 ![DM Portal BasicConfig](/media/dm-portal-basicconfig.png)
-
 
 ### 实例信息配置
 
@@ -227,7 +225,8 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 * 不允许修改实例配置信息
 
 #### 操作步骤
-* 在首页，点击 **编辑同步规则**。
+
+* 在首页，点击 **编辑同步规则** 。
 * 选择上传 task.yaml 文件。
 * 解析成功后，页面会自动跳转。
 
