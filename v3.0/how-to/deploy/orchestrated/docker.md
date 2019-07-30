@@ -11,6 +11,10 @@ This page shows you how to manually deploy a multi-node TiDB cluster on multiple
 
 To learn more, see [TiDB architecture](/architecture.md) and [Software and Hardware Recommendations](/how-to/deploy/hardware-recommendations.md).
 
+> **Warning:**
+>
+> This is for testing only. DO NOT USE in production! Please deploy TiDB with [our Ansible solution](/how-to/deploy/orchestrated/ansible.md) or [TiDB Operator in Kubernetes](/tidb-in-kubernetes/deploy/tidb-operator.md) in production.
+
 ## Preparation
 
 Before you start, make sure that you have:

@@ -20,6 +20,10 @@ It takes you through the following steps:
 - Scale out the TiDB cluster
 - Shut down the Kubernetes cluster (optional)
 
+> **Warning:**
+>
+> This is for testing only. DO NOT USE in production!
+
 ## Select a project
 
 This tutorial launches a 3-node Kubernetes cluster of `n1-standard-1` machines. Pricing information can be [found here](https://cloud.google.com/compute/pricing).

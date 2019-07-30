@@ -10,6 +10,10 @@ This document describes how to deploy a TiDB cluster in Kubernetes on your lapto
 
 [Docker in Docker](https://hub.docker.com/_/docker/) (DinD) runs Docker containers as virtual machines, and runs another layer of Docker containers inside the first. [kubeadm-dind-cluster](https://github.com/kubernetes-sigs/kubeadm-dind-cluster) uses DinD to run Kubernetes clusters inside Docker containers. TiDB Operator uses a modified DinD script to manage the DinD Kubernetes cluster.
 
+> **Warning:**
+>
+> This is for testing only. DO NOT USE in production!
+
 ## Prerequisites
 
 Before deployment, make sure the following requirements are satisfied:

@@ -8,6 +8,10 @@ category: how-to
 
 This document describes how to deploy a TiDB cluster in the [minikube](https://kubernetes.io/docs/setup/minikube/) cluster.
 
+> **Warning:**
+>
+> This is for testing only. DO NOT USE in production!
+
 ## Start a Kubernetes cluster with minikube
 
 [Minikube](https://kubernetes.io/docs/setup/minikube/) can start a local Kubernetes cluster inside a VM on your laptop. It works on macOS, Linux, and Windows.
