@@ -36,18 +36,22 @@ TiDB Operator 提供了多种方式来部署 Kubernetes 上的 TiDB 集群：
 + 测试环境：
     - [DinD](how-to/get-started/deploy-tidb-from-kubernetes-dind.md)：使用 TiDB Operator 在本地 DinD 环境部署 TiDB 集群；
     - [Minikube](how-to/get-started/deploy-tidb-from-kubernetes-minikube.md)：使用 TiDB Operator 在本地 Minikube 环境部署 TiDB 集群；
-    - [GKE](how-to/get-started/deploy-tidb-from-kubernetes-gke.md)：使用 TiDB Operator 在 GKE 上部署 TiDB 集群。
+    - [GKE](how-to/get-started/deploy-tidb-from-kubernetes-gke.md)：使用 TiDB Operator 在 GKE 上部署 TiDB 集群；
+    - [GCP](how-to/deploy/tidb-in-kubernetes/gcp-gke.md)：使用 TiDB Operator 在 GCP 上部署 TiDB 集群。
 
 + 生产环境：
-    - 公有云：参考 [AWS 部署文档](how-to/deploy/tidb-in-kubernetes/aws-eks.md)、[GCP 部署文档](how-to/deploy/tidb-in-kubernetes/gcp-gke.md)或[阿里云部署文档](how-to/deploy/tidb-in-kubernetes/alibaba-cloud.md)在对应的公有云上一键部署生产可用的 TiDB 集群并进行后续的运维管理；
+
+    - 公有云：参考 [AWS 部署文档](how-to/deploy/tidb-in-kubernetes/aws-eks.md)或[阿里云部署文档](how-to/deploy/tidb-in-kubernetes/alibaba-cloud.md)在对应的公有云上一键部署生产可用的 TiDB 集群并进行后续的运维管理；
+
     - 现有 Kubernetes 集群：首先按照[部署 TiDB Operator](how-to/deploy/tidb-in-kubernetes/tidb-operator.md)在集群中安装 TiDB Operator，再根据[在标准 Kubernetes 集群上部署 TiDB 集群](how-to/deploy/tidb-in-kubernetes/general-kubernetes.md)来部署你的 TiDB 集群。对于生产级 TiDB 集群，你还需要参考 [TiDB 集群环境要求](reference/configuration/tidb-in-kubernetes/local-pv-configuration.md)调整 Kubernetes 集群配置并根据[本地 PV 配置](reference/configuration/tidb-in-kubernetes/local-pv-configuration.md)为你的 Kubernetes 集群配置本地 PV，以满足 TiKV 的低延迟本地存储需求。
 
 在任何环境上部署前，都可以参考 [TiDB 集群配置](reference/configuration/tidb-in-kubernetes/cluster-configuration.md)来自定义 TiDB 配置。
 
 部署完成后，你可以参考下面的文档进行 Kubernetes 上 TiDB 集群的使用和运维：
 
-+ [管理 TiDB 集群](how-to/maintain/tidb-in-kubernetes/k8s-node-for-tidb.md)
++ [部署 TiDB 集群](how-to/deploy/tidb-in-kubernetes/general-kubernetes.md)
 + [访问 TiDB 集群](how-to/deploy/tidb-in-kubernetes/access-tidb.md)
++ [维护 TiDB 集群所在的 Kubernetes 节点](how-to/maintain/tidb-in-kubernetes/k8s-node-for-tidb.md)
 + [TiDB 集群扩缩容](how-to/scale/tidb-in-kubernetes.md)
 + [TiDB 集群升级](how-to/upgrade/tidb-in-kubernetes.md#升级-tidb-版本)
 + [TiDB 集群配置变更](how-to/upgrade/tidb-in-kubernetes.md#更新-tidb-集群配置)
