@@ -11,6 +11,10 @@ This document describes how to quickly deploy a TiDB testing cluster with a sing
 
 With Docker Compose, you can use a YAML file to configure application services in multiple containers. Then, with a single command, you can create and start all the services from your configuration.
 
+> **Warning:**
+>
+> This is for testing only, DO NOT USE in production! Please deploy TiDB with [our ansible solution](/how-to/deploy/orchestrated/ansible.md) or [TiDB Operator in Kubernetes](/tidb-in-kubernetes/deploy/tidb-operator.md) in production.
+
 ## Prerequisites
 
 Make sure you have installed the following items on your machine:
