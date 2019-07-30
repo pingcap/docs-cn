@@ -7,6 +7,11 @@ category: how-to
 
 本文介绍了如何使用个人电脑（Linux 或 macOS 系统）在 GCP GKE 上部署 TiDB 集群。
 
+  > **注意：**
+  >
+  > 当前多磁盘聚合功能[存在一些已知问题](https://github.com/pingcap/tidb-operator/issues/684)，不建议生产环境中每节点配置一块以上磁盘。
+  > 我们正在修复此问题。
+
 ## 环境准备
 
 部署前，确认已安装以下软件：
