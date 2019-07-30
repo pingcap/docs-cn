@@ -36,7 +36,7 @@
       - [部署 TiDB Operator](how-to/deploy/tidb-in-kubernetes/tidb-operator.md)
       - [访问 Kubernetes 上的 TiDB 集群](how-to/deploy/tidb-in-kubernetes/access-tidb.md)
       - [标准 Kubernetes 集群](how-to/deploy/tidb-in-kubernetes/general-kubernetes.md)
-      - [阿里云](how-to/deploy/tidb-in-kubernetes/alibaba-cloud.md)
+      - [阿里云 ACK](how-to/deploy/tidb-in-kubernetes/alibaba-cloud.md)
       - [AWS EKS](how-to/deploy/tidb-in-kubernetes/aws-eks.md)
       - [GCP GKE](how-to/deploy/tidb-in-kubernetes/gcp-gke.md)
     + 集群部署方式
