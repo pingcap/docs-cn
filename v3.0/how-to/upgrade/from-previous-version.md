@@ -147,7 +147,7 @@ $ ansible-playbook local_prepare.yml
 $ ansible-playbook excessive_rolling_update.yml
 ```
 
->  **注意：**
+> **注意：**
 > 
 > 如当前版本**大于或等于** TiDB 3.0 版本在滚动升级及日常滚动重启 TiDB 集群仍然使用 `rolling_update.yml` 操作。
 
