@@ -47,7 +47,7 @@ Before deploying TiDB on any of the above two environments, you can always refer
 
 After the deployment is complete, see the following documents to use, operate, and maintain TiDB clusters in Kubernetes:
 
-+ [Manage the TiDB Cluster](tidb-in-kubernetes/maintain/tidb-cluster.md)
++ [Manage the TiDB Cluster](tidb-in-kubernetes/maintain/kubernetes-node.md)
 + [Access the TiDB Cluster](tidb-in-kubernetes/deploy/access-tidb.md)
 + [Scale TiDB Cluster](tidb-in-kubernetes/scale-in-kubernetes.md)
 + [Upgrade TiDB Cluster](tidb-in-kubernetes/upgrade/tidb-cluster.md#upgrade-the-version-of-tidb-cluster)

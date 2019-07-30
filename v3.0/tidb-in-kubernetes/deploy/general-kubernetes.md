@@ -11,7 +11,7 @@ This document describes how to deploy a TiDB cluster on general Kubernetes.
 ## Prerequisites
 
 - [Deploy TiDB Operator](tidb-in-kubernetes/deploy/tidb-operator.md);
-- [Install Helm](tidb-in-kubernetes/reference/tools/tools-in-kubernetes.md)  and configure it with the official PingCAP chart.
+- [Install Helm](tidb-in-kubernetes/reference/tools/in-kubernetes.md) and configure it with the official PingCAP chart.
 
 ## Configure TiDB cluster
 
@@ -28,7 +28,7 @@ helm inspect values pingcap/tidb-cluster --version=<chartVersion> > /home/tidb/<
 >
 > You can replace `/home/tidb` with any directory as you like. In the rest of this document, `values.yaml` is used to refer to `/home/tidb/<releaseName>/values-<releaseName>.yaml`.
 
-Modify the configuratiuon above according to your needs. For more configuration details, refer to the [TiDB Cluster Configuration Document](/tidb-in-kubernetes/reference/configuration/tidb-cluster.md)。
+Modify the configuratiuon above according to your needs. For more configuration details, refer to the [TiDB Cluster Configuration Document](/tidb-in-kubernetes/reference/configuration/tidb-cluster.md).
 
 ## Deploy TiDB Cluster
 

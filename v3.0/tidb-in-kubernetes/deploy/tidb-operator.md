@@ -50,7 +50,7 @@ Set `LimitNOFILE` to `1048576` or bigger.
 
 ## Install Helm
 
-Refer to [Use Helm](/tidb-in-kubernetes/reference/tools-in-kubernetes.md#use-helm) to install Helm and configre it with the official PingCAP chart Repo.
+Refer to [Use Helm](/tidb-in-kubernetes/reference/tools/in-kubernetes.md#use-helm) to install Helm and configre it with the official PingCAP chart Repo.
 
 ## Configure Local Persistent Volume
 
