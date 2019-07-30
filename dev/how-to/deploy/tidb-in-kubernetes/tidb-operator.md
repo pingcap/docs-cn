@@ -29,7 +29,7 @@ TiDB Operator 运行在 Kubernetes 集群，你可以使用[这里](https://kube
 
 * [Local DinD 教程](/how-to/get-started/deploy-tidb-from-kubernetes-dind.md)
 * [Google GKE 教程](/how-to/get-started/deploy-tidb-from-kubernetes-gke.md)
-* [AWS EKS 教程](/how-to/deploy/orchestrated/tidb-in-kubernetes/aws-eks.md)
+* [AWS EKS 教程](/how-to/deploy/tidb-in-kubernetes/aws-eks.md)
 
 如果你要使用不同环境，必须在 Kubernetes 集群中安装 DNS 插件。可以根据[官方文档](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/)搭建 DNS 插件。
 
@@ -93,7 +93,7 @@ kubectl get crd tidbclusters.pingcap.com
 
 > **注意：**
 >
-> `<chartVersion>` 在后续文档中代表 chart 版本，例如 `v1.0.0-beta.3`。
+> `<chartVersion>` 在后续文档中代表 chart 版本，例如 `v1.0.0`。
 
 获取你要安装的 `tidb-operator` chart 中的 `values.yaml` 文件：
 
