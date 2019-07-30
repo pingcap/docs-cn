@@ -209,6 +209,8 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 * 点击 **完成并下载**
 
+![DM Portal GenerateConfig](/media/dm-portal-generateconfig.png)
+
 ### 编辑规则
 
 #### 功能描述
