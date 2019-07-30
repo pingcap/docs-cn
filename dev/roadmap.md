@@ -68,8 +68,8 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 * 动态 Split,Merge 热点 Region
 * 精细的内存控制
 * Raft
-+ Joint consensus
-+ 只读副本
+* Joint consensus
+* 只读副本
 * 事务
     + 悲观锁 GA
     + 事务内不限制语句数量
@@ -86,7 +86,6 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 
 * 重构日志内容
 
-
 ### TiFlash
 
 #### 功能
@@ -97,42 +96,40 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 
 * snapshot read
 
-
 ### TiSpark
 
 #### 功能
 
-* 支持 batch write 
+* 支持 batch write
 
 * 接入 TiFlash
 
-
 ## Data Migration
 
-#### 功能
+### 功能
 
 * 完善前向检查
 * 可视化管理同步规则
 * 可视化管理同步任务
 
-#### 易用性
+### 易用性
 
 * Ctrl 工具集成数据一致性校验功能
 * Ctrl 工具输出任务详细信息
 * 重构日志格式及内容
 
-#### 高可用
+### 高可用
 
 * 支持服务高可用
 
 ## TiDB Toolkit
 
-#### 功能
+### 功能
 
 * Loader 集成到 TiDB
 * TiDB Lightning 集成到 TiDB
 
-#### 性能
+### 性能
 
 * TiDB Lightning 支持并行导入
 * TiDB Lightning 优化导入回放路径
@@ -201,10 +198,10 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 
 ## Data Migration
 
-#### 功能
+### 功能
 
 * 下游支持 Oracle
 
-#### 高可靠
+### 高可靠
 
 * 支持数据高可靠
