@@ -46,12 +46,12 @@ TiDB Operator 提供了多种方式来部署 Kubernetes 上的 TiDB 集群：
 
 部署完成后，你可以参考下面的文档进行 Kubernetes 上 TiDB 集群的使用和运维：
 
-+ [管理 TiDB 集群](/reference/configuration/tidb-in-kubernetes/cluster-configuration/)
-+ [访问 TiDB 集群](/how-to/deploy/tidb-in-kubernetes/access-tidb.md)
-+ [TiDB 集群扩缩容](/how-to/scale/tidb-in-kubernetes.md)
-+ [TiDB 集群升级](/how-to/upgrade/tidb-in-kubernetes.md#升级-tidb-版本)
-+ [TiDB 集群配置变更](/how-to/upgrade/tidb-in-kubernetes.md#更新-tidb-集群配置)
-+ [TiDB 集群备份恢复](/how-to/maintain/tidb-in-kubernetes/backup-and-restore.md)
++ [管理 TiDB 集群](reference/configuration/tidb-in-kubernetes/cluster-configuration/)
++ [访问 TiDB 集群](how-to/deploy/tidb-in-kubernetes/access-tidb.md)
++ [TiDB 集群扩缩容](how-to/scale/tidb-in-kubernetes.md)
++ [TiDB 集群升级](how-to/upgrade/tidb-in-kubernetes.md#升级-tidb-版本)
++ [TiDB 集群配置变更](how-to/upgrade/tidb-in-kubernetes.md#更新-tidb-集群配置)
++ [TiDB 集群备份恢复](how-to/maintain/tidb-in-kubernetes/backup-and-restore.md)
 + [配置 TiDB 集群故障自动转移](how-to/maintain/tidb-in-kubernetes/auto-failover.md)
 + [监控 TiDB 集群](how-to/monitor/tidb-in-kubernetes.md)
 + [TiDB 集群日志收集](how-to/maintain/tidb-in-kubernetes/log-collecting.md)
@@ -64,6 +64,6 @@ TiDB Operator 提供了多种方式来部署 Kubernetes 上的 TiDB 集群：
 Kubernetes 上的 TiDB 提供了专用的命令行工具 `tkctl` 用于集群管理和辅助诊断，同时，在 Kubernetes 上，TiDB 的部分生态工具的使用方法也有所不同，你可以：
 
 + 参考 [`tkctl` 使用指南](reference/tools/tkctl.md) 来使用 `tkctl`；
-+ 参考 [Kubernetes 上的 TiDB 相关工具使用](/reference/tools/tools-in-kubernetes.md) 来了解 TiDB 生态工具在 Kubernetes 上的使用方法。
++ 参考 [Kubernetes 上的 TiDB 相关工具使用](reference/tools/tools-in-kubernetes.md) 来了解 TiDB 生态工具在 Kubernetes 上的使用方法。
 
 最后，当 TiDB Operator 发布新版本时，你可以参考[升级 TiDB Operator](how-to/upgrade/tidb-operator.md) 进行版本更新。
