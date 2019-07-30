@@ -18,7 +18,6 @@ helm delete <releaseName> --purge
 
 The above commands only removes the runining Pod with the data still retained. If you want the data to be deleted as well, you can use the following commands:
 
-
 > **Warning:**
 >
 > The following commands deletes your data completely. Please be cautious.
