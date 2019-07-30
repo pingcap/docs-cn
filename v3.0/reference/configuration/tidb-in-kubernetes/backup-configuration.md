@@ -52,7 +52,7 @@ category: reference
 
 + 备份参数
 + 默认："--chunk-filesize=100"
-+ 为备份数据时使用的 [mydumper](https://github.com/maxbube/mydumper/blob/master/docs/mydumper_usage.rst#options)) 指定额外的运行参数
++ 为备份数据时使用的 [mydumper](https://github.com/maxbube/mydumper/blob/master/docs/mydumper_usage.rst#options) 指定额外的运行参数
 
 ## `restoreOptions`
 
