@@ -10,7 +10,7 @@ category: how-to
 Kubernetes 上的 TiDB 集群支持两种备份策略：
 
 * [全量备份](#全量备份)（定时执行或 Ad-hoc）：使用 [`mydumper`](/reference/tools/mydumper.md) 获取集群的逻辑备份；
-* [增量备份](#增量备份)：使用 [`TiDB Binlog`](/reference/tools/tidb-binlog/overview.md) 将 TiDB 集群的数据实时复制到其它数据库中或实时获得增量数据备份；
+* [增量备份](#增量备份)：使用 [`TiDB Binlog`](/reference/tidb-binlog-overview.md) 将 TiDB 集群的数据实时复制到其它数据库中或实时获得增量数据备份；
 
 目前，Kubernetes 上的 TiDB 集群只对 `mydumper` 获取的全量备份数据提供自动化的数据恢复操作。恢复 `TiDB-Binlog` 获取的增量数据需要手动进行。
 
@@ -35,7 +35,7 @@ Kubernetes 上的 TiDB 集群支持两种备份策略：
     >
     > 你必须将定时全量备份使用的 PV 的 [reclaim policy](https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy) 设置为 `Retain` 来确保你的数据安全。
 
-3. 按照 `[Cron](https://en.wikipedia.org/wiki/Cron)` 格式设置 `scheduledBackup.schedule` 来定义任务的执行周期与时间；
+3. 按照 [Cron](https://en.wikipedia.org/wiki/Cron) 格式设置 `scheduledBackup.schedule` 来定义任务的执行周期与时间；
 4. 创建一个包含数据库用户名和密码的 Kubernetes [Secret](https://kubernetes.io/docs/concepts/configuration/secret/) 该用户必须拥有数据备份所需的数据库相关权限，同时，将 `scheduledBackup.secretName` 设置为该 `Secret` 的名字（默认为 `backup-secret`）：
 
     {{< copyable "shell-regular" >}}
@@ -54,7 +54,7 @@ Kubernetes 上的 TiDB 集群支持两种备份策略：
 
 ### Ad-hoc 全量备份
 
-Ad-hoc 全量备份封装在 `pingcap/tidb-backup` 这个 Helm chart 中。根据 `values.yaml` 文件中的 `mode` 配置，该 chart 可以执行全量备份或数据恢复。我们会在 [数据恢复](#数据恢复) 一节中描述如何执行数据恢复。
+Ad-hoc 全量备份封装在 `pingcap/tidb-backup` 这个 Helm chart 中。根据 `values.yaml` 文件中的 `mode` 配置，该 chart 可以执行全量备份或数据恢复。我们会在[数据恢复](#数据恢复)一节中描述如何执行数据恢复。
 
 你可以通过下面的步骤执行一次 Ad-hoc 全量备份：
 
@@ -122,7 +122,7 @@ kubectl get pvc -n <namespace> -l app.kubernetes.io/component=backup,pingcap.com
 
 ## 增量备份
 
-增量备份使用 [TiDB Binlog](/reference/tools/tidb-binlog/overview.md) 工具从 TiDB 集群收集 Binlog，并提供实时备份和向其它数据库的实时同步能力。
+增量备份使用 [TiDB Binlog](/reference/tidb-binlog-overview.md) 工具从 TiDB 集群收集 Binlog，并提供实时备份和向其它数据库的实时同步能力。
 
 增量备份是默认关闭的，你可以通过修改 `values.yaml` 中的下列配置项来开启增量备份：
 
