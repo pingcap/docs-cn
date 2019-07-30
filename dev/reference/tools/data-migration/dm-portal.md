@@ -59,6 +59,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 ### 新建规则
 
 #### 功能描述
+
 用于新建一个 task.yaml 文件，需要选择同步模式、配置上下游实例、配置库表路由，配置 binlog 过滤。
 
 #### 操作步骤
@@ -224,7 +225,8 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 * 不允许修改实例配置信息
 
 #### 操作步骤
-* 在首页，点击 **编辑同步规则**。
+
+* 在首页，点击 **编辑同步规则** 。
 * 选择上传 task.yaml 文件。
 * 解析成功后，页面会自动跳转。
 
