@@ -324,6 +324,7 @@
       - [DM 集群操作](reference/tools/data-migration/cluster-operations.md)
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](how-to/migrate/from-aurora.md)
+      - [DM Portal](reference/tools/data-migration/dm-portal.md)
       - [DM 故障诊断](how-to/troubleshoot/data-migration.md)
       - [FAQ](faq/data-migration.md)
     + TiDB Lightning
