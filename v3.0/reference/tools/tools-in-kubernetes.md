@@ -251,6 +251,6 @@ helm del --purge <release-name>
 
 ## 使用 Terraform
 
-[Terraform](https://www.terraform.io/) 是一个基础设施即代码（Infrastructore as Code）管理工具。它允许用户使用声明式的风格描述自己的基础设施，并针对描述生成执行计划来创建或调整真实世界的计算资源。Kubernetes 上的 TiDB 使用 Terraform 来在公有云上创建和管理 TiDB 集群。
+[Terraform](https://www.terraform.io/) 是一个基础设施即代码（Infrastructure as Code）管理工具。它允许用户使用声明式的风格描述自己的基础设施，并针对描述生成执行计划来创建或调整真实世界的计算资源。Kubernetes 上的 TiDB 使用 Terraform 来在公有云上创建和管理 TiDB 集群。
 
 你可以参考[Terraform 官方文档](https://www.terraform.io/downloads.html) 来安装 Terraform。
