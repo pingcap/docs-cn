@@ -94,7 +94,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 #### 注意事项
 
-如果任务类型选择**增量**或者**All**，在配置上游实例信息时候，还需要配置 binlog-file 和 binlog-pos。
+如果任务类型选择**增量**或者 **All**，在配置上游实例信息时候，还需要配置 binlog-file 和 binlog-pos。
 
 #### 操作步骤
 
