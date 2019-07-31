@@ -43,7 +43,7 @@ Before you start, make sure you have:
 
     > **Note:**
     >
-    > When you deploy TiDB using Ansible, **use SSD disks for the data directory of TiKV and PD nodes**. Otherwise, it cannot pass the check. If you only want to try TiDB out and explore the features, it is recommended to [deploy TiDB using Docker Compose](/how-to/get-started/deploy-tidb-from-docker-compose.md) on a single machine.
+    > When you deploy TiDB using Ansible, **use SSD disks for the data directory of TiKV and PD nodes**. Otherwise, it cannot pass the check.
 
 2. A Control Machine that meets the following requirements:
 

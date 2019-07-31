@@ -34,7 +34,6 @@
     + Start a Local Cluster
       - [From Binary](how-to/get-started/local-cluster/install-from-binary.md)
       - [In Kubernetes](how-to/get-started/local-cluster/install-from-kubernetes.md)
-      - [In Docker Compose](how-to/get-started/local-cluster/install-from-docker-compose.md)
     - [Explore SQL with TiDB](how-to/get-started/explore-sql.md)
     - [Import Example Database](how-to/get-started/import-example-database.md)
     - [Read Historical Data](how-to/get-started/read-historical-data.md)
