@@ -18,6 +18,10 @@ category: how-to
 - 扩容 TiDB 集群
 - 删除 Kubernetes 集群（可选）
 
+> **警告：**
+>
+> 对于生产环境，不要使用此方式进行部署。
+
 ## 选择一个项目
 
 本教程会启动一个包含 3 个 `n1-standard-1` 类型节点的 Kubernetes 集群。价格信息可以参考[这里](https://cloud.google.com/compute/pricing)。
@@ -123,7 +127,7 @@ PingCAP Helm 仓库中存放着 PingCAP 发布的 charts，例如 tidb-operator�
 {{< copyable "shell-regular" >}}
 
 ``` shell
-helm repo add pingcap http://charts.pingcap.org/ && \
+helm repo add pingcap https://charts.pingcap.org/ && \
 helm repo list
 ```
 
@@ -141,7 +145,7 @@ helm search tidb-operator -l
 
 > **注意：**
 >
-> `<chartVersion>` 在后面文档中代表 chart 版本，例如 `v1.0.0-beta.3`。
+> `<chartVersion>` 在后面文档中代表 chart 版本，例如 `v1.0.0`。
 
 第一个要安装的 TiDB 组件是 TiDB Operator，TiDB Operator 是管理组件，结合 Kubernetes 启动 TiDB 集群并保证集群正常运行。执行下面命令之前请确保在 `tidb-operator` 目录下：
 

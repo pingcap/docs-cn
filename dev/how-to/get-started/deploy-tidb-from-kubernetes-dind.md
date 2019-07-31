@@ -10,6 +10,10 @@ category: how-to
 
 DinD 将 Docker 容器作为虚拟机运行，并在第一层 Docker 容器中运行另一层 Docker 容器。[kubeadm-dind-cluster](https://github.com/kubernetes-sigs/kubeadm-dind-cluster) 使用 DinD 技术在 Docker 容器中运行 Kubernetes 集群。TiDB Operator 通过完善过的一套 DinD 脚本来管理 DinD Kubernetes 集群。
 
+> **警告：**
+>
+> 对于生产环境，不要使用此方式进行部署。
+
 ## 环境准备
 
 部署前，请确认软件、资源等满足如下需求：
@@ -156,7 +160,7 @@ kube-node-3   Ready    <none>   9m32s   v1.12.5   10.192.0.5    <none>        De
 
 > **注意：**
 >
-> `<chartVersion>` 在后续文档中代表 chart 版本，例如 `v1.0.0-beta.3`。
+> `<chartVersion>` 在后续文档中代表 chart 版本，例如 `v1.0.0`。
 
 如果 K8s 集群启动并正常运行，可以通过 `helm` 添加 chart 仓库并安装 TiDB Operator。
 
@@ -165,7 +169,7 @@ kube-node-3   Ready    <none>   9m32s   v1.12.5   10.192.0.5    <none>        De
     {{< copyable "shell-regular" >}}
 
     ``` shell
-    helm repo add pingcap http://charts.pingcap.org/ && \
+    helm repo add pingcap https://charts.pingcap.org/ && \
     helm repo list && \
     helm repo update && \
     helm search tidb-cluster -l && \

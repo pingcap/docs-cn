@@ -180,7 +180,7 @@ Kubernetes 应用在 helm 中被打包为 chart。PingCAP 针对 Kubernetes 上�
 * `tidb-cluster`：用于部署 TiDB 集群；
 * `tidb-backup`：用于 TiDB 集群备份恢复；
 
-这些 chart 都托管在 PingCAP 维护的 helm chart 仓库 `http://charts.pingcap.org/` 中，你可以通过下面的命令添加该仓库：
+这些 chart 都托管在 PingCAP 维护的 helm chart 仓库 `https://charts.pingcap.org/` 中，你可以通过下面的命令添加该仓库：
 
 {{< copyable "shell-regular" >}}
 
@@ -198,9 +198,9 @@ helm search pingcap -l
 
 ```
 NAME                    CHART VERSION   APP VERSION DESCRIPTION
-pingcap/tidb-backup     v1.0.0-rc.1                 A Helm chart for TiDB Backup or Restore
-pingcap/tidb-cluster    v1.0.0-rc.1                 A Helm chart for TiDB Cluster
-pingcap/tidb-operator   v1.0.0-rc.1                 tidb-operator Helm chart for Kubernetes
+pingcap/tidb-backup     v1.0.0                      A Helm chart for TiDB Backup or Restore
+pingcap/tidb-cluster    v1.0.0                      A Helm chart for TiDB Cluster
+pingcap/tidb-operator   v1.0.0                      tidb-operator Helm chart for Kubernetes
 ```
 
 当新版本的 chart 发布后，你可以使用 `helm repo update` 命令更新本地对于仓库的缓存：
