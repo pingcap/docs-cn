@@ -10,6 +10,10 @@ category: how-to
 
 DinD 将 Docker 容器作为虚拟机运行，并在第一层 Docker 容器中运行另一层 Docker 容器。[kubeadm-dind-cluster](https://github.com/kubernetes-sigs/kubeadm-dind-cluster) 使用 DinD 技术在 Docker 容器中运行 Kubernetes 集群。TiDB Operator 通过完善过的一套 DinD 脚本来管理 DinD Kubernetes 集群。
 
+> **警告：**
+>
+> 对于生产环境，不要使用此方式进行部署。
+
 ## 环境准备
 
 部署前，请确认软件、资源等满足如下需求：
