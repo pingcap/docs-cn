@@ -11,7 +11,7 @@ The TiDB monitoring framework adopts two open source projects: Prometheus and Gr
 
 ## About Prometheus in TiDB
 
-As a time series database, Prometheus has a multi-dimensional data model and flexible query language. As one of the most popular open source projects, many companies and organizations have adopted Prometheus, and the project has a very active community. PingCAP is one of the active developers and adopters of Prometheus for monitoring and alerting in TiDB, TiKV and PD.
+As a time series database, Prometheus has a multi-dimensional data model and flexible query language. As one of the most popular open source projects, Prometheus has been adopted by many companies and organizations and has a very active community. PingCAP is one of the active developers and adopters of Prometheus for monitoring and alerting in TiDB, TiKV and PD.
 
 Prometheus consists of multiple components. Currently, TiDB uses the following of them:
 

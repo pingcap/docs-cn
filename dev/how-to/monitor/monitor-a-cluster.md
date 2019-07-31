@@ -9,7 +9,7 @@ category: how-to
 You can use the following two types of interfaces to monitor the TiDB cluster state:
 
 - [The state interface](#use-the-state-interface): this interface uses the HTTP interface to get the component information.
-- [The metrics interface](#use-the-metrics-interface): this interface uses Prometheus to record the detailed information of the various operations in components and view these metrics using Grafana.
+- [The metrics interface](#use-the-metrics-interface): this interface uses Prometheus to record the detailed information of the various operations in components and views these metrics using Grafana.
 
 ## Use the state interface
 
@@ -21,7 +21,7 @@ The state interface monitors the basic information of a specific component in th
 - Default port: `10080`
 - Details about API names: see [TiDB HTTP API](https://github.com/pingcap/tidb/blob/master/docs/tidb_http_api.md)
 
-The following example uses `http://${host}:${port}/status` to get the current state of the TiDB server and to determine whether the server is alive. The result is returned in the JSON format.
+The following example uses `http://${host}:${port}/status` to get the current state of the TiDB server and to determine whether the server is alive. The result is returned in JSON format.
 
 ```bash
 curl http://127.0.0.1:10080/status
