@@ -121,7 +121,7 @@ helm search tidb-operator -l
 
 > **Note:**
 > 
-> <chartVersion> will be used in the rest of the document to represent the chart version, e.g. `v1.0.0-rc.1`.
+> <chartVersion> will be used in the rest of the document to represent the chart version, e.g. `v1.0.0`.
 
 Clone tidb-operator repository:
 

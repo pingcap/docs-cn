@@ -164,7 +164,7 @@ helm search tidb-operator -l
 
 ## Deploy TiDB Operator
 
-Note that `<chartVersion>` is used in the rest of the document to represent the chart version, e.g. `v1.0.0-rc.1`.
+Note that `<chartVersion>` is used in the rest of the document to represent the chart version, e.g. `v1.0.0`.
 
 The first TiDB component we are going to install is the TiDB Operator, using a Helm Chart. TiDB Operator is the management system that works with Kubernetes to bootstrap your TiDB cluster and keep it running. This step assumes you are in the `tidb-operator` working directory:
 

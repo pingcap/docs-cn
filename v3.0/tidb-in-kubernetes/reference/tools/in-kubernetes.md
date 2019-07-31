@@ -201,9 +201,9 @@ helm search pingcap -l
 
 ```
 NAME                    CHART VERSION   APP VERSION DESCRIPTION
-pingcap/tidb-backup     v1.0.0-rc.1                 A Helm chart for TiDB Backup or Restore
-pingcap/tidb-cluster    v1.0.0-rc.1                 A Helm chart for TiDB Cluster
-pingcap/tidb-operator   v1.0.0-rc.1                 tidb-operator Helm chart for Kubernetes
+pingcap/tidb-backup     v1.0.0                      A Helm chart for TiDB Backup or Restore
+pingcap/tidb-cluster    v1.0.0                      A Helm chart for TiDB Cluster
+pingcap/tidb-operator   v1.0.0                      tidb-operator Helm chart for Kubernetes
 ```
 
 When a new version of chart has been released, you can use `helm repo update` to update the repository cached locally:
