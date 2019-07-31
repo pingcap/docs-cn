@@ -50,7 +50,6 @@ TiDB Operator 提供了多种方式来部署 Kubernetes 上的 TiDB 集群：
 
 + [部署 TiDB 集群](how-to/deploy/tidb-in-kubernetes/general-kubernetes.md)
 + [访问 TiDB 集群](how-to/deploy/tidb-in-kubernetes/access-tidb.md)
-+ [维护 TiDB 集群所在的 Kubernetes 节点](how-to/maintain/tidb-in-kubernetes/k8s-node-for-tidb.md)
 + [TiDB 集群扩缩容](how-to/scale/tidb-in-kubernetes.md)
 + [TiDB 集群升级](how-to/upgrade/tidb-in-kubernetes.md#升级-tidb-版本)
 + [TiDB 集群配置变更](how-to/upgrade/tidb-in-kubernetes.md#更新-tidb-集群配置)
@@ -58,6 +57,7 @@ TiDB Operator 提供了多种方式来部署 Kubernetes 上的 TiDB 集群：
 + [配置 TiDB 集群故障自动转移](how-to/maintain/tidb-in-kubernetes/auto-failover.md)
 + [监控 TiDB 集群](how-to/monitor/tidb-in-kubernetes.md)
 + [TiDB 集群日志收集](how-to/maintain/tidb-in-kubernetes/log-collecting.md)
++ [维护 TiDB 所在的 Kubernetes 节点](how-to/maintain/tidb-in-kubernetes/k8s-node-for-tidb.md)
 
 当集群出现问题需要进行诊断时，你可以：
 
