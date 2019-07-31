@@ -5,8 +5,8 @@ category: reference
 
 # DM Portal 简介
 
-当前版本的 DM 的提供了丰富多样的功能特性，包括 [Table routing](/reference/tools/data-migration/features/overview.md#table-routing)，[Black & white table lists](/reference/tools/data-migration/features/overview.md#black-white-table-lists)，[Binlog event filter](/reference/tools/data-migration/features/overview.md#binlog-event-filter)，[Column mapping](/reference/tools/data-migration/features/overview.md#column-mapping) 等。但这些功能特性同时也增加了用户使用 DM 的复杂度，尤其在编写 [DM 任务配置](/reference/tools/data-migration/configure/task-configuration-file/) 时候。
-针对这个问题，我们提供了一个非常精简的小网页程序  DM Portal，能够帮助用户以可视化的方式去配置需要的同步任务，并且生成可以直接让 DM 直接执行的 task.yaml 文件。
+当前版本的 DM 提供了丰富多样的功能特性，包括 [Table routing](/reference/tools/data-migration/features/overview.md#table-routing)，[Black & white table lists](/reference/tools/data-migration/features/overview.md#black-white-table-lists)，[Binlog event filter](/reference/tools/data-migration/features/overview.md#binlog-event-filter)，[Column mapping](/reference/tools/data-migration/features/overview.md#column-mapping) 等。但这些功能特性同时也增加了用户使用 DM 的复杂度，尤其在编写 [DM 任务配置](/reference/tools/data-migration/configure/task-configuration-file.md) 时候。
+针对这个问题，我们提供了一个非常精简的小网页程序 DM Portal，能够帮助用户以可视化的方式去配置需要的同步任务，并且生成可以直接让 DM 直接执行的 `task.yaml` 文件。
 
 ## 功能描述
 
@@ -16,7 +16,7 @@ category: reference
 
 - 全量同步
 - 增量同步
-- All(全量+增量）
+- All（全量+增量）
 
 ### 实例信息配置
 
@@ -28,26 +28,26 @@ category: reference
 
 ### 配置文件生成
 
-支持配置文件创建，能够将配置文件下载到本地并且同时会在 dm-portal 服务器 /tmp/ 目录下自动创建。
+支持配置文件创建，能够将配置文件下载到本地并且同时会在 dm-portal 服务器的 `/tmp/` 目录下自动创建。
 
 ### 使用限制
 
-当前的 DM 配置可视化生成页面能够覆盖绝大部分的 DM 配置场景，但还是有一定的使用限制：
+当前的 DM 配置可视化生成页面能够覆盖绝大部分的 DM 配置场景，但也有一定的使用限制：
 
 - 不支持 [Column mapping](/reference/tools/data-migration/features/overview.md#column-mapping)
-- 不支持 [Binlog event filter](/reference/tools/data-migration/features/overview.md#binlog-event-filter) 的 sql pattern 方式
-- 编辑功能不支持解析用户之前写的 task.yaml 文件，页面只能编辑由页面生成的 task.yaml 文件
-- 编辑功能不支持修改实例配置信息，如果用户需要调整实例配置，需要重新生成 task.yaml 文件
-- 页面的上游实例配置仅用于获取上游库表结构，dm-worker 里依旧需要配置对应的上游实例信息
-- 生成的 task.yaml 中默认 mydumper-path 为 "./bin/mydumper"，如果实际使用其他路径，需要在生成的配置文件中进行手动修改。
+- 不支持 [Binlog event filter](/reference/tools/data-migration/features/overview.md#binlog-event-filter) 的 SQL pattern 方式
+- 编辑功能不支持解析用户之前写的 `task.yaml` 文件，页面只能编辑由页面生成的 `task.yaml` 文件
+- 编辑功能不支持修改实例配置信息，如果用户需要调整实例配置，需要重新生成 `task.yaml` 文件
+- 页面的上游实例配置仅用于获取上游库表结构，DM-worker 里依旧需要配置对应的上游实例信息
+- 生成的 `task.yaml` 中，默认 mydumper-path 为 `./bin/mydumper`，如果实际使用其他路径，需要在生成的配置文件中进行手动修改。
 
 ## 部署使用
 
-### binarey 部署
+### Binarey 部署
 
-DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-portal-latest.tar.gz) 下载，通过 `./dm-portal` 的命令就能直接启动。
+DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-portal-latest.tar.gz) 下载，通过 `./dm-portal` 的命令即可直接启动。
 
-* 如果在本地启动，浏览器访问 127.0.0.1:8280 就能使用。
+* 如果在本地启动，浏览器访问 `127.0.0.1:8280` 即可使用。
 * 如果在服务器上启动，需要为服务器上配置访问代理。
 
 ### DM Ansible 部署
@@ -60,11 +60,11 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 #### 功能描述
 
-用于新建一个 task.yaml 文件，需要选择同步模式、配置上下游实例、配置库表路由，配置 binlog 过滤。
+用于新建一个 `task.yaml` 文件，需要选择同步模式、配置上下游实例、配置库表路由，配置 binlog 过滤。
 
 #### 操作步骤
 
-* 登录 dm-portal 页面，点击 **新建任务规则**。
+* 登录 dm-portal 页面，点击**新建任务规则**。
 
 ### 基础信息配置
 
@@ -74,7 +74,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 #### 前置条件
 
-已选择 **新建同步规则**。
+已选择**新建同步规则**。
 
 #### 操作步骤
 
@@ -86,7 +86,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 #### 功能描述
 
-用于配置上下游实例信息，包括 Host，Port, Username, Password。
+用于配置上下游实例信息，包括 Host、Port、Username、Password。
 
 #### 前置条件
 
@@ -94,13 +94,13 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 #### 注意事项
 
-如果任务类型选择 **增量** 或者 **All**，在配置上游实例信息时候，还需要配置 binlog-file 和 binlog-pos。
+如果任务类型选择**增量**或者**All**，在配置上游实例信息时候，还需要配置 binlog-file 和 binlog-pos。
 
 #### 操作步骤
 
 * 填写上游实例信息。
 * 填写下游实例信息。
-* 点击 **下一步**。
+* 点击**下一步**。
 
 ![DM Portal InstanceConfig](/media/dm-portal-instanceconfig.png)
 
@@ -108,7 +108,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 #### 功能描述
 
-用于配置上游的 binlog 过滤，可以选择需要过滤的 DDL/DML, 并且在数据库上配置的 filter 后会自动给其下的数据表继承。
+用于配置上游的 binlog 过滤，可以选择需要过滤的 DDL/DML，并且在数据库上配置的 filter 后会自动给其下的数据表继承。
 
 #### 前置条件
 
@@ -147,11 +147,11 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 #### 操作步骤
 
-* 在 **上游实例** 处，选择需要同步的数据库和数据表。
-* 点击移动按钮，将需要同步的库表移动至 **下游实例** 处。
+* 在**上游实例**处，选择需要同步的数据库和数据表。
+* 点击移动按钮，将需要同步的库表移动至**下游实例**处。
 * 点击右键按钮，可以对库表进行改名操作。
 * 选中需要操作的数据表，可以拖动至别的数据表图标上创建出合并表；可以拖动到数据库图标上移动至该库下；可以拖动到 target-instence 图标上移动到一个新的数据库下。
-* 点击 **完成**，自动下载 task.yaml 到本地，并且在 dm-portal 服务器上 /tmp/ 目录下自动创建一份 task.yaml 配置文件。
+* 点击**完成**，自动下载 `task.yaml` 到本地，并且在 DM Portal 服务器上的 `/tmp/` 目录下自动创建一份 `task.yaml` 配置文件。
 
 ##### 移动同步库表
 
@@ -193,7 +193,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 #### 功能描述
 
-在完成任务配置后，DM Portal 会帮忙生成对应的 task.yaml 文件。
+在完成任务配置后，DM Portal 会帮忙生成对应的 `task.yaml` 文件。
 
 #### 前置条件
 
@@ -201,11 +201,11 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 #### 注意事项
 
-* task.yaml 配置文件会在浏览器本地下载目录保存一份，同时在服务器端的 /tmp/ 目录下保存一份。
+* `task.yaml` 配置文件会在浏览器本地下载目录保存一份，同时在服务器端的 `/tmp/` 目录下保存一份。
 
 #### 操作步骤
 
-* 点击 **完成并下载**
+* 点击**完成并下载**
 
 ![DM Portal GenerateConfig](/media/dm-portal-generateconfig.png)
 
@@ -213,12 +213,12 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 #### 功能描述
 
-可以将之前创建的 task.yaml 上传后，解析出来之前的填写的配置信息，对部分配置进行修改。
+可以将之前创建的 `task.yaml` 上传后，解析出来之前的填写的配置信息，对部分配置进行修改。
 
 #### 前置条件
 
-* 已经创建出 task.yaml 文件。
-* 非 DM Portal 创建出来的 task.yaml 文件不可使用。
+* 已经创建出 `task.yaml` 文件。
+* 非 DM Portal 创建出来的 `task.yaml` 文件不可使用。
 
 #### 注意事项
 
@@ -226,8 +226,8 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 #### 操作步骤
 
-* 在首页，点击 **编辑同步规则** 。
-* 选择上传 task.yaml 文件。
+* 在首页，点击**编辑同步规则** 。
+* 选择上传 `task.yaml` 文件。
 * 解析成功后，页面会自动跳转。
 
 ![DM Portal EditConfig](/media/dm-portal-editconfig.png)
