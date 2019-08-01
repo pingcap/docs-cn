@@ -156,7 +156,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 ##### 移动同步库表
 
-![DM Portal TableRoute 1](/media/dm-portal-tableroute-1png)
+![DM Portal TableRoute 1](/media/dm-portal-tableroute-1.png)
 
 ![DM Portal TableRoute 2](/media/dm-portal-tableroute-2.png)
 
