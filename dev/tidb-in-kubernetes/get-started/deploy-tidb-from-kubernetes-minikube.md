@@ -55,7 +55,7 @@ minikube start --docker-env https_proxy=http://127.0.0.1:1086 \
 
 Kubernetes 命令行工具 [kubectl](https://kubernetes.io/docs/user-guide/kubectl/)，可以让你执行命令访问 Kubernetes 集群。
 
-参考[文档](https://kubernetes.io/docs/tasks/tools/install-kubectl/) 安装和配置 kubectl。
+参考[文档](https://kubernetes.io/docs/tasks/tools/install-kubectl/)安装和配置 kubectl。
 
 kubectl 安装完成后，测试 Minikube Kubernetes 集群：
 
