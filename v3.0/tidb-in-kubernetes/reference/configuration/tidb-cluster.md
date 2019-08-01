@@ -1,7 +1,7 @@
 ---
 title: Kubernetes 上的 TiDB 集群配置
 category: reference
-aliases: ['/docs-cn/V3.0/reference/configuration/tidb-in-kubernetes/cluster-configuration/']
+aliases: ['/docs-cn/v3.0/reference/configuration/tidb-in-kubernetes/cluster-configuration/']
 ---
 
 # Kubernetes 上的 TiDB 集群配置

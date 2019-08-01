@@ -1,7 +1,7 @@
 ---
 title: 本地 PV 配置
 category: reference
-aliases: ['/docs-cn/V3.0/reference/configuration/tidb-in-kubernetes/local-pv-configuration/']
+aliases: ['/docs-cn/v3.0/reference/configuration/tidb-in-kubernetes/local-pv-configuration/']
 ---
 
 # 本地 PV 配置

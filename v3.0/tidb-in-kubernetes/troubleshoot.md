@@ -1,7 +1,7 @@
 ---
 title: Kubernetes 上的 TiDB 集群故障诊断
 category: how-to
-aliases: ['/docs-cn/V3.0/how-to/troubleshoot/tidb-in-kubernetes/']
+aliases: ['/docs-cn/v3.0/how-to/troubleshoot/tidb-in-kubernetes/']
 ---
 
 # Kubernetes 上的 TiDB 集群故障诊断

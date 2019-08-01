@@ -1,7 +1,7 @@
 ---
 title: 访问 Kubernetes 上的 TiDB 集群
 category: how-to
-aliases: ['/docs-cn/v3.0/how-to/deploy/orchestrated/tidb-in-kubernetes/access-tidb/'/docs-cn/V3.0/how-to/deploy/tidb-in-kubernetes/access-tidb/']
+aliases: ['/docs-cn/v3.0/how-to/deploy/orchestrated/tidb-in-kubernetes/access-tidb/'/docs-cn/v3.0/how-to/deploy/tidb-in-kubernetes/access-tidb/']
 ---
 
 # 访问 Kubernetes 上的 TiDB 集群

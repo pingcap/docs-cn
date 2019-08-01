@@ -1,7 +1,7 @@
 ---
 title: 销毁 Kubernetes 上的 TiDB 集群
 category: how-to
-aliases: ['/docs-cn/V3.0/how-to/maintain/tidb-in-kubernetes/destroy-cluster/']
+aliases: ['/docs-cn/v3.0/how-to/maintain/tidb-in-kubernetes/destroy-cluster/']
 ---
 
 # 销毁 Kubernetes 上的 TiDB 集群

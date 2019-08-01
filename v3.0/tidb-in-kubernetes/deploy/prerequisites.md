@@ -1,7 +1,7 @@
 ---
 title: Kubernetes 上的 TiDB 集群环境需求
 category: how-to
-aliases: ['/docs-cn/V3.0/how-to/deploy/tidb-in-kubernetes/prerequisites/']
+aliases: ['/docs-cn/v3.0/how-to/deploy/tidb-in-kubernetes/prerequisites/']
 ---
 
 # Kubernetes 上的 TiDB 集群环境需求

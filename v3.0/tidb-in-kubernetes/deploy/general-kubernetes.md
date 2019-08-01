@@ -1,7 +1,7 @@
 ---
 title: 在标准 Kubernetes 上部署 TiDB 集群
 category: how-to
-aliases: ['/docs-cn/V3.0/how-to/deploy/tidb-in-kubernetes/general-kubernetes/']
+aliases: ['/docs-cn/v3.0/how-to/deploy/tidb-in-kubernetes/general-kubernetes/']
 ---
 
 # 在标准 Kubernetes 上部署 TiDB 集群

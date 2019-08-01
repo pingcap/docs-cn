@@ -1,7 +1,7 @@
 ---
 title: 升级 TiDB Operator
 category: how-to
-aliases: ['/docs-cn/V3.0/how-to/upgrade/tidb-operator/']
+aliases: ['/docs-cn/v3.0/how-to/upgrade/tidb-operator/']
 ---
 
 # 升级 TiDB Operator

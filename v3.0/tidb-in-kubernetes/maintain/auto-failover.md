@@ -1,7 +1,7 @@
 ---
 title: Kubernetes 上的 TiDB 集群故障自动转移
 category: how-to
-aliases: ['/docs-cn/V3.0/how-to/maintain/tidb-in-kubernetes/auto-failover/']
+aliases: ['/docs-cn/v3.0/how-to/maintain/tidb-in-kubernetes/auto-failover/']
 ---
 
 # Kubernetes 上的 TiDB 集群故障自动转移

@@ -1,7 +1,7 @@
 ---
 title: Kubernetes 上的 TiDB 工具指南
 category: reference
-aliases: ['/docs-cn/V3.0/reference/tools/tools-in-kubernetes/']
+aliases: ['/docs-cn/v3.0/reference/tools/tools-in-kubernetes/']
 ---
 
 # Kubernetes 上的 TiDB 工具指南
