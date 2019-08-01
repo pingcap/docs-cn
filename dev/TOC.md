@@ -56,7 +56,6 @@
       - [Overview](how-to/deploy/geographic-redundancy/overview.md)
       - [Configure Location Awareness](how-to/deploy/geographic-redundancy/location-awareness.md)
     - [Data Migration with Ansible](how-to/deploy/data-migration-with-ansible.md)
-    - [Deploy TiDB Operator](how-to/deploy/tidb-operator.md)
     - [TiDB Binlog Cluster Deployment](how-to/deploy/tidb-binlog.md)
   + Configure
     - [Time Zone](how-to/configure/time-zone.md)
