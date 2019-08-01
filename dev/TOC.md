@@ -307,7 +307,7 @@
     - [TiDB Controller](reference/tools/tidb-control.md)
     - [工具下载](reference/tools/download.md)
 + TiDB in Kubernetes
- - [TiDB Operator 简介](tidb-in-kubernetes/tidb-operator-overview.md)
+  - [TiDB Operator 简介](tidb-in-kubernetes/tidb-operator-overview.md)
   + 快速上手
     - [DinD](tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
     - [GKE](tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
