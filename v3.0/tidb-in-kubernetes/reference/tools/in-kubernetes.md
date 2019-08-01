@@ -74,7 +74,7 @@ pd-ctl -u 127.0.0.1:<local-port> -d config show
     tikv-ctl --pd 127.0.0.1:2379 compact-cluster
     ```
 
-* **本地模式**：本地模式需要访问 TiKV 的数据文件，并且需要停止正在运行的 TiKV 实例。需要先使用[诊断模式](/how-to/troubleshoot/tidb-in-kubernetes.md#诊断模式)关闭 TiKV 实例自动重启，关闭 TiKV 进程，再使用 `tkctl debug` 命令在目标 TiKV Pod 中启动一个包含 `tikv-ctl` 可执行文件的新容器来执行操作，步骤如下：
+* **本地模式**：本地模式需要访问 TiKV 的数据文件，并且需要停止正在运行的 TiKV 实例。需要先使用[诊断模式](/tidb-in-kubernetes/troubleshoot.md#诊断模式)关闭 TiKV 实例自动重启，关闭 TiKV 进程，再使用 `tkctl debug` 命令在目标 TiKV Pod 中启动一个包含 `tikv-ctl` 可执行文件的新容器来执行操作，步骤如下：
 
     1. 进入诊断模式：
 
