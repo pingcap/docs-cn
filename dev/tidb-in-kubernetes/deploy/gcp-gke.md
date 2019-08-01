@@ -48,8 +48,8 @@ gcloud services enable container.googleapis.com
 执行 Terraform 脚本需要 3 个环境变量。可以等 Terraform 提示输入，或提前 `export` 变量。所需的 3 个环境变量如下：
 
 * `TF_VAR_GCP_CREDENTIALS_PATH`：GCP 证书文件路径
-    - 建议另建服务账号给 Terraform 使用。参考 [服务账号](https://cloud.google.com/iam/docs/creating-managing-service-accounts) 来创建服务账号并授予账号 `Project Editor` 权限。
-    - 参考 [服务账号密钥](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) 来创建服务账号密钥。创建过程中选择 `JSON` 类型密钥。创建完成后，自动下载的 `JSON` 文件就是所需的证书文件。
+    - 建议另建服务账号给 Terraform 使用。参考[服务账号](https://cloud.google.com/iam/docs/creating-managing-service-accounts)来创建服务账号并授予账号 `Project Editor` 权限。
+    - 参考[服务账号密钥](https://cloud.google.com/iam/docs/creating-managing-service-account-keys)来创建服务账号密钥。创建过程中选择 `JSON` 类型密钥。创建完成后，自动下载的 `JSON` 文件就是所需的证书文件。
 * `TF_VAR_GCP_REGION`：创建资源所在的区域，例如：`us-west1`。
 * `TF_VAR_GCP_PROJECT`：GCP 项目的名称。
 
@@ -206,7 +206,7 @@ variable "tidb_version" {
 
 升级过程会持续一段时间。你可以通过 `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb --watch` 命令来持续观察升级进度。
 
-然后你可以[访问数据库](#访问数据库) 并通过 `tidb_version()` 确认集群是否升级成功：
+然后你可以[访问数据库](#访问数据库)并通过 `tidb_version()` 确认集群是否升级成功：
 
 {{< copyable "sql" >}}
 
