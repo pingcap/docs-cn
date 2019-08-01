@@ -135,7 +135,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 #### 功能描述
 
-可以选择需要同步的数据库和数据表，并且进行修改名称、合并库、合并表等操作。可以对上一步操作进行撤销，可以对库表路由配置进行全部重置。
+可以选择需要同步的数据库和数据表，并且进行修改名称、合并库、合并表等操作。可以对上一步操作进行撤销，可以对库表路由配置进行全部重置。在完成任务配置后，DM Portal 会帮忙生成对应的 `task.yaml` 文件。
 
 #### 前置条件
 
@@ -190,23 +190,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 ![DM Portal Reset](/media/dm-portal-reset.png)
 
-### 获取配置
-
-#### 功能描述
-
-在完成任务配置后，DM Portal 会帮忙生成对应的 `task.yaml` 文件。
-
-#### 前置条件
-
-已经配置好所有任务配置。
-
-#### 注意事项
-
-* `task.yaml` 配置文件会在浏览器本地下载目录保存一份，同时在服务器端的 `/tmp/` 目录下保存一份。
-
-#### 操作步骤
-
-* 点击**完成并下载**
+##### 完成并下载
 
 ![DM Portal GenerateConfig](/media/dm-portal-generateconfig.png)
 

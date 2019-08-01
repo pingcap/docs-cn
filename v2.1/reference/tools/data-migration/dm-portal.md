@@ -6,6 +6,7 @@ category: reference
 # DM Portal 简介
 
 当前版本的 DM 提供了丰富多样的功能特性，包括 [Table routing](/reference/tools/data-migration/features/overview.md#table-routing)，[Black & white table lists](/reference/tools/data-migration/features/overview.md#black-white-table-lists)，[Binlog event filter](/reference/tools/data-migration/features/overview.md#binlog-event-filter)，[Column mapping](/reference/tools/data-migration/features/overview.md#column-mapping) 等。但这些功能特性同时也增加了用户使用 DM 的复杂度，尤其在编写 [DM 任务配置](/reference/tools/data-migration/configure/task-configuration-file.md)时候。
+
 针对这个问题，我们提供了一个非常精简的小网页程序 DM Portal，能够帮助用户以可视化的方式去配置需要的同步任务，并且生成可以直接让 DM 直接执行的 `task.yaml` 文件。
 
 ## 功能描述
@@ -94,7 +95,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 #### 注意事项
 
-如果任务类型选择**增量**或者**All**，在配置上游实例信息时候，还需要配置 binlog-file 和 binlog-pos。
+如果任务类型选择**增量**或者 **All**，在配置上游实例信息时候，还需要配置 binlog-file 和 binlog-pos。
 
 #### 操作步骤
 
@@ -134,7 +135,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 #### 功能描述
 
-可以选择需要同步的数据库和数据表，并且进行修改名称、合并库、合并表等操作。可以对上一步操作进行撤销，可以对库表路由配置进行全部重置。
+可以选择需要同步的数据库和数据表，并且进行修改名称、合并库、合并表等操作。可以对上一步操作进行撤销，可以对库表路由配置进行全部重置。在完成任务配置后，DM Portal 会帮忙生成对应的 `task.yaml` 文件。
 
 #### 前置条件
 
@@ -150,7 +151,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 * 在**上游实例**处，选择需要同步的数据库和数据表。
 * 点击移动按钮，将需要同步的库表移动至**下游实例**处。
 * 点击右键按钮，可以对库表进行改名操作。
-* 选中需要操作的数据表，可以拖动至别的数据表图标上创建出合并表；可以拖动到数据库图标上移动至该库下；可以拖动到 target-instence 图标上移动到一个新的数据库下。
+* 选中需要操作的数据表，可以拖动至别的数据表图标上创建出合并表；可以拖动到数据库图标上移动至该库下；可以拖动到 target-instance 图标上移动到一个新的数据库下。
 * 点击**完成**，自动下载 `task.yaml` 到本地，并且在 DM Portal 服务器上的 `/tmp/` 目录下自动创建一份 `task.yaml` 配置文件。
 
 ##### 移动同步库表
@@ -189,23 +190,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 ![DM Portal Reset](/media/dm-portal-reset.png)
 
-### 获取配置
-
-#### 功能描述
-
-在完成任务配置后，DM Portal 会帮忙生成对应的 `task.yaml` 文件。
-
-#### 前置条件
-
-已经配置好所有任务配置。
-
-#### 注意事项
-
-* `task.yaml` 配置文件会在浏览器本地下载目录保存一份，同时在服务器端的 `/tmp/` 目录下保存一份。
-
-#### 操作步骤
-
-* 点击**完成并下载**
+##### 完成并下载
 
 ![DM Portal GenerateConfig](/media/dm-portal-generateconfig.png)
 
@@ -226,7 +211,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 #### 操作步骤
 
-* 在首页，点击**编辑同步规则** 。
+* 在首页，点击**编辑同步规则**。
 * 选择上传 `task.yaml` 文件。
 * 解析成功后，页面会自动跳转。
 
