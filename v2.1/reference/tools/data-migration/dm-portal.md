@@ -65,7 +65,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 #### 操作步骤
 
-1. 登录 dm-portal 页面，点击**新建任务规则**。
+登录 dm-portal 页面，点击**新建任务规则**。
 
 ### 基础信息配置
 
