@@ -315,16 +315,16 @@
   + 部署
     - [集群环境要求](tidb-in-kubernetes/deploy/prerequisites.md)
     - [部署 TiDB Operator](tidb-in-kubernetes/deploy/tidb-operator.md)
+    - [标准 Kubernetes 上的 TiDB 集群](tidb-in-kubernetes/deploy/general-kubernetes.md)
+    - [AWS EKS 上的 TiDB 集群](tidb-in-kubernetes/deploy/aws-eks.md)
+    - [GCP 上的 TiDB 集群](tidb-in-kubernetes/deploy/gcp-gke.md)
+    - [阿里云 上的 TiDB 集群](tidb-in-kubernetes/deploy/alibaba-cloud.md)
     - [访问 Kubernetes 上的 TiDB 集群](tidb-in-kubernetes/deploy/access-tidb.md)
-    - [标准 Kubernetes 上的 TiDB](tidb-in-kubernetes/deploy/general-kubernetes.md)
-    - [AWS EKS 上的 TiDB](tidb-in-kubernetes/deploy/aws-eks.md)
-    - [GCP 上的 TiDB](tidb-in-kubernetes/deploy/gcp-gke.md)
-    - [Alibaba Cloud 上的 TiDB](tidb-in-kubernetes/deploy/alibaba-cloud.md)
   + 配置
     - [初始化集群](tidb-in-kubernetes/initialize-cluster.md)
   - [监控](tidb-in-kubernetes/monitor/tidb-in-kubernetes.md)
   + 运维
-    - [销毁 TiDB 集群](tidb-in-kubernetes/maintain/delete-tidb-cluster.md)
+    - [销毁 TiDB 集群](tidb-in-kubernetes/maintain/destroy-tidb-cluster.md)
     - [维护 TiDB 集群所在节点](tidb-in-kubernetes/maintain/kubernetes-node.md)
     - [备份与恢复](tidb-in-kubernetes/maintain/backup-and-restore.md)
     - [收集日志](tidb-in-kubernetes/maintain/log-collecting.md)
