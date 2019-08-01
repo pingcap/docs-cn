@@ -53,7 +53,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 ### DM Ansible 部署
 
-可以使用 DM Ansible 部署 DM Portal，具体部署方法参照 [使用 DM Ansible 部署 DM 集群](/how-to/deploy/data-migration-with-ansible.md)。
+可以使用 DM Ansible 部署 DM Portal，具体部署方法参照[使用 DM Ansible 部署 DM 集群](/how-to/deploy/data-migration-with-ansible.md)。
 
 ## 使用说明
 
