@@ -29,7 +29,7 @@ TiDB Operator 运行在 Kubernetes 集群，你可以使用[这里](https://kube
 
 * [Local DinD 教程](/how-to/get-started/deploy-tidb-from-kubernetes-dind.md)
 * [Google GKE 教程](/how-to/get-started/deploy-tidb-from-kubernetes-gke.md)
-* [AWS EKS 教程](/how-to/deploy/tidb-in-kubernetes/aws-eks.md)
+* [AWS EKS 教程](/tidb-in-kubernetes/deploy/aws-eks.md)
 
 如果你要使用不同环境，必须在 Kubernetes 集群中安装 DNS 插件。可以根据[官方文档](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/)搭建 DNS 插件。
 
@@ -55,7 +55,7 @@ sudo vim /etc/systemd/system/docker.service
 
 ### 准备本地卷
 
-参考 [本地 PV 配置](/reference/configuration/tidb-in-kubernetes/local-pv-configuration.md) 在你的 Kubernetes 集群中配置本地持久化卷。
+参考[本地 PV 配置](/tidb-in-kubernetes/reference/configuration/local-pv.md)在你的 Kubernetes 集群中配置本地持久化卷。
 
 ### 部署 local-static-provisioner
 

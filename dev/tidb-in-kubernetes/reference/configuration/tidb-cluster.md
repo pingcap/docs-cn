@@ -32,7 +32,7 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群。通过 Helm 获取的配
 | `discovery.resources.requests.cpu` | PD 服务发现组件的 CPU 资源请求 | `80m` |
 | `discovery.resources.requests.memory` | PD 服务发现组件的内存资源请求 | `50Mi` |
 | `enableConfigMapRollout` | 是否开启 TiDB 集群自动滚动更新。如果启用，则 TiDB 集群的 ConfigMap 变更时，TiDB 集群自动更新对应组件。该配置只在 tidb-operator v1.0 及以上版本才支持 | `false` |
-| `pd.config` | 配置文件格式的 PD 的配置，请参考[链接](https://github.com/pingcap/pd/blob/master/conf/config.toml)查看默认 PD 配置文件（选择对应 PD 版本的 tag），可以参考[文档](https://pingcap.com/docs-cn/v3.0/reference/configuration/pd-server/configuration-file/)查看配置参数的具体介绍（请选择对应的文档版本），这里只需要**按照配置文件中的格式修改配置** | TiDB Operator 版本 <= v1.0.0-beta.3，默认值为：<br>`nil`<br>TiDB Operator 版本 > v1.0.0-beta.3，默认值为：<br>`[log]`<br>`level = "info"`<br>`[replication]`<br>`location-labels = ["region", "zone", "rack", "host"]`<br>配置示例：<br>&nbsp;&nbsp;`config:` \|<br>&nbsp;&nbsp;&nbsp;&nbsp;`[log]`<br>&nbsp;&nbsp;&nbsp;&nbsp;`level = "info"`<br>&nbsp;&nbsp;&nbsp;&nbsp;`[replication]`<br>&nbsp;&nbsp;&nbsp;&nbsp;`location-labels = ["region", "zone", "rack", "host"]` |
+| `pd.config` | 配置文件格式的 PD 的配置，请参考[链接](https://github.com/pingcap/pd/blob/master/conf/config.toml)查看默认 PD 配置文件（选择对应 PD 版本的 tag），可以参考[文档](/reference/configuration/pd-server/configuration-file.md)查看配置参数的具体介绍（请选择对应的文档版本），这里只需要**按照配置文件中的格式修改配置** | TiDB Operator 版本 <= v1.0.0-beta.3，默认值为：<br>`nil`<br>TiDB Operator 版本 > v1.0.0-beta.3，默认值为：<br>`[log]`<br>`level = "info"`<br>`[replication]`<br>`location-labels = ["region", "zone", "rack", "host"]`<br>配置示例：<br>&nbsp;&nbsp;`config:` \|<br>&nbsp;&nbsp;&nbsp;&nbsp;`[log]`<br>&nbsp;&nbsp;&nbsp;&nbsp;`level = "info"`<br>&nbsp;&nbsp;&nbsp;&nbsp;`[replication]`<br>&nbsp;&nbsp;&nbsp;&nbsp;`location-labels = ["region", "zone", "rack", "host"]` |
 | `pd.replicas` | PD 的 Pod 数 | `3` |
 | `pd.image` | PD 镜像 | `pingcap/pd:v3.0.0-rc.1` |
 | `pd.imagePullPolicy` | PD 镜像的拉取策略 | `IfNotPresent` |
@@ -73,7 +73,7 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群。通过 Helm 获取的配
 | `tikv.readpoolStorageConcurrency` | TiKV 存储的高优先级/普通优先级/低优先级操作的线程池大小<br>如果 TiDB Operator 版本 > v1.0.0-beta.3，请通过 `tikv.config` 配置：<br>`[readpool.storage]`<br>`high-concurrency = 4`<br>`normal-concurrency = 4`<br>`low-concurrency = 4` | `4` |
 | `tikv.readpoolCoprocessorConcurrency` | 一般如果 `tikv.resources.limits.cpu` > 8，则 `tikv.readpoolCoprocessorConcurrency` 设置为`tikv.resources.limits.cpu` * 0.8<br>如果 TiDB Operator 版本 > v1.0.0-beta.3，请通过 `tikv.config` 配置：<br>`[readpool.coprocessor]`<br>`high-concurrency = 8`<br>`normal-concurrency = 8`<br>`low-concurrency = 8` | `8` |
 | `tikv.storageSchedulerWorkerPoolSize` | TiKV 调度程序的工作池大小，应在重写情况下增加，同时应小于总 CPU 核心<br>如果 TiDB Operator 版本 > v1.0.0-beta.3，请通过 `tikv.config` 配置：<br>`[storage]`<br>`scheduler-worker-pool-size = 4` | `4` |
-| `tidb.config` | 配置文件格式的 TiDB 的配置，请参考[链接](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)查看默认 TiDB 配置文件（选择对应 TiDB 版本的 tag），可以参考[文档](https://pingcap.com/docs-cn/v3.0/reference/configuration/tidb-server/configuration-file/)查看配置参数的具体介绍（请选择对应的文档版本），这里只需要**按照配置文件中的格式修改配置** | TiDB Operator 版本 <= v1.0.0-beta.3，默认值为：<br>`nil`<br>TiDB Operator 版本 > v1.0.0-beta.3，默认值为：<br>`[log]`<br>`level = "info"`<br>配置示例：<br>&nbsp;&nbsp;`config:` \|<br>&nbsp;&nbsp;&nbsp;&nbsp;`[log]`<br>&nbsp;&nbsp;&nbsp;&nbsp;`level = "info"` |
+| `tidb.config` | 配置文件格式的 TiDB 的配置，请参考[链接](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)查看默认 TiDB 配置文件（选择对应 TiDB 版本的 tag），可以参考[文档](/reference/configuration/tidb-server/configuration-file.md)查看配置参数的具体介绍（请选择对应的文档版本），这里只需要**按照配置文件中的格式修改配置** | TiDB Operator 版本 <= v1.0.0-beta.3，默认值为：<br>`nil`<br>TiDB Operator 版本 > v1.0.0-beta.3，默认值为：<br>`[log]`<br>`level = "info"`<br>配置示例：<br>&nbsp;&nbsp;`config:` \|<br>&nbsp;&nbsp;&nbsp;&nbsp;`[log]`<br>&nbsp;&nbsp;&nbsp;&nbsp;`level = "info"` |
 | `tidb.replicas` | TiDB 的 Pod 数 | `2` |
 | `tidb.image` | TiDB 的镜像 | `pingcap/tidb:v3.0.0-rc.1` |
 | `tidb.imagePullPolicy` | TiDB 镜像的拉取策略 | `IfNotPresent` |
@@ -122,7 +122,7 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群。通过 Helm 获取的配
 
 部署前需要根据实际情况和需求，为 TiDB 集群各个组件配置资源，上面列表中所述每个组件的资源配置包括 requests 和 limits，分别指资源的最低要求和最大限额，资源的 limits 要大于等于 requests，建议 limits 等于 requests，这样可以保证服务获得 Guaranteed 级别的 QoS。
 
-其中 PD/TiKV/TiDB 是 TiDB 集群的核心服务组件，在生产环境下它们的资源配置需要按组件要求指定，具体参考：[资源配置推荐](/how-to/deploy/hardware-recommendations.md)。如果是测试环境，可以无需配置资源直接使用 `values.yaml` 中默认的配置。
+其中 PD/TiKV/TiDB 是 TiDB 集群的核心服务组件，在生产环境下它们的资源配置需要按组件要求指定，具体参考：[资源配置推荐](/tidb-in-kubernetes/deploy/hardware-recommendations.md)。如果是测试环境，可以无需配置资源直接使用 `values.yaml` 中默认的配置。
 
 ## 容灾配置说明
 

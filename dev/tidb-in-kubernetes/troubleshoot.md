@@ -165,7 +165,7 @@ kubectl describe po -n <namespace> <pod_name>
 kubectl get storageclass
 ```
 
-如果集群中有 StorageClass，但可用的 PV 不足，则需要添加对应的 PV 资源。对于 Local PV，可以参考[本地 PV 配置](/reference/configuration/tidb-in-kubernetes/local-pv-configuration.md)进行扩充。
+如果集群中有 StorageClass，但可用的 PV 不足，则需要添加对应的 PV 资源。对于 Local PV，可以参考[本地 PV 配置](/tidb-in-kubernetes/reference/configuration/local-pv.md)进行扩充。
 
 ## Pod 处于 CrashLoopBackOff 状态
 
