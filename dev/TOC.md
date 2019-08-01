@@ -318,7 +318,7 @@
     - [标准 Kubernetes 上的 TiDB 集群](tidb-in-kubernetes/deploy/general-kubernetes.md)
     - [AWS EKS 上的 TiDB 集群](tidb-in-kubernetes/deploy/aws-eks.md)
     - [GCP 上的 TiDB 集群](tidb-in-kubernetes/deploy/gcp-gke.md)
-    - [阿里云 上的 TiDB 集群](tidb-in-kubernetes/deploy/alibaba-cloud.md)
+    - [阿里云上的 TiDB 集群](tidb-in-kubernetes/deploy/alibaba-cloud.md)
     - [访问 Kubernetes 上的 TiDB 集群](tidb-in-kubernetes/deploy/access-tidb.md)
   + 配置
     - [初始化集群](tidb-in-kubernetes/initialize-cluster.md)
