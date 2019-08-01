@@ -73,19 +73,19 @@ aliases: ['/docs-cn/op-guide/offline-ansible-deployment/']
 | TiDB 版本 | tidb-ansible tag | 备注 |
 | -------- | ---------------- | --- |
 | 2.0 版本 | v2.0.10、v2.0.11 | 最新 2.0 稳定版本，可用于生产环境。 |
-| 2.1 版本 | v2.1.1 ~ v2.1.6 | 最新 2.1 稳定版本，可用于生产环境（建议）。 |
-| 3.0 版本 | v3.0.0-beta、v3.0.0-beta.1 | 目前是 beta 版本，不建议用于生产环境。 |
+| 2.1 版本 | v2.1.1 ~ v2.1.6 | 最新 2.1 稳定版本，可用于生产环境。 |
+| 3.0 版本 | v3.0.1 | 最新 3.0 稳定版本，可用于生产环境（建议）。 |
 | latest 版本 | None | 包含最新特性，每日更新，不建议用于生产环境。 |
 
 1. 在下载机上安装 Ansible
 
-    请按以下方式在 CentOS 7 系统的下载机上在线安装 Ansible。安装完成后，可通过 `ansible --version` 查看版本，请务必确认是 **Ansible 2.5.0** 版本，否则会有兼容问题。
+    请按以下方式在 CentOS 7 系统的下载机上在线安装 Ansible。安装完成后，可通过 `ansible --version` 查看版本，请务必确认是 **Ansible 2.7.11** 版本，否则会有兼容问题。
 
     ```bash
     # yum install epel-release
     # yum install ansible curl
     # ansible --version
-      ansible 2.5.0
+      ansible 2.7.11
     ```
 
 2. 下载 tidb-ansible
