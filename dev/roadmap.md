@@ -68,8 +68,8 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 * 动态 Split,Merge 热点 Region
 * 精细的内存控制
 * Raft
-* Joint consensus
-* 只读副本
+    + Joint consensus
+    + 只读副本
 * 事务
     + 悲观锁 GA
     + 事务内不限制语句数量
@@ -91,9 +91,7 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 #### 功能
 
 * 列式存储
-
 * 通过 Raft learner 从 TiKV 同步数据
-
 * snapshot read
 
 ### TiSpark
@@ -101,7 +99,6 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 #### 功能
 
 * 支持 batch write
-
 * 接入 TiFlash
 
 ## Data Migration
