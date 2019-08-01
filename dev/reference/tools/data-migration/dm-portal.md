@@ -57,7 +57,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 ## 使用说明
 
-### 新建规则
+### 1. 新建规则
 
 #### 功能描述
 
@@ -83,7 +83,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 * 选择任务类型。
 ![DM Portal BasicConfig](/media/dm-portal-basicconfig.png)
 
-### 实例信息配置
+### 2. 实例信息配置
 
 #### 功能描述
 
@@ -131,7 +131,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 ![DM Portal BinlogFilter 2](/media/dm-portal-binlogfilter-2.png)
 
-### 库表路由配置
+### 3. 库表路由配置
 
 #### 功能描述
 
@@ -194,7 +194,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 ![DM Portal GenerateConfig](/media/dm-portal-generateconfig.png)
 
-### 编辑规则
+### 4. 编辑规则
 
 #### 功能描述
 

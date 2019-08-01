@@ -7,7 +7,7 @@ category: reference
 
 当前版本的 DM 提供了丰富多样的功能特性，包括 [Table routing](/reference/tools/data-migration/features/overview.md#table-routing)，[Black & white table lists](/reference/tools/data-migration/features/overview.md#black-white-table-lists)，[Binlog event filter](/reference/tools/data-migration/features/overview.md#binlog-event-filter)，[Column mapping](/reference/tools/data-migration/features/overview.md#column-mapping) 等。但这些功能特性同时也增加了用户使用 DM 的复杂度，尤其在编写 [DM 任务配置](/reference/tools/data-migration/configure/task-configuration-file.md)的时候。
 
-针对这个问题，DM 提供了一个精简的网页程序，能够帮助用户以可视化的方式去配置需要的同步任务，并且生成可以直接让 DM 直接执行的 `task.yaml` 文件。
+针对这个问题，DM 提供了一个精简的网页程序 DM Portal，能够帮助用户以可视化的方式去配置需要的同步任务，并且生成可以直接让 DM 直接执行的 `task.yaml` 文件。
 
 ## 功能描述
 
@@ -57,7 +57,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 ## 使用说明
 
-### 新建规则
+### 1. 新建规则
 
 #### 功能描述
 
@@ -83,7 +83,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 * 选择任务类型。
 ![DM Portal BasicConfig](/media/dm-portal-basicconfig.png)
 
-### 实例信息配置
+### 2. 实例信息配置
 
 #### 功能描述
 
@@ -131,7 +131,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 ![DM Portal BinlogFilter 2](/media/dm-portal-binlogfilter-2.png)
 
-### 库表路由配置
+### 3. 库表路由配置
 
 #### 功能描述
 
@@ -194,7 +194,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 ![DM Portal GenerateConfig](/media/dm-portal-generateconfig.png)
 
-### 编辑规则
+### 4. 编辑规则
 
 #### 功能描述
 
