@@ -250,7 +250,7 @@ It is not recommended to deploy TiDB offline using Ansible. If the Control Machi
 
 #### How to deploy TiDB quickly using Docker Compose on a single machine?
 
-You can use Docker Compose to build a TiDB cluster locally, including the cluster monitoring components. You can also customize the version and number of instances for each component. The configuration file can also be customized. You can only use this deployment method for testing and development environment.
+You can use Docker Compose to build a TiDB cluster locally, including the cluster monitoring components. You can also customize the version and number of instances for each component. The configuration file can also be customized. You can only use this deployment method for testing and development environment. For details, see [Building the Cluster Using Docker Compose](https://pingcap.com/docs/dev/how-to/get-started/deploy-tidb-from-docker-compose/).
 
 #### How to separately record the slow query log in TiDB? How to locate the slow query SQL statement?
 
