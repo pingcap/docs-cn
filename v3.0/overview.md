@@ -49,7 +49,7 @@ TiDB 可以部署在本地和云平台上，支持公有云、私有云和混合
 
 - [使用 Ansible 部署](/how-to/deploy/orchestrated/ansible.md)：如果用于生产环境，推荐使用 Ansible 部署 TiDB 集群。
 - [使用 Ansible 离线部署](/how-to/deploy/orchestrated/offline-ansible.md)：如果部署环境无法访问网络，可使用 Ansible 进行离线部署。
-- [使用 TiDB Operator 部署](/how-to/deploy/tidb-operator.md)：使用 TiDB Operator 在 Kubernetes 集群上部署生产就绪的 TiDB 集群，支持[部署到 AWS EKS](/how-to/deploy/orchestrated/tidb-in-kubernetes/aws-eks.md)、[部署到谷歌云 GKE (beta)](/how-to/deploy/orchestrated/tidb-in-kubernetes/gcp-gke.md)、[部署到阿里云 ACK](dev/how-to/deploy/orchestrated/tidb-in-kubernetes/alibaba-cloud.md) 等。
+- [使用 TiDB Operator 部署](/how-to/deploy/tidb-in-kubernetes/tidb-operator.md)：使用 TiDB Operator 在 Kubernetes 集群上部署生产就绪的 TiDB 集群，支持[部署到 AWS EKS](/how-to/deploy/orchestrated/tidb-in-kubernetes/aws-eks.md)、[部署到谷歌云 GKE (beta)](/how-to/deploy/orchestrated/tidb-in-kubernetes/gcp-gke.md)、[部署到阿里云 ACK](dev/how-to/deploy/orchestrated/tidb-in-kubernetes/alibaba-cloud.md) 等。
 - [使用 Docker Compose 部署](/how-to/get-started/deploy-tidb-from-docker-compose.md)：如果你只是想测试 TiDB、体验 TiDB 的特性，或者用于开发环境，可以使用 Docker Compose 在本地快速部署 TiDB 集群。该部署方式不适用于生产环境。
 - [使用 Docker 部署](/how-to/deploy/orchestrated/docker.md)：你可以使用 Docker 部署 TiDB 集群，但该部署方式不适用于生产环境。
 - [使用 TiDB Operator 部署到 Minikube](/how-to/get-started/deploy-tidb-from-kubernetes-minikube.md)：你可以使用 TiDB Opeartor 将 TiDB 集群部署到本地 Minikube 启动的 Kubernetes 集群中。该部署方式不适用于生产环境。
