@@ -120,9 +120,9 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群。通过 Helm 获取的配
 
 ## 资源配置说明
 
-部署前需要根据实际情况和需求，为 TiDB 集群各个组件配置资源，上面列表中所述每个组件的资源配置包括 requests 和 limits，分别指资源的最低要求和最大限额，资源的 limits 要大于等于 requests，建议 limits 等于 requests，这样可以保证服务获得 Guaranteed 级别的 QoS。
+部署前需要根据实际情况和需求，为 TiDB 集群各个组件配置资源，上面列表中所述每个组件的资源配置包括 requests 和 limits，分别指资源的最低要求和最大限额，资源的 limits 要大于等于 requests。
 
-其中 PD/TiKV/TiDB 是 TiDB 集群的核心服务组件，在生产环境下它们的资源配置需要按组件要求指定，具体参考：[资源配置推荐](/how-to/deploy/hardware-recommendations.md)。如果是测试环境，可以无需配置资源直接使用 `values.yaml` 中默认的配置。
+其中 PD/TiKV/TiDB 是 TiDB 集群的核心服务组件，在生产环境下它们的资源配置需要按组件要求指定，具体参考：[资源配置推荐](/how-to/deploy/hardware-recommendations.md)。请注意如果使用 NUMA 架构 CPU，为了获得更好的性能，请务必进行绑核，同时保证 PD/TiKV/TiDB 组件获得 Guaranteed 级别的 QoS，这要求设置资源时 limits 要等于 requests，并且 CPU 的数量必须是大于 1的整数。这块请参考: [Guaranteed](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#static-policy)。
 
 ## 容灾配置说明
 
