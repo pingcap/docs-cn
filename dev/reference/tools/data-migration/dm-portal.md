@@ -101,7 +101,7 @@ DM Portal 可以在 [dm-portal-latest.tar.gz](https://download.pingcap.org/dm-po
 
 1. 填写上游实例信息。
 2. 填写下游实例信息。
-* 点击**下一步**。
+3. 点击**下一步**。
 
 ![DM Portal InstanceConfig](/media/dm-portal-instanceconfig.png)
 
