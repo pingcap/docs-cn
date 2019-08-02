@@ -50,7 +50,7 @@ sudo vim /etc/systemd/system/docker.service
 
 ## 安装 Helm
 
-参考 [使用 Helm](/reference/tools/tools-in-kubernetes.md#使用-helm) 安装 Helm 并配置 PingCAP 官方 chart 仓库。
+参考 [使用 Helm](/tidb-in-kubernetes/reference/tools/in-kubernetes.md#使用-helm) 安装 Helm 并配置 PingCAP 官方 chart 仓库。
 
 ## 配置本地持久化卷
 

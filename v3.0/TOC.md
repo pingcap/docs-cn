@@ -62,7 +62,7 @@
     - [TiDB Binlog 集群运维](how-to/maintain/tidb-binlog.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](how-to/scale/with-ansible.md)
-    - [Kubernetes 上的 TiDB 集群扩缩容](how-to/scale/tidb-in-kubernetes.md)
+    - [Kubernetes 上的 TiDB 集群扩缩容](how-to/upgrade/tidb-in-kubernetes.md)
   + 升级
     - [升级至 TiDB 3.0](how-to/upgrade/from-previous-version.md)
     - [使用 Ansible 滚动升级](how-to/upgrade/rolling-updates-with-ansible.md)
