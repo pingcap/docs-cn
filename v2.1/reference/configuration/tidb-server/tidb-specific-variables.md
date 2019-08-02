@@ -49,28 +49,6 @@ set @@global.tidb_distsql_scan_concurrency = 10
 - Default value: 0
 - This variable is used to set whether the optimizer executes the optimization operation of unfolding the "in-" subquery.
 
-### tidb_auto_analyze_ratio
-
-- Scope: GLOBAL
-- Default value: 0.5
-- This variable is used to set the threshold when TiDB automatically executes [`ANALYZE TABLE`](/reference/sql/statements/analyze-table.md) in a background thread to update table statistics. For example, a value of 0.5 means that auto-analyze is triggered when greater than 50% of the rows in a table have been modified.  Auto-analyze can be restricted to only execute during certain hours of the day by specifying `tidb_auto_analyze_start_time` and `tidb_auto_analyze_end_time`.
-
-> **Note:**
->
-> Only when the `run-auto-analyze` option is enabled in the starting configuration file of TiDB, the `auto_analyze` feature can be triggered.
-
-### tidb_auto_analyze_start_time
-
-- Scope: GLOBAL
-- Default value: 00:00 +0000
-- This variable is used to restrict the time window that the automatic update of statistics is permitted. For example, to only allow automatic statistics updates between 1AM and 3AM, set `tidb_auto_analyze_start_time='01:00 +0000'` and `tidb_auto_analyze_end_time='03:00 +0000'`.
-
-### tidb_auto_analyze_end_time
-
-- Scope: GLOBAL
-- Default value: 23:59 +0000
-- This variable is used to restrict the time window that the automatic update of statistics is permitted. For example, to only allow automatic statistics updates between 1AM and 3AM, set `tidb_auto_analyze_start_time='01:00 +0000'` and `tidb_auto_analyze_end_time='03:00 +0000'`.
-
 ### tidb_build_stats_concurrency
 
 - Scope: SESSION
@@ -334,12 +312,6 @@ set @@global.tidb_distsql_scan_concurrency = 10
 - Default value: `NO_PRIORITY`
 - This variable is used to change the default priority for statements executed on a TiDB server. A use case is to ensure that a particular user that is performing OLAP queries receives lower priority than users performing OLTP queries.
 - You can set the value of this variable to `NO_PRIORITY`, `LOW_PRIORITY`, `DELAYED` or `HIGH_PRIORITY`.
-
-### tidb_opt_write_row_id
-
-- Scope: SESSION
-- Default value: 0
-- This variable is used to set whether to allow `insert`, `replace` and `update` statements to operate on the column `_tidb_rowid`. It is not allowed by default. This variable can be used only when importing data with TiDB tools.
 
 ## SHARD_ROW_ID_BITS
 

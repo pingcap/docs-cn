@@ -248,7 +248,7 @@ RocksDB - kv | SST read duration | The time consumed when reading SST files |
 RocksDB - kv | Write stall duration | The time which is caused by write stall | It should be `0` in normal case.
 RocksDB - kv | Memtable size | The memtable size of each column family |
 RocksDB - kv | Memtable hit | The hit rate of memtable |
-RocksDB - kv | Block cache size | The block cache size. Breakdown by column family if shared block cache is disabled. |
+RocksDB - kv | Block cache size | The block cache size of each column family |
 RocksDB - kv | Block cache hit | The hit rate of block cache |
 RocksDB - kv | Block cache flow | The flow of different kinds of block cache operations |
 RocksDB - kv | Block cache operations | The count of different kinds of block cache operations |
@@ -281,7 +281,7 @@ RocksDB - raft | SST read duration | The time consumed when reading SST files |
 RocksDB - raft | Write stall duration | The time which is caused by write stall | It should be `0` in normal case.
 RocksDB - raft | Memtable size | The memtable size of each column family |
 RocksDB - raft | Memtable hit | The hit rate of memtable |
-RocksDB - raft | Block cache size | The block cache size. Breakdown by column family if shared block cache is disabled. |
+RocksDB - raft | Block cache size | The block cache size of each column family |
 RocksDB - raft | Block cache hit | The hit rate of block cache |
 RocksDB - raft | Block cache flow | The flow of different kinds of block cache operations |
 RocksDB - raft | Block cache operations | The count of different kinds of block cache operations |

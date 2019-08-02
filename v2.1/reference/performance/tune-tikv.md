@@ -23,9 +23,7 @@ TiKV implements `Column Families` (CF) from RocksDB.
     
     - The `default` CF stores the Raft log. The corresponding parameters are in `[raftdb.defaultcf]`.
 
-After TiKV 3.0, by default, all CFs share one block cache instance. You can configure the size of the cache by setting the `capacity` parameter under `[storage.block-cache]`. The bigger the block cache, the more hot data can be cached, and the easier to read data, in the meantime, the more system memory is occupied. To use a separate block cache instance for each CF, set `shared=false` under `[storage.block-cache]`, and configure individual block cache size for each CF. For example, you can configure the size of `write` CF by setting the `block-cache-size` parameter under `[rocksdb.writecf]`.
-
-Before TiKV 3.0, shared block cache is not supported, and you need to configure block cache for each CF individually.
+Each CF has a separate `block cache` to cache data blocks to accelerate the data reading speed in RocksDB. You can configure the size of the `block cache` by setting the `block-cache-size` parameter. The bigger the `block-cache-size`, the more hot data can be cached, and the easier to read data, in the meantime, the more system memory is occupied.
 
 Each CF also has a separate `write buffer`. You can configure the size by setting the `write-buffer-size` parameter.
 
@@ -63,30 +61,6 @@ log-level = "info"
 # higher. Run `top -H -p tikv-pid` and if the threads named `sched-worker-pool` are busy, set the value of parameter
 # `scheduler-worker-pool-size` higher and increase the number of write threads.
 # scheduler-worker-pool-size = 4
-
-[storage.block-cache]
-## Whether to create a shared block cache for all RocksDB column families.
-##
-## Block cache is used by RocksDB to cache uncompressed blocks. Big block cache can speed up read.
-## It is recommended to turn on shared block cache. Since only the total cache size need to be
-## set, it is easier to configure. In most cases, it should be able to auto-balance cache usage
-## between column families with standard LRU algorithm.
-##
-## The rest of config in the storage.block-cache session is effective only when shared block cache
-## is on.
-# shared = true
-
-## Size of the shared block cache. Normally it should be tuned to 30%-50% of system's total memory.
-## When the config is not set, it is decided by the sum of the following fields or their default
-## value:
-##   * rocksdb.defaultcf.block-cache-size or 25% of system's total memory
-##   * rocksdb.writecf.block-cache-size   or 15% of system's total memory
-##   * rocksdb.lockcf.block-cache-size    or  2% of system's total memory
-##   * raftdb.defaultcf.block-cache-size  or  2% of system's total memory
-##
-## To deploy multiple TiKV nodes on a single physical machine, configure this parameter explicitly.
-## Otherwise, the OOM problem might occur in TiKV.
-# capacity = "1GB"
 
 [pd]
 # PD address
