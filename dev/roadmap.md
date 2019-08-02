@@ -65,7 +65,7 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 
 * 集群规模最大支持 200+节点
 * 全量物理备份恢复
-* 动态 Split,Merge 热点 Region
+* 动态 Split，Merge 热点 Region
 * 精细的内存控制
 * Raft
     + Joint consensus
