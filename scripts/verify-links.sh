@@ -9,7 +9,7 @@
 #   - Links starting with one or two dots are relative to the directory in which files reside
 #   - Other links are relative to the root of the version directory (e.g. v1.0, v2.0, v3.0)
 # - When a file was moved, all other references are required to be updated for now, even if alias are given
-#   - TODO relaxing this requirement?
+#   - This is recommended because of less redirects and better anchors support.
 #
 
 ROOT=$(unset CDPATH && cd $(dirname "${BASH_SOURCE[0]}")/.. && pwd)
