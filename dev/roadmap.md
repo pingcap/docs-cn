@@ -37,7 +37,7 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
     + Full Vectorized Expression Evaluation
 * Indexes on Expressions
 * Multi-Index Scan
-* Join,Aggregate,Sort 算子支持外部存储
+* Join，Aggregate，Sort 算子支持外部存储
 * 优化执行引擎并发模型
 * 支持新 Cascades 优化器，支持 Cascades Planner，扩大优化器的搜索空间
 
