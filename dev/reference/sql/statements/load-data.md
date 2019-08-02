@@ -49,4 +49,3 @@ Records: 815264  Deleted: 0  Skipped: 0  Warnings: 0
 
 * [INSERT](/reference/sql/statements/insert.md)
 * [Transaction Model](/reference/transactions/transaction-model.md)
-* [Import Example Database](/how-to/get-started/import-example-database.md)

@@ -5,10 +5,15 @@
 
 ## 目录
 
-+ [关于 TiDB](overview.md)
++ 关于 TiDB
+  - [TiDB 简介](overview.md)
+  + Benchmark 测试
+    - [如何用 Sysbench 测试 TiDB](benchmark/how-to-run-sysbench.md)
+    - [Sysbench 性能对比 - v2.1 对比 v2.0](benchmark/sysbench-v3.md)
+    - [TPC-H 50G 性能对比 - v2.1 对比 v2.0](benchmark/tpch-v2.md)
 + 主要概念
   - [整体架构](architecture.md)
-  + [核心特性](key-features.md)
+  + 核心特性
     - [水平扩展](key-features.md#水平扩展)
     - [高可用](key-features.md#高可用)
 + 操作指南
@@ -271,6 +276,7 @@
       - [DM 集群操作](reference/tools/data-migration/cluster-operations.md)
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](how-to/migrate/from-aurora.md)
+      - [DM Portal](reference/tools/data-migration/dm-portal.md)
       - [DM 故障诊断](how-to/troubleshoot/data-migration.md)
       - [FAQ](faq/data-migration.md)
     + TiDB Lightning
@@ -301,6 +307,7 @@
 - [TiDB 路线图](roadmap.md)
 + [版本发布历史](releases/rn.md)
   + v3.0
+    - [3.0.1](releases/3.0.1.md)
     - [3.0 GA](releases/3.0-ga.md)
     - [3.0.0-rc.3](releases/3.0.0-rc.3.md)
     - [3.0.0-rc.2](releases/3.0.0-rc.2.md)
@@ -308,6 +315,7 @@
     - [3.0.0-beta.1](releases/3.0.0-beta.1.md)
     - [3.0.0-beta](releases/3.0beta.md)
   + v2.1
+    - [2.1.15](releases/2.1.15.md)
     - [2.1.14](releases/2.1.14.md)
     - [2.1.13](releases/2.1.13.md)
     - [2.1.12](releases/2.1.12.md)

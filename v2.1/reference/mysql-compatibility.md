@@ -91,8 +91,6 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
     - 不支持修改 `DECIMAL` 类型的精度（从 TiDB 2.1.10 开始，不支持修改 `DECIMAL` 类型的精度，TiDB 2.1.9 支持修改）
     - 不支持更改 `UNSIGNED` 属性
     - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
-+ Alter Table
-    - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
 + Alter Database
     - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
 + `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`: TiDB 支持的语法，但是在 TiDB 中不会生效。所有支持的 DDL 变更都不会锁表。
