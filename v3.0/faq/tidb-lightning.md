@@ -41,8 +41,13 @@ Lightning 默认会对导入数据计算校验和 (checksum)，如果校验和�
 
 TiDB 也支持从 MySQL 命令行运行 `ADMIN CHECKSUM TABLE` 指令来计算校验和。
 
-```text
-mysql> ADMIN CHECKSUM TABLE `schema`.`table`;
+{{< copyable "sql" >}}
+
+```sql
+ADMIN CHECKSUM TABLE `schema`.`table`;
+```
+
+```
 +---------+------------+---------------------+-----------+-------------+
 | Db_name | Table_name | Checksum_crc64_xor  | Total_kvs | Total_bytes |
 +---------+------------+---------------------+-----------+-------------+
@@ -101,6 +106,8 @@ sql-mode = ""
 ## 为什么用过 TiDB Lightning 之后，TiDB 集群变得又慢又耗 CPU？
 
 如果 `tidb-lightning` 曾经异常退出，集群可能仍留在“导入模式” (import mode)，不适合在生产环境工作。此时需要强制切换回“普通模式” (normal mode)：
+
+{{< copyable "shell-regular" >}}
 
 ```sh
 tidb-lightning-ctl --switch-mode=normal
