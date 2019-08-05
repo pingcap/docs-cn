@@ -10,18 +10,18 @@ category: reference
 
 TiDB Binlog is a tool for enterprise users to collect binlog files for TiDB and provide real-time backup and replication.
 
-TiDB Binlog supports the following scenarios:  
+TiDB Binlog supports the following scenarios:
 
-- **Data replication**: to replicate TiDB cluster data to other databases  
+- **Data replication**: to replicate TiDB cluster data to other databases
 - **Real-time backup and recovery**: to back up TiDB cluster data, and recover in case of cluster outages
-  
+
 ## TiDB Binlog Local architecture
 
-The TiDB Binlog architecture is as follows:  
+The TiDB Binlog architecture is as follows:
 
-![TiDB Binlog architecture](/media/architecture.jpeg) 
+![TiDB Binlog architecture](/media/architecture.jpeg)
 
-The TiDB Binlog cluster mainly consists of two components:  
+The TiDB Binlog cluster mainly consists of two components:
 
 ### Pump
 
@@ -40,57 +40,58 @@ TiDB Binlog can be [downloaded](/reference/tools/download.md) as part of the Ent
 ### Deploy TiDB Binlog
 
 - It is recommended to deploy Pump using Ansible.
-- Build a new TiDB cluster with a startup order of pd-server -> tikv-server -> pump -> tidb-server -> drainer.  
+- Build a new TiDB cluster with a startup order of pd-server -> tikv-server -> pump -> tidb-server -> drainer.
     - Edit the `tidb-ansible inventory.ini` file:
-        
+
         ```ini
         enable_binlog = True
         ```
-    
-    - Run `ansible-playbook deploy.yml` 
+
+    - Run `ansible-playbook deploy.yml`
     - Run `ansible-playbook start.yml`
-      
+
 - Deploy Binlog for an existing TiDB cluster.
+
     - Edit the `tidb-ansible inventory.ini` file:
-    
+
         ```ini
         enable_binlog = True
         ```
-    
+
     - Run `ansible-playbook rolling_update.yml`
 
 ### Note
 
-- You need to deploy a Pump for each TiDB server in a TiDB cluster. Currently, the TiDB server only supports the binlog in UNIX socket.  
-  
-  We set the startup parameter `binlog-socket` as the specified unix socket file path of the corresponding parameter `socket` in Pump. The final deployment architecture is as follows:  
-  
-  ![TiDB pump deployment architecture](/media/tidb_pump_deployment.jpeg)  
-   
+- You need to deploy a Pump for each TiDB server in a TiDB cluster. Currently, the TiDB server only supports the binlog in UNIX socket.
+
+    We set the startup parameter `binlog-socket` as the specified unix socket file path of the corresponding parameter `socket` in Pump. The final deployment architecture is as follows:
+
+    ![TiDB pump deployment architecture](/media/tidb_pump_deployment.jpeg)
+
 - Currently, you need to deploy Drainer manually.
 
 - Drainer does not support renaming DDL on the table of the ignored schemas (schemas in the filter list).
 
 - To start Drainer in the existing TiDB cluster, usually you need to do a full backup, get the savepoint, import the full backup, and start Drainer and replicate from the savepoint.
-  
-- To guarantee the integrity of data, perform the following operations 10 minutes after Pump is started:  
 
-    - Run Drainer at the `gen-savepoint` model and generate the Drainer savepoint file:  
-      
+- To guarantee the integrity of data, perform the following operations 10 minutes after Pump is started:
+
+    - Run Drainer at the `gen-savepoint` model and generate the Drainer savepoint file:
+
         ```bash
         bin/drainer -gen-savepoint --data-dir= ${drainer_savepoint_dir} --pd-urls=${pd_urls}
         ```
-       
+
     - Do a full backup. For example, back up TiDB using mydumper.
     - Import the full backup to the target system.
     - Set the file path of the savepoint and start Drainer:
-      
+
         ```bash
         bin/drainer --config=conf/drainer.toml --data-dir=${drainer_savepoint_dir}
         ```
 
-- The drainer outputs `pb` and you need to set the following parameters in the configuration file.  
-  
+- The drainer outputs `pb` and you need to set the following parameters in the configuration file.
+
     ```toml
     [syncer]
     db-type = "pb"
@@ -204,7 +205,7 @@ Usage of Drainer:
 -disable-dispatch
     disable dispatching sqls that in one same binlog; if set true, work-count and txn-batch would be useless
 -gen-savepoint
-    generate the savepoint from cluster 
+    generate the savepoint from cluster
 -ignore-schemas string
     disable replicating those schemas (default "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql")
 -log-file string
@@ -218,7 +219,7 @@ Usage of Drainer:
 -pd-urls string
     a comma separated list of PD endpoints (default "http://127.0.0.1:2379")
 -txn-batch int
-    number of binlog events in a transaction batch (default 1) 
+    number of binlog events in a transaction batch (default 1)
 ```
 
 Configuration file
@@ -229,7 +230,7 @@ Configuration file
 # addr (i.e. 'host:port') to listen on for Drainer connections
 addr = "127.0.0.1:8249"
 
-# the interval time (in seconds) of detect Pumps' status 
+# the interval time (in seconds) of detect Pumps' status
 detect-interval = 10
 
 # Drainer meta data directory path
@@ -259,7 +260,7 @@ disable-dispatch = false
 # valid values are "mysql", "pb"
 db-type = "mysql"
 
-# The replicate-do-db prioritizes over replicate-do-table if having the same db name. 
+# The replicate-do-db prioritizes over replicate-do-table if having the same db name.
 # Regular expressions are supported, and starting with '~' declares the use of regular expressions.
 # replicate-do-db = ["~^b.*","s1"]
 # [[syncer.replicate-do-table]]
@@ -288,7 +289,7 @@ This section introduces how to monitor TiDB Binlog's status and performance, and
 
 ### Configure Pump/Drainer
 
-Use the Pump service deployed using Ansible. Set metrics in startup parameters.  
+Use the Pump service deployed using Ansible. Set metrics in startup parameters.
 
 When you start Drainer, set the two parameters of `--metrics-addr` and `--metrics-interval`. Set `--metrics-addr` as the address of Push Gateway. Set `--metrics-interval` as the frequency of push (default 15 seconds).
 
@@ -296,7 +297,7 @@ When you start Drainer, set the two parameters of `--metrics-addr` and `--metric
 
 #### Create a Prometheus data source
 
-1. Login the Grafana Web interface. 
+1. Login the Grafana Web interface.
 
     - The default address is: [http://localhost:3000](http://localhost:3000)
 
@@ -312,7 +313,7 @@ When you start Drainer, set the two parameters of `--metrics-addr` and `--metric
 
 5. Specify the data source information:
 
-    - Specify the name for the data source. 
+    - Specify the name for the data source.
 
     - For Type, select Prometheus.
 
@@ -328,8 +329,8 @@ When you start Drainer, set the two parameters of `--metrics-addr` and `--metric
 
 2. On the sidebar menu, click "Dashboards" -> "Import" to open the "Import Dashboard" window.
 
-3. Click "Upload .json File" to upload a JSON file (Download [TiDB Grafana Config](https://grafana.com/tidb)). 
+3. Click "Upload .json File" to upload a JSON file (Download [TiDB Grafana Config](https://grafana.com/tidb)).
 
-4. Click "Save & Open". 
+4. Click "Save & Open".
 
 5. A Prometheus dashboard is created.

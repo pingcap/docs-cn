@@ -22,10 +22,11 @@ For other information, see [Frequently Asked Questions (FAQ)](/faq/tidb.md).
 2. Use the `ps` command to check if all the processes are running.
 
     - If a certain process is not running, see the following corresponding sections to diagnose and solve the issue.
+
     + If all the processes are running, check the `tidb-server` log to see if the following messages are displayed:
         - InformationSchema is out of date: This message is displayed if the `tikv-server` cannot be connected. Check the state and log of `pd-server` and `tikv-server`.
         - panic: This message is displayed if there is an issue with the program. Please provide the detailed panic log and [create an issue](https://github.com/pingcap/tidb/issues/new/choose).
-        
+
 3. If the data is cleared and the services are re-deployed, make sure that:
 
     - All the data in `tikv-server` and `pd-server` are cleared.
@@ -38,9 +39,13 @@ For other information, see [Frequently Asked Questions (FAQ)](/faq/tidb.md).
 See the following for the situations when the `tidb-server` cannot be started:
 
 - Error in the startup parameters.
+
     See the [TiDB configuration and options](/reference/configuration/tidb-server/configuration.md).
+
 - The port is occupied.
+
     Use the `lsof -i:port` command to show all the networking related to a given port and make sure the port to start the `tidb-server` is not occupied.
+
 + Cannot connect to `pd-server`.
 
     - Check if the network between TiDB and PD is running smoothly, including whether the network can be pinged or if there is any issue with the Firewall configuration.
@@ -51,11 +56,17 @@ See the following for the situations when the `tidb-server` cannot be started:
 See the following for the situations when the `tikv-server` cannot be started:
 
 - Error in the startup parameters: See the [TiKV configuration and options](/reference/configuration/tikv-server/configuration.md).
+
 - The port is occupied: Use the `lsof -i:port` command to show all the networking related to a given port and make sure the port to start the `tikv-server` is not occupied.
+
 + Cannot connect to `pd-server`.
+
     - Check if the network between TiDB and PD is running smoothly, including whether the network can be pinged or if there is any issue with the Firewall configuration.
+
     - If there is no issue with the network, check the state and log of the `pd-server` process.
+
 - The file is occupied.
+
     Do not open two TiKV files on one database file directory.
 
 ## Cannot start `pd-server`
@@ -91,16 +102,21 @@ Before starting the process, make sure the result of `ulimit -n` is large enough
 ## Database access times out and the system load is too high
 
 First, check the [slow query log](/how-to/maintain/identify-slow-queries.md) and see if it is because of some inappropriate SQL statement.
+
 If you failed to solve the problem, provide the following information:
 
 + The deployment topology
+
     - How many `tidb-server`/`pd-server`/`tikv-server` instances are deployed?
     - How are these instances distributed in the machines?
+
 + The hardware configuration of the machines where these instances are deployed:
+
     - The number of CPU cores
     - The size of the memory
     - The type of the disk (SSD or Hard Drive Disk)
     - Are they physical machines or virtual machines?
+
 - Are there other services besides the TiDB cluster?
 - Are the `pd-server`s and `tikv-server`s deployed separately?
 - What is the current operation?

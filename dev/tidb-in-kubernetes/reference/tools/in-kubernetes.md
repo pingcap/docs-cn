@@ -33,7 +33,7 @@ Assume that your local port `2379` has been occupied and you want to switch to a
 ```shell
 kubectl port-forward -n <namespace> svc/<cluster-name>-pd <local-port>:2379 &>/tmp/portforward-pd.log
 ```
- 
+
 Then you need to explicitly assign a PD port for `pd-ctl`:
 
 {{< copyable "shell-regular" >}}

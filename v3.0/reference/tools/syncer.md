@@ -9,7 +9,7 @@ aliases: ['/docs/tools/syncer/']
 
 ## About Syncer
 
-Syncer is a tool used to import data incrementally. It is a part of the TiDB enterprise toolset. 
+Syncer is a tool used to import data incrementally. It is a part of the TiDB enterprise toolset.
 
 It can be [downloaded](/reference/tools/download.md) as part of the Enterprise Tools package.
 
@@ -112,7 +112,7 @@ max-retry = 100
 # Skip the DDL statement; the format is **prefix exact match**, for example, you need to fill at least `DROP TABLE` in to skip `DROP TABLE ABC`.
 # skip-ddls = ["ALTER USER", "CREATE USER"]
 
-# After Syncer uses `route-rules` to map the upstream schema and table into `target-schema` and `target-table`, 
+# After Syncer uses `route-rules` to map the upstream schema and table into `target-schema` and `target-table`,
 # Syncer matches the mapped `target-schema` and `target-table` with do/ignore rules,
 # and the matching sequence is: replicate-do-db --> replicate-do-table --> replicate-ignore-db --> replicate-ignore-table.
 # Specify the database name to be replicated. Support regular expressions. Start with '~' to use regular expressions.
@@ -356,7 +356,7 @@ Before replicating data using Syncer, check the following items:
 
         In earlier versions of MariaDB, the format of some binlog field types is inconsistent with that in MySQL.
 
-    > **Note:** 
+    > **Note:**
     >
     > If there is a master-slave replication structure between the upstream MySQL/MariaDB servers, then choose the following version.
     >
@@ -462,7 +462,7 @@ Before replicating data using Syncer, check the following items:
     ```
 
 6. Check the Character Set.
-    
+
     TiDB differs from MySQL in [Character Set](/reference/sql/character-set.md).
 
 ## Syncer monitoring solution
@@ -556,7 +556,6 @@ Syncer provides the metric interface, and requires Prometheus to actively obtain
 
 - metrics: `syncer_binlog_file{node="syncer"}` and `syncer_binlog_file{node="master"}`
 - info: it works with `position of binlog position`. `syncer_binlog_file{node="master"}` indicates the file number of the latest binlog position fetched from MySQL, and `syncer_binlog_file{node="syncer"}` indicates the file number of the binlog position that Syncer has replicated.
-
 
 #### title: execution jobs
 

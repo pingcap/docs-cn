@@ -6,7 +6,7 @@ category: reference
 
 # DM-worker Introduction
 
-DM-worker is a tool used to replicate data from MySQL/MariaDB to TiDB. 
+DM-worker is a tool used to replicate data from MySQL/MariaDB to TiDB.
 
 It has the following features:
 

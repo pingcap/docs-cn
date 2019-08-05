@@ -203,7 +203,7 @@ Sysbench test was carried on each of the tidb-servers. And the final result was 
 
 | Type | Thread | TPS | QPS | avg.latency(ms) | .95.latency(ms) | max.latency(ms) |
 |:---- |:---- |:---- |:---- |:----------------|:----------------- |:---- |
-| oltp_update_index | 3\*8 | 9668.98 | 9668.98 | 2.51 | 3.19 | 103.88| 
+| oltp_update_index | 3\*8 | 9668.98 | 9668.98 | 2.51 | 3.19 | 103.88|
 | oltp_update_index | 3\*16 | 12834.99 | 12834.99 | 3.79 | 5.47 | 176.90 |
 | oltp_update_index | 3\*32 | 15955.77 | 15955.77 | 6.07 | 9.39 | 4787.14 |
 | oltp_update_index | 3\*64 | 18697.17 | 18697.17 | 10.34 | 17.63 | 4539.04 |

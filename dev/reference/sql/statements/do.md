@@ -1,10 +1,10 @@
 ---
-title: DO | TiDB SQL Statement Reference 
+title: DO | TiDB SQL Statement Reference
 summary: An overview of the usage of DO for the TiDB database.
 category: reference
 ---
 
-# DO 
+# DO
 
 This statement executes an expression, without returning a result. In MySQL, a common use-case is to excecute stored programs without needing to handle the result. Since TiDB does not provide stored routines, this function has a more limited use.
 

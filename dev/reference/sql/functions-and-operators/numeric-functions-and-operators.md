@@ -20,7 +20,6 @@ TiDB supports all of the [numeric functions and operators](https://dev.mysql.com
 | [`%`, `MOD`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_mod)  | Modulo operator                   |
 | [`-`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_unary-minus) | Change the sign of the argument   |
 
-
 ## Mathematical functions
 
 | Name                                                                                                      | Description                                                       |

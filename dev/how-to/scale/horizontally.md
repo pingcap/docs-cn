@@ -106,12 +106,11 @@ Then you can check the state of this TiKV:
 
 You can verify the state of this store using `state_name`:
 
-  - Up: This store is in service.
-  - Disconnected: The heartbeats of this store cannot be detected currently, which might be caused by a failure or network interruption.
-  - Down: PD does not receive heartbeats from the TiKV store for more than an hour (the time can be configured using `max-down-time`). At this time, PD adds a replica for the data on this store.
-  - Offline: The store is in the process of transferring its Regions to other nodes. The state name is misleading: the store is available and even continuing to lead some of its Regions.
-  - Tombstone: This store is shut down and has no data on it, so the instance can be deleted.
-
+- Up: This store is in service.
+- Disconnected: The heartbeats of this store cannot be detected currently, which might be caused by a failure or network interruption.
+- Down: PD does not receive heartbeats from the TiKV store for more than an hour (the time can be configured using `max-down-time`). At this time, PD adds a replica for the data on this store.
+- Offline: The store is in the process of transferring its Regions to other nodes. The state name is misleading: the store is available and even continuing to lead some of its Regions.
+- Tombstone: This store is shut down and has no data on it, so the instance can be deleted.
 
 ### Migrate a node dynamically
 

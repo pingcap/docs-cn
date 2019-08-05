@@ -1,5 +1,5 @@
 ---
-title: DELETE | TiDB SQL Statement Reference 
+title: DELETE | TiDB SQL Statement Reference
 summary: An overview of the usage of DELETE for the TiDB database.
 category: reference
 ---

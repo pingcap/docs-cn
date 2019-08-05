@@ -2,7 +2,7 @@
 title: Information Schema
 summary: Learn how to use Information Schema in TiDB.
 category: reference
-aliases: ['/docs/sql/information-schema/'] 
+aliases: ['/docs/sql/information-schema/']
 ---
 
 # Information Schema
@@ -133,14 +133,16 @@ CHARACTER_MAXIMUM_LENGTH: NULL
       CHARACTER_SET_NAME: NULL
           COLLATION_NAME: NULL
              COLUMN_TYPE: int(11)
-              COLUMN_KEY: 
-                   EXTRA: 
+              COLUMN_KEY:
+                   EXTRA:
               PRIVILEGES: select,insert,update,references
-          COLUMN_COMMENT: 
-   GENERATION_EXPRESSION: 
+          COLUMN_COMMENT:
+   GENERATION_EXPRESSION:
 1 row in set (0.01 sec)
 ```
+
 The corresponding `SHOW` statement is as follows:
+
 ```sql
 mysql> SHOW COLUMNS FROM t1 FROM test;
 +-------+---------+------+------+---------+-------+
@@ -238,6 +240,7 @@ DEFAULT_CHARACTER_SET_NAME: utf8mb4
 ### SESSION\_VARIABLES table
 
 The `SESSION_VARIABLES` table provides information about session variables. The table data is similar to the result of the `SHOW SESSION VARIABLES` statement:
+
 ```sql
 mysql> SELECT * FROM session_variables LIMIT 10;
 +----------------------------------+----------------------+
@@ -323,8 +326,8 @@ MAX_DATA_LENGTH: 0
      CHECK_TIME: NULL
 TABLE_COLLATION: utf8mb4_bin
        CHECKSUM: NULL
- CREATE_OPTIONS: 
-  TABLE_COMMENT: 
+ CREATE_OPTIONS:
+  TABLE_COMMENT:
   TIDB_TABLE_ID: 5
 1 row in set (0.00 sec)
 ```
@@ -553,7 +556,7 @@ Create Table: CREATE TABLE `TIKV_REGION_STATUS` (
 1 row in set (0.00 sec)
 ```
 
-You can implement the `top confver`, `top read` and `top write` operations in pd-ctl via the `ORDER BY X LIMIT Y` operation on the `EPOCH_CONF_VER`, `WRITTEN_BYTES` and `READ_BYTES` columns. 
+You can implement the `top confver`, `top read` and `top write` operations in pd-ctl via the `ORDER BY X LIMIT Y` operation on the `EPOCH_CONF_VER`, `WRITTEN_BYTES` and `READ_BYTES` columns.
 
 You can query the top 3 Regions with the most write data using the following SQL statement:
 

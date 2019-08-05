@@ -1,5 +1,5 @@
 ---
-title: FLUSH TABLES | TiDB SQL Statement Reference 
+title: FLUSH TABLES | TiDB SQL Statement Reference
 summary: An overview of the usage of FLUSH TABLES for the TiDB database.
 category: reference
 ---

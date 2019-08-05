@@ -1,5 +1,5 @@
 ---
-title: REVOKE <privileges> | TiDB SQL Statement Reference 
+title: REVOKE <privileges> | TiDB SQL Statement Reference
 summary: An overview of the usage of REVOKE <privileges> for the TiDB database.
 category: reference
 ---
@@ -83,4 +83,3 @@ This statement is understood to be fully compatible with MySQL. Any compatibilit
 * [GRANT <privileges>](/reference/sql/statements/grant-privileges.md)
 * [SHOW GRANTS](/reference/sql/statements/show-grants.md)
 * [Privilege Management](/reference/security/privilege-system.md)
-

@@ -103,7 +103,7 @@ TiDB 2.0:
 
 It should be noted that:
 
-- In the diagram above, the orange bars represent the query results of Release 1.0 and the blue bars represent the query results of Release 2.0. The y-axis represents the processing time of queries in seconds, the shorter the faster. 
+- In the diagram above, the orange bars represent the query results of Release 1.0 and the blue bars represent the query results of Release 2.0. The y-axis represents the processing time of queries in seconds, the shorter the faster.
 - Query 15 is tagged with "NaN" because VIEW is currently not supported in either TiDB 1.0 or 2.0. We have plans to provide VIEW support in a future release.
 - Queries 2, 17, and 19 in the TiDB 1.0 column are tagged with "NaN" because TiDB 1.0 did not return results for these queries.
 - Queries 5, 7, 18, and 21 in the TiDB 1.0 column are tagged with "OOM" because the memory consumption was too high.

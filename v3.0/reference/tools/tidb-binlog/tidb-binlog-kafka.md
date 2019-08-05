@@ -15,7 +15,7 @@ TiDB Binlog is a tool for enterprise users to collect binlog files for TiDB and 
 
 TiDB Binlog supports the following scenarios:
 
-- **Data replication**: to replicate TiDB cluster data to other databases  
+- **Data replication**: to replicate TiDB cluster data to other databases
 - **Real-time backup and recovery**: to back up TiDB cluster data, and recover in case of cluster outages
 
 ## TiDB Binlog architecture
@@ -171,7 +171,7 @@ ZK3="192.168.0.11"
 
 Deploy Drainer/Pump on the machine with the IP address "192.168.0.10".
 
-The IP address of the corresponding PD cluster is "192.168.0.16,192.168.0.15,192.168.0.14". 
+The IP address of the corresponding PD cluster is "192.168.0.16,192.168.0.15,192.168.0.14".
 
 The ZooKeeper IP address of the corresponding Kafka cluster is "192.168.0.13,192.168.0.12,192.168.0.11".
 
@@ -335,7 +335,7 @@ This example describes how to use Pump/Drainer.
     # to replicate the downstream concurrency number, and a bigger value means better throughput performance (default 1)
     worker-count = 1
 
-    # whether to disable dispatching sqls in a single binlog; 
+    # whether to disable dispatching sqls in a single binlog;
     # if you set the value to true, it is restored into a single transaction to replicate in the order of each binlog (If the downstream service type is "mysql", set the value to false)
     disable-dispatch = false
 
@@ -414,7 +414,7 @@ When you start Drainer, set the two parameters of `--metrics-addr` and `--metric
 
 #### Create a Prometheus data source
 
-1. Login the Grafana Web interface. 
+1. Login the Grafana Web interface.
 
     - The default address is: [http://localhost:3000](http://localhost:3000)
 

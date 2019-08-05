@@ -12,9 +12,10 @@ Syncer can be [downloaded as part of Enterprise Tools](/reference/tools/download
 
 Assuming the data from `t1` and `t2` is already imported to TiDB using `mydumper`/`loader`. Now we hope that any updates to these two tables are replicated to TiDB in real time.
 
-### Obtain the position to replicate
+## Obtain the position to replicate
 
 The data exported from MySQL contains a metadata file which includes the position information. Take the following metadata information as an example:
+
 ```
 Started dump at: 2017-04-28 10:48:10
 SHOW MASTER STATUS:
@@ -23,8 +24,8 @@ SHOW MASTER STATUS:
     GTID:
 
 Finished dump at: 2017-04-28 10:48:11
-
 ```
+
 The position information (`Pos: 930143241`) needs to be stored in the `syncer.meta` file for `syncer` to replicate:
 
 ```bash
@@ -37,7 +38,7 @@ binlog-pos = 930143241
 >
 > The `syncer.meta` file only needs to be configured once when it is first used. The position will be automatically updated when binlog is replicated.
 
-### Start `syncer`
+## Start `syncer`
 
 The `config.toml` file for `syncer`:
 
@@ -144,6 +145,7 @@ user = "root"
 password = ""
 port = 4000
 ```
+
 Start `syncer`:
 
 ```bash
@@ -154,13 +156,13 @@ Start `syncer`:
 2016/10/27 15:22:01 syncer.go:549: [info] rotate binlog to (mysql-bin.000003, 1280)
 ```
 
-### Insert data into MySQL
+## Insert data into MySQL
 
 ```bash
 INSERT INTO t1 VALUES (4, 4), (5, 5);
 ```
 
-### Log in TiDB and view the data
+## Log in TiDB and view the data
 
 ```sql
 mysql -h127.0.0.1 -P4000 -uroot -p

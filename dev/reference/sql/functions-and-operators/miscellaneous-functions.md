@@ -35,4 +35,3 @@ TiDB supports most of the [miscellaneous functions](https://dev.mysql.com/doc/re
 | [`RELEASE_LOCK()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_release-lock)        | Releases the named lock [TiDB #10929](https://github.com/pingcap/tidb/issues/10929) |
 | [`UUID_SHORT()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_uuid-short)            | Provides a UUID that is unique given certain assumptions not present in TiDB [TiDB #4620](https://github.com/pingcap/tidb/issues/4620) |
 | [`MASTER_WAIT_POS()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_master-pos-wait)  | Relates to MySQL replication |
-

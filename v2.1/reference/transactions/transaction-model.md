@@ -66,7 +66,7 @@ Due to its distributed nature, workloads that are single-threaded or latency-sen
         IGNORE n LINES
         (col_name ...);
     ```
-    
+
     Currently, the supported `ESCAPED BY` characters are: `/\/\`.
 
 + Transaction

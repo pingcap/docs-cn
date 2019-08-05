@@ -130,7 +130,7 @@ TiDB is configurable using command-line flags and environment variables. The def
 
 - The number of sessions allowed to run concurrently in TiDB. It is used for traffic control.
 - Default: 1000
-- If the number of the concurrent sessions is larger than `token-limit`, the request is blocked and waiting for the operations which have been finished to 
+- If the number of the concurrent sessions is larger than `token-limit`, the request is blocked and waiting for the operations which have been finished to
 release tokens.
 
 ## `-V`

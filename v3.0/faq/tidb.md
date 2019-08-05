@@ -719,11 +719,13 @@ You can edit the `t` parameter of `loader` based on the number of TiKV instances
 ### Full data export and import
 
 #### Mydumper
+
 See [mydumper Instructions](/reference/tools/mydumper.md).
 
 #### Loader
+
 See [Loader Instructions](/reference/tools/loader.md).
- 
+
 #### How to migrate an application running on MySQL to TiDB?
 
 Because TiDB supports most MySQL syntax, generally you can migrate your applications to TiDB without changing a single line of code in most cases.

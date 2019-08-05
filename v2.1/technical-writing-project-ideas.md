@@ -15,7 +15,7 @@ The project ideas of TiDB documentation in Google Season of Docs are as follows:
 
 2. Review GitHub Pull Requests about TiDB documentation. This can include reviewing the language and content organization in docs Pull Requests filed by a contributor, a developer, a Database Administrator, or another Technical Writer.
 
-3. Execute user acceptance tests for TiDB documentation. This can include executing a usability test by following the existing document, such as testing the deployment of TiDB or TiDB ecosystem tools. The tester might find it necessary to update some steps or outdated description or the content structure, and then the documentation can be improved based on this.  
+3. Execute user acceptance tests for TiDB documentation. This can include executing a usability test by following the existing document, such as testing the deployment of TiDB or TiDB ecosystem tools. The tester might find it necessary to update some steps or outdated description or the content structure, and then the documentation can be improved based on this.
 
 4. Take part in refactoring the TiDB documentation for content reuse of Markdown files. Some existing documents that are a bit too long will be split into two or multiple separate documents, to make it easy for content reuse.
 

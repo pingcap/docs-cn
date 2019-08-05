@@ -23,7 +23,7 @@ When you compile TiKV, the `tikv-ctl` command is also compiled at the same time.
     ```
 
     However, sometimes `tikv-ctl` communicates with PD instead of TiKV. In this case, you need to use the `--pd` option instead of `--host`. Here is an example:
-    
+
     ```
     $ tikv-ctl --pd 127.0.0.1:2379 compact-cluster
     store:"127.0.0.1:20160" compact db:KV cf:default range:([], []) success!
@@ -208,7 +208,7 @@ If the command is successfully executed, it prints the above information. If the
 
 ### Modify the RocksDB configuration of TiKV dynamically
 
-You can use the `modify-tikv-config` command to dynamically modify the configuration arguments. Currently, it only supports dynamically modifying RocksDB related arguments. 
+You can use the `modify-tikv-config` command to dynamically modify the configuration arguments. Currently, it only supports dynamically modifying RocksDB related arguments.
 
 - `-m` is used to specify the target RocksDB. You can set it to `kvdb` or `raftdb`.
 - `-n` is used to specify the configuration name.
@@ -244,7 +244,7 @@ $ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 4,5 --all-
 Then after you restart TiKV, these Regions can continue to provide services using the other healthy replicas. This command is usually used in circumstances where multiple TiKV stores are damaged or deleted.
 
 > **Note:**
-> 
+>
 > - This command only supports the local mode. It prints `success!` when successfully run.
 > - Generally, you need to run this command for all stores where the peers of the specified Regions are located.
 > - If you specify `--all-regions`, run this command for all the other healthy stores in the cluster.
@@ -261,7 +261,7 @@ success!
 ```
 
 > **Note:**
-> 
+>
 > - This command only supports the local mode. It prints `success!` when successfully run.
 > - The argument of the `-p` option specifies the PD endpoints without the `http` prefix. Specifying the PD endpoints is to query whether the specified `region_id` is validated or not.
 > - You need to run this command for all stores where specified Regions' peers locate.

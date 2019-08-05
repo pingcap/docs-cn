@@ -1,10 +1,10 @@
 ---
-title: DEALLOCATE | TiDB SQL Statement Reference 
+title: DEALLOCATE | TiDB SQL Statement Reference
 summary: An overview of the usage of DEALLOCATE for the TiDB database.
 category: reference
 ---
 
-# DEALLOCATE 
+# DEALLOCATE
 
 The `DEALLOCATE` statement provides an SQL interface to server-side prepared statements.
 

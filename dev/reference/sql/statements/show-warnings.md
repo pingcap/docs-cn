@@ -1,12 +1,12 @@
 ---
-title: SHOW WARNINGS | TiDB SQL Statement Reference 
+title: SHOW WARNINGS | TiDB SQL Statement Reference
 summary: An overview of the usage of SHOW WARNINGS for the TiDB database.
 category: reference
 ---
 
-# SHOW WARNINGS 
+# SHOW WARNINGS
 
-This statement shows a list of warnings that occurred for previously executed statements in the current client connection. As in MySQL, the `sql_mode` impacts which statements will cause errors vs. warnings considerably. 
+This statement shows a list of warnings that occurred for previously executed statements in the current client connection. As in MySQL, the `sql_mode` impacts which statements will cause errors vs. warnings considerably.
 
 ## Synopsis
 

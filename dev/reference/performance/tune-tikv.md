@@ -20,7 +20,7 @@ TiKV implements `Column Families` (CF) from RocksDB.
     - The `lock` CF stores the lock information. The system uses the default parameters.
 
 - The Raft RocksDB (RaftDB) instance stores Raft logs.
-    
+
     - The `default` CF stores the Raft log. The corresponding parameters are in `[raftdb.defaultcf]`.
 
 After TiKV 3.0, by default, all CFs share one block cache instance. You can configure the size of the cache by setting the `capacity` parameter under `[storage.block-cache]`. The bigger the block cache, the more hot data can be cached, and the easier to read data, in the meantime, the more system memory is occupied. To use a separate block cache instance for each CF, set `shared=false` under `[storage.block-cache]`, and configure individual block cache size for each CF. For example, you can configure the size of `write` CF by setting the `block-cache-size` parameter under `[rocksdb.writecf]`.
@@ -44,10 +44,10 @@ log-level = "info"
 # The number of gRPC connections between each TiKV instance
 # grpc-raft-conn-num = 10
 
-# Most read requests from TiDB are sent to the coprocessor of TiKV. This parameter is used to set the number of threads 
+# Most read requests from TiDB are sent to the coprocessor of TiKV. This parameter is used to set the number of threads
 # of the coprocessor. If many read requests exist, add the number of threads and keep the number within that of the
 # system CPU cores. For example, for a 32-core machine deployed with TiKV, you can even set this parameter to 30 in
-# repeatable read scenarios. If this parameter is not set, TiKV automatically sets it to CPU cores * 0.8. 
+# repeatable read scenarios. If this parameter is not set, TiKV automatically sets it to CPU cores * 0.8.
 # end-point-concurrency = 8
 
 # Tag the TiKV instances to schedule replicas.
@@ -113,14 +113,14 @@ region-max-size = "384MB"
 region-split-size = "256MB"
 # When the data size change in a Region is larger than the threshold value, TiKV checks whether this Region needs split.
 # To reduce the costs of scanning data in the checking process, set the value to 32MB during checking and set it to
-# the default value in normal operation. 
+# the default value in normal operation.
 region-split-check-diff = "32MB"
 
 [rocksdb]
 # The maximum number of threads of RocksDB background tasks. The background tasks include compaction and flush.
 # For detailed information why RocksDB needs to implement compaction, see RocksDB-related materials. When write
-# traffic (like the importing data size) is big, it is recommended to enable more threads. But set the number of the enabled 
-# threads smaller than that of CPU cores. For example, when importing data, for a machine with a 32-core CPU, 
+# traffic (like the importing data size) is big, it is recommended to enable more threads. But set the number of the enabled
+# threads smaller than that of CPU cores. For example, when importing data, for a machine with a 32-core CPU,
 # set the value to 28.
 # max-background-jobs = 8
 
@@ -153,19 +153,19 @@ max-manifest-file-size = "20MB"
 # Similar to page in other databases, block is the smallest unit cached in block-cache.
 block-size = "64KB"
 
-# The compaction mode of each layer of RocksDB data. The optional values include no, snappy, zlib, 
+# The compaction mode of each layer of RocksDB data. The optional values include no, snappy, zlib,
 # bzip2, lz4, lz4hc, and zstd.
 # "no:no:lz4:lz4:lz4:zstd:zstd" indicates there is no compaction of level0 and level1; lz4 compaction algorithm is used
 # from level2 to level4; zstd compaction algorithm is used from level5 to level6.
-# "no" means no compaction. "lz4" is a compaction algorithm with moderate speed and compaction ratio. The 
+# "no" means no compaction. "lz4" is a compaction algorithm with moderate speed and compaction ratio. The
 # compaction ratio of zlib is high. It is friendly to the storage space, but its compaction speed is slow. This
 # compaction occupies many CPU resources. Different machines deploy compaction modes according to CPU and I/O resources.
-# For example, if you use the compaction mode of "no:no:lz4:lz4:lz4:zstd:zstd" and find much I/O pressure of the 
+# For example, if you use the compaction mode of "no:no:lz4:lz4:lz4:zstd:zstd" and find much I/O pressure of the
 # system (run the iostat command to find %util lasts 100%, or run the top command to find many iowaits) when writing
 # (importing) a lot of data while the CPU resources are adequate, you can compress level0 and level1 and exchange CPU
 # resources for I/O resources. If you use the compaction mode of "no:no:lz4:lz4:lz4:zstd:zstd" and you find the I/O
-# pressure of the system is not big when writing a lot of data, but CPU resources are inadequate. Then run the top 
-# command and choose the -H option. If you find a lot of bg threads (namely the compaction thread of RocksDB) are 
+# pressure of the system is not big when writing a lot of data, but CPU resources are inadequate. Then run the top
+# command and choose the -H option. If you find a lot of bg threads (namely the compaction thread of RocksDB) are
 # running, you can exchange I/O resources for CPU resources and change the compaction mode to "no:no:no:lz4:lz4:zstd:zstd".
 # In a word, it aims at making full use of the existing resources of the system and improving TiKV performance
 # in terms of the current resources.
@@ -176,12 +176,12 @@ write-buffer-size = "128MB"
 
 # The maximum number of the memtables. The data written into RocksDB is first recorded in the WAL log, and then inserted
 # into memtables. When the memtable reaches the size limit of `write-buffer-size`, it turns into read only and generates
-# a new memtable receiving new write operations. The flush threads of RocksDB will flush the read only memtable to the 
+# a new memtable receiving new write operations. The flush threads of RocksDB will flush the read only memtable to the
 # disks to become an sst file of level0. `max-background-flushes` controls the maximum number of flush threads. When the
 # flush threads are busy, resulting in the number of the memtables waiting to be flushed to the disks reaching the limit
-# of `max-write-buffer-number`, RocksDB stalls the new operation. 
-# "Stall" is a flow control mechanism of RocksDB. When importing data, you can set the `max-write-buffer-number` value 
-# higher, like 10. 
+# of `max-write-buffer-number`, RocksDB stalls the new operation.
+# "Stall" is a flow control mechanism of RocksDB. When importing data, you can set the `max-write-buffer-number` value
+# higher, like 10.
 max-write-buffer-number = 5
 
 # When the number of sst files of level0 reaches the limit of `level0-slowdown-writes-trigger`, RocksDB

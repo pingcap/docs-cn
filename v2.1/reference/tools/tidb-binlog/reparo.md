@@ -27,7 +27,7 @@ Usage of Reparo:
 -data-dir string
     The storage directory for the binlog file in the protobuf format that Drainer outputs ("data.drainer" by default)
 -dest-type string
-    The downstream service type 
+    The downstream service type
     Value: "print"/"mysql" ("print" by default)
     If it is set to "print", the data is parsed and printed to standard output while the SQL statement is not executed.
     If it is set to "mysql", you need to configure the "host", "port", "user" and "password" information in the configuration file.
@@ -52,7 +52,7 @@ Usage of Reparo:
 # The storage directory for the binlog file in the protobuf format that Drainer outputs
 data-dir = "./data.drainer"
 
-# Uses the index file to locate `ts`. Set this parameter if `start-ts` is set. The file 
+# Uses the index file to locate `ts`. Set this parameter if `start-ts` is set. The file
 # directory is {data-dir}/{index-name}.
 # index-name = "binlog.index"
 # log-file = ""
@@ -62,29 +62,29 @@ data-dir = "./data.drainer"
 # Value: "debug"/"info"/"warn"/"error"/"fatal" ("info" by default)
 log-level = "info"
 
-# Uses `start-datetime` and `stop-datetime` to specify the time range in which 
+# Uses `start-datetime` and `stop-datetime` to specify the time range in which
 # the binlog files are to be recovered.
 # Format: "2006-01-02 15:04:05"
 # start-datetime = ""
 # stop-datetime = ""
 
-# Correspond to `start-datetime` and `stop-datetime` respectively. 
-# They are used to specify the time range in which the binlog files are to be recovered. 
+# Correspond to `start-datetime` and `stop-datetime` respectively.
+# They are used to specify the time range in which the binlog files are to be recovered.
 # If `start-datetime` and `stop-datetime` are set, there is no need to set `start-tso` and `stop-tso`.
 # start-tso = 0
 # stop-tso = 0
 
 # The downstream service type
 # Value: "print"/"mysql" ("print" by default)
-# If it is set to "print", the data is parsed and printed to standard output 
+# If it is set to "print", the data is parsed and printed to standard output
 # while the SQL statement is not executed.
 # If it is set to "mysql", you need to configure `host`, `port`, `user` and `password` in [dest-db].
 dest-type = "mysql"
 
 # `replicate-do-db` and `replicate-do-table` specify the database and table to be recovered.
 # `replicate-do-db` has priority over `replicate-do-table`.
-# You can use a regular expression for configuration. The regular expression should start with "~". 
-# The configuration method for `replicate-do-db` and `replicate-do-table` is 
+# You can use a regular expression for configuration. The regular expression should start with "~".
+# The configuration method for `replicate-do-db` and `replicate-do-table` is
 # the same with that for `replicate-do-db` and `replicate-do-table` of Drainer.
 # replicate-do-db = ["~^b.*","s1"]
 # [[replicate-do-table]]
@@ -113,7 +113,7 @@ password = ""
 > * `data-dir` specifies the directory for the binlog file that Drainer outputs.
 > * Both `start-datatime` and `start-tso` are used to specify the time point for starting recovery, but they are different in the time format. If they are not set, the recovery process starts from the earliest binlog file by default.
 > * Both `stop-datetime` and `stop-tso` are used to specify the time point for finishing recovery, but they are different in the time format. If they are not set, the recovery process ends up with the last binlog file by default.
-> * `dest-type` specifies the destination type. Its value can be "mysql" and "print." 
+> * `dest-type` specifies the destination type. Its value can be "mysql" and "print."
 >
 >     * When it is set to `mysql`, the data can be recovered to MySQL or TiDB that uses or is compatible with the MySQL protocol. In this case, you need to specify the database information in `[dest-db]` of the configuration information.
 >     * When it is set to `print`, only the binlog information is printed. It is generally used for debugging and checking the binlog information. In this case, there is no need to specify `[dest-db]`.

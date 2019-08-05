@@ -21,7 +21,7 @@ Syntax:
 
 ```sql
 ANALYZE TABLE TableNameList [WITH NUM BUCKETS]
-> The statement collects statistics of all the tables in `TableNameList`. 
+> The statement collects statistics of all the tables in `TableNameList`.
 > `WITH NUM BUCKETS` specifies the maximum number of buckets in the generated histogram.
 
 ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS]

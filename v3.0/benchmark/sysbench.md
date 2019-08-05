@@ -36,7 +36,7 @@ Place: Beijing
 
 - Sysbench version: 1.0.6
 
-- Test script: https://github.com/pingcap/tidb-bench/tree/cwen/not_prepared_statement/sysbench.   
+- Test script: https://github.com/pingcap/tidb-bench/tree/cwen/not_prepared_statement/sysbench.
 
 ## Test scenarios
 
@@ -52,8 +52,8 @@ CREATE TABLE `sbtest` (
   `pad` char(60) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `k_1` (`k`)
-) ENGINE=InnoDB  
-``` 
+) ENGINE=InnoDB
+```
 
 The deployment and configuration details:
 
@@ -65,14 +65,14 @@ The deployment and configuration details:
 172.16.10.8    1*tidb    1*pd      1*sysbench
 
 // Each physical node has three disks.
-data3: 2 tikv (Optane SSD) 
+data3: 2 tikv (Optane SSD)
 data2: 1 tikv
 data1: 1 tikv
 
 // TiKV configuration
 sync-log = false
 grpc-concurrency = 8
-grpc-raft-conn-num = 24 
+grpc-raft-conn-num = 24
 [defaultcf]
 block-cache-size = "12GB"
 [writecf]
@@ -82,23 +82,23 @@ block-cache-size = "2GB"
 
 // MySQL deployment
 // Use the semi-synchronous replication and asynchronous replication to deploy two replicas respectively.
-172.16.20.4    master    
-172.16.20.6    slave        
+172.16.20.4    master
+172.16.20.6    slave
 172.16.20.7    slave
-172.16.10.8    1*sysbench 
+172.16.10.8    1*sysbench
 Mysql version: 5.6.37
 
 // MySQL configuration
 thread_cache_size = 64
 innodb_buffer_pool_size = 64G
 innodb_file_per_table = 1
-innodb_flush_log_at_trx_commit = 0  
-datadir = /data3/mysql  
-max_connections = 2000 
+innodb_flush_log_at_trx_commit = 0
+datadir = /data3/mysql
+max_connections = 2000
 ```
 
 - OLTP RW test
-    
+
     | - | Table count | Table size | Sysbench threads | TPS | QPS | Latency(avg / .95) |
     | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
     | TiDB | 32 | 1 million | 64 * 4 | 3834 | 76692 | 67.04 ms / 110.88 ms |
@@ -112,9 +112,9 @@ max_connections = 2000
     | Mysql | 32 | 5 million | 256 | 1902 | 38045 | 134.56 ms / 363.18 ms |
     | Mysql | 32 | 10 million | 256 | 1770 | 35416 | 144.55 ms / 383.33 ms  |
 
-![](/media/sysbench-01.png)
+![sysbench-01](/media/sysbench-01.png)
 
-![](/media/sysbench-02.png)
+![sysbench-02](/media/sysbench-02.png)
 
 - `Select` RW test
 
@@ -131,9 +131,9 @@ max_connections = 2000
     | Mysql | 32 | 5 million | 256 |  386866 | 0.66 ms / 1.64 ms |
     | Mysql | 32 | 10 million | 256 |  388273 | 0.66 ms / 1.64 ms  |
 
-![](/media/sysbench-03.png)
+![sysbench-03](/media/sysbench-03.png)
 
-![](/media/sysbench-04.png)
+![sysbench-04](/media/sysbench-04.png)
 
 - `Insert` RW test
 
@@ -148,37 +148,37 @@ max_connections = 2000
     | Mysql | 32 | 1 million | 128 | 14884 | 8.58  ms / 21.11 ms |
     | Mysql | 32 | 1 million | 256 | 14508 | 17.64 ms / 44.98 ms  |
     | Mysql | 32 | 5 million | 256 | 10593 | 24.16 ms / 82.96 ms  |
-    | Mysql | 32 | 10 million | 256 | 9813 | 26.08 ms / 94.10 ms  |  
- 
-![](/media/sysbench-05.png)
+    | Mysql | 32 | 10 million | 256 | 9813 | 26.08 ms / 94.10 ms  |
 
-![](/media/sysbench-06.png)   
+![sysbench-05](/media/sysbench-05.png)
+
+![sysbench-06](/media/sysbench-06.png)
 
 ### Scenario two: TiDB horizontal scalability test
 
 The deployment and configuration details:
 
 ```
-// TiDB deployment 
-172.16.20.3    4*tikv    
+// TiDB deployment
+172.16.20.3    4*tikv
 172.16.10.2    1*tidb    1*pd     1*sysbench
 
-// Each physical node has three disks. 
-data3: 2 tikv (Optane SSD) 
-data2: 1 tikv 
-data1: 1 tikv 
+// Each physical node has three disks.
+data3: 2 tikv (Optane SSD)
+data2: 1 tikv
+data1: 1 tikv
 
-// TiKV configuration 
+// TiKV configuration
 sync-log = false
 grpc-concurrency = 8
-grpc-raft-conn-num = 24 
+grpc-raft-conn-num = 24
 [defaultcf]
 block-cache-size = "12GB"
 [writecf]
 block-cache-size = "5GB"
 [raftdb.defaultcf]
 block-cache-size = "2GB"
-``` 
+```
 
 - OLTP RW test
 
@@ -189,7 +189,7 @@ block-cache-size = "2GB"
     | 4 TiDB physical nodes | 32 | 1 million | 256 * 4 | 8984 | 179692 | 114.96 ms / 176.73 ms |
     | 6 TiDB physical nodes | 32 | 5 million | 256 * 6 | 12953 | 259072 | 117.80 ms / 200.47 ms  |
 
-![](/media/sysbench-07.png)
+![sysbench-07](/media/sysbench-07.png)
 
 - `Select` RW test
 
@@ -200,7 +200,7 @@ block-cache-size = "2GB"
     | 4 TiDB physical nodes | 32 | 1 million | 256 * 4 | 289933 | 3.53 ms / 8.74 ms  |
     | 6 TiDB physical nodes | 32 | 5 million | 256 * 6 | 435313 | 3.55 ms / 9.17 ms  |
 
-![](/media/sysbench-08.png)
+![sysbench-08](/media/sysbench-08.png)
 
 - `Insert` RW test
 
@@ -210,4 +210,4 @@ block-cache-size = "2GB"
     | 5 TiKV physical nodes | 32 | 1 million | 256 * 3 | 60689 | 37.96 ms / 29.9 ms |
     | 7 TiKV physical nodes | 32 | 1 million | 256 * 3 | 80087 | 9.62 ms / 21.37 ms |
 
-![](/media/sysbench-09.png)
+![sysbench-09](/media/sysbench-09.png)

@@ -36,8 +36,8 @@ This section describes the configuration of independent deployment of TiKV and T
 For independent deployment of TiKV and TiSpark, it is recommended to refer to the following recommendations:
 
 + Hardware configuration
- - For general purposes, please refer to the TiDB and TiKV hardware configuration [recommendations](/how-to/deploy/hardware-recommendations.md#deployment-recommendations).
- - If the usage is more focused on the analysis scenarios, you can increase the memory of the TiKV nodes to at least 64G.
+    - For general purposes, please refer to the TiDB and TiKV hardware configuration [recommendations](/how-to/deploy/hardware-recommendations.md#deployment-recommendations).
+    - If the usage is more focused on the analysis scenarios, you can increase the memory of the TiKV nodes to at least 64G.
 
 + TiKV parameters (default)
 
@@ -146,19 +146,22 @@ After the command returns, you can see if the Slave node is joined to the Spark 
 
 #### Spark SQL shell and JDBC server
 
-If you want to use JDBC server and interactive SQL shell, please copy `start-tithriftserver.sh stop-tithriftserver.sh` to your Spark's sbin folder and `tispark-sql` to the bin folder. 
+If you want to use JDBC server and interactive SQL shell, please copy `start-tithriftserver.sh stop-tithriftserver.sh` to your Spark's sbin folder and `tispark-sql` to the bin folder.
 
 To start interactive shell:
+
 ```sh
 ./bin/tispark-sql
 ```
 
 To use Thrift Server, you can start it similar way as default Spark Thrift Server:
+
 ```sh
 ./sbin/start-tithriftserver.sh
 ```
 
 And stop it like below:
+
 ```sh
 ./sbin/stop-tithriftserver.sh
 ```
@@ -180,6 +183,7 @@ import org.apache.spark.sql.TiContext
 val ti = new TiContext(spark)
 ti.tidbMapDatabase ("tpch")
 ```
+
 After that you can call Spark SQL directly:
 
 ```sh
@@ -195,7 +199,7 @@ The result is:
 | 600000000 |
 +-------------+
 ```
- 
+
 TiSpark's SQL Interactive shell is almost the same as the spark-SQL shell.
 
 ```sh

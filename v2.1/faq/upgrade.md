@@ -10,7 +10,7 @@ This document lists some FAQs and their solutions after you upgrade TiDB.
 
 ## The character set (charset) errors when executing DDL operations
 
-In v2.1.0 and earlier versions (including all versions of v2.0), the character set of TiDB is UTF-8 by default. But starting from v2.1.1, the default character set has been changed into UTF8MB4. 
+In v2.1.0 and earlier versions (including all versions of v2.0), the character set of TiDB is UTF-8 by default. But starting from v2.1.1, the default character set has been changed into UTF8MB4.
 
 If you explicitly specify the charset of a newly created table as UTF-8 in v2.1.0 or earlier versions, then you might fail to execute DDL operations after upgrading TiDB to v2.1.1.
 
@@ -47,7 +47,7 @@ To avoid this issue, you need to pay attention to:
     ERROR 1105 (HY000): unsupported modify column charset utf8mb4 not match origin utf8
     ```
 
-Solution: 
+Solution:
 
 You can explicitly specify the column charset as the same with the original charset.
 
@@ -72,7 +72,7 @@ alter table t change column a a varchar(22) character set utf8;
                 "id": 1,
                 "name": {
                     "L": "a",
-                    "O": "a"   # The column name. 
+                    "O": "a"   # The column name.
                 },
                 "offset": 0,
                 "origin_default": null,
@@ -110,7 +110,7 @@ alter table t change column a a varchar(22) character set utf8;
     +-------+-------------------------------------------------------+
     ```
 
-    In the above example, `show create table` only shows the charset of the table, but the charset of the column is actually UTF8MB4, which can be confirmed by obtaining the schema through the HTTP API. However, when a new table is created, the charset of the column should stay consistent with that of the table. This bug has been fixed in v2.1.3. 
+    In the above example, `show create table` only shows the charset of the table, but the charset of the column is actually UTF8MB4, which can be confirmed by obtaining the schema through the HTTP API. However, when a new table is created, the charset of the column should stay consistent with that of the table. This bug has been fixed in v2.1.3.
 
 - After upgrading, the following operations are executed in v2.1.3 and the later versions.
 
@@ -174,7 +174,7 @@ Solution:
     Query OK, 1 row affected
     ```
 
-- In v2.1.3 and the later versions: it is recommended to modify the column charset into UTF8MB4. Or you can set `tidb_skip_utf8_check` to skip the UTF-8 check. But if you skip the check, you might fail to replicate data from TiDB to MySQL because MySQL executes the check. 
+- In v2.1.3 and the later versions: it is recommended to modify the column charset into UTF8MB4. Or you can set `tidb_skip_utf8_check` to skip the UTF-8 check. But if you skip the check, you might fail to replicate data from TiDB to MySQL because MySQL executes the check.
 
     ```sql
     tidb > alter table t change column a a varchar(100) character set utf8mb4;
@@ -183,11 +183,11 @@ Solution:
     Query OK, 1 row affected
     ```
 
-    Specifically, you can use the variable `tidb_skip_utf8_check` to skip the legal UTF-8 and UTF8MB4 check on the data. But if you skip the check, you might fail to replicate the data from TiDB to MySQL because MySQL executes the check. 
+    Specifically, you can use the variable `tidb_skip_utf8_check` to skip the legal UTF-8 and UTF8MB4 check on the data. But if you skip the check, you might fail to replicate the data from TiDB to MySQL because MySQL executes the check.
 
     If you only want to skip the UTF-8 check, you can set `tidb_check_mb4_value_in_utf8`. This variable is added to the `config.toml` file in v2.1.3, and you can modify `check-mb4-value-in-utf8` in the configuration file and then restart the cluster to enable it.
 
-    Starting from v2.1.5, you can set `tidb_check_mb4_value_in_utf8` through the HTTP API and the session variable: 
+    Starting from v2.1.5, you can set `tidb_check_mb4_value_in_utf8` through the HTTP API and the session variable:
 
     * HTTP API（the HTTP API can be enabled only on a single server）
 

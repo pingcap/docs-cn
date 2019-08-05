@@ -86,7 +86,7 @@ For example, if you want to add two TiDB nodes (node101, node102) with the IP ad
     | node7 | 172.16.10.7 | TiKV2 |
     | node8 | 172.16.10.8 | TiKV3 |
     | node9 | 172.16.10.9 | TiKV4 |
-        
+
 2. Initialize the newly added node:
 
     ```
@@ -160,9 +160,9 @@ For example, if you want to add a PD node (node103) with the IP address `172.16.
     [grafana_servers]
     172.16.10.3
     ```
-  
+
     Now the topology is as follows:
-  
+
     | Name | Host IP | Services |
     | ---- | ------- | -------- |
     | node1 | 172.16.10.1 | PD1 |
@@ -189,7 +189,7 @@ For example, if you want to add a PD node (node103) with the IP address `172.16.
     ```
 
 4. Login the newly added PD node and edit the starting script:
-  
+
     ```
     {deploy_dir}/scripts/run_pd.sh
     ```
@@ -202,28 +202,28 @@ For example, if you want to add a PD node (node103) with the IP address `172.16.
 
     2. Add `--join="http://172.16.10.1:2379" \`. The IP address (`172.16.10.1`) can be any of the existing PD IP address in the cluster.
     3. Manually start the PD service in the newly added PD node:
-      
+
         ```
         {deploy_dir}/scripts/start_pd.sh
         ```
-      
+
     4. Use `pd-ctl` to check whether the new node is added successfully:
-    
+
         ```
         ./pd-ctl -u "http://172.16.10.1:2379"
         ```
-    
+
         > **Note:**
         >
         > `pd-ctl` is a command used to check the number of PD nodes.
 
 5. Apply a rolling update to the entire cluster:
-    
+
     ```
     ansible-playbook rolling_update.yml
     ```
 
-6. Start the monitor service: 
+6. Start the monitor service:
 
     ```
     ansible-playbook start.yml -l 172.16.10.103
@@ -312,17 +312,17 @@ For example, if you want to remove a TiKV node (node9) with the IP address `172.
 1. Remove the node from the cluster using `pd-ctl`:
 
     1. View the store ID of node9:
-        
+
         ```
         ./pd-ctl -u "http://172.16.10.1:2379" -d store
         ```
 
     2. Remove node9 from the cluster, assuming that the store ID is 10:
-        
+
         ```
         ./pd-ctl -u "http://172.16.10.1:2379" -d store delete 10
         ```
-        
+
 2. Use `pd-ctl` to check whether the node is successfully removed:
 
     ```
@@ -410,7 +410,7 @@ For example, if you want to remove a PD node (node2) with the IP address `172.16
         ```
 
     2. Remove node2 from the cluster, assuming that the name is pd2:
-        
+
         ```
         ./pd-ctl -u "http://172.16.10.1:2379" -d member delete name pd2
         ```

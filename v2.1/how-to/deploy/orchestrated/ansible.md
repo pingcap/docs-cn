@@ -34,7 +34,7 @@ Before you start, make sure you have:
 1. Several target machines that meet the following requirements:
 
     - 4 or more machines
-    
+
         A standard TiDB cluster contains 6 machines. You can use 4 machines for testing. For more details, see [Software and Hardware Recommendations](/how-to/deploy/hardware-recommendations.md).
 
     - CentOS 7.3 (64 bit) or later, x86_64 architecture (AMD64)
@@ -92,6 +92,7 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
     # visudo
     tidb ALL=(ALL) NOPASSWD: ALL
     ```
+
 4. Generate the SSH key.
 
     Execute the `su` command to switch the user from `root` to `tidb`.
@@ -101,7 +102,7 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
     ```
 
     Create the SSH key for the `tidb` user account and hit the Enter key when `Enter passphrase` is prompted. After successful execution, the SSH private key file is `/home/tidb/.ssh/id_rsa`, and the SSH public key file is `/home/tidb/.ssh/id_rsa.pub`.
-    
+
     ```
     $ ssh-keygen -t rsa
     Generating public/private rsa key pair.
@@ -143,9 +144,9 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
     > **Note:**
     >
     > It is required to use the corresponding tidb-ansible version when you deploy and upgrade the TiDB cluster. If you deploy TiDB using a mismatched version of tidb-ansible (such as using tidb-ansible v2.1.4 to deploy TiDB v2.1.6), an error might occur.
-    
+
     - Download the tidb-ansible version with a specified tag:
-    
+
         ```
         $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
         ```
@@ -249,7 +250,7 @@ analyzing CPU 0:
   available cpufreq governors: performance powersave
 ```
 
-Taking the above code for example, the system supports the `performance` and `powersave` modes. 
+Taking the above code for example, the system supports the `performance` and `powersave` modes.
 
 > **Note:**
 >
@@ -273,7 +274,7 @@ analyzing CPU 0:
                   within this range.
 ```
 
-As the above code shows, the current mode is `powersave` in this example. 
+As the above code shows, the current mode is `powersave` in this example.
 
 ### Change the governor mode
 

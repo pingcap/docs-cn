@@ -372,7 +372,7 @@ To access the TiDB cluster, use `kubectl port-forward` to expose services to the
         >
         > If the proxy is set up sucessfully, it will print something like `Forwarding from 0.0.0.0:3000 -> 3000`. After testing, press `Ctrl + C` to stop the proxy and exit.
 
-    2. Then, open your web browser at http://localhost:3000 to access the Grafana monitoring interface.
+    2. Then, open your web browser at `http://localhost:3000` to access the Grafana monitoring interface.
 
         * Default username: admin
         * Default password: admin
@@ -454,6 +454,7 @@ You can scale out or scale in the TiDB cluster simply by modifying the number of
     ```shell
     helm upgrade demo pingcap/tidb-cluster --namespace=tidb -f /home/tidb/demo/values-demo.yaml --version=<chartVersion>
     ```
+
 > **Note:**
 >
 > If you need to scale in TiKV, the consumed time depends on the volume of your existing data, because the data needs to be migrated safely.
@@ -509,7 +510,7 @@ helm delete demo --purge
 >
 > This only deletes the running pods and other resources. The data is persisted.
 
-If you do not need the data anymore, run the following commands to clean up the data. 
+If you do not need the data anymore, run the following commands to clean up the data.
 
 {{< copyable "shell-regular" >}}
 

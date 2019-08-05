@@ -1,5 +1,5 @@
 ---
-title: SHOW COLLATION | TiDB SQL Statement Reference 
+title: SHOW COLLATION | TiDB SQL Statement Reference
 summary: An overview of the usage of SHOW COLLATION for the TiDB database.
 category: reference
 ---

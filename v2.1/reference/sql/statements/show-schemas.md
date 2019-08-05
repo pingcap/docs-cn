@@ -1,5 +1,5 @@
 ---
-title: SHOW SCHEMAS | TiDB SQL Statement Reference 
+title: SHOW SCHEMAS | TiDB SQL Statement Reference
 summary: An overview of the usage of SHOW SCHEMAS for the TiDB database.
 category: reference
 ---

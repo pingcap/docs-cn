@@ -2,7 +2,7 @@
 title: Data Migration Relay Log
 summary: Learn the directory structure, initial replication rules and data purge of DM relay logs.
 category: reference
-aliases: ['/docs/tools/dm/relay-log/'] 
+aliases: ['/docs/tools/dm/relay-log/']
 ---
 
 # Data Migration Relay Log
@@ -31,14 +31,14 @@ An example of the directory structure of the local storage for a relay log:
 `-- server-uuid.index
 ```
 
-- `subdir`: 
+- `subdir`:
 
     - DM-worker stores the binlog replicated from the upstream database in the same directory. Each directory is a `subdir`.
 
     - `subdir` is named `<Upstream database UUID>.<Local subdir serial number>`.
 
     - After [a switch between master and slave instances](/reference/tools/data-migration/cluster-operations.md#switch-between-master-and-slave-instances) in the upstream, DM-worker generates a new `subdir` directory with an incremental serial number.
-    
+
         - In the above example, for the `7e427cc0-091c-11e9-9e45-72b7c59d52d7.000001` directory, `7e427cc0-091c-11e9-9e45-72b7c59d52d7` is the upstream database UUID and `000001` is the local `subdir` serial number.
 
 - `server-uuid.index`: Records a list of names of currently available `subdir` directory.
@@ -67,8 +67,8 @@ For each start of DM-worker (or the relay log resuming replication after a pause
 
     - In the non-GTID mode, DM-worker starts replication from the initial upstream binlog and replicates all the upstream binlog files to the latest successively.
 
-    - In the GTID mode, DM-worker starts replication from the initial upstream GTID. 
-    
+    - In the GTID mode, DM-worker starts replication from the initial upstream GTID.
+
         > **Note:**
         >
         > If the upstream relay log is purged, an error occurs. In this case, set `relay-binlog-gtid` to specify the starting position of replication.
@@ -89,7 +89,7 @@ The data purge methods for the relay log include automatic purge and manual purg
 Automatic data purge includes three configuration items in the DM-worker configuration file:
 
 - `purge-interval`
-    
+
     - The interval of automatic purge in the background, in seconds.
     - "3600" by default, indicating a background purge task is performed every 3600 seconds.
 

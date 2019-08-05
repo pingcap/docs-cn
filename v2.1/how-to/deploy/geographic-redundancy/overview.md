@@ -45,7 +45,7 @@ Compared with the 3-DC deployment, the 3-DC in 2 cities deployment has the follo
 2. Better usage of the resources because 2 DCs can provide services to the applications.
 3. Even if one DC is down, the TiDB cluster will be still available and no data is lost.
 
-However, the disadvantage is that if the 2 DCs within the same city goes down, whose probability is higher than that of the outage of 2 DCs in 2 cities, the TiDB cluster will not be available and some of the data will be lost. 
+However, the disadvantage is that if the 2 DCs within the same city goes down, whose probability is higher than that of the outage of 2 DCs in 2 cities, the TiDB cluster will not be available and some of the data will be lost.
 
 ## 2-DC + Binlog Replication Deployment Solution
 
@@ -63,7 +63,6 @@ Some of our production users also adopt the 2-DC multi-active solution, which me
 2. Each DC has 1 cluster and each cluster has two databases: A Master database to serve part of the application requests and a Slave database to act as the backup of the other DC’s Master database. Data written into the Master database is replicated via Binlog to the Slave database in the other DC, forming a loop of backup.
 
 Please be noted that for the 2-DC + Binlog replication solution, data is asynchronously replicated via Binlog. If the network latency between 2 DCs is too high, the data in the Slave cluster will fall much behind of the Master cluster. If the Master cluster goes down, some data will be lost and it cannot be guaranteed the lost data is within 5 minutes.
-
 
 ## Overall analysis for HA and DR
 

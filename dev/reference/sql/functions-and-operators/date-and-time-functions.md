@@ -8,7 +8,7 @@ category: reference
 
 TiDB supports all of the [date and time functions](https://dev.mysql.com/doc/refman/5.7/en/numeric-functions.html) available in MySQL 5.7.
 
-**Date/Time functions**
+**Date/Time functions:**
 
 | Name                                     | Description                              |
 | ---------------------------------------- | ---------------------------------------- |

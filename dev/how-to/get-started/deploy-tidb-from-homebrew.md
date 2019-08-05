@@ -1,5 +1,5 @@
 ---
-title: Install from Homebrew 
+title: Install from Homebrew
 summary: Install TiDB using the Homebrew package manager.
 category: how-to
 ---

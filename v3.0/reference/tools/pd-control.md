@@ -195,7 +195,7 @@ Usage:
     ```
 
 - `leader-schedule-limit` controls the number of tasks scheduling the leader at the same time. This value affects the speed of leader balance. A larger value means a higher speed and setting the value to 0 closes the scheduling. Usually the leader scheduling has a small load, and you can increase the value in need.
-    
+
     ```bash
     >> config set leader-schedule-limit 4         // 4 tasks of leader scheduling at the same time at most
     ```
@@ -614,7 +614,7 @@ Use this command to view the namespace information of the table.
 Usage:
 
 ```bash
->> table_ns add ts1 1            // Add the table with the table id of 1 to the namespace named ts1 
+>> table_ns add ts1 1            // Add the table with the table id of 1 to the namespace named ts1
 >> table_ns create ts1           // Add the namespace named ts1
 >> table_ns remove ts1 1         // Remove the table with the table id of 1 from the namespace named ts1
 >> table_ns rm_meta ts1          // Remove the metadata from the namespace named ts1

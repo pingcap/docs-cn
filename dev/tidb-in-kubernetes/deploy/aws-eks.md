@@ -30,9 +30,9 @@ Before deploying a TiDB cluster on AWS EKS, make sure the following requirements
     Default region name [None]: us-west-2
     Default output format [None]: json
     ```
-  
+
     > **Note:**
-    > 
+    >
     > The access key must have at least permissions to: create VPC, create EBS, create EC2 and create role.
 
 * [terraform](https://learn.hashicorp.com/terraform/getting-started/install.html)
@@ -52,7 +52,7 @@ Before deploying a TiDB cluster on AWS EKS, make sure the following requirements
     ```
 
     Or, download binary for macOS:
-    
+
     {{< copyable "shell-regular" >}}
 
     ```shell
@@ -60,7 +60,7 @@ Before deploying a TiDB cluster on AWS EKS, make sure the following requirements
     ```
 
     Then execute the following commands:
-    
+
     {{< copyable "shell-regular" >}}
 
     ```shell
@@ -153,9 +153,9 @@ You can interact with the EKS cluster using `kubectl` and `helm` with the kubeco
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb 
+    kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb
     ```
-    
+
     {{< copyable "shell-regular" >}}
 
     ```shell
@@ -205,7 +205,7 @@ For example, to upgrade the cluster to version 3.0.1, modify the `tidb_version` 
 ```
 
 > **Note:**
-> 
+>
 > The upgrading doesn't finish immediately. You can watch the upgrading process by `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb --watch`.
 
 ## Scale
@@ -269,14 +269,14 @@ An instance of `./tidb-cluster` module corresponds to a TiDB cluster in the EKS 
 ```hcl
 module example-cluster {
   source = "./tidb-cluster"
-  
+
   # The target EKS, required
   eks_info = local.eks
   # The subnets of node pools of this TiDB cluster, required
   subnets = local.subnets
   # TiDB cluster name, required
   cluster_name    = "example-cluster"
-  
+
   # Helm values file
   override_values = file("example-cluster.yaml")
   # TiDB cluster version
@@ -342,7 +342,7 @@ The Terraform module in our case typically combines several sub-modules:
 
 - `tidb-operator`, that provisions the Kubernetes control plane for TiDB cluster
 - `tidb-cluster`, that creates the resource pool in the target Kubernetes cluster and deploy the TiDB cluster
--  A `VPC` module, a `bastion` module and a `key-pair` module that are dedicated to TiDB on AWS
+- A `VPC` module, a `bastion` module and a `key-pair` module that are dedicated to TiDB on AWS
 
 The best practice for managing multiple Kubernetes clusters is creating a new directory for each of your Kubernetes clusters, and combine the above modules according to your needs via Terraform scripts, so that the Terraform states among clusters do not interfere with each other, and it is convenient to expand. Here's an example:
 
@@ -405,7 +405,7 @@ provider "helm" {
 # Provisions a TiDB cluster in the EKS cluster
 module "tidb-cluster-a" {
   source = "../modules/aws/tidb-cluster"
-  providers = { 
+  providers = {
     helm = "helm.eks"
   }
 
@@ -418,10 +418,10 @@ module "tidb-cluster-a" {
 # Provisions another TiDB cluster in the EKS cluster
 module "tidb-cluster-b" {
   source = "../modules/aws/tidb-cluster"
-  providers = { 
+  providers = {
     helm = "helm.eks"
   }
-  
+
   cluster_name = "tidb-cluster-b"
   eks          = module.tidb-operator.eks
   ssh_key_name = module.key-pair.key_name

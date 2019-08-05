@@ -121,7 +121,7 @@ The result is displayed in the JSON format. (The above output is truncated.)
     ```
 
     (The above output is also truncated.)
-    
+
     If you do not want to use the default TiDB service address and port, use the `--host` and `--port` options to configure. For example, `tidb-ctl --host 172.16.55.88 --port 8898 schema in mysql -n db`.
 
 #### The `base64decode` subcommand
@@ -170,7 +170,7 @@ tidb-ctl base64decode [table_id] [base64_data]
        }
       ]
      }
-    }% 
+    }%
     ```
 
 3. Decode `handle id (uint64) using `base64decode`.

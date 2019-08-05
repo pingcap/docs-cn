@@ -1,5 +1,5 @@
 ---
-title: ALTER DATABASE | TiDB SQL Statement Reference 
+title: ALTER DATABASE | TiDB SQL Statement Reference
 summary: An overview of the usage of ALTER DATABASE for the TiDB database.
 category: reference
 ---

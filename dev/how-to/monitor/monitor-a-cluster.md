@@ -94,7 +94,7 @@ Assume that the TiDB cluster topology is as follows:
 | Node5 | 192.168.199.117| TiKV2, node_export |
 | Node6 | 192.168.199.118| TiKV3, node_export |
 
-#### Step 1: Download the binary package.
+#### Step 1: Download the binary package
 
 ```bash
 # Downloads the package.
@@ -108,7 +108,7 @@ $ tar -xzf node_exporter-0.15.2.linux-amd64.tar.gz
 $ tar -xzf grafana-4.6.3.linux-x64.tar.gz
 ```
 
-#### Step 2: Start `node_exporter` on Node1, Node2, Node3, and Node4.
+#### Step 2: Start `node_exporter` on Node1, Node2, Node3, and Node4
 
 ```bash
 $ cd node_exporter-0.15.2.linux-amd64
@@ -118,7 +118,7 @@ $ ./node_exporter --web.listen-address=":9100" \
     --log.level="info" &
 ```
 
-#### Step 3: Start Prometheus on Node1.
+#### Step 3: Start Prometheus on Node1
 
 Edit the Prometheus configuration file:
 
@@ -187,7 +187,7 @@ $ ./prometheus \
     --storage.tsdb.retention="15d" &
 ```
 
-#### Step 4: Start Grafana on Node1.
+#### Step 4: Start Grafana on Node1
 
 Edit the Grafana configuration file:
 

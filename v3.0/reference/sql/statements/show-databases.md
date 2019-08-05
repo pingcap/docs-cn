@@ -1,5 +1,5 @@
 ---
-title: SHOW DATABASES | TiDB SQL Statement Reference 
+title: SHOW DATABASES | TiDB SQL Statement Reference
 summary: An overview of the usage of SHOW DATABASES for the TiDB database.
 category: reference
 ---

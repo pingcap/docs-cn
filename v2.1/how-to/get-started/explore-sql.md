@@ -1,5 +1,5 @@
 ---
-title: Explore SQL with TiDB 
+title: Explore SQL with TiDB
 summary: Learn about the basic SQL statements for the TiDB database.
 category: how-to
 ---

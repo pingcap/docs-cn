@@ -1,5 +1,5 @@
 ---
-title: Install from DBdeployer 
+title: Install from DBdeployer
 summary: Install TiDB using the DBdeployer package manager.
 category: how-to
 aliases: ['/docs/v3.0/how-to/get-started/local-cluster/install-from-dbdeployer/']
@@ -39,7 +39,7 @@ Install TiDB using the installed MySQL 5.7 client:
 curl -O https://download.pingcap.org/tidb-master-darwin-amd64.tar.gz
 dbdeployer unpack tidb-master-darwin-amd64.tar.gz --unpack-version=3.0.0
 dbdeployer deploy single 3.0.0 --client-from=5.7.25
-</pre>  
+</pre>
 
 </section>
   <section id="LinuxContent">

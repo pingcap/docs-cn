@@ -1,5 +1,5 @@
 ---
-title: SET PASSWORD | TiDB SQL Statement Reference 
+title: SET PASSWORD | TiDB SQL Statement Reference
 summary: An overview of the usage of SET PASSWORD for the TiDB database.
 category: reference
 ---
@@ -62,4 +62,3 @@ This statement is understood to be fully compatible with MySQL. Any compatibilit
 
 * [CREATE USER](/reference/sql/statements/create-user.md)
 * [Privilege Management](/reference/security/privilege-system.md)
-

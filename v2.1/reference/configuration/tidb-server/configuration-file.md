@@ -10,31 +10,31 @@ The TiDB configuration file supports more options than command line options. You
 
 This document describes the options that are not involved in command line options. For command line options, see [here](/reference/configuration/tidb-server/configuration.md).
 
-### `split-table`
+## `split-table`
 
 - To create a separate Region for each table
 - Default: true
 - It is recommended to set it to false if you need to create a large number of tables
 
-### `oom-action`
+## `oom-action`
 
 - To specify the operation when out-of-memory occurs in TiDB
 - Default: "log"
 - The valid options are "log" and "cancel"; "log" only prints the log, without actual processing; "cancel" cancels the operation and outputs the log
 
-### `enable-streaming`
+## `enable-streaming`
 
 - To enable the data fetch mode of streaming in Coprocessor
 - Default: false
 
-### `lower-case-table-names`
+## `lower-case-table-names`
 
 - To configure the value of the `lower_case_table_names` system variable
 - Default: 2
 - For details, you can see the [MySQL description](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names) of this variable
 - Currently, TiDB only supports setting the value of this option to 2. This means it is case-sensitive when you save a table name, but case-insensitive when you compare table names. The comparison is based on the lower case.
 
-### `compatible-kill-query`
+## `compatible-kill-query`
 
 + To set the `KILL` statement to be MySQL compatible
 + Default: false
@@ -45,70 +45,70 @@ This document describes the options that are not involved in command line option
 
 Configuration about log.
 
-### `format`
+## `format`
 
 - To specify the log output format
 - The valid options are "json", "text" and "console"
 - Default: "text"
 
-### `disable-timestamp`
+## `disable-timestamp`
 
 - Whether to disable outputting timestamp in the log
 - Default: false
 - If you set the value to true, the log does not output timestamp
 
-### `slow-query-file`
+## `slow-query-file`
 
 - The file name of the slow query log
 - Default: "tidb-slow.log"
 - The format of the slow log is updated in TiDB v2.1.8, so the slow log is output to the slow log file separately. In versions before v2.1.8, this variable is set to "" by default.
 - After you set it, the slow query log is output to this file separately
 
-### `slow-threshold`
+## `slow-threshold`
 
 - To output the threshold value of consumed time in the slow log
 - Default: 300ms
 - If the value in a query is larger than the default value, it is a slow query and is output to the slow log
 
-### `expensive-threshold`
+## `expensive-threshold`
 
 - To output the threshold value of the number of rows for the `expensive` operation
 - Default: 10000
 - When the number of query rows (including the intermediate results based on statistics) is larger than this value, it is an `expensive` operation and outputs log with the `[EXPENSIVE_QUERY]` prefix.
 
-### `query-log-max-len`
+## `query-log-max-len`
 
 - The maximum length of SQL output
 - Default: 2048
 - When the length of the statement is longer than `query-log-max-len`, the statement is truncated to output
 
-### log.file
+## log.file
 
-#### `filename`
+### `filename`
 
 - The file name of the general log file
 - Default: ""
 - If you set it, the log is output to this file
 
-#### `max-size`
+### `max-size`
 
 - The size limit of the log file
 - Default: 300MB
 - The maximum size is 4GB
 
-#### `max-days`
+### `max-days`
 
 - The maximum number of days that the log is retained
 - Default: 0
 - The log is retained by default; if you set the value, the expired log is cleaned up after `max-days`
 
-#### `max-backups`
+### `max-backups`
 
 - The maximum number of retained logs
 - Default: 0
 - All the log files are retained by default; if you set it to 7, 7 log files are retained at maximum
 
-#### `log-rotate`
+### `log-rotate`
 
 - Whether to create a new log file every day
 - Default: true
@@ -190,7 +190,7 @@ Configuration about performance.
 
 - Whether TiDB performs statistics update operations, such as maintaining the total number of rows and the number of modified rows, automatically analyzing and using feedback
 - Default: true
-+ Because the time interval of the statistics update operations is controlled by `stats-lease`, this parameter only takes effect when `stats-lease` is set to 0. When `enable-update-stats` is `false`, TiDB no longer automatically modifies the following system tables: 
++ Because the time interval of the statistics update operations is controlled by `stats-lease`, this parameter only takes effect when `stats-lease` is set to 0. When `enable-update-stats` is `false`, TiDB no longer automatically modifies the following system tables:
     - `mysql.stats_meta`: TiDB no longer automatically records the number of table rows that are modified by the transaction or updates it to this system table
     - `mysql.stats_histograms` and `mysql.stats_buckets`: TiDB no longer automatically analyzes or proactively updates statistics
     - `mysql.stats_feedback`: TiDB no longer updates the statistics of the tables and indexes according to a part of statistics returned by the queried data

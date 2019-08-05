@@ -86,14 +86,14 @@ If the `ssl-ca` parameter is not specified in the TiDB server or MySQL client, t
   1. Specify the `ssl-cert` and `ssl-key` parameters in the TiDB server.
   2. Specify the `--ssl-ca` parameter in the MySQL client.
   3. Specify the `--ssl-mode` to `VERIFY_CA` at least in the MySQL client.
-  4. Make sure that the certificate (`ssl-cert`) configured by the TiDB server is signed by the CA specified by the client `--ssl-ca` parameter, otherwise the authentication fails. 
-  
+  4. Make sure that the certificate (`ssl-cert`) configured by the TiDB server is signed by the CA specified by the client `--ssl-ca` parameter, otherwise the authentication fails.
+
 + To authenticate the MySQL client from the TiDB server:
   1. Specify the `ssl-cert`, `ssl-key`, and `ssl-ca` parameters in the TiDB server.
   2. Specify the `--ssl-cert` and `--ssl-key` parameters in the client.
   3. Make sure the server-configured certificate and the client-configured certificate are both signed by the `ssl-ca` specified by the server.
-  
-- To perform mutual authentication, meet both of the above requirements. 
+
+- To perform mutual authentication, meet both of the above requirements.
 
 > **Note:**
 >

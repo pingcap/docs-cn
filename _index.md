@@ -21,7 +21,7 @@ TiDB can be deployed on-premise or in-cloud. The following deployment options ar
     - [GKE (Google Kubernetes Engine)](/v3.0/tidb-in-kubernetes/deploy/gcp-gke.md)
     - [Google Cloud Shell](/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
     - [Alibaba Cloud ACK (Container Service for Kubernetes)](/v3.0/tidb-in-kubernetes/deploy/alibaba-cloud.md)
-  
+
     Or deploy TiDB locally using:
 
     - [DinD (Docker in Docker)](/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)

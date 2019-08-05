@@ -142,7 +142,7 @@ The filtering process is as follows:
 
 2. Filter at the table level:
 
-    1. If `do-tables` is not empty, judge whether a matched table exists in `do-tables`.  
+    1. If `do-tables` is not empty, judge whether a matched table exists in `do-tables`.
 
         - If yes, replicate `test`.`t`.
         - If not, filter `test`.`t`.

@@ -1,5 +1,5 @@
 ---
-title: SET TRANSACTION | TiDB SQL Statement Reference 
+title: SET TRANSACTION | TiDB SQL Statement Reference
 summary: An overview of the usage of SET TRANSACTION for the TiDB database.
 category: reference
 ---

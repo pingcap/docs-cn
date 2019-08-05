@@ -1,5 +1,5 @@
 ---
-title: INSERT | TiDB SQL Statement Reference 
+title: INSERT | TiDB SQL Statement Reference
 summary: An overview of the usage of INSERT for the TiDB database.
 category: reference
 ---
@@ -7,7 +7,6 @@ category: reference
 # INSERT
 
 This statement inserts new rows into a table.
-
 
 ## Synopsis
 

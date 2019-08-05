@@ -1,5 +1,5 @@
 ---
-title: USE | TiDB SQL Statement Reference 
+title: USE | TiDB SQL Statement Reference
 summary: An overview of the usage of USE for the TiDB database.
 category: reference
 ---

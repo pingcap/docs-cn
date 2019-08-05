@@ -7,7 +7,7 @@ category: Releases
 
 On January 19, 2018, TiDB 1.1 Alpha is released. This release has great improvement in MySQL compatibility, SQL optimization, stability, and performance.
 
-## TiDB:
+## TiDB
 
 - SQL parser
     - Support more syntax
@@ -28,7 +28,7 @@ On January 19, 2018, TiDB 1.1 Alpha is released. This release has great improvem
 - Server
     - Support the PROXY protocol
 
-## PD:
+## PD
 
 - Add more APIs
 - Support TLS
@@ -36,7 +36,7 @@ On January 19, 2018, TiDB 1.1 Alpha is released. This release has great improvem
 - Schedule to adapt to different Region sizes
 - Fix some bugs about scheduling
 
-## TiKV:
+## TiKV
 
 - Support Raft learner
 - Optimize Raft Snapshot and reduce the I/O overhead

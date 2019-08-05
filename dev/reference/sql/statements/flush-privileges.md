@@ -1,5 +1,5 @@
 ---
-title: FLUSH PRIVILEGES | TiDB SQL Statement Reference 
+title: FLUSH PRIVILEGES | TiDB SQL Statement Reference
 summary: An overview of the usage of FLUSH PRIVILEGES for the TiDB database.
 category: reference
 ---

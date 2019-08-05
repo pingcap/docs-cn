@@ -136,7 +136,7 @@ You need to configure the following information when using Driver:
 * `ClusterID`: the cluster ID of the TiDB cluster
 * `Topic`: the topic name of Kafka. If Topic is empty, use the default name in Drainer `<ClusterID>_obinlog`.
 
-You can use Driver by quoting the Driver code in package and refer to the example code provided by Driver to learn how to use Driver and parse the binlog data. 
+You can use Driver by quoting the Driver code in package and refer to the example code provided by Driver to learn how to use Driver and parse the binlog data.
 
 Currently, two examples are provided:
 

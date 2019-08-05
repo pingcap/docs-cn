@@ -2,7 +2,7 @@
 title: Constraints
 summary: Learn how SQL Constraints apply to TiDB.
 category: reference
-aliases: ['/docs/sql/constraints/'] 
+aliases: ['/docs/sql/constraints/']
 ---
 
 # Constraints
@@ -48,7 +48,7 @@ TiDB also supports the syntax to `DROP FOREIGN KEY` and `ADD FOREIGN KEY` via th
 
 ```sql
 ALTER TABLE orders DROP FOREIGN KEY fk_user_id;
-ALTER TABLE orders ADD FOREIGN KEY fk_user_id (user_id) REFERENCES users(id); 
+ALTER TABLE orders ADD FOREIGN KEY fk_user_id (user_id) REFERENCES users(id);
 ```
 
 Currently foreign keys are not enforced as part of DML operations. For example, in TiDB the following transaction commits successfully even though there is no `user_id` with `id=123`:
@@ -185,4 +185,4 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ..
 ```
 
-* The first `INSERT` statement causes a duplicate key error. This results in additional network communication, and will likely decrease insert throughput. 
+* The first `INSERT` statement causes a duplicate key error. This results in additional network communication, and will likely decrease insert throughput.

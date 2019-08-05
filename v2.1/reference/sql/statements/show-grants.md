@@ -1,5 +1,5 @@
 ---
-title: SHOW GRANTS | TiDB SQL Statement Reference 
+title: SHOW GRANTS | TiDB SQL Statement Reference
 summary: An overview of the usage of SHOW GRANTS for the TiDB database.
 category: reference
 ---

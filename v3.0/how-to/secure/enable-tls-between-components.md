@@ -72,7 +72,7 @@ cert-path = "/path/to/pd-server.pem"
 key-path = "/path/to/pd-server-key.pem"
 ```
 
-Now mutual authentication among TiDB components is enabled. 
+Now mutual authentication among TiDB components is enabled.
 
 When you connect the server using the client, it is required to specify the client certificate. For example:
 

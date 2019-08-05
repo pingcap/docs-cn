@@ -7,7 +7,7 @@ category: releases
 
 On August 4, 2017, TiDB RC4 is released! This release is focused on the compatibility with MySQL, SQL query optimizer, system stability and performance in this version. What’s more, a new permission management mechanism is added and users can control data access in the same way as the MySQL privilege management system.
 
-## TiDB:
+## TiDB
 
 + Query optimizer
     - Collect column/index statistics and use them in the query optimizer
@@ -31,7 +31,8 @@ On August 4, 2017, TiDB RC4 is released! This release is focused on the compatib
 + Fix Bugs
 + Solve the problem of memory leak
 
-## PD:
+## PD
+
 + Support location aware replica scheduling
 + Conduct fast scheduling based on the number of region
 + pd-ctl support more features
@@ -40,7 +41,8 @@ On August 4, 2017, TiDB RC4 is released! This release is focused on the compatib
     - Add or delete scheduler and operator
     - Obtain cluster label information
 
-## TiKV:
+## TiKV
+
 + Support Async Apply to improve the entire write performance
 + Use prefix seek to improve the read performance of Write CF
 + Use memory hint prefix to improve the insert performance of Raft CF

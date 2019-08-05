@@ -85,7 +85,7 @@ TiDB supports the ability to store data in both row-oriented and (coming soon) c
 ## SQL Plan Management
 
 In both MySQL and TiDB, optimizer hints are available to override the default query execution plan with a better known plan. The problem with this approach is that it requires an application developer to make modifications to query text to inject the hint. This can also be undesirable in the case that an ORM is used to generate the query.
- 
+
 In TiDB 3.0, you will be able to bind queries to a specific execution plan directly within the TiDB server. This method is entirely transparent to application code.
 
 ## Open Source

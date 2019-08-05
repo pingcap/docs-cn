@@ -12,7 +12,7 @@ This document introduces the sharding support feature provided by Data Migration
 >
 > To merge and replicate data from the sharded tables, you must configure the `is-sharding: true` item in the task configuration file.
 
-### Restrictions
+## Restrictions
 
 DM has the following sharding DDL usage restrictions:
 
@@ -34,9 +34,9 @@ DM has the following sharding DDL usage restrictions:
     - For example, both the original `table_1` and `table_2` have two columns (a, b) initially, and have three columns (a, b, c) after the sharding DDL operation, so after the replication the newly created table should also have three columns (a, b, c).
 - Because the DM-worker that has received the DDL statements will pause the task to wait for other DM-workers to receive their DDL statements, the delay of data replication will be increased.
 
-### Background
+## Background
 
-Currently, DM uses the binlog in the `ROW` format to perform the replication task. The binlog does not contain the table schema information. When you use the `ROW` binlog to replicate data, if you have not replicated multiple upstream tables into the same downstream table, then there only exist DDL operations of one upstream table that can update the table schema of the downstream table. The `ROW` binlog can be considered to have the nature of self-description. During the replication process, the DML statements can be constructed accordingly with the column values and the downstream table schema.  
+Currently, DM uses the binlog in the `ROW` format to perform the replication task. The binlog does not contain the table schema information. When you use the `ROW` binlog to replicate data, if you have not replicated multiple upstream tables into the same downstream table, then there only exist DDL operations of one upstream table that can update the table schema of the downstream table. The `ROW` binlog can be considered to have the nature of self-description. During the replication process, the DML statements can be constructed accordingly with the column values and the downstream table schema.
 
 However, in the process of merging and replicating sharded tables, if DDL statements are executed on the upstream tables to modify the table schema, then you need to perform extra operations to replicate the DDL statements so as to avoid the inconsistency between the DML statements produced by the column values and the actual downstream table schema.
 
@@ -56,7 +56,7 @@ Now assume that in the replication process, the binlog data received from the tw
 
 Assume that the DDL statements of sharded tables are not processed during the replication process. After DDL statements of instance 1 are replicated to the downstream, the downstream table schema is changed to `schema V2`. But for instance 2, the Syncer unit in DM-worker is still receiving DML events of `schema V1` from `t2` to `t3`. Therefore, when the DML statements of `schema V1` are replicated to the downstream, the inconsistency between the DML statements and the table schema can cause errors and the data cannot be replicated successfully.
 
-### Principles
+## Principles
 
 This section shows how DM replicates DDL statements in the process of merging sharded tables based on the above example in the [background](#background) section.
 

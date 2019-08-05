@@ -1,5 +1,5 @@
 ---
-title: RENAME TABLE | TiDB SQL Statement Reference 
+title: RENAME TABLE | TiDB SQL Statement Reference
 summary: An overview of the usage of RENAME TABLE for the TiDB database.
 category: reference
 ---

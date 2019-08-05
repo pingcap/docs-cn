@@ -1,5 +1,5 @@
 ---
-title: DESC | TiDB SQL Statement Reference 
+title: DESC | TiDB SQL Statement Reference
 summary: An overview of the usage of DESC for the TiDB database.
 category: reference
 ---

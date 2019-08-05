@@ -13,7 +13,7 @@ This document describes how to deploy a TiDB cluster on Alibaba Cloud Kubernetes
 - [aliyun-cli](https://github.com/aliyun/aliyun-cli) >= 3.0.15 and [configure aliyun-cli](https://www.alibabacloud.com/help/doc-detail/90766.htm?spm=a2c63.l28256.a3.4.7b52a893EFVglq)
 
     > **Note:**
-    > 
+    >
     > The access key must be granted permissions to control the corresponding resources.
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.12
@@ -25,7 +25,7 @@ You can use [Cloud Shell](https://shell.aliyun.com) of Alibaba Cloud to perform 
 
 ### Required privileges
 
-To deploy a TiDB cluster, make sure you have the following privileges: 
+To deploy a TiDB cluster, make sure you have the following privileges:
 
 - AliyunECSFullAccess
 - AliyunESSFullAccess
@@ -51,7 +51,7 @@ In the default configuration, you will create:
     - An auto-scaling group of 2 * `ecs.c5.4xlarge` instances for deploying the TiDB cluster
     - An auto-scaling group of 1 * `ecs.c5.xlarge` instance for deploying monitoring components
     - A 100 GB cloud disk used to store monitoring data
- 
+
 All the instances except ACK mandatory workers are deployed across availability zones (AZs) to provide cross-AZ high availability. The auto-scaling group ensures the desired number of healthy instances, so the cluster can auto-recover from node failure or even AZ failure.
 
 ## Deploy
@@ -66,7 +66,7 @@ All the instances except ACK mandatory workers are deployed across availability 
     export TF_VAR_ALICLOUD_SECRET_KEY=<YOUR_SECRET_KEY>
     ```
 
-The `variables.tf` file contains default settings of variables used for deploying the cluster. You can change it or use the `-var` option to override a specific variable to fit your need.
+    The `variables.tf` file contains default settings of variables used for deploying the cluster. You can change it or use the `-var` option to override a specific variable to fit your need.
 
 2. Use Terraform to set up the cluster.
 
@@ -212,7 +212,7 @@ module "tidb-cluster-dev" {
 
   cluster_name = "dev-cluster"
   ack          = module.tidb-operator
-  
+
   pd_count                   = 1
   tikv_count                 = 1
   tidb_count                 = 1
@@ -279,10 +279,10 @@ It is recommended to use a separate Terraform module to manage a specific Kubern
         access_key = <YOUR_ACCESS_KEY>
         secret_key = <YOUR_SECRET_KEY>
     }
-    
+
     module "tidb-operator" {
         source     = "../modules/aliyun/tidb-operator"
-        
+
         region          = <YOUR_REGION>
         access_key      = <YOUR_ACCESS_KEY>
         secret_key      = <YOUR_SECRET_KEY>
@@ -290,7 +290,7 @@ It is recommended to use a separate Terraform module to manage a specific Kubern
         key_file        = "ssh-key.pem"
         kubeconfig_file = "kubeconfig"
     }
-    
+
     provider "helm" {
         alias    = "default"
         insecure = true
@@ -299,20 +299,20 @@ It is recommended to use a separate Terraform module to manage a specific Kubern
             config_path = module.tidb-operator.kubeconfig_filename
         }
     }
-    
+
     module "tidb-cluster" {
         source = "../modules/aliyun/tidb-cluster"
         providers = {
             helm = helm.default
         }
-        
+
         cluster_name = "example-cluster"
         ack          = module.tidb-operator
     }
-    
+
     module "bastion" {
         source = "../modules/aliyun/bastion"
-        
+
         bastion_name             = "example-bastion"
         key_name                 = module.tidb-operator.key_name
         vpc_id                   = module.tidb-operator.vpc_id
@@ -353,7 +353,7 @@ terraform state rm module.ack.alicloud_cs_managed_kubernetes.k8s
 ```
 
 > **Note:**
-> 
+>
 > You have to manually delete the cloud disk used by monitoring node in the Alibaba Cloud console after destroying if you do not need it anymore.
 
 ## Limitation

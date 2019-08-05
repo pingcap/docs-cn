@@ -1,8 +1,8 @@
 ---
 title: TiDB Sysbench Performance Test Report -- v2.0.0 vs. v1.0.0
-category: benchmark 
+category: benchmark
 aliases: ['/docs/benchmark/sysbench-v2/']
---- 
+---
 
 # TiDB Sysbench Performance Test Report -- v2.0.0 vs. v1.0.0
 
@@ -10,24 +10,24 @@ aliases: ['/docs/benchmark/sysbench-v2/']
 
 This test aims to compare the performances of TiDB 1.0 and TiDB 2.0.
 
-## Test version, time, and place 
+## Test version, time, and place
 
-TiDB version: v1.0.8 vs. v2.0.0-rc6 
+TiDB version: v1.0.8 vs. v2.0.0-rc6
 
 Time: April 2018
 
-Place: Beijing, China      
+Place: Beijing, China
 
 ## Test environment
- 
-IDC machine       
- 
+
+IDC machine
+
 | Type | Name |
 | -------- | --------- |
 | OS | linux (CentOS 7.3.1611) |
 | CPU | 40 vCPUs, Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz |
 | RAM | 128GB |
-| DISK | Optane 500GB SSD * 1 |   
+| DISK | Optane 500GB SSD * 1 |
 
 ## Test plan
 
@@ -52,19 +52,19 @@ IDC machine
 ### TiKV parameter configuration
 
 - v1.0.8
-    
+
     ```
     sync-log = false
     grpc-concurrency = 8
-    grpc-raft-conn-num = 24 
+    grpc-raft-conn-num = 24
     ```
 
 - v2.0.0-rc6
 
-    ``` 
+    ```
     sync-log = false
     grpc-concurrency = 8
-    grpc-raft-conn-num = 24 
+    grpc-raft-conn-num = 24
     use-delete-range: false
     ```
 
@@ -84,7 +84,7 @@ IDC machine
 
 ## Test result
 
-### Standard `Select` test 
+### Standard `Select` test
 
 | Version | Table count | Table size | Sysbench threads |QPS | Latency (avg/.95) |
 | :---: | :---: | :---: | :---: | :---: | :---: |

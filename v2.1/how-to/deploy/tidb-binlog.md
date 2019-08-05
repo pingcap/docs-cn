@@ -13,7 +13,7 @@ This document describes two methods of deploying TiDB Binlog:
 
 It is recommended to deploy TiDB Binlog using TiDB-Ansible. If you just want to do a simple testing, you can deploy TiDB Binlog using a Binary package.
 
-## Deploy TiDB Binlog using TiDB Ansible 
+## Deploy TiDB Binlog using TiDB Ansible
 
 ### Step 1: Download TiDB Ansible
 
@@ -28,7 +28,7 @@ It is recommended to deploy TiDB Binlog using TiDB-Ansible. If you just want to 
 2. Use the following command to download the corresponding branch of TiDB-Ansible from the [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible) on GitHub. The default folder name is `tidb-ansible`.
 
     - Download the 2.0 version:
-        
+
         ```bash
         $ git clone -b release-2.0-new-binlog https://github.com/pingcap/tidb-ansible.git
         ```
@@ -44,8 +44,9 @@ It is recommended to deploy TiDB Binlog using TiDB-Ansible. If you just want to 
         ```bash
         $ git clone https://github.com/pingcap/tidb-ansible.git
         ```
-        
+
 ### Step 2: Deploy Pump
+
 1. Modify the `tidb-ansible/inventory.ini` file.
 
     1. Set `enable_binlog = True` to start `binlog` of the TiDB cluster.
@@ -65,8 +66,8 @@ It is recommended to deploy TiDB Binlog using TiDB-Ansible. If you just want to 
         172.16.10.74
         ```
 
-        Pump retains the data of the latest 7 days by default. You can modify the value of the `gc` variable in the `tidb-ansible/conf/pump.yml` file and remove the related comments: 
-        
+        Pump retains the data of the latest 7 days by default. You can modify the value of the `gc` variable in the `tidb-ansible/conf/pump.yml` file and remove the related comments:
+
         ```yaml
         global:
           # an integer value to control the expiry date of the binlog data, which indicates for how long (in days) the binlog data would be stored
@@ -99,7 +100,7 @@ It is recommended to deploy TiDB Binlog using TiDB-Ansible. If you just want to 
         > **Note:**
         >
         > Do not add a space after the commas in the above command. Otherwise, an error is reported.
-        
+
     2. Start `pump_servers`.
 
         ```
@@ -129,7 +130,7 @@ It is recommended to deploy TiDB Binlog using TiDB-Ansible. If you just want to 
     ```bash
     $ cd /home/tidb/tidb-ansible
     $ resources/bin/binlogctl -pd-urls=http://172.16.10.72:2379 -cmd pumps
-    
+
     INFO[0000] pump: {NodeID: ip-172-16-10-72:8250, Addr: 172.16.10.72:8250, State: online, MaxCommitTS: 403051525690884099, UpdateTime: 2018-12-25 14:23:37 +0800 CST}
     INFO[0000] pump: {NodeID: ip-172-16-10-73:8250, Addr: 172.16.10.73:8250, State: online, MaxCommitTS: 403051525703991299, UpdateTime: 2018-12-25 14:23:36 +0800 CST}
     INFO[0000] pump: {NodeID: ip-172-16-10-74:8250, Addr: 172.16.10.74:8250, State: online, MaxCommitTS: 403051525717360643, UpdateTime: 2018-12-25 14:23:35 +0800 CST}
@@ -137,7 +138,7 @@ It is recommended to deploy TiDB Binlog using TiDB-Ansible. If you just want to 
 
 ### Step 3: Deploy Drainer
 
-1. Obtain `initial_commit_ts`. 
+1. Obtain `initial_commit_ts`.
 
     Run the following command to use `binlogctl` to generate the `tso` information which is needed for the initial start of Drainer:
 
@@ -183,7 +184,7 @@ It is recommended to deploy TiDB Binlog using TiDB-Ansible. If you just want to 
         > **Note:**
         >
         > Name the configuration file as `alias_drainer-cluster.toml`. Otherwise, the customized configuration file cannot be found during the deployment process.
-        
+
         Set `db-type` to `mysql` and configure the downstream MySQL information:
 
         ```toml
@@ -215,8 +216,8 @@ It is recommended to deploy TiDB Binlog using TiDB-Ansible. If you just want to 
         # Valid values are "mysql", "file", "kafka", and "flash".
         db-type = "file"
 
-        # Uncomment this if you want to use `file` as `db-type`. 
-        # The value can be `gzip`. Leave it empty to disable compression. 
+        # Uncomment this if you want to use `file` as `db-type`.
+        # The value can be `gzip`. Leave it empty to disable compression.
         [syncer.to]
         # default data directory: "{{ deploy_dir }}/data.drainer"
         dir = "data.drainer"
@@ -326,7 +327,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
 
         # the interval of the heartbeats Pump sends to PD (in seconds)
         heartbeat-interval = 2
-    
+
         # the address of the PD cluster nodes
         pd-urls = "http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379"
 
@@ -340,7 +341,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         ```bash
         ./bin/pump -config pump.toml
         ```
-  
+
         If the command line parameters is the same with the configuration file parameters, the values of command line parameters are used.
 
 2. Deploy Drainer using binary.
@@ -370,7 +371,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         -disable-detect
             whether to disable the conflict monitoring
         -disable-dispatch
-            whether to disable the SQL feature of splitting a single binlog file. If it is set to "true", each binlog file is restored to a single transaction for replication based on the order of binlogs. 
+            whether to disable the SQL feature of splitting a single binlog file. If it is set to "true", each binlog file is restored to a single transaction for replication based on the order of binlogs.
             It is set to "False", when the downstream is MySQL.
         -ignore-schemas string
             the db filter list ("INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test" by default)
@@ -425,7 +426,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
 
         # the number of SQL statements of a transaction that are output to the downstream database (20 by default)
         txn-batch = 20
-    
+
         # the number of the concurrency of the downstream for replication. The bigger the value,
         # the better throughput performance of the concurrency (16 by default)
         worker-count = 16
@@ -499,7 +500,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         If the command line parameter and the configuration file parameter are the same, the parameter value in the command line is used.
 
 3. Starting TiDB server:
-        
+
     - After starting Pump and Drainer, start TiDB server with binlog enabled by adding this section to your config file for TiDB server:
         ```
         [binlog]
@@ -509,7 +510,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
     - TiDB server will obtain the addresses of registered Pumps from PD and will stream data to all of them. If there are no registered Pump instances, TiDB server will refuse to start or will block starting until a Pump instance comes online.
 
 > **Note:**
-> 
+>
 > - When TiDB is running, you need to guarantee that at least one Pump is running normally.
 > - To enable the TiDB Binlog service in TiDB server, use the `-enable-binlog` startup parameter in TiDB, or add enable=true to the [binlog] section of the TiDB server configuration file.
 > - Make sure that the TiDB Binlog service is enabled in all TiDB instances in a same cluster, otherwise upstream and downstream data inconsistency might occur during data replication. If you want to temporarily run a TiDB instance where the TiDB Binlog service is not enabled, set `run_ddl=false` in the TiDB configuration file.

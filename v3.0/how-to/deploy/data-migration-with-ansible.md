@@ -2,7 +2,7 @@
 title: Deploy Data Migration Using DM-Ansible
 summary: Use DM-Ansible to deploy the Data Migration cluster.
 category: how-to
-aliases: ['/docs/tools/dm/deployment/'] 
+aliases: ['/docs/tools/dm/deployment/']
 ---
 
 # Deploy Data Migration Using DM-Ansible
@@ -68,6 +68,7 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
     # visudo
     tidb ALL=(ALL) NOPASSWD: ALL
     ```
+
 4. Generate the SSH key.
 
     Execute the `su` command to switch the user from `root` to `tidb`.
@@ -77,7 +78,7 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
     ```
 
     Create the SSH key for the `tidb` user account and hit the <kbd>Enter</kbd> key when `Enter passphrase` is prompted. After successful execution, the SSH private key file is `/home/tidb/.ssh/id_rsa`, and the SSH public key file is `/home/tidb/.ssh/id_rsa.pub`.
-    
+
     ```
     $ ssh-keygen -t rsa
     Generating public/private rsa key pair.

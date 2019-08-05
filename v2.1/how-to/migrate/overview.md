@@ -22,7 +22,7 @@ Migrations will often make use of the following tools. The following is a brief 
 
 The following example scenarios show how you can put to use the tools mentioned above.
 
-#### Full data migration from MySQL
+### Full data migration from MySQL
 
 To migrate the full data, you can use one of the following three solutions:
 
@@ -32,7 +32,7 @@ To migrate the full data, you can use one of the following three solutions:
 
 For detailed operations, follow the steps in [Migrate Data from MySQL to TiDB](/how-to/migrate/from-mysql.md).
 
-#### Full data migration and incremental replication
+### Full data migration and incremental replication
 
 To migrate the full data and then replicate data incrementally, you can use one of the following three solutions:
 
@@ -41,12 +41,12 @@ To migrate the full data and then replicate data incrementally, you can use one 
 - DM: use DM to migrate the full data from MySQL to TiDB and then replicate the incremental data from MySQL into TiDB.
 
 For detailed operations, follow the steps in [Incremental Migration](/how-to/migrate/incrementally-from-mysql.md).
-    
+
   > **Note:**
   >
   > To replicate data from MySQL to TiDB, binary logging [must be enabled](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html) with the [row format](https://dev.mysql.com/doc/refman/5.7/en/binary-log-formats.html) enabled.
 
-#### Dump and restore from database other than MySQL
+### Dump and restore from database other than MySQL
 
 To import data from another database, it is recommended to:
 

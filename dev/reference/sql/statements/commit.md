@@ -1,5 +1,5 @@
 ---
-title: COMMIT | TiDB SQL Statement Reference 
+title: COMMIT | TiDB SQL Statement Reference
 summary: An overview of the usage of COMMIT for the TiDB database.
 category: reference
 ---
@@ -35,7 +35,7 @@ Query OK, 0 rows affected (0.01 sec)
 ## MySQL compatibility
 
 * In MySQL, with the exception of Group Replication with multiple primaries, it is not typical that a `COMMIT` statement could result in an error. By contrast, TiDB uses optimistic concurrency control and conflicts may result in `COMMIT` returning an error.
-* Be default, `UNIQUE` and `PRIMARY KEY` constraint checks are deffered until statement commit. This behavior can be changed by setting `tidb_constraint_check_in_place=TRUE`. 
+* Be default, `UNIQUE` and `PRIMARY KEY` constraint checks are deffered until statement commit. This behavior can be changed by setting `tidb_constraint_check_in_place=TRUE`.
 
 ## See also
 

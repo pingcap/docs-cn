@@ -10,7 +10,7 @@ This document introduces the precheck feature provided by DM. This feature is us
 
 ## Command
 
-`check-task` allows you to precheck whether the upstream MySQL instance configuration satisfies the DM requirements. 
+`check-task` allows you to precheck whether the upstream MySQL instance configuration satisfies the DM requirements.
 
 ## Checking items
 

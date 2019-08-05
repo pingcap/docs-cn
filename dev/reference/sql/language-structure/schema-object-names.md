@@ -66,7 +66,7 @@ The qualifier character is a separate token and need not be contiguous with the 
 To quote this identifier, use:
 
 ```sql
-`table_name`.`col_name` 
+`table_name`.`col_name`
 ```
 
 Instead of

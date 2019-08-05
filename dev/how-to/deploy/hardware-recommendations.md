@@ -8,7 +8,7 @@ category: how-to
 
 ## About
 
-As an open source distributed NewSQL database with high performance, TiDB can be deployed in the Intel architecture server and major virtualization environments and runs well. TiDB supports most of the major hardware networks and Linux operating systems. 
+As an open source distributed NewSQL database with high performance, TiDB can be deployed in the Intel architecture server and major virtualization environments and runs well. TiDB supports most of the major hardware networks and Linux operating systems.
 
 ## Linux OS version requirements
 
@@ -20,7 +20,7 @@ As an open source distributed NewSQL database with high performance, TiDB can be
 | Ubuntu LTS               | 16.04 or later |
 
 > **Note:**
-> 
+>
 > - For Oracle Enterprise Linux, TiDB supports the Red Hat Compatible Kernel (RHCK) and does not support the Unbreakable Enterprise Kernel provided by Oracle Enterprise Linux.
 > - A large number of TiDB tests have been run on the CentOS 7.3 system, and in our community there are a lot of best practices in which TiDB is deployed on the Linux operating system. Therefore, it is recommended to deploy TiDB on CentOS 7.3 or later.
 > - The support for the Linux operating systems above includes the deployment and operation in physical servers as well as in major virtualized environments like VMware, KVM and XEN.
@@ -39,7 +39,7 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 |         |         |         |              | Total Server Number |  4      |
 
 > **Note**:
-> 
+>
 > - In the test environment, the TiDB and PD can be deployed on the same server.
 > - For performance-related test, do not use low-performance storage and network hardware configuration, in order to guarantee the correctness of the test result.
 > - The TiDB server uses the disk to store server logs, so there are no special requirements for the disk type and capacity in the test environment.
@@ -55,7 +55,7 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 |     |     |     |      |  Total Server Number   |    9   |
 
 > **Note**:
-> 
+>
 > - In the production environment, you can deploy and run TiDB and PD on the same server. If you have a higher requirement for performance and reliability, try to deploy them separately.
 > - It is strongly recommended to use higher configuration in the production environment.
 > - It is recommended to keep the size of TiKV hard disk within 2 TB if you are using PCI-E SSD disks or within 1.5 TB if you are using regular SSD disks.

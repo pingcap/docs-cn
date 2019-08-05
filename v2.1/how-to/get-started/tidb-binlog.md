@@ -1,5 +1,5 @@
 ---
-title: TiDB-Binlog Tutorial 
+title: TiDB-Binlog Tutorial
 summary: Learn to deploy TiDB-Binlog with a simple TiDB cluster.
 category: how-to
 ---
@@ -68,7 +68,7 @@ Populate the config files using:
 
 ```bash
 printf > pd.toml %s\\n 'log-file="pd.log"' 'data-dir="pd.data"'
-printf > tikv.toml %s\\n 'log-file="tikv.log"' '[storage]' 'data-dir="tikv.data"' '[pd]' 'endpoints=["127.0.0.1:2379"]' '[rocksdb]' max-open-files=1024 '[raftdb]' max-open-files=1024 
+printf > tikv.toml %s\\n 'log-file="tikv.log"' '[storage]' 'data-dir="tikv.data"' '[pd]' 'endpoints=["127.0.0.1:2379"]' '[rocksdb]' max-open-files=1024 '[raftdb]' max-open-files=1024
 printf > pump.toml %s\\n 'log-file="pump.log"' 'data-dir="pump.data"' 'addr="127.0.0.1:8250"' 'advertise-addr="127.0.0.1:8250"' 'pd-urls="http://127.0.0.1:2379"'
 printf > tidb.toml %s\\n 'store="tikv"' 'path="127.0.0.1:2379"' '[log.file]' 'filename="tidb.log"' '[binlog]' 'enable=true'
 printf > drainer.toml %s\\n 'log-file="drainer.log"' '[syncer]' 'db-type="mysql"' '[syncer.to]' 'host="127.0.0.1"' 'user="root"' 'password=""' 'port=3306'
@@ -260,6 +260,7 @@ select * from t1;
 ```
 
 Expected output:
+
 ```
 TiDB [(none)]> create database tidbtest;
 Query OK, 0 rows affected (0.12 sec)
@@ -373,8 +374,10 @@ There are 3 solutions to this issue:
     ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=drainers
     ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=offline-drainer --node-id=localhost.localdomain:8249
     ```
+
 - Start Drainer _before_ starting Pump.
 - Use `binlogctl` after starting PD (but before starting Drainer and Pump) to update the state of the paused Drainer:
+
     ```
     ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=update-drainer --node-id=localhost.localdomain:8249 --state=offline
     ```

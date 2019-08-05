@@ -1,10 +1,10 @@
 ---
-title: SHOW CHARACTER SET | TiDB SQL Statement Reference 
+title: SHOW CHARACTER SET | TiDB SQL Statement Reference
 summary: An overview of the usage of SHOW CHARACTER SET for the TiDB database.
 category: reference
 ---
 
-# SHOW CHARACTER SET 
+# SHOW CHARACTER SET
 
 This statement provides a static list of available character sets in TiDB. The output does not reflect any attributes of the current connection or user.
 

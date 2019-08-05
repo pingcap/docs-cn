@@ -1,10 +1,10 @@
 ---
-title: KILL [TIDB] | TiDB SQL Statement Reference 
+title: KILL [TIDB] | TiDB SQL Statement Reference
 summary: An overview of the usage of KILL [TIDB] for the TiDB database.
 category: reference
 ---
 
-# KILL [TIDB] 
+# KILL [TIDB]
 
 The statement `KILL TIDB` is used to terminate connections in TiDB.
 

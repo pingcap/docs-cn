@@ -1,5 +1,5 @@
 ---
-title: DROP USER | TiDB SQL Statement Reference 
+title: DROP USER | TiDB SQL Statement Reference
 summary: An overview of the usage of DROP USER for the TiDB database.
 category: reference
 ---
@@ -17,7 +17,6 @@ This statement removes a user from the TiDB system database. The optional keywor
 **Username:**
 
 ![Username](/media/sqlgram-dev/Username.png)
-
 
 ## Examples
 
@@ -71,4 +70,3 @@ ERROR 1141 (42000): There is no such grant defined for user 'newuser' on host '%
 * [ALTER USER](/reference/sql/statements/alter-user.md)
 * [SHOW CREATE USER](/reference/sql/statements/show-create-user.md)
 * [Privilege Management](/reference/security/privilege-system.md)
-

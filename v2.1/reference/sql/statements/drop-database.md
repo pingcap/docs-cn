@@ -1,5 +1,5 @@
 ---
-title: DROP DATABASE | TiDB SQL Statement Reference 
+title: DROP DATABASE | TiDB SQL Statement Reference
 summary: An overview of the usage of DROP DATABASE for the TiDB database.
 category: reference
 ---
@@ -62,4 +62,3 @@ This statement is understood to be fully compatible with MySQL. Any compatibilit
 
 * [CREATE DATABASE](/reference/sql/statements/create-database.md)
 * [ALTER DATABASE](/reference/sql/statements/alter-database.md)
-

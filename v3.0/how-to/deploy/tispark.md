@@ -30,7 +30,7 @@ To make it easy to [try TiSpark](/reference/tispark.md), the TiDB cluster instal
 
 Download the latest version of JDK 1.8 from [Oracle JDK official download page](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-javase8-2177648.html). The version used in the following example is `jdk-8u141-linux-x64.tar.gz`.
 
-Extract the package and set the environment variables based on your JDK deployment directory.  
+Extract the package and set the environment variables based on your JDK deployment directory.
 
 Edit the `~/.bashrc` file. For example:
 
@@ -117,6 +117,7 @@ First start the spark-shell:
 $ cd spark
 $ bin/spark-shell
 ```
+
 Then query the TiDB table as you are using the native Spark SQL:
 
 ```scala

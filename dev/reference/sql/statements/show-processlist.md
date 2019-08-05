@@ -1,5 +1,5 @@
 ---
-title: SHOW [FULL] PROCESSLIST | TiDB SQL Statement Reference 
+title: SHOW [FULL] PROCESSLIST | TiDB SQL Statement Reference
 summary: An overview of the usage of SHOW [FULL] PROCESSLIST for the TiDB database.
 category: reference
 ---

@@ -22,7 +22,7 @@ CREATE TABLE person (
 );
 ```
 
-To index a JSON column, you must first extract it as a generated stored column. 
+To index a JSON column, you must first extract it as a generated stored column.
 
 > **Note:**
 >
@@ -85,5 +85,5 @@ CREATE TABLE person (
 The current limitations of JSON and generated columns are as follows:
 
 - You cannot add the generated column in the storage type of `STORED` through `ALTER TABLE`.
-- You cannot create an index on the generated column through `ALTER TABLE`. 
+- You cannot create an index on the generated column through `ALTER TABLE`.
 - Not all [JSON functions](/reference/sql/functions-and-operators/json-functions.md) are supported.

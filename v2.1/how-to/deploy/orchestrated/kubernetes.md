@@ -6,7 +6,7 @@ category: how-to
 
 # TiDB Deployment on Kubernetes
 
-[TiDB Operator](https://github.com/pingcap/tidb-operator) manages TiDB clusters on [Kubernetes](https://kubernetes.io) 
+[TiDB Operator](https://github.com/pingcap/tidb-operator) manages TiDB clusters on [Kubernetes](https://kubernetes.io)
 and automates tasks related to operating a TiDB cluster. It makes TiDB a truly cloud-native database.
 
 <main class="tabs">

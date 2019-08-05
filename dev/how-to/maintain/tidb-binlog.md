@@ -79,6 +79,7 @@ Usage of binlogctl:
 -time-zone string
     If a time zone is set, the corresponding time of the obtained `tso` is printed in the "generate_meta" mode. For example, "Asia/Shanghai" is the CST time zone and "Local" is the local time zone
 ```
+
 Command example:
 
 - Check the state of all the Pump or Drainer nodes:

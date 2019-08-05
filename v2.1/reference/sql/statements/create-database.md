@@ -1,5 +1,5 @@
 ---
-title: CREATE DATABASE | TiDB SQL Statement Reference 
+title: CREATE DATABASE | TiDB SQL Statement Reference
 summary: An overview of the usage of CREATE DATABASE for the TiDB database.
 category: reference
 ---

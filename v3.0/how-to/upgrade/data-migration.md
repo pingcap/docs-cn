@@ -48,31 +48,31 @@ Starting from this version, DM-worker uses a same port (8262 by default) to prov
 
     - Remove all the `dm_worker_status_port` configuration items and modify the `dm_worker_port` configuration item as needed.
     - Remove all the `dm_master_status_port` configuration items and modify the `dm_master_port` configuration item as needed.
-    
+
     For example, modify
-    
+
     ```ini
     dm_worker1_1 ansible_host=172.16.10.72 server_id=101 deploy_dir=/data1/dm_worker dm_worker_port=10081 dm_worker_status_port=10082 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
     ```
-    
+
     to
-    
+
     ```ini
     dm_worker1_1 ansible_host=172.16.10.72 server_id=101 deploy_dir=/data1/dm_worker dm_worker_port=8262 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
     ```
-    
+
     and modify
-    
+
     ```ini
     dm_master ansible_host=172.16.10.71 dm_master_port=12080 dm_master_status_port=12081
     ```
-    
+
     to
-    
+
     ```ini
     dm_master ansible_host=172.16.10.71 dm_master_port=8261
     ```
-    
+
 2. Use DM-Ansible to perform a rolling update on DM, Prometheus and Grafana.
 
 ## Upgrade to v1.0.0-133-g2f9fe82
@@ -108,7 +108,7 @@ Starting from this version, the above two kinds of information are removed and t
 1. Modify the `inventory.ini` configuration information.
 
     Set the corresponding `source_id` for all DM-worker instances.
-    
+
     For example, modify
 
     ```ini
@@ -124,11 +124,11 @@ Starting from this version, the above two kinds of information are removed and t
 2. Use DM-Ansible to perform a rolling update on DM.
 
 3. Modify the task configuration file (`task.yaml`).
-    
+
     Remove the `config` and `instance-id` configuration items and add the `source-id` configuration item (corresponding to `source_id` in `inventory.ini`).
-    
+
     For example, modify
-    
+
     ```yaml
     config:
           host: "192.168.199.118"
@@ -137,9 +137,9 @@ Starting from this version, the above two kinds of information are removed and t
           password: "1234"
     instance-id: "instance118-4306" # It is unique. It is used as the ID when storing the checkpoint, configuration and other information.
     ```
-    
+
     to
-    
+
     ```yaml
     source-id: "instance118-4306" # It should be consistent with the original `source_id` value when the checkpoint of the original task needs to be reused.
     ```

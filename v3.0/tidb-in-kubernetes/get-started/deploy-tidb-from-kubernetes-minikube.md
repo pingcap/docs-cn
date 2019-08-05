@@ -44,7 +44,7 @@ minikube start --docker-env https_proxy=http://127.0.0.1:1086 \
   --docker-env http_proxy=http://127.0.0.1:1086
 ```
 
-> **Note:** 
+> **Note:**
 >
 > As minikube is running with VMs (default), the `127.0.0.1` is the VM itself, you might want to use your real IP address of the host machine in some cases.
 
@@ -120,7 +120,7 @@ helm search tidb-operator -l
 ### Install TiDB operator in the Kubernetes cluster
 
 > **Note:**
-> 
+>
 > <chartVersion> will be used in the rest of the document to represent the chart version, e.g. `v1.0.0`.
 
 Clone tidb-operator repository:
@@ -153,7 +153,7 @@ When you see both tidb-scheduler and tidb-controller-manager are running, you ca
 
 ### Launch a TiDB cluster
 
-To launch a TiDB cluster, use the following command: 
+To launch a TiDB cluster, use the following command:
 
 ```shell
 helm install pingcap/tidb-cluster --name demo --set \
@@ -200,7 +200,7 @@ To connect your MySQL client to the TiDB server, take the following steps:
 
 ### Monitor TiDB cluster
 
-To monitor the status of the TiDB cluster, take the following steps. 
+To monitor the status of the TiDB cluster, take the following steps.
 
 1. Forward a local port to the Grafana port.
 
@@ -210,7 +210,7 @@ To monitor the status of the TiDB cluster, take the following steps.
 
 2. Open your browser, and access Grafana at `http://localhost:3000`.
 
-    Alternatively, Minikube provides `minikube service` that exposes Grafana as a service for you to access more conveniently. 
+    Alternatively, Minikube provides `minikube service` that exposes Grafana as a service for you to access more conveniently.
 
     ```shell
     minikube service demo-grafana
@@ -242,4 +242,3 @@ The minikube VM is configured by default to only use 2048MB of memory and 2 CPUs
 minikube delete
 minikube start --cpus 4 --memory 4096 ...
 ```
-

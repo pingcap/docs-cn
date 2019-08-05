@@ -14,4 +14,3 @@ TiDB supports all of the [control flow functions](https://dev.mysql.com/doc/refm
 | [`IF()`](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html#function_if)         | If/else construct                 |
 | [`IFNULL()`](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html#function_ifnull) | Null if/else construct            |
 | [`NULLIF()`](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html#function_nullif) | Return NULL if expr1 = expr2      |
-

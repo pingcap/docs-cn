@@ -35,7 +35,7 @@ DM-worker executes specific data replication tasks.
 
 After DM-worker is started, it automatically replicates the upstream binlog to the local configuration directory (the default replication directory is `<deploy_dir>/relay_log` if DM is deployed using `DM-Ansible`). For details about DM-worker, see [DM-worker Introduction](/reference/tools/data-migration/dm-worker-intro.md). For details about the relay log, see [Relay Log](/reference/tools/data-migration/relay-log.md).
 
-### dmctl 
+### dmctl
 
 dmctl is the command line tool used to control the DM cluster.
 
@@ -77,7 +77,7 @@ Before using the DM tool, note the following restrictions:
     - 5.5 < MySQL version < 5.8
     - MariaDB version >= 10.1.2
 
-    > **Note:** 
+    > **Note:**
     >
     > If there is a master-slave replication structure between the upstream MySQL/MariaDB servers, then choose the following version.
     >

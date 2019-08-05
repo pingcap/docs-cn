@@ -36,7 +36,7 @@ To set the format of the value of the `time_zone`:
 - The value can be given as a string indicating an offset from UTC, such as '+10:00' or '-6:00'.
 - The value can be given as a named time zone, such as 'Europe/Helsinki', 'US/Eastern', or 'MET'.
 
-The current session time zone setting affects the display and storage of time values that are zone-sensitive. This includes the values displayed by functions such as `NOW()` or `CURTIME()`, 
+The current session time zone setting affects the display and storage of time values that are zone-sensitive. This includes the values displayed by functions such as `NOW()` or `CURTIME()`,
 
 > **Note:**
 >

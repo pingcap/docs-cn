@@ -1,5 +1,5 @@
 ---
-title: DROP VIEW | TiDB SQL Statement Reference 
+title: DROP VIEW | TiDB SQL Statement Reference
 summary: An overview of the usage of DROP VIEW for the TiDB database.
 category: reference
 ---

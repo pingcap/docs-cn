@@ -87,7 +87,7 @@ For details, see [TiDB Privilege Management](/reference/security/privilege-syste
 
 ### Grant a role to a user
 
-For example, you can use the following statement to grant both roles `role1` and `role2` to users `user1@localhost` and `user2@localhost`: 
+For example, you can use the following statement to grant both roles `role1` and `role2` to users `user1@localhost` and `user2@localhost`:
 
 {{< copyable "sql" >}}
 

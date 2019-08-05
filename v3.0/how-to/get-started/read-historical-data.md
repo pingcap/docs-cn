@@ -2,7 +2,7 @@
 title: Read Historical Data
 summary: Learn about how TiDB reads data from history versions.
 category: how-to
-aliases: ['/docs/op-guide/history-read/'] 
+aliases: ['/docs/op-guide/history-read/']
 ---
 
 # Read Historical Data
@@ -21,8 +21,8 @@ TiDB implements a feature to read history data using the standard SQL interface 
 The `tidb_snapshot` system variable is introduced to support reading history data. About the `tidb_snapshot` variable:
 
 - The variable is valid in the `Session` scope.
-- Its value can be modified using the `Set` statement. 
-- The data type for the variable is text. 
+- Its value can be modified using the `Set` statement.
+- The data type for the variable is text.
 - The variable accepts TSO (Timestamp Oracle) and datetime. TSO is a globally unique time service, which is obtained from PD. The acceptable datetime format is "2016-10-08 16:45:26.999". Generally, the datetime can be set using second precision, for example "2016-10-08 16:45:26".
 - When the variable is set, TiDB creates a Snapshot using its value as the timestamp, just for the data structure and there is no any overhead. After that, all the `Select` operations will read data from this Snapshot.
 
@@ -30,7 +30,7 @@ The `tidb_snapshot` system variable is introduced to support reading history dat
 >
 > Because the timestamp in TiDB transactions is allocated by Placement Driver (PD), the version of the stored data is also marked based on the timestamp allocated by PD. When a Snapshot is created, the version number is based on the value of the `tidb_snapshot` variable. If there is a large difference between the local time of the TiDB server and the PD server, use the time of the PD server.
 
-After reading data from history versions, you can read data from the latest version by ending the current Session or using the `Set` statement to set the value of the `tidb_snapshot` variable to "" (empty string). 
+After reading data from history versions, you can read data from the latest version by ending the current Session or using the `Set` statement to set the value of the `tidb_snapshot` variable to "" (empty string).
 
 ## How TiDB manages the data versions
 
@@ -50,13 +50,13 @@ Pay special attention to the following two variables:
     ```sql
     mysql> create table t (c int);
     Query OK, 0 rows affected (0.01 sec)
-    
+
     mysql> insert into t values (1), (2), (3);
     Query OK, 3 rows affected (0.00 sec)
     ```
 
 2. View the data in the table:
-  
+
     ```sql
     mysql> select * from t;
     +------+
@@ -70,7 +70,7 @@ Pay special attention to the following two variables:
     ```
 
 3. View the timestamp of the table:
-  
+
     ```sql
     mysql> select now();
     +---------------------+
@@ -102,12 +102,12 @@ Pay special attention to the following two variables:
     3 rows in set (0.00 sec)
     ```
 
-6. Set the `tidb_snapshot` variable whose scope is Session. The variable is set so that the latest version before the value can be read. 
+6. Set the `tidb_snapshot` variable whose scope is Session. The variable is set so that the latest version before the value can be read.
 
     > **Note:**
     >
     > In this example, the value is set to be the time before the update operation.
-  
+
     ```sql
     mysql> set @@tidb_snapshot="2016-10-08 16:45:26";
     Query OK, 0 rows affected (0.00 sec)
@@ -132,12 +132,12 @@ Pay special attention to the following two variables:
     ```
 
 7. Set the  `tidb_snapshot` variable to be "" (empty string) and you can read the data from the latest version:
-  
+
     ```sql
     mysql> set @@tidb_snapshot="";
     Query OK, 0 rows affected (0.00 sec)
     ```
-    
+
     ```sql
     mysql> select * from t;
     +------+

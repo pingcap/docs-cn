@@ -1,8 +1,8 @@
 ---
-title: Explore SQL with TiDB 
+title: Explore SQL with TiDB
 summary: Learn about the basic SQL statements for the TiDB database.
 category: how-to
-aliases: ['/docs/try-tidb'] 
+aliases: ['/docs/try-tidb']
 ---
 
 # Explore SQL with TiDB

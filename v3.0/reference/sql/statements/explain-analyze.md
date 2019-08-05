@@ -1,5 +1,5 @@
 ---
-title: EXPLAIN ANALYZE | TiDB SQL Statement Reference 
+title: EXPLAIN ANALYZE | TiDB SQL Statement Reference
 summary: An overview of the usage of EXPLAIN ANALYZE for the TiDB database.
 category: reference
 ---

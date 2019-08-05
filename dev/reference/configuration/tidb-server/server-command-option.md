@@ -48,7 +48,7 @@ The complete descriptions of startup options are as follows.
 
 - TiDB configuration files
 - Default: ""
-- The file path of the configuration files 
+- The file path of the configuration files
 
 ### \-\-lease
 
@@ -67,7 +67,7 @@ The complete descriptions of startup options are as follows.
 
 - Log file
 - Default: ""
-- If the option is not set, the log is output to "stderr"; if set, the log is output to the corresponding file. In the small hours of every day, the log automatically rotates to use a new file, renames and backups the previous file. 
+- If the option is not set, the log is output to "stderr"; if set, the log is output to the corresponding file. In the small hours of every day, the log automatically rotates to use a new file, renames and backups the previous file.
 
 ### \-\-metrics-addr
 
@@ -110,8 +110,8 @@ The complete descriptions of startup options are as follows.
 - The status monitor port of TiDB
 - Default: "10080"
 - This port is used to display the internal data of TiDB, including the [Prometheus statistics](https://prometheus.io/) and [pprof](https://golang.org/pkg/net/http/pprof/).
-- Access the Prometheus statistics at http://host:status_port/metrics.
-- Access the pprof data at http://host:status_port/debug/pprof.
+- Access the Prometheus statistics at `http://host:status_port/metrics`.
+- Access the pprof data at `http://host:status_port/debug/pprof`.
 
 ### \-\-store
 
@@ -155,14 +155,14 @@ Same as the "run-ddl" startup option
 ### cross-join
 
 - Default: true
-- When you execute `join` on tables without any conditions on both sides, the statement can be run by default. But if you set the value to `false`, the server does not run such `join` statement. 
+- When you execute `join` on tables without any conditions on both sides, the statement can be run by default. But if you set the value to `false`, the server does not run such `join` statement.
 
 ### force-priority
 
 - The default priority for statements
 - Default: `NO_PRIORITY`
 - TiDB supports the priorities `NO_PRIORITY` | `LOW_PRIORITY` | `DELAYED` | `HIGH_PRIORITY` for statements. One use case for changing the priority, is you may choose to dedicate a pool of servers for OLAP queries and set the value to `LOW_PRIORITY` to ensure that TiKV servers will provide priority to OLTP workloads which are routed to a different pool of TiDB servers. This helps ensure more uniform OLTP performance at the risk of slightly slower OLAP performance.
-  
+
 TiDB will automatically set table scans to `LOW_PRIORITY` and overwriting priority on a per-statement basis is possible by using the `HIGH PRIORITY` or `LOW PRIORITY` DML modifier.
 
 ### join-concurrency
@@ -187,7 +187,7 @@ TiDB will automatically set table scans to `LOW_PRIORITY` and overwriting priori
 
 - The slow query log file
 - Default: ""
-- The value is the file name. If a non-null string is specified, the slow query log is redirected to the corresponding file. 
+- The value is the file name. If a non-null string is specified, the slow query log is redirected to the corresponding file.
 
 ### retry-limit
 

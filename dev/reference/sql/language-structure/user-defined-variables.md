@@ -15,11 +15,13 @@ You can use the `SET` statement to set a user variable:
 ```sql
 SET @var_name = expr [, @var_name = expr] ...
 ```
+
 or
 
 ```sql
 SET @var_name := expr
 ```
+
 For SET, you can use `=` or `:=` as the assignment operator.
 
 For example:

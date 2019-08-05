@@ -172,7 +172,7 @@ Assuming that you want to add a DM-worker instance on the `172.16.10.74` machine
         username = tidb
         ```
 
-    2. Run the following command and enter the `root` user password for deploying `172.16.10.74` according to the prompt. 
+    2. Run the following command and enter the `root` user password for deploying `172.16.10.74` according to the prompt.
 
         ```
         $ ansible-playbook -i hosts.ini create_users.yml -u root -k
@@ -266,7 +266,7 @@ Assuming that the `172.16.10.71` machine needs to be maintained or this machine 
         username = tidb
         ```
 
-    2. Run the following command and enter the `root` user password for deploying `172.16.10.80` according to the prompt. 
+    2. Run the following command and enter the `root` user password for deploying `172.16.10.80` according to the prompt.
 
         ```
         $ ansible-playbook -i hosts.ini create_users.yml -u root -k
@@ -278,14 +278,14 @@ Assuming that the `172.16.10.71` machine needs to be maintained or this machine 
 
     > **Note:**
     >
-    > If the `172.16.10.71` machine breaks down and you cannot log in via SSH, ignore this step.  
+    > If the `172.16.10.71` machine breaks down and you cannot log in via SSH, ignore this step.
 
     ```
     $ ansible-playbook stop.yml --tags=dm-master
     ```
 
 3. Edit the `inventory.ini` file, comment or delete the line where the DM-master instance that you want to replace exists, and add the information of the new DM-master instance.
- 
+
     ```ini
     [dm_master_servers]
     # dm_master ansible_host=172.16.10.71
@@ -314,7 +314,7 @@ Assuming that the `172.16.10.71` machine needs to be maintained or this machine 
 
 Assuming that the `172.16.10.72` machine needs to be maintained or this machine breaks down, and you need to migrate `dm_worker1` from `172.16.10.72` to `172.16.10.75`, perform the following steps:
 
-1. Configure the SSH mutual trust and sudo rules on the Control Machine. 
+1. Configure the SSH mutual trust and sudo rules on the Control Machine.
 
     1. Refer to [Configure the SSH mutual trust and sudo rules on the Control Machine](/how-to/deploy/data-migration-with-ansible.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine), log in to the Control Machine using the `tidb` user account, and add `172.16.10.75` to the `[servers]` section of the `hosts.ini` file.
 
@@ -335,7 +335,7 @@ Assuming that the `172.16.10.72` machine needs to be maintained or this machine 
         ```
 
         This step creates the `tidb` user account on `172.16.10.75`, and configures the sudo rules and the SSH mutual trust between the Control Machine and the `172.16.10.75` machine.
-    
+
 2. Stop the DM-worker instance that you need to replace.
 
     > **Note:**

@@ -1,5 +1,5 @@
 ---
-title: CREATE TABLE LIKE | TiDB SQL Statement Reference 
+title: CREATE TABLE LIKE | TiDB SQL Statement Reference
 summary: An overview of the usage of CREATE TABLE LIKE for the TiDB database.
 category: reference
 ---

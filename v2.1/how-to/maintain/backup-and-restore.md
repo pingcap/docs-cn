@@ -42,14 +42,14 @@ You can use [`mydumper`](/reference/tools/mydumper.md) to export data from MySQL
 
 > **Important**: You must use the `mydumper` from the Enterprise Tools package, and not the `mydumper` provided by your operating system's package manager. The upstream version of `mydumper` does not yet handle TiDB correctly ([#155](https://github.com/maxbube/mydumper/pull/155)). Using `mysqldump` is also not recommended, as it is much slower for both backup and restoration.
 
-### Best practices of full backup and restoration using `mydumper`/`loader` 
+### Best practices of full backup and restoration using `mydumper`/`loader`
 
 To quickly backup and restore data (especially large amounts of data), refer to the following recommendations:
 
 - Keep the exported data file as small as possible and it is recommended keep it within 64M. You can use the `-F` parameter to set the value.
 - You can adjust the `-t` parameter of `loader` based on the number and the load of TiKV instances. For example, if there are three TiKV instances, `-t` can be set to 3 * (1 ~ n). If the load of TiKV is too high and the log `backoffer.maxSleep 15000ms is exceeded` is displayed many times, decrease the value of `-t`; otherwise, increase it.
 
-#### An example of restoring data and related configuration 
+#### An example of restoring data and related configuration
 
 - The total size of the exported files is 214G. A single table has 8 columns and 2 billion rows.
 - The cluster topology:
@@ -73,6 +73,7 @@ Use `mydumper` to backup data from TiDB.
 ```bash
 ./bin/mydumper -h 127.0.0.1 -P 4000 -u root -t 16 -F 64 -B test -T t1,t2 --skip-tz-utc -o ./var/test
 ```
+
 In this command,
 
 - `-B test`: means the data is exported from the `test` database.
@@ -83,7 +84,7 @@ In this command,
 
 ### Restore data into TiDB
 
-To restore data into TiDB, use `loader` to import the previously exported data. See [Loader instructions](/reference/tools/loader.md) for more information.   
+To restore data into TiDB, use `loader` to import the previously exported data. See [Loader instructions](/reference/tools/loader.md) for more information.
 
 ```bash
 ./bin/loader -h 127.0.0.1 -u root -P 4000 -t 32 -d ./var/test

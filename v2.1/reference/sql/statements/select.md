@@ -1,10 +1,10 @@
 ---
-title: SELECT | TiDB SQL Statement Reference 
+title: SELECT | TiDB SQL Statement Reference
 summary: An overview of the usage of SELECT for the TiDB database.
 category: reference
 ---
 
-# SELECT 
+# SELECT
 
 The `SELECT` statement is used to read data from TiDB.
 
@@ -76,8 +76,6 @@ The `SELECT` statement is used to read data from TiDB.
 |`LIMIT` | The `LIMIT` clause can be used to constrain the number of rows. `LIMIT` takes one or two numeric arguments. With one argument, the argument specifies the maximum number of rows to return, the first row to return is the first row of the table by default; with two arguments, the first argument specifies the offset of the first row to return, and the second specifies the maximum number of rows to return.|
 | `FOR UPDATE` | The `SELECT FOR UPDATE` clause locks all the data in the result sets to detect concurrent updates from other transactions. Data that match the query conditions but do not exist in the result sets are not read-locked, such as the row data written by other transactions after the current transaction is started. TiDB uses the [Optimistic Transaction Model](/reference/transactions/transaction-model.md). The transaction conflicts are not detected in the statement execution phase. Therefore, the current transaction does not block other transactions from executing `UPDATE`, `DELETE` or `SELECT FOR UPDATE` like other databases such as PostgreSQL. In the committing phase, the rows read by `SELECT FOR UPDATE` are committed in two phases, which means they can also join the conflict detection. If write conflicts occur, the commit fails for all transactions that include the `SELECT FOR UPDATE` clause. If no conflict is detected, the commit succeeds. And a new version is generated for the locked rows, so that write conflicts can be detected when other uncommitted transactions are being committed later.|
 |`LOCK IN SHARE MODE` | To guarantee compatibility, TiDB parses these three modifiers, but will ignore them.|
-
-
 
 ## Examples
 

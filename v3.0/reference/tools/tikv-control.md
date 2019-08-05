@@ -46,7 +46,7 @@ AAFF
 ```
 
 > **Note:**
-> 
+>
 > When you specify the `escaped` form of the key in a command line, it is required to enclose it in double quotes. Otherwise, bash eats the backslash and a wrong result is returned.
 
 ## Subcommands, some options and flags
@@ -224,10 +224,10 @@ If the command is successfully executed, it prints the above information. If the
 
 ### Modify the RocksDB configuration of TiKV dynamically
 
-You can use the `modify-tikv-config` command to dynamically modify the configuration arguments. Currently, it only supports dynamically modifying RocksDB related arguments. 
+You can use the `modify-tikv-config` command to dynamically modify the configuration arguments. Currently, it only supports dynamically modifying RocksDB related arguments.
 
 - `-m` is used to specify the target RocksDB. You can set it to `kvdb` or `raftdb`.
-- `-n` is used to specify the configuration name. 
+- `-n` is used to specify the configuration name.
     You can refer to the arguments of `[rocksdb]` and `[raftdb]` (corresponding to `kvdb` and `raftdb`) in the [TiKV configuration template](https://github.com/tikv/tikv/blob/master/etc/config-template.toml#L213-L500).
     You can use `default|write|lock + . + argument name` to specify the configuration of different CFs. For `kvdb`, you can set it to `default`, `write`, or `lock`; for `raftdb`, you can only set it to `default`.
 - `-v` is used to specify the configuration value.
@@ -296,4 +296,3 @@ $ tikv-ctl ldb --hex manifest_dump --path=/tmp/db/MANIFEST-000001
 You can specify the column family that your query is against using the `--column_family=<string>` command line.
 
 `--try_load_options` loads the database options file to open the database. It is recommended to always keep this option on when the database is running. If you open the database with default options, the LSM-tree might be messed up, which cannot be recovered automatically.
-

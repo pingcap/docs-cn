@@ -47,7 +47,7 @@ Server | Server report failures | The total number of reporting failure messages
 Server | Region average written keys | The average rate of writing keys to Regions on each TiKV instance |
 Server | Region average written bytes | The average rate of writing bytes to Regions on each TiKV instance |
 Server | Active written leaders | The number of active leaders on each TiKV instance |
-Server | Approximate Region size | The approximate Region size | 
+Server | Approximate Region size | The approximate Region size |
 Raft IO | Apply log duration | The time consumed when Raft applies log |
 Raft IO | Apply log duration per server | The time consumed when Raft applies log on each TiKV instance |
 Raft IO | Append log duration | The time consumed when Raft appends log |
@@ -92,7 +92,7 @@ Scheduler - batch_get | Scheduler scan details | The keys scan details of each C
 Scheduler - batch_get | Scheduler scan details [lock] | The keys scan details of lock CF when executing batch_get command |
 Scheduler - batch_get | Scheduler scan details [write] | The keys scan details of write CF when executing batch_get command |
 Scheduler - batch_get | Scheduler scan details [default] | The keys scan details of default CF when executing batch_get command |
-Scheduler - cleanup | Scheduler stage total | The total number of commands on each stage in cleanup command | There should not be lots of errors in a short time. 
+Scheduler - cleanup | Scheduler stage total | The total number of commands on each stage in cleanup command | There should not be lots of errors in a short time.
 Scheduler - cleanup | Scheduler command duration | The time consumed when executing cleanup command | It should be less than `1s`.
 Scheduler - cleanup | Scheduler latch wait duration | The time which is caused by latch wait in cleanup command | It should be less than `1s`.
 Scheduler - cleanup | Scheduler keys read | The count of keys read by a cleanup command |
@@ -101,16 +101,16 @@ Scheduler - cleanup | Scheduler scan details | The keys scan details of each CF 
 Scheduler - cleanup | Scheduler scan details [lock] | The keys scan details of lock CF when executing cleanup command |
 Scheduler - cleanup | Scheduler scan details [write] | The keys scan details of write CF when executing cleanup command |
 Scheduler - cleanup | Scheduler scan details [default] | The keys scan details of default CF when executing cleanup command |
-Scheduler - commit | Scheduler stage total | The total number of commands on each stage in commit command | There should not be lots of errors in a short time. 
+Scheduler - commit | Scheduler stage total | The total number of commands on each stage in commit command | There should not be lots of errors in a short time.
 Scheduler - commit | Scheduler command duration | The time consumed when executing commit command | It should be less than `1s`.
-Scheduler - commit | Scheduler latch wait duration | The time which is caused by latch wait in commit command | It should be less than `1s`. 
+Scheduler - commit | Scheduler latch wait duration | The time which is caused by latch wait in commit command | It should be less than `1s`.
 Scheduler - commit | Scheduler keys read | The count of keys read by a commit command |
 Scheduler - commit | Scheduler keys written | The count of keys written by a commit command |
 Scheduler - commit | Scheduler scan details | The keys scan details of each CF when executing commit command |
 Scheduler - commit | Scheduler scan details [lock] | The keys scan details of lock CF when executing commit command |
 Scheduler - commit | Scheduler scan details [write] | The keys scan details of write CF when executing commit command |
 Scheduler - commit | Scheduler scan details [default] | The keys scan details of default CF when executing commit command |
-Scheduler - gc | Scheduler stage total | The total number of commands on each stage in gc command | There should not be lots of errors in a short time. 
+Scheduler - gc | Scheduler stage total | The total number of commands on each stage in gc command | There should not be lots of errors in a short time.
 Scheduler - gc | Scheduler command duration | The time consumed when executing gc command | It should be less than `1s`.
 Scheduler - gc | Scheduler latch wait duration | The time which is caused by latch wait in gc command | It should be less than `1s`.
 Scheduler - gc | Scheduler keys read | The count of keys read by a gc command |
@@ -119,7 +119,7 @@ Scheduler - gc | Scheduler scan details | The keys scan details of each CF when 
 Scheduler - gc | Scheduler scan details [lock] | The keys scan details of lock CF when executing gc command |
 Scheduler - gc | Scheduler scan details [write] | The keys scan details of write CF when executing gc command |
 Scheduler - gc | Scheduler scan details [default] | The keys scan details of default CF when executing gc command |
-Scheduler - get | Scheduler stage total | The total number of commands on each stage in get command | There should not be lots of errors in a short time. 
+Scheduler - get | Scheduler stage total | The total number of commands on each stage in get command | There should not be lots of errors in a short time.
 Scheduler - get | Scheduler command duration | The time consumed when executing get command | It should be less than `1s`.
 Scheduler - get | Scheduler latch wait duration | The time which is caused by latch wait in get command | It should be less than `1s`.
 Scheduler - get | Scheduler keys read | The count of keys read by a get command |
@@ -128,7 +128,7 @@ Scheduler - get | Scheduler scan details | The keys scan details of each CF when
 Scheduler - get | Scheduler scan details [lock] | The keys scan details of lock CF when executing get command |
 Scheduler - get | Scheduler scan details [write] | The keys scan details of write CF when executing get command |
 Scheduler - get | Scheduler scan details [default] | The keys scan details of default CF when executing get command |
-Scheduler - key_mvcc | Scheduler stage total | The total number of commands on each stage in key_mvcc command | There should not be lots of errors in a short time. 
+Scheduler - key_mvcc | Scheduler stage total | The total number of commands on each stage in key_mvcc command | There should not be lots of errors in a short time.
 Scheduler - key_mvcc | Scheduler command duration | The time consumed when executing key_mvcc command | It should be less than `1s`.
 Scheduler - key_mvcc | Scheduler latch wait duration | The time which is caused by latch wait in key_mvcc command | It should be less than `1s`.
 Scheduler - key_mvcc | Scheduler keys read | The count of keys read by a key_mvcc command |
@@ -137,7 +137,7 @@ Scheduler - key_mvcc | Scheduler scan details | The keys scan details of each CF
 Scheduler - key_mvcc | Scheduler scan details [lock] | The keys scan details of lock CF when executing key_mvcc command |
 Scheduler - key_mvcc | Scheduler scan details [write] | The keys scan details of write CF when executing key_mvcc command |
 Scheduler - key_mvcc | Scheduler scan details [default] | The keys scan details of default CF when executing key_mvcc command |
-Scheduler - prewrite | Scheduler stage total | The total number of commands on each stage in prewrite command | There should not be lots of errors in a short time. 
+Scheduler - prewrite | Scheduler stage total | The total number of commands on each stage in prewrite command | There should not be lots of errors in a short time.
 Scheduler - prewrite | Scheduler command duration | The time consumed when executing prewrite command | It should be less than `1s`.
 Scheduler - prewrite | Scheduler latch wait duration | The time which is caused by latch wait in prewrite command | It should be less than `1s`.
 Scheduler - prewrite | Scheduler keys read | The count of keys read by a prewrite command |
@@ -146,7 +146,7 @@ Scheduler - prewrite | Scheduler scan details | The keys scan details of each CF
 Scheduler - prewrite | Scheduler scan details [lock] | The keys scan details of lock CF when executing prewrite command |
 Scheduler - prewrite | Scheduler scan details [write] | The keys scan details of write CF when executing prewrite command |
 Scheduler - prewrite | Scheduler scan details [default] | The keys scan details of default CF when executing prewrite command |
-Scheduler - resolve_lock | Scheduler stage total | The total number of commands on each stage in resolve_lock command | There should not be lots of errors in a short time. 
+Scheduler - resolve_lock | Scheduler stage total | The total number of commands on each stage in resolve_lock command | There should not be lots of errors in a short time.
 Scheduler - resolve_lock | Scheduler command duration | The time consumed when executing resolve_lock command | It should be less than `1s`.
 Scheduler - resolve_lock | Scheduler latch wait duration | The time which is caused by latch wait in resolve_lock command | It should be less than `1s`.
 Scheduler - resolve_lock | Scheduler keys read | The count of keys read by a resolve_lock command |
@@ -155,7 +155,7 @@ Scheduler - resolve_lock | Scheduler scan details | The keys scan details of eac
 Scheduler - resolve_lock | Scheduler scan details [lock] | The keys scan details of lock CF when executing resolve_lock command |
 Scheduler - resolve_lock | Scheduler scan details [write] | The keys scan details of write CF when executing resolve_lock command |
 Scheduler - resolve_lock | Scheduler scan details [default] | The keys scan details of default CF when executing resolve_lock command |
-Scheduler - scan | Scheduler stage total | The total number of commands on each stage in scan command | There should not be lots of errors in a short time. 
+Scheduler - scan | Scheduler stage total | The total number of commands on each stage in scan command | There should not be lots of errors in a short time.
 Scheduler - scan | Scheduler command duration | The time consumed when executing scan command | It should be less than `1s`.
 Scheduler - scan | Scheduler latch wait duration | The time which is caused by latch wait in scan command | It should be less than `1s`.
 Scheduler - scan | Scheduler keys read | The count of keys read by a scan command |
@@ -173,7 +173,7 @@ Scheduler - scan_lock | Scheduler scan details | The keys scan details of each C
 Scheduler - scan_lock | Scheduler scan details [lock] | The keys scan details of lock CF when executing scan_lock command |
 Scheduler - scan_lock | Scheduler scan details [write] | The keys scan details of write CF when executing scan_lock command |
 Scheduler - scan_lock | Scheduler scan details [default] | The keys scan details of default CF when executing scan_lock command |
-Scheduler - start_ts_mvcc | Scheduler stage total | The total number of commands on each stage in start_ts_mvcc command | There should not be lots of errors in a short time. 
+Scheduler - start_ts_mvcc | Scheduler stage total | The total number of commands on each stage in start_ts_mvcc command | There should not be lots of errors in a short time.
 Scheduler - start_ts_mvcc | Scheduler command duration | The time consumed when executing start_ts_mvcc command | It should be less than `1s`.
 Scheduler - start_ts_mvcc | Scheduler latch wait duration | The time which is caused by latch wait in start_ts_mvcc command | It should be less than `1s`.
 Scheduler - start_ts_mvcc | Scheduler keys read | The count of keys read by a start_ts_mvcc command |

@@ -8,7 +8,7 @@ category: reference
 
 TiDB supports the following data types to store temporal values: `DATE`, `TIME`, `DATETIME`, `TIMESTAMP`, and `YEAR`. Each of these types has its own range of valid values, and uses a zero value to indicate that it is an invalid value. In addition, the `TIMESTAMP` and `DATETIME` types can automatically generate new time values on modification.
 
-When dealing with date and time value types, note: 
+When dealing with date and time value types, note:
 
 + Although TiDB tries to interpret different formats, the date-portion must be in the format of year-month-day (for example, '1998-09-04'), rather than month-day-year or day-month-year.
 + If the year-portion of a date is specified as 2 digits, TiDB converts it based on [specific rules](#two-digit-year-portion-contained-in-the-date).
@@ -22,7 +22,7 @@ When dealing with date and time value types, note:
     | 2012-08-15 09:28:00 | 20120815092800 | 20120815092800.889 |
     +---------------------+----------------+--------------------+
     ```
-  
+
 + TiDB might automatically convert invalid values or values beyond the supported range to a zero value of that type. This behavior is dependent on the SQL Mode set. For example:
 
     ```sql
@@ -35,7 +35,7 @@ When dealing with date and time value types, note:
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin |
     +-------+---------------------------------------------------------------------------------------------------------+
     1 row in set (0.00 sec)
-    
+
     mysql> select @@sql_mode;
     +-------------------------------------------------------------------------------------------------------------------------------------------+
     | @@sql_mode                                                                                                                                |
@@ -43,14 +43,14 @@ When dealing with date and time value types, note:
     | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
     +-------------------------------------------------------------------------------------------------------------------------------------------+
     1 row in set (0.00 sec)
-  
+
     mysql> insert into t1 values ('2090-11-32:22:33:44');
     ERROR 1292 (22007): Truncated incorrect time value: '2090-11-32:22:33:44'
     mysql> set @@sql_mode='';                                                                                                                                                                                                                     Query OK, 0 rows affected (0.01 sec)
-    
+
     mysql> insert into t1 values ('2090-11-32:22:33:44');
     Query OK, 1 row affected, 1 warning (0.01 sec)
-    
+
     mysql> select * from t1;
     +----------+
     | a        |
@@ -61,7 +61,7 @@ When dealing with date and time value types, note:
     ```
 
 + Setting different SQL modes can change TiDB behaviors.
-+ If the SQL mode `NO_ZERO_DATE` is not enabled, TiDB allows month or day in the columns of `DATE` and `DATETIME` to be zero value, for example, '2009-00-00' or '2009-01-00'. If this date type is to be calculated in a function, for example, in `DATE_SUB()` or `DATE_ADD()`, the result can be incorrect. 
++ If the SQL mode `NO_ZERO_DATE` is not enabled, TiDB allows month or day in the columns of `DATE` and `DATETIME` to be zero value, for example, '2009-00-00' or '2009-01-00'. If this date type is to be calculated in a function, for example, in `DATE_SUB()` or `DATE_ADD()`, the result can be incorrect.
 + By default, TiDB enables the SQL mode `NO_ZERO_DATE`. This mode prevents storing zero values such as '0000-00-00'.
 
 Different types of zero value are shown in the following table:
@@ -80,7 +80,7 @@ Invalid `DATE`, `DATETIME`, `TIMESTAMP` values are automatically converted to th
 
 Columns with `TIMESTAMP` or `DATETIME` value type can be automatically initialized or updated to the current time.
 
-For any column with `TIMESTAMP` or `DATETIME` value type in the table, you can set the default or auto-update value as current timestamp. 
+For any column with `TIMESTAMP` or `DATETIME` value type in the table, you can set the default or auto-update value as current timestamp.
 
 These properties can be set by setting `DEFAULT CURRENT_TIMESTAMP` and `ON UPDATE CURRENT_TIMESTAMP` when the column is being defined. DEFAULT can also be set as a specific value, such as `DEFAULT 0` or `DEFAULT '2000-01-01 00:00:00'`.
 
@@ -110,7 +110,7 @@ CREATE TABLE t1 (
     CREATE TABLE t1 (t TIME(3), dt DATETIME(6));
     ```
 
-  `fsp` must range from 0 to 6. 
+  `fsp` must range from 0 to 6.
 
   `0` means there is no fractional part. If `fsp` is omitted, the default is 0.
 
@@ -119,11 +119,11 @@ CREATE TABLE t1 (
     ```sql
     mysql> CREATE TABLE fractest( c1 TIME(2), c2 DATETIME(2), c3 TIMESTAMP(2) );
     Query OK, 0 rows affected (0.33 sec)
-    
+
     mysql> INSERT INTO fractest VALUES
          > ('17:51:04.777', '2014-09-08 17:51:04.777',   '2014-09-08 17:51:04.777');
     Query OK, 1 row affected (0.03 sec)
-    
+
     mysql> SELECT * FROM fractest;
     +-------------|------------------------|------------------------+
     | c1          | c2                     | c3                     |
@@ -176,16 +176,16 @@ mysql> SELECT NOW(), NOW()+0, NOW(3)+0;
 
 ### Two-digit year-portion contained in the date
 
-The two-digit year-portion contained in date does not explicitly indicate the actual year and is ambiguous. 
+The two-digit year-portion contained in date does not explicitly indicate the actual year and is ambiguous.
 
-For `DATETIME`, `DATE` and `TIMESTAMP` types, TiDB follows the following rules to eliminate ambiguity: 
+For `DATETIME`, `DATE` and `TIMESTAMP` types, TiDB follows the following rules to eliminate ambiguity:
 
 - Values between 00 and 69 is converted to a value between 2000 and 2069
 - Values between 70 and 99 is converted to a value between 1970 and 1999
 
 These rules also apply to the `YEAR` type, with one exception:
 
-When numeral `00` is inserted to `YEAR(4)`, the result is 0000 rather than 2000. 
+When numeral `00` is inserted to `YEAR(4)`, the result is 0000 rather than 2000.
 
 If you want the result to be 2000, specify the value to be 2000, '0' or '00'.
 
@@ -210,7 +210,7 @@ TIME[(fsp)]
 ```
 
 > **Note:**
-> 
+>
 > Pay attention to the abbreviated form of `TIME`. For example, '11:12' means '11:12:00' instead of '00:11:12'. However, '1112' means '00:11:12'. These differences are caused by the presence or absence of the `:` character.
 
 ### `DATETIME` type
@@ -238,7 +238,7 @@ TIMESTAMP[(fsp)]
 When `TIMESTAMP` is to be stored, TiDB converts the `TIMESTAMP` value from the current time zone to UTC time zone. When `TIMESTAMP`  is to be retrieved, TiDB converts the stored `TIMESTAMP` value from UTC time zone to the current time zone (Note: `DATETIME` is not handled in this way). The default time zone for each connection is the server's local time zone, which can be modified by the environment variable `time_zone`.
 
 > **Warning:**
-> 
+>
 > As in MySQL, the `TIMESTAMP` data type suffers from the [Year 2038 Problem](https://en.wikipedia.org/wiki/Year_2038_problem). For storing values that may span beyond 2038, please consider using the `DATETIME` type instead.
 
 ### `YEAR` type

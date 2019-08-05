@@ -1,12 +1,12 @@
 ---
 title: Support Resources
 summary: Find support resources for your TiDB installation.
-category: support 
+category: support
 ---
 
 # Support Resources
 
-You can reach out to the community members via any one of the following ways: 
+You can reach out to the community members via any one of the following ways:
 
 + Slack Channel: [https://pingcap.com/tidbslack](https://pingcap.com/tidbslack)
 + Google Groups: [https://groups.google.com/forum/#!forum/tidb-user](https://groups.google.com/forum/#!forum/tidb-user)

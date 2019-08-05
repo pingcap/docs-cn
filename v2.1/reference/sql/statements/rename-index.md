@@ -1,5 +1,5 @@
 ---
-title: RENAME INDEX | TiDB SQL Statement Reference 
+title: RENAME INDEX | TiDB SQL Statement Reference
 summary: An overview of the usage of RENAME INDEX for the TiDB database.
 category: reference
 ---

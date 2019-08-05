@@ -8,11 +8,11 @@ category: reference
 
 TiDB uses MVCC to control concurrency. When you update or delete data, the original data is not deleted immediately but is kept for a period during which it can be read. Thus the write operation and the read operation are not mutually exclusive and it is possible to read the history versions of the data.
 
-The data versions whose duration exceeds a specific time and that are not used any more will be cleared, otherwise they will occupy the disk space and affect TiDB's performance. TiDB uses Garbage Collection (GC) to clear the obsolete data. 
+The data versions whose duration exceeds a specific time and that are not used any more will be cleared, otherwise they will occupy the disk space and affect TiDB's performance. TiDB uses Garbage Collection (GC) to clear the obsolete data.
 
 ## Working mechanism
 
-GC runs periodically on TiDB. When a TiDB server is started, a `gc_worker` is enabled in the background. In each TiDB cluster, one `gc_worker` is elected to be the leader which is used to maintain the GC status and send GC commands to all the TiKV Region leaders. 
+GC runs periodically on TiDB. When a TiDB server is started, a `gc_worker` is enabled in the background. In each TiDB cluster, one `gc_worker` is elected to be the leader which is used to maintain the GC status and send GC commands to all the TiKV Region leaders.
 
 ## Configuration and monitor
 
@@ -55,8 +55,8 @@ In the table above, `tikv_gc_run_interval`, `tikv_gc_life_time` and `tikv_gc_con
 
     > **Note:**
     >
-    > When you set `tikv_gc_life_time` to a large number (like days or even months) in a scenario where data is updated frequently, some problems as follows may occur: 
-        
+    > When you set `tikv_gc_life_time` to a large number (like days or even months) in a scenario where data is updated frequently, some problems as follows may occur:
+
     - The more versions of the data, the more disk storage space is occupied.
     - A large number of history versions might slow down the query. They may affect range queries like `select count(*) from t`.
     - If `tikv_gc_life_time` is suddenly turned to a smaller value during operation, a great deal of old data may be deleted in a short time, causing I/O pressure.
@@ -85,8 +85,8 @@ The TiDB transaction model is inspired by Google's Percolator. It's mainly a two
 
 ### 3. Do GC
 
-Clear the data before the safe point of each key and the write record. 
+Clear the data before the safe point of each key and the write record.
 
 > **Note:**
 >
-> If the last record in all the write records of `Put` and `Delete` types before the safe point is `Put`, this record and its data cannot be deleted directly. Otherwise, you cannot successfully perform the read operation whose timestamp is after the safe point and before the next version of the key. 
+> If the last record in all the write records of `Put` and `Delete` types before the safe point is `Put`, this record and its data cannot be deleted directly. Otherwise, you cannot successfully perform the read operation whose timestamp is after the safe point and before the next version of the key.

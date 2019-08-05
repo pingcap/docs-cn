@@ -103,6 +103,7 @@ The relationship between the `tidb-ansible` version and the TiDB version is as f
     # ansible --version
       ansible 2.5.0
     ```
+
     > **Note:**
     >
     > Make sure that the version of Ansible is 2.5, otherwise a compatibility issue occurs.
@@ -116,7 +117,7 @@ The relationship between the `tidb-ansible` version and the TiDB version is as f
     > It is required to use the corresponding tidb-ansible version when you deploy and upgrade the TiDB cluster. If you deploy TiDB using a mismatched version of tidb-ansible (such as using tidb-ansible v2.1.4 to deploy TiDB v2.1.6), an error might occur.
 
     - Download the tidb-ansible version with a specified tag:
-    
+
         ```
         $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
         ```
@@ -146,7 +147,7 @@ See [Install the NTP service on the target machines](/how-to/deploy/orchestrated
 
 > **Note:** If the time and time zone of all your target machines are same, the NTP service is on and is normally synchronizing time, you can ignore this step. See [How to check whether the NTP service is normal](#how-to-check-whether-the-ntp-service-is-normal).
 
-## Step 7: Configure the CPUfreq governor mode on the target machine 
+## Step 7: Configure the CPUfreq governor mode on the target machine
 
 See [Configure the CPUfreq governor mode on the target machine](/how-to/deploy/orchestrated/ansible.md#step-7-configure-the-cpufreq-governor-mode-on-the-target-machine).
 

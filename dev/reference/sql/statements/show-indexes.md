@@ -1,5 +1,5 @@
 ---
-title: SHOW INDEXES [FROM|IN] | TiDB SQL Statement Reference 
+title: SHOW INDEXES [FROM|IN] | TiDB SQL Statement Reference
 summary: An overview of the usage of SHOW INDEXES [FROM|IN] for the TiDB database.
 category: reference
 ---

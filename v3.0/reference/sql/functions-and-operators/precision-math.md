@@ -61,7 +61,7 @@ For expressions with precision math, TiDB uses the exact-value numbers as given 
 How to handle a numeric expression depends on the values of the expression:
 
 - If the expression contains any approximate values, the result is approximate. TiDB evaluates the expression using floating-point arithmetic.
-- If the expression contains no approximate values are present, which means only exact values are contained, and if any exact value contains a fractional part, the expression is evaluated using DECIMAL exact arithmetic and has a precision of 65 digits. 
+- If the expression contains no approximate values are present, which means only exact values are contained, and if any exact value contains a fractional part, the expression is evaluated using DECIMAL exact arithmetic and has a precision of 65 digits.
 - Otherwise, the expression contains only integer values. The expression is exact. TiDB evaluates the expression using integer arithmetic and has a precision the same as BIGINT (64 bits).
 
 If a numeric expression contains strings, the strings are converted to double-precision floating-point values and the result of the expression is approximate.
@@ -74,7 +74,7 @@ SET sql_mode = 'TRADITIONAL`;
 
 If a number is inserted into an exact type column (DECIMAL or integer), it is inserted with its exact value if it is within the column range. For this number:
 
-- If the value has too many digits in the fractional part, rounding occurs and a warning is generated. 
+- If the value has too many digits in the fractional part, rounding occurs and a warning is generated.
 - If the value has too many digits in the integer part, it is too large and is handled as follows:
   - If strict mode is not enabled, the value is truncated to the nearest legal value and a warning is generated.
   - If strict mode is enabled, an overflow error occurs.

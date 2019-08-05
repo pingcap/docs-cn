@@ -48,7 +48,7 @@ Make sure you have installed the following items on your machine:
     mysql -h 127.0.0.1 -P 4000 -u root
     ```
 
-## Monitor the cluster 
+## Monitor the cluster
 
 After you have successfully deployed a TiDB cluster, you can now monitor the TiDB cluster using one of the following methods:
 

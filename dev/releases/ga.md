@@ -7,7 +7,7 @@ category: Releases
 
 On October 16, 2017, TiDB 1.0 is now released! This release is focused on MySQL compatibility, SQL optimization, stability, and performance.
 
-## TiDB:
+## TiDB
 
 - The SQL query optimizer:
   - Adjust the cost model
@@ -19,12 +19,12 @@ On October 16, 2017, TiDB 1.0 is now released! This release is focused on MySQL 
 - Refactor the Hash Aggregator operator to reduce the memory usage
 - Support the Stream Aggregator operator
 
-## PD:
+## PD
 
 - Support read flow based balancing
 - Support setting the Store weight and weight based balancing
 
-## TiKV:
+## TiKV
 
 - Coprocessor now supports more pushdown functions
 - Support pushing down the sampling operation
@@ -37,7 +37,7 @@ On October 16, 2017, TiDB 1.0 is now released! This release is focused on MySQL 
 
 ## Acknowledgement
 
-### Special thanks to the following enterprises and teams!
+### Special thanks to the following enterprises and teams
 
 - Archon
 - Mobike
@@ -46,7 +46,7 @@ On October 16, 2017, TiDB 1.0 is now released! This release is focused on MySQL 
 - Tencent Cloud
 - UCloud
 
-### Thanks to the open source software and services from the following organizations and individuals:
+### Thanks to the open source software and services from the following organizations and individuals
 
 - Asta Xie
 - CNCF
@@ -64,7 +64,7 @@ On October 16, 2017, TiDB 1.0 is now released! This release is focused on MySQL 
 - RocksDB Team
 - Rust Team
 
-### Thanks to the individual contributors:
+### Thanks to the individual contributors
 
 - 8cbx
 - Akihiro Suda

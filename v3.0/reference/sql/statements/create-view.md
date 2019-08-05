@@ -1,5 +1,5 @@
 ---
-title: CREATE VIEW | TiDB SQL Statement Reference 
+title: CREATE VIEW | TiDB SQL Statement Reference
 summary: An overview of the usage of CREATE VIEW for the TiDB database.
 category: reference
 ---
