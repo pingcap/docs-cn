@@ -20,10 +20,10 @@ category: reference
     - QPS By Instance：每个 TiDB 上的 QPS
     - Failed Query OPM：每个 TiDB 实例上，执行 SQL 语句发生错误按照错误类型的统计（例如语法错误、主键冲突等）
     - Slow query：慢查询处理时间统计（整个慢查询耗时、Coprocessor 耗时、Coprocessor 调度等待时间）
-    - 999/99/95/80 Duration：不同类型的 SQL 执行耗时统计（不同百分位）
+    - 999/99/95/80 Duration：不同类型的 SQL 语句执行耗时统计（不同百分位）
 
 - Query Detail
-    - Duration 80/95/99/999 By Instance：每个 TiDB 实例执行 SQL 的耗时统计（不同百分位）
+    - Duration 80/95/99/999 By Instance：每个 TiDB 实例执行 SQL 语句的耗时统计（不同百分位）
     - Failed Query OPM Detail：整个集群执行 SQL 语句发生的错误按照错误类型统计（例如语法错误、主键冲突等）
     - Internal SQL OPS：TiDB 内部 SQL 语句执行数量统计
 
@@ -68,7 +68,7 @@ category: reference
     - Distsql Partial QPS：每秒 Partial Results 的数量
     - Scan Keys Num：每个 Query 扫描的 Key 的数量
     - Scan Keys Partial Num：每一个 Partial Result 扫描的 Key 的数量
-    - Partial Num：每个 SQL 的 Partial Results 的数量
+    - Partial Num：每个 SQL 语句 Partial Results 的数量
 
 - KV Errors
     - KV Retry Duration：KV 重试请求的时间
