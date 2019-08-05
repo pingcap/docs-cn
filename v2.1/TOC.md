@@ -19,7 +19,7 @@
 + 操作指南
   + 快速上手
     + 创建集群
-      - [使用 Docker Compose](how-to/get-started/local-cluster/install-from-docker-compose.md)
+      - [使用 Docker Compose](https://pingcap.com/docs-cn/dev/how-to/get-started/deploy-tidb-from-docker-compose/)
     - [SQL 基本操作](how-to/get-started/explore-sql.md)
     - [读取历史数据](how-to/get-started/read-historical-data.md)
     - [TiDB Binlog 教程](how-to/get-started/tidb-binlog.md)
