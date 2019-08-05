@@ -15,7 +15,7 @@ To make it easy to [try TiSpark](/reference/tispark.md), the TiDB cluster instal
 - The TiSpark jar package is deployed by default in the `jars` folder in the Spark deployment directory.
 
     ```
-    spark/jars/tispark-SNAPSHOT-jar-with-dependencies.jar
+    spark/jars/tispark-${name_with_version}.jar
     ```
 
 - TiSpark sample data and import scripts are deployed by default in the TiDB-Ansible directory.
@@ -184,4 +184,4 @@ The result is:
 -----------------+---------+------------+--------+-----------+
 ```
 
-See [more examples](https://github.com/ilovesoup/tpch/tree/master/sparksql).
+See [more examples](https://github.com/pingcap/tispark-test/tree/master/tpch/sparksql)).
