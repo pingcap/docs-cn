@@ -53,7 +53,7 @@ for d in dev $(ls -d v[0-9]*); do
     cat $CONFIG_TMP
     for f in $(find "$d" -type f -name '*.md'); do
         echo markdown-link-check --config "$CONFIG_TMP" "$f" -q
-        output=$(markdown-link-check --config "$CONFIG_TMP" "$f" -q)
+        output=$(markdown-link-check --color --config "$CONFIG_TMP" "$f" -q)
         if [ $? -ne 0 ]; then
             ((error_files++))
             error_output+="$output"
