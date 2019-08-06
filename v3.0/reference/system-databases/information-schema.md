@@ -633,7 +633,7 @@ The `STATE` column shows the execution status of a specific `ANALYZE` task. Its 
 
 ## SLOW\_QUERY table
 
-The `SLOW_QUERY` table maps slow query logs. Its column names and field names of slow query logs have an one-to-one corresponse relationship. For details, see [Identify Slow Queries](/how-to/maintain/identify-slow-queries.md/#identify-slow-queries).
+The `SLOW_QUERY` table maps slow query logs. Its column names and field names of slow query logs have an one-to-one corresponse relationship. For details, see [Identify Slow Queries](/how-to/maintain/identify-slow-queries.md#identify-slow-queries).
 
 ```sql
 mysql> desc slow_query\G
