@@ -16,6 +16,7 @@ This document describes how to deploy a TiDB cluster on GCP GKE with your laptop
 
 First of all, make sure the following items are installed on your machine:
 
+* git
 * [Google Cloud SDK](https://cloud.google.com/sdk/install)
 * [terraform](https://www.terraform.io/downloads.html) >= 0.12
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.14
@@ -25,6 +26,14 @@ First of all, make sure the following items are installed on your machine:
 ## Configure
 
 Before deploying, you need to configure several items to guarantee a smooth deployment.
+First download the source:
+
+{{< copyable "shell-regular" >}}
+
+```bash
+git clone --depth=1 https://github.com/pingcap/tidb-operator && \
+cd tidb-operator/deploy/gcp
+```
 
 ### Configure Cloud SDK
 
@@ -52,37 +61,41 @@ The terraform script expects three environment variables. You can let Terraform 
     - It is recommended to create a new service account to be used by Terraform. See [this page](https://cloud.google.com/iam/docs/creating-managing-service-accounts) to create a service account and grant `Project Editor` role to it.
     - See [this page](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) to create service account keys, and choose `JSON` key type during creation. The downloaded `JSON` file that contains the private key is the credentials file you need.
 * `TF_VAR_GCP_REGION`: The region to create the resources in, for example: `us-west1`.
-* `TF_VAR_GCP_PROJECT`: The name of the GCP project.
+* `TF_VAR_GCP_CREDENTIALS_PATH`: Path to a valid GCP credentials file.
+    - It is recommended to create a new service account to be used by Terraform as shown in the below example.
 
-> **Note:**
->
-> The service account must have sufficient permissions to create resources in the project. The `Project Editor` primitive will accomplish this.
-
-To set the three environment variables, for example, you can enter the following commands in your terminal and replace the values with the path to the JSON file you have downloaded, the GCP region and your GCP project name:
+Below we will set these environment variables
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-export TF_VAR_GCP_CREDENTIALS_PATH="/Path/to/my-project.json"
+# Replace the region with your GCP region and your GCP project name.
+echo GCP_REGION=us-west1 >> terraform.tfvars
+# First make sure you are connected to the correct project. gcloud config set project $PROJECT
+echo "GCP_PROJECT=$(gcloud config get-value project)" >> terraform.tfvars
+# Create a service account for terraform with restricted permissions and set the credentails path
+./create-service-account.sh
 ```
-
-{{< copyable "shell-regular" >}}
-
-```bash
-export TF_VAR_GCP_REGION="us-west1"
-```
-
-{{< copyable "shell-regular" >}}
-
-```bash
-export TF_VAR_GCP_PROJECT="my-project"
-```
-
-You can also append them in your `~/.bash_profile` so they will be exported automatically next time.
 
 ## Deploy
 
-The default setup creates a new VPC, two subnetworks, and an f1-micro instance as a bastion machine. The GKE cluster is created with the following instance types as worker nodes:
+You need to decide on instance types. If you just want to get a feel for a TiDB deployment and lower your cost, you can use the small settings.
+
+{{< copyable "shell-regular" >}}
+
+```bash
+cat small.tfvars >> terraform.tfvars
+```
+
+{{< copyable "shell-regular" >}}
+
+If you want to benchmark a production deployment, run:
+
+```bash
+cat prod.tfvars >> terraform.tfvars
+```
+
+The default setup creates a new VPC, two subnetworks, and an f1-micro instance as a bastion machine. The production setup is created with the following instance types as worker nodes:
 
 * 3 n1-standard-4 instances for PD
 * 3 n1-highmem-8 instances for TiKV
@@ -93,16 +106,9 @@ The default setup creates a new VPC, two subnetworks, and an f1-micro instance a
 >
 > The number of nodes created depends on how many availability zones there are in the chosen region. Most have 3 zones, but us-central1 has 4. See [Regions and Zones](https://cloud.google.com/compute/docs/regions-zones/) for more information and see the [Customize](#customize) section on how to customize node pools in a regional cluster.
 
-The default setup, as listed above, requires at least 91 CPUs which exceed the default CPU quota of a GCP project. To increase your project's quota, follow the instructions [here](https://cloud.google.com/compute/quotas). You need more CPUs if you need to scale out.
+The production setup, as listed above, requires at least 91 CPUs which exceed the default CPU quota of a GCP project. To increase your project's quota, follow the instructions [here](https://cloud.google.com/compute/quotas). You need more CPUs if you need to scale out.
 
 Now that you have configured everything needed, you can launch the script to deploy the TiDB cluster:
-
-{{< copyable "shell-regular" >}}
-
-```bash
-git clone --depth=1 https://github.com/pingcap/tidb-operator && \
-cd tidb-operator/deploy/gcp
-```
 
 {{< copyable "shell-regular" >}}
 
@@ -125,11 +131,11 @@ Apply complete! Resources: 17 added, 0 changed, 0 destroyed.
 
 Outputs:
 
-cluster_id = my-cluster
-cluster_name = my-cluster
+cluster_id = tidb
+cluster_name = tidb
 how_to_connect_to_mysql_from_bastion = mysql -h 172.31.252.20 -P 4000 -u root
 how_to_ssh_to_bastion = gcloud compute ssh bastion --zone us-west1-b
-kubeconfig_file = ./credentials/kubeconfig_my-cluster
+kubeconfig_file = ./credentials/kubeconfig_tidb
 monitor_ilb_ip = 35.227.134.146
 monitor_port = 3000
 region = us-west1
@@ -160,7 +166,7 @@ mysql -h <tidb_ilb_ip> -P 4000 -u root
 
 ## Interact with the cluster
 
-You can interact with the cluster using `kubectl` and `helm` with the kubeconfig file `credentials/kubeconfig_<cluster_name>` as follows. The default `cluster_name` is `my-cluster`, which can be changed in `variables.tf`.
+You can interact with the cluster using `kubectl` and `helm` with the kubeconfig file `credentials/kubeconfig_<cluster_name>` as follows. The default `cluster_name` is `tidb`, which can be changed in `variables.tf`.
 
 There are two ways to do this:
 
@@ -282,9 +288,9 @@ gcloud compute instance-groups managed list | grep monitor
 And the result will be something like this:
 
 ```
-gke-my-cluster-monitor-pool-08578e18-grp  us-west1-b  zone   gke-my-cluster-monitor-pool-08578e18  0     0            gke-my-cluster-monitor-pool-08578e18  no
-gke-my-cluster-monitor-pool-7e31100f-grp  us-west1-c  zone   gke-my-cluster-monitor-pool-7e31100f  1     1            gke-my-cluster-monitor-pool-7e31100f  no
-gke-my-cluster-monitor-pool-78a961e5-grp  us-west1-a  zone   gke-my-cluster-monitor-pool-78a961e5  1     1            gke-my-cluster-monitor-pool-78a961e5  no
+gke-tidb-monitor-pool-08578e18-grp  us-west1-b  zone   gke-tidb-monitor-pool-08578e18  0     0            gke-tidb-monitor-pool-08578e18  no
+gke-tidb-monitor-pool-7e31100f-grp  us-west1-c  zone   gke-tidb-monitor-pool-7e31100f  1     1            gke-tidb-monitor-pool-7e31100f  no
+gke-tidb-monitor-pool-78a961e5-grp  us-west1-a  zone   gke-tidb-monitor-pool-78a961e5  1     1            gke-tidb-monitor-pool-78a961e5  no
 ```
 
 The first column is the name of the managed instance group, and the second column is the zone in which it was created. You also need the name of the instance in that group, and you can get it by running:
@@ -300,12 +306,12 @@ For example:
 {{< copyable "shell-regular" >}}
 
 ```bash
-gcloud compute instance-groups managed list-instances gke-my-cluster-monitor-pool-08578e18-grp --zone us-west1-b
+gcloud compute instance-groups managed list-instances gke-tidb-monitor-pool-08578e18-grp --zone us-west1-b
 ```
 
 ```
 NAME                                       ZONE        STATUS   ACTION  INSTANCE_TEMPLATE                     VERSION_NAME  LAST_ERROR
-gke-my-cluster-monitor-pool-08578e18-c7vd  us-west1-b  RUNNING  NONE    gke-my-cluster-monitor-pool-08578e18
+gke-tidb-monitor-pool-08578e18-c7vd  us-west1-b  RUNNING  NONE    gke-tidb-monitor-pool-08578e18
 ```
 
 Now you can delete the instance by specifying the name of the managed instance group and the name of the instance, for example:
@@ -313,7 +319,7 @@ Now you can delete the instance by specifying the name of the managed instance g
 {{< copyable "shell-regular" >}}
 
 ```bash
-gcloud compute instance-groups managed delete-instances gke-my-cluster-monitor-pool-08578e18-grp --instances=gke-my-cluster-monitor-pool-08578e18-c7vd --zone us-west1-b
+gcloud compute instance-groups managed delete-instances gke-tidb-monitor-pool-08578e18-grp --instances=gke-tidb-monitor-pool-08578e18-c7vd --zone us-west1-b
 ```
 
 ## Destroy
@@ -330,4 +336,4 @@ You have to manually delete disks in the Google Cloud Console, or with `gcloud` 
 
 > **Note:**
 >
-> When `terraform destroy` is running, an error with the following message might occur: `Error reading Container Cluster "my-cluster": Cluster "my-cluster" has status "RECONCILING" with message""`. This happens when GCP is upgrading the kubernetes master node, which it does automatically at times. While this is happening, it is not possible to delete the cluster. When it is done, run `terraform destroy` again.
+> When `terraform destroy` is running, an error with the following message might occur: `Error reading Container Cluster "tidb": Cluster "tidb" has status "RECONCILING" with message""`. This happens when GCP is upgrading the kubernetes master node, which it does automatically at times. While this is happening, it is not possible to delete the cluster. When it is done, run `terraform destroy` again.
