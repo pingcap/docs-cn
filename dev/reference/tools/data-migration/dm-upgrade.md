@@ -33,15 +33,15 @@ Go Version: go version go1.11.2 linux/amd64
 
 ### 主要变更
 
-从此版本开始，所有的配置进行严格的检查，遇到不识别的配置会报错，这样的目的是为了确保用户始终准确的了解自己的配置。
+从此版本开始，将对所有的配置进行严格检查，遇到不识别的配置会报错，以确保用户始终准确地了解自己的配置。
 
 ### 升级操作示例
 
-启动 dm-master/dm-worker 前确保废弃的配置信息已经删除，且没有多余的配置项，否则会启动失败。可根据失败信息删除多余的配置。
+启动 DM-master 或 DM-worker 前, 必须确保已经删除废弃的配置信息，且没有多余的配置项，否则会启动失败。可根据失败信息删除多余的配置。
 可能遗留的废弃配置:
 
-- dm-worker.toml 中的 `meta-file`
-- task.yaml 中的 `mysql-instances` 中的 `server-id`
+- `dm-worker.toml` 中的 `meta-file`
+- `task.yaml` 中的 `mysql-instances` 中的 `server-id`
 
 ## 升级到 v1.0.0-143-gcd753da
 
