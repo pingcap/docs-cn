@@ -1,5 +1,8 @@
 # TiDB Documentation
 
+<!-- markdownlint-disable MD007 -->
+<!-- markdownlint-disable MD032 -->
+
 ## Documentation List
 
 + Introduction
@@ -374,6 +377,7 @@
 - [Roadmap](roadmap.md)
 + [Releases](releases/rn.md)
   + v3.0
+    - [3.0.2](releases/3.0.2.md)
     - [3.0.1](releases/3.0.1.md)
     - [3.0 GA](releases/3.0-ga.md)
     - [3.0.0-rc.3](releases/3.0.0-rc.3.md)
