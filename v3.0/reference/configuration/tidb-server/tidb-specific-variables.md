@@ -365,15 +365,15 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 是否需要禁用自动重试，请参考[自动重试的风险](/reference/transactions/transaction-isolation.md#乐观事务注意事项)。
 
-### tidb_back_off_weight
+### tidb_backoff_weight
 
 作用域：SESSION | GLOBAL
 
 默认值：2
 
-这个变量用来给 TiDB 的 `back-off` 最大时间增加权重，即内部遇到网络或其他组件（TiKV、PD）故障等时，发送重试请求的最大重试时间。可以通过这个变量来调整最大重试时间，最小值为 1。
+这个变量用来给 TiDB 的 `backoff` 最大时间增加权重，即内部遇到网络或其他组件（TiKV、PD）故障等时，发送重试请求的最大重试时间。可以通过这个变量来调整最大重试时间，最小值为 1。
 
-例如，TiDB 向 PD 取 TSO 的基础超时时间是 15 秒，当 `tidb_back_off_weight = 2` 时，取 TSO 的最大超时时间为：基础时间 * 2 等于 30 秒。
+例如，TiDB 向 PD 取 TSO 的基础超时时间是 15 秒，当 `tidb_backoff_weight = 2` 时，取 TSO 的最大超时时间为：基础时间 * 2 等于 30 秒。
 
 在网络环境较差的情况下，适当增大该变量值可以有效缓解因为超时而向应用端报错的情况；而如果应用端希望更快地接到报错信息，则应该尽量减小该变量的值。
 
