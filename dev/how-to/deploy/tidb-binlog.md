@@ -328,7 +328,7 @@ Drainer="192.168.0.13"
         # PD 集群节点的地址
         pd-urls = "http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379"
 
-        #[security]
+        # [security]
         # 如无特殊安全设置需要，该部分一般都注解掉
         # 包含与集群连接的受信任SSL CA列表的文件路径
         # ssl-ca = "/path/to/ca.pem"
@@ -403,8 +403,6 @@ Drainer="192.168.0.13"
             不支持对 ignore schemas 的 table 进行 rename DDL 操作
         -initial-commit-ts (默认为 0)
             如果 Drainer 没有相关的断点信息，可以通过该项来设置相关的断点信息
-        -kafka-addrs string
-            逗号分隔的 kafka broker 地址列表 (默认 "127.0.0.1:9092")
         -log-file string
             log 文件路径
         -log-rotate string
@@ -422,8 +420,6 @@ Drainer="192.168.0.13"
             即将 insert 语句换为 replace 语句，将 update 语句拆分为 delete + replace 语句
         -txn-batch int
             输出到下游数据库一个事务的 SQL 数量（默认 1）
-        -zookeeper-addrs string
-            逗号分隔的 zookeeper broker 地址列表
         ```
 
     - Drainer 配置文件（以在 “192.168.0.13” 上部署为例）
@@ -522,7 +518,7 @@ Drainer="192.168.0.13"
 
         [syncer.to.checkpoint]
         # 当下游是 mysql 或 tidb 时可以开启该选项，以改变保存 checkpoint 的数据库
-        #schema = "tidb_binlog"
+        # schema = "tidb_binlog"
         ```
 
     - 启动示例
