@@ -334,7 +334,6 @@ The following list shows the keywords and reserved words in TiDB. The reserved w
 - ROW
 - ROW_COUNT
 - ROW_FORMAT
-- ROWS (R)
 
 <a name="S" class="letter">S</a>
 
