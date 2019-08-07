@@ -555,6 +555,17 @@ TiDB 支持改变 [per-session](/reference/configuration/tidb-server/tidb-specif
 同 MySQL 的用法一致，例如：
 `select column_name from table_name use index（index_name）where where_condition;`
 
+#### 3.3.13 触发 Information schema is changed 错误的原因？
+
+TiDB 在执行 SQL 的时候会使用当时的 `schema` 来处理此 SQL 语句，且 TiDB 支持在线异步变更 DDL。那么在执行 DML 的时候可能有 DDL 语句也在执行，而我们需要确保每个 SQL 在同一个 `schema` 上执行。所以当执行 DML 时，遇到有 DDL 操作时可能会报 `Information schema is changed` 的错误。但是我们为了避免太多的 DML 语句报错，做了一些优化。所以现在会报此错的可能原因如下：
+
+- 如果执行的 DML 语句中涉及的表和集群中正在执行的 DDL 的表有相同的，那么这个 DML 语句就会报此错。
+- 有些情况下，我们不会考虑是否跟表有关就直接报此错。
+    - 这个 DML 执行时间很久，而这段时间内执行了很多 DDL 语句，导致中间 `schema` 版本变更超过 100（目前我们只缓存了 100 个版本信息）。
+    - 接受 DML 请求的 TiDB 长时间不能加载到 `schema information` (与 PD 或者 TiKV 网络问题等都会导致此问题)，而这段时间内执行了很多 DDL 语句，导致中间 `schema` 版本变更超过 100（目前我们没有按 `schema` 版本去获取信息）。
+
+备注：`create table` 操作会有 1 个 `schema` 版本变更，这个跟每个 DDL 操作对应变更的 `schema state` 个数一致。再比如，`add column` 操作会有 4 个版本信息。
+
 ### 3.4 TiKV 管理
 
 #### 3.4.1 TiKV 集群副本建议配置数量是多少，是不是最小高可用配置（3个）最好？
