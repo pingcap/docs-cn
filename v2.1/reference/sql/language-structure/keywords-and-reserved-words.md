@@ -333,7 +333,6 @@ Query OK, 0 rows affected (0.08 sec)
 - ROW
 - ROW_COUNT
 - ROW_FORMAT
-- ROWS (R)
 
 <a name="S" class="letter">S</a>
 
