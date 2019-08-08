@@ -342,7 +342,7 @@ Drainer="192.168.0.13"
         # 设置为 true（默认值）来保证可靠性，确保 binlog 数据刷新到磁盘
         # sync-log = true
 
-        # 当可用磁盘容量小于该设置值时，Pump 将停止写入数据，v3.0.1后支持该功能
+        # 当可用磁盘容量小于该设置值时，Pump 将停止写入数据，v3.0.1 后支持该功能
         # 42 MB -> 42000000, 42 mib -> 44040192
         # default: 10 gib
         # stop-write-at-available-space = "10 gib"
@@ -413,7 +413,7 @@ Drainer="192.168.0.13"
         -metrics-interval int
             监控信息上报频率（默认 15，单位：秒）
         -node-id string
-            v3.0.2后支持该功能，drainer 节点的唯一识别 ID，如果不指定程序会根据主机名和监听端口自动生成
+            v3.0.2 后支持该功能，drainer 节点的唯一识别 ID，如果不指定程序会根据主机名和监听端口自动生成
         -pd-urls string
             PD 集群节点的地址 (-pd-urls="http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379")
         -safe-mode
@@ -469,7 +469,7 @@ Drainer="192.168.0.13"
         # 参数有效值为 "mysql"，"file"，"kafka"，"flash"
         db-type = "mysql"
 
-        # 事务的 commit ts 若在该列表中，则该事务将被过滤，不会同步至下游，v3.0.2后支持该功能
+        # 事务的 commit ts 若在该列表中，则该事务将被过滤，不会同步至下游，v3.0.2 后支持该功能
         ignore-txn-commit-ts = []
 
         # db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test")，
