@@ -25,13 +25,13 @@ function install_go {
     echo "Intall go ..."
     case "$OSTYPE" in 
         linux*) 
-            curl -L https://storage.googleapis.com/golang/go1.10.2.linux-amd64.tar.gz -o golang.tar.gz
+            curl -L https://storage.googleapis.com/golang/go1.12.5.linux-amd64.tar.gz -o golang.tar.gz
             ${SUDO} tar -C /usr/local -xzf golang.tar.gz
             rm golang.tar.gz
         ;;
 
         darwin*)
-            curl -L https://storage.googleapis.com/golang/go1.10.2.darwin-amd64.tar.gz -o golang.tar.gz
+            curl -L https://storage.googleapis.com/golang/go1.12.5.darwin-amd64.tar.gz -o golang.tar.gz
             ${SUDO} tar -C /usr/local -xzf golang.tar.gz
             rm golang.tar.gz
         ;;
@@ -97,8 +97,8 @@ if which go &>/dev/null; then
     # requires go >= 1.8
     GO_VER_1=`go version | awk 'match($0, /([0-9])+(\.[0-9]+)+/) { ver = substr($0, RSTART, RLENGTH); split(ver, n, "."); print n[1];}'`
     GO_VER_2=`go version | awk 'match($0, /([0-9])+(\.[0-9]+)+/) { ver = substr($0, RSTART, RLENGTH); split(ver, n, "."); print n[2];}'`
-    if [[ (($GO_VER_1 -eq 1 && $GO_VER_2 -lt 10)) || (($GO_VER_1 -lt 1)) ]]; then
-        echo "Please upgrade Go to 1.10 or later."
+    if [[ (($GO_VER_1 -eq 1 && $GO_VER_2 -lt 12)) || (($GO_VER_1 -lt 1)) ]]; then
+        echo "Please upgrade Go to 1.12 or later."
         exit 1
     fi
 else
