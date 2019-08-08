@@ -126,7 +126,7 @@ The key's randomart image is:
 | -------- | ---------------- | --- |
 | 2.0 版本 | v2.0.10、v2.0.11 | 最新 2.0 稳定版本，可用于生产环境。 |
 | 2.1 版本 | v2.1.1 ~ v2.1.8 等 | 最新 2.1 稳定版本，可用于生产环境。 |
-| 3.0 版本 | v3.0.1 | 最新 2.1 稳定版本，可用于生产环境（建议）。 |
+| 3.0 版本 | v3.0.1 | 最新 3.0 稳定版本，可用于生产环境（建议）。 |
 | latest 版本 | None | 包含最新特性，每日更新，不建议用于生产环境。 |
 
 使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible [相应版本](https://github.com/pingcap/tidb-ansible/tags)，默认的文件夹名称为 `tidb-ansible`。
@@ -153,7 +153,7 @@ The key's randomart image is:
 
 ## 在中控机器上安装 Ansible 及其依赖
 
-以 `tidb` 用户登录中控机，请务必按以下方式通过 pip 安装 Ansible 及其相关依赖的指定版本，否则会有兼容问题。安装完成后，可通过 `ansible --version` 查看 Ansible 版本。目前 release-2.0与release-2.1 兼容 Ansible 2.4 版本，release-3.0与master 兼容 Ansible 2.7 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中。
+以 `tidb` 用户登录中控机，请务必按以下方式通过 pip 安装 Ansible 及其相关依赖的指定版本，否则会有兼容问题。安装完成后，可通过 `ansible --version` 查看 Ansible 版本。目前 release-2.0 与 release-2.1 兼容 Ansible 2.4 版本，release-3.0 与 master 兼容 Ansible 2.7 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中。
 
   ```bash
   $ cd /home/tidb/tidb-ansible
