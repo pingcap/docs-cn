@@ -135,7 +135,7 @@ To access the deployed TiDB cluster, use the following commands to first `ssh` i
 {{< copyable "shell-regular" >}}
 
 ```shell
-ssh -i credentials/k8s-prod-<cluster_name>.pem ec2-user@<bastion_ip>
+ssh -i credentials/<cluster_name>.pem centos@<bastion_ip>
 ```
 
 {{< copyable "shell-regular" >}}
