@@ -417,7 +417,7 @@ Drainer="192.168.0.13"
         -pd-urls string
             PD 集群节点的地址 (-pd-urls="http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379")
         -safe-mode
-            v3.0.1后支持该功能，是否开启安全模式使得下游 MySQL/TiDB 可被重复写入
+            是否开启安全模式使得下游 MySQL/TiDB 可被重复写入
             即将 insert 语句换为 replace 语句，将 update 语句拆分为 delete + replace 语句
         -txn-batch int
             输出到下游数据库一个事务的 SQL 数量（默认 1）
@@ -461,7 +461,7 @@ Drainer="192.168.0.13"
         # 顺序依次还原成单个事务进行同步（下游服务类型为 MySQL, 该项设置为 False）
         disable-dispatch = false
 
-        # safe mode 会使写下游 MySQL/TiDB 可被重复写入，v3.0.1后支持该功能
+        # safe mode 会使写下游 MySQL/TiDB 可被重复写入
         # 会用 replace 替换 insert 语句，用 delete + replace 替换 update 语句
         safe-mode = false
 
@@ -469,7 +469,7 @@ Drainer="192.168.0.13"
         # 参数有效值为 "mysql"，"file"，"kafka"，"flash"
         db-type = "mysql"
 
-        # 事务的 commit ts 若在该列表中，则该事务将被过滤，不会同步至下游
+        # 事务的 commit ts 若在该列表中，则该事务将被过滤，不会同步至下游，v3.0.2后支持该功能
         ignore-txn-commit-ts = []
 
         # db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test")，
