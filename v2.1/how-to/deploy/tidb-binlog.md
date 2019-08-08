@@ -341,7 +341,7 @@ Drainer="192.168.0.13"
         # 设置为 true（默认值）来保证可靠性，确保 binlog 数据刷新到磁盘
         # sync-log = true
 
-        # 当可用磁盘容量小于该设置值时，Pump 将停止写入数据
+        # 当可用磁盘容量小于该设置值时，Pump 将停止写入数据，v2.1.14后支持该功能
         # 42 MB -> 42000000, 42 mib -> 44040192
         # default: 10 gib
         # stop-write-at-available-space = "10 gib"
