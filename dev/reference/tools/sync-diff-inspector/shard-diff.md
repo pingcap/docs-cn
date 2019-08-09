@@ -3,13 +3,13 @@ title: 分库分表场景下的数据校验
 category: tools
 ---
 
-### 分库分表场景下的数据校验
+# 分库分表场景下的数据校验
 
 sync-diff-inspector 支持对分库分表场景进行数据校验。例如有两个 MySQL 实例，使用同步工具 DM 同步到一个 TiDB 中，场景如图所示：
 
 ![shard-table-sync](/media/shard-table-sync.png)
 
-则需要为 `table-0` 在 `table-config` 中进行特殊配置，设置 `is-sharding=true`， 并且在 `table-config.source-tables` 中配置上游表信息。完整的示例配置如下：
+则需要为 `table-0` 在 `table-config` 中进行特殊配置，设置 `is-sharding=true`，并且在 `table-config.source-tables` 中配置上游表信息。完整的示例配置如下：
 
 ``` toml
 # Diff Configuration.

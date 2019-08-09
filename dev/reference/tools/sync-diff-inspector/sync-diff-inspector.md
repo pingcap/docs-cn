@@ -5,7 +5,7 @@ category: tools
 
 # sync-diff-inspector 用户文档
 
-sync-diff-inspector 是一个用于校验 MySQL／TiDB 中两份数据是否一致的工具，该工具提供了修复数据的功能（适用于修复少量不一致的数据）。
+sync-diff-inspector 是一个用于校验 MySQL／TiDB 中两份数据是否一致的工具。该工具提供了修复数据的功能（适用于修复少量不一致的数据）。
 
 主要功能：
 
@@ -57,7 +57,7 @@ sync-diff-inspector 需要获取表结构信息、查询数据、建 checkpoint 
 
     RELOAD (查看表结构)
 
-### 通用配置文件说明
+### 配置文件说明
 
 sync-diff-inspector 的配置总共分为三个部分：
 
@@ -205,10 +205,10 @@ fix-sql-file = "fix.sql"
 
 该命令最终会在日志中输出一个检查报告，说明每个表的检查情况。如果数据存在不一致的情况，sync-diff-inspector 会生成 SQL 修复不一致的数据，并将这些 SQL 语句保存到 `fix.sql` 文件中。
 
-### 注意
+### 注意事项
 
 * sync-diff-inspector 在校验数据时会消耗一定的服务器资源，需要避免在业务高峰期间校验。
-* TiDB 使用的 collation 为 `utf8_bin`，如果对 MySQL 和 TiDB 的数据进行对比，需要注意 MySQL 中表的 collation 设置。如果表的主键／唯一键为 varchar 类型，且 MySQL 中 collation 设置与 TiDB 不同，可能会因为排序问题导致最终校验结果不正确，需要在 sync-diff-inspector 的配置文件中增加 collation 设置。
-* sync-diff-inspector 会优先使用 TiDB 的统计信息来划分 chunk，需要尽量保证统计信息精确，可以在*业务空闲期*手动执行 `analyze table {table_name}`。
+* TiDB 使用的 collation 为 `utf8_bin`。如果对 MySQL 和 TiDB 的数据进行对比，需要注意 MySQL 中表的 collation 设置。如果表的主键／唯一键为 varchar 类型，且 MySQL 中 collation 设置与 TiDB 不同，可能会因为排序问题导致最终校验结果不正确，需要在 sync-diff-inspector 的配置文件中增加 collation 设置。
+* sync-diff-inspector 会优先使用 TiDB 的统计信息来划分 chunk，需要尽量保证统计信息精确，可以在**业务空闲期**手动执行 `analyze table {table_name}`。
 * table-rule 的规则需要特殊注意，例如设置了 `schema-pattern="test1"`，`target-schema="test2"`，会对比 source 中的 `test1` 库和 target 中的 `test2` 库；如果 source 中有 `test2` 库，该库也会和 target 中的 `test2` 库进行对比。
 * 生成的 `fix.sql` 仅作为修复数据的参考，需要确认后再执行这些 SQL 修复数据。

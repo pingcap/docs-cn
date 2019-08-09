@@ -3,13 +3,13 @@ title: TiDB 主从集群的数据校验
 category: tools
 ---
 
-### TiDB 主从集群的数据校验
+# TiDB 主从集群的数据校验
 
-用户可以使用 TiDB-Binlog 搭建 TiDB 的主从集群，在 Drainer 把数据同步到 TiDB 时，Drainer 会在保存 checkpoint 时保存上下游的 tso 的对应关系 `ts-map`，在 sync-diff-inspector 中配置 `snapshot` 即可对 TiDB 主从集群的数据进行校验。
+用户可以使用 TiDB-Binlog 搭建 TiDB 的主从集群，Drainer 在把数据同步到 TiDB 时，保存 checkpoint 的同时也会将上下游的 TSO 对应关系保存为 `ts-map`。在 sync-diff-inspector 中配置 `snapshot` 即可对 TiDB 主从集群的数据进行校验。
 
-#### 获取 ts-map
+## 获取 ts-map
 
-在下游 TiDB 中执行以下 SQL：
+在下游 TiDB 中执行以下 SQL 语句：
 
 ```
     mysql> select * from tidb_binlog.checkpoint;
@@ -22,9 +22,9 @@ category: tools
 
 从结果中可以获取 ts-map 信息。
 
-#### 配置 snapshot
+## 配置 snapshot
 
-使用上一步骤获取的 ts-map 信息来配置上下游数据库的 snapshot 信息。其中的 `Database config` 部分示例配置如下：
+使用上一步骤获取的 ts-map 信息来配置上下游数据库的 snapshot 信息。其中的 `Databases config` 部分示例配置如下：
 
 ```toml
 ######################### Databases config #########################
@@ -50,7 +50,7 @@ category: tools
     snapshot = "409621863377928345"
 ```
 
-#### 注意
+## 注意事项
 
-1. Drainer 的 `db-type` 需要设置为 `tidb` ，这样才会在 checkpoint 中保存 `ts-map`。
-2. 需要调整 tikv 的 gc 时间，保证在校验时 snapshot 对应的历史数据不会被 gc。建议调整为1个小时，在校验后再还原 gc 设置。
+- Drainer 的 `db-type` 需要设置为 `tidb`，这样才会在 checkpoint 中保存 `ts-map`。
+- 需要调整 TiKV 的 GC 时间，保证在校验时 snapshot 对应的历史数据不会被执行 GC。建议调整为 1 个小时，在校验后再还原 GC 设置。
