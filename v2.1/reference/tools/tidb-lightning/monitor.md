@@ -1,15 +1,15 @@
 ---
-title: TiDB-Lightning 监控告警
+title: TiDB Lightning 监控告警
 category: reference
 ---
 
-# TiDB-Lightning 监控告警
+# TiDB Lightning 监控告警
 
 `tidb-lightning` 和 `tikv-importer` 都支持使用 [Prometheus](https://prometheus.io/) 采集监控指标 (metrics)。本文主要介绍 TiDB-Lightning 的监控配置与监控指标。
 
 ## 监控配置
 
-- 如果是使用 TiDB-Ansible 部署 Lightning，只要将服务器地址加到 `inventory.ini` 里的 `[monitored_servers]` 部分即可。
+- 如果是使用 TiDB Ansible 部署 Lightning，只要将服务器地址加到 `inventory.ini` 里的 `[monitored_servers]` 部分即可。
 - 如果是手动部署 Lightning，则参照以下步骤进行配置。
 
 ### `tikv-importer`

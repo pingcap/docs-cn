@@ -5,7 +5,12 @@
 
 ## 目录
 
-+ [关于 TiDB](overview.md)
++ 关于 TiDB
+  - [TiDB 简介](overview.md)
+  + Benchmark 测试
+    - [如何用 Sysbench 测试 TiDB](benchmark/how-to-run-sysbench.md)
+    - [Sysbench 性能对比 - v2.1 对比 v2.0](benchmark/sysbench-v3.md)
+    - [TPC-H 50G 性能对比 - v2.1 对比 v2.0](benchmark/tpch-v2.md)
 + 主要概念
   - [整体架构](architecture.md)
   + 核心特性
@@ -14,7 +19,7 @@
 + 操作指南
   + 快速上手
     + 创建集群
-      - [使用 Docker Compose](how-to/get-started/local-cluster/install-from-docker-compose.md)
+      - [使用 Docker Compose](https://pingcap.com/docs-cn/dev/how-to/get-started/deploy-tidb-from-docker-compose/)
     - [SQL 基本操作](how-to/get-started/explore-sql.md)
     - [读取历史数据](how-to/get-started/read-historical-data.md)
     - [TiDB Binlog 教程](how-to/get-started/tidb-binlog.md)
@@ -271,7 +276,9 @@
       - [DM 集群操作](reference/tools/data-migration/cluster-operations.md)
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](how-to/migrate/from-aurora.md)
+      - [DM Portal](reference/tools/data-migration/dm-portal.md)
       - [DM 故障诊断](how-to/troubleshoot/data-migration.md)
+      - [FAQ](faq/data-migration.md)
     + TiDB Lightning
       - [概述](reference/tools/tidb-lightning/overview.md)
       - [部署执行](reference/tools/tidb-lightning/deployment.md)
@@ -289,6 +296,7 @@
 + 常见问题 (FAQ)
   - [TiDB FAQ](faq/tidb.md)
   - [TiDB-Lightning FAQ](faq/tidb-lightning.md)
+  - [Data Migration FAQ](faq/data-migration.md)
   - [升级 FAQ](faq/upgrade.md)
 + 技术支持
   - [支持渠道](support-resources.md)
@@ -299,6 +307,7 @@
 - [TiDB 路线图](roadmap.md)
 + [版本发布历史](releases/rn.md)
   + v3.0
+    - [3.0.1](releases/3.0.1.md)
     - [3.0 GA](releases/3.0-ga.md)
     - [3.0.0-rc.3](releases/3.0.0-rc.3.md)
     - [3.0.0-rc.2](releases/3.0.0-rc.2.md)
@@ -306,6 +315,7 @@
     - [3.0.0-beta.1](releases/3.0.0-beta.1.md)
     - [3.0.0-beta](releases/3.0beta.md)
   + v2.1
+    - [2.1.15](releases/2.1.15.md)
     - [2.1.14](releases/2.1.14.md)
     - [2.1.13](releases/2.1.13.md)
     - [2.1.12](releases/2.1.12.md)

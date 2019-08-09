@@ -428,11 +428,19 @@ location_labels = ["host"]
 
 - 服务配置文件参数调整
 
-    1. 多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中的 `block-cache-size` 参数:
-        - `rocksdb defaultcf block-cache-size(GB)` = MEM \* 80% / TiKV 实例数量 \* 30%
-        - `rocksdb writecf block-cache-size(GB)` = MEM \* 80% / TiKV 实例数量 \* 45%
-        - `rocksdb lockcf block-cache-size(GB)` = MEM \* 80% / TiKV 实例数量 \* 2.5% (最小 128 MB)
-        - `raftdb defaultcf block-cache-size(GB)` = MEM \* 80% / TiKV 实例数量 \* 2.5% (最小 128 MB)
+    1. 多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中 `block-cache-size` 下面的 `capacity` 参数：
+
+        ```
+        storage:
+          block-cache:
+            capacity: "1GB"
+        ```
+
+        > **注意：**
+        >
+        > TiKV 实例数量指每个服务器上 TiKV 的进程数量。
+        >
+        > 推荐设置：`capacity` = MEM_TOTAL * 0.5 / TiKV 实例数量
 
     2. 多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中 `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数：
 
@@ -446,16 +454,28 @@ location_labels = ["host"]
             # low-concurrency: 8
         ```
 
-        - 推荐设置：实例数 \* 参数值 = CPU 核数 \* 0.8。
+        > **注意：**
+        >
+        > 推荐设置：TiKV 实例数量 \* 参数值 = CPU 核心数量 \* 0.8
 
-    3. 如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
-        - `capacity` = 磁盘总容量 / TiKV 实例数量，例如 "100GB"
+    3. 如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数：
+
+        ```
+        raftstore:
+          capacity: 0
+        ```
+
+        > **注意：**
+        >
+        > 推荐配置：`capacity` = 磁盘总容量 / TiKV 实例数量
+        >
+        > 例如：`capacity: "100GB"`
 
 ### inventory.ini 变量调整
 
 #### 部署目录调整
 
-部署目录通过 `deploy_dir` 变量控制，默认全局变量已设置为 `/home/tidb/deploy`，对所有服务生效。如数据盘挂载目录为 `/data1`，可设置为 `/data1/deploy`，样例如下:
+部署目录通过 `deploy_dir` 变量控制，默认全局变量已设置为 `/home/tidb/deploy`，对所有服务生效。如数据盘挂载目录为 `/data1`，可设置为 `/data1/deploy`，样例如下：
 
 ```
 ## Global variables
@@ -480,7 +500,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | cluster_name | 集群名称，可调整 |
 | tidb_version | TiDB 版本，TiDB-Ansible 各分支默认已配置 |
 | process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
-| timezone | 新安装 TiDB 集群第一次启动 bootstrap（初始化）时，将 TiDB 全局默认时区设置为该值。TiDB 使用的时区后续可通过 `time_zone` 全局变量和 session 变量来修改，参考[时区支持](../sql/time-zone.md)。 默认为 `Asia/Shanghai`，可选值参考 [timzone 列表](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)。 |
+| timezone | 新安装 TiDB 集群第一次启动 bootstrap（初始化）时，将 TiDB 全局默认时区设置为该值。TiDB 使用的时区后续可通过 `time_zone` 全局变量和 session 变量来修改，参考[时区支持](how-to/configure/time-zone.md)。 默认为 `Asia/Shanghai`，可选值参考 [timzone 列表](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)。 |
 | enable_firewalld | 开启防火墙，默认不开启，如需开启，请将[部署建议-网络要求](/how-to/deploy/hardware-recommendations.md#网络要求) 中的端口加入白名单 |
 | enable_ntpd | 检测部署目标机器 NTP 服务，默认为 True，请勿关闭 |
 | set_hostname | 根据 IP 修改部署目标机器主机名，默认为 False |
