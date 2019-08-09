@@ -51,7 +51,7 @@ category: tools
     snapshot = "409621863377928345"
 ```
 
-#### 注意
+## 注意事项
 
 - Drainer 的 `db-type` 需要设置为 `tidb`，这样才会在 checkpoint 中保存 `ts-map`。
 - 需要调整 TiKV 的 GC 时间，保证在校验时 snapshot 对应的历史数据不会被执行 GC。建议调整为 1 个小时，在校验后再还原 GC 设置。
