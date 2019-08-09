@@ -22,7 +22,7 @@ category: tools
 
 从结果中可以获取 ts-map 信息。
 
-#### 配置 snapshot
+## 配置 snapshot
 
 使用上一步骤获取的 ts-map 信息来配置上下游数据库的 snapshot 信息。其中的 `Databases config` 部分示例配置如下：
 
