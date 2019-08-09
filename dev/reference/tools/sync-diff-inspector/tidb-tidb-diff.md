@@ -53,5 +53,5 @@ category: tools
 
 #### 注意
 
-1. Drainer 的 `db-type` 需要设置为 `tidb` ，这样才会在 checkpoint 中保存 `ts-map`。
+- Drainer 的 `db-type` 需要设置为 `tidb`，这样才会在 checkpoint 中保存 `ts-map`。
 2. 需要调整 tikv 的 gc 时间，保证在校验时 snapshot 对应的历史数据不会被 gc。建议调整为1个小时，在校验后再还原 gc 设置。
