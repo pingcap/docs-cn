@@ -1,10 +1,10 @@
 ---
-title: TiDB-Lightning Checkpoints
+title: TiDB Lightning Checkpoints
 summary: Use checkpoints to avoid redoing the previously completed tasks before the crash.
 category: reference
 ---
 
-# TiDB-Lightning Checkpoints
+# TiDB Lightning Checkpoints
 
 Importing a large database usually takes hours or days, and if such long running processes spuriously crashes, it can be very time-wasting to redo the previously completed tasks. To solve this, Lightning uses *checkpoints* to store the import progress, so that `tidb-lightning` continues importing from where it lefts off after restarting.
 

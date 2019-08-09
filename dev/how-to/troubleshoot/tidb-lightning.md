@@ -1,20 +1,20 @@
 ---
-title: TiDB-Lightning Troubleshooting
-summary: Learn about common errors and solutions of TiDB-Lightning.
+title: TiDB Lightning Troubleshooting
+summary: Learn about common errors and solutions of TiDB Lightning.
 category: how-to
 ---
 
-# TiDB-Lightning Troubleshooting
+# TiDB Lightning Troubleshooting
 
-When Lightning encounters an unrecoverable error, it exits with nonzero exit code and leaves the reason in the log file. Errors are typically printed at the end of the log. You can also search for the string `[error]` to look for non-fatal errors.
+When TiDB Lightning encounters an unrecoverable error, it exits with nonzero exit code and leaves the reason in the log file. Errors are typically printed at the end of the log. You can also search for the string `[error]` to look for non-fatal errors.
 
 This document summarizes some commonly encountered errors in the `tidb-lightning` log file and their solutions.
 
 ## Import speed is too slow
 
-Normally it takes Lightning 2 minutes per thread to import a 256 MB data file. It is an error if the speed is much slower than this. The time taken for each data file can be checked from the log mentioning `restore chunk … takes`. This can also be observed from metrics on Grafana.
+Normally it takes TiDB Lightning 2 minutes per thread to import a 256 MB data file. It is an error if the speed is much slower than this. The time taken for each data file can be checked from the log mentioning `restore chunk … takes`. This can also be observed from metrics on Grafana.
 
-There are several reasons why Lightning becomes slow:
+There are several reasons why TiDB Lightning becomes slow:
 
 **Cause 1**: `region-concurrency` is too high, which causes thread contention and reduces performance.
 
@@ -26,7 +26,7 @@ There are several reasons why Lightning becomes slow:
 
 Every additional index will introduce a new KV pair for each row. If there are N indices, the actual size to be imported would be approximately (N+1) times the size of the mydumper output. If the indices are negligible, you may first remove them from the schema, and add them back via `CREATE INDEX` after import is complete.
 
-**Cause 3**: Lightning is too old.
+**Cause 3**: TiDB Lightning is too old.
 
 Try the latest version! Maybe there is new speed improvement.
 
@@ -87,7 +87,7 @@ See the [Checkpoints control](/reference/tools/tidb-lightning/checkpoints.md#che
 
 ## cannot guess encoding for input file, please convert to UTF-8 manually
 
-**Cause**: Lightning only recognizes the UTF-8 and GB-18030 encodings for the table schemas. This error is emitted if the file isn't in any of these encodings. It is also possible that the file has mixed encoding, such as containing a string in UTF-8 and another string in GB-18030, due to historical `ALTER TABLE` executions.
+**Cause**: TiDB Lightning only recognizes the UTF-8 and GB-18030 encodings for the table schemas. This error is emitted if the file isn't in any of these encodings. It is also possible that the file has mixed encoding, such as containing a string in UTF-8 and another string in GB-18030, due to historical `ALTER TABLE` executions.
 
 **Solutions**:
 

@@ -1,16 +1,16 @@
 ---
-title: TiDB-Lightning Deployment
-summary: Deploy TiDB-Lightning to quickly import large amounts of new data.
+title: TiDB Lightning Deployment
+summary: Deploy TiDB Lightning to quickly import large amounts of new data.
 category: reference
 ---
 
-# TiDB-Lightning Deployment
+# TiDB Lightning Deployment
 
-This document describes the hardware requirements of TiDB-Lightning on separate deployment and mixed deployment, and how to deploy it using Ansible or manually.
+This document describes the hardware requirements of TiDB Lightning on separate deployment and mixed deployment, and how to deploy it using Ansible or manually.
 
 ## Notes
 
-Before starting TiDB-Lightning, note that:
+Before starting TiDB Lightning, note that:
 
 - During the import process, the cluster cannot provide normal services.
 - If `tidb-lightning` crashes, the cluster is left in "import mode". Forgetting to switch back to "normal mode" can lead to a high amount of uncompacted data on the TiKV cluster, and cause abnormally high CPU usage and stall. You can manually switch the cluster back to "normal mode" via the `tidb-lightning-ctl` tool:
@@ -18,6 +18,20 @@ Before starting TiDB-Lightning, note that:
     ```sh
     bin/tidb-lightning-ctl -switch-mode=normal
     ```
+
+- TiDB Lightning is required to have the following privileges in the downstream TiDB:
+
+    | Privilege | Scope |
+    |----:|:------|
+    | SELECT | Tables |
+    | INSERT | Tables |
+    | UPDATE | Tables |
+    | DELETE | Tables |
+    | CREATE | Databases, tables |
+    | DROP | Databases, tables |
+    | ALTER | Tables |
+
+    If the `checksum` configuration item of TiDB Lightning is set to `true`, then the admin user privileges in the downstream TiDB need to be granted to TiDB Lightning.
 
 ## Hardware requirements
 
@@ -76,16 +90,16 @@ In this command,
 
 If the data source consists of CSV files, see [CSV support](/reference/tools/tidb-lightning/csv.md) for configuration.
 
-## Deploy TiDB-Lightning
+## Deploy TiDB Lightning
 
-This section describes two deployment methods of TiDB-Lightning:
+This section describes two deployment methods of TiDB Lightning:
 
-- [Deploy TiDB-Lightning using Ansible](#deploy-tidb-lightning-using-ansible)
-- [Deploy TiDB-Lightning manually](#deploy-tidb-lightning-manually)
+- [Deploy TiDB Lightning using Ansible](#deploy-tidb-lightning-using-ansible)
+- [Deploy TiDB Lightning manually](#deploy-tidb-lightning-manually)
 
-### Deploy TiDB-Lightning using Ansible
+### Deploy TiDB Lightning using Ansible
 
-You can deploy TiDB-Lightning using Ansible together with the [deployment of the TiDB cluster itself using Ansible](/how-to/deploy/orchestrated/ansible.md).
+You can deploy TiDB Lightning using Ansible together with the [deployment of the TiDB cluster itself using Ansible](/how-to/deploy/orchestrated/ansible.md).
 
 1. Edit `inventory.ini` to add the addresses of the `tidb-lightning` and `tikv-importer` servers.
 
@@ -158,7 +172,7 @@ You can deploy TiDB-Lightning using Ansible together with the [deployment of the
 
 7. After completion, run `scripts/stop_importer.sh` on the `tikv-importer` server to stop Importer.
 
-### Deploy TiDB-Lightning manually
+### Deploy TiDB Lightning manually
 
 #### Step 1: Deploy a TiDB cluster
 
@@ -166,13 +180,13 @@ Before importing data, you need to have a deployed TiDB cluster, with the cluste
 
 You can find deployment instructions in [TiDB Quick Start Guide](https://pingcap.com/docs/QUICKSTART/).
 
-#### Step 2: Download the TiDB-Lightning installation package
+#### Step 2: Download the TiDB Lightning installation package
 
-Download the TiDB-Lightning package (choose the same version as that of the TiDB cluster):
+Download the TiDB Lightning package (choose the same version as that of the TiDB cluster):
 
-- **v2.1.9**: https://download.pingcap.org/tidb-v2.1.9-linux-amd64.tar.gz
-- **v2.0.9**: https://download.pingcap.org/tidb-lightning-v2.0.9-linux-amd64.tar.gz
-- Latest unstable version: https://download.pingcap.org/tidb-lightning-test-xx-latest-linux-amd64.tar.gz
+- **v2.1.9**: <https://download.pingcap.org/tidb-v2.1.9-linux-amd64.tar.gz>
+- **v2.0.9**: <https://download.pingcap.org/tidb-lightning-v2.0.9-linux-amd64.tar.gz>
+- Latest unstable version: <https://download.pingcap.org/tidb-lightning-test-xx-latest-linux-amd64.tar.gz>
 
 #### Step 3: Start `tikv-importer`
 
@@ -333,7 +347,7 @@ Download the TiDB-Lightning package (choose the same version as that of the TiDB
     read-block-size = 65536 # Byte (default = 64 KB)
 
     # Minimum size (in terms of source data file) of each batch of import.
-    # Lightning splits a large table into multiple data engine files according to this size.
+    # TiDB Lightning splits a large table into multiple data engine files according to this size.
     batch-size = 107_374_182_400 # Byte (default = 100 GB)
 
     # Engine file needs to be imported sequentially. Due to parallel processing,

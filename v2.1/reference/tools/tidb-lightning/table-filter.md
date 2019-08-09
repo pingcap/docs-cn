@@ -1,12 +1,12 @@
 ---
-title: TiDB-Lightning Table Filter
+title: TiDB Lightning Table Filter
 summary: Use black and white lists to filter out tables, ignoring them during import.
 category: reference
 ---
 
-# TiDB-Lightning Table Filter
+# TiDB Lightning Table Filter
 
-TiDB-Lightning supports setting up black and white lists to ignore certain databases and tables. This can be used to skip cache tables, or manually partition the data source on a shared storage to allow multiple Lightning instances work together without interfering each other.
+TiDB Lightning supports setting up black and white lists to ignore certain databases and tables. This can be used to skip cache tables, or manually partition the data source on a shared storage to allow multiple Lightning instances work together without interfering each other.
 
 The filtering rule is similar to MySQL `replication-rules-db`/`replication-rules-table`.
 
