@@ -44,7 +44,7 @@ sudo yum install -y java ant
 Enter the `benchmarksql` directory and run `ant` to build:
 
 ```shell
-cd benchmarksql
+cd benchmarksql && \
 ant
 ```
 
@@ -113,15 +113,17 @@ loadWorkers=32  # The number of concurrent workers that load data.
 
 1. Use a MySQL client to connect to the TiDB server and run the following command:
 
+    {{< copyable "sql" >}}
+
     ```sql
-    create database tpcc
+    create database tpcc;
     ```
 
 2. Run the following BenchmarkSQL script in shell to create tables:
 
     ```shell
-    cd run
-    ./runSQL.sh props.mysql sql.mysql/tableCreates.sql
+    cd run && \
+    ./runSQL.sh props.mysql sql.mysql/tableCreates.sql && \
     ./runSQL.sh props.mysql sql.mysql/indexCreates.sql
     ```
 

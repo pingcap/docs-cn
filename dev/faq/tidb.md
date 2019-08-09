@@ -552,6 +552,8 @@ You can combine the above two parameters with the DML of TiDB to use them. For e
 
 1. Adjust the priority by writing SQL statements in the database:
 
+    {{< copyable "sql" >}}
+
     ```sql
     select HIGH_PRIORITY | LOW_PRIORITY count(*) from table_name;
     insert HIGH_PRIORITY | LOW_PRIORITY into table_name insert_values;
@@ -571,6 +573,8 @@ When the modified number or the current total row number is larger than `tidb_au
 #### How to use a specific index with hint in a SQL statement?
 
 Its usage is similar to MySQL:
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT column_name FROM table_name USE INDEX（index_name）WHERE where_condition;
@@ -733,9 +737,15 @@ Because TiDB supports most MySQL syntax, generally you can migrate your applicat
 
 Restart the TiDB service, add the `-skip-grant-table=true` parameter in the configuration file. Log into the cluster without password and recreate the user, or recreate the `mysql.user` table using the following statement:
 
+{{< copyable "sql" >}}
+
 ```sql
 DROP TABLE IF EXIST mysql.user;
+```
 
+{{< copyable "sql" >}}
+
+```sql
 CREATE TABLE if not exists mysql.user (
     Host        CHAR(64),
     User        CHAR(16),
@@ -764,7 +774,11 @@ CREATE TABLE if not exists mysql.user (
     Event_priv      ENUM('N','Y') NOT NULL DEFAULT 'N',
     Trigger_priv      ENUM('N','Y') NOT NULL DEFAULT 'N',
     PRIMARY KEY (Host, User));
+```
 
+{{< copyable "sql" >}}
+
+```sql
 INSERT INTO mysql.user VALUES ("%", "root", "", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y");
 ```
 
@@ -871,7 +885,7 @@ It is recommended to build a multi-source MySQL -> TiDB real-time replication en
 
 The total read capacity has no limit. You can increase the read capacity by adding more TiDB servers. Generally the write capacity has no limit as well. You can increase the write capacity by adding more TiKV nodes.
 
-#### The error message `transaction too large` is displayed.
+#### The error message `transaction too large` is displayed
 
 As distributed transactions need to conduct two-phase commit and the bottom layer performs Raft replication, if a transaction is very large, the commit process would be quite slow and the following Raft replication flow is thus struck. To avoid this problem, we limit the transaction size:
 
@@ -921,7 +935,9 @@ If the amount of data that needs to be deleted at a time is very large, this loo
 
 You can configure concurrent GC to increase the speed of reclaiming storage space. The default concurrency is 1, and you can modify it to at most 50% of the number of TiKV instances using the following command:
 
-```
+{{< copyable "sql" >}}
+
+```sql
 update mysql.tidb set VARIABLE_VALUE="3" where VARIABLE_NAME="tikv_gc_concurrency";
 ```
 
@@ -950,8 +966,13 @@ Recommendations:
 
 You can use `admin show ddl` to view the progress of the current DDL job. The operation is as follows:
 
+{{< copyable "sql" >}}
+
 ```sql
-tidb> admin show ddl\G;
+admin show ddl;
+```
+
+```
 *************************** 1. row ***************************
   SCHEMA_VER: 140
        OWNER: 1a1c4174-0fcd-4ba0-add9-12d08c4077dc
@@ -1072,6 +1093,8 @@ The accessed Region is not available. A Raft Group is not available, with possib
 #### ERROR 9006 (HY000): GC life time is shorter than transaction duration
 
 The interval of `GC Life Time` is too short. The data that should have been read by long transactions might be deleted. You can add `GC Life Time` using the following command:
+
+{{< copyable "sql" >}}
 
 ```sql
 update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_time';

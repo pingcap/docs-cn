@@ -39,13 +39,23 @@ In addition, you can control the memory quota of a query using the following ses
 
 Some usage examples:
 
+{{< copyable "sql" >}}
+
 ```sql
 -- Set the threshold value of memory quota for a single SQL query to 8GB:
 set @@tidb_mem_quota_query = 8 << 30;
+```
 
+{{< copyable "sql" >}}
+
+```sql
 -- Set the threshold value of memory quota for a single SQL query to 8MB:
 set @@tidb_mem_quota_query = 8 << 20;
+```
 
+{{< copyable "sql" >}}
+
+```sql
 -- Set the threshold value of memory quota for a single SQL query to 8KB:
 set @@tidb_mem_quota_query = 8 << 10;
 ```

@@ -17,11 +17,15 @@ This page includes some basic SQL statements such as CRUD operations. For a comp
 
 To create a database, use the `CREATE DATABASE` statement:
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE DATABASE db_name [options];
 ```
 
 For example, to create a database named `samp_db`:
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE DATABASE IF NOT EXISTS samp_db;
@@ -31,6 +35,8 @@ CREATE DATABASE IF NOT EXISTS samp_db;
 
 To show the databases, use the `SHOW DATABASES` statement:
 
+{{< copyable "sql" >}}
+
 ```sql
 SHOW DATABASES;
 ```
@@ -38,6 +44,8 @@ SHOW DATABASES;
 ### Delete a database
 
 To delete a database, use the `DROP DATABASE` statement:
+
+{{< copyable "sql" >}}
 
 ```sql
 DROP DATABASE samp_db;
@@ -49,11 +57,15 @@ DROP DATABASE samp_db;
 
 - To create a table, use the `CREATE TABLE` statement:
 
+    {{< copyable "sql" >}}
+
     ```sql
     CREATE TABLE table_name column_name data_type constraint;
     ```
 
     For example:
+
+    {{< copyable "sql" >}}
 
     ```sql
     CREATE TABLE person (
@@ -65,6 +77,8 @@ DROP DATABASE samp_db;
 
 - Add `IF NOT EXISTS` to prevent an error if the table exists:
 
+    {{< copyable "sql" >}}
+
     ```sql
     CREATE TABLE IF NOT EXISTS person (
         number INT(11),
@@ -75,6 +89,8 @@ DROP DATABASE samp_db;
 
 - To view the statement that creates the table, use the `SHOW CREATE` statement:
 
+    {{< copyable "sql" >}}
+
     ```sql
     SHOW CREATE table person;
     ```
@@ -83,11 +99,15 @@ DROP DATABASE samp_db;
 
 - To show all the tables in a database, use the `SHOW TABLES` statement:
 
+    {{< copyable "sql" >}}
+
     ```sql
     SHOW TABLES FROM samp_db;
     ```
 
 - To show all the columns in a table, use the `SHOW FULL COLUMNS` statement:
+
+    {{< copyable "sql" >}}
 
     ```sql
     SHOW FULL COLUMNS FROM person;
@@ -97,11 +117,15 @@ DROP DATABASE samp_db;
 
 To delete a table, use the `DROP TABLE` statement:
 
+{{< copyable "sql" >}}
+
 ```sql
 DROP TABLE person;
 ```
 
 or
+
+{{< copyable "sql" >}}
 
 ```sql
 DROP TABLE IF EXISTS person;
@@ -113,11 +137,15 @@ DROP TABLE IF EXISTS person;
 
 - To create an index for the column whose value is not unique, use the `CREATE INDEX` or `ALTER TABLE` statement:
 
+    {{< copyable "sql" >}}
+
     ```sql
     CREATE INDEX person_num ON person (number);
     ```
 
     or
+
+    {{< copyable "sql" >}}
 
     ```sql
     ALTER TABLE person ADD INDEX person_num (number);
@@ -125,11 +153,15 @@ DROP TABLE IF EXISTS person;
 
 - To create a unique index for the column whose value is unique, use the `CREATE UNIQUE INDEX` or `ALTER TABLE` statement:
 
+    {{< copyable "sql" >}}
+
     ```sql
     CREATE UNIQUE INDEX person_num ON person (number);
     ```
 
     or
+
+    {{< copyable "sql" >}}
 
     ```sql
     ALTER TABLE person ADD UNIQUE person_num (number);
@@ -139,6 +171,8 @@ DROP TABLE IF EXISTS person;
 
 To show all the indexes in a table, use the `SHOW INDEX` statement:
 
+{{< copyable "sql" >}}
+
 ```sql
 SHOW INDEX from person;
 ```
@@ -147,8 +181,15 @@ SHOW INDEX from person;
 
 To delete an index, use the `DROP INDEX` or `ALTER TABLE` statement:
 
+{{< copyable "sql" >}}
+
 ```sql
 DROP INDEX person_num ON person;
+```
+
+{{< copyable "sql" >}}
+
+```sql
 ALTER TABLE person DROP INDEX person_num;
 ```
 
@@ -158,6 +199,8 @@ ALTER TABLE person DROP INDEX person_num;
 
 To insert data into a table, use the `INSERT` statement:
 
+{{< copyable "sql" >}}
+
 ```sql
 INSERT INTO person VALUES("1","tom","20170912");
 ```
@@ -166,8 +209,13 @@ INSERT INTO person VALUES("1","tom","20170912");
 
 To view the data in a table, use the `SELECT` statement:
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT * FROM person;
+```
+
+```
 +--------+------+------------+
 | number | name | birthday   |
 +--------+------+------------+
@@ -179,10 +227,19 @@ SELECT * FROM person;
 
 To update the data in a table, use the `UPDATE` statement:
 
+{{< copyable "sql" >}}
+
 ```sql
 UPDATE person SET birthday='20171010' WHERE name='tom';
+```
 
+{{< copyable "sql" >}}
+
+```sql
 SELECT * FROM person;
+```
+
+```
 +--------+------+------------+
 | number | name | birthday   |
 +--------+------+------------+
@@ -194,9 +251,19 @@ SELECT * FROM person;
 
 To delete the data in a table, use the `DELETE` statement:
 
+{{< copyable "sql" >}}
+
 ```sql
 DELETE FROM person WHERE number=1;
+```
+
+{{< copyable "sql" >}}
+
+```sql
 SELECT * FROM person;
+```
+
+```
 Empty set (0.00 sec)
 ```
 
@@ -206,6 +273,8 @@ Empty set (0.00 sec)
 
 To create a user, use the `CREATE USER` statement. The following example creates a user named `tiuser` with the password `123456`:
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE USER 'tiuser'@'localhost' IDENTIFIED BY '123456';
 ```
@@ -214,11 +283,15 @@ CREATE USER 'tiuser'@'localhost' IDENTIFIED BY '123456';
 
 - To grant `tiuser` the privilege to retrieve the tables in the `samp_db` database:
 
+    {{< copyable "sql" >}}
+
     ```sql
     GRANT SELECT ON samp_db.* TO 'tiuser'@'localhost';
     ```
 
 - To check the privileges of `tiuser`:
+
+    {{< copyable "sql" >}}
 
     ```sql
     SHOW GRANTS for tiuser@localhost;
@@ -227,6 +300,8 @@ CREATE USER 'tiuser'@'localhost' IDENTIFIED BY '123456';
 ### Delete a user
 
 To delete `tiuser`:
+
+{{< copyable "sql" >}}
 
 ```sql
 DROP USER 'tiuser'@'localhost';

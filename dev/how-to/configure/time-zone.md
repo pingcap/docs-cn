@@ -14,20 +14,26 @@ The time zone in TiDB is decided by the global `time_zone` system variable and t
 
 You can use the following statement to set the global server `time_zone` value at runtime:
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SET GLOBAL time_zone = timezone;
+SET GLOBAL time_zone = timezone;
 ```
 
 Each client has its own time zone setting, given by the session `time_zone` variable. Initially, the session variable takes its value from the global `time_zone` variable, but the client can change its own time zone with this statement:
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SET time_zone = timezone;
+SET time_zone = timezone;
 ```
 
 You can use the following statement to view the current values of the global and client-specific time zones:
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SELECT @@global.time_zone, @@session.time_zone;
+SELECT @@global.time_zone, @@session.time_zone;
 ```
 
 To set the format of the value of the `time_zone`:
@@ -42,20 +48,53 @@ The current session time zone setting affects the display and storage of time va
 >
 > Only the values of the Timestamp data type is affected by time zone. This is because the Timestamp data type uses the literal value + time zone information. Other data types, such as Datetime/Date/Time, do not have time zone information, thus their values are not affected by the changes of time zone.
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> create table t (ts timestamp, dt datetime);
+create table t (ts timestamp, dt datetime);
+```
+
+```
 Query OK, 0 rows affected (0.02 sec)
+```
 
-mysql> set @@time_zone = 'UTC';
+{{< copyable "sql" >}}
+
+```sql
+set @@time_zone = 'UTC';
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> insert into t values ('2017-09-30 11:11:11', '2017-09-30 11:11:11');
+{{< copyable "sql" >}}
+
+```sql
+insert into t values ('2017-09-30 11:11:11', '2017-09-30 11:11:11');
+```
+
+```
 Query OK, 1 row affected (0.00 sec)
+```
 
-mysql> set @@time_zone = '+8:00';
+{{< copyable "sql" >}}
+
+```sql
+set @@time_zone = '+8:00';
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> select * from t;
+{{< copyable "sql" >}}
+
+```sql
+select * from t;
+```
+
+```
 +---------------------|---------------------+
 | ts                  | dt                  |
 +---------------------|---------------------+

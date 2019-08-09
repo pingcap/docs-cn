@@ -92,6 +92,7 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
     # visudo
     tidb ALL=(ALL) NOPASSWD: ALL
     ```
+
 4. Generate the SSH key.
 
     Execute the `su` command to switch the user from `root` to `tidb`.
@@ -622,6 +623,8 @@ Because TiDB is compatible with MySQL, you must use the MySQL client to connect 
 
 1. Connect to the TiDB cluster using the MySQL client.
 
+    {{< copyable "sql" >}}
+
     ```sql
     mysql -u root -h 172.16.10.1 -P 4000
     ```
@@ -692,8 +695,13 @@ Edit the `inventory.ini` file and add the following host variable after the IP o
 
 1. Run the following command. If it returns `running`, then the NTP service is running:
 
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    sudo systemctl status ntpd.service
     ```
-    $ sudo systemctl status ntpd.service
+
+    ```
     ntpd.service - Network Time Service
     Loaded: loaded (/usr/lib/systemd/system/ntpd.service; disabled; vendor preset: disabled)
     Active: active (running) since 一 2017-12-18 13:13:19 CST; 3s ago
@@ -701,8 +709,13 @@ Edit the `inventory.ini` file and add the following host variable after the IP o
 
 2. Run the ntpstat command. If it returns `synchronised to NTP server` (synchronizing with the NTP server), then the synchronization process is normal.
 
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    ntpstat
     ```
-    $ ntpstat
+
+    ```
     synchronised to NTP server (85.199.214.101) at stratum 2
     time correct to within 91 ms
     polling server every 1024 s
@@ -714,46 +727,60 @@ Edit the `inventory.ini` file and add the following host variable after the IP o
 
 - The following condition indicates the NTP service is not synchronizing normally:
 
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    ntpstat
     ```
-    $ ntpstat
+
+    ```
     unsynchronised
     ```
 
 - The following condition indicates the NTP service is not running normally:
 
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    ntpstat
     ```
-    $ ntpstat
+
+    ```
     Unable to talk to NTP daemon. Is it running?
     ```
 
 - To make the NTP service start synchronizing as soon as possible, run the following command. You can replace `pool.ntp.org` with other NTP servers.
 
-    ```
-    $ sudo systemctl stop ntpd.service
-    $ sudo ntpdate pool.ntp.org
-    $ sudo systemctl start ntpd.service
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    sudo systemctl stop ntpd.service && \
+    sudo ntpdate pool.ntp.org && \
+    sudo systemctl start ntpd.service
     ```
 
 - To install the NTP service manually on the CentOS 7 system, run the following command:
 
-    ```
-    $ sudo yum install ntp ntpdate
-    $ sudo systemctl start ntpd.service
-    $ sudo systemctl enable ntpd.service
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    sudo yum install ntp ntpdate
+    sudo systemctl start ntpd.service
+    sudo systemctl enable ntpd.service
     ```
 
 ### How to modify the supervision method of a process from `supervise` to `systemd`?
 
 Run the following command:
 
-```
+```shell
 # process supervision, [systemd, supervise]
 process_supervision = systemd
 ```
 
 For versions earlier than TiDB 1.0.4, the TiDB-Ansible supervision method of a process is `supervise` by default. The previously installed cluster can remain the same. If you need to change the supervision method to `systemd`, stop the cluster and run the following command:
 
-```
+```shell
 ansible-playbook stop.yml
 ansible-playbook deploy.yml -D
 ansible-playbook start.yml
@@ -763,35 +790,55 @@ ansible-playbook start.yml
 
 Log in to the deployment target machine using the `root` user account, create the `tidb` user and set the login password.
 
+{{< copyable "shell-root" >}}
+
+```shell
+useradd tidb
 ```
-# useradd tidb
-# passwd tidb
+
+{{< copyable "shell-root" >}}
+
+```shell
+passwd tidb
 ```
 
 To configure sudo without password, run the following command, and add `tidb ALL=(ALL) NOPASSWD: ALL` to the end of the file:
 
+{{< copyable "shell-root" >}}
+
+```shell
+visudo
 ```
-# visudo
+
+```
 tidb ALL=(ALL) NOPASSWD: ALL
 ```
 
 Use the `tidb` user to log in to the Control Machine, and run the following command. Replace `172.16.10.61` with the IP of your deployment target machine, and enter the `tidb` user password of the deployment target machine as prompted. Successful execution indicates that SSH mutual trust is already created. This applies to other machines as well.
 
-```
-[tidb@172.16.10.49 ~]$ ssh-copy-id -i ~/.ssh/id_rsa.pub 172.16.10.61
+```shell
+ssh-copy-id -i ~/.ssh/id_rsa.pub 172.16.10.61
 ```
 
 Log in to the Control Machine using the `tidb` user account, and log in to the IP of the target machine using SSH. If you do not need to enter the password and can successfully log in, then the SSH mutual trust is successfully configured.
 
+```shell
+ssh 172.16.10.61
 ```
-[tidb@172.16.10.49 ~]$ ssh 172.16.10.61
+
+```
 [tidb@172.16.10.61 ~]$
 ```
 
 After you login to the deployment target machine using the `tidb` user, run the following command. If you do not need to enter the password and can switch to the `root` user, then sudo without password of the `tidb` user is successfully configured.
 
+{{< copyable "shell-regular" >}}
+
+```shell
+sudo -su root
 ```
-[tidb@172.16.10.61 ~]$ sudo -su root
+
+```
 [root@172.16.10.61 tidb]#
 ```
 
@@ -804,8 +851,11 @@ Enter `import jmespath` in the Python interactive window of the Control Machine.
 - If no error displays, the dependency is successfully installed.
 - If the `ImportError: No module named jmespath` error displays, the Python `jmespath` module is not successfully installed.
 
+```shell
+python
 ```
-$ python
+
+```
 Python 2.7.5 (default, Nov  6 2016, 00:28:07)
 [GCC 4.8.5 20150623 (Red Hat 4.8.5-11)] on linux2
 Type "help", "copyright", "credits" or "license" for more information.

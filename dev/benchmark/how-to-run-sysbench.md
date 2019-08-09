@@ -129,6 +129,8 @@ db-driver=mysql
 
 Before importing the data, it is necessary to make some settings to TiDB. Execute the following command in MySQL client:
 
+{{< copyable "sql" >}}
+
 ```sql
 set global tidb_disable_txn_auto_retry = off;
 ```
@@ -137,7 +139,9 @@ Then exit the client. TiDB uses an optimistic transaction model that rolls back 
 
 Restart MySQL client and execute the following SQL statement to create a database `sbtest`:
 
-```
+{{< copyable "sql" >}}
+
+```sql
 create database sbtest;
 ```
 
@@ -164,11 +168,15 @@ Sysbench 1.0.14 does not provide data warming, so it must be done manually. If y
 
 Take a table sbtest7 in Sysbench as an example. Execute the following SQL to warming up data:
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT COUNT(pad) FROM sbtest7 USE INDEX (k_7);
 ```
 
 Collecting statistics helps the optimizer choose a more accurate execution plan. The `analyze` command can be used to collect statistics on the table sbtest. Each table needs statistics.
+
+{{< copyable "sql" >}}
 
 ```sql
 ANALYZE TABLE sbtest7;

@@ -43,6 +43,7 @@ Assume we have 6 machines with the following details:
 ### 1. Start PD
 
 Start PD1 on the **host1**
+
 ```bash
 docker run -d --name pd1 \
   -p 2379:2379 \
@@ -60,6 +61,7 @@ docker run -d --name pd1 \
 ```
 
 Start PD2 on the **host2**
+
 ```bash
 docker run -d --name pd2 \
   -p 2379:2379 \
@@ -77,6 +79,7 @@ docker run -d --name pd2 \
 ```
 
 Start PD3 on the **host3**
+
 ```bash
 docker run -d --name pd3 \
   -p 2379:2379 \
@@ -96,6 +99,7 @@ docker run -d --name pd3 \
 ### 2. Start TiKV
 
 Start TiKV1 on the **host4**
+
 ```bash
 docker run -d --name tikv1 \
   -p 20160:20160 \
@@ -109,6 +113,7 @@ docker run -d --name tikv1 \
 ```
 
 Start TiKV2 on the **host5**
+
 ```bash
 docker run -d --name tikv2 \
   -p 20160:20160 \
@@ -122,6 +127,7 @@ docker run -d --name tikv2 \
 ```
 
 Start TiKV3 on the **host6**
+
 ```bash
 docker run -d --name tikv3 \
   -p 20160:20160 \
