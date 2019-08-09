@@ -9,7 +9,7 @@ category: tools
 
 ## 获取 ts-map
 
-在下游 TiDB 中执行以下 SQL：
+在下游 TiDB 中执行以下 SQL 语句：
 
 ```
     mysql> select * from tidb_binlog.checkpoint;
