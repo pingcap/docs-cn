@@ -3,7 +3,7 @@ title: 分库分表场景下的数据校验
 category: tools
 ---
 
-### 分库分表场景下的数据校验
+# 分库分表场景下的数据校验
 
 sync-diff-inspector 支持对分库分表场景进行数据校验。例如有两个 MySQL 实例，使用同步工具 DM 同步到一个 TiDB 中，场景如图所示：
 
