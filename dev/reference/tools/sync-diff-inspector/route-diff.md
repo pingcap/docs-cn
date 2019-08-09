@@ -5,7 +5,7 @@ category: tools
 
 # 不同库名／表名的数据校验
 
-用户在使用 DM 等同步工具时，可以设置 `route-rules` 将数据同步到下游指定表中，sync-diff-inspector 提供了校验不同库名、表名的表的功能。
+用户在使用 DM 等同步工具时，可以设置 `route-rules` 将数据同步到下游指定表中。sync-diff-inspector 提供了校验不同库名、表名的表的功能。
 
 下面是一个简单的例子：
 
