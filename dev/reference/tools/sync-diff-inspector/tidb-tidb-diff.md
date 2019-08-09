@@ -5,7 +5,7 @@ category: tools
 
 # TiDB 主从集群的数据校验
 
-用户可以使用 TiDB-Binlog 搭建 TiDB 的主从集群，在 Drainer 把数据同步到 TiDB 时，Drainer 会在保存 checkpoint 时保存上下游的 tso 的对应关系 `ts-map`，在 sync-diff-inspector 中配置 `snapshot` 即可对 TiDB 主从集群的数据进行校验。
+用户可以使用 TiDB-Binlog 搭建 TiDB 的主从集群，Drainer 在把数据同步到 TiDB 时，保存 checkpoint 的同时也会将上下游的 TSO 对应关系保存为 `ts-map`。在 sync-diff-inspector 中配置 `snapshot` 即可对 TiDB 主从集群的数据进行校验。
 
 ## 获取 ts-map
 
