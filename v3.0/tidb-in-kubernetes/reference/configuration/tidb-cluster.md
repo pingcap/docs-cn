@@ -125,9 +125,11 @@ TiDB Operator uses `Helm` to deploy and manage TiDB clusters. The configuration 
 
 ## Resource configuration
 
-Before deploying a TiDB cluster, it is necessary to configure the resources for each component of the cluster depending on your needs. `requests` and `limits` are the resource configuration items listed in the table above. They respectively refer to the minimum requirement for and maximum limit on resources. `limits` must be greater than or equal to `request`. It is recommended to set `limits` to be equal to `requests`, which ensures that the service achieves Guaranteed-level QoS.
+Before deploying a TiDB cluster, it is necessary to configure the resources for each component of the cluster depending on your needs. PD, TiKV and TiDB are the core service components of a TiDB cluster. In a production environment, their resource configurations must be specified according to component needs. Detailed reference: [Hardware Recommendations](/how-to/deploy/hardware-recommendations.md).
 
-PD, TiKV and TiDB are the core service components of a TiDB cluster. In a production environment, their resource configuration must be specified manually according to component needs. Detailed reference: [Hardware Recommendations](/how-to/deploy/hardware-recommendations.md). In a testing environment, you can directly use the default configuration in the `values.yaml` file without any manual setting.
+To ensure the proper scheduling and stable operation of the components of the TiDB cluster in Kubernetes, it is recommended to set Guaranteed-level QoS by letting `limits` equal to `requests` when configuring resources. Detailed reference: [Configure Quality of Service for Pods](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/).
+
+If you are using a NUMA-based CPU, you need to enable `Static`'s CPU management policy on the node for better performance. In order to allow the TiDB cluster component to monopolize the corresponding CPU resources, the CPU quota must be an integer greater than or equal to `1` besides setting Guaranteed-level QoS as mentioned above. Detailed reference: [Control CPU Management Policies on the Node](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies).
 
 ## Disaster recovery configuration
 
