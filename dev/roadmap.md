@@ -17,7 +17,7 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 * Multi-Column Statistics
 * 为普通 CM-Sketch 支持 TopN 统计信息
 * 完善 Plan Cache 功能
-* 简单的自适应 SQL 引擎
+* 自适应 SQL 引擎
 * SQL Tuning Advisor
 * SQL Plan Management
 
