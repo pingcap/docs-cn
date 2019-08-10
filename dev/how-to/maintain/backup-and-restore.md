@@ -91,7 +91,7 @@ Then execute two more commands:
 - Step 1: before executing the `mydumper` command, query the GC values of the TiDB cluster and adjust it to a suitable value using the MySQL client.
 
     ```sql
-    mysql> SELECT * FROM mysql.tidb WHERE VARIABLE_NAME = 'tikv_gc_life_time'
+    mysql> SELECT * FROM mysql.tidb WHERE VARIABLE_NAME = 'tikv_gc_life_time';
     +-----------------------+------------------------------------------------------------------------------------------------+
     | VARIABLE_NAME         | VARIABLE_VALUE                                                                                 |
     +-----------------------+------------------------------------------------------------------------------------------------+
