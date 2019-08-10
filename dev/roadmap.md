@@ -15,7 +15,7 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 * 支持 TiFlash 存储引擎
 * Optimizer Trace
 * Multi-Column Statistics
-* Normal CM-Sketch with TOPN Statistics
+* 为普通 CM-Sketch 支持 TopN 统计信息
 * 完善 Plan Cache 功能
 * 简单的自适应 SQL 引擎
 * SQL Tuning Advisor
