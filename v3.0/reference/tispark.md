@@ -1,7 +1,6 @@
 ---
 title: TiSpark 用户指南
 category: reference
-aliases: ['/docs-cn/tispark/tispark-user-guide/']
 ---
 
 # TiSpark 用户指南
@@ -23,9 +22,7 @@ TiSpark 是将 Spark SQL 直接运行在分布式存储引擎 TiKV 上的 OLAP �
 
 ## 环境准备
 
-现有 TiSpark 2.x 版本支持 Spark 2.3.x，但并不支持 Spark 2.3.x 以外的版本。如果你希望使用 Spark 2.1.x 版本，需使用 TiSpark 1.x。
-
-TiSpark 2.x 对于 Spark 2.3.x 的不同小版本做了些微的改动。默认的 TiSpark 支持 Spark 2.3.2，若希望使用 Spark 2.3.0 或者 Spark 2.3.1，则需要自行编译相关小版本的支持，以避免出现 API 的冲突。可以参见这个[文档](https://github.com/pingcap/tispark#how-to-build-from-sources)来获知如何从源码编译支持 Spark 2.3.x 的 TiSpark 。
+现有 TiSpark 2.x 版本支持 Spark 2.3.x和Spark 2.4.x。如果你希望使用 Spark 2.1.x 版本，需使用 TiSpark 1.x。
 
 TiSpark 需要 JDK 1.8+ 以及 Scala 2.11（Spark2.0+ 默认 Scala 版本）。
 
@@ -76,14 +73,14 @@ spark.sql.extensions org.apache.spark.sql.TiExtensions
 
 ## 部署 TiSpark
 
-TiSpark 的 jar 包可以在[这里](http://download.pingcap.org/tispark-latest-linux-amd64.tar.gz)下载，解压并拷贝到合适的目录。
+TiSpark 的 jar 包可以在[这里](https://github.com/pingcap/tispark/releases)下载对应版本的 jar 包并拷贝到合适的目录。
 
 ### 已有 Spark 集群的部署方式
 
 如果在已有 Spark 集群上运行 TiSpark，无需重启集群。可以使用 Spark 的 `--jars` 参数将 TiSpark 作为依赖引入：
 
 ```
-spark-shell --jars $TISPARK_FOLDER/tispark-core-${version}-SNAPSHOT-jar-with-dependencies.jar
+spark-shell --jars $TISPARK_FOLDER/tispark-${name_with_version}.jar
 ```
 
 ### 没有 Spark 集群的部署方式
@@ -94,7 +91,7 @@ spark-shell --jars $TISPARK_FOLDER/tispark-core-${version}-SNAPSHOT-jar-with-dep
 
 你可以在[这里](https://spark.apache.org/downloads.html)下载 Apache Spark。
 
-对于 Standalone 模式且无需 Hadoop 支持，则选择 Spark 2.3.x 且带有 Hadoop 依赖的 Pre-build with Apache Hadoop 2.x 任意版本。如有需要配合使用的 Hadoop 集群，则选择对应的 Hadoop 版本号。你也可以选择从源代码[自行构建](https://spark.apache.org/docs/2.3.0/building-spark.html)以配合官方 Hadoop 2.x 之前的版本。
+对于 Standalone 模式且无需 Hadoop 支持，则选择 Spark 2.3.x 或者 Spark 2.4.x 且带有 Hadoop 依赖的 Pre-build with Apache Hadoop 2.x 任意版本。如有需要配合使用的 Hadoop 集群，则选择对应的 Hadoop 版本号。你也可以选择从源代码[自行构建](https://spark.apache.org/docs/latest/building-spark.html)以配合官方 Hadoop 2.x 之前的版本。
 
 如果你已经有了 Spark 二进制文件，并且当前 PATH 为 SPARKPATH，需将 TiSpark jar 包拷贝到 `${SPARKPATH}/jars` 目录下。
 
@@ -186,14 +183,6 @@ select count(*) from account;
 1 row selected (1.97 seconds)
 ```
 
-## TiSparkR
-
-TiSparkR 是为兼容 SparkR 而开发的组件。具体使用请参考[这份文档](https://github.com/pingcap/tispark/blob/master/R/README.md)。
-
-## TiSpark on PySpark
-
-TiSpark on PySpark 是为兼容 PySpark 而开发的组件。具体使用请参考[这份文档](https://github.com/pingcap/tispark/blob/master/python/README.md)。
-
 ## 和 Hive 一起使用 TiSpark
 
 TiSpark 可以和 Hive 混合使用。
@@ -260,3 +249,11 @@ TiSpark 可以使用 TiDB 的统计信息：
 - Q. 是否可以和 TiKV 混合部署？
 
     A. 如果 TiDB 以及 TiKV 负载较高且运行关键的线上任务，请考虑单独部署 TiSpark；并且考虑使用不同的网卡保证 OLTP 的网络资源不被侵占而影响线上业务。如果线上业务要求不高或者机器负载不大，可以考虑与 TiKV 混合部署。
+
+- Q. Spark 执行中报 warning：WARN ObjectStore:568 - Failed to get database
+
+    A. Warning 忽略即可，原因是 Spark 找不到对应的 hive 库，因为这个库是在 TIKV 中，而不是在 hive 中。可以考虑调整 [log4j 日志](https://github.com/pingcap/tidb-docker-compose/blob/master/tispark/conf/log4j.properties#L43)，将该参数添加到 spark 下 conf 里 log4j 文件(如果后缀是 template 那先 mv 成后缀 properties)。
+
+- Q. Spark 执行中报 java.sql.BatchUpdateException: Data Truncated
+
+    A. 写入的数据长度超过了数据库定义的数据类型的长度，可以确认 target table 的字段长度，进行调整。

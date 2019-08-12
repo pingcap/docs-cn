@@ -1,9 +1,9 @@
 ---
-title: TiDB-Lightning 错误排解
+title: TiDB Lightning 错误排解
 category: reference
 ---
 
-# TiDB-Lightning 错误排解
+# TiDB Lightning 错误排解
 
 当 Lightning 遇到不可恢复的错误时便会异常退出，并在日志中记下错误原因。一般可在日志底部找到，也可以搜索 `[error]` 字符串找出中间发生的错误。本文主要描述一些常见的错误及其解决方法。
 
@@ -56,9 +56,9 @@ Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的数�
 
 如果错误原因是非法数据源，使用 `tidb-lightning-ctl` 删除已导入数据，并重启 Lightning。
 
-    ```sh
-    tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
-    ```
+```sh
+tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
+```
 
 其他解决方法请参考[断点续传的控制](/reference/tools/tidb-lightning/checkpoints.md#断点续传的控制)。
 
