@@ -28,7 +28,7 @@ PD | Leader Balance Ratio | the leader ratio difference of the nodes with the bi
 PD | Region Balance Ratio | the Region ratio difference of the nodes with the biggest Region ratio and the smallest Region ratio | It is less than 5% for a balanced situation and becomes bigger when you add or remove a node.
 PD | Store Status -- Up Stores | the number of TiKV nodes that are up |
 PD | Store Status -- Disconnect Stores | the number of TiKV nodes that encounter abnormal communication within a short time |
-PD | Store Status -- LowSpace Stores | the number of TiKV nodes with an available space of less than 80% |
+PD | Store Status -- LowSpace Stores | the number of TiKV nodes with an available space of less than 20% |
 PD | Store Status -- Down Stores | the number of TiKV nodes that are down | The normal value is `0`. If the number is bigger than `0`, it means some node(s) are abnormal.
 PD | Store Status -- Offline Stores | the number of TiKV nodes (still providing service) that are being made offline |
 PD | Store Status -- Tombstone Stores | the number of TiKV nodes that are successfully offline |
