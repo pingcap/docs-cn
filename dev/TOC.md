@@ -236,6 +236,7 @@
     - [Generated Columns](reference/sql/generated-columns.md)
     - [Partitioning](reference/sql/partitioning.md)
     - [Character Set](reference/sql/character-set.md)
+    - [Views](reference/sql/views.md)
   + Configuration
     + tidb-server
       - [MySQL System Variables](reference/configuration/tidb-server/mysql-variables.md)
