@@ -21,7 +21,7 @@ If you want to work on a new idea of relatively small scope:
 3. If your proposed change is accepted, sign the [CLA](https://cla-assistant.io/pingcap/tidb?pullRequest=5567), and start work in your fork.
 4. Submit a [pull request](https://github.com/pingcap/tidb/pull/3113) containing a tested change.
 
-Contributions are welcomed and greatly appreciated. See [CONTRIBUTING.md](https://github.com/pingcap/community/blob/master/CONTRIBUTING.md) for details on submitting patches and the contribution workflow.
+Contributions are welcomed and greatly appreciated. See [CONTRIBUTING.md](https://github.com/pingcap/tidb/blob/master/CONTRIBUTING.md) for details on submitting patches and the contribution workflow.
 
 ## Improve the Docs
 
