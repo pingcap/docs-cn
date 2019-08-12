@@ -299,6 +299,8 @@ Drainer="192.168.0.13"
             Prometheus Pushgateway 地址，不设置则禁止上报监控信息
         -metrics-interval int
             监控信息上报频率 (默认 15，单位 秒)
+        -node-id string
+            Pump 节点的唯一识别 ID，如果不指定，程序会根据主机名和监听端口自动生成
         -pd-urls string
             PD 集群节点的地址 (-pd-urls="http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379")
         ```
@@ -326,9 +328,36 @@ Drainer="192.168.0.13"
         # PD 集群节点的地址
         pd-urls = "http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379"
 
+        # [security]
+        # 如无特殊安全设置需要，该部分一般都注解掉
+        # 包含与集群连接的受信任 SSL CA 列表的文件路径
+        # ssl-ca = "/path/to/ca.pem"
+        # 包含与集群连接的 PEM 形式的 X509 certificate 的路径
+        # ssl-cert = "/path/to/drainer.pem"
+        # 包含与集群链接的 PEM 形式的 X509 key 的路径
+        # ssl-key = "/path/to/drainer-key.pem"
+
         # [storage]
         # 设置为 true（默认值）来保证可靠性，确保 binlog 数据刷新到磁盘
         # sync-log = true
+
+        # 当可用磁盘容量小于该设置值时，Pump 将停止写入数据
+        # 42 MB -> 42000000, 42 mib -> 44040192
+        # default: 10 gib
+        # stop-write-at-available-space = "10 gib"
+
+        # Pump 内嵌的 LSM DB 设置，除非对该部分很了解，否则一般注解掉
+        # [storage.kv]
+        # block-cache-capacity = 8388608
+        # block-restart-interval = 16
+        # block-size = 4096
+        # compaction-L0-trigger = 8
+        # compaction-table-size = 67108864
+        # compaction-total-size = 536870912
+        # compaction-total-size-multiplier = 8.0
+        # write-buffer = 67108864
+        # write-L0-pause-trigger = 24
+        # write-L0-slowdown-trigger = 17
         ```
 
     - 启动示例
@@ -353,6 +382,8 @@ Drainer="192.168.0.13"
             Drainer 提供服务的地址(-addr="192.168.0.13:8249")
         -c int
             同步下游的并发数，该值设置越高同步的吞吐性能越好 (default 1)
+        -cache-binlog-count int
+            缓存中的 binlog 数目限制（默认 65536）
         -config string
             配置文件路径，Drainer 会首先读取配置文件的配置；
             如果对应的配置在命令行参数里面也存在，Drainer 就会使用命令行参数的配置来覆盖配置文件里面的配置
@@ -380,10 +411,13 @@ Drainer="192.168.0.13"
             Prometheus Pushgateway 地址，不设置则禁止上报监控信息
         -metrics-interval int
             监控信息上报频率（默认 15，单位：秒）
+        -node-id string
+            drainer 节点的唯一识别 ID，如果不指定，程序会根据主机名和监听端口自动生成
         -pd-urls string
             PD 集群节点的地址 (-pd-urls="http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379")
         -safe-mode
-            是否开启安全模式（将 update 语句拆分为 delete + replace 语句）
+            是否开启安全模式使得下游 MySQL/TiDB 可被重复写入
+            即将 insert 语句换为 replace 语句，将 update 语句拆分为 delete + replace 语句
         -txn-batch int
             输出到下游数据库一个事务的 SQL 数量（默认 1）
         ```
@@ -426,9 +460,16 @@ Drainer="192.168.0.13"
         # 顺序依次还原成单个事务进行同步（下游服务类型为 MySQL, 该项设置为 False）
         disable-dispatch = false
 
+        # safe mode 会使写下游 MySQL/TiDB 可被重复写入
+        # 会用 replace 替换 insert 语句，用 delete + replace 替换 update 语句
+        safe-mode = false
+
         # Drainer 下游服务类型（默认为 mysql）
         # 参数有效值为 "mysql"，"file"，"kafka"，"flash"
         db-type = "mysql"
+
+        # 事务的 commit ts 若在该列表中，则该事务将被过滤，不会同步至下游
+        ignore-txn-commit-ts = []
 
         # db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test")，
         # 不支持对 ignore schemas 的 table 进行 rename DDL 操作
@@ -465,13 +506,19 @@ Drainer="192.168.0.13"
 
         # db-type 设置为 kafka 时，Kafka 相关配置
         # [syncer.to]
+        # kafka-addrs 和 zookeeper-addrs 只需要一个，两者都有时程序会优先用 zookeeper 中的 kafka 地址
         # zookeeper-addrs = "127.0.0.1:2181"
         # kafka-addrs = "127.0.0.1:9092"
         # kafka-version = "0.8.2.0"
+        # kafka-max-messages = 1024
 
         # 保存 binlog 数据的 Kafka 集群的 topic 名称，默认值为 <cluster-id>_obinlog
         # 如果运行多个 Drainer 同步数据到同一个 Kafka 集群，每个 Drainer 的 topic-name 需要设置不同的名称
         # topic-name = ""
+
+        [syncer.to.checkpoint]
+        # 当下游是 MySQL 或 TiDB 时可以开启该选项，以改变保存 checkpoint 的数据库
+        # schema = "tidb_binlog"
         ```
 
     - 启动示例
