@@ -5,6 +5,10 @@ category: reference
 
 # 加密和压缩函数
 
+TiDB 支持使用 MySQL 5.7 中提供的大部分[加密和压缩函数](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html)。
+
+## 支持的函数
+
 | 函数名      | 功能描述      |
 |:-----------|:----------------------------|
 | [`MD5()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_md5)                                                             | 计算字符串的 MD5 校验和        |
@@ -26,3 +30,9 @@ category: reference
 | [`ASYMMETRIC_ENCRYPT()`](https://dev.mysql.com/doc/refman/5.7/en/enterprise-encryption-functions.html#function_asymmetric-encrypt)                    | 使用公钥或私钥加密明文   |
 | [`ASYMMETRIC_SIGN()`](https://dev.mysql.com/doc/refman/5.7/en/enterprise-encryption-functions.html#function_asymmetric-sign)                          | 从摘要创建签名                    |
 | [`ASYMMETRIC_VERIFY()`](https://dev.mysql.com/doc/refman/5.7/en/enterprise-encryption-functions.html#function_asymmetric-verify)                      | 验证签名字符串是否匹配摘要字符串             |
+
+## 不支持的函数
+
+* `DES_DECRYPT()`、`DES_ENCRYPT()`、`OLD_PASSWORD()` 和 `ENCRYPT()`：这些函数在 MySQL 5.7 中被废弃，并且已在 MySQL 8.0 中移除。
+* `VALIDATE_PASSWORD_STRENGTH()` 函数。
+* 只在 MySQL 企业版中支持的函数。见 [Issue #2632](https://github.com/pingcap/tidb/issues/2632)。
