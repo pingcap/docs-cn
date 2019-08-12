@@ -6,7 +6,7 @@ category: reference
 
 # SHOW TABLE REGIONS
 
-`SHOW TABLE STATUS` 语句用于显示 TiDB 中表的 REGION 信息。
+`SHOW TABLE REGIONS` 语句用于显示 TiDB 中某个表的 REGION 信息。
 
 ## 语法图
 
@@ -20,10 +20,10 @@ SHOW TABLE [table_name] INDEX [index_name] REGIONS;
 `SHOW TABLE REGIONS` 回返回如下列：
 * REGION_ID: REGION 的 ID。
 * START_KEY: REGION 的 START KEY。
-* END_KEY:   REGION 的 END KEY。
+* END_KEY: REGION 的 END KEY。
 * LEADER_ID: REGION 的 LEADER ID。
 * LEADER_STORE_ID: REGION LEADER 所在的 store (TiKV) ID。
-* PEERS:     REGION 所有副本的 ID。
+* PEERS: REGION 所有副本的 ID。
 * SCATTERING: REGION 是否正在打散或调度中。
 
 ## 示例
