@@ -83,7 +83,7 @@ Query OK, 0 rows affected (0.31 sec)
 
 ## 相关 session 变量
 
-和 `CREATE INDEX` 语句相关的 global 变量有 `tidb_ddl_reorg_worker_cnt`, `tidb_ddl_reorg_batch_size`, `tidb_ddl_reorg_priority`, 具体可以参考 [TiDB 特定系统变量](/reference/configuration/tidb-server/tidb-specific-variables.md/#tidb-ddl-reorg-worker-cnt)
+和 `CREATE INDEX` 语句相关的全局变量有 `tidb_ddl_reorg_worker_cnt`，`tidb_ddl_reorg_batch_size` 和 `tidb_ddl_reorg_priority`，具体可以参考 [TiDB 特定系统变量](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb-ddl-reorg-worker-cnt)。
 
 ## MySQL 兼容性
 
