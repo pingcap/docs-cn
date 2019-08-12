@@ -184,9 +184,9 @@ You can find deployment instructions in [TiDB Quick Start Guide](https://pingcap
 
 Download the TiDB Lightning package (choose the same version as that of the TiDB cluster):
 
-- **v2.1.9**: `https://download.pingcap.org/tidb-v2.1.9-linux-amd64.tar.gz`
-- **v2.0.9**: `https://download.pingcap.org/tidb-lightning-v2.0.9-linux-amd64.tar.gz`
-- Latest unstable version: `https://download.pingcap.org/tidb-lightning-test-xx-latest-linux-amd64.tar.gz`
+- **v2.1.9**: <https://download.pingcap.org/tidb-v2.1.9-linux-amd64.tar.gz>
+- **v2.0.9**: <https://download.pingcap.org/tidb-lightning-v2.0.9-linux-amd64.tar.gz>
+- Latest unstable version: <https://download.pingcap.org/tidb-lightning-test-xx-latest-linux-amd64.tar.gz>
 
 #### Step 3: Start `tikv-importer`
 
@@ -431,9 +431,13 @@ Download the TiDB Lightning package (choose the same version as that of the TiDB
     [post-restore]
     # Performs `ADMIN CHECKSUM TABLE <table>` for each table to verify data integrity.
     checksum = true
-    # Performs level-1 compaction after importing each table.
+    # If the value is set to `true`, a level-1 compaction is performed
+    # every time a table is imported.
+    # The default value is `false`.
     level-1-compact = false
-    # Performs full compaction on the whole TiKV cluster at the end of process.
+    # If the value is set to `true`, a full compaction on the whole
+    # TiKV cluster is performed at the end of the import.
+    # The default value is `false`.
     compact = false
     # Performs `ANALYZE TABLE <table>` for each table.
     analyze = true
