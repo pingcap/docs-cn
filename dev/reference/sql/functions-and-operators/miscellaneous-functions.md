@@ -22,7 +22,7 @@ TiDB 支持使用 MySQL 5.7 中提供的大部分[其他函数](https://dev.mysq
 | [`IS_IPV4_MAPPED()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_is-ipv4-mapped)    | 判断参数是否为 IPv4 映射的地址   |
 | [`IS_IPV6()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_is-ipv6)    | 判断参数是否为 IPv6 地址    |
 | [`NAME_CONST()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_name-const)  | 可以用于重命名列名  |
-| [`SLEEP()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_sleep)  | 语句暂停执行几秒时间 |
+| [`SLEEP()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_sleep)  | 让语句暂停执行几秒时间 |
 | [`UUID()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_uuid)  | 返回一个通用唯一识别码 (UUID)  |
 | [`VALUES()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_values)  | 定义 `INSERT` 语句使用的值  |
 
