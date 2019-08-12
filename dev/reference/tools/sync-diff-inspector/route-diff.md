@@ -1,5 +1,5 @@
 ---
-title: 不同库名／表名的数据校验
+title: 不同库名或表名的数据校验
 category: tools
 ---
 
