@@ -20,7 +20,7 @@ TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm upgrade <releaseName> pingcap/tidb-cluster -f values.yaml --version=<chart-version>
+    helm upgrade <release-name> pingcap/tidb-cluster -f values.yaml --version=<chart-version>
     ```
 
 3. 查看集群水平扩缩容状态：
@@ -36,7 +36,7 @@ TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达
 > **注意：**
 >
 > - PD、TiKV 组件在滚动升级的过程中不会触发扩缩容操作。
-> - PD、TiKV 组件在缩容过程中都会调用接口下线正在删除的 PD、TiKV 组件在下线时会涉及到数据迁移的操作，所以会消耗比较长的时间。
+> - TiKV 组件在缩容过程中会调用 PD 接口将对应 TiKV 标记为下线，然后将其上数据迁移到其它 TiKV 节点，在数据迁移期间 TiKV Pod 依然是 `Running` 状态，数据迁移完成后对应 Pod 才会被删除，缩容时间与待缩容的 TiKV 上的数据量有关，可以通过 `kubectl get tidbcluster -n <namespace> <release-name> -o json | jq '.status.tikv.stores'` 查看 TiKV 是否处于下线（Offline）状态。
 > - PD、TiKV 组件在缩容过程中被删除的节点的 PVC 会保留，并且由于 PV 的 `Reclaim Policy` 设置为 `Retain`，即使 PVC 被删除，数据依然可以找回。
 
 ## 垂直扩缩容
@@ -52,7 +52,7 @@ TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm upgrade <releaseName> pingcap/tidb-cluster -f values.yaml --version=<chart-version>
+    helm upgrade <release-name> pingcap/tidb-cluster -f values.yaml --version=<chart-version>
     ```
 
 3. 查看升级进度：
@@ -68,4 +68,4 @@ TiDB 水平扩缩容操作指的是通过增加或减少节点的数量，来达
 > **注意：**
 >
 > - 如果在垂直扩容时修改了资源的 `requests` 字段，由于 PD、TiKV 使用了 `Local PV`，升级后还需要调度回原节点，如果原节点资源不够，则会导致 Pod 一直处于 `Pending` 状态而影响服务。
-> - TiDB 作为一个可水平扩展的数据库，推荐发挥 TiDB 集群可水平扩展的优势，而不是类似传统数据库仅仅是进行资源的叠加。
+> - TiDB 作为一个可水平扩展的数据库，推荐通过增加节点个数发挥 TiDB 集群可水平扩展的优势，而不是类似传统数据库升级节点硬件配置来实现垂直扩容。
