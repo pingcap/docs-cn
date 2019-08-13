@@ -69,7 +69,7 @@ aliases: ['/docs-cn/op-guide/dashboard-overview-info/']
 - coprocessor pending requests：正常情况监控为 0 或者数量很少
 - coprocessor executor count：不同类型的查询操作数量
 - coprocessor request duration：TiKV 中查询消耗的时间
-- raft store CPU：raftstore 线程的 CPU 使用率，线程数量默认为 2 (通过 `raftstore.store-pool-size` 配置)，如果单个线程使用率超过 80% 说明使用率很高
+- raft store CPU：raftstore 线程的 CPU 使用率，线程数量默认为 2 (通过 `raftstore.store-pool-size` 配置)，如果单个线程使用率超过 80%，说明使用率很高
 - Coprocessor CPU：TiKV 查询线程的 CPU 使用率，和业务相关，复杂查询会使用大量的 CPU 资源
 
 ## System Info
