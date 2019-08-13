@@ -67,7 +67,7 @@ test> split table t index name between ("a") and ("z") regions 2;
 | 2                  | 1.0                  |
 +--------------------+----------------------+
 1 row in set
--- 现在表 t  一共有 6 个 REGIONS，其中 ID 是 94 的 REGION 既会写入 [-inf,20000) 的行数据，也会写入索引 [l,+inf] 的 name 索引数据。
+-- 现在表 t 一共有 6 个 Region，其中 ID 是 94 的 Region 既会写入 [-inf,20000) 的行数据，也会写入索引 [l,+inf] 的 name 索引数据。
 test> show table t regions;
 +-----------+-----------------------------+-----------------------------+-----------+-----------------+---------------+------------+
 | REGION_ID | START_KEY                   | END_Key                     | LEADER_ID | LEADER_STORE_ID | PEERS         | SCATTERING |
