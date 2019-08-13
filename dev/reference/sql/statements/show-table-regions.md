@@ -19,7 +19,7 @@ SHOW TABLE [table_name] INDEX [index_name] REGIONS;
 
 `SHOW TABLE REGIONS` 回返回如下列：
 * `REGION_ID`：Region 的 ID。
-* START_KEY: REGION 的 START KEY。
+* `START_KEY`：Region 的 Start key。
 * END_KEY: REGION 的 END KEY。
 * LEADER_ID: REGION 的 LEADER ID。
 * LEADER_STORE_ID: REGION LEADER 所在的 store (TiKV) ID。
