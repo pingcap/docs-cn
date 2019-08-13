@@ -32,7 +32,7 @@ SHOW TABLE [table_name] INDEX [index_name] REGIONS;
 ```sql
 test> create table t (id int key,name varchar(50), index (name));
 Query OK, 0 rows affected
--- 默认新键表后会单独 SPLIT 出一个 REGION 来存放这个这个表的数据，开始时行数据和索引数据都会写到这个 REGION 。
+-- 默认新建表后会单独 split 出一个 Region 来存放该表的数据，开始时行数据和索引数据都会写到这个 Region。
 test> show table t regions;
 +-----------+-----------+---------+-----------+-----------------+-----------+------------+
 | REGION_ID | START_KEY | END_Key | LEADER_ID | LEADER_STORE_ID | PEERS     | SCATTERING |
