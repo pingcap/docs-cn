@@ -84,5 +84,5 @@ test> show table t regions;
 
 ## 另请参阅
 
-* [SPLIT TABLE REGIONS](/reference/sql/statements/split-regions.md)
+* [SPLIT REGIONS](/reference/sql/statements/split-regions.md)
 * [CREATE TABLE](/reference/sql/statements/create-table.md)
