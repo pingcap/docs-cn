@@ -260,5 +260,4 @@ SET collation_connection = @@collation_database;
 
 如果不希望报错，可以通过 `set @@tidb_skip_utf8_check=1;` 跳过字符检查。
 
-
 更多细节，参考 [Connection Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-connection.html)。
