@@ -37,7 +37,7 @@ Go Version: go version go1.11.2 linux/amd64
 
 ### 升级操作示例
 
-启动 DM-master 或 DM-worker 前, 必须确保已经删除废弃的配置信息，且没有多余的配置项，否则会启动失败。可根据失败信息删除多余的配置。
+启动 DM-master 或 DM-worker 前，必须确保已经删除废弃的配置信息，且没有多余的配置项，否则会启动失败。可根据失败信息删除多余的配置。
 可能遗留的废弃配置:
 
 - `dm-worker.toml` 中的 `meta-file`
