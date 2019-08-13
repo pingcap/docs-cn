@@ -579,7 +579,7 @@ loaders:
 * `column-mappings` 部分指引 DM 如何进行 shard merge 操作。
   
     * 只有一个上游表结构和表，因此 `schema-pattern` 和 `table-pattern` 事实上是字符串。
-    
+
         * 如果要将多个表结构和/或表合并到下游的一个表中，可以使用通配符。
   
     * `partition id` 表达式有一个对应的 `arguments` 部分，该部分控制将上游 ID 转换成下游 TiDB 集群中使用的 ID 的算法。
@@ -587,7 +587,6 @@ loaders:
     * `source_column` 和 `target_column` 的含义不言自明，需要注意的是，这二者能将上游插入的数据合并到下游结构不同的表中，例如，需要保留原始值时，可以这样操作。
   
     * `mysql-instances` 中的每一项都有不同的列映射，因为不同的 `partition id` 算法需要不同的参数。
-
 
 启动 `dmtask2`：
 
