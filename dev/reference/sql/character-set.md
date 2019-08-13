@@ -253,4 +253,10 @@ SET collation_connection = @@collation_database;
 * 规则2:    指定 CHARACTER SET charset_name 且未指定 COLLATE collation_name，则使用 CHARACTER SET charset_name 和 CHARACTER SET charset_name 默认的排序比较规则。
 * 规则3:   CHARACTER SET charset_name 和 COLLATE collation_name 都未指定，则使用更高优化级给出的字符集和排序比较规则。
 
+## 字符合法性检查
+
+当指定的字符集为 utf8 或 utf8mb4 时，TiDB 仅支持合法的 utf8 字符。对于不合法的字符，会报错：`incorrect utf8 value`。
+
+如果不希望报错，可以通过 `set @@tidb_skip_utf8_check=1;` 跳过字符检查。
+
 更多细节，参考 [Connection Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-connection.html)。
