@@ -5,7 +5,7 @@ category: how-to
 
 # 访问 Kubernetes 上的 TiDB 集群
 
-在 Kubernetes 集群内访问 TiDB 时，使用 TiDB service 域名 `<tidbcluster-name>-tidb.<namespace>` 即可。若需要在集群外访问，则需将 TiDB 服务端口暴露出去。在 `tidb-cluster` Helm chart 中，通过 `values.yaml` 文件中的 `tidb.service` 字段进行配置：
+在 Kubernetes 集群内访问 TiDB 时，使用 TiDB service 域名 `<release-name>-tidb.<namespace>` 即可。若需要在集群外访问，则需将 TiDB 服务端口暴露出去。在 `tidb-cluster` Helm chart 中，通过 `values.yaml` 文件中的 `tidb.service` 字段进行配置：
 
 {{< copyable "" >}}
 
@@ -23,9 +23,16 @@ tidb:
 在没有 LoadBalancer 时，可选择通过 NodePort 暴露。NodePort 有两种模式：
 
 - `externalTrafficPolicy=Cluster`：集群所有的机器都会给 TiDB 分配 TCP 端口，此为默认值
+
+    使用 `Cluster` 模式时，可以通过任意一台机器的 IP 加同一个端口访问 TiDB 服务，如果该机器上没有 TiDB Pod，则相应请求会转发到有 TiDB Pod 的机器上。
+
+    > **注意：**
+    >
+    > 该模式下 TiDB 服务获取到的请求源 IP 是主机 IP，并不是真正的客户端源 IP，所以基于客户端源 IP 的访问权限控制在该模式下不可用。
+
 - `externalTrafficPolicy=Local`：只有运行 TiDB 的机器会分配 TCP 端口，用于访问本地的 TiDB 实例
 
-    使用 Local 模式时，建议打开 tidb-scheduler 的 `StableScheduling` 特性。tidb-scheduler 会尽可能在升级过程中将新 TiDB 实例调度到原机器，这样集群外的客户端便不需要在 TiDB 重启后更新配置。
+    使用 `Local` 模式时，建议打开 tidb-scheduler 的 `StableScheduling` 特性。tidb-scheduler 会尽可能在升级过程中将新 TiDB 实例调度到原机器，这样集群外的客户端便不需要在 TiDB 重启后更新配置。
 
 ### 查看 NodePort 模式下对外暴露的 IP/PORT
 
@@ -34,19 +41,7 @@ tidb:
 {{< copyable "shell-regular" >}}
 
 ```shell
-namespace=<your-tidb-namesapce>
-```
-
-{{< copyable "shell-regular" >}}
-
-```shell
-release=<your-tidb-release-name>
-```
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl -n <namespace> get svc <release>-tidb -ojsonpath="{.spec.ports[?(@.name=='mysql-client')].nodePort}{'\n'}"
+kubectl -n <namespace> get svc <release-name>-tidb -ojsonpath="{.spec.ports[?(@.name=='mysql-client')].nodePort}{'\n'}"
 ```
 
 查看可通过哪些节点的 IP 访问 TiDB 服务，有两种情况：
@@ -57,13 +52,7 @@ kubectl -n <namespace> get svc <release>-tidb -ojsonpath="{.spec.ports[?(@.name=
     {{< copyable "shell-regular" >}}
 
     ```shell
-    release=<your-tidb-release-name>
-    ```
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    kubectl -n stability-cluster1 get pods -l "app.kubernetes.io/component=tidb,app.kubernetes.io/instance=<release>" -ojsonpath="{range .items[*]}{.spec.nodeName}{'\n'}{end}"
+    kubectl -n <namespace> get pods -l "app.kubernetes.io/component=tidb,app.kubernetes.io/instance=<release-name>" -ojsonpath="{range .items[*]}{.spec.nodeName}{'\n'}{end}"
     ```
 
 ## LoadBalancer
