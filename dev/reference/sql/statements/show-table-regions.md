@@ -6,7 +6,7 @@ category: reference
 
 # SHOW TABLE REGIONS
 
-`SHOW TABLE REGIONS` 语句用于显示 TiDB 中某个表的 REGION 信息。
+`SHOW TABLE REGIONS` 语句用于显示 TiDB 中某个表的 Region 信息。
 
 ## 语法图
 
