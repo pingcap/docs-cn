@@ -59,7 +59,7 @@ test> show table t regions;
 | 5         | t_43_r_80000 |              | 8         | 2               | 8, 14, 93     | 0          |
 +-----------+--------------+--------------+-----------+-----------------+---------------+------------+
 5 rows in set
--- 用 SPLIT TABLE REGION 语法切分索引数据的 REGION，下面语法把表 t 的索引 name 数据在 [a,z] 范围内切分成 2 个 REGION。
+-- 用 `SPLIT TABLE REGION` 语法切分索引数据的 Region，下面语法把表 t 的索引 name 数据在 [a,z] 范围内切分成 2 个 Region。
 test> split table t index name between ("a") and ("z") regions 2;
 +--------------------+----------------------+
 | TOTAL_SPLIT_REGION | SCATTER_FINISH_RATIO |
