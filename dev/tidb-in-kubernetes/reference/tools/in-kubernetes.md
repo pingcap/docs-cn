@@ -152,7 +152,7 @@ tidb-ctl schema in mysql
 
 2. Install Helm server.
 
-   Apply the `RBAC` rule required by the `tiller` component in the cluster and install `tiller`:
+    Apply the `RBAC` rule required by the `tiller` component in the cluster and install `tiller`:
 
     {{< copyable "shell-regular" >}}
 
@@ -161,15 +161,15 @@ tidb-ctl schema in mysql
     helm init --service-account=tiller --upgrade
     ```
 
-   Confirm that the tiller pod is in the `running` state by the following command:
+    Confirm that the tiller pod is in the `running` state by the following command:
 
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl get po -n kube-system -l name=tiller
     ```
 
-   If `RBAC` is not enabled for the Kubernetes cluster, use the following command to install `tiller`:
+    If `RBAC` is not enabled for the Kubernetes cluster, use the following command to install `tiller`:
 
     {{< copyable "shell-regular" >}}
 
@@ -236,11 +236,11 @@ When performing a deployment or upgrade, you must specify the chart name (`chart
 
 * To delete the application deployed by Helm, run the following command:
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-helm del --purge <release-name>
-```
+    ```shell
+    helm del --purge <release-name>
+    ```
 
 For more information on Helm, refer to [Helm Documentation](https://helm.sh/docs/).
 

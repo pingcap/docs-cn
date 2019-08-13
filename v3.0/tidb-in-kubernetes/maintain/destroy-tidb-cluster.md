@@ -13,11 +13,10 @@ To destroy a TiDB cluster in Kubernetes, run the following commands:
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm delete <releaseName> --purge
+helm delete <release-name> --purge
 ```
 
 The above commands only removes the runining Pod with the data still retained. If you want the data to be deleted as well, you can use the following commands:
-
 
 > **Warning:**
 >
@@ -26,11 +25,11 @@ The above commands only removes the runining Pod with the data still retained. I
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl delete pvc -n <namespace> -l app.kubernetes.io/instance=<releaseName>,app.kubernetes.io/managed-by=tidb-operator
+kubectl delete pvc -n <namespace> -l app.kubernetes.io/instance=<release-name>,app.kubernetes.io/managed-by=tidb-operator
 ```
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl get pv -l app.kubernetes.io/namespace=<namespace>,app.kubernetes.io/managed-by=tidb-operator,app.kubernetes.io/instance=<releaseName> -o name | xargs -I {} kubectl patch {} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
+kubectl get pv -l app.kubernetes.io/namespace=<namespace>,app.kubernetes.io/managed-by=tidb-operator,app.kubernetes.io/instance=<release-name> -o name | xargs -I {} kubectl patch {} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
 ```

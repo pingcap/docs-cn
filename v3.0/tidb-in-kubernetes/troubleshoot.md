@@ -12,7 +12,7 @@ This document describes some common issues and solutions when you use a TiDB clu
 
 When a Pod is in the `CrashLoopBackoff` state, the containers in the Pod quit continually. As a result, you cannot use `kubectl exec` or `tkctl debug` normally, making it inconvenient to diagnose issues.
 
-To solve this problem, TiDB in Kubernetes provides the Pod diagnostic mode. In this mode, the containers in the Pod hang directly after starting, and will not get into a state of repeated crash. Then you can use `kubectl exec` or `tkctl debug` to connect to the Pod containers for diagnosis.
+To solve this problem, TiDB in Kubernetes provides the Pod diagnostic mode for PD, TiKV, and TiDB components. In this mode, the containers in the Pod hang directly after starting, and will not get into a state of repeated crash. Then you can use `kubectl exec` or `tkctl debug` to connect to the Pod containers for diagnosis.
 
 To use the diagnostic mode for troubleshooting:
 
@@ -21,7 +21,7 @@ To use the diagnostic mode for troubleshooting:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl annotate pod <pod_name> -n <namespace> runmode=debug
+    kubectl annotate pod <pod-name> -n <namespace> runmode=debug
     ```
 
     The next time the container in the Pod is restarted, it detects this annotation and enters the diagnostic mode.
@@ -31,7 +31,7 @@ To use the diagnostic mode for troubleshooting:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    watch kubectl get pod <pod_name> -n <namespace>
+    watch kubectl get pod <pod-name> -n <namespace>
     ```
 
 3. Start the diagnosis.
@@ -41,13 +41,13 @@ To use the diagnostic mode for troubleshooting:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl exec -it <pod_name> -n <namespace> -- /bin/bash
+    kubectl exec -it <pod-name> -n <namespace> -- /bin/sh
     ```
 
 4. After finishing the diagnosis and resolving the problem, delete the Pod.
 
     ```shell
-    kubectl delete pod <pod_name> -n <namespace>
+    kubectl delete pod <pod-name> -n <namespace>
     ```
 
     After the Pod is rebuilt, it automatically returns to the normal mode.
@@ -61,7 +61,7 @@ To restore the cluster at this time, use the `helm install` command to create a 
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm install pingcap/tidb-cluster -n <release_name> --namespace=<namespace> --version=<chart_version> -f values.yaml
+helm install pingcap/tidb-cluster -n <release-name> --namespace=<namespace> --version=<chart_version> -f values.yaml
 ```
 
 ## Pod is not created normally
@@ -73,12 +73,12 @@ After creating a cluster using `helm install`, if the Pod is not created, you ca
 ```shell
 kubectl get tidbclusters -n <namespace>
 kubectl get statefulsets -n <namespace>
-kubectl describe statefulsets -n <namespace> <cluster_name>-pd
+kubectl describe statefulsets -n <namespace> <release-name>-pd
 ```
 
 ## Network connection failure between Pods
 
-In a TiDB cluster, you can access most Pods by using the Pod's domain name (allocated by the Headless Service). The exception is when TiDB Operator collects the cluster information or issues control commands, it accesses the PD (Placement Driver) cluster using the `ServiceName` of the PD service.
+In a TiDB cluster, you can access most Pods by using the Pod's domain name (allocated by the Headless Service). The exception is when TiDB Operator collects the cluster information or issues control commands, it accesses the PD (Placement Driver) cluster using the `service-name` of the PD service.
 
 When you find some network connection issues between Pods from the log or monitoring metrics, or you find the network connection between Pods might be abnormal according to the problematic condition, you can follow the following process to diagnose and narrow down the problem:
 
@@ -87,11 +87,11 @@ When you find some network connection issues between Pods from the log or monito
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl -n <namespace> get endpoints <cluster_name>-pd
-    kubectl -n <namespace> get endpoints <cluster_name>-tidb
-    kubectl -n <namespace> get endpoints <cluster_name>-pd-peer
-    kubectl -n <namespace> get endpoints <cluster_name>-tikv-peer
-    kubectl -n <namespace> get endpoints <cluster_name>-tidb-peer
+    kubectl -n <namespace> get endpoints <release-name>-pd
+    kubectl -n <namespace> get endpoints <release-name>-tidb
+    kubectl -n <namespace> get endpoints <release-name>-pd-peer
+    kubectl -n <namespace> get endpoints <release-name>-tikv-peer
+    kubectl -n <namespace> get endpoints <release-name>-tidb-peer
     ```
 
     The `ENDPOINTS` field shown in the above command should be a comma-separated list of `cluster_ip:port`. If the field is empty or incorrect, check the health of the Pod and whether `kube-controller-manager` is working properly.
@@ -101,7 +101,7 @@ When you find some network connection issues between Pods from the log or monito
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tkctl debug -n <namespace> <pod_name>
+    tkctl debug -n <namespace> <pod-name>
     ```
 
     After the remote shell is started, use the `dig` command to diagnose the DNS resolution. If the DNS resolution is abnormal, refer to [Debugging DNS Resolution](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/) for troubleshooting.
@@ -136,15 +136,15 @@ When you find some network connection issues between Pods from the log or monito
 
         ```shell
         # Checks whether the ports are consistent.
-        kubectl -n <namespace> get po <pod_name> -ojson | jq '.spec.containers[].ports[].containerPort'
+        kubectl -n <namespace> get po <pod-name> -ojson | jq '.spec.containers[].ports[].containerPort'
 
         # Checks whether the application is correctly configured to serve the specified port.
         # The default port of PD is 2379 when not configured.
-        kubectl -n <namespace> -it exec <pod_name> -- cat /etc/pd/pd.toml | grep client-urls
+        kubectl -n <namespace> -it exec <pod-name> -- cat /etc/pd/pd.toml | grep client-urls
         # The default port of PD is 20160 when not configured.
-        kubectl -n <namespace> -it exec <pod_name> -- cat /etc/tikv/tikv.toml | grep addr
+        kubectl -n <namespace> -it exec <pod-name> -- cat /etc/tikv/tikv.toml | grep addr
         # The default port of TiDB is 4000 when not configured.
-        kubectl -n <namespace> -it exec <pod_name> -- cat /etc/tidb/tidb.toml | grep port
+        kubectl -n <namespace> -it exec <pod-name> -- cat /etc/tidb/tidb.toml | grep port
         ```
 
 ## The Pod is in the Pending state
@@ -159,12 +159,12 @@ You can check the specific reason for Pending by using the `kubectl describe pod
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl describe po -n <namespace> <pod_name>
+kubectl describe po -n <namespace> <pod-name>
 ```
 
 - If the CPU or memory resources are insufficient, you can lower the CPU or memory resources requested by the corresponding component for scheduling, or add a new Kubernetes node.
 
-- If the `StorageClass` of the PVC cannot be found, delete the TiDB Pod and the corresponding PVC. Then, in the `values.yaml` file, change `StorageClassName` to the name of the `StorageClass` available in the cluster. Run the following command to get the `StorageClass` available in the cluster:
+- If the `StorageClass` of the PVC cannot be found, delete the TiDB Pod and the corresponding PVC. Then, in the `values.yaml` file, change `storageClassName` to the name of the `StorageClass` available in the cluster. Run the following command to get the `StorageClass` available in the cluster:
 
     {{< copyable "shell-regular" >}}
 
@@ -181,7 +181,7 @@ A Pod in the `CrashLoopBackOff` state means that the container in the Pod repeat
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl -n <namespace> logs -f <pod_name>
+kubectl -n <namespace> logs -f <pod-name>
 ```
 
 If the log fails to help diagnose the problem, you can add the `-p` parameter to output the log information when the container was last started:
@@ -189,7 +189,7 @@ If the log fails to help diagnose the problem, you can add the `-p` parameter to
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl -n <namespace> logs -p <pod_name>
+kubectl -n <namespace> logs -p <pod-name>
 ```
 
 After checking the error messages in the log, you can refer to [Cannot start `tidb-server`](/how-to/troubleshoot/cluster-setup.md#cannot-start-tidb-server), [Cannot start `tikv-server`](/how-to/troubleshoot/cluster-setup.md#cannot-start-tikv-server), and [Cannot start `pd-server`](/how-to/troubleshoot/cluster-setup.md#cannot-start-pd-server) for further troubleshooting.
@@ -222,7 +222,7 @@ If you cannot access the TiDB service, first check whether the TiDB service is d
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl logs -f <tidb-pod-name> -n <namespace>
+    kubectl logs -f <tidb-pod-name> -n <namespace> -c tidb
     ```
 
 If the cluster is successfully deployed, check the network using the following steps:

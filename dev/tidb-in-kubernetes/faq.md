@@ -59,7 +59,7 @@ To check the configuration of the PD, TiKV, and TiDB components of the current c
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl exec -it <pdPodName> -n <namespace> -- cat /etc/pd/pd.toml
+    kubectl exec -it <pd-pod-name> -n <namespace> -- cat /etc/pd/pd.toml
     ```
 
 * Check the TiKV configuration file:
@@ -67,7 +67,7 @@ To check the configuration of the PD, TiKV, and TiDB components of the current c
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl exec -it <tikvPodName> -n <namespace> -- cat /etc/tikv/tikv.toml
+    kubectl exec -it <tikv-pod-name> -n <namespace> -- cat /etc/tikv/tikv.toml
     ```
 
 * Check the TiDB configuration file:
@@ -75,5 +75,5 @@ To check the configuration of the PD, TiKV, and TiDB components of the current c
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl exec -it <tidbPodName> -c tidb -n <namespace> -- cat /etc/tidb/tidb.toml
+    kubectl exec -it <tidb-pod-name> -c tidb -n <namespace> -- cat /etc/tidb/tidb.toml
     ```
