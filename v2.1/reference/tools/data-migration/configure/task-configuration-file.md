@@ -148,7 +148,7 @@ mysql-instances:
     source-id: "mysql-replica-01"                                      # The ID of the upstream instance or replication group ID. It can be configured by referring to the `source_id` in the `inventory.ini` file or the `source-id` in the `dm-master.toml` file.
     meta:                                                              # The position where the binlog replication starts when `task-mode` is `incremental` and the downstream database checkpoint does not exist. If the checkpoint exists, the checkpoint is used.
 
-      binlog-name: binlog-00001
+      binlog-name: binlog.000001
       binlog-pos: 4
 
     route-rules: ["route-rule-1", "route-rule-2"]                      # The name of the mapping rule between the table matching the upstream database instance and the downstream database.
