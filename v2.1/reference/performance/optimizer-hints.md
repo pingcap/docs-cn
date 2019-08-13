@@ -42,7 +42,7 @@ SELECT /*+ TIDB_HJ(t1, t2) */ * from t1，t2 where t1.id = t2.id
 
  在 `SELECT` 语句中可以使用 `MAX_EXECUTION_TIME(N)`，它会限制语句的执行时间不能超过 `N` 毫秒，否则服务器会终止这条语句的执行。
 
- 例如，下面例子设置了 1 秒超时：
+例如，下面例子设置了 1 秒超时：
 
  ```sql
 SELECT /*+ MAX_EXECUTION_TIME(1000) */ * FROM t1 INNER JOIN t2 WHERE ...
