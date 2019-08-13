@@ -23,7 +23,7 @@ SHOW TABLE [table_name] INDEX [index_name] REGIONS;
 * `START_KEY`：Region 的 Start key。
 * `END_KEY`：Region 的 End key。
 * `LEADER_ID`：Region 的 Leader ID。
-* LEADER_STORE_ID: REGION LEADER 所在的 store (TiKV) ID。
+* `LEADER_STORE_ID`：Region leader 所在的 store (TiKV) ID。
 * PEERS: REGION 所有副本的 ID。
 * SCATTERING: REGION 是否正在打散或调度中。
 
