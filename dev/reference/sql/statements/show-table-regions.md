@@ -40,7 +40,7 @@ test> show table t regions;
 | 5         | t_43_     |         | 8         | 2               | 8, 14, 93 | 0          |
 +-----------+-----------+---------+-----------+-----------------+-----------+------------+
 1 row in set
--- 用 SPLIT TABLE REGION 语法切分行数据的 REGION，下面语法把表 t 的行数据切分成 5 个 REGION。 
+-- 用 `SPLIT TABLE REGION` 语法切分行数据的 Region，下面语法把表 t 的行数据切分成 5 个 Region。 
 test> split table t between (0) and (100000) regions 5;
 +--------------------+----------------------+
 | TOTAL_SPLIT_REGION | SCATTER_FINISH_RATIO |
