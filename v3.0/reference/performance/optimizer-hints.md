@@ -45,7 +45,7 @@ SELECT /*+ TIDB_HJ(t1, t2) */ * from t1，t2 where t1.id = t2.id
 
  例如，下面例子设置了 1 秒超时：
 
- ```sql
+```sql
 SELECT /*+ MAX_EXECUTION_TIME(1000) */ * FROM t1 INNER JOIN t2 WHERE ...
 ```
 
