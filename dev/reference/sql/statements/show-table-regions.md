@@ -17,7 +17,8 @@ SHOW TABLE [table_name] REGIONS;
 SHOW TABLE [table_name] INDEX [index_name] REGIONS;
 ```
 
-`SHOW TABLE REGIONS` 回返回如下列：
+`SHOW TABLE REGIONS` 会返回如下列：
+
 * `REGION_ID`：Region 的 ID。
 * `START_KEY`：Region 的 Start key。
 * END_KEY: REGION 的 END KEY。
