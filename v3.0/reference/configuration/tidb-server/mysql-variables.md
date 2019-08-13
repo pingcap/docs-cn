@@ -110,7 +110,9 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
 | tx_isolation | GLOBAL \| SESSION | 事务隔离级别 |
 | max\_execution\_time | GLOBAL \| SESSION | 语句超时时间，单位为毫秒 |
 
- 注意，`max_execution_time` 目前对所有类型的 `statement` 生效，并非只对 `select` 语句生效。实际精度在 100ms 级别，而不是准确的毫秒级别。
+> **注意：**
+>
+> `max_execution_time` 目前对所有类型的 `statement` 生效，并非只对 `SELECT` 语句生效。实际精度在 100ms 级别，而非更准确的毫秒级别。
 
 ## TiDB 特有的系统变量
 
