@@ -174,11 +174,12 @@ region4  [("c", "")                    , maxIndexValue               )
 
 ## pre_split_regions
 
-使用带有 `shard_row_id_bits` 的表时，如果希望建表时就做均匀切分 Region，可以考虑配合 `pre_split_regions` 一起使用，用来在建表成功后就开始预均匀切分 `2^(pre_split_regions-1)` 个 Region。
-
+对于带有 `shard_row_id_bits` 的表，如果希望建表时就均匀预切分好 Region，可以使用 `pre_split_regions` 配置。
 > **注意：**
 >
 > `pre_split_regions` 必须小于等于 `shard_row_id_bits`。
+
+这样在建表成功后, 该表的行数据会均匀切分成 `2^(pre_split_regions-1)` 个 Region。
 
 ### 示例
 
@@ -188,18 +189,22 @@ region4  [("c", "")                    , maxIndexValue               )
 create table t (a int, b int,index idx1(a)) shard_row_id_bits = 4 pre_split_regions=3;
 ```
 
-该语句在建表后，会对这个表 t 预切分出 4 + 1 个 Region。4 (2^(3-1)) 个 Region 是用来存 table 的行数据的，1 个 Region 是用来存 idx1 索引的数据。
+`pre_split_regions` = 3 则 Region ＝ 2^(3-1) = 4
 
-4 个 table Region 的范围区间如下：
+所以该语句在建表后，会生成 4 个 Region 来存行数据，同时还有 1 个 Region 存 idx1 索引的数据。
+
+4 个行数据 Region 的范围区间如下：
 
 ```
-region1:   [ -inf      ,  1<<61 )
-region2:   [ 1<<61     ,  2<<61 )
-region3:   [ 2<<61     ,  3<<61 )
-region4:   [ 3<<61     ,  +inf  )
+Region1:  [0                   , 2305843009213693952) ( (1 << 61) )
+Region2:  [2305843009213693952 , 4611686018427387904) ( (2 << 61) )
+Region3:  [4611686018427387904 , 6917529027641081856) ( (3 << 61) )
+Region4:  [6917529027641081856 , 9223372036854775807) ( (4 << 61) - 1 )
 ```
 
-关于为什么是切割 2^(pre_split_regions-1) 个 Region，因为使用 shard_row_id_bits 时，只会分配正数给 `_tidb_rowid`，所以就没有必要给负数的那段区间做 Split Region 了。
+注意到 4 个 Region 实际上是对区间 [0，(1 << 63)) 进行 4 等分。
+
+所以如果 `pre_split_regions` = 4 则会生成 8 个 Region, 也是对区间 [0，(1 << 63)) 进行 8 等分。
 
 ## 相关 session 变量
 
