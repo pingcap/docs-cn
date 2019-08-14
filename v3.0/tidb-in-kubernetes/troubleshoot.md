@@ -314,7 +314,7 @@ kubectl logs -f <tidb-pod-name> -n <namespace> -c tidb
         {{< copyable "shell-regular" >}}
 
         ```shell
-        kubectl delete -n <namespace> pvc tikv-<pod-name>
+        kubectl delete -n <namespace> pvc tikv-<pod-name> --wait=false
         ```
 
     * 删除 Pod，等待 Pod 重建：
