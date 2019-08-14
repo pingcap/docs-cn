@@ -258,7 +258,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
 
 2. 将数据源写入到同样的机器。
 
-3. 配置 `tidb-lightning.toml`。
+3. 配置 `tidb-lightning.toml`。对于没有出现在下述模版中的配置，TiDB-Lightning 给出配置错误的提醒并退出。
 
     ```toml
     # TiDB-Lightning 配置文件模版
@@ -289,8 +289,14 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     level = "info"
     file = "tidb-lightning.log"
     max-size = 128 # MB
-    max-days = 28
+    max-days = 28 # 默认值为不删除旧日志
     max-backups = 14
+    
+    # Server 模式
+    # 是否启用 Server 模式
+    #server-mode = false
+    # Server 模式下的监听地址
+    #status-addr = ":8289"
 
     [checkpoint]
     # 启用断点续传。
@@ -312,7 +318,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     #dsn = "/tmp/tidb_lightning_checkpoint.pb"
     # 导入成功后是否保留断点。默认为删除。
     # 保留断点可用于调试，但有可能泄漏数据源的元数据。
-    # keep-after-success = false
+    #keep-after-success = false
 
     [tikv-importer]
     # tikv-importer 的监听地址，需改成 tikv-importer 服务器的实际地址。
@@ -347,6 +353,8 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     #  - binary：不尝试转换编码
     # 注意，此参数不影响 Lightning 读取数据文件。
     character-set = "auto"
+    # 是否区分大小写
+    #case-sensitive = false
 
     # 配置如何解析 CSV 文件。
     [mydumper.csv]
@@ -380,6 +388,8 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     pd-addr = "172.16.31.4:2379"
     # tidb-lightning 引用了 TiDB 库，而它自己会产生一些日志。此设置控制 TiDB 库的日志等级。
     log-level = "error"
+    # MySQL SQL Mode 配置
+    #sql-mode = ""
 
     # 设置 TiDB 会话变量，提升 CHECKSUM 和 ANALYZE 的速度。各参数定义可参阅
     # https://pingcap.com/docs-cn/sql/statistics/#%E6%8E%A7%E5%88%B6-analyze-%E5%B9%B6%E5%8F%91%E5%BA%A6
