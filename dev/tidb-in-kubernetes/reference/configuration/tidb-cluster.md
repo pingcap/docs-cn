@@ -24,7 +24,7 @@ TiDB Operator uses `Helm` to deploy and manage TiDB clusters. The configuration 
 | :----- | :---- | :----- |
 | `rbac.create` | Whether to enable the RBAC mode of Kubernetes | `true` |
 | `clusterName` |The TiDB cluster name. This variable is unset by default. In this case, `tidb-cluster` directly replaces it with `ReleaseName` when the cluster is being installed. | `nil` |
-| `extraLabels` | The custom labels attached to the TiDB cluster. See [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) | `{}` |
+| `extraLabels` | Adds extra labels to the `TidbCluster` object (CRD). See [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) | `{}` |
 | `schedulerName` | The scheduler used by the TiDB cluster | `tidb-scheduler` |
 | `timezone` | The default timezone used by the TiDB cluster | `UTC` |
 | `pvReclaimPolicy` | The reclaim policy for PV (Persistent Volume) used by the TiDB cluster | `Retain` |
