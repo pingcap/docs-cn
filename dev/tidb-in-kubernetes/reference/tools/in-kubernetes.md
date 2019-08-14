@@ -15,7 +15,7 @@ Operations on TiDB in Kubernetes require some open source tools. In the meantime
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl port-forward -n <namespace> svc/<cluster-name>-pd 2379:2379 &>/tmp/portforward-pd.log
+kubectl port-forward -n <namespace> svc/<cluster-name>-pd 2379:2379 &>/tmp/portforward-pd.log &
 ```
 
 After the above command is executed, you can access the PD service via `127.0.0.1:2379`, and then use the default parameters of `pd-ctl` to operate. For example:
@@ -31,7 +31,7 @@ Assume that your local port `2379` has been occupied and you want to switch to a
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl port-forward -n <namespace> svc/<cluster-name>-pd <local-port>:2379 &>/tmp/portforward-pd.log
+kubectl port-forward -n <namespace> svc/<cluster-name>-pd <local-port>:2379 &>/tmp/portforward-pd.log &
 ```
 
 Then you need to explicitly assign a PD port for `pd-ctl`:
@@ -51,13 +51,13 @@ pd-ctl -u 127.0.0.1:<local-port> -d config show
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl port-forward -n <namespace> svc/<cluster-name>-pd 2379:2379 &>/tmp/portforward-pd.log
+    kubectl port-forward -n <namespace> svc/<cluster-name>-pd 2379:2379 &>/tmp/portforward-pd.log &
     ```
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl port-forward -n <namespace> <tikv-pod-name> 20160:20160 &>/tmp/portforward-tikv.log
+    kubectl port-forward -n <namespace> <tikv-pod-name> 20160:20160 &>/tmp/portforward-tikv.log &
     ```
 
     After the connection is established, you can access the PD service and the TiKV node via the corresponding port in local:
@@ -119,13 +119,13 @@ pd-ctl -u 127.0.0.1:<local-port> -d config show
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl port-forward -n <namespace> svc/<cluster-name>-pd 2379:2379 &>/tmp/portforward-pd.log
+kubectl port-forward -n <namespace> svc/<cluster-name>-pd 2379:2379 &>/tmp/portforward-pd.log &
 ```
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl port-forward -n <namespace> <tidb-pod-name> 10080:10080 &>/tmp/portforward-tidb.log
+kubectl port-forward -n <namespace> <tidb-pod-name> 10080:10080 &>/tmp/portforward-tidb.log &
 ```
 
 Then you can use the `tidb-ctl`:

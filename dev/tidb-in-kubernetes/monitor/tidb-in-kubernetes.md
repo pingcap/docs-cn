@@ -28,7 +28,7 @@ You can run the `kubectl port-forward` command to view the monitoring dashboard:
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl port-forward -n <namespace> svc/<release-name>-grafana 3000:3000 &>/tmp/portforward-grafana.log
+kubectl port-forward -n <namespace> svc/<release-name>-grafana 3000:3000 &>/tmp/portforward-grafana.log &
 ```
 
 Then open [http://localhost:3000](http://localhost:3000) in your browser and log on with the default username and password `admin`.
@@ -44,7 +44,7 @@ To access the monitoring data directly, run the `kubectl port-forward` command t
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl port-forward -n <namespace> svc/<release-name>-prometheus 9090:9090 &>/tmp/portforward-prometheus.log
+kubectl port-forward -n <namespace> svc/<release-name>-prometheus 9090:9090 &>/tmp/portforward-prometheus.log &
 ```
 
 Then open [http://localhost:9090](http://localhost:9090) in your browser or access this address via a client tool.
