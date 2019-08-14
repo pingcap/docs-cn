@@ -262,14 +262,14 @@ kubectl logs -f <tidb-pod-name> -n <namespace>
 
 ## TiKV Store 异常进入 Tombstone 状态
 
-正常情况下，当 TiKV Pod 处于健康状态时（Pod 状态为 `Running`），对应的 TiKV Store 状态也是健康的（Store 状态为 `UP`）。但并发操作 TiKV 组件的扩容和缩容可能会导致部分 TiKV Store 异常进入 Tombstone 状态。此时，可以按照以下步骤进行修复：
+正常情况下，当 TiKV Pod 处于健康状态时（Pod 状态为 `Running`），对应的 TiKV Store 状态也是健康的（Store 状态为 `UP`）。但并发进行 TiKV 组件的扩容和缩容可能会导致部分 TiKV Store 异常并进入 Tombstone 状态。此时，可以按照以下步骤进行修复：
 
 1. 查看 TiKV Store 状态：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get -n <namespace> tidbcluster <cluster-name> -ojson | jq '.status.tikv.stores'
+    kubectl get -n <namespace> tidbcluster <release-name> -ojson | jq '.status.tikv.stores'
     ```
 
 2. 查看 TiKV Pod 运行状态：
@@ -280,14 +280,14 @@ kubectl logs -f <tidb-pod-name> -n <namespace>
     kubectl get -n <namespace> po -l app.kubernetes.io/component=tikv
     ```
 
-3. 对比 Store 状态与 Pod 运行状态。正常情况下每一个正常运行的 Pod 都有一个处于 `UP` 状态的 Store，假如某个 TiKV 的 Pod 的所有 Store 都处于 `Tombstone` 或 `Down` 状态，则其中 `lastHeartbeatTime` 最大的 Store 即为异常下线的 Store，我们需要手工进行恢复：
+3. 对比 Store 状态与 Pod 运行状态。正常情况下每一个正常运行的 Pod 都有一个处于 `UP` 状态的 Store，假如某个 TiKV 的 Pod 的所有 Store 都处于 `Tombstone` 或 `Down` 状态，则其中 `lastHeartbeatTime` 最大的 Store 即为异常下线的 Store，需要手工进行恢复：
 
     * 打开到 PD 服务的连接：
 
         {{< copyable "shell-regular" >}}
 
         ```shell
-        kubectl port-forward -n <namespace> svc/<cluster-name>-pd <local-port>:2379 &>/tmp/portforward-pd.log
+        kubectl port-forward -n <namespace> svc/<release-name>-pd <local-port>:2379 &>/tmp/portforward-pd.log
         ```
 
     * 上线对应 Store：
