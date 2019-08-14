@@ -39,7 +39,7 @@ TiDB 目前还不支持触发器、存储过程、自定义函数、外键，除
 
 #### 1.1.7 TiDB 具备高可用的特性吗？
 
-TiDB 天然具备高可用特性，TiDB、TiKV、PD 这三个组件都能容忍部分实例失效，不影响整个集群的可用性。具体见 [TiDB 高可用性](/key-features/#高可用)。
+TiDB 天然具备高可用特性，TiDB、TiKV、PD 这三个组件都能容忍部分实例失效，不影响整个集群的可用性。具体见 [TiDB 高可用性](/key-features.md#高可用)。
 
 #### 1.1.8 TiDB 数据是强一致的吗？
 
@@ -111,7 +111,7 @@ TiDB 作为分布式数据库，在 TiDB 中修改用户密码建议使用 `set 
 
 #### 1.1.22 TiDB 中，为什么出现后插入数据的自增 ID 反而小？
 
-TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 tidb-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考[CREATE TABLE 语法](/reference/mysql-compatibility/#auto-increment-id)。
+TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 tidb-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考[CREATE TABLE 语法](/reference/mysql-compatibility.md#auto-increment-id)。
 
 #### 1.1.23 sql_mode 默认除了通过命令 set 修改，配置文件怎么修改？
 
@@ -269,7 +269,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 2）如果出现了慢查询，可以从 Grafana 监控定位到出现慢查询的 tidb-server 以及时间点，然后在对应节点查找日志中记录的 SQL 信息。
 
-3）除了日志，还可以通过 `admin show slow` 命令查看，详情可参考 [`admin show slow` 命令](/how-to/maintain/identify-slow-queries/#admin-show-slow-命令)。
+3）除了日志，还可以通过 `admin show slow` 命令查看，详情可参考 [`admin show slow` 命令](/how-to/maintain/identify-slow-queries.md#admin-show-slow-命令)。
 
 #### 2.2.5 首次部署 TiDB 集群时，没有配置 tikv 的 Label 信息，在后续如何添加配置 Label？
 
@@ -524,7 +524,7 @@ TiDB 在执行 SQL 时，预估出来每个 operator 处理了超过 10000 条�
 
 #### 3.3.10 在 TiDB 中如何控制或改变 SQL 提交的执行优先级？
 
-TiDB 支持改变 [per-session](/reference/configuration/tidb-server/tidb-specific-variables#tidb_force_priority)、[全局](/reference/configuration/tidb-server/server-command-option.md#force-priority)或单个语句的优先级。优先级包括：
+TiDB 支持改变 [per-session](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_force_priority)、[全局](/reference/configuration/tidb-server/server-command-option.md#force-priority)或单个语句的优先级。优先级包括：
 
 - HIGH_PRIORITY：该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句
 - LOW_PRIORITY：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级

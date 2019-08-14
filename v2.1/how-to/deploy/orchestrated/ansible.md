@@ -491,7 +491,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | cluster_name | 集群名称，可调整 |
 | tidb_version | TiDB 版本，TiDB-Ansible 各分支默认已配置 |
 | process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
-| timezone | 新安装 TiDB 集群第一次启动 bootstrap（初始化）时，将 TiDB 全局默认时区设置为该值。TiDB 使用的时区后续可通过 `time_zone` 全局变量和 session 变量来修改，参考[时区支持](../sql/time-zone.md)。 默认为 `Asia/Shanghai`，可选值参考 [timzone 列表](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)。 |
+| timezone | 新安装 TiDB 集群第一次启动 bootstrap（初始化）时，将 TiDB 全局默认时区设置为该值。TiDB 使用的时区后续可通过 `time_zone` 全局变量和 session 变量来修改，参考[时区支持](/how-to/configure/time-zone.md)。 默认为 `Asia/Shanghai`，可选值参考 [timzone 列表](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)。 |
 | enable_firewalld | 开启防火墙，默认不开启，如需开启，请将[部署建议-网络要求](/how-to/deploy/hardware-recommendations.md#网络要求) 中的端口加入白名单 |
 | enable_ntpd | 检测部署目标机器 NTP 服务，默认为 True，请勿关闭 |
 | set_hostname | 根据 IP 修改部署目标机器主机名，默认为 False |
