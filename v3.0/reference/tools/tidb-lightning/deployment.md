@@ -291,7 +291,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     max-size = 128 # MB
     max-days = 28 # 默认值为不删除旧日志
     max-backups = 14
-    
+
     # Server 模式
     # 是否启用 Server 模式
     #server-mode = false
