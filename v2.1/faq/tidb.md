@@ -624,7 +624,7 @@ WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD
 
 #### 3.4.15 在最严格的 `sync-log = true` 数据可用模式下，写入性能如何？
 
-一般来说，开启 `sync-log` 会让性能损耗 30% 左右。关闭 `sync-log` 时的性能表现，请参见 [TiDB Sysbench 性能测试报告](https://github.com/pingcap/docs-cn/blob/master/dev/benchmark/sysbench-v4.md)。
+一般来说，开启 `sync-log` 会让性能损耗 30% 左右。关闭 `sync-log` 时的性能表现，请参见 [TiDB Sysbench 性能测试报告](https://github.com/pingcap/docs-cn/blob/master/v2.1/benchmark/sysbench-v3.md)。
 
 #### 3.4.16 是否可以利用 TiKV 的 Raft + 多副本达到完全的数据可靠，单机存储引擎是否需要最严格模式？
 
