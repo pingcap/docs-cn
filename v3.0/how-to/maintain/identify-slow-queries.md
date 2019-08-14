@@ -34,6 +34,7 @@ insert into t select * from t;
 > 注：慢查询日志中所有时间相关字段的单位都是 **“秒”**
 
 Slow Query 基础信息：
+
 * `Time`：表示日志打印时间。
 * `Query_time`：表示执行这个语句花费的时间。
 * `Query`：表示 SQL 语句。慢日志里面不会打印 `Query`，但映射到内存表后，对应的字段叫 `Query`。
@@ -45,14 +46,17 @@ Slow Query 基础信息：
 * `Backoff_time`：表示语句遇到需要重试的错误时在重试前等待的时间，常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、`tikv server is busy`。
 
 和内存使用相关的字段：
+
 * `Memory_max`：表示执行期间 TiDB 使用的最大内存空间，单位为 byte。
 
 和 SQL 执行的用户相关的字段：
+
 * `User`：表示执行语句的用户名。
 * `Conn_ID`：表示用户的链接 ID，可以用类似 `con:3` 的关键字在 TiDB 日志中查找该链接相关的其他日志。
 * `DB`：表示执行语句时使用的 database。
 
 和 TiKV Coprocessor Task 相关的字段：
+
 * `Request_count`：表示这个语句发送的 Coprocessor 请求的数量。
 * `Total_keys`：表示 Coprocessor 扫过的 key 的数量。
 * `Process_time`：执行 SQL 在 TiKV 的处理时间之和，因为数据会并行的发到 TiKV 执行，这个值可能会超过 `Query_time`。
