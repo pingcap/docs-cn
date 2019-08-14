@@ -139,7 +139,7 @@ region = us-west-21
 {{< copyable "shell-regular" >}}
 
 ```shell
-ssh -i credentials/k8s-prod-<cluster_name>.pem centos@<bastion_ip>
+ssh -i credentials/<cluster_name>.pem centos@<bastion_ip>
 ```
 
 {{< copyable "shell-regular" >}}
