@@ -93,7 +93,8 @@ order by query_time desc
 limit 2;
 ```
 
-输出的结果样例：
+输出样例：
+
 ```
 +--------------+------------------------------------------------------------------+
 | query_time   | query                                                            |
@@ -118,7 +119,8 @@ order by query_time desc
 limit 2;
 ```
 
-输出的结果样例：
+输出样例：
+
 ```
 +-------------+------------------------------------------------------------------+----------------+
 | Query_time  | query                                                            | user           |
@@ -143,7 +145,8 @@ order by query_time desc
 limit 1;
 ```
 
-输出结果样例：
+输出样例：
+
 ```
 +-------------+-----------------------------+------------------------------------------------------------------+
 | query_time  | query                       | digest                                                           |
@@ -162,7 +165,8 @@ from information_schema.slow_query
 where digest = "4751cb6008fda383e22dacb601fde85425dc8f8cf669338d55d944bafb46a6fa";
 ```
 
-输出结果样例：
+输出样例：
+
 ```
 +-----------------------------+-------------+
 | query                       | query_time  |
@@ -183,7 +187,8 @@ where is_internal = false
   and stats like '%pseudo%';
 ```
 
-样例输出：
+输出样例：
+
 ```
 +-----------------------------+-------------+---------------------------------+
 | query                       | query_time  | stats                           |
@@ -221,6 +226,7 @@ pt-query-digest --report tidb-slow.log
 ```
 
 输出样例：
+
 ```
 # 320ms user time, 20ms system time, 27.00M rss, 221.32M vsz
 # Current date: Mon Mar 18 13:18:51 2019
