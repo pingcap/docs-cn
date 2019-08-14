@@ -280,14 +280,14 @@ kubectl logs -f <tidb-pod-name> -n <namespace> -c tidb
     kubectl get -n <namespace> po -l app.kubernetes.io/component=tikv
     ```
 
-3. 对比 Store 状态与 Pod 运行状态。正常情况下每一个正常运行的 Pod 都有一个处于 `UP` 状态的 Store，假如某个 TiKV 的 Pod 的所有 Store 都处于 `Tombstone` 或 `Down` 状态，则其中 `lastHeartbeatTime` 最大的 Store 即为异常下线的 Store，我们需要手工进行恢复：
+3. 对比 Store 状态与 Pod 运行状态。正常情况下每一个正常运行的 Pod 都有一个处于 `UP` 状态的 Store，假如某个 TiKV Pod 所对应的 Store 处于 `Offline` 状态，则表明该 Pod 的 Store 正在异常下线中。此时，可以通过下面的命令取消下线进程，进行恢复：
 
     * 打开到 PD 服务的连接：
 
         {{< copyable "shell-regular" >}}
 
         ```shell
-        kubectl port-forward -n <namespace> svc/<cluster-name>-pd <local-port>:2379 &>/tmp/portforward-pd.log
+        kubectl port-forward -n <namespace> svc/<cluster-name>-pd <local-port>:2379 &>/tmp/portforward-pd.log &
         ```
 
     * 上线对应 Store：
@@ -297,3 +297,31 @@ kubectl logs -f <tidb-pod-name> -n <namespace> -c tidb
         ```shell
         curl -X POST http://127.0.0.1:2379/pd/api/v1/store/<store-id>/state?state=Up
         ```
+
+4. 假如某个 TiKV Pod 所对应的所有 Store 都处于 `Down` 或 `Tombstone` 状态，则表明异常下线已经完成。此时，需要重建 Pod 并绑定新的 PV（PersistentVolume）进行恢复：
+
+    * 将该 Store 对应 PV 的 `reclaimPolicy` 调整为 `Delete`：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl patch $(kubectl get pv -l app.kubernetes.io/instance=<release-name>,tidb.pingcap.com/store-id=<store-id> -o name) -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}
+        ```
+
+    * 删除 Pod 使用的 PVC：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl delete -n <namespace> pvc tikv-<pod-name>
+        ```
+
+    * 删除 Pod，等待 Pod 重建：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        kubectl delete -n <namespace> pod <pod-name>
+        ```
+
+    Pod 重建后，会以在集群中注册一个新的 Store，恢复完成。
