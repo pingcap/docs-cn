@@ -75,7 +75,9 @@ Slow Query 基础信息：
 
 用户可通过查询 `INFORMATION_SCHEMA.SLOW_QUERY` 表来查询慢查询日志中的内容，表中列名和慢日志中字段名一一对应，表结构可查看 [Information Schema](reference/system-databases/information-schema.md#information-schema) 中关于 `SLOW_QUERY` 表的介绍。
 
-> 注：每次查询 `SLOW_QUERY` 表时，TiDB 都会去读取和解析一次当前的慢查询日志。
+> **注意：**
+>
+> 每次查询 `SLOW_QUERY` 表时，TiDB 都会去读取和解析一次当前的慢查询日志。
 
 ## 查询 `SLOW_QUERY` 示例
 
