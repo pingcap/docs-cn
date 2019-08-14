@@ -111,7 +111,6 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 
 ### 易用性
 
-* Ctrl 工具集成数据一致性校验功能
 * Ctrl 工具输出任务详细信息
 * 重构日志格式及内容
 
