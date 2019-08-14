@@ -215,7 +215,9 @@ set tidb_slow_query_file = "/path-to-log/tidb-slow.log"
 
 可以用 `pt-query-digest` 工具分析 TiDB 慢日志。
 
-> 注：建议使用 pt-query-digest 3.0.13 及以上版本
+> **注意：**
+>
+> 建议使用 pt-query-digest 3.0.13 及以上版本。
 
 示例如下：
 
