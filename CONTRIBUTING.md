@@ -91,7 +91,9 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 
 19. [MD034 - Bare URL used](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md034---bare-url-used)
 
-    文档中禁止出现裸露的 URL，一般需要使用一对尖括号 (<URL>) 包裹裸露的 URL。如果由于特殊情况必须要使用裸露的 URL，可以用一对反引号 (`URL`) 包裹 URL。
+	文档中禁止出现裸露的 URL，一般需要使用一对尖括号 (`<URL>`) 包裹裸露的 URL。如果由于特殊情况必须要使用裸露的 URL，可以用一对反引号 (``` `URL` ```) 包裹 URL。
+
+	https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md034---bare-url-used
 
 20. [MD037 - Spaces inside emphasis markers](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md037---spaces-inside-emphasis-markers)
 
