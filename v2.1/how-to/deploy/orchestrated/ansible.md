@@ -434,7 +434,7 @@ location_labels = ["host"]
             # normal-concurrency: 8
             # low-concurrency: 8
         ```
-        
+
         > **注意：**
         >
         > 推荐配置：实例数 \* 参数值 = CPU 核数 * 0.8。
