@@ -302,6 +302,7 @@
       - [监控告警](reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](faq/tidb-lightning.md)
+    - [sync-diff-inspector](reference/tools/sync-diff-inspector/overview.md)
     - [PD Control](reference/tools/pd-control.md)
     - [PD Recover](reference/tools/pd-recover.md)
     - [TiKV Control](reference/tools/tikv-control.md)
