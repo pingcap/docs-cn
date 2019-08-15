@@ -268,7 +268,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     pprof-port = 8289
 
     # 开始导入前先检查集群版本是否支持。
-    #check-requirements = true
+    # check-requirements = true
 
     # 控制同时处理的最大引擎数量。
     # 每张表被分割为一个用于储存索引的“索引引擎”和若干存储行数据的“数据引擎”。
