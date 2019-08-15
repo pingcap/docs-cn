@@ -20,6 +20,10 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 * 自适应 SQL 引擎
 * SQL Tuning Advisor
 * SQL Plan Management
+* 事务
+  + 悲观锁 GA
+  + 事务内不限制语句数量
+  + 支持 10GB 事务
 
 #### 性能
 
@@ -58,22 +62,19 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 #### 高可用
 
 * Binlog 支持服务高可用
+* Binlog 支持数据高可靠
 
 ### TiKV
 
 #### 功能
 
 * 集群规模最大支持 200+节点
-* 全量物理备份恢复
+* 全量快速备份恢复
 * 动态 Split，Merge 热点 Region
 * 精细的内存控制
 * Raft
     + Joint consensus
     + 只读副本
-* 事务
-    + 悲观锁 GA
-    + 事务内不限制语句数量
-    + 支持 10GB 事务
 
 #### 性能
 
@@ -117,6 +118,7 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 ### 高可用
 
 * 支持服务高可用
+* 支持数据高可靠
 
 ## TiDB Toolkit
 
@@ -164,15 +166,11 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 
 * 列级别权限
 
-#### 高可靠用
-
-* Binlog 支持数据高可靠
-
 ### TiKV
 
 #### 功能
 
-* 增量物理备份恢复
+* 增量快速备份恢复
 * 闪回到任意时间点
 * 分级存储
 * 精细的 QoS 控制
@@ -186,18 +184,8 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 
 #### 性能
 
-* 提升物理备份性能
-* 提升增量物理备份性能
+* 提升快速备份性能
+* 提升快速备份性能
 * 1PC
 * 支持 Storage Class Memory 硬件
 * 新 Raft 引擎
-
-## Data Migration
-
-### 功能
-
-* 下游支持 Oracle
-
-### 高可靠
-
-* 支持数据高可靠
