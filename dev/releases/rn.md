@@ -18,6 +18,7 @@ category: release
 
 ## 2.1
 
+- [2.1.16](/releases/2.1.16.md)
 - [2.1.15](/releases/2.1.15.md)
 - [2.1.14](/releases/2.1.14.md)
 - [2.1.13](/releases/2.1.13.md)
