@@ -180,7 +180,7 @@ where digest = "4751cb6008fda383e22dacb601fde85425dc8f8cf669338d55d944bafb46a6fa
 +-----------------------------+-------------+
 ```
 
-### 搜索统计信息为 pseudo 的慢查询 SQL
+### 搜索统计信息为 pseudo 的慢查询 SQL 语句
 
 {{< copyable "sql" >}}
 
