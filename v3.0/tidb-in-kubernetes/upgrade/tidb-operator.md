@@ -11,7 +11,7 @@ aliases: ['/docs-cn/v3.0/how-to/upgrade/tidb-operator/']
 {{< copyable "shell-regular" >}}
 
 ```shell
-helm upgrade tidb-operator pingcap/tidb-operator --version=<chartVersion> -f /home/tidb/tidb-operator/values-tidb-operator.yaml
+helm upgrade tidb-operator pingcap/tidb-operator --version=<chart-version> -f /home/tidb/tidb-operator/values-tidb-operator.yaml
 ```
 
 当新版本 tidb-operator 发布，只要更新 `values.yaml` 中的 `operatorImage` 然后执行上述命令就可以。但是安全起见，最好从新版本 `tidb-operator` chart 中获取新版本 `values.yaml` 并和旧版本 `values.yaml` 合并生成新的 `values.yaml`，然后升级。

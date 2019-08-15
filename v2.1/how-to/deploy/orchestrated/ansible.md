@@ -123,32 +123,20 @@ The key's randomart image is:
 
 | TiDB 版本 | tidb-ansible tag | 备注 |
 | -------- | ---------------- | --- |
-| 2.0 版本 | v2.0.10、v2.0.11 | 最新 2.0 稳定版本，可用于生产环境。 |
-| 2.1 版本 | v2.1.1 ~ v2.1.8 等 | 最新 2.1 稳定版本，可用于生产环境（建议）。 |
-| 3.0 版本 | v3.0.0-beta、v3.0.0-beta.1 等 | 目前是 beta 版本，不建议用于生产环境。 |
-| latest 版本 | None | 包含最新特性，每日更新，不建议用于生产环境。 |
+| 2.0 版本 | v2.0.10、v2.0.11 | 2.0 稳定版本，新用户不建议用于生产环境 |
+| 2.1 版本 | v2.1.1 ~ v2.1.13 等 | 2.1 稳定版本，可用于生产环境 |
 
-使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible [相应版本](https://github.com/pingcap/tidb-ansible/tags)，默认的文件夹名称为 `tidb-ansible`。
+使用以下命令从 [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible 2.0 或者 2.1 [相应 TAG 版本](https://github.com/pingcap/tidb-ansible/tags)，默认的文件夹名称为 `tidb-ansible`。
 
-> **注意：**
->
-> 部署和升级 TiDB 集群需使用对应的 tidb-ansible 版本，通过改 `inventory.ini` 文件中的版本来混用可能会产生一些错误。
-
-- 下载指定 tag 的 tidb-ansible：
-
-    ```
-    $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
-    ```
-
-- 下载 latest 版本对应的 tidb-ansible：
-
-    ```
-    $ git clone https://github.com/pingcap/tidb-ansible.git
-    ```
+```
+$ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
+```
 
 > **注意：**
 >
-> 请务必按文档操作，将 `tidb-ansible` 下载到 `/home/tidb` 目录下，权限为 `tidb` 用户，不要下载到 `/root` 下，否则会遇到权限问题。
+> - `$tag` 替换为选定的 TAG 版本的值，例如 `v2.1.15`。
+> - 部署和升级 TiDB 集群需使用对应的 tidb-ansible 版本，通过改 `inventory.ini` 文件中的版本来混用可能会产生一些错误。
+> - 请务必按文档操作，将 `tidb-ansible` 下载到 `/home/tidb` 目录下，权限为 `tidb` 用户，不要下载到 `/root` 下，否则会遇到权限问题。
 
 ## 在中控机器上安装 Ansible 及其依赖
 
@@ -428,7 +416,7 @@ location_labels = ["host"]
 
 - 服务配置文件参数调整
 
-    1. 多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中的 `block-cache-size` 参数:
+    1. 多实例情况下，需要修改 `tidb-ansible/conf/tikv.yml` 中的 `block-cache-size` 参数：
 
         - `rocksdb defaultcf block-cache-size(GB)` = MEM \* 80% / TiKV 实例数量 \* 30%
         - `rocksdb writecf block-cache-size(GB)` = MEM \* 80% / TiKV 实例数量 \* 45%
@@ -447,9 +435,11 @@ location_labels = ["host"]
             # low-concurrency: 8
         ```
 
-        - 推荐设置：实例数 \* 参数值 = CPU 核数 * 0.8。
+        > **注意：**
+        >
+        > 推荐配置：实例数 \* 参数值 = CPU 核数 * 0.8。
 
-    3. 如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数:
+    3. 如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数：
 
         ```
         raftstore:
@@ -458,15 +448,13 @@ location_labels = ["host"]
 
         > **注意：**
         >
-        > 推荐配置：`capacity` = 磁盘总容量 / TiKV 实例数量
-        >
-        > 例如：`capacity: "100GB"`
+        > 推荐配置：`capacity` = 磁盘总容量 / TiKV 实例数量，例如：`capacity: "100GB"`。
 
 ### inventory.ini 变量调整
 
 #### 部署目录调整
 
-部署目录通过 `deploy_dir` 变量控制，默认全局变量已设置为 `/home/tidb/deploy`，对所有服务生效。如数据盘挂载目录为 `/data1`，可设置为 `/data1/deploy`，样例如下:
+部署目录通过 `deploy_dir` 变量控制，默认全局变量已设置为 `/home/tidb/deploy`，对所有服务生效。如数据盘挂载目录为 `/data1`，可设置为 `/data1/deploy`，样例如下：
 
 ```
 ## Global variables
@@ -491,7 +479,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | cluster_name | 集群名称，可调整 |
 | tidb_version | TiDB 版本，TiDB-Ansible 各分支默认已配置 |
 | process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
-| timezone | 新安装 TiDB 集群第一次启动 bootstrap（初始化）时，将 TiDB 全局默认时区设置为该值。TiDB 使用的时区后续可通过 `time_zone` 全局变量和 session 变量来修改，参考[时区支持](../sql/time-zone.md)。 默认为 `Asia/Shanghai`，可选值参考 [timzone 列表](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)。 |
+| timezone | 新安装 TiDB 集群第一次启动 bootstrap（初始化）时，将 TiDB 全局默认时区设置为该值。TiDB 使用的时区后续可通过 `time_zone` 全局变量和 session 变量来修改，参考[时区支持](/how-to/configure/time-zone.md)。 默认为 `Asia/Shanghai`，可选值参考 [timzone 列表](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)。 |
 | enable_firewalld | 开启防火墙，默认不开启，如需开启，请将[部署建议-网络要求](/how-to/deploy/hardware-recommendations.md#网络要求) 中的端口加入白名单 |
 | enable_ntpd | 检测部署目标机器 NTP 服务，默认为 True，请勿关闭 |
 | set_hostname | 根据 IP 修改部署目标机器主机名，默认为 False |
@@ -636,7 +624,7 @@ $ sudo systemctl status ntpd.service
    Active: active (running) since 一 2017-12-18 13:13:19 CST; 3s ago
 ```
 
-执行 ntpstat 命令，输出 synchronised to NTP server(正在与 NTP server 同步)表示在正常同步：
+执行 ntpstat 命令，输出 synchronised to NTP server（正在与 NTP server 同步）表示在正常同步：
 
 ```
 $ ntpstat
