@@ -128,7 +128,7 @@ $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
 
 > **注意：**
 >
-> - `$tag` 替换为选定的 TAG 版本的值
+> - `$tag` 替换为选定的 TAG 版本的值，例如 `v3.0.2`。
 > - 部署和升级 TiDB 集群需使用对应的 tidb-ansible 版本，通过改 `inventory.ini` 文件中的版本来混用可能会产生一些错误。
 > - 请务必按文档操作，将 `tidb-ansible` 下载到 `/home/tidb` 目录下，权限为 `tidb` 用户，不要下载到 `/root` 下，否则会遇到权限问题。
 
