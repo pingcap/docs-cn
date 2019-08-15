@@ -232,15 +232,15 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     # 导入任务并发数。
     num-import-jobs = 24
     # 预处理 Region 最长时间。
-    #max-prepare-duration = "5m"
+    # max-prepare-duration = "5m"
     # 把要导入的数据切分为这个大小的 Region。
-    #region-split-size = "512MB"
+    # region-split-size = "512MB"
     # 流管道窗口大小，管道满时会阻塞流。
-    #stream-channel-window = 128
+    # stream-channel-window = 128
     # 引擎文档同时打开的最大数量。
     max-open-engines = 8
     # Importer 上传至 TiKV 的最大速度 (bytes per second)。
-    #upload-speed-limit = "512MB"
+    # upload-speed-limit = "512MB"
     # 目标 store 可用空间的最小比率：store_available_space / store_capacity.
     # 如果目标存储空间的可用比率低于下值，Importer 将会暂停上传 SST 来为 PD 提供足够时间进行 regions 负载均衡。
     min-available-ratio = 0.05
@@ -279,7 +279,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
 
     # 转换数据的并发数，默认为逻辑 CPU 数量，不需要配置。
     # 混合部署的情况下可以配置为逻辑 CPU 的 75% 大小。
-    #region-concurrency =
+    # region-concurrency =
 
     # 最大的 I/O 并发数。I/O 并发量太高时，会因硬盘内部缓存频繁被刷新而增加 I/O 等待时间，
     # 导致缓存未命中和降低读取速度。因应不同的存储介质，此参数可能需要调整以达到最佳效率。
@@ -294,9 +294,9 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
 
     # Server 模式
     # 是否启用 Server 模式
-    #server-mode = false
+    # server-mode = false
     # Server 模式下的监听地址
-    #status-addr = ":8289"
+    # status-addr = ":8289"
 
     [checkpoint]
     # 启用断点续传。
@@ -315,10 +315,10 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     # 若 driver = "mysql"，此参数为数据库连接参数 (DSN)，格式为“用户:密码@tcp(地址:端口)/”。
     # 默认会重用 [tidb] 设置目标数据库来存储断点。
     # 为避免加重目标集群的压力，建议另外使用一个兼容 MySQL 的数据库服务器。
-    #dsn = "/tmp/tidb_lightning_checkpoint.pb"
+    # dsn = "/tmp/tidb_lightning_checkpoint.pb"
     # 导入成功后是否保留断点。默认为删除。
     # 保留断点可用于调试，但有可能泄漏数据源的元数据。
-    #keep-after-success = false
+    # keep-after-success = false
 
     [tikv-importer]
     # tikv-importer 的监听地址，需改成 tikv-importer 服务器的实际地址。
@@ -354,7 +354,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     # 注意，此参数不影响 Lightning 读取数据文件。
     character-set = "auto"
     # 是否区分大小写
-    #case-sensitive = false
+    # case-sensitive = false
 
     # 配置如何解析 CSV 文件。
     [mydumper.csv]
@@ -389,7 +389,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     # tidb-lightning 引用了 TiDB 库，而它自己会产生一些日志。此设置控制 TiDB 库的日志等级。
     log-level = "error"
     # MySQL SQL Mode 配置
-    #sql-mode = ""
+    # sql-mode = ""
 
     # 设置 TiDB 会话变量，提升 CHECKSUM 和 ANALYZE 的速度。各参数定义可参阅
     # https://pingcap.com/docs-cn/sql/statistics/#%E6%8E%A7%E5%88%B6-analyze-%E5%B9%B6%E5%8F%91%E5%BA%A6
