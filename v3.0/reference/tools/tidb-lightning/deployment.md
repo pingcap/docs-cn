@@ -289,7 +289,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     level = "info"
     file = "tidb-lightning.log"
     max-size = 128 # MB
-    max-days = 28 # 默认值为不删除旧日志
+    max-days = 28 # 默认不删除旧日志
     max-backups = 14
 
     # Server 模式
