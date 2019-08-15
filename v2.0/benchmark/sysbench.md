@@ -1,45 +1,47 @@
 ---
 title: TiDB Sysbench 性能测试报告 - v1.0.0
-category: benchmark 
+category: benchmark
 draft: true
---- 
+---
 
 # TiDB Sysbench 性能测试报告 - v1.0.0
 
 ## 测试目的
+
 测试 TiDB 在 OLTP 场景下的性能以及水平扩展能力。
 
-> **注意**: 不同的测试环境可能使测试结果发生改变。
+> **注意**:
+>
+> 不同的测试环境可能使测试结果发生改变。
 
-## 测试版本、时间、地点 
+## 测试版本、时间、地点
 
-TiDB 版本：v1.0.0 
+TiDB 版本：v1.0.0
 时间：2017 年 10 月 20 日
-地点：北京      
+地点：北京
 
 ## 测试环境
- 
- IDC机器       
- 
+
+IDC 机器
+
 | 类别       |  名称       |
 | :--------: | :---------: |
 | OS       | linux (CentOS 7.3.1611)       |
 | CPU | 40 vCPUs, Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz |
 | RAM | 128GB |
-| DISK | 1.5T SSD * 2  + Optane SSD * 1 |
+| DISK | 1.5T SSD \* 2  + Optane SSD * 1 |
 
-Sysbench 版本: 1.0.6   
+Sysbench 版本: 1.0.6
 
-测试脚本: https://github.com/pingcap/tidb-bench/tree/cwen/not_prepared_statement/sysbench
-
+测试脚本: <https://github.com/pingcap/tidb-bench/tree/cwen/not_prepared_statement/sysbench>
 
 ## 测试方案
 
 ### 场景一：sysbench 标准性能测试
 
-测试表结构    
+测试表结构
 
-``` 
+```
 CREATE TABLE `sbtest` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `k` int(10) unsigned NOT NULL DEFAULT '0',
@@ -47,26 +49,27 @@ CREATE TABLE `sbtest` (
   `pad` char(60) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `k_1` (`k`)
-) ENGINE=InnoDB  
-``` 
-        
-部署方案以及配置参数   
-``` 
+) ENGINE=InnoDB
+```
+
+部署方案以及配置参数
+
+```
 // TiDB 部署方案
-172.16.20.4    4*tikv    1*tidb    1*sysbench 
-172.16.20.6    4*tikv    1*tidb    1*sysbench       
-172.16.20.7    4*tikv    1*tidb    1*sysbench   
-172.16.10.8    1*tidb    1*pd      1*sysbench  
+172.16.20.4    4*tikv    1*tidb    1*sysbench
+172.16.20.6    4*tikv    1*tidb    1*sysbench
+172.16.20.7    4*tikv    1*tidb    1*sysbench
+172.16.10.8    1*tidb    1*pd      1*sysbench
 
-// 每个物理节点有三块盘： 
-data3: 2 tikv  (Optane SSD) 
-data2: 1 tikv 
-data1: 1 tikv    
+// 每个物理节点有三块盘：
+data3: 2 tikv (Optane SSD)
+data2: 1 tikv
+data1: 1 tikv
 
-// TiKV 参数配置   
+// TiKV 参数配置
 sync-log = false
 grpc-concurrency = 8
-grpc-raft-conn-num = 24 
+grpc-raft-conn-num = 24
 [defaultcf]
 block-cache-size = "12GB"
 [writecf]
@@ -76,22 +79,22 @@ block-cache-size = "2GB"
 
 // Mysql 部署方案
 // 分别使用半同步复制和异步复制，部署两副本
-172.16.20.4    master    
-172.16.20.6    slave        
+172.16.20.4    master
+172.16.20.6    slave
 172.16.20.7    slave
-172.16.10.8    1*sysbench 
+172.16.10.8    1*sysbench
 Mysql version: 5.6.37
 
 // Mysql 参数配置
 thread_cache_size = 64
 innodb_buffer_pool_size = 64G
 innodb_file_per_table = 1
-innodb_flush_log_at_trx_commit = 0  
-datadir = /data3/mysql  
-max_connections = 2000 
-```    
+innodb_flush_log_at_trx_commit = 0
+datadir = /data3/mysql
+max_connections = 2000
+```
 
-* 标准 oltp 测试 
+* 标准 oltp 测试
 
 | - | table count | table size | sysbench threads | tps | qps | latency(avg / .95) |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -106,11 +109,11 @@ max_connections = 2000
 | Mysql | 32 | 500 万 | 256 | 1902 | 38045 | 134.56 ms / 363.18 ms |
 | Mysql | 32 | 1000 万 | 256 | 1770 | 35416 | 144.55 ms / 383.33 ms  |
 
-![](http://7xnp02.com1.z0.glb.clouddn.com/threads_oltp.png?imageView2/2/w/700/q/75|imageslim)    
+![threads_oltp](http://7xnp02.com1.z0.glb.clouddn.com/threads_oltp.png?imageView2/2/w/700/q/75|imageslim)
 
-![](http://7xnp02.com1.z0.glb.clouddn.com/table_size_oltp.png?imageView2/2/w/700/q/75|imageslim)
+![table_size_oltp](http://7xnp02.com1.z0.glb.clouddn.com/table_size_oltp.png?imageView2/2/w/700/q/75|imageslim)
 
-* 标准 select 测试 
+* 标准 select 测试
 
 | - | table count | table size | sysbench threads |qps | latency(avg / .95) |
 | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -125,9 +128,9 @@ max_connections = 2000
 | Mysql | 32 | 500 万 | 256 |  386866 | 0.66 ms / 1.64 ms |
 | Mysql | 32 | 1000 万 | 256 |  388273 | 0.66 ms / 1.64 ms  |
 
-![](http://7xnp02.com1.z0.glb.clouddn.com/threads_select.png?imageView2/2/w/700/q/75|imageslim) 
+![threads_select](http://7xnp02.com1.z0.glb.clouddn.com/threads_select.png?imageView2/2/w/700/q/75|imageslim)
 
-![](http://7xnp02.com1.z0.glb.clouddn.com/table_size_select.png?imageView2/2/w/700/q/75|imageslim) 
+![table_size_select](http://7xnp02.com1.z0.glb.clouddn.com/table_size_select.png?imageView2/2/w/700/q/75|imageslim)
 
 * 标准 insert 测试
 
@@ -142,40 +145,39 @@ max_connections = 2000
 | Mysql | 32 | 100 万 | 128 | 14884 | 8.58  ms / 21.11 ms |
 | Mysql | 32 | 100 万 | 256 | 14508 | 17.64 ms / 44.98 ms  |
 | Mysql | 32 | 500 万 | 256 | 10593 | 24.16 ms / 82.96 ms  |
-| Mysql | 32 | 1000 万 | 256 | 9813 | 26.08 ms / 94.10 ms  |  
- 
-![](http://7xnp02.com1.z0.glb.clouddn.com/threads_insert.png?imageView2/2/w/700/q/75|imageslim)
+| Mysql | 32 | 1000 万 | 256 | 9813 | 26.08 ms / 94.10 ms  |
 
-![](http://7xnp02.com1.z0.glb.clouddn.com/table_size_insert.png?imageView2/2/w/700/q/75|imageslim)   
+![threads_insert](http://7xnp02.com1.z0.glb.clouddn.com/threads_insert.png?imageView2/2/w/700/q/75|imageslim)
 
+![table_size_insert](http://7xnp02.com1.z0.glb.clouddn.com/table_size_insert.png?imageView2/2/w/700/q/75|imageslim)
 
 ### 场景二：TiDB 水平扩展能力测试
 
-部署方案以及配置参数    
+部署方案以及配置参数
 
 ```
-// TiDB 部署方案 
-172.16.20.3    4*tikv    
+// TiDB 部署方案
+172.16.20.3    4*tikv
 172.16.10.2    1*tidb    1*pd     1*sysbench
 
-每个物理节点有三块盘： 
-data3: 2 tikv  (Optane SSD) 
-data2: 1 tikv 
-data1: 1 tikv 
+每个物理节点有三块盘：
+data3: 2 tikv  (Optane SSD)
+data2: 1 tikv
+data1: 1 tikv
 
-// TiKV 参数配置 
+// TiKV 参数配置
 sync-log = false
 grpc-concurrency = 8
-grpc-raft-conn-num = 24 
+grpc-raft-conn-num = 24
 [defaultcf]
 block-cache-size = "12GB"
 [writecf]
 block-cache-size = "5GB"
 [raftdb.defaultcf]
 block-cache-size = "2GB"
-``` 
+```
 
-* 标准 oltp 测试    
+* 标准 oltp 测试
 
 | - | table count | table size | sysbench threads | tps | qps | latency(avg / .95) |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -184,11 +186,9 @@ block-cache-size = "2GB"
 | 4 物理节点 TiDB | 32 | 100 万 | 256 * 4 | 8984 | 179692 | 114.96 ms / 176.73 ms |
 | 6 物理节点 TiDB | 32 | 500 万 | 256 * 6 | 12953 | 259072 | 117.80 ms / 200.47 ms  |
 
+![scale_tidb_oltp](http://7xnp02.com1.z0.glb.clouddn.com/scale_tidb_oltp.png?imageView2/2/w/700/q/75|imageslim)
 
-![](http://7xnp02.com1.z0.glb.clouddn.com/scale_tidb_oltp.png?imageView2/2/w/700/q/75|imageslim)
-
-
-* 标准 select 测试    
+* 标准 select 测试
 
 | - | table count | table size | sysbench threads | qps | latency(avg / .95) |
 | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -197,10 +197,9 @@ block-cache-size = "2GB"
 | 4 物理节点 TiDB | 32 | 100 万 | 256 * 4 | 289933 | 3.53 ms / 8.74 ms  |
 | 6 物理节点 TiDB | 32 | 500 万 | 256 * 6 | 435313 | 3.55 ms / 9.17 ms  |
 
-![](http://7xnp02.com1.z0.glb.clouddn.com/scale_tidb_select.png?imageView2/2/w/700/q/75|imageslim)
+![scale_tidb_select](http://7xnp02.com1.z0.glb.clouddn.com/scale_tidb_select.png?imageView2/2/w/700/q/75|imageslim)
 
-
-* 标准 insert 测试    
+* 标准 insert 测试
 
 | - | table count | table size | sysbench threads | qps | latency(avg / .95) |
 | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -208,4 +207,4 @@ block-cache-size = "2GB"
 | 5 物理节点 TiKV | 32 | 100 万 | 256 * 3 | 60689 | 37.96 ms / 29.9 ms |
 | 7 物理节点 TiKV | 32 | 100 万 | 256 * 3 | 80087 | 9.62 ms / 21.37 ms |
 
-![](http://7xnp02.com1.z0.glb.clouddn.com/scale_tikv_insert.png?imageView2/2/w/700/q/75|imageslim)
+![scale_tikv_insert](http://7xnp02.com1.z0.glb.clouddn.com/scale_tikv_insert.png?imageView2/2/w/700/q/75|imageslim)

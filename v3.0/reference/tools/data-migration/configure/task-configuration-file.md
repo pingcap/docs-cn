@@ -130,7 +130,7 @@ mysql-instances:
   -
     source-id: "mysql-replica-01"           # 上游实例或者复制组 ID，参考 `inventory.ini` 的 `source_id` 或者 `dm-master.toml` 的 `source-id` 配置。
     meta:                                   # `task-mode` 为 `incremental` 且下游数据库的 `checkpoint` 不存在时 binlog 同步开始的位置; 如果 checkpoint 存在，则以 `checkpoint` 为准。
-      binlog-name: binlog-00001
+      binlog-name: binlog.000001
       binlog-pos: 4
 
     route-rules: ["route-rule-1", "route-rule-2"]    # 该上游数据库实例匹配的表到下游数据库的 table routing 规则名称。

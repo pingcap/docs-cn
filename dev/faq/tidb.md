@@ -39,7 +39,7 @@ TiDB 目前还不支持触发器、存储过程、自定义函数、外键，除
 
 #### 1.1.7 TiDB 具备高可用的特性吗？
 
-TiDB 天然具备高可用特性，TiDB、TiKV、PD 这三个组件都能容忍部分实例失效，不影响整个集群的可用性。具体见 [TiDB 高可用性](/key-features/#高可用)。
+TiDB 天然具备高可用特性，TiDB、TiKV、PD 这三个组件都能容忍部分实例失效，不影响整个集群的可用性。具体见 [TiDB 高可用性](/key-features.md#高可用)。
 
 #### 1.1.8 TiDB 数据是强一致的吗？
 
@@ -67,7 +67,7 @@ TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶�
 
 #### 1.1.13 除了官方文档，有没有其他 TiDB 知识获取途径？
 
-目前[官方文档](/verview.md#tidb-简介)是获取 TiDB 相关知识最主要、最及时的发布途径。除此之外，我们也有一些技术沟通群，如有需求可发邮件至 [info@pingcap.com](mailto:info@pingcap.com) 获取。
+目前[官方文档](/overview.md#tidb-简介)是获取 TiDB 相关知识最主要、最及时的发布途径。除此之外，我们也有一些技术沟通群，如有需求可发邮件至 [info@pingcap.com](mailto:info@pingcap.com) 获取。
 
 #### 1.1.14 TiDB 对哪些 MySQL variables 兼容？
 
@@ -111,7 +111,7 @@ TiDB 作为分布式数据库，在 TiDB 中修改用户密码建议使用 `set 
 
 #### 1.1.22 TiDB 中，为什么出现后插入数据的自增 ID 反而小？
 
-TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 tidb-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考[CREATE TABLE 语法](/reference/mysql-compatibility/#auto-increment-id)。
+TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 tidb-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考[CREATE TABLE 语法](/reference/mysql-compatibility.md#auto-increment-id)。
 
 #### 1.1.23 sql_mode 默认除了通过命令 set 修改，配置文件怎么修改？
 
@@ -269,7 +269,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 2）如果出现了慢查询，可以从 Grafana 监控定位到出现慢查询的 tidb-server 以及时间点，然后在对应节点查找日志中记录的 SQL 信息。
 
-3）除了日志，还可以通过 `admin show slow` 命令查看，详情可参考 [`admin show slow` 命令](/how-to/maintain/identify-slow-queries/#admin-show-slow-命令)。
+3）除了日志，还可以通过 `admin show slow` 命令查看，详情可参考 [`admin show slow` 命令](/how-to/maintain/identify-slow-queries.md#admin-show-slow-命令)。
 
 #### 2.2.5 首次部署 TiDB 集群时，没有配置 tikv 的 Label 信息，在后续如何添加配置 Label？
 
@@ -524,24 +524,24 @@ TiDB 在执行 SQL 时，预估出来每个 operator 处理了超过 10000 条�
 
 #### 3.3.10 在 TiDB 中如何控制或改变 SQL 提交的执行优先级？
 
-TiDB 支持改变 [per-session](/reference/configuration/tidb-server/tidb-specific-variables#tidb_force_priority)、[全局](sq(/reference/configuration/tidb-server/server-command-option.md#force-priority)或[单个语句](/reference/sql/statements/dml.md)的优先级。优先级包括：
+TiDB 支持改变 [per-session](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_force_priority)、[全局](/reference/configuration/tidb-server/server-command-option.md#force-priority)或单个语句的优先级。优先级包括：
 
 - HIGH_PRIORITY：该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句
 - LOW_PRIORITY：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
 
-以上两种参数可以结合 TiDB 的 DML 语言进行使用，具体使用方式可以参考[官方文档](/reference/sql/statements/dml.md)，使用方法举例如下：
+以上两种参数可以结合 TiDB 的 DML 语言进行使用，使用方法举例如下：
 
-1）通过在数据库中写 SQL 的方式来调整优先级：
+1. 通过在数据库中写 SQL 的方式来调整优先级：
 
-```sql
-select HIGH_PRIORITY | LOW_PRIORITY count(*) from table_name;
-insert HIGH_PRIORITY | LOW_PRIORITY into table_name insert_values;
-delete HIGH_PRIORITY | LOW_PRIORITY from table_name;
-update HIGH_PRIORITY | LOW_PRIORITY table_reference set assignment_list where where_condition;
-replace HIGH_PRIORITY | LOW_PRIORITY into table_name;
-```
+    ```sql
+    select HIGH_PRIORITY | LOW_PRIORITY count(*) from table_name;
+    insert HIGH_PRIORITY | LOW_PRIORITY into table_name insert_values;
+    delete HIGH_PRIORITY | LOW_PRIORITY from table_name;
+    update HIGH_PRIORITY | LOW_PRIORITY table_reference set assignment_list where where_condition;
+    replace HIGH_PRIORITY | LOW_PRIORITY into table_name;
+    ```
 
-2）全表扫会自动调整为低优先级，analyze 也是默认低优先级。
+2. 全表扫会自动调整为低优先级，analyze 也是默认低优先级。
 
 #### 3.3.11 在 TiDB 中 auto analyze 的触发策略是怎样的？
 
@@ -928,7 +928,7 @@ TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指�
 
 ### 7.1 Prometheus 监控框架
 
-详细参考 [TiDB 监控框架概述](/how-to/monitor/overview/)。
+详细参考 [TiDB 监控框架概述](/how-to/monitor/overview.md)。
 
 ### 7.2 监控指标解读
 
@@ -936,7 +936,7 @@ TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指�
 
 #### 7.2.1 目前的监控使用方式及主要监控指标，有没有更好看的监控？
 
-TiDB 使用 Prometheus + Grafana 组成 TiDB 数据库系统的监控系统，用户在 Grafana 上通过 dashboard 可以监控到 TiDB 的各类运行指标，包括系统资源的监控指标，包括客户端连接与 SQL 运行的指标，包括内部通信和 Region 调度的指标，通过这些指标，可以让数据库管理员更好的了解到系统的运行状态，运行瓶颈等内容。在监控指标的过程中，我们按照 TiDB 不同的模块，分别列出了各个模块重要的指标项，一般用户只需要关注这些常见的指标项。具体指标请参见[官方文档](/reference/key-monitoring-metrics/overview-dashboard/)。
+TiDB 使用 Prometheus + Grafana 组成 TiDB 数据库系统的监控系统，用户在 Grafana 上通过 dashboard 可以监控到 TiDB 的各类运行指标，包括系统资源的监控指标，包括客户端连接与 SQL 运行的指标，包括内部通信和 Region 调度的指标，通过这些指标，可以让数据库管理员更好的了解到系统的运行状态，运行瓶颈等内容。在监控指标的过程中，我们按照 TiDB 不同的模块，分别列出了各个模块重要的指标项，一般用户只需要关注这些常见的指标项。具体指标请参见[官方文档](/reference/key-monitoring-metrics/overview-dashboard.md)。
 
 #### 7.2.2 Prometheus 监控数据默认 15 天自动清除一次，可以自己设定成 2 个月或者手动删除吗？
 

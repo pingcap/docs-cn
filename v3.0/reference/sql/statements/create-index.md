@@ -42,7 +42,6 @@ category: reference
 
 ![IndexOption](/media/sqlgram/IndexOption.png)
 
-
 ## 示例
 
 ```sql
@@ -63,7 +62,7 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 +---------------------+----------+------+-------------------------------------------------------------+
 3 rows in set (0.00 sec)
 
-mysql> CREATE INDEX c1 ON t1 (c1); 
+mysql> CREATE INDEX c1 ON t1 (c1);
 Query OK, 0 rows affected (0.30 sec)
 
 mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
@@ -81,6 +80,10 @@ Query OK, 0 rows affected (0.30 sec)
 mysql> CREATE UNIQUE INDEX c1 ON t1 (c1);
 Query OK, 0 rows affected (0.31 sec)
 ```
+
+## 相关 session 变量
+
+和 `CREATE INDEX` 语句相关的全局变量有 `tidb_ddl_reorg_worker_cnt`，`tidb_ddl_reorg_batch_size` 和 `tidb_ddl_reorg_priority`，具体可以参考 [TiDB 特定系统变量](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb-ddl-reorg-worker-cnt)。
 
 ## MySQL 兼容性
 

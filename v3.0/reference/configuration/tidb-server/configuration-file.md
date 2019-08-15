@@ -4,6 +4,8 @@ category: reference
 aliases: ['/docs-cn/op-guide/tidb-config-file/']
 ---
 
+<!-- markdownlint-disable MD001 -->
+
 # TiDB 配置文件描述
 
 TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认值的配置文件，重命名为 config.toml 即可。
@@ -23,6 +25,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 现在合法的选项是 ["log", "cancel"]，如果为 "log"，仅仅是打印日志，不作实质处理。如果为 "cancel"，我们会取消执行这个操作，并且输出日志。
 
 ### `mem-quota-query`
+
 + 单条 SQL 语句可以占用的最大内存阈值。
 + 默认值：34359738368
 + 超过该值的请求会被 `oom-action` 定义的行为所处理。
@@ -65,7 +68,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 将旧表中的 utf8 字符集当成 utf8mb4的开关。
 + 默认值：true
 
-## log 
+## log
 
 日志相关的配置项。
 
@@ -194,7 +197,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `max-memory`
 
-+ Prepare cache LRU 使用的最大内存限制，超过 performance.max-memory * (1 - prepared-plan-cache.memory-guard-ratio)会 剔除 LRU 中的元素。 
++ Prepare cache LRU 使用的最大内存限制，超过 performance.max-memory * (1 - prepared-plan-cache.memory-guard-ratio)会 剔除 LRU 中的元素。
 + 默认值：0
 + 这个配置只有在 prepared-plan-cache.enabled 为 true 的情况才会生效。在 LRU 的 size 大于 prepared-plan-cache.capacity 的情况下，也会剔除 LRU 中的元素。
 
@@ -222,12 +225,18 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `stats-lease`
 
-+ TiDB 重载统计信息，更新表行数，检查是否需要自动 analyze 以及加载列的统计信息的时间间隔。
++ TiDB 重载统计信息，更新表行数，检查是否需要自动 analyze，利用 feedback 更新统计信息以及加载列的统计信息的时间间隔。
 + 默认值：3s
     - 每隔 `stats-lease` 时间，TiDB 会检查统计信息是否有更新，如果有会将其更新到内存中
-    - 每隔 `5 * stats-lease` 时间，TiDB 会将 DML 产生的总行数以及修改的行数变化持久化下来
+    - 每隔 `20 * stats-lease` 时间，TiDB 会将 DML 产生的总行数以及修改的行数变化更新到系统表中
     - 每隔 `stats-lease` 时间，TiDB 会检查是否有表或者索引需要自动 analyze
     - 每隔 `stats-lease` 时间，TiDB 会检查是否有列的统计信息需要被加载到内存中
+    - 每隔 `200 * stats-lease` 时间，TiDB 会将内存中缓存的 feedback 写入系统表中
+    - 每隔 `5 * stats-lease` 时间，TiDB 会读取系统表中的 feedback，更新内存中缓存的统计信息
++ 当 `stats-lease` 为 0 时，TiDB 会以 3s 的时间间隔周期性的读取系统表中的统计信息并更新内存中缓存的统计信息。但不会自动修改统计信息相关系统表，具体来说，TiDB 不再自动修改这些表：
+    - `mysql.stats_meta`：TiDB 不再自动记录事务中对某张表的修改行数，也不会更新到这个系统表中
+    - `mysql.stats_histograms`/`mysql.stats_buckets` 和 `mysql.stats_top_n`：TiDB 不再自动 analyze 和主动更新统计信息
+    - `mysql.stats_feedback`：TiDB 不再根据被查询的数据反馈的部分统计信息更新表和索引的统计信息，analyze 以及 feedback 等操作都不会再进行。
 
 ### `run-auto-analyze`
 
@@ -237,7 +246,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `feedback-probability`
 
 + TiDB 对查询收集统计信息反馈的概率。
-+ 默认值：0.0
++ 默认值：0.05
 + 对于每一个查询，TiDB 会以 `feedback-probability` 的概率收集查询的反馈，用于更新统计信息。
 
 ### `query-feedback-limit`

@@ -1,14 +1,14 @@
 ---
-title: TiDB-Lightning 断点续传
+title: TiDB Lightning 断点续传
 category: reference
 ---
 
-# TiDB-Lightning 断点续传
+# TiDB Lightning 断点续传
 
 大量的数据导入一般耗时数小时至数天，长时间运行的进程会有一定机率发生非正常中断。如果每次重启都从头开始，
 就会浪费掉之前已成功导入的数据。为此，Lightning 提供了“断点续传”的功能，即使 `tidb-lightning` 崩溃，在重启时仍然接着之前的进度继续工作。
 
-本文主要介绍 TiDB-Lightning 断点续传的启用与配置、断点的存储，以及断点续传的控制。
+本文主要介绍 TiDB Lightning 断点续传的启用与配置、断点的存储，以及断点续传的控制。
 
 ## 断点续传的启用与配置
 

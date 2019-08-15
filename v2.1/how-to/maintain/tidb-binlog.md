@@ -98,14 +98,14 @@ Usage of binlogctl:
     ```
 
 - 修改 Pump/Drainer 的状态
-  
+
     设置 `cmd` 为 `update-pump` 或者 `update-drainer` 来更新 Pump 或者 Drainer 的状态。Pump 和 Drainer 的状态可以为：online，pausing，paused，closing 以及 offline。例如：
 
     ```bash
     bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd update-pump -node-id ip-127-0-0-1:8250 -state paused
     ```
 
-    这条命令会修改 Pump/Drainer 保存在 PD 中的状态。
+    这条命令会修改 Pump/Drainer 保存在 PD 中的状态，仅在 Pump/Drainer 服务异常的情况下使用。
 
 - 暂停/下线 Pump/Drainer
 

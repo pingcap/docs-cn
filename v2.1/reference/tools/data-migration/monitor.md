@@ -14,7 +14,7 @@ category: reference
 
 ## Task
 
-在 Grafana dashboard 中，DM 默认名称为 `DM-task`。 
+在 Grafana dashboard 中，DM 默认名称为 `DM-task`。
 
 ### overview
 
@@ -29,7 +29,6 @@ overview 下包含运行当前选定 task 的所有 DM-worker instance 的部分
 | load progress | loader 导入过程的进度百分比，值变化范围为：0% - 100%  | N/A |
 | binlog file gap between master and syncer | 与上游 master 相比 binlog replication 落后的 binlog file 个数 | N/A |
 | shard lock resolving | 当前子任务是否正在等待 shard DDL 同步，大于 0 表示正在等待同步 | N/A |
-
 
 ### task 状态
 
@@ -95,7 +94,6 @@ overview 下包含运行当前选定 task 的所有 DM-worker instance 的部分
 | execution latency | syncer 执行 transaction 到下游的耗时，单位：秒 | N/A |
 | unsynced tables | 当前子任务内还未收到 shard DDL 的分表数量 | N/A |
 | shard lock resolving | 当前子任务是否正在等待 shard DDL 同步，大于 0 表示正在等待同步 | N/A |
-
 
 ## Instance
 

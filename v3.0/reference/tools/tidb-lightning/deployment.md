@@ -1,23 +1,37 @@
 ---
-title: TiDB-Lightning 部署与执行
+title: TiDB Lightning 部署与执行
 category: reference
 aliases: ['/docs-cn/tools/lightning/deployment/']
 ---
 
-# TiDB-Lightning 部署与执行
+# TiDB Lightning 部署与执行
 
-本文主要介绍 TiDB-Lightning 单独部署与混合部署的硬件需求，Ansible 部署与手动部署这两种部署方式，以及启动与执行。
+本文主要介绍 TiDB Lightning 单独部署与混合部署的硬件需求，Ansible 部署与手动部署这两种部署方式，以及启动与执行。
 
 ## 注意事项
 
-在使用 TiDB-Lightning 前，需注意以下事项：
+在使用 TiDB Lightning 前，需注意以下事项：
 
-- TiDB-Lightning 运行后，TiDB 集群将无法正常对外提供服务。
+- TiDB Lightning 运行后，TiDB 集群将无法正常对外提供服务。
 - 若 `tidb-lightning` 崩溃，集群会留在“导入模式”。若忘记转回“普通模式”，集群会产生大量未压缩的文件，继而消耗 CPU 并导致迟延 (stall)。此时，需要使用 `tidb-lightning-ctl` 手动将集群转回“普通模式”：
 
     ```sh
     bin/tidb-lightning-ctl -switch-mode=normal
     ```
+
+- TiDB Lightning 需要下游 TiDB 的权限：
+
+    | 权限 | 作用域 |
+    |----:|:------|
+    | SELECT | Tables |
+    | INSERT | Tables |
+    | UPDATE | Tables |
+    | DELETE | Tables |
+    | CREATE | Databases, tables |
+    | DROP | Databases, tables |
+    | ALTER | Tables |
+  
+  如果 TiDB Lightning 配置项 `checksum = true`，则 TiDB Lightning 需要有下游 TiDB admin 用户权限。
 
 ## 硬件需求
 
@@ -37,7 +51,7 @@ aliases: ['/docs-cn/tools/lightning/deployment/']
     - 32+ 逻辑核 CPU
     - 40 GB+ 内存
     - 1 TB+ SSD 硬盘，IOPS 越高越好（要求 ≥8000）
-      * 硬盘必须大于最大的 N 个表的大小总和，其中 N = max(index-concurrency, table-concurrency)。
+        * 硬盘必须大于最大的 N 个表的大小总和，其中 N = max(index-concurrency, table-concurrency)。
     - 使用万兆网卡，带宽需 300 MB/s 以上
     - 运行过程中 CPU、I/O 和网络带宽都可能打满，建议单独部署。
 
@@ -69,13 +83,13 @@ aliases: ['/docs-cn/tools/lightning/deployment/']
 
 如果数据源是 CSV 文件，请参考 [CSV 支持](/reference/tools/tidb-lightning/csv.md)获取配置信息。
 
-## 部署 TiDB-Lightning
+## 部署 TiDB Lightning
 
-本节介绍 TiDB-Lightning 的两种部署方式：[使用 Ansible 部署](#使用-ansible-部署-tidb-lightning)和[手动部署](#手动部署-tidb-lightning)。
+本节介绍 TiDB Lightning 的两种部署方式：[使用 Ansible 部署](#使用-ansible-部署-tidb-lightning)和[手动部署](#手动部署-tidb-lightning)。
 
-### 使用 Ansible 部署 TiDB-Lightning
+### 使用 Ansible 部署 TiDB Lightning
 
-TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orchestrated/ansible.md)。
+TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orchestrated/ansible.md)。
 
 1. 编辑 `inventory.ini`，分别配置一个 IP 来部署 `tidb-lightning` 和 `tikv-importer`。
 
@@ -148,19 +162,19 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
 
 7. 完成后，在 `tikv-importer` 的服务器执行 `scripts/stop_importer.sh` 来关闭 Importer。
 
-### 手动部署 TiDB-Lightning
+### 手动部署 TiDB Lightning
 
 #### 第 1 步：部署 TiDB 集群
 
 在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群 (版本要求 2.0.9 以上)，建议使用最新版。部署方法可参考 [TiDB 快速入门指南](/overview.md#部署方式)。
 
-#### 第 2 步：下载 TiDB-Lightning 安装包
+#### 第 2 步：下载 TiDB Lightning 安装包
 
-通过以下链接获取 TiDB-Lightning 安装包（需选择与集群相同的版本）：
+通过以下链接获取 TiDB Lightning 安装包（需选择与集群相同的版本）：
 
-- **v2.1.9**: https://download.pingcap.org/tidb-v2.1.9-linux-amd64.tar.gz
-- **v2.0.9**: https://download.pingcap.org/tidb-lightning-v2.0.9-linux-amd64.tar.gz
-- 最新 unstable 版本：https://download.pingcap.org/tidb-lightning-test-xx-latest-linux-amd64.tar.gz
+- **v2.1.9**: `https://download.pingcap.org/tidb-v2.1.9-linux-amd64.tar.gz`
+- **v2.0.9**: `https://download.pingcap.org/tidb-lightning-v2.0.9-linux-amd64.tar.gz`
+- 最新 unstable 版本：`https://download.pingcap.org/tidb-lightning-test-xx-latest-linux-amd64.tar.gz`
 
 #### 第 3 步：启动 `tikv-importer`
 
@@ -205,7 +219,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     # 第 6 层的算法用于压缩 SST 文件。
     # 第 1 至 5 层的算法目前忽略。
     compression-per-level = ["lz4", "no", "no", "no", "no", "no", "lz4"]
-    
+
     [rocksdb.writecf]
     # (同上)
     compression-per-level = ["lz4", "no", "no", "no", "no", "no", "lz4"]
@@ -351,7 +365,7 @@ TiDB-Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     null = '\N'
     # 是否解析字段内反斜线转义符。
     backslash-escape = true
-    # 如果有行以分隔符结尾，删除尾部分隔符。 
+    # 如果有行以分隔符结尾，删除尾部分隔符。
     trim-last-separator = false
 
     [tidb]

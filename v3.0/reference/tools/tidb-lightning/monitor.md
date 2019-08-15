@@ -1,16 +1,16 @@
 ---
-title: TiDB-Lightning 监控告警
+title: TiDB Lightning 监控告警
 category: reference
 aliases: ['/docs-cn/tools/lightning/monitor/']
 ---
 
-# TiDB-Lightning 监控告警
+# TiDB Lightning 监控告警
 
 `tidb-lightning` 和 `tikv-importer` 都支持使用 [Prometheus](https://prometheus.io/) 采集监控指标 (metrics)。本文主要介绍 TiDB-Lightning 的监控配置与监控指标。
 
 ## 监控配置
 
-- 如果是使用 TiDB-Ansible 部署 Lightning，只要将服务器地址加到 `inventory.ini` 里的 `[monitored_servers]` 部分即可。
+- 如果是使用 TiDB Ansible 部署 Lightning，只要将服务器地址加到 `inventory.ini` 里的 `[monitored_servers]` 部分即可。
 - 如果是手动部署 Lightning，则参照以下步骤进行配置。
 
 ### `tikv-importer`
@@ -92,15 +92,15 @@ scrape_configs:
 - **`tikv_import_sst_delivery_duration`** (直方图)
 
     将 SST 文件从 `dispatch-job` 任务发送到 `ImportSSTJob`任务需时的直方图
-    
+
 - **`tikv_import_sst_recv_duration`** (直方图)
 
     `ImportSSTJob`任务接收从 `dispatch-job` 任务发送过来的 SST 文件需时的直方图。
-   
+
 - **`tikv_import_sst_upload_duration`** (直方图)
 
     从 `ImportSSTJob` 任务上传 SST 文件到 TiKV 节点需时的直方图。
-   
+
 - **`tikv_import_sst_chunk_bytes`** (直方图)
 
     上传到 TiKV 节点的 SST 文件（压缩）大小的直方图。
@@ -154,7 +154,7 @@ scrape_configs:
     - **state**：`pending` / `written` / `closed` / `imported` / `altered_auto_inc` / `checksum` / `analyzed` / `completed`
     - **result**：`success` / `failure`
 
-**`lightning_engines`** (计数器)
+- **`lightning_engines`** (计数器)
 
     计算处理后引擎文件的数量以及其状态。标签：
 
@@ -182,7 +182,7 @@ scrape_configs:
 - **`lightning_row_kv_deliver_seconds`**（直方图）
 
     发送一组与单行 SQL 数据对应的 KV 对需时的直方图。
-    
+
 - **`lightning_block_deliver_seconds`**（直方图）
 
     每个 KV 对中的区块传送到 `tikv-importer` 需时的直方图。

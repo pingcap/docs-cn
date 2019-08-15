@@ -22,13 +22,17 @@ aliases: ['/docs-cn/op-guide/tidb-v3.0-upgrade-guide/']
 
 ## 在中控机器上安装 Ansible 及其依赖
 
-TiDB-Ansible release-3.0 版本依赖 2.5.14 Ansible 版本（`ansible=2.5.14`），另依赖 Python 模块：`jinja2>=2.9.6` 和 `jmespath>=0.9.0`。为方便管理依赖，新版本使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-ansible-及其依赖)。
+> **注意：**
+>
+> 如果已经安装了 Ansible 及其依赖，可跳过该步骤。
+
+TiDB-Ansible release-3.0 版本依赖 Ansible 2.4.2 及以上版本（`ansible>=2.4.2`，最好是 2.7.11 版本），另依赖 Python 模块：`jinja2>=2.9.6` 和 `jmespath>=0.9.0`。为方便管理依赖，建议使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-ansible-及其依赖)。
 
 安装完成后，可通过以下命令查看版本：
 
 ```
 $ ansible --version
-ansible 2.5.14
+ansible 2.7.11
 $ pip show jinja2
 Name: Jinja2
 Version: 2.10
@@ -88,19 +92,39 @@ $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
 
 如之前自定义过 TiDB 集群组件配置文件，请参照备份文件修改 `/home/tidb/tidb-ansible/conf` 下对应配置文件。
 
-TiKV 配置中 `end-point-concurrency` 变更为 `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数：
+**注意以下参数变更：**
 
-```
-readpool:
-  coprocessor:
-    # Notice: if CPU_NUM > 8, default thread pool size for coprocessors
-    # will be set to CPU_NUM * 0.8.
-    # high-concurrency: 8
-    # normal-concurrency: 8
-    # low-concurrency: 8
-```
+- TiKV 配置中 `end-point-concurrency` 变更为 `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数：
 
-单机多 TiKV 实例情况下，需要修改这三个参数，推荐设置：`实例数 * 参数值 = CPU 核数 * 0.8`。
+    ```
+    readpool:
+      coprocessor:
+        # Notice: if CPU_NUM > 8, default thread pool size for coprocessors
+        # will be set to CPU_NUM * 0.8.
+        # high-concurrency: 8
+        # normal-concurrency: 8
+        # low-concurrency: 8
+    ```
+
+    > **注意：**
+    >
+    > 单机多 TiKV 实例（进程）情况下，需要修改这三个参数。
+    >
+    > 推荐设置：TiKV 实例数量 \* 参数值 = CPU 核心数量 \* 0.8
+
+- TiKV 配置中不同 CF 中的 `block-cache-size` 参数变更为 `block-cache`
+
+    ```
+    storage:
+      block-cache:
+        capacity: "1GB"
+    ```
+
+    > **注意：**
+    >
+    > 单机多 TiKV 实例（进程）情况下，需要修改 `capacity` 参数。
+    >
+    > 推荐设置：`capacity` = (MEM_TOTAL * 0.5 / TiKV 实例数量)
 
 ## 下载 TiDB 3.0 binary 到中控机
 
@@ -114,13 +138,17 @@ $ ansible-playbook local_prepare.yml
 
 > **注意：**
 >
-> 为优化 TiDB 集群组件的运维管理，TiDB 3.0 版本对 `systemd` 模式下的 `PD service` 名称进行了调整。与之前版本相比，滚动升级 TiDB 3.0 版本集群组件的操作略有不同，注意升级前后 `process_supervision` 参数配置须保持一致。
+> 为优化 TiDB 集群组件的运维管理，TiDB 3.0 版本对 `systemd` 模式下的 `PD service` 名称进行了调整。如当前版本**小于** TiDB 3.0 版本，滚动升级到 TiDB 3.0 版本集群组件的操作略有不同，注意升级前后 `process_supervision` 参数配置须保持一致。
 
-如果 `process_supervision` 变量使用默认的 `systemd` 参数，则通过 `excessive_rolling_update.yml` 滚动升级 TiDB 集群。  
+如果 `process_supervision` 变量使用默认的 `systemd` 参数，则通过 `excessive_rolling_update.yml` 滚动升级 TiDB 集群。
 
 ```
 $ ansible-playbook excessive_rolling_update.yml
 ```
+
+> **注意：**
+>
+> 如当前版本**大于或等于** TiDB 3.0 版本，则滚动升级及日常滚动重启 TiDB 集群仍然使用 `rolling_update.yml` 操作。
 
 如果 `process_supervision` 变量使用 `supervise` 参数，则通过 `rolling_update.yml` 滚动升级 TiDB 集群。
 

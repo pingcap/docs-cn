@@ -27,13 +27,13 @@ Loader 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/referen
 
 ## 使用方法
 
-#### 注意事项
+### 注意事项
 
 请勿使用 loader 导入 MySQL 实例中 `mysql` 系统数据库到下游 TiDB。
 
 如果 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。
 
-如果使用默认的 `checkpoint-schema` 参数，在导完一个 database 数据库后，请 `drop database tidb_loader` 后再开始导入下一个 database。  
+如果使用默认的 `checkpoint-schema` 参数，在导完一个 database 数据库后，请 `drop database tidb_loader` 后再开始导入下一个 database。
 
 推荐数据库开始导入的时候，明确指定 `checkpoint-schema = "tidb_loader"` 参数。
 
@@ -47,7 +47,7 @@ Loader 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/referen
   -V
       打印 loader 版本
   -c string
-      指定配置文件启动 loader 
+      指定配置文件启动 loader
   -checkpoint-schema string
       checkpoint 数据库名，loader 在运行过程中会不断的更新这个数据库，在中断并恢复后，会通过这个库获取上次运行的进度 (默认为 "tidb_loader")
   -d string
@@ -112,16 +112,20 @@ port = 4000
 
 通过命令行参数：
 
-    ./bin/loader -d ./test -h 127.0.0.1 -u root -P 4000
+```bash
+./bin/loader -d ./test -h 127.0.0.1 -u root -P 4000
+```
 
 或者使用配置文件 "config.toml":
 
-    ./bin/loader -c=config.toml
+```bash
+./bin/loader -c=config.toml
+```
 
-##  FAQ
+## FAQ
 
-#### 合库合表场景案例说明
-  
+### 合库合表场景案例说明
+
 根据配置文件的 route-rules 可以支持将分库分表的数据导入到同一个库同一个表中，但是在开始前需要检查分库分表规则：
 
 + 是否可以利用 route-rules 的语义规则表示
@@ -129,7 +133,7 @@ port = 4000
 
 Loader 需要配置文件中开启 route-rules 参数以提供合库合表功能
 
-+ 如果使用该功能，必须填写 `pattern-schema` 与 `target-schema` 
++ 如果使用该功能，必须填写 `pattern-schema` 与 `target-schema`
 + 如果 `pattern-table` 与 `target-table` 为空，将不进行表名称合并或转换
 
 ```toml

@@ -5,10 +5,34 @@ category: reference
 
 # GC 配置
 
-TiDB 的 GC 相关的配置存储于 `mysql.tidb` 系统表中，以下列出这些参数及其含义。可以通过 SQL 语句对这些参数进行查询和更改。例如，如果需要将 GC 调整为每 30 分钟执行一次，只需执行下列语句即可：
+TiDB 的 GC 相关的配置存储于 `mysql.tidb` 系统表中，可以通过 SQL 语句对这些参数进行查询和更改：
+
+```plain
+mysql> select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb;
++--------------------------+----------------------------------------------------------------------------------------------------+
+| VARIABLE_NAME            | VARIABLE_VALUE                                                                                     |
++--------------------------+----------------------------------------------------------------------------------------------------+
+| bootstrapped             | True                                                                                               |
+| tidb_server_version      | 33                                                                                                 |
+| system_tz                | UTC                                                                                                |
+| tikv_gc_leader_uuid      | 5afd54a0ea40005                                                                                    |
+| tikv_gc_leader_desc      | host:tidb-cluster-tidb-0, pid:215, start at 2019-07-15 11:09:14.029668932 +0000 UTC m=+0.463731223 |
+| tikv_gc_leader_lease     | 20190715-12:12:14 +0000                                                                            |
+| tikv_gc_enable           | true                                                                                               |
+| tikv_gc_run_interval     | 10m0s                                                                                              |
+| tikv_gc_life_time        | 10m0s                                                                                              |
+| tikv_gc_last_run_time    | 20190715-12:09:14 +0000                                                                            |
+| tikv_gc_safe_point       | 20190715-11:59:14 +0000                                                                            |
+| tikv_gc_auto_concurrency | true                                                                                               |
+| tikv_gc_mode             | distributed                                                                                        |
++--------------------------+----------------------------------------------------------------------------------------------------+
+13 rows in set (0.00 sec)
+```
+
+例如，如果需要将 GC 调整为保留最近一天以内的数据，只需执行下列语句即可：
 
 ```sql
-update mysql.tidb set VARIABLE_VALUE="30m" where VARIABLE_NAME="tikv_gc_run_interval";
+update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_time";
 ```
 
 > **注意：**
@@ -36,11 +60,11 @@ update mysql.tidb set VARIABLE_VALUE="30m" where VARIABLE_NAME="tikv_gc_run_inte
 
 > **注意：**
 >
-> - `tikv_gc_life_time` 的值必须大于 TiDB 的配置文件中的 [`max-txn-time-use`](/reference/configuration/tidb-server/configuration-file#max-txn-time-use) 的值至少 10 秒，且不低于 10 分钟。
+> - `tikv_gc_life_time` 的值必须大于 TiDB 的配置文件中的 [`max-txn-time-use`](/reference/configuration/tidb-server/configuration-file.md#max-txn-time-use) 的值至少 10 秒，且不低于 10 分钟。
 >
 > - 在数据更新频繁的场景下，如果将 `tikv_gc_life_time` 设置得比较大（如数天甚至数月），可能会有一些潜在的问题，如：
->    - 磁盘空间占用较多。
->    - 大量的历史版本会在一定程度上影响性能，尤其是范围查询（如 `select count(*) from t`）。
+>     - 磁盘空间占用较多。
+>     - 大量的历史版本会在一定程度上影响性能，尤其是范围查询（如 `select count(*) from t`）。
 
 ## `tikv_gc_mode`
 

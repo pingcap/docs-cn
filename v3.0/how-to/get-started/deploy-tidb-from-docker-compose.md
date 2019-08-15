@@ -8,7 +8,7 @@ aliases: ['/docs-cn/v3.0/how-to/get-started/local-cluster/install-from-docker-co
 
 本文档介绍如何在单机上通过 Docker Compose 快速一键部署一套 TiDB 测试集群。[Docker Compose](https://docs.docker.com/compose/overview) 可以通过一个 YAML 文件定义多个容器的应用服务，然后一键启动或停止。
 
-> **注意：**
+> **警告：**
 >
 > 对于生产环境，不要使用 Docker Compose 进行部署，而应[使用 Ansible 部署 TiDB 集群](/how-to/deploy/orchestrated/ansible.md)。
 
@@ -60,7 +60,7 @@ aliases: ['/docs-cn/v3.0/how-to/get-started/local-cluster/install-from-docker-co
     ```
 
     如果是 Mac 系统，也可以通过 Homebrew 安装：
-    
+
     ```
     brew install kubernetes-helm
     ```

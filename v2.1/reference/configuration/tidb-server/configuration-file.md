@@ -3,6 +3,8 @@ title: TiDB 配置文件描述
 category: reference
 ---
 
+<!-- markdownlint-disable MD001 -->
+
 # TiDB 配置文件描述
 
 TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认的配置文件，重命名为 config.toml 即可。
@@ -43,7 +45,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + TiDB 中 `KILL xxx` 的行为和 MySQL 中的行为不相同。为杀死一条查询，在 TiDB 里需要加上 `TIDB` 关键词，即 `KILL TIDB xxx`。但如果把 `compatible-kill-query` 设置为 true，则不需要加上 `TIDB` 关键词。
 + 这种区别很重要，因为当用户按下 <kbd>Ctrl</kbd>+<kbd>C</kbd> 时，MySQL 命令行客户端的默认行为是：创建与后台的新连接，并在该新连接中执行 `KILL` 语句。如果负载均衡器或代理已将该新连接发送到与原始会话不同的 TiDB 服务器实例，则该错误会话可能被终止，从而导致使用 TiDB 集群的业务中断。只有当您确定在 `KILL` 语句中引用的连接正好位于 `KILL` 语句发送到的服务器上时，才可以启用 `compatible-kill-query`。
 
-## log 
+## log
 
 日志相关的配置项。
 
@@ -172,12 +174,28 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `stats-lease`
 
-+ TiDB 重载统计信息，更新表行数，检查是否需要自动 analyze 以及加载列的统计信息的时间间隔。
++ TiDB 重载统计信息，更新表行数，检查是否需要自动 analyze，利用 feedback 更新统计信息以及加载列的统计信息的时间间隔。
 + 默认：3s
     - 每隔 `stats-lease` 时间，TiDB 会检查统计信息是否有更新，如果有会将其更新到内存中
-    - 每隔 `5 * stats-lease` 时间，TiDB 会将 DML 产生的总行数以及修改的行数变化持久化下来
+    - 每隔 `20 * stats-lease` 时间，TiDB 会将 DML 产生的总行数以及修改的行数变化持久化下来
     - 每隔 `stats-lease` 时间，TiDB 会检查是否有表或者索引需要自动 analyze
     - 每隔 `stats-lease` 时间，TiDB 会检查是否有列的统计信息需要被加载到内存中
+    - 每隔 `200 * stats-lease` 时间，TiDB 会将内存中缓存的 feedback 写入系统表中
+    - 每隔 `5 * stats-lease` 时间，TiDB 会读取系统表中的 feedback，更新统计信息
++ 当 `stats-lease` 为 0 时， 上述所有操作都不会再进行。
+
+### `enable-update-stats`
+
+> **注意：**
+>
+> 该配置项由 2.1.13 版本中引入，仅在 TiDB 版本大于等于 v2.1.13 的 2.1 版本中支持。
+
++ TiDB 是否做统计信息更新相关操作，例如维护总行数和修改行数，自动 analyze 以及 feedback 等。
++ 默认：true
++ 由于统计信息更新操作的周期由 `stats-lease` 决定，因此该参数只在 `stats-lease` 不为 0 的情况下生效。当 `enable-update-stats` 为 false 时，TiDB 不再自动修改这些表：
+    - `mysql.stats_meta`：TiDB 不再自动记录事务中对某张表的修改行数，也不会更新到这个系统表中
+    - `mysql.stats_histograms` 和 `mysql.stats_buckets`：TiDB 不再自动 analyze 和主动更新统计信息
+    - `mysql.stats_feedback`：TiDB 不再根据被查询的数据反馈的部分统计信息更新表和索引的统计信息
 
 ### `run-auto-analyze`
 
@@ -187,7 +205,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `feedback-probability`
 
 + TiDB 对查询收集统计信息反馈的概率。
-+ 默认：0.0
++ 默认：0.05
 + 对于每一个查询，TiDB 会以 `feedback-probability` 的概率收集查询的反馈，用于更新统计信息。
 
 ## prepared-plan-cache

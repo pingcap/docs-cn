@@ -104,12 +104,12 @@ category: tools
     - 判断从 Pump 获取数据是否太慢：
 
         监控 Pump handle tso 可以看每个 Pump 最近一条消息的时间，是不是有延迟特别大的 Pump，确认对应 Pump 正常运行
-        
+
     - 根据 Drainer event 和 Drainer execute latency 来判断是否下游同步太慢：
-        
+
         - 如果 Drainer execute time 过大，则检查到目标库网络带宽和延迟，以及目标库状态
         - 如果 Drainer execute time 不大，Drainer event 过小，则增加 work count 和 batch 进行重试
-            
+
     - 上面都不满足或者操作后没有改观，则报备开发 support@pingcap.com 进行处理
 
 ### Warning
