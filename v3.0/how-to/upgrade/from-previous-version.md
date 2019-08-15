@@ -23,14 +23,19 @@ This document is targeted for users who want to upgrade from TiDB 2.0 (above V2.
 
 ## Install Ansible and dependencies on the Control Machine
 
-TiDB-Ansible release-3.0 depends on Ansible 2.5.14  (`ansible=2.5.14`) and the Python module `jinja2>=2.9.6` and `jmespath>=0.9.0`.
+> **Note:**
+>
+> If you have installed Ansible and its dependencies, you can skip this step.
+
+TiDB-Ansible release-3.0 depends on Ansible 2.4.2 and the later versions (`ansible>=2.4.2`, Ansible 2.7.11 recommended) and the Python module `jinja2>=2.9.6` and `jmespath>=0.9.0`.
+
 To make it easy to manage dependencies, use `pip` to install Ansible and its dependencies. For details, see [Install Ansible and its dependencies on the Control Machine](/how-to/deploy/orchestrated/ansible.md#step-4-install-ansible-and-its-dependencies-on-the-control-machine). For offline environment, see [Install Ansible and its dependencies offline on the Control Machine](/how-to/deploy/orchestrated/offline-ansible.md#step-3-install-ansible-and-its-dependencies-offline-on-the-control-machine).
 
 After the installation is finished, you can view the version information using the following command:
 
-```
+```shell
 $ ansible --version
-ansible 2.5.14
+ansible 2.7.11
 $ pip show jinja2
 Name: Jinja2
 Version: 2.10
@@ -51,13 +56,13 @@ Version: 0.9.0
 
 2. Back up the `tidb-ansible` folders of TiDB 2.0 or TiDB 2.1 versions using the following command:
 
-    ```
+    ```shell
     $ mv tidb-ansible tidb-ansible-bak
     ```
 
 3. Download the tidb-ansible with the tag corresponding to TiDB 3.0. For more details, See [Download TiDB-Ansible to the Control Machine](/how-to/deploy/orchestrated/ansible.md#step-3-download-tidb-ansible-to-the-control-machine). The default folder name is `tidb-ansible`.
 
-    ```
+    ```shell
     $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
     ```
 
@@ -96,19 +101,39 @@ Edit the `inventory.ini` file. For IP information, see the `/home/tidb/tidb-ansi
 
 If you have previously customized the configuration file of TiDB cluster components, refer to the backup file to modify the corresponding configuration file in `/home/tidb/tidb-ansible/conf`.
 
-In TiKV configuration, `end-point-concurrency` is changed to three parameters: `high-concurrency`, `normal-concurrency` and `low-concurrency`.
+**Note the following parameter changes:**
 
-```
-readpool:
-  coprocessor:
-    # Notice: if CPU_NUM > 8, default thread pool size for coprocessors
-    # will be set to CPU_NUM * 0.8.
-    # high-concurrency: 8
-    # normal-concurrency: 8
-    # low-concurrency: 8
-```
+- In TiKV configuration, `end-point-concurrency` is changed to three parameters: `high-concurrency`, `normal-concurrency` and `low-concurrency`.
 
-For the cluster topology of multiple TiKV instances on a single machine, you need to modify the three parameters above. Recommended configuration: `number of instances * parameter value = number of CPU cores * 0.8`.
+    ```yaml
+    readpool:
+      coprocessor:
+        # Notice: if CPU_NUM > 8, default thread pool size for coprocessors
+        # will be set to CPU_NUM * 0.8.
+        # high-concurrency: 8
+        # normal-concurrency: 8
+        # low-concurrency: 8
+    ```
+
+    > **Note:**
+    >
+    > For the cluster topology of multiple TiKV instances (processes) on a single machine, you need to modify the three parameters above.
+
+    Recommended configuration: the number of TiKV instances \* the parameter value = the number of CPU cores \* 0.8.
+
+- In the TiKV configuration, the `block-cache-size` parameter of different CFs is changed to `block-cache`.
+
+    ```
+    storage:
+      block-cache:
+        capacity: "1GB"
+    ```
+
+    > **Note:**
+    >
+    > For the cluster topology of multiple TiKV instances (processes) on a single machine, you need to modify the `capacity` parameter.
+
+    Recommended configuration: `capacity` = MEM_TOTAL \* 0.5 / the number of TiKV instances.
 
 ## Download TiDB 3.0 binary to the Control Machine
 
@@ -122,22 +147,26 @@ $ ansible-playbook local_prepare.yml
 
 > **Note:**
 >
-> To optimize operation and maintenance management over components of TiDB cluster, there are some adjustments to  `PD service` under `systemd` in TiDB 3.0. Compared to earlier versions, rolling update operations on TiDB cluster components are slightly different. Please make sure that the `process_supervision` parameter remains consistent before and after the upgrade.
+> To optimize operation and maintenance management over components of TiDB cluster, there are some adjustments to `PD service` under `systemd` in TiDB 3.0. If the current version is earlier than TiDB 3.0.0, the rolling update of TiDB cluster components to the 3.0 versions is slightly different. Please make sure that the `process_supervision` parameter remains consistent before and after the upgrade.
 
 - If the default `systemd` parameter is used by the `process_supervision` variable,perform rolling update on the TiDB cluster using  `excessive_rolling_update.yml`.
 
-   ```
-  $ ansible-playbook excessive_rolling_update.yml
-   ```
+    ```shell
+    $ ansible-playbook excessive_rolling_update.yml
+    ```
+
+    > **Note:**
+    >
+    > If the current version is TiDB 3.0.0 or later, then you can still use the `rolling_update.yml` approach to rolling-update and rolling-restart the TiDB cluster.
 
 - If the `supervise` parameter is used by the `process_supervision` variable, perform rolling update on the TiDB cluster using `rolling_update.yml`.
 
-   ```
-   $ ansible-playbook rolling_update.yml
-   ```
+    ```shell
+    $ ansible-playbook rolling_update.yml
+    ```
 
 ## Perform rolling update to TiDB monitoring components
 
-```
+```shell
 $ ansible-playbook rolling_update_monitor.yml
 ```

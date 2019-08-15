@@ -483,16 +483,16 @@ location_labels = ["host"]
 
 1. For the cluster topology of multiple TiKV instances on each TiKV node, you need to edit the `block-cache-size` parameter in `tidb-ansible/conf/tikv.yml`:
 
-    - `rocksdb defaultcf block-cache-size(GB)`: MEM * 80% / TiKV instance number * 30%
-    - `rocksdb writecf block-cache-size(GB)`: MEM * 80% / TiKV instance number * 45%
-    - `rocksdb lockcf block-cache-size(GB)`: MEM * 80% / TiKV instance number * 2.5% (128 MB at a minimum)
-    - `raftdb defaultcf block-cache-size(GB)`: MEM * 80% / TiKV instance number * 2.5% (128 MB at a minimum)
+    - `rocksdb defaultcf block-cache-size(GB)`: MEM \* 80% / TiKV instance number \* 30%
+    - `rocksdb writecf block-cache-size(GB)`: MEM \* 80% / TiKV instance number \* 45%
+    - `rocksdb lockcf block-cache-size(GB)`: MEM \* 80% / TiKV instance number \* 2.5% (128 MB at a minimum)
+    - `raftdb defaultcf block-cache-size(GB)`: MEM \* 80% / TiKV instance number \* 2.5% (128 MB at a minimum)
 
 2. For the cluster topology of multiple TiKV instances on each TiKV node, you need to edit the `high-concurrency`, `normal-concurrency` and `low-concurrency` parameters in the `tidb-ansible/conf/tikv.yml` file:
 
     ```
     readpool:
-    coprocessor:
+      coprocessor:
         # Notice: if CPU_NUM > 8, default thread pool size for coprocessors
         # will be set to CPU_NUM * 0.8.
         # high-concurrency: 8
@@ -500,11 +500,16 @@ location_labels = ["host"]
         # low-concurrency: 8
     ```
 
-    Recommended configuration: `number of instances * parameter value = CPU_Vcores * 0.8`.
+    Recommended configuration: the number of TiKV instances \* the parameter value = CPU_Vcores \* 0.8.
 
 3. If multiple TiKV instances are deployed on a same physical disk, edit the `capacity` parameter in `conf/tikv.yml`:
 
-    - `capacity`: total disk capacity / number of TiKV instances (the unit is GB)
+    ```
+    raftstore:
+      capacity: 0
+    ```
+
+    Recommended configuration: `capacity` = total disk capacity / the number of TiKV instances. For example, `capacity: "100GB"`.
 
 ## Step 10: Edit variables in the `inventory.ini` file
 

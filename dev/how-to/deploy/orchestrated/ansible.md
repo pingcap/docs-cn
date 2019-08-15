@@ -481,12 +481,19 @@ location_labels = ["host"]
 
 **Edit the parameters in the service configuration file:**
 
-1. For the cluster topology of multiple TiKV instances on each TiKV node, you need to edit the `block-cache-size` parameter in `tidb-ansible/conf/tikv.yml`:
+1. For the cluster topology of multiple TiKV instances on each TiKV node, you need to edit the `capacity` parameter under `block-cache-size` in `tidb-ansible/conf/tikv.yml`:
 
-    - `rocksdb defaultcf block-cache-size(GB)`: MEM \* 80% / TiKV instance number \* 30%
-    - `rocksdb writecf block-cache-size(GB)`: MEM \* 80% / TiKV instance number \* 45%
-    - `rocksdb lockcf block-cache-size(GB)`: MEM \* 80% / TiKV instance number \* 2.5% (128 MB at a minimum)
-    - `raftdb defaultcf block-cache-size(GB)`: MEM \* 80% / TiKV instance number \* 2.5% (128 MB at a minimum)
+    ```
+    storage:
+      block-cache:
+        capacity: "1GB"
+    ```
+
+    > **Note:**
+    >
+    > The number of TiKV instances is the number of TiKV processes on each server.
+
+    Recommended configuration: `capacity` = MEM_TOTAL \* 0.5 / the number of TiKV instances
 
 2. For the cluster topology of multiple TiKV instances on each TiKV node, you need to edit the `high-concurrency`, `normal-concurrency` and `low-concurrency` parameters in the `tidb-ansible/conf/tikv.yml` file:
 
@@ -500,11 +507,16 @@ location_labels = ["host"]
         # low-concurrency: 8
     ```
 
-    Recommended configuration: `number of instances * parameter value = CPU_Vcores * 0.8`.
+    Recommended configuration: the number of TiKV instances \* the parameter value = the number of CPU cores \* 0.8.
 
 3. If multiple TiKV instances are deployed on a same physical disk, edit the `capacity` parameter in `conf/tikv.yml`:
 
-    - `capacity`: total disk capacity / number of TiKV instances (the unit is GB)
+    ```
+    raftstore:
+      capacity: 0
+    ```
+
+    Recommended configuration: `capacity` = total disk capacity / the number of TiKV instances. For example, `capacity: "100GB"`.
 
 ## Step 10: Edit variables in the `inventory.ini` file
 
@@ -657,7 +669,6 @@ Edit the `inventory.ini` file and add the following host variable after the IP o
 | TiDB          | tidb_status_port   | 10080        | the communication port to report TiDB status |
 | TiKV          | tikv_port          | 20160        | the TiKV communication port |
 | TiKV          | tikv_status_port   | 20180        | the communication port to report the TiKV status |
-| TiKV          | tikv_status_port   | 20180        | the communication port to report TiKV status |
 | PD            | pd_client_port     | 2379         | the communication port between TiDB and PD |
 | PD            | pd_peer_port       | 2380         | the inter-node communication port within the PD cluster |
 | Pump          | pump_port          | 8250         | the pump communication port |
