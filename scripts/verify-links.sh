@@ -24,7 +24,7 @@ CONFIG_TMP=$(mktemp)
 trap 'rm -f $CONFIG_TMP' EXIT
 
 # TODO fix later
-IGNORE_DIRS=(v1.0 v2.0 v2.1 v2.1-legacy)
+IGNORE_DIRS=(v1.0 v2.0 v2.1-legacy)
 
 function in_array() {
     local i=$1
