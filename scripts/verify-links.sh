@@ -20,8 +20,9 @@ if ! which markdown-link-check &>/dev/null; then
 fi
 
 CONFIG_TMP=$(mktemp)
+ERROR_REPORT=$(mktemp)
 
-trap 'rm -f $CONFIG_TMP' EXIT
+trap 'rm -f $CONFIG_TMP $ERROR_REPORT' EXIT
 
 # TODO fix later
 IGNORE_DIRS=(v1.0 v2.0 v2.1 v2.1-legacy)
@@ -38,8 +39,6 @@ function in_array() {
 }
 
 # Check all directories starting with 'v\d.*' and dev.
-error_files=0
-error_output=""
 for d in dev $(ls -d v[0-9]*); do
     if in_array $d "${IGNORE_DIRS[@]}"; then
         echo "info: directory $d skipped"
@@ -51,19 +50,26 @@ for d in dev $(ls -d v[0-9]*); do
         -e "s#<DOC_ROOT>#$ROOT/$d#g" \
         scripts/markdown-link-check.tpl > $CONFIG_TMP
     cat $CONFIG_TMP
-    for f in $(find "$d" -type f -name '*.md'); do
-        echo markdown-link-check --config "$CONFIG_TMP" "$f" -q
-        output=$(markdown-link-check --color --config "$CONFIG_TMP" "$f" -q)
-        if [ $? -ne 0 ]; then
-            ((error_files++))
-            error_output+="$output"
-        fi
-        echo "$output"
-    done
+    # TODO simplify this if markdown-link-check can process multiple files together
+    while read -r tasks; do
+        for task in $tasks; do
+            (
+                echo markdown-link-check --config "$CONFIG_TMP" "$task" -q
+                output=$(markdown-link-check --color --config "$CONFIG_TMP" "$task" -q)
+                if [ $? -ne 0 ]; then
+                    printf "$output" >> $ERROR_REPORT
+                fi
+                echo "$output"
+            ) &
+        done
+        wait
+    done <<<"$(find "$d" -type f -name '*.md' | xargs -n 10)"
 done
 
+error_files=$(cat $ERROR_REPORT | grep 'FILE: ' | wc -l)
+error_output=$(cat $ERROR_REPORT)
 echo ""
-if [ $error_files -gt 0 ]; then
+if [ "$error_files" -gt 0 ]; then
     echo "error: $error_files files have invalid links (or alias links which are recommended to be replaced with latest one), please fix them!"
     echo ""
     echo "=== ERROR REPORT == ":
