@@ -17,9 +17,9 @@ DM 功能如下：
 本教程主要介绍如何使用 DM 迁移上游多个 MySQL 实例的一个分片表。包括两种场景：
 
 - 合并若干个互不冲突的表或分片，即这些表或分片的表结构并不会造成唯一键值对的冲突；
-- 合并唯一键值对存在冲突的表。
+- 合并唯一键存在冲突的表。
 
-本教程假设目前使用的是一台新的、纯净版 CentOS 7 实例，你能（使用 VMware、VirtualBox 及其他工具）在本地虚拟化或在供应商提供的平台上部署一台小型的云虚拟存机。因为需要运行多个服务，建议内存最好在 1 GB 以上。
+本教程假设目前使用的是一台新的、纯净版 CentOS 7 实例，你能（使用 VMware、VirtualBox 及其他工具）在本地虚拟化或在供应商提供的平台上部署一台小型的云虚拟主机。因为需要运行多个服务，建议内存最好在 1 GB 以上。
 
 > **警告：**
 >
@@ -298,7 +298,7 @@ loaders:
 
 * `is-sharding: true`：多个 DM-worker 实例在一个 task 上工作，这些实例将上游的若干分片合并到一个下游的表中。
 
-* `ignore-checking-items: ["auto_increment_ID"]`：关闭 DM 对上游实例中潜在的自增 ID 冲突的检测。DM 能检测出上游在相同表结构中名称相同、并包含自增列的所有 MySQL Server，这种情况可能会导致几个表之间的冲突。通过配置 `auto-increment-increment` 和 `auto-increment-offset` 可使每个 MySQL Server 的 ID 都不重叠，从而避免不同表之间冲突的产生。因此，可以让 DM 关闭对自增 ID 冲突的检测。
+* `ignore-checking-items: ["auto_increment_ID"]`：关闭 DM 对上游实例中潜在的自增 ID 冲突的检测。DM 能检测出上游表结构相同、并包含自增列的分片间潜在的列值冲突。通过配置 `auto-increment-increment` 和 `auto-increment-offset` 可使每个 MySQL Server 的 ID 都不重叠，从而避免不同表之间冲突的产生。因此，可以让 DM 关闭对自增 ID 冲突的检测。
 
 * `black-white-list`：将一个任务限制在数据库 `dmtest` 中。
 
@@ -345,7 +345,7 @@ Go Version: go version go1.12 linux/amd64
 }
 ```
 
-启动该任务意味着启动任务配置文件中定义的行为，包括执行 mydumper 和 loader 实例，加载初次转储的数据后，将 DM-worker 作为同步任务的 slave 连接到上游的 MySQL Server。
+启动该任务意味着启动任务配置文件中定义的行为，包括执行 mydumper 和 loader 实例，加载初次 dump 的数据后，将 DM-worker 作为同步任务的 slave 连接到上游的 MySQL Server。
 
 所有的行数据都被迁移到 TiDB Server：
 
