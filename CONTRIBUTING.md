@@ -9,7 +9,13 @@ category: contribute
 
 如要对中文文档进行贡献，请先 fork [docs-cn 仓库](https://github.com/pingcap/docs-cn)，再提交您的 Pull Request。
 
-TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量和格式规范，您的 PR 需要遵循一定的 markdown 风格。
+TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量和格式规范，您修改的文档需要遵循一定的 Markdown 风格。
+
+## 参考资源
+
+- [PingCAP 中文技术文档风格指南](https://docs.google.com/document/d/1b6ZhZD33OoM8AacpKksGGSuxJWReLkNnSt8eSc1kTXc/edit?usp=sharing)
+- [使用 GitHub Desktop 提交文档 PR 指南](https://internal.pingcap.net/confluence/pages/viewpage.action?pageId=54233125)（暂只提供内部版）
+- [Commit Message 和 Pull Request 填写指南](https://github.com/pingcap/community/blob/master/commit-message-pr-style.md)
 
 ## 必须遵循的 markdownlint 规则
 
