@@ -9,7 +9,12 @@ category: contribute
 
 如要对中文文档进行贡献，请先 fork [docs-cn 仓库](https://github.com/pingcap/docs-cn)，再提交您的 Pull Request。
 
-TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量和格式规范，您的 PR 需要遵循一定的 markdown 风格。
+TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量和格式规范，您修改的文档需要遵循一定的 Markdown 风格。
+
+## 参考资源
+
+- [PingCAP 中文技术文档风格指南](https://docs.google.com/document/d/1b6ZhZD33OoM8AacpKksGGSuxJWReLkNnSt8eSc1kTXc/edit?usp=sharing)
+- [Pull Request 提交流程](#pull-request-提交流程)
 
 ## 必须遵循的 markdownlint 规则
 
@@ -91,7 +96,7 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 
 19. [MD034 - Bare URL used](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md034---bare-url-used)
 
-    文档中禁止出现裸露的 URL，一般需要使用一对尖括号 (<URL>) 包裹裸露的 URL。如果由于特殊情况必须要使用裸露的 URL，可以用一对反引号 (`URL`) 包裹 URL。
+    文档中禁止出现裸露的 URL。如果希望用户能直接点击并打开该 URL，则用一对尖括号 (`<URL>`) 包裹该 URL。如果由于特殊情况必须使用裸露的 URL，可以用一对反引号 (``` `URL` ```) 包裹该 URL。
 
 20. [MD037 - Spaces inside emphasis markers](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md037---spaces-inside-emphasis-markers)
 
