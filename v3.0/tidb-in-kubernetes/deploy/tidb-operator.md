@@ -119,7 +119,7 @@ kubectl get crd tidbclusters.pingcap.com
 
 2. 配置 TiDB Operator
 
-    TiDB Operator 里面会用到 `k8s.gcr.io/kube-scheduler` 镜像，如果下载不了该镜像，可以修改 `/home/tidb/tidb-operator/values-tidb-operator.yaml` 文件中的 `scheduler.kubeSchedulerImage` 为 `registry.cn-hangzhou.aliyuncs.com/google_containers`。
+    TiDB Operator 里面会用到 `k8s.gcr.io/kube-scheduler` 镜像，如果下载不了该镜像，可以修改 `/home/tidb/tidb-operator/values-tidb-operator.yaml` 文件中的 `scheduler.kubeSchedulerImage` 为 `registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler`。
 
 3. 安装 TiDB Operator
 

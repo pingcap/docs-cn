@@ -25,15 +25,11 @@ function install_go {
     echo "Intall go ..."
     case "$OSTYPE" in 
         linux*) 
-            curl -L https://storage.googleapis.com/golang/go1.10.2.linux-amd64.tar.gz -o golang.tar.gz
-            ${SUDO} tar -C /usr/local -xzf golang.tar.gz
-            rm golang.tar.gz
+            curl -L https://storage.googleapis.com/golang/go1.12.7.linux-amd64.tar.gz -o golang.tar.gz
         ;;
 
         darwin*)
-            curl -L https://storage.googleapis.com/golang/go1.10.2.darwin-amd64.tar.gz -o golang.tar.gz
-            ${SUDO} tar -C /usr/local -xzf golang.tar.gz
-            rm golang.tar.gz
+            curl -L https://storage.googleapis.com/golang/go1.12.7.darwin-amd64.tar.gz -o golang.tar.gz
         ;;
 
         *)
@@ -41,6 +37,9 @@ function install_go {
             exit 1
         ;;
     esac
+    ${SUDO} tar -C /usr/local -xzf golang.tar.gz
+    rm golang.tar.gz
+    echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.profile
 }
 
 function install_gpp {
@@ -117,5 +116,7 @@ if which g++ &>/dev/null; then
 else
     install_gpp
 fi
+
+echo -e "Run this command:\n\n\tsource $HOME/.profile\n\nor just open a new terminal window to update environment variables"
 
 echo OK
