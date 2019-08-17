@@ -42,7 +42,6 @@ Drainer 从各个 Pump 中收集 Binlog 进行归并，再将 Binlog 转化成 S
 * Pump 负责存储 Binlog，并将 Binlog 按顺序提供给 Drainer。
 * Drainer 负责读取各个 Pump 的 Binlog，归并排序后发送到下游。
 
-
 ## 注意事项
 
 * 需要使用 TiDB v2.0.8-binlog、v2.1.0-rc.5 及以上版本，否则不兼容该版本的 TiDB Binlog。
