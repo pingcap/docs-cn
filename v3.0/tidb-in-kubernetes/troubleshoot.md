@@ -281,7 +281,7 @@ kubectl logs -f <tidb-pod-name> -n <namespace> -c tidb
     kubectl get -n <namespace> po -l app.kubernetes.io/component=tikv
     ```
 
-3. 对比 Store 状态与 Pod 运行状态。正常情况下每一个正常运行的 Pod 都有一个处于 `UP` 状态的 Store，假如某个 TiKV Pod 所对应的 Store 处于 `Offline` 状态，则表明该 Pod 的 Store 正在异常下线中。此时，可以通过下面的命令取消下线进程，进行恢复：
+3. 对比 Store 状态与 Pod 运行状态。假如某个 TiKV Pod 所对应的 Store 处于 `Offline` 状态，则表明该 Pod 的 Store 正在异常下线中。此时，可以通过下面的命令取消下线进程，进行恢复：
 
     * 打开到 PD 服务的连接：
 
