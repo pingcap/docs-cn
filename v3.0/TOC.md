@@ -62,7 +62,6 @@
     - [TiDB Binlog 集群运维](how-to/maintain/tidb-binlog.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](how-to/scale/with-ansible.md)
-    - [Kubernetes 上的 TiDB 集群扩缩容](how-to/upgrade/tidb-in-kubernetes.md)
   + 升级
     - [升级至 TiDB 3.0](how-to/upgrade/from-previous-version.md)
     - [使用 Ansible 滚动升级](how-to/upgrade/rolling-updates-with-ansible.md)
@@ -304,6 +303,7 @@
       - [监控告警](reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](faq/tidb-lightning.md)
+    - [sync-diff-inspector](reference/tools/sync-diff-inspector/overview.md)
     - [PD Control](reference/tools/pd-control.md)
     - [PD Recover](reference/tools/pd-recover.md)
     - [TiKV Control](reference/tools/tikv-control.md)
@@ -369,6 +369,7 @@
     - [3.0.0-beta.1](releases/3.0.0-beta.1.md)
     - [3.0.0-beta](releases/3.0beta.md)
   + v2.1
+    - [2.1.16](releases/2.1.16.md)
     - [2.1.15](releases/2.1.15.md)
     - [2.1.14](releases/2.1.14.md)
     - [2.1.13](releases/2.1.13.md)

@@ -61,7 +61,7 @@ TiDB Operator 尚不支持自动编排 TiSpark。
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl exec -it <pdPodName> -n <namespace> -- cat /etc/pd/pd.toml
+    kubectl exec -it <pd-pod-name> -n <namespace> -- cat /etc/pd/pd.toml
     ```
 
 * 查看 TiKV 配置文件
@@ -69,7 +69,7 @@ TiDB Operator 尚不支持自动编排 TiSpark。
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl exec -it <tikvPodName> -n <namespace> -- cat /etc/tikv/tikv.toml
+    kubectl exec -it <tikv-pod-name> -n <namespace> -- cat /etc/tikv/tikv.toml
     ```
 
 * 查看 TiDB 配置文件
@@ -77,5 +77,5 @@ TiDB Operator 尚不支持自动编排 TiSpark。
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl exec -it <tidbPodName> -c tidb -n <namespace> -- cat /etc/tidb/tidb.toml
+    kubectl exec -it <tidb-pod-name> -c tidb -n <namespace> -- cat /etc/tidb/tidb.toml
     ```
