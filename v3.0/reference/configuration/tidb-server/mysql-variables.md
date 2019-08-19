@@ -111,6 +111,11 @@ The following MySQL system variables are fully supported in TiDB and have the sa
 | time_zone | GLOBAL \| SESSION | the time zone of the database |
 | tx_isolation | GLOBAL \| SESSION | the isolation level of a transaction |
 | hostname | NONE | the hostname of the TiDB server |
+| max\_execution\_time | GLOBAL \| SESSION |  the execution timeout for a statement, in milliseconds |
+
+> **Note:**
+>
+> Unlike in MySQL, the `max_execution_time` system variable currently works on all kinds of statements in TiDB, not only restricted to the `SELECT` statement. The precision of the timeout value is roughly 100ms. This means the statement might not be terminated in accurate milliseconds as you specify.
 
 ## TiDB Specific System Variables
 

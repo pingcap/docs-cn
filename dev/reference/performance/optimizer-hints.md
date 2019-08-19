@@ -35,3 +35,19 @@ SELECT /*+ TIDB_HJ(t1, t2) */ * from t1, t2 where t1.id = t2.id
 ```
 
 This variable is used to remind the optimizer to use the `Hash Join` algorithm. This algorithm executes threads concurrently. It runs faster but takes up more memory.
+
+## MAX\_EXECUTION\_TIME(N)
+
+The `MAX_EXECUTION_TIME` hint only applies to `SELECT` statements. It places a limit `N` (a timeout value in milliseconds) on how long a statement is permitted to execute before the server terminates it:
+
+```
+MAX_EXECUTION_TIME(N)
+```
+
+Example with a timeout of 1 second (1000 milliseconds):
+
+```sql
+SELECT /*+ MAX_EXECUTION_TIME(1000) */ * FROM t1 INNER JOIN t2 WHERE ...
+```
+
+In addition to this hint, the `max_execution_time` system variable also limits the execution time of a statement.
