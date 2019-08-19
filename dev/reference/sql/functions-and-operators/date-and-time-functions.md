@@ -5,7 +5,7 @@ category: reference
 
 # 日期和时间函数
 
-TiDB 中日期和时间函数的使用方法与 MySQL 基本一致，详情参见: [Date and Time Functions](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html).
+TiDB 支持使用 MySQL 5.7 中提供的所有[日期和时间函数](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html)。
 
 ## 日期时间函数表
 

@@ -44,7 +44,7 @@ category: reference
 
 ## 部署使用
 
-### Binarey 部署
+### Binary 部署
 
 DM Portal 可以在 [dm-portal-latest-linux-amd64.tar.gz](https://download.pingcap.org/dm-portal-latest-linux-amd64.tar.gz) 下载，通过 `./dm-portal` 的命令即可直接启动。
 
