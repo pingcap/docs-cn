@@ -14,7 +14,7 @@ Kubernetes 上的 TiDB 运维管理需要使用一些开源工具。同时，在
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl port-forward -n <namespace> svc/<cluster-name>-pd 2379:2379 &>/tmp/portforward-pd.log
+kubectl port-forward -n <namespace> svc/<cluster-name>-pd 2379:2379 &>/tmp/portforward-pd.log &
 ```
 
 执行上述命令后，就可以通过 `127.0.0.1:2379` 访问到 PD 服务，从而直接使用 `pd-ctl` 命令的默认参数执行操作，如：
@@ -30,7 +30,7 @@ pd-ctl -d config show
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl port-forward -n <namespace> svc/<cluster-name>-pd <local-port>:2379 &>/tmp/portforward-pd.log
+kubectl port-forward -n <namespace> svc/<cluster-name>-pd <local-port>:2379 &>/tmp/portforward-pd.log &
 ```
 
 此时，需要为 `pd-ctl` 命令显式指定 PD 端口：
@@ -50,13 +50,13 @@ pd-ctl -u 127.0.0.1:<local-port> -d config show
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl port-forward -n <namespace> svc/<cluster-name>-pd 2379:2379 &>/tmp/portforward-pd.log
+    kubectl port-forward -n <namespace> svc/<cluster-name>-pd 2379:2379 &>/tmp/portforward-pd.log &
     ```
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl port-forward -n <namespace> <tikv-pod-name> 20160:20160 &>/tmp/portforward-tikv.log
+    kubectl port-forward -n <namespace> <tikv-pod-name> 20160:20160 &>/tmp/portforward-tikv.log &
     ```
 
     打开连接后，即可通过本地的对应端口访问 PD 服务和 TiKV 节点：
@@ -116,13 +116,13 @@ pd-ctl -u 127.0.0.1:<local-port> -d config show
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl port-forward -n <namespace> svc/<cluster-name>-pd 2379:2379 &>/tmp/portforward-pd.log
+kubectl port-forward -n <namespace> svc/<cluster-name>-pd 2379:2379 &>/tmp/portforward-pd.log &
 ```
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl port-forward -n <namespace> <tidb-pod-name> 10080:10080 &>/tmp/portforward-tidb.log
+kubectl port-forward -n <namespace> <tidb-pod-name> 10080:10080 &>/tmp/portforward-tidb.log &
 ```
 
 接下来便可开始使用 `tidb-ctl` 命令：
