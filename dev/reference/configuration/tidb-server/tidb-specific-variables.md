@@ -43,12 +43,6 @@ set @@global.tidb_distsql_scan_concurrency = 10
 - This variable is used to set whether the optimizer executes the optimization operation of pushing down the aggregate function to the position before Join.
 - When the aggregate operation is slow in query, you can set the variable value to 1.
 
-### tidb_opt_insubquery_unfold
-
-- Scope: SESSION
-- Default value: 0
-- This variable is used to set whether the optimizer executes the optimization operation of unfolding the "in-" subquery.
-
 ### tidb_auto_analyze_ratio
 
 - Scope: GLOBAL
