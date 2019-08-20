@@ -56,8 +56,6 @@ mysql> select a, b, sum(c) from t group by a;
 ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'b' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
 ```
 
-目前，TiDB 默认不开启 SQL 模式 [`ONLY_FULL_GROUP_BY`](/reference/mysql-compatibility.md#默认设置的区别)。
-
 ### 与 MySQL 的区别
 
 TiDB 目前实现的 `ONLY_FULL_GROUP_BY` 没有 MySQL 5.7 严格。例如，假设我们执行以下查询，希望结果按 "c" 排序：
