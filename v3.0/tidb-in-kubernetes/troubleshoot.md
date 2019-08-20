@@ -299,7 +299,7 @@ kubectl logs -f <tidb-pod-name> -n <namespace> -c tidb
         curl -X POST http://127.0.0.1:2379/pd/api/v1/store/<store-id>/state?state=Up
         ```
 
-4. 假如某个 TiKV Pod 所对应的 `lastHeartbeatTime` 最新的 Store 处于 `Tombstone` 状态 ，则表明异常下线已经完成。此时，需要重建 Pod 并绑定新的 PV（PersistentVolume）进行恢复：
+4. 假如某个 TiKV Pod 所对应的 `lastHeartbeatTime` 最新的 Store 处于 `Tombstone` 状态 ，则表明异常下线已经完成。此时，需要重建 Pod 并绑定新的 PV 进行恢复：
 
     1. 将该 Store 对应 PV 的 `reclaimPolicy` 调整为 `Delete`：
 
