@@ -22,7 +22,7 @@ TiDB 通过 Prometheus 和 Grafana 监控 TiDB 集群。在通过 TiDB Operator 
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl port-forward -n <namespace> svc/<release-name>-grafana 3000:3000 &>/tmp/portforward-grafana.log
+kubectl port-forward -n <namespace> svc/<release-name>-grafana 3000:3000 &>/tmp/portforward-grafana.log &
 ```
 
 然后在浏览器中打开 [http://localhost:3000](http://localhost:3000)，默认用户名和密码都为 `admin`。
@@ -38,7 +38,7 @@ Grafana 服务默认通过 `NodePort` 暴露，如果 Kubernetes 集群支持负
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl port-forward -n <namespace> svc/<release-name>-prometheus 9090:9090 &>/tmp/portforward-prometheus.log
+kubectl port-forward -n <namespace> svc/<release-name>-prometheus 9090:9090 &>/tmp/portforward-prometheus.log &
 ```
 
 然后在浏览器中打开 [http://localhost:9090](http://localhost:9090)，或通过客户端工具访问此地址即可。
