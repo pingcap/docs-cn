@@ -36,16 +36,16 @@ aliases: ['/docs-cn/v3.0/how-to/configure/initialize-cluster/']
 
     该命令会创建 `root` 和 `developer` 两个用户的密码，存到 `tidb-secret` 的 Secret 里面。
 
-2. 设置允许访问TiDB的主机
-   
-    在部署集群前可以通过设置`permitHost`设置允许访问TiDB的主机*host_name*。如果不设置，则允许所有主机访问。详细请参考[Mysql GRANT host name](https://dev.mysql.com/doc/refman/5.7/en/grant.html)。
-  
+2. 设置允许访问 TiDB 的主机
+
+    在部署集群前可以通过设置 `permitHost` 设置允许访问 TiDB 的主机 **host_name**。如果不设置，则允许所有主机访问。详情请参考 [Mysql GRANT host name](https://dev.mysql.com/doc/refman/5.7/en/grant.html)。
+
     ```shell
-tidb:
+    tidb:
       passwordSecretName: tidb-secret
       permitHost: <Mysql-client-host-name>
     ```
-    
+
 3. 部署集群
 
     创建 Secret 之后，通过下面命令部署集群：
