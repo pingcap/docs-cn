@@ -259,6 +259,46 @@ mysql> SELECT * FROM session_variables LIMIT 10;
 10 rows in set (0.00 sec)
 ```
 
+## SLOW_QUERY table
+
+The `SLOW_QUERY` table provides the slow query information, which is the parsing result of the TiDB slow log file. The column names in the table are corresponding to the field names in the slow log. For how to use this table to identify problematic statements and improve query performance, see [Slow Query Log Document](/how-to/maintain/identify-slow-queries.md).
+
+```sql
+mysql> desc information_schema.slow_query;
++---------------+---------------------+------+------+---------+-------+
+| Field         | Type                | Null | Key  | Default | Extra |
++---------------+---------------------+------+------+---------+-------+
+| Time          | timestamp unsigned  | YES  |      | NULL    |       |
+| Txn_start_ts  | bigint(20) unsigned | YES  |      | NULL    |       |
+| User          | varchar(64)         | YES  |      | NULL    |       |
+| Host          | varchar(64)         | YES  |      | NULL    |       |
+| Conn_ID       | bigint(20) unsigned | YES  |      | NULL    |       |
+| Query_time    | double unsigned     | YES  |      | NULL    |       |
+| Process_time  | double unsigned     | YES  |      | NULL    |       |
+| Wait_time     | double unsigned     | YES  |      | NULL    |       |
+| Backoff_time  | double unsigned     | YES  |      | NULL    |       |
+| Request_count | bigint(20) unsigned | YES  |      | NULL    |       |
+| Total_keys    | bigint(20) unsigned | YES  |      | NULL    |       |
+| Process_keys  | bigint(20) unsigned | YES  |      | NULL    |       |
+| DB            | varchar(64)         | YES  |      | NULL    |       |
+| Index_ids     | varchar(100)        | YES  |      | NULL    |       |
+| Is_internal   | tinyint(1) unsigned | YES  |      | NULL    |       |
+| Digest        | varchar(64)         | YES  |      | NULL    |       |
+| Stats         | varchar(512)        | YES  |      | NULL    |       |
+| Cop_proc_avg  | double unsigned     | YES  |      | NULL    |       |
+| Cop_proc_p90  | double unsigned     | YES  |      | NULL    |       |
+| Cop_proc_max  | double unsigned     | YES  |      | NULL    |       |
+| Cop_proc_addr | varchar(64)         | YES  |      | NULL    |       |
+| Cop_wait_avg  | double unsigned     | YES  |      | NULL    |       |
+| Cop_wait_p90  | double unsigned     | YES  |      | NULL    |       |
+| Cop_wait_max  | double unsigned     | YES  |      | NULL    |       |
+| Cop_wait_addr | varchar(64)         | YES  |      | NULL    |       |
+| Mem_max       | bigint(20) unsigned | YES  |      | NULL    |       |
+| Succ          | tinyint(1) unsigned | YES  |      | NULL    |       |
+| Query         | longblob unsigned   | YES  |      | NULL    |       |
++---------------+---------------------+------+------+---------+-------+
+```
+
 ### STATISTICS table
 
 The `STATISTICS` table provides information about table indexes:
