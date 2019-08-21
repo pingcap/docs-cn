@@ -70,7 +70,7 @@ cd tidb-enterprise-tools-latest-linux-amd64
     - TIKV * 12
     - TIDB * 4
     - PD * 3
-- mydumper `-F` 参数设置为 16, Loader `-t` 参数设置为 64
+- mydumper `-F` 参数设置为 16，Loader `-t` 参数设置为 64
 
 结果：导入时间 11 小时左右，19.4 G/小时
 
