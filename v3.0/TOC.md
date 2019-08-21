@@ -343,7 +343,7 @@
     + 配置
       - [集群配置](tidb-in-kubernetes/reference/configuration/tidb-cluster.md)
       - [备份配置](tidb-in-kubernetes/reference/configuration/backup.md)
-      - [本地 PV 配置](tidb-in-kubernetes/reference/configuration/local-pv.md)
+      - [PV 配置](tidb-in-kubernetes/reference/configuration/storage-class.md)
     + 工具
       - [tkctl](tidb-in-kubernetes/reference/tools/tkctl.md)
       - [相关工具使用](tidb-in-kubernetes/reference/tools/in-kubernetes.md)
