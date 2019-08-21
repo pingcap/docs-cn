@@ -133,8 +133,8 @@ TiDB 支持 MySQL 5.7 中 **绝大多数的 SQL 模式**，以下几种模式除
     + TiDB 中，`utf8mb4` 的默认排序规则为 `utf8mb4_bin`
     + MySQL 5.7 中，`utf8mb4` 的默认排序规则为 `utf8mb4_general_ci`，MySQL 8.0 中修改为 `utf8mb4_0900_ai_ci`
     + 请使用 [`SHOW CHARACTER SET`](/reference/sql/statements/show-character-set.md) 语句查看所有字符集的默认排序规则
-+ 默认 SQL mode **已相同**
-    + TiDB 和 MySQL 5.7 均为 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`
++ 默认 SQL mode 与 MySQL **已相同**
+    + TiDB 和 MySQL 5.7 中均为 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`
 + `lower_case_table_names` 的默认值不同：
     + TiDB 中该值默认为 2，并且目前 TiDB 只支持设置该值为 2
     + MySQL 中默认设置：
