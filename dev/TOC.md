@@ -201,6 +201,7 @@
       - [`SHOW TABLE STATUS`](reference/sql/statements/show-table-status.md)
       - [`SHOW [GLOBAL|SESSION] VARIABLES`](reference/sql/statements/show-variables.md)
       - [`SHOW WARNINGS`](reference/sql/statements/show-warnings.md)
+      - [`SHOW TABLE REGIONS`](reference/sql/statements/show-table-regions.md)
       - [`SPLIT REGION`](reference/sql/statements/split-region.md)
       - [`START TRANSACTION`](reference/sql/statements/start-transaction.md)
       - [`TRACE`](reference/sql/statements/trace.md)
@@ -339,7 +340,7 @@
     + 配置
       - [集群配置](tidb-in-kubernetes/reference/configuration/tidb-cluster.md)
       - [备份配置](tidb-in-kubernetes/reference/configuration/backup.md)
-      - [本地 PV 配置](tidb-in-kubernetes/reference/configuration/local-pv.md)
+      - [PV 配置](tidb-in-kubernetes/reference/configuration/storage-class.md)
     + 工具
       - [tkctl](tidb-in-kubernetes/reference/tools/tkctl.md)
       - [相关工具使用](tidb-in-kubernetes/reference/tools/in-kubernetes.md)

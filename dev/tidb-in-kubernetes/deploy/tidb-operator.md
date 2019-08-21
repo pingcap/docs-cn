@@ -67,7 +67,7 @@ TiDB 默认会使用很多文件描述符，工作节点和上面的 Docker 进�
 
 ### 准备本地卷
 
-参考[本地 PV 配置](/tidb-in-kubernetes/reference/configuration/local-pv.md)在你的 Kubernetes 集群中配置本地持久化卷。
+参考[本地 PV 配置](/tidb-in-kubernetes/reference/configuration/storage-class.md#本地-pv-配置)在你的 Kubernetes 集群中配置本地持久化卷。
 
 ### 部署 local-static-provisioner
 
