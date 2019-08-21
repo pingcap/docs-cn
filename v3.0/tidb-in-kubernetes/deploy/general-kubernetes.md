@@ -31,11 +31,15 @@ helm inspect values pingcap/tidb-cluster --version=<chart-version> > /home/tidb/
 > - `chart-version` 是 tidb-cluster chart 发布的版本，可以通过 `helm search -l tidb-cluster` 查看当前支持的版本。
 > - 下文会用 `values.yaml` 指代 `/home/tidb/<release-name>/values-<release-name>.yaml`。
 
-默认集群使用 `local-storage` 存储类型，生产环境推荐使用本地存储，但实际 Kubernetes 集群中本地存储可能按磁盘类型进行了分类，例如 `nvme-disks`, `sas-disks`，如果是 demo 环境或功能性验证，可以使用网络存储，例如 `ebs`, `nfs` 等，另外 TiDB 集群不同组件对磁盘的要求不一样。所以部署集群前要根据当前 Kubernetes 集群支持的存储类型以及使用场景为 TiDB 集群各组件选择合适的存储类型，通过修改 `values.yaml` 中各组件的 `storageClassName` 字段设置存储类型。关于 Kubernetes 集群支持哪些存储类型，请联系系统管理员确定。
+默认集群使用 `local-storage` 存储类型。生产环境推荐使用本地存储，但实际 Kubernetes 集群中本地存储可能按磁盘类型进行了分类，例如 `nvme-disks`，`sas-disks`。如果是演示环境或功能性验证，可以使用网络存储，例如 `ebs`，`nfs` 等。另外 TiDB 集群不同组件对磁盘的要求不一样。所以部署集群前要根据当前 Kubernetes 集群支持的存储类型以及使用场景为 TiDB 集群各组件选择合适的存储类型，通过修改 `values.yaml` 中各组件的 `storageClassName` 字段设置存储类型。关于 Kubernetes 集群支持哪些存储类型，请联系系统管理员确定。
 
 如果创建集群时设置了集群中不存在的存储类型，则会导致集群创建处于 Pending 状态，需要将[集群彻底销毁掉](/tidb-in-kubernetes/maintain/destroy-tidb-cluster.md)。
 
 默认部署的集群拓扑是：3 个 PD，3 个 TiKV，2 个 TiDB 和 1 个监控。TiDB Operator 扩展调度器根据数据高可用要求 Kubernetes 集群至少有 3 个节点，否则请减小默认部署的 PD 和 TiKV 个数为 1，或者将 `values.yaml` 中 `schedulerName` 改为 Kubernetes 内置调度器 `default-scheduler`。
+
+> **警告：**
+>
+> `default-scheduler` 仅适用于演示环境，改为 `default-scheduler` 后，TiDB 集群的调度将无法保证数据高可用，另外一些其它特性也无法支持，例如 [https://github.com/pingcap/tidb-operator/blob/master/docs/design-proposals/tidb-stable-scheduling.md](TiDB Pod StableScheduling) 等。
 
 其它更多配置参数请参考 [TiDB 集群部署配置文档](/tidb-in-kubernetes/reference/configuration/tidb-cluster.md)。
 
