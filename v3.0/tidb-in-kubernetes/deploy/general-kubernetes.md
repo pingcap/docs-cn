@@ -31,7 +31,7 @@ helm inspect values pingcap/tidb-cluster --version=<chart-version> > /home/tidb/
 > - `chart-version` 是 tidb-cluster chart 发布的版本，可以通过 `helm search -l tidb-cluster` 查看当前支持的版本。
 > - 下文会用 `values.yaml` 指代 `/home/tidb/<release-name>/values-<release-name>.yaml`。
 
-默认集群使用 `local-storage` 存储类型。生产环境推荐使用本地存储，但实际 Kubernetes 集群中本地存储可能按磁盘类型进行了分类，例如 `nvme-disks`，`sas-disks`。如果是演示环境或功能性验证，可以使用网络存储，例如 `ebs`，`nfs` 等。另外 TiDB 集群不同组件对磁盘的要求不一样。所以部署集群前要根据当前 Kubernetes 集群支持的存储类型以及使用场景为 TiDB 集群各组件选择合适的存储类型，通过修改 `values.yaml` 中各组件的 `storageClassName` 字段设置存储类型。关于 Kubernetes 集群支持哪些存储类型，请联系系统管理员确定。
+默认集群使用 `local-storage` 存储类型。生产环境推荐使用本地存储，但实际 Kubernetes 集群中本地存储可能按磁盘类型进行了分类，例如 `nvme-disks`，`sas-disks`。如果是演示环境或功能性验证，可以使用网络存储，例如 `ebs`，`nfs` 等。另外 TiDB 集群不同组件对磁盘的要求不一样。所以部署集群前要根据当前 Kubernetes 集群支持的存储类型以及使用场景为 TiDB 集群各组件选择合适的存储类型，通过修改 `values.yaml` 中各组件的 `storageClassName` 字段设置存储类型。关于 Kubernetes 集群支持哪些[存储类型](/tidb-in-kubernetes/reference/configuration/storage-class.md)，请联系系统管理员确定。
 
 如果创建集群时设置了集群中不存在的存储类型，则会导致集群创建处于 Pending 状态，需要将[集群彻底销毁掉](/tidb-in-kubernetes/maintain/destroy-tidb-cluster.md)。
 
