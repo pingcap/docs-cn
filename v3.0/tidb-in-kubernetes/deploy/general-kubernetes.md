@@ -35,7 +35,7 @@ helm inspect values pingcap/tidb-cluster --version=<chart-version> > /home/tidb/
 
 如果创建集群时设置了集群中不存在的存储类型，则会导致集群创建处于 Pending 状态，需要将[集群彻底销毁掉](/tidb-in-kubernetes/maintain/destroy-tidb-cluster.md)。
 
-默认部署的集群拓扑是：3 个 PD，3 个 TiKV，2 个 TiDB 和 1 个监控。TiDB Operator 扩展调度器根据数据高可用要求 Kubernetes 集群至少有 3 个节点，否则请减小默认部署的 PD 和 TiKV 个数为 1，或者将 `values.yaml` 中 `schedulerName` 改为 Kubernetes 内置调度器 `default-scheduler`。
+默认部署的集群拓扑是：3 个 PD，3 个 TiKV，2 个 TiDB 和 1 个监控。根据数据高可用原则，TiDB Operator 扩展调度器要求 PD 集群和 TiKV 集群至少有 3 个节点，否则，请减小默认部署的 PD 和 TiKV 个数为 1，或者将 `values.yaml` 中 `schedulerName` 改为 Kubernetes 内置调度器 `default-scheduler`。
 
 > **警告：**
 >
