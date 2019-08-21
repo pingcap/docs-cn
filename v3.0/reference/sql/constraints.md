@@ -6,11 +6,11 @@ aliases: ['/docs-cn/sql/constraints/']
 
 # 约束
 
-TiDB 支持的基本约束与 MySQL 支持的相同，但有以下区别：
+TiDB 支持的基本约束与 MySQL 支持的基本相同，但有以下区别：
 
 - 默认对唯一约束进行[惰性检查](/reference/transactions/overview.md#事务的惰性检查)。通过在事务提交时再进行批量检查，TiDB 能够减少网络开销、提升性能。您可通过设置 `tidb_constraint_check_in_place` 为 `TRUE` 改变此行为。
 
-- TiDB 目前支持的外键约束不是由 DML 操作强制实施的。
+- TiDB 支持创建外键约束，但 DML 语句中外键约束不会进行强制实施。换句话说，外键约束可以被创建，但不会实际生效。
 
 ## 外键约束
 
