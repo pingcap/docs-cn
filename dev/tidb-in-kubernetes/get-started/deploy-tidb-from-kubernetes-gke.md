@@ -286,7 +286,7 @@ To do so, use the following command:
 kubectl -n tidb port-forward svc/demo-grafana 3000:3000 &>/dev/null &
 ```
 
-In Cloud Shell, click on the Web Preview button and enter 3000 for the port. This opens a new browser tab pointing to the Grafana dashboards. Alternatively, use the following URL `https://ssh.cloud.google.com/devshell/proxy?port=3000` in a new tab or window.
+In Cloud Shell, click on the Web Preview button and enter 3000 for the port. This opens a new browser tab pointing to the Grafana dashboards. Alternatively, use the following URL <https://ssh.cloud.google.com/devshell/proxy?port=3000> in a new tab or window.
 
 If not using Cloud Shell, point a browser to `localhost:3000`.
 

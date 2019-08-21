@@ -2,6 +2,7 @@
 title: Deploy TiDB on Google Cloud
 summary: Learn how to quickly deploy a TiDB cluster on Google Cloud using Kubernetes.
 category: how-to
+aliases: ['/docs/v3.0/how-to/get-started/deploy-tidb-from-kubernetes-gke/']
 ---
 
 # Deploy TiDB on Google Cloud
@@ -133,7 +134,7 @@ When you see `Running`, it's time to hit <kbd>Ctrl</kbd>+<kbd>C</kbd> and procee
 
 ## Add Helm repo
 
-Helm repo (https://charts.pingcap.org/) houses PingCAP managed charts, such as tidb-operator, tidb-cluster and tidb-backup, etc. Add and check the repo with following commands:
+Helm repo (`https://charts.pingcap.org/`) houses PingCAP managed charts, such as tidb-operator, tidb-cluster and tidb-backup, etc. Add and check the repo with following commands:
 
 {{< copyable "shell-regular" >}}
 
@@ -286,7 +287,7 @@ To do so, use the following command:
 kubectl -n tidb port-forward svc/demo-grafana 3000:3000 &>/dev/null &
 ```
 
-In Cloud Shell, click on the Web Preview button and enter 3000 for the port. This opens a new browser tab pointing to the Grafana dashboards. Alternatively, use the following URL https://ssh.cloud.google.com/devshell/proxy?port=3000 in a new tab or window.
+In Cloud Shell, click on the Web Preview button and enter 3000 for the port. This opens a new browser tab pointing to the Grafana dashboards. Alternatively, use the following URL <https://ssh.cloud.google.com/devshell/proxy?port=3000> in a new tab or window.
 
 If not using Cloud Shell, point a browser to `localhost:3000`.
 
