@@ -240,6 +240,7 @@
       - [`LOAD DATA`](reference/sql/statements/load-data.md)
       - [`MODIFY COLUMN`](reference/sql/statements/modify-column.md)
       - [`PREPARE`](reference/sql/statements/prepare.md)
+      - [`RECOVER TABLE`](reference/sql/statements/recover-table.md)
       - [`RENAME INDEX`](reference/sql/statements/rename-index.md)
       - [`RENAME TABLE`](reference/sql/statements/rename-table.md)
       - [`REPLACE`](reference/sql/statements/replace.md)
