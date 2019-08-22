@@ -81,6 +81,10 @@ mysql> CREATE UNIQUE INDEX c1 ON t1 (c1);
 Query OK, 0 rows affected (0.31 sec)
 ```
 
+## Associated session variables
+
+The global variables associated with the `CREATE INDEX` statement are `tidb_ddl_reorg_worker_cnt`, `tidb_ddl_reorg_batch_size` and `tidb_ddl_reorg_priority`. Refer to [TiDB-specific system variables](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb-ddl-reorg-worker-cnt) for details.
+
 ## MySQL compatibility
 
 * `FULLTEXT`, `HASH` and `SPATIAL` indexes are not supported.
