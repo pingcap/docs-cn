@@ -2,6 +2,7 @@
 title: Overview of TiDB Operator
 summary: Learn the overview of TiDB Operator.
 category: reference
+aliases: ['/docs/v3.0/reference/tidb-operator-overview/']
 ---
 
 # Overview of TiDB Operator

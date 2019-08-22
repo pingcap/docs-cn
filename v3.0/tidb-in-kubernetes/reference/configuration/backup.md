@@ -2,6 +2,7 @@
 title: The Backup Configuration of TiDB in Kubernetetes
 summary: Learn the backup configurations of TiDB in Kubernetetes.
 category: reference
+aliases: ['/docs/v3.0/reference/configuration/tidb-in-kubernetes/cluster-configuration/']
 ---
 
 # The Backup Configuration of TiDB in Kubernetetes

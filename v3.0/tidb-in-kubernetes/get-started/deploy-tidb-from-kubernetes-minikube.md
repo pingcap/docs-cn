@@ -2,6 +2,7 @@
 title: Deploy TiDB in the Minikube Cluster
 summary: Learn how to deploy TiDB in the minikube cluster.
 category: how-to
+aliases: ['/docs/v3.0/how-to/get-started/deploy-tidb-from-kubernetes-minikube/']
 ---
 
 # Deploy TiDB in the Minikube Cluster
@@ -102,7 +103,7 @@ kubectl -n kube-system get pods -l app=helm
 
 ### Add Helm repo
 
-Helm repo (https://charts.pingcap.org/) houses PingCAP managed charts, such as tidb-operator, tidb-cluster and tidb-backup, etc. Add and check the repo with following commands:
+Helm repo (`https://charts.pingcap.org/`) houses PingCAP managed charts, such as tidb-operator, tidb-cluster and tidb-backup, etc. Add and check the repo with following commands:
 
 ```shell
 helm repo add pingcap https://charts.pingcap.org/
