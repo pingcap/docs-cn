@@ -39,7 +39,7 @@ test> show table t regions;
 +-----------+-----------+---------+-----------+-----------------+-----------+------------+
 | 5         | t_43_     |         | 8         | 2               | 8, 14, 93 | 0          |
 +-----------+-----------+---------+-----------+-----------------+-----------+------------+
--- 上面 START_KEY 列的值 t_43_ 中， t 是表数据的前缀，43 是表 t 的 table ID。
+-- 上面 START_KEY 列的值 t_43_ 中，t 是表数据的前缀，43 是表 t 的 table ID。
 -- END_KEY 列的值为空（""）表示无穷大。
 1 row in set
 -- 用 `SPLIT TABLE REGION` 语法切分行数据的 Region，下面语法把表 t 的行数据切分成 5 个 Region。
@@ -50,7 +50,7 @@ test> split table t between (0) and (100000) regions 5;
 | 5                  | 1.0                  |
 +--------------------+----------------------+
 1 row in set
--- 表 t 现在一共有 6 个region, 其中 98，103，109，113，2 用来存 行数据，region 68 用来存索引数据。
+-- 表 t 现在一共有 6 个 Region，其中 98、103、109、113、2 用来存行数据，Region 68 用来存索引数据。
 test> show table t regions;
 +-----------+--------------+--------------+-----------+-----------------+---------------+------------+
 | REGION_ID | START_KEY    | END_KEY      | LEADER_ID | LEADER_STORE_ID | PEERS         | SCATTERING |
@@ -63,9 +63,9 @@ test> show table t regions;
 | 68        | t_43_        | t_43_r       | 90        | 6               | 69, 90, 97    | 0          |
 +-----------+--------------+--------------+-----------+-----------------+---------------+------------+
 6 rows in set
--- region 98 的 START_KEY 和 END_KEY 中，t_43 是表数据前缀和 table ID，_r 是表 t record 数据的前缀，索引数据的前缀是 _i，
--- 所以 region 98 的 START_KEY 和 END_KEY 表示用来存储 [-inf, 20000) 之前的 record 数据。其他 region 103,109,113,2 的存储范围依次类推。
--- region 68 用来存储索引数据存储。表 t 索引数据的起始 key 是 t_43_i，处于 region 68 的存储范围内。
+-- Region 98 的 START_KEY 和 END_KEY 中，t_43 是表数据前缀和 table ID，_r 是表 t record 数据的前缀，索引数据的前缀是 _i，
+-- 所以 Region 98 的 START_KEY 和 END_KEY 表示用来存储 [-inf, 20000) 之前的 record 数据。其他 Region (103, 109, 113, 2) 的存储范围依次类推。
+-- Region 68 用来存储索引数据存储。表 t 索引数据的起始 key 是 t_43_i，处于 Region 68 的存储范围内。
 
 -- 用 `SPLIT TABLE REGION` 语法切分索引数据的 Region，下面语法把表 t 的索引 name 数据在 [a,z] 范围内切分成 2 个 Region。
 test> split table t index name between ("a") and ("z") regions 2;
@@ -75,7 +75,7 @@ test> split table t index name between ("a") and ("z") regions 2;
 | 2                  | 1.0                  |
 +--------------------+----------------------+
 1 row in set
--- 现在表 t 一共有 7 个 Region，其中 5 个 (region 98,103,109,113,2) 用来存表 t 的 record 数据，另外 2 个 (region 125, 68) 用来存 name 索引的数据。
+-- 现在表 t 一共有 7 个 Region，其中 5 个 Region (98, 103, 109, 113, 2) 用来存表 t 的 record 数据，另外 2 个 Region (125, 68) 用来存 name 索引的数据。
 test> show table t regions;
 +-----------+-----------------------------+-----------------------------+-----------+-----------------+---------------+------------+
 | REGION_ID | START_KEY                   | END_KEY                     | LEADER_ID | LEADER_STORE_ID | PEERS         | SCATTERING |
