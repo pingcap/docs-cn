@@ -17,7 +17,7 @@ category: reference
 
 + 数据库版本
 
-    - 5.5 < MySQL 版本 < 5.8
+    - 5.5 < MySQL 版本 < 8.0
     - MariaDB 版本 >= 10.1.2
 
 + MySQL binlog 配置
