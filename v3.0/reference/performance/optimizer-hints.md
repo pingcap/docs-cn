@@ -38,3 +38,15 @@ SELECT /*+ TIDB_HJ(t1, t2) */ * from t1，t2 where t1.id = t2.id
 ```
 
 提示优化器使用 Hash Join 算法，这个算法多线程并发执行，执行速度较快，但会消耗较多内存。
+
+### MAX\_EXECUTION\_TIME(N)
+
+在 `SELECT` 语句中可以使用 `MAX_EXECUTION_TIME(N)`，它会限制语句的执行时间不能超过 `N` 毫秒，否则服务器会终止这条语句的执行。
+
+例如，下面例子设置了 1 秒超时：
+
+```sql
+SELECT /*+ MAX_EXECUTION_TIME(1000) */ * FROM t1 INNER JOIN t2 WHERE ...
+```
+
+ 除了 hint 之外，环境变量 `max_execution_time` 也会对语句执行时间进行限制。

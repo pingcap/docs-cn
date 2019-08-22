@@ -48,14 +48,6 @@ set @@global.tidb_distsql_scan_concurrency = 10
 这个变量用来设置优化器是否执行聚合函数下推到 Join 之前的优化操作。
 当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
 
-### tidb_opt_insubquery_unfold
-
-作用域：SESSION
-
-默认值：0
-
-这个变量用来设置优化器是否执行 `in-` 子查询展开的优化操作。
-
 ### tidb_auto_analyze_ratio
 
 作用域：GLOBAL

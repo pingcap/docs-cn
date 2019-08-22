@@ -19,7 +19,7 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群。通过 Helm 获取的配
 | :----- | :---- | :----- |
 | `rbac.create` | 是否启用 Kubernetes 的 RBAC | `true` |
 | `clusterName` | TiDB 集群名，默认不设置该变量，`tidb-cluster` 会直接用执行安装时的 `ReleaseName` 代替 | `nil` |
-| `extraLabels` | TiDB 集群附加的自定义标签 参考：[labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) | `{}` |
+| `extraLabels` | 添加额外的 labels 到 `TidbCluster` 对象 (CRD) 上，参考：[labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) | `{}` |
 | `schedulerName` | TiDB 集群使用的调度器 | `tidb-scheduler` |
 | `timezone` | TiDB 集群默认时区 | `UTC` |
 | `pvReclaimPolicy` | TiDB 集群使用的 PV (Persistent Volume)的 reclaim policy | `Retain` |
@@ -50,7 +50,7 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群。通过 Helm 获取的配
 | `pd.nodeSelector` | `pd.nodeSelector` 确保 PD Pods 只调度到以该键值对作为标签的节点，详情参考：[nodeselector](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#nodeselector) | `{}` |
 | `pd.tolerations` | `pd.tolerations` 应用于 PD Pods，允许 PD Pods 调度到含有指定 taints 的节点上，详情参考：[taint-and-toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration) | `{}` |
 | `pd.annotations` | 为 PD Pods 添加特定的 `annotations` | `{}` |
-| `tikv.config` | 配置文件格式的 TiKV 的配置，请参考[链接](https://github.com/tikv/tikv/blob/master/etc/config-template.toml)查看默认 TiKV 配置文件（选择对应 TiKV 版本的 tag），可以参考[文档](https://pingcap.com/docs-cn/v3.0/reference/configuration/tikv-server/configuration-file/)查看配置参数的具体介绍（请选择对应的文档版本），这里只需要**按照配置文件中的格式修改配置** | TiDB Operator 版本 <= v1.0.0-beta.3，默认值为：<br>`nil`<br>TiDB Operator 版本 > v1.0.0-beta.3，默认值为：<br>`log-level = "info"`<br>配置示例：<br>&nbsp;&nbsp;`config:` \|<br>&nbsp;&nbsp;&nbsp;&nbsp;`log-level = "info"` |
+| `tikv.config` | 配置文件格式的 TiKV 的配置，请参考[链接](https://github.com/tikv/tikv/blob/master/etc/config-template.toml)查看默认 TiKV 配置文件（选择对应 TiKV 版本的 tag），可以参考[文档](https://pingcap.com/docs-cn/v3.0/reference/configuration/tikv-server/configuration-file/)查看配置参数的具体介绍（请选择对应的文档版本），这里只需要**按照配置文件中的格式修改配置**<br/><br/>以下两个配置项需要显式配置：<br/><br/>`[storage.block-cache]`<br/>&nbsp;&nbsp;`shared = true`<br/>&nbsp;&nbsp;`capacity = "1GB"`<br/>推荐设置：`capacity` 设置为 `tikv.resources.limits.memory` 的 50%<br/><br/>`[readpool.coprocessor]`<br/>&nbsp;&nbsp;`high-concurrency = 8`<br/>&nbsp;&nbsp;`normal-concurrency = 8`<br/>&nbsp;&nbsp;`low-concurrency = 8`<br/>推荐设置：设置为 `tikv.resources.limits.cpu` 的 80%| TiDB Operator 版本 <= v1.0.0-beta.3，默认值为：<br>`nil`<br>TiDB Operator 版本 > v1.0.0-beta.3，默认值为：<br>`log-level = "info"`<br>配置示例：<br>&nbsp;&nbsp;`config:` \|<br>&nbsp;&nbsp;&nbsp;&nbsp;`log-level = "info"` |
 | `tikv.replicas` | TiKV 的 Pod 数 | `3` |
 | `tikv.image` | TiKV 的镜像 | `pingcap/tikv:v3.0.0-rc.1` |
 | `tikv.imagePullPolicy` | TiKV 镜像的拉取策略 | `IfNotPresent` |
@@ -73,7 +73,7 @@ TiDB Operator 使用 Helm 部署和管理 TiDB 集群。通过 Helm 获取的配
 | `tikv.readpoolStorageConcurrency` | TiKV 存储的高优先级/普通优先级/低优先级操作的线程池大小<br>如果 TiDB Operator 版本 > v1.0.0-beta.3，请通过 `tikv.config` 配置：<br>`[readpool.storage]`<br>`high-concurrency = 4`<br>`normal-concurrency = 4`<br>`low-concurrency = 4` | `4` |
 | `tikv.readpoolCoprocessorConcurrency` | 一般如果 `tikv.resources.limits.cpu` > 8，则 `tikv.readpoolCoprocessorConcurrency` 设置为`tikv.resources.limits.cpu` * 0.8<br>如果 TiDB Operator 版本 > v1.0.0-beta.3，请通过 `tikv.config` 配置：<br>`[readpool.coprocessor]`<br>`high-concurrency = 8`<br>`normal-concurrency = 8`<br>`low-concurrency = 8` | `8` |
 | `tikv.storageSchedulerWorkerPoolSize` | TiKV 调度程序的工作池大小，应在重写情况下增加，同时应小于总 CPU 核心<br>如果 TiDB Operator 版本 > v1.0.0-beta.3，请通过 `tikv.config` 配置：<br>`[storage]`<br>`scheduler-worker-pool-size = 4` | `4` |
-| `tidb.config` | 配置文件格式的 TiDB 的配置，请参考[链接](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)查看默认 TiDB 配置文件（选择对应 TiDB 版本的 tag），可以参考[文档](/reference/configuration/tidb-server/configuration-file.md)查看配置参数的具体介绍（请选择对应的文档版本），这里只需要**按照配置文件中的格式修改配置** | TiDB Operator 版本 <= v1.0.0-beta.3，默认值为：<br>`nil`<br>TiDB Operator 版本 > v1.0.0-beta.3，默认值为：<br>`[log]`<br>`level = "info"`<br>配置示例：<br>&nbsp;&nbsp;`config:` \|<br>&nbsp;&nbsp;&nbsp;&nbsp;`[log]`<br>&nbsp;&nbsp;&nbsp;&nbsp;`level = "info"` |
+| `tidb.config` | 配置文件格式的 TiDB 的配置，请参考[配置文件](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)查看默认 TiDB 配置文件（选择对应 TiDB 版本的 tag），可以参考[文档](/reference/configuration/tidb-server/configuration-file.md)查看配置参数的具体介绍（请选择对应的文档版本）。这里只需要**按照配置文件中的格式修改配置**。<br/><br/>以下配置项需要显式配置：<br/><br/>`[performance]`<br/>&nbsp;&nbsp;`max-procs = 0`<br/>推荐设置：`max-procs` 设置为 `tidb.resources.limits.cpu` 对应的核心数 | TiDB Operator 版本 <= v1.0.0-beta.3，默认值为：<br>`nil`<br>TiDB Operator 版本 > v1.0.0-beta.3，默认值为：<br>`[log]`<br>`level = "info"`<br>配置示例：<br>&nbsp;&nbsp;`config:` \|<br>&nbsp;&nbsp;&nbsp;&nbsp;`[log]`<br>&nbsp;&nbsp;&nbsp;&nbsp;`level = "info"` |
 | `tidb.replicas` | TiDB 的 Pod 数 | `2` |
 | `tidb.image` | TiDB 的镜像 | `pingcap/tidb:v3.0.0-rc.1` |
 | `tidb.imagePullPolicy` | TiDB 镜像的拉取策略 | `IfNotPresent` |
