@@ -20,6 +20,31 @@ Assuming that V-A, V-B, V-C are three DM versions in chronological order and the
 > - Unless otherwise stated, all the following upgrade examples assume that all the data replication tasks have been stopped before the upgrade and all the replication tasks are restarted manually after DM upgrade is finished.
 > - The following shows the upgrade procedure of DM versions in reverse chronological order.
 
+## Upgrade to v1.0.0-rc.1-12-gaa39ff9
+
+### Version information
+
+```bash
+Release Version: v1.0.0-rc.1-12-gaa39ff9
+Git Commit Hash: aa39ff981dfb3e8c0fa4180127246b253604cc34
+Git Branch: dm-master
+UTC Build Time: 2019-07-24 02:26:08
+Go Version: go version go1.11.2 linux/amd64
+```
+
+### Main changes
+
+Starting from this release, TiDB DM checks all configurations rigorously. Unrecognized configuration triggers an error. This is to ensure that users always know exactly what the configuration is.
+
+### Upgrade operation example
+
+Before starting the DM-master or DM-worker, ensure that the obsolete configuration information has been deleted and there are no redundant configuration items.
+
+Otherwise, the starting might fail. In this situation, you can delete the redundant configuration based on the failure information. These are two possible redundant configurations:
+
+- `meta-file` in `dm-worker.toml`
+- `server-id` in `mysql-instances` in `task.yaml`
+
 ## Upgrade to v1.0.0-143-gcd753da
 
 ### Version information
