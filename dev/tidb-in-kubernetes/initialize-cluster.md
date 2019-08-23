@@ -37,7 +37,7 @@ category: how-to
 
 2. 设置允许访问 TiDB 的主机
 
-    在部署集群前可以通过设置 `permitHost` 设置允许访问 TiDB 的主机 **host_name**。如果不设置，则允许所有主机访问。详情请参考 [Mysql GRANT host name](https://dev.mysql.com/doc/refman/5.7/en/grant.html)。
+    在部署集群前可以通过 `permitHost` 配置项来设置允许访问 TiDB 的主机 **host_name**。如果不设置，则允许所有主机访问。详情请参考 [Mysql GRANT host name](https://dev.mysql.com/doc/refman/5.7/en/grant.html)。
 
     ```shell
     tidb:
