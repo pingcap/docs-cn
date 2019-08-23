@@ -42,7 +42,7 @@ category: how-to
     ```shell
     tidb:
       passwordSecretName: tidb-secret
-      permitHost: <Mysql-client-host-name>
+      permitHost: <mysql-client-host-name>
     ```
 
 3. 部署集群
