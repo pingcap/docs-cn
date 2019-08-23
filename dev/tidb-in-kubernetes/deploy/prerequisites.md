@@ -27,6 +27,7 @@ This document introduces the hardware and software prerequisites for deploying a
 | fs.file-max | 1000000 |
 | fs.inotify.max_user_watches | 1048576 |
 | fs.inotify.max_user_instances | 1024 |
+| net.ipv4.conf.all.rp_filter | 1 |
 | net.ipv4.neigh.default.gc_thresh1 | 80000 |
 | net.ipv4.neigh.default.gc_thresh2 | 90000 |
 | net.ipv4.neigh.default.gc_thresh3 | 100000 |
