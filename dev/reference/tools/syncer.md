@@ -350,14 +350,14 @@ target-table = "order_2017"
 
     使用 `select @@version;` 命令检查数据库版本。目前，Syncer 只支持以下版本：
 
-    - 5.5 < MySQL 版本 < 5.8
+    - 5.5 < MySQL 版本 < 8.0
     - MariaDB 版本 >= 10.1.2（更早版本的 binlog 部分字段类型格式与 MySQL 不一致）
 
     > **注意：**
     >
     > 如果上游 MySQL/MariaDB server 间构成主从复制结构，则
     >
-    > - 5.7.1 < MySQL 版本 < 5.8
+    > - 5.7.1 < MySQL 版本 < 8.0
     > - MariaDB 版本 >= 10.1.3
 
 2. 检查源库 `server-id`。
