@@ -231,6 +231,7 @@
     - [TiDB 面板](reference/key-monitoring-metrics/tidb-dashboard.md)
     - [PD 面板](reference/key-monitoring-metrics/pd-dashboard.md)
     - [TiKV 面板](reference/key-monitoring-metrics/tikv-dashboard.md)
+  - [报警规则](reference/alert-rules.md)
   + 安全
     - [与 MySQL 的安全特性差异](reference/security/compatibility.md)
     - [TiDB 数据库权限管理](reference/security/privilege-system.md)
