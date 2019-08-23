@@ -33,7 +33,7 @@ IDC 机器
 
 Sysbench 版本: 1.0.6
 
-测试脚本: <https://github.com/pingcap/tidb-bench/tree/cwen/not_prepared_statement/sysbench>
+测试脚本: [https://github.com/pingcap/tidb-bench/tree/cwen/not_prepared_statement/sysbench](https://github.com/pingcap/tidb-bench/tree/cwen/not_prepared_statement/sysbench)
 
 ## 测试方案
 
@@ -109,9 +109,9 @@ max_connections = 2000
 | Mysql | 32 | 500 万 | 256 | 1902 | 38045 | 134.56 ms / 363.18 ms |
 | Mysql | 32 | 1000 万 | 256 | 1770 | 35416 | 144.55 ms / 383.33 ms  |
 
-![threads_oltp](http://7xnp02.com1.z0.glb.clouddn.com/threads_oltp.png?imageView2/2/w/700/q/75|imageslim)
+![sysbench-01](/media/sysbench-01.png)
 
-![table_size_oltp](http://7xnp02.com1.z0.glb.clouddn.com/table_size_oltp.png?imageView2/2/w/700/q/75|imageslim)
+![sysbench-02](/media/sysbench-02.png)
 
 * 标准 select 测试
 
@@ -128,9 +128,9 @@ max_connections = 2000
 | Mysql | 32 | 500 万 | 256 |  386866 | 0.66 ms / 1.64 ms |
 | Mysql | 32 | 1000 万 | 256 |  388273 | 0.66 ms / 1.64 ms  |
 
-![threads_select](http://7xnp02.com1.z0.glb.clouddn.com/threads_select.png?imageView2/2/w/700/q/75|imageslim)
+![sysbench-03](/media/sysbench-03.png)
 
-![table_size_select](http://7xnp02.com1.z0.glb.clouddn.com/table_size_select.png?imageView2/2/w/700/q/75|imageslim)
+![sysbench-04](/media/sysbench-04.png)
 
 * 标准 insert 测试
 
@@ -147,9 +147,9 @@ max_connections = 2000
 | Mysql | 32 | 500 万 | 256 | 10593 | 24.16 ms / 82.96 ms  |
 | Mysql | 32 | 1000 万 | 256 | 9813 | 26.08 ms / 94.10 ms  |
 
-![threads_insert](http://7xnp02.com1.z0.glb.clouddn.com/threads_insert.png?imageView2/2/w/700/q/75|imageslim)
+![sysbench-05](/media/sysbench-05.png)
 
-![table_size_insert](http://7xnp02.com1.z0.glb.clouddn.com/table_size_insert.png?imageView2/2/w/700/q/75|imageslim)
+![sysbench-06](/media/sysbench-06.png)
 
 ### 场景二：TiDB 水平扩展能力测试
 
@@ -186,7 +186,7 @@ block-cache-size = "2GB"
 | 4 物理节点 TiDB | 32 | 100 万 | 256 * 4 | 8984 | 179692 | 114.96 ms / 176.73 ms |
 | 6 物理节点 TiDB | 32 | 500 万 | 256 * 6 | 12953 | 259072 | 117.80 ms / 200.47 ms  |
 
-![scale_tidb_oltp](http://7xnp02.com1.z0.glb.clouddn.com/scale_tidb_oltp.png?imageView2/2/w/700/q/75|imageslim)
+![sysbench-07](/media/sysbench-07.png)
 
 * 标准 select 测试
 
@@ -197,7 +197,7 @@ block-cache-size = "2GB"
 | 4 物理节点 TiDB | 32 | 100 万 | 256 * 4 | 289933 | 3.53 ms / 8.74 ms  |
 | 6 物理节点 TiDB | 32 | 500 万 | 256 * 6 | 435313 | 3.55 ms / 9.17 ms  |
 
-![scale_tidb_select](http://7xnp02.com1.z0.glb.clouddn.com/scale_tidb_select.png?imageView2/2/w/700/q/75|imageslim)
+![sysbench-08](/media/sysbench-08.png)
 
 * 标准 insert 测试
 
@@ -207,4 +207,4 @@ block-cache-size = "2GB"
 | 5 物理节点 TiKV | 32 | 100 万 | 256 * 3 | 60689 | 37.96 ms / 29.9 ms |
 | 7 物理节点 TiKV | 32 | 100 万 | 256 * 3 | 80087 | 9.62 ms / 21.37 ms |
 
-![scale_tikv_insert](http://7xnp02.com1.z0.glb.clouddn.com/scale_tikv_insert.png?imageView2/2/w/700/q/75|imageslim)
+![sysbench-09](/media/sysbench-09.png)
