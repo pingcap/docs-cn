@@ -13,7 +13,7 @@ TiDB 支持的基本约束与 MySQL 支持的基本相同，但有以下区别�
 
 ## 外键约束
 
-目前，TiDB 仅支持使用 DDL 命令创建外键。例如：
+目前，TiDB 支持创建外键。例如：
 
 ```
 CREATE TABLE users (
