@@ -125,15 +125,4 @@ The `pingcap/tidb-backup` helm chart helps restore a TiDB cluster using backup d
 
 Incremental backup uses [TiDB Binlog](/reference/tidb-binlog-overview.md) to collect binlog data from TiDB and provide real-time backup and replication to downstream platforms.
 
-Incremental backup is disabled in the TiDB cluster by default. To create a TiDB cluster with incremental backup enabled or enable incremental backup in existing TiDB cluster, modify the `values.yaml` file:
-
-* Set `binlog.pump.create` to `true`.
-* Set `binlog.drainer.create` to `true`.
-* Set `binlog.pump.storageClassName` and `binlog.drainer.storageClassName` to an available `storageClass` in your Kubernetes cluster.
-* Set `binlog.drainer.destDBType` to your desired downstream storage as needed, which is explained in details below.
-
-Incremental backup supports three types of downstream storage:
-
-* PersistenceVolume: the default downstream storage. You can consider configuring a large PV for `drainer` (by modifying `binlog.drainer.storage`) in this case.
-* MySQL compatible databases: enabled by setting `binlog.drainer.destDBType` to `mysql`. Meanwhile, you must configure the address and credential of the target database in `binlog.drainer.mysql`.
-* Apache Kafka: enabled by setting `binlog.drainer.destDBType` to `kafka`. Meanwhile, you must configure the zookeeper address and Kafka address of the target cluster in `binlog.drainer.kafka`.
+For the detailed guide of maintaining TiDB Binlog in Kubernetes, refer to [TiDB Binlog](/tidb-in-kubernetes/maintain/tidb-binlog.md).
