@@ -211,12 +211,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + TiDB 在 TCP 层开启 keepalive。
 + 默认值：false
 
-### `retry-limit`
-
-+ TiDB 在提交事务的时候遇到 key 冲突或者其他错误时进行的重试次数。
-+ 默认值：10
-+ 如果 TiDB 超过 `retry-limit` 次重试还是没有成功，将会返回错误。
-
 ### `cross-join`
 
 + 默认值：true
