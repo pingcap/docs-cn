@@ -35,7 +35,7 @@ TiDB Data Migration 平台由 3 部分组成：DM-master、DM-worker 和 dmctl�
 * DM-worker 负责执行特定的数据同步任务。
 * dmctl 是一个命令行工具，用于控制 DM 集群。
 
-`.yaml` 文件中定义了各个数据同步任务，dmctl 读取这些数据，并将这些数据提交至 DM-master。DM-master 再将关于给定任务的相应职责告知每个 DM-worker 实例。
+`.yaml` 文件中定义了各个数据同步任务，dmctl 会读取这些文件，并且这些文件会被提交给 DM-master。DM-master 再将关于给定任务的相应职责告知每个 DM-worker 实例。
 
 详情参见 [Data Migration 简介](/reference/tools/data-migration/overview.md)。
 
