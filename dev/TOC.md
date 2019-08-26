@@ -12,6 +12,7 @@
     - [如何对 TiDB 进行 TPC-C 测试](benchmark/how-to-run-tpcc.md)
     - [Sysbench 性能对比 - v3.0 对比 v2.1](benchmark/sysbench-v4.md)
     - [TPC-C 性能对比 - v3.0 对比 v2.1](benchmark/tpcc.md)
+    - [线上负载与 Add Index 相互影响测试](benchmark/add-index-with-load.md)
 + 主要概念
   - [整体架构](architecture.md)
   + 核心特性
@@ -34,7 +35,10 @@
       - [跨数据中心部署方案](how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](how-to/deploy/geographic-redundancy/location-awareness.md)
     - [使用 Ansible 部署 DM 集群](how-to/deploy/data-migration-with-ansible.md)
-    - [部署 TiDB Binlog 集群](how-to/deploy/tidb-binlog.md)
+    + 部署使用 TiDB Binlog
+      - [部署 TiDB Binlog 集群](how-to/deploy/tidb-binlog.md)
+      - [Binlog Slave Client 用户文档](reference/tools/tidb-binlog/binlog-slave-client.md)
+      - [Reparo 使用文档](reference/tools/tidb-binlog/reparo.md)
   + 配置
     - [时区](how-to/configure/time-zone.md)
     - [内存控制](how-to/configure/memory-control.md)
