@@ -5,6 +5,8 @@ category: deployment
 aliases: ['/docs/op-guide/tidb-config-file/']
 ---
 
+<!-- markdownlint-disable MD001 -->
+
 # TiDB Configuration File Description
 
 The TiDB configuration file supports more options than command line options. You can find the default configuration file in [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) and rename it to `config.toml`.
@@ -160,12 +162,6 @@ Configuration about performance.
 - To enable `keepalive` in the TCP layer
 - Default: false
 
-### `retry-limit`
-
-- The number of retries that TiDB makes when it encounters a `key` conflict or other errors while committing a transaction
-- Default: 10
-- If the number of retries exceeds `retry-limit` but the transaction still fails, TiDB returns an error
-
 ### `cross-join`
 
 - Default: true
@@ -181,7 +177,9 @@ Configuration about performance.
     - At intervals of `stats-lease`, TiDB checks for column statistics that need to be loaded to the memory
     - At intervals of `200 * stats-lease`, TiDB writes the feedback cached in the memory to the system table
     - At intervals of `5 * stats-lease`, TiDB reads the feedback in the system table, and updates the statistics cached in the memory
+
 + When `stats-lease` is set to 0, TiDB periodically reads the feedback in the system table, and updates the statistics cached in the memory every three seconds. But TiDB no longer automatically modifies the following statistics-related system tables:
+
     - `mysql.stats_meta`: TiDB no longer automatically records the number of table rows that are modified by the transaction or updates it to this system table
     - `mysql.stats_histograms`/`mysql.stats_buckets` and `mysql.stats_top_n`: TiDB no longer automatically analyzes or proactively updates statistics
     - `mysql.stats_feedback`: TiDB no longer updates the statistics of the tables and indexes according to a part of statistics returned by the queried data
