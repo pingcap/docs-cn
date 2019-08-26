@@ -464,7 +464,7 @@ mysql -h 127.0.0.1 -P 4000 -u root -e 'select * from t1' dmtest1 | tail
     done
     ```
 
-2. 向每个 MySQL 实例插入几百行数据。通过设置 `auto_increment_increment=1` and `auto_increment_offset=1` 确保这 3 个 MySQL Server 都分配相同的自增 ID：
+2. 向每个 MySQL 实例插入几百行数据。通过设置 `auto_increment_increment=1` 和 `auto_increment_offset=1` 确保这 3 个 MySQL Server 都分配相同的自增 ID：
 
     ```bash
     for i in 1 2 3; do
