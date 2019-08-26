@@ -42,7 +42,7 @@ TiDB Operator 提供了多种方式来部署 Kubernetes 上的 TiDB 集群：
 
     - 公有云：参考 [AWS 部署文档](tidb-in-kubernetes/deploy/aws-eks.md)，[GKE 部署文档 (beta)](tidb-in-kubernetes/deploy/gcp-gke.md)，或[阿里云部署文档](tidb-in-kubernetes/deploy/alibaba-cloud.md)在对应的公有云上一键部署生产可用的 TiDB 集群并进行后续的运维管理；
 
-    - 现有 Kubernetes 集群：首先按照[部署 TiDB Operator](tidb-in-kubernetes/deploy/tidb-operator.md)在集群中安装 TiDB Operator，再根据[在标准 Kubernetes 集群上部署 TiDB 集群](tidb-in-kubernetes/deploy/general-kubernetes.md)来部署你的 TiDB 集群。对于生产级 TiDB 集群，你还需要参考 [TiDB 集群环境要求](tidb-in-kubernetes/deploy/prerequisites.md)调整 Kubernetes 集群配置并根据[本地 PV 配置](tidb-in-kubernetes/reference/configuration/local-pv.md)为你的 Kubernetes 集群配置本地 PV，以满足 TiKV 的低延迟本地存储需求。
+    - 现有 Kubernetes 集群：首先按照[部署 TiDB Operator](tidb-in-kubernetes/deploy/tidb-operator.md)在集群中安装 TiDB Operator，再根据[在标准 Kubernetes 集群上部署 TiDB 集群](tidb-in-kubernetes/deploy/general-kubernetes.md)来部署你的 TiDB 集群。对于生产级 TiDB 集群，你还需要参考 [TiDB 集群环境要求](tidb-in-kubernetes/deploy/prerequisites.md)调整 Kubernetes 集群配置并根据[本地 PV 配置](tidb-in-kubernetes/reference/configuration/storage-class.md#本地-pv-配置)为你的 Kubernetes 集群配置本地 PV，以满足 TiKV 的低延迟本地存储需求。
 
 在任何环境上部署前，都可以参考 [TiDB 集群配置](tidb-in-kubernetes/reference/configuration/tidb-cluster.md)来自定义 TiDB 配置。
 

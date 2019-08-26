@@ -74,14 +74,14 @@ DM 支持对原分库分表进行合库合表操作，但需要满足一些[使�
 
 + 数据库版本
 
-    - 5.5 < MySQL 版本 < 5.8
+    - 5.5 < MySQL 版本 < 8.0
     - MariaDB 版本 >= 10.1.2
 
     > **注意：**
     >
     > 如果上游 MySQL/MariaDB server 间构成主从复制结构，则
     >
-    > - 5.7.1 < MySQL 版本 < 5.8
+    > - 5.7.1 < MySQL 版本 < 8.0
     > - MariaDB 版本 >= 10.1.3
 
     在使用 dmctl 启动任务时，DM 会自动对任务上下游数据库的配置、权限等进行[前置检查](/reference/tools/data-migration/precheck.md)。
