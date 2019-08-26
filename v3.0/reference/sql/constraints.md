@@ -6,11 +6,11 @@ aliases: ['/docs-cn/sql/constraints/']
 
 # 约束
 
-TiDB 支持的基本约束与 MySQL 支持的基本相同，但有以下区别：
+TiDB 支持的基本约束与 MySQL 的基本相同，但有以下区别：
 
 - 默认对唯一约束进行[惰性检查](/reference/transactions/overview.md#事务的惰性检查)。通过在事务提交时再进行批量检查，TiDB 能够减少网络开销、提升性能。您可通过设置 `tidb_constraint_check_in_place` 为 `TRUE` 改变此行为。
 
-- TiDB 支持创建外键约束语法，但不会在 DML 语句中对外键进行约束（即外键约束不生效）。
+- TiDB 支持创建外键约束，但不会在 DML 语句中对外键进行约束（即外键约束不生效）。
 
 ## 外键约束
 
@@ -46,7 +46,7 @@ ALTER TABLE orders DROP FOREIGN KEY fk_user_id;
 ALTER TABLE orders ADD FOREIGN KEY fk_user_id (user_id) REFERENCES users(id);
 ```
 
-然后，TiDB 不会在 DML 语句中对外键进行约束。例如，即使 `users` 表中不存在 `id=123` 的记录，下列事务也能提交成功：
+然而，TiDB 不会在 DML 语句中对外键进行约束。例如，即使 `users` 表中不存在 `id=123` 的记录，下列事务也能提交成功：
 
 ```
 START TRANSACTION;
