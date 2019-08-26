@@ -115,7 +115,7 @@ TiDB Data Migration 平台由 3 部分组成：DM-master、DM-worker 和 dmctl�
 
 ## 无重叠分片
 
-本示例场景由 3 个分片组成，这些分片表结构相同，但自增主键并不重叠。
+本示例场景包含 3 个分片，这些分片表结构相同，但自增主键并不重叠。
 
 在 `.my.cnf` 文件中设置 `auto-increment-increment=5` 和 `auto-increment-offset` 可以实现这种情况。将 `auto-increment-increment` 设置为 5，则这些实例的自增 ID 以 5 为单位递增；每个实例的 `auto-increment-offset` 都设置得不同，则这些实例的偏移为 0 到开始计数的值。例如，若一个实例的 `auto-increment-increment` 为 5，`auto-increment-offset` 为 2，则会生成自增 ID 序列 {2,7,12,17,22,…}。
 
