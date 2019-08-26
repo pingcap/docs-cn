@@ -97,7 +97,7 @@ category: Roadmap
 
 - [x] 集群部署工具
 - [X] 高性能数据导入工具（lightning）
-- [X] 集群备份和恢复工具（包括全量+增量备份，mydumper + drainer/reparo）
-- [X] 改进 TiDB-Binlog 架构
+- [X] 集群备份和恢复工具（包括全量+增量备份，Mydumper + drainer/reparo）
+- [X] 改进 TiDB Binlog 架构
 - [ ] 数据在线迁移工具（Syncer 升级版）
 - [ ] 集群诊断和分析工具

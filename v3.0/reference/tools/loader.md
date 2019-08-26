@@ -14,14 +14,14 @@ Loader 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/referen
 
 ## 为什么我们要做这个工具
 
-当数据量比较大的时候，如果用 mysqldump 这样的工具迁移数据会比较慢。我们尝试了 [mydumper/myloader 套件](https://github.com/maxbube/mydumper)，能够多线程导出和导入数据。在使用过程中，mydumper 问题不大，但是 myloader 由于缺乏出错重试、断点续传这样的功能，使用起来很不方便。所以我们开发了 loader，能够读取 mydumper 的输出数据文件，通过 MySQL protocol 向 TiDB/MySQL 中导入数据。
+当数据量比较大的时候，如果用 mysqldump 这样的工具迁移数据会比较慢。我们尝试了 [Mydumper/myloader 套件](https://github.com/maxbube/mydumper)，能够多线程导出和导入数据。在使用过程中，Mydumper 问题不大，但是 myloader 由于缺乏出错重试、断点续传这样的功能，使用起来很不方便。所以我们开发了 loader，能够读取 Mydumper 的输出数据文件，通过 MySQL protocol 向 TiDB/MySQL 中导入数据。
 
 ## Loader 有哪些优点
 
 * 多线程导入
 * 支持表级别的并发导入，分散写入热点
 * 支持对单个大表并发导入，分散写入热点
-* 支持 mydumper 数据格式
+* 支持 Mydumper 数据格式
 * 出错重试
 * 断点续导
 * 通过 system variable 优化 TiDB 导入数据速度
@@ -32,7 +32,7 @@ Loader 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/referen
 
 请勿使用 loader 导入 MySQL 实例中 `mysql` 系统数据库到下游 TiDB。
 
-如果 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。
+如果 Mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。
 
 如果使用默认的 `checkpoint-schema` 参数，在导完一个 database 数据库后，请 `drop database tidb_loader` 后再开始导入下一个 database。
 

@@ -5,7 +5,7 @@ category: tispark
 
 # TiSpark 快速入门指南
 
-为了让大家快速体验 [TiSpark](/reference/tispark.md)，通过 TiDB-Ansible 安装的 TiDB 集群中默认已集成 Spark、TiSpark jar 包及 TiSpark sample data。
+为了让大家快速体验 [TiSpark](/reference/tispark.md)，通过  安装的 TiDB 集群中默认已集成 Spark、TiSpark jar 包及 TiSpark sample data。
 
 ## 部署信息
 
@@ -14,7 +14,7 @@ category: tispark
 
     spark/jars/tispark-SNAPSHOT-jar-with-dependencies.jar
 
-- TiSpark sample data 及导入脚本默认部署在 TiDB-Ansible 目录下：
+- TiSpark sample data 及导入脚本默认部署在  目录下：
 
     tidb-ansible/resources/bin/tispark-sample-data
 

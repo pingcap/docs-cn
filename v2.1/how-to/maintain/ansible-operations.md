@@ -1,9 +1,9 @@
 ---
-title: TiDB-Ansible 常见运维操作
+title:  常见运维操作
 category: how-to
 ---
 
-# TiDB-Ansible 常见运维操作
+#  常见运维操作
 
 ## 启动集群
 

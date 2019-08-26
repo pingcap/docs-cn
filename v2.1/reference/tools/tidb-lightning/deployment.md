@@ -124,7 +124,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
         # 提供监控告警的端口。需对监控服务器 (monitoring_server) 开放。
         tidb_lightning_pprof_port: 8289
 
-        # 获取数据源（mydumper SQL dump 或 CSV）的路径。
+        # 获取数据源（Mydumper SQL dump 或 CSV）的路径。
         data_source_dir: "{{ deploy_dir }}/mydumper"
         ```
 
@@ -260,7 +260,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
 3. 配置 `tidb-lightning.toml`。
 
     ```toml
-    # TiDB-Lightning 配置文件模版
+    # TiDB Lightning 配置文件模版
 
     [lightning]
     # 用于调试和 Prometheus 监控的 HTTP 端口。输入 0 关闭。
@@ -333,7 +333,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     # 是一致的。取值范围是（0 <= batch-import-ratio < 1）。
     batch-import-ratio = 0.75
 
-    # mydumper 源数据目录。
+    # Mydumper 源数据目录。
     data-source-dir = "/data/my_database"
     # 如果 no-schema 设置为 true，tidb-lightning 将直接去 tidb-server 获取表结构信息，
     # 而不是根据 data-source-dir 的 schema 文件来创建库/表，
@@ -410,7 +410,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     # 每经过这段时间，在日志打印当前进度。
     log-progress = "5m"
 
-    # 表库过滤设置。详情见《TiDB-Lightning 表库过滤》。
+    # 表库过滤设置。详情见《TiDB Lightning 表库过滤》。
     #[black-white-list]
     # ...
 

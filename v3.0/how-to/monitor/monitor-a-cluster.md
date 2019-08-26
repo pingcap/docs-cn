@@ -76,7 +76,7 @@ curl http://127.0.0.1:2379/pd/api/v1/stores
 
 Metrics 接口用于监控整个集群的状态和性能。
 
-- 如果使用 TiDB-Ansible 部署 TiDB 集群，监控系统（Prometheus 和 Grafana）会同时部署。
+- 如果使用  部署 TiDB 集群，监控系统（Prometheus 和 Grafana）会同时部署。
 - 如果使用其他方式部署 TiDB 集群，在使用 metrics 接口前，需先[部署 Prometheus 和 Grafana](#部署-prometheus-和-grafana)。
 
 成功部署 Prometheus 和 Grafana 之后，[配置 Grafana](#配置-grafana)。

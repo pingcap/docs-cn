@@ -1,13 +1,13 @@
 ---
-title: TiDB-Ansible 部署方案
+title: TiDB Ansible 部署方案
 category: how-to
 ---
 
-# TiDB-Ansible 部署方案
+# TiDB Ansible 部署方案
 
 ## 概述
 
-Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingcap/tidb-ansible) 是 PingCAP 基于 Ansible playbook 功能编写的集群部署工具。本文档介绍如何使用 TiDB-Ansible 部署一个完整的 TiDB 集群。
+Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingcap/tidb-ansible) 是 PingCAP 基于 Ansible playbook 功能编写的集群部署工具。本文档介绍如何使用 TiDB Ansible 部署一个完整的 TiDB 集群。
 
 本部署工具可以通过配置文件设置集群拓扑，完成以下各项运维工作：
 
@@ -24,7 +24,7 @@ Ansible 是一款自动化运维工具，[TiDB-Ansible](https://github.com/pingc
 
 > **注意：**
 >
-> 对于生产环境，须使用 TiDB-Ansible 部署 TiDB 集群。如果只是用于测试 TiDB 或体验 TiDB 的特性，建议[使用 Docker Compose 在单机上快速部署 TiDB 集群](/how-to/get-started/deploy-tidb-from-docker-compose.md)。
+> 对于生产环境，须使用 TiDB Ansible 部署 TiDB 集群。如果只是用于测试 TiDB 或体验 TiDB 的特性，建议[使用 Docker Compose 在单机上快速部署 TiDB 集群](/how-to/get-started/deploy-tidb-from-docker-compose.md)。
 
 ## 准备机器
 
@@ -117,9 +117,9 @@ The key's randomart image is:
 +----[SHA256]-----+
 ```
 
-## 在中控机器上下载 TiDB-Ansible
+## 在中控机器上下载 TiDB Ansible
 
-以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录。使用以下命令从 [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 master 分支的 TiDB-Ansible，默认的文件夹名称为 `tidb-ansible`。
+以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录。使用以下命令从 [TiDB Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 master 分支的 TiDB Ansible，默认的文件夹名称为 `tidb-ansible`。
 
 ```
 $ git clone https://github.com/pingcap/tidb-ansible.git
@@ -478,7 +478,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | 变量            | 含义                                                        |
 | --------------- | ---------------------------------------------------------- |
 | cluster_name | 集群名称，可调整 |
-| tidb_version | TiDB 版本，TiDB-Ansible 各分支默认已配置 |
+| tidb_version | TiDB 版本，TiDB Ansible 各分支默认已配置 |
 | process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
 | timezone | 新安装 TiDB 集群第一次启动 bootstrap（初始化）时，将 TiDB 全局默认时区设置为该值。TiDB 使用的时区后续可通过 `time_zone` 全局变量和 session 变量来修改，参考[时区支持](how-to/configure/time-zone.md)。 默认为 `Asia/Shanghai`，可选值参考 [timzone 列表](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)。 |
 | enable_firewalld | 开启防火墙，默认不开启，如需开启，请将[部署建议-网络要求](/how-to/deploy/hardware-recommendations.md#网络要求) 中的端口加入白名单 |

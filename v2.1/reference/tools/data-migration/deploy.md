@@ -79,7 +79,7 @@ mysql-instances:
   source-id: "mysql-replica-01"
   # 需要同步的库名或表名的黑白名单的配置项名称，用于引用全局的黑白名单配置，全局配置见下面的 `black-white-list` 的配置。
   black-white-list: "global"
-  # mydumper 的配置项名称，用于引用全局的 mydumper 配置。
+  # Mydumper 的配置项名称，用于引用全局的 Mydumper 配置。
   mydumper-config-name: "global"
 
 -
@@ -94,11 +94,11 @@ black-white-list:
     - db-name: "test_db"              # 需要同步的表的库名。
       tbl-name: "test_table"          # 需要同步的表的名称。
 
-# mydumper 全局配置，各实例通过配置项名引用。
+# Mydumper 全局配置，各实例通过配置项名引用。
 mydumpers:
   global:
-    mydumper-path: "./bin/mydumper"   # mydumper 二进制文件的路径。
-    extra-args: "-B test_db -T test_table"  # 只导出 `test_db` 库中的 `test_table` 表，可设置 mydumper 的任何参数。
+    mydumper-path: "./bin/mydumper"   # Mydumper 二进制文件的路径。
+    extra-args: "-B test_db -T test_table"  # 只导出 `test_db` 库中的 `test_table` 表，可设置 Mydumper 的任何参数。
 ```
 
 ## 第 4 步：启动任务
