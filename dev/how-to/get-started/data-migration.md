@@ -31,7 +31,7 @@ DM 功能如下：
 
 TiDB Data Migration 平台由 3 部分组成：DM-master、DM-worker 和 dmctl。
 
-* DM-master 管理及调度数据同步任务的操作。
+* DM-master 负责管理和调度数据同步任务的操作。
 * DM-worker 执行特定的数据同步任务。
 * dmctl 是一个命令行工具，用于控制 DM 集群。
 
