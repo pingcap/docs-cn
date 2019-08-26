@@ -1,6 +1,7 @@
 ---
 title: TiDB 3.0 升级操作指南
 category: how-to
+aliases: ['/docs-cn/v2.1/how-to/upgrade/to-tidb-3.0/']
 ---
 
 # TiDB 3.0 升级操作指南
