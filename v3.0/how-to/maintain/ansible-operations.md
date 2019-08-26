@@ -4,7 +4,7 @@ category: how-to
 aliases: ['/docs-cn/op-guide/ansible-operation/']
 ---
 
-#  常见运维操作
+# 常见运维操作
 
 ## 启动集群
 

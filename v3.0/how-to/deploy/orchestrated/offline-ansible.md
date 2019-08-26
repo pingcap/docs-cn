@@ -90,7 +90,7 @@ aliases: ['/docs-cn/op-guide/offline-ansible-deployment/']
 
 2. 下载 tidb-ansible
 
-    使用以下命令从 Github [ 项目](https://github.com/pingcap/tidb-ansible)上下载  相应版本，默认的文件夹名称为 `tidb-ansible`。
+    使用以下命令从 Github [项目](https://github.com/pingcap/tidb-ansible)上下载  相应版本，默认的文件夹名称为 `tidb-ansible`。
 
     > **注意：**
     >

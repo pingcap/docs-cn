@@ -4,7 +4,7 @@ category: how-to
 aliases: ['/docs-cn/op-guide/ansible-deployment/']
 ---
 
-#  部署方案
+# 部署方案
 
 ## 概述
 
@@ -118,9 +118,9 @@ The key's randomart image is:
 +----[SHA256]-----+
 ```
 
-## 在中控机器上下载 
+## 在中控机器上下载
 
-以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录。使用以下命令从 [ 项目](https://github.com/pingcap/tidb-ansible)上下载  3.0 [相应 TAG 版本](https://github.com/pingcap/tidb-ansible/tags)，默认的文件夹名称为 `tidb-ansible`。
+以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录。使用以下命令从 [项目](https://github.com/pingcap/tidb-ansible)上下载  3.0 [相应 TAG 版本](https://github.com/pingcap/tidb-ansible/tags)，默认的文件夹名称为 `tidb-ansible`。
 
 ```
 $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git

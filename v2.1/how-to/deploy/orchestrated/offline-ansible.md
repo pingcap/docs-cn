@@ -3,7 +3,7 @@ title: 离线  部署方案
 category: how-to
 ---
 
-# 离线  部署方案
+# 离线部署方案
 
 ## 准备机器
 
@@ -89,7 +89,7 @@ category: how-to
 
 2. 下载 tidb-ansible
 
-    使用以下命令从 Github [ 项目](https://github.com/pingcap/tidb-ansible)上下载  相应版本，默认的文件夹名称为 `tidb-ansible`。
+    使用以下命令从 Github [项目](https://github.com/pingcap/tidb-ansible)上下载  相应版本，默认的文件夹名称为 `tidb-ansible`。
 
     > **注意：**
     >

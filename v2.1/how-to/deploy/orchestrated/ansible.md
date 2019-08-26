@@ -3,7 +3,7 @@ title:  部署方案
 category: how-to
 ---
 
-#  部署方案
+# 部署方案
 
 ## 概述
 
@@ -117,7 +117,7 @@ The key's randomart image is:
 +----[SHA256]-----+
 ```
 
-## 在中控机器上下载 
+## 在中控机器上下载
 
 以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录。以下为 tidb-ansible 与 TiDB 的版本对应关系，版本选择可以咨询官方。
 
@@ -126,7 +126,7 @@ The key's randomart image is:
 | 2.0 版本 | v2.0.10、v2.0.11 | 2.0 稳定版本，新用户不建议用于生产环境 |
 | 2.1 版本 | v2.1.1 ~ v2.1.13 等 | 2.1 稳定版本，可用于生产环境 |
 
-使用以下命令从 [ 项目](https://github.com/pingcap/tidb-ansible)上下载  2.0 或者 2.1 [相应 TAG 版本](https://github.com/pingcap/tidb-ansible/tags)，默认的文件夹名称为 `tidb-ansible`。
+使用以下命令从 [项目](https://github.com/pingcap/tidb-ansible)上下载  2.0 或者 2.1 [相应 TAG 版本](https://github.com/pingcap/tidb-ansible/tags)，默认的文件夹名称为 `tidb-ansible`。
 
 ```
 $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
