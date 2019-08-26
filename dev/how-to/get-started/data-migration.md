@@ -218,7 +218,7 @@ TiDB Data Migration 平台由 3 部分组成：DM-master、DM-worker 和 dmctl�
 
 每个上游的 MySQL Server 实例对应一个单独的 DM-worker 实例，每个 DM-worker 实例都有各自的配置文件。这些文件内容包括：
 
-- 连接到上游 MySQL Server 的细节信息
+- 连接到上游 MySQL Server 的详细信息
 - relay log（上游服务器的 binlog）的存储路径
 - mydumper 的输出
 
