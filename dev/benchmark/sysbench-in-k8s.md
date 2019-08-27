@@ -385,7 +385,7 @@ GCP 多可用区，涉及跨 Zone 通信，网络延迟相比同 Zone 会少许�
 | 1200    | 258835.24 | 10.09           |
 | 1500    | 280114.00 | 12.75           |
 
-QPS 对比:
+QPS 对比：
 
 ![Single Zonal vs Regional](/media/sysbench-in-k8s/single-zonal-vs-regional-qps.svg)
 
