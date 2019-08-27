@@ -2,6 +2,7 @@
 title: TiDB Development Release Upgrade Guide
 summary: Learn how to upgrade to TiDB Development Release
 category: upgrade
+aliases: ['/docs/dev/how-to/upgrade/to-tidb-3.0/']
 ---
 
 # TiDB Development Release Upgrade Guide

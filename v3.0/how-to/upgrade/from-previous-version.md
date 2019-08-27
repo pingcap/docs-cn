@@ -2,6 +2,7 @@
 title: TiDB 3.0 Upgrade Guide
 summary: Learn how to upgrade to TiDB 3.0.
 category: upgrade
+aliases: ['/docs/v3.0/how-to/upgrade/to-tidb-3.0/']
 ---
 
 # TiDB 3.0 Upgrade Guide
