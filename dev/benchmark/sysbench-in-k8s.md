@@ -303,7 +303,7 @@ Load Balancer:
 | 1200    | 441084.13 | 5.28            |
 | 1500    | 447659.15 | 6.67            |
 
-QPS 对比:
+QPS 对比：
 
 ![Service vs Load Balancer](/media/sysbench-in-k8s/service-vs-load-balancer-qps.svg)
 
