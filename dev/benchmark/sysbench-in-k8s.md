@@ -150,7 +150,7 @@ sysbench \
   prepare
 ```
 
-`<tidb-host`> 为 tidb 的数据库地址，根据不同测试需求选择不同的地址，比如 Pod IP, Service 域名，Host IP 以及 Load Balancer IP 。（下同）
+`<tidb-host`> 为 TiDB 的数据库地址，根据不同测试需求选择不同的地址，比如 Pod IP、Service 域名、Host IP 以及 Load Balancer IP。（下同）
 
 #### 预热
 
