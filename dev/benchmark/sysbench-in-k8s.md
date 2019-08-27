@@ -399,7 +399,7 @@ Latency 对比：
 
 此次测试主要将典型公有云部署 Kubernetes 运行 TiDB 集群的几种场景使用 sysbench 做了测试，了解不同因素可能带来的影响。从整体看，主要有以下几点：
 
-- VPC-Native 模式下 Host 网络性能略好于 Pod 网络 (~7%，以 QPS 差异估算，下同)
+- VPC-Native 模式下 Host 网络性能略好于 Pod 网络（~7%，以 QPS 差异估算，下同）
 - GCP 的 Ubuntu 系统单纯的读测试中性能略好于 COS (~9%)
 - 使用 Load Balancer 在集群外访问，会略损失性能 (~5%)
 - 多可用区下节点之间延迟增加，会对 TiDB 性能产生一定的影响 (30% ~ 6%，随并发数增加而下降)
