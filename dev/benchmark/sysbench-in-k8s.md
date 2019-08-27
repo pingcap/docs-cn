@@ -264,7 +264,7 @@ Ubuntu:
 | 1200    | 489220.93 | 4.33            |
 | 1500    | 489988.97 | 5.47            |
 
-QPS 对比:
+QPS 对比：
 
 ![COS vs Ubuntu](/media/sysbench-in-k8s/cos-vs-ubuntu-qps.svg)
 
