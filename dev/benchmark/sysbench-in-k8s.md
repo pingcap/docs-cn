@@ -389,7 +389,7 @@ QPS 对比:
 
 ![Single Zonal vs Regional](/media/sysbench-in-k8s/single-zonal-vs-regional-qps.svg)
 
-Latency 对比:
+Latency 对比：
 
 ![Single Zonal vs Regional](/media/sysbench-in-k8s/single-zonal-vs-regional-latency.svg)
 
