@@ -448,6 +448,8 @@ terraform destroy
 
 - 在执行 `terraform destroy` 之前将 Kubernetes 的 PV (Persistent Volume) 回收策略设置为 `Delete`，具体操作为在 `terraform destroy` 之前运行以下 `kubectl`命令：
 
+    {{< copyable "shell-regular" >}}
+    
     ```bash
     kubectl --kubeconfig /path/to/kubeconfig/file get pvc -n namespace-of-tidb-cluster -o jsonpath='{.items[*].spec.volumeName}'|fmt -1 | xargs -I {} kubectl --kubeconfig /path/to/kubeconfig/file patch pv {} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
     ```
@@ -459,7 +461,7 @@ terraform destroy
     {{< copyable "shell-regular" >}}
 
     ```bash
-    ./change-pv-reclaimpolicy.sh /path/to/kubeconfig/file tidb-cluster-namespace
+    ./change-pv-reclaimpolicy.sh /path/to/kubeconfig/file <tidb-cluster-namespace>
     ```
 
 ## 管理多个 Kubernetes 集群
