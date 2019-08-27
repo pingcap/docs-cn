@@ -92,7 +92,7 @@ The character sets of TiDB use UTF-8 by default and currently only support UTF-8
 
 5000 at most.
 
-#### Does TiDB support XA？
+#### Does TiDB support XA?
 
 No. The JDBC driver of TiDB is MySQL JDBC (Connector/J). When using Atomikos, set the data source to `type="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"`. TiDB does not support the connection with MySQL JDBC XADataSource. MySQL JDBC XADataSource only works for MySQL (for example, using DML to modify the `redo` log).
 
@@ -452,11 +452,11 @@ Two reasons:
 
 ### Manage the PD server
 
-#### The `TiKV cluster is not bootstrapped` message is displayed when I access PD.
+#### The `TiKV cluster is not bootstrapped` message is displayed when I access PD
 
 Most of the APIs of PD are available only when the TiKV cluster is initialized. This message is displayed if PD is accessed when PD is started while TiKV is not started when a new cluster is deployed. If this message is displayed, start the TiKV cluster. When TiKV is initialized, PD is accessible.
 
-#### The `etcd cluster ID mismatch` message is displayed when starting PD.
+#### The `etcd cluster ID mismatch` message is displayed when starting PD
 
 This is because the `--initial-cluster` in the PD startup parameter contains a member that doesn't belong to this cluster. To solve this problem, check the corresponding cluster of each member, remove the wrong member, and then restart PD.
 
@@ -556,6 +556,8 @@ You can combine the above two parameters with the DML of TiDB to use them. For e
 
 1. Adjust the priority by writing SQL statements in the database:
 
+    {{< copyable "sql" >}}
+
     ```sql
     select HIGH_PRIORITY | LOW_PRIORITY count(*) from table_name;
     insert HIGH_PRIORITY | LOW_PRIORITY into table_name insert_values;
@@ -576,6 +578,8 @@ When the modified number or the current total row number is larger than `tidb_au
 
 Its usage is similar to MySQL:
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT column_name FROM table_name USE INDEX（index_name）WHERE where_condition;
 ```
@@ -584,15 +588,15 @@ SELECT column_name FROM table_name USE INDEX（index_name）WHERE where_conditio
 
 #### What is the recommended number of replicas in the TiKV cluster? Is it better to keep the minimum number for high availability?
 
-Use 3 replicas for test. If you increase the number of replicas, the performance declines but it is more secure. Whether to configure more replicas depends on the specific business needs.
+3 replicas for each Region is sufficient for a testing environment. However, you should never operate a TiKV cluster with under 3 nodes in a production scenario. Depending on infrastructure, workload, and resiliency needs, you may wish to increase this number.
 
-#### The `cluster ID mismatch` message is displayed when starting TiKV.
+#### The `cluster ID mismatch` message is displayed when starting TiKV
 
 This is because the cluster ID stored in local TiKV is different from the cluster ID specified by PD. When a new PD cluster is deployed, PD generates random cluster IDs. TiKV gets the cluster ID from PD and stores the cluster ID locally when it is initialized. The next time when TiKV is started, it checks the local cluster ID with the cluster ID in PD. If the cluster IDs don't match, the `cluster ID mismatch` message is displayed and TiKV exits.
 
 If you previously deploy a PD cluster, but then you remove the PD data and deploy a new PD cluster, this error occurs because TiKV uses the old data to connect to the new PD cluster.
 
-#### The `duplicated store address` message is displayed when starting TiKV.
+#### The `duplicated store address` message is displayed when starting TiKV
 
 This is because the address in the startup parameter has been registered in the PD cluster by other TiKVs. This error occurs when there is no data folder under the directory that TiKV `--store` specifies, but you use the previous parameter to restart the TiKV.
 
@@ -623,7 +627,7 @@ TiKV implements the Column Family (CF) feature of RocksDB. By default, the KV da
 
 #### If a node is down, will the service be affected? If yes, how long?
 
-TiDB uses Raft to replicate data among multiple replicas and guarantees the strong consistency of data. If one replica goes wrong, the other replicas can guarantee data security. The default number of replicas in each Region is 3. Based on the Raft protocol, a leader is elected in each Region, and if a single leader fails, a follower is soon elected as Region leader after a maximum of 2 * lease time (lease time is 10 seconds).
+TiKV uses Raft to replicate data among multiple replicas (by default 3 replicas for each Region). If one replica goes wrong, the other replicas can guarantee data safety. Based on the Raft protocol, if a single leader fails as the node goes down, a follower in another node is soon elected as the Region leader after a maximum of 2 * lease time (lease time is 10 seconds).
 
 #### What are the TiKV scenarios that take up high I/O, memory, CPU, and exceed the parameter configuration?
 
@@ -639,7 +643,7 @@ No. It differs from the table splitting rules of MySQL. In TiKV, the table Range
 
 #### How does Region split?
 
-Region is not divided in advance, but it follows a Region split mechanism. When the Region size exceeds the value of the `region_split_size` or `region-split-keys` parameters, split is triggered. After the split, the information is reported to PD.
+Region is not divided in advance, but it follows a Region split mechanism. When the Region size exceeds the value of the `region-split-size` or `region-split-keys` parameters, split is triggered. After the split, the information is reported to PD.
 
 #### Does TiKV have the `innodb_flush_log_trx_commit` parameter like MySQL, to guarantee the security of data?
 
@@ -657,13 +661,15 @@ WAL belongs to ordered writing, and currently, we do not apply a unique configur
 
 #### How is the write performance in the most strict data available mode (`sync-log = true`)?
 
-Generally, enabling `sync-log` reduces about 30% of the performance. For write performance when `sync-log` is set to `false`, see [Performance test result for TiDB using Sysbench](https://github.com/pingcap/docs/blob/master/v2.1/benchmark/sysbench-v3.md).
+Generally, enabling `sync-log` reduces about 30% of the performance. For write performance when `sync-log` is set to `false`, see [Performance test result for TiDB using Sysbench](https://github.com/pingcap/docs/blob/master/dev/benchmark/sysbench-v4.md).
 
 #### Can Raft + multiple replicas in the TiKV architecture achieve absolute data security? Is it necessary to apply the most strict mode (`sync-log = true`) to a standalone storage?
 
-Data is redundantly copied between TiKV nodes using the [Raft consensus algorithm](https://raft.github.io/) to ensure recoverability should a node failure occur. Only when the data has been written into more than 50% of the nodes, will the application return ACK (two out of three nodes). However, theoretically, two nodes might crash. Therefore, for scenarios with a strict requirement on data security, for example, the financial industry, you need to enable the `sync-log` mode.
+Data is redundantly replicated between TiKV nodes using the [Raft consensus algorithm](https://raft.github.io/) to ensure recoverability should a node failure occur. Only when the data has been written into more than 50% of the replicas will the application return ACK (two out of three nodes). However, theoretically, two nodes might crash. Therefore, except for scenarios with less strict requirement on data safety but extreme requirement on performance, it is strongly recommended that you enable the `sync-log` mode.
 
-As an alternative to using `sync-log`, you may also consider having five nodes instead of three in your Raft group. This would allow for the failure of two nodes, while still providing data safety.
+As an alternative to using `sync-log`, you may also consider having five replicas instead of three in your Raft group. This would allow for the failure of two replicas, while still providing data safety.
+
+For a standalone TiKV node, it is still recommended to enable the `sync-log` mode. Otherwise, the last write might be lost in case of a node failure.
 
 #### Since TiKV uses the Raft protocol, multiple network roundtrips occur during data writing. What is the actual write delay?
 
@@ -678,13 +684,17 @@ TiKV supports calling the interface separately. Theoretically, you can take an i
 - Reduce the data transmission between TiDB and TiKV
 - Make full use of the distributed computing resources of TiKV to execute computing pushdown
 
-#### The error message `IO error: No space left on device While appending to file` is displayed.
+#### The error message `IO error: No space left on device While appending to file` is displayed
 
 This is because the disk space is not enough. You need to add nodes or enlarge the disk space.
 
 #### Why does the OOM (Out of Memory) error occur frequently in TiKV?
 
 The memory usage of TiKV mainly comes from the block-cache of RocksDB, which is 40% of the system memory size by default. When the OOM error occurs frequently in TiKV, you should check whether the value of `block-cache-size` is set too high. In addition, when multiple TiKV instances are deployed on a single machine, you need to explicitly configure the parameter to prevent multiple instances from using too much system memory that results in the OOM error.
+
+#### Can both TiDB data and RawKV data be stored in the same TiKV cluster?
+
+No. TiDB (or data created from the transactional API) relies on a specific key format. It is not compatible with data created from RawKV API (or data from other RawKV-based services).
 
 ### TiDB test
 
@@ -693,7 +703,7 @@ The memory usage of TiKV mainly comes from the block-cache of RocksDB, which is 
 At the beginning, many users tend to do a benchmark test or a comparison test between TiDB and MySQL. We have also done a similar official test and find the test result is consistent at large, although the test data has some bias. Because the architecture of TiDB differs greatly from MySQL, it is hard to find a benchmark point. The suggestions are as follows:
 
 - Do not spend too much time on the benchmark test. Pay more attention to the difference of scenarios using TiDB.
-- See [Performance test result for TiDB using Sysbench](https://github.com/pingcap/docs/blob/master/v2.1/benchmark/sysbench-v3.md).
+- See [Performance test result for TiDB using Sysbench](https://github.com/pingcap/docs/blob/master/dev/benchmark/sysbench-v4.md).
 
 #### What's the relationship between the TiDB cluster capacity (QPS) and the number of nodes? How does TiDB compare to MySQL?
 
@@ -701,7 +711,7 @@ At the beginning, many users tend to do a benchmark test or a comparison test be
 - In MySQL, the read capacity can be increased by adding slave, but the write capacity cannot be increased except using sharding, which has many problems.
 - In TiDB, both the read and write capacity can be easily increased by adding more nodes.
 
-#### The performance test of MySQL and TiDB by our DBA shows that the performance of a standalone TiDB is not as good as MySQL.
+#### The performance test of MySQL and TiDB by our DBA shows that the performance of a standalone TiDB is not as good as MySQL
 
 TiDB is designed for scenarios where sharding is used because the capacity of a MySQL standalone is limited, and where strong consistency and complete distributed transactions are required. One of the advantages of TiDB is pushing down computing to the storage nodes to execute concurrent computing.
 
@@ -737,9 +747,15 @@ Because TiDB supports most MySQL syntax, generally you can migrate your applicat
 
 Restart the TiDB service, add the `-skip-grant-table=true` parameter in the configuration file. Log into the cluster without password and recreate the user, or recreate the `mysql.user` table using the following statement:
 
+{{< copyable "sql" >}}
+
 ```sql
 DROP TABLE IF EXIST mysql.user;
+```
 
+{{< copyable "sql" >}}
+
+```sql
 CREATE TABLE if not exists mysql.user (
     Host        CHAR(64),
     User        CHAR(16),
@@ -768,7 +784,11 @@ CREATE TABLE if not exists mysql.user (
     Event_priv      ENUM('N','Y') NOT NULL DEFAULT 'N',
     Trigger_priv      ENUM('N','Y') NOT NULL DEFAULT 'N',
     PRIMARY KEY (Host, User));
+```
 
+{{< copyable "sql" >}}
+
+```sql
 INSERT INTO mysql.user VALUES ("%", "root", "", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y");
 ```
 
@@ -875,7 +895,7 @@ It is recommended to build a multi-source MySQL -> TiDB real-time replication en
 
 The total read capacity has no limit. You can increase the read capacity by adding more TiDB servers. Generally the write capacity has no limit as well. You can increase the write capacity by adding more TiKV nodes.
 
-#### The error message `transaction too large` is displayed.
+#### The error message `transaction too large` is displayed
 
 As distributed transactions need to conduct two-phase commit and the bottom layer performs Raft replication, if a transaction is very large, the commit process would be quite slow and the following Raft replication flow is thus struck. To avoid this problem, we limit the transaction size:
 
@@ -925,7 +945,9 @@ If the amount of data that needs to be deleted at a time is very large, this loo
 
 You can configure concurrent GC to increase the speed of reclaiming storage space. The default concurrency is 1, and you can modify it to at most 50% of the number of TiKV instances using the following command:
 
-```
+{{< copyable "sql" >}}
+
+```sql
 update mysql.tidb set VARIABLE_VALUE="3" where VARIABLE_NAME="tikv_gc_concurrency";
 ```
 
@@ -954,8 +976,13 @@ Recommendations:
 
 You can use `admin show ddl` to view the progress of the current DDL job. The operation is as follows:
 
+{{< copyable "sql" >}}
+
 ```sql
-tidb> admin show ddl\G;
+admin show ddl;
+```
+
+```
 *************************** 1. row ***************************
   SCHEMA_VER: 140
        OWNER: 1a1c4174-0fcd-4ba0-add9-12d08c4077dc
@@ -1076,6 +1103,8 @@ The accessed Region is not available. A Raft Group is not available, with possib
 #### ERROR 9006 (HY000): GC life time is shorter than transaction duration
 
 The interval of `GC Life Time` is too short. The data that should have been read by long transactions might be deleted. You can add `GC Life Time` using the following command:
+
+{{< copyable "sql" >}}
 
 ```sql
 update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_time';
