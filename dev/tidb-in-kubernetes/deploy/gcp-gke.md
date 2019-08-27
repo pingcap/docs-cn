@@ -484,7 +484,7 @@ terraform destroy
 ```shell
 # 假设已在项目根目录
 mkdir -p deploy/gcp-staging
-vim deploy/gccp-staging/main.tf
+vim deploy/gcp-staging/main.tf
 ```
 
 `deploy/gcp-staging/main.tf` 中的内容类似：
