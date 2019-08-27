@@ -20,7 +20,7 @@ category: benchmark
 
 TiDB Operator 使用 v1.0.0 版本。
 
-PD, TiDB 和 TiKV 实例数均为 3 个。各组件分别作了如下配置，未配置部分使用默认值。
+PD、TiDB 和 TiKV 实例数均为 3 个。各组件分别作了如下配置，未配置部分使用默认值。
 
 PD:
 
