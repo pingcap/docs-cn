@@ -230,7 +230,7 @@ QPS 对比：
 
 ![Pod vs Host Network](/media/sysbench-in-k8s/pod-vs-host-network-qps.svg)
 
-Latency 对比:
+Latency 对比：
 
 ![Pod vs Host Network](/media/sysbench-in-k8s/pod-vs-host-network-latency.svg)
 
