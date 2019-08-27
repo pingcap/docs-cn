@@ -128,7 +128,7 @@ sysctl net.ipv4.tcp_syncookies=0
 
 ### Sysbench 版本与运行参数
 
-本次测试中 sysbench 版本为 1.0.17 。并测试前统一使用 `oltp_common` 的 `prewarm` 命令进行数据预热。
+本次测试中 sysbench 版本为 1.0.17。并在测试前统一使用 `oltp_common` 的 `prewarm` 命令进行数据预热。
 
 #### 初始化
 
