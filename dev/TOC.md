@@ -335,6 +335,7 @@
     - [销毁 TiDB 集群](tidb-in-kubernetes/maintain/destroy-tidb-cluster.md)
     - [维护 TiDB 集群所在节点](tidb-in-kubernetes/maintain/kubernetes-node.md)
     - [备份与恢复](tidb-in-kubernetes/maintain/backup-and-restore.md)
+    - [恢复 Kubernetes 上的 TiDB 集群数据](tidb-in-kubernetes/maintain/lightning.md)
     - [收集日志](tidb-in-kubernetes/maintain/log-collecting.md)
     - [集群故障自动转移](tidb-in-kubernetes/maintain/auto-failover.md)
   - [扩缩容](tidb-in-kubernetes/scale-in-kubernetes.md)
