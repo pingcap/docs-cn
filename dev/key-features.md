@@ -18,7 +18,7 @@ TiDB does not have 100% MySQL compatibility because we built the layer from scra
 
 ## Replicate from and to MySQL
 
-TiDB supports the ability to replicate from a MySQL or MariaDB installation, using its Data Migration (DM) toolchain. Replication is also possible in the direction of TiDB to MySQL using the TiDB-Binlog.
+TiDB supports the ability to replicate from a MySQL or MariaDB installation, using its Data Migration (DM) toolchain. Replication is also possible in the direction of TiDB to MySQL using the TiDB Binlog.
 
 We believe that being able to replicate in both directions lowers the risk when either evaluating or migrating to TiDB from MySQL.
 
@@ -74,7 +74,7 @@ Your session will be placed in read-only mode while reading the earlier versions
 
 ## Fast Import and Restore of Data
 
-TiDB supports the ability to fast-import both mydumper and .csv formatted data using an optimized insert mode that disables redo logging, and applies a number of optimizations.
+TiDB supports the ability to fast-import both Mydumper and .csv formatted data using an optimized insert mode that disables redo logging, and applies a number of optimizations.
 
 With TiDB Lightning, you can import data into TiDB at over 100GiB/hour using production-grade hardware.
 

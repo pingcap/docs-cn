@@ -12,7 +12,7 @@ The capacity of a TiDB cluster can be increased or reduced without affecting onl
 
 > **Note:**
 >
-> If your TiDB cluster is deployed using Ansible, see [Scale the TiDB Cluster Using TiDB-Ansible](/how-to/scale/with-ansible.md).
+> If your TiDB cluster is deployed using Ansible, see [Scale the TiDB Cluster Using TiDB Ansible](/how-to/scale/with-ansible.md).
 
 The following part shows you how to add or delete PD, TiKV or TiDB nodes.
 
@@ -24,9 +24,9 @@ Assume we have three PD servers with the following details:
 
 | Name | ClientUrls        | PeerUrls          |
 |:-----|:------------------|:------------------|
-| pd1  | http://host1:2379 | http://host1:2380 |
-| pd2  | http://host2:2379 | http://host2:2380 |
-| pd3  | http://host3:2379 | http://host3:2380 |
+| pd1  | <http://host1:2379> | <http://host1:2380> |
+| pd2  | <http://host2:2379> | <http://host2:2380> |
+| pd3  | <http://host3:2379> | <http://host3:2380> |
 
 Get the information about the existing PD nodes through pd-ctl:
 

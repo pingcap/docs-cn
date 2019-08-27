@@ -141,7 +141,7 @@ in the field.
 
 ### Non-configurable options
 
-Lightning does not support every option supported by the `LOAD DATA` statement. Some examples:
+TiDB Lightning does not support every option supported by the `LOAD DATA` statement. Some examples:
 
 * The line terminator must only be CR (`\r`), LF (`\n`) or CRLF (`\r\n`), i.e. `LINES TERMINATED BY`
     is not customizable.

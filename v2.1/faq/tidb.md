@@ -6,6 +6,8 @@ category: faq
 
 # TiDB FAQ
 
+<!-- markdownlint-disable MD026 -->
+
 This document lists the Most Frequently Asked Questions about TiDB.
 
 ## About TiDB
@@ -228,7 +230,7 @@ Check the time difference between the machine time of the monitor and the time w
 | Variable        | Description                                                |
 | ---- | ------- |
 | cluster_name | the name of a cluster, adjustable |
-| tidb_version | the version of TiDB, configured by default in TiDB-Ansible branches |
+| tidb_version | the version of TiDB, configured by default in TiDB Ansible branches |
 | deployment_method | the method of deployment, binary by default, Docker optional |
 | process_supervision | the supervision way of processes, systemd by default, supervise optional |
 | timezone | the timezone of the managed node, adjustable, `Asia/Shanghai` by default, used with the `set_timezone` variable |
@@ -287,7 +289,7 @@ The Direct mode wraps the Write request into the I/O command and sends this comm
     ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randread_write_test.txt -name='fio mixed randread and sequential write test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_write_test.json
     ```
 
-#### Error `UNREACHABLE! "msg": "Failed to connect to the host via ssh: " ` when deploying TiDB using TiDB-Ansible
+#### Error `UNREACHABLE! "msg": "Failed to connect to the host via ssh: "` when deploying TiDB using TiDB Ansible
 
 Two possible reasons and solutions:
 
@@ -312,7 +314,7 @@ Two possible reasons and solutions:
 
 #### How are the rolling updates done?
 
-When you apply rolling updates to the TiDB services, the running application is not affected. You need to configure the minimum cluster topology (TiDB * 2, PD * 3, TiKV * 3). If the Pump/Drainer service is involved in the cluster, it is recommended to stop Drainer before rolling updates. When you update TiDB, Pump is also updated.
+When you apply rolling updates to the TiDB services, the running application is not affected. You need to configure the minimum cluster topology (TiDB \* 2, PD \* 3, TiKV \* 3). If the Pump/Drainer service is involved in the cluster, it is recommended to stop Drainer before rolling updates. When you update TiDB, Pump is also updated.
 
 #### How to upgrade when I deploy TiDB using Binary?
 
@@ -402,11 +404,11 @@ Take `Release Version: v1.0.3-1-ga80e796` as an example of version number descri
 - `-1` indicates the current version has one commit.
 - `ga80e796` indicates the version `git-hash`.
 
-#### What's the difference between various TiDB master versions? How to avoid using the wrong TiDB-Ansible version?
+#### What's the difference between various TiDB master versions? How to avoid using the wrong TiDB Ansible version?
 
 The TiDB community is highly active. After the 1.0 GA release, the engineers have been keeping optimizing and fixing bugs. Therefore, the TiDB version is updated quite fast. If you want to keep informed of the latest version, see [TiDB Weekly update](https://pingcap.com/weekly/).
 
-It is recommended to deploy the TiDB cluster using the latest version of TiDB-Ansible, which will also be updated along with the TiDB version. TiDB has a unified management of the version number after the 1.0 GA release. You can view the version number using the following two methods:
+It is recommended to deploy the TiDB cluster using the latest version of TiDB Ansible, which will also be updated along with the TiDB version. TiDB has a unified management of the version number after the 1.0 GA release. You can view the version number using the following two methods:
 
 - `select tidb_version()`
 - `tidb-server -V`
@@ -491,7 +493,7 @@ The offline node usually indicates the TiKV node. You can determine whether the 
 
 #### Why couldn't I connect to the PD server using `127.0.0.1` when I was using the PD Control?
 
-If your TiDB cluster is deployed using TiDB-Ansible, the PD external service port is not bound to `127.0.0.1`, so PD Control does not recognize `127.0.0.1` and you can only connect to it using the local IP address.
+If your TiDB cluster is deployed using TiDB Ansible, the PD external service port is not bound to `127.0.0.1`, so PD Control does not recognize `127.0.0.1` and you can only connect to it using the local IP address.
 
 ### Manage the TiDB server
 
@@ -709,7 +711,7 @@ TiDB is not suitable for tables of small size (such as below ten million level),
 
 #### How to back up data in TiDB?
 
-Currently, the preferred method for backup is using the [PingCAP fork of mydumper](/reference/tools/mydumper.md). Although the official MySQL tool `mysqldump` is also supported in TiDB to back up and restore data, its performance is poorer than [`mydumper`](/reference/tools/mydumper.md)/[`loader`](/reference/tools/loader.md) and it needs much more time to back up and restore large volumes of data.
+Currently, the preferred method for backup is using the [PingCAP fork of Mydumper](/reference/tools/mydumper.md). Although the official MySQL tool `mysqldump` is also supported in TiDB to back up and restore data, its performance is poorer than [`mydumper`](/reference/tools/mydumper.md)/[`loader`](/reference/tools/loader.md) and it needs much more time to back up and restore large volumes of data.
 
 Keep the size of the data file exported from `mydumper` as small as possible. It is recommended to keep the size within 64M. You can set value of the `-F` parameter to 64.
 
@@ -721,7 +723,7 @@ You can edit the `t` parameter of `loader` based on the number of TiKV instances
 
 #### Mydumper
 
-See [mydumper Instructions](/reference/tools/mydumper.md).
+See [Mydumper Instructions](/reference/tools/mydumper.md).
 
 #### Loader
 
@@ -851,7 +853,7 @@ Frequent DDL operations may affect the replication speed. For Sycner, DDL operat
 
 ##### If the machine that Syncer is in is broken and the directory of the `syncer.meta` file is lost, what should I do?
 
-When you replicate data using Syncer GTID, the `syncer.meta` file is constantly updated during the replication process. The current version of Syncer does not contain the design for high availability. The `syncer.meta` configuration file of Syncer is directly stored on the hard disks, which is similar to other tools in the MySQL ecosystem, such as mydumper.
+When you replicate data using Syncer GTID, the `syncer.meta` file is constantly updated during the replication process. The current version of Syncer does not contain the design for high availability. The `syncer.meta` configuration file of Syncer is directly stored on the hard disks, which is similar to other tools in the MySQL ecosystem, such as Mydumper.
 
 Two solutions:
 

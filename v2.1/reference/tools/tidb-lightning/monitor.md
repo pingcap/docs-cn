@@ -10,7 +10,7 @@ Both `tidb-lightning` and `tikv-importer` supports metrics collection via [Prome
 
 ## Monitor configuration
 
-- If TiDB Lightning is installed using TiDB-Ansible, simply add the servers to the `[monitored_servers]` section in the `inventory.ini`. Then the Prometheus server can collect their metrics.
+- If TiDB Lightning is installed using TiDB Ansible, simply add the servers to the `[monitored_servers]` section in the `inventory.ini`. Then the Prometheus server can collect their metrics.
 - If TiDB Lightning is manually installed, follow the instructions below.
 
 ### `tikv-importer`

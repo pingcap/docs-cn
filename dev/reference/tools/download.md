@@ -35,9 +35,9 @@ If you want to download the latest version of [DM](/reference/tools/data-migrati
 |:---|:---|:---|:---|
 | [dm-latest-linux-amd64.tar.gz](http://download.pingcap.org/dm-latest-linux-amd64.tar.gz) | Linux | amd64 | [dm-latest-linux-amd64.sha256](http://download.pingcap.org/dm-latest-linux-amd64.sha256) |
 
-## Syncer, Loader, and mydumper
+## Syncer, Loader, and Mydumper
 
-If you want to download the latest version of [Syncer](/reference/tools/syncer.md), [Loader](/reference/tools/loader.md), or [mydumper](/reference/tools/mydumper.md), directly download the tidb-enterprise-tools package, because all these tools are included in this package.
+If you want to download the latest version of [Syncer](/reference/tools/syncer.md), [Loader](/reference/tools/loader.md), or [Mydumper](/reference/tools/mydumper.md), directly download the tidb-enterprise-tools package, because all these tools are included in this package.
 
 | Package name | OS | Architecture | SHA256 checksum |
 |:---|:---|:---|:---|
@@ -47,6 +47,6 @@ This enterprise tools package includes all the following tools:
 
 - Syncer
 - Loader
-- mydumper
+- Mydumper
 - [binlogctl](/reference/tidb-binlog-overview.md#binlogctl-guide)
 - [sync_diff_inspector](/reference/tools/sync-diff-inspector.md)

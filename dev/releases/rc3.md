@@ -12,7 +12,7 @@ On June 20, 2017, TiDB RC4 is released!This release is focused on MySQL compatib
 - The privilege management is refined to enable users to manage the data access privileges using the same way as in MySQL.
 - DDL is accelerated.
 - The load balancing policy and process are optimized for performance.
-- TiDB-Ansible is open sourced. By using TiDB-Ansilbe, you can deploy, upgrade, start and shutdown a TiDB cluster with one click.
+- TiDB Ansible is open sourced. By using TiDB-Ansilbe, you can deploy, upgrade, start and shutdown a TiDB cluster with one click.
 
 ## Detailed updates
 

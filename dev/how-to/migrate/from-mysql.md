@@ -12,7 +12,7 @@ You can use `mydumper` to export data from MySQL and `loader` to import the data
 
 > **Note:**
 >
-> Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use it. Its performance is much lower than `mydumper` / `loader` and it takes much time to migrate large amounts of data. It is important to use the `mydumper` provided by TiDB and not the upstream `mydumper` version.  See [mydumper](/reference/tools/mydumper.md) for more information.
+> Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use it. Its performance is much lower than `mydumper` / `loader` and it takes much time to migrate large amounts of data. It is important to use the `mydumper` provided by TiDB and not the upstream `mydumper` version.  See [Mydumper](/reference/tools/mydumper.md) for more information.
 
 `Mydumper` and `loader` can be [downloaded as part of Enterprise Tools](/reference/tools/download.md).
 

@@ -9,23 +9,23 @@ aliases: ['/docs/tools/binlog/deploy/','/docs/dev/reference/tools/tidb-binlog/de
 
 This document describes two methods of deploying TiDB Binlog:
 
-- [Deploy TiDB Binlog using TiDB-Ansible](#deploy-tidb-binlog-using-tidb-ansible)
+- [Deploy TiDB Binlog using TiDB Ansible](#deploy-tidb-binlog-using-tidb-ansible)
 - [Deploy TiDB Binlog using a Binary package](#deploy-tidb-binlog-using-a-binary-package)
 
-It is recommended to deploy TiDB Binlog using TiDB-Ansible. If you just want to do a simple testing, you can deploy TiDB Binlog using a Binary package.
+It is recommended to deploy TiDB Binlog using TiDB Ansible. If you just want to do a simple testing, you can deploy TiDB Binlog using a Binary package.
 
 ## Deploy TiDB Binlog using TiDB Ansible
 
 ### Step 1: Download TiDB Ansible
 
-1. Use the TiDB user account to log in to the central control machine and go to the `/home/tidb` directory. The information about the branch of TiDB-Ansible and the corresponding TiDB version is as follows. If you have questions regarding which version to use, email to [info@pingcap.com](mailto:info@pingcap.com) for more information or [file an issue](https://github.com/pingcap/tidb-ansible/issues/new).
+1. Use the TiDB user account to log in to the central control machine and go to the `/home/tidb` directory. The information about the branch of TiDB Ansible and the corresponding TiDB version is as follows. If you have questions regarding which version to use, email to [info@pingcap.com](mailto:info@pingcap.com) for more information or [file an issue](https://github.com/pingcap/tidb-ansible/issues/new).
 
     | tidb-ansible branch | TiDB version | Note |
     | ------------------- | ------------ | ---- |
     | release-3.0 | 3.0 stable | The latest 3.0 stable version. For use in production environments (recommended). |
     | master | 3.0 unstable | This version includes the latest features with a daily update. |
 
-2. Use the following command to download the corresponding branch of TiDB-Ansible from the [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible) on GitHub. The default folder name is `tidb-ansible`.
+2. Use the following command to download the corresponding branch of TiDB Ansible from the [TiDB Ansible project](https://github.com/pingcap/tidb-ansible) on GitHub. The default folder name is `tidb-ansible`.
 
     - Download the 3.0 branch:
 
@@ -495,6 +495,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
 3. Starting TiDB server:
 
     - After starting Pump and Drainer, start TiDB server with binlog enabled by adding this section to your config file for TiDB server:
+
         ```
         [binlog]
         enable=true

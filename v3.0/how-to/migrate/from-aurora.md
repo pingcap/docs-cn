@@ -108,7 +108,7 @@ mysql-instances:
   source-id: "mysql-replica-01"
   # The configuration item name of the black and white lists of the schema or table to be replicated, used to quote the global black and white lists configuration. For global configuration, see the `black-white-list` below.
   black-white-list: "global"
-  # The configuration item name of mydumper, used to quote the global mydumper configuration.
+  # The configuration item name of Mydumper, used to quote the global Mydumper configuration.
   mydumper-config-name: "global"
 
 -
@@ -123,10 +123,10 @@ black-white-list:
     - db-name: "test_db"              # The database name of the table to be replicated
       tbl-name: "test_table"          # The name of the table to be replicated
 
-# mydumper global configuration. Each instance can quote it by the configuration item name.
+# Mydumper global configuration. Each instance can quote it by the configuration item name.
 mydumpers:
   global:
-    extra-args: "-B test_db -T test_table"  # Only outputs the `test_table` table of the `test_db` schema and can configure any parameter of mydumper.
+    extra-args: "-B test_db -T test_table"  # Only outputs the `test_table` table of the `test_db` schema and can configure any parameter of Mydumper.
 ```
 
 ## Step 5: Start the task

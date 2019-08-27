@@ -12,9 +12,9 @@ This guide describes how to deploy a TiDB cluster using Ansible. For the product
 
 Ansible is an IT automation tool that can configure systems, deploy software, and orchestrate more advanced IT tasks such as continuous deployments or zero downtime rolling updates.
 
-[TiDB-Ansible](https://github.com/pingcap/tidb-ansible) is a TiDB cluster deployment tool developed by PingCAP, based on Ansible playbook. TiDB-Ansible enables you to quickly deploy a new TiDB cluster which includes PD, TiDB, TiKV, and the cluster monitoring modules.
+[TiDB Ansible](https://github.com/pingcap/tidb-ansible) is a TiDB cluster deployment tool developed by PingCAP, based on Ansible playbook. TiDB Ansible enables you to quickly deploy a new TiDB cluster which includes PD, TiDB, TiKV, and the cluster monitoring modules.
 
-You can use the TiDB-Ansible configuration file to set up the cluster topology and complete all the following operation tasks:
+You can use the TiDB Ansible configuration file to set up the cluster topology and complete all the following operation tasks:
 
 - Initialize operating system parameters
 - Deploy the whole TiDB cluster
@@ -128,7 +128,7 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
     +----[SHA256]-----+
     ```
 
-## Step 3: Download TiDB-Ansible to the Control Machine
+## Step 3: Download TiDB Ansible to the Control Machine
 
 1. Log in to the Control Machine using the `tidb` user account and enter the `/home/tidb` directory. The relationship between the `tidb-ansible` version and the TiDB version is as follows:
 
@@ -139,7 +139,7 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
     | 3.0 version | v3.0.0-beta, v3.0.0-beta.1 | It is currently a beta version which is not recommended to use in the production environment. |
     | `master` branch | None | It includes the newest features and is updated on a daily basis, so it is not recommended to use it in the production environment. |
 
-2. Download the [corresponding TiDB-Ansible versions](https://github.com/pingcap/tidb-ansible/tags) from the [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`.
+2. Download the [corresponding TiDB Ansible versions](https://github.com/pingcap/tidb-ansible/tags) from the [TiDB Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`.
 
     > **Note:**
     >
@@ -167,7 +167,7 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
 
 Make sure you have logged in to the Control Machine using the `tidb` user account.
 
-It is required to use `pip` to install Ansible and its dependencies, otherwise a compatibility issue occurs. Currently, the release-2.0, release-2.1, and master branches of TiDB-Ansible are compatible with Ansible 2.4 and Ansible 2.5.
+It is required to use `pip` to install Ansible and its dependencies, otherwise a compatibility issue occurs. Currently, the release-2.0, release-2.1, and master branches of TiDB Ansible are compatible with Ansible 2.4 and Ansible 2.5.
 
 1. Install Ansible and the dependencies on the Control Machine:
 
@@ -542,7 +542,7 @@ To enable the following control variables, use the capitalized `True`. To disabl
 | Variable Name | Description |
 | :---- | :------- |
 | cluster_name | the name of a cluster, adjustable |
-| tidb_version | the version of TiDB, configured by default in TiDB-Ansible branches |
+| tidb_version | the version of TiDB, configured by default in TiDB Ansible branches |
 | process_supervision | the supervision way of processes, systemd by default, supervise optional |
 | timezone | the global default time zone configured when a new TiDB cluster bootstrap is initialized; you can edit it later using the global `time_zone` system variable and the session `time_zone` system variable as described in [Time Zone Support](/how-to/configure/time-zone.md); the default value is `Asia/Shanghai` and see [the list of time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for more optional values |
 | enable_firewalld | to enable the firewall, closed by default; to enable it, add the ports in [network requirements](/how-to/deploy/hardware-recommendations.md#network-requirements) to the white list |
@@ -756,7 +756,7 @@ Run the following command:
 process_supervision = systemd
 ```
 
-For versions earlier than TiDB 1.0.4, the TiDB-Ansible supervision method of a process is `supervise` by default. The previously installed cluster can remain the same. If you need to change the supervision method to `systemd`, stop the cluster and run the following command:
+For versions earlier than TiDB 1.0.4, the TiDB Ansible supervision method of a process is `supervise` by default. The previously installed cluster can remain the same. If you need to change the supervision method to `systemd`, stop the cluster and run the following command:
 
 ```
 ansible-playbook stop.yml

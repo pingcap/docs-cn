@@ -13,7 +13,7 @@ On June 20, 2017, TiDB RC4 is released!This release is focused on MySQL compatib
 - The privilege management is refined to enable users to manage the data access privileges using the same way as in MySQL.
 - DDL is accelerated.
 - The load balancing policy and process are optimized for performance.
-- TiDB-Ansible is open sourced. By using TiDB-Ansilbe, you can deploy, upgrade, start and shutdown a TiDB cluster with one click.
+- TiDB Ansible is open sourced. By using TiDB-Ansilbe, you can deploy, upgrade, start and shutdown a TiDB cluster with one click.
 
 ## Detailed updates
 
@@ -21,9 +21,9 @@ On June 20, 2017, TiDB RC4 is released!This release is focused on MySQL compatib
 
 + The following features are added or improved in the SQL query optimizer:
     - Support incremental statistics
-    - Support the ` Merge Sort Join ` operator
-    - Support the ` Index Lookup Join` operator
-    - Support the ` Optimizer Hint` Syntax
+    - Support the `Merge Sort Join` operator
+    - Support the `Index Lookup Join` operator
+    - Support the `Optimizer Hint` Syntax
     - Optimize the memory consumption of the `Scan`, `Join`, `Aggregation` operators
     - Optimize the Cost Based Optimizer (CBO) framework
     - Refactor `Expression`

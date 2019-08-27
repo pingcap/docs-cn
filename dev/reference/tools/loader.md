@@ -14,7 +14,7 @@ It can be [downloaded](/reference/tools/download.md) as part of the Enterprise T
 
 ## Why did we develop Loader?
 
-Since tools like mysqldump will take us days to migrate massive amounts of data, we used the [mydumper/myloader suite](https://github.com/maxbube/mydumper) to multi-thread export and import data. During the process, we found that mydumper works well. However, as myloader lacks functions of error retry and savepoint, it is inconvenient for us to use. Therefore, we developed loader, which reads the output data files of mydumper and imports data to TiDB through the MySQL protocol.
+Since tools like mysqldump will take us days to migrate massive amounts of data, we used the [Mydumper/myloader suite](https://github.com/maxbube/mydumper) to multi-thread export and import data. During the process, we found that Mydumper works well. However, as myloader lacks functions of error retry and savepoint, it is inconvenient for us to use. Therefore, we developed loader, which reads the output data files of Mydumper and imports data to TiDB through the MySQL protocol.
 
 ## What can Loader do?
 
@@ -24,7 +24,7 @@ Since tools like mysqldump will take us days to migrate massive amounts of data,
 
 + Support concurrent import of a single large table and scattered hot spot write
 
-+ Support mydumper data format
++ Support Mydumper data format
 
 + Support error retry
 
@@ -37,7 +37,7 @@ Since tools like mysqldump will take us days to migrate massive amounts of data,
 > **Note:**
 >
 > - Do not import the `mysql` system database from the MySQL instance to the downstream TiDB instance.
-> - If mydumper uses the `-m` parameter, the data is exported without the table structure and the loader can not import the data.
+> - If Mydumper uses the `-m` parameter, the data is exported without the table structure and the loader can not import the data.
 > - If you use the default `checkpoint-schema` parameter, after importing the data of a database, run `drop database tidb_loader` before you begin to import the next database.
 > - It is recommended to specify the `checkpoint-schema = "tidb_loader"` parameter when importing data.
 

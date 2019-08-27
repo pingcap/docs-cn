@@ -24,7 +24,7 @@ There are several reasons why Lightning becomes slow:
 
 **Cause 2**: The table is too complex.
 
-Every additional index will introduce a new KV pair for each row. If there are N indices, the actual size to be imported would be approximately (N+1) times the size of the mydumper output. If the indices are negligible, you may first remove them from the schema, and add them back via `CREATE INDEX` after import is complete.
+Every additional index will introduce a new KV pair for each row. If there are N indices, the actual size to be imported would be approximately (N+1) times the size of the Mydumper output. If the indices are negligible, you may first remove them from the schema, and add them back via `CREATE INDEX` after import is complete.
 
 **Cause 3**: Lightning is too old.
 
@@ -103,7 +103,7 @@ See the [Checkpoints control](/reference/tools/tidb-lightning/checkpoints.md#che
 
 **Solutions**:
 
-1. Ensure Lightning and the source database are using the same time zone. When deploying via TiDB-Ansible, the timezone is defined in `inventory.ini`.
+1. Ensure Lightning and the source database are using the same time zone. When deploying via TiDB Ansible, the timezone is defined in `inventory.ini`.
 
     ```ini
     # inventory.ini
@@ -118,4 +118,4 @@ See the [Checkpoints control](/reference/tools/tidb-lightning/checkpoints.md#che
     TZ='Asia/Shanghai' bin/tidb-lightning -config tidb-lightning.toml
     ```
 
-2. When exporting data using mydumper, make sure to include the `--skip-tz-utc` flag.
+2. When exporting data using Mydumper, make sure to include the `--skip-tz-utc` flag.

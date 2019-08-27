@@ -415,9 +415,9 @@ Before replicating data using Syncer, check the following items:
 
 4. Check user privileges.
 
-    1. Check the user privileges required by mydumper for full data export.
+    1. Check the user privileges required by Mydumper for full data export.
 
-        - To export the full data using mydumper, the user must have the privileges of `select` and `reload`.
+        - To export the full data using Mydumper, the user must have the privileges of `select` and `reload`.
         - You can add the `--no-locks` option when the operation object is RDS, to avoid applying for the `reload` privilege.
 
     2. Check the upstream MySQL or MariaDB user privileges required by Syncer for incremental replication.
@@ -507,7 +507,7 @@ Syncer provides the metric interface, and requires Prometheus to actively obtain
 
 1. Log in to the Grafana Web interface.
 
-    - The default address is: http://localhost:3000
+    - The default address is: <http://localhost:3000>
     - The default account name: admin
     - The password for the default account: admin
 

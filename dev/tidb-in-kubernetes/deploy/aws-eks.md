@@ -253,7 +253,7 @@ In EKS, some values are not customizable in `values.yaml`, such as the cluster v
 
 ### Customize TiDB Operator
 
-You can customize the TiDB operator by specifying a Helm values file through the `operator_values` variable in the `variables.tf` file. For example:
+You can customize the TiDB Operator by specifying a Helm values file through the `operator_values` variable in the `variables.tf` file. For example:
 
 ```hcl
 variable "operator_values" {

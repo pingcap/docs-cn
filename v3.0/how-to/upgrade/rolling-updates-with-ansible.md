@@ -1,11 +1,11 @@
 ---
-title: Upgrade TiDB Using TiDB-Ansible
-summary: Use TiDB-Ansible to perform a rolling update for a TiDB cluster.
+title: Upgrade TiDB Using TiDB Ansible
+summary: Use TiDB Ansible to perform a rolling update for a TiDB cluster.
 category: how-to
 aliases: ['/docs/op-guide/ansible-deployment-rolling-update/','/docs/dev/how-to/maintain/upgrade/rolling-updates-with-ansible/']
 ---
 
-# Upgrade TiDB Using TiDB-Ansible
+# Upgrade TiDB Using TiDB Ansible
 
 When you perform a rolling update for a TiDB cluster, the service is shut down serially and is started after you update the service binary and the configuration file. If the load balancing is configured in the front-end, the rolling update of TiDB does not impact the running applications. Minimum requirements: `pd*3, tidb*2, tikv*3`.
 

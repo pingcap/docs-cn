@@ -84,7 +84,7 @@ mysql-instances:
   # database/table to be replicated, used to quote the global black and white
   # lists configuration that is set in the global black-white-list below.
   black-white-list: "global"
-  # The configuration item name of mydumper, used to quote the global mydumper configuration.
+  # The configuration item name of Mydumper, used to quote the global Mydumper configuration.
   mydumper-config-name: "global"
 
 -
@@ -100,11 +100,11 @@ black-white-list:
     - db-name: "test_db"              # The database name of the table to be replicated.
       tbl-name: "test_table"          # The name of the table to be replicated.
 
-# mydumper global configuration. Each instance can quote it by the configuration item name.
+# Mydumper global configuration. Each instance can quote it by the configuration item name.
 mydumpers:
   global:
-    mydumper-path: "./bin/mydumper"   # The file path of the mydumper binary.
-    extra-args: "-B test_db -T test_table"  # Only dumps the "test_table" table of the "test_db" database. It can configure any mydumper argument.
+    mydumper-path: "./bin/mydumper"   # The file path of the Mydumper binary.
+    extra-args: "-B test_db -T test_table"  # Only dumps the "test_table" table of the "test_db" database. It can configure any Mydumper argument.
 ```
 
 ## Step 4: Start the data replication task

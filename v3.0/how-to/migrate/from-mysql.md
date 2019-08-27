@@ -13,7 +13,7 @@ You can use `mydumper` to export data from MySQL and `loader` to import the data
 
 > **Note:**
 >
-> Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use it. Its performance is much lower than `mydumper` / `loader` and it takes much time to migrate large amounts of data. It is important to use the `mydumper` provided by TiDB and not the upstream `mydumper` version.  See [mydumper](/reference/tools/mydumper.md) for more information.
+> Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use it. Its performance is much lower than `mydumper` / `loader` and it takes much time to migrate large amounts of data. It is important to use the `mydumper` provided by TiDB and not the upstream `mydumper` version.  See [Mydumper](/reference/tools/mydumper.md) for more information.
 
 `Mydumper` and `loader` can be [downloaded as part of Enterprise Tools](/reference/tools/download.md).
 
@@ -24,6 +24,7 @@ Use the `mydumper` tool to export data from MySQL by using the following command
 ```bash
 ./bin/mydumper -h 127.0.0.1 -P 3306 -u root -t 16 -F 64 -B test -T t1,t2 --skip-tz-utc -o ./var/test
 ```
+
 In this command,
 
 - `-B test`: means the data is exported from the `test` database.
@@ -85,17 +86,17 @@ To migrate data quickly, especially for huge amount of data, you can refer to th
 
 ### A sample and the configuration
 
- - The total size of the exported files is 214G. A single table has 8 columns and 2 billion rows.
- - The cluster topology:
+- The total size of the exported files is 214G. A single table has 8 columns and 2 billion rows.
+- The cluster topology:
     - 12 TiKV instances: 4 nodes, 3 TiKV instances per node
     - 4 TiDB instances
     - 3 PD instances
- - The configuration of each node:
+- The configuration of each node:
     - CPU: Intel Xeon E5-2670 v3 @ 2.30GHz
     - 48 vCPU [2 x 12 physical cores]
     - Memory: 128G
     - Disk: sda [raid 10, 300G] sdb[RAID 5, 2T]
     - Operating System: CentOS 7.3
- - The `-F` parameter of `mydumper` is set to 16 and the `-t` parameter of `loader` is set to 64.
+- The `-F` parameter of `mydumper` is set to 16 and the `-t` parameter of `loader` is set to 64.
 
 **Results**: It takes 11 hours to import all the data, which is 19.4G/hour.

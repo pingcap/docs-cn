@@ -206,7 +206,7 @@ $ ps -a
  18892 pts/1    00:00:00 ps
 ```
 
-Each of the upstream MySQL Server instances corresponds to a separate DM-worker instance, each of which has its own configuration file. These files describe the details of the connection to the upstream MySQL Server as well as where to store the relay log files (the local copy of the upstream server's binary log) and the output of mydumper. Each DM-worker should listen on a different port (defined by `worker-addr`). Here's dm-worker1.toml, for example:
+Each of the upstream MySQL Server instances corresponds to a separate DM-worker instance, each of which has its own configuration file. These files describe the details of the connection to the upstream MySQL Server as well as where to store the relay log files (the local copy of the upstream server's binary log) and the output of Mydumper. Each DM-worker should listen on a different port (defined by `worker-addr`). Here's dm-worker1.toml, for example:
 
 ```toml
 # Worker Configuration.
@@ -283,7 +283,7 @@ There are a number of global options, and several groups of options that define 
 
 * We use `black-white-list` to limit the scope of this task to database `dmtest`.
 
-* The `loaders` section defines where to find the output of each instance of mydumper that was executed by the respective instance of DM-worker.
+* The `loaders` section defines where to find the output of each instance of Mydumper that was executed by the respective instance of DM-worker.
 
 The `dmctl` tool is an interactive client that facilitates interaction with the DM cluster. You use it to start tasks, query task status, et cetera. Start the tool by executing `dmctl -master-addr :8261` to get the interactive prompt:
 
@@ -326,7 +326,7 @@ To start dmtask1, execute `start-task dm-cnf/dmtask1.yaml`:
 }
 ```
 
-Starting the task will kick off the actions defined in the task configuration file. That includes executing instances of mydumper and loader, and connecting the workers to the upstream MySQL servers as replication slaves after the initial data dump has been loaded.
+Starting the task will kick off the actions defined in the task configuration file. That includes executing instances of Mydumper and loader, and connecting the workers to the upstream MySQL servers as replication slaves after the initial data dump has been loaded.
 
 We can see that all rows have been migrated to the TiDB server:
 

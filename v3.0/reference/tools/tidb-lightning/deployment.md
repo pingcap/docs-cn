@@ -135,7 +135,7 @@ You can deploy TiDB Lightning using Ansible together with the [deployment of the
         # The listening port for metrics gathering. Should be open to the monitoring servers.
         tidb_lightning_pprof_port: 8289
 
-        # The file path that tidb-lightning reads the data source (mydumper SQL dump or CSV) from.
+        # The file path that tidb-lightning reads the data source (Mydumper SQL dump or CSV) from.
         data_source_dir: "{{ deploy_dir }}/mydumper"
         ```
 

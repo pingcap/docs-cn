@@ -27,7 +27,7 @@ This document is targeted for users who want to upgrade from TiDB 2.0 (above V2.
 >
 > If you have installed Ansible and its dependencies, you can skip this step.
 
-TiDB-Ansible release-3.0 depends on Ansible 2.4.2 and the later versions (`ansible>=2.4.2`, Ansible 2.7.11 recommended) and the Python module `jinja2>=2.9.6` and `jmespath>=0.9.0`.
+TiDB Ansible release-3.0 depends on Ansible 2.4.2 and the later versions (`ansible>=2.4.2`, Ansible 2.7.11 recommended) and the Python module `jinja2>=2.9.6` and `jmespath>=0.9.0`.
 
 To make it easy to manage dependencies, use `pip` to install Ansible and its dependencies. For details, see [Install Ansible and its dependencies on the Control Machine](/how-to/deploy/orchestrated/ansible.md#step-4-install-ansible-and-its-dependencies-on-the-control-machine). For offline environment, see [Install Ansible and its dependencies offline on the Control Machine](/how-to/deploy/orchestrated/offline-ansible.md#step-3-install-ansible-and-its-dependencies-offline-on-the-control-machine).
 
@@ -50,7 +50,7 @@ Version: 0.9.0
 > - Make sure that the Jinja2 version is correct, otherwise an error occurs when you start Grafana.
 > - Make sure that the jmespath version is correct, otherwise an error occurs when you perform a rolling update for TiKV.
 
-## Download TiDB-Ansible to the Control Machine
+## Download TiDB Ansible to the Control Machine
 
 1. Log in to the Control Machine using the `tidb` user account and enter the `/home/tidb` directory.
 
@@ -60,7 +60,7 @@ Version: 0.9.0
     $ mv tidb-ansible tidb-ansible-bak
     ```
 
-3. Download the tidb-ansible with the tag corresponding to TiDB 3.0. For more details, See [Download TiDB-Ansible to the Control Machine](/how-to/deploy/orchestrated/ansible.md#step-3-download-tidb-ansible-to-the-control-machine). The default folder name is `tidb-ansible`.
+3. Download the tidb-ansible with the tag corresponding to TiDB 3.0. For more details, See [Download TiDB Ansible to the Control Machine](/how-to/deploy/orchestrated/ansible.md#step-3-download-tidb-ansible-to-the-control-machine). The default folder name is `tidb-ansible`.
 
     ```shell
     $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git

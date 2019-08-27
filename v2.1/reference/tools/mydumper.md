@@ -1,18 +1,18 @@
 ---
-title: mydumper Instructions
-summary: Use mydumper to export data from TiDB.
+title: Mydumper Instructions
+summary: Use Mydumper to export data from TiDB.
 category: reference
 ---
 
-# mydumper Instructions
+# Mydumper Instructions
 
-## What is mydumper?
+## What is Mydumper?
 
-`mydumper` is a fork of the [mydumper](https://github.com/maxbube/mydumper) project with additional functionality specific to TiDB. It is the recommended method to use for logical backups of TiDB.
+`mydumper` is a fork of the [Mydumper](https://github.com/maxbube/mydumper) project with additional functionality specific to TiDB. It is the recommended method to use for logical backups of TiDB.
 
 It can be [downloaded](/reference/tools/download.md) as part of the Enterprise Tools package.
 
-## What enhancements does this contain over regular mydumper?
+## What enhancements does this contain over regular Mydumper?
 
 + Uses `tidb_snapshot` to provide backup consistency instead of `FLUSH TABLES WITH READ LOCK`
 
@@ -45,8 +45,8 @@ Command line parameter:
 
 ### Is the source code for these changes available?
 
-Source code for PingCAP's mydumper is [available on GitHub](https://github.com/pingcap/mydumper).
+Source code for PingCAP's Mydumper is [available on GitHub](https://github.com/pingcap/mydumper).
 
-### Do you plan to make these changes available to upstream mydumper?
+### Do you plan to make these changes available to upstream Mydumper?
 
-Yes, we intend to make our changes available to upstream mydumper. See [PR #155](https://github.com/maxbube/mydumper/pull/155).
+Yes, we intend to make our changes available to upstream Mydumper. See [PR #155](https://github.com/maxbube/mydumper/pull/155).

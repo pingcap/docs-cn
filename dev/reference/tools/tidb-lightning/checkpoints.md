@@ -47,7 +47,7 @@ driver = "file"
 
 ## Checkpoints storage
 
-Lightning supports two kinds of checkpoint storage: a local file or a remote MySQL-compatible database.
+TiDB Lightning supports two kinds of checkpoint storage: a local file or a remote MySQL-compatible database.
 
 * With `driver = "file"`, checkpoints are stored in a local file at the path given by the `dsn` setting. Checkpoints are updated rapidly, so we highly recommend placing the checkpoint file on a drive with very high write endurance, such as a RAM disk.
 

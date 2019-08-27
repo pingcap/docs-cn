@@ -201,7 +201,7 @@ Once the K8s cluster is up and running, we can add chart repo and install TiDB O
     helm search tidb-operator -l
     ```
 
-2. Install TiDB operator:
+2. Install TiDB Operator:
 
     {{< copyable "shell-regular" >}}
 

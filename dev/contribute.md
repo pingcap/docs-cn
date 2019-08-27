@@ -10,7 +10,7 @@ category: how-to
 
 We recommend starting with an existing issue with the [help-wanted](https://github.com/pingcap/tidb/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) label. These issues are well suited for new contributors.
 
-If a PR (Pull Request) submitted to the [TiDB/TiKV/TiSpark/PD/TiDB-Operator/Docs/Docs-cn](https://github.com/pingcap) projects by you is approved and merged, then you become a TiDB Contributor.
+If a PR (Pull Request) submitted to the [TiDB/TiKV/TiSpark/PD/TiDB Operator/Docs/Docs-cn](https://github.com/pingcap) projects by you is approved and merged, then you become a TiDB Contributor.
 
 Before submitting a pull request, sign the [CLA](https://cla-assistant.io/pingcap/tidb?pullRequest=5567).
 

@@ -62,7 +62,7 @@ After kubectl is installed, test your minikube Kubernetes cluster:
 kubectl cluster-info
 ```
 
-## Install TiDB operator and run a TiDB cluster
+## Install TiDB Operator and run a TiDB cluster
 
 ### Install helm
 
@@ -117,7 +117,7 @@ helm search tidb-cluster -l
 helm search tidb-operator -l
 ```
 
-### Install TiDB operator in the Kubernetes cluster
+### Install TiDB Operator in the Kubernetes cluster
 
 > **Note:**
 >

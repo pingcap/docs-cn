@@ -14,7 +14,7 @@ Before you start, make sure that you have:
 
 1. A download machine
 
-    - The machine must have access to the Internet in order to download TiDB-Ansible, TiDB and related packages.
+    - The machine must have access to the Internet in order to download TiDB Ansible, TiDB and related packages.
     - For Linux operating system, it is recommended to install CentOS 7.3 or later.
 
 2. Several target machines and one Control Machine
@@ -78,7 +78,7 @@ Currently, the TiDB 2.0 GA version and the master version are compatible with An
      ansible 2.5.0
     ```
 
-## Step 4: Download TiDB-Ansible and TiDB packages on the download machine
+## Step 4: Download TiDB Ansible and TiDB packages on the download machine
 
 The relationship between the `tidb-ansible` version and the TiDB version is as follows:
 
@@ -108,9 +108,9 @@ The relationship between the `tidb-ansible` version and the TiDB version is as f
     >
     > Make sure that the version of Ansible is 2.5, otherwise a compatibility issue occurs.
 
-2. Download TiDB-Ansible.
+2. Download TiDB Ansible.
 
-    Use the following command to download the corresponding version of TiDB-Ansible from the GitHub [TiDB-Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`.
+    Use the following command to download the corresponding version of TiDB Ansible from the GitHub [TiDB Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`.
 
     > **Note:**
     >

@@ -6,7 +6,7 @@ category: reference
 
 # TiDB Lightning Overview
 
-[TiDB Lightning](https://github.com/pingcap/tidb-lightning) is a tool used for fast full import of large amounts of data into a TiDB cluster. Currently, TiDB Lightning supports reading SQL dump exported via mydumper or CSV data source. You can use it in the following two scenarios:
+[TiDB Lightning](https://github.com/pingcap/tidb-lightning) is a tool used for fast full import of large amounts of data into a TiDB cluster. Currently, TiDB Lightning supports reading SQL dump exported via Mydumper or CSV data source. You can use it in the following two scenarios:
 
 - Importing **large amounts** of **new** data **quickly**
 - Back up and restore all the data

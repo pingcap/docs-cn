@@ -8,7 +8,7 @@ category: reference
 
 TiDB supports both the MySQL wire protocol and the majority of its syntax. This means that you can use your existing MySQL connectors and clients, and your existing applications can often be migrated to TiDB without changing any application code.
 
-Currently TiDB Server advertises itself as MySQL 5.7 and works with most MySQL database tools such as PHPMyAdmin, Navicat, MySQL Workbench, mysqldump, and mydumper/myloader.
+Currently TiDB Server advertises itself as MySQL 5.7 and works with most MySQL database tools such as PHPMyAdmin, Navicat, MySQL Workbench, mysqldump, and Mydumper/myloader.
 
 > **Note:**
 >
@@ -84,17 +84,17 @@ TiDB supports most of the MySQL built-in functions, but not all. See [TiDB SQL G
 In TiDB DDL does not block reads or writes to tables while in operation. However, some restrictions currently apply to DDL changes:
 
 + Add Index:
-  - Does not support creating multiple indexes at the same time.
-  - Adding an index on a generated column via `ALTER TABLE` is not supported.
+    - Does not support creating multiple indexes at the same time.
+    - Adding an index on a generated column via `ALTER TABLE` is not supported.
 + Add Column:
-  - Does not support creating multiple columns at the same time.
-  - Does not support setting a column as the `PRIMARY KEY`, or creating a unique index, or specifying `auto_increment` while adding it.
+    - Does not support creating multiple columns at the same time.
+    - Does not support setting a column as the `PRIMARY KEY`, or creating a unique index, or specifying `auto_increment` while adding it.
 + Drop Column: Does not support dropping the `PRIMARY KEY` column or index column.
 + Change/Modify Column:
-  - Does not support lossy changes, such as from `BIGINT` to `INTEGER` or `VARCHAR(255)` to `VARCHAR(10)`.
-  - Does not support modifying the precision of `DECIMAL` data types starting from TiDB v2.1.10.
-  - Does not support changing the `UNSIGNED` attribute.
-  - Only supports changing the `CHARACTER SET` attribute from `utf8` to `utf8mb4`.
+    - Does not support lossy changes, such as from `BIGINT` to `INTEGER` or `VARCHAR(255)` to `VARCHAR(10)`.
+    - Does not support modifying the precision of `DECIMAL` data types starting from TiDB v2.1.10.
+    - Does not support changing the `UNSIGNED` attribute.
+    - Only supports changing the `CHARACTER SET` attribute from `utf8` to `utf8mb4`.
 + `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`: the syntax is supported, but is not applicable to TiDB. All DDL changes that are supported do not lock the table.
 + `ALGORITHM [=] {DEFAULT|INSTANT|INPLACE|COPY}`: the syntax for `ALGORITHM=INSTANT` and `ALGORITHM=INPLACE` is fully supported, but will work differently than MySQL since some operations that are `INPLACE` in MySQL are `INSTANT` in TiDB. The syntax `ALGORITHM=COPY` is not applicable to TIDB and returns a warning.
 

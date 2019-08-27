@@ -161,7 +161,7 @@ tidb> SELECT /*!90000 "I should not run", */ "I should run" FROM dual;
 
 Support for `LOCK TABLE` syntax is currently experimental, and must be explicitly enabled ([TiDB #10343](https://github.com/pingcap/tidb/pull/10343)).
 
-It is recommended to use the historical reads feature of `tidb_snapshot` to produce consistent reads, instead of `FLUSH TABLES WITH READ LOCK`. Support for `tidb_snapshot` is available in [mydumper](/reference/tools/mydumper.md)).
+It is recommended to use the historical reads feature of `tidb_snapshot` to produce consistent reads, instead of `FLUSH TABLES WITH READ LOCK`. Support for `tidb_snapshot` is available in [Mydumper](/reference/tools/mydumper.md)).
 
 ### Default differences
 

@@ -81,7 +81,7 @@ TiDB Binlog can be [downloaded](/reference/tools/download.md) as part of the Ent
         bin/drainer -gen-savepoint --data-dir= ${drainer_savepoint_dir} --pd-urls=${pd_urls}
         ```
 
-    - Do a full backup. For example, back up TiDB using mydumper.
+    - Do a full backup. For example, back up TiDB using Mydumper.
     - Import the full backup to the target system.
     - Set the file path of the savepoint and start Drainer:
 
