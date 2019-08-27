@@ -304,6 +304,8 @@ The following part shows how to use Pump and Drainer based on the nodes above.
             the Prometheus Pushgateway address. If not set, it is forbidden to report the monitoring metrics.
         -metrics-interval int
             the report frequency of the monitoring metrics (15 by default, in seconds)
+        -node-id string
+            the unique ID of a Pump node. If you do not specify this ID, the system automatically generates an ID based on the host name and listening port.
         -pd-urls string
             the address of the PD cluster nodes (-pd-urls="http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379")
         ```
@@ -331,9 +333,35 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         # the address of the PD cluster nodes
         pd-urls = "http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379"
 
+        # [security]
+        # This section is generally commented out if no special security settings are required.
+        # The file path containing a list of trusted SSL CAs connected to the cluster.
+        # ssl-ca = "/path/to/ca.pem"
+        # The path to the X509 certificate that is connected to the cluster in PEM format.
+        # ssl-cert = "/path/to/drainer.pem"
+        # The path to the X509 key that is connected to the cluster in PEM format.
+        # ssl-key = "/path/to/drainer-key.pem"
+
         # [storage]
         # Set to true (by default) to guarantee reliability by ensuring binlog data is flushed to the disk
         # sync-log = true
+
+        # When the available disk capacity is less than the set value, Pump stops writing data.
+        # 42 MB -> 42000000, 42 mib -> 44040192
+        # default: 10 gib
+        # stop-write-at-available-space = "10 gib"
+        # The LSM DB settings embedded in Pump. Unless you know this part well, it is usually commented out.
+        # [storage.kv]
+        # block-cache-capacity = 8388608
+        # block-restart-interval = 16
+        # block-size = 4096
+        # compaction-L0-trigger = 8
+        # compaction-table-size = 67108864
+        # compaction-total-size = 536870912
+        # compaction-total-size-multiplier = 8.0
+        # write-buffer = 67108864
+        # write-L0-pause-trigger = 24
+        # write-L0-slowdown-trigger = 17
         ```
 
     - The example of starting Pump:
@@ -358,6 +386,8 @@ The following part shows how to use Pump and Drainer based on the nodes above.
             the address through which Drainer provides the service (-addr="192.168.0.13:8249")
         -c int
             the number of the concurrency of the downstream for replication. The bigger the value, the better throughput performance of the concurrency (1 by default).
+        -cache-binlog-count int
+            the limit on the number of binlog items in the cache (65536 by default)
         -config string
             the directory of the configuration file. Drainer reads the configuration file first.
             If the corresponding configuration exists in the command line parameters, Drainer uses the configuration of the command line parameters to cover that of the configuration file.
@@ -388,10 +418,13 @@ The following part shows how to use Pump and Drainer based on the nodes above.
             It it is not set, the monitoring metrics are not reported.
         -metrics-interval int
             the report frequency of the monitoring metrics (15 by default, in seconds)
+        -node-id string
+            the unique ID of a Drainer node. If you do not specify this ID, the system automatically generates an ID based on the host name and listening port.
         -pd-urls string
             the address of the PD cluster nodes (-pd-urls="http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379")
         -safe-mode
-            whether to enable the safe mode (divides the Update statement to Delete + Replace)
+            Whether to enable safe mode so that data can be written into the downstream MySQL/TiDB repeatedly.
+            This mode replaces the `INSERT` statement with the `REPLACE` statement and splits the `UPDATE` statement into `DELETE` plus `REPLACE`.
         -txn-batch int
             the number of SQL statements of a transaction which are output to the downstream database (1 by default)
         ```
@@ -436,9 +469,16 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         # If the downstream service is MySQL, set it to "False".
         disable-dispatch = false
 
+        # In safe mode, data can be written into the downstream MySQL/TiDB repeatedly.
+        # This mode replaces the `INSERT` statement with the `REPLACE` statement and replaces the `UPDATE` statement with `DELETE` plus `REPLACE` statements.
+        safe-mode = false
+
         # the downstream service type of Drainer ("mysql" by default)
         # Valid value: "mysql", "kafka", "file", "flash"
         db-type = "mysql"
+
+        # If `commit ts` of the transaction is in the list, the transaction is filtered and not replicated to the downstream.
+        ignore-txn-commit-ts = []
 
         # the db filter list ("INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test" by default)
         # Does not support the Rename DDL operation on tables of `ignore schemas`.
@@ -476,13 +516,20 @@ The following part shows how to use Pump and Drainer based on the nodes above.
 
         # the Kafka configuration when `db-type` is set to "kafka"
         # [syncer.to]
+        # only one of kafka-addrs and zookeeper-addrs is needed. If both are present, the program gives priority
+        # to the kafka address in zookeeper
         # zookeeper-addrs = "127.0.0.1:2181"
         # kafka-addrs = "127.0.0.1:9092"
         # kafka-version = "0.8.2.0"
+        # kafka-max-messages = 1024
 
         # the topic name of the Kafka cluster that saves the binlog data. The default value is <cluster-id>_obinlog
         # To run multiple Drainers to replicate data to the same Kafka cluster, you need to set different `topic-name`s for each Drainer.
         # topic-name = ""
+
+        [syncer.to.checkpoint]
+        # When the downstream is MySQL or TiDB, this option can be enabled to change the database that holds the checkpoint
+        # schema = "tidb_binlog"
         ```
 
     - Starting Drainer:
