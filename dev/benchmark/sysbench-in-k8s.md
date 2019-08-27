@@ -240,7 +240,7 @@ Latency 对比：
 
 GKE 平台可以为节点选择 [Ubuntu 和 COS 两种操作系统](https://cloud.google.com/kubernetes-engine/docs/concepts/node-images)。本次测试中，分别对两种操作系统进行 Point Select 测试。
 
-此次测试中 Pod 网络模式为 Host 。
+此次测试中 Pod 网络模式为 Host。
 
 COS:
 
