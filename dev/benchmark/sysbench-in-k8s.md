@@ -268,7 +268,7 @@ QPS 对比：
 
 ![COS vs Ubuntu](/media/sysbench-in-k8s/cos-vs-ubuntu-qps.svg)
 
-Latency 对比:
+Latency 对比：
 
 ![COS vs Ubuntu](/media/sysbench-in-k8s/cos-vs-ubuntu-latency.svg)
 
