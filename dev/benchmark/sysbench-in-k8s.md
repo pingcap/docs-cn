@@ -307,7 +307,7 @@ QPS 对比：
 
 ![Service vs Load Balancer](/media/sysbench-in-k8s/service-vs-load-balancer-qps.svg)
 
-Latency 对比:
+Latency 对比：
 
 ![Service vs Load Balancer](/media/sysbench-in-k8s/service-vs-load-balancer-latency.svg)
 
