@@ -245,11 +245,11 @@ Download the TiDB Lightning package (choose the same version as that of the TiDB
     # Number of concurrent import jobs.
     num-import-jobs = 24
     # Maximum duration to prepare Regions.
-    #max-prepare-duration = "5m"
+    # max-prepare-duration = "5m"
     # Split Regions into this size according to the importing data.
-    #region-split-size = "512MB"
+    # region-split-size = "512MB"
     # Stream channel window size. The stream will be blocked on channel full.
-    #stream-channel-window = 128
+    # stream-channel-window = 128
     # Maximum number of open engines.
     max-open-engines = 8
     # Maximum upload speed (bytes per second) from Importer to TiKV.
@@ -272,7 +272,7 @@ Download the TiDB Lightning package (choose the same version as that of the TiDB
 
 2. Mount the data source onto the same machine.
 
-3. Configure `tidb-lightning.toml`.
+3. Configure `tidb-lightning.toml`. For configurations that do not appear in the template below, TiDB Lightning writes a configuration error to the log file and exits.
 
     ```toml
     ### tidb-lightning configuration
@@ -282,7 +282,7 @@ Download the TiDB Lightning package (choose the same version as that of the TiDB
     pprof-port = 8289
 
     # Checks if the cluster satisfies the minimum requirement before starting.
-    #check-requirements = true
+    # check-requirements = true
 
     # The maximum number of engines to be opened concurrently.
     # Each table is split into one "index engine" to store indices, and multiple
@@ -297,7 +297,7 @@ Download the TiDB Lightning package (choose the same version as that of the TiDB
     # The concurrency number of data. It is set to the number of logical CPU
     # cores by default. When deploying together with other components, you can
     # set it to 75% of the size of logical CPU cores to limit the CPU usage.
-    #region-concurrency =
+    # region-concurrency =
 
     # The maximum I/O concurrency. Excessive I/O concurrency causes an increase in
     # I/O latency because the disk's internal buffer is frequently refreshed,
@@ -309,8 +309,14 @@ Download the TiDB Lightning package (choose the same version as that of the TiDB
     level = "info"
     file = "tidb-lightning.log"
     max-size = 128 # MB
-    max-days = 28
+    max-days = 28 # Old logs are not deleted by default.
     max-backups = 14
+
+    # Server mode
+    # Whether to enable server mode.
+    # server-mode = false
+    # Listening address in server mode.
+    # status-addr = ":8289"
 
     [checkpoint]
     # Whether to enable checkpoints.
@@ -331,11 +337,11 @@ Download the TiDB Lightning package (choose the same version as that of the TiDB
     # If the URL is not specified, the TiDB server from the [tidb] section is used to
     # store the checkpoints. You should specify a different MySQL-compatible
     # database server to reduce the load of the target TiDB cluster.
-    #dsn = "/tmp/tidb_lightning_checkpoint.pb"
+    # dsn = "/tmp/tidb_lightning_checkpoint.pb"
     # Whether to keep the checkpoints after all data are imported. If false, the
     # checkpoints will be deleted. Keeping the checkpoints can aid debugging but
     # will leak metadata about the data source.
-    #keep-after-success = false
+    # keep-after-success = false
 
     [tikv-importer]
     # The listening address of tikv-importer. Change it to the actual address.
@@ -381,6 +387,8 @@ Download the TiDB Lightning package (choose the same version as that of the TiDB
     # note that the *data* files are always parsed as binary regardless of
     # schema encoding.
     character-set = "auto"
+    # Is it case sensitive.
+    # case-sensitive = false
 
     # Configure how CSV files are parsed.
     [mydumper.csv]
@@ -415,6 +423,8 @@ Download the TiDB Lightning package (choose the same version as that of the TiDB
     # tidb-lightning imports TiDB as a library and generates some logs itself.
     # This setting controls the log level of the TiDB library.
     log-level = "error"
+    # MySQL SQL Mode configuration
+    # sql-mode = ""
 
     # Sets the TiDB session variable to speed up the Checksum and Analyze operations.
     # See https://pingcap.com/docs/dev/reference/performance/statistics/#control-analyze-concurrency
@@ -452,7 +462,7 @@ Download the TiDB Lightning package (choose the same version as that of the TiDB
     log-progress = "5m"
 
     # Table filter options. See the corresponding section for details.
-    #[black-white-list]
+    # [black-white-list]
     # ...
     ```
 
