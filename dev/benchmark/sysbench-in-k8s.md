@@ -124,7 +124,7 @@ sysctl vm.swappiness=0
 sysctl net.ipv4.tcp_syncookies=0
 ```
 
-同时对最大文件数配置为 1000000 。
+同时对最大文件数配置为 1000000。
 
 ### Sysbench 版本与运行参数
 
