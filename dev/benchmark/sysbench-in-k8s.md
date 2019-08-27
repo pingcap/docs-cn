@@ -10,7 +10,7 @@ category: benchmark
 ## 目的
 
 - 测试典型公有云平台上 TiDB 性能数据
-- 测试公有云平台磁盘、网络、CPU 以及不同 Pod 网络下 对 TiDB 性能影响
+- 测试公有云平台磁盘、网络、CPU 以及不同 Pod 网络下对 TiDB 性能的影响
 
 ## 环境
 
