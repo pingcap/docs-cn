@@ -226,7 +226,7 @@ Host Network:
 | 1200    | 441084.13 | 5.28            |
 | 1500    | 447659.15 | 6.67            |
 
-QPS 对比:
+QPS 对比：
 
 ![Pod vs Host Network](/media/sysbench-in-k8s/pod-vs-host-network-qps.svg)
 
