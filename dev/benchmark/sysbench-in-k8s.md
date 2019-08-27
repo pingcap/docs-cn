@@ -311,7 +311,7 @@ Latency 对比:
 
 ![Service vs Load Balancer](/media/sysbench-in-k8s/service-vs-load-balancer-latency.svg)
 
-从图中可以看到 Ubuntu 系统在单纯的 Point Select 测试是中表现比 COS 系统要好。
+从图中可以看到 K8S Service 在单纯的 Point Select 测试是中表现比 GCP LoadBalancer 要好。
 
 ### OLTP 其他测试
 
