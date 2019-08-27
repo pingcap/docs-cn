@@ -440,8 +440,6 @@ terraform destroy
 
 ### 删除磁盘
 
-如果你不再需要之前的数据，执行完 `terraform destroy` 后，可通过 Google Cloud 控制台或者 `gcloud` 删除磁盘。
-
 如果你不再需要之前的数据，并且想要删除正在使用的磁盘，有以下两种方法可以完成此操作：
 
 - 手动删除：在 Google Cloud Console 中删除磁盘，或使用 `gcloud` 命令行工具执行删除操作。
@@ -449,7 +447,7 @@ terraform destroy
 - 在执行 `terraform destroy` 之前将 Kubernetes 的 PV (Persistent Volume) 回收策略设置为 `Delete`，具体操作为在 `terraform destroy` 之前运行以下 `kubectl`命令：
 
     {{< copyable "shell-regular" >}}
-    
+
     ```bash
     kubectl --kubeconfig /path/to/kubeconfig/file get pvc -n namespace-of-tidb-cluster -o jsonpath='{.items[*].spec.volumeName}'|fmt -1 | xargs -I {} kubectl --kubeconfig /path/to/kubeconfig/file patch pv {} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
     ```
