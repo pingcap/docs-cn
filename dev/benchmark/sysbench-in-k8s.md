@@ -192,7 +192,7 @@ sysbench \
   run
 ```
 
-`<test>` 为 sysbench 的测试 case 。我们选择了 oltp_point_select, oltp_update_index, oltp_update_no_index, oltp_read_write 这几种。
+`<test>` 为 sysbench 的测试 case。我们选择了 oltp_point_select、oltp_update_index、oltp_update_no_index、oltp_read_write 这几种。
 
 ## 测试报告
 
