@@ -65,3 +65,22 @@ aliases: ['/docs-cn/v3.0/how-to/upgrade/tidb-in-kubernetes/']
 >
 > - 将 `enableConfigMapRollout` 特性从关闭状态打开时，即使没有配置变更，也会触发一次 PD、TiKV、TiDB 的滚动更新。
 > - 目前 PD 的 `scheduler` 和 `replication` 配置（`values.yaml` 中的 `maxStoreDownTime` 和 `maxReplicas` 字段）在集群安装完成后无法自动更新，需要通过 [pd-ctl](/reference/tools/pd-control.md) 手动更新。
+
+## 强制升级 TiDB 集群
+
+如果 PD 集群不可用，[TiDB 集群伸缩](/tidb-in-kubernetes/scale-in-kubernetes.md)，[升级 TiDB 版本](#升级-TiDB-版本)和[更新 TiDB 集群配置](#更新-TiDB-集群配置)都无法操作，从 TiDB Operator 版本 > v1.0.0-beta.3 开始，支持 `force-upgrade`，在 PD 集群不可用的情况下（例如，PD 配置错误，PD 镜像 tag 错误等），允许用户通过下面步骤强制升级集群以恢复集群功能：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl annotate --overwrite tc <release-name> -n <namespace> tidb.pingcap.com/force-upgrade=true
+```
+然后执行对应操作中的 `helm upgrade` 命令。
+
+PD 集群恢复后，**必须**执行下面命令禁用强制升级功能，否则下次升级过程可能会出现异常：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl annotate tc <release-name> -n <namespace> tidb.pingcap.com/force-upgrade-
+```
