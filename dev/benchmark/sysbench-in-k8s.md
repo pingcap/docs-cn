@@ -202,7 +202,7 @@ sysbench \
 
 Kubernetes 可以允许 Pod 运行在 Host 网络模式下，在 TiDB 实例独占机器没有端口冲突的情况下，此部署方式适用。我们分别对两种网络模式下分别做了 Point Select 测试。
 
-此次测试中，操作系统为 COS 。
+此次测试中，操作系统为 COS。
 
 Pod Network:
 
