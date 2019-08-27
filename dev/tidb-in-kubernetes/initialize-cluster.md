@@ -33,7 +33,7 @@ category: how-to
     kubectl create secret generic tidb-secret --from-literal=root=<root-password> --from-literal=developer=<developer-passowrd> --namespace=<namespace>
     ```
 
-    该命令会创建 `root` 和 `developer` 两个用户的密码，存到 `tidb-secret` 的 Secret 里面。
+    该命令会创建 `root` 和 `developer` 两个用户的密码，存到 `tidb-secret` 的 Secret 里面。并且创建的普通用户`developer`默认只有`USAGE`权限，其他权限请在`tidb.initSql`中设置。
 
 2. 设置允许访问 TiDB 的主机
 
