@@ -23,6 +23,7 @@
     - [SQL 基本操作](how-to/get-started/explore-sql.md)
     - [读取历史数据](how-to/get-started/read-historical-data.md)
     - [TiDB Binlog 教程](how-to/get-started/tidb-binlog.md)
+    - [TiDB Data Migration 教程](how-to/get-started/data-migration.md)
     - [TiSpark 教程](how-to/get-started/tispark.md)
   + 部署
     - [软硬件环境需求](how-to/deploy/hardware-recommendations.md)
@@ -34,7 +35,10 @@
       - [跨数据中心部署方案](how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](how-to/deploy/geographic-redundancy/location-awareness.md)
     - [使用 Ansible 部署 DM 集群](how-to/deploy/data-migration-with-ansible.md)
-    - [部署 TiDB Binlog 集群](how-to/deploy/tidb-binlog.md)
+    + 部署使用 TiDB Binlog
+      - [部署 TiDB Binlog 集群](how-to/deploy/tidb-binlog.md)
+      - [Binlog Slave Client 用户文档](reference/tools/tidb-binlog/binlog-slave-client.md)
+      - [Reparo 使用文档](reference/tools/tidb-binlog/reparo.md)
   + 配置
     - [时区](how-to/configure/time-zone.md)
     - [内存控制](how-to/configure/memory-control.md)
@@ -72,6 +76,55 @@
     - [Data Migration 故障诊断](how-to/troubleshoot/data-migration.md)
     - [TiDB Lightning 故障诊断](how-to/troubleshoot/tidb-lightning.md)
 + 参考手册
+  + 周边工具
+    - [Mydumper](reference/tools/mydumper.md)
+    - [Loader](reference/tools/loader.md)
+    - [Syncer](reference/tools/syncer.md)
+    + Data Migration
+      + 概述
+        - [DM 架构](reference/tools/data-migration/overview.md#dm-架构)
+        - [同步功能介绍](reference/tools/data-migration/overview.md#同步功能介绍)
+        - [使用限制](reference/tools/data-migration/overview.md#使用限制)
+      + 核心特性
+        - [Table Routing](reference/tools/data-migration/features/overview.md#table-routing)
+        - [Black & White Lists](reference/tools/data-migration/features/overview.md#black-white-table-lists)
+        - [Binlog Event Filter](reference/tools/data-migration/features/overview.md#binlog-event-filter)
+        - [Column Mapping](reference/tools/data-migration/features/overview.md#column-mapping)
+        - [同步延迟监控](reference/tools/data-migration/features/overview.md#同步延迟监控)
+        + Shard Support
+          - [简介](reference/tools/data-migration/features/shard-merge.md)
+          - [使用限制](reference/tools/data-migration/features/shard-merge.md#使用限制)
+          - [手动处理 Sharding DDL Lock](reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)
+      + 使用场景
+        - [简单的从库同步场景](reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
+        - [分库分表合并场景](reference/tools/data-migration/usage-scenarios/shard-merge.md)
+      + [部署使用](reference/tools/data-migration/deploy.md)
+      + 配置
+        - [概述](reference/tools/data-migration/configure/overview.md)
+        - [任务配置](reference/tools/data-migration/configure/task-configuration-file.md)
+      - [监控 DM 集群](reference/tools/data-migration/monitor.md)
+      - [管理数据同步任务](reference/tools/data-migration/manage-tasks.md)
+      - [DM 集群操作](reference/tools/data-migration/cluster-operations.md)
+      + 从与 MySQL 兼容的数据库迁移数据
+        - [从 Amazon Aurora MySQL 迁移数据](how-to/migrate/from-aurora.md)
+      - [DM Portal](reference/tools/data-migration/dm-portal.md)
+      - [DM 故障诊断](how-to/troubleshoot/data-migration.md)
+      - [FAQ](faq/data-migration.md)
+    + TiDB Lightning
+      - [概述](reference/tools/tidb-lightning/overview.md)
+      - [部署执行](reference/tools/tidb-lightning/deployment.md)
+      - [断点续传](reference/tools/tidb-lightning/checkpoints.md)
+      - [表库过滤](reference/tools/tidb-lightning/table-filter.md)
+      - [CSV 支持](reference/tools/tidb-lightning/csv.md)
+      - [监控告警](reference/tools/tidb-lightning/monitor.md)
+      - [故障诊断](how-to/troubleshoot/tidb-lightning.md)
+      - [FAQ](faq/tidb-lightning.md)
+    - [sync-diff-inspector](reference/tools/sync-diff-inspector/overview.md)
+    - [PD Control](reference/tools/pd-control.md)
+    - [PD Recover](reference/tools/pd-recover.md)
+    - [TiKV Control](reference/tools/tikv-control.md)
+    - [TiDB Controller](reference/tools/tidb-control.md)
+    - [工具下载](reference/tools/download.md)
   + [与 MySQL 兼容性对比](reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
@@ -245,54 +298,6 @@
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + [TiSpark 使用指南](reference/tispark.md)
   + [TiDB Binlog 简介](reference/tidb-binlog-overview.md)
-  + 生态工具
-    - [Mydumper](reference/tools/mydumper.md)
-    - [Loader](reference/tools/loader.md)
-    - [Syncer](reference/tools/syncer.md)
-    + Data Migration
-      + 概述
-        - [DM 架构](reference/tools/data-migration/overview.md#dm-架构)
-        - [同步功能介绍](reference/tools/data-migration/overview.md#同步功能介绍)
-        - [使用限制](reference/tools/data-migration/overview.md#使用限制)
-      + 核心特性
-        - [Table Routing](reference/tools/data-migration/features/overview.md#table-routing)
-        - [Black & White Lists](reference/tools/data-migration/features/overview.md#black-white-table-lists)
-        - [Binlog Event Filter](reference/tools/data-migration/features/overview.md#binlog-event-filter)
-        - [Column Mapping](reference/tools/data-migration/features/overview.md#column-mapping)
-        - [同步延迟监控](reference/tools/data-migration/features/overview.md#同步延迟监控)
-        + Shard Support
-          - [简介](reference/tools/data-migration/features/shard-merge.md)
-          - [使用限制](reference/tools/data-migration/features/shard-merge.md#使用限制)
-          - [手动处理 Sharding DDL Lock](reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)
-      + 使用场景
-        - [简单的从库同步场景](reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
-        - [分库分表合并场景](reference/tools/data-migration/usage-scenarios/shard-merge.md)
-      + [部署使用](reference/tools/data-migration/deploy.md)
-      + 配置
-        - [概述](reference/tools/data-migration/configure/overview.md)
-        - [任务配置](reference/tools/data-migration/configure/task-configuration-file.md)
-      - [监控 DM 集群](reference/tools/data-migration/monitor.md)
-      - [管理数据同步任务](reference/tools/data-migration/manage-tasks.md)
-      - [DM 集群操作](reference/tools/data-migration/cluster-operations.md)
-      + 从与 MySQL 兼容的数据库迁移数据
-        - [从 Amazon Aurora MySQL 迁移数据](how-to/migrate/from-aurora.md)
-      - [DM Portal](reference/tools/data-migration/dm-portal.md)
-      - [DM 故障诊断](how-to/troubleshoot/data-migration.md)
-      - [FAQ](faq/data-migration.md)
-    + TiDB Lightning
-      - [概述](reference/tools/tidb-lightning/overview.md)
-      - [部署执行](reference/tools/tidb-lightning/deployment.md)
-      - [断点续传](reference/tools/tidb-lightning/checkpoints.md)
-      - [表库过滤](reference/tools/tidb-lightning/table-filter.md)
-      - [CSV 支持](reference/tools/tidb-lightning/csv.md)
-      - [监控告警](reference/tools/tidb-lightning/monitor.md)
-      - [故障诊断](how-to/troubleshoot/tidb-lightning.md)
-      - [FAQ](faq/tidb-lightning.md)
-    - [PD Control](reference/tools/pd-control.md)
-    - [PD Recover](reference/tools/pd-recover.md)
-    - [TiKV Control](reference/tools/tikv-control.md)
-    - [TiDB Controller](reference/tools/tidb-control.md)
-    - [工具下载](reference/tools/download.md)
 + 常见问题 (FAQ)
   - [TiDB FAQ](faq/tidb.md)
   - [TiDB-Lightning FAQ](faq/tidb-lightning.md)
@@ -306,15 +311,8 @@
   - [改进文档](contribute.md#改进文档)
 - [TiDB 路线图](roadmap.md)
 + [版本发布历史](releases/rn.md)
-  + v3.0
-    - [3.0.1](releases/3.0.1.md)
-    - [3.0 GA](releases/3.0-ga.md)
-    - [3.0.0-rc.3](releases/3.0.0-rc.3.md)
-    - [3.0.0-rc.2](releases/3.0.0-rc.2.md)
-    - [3.0.0-rc.1](releases/3.0.0-rc.1.md)
-    - [3.0.0-beta.1](releases/3.0.0-beta.1.md)
-    - [3.0.0-beta](releases/3.0beta.md)
   + v2.1
+    - [2.1.16](releases/2.1.16.md)
     - [2.1.15](releases/2.1.15.md)
     - [2.1.14](releases/2.1.14.md)
     - [2.1.13](releases/2.1.13.md)

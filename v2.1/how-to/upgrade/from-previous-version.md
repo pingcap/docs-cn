@@ -1,6 +1,7 @@
 ---
 title: TiDB 3.0 升级操作指南
 category: how-to
+aliases: ['/docs-cn/v2.1/how-to/upgrade/to-tidb-3.0/']
 ---
 
 # TiDB 3.0 升级操作指南
@@ -135,21 +136,21 @@ $ ansible-playbook local_prepare.yml
 
 ## 滚动升级 TiDB 集群组件
 
-> **注意：**
->
-> 为优化 TiDB 集群组件的运维管理，TiDB 3.0 版本对 `systemd` 模式下的 `PD service` 名称进行了调整。与之前版本相比，滚动升级 TiDB 3.0 版本集群组件的操作略有不同，注意升级前后 `process_supervision` 参数配置须保持一致。
-
-如果 `process_supervision` 变量使用默认的 `systemd` 参数，则通过 `excessive_rolling_update.yml` 滚动升级 TiDB 集群。
+如果当前 `process_supervision` 变量使用默认的 `systemd` 参数，则通过 `excessive_rolling_update.yml` 滚动升级 TiDB 集群。
 
 ```
 $ ansible-playbook excessive_rolling_update.yml
 ```
 
-如果 `process_supervision` 变量使用 `supervise` 参数，则通过 `rolling_update.yml` 滚动升级 TiDB 集群。
+如果当前 `process_supervision` 变量使用 `supervise` 参数，则通过 `rolling_update.yml` 滚动升级 TiDB 集群。
 
 ```
 $ ansible-playbook rolling_update.yml
 ```
+
+> **注意：**
+>
+> 为优化 TiDB 集群组件的运维管理，TiDB 3.0 版本对 `systemd` 模式下的 `PD service` 名称进行了调整。在升级到 TiDB 3.0 版本后，滚动升级及日常滚动重启 TiDB 集群统一使用 `rolling_update.yml` 操作，不再使用 `excessive_rolling_update.yml`。
 
 ## 滚动升级 TiDB 监控组件
 

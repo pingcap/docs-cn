@@ -9,7 +9,13 @@ category: contribute
 
 如要对中文文档进行贡献，请先 fork [docs-cn 仓库](https://github.com/pingcap/docs-cn)，再提交您的 Pull Request。
 
-TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量和格式规范，您的 PR 需要遵循一定的 markdown 风格。
+TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量和格式规范，您修改的文档需要遵循一定的 Markdown 风格。
+
+## 参考资源
+
+- [PingCAP 中文技术文档风格指南](resources/pingcap-style-guide-zh-v1.0.pdf)
+- [TiDB 中文文档模板](resources/tidb-docs-template-zh-v1.0.pdf)
+- [Pull Request 提交流程](#pull-request-提交流程)
 
 ## 必须遵循的 markdownlint 规则
 
@@ -91,7 +97,7 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 
 19. [MD034 - Bare URL used](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md034---bare-url-used)
 
-    文档中禁止出现裸露的 URL，一般需要使用一对尖括号 (<URL>) 包裹裸露的 URL。如果由于特殊情况必须要使用裸露的 URL，可以用一对反引号 (`URL`) 包裹 URL。
+    文档中禁止出现裸露的 URL。如果希望用户能直接点击并打开该 URL，则用一对尖括号 (`<URL>`) 包裹该 URL。如果由于特殊情况必须使用裸露的 URL，可以用一对反引号 (``` `URL` ```) 包裹该 URL。
 
 20. [MD037 - Spaces inside emphasis markers](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md037---spaces-inside-emphasis-markers)
 
@@ -120,3 +126,82 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 26. [MD046 - Code block style](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md046---code-block-style)
 
     文档中代码块统一使用**三个反引号**进行包裹，**禁止**使用**缩进四格**风格的代码块。(`style`=`fenced`)
+
+## Pull Request 提交流程
+
+TiDB 文档的修改需要遵循一定的流程，具体如下。
+
+> **注意：**
+>
+> 目前 TiDB 主要维护三个版本的文档：dev（最新开发版），v3.0（最新稳定版），v2.1（最新 2.1 版）。提 Pull Request 前请务必考虑修改会影响的文档版本，并据此修改所有相应的版本。
+
+### 第 1 步：Fork pingcap/docs-cn 仓库
+
+1. 打开 pingcap/docs-cn 项目[仓库](https://help.github.com/articles/github-glossary/#repository)：<https://github.com/pingcap/docs-cn>
+2. 点击右上角的 [**Fork**](https://help.github.com/articles/github-glossary/#fork) 按钮，等待 Fork 完成即可。
+
+### 第 2 步：将 Fork 的仓库克隆至本地
+
+```
+cd $working_dir # 将 $working_dir 替换为你想放置 repo 的目录。例如，`cd ~/Documents/GitHub`
+git clone git@github.com:$user/docs-cn.git # 将 `$user` 替换为你的 GitHub ID
+
+cd $working_dir/docs-cn
+git remote add upstream git@github.com:pingcap/docs-cn.git # 添加上游仓库
+git remote -v
+```
+
+### 第 3 步：新建一个 Branch
+
+1. 确保本地 master branch 与 upstream/master 保持最新。
+
+    ```
+    cd $working_dir/docs-cn
+    git fetch upstream
+    git checkout master
+    git rebase upstream/master
+    ```
+
+2. 基于 master branch 新建一个 branch，名称格式为：aaa-bbb-ccc。
+
+    ```
+    git checkout -b new-branch-name
+    ```
+
+### 第 4 步：编辑文档进行增删或修改
+
+在建好的 `new-branch-name` branch 上进行编辑，可使用 Markdown 编辑器（如 Visual Studio Code）打开 docs-cn repo，对相应文档进行增、删，或修改，并保存你的修改。
+
+### 第 5 步：提交你的修改
+
+```
+git status
+git add <file> ... # 如果你想提交所有的文档修改，可直接使用 `git add .`
+git commit -m "commit-message: update the xx"
+```
+
+参考[如何写 commit message](https://github.com/pingcap/community/blob/master/commit-message-pr-style.md#how-to-write-a-good-commit-message)。
+
+### 第 6 步：保持新建 branch 与 upstream/master 一致
+
+```
+# 在新建 branch 上
+git fetch upstream
+git rebase upstream/master
+```
+
+### 第 7 步：将你的修改推至远程
+
+```
+git push -u origin new-branch-name
+```
+
+### 第 8 步：创建一个 Pull Request
+
+1. 打开你 Fork 的仓库：<https://github.com/$user/docs-cn>（将 `$user` 替换为你的 GitHub ID）
+2. 点击 `Compare & pull request` 按钮即可创建 PR。参考[如何写 PR title 和描述](https://github.com/pingcap/community/blob/master/commit-message-pr-style.md#pull-request-title-style)。
+
+    > **注意：**
+    >
+    > - 如果你的修改影响多个文档版本 (dev, v3.0, v2.1)，务必在 PR 描述框相应的问题下注明，或者在页面右侧选择相应的 label (dev, v3.0, v2.1) 来注明。
+    > - 如果你的修改也同样适用于[英文版文档](https://github.com/pingcap/docs)，需要在提 PR 时添加 label `pending-aligning`；也非常欢迎同时更新中文版和英文版。

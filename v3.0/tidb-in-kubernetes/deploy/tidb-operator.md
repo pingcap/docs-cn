@@ -68,7 +68,7 @@ TiDB 默认会使用很多文件描述符，工作节点和上面的 Docker 进�
 
 ### 准备本地卷
 
-参考[本地 PV 配置](/tidb-in-kubernetes/reference/configuration/local-pv.md)在你的 Kubernetes 集群中配置本地持久化卷。
+参考[本地 PV 配置](/tidb-in-kubernetes/reference/configuration/storage-class.md#本地-pv-配置)在你的 Kubernetes 集群中配置本地持久化卷。
 
 ### 部署 local-static-provisioner
 
@@ -119,7 +119,7 @@ kubectl get crd tidbclusters.pingcap.com
 
 2. 配置 TiDB Operator
 
-    TiDB Operator 里面会用到 `k8s.gcr.io/kube-scheduler` 镜像，如果下载不了该镜像，可以修改 `/home/tidb/tidb-operator/values-tidb-operator.yaml` 文件中的 `scheduler.kubeSchedulerImage` 为 `registry.cn-hangzhou.aliyuncs.com/google_containers`。
+    TiDB Operator 里面会用到 `k8s.gcr.io/kube-scheduler` 镜像，如果下载不了该镜像，可以修改 `/home/tidb/tidb-operator/values-tidb-operator.yaml` 文件中的 `scheduler.kubeSchedulerImage` 为 `registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler`。
 
 3. 安装 TiDB Operator
 
