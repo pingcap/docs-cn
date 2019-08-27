@@ -758,7 +758,7 @@ sqoop export \
 
 - job_name: &#39;syncer_ops&#39; // 任务名字
     static_configs:
-- targets: [&#39;10.10.1.1:10096&#39;] //Syncer监听地址与端口，通知 prometheus 拉取 Syncer 的数据。
+- targets: [&#39;10.10.1.1:10096&#39;] // Syncer 监听地址与端口，通知 prometheus 拉取 Syncer 的数据。
 
 重启 Prometheus 即可。
 

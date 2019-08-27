@@ -78,11 +78,11 @@ sql-mode = ""
 
 ## 如何正确关闭 `tikv-importer` 进程？
 
-如使用  部署，在 Importer 的服务器上运行 `scripts/stop_importer.sh` 即可。否则，可通过 `ps aux | grep tikv-importer` 获取进程ID，然后 `kill «pid»`。
+如使用 TiDB Ansible 部署，在 Importer 的服务器上运行 `scripts/stop_importer.sh` 即可。否则，可通过 `ps aux | grep tikv-importer` 获取进程ID，然后 `kill «pid»`。
 
 ## 如何正确关闭 `tidb-lightning` 进程？
 
-如使用  部署，在 Lightning 的服务器上运行 `scripts/stop_lightning.sh` 即可。
+如使用 TiDB Ansible 部署，在 Lightning 的服务器上运行 `scripts/stop_lightning.sh` 即可。
 
 如果 `tidb-lightning` 正在前台运行，可直接按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 退出。
 

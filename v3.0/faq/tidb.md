@@ -236,7 +236,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | **变量** | **含义** |
 | --- | --- |
 | cluster_name | 集群名称，可调整 |
-| tidb_version | TiDB 版本， 各分支默认已配置 |
+| tidb_version | TiDB 版本，TiDB Ansible 各分支默认已配置 |
 | deployment_method | 部署方式，默认为 binary，可选 docker |
 | process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
 | timezone | 修改部署目标机器时区，默认为 Asia/Shanghai, 可调整，与set_timezone 变量结合使用 |
@@ -396,9 +396,9 @@ TiDB 版本目前逐步标准化，每次 Release 都包含详细的 Change log�
 - `1` 表示该版本 commit 1 次
 - `ga80e796` 代表版本的 `git-hash`
 
-#### 3.1.11 分不清 TiDB master 版本之间的区别，经常用错  版本?
+#### 3.1.11 分不清 TiDB master 版本之间的区别，经常用错 TiDB Ansible 版本?
 
-TiDB 目前社区非常活跃，在 1.0 GA 版本发布后，还在不断的优化和修改 BUG，因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的[新版本发布官方网站](https://pingcap.com/weekly/)。此外 TiDB 安装推荐使用  进行安装， 的版本也会随着 TiDB 的版本发布进行更新，因此建议用户在安装升级新版本的时候使用最新的  安装包版本进行安装。此外，在 TiDB 1.0 GA 版本后，对 TiDB 的版本号进行了统一管理，TiDB 的版本可以通过以下两种方式进行查看：
+TiDB 目前社区非常活跃，在 1.0 GA 版本发布后，还在不断的优化和修改 BUG，因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的[新版本发布官方网站](https://pingcap.com/weekly/)。此外 TiDB 安装推荐使用 TiDB Ansible 进行安装，TiDB Ansible 的版本也会随着 TiDB 的版本发布进行更新，因此建议用户在安装升级新版本的时候使用最新的 TiDB Ansible 安装包版本进行安装。此外，在 TiDB 1.0 GA 版本后，对 TiDB 的版本号进行了统一管理，TiDB 的版本可以通过以下两种方式进行查看：
 
 - 通过 `select tidb_version()` 进行查看
 - 通过执行 `tidb-server -V` 进行查看
@@ -759,7 +759,7 @@ sqoop export \
 
 - job_name: &#39;syncer_ops&#39; // 任务名字
     static_configs:
-- targets: [&#39;10.10.1.1:10096&#39;] //Syncer 监听地址与端口，通知 prometheus 拉取 Syncer 的数据。
+- targets: [&#39;10.10.1.1:10096&#39;] // Syncer 监听地址与端口，通知 prometheus 拉取 Syncer 的数据。
 
 重启 Prometheus 即可。
 
