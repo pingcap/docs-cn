@@ -114,7 +114,7 @@ c2-standard-16 机型。我们选择了 n1-standard-16 机型测试。
 
 ### 操作系统及参数
 
-GKE 支持两种操作系统：COS 和 Ubuntu 。在 Point Select 测试中进行了对比测试。其余测试中，同一使用 Ubuntu 系统进行测试。
+GKE 支持两种操作系统：COS (Container Optimized OS) 和 Ubuntu 。在 Point Select 测试中进行了对比测试。其余测试中，统一使用 Ubuntu 系统进行测试。
 
 内核统一做了如下配置:
 
