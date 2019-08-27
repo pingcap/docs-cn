@@ -351,7 +351,7 @@ Before replicating data using Syncer, check the following items:
 
     Use the `select @@version;` command to check your database version. Currently, Syncer supports the following versions:
 
-    - 5.5 < MySQL version < 5.8
+    - 5.5 < MySQL version < 8.0
     - MariaDB version >= 10.1.2
 
         In earlier versions of MariaDB, the format of some binlog field types is inconsistent with that in MySQL.
@@ -360,7 +360,7 @@ Before replicating data using Syncer, check the following items:
     >
     > If there is a master-slave replication structure between the upstream MySQL/MariaDB servers, then choose the following version.
     >
-    > - 5.7.1 < MySQL version < 5.8
+    > - 5.7.1 < MySQL version < 8.0
     > - MariaDB version >= 10.1.3
 
 2. Check the `server-id` of the source database.

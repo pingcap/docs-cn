@@ -19,7 +19,7 @@ Upstream and downstream database users must have the corresponding read and writ
 
 + Database version
 
-    - 5.5 < MySQL version < 5.8
+    - 5.5 < MySQL version < 8.0
     - MariaDB version >= 10.1.2
 
 + MySQL binlog configuration
