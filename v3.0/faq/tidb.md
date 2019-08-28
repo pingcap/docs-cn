@@ -555,6 +555,11 @@ TiDB 支持改变 [per-session](/reference/configuration/tidb-server/tidb-specif
 同 MySQL 的用法一致，例如：
 `select column_name from table_name use index（index_name）where where_condition;`
 
+#### 3.3.13 高并发执行 DDL 报错？
+
+高并发情况下执行 DDL （比如批量建表）时，极少部分 DDL 可能会执行失败。原因是并发执行 DDL 时存在冲突 key，并发太高导致冲突很严重时，可能会导致 DDL 执行失败。
+建议 DDL 并发不要超过20。否则应用端需要自己处理 DDL 失败然后重试。
+
 ### 3.4 TiKV 管理
 
 #### 3.4.1 TiKV 集群副本建议配置数量是多少，是不是最小高可用配置（3个）最好？
