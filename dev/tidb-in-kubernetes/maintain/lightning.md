@@ -94,7 +94,7 @@ tikv-importer 可以在一个现有的 TiDB 集群上启用，或者在新建 Ti
               [gcs]
               type = google cloud storage
               # 该服务账号必须被授予 Storage Object Viewer 角色。
-              # 该内容可以通过 `cat <service-account-file.json> | jq -c` 命令获取。
+              # 该内容可以通过 `cat <service-account-file.json> | jq -c .` 命令获取。
               service_account_credentials = <service-account-json-file-content>
             ```
 
