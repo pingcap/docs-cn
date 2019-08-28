@@ -123,40 +123,40 @@ Usage : haproxy [-f <cfgfile|cfgdir>]* [ -vdVD ] [ -n <maxconn> ] [ -N <maxpconn
 yum 安装过程中会生成配置模版。
 
 ```yaml
-global  # 全局配置
-   log         127.0.0.1 local2       # 定义全局的 syslog 服务器，最多可以定义两个
-   chroot      /var/lib/haproxy      # 将当前目录为指定目录，设置超级用户权限启动进程，提高安全性
-   pidfile     /var/run/haproxy.pid  # 将 haproxy 进程写入 pid 文件
-   maxconn     4000                     # 设置每个 haproxy 进程锁接受的最大并发连接数
+global                                     # 全局配置
+   log         127.0.0.1 local2            # 定义全局的 syslog 服务器，最多可以定义两个
+   chroot      /var/lib/haproxy            # 将当前目录为指定目录，设置超级用户权限启动进程，提高安全性
+   pidfile     /var/run/haproxy.pid        # 将 haproxy 进程写入 pid 文件
+   maxconn     4000                        # 设置每个 haproxy 进程锁接受的最大并发连接数
    user        haproxy                     # 同 uid 参数，使用是用户名
-   group       haproxy                    # 同 gid 参数，建议专用用户组
-   nbproc      40                            # 启动多个进程来转发请求，需要调整到足够大的值来保证 haproxy 本身不会成为瓶颈
-   daemon                                    # 让haproxy以守护进程的方式工作于后台，其等同于“-D”选项的功能。当然，也可以在命令行中以“-db”选项将其禁用。
-   stats socket /var/lib/haproxy/stats  # 定义统计信息保存位置
+   group       haproxy                     # 同 gid 参数，建议专用用户组
+   nbproc      40                          # 启动多个进程来转发请求，需要调整到足够大的值来保证 haproxy 本身不会成为瓶颈
+   daemon                                  # 让haproxy以守护进程的方式工作于后台，其等同于“-D”选项的功能。当然，也可以在命令行中以“-db”选项将其禁用。
+   stats socket /var/lib/haproxy/stats     # 定义统计信息保存位置
 
-defaults                                        # 默认配置
-   log global                                  # 日志继承全局配置段的设置
-   retries 2                                     # 向上游服务器尝试连接的最大次数，超过此值就认为后端服务器不可用
-   timeout connect  2s                   # haproxy与后端服务器连接超时时间，如果在同一个局域网可设置较小的时间
-   timeout client 30000s                # 定义客户端与haproxy连接后，数据传输完毕，不再有数据传输，即非活动连接的超时时间
-   timeout server 30000s               # 定义haproxy与上游服务器非活动连接的超时时间
+defaults                                   # 默认配置
+   log global                              # 日志继承全局配置段的设置
+   retries 2                               # 向上游服务器尝试连接的最大次数，超过此值就认为后端服务器不可用
+   timeout connect  2s                     # haproxy与后端服务器连接超时时间，如果在同一个局域网可设置较小的时间
+   timeout client 30000s                   # 定义客户端与haproxy连接后，数据传输完毕，不再有数据传输，即非活动连接的超时时间
+   timeout server 30000s                   # 定义haproxy与上游服务器非活动连接的超时时间
 
 listen admin_stats                         # frontend和backend的组合体,监控组的名称，按需自定义名称
    bind 0.0.0.0:8080                       # 配置监听端口
-   mode http                                   # 配置监控运行的模式，在这为http模式
-   option httplog                              # 表示开始打开记录http请求的日志功能
-   maxconn 10                                # 最大并发连接数
-   stats refresh 30s                         # 配置每隔 30 秒自动刷新监控页面
-   stats uri /haproxy                        # 配置监控页面的url
-   stats realm Haproxy                   # 配置监控页面的提示信息
-   stats auth admin:pingcap123     # 配置监控页面的用户和密码admin,可以设置多个用户名
-   stats hide-version                        # 配置隐藏统计页面上的HAproxy版本信息
-   stats  admin if TRUE                   # 配置手工启用/禁用,后端服务器(haproxy-1.4.9以后版本)  
+   mode http                               # 配置监控运行的模式，在这为http模式
+   option httplog                          # 表示开始打开记录http请求的日志功能
+   maxconn 10                              # 最大并发连接数
+   stats refresh 30s                       # 配置每隔 30 秒自动刷新监控页面
+   stats uri /haproxy                      # 配置监控页面的url
+   stats realm Haproxy                     # 配置监控页面的提示信息
+   stats auth admin:pingcap123             # 配置监控页面的用户和密码admin,可以设置多个用户名
+   stats hide-version                      # 配置隐藏统计页面上的HAproxy版本信息
+   stats  admin if TRUE                    # 配置手工启用/禁用,后端服务器(haproxy-1.4.9以后版本)  
 
-listen tidb-cluster                           # 配置 database 负载均衡
+listen tidb-cluster                        # 配置 database 负载均衡
    bind 0.0.0.0:3390                       # 配置浮动 IP 和 监听端口
-   mode tcp                                    # haproxy中还要使用4层的应用
-   balance leastconn                      # 连接数最少的服务器优先接收连接。leastconn建议用于长会话服务，例如LDAP、SQL、TSE等，而不适合短会话协议。如HTTP.该算法是动态的，对于实例启动慢的服务器权重会在运行中调整。
+   mode tcp                                # haproxy中还要使用4层的应用
+   balance leastconn                       # 连接数最少的服务器优先接收连接。leastconn建议用于长会话服务，例如LDAP、SQL、TSE等，而不适合短会话协议。如HTTP.该算法是动态的，对于实例启动慢的服务器权重会在运行中调整。
    server tidb-1 10.9.18.229:4000 check inter 2000 rise 2 fall 3       # 这是检测 4000 端口，检测频率是2000毫秒，检测 2 次正常就认为机器又可用了，失败 3 次认为此服务器就不可用
    server tidb-2 10.9.39.208:4000 check inter 2000 rise 2 fall 3
    server tidb-3 10.9.64.166:4000 check inter 2000 rise 2 fall 3
