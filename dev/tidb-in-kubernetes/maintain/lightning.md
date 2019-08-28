@@ -10,7 +10,7 @@ category: how-to
 
 TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kubernetes 上，tikv-importer 位于 TiDB 集群的 Helm chart 内，被部署为一个副本数为 1 (`replicas=1`) 的 `StatefulSet`；tidb-lightning 位于单独的 Helm chart 内，被部署为一个 `Job`。
 
-为了使用 TiDB Lightning 恢复数据，tikv-importer 和 tidb-lightning 都必须分别部署，部署方式如下。
+为了使用 TiDB Lightning 恢复数据，tikv-importer 和 tidb-lightning 都必须分别部署。
 
 ## 部署 tikv-importer
 
@@ -54,11 +54,11 @@ tikv-importer 可以在一个现有的 TiDB 集群上启用，或者在新建 Ti
 
     tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
 
-    * 本地
+    * 本地模式
 
         本地模式要求 Mydumper 备份数据位于其中一个 Kubernetes 节点上。要启用该模式，你需要将 `dataSource.local.nodeName` 设置为该节点名称，将 `dataSource.local.hostPath` 设置为 Mydumper 备份数据目录路径，该路径中需要包含名为 `metadata` 的文件。
 
-    * 远程
+    * 远程模式
 
         与本地模式不同，远程模式需要使用 [rclone](https://rclone.org) 将 Mydumper 备份 tarball 文件从网络存储中下载到 PV 中。远程模式能在 rclone 支持的任何云存储下工作，目前已经有以下存储进行了相关测试：[Google Cloud Storage (GCS)](https://cloud.google.com/storage/)、[AWS S3](https://aws.amazon.com/s3/) 和 [Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/)。
 
