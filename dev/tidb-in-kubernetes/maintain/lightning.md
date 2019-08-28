@@ -56,7 +56,7 @@ tikv-importer 可以在一个现有的 TiDB 集群上启用，或者在新建 Ti
 
     * 本地
 
-        本地模式要求 Mydumper 备份数据位于其中一个 Kubernetes 节点上。为了启用该模式，你需要将 `dataSource.local.nodeName` 设置为该节点名称，将 `dataSource.local.hostPath` 设置为 Mydumper 备份数据目录路径，该路径中包含一个名为 `metadata` 的文件。
+        本地模式要求 Mydumper 备份数据位于其中一个 Kubernetes 节点上。为了启用该模式，你需要将 `dataSource.local.nodeName` 设置为该节点名称，将 `dataSource.local.hostPath` 设置为 Mydumper 备份数据目录路径，该路径中需要包含名为 `metadata` 的文件。
 
     * 远程
 
