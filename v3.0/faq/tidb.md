@@ -558,7 +558,7 @@ TiDB 支持改变 [per-session](/reference/configuration/tidb-server/tidb-specif
 #### 3.3.13 高并发执行 DDL 报错？
 
 高并发情况下执行 DDL （比如批量建表）时，极少部分 DDL 可能会由于并发执行时 key 冲突而执行失败。
-建议 DDL 并发不要超过20。否则应用端需要自己处理 DDL 失败然后重试。
+建议 DDL 并发低于20。否则需要在应用端重试失败的 DDL 语句。
 
 ### 3.4 TiKV 管理
 
