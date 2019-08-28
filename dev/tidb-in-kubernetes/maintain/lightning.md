@@ -56,7 +56,7 @@ tikv-importer 可以在一个现有的 TiDB 集群上启用，或者在新建 Ti
 
     * 本地
 
-        本地模式要求 Mydumper 备份数据位于其中一个 Kubernetes 节点上。为了启用该模式，你需要将 `dataSource.local.nodeName` 设置为该节点名称，将 `dataSource.local.hostPath` 设置为 Mydumper 备份数据目录路径，该路径中需要包含名为 `metadata` 的文件。
+        本地模式要求 Mydumper 备份数据位于其中一个 Kubernetes 节点上。要启用该模式，你需要将 `dataSource.local.nodeName` 设置为该节点名称，将 `dataSource.local.hostPath` 设置为 Mydumper 备份数据目录路径，该路径中需要包含名为 `metadata` 的文件。
 
     * 远程
 
@@ -120,7 +120,7 @@ tikv-importer 可以在一个现有的 TiDB 集群上启用，或者在新建 Ti
 
 1. 运行 `kubectl delete job -n <namespace> <tidb-lightning-release-name>-tidb-lightning`，删除 lightning `Job`。
 
-2. 运行 `helm template pingcap/tidb-lightning --name <tidb-lightning-release-name> --set failFast=false -f tidb-lightning-values.yaml | kubectl apply -n <namespace> -f -`，重新创建将 `failFast` 禁用的 lightning `Job`。
+2. 运行 `helm template pingcap/tidb-lightning --name <tidb-lightning-release-name> --set failFast=false -f tidb-lightning-values.yaml | kubectl apply -n <namespace> -f -`，重新创建禁用 `failFast` 的 lightning `Job`。
 
 3. 当 lightning pod 重新运行时，在 lightning 容器中执行 `kubectl exec -it -n <namesapce> <tidb-lightning-pod-name> sh` 命令。
 
