@@ -8,7 +8,7 @@ category: how-to
 
 本文介绍了如何使用 [TiDB Lightning](https://github.com/pingcap/tidb-lightning) 快速恢复 Kubernetes 上的 TiDB 集群数据。
 
-TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kubernetes 上，tikv-importer 位于 TiDB 集群的 Helm 图表内，被部署为一个副本数为 1 (`replicas=1`) 的 `StatefulSet`；tidb-lightning 位于单独的 Helm 图表内，被部署为一个 `Job`。
+TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kubernetes 上，tikv-importer 位于 TiDB 集群的 Helm chart 内，被部署为一个副本数为 1 (`replicas=1`) 的 `StatefulSet`；tidb-lightning 位于单独的 Helm chart 内，被部署为一个 `Job`。
 
 为了使用 TiDB Lightning 恢复数据，tikv-importer 和 tidb-lightning 都必须分别部署，部署方式如下。
 
@@ -16,7 +16,7 @@ TiDB Lightning 包含两个组件：tidb-lightning 和 tikv-importer。在 Kuber
 
 tikv-importer 可以在一个现有的 TiDB 集群上启用，或者在新建 TiDB 集群时启用。
 
-* 新建一个 TiDB 集群时启用 tikv-importer：
+* 在新建一个 TiDB 集群时启用 tikv-importer：
 
     1. 在 `tidb-cluster` 的 `values.yaml` 文件中将 `importer.create` 设置为 `true`。
 
@@ -52,7 +52,7 @@ tikv-importer 可以在一个现有的 TiDB 集群上启用，或者在新建 Ti
     helm inspect values pingcap/tidb-lightning --version=<chart-version> > tidb-lightning-values.yaml
     ```
 
-    TiDB Lightning Helm 图表支持本地和远程的数据源。
+    tidb-lightning Helm chart 支持恢复本地或远程的备份数据。
 
     * 本地
 
@@ -60,9 +60,9 @@ tikv-importer 可以在一个现有的 TiDB 集群上启用，或者在新建 Ti
 
     * 远程
 
-        与本地模式不同，远程模式需要使用 [rclone](https://rclone.org) 将 Mydumper 备份 tarball 文件从网络存储中下载到 PV 中。该操作对于 rclone 支持的任何云存储应该都可行，但目前只有如下几种经过测试：[Google Cloud Storage (GCS)](https://cloud.google.com/storage/)、[AWS S3](https://aws.amazon.com/s3/) 和 [Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/)。
+        与本地模式不同，远程模式需要使用 [rclone](https://rclone.org) 将 Mydumper 备份 tarball 文件从网络存储中下载到 PV 中。远程模式能在 rclone 支持的任何云存储下工作，目前已经有以下存储进行了相关测试：[Google Cloud Storage (GCS)](https://cloud.google.com/storage/)、[AWS S3](https://aws.amazon.com/s3/) 和 [Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/)。
 
-        1. 确保 `dataSource.local.nodeName` 和 `dataSource.local.hostPath` 被注释掉。
+        1. 确保 `values.yaml` 中的 `dataSource.local.nodeName` 和 `dataSource.local.hostPath` 被注释掉。
 
         2. 新建一个包含 rclone 配置的 `Secret`。rclone 配置实例如下所示。只要求配置一种云存储。有关其他的云存储，请参考 [rclone 官方文档](https://rclone.org/)。
 
@@ -98,7 +98,7 @@ tikv-importer 可以在一个现有的 TiDB 集群上启用，或者在新建 Ti
               service_account_credentials = <service-account-json-file-content>
             ```
 
-            使用你的实际配置替换上述配置中的占位文字，并将该文件存储为 `secret.yaml`。然后通过 `kubectl apply -f secret.yaml -n <namespace>` 命令创建 `Secret`。
+            使用你的实际配置替换上述配置中的占位符，并将该文件存储为 `secret.yaml`。然后通过 `kubectl apply -f secret.yaml -n <namespace>` 命令创建该 `Secret`。
 
         3. 将 `dataSource.remote.storageClassName` 设置为 Kubernetes 集群中现有的一个存储类型。
 
@@ -110,27 +110,27 @@ tikv-importer 可以在一个现有的 TiDB 集群上启用，或者在新建 Ti
     helm install pingcap/tidb-lightning --name=<tidb-lightning-release-name> --namespace=<namespace> --set failFast=true -f tidb-lightning-values.yaml --version=<chart-version>
     ```
 
-当 TiDB Lightning 未能成功恢复数据时，它不能简单地直接重启，必须要进行**手动干预**，否则很容易出现错误。因此 tidb-lightning 的 `Job` 重启策略被设置为 `Never`。
+当 TiDB Lightning 未能成功恢复数据时，不能简单地直接重启进程，必须进行**手动干预**，否则将很容易出现错误。因此，tidb-lightning 的 `Job` 重启策略被设置为 `Never`。
 
 > **注意：**
 >
-> 目前，即使数据被成功恢复，TiDB Lightning 也会[报出非零错误码并退出](https://github.com/pingcap/tidb-lightning/pull/230)，这会触发作业的失败。因此，数据恢复成功与否需要通过查看 tidb-lightning pod 的日志进行确认。
+> 目前，即使数据被成功恢复，TiDB Lightning 也会[报出非零错误码并退出](https://github.com/pingcap/tidb-lightning/pull/230)，这会导致 Job 失败。因此，数据恢复成功与否需要通过查看 tidb-lightning pod 的日志进行确认。
 
 如果 TiDB Lightning 未能成功恢复数据，需要采用以下步骤进行手动干预：
 
-1. 运行 `kubectl delete job -n <namespace> <tidb-lightning-release-name>-tidb-lightning`，删除 lightning 作业。
+1. 运行 `kubectl delete job -n <namespace> <tidb-lightning-release-name>-tidb-lightning`，删除 lightning Job。
 
-2. 运行 `helm template pingcap/tidb-lightning --name <tidb-lightning-release-name> --set failFast=false -f tidb-lightning-values.yaml | kubectl apply -n <namespace> -f -`，重新创建将 `failFast` 禁用的 lightning 作业。
+2. 运行 `helm template pingcap/tidb-lightning --name <tidb-lightning-release-name> --set failFast=false -f tidb-lightning-values.yaml | kubectl apply -n <namespace> -f -`，重新创建将 `failFast` 禁用的 lightning Job。
 
 3. 当 lightning pod 重新运行时，在 lightning 容器中执行 `kubectl exec -it -n <namesapce> <tidb-lightning-pod-name> sh` 命令。
 
 4. 运行 `cat /proc/1/cmdline`，获得启动脚本。
 
-5. 阅读[故障排除指南](/how-to/troubleshoot/tidb-lightning.md#tidb-lightning-troubleshooting)，对 lightning 进行诊断。
+5. 参考[故障排除指南](/how-to/troubleshoot/tidb-lightning.md#tidb-lightning-troubleshooting)，对 lightning 进行诊断。
 
 ## 销毁 TiDB Lightning
 
-目前，TiDB Lightning 只能在线下恢复数据。当恢复过程结束、TiDB 集群需要向外部应用提供服务时，需要销毁 TiDB Lightning 以节省开支。
+目前，TiDB Lightning 只能在线下恢复数据。当恢复过程结束、TiDB 集群需要向外部应用提供服务时，可以销毁 TiDB Lightning 以节省开支。
 
 删除 tikv-importer 的步骤：
 
