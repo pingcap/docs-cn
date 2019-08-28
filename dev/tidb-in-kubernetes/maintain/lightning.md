@@ -114,13 +114,13 @@ tikv-importer 可以在一个现有的 TiDB 集群上启用，或者在新建 Ti
 
 > **注意：**
 >
-> 目前，即使数据被成功恢复，TiDB Lightning 也会[报出非零错误码并退出](https://github.com/pingcap/tidb-lightning/pull/230)，这会导致 Job 失败。因此，数据恢复成功与否需要通过查看 tidb-lightning pod 的日志进行确认。
+> 目前，即使数据被成功恢复，TiDB Lightning 也会[报出非零错误码并退出](https://github.com/pingcap/tidb-lightning/pull/230)，这会导致 `Job` 失败。因此，数据恢复成功与否需要通过查看 tidb-lightning pod 的日志进行确认。
 
 如果 TiDB Lightning 未能成功恢复数据，需要采用以下步骤进行手动干预：
 
-1. 运行 `kubectl delete job -n <namespace> <tidb-lightning-release-name>-tidb-lightning`，删除 lightning Job。
+1. 运行 `kubectl delete job -n <namespace> <tidb-lightning-release-name>-tidb-lightning`，删除 lightning `Job`。
 
-2. 运行 `helm template pingcap/tidb-lightning --name <tidb-lightning-release-name> --set failFast=false -f tidb-lightning-values.yaml | kubectl apply -n <namespace> -f -`，重新创建将 `failFast` 禁用的 lightning Job。
+2. 运行 `helm template pingcap/tidb-lightning --name <tidb-lightning-release-name> --set failFast=false -f tidb-lightning-values.yaml | kubectl apply -n <namespace> -f -`，重新创建将 `failFast` 禁用的 lightning `Job`。
 
 3. 当 lightning pod 重新运行时，在 lightning 容器中执行 `kubectl exec -it -n <namesapce> <tidb-lightning-pod-name> sh` 命令。
 
