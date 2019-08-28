@@ -94,6 +94,8 @@ set global tidb_disable_txn_auto_retry=0;
 
 在高并发读测试中，压测端 sysbench 对 CPU 需求较高，需选择多核较高配置型号，避免压测端成为瓶颈。
 
+注：GCP 不同的区域可用机型不同。同时测试中发现磁盘性能表现也存在差异，我们统一在 us-central1 中申请机器测试。
+
 #### 磁盘
 
 GKE 当前的 NVMe 磁盘还在 Alpha 阶段，使用需特殊申请，不具备普遍意义。测试中，本地 SSD 盘统一使用 iSCSI 接口类型。挂载参数参考[官方建议](https://cloud.google.com/compute/docs/disks/performance#optimize_local_ssd)增加了 `discard,nobarrier` 选项。完整挂载例子如下：
