@@ -134,7 +134,7 @@ tikv-importer 可以在一个现有的 TiDB 集群上启用，或者在新建 Ti
 
 删除 tikv-importer 的步骤：
 
-1. 在 TiDB 集群图表的 `values.yaml` 文件中将 `importer.create` 设置为 `false`。
+1. 在 TiDB 集群 chart 的 `values.yaml` 文件中将 `importer.create` 设置为 `false`。
 
 2. 然后运行 `helm upgrade <tidb-cluster-release-name> pingcap/tidb-cluster -f values.yaml`。
 
