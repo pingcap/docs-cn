@@ -14,37 +14,63 @@ TiDB 支持三种注释风格：
 
 例：
 
+{{< copyable "sql" >}}
+
+```sql
+SELECT 1+1;     # 注释文字
 ```
-mysql> SELECT 1+1;     # This comment continues to the end of line
+
+```
 +------+
 | 1+1  |
 +------+
 |    2 |
 +------+
 1 row in set (0.00 sec)
+```
 
-mysql> SELECT 1+1;     -- This comment continues to the end of line
+{{< copyable "sql" >}}
+
+```sql
+SELECT 1+1;     -- 注释文字
+```
+
+```
 +------+
 | 1+1  |
 +------+
 |    2 |
 +------+
 1 row in set (0.00 sec)
+```
 
-mysql> SELECT 1 /* this is an in-line comment */ + 1;
+{{< copyable "sql" >}}
+
+```sql
+SELECT 1 /* 这是行内注释文字 */ + 1;
+```
+
+```
 +--------+
 | 1  + 1 |
 +--------+
 |      2 |
 +--------+
 1 row in set (0.01 sec)
+```
 
-mysql> SELECT 1+
+{{< copyable "sql" >}}
+
+```sql
+SELECT 1+
     -> /*
-   /*> this is a
-   /*> multiple-line comment
+   /*> 这是一条
+   /*> 多行注释
    /*> */
     -> 1;
+```
+
+```
 +-------+
 | 1+
 
@@ -53,8 +79,15 @@ mysql> SELECT 1+
 |     2 |
 +-------+
 1 row in set (0.00 sec)
+```
 
-mysql> SELECT 1+1--1;
+{{< copyable "sql" >}}
+
+```sql
+SELECT 1+1--1;
+```
+
+```
 +--------+
 | 1+1--1 |
 +--------+
@@ -71,7 +104,7 @@ TiDB 也跟 MySQL 保持一致，支持一种 C 风格注释的变体：
 
 在这种格式中，TiDB 会执行注释中的语句，这个语法是为了让这些 SQL 在其他的数据库中被忽略，而在 TiDB 中被执行。
 
-例如： `SELECT /*! STRAIGHT_JOIN */ col1 FROM table1,table2 WHERE ...`
+例如：`SELECT /*! STRAIGHT_JOIN */ col1 FROM table1,table2 WHERE ...`
 
 在 TiDB 中，这种写法等价于 `SELECT STRAIGHT_JOIN col1 FROM table1,table2 WHERE ...`
 
@@ -79,7 +112,9 @@ TiDB 也跟 MySQL 保持一致，支持一种 C 风格注释的变体：
 
 还有一种注释会被当做是优化器 Hint 特殊对待：
 
-```
+{{< copyable "sql" >}}
+
+```sql
 SELECT /*+ hint */ FROM ...;
 ```
 
