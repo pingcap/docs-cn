@@ -7,7 +7,7 @@ aliases: ['/docs-cn/sql/expressions-pushed-down-2-TiKV/']
 # 下推到 TiKV 的表达式列表
 
 | 表达式分类 | 具体操作 |
-| -------------- | ------------------------------------- |
+| :-------------- | :------------------------------------- |
 | [逻辑运算](/reference/sql/functions-and-operators/operators.md) | AND (&&), OR (&#124;&#124;), NOT (!) |
 | [比较运算](/reference/sql/functions-and-operators/operators.md#比较方法和操作符) | <, <=, =, != (<>), >, >=, [`<=>`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_equal-to), [`IN()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_in), IS NULL, LIKE, IS TRUE, IS FALSE, [`COALESCE()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_coalesce) |
 | [数值运算](/reference/sql/functions-and-operators/numeric-functions-and-operators.md) | +, -, *, /, [`ABS()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_abs), [`CEIL()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_ceil), [`CEILING()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_ceiling), [`FLOOR()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_floor) |
