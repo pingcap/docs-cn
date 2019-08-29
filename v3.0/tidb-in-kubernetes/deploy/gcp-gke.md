@@ -293,7 +293,7 @@ module "example-tidb-cluster" {
 > **注意：**
 >
 > - 每个集群的 `cluster_name` 必须是唯一的。
-> - 创建的实际节点数乘以该 Region 中的可用区数。
+> - 实际创建的总节点数等于配置文件中的节点数乘以该 Region 中可用区的个数。
 
 你可以通过 `kubectl` 获取创建的 TiDB 集群和监控组件的地址。如果你希望 Terraform 脚本打印此信息，可在 `outputs.tf` 中添加一个 `output` 配置项，如下所示：
 
