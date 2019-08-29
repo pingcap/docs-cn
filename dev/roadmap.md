@@ -129,7 +129,7 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 
 ### 性能
 
-* TiDB Lightning 支持并行导入
+* TiDB Lightning 支持多 lightning + importer 实例并行导入
 * TiDB Lightning 优化导入回放路径
 
 # TiDB 未来规划
