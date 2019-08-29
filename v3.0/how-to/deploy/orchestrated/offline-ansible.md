@@ -22,18 +22,25 @@ aliases: ['/docs-cn/op-guide/offline-ansible-deployment/']
 
 > 下载[系统依赖离线安装包](https://download.pingcap.org/ansible-system-rpms.el7.tar.gz)，上传至中控机。该离线包仅支持 CentOS 7 系统，包含 `pip` 及 `sshpass`。
 
+{{< copyable "shell-root" >}}
+
 ```bash
-# tar -xzvf ansible-system-rpms.el7.tar.gz
-# cd ansible-system-rpms.el7
-# chmod u+x install_ansible_system_rpms.sh
-# ./install_ansible_system_rpms.sh
+tar -xzvf ansible-system-rpms.el7.tar.gz &&
+cd ansible-system-rpms.el7 &&
+chmod u+x install_ansible_system_rpms.sh &&
+./install_ansible_system_rpms.sh
 ```
 
 安装完成后，可通过 `pip -V` 验证 pip 是否安装成功：
 
+{{< copyable "shell-root" >}}
+
 ```bash
-# pip -V
- pip 8.1.2 from /usr/lib/python2.7/site-packages (python 2.7)
+pip -V
+```
+
+```
+pip 8.1.2 from /usr/lib/python2.7/site-packages (python 2.7)
 ```
 
 > 如果你的系统已安装 pip，请确认版本 >= 8.1.2，否则离线安装 ansible 及其依赖时，会有兼容问题。
@@ -52,18 +59,25 @@ aliases: ['/docs-cn/op-guide/offline-ansible-deployment/']
 
 下面以安装 Ansible 2.5 为例：
 
-```
-# tar -xzvf ansible-2.5.0-pip.tar.gz
-# cd ansible-2.5.0-pip/
-# chmod u+x install_ansible.sh
-# ./install_ansible.sh
+{{< copyable "shell-root" >}}
+
+```bash
+tar -xzvf ansible-2.5.0-pip.tar.gz &&
+cd ansible-2.5.0-pip/ &&
+chmod u+x install_ansible.sh &&
+./install_ansible.sh
 ```
 
 安装完成后，可通过 `ansible --version` 查看版本：
 
+{{< copyable "shell-root" >}}
+
 ```bash
-# ansible --version
- ansible 2.5.0
+ansible --version
+```
+
+```
+ansible 2.5.0
 ```
 
 ## 在下载机上下载 TiDB-Ansible 及 TiDB 安装包
@@ -81,11 +95,16 @@ aliases: ['/docs-cn/op-guide/offline-ansible-deployment/']
 
     请按以下方式在 CentOS 7 系统的下载机上在线安装 Ansible。安装完成后，可通过 `ansible --version` 查看版本，请务必确认是 **Ansible 2.5.0** 版本，否则会有兼容问题。
 
+    {{< copyable "shell-root" >}}
+
     ```bash
-    # yum install epel-release
-    # yum install ansible curl
-    # ansible --version
-      ansible 2.5.0
+    yum install epel-release &&
+    yum install ansible curl &&
+    ansible --version
+    ```
+
+    ```
+    ansible 2.5.0
     ```
 
 2. 下载 tidb-ansible
@@ -98,20 +117,26 @@ aliases: ['/docs-cn/op-guide/offline-ansible-deployment/']
 
     - 下载指定 tag 的 tidb-ansible：
 
-        ```
-        $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        git clone -b $tag https://github.com/pingcap/tidb-ansible.git
         ```
 
     - 下载 latest 版本对应的 tidb-ansible：
 
-        ```
-        $ git clone https://github.com/pingcap/tidb-ansible.git
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        git clone https://github.com/pingcap/tidb-ansible.git
         ```
 
 3. 执行 `local_prepare.yml` playbook，联网下载 TiDB binary 到下载机
 
-    ```
-    cd tidb-ansible
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cd tidb-ansible &&
     ansible-playbook local_prepare.yml
     ```
 
@@ -145,11 +170,13 @@ aliases: ['/docs-cn/op-guide/offline-ansible-deployment/']
 
 2. Grafana Dashboard 上的 Report 按钮可用来生成 PDF 文件，此功能依赖 `fontconfig` 包及英文字体，如需使用该功能，请下载 [font 离线安装包](https://download.pingcap.org/grafana-font-rpms.el7.tar.gz)上传至 **grafana_servers** 机器上安装。该离线包仅支持 CentOS 7 系统，包含 `fontconfig` 及 `open-sans-fonts`。
 
-    ```
-    $ tar -xzvf grafana-font-rpms.el7.tar.gz
-    $ cd grafana-font-rpms.el7
-    $ chmod u+x install_grafana_font_rpms.sh
-    $ ./install_grafana_font_rpms.sh
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tar -xzvf grafana-font-rpms.el7.tar.gz &&
+    cd grafana-font-rpms.el7 &&
+    chmod u+x install_grafana_font_rpms.sh &&
+    ./install_grafana_font_rpms.sh
     ```
 
 3. 参考[部署任务](/how-to/deploy/orchestrated/ansible.md#部署任务)即可。

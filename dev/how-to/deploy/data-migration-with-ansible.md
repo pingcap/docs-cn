@@ -36,7 +36,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
     {{< copyable "shell-root" >}}
 
     ```bash
-    yum -y install epel-release git curl sshpass && \
+    yum -y install epel-release git curl sshpass &&
     yum -y install python-pip
     ```
 
@@ -153,9 +153,9 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tar -xzvf dm-ansible-latest.tar.gz && \
-    mv dm-ansible-latest dm-ansible && \
-    cd /home/tidb/dm-ansible && \
+    tar -xzvf dm-ansible-latest.tar.gz &&
+    mv dm-ansible-latest dm-ansible &&
+    cd /home/tidb/dm-ansible &&
     sudo pip install -r ./requirements.txt
     ```
 
@@ -184,7 +184,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
     {{< copyable "shell-regular" >}}
 
     ```bash
-    cd /home/tidb/dm-ansible && \
+    cd /home/tidb/dm-ansible &&
     vi hosts.ini
     ```
 
@@ -363,7 +363,7 @@ grafana_admin_password = "admin"
 {{< copyable "shell-regular" >}}
 
 ```bash
-cd /home/tidb/dm-ansible/resources/bin && \
+cd /home/tidb/dm-ansible/resources/bin &&
 ./dmctl -encrypt 123456
 ```
 

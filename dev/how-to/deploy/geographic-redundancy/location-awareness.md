@@ -25,6 +25,8 @@ tikv-server --labels zone=<zone>,rack=<rack>,host=<host>
 
 配置文件：
 
+{{< copyable "" >}}
+
 ```toml
 [server]
 labels = "zone=<zone>,rack=<rack>,host=<host>"
@@ -33,6 +35,8 @@ labels = "zone=<zone>,rack=<rack>,host=<host>"
 ## PD 理解 TiKV 拓扑结构
 
 可以通过 PD 的配置文件让 PD 理解 TiKV 集群的拓扑结构。
+
+{{< copyable "" >}}
 
 ```toml
 [replication]
