@@ -256,7 +256,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 #### 2.2.3 Docker Compose 快速构建集群（单机部署）
 
-使用 docker-compose 在本地一键拉起一个集群，包括集群监控，还可以根据需求自定义各个组件的软件版本和实例个数，以及自定义配置文件，这种只限于开发环境，详细可参考[官方文档](/how-to/get-started/deploy-tidb-from-docker-compose.md)。
+使用 docker-compose 在本地一键拉起一个集群，包括集群监控，还可以根据需求自定义各个组件的软件版本和实例个数，以及自定义配置文件，这种只限于开发环境，详细可参考[官方文档](/how-to/get-started/local-cluster/install-from-binary.md)。
 
 #### 2.2.4 如何单独记录 TiDB 中的慢查询日志，如何定位慢查询 SQL？
 
