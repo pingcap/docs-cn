@@ -16,11 +16,11 @@ Kubernetes currently supports statically allocated local storage. To create a lo
 
 For more information, refer to [Kubernetes local storage](https://kubernetes.io/docs/concepts/storage/volumes/#local) and [local-static-provisioner document](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner#overview).
 
-## Data Security
+## Data security
 
 By default, when a local PV is released, the provisioner recycles it. To prevent data from being recycled automatically, you must set the reclaim policy of your storage class to `Retain`. After confirming that a PV's data can be deleted, modify its reclaim policy to `Delete`. For how to change PV reclaim policy in Kubernetes, refer to [this doc](https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy/).
 
-## Best Practices
+## Best practices
 
 - The path of local PV is the unique identifier of local storage on the node. To avoid conflict, it's recommended to use the UUID of the device to generate a unique path.
 - For IO isolation, a whole physical disk per volume is recommended.

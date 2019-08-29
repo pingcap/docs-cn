@@ -64,7 +64,7 @@ Because TiDB uses many file descriptors by default, the worker node and its Dock
 
 Refer to [Use Helm](/tidb-in-kubernetes/reference/tools/in-kubernetes.md#use-helm) to install Helm and configre it with the official PingCAP chart Repo.
 
-## Configure Local Persistent Volume
+## Configure local persistent volume
 
 ### Prepare local volumes
 

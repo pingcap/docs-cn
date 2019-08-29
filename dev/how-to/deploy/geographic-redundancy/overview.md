@@ -7,7 +7,7 @@ category: how-to
 
 As a NewSQL database, TiDB excels in the best features of the traditional relational database and the scalability of the NoSQL database and is of course, highly available across data centers (hereinafter referred to as DC). This document is to introduce different deployment solutions in cross-DC environment.
 
-## 3-DC Deployment Solution
+## 3-DC deployment solution
 
 TiDB, TiKV and PD are distributed among 3 DCs, which is the most common deployment solution with the highest availability.
 
@@ -33,7 +33,7 @@ If not all of the three DCs need to provide service to the applications, you can
 
 ![Read Performance Optimized 3-DC Deployment](/media/deploy-3dc-optimize.png)
 
-## 3-DC in 2 cities Deployment Solution
+## 3-DC in 2 cities deployment solution
 
 This solution is similar to the previous 3-DC deployment solution and can be considered as an optimization based on the business scenario. The difference is that the distance between the 2 DCs within the same city is short and thus the latency is very low. In this case, we can dispatch the requests to the two DCs within the same city and configure the TiKV leader and PD leader to be in the 2 DCs in the same city.
 
@@ -47,7 +47,7 @@ Compared with the 3-DC deployment, the 3-DC in 2 cities deployment has the follo
 
 However, the disadvantage is that if the 2 DCs within the same city goes down, whose probability is higher than that of the outage of 2 DCs in 2 cities, the TiDB cluster will not be available and some of the data will be lost.
 
-## 2-DC + Binlog Replication Deployment Solution
+## 2-DC + Binlog replication deployment solution
 
 The 2-DC + Binlog replication is similar to the MySQL Master-Slave solution. 2 complete sets of TiDB clusters (each complete set of the TiDB cluster includes TiDB, PD and TiKV) are deployed in 2 DCs, one acts as the Master and one as the Slave. Under normal circumstances, the Master DC handles all the requests and the data written to the Master DC is asynchronously written to the Slave DC via Binlog.
 

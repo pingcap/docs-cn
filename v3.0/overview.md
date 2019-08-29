@@ -17,7 +17,7 @@ TiDB can be deployed on-premise or in-cloud. The following deployment options ar
 - [Kubernetes Deployment (beta)](/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md): This guide describes how to deploy TiDB on Kubernetes using [TiDB Operator](https://github.com/pingcap/tidb-operator). You can follow this guide to see how to deploy TiDB on Google Kubernetes Engine or deploy TiDB locally using Docker in Docker.
 - [Binary Tarball Deployment](/how-to/deploy/from-tarball/production-environment.md): This guide describes how to deploy TiDB from a binary tarball in production. Guides for [development](/how-to/get-started/deploy-tidb-from-binary.md) and [testing](/how-to/deploy/from-tarball/testing-environment.md) environments are also available.
 
-## Community Provided Blog Posts & Tutorials
+## Community provided blog posts & tutorials
 
 The following list collects deployment guides and tutorials from the community. The content is subject to change by the contributors.
 
@@ -27,7 +27,7 @@ The following list collects deployment guides and tutorials from the community. 
 
 _Your contribution is also welcome! Feel free to open a [pull request](https://github.com/pingcap/docs/blob/master/dev/overview.md) to add additional links._
 
-## Source Code
+## Source code
 
 Source code for [all components of the TiDB platform](https://github.com/pingcap) is available on GitHub.
 

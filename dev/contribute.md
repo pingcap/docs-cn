@@ -23,7 +23,7 @@ If you want to work on a new idea of relatively small scope:
 
 Contributions are welcomed and greatly appreciated. See [CONTRIBUTING.md](https://github.com/pingcap/tidb/blob/master/CONTRIBUTING.md) for details on submitting patches and the contribution workflow.
 
-## Improve the Docs
+## Improve the docs
 
 We welcome contributions to help improve the documentation!
 
