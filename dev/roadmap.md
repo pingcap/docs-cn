@@ -3,6 +3,7 @@ title: TiDB Roadmap
 category: Roadmap
 aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 ---
+<!-- markdownlint-disable MD001 -->
 
 # TiDB V4.0 Roadmap
 
@@ -21,9 +22,9 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 * SQL Tuning Advisor
 * SQL Plan Management
 * 事务
-  + 悲观锁 GA
-  + 事务内不限制语句数量
-  + 支持 10GB 事务
+    + 悲观锁 GA
+    + 事务内不限制语句数量
+    + 支持 10GB 事务
 
 #### 性能
 
@@ -130,7 +131,6 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 ### 性能
 
 * TiDB Lightning 支持多 lightning + importer 实例并行导入
-* TiDB Lightning 优化导入回放路径
 
 # TiDB 未来规划
 
