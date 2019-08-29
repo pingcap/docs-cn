@@ -34,6 +34,8 @@ category: how-to
 
 我们使用 `mydumper` 从 MySQL 导出数据，如下:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./bin/mydumper -h 127.0.0.1 -P 3306 -u root -t 16 -F 64 -B test -T t1,t2 --skip-tz-utc -o ./var/test
 ```
@@ -60,24 +62,42 @@ category: how-to
 
 我们使用 `loader` 将之前导出的数据导入到 TiDB。Loader 的下载和具体的使用方法见 [Loader 使用文档](/reference/tools/loader.md)
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./bin/loader -h 127.0.0.1 -u root -P 4000 -t 32 -d ./var/test
 ```
 
 导入成功之后，我们可以用 MySQL 官方客户端进入 TiDB，查看:
 
-```sql
-mysql -h127.0.0.1 -P4000 -uroot
+{{< copyable "shell-regular" >}}
 
-mysql> show tables;
+```sql
+mysql -h 127.0.0.1 -P 4000 -u root
+```
+
+{{< copyable "sql" >}}
+
+```sql
+show tables;
+```
+
+```
 +----------------+
 | Tables_in_test |
 +----------------+
 | t1             |
 | t2             |
 +----------------+
+```
 
-mysql> select * from t1;
+{{< copyable "sql" >}}
+
+```sql
+select * from t1;
+```
+
+```
 +----+------+
 | id | age  |
 +----+------+
@@ -85,8 +105,15 @@ mysql> select * from t1;
 |  2 |    2 |
 |  3 |    3 |
 +----+------+
+```
 
-mysql> select * from t2;
+{{< copyable "sql" >}}
+
+```sql
+select * from t2;
+```
+
+```
 +----+------+
 | id | name |
 +----+------+
