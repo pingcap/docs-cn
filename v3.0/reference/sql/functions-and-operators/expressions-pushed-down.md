@@ -15,7 +15,9 @@ aliases: ['/docs-cn/sql/expressions-pushed-down-2-TiKV/']
 | [JSON运算](/reference/sql/functions-and-operators/json-functions.md) | [JSON_TYPE(json_val)][json_type],<br> [JSON_EXTRACT(json_doc, path[, path] ...)][json_extract],<br> [JSON_UNQUOTE(json_val)][json_unquote],<br> [JSON_OBJECT(key, val[, key, val] ...)][json_object],<br> [JSON_ARRAY([val[, val] ...])][json_array],<br> [JSON_MERGE(json_doc, json_doc[, json_doc] ...)][json_merge], [JSON_SET(json_doc, path, val[, path, val] ...)][json_set], [JSON_INSERT(json_doc, path, val[, path, val] ...)][json_insert], [JSON_REPLACE(json_doc, path, val[, path, val] ...)][json_replace], [JSON_REMOVE(json_doc, path[, path] ...)][json_remove] |
 | [日期运算](/reference/sql/functions-and-operators/date-and-time-functions.md) | [`DATE_FORMAT()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_date-format)  |
 
-注意：上述所支持下推的表达式可以被拉入黑名单mysql.expr_pushdown_blacklist中。
+> **注意：**
+>
+> 上述支持下推的表达式可以被拉入黑名单 `mysql.expr_pushdown_blacklist` 中。
 
 [json_extract]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-extract
 [json_short_extract]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#operator_json-column-path
