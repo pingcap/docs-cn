@@ -28,7 +28,7 @@ TiDB 提供了以下两种接口来监控集群状态：
 curl http://127.0.0.1:10080/status
 ```
 
-```json
+```
 {
     connections: 0,  # 当前 TiDB Server 上的客户端连接数
     version: "5.7.25-TiDB-v3.0.0-beta-250-g778c3f4a5",  # TiDB 版本号
@@ -50,7 +50,7 @@ curl http://127.0.0.1:10080/status
 curl http://127.0.0.1:2379/pd/api/v1/stores
 ```
 
-```json
+```
 {
   "count": 1,  # TiKV 节点数量
   "stores": [  # TiKV 节点的列表
