@@ -4,6 +4,8 @@ category: reference
 aliases: ['/docs-cn/sql/expressions-pushed-down-2-TiKV/']
 ---
 
+# 下推到 TiKV 的表达式列表
+
 | 表达式分类 | 具体操作 |
 | -------------- | ------------------------------------- |
 | [逻辑运算](/reference/sql/functions-and-operators/operators.md) | AND (&&), OR (&#124;&#124;), NOT (!) |
