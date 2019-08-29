@@ -91,7 +91,7 @@ Terraform 自动加载和填充匹配 `terraform.tfvars` 或 `*.auto.tfvars` 文
 
 在部署集群前，需要先确定实例类型。
 
-- 如果只是想试一下 TiDB，又不想花费太高成本，可以采用较低的配置：
+- 如果只是想试一下 TiDB，又不想花费太高成本，可以采用轻量级的配置：
 
     {{< copyable "shell-regular" >}}
 
@@ -99,7 +99,7 @@ Terraform 自动加载和填充匹配 `terraform.tfvars` 或 `*.auto.tfvars` 文
     cat small.tfvars >> terraform.tfvars
     ```
 
-- 如果要对生产环境的部署进行 benchmark 测试，则建议采用较高的配置：
+- 如果要对生产环境的部署进行 benchmark 测试，则建议采用生产级的配置：
 
     {{< copyable "shell-regular" >}}
 
@@ -120,7 +120,7 @@ Terraform 自动加载和填充匹配 `terraform.tfvars` 或 `*.auto.tfvars` 文
 
 如上所述，生产环境的部署需要 91 个 CPU，超过了 GCP 项目的默认配额。可以参考[配额](https://cloud.google.com/compute/quotas)来增加项目配额。扩容同样需要更多 CPU。
 
-所有信息现已配置好，可以启动脚本来部署 TiDB 集群：
+所有配置现已完成，可以启动脚本来部署 TiDB 集群：
 
 {{< copyable "shell-regular" >}}
 
