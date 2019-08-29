@@ -90,6 +90,7 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
     - 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`
     - 不支持修改 `DECIMAL` 类型的精度（从 TiDB 2.1.10 开始，不支持修改 `DECIMAL` 类型的精度，TiDB 2.1.9 支持修改）
     - 不支持更改 `UNSIGNED` 属性
+    - 不支持从 `NULL` 到 `NOT NULL` 的修改
     - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
 + Alter Database
     - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
