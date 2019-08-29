@@ -44,7 +44,7 @@ binlogctl 下载链接：
 {{< copyable "shell-regular" >}}
 
 ```bash
-wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz && \
+wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz &&
 wget https://download.pingcap.org/tidb-{version}-linux-amd64.sha256
 ```
 
@@ -61,7 +61,7 @@ sha256sum -c tidb-{version}-linux-amd64.sha256
 {{< copyable "shell-regular" >}}
 
 ```bash
-wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz && \
+wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz &&
 wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
 ```
 
