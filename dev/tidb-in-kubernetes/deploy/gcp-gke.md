@@ -545,7 +545,7 @@ module "bastion" {
   bastion_name       = "${locals.gke_name}-tidb-bastion"
 }
 
-# HACK: enforces Helm to depend on the GKE cluster
+# HACK: 强制使 Helm 依赖 GKE 集群
 data "local_file" "kubeconfig" {
   depends_on = [module.tidb-operator.cluster_id]
   filename   = module.tidb-operator.kubeconfig_path
