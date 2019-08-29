@@ -5,7 +5,7 @@ category: how-to
 
 # TiDB 2.1 升级操作指南
 
-本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 RC 版本升级到 TiDB 2.1 GA 版本。TiDB 2.1 版本不兼容 Kafka 版本的 TiDB Binlog，如果当前集群已经使用 [Kafka 版本的 TiDB Binlog](/reference/tools/tidb-binlog/tidb-binlog-kafka.md)，须参考 [TiDB Binlog Cluster 版本升级方法](/how-to/upgrade/tidb-binlog.md) 升级到 Cluster 版本。
+本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 RC 版本升级到 TiDB 2.1 GA 版本。TiDB 2.1 版本不兼容 Kafka 版本的 TiDB Binlog，如果当前集群已经使用 [Kafka 版本的 TiDB Binlog](/reference/tools/tidb-binlog/tidb-binlog-kafka.md)，须参考 [TiDB Binlog Cluster 版本升级方法](/how-to/upgrade/tidb-binlog.md)升级到 Cluster 版本。
 
 ## 升级兼容性说明
 
@@ -25,13 +25,34 @@ TiDB-Ansible release-2.1 版本依赖 2.4.2 及以上但不高于 2.7.0 的 Ansi
 
 安装完成后，可通过以下命令查看版本：
 
+{{< copyable "shell-regular" >}}
+
+```bash
+ansible --version
 ```
-$ ansible --version
+
+```
 ansible 2.6.8
-$ pip show jinja2
+```
+
+{{< copyable "shell-regular" >}}
+
+```bash
+pip show jinja2
+```
+
+```
 Name: Jinja2
 Version: 2.10
-$ pip show jmespath
+```
+
+{{< copyable "shell-regular" >}}
+
+```bash
+pip show jmespath
+```
+
+```
 Name: jmespath
 Version: 0.9.3
 ```
@@ -44,14 +65,18 @@ Version: 0.9.3
 
 以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录，备份 TiDB 2.0 版本或 TiDB 2.1 rc 版本的 tidb-ansible 文件夹：
 
-```
-$ mv tidb-ansible tidb-ansible-bak
+{{< copyable "shell-regular" >}}
+
+```bash
+mv tidb-ansible tidb-ansible-bak
 ```
 
 下载最新 tidb-ansible release-2.1 分支，默认的文件夹名称为 `tidb-ansible`。
 
-```
-$ git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
+{{< copyable "shell-regular" >}}
+
+```bash
+git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
 ```
 
 ## 编辑 inventory.ini 文件和配置文件
@@ -105,18 +130,24 @@ readpool:
 
 确认 `tidb-ansible/inventory.ini` 文件中 `tidb_version = v2.1.0`，然后执行以下命令下载 TiDB 2.1 binary 到中控机。
 
-```
-$ ansible-playbook local_prepare.yml
+{{< copyable "shell-regular" >}}
+
+```bash
+ansible-playbook local_prepare.yml
 ```
 
 ## 滚动升级 TiDB 集群组件
 
-```
-$ ansible-playbook rolling_update.yml
+{{< copyable "shell-regular" >}}
+
+```bash
+ansible-playbook rolling_update.yml
 ```
 
 ## 滚动升级 TiDB 监控组件
 
-```
-$ ansible-playbook rolling_update_monitor.yml
+{{< copyable "shell-regular" >}}
+
+```bash
+ansible-playbook rolling_update_monitor.yml
 ```

@@ -33,8 +33,13 @@ TiDB Binlog 版本与 TiDB 版本的对应关系如下：
 
     查询 Drainer 的 `status` 接口，示例命令如下：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ curl 'http://172.16.10.49:8249/status'
+    curl 'http://172.16.10.49:8249/status'
+    ```
+
+    ```
     {"PumpPos":{"172.16.10.49:8250":{"offset":32686}},"Synced": true ,"DepositWindow":{"Upper":398907800202772481,"Lower":398907799455662081}}
     ```
 
