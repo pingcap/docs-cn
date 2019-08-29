@@ -90,6 +90,7 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
     - 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`
     - 不支持修改 `DECIMAL` 类型的精度（从 TiDB 2.1.10 开始，不支持修改 `DECIMAL` 类型的精度，TiDB 2.1.9 支持修改）
     - 不支持更改 `UNSIGNED` 属性
+    - 不支持从 `NULL` 到 `NOT NULL` 的修改
     - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
 + Alter Database
     - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
@@ -135,9 +136,8 @@ TiDB 支持 MySQL 5.7 中 **绝大多数的 SQL 模式**，以下几种模式除
     + TiDB 中，`utf8mb4` 的默认排序规则为 `utf8mb4_bin`
     + MySQL 5.7 中，`utf8mb4` 的默认排序规则为 `utf8mb4_general_ci`，MySQL 8.0 中修改为 `utf8mb4_0900_ai_ci`
     + 请使用 [`SHOW CHARACTER SET`](/reference/sql/statements/admin.md#-show-语句) 语句查看所有字符集的默认排序规则
-+ 默认 SQL mode 不同：
-    + TiDB 中为 `STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION`
-    + MySQL 中为 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`
++ 默认 SQL mode 与 MySQL **已相同**
+    + TiDB 和 MySQL 5.7 中均为 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`
 + `lower_case_table_names` 的默认值不同：
     + TiDB 中该值默认为 2，并且目前 TiDB 只支持设置该值为 2
     + MySQL 中默认设置：

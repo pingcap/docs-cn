@@ -140,40 +140,19 @@ The key's randomart image is:
 
 ## 在中控机器上下载 TiDB-Ansible
 
-以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录。以下为 tidb-ansible 与 TiDB 的版本对应关系，版本选择可以咨询官方。
+以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录。使用以下命令从 [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible 3.0 [相应 TAG 版本](https://github.com/pingcap/tidb-ansible/tags)，默认的文件夹名称为 `tidb-ansible`。
 
-| TiDB 版本 | tidb-ansible tag | 备注 |
-| -------- | ---------------- | --- |
-| 2.0 版本 | v2.0.10、v2.0.11 | 最新 2.0 稳定版本，可用于生产环境。 |
-| 2.1 版本 | v2.1.1 ~ v2.1.8 等 | 最新 2.1 稳定版本，可用于生产环境（建议）。 |
-| 3.0 版本 | v3.0.0-beta、v3.0.0-beta.1 等 | 目前是 beta 版本，不建议用于生产环境。 |
-| latest 版本 | None | 包含最新特性，每日更新，不建议用于生产环境。 |
+{{< copyable "shell-regular" >}}
 
-使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible [相应版本](https://github.com/pingcap/tidb-ansible/tags)，默认的文件夹名称为 `tidb-ansible`。
+```bash
+git clone -b $tag https://github.com/pingcap/tidb-ansible.git
+```
 
 > **注意：**
 >
-> 部署和升级 TiDB 集群需使用对应的 tidb-ansible 版本，通过改 `inventory.ini` 文件中的版本来混用可能会产生一些错误。
-
-- 下载指定 tag 的 tidb-ansible：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    git clone -b $tag https://github.com/pingcap/tidb-ansible.git
-    ```
-
-- 下载 latest 版本对应的 tidb-ansible：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    git clone https://github.com/pingcap/tidb-ansible.git
-    ```
-
-> **注意：**
->
-> 请务必按文档操作，将 `tidb-ansible` 下载到 `/home/tidb` 目录下，权限为 `tidb` 用户，不要下载到 `/root` 下，否则会遇到权限问题。
+> - `$tag` 替换为选定的 TAG 版本的值，例如 `v3.0.2`。
+> - 部署和升级 TiDB 集群需使用对应的 tidb-ansible 版本，通过改 `inventory.ini` 文件中的版本来混用可能会产生一些错误。
+> - 请务必按文档操作，将 `tidb-ansible` 下载到 `/home/tidb` 目录下，权限为 `tidb` 用户，不要下载到 `/root` 下，否则会遇到权限问题。
 
 ## 在中控机器上安装 Ansible 及其依赖
 
@@ -542,7 +521,7 @@ location_labels = ["host"]
 
         > **注意：**
         >
-        > 推荐设置：TiKV 实例数量 \* 参数值 = CPU 核心数量 \* 0.8
+        > 推荐配置：TiKV 实例数量 \* 参数值 = CPU 核心数量 \* 0.8
 
     3. 如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 `capacity` 参数：
 
@@ -553,9 +532,7 @@ location_labels = ["host"]
 
         > **注意：**
         >
-        > 推荐配置：`capacity` = 磁盘总容量 / TiKV 实例数量
-        >
-        > 例如：`capacity: "100GB"`
+        > 推荐配置：`capacity` = 磁盘总容量 / TiKV 实例数量，例如：`capacity: "100GB"`。
 
 ### inventory.ini 变量调整
 

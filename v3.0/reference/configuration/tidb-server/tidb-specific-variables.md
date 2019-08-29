@@ -50,14 +50,6 @@ set @@global.tidb_distsql_scan_concurrency = 10
 这个变量用来设置优化器是否执行聚合函数下推到 Join 之前的优化操作。
 当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
 
-### tidb_opt_insubquery_unfold
-
-作用域：SESSION
-
-默认值：0
-
-这个变量用来设置优化器是否执行 `in-` 子查询展开的优化操作。
-
 ### tidb_auto_analyze_ratio
 
 作用域：GLOBAL
@@ -365,15 +357,15 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 是否需要禁用自动重试，请参考[自动重试的风险](/reference/transactions/transaction-isolation.md#乐观事务注意事项)。
 
-### tidb_back_off_weight
+### tidb_backoff_weight
 
 作用域：SESSION | GLOBAL
 
 默认值：2
 
-这个变量用来给 TiDB 的 `back-off` 最大时间增加权重，即内部遇到网络或其他组件（TiKV、PD）故障等时，发送重试请求的最大重试时间。可以通过这个变量来调整最大重试时间，最小值为 1。
+这个变量用来给 TiDB 的 `backoff` 最大时间增加权重，即内部遇到网络或其他组件（TiKV、PD）故障等时，发送重试请求的最大重试时间。可以通过这个变量来调整最大重试时间，最小值为 1。
 
-例如，TiDB 向 PD 取 TSO 的基础超时时间是 15 秒，当 `tidb_back_off_weight = 2` 时，取 TSO 的最大超时时间为：基础时间 * 2 等于 30 秒。
+例如，TiDB 向 PD 取 TSO 的基础超时时间是 15 秒，当 `tidb_backoff_weight = 2` 时，取 TSO 的最大超时时间为：基础时间 * 2 等于 30 秒。
 
 在网络环境较差的情况下，适当增大该变量值可以有效缓解因为超时而向应用端报错的情况；而如果应用端希望更快地接到报错信息，则应该尽量减小该变量的值。
 
@@ -638,3 +630,11 @@ select * from t, t1 where t.a=t1.a
 默认值：300
 
 这个变量用来设置 `SPLIT REGION` 语句的执行超时时间，单位是秒，默认值是 300 秒，如果超时还未完成，就返回一个超时错误。
+
+### tidb_scatter_region
+
+作用域：GLOBAL
+
+默认值：0
+
+TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在建表语句执行时，同步打散刚分裂出的 Region。适用于批量建表后紧接着批量写入数据，能让刚分裂出的 Region 先在 TiKV 分散而不用等待 PD 进行调度。为了保证后续批量写入数据的稳定性，建表语句会等待打散 Region 完成后再返回建表成功，建表语句执行时间会是关闭该变量的数倍。
