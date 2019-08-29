@@ -213,4 +213,5 @@ SET character_set_results = charset_name;
 SET collation_connection = @@collation_database;
 
 ```
+
 更多细节，参考 [Connection Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-connection.html)。
