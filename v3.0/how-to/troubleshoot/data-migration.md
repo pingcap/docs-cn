@@ -18,6 +18,8 @@ aliases: ['/docs-cn/tools/dm/troubleshooting/']
 
 4. 一般情况下，错误处理完成后，只需使用 dmctl 重启任务即可。
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     resume-task ${task name}
     ```

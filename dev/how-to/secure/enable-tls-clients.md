@@ -34,6 +34,8 @@ TiDB 的加密连接支持默认是关闭的，必须在 TiDB 服务端通过配
 
 上述证书及密钥可以使用 OpenSSL 签发和生成，也可以使用 MySQL 自带的工具 `mysql_ssl_rsa_setup` 快捷生成：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 mysql_ssl_rsa_setup --datadir=./certs
 ```
@@ -92,8 +94,13 @@ MySQL 5.7 及以上版本自带的客户端默认尝试使用安全连接，若�
 
 以下是一个安全连接中执行该语句的结果。由于客户端支持的 TLS 版本号和加密协议会有所不同，执行结果相应地也会有所变化。
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW STATUS LIKE "%Ssl%";
+SHOW STATUS LIKE "%Ssl%";
+```
+
+```
 ......
 | Ssl_verify_mode | 5                            |
 | Ssl_version     | TLSv1.2                      |
@@ -103,8 +110,13 @@ mysql> SHOW STATUS LIKE "%Ssl%";
 
 除此以外，对于 MySQL 自带客户端，还可以使用 `STATUS` 或 `\s` 语句查看连接情况：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> \s
+\s
+```
+
+```
 ...
 SSL: Cipher in use is ECDHE-RSA-AES128-GCM-SHA256
 ...

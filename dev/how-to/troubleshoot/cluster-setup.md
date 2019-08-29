@@ -47,7 +47,7 @@ tidb-server 无法启动的常见情况包括：
 
 + 启动参数错误
 
-    请参考[TiDB 命令行参数](/reference/configuration/tidb-server/configuration.md)
+    请参考 [TiDB 命令行参数](/reference/configuration/tidb-server/configuration.md)
 
 + 端口被占用：`lsof -i:port`
 
@@ -68,11 +68,11 @@ tidb-server 无法启动的常见情况包括：
 
 + 启动参数错误
 
-    请参考[TiKV 启动参数](/reference/configuration/tikv-server/configuration.md)文档。
+    请参考 [TiKV 启动参数](/reference/configuration/tikv-server/configuration.md)文档。
 
 + 端口被占用：`lsof -i:port`
 
-    请确保 tikv-server 启动所需要的端口未被占用： `lsof -i:port`。
+    请确保 tikv-server 启动所需要的端口未被占用：`lsof -i:port`。
 + 无法连接 pd-server
 
     首先检查 pd-server 的进程状态和日志。确保 pd-server 成功启动，对应端口已打开：`lsof -i:port`。
@@ -92,7 +92,7 @@ tidb-server 无法启动的常见情况包括：
 
 + 端口被占用：`lsof -i:port`
 
-    请确保 pd-server 启动所需要的端口未被占用： `lsof -i:port`。
+    请确保 pd-server 启动所需要的端口未被占用：`lsof -i:port`。
 
 ## TiDB/TiKV/PD 进程异常退出
 
@@ -118,7 +118,7 @@ tidb-server 无法启动的常见情况包括：
 
 ## TiDB panic
 
-请提供 panic 的 log
+请提供 panic 的 log。
 
 ## 连接被拒绝
 
