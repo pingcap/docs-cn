@@ -45,23 +45,29 @@ TiDB Data Migration 平台由 3 部分组成：DM-master、DM-worker 和 dmctl�
 
 1. 安装 MySQL 5.7，下载或提取 TiDB 安装包：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    sudo yum install -y http://repo.mysql.com/yum/mysql-5.7-community/el/7/x86_64/mysql57-community-release-el7-10.noarch.rpm
-    sudo yum install -y mysql-community-server
-    curl http://download.pingcap.org/tidb-v3.0-linux-amd64.tar.gz | tar xzf -
-    curl http://download.pingcap.org/dm-latest-linux-amd64.tar.gz | tar xzf -
+    sudo yum install -y http://repo.mysql.com/yum/mysql-5.7-community/el/7/x86_64/mysql57-community-release-el7-10.noarch.rpm &&
+    sudo yum install -y mysql-community-server &&
+    curl http://download.pingcap.org/tidb-v3.0-linux-amd64.tar.gz | tar xzf - &&
+    curl http://download.pingcap.org/dm-latest-linux-amd64.tar.gz | tar xzf - &&
     curl -L https://github.com/pingcap/docs/raw/master/dev/how-to/get-started/dm-cnf/dm-cnf.tgz | tar xvzf -
     ```
 
 2. 创建目录和符号链接：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    mkdir -p bin data logs
-    ln -sf -t bin/ "$HOME"/*/bin/*
+    mkdir -p bin data logs &&
+    ln -sf -t bin/ "$HOME"/*/bin/* &&
     [[ :$PATH: = *:$HOME/bin:* ]] || echo 'export PATH=$PATH:$HOME/bin' >> ~/.bash_profile && . ~/.bash_profile
     ```
 
 3. 安装 3 个 MySQL Server 实例的配置：
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     tee -a "$HOME/.my.cnf" <<EoCNF
@@ -91,6 +97,8 @@ TiDB Data Migration 平台由 3 部分组成：DM-master、DM-worker 和 dmctl�
 
 4. 初始化并启动这些 MySQL 实例：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     for i in 1 2 3
     do
@@ -102,12 +110,25 @@ TiDB Data Migration 平台由 3 部分组成：DM-master、DM-worker 和 dmctl�
 
 5. 执行 `jobs` 和/或 `pgrep -a mysqld` 以确保 MySQL Server 实例都在运行状态。
 
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    jobs
     ```
-    $ jobs
+
+    ```
     [1]   Running                 mysqld --defaults-group-suffix="$i" &
     [2]-  Running                 mysqld --defaults-group-suffix="$i" &
     [3]+  Running                 mysqld --defaults-group-suffix="$i" &
-    $ pgrep -a mysqld
+    ```
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    pgrep -a mysqld
+    ```
+
+    ```
     17672 mysqld --defaults-group-suffix=1
     17727 mysqld --defaults-group-suffix=2
     17782 mysqld --defaults-group-suffix=3
@@ -121,6 +142,8 @@ TiDB Data Migration 平台由 3 部分组成：DM-master、DM-worker 和 dmctl�
 
 1. 对于这 3 个 MySQL Server 实例，每个实例都分别创建数据库和表：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     for i in 1 2 3
     do
@@ -132,6 +155,8 @@ TiDB Data Migration 平台由 3 部分组成：DM-master、DM-worker 和 dmctl�
     ```
 
 2. 在每个 MySQL 实例中插入几百行数据：
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     for i in 1 2 3; do
@@ -148,6 +173,8 @@ TiDB Data Migration 平台由 3 部分组成：DM-master、DM-worker 和 dmctl�
     ```
 
 3. 查询上一步写入的所有行并排序，以确认写入数据是正确的：
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     for i in 1 2 3; do
@@ -184,6 +211,8 @@ TiDB Data Migration 平台由 3 部分组成：DM-master、DM-worker 和 dmctl�
 
 1. 启动单个 `tidb-server` 实例、每个 MySQL Server 实例 （总共 3 个实例）的 DM-worker 进程和一个 DM-master 进程：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     tidb-server --log-file=logs/tidb-server.log &
     for i in 1 2 3; do dm-worker --config=dm-cnf/dm-worker$i.toml & done
@@ -192,8 +221,13 @@ TiDB Data Migration 平台由 3 部分组成：DM-master、DM-worker 和 dmctl�
 
 2. 执行 `jobs` 和/或 `ps -a`，确保这些进程都正在运行：
 
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    jobs
     ```
-    $ jobs
+
+    ```
     [1]   Running                 mysqld --defaults-group-suffix="$i" &
     [2]   Running                 mysqld --defaults-group-suffix="$i" &
     [3]   Running                 mysqld --defaults-group-suffix="$i" &
@@ -202,7 +236,15 @@ TiDB Data Migration 平台由 3 部分组成：DM-master、DM-worker 和 dmctl�
     [6]   Running                 dm-worker --config=dm-cnf/dm-worker$i.toml &
     [7]-  Running                 dm-worker --config=dm-cnf/dm-worker$i.toml &
     [8]+  Running                 dm-master --config=dm-cnf/dm-master.toml &
-    $ ps -a
+    ```
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ps -a
+    ```
+
+    ```
        PID TTY          TIME CMD
      17317 pts/0    00:00:00 screen
      17672 pts/1    00:00:04 mysqld
@@ -225,6 +267,8 @@ TiDB Data Migration 平台由 3 部分组成：DM-master、DM-worker 和 dmctl�
 各个 DM-worker 通过不同的端口监听（由 `worker-addr` 定义）。
 
 以下为 `dm-worker1.toml` 的示例：
+
+{{< copyable "" >}}
 
 ```toml
 # DM-worker 配置
@@ -249,6 +293,8 @@ port = 3307
 - 如果从 MariaDB Server 或 MariaDB (Galera) Cluster 迁移数据，则设置 `flavor = "mariadb"`（仅支持 10.1.2 以上 MariaDB 版本）。
 
 任务在 YAML 文件中定义。以下为一个 `dmtask1.yaml` 文件示例：
+
+{{< copyable "" >}}
 
 ```yaml
 name: dmtask1
@@ -293,7 +339,7 @@ loaders:
 以上文件包含一些全局配置项和几组定义各种行为的配置项。
 
 * `task-mode: all`：DM 导入上游实例的全量备份，并使用上游 MySQL Server 的 binlog 进行增量同步。
-  
+
     * 此外，可将 `task-mode` 设置为 `full` 或 `incremental` 以分别进行全量备份或增量同步。
 
 * `is-sharding: true`：多个 DM-worker 实例进行同一个任务，这些实例将上游的若干分片合并到一个下游的表中。
@@ -306,8 +352,13 @@ loaders:
 
 `dmctl` 是控制 DM 集群的命令行工具，用于启动任务、查询任务状态。执行 `dmctl -master-addr :8261` 获取如下交互提示，从而启动该工具：
 
+{{< copyable "shell-regular" >}}
+
+```bash
+dmctl -master-addr :8261
 ```
-$ dmctl -master-addr :8261
+
+```
 Welcome to dmctl
 Release Version: v1.0.0-alpha-69-g5134ad1
 Git Commit Hash: 5134ad19fbf6c57da0c7af548f5ca2a890bddbe4
@@ -320,8 +371,13 @@ Go Version: go version go1.12 linux/amd64
 
 执行 `start-task dm-cnf/dmtask1.yaml` 启动 `dmtask1`：
 
+{{< copyable "shell-regular" >}}
+
+```bash
+start-task dm-cnf/dmtask1.yaml
 ```
-» start-task dm-cnf/dmtask1.yaml
+
+```
 {
     "result": true,
     "msg": "",
@@ -349,6 +405,8 @@ Go Version: go version go1.12 linux/amd64
 
 所有的行数据都被迁移到 TiDB Server：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 mysql -h 127.0.0.1 -P 4000 -u root -e 'select * from t1' dmtest1 | tail
 ```
@@ -370,6 +428,8 @@ mysql -h 127.0.0.1 -P 4000 -u root -e 'select * from t1' dmtest1 | tail
 ```
 
 现在 DM 正作为每个 MySQL Server 的 slave，读取 MySQL Server 的 binlog，将更新的数据实时同步到下游的 TiDB Server：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 for i in 1 2 3
@@ -400,6 +460,8 @@ done
 
 向上游 MySQL Server 插入几行数据，更新 MySQL 中的这些行，并再次查询这些行：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 for i in 1 2 3; do
     mysql -N -h 127.0.0.1 -P "$((3306+i))" -u root -e 'insert into t1 (id) select null from t1' dmtest1
@@ -423,6 +485,8 @@ mysql -h 127.0.0.1 -P 4000 -u root -e 'select * from t1' dmtest1 | tail
 ```
 
 更新这些行，则可见更新的数据已同步到 TiDB 中：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 for i in 1 2 3; do
@@ -454,6 +518,8 @@ mysql -h 127.0.0.1 -P 4000 -u root -e 'select * from t1' dmtest1 | tail
 
 1. 创建一个新的数据库和 MySQL 各实例中的一些表：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     for i in 1 2 3
     do
@@ -465,6 +531,8 @@ mysql -h 127.0.0.1 -P 4000 -u root -e 'select * from t1' dmtest1 | tail
     ```
 
 2. 向每个 MySQL 实例插入几百行数据。通过设置 `auto_increment_increment=1` 和 `auto_increment_offset=1` 确保这 3 个 MySQL Server 都分配相同的自增 ID：
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     for i in 1 2 3; do
@@ -482,6 +550,8 @@ mysql -h 127.0.0.1 -P 4000 -u root -e 'select * from t1' dmtest1 | tail
     ```
 
 3. 在 MySQL 实例中查询这些行，确保插入的数据无误：
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     for i in 1 2 3; do
@@ -507,6 +577,8 @@ mysql -h 127.0.0.1 -P 4000 -u root -e 'select * from t1' dmtest1 | tail
 如果要把这些行原封不动地迁移到下游 TiDB 实例中的一张表中，将产生主键自增值冲突，导致重复的 key error 报错。可以使用 DM 的 "column mappings" 功能中的 "partition id" 表达式转化自增值，以避免自增值冲突。
 
 以下是 `dmtask2.yaml`：
+
+{{< copyable "" >}}
 
 ```yaml
 name: dmtask2
@@ -577,18 +649,20 @@ loaders:
 * `ignore-checking-items: ["auto_increment_ID"]` 将不再使用，因为上游的自增 ID 存在冲突。
 
 * `column-mappings` 部分指引 DM 如何进行 shard merge 操作。
-  
+
     * 只有一个上游表结构和表，因此 `schema-pattern` 和 `table-pattern` 事实上是字符串。
 
         * 如果要将多个表结构和/或表合并到下游的一个表中，可以使用通配符。
-  
+
     * `partition id` 表达式有一个对应的 `arguments` 部分，该部分控制将上游 ID 转换成下游 TiDB 集群中使用的 ID 的算法。
-  
+
     * `source_column` 和 `target_column` 的含义不言自明，需要注意的是，这二者能将上游插入的数据合并到下游结构不同的表中，例如，需要保留原始值时，可以这样操作。
-  
+
     * `mysql-instances` 中的每一项都有不同的列映射，因为不同的 `partition id` 算法需要不同的参数。
 
 启动 `dmtask2`：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 dmctl -master-addr :8261 <<<"start-task dm-cnf/dmtask2.yaml"
@@ -629,6 +703,8 @@ Go Version: go version go1.12 linux/amd64
 
 数据导入到下游 TiDB 实例后：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 mysql -h 127.0.0.1 -P 4000 -u root -e 'select * from t1' dmtest2 | tail
 ```
@@ -650,6 +726,8 @@ mysql -h 127.0.0.1 -P 4000 -u root -e 'select * from t1' dmtest2 | tail
 
 DM 使用一种算法将上游 MySQL 实例分配的 ID 进行位移，以生成下游 TiDB 实例的唯一 ID。在测试中，partition ID 仅由 "instance ID" 组成，因为上游 MySQL Server 中 schema 和表名是相同的。我们将 partition ID 表达式参数中的 "schema ID" 和 "table ID" 留空：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 grep arguments dm-cnf/dmtask2.yaml
 ```
@@ -666,8 +744,10 @@ grep arguments dm-cnf/dmtask2.yaml
 
 在此，可为本示例复现算法，以自增 ID 372、instance ID 为 3 为例：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-id=372 instance_id=3 schema_id=0 table_id=0
+id=372 instance_id=3 schema_id=0 table_id=0 &&
 echo $(( instance_id << (64-1-4) | schema_id << (64-1-4-7) | table_id << 44 | id ))
 ```
 
@@ -678,6 +758,8 @@ echo $(( instance_id << (64-1-4) | schema_id << (64-1-4-7) | table_id << 44 | id
 ```
 
 因为只有 44 位对应原始的自增值，所以可以舍弃其他位，从而将转换后的值转换回原来的值：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 echo $(( 1729382256910270836 & (1<<45)-1 ))
@@ -690,6 +772,8 @@ echo $(( 1729382256910270836 & (1<<45)-1 ))
 ```
 
 可使用 SQL 查询中的表达式查看转换后的 ID 和原来的 ID：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 mysql -h 127.0.0.1 -P 4000 -u root -e 'select id, id&(1<<45)-1 as orig_id, c, port from t1 order by orig_id' dmtest2 | tail
