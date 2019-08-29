@@ -68,7 +68,7 @@ HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具�
 
 ![HAProxy](/media/Haproxy.jpg)
 
-### 安装 HAproxy
+### 安装 HAProxy
 
 1. 使用 yum 安装 HAProxy。
 
