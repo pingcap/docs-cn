@@ -22,7 +22,6 @@ HAProxy 是由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写�
 - [SSL](http://cbonte.github.io/haproxy-dconv/1.9/intro.html#3.3.2)：支持 HTTPS 通信和解析；
 - [监控与统计](http://cbonte.github.io/haproxy-dconv/1.9/intro.html#3.3.3)：通过 web 页面可以实时监控服务状态以及具体的流量信息。
 
-
 ## 准备环境
 
 在部署 HAProxy 之前，需准备好以下环境。
