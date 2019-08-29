@@ -200,6 +200,7 @@ SET character_set_results = charset_name;
 SET character_set_connection = charset_name;
 
 ```
+
 `COLLATE` 是可选的，如果没有提供，将会用 charset_name 默认的 Collation。
 
 * `SET CHARACTER SET 'charset_name'`
@@ -210,6 +211,6 @@ SET character_set_connection = charset_name;
 SET character_set_client = charset_name;
 SET character_set_results = charset_name;
 SET collation_connection = @@collation_database;
-```
 
+```
 更多细节，参考 [Connection Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-connection.html)。
