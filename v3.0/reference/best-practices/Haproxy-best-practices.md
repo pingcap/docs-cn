@@ -9,18 +9,19 @@ category: reference
 
 ## HAProxy 简介
 
-HAProxy 是一个使用 C 语言编写的自由及开放源代码软件，提供高可用性、负载均衡，以及基于 TCP 和 HTTP 的应用程序代理。GitHub、Bitbucket、Stack Overflow、Reddit、Tumblr、Twitter 和 Tuenti 在内的知名网站，及亚马逊网络服务系统都使用了 HAProxy。
+[HAProxy](https://github.com/haproxy/haproxy) 是由 C 语言编写的自由开放源码的软件。为基于 TCP 和 HTTP 协议的应用程序提供高可用性、负载均衡和代理服务。它在对 CPU 和 内存的快速及高效使用方面的特点，获得诸如：GitHub、Bitbucket、Stack Overflow、Reddit、Tumblr、Twitter 和 Tuenti 在内的知名网站，及亚马逊网络服务系统的广泛使用。
 
-HAProxy 提供了 L4(TCP) 和 L7(HTTP) 两种负载均衡能力，具备丰富的功能。HAProxy 的社区非常活跃，版本更新快速（最新稳定版 1.7.2 于 2017 年 1 月 13 日推出）。最关键的是，HAProxy 具备媲美商用负载均衡器的性能和稳定性。因为 HAProxy 的上述优点，它当前不仅是免费负载均衡软件的首选，更几乎成为了唯一选择。
+HAProxy 是由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，并仍然负责该项目的维护，该在开源社区提供免费和版本迭代。最新的稳定版本 2.0.0 于 2019 年 8 月 16 日发布，并带来更多的[优秀的特性](https://www.haproxy.com/blog/haproxy-2-0-and-beyond/)。
 
-## HAProxy 核心功能
+## HAProxy 部分核心功能介绍
 
-- 负载均衡：L4 和 L7 两种模式，支持 RR、静态 RR、LC、IP Hash、URI Hash、URL_PARAM Hash、HTTP_HEADER Hash 等丰富的负载均衡算法；
-- 健康检查：支持 TCP 和 HTTP 两种健康检查模式；
-- 会话保持：对于未实现会话共享的应用集群，可通过 Insert Cookie、Rewrite Cookie、Prefix Cookie，以及上述多种 Hash 方式实现会话保持；
-- SSL：HAProxy 可以解析 HTTPS 协议，并能够将请求解密为 HTTP 后向后端传输；
-- HTTP 请求重写与重定向；
-- 监控与统计：HAProxy 提供了基于 Web 的统计信息页面，展现健康状态和流量数据。基于此功能，使用者可以开发监控程序来监控 HAProxy 的状态。
+- [高可用行](http://cbonte.github.io/haproxy-dconv/1.9/intro.html#3.3.4)：HAProxy 提供 优雅关闭服务和无缝切换的高可用功能；
+- [负载均衡](http://cbonte.github.io/haproxy-dconv/1.9/configuration.html#4.2-balance)：L4（TCP）和 L7（HTTP）负载均衡模式，至少 9 类均衡算法，比如 roundrobin,leastconn,random 等;
+- [健康检查](http://cbonte.github.io/haproxy-dconv/1.9/configuration.html#5.2-check)：对 HAProxy 配置的 HTTP 或者 TCP 模式状态检查；
+- [会话保持](http://cbonte.github.io/haproxy-dconv/1.9/intro.html#3.3.6)：在应用程序没有提供会话保持的功能下，HAProxy 可以提供该项功能；
+- [SSL](http://cbonte.github.io/haproxy-dconv/1.9/intro.html#3.3.2)：支持 HTTPS 通信和解析；
+- [监控与统计](http://cbonte.github.io/haproxy-dconv/1.9/intro.html#3.3.3)：通过 web 页面可以实时监控服务状态以及具体的流量信息。
+
 
 ## 准备环境
 
@@ -182,7 +183,7 @@ listen tidb-cluster                        # 配置 database 负载均衡
 
    ```bash
    ps -ef |grep haproxy
-   kill -9 haproxy.pid
+   kill -9 ${haproxy.pid}  # HAProxy 进程 pid
    ```
 
 - 方法二：使用 systemd 停止 HAProxy
