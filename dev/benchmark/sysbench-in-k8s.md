@@ -274,7 +274,11 @@ Latency 对比：
 
 ![COS vs Ubuntu](/media/sysbench-in-k8s/cos-vs-ubuntu-latency.svg)
 
-从图中可以看到 Ubuntu 系统在单纯的 Point Select 测试是中表现比 COS 系统要好。
+从图中可以看到 Host 模式下，Ubuntu 系统在单纯的 Point Select 测试是中表现比 COS 系统要好。
+
+> **注意：**
+>
+> 此测试只针对单一测试集进行了测试，表明操作系统不同、不同的优化与默认设置，都有可能影响性能，不构成推荐建议。COS 系统专为容器优化，在安全性、磁盘性能做了许多工作，在 GKE 是官方推荐系统。
 
 #### K8S Service vs GCP LoadBalancer
 
@@ -440,7 +444,7 @@ Latency 对比：
 此次测试主要将典型公有云部署 Kubernetes 运行 TiDB 集群的几种场景使用 sysbench 做了测试，了解不同因素可能带来的影响。从整体看，主要有以下几点：
 
 - VPC-Native 模式下 Host 网络性能略好于 Pod 网络（~7%，以 QPS 差异估算，下同）
-- GCP 的 Ubuntu 系统单纯的读测试中性能略好于 COS (~9%)
+- GCP 的 Ubuntu 系统 Host 网络下单纯的读测试中性能略好于 COS (~9%)
 - 使用 Load Balancer 在集群外访问，会略损失性能 (~5%)
 - 多可用区下节点之间延迟增加，会对 TiDB 性能产生一定的影响（30% ~ 6%，随并发数增加而下降）
 - Point Select 读测试主要消耗 CPU ，计算型机型相对普通型机器带来了很大 QPS 提升 (50% ~ 60%)
