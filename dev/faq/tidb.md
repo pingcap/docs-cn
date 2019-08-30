@@ -558,7 +558,7 @@ TiDB 支持改变 [per-session](/reference/configuration/tidb-server/tidb-specif
 
 #### 3.4.1 TiKV 集群副本建议配置数量是多少，是不是最小高可用配置（3个）最好？
 
-一般建议 3 副本即可，副本升高，性能会有下降，但是安全性更高。是否设置更多副本需要看具体业务需要。
+如果是测试环境 3 副本足够；在生产环境中，不可让集群副本数低于 3，需根据架构特点、业务系统及恢复能力的需求，适当增加副本数。值得注意的是，副本升高，性能会有下降，但是安全性更高。
 
 #### 3.4.2 TiKV 启动报错：cluster ID mismatch
 
@@ -580,7 +580,7 @@ TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在�
 - write CF 存储的是数据的版本信息（MVCC）、索引、小表相关的数据，相关的参数位于 `[rocksdb.writecf]` 项中。
 - lock CF 存储的是锁信息，系统使用默认参数。
 - Raft RocksDB 实例存储 Raft log。default CF 主要存储的是 Raft log，与其对应的参数位于 `[raftdb.defaultcf]` 项中。
-- 每个 CF 都有单独的 Block-cache，用于缓存数据块，加速 RocksDB 的读取速度，Block-cache 的大小通过参数 `block-cache-size` 控制，`block-cache-size` 越大，能够缓存的热点数据越多，对读取操作越有利，同时占用的系统内存也会越多。
+- 所有 CF 共享一个 Block-cache，用于缓存数据块，加速 RocksDB 的读取速度，Block-cache 的大小通过参数 `block-cache-size` 控制，`block-cache-size` 越大，能够缓存的热点数据越多，对读取操作越有利，同时占用的系统内存也会越多。
 - 每个 CF 有各自的 Write-buffer，大小通过 `write-buffer-size` 控制。
 
 #### 3.4.6 TiKV channel full 是什么原因？
@@ -596,7 +596,7 @@ TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在�
 
 #### 3.4.8 如果一个节点挂了会影响服务吗？影响会持续多久？
 
-TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强一致，当一份备份出现问题时，其他的副本能保证数据的安全。通常 TiDB 配置每个 Region 为 3 副本，根据 Raft 协议，每个 Region 会选取一个 Leader 提供服务。当单个 Leader 失效时，在最大 2 * lease time（leasetime 是 10 秒）时间后，通过 Raft 协议会很快将一个 Follower 选为新的 Region Leader 来提供服务。
+TiDB 使用 Raft 在多个副本之间做数据同步（默认为每个 Region 3 个副本）。当一份备份出现问题时，其他的副本能保证数据的安全。根据 Raft 协议，当某个节点挂掉导致该节点里的 Leader 失效时，在最大 2 * lease time（leasetime 是 10 秒）时间后，通过 Raft 协议会很快将一个另外一个节点里的 Follower 选为新的 Region Leader 来提供服务。
 
 #### 3.4.9 TiKV 在分别在那些场景下占用大量 IO、内存、CPU（超过参数配置的多倍）？
 
@@ -612,7 +612,7 @@ TiDB 使用 Raft 在多个副本之间做数据同步，从而保证数据的强
 
 #### 3.4.12 Region 是如何进行分裂的？
 
-Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 的大小超过参数 `region_split_size` 或 `region-split-keys` 的值时，就会触发分裂，分裂后的信息会汇报给 PD。
+Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 的大小超过参数 `region-split-size` 或 `region-split-keys` 的值时，就会触发分裂，分裂后的信息会汇报给 PD。
 
 #### 3.4.13 TiKV 是否有类似 MySQL 的 `innodb_flush_log_trx_commit` 参数，来保证提交数据不丢失？
 
@@ -628,9 +628,11 @@ WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD
 
 #### 3.4.16 是否可以利用 TiKV 的 Raft + 多副本达到完全的数据可靠，单机存储引擎是否需要最严格模式？
 
-通过使用 [Raft 一致性算法](https://raft.github.io/)，数据在各 TiKV 节点间复制为多副本，以确保某个节点挂掉时数据的安全性。只有当数据已写入超过 50% 的节点时，应用才返回 ACK（三节点中的二节点）。但理论上两个节点也可能同时发生故障，所以在诸如金融行业对数据零容忍的场景中，还是需要开启 `sync-log`。
+通过使用 [Raft 一致性算法](https://raft.github.io/)，数据在各 TiKV 节点间复制为多副本，以确保某个节点挂掉时数据的安全性。只有当数据已写入超过 50% 的副本时，应用才返回 ACK（三副本中的两副本）。但理论上两个节点也可能同时发生故障，所以除非是对性能要求高于数据安全的场景，一般都强烈推荐开启 `sync-log`。
 
-另外，还有一种 `sync-log` 的替代方案，即在 Raft group 中用五个节点而非三个节点。这将允许两个节点同时发生故障，而仍然能保证数据安全性。
+另外，还有一种 `sync-log` 的替代方案，即在 Raft group 中用五个副本而非三个。这将允许两个副本同时发生故障，而仍然能保证数据安全性。
+
+对于单机存储引擎也同样推荐打开 `sync-log` 模式。否则如果节点宕机可能会丢失最后一次写入数据。
 
 #### 3.4.17 使用 Raft 协议，数据写入会有多次网络的 roundtrip，实际写入延迟如何？
 
@@ -652,6 +654,10 @@ TiKV 支持单独进行接口调用，理论上也可以起个实例做为 Cache
 #### 3.4.21 为什么 TiKV 容易出现 OOM？
 
 TiKV 的内存占用主要来自于 RocksDB 的 block-cache，默认为系统总内存的 40%。当 TiKV 容易出现 OOM 时，检查 `block-cache-size` 配置是否过高。还需要注意，当单机部署了多个 TiKV 实例时，需要显式地配置该参数，以防止多个实例占用过多系统内存导致 OOM。
+
+#### 3.4.22 TiDB 数据和 RawKV 数据可存储于同一个 TiKV 集群里吗？
+
+不可以。TiDB 数据（或使用其他事务 API 生成的数据）依赖于一种特殊的键值格式，和 RawKV API 数据（或其他基于 RawKV 的服务生成的数据）并不兼容。
 
 ### 3.5 TiDB 测试
 
