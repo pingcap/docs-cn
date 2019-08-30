@@ -61,6 +61,8 @@ aliases: ['/docs-cn/sql/ddl/','/docs-cn/dev/reference/sql/statements/ddl/']
 
 以下是 `CREATE TABLE` 相关的语法说明：
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE TABLE [IF NOT EXISTS] tbl_name
     (create_definition,...)
@@ -68,6 +70,8 @@ CREATE TABLE [IF NOT EXISTS] tbl_name
 ```
 
 使用 `IF NOT EXIST` 时，即使创建的表已经存在，也不会报错，如果不指定时，则报错。
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] tbl_name
@@ -222,25 +226,58 @@ table_option:
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE TABLE t1 (a int);
+CREATE TABLE t1 (a int);
+```
+
+```
 Query OK, 0 rows affected (0.11 sec)
+```
 
-mysql> CREATE TABLE t2 LIKE t1;
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t2 LIKE t1;
+```
+
+```
 Query OK, 0 rows affected (0.10 sec)
+```
 
-mysql> DESC t1;
+{{< copyable "sql" >}}
+
+```sql
+DESC t1;
+```
+
+```
 +-------+---------+------+------+---------+-------+
 | Field | Type    | Null | Key  | Default | Extra |
 +-------+---------+------+------+---------+-------+
 | a     | int(11) | YES  |      | NULL    |       |
 +-------+---------+------+------+---------+-------+
 1 row in set (0.00 sec)
+```
 
-mysql> INSERT INTO t1 VALUES (1);
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 VALUES (1);
+```
+
+```
 Query OK, 1 row affected (0.02 sec)
+```
 
-mysql> SELECT * FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t1;
+```
+
+```
 +------+
 | a    |
 +------+
