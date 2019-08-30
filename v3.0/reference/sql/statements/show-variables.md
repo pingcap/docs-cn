@@ -24,8 +24,13 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW GLOBAL VARIABLES LIKE 'tidb%';
+SHOW GLOBAL VARIABLES LIKE 'tidb%';
+```
+
+```
 +------------------------------------+--------------+
 | Variable_name                      | Value        |
 +------------------------------------+--------------+
@@ -89,8 +94,15 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'tidb%';
 | tidb_mem_quota_hashjoin            | 34359738368  |
 +------------------------------------+--------------+
 58 rows in set (0.01 sec)
+```
 
-mysql> SHOW GLOBAL VARIABLES LIKE 'time_zone%';
+{{< copyable "sql" >}}
+
+```sql
+SHOW GLOBAL VARIABLES LIKE 'time_zone%';
+```
+
+```
 +---------------+--------+
 | Variable_name | Value  |
 +---------------+--------+

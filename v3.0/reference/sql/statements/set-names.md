@@ -16,8 +16,13 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW VARIABLES LIKE 'character_set%';
+SHOW VARIABLES LIKE 'character_set%';
+```
+
+```
 +--------------------------+--------------------------------------------------------+
 | Variable_name            | Value                                                  |
 +--------------------------+--------------------------------------------------------+
@@ -31,11 +36,25 @@ mysql> SHOW VARIABLES LIKE 'character_set%';
 | character_set_server     | utf8mb4                                                |
 +--------------------------+--------------------------------------------------------+
 8 rows in set (0.01 sec)
+```
 
-mysql> SET NAMES utf8;
+{{< copyable "sql" >}}
+
+```sql
+SET NAMES utf8;
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> SHOW VARIABLES LIKE 'character_set%';
+{{< copyable "sql" >}}
+
+```sql
+SHOW VARIABLES LIKE 'character_set%';
+```
+
+```
 +--------------------------+--------------------------------------------------------+
 | Variable_name            | Value                                                  |
 +--------------------------+--------------------------------------------------------+
@@ -49,11 +68,25 @@ mysql> SHOW VARIABLES LIKE 'character_set%';
 | character_set_filesystem | binary                                                 |
 +--------------------------+--------------------------------------------------------+
 8 rows in set (0.00 sec)
+```
 
-mysql> SET CHARACTER SET utf8mb4;
+{{< copyable "sql" >}}
+
+```sql
+SET CHARACTER SET utf8mb4;
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> SHOW VARIABLES LIKE 'character_set%';
+{{< copyable "sql" >}}
+
+```sql
+SHOW VARIABLES LIKE 'character_set%';
+```
+
+```
 +--------------------------+--------------------------------------------------------+
 | Variable_name            | Value                                                  |
 +--------------------------+--------------------------------------------------------+

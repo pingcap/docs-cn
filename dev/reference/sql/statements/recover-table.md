@@ -25,7 +25,7 @@ RECOVER TABLE BY JOB ddl_job_id
 
 如果删除表后并过了 GC lifetime，就不能再用 `RECOVER TABLE` 来恢复被删除的表了，执行 `RECOVER TABLE` 语句会返回类似错误：`snapshot is older than GC safe point 2019-07-10 13:45:57 +0800 CST`。
 
-对于 3.0.0 及之后的 TiDB 版本，不推荐在使用 binlog 的情况下使用 `RECOVER TABLE` 功能。
+对于 3.0.0 及之后的 TiDB 版本，不推荐在使用 TiDB Binlog 的情况下使用 `RECOVER TABLE` 功能。
 
 TiDB Binlog 在 3.0.1 支持 `RECOVER TABLE` 后，可在下面的情况下使用 `RECOVER TABLE`：
 
