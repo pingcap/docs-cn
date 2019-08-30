@@ -16,46 +16,93 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW GLOBAL VARIABLES LIKE 'sql_mode';
+SHOW GLOBAL VARIABLES LIKE 'sql_mode';
+```
+
+```
 +---------------+-------------------------------------------------------------------------------------------------------------------------------------------+
 | Variable_name | Value                                                                                                                                     |
 +---------------+-------------------------------------------------------------------------------------------------------------------------------------------+
 | sql_mode      | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
 +---------------+-------------------------------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
+```
 
-mysql> SHOW SESSION VARIABLES LIKE 'sql_mode';
+{{< copyable "sql" >}}
+
+```sql
+SHOW SESSION VARIABLES LIKE 'sql_mode';
+```
+
+```
 +---------------+-------------------------------------------------------------------------------------------------------------------------------------------+
 | Variable_name | Value                                                                                                                                     |
 +---------------+-------------------------------------------------------------------------------------------------------------------------------------------+
 | sql_mode      | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
 +---------------+-------------------------------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
+```
 
-mysql> SET GLOBAL sql_mode = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER';
+{{< copyable "sql" >}}
+
+```sql
+SET GLOBAL sql_mode = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER';
+```
+
+```
 Query OK, 0 rows affected (0.03 sec)
+```
 
-mysql> SHOW GLOBAL VARIABLES LIKE 'sql_mode';
+{{< copyable "sql" >}}
+
+```sql
+SHOW GLOBAL VARIABLES LIKE 'sql_mode';
+```
+
+```
 +---------------+-----------------------------------------+
 | Variable_name | Value                                   |
 +---------------+-----------------------------------------+
 | sql_mode      | STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER |
 +---------------+-----------------------------------------+
 1 row in set (0.00 sec)
+```
 
-mysql> SHOW SESSION VARIABLES LIKE 'sql_mode';
+{{< copyable "sql" >}}
+
+```sql
+SHOW SESSION VARIABLES LIKE 'sql_mode';
+```
+
+```
 +---------------+-------------------------------------------------------------------------------------------------------------------------------------------+
 | Variable_name | Value                                                                                                                                     |
 +---------------+-------------------------------------------------------------------------------------------------------------------------------------------+
 | sql_mode      | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
 +---------------+-------------------------------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
+```
 
-mysql> SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER';
+{{< copyable "sql" >}}
+
+```sql
+SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER';
+```
+
+```
 Query OK, 0 rows affected (0.01 sec)
+```
 
-mysql> SHOW SESSION VARIABLES LIKE 'sql_mode';
+{{< copyable "sql" >}}
+
+```sql
+SHOW SESSION VARIABLES LIKE 'sql_mode';
+```
+
+```
 +---------------+-----------------------------------------+
 | Variable_name | Value                                   |
 +---------------+-----------------------------------------+

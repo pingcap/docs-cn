@@ -22,8 +22,13 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW COLLATION;
+SHOW COLLATION;
+```
+
+```
 +--------------------------+----------+------+---------+----------+---------+
 | Collation                | Charset  | Id   | Default | Compiled | Sortlen |
 +--------------------------+----------+------+---------+----------+---------+

@@ -22,8 +22,13 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW DATABASES;
+SHOW DATABASES;
+```
+
+```
 +--------------------+
 | Database           |
 +--------------------+
@@ -33,11 +38,25 @@ mysql> SHOW DATABASES;
 | test               |
 +--------------------+
 4 rows in set (0.00 sec)
+```
 
-mysql> CREATE DATABASE mynewdb;
+{{< copyable "sql" >}}
+
+```sql
+CREATE DATABASE mynewdb;
+```
+
+```
 Query OK, 0 rows affected (0.10 sec)
+```
 
-mysql> SHOW DATABASES;
+{{< copyable "sql" >}}
+
+```sql
+SHOW DATABASES;
+```
+
+```
 +--------------------+
 | Database           |
 +--------------------+

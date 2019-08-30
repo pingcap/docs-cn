@@ -29,26 +29,57 @@ SHOW TABLE [table_name] INDEX [index_name] REGIONS;
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-test> create table t (id int key,name varchar(50), index (name));
+create table t (id int key,name varchar(50), index (name));
+```
+
+```
 Query OK, 0 rows affected
--- 默认新建表后会单独 split 出一个 Region 来存放该表的数据，开始时行数据和索引数据都会写到这个 Region。
-test> show table t regions;
+```
+
+默认新建表后会单独 split 出一个 Region 来存放该表的数据，开始时行数据和索引数据都会写到这个 Region。
+
+{{< copyable "sql" >}}
+
+```sql
+show table t regions;
+```
+
+```
 +-----------+-----------+---------+-----------+-----------------+-----------+------------+
 | REGION_ID | START_KEY | END_Key | LEADER_ID | LEADER_STORE_ID | PEERS     | SCATTERING |
 +-----------+-----------+---------+-----------+-----------------+-----------+------------+
 | 5         | t_43_     |         | 8         | 2               | 8, 14, 93 | 0          |
 +-----------+-----------+---------+-----------+-----------------+-----------+------------+
 1 row in set
--- 用 `SPLIT TABLE REGION` 语法切分行数据的 Region，下面语法把表 t 的行数据切分成 5 个 Region。
-test> split table t between (0) and (100000) regions 5;
+```
+
+用 `SPLIT TABLE REGION` 语法切分行数据的 Region，下面语法把表 t 的行数据切分成 5 个 Region。
+
+{{< copyable "sql" >}}
+
+```sql
+split table t between (0) and (100000) regions 5;
+```
+
+```
 +--------------------+----------------------+
 | TOTAL_SPLIT_REGION | SCATTER_FINISH_RATIO |
 +--------------------+----------------------+
 | 4                  | 1.0                  |
 +--------------------+----------------------+
 1 row in set
-test> show table t regions;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+show table t regions;
+```
+
+```
 +-----------+--------------+--------------+-----------+-----------------+---------------+------------+
 | REGION_ID | START_KEY    | END_Key      | LEADER_ID | LEADER_STORE_ID | PEERS         | SCATTERING |
 +-----------+--------------+--------------+-----------+-----------------+---------------+------------+
@@ -59,16 +90,34 @@ test> show table t regions;
 | 5         | t_43_r_80000 |              | 8         | 2               | 8, 14, 93     | 0          |
 +-----------+--------------+--------------+-----------+-----------------+---------------+------------+
 5 rows in set
--- 用 `SPLIT TABLE REGION` 语法切分索引数据的 Region，下面语法把表 t 的索引 name 数据在 [a,z] 范围内切分成 2 个 Region。
-test> split table t index name between ("a") and ("z") regions 2;
+```
+
+用 `SPLIT TABLE REGION` 语法切分索引数据的 Region，下面语法把表 t 的索引 name 数据在 [a,z] 范围内切分成 2 个 Region。
+
+{{< copyable "sql" >}}
+
+```sql
+split table t index name between ("a") and ("z") regions 2;
+```
+
+```
 +--------------------+----------------------+
 | TOTAL_SPLIT_REGION | SCATTER_FINISH_RATIO |
 +--------------------+----------------------+
 | 2                  | 1.0                  |
 +--------------------+----------------------+
 1 row in set
--- 现在表 t 一共有 6 个 Region，其中 ID 是 94 的 Region 既会写入 [-inf,20000) 的行数据，也会写入索引 [l,+inf] 的 name 索引数据。
-test> show table t regions;
+```
+
+现在表 t 一共有 6 个 Region，其中 ID 是 94 的 Region 既会写入 [-inf,20000) 的行数据，也会写入索引 [l,+inf] 的 name 索引数据。
+
+{{< copyable "sql" >}}
+
+```sql
+show table t regions;
+```
+
+```
 +-----------+-----------------------------+-----------------------------+-----------+-----------------+---------------+------------+
 | REGION_ID | START_KEY                   | END_Key                     | LEADER_ID | LEADER_STORE_ID | PEERS         | SCATTERING |
 +-----------+-----------------------------+-----------------------------+-----------+-----------------+---------------+------------+
