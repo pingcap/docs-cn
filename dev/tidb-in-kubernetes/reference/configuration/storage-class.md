@@ -84,6 +84,7 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
 ### 示例
 
 如果监控，TiDB Binlog 和备份等组件也都使用本地盘存储数据，可以挂载普通 SAS 盘，并分别创建不同的 `StorageClass` 使用。
+
 - 给监控数据使用的盘通过 [bind mount](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) 方式挂载到 `/mnt/disks` 目录，后续创建 `local-storage` `StorageClass`
 - 给 TiDB Binlog 和备份数据使用的盘通过 [bind mount](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) 方式挂载到 `/mnt/backup` 目录，后续创建 `backup-storage` `StorageClass`
 - 给 PD 数据使用的盘通过 [bind mount](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) 方式挂载到 `/mnt/sharedssd` 目录，后续创建 `shared-ssd-storage` `StorageClass`
