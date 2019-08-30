@@ -112,7 +112,7 @@ tidb> explain select * from t where a < 2 and a > 2;
 |  | bitor | |
 | && | bitand| |
 | ! | not | |
-| in | IN | | 
+| in | IN | |
 | + | PLUS| |
 | - | MINUS | |
 | * | MUL | |
