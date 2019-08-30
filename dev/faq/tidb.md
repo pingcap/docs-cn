@@ -210,11 +210,11 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 #### 2.2.1 Ansible 部署方式（强烈推荐）
 
-详细可参考 [使用 TiDB Ansible 部署 TiDB 集群](/how-to/deploy/orchestrated/ansible.md)。
+详细可参考[使用 TiDB Ansible 部署 TiDB 集群](/how-to/deploy/orchestrated/ansible.md)。
 
 ##### 2.2.1.1 为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？
 
-这种情况一般是因为没有使用 `--config` 参数来指定配置文件（目前只会出现在 binary 部署的场景），TiKV/PD 会按默认值来设置。如果要使用配置文件，请设置 TiKV/PD 的 `--config` 参数。对于 TiKV 组件，修改配置后重启服务即可；对于 PD 组件，只会在第一次启动时读取配置文件，之后可以使用 pd-ctl 的方式来修改配置，详情可参考 [这里](/reference/configuration/pd-server/configuration.md)。
+这种情况一般是因为没有使用 `--config` 参数来指定配置文件（目前只会出现在 binary 部署的场景），TiKV/PD 会按默认值来设置。如果要使用配置文件，请设置 TiKV/PD 的 `--config` 参数。对于 TiKV 组件，修改配置后重启服务即可；对于 PD 组件，只会在第一次启动时读取配置文件，之后可以使用 pd-ctl 的方式来修改配置，详情可参考[这里](/reference/configuration/pd-server/configuration.md)。
 
 ##### 2.2.1.2 TiDB 监控框架 Prometheus + Grafana 监控机器建议单独还是多台部署？
 
@@ -782,7 +782,7 @@ sqoop export \
 
 ##### 4.2.1.6 使用 Syncer gtid 的方式同步时，同步过程中会不断更新 syncer.meta 文件，如果 Syncer 所在的机器坏了，导致 syncer.meta 文件所在的目录丢失，该如何处理？
 
-当前 Syncer 版本的没有进行高可用设计，Syncer 目前的配置信息 syncer.meta 直接存储在硬盘上，其存储方式类似于其他 MySQL 生态工具，比如 Mydumper。 因此，要解决这个问题当前可以有两个方法：
+当前 Syncer 版本的没有进行高可用设计，Syncer 目前的配置信息 syncer.meta 直接存储在硬盘上，其存储方式类似于其他 MySQL 生态工具，比如 Mydumper。因此，要解决这个问题当前可以有两个方法：
 
 1）把 syncer.meta 数据放到比较安全的磁盘上，例如磁盘做好 raid1；
 

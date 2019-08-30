@@ -21,7 +21,7 @@ Syncer 可以部署在任一台可以连通对应的 MySQL 和 TiDB 集群的机
 
 ## Syncer 增量导入数据示例
 
-使用前请详细阅读 [Syncer 同步前预检查](#Syncer-同步前检查)。
+使用前请详细阅读 [Syncer 同步前预检查](#syncer-同步前检查)。
 
 ### 设置同步开始的 position
 
