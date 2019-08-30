@@ -83,14 +83,14 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
 
 ### 示例
 
-如果监控，TiDB Binlog 和备份等组件也都使用本地盘存储数据，可以挂载普通 SAS 盘，并分别创建不同的 `StorageClass` 使用。
+如果监控，TiDB Binlog 和备份等组件也都使用本地盘存储数据，可以挂载普通 SAS 盘，并分别创建不同的 `StorageClass` 使用，具体操作如下：
 
-- 给监控数据使用的盘通过 [bind mount](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) 方式挂载到 `/mnt/disks` 目录，后续创建 `local-storage` `StorageClass`
-- 给 TiDB Binlog 和备份数据使用的盘通过 [bind mount](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) 方式挂载到 `/mnt/backup` 目录，后续创建 `backup-storage` `StorageClass`
+- 给监控数据使用的盘，可通过 [bind mount](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) 方式挂载到 `/mnt/disks` 目录，后续创建 `local-storage` `StorageClass`。
+- 给 TiDB Binlog 和备份数据使用的盘，可通过 [bind mount](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) 方式挂载到 `/mnt/backup` 目录，后续创建 `backup-storage` `StorageClass`。
 - 给 PD 数据使用的盘通过 [bind mount](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) 方式挂载到 `/mnt/sharedssd` 目录，后续创建 `shared-ssd-storage` `StorageClass`
-- 给 TiKV 数据使用的盘通过[普通挂载](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv)方式挂载到 `/mnt/ssd` 目录，后续创建 `ssd-storage` `StorageClass`
+- 给 TiKV 数据使用的盘，可通过[普通挂载](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv)方式挂载到 `/mnt/ssd` 目录，后续创建 `ssd-storage` `StorageClass`
 
-安装 `local-volume-provisioner` 过程中，执行 `kubectl create` 之前，需要根据上述磁盘挂载情况修改 `local-volume-provisioner` yaml 文件，创建必要的 `StorageClass`，根据上述挂载修改的 yaml 文件示例：
+安装 `local-volume-provisioner` 过程中，执行 `kubectl create` 之前，需要根据上述磁盘挂载情况修改 `local-volume-provisioner` yaml 文件，创建必要的 `StorageClass`。以下是根据上述挂载修改的 yaml 文件示例：
 
 ```
 apiVersion: storage.k8s.io/v1
