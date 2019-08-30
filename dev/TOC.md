@@ -13,6 +13,7 @@
     - [Sysbench 性能对比 - v3.0 对比 v2.1](benchmark/sysbench-v4.md)
     - [TPC-C 性能对比 - v3.0 对比 v2.1](benchmark/tpcc.md)
     - [线上负载与 Add Index 相互影响测试](benchmark/add-index-with-load.md)
+    - [TiDB in Kubernetes Sysbench 性能测试](benchmark/sysbench-in-k8s.md)
 + 主要概念
   - [整体架构](architecture.md)
   + 核心特性
@@ -24,6 +25,7 @@
     - [SQL 基本操作](how-to/get-started/explore-sql.md)
     - [读取历史数据](how-to/get-started/read-historical-data.md)
     - [TiDB Binlog 教程](how-to/get-started/tidb-binlog.md)
+    - [TiDB Data Migration 教程](how-to/get-started/data-migration.md)
     - [TiSpark 教程](how-to/get-started/tispark.md)
   + 部署
     - [软硬件环境需求](how-to/deploy/hardware-recommendations.md)
