@@ -198,6 +198,7 @@ col_name {ENUM | SET} (val_list)
 SET character_set_client = charset_name;
 SET character_set_results = charset_name;
 SET character_set_connection = charset_name;
+
 ```
 
 `COLLATE` 是可选的，如果没有提供，将会用 charset_name 默认的 Collation。
@@ -210,6 +211,7 @@ SET character_set_connection = charset_name;
 SET character_set_client = charset_name;
 SET character_set_results = charset_name;
 SET collation_connection = @@collation_database;
+
 ```
 
 ## 字符合法性检查
