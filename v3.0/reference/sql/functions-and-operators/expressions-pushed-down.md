@@ -6,6 +6,8 @@ aliases: ['/docs-cn/sql/expressions-pushed-down-2-TiKV/']
 
 # 下推到 TiKV 的表达式列表
 
+## 已支持下推的表达式列表
+
 | 表达式分类 | 具体操作 |
 | :-------------- | :------------------------------------- |
 | [逻辑运算](/reference/sql/functions-and-operators/operators.md#逻辑操作符) | AND (&&), OR (&#124;&#124;), NOT (!) |
@@ -15,7 +17,7 @@ aliases: ['/docs-cn/sql/expressions-pushed-down-2-TiKV/']
 | [JSON运算](/reference/sql/functions-and-operators/json-functions.md) | [JSON_TYPE(json_val)][json_type],<br> [JSON_EXTRACT(json_doc, path[, path] ...)][json_extract],<br> [JSON_UNQUOTE(json_val)][json_unquote],<br> [JSON_OBJECT(key, val[, key, val] ...)][json_object],<br> [JSON_ARRAY([val[, val] ...])][json_array],<br> [JSON_MERGE(json_doc, json_doc[, json_doc] ...)][json_merge], [JSON_SET(json_doc, path, val[, path, val] ...)][json_set], [JSON_INSERT(json_doc, path, val[, path, val] ...)][json_insert], [JSON_REPLACE(json_doc, path, val[, path, val] ...)][json_replace], [JSON_REMOVE(json_doc, path[, path] ...)][json_remove] |
 | [日期运算](/reference/sql/functions-and-operators/date-and-time-functions.md) | [`DATE_FORMAT()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_date-format)  |
 
-# 禁止特定表达式下推
+## 禁止特定表达式下推
 
 当函数的计算过程由于下推而出现不被期待的行为时，我们通过将其拉入黑名单禁止下推来快速恢复业务。
 上述支持下推的表达式可以被拉入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止其下推。
@@ -23,12 +25,14 @@ aliases: ['/docs-cn/sql/expressions-pushed-down-2-TiKV/']
 * 如何拉入黑名单？
 
 通过以下两个步骤可以将一个或多个函数加入黑名单：
+
 1. 向 `mysql.expr_pushdown_blacklist` 插入对应函数名
 2. 执行 `admin reload expr_pushdown_blacklist;`
 
 * 如何挪出黑名单？
 
-通过以下两个步骤略哦将一个或多个函数挪出黑名单：
+通过以下两个步骤可以将一个或多个函数挪出黑名单：
+
 1. 从 `mysql.expr_pushdown_blacklist` 表删除对应函数名
 2. 执行 `admin reload expr_pushdown_blacklist;`
 
@@ -87,10 +91,10 @@ tidb> explain select * from t where a < 2 and a > 2;
 |     └─TableScan_6     | 10000.00 | cop  | table:t, range:[-inf,+inf], keep order:false, stats:pseudo |
 +-----------------------+----------+------+------------------------------------------------------------+
 4 rows in set (0.00 sec)
-
 ```
 
 注：
+
 1. `admin reload expr_pushdown_blacklist` 只对执行该 SQL 的 TiDB server 生效，若需要集群中所有 TiDB server 生效，需要在每台 TiDB server 上执行该 SQL。
 2. 表达式黑名单功能在 v3.0.0 及以上版本中支持。
 3. 使用表达式原始名称文本（如，">"，"+"，"is null"）添加黑名单在 v3.0.3 及以下版本中不完全支持。v3.0.3 及以下版本中，部分表达式在黑名单中使用别名。已支持下推的表达式中，表达式别名与原始名不同的，对应关系见下表(不区分大小写)。
