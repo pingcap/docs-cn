@@ -12,9 +12,22 @@ TiDB can be deployed on-premise or in-cloud. The following deployment options ar
 
 - [Ansible Deployment](/how-to/deploy/orchestrated/ansible.md): This guide describes how to deploy TiDB using Ansible. It is strongly recommended for production deployment.
 - [Ansible Offline Deployment](/how-to/deploy/orchestrated/offline-ansible.md): If your environment has no access to the internet, you can follow this guide to see how to deploy a TiDB cluster offline using Ansible.
-- [Docker Deployment](/how-to/deploy/orchestrated/docker.md): This guide describes how to deploy TiDB using Docker. It is NOT recommended for production deployment.
-- [Docker Compose Deployment](/how-to/get-started/deploy-tidb-from-docker-compose.md): This guide describes how to deploy TiDB using Docker compose. You can follow this guide to quickly deploy a TiDB cluster for testing and development on your local drive. But DO NOT USE this in production!
-- [Kubernetes Deployment (beta)](/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md): This guide describes how to deploy TiDB on Kubernetes using [TiDB Operator](https://github.com/pingcap/tidb-operator). You can follow this guide to see how to deploy TiDB on Google Kubernetes Engine or deploy TiDB locally using Docker in Docker.
+- [Docker Deployment](/how-to/deploy/orchestrated/docker.md): This guide describes how to deploy TiDB using Docker.
+- [Docker Compose Deployment](/how-to/get-started/deploy-tidb-from-docker-compose.md): This guide describes how to deploy TiDB using Docker compose. You can follow this guide to quickly deploy a TiDB cluster for testing and development on your local drive.
+- Kubernetes Deployment:
+
+    You can use [TiDB Operator](https://github.com/pingcap/tidb-operator) to deploy TiDB on:
+
+    - [AWS EKS (Elastic Kubernetes Service)](/tidb-in-kubernetes/deploy/aws-eks.md)
+    - [GKE (Google Kubernetes Engine)](/tidb-in-kubernetes/deploy/gcp-gke.md)
+    - [Google Cloud Shell](/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
+    - [Alibaba Cloud ACK (Container Service for Kubernetes)](/tidb-in-kubernetes/deploy/alibaba-cloud.md)
+
+    Or deploy TiDB locally using:
+
+    - [DinD (Docker in Docker)](/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
+    - [Minikube](/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube.md)
+
 - [Binary Tarball Deployment](/how-to/deploy/from-tarball/production-environment.md): This guide describes how to deploy TiDB from a binary tarball in production. Guides for [development](/how-to/get-started/deploy-tidb-from-binary.md) and [testing](/how-to/deploy/from-tarball/testing-environment.md) environments are also available.
 
 ## Community provided blog posts & tutorials
