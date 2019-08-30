@@ -1,7 +1,6 @@
 ---
 title: 下推到 TiKV 的表达式列表
 category: reference
-aliases: ['/docs-cn/sql/expressions-pushed-down-2-TiKV/']
 ---
 
 # 下推到 TiKV 的表达式列表
@@ -39,7 +38,7 @@ aliases: ['/docs-cn/sql/expressions-pushed-down-2-TiKV/']
 * 表达式下推黑名单用法示例
 
 下例首先将表达式 `<` 及 `>` 拉入黑名单，然后将表达式 `>` 从黑名单中挪出。
-黑名单是否生效可以从 explain 结果进行观察（[如何理解 explain 结果](/reference/sql/performance/understanding-the-query-execution-plan.md)）。
+黑名单是否生效可以从 explain 结果进行观察（[如何理解 explain 结果](reference/sql/performance/understanding-the-query-execution-plan.md)）。
 
 ``` sql
 tidb> create table t(a int);
