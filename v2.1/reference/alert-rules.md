@@ -320,7 +320,7 @@ category: reference
 
 * 规则描述：
 
-    raft leader 上报有不响应 peer 的 Region 数量。
+    Raft leader 上报有不响应 peer 的 Region 数量。
 
 * 处理方法：
 
