@@ -24,8 +24,8 @@ TiDB 支持的 MySQL GROUP BY 聚合函数如下所示：
 
 > **注意：**
 >
-> - 除非另有说明，否则组函数默认忽略 `NULL` 值。
-> - 如果在不包含 `GROUP BY` 子句的语句中使用组函数，则相当于对所有行进行分组。
+> - 除非另有说明，否则聚合函数默认忽略 `NULL` 值。
+> - 如果在不包含 `GROUP BY` 子句的语句中使用聚合函数，则相当于对所有行进行分组。
 
 ## GROUP BY 修饰符
 
@@ -57,7 +57,7 @@ mysql> select a, b, sum(c) from t group by a;
 ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'b' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
 ```
 
-目前，TiDB 默认不开启 SQL 模式 [`ONLY_FULL_GROUP_BY`](/reference/mysql-compatibility.md#默认设置的区别)。
+目前，TiDB 默认开启 SQL 模式 [`ONLY_FULL_GROUP_BY`](/reference/mysql-compatibility.md#默认设置的区别)。
 
 ### 与 MySQL 的区别
 

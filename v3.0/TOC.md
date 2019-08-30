@@ -12,6 +12,7 @@
     - [如何对 TiDB 进行 TPC-C 测试](benchmark/how-to-run-tpcc.md)
     - [Sysbench 性能对比 - v3.0 对比 v2.1](benchmark/sysbench-v4.md)
     - [TPC-C 性能对比 - v3.0 对比 v2.1](benchmark/tpcc.md)
+    - [线上负载与 Add Index 相互影响测试](benchmark/add-index-with-load.md)
 + 主要概念
   - [整体架构](architecture.md)
   + 核心特性
@@ -20,38 +21,29 @@
 + 操作指南
   + 快速上手
     + 创建集群
-      + 使用 Kubernetes
-        - [DinD](how-to/get-started/deploy-tidb-from-kubernetes-dind.md)
-        - [Minikube](how-to/get-started/deploy-tidb-from-kubernetes-minikube.md)
-        - [GKE](how-to/get-started/deploy-tidb-from-kubernetes-gke.md)
-      - [使用 Docker Compose](how-to/get-started/deploy-tidb-from-docker-compose.md)
+      - [使用 Docker Compose 部署 TiDB 集群](https://pingcap.com/docs-cn/dev/how-to/get-started/deploy-tidb-from-docker-compose/)
     - [SQL 基本操作](how-to/get-started/explore-sql.md)
     - [读取历史数据](how-to/get-started/read-historical-data.md)
     - [TiDB Binlog 教程](how-to/get-started/tidb-binlog.md)
+    - [TiDB Data Migration 教程](how-to/get-started/data-migration.md)
     - [TiSpark 教程](how-to/get-started/tispark.md)
   + 部署
     - [软硬件环境需求](how-to/deploy/hardware-recommendations.md)
-    - [Kubernetes 上的 TiDB 集群环境需求](how-to/deploy/tidb-in-kubernetes-prerequisites.md)
     + 集群部署方式
       - [使用 Ansible 部署（推荐）](how-to/deploy/orchestrated/ansible.md)
       - [使用 Ansible 离线部署](how-to/deploy/orchestrated/offline-ansible.md)
       - [使用 Docker 部署](how-to/deploy/orchestrated/docker.md)
-      + 使用 Kubernetes 部署
-        - [阿里云](how-to/deploy/orchestrated/tidb-in-kubernetes/alibaba-cloud.md)
-        - [AWS EKS](how-to/deploy/orchestrated/tidb-in-kubernetes/aws-eks.md)
-        - [GCP](how-to/deploy/orchestrated/tidb-in-kubernetes/gcp-gke.md)
-        - [标准 Kubernetes 集群](how-to/deploy/orchestrated/tidb-in-kubernetes/general-kubernetes.md)
     + 跨地域冗余
       - [跨数据中心部署方案](how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](how-to/deploy/geographic-redundancy/location-awareness.md)
     - [使用 Ansible 部署 DM 集群](how-to/deploy/data-migration-with-ansible.md)
-    - [部署 TiDB Binlog 集群](how-to/deploy/tidb-binlog.md)
-    - [部署 TiDB Operator](how-to/deploy/tidb-operator.md)
-    - [访问 Kubernetes 上的 TiDB 集群](how-to/deploy/orchestrated/tidb-in-kubernetes/access-tidb.md)
+    + 部署使用 TiDB Binlog
+      - [部署 TiDB Binlog 集群](how-to/deploy/tidb-binlog.md)
+      - [Binlog Slave Client 用户文档](reference/tools/tidb-binlog/binlog-slave-client.md)
+      - [Reparo 使用文档](reference/tools/tidb-binlog/reparo.md)
   + 配置
     - [时区](how-to/configure/time-zone.md)
     - [内存控制](how-to/configure/memory-control.md)
-    - [初始化集群](how-to/configure/initialize-cluster.md)
   + 安全
     + 安全传输层协议 (TLS)
       - [为 MySQL 客户端开启 TLS](how-to/secure/enable-tls-clients.md)
@@ -61,7 +53,6 @@
     - [概述](how-to/monitor/overview.md)
     - [监控 TiDB 集群](how-to/monitor/monitor-a-cluster.md)
     - [监控 TiDB Binlog 集群](how-to/monitor/tidb-binlog.md)
-    - [监控 Kubernetes 上的 TiDB 集群](how-to/monitor/tidb-in-kubernetes.md)
   + 迁移
     - [概述](how-to/migrate/overview.md)
     + 从 MySQL 迁移
@@ -74,30 +65,67 @@
     + [备份与恢复](how-to/maintain/backup-and-restore.md)
     - [定位慢查询](how-to/maintain/identify-slow-queries.md)
     - [TiDB Binlog 集群运维](how-to/maintain/tidb-binlog.md)
-    + Kubernetes 上的 TiDB 集群运维
-      - [备份与恢复](how-to/maintain/tidb-in-kubernetes/backup-and-restore.md)
-      - [销毁 TiDB 集群](how-to/maintain/tidb-in-kubernetes/delete-cluster.md)
-      - [维护 TiDB 集群所在节点](how-to/maintain/tidb-in-kubernetes/k8s-node-for-node.md)
-      - [收集日志](how-to/maintain/tidb-in-kubernetes/log-collecting.md)
-      - [集群故障自动转移](how-to/maintain/tidb-in-kubernetes/auto-failover.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](how-to/scale/with-ansible.md)
-    - [Kubernetes 上的 TiDB 集群扩缩容](how-to/scale/tidb-in-kubernetes.md)
   + 升级
     - [升级至 TiDB 3.0](how-to/upgrade/from-previous-version.md)
-    - [升级至 TiDB 2.1](how-to/upgrade/to-tidb-2.1.md)
     - [使用 Ansible 滚动升级](how-to/upgrade/rolling-updates-with-ansible.md)
     - [升级 TiDB Binlog Cluster 版本](how-to/upgrade/tidb-binlog.md)
-    - 升级 Kubernetes 上的 TiDB 集群
-      - [升级 TiDB](how-to/upgrade/tidb-in-kubernetes.md)
-      - [升级 TiDB Operator](how-to/upgrade/tidb-operator.md)
     - [升级 Data Migration](reference/tools/data-migration/dm-upgrade.md)
   + 故障诊断
     - [集群配置诊断](how-to/troubleshoot/cluster-setup.md)
     - [Data Migration 故障诊断](how-to/troubleshoot/data-migration.md)
     - [TiDB Lightning 故障诊断](how-to/troubleshoot/tidb-lightning.md)
-    - [Kubernetes 上的 TiDB 集群故障诊断](how-to/troubleshoot/tidb-in-kubernetes.md)
 + 参考手册
+  + 周边工具
+    - [Mydumper](reference/tools/mydumper.md)
+    - [Loader](reference/tools/loader.md)
+    - [Syncer](reference/tools/syncer.md)
+    + Data Migration
+      + 概述
+        - [DM 架构](reference/tools/data-migration/overview.md#dm-架构)
+        - [同步功能介绍](reference/tools/data-migration/overview.md#同步功能介绍)
+        - [使用限制](reference/tools/data-migration/overview.md#使用限制)
+      + 核心特性
+        - [Table Routing](reference/tools/data-migration/features/overview.md#table-routing)
+        - [Black & White Lists](reference/tools/data-migration/features/overview.md#black-white-table-lists)
+        - [Binlog Event Filter](reference/tools/data-migration/features/overview.md#binlog-event-filter)
+        - [Column Mapping](reference/tools/data-migration/features/overview.md#column-mapping)
+        - [同步延迟监控](reference/tools/data-migration/features/overview.md#同步延迟监控)
+        + Shard Support
+          - [简介](reference/tools/data-migration/features/shard-merge.md)
+          - [使用限制](reference/tools/data-migration/features/shard-merge.md#使用限制)
+          - [手动处理 Sharding DDL Lock](reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)
+      + 使用场景
+        - [简单的从库同步场景](reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
+        - [分库分表合并场景](reference/tools/data-migration/usage-scenarios/shard-merge.md)
+      + [部署使用](reference/tools/data-migration/deploy.md)
+      + 配置
+        - [概述](reference/tools/data-migration/configure/overview.md)
+        - [任务配置](reference/tools/data-migration/configure/task-configuration-file.md)
+      - [监控 DM 集群](reference/tools/data-migration/monitor.md)
+      - [管理数据同步任务](reference/tools/data-migration/manage-tasks.md)
+      - [DM 集群操作](reference/tools/data-migration/cluster-operations.md)
+      + 从与 MySQL 兼容的数据库迁移数据
+        - [从 Amazon Aurora MySQL 迁移数据](how-to/migrate/from-aurora.md)
+      - [DM Portal](reference/tools/data-migration/dm-portal.md)
+      - [DM 故障诊断](how-to/troubleshoot/data-migration.md)
+      - [FAQ](faq/data-migration.md)
+    + TiDB Lightning
+      - [概述](reference/tools/tidb-lightning/overview.md)
+      - [部署执行](reference/tools/tidb-lightning/deployment.md)
+      - [断点续传](reference/tools/tidb-lightning/checkpoints.md)
+      - [表库过滤](reference/tools/tidb-lightning/table-filter.md)
+      - [CSV 支持](reference/tools/tidb-lightning/csv.md)
+      - [监控告警](reference/tools/tidb-lightning/monitor.md)
+      - [故障诊断](how-to/troubleshoot/tidb-lightning.md)
+      - [FAQ](faq/tidb-lightning.md)
+    - [sync-diff-inspector](reference/tools/sync-diff-inspector/overview.md)
+    - [PD Control](reference/tools/pd-control.md)
+    - [PD Recover](reference/tools/pd-recover.md)
+    - [TiKV Control](reference/tools/tikv-control.md)
+    - [TiDB Controller](reference/tools/tidb-control.md)
+    - [工具下载](reference/tools/download.md)
   + [与 MySQL 兼容性对比](reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
@@ -252,10 +280,6 @@
     + tikv-server
       - [配置参数](reference/configuration/tikv-server/configuration.md)
       - [配置文件描述](reference/configuration/tikv-server/configuration-file.md)
-    + Kubernetes 上的 TiDB
-      - [集群配置](reference/configuration/tidb-in-kubernetes/cluster-configuration.md)
-      - [备份配置](reference/configuration/tidb-in-kubernetes/backup-configuration.md)
-      - [本地 PV 配置](reference/configuration/tidb-in-kubernetes/local-pv-configuration.md)
   + 监控指标
     - [Overview 面板](reference/key-monitoring-metrics/overview-dashboard.md)
     - [TiDB 面板](reference/key-monitoring-metrics/tidb-dashboard.md)
@@ -290,69 +314,58 @@
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + [TiSpark 使用指南](reference/tispark.md)
   + [TiDB Binlog 简介](reference/tidb-binlog-overview.md)
-  + 生态工具
-    - [tkctl](reference/tools/tkctl.md)
-    - [Mydumper](reference/tools/mydumper.md)
-    - [Loader](reference/tools/loader.md)
-    - [Syncer](reference/tools/syncer.md)
-    + Data Migration
-      + 概述
-        - [DM 架构](reference/tools/data-migration/overview.md#dm-架构)
-        - [同步功能介绍](reference/tools/data-migration/overview.md#同步功能介绍)
-        - [使用限制](reference/tools/data-migration/overview.md#使用限制)
-      + 核心特性
-        - [Table Routing](reference/tools/data-migration/features/overview.md#table-routing)
-        - [Black & White Lists](reference/tools/data-migration/features/overview.md#black-white-table-lists)
-        - [Binlog Event Filter](reference/tools/data-migration/features/overview.md#binlog-event-filter)
-        - [Column Mapping](reference/tools/data-migration/features/overview.md#column-mapping)
-        - [同步延迟监控](reference/tools/data-migration/features/overview.md#同步延迟监控)
-        + Shard Support
-          - [简介](reference/tools/data-migration/features/shard-merge.md)
-          - [使用限制](reference/tools/data-migration/features/shard-merge.md#使用限制)
-          - [手动处理 Sharding DDL Lock](reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)
-      + 使用场景
-        - [简单的从库同步场景](reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
-        - [分库分表合并场景](reference/tools/data-migration/usage-scenarios/shard-merge.md)
-      + [部署使用](reference/tools/data-migration/deploy.md)
-      + 配置
-        - [概述](reference/tools/data-migration/configure/overview.md)
-        - [任务配置](reference/tools/data-migration/configure/task-configuration-file.md)
-      - [监控 DM 集群](reference/tools/data-migration/monitor.md)
-      - [管理数据同步任务](reference/tools/data-migration/manage-tasks.md)
-      - [DM 集群操作](reference/tools/data-migration/cluster-operations.md)
-      + 从与 MySQL 兼容的数据库迁移数据
-        - [从 Amazon Aurora MySQL 迁移数据](how-to/migrate/from-aurora.md)
-      - [DM 故障诊断](how-to/troubleshoot/data-migration.md)
-      - [FAQ](faq/data-migration.md)
-    + TiDB Lightning
-      - [概述](reference/tools/tidb-lightning/overview.md)
-      - [部署执行](reference/tools/tidb-lightning/deployment.md)
-      - [断点续传](reference/tools/tidb-lightning/checkpoints.md)
-      - [表库过滤](reference/tools/tidb-lightning/table-filter.md)
-      - [CSV 支持](reference/tools/tidb-lightning/csv.md)
-      - [监控告警](reference/tools/tidb-lightning/monitor.md)
-      - [故障诊断](how-to/troubleshoot/tidb-lightning.md)
-      - [FAQ](faq/tidb-lightning.md)
-    - [PD Control](reference/tools/pd-control.md)
-    - [PD Recover](reference/tools/pd-recover.md)
-    - [TiKV Control](reference/tools/tikv-control.md)
-    - [TiDB Controller](reference/tools/tidb-control.md)
-    - [工具下载](reference/tools/download.md)
++ TiDB in Kubernetes
+  - [TiDB Operator 简介](tidb-in-kubernetes/tidb-operator-overview.md)
+  + 快速上手
+    - [DinD](tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
+    - [GKE](tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
+    - [Minikube](tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube.md)
+  + 部署
+    - [集群环境要求](tidb-in-kubernetes/deploy/prerequisites.md)
+    - [部署 TiDB Operator](tidb-in-kubernetes/deploy/tidb-operator.md)
+    - [标准 Kubernetes 上的 TiDB 集群](tidb-in-kubernetes/deploy/general-kubernetes.md)
+    - [AWS EKS 上的 TiDB 集群](tidb-in-kubernetes/deploy/aws-eks.md)
+    - [GCP 上的 TiDB 集群](tidb-in-kubernetes/deploy/gcp-gke.md)
+    - [阿里云上的 TiDB 集群](tidb-in-kubernetes/deploy/alibaba-cloud.md)
+    - [访问 Kubernetes 上的 TiDB 集群](tidb-in-kubernetes/deploy/access-tidb.md)
+  + 配置
+    - [初始化集群](tidb-in-kubernetes/initialize-cluster.md)
+  - [监控](tidb-in-kubernetes/monitor/tidb-in-kubernetes.md)
+  + 运维
+    - [销毁 TiDB 集群](tidb-in-kubernetes/maintain/destroy-tidb-cluster.md)
+    - [维护 TiDB 集群所在节点](tidb-in-kubernetes/maintain/kubernetes-node.md)
+    - [备份与恢复](tidb-in-kubernetes/maintain/backup-and-restore.md)
+    - [收集日志](tidb-in-kubernetes/maintain/log-collecting.md)
+    - [集群故障自动转移](tidb-in-kubernetes/maintain/auto-failover.md)
+  - [扩缩容](tidb-in-kubernetes/scale-in-kubernetes.md)
+  + 升级
+    - [TiDB 集群](tidb-in-kubernetes/upgrade/tidb-cluster.md)
+    - [TiDB Operator](tidb-in-kubernetes/upgrade/tidb-operator.md)
+  + 参考信息
+    + 配置
+      - [集群配置](tidb-in-kubernetes/reference/configuration/tidb-cluster.md)
+      - [备份配置](tidb-in-kubernetes/reference/configuration/backup.md)
+      - [PV 配置](tidb-in-kubernetes/reference/configuration/storage-class.md)
+    + 工具
+      - [tkctl](tidb-in-kubernetes/reference/tools/tkctl.md)
+      - [相关工具使用](tidb-in-kubernetes/reference/tools/in-kubernetes.md)
+  - [故障诊断](tidb-in-kubernetes/troubleshoot.md)
+  - [常见问题](tidb-in-kubernetes/faq.md)
 + 常见问题 (FAQ)
   - [TiDB FAQ](faq/tidb.md)
   - [TiDB Lightning FAQ](faq/tidb-lightning.md)
   - [Data Migration FAQ](faq/data-migration.md)
   - [升级 FAQ](faq/upgrade.md)
-  - [Kubernetes 上的 TiDB FAQ](faq/tidb-in-kubernetes.md)
 + 技术支持
   - [支持渠道](support-resources.md)
   - [反馈问题](report-issue.md)
 + [贡献](contribute.md)
   - [贡献代码](contribute.md#成为-tidb-的贡献者)
   - [改进文档](contribute.md#改进文档)
-- [TiDB 路线图](roadmap.md)
++ [TiDB 路线图](roadmap.md)
 + [版本发布历史](releases/rn.md)
   + v3.0
+    - [3.0.2](releases/3.0.2.md)
     - [3.0.1](releases/3.0.1.md)
     - [3.0 GA](releases/3.0-ga.md)
     - [3.0.0-rc.3](releases/3.0.0-rc.3.md)
@@ -361,6 +374,7 @@
     - [3.0.0-beta.1](releases/3.0.0-beta.1.md)
     - [3.0.0-beta](releases/3.0beta.md)
   + v2.1
+    - [2.1.16](releases/2.1.16.md)
     - [2.1.15](releases/2.1.15.md)
     - [2.1.14](releases/2.1.14.md)
     - [2.1.13](releases/2.1.13.md)

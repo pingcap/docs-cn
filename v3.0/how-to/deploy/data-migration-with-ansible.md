@@ -208,7 +208,7 @@ dm_worker1 ansible_host=172.16.10.72 server_id=101 source_id="mysql-replica-01" 
 
 | 节点 | 主机 IP | 服务 |
 | ---- | ------- | -------- |
-| node1 | 172.16.10.71 | DM-master, Prometheus, Grafana, Alertmanager |
+| node1 | 172.16.10.71 | DM-master, Prometheus, Grafana, Alertmanager, DM Portal |
 | node2 | 172.16.10.72 | DM-worker1 |
 | node3 | 172.16.10.73 | DM-worker2 |
 | mysql-replica-01| 172.16.10.81 | MySQL |
@@ -223,6 +223,9 @@ dm_master ansible_host=172.16.10.71
 dm_worker1 ansible_host=172.16.10.72 server_id=101 source_id="mysql-replica-01" mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
 dm_worker2 ansible_host=172.16.10.73 server_id=102 source_id="mysql-replica-02" mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+
+[dm_portal_servers]
+dm_portal ansible_host=172.16.10.71
 
 # 监控模块
 [prometheus_servers]
@@ -254,7 +257,7 @@ grafana_admin_password = "admin"
 
 | 节点 | 主机 IP | 服务 |
 | ---- | ------- | -------- |
-| node1 | 172.16.10.71 | DM-master, Prometheus, Grafana, Alertmanager |
+| node1 | 172.16.10.71 | DM-master, Prometheus, Grafana, Alertmanager, DM Portal |
 | node2 | 172.16.10.72 | DM-worker1-1, DM-worker1-2 |
 | node3 | 172.16.10.73 | DM-worker2-1, DM-worker2-2 |
 
@@ -271,6 +274,9 @@ dm_worker1_2 ansible_host=172.16.10.72 server_id=102 deploy_dir=/data2/dm_worker
 
 dm_worker2_1 ansible_host=172.16.10.73 server_id=103 deploy_dir=/data1/dm_worker dm_worker_port=8262 mysql_host=172.16.10.83 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 dm_worker2_2 ansible_host=172.16.10.73 server_id=104 deploy_dir=/data2/dm_worker dm_worker_port=8263 mysql_host=172.16.10.84 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+
+[dm_portal_servers]
+dm_portal ansible_host=172.16.10.71
 
 # 监控模块
 [prometheus_servers]

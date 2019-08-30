@@ -249,3 +249,11 @@ TiSpark 可以使用 TiDB 的统计信息：
 - Q. 是否可以和 TiKV 混合部署？
 
     A. 如果 TiDB 以及 TiKV 负载较高且运行关键的线上任务，请考虑单独部署 TiSpark；并且考虑使用不同的网卡保证 OLTP 的网络资源不被侵占而影响线上业务。如果线上业务要求不高或者机器负载不大，可以考虑与 TiKV 混合部署。
+
+- Q. Spark 执行中报 warning：WARN ObjectStore:568 - Failed to get database
+
+    A. Warning 忽略即可，原因是 Spark 找不到对应的 hive 库，因为这个库是在 TIKV 中，而不是在 hive 中。可以考虑调整 [log4j 日志](https://github.com/pingcap/tidb-docker-compose/blob/master/tispark/conf/log4j.properties#L43)，将该参数添加到 spark 下 conf 里 log4j 文件(如果后缀是 template 那先 mv 成后缀 properties)。
+
+- Q. Spark 执行中报 java.sql.BatchUpdateException: Data Truncated
+
+    A. 写入的数据长度超过了数据库定义的数据类型的长度，可以确认 target table 的字段长度，进行调整。
