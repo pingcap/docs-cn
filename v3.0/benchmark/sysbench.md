@@ -34,7 +34,7 @@ IDC 机器
 
 Sysbench 版本: 1.0.6
 
-测试脚本: [https://github.com/pingcap/tidb-bench/tree/cwen/not_prepared_statement/sysbench](https://github.com/pingcap/tidb-bench/tree/cwen/not_prepared_statement/sysbench)
+测试脚本: <https://github.com/pingcap/tidb-bench/tree/cwen/not_prepared_statement/sysbench>
 
 ## 测试方案
 
