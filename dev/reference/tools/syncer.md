@@ -27,8 +27,13 @@ Syncer 可以部署在任一台可以连通对应的 MySQL 和 TiDB 集群的机
 
 设置 Syncer 的 meta 文件, 这里假设 meta 文件是 `syncer.meta`:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-# cat syncer.meta
+cat syncer.meta
+```
+
+```
 binlog-name = "mysql-bin.000003"
 binlog-pos = 930143241
 binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e-487b6bd31bf7:1-4"
@@ -197,9 +202,13 @@ port = 4000
 
 启动 Syncer：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./bin/syncer -config config.toml
+```
 
+```
 2016/10/27 15:22:01 binlogsyncer.go:226: [info] begin to sync binlog from position (mysql-bin.000003, 1280)
 2016/10/27 15:22:01 binlogsyncer.go:130: [info] register slave for master server 127.0.0.1:3306
 2016/10/27 15:22:01 binlogsyncer.go:552: [info] rotate to (mysql-bin.000003, 1280)
@@ -208,15 +217,27 @@ port = 4000
 
 ### 在 MySQL 中插入新的数据
 
+{{< copyable "sql" >}}
+
 ```sql
 INSERT INTO t1 VALUES (4, 4), (5, 5);
 ```
 
 登录到 TiDB 查看：
 
-```sql
+{{< copyable "shell-regular" >}}
+
+```bash
 mysql -h127.0.0.1 -P4000 -uroot -p
-mysql> select * from t1;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+select * from t1;
+```
+
+```
 +----+------+
 | id | age  |
 +----+------+
@@ -230,7 +251,7 @@ mysql> select * from t1;
 
 Syncer 每隔 30s 会输出当前的同步统计，如下所示：
 
-```bash
+```
 2017/06/08 01:18:51 syncer.go:934: [info] [syncer]total events = 15, total tps = 130, recent tps = 4,
 master-binlog = (ON.000001, 11992), master-binlog-gtid=53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-74,
 syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-17
@@ -364,8 +385,13 @@ target-table = "order_2017"
 
     可通过以下命令查看 `server-id`：
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> show global variables like 'server_id';
+    show global variables like 'server_id';
+    ```
+
+    ```
     +---------------+-------+
     | Variable_name | Value |
     +---------------+-------+
@@ -383,8 +409,13 @@ target-table = "order_2017"
 
         使用如下命令确认是否开启了 binlog：
 
+        {{< copyable "sql" >}}
+
         ```sql
-        mysql> show global variables like 'log_bin';
+        show global variables like 'log_bin';
+        ```
+
+        ```
         +--------------------+---------+
         | Variable_name      | Value   |
         +--------------------+---------+
@@ -397,8 +428,13 @@ target-table = "order_2017"
 
     2. binlog 格式必须为 `ROW`，且参数 `binlog_row_image` 必须设置为 `FULL`，可使用如下命令查看参数设置：
 
+        {{< copyable "shell-regular" >}}
+
         ```sql
-        mysql> select variable_name, variable_value from information_schema.global_variables where variable_name in ('binlog_format','binlog_row_image');
+        select variable_name, variable_value from information_schema.global_variables where variable_name in ('binlog_format','binlog_row_image');
+        ```
+
+        ```
         +------------------+----------------+
         | variable_name    | variable_value |
         +------------------+----------------+
@@ -424,7 +460,7 @@ target-table = "order_2017"
         需要上游 MySQL 同步账号至少赋予以下权限：
 
         ```
-        select , replication slave , replication client
+        select, replication slave, replication client
         ```
 
     3. 下游 TiDB 需要的权限
@@ -442,6 +478,8 @@ target-table = "order_2017"
 
         为所同步的数据库或者表，执行下面的 GRANT 语句：
 
+        {{< copyable "sql" >}}
+
         ```sql
         GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX  ON db.table TO 'your_user'@'your_wildcard_of_host';
         ```
@@ -450,8 +488,13 @@ target-table = "order_2017"
 
     必须确认上下游的 SQL mode 一致；如果不一致，则会出现数据同步的错误。
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> show variables like '%sql_mode%';
+    show variables like '%sql_mode%';
+    ```
+
+    ```
     +---------------+-----------------------------------------------------------------------------------+
     | Variable_name | Value                                                                             |
     +---------------+-----------------------------------------------------------------------------------+

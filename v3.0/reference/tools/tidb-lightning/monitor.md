@@ -46,6 +46,8 @@ pprof-port = 8289
 
 要让 Prometheus 发现 Lightning，可以将地址直接写入其配置文件，例如：
 
+{{< copyable "" >}}
+
 ```yaml
 ...
 scrape_configs:

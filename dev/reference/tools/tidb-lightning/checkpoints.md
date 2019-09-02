@@ -58,7 +58,9 @@ Lightning 支持两种存储方式：本地文件或 MySQL 数据库。
 
 ### `--checkpoint-error-destroy`
 
-```sh
+{{< copyable "shell-regular" >}}
+
+```shell
 tidb-lightning-ctl --checkpoint-error-destroy='`schema`.`table`'
 ```
 
@@ -73,14 +75,18 @@ tidb-lightning-ctl --checkpoint-error-destroy='`schema`.`table`'
 
 传入 "all" 会对所有表进行上述操作。这是最方便、安全但保守的断点错误解决方法：
 
-```sh
+{{< copyable "shell-regular" >}}
+
+```shell
 tidb-lightning-ctl --checkpoint-error-destroy=all
 ```
 
 ### `--checkpoint-error-ignore`
 
-```sh
-tidb-lightning-ctl --checkpoint-error-ignore='`schema`.`table`'
+{{< copyable "shell-regular" >}}
+
+```shell
+tidb-lightning-ctl --checkpoint-error-ignore='`schema`.`table`' &&
 tidb-lightning-ctl --checkpoint-error-ignore=all
 ```
 
@@ -92,8 +98,10 @@ tidb-lightning-ctl --checkpoint-error-ignore=all
 
 ### `--checkpoint-remove`
 
-```sh
-tidb-lightning-ctl --checkpoint-remove='`schema`.`table`'
+{{< copyable "shell-regular" >}}
+
+```shell
+tidb-lightning-ctl --checkpoint-remove='`schema`.`table`' &&
 tidb-lightning-ctl --checkpoint-remove=all
 ```
 
@@ -101,7 +109,9 @@ tidb-lightning-ctl --checkpoint-remove=all
 
 ### `--checkpoint-dump`
 
-```sh
+{{< copyable "shell-regular" >}}
+
+```shell
 tidb-lightning-ctl --checkpoint-dump=output/directory
 ```
 
