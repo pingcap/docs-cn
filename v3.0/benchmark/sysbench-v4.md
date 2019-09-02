@@ -174,7 +174,7 @@ store-pool-size = 3
 | 1200    | 534577.36 |            4.18 |
 | 1500    | 533944.64 |            5.28 |
 
-![point select](../../media/sysbench_v4_point_select.png)
+![point select](/media/sysbench_v4_point_select.png)
 
 ### Update Non-Index 测试
 
@@ -200,7 +200,7 @@ store-pool-size = 3
 | 1200    | 59904.02 |           29.72 |
 | 1500    | 62247.95 |           42.61 |
 
-![update non-index](../../media/sysbench_v4_update_non_index.png)
+![update non-index](/media/sysbench_v4_update_non_index.png)
 
 ### Update Index 测试
 
@@ -226,7 +226,7 @@ store-pool-size = 3
 | 1200    | 30419.40 |           92.42 |
 | 1500    | 30643.55 |          125.52 |
 
-![update index](../../media/sysbench_v4_update_index.png)
+![update index](/media/sysbench_v4_update_index.png)
 
 ### Read Write 测试
 
@@ -263,4 +263,4 @@ store-pool-size = 3
 | 1200    | 143344.37 |          223.34 |
 | 1500    | 144567.91 |          277.21 |
 
-![read write](../../media/sysbench_v4_read_write.png)
+![read write](/media/sysbench_v4_read_write.png)
