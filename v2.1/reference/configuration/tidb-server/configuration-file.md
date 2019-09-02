@@ -9,7 +9,7 @@ category: reference
 
 TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认的配置文件，重命名为 config.toml 即可。
 
-本文档只阐述未包含在命令行参数中的参数，命令行参数参见[这里](/reference/configuration/tidb-server/configuration.md)。
+本文档只阐述未包含在命令行参数中的参数，命令行参数参见[这里](v2.1/reference/configuration/tidb-server/configuration.md)。
 
 ### `split-table`
 

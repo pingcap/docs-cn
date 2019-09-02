@@ -7,7 +7,7 @@ category: reference
 
 TiDB 支持的基本约束与 MySQL 的基本相同，但有以下区别：
 
-- 默认对唯一约束进行[惰性检查](/reference/transactions/overview.md#事务的惰性检查)。通过在事务提交时再进行批量检查，TiDB 能够减少网络开销、提升性能。您可通过设置 `tidb_constraint_check_in_place` 为 `TRUE` 改变此行为。
+- 默认对唯一约束进行[惰性检查](v2.1/reference/transactions/overview.md#事务的惰性检查)。通过在事务提交时再进行批量检查，TiDB 能够减少网络开销、提升性能。您可通过设置 `tidb_constraint_check_in_place` 为 `TRUE` 改变此行为。
 
 - TiDB 支持创建外键约束，但不会在 DML 语句中对外键进行约束（即外键约束不生效）。
 

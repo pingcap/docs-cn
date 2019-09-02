@@ -66,7 +66,7 @@ ERROR 1141 (42000): There is no such grant defined for user 'newuser' on host '%
 
 ## 另请参阅
 
-* [CREATE USER](/reference/sql/statements/create-user.md)
-* [ALTER USER](/reference/sql/statements/alter-user.md)
-* [SHOW CREATE USER](/reference/sql/statements/show-create-user.md)
-* [Privilege Management](/reference/security/privilege-system.md)
+* [CREATE USER](v2.1/reference/sql/statements/create-user.md)
+* [ALTER USER](v2.1/reference/sql/statements/alter-user.md)
+* [SHOW CREATE USER](v2.1/reference/sql/statements/show-create-user.md)
+* [Privilege Management](v2.1/reference/security/privilege-system.md)

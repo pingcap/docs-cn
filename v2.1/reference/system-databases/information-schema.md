@@ -9,7 +9,7 @@ category: reference
 
 ## CHARACTER\_SETS Table
 
- `CHARACTER_SETS` 表提供[字符集](/reference/sql/character-set.md)相关的信息。TiDB 目前仅支持部分字符集。
+ `CHARACTER_SETS` 表提供[字符集](v2.1/reference/sql/character-set.md)相关的信息。TiDB 目前仅支持部分字符集。
 
 ```sql
 mysql> SELECT * FROM character_sets;
@@ -242,7 +242,7 @@ mysql> SELECT * FROM session_variables LIMIT 10;
 
 ## SLOW_QUERY 表
 
-`SLOW_QUERY` 表中提供了慢查询相关的信息，其内容通过解析 TiDB 慢查询日志而来，列名和慢日志中的字段名是一一对应。关于如何使用该表调查和改善慢查询请参考[慢查询日志文档](/how-to/maintain/identify-slow-queries.md)。
+`SLOW_QUERY` 表中提供了慢查询相关的信息，其内容通过解析 TiDB 慢查询日志而来，列名和慢日志中的字段名是一一对应。关于如何使用该表调查和改善慢查询请参考[慢查询日志文档](v2.1/how-to/maintain/identify-slow-queries.md)。
 
 ```sql
 mysql> desc information_schema.slow_query;

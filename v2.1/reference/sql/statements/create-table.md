@@ -146,7 +146,7 @@ data_type:
   | JSON
 ```
 
-`data_type` 请参考[数据类型](/reference/sql/data-types/overview.md)章节。
+`data_type` 请参考[数据类型](v2.1/reference/sql/data-types/overview.md)章节。
 
 ```sql
 index_col_name:
@@ -204,7 +204,7 @@ table_option:
   | STATS_PERSISTENT [=] {DEFAULT|0|1}
 ```
 
-`table_option` 目前支持的只有 `AUTO_INCREMENT`、`SHARD_ROW_ID_BITS`（详情介绍请参考 [TiDB 专用系统变量和语法](/reference/configuration/tidb-server/tidb-specific-variables.md#shard-row-id-bits)）、`PRE_SPLIT_REGIONS`、`CHARACTER SET`、`COLLATE` 和 `COMMENT`，其它只是语法上支持。具体内容参考下表，各个子句之间用逗号隔开。
+`table_option` 目前支持的只有 `AUTO_INCREMENT`、`SHARD_ROW_ID_BITS`（详情介绍请参考 [TiDB 专用系统变量和语法](v2.1/reference/configuration/tidb-server/tidb-specific-variables.md#shard-row-id-bits)）、`PRE_SPLIT_REGIONS`、`CHARACTER SET`、`COLLATE` 和 `COMMENT`，其它只是语法上支持。具体内容参考下表，各个子句之间用逗号隔开。
 
 | 参数           |含义                                  |举例                      |
 |----------------|--------------------------------------|----------------------------|
@@ -261,6 +261,6 @@ mysql> SELECT * FROM t1;
 
 ## 另请参阅
 
-* [DROP TABLE](/reference/sql/statements/drop-table.md)
-* [CREATE TABLE LIKE](/reference/sql/statements/create-table-like.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
+* [DROP TABLE](v2.1/reference/sql/statements/drop-table.md)
+* [CREATE TABLE LIKE](v2.1/reference/sql/statements/create-table-like.md)
+* [SHOW CREATE TABLE](v2.1/reference/sql/statements/show-create-table.md)

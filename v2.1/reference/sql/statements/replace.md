@@ -66,11 +66,11 @@ mysql> SELECT * FROM t1;
 
 ## MySQL 兼容性
 
-`REPLACE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`REPLACE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](v2.1/report-issue.md)。
 
 ## 另请参阅
 
-* [DELETE](/reference/sql/statements/delete.md)
-* [INSERT](/reference/sql/statements/insert.md)
-* [SELECT](/reference/sql/statements/select.md)
-* [UPDATE](/reference/sql/statements/update.md)
+* [DELETE](v2.1/reference/sql/statements/delete.md)
+* [INSERT](v2.1/reference/sql/statements/insert.md)
+* [SELECT](v2.1/reference/sql/statements/select.md)
+* [UPDATE](v2.1/reference/sql/statements/update.md)

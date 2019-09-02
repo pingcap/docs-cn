@@ -59,9 +59,9 @@ mysql> show privileges;
 
 ## MySQL 兼容性
 
-`SHOW PRIVILEGES` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW PRIVILEGES` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](v2.1/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW GRANTS](/reference/sql/statements/show-grants.md)
-* [GRANT <privileges>](/reference/sql/statements/grant-privileges.md)
+* [SHOW GRANTS](v2.1/reference/sql/statements/show-grants.md)
+* [GRANT <privileges>](v2.1/reference/sql/statements/grant-privileges.md)

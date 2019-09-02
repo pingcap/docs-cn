@@ -31,10 +31,10 @@ Query OK, 0 rows affected (0.01 sec)
 
 ## MySQL 兼容性
 
-`FLUSH PRIVILEGES` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`FLUSH PRIVILEGES` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](v2.1/report-issue.md)。
 
 ## 另请参阅
 
-* [GRANT](/reference/sql/statements/grant-privileges.md)
-* [REVOKE <privileges>](/reference/sql/statements/revoke-privileges.md)
-* [Privilege Management](/reference/security/privilege-system.md)
+* [GRANT](v2.1/reference/sql/statements/grant-privileges.md)
+* [REVOKE <privileges>](v2.1/reference/sql/statements/revoke-privileges.md)
+* [Privilege Management](v2.1/reference/security/privilege-system.md)
