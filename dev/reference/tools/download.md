@@ -34,9 +34,9 @@ category: reference
 |:---|:---|:---|:---|
 | [dm-latest-linux-amd64.tar.gz](http://download.pingcap.org/dm-latest-linux-amd64.tar.gz) | Linux | amd64 | [dm-latest-linux-amd64.sha256](http://download.pingcap.org/dm-latest-linux-amd64.sha256) |
 
-## Syncer，Loader 和 mydumper
+## Syncer，Loader 和 Mydumper
 
-如需下载最新版本的 [Syncer](/reference/tools/syncer.md)，[Loader](/reference/tools/loader.md) 或 [mydumper](/reference/tools/mydumper.md)，直接下载 tidb-enterprise-tools 安装包即可，因为这些工具均包含在此安装包中。
+如需下载最新版本的 [Syncer](/reference/tools/syncer.md)，[Loader](/reference/tools/loader.md) 或 [Mydumper](/reference/tools/mydumper.md)，直接下载 tidb-enterprise-tools 安装包即可，因为这些工具均包含在此安装包中。
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
@@ -46,7 +46,7 @@ tidb-enterprise-tools 安装包包含以下工具：
 
 - Syncer
 - Loader
-- mydumper
+- Mydumper
 - [binlogctl](/reference/tidb-binlog-overview.md#binlogctl-工具)
 - ddl_checker
 - [sync-diff-inspector](/reference/tools/sync-diff-inspector/overview.md)

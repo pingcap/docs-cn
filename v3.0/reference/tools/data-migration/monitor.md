@@ -82,17 +82,17 @@ overview 下包含运行当前选定 task 的所有 DM-worker instance 的部分
 
 | metric 名称 | 说明  | 告警说明 |
 |:----|:------------|:----|
-| remaining time to sync | 预计 syncer 还需要多少分钟可以和 master 完全同步，单位：分钟 | N/A |
-| replicate lag | master 到 syncer 的 binlog 复制延迟时间，单位：秒 | N/A |
+| remaining time to sync | 预计 Syncer 还需要多少分钟可以和 master 完全同步，单位：分钟 | N/A |
+| replicate lag | master 到 Syncer 的 binlog 复制延迟时间，单位：秒 | N/A |
 | process exist with error | binlog replication 在 DM-worker 内部遇到错误并且退出了 | 立即告警 |
 | binlog file gap between master and syncer | 与上游 master 相比落后的 binlog file 个数 | 落后 binlog file 个数超过 1 个（不含 1 个）且持续 10 分钟时 |
 | binlog file gap between relay and syncer | 与 relay 相比落后的 binlog file 个数 | 落后 binlog file 个数超过 1 个（不含 1 个）且持续 10 分钟时 |
 | binlog event qps | 单位时间内接收到的 binlog event 数量 (不包含需要跳过的 event) | N/A |
 | skipped binlog event qps  | 单位时间内接收到的需要跳过的 binlog event 数量  | N/A |
-| cost of binlog event transform | syncer 解析并且转换 binlog 成 SQLs 的耗时，单位：秒 | N/A |
+| cost of binlog event transform | Syncer 解析并且转换 binlog 成 SQLs 的耗时，单位：秒 | N/A |
 | total sqls jobs | 单位时间内新增的 job 数量 | N/A |
 | finished sqls jobs | 单位时间内完成的 job 数量 | N/A |
-| execution latency | syncer 执行 transaction 到下游的耗时，单位：秒 | N/A |
+| execution latency | Syncer 执行 transaction 到下游的耗时，单位：秒 | N/A |
 | unsynced tables | 当前子任务内还未收到 shard DDL 的分表数量 | N/A |
 | shard lock resolving | 当前子任务是否正在等待 shard DDL 同步，大于 0 表示正在等待同步 | N/A |
 
