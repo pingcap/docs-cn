@@ -186,7 +186,6 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 #### 性能
 
 * 提升快速备份性能
-* 提升快速备份性能
 * 1PC
 * 支持 Storage Class Memory 硬件
 * 新 Raft 引擎
