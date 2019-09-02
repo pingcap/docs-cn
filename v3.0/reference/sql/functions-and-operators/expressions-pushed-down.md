@@ -6,7 +6,7 @@ category: reference
 
 # 下推到 TiKV 的表达式列表
 
-当 TiDB 从 TiKV 中读取数据的时候，TiDB 尽量下推一些表达式运算到 TiKV中，从而减少数据传输量以及 TiDB 单一节点的计算压力。目前 TiDB 中下推到 TiKV 的表达式详见以下列表。 
+当 TiDB 从 TiKV 中读取数据的时候，TiDB 尽量下推一些表达式运算到 TiKV中，从而减少数据传输量以及 TiDB 单一节点的计算压力。目前 TiDB 中下推到 TiKV 的表达式详见以下列表。
 
 ## 已支持下推的表达式列表
 
@@ -43,54 +43,54 @@ category: reference
     下例首先将表达式 `<` 及 `>` 拉入黑名单，然后将表达式 `>` 从黑名单中挪出。
 黑名单是否生效可以从 explain 结果进行观察（[如何理解 explain 结果](reference/performance/understanding-the-query-execution-plan.md)）。
 
-    ``` sql
-    tidb> create table t(a int);
-    Query OK, 0 rows affected (0.01 sec)
-    
-    tidb> explain select * from t where a < 2 and a > 2;
-    +---------------------+----------+------+------------------------------------------------------------+
-    | id                  | count    | task | operator info                                              |
-    +---------------------+----------+------+------------------------------------------------------------+
-    | TableReader_7       | 0.00     | root | data:Selection_6                                           |
-    | └─Selection_6       | 0.00     | cop  | gt(test.t.a, 2), lt(test.t.a, 2)                           |
-    |   └─TableScan_5     | 10000.00 | cop  | table:t, range:[-inf,+inf], keep order:false, stats:pseudo |
-    +---------------------+----------+------+------------------------------------------------------------+
-    3 rows in set (0.00 sec)
-    
-    tidb> insert into mysql.expr_pushdown_blacklist values('<'), ('>');
-    Query OK, 2 rows affected (0.00 sec)
-    Records: 2  Duplicates: 0  Warnings: 0
-    
-    tidb> admin reload expr_pushdown_blacklist;
-    Query OK, 0 rows affected (0.00 sec)
-    
-    tidb> explain select * from t where a < 2 and a > 2;
-    +---------------------+----------+------+------------------------------------------------------------+
-    | id                  | count    | task | operator info                                              |
-    +---------------------+----------+------+------------------------------------------------------------+
-    | Selection_5         | 8000.00  | root | gt(test.t.a, 2), lt(test.t.a, 2)                           |
-    | └─TableReader_7     | 10000.00 | root | data:TableScan_6                                           |
-    |   └─TableScan_6     | 10000.00 | cop  | table:t, range:[-inf,+inf], keep order:false, stats:pseudo |
-    +---------------------+----------+------+------------------------------------------------------------+
-    3 rows in set (0.00 sec)
-    
-    tidb> delete from mysql.expr_pushdown_blacklist where name = '>';
-    Query OK, 1 row affected (0.00 sec)
-    
-    tidb> admin reload expr_pushdown_blacklist;
-    Query OK, 0 rows affected (0.00 sec)
-    
-    tidb> explain select * from t where a < 2 and a > 2;
-    +-----------------------+----------+------+------------------------------------------------------------+
-    | id                    | count    | task | operator info                                              |
-    +-----------------------+----------+------+------------------------------------------------------------+
-    | Selection_5           | 2666.67  | root | lt(test.t.a, 2)                                            |
-    | └─TableReader_8       | 3333.33  | root | data:Selection_7                                           |
-    |   └─Selection_7       | 3333.33  | cop  | gt(test.t.a, 2)                                            |
-    |     └─TableScan_6     | 10000.00 | cop  | table:t, range:[-inf,+inf], keep order:false, stats:pseudo |
-    +-----------------------+----------+------+------------------------------------------------------------+
-    4 rows in set (0.00 sec)
-    ```
+``` sql
+tidb> create table t(a int);
+Query OK, 0 rows affected (0.01 sec)
+
+tidb> explain select * from t where a < 2 and a > 2;
++---------------------+----------+------+------------------------------------------------------------+
+| id                  | count    | task | operator info                                              |
++---------------------+----------+------+------------------------------------------------------------+
+| TableReader_7       | 0.00     | root | data:Selection_6                                           |
+| └─Selection_6       | 0.00     | cop  | gt(test.t.a, 2), lt(test.t.a, 2)                           |
+|   └─TableScan_5     | 10000.00 | cop  | table:t, range:[-inf,+inf], keep order:false, stats:pseudo |
++---------------------+----------+------+------------------------------------------------------------+
+3 rows in set (0.00 sec)
+
+tidb> insert into mysql.expr_pushdown_blacklist values('<'), ('>');
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+tidb> admin reload expr_pushdown_blacklist;
+Query OK, 0 rows affected (0.00 sec)
+
+tidb> explain select * from t where a < 2 and a > 2;
++---------------------+----------+------+------------------------------------------------------------+
+| id                  | count    | task | operator info                                              |
++---------------------+----------+------+------------------------------------------------------------+
+| Selection_5         | 8000.00  | root | gt(test.t.a, 2), lt(test.t.a, 2)                           |
+| └─TableReader_7     | 10000.00 | root | data:TableScan_6                                           |
+|   └─TableScan_6     | 10000.00 | cop  | table:t, range:[-inf,+inf], keep order:false, stats:pseudo |
++---------------------+----------+------+------------------------------------------------------------+
+3 rows in set (0.00 sec)
+
+tidb> delete from mysql.expr_pushdown_blacklist where name = '>';
+Query OK, 1 row affected (0.00 sec)
+
+tidb> admin reload expr_pushdown_blacklist;
+Query OK, 0 rows affected (0.00 sec)
+
+tidb> explain select * from t where a < 2 and a > 2;
++-----------------------+----------+------+------------------------------------------------------------+
+| id                    | count    | task | operator info                                              |
++-----------------------+----------+------+------------------------------------------------------------+
+| Selection_5           | 2666.67  | root | lt(test.t.a, 2)                                            |
+| └─TableReader_8       | 3333.33  | root | data:Selection_7                                           |
+|   └─Selection_7       | 3333.33  | cop  | gt(test.t.a, 2)                                            |
+|     └─TableScan_6     | 10000.00 | cop  | table:t, range:[-inf,+inf], keep order:false, stats:pseudo |
++-----------------------+----------+------+------------------------------------------------------------+
+4 rows in set (0.00 sec)
+```
 
 > **注意：**
 >
@@ -98,7 +98,7 @@ category: reference
 > - 表达式黑名单功能在 v3.0.0 及以上版本中支持。
 > - 使用表达式原始名称文本（如，">"，"+"，"is null"）添加黑名单在 v3.0.3 及以下版本中不完全支持。v3.0.3 及以下版本中，部分表达式在黑名单中使用别名。已支持下推的表达式中，表达式别名与原始名不同的，对应关系见下表（不区分大小写）。
 
-| 表达式原始名称 | 表达式别名 | 
+| 表达式原始名称 | 表达式别名 |
 | :-------- | :---------- |
 | < | LT |
 | > | GT |
