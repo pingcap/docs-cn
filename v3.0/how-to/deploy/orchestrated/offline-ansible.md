@@ -1,16 +1,16 @@
 ---
-title: 离线 TiDB-Ansible 部署方案
+title: 离线 TiDB Ansible 部署方案
 category: how-to
 aliases: ['/docs-cn/op-guide/offline-ansible-deployment/']
 ---
 
-# 离线 TiDB-Ansible 部署方案
+# 离线 TiDB Ansible 部署方案
 
 ## 准备机器
 
 1. 下载机一台
 
-    - 该机器需开放外网访问，用于下载 TiDB-Ansible、TiDB 及相关软件安装包。
+    - 该机器需开放外网访问，用于下载 TiDB Ansible、TiDB 及相关软件安装包。
     - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统。
 
 2. 部署目标机器若干及部署中控机一台
@@ -66,7 +66,7 @@ aliases: ['/docs-cn/op-guide/offline-ansible-deployment/']
  ansible 2.5.0
 ```
 
-## 在下载机上下载 TiDB-Ansible 及 TiDB 安装包
+## 在下载机上下载 TiDB Ansible 及 TiDB 安装包
 
 以下为 tidb-ansible 与 TiDB 的版本对应关系，版本选择可以咨询官方。
 
@@ -90,7 +90,7 @@ aliases: ['/docs-cn/op-guide/offline-ansible-deployment/']
 
 2. 下载 tidb-ansible
 
-    使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`。
+    使用以下命令从 Github [TiDB Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`。
 
     > **注意：**
     >
