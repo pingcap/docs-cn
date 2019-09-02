@@ -89,7 +89,7 @@ tidb> explain select * from t where a < 2 and a > 2;
 4 rows in set (0.00 sec)
 ```
 
-注：
+> **注意：**
 
 1. `admin reload expr_pushdown_blacklist` 只对执行该 SQL 的 TiDB server 生效，若需要集群中所有 TiDB server 生效，需要在每台 TiDB server 上执行该 SQL。
 2. 表达式黑名单功能在 v3.0.0 及以上版本中支持。
