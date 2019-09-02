@@ -6,7 +6,7 @@ aliases: ['/docs-cn/op-guide/migration/']
 
 # 增量数据复制
 
-[全量迁移](/how-to/migrate/from-mysql.md)文档中介绍了如何使用 `mydumper`/`loader` 将 MySQL 的数据全量导入到 TiDB，但如果后续 MySQL 的数据有更新，仍然希望快速导入，就不适合使用全量的方式。因此，TiDB 提供了 `syncer` 工具，可以方便地将 MySQL 的数据增量的导入到 TiDB 里面。
+[全量迁移](v3.0/how-to/migrate/from-mysql.md)文档中介绍了如何使用 `mydumper`/`loader` 将 MySQL 的数据全量导入到 TiDB，但如果后续 MySQL 的数据有更新，仍然希望快速导入，就不适合使用全量的方式。因此，TiDB 提供了 `syncer` 工具，可以方便地将 MySQL 的数据增量的导入到 TiDB 里面。
 
 `syncer` 属于 TiDB 企业版工具集，如何获取可以参考 [下载 TiDB 企业版工具集](#下载-tidb-企业版工具集-linux)。
 
@@ -58,7 +58,7 @@ binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e
 
 ## 启动 `syncer`
 
-启动 Syncer 服务之前请详细阅读 [Syncer 增量导入](/reference/tools/syncer.md )
+启动 Syncer 服务之前请详细阅读 [Syncer 增量导入](v3.0/reference/tools/syncer.md )
 
 `syncer` 的配置文件 `config.toml`:
 

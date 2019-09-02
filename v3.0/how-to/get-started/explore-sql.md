@@ -6,7 +6,7 @@ aliases: ['/docs-cn/try-tidb/']
 
 # TiDB 中的基本 SQL 操作
 
-成功部署 TiDB 集群之后，便可以在 TiDB 中执行 SQL 语句了。因为 TiDB 兼容 MySQL，你可以使用 MySQL 客户端连接 TiDB，并且[大多数情况下](/reference/mysql-compatibility.md)可以直接执行 MySQL 语句。
+成功部署 TiDB 集群之后，便可以在 TiDB 中执行 SQL 语句了。因为 TiDB 兼容 MySQL，你可以使用 MySQL 客户端连接 TiDB，并且[大多数情况下](v3.0/reference/mysql-compatibility.md)可以直接执行 MySQL 语句。
 
 本文介绍 CRUD 操作等基本的 SQL 语句。完整的 SQL 语句列表，参见 [TiDB SQL 语法详解](https://pingcap.github.io/sqlgram/)。
 

@@ -64,11 +64,11 @@ aliases: ['/docs-cn/v3.0/how-to/upgrade/tidb-in-kubernetes/']
 > **注意：**
 >
 > - 将 `enableConfigMapRollout` 特性从关闭状态打开时，即使没有配置变更，也会触发一次 PD、TiKV、TiDB 的滚动更新。
-> - 目前 PD 的 `scheduler` 和 `replication` 配置（`values.yaml` 中的 `maxStoreDownTime` 和 `maxReplicas` 字段）在集群安装完成后无法自动更新，需要通过 [pd-ctl](/reference/tools/pd-control.md) 手动更新。
+> - 目前 PD 的 `scheduler` 和 `replication` 配置（`values.yaml` 中的 `maxStoreDownTime` 和 `maxReplicas` 字段）在集群安装完成后无法自动更新，需要通过 [pd-ctl](v3.0/reference/tools/pd-control.md) 手动更新。
 
 ## 强制升级 TiDB 集群
 
-如果 PD 集群因为 PD 配置错误，PD 镜像 tag 错误，NodeAffinity 等原因不可用，[TiDB 集群伸缩](/tidb-in-kubernetes/scale-in-kubernetes.md)，[升级 TiDB 版本](#升级-TiDB-版本)和[更新 TiDB 集群配置](#更新-TiDB-集群配置)都无法操作。这种情况下，可使用 `force-upgrade`（TiDB Operator 版本 > v1.0.0-beta.3 ）强制升级集群以恢复集群功能。具体操作步骤如下：
+如果 PD 集群因为 PD 配置错误，PD 镜像 tag 错误，NodeAffinity 等原因不可用，[TiDB 集群伸缩](v3.0/tidb-in-kubernetes/scale-in-kubernetes.md)，[升级 TiDB 版本](#升级-TiDB-版本)和[更新 TiDB 集群配置](#更新-TiDB-集群配置)都无法操作。这种情况下，可使用 `force-upgrade`（TiDB Operator 版本 > v1.0.0-beta.3 ）强制升级集群以恢复集群功能。具体操作步骤如下：
 
 {{< copyable "shell-regular" >}}
 

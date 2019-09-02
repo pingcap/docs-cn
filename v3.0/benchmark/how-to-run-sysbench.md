@@ -10,9 +10,9 @@ aliases: ['/docs-cn/benchmark/how-to-run-sysbench']
 
 ## 测试环境
 
-- [硬件要求](/how-to/deploy/hardware-recommendations.md)
+- [硬件要求](v3.0/how-to/deploy/hardware-recommendations.md)
 
-- 参考 [TiDB 部署文档](/how-to/deploy/orchestrated/ansible.md)部署 TiDB 集群。在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD，和 1 个 TiKV 实例。关于磁盘，以 32 张表、每张表 10M 行数据为例，建议 TiKV 的数据目录所在的磁盘空间大于 512 GB。
+- 参考 [TiDB 部署文档](v3.0/how-to/deploy/orchestrated/ansible.md)部署 TiDB 集群。在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD，和 1 个 TiKV 实例。关于磁盘，以 32 张表、每张表 10M 行数据为例，建议 TiKV 的数据目录所在的磁盘空间大于 512 GB。
     对于单个 TiDB 的并发连接数，建议控制在 500 以内，如需增加整个系统的并发压力，可以增加 TiDB 实例，具体增加的 TiDB 个数视测试压力而定。
 
 IDC 机器：
@@ -87,7 +87,7 @@ sync-log = false
 capacity = "30GB"
 ```
 
-更详细的 TiKV 参数调优请参考 [TiKV 性能参数调优](/reference/performance/tune-tikv.md)。
+更详细的 TiKV 参数调优请参考 [TiKV 性能参数调优](v3.0/reference/performance/tune-tikv.md)。
 
 ## 测试过程
 

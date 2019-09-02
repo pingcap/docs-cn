@@ -10,7 +10,7 @@ aliases: ['/docs-cn/v3.0/how-to/get-started/local-cluster/install-from-docker-co
 
 > **警告：**
 >
-> 对于生产环境，不要使用 Docker Compose 进行部署，而应[使用 Ansible 部署 TiDB 集群](/how-to/deploy/orchestrated/ansible.md)。
+> 对于生产环境，不要使用 Docker Compose 进行部署，而应[使用 Ansible 部署 TiDB 集群](v3.0/how-to/deploy/orchestrated/ansible.md)。
 
 ## 准备环境
 
@@ -161,4 +161,4 @@ docker-compose exec tispark-master /opt/spark/bin/pyspark
 docker-compose exec tispark-master /opt/spark/bin/sparkR
 ```
 
-更多关于 TiSpark 的信息，参见 [TiSpark 的详细文档](/how-to/get-started/tispark.md)。
+更多关于 TiSpark 的信息，参见 [TiSpark 的详细文档](v3.0/how-to/get-started/tispark.md)。

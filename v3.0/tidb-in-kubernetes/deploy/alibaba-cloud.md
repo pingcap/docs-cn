@@ -217,7 +217,7 @@ variable "operator_helm_values" {
 
 ### 配置 TiDB 集群
 
-TiDB 集群会使用 `./my-cluster.yaml` 作为集群的 `values.yaml` 配置文件，修改该文件即可配置 TiDB 集群。支持的配置项可参考 [Kubernetes 上的 TiDB 集群配置](/tidb-in-kubernetes/reference/configuration/tidb-cluster.md)。
+TiDB 集群会使用 `./my-cluster.yaml` 作为集群的 `values.yaml` 配置文件，修改该文件即可配置 TiDB 集群。支持的配置项可参考 [Kubernetes 上的 TiDB 集群配置](v3.0/tidb-in-kubernetes/reference/configuration/tidb-cluster.md)。
 
 ## 管理多个 TiDB 集群
 

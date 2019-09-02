@@ -59,7 +59,7 @@ aliases: ['/docs-cn/v3.0/reference/configuration/tidb-in-kubernetes/cluster-conf
 
 + 恢复参数
 + 默认："-t 16"
-+ 为恢复数据时使用的 [Loader](/reference/tools/loader.md) 指定额外的运行参数
++ 为恢复数据时使用的 [Loader](v3.0/reference/tools/loader.md) 指定额外的运行参数
 
 ## `gcp.bucket`
 

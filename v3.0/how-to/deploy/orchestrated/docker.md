@@ -10,7 +10,7 @@ aliases: ['/docs-cn/op-guide/docker-deployment/']
 
 > **警告：**
 >
-> 对于生产环境，不要使用 Docker 进行部署，而应[使用 Ansible 部署 TiDB 集群](/how-to/deploy/orchestrated/ansible.md)。
+> 对于生产环境，不要使用 Docker 进行部署，而应[使用 Ansible 部署 TiDB 集群](v3.0/how-to/deploy/orchestrated/ansible.md)。
 
 ## 环境准备
 

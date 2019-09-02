@@ -12,9 +12,9 @@ sync-diff-inspector 是一个用于校验 MySQL／TiDB 中两份数据是否一�
 
 * 对比表结构和数据
 * 如果数据不一致，则生成用于修复数据的 SQL 语句
-* 支持[不同库名或表名的数据校验](/reference/tools/sync-diff-inspector/route-diff.md)
-* 支持[分库分表场景下的数据校验](/reference/tools/sync-diff-inspector/shard-diff.md)
-* 支持 [TiDB 主从集群的数据校验](/reference/tools/sync-diff-inspector/tidb-diff.md)
+* 支持[不同库名或表名的数据校验](v3.0/reference/tools/sync-diff-inspector/route-diff.md)
+* 支持[分库分表场景下的数据校验](v3.0/reference/tools/sync-diff-inspector/shard-diff.md)
+* 支持 [TiDB 主从集群的数据校验](v3.0/reference/tools/sync-diff-inspector/tidb-diff.md)
 
 GitHub 地址：[sync-diff-inspector](https://github.com/pingcap/tidb-tools/tree/master/sync_diff_inspector)
 

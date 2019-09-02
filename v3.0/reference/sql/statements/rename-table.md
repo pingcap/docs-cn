@@ -46,10 +46,10 @@ mysql> SHOW TABLES;
 
 ## MySQL 兼容性
 
-`RENAME TABLE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`RENAME TABLE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [SHOW TABLES](/reference/sql/statements/show-tables.md)
-* [ALTER TABLE](/reference/sql/statements/alter-table.md)
+* [CREATE TABLE](v3.0/reference/sql/statements/create-table.md)
+* [SHOW TABLES](v3.0/reference/sql/statements/show-tables.md)
+* [ALTER TABLE](v3.0/reference/sql/statements/alter-table.md)
