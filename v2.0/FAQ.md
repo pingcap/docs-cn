@@ -524,7 +524,7 @@ loader的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调�
 
 ### 4.1.2 Loader 工具
 
-具体可以参考 [https://pingcap.com/docs-cn/tools/loader/](https://pingcap.com/docs-cn/tools/loader/)
+具体可以参考 <https://pingcap.com/docs-cn/tools/loader/>。
 
 ### 4.1.3 如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？
 
