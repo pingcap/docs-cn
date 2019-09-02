@@ -91,7 +91,7 @@ tidb> explain select * from t where a < 2 and a > 2;
 
 > **注意：**
 >
-1. `admin reload expr_pushdown_blacklist` 只对执行该 SQL 的 TiDB server 生效，若需要集群中所有 TiDB server 生效，需要在每台 TiDB server 上执行该 SQL。
+> - `admin reload expr_pushdown_blacklist` 只对执行该 SQL 的 TiDB server 生效，若需要集群中所有 TiDB server 生效，需要在每台 TiDB server 上执行该 SQL。
 2. 表达式黑名单功能在 v3.0.0 及以上版本中支持。
 3. 使用表达式原始名称文本（如，">"，"+"，"is null"）添加黑名单在 v3.0.3 及以下版本中不完全支持。v3.0.3 及以下版本中，部分表达式在黑名单中使用别名。已支持下推的表达式中，表达式别名与原始名不同的，对应关系见下表(不区分大小写)。
 
