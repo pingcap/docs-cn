@@ -23,6 +23,7 @@
     - [SQL 基本操作](how-to/get-started/explore-sql.md)
     - [读取历史数据](how-to/get-started/read-historical-data.md)
     - [TiDB Binlog 教程](how-to/get-started/tidb-binlog.md)
+    - [TiDB Data Migration 教程](how-to/get-started/data-migration.md)
     - [TiSpark 教程](how-to/get-started/tispark.md)
   + 部署
     - [软硬件环境需求](how-to/deploy/hardware-recommendations.md)
@@ -34,7 +35,10 @@
       - [跨数据中心部署方案](how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](how-to/deploy/geographic-redundancy/location-awareness.md)
     - [使用 Ansible 部署 DM 集群](how-to/deploy/data-migration-with-ansible.md)
-    - [部署 TiDB Binlog 集群](how-to/deploy/tidb-binlog.md)
+    + 部署使用 TiDB Binlog
+      - [部署 TiDB Binlog 集群](how-to/deploy/tidb-binlog.md)
+      - [Binlog Slave Client 用户文档](reference/tools/tidb-binlog/binlog-slave-client.md)
+      - [Reparo 使用文档](reference/tools/tidb-binlog/reparo.md)
   + 配置
     - [时区](how-to/configure/time-zone.md)
     - [内存控制](how-to/configure/memory-control.md)
@@ -296,7 +300,7 @@
   + [TiDB Binlog 简介](reference/tidb-binlog-overview.md)
 + 常见问题 (FAQ)
   - [TiDB FAQ](faq/tidb.md)
-  - [TiDB-Lightning FAQ](faq/tidb-lightning.md)
+  - [TiDB Lightning FAQ](faq/tidb-lightning.md)
   - [Data Migration FAQ](faq/data-migration.md)
   - [升级 FAQ](faq/upgrade.md)
 + 技术支持

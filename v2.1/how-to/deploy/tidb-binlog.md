@@ -5,6 +5,15 @@ category: reference
 
 # TiDB Binlog 集群部署
 
+## 服务器要求
+
+Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台上。在开发、测试和生产环境下，对服务器硬件配置的要求和建议如下：
+
+| 服务     | 部署数量       | CPU   | 磁盘          | 内存   |
+| :-------- | :-------- | :--------| :--------------- | :------ |
+| Pump | 3 | 8核+   | SSD, 200 GB+ | 16G |
+| Drainer | 1 | 8核+ | SAS, 100 GB+ （如果输出 binlog 为本地文件，磁盘大小视保留数据天数而定） | 16G |
+
 ## 使用 TiDB Ansible 部署 TiDB Binlog
 
 ### 第 1 步：下载 TiDB Ansible
@@ -113,7 +122,7 @@ category: reference
 
     **方式二**：从零开始部署含 Pump 组件的 TiDB 集群
 
-    使用 Ansible 部署 TiDB 集群，方法参考 [TiDB Ansible 部署方案](/how-to/deploy/orchestrated/ansible.md)。
+    使用 Ansible 部署 TiDB 集群，方法参考 [使用 TiDB Ansible 部署 TiDB 集群](/how-to/deploy/orchestrated/ansible.md)。
 
 3. 查看 Pump 服务状态
 

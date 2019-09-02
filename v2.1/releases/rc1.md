@@ -37,5 +37,5 @@ category: Releases
 
 ## 工具
 
-+ Loader：兼容 Percona 的 mydumper 数据格式，提供多线程导入、出错重试、断点续传等功能，并且针对 TiDB 有优化
++ Loader：兼容 Percona 的 Mydumper 数据格式，提供多线程导入、出错重试、断点续传等功能，并且针对 TiDB 有优化
 + 开发完成一键部署工具

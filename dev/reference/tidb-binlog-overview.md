@@ -14,7 +14,7 @@ TiDB Binlog 支持以下功能场景：
 
 ## TiDB Binlog 整体架构
 
-![TiDB-Binlog 架构](/media/tidb_binlog_cluster_architecture.png)
+![TiDB Binlog 架构](/media/tidb_binlog_cluster_architecture.png)
 
 TiDB Binlog 集群主要分为 Pump 和 Drainer 两个组件，以及 binlogctl 工具：
 
@@ -41,15 +41,6 @@ Drainer 从各个 Pump 中收集 Binlog 进行归并，再将 Binlog 转化成 S
 * TiDB 通过内置的 Pump Client 将 Binlog 分发到各个 Pump。
 * Pump 负责存储 Binlog，并将 Binlog 按顺序提供给 Drainer。
 * Drainer 负责读取各个 Pump 的 Binlog，归并排序后发送到下游。
-
-## 服务器要求
-
-Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台上。对于开发，测试以及生产环境的服务器硬件配置有以下要求和建议：
-
-| 服务     | 部署数量       | CPU   | 磁盘          | 内存   |
-| :-------- | :-------- | :--------| :--------------- | :------ |
-| Pump | 3 | 8核+   | SSD, 200 GB+ | 16G |
-| Drainer | 1 | 8核+ | SAS, 100 GB+ （如果输出为本地文件，则使用 SSD，并增加磁盘大小） | 16G |
 
 ## 注意事项
 

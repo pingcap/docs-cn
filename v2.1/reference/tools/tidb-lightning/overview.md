@@ -5,7 +5,7 @@ category: reference
 
 # TiDB Lightning 简介
 
-TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，有以下两个主要的使用场景：一是大量新数据的快速导入；二是全量数据的备份恢复。目前，支持 mydumper 或 CSV 输出格式的数据源。您可以在以下两种场景下使用 Lightning：
+TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，有以下两个主要的使用场景：一是大量新数据的快速导入；二是全量数据的备份恢复。目前，支持 Mydumper 或 CSV 输出格式的数据源。您可以在以下两种场景下使用 Lightning：
 
 - **迅速**导入**大量新**数据。
 - 备份恢复所有数据。
