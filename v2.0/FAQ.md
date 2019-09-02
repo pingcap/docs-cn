@@ -520,7 +520,7 @@ loader的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调�
 
 ### 4.1.1 Mydumper 工具
 
-具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)
+具体可以参考 <https://github.com/maxbube/mydumper>。
 
 ### 4.1.2 Loader 工具
 
