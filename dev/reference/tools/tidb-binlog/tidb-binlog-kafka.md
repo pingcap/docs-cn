@@ -50,18 +50,31 @@ Kafka 集群用来存储由 Pump 写入的 Binlog 数据，并提供给 Drainer 
 
 ### 下载官方 Binary
 
-CentOS 7+
+环境：CentOS 7+
+
+下载压缩包：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
-# 下载压缩包
-wget http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.tar.gz
+wget http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.tar.gz &&
 wget http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.sha256
+```
 
-# 检查文件完整性，返回 ok 则正确
+检查文件完整性，返回 ok 则正确：
+
+{{< copyable "shell-regular" >}}
+
+```bash
 sha256sum -c tidb-binlog-kafka-linux-amd64.sha256
+```
 
-# 解开压缩包
-tar -xzf tidb-binlog-kafka-linux-amd64.tar.gz
+解开压缩包：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tar -xzf tidb-binlog-kafka-linux-amd64.tar.gz &&
 cd tidb-binlog-kafka-linux-amd64
 ```
 
@@ -245,6 +258,8 @@ ZK3="192.168.0.11"
 
 3. 启动示例
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     ./bin/pump -config pump.toml
     ```
@@ -370,6 +385,8 @@ ZK3="192.168.0.11"
 
 3. 启动示例
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     ./bin/drainer -config drainer.toml
     ```
@@ -378,22 +395,37 @@ ZK3="192.168.0.11"
 
 PbReader 用于解析 Drainer 生成的 Pb 文件，并翻译成对应的 SQL 语句。
 
-CentOS 7+
+环境：CentOS 7+
+
+下载 PbReader 压缩包：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
-# 下载 PbReader 压缩包
-wget http://download.pingcap.org/pb_reader-latest-linux-amd64.tar.gz
+wget http://download.pingcap.org/pb_reader-latest-linux-amd64.tar.gz &&
 wget http://download.pingcap.org/pb_reader-latest-linux-amd64.sha256
+```
 
-# 检查文件完整性，返回 ok 则正确
+检查文件完整性，返回 ok 则正确：
+
+{{< copyable "shell-regular" >}}
+
+```bash
 sha256sum -c pb_reader-latest-linux-amd64.sha256
+```
 
-# 解开压缩包
-tar -xzf pb_reader-latest-linux-amd64.tar.gz
+解开压缩包：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tar -xzf pb_reader-latest-linux-amd64.tar.gz &&
 cd pb_reader-latest-linux-amd64
 ```
 
-PbReader 使用示例
+PbReader 使用示例：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 ./bin/pbReader -binlog-file=${path}/binlog-0000000000000000

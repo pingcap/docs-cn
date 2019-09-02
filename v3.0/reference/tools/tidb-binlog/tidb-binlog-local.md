@@ -140,6 +140,8 @@ TiDB Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/re
 
 3. 启动示例
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     ./bin/pump -config pump.toml
     ```
@@ -257,6 +259,8 @@ TiDB Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/re
     ```
 
 3. 启动示例
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     ./bin/drainer -config drainer.toml
