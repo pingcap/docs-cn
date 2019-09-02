@@ -2,7 +2,7 @@
 title: TiDB Adopters
 summary: Learn about the list of TiDB adopters in various industries.
 category: adopters
-i18n_link: "https://www.pingcap.com/cases-cn/"
+i18n_link: "https://pingcap.com/cases-cn/"
 ---
 
 # TiDB Adopters
@@ -11,30 +11,30 @@ This is a list of TiDB adopters in various industries.
 
 | Company | Industry | Success Story |
 | :--- | :--- | :--- |
-|[Mobike](https://en.wikipedia.org/wiki/Mobike)|Ridesharing|[English](https://www.pingcap.com/blog/Use-Case-TiDB-in-Mobike/); [Chinese](https://www.pingcap.com/cases-cn/user-case-mobike/)|
-|[Jinri Toutiao](https://en.wikipedia.org/wiki/Toutiao)|Mobile News Platform|[Chinese](https://www.pingcap.com/cases-cn/user-case-toutiao/)|
-|[Yiguo.com](https://www.crunchbase.com/organization/shanghai-yiguo-electron-business)|E-commerce|[English](https://www.datanami.com/2018/02/22/hybrid-database-capturing-perishable-insights-yiguo/); [Chinese](https://www.pingcap.com/cases-cn/user-case-yiguo)|
-|[Shopee](https://en.wikipedia.org/wiki/Shopee)|E-commerce|[English](https://www.pingcap.com/success-stories/tidb-in-shopee/); [Chinese](https://www.pingcap.com/cases-cn/user-case-shopee/)|
-|[Yuanfudao.com](https://www.crunchbase.com/organization/yuanfudao)|EdTech|[English](https://www.pingcap.com/blog/2017-08-08-tidbforyuanfudao/); [Chinese](https://www.pingcap.com/cases-cn/user-case-yuanfudao/)|
+|[Mobike](https://en.wikipedia.org/wiki/Mobike)|Ridesharing|[English](https://pingcap.com/blog/Use-Case-TiDB-in-Mobike/); [Chinese](https://pingcap.com/cases-cn/user-case-mobike/)|
+|[Jinri Toutiao](https://en.wikipedia.org/wiki/Toutiao)|Mobile News Platform|[Chinese](https://pingcap.com/cases-cn/user-case-toutiao/)|
+|[Yiguo.com](https://www.crunchbase.com/organization/shanghai-yiguo-electron-business)|E-commerce|[English](https://www.datanami.com/2018/02/22/hybrid-database-capturing-perishable-insights-yiguo/); [Chinese](https://pingcap.com/cases-cn/user-case-yiguo)|
+|[Shopee](https://en.wikipedia.org/wiki/Shopee)|E-commerce|[English](https://pingcap.com/success-stories/tidb-in-shopee/); [Chinese](https://pingcap.com/cases-cn/user-case-shopee/)|
+|[Yuanfudao.com](https://www.crunchbase.com/organization/yuanfudao)|EdTech|[English](https://pingcap.com/blog/2017-08-08-tidbforyuanfudao/); [Chinese](https://pingcap.com/cases-cn/user-case-yuanfudao/)|
 |[Xiaomi](https://en.wikipedia.org/wiki/Xiaomi)|Consumer Electronics|[Chinese](https://pingcap.com/cases-cn/user-case-xiaomi/)|
-|[LY.com](https://www.crunchbase.com/organization/ly-com)|Travel|[Chinese](https://www.pingcap.com/cases-cn/user-case-tongcheng/)|
-|[Qunar.com](https://www.crunchbase.com/organization/qunar-com)|Travel|[Chinese](https://www.pingcap.com/cases-cn/user-case-qunar/)|
+|[LY.com](https://www.crunchbase.com/organization/ly-com)|Travel|[Chinese](https://pingcap.com/cases-cn/user-case-tongcheng/)|
+|[Qunar.com](https://www.crunchbase.com/organization/qunar-com)|Travel|[Chinese](https://pingcap.com/cases-cn/user-case-qunar/)|
 |[Hulu](https://www.hulu.com)|Entertainment||
 |[VIPKID](https://www.crunchbase.com/organization/vipkid)|EdTech||
 |[Lenovo](https://en.wikipedia.org/wiki/Lenovo)|Enterprise Technology||
 |[Bank of Beijing](https://en.wikipedia.org/wiki/Bank_of_Beijing)|Banking|[Chinese](https://pingcap.com/cases-cn/user-case-beijing-bank/)|
 |[Industrial and Commercial Bank of China](https://en.wikipedia.org/wiki/Industrial_and_Commercial_Bank_of_China)|Banking||
-|[iQiyi](https://en.wikipedia.org/wiki/IQiyi)|Media and Entertainment|[English](https://www.pingcap.com/success-stories/tidb-in-iqiyi/); [Chinese](https://pingcap.com/cases-cn/user-case-iqiyi/)|
-|[BookMyShow](https://www.crunchbase.com/organization/bookmyshow)|Media and Entertainment|[English](https://www.pingcap.com/success-stories/tidb-in-bookmyshow/)|
-|[Yimian Data](https://www.crunchbase.com/organization/yimian-data)|Big Data|[Chinese](https://www.pingcap.com/cases-cn/user-case-yimian)|
+|[iQiyi](https://en.wikipedia.org/wiki/IQiyi)|Media and Entertainment|[English](https://pingcap.com/success-stories/tidb-in-iqiyi/); [Chinese](https://pingcap.com/cases-cn/user-case-iqiyi/)|
+|[BookMyShow](https://www.crunchbase.com/organization/bookmyshow)|Media and Entertainment|[English](https://pingcap.com/success-stories/tidb-in-bookmyshow/)|
+|[Yimian Data](https://www.crunchbase.com/organization/yimian-data)|Big Data|[Chinese](https://pingcap.com/cases-cn/user-case-yimian)|
 |[CAASDATA](https://www.caasdata.com/)|Big Data|[Chinese](https://pingcap.com/cases-cn/user-case-kasi/)|
-|[Phoenix New Media](https://www.crunchbase.com/organization/phoenix-new-media)|Media|[Chinese](https://www.pingcap.com/cases-cn/user-case-ifeng/)|
+|[Phoenix New Media](https://www.crunchbase.com/organization/phoenix-new-media)|Media|[Chinese](https://pingcap.com/cases-cn/user-case-ifeng/)|
 |[Mobikok](http://www.mobikok.com/en/)|AdTech|[Chinese](https://pingcap.com/cases-cn/user-case-mobikok/)|
-|[LinkDoc Technology](https://www.crunchbase.com/organization/linkdoc-technology)|HealthTech|[Chinese](https://www.pingcap.com/cases-cn/user-case-linkdoc/)|
-|[G7 Networks](https://www.english.g7.com.cn/)| Logistics|[Chinese](https://www.pingcap.com/cases-cn/user-case-g7/)|
+|[LinkDoc Technology](https://www.crunchbase.com/organization/linkdoc-technology)|HealthTech|[Chinese](https://pingcap.com/cases-cn/user-case-linkdoc/)|
+|[G7 Networks](https://www.english.g7.com.cn/)| Logistics|[Chinese](https://pingcap.com/cases-cn/user-case-g7/)|
 |[Hive-Box](http://www.fcbox.com/en/pc/index.html#/)|Logistics|[Chinese](https://pingcap.com/cases-cn/user-case-fengchao/)|
-|[360 Finance](https://www.crunchbase.com/organization/360-finance)|FinTech|[Chinese](https://www.pingcap.com/cases-cn/user-case-360/)|
-|[GAEA](http://www.gaea.com/en/)|Gaming|[English](https://www.pingcap.com/blog/2017-05-22-Comparison-between-MySQL-and-TiDB-with-tens-of-millions-of-data-per-day/); [Chinese](https://www.pingcap.com/cases-cn/user-case-gaea-ad/)|
+|[360 Finance](https://www.crunchbase.com/organization/360-finance)|FinTech|[Chinese](https://pingcap.com/cases-cn/user-case-360/)|
+|[GAEA](http://www.gaea.com/en/)|Gaming|[English](https://pingcap.com/blog/2017-05-22-Comparison-between-MySQL-and-TiDB-with-tens-of-millions-of-data-per-day/); [Chinese](https://pingcap.com/cases-cn/user-case-gaea-ad/)|
 |[YOOZOO Games](https://www.crunchbase.com/organization/yoozoo-games)|Gaming|[Chinese](https://pingcap.com/cases-cn/user-case-youzu/)|
 |[Seasun Games](https://www.crunchbase.com/organization/seasun)|Gaming|[Chinese](https://pingcap.com/cases-cn/user-case-xishanju/)|
 |[NetEase Games](https://game.163.com/en/)|Gaming||
@@ -48,7 +48,7 @@ This is a list of TiDB adopters in various industries.
 |[Tongdun Technology](https://www.crunchbase.com/organization/tongdun-technology)|FinTech||
 |[Wacai](https://www.crunchbase.com/organization/wacai)|FinTech||
 |[Tree Finance](https://www.treefinance.com.cn/)|FinTech||
-|[2Dfire.com](http://www.2dfire.com/)|FoodTech|[Chinese](https://www.pingcap.com/cases-cn/user-case-erweihuo/)|
+|[2Dfire.com](http://www.2dfire.com/)|FoodTech|[Chinese](https://pingcap.com/cases-cn/user-case-erweihuo/)|
 |[Happigo.com](https://www.crunchbase.com/organization/happigo-com)|E-commerce||
 |[Mashang Consumer Finance](https://www.crunchbase.com/organization/ms-finance)|FinTech||
 |[Tencent OMG](https://en.wikipedia.org/wiki/Tencent)|Media||
@@ -63,13 +63,13 @@ This is a list of TiDB adopters in various industries.
 |[Youju Tech](https://www.ujuz.cn/)|E-Commerce||
 |[Maizuo](https://www.crunchbase.com/organization/maizhuo)|E-Commerce||
 |[Mogujie](https://www.crunchbase.com/organization/mogujie)|E-Commerce||
-|[Zhuan Zhuan](https://www.crunchbase.com/organization/zhuan-zhuan)|Online Marketplace|[English](https://www.pingcap.com/success-stories/tidb-in-zhuanzhuan/); [Chinese](https://pingcap.com/cases-cn/user-case-zhuanzhuan/)|
+|[Zhuan Zhuan](https://www.crunchbase.com/organization/zhuan-zhuan)|Online Marketplace|[English](https://pingcap.com/success-stories/tidb-in-zhuanzhuan/); [Chinese](https://pingcap.com/cases-cn/user-case-zhuanzhuan/)|
 |[Shuangchuang Huipu](http://scphjt.com/)|FinTech||
 |[Meizu](https://en.wikipedia.org/wiki/Meizu)|Media||
 |[SEA group](https://sea-group.org/?lang=en)|Gaming||
 |[Sogou](https://en.wikipedia.org/wiki/Sogou)|MediaTech||
 |[Chunyu Yisheng](https://www.crunchbase.com/organization/chunyu)|HealthTech||
-|[Meituan-Dianping](https://en.wikipedia.org/wiki/Meituan-Dianping)|Food Delivery|[English](https://www.pingcap.com/success-stories/tidb-in-meituan-dianping/); [Chinese](https://pingcap.com/cases-cn/user-case-meituan/)|
+|[Meituan-Dianping](https://en.wikipedia.org/wiki/Meituan-Dianping)|Food Delivery|[English](https://pingcap.com/success-stories/tidb-in-meituan-dianping/); [Chinese](https://pingcap.com/cases-cn/user-case-meituan/)|
 |[Qutoutiao](https://www.crunchbase.com/organization/qutoutiao)|Social Network||
 |[QuantGroup](https://www.crunchbase.com/organization/quantgroup)|FinTech||
 |[FINUP](https://www.crunchbase.com/organization/finup)|FinTech||

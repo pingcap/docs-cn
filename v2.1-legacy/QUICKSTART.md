@@ -18,7 +18,7 @@ As an open source distributed scalable HTAP database, TiDB can be deployed on-pr
 
 The following list collects deployment guides and tutorials from the community. The content is subject to change by the contributors.
 
-- [How To Spin Up an HTAP Database in 5 Minutes with TiDB + TiSpark](https://www.pingcap.com/blog/how_to_spin_up_an_htap_database_in_5_minutes_with_tidb_tispark/)
+- [How To Spin Up an HTAP Database in 5 Minutes with TiDB + TiSpark](https://pingcap.com/blog/how_to_spin_up_an_htap_database_in_5_minutes_with_tidb_tispark/)
 - [Developer install guide (single machine)](http://www.tocker.ca/this-blog-now-powered-by-wordpress-tidb.html)
 
 _Your contribution is also welcome! Feel free to open a [pull request](https://github.com/pingcap/docs/edit/master/QUICKSTART.md) to add additional links._

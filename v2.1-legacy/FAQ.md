@@ -64,7 +64,7 @@ The architecture of TiDB guarantees that it fully supports geo-distribution and 
 
 #### Does TiDB provide any other knowledge resource besides the documentation?
 
-Currently, [TiDB documentation](https://www.pingcap.com/docs/) is the most important and timely way to get knowledge of TiDB. In addition, we also have some technical communication groups. If you have any needs, contact info@pingcap.com.
+Currently, [TiDB documentation](https://pingcap.com/docs/) is the most important and timely way to get knowledge of TiDB. In addition, we also have some technical communication groups. If you have any needs, contact info@pingcap.com.
 
 #### What are the MySQL variables that TiDB is compatible with?
 
@@ -130,15 +130,15 @@ The configuration method of TiDB `sql_mode` is different from that of MySQL `sql
 
 #### TiKV for data storage
 
-See [TiDB Internal (I) - Data Storage](https://www.pingcap.com/blog/2017-07-11-tidbinternal1/).
+See [TiDB Internal (I) - Data Storage](https://pingcap.com/blog/2017-07-11-tidbinternal1/).
 
 #### TiDB for data computing
 
-See [TiDB Internal (II) - Computing](https://www.pingcap.com/blog/2017-07-11-tidbinternal2/).
+See [TiDB Internal (II) - Computing](https://pingcap.com/blog/2017-07-11-tidbinternal2/).
 
 #### PD for scheduling
 
-See [TiDB Internal (III) - Scheduling](https://www.pingcap.com/blog/2017-07-20-tidbinternal3/).
+See [TiDB Internal (III) - Scheduling](https://pingcap.com/blog/2017-07-20-tidbinternal3/).
 
 ## Install, deploy and upgrade
 
