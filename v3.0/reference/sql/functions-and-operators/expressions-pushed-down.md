@@ -1,12 +1,12 @@
 ---
 title: 下推到 TiKV 的表达式列表
-summary: TiDB 中下推到 TiKV 的表达式列表及相关设置
+summary: TiDB 中下推到 TiKV 的表达式列表及相关设置。
 category: reference
 ---
 
 # 下推到 TiKV 的表达式列表
 
-当 TiDB 从 TiKV 中读取数据的时候，TiDB 尽量下推一些表达式运算到 TiKV中，从而减少数据传输量以及 TiDB 单一节点的计算压力。目前 TiDB 中下推到 TiKV 的表达式详见以下列表。
+当 TiDB 从 TiKV 中读取数据的时候，TiDB 会尽量下推一些表达式运算到 TiKV 中，从而减少数据传输量以及 TiDB 单一节点的计算压力。本文将介绍 TiDB 已支持下推的表达式，以及如何禁止下推特定表达式。
 
 ## 已支持下推的表达式列表
 
@@ -21,29 +21,29 @@ category: reference
 
 ## 禁止特定表达式下推
 
-当函数的计算过程由于下推而出现不被期待的行为时，我们通过将其拉入黑名单禁止下推来快速恢复业务。
-上述支持下推的表达式可以被拉入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止其下推。
+当函数的计算过程由于下推而出现不被期待的行为时，可通过将其拉入黑名单禁止下推来快速恢复业务。具体来讲，可以将上述支持下推的表达式拉入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止其下推。
 
-* 如何拉入黑名单？
+### 加入黑名单
 
-    通过以下两个步骤可以将一个或多个函数加入黑名单：
+执行以下步骤，可将一个或多个函数加入黑名单：
 
-    1. 向 `mysql.expr_pushdown_blacklist` 插入对应函数名
-    2. 执行 `admin reload expr_pushdown_blacklist;`
+1. 向 `mysql.expr_pushdown_blacklist` 插入对应的函数名。
+2. 执行 `admin reload expr_pushdown_blacklist;`。
 
-* 如何挪出黑名单？
+### 移出黑名单
 
-    通过以下两个步骤可以将一个或多个函数挪出黑名单：
+执行以下步骤，可以将一个或多个函数移出黑名单：
 
-    1. 从 `mysql.expr_pushdown_blacklist` 表删除对应函数名
-    2. 执行 `admin reload expr_pushdown_blacklist;`
+1. 从 `mysql.expr_pushdown_blacklist` 表中删除对应的函数名。
+2. 执行 `admin reload expr_pushdown_blacklist;`。
 
-* 表达式下推黑名单用法示例
+### 表达式下推黑名单用法示例
 
-    下例首先将表达式 `<` 及 `>` 拉入黑名单，然后将表达式 `>` 从黑名单中挪出。
-黑名单是否生效可以从 explain 结果进行观察（[如何理解 explain 结果](reference/performance/understanding-the-query-execution-plan.md)）。
+以下示例首先将表达式 `<` 及 `>` 拉入黑名单，然后将表达式 `>` 从黑名单中挪出。
 
-``` sql
+黑名单是否生效可以从 `explain` 结果中进行观察（参见[如何理解 `explain` 结果](reference/performance/understanding-the-query-execution-plan.md)）。
+
+```sql
 tidb> create table t(a int);
 Query OK, 0 rows affected (0.01 sec)
 
@@ -94,9 +94,9 @@ tidb> explain select * from t where a < 2 and a > 2;
 
 > **注意：**
 >
-> - `admin reload expr_pushdown_blacklist` 只对执行该 SQL 的 TiDB server 生效，若需要集群中所有 TiDB server 生效，需要在每台 TiDB server 上执行该 SQL。
+> - `admin reload expr_pushdown_blacklist` 只对执行该 SQL 的 TiDB server 生效，若需要集群中所有 TiDB server 生效，需要在每台 TiDB server 上执行该 SQL 语句。
 > - 表达式黑名单功能在 v3.0.0 及以上版本中支持。
-> - 使用表达式原始名称文本（如，">"，"+"，"is null"）添加黑名单在 v3.0.3 及以下版本中不完全支持。v3.0.3 及以下版本中，部分表达式在黑名单中使用别名。已支持下推的表达式中，表达式别名与原始名不同的，对应关系见下表（不区分大小写）。
+> - 在 v3.0.3 及以下版本中，不完全支持使用表达式原始名称文本（如 ">"，"+"，"is null"）添加黑名单，部分表达式在黑名单中使用别名。已支持下推的表达式中，表达式别名与原始名不同的，对应关系见下表（不区分大小写）。
 
 | 表达式原始名称 | 表达式别名 |
 | :-------- | :---------- |
