@@ -90,11 +90,11 @@ mysql> SELECT * FROM t2;
 
 ## MySQL 兼容性
 
-`INSERT` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`INSERT` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](dev/report-issue.md)。
 
 ## 另请参阅
 
-* [DELETE](/reference/sql/statements/delete.md)
-* [SELECT](/reference/sql/statements/select.md)
-* [UPDATE](/reference/sql/statements/update.md)
-* [REPLACE](/reference/sql/statements/replace.md)
+* [DELETE](dev/reference/sql/statements/delete.md)
+* [SELECT](dev/reference/sql/statements/select.md)
+* [UPDATE](dev/reference/sql/statements/update.md)
+* [REPLACE](dev/reference/sql/statements/replace.md)

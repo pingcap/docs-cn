@@ -7,7 +7,7 @@ category: reference
 
 本文介绍了如何使用 DM 来处理异常的 SQL 语句。
 
-目前，TiDB 并不完全兼容所有的 MySQL 语法（详见 [TiDB 已支持的 DDL 语句](/reference/mysql-compatibility.md#ddl)）。当使用 DM 从 MySQL 同步数据到 TiDB 时，如果 TiDB 不支持对应的 SQL 语句，可能会造成错误并中断同步任务。在这种情况下，DM 提供以下两种方式来恢复同步：
+目前，TiDB 并不完全兼容所有的 MySQL 语法（详见 [TiDB 已支持的 DDL 语句](dev/reference/mysql-compatibility.md#ddl)）。当使用 DM 从 MySQL 同步数据到 TiDB 时，如果 TiDB 不支持对应的 SQL 语句，可能会造成错误并中断同步任务。在这种情况下，DM 提供以下两种方式来恢复同步：
 
 - 使用 dmctl 来手动跳过该 SQL 语句对应的 binlog event。
 
@@ -20,7 +20,7 @@ category: reference
 
 - 跳过/替代执行操作只适合用于一次性跳过/替代执行**下游 TiDB 不支持执行的 SQL 语句**，其它同步错误请不要使用此方式进行处理。
 
-    - 其它同步错误可尝试使用 [black & white table lists](/reference/tools/data-migration/features/overview.md#black-white-table-lists) 或 [binlog event filter](/reference/tools/data-migration/features/overview.md#binlog-event-filter)。
+    - 其它同步错误可尝试使用 [black & white table lists](dev/reference/tools/data-migration/features/overview.md#black-white-table-lists) 或 [binlog event filter](dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)。
 
 - 如果业务不能接受下游 TiDB 跳过异常的 DDL 语句，也不接受使用其他 DDL 语句作为替代，则不适合使用此方式进行处理。
 
@@ -32,7 +32,7 @@ category: reference
 - `--sharding` 仅用于对 sharding group 预设一些操作，并且必须在 DDL 语句执行之前预设，不能在 DDL 语句已经执行后预设。
 
     - `--sharding` 模式下只支持预设，并只能使用 `--sql-pattern` 来匹配 binlog event。
-    - 有关使用 DM 处理 sharding DDL 同步的原理，请参阅[分库分表合并同步原理](/reference/tools/data-migration/features/shard-merge.md#实现原理)。
+    - 有关使用 DM 处理 sharding DDL 同步的原理，请参阅[分库分表合并同步原理](dev/reference/tools/data-migration/features/shard-merge.md#实现原理)。
 
 #### 匹配 binlog event
 
@@ -131,7 +131,7 @@ DM 在进行增量数据同步时，简化后的流程大致为：
 
 #### query-status
 
-`query-status` 命令用于查询当前 DM-worker 内子任务及 relay 单元等的状态，详见[查询状态](/reference/tools/data-migration/query-status.md)。
+`query-status` 命令用于查询当前 DM-worker 内子任务及 relay 单元等的状态，详见[查询状态](dev/reference/tools/data-migration/query-status.md)。
 
 #### query-error
 

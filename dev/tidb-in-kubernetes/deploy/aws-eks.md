@@ -347,7 +347,7 @@ terraform destroy
 
 上述文档中介绍的 Terraform 脚本组合了多个 Terraform 模块：
 
-- `tidb-operator` 模块，用于创建 EKS 集群并在 EKS 集群上安装配置 [TiDB Operator](tidb-in-kubernetes/deploy/tidb-operator.md)。
+- `tidb-operator` 模块，用于创建 EKS 集群并在 EKS 集群上安装配置 [TiDB Operator](dev/tidb-in-kubernetes/deploy/tidb-operator.md)。
 - `tidb-cluster` 模块，用于创建 TiDB 集群所需的资源池并部署 TiDB 集群。
 - EKS 上的 TiDB 集群专用的 `vpc` 模块、`key-pair`模块和`bastion` 模块
 

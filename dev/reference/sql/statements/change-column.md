@@ -67,8 +67,8 @@ ERROR 1105 (HY000): can't run multi schema change
 
 ## 另请参阅
 
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
-* [ADD COLUMN](/reference/sql/statements/add-column.md)
-* [DROP COLUMN](/reference/sql/statements/drop-column.md)
-* [MODIFY COLUMN](/reference/sql/statements/modify-column.md)
+* [CREATE TABLE](dev/reference/sql/statements/create-table.md)
+* [SHOW CREATE TABLE](dev/reference/sql/statements/show-create-table.md)
+* [ADD COLUMN](dev/reference/sql/statements/add-column.md)
+* [DROP COLUMN](dev/reference/sql/statements/drop-column.md)
+* [MODIFY COLUMN](dev/reference/sql/statements/modify-column.md)

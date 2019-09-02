@@ -80,8 +80,8 @@ mysql> SELECT * FROM t1;
 
 ## MySQL 兼容性
 
-`SHOW WARNINGS` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW WARNINGS` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](dev/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW ERRORS](/reference/sql/statements/show-errors.md)
+* [SHOW ERRORS](dev/reference/sql/statements/show-errors.md)

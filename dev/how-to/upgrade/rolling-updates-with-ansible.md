@@ -15,8 +15,8 @@ category: how-to
 
 跨大版本升级，必须更新 `tidb-ansible`，小版本升级，也建议更新 `tidb-ansible`，以获取最新的配置文件模板、特性及 bug 修复。
 
-- 从 TiDB 1.0 升级到 TiDB 2.1，参考 [TiDB 2.1 升级操作指南](/how-to/upgrade/to-tidb-2.1.md)。
-- 从 TiDB 2.1 升级到 TiDB 3.0，参考 [TiDB 3.0 升级操作指南](/how-to/upgrade/from-previous-version.md)。
+- 从 TiDB 1.0 升级到 TiDB 2.1，参考 [TiDB 2.1 升级操作指南](dev/how-to/upgrade/to-tidb-2.1.md)。
+- 从 TiDB 2.1 升级到 TiDB 3.0，参考 [TiDB 3.0 升级操作指南](dev/how-to/upgrade/from-previous-version.md)。
 
 ### 自动下载 binary
 

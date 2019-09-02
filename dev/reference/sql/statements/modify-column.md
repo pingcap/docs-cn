@@ -6,7 +6,7 @@ category: reference
 
 # MODIFY COLUMN
 
-`ALTER TABLE .. MODIFY COLUMN` 语句用于修改已有表上的列，包括列的数据类型和属性。若要同时重命名，可改用 [`CHANGE COLUMN`](/reference/sql/statements/change-column.md) 语句。
+`ALTER TABLE .. MODIFY COLUMN` 语句用于修改已有表上的列，包括列的数据类型和属性。若要同时重命名，可改用 [`CHANGE COLUMN`](dev/reference/sql/statements/change-column.md) 语句。
 
 ## 语法图
 
@@ -68,8 +68,8 @@ ERROR 1105 (HY000): can't run multi schema change
 
 ## 另请参阅
 
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
-* [ADD COLUMN](/reference/sql/statements/add-column.md)
-* [DROP COLUMN](/reference/sql/statements/drop-column.md)
-* [CHANGE COLUMN](/reference/sql/statements/change-column.md)
+* [CREATE TABLE](dev/reference/sql/statements/create-table.md)
+* [SHOW CREATE TABLE](dev/reference/sql/statements/show-create-table.md)
+* [ADD COLUMN](dev/reference/sql/statements/add-column.md)
+* [DROP COLUMN](dev/reference/sql/statements/drop-column.md)
+* [CHANGE COLUMN](dev/reference/sql/statements/change-column.md)

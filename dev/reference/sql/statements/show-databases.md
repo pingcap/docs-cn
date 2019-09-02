@@ -52,10 +52,10 @@ mysql> SHOW DATABASES;
 
 ## MySQL 兼容性
 
-`SHOW DATABASES` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW DATABASES` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](dev/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW SCHEMAS](/reference/sql/statements/show-schemas.md)
-* [DROP DATABASE](/reference/sql/statements/drop-database.md)
-* [CREATE DATABASE](/reference/sql/statements/create-database.md)
+* [SHOW SCHEMAS](dev/reference/sql/statements/show-schemas.md)
+* [DROP DATABASE](dev/reference/sql/statements/drop-database.md)
+* [CREATE DATABASE](dev/reference/sql/statements/create-database.md)
