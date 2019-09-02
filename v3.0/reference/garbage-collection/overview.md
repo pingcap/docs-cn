@@ -38,4 +38,4 @@ TiDB 2.1 及更早版本使用的 GC 方式是由 GC leader 向所有 Region 发
 
 > **注意：**
 >
-> 通过修改配置可以继续使用旧的 GC 方式，详情请参考 [GC 配置](v3.0/reference/garbage-collection/configuration.md)。
+> 通过修改配置可以继续使用旧的 GC 方式，详情请参考 [GC 配置](/v3.0/reference/garbage-collection/configuration.md)。

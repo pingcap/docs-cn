@@ -37,7 +37,7 @@ TiDB Data Migration 平台由 3 部分组成：DM-master、DM-worker 和 dmctl�
 
 `.yaml` 文件中定义了各个数据同步任务，dmctl 会读取这些文件，并且这些文件会被提交给 DM-master。DM-master 再将关于给定任务的相应职责告知每个 DM-worker 实例。
 
-详情参见 [Data Migration 简介](v3.0/reference/tools/data-migration/overview.md)。
+详情参见 [Data Migration 简介](/v3.0/reference/tools/data-migration/overview.md)。
 
 ## 安装
 
@@ -719,4 +719,4 @@ mysql -h 127.0.0.1 -P 4000 -u root -e 'select id, id&(1<<45)-1 as orig_id, c, po
 
 本教程介绍了分片迁移中，DM 如何在集群中导入初始数据，以及 DM 读取 binlog，从而使下游 TiDB 集群与上游实例保持同步。
 
-关于 DM 的更多详情，请参考 [Data Migration 简介](v3.0/reference/tools/data-migration/overview.md)，或加入 [TiDB Community Slack](https://pingcap.com/tidbslack/) channel 参与讨论。
+关于 DM 的更多详情，请参考 [Data Migration 简介](/v3.0/reference/tools/data-migration/overview.md)，或加入 [TiDB Community Slack](https://pingcap.com/tidbslack/) channel 参与讨论。

@@ -76,10 +76,10 @@ ERROR 1141 (42000): There is no such grant defined for user 'newuser' on host '%
 
 ## MySQL 兼容性
 
-`REVOKE <privileges>` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](v3.0/report-issue.md)。
+`REVOKE <privileges>` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [GRANT <privileges>](v3.0/reference/sql/statements/grant-privileges.md)
-* [SHOW GRANTS](v3.0/reference/sql/statements/show-grants.md)
-* [Privilege Management](v3.0/reference/security/privilege-system.md)
+* [GRANT <privileges>](/v3.0/reference/sql/statements/grant-privileges.md)
+* [SHOW GRANTS](/v3.0/reference/sql/statements/show-grants.md)
+* [Privilege Management](/v3.0/reference/security/privilege-system.md)

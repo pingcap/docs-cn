@@ -71,10 +71,10 @@ mysql> SHOW VARIABLES LIKE 'character_set%';
 
 ## MySQL 兼容性
 
-`SET [NAMES|CHARACTER SET]` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](v2.1/report-issue.md)。
+`SET [NAMES|CHARACTER SET]` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v2.1/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW \[GLOBAL|SESSION\] VARIABLES](v2.1/reference/sql/statements/show-variables.md)
-* [SET <variable>](v2.1/reference/sql/statements/set-variable.md)
-* [Character Set Support](v2.1/reference/sql/character-set.md)
+* [SHOW \[GLOBAL|SESSION\] VARIABLES](/v2.1/reference/sql/statements/show-variables.md)
+* [SET <variable>](/v2.1/reference/sql/statements/set-variable.md)
+* [Character Set Support](/v2.1/reference/sql/character-set.md)

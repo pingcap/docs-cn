@@ -64,5 +64,5 @@ mysql> SHOW SESSION VARIABLES like 'transaction_isolation';
 
 ## 另请参阅
 
-* [SET \[GLOBAL|SESSION\] <variable>](dev/reference/sql/statements/set-variable.md)
-* [Isolation Levels](dev/reference/transactions/transaction-isolation.md)
+* [SET \[GLOBAL|SESSION\] <variable>](/dev/reference/sql/statements/set-variable.md)
+* [Isolation Levels](/dev/reference/transactions/transaction-isolation.md)

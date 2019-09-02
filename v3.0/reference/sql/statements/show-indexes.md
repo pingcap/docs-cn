@@ -66,10 +66,10 @@ mysql> SHOW KEYS FROM t1;
 
 ## MySQL 兼容性
 
-`SHOW INDEXES [FROM|IN]` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](v3.0/report-issue.md)。
+`SHOW INDEXES [FROM|IN]` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW CREATE TABLE](v3.0/reference/sql/statements/show-create-table.md)
-* [DROP INDEX](v3.0/reference/sql/statements/drop-index.md)
-* [CREATE INDEX](v3.0/reference/sql/statements/create-index.md)
+* [SHOW CREATE TABLE](/v3.0/reference/sql/statements/show-create-table.md)
+* [DROP INDEX](/v3.0/reference/sql/statements/drop-index.md)
+* [CREATE INDEX](/v3.0/reference/sql/statements/create-index.md)

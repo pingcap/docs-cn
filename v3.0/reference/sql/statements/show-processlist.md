@@ -37,4 +37,4 @@ mysql> SHOW PROCESSLIST;
 
 ## 另请参阅
 
-* [KILL \[TIDB\]](v3.0/reference/sql/statements/kill.md)
+* [KILL \[TIDB\]](/v3.0/reference/sql/statements/kill.md)

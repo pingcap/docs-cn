@@ -30,7 +30,7 @@ TiDB Binlog Local 主要分为两个组件：
 
 ### TiDB Binlog Local 下载
 
-TiDB Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](dev/reference/tools/download.md)。
+TiDB Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/dev/reference/tools/download.md)。
 
 ### TiDB Binlog Local 部署
 

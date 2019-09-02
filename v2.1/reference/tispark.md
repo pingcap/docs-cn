@@ -40,7 +40,7 @@ TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
 + 硬件配置建议
 
-    普通场景可以参考 [TiDB 和 TiKV 硬件配置建议](v2.1/how-to/deploy/hardware-recommendations.md)，但是如果是偏重分析的场景，可以将 TiKV 节点增加到至少 64G 内存。
+    普通场景可以参考 [TiDB 和 TiKV 硬件配置建议](/v2.1/how-to/deploy/hardware-recommendations.md)，但是如果是偏重分析的场景，可以将 TiKV 节点增加到至少 64G 内存。
 
 ### Spark 与 TiSpark 集群独立部署的配置
 

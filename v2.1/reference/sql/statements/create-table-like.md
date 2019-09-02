@@ -53,9 +53,9 @@ Empty set (0.00 sec)
 
 ## MySQL 兼容性
 
-`CREATE TABLE LIKE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](v2.1/report-issue.md)。
+`CREATE TABLE LIKE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v2.1/report-issue.md)。
 
 ## 另请参阅
 
-* [CREATE TABLE](v2.1/reference/sql/statements/create-table.md)
-* [SHOW CREATE TABLE](v2.1/reference/sql/statements/show-create-table.md)
+* [CREATE TABLE](/v2.1/reference/sql/statements/create-table.md)
+* [SHOW CREATE TABLE](/v2.1/reference/sql/statements/show-create-table.md)

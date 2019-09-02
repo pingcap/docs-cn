@@ -69,11 +69,11 @@ mysql> SHOW TABLES;
 
 ## MySQL 兼容性
 
-`CREATE DATABASE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](v2.1/report-issue.md)。
+`CREATE DATABASE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v2.1/report-issue.md)。
 
 ## 另请参阅
 
-* [USE](v2.1/reference/sql/statements/use.md)
-* [ALTER DATABASE](v2.1/reference/sql/statements/alter-database.md)
-* [DROP DATABASE](v2.1/reference/sql/statements/drop-database.md)
-* [SHOW DATABASES](v2.1/reference/sql/statements/show-databases.md)
+* [USE](/v2.1/reference/sql/statements/use.md)
+* [ALTER DATABASE](/v2.1/reference/sql/statements/alter-database.md)
+* [DROP DATABASE](/v2.1/reference/sql/statements/drop-database.md)
+* [SHOW DATABASES](/v2.1/reference/sql/statements/show-databases.md)

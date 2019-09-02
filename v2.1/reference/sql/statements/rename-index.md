@@ -52,11 +52,11 @@ Create Table: CREATE TABLE `t1` (
 
 ## MySQL 兼容性
 
-`RENAME INDEX` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](v2.1/report-issue.md)。
+`RENAME INDEX` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v2.1/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW CREATE TABLE](v2.1/reference/sql/statements/show-create-table.md)
-* [CREATE INDEX](v2.1/reference/sql/statements/create-index.md)
-* [DROP INDEX](v2.1/reference/sql/statements/drop-index.md)
-* [SHOW INDEX](v2.1/reference/sql/statements/show-index.md)
+* [SHOW CREATE TABLE](/v2.1/reference/sql/statements/show-create-table.md)
+* [CREATE INDEX](/v2.1/reference/sql/statements/create-index.md)
+* [DROP INDEX](/v2.1/reference/sql/statements/drop-index.md)
+* [SHOW INDEX](/v2.1/reference/sql/statements/show-index.md)

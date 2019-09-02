@@ -7,11 +7,11 @@ category: reference
 
 本文档主要介绍 Data Migration (DM) 的任务配置文件 [`task.yaml`](https://github.com/pingcap/dm/blob/master/dm/master/task.yaml)，包含[全局配置](#全局配置) 和[实例配置](#实例配置) 两部分。
 
-关于各配置项的功能和配置，请参阅[数据同步功能](dev/reference/tools/data-migration/features/overview.md)。
+关于各配置项的功能和配置，请参阅[数据同步功能](/dev/reference/tools/data-migration/features/overview.md)。
 
 ## 关键概念
 
-关于包括 `source-id` 和 DM-worker ID 在内的关键概念的介绍，请参阅[关键概念](dev/reference/tools/data-migration/configure/overview.md#关键概念)。
+关于包括 `source-id` 和 DM-worker ID 在内的关键概念的介绍，请参阅[关键概念](/dev/reference/tools/data-migration/configure/overview.md#关键概念)。
 
 ## 配置顺序
 

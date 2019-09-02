@@ -9,8 +9,8 @@ category: how-to
 
 Kubernetes 上的 TiDB 集群支持两种备份策略：
 
-* [全量备份](#全量备份)（定时执行或 Ad-hoc）：使用 [`mydumper`](dev/reference/tools/mydumper.md) 获取集群的逻辑备份；
-* [增量备份](#增量备份)：使用 [`TiDB Binlog`](dev/reference/tidb-binlog-overview.md) 将 TiDB 集群的数据实时复制到其它数据库中或实时获得增量数据备份；
+* [全量备份](#全量备份)（定时执行或 Ad-hoc）：使用 [`mydumper`](/dev/reference/tools/mydumper.md) 获取集群的逻辑备份；
+* [增量备份](#增量备份)：使用 [`TiDB Binlog`](/dev/reference/tidb-binlog-overview.md) 将 TiDB 集群的数据实时复制到其它数据库中或实时获得增量数据备份；
 
 目前，Kubernetes 上的 TiDB 集群只对 `mydumper` 获取的全量备份数据提供自动化的数据恢复操作。恢复 `TiDB-Binlog` 获取的增量数据需要手动进行。
 
@@ -18,7 +18,7 @@ Kubernetes 上的 TiDB 集群支持两种备份策略：
 
 全量备份使用 `mydumper` 来获取 TiDB 集群的逻辑备份数据。全量备份任务会创建一个 PVC ([PersistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims)) 来存储数据。
 
-默认配置下，备份任务使用 PV ([Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistent-volumes)) 来存储备份数据。你也可以通过修改配置将备份数据存储到 [Google Cloud Storage](https://cloud.google.com/storage/)，[Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/) 或 [Amazon S3](https://aws.amazon.com/s3/) 中，在这种情况下，数据在上传到对象存储前，会临时存储在 PV 中。参考 [Kubernetes 上的 TiDB 集群备份配置](dev/tidb-in-kubernetes/reference/configuration/backup.md) 了解所有的配置选项。
+默认配置下，备份任务使用 PV ([Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistent-volumes)) 来存储备份数据。你也可以通过修改配置将备份数据存储到 [Google Cloud Storage](https://cloud.google.com/storage/)，[Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/) 或 [Amazon S3](https://aws.amazon.com/s3/) 中，在这种情况下，数据在上传到对象存储前，会临时存储在 PV 中。参考 [Kubernetes 上的 TiDB 集群备份配置](/dev/tidb-in-kubernetes/reference/configuration/backup.md) 了解所有的配置选项。
 
 你可以配置一个定时执行的全量备份任务，也可以临时执行一个全量备份任务。
 
@@ -122,7 +122,7 @@ kubectl get pvc -n <namespace> -l app.kubernetes.io/component=backup,pingcap.com
 
 ## 增量备份
 
-增量备份使用 [TiDB Binlog](dev/reference/tidb-binlog-overview.md) 工具从 TiDB 集群收集 Binlog，并提供实时备份和向其它数据库的实时同步能力。
+增量备份使用 [TiDB Binlog](/dev/reference/tidb-binlog-overview.md) 工具从 TiDB 集群收集 Binlog，并提供实时备份和向其它数据库的实时同步能力。
 
 增量备份是默认关闭的，你可以通过修改 `values.yaml` 中的下列配置项来开启增量备份：
 

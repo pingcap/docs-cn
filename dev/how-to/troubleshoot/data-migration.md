@@ -27,13 +27,13 @@ category: reference
 
 ### 执行 `query-status` 或查看日志时出现 `Access denied for user 'root'@'172.31.43.27' (using password: YES)`
 
-在所有 DM 配置文件中，数据库相关的密码都必须使用经 dmctl 加密后的密文（若数据库密码为空，则无需加密）。有关如何使用 dmctl 加密明文密码，参见[使用 dmctl 加密上游 MySQL 用户密码](dev/how-to/deploy/data-migration-with-ansible.md#使用-dmctl-加密上游-mysql-用户密码)。
+在所有 DM 配置文件中，数据库相关的密码都必须使用经 dmctl 加密后的密文（若数据库密码为空，则无需加密）。有关如何使用 dmctl 加密明文密码，参见[使用 dmctl 加密上游 MySQL 用户密码](/dev/how-to/deploy/data-migration-with-ansible.md#使用-dmctl-加密上游-mysql-用户密码)。
 
-此外，在 DM 运行过程中，上下游数据库的用户必须具备相应的读写权限。在启动同步任务过程中，DM 会自动进行相应权限的前置检查，详见[上游 MySQL 实例配置前置检查](dev/reference/tools/data-migration/precheck.md)。
+此外，在 DM 运行过程中，上下游数据库的用户必须具备相应的读写权限。在启动同步任务过程中，DM 会自动进行相应权限的前置检查，详见[上游 MySQL 实例配置前置检查](/dev/reference/tools/data-migration/precheck.md)。
 
 ### 处理不兼容的 DDL 语句
 
-你需要使用 dmctl 手动处理 TiDB 不兼容的 DDL 语句（包括手动跳过该 DDL 语句或使用用户指定的 DDL 语句替换原 DDL 语句，详见[跳过 (skip) 或替代执行 (replace) 异常的 SQL 语句](dev/reference/tools/data-migration/skip-replace-sqls.md)）。
+你需要使用 dmctl 手动处理 TiDB 不兼容的 DDL 语句（包括手动跳过该 DDL 语句或使用用户指定的 DDL 语句替换原 DDL 语句，详见[跳过 (skip) 或替代执行 (replace) 异常的 SQL 语句](/dev/reference/tools/data-migration/skip-replace-sqls.md)）。
 
 > **注意：**
 >
@@ -51,7 +51,7 @@ category: reference
 
 1. 使用 `stop-task` 命令停止当前正在运行的所有同步任务。
 
-2. 使用 Ansible [停止整个 DM 集群](dev/how-to/deploy/data-migration-with-ansible.md#第-10-步-关闭-dm-集群)。
+2. 使用 Ansible [停止整个 DM 集群](/dev/how-to/deploy/data-migration-with-ansible.md#第-10-步-关闭-dm-集群)。
 
 3. 手动清理掉与 binlog event 被重置的 MySQL master 相对应的 DM-worker 的 relay log 目录。
 
@@ -60,6 +60,6 @@ category: reference
 
 4. 清理掉下游已同步的数据。
 
-5. 使用 Ansible [启动整个 DM 集群](dev/how-to/deploy/data-migration-with-ansible.md#第-9-步-部署-dm-集群)。
+5. 使用 Ansible [启动整个 DM 集群](/dev/how-to/deploy/data-migration-with-ansible.md#第-9-步-部署-dm-集群)。
 
 6. 以新的任务名重启数据同步任务，或设置 `remove-meta` 为 `true` 且 `task-mode` 为 `all`。

@@ -51,7 +51,7 @@ Query OK, 0 rows affected (0.23 sec)
 
 ## 另请参阅
 
-* [DROP VIEW](dev/reference/sql/statements/drop-view.md)
-* [CREATE TABLE](dev/reference/sql/statements/create-table.md)
-* [SHOW CREATE TABLE](dev/reference/sql/statements/show-create-table.md)
-* [SHOW TABLES](dev/reference/sql/statements/show-tables.md)
+* [DROP VIEW](/dev/reference/sql/statements/drop-view.md)
+* [CREATE TABLE](/dev/reference/sql/statements/create-table.md)
+* [SHOW CREATE TABLE](/dev/reference/sql/statements/show-create-table.md)
+* [SHOW TABLES](/dev/reference/sql/statements/show-tables.md)

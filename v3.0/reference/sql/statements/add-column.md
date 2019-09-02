@@ -78,5 +78,5 @@ mysql> SELECT * FROM t1;
 
 ## 另请参阅
 
-* [ADD INDEX](v3.0/reference/sql/statements/add-index.md)
-* [CREATE TABLE](v3.0/reference/sql/statements/create-table.md)
+* [ADD INDEX](/v3.0/reference/sql/statements/add-index.md)
+* [CREATE TABLE](/v3.0/reference/sql/statements/create-table.md)

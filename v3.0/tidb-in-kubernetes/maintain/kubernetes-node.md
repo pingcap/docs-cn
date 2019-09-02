@@ -13,7 +13,7 @@ TiDB 是高可用数据库，可以在部分数据库节点下线的情况下正
 环境准备：
 
 - [`kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-- [`tkctl`](v3.0/tidb-in-kubernetes/reference/tools/tkctl.md)
+- [`tkctl`](/v3.0/tidb-in-kubernetes/reference/tools/tkctl.md)
 - [`jq`](https://stedolan.github.io/jq/download/)
 
 > **注意：**

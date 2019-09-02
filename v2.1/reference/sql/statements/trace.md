@@ -140,4 +140,4 @@ operation: [
 
 ## 另请参阅
 
-* [EXPLAIN ANALYZE](v2.1/reference/sql/statements/explain-analyze.md)
+* [EXPLAIN ANALYZE](/v2.1/reference/sql/statements/explain-analyze.md)

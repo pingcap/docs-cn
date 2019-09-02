@@ -62,11 +62,11 @@ Query OK, 0 rows affected (0.11 sec)
 
 ## MySQL 兼容性
 
-`TRUNCATE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](v3.0/report-issue.md)。
+`TRUNCATE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [DROP TABLE](v3.0/reference/sql/statements/drop-table.md)
-* [DELETE](v3.0/reference/sql/statements/delete.md)
-* [CREATE TABLE](v3.0/reference/sql/statements/create-table.md)
-* [SHOW CREATE TABLE](v3.0/reference/sql/statements/show-create-table.md)
+* [DROP TABLE](/v3.0/reference/sql/statements/drop-table.md)
+* [DELETE](/v3.0/reference/sql/statements/delete.md)
+* [CREATE TABLE](/v3.0/reference/sql/statements/create-table.md)
+* [SHOW CREATE TABLE](/v3.0/reference/sql/statements/show-create-table.md)

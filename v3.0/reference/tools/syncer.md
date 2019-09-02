@@ -10,7 +10,7 @@ aliases: ['/docs-cn/tools/syncer/']
 
 Syncer 是一个数据导入工具，能方便地将 MySQL 的数据增量导入到 TiDB。
 
-Syncer 包含在 tidb-enterprise-tools 安装包中，可[在此下载](v3.0/reference/tools/download.md)。
+Syncer 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/v3.0/reference/tools/download.md)。
 
 ## Syncer 架构
 
@@ -463,7 +463,7 @@ target-table = "order_2017"
 
 6. 检查字符集。
 
-    TiDB 和 MySQL 的字符集的兼容性不同，详见 [TiDB 支持的字符集](v3.0/reference/sql/character-set.md)。
+    TiDB 和 MySQL 的字符集的兼容性不同，详见 [TiDB 支持的字符集](/v3.0/reference/sql/character-set.md)。
 
 ## 监控方案
 

@@ -18,9 +18,9 @@ alter_specification:
   | [DEFAULT] COLLATE [=] collation_name
 ```
 
-`alter_specification` 选项用于指定数据库具体的 `CHARACTER SET` 和 `COLLATE`。目前 TiDB 只支持部分的字符集和排序规则，请参照[字符集支持](dev/reference/sql/character-set.md)。
+`alter_specification` 选项用于指定数据库具体的 `CHARACTER SET` 和 `COLLATE`。目前 TiDB 只支持部分的字符集和排序规则，请参照[字符集支持](/dev/reference/sql/character-set.md)。
 
 ## 另请参阅
 
-* [CREATE DATABASE](dev/reference/sql/statements/create-database.md)
-* [SHOW DATABASES](dev/reference/sql/statements/show-databases.md)
+* [CREATE DATABASE](/dev/reference/sql/statements/create-database.md)
+* [SHOW DATABASES](/dev/reference/sql/statements/show-databases.md)

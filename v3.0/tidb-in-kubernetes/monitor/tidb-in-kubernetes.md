@@ -14,7 +14,7 @@ TiDB 通过 Prometheus 和 Grafana 监控 TiDB 集群。在通过 TiDB Operator 
 
 监控数据默认没有持久化，如果由于某些原因监控容器重启，已有的监控数据会丢失。可以在 `values.yaml` 中设置 `monitor.persistent` 为 `true` 来持久化监控数据。开启此选项时应将 `storageClass` 设置为一个当前集群中已有的存储，并且此存储应当支持将数据持久化，否则仍然会存在数据丢失的风险。
 
-在 [TiDB 集群监控](v3.0/how-to/monitor/monitor-a-cluster.md)中有一些监控系统配置的细节可供参考。
+在 [TiDB 集群监控](/v3.0/how-to/monitor/monitor-a-cluster.md)中有一些监控系统配置的细节可供参考。
 
 ### 查看监控面板
 

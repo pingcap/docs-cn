@@ -5,7 +5,7 @@ category: reference
 
 # TiKV 重要监控指标详解
 
-使用 Ansible 部署 TiDB 集群时，一键部署监控系统 (Prometheus/Grafana)，监控架构请看 [TiDB 监控框架概述](dev/how-to/monitor/overview.md)。
+使用 Ansible 部署 TiDB 集群时，一键部署监控系统 (Prometheus/Grafana)，监控架构请看 [TiDB 监控框架概述](/dev/how-to/monitor/overview.md)。
 
 目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview 等。
 

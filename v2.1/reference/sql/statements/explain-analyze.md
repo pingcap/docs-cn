@@ -56,7 +56,7 @@ mysql> EXPLAIN ANALYZE SELECT * FROM t1;
 
 ## 另请参阅
 
-* [Understanding the Query Execution Plan](v2.1/reference/performance/understanding-the-query-execution-plan.md)
-* [EXPLAIN](v2.1/reference/sql/statements/explain.md)
-* [ANALYZE TABLE](v2.1/reference/sql/statements/analyze-table.md)
-* [TRACE](v2.1/reference/sql/statements/trace.md)
+* [Understanding the Query Execution Plan](/v2.1/reference/performance/understanding-the-query-execution-plan.md)
+* [EXPLAIN](/v2.1/reference/sql/statements/explain.md)
+* [ANALYZE TABLE](/v2.1/reference/sql/statements/analyze-table.md)
+* [TRACE](/v2.1/reference/sql/statements/trace.md)

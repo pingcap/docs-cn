@@ -47,5 +47,5 @@ Records: 815264  Deleted: 0  Skipped: 0  Warnings: 0
 
 ## 另请参阅
 
-* [INSERT](dev/reference/sql/statements/insert.md)
-* [Transaction Model](dev/reference/transactions/transaction-model.md)
+* [INSERT](/dev/reference/sql/statements/insert.md)
+* [Transaction Model](/dev/reference/transactions/transaction-model.md)

@@ -18,7 +18,7 @@ category: reference
 
 - 跳过/替代执行操作只适合用于一次性跳过/替代执行**下游 TiDB 不支持执行的 SQL 语句**，其它同步错误请不要使用此方式进行处理。
 
-    - 其它同步错误可尝试使用 [black & white table lists](v2.1/reference/tools/data-migration/features/overview.md#black-white-table-lists) 或 [binlog event filter](v2.1/reference/tools/data-migration/features/overview.md#binlog-event-filter)。
+    - 其它同步错误可尝试使用 [black & white table lists](/v2.1/reference/tools/data-migration/features/overview.md#black-white-table-lists) 或 [binlog event filter](/v2.1/reference/tools/data-migration/features/overview.md#binlog-event-filter)。
 
 - 如果业务不能接受下游 TiDB 跳过异常的 DDL 语句，也不接受使用其他 DDL 语句作为替代，则不适合使用此方式进行处理。
 
@@ -30,7 +30,7 @@ category: reference
 - `--sharding` 仅用于对 sharding group 预设一些操作，并且必须在 DDL 语句执行之前预设，不能在 DDL 语句已经执行后预设。
 
     - `--sharding` 模式下只支持预设，并只能使用 `--sql-pattern` 来匹配 binlog event。
-    - 有关使用 DM 处理 sharding DDL 同步的原理，请参阅[分库分表合并同步原理](v2.1/reference/tools/data-migration/features/shard-merge.md#实现原理)。
+    - 有关使用 DM 处理 sharding DDL 同步的原理，请参阅[分库分表合并同步原理](/v2.1/reference/tools/data-migration/features/shard-merge.md#实现原理)。
 
 ## 匹配 binlog event
 
@@ -129,7 +129,7 @@ DM 在进行增量数据同步时，简化后的流程大致为：
 
 ### query-status
 
-`query-status` 命令用于查询当前 DM-worker 内子任务及 relay 单元等的状态，详见[查询状态](v2.1/reference/tools/data-migration/query-status.md)。
+`query-status` 命令用于查询当前 DM-worker 内子任务及 relay 单元等的状态，详见[查询状态](/v2.1/reference/tools/data-migration/query-status.md)。
 
 ### query-error
 
