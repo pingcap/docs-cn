@@ -22,7 +22,7 @@ TiSpark 是将 Spark SQL 直接运行在分布式存储引擎 TiKV 上的 OLAP �
 
 ## 环境准备
 
-现有 TiSpark 2.x 版本支持 Spark 2.3.x和Spark 2.4.x。如果你希望使用 Spark 2.1.x 版本，需使用 TiSpark 1.x。
+现有 TiSpark 2.x 版本支持 Spark 2.3.x 和 Spark 2.4.x。如果你希望使用 Spark 2.1.x 版本，需使用 TiSpark 1.x。
 
 TiSpark 需要 JDK 1.8+ 以及 Scala 2.11（Spark2.0+ 默认 Scala 版本）。
 
@@ -50,20 +50,24 @@ Spark 推荐每台计算节点配备 CPU 累计 8 到 16 核以上。你可以�
 
 Spark 的具体配置方式也请参考[官方说明](https://spark.apache.org/docs/latest/spark-standalone.html)。以下为根据 `spark-env.sh` 配置的范例：
 
+{{< copyable "" >}}
+
 ```
 SPARK_EXECUTOR_MEMORY=32g
 SPARK_WORKER_MEMORY=32g
 SPARK_WORKER_CORES=8
 ```
 
- 在 `spark-defaults.conf` 中，增加如下配置：
+在 `spark-defaults.conf` 中，增加如下配置：
+
+{{< copyable "" >}}
 
 ```
 spark.tispark.pd.addresses $your_pd_servers
 spark.sql.extensions org.apache.spark.sql.TiExtensions
 ```
 
- `your_pd_servers` 是用逗号分隔的 PD 地址，每个地址使用 `地址:端口` 的格式。
+`your_pd_servers` 是用逗号分隔的 PD 地址，每个地址使用 `地址:端口` 的格式。
 
 例如你有一组 PD 在`10.16.20.1`，`10.16.20.2`，`10.16.20.3`，那么 PD 配置格式是`10.16.20.1:2379,10.16.20.2:2379,10.16.20.3:2379`。
 
@@ -79,7 +83,9 @@ TiSpark 的 jar 包可以在[这里](https://github.com/pingcap/tispark/releases
 
 如果在已有 Spark 集群上运行 TiSpark，无需重启集群。可以使用 Spark 的 `--jars` 参数将 TiSpark 作为依赖引入：
 
-```
+{{< copyable "shell-regular" >}}
+
+```shell
 spark-shell --jars $TISPARK_FOLDER/tispark-${name_with_version}.jar
 ```
 
@@ -99,8 +105,15 @@ spark-shell --jars $TISPARK_FOLDER/tispark-${name_with_version}.jar
 
 在选中的 Spark Master 节点执行如下命令：
 
-```
+{{< copyable "shell-regular" >}}
+
+```bash
 cd $SPARKPATH
+```
+
+{{< copyable "shell-regular" >}}
+
+```bash
 ./sbin/start-master.sh
 ```
 
@@ -110,6 +123,8 @@ cd $SPARKPATH
 
 类似地，可以用如下命令启动 Spark-Slave 节点：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./sbin/start-slave.sh spark://spark-master-hostname:7077
 ```
@@ -118,23 +133,37 @@ cd $SPARKPATH
 
 #### Spark SQL shell 和 JDBC 服务器
 
-当前版本的 TiSpark 可以直接使用 `spark-sql`和 Spark 的 ThriftServer JDBC 服务器。
+当前版本的 TiSpark 可以直接使用 `spark-sql` 和 Spark 的 ThriftServer JDBC 服务器。
 
 ## 一个使用范例
 
 假设你已经按照上述步骤成功启动了 TiSpark 集群，下面简单介绍如何使用 Spark SQL 来做 OLAP 分析。这里我们用名为 tpch 数据库中的 lineitem 表作为范例。
 
-假设你的 PD 节点位于 192.168.1.100，端口为 2379，在`$SPARK_HOME/conf/spark-defaults.conf`加入：
+假设你的 PD 节点位于 192.168.1.100，端口为 2379，在 `$SPARK_HOME/conf/spark-defaults.conf` 加入：
+
+{{< copyable "" >}}
 
 ```
 spark.tispark.pd.addresses 192.168.1.100:2379
+```
+
+{{< copyable "" >}}
+
+```
 spark.sql.extensions org.apache.spark.sql.TiExtensions
 ```
 
 然后在 Spark-Shell 里像原生 Spark 一样输入下面的命令：
 
+{{< copyable "" >}}
+
 ```scala
 spark.sql("use tpch")
+```
+
+{{< copyable "" >}}
+
+```scala
 spark.sql("select count(*) from lineitem").show
 ```
 
@@ -150,11 +179,23 @@ spark.sql("select count(*) from lineitem").show
 
 Spark SQL 交互 Shell 和原生 Spark 一致：
 
-```sh
-spark-sql> use tpch;
-Time taken: 0.015 seconds
+{{< copyable "" >}}
 
+```shell
+spark-sql> use tpch;
+```
+
+```
+Time taken: 0.015 seconds
+```
+
+{{< copyable "" >}}
+
+```shell
 spark-sql> select count(*) from lineitem;
+```
+
+```
 2000
 Time taken: 0.673 seconds, Fetched 1 row(s)
 ```
@@ -162,19 +203,43 @@ Time taken: 0.673 seconds, Fetched 1 row(s)
 SQuirreLSQL 和 hive-beeline 可以使用 JDBC 连接 Thrift 服务器。
 例如，使用 beeline 连接：
 
-```sh
-./beeline
-Beeline version 1.2.2 by Apache Hive
-beeline> !connect jdbc:hive2://localhost:10000
+{{< copyable "shell-regular" >}}
 
+```shell
+./beeline
+```
+
+```
+Beeline version 1.2.2 by Apache Hive
+```
+
+{{< copyable "" >}}
+
+```shell
+beeline> !connect jdbc:hive2://localhost:10000
+```
+
+{{< copyable "" >}}
+
+```shell
 1: jdbc:hive2://localhost:10000> use testdb;
+```
+
+```
 +---------+--+
 | Result  |
 +---------+--+
 +---------+--+
 No rows selected (0.013 seconds)
+```
 
+{{< copyable "sql" >}}
+
+```sql
 select count(*) from account;
+```
+
+```
 +-----------+--+
 | count(1)  |
 +-----------+--+

@@ -12,6 +12,8 @@ TiDB 支持分布式事务。涉及到事务的语句包括 `autocommit` 变量�
 
 语法：
 
+{{< copyable "sql" >}}
+
 ```sql
 SET autocommit = {0 | 1}
 ```
@@ -22,8 +24,15 @@ SET autocommit = {0 | 1}
 
 另外 `autocommit` 也是一个 System Variable，所以可以通过变量赋值语句修改当前 Session 或者是 Global 的值。
 
+{{< copyable "sql" >}}
+
 ```sql
 SET @@SESSION.autocommit = {0 | 1};
+```
+
+{{< copyable "sql" >}}
+
+```sql
 SET @@GLOBAL.autocommit = {0 | 1};
 ```
 
@@ -31,11 +40,21 @@ SET @@GLOBAL.autocommit = {0 | 1};
 
 语法:
 
+{{< copyable "sql" >}}
+
 ```sql
 BEGIN;
+```
 
+{{< copyable "sql" >}}
+
+```sql
 START TRANSACTION;
+```
 
+{{< copyable "sql" >}}
+
+```sql
 START TRANSACTION WITH CONSISTENT SNAPSHOT;
 ```
 
@@ -44,6 +63,8 @@ START TRANSACTION WITH CONSISTENT SNAPSHOT;
 ## COMMIT
 
 语法：
+
+{{< copyable "sql" >}}
 
 ```sql
 COMMIT;
@@ -54,6 +75,8 @@ COMMIT;
 ## ROLLBACK
 
 语法：
+
+{{< copyable "sql" >}}
 
 ```sql
 ROLLBACK;
@@ -73,6 +96,8 @@ TiDB 可以显式地使用事务（`[BEGIN|START TRANSACTION]`/`COMMIT`）或者
 
 TiDB **只支持** `SNAPSHOT ISOLATION`，可以通过下面的语句将当前 Session 的隔离级别设置为 `READ COMMITTED`，这只是语法上的兼容，事务依旧是以 `SNAPSHOT ISOLATION` 来执行。
 
+{{< copyable "sql" >}}
+
 ```sql
 SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
 ```
@@ -82,6 +107,8 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
 TiDB 中，对于普通的 `INSERT` 语句写入的值，会进行惰性检查。惰性检查的含义是，不在 `INSERT` 语句执行时进行唯一约束的检查，而在事务提交时进行唯一约束的检查。
 
 举例：
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE T (I INT KEY);

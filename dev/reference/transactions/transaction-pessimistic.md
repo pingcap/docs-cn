@@ -48,11 +48,11 @@ enable = true
 
 - 在配置文件设置中默认启用悲观事务模式，使除了自动提交的单语句事务之外的所有事务都会进入悲观事务模式。
 
-```
-[pessimistic-txn]
-enable = true
-default = true
-```
+    ```
+    [pessimistic-txn]
+    enable = true
+    default = true
+    ```
 
 在配置了默认启用悲观事务的情况下，可以用以下两种方式使事务进入乐观事务模式：
 
