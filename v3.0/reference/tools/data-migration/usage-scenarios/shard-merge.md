@@ -60,6 +60,8 @@ aliases: ['/docs-cn/tools/dm/shard-merge-scenario/']
 
 - 要满足同步需求 #1 和 #2，配置 [Table routing 规则](/reference/tools/data-migration/features/overview.md#table-routing) 如下：
 
+    {{< copyable "" >}}
+
     ```yaml
     routes:
       ...
@@ -69,6 +71,8 @@ aliases: ['/docs-cn/tools/dm/shard-merge-scenario/']
     ```
 
 - 要满足同步需求 #3，配置 [table routing 规则](/reference/tools/data-migration/features/overview.md#table-routing) 如下：
+
+    {{< copyable "" >}}
 
     ```yaml
     routes:
@@ -85,6 +89,8 @@ aliases: ['/docs-cn/tools/dm/shard-merge-scenario/']
 
 - 要满足同步需求 #4 和 #5，配置 [Binlog event filter 规则](/reference/tools/data-migration/features/overview.md#binlog-event-filter) 如下：
 
+    {{< copyable "" >}}
+
     ```yaml
     filters:
       ...
@@ -99,6 +105,8 @@ aliases: ['/docs-cn/tools/dm/shard-merge-scenario/']
     > 同步需求 #4、#5 和 #7 的操作意味着过滤掉所有对 `user` 库的删除操作，所以此处配置了库级别的过滤规则。但是 `user` 库以后加入表的删除操作也都会被过滤。
 
 - 要满足同步需求 #6，配置 [Binlog event filter 规则](/reference/tools/data-migration/features/overview.md#binlog-event-filter) 如下：
+
+    {{< copyable "" >}}
 
     ```yaml
     filters:
@@ -116,6 +124,8 @@ aliases: ['/docs-cn/tools/dm/shard-merge-scenario/']
 
 - 要满足同步需求 #7，配置 [Black & white table lists](/reference/tools/data-migration/features/overview.md#black-white-table-lists) 如下：
 
+    {{< copyable "" >}}
+
     ```yaml
     black-white-list:
       log-bak-ignored:
@@ -125,6 +135,8 @@ aliases: ['/docs-cn/tools/dm/shard-merge-scenario/']
     ```
 
 - 要满足同步需求 #8，配置 [column mapping 规则](/reference/tools/data-migration/features/overview.md#column-mapping) 如下：
+
+    {{< copyable "" >}}
 
     ```yaml
     column-mappings:
@@ -154,6 +166,8 @@ aliases: ['/docs-cn/tools/dm/shard-merge-scenario/']
 ## 同步任务配置
 
 同步任务的完整配置如下。详情请参阅 [Data Migration 任务配置文件](/reference/tools/data-migration/configure/task-configuration-file.md)。
+
+{{< copyable "" >}}
 
 ```yaml
 name: "shard_merge"

@@ -139,10 +139,11 @@ mydumpers:
     ./dmctl --master-addr 172.16.10.71:8261
     ```
 
-3. 执行以下命令启动数据同步任务
+3. 执行以下命令启动数据同步任务，其中，`task.yaml` 是之前编辑的配置文件
+
+    {{< copyable "" >}}
 
     ```bash
-    # `task.yaml` 是之前编辑的配置文件
     start-task ./task.yaml
     ```
 

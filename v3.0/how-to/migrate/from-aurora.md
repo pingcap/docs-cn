@@ -143,7 +143,7 @@ mydumpers:
 
 3. 执行以下命令启动数据同步任务（`task.yaml` 是之前编辑的配置文件）
 
-    {{< copyable "shell-regular" >}}
+    {{< copyable "" >}}
 
     ```bash
     start-task ./task.yaml

@@ -14,7 +14,7 @@ category: reference
 {{< copyable "sql" >}}
 
 ```sql
-select * from `ANALYZE_STATUS`
+select * from `ANALYZE_STATUS`;
 ```
 
 ```

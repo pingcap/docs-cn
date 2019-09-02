@@ -20,6 +20,8 @@ Table routing 提供将上游 MySQL/MariaDB 实例的某些表同步到下游指
 
 ### 参数配置
 
+{{< copyable "" >}}
+
 ```yaml
 routes:
   rule-1:
@@ -54,6 +56,8 @@ routes:
 > - 如果下游 TiDB `schema: test` 已经存在， 并且不会被删除，则可以省略 `rule-2`。
 > - 如果下游 TiDB `schema: test` 不存在，只设置了 `rule_1`，则同步会报错 `schema test doesn't exist`。
 
+{{< copyable "" >}}
+
 ```yaml
   rule-1:
     schema-pattern: "test_*"
@@ -69,6 +73,8 @@ routes:
 
 假设存在分库场景，将上游两个 MySQL 实例 `test_{1,2,3...}`.`t_{1,2,3...}` 同步到下游 TiDB 的 `test`.`t_{1,2,3...}`，创建一条路由规则即可：
 
+{{< copyable "" >}}
+
 ```yaml
   rule-1:
     schema-pattern: "test_*"
@@ -78,6 +84,8 @@ routes:
 #### 错误的 table routing
 
 假设存在下面两个路由规则，`test_1_bak`.`t_1_bak` 可以匹配上 `rule-1` 和 `rule-2`，违反 table 路由的限制而报错。
+
+{{< copyable "" >}}
 
 ```yaml
   rule-0:
@@ -100,6 +108,8 @@ routes:
 上游数据库实例表的黑白名单过滤规则，可以用来过滤或者只同步某些 `database/table` 的所有操作。
 
 ### 参数配置
+
+{{< copyable "" >}}
 
 ```yaml
 black-white-list:
@@ -177,6 +187,8 @@ black-white-list:
 
 配置如下：
 
+{{< copyable "" >}}
+
 ```yaml
 black-white-list:
   bw-rule:
@@ -214,6 +226,8 @@ Binlog event filter 是比同步表黑白名单更加细粒度的过滤规则，
 > 同一个表匹配上多个规则，将会顺序应用这些规则，并且黑名单的优先级高于白名单，即如果同时存在规则 `Ignore` 和 `Do` 应用在某个 table 上，那么 `Ignore` 生效。
 
 ### 参数配置
+
+{{< copyable "" >}}
 
 ```yaml
 filters:
@@ -272,6 +286,8 @@ filters:
 - `filter-table-rule` 过滤掉所有匹配到 pattern `test_*`.`t_*` 的 table 的 `turncate table`、`drop table`、`delete statement` 操作。
 - `filter-schema-rule` 过滤掉所有匹配到 pattern `test_*` 的 schema 的 `drop database` 操作。
 
+{{< copyable "" >}}
+
 ```yaml
 filters:
   filter-table-rule:
@@ -296,6 +312,8 @@ filters:
 >
 > 同步 `create database/table` 的原因是创建库和表后才能同步 `DML`。
 
+{{< copyable "" >}}
+
 ```yaml
 filters:
   do-table-rule:
@@ -312,6 +330,8 @@ filters:
 #### 过滤 TiDB 不支持的 SQL 语句
 
 可设置如下规则过滤 TiDB 不支持的 `PROCEDURE` 语句：
+
+{{< copyable "" >}}
 
 ```yaml
 filters:
@@ -332,6 +352,8 @@ filters:
 
 可设置如下规则过滤 TiDB parser 不支持的 `PARTITION` 语句：
 
+{{< copyable "" >}}
+
 ```yaml
 filters:
   filter-partition-rule:
@@ -350,6 +372,8 @@ Column mapping 提供对表的列值进行修改的功能。可以根据不同�
 > - 不支持对同一个表设置多个不同的列值转换规则。
 
 ### 参数配置
+
+{{< copyable "" >}}
 
 ```yaml
 column-mappings:
@@ -431,6 +455,8 @@ column-mappings:
 假设存在分库分表场景：将上游两个 MySQL 实例的 `test_{1,2,3...}`.`t_{1,2,3...}` 同步到下游 TiDB 的 `test`.`t`，并且这些表都有自增主键。
 
 需要设置下面两个规则：
+
+{{< copyable "" >}}
 
 ```yaml
 column-mappings:
