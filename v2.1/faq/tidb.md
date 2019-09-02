@@ -210,11 +210,11 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 #### 2.2.1 Ansible 部署方式（强烈推荐）
 
-详细可参考 [TiDB Ansible 部署方案](/how-to/deploy/orchestrated/ansible.md)。
+详细可参考[使用 TiDB Ansible 部署 TiDB 集群](/how-to/deploy/orchestrated/ansible.md)。
 
 ##### 2.2.1.1 为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？
 
-这种情况一般是因为没有使用 `--config` 参数来指定配置文件（目前只会出现在 binary 部署的场景），TiKV/PD 会按默认值来设置。如果要使用配置文件，请设置 TiKV/PD 的 `--config` 参数。对于 TiKV 组件，修改配置后重启服务即可；对于 PD 组件，只会在第一次启动时读取配置文件，之后可以使用 pd-ctl 的方式来修改配置，详情可参考 [这里](/reference/configuration/pd-server/configuration.md)。
+这种情况一般是因为没有使用 `--config` 参数来指定配置文件（目前只会出现在 binary 部署的场景），TiKV/PD 会按默认值来设置。如果要使用配置文件，请设置 TiKV/PD 的 `--config` 参数。对于 TiKV 组件，修改配置后重启服务即可；对于 PD 组件，只会在第一次启动时读取配置文件，之后可以使用 pd-ctl 的方式来修改配置，详情可参考[这里](/reference/configuration/pd-server/configuration.md)。
 
 ##### 2.2.1.2 TiDB 监控框架 Prometheus + Grafana 监控机器建议单独还是多台部署？
 
@@ -235,7 +235,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | **变量** | **含义** |
 | --- | --- |
 | cluster_name | 集群名称，可调整 |
-| tidb_version | TiDB 版本，TiDB-Ansible 各分支默认已配置 |
+| tidb_version | TiDB 版本，TiDB Ansible 各分支默认已配置 |
 | deployment_method | 部署方式，默认为 binary，可选 docker |
 | process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
 | timezone | 修改部署目标机器时区，默认为 Asia/Shanghai, 可调整，与set_timezone 变量结合使用 |
@@ -395,9 +395,9 @@ TiDB 版本目前逐步标准化，每次 Release 都包含详细的 Change log�
 - `1` 表示该版本 commit 1 次
 - `ga80e796` 代表版本的 `git-hash`
 
-#### 3.1.11 分不清 TiDB master 版本之间的区别，经常用错 TiDB-Ansible 版本?
+#### 3.1.11 分不清 TiDB master 版本之间的区别，经常用错 TiDB Ansible 版本?
 
-TiDB 目前社区非常活跃，在 1.0 GA 版本发布后，还在不断的优化和修改 BUG，因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的[新版本发布官方网站](https://pingcap.com/weekly/)。此外 TiDB 安装推荐使用 TiDB-Ansible 进行安装，TiDB-Ansible 的版本也会随着 TiDB 的版本发布进行更新，因此建议用户在安装升级新版本的时候使用最新的 TiDB-Ansible 安装包版本进行安装。此外，在 TiDB 1.0 GA 版本后，对 TiDB 的版本号进行了统一管理，TiDB 的版本可以通过以下两种方式进行查看：
+TiDB 目前社区非常活跃，在 1.0 GA 版本发布后，还在不断的优化和修改 BUG，因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的[新版本发布官方网站](https://pingcap.com/weekly/)。此外 TiDB 安装推荐使用 TiDB Ansible 进行安装，TiDB Ansible 的版本也会随着 TiDB 的版本发布进行更新，因此建议用户在安装升级新版本的时候使用最新的 TiDB Ansible 安装包版本进行安装。此外，在 TiDB 1.0 GA 版本后，对 TiDB 的版本号进行了统一管理，TiDB 的版本可以通过以下两种方式进行查看：
 
 - 通过 `select tidb_version()` 进行查看
 - 通过执行 `tidb-server -V` 进行查看
@@ -682,9 +682,9 @@ TiDB 设计的目标就是针对 MySQL 单台容量限制而被迫做的分库�
 
 #### 3.6.1 TiDB 主要备份方式？
 
-目前，推荐的备份方式是使用 [PingCAP fork 的 mydumper](/reference/tools/mydumper.md)。尽管 TiDB 也支持使用 MySQL 官方工具 `mysqldump` 进行数据备份、恢复，但其性能低于 [`mydumper`](/reference/tools/mydumper.md)/[`loader`](/reference/tools/loader.md)，并且该工具备份、恢复大量数量时，要耗费更多时间。
+目前，推荐的备份方式是使用 [PingCAP fork 的 Mydumper](/reference/tools/mydumper.md)。尽管 TiDB 也支持使用 MySQL 官方工具 `mysqldump` 进行数据备份、恢复，但其性能低于 [`mydumper`](/reference/tools/mydumper.md)/[`loader`](/reference/tools/loader.md)，并且该工具备份、恢复大量数量时，要耗费更多时间。
 
-使用 mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64；
+使用 Mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64；
 
 loader 的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调整，例如 3 个 TiKV 的场景， 此值可以设为 3 * (1 ～ n)，当 TiKV 负载过高，loader 以及 TiDB 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 TiKV 负载不是太高的时候，可以适当调大该值。
 
@@ -694,7 +694,7 @@ loader 的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调
 
 #### 4.1.1 Mydumper
 
-参见 [mydumper 使用文档](/reference/tools/mydumper.md)。
+参见 [Mydumper 使用文档](/reference/tools/mydumper.md)。
 
 #### 4.1.2 Loader
 
@@ -764,7 +764,7 @@ sqoop export \
 
 - job_name: &#39;syncer_ops&#39; // 任务名字
     static_configs:
-- targets: [&#39;10.10.1.1:10096&#39;] //syncer监听地址与端口，通知 prometheus 拉取 syncer 的数据。
+- targets: [&#39;10.10.1.1:10096&#39;] // Syncer 监听地址与端口，通知 prometheus 拉取 Syncer 的数据。
 
 重启 Prometheus 即可。
 
@@ -782,7 +782,7 @@ sqoop export \
 
 ##### 4.2.1.6 使用 Syncer gtid 的方式同步时，同步过程中会不断更新 syncer.meta 文件，如果 Syncer 所在的机器坏了，导致 syncer.meta 文件所在的目录丢失，该如何处理？
 
-当前 Syncer 版本的没有进行高可用设计，Syncer 目前的配置信息 syncer.meta 直接存储在硬盘上，其存储方式类似于其他 MySQL 生态工具，比如 mydumper。 因此，要解决这个问题当前可以有两个方法：
+当前 Syncer 版本的没有进行高可用设计，Syncer 目前的配置信息 syncer.meta 直接存储在硬盘上，其存储方式类似于其他 MySQL 生态工具，比如 Mydumper。因此，要解决这个问题当前可以有两个方法：
 
 1）把 syncer.meta 数据放到比较安全的磁盘上，例如磁盘做好 raid1；
 

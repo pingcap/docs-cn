@@ -26,7 +26,7 @@ aliases: ['/docs-cn/op-guide/tidb-v3.0-upgrade-guide/','/docs-cn/v3.0/how-to/upg
 >
 > 如果已经安装了 Ansible 及其依赖，可跳过该步骤。
 
-TiDB-Ansible release-3.0 版本依赖 Ansible 2.4.2 及以上版本（`ansible>=2.4.2`，最好是 2.7.11 版本），另依赖 Python 模块：`jinja2>=2.9.6` 和 `jmespath>=0.9.0`。为方便管理依赖，建议使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-ansible-及其依赖)。
+TiDB Ansible release-3.0 版本依赖 Ansible 2.4.2 及以上版本（`ansible>=2.4.2`，最好是 2.7.11 版本），另依赖 Python 模块：`jinja2>=2.9.6` 和 `jmespath>=0.9.0`。为方便管理依赖，建议使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-ansible-及其依赖)。
 
 安装完成后，可通过以下命令查看版本：
 
@@ -45,7 +45,7 @@ Version: 0.9.0
 >
 > 请务必按以上文档安装 Ansible 及其依赖。确认 Jinja2 版本是否正确，否则启动 Grafana 时会报错。确认 jmespath 版本是否正确，否则滚动升级 TiKV 时会报错。
 
-## 在中控机器上下载 TiDB-Ansible
+## 在中控机器上下载 TiDB Ansible
 
 以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录，备份 TiDB 2.0 版本或 TiDB 2.1 版本的 tidb-ansible 文件夹：
 
@@ -53,7 +53,7 @@ Version: 0.9.0
 $ mv tidb-ansible tidb-ansible-bak
 ```
 
-下载 TiDB 3.0 版本对应 tag 的 tidb-ansible  [**下载 TiDB-Ansible**](/how-to/deploy/orchestrated/ansible.md#在中控机器上下载-tidb-ansible)，默认的文件夹名称为 `tidb-ansible`。
+下载 TiDB 3.0 版本对应 tag 的 tidb-ansible  [**下载 TiDB Ansible**](/how-to/deploy/orchestrated/ansible.md#在中控机器上下载-tidb-ansible)，默认的文件夹名称为 `tidb-ansible`。
 
 ```
 $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
