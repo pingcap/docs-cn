@@ -300,7 +300,7 @@
   + [TiDB Binlog 简介](reference/tidb-binlog-overview.md)
 + 常见问题 (FAQ)
   - [TiDB FAQ](faq/tidb.md)
-  - [TiDB-Lightning FAQ](faq/tidb-lightning.md)
+  - [TiDB Lightning FAQ](faq/tidb-lightning.md)
   - [Data Migration FAQ](faq/data-migration.md)
   - [升级 FAQ](faq/upgrade.md)
 + 技术支持

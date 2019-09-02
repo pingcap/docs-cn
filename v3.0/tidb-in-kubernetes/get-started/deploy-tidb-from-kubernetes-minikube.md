@@ -66,7 +66,7 @@ kubectl 安装完成后，测试 Minikube Kubernetes 集群：
 kubectl cluster-info
 ```
 
-## 安装 TiDB operator 并运行 TiDB 集群
+## 安装 TiDB Operator 并运行 TiDB 集群
 
 ### 安装 Helm
 

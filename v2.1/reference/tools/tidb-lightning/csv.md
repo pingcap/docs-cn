@@ -129,7 +129,7 @@ trim-last-separator = false
 
 ### 不可配置项
 
-Lightning 并不完全支持 `LOAD DATA` 语句中的所有配置项。例如：
+TiDB Lightning 并不完全支持 `LOAD DATA` 语句中的所有配置项。例如：
 
 * 行终止符只能是 CR（`\r`），LF（`\n`）或 CRLF（`\r\n`），也就是说，无法自定义 `LINES TERMINATED BY`。
 * 不可使用行前缀 （`LINES STARTING BY`）。
