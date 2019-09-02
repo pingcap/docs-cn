@@ -13,6 +13,7 @@
     - [Sysbench 性能对比 - v3.0 对比 v2.1](benchmark/sysbench-v4.md)
     - [TPC-C 性能对比 - v3.0 对比 v2.1](benchmark/tpcc.md)
     - [线上负载与 Add Index 相互影响测试](benchmark/add-index-with-load.md)
+    - [TiDB in Kubernetes Sysbench 性能测试](benchmark/sysbench-in-k8s.md)
 + 主要概念
   - [整体架构](architecture.md)
   + 核心特性
@@ -365,6 +366,7 @@
 + [TiDB 路线图](roadmap.md)
 + [版本发布历史](releases/rn.md)
   + v3.0
+    - [3.0.3](releases/3.0.3.md)
     - [3.0.2](releases/3.0.2.md)
     - [3.0.1](releases/3.0.1.md)
     - [3.0 GA](releases/3.0-ga.md)
