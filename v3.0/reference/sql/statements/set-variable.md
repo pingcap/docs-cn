@@ -6,7 +6,7 @@ category: reference
 
 # SET [GLOBAL|SESSION] <variable>
 
-`SET [GLOBAL|SESSION]` 语句用于在 `SESSION` 或 `GLOBAL` 的范围内，对某个 TiDB 的内置变量进行更改。需注意，对 `GLOBAL` 变量的更改不适用于已有连接或本地连接，这与 MySQL 类似。只有新会话才会反映值的变化。
+`SET [GLOBAL|SESSION]` 语句用于在 `SESSION` 或 ` GLOBAL` 的范围内，对某个 TiDB 的内置变量进行更改。需注意，对 `GLOBAL` 变量的更改不适用于已有连接或本地连接，这与 MySQL 类似。只有新会话才会反映值的变化。
 
 ## 语法图
 

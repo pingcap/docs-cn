@@ -15,24 +15,24 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 #### 功能
 
 * 支持 TiFlash 存储引擎
-* 支持 Optimizer Trace
+* Optimizer Trace
 * 支持多列统计信息
 * 为普通 CM-Sketch 支持 TopN 统计信息
 * 完善 Plan Cache 功能
-* 支持自适应 SQL 引擎
-* 支持 SQL Tuning Advisor
-* 支持 SQL Plan Management
+* 自适应 SQL 引擎
+* SQL Tuning Advisor
+* SQL Plan Management
 * 事务
     + 悲观锁 GA
     + 事务内不限制语句数量
-    + 支持 10 GB 事务
+    + 支持 10GB 事务
 
 #### 性能
 
 * 提升 load CSV/data 性能
 * 提升 Prepare 语句性能
 * Generated Column 支持 Index
-* 优化 SQL 引擎部分算子
+* 优化 SQL 引擎部份算子
     + 提升通过索引回表查询的性能
     + Index Join 拆分为 Index Merge Join 和 Index Hash Join
     + Radix Hash Join
@@ -43,7 +43,7 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
     + Full Vectorized Expression Evaluation
 * Indexes on Expressions
 * Multi-Index Scan
-* Join、Aggregate 和 Sort 算子支持外部存储
+* Join，Aggregate，Sort 算子支持外部存储
 * 优化执行引擎并发模型
 * 支持新 Cascades 优化器，支持 Cascades Planner，扩大优化器的搜索空间
 
@@ -55,10 +55,10 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 * 空闲连接自动断开
 * 完善支持 MySQL 5.7 DDL 语句
 * 重构日志内容
-* 支持使用 `admin checksum from … to …` 校验数据完整性
-* 支持使用标准 SQL 查询 DDL 历史记录
-* 支持使用标准 SQL 管理 Binlog
-* 支持使用标准 SQL 管理集群
+* 支持 admin checksum from … to … 校验数据完整性
+* 标准 SQL 查询 DDL 历史记录
+* 标准 SQL 管理 Binlog
+* 标准 SQL 管理集群
 * 多个 Ctrl 工具合并一个工具
 
 #### 高可用
@@ -70,9 +70,9 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 
 #### 功能
 
-* 集群规模最大支持 200+ 节点
+* 集群规模最大支持 200+节点
 * 全量快速备份恢复
-* 动态 Split 和 Merge 热点 Region
+* 动态 Split，Merge 热点 Region
 * 精细的内存控制
 * Raft
     + Joint consensus
@@ -145,9 +145,9 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 * Invisible Index
 * 支持修改列类型
 * 分区表支持二级分区
-* 分区表与普通表相互转换
+* Table Partition 与 普通表相互转换
 * 视图支持写入及更新
-* Multi-Schema Change
+* Mutil-Schema Change
 * 按 Table 配置副本数及分布策略
 * 精细的 QoS 控制
 * 闪回到任意时间点
@@ -175,12 +175,12 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 * 闪回到任意时间点
 * 分级存储
 * 精细的 QoS 控制
-* 按 Region 配置副本数及分布策略
+* 按 Region 配置副本数及分布策
 * Raft
     + 链式复制数据
     + Witness Role
 * 存储引擎
-    + 支持 RocksDB 在 compaction 时按照 Guard 信息切分 SSTable
+    + RocksDB Gaurd，compaction 按特定逻辑切分 SST
     + 冷热数据分离
 
 #### 性能
