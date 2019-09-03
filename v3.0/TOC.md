@@ -187,6 +187,7 @@
       - [窗口函数](reference/sql/functions-and-operators/window-functions.md)
       - [其它函数](reference/sql/functions-and-operators/miscellaneous-functions.md)
       - [精度数学](reference/sql/functions-and-operators/precision-math.md)
+      - [下推到 TiKV 的表达式列表](reference/sql/functions-and-operators/expressions-pushed-down.md)
     + SQL 语句
       - [`ADD COLUMN`](reference/sql/statements/add-column.md)
       - [`ADD INDEX`](reference/sql/statements/add-index.md)
