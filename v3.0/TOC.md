@@ -297,6 +297,7 @@
     - [TiDB](reference/key-monitoring-metrics/tidb-dashboard.md)
     - [PD](reference/key-monitoring-metrics/pd-dashboard.md)
     - [TiKV](reference/key-monitoring-metrics/tikv-dashboard.md)
+  - [Alert Rules](reference/alert-rules.md)
   + Security
     - [Security Compatibility with MySQL](reference/security/compatibility.md)
     - [The TiDB Access Privilege System](reference/security/privilege-system.md)
