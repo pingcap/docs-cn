@@ -186,6 +186,7 @@
       - [窗口函数](reference/sql/functions-and-operators/window-functions.md)
       - [其它函数](reference/sql/functions-and-operators/miscellaneous-functions.md)
       - [精度数学](reference/sql/functions-and-operators/precision-math.md)
+      - [下推到 TiKV 的表达式列表](reference/sql/functions-and-operators/expressions-pushed-down.md)
     + SQL 语句
       - [`ADD COLUMN`](reference/sql/statements/add-column.md)
       - [`ADD INDEX`](reference/sql/statements/add-index.md)
@@ -367,6 +368,7 @@
 + [TiDB 路线图](roadmap.md)
 + [版本发布历史](releases/rn.md)
   + v3.0
+    - [3.0.3](releases/3.0.3.md)
     - [3.0.2](releases/3.0.2.md)
     - [3.0.1](releases/3.0.1.md)
     - [3.0 GA](releases/3.0-ga.md)

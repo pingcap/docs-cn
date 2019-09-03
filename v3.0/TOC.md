@@ -13,6 +13,7 @@
     - [Sysbench 性能对比 - v3.0 对比 v2.1](benchmark/sysbench-v4.md)
     - [TPC-C 性能对比 - v3.0 对比 v2.1](benchmark/tpcc.md)
     - [线上负载与 Add Index 相互影响测试](benchmark/add-index-with-load.md)
+    - [TiDB in Kubernetes Sysbench 性能测试](benchmark/sysbench-in-k8s.md)
 + 主要概念
   - [整体架构](architecture.md)
   + 核心特性
@@ -186,6 +187,7 @@
       - [窗口函数](reference/sql/functions-and-operators/window-functions.md)
       - [其它函数](reference/sql/functions-and-operators/miscellaneous-functions.md)
       - [精度数学](reference/sql/functions-and-operators/precision-math.md)
+      - [下推到 TiKV 的表达式列表](reference/sql/functions-and-operators/expressions-pushed-down.md)
     + SQL 语句
       - [`ADD COLUMN`](reference/sql/statements/add-column.md)
       - [`ADD INDEX`](reference/sql/statements/add-index.md)
@@ -366,6 +368,7 @@
 + [TiDB 路线图](roadmap.md)
 + [版本发布历史](releases/rn.md)
   + v3.0
+    - [3.0.3](releases/3.0.3.md)
     - [3.0.2](releases/3.0.2.md)
     - [3.0.1](releases/3.0.1.md)
     - [3.0 GA](releases/3.0-ga.md)

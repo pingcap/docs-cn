@@ -3,6 +3,7 @@ title: TiDB Roadmap
 category: Roadmap
 aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 ---
+
 <!-- markdownlint-disable MD001 -->
 
 # TiDB V4.0 Roadmap
@@ -184,7 +185,6 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 
 #### 性能
 
-* 提升快速备份性能
 * 提升快速备份性能
 * 1PC
 * 支持 Storage Class Memory 硬件
