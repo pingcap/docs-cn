@@ -41,7 +41,7 @@ category: reference
 
 以下示例首先将表达式 `<` 及 `>` 拉入黑名单，然后将表达式 `>` 从黑名单中挪出。
 
-黑名单是否生效可以从 `explain` 结果中进行观察（参见[如何理解 `explain` 结果](reference/performance/understanding-the-query-execution-plan.md)）。
+黑名单是否生效可以从 `explain` 结果中进行观察（参见[如何理解 `explain` 结果](/v3.0/reference/performance/understanding-the-query-execution-plan.md)）。
 
 ```sql
 tidb> create table t(a int);
