@@ -293,7 +293,7 @@ $ ./bin/grafana-server \
 
 在顶部菜单中，点击 **New dashboard**，选择要查看的面板。
 
-![view dashboard](../media/view-dashboard.png)
+![view dashboard](/media/view-dashboard.png)
 
 可查看以下集群组件信息：
 
