@@ -1,5 +1,5 @@
 ---
-title: TiDB Roadmap
+title: TiDB V4.0 Roadmap
 category: Roadmap
 aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 ---
@@ -10,7 +10,7 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 
 ## TiDB
 
-### TiDB
+### TiDB Server
 
 #### 功能
 
@@ -66,7 +66,7 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 * Binlog 支持服务高可用
 * Binlog 支持数据高可靠
 
-### TiKV
+### TiKV Server
 
 #### 功能
 
@@ -133,11 +133,9 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 
 * TiDB Lightning 支持多 lightning + importer 实例并行导入
 
-# TiDB 未来规划
+## TiDB 未来规划
 
-## TiDB
-
-### TiDB
+### TiDB Server
 
 #### 功能
 
@@ -167,7 +165,7 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 
 * 列级别权限
 
-### TiKV
+### TiKV Server
 
 #### 功能
 
