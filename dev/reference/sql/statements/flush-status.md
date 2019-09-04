@@ -74,4 +74,4 @@ mysql> show status;
 
 ## 另请参阅
 
-* [SHOW \[GLOBAL|SESSION\] STATUS](/reference/sql/statements/show-status.md)
+* [SHOW \[GLOBAL|SESSION\] STATUS](/dev/reference/sql/statements/show-status.md)
