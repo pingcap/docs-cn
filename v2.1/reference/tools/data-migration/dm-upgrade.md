@@ -15,9 +15,33 @@ category: reference
 > **注意：**
 >
 > - 若无特殊说明，各版本的升级操作均为从前一个有升级指引的版本向当前版本升级。
-> - 若无特殊说明，各升级操作示例均假定已经下载了对应版本的 DM 和 DM-Ansible 且 DM binary 存在于 DM-Ansible 的相应目录中（下载 DM binary 可以参考[更新组件版本](/reference/tools/data-migration/cluster-operations.md#更新组件版本)）。
+> - 若无特殊说明，各升级操作示例均假定已经下载了对应版本的 DM 和 DM-Ansible 且 DM binary 存在于 DM-Ansible 的相应目录中（下载 DM binary 可以参考[更新组件版本](/v2.1/reference/tools/data-migration/cluster-operations.md#更新组件版本)）。
 > - 若无特殊说明，各升级操作示例均假定升级前已停止所有同步任务，升级完成后手动重新启动所有同步任务。
 > - 以下版本升级指引逆序展示。
+
+## 升级到 v1.0.0-rc.1-12-gaa39ff9
+
+### 版本信息
+
+```bash
+Release Version: v1.0.0-rc.1-12-gaa39ff9
+Git Commit Hash: aa39ff981dfb3e8c0fa4180127246b253604cc34
+Git Branch: dm-master
+UTC Build Time: 2019-07-24 02:26:08
+Go Version: go version go1.11.2 linux/amd64
+```
+
+### 主要变更
+
+从此版本开始，将对所有的配置进行严格检查，遇到不识别的配置会报错，以确保用户始终准确地了解自己的配置。
+
+### 升级操作示例
+
+启动 DM-master 或 DM-worker 前，必须确保已经删除废弃的配置信息，且没有多余的配置项，否则会启动失败。可根据失败信息删除多余的配置。
+可能遗留的废弃配置:
+
+- `dm-worker.toml` 中的 `meta-file`
+- `task.yaml` 中的 `mysql-instances` 中的 `server-id`
 
 ## 升级到 v1.0.0-143-gcd753da
 

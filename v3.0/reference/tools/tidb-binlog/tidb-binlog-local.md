@@ -31,7 +31,7 @@ TiDB Binlog Local 主要分为两个组件：
 
 ### TiDB Binlog Local 下载
 
-TiDB Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/reference/tools/download.md)。
+TiDB Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/v3.0/reference/tools/download.md)。
 
 ### TiDB Binlog Local 部署
 
@@ -51,7 +51,7 @@ TiDB Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/re
     为了保证数据的完整性，在 pump 运行 10 分钟左右后按顺序进行下面的操作
 
     * 以 gen-savepoint model 运行 drainer 生成 drainer savepint 文件，`bin/drainer -gen-savepoint --data-dir= ${drainer_savepoint_dir} --pd-urls=${pd_urls}`
-    * 全量备份，例如 mydumper 备份 tidb
+    * 全量备份，例如 Mydumper 备份 tidb
     * 全量导入备份到目标系统
     * 设置 savepoint 文件路径，然后启动 drainer，`bin/drainer --config=conf/drainer.toml --data-dir=${drainer_savepoint_dir}`
 
@@ -171,7 +171,7 @@ TiDB Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/re
         是否禁用拆分单个 binlog 的 sqls 的功能，如果设置为 true，则按照每个 binlog
         顺序依次还原成单个事务进行同步( 下游服务类型为 mysql, 该项设置为 False )
     -gen-savepoint
-        如果设置为 true, 则只生成 drainer 的 savepoint meta 文件, 可以配合 mydumper 使用
+        如果设置为 true, 则只生成 drainer 的 savepoint meta 文件, 可以配合 Mydumper 使用
     -ignore-schemas string
         db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test"),
         不支持对 ignore schemas 的 table 进行 rename DDL 操作
@@ -280,4 +280,4 @@ drainer 启动时可以设置 `--metrics-addr` 和 `--metrics-interval` 两个�
 
 + 导入 dashboard 配置文件
 
-    点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 [dashboard 配置文件](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json)上传 -> 选择对应的 data source
+    点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 [dashboard 配置文件](https://github.com/pingcap/tidb-ansible/blob/master/scripts/binlog.json)上传 -> 选择对应的 data source

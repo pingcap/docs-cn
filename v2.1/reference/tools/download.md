@@ -9,14 +9,14 @@ category: reference
 
 ## TiDB Binlog 和 TiDB Lightning
 
-如需下载 2.1 版本的 [TiDB Binlog](/reference/tidb-binlog-overview.md) 或 [TiDB Lightning](/reference/tools/tidb-lightning/overview.md)，直接下载 TiDB 安装包即可，因为 TiDB Binlog 和 TiDB Lightning 均包含在 TiDB 安装包中。
+如需下载 2.1 版本的 [TiDB Binlog](/v2.1/reference/tidb-binlog-overview.md) 或 [TiDB Lightning](/v2.1/reference/tools/tidb-lightning/overview.md)，直接下载 TiDB 安装包即可，因为 TiDB Binlog 和 TiDB Lightning 均包含在 TiDB 安装包中。
 
 以下表格中也提供了 Kafka 版本的 TiDB Binlog 下载链接。
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
 | [tidb-v2.1.0-linux-amd64.tar.gz](http://download.pingcap.org/tidb-v2.1.0-linux-amd64.tar.gz) (TiDB Binlog, TiDB Lightning) | Linux | amd64 |[tidb-v2.1.0-linux-amd64.sha256](http://download.pingcap.org/tidb-v2.1.0-linux-amd64.sha256)|
-| [tidb-binlog-kafka-linux-amd64.tar.gz](http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.tar.gz)（Kafka 版本的 TiDB-Binlog）| Linux | amd64 |[tidb-binlog-kafka-linux-amd64.sha256](http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.sha256)|
+| [tidb-binlog-kafka-linux-amd64.tar.gz](http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.tar.gz)（Kafka 版本的 TiDB Binlog）| Linux | amd64 |[tidb-binlog-kafka-linux-amd64.sha256](http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.sha256)|
 
 ## TiDB DM (Data Migration)
 
@@ -26,9 +26,9 @@ category: reference
 |:---|:---|:---|:---|
 | [dm-latest-linux-amd64.tar.gz](http://download.pingcap.org/dm-latest-linux-amd64.tar.gz) | Linux | amd64 | [dm-latest-linux-amd64.sha256](http://download.pingcap.org/dm-latest-linux-amd64.sha256) |
 
-## Syncer，Loader 和 mydumper
+## Syncer，Loader 和 Mydumper
 
-如需下载最新版本的 [Syncer](/reference/tools/syncer.md)，[Loader](/reference/tools/loader.md) 或 [mydumper](/reference/tools/mydumper.md)，直接下载 tidb-enterprise-tools 安装包即可，因为这些工具均包含在此安装包中。
+如需下载最新版本的 [Syncer](/v2.1/reference/tools/syncer.md)，[Loader](/v2.1/reference/tools/loader.md) 或 [Mydumper](/v2.1/reference/tools/mydumper.md)，直接下载 tidb-enterprise-tools 安装包即可，因为这些工具均包含在此安装包中。
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
@@ -38,7 +38,7 @@ tidb-enterprise-tools 安装包包含以下工具：
 
 - Syncer
 - Loader
-- mydumper
-- [binlogctl](/reference/tidb-binlog-overview.md#binlogctl-工具)
+- Mydumper
+- [binlogctl](/v2.1/reference/tidb-binlog-overview.md#binlogctl-工具)
 - ddl_checker
-- [sync_diff_inspector](/reference/tools/sync-diff-inspector.md)
+- [sync_diff_inspector](/v2.1/reference/tools/sync-diff-inspector/overview.md)

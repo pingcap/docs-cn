@@ -29,7 +29,7 @@ mysql> select * from `ANALYZE_STATUS`
 
 ## CHARACTER_SETS 表
 
-`CHARACTER_SETS` 表提供[字符集](/reference/sql/character-set.md)相关的信息。TiDB 目前仅支持部分字符集。
+`CHARACTER_SETS` 表提供[字符集](/v3.0/reference/sql/character-set.md)相关的信息。TiDB 目前仅支持部分字符集。
 
 ```sql
 mysql> SELECT * FROM character_sets;
@@ -276,41 +276,42 @@ mysql> SELECT * FROM session_variables LIMIT 10;
 
 ## SLOW_QUERY 表
 
-`SLOW_QUERY` 提供了慢查询相关的一些信息。表的内容通过解析 TiDB 慢日志文件的数据而来，表中列名和慢日志中的字段名是一一对应的关系。更多操作可以参考[慢查询日志文档](/how-to/maintain/identify-slow-queries.md)。
+`SLOW_QUERY` 表中提供了慢查询相关的信息，其内容通过解析 TiDB 慢查询日志而来，列名和慢日志中的字段名是一一对应。关于如何使用该表调查和改善慢查询请参考[慢查询日志文档](/v3.0/how-to/maintain/identify-slow-queries.md)。
 
 ```sql
-mysql>desc SLOW_QUERY;
-+---------------+---------------------+------+-----+---------+-------+
-| Field         | Type                | Null | Key | Default | Extra |
-+---------------+---------------------+------+-----+---------+-------+
-| Time          | timestamp unsigned  | YES  |     | <null>  |       |
-| Txn_start_ts  | bigint(20) unsigned | YES  |     | <null>  |       |
-| User          | varchar(64)         | YES  |     | <null>  |       |
-| Host          | varchar(64)         | YES  |     | <null>  |       |
-| Conn_ID       | bigint(20) unsigned | YES  |     | <null>  |       |
-| Query_time    | double unsigned     | YES  |     | <null>  |       |
-| Process_time  | double unsigned     | YES  |     | <null>  |       |
-| Wait_time     | double unsigned     | YES  |     | <null>  |       |
-| Backoff_time  | double unsigned     | YES  |     | <null>  |       |
-| Request_count | bigint(20) unsigned | YES  |     | <null>  |       |
-| Total_keys    | bigint(20) unsigned | YES  |     | <null>  |       |
-| Process_keys  | bigint(20) unsigned | YES  |     | <null>  |       |
-| DB            | varchar(64)         | YES  |     | <null>  |       |
-| Index_ids     | varchar(100)        | YES  |     | <null>  |       |
-| Is_internal   | tinyint(1) unsigned | YES  |     | <null>  |       |
-| Digest        | varchar(64)         | YES  |     | <null>  |       |
-| Stats         | varchar(512)        | YES  |     | <null>  |       |
-| Cop_proc_avg  | double unsigned     | YES  |     | <null>  |       |
-| Cop_proc_p90  | double unsigned     | YES  |     | <null>  |       |
-| Cop_proc_max  | double unsigned     | YES  |     | <null>  |       |
-| Cop_proc_addr | varchar(64)         | YES  |     | <null>  |       |
-| Cop_wait_avg  | double unsigned     | YES  |     | <null>  |       |
-| Cop_wait_p90  | double unsigned     | YES  |     | <null>  |       |
-| Cop_wait_max  | double unsigned     | YES  |     | <null>  |       |
-| Cop_wait_addr | varchar(64)         | YES  |     | <null>  |       |
-| Mem_max       | bigint(20) unsigned | YES  |     | <null>  |       |
-| Query         | varchar(4096)       | YES  |     | <null>  |       |
-+---------------+---------------------+------+-----+---------+-------+
+mysql> desc information_schema.slow_query;
++---------------+---------------------+------+------+---------+-------+
+| Field         | Type                | Null | Key  | Default | Extra |
++---------------+---------------------+------+------+---------+-------+
+| Time          | timestamp unsigned  | YES  |      | NULL    |       |
+| Txn_start_ts  | bigint(20) unsigned | YES  |      | NULL    |       |
+| User          | varchar(64)         | YES  |      | NULL    |       |
+| Host          | varchar(64)         | YES  |      | NULL    |       |
+| Conn_ID       | bigint(20) unsigned | YES  |      | NULL    |       |
+| Query_time    | double unsigned     | YES  |      | NULL    |       |
+| Process_time  | double unsigned     | YES  |      | NULL    |       |
+| Wait_time     | double unsigned     | YES  |      | NULL    |       |
+| Backoff_time  | double unsigned     | YES  |      | NULL    |       |
+| Request_count | bigint(20) unsigned | YES  |      | NULL    |       |
+| Total_keys    | bigint(20) unsigned | YES  |      | NULL    |       |
+| Process_keys  | bigint(20) unsigned | YES  |      | NULL    |       |
+| DB            | varchar(64)         | YES  |      | NULL    |       |
+| Index_ids     | varchar(100)        | YES  |      | NULL    |       |
+| Is_internal   | tinyint(1) unsigned | YES  |      | NULL    |       |
+| Digest        | varchar(64)         | YES  |      | NULL    |       |
+| Stats         | varchar(512)        | YES  |      | NULL    |       |
+| Cop_proc_avg  | double unsigned     | YES  |      | NULL    |       |
+| Cop_proc_p90  | double unsigned     | YES  |      | NULL    |       |
+| Cop_proc_max  | double unsigned     | YES  |      | NULL    |       |
+| Cop_proc_addr | varchar(64)         | YES  |      | NULL    |       |
+| Cop_wait_avg  | double unsigned     | YES  |      | NULL    |       |
+| Cop_wait_p90  | double unsigned     | YES  |      | NULL    |       |
+| Cop_wait_max  | double unsigned     | YES  |      | NULL    |       |
+| Cop_wait_addr | varchar(64)         | YES  |      | NULL    |       |
+| Mem_max       | bigint(20) unsigned | YES  |      | NULL    |       |
+| Succ          | tinyint(1) unsigned | YES  |      | NULL    |       |
+| Query         | longblob unsigned   | YES  |      | NULL    |       |
++---------------+---------------------+------+------+---------+-------+
 ```
 
 ## STATISTICS 表

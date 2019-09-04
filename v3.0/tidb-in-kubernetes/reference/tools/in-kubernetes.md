@@ -10,12 +10,12 @@ Kubernetes 上的 TiDB 运维管理需要使用一些开源工具。同时，在
 
 ## 在 Kubernetes 上使用 PD Control
 
-[PD Control](reference/tools/pd-control.md) 是 PD 的命令行工具，在使用 PD Control 操作 Kubernetes 上的 TiDB 集群时，需要先使用 `kubectl port-forward` 打开本地到 PD 服务的连接：
+[PD Control](/v3.0/reference/tools/pd-control.md) 是 PD 的命令行工具，在使用 PD Control 操作 Kubernetes 上的 TiDB 集群时，需要先使用 `kubectl port-forward` 打开本地到 PD 服务的连接：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl port-forward -n <namespace> svc/<cluster-name>-pd 2379:2379 &>/tmp/portforward-pd.log
+kubectl port-forward -n <namespace> svc/<cluster-name>-pd 2379:2379 &>/tmp/portforward-pd.log &
 ```
 
 执行上述命令后，就可以通过 `127.0.0.1:2379` 访问到 PD 服务，从而直接使用 `pd-ctl` 命令的默认参数执行操作，如：
@@ -31,7 +31,7 @@ pd-ctl -d config show
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl port-forward -n <namespace> svc/<cluster-name>-pd <local-port>:2379 &>/tmp/portforward-pd.log
+kubectl port-forward -n <namespace> svc/<cluster-name>-pd <local-port>:2379 &>/tmp/portforward-pd.log &
 ```
 
 此时，需要为 `pd-ctl` 命令显式指定 PD 端口：
@@ -44,20 +44,20 @@ pd-ctl -u 127.0.0.1:<local-port> -d config show
 
 ## 在 Kubernetes 上使用 TiKV Control
 
-[TiKV Control](reference/tools/tikv-control.md) 是 TiKV 的命令行工具。在使用 TiKV Control 操作 Kubernetes 上的 TiDB 集群时，针对 TiKV Control 的不同操作模式，有不同的操作步骤。
+[TiKV Control](/v3.0/reference/tools/tikv-control.md) 是 TiKV 的命令行工具。在使用 TiKV Control 操作 Kubernetes 上的 TiDB 集群时，针对 TiKV Control 的不同操作模式，有不同的操作步骤。
 
 * **远程模式**：此模式下 `tikv-ctl` 命令需要通过网络访问 TiKV 服务或 PD 服务，因此需要先使用 `kubectl port-forward` 打开本地到 PD 服务以及目标 TiKV 节点的连接：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl port-forward -n <namespace> svc/<cluster-name>-pd 2379:2379 &>/tmp/portforward-pd.log
+    kubectl port-forward -n <namespace> svc/<cluster-name>-pd 2379:2379 &>/tmp/portforward-pd.log &
     ```
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl port-forward -n <namespace> <tikv-pod-name> 20160:20160 &>/tmp/portforward-tikv.log
+    kubectl port-forward -n <namespace> <tikv-pod-name> 20160:20160 &>/tmp/portforward-tikv.log &
     ```
 
     打开连接后，即可通过本地的对应端口访问 PD 服务和 TiKV 节点：
@@ -74,7 +74,7 @@ pd-ctl -u 127.0.0.1:<local-port> -d config show
     tikv-ctl --pd 127.0.0.1:2379 compact-cluster
     ```
 
-* **本地模式**：本地模式需要访问 TiKV 的数据文件，并且需要停止正在运行的 TiKV 实例。需要先使用[诊断模式](/tidb-in-kubernetes/troubleshoot.md#诊断模式)关闭 TiKV 实例自动重启，关闭 TiKV 进程，再使用 `tkctl debug` 命令在目标 TiKV Pod 中启动一个包含 `tikv-ctl` 可执行文件的新容器来执行操作，步骤如下：
+* **本地模式**：本地模式需要访问 TiKV 的数据文件，并且需要停止正在运行的 TiKV 实例。需要先使用[诊断模式](/v3.0/tidb-in-kubernetes/troubleshoot.md#诊断模式)关闭 TiKV 实例自动重启，关闭 TiKV 进程，再使用 `tkctl debug` 命令在目标 TiKV Pod 中启动一个包含 `tikv-ctl` 可执行文件的新容器来执行操作，步骤如下：
 
     1. 进入诊断模式：
 
@@ -112,18 +112,18 @@ pd-ctl -u 127.0.0.1:<local-port> -d config show
 
 ## 在 Kubernetes 上使用 TiDB Control
 
-[TiDB Control](reference/tools/tidb-control.md) 是 TiDB 的命令行工具，使用 TiDB Control 时，需要从本地访问 TiDB 节点和 PD 服务，因此建议使用 `kubectl port-forward` 打开到集群中 TiDB 节点和 PD 服务的连接：
+[TiDB Control](/v3.0/reference/tools/tidb-control.md) 是 TiDB 的命令行工具，使用 TiDB Control 时，需要从本地访问 TiDB 节点和 PD 服务，因此建议使用 `kubectl port-forward` 打开到集群中 TiDB 节点和 PD 服务的连接：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl port-forward -n <namespace> svc/<cluster-name>-pd 2379:2379 &>/tmp/portforward-pd.log
+kubectl port-forward -n <namespace> svc/<cluster-name>-pd 2379:2379 &>/tmp/portforward-pd.log &
 ```
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl port-forward -n <namespace> <tidb-pod-name> 10080:10080 &>/tmp/portforward-tidb.log
+kubectl port-forward -n <namespace> <tidb-pod-name> 10080:10080 &>/tmp/portforward-tidb.log &
 ```
 
 接下来便可开始使用 `tidb-ctl` 命令：

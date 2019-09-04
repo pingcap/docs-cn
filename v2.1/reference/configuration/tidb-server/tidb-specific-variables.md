@@ -50,7 +50,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 ### tidb_opt_insubquery_unfold
 
-作用域：SESSION
+作用域：SESSION | GLOBAL
 
 默认值：0
 
@@ -329,7 +329,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 这个变量不会影响自动提交的隐式事务和 TiDB 内部执行的事务，它们依旧会根据 `tidb_retry_limit` 的值来决定最大重试次数。
 
-是否需要禁用自动重试，请参考[自动重试的风险](/reference/transactions/transaction-isolation.md#乐观事务注意事项)。
+是否需要禁用自动重试，请参考[自动重试的风险](/v2.1/reference/transactions/transaction-isolation.md#乐观事务注意事项)。
 
 ### tidb_backoff_weight
 

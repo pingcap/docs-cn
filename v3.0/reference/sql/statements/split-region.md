@@ -208,4 +208,4 @@ Region4:  [6917529027641081856 , 9223372036854775807) ( (4 << 61) - 1 )
 
 ## 相关 session 变量
 
-和 `SPLIT REGION` 语句相关的 session 变量有 `tidb_wait_split_region_finish` 和 `tidb_wait_split_region_timeout`，具体可参考 [TiDB 专用系统变量和语法](/reference/configuration/tidb-server/tidb-specific-variables.md)。
+和 `SPLIT REGION` 语句相关的 session 变量有 `tidb_wait_split_region_finish` 和 `tidb_wait_split_region_timeout`，具体可参考 [TiDB 专用系统变量和语法](/v3.0/reference/configuration/tidb-server/tidb-specific-variables.md)。
