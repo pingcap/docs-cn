@@ -35,10 +35,10 @@ Empty set (0.01 sec)
 
 ## MySQL 兼容性
 
-`ROLLBACK` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`ROLLBACK` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [COMMIT](/reference/sql/statements/commit.md)
-* [BEGIN](/reference/sql/statements/begin.md)
-* [START TRANSACTION](/reference/sql/statements/start-transaction.md)
+* [COMMIT](/v3.0/reference/sql/statements/commit.md)
+* [BEGIN](/v3.0/reference/sql/statements/begin.md)
+* [START TRANSACTION](/v3.0/reference/sql/statements/start-transaction.md)
