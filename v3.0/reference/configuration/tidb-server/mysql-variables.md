@@ -11,7 +11,7 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
 
 ## 设置系统变量
 
-通过 [`SET` 语句](/reference/sql/statements/admin.md#set-语句)可以修改系统变量的值。进行修改时，还要考虑变量可修改的范围，不是所有的变量都能在全局/会话范围内进行修改。具体的可修改范围参考 [MySQL 动态变量文档](https://dev.mysql.com/doc/refman/5.7/en/dynamic-system-variables.html)。
+通过 [`SET` 语句](/v3.0/reference/sql/statements/admin.md#set-语句)可以修改系统变量的值。进行修改时，还要考虑变量可修改的范围，不是所有的变量都能在全局/会话范围内进行修改。具体的可修改范围参考 [MySQL 动态变量文档](https://dev.mysql.com/doc/refman/5.7/en/dynamic-system-variables.html)。
 
 ### 全局范围值
 
@@ -108,7 +108,12 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
 | sql_mode | GLOBAL \| SESSION | 支持部分 MySQL SQL mode，|
 | time_zone | GLOBAL \| SESSION | 数据库所使用的时区 |
 | tx_isolation | GLOBAL \| SESSION | 事务隔离级别 |
+| max\_execution\_time | GLOBAL \| SESSION | 语句超时时间，单位为毫秒 |
+
+> **注意：**
+>
+> `max_execution_time` 目前对所有类型的 `statement` 生效，并非只对 `SELECT` 语句生效。实际精度在 100ms 级别，而非更准确的毫秒级别。
 
 ## TiDB 特有的系统变量
 
-参见 [TiDB 专用系统变量](/reference/configuration/tidb-server/tidb-specific-variables.md)。
+参见 [TiDB 专用系统变量](/v3.0/reference/configuration/tidb-server/tidb-specific-variables.md)。

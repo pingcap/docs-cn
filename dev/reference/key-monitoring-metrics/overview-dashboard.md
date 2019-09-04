@@ -5,7 +5,7 @@ category: reference
 
 # Overview 面板重要监控指标详解
 
-使用 Ansible 部署 TiDB 集群时，一键部署监控系统 (Prometheus/Grafana)，监控架构请看 [TiDB 监控框架概述](/how-to/monitor/overview.md)。
+使用 Ansible 部署 TiDB 集群时，一键部署监控系统 (Prometheus/Grafana)，监控架构请看 [TiDB 监控框架概述](/dev/how-to/monitor/overview.md)。
 
 目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview 等。
 
@@ -28,7 +28,7 @@ category: reference
 - Store Status：集群 TiKV 节点的状态
     - Up Stores：正常运行的 TiKV 节点数量
     - Disconnect Stores：短时间内通信异常的 TiKV 节点数量
-    - LowSpace Stores：剩余可用空间小于 80% 的 TiKV 节点数量
+    - LowSpace Stores：剩余可用空间小于 20% 的 TiKV 节点数量
     - Down Stores：停止工作的 TiKV 节点数量，如果大于 0，说明有节点不正常
     - Offline Stores：正在下线的 TiKV 节点数量（正在下线的 TiKV 节点还在提供服务）
     - Tombstone Stores：下线成功的 TiKV 节点数量
