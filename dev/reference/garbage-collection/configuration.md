@@ -60,7 +60,7 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 
 > **注意：**
 >
-> - `tikv_gc_life_time` 的值必须大于 TiDB 的配置文件中的 [`max-txn-time-use`](/reference/configuration/tidb-server/configuration-file.md#max-txn-time-use) 的值至少 10 秒，且不低于 10 分钟。
+> - `tikv_gc_life_time` 的值必须大于 TiDB 的配置文件中的 [`max-txn-time-use`](/dev/reference/configuration/tidb-server/configuration-file.md#max-txn-time-use) 的值至少 10 秒，且不低于 10 分钟。
 >
 > - 在数据更新频繁的场景下，如果将 `tikv_gc_life_time` 设置得比较大（如数天甚至数月），可能会有一些潜在的问题，如：
 >     - 磁盘空间占用较多。
@@ -70,15 +70,15 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 
 指定 GC 模式。可选值如下：
 
-- `"distributed"`（默认）：分布式 GC 模式。在此模式下，[Do GC](/reference/garbage-collection/overview.md#do-gc) 阶段由 TiDB 上的 GC leader 向 PD 发送 safe point，每个 TiKV 节点各自获取该 safe point 并对所有当前节点上作为 leader 的 Region 进行 GC。此模式于 TiDB 3.0 引入。
+- `"distributed"`（默认）：分布式 GC 模式。在此模式下，[Do GC](/dev/reference/garbage-collection/overview.md#do-gc) 阶段由 TiDB 上的 GC leader 向 PD 发送 safe point，每个 TiKV 节点各自获取该 safe point 并对所有当前节点上作为 leader 的 Region 进行 GC。此模式于 TiDB 3.0 引入。
 
-- `"central"`：集中 GC 模式。在此模式下，[Do GC](/reference/garbage-collection/overview.md#do-gc) 阶段由 GC leader 向所有的 Region 发送 GC 请求。TiDB 2.1 及更早版本采用此 GC 模式。
+- `"central"`：集中 GC 模式。在此模式下，[Do GC](/dev/reference/garbage-collection/overview.md#do-gc) 阶段由 GC leader 向所有的 Region 发送 GC 请求。TiDB 2.1 及更早版本采用此 GC 模式。
 
 ## `tikv_gc_auto_concurrency`
 
 控制是否由 TiDB 自动决定 GC concurrency，即同时进行 GC 的线程数。
 
-当 `tikv_gc_mode` 设为 `"distributed"`，GC concurrency 将应用于 [Resolve Locks](/reference/garbage-collection/overview.md#resolve-locks) 阶段。当 [`tikv_gc_mode`](#tikv_gc_mode) 设为 `"central"` 时，GC concurrency 将应用于 Resolve Locks 以及 [Do GC](/reference/garbage-collection/overview.md#do-gc) 两个阶段。
+当 `tikv_gc_mode` 设为 `"distributed"`，GC concurrency 将应用于 [Resolve Locks](/dev/reference/garbage-collection/overview.md#resolve-locks) 阶段。当 [`tikv_gc_mode`](#tikv_gc_mode) 设为 `"central"` 时，GC concurrency 将应用于 Resolve Locks 以及 [Do GC](/dev/reference/garbage-collection/overview.md#do-gc) 两个阶段。
 
 - `true`（默认）：自动以 TiKV 节点的个数作为 GC concurrency
 - `false`：使用 [`tikv_gc_concurrency`](#tikv-gc-concurrency) 的值作为 GC 并发数
