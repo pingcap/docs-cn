@@ -126,7 +126,7 @@ tikv-importer 可以在一个现有的 TiDB 集群上启用，或者在新建 Ti
 
 4. 运行 `cat /proc/1/cmdline`，获得启动脚本。
 
-5. 参考[故障排除指南](/how-to/troubleshoot/tidb-lightning.md#tidb-lightning-troubleshooting)，对 lightning 进行诊断。
+5. 参考[故障排除指南](/dev/how-to/troubleshoot/tidb-lightning.md#tidb-lightning-troubleshooting)，对 lightning 进行诊断。
 
 ## 销毁 TiDB Lightning
 
