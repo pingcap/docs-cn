@@ -186,6 +186,7 @@
       - [窗口函数](/dev/reference/sql/functions-and-operators/window-functions.md)
       - [其它函数](/dev/reference/sql/functions-and-operators/miscellaneous-functions.md)
       - [精度数学](/dev/reference/sql/functions-and-operators/precision-math.md)
+      - [下推到 TiKV 的表达式列表](/dev/reference/sql/functions-and-operators/expressions-pushed-down.md)
     + SQL 语句
       - [`ADD COLUMN`](/dev/reference/sql/statements/add-column.md)
       - [`ADD INDEX`](/dev/reference/sql/statements/add-index.md)
@@ -286,6 +287,7 @@
     - [TiDB 面板](/dev/reference/key-monitoring-metrics/tidb-dashboard.md)
     - [PD 面板](/dev/reference/key-monitoring-metrics/pd-dashboard.md)
     - [TiKV 面板](/dev/reference/key-monitoring-metrics/tikv-dashboard.md)
+  - [报警规则](/dev/reference/alert-rules.md)
   + 安全
     - [与 MySQL 的安全特性差异](/dev/reference/security/compatibility.md)
     - [TiDB 数据库权限管理](/dev/reference/security/privilege-system.md)
