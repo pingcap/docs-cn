@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/how-to/upgrade/to-tidb-3.0/']
 
 # TiDB 3.0 升级操作指南
 
-本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 RC 版本升级到 TiDB 3.0 版本。TiDB 3.0 版本兼容 [Kafka 版本的 TiDB Binlog](/reference/tools/tidb-binlog/tidb-binlog-kafka.md) 以及[TiDB Binlog Cluster 版本](/reference/tidb-binlog-overview.md)。
+本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 RC 版本升级到 TiDB 3.0 版本。TiDB 3.0 版本兼容 [Kafka 版本的 TiDB Binlog](/dev/reference/tools/tidb-binlog/tidb-binlog-kafka.md) 以及[TiDB Binlog Cluster 版本](/dev/reference/tidb-binlog-overview.md)。
 
 ## 升级兼容性说明
 
@@ -26,7 +26,7 @@ aliases: ['/docs-cn/dev/how-to/upgrade/to-tidb-3.0/']
 >
 > 如果已经安装了 Ansible 及其依赖，可跳过该步骤。
 
-TiDB-Ansible release-3.0 版本依赖 Ansible 2.4.2 及以上版本（`ansible>=2.4.2`，最好是 2.7.11 版本），另依赖 Python 模块：`jinja2>=2.9.6` 和 `jmespath>=0.9.0`。为方便管理依赖，建议使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-ansible-及其依赖)。
+TiDB Ansible release-3.0 版本依赖 Ansible 2.4.2 及以上版本（`ansible>=2.4.2`，最好是 2.7.11 版本），另依赖 Python 模块：`jinja2>=2.9.6` 和 `jmespath>=0.9.0`。为方便管理依赖，建议使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](/dev/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](/dev/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-ansible-及其依赖)。
 
 安装完成后，可通过以下命令查看版本：
 
@@ -45,7 +45,7 @@ Version: 0.9.0
 >
 > 请务必按以上文档安装 Ansible 及其依赖。确认 Jinja2 版本是否正确，否则启动 Grafana 时会报错。确认 jmespath 版本是否正确，否则滚动升级 TiKV 时会报错。
 
-## 在中控机器上下载 TiDB-Ansible
+## 在中控机器上下载 TiDB Ansible
 
 以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录，备份 TiDB 2.0 版本或 TiDB 2.1 版本的 tidb-ansible 文件夹：
 
@@ -53,7 +53,7 @@ Version: 0.9.0
 $ mv tidb-ansible tidb-ansible-bak
 ```
 
-下载 TiDB 3.0 版本对应 tag 的 tidb-ansible  [**下载 TiDB-Ansible**](/how-to/deploy/orchestrated/ansible.md#在中控机器上下载-tidb-ansible)，默认的文件夹名称为 `tidb-ansible`。
+下载 TiDB 3.0 版本对应 tag 的 tidb-ansible  [**下载 TiDB Ansible**](/dev/how-to/deploy/orchestrated/ansible.md#在中控机器上下载-tidb-ansible)，默认的文件夹名称为 `tidb-ansible`。
 
 ```
 $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
@@ -67,7 +67,7 @@ $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
 
 编辑 `inventory.ini` 文件，IP 信息参照备份文件 `/home/tidb/tidb-ansible-bak/inventory.ini`。
 
-以下变量配置，需要重点确认，变量含义可参考 [inventory.ini 变量调整](/how-to/deploy/orchestrated/ansible.md#其他变量调整)。
+以下变量配置，需要重点确认，变量含义可参考 [inventory.ini 变量调整](/dev/how-to/deploy/orchestrated/ansible.md#其他变量调整)。
 
 1. 请确认 `ansible_user` 配置的是普通用户。为统一权限管理，不再支持使用 root 用户远程安装。默认配置中使用 `tidb` 用户作为 SSH 远程用户及程序运行用户。
 
@@ -77,7 +77,7 @@ $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
     ansible_user = tidb
     ```
 
-    可参考[如何配置 ssh 互信及 sudo 规则](/how-to/deploy/orchestrated/ansible.md#在中控机上配置部署机器-ssh-互信及-sudo-规则)自动配置主机间互信。
+    可参考[如何配置 ssh 互信及 sudo 规则](/dev/how-to/deploy/orchestrated/ansible.md#在中控机上配置部署机器-ssh-互信及-sudo-规则)自动配置主机间互信。
 
 2. `process_supervision` 变量请与之前版本保持一致，默认推荐使用 `systemd`。
 
@@ -86,7 +86,7 @@ $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
     process_supervision = systemd
     ```
 
-    如需变更，可参考 [如何调整进程监管方式从 supervise 到 systemd](/how-to/deploy/orchestrated/ansible.md#如何调整进程监管方式从-supervise-到-systemd)，先使用备份 `/home/tidb/tidb-ansible-bak/` 分支变更进程监管方式再升级。
+    如需变更，可参考 [如何调整进程监管方式从 supervise 到 systemd](/dev/how-to/deploy/orchestrated/ansible.md#如何调整进程监管方式从-supervise-到-systemd)，先使用备份 `/home/tidb/tidb-ansible-bak/` 分支变更进程监管方式再升级。
 
 ### 编辑 TiDB 集群组件配置文件
 

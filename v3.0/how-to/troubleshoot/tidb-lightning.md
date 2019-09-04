@@ -10,7 +10,7 @@ aliases: ['/docs-cn/tools/lightning/errors/']
 
 ## 导入速度太慢
 
-Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的数据文件，如果速度远慢于这个数值就是有问题。导入的速度可以检查日志提及 `restore chunk … takes` 的记录，或者观察 Grafana 的监控信息。
+TiDB Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的数据文件，如果速度远慢于这个数值就是有问题。导入的速度可以检查日志提及 `restore chunk … takes` 的记录，或者观察 Grafana 的监控信息。
 
 导入速度太慢一般有几个原因：
 
@@ -22,7 +22,7 @@ Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的数�
 
 **原因 2**：表结构太复杂。
 
-每条索引都会额外增加 KV 对。如果有 N 条索引，实际导入的大小就差不多是 mydumper 文件的 N+1 倍。如果索引不太重要，可以考虑先从 schema 去掉，待导入完成后再使用 `CREATE INDEX` 加回去。
+每条索引都会额外增加 KV 对。如果有 N 条索引，实际导入的大小就差不多是 Mydumper 文件的 N+1 倍。如果索引不太重要，可以考虑先从 schema 去掉，待导入完成后再使用 `CREATE INDEX` 加回去。
 
 **原因 3**：Lightning 版本太旧。
 
@@ -34,7 +34,7 @@ Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的数�
 
 1. 这张表可能本身已有数据，影响最终结果。
 2. 如果目标数据库的校验和全是 0，表示没有发生任何导入，有可能是集群太忙无法接收任何数据。
-3. 如果数据源是由机器生成而不是从 mydumper 备份的，需确保数据符合表的限制，例如：
+3. 如果数据源是由机器生成而不是从 Mydumper 备份的，需确保数据符合表的限制，例如：
 
     * 自增 (AUTO_INCREMENT) 的列需要为正数，不能为 0。
     * 单一键和主键 (UNIQUE and PRIMARY KEYs) 不能有重复的值。
@@ -51,7 +51,7 @@ Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的数�
 
 ## Checkpoint for … has invalid status:（错误码）
 
-**原因**：[断点续传](/reference/tools/tidb-lightning/checkpoints.md)已启用。Lightning 或 Importer 之前发生了异常退出。为了防止数据意外损坏，Lighting 在错误解决以前不会启动。
+**原因**：[断点续传](/v3.0/reference/tools/tidb-lightning/checkpoints.md)已启用。Lightning 或 Importer 之前发生了异常退出。为了防止数据意外损坏，Lighting 在错误解决以前不会启动。
 
 错误码是小于 25 的整数，可能的取值是 0、3、6、9、12、14、15、17、18、20、21。整数越大，表示异常退出所发生的步骤在导入流程中越晚。
 
@@ -63,7 +63,7 @@ Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的数�
 tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
 ```
 
-其他解决方法请参考[断点续传的控制](/reference/tools/tidb-lightning/checkpoints.md#断点续传的控制)。
+其他解决方法请参考[断点续传的控制](/v3.0/reference/tools/tidb-lightning/checkpoints.md#断点续传的控制)。
 
 ## ResourceTemporarilyUnavailable("Too many open engines …: 8")
 
