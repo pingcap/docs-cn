@@ -9,7 +9,7 @@ aliases: ['/docs-cn/sql/util/']
 
 `EXPLAIN` 语句仅用于显示查询的执行计划，而不执行查询。`EXPLAIN ANALYZE` 可执行查询，补充 `EXPLAIN` 语句。如果 `EXPLAIN` 的输出与预期结果不匹配，可考虑在查询的每个表上执行 `ANALYZE TABLE`。
 
-语句 `DESC` 和 `DESCRIBE` 是 `EXPLAIN` 的别名。`EXPLAIN <tableName>` 的替代用法记录在 [`SHOW [FULL] COLUMNS FROM`](/reference/sql/statements/show-columns-from.md) 下。
+语句 `DESC` 和 `DESCRIBE` 是 `EXPLAIN` 的别名。`EXPLAIN <tableName>` 的替代用法记录在 [`SHOW [FULL] COLUMNS FROM`](/v3.0/reference/sql/statements/show-columns-from.md) 下。
 
 ## 语法图
 
@@ -153,7 +153,7 @@ The xx.dot is the result returned by the above statement.
 
 ## 另请参阅
 
-* [Understanding the Query Execution Plan](/reference/performance/understanding-the-query-execution-plan.md)
-* [EXPLAIN ANALYZE](/reference/sql/statements/explain-analyze.md)
-* [ANALYZE TABLE](/reference/sql/statements/analyze-table.md)
-* [TRACE](/reference/sql/statements/trace.md)
+* [Understanding the Query Execution Plan](/v3.0/reference/performance/understanding-the-query-execution-plan.md)
+* [EXPLAIN ANALYZE](/v3.0/reference/sql/statements/explain-analyze.md)
+* [ANALYZE TABLE](/v3.0/reference/sql/statements/analyze-table.md)
+* [TRACE](/v3.0/reference/sql/statements/trace.md)

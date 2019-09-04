@@ -10,11 +10,11 @@ aliases: ['/docs-cn/tools/dm/practice/']
 
 ## 第 1 步：部署 DM 集群
 
-目前推荐使用 DM-Ansible 部署 DM 集群，具体部署方法参照 [使用 DM-Ansible 部署 DM 集群](/how-to/deploy/data-migration-with-ansible.md)。
+目前推荐使用 DM-Ansible 部署 DM 集群，具体部署方法参照 [使用 DM-Ansible 部署 DM 集群](/v3.0/how-to/deploy/data-migration-with-ansible.md)。
 
 > **注意：**
 >
-> - 在 DM 所有的配置文件中，数据库的密码要使用 dmctl 加密后的密文。如果数据库密码为空，则不需要加密。关于如何使用 dmctl 加密明文密码，参考[使用 dmctl 加密上游 MySQL 用户密码](/how-to/deploy/data-migration-with-ansible.md#使用-dmctl-加密上游-mysql-用户密码)。
+> - 在 DM 所有的配置文件中，数据库的密码要使用 dmctl 加密后的密文。如果数据库密码为空，则不需要加密。关于如何使用 dmctl 加密明文密码，参考[使用 dmctl 加密上游 MySQL 用户密码](/v3.0/how-to/deploy/data-migration-with-ansible.md#使用-dmctl-加密上游-mysql-用户密码)。
 > - 上下游数据库用户必须拥有相应的读写权限。
 
 ## 第 2 步：检查集群信息
@@ -80,7 +80,7 @@ mysql-instances:
   source-id: "mysql-replica-01"
   # 需要同步的库名或表名的黑白名单的配置项名称，用于引用全局的黑白名单配置，全局配置见下面的 `black-white-list` 的配置。
   black-white-list: "global"
-  # mydumper 的配置项名称，用于引用全局的 mydumper 配置。
+  # Mydumper 的配置项名称，用于引用全局的 Mydumper 配置。
   mydumper-config-name: "global"
 
 -
@@ -95,16 +95,16 @@ black-white-list:
     - db-name: "test_db"              # 需要同步的表的库名。
       tbl-name: "test_table"          # 需要同步的表的名称。
 
-# mydumper 全局配置，各实例通过配置项名引用。
+# Mydumper 全局配置，各实例通过配置项名引用。
 mydumpers:
   global:
-    mydumper-path: "./bin/mydumper"   # mydumper 二进制文件的路径。
-    extra-args: "-B test_db -T test_table"  # 只导出 `test_db` 库中的 `test_table` 表，可设置 mydumper 的任何参数。
+    mydumper-path: "./bin/mydumper"   # Mydumper 二进制文件的路径。
+    extra-args: "-B test_db -T test_table"  # 只导出 `test_db` 库中的 `test_table` 表，可设置 Mydumper 的任何参数。
 ```
 
 ## 第 4 步：启动任务
 
-为了提前发现数据同步任务的一些配置错误，DM 中增加了[前置检查](/reference/tools/data-migration/precheck.md)功能：
+为了提前发现数据同步任务的一些配置错误，DM 中增加了[前置检查](/v3.0/reference/tools/data-migration/precheck.md)功能：
 
 - 启动数据同步任务时，DM 自动检查相应的权限和配置。
 - 也可使用 `check-task` 命令手动前置检查上游的 MySQL 实例配置是否符合 DM 的配置要求。

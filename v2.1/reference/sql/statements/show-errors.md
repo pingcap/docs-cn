@@ -52,8 +52,8 @@ Empty set (0.00 sec)
 
 ## MySQL 兼容性
 
-`SHOW ERRORS` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW ERRORS` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v2.1/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW WARNINGS](/reference/sql/statements/show-warnings.md)
+* [SHOW WARNINGS](/v2.1/reference/sql/statements/show-warnings.md)

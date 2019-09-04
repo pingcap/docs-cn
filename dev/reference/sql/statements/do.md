@@ -42,8 +42,8 @@ Query OK, 0 rows affected (2.50 sec)
 
 ## MySQL 兼容性
 
-`DO` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`DO` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/dev/report-issue.md)。
 
 ## 另请参阅
 
-* [SELECT](/reference/sql/statements/select.md)
+* [SELECT](/dev/reference/sql/statements/select.md)
