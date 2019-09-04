@@ -46,13 +46,16 @@ ALTER TABLE orders DROP FOREIGN KEY fk_user_id;
 ALTER TABLE orders ADD FOREIGN KEY fk_user_id (user_id) REFERENCES users(id);
 ```
 
-目前，外键约束并不作为 DML 操作的一部分而进行强制实施。例如，即使 `users` 表中不存在 `id=123` 的记录，在 TiDB 中下列事务也能提交成功：
+### 注意
+* 目前，外键约束并不作为 DML 操作的一部分而进行强制实施，即外键没有真正生效。例如，即使 `users` 表中不存在 `id=123` 的记录，在 TiDB 中下列事务也能提交成功：
 
 ```
 START TRANSACTION;
 INSERT INTO orders (user_id, doc) VALUES (123, NULL);
 COMMIT;
 ```
+
+* 此外，TiDB 在执行 `SHOW CREATE TABLE` 语句的结果中不显示外键信息。
 
 ## 非空约束
 
