@@ -28,9 +28,9 @@ TiDB Operator 部署前，请确认以下软件需求：
 
 TiDB Operator 运行在 Kubernetes 集群，你可以使用[这里](https://kubernetes.io/docs/setup/)列出的任何一种方法搭建一套 Kubernetes 集群。只要保证 Kubernetes 版本大于等于 v1.12。如果你使用 AWS、GKE 或者本机，下面是快速上手教程：
 
-* [Local DinD 教程](/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
-* [Google GKE 教程](/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
-* [AWS EKS 教程](/tidb-in-kubernetes/deploy/aws-eks.md)
+* [Local DinD 教程](/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
+* [Google GKE 教程](/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
+* [AWS EKS 教程](/v3.0/tidb-in-kubernetes/deploy/aws-eks.md)
 
 如果你要使用不同环境，必须在 Kubernetes 集群中安装 DNS 插件。可以根据[官方文档](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/)搭建 DNS 插件。
 
@@ -62,13 +62,13 @@ TiDB 默认会使用很多文件描述符，工作节点和上面的 Docker 进�
 
 ## 安装 Helm
 
-参考 [使用 Helm](/tidb-in-kubernetes/reference/tools/in-kubernetes.md#使用-helm) 安装 Helm 并配置 PingCAP 官方 chart 仓库。
+参考 [使用 Helm](/v3.0/tidb-in-kubernetes/reference/tools/in-kubernetes.md#使用-helm) 安装 Helm 并配置 PingCAP 官方 chart 仓库。
 
 ## 配置本地持久化卷
 
 ### 准备本地卷
 
-参考[本地 PV 配置](/tidb-in-kubernetes/reference/configuration/storage-class.md#本地-pv-配置)在你的 Kubernetes 集群中配置本地持久化卷。
+参考[本地 PV 配置](/v3.0/tidb-in-kubernetes/reference/configuration/storage-class.md#本地-pv-配置)在你的 Kubernetes 集群中配置本地持久化卷。
 
 ### 部署 local-static-provisioner
 

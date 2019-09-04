@@ -266,7 +266,7 @@ kubectl get po -n tidb
 kubectl -n tidb port-forward svc/demo-grafana 3000:3000 &>/dev/null &
 ```
 
-在 Cloud Shell 中，点击 Web Preview 按钮并输入端口 3000，将打开一个新的浏览器标签页访问 Grafana 面板。或者也可以在新浏览器标签或者窗口中直接访问 URL：[https://ssh.cloud.google.com/devshell/proxy?port=3000](https://ssh.cloud.google.com/devshell/proxy?port=3000)。
+在 Cloud Shell 中，点击 Web Preview 按钮并输入端口 3000，将打开一个新的浏览器标签页访问 Grafana 面板。或者也可以在新浏览器标签或者窗口中直接访问 URL：<https://ssh.cloud.google.com/devshell/proxy?port=3000>。
 
 如果没有使用 Cloud Shell，可以在浏览器中访问 `localhost:3000`。
 
@@ -301,4 +301,4 @@ gcloud container clusters delete tidb
 
 ## 更多信息
 
-我们还提供简单的[基于 Terraform 的部署方案](/tidb-in-kubernetes/deploy/gcp-gke.md)。
+我们还提供简单的[基于 Terraform 的部署方案](/dev/tidb-in-kubernetes/deploy/gcp-gke.md)。

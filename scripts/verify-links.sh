@@ -47,7 +47,7 @@ for d in dev $(ls -d v[0-9]*); do
     echo "info: checking links under $d directory..."
     sed \
         -e "s#<ROOT>#$ROOT#g" \
-        -e "s#<DOC_ROOT>#$ROOT/$d#g" \
+        -e "s#<DOC_ROOT>#$ROOT#g" \
         scripts/markdown-link-check.tpl > $CONFIG_TMP
     cat $CONFIG_TMP
     # TODO simplify this if markdown-link-check can process multiple files together

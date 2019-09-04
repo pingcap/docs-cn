@@ -1,20 +1,20 @@
 ---
-title: 离线 TiDB-Ansible 部署方案
+title: 离线 TiDB Ansible 部署方案
 category: how-to
 ---
 
-# 离线 TiDB-Ansible 部署方案
+# 离线 TiDB Ansible 部署方案
 
 ## 准备机器
 
 1. 下载机一台
 
-    - 该机器需开放外网访问，用于下载 TiDB-Ansible、TiDB 及相关软件安装包。
+    - 该机器需开放外网访问，用于下载 TiDB Ansible、TiDB 及相关软件安装包。
     - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统。
 
 2. 部署目标机器若干及部署中控机一台
 
-    - 系统要求及配置参考[准备机器](/how-to/deploy/orchestrated/ansible.md#准备机器)。
+    - 系统要求及配置参考[准备机器](/v2.1/how-to/deploy/orchestrated/ansible.md#准备机器)。
     - 可以无法访问外网。
 
 ## 在中控机上安装系统依赖包
@@ -39,7 +39,7 @@ category: how-to
 
 ## 在中控机上创建 tidb 用户，并生成 ssh key
 
-参考[在中控机上创建 tidb 用户，并生成 ssh key](/how-to/deploy/orchestrated/ansible.md#在中控机上创建-tidb-用户-并生成-ssh-key) 即可。
+参考[在中控机上创建 tidb 用户，并生成 ssh key](/v2.1/how-to/deploy/orchestrated/ansible.md#在中控机上创建-tidb-用户-并生成-ssh-key) 即可。
 
 ## 在中控机器上离线安装 Ansible 及其依赖
 
@@ -65,7 +65,7 @@ category: how-to
  ansible 2.5.0
 ```
 
-## 在下载机上下载 TiDB-Ansible 及 TiDB 安装包
+## 在下载机上下载 TiDB Ansible 及 TiDB 安装包
 
 以下为 tidb-ansible 与 TiDB 的版本对应关系，版本选择可以咨询官方。
 
@@ -89,7 +89,7 @@ category: how-to
 
 2. 下载 tidb-ansible
 
-    使用以下命令从 Github [TiDB-Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB-Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`。
+    使用以下命令从 Github [TiDB Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB Ansible 相应版本，默认的文件夹名称为 `tidb-ansible`。
 
     > **注意：**
     >
@@ -118,25 +118,25 @@ category: how-to
 
 ## 在中控机上配置部署机器 ssh 互信及 sudo 规则
 
-参考[在中控机上配置部署机器 ssh 互信及 sudo 规则](/how-to/deploy/orchestrated/ansible.md#在中控机上配置部署机器-ssh-互信及-sudo-规则)即可。
+参考[在中控机上配置部署机器 ssh 互信及 sudo 规则](/v2.1/how-to/deploy/orchestrated/ansible.md#在中控机上配置部署机器-ssh-互信及-sudo-规则)即可。
 
 ## 在部署目标机器上安装 NTP 服务
 
-> 如果你的部署目标机器时间、时区设置一致，已开启 NTP 服务且在正常同步时间，此步骤可忽略，可参考[如何检测 NTP 服务是否正常](/how-to/deploy/orchestrated/ansible.md#如何检测-ntp-服务是否正常)。
+> 如果你的部署目标机器时间、时区设置一致，已开启 NTP 服务且在正常同步时间，此步骤可忽略，可参考[如何检测 NTP 服务是否正常](/v2.1/how-to/deploy/orchestrated/ansible.md#如何检测-ntp-服务是否正常)。
 
-参考[在部署目标机器上安装 NTP 服务](/how-to/deploy/orchestrated/ansible.md#在部署目标机器上安装-ntp-服务)即可。
+参考[在部署目标机器上安装 NTP 服务](/v2.1/how-to/deploy/orchestrated/ansible.md#在部署目标机器上安装-ntp-服务)即可。
 
 ## 在部署目标机器上配置 CPUfreq 调节器模式
 
-参考[在部署目标机器上配置 CPUfreq 调节器模式](/how-to/deploy/orchestrated/ansible.md#在部署目标机器上配置-cpufreq-调节器模式)即可。
+参考[在部署目标机器上配置 CPUfreq 调节器模式](/v2.1/how-to/deploy/orchestrated/ansible.md#在部署目标机器上配置-cpufreq-调节器模式)即可。
 
 ## 在部署目标机器上添加数据盘 ext4 文件系统挂载参数
 
-参考[在部署目标机器上添加数据盘 ext4 文件系统挂载参数](/how-to/deploy/orchestrated/ansible.md#在部署目标机器上添加数据盘-ext4-文件系统挂载参数)即可。
+参考[在部署目标机器上添加数据盘 ext4 文件系统挂载参数](/v2.1/how-to/deploy/orchestrated/ansible.md#在部署目标机器上添加数据盘-ext4-文件系统挂载参数)即可。
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
-参考[分配机器资源，编辑 inventory.ini 文件](/how-to/deploy/orchestrated/ansible.md#分配机器资源-编辑-inventory-ini-文件)即可。
+参考[分配机器资源，编辑 inventory.ini 文件](/v2.1/how-to/deploy/orchestrated/ansible.md#分配机器资源-编辑-inventory-ini-文件)即可。
 
 ## 部署任务
 
@@ -151,8 +151,8 @@ category: how-to
     $ ./install_grafana_font_rpms.sh
     ```
 
-3. 参考[部署任务](/how-to/deploy/orchestrated/ansible.md#部署任务)即可。
+3. 参考[部署任务](/v2.1/how-to/deploy/orchestrated/ansible.md#部署任务)即可。
 
 ## 测试集群
 
-参考[测试集群](/how-to/deploy/orchestrated/ansible.md#测试集群)即可。
+参考[测试集群](/v2.1/how-to/deploy/orchestrated/ansible.md#测试集群)即可。
