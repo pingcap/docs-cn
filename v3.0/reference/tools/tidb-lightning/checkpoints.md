@@ -45,7 +45,7 @@ driver = "file"
 
 ## 断点的存储
 
-Lightning 支持两种存储方式：本地文件或 MySQL 数据库。
+TiDB Lightning 支持两种存储方式：本地文件或 MySQL 数据库。
 
 * 若 `driver = "file"`，断点会存放在一个本地文件，其路径由 `dsn` 参数指定。由于断点会频繁更新，建议将这个文件放到写入次数不受限制的盘上，例如 RAM disk。
 

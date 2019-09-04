@@ -7,11 +7,11 @@ category: reference
 
 本文档主要介绍 Data Migration (DM) 的任务配置文件 [`task.yaml`](https://github.com/pingcap/dm/blob/master/dm/master/task.yaml)，包含[全局配置](#全局配置) 和[实例配置](#实例配置) 两部分。
 
-关于各配置项的功能和配置，请参阅[数据同步功能](/reference/tools/data-migration/features/overview.md)。
+关于各配置项的功能和配置，请参阅[数据同步功能](/dev/reference/tools/data-migration/features/overview.md)。
 
 ## 关键概念
 
-关于包括 `source-id` 和 DM-worker ID 在内的关键概念的介绍，请参阅[关键概念](/reference/tools/data-migration/configure/overview.md#关键概念)。
+关于包括 `source-id` 和 DM-worker ID 在内的关键概念的介绍，请参阅[关键概念](/dev/reference/tools/data-migration/configure/overview.md#关键概念)。
 
 ## 配置顺序
 
@@ -113,11 +113,11 @@ loaders:                                            # loader 处理单元运行�
     pool-size: 16                                   # loader 并发执行 mydumper 的 SQL 文件的线程数量。
     dir: "./dumped_data"                            # loader 读取 mydumper 输出文件的地址，同实例对应的不同任务必须不同（mydumper 会根据这个地址输出 SQL 文件）。
 
-syncers:                                            # syncer 处理单元运行配置参数。
+syncers:                                            # Syncer 处理单元运行配置参数。
   global:
-    worker-count: 16                                # syncer 并发同步 binlog event 的线程数量。
-    batch: 1000                                     # syncer 同步到下游数据库的一个事务批次 SQL 语句数。
-    max-retry: 100                                  # syncer 同步到下游数据库出错的事务的重试次数（仅限于 DML 操作）。
+    worker-count: 16                                # Syncer 并发同步 binlog event 的线程数量。
+    batch: 1000                                     # Syncer 同步到下游数据库的一个事务批次 SQL 语句数。
+    max-retry: 100                                  # Syncer 同步到下游数据库出错的事务的重试次数（仅限于 DML 操作）。
 ```
 
 ## 示例配置
@@ -129,7 +129,7 @@ mysql-instances:
   -
     source-id: "mysql-replica-01"           # 上游实例或者复制组 ID，参考 `inventory.ini` 的 `source_id` 或者 `dm-master.toml` 的 `source-id` 配置。
     meta:                                   # `task-mode` 为 `incremental` 且下游数据库的 `checkpoint` 不存在时 binlog 同步开始的位置; 如果 checkpoint 存在，则以 `checkpoint` 为准。
-      binlog-name: binlog-00001
+      binlog-name: binlog.000001
       binlog-pos: 4
 
     route-rules: ["route-rule-1", "route-rule-2"]    # 该上游数据库实例匹配的表到下游数据库的 table routing 规则名称。
@@ -139,13 +139,13 @@ mysql-instances:
 
     mydumper-config-name: "global"          # mydumper 配置名称。
     loader-config-name: "global"            # loader 配置名称。
-    syncer-config-name: "global"            # syncer 配置名称。
+    syncer-config-name: "global"            # Syncer 配置名称。
 
   -
     source-id: "mysql-replica-02"           # 上游实例或者复制组 ID，参考 `inventory.ini` 的 `source_id` 或者 `dm-master.toml` 的 `source-id` 配置。
     mydumper-config-name: "global"          # mydumper 配置名称。
     loader-config-name: "global"            # loader 配置名称。
-    syncer-config-name: "global"            # syncer 配置名称。
+    syncer-config-name: "global"            # Syncer 配置名称。
 ```
 
 关于以上配置项的更多配置细节，参见[功能配置集](#功能配置集)的相关配置项，对应关系如下：

@@ -7,13 +7,13 @@ category: reference
 
 TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现有的 MySQL 连接器和客户端都可以继续使用。大多数情况下您现有的应用都可以迁移至 TiDB，无需任何代码修改。
 
-当前 TiDB 服务器官方支持的版本为 MySQL 5.7。大部分 MySQL 运维工具（如 PHPMyAdmin, Navicat, MySQL Workbench 等），以及备份恢复工具（如 mysqldump，mydumper/myloader）等都可以直接使用。
+当前 TiDB 服务器官方支持的版本为 MySQL 5.7。大部分 MySQL 运维工具（如 PHPMyAdmin, Navicat, MySQL Workbench 等），以及备份恢复工具（如 mysqldump，Mydumper/myloader）等都可以直接使用。
 
 不过一些特性由于在分布式环境下没法很好的实现，目前暂时不支持或者是表现与 MySQL 有差异。一些 MySQL 语法在 TiDB 中可以解析通过，但是不会做任何后续的处理，例如 `Create Table` 语句中 `Engine` 以及 `Partition` 选项，都是解析并忽略。
 
 > **注意：**
 >
-> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[安全特性](/reference/security/compatibility.md)及[事务模型](/reference/transactions/transaction-model.md)的兼容信息请查看各自具体页面。
+> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[安全特性](/v2.1/reference/security/compatibility.md)及[事务模型](/v2.1/reference/transactions/transaction-model.md)的兼容信息请查看各自具体页面。
 
 ## 不支持的特性
 
@@ -38,7 +38,7 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 * `CREATE TABLE tblName AS SELECT stmt` 语法
 * `CREATE TEMPORARY TABLE` 语法
 * `XA` 语法（TiDB 内部使用两阶段提交，但并没有通过 SQL 接口公开）
-* `LOCK TABLE` 语法（TiDB 使用 `tidb_snapshot` 来[生成备份](/reference/tools/mydumper.md)
+* `LOCK TABLE` 语法（TiDB 使用 `tidb_snapshot` 来[生成备份](/v2.1/reference/tools/mydumper.md)
 * `CHECK TABLE` 语法
 * `CHECKSUM TABLE` 语法
 
@@ -65,11 +65,11 @@ TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用
 
 ### Performance schema
 
-Performance schema 表在 TiDB 中返回结果为空。TiDB 使用 [Prometheus 和 Grafana](/how-to/monitor/monitor-a-cluster.md) 来监测性能指标。
+Performance schema 表在 TiDB 中返回结果为空。TiDB 使用 [Prometheus 和 Grafana](/v2.1/how-to/monitor/monitor-a-cluster.md) 来监测性能指标。
 
 ### 查询计划
 
-TiDB 的查询计划（`EXPLAIN`/`EXPLAIN FOR`）输出格式与 MySQL 差别较大，同时 `EXPLAIN FOR` 的输出内容与权限设置与 MySQL 不一致，参见[理解 TiDB 执行计划](/reference/performance/understanding-the-query-execution-plan.md)。
+TiDB 的查询计划（`EXPLAIN`/`EXPLAIN FOR`）输出格式与 MySQL 差别较大，同时 `EXPLAIN FOR` 的输出内容与权限设置与 MySQL 不一致，参见[理解 TiDB 执行计划](/v2.1/reference/performance/understanding-the-query-execution-plan.md)。
 
 ### 内建函数
 
@@ -90,6 +90,7 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
     - 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`
     - 不支持修改 `DECIMAL` 类型的精度（从 TiDB 2.1.10 开始，不支持修改 `DECIMAL` 类型的精度，TiDB 2.1.9 支持修改）
     - 不支持更改 `UNSIGNED` 属性
+    - 不支持从 `NULL` 到 `NOT NULL` 的修改
     - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
 + Alter Database
     - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
@@ -98,7 +99,7 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 
 ### `ANALYZE TABLE`
 
-- [`ANALYZE TABLE`](/reference/performance/statistics.md#手动收集) 语句在 TiDB 和 MySQL 中表现不同。在 MySQL/InnoDB 中，它是一个轻量级语句，执行过程较短；而在 TiDB 中，它会完全重构表的统计数据，语句执行过程较长。
+- [`ANALYZE TABLE`](/v2.1/reference/performance/statistics.md#手动收集) 语句在 TiDB 和 MySQL 中表现不同。在 MySQL/InnoDB 中，它是一个轻量级语句，执行过程较短；而在 TiDB 中，它会完全重构表的统计数据，语句执行过程较长。
 
 ### 存储引擎
 
@@ -116,14 +117,14 @@ Create Table: CREATE TABLE `t1` (
 1 row in set (0.00 sec)
 ```
 
-从架构上讲，TiDB 确实支持类似 MySQL 的存储引擎抽象，在启动 TiDB（通常是 `tikv`）时 [`--store`](/reference/configuration/tidb-server/configuration.md#store) 选项指定的引擎中创建用户表。
+从架构上讲，TiDB 确实支持类似 MySQL 的存储引擎抽象，在启动 TiDB（通常是 `tikv`）时 [`--store`](/v2.1/reference/configuration/tidb-server/configuration.md#store) 选项指定的引擎中创建用户表。
 
 ### SQL 模式
 
 TiDB 支持 MySQL 5.7 中 **绝大多数的 SQL 模式**，以下几种模式除外：
 
 - TiDB 不支持兼容模式（例如 `ORACLE` 和 `POSTGRESQL`）。MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
-- TiDB 中的 `ONLY_FULL_GROUP_BY` 与 MySQL 5.7 相比有细微的[语义差别](/reference/sql/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)，此问题日后将予以解决。
+- TiDB 中的 `ONLY_FULL_GROUP_BY` 与 MySQL 5.7 相比有细微的[语义差别](/v2.1/reference/sql/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)，此问题日后将予以解决。
 - `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` 这两种 SQL 模式用于解决兼容问题，但并不适用于 TiDB。
 
 ### 默认设置的区别
@@ -134,10 +135,9 @@ TiDB 支持 MySQL 5.7 中 **绝大多数的 SQL 模式**，以下几种模式除
 + 默认排序规则不同：
     + TiDB 中，`utf8mb4` 的默认排序规则为 `utf8mb4_bin`
     + MySQL 5.7 中，`utf8mb4` 的默认排序规则为 `utf8mb4_general_ci`，MySQL 8.0 中修改为 `utf8mb4_0900_ai_ci`
-    + 请使用 [`SHOW CHARACTER SET`](/reference/sql/statements/admin.md#-show-语句) 语句查看所有字符集的默认排序规则
-+ 默认 SQL mode 不同：
-    + TiDB 中为 `STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION`
-    + MySQL 中为 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`
+    + 请使用 [`SHOW CHARACTER SET`](/v2.1/reference/sql/statements/admin.md#-show-语句) 语句查看所有字符集的默认排序规则
++ 默认 SQL mode 与 MySQL **已相同**
+    + TiDB 和 MySQL 5.7 中均为 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`
 + `lower_case_table_names` 的默认值不同：
     + TiDB 中该值默认为 2，并且目前 TiDB 只支持设置该值为 2
     + MySQL 中默认设置：

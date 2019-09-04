@@ -47,6 +47,5 @@ Records: 815264  Deleted: 0  Skipped: 0  Warnings: 0
 
 ## 另请参阅
 
-* [INSERT](/reference/sql/statements/insert.md)
-* [Transaction Model](/reference/transactions/transaction-model.md)
-* [Import Example Database](/how-to/get-started/import-example-database.md)
+* [INSERT](/v2.1/reference/sql/statements/insert.md)
+* [Transaction Model](/v2.1/reference/transactions/transaction-model.md)
