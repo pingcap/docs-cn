@@ -6,7 +6,7 @@ aliases: ['/docs-cn/op-guide/migration/']
 
 # 增量数据复制
 
-[全量迁移](/how-to/migrate/from-mysql.md)文档中介绍了如何使用 `mydumper`/`loader` 将 MySQL 的数据全量导入到 TiDB，但如果后续 MySQL 的数据有更新，仍然希望快速导入，就不适合使用全量的方式。因此，TiDB 提供了 `syncer` 工具，可以方便地将 MySQL 的数据增量的导入到 TiDB 里面。
+[全量迁移](/v3.0/how-to/migrate/from-mysql.md)文档中介绍了如何使用 `mydumper`/`loader` 将 MySQL 的数据全量导入到 TiDB，但如果后续 MySQL 的数据有更新，仍然希望快速导入，就不适合使用全量的方式。因此，TiDB 提供了 `syncer` 工具，可以方便地将 MySQL 的数据增量的导入到 TiDB 里面。
 
 `syncer` 属于 TiDB 企业版工具集，如何获取可以参考 [下载 TiDB 企业版工具集](#下载-tidb-企业版工具集-linux)。
 
@@ -28,7 +28,7 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 ## 获取同步 position
 
-如上文所提，mydumper 导出的数据目录里面有一个 `metadata` 文件，里面就包含了我们所需的 position 信息。
+如上文所提，Mydumper 导出的数据目录里面有一个 `metadata` 文件，里面就包含了我们所需的 position 信息。
 
 medadata 文件信息内容举例：
 
@@ -54,11 +54,11 @@ binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e
 > **注意：**
 >
 > - `syncer.meta` 只需要第一次使用的时候配置，后续 `syncer` 同步新的 binlog 之后会自动将其更新到最新的 position。
-> - 如果使用 binlog position 同步则只需要配置 binlog-name binlog-pos; 使用 gtid 同步则需要设置 gtid，且启动 syncer 时带有 `--enable-gtid`。
+> - 如果使用 binlog position 同步则只需要配置 binlog-name binlog-pos; 使用 gtid 同步则需要设置 gtid，且启动 Syncer 时带有 `--enable-gtid`。
 
 ## 启动 `syncer`
 
-启动 syncer 服务之前请详细阅读 [Syncer 增量导入](/reference/tools/syncer.md )
+启动 Syncer 服务之前请详细阅读 [Syncer 增量导入](/v3.0/reference/tools/syncer.md )
 
 `syncer` 的配置文件 `config.toml`:
 

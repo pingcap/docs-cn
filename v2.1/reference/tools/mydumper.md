@@ -1,21 +1,21 @@
 ---
-title: mydumper 使用文档
-summary: 使用 mydumper 从 TiDB 导出数据。
+title: Mydumper 使用文档
+summary: 使用 Mydumper 从 TiDB 导出数据。
 category: reference
 ---
 
-# mydumper 使用文档
+# Mydumper 使用文档
 
-## mydumper 简介
+## Mydumper 简介
 
-`mydumper` 是 [mydumper](https://github.com/maxbube/mydumper) 的 fork 项目，并添加了一些针对 TiDB 的功能。推荐使用此工具对 TiDB 进行逻辑备份。
+`mydumper` 是 [Mydumper](https://github.com/maxbube/mydumper) 的 fork 项目，并添加了一些针对 TiDB 的功能。推荐使用此工具对 TiDB 进行逻辑备份。
 
-mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/reference/tools/download.md)。
+Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/v2.1/reference/tools/download.md)。
 
-## 相比于普通的 mydumper，此工具有哪些改进之处？
+## 相比于普通的 Mydumper，此工具有哪些改进之处？
 
 + 使用 `tidb_snapshot` 而非 `FLUSH TABLES WITH READ LOCK` 提供备份一致性
-+ [允许设置](/how-to/get-started/read-historical-data.md#操作流程) `tidb_snapshot` 的值（即可备份不同时间点的数据）
++ [允许设置](/v2.1/how-to/get-started/read-historical-data.md#操作流程) `tidb_snapshot` 的值（即可备份不同时间点的数据）
 
 ### 新添参数
 
@@ -42,10 +42,10 @@ mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/refer
 
 ## FAQ
 
-### PingCAP 的 mydumper 的源码是否可获取？
+### PingCAP 的 Mydumper 的源码是否可获取？
 
-PingCAP 的 mydumper 源码 [位于 GitHub](https://github.com/pingcap/mydumper)。
+PingCAP 的 Mydumper 源码 [位于 GitHub](https://github.com/pingcap/mydumper)。
 
-### 未来是否计划让 PingCAP 对 mydumper 的改动合并到上游？
+### 未来是否计划让 PingCAP 对 Mydumper 的改动合并到上游？
 
-是的，PingCAP 团队计划将对 mydumper 的改动合并到上游。参见 [PR #155](https://github.com/maxbube/mydumper/pull/155)。
+是的，PingCAP 团队计划将对 Mydumper 的改动合并到上游。参见 [PR #155](https://github.com/maxbube/mydumper/pull/155)。
