@@ -47,7 +47,8 @@ ALTER TABLE orders ADD FOREIGN KEY fk_user_id (user_id) REFERENCES users(id);
 ```
 
 ### 注意
-* TiDB 不会在 DML 语句中对外键进行约束 。例如，即使 `users` 表中不存在 `id=123` 的记录，下列事务也能提交成功：
+
+* TiDB 不会在 DML 语句中对外键进行约束。例如，即使 `users` 表中不存在 `id=123` 的记录，下列事务也能提交成功：
 
 ```
 START TRANSACTION;
