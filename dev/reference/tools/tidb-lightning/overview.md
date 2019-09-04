@@ -25,7 +25,7 @@ TiDB Lightning 整体工作原理如下：
 
 2. `tidb-lightning` 会在目标数据库建立架构和表，并获取其元数据。
 
-3. 每张表都会被分割为多个连续的 *区块* ，这样来自大表（200 GB+）的数据就可以用增量方式导入。
+3. 每张表都会被分割为多个连续的**区块**，这样来自大表 (200 GB+) 的数据就可以用增量方式导入。
 
 4. `tidb-lightning` 会通过 gRPC 让 `tikv-importer` 为每一个区块准备一个“引擎文件 (engine file)”来处理 KV 对。`tidb-lightning` 会并发读取 SQL dump，将数据源转换成与 TiDB 相同编码的 KV 对，然后发送到 `tikv-importer` 里对应的引擎文件。
 
