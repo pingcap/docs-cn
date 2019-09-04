@@ -35,10 +35,10 @@ Empty set (0.01 sec)
 
 ## MySQL compatibility
 
-This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/report-issue.md) on GitHub.
+This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/v2.1/report-issue.md) on GitHub.
 
 ## See also
 
-* [COMMIT](/reference/sql/statements/commit.md)
-* [BEGIN](/reference/sql/statements/begin.md)
-* [START TRANSACTION](/reference/sql/statements/start-transaction.md)
+* [COMMIT](/v2.1/reference/sql/statements/commit.md)
+* [BEGIN](/v2.1/reference/sql/statements/begin.md)
+* [START TRANSACTION](/v2.1/reference/sql/statements/start-transaction.md)

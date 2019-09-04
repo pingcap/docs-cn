@@ -10,7 +10,7 @@ This document collects the available downloads for most officially maintained ve
 
 ## TiDB Binlog
 
-If you want to download the latest version of [TiDB Binlog](/reference/tidb-binlog-overview.md), directly download the TiDB package, because TiDB Binlog is included in the TiDB package.
+If you want to download the latest version of [TiDB Binlog](/dev/reference/tidb-binlog-overview.md), directly download the TiDB package, because TiDB Binlog is included in the TiDB package.
 
 In addition, the Kafka version of TiDB Binlog is also provided.
 
@@ -21,7 +21,7 @@ In addition, the Kafka version of TiDB Binlog is also provided.
 
 ## TiDB Lightning
 
-If you want to download the latest version of [TiDB Lightning](/reference/tools/tidb-lightning/overview.md), click the download link in the following table.
+If you want to download the latest version of [TiDB Lightning](/dev/reference/tools/tidb-lightning/overview.md), click the download link in the following table.
 
 | Package name | OS | Architecture |  SHA256 checksum |
 |:---|:---|:---|:---|
@@ -29,7 +29,7 @@ If you want to download the latest version of [TiDB Lightning](/reference/tools/
 
 ## DM (Data Migration)
 
-If you want to download the latest version of [DM](/reference/tools/data-migration/overview.md), click the download link in the following table. You can also check the [DM Release](https://github.com/pingcap/dm/releases) page.
+If you want to download the latest version of [DM](/dev/reference/tools/data-migration/overview.md), click the download link in the following table. You can also check the [DM Release](https://github.com/pingcap/dm/releases) page.
 
 | Package name | OS | Architecture |  SHA256 checksum |
 |:---|:---|:---|:---|
@@ -37,7 +37,7 @@ If you want to download the latest version of [DM](/reference/tools/data-migrati
 
 ## Syncer, Loader, and Mydumper
 
-If you want to download the latest version of [Syncer](/reference/tools/syncer.md), [Loader](/reference/tools/loader.md), or [Mydumper](/reference/tools/mydumper.md), directly download the tidb-enterprise-tools package, because all these tools are included in this package.
+If you want to download the latest version of [Syncer](/dev/reference/tools/syncer.md), [Loader](/dev/reference/tools/loader.md), or [Mydumper](/dev/reference/tools/mydumper.md), directly download the tidb-enterprise-tools package, because all these tools are included in this package.
 
 | Package name | OS | Architecture | SHA256 checksum |
 |:---|:---|:---|:---|
@@ -48,5 +48,5 @@ This enterprise tools package includes all the following tools:
 - Syncer
 - Loader
 - Mydumper
-- [binlogctl](/reference/tidb-binlog-overview.md#binlogctl-guide)
-- [sync_diff_inspector](/reference/tools/sync-diff-inspector.md)
+- [binlogctl](/dev/reference/tidb-binlog-overview.md#binlogctl-guide)
+- [sync_diff_inspector](/dev/reference/tools/sync-diff-inspector.md)

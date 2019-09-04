@@ -27,9 +27,9 @@ In short, to use encrypted connections, both of the following conditions must be
 
 See the following desrciptions about the related parameters to enable encrypted connections:
 
-- [`ssl-cert`](/reference/configuration/tidb-server/configuration.md#ssl-cert): specifies the file path of the SSL certificate
-- [`ssl-key`](/reference/configuration/tidb-server/configuration.md#ssl-key): specifies the private key that matches the certificate
-- [`ssl-ca`](/reference/configuration/tidb-server/configuration.md#ssl-ca): (optional) specifies the file path of the trusted CA certificate
+- [`ssl-cert`](/dev/reference/configuration/tidb-server/configuration.md#ssl-cert): specifies the file path of the SSL certificate
+- [`ssl-key`](/dev/reference/configuration/tidb-server/configuration.md#ssl-key): specifies the private key that matches the certificate
+- [`ssl-ca`](/dev/reference/configuration/tidb-server/configuration.md#ssl-ca): (optional) specifies the file path of the trusted CA certificate
 
 To enable encrypted connections in the TiDB server, you must specify both of the `ssl-cert` and `ssl-key` parameters in the configuration file when you start the TiDB server. You can also specify the `ssl-ca` parameter for client authentication (see [Enable authentication](#enable-authentication)).
 

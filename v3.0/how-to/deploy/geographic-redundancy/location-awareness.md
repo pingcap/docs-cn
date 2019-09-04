@@ -11,7 +11,7 @@ aliases: ['/docs/op-guide/location-awareness/']
 
 PD schedules according to the topology of the TiKV cluster to maximize the TiKV's capability for disaster recovery.
 
-Before you begin, see [Deploy TiDB Using Ansible (Recommended)](/how-to/deploy/orchestrated/ansible.md) and [Deploy TiDB Using Docker](/how-to/deploy/orchestrated/docker.md).
+Before you begin, see [Deploy TiDB Using Ansible (Recommended)](/v3.0/how-to/deploy/orchestrated/ansible.md) and [Deploy TiDB Using Docker](/v3.0/how-to/deploy/orchestrated/docker.md).
 
 ## TiKV reports the topological information
 

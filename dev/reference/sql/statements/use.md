@@ -71,9 +71,9 @@ mysql> SHOW TABLES;
 
 ## MySQL compatibility
 
-This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/report-issue.md) on GitHub.
+This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/dev/report-issue.md) on GitHub.
 
 ## See also
 
-* [CREATE DATABASE](/reference/sql/statements/create-database.md)
-* [SHOW TABLES](/reference/sql/statements/show-tables.md)
+* [CREATE DATABASE](/dev/reference/sql/statements/create-database.md)
+* [SHOW TABLES](/dev/reference/sql/statements/show-tables.md)

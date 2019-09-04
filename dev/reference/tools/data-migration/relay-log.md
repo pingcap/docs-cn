@@ -36,7 +36,7 @@ An example of the directory structure of the local storage for a relay log:
 
     - `subdir` is named `<Upstream database UUID>.<Local subdir serial number>`.
 
-    - After [a switch between master and slave instances](/reference/tools/data-migration/cluster-operations.md#switch-between-master-and-slave-instances) in the upstream, DM-worker generates a new `subdir` directory with an incremental serial number.
+    - After [a switch between master and slave instances](/dev/reference/tools/data-migration/cluster-operations.md#switch-between-master-and-slave-instances) in the upstream, DM-worker generates a new `subdir` directory with an incremental serial number.
 
         - In the above example, for the `7e427cc0-091c-11e9-9e45-72b7c59d52d7.000001` directory, `7e427cc0-091c-11e9-9e45-72b7c59d52d7` is the upstream database UUID and `000001` is the local `subdir` serial number.
 

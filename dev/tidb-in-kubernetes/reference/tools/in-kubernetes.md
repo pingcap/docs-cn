@@ -10,7 +10,7 @@ Operations on TiDB in Kubernetes require some open source tools. In the meantime
 
 ## Use PD Control in Kubernetes
 
-[PD Control](reference/tools/pd-control.md) is the command-line tool for PD (Placement Driver). To use PD Control to operate on TiDB clusters in Kubernetes, firstly you need to establish the connection from local to the PD service using `kubectl port-forward`:
+[PD Control](/dev/reference/tools/pd-control.md) is the command-line tool for PD (Placement Driver). To use PD Control to operate on TiDB clusters in Kubernetes, firstly you need to establish the connection from local to the PD service using `kubectl port-forward`:
 
 {{< copyable "shell-regular" >}}
 
@@ -44,7 +44,7 @@ pd-ctl -u 127.0.0.1:<local-port> -d config show
 
 ## Use TiKV Control in Kubernetes
 
-[TiKV Control](reference/tools/tikv-control.md) is the command-line tool for TiKV. When using TiKV Control for TiDB clusters in Kubernetes, be aware that each operation mode involves different steps, as described below:
+[TiKV Control](/dev/reference/tools/tikv-control.md) is the command-line tool for TiKV. When using TiKV Control for TiDB clusters in Kubernetes, be aware that each operation mode involves different steps, as described below:
 
 * **Remote Mode**: In this mode, `tikv-ctl` accesses the TiKV service or the PD service through network. Firstly you need to establish the connection from local to the PD service and the target TiKV node using `kubectl port-forward`:
 
@@ -74,7 +74,7 @@ pd-ctl -u 127.0.0.1:<local-port> -d config show
     tikv-ctl --pd 127.0.0.1:2379 compact-cluster
     ```
 
-* **Local Mode**：In this mode, `tikv-ctl` accesses data files of TiKV, and the running TiKV instances must be stopped. To operate in the local mode, first you need to enter the [Diagnostic Mode](/tidb-in-kubernetes/troubleshoot.md#use-the-diagnostic-mode) to turn off automatic re-starting for the TiKV instance, stop the TiKV process, and use the `tkctl debug` command to start in the target TiKV Pod a new container that contains the `tikv-ctl` executable. The steps are as follows:
+* **Local Mode**：In this mode, `tikv-ctl` accesses data files of TiKV, and the running TiKV instances must be stopped. To operate in the local mode, first you need to enter the [Diagnostic Mode](/dev/tidb-in-kubernetes/troubleshoot.md#use-the-diagnostic-mode) to turn off automatic re-starting for the TiKV instance, stop the TiKV process, and use the `tkctl debug` command to start in the target TiKV Pod a new container that contains the `tikv-ctl` executable. The steps are as follows:
 
     1. Enter the Diagnostic mode:
 
@@ -114,7 +114,7 @@ pd-ctl -u 127.0.0.1:<local-port> -d config show
 
 ## Use TiDB Control in Kubernetes
 
-[TiDB Control](reference/tools/tidb-control.md) is the command-line tool for TiDB. To use TiDB Control in Kubernetes, you need to access the TiDB node and the PD service from local. It is suggested you turn on the connection from local to the TiDB node and the PD service using `kubectl port-forward`:
+[TiDB Control](/dev/reference/tools/tidb-control.md) is the command-line tool for TiDB. To use TiDB Control in Kubernetes, you need to access the TiDB node and the PD service from local. It is suggested you turn on the connection from local to the TiDB node and the PD service using `kubectl port-forward`:
 
 {{< copyable "shell-regular" >}}
 

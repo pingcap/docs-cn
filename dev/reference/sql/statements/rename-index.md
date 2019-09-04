@@ -52,11 +52,11 @@ Create Table: CREATE TABLE `t1` (
 
 ## MySQL compatibility
 
-This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/report-issue.md) on GitHub.
+This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/dev/report-issue.md) on GitHub.
 
 ## See also
 
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
-* [CREATE INDEX](/reference/sql/statements/create-index.md)
-* [DROP INDEX](/reference/sql/statements/drop-index.md)
-* [SHOW INDEX](/reference/sql/statements/show-index.md)
+* [SHOW CREATE TABLE](/dev/reference/sql/statements/show-create-table.md)
+* [CREATE INDEX](/dev/reference/sql/statements/create-index.md)
+* [DROP INDEX](/dev/reference/sql/statements/drop-index.md)
+* [SHOW INDEX](/dev/reference/sql/statements/show-index.md)

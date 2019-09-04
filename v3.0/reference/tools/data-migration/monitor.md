@@ -7,7 +7,7 @@ aliases: ['/docs/tools/dm/monitor/']
 
 # Data Migration Monitoring Metrics
 
-If your DM cluster is deployed using DM-Ansible, the [monitoring system](/reference/tools/data-migration/deploy.md#step-7-monitor-the-task-and-check-logs) is also deployed at the same time. This document describes the monitoring metrics provided by DM-worker.
+If your DM cluster is deployed using DM-Ansible, the [monitoring system](/v3.0/reference/tools/data-migration/deploy.md#step-7-monitor-the-task-and-check-logs) is also deployed at the same time. This document describes the monitoring metrics provided by DM-worker.
 
 > **Note:**
 >

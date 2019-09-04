@@ -41,7 +41,7 @@ Upstream and downstream database users must have the corresponding read and writ
     TiDB differs from MySQL in compatibility in the following aspects:
 
     - TiDB does not support the foreign key.
-    - [Character set compatibility differs](/reference/sql/character-set.md).
+    - [Character set compatibility differs](/dev/reference/sql/character-set.md).
 
 + The consistency of the sharded tables in the multiple upstream MySQL instances
 

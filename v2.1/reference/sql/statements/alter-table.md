@@ -8,8 +8,8 @@ category: reference
 
 This statement modifies an existing table to conform to a new table structure. The statement `ALTER TABLE` can be used to:
 
-* [`ADD`](/reference/sql/statements/add-index.md), [`DROP`](/reference/sql/statements/drop-index.md), or [`RENAME`](/reference/sql/statements/rename-index.md) indexes
-* [`ADD`](/reference/sql/statements/add-column.md), [`DROP`](/reference/sql/statements/drop-column.md), [`MODIFY`](/reference/sql/statements/modify-column.md) or [`CHANGE`](/reference/sql/statements/change-column.md) columns
+* [`ADD`](/v2.1/reference/sql/statements/add-index.md), [`DROP`](/v2.1/reference/sql/statements/drop-index.md), or [`RENAME`](/v2.1/reference/sql/statements/rename-index.md) indexes
+* [`ADD`](/v2.1/reference/sql/statements/add-column.md), [`DROP`](/v2.1/reference/sql/statements/drop-column.md), [`MODIFY`](/v2.1/reference/sql/statements/modify-column.md) or [`CHANGE`](/v2.1/reference/sql/statements/change-column.md) columns
 
 ## Synopsis
 
@@ -65,11 +65,11 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 ## See also
 
-* [ADD COLUMN](/reference/sql/statements/add-column.md)
-* [DROP COLUMN](/reference/sql/statements/drop-column.md)
-* [ADD INDEX](/reference/sql/statements/add-index.md)
-* [DROP INDEX](/reference/sql/statements/drop-index.md)
-* [RENAME INDEX](/reference/sql/statements/rename-index.md)
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [DROP TABLE](/reference/sql/statements/drop-table.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
+* [ADD COLUMN](/v2.1/reference/sql/statements/add-column.md)
+* [DROP COLUMN](/v2.1/reference/sql/statements/drop-column.md)
+* [ADD INDEX](/v2.1/reference/sql/statements/add-index.md)
+* [DROP INDEX](/v2.1/reference/sql/statements/drop-index.md)
+* [RENAME INDEX](/v2.1/reference/sql/statements/rename-index.md)
+* [CREATE TABLE](/v2.1/reference/sql/statements/create-table.md)
+* [DROP TABLE](/v2.1/reference/sql/statements/drop-table.md)
+* [SHOW CREATE TABLE](/v2.1/reference/sql/statements/show-create-table.md)

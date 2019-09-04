@@ -46,10 +46,10 @@ mysql> SHOW TABLES;
 
 ## MySQL compatibility
 
-This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/report-issue.md) on GitHub.
+This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/dev/report-issue.md) on GitHub.
 
 ## See also
 
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [SHOW TABLES](/reference/sql/statements/show-tables.md)
-* [ALTER TABLE](/reference/sql/statements/alter-table.md)
+* [CREATE TABLE](/dev/reference/sql/statements/create-table.md)
+* [SHOW TABLES](/dev/reference/sql/statements/show-tables.md)
+* [ALTER TABLE](/dev/reference/sql/statements/alter-table.md)

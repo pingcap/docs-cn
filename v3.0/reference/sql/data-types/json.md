@@ -23,4 +23,4 @@ INSERT INTO city (id,detail) VALUES (1, '{"name": "Beijing", "population": 100}'
 SELECT id FROM city WHERE population >= 100;
 ```
 
-For more information, see [JSON Functions](/reference/sql/functions-and-operators/json-functions.md) and [Generated Columns](/reference/sql/generated-columns.md).
+For more information, see [JSON Functions](/v3.0/reference/sql/functions-and-operators/json-functions.md) and [Generated Columns](/v3.0/reference/sql/generated-columns.md).

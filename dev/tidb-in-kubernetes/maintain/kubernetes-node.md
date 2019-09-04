@@ -13,7 +13,7 @@ This document introduces how to perform a temporary or long-term maintenance tas
 ## Prerequisites
 
 - [`kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-- [`tkctl`](tidb-in-kubernetes/reference/tools/tkctl.md)
+- [`tkctl`](/dev/tidb-in-kubernetes/reference/tools/tkctl.md)
 - [`jq`](https://stedolan.github.io/jq/download/)
 
 > **Note:**

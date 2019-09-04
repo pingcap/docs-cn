@@ -44,7 +44,7 @@ When you use `RECOVER TABLE` in the upstream TiDB during TiDB Binlog replication
 
 + Latency occurs during replication between upstream and downstream databases. An error instance: `snapshot is older than GC safe point 2019-07-10 13:45:57 +0800 CST`.
 
-For the above three situations, you can resume data replication from TiDB Binlog with a [full import of the deleted table](how-to/migrate/overview.md#full-data-migration-from-mysql).
+For the above three situations, you can resume data replication from TiDB Binlog with a [full import of the deleted table](/dev/how-to/migrate/overview.md#full-data-migration-from-mysql).
 
 ## Examples
 
@@ -102,6 +102,6 @@ For the above three situations, you can resume data replication from TiDB Binlog
 
 When deleting a table, TiDB only deletes the table metadata, and writes the table data (row data and index data) to be deleted to the `mysql.gc_delete_range` table. The GC Worker in the TiDB background periodically removes from the `mysql.gc_delete_range` table the keys that exceed the GC life time.
 
-Therefore, to recover a table, you only need to recover the table metadata and delete the corresponding row record in the `mysql.gc_delete_range` table before the GC Worker deletes the table data. You can use a snapshot read of TiDB to recover the table metadata. Refer to [Read Historical Data](/how-to/get-started/read-historical-data.md) for details.
+Therefore, to recover a table, you only need to recover the table metadata and delete the corresponding row record in the `mysql.gc_delete_range` table before the GC Worker deletes the table data. You can use a snapshot read of TiDB to recover the table metadata. Refer to [Read Historical Data](/dev/how-to/get-started/read-historical-data.md) for details.
 
 Table recovery is done by TiDB obtaining the table metadata through snapshot read, and then going through the process of table creation similar to `CREATE TABLE`. Therefore, `RECOVER TABLE` itself is, in essence, a kind of DDL operation.

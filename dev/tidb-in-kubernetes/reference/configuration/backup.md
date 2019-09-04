@@ -57,7 +57,7 @@ category: reference
 
 ### `restoreOptions`
 
-- The optional parameter specified to [`loader`](/reference/tools/loader.md) used when backing up data
+- The optional parameter specified to [`loader`](/dev/reference/tools/loader.md) used when backing up data
 - Default: "-t 16"
 
 ### `gcp.bucket`

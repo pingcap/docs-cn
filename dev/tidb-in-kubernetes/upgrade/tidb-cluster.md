@@ -57,4 +57,4 @@ You can change the configuration of TiDB cluster through the following steps:
 > **Note:**
 >
 > - Changing the `enableConfigMapRollout` variable against a running cluster will trigger a rolling update of PD, TiKV, TiDB servers even if there's no change to the configuration.
-> - Currently, PD's `scheduler` and `replication` configurations (the configuration key under `[scheduler]` and `[replication]` of the PD configuration file) can not be upgraded automatically.  You must upgrade them manually via `pd-ctl`. See [pd-ctl](/reference/tools/pd-control.md) for reference.
+> - Currently, PD's `scheduler` and `replication` configurations (the configuration key under `[scheduler]` and `[replication]` of the PD configuration file) can not be upgraded automatically.  You must upgrade them manually via `pd-ctl`. See [pd-ctl](/dev/reference/tools/pd-control.md) for reference.

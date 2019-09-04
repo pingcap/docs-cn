@@ -20,7 +20,7 @@ The default time zone setting for each component container of a TiDB cluster in 
 * If the cluster is running:
 
     * In the `values.yaml` file of the TiDB cluster, modify `timezone` settings in the `values.yaml` file of the TiDB cluster. For example, you can set it to `timezone: Asia/Shanghai` and then upgrade the TiDB cluster.
-    * Refer to [Time Zone Support](/how-to/configure/time-zone.md) to modify TiDB service time zone settings.
+    * Refer to [Time Zone Support](/v3.0/how-to/configure/time-zone.md) to modify TiDB service time zone settings.
 
 ## Can HPA or VPA be configured on TiDB components?
 
@@ -30,8 +30,8 @@ Currently, the TiDB cluster does not support HPA (Horizontal Pod Autoscaling) or
 
 Besides the operation of the Kubernetes cluster itself, there are the following two scenarios that might require manual intervention when using TiDB Operator:
 
-* Adjusting the cluster after the auto-failover of TiKV. See [Auto-Failover](tidb-in-kubernetes/maintain/auto-failover.md) for details;
-* Maintaining or dropping the specified Kubernetes nodes. See [Maintaining Nodes](tidb-in-kubernetes/maintain/kubernetes-node.md) for details.
+* Adjusting the cluster after the auto-failover of TiKV. See [Auto-Failover](/v3.0/tidb-in-kubernetes/maintain/auto-failover.md) for details;
+* Maintaining or dropping the specified Kubernetes nodes. See [Maintaining Nodes](/v3.0/tidb-in-kubernetes/maintain/kubernetes-node.md) for details.
 
 ## What is the recommended deployment topology when I use TiDB Operator to orchestrate a TiDB cluster on a public cloud?
 
@@ -47,7 +47,7 @@ In terms of the deployment topology relationship between the TiDB cluster and Ti
 
 TiDB Operator does not yet support automatically orchestrating TiSpark.
 
-If you want to add the TiSpark component to TiDB in Kubernetes, you must maintain Spark on your own in **the same** Kubernetes cluster. You must ensure that Spark can access the IPs and ports of PD and TiKV instances, and install the TiSpark plugin for Spark. [TiSpark](/reference/tispark.md#deploy-tiSpark-on-the-existing-spark-cluster) offers a detailed guide for you to install the TiSpark plugin.
+If you want to add the TiSpark component to TiDB in Kubernetes, you must maintain Spark on your own in **the same** Kubernetes cluster. You must ensure that Spark can access the IPs and ports of PD and TiKV instances, and install the TiSpark plugin for Spark. [TiSpark](/v3.0/reference/tispark.md#deploy-tiSpark-on-the-existing-spark-cluster) offers a detailed guide for you to install the TiSpark plugin.
 
 To maintain Spark in Kubernetes, refer to [Spark on Kubernetes](http://spark.apache.org/docs/latest/running-on-kubernetes.html).
 

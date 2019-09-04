@@ -12,7 +12,7 @@ Similarly, statements such as `SELECT .. FOR UPDATE` do not work in the same way
 
 > **Note:**
 >
-> Experimental support for [pessimistic locking](/reference/transactions/transaction-pessimistic.md) is now available. When enabled, TiDB will behave behave similar to the InnoDB storage engine.
+> Experimental support for [pessimistic locking](/dev/reference/transactions/transaction-pessimistic.md) is now available. When enabled, TiDB will behave behave similar to the InnoDB storage engine.
 
 ## Differences from MySQL
 

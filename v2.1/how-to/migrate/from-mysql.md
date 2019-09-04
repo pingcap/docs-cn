@@ -12,9 +12,9 @@ You can use `mydumper` to export data from MySQL and `loader` to import the data
 
 > **Note:**
 >
-> Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use it. Its performance is much lower than `mydumper` / `loader` and it takes much time to migrate large amounts of data. It is important to use the `mydumper` provided by TiDB and not the upstream `mydumper` version.  See [Mydumper](/reference/tools/mydumper.md) for more information.
+> Although TiDB also supports the official `mysqldump` tool from MySQL for data migration, it is not recommended to use it. Its performance is much lower than `mydumper` / `loader` and it takes much time to migrate large amounts of data. It is important to use the `mydumper` provided by TiDB and not the upstream `mydumper` version.  See [Mydumper](/v2.1/reference/tools/mydumper.md) for more information.
 
-`Mydumper` and `loader` can be [downloaded as part of Enterprise Tools](/reference/tools/download.md).
+`Mydumper` and `loader` can be [downloaded as part of Enterprise Tools](/v2.1/reference/tools/download.md).
 
 ### Export data from MySQL
 
@@ -38,7 +38,7 @@ In this command,
 
 ### Import data to TiDB
 
-Use `loader` to import the data from MySQL to TiDB. See [Loader instructions](/reference/tools/loader.md) for more information.
+Use `loader` to import the data from MySQL to TiDB. See [Loader instructions](/v2.1/reference/tools/loader.md) for more information.
 
 ```bash
 ./bin/loader -h 127.0.0.1 -u root -P 4000 -t 32 -d ./var/test

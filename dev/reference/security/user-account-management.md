@@ -125,4 +125,4 @@ If you modified the privilege tables directly, run the following command to appl
 FLUSH PRIVILEGES;
 ```
 
-For details, see [Privilege Management](/reference/security/privilege-system.md).
+For details, see [Privilege Management](/dev/reference/security/privilege-system.md).

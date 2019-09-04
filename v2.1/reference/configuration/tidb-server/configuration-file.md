@@ -8,7 +8,7 @@ category: deployment
 
 The TiDB configuration file supports more options than command line options. You can find the default configuration file in [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) and rename it to `config.toml`.
 
-This document describes the options that are not involved in command line options. For command line options, see [here](/reference/configuration/tidb-server/configuration.md).
+This document describes the options that are not involved in command line options. For command line options, see [here](/v2.1/reference/configuration/tidb-server/configuration.md).
 
 ## `split-table`
 
@@ -188,8 +188,8 @@ Configuration about performance.
 >
 > This configuration item is introduced in the 2.1.13 version. It is only supported in the 2.1 versions, specifically, 2.1.3 and later versions.
 
-- Whether TiDB performs statistics update operations, such as maintaining the total number of rows and the number of modified rows, automatically analyzing and using feedback
-- Default: true
++ Whether TiDB performs statistics update operations, such as maintaining the total number of rows and the number of modified rows, automatically analyzing and using feedback
++ Default: true
 + Because the time interval of the statistics update operations is controlled by `stats-lease`, this parameter only takes effect when `stats-lease` is set to 0. When `enable-update-stats` is `false`, TiDB no longer automatically modifies the following system tables:
     - `mysql.stats_meta`: TiDB no longer automatically records the number of table rows that are modified by the transaction or updates it to this system table
     - `mysql.stats_histograms` and `mysql.stats_buckets`: TiDB no longer automatically analyzes or proactively updates statistics

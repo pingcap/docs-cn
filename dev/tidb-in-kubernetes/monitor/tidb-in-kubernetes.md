@@ -19,7 +19,7 @@ You can monitor the TiDB cluster with Prometheus and Grafana. A separate monitor
 
 The monitoring data is not persisted by default. If the monitoring container restarts for some reason, the existing monitoring data gets lost. To persist the monitoring data, you can set `monitor.persistent` to `true` in the `values.yaml` file. When you enable this option, you need to set `storageClass` to an existing storage in the current cluster, and this storage is required to support persisting data, otherwise there is still a risk of data loss.
 
-For configuration details on the monitoring system, refer to [TiDB Cluster Monitoring](/how-to/monitor/monitor-a-cluster.md).
+For configuration details on the monitoring system, refer to [TiDB Cluster Monitoring](/dev/how-to/monitor/monitor-a-cluster.md).
 
 ### View the monitoring dashboard
 

@@ -25,7 +25,7 @@ TiDB is configurable using command-line flags and environment variables. The def
 
 - The configuration file
 - Default: ""
-- If you have specified the configuration file, TiDB reads the configuration file. If the corresponding configuration also exists in the command line flags, TiDB uses the configuration in the command line flags to overwrite that in the configuration file. For detailed configuration information, see [TiDB Configuration File Description](/reference/configuration/tidb-server/configuration-file.md).
+- If you have specified the configuration file, TiDB reads the configuration file. If the corresponding configuration also exists in the command line flags, TiDB uses the configuration in the command line flags to overwrite that in the configuration file. For detailed configuration information, see [TiDB Configuration File Description](/v3.0/reference/configuration/tidb-server/configuration-file.md).
 
 ## `--host`
 
@@ -118,8 +118,8 @@ TiDB is configurable using command-line flags and environment variables. The def
 - The status report port for TiDB server
 - Default: "10080"
 - This is used to get server internal data. The data includes [Prometheus metrics](https://prometheus.io/) and [pprof](https://golang.org/pkg/net/http/pprof/).
-- Prometheus metrics can be got through "http://host:status_port/metrics".
-- Pprof data can be got through "http://host:status_port/debug/pprof".
+- Prometheus metrics can be got through <http://host:status_port/metrics>.
+- Pprof data can be got through <http://host:status_port/debug/pprof>.
 
 ## `--store`
 

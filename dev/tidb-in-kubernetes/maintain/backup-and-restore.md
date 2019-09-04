@@ -10,8 +10,8 @@ This document describes how to back up and restore the data of a TiDB cluster in
 
 TiDB in Kubernetes supports two kinds of backup strategies:
 
-* [Full backup](#full-backup) (scheduled or ad-hoc): use [`mydumper`](/reference/tools/mydumper.md) to take a logical backup of the TiDB cluster.
-* [Incremental backup](#incremental-backup): use [`TiDB Binlog`](/reference/tidb-binlog-overview.md) to replicate data in the TiDB cluster to another database or take a real-time backup of the data.
+* [Full backup](#full-backup) (scheduled or ad-hoc): use [`mydumper`](/dev/reference/tools/mydumper.md) to take a logical backup of the TiDB cluster.
+* [Incremental backup](#incremental-backup): use [`TiDB Binlog`](/dev/reference/tidb-binlog-overview.md) to replicate data in the TiDB cluster to another database or take a real-time backup of the data.
 
 Currently, TiDB in Kubernetes only supports automatic [restoration](#restore) for full backup taken by `mydumper`. Restoring the incremental backup data by `TiDB Binlog` requires manual operations.
 
@@ -19,7 +19,7 @@ Currently, TiDB in Kubernetes only supports automatic [restoration](#restore) fo
 
 Full backup uses `mydumper` to take a logical backup of a TiDB cluster. The backup task creates a PVC ([PersistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims)) to store data.
 
-In the default configuration, the backup uses PV ([Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistent-volumes)) to store backup data. You can also store the data in [Google Cloud Storage](https://cloud.google.com/storage/) buckets, [Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/) or [Amazon S3](https://aws.amazon.com/s3/) by changing the configuration. In this case, the backup data is temporarily stored in the PV before it is uploaded to object storage. Refer to [TiDB cluster backup configuration](/tidb-in-kubernetes/reference/configuration/backup.md) for all configuration options you have.
+In the default configuration, the backup uses PV ([Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistent-volumes)) to store backup data. You can also store the data in [Google Cloud Storage](https://cloud.google.com/storage/) buckets, [Ceph Object Storage](https://ceph.com/ceph-storage/object-storage/) or [Amazon S3](https://aws.amazon.com/s3/) by changing the configuration. In this case, the backup data is temporarily stored in the PV before it is uploaded to object storage. Refer to [TiDB cluster backup configuration](/dev/tidb-in-kubernetes/reference/configuration/backup.md) for all configuration options you have.
 
 You can either set up a scheduled full backup job or take a full backup in an ad-hoc manner.
 
@@ -123,6 +123,6 @@ The `pingcap/tidb-backup` helm chart helps restore a TiDB cluster using backup d
 
 ## Incremental backup
 
-Incremental backup uses [TiDB Binlog](/reference/tidb-binlog-overview.md) to collect binlog data from TiDB and provide real-time backup and replication to downstream platforms.
+Incremental backup uses [TiDB Binlog](/dev/reference/tidb-binlog-overview.md) to collect binlog data from TiDB and provide real-time backup and replication to downstream platforms.
 
-For the detailed guide of maintaining TiDB Binlog in Kubernetes, refer to [TiDB Binlog](/tidb-in-kubernetes/maintain/tidb-binlog.md).
+For the detailed guide of maintaining TiDB Binlog in Kubernetes, refer to [TiDB Binlog](/dev/tidb-in-kubernetes/maintain/tidb-binlog.md).

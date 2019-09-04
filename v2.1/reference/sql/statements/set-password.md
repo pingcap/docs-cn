@@ -56,9 +56,9 @@ mysql> SHOW CREATE USER newuser;
 
 ## MySQL compatibility
 
-This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/report-issue.md) on GitHub.
+This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/v2.1/report-issue.md) on GitHub.
 
 ## See also
 
-* [CREATE USER](/reference/sql/statements/create-user.md)
-* [Privilege Management](/reference/security/privilege-system.md)
+* [CREATE USER](/v2.1/reference/sql/statements/create-user.md)
+* [Privilege Management](/v2.1/reference/security/privilege-system.md)

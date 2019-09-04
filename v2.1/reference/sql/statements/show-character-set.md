@@ -40,8 +40,8 @@ mysql> SHOW CHARACTER SET;
 
 ## MySQL compatibility
 
-This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/report-issue.md) on GitHub.
+This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/v2.1/report-issue.md) on GitHub.
 
 ## See also
 
-* [SHOW COLLATION](/reference/sql/statements/show-collation.md)
+* [SHOW COLLATION](/v2.1/reference/sql/statements/show-collation.md)

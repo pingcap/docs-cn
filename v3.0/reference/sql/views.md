@@ -61,5 +61,5 @@ Currently, the TiDB view has the following limitations:
 
 ## See also
 
-- [CREATE VIEW](/reference/sql/statements/create-view.md)
-- [DROP VIEW](/reference/sql/statements/drop-view.md)
+- [CREATE VIEW](/v3.0/reference/sql/statements/create-view.md)
+- [DROP VIEW](/v3.0/reference/sql/statements/drop-view.md)

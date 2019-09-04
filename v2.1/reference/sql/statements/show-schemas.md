@@ -6,4 +6,4 @@ category: reference
 
 # SHOW SCHEMAS
 
-This statement is an alias to [`SHOW DATABASES`](/reference/sql/statements/show-databases.md). It is included for compatibility with MySQL.
+This statement is an alias to [`SHOW DATABASES`](/v2.1/reference/sql/statements/show-databases.md). It is included for compatibility with MySQL.

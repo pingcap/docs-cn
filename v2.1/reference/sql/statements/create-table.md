@@ -146,7 +146,7 @@ data_type:
   | JSON
 ```
 
-For the `data_type`, see [Data Types](/reference/sql/data-types/overview.md).
+For the `data_type`, see [Data Types](/v2.1/reference/sql/data-types/overview.md).
 
 ```sql
 index_col_name:
@@ -206,7 +206,7 @@ table_option:
   | STATS_PERSISTENT [=] {DEFAULT|0|1}
 ```
 
-The `table_option` currently only supports `AUTO_INCREMENT`, `SHARD_ROW_ID_BITS` (see [TiDB Specific System Variables](/reference/configuration/tidb-server/tidb-specific-variables.md#shard-row-id-bits) for details), `PRE_SPLIT_REGIONS`, `CHARACTER SET`, `COLLATE`, and `COMMENT`, while the others are only supported in syntax. The clauses are separated by a comma `,`. See the following table for details:
+The `table_option` currently only supports `AUTO_INCREMENT`, `SHARD_ROW_ID_BITS` (see [TiDB Specific System Variables](/v2.1/reference/configuration/tidb-server/tidb-specific-variables.md#shard-row-id-bits) for details), `PRE_SPLIT_REGIONS`, `CHARACTER SET`, `COLLATE`, and `COMMENT`, while the others are only supported in syntax. The clauses are separated by a comma `,`. See the following table for details:
 
 | Parameters | Description | Example |
 | ---------- | ---------- | ------- |
@@ -262,6 +262,6 @@ mysql> SELECT * FROM t1;
 
 ## See also
 
-* [DROP TABLE](/reference/sql/statements/drop-table.md)
-* [CREATE TABLE LIKE](/reference/sql/statements/create-table-like.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
+* [DROP TABLE](/v2.1/reference/sql/statements/drop-table.md)
+* [CREATE TABLE LIKE](/v2.1/reference/sql/statements/create-table-like.md)
+* [SHOW CREATE TABLE](/v2.1/reference/sql/statements/show-create-table.md)

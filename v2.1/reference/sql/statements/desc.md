@@ -6,4 +6,4 @@ category: reference
 
 # DESC
 
-This statement is an alias to [`EXPLAIN`](/reference/sql/statements/explain.md). It is included for compatibility with MySQL.
+This statement is an alias to [`EXPLAIN`](/v2.1/reference/sql/statements/explain.md). It is included for compatibility with MySQL.

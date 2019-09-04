@@ -30,7 +30,7 @@ The TiDB DM (Data Migration) platform consists of 3 components: DM-master, DM-wo
 
 Individual tasks are defined in .yaml files that are read by dmctl and submitted to DM-master. DM-master then informs each instance of DM-worker of its responsibilities for a given task.
 
-For additional information about DM, please consult [Data Migration Overview](/reference/tools/data-migration/overview.md) in the TiDB documentation.
+For additional information about DM, please consult [Data Migration Overview](/v3.0/reference/tools/data-migration/overview.md) in the TiDB documentation.
 
 ## Setup
 
@@ -694,4 +694,4 @@ Expected output:
 
 In this tutorial, we've completed 2 exercises. The first was a shard migration from 3 upstream MySQL server instances that each assigned non-overlapping sets of auto-increment IDs, and the second was a shard migration from 3 upstream MySQL server instances that each assigned auto-increment IDs that conflicted with one another. We saw how DM not only takes care of importing an initial dump of data in the cluster, but that it can also read binary logs to keep the downstream TiDB cluster in sync with the upstream instance(s).
 
-For additional information about DM, please consult [Data Migration Overview](/reference/tools/data-migration/overview.md) in the TiDB documentation or join the [TiDB Community Slack](https://pingcap.com/tidbslack/) channel!
+For additional information about DM, please consult [Data Migration Overview](/v3.0/reference/tools/data-migration/overview.md) in the TiDB documentation or join the [TiDB Community Slack](https://pingcap.com/tidbslack/) channel!

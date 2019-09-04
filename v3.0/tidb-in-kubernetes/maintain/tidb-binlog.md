@@ -6,12 +6,12 @@ category: how-to
 
 # Maintain TiDB Binlog
 
-This document describes how to maintain [TiDB Binlog](reference/tidb-binlog-overview.md) of a TiDB cluster in Kubernetes.
+This document describes how to maintain [TiDB Binlog](/v3.0/reference/tidb-binlog-overview.md) of a TiDB cluster in Kubernetes.
 
 ## Prerequisites
 
-- [Deploy TiDB Operator](tidb-in-kubernetes/deploy/tidb-operator.md);
-- [Install Helm](tidb-in-kubernetes/reference/tools/in-kubernetes.md#use-helm) and configure it with the official PingCAP chart.
+- [Deploy TiDB Operator](/v3.0/tidb-in-kubernetes/deploy/tidb-operator.md);
+- [Install Helm](/v3.0/tidb-in-kubernetes/reference/tools/in-kubernetes.md#use-helm) and configure it with the official PingCAP chart.
 
 ## Enable TiDB Binlog of a TiDB cluster
 
@@ -97,7 +97,7 @@ By default, only one downstream drainer is created. You can install the `tidb-dr
 
     The `clusterName` and `clusterVersion` must match the desired source TiDB cluster.
 
-    For complete configuration details, refer to [TiDB Binlog Drainer Configurations in Kubernetes](tidb-in-kubernetes/reference/configuration/tidb-drainer.md).
+    For complete configuration details, refer to [TiDB Binlog Drainer Configurations in Kubernetes](/v3.0/tidb-in-kubernetes/reference/configuration/tidb-drainer.md).
 
 4. Deploy the drainer:
 

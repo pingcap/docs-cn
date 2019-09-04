@@ -12,13 +12,13 @@ A problematic SQL statement can increase the pressure on the entire cluster, res
 
 > **Note:**
 >
-> This document describes the slow query log in versions up to TiDB 2.1.7. For the slow query log in later versions see [Identifying Slow Queries](/how-to/maintain/identify-slow-queries.md).
+> This document describes the slow query log in versions up to TiDB 2.1.7. For the slow query log in later versions see [Identifying Slow Queries](/v2.1/how-to/maintain/identify-slow-queries.md).
 
 ## Obtain the log
 
-By `grep` the keyword `SLOW_QUERY` in the log file of TiDB, you can obtain the logs of statements whose execution time exceeds [slow-threshold](/reference/configuration/tidb-server/configuration-file.md#slow-threshold).
+By `grep` the keyword `SLOW_QUERY` in the log file of TiDB, you can obtain the logs of statements whose execution time exceeds [slow-threshold](/v2.1/reference/configuration/tidb-server/configuration-file.md#slow-threshold).
 
-You can edit `slow-threshold` in the configuration file and its default value is 300ms. If you configure the [slow-query-file](/reference/configuration/tidb-server/configuration-file.md#slow-query-file), all the slow query logs will be written in this file.
+You can edit `slow-threshold` in the configuration file and its default value is 300ms. If you configure the [slow-query-file](/v2.1/reference/configuration/tidb-server/configuration-file.md#slow-query-file), all the slow query logs will be written in this file.
 
 ## Usage example
 
@@ -36,7 +36,7 @@ This section describes fields in the slow query log based on the usage example a
 
 ### `cost_time`
 
-The execution time of this statement. Only the statements whose execution time exceeds [slow-threshold](/reference/configuration/tidb-server/configuration-file.md#slow-threshold) output this log.
+The execution time of this statement. Only the statements whose execution time exceeds [slow-threshold](/v2.1/reference/configuration/tidb-server/configuration-file.md#slow-threshold) output this log.
 
 ### `process_time`
 

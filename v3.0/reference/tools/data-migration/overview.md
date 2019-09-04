@@ -34,7 +34,7 @@ DM-worker executes specific data replication tasks.
 - Orchestrating the operation of the data replication subtasks
 - Monitoring the running state of the data replication subtasks
 
-After DM-worker is started, it automatically replicates the upstream binlog to the local configuration directory (the default replication directory is `<deploy_dir>/relay_log` if DM is deployed using `DM-Ansible`). For details about DM-worker, see [DM-worker Introduction](/reference/tools/data-migration/dm-worker-intro.md). For details about the relay log, see [Relay Log](/reference/tools/data-migration/relay-log.md).
+After DM-worker is started, it automatically replicates the upstream binlog to the local configuration directory (the default replication directory is `<deploy_dir>/relay_log` if DM is deployed using `DM-Ansible`). For details about DM-worker, see [DM-worker Introduction](/v3.0/reference/tools/data-migration/dm-worker-intro.md). For details about the relay log, see [Relay Log](/v3.0/reference/tools/data-migration/relay-log.md).
 
 ### dmctl
 
@@ -51,23 +51,23 @@ This section describes the data replication features provided by the Data Migrat
 
 ### Schema and table routing
 
-The [schema and table routing](/reference/tools/data-migration/features/overview.md#table-routing) feature means that DM can replicate a certain table of the upstream MySQL or MariaDB instance to the specified table in the downstream, which can be used to merge or replicate the sharding data.
+The [schema and table routing](/v3.0/reference/tools/data-migration/features/overview.md#table-routing) feature means that DM can replicate a certain table of the upstream MySQL or MariaDB instance to the specified table in the downstream, which can be used to merge or replicate the sharding data.
 
 ### Black and white lists replication at the schema and table levels
 
-The [black and white lists filtering rule](/reference/tools/data-migration/features/overview.md#black-and-white-table-lists) of the upstream database instance tables is similar to MySQL `replication-rules-db`/`replication-rules-table`, which can be used to filter or only replicate all operations of some databases or some tables.
+The [black and white lists filtering rule](/v3.0/reference/tools/data-migration/features/overview.md#black-and-white-table-lists) of the upstream database instance tables is similar to MySQL `replication-rules-db`/`replication-rules-table`, which can be used to filter or only replicate all operations of some databases or some tables.
 
 ### Binlog event filtering
 
-[Binlog event filtering](/reference/tools/data-migration/features/overview.md#binlog-event-filtering) is a more fine-grained filtering rule than the black and white lists filtering rule. You can use statements like `INSERT` or `TRUNCATE TABLE` to specify the binlog events of `schema/table` that you need to replicate or filter out.
+[Binlog event filtering](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filtering) is a more fine-grained filtering rule than the black and white lists filtering rule. You can use statements like `INSERT` or `TRUNCATE TABLE` to specify the binlog events of `schema/table` that you need to replicate or filter out.
 
 ### Column mapping
 
-The [column mapping](/reference/tools/data-migration/features/overview.md#column-mapping) feature means that the table column value can be modified according to the built-in expression specified by the user, which can be used to resolve the conflicts of the sharding auto-increment primary key IDs.
+The [column mapping](/v3.0/reference/tools/data-migration/features/overview.md#column-mapping) feature means that the table column value can be modified according to the built-in expression specified by the user, which can be used to resolve the conflicts of the sharding auto-increment primary key IDs.
 
 ### Sharding support
 
-DM supports merging the original sharded instances and tables into TiDB, but with [some restrictions](/reference/tools/data-migration/features/shard-merge.md#restrictions).
+DM supports merging the original sharded instances and tables into TiDB, but with [some restrictions](/v3.0/reference/tools/data-migration/features/shard-merge.md#restrictions).
 
 ## Usage restrictions
 
@@ -85,22 +85,22 @@ Before using the DM tool, note the following restrictions:
     > - 5.7.1 < MySQL version < 8.0
     > - MariaDB version >= 10.1.3
 
-    Data Migration [prechecks the corresponding privileges and configuration automatically](/reference/tools/data-migration/precheck.md) while starting the data replication task using dmctl.
+    Data Migration [prechecks the corresponding privileges and configuration automatically](/v3.0/reference/tools/data-migration/precheck.md) while starting the data replication task using dmctl.
 
 + DDL syntax
 
-    - Currently, TiDB is not compatible with all the DDL statements that MySQL supports. Because DM uses the TiDB parser to process DDL statements, it only supports the DDL syntax supported by the TiDB parser. For details, see [MySQL Compatibility](/reference/mysql-compatibility.md#ddl).
+    - Currently, TiDB is not compatible with all the DDL statements that MySQL supports. Because DM uses the TiDB parser to process DDL statements, it only supports the DDL syntax supported by the TiDB parser. For details, see [MySQL Compatibility](/v3.0/reference/mysql-compatibility.md#ddl).
 
-    - DM reports an error when it encounters an incompatible DDL statement. To solve this error, you need to manually handle it using dmctl, either skipping this DDL statement or replacing it with a specified DDL statement(s). For details, see [Skip or replace abnormal SQL statements](/how-to/troubleshoot/data-migration.md#skip-or-replace-abnormal-sql-statements).
+    - DM reports an error when it encounters an incompatible DDL statement. To solve this error, you need to manually handle it using dmctl, either skipping this DDL statement or replacing it with a specified DDL statement(s). For details, see [Skip or replace abnormal SQL statements](/v3.0/how-to/troubleshoot/data-migration.md#skip-or-replace-abnormal-sql-statements).
 
 + Sharding
 
-    - If conflict exists between sharded tables, *only columns with the auto increment primary key* encounter the conflict, and the *column type is bigint*, solve the conflict using [column mapping](/reference/tools/data-migration/features/overview.md#column-mapping). Otherwise, data replication is not supported. Conflicting data can cover each other and cause data loss.
+    - If conflict exists between sharded tables, *only columns with the auto increment primary key* encounter the conflict, and the *column type is bigint*, solve the conflict using [column mapping](/v3.0/reference/tools/data-migration/features/overview.md#column-mapping). Otherwise, data replication is not supported. Conflicting data can cover each other and cause data loss.
 
-    - For other sharding restrictions, see [Sharding DDL usage restrictions](/reference/tools/data-migration/features/shard-merge.md#restrictions).
+    - For other sharding restrictions, see [Sharding DDL usage restrictions](/v3.0/reference/tools/data-migration/features/shard-merge.md#restrictions).
 
 + Operations
 
-    - After DM-worker is restarted, the data replication task cannot be automatically restored. You need to manually run `start-task`. For details, see [Manage the Data Replication Task](/reference/tools/data-migration/manage-tasks.md).
+    - After DM-worker is restarted, the data replication task cannot be automatically restored. You need to manually run `start-task`. For details, see [Manage the Data Replication Task](/v3.0/reference/tools/data-migration/manage-tasks.md).
 
-    - After DM-worker is restarted, the DDL lock replication cannot be automatically restored in some conditions. You need to manually handle it. For details, see [Handle Sharding DDL Locks Manually](/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md).
+    - After DM-worker is restarted, the DDL lock replication cannot be automatically restored in some conditions. You need to manually handle it. For details, see [Handle Sharding DDL Locks Manually](/v3.0/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md).

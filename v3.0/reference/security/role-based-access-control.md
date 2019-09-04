@@ -33,7 +33,7 @@ For example, you can use the following statement to create roles `r_1` and `r_2`
 CREATE ROLE `r_1`@`%`, `r_2`@`%`;
 ```
 
-For the role naming format and rule, see [TiDB User Account Management](/reference/security/user-account-management.md).
+For the role naming format and rule, see [TiDB User Account Management](/v3.0/reference/security/user-account-management.md).
 
 Roles are stored in the `mysql.user` table. The name of the role you are trying to create must be unique; otherwise, an error is reported.
 
@@ -55,7 +55,7 @@ To delete a role, you need the `DROP ROLE` or `DROP USER` privilege.
 
 ### Grant a privilege to a role
 
-The operation of granting a privilege to a role is the same with that of granting a privilege to a user. For details, see [TiDB Privilege Management](/reference/security/privilege-system.md).
+The operation of granting a privilege to a role is the same with that of granting a privilege to a user. For details, see [TiDB Privilege Management](/v3.0/reference/security/privilege-system.md).
 
 For example, you can use the following statement to grant the `analyst` role the privilege to read the `test` database:
 
@@ -83,7 +83,7 @@ For example, you can use the following statement to revoke all privileges on the
 REVOKE ALL PRIVILEGES ON `test`.* FROM 'analyst'@'%';
 ```
 
-For details, see [TiDB Privilege Management](/reference/security/privilege-system.md).
+For details, see [TiDB Privilege Management](/v3.0/reference/security/privilege-system.md).
 
 ### Grant a role to a user
 
@@ -354,7 +354,7 @@ You can use `SHOW GRANTS` or `SHOW GRANTS FOR CURRENT_USER()` to check the curre
 
 ### Authorization table
 
-In addition to four system [privilege tables](/reference/security/privilege-system.md#privilege-table), the RBAC system introduces two new system privilege tables:
+In addition to four system [privilege tables](/v3.0/reference/security/privilege-system.md#privilege-table), the RBAC system introduces two new system privilege tables:
 
 - `mysql.role_edges`: records the authorization relationship of the role and user.
 - `mysql.default_roles`: records default roles of each user.
@@ -408,5 +408,5 @@ select * from mysql.default_roles;
 
 Because RBAC, user management, and privilege management are closely related, you can refer to operation details in the following resources:
 
-- [TiDB Privilege Management](/reference/security/privilege-system.md)
-- [TiDB User Account Management](/reference/security/user-account-management.md)
+- [TiDB Privilege Management](/v3.0/reference/security/privilege-system.md)
+- [TiDB User Account Management](/v3.0/reference/security/user-account-management.md)

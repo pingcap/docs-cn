@@ -36,7 +36,7 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 ## Full backup and restoration using `mydumper`/`loader`
 
-You can use [`mydumper`](/reference/tools/mydumper.md) to export data from TiDB and [`loader`](/reference/tools/loader.md) to import the data into TiDB.
+You can use [`mydumper`](/dev/reference/tools/mydumper.md) to export data from TiDB and [`loader`](/dev/reference/tools/loader.md) to import the data into TiDB.
 
 > **Important**: You must use the `mydumper` from the Enterprise Tools package, and not the `mydumper` provided by your operating system's package manager. The upstream version of `mydumper` does not yet handle TiDB correctly ([#155](https://github.com/maxbube/mydumper/pull/155)). Using `mysqldump` is also not recommended, as it is much slower for both backup and restoration.
 
@@ -112,7 +112,7 @@ Then execute two more commands:
 
 ### Restore data into TiDB
 
-To restore data into TiDB, use `loader` to import the previously exported data. See [Loader instructions](/reference/tools/loader.md) for more information.
+To restore data into TiDB, use `loader` to import the previously exported data. See [Loader instructions](/dev/reference/tools/loader.md) for more information.
 
 ```bash
 ./bin/loader -h 127.0.0.1 -u root -P 4000 -t 32 -d ./var/test

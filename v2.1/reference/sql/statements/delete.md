@@ -53,11 +53,11 @@ mysql> SELECT * FROM t1;
 
 ## MySQL compatibility
 
-This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/report-issue.md) on GitHub.
+This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/v2.1/report-issue.md) on GitHub.
 
 ## See also
 
-* [INSERT](/reference/sql/statements/insert.md)
-* [SELECT](/reference/sql/statements/select.md)
-* [UPDATE](/reference/sql/statements/update.md)
-* [REPLACE](/reference/sql/statements/replace.md)
+* [INSERT](/v2.1/reference/sql/statements/insert.md)
+* [SELECT](/v2.1/reference/sql/statements/select.md)
+* [UPDATE](/v2.1/reference/sql/statements/update.md)
+* [REPLACE](/v2.1/reference/sql/statements/replace.md)

@@ -96,7 +96,7 @@ enabled = true
 
 ### Configure TiKV
 
-You can use the basic configuration at the beginning. Then after the test is run, you can adjust it based on the metrics on Grafana and the [TiKV Tuning Instructions](../reference/performance/tune-tikv.md).
+You can use the basic configuration at the beginning. Then after the test is run, you can adjust it based on the metrics on Grafana and the [TiKV Tuning Instructions](/v3.0/reference/performance/tune-tikv.md).
 
 ### Configure BenchmarkSQL
 

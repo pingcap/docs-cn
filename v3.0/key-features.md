@@ -15,7 +15,7 @@ TiDB expands both SQL processing and storage by simply adding new nodes. This ma
 
 TiDB acts like it is a MySQL 5.7 server to your applications. You can continue to use all of the existing MySQL client libraries, and in many cases, you will not need to change a single line of code in your application.
 
-TiDB does not have 100% MySQL compatibility because we built the layer from scratch in order to maximize the performance advantages inherent to a distributed system. We believe in being transparent about the level of MySQL compatibility that TiDB provides. Please check out the list of [known compatibility differences](/reference/mysql-compatibility.md).
+TiDB does not have 100% MySQL compatibility because we built the layer from scratch in order to maximize the performance advantages inherent to a distributed system. We believe in being transparent about the level of MySQL compatibility that TiDB provides. Please check out the list of [known compatibility differences](/v3.0/reference/mysql-compatibility.md).
 
 ## Replicate from and to MySQL
 
@@ -27,7 +27,7 @@ We believe that being able to replicate in both directions lowers the risk when 
 
 TiDB internally shards table into small range-based chunks that we refer to as "Regions". Each Region defaults to approximately 100MiB in size, and TiDB uses a Two-phase commit internally to ensure that Regions are maintained in a transactionally consistent way.
 
-Transactions in TiDB are strongly consistent, with snapshot isolation level consistency. For more information, see transaction [behavior and performance differences](/reference/transactions/transaction-model.md). This makes TiDB more comparable to traditional relational databases in semantics than some of the newer NoSQL systems using eventual consistency.
+Transactions in TiDB are strongly consistent, with snapshot isolation level consistency. For more information, see transaction [behavior and performance differences](/v3.0/reference/transactions/transaction-model.md). This makes TiDB more comparable to traditional relational databases in semantics than some of the newer NoSQL systems using eventual consistency.
 
 These behaviors are transparent to your application(s), which only need to connect to TiDB using a MySQL 5.7 compatible client library.
 

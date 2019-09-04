@@ -37,7 +37,7 @@ This section describes the configuration of independent deployment of TiKV and T
 For independent deployment of TiKV and TiSpark, it is recommended to refer to the following recommendations:
 
 + Hardware configuration
-    - For general purposes, please refer to the TiDB and TiKV hardware configuration [recommendations](/how-to/deploy/hardware-recommendations.md#deployment-recommendations).
+    - For general purposes, please refer to the TiDB and TiKV hardware configuration [recommendations](/v3.0/how-to/deploy/hardware-recommendations.md#deployment-recommendations).
     - If the usage is more focused on the analysis scenarios, you can increase the memory of the TiKV nodes to at least 64G.
 
 ### Configuration of independent deployment of Spark and TiSpark
@@ -234,7 +234,7 @@ TiSpark uses TiDB statistic information for the following items:
 1. Determining which index to ues in your query plan with the estimated lowest cost.
 2. Small table broadcasting, which enables efficient broadcast join.
 
-If you would like TiSpark to use statistic information, first you need to make sure that concerning tables have already been analyzed. Read more about how to analyze tables [here](/reference/performance/statistics.md).
+If you would like TiSpark to use statistic information, first you need to make sure that concerning tables have already been analyzed. Read more about how to analyze tables [here](/v3.0/reference/performance/statistics.md).
 
 Starting from TiSpark 2.0, statistics information is default to auto load.
 

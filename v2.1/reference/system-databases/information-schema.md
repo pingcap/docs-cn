@@ -12,7 +12,7 @@ As part of MySQL compatibility, TiDB supports a number of `INFORMATION_SCHEMA` t
 
 ### CHARACTER\_SETS table
 
-The `CHARACTER_SETS` table provides information about [character sets](/reference/sql/character-set.md). The default character set in TiDB is `utf8mb4`. Additional character sets in this table are included for compatibility with MySQL:
+The `CHARACTER_SETS` table provides information about [character sets](/v2.1/reference/sql/character-set.md). The default character set in TiDB is `utf8mb4`. Additional character sets in this table are included for compatibility with MySQL:
 
 ```sql
 mysql> SELECT * FROM character_sets;
@@ -261,7 +261,7 @@ mysql> SELECT * FROM session_variables LIMIT 10;
 
 ## SLOW_QUERY table
 
-The `SLOW_QUERY` table provides the slow query information, which is the parsing result of the TiDB slow log file. The column names in the table are corresponding to the field names in the slow log. For how to use this table to identify problematic statements and improve query performance, see [Slow Query Log Document](/how-to/maintain/identify-slow-queries.md).
+The `SLOW_QUERY` table provides the slow query information, which is the parsing result of the TiDB slow log file. The column names in the table are corresponding to the field names in the slow log. For how to use this table to identify problematic statements and improve query performance, see [Slow Query Log Document](/v2.1/how-to/maintain/identify-slow-queries.md).
 
 ```sql
 mysql> desc information_schema.slow_query;

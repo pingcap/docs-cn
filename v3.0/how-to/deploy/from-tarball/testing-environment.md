@@ -9,11 +9,11 @@ aliases: ['/docs/op-guide/binary-testing-deployment/']
 
 This guide provides installation instructions for all TiDB components across multiple nodes for testing purposes. It does not match the recommended usage for production systems.
 
-See also [local deployment](/how-to/get-started/deploy-tidb-from-binary.md) and [production environment](/how-to/deploy/from-tarball/production-environment.md) deployment.
+See also [local deployment](/v3.0/how-to/get-started/deploy-tidb-from-binary.md) and [production environment](/v3.0/how-to/deploy/from-tarball/production-environment.md) deployment.
 
 ## Prepare
 
-Before you start, see [TiDB architecture](/architecture.md) and [Software and Hardware Recommendations](/how-to/deploy/hardware-recommendations.md). Make sure the following requirements are satisfied:
+Before you start, see [TiDB architecture](/v3.0/architecture.md) and [Software and Hardware Recommendations](/v3.0/how-to/deploy/hardware-recommendations.md). Make sure the following requirements are satisfied:
 
 ### Operating system
 
@@ -21,7 +21,7 @@ For the operating system, it is recommended to use RHEL/CentOS 7.3 or higher. Th
 
 | Configuration | Description |
 | :-- | :-------------------- |
-| Supported Platform | RHEL/CentOS 7.3+ ([more details](/how-to/deploy/hardware-recommendations.md)) |
+| Supported Platform | RHEL/CentOS 7.3+ ([more details](/v3.0/how-to/deploy/hardware-recommendations.md)) |
 | File System  |  ext4 is recommended |
 | Swap Space  |  Should be disabled  |
 | Disk Block Size  |  Set the system disk `Block` size to `4096` |

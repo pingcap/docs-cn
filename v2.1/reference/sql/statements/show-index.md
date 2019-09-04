@@ -6,4 +6,4 @@ category: reference
 
 # SHOW INDEX [FROM|IN]
 
-This statement is an alias to [`SHOW INDEXES [FROM|IN]`](/reference/sql/statements/show-indexes.md). It is included for compatibility with MySQL.
+This statement is an alias to [`SHOW INDEXES [FROM|IN]`](/v2.1/reference/sql/statements/show-indexes.md). It is included for compatibility with MySQL.

@@ -6,7 +6,7 @@ category: reference
 
 # Data Types
 
-TiDB supports all the data types in MySQL except the `SPATIAL` type.  This includes all the [numeric types](/reference/sql/data-types/numeric.md), [string types](/reference/sql/data-types/string.md), [date & time types](/reference/sql/data-types/date-and-time.md), and [the JSON type](/reference/sql/data-types/json.md).
+TiDB supports all the data types in MySQL except the `SPATIAL` type.  This includes all the [numeric types](/dev/reference/sql/data-types/numeric.md), [string types](/dev/reference/sql/data-types/string.md), [date & time types](/dev/reference/sql/data-types/date-and-time.md), and [the JSON type](/dev/reference/sql/data-types/json.md).
 
 The definitions used for datatypes are specified as `T(M[, D])`. Where by:
 

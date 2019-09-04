@@ -9,7 +9,7 @@ aliases: ['/docs/op-guide/binary-local-deployment/','/docs/v3.0/how-to/get-start
 
 This guide provides installation instructions for all TiDB components on a single developer machine. It is intended for evaluation purposes, and does not match the recommended usage for production systems.
 
-See also [testing environment](/how-to/deploy/from-tarball/testing-environment.md) and [production enviroment](/how-to/deploy/from-tarball/production-environment.md) deployment.
+See also [testing environment](/v3.0/how-to/deploy/from-tarball/testing-environment.md) and [production enviroment](/v3.0/how-to/deploy/from-tarball/production-environment.md) deployment.
 
 The following local TCP ports will be used:
 
@@ -21,8 +21,7 @@ The following local TCP ports will be used:
 | PD        | 2379  | TCP      | the communication port between TiDB and PD |
 | PD        | 2380  | TCP      | the inter-node communication port within the PD cluster |
 
-
-### Prepare
+## Prepare
 
 This guide is for deployment on Linux only. It is recommended to use RHEL/CentOS 7.3 or higher. TiKV requires you to raise the open files limit:
 
@@ -37,9 +36,10 @@ EOF
 sudo cp /tmp/tidb.conf /etc/security/limits.d/
 sudo sysctl -w fs.file-max=1000000
 ```
-See the [production deployment](/how-to/deploy/from-tarball/production-environment.md) optional kernel tuning parameters.
 
-### Create a database running user account
+See the [production deployment](/v3.0/how-to/deploy/from-tarball/production-environment.md) optional kernel tuning parameters.
+
+## Create a database running user account
 
 1. Log in to the machine using the `root` user account and create a database running user account (`tidb`) using the following command:
 
@@ -53,7 +53,7 @@ See the [production deployment](/how-to/deploy/from-tarball/production-environme
     # su - tidb
     ```
 
-### Download the official binary package
+## Download the official binary package
 
 ```
 # Download the package.
@@ -67,7 +67,7 @@ $ tar -xzf tidb-v3.0-linux-amd64.tar.gz
 $ cd tidb-v3.0-linux-amd64
 ```
 
-### Start
+## Start
 
 Follow the steps below to start PD, TiKV and TiDB:
 

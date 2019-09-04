@@ -90,11 +90,11 @@ mysql> SELECT * FROM t2;
 
 ## MySQL compatibility
 
-This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/report-issue.md) on GitHub.
+This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/dev/report-issue.md) on GitHub.
 
 ## See also
 
-* [DELETE](/reference/sql/statements/delete.md)
-* [SELECT](/reference/sql/statements/select.md)
-* [UPDATE](/reference/sql/statements/update.md)
-* [REPLACE](/reference/sql/statements/replace.md)
+* [DELETE](/dev/reference/sql/statements/delete.md)
+* [SELECT](/dev/reference/sql/statements/select.md)
+* [UPDATE](/dev/reference/sql/statements/update.md)
+* [REPLACE](/dev/reference/sql/statements/replace.md)

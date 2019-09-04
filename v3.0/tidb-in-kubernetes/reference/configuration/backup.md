@@ -58,7 +58,7 @@ aliases: ['/docs/v3.0/reference/configuration/tidb-in-kubernetes/cluster-configu
 
 ### `restoreOptions`
 
-- The optional parameter specified to [`loader`](/reference/tools/loader.md) used when backing up data
+- The optional parameter specified to [`loader`](/v3.0/reference/tools/loader.md) used when backing up data
 - Default: "-t 16"
 
 ### `gcp.bucket`

@@ -19,7 +19,7 @@ Before you start, make sure that you have:
 
 2. Several target machines and one Control Machine
 
-    - For system requirements and configuration, see [Prepare the environment](/how-to/deploy/orchestrated/ansible.md#prepare).
+    - For system requirements and configuration, see [Prepare the environment](/v2.1/how-to/deploy/orchestrated/ansible.md#prepare).
     - It is acceptable without access to the Internet.
 
 ## Step 1: Install system dependencies on the Control Machine
@@ -52,7 +52,7 @@ Take the following steps to install system dependencies on the Control Machine i
 
 ## Step 2: Create the `tidb` user on the Control Machine and generate the SSH key
 
-See [Create the `tidb` user on the Control Machine and generate the SSH key](/how-to/deploy/orchestrated/ansible.md#step-2-create-the-tidb-user-on-the-control-machine-and-generate-the-ssh-key).
+See [Create the `tidb` user on the Control Machine and generate the SSH key](/v2.1/how-to/deploy/orchestrated/ansible.md#step-2-create-the-tidb-user-on-the-control-machine-and-generate-the-ssh-key).
 
 ## Step 3: Install Ansible and its dependencies offline on the Control Machine
 
@@ -139,25 +139,25 @@ The relationship between the `tidb-ansible` version and the TiDB version is as f
 
 ## Step 5: Configure the SSH mutual trust and sudo rules on the Control Machine
 
-See [Configure the SSH mutual trust and sudo rules on the Control Machine](/how-to/deploy/orchestrated/ansible.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine).
+See [Configure the SSH mutual trust and sudo rules on the Control Machine](/v2.1/how-to/deploy/orchestrated/ansible.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine).
 
 ## Step 6: Install the NTP service on the target machines
 
-See [Install the NTP service on the target machines](/how-to/deploy/orchestrated/ansible.md#step-6-install-the-ntp-service-on-the-target-machines).
+See [Install the NTP service on the target machines](/v2.1/how-to/deploy/orchestrated/ansible.md#step-6-install-the-ntp-service-on-the-target-machines).
 
 > **Note:** If the time and time zone of all your target machines are same, the NTP service is on and is normally synchronizing time, you can ignore this step. See [How to check whether the NTP service is normal](#how-to-check-whether-the-ntp-service-is-normal).
 
 ## Step 7: Configure the CPUfreq governor mode on the target machine
 
-See [Configure the CPUfreq governor mode on the target machine](/how-to/deploy/orchestrated/ansible.md#step-7-configure-the-cpufreq-governor-mode-on-the-target-machine).
+See [Configure the CPUfreq governor mode on the target machine](/v2.1/how-to/deploy/orchestrated/ansible.md#step-7-configure-the-cpufreq-governor-mode-on-the-target-machine).
 
 ## Step 8: Mount the data disk ext4 filesystem with options on the target machines
 
-See [Mount the data disk ext4 filesystem with options on the target machines](/how-to/deploy/orchestrated/ansible.md#step-8-mount-the-data-disk-ext4-filesystem-with-options-on-the-target-machines).
+See [Mount the data disk ext4 filesystem with options on the target machines](/v2.1/how-to/deploy/orchestrated/ansible.md#step-8-mount-the-data-disk-ext4-filesystem-with-options-on-the-target-machines).
 
 ## Step 9: Edit the `inventory.ini` file to orchestrate the TiDB cluster
 
-See [Edit the `inventory.ini` file to orchestrate the TiDB cluster](/how-to/deploy/orchestrated/ansible.md#step-9-edit-the-inventory-ini-file-to-orchestrate-the-tidb-cluster).
+See [Edit the `inventory.ini` file to orchestrate the TiDB cluster](/v2.1/how-to/deploy/orchestrated/ansible.md#step-9-edit-the-inventory-ini-file-to-orchestrate-the-tidb-cluster).
 
 ## Step 10: Deploy the TiDB cluster
 
@@ -172,8 +172,8 @@ See [Edit the `inventory.ini` file to orchestrate the TiDB cluster](/how-to/depl
     $ ./install_grafana_font_rpms.sh
     ```
 
-3. See [Deploy the TiDB cluster](/how-to/deploy/orchestrated/ansible.md#step-11-deploy-the-tidb-cluster).
+3. See [Deploy the TiDB cluster](/v2.1/how-to/deploy/orchestrated/ansible.md#step-11-deploy-the-tidb-cluster).
 
 ## Test the TiDB cluster
 
-See [Test the TiDB cluster](/how-to/deploy/orchestrated/ansible.md#test-the-tidb-cluster).
+See [Test the TiDB cluster](/v2.1/how-to/deploy/orchestrated/ansible.md#test-the-tidb-cluster).

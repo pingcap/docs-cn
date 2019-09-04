@@ -10,7 +10,7 @@ The system variables in MySQL are the system parameters that modify the operatio
 
 ## Set the system variables
 
-You can use the [`SET`](/reference/sql/statements/set-variable.md) statement to change the value of the system variables. Before you change, consider the scope of the variable. For more information, see [MySQL Dynamic System Variables](https://dev.mysql.com/doc/refman/5.7/en/dynamic-system-variables.html).
+You can use the [`SET`](/dev/reference/sql/statements/set-variable.md) statement to change the value of the system variables. Before you change, consider the scope of the variable. For more information, see [MySQL Dynamic System Variables](https://dev.mysql.com/doc/refman/5.7/en/dynamic-system-variables.html).
 
 ### Set Global variables
 
@@ -118,4 +118,4 @@ The following MySQL system variables are fully supported in TiDB and have the sa
 
 ## TiDB specific system variables
 
-See [TiDB Specific System Variables](/reference/configuration/tidb-server/tidb-specific-variables.md).
+See [TiDB Specific System Variables](/dev/reference/configuration/tidb-server/tidb-specific-variables.md).

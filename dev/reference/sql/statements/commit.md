@@ -39,7 +39,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 ## See also
 
-* [START TRANSACTION](/reference/sql/statements/start-transaction.md)
-* [ROLLBACK](/reference/sql/statements/rollback.md)
-* [BEGIN](/reference/sql/statements/begin.md)
-* [Lazy checking of constraints](/reference/transactions/overview.md#lazy-check-of-constraints)
+* [START TRANSACTION](/dev/reference/sql/statements/start-transaction.md)
+* [ROLLBACK](/dev/reference/sql/statements/rollback.md)
+* [BEGIN](/dev/reference/sql/statements/begin.md)
+* [Lazy checking of constraints](/dev/reference/transactions/overview.md#lazy-check-of-constraints)

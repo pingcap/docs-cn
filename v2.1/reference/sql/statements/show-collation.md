@@ -256,4 +256,4 @@ TiDB does not support collations other than binary. This statement is only provi
 
 ## See also
 
-* [SHOW CHARACTER SET](/reference/sql/statements/show-character-set.md)
+* [SHOW CHARACTER SET](/v2.1/reference/sql/statements/show-character-set.md)

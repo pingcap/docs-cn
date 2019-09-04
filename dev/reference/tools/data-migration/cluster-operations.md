@@ -60,7 +60,7 @@ For the binlog during incremental data import, DM uses the downstream database t
 
         At this time, DM tries again to replicate these DDL statements that are not skipped. However, the restarted DM-worker instances will be blocked at the position of the binlog event corresponding to the DDL binlog event, because the DM-worker instance that is not restarted has executed to the place after this DDL binlog event.
 
-        To resolve this issue, follow the steps described in [Handle Sharding DDL Locks Manually](/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md#scenario-2-some-dm-workers-restart-during-the-ddl-unlocking-process).
+        To resolve this issue, follow the steps described in [Handle Sharding DDL Locks Manually](/dev/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md#scenario-2-some-dm-workers-restart-during-the-ddl-unlocking-process).
 
 **Conclusion:** Try to avoid restarting DM-worker in the process of sharding DDL replication.
 
@@ -160,7 +160,7 @@ Assuming that you want to add a DM-worker instance on the `172.16.10.74` machine
 
 1. Configure the SSH mutual trust and sudo rules on the Control Machine.
 
-    1. Refer to [Configure the SSH mutual trust and sudo rules on the Control Machine](/how-to/deploy/data-migration-with-ansible.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine), log in to the Control Machine using the `tidb` user account and add `172.16.10.74` to the `[servers]` section of the `hosts.ini` file.
+    1. Refer to [Configure the SSH mutual trust and sudo rules on the Control Machine](/dev/how-to/deploy/data-migration-with-ansible.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine), log in to the Control Machine using the `tidb` user account and add `172.16.10.74` to the `[servers]` section of the `hosts.ini` file.
 
         ```
         $ cd /home/tidb/dm-ansible
@@ -254,7 +254,7 @@ Assuming that the `172.16.10.71` machine needs to be maintained or this machine 
 
 1. Configure the SSH mutual trust and sudo rules on the Control machine.
 
-    1. Refer to [Configure the SSH mutual trust and sudo rules on the Control Machine](/how-to/deploy/data-migration-with-ansible.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine), log in to the Control Machine using the `tidb` user account, and add `172.16.10.80` to the `[servers]` section of the `hosts.ini` file.
+    1. Refer to [Configure the SSH mutual trust and sudo rules on the Control Machine](/dev/how-to/deploy/data-migration-with-ansible.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine), log in to the Control Machine using the `tidb` user account, and add `172.16.10.80` to the `[servers]` section of the `hosts.ini` file.
 
         ```
         $ cd /home/tidb/dm-ansible
@@ -316,7 +316,7 @@ Assuming that the `172.16.10.72` machine needs to be maintained or this machine 
 
 1. Configure the SSH mutual trust and sudo rules on the Control Machine.
 
-    1. Refer to [Configure the SSH mutual trust and sudo rules on the Control Machine](/how-to/deploy/data-migration-with-ansible.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine), log in to the Control Machine using the `tidb` user account, and add `172.16.10.75` to the `[servers]` section of the `hosts.ini` file.
+    1. Refer to [Configure the SSH mutual trust and sudo rules on the Control Machine](/dev/how-to/deploy/data-migration-with-ansible.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine), log in to the Control Machine using the `tidb` user account, and add `172.16.10.75` to the `[servers]` section of the `hosts.ini` file.
 
         ```
         $ cd /home/tidb/dm-ansible

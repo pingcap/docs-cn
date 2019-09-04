@@ -197,7 +197,7 @@ In the default configuration, the Terraform script creates a new VPC. To use the
 
 ### Configure the TiDB cluster
 
-`./my-cluster.yaml` is the `values.yaml` configuration file in the TiDB cluster. You can configure the TiDB cluster by modifying this file. For supported configuration items, see [Configure the TiDB cluster in Kubernetes](/tidb-in-kubernetes/reference/configuration/tidb-cluster.md).
+`./my-cluster.yaml` is the `values.yaml` configuration file in the TiDB cluster. You can configure the TiDB cluster by modifying this file. For supported configuration items, see [Configure the TiDB cluster in Kubernetes](/dev/tidb-in-kubernetes/reference/configuration/tidb-cluster.md).
 
 ## Manage multiple TiDB clusters
 

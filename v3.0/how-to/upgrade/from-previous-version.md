@@ -7,7 +7,7 @@ aliases: ['/docs/v3.0/how-to/upgrade/to-tidb-3.0/']
 
 # TiDB 3.0 Upgrade Guide
 
-This document is targeted for users who want to upgrade from TiDB 2.0 (above V2.0.1) or TiDB 2.1 RC to TiDB 3.0. TiDB 3.0 is compatible with [TiDB Binlog of Kafka Version](/reference/tools/tidb-binlog/tidb-binlog-kafka.md) and [TiDB Binlog of Cluster Version](/reference/tidb-binlog-overview.md).
+This document is targeted for users who want to upgrade from TiDB 2.0 (above V2.0.1) or TiDB 2.1 RC to TiDB 3.0. TiDB 3.0 is compatible with [TiDB Binlog of Kafka Version](/v3.0/reference/tools/tidb-binlog/tidb-binlog-kafka.md) and [TiDB Binlog of Cluster Version](/v3.0/reference/tidb-binlog-overview.md).
 
 ## Upgrade caveat
 
@@ -30,7 +30,7 @@ This document is targeted for users who want to upgrade from TiDB 2.0 (above V2.
 
 TiDB Ansible release-3.0 depends on Ansible 2.4.2 and the later versions (`ansible>=2.4.2`, Ansible 2.7.11 recommended) and the Python module `jinja2>=2.9.6` and `jmespath>=0.9.0`.
 
-To make it easy to manage dependencies, use `pip` to install Ansible and its dependencies. For details, see [Install Ansible and its dependencies on the Control Machine](/how-to/deploy/orchestrated/ansible.md#step-4-install-ansible-and-its-dependencies-on-the-control-machine). For offline environment, see [Install Ansible and its dependencies offline on the Control Machine](/how-to/deploy/orchestrated/offline-ansible.md#step-3-install-ansible-and-its-dependencies-offline-on-the-control-machine).
+To make it easy to manage dependencies, use `pip` to install Ansible and its dependencies. For details, see [Install Ansible and its dependencies on the Control Machine](/v3.0/how-to/deploy/orchestrated/ansible.md#step-4-install-ansible-and-its-dependencies-on-the-control-machine). For offline environment, see [Install Ansible and its dependencies offline on the Control Machine](/v3.0/how-to/deploy/orchestrated/offline-ansible.md#step-3-install-ansible-and-its-dependencies-offline-on-the-control-machine).
 
 After the installation is finished, you can view the version information using the following command:
 
@@ -61,7 +61,7 @@ Version: 0.9.0
     $ mv tidb-ansible tidb-ansible-bak
     ```
 
-3. Download the tidb-ansible with the tag corresponding to TiDB 3.0. For more details, See [Download TiDB Ansible to the Control Machine](/how-to/deploy/orchestrated/ansible.md#step-3-download-tidb-ansible-to-the-control-machine). The default folder name is `tidb-ansible`.
+3. Download the tidb-ansible with the tag corresponding to TiDB 3.0. For more details, See [Download TiDB Ansible to the Control Machine](/v3.0/how-to/deploy/orchestrated/ansible.md#step-3-download-tidb-ansible-to-the-control-machine). The default folder name is `tidb-ansible`.
 
     ```shell
     $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
@@ -77,7 +77,7 @@ Edit the `inventory.ini` file. For IP information, see the `/home/tidb/tidb-ansi
 
 >**Note:**
 >
->Pay special attention to the following variables configuration. For variable meaning, see [Description of other variables](/how-to/deploy/orchestrated/ansible.md#edit-other-variables-optional).
+>Pay special attention to the following variables configuration. For variable meaning, see [Description of other variables](/v3.0/how-to/deploy/orchestrated/ansible.md#edit-other-variables-optional).
 
 1. Make sure that `ansible_user` is the normal user. For unified privilege management, remote installation using the root user is no longer supported. The default configuration uses the `tidb` user as the SSH remote user and the program running user.
 
@@ -87,7 +87,7 @@ Edit the `inventory.ini` file. For IP information, see the `/home/tidb/tidb-ansi
     ansible_user = tidb
     ```
 
-    You can refer to [How to configure SSH mutual trust and sudo rules on the Control Machine](/how-to/deploy/orchestrated/ansible.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine) to automatically configure the mutual trust among hosts.
+    You can refer to [How to configure SSH mutual trust and sudo rules on the Control Machine](/v3.0/how-to/deploy/orchestrated/ansible.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine) to automatically configure the mutual trust among hosts.
 
 2. Keep the `process_supervision` variable consistent with that in the previous version. It is recommended to use `systemd` by default.
 
@@ -96,7 +96,7 @@ Edit the `inventory.ini` file. For IP information, see the `/home/tidb/tidb-ansi
     process_supervision = systemd
     ```
 
-    If you need to modify this variable, see [How to modify the supervision method of a process from `supervise` to `systemd`](/how-to/deploy/orchestrated/ansible.md#how-to-modify-the-supervision-method-of-a-process-from-supervise-to-systemd). Before you upgrade, first use the `/home/tidb/tidb-ansible-bak/` backup branch to modify the supervision method of a process.
+    If you need to modify this variable, see [How to modify the supervision method of a process from `supervise` to `systemd`](/v3.0/how-to/deploy/orchestrated/ansible.md#how-to-modify-the-supervision-method-of-a-process-from-supervise-to-systemd). Before you upgrade, first use the `/home/tidb/tidb-ansible-bak/` backup branch to modify the supervision method of a process.
 
 ### Edit the configuration file of TiDB cluster components
 

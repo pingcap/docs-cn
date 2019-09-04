@@ -62,11 +62,11 @@ Query OK, 0 rows affected (0.11 sec)
 
 ## MySQL compatibility
 
-This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/report-issue.md) on GitHub.
+This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/v3.0/report-issue.md) on GitHub.
 
 ## See also
 
-* [DROP TABLE](/reference/sql/statements/drop-table.md)
-* [DELETE](/reference/sql/statements/delete.md)
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
+* [DROP TABLE](/v3.0/reference/sql/statements/drop-table.md)
+* [DELETE](/v3.0/reference/sql/statements/delete.md)
+* [CREATE TABLE](/v3.0/reference/sql/statements/create-table.md)
+* [SHOW CREATE TABLE](/v3.0/reference/sql/statements/show-create-table.md)

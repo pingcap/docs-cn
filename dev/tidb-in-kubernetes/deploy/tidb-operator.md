@@ -28,9 +28,9 @@ Before deploying TiDB Operator, make sure the following items are installed on y
 
 TiDB Operator runs in Kubernetes cluster. You can refer to [the document of how to set up Kubernetes](https://kubernetes.io/docs/setup/) to set up a Kubernetes cluster. Make sure that the Kubernetes version is v1.12 or higher. If you are using AWS, GKE or local machines, here are quick-start tutorials:
 
-* [Local DinD tutorial](/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
-* [Google GKE tutorial](/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
-* [AWS EKS tutorial](/tidb-in-kubernetes/deploy/aws-eks.md)
+* [Local DinD tutorial](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
+* [Google GKE tutorial](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
+* [AWS EKS tutorial](/dev/tidb-in-kubernetes/deploy/aws-eks.md)
 
 If you are deploying in a different environment, a proper DNS addon must be installed in the Kubernetes cluster. You can follow the [official documentation](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/) to set up a DNS addon.
 
@@ -62,13 +62,13 @@ Because TiDB uses many file descriptors by default, the worker node and its Dock
 
 ## Install Helm
 
-Refer to [Use Helm](/tidb-in-kubernetes/reference/tools/in-kubernetes.md#use-helm) to install Helm and configre it with the official PingCAP chart Repo.
+Refer to [Use Helm](/dev/tidb-in-kubernetes/reference/tools/in-kubernetes.md#use-helm) to install Helm and configre it with the official PingCAP chart Repo.
 
 ## Configure local persistent volume
 
 ### Prepare local volumes
 
-Refer to [Local PV Configuration](/tidb-in-kubernetes/reference/configuration/local-pv.md) to set up local persistent volumes in your Kubernetes cluster.
+Refer to [Local PV Configuration](/dev/tidb-in-kubernetes/reference/configuration/local-pv.md) to set up local persistent volumes in your Kubernetes cluster.
 
 ### Deploy local-static-provisioner
 

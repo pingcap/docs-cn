@@ -11,7 +11,7 @@ DM uses the sharding DDL lock to ensure operations are performed in the correct 
 > **Warning:**
 >
 > - Do not use `unlock-ddl-lock` or `break-ddl-lock` unless you are totally aware of the possible impacts brought by the command and you can accept them.
-> - Before manually handling the abnormal DDL locks, make sure that you have already read the DM [shard merge principles](/reference/tools/data-migration/features/shard-merge.md#principles).
+> - Before manually handling the abnormal DDL locks, make sure that you have already read the DM [shard merge principles](/v2.1/reference/tools/data-migration/features/shard-merge.md#principles).
 
 ## Command
 
@@ -147,7 +147,7 @@ break-ddl-lock <--worker=127.0.0.1:8262> [--remove-id] [--exec] [--skip] <task-n
 + `task-name`:
 
     - Non-flag; string; required
-    - It specifies the name of the task containing the lock that is going to execute the breaking operation (you can check whether a task contains the lock via [query-status](/reference/tools/data-migration/query-status.md)).
+    - It specifies the name of the task containing the lock that is going to execute the breaking operation (you can check whether a task contains the lock via [query-status](/v2.1/reference/tools/data-migration/query-status.md)).
 
 #### Example of results
 
@@ -174,7 +174,7 @@ Currently, the `unlock-ddl-lock` or `break-ddl-lock` command only supports handl
 
 #### The reason for the abnormal lock
 
-Before `DM-master` tries to automatically unlock the sharding DDL lock, all the DM-workers need to receive the sharding DDL events (for details, see [shard merge principles](/reference/tools/data-migration/features/shard-merge.md#principles)). If the sharding DDL event is already in the replication process, and some DM-workers have gone offline and are not to be restarted (these DM-workers have been removed according to the application demand), then the sharding DDL lock cannot be automatically replicated and unlocked because not all the DM-workers can receive the DDL event.
+Before `DM-master` tries to automatically unlock the sharding DDL lock, all the DM-workers need to receive the sharding DDL events (for details, see [shard merge principles](/v2.1/reference/tools/data-migration/features/shard-merge.md#principles)). If the sharding DDL event is already in the replication process, and some DM-workers have gone offline and are not to be restarted (these DM-workers have been removed according to the application demand), then the sharding DDL lock cannot be automatically replicated and unlocked because not all the DM-workers can receive the DDL event.
 
 > **Note:**
 >
@@ -211,6 +211,7 @@ The operation processes of MySQL and DM are as follows:
     ```sql
     ALTER TABLE shard_db_1.shard_table_1 ADD COLUMN c2 INT;
     ```
+
     ```sql
     ALTER TABLE shard_db_1.shard_table_2 ADD COLUMN c2 INT;
     ```
@@ -243,7 +244,7 @@ The operation processes of MySQL and DM are as follows:
     ```
 
 4. Due to the application demand, the `DM-worker-2` data in `MySQL-2` is no longer needed to be replicated to the downstream TiDB, and `DM-worker-2` is made offline.
-5. The lock whose ID is ``` test-`shard_db`.`shard_table` ``` on `DM-master` cannot receive the DDL information of `DM-worker-2`.
+5. The lock whose ID is ```test-`shard_db`.`shard_table` ``` on `DM-master` cannot receive the DDL information of `DM-worker-2`.
 
     - The returned result `unsynced` by `show-ddl-locks` has always included the information of `DM-worker-2` (`127.0.0.1:8263`).
 6. Use `unlock-dll-lock` to ask `DM-master` to actively unlock the DDL lock.
@@ -475,6 +476,7 @@ The operation processes are:
         ]
     }
     ```
+
 4. Use `query-status` to confirm if the replication task is normal and no longer at the state of waiting for the lock.
 
 #### Impact

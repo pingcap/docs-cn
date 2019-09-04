@@ -9,7 +9,7 @@ aliases: ['/docs/sql/util/']
 
 The `EXPLAIN` statement shows the execution plan for a query without executing it. It is complimented by `EXPLAIN ANALYZE` which will execute the query. If the output of `EXPLAIN` does not match the expected result, consider executing `ANALYZE TABLE` on each table in the query.
 
-The statements `DESC` and `DESCRIBE` are aliases of this statement. The alternative usage of `EXPLAIN <tableName>` is documented under [`SHOW [FULL] COLUMNS FROM`](/reference/sql/statements/show-columns-from.md).
+The statements `DESC` and `DESCRIBE` are aliases of this statement. The alternative usage of `EXPLAIN <tableName>` is documented under [`SHOW [FULL] COLUMNS FROM`](/v3.0/reference/sql/statements/show-columns-from.md).
 
 ## Synopsis
 
@@ -91,6 +91,7 @@ mysql> EXPLAIN DELETE FROM t1 WHERE c1=3;
 +---------------------+----------+------+-------------------------------------------------------------+
 3 rows in set (0.00 sec)
 ```
+
 If you do not specify the `FORMAT`, or specify `FORMAT = "row"`, `EXPLAIN` statement will output the results in a tabular format. See [Understand the Query Execution Plan](https://pingcap.com/docs/dev/reference/performance/understanding-the-query-execution-plan/) for more information.
 
 In addition to the MySQL standard result format, TiDB also supports DotGraph and you need to specify `FORMAT = "dot"` as in the following example:
@@ -152,7 +153,7 @@ If the `dot` program is not installed on your computer, copy the result to [this
 
 ## See also
 
-* [Understanding the Query Execution Plan](/reference/performance/understanding-the-query-execution-plan.md)
-* [EXPLAIN ANALYZE](/reference/sql/statements/explain-analyze.md)
-* [ANALYZE TABLE](/reference/sql/statements/analyze-table.md)
-* [TRACE](/reference/sql/statements/trace.md)
+* [Understanding the Query Execution Plan](/v3.0/reference/performance/understanding-the-query-execution-plan.md)
+* [EXPLAIN ANALYZE](/v3.0/reference/sql/statements/explain-analyze.md)
+* [ANALYZE TABLE](/v3.0/reference/sql/statements/analyze-table.md)
+* [TRACE](/v3.0/reference/sql/statements/trace.md)

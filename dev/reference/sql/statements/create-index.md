@@ -83,7 +83,7 @@ Query OK, 0 rows affected (0.31 sec)
 
 ## Associated session variables
 
-The global variables associated with the `CREATE INDEX` statement are `tidb_ddl_reorg_worker_cnt`, `tidb_ddl_reorg_batch_size` and `tidb_ddl_reorg_priority`. Refer to [TiDB-specific system variables](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb-ddl-reorg-worker-cnt) for details.
+The global variables associated with the `CREATE INDEX` statement are `tidb_ddl_reorg_worker_cnt`, `tidb_ddl_reorg_batch_size` and `tidb_ddl_reorg_priority`. Refer to [TiDB-specific system variables](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#tidb-ddl-reorg-worker-cnt) for details.
 
 ## MySQL compatibility
 
@@ -93,9 +93,9 @@ The global variables associated with the `CREATE INDEX` statement are `tidb_ddl_
 
 ## See also
 
-* [ADD INDEX](/reference/sql/statements/add-index.md)
-* [DROP INDEX](/reference/sql/statements/drop-index.md)
-* [RENAME INDEX](/reference/sql/statements/rename-index.md)
-* [ADD COLUMN](/reference/sql/statements/add-column.md)
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [EXPLAIN](/reference/sql/statements/explain.md)
+* [ADD INDEX](/dev/reference/sql/statements/add-index.md)
+* [DROP INDEX](/dev/reference/sql/statements/drop-index.md)
+* [RENAME INDEX](/dev/reference/sql/statements/rename-index.md)
+* [ADD COLUMN](/dev/reference/sql/statements/add-column.md)
+* [CREATE TABLE](/dev/reference/sql/statements/create-table.md)
+* [EXPLAIN](/dev/reference/sql/statements/explain.md)

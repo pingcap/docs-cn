@@ -10,13 +10,13 @@ category: reference
 
 `mydumper` is a fork of the [Mydumper](https://github.com/maxbube/mydumper) project with additional functionality specific to TiDB. It is the recommended method to use for logical backups of TiDB.
 
-It can be [downloaded](/reference/tools/download.md) as part of the Enterprise Tools package.
+It can be [downloaded](/dev/reference/tools/download.md) as part of the Enterprise Tools package.
 
 ## What enhancements does this contain over regular Mydumper?
 
 + Uses `tidb_snapshot` to provide backup consistency instead of `FLUSH TABLES WITH READ LOCK`
 
-+ Allows `tidb_snapshot` to be [configurable](/how-to/get-started/read-historical-data.md#how-tidb-reads-data-from-history-versions) (i.e. backup data as it appeared at an earlier point in time)
++ Allows `tidb_snapshot` to be [configurable](/dev/how-to/get-started/read-historical-data.md#how-tidb-reads-data-from-history-versions) (i.e. backup data as it appeared at an earlier point in time)
 
 ### New parameter description
 

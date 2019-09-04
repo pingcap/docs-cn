@@ -3,15 +3,15 @@ title: How to Test TiDB Using Sysbench
 category: benchmark
 ---
 
-#  How to Test TiDB Using Sysbench
+# How to Test TiDB Using Sysbench
 
 In this test, Sysbench 1.0.14 and TiDB 3.0 Beta are used. It is recommended to use Sysbench 1.0 or later, which can be downloaded [here](https://github.com/akopytov/sysbench/releases/tag/1.0.14).
 
 ## Test environment
 
-- [Hardware recommendations](/how-to/deploy/hardware-recommendations.md)
+- [Hardware recommendations](/v2.1/how-to/deploy/hardware-recommendations.md)
 
-- The TiDB cluster is deployed according to the [TiDB Deployment Guide](/how-to/deploy/orchestrated/ansible.md). Suppose there are 3 servers in total. It is recommended to deploy 1 TiDB instance, 1 PD instance and 1 TiKV instance on each server. As for disk space, supposing that there are 32 tables and 10M rows of data on each table, it is recommended that the disk space where TiKV's data directory resides is larger than 512 GB.
+- The TiDB cluster is deployed according to the [TiDB Deployment Guide](/v2.1/how-to/deploy/orchestrated/ansible.md). Suppose there are 3 servers in total. It is recommended to deploy 1 TiDB instance, 1 PD instance and 1 TiKV instance on each server. As for disk space, supposing that there are 32 tables and 10M rows of data on each table, it is recommended that the disk space where TiKV's data directory resides is larger than 512 GB.
 The number of concurrent connections to a single TiDB cluster is recommended to be under 500. If you need to increase the concurrency pressure on the entire system, you can add TiDB instances to the cluster whose number depends on the pressure of the test.
 
 IDC machines:
@@ -76,7 +76,7 @@ block-cache-size = "24GB"
 block-cache-size = "6GB"
 ```
 
-For more detailed information on TiKV performance tuning, see [Tune TiKV Performance](/reference/performance/tune-tikv.md).
+For more detailed information on TiKV performance tuning, see [Tune TiKV Performance](/v2.1/reference/performance/tune-tikv.md).
 
 ## Test process
 
@@ -130,7 +130,7 @@ Restart MySQL client and execute the following SQL statement to create a databas
 create database sbtest;
 ```
 
-Adjust the order in which Sysbench scripts create indexes. Sysbench imports data in the order of "Build Table -> Insert Data -> Create Index", which takes more time for TiDB to import data. Users can adjust the order to speed up the import of data. Suppose that you use Sysbench version https://github.com/akopytov/sysbench/tree/1.0.14. You can adjust the order in the following two ways.
+Adjust the order in which Sysbench scripts create indexes. Sysbench imports data in the order of "Build Table -> Insert Data -> Create Index", which takes more time for TiDB to import data. Users can adjust the order to speed up the import of data. Suppose that you use Sysbench version <https://github.com/akopytov/sysbench/tree/1.0.14>. You can adjust the order in the following two ways.
 
 1. Download the TiDB-modified [oltp_common.lua](https://raw.githubusercontent.com/pingcap/tidb-bench/master/sysbench/sysbench-patch/oltp_common.lua) file and overwrite the `/usr/share/sysbench/oltp_common.lua` file with it.
 2. Move the [235th](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L235) to [240th](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L240) lines of `/usr/share/sysbench/oltp_common.lua` to be right behind 198th lines.

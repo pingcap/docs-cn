@@ -69,11 +69,11 @@ mysql> SHOW TABLES;
 
 ## MySQL compatibility
 
-This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/report-issue.md) on GitHub.
+This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/v2.1/report-issue.md) on GitHub.
 
 ## See also
 
-* [USE](/reference/sql/statements/use.md)
-* [ALTER DATABASE](/reference/sql/statements/alter-database.md)
-* [DROP DATABASE](/reference/sql/statements/drop-database.md)
-* [SHOW DATABASES](/reference/sql/statements/show-databases.md)
+* [USE](/v2.1/reference/sql/statements/use.md)
+* [ALTER DATABASE](/v2.1/reference/sql/statements/alter-database.md)
+* [DROP DATABASE](/v2.1/reference/sql/statements/drop-database.md)
+* [SHOW DATABASES](/v2.1/reference/sql/statements/show-databases.md)

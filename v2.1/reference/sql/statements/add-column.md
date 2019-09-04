@@ -78,5 +78,5 @@ mysql> SELECT * FROM t1;
 
 ## See also
 
-* [ADD INDEX](/reference/sql/statements/add-index.md)
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
+* [ADD INDEX](/v2.1/reference/sql/statements/add-index.md)
+* [CREATE TABLE](/v2.1/reference/sql/statements/create-table.md)

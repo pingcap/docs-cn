@@ -52,10 +52,10 @@ mysql> SHOW DATABASES;
 
 ## MySQL compatibility
 
-This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/report-issue.md) on GitHub.
+This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/dev/report-issue.md) on GitHub.
 
 ## See also
 
-* [SHOW SCHEMAS](/reference/sql/statements/show-schemas.md)
-* [DROP DATABASE](/reference/sql/statements/drop-database.md)
-* [CREATE DATABASE](/reference/sql/statements/create-database.md)
+* [SHOW SCHEMAS](/dev/reference/sql/statements/show-schemas.md)
+* [DROP DATABASE](/dev/reference/sql/statements/drop-database.md)
+* [CREATE DATABASE](/dev/reference/sql/statements/create-database.md)

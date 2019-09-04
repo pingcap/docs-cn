@@ -10,11 +10,11 @@ This guide shows how to replicate data using the Data Migration (DM) tool.
 
 ## Step 1: Deploy the DM cluster
 
-It is recommended to deploy the DM cluster using DM-Ansible. For detailed deployment, see [Deploy Data Migration Using DM-Ansible](/how-to/deploy/data-migration-with-ansible.md).
+It is recommended to deploy the DM cluster using DM-Ansible. For detailed deployment, see [Deploy Data Migration Using DM-Ansible](/dev/how-to/deploy/data-migration-with-ansible.md).
 
 > **Note:**
 >
-> - For database passwords in all the DM configuration files, use the passwords encrypted by `dmctl`. If a database password is empty, it is unnecessary to encrypt it. See [Encrypt the upstream MySQL user password using dmctl](/how-to/deploy/data-migration-with-ansible.md#encrypt-the-upstream-mysql-user-password-using-dmctl).
+> - For database passwords in all the DM configuration files, use the passwords encrypted by `dmctl`. If a database password is empty, it is unnecessary to encrypt it. See [Encrypt the upstream MySQL user password using dmctl](/dev/how-to/deploy/data-migration-with-ansible.md#encrypt-the-upstream-mysql-user-password-using-dmctl).
 > - The user of the upstream and downstream databases must have the corresponding read and write privileges.
 
 ## Step 2: Check the cluster information
@@ -113,7 +113,7 @@ To detect possible errors of data replication configuration in advance, DM provi
 - DM automatically checks the corresponding privileges and configuration while starting the data replication task.
 - You can also use the `check-task` command to manually precheck whether the upstream MySQL instance configuration satisfies the DM requirements.
 
-For details about the precheck feature, see [Precheck the upstream MySQL instance configuration](/reference/tools/data-migration/precheck.md).
+For details about the precheck feature, see [Precheck the upstream MySQL instance configuration](/dev/reference/tools/data-migration/precheck.md).
 
 > **Note:**
 >

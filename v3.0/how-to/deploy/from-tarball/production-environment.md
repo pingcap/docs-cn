@@ -9,11 +9,11 @@ aliases: ['/docs/op-guide/binary-deployment/']
 
 This guide provides installation instructions from a binary tarball on Linux. A complete TiDB cluster contains PD, TiKV, and TiDB. To start the database service, follow the order of PD -> TiKV -> TiDB. To stop the database service, follow the order of stopping TiDB -> TiKV -> PD.
 
-See also [local deployment](/how-to/get-started/deploy-tidb-from-binary.md) and [testing environment](/how-to/deploy/from-tarball/testing-environment.md) deployment.
+See also [local deployment](/v3.0/how-to/get-started/deploy-tidb-from-binary.md) and [testing environment](/v3.0/how-to/deploy/from-tarball/testing-environment.md) deployment.
 
 ## Prepare
 
-Before you start, see [TiDB architecture](/architecture.md) and [Software and Hardware Recommendations](/how-to/deploy/hardware-recommendations.md). Make sure the following requirements are satisfied:
+Before you start, see [TiDB architecture](/v3.0/architecture.md) and [Software and Hardware Recommendations](/v3.0/how-to/deploy/hardware-recommendations.md). Make sure the following requirements are satisfied:
 
 ### Operating system
 
@@ -21,7 +21,7 @@ For the operating system, it is recommended to use RHEL/CentOS 7.3 or higher. Th
 
 | Configuration | Description |
 | :-- | :-------------------- |
-| Supported Platform | RHEL/CentOS 7.3+ ([more details](/how-to/deploy/hardware-recommendations.md)) |
+| Supported Platform | RHEL/CentOS 7.3+ ([more details](/v3.0/how-to/deploy/hardware-recommendations.md)) |
 | File System  |  ext4 is recommended |
 | Swap Space  |  Should be disabled  |
 | Disk Block Size  |  Set the system disk `Block` size to `4096` |
@@ -119,7 +119,7 @@ $ cd tidb-v3.0-linux-amd64
 
 ## Multiple nodes cluster deployment
 
-For the production environment, multiple nodes cluster deployment is recommended. Before you begin, see [Software and Hardware Recommendations](/how-to/deploy/hardware-recommendations.md).
+For the production environment, multiple nodes cluster deployment is recommended. Before you begin, see [Software and Hardware Recommendations](/v3.0/how-to/deploy/hardware-recommendations.md).
 
 Assuming that you have six nodes, you can deploy 3 PD instances, 3 TiKV instances, and 1 TiDB instance. See the following table for details:
 
@@ -201,7 +201,7 @@ Follow the steps below to start PD, TiKV, and TiDB:
 > **Note:**
 >
 > - If you start TiKV or deploy PD in the production environment, it is highly recommended to specify the path for the configuration file using the `--config` parameter. If the parameter is not set, TiKV or PD does not read the configuration file.
-> - To tune TiKV, see [Performance Tuning for TiKV](/reference/performance/tune-tikv.md).
-> - If you use `nohup` to start the cluster in the production environment, write the startup commands in a script and then run the script. If not, the `nohup` process might abort because it receives exceptions when the Shell command exits. For more information, see [The TiDB/TiKV/PD process aborts unexpectedly](/how-to/troubleshoot/cluster-setup.md#the-tidbtikvpd-process-aborts-unexpectedly).
+> - To tune TiKV, see [Performance Tuning for TiKV](/v3.0/reference/performance/tune-tikv.md).
+> - If you use `nohup` to start the cluster in the production environment, write the startup commands in a script and then run the script. If not, the `nohup` process might abort because it receives exceptions when the Shell command exits. For more information, see [The TiDB/TiKV/PD process aborts unexpectedly](/v3.0/how-to/troubleshoot/cluster-setup.md#the-tidbtikvpd-process-aborts-unexpectedly).
 
-For the deployment and use of TiDB monitoring services, see [Monitor a TiDB Cluster](/how-to/monitor/monitor-a-cluster.md).
+For the deployment and use of TiDB monitoring services, see [Monitor a TiDB Cluster](/v3.0/how-to/monitor/monitor-a-cluster.md).

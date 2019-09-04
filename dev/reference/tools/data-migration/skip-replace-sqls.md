@@ -8,7 +8,7 @@ category: reference
 
 This document introduces how to handle abnormal SQL statements using Data Migration (DM).
 
-Currently, TiDB is not completely compatible with all MySQL syntax (see [the DDL statements supported by TiDB](/reference/mysql-compatibility.md#ddl)). Therefore, when DM is replicating data from MySQL to TiDB and TiDB does not support the corresponding SQL statement, an error might occur and break the replication process. In this case, there are two ways to resume the replication:
+Currently, TiDB is not completely compatible with all MySQL syntax (see [the DDL statements supported by TiDB](/dev/reference/mysql-compatibility.md#ddl)). Therefore, when DM is replicating data from MySQL to TiDB and TiDB does not support the corresponding SQL statement, an error might occur and break the replication process. In this case, there are two ways to resume the replication:
 
 - Use dmctl to manually skip the binlog event to which this SQL statement corresponds
 
@@ -19,7 +19,7 @@ If you know in advance that an unsupported SQL statement is going to be replicat
 ## Restrictions
 
 - The skip or replace operation is a one-time operation that is only used to skip or replace the SQL statement unsupported by the downstream TiDB. Do not handle other replication errors with this approach.
-    - For other replication errors, try to handle them using [Black and white table lists](/reference/tools/data-migration/features/overview.md#black-and-white-table-lists) or [Binlog event filtering](/reference/tools/data-migration/features/overview.md#binlog-event-filter).
+    - For other replication errors, try to handle them using [Black and white table lists](/dev/reference/tools/data-migration/features/overview.md#black-and-white-table-lists) or [Binlog event filtering](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter).
 
 - If it is unacceptable in the actual production environment that the abnormal DDL statement is skipped in the downstream TiDB and it cannot be replaced with other DDL statements, then do not use this approach.
     - For example: `DROP PRIMARY KEY`
@@ -29,7 +29,7 @@ If you know in advance that an unsupported SQL statement is going to be replicat
 
 - `--sharding` is only used to preset the operation to the sharding group. You must preset it before executing the DDL statement and presetting it after executing the DDL is not allowed.
     - `--sharding` only supports presetting operations, and in this mode, you can only use `--sql-pattern` to match the binlog event.
-    - For the principles of replicating sharding DDL statements using DM, see [Merge and replicate data from sharded tables](/reference/tools/data-migration/features/shard-merge.md#principles)
+    - For the principles of replicating sharding DDL statements using DM, see [Merge and replicate data from sharded tables](/dev/reference/tools/data-migration/features/shard-merge.md#principles)
 
 ## Match the binlog event
 
@@ -47,7 +47,7 @@ In DM, two modes of matching the binlog event are supported (you can only choose
 
 2. DDL pattern: the regular expression (only for the DDL statement) matching mode
 
-    - The DDL pattern is given by `--sql-pattern` in the command, for example, to match ``` ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2` ```, the corresponding regular expression should be ``` ~(?i)ALTER\s+TABLE\s+`db2`.`tbl2`\s+DROP\s+COLUMN\s+`c2` ```.
+    - The DDL pattern is given by `--sql-pattern` in the command, for example, to match ```ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2` ```, the corresponding regular expression should be ```~(?i)ALTER\s+TABLE\s+`db2`.`tbl2`\s+DROP\s+COLUMN\s+`c2` ```.
     - The regular expression must be prefixed with `~` and cannot contain any common space (you can replace the space with `\s` or `\s+` in the string).
 
 In the scenario of merging and replicating data from sharded tables, if you need DM to automatically select a DDL lock owner to execute the skip or replace operation, then you must use the DDL pattern matching mode because the binlog positions corresponding to the DDL statements on different DM-workers have no logical connection and are hard to confirm.
@@ -128,7 +128,7 @@ When you use dmctl to manually handle the SQL statements unsupported by TiDB, th
 
 ### query-status
 
-`query-status` allows you to query the current status of items such as the subtask and the relay unit in each DM-worker. For details, see [query status](/reference/tools/data-migration/query-status.md).
+`query-status` allows you to query the current status of items such as the subtask and the relay unit in each DM-worker. For details, see [query status](/dev/reference/tools/data-migration/query-status.md).
 
 ### query-error
 
@@ -215,7 +215,7 @@ sql-skip <--worker=127.0.0.1:8262> [--binlog-pos=mysql-bin|000001.000003:3270] [
 + `sql-pattern`:
     - Flag parameter, string, `--sql-pattern`
     - You must specify `--sql-pattern` or `binlog-pos`, and you must not specify both.
-    - If it is specified, the skip operation is executed when `sql-pattern` matches with the DDL statement (converted by the optional router-rule) of the binlog event. The format is a regular expression prefixed with `~`, for example, ``` ~(?i)ALTER\s+TABLE\s+`db1`.`tbl1`\s+ADD\s+COLUMN\s+col1\s+INT ```.
+    - If it is specified, the skip operation is executed when `sql-pattern` matches with the DDL statement (converted by the optional router-rule) of the binlog event. The format is a regular expression prefixed with `~`, for example, ```~(?i)ALTER\s+TABLE\s+`db1`.`tbl1`\s+ADD\s+COLUMN\s+col1\s+INT```.
         - Common spaces are not supported in the regular expression temporarily. You can replace the space with `\s` or `\s+` if it is needed.
         - The regular expression must be prefixed with `~`. For details, see [regular expression syntax](https://golang.org/pkg/regexp/syntax/#hdr-Syntax).
         - The schema/table name in the regular expression must be converted by the optional router-rule, so the converted name is consistent with the target schema/table name in the downstream. For example, if there are ``` `shard_db_1`.`shard_tbl_1` ``` in the upstream and ``` `shard_db`.`shard_tbl` ``` in the downstream, then you should match ``` `shard_db`.`shard_tbl` ```.
@@ -259,7 +259,7 @@ sql-replace <--worker=127.0.0.1:8262> [--binlog-pos=mysql-bin|000001.000003:3270
 
 + `SQLs`:
     - Non-flag parameter, string, required
-    - `SQLs` specifies the new SQL statements that are going to replace the original binlog event. You should separate multiple SQL statements with `;`, for example, ``` ALTER TABLE shard_db.shard_table drop index idx_c2;ALTER TABLE shard_db.shard_table DROP COLUMN c2; ```.
+    - `SQLs` specifies the new SQL statements that are going to replace the original binlog event. You should separate multiple SQL statements with `;`, for example, ```ALTER TABLE shard_db.shard_table drop index idx_c2;ALTER TABLE shard_db.shard_table DROP COLUMN c2;```.
 
 ## Usage examples
 

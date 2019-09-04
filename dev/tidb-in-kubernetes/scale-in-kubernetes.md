@@ -42,7 +42,7 @@ To perform a horizontal scaling operation:
 > - When the PD and TiKV components scale downcall the corresponding interface to take offline the PD and TiKV nodes being deleted. This involves data migration operations, so it might take some time to finish the process.
 When the TiKV component scales in, it calls the PD interface to mark the corresponding TiKV instance as offline, and then migrates the data on it to other TiKV nodes. During the data migration, the TiKV Pod is still in the `Running` state, and the corresponding Pod is deleted only after the data migration is completed. The time consumed by scaling in depends on the amount of data on the TiKV instance to be scaled in. You can check whether TiKV is in the `Offline` state by running `kubectl get tidbcluster -n <namespace> <release-name> -o json | jq '.status.tikv.stores'`.
 > - The PVC of the deleted node is retained during the scaling down process, and because the PV's `Reclaim Policy` value is set to `Retain`, the data can be retrieved even if the PVC is deleted.
-> - The TiKV component does not support scale-out while a scale-in operation is in progress. Forcing a scale-out operation might cause anomalies in the cluster. If an anomaly already happens, refer to [TiKV Store is in Tombstone status abnormally](tidb-in-kubernetes/troubleshoot.md#tikv-store-is-in-tombstone-status-abnormally) to fix it.
+> - The TiKV component does not support scale-out while a scale-in operation is in progress. Forcing a scale-out operation might cause anomalies in the cluster. If an anomaly already happens, refer to [TiKV Store is in Tombstone status abnormally](/dev/tidb-in-kubernetes/troubleshoot.md#tikv-store-is-in-tombstone-status-abnormally) to fix it.
 
 ## Vertical scaling
 

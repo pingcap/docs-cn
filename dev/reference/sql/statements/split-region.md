@@ -206,4 +206,4 @@ region4:   [ 3<<61     ,  +inf  )
 
 ## Related session variable
 
-There are two `SPLIT REGION` related session variables: `tidb_wait_split_region_finish` and `tidb_wait_split_region_timeout`. For details, see [TiDB specific system variables and syntax](/reference/configuration/tidb-server/tidb-specific-variables.md).
+There are two `SPLIT REGION` related session variables: `tidb_wait_split_region_finish` and `tidb_wait_split_region_timeout`. For details, see [TiDB specific system variables and syntax](/dev/reference/configuration/tidb-server/tidb-specific-variables.md).

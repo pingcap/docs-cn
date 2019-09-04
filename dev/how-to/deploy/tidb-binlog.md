@@ -75,7 +75,7 @@ It is recommended to deploy TiDB Binlog using TiDB Ansible. If you just want to 
           # gc: 7
         ```
 
-        Make sure the space of the deployment directory is sufficient for storing Binlog. For more details, see [Configure the deployment directory](/how-to/deploy/orchestrated/ansible.md#configure-the-deployment-directory). You can also set a separate deployment directory for Pump.
+        Make sure the space of the deployment directory is sufficient for storing Binlog. For more details, see [Configure the deployment directory](/dev/how-to/deploy/orchestrated/ansible.md#configure-the-deployment-directory). You can also set a separate deployment directory for Pump.
 
         ```ini
         ## Binlog Part
@@ -121,7 +121,7 @@ It is recommended to deploy TiDB Binlog using TiDB Ansible. If you just want to 
 
     **Method #2**: Deploy a TiDB cluster containing Pump from scratch.
 
-    For how to use Ansible to deploy the TiDB cluster, see [Deploy TiDB Using Ansible](/how-to/deploy/orchestrated/ansible.md).
+    For how to use Ansible to deploy the TiDB cluster, see [Deploy TiDB Using Ansible](/dev/how-to/deploy/orchestrated/ansible.md).
 
 3. Check the Pump status.
 

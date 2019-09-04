@@ -59,9 +59,9 @@ mysql> show privileges;
 
 ## MySQL compatibility
 
-This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/report-issue.md) on GitHub.
+This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/v3.0/report-issue.md) on GitHub.
 
 ## See also
 
-* [SHOW GRANTS](/reference/sql/statements/show-grants.md)
-* [GRANT <privileges>](/reference/sql/statements/grant-privileges.md)
+* [SHOW GRANTS](/v3.0/reference/sql/statements/show-grants.md)
+* [GRANT <privileges>](/v3.0/reference/sql/statements/grant-privileges.md)

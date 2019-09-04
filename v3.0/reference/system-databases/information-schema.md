@@ -37,7 +37,7 @@ select * from `ANALYZE_STATUS`;
 
 ### CHARACTER_SETS table
 
-The `CHARACTER_SETS` table provides information about [character sets](/reference/sql/character-set.md). Currently, TiDB only supports some of the character sets.
+The `CHARACTER_SETS` table provides information about [character sets](/v3.0/reference/sql/character-set.md). Currently, TiDB only supports some of the character sets.
 
 {{< copyable "sql" >}}
 
@@ -352,7 +352,7 @@ SELECT * FROM session_variables LIMIT 10;
 
 ## SLOW_QUERY table
 
-The `SLOW_QUERY` table provides the slow query information, which is the parsing result of the TiDB slow log file. The column names in the table are corresponding to the field names in the slow log. For how to use this table to identify problematic statements and improve query performance of the SQL engine, see [Slow Query Log Document](/how-to/maintain/identify-slow-queries.md).
+The `SLOW_QUERY` table provides the slow query information, which is the parsing result of the TiDB slow log file. The column names in the table are corresponding to the field names in the slow log. For how to use this table to identify problematic statements and improve query performance of the SQL engine, see [Slow Query Log Document](/v3.0/how-to/maintain/identify-slow-queries.md).
 
 ```sql
 mysql> desc information_schema.slow_query;
@@ -933,7 +933,7 @@ The `STATE` column shows the execution status of a specific `ANALYZE` task. Its 
 
 ## SLOW\_QUERY table
 
-The `SLOW_QUERY` table maps slow query logs. Its column names and field names of slow query logs have an one-to-one corresponse relationship. For details, see [Identify Slow Queries](/how-to/maintain/identify-slow-queries.md#identify-slow-queries).
+The `SLOW_QUERY` table maps slow query logs. Its column names and field names of slow query logs have an one-to-one corresponse relationship. For details, see [Identify Slow Queries](/v3.0/how-to/maintain/identify-slow-queries.md#identify-slow-queries).
 
 ```sql
 mysql> desc slow_query\G

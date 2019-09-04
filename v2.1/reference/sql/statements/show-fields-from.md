@@ -6,4 +6,4 @@ category: reference
 
 # SHOW [FULL] FIELDS FROM
 
-This statement is an alias to [`SHOW [FULL] COLUMNS FROM`](/reference/sql/statements/show-columns-from.md). It is included for compatibility with MySQL.
+This statement is an alias to [`SHOW [FULL] COLUMNS FROM`](/v2.1/reference/sql/statements/show-columns-from.md). It is included for compatibility with MySQL.

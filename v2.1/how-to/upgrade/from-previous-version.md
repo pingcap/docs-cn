@@ -11,9 +11,9 @@ This document describes how to upgrade from TiDB 2.0 (TiDB 2.0.1 or later) or Ti
 
 > **Note:**
 >
-> TiDB 2.1 is not compatible with the Kafka version of TiDB Binlog. If your current TiDB cluster has already been using the [Kafka version of TiDB Binlog](/reference/tools/tidb-binlog/tidb-binlog-kafka.md), you need to [upgrade it to the cluster version of TiDB Binlog](/how-to/upgrade/tidb-binlog.md).
+> TiDB 2.1 is not compatible with the Kafka version of TiDB Binlog. If your current TiDB cluster has already been using the [Kafka version of TiDB Binlog](/v2.1/reference/tools/tidb-binlog/tidb-binlog-kafka.md), you need to [upgrade it to the cluster version of TiDB Binlog](/v2.1/how-to/upgrade/tidb-binlog.md).
 
-For details about using Ansible to perform a rolling update to each component, see [Perform a rolling update using Ansible](/how-to/upgrade/rolling-updates-with-ansible.md#perform-a-rolling-update-using-ansible).
+For details about using Ansible to perform a rolling update to each component, see [Perform a rolling update using Ansible](/v2.1/how-to/upgrade/rolling-updates-with-ansible.md#perform-a-rolling-update-using-ansible).
 
 ## Upgrade caveat
 
@@ -35,7 +35,7 @@ Do not execute any DDL statements during the upgrading process, otherwise the un
 
 TiDB Ansible release-3.0 depends on Ansible 2.4.2 and the later versions (`ansible>=2.4.2`) and the Python module `jinja2>=2.9.6` and `jmespath>=0.9.0`.
 
-To make it easy to manage dependencies, use `pip` to install Ansible and its dependencies. For details, see [Install Ansible and its dependencies on the Control Machine](/how-to/deploy/orchestrated/ansible.md#step-4-install-ansible-and-its-dependencies-on-the-control-machine). For offline environment, see [Install Ansible and its dependencies offline on the Control Machine](/how-to/deploy/orchestrated/offline-ansible.md#step-3-install-ansible-and-its-dependencies-offline-on-the-control-machine).
+To make it easy to manage dependencies, use `pip` to install Ansible and its dependencies. For details, see [Install Ansible and its dependencies on the Control Machine](/v2.1/how-to/deploy/orchestrated/ansible.md#step-4-install-ansible-and-its-dependencies-on-the-control-machine). For offline environment, see [Install Ansible and its dependencies offline on the Control Machine](/v2.1/how-to/deploy/orchestrated/offline-ansible.md#step-3-install-ansible-and-its-dependencies-offline-on-the-control-machine).
 
 After the installation is finished, you can view the version information using the following command:
 
@@ -80,7 +80,7 @@ Log in to the Control Machine using the `tidb` user account and enter the `/home
 
 Edit the `inventory.ini` file. For IP information, see the `/home/tidb/tidb-ansible-bak/inventory.ini` backup file.
 
-Pay special attention to the following variables configuration. For variable meaning, see [Description of other variables](/how-to/deploy/orchestrated/ansible.md#edit-other-variables-optional).
+Pay special attention to the following variables configuration. For variable meaning, see [Description of other variables](/v2.1/how-to/deploy/orchestrated/ansible.md#edit-other-variables-optional).
 
 1. Make sure that `ansible_user` is the normal user. For unified privilege management, remote installation using the root user is no longer supported. The default configuration uses the `tidb` user as the SSH remote user and the program running user.
 
@@ -90,7 +90,7 @@ Pay special attention to the following variables configuration. For variable mea
     ansible_user = tidb
     ```
 
-    You can refer to [How to configure SSH mutual trust and sudo rules on the Control Machine](/how-to/deploy/orchestrated/ansible.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine) to automatically configure the mutual trust among hosts.
+    You can refer to [How to configure SSH mutual trust and sudo rules on the Control Machine](/v2.1/how-to/deploy/orchestrated/ansible.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine) to automatically configure the mutual trust among hosts.
 
 2. Keep the `process_supervision` variable consistent with that in the previous version. It is recommended to use `systemd` by default.
 
@@ -99,7 +99,7 @@ Pay special attention to the following variables configuration. For variable mea
     process_supervision = systemd
     ```
 
-    If you need to modify this variable, see [How to modify the supervision method of a process from `supervise` to `systemd`](/how-to/deploy/orchestrated/ansible.md#how-to-modify-the-supervision-method-of-a-process-from-supervise-to-systemd). Before you upgrade, first use the `/home/tidb/tidb-ansible-bak/` backup branch to modify the supervision method of a process.
+    If you need to modify this variable, see [How to modify the supervision method of a process from `supervise` to `systemd`](/v2.1/how-to/deploy/orchestrated/ansible.md#how-to-modify-the-supervision-method-of-a-process-from-supervise-to-systemd). Before you upgrade, first use the `/home/tidb/tidb-ansible-bak/` backup branch to modify the supervision method of a process.
 
 ### Edit the configuration file of TiDB cluster components
 

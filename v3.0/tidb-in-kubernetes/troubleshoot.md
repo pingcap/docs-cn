@@ -173,7 +173,7 @@ kubectl describe po -n <namespace> <pod-name>
     kubectl get storageclass
     ```
 
-- If a `StorageClass` exists in the cluster but the available PV is insufficient, you need to add PV resources correspondingly. For Local PV, you can expand it by referring to [Local PV Configuration](/tidb-in-kubernetes/reference/configuration/local-pv.md).
+- If a `StorageClass` exists in the cluster but the available PV is insufficient, you need to add PV resources correspondingly. For Local PV, you can expand it by referring to [Local PV Configuration](/v3.0/tidb-in-kubernetes/reference/configuration/local-pv.md).
 
 ## The Pod is in the `CrashLoopBackOff` state
 
@@ -193,7 +193,7 @@ If the log fails to help diagnose the problem, you can add the `-p` parameter to
 kubectl -n <namespace> logs -p <pod-name>
 ```
 
-After checking the error messages in the log, you can refer to [Cannot start `tidb-server`](/how-to/troubleshoot/cluster-setup.md#cannot-start-tidb-server), [Cannot start `tikv-server`](/how-to/troubleshoot/cluster-setup.md#cannot-start-tikv-server), and [Cannot start `pd-server`](/how-to/troubleshoot/cluster-setup.md#cannot-start-pd-server) for further troubleshooting.
+After checking the error messages in the log, you can refer to [Cannot start `tidb-server`](/v3.0/how-to/troubleshoot/cluster-setup.md#cannot-start-tidb-server), [Cannot start `tikv-server`](/v3.0/how-to/troubleshoot/cluster-setup.md#cannot-start-tikv-server), and [Cannot start `pd-server`](/v3.0/how-to/troubleshoot/cluster-setup.md#cannot-start-pd-server) for further troubleshooting.
 
 In addition, TiKV might also fail to start when `ulimit` is insufficient. In this case, you can modify the `/etc/security/limits.conf` file of the Kubernetes node to increase the `ulimit`:
 

@@ -6,7 +6,7 @@ category: reference
 
 # Execution Plan Binding
 
-The [Optimizer Hints](/reference/performance/optimizer-hints.md) document introduces how to select a specific execution plan using Hint. However, sometimes you need to interfere with execution selection without modifying SQL statements. Execution Plan Binding provides a set of functionalities to do this.
+The [Optimizer Hints](/v3.0/reference/performance/optimizer-hints.md) document introduces how to select a specific execution plan using Hint. However, sometimes you need to interfere with execution selection without modifying SQL statements. Execution Plan Binding provides a set of functionalities to do this.
 
 ## Syntax
 
@@ -45,7 +45,6 @@ select * from t where a > ？
 >     ```sql
 >     CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(idx) WHERE b > 2
 >     ```
-
 
 ### Remove binding
 

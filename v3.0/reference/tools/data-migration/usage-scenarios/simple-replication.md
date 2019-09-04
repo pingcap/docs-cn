@@ -62,7 +62,7 @@ Assume that the schemas replicated to the downstream are as follows:
 
 ## Replication solution
 
-- To satisfy replication Requirements #1-i, #1-ii and #1-iii, configure the [table routing rules](/reference/tools/data-migration/features/overview.md#table-routing) as follows:
+- To satisfy replication Requirements #1-i, #1-ii and #1-iii, configure the [table routing rules](/v3.0/reference/tools/data-migration/features/overview.md#table-routing) as follows:
 
     ```yaml
     routes:
@@ -78,7 +78,7 @@ Assume that the schemas replicated to the downstream are as follows:
         target-schema: "user_south"
     ```
 
-- To satisfy the replication Requirement #2-i, configure the [table routing rules](/reference/tools/data-migration/features/overview.md#table-routing) as follows:
+- To satisfy the replication Requirement #2-i, configure the [table routing rules](/v3.0/reference/tools/data-migration/features/overview.md#table-routing) as follows:
 
     ```yaml
     routes:
@@ -95,7 +95,7 @@ Assume that the schemas replicated to the downstream are as follows:
         target-table:  "store_shenzhen"
     ```
 
-- To satisfy the replication Requirement #1-iv, configure the [binlog filtering rules](/reference/tools/data-migration/features/overview.md#binlog-event-filtering) as follows:
+- To satisfy the replication Requirement #1-iv, configure the [binlog filtering rules](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filtering) as follows:
 
     ```yaml
     filters:
@@ -111,7 +111,7 @@ Assume that the schemas replicated to the downstream are as follows:
         action: Ignore
     ```
 
-- To satisfy the replication Requirement #2-ii, configure the [binlog filtering rule](/reference/tools/data-migration/features/overview.md#binlog-event-filtering) as follows:
+- To satisfy the replication Requirement #2-ii, configure the [binlog filtering rule](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filtering) as follows:
 
     ```yaml
     filters:
@@ -126,7 +126,7 @@ Assume that the schemas replicated to the downstream are as follows:
     >
     > `store-filter-rule` is different from `log-filter-rule & user-filter-rule`. `store-filter-rule` is a rule for the whole `store` schema, while `log-filter-rule` and `user-filter-rule` are rules for the `log` table in the `user` schema.
 
-- To satisfy the replication Requirement #3, configure the [black and white lists](/reference/tools/data-migration/features/overview.md#black-and-white-table-lists) as follows:
+- To satisfy the replication Requirement #3, configure the [black and white lists](/v3.0/reference/tools/data-migration/features/overview.md#black-and-white-table-lists) as follows:
 
     ```yaml
     black-white-list:
@@ -136,7 +136,7 @@ Assume that the schemas replicated to the downstream are as follows:
 
 ## Replication task configuration
 
-The complete replication task configuration is shown below. For more details, see [configuration explanations](/reference/tools/data-migration/configure/task-configuration-file.md).
+The complete replication task configuration is shown below. For more details, see [configuration explanations](/v3.0/reference/tools/data-migration/configure/task-configuration-file.md).
 
 ```yaml
 name: "one-tidb-slave"

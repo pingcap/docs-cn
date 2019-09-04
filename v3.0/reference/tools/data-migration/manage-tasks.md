@@ -7,7 +7,7 @@ aliases: ['/docs/tools/dm/manage-task/']
 
 # Manage the Data Replication Task
 
-This document describes how to manage and maintain the data replication task using the [dmctl](/reference/tools/data-migration/overview.md#dmctl) component. For the Data Migration cluster deployed using DM-Ansible, the dmctl binary file is in `dm-ansible/dmctl`.
+This document describes how to manage and maintain the data replication task using the [dmctl](/v3.0/reference/tools/data-migration/overview.md#dmctl) component. For the Data Migration cluster deployed using DM-Ansible, the dmctl binary file is in `dm-ansible/dmctl`.
 
 ## dmctl basic usage
 
@@ -146,7 +146,7 @@ start-task [ -w "172.16.30.15:10081"] ./task.yaml
 
 ### Check the data replication task status
 
-You can use the `query-status` task management command to check the status of the data replication task. For details about the query result and subtask status, see [Query Status](/reference/tools/data-migration/query-status.md).
+You can use the `query-status` task management command to check the status of the data replication task. For details about the query result and subtask status, see [Query Status](/v3.0/reference/tools/data-migration/query-status.md).
 
 ```bash
 » help query-status
@@ -503,7 +503,7 @@ update-task [-w "127.0.0.1:10181"] ./task.yaml
 
 ## Manage the DDL locks
 
-See [Handle Sharding DDL Locks Manually](/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md).
+See [Handle Sharding DDL Locks Manually](/v3.0/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md).
 
 ## Refresh worker tasks
 

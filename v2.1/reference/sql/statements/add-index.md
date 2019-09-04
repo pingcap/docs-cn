@@ -72,9 +72,9 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 ## See also
 
-* [CREATE INDEX](/reference/sql/statements/create-index.md)
-* [DROP INDEX](/reference/sql/statements/drop-index.md)
-* [RENAME INDEX](/reference/sql/statements/rename-index.md)
-* [ADD COLUMN](/reference/sql/statements/add-column.md)
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [EXPLAIN](/reference/sql/statements/explain.md)
+* [CREATE INDEX](/v2.1/reference/sql/statements/create-index.md)
+* [DROP INDEX](/v2.1/reference/sql/statements/drop-index.md)
+* [RENAME INDEX](/v2.1/reference/sql/statements/rename-index.md)
+* [ADD COLUMN](/v2.1/reference/sql/statements/add-column.md)
+* [CREATE TABLE](/v2.1/reference/sql/statements/create-table.md)
+* [EXPLAIN](/v2.1/reference/sql/statements/explain.md)

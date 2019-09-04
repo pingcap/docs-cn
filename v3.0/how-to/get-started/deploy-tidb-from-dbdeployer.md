@@ -9,7 +9,7 @@ aliases: ['/docs/v3.0/how-to/get-started/local-cluster/install-from-dbdeployer/'
 
 DBdeployer is designed to allow multiple versions of TiDB deployed concurrently. It is recommended for advanced users who are testing out new builds of TiDB, or testing compatibility across releases.
 
-Similar to [Homebrew](/how-to/get-started/deploy-tidb-from-homebrew.md), the DBdeployer installation method installs the tidb-server **without** the tikv-server or pd-server. This is useful for development environments, since you can test your application's compatibility with TiDB without needing to deploy a full TiDB platform.
+Similar to [Homebrew](/v3.0/how-to/get-started/deploy-tidb-from-homebrew.md), the DBdeployer installation method installs the tidb-server **without** the tikv-server or pd-server. This is useful for development environments, since you can test your application's compatibility with TiDB without needing to deploy a full TiDB platform.
 
 > **Note:**
 >

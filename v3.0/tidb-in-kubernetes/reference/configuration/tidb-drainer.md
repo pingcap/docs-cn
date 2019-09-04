@@ -10,7 +10,7 @@ This document introduces the configuration parameters for a TiDB Binlog drainer 
 
 ## Configuration parameters
 
-The following table contains all configuration parameters available for the `tidb-drainer` chart.  Refer to [Use Helm](tidb-in-kubernetes/reference/tools/in-kubernetes.md#use-helm) to learn how to configure these parameters.
+The following table contains all configuration parameters available for the `tidb-drainer` chart.  Refer to [Use Helm](/v3.0/tidb-in-kubernetes/reference/tools/in-kubernetes.md#use-helm) to learn how to configure these parameters.
 
 | Parameter | Description | Default Value |
 | :----- | :---- | :----- |

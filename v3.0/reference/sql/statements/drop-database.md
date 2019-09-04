@@ -56,9 +56,9 @@ mysql> SHOW DATABASES;
 
 ## MySQL compatibility
 
-This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/report-issue.md) on GitHub.
+This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/v3.0/report-issue.md) on GitHub.
 
 ## See also
 
-* [CREATE DATABASE](/reference/sql/statements/create-database.md)
-* [ALTER DATABASE](/reference/sql/statements/alter-database.md)
+* [CREATE DATABASE](/v3.0/reference/sql/statements/create-database.md)
+* [ALTER DATABASE](/v3.0/reference/sql/statements/alter-database.md)

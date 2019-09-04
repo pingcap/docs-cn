@@ -14,7 +14,7 @@ However, TiDB does not support some of MySQL features or behaves differently fro
 
 > **Note:**
 >
-> This page refers to general differences between MySQL and TiDB. Please also see the dedicated pages for [Security](/reference/security/compatibility.md) and [Transaction Model](/reference/transactions/transaction-model.md) compatibility.
+> This page refers to general differences between MySQL and TiDB. Please also see the dedicated pages for [Security](/dev/reference/security/compatibility.md) and [Transaction Model](/dev/reference/transactions/transaction-model.md) compatibility.
 
 ## Unsupported features
 
@@ -69,11 +69,11 @@ The operations are executed as follows:
 
 ### Performance schema
 
-Performance schema tables return empty results in TiDB. TiDB uses a combination of [Prometheus and Grafana](/how-to/monitor/monitor-a-cluster.md#use-prometheus-and-grafana) for performance metrics instead.
+Performance schema tables return empty results in TiDB. TiDB uses a combination of [Prometheus and Grafana](/dev/how-to/monitor/monitor-a-cluster.md#use-prometheus-and-grafana) for performance metrics instead.
 
 ### Query Execution Plan
 
-The output format of Query Execution Plan (`EXPLAIN`/`EXPLAIN FOR`) in TiDB is greatly different from that in MySQL. Besides, the output content and the privileges setting of `EXPLAIN FOR` are not the same as those of MySQL. See [Understand the Query Execution Plan](/reference/performance/understanding-the-query-execution-plan.md) for more details.
+The output format of Query Execution Plan (`EXPLAIN`/`EXPLAIN FOR`) in TiDB is greatly different from that in MySQL. Besides, the output content and the privileges setting of `EXPLAIN FOR` are not the same as those of MySQL. See [Understand the Query Execution Plan](/dev/reference/performance/understanding-the-query-execution-plan.md) for more details.
 
 ### Built-in functions
 
@@ -98,11 +98,11 @@ In TiDB DDL does not block reads or writes to tables while in operation. However
 + `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`: the syntax is supported, but is not applicable to TiDB. All DDL changes that are supported do not lock the table.
 + `ALGORITHM [=] {DEFAULT|INSTANT|INPLACE|COPY}`: the syntax for `ALGORITHM=INSTANT` and `ALGORITHM=INPLACE` is fully supported, but it works differently from MySQL because some operations that are `INPLACE` in MySQL are `INSTANT` in TiDB. The syntax `ALGORITHM=COPY` is not applicable to TIDB and returns a warning.
 
-For more information, see [Online Schema Changes](/key-features.md#online-schema-changes).
+For more information, see [Online Schema Changes](/dev/key-features.md#online-schema-changes).
 
 ### Analyze table
 
-[`ANALYZE TABLE`](/reference/performance/statistics.md#manual-collection) works differently in TiDB than in MySQL, in that it is a relatively lightweight and short-lived operation in MySQL/InnoDB, while in TiDB it completely rebuilds the statistics for a table and can take much longer to complete.
+[`ANALYZE TABLE`](/dev/reference/performance/statistics.md#manual-collection) works differently in TiDB than in MySQL, in that it is a relatively lightweight and short-lived operation in MySQL/InnoDB, while in TiDB it completely rebuilds the statistics for a table and can take much longer to complete.
 
 ### Views
 
@@ -125,14 +125,14 @@ Create Table: CREATE TABLE `t1` (
 1 row in set (0.00 sec)
 ```
 
-Architecturally, TiDB does support a similar storage engine abstraction to MySQL, and user tables are created in the engine specified by the [`--store`](/reference/configuration/tidb-server/configuration.md#store) option used when you start tidb-server (typically `tikv`).
+Architecturally, TiDB does support a similar storage engine abstraction to MySQL, and user tables are created in the engine specified by the [`--store`](/dev/reference/configuration/tidb-server/configuration.md#store) option used when you start tidb-server (typically `tikv`).
 
 ### SQL modes
 
 TiDB supports **all of the SQL modes** from MySQL 5.7 with minor exceptions:
 
 - The compatibility modes deprecated in MySQL 5.7 and removed in MySQL 8.0 are not supported (such as `ORACLE`, `POSTGRESQL` etc).
-- The mode `ONLY_FULL_GROUP_BY` has minor [semantic differences](/reference/sql/functions-and-operators/aggregate-group-by-functions.md#differences-from-mysql) to MySQL 5.7, which we plan to address in the future.
+- The mode `ONLY_FULL_GROUP_BY` has minor [semantic differences](/dev/reference/sql/functions-and-operators/aggregate-group-by-functions.md#differences-from-mysql) to MySQL 5.7, which we plan to address in the future.
 - The SQL modes `NO_DIR_IN_CREATE` and `NO_ENGINE_SUBSTITUTION` are supported for compatibility, but are not applicable to TiDB.
 
 ### Version-specific comments
@@ -161,7 +161,7 @@ tidb> SELECT /*!90000 "I should not run", */ "I should run" FROM dual;
 
 Support for `LOCK TABLE` syntax is currently experimental, and must be explicitly enabled ([TiDB #10343](https://github.com/pingcap/tidb/pull/10343)).
 
-It is recommended to use the historical reads feature of `tidb_snapshot` to produce consistent reads, instead of `FLUSH TABLES WITH READ LOCK`. Support for `tidb_snapshot` is available in [Mydumper](/reference/tools/mydumper.md)).
+It is recommended to use the historical reads feature of `tidb_snapshot` to produce consistent reads, instead of `FLUSH TABLES WITH READ LOCK`. Support for `tidb_snapshot` is available in [Mydumper](/dev/reference/tools/mydumper.md)).
 
 ### Default differences
 
@@ -171,7 +171,7 @@ It is recommended to use the historical reads feature of `tidb_snapshot` to prod
 - Default collation:
     - The default collation of `utf8mb4` in TiDB is `utf8mb4_bin`.
     - The default collation of `utf8mb4` in MySQL 5.7 is `utf8mb4_general_ci`, but changes to `utf8mb4_0900_ai_ci` in MySQL 8.0.
-    - You can use the [`SHOW CHARACTER SET`](/reference/sql/statements/show-character-set.md) statement to check the default collations of all character sets.
+    - You can use the [`SHOW CHARACTER SET`](/dev/reference/sql/statements/show-character-set.md) statement to check the default collations of all character sets.
 - Default value of `foreign_key_checks`:
     - The default value in TiDB is `OFF` and currently TiDB only supports `OFF`.
     - The default value in MySQL 5.7 is `ON`.
