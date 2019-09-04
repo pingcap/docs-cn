@@ -9,8 +9,8 @@ category: how-to
 
 ## 前置条件
 
-* 参考 [TiDB Operator](/tidb-in-kubernetes/deploy/tidb-operator.md) 完成集群中的 TiDB Operator 部署；
-* 参考 [使用 Helm](/tidb-in-kubernetes/reference/tools/in-kubernetes.md#使用-helm) 安装 Helm 并配置 PingCAP 官方 chart 仓库。
+* 参考 [TiDB Operator](/dev/tidb-in-kubernetes/deploy/tidb-operator.md) 完成集群中的 TiDB Operator 部署；
+* 参考 [使用 Helm](/dev/tidb-in-kubernetes/reference/tools/in-kubernetes.md#使用-helm) 安装 Helm 并配置 PingCAP 官方 chart 仓库。
 
 ## 配置 TiDB 集群
 
@@ -35,9 +35,9 @@ helm inspect values pingcap/tidb-cluster --version=<chart-version> > /home/tidb/
 - 生产环境：推荐使用本地存储，但实际 Kubernetes 集群中本地存储可能按磁盘类型进行了分类，例如 `nvme-disks`，`sas-disks`。
 - 演示环境或功能性验证：可以使用网络存储，例如 `ebs`，`nfs` 等。
 
-另外 TiDB 集群不同组件对磁盘的要求不一样。所以部署集群前要根据当前 Kubernetes 集群支持的存储类型以及使用场景为 TiDB 集群各组件选择合适的存储类型，通过修改 `values.yaml` 中各组件的 `storageClassName` 字段设置存储类型。关于 Kubernetes 集群支持哪些[存储类型](/tidb-in-kubernetes/reference/configuration/storage-class.md)，请联系系统管理员确定。
+另外 TiDB 集群不同组件对磁盘的要求不一样。所以部署集群前要根据当前 Kubernetes 集群支持的存储类型以及使用场景为 TiDB 集群各组件选择合适的存储类型，通过修改 `values.yaml` 中各组件的 `storageClassName` 字段设置存储类型。关于 Kubernetes 集群支持哪些[存储类型](/dev/tidb-in-kubernetes/reference/configuration/storage-class.md)，请联系系统管理员确定。
 
-如果创建集群时设置了集群中不存在的存储类型，则会导致集群创建处于 Pending 状态，需要[将集群彻底销毁掉](/tidb-in-kubernetes/maintain/destroy-tidb-cluster.md)。
+如果创建集群时设置了集群中不存在的存储类型，则会导致集群创建处于 Pending 状态，需要[将集群彻底销毁掉](/dev/tidb-in-kubernetes/maintain/destroy-tidb-cluster.md)。
 
 默认部署的集群拓扑是：3 个 PD Pod，3 个 TiKV Pod，2 个 TiDB Pod 和 1 个监控 Pod。在该部署拓扑下根据数据高可用原则，TiDB Operator 扩展调度器要求 Kubernetes 集群中至少有 3 个节点，如果 Kubernetes 集群节点个数少于 3 个，将会导致有一个 PD Pod 处于 Pending 状态，而 TiKV 和 TiDB Pod 也都不会创建。
 
@@ -47,7 +47,7 @@ Kubernetes 集群节点个数少于 3 个时，为了使 TiDB 集群能启动起
 >
 > `default-scheduler` 仅适用于演示环境，改为 `default-scheduler` 后，TiDB 集群的调度将无法保证数据高可用，另外一些其它特性也无法支持，例如 [TiDB Pod StableScheduling](https://github.com/pingcap/tidb-operator/blob/master/docs/design-proposals/tidb-stable-scheduling.md) 等。
 
-其它更多配置参数请参考 [TiDB 集群部署配置文档](/tidb-in-kubernetes/reference/configuration/tidb-cluster.md)。
+其它更多配置参数请参考 [TiDB 集群部署配置文档](/dev/tidb-in-kubernetes/reference/configuration/tidb-cluster.md)。
 
 ## 部署 TiDB 集群
 

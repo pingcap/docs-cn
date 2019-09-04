@@ -77,10 +77,10 @@ mysql> SHOW TABLES IN mysql;
 
 ## MySQL 兼容性
 
-`SHOW [FULL] TABLES` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW [FULL] TABLES` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [DROP TABLE](/reference/sql/statements/drop-table.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
+* [CREATE TABLE](/v3.0/reference/sql/statements/create-table.md)
+* [DROP TABLE](/v3.0/reference/sql/statements/drop-table.md)
+* [SHOW CREATE TABLE](/v3.0/reference/sql/statements/show-create-table.md)
