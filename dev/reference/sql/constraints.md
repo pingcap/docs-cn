@@ -47,15 +47,15 @@ ALTER TABLE orders ADD FOREIGN KEY fk_user_id (user_id) REFERENCES users(id);
 
 ### 注意
 
-* TiDB 不会在 DML 语句中对外键进行约束。例如，即使 `users` 表中不存在 `id=123` 的记录，下列事务也能提交成功：
+* TiDB 支持外键是为了在将其他数据库迁移到 TiDB 时，不会因为此语法报错。但是，TiBD 不会在 DML 语句中对外键进行约束。例如，即使 `users` 表中不存在 `id=123` 的记录，下列事务也能提交成功：
 
-```
-START TRANSACTION;
-INSERT INTO orders (user_id, doc) VALUES (123, NULL);
-COMMIT;
-```
+    ```
+    START TRANSACTION;
+    INSERT INTO orders (user_id, doc) VALUES (123, NULL);
+    COMMIT;
+    ```
 
-* 此外，TiDB 在执行 `SHOW CREATE TABLE` 语句的结果中不显示外键信息。
+* TiDB 在执行 `SHOW CREATE TABLE` 语句的结果中不显示外键信息。
 
 ## 非空约束
 
