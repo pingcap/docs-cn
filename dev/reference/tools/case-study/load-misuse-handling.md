@@ -19,12 +19,11 @@ packet for query is too large. Try adjusting the 'max_allowed_packet' variable
 ### 原因
 
 * MySQL client 和 MySQL/TiDB Server 都有 `max_allowed_packet` 配额的限制，如果在使用过程中违反其中任何一个 `max_allowed_packet` 配额，客户端程序就会收到对应的报错。目前最新版本 `syncer/loader/dm` 和 `TiDB server` 的默认 `max_allowed_packet` 配额都为 `64M`。
-  * 请使用最新版本，或者最新稳定版本的工具，[dowload page](/reference/tools/download.md)
+    * 请使用最新版本，或者最新稳定版本的工具，[dowload page](/reference/tools/download.md)
 * `loader/dm` 的 load data 处理模块不支持对 dump sqls 文件进行切分，原因是 MyDumper 采用了最简单的编码实现，正如 MyDumper 代码注释 `/* Poor man's data dump code */` 所言。如果在 `loader/dm` 实现文件切分，那么需要在 `TiDB parser` 基础上实现一个完备的解析器才能正确的处理数据切分，但是随之会带来以下的问题：
    * 工作量大
-   * 复杂度高，不容易保证正确性
+   * 复杂度高,不容易保证正确性
    * 性能的极大降低
-
 
 ### 解决方案
 
@@ -39,5 +38,5 @@ packet for query is too large. Try adjusting the 'max_allowed_packet' variable
   ```
 
 * 如果宽表的单行超过了 `64M`, 那么需要修改两个配置, 并且使之生效
-  * 在 TiDB server 执行 `set @@global.max_allowed_packet=134217728` （`134217728 = 128M`）
-  * 根据实际情况为 `loader` 的配置文件或者 `dm task` 配置文件中的 db 配置增加类似 `max-allowed-packet=128M`，然后重启进程或者任务
+    * 在 TiDB server 执行 `set @@global.max_allowed_packet=134217728` （`134217728 = 128M`）
+    * 根据实际情况为 `loader` 的配置文件或者 `dm task` 配置文件中的 db 配置增加类似 `max-allowed-packet=128M`，然后重启进程或者任务
