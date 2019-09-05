@@ -51,6 +51,6 @@ Query OK, 0 rows affected (0.23 sec)
 
 ## 另请参阅
 
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
-* [SHOW TABLES](/reference/sql/statements/show-tables.md)
+* [CREATE TABLE](/v2.1/reference/sql/statements/create-table.md)
+* [SHOW CREATE TABLE](/v2.1/reference/sql/statements/show-create-table.md)
+* [SHOW TABLES](/v2.1/reference/sql/statements/show-tables.md)

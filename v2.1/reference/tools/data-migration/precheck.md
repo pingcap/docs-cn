@@ -40,7 +40,7 @@ category: reference
     TiDB 和 MySQL 的兼容性存在以下一些区别：
 
     - TiDB 不支持外键
-    - 字符集的兼容性不同，详见 [TiDB 支持的字符集](/reference/sql/character-set.md)
+    - 字符集的兼容性不同，详见 [TiDB 支持的字符集](/v2.1/reference/sql/character-set.md)
 
 + 上游 MySQL 多实例分库分表的一致性
 
