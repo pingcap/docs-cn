@@ -28,13 +28,13 @@ category: reference
 
 ## TiDB 数据分布原理
 
-如果要解决以上挑战，需要从 TiDB 数据切分以及调度的原理开始讲起。这里只是作简单的说明，详情可参阅：[说调度](https://pingcap.com/blog-cn/tidb-internal-3/)。
+如果要解决以上挑战，需要从 TiDB 数据切分以及调度的原理开始讲起。这里只是作简单的说明，更多细节可参阅：[说调度](https://pingcap.com/blog-cn/tidb-internal-3/)。
 
 TiDB 以 Region 为单位对数据进行切分，每个 Region 有大小限制（默认 96M）。 Region 的切分方式是范围切分。每个 Region 会有多副本，每一组副本，称为一个 Raft-Group。每个 Raft-Group 中由 Leader 负责执行这块数据的读 & 写（TiDB 即将支持 [Follower-Read](https://zhuanlan.zhihu.com/p/78164196)）。Leader 会自动地被 PD 组件均匀调度在不同的物理节点上，用以均分读写压力。
 
 ![图1. TiDB 数据概览](/media/high-concurrency-best-practice/tidb-data-overview.png)
 
-只要业务的写入没有 AUTO_INCREMENT 的主键，或没有单调递增的索引（即没有业务上的写入热点，详情可参阅 [TiDB 正确使用方式](https://zhuanlan.zhihu.com/p/25574778)），从原理上来说，TiDB 依靠这个架构可具备线性扩展的读写能力，并且可以充分利用分布式资源。从这一点看，TiDB 尤其适合高并发批量写入场景的业务。
+只要业务的写入没有 AUTO_INCREMENT 的主键，或没有单调递增的索引（即没有业务上的写入热点，更多细节可参阅 [TiDB 正确使用方式](https://zhuanlan.zhihu.com/p/25574778)），从原理上来说，TiDB 依靠这个架构可具备线性扩展的读写能力，并且可以充分利用分布式资源。从这一点看，TiDB 尤其适合高并发批量写入场景的业务。
 
 但理论场景和实际情况往往存在不同。以下实例说明了热点是如何产生的。
 
@@ -159,9 +159,9 @@ SPLIT TABLE TEST_HOTSPOT BETWEEN (0) AND (9223372036854775807) REGIONS 128;
 
 ### 更复杂的热点问题
 
-如果表没有主键或者主键不是 Int 类型，而且用户也不想自己生成一个随机分布的主键 ID 的话，TiDB 内部有一个隐式的 `_tidb_rowid` 列作为行 ID。在不使用 `SHARD_ROW_ID_BITS` 的情况下，`_tidb_rowid` 列的值基本也为单调递增，此时也会有写热点存在。（`SHARD_ROW_ID_BITS` 详情可参阅[这里](https://pingcap.com/docs-cn/v3.0/reference/configuration/tidb-server/tidb-specific-variables/#shard-row-id-bits)）
+如果表没有主键或者主键不是 Int 类型，而且用户也不想自己生成一个随机分布的主键 ID 的话，TiDB 内部有一个隐式的 `_tidb_rowid` 列作为行 ID。在不使用 `SHARD_ROW_ID_BITS` 的情况下，`_tidb_rowid` 列的值基本也为单调递增，此时也会有写热点存在。（`SHARD_ROW_ID_BITS` 的详细说明可参阅[这里](https://pingcap.com/docs-cn/v3.0/reference/configuration/tidb-server/tidb-specific-variables/#shard-row-id-bits)）
 
-要避免由 `_tidb_rowid` 带来的写入热点问题，可以在建表时，使用 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 这两个建表选项（`PRE_SPLIT_REGIONS` 详情可参阅[这里](https://pingcap.com/docs-cn/v3.0/reference/sql/statements/split-region/#pre-split-regions)）。
+要避免由 `_tidb_rowid` 带来的写入热点问题，可以在建表时，使用 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 这两个建表选项（`PRE_SPLIT_REGIONS` 的详细说明可参阅[这里](https://pingcap.com/docs-cn/v3.0/reference/sql/statements/split-region/#pre-split-regions)）。
 
 `SHARD_ROW_ID_BITS` 用于将 `_tidb_rowid` 列生成的行 ID 随机打散。`pre_split_regions` 用于在建完表后预先进行 Split region。
 
