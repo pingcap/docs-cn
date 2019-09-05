@@ -1,0 +1,92 @@
+version: 2
+
+jobs:
+  lint:
+    docker:
+      - image: circleci/ruby:2.4.1-node
+    working_directory: ~/pingcap/docs-cn
+    steps:
+      - checkout
+
+      - run:
+          name: "Install markdownlint"
+          command: |
+            sudo npm install -g markdownlint-cli
+            markdownlint --version
+
+      - run:
+          name: "Lint dev"
+          command: markdownlint dev/
+
+      - run:
+          name: "Lint README"
+          command: markdownlint README.md
+
+      - run:
+          name: "Lint edited files"
+          command: |
+            git remote add upstream https://github.com/pingcap/docs-cn.git
+            git fetch upstream
+            markdownlint $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*' ':(exclude)v1.0/*' ':(exclude)v2.0/*' ':(exclude)v2.1-legacy/*')
+
+      - run:
+          name: "Check links"
+          command: |
+            scripts/verify-links.sh
+
+  build:
+    docker:
+      - image: andelf/doc-build:0.1.9
+    working_directory: ~/pingcap/docs-cn
+
+    steps:
+      - checkout
+
+      - run:
+          name: "Special Check for Golang User"
+          command: grep -RP '\t' *  | tee | grep '.md' && exit 1; echo ok
+
+      - run:
+          name: "Merge Makedown Files"
+          command: python3 scripts/merge_by_toc.py
+
+      - run:
+          name: "Generate PDF"
+          command: scripts/generate_pdf.sh
+
+      # echo "222.222.95.49 uc.qbox.me": adds a new host
+      - deploy:
+          name: "Publish PDF"
+          command: |
+            sudo bash -c 'echo "222.222.95.49 uc.qbox.me" >> /etc/hosts';
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              python3 scripts/upload.py dev/output.pdf tidb-manual-cn-dev.pdf;
+              python3 scripts/upload.py v3.0/output.pdf tidb-manual-cn-v3.0.pdf;
+              python3 scripts/upload.py v2.1/output.pdf tidb-manual-cn-v2.1.pdf;
+            fi
+            if [ "${CIRCLE_BRANCH}" == "website-preview" ]; then
+              python3 scripts/upload.py dev/output.pdf tidb-manual-cn-preview-dev.pdf;
+              python3 scripts/upload.py v3.0/output.pdf tidb-manual-cn-preview-v3.0.pdf;
+              python3 scripts/upload.py v2.1/output.pdf tidb-manual-cn-preview-v2.1.pdf;
+            fi
+
+      - run:
+          name: "Copy Generated PDF"
+          command: mkdir /tmp/artifacts && cp dev/output.pdf dev/doc.md /tmp/artifacts && cp v3.0/output.pdf v3.0/doc.md /tmp/artifacts && cp v2.1/output.pdf v2.1/doc.md /tmp/artifacts
+
+      - store_artifacts:
+          path: /tmp/artifacts
+
+workflows:
+  version: 2
+  lint:
+    jobs:
+      - lint
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
+                - website-preview

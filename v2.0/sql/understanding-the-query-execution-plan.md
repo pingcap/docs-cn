@@ -34,7 +34,9 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 
 ### Task 简介
 
-目前 TiDB 的计算任务隶属于两种不同的 task: cop task 和 root task。cop task 是指被下推到 KV 端分布式执行的计算任务，root task 是指在 TiDB 端单点执行的计算任务。SQL 优化的目标之一是将计算尽可能的下推到 KV 端执行。
+目前 TiDB 的计算任务隶属于两种不同的 task：cop task 和 root task。cop task 是指使用 TiKV 中的 coprocessor 执行的计算任务，root task 是指在 TiDB 中执行的计算任务。
+
+SQL 优化的目标之一是将计算尽可能地下推到 TiKV 中执行。TiKV 中的 coprocessor 能支持大部分 SQL 内建函数（包括聚合函数和标量函数）、SQL `LIMIT` 操作、索引扫描和表扫描。但是，所有的 Join 操作都只能作为 root task 在 TiDB 上执行。
 
 ### 表数据和索引数据
 

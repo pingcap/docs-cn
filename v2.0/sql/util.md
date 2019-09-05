@@ -74,6 +74,7 @@ label = "cop"
 ```
 
 如果电脑上安装了 `dot` 程序 (包含在 graphviz 软件包中)，可以通过如下方式生成 PNG 文件：
+
 ```bash
 dot xx.dot -T png -O
 
@@ -84,11 +85,10 @@ dot xx.dot -T png -O
 
 ![Explain Dot](../media/explain_dot.png)
 
-
 ## `USE` 语句
 
 ```sql
 USE db_name
 ```
 
-切换默认 Database，当 SQL 语句中的表没有显示指定 Database 时，即使用默认 Database。
+切换需要使用的 Database 的时候，如果 SQL 语句中的表没有显式指定的 Database，即默认使用当前选定的 Database。

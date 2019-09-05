@@ -77,7 +77,7 @@ TiDB 支持 `SQL92` 标准并兼容 MySQL 语法，目前已经实现了大多�
 对于值唯一的列可以创建唯一索引：
 
     CREATE UNIQUE INDEX person_num ON person (number);
-    ALTER TABLE person ADD UNIQUE person_num  ON (number);
+    ALTER TABLE person ADD UNIQUE person_num (number);
 
 可利用 `ALTER TABLE` 或 `DROP INDEX` 语句来删除索引。类似于 `CREATE INDEX` 语句，`DROP INDEX` 可以在 `ALTER TABLE` 内部作为一条语句处理，语法如下。
 

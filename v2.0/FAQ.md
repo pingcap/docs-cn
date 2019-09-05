@@ -248,9 +248,9 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 | 滚动升级除 PD 外模块 | ansible-playbook rolling\_update.yml --skip-tags=pd |
 | 滚动升级监控组件 | ansible-playbook rolling\_update\_monitor.yml |
 
-### 3.1.2 TiDB 如何登陆？
+### 3.1.2 TiDB 如何登录？
 
-和 MySQL 登陆方式一样，可以按照下面例子进行登陆。
+和 MySQL 登录方式一样，可以按照下面例子进行登录。
 
 `mysql -h 127.0.0.1 -uroot -P4000`
 
@@ -375,9 +375,9 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 不可以，目前 TiDB 只支持分布式存储引擎和 Goleveldb/Rocksdb/Boltdb 引擎；
 
-### 3.3.4 Infomation_schema 能否支持更多真实信息？
+### 3.3.4 Information_schema 能否支持更多真实信息？
 
-Infomation_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。当前 TiDB 支持的：Infomation\_schema 请参考[TiDB 系统数据库说明文档](https://pingcap.com/docs-cn/sql/system-database)。
+Information_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。当前 TiDB 支持的：Information\_schema 请参考[TiDB 系统数据库说明文档](https://pingcap.com/docs-cn/sql/system-database)。
 
 ### 3.3.5 TiDB Backoff type 主要原因?
 
@@ -520,19 +520,19 @@ loader的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调�
 
 ### 4.1.1 Mydumper 工具
 
-具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)
+具体可以参考 <https://github.com/maxbube/mydumper>。
 
 ### 4.1.2 Loader 工具
 
-具体可以参考 [https://www.pingcap.com/docs-cn/tools/loader/](https://www.pingcap.com/docs-cn/tools/loader/)
+具体可以参考 <https://pingcap.com/docs-cn/tools/loader/>。
 
 ### 4.1.3 如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？
 
 TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提供了一个[检查工具](https://github.com/pingcap/tidb-tools/tree/master/checker)，用于检查 MySQL 中的 Schema 是否和 TiDB 兼容。
 
-### 4.1.4 不小心把 MySQL 的 user 表导入到 TiDB 了，或者忘记密码，无法登陆，如何处理？
+### 4.1.4 不小心把 MySQL 的 user 表导入到 TiDB 了，或者忘记密码，无法登录，如何处理？
 
-重启 TiDB 服务，配置文件中增加 `-skip-grant-table=true` 参数，无密码登陆集群后，可以根据情况重建用户，或者重建 mysql.user 表，具体表结构搜索官网。
+重启 TiDB 服务，配置文件中增加 `-skip-grant-table=true` 参数，无密码登录集群后，可以根据情况重建用户，或者重建 mysql.user 表，具体表结构搜索官网。
 
 ### 4.1.5 如何导出 TiDB 数据？
 
@@ -561,7 +561,7 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 #### 4.2.1.2 如何配置监控 Syncer 运行情况？
 
-下载 [Syncer Json](https://github.com/pingcap/docs/blob/master/etc/Syncer.json) 导入到 Grafana，修改 Prometheus 配置文件，添加以下内容：
+下载 [Syncer Json](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json) 导入到 Grafana，修改 Prometheus 配置文件，添加以下内容：
 
 - job_name: &#39;syncer_ops&#39; // 任务名字
     static_configs:

@@ -8,6 +8,7 @@ category: advanced
 当试用 TiDB 遇到问题时，请先参考本篇文档。如果问题未解决，请按文档要求收集必要的信息通过 Github [提供给 TiDB 开发者](https://github.com/pingcap/tidb/issues/new)。
 
 ## 如何给 TiDB 开发者报告错误
+
 当使用 TiDB 遇到问题并且通过后面所列信息无法解决时，请收集以下信息并[创建新 Issue](https://github.com/pingcap/tidb/issues/new):
 
 + 具体的出错信息以及正在执行的操作
@@ -16,26 +17,27 @@ category: advanced
 + 机器配置以及部署拓扑
 + dmesg 中 TiDB 组件相关的问题
 
-
 ## 数据库连接不上
 
 首先请确认集群的各项服务是否已经启动，包括 tidb-server、pd-server、tikv-server。请用 ps 命令查看所有进程是否在。如果某个组件的进程已经不在了，请参考对应的章节排查错误。
 
 如果所有的进程都在，请查看 tidb-server 的日志，看是否有报错？常见的错误包括：
 
-+   InfomationSchema is out of date
++ InformationSchema is out of date
 
     无法连接 tikv-server，请检查 pd-server 以及 tikv-server 的状态和日志。
-+   panic
+
++ panic
 
     程序有错误，请将具体的 panic log [提供给 TiDB 开发者](https://github.com/pingcap/tidb/issues/new)。
 
 如果是清空数据并重新部署服务，请确认以下信息：
 
-+   pd-server、tikv-server 数据都已清空
++ pd-server、tikv-server 数据都已清空
 
     tikv-server 存储具体的数据，pd-server 存储 tikv-server 中数据的的元信息。如果只清空 pd-server 或只清空 tikv-server 的数据，会导致两边数据不匹配。
-+   清空 pd-server 和 tikv-server 的数据并重启后，也需要重启 tidb-server
+
++ 清空 pd-server 和 tikv-server 的数据并重启后，也需要重启 tidb-server
 
     集群 ID 是由 pd-server 在集群初始化时随机分配，所以重新部署集群后，集群 ID 会发生变化。tidb-server 业务需要重启以获取新的集群 ID。
 
@@ -43,13 +45,15 @@ category: advanced
 
 tidb-server 无法启动的常见情况包括：
 
-+   启动参数错误
++ 启动参数错误
 
     请参考[TiDB 命令行参数](op-guide/configuration.md#tidb)文档。
-+   端口被占用：`lsof -i:port`
+
++ 端口被占用：`lsof -i:port`
 
     请确保 tidb-server 启动所需要的端口未被占用。
-+   无法连接 pd-server
+
++ 无法连接 pd-server
 
     首先检查 pd-server 的进程状态和日志，确保 pd-server 成功启动，对应端口已打开：`lsof -i:port`。
 
@@ -62,50 +66,53 @@ tidb-server 无法启动的常见情况包括：
 
 ## tikv-server 启动报错
 
-+   启动参数错误
++ 启动参数错误
 
     请参考[TiKV 启动参数](op-guide/configuration.md#tikv)文档。
 
-+   端口被占用：`lsof -i:port`
++ 端口被占用：`lsof -i:port`
 
     请确保 tikv-server 启动所需要的端口未被占用： `lsof -i:port`。
-+   无法连接 pd-server
+
++ 无法连接 pd-server
 
     首先检查 pd-server 的进程状态和日志。确保 pd-server 成功启动，对应端口已打开：`lsof -i:port`。
 
-    若 pd-server 正常，则需要检查 tikv-server 机器和 pd-server 对应端口之间的连通性，
-    确保网段连通且对应服务端口已添加到防火墙白名单中，可通过 nc 或 curl 工具检查。具体命令参考上一节。
+    若 pd-server 正常，则需要检查 tikv-server 机器和 pd-server 对应端口之间的连通性，确保网段连通且对应服务端口已添加到防火墙白名单中，可通过 nc 或 curl 工具检查。具体命令参考上一节。
 
-+   文件被占用
++ 文件被占用
 
     不要在一个数据库文件目录上打开两个 tikv。
 
 ## pd-server 启动报错
 
-+   启动参数错误
++ 启动参数错误
 
     请参考[PD 命令行参数](op-guide/configuration.md#placement-driver-pd)文档。
-+   端口被占用：`lsof -i:port`
+
++ 端口被占用：`lsof -i:port`
 
     请确保 pd-server 启动所需要的端口未被占用： `lsof -i:port`。
 
 ## TiDB/TiKV/PD 进程异常退出
 
-+   进程是否是启动在前台
++ 进程是否是启动在前台
 
     当前终端退出给其所有子进程发送 HUP 信号，从而导致进程退出。
-+   是否是在命令行用过 `nohup+&` 方式直接运行
+
++ 是否是在命令行用过 `nohup+&` 方式直接运行
 
     这样依然可能导致进程因终端连接突然中断，作为终端 SHELL 的子进程被杀掉。
+
     推荐将启动命令写在脚本中，通过脚本运行（相当于二次 fork 启动）。
 
 ## TiKV 进程异常重启
 
-+   检查 dmesg 或者 syslog 里面是否有 OOM 信息
++ 检查 dmesg 或者 syslog 里面是否有 OOM 信息
 
     如果有 OOM 信息并且杀掉的进程为 TiKV，请减少 TiKV 的 RocksDB 的各个 CF 的 `block-cache-size` 值。
 
-+   检查 TiKV 日志是否有 panic 的 log
++ 检查 TiKV 日志是否有 panic 的 log
 
     提交 Issue 并附上 panic 的 log。
 

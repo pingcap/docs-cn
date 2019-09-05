@@ -13,7 +13,6 @@ TiDB 支持包括跨行事务，JOIN 及子查询在内的绝大多数 MySQL 的
 
 一些 MySQL 语法在 TiDB 中可以解析通过，但是不会做任何后续的处理，例如 Create Table 语句中 `Engine` 以及 `Partition` 选项，都是解析并忽略。更多兼容性差异请参考具体的文档。
 
-
 ## 不支持的特性
 
 * 存储过程
@@ -87,11 +86,12 @@ TiDB 实现了 F1 的异步 Schema 变更算法，DDL 执行过程中不会阻�
     - 不支持对enum类型的列进行修改
 
 ### 事务
+
 TiDB 使用乐观事务模型，在执行 Update、Insert、Delete 等语句时，只有在提交过程中才会检查写写冲突，而不是像 MySQL 一样使用行锁来避免写写冲突。所以业务端在执行 SQL 语句后，需要注意检查 commit 的返回值，即使执行时没有出错，commit的时候也可能会出错。
 
 ### Load data
 
-+  语法：
++ 语法：
 
     ```sql
     LOAD DATA LOCAL INFILE 'file_name' INTO TABLE table_name
@@ -102,6 +102,26 @@ TiDB 使用乐观事务模型，在执行 Update、Insert、Delete 等语句时�
 
     其中 ESCAPED BY 目前只支持 '/\/\'。
 
-+   事务的处理：
++ 事务的处理：
 
     TiDB 在执行 load data 时，默认每 2 万行记录作为一个事务进行持久化存储。如果一次 load data 操作插入的数据超过 2 万行，那么会分为多个事务进行提交。如果某个事务出错，这个事务会提交失败，但它前面的事务仍然会提交成功，在这种情况下一次 load data 操作会有部分数据插入成功，部分数据插入失败。而 MySQL 中会将一次 load data 操作视为一个事务，如果其中发生失败情况，将会导致整个 load data 操作失败。
+
+### 默认设置的区别
+
++ 默认字符集不同：
+    + TiDB 中为 `utf8`，相当于 MySQL 的 `utf8mb4`
+    + MySQL 5.7 中为 `latin1`，但在 MySQL 8.0 中修改为 `utf8mb4`
++ 默认排序规则不同：
+    + MySQL 5.7 中使用 `latin1_swedish_ci`
+    + TiDB 使用 `binary`
++ `lower_case_table_names` 的默认值不同：
+    + TiDB 中该值默认为 2，并且目前 TiDB 只支持设置该值为 2
+    + MySQL 中默认设置：
+        + Linux 系统中该值为 0
+        + Windows 系统中该值为 1
+        + macOS 系统中该值为 2
++ `explicit_defaults_for_timestamp` 的默认值不同：
+    + TiDB 中该值默认为 `ON`，并且目前 TiDB 只支持设置该值为 `ON`
+    + MySQL 中默认设置：
+        + MySQL 5.7：`OFF`
+        + MySQL 8.0：`ON`

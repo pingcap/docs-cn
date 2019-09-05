@@ -46,7 +46,7 @@ SELECT
 |`HAVING where_condition` | Having 子句与 Where 子句作用类似，Having 子句可以让过滤 GroupBy 后的各种数据，Where 子句用于在聚合前过滤记录。|
 |`ORDER BY` | OrderBy 子句用于指定结果排序顺序，可以按照列、表达式或者是 `select_expr` 列表中某个位置的字段进行排序。|
 |`LIMIT` | Limit 子句用于限制结果条数。Limit 接受一个或两个数字参数，如果只有一个参数，那么表示返回数据的最大行数；如果是两个参数，那么第一个参数表示返回数据的第一行的偏移量（第一行数据的偏移量是 0），第二个参数指定返回数据的最大条目数。|
-|`FOR UPDATE` | 对查询结果集所有数据上读锁，以监测其他事务对这些的并发修改。TiDB 使用[乐观事务模型](mysql-compatibility.md#事务)在语句执行期间不会检测锁冲突，在事务的提交阶段才会检测事务冲突，如果执行 Select For Update 期间，有其他事务修改相关的数据，那么包含 Select For Update 语句的事务会提交失败。|
+|`FOR UPDATE` | 对查询结果集所有数据上读锁（对于在查询条件内，但是不在结果集的数据，将不会加锁，如事务启动后由其他事务写入的数据），以监测其他事务对这些的并发修改。TiDB 使用[乐观事务模型](mysql-compatibility.md#事务)在语句执行期间不会检测锁冲突，在事务的提交阶段才会检测事务冲突，如果执行 Select For Update 期间，有其他事务修改相关的数据，那么包含 Select For Update 语句的事务会提交失败。|
 |`LOCK IN SHARE MODE` | TiDB 出于兼容性解析这个语法，但是不做任何处理|
 
 ## Insert 语句
@@ -110,7 +110,6 @@ INSERT INTO tbl_name VALUES(1,2,3),(4,5,6),(7,8,9);
 
 上面的例子中，`(1,2,3),(4,5,6),(7,8,9)` 即为 Value List，其中每个括号内部的数据表示一行数据，这个例子中插入了三行数据。Insert 语句也可以只给部分列插入数据，这种情况下，需要在 Value List 之前加上 ColumnName List，如：
 
-
 ```sql
 INSERT INTO tbl_name (a,c) VALUES(1,2),(4,5),(7,8);
 ```
@@ -130,6 +129,7 @@ INSERT INTO tbl_name SET a=1, b=2, c=3;
 * Select Statement
 
 待插入的数据集是通过一个 Select 语句获取，要插入的列是通过 Select 语句的 Schema 获得。例如：
+
 ```sql
 CREATE TABLE tbl_name1 (
     a int,
@@ -150,6 +150,7 @@ Delete 语句用于删除数据库中的数据，TiDB 兼容 MySQL Delete 语句
 这种语法用于删除的数据只会涉及一个表的情况。
 
 ### 语法定义
+
 ```sql
 DELETE [LOW_PRIORITY] [QUICK] [IGNORE] FROM tbl_name
     [WHERE where_condition]
@@ -175,7 +176,6 @@ DELETE [LOW_PRIORITY] [QUICK] [IGNORE]
 
 删除多个表的数据的时候，可以用这两种语法。这两种写法都可以指定从多个表查询数据，但只删除其中一些表的数据。在第一种语法中，只会删除 `FROM` 关键字之前的 Table 列表中所列 Table 的表中的数据。对于第二种写法，只会删除 `FROM` 之后 `USING` 之前的 Table 列表中的所列 Table 中的数据。
 
-
 ### 语法元素说明
 
 | 语法元素 | 说明 |
@@ -197,6 +197,7 @@ Update 语句用于更新表中的数据。
 Update 语句一共有两种语法，分别用于更新单表数据和多表数据。
 
 ### 单表 Update
+
 ```sql
 UPDATE [LOW_PRIORITY] [IGNORE] table_reference
     SET assignment_list
@@ -214,13 +215,14 @@ assignment_list:
 单表 Update 语句会更新 Table 中现有行的指定列。`SET assignment_list` 指定了要更新的列名，以及要赋予地新值。 Where/OrderBy/Limit 子句一起用于从 Table 中查询出待更新的数据。
 
 ### 多表 Update
+
 ```sql
 UPDATE [LOW_PRIORITY] [IGNORE] table_references
     SET assignment_list
     [WHERE where_condition]
 ```
-多表更新语句用于将 `table_references` 中满足 Where 子句的数据地指定列赋予新的值。
 
+多表更新语句用于将 `table_references` 中满足 Where 子句的数据地指定列赋予新的值。
 
 ### 语法元素说明
 
@@ -234,7 +236,6 @@ UPDATE [LOW_PRIORITY] [IGNORE] table_references
 | `WHERE where_condition` | Where 表达式，只更新满足表达式的那些行 |
 | `ORDER BY` | 对待更新数据集进行排序 |
 | `LIMIT row_count` | 只对待更新数据集中排序前 row_count 行的内容进行更新 |
-
 
 ## Replace 语句
 
