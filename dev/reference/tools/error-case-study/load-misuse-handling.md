@@ -5,7 +5,7 @@ category: reference
 
 # Load data 常见的报错处理
 
-本片文章主要介绍一些在使用 [loader](reference/tools/loader.md) 或者 [dm](reference/tools/data-migration/overview.md) 进行 load data 过程中常见的因为使用造成的出错场景，以及这些错误发生的原因和处理方式。
+本片文章主要介绍一些在使用 [loader](/dev/reference/tools/loader.md) 或者 [dm](/dev/reference/tools/data-migration/overview.md) 进行 load data 过程中常见的因为使用造成的出错场景，以及这些错误发生的原因和处理方式。
 
 ## Try adjusting the `max_allowed_packet` variable
 
