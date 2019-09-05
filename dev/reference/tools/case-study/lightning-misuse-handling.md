@@ -12,7 +12,7 @@ category: reference
 
 在 load data 过程中遇到下面的报错
 
-```
+```log
 Error: checksum mismatched remote vs local => (checksum: 3828723015727756136 vs 7895534721177712659) (total_kvs: 1221416844 vs 1501500000) (total_bytes:237660308510 vs 292158203078)
 ```
 
@@ -29,7 +29,7 @@ Error: checksum mismatched remote vs local => (checksum: 3828723015727756136 vs 
 ### 解决方案
 
 * 删除出现 `checksum mismatch` 错误的 table 的数据
-  ```
+  ```shell
   tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
   ```
 * 需要寻找办法检测数据源是否存在冲突数据，lightning 一般工作在大量的数据上面，所以目前还未提供有效的冲突检测和处理措施。
