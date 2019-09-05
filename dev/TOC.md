@@ -317,6 +317,8 @@
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + [TiSpark 使用指南](/dev/reference/tispark.md)
   + [TiDB Binlog 简介](/dev/reference/tidb-binlog-overview.md)
+  + 最佳实践
+    - [TiDB 高并发写入常见热点问题及规避方法](/dev/reference/best-practices/high-concurrency.md)
 + TiDB in Kubernetes
   - [TiDB Operator 简介](/dev/tidb-in-kubernetes/tidb-operator-overview.md)
   + 快速上手
