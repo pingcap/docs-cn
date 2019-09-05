@@ -21,7 +21,7 @@ aliases: ['/docs-cn/v3.0/faq/tidb-in-kubernetes/']
     如果 TiDB 集群已经在运行，需要做如下修改：
 
     * 在 TiDB 集群的 `values.yaml` 文件中，修改 `timezone` 配置，例如：`timezone: Asia/Shanghai`，然后升级 TiDB 集群。
-    * 参考[时区支持](/how-to/configure/time-zone.md)，修改 TiDB 服务时区配置。
+    * 参考[时区支持](/v3.0/how-to/configure/time-zone.md)，修改 TiDB 服务时区配置。
 
 ## TiDB 相关组件可以配置 HPA 或 VPA 么？
 
@@ -31,8 +31,8 @@ TiDB 集群目前还不支持 HPA（Horizontal Pod Autoscaling，自动水平扩
 
 如果不考虑 Kubernetes 集群本身的运维，TiDB Operator 存在以下可能需要人工介入的场景：
 
-* TiKV 自动故障转移之后的集群调整，参考[自动故障转移](tidb-in-kubernetes/maintain/auto-failover.md)；
-* 维护或下线指定的 Kubernetes 节点，参考[维护节点](tidb-in-kubernetes/maintain/kubernetes-node.md)。
+* TiKV 自动故障转移之后的集群调整，参考[自动故障转移](/v3.0/tidb-in-kubernetes/maintain/auto-failover.md)；
+* 维护或下线指定的 Kubernetes 节点，参考[维护节点](/v3.0/tidb-in-kubernetes/maintain/kubernetes-node.md)。
 
 ## 在公有云上使用 TiDB Operator 编排 TiDB 集群时，推荐的部署拓扑是怎样的？
 
@@ -48,7 +48,7 @@ TiDB 集群目前还不支持 HPA（Horizontal Pod Autoscaling，自动水平扩
 
 TiDB Operator 尚不支持自动编排 TiSpark。
 
-假如要为 TiDB in Kubernetes 添加 TiSpark 组件，你需要在**同一个** Kubernetes 集群中自行维护 Spark，确保 Spark 能够访问到 PD 和 TiKV 实例的 IP 与端口，并为 Spark 安装 TiSpark 插件，TiSpark 插件的安装方式可以参考 [TiSpark](/reference/tispark.md#已有-Spark-集群的部署方式)。
+假如要为 TiDB in Kubernetes 添加 TiSpark 组件，你需要在**同一个** Kubernetes 集群中自行维护 Spark，确保 Spark 能够访问到 PD 和 TiKV 实例的 IP 与端口，并为 Spark 安装 TiSpark 插件，TiSpark 插件的安装方式可以参考 [TiSpark](/v3.0/reference/tispark.md#已有-Spark-集群的部署方式)。
 
 在 Kubernetes 上维护 Spark 可以参考 Spark 的官方文档：[Spark on Kubernetes](http://spark.apache.org/docs/latest/running-on-kubernetes.html)。
 
