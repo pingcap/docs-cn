@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS TEST_HOTSPOT(
       id         BIGINT PRIMARY KEY,
       age        INT,
       user_name  VARCHAR(32),
-      email 	 VARCHAR(128)
+      email      VARCHAR(128)
 )
 ```
 
