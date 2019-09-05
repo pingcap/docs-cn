@@ -22,8 +22,7 @@ Error: checksum mismatched remote vs local => (checksum: 3828723015727756136 vs 
     * `[checkpoint] driver = mysql`, 可以通 TiDB api `curl http://{TiDBIP}:10080/schema/{checkpoint.schema}/{checkpoint.table}` 查询对应 `checkpoint table` 的创建时间来判断是否正确清理了 `checkpoint`.
 
 * lightning 导入的数据源存在冲突的数据
-   * 不同行的数据具有相同的 primary key/unique key
-
+    * 不同行的数据具有相同的 primary key/unique key
 
 ### 解决方案
 
@@ -32,4 +31,5 @@ Error: checksum mismatched remote vs local => (checksum: 3828723015727756136 vs 
   ```
   tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
   ```
+
 * 需要寻找办法检测数据源是否存在冲突数据，lightning 一般工作在大量的数据上面，所以目前还未提供有效的冲突检测和处理措施。
