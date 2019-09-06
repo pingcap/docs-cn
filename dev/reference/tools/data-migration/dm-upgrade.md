@@ -45,7 +45,7 @@ Go Version: go version go1.12 linux/amd64
 4. 执行 `ansible-playbook rolling_update_monitor.yml` 滚动升级 DM 监控组件
 
 > **注意：**
-> 
+>
 > 更新至 DM 1.0 GA 版本时，需要确保 DM 所有组件 (dmctl/DM-master/DM-worker) 同时升级。不支持部分组件升级使用。
 
 ## 升级到 v1.0.0-rc.1-12-gaa39ff9
