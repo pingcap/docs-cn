@@ -39,7 +39,7 @@ Go Version: go version go1.12 linux/amd64
 ### 升级操作示例
 
 1. 下载新版本 DM-Ansible, 确认 `inventory.ini` 文件中 `dm_version = v1.0.0`
-2. 执行 `ansible-playbook local_prepare.yml` 下载新的 DM 包
+2. 执行 `ansible-playbook local_prepare.yml` 下载新的 DM binary 到本地
 3. 执行 `ansible-playbook rolling_update.yml` 滚动升级 DM 集群组件
 4. 执行 `ansible-playbook rolling_update_monitor.yml` 滚动升级 DM 监控组件
 
