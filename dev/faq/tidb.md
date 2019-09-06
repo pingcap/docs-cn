@@ -809,7 +809,6 @@ TiDB 读流量可以通过增加 TiDB server 进行扩展，总读容量无限�
 
 - 单个事务包含的 SQL 语句不超过 5000 条（默认）
 - 单条 KV entry 不超过 6MB
-- KV entry 的总条数不超过 30w
 - KV entry 的总大小不超过 100MB
 
 在 Google 的 Cloud Spanner 上面，也有类似的[限制](https://cloud.google.com/spanner/docs/limits)。
