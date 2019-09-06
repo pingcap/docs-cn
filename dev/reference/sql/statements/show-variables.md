@@ -102,7 +102,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'tidb%';
 | tidb_hashagg_final_concurrency      | 4             |
 | tidb_opt_correlation_threshold      | 0.9           |
 +-------------------------------------+---------------+
-58 rows in set (0.01 sec)
+68 rows in set (0.01 sec)
 
 mysql> SHOW GLOBAL VARIABLES LIKE 'time_zone%';
 +---------------+--------+
