@@ -217,7 +217,7 @@ Usage of binlogctl:
     {{< copyable "sql" >}}
 
     ```sql
-    change pump to node_state ='paused' for node_id 'pump1'";
+    change pump to node_state ='paused' for node_id 'pump1';
     ```
 
     ```
@@ -227,7 +227,7 @@ Usage of binlogctl:
     {{< copyable "sql" >}}
 
     ```sql
-    change drainer to node_state ='paused' for node_id 'drainer1'";
+    change drainer to node_state ='paused' for node_id 'drainer1';
     ```
 
     ```
