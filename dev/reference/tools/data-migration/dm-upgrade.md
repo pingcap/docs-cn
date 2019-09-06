@@ -30,6 +30,7 @@ Git Branch: release-1.0
 UTC Build Time: 2019-09-06 03:18:48
 Go Version: go version go1.12 linux/amd64
 ```
+
 ### 主要变更
 
 - 常见的异常场景支持自动尝试恢复同步任务
