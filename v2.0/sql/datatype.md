@@ -218,7 +218,7 @@ LONGBLOB
 TEXT[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
 > A TEXT column. M represents the maximum column length ranging from 0 to 65,535. The maximum length of TEXT is based on the size of the longest row and the character set.
 
-TINYTEXT[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
+TINYTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
 > A TEXT column with a maximum length of 255 characters.
 
 MEDIUMTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
