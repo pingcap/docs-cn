@@ -68,8 +68,25 @@ kubectl patch storageclass <storage-class-name> -p '{"allowVolumeExpansion": tru
 
 Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner) 项目中的 `local-volume-provisioner` 程序创建本地存储对象。创建流程如下：
 
-1. 参考 Kubernetes 提供的[操作文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md)，在 TiKV 集群节点中预分配本地存储。
-2. 参考 Helm 的[部署案例](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/tree/master/helm)，部署 `local-volume-provisioner` 程序。
+1. 参考 Kubernetes 提供的[操作文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md)，在集群节点中预分配本地存储。
+2. 部署 `local-volume-provisioner` 程序
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml
+    ```
+
+    通过下面命令查看 Pod 和 PV 状态：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get po -n kube-system -l app=local-volume-provisioner && \
+    kubectl get pv | grep local-storage
+    ```
+
+    `local-volume-provisioner` 会为每一块挂载的磁盘创建一个卷。注意，在 GKE 上，默认只能创建大小为 375GiB 的本地卷，你需要手动操作创建更大的磁盘。
 
 更多信息，可参阅 [Kubernetes 本地存储](https://kubernetes.io/docs/concepts/storage/volumes/#local)和 [local-static-provisioner 文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner#overview)。
 
@@ -80,6 +97,110 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
 - 如果想要容量隔离，建议每个存储卷一个分区来实现
 
 更多信息，可参阅 local-static-provisioner 的[最佳实践文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/best-practices.md)。
+
+### 示例
+
+如果监控，TiDB Binlog 和备份等组件也都使用本地盘存储数据，可以挂载普通 SAS 盘，并分别创建不同的 `StorageClass` 使用，具体操作如下：
+
+- 给监控数据使用的盘，可通过 [bind mount](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) 方式挂载到 `/mnt/disks` 目录，后续创建 `local-storage` `StorageClass`。
+- 给 TiDB Binlog 和备份数据使用的盘，可通过 [bind mount](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) 方式挂载到 `/mnt/backup` 目录，后续创建 `backup-storage` `StorageClass`。
+- 给 PD 数据使用的盘，可通过 [bind mount](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs) 方式挂载到 `/mnt/sharedssd` 目录，后续创建 `shared-ssd-storage` `StorageClass`。
+- 给 TiKV 数据使用的盘，可通过[普通挂载](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#use-a-whole-disk-as-a-filesystem-pv)方式挂载到 `/mnt/ssd` 目录，后续创建 `ssd-storage` `StorageClass`。
+
+安装 `local-volume-provisioner` 过程中，执行 `kubectl apply` 之前，需要根据上述磁盘挂载情况修改 `local-volume-provisioner` [yaml](https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml) 文件，创建必要的 `StorageClass`。以下是根据上述挂载修改的 yaml 文件示例：
+
+```
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: "local-storage"
+provisioner: "kubernetes.io/no-provisioner"
+volumeBindingMode: "WaitForFirstConsumer"
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: "ssd-storage"
+provisioner: "kubernetes.io/no-provisioner"
+volumeBindingMode: "WaitForFirstConsumer"
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: "shared-ssd-storage"
+provisioner: "kubernetes.io/no-provisioner"
+volumeBindingMode: "WaitForFirstConsumer"
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: "backup-storage"
+provisioner: "kubernetes.io/no-provisioner"
+volumeBindingMode: "WaitForFirstConsumer"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: local-provisioner-config
+  namespace: kube-system
+data:
+  nodeLabelsForPV: |
+    - kubernetes.io/hostname
+  storageClassMap: |
+    shared-ssd-storage:
+      hostDir: /mnt/sharedssd
+      mountDir: /mnt/sharedssd
+    ssd-storage:
+      hostDir: /mnt/ssd
+      mountDir: /mnt/ssd
+    local-storage:
+      hostDir: /mnt/disks
+      mountDir: /mnt/disks
+    backup-storage:
+      hostDir: /mnt/backup
+      mountDir: /mnt/backup
+---
+
+......
+
+          volumeMounts:
+
+            ......
+
+            - mountPath: /mnt/ssd
+              name: local-ssd
+              mountPropagation: "HostToContainer"
+            - mountPath: /mnt/sharedssd
+              name: local-sharedssd
+              mountPropagation: "HostToContainer"
+            - mountPath: /mnt/disks
+              name: local-disks
+              mountPropagation: "HostToContainer"
+            - mountPath: /mnt/backup
+              name: local-backup
+              mountPropagation: "HostToContainer"
+      volumes:
+
+        ......
+
+        - name: local-ssd
+          hostPath:
+            path: /mnt/ssd
+        - name: local-sharedssd
+          hostPath:
+            path: /mnt/sharedssd
+        - name: local-disks
+          hostPath:
+            path: /mnt/disks
+        - name: local-backup
+          hostPath:
+            path: /mnt/backup
+......
+
+```
+
+最后通过 `kubectl apply` 安装 `local-volume-provisioner`。
+后续创建 TiDB 集群或者备份的时候，配置相应的 `StorageClass` 使用。
 
 ## 数据安全
 
