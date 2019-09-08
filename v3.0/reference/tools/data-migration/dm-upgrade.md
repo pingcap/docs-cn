@@ -20,6 +20,35 @@ aliases: ['/docs-cn/tools/dm/dm-upgrade/']
 > - 若无特殊说明，各升级操作示例均假定升级前已停止所有同步任务，升级完成后手动重新启动所有同步任务。
 > - 以下版本升级指引逆序展示。
 
+## 升级到 v1.0.0-10-geb2889c9 (1.0 GA)
+
+### 版本信息
+
+```bash
+Release Version: v1.0.0-10-geb2889c9
+Git Commit Hash: eb2889c9dcfbff6653be9c8720a32998b4627db9
+Git Branch: release-1.0
+UTC Build Time: 2019-09-06 03:18:48
+Go Version: go version go1.12 linux/amd64
+```
+
+### 主要变更
+
+- 常见的异常场景支持自动尝试恢复同步任务
+- 提升 DDL 语法兼容性
+- 修复上游数据库连接异常时可能丢失数据的 bug
+
+### 升级操作示例
+
+1. 下载新版本 DM-Ansible, 确认 `inventory.ini` 文件中 `dm_version = v1.0.0`
+2. 执行 `ansible-playbook local_prepare.yml` 下载新的 DM binary 到本地
+3. 执行 `ansible-playbook rolling_update.yml` 滚动升级 DM 集群组件
+4. 执行 `ansible-playbook rolling_update_monitor.yml` 滚动升级 DM 监控组件
+
+> **注意：**
+>
+> 更新至 DM 1.0 GA 版本时，需要确保 DM 所有组件 (dmctl/DM-master/DM-worker) 同时升级。不支持部分组件升级使用。
+
 ## 升级到 v1.0.0-rc.1-12-gaa39ff9
 
 ### 版本信息
