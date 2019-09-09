@@ -45,13 +45,20 @@ For how to pause, close, check, and modify the state of Drainer, see the [binlog
 
 ### Download `binlogctl`
 
-Your distribution of TiDB or TiDB Binlog may already include binlogctl. If not, download `binlogctl`:
+Your distribution of TiDB or TiDB Binlog might already include binlogctl. If not, download `binlogctl`:
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz
 wget https://download.pingcap.org/tidb-{version}-linux-amd64.sha256
+```
 
-# Check the file integrity. If the result is OK, the file is correct.
+The following command checks the file integrity. If the result is OK, the file is correct.
+
+{{< copyable "shell-regular" >}}
+
+```bash
 sha256sum -c tidb-{version}-linux-amd64.sha256
 ```
 
@@ -80,15 +87,20 @@ Usage of binlogctl:
 -time-zone string
     If a time zone is set, the corresponding time of the obtained `tso` is printed in the "generate_meta" mode. For example, "Asia/Shanghai" is the CST time zone and "Local" is the local time zone
 ```
+
 Command example:
 
 - Check the state of all the Pump or Drainer nodes:
 
     Set `cmd` as `pumps` or `drainers` to check the state of all the Pump or Drainer nodes. For example,
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pumps
+    ```
 
+    ```
     INFO[0000] pump: {NodeID: ip-172-16-30-67:8250, Addr: 172.16.30.192:8250, State: online, MaxCommitTS: 405197570529820673, UpdateTime: 2018-12-25 14:23:37 +0800 CST}
     ```
 
@@ -96,14 +108,16 @@ Command example:
 
     Set `cmd` as `update-pump` or `update-drainer` to modify the states of Pump or Drainer, which can be `online`, `pausing`, `paused`, `closing` or `offline`.
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd update-pump -node-id ip-127-0-0-1:8250 -state paused
     ```
 
     > **Note:**
-    > 
+    >
     > - This command modifies the state of Pump or Drainer saved in the Placement Driver (PD).
-    > - Use this command **only** when the Pump or Drainer service fails to function properly. 
+    > - Use this command **only** when the Pump or Drainer service fails to function properly.
 
 - Pause or close Pump or Drainer:
 
@@ -113,6 +127,8 @@ Command example:
 
     For example,
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pause-pump -node-id ip-127-0-0-1:8250
     ```
@@ -121,9 +137,13 @@ Command example:
 
 - Generate the meta file that Drainer needs to start:
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd generate_meta
+    ```
 
+    ```
     INFO[0000] [pd] create pd client with endpoints [http://192.168.199.118:32379]
     INFO[0000] [pd] leader switches to: http://192.168.199.118:32379, previous:
     INFO[0000] [pd] init cluster id 6569368151110378289
@@ -138,8 +158,13 @@ To view or modify binlog related states, execute corresponding SQL statements in
 
 - Check whether binlog is enabled:
 
-    ```bash
-    mysql> show variables like "log_bin";
+    {{< copyable "sql" >}}
+
+    ```sql
+    show variables like "log_bin";
+    ```
+
+    ```
     +---------------+-------+
     | Variable_name | Value |
     +---------------+-------+
@@ -151,8 +176,13 @@ To view or modify binlog related states, execute corresponding SQL statements in
 
 - Check the status of all the Pump or Drainer nodes:
 
-    ```bash
-    mysql> show pump status;
+    {{< copyable "sql" >}}
+
+    ```sql
+    show pump status;
+    ```
+
+    ```
     +--------|----------------|--------|--------------------|---------------------|
     | NodeID |     Address    | State  |   Max_Commit_Ts    |    Update_Time      |
     +--------|----------------|--------|--------------------|---------------------|
@@ -162,8 +192,13 @@ To view or modify binlog related states, execute corresponding SQL statements in
     +--------|----------------|--------|--------------------|---------------------|
     ```
 
-    ```bash
-    mysql> show drainer status;
+    {{< copyable "sql" >}}
+
+    ```sql
+    show drainer status;
+    ```
+
+    ```
     +----------|----------------|--------|--------------------|---------------------|
     |  NodeID  |     Address    | State  |   Max_Commit_Ts    |    Update_Time      |
     +----------|----------------|--------|--------------------|---------------------|
@@ -175,13 +210,23 @@ To view or modify binlog related states, execute corresponding SQL statements in
 
 - Modify the states of a Pump or Drainer node:
 
-    ```bach
-    mysql> change pump to node_state ='paused' for node_id 'pump1'";
+    {{< copyable "sql" >}}
+
+    ```sql
+    change pump to node_state ='paused' for node_id 'pump1';
+    ```
+
+    ```
     Query OK, 0 rows affected (0.01 sec)
     ```
 
-    ```bach
-    mysql> change drainer to node_state ='paused' for node_id 'drainer1'";
+    {{< copyable "sql" >}}
+
+    ```sql
+    change drainer to node_state ='paused' for node_id 'drainer1';
+    ```
+
+    ```
     Query OK, 0 rows affected (0.01 sec)
     ```
 
