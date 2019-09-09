@@ -1,106 +1,193 @@
 ---
-title: TiDB Roadmap
-summary: Learn about the roadmap of TiDB.
+title: TiDB v4.0 Roadmap
+summary: Learn about the v4.0 roadmap of TiDB.
 category: Roadmap
+aliases: ['/docs/ROADMAP/','/docs/roadmap/']
 ---
 
-# TiDB Roadmap
+<!-- markdownlint-disable MD001 -->
 
-This document defines the roadmap for TiDB development.
+# TiDB v4.0 Roadmap
 
-## TiDB:
+This document describes the roadmap for TiDB development.
 
-+ [ ] Optimizer
-    - [ ] Statistics Optimization
-    - [ ] Multi-Column Statistics
-    - [ ] Cascades Planner
-    - [ ] Plan Management
-    - [ ] SQL Tuning Advisor
-    - [ ] Robust Access Path Selection: add the heuristic rule and improve the accuracy of index selection in OLTP scenarios
-    - [ ] Adaptive Query Optimization
-+ [ ] Execution Engine
-    - [ ] Parallel Operators
-    - [ ] Memory Control
-    - [ ] Concurrency Control
-    - [ ] Shuffle Operators
-    - [ ] Vectorized Expression Evaluation
-    - [ ] UDF
-+ [ ] SQL Features
-    - [ ] Support Views
-    - [ ] Support Window Functions
-    - [ ] Support Common Table Expressions
-    - [ ] Support Hash Partitioned Tables
-    - [ ] Support the utf8mb4_0900_ai_ci Collation
-+ [ ] Improve DDL
-    - [ ] Support Table Lock
-    - [ ] Support Change Column Type
-    - [ ] Support Multiple DDL Operations in a Single Statement
-    - [ ] Support Invisible Indexes
-+ [ ] Support Plugin System
-    - [ ] Support White List Plugin
-    - [ ] Support Audit Log Plugin
-    - [ ] Support RBAC Plugin
-    - [ ] Support Diagnostic Plugin
-+ [ ] Support Query Tracing
-+ [ ] Support Hybrid Column/Row-oriented Storage Engine
-+ [ ] Support New Storage Row Format: improve performance and reduce memory usage
-+ [ ] Support Non-integer Type of RowID
-+ [ ] Transaction
-    - [ ] Reduce Read-write Conflicts
-    - [ ] Optimize Transaction Scheduling Mechanism
-    - [ ] Refine Model and Reduce Latency
-    - [ ] Support Minimal Transaction (like the mini-transaction of InnoDB)
+## TiDB
 
-## TiKV:
+### TiDB Server
 
-+ Raft
-    - [x] Region Merge - Merge small Regions together to reduce overhead
-    - [x] Local Read Thread - Process read requests in a local read thread
-    - [x] Split Region in Batch - Speed up Region split for large Regions
-    - [x] Raft Learner - Support Raft learner to smooth the configuration change process
-    - [x] Raft Pre-vote - Support Raft pre-vote to avoid unnecessary leader election on network isolation
-    - [ ] Joint Consensus - Change multi members safely.
-    - [ ] Multi-thread Raftstore - Process Region Raft logic in multiple threads
-    - [ ] Multi-thread apply pool - Apply Region Raft committed entries in multiple threads
-+ Engine
-    - [ ] Titan - Separate large key-values from LSM-Tree
-    - [ ] Pluggable Engine Interface - Clean up the engine wrapper code and provide more extensibility
-+ Storage
-    - [ ] Flow Control - Do flow control in scheduler to avoid write stall in advance
-+ Transaction
-    - [x] Optimize transaction conflicts
-    - [ ] Distributed GC - Distribute MVCC garbage collection control to TiKV
-+ Coprocessor
-    - [x] Streaming - Cut large data set into small chunks to optimize memory consumption
-    - [ ] Chunk Execution - Process data in chunk to improve performance
-    - [ ] Request Tracing - Provide per-request execution details
-+ Tools
-    - [x] TiKV Importer - Speed up data importing by SST file ingestion
-+ Client
-    - [ ] TiKV client (Rust crate)
-    - [ ] Batch gRPC Message - Reduce message overhead
+#### Features
 
-## PD:
+* Support TiFlash storage engine
+* Support Optimizer Trace
+* Support multi-column statistics
+* Support TopN statistics for regular CM-Sketch
+* Improve the Plan Cache feature
+* Support self-adaptive SQL engine
+* Support SQL Tuning Advisor
+* Support SQL plan management
+* Transaction
+    + Pessimistic locking general availability (GA)
+    + Support an unlimited number of statements in a transaction
+    + Support 10 GB transactions
 
-- [x] Improve namespace
-    - [x] Different replication policies for different namespaces and tables
-- [x] Decentralize scheduling table Regions
-- [x] Scheduler supports prioritization to be more controllable
-- [ ] Use machine learning to optimize scheduling
-- [ ] Optimize Region metadata - Save Region metadata in detached storage engine
+#### Performance
 
-## TiSpark:
+* Improve CSV/data loading performance
+* Improve `Prepare` statement performance
+* Support index for generated columns
+* Optimize some operators of the SQL engine
+    + Improve performance of queries by using indexes to return to the table
+    + Split Index Join to Index Merge Join and Index Hash Join
+    + Radix Hash Join
+    + Index Merge
+    + Parallel Stream Aggregate
+    + Parallel Merge Sort
+    + Parallel Merge Join
+    + Full Vectorized Expression Evaluation
+* Indexes on expressions
+* Multi-index scan
+* Support external storage for Join, Aggregate, and Sort operators
+* Optimize the execution engine concurrency model
+* Support new Cascades Optimizer and Cascades Planner to increase the Optimizer searching space
 
-- [ ] Limit/Order push-down
-- [x] Access through the DAG interface and deprecate the Select interface
-- [ ] Index Join and parallel merge join
-- [ ] Data Federation
+#### Usability
 
-## Tools:
+* Improve the Optimizer Hint feature
+* Quickly restore database or table metadata and data
+* Dynamically modify configuration items
+* Automatically terminate idle connections
+* Improve support for DDL statements in MySQL 5.7
+* Refactor log content
+* Support `admin checksum from … to …` to verify data integrity
+* Support using standard SQL statements to query the DDL history
+* Support using standard SQL statements to manage Binlog
+* Support using standard SQL statements to manage the cluster
+* Integrate multiple Ctrl tools into one tool
 
-- [X] Tool for automating TiDB deployment
-- [X] High-Performance data import tool (lightning)
-- [X] Backup and restore tool (incremental backup supported by drainer, incremental restore supported by reparo)
-- [X] New TiDB-binlog with improved architecture
-- [ ] Data online migration tool (premium edition of Syncer)
-- [ ] Diagnostic tools
+#### High Availability
+
+* Support high service availability with TiDB Binlog
+* Support high data reliability with TiDB Binlog
+
+### TiKV Server
+
+#### Features
+
+* Support up to 200+ nodes in a cluster
+* Fast full backup and restoration
+* Dynamically split and merge hot spot Regions
+* Fine-grained memory control
+* Raft
+    + Joint consensus
+    + Read-only replicas
+
+#### Performance
+
+* Improve scan performance
+* Dynamically increase the number of worker threads
+* Flexibly increase read-only replicas
+* Optimize the scheduling system to prevent QPS jitter
+
+#### Usability
+
+* Refactor log content
+
+### TiFlash
+
+#### Features
+
+* Column-based storage
+* Replicate data from TiKV by using Raft learner
+* Snapshot read
+
+### TiSpark
+
+#### Features
+
+* Support batch write
+* Support accessing TiFlash
+
+## Data Migration
+
+### Features
+
+* Improve forward checking
+* Visualized management of replication rules
+* Visualized management of replication tasks
+* Online verification on data replication
+
+### Usability
+
+* Refactor log format and content
+
+### High Availability
+
+* Support high service availability
+* Support high data reliability
+
+## TiDB Toolkit
+
+### Features
+
+* Integrate Loader into TiDB
+* Integrate TiDB Lightning into TiDB
+
+### Performance
+
+* Support parallel data importing by using multiple `lightning` and `importer` instances in TiDB Lightning
+
+## TiDB Future Plan
+
+### TiDB Server
+
+#### Features
+
+* Common table expression
+* Invisible index
+* Support modifying column types
+* Support second-level partitions for partitioned tables
+* Support conversion between partitioned tables and regular tables
+* Support inserts and updates for Views
+* Multi-schema change
+* Configure the number of replicas and distribution strategy by tables
+* Fine-grained QoS control
+* Flash back to any point-in-time
+
+#### Performance
+
+* Coprocessor cache
+* New row storage format
+* Distributed execution engine
+
+#### Usability
+
+* Full link Trace tool
+* Complete Help information
+
+#### Security
+
+* Column-level privileges
+
+### TiKV Server
+
+#### Features
+
+* Fast incremental backup and restoration
+* Flash back to any point-in-time
+* Hierarchical storage
+* Fine-grained QoS control
+* Configure the number of replicas and distribution strategy by Regions
+* Raft
+    + Chain replication of data
+    + Witness role
+* Storage engine
+    + Support splitting SSTables according to Guards During compaction in RocksDB
+    + Separate cold and hot data
+
+#### Performance
+
+* Improve fast backup performance
+* Improve fast restoration performance
+* 1PC
+* Support storage class memory hardware
+* New Raft engine

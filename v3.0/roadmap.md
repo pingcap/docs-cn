@@ -1,15 +1,14 @@
 ---
-title: TiDB Roadmap
-summary: Learn about the roadmap of TiDB.
+title: TiDB v3.0 Roadmap
+summary: Learn about the v3.0 roadmap of TiDB.
 category: Roadmap
-aliases: ['/docs/ROADMAP/','/docs/roadmap/']
 ---
 
-# TiDB Roadmap
+# TiDB v3.0 Roadmap
 
 This document defines the roadmap for TiDB development.
 
-## TiDB:
+## TiDB
 
 + [ ] Optimizer
     - [ ] Statistics Optimization
@@ -52,7 +51,7 @@ This document defines the roadmap for TiDB development.
     - [ ] Refine Model and Reduce Latency
     - [ ] Support Minimal Transaction (like the mini-transaction of InnoDB)
 
-## TiKV:
+## TiKV
 
 + Raft
     - [x] Region Merge - Merge small Regions together to reduce overhead
@@ -81,7 +80,7 @@ This document defines the roadmap for TiDB development.
     - [ ] TiKV client (Rust crate)
     - [ ] Batch gRPC Message - Reduce message overhead
 
-## PD:
+## PD
 
 - [x] Improve namespace
     - [x] Different replication policies for different namespaces and tables
@@ -90,14 +89,14 @@ This document defines the roadmap for TiDB development.
 - [ ] Use machine learning to optimize scheduling
 - [ ] Optimize Region metadata - Save Region metadata in detached storage engine
 
-## TiSpark:
+## TiSpark
 
 - [ ] Limit/Order push-down
 - [x] Access through the DAG interface and deprecate the Select interface
 - [ ] Index Join and parallel merge join
 - [ ] Data Federation
 
-## Tools:
+## Tools
 
 - [X] Tool for automating TiDB deployment
 - [X] High-Performance data import tool (lightning)
