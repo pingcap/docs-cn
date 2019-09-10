@@ -173,13 +173,23 @@ Usage of binlogctl:
 
 - 修改 Pump/Drainer 状态
 
-    ```bach
-    mysql> change pump to node_state ='paused' for node_id 'pump1'";
+    {{< copyable "sql" >}}
+
+    ```sql
+    change pump to node_state ='paused' for node_id 'pump1';
+    ```
+
+    ```
     Query OK, 0 rows affected (0.01 sec)
     ```
 
-    ```bach
-    mysql> change drainer to node_state ='paused' for node_id 'drainer1'";
+    {{< copyable "sql" >}}
+
+    ```sql
+    change drainer to node_state ='paused' for node_id 'drainer1';
+    ```
+
+    ```
     Query OK, 0 rows affected (0.01 sec)
     ```
 
