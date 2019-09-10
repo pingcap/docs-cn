@@ -28,7 +28,7 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 | task          | 当前这个算子属于什么 task。目前的执行计划分成为两种 task，一种叫 **root** task，在 tidb-server 上执行，一种叫 **cop** task，并行的在 TiKV 上执行。当前的执行计划在 task 级别的拓扑关系是一个 root task 后面可以跟许多 cop task，root task 使用 cop task 的输出结果作为输入。cop task 中执行的也即是 TiDB 下推到 TiKV 上的任务，每个 cop task 分散在 TiKV 集群中，由多个进程共同执行。 |
 | operator info | 每个算子的详细信息。各个算子的 operator info 各有不同，详见 [Operator Info](#operator-info)。                   |
 
-## <span id="explain-analyze-output-format">`EXPLAIN ANALYZE` 输出格式</span>
+## `EXPLAIN ANALYZE` 输出格式
 
 作为 `EXPLAIN` 语句的扩展，`EXPLAIN ANALYZE` 语句执行查询并在 `execution info` 列中提供额外的执行统计信息。具体如下：
 
