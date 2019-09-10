@@ -61,7 +61,7 @@ cd tidb-enterprise-tools-latest-linux-amd64
 为了快速地备份恢复数据 (特别是数据量巨大的库)，可以参考以下建议：
 
 * 使用 Mydumper 导出来的数据文件尽可能的小，最好不要超过 64M，可以将参数 `-F` 设置为 64。
-* Loader的 `-t` 参数可以根据 TiKV 的实例个数以及负载进行评估调整，例如 3 个 TiKV 实例的场景，此值可以设为 `3 *(1 ～ n)` 左右。当 TiKV 负载过高，Loader 以及 TiDB 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 时，可以适当调小该值；当 TiKV 负载不是太高的时候，可以适当调大该值。
+* Loader的 `-t` 参数可以根据 TiKV 的实例个数以及负载进行评估调整，例如有 m 个 TiKV 实例的场景，此值可以设为 `m * (1 ～ n)` 左右，n 的值可以根据 TiKV 的负载情况进行调整。当 TiKV 负载过高，Loader 以及 TiDB 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 时，可以适当调小该值；当 TiKV 负载不是太高的时候，可以适当调大该值。
 
 数据恢复示例及相关的配置：
 
@@ -70,7 +70,7 @@ cd tidb-enterprise-tools-latest-linux-amd64
     - TIKV * 12
     - TIDB * 4
     - PD * 3
-- Mydumper `-F` 参数设置为 64，Loader `-t` 参数设置为 16
+- Mydumper `-F` 参数设置为 64，Loader `-t` 参数设置为 12
 
 结果：导入时间 11 小时左右，19.4 G/小时
 
