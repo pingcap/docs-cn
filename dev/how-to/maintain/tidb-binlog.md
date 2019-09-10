@@ -10,18 +10,18 @@ category: reference
 Pump/Drainer 中状态的定义：
 
 * online：正常运行中。
-* pausing：暂停中，当使用 kill 或者 Ctrl+C 退出进程时，都将处于该状态。当 Pump/Drainer 安全退出了所有的内部线程后，将自己的状态切换为 paused。
+* pausing：暂停中，当使用 kill（非 kill -9）、Ctrl+C 或者使用 binlogctl 的 pause-pump/pause-drainer 命令退出进程时，都将处于该状态。当 Pump/Drainer 安全退出了所有的内部线程后，将自己的状态切换为 paused。
 * paused：已暂停，处于该状态时 Pump 不接受写 binlog 的请求，也不继续为 Drainer 提供 binlog，Drainer 不再往下游同步数据。
-* closing：下线中，使用 binlogctl 控制 Pump/Drainer 下线，在进程退出前都处于该状态。下线时 Pump 不再接受写 binlog 的请求，等待所有的 binlog 数据被 Drainer 消费完。
+* closing：下线中，使用 binlogctl 的 offline-pump/offline-drainer 命令控制 Pump/Drainer 下线，在进程退出前都处于该状态。下线时 Pump 不再接受写 binlog 的请求，等待所有的 binlog 数据被 Drainer 消费完。
 * offline：已下线，当 Pump 已经将已保存的所有 binlog 数据全部发送给 Drainer 后，该 Pump 将状态切换为 offline。
 
 > **注意：**
 >
 > * 当暂停 Pump/Drainer 时，数据同步会中断。
-> * Pump/Drainer 的状态需要区分已暂停（paused）和下线（offline），Ctrl + C 或者 kill 进程，Pump 和 Drainer 的状态会变为 pausing，最终变为 paused。进入 paused 状态前 Pump 不需要将已保存的 binlog 数据全部发送到 Drainer，进入 offline 状态前 pump 需要将已保存的 binlog 数据全部发送到 Drainer。如果需要较长时间退出 Pump（或不再使用该 Pump），需要使用 binlogctl 工具来下线 Pump。Drainer 同理。
-> * Pump 在下线时需要确认自己的数据被所有的非 offline 状态的 Drainer 消费了，所以在下线 Pump 时需要确保所有的 Drainer 都是处于 online 状态，否则 Pump 无法正常下线。
-> * Pump 保存的 binlog 数据只有在被所有非 offline 状态的 Drainer 消费的情况下才会被 GC 处理。
-> * 不要轻易下线 Drainer，只有在永久不需要使用该 Drainer 的情况下才需要下线 Drainer。
+> * Pump/Drainer 的状态需要区分已暂停（paused）和下线（offline）。Pump 进入 offline 状态前需要将已保存的 binlog 数据全部发送到 Drainer，进入 paused 状态则不需要。如果需要较长时间退出 Pump（或不再使用该 Pump），需要使用 binlogctl 工具来下线 Pump。Drainer 同理。
+> * Pump 在下线时需要确认自己的数据被所有的非 offline 状态的 Drainer 消费了，所以在下线 Pump 时需要确保所有的 Drainer 都是处于 online 状态且进程正常，否则 Pump 无法正常下线。
+> 如果 Drainer 长期不再使用，一定要保证该 Drainer 的状态为 offline，否则可能会对 Pump 的上线/下线造成影响。
+> * 不要轻易下线 Pump/Drainer，只有在永久不需要使用该服务的情况下才需要下线。
 
 关于 Pump/Drainer 暂停、下线、状态查询、状态修改等具体的操作方法，参考如下 binlogctl 工具的使用方法介绍。
 
@@ -29,15 +29,15 @@ Pump/Drainer 中状态的定义：
 
 * 获取 TiDB 集群当前的 TSO
 * 查看 Pump/Drainer 状态
-* 修改 Pump/Drainer 状态
 * 暂停/下线 Pump/Drainer
+* 异常情况下修改 PD 中保存的 Pump/Drainer 状态
 
 使用 binlogctl 的场景：
 
 * 第一次运行 Drainer，需要获取 TiDB 集群当前的 TSO
-* Pump/Drainer 异常退出，状态没有更新，对业务造成影响，可以直接使用该工具修改状态
 * 同步出现故障/检查运行情况，需要查看 Pump/Drainer 的状态
 * 维护集群，需要暂停/下线 Pump/Drainer
+* Pump/Drainer 异常退出，状态没有更新，对业务造成影响，可以直接使用该工具修改状态
 
 binlogctl 下载链接：
 
@@ -115,18 +115,6 @@ Usage of binlogctl:
     [2019/04/28 09:29:59.016 +00:00] [INFO] [nodes.go:48] ["query node"] [type=pump] [node="{NodeID: 1.1.1.1:8250, Addr: pump:8250, State: online, MaxCommitTS: 408012403141509121, UpdateTime: 2019-04-28 09:29:57 +0000 UTC}"]
     ```
 
-- 修改 Pump/Drainer 的状态
-
-    设置 `cmd` 为 `update-pump` 或者 `update-drainer` 来更新 Pump 或者 Drainer 的状态。Pump 和 Drainer 的状态可以为：online，pausing，paused，closing 以及 offline。例如：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd update-pump -node-id ip-127-0-0-1:8250 -state paused
-    ```
-
-    这条命令会修改 Pump/Drainer 保存在 PD 中的状态，仅在 Pump/Drainer 服务异常的情况下使用。
-
 - 暂停/下线 Pump/Drainer
 
     分别设置 `cmd` 为 `pause-pump`、`pause-drainer`、`offline-pump`、`offline-drainer` 来暂停 Pump、暂停 Drainer、下线 Pump、下线 Drainer。例如：
@@ -137,7 +125,23 @@ Usage of binlogctl:
     bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pause-pump -node-id ip-127-0-0-1:8250
     ```
 
-    binlogctl 会发送 HTTP 请求给 Pump/Drainer，Pump/Drainer 收到命令后会退出进程，并且将自己的状态设置为 paused/offline。
+    binlogctl 会发送 HTTP 请求给 Pump/Drainer，Pump/Drainer 收到命令后会主动退出进程，并且将自己的状态设置为 paused/offline 并上报到 PD 中。
+
+- 异常情况下修改 Pump/Drainer 的状态
+
+    设置 `cmd` 为 `update-pump` 或者 `update-drainer` 来更新 Pump 或者 Drainer 的状态。Pump 和 Drainer 的状态可以为：online，pausing，paused，closing 以及 offline。例如：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd update-pump -node-id ip-127-0-0-1:8250 -state paused
+    ```
+
+    注意：Pump/Drainer 在正常运行过程中会定期在 PD 中更新自己的状态，而这条这条命令是直接去修改 Pump/Drainer 保存在 PD 中的状态，所以在 Pump/Drainer 服务正常的情况下使用这些命令是没有意义的。仅在 Pump/Drainer 服务异常的情况下使用，例如：
+
+    - Pump 异常退出，且无法重新启动，在这种情况下同步会中断。如果希望恢复同步且可以容忍部分 binlog 数据丢失，可以使用 update-pump 命令将该 Pump 状态设置为 offline，则 Drainer 会放弃拉取该 Pump 的 binlog 然后继续同步数据。
+
+    - Drainer 进程已经退出，且一段时间内不再使用该 Drainer，但是该 Drainer 的状态不是 offline。可以使用 update-drainer 命令将该 Drainer 状态设置为 offline。
 
 - 生成 Drainer 启动需要的 meta 文件
 
@@ -212,7 +216,7 @@ Usage of binlogctl:
     +----------|----------------|--------|--------------------|---------------------|
     ```
 
-- 修改 Pump/Drainer 状态
+- 异常情况下修改 Pump/Drainer 状态
 
     {{< copyable "sql" >}}
 
@@ -233,6 +237,8 @@ Usage of binlogctl:
     ```
     Query OK, 0 rows affected (0.01 sec)
     ```
+
+    该 SQL 的功能和 binlogctl 中的 update-pump 和 update—drainer 命令的功能一样，因此也只有在 Pump/Drainer 异常的情况下使用。
 
 > **注意：**
 >
