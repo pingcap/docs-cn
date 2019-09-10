@@ -89,6 +89,7 @@ sql-mode = ""
 根据您的部署方式，选择相应操作结束进程
 
 - 使用 TiDB Ansible 部署：在 Lightning 的服务器上运行 `scripts/stop_lightning.sh` 。
+
 - 手动部署：如果 `tidb-lightning` 正在前台运行，可直接按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 退出。否则，可通过 `ps aux | grep tidb-lightning` 获取进程 ID，然后通过 `kill -2 «pid»` 结束进程。
 
 ## `tidb-lightning` 在服务器上运行，进程莫名其妙地退出了，是怎么回事呢？
@@ -99,7 +100,7 @@ sql-mode = ""
 2018/08/10 07:29:08.310 main.go:47: [info] Got signal hangup to exit.
 ```
 
-不推荐在命令行中直接使用 `nohup` 启动进程，推荐按照 [启动 tidb-lightning](/v3.0/reference/tools/tidb-lightning/deployment/) 使用脚本启动。
+不推荐在命令行中直接使用 `nohup` 启动进程，推荐按照 [启动 tidb-lightning](/v3.0/reference/tools/tidb-lightning/deployment.md) 使用脚本启动。
 
 ## 为什么用过 TiDB Lightning 之后，TiDB 集群变得又慢又耗 CPU？
 
