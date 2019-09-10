@@ -69,27 +69,6 @@ TiDB 默认会使用很多文件描述符，工作节点和上面的 Docker 进�
 
 参考[本地 PV 配置](/dev/tidb-in-kubernetes/reference/configuration/storage-class.md#本地-pv-配置)在你的 Kubernetes 集群中配置本地持久化卷。
 
-### 部署 local-static-provisioner
-
-在 Kubernetes 节点上挂载所有磁盘后，部署 [local-volume-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner)，它会自动将这些挂载的磁盘配置为本地持久化卷。
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml
-```
-
-通过下面命令查看 Pod 和 PV 状态：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl get po -n kube-system -l app=local-volume-provisioner && \
-kubectl get pv | grep local-storage
-```
-
-local-volume-provisioner 为每一块挂载的磁盘创建一个卷。注意，在 GKE 上，默认只能创建大小为 375GiB 的本地卷，你需要手动操作创建更大的磁盘。
-
 ## 安装 TiDB Operator
 
 TiDB Operator 使用 [CRD (Custom Resource Definition)](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/) 扩展 Kubernetes，所以要使用 TiDB Operator，必须先创建 `TidbCluster` 自定义资源类型。只需要在你的 Kubernetes 集群上创建一次即可：
