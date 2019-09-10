@@ -16,8 +16,7 @@ Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/dev/r
 
 + 对于 TiDB 可以设置 [tidb_snapshot](/dev/how-to/get-started/read-historical-data.md#操作流程) 的值指定备份数据的时间点，从而保证备份的一致性，而不是通过 `FLUSH TABLES WITH READ LOCK` 来保证备份一致性。
 
-+ 
-  
++ 优化了 TiDB 中没有 Primary Key 或者 Primary Key 非整数的表的数据导出性能。
 
 ### 新添参数
 
@@ -69,6 +68,16 @@ Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/dev/r
 ### 如何配置 Mydumper 的参数 `-F, --chunk-filesize`?
 
 Mydumper 在备份时会根据这个参数的值把每个表的数据划分成多个 `chunk`，每个 `chunk` 保存到一个文件中，大小约为 `chunk-filesize`。TiDB-Lightning/Loader 在恢复数据时会按照文件粒度进行并行处理，推荐把该参数的值设置为 64（单位 MB）。
+
+### Mydumper 备份 TiDB 数据报错 "GC life time is shorter than transaction duration" 应该怎么解决？
+
+Mydumper 备份 TiDB 数据时为了保证数据的一致性使用了 TiDB 的 snapshot 特性，如果备份过程中 snapshot 对应的历史数据被 TiDB GC 处理了，则会报该错误。建议在备份前通过如下命令调整 TiDB 的 GC 参数：
+
+```bash
+mysql> update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_life_time';
+```
+
+备份完成后再将 `tikv_gc_life_time` 的值调整为原来的值。
 
 ### Mydumper 的参数 `--tidb-rowid` 是否需要配置？
 
