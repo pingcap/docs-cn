@@ -64,7 +64,7 @@ tikv-importer 可以在一个现有的 TiDB 集群上启用，或者在新建 Ti
 
         1. 确保 `values.yaml` 中的 `dataSource.local.nodeName` 和 `dataSource.local.hostPath` 被注释掉。
 
-        2. 新建一个包含 rclone 配置的 `Secret`。rclone 配置实例如下所示。只要求配置一种云存储。有关其他的云存储，请参考 [rclone 官方文档](https://rclone.org/)。
+        2. 新建一个包含 rclone 配置的 `Secret`。rclone 配置示例如下。一般只需要配置一种云存储。有关其他的云存储，请参考 [rclone 官方文档](https://rclone.org/)。
 
             {{< copyable "" >}}
 
