@@ -49,7 +49,8 @@ t22_r11
 
 #### 均匀切分
 
-由于 `row_id` 是整数，所以根据指定的 `lower_value`、`upper_value` 以及 `region_num`，可以推算出需要切分的 key。TiDB 先计算 step（`step = (upper_value - lower_value)/num`），然后在 `lower_value` 和 `upper_value` 之间每隔 step 区间切一次，最终切出 `num` 个 Region。
+由于 `row_id` 是整数，所以根据用户指定的 `lower_value`、`upper_value` 以及 `region_num`，可以很容易地计算出需要切分的 key。先计算出 step（`step = (upper_value - lower_value)/num`），然后在 `lower_value` 和 `upper_value` 之间每隔 step 区间切一次，最终切出 `num` 个 Region。
+由于 `row_id` 是整数，所以根据用户指定的 `lower_value`、`upper_value` 以及 `region_num`，可以很容易地计算出需要切分的 key。先计算出 step（`step = (upper_value - lower_value)/num`），然后在 `lower_value` 和 `upper_value` 之间每隔 step 区间切一次，最终切出 `num` 个 Region。
 
 例如，对于表 t，如果想要从 `minInt64`~`maxInt64` 之间均匀切割出 16 个 Region，可以用以下语句：
 
