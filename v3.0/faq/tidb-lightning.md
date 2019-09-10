@@ -53,7 +53,7 @@ mysql> ADMIN CHECKSUM TABLE `schema`.`table`;
 
 ## TiDB Lightning 支持哪些格式的数据源？
 
-到 v2.1.6 版本为止，只支持本地文档形式的数据源，支持 [Mydumper](/reference/tools/mydumper.md) 或 [CSV](/reference/tools/tidb-lightning/csv.md) 格式。
+到 v2.1.6 版本为止，只支持本地文档形式的数据源，支持 [Mydumper](/v3.0/reference/tools/mydumper.md) 或 [CSV](/v3.0/reference/tools/tidb-lightning/csv.md) 格式。
 
 ## 我已经在下游创建好库和表了，TiDB Lightning 可以忽略建库建表操作吗？
 

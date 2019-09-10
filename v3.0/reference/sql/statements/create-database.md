@@ -45,7 +45,7 @@ create_specification:
 
 当创建已存在的数据库且不指定使用 `IF NOT EXISTS` 时会报错。
 
-`create_specification` 选项用于指定数据库具体的 `CHARACTER SET` 和 `COLLATE`。目前 TiDB 只支持部分的字符集和排序规则，请参照[字符集支持](/reference/sql/character-set.md)。
+`create_specification` 选项用于指定数据库具体的 `CHARACTER SET` 和 `COLLATE`。目前 TiDB 只支持部分的字符集和排序规则，请参照[字符集支持](/v3.0/reference/sql/character-set.md)。
 
 ## 示例
 
@@ -69,11 +69,11 @@ mysql> SHOW TABLES;
 
 ## MySQL 兼容性
 
-`CREATE DATABASE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`CREATE DATABASE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [USE](/reference/sql/statements/use.md)
-* [ALTER DATABASE](/reference/sql/statements/alter-database.md)
-* [DROP DATABASE](/reference/sql/statements/drop-database.md)
-* [SHOW DATABASES](/reference/sql/statements/show-databases.md)
+* [USE](/v3.0/reference/sql/statements/use.md)
+* [ALTER DATABASE](/v3.0/reference/sql/statements/alter-database.md)
+* [DROP DATABASE](/v3.0/reference/sql/statements/drop-database.md)
+* [SHOW DATABASES](/v3.0/reference/sql/statements/show-databases.md)
