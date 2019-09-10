@@ -81,7 +81,7 @@ mysql> update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv
 
 ### Mydumper 的参数 `--tidb-rowid` 是否需要配置？
 
-设置该参数为 true 则导出的数据中会包含 TiDB 的隐藏列的数据。
+如果设置该参数为 true 则导出的数据中会包含 TiDB 的隐藏列的数据，在恢复到 TiDB 的时候使用隐藏列会有数据不一致的风险，不推荐使用该参数。
 
 ### PingCAP 的 Mydumper 的源码是否可获取？
 
