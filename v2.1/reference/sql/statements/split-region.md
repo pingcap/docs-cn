@@ -202,4 +202,3 @@ region4:   [ 3<<61     ,  +inf  )
 ## 相关 session 变量
 
 和 `SPLIT REGION` 语句相关的 session 变量有 `tidb_wait_split_region_finish` 和 `tidb_wait_split_region_timeout`，具体可参考 [TiDB 专用系统变量和语法](/v2.1/reference/configuration/tidb-server/tidb-specific-variables.md)。
-
