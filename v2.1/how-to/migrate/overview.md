@@ -49,5 +49,3 @@ category: how-to
 
 1. 将数据导出为 CSV 格式。
 2. 使用 TiDB Lightning 将 CSV 格式的数据导入 TiDB。
-
-详细操作参见[使用 TiDB Lightning 迁移 CSV 数据](/v2.1/reference/tools/tidb-lightning/csv.md)。
