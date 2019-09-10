@@ -40,8 +40,8 @@ mysql> SHOW CHARACTER SET;
 
 ## MySQL 兼容性
 
-`SHOW CHARACTER SET` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW CHARACTER SET` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v2.1/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW COLLATION](/reference/sql/statements/show-collation.md)
+* [SHOW COLLATION](/v2.1/reference/sql/statements/show-collation.md)

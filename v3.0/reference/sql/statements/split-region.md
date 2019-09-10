@@ -174,7 +174,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
 ## pre_split_regions
 
-使用带有 `shard_row_id_bits` 的表时，如果希望建表时就做均匀切分 Region，可以考虑配合 `pre_split_regions` 一起使用，用来在建表成功后就开始预均匀切分 `2^(pre_split_regions-1)` 个 Region。
+使用带有 `shard_row_id_bits` 的表时，如果希望建表时就均匀切分 Region，可以考虑配合 `pre_split_regions` 一起使用，用来在建表成功后就开始预均匀切分 `2^(pre_split_regions)` 个 Region。
 
 > **注意：**
 >
@@ -185,10 +185,10 @@ region4  [("c", "")                    , maxIndexValue               )
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a int, b int,index idx1(a)) shard_row_id_bits = 4 pre_split_regions=3;
+create table t (a int, b int,index idx1(a)) shard_row_id_bits = 4 pre_split_regions=2;
 ```
 
-该语句在建表后，会对这个表 t 预切分出 4 + 1 个 Region。4 (2^(3-1)) 个 Region 是用来存 table 的行数据的，1 个 Region 是用来存 idx1 索引的数据。
+该语句在建表后，会对这个表 t 预切分出 4 + 1 个 Region。4 (2^2) 个 Region 是用来存 table 的行数据的，1 个 Region 是用来存 idx1 索引的数据。
 
 4 个 table Region 的范围区间如下：
 
@@ -199,8 +199,6 @@ region3:   [ 2<<61     ,  3<<61 )
 region4:   [ 3<<61     ,  +inf  )
 ```
 
-关于为什么是切割 2^(pre_split_regions-1) 个 Region，因为使用 shard_row_id_bits 时，只会分配正数给 `_tidb_rowid`，所以就没有必要给负数的那段区间做 Split Region 了。
-
 ## 相关 session 变量
 
-和 `SPLIT REGION` 语句相关的 session 变量有 `tidb_wait_split_region_finish` 和 `tidb_wait_split_region_timeout`，具体可参考 [TiDB 专用系统变量和语法](/reference/configuration/tidb-server/tidb-specific-variables.md)。
+和 `SPLIT REGION` 语句相关的 session 变量有 `tidb_wait_split_region_finish` 和 `tidb_wait_split_region_timeout`，具体可参考 [TiDB 专用系统变量和语法](/v3.0/reference/configuration/tidb-server/tidb-specific-variables.md)。

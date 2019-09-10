@@ -37,11 +37,11 @@ mysql> SHOW CREATE TABLE t1;
 
 ## MySQL 兼容性
 
-`SHOW CREATE TABLE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW CREATE TABLE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [DROP TABLE](/reference/sql/statements/drop-table.md)
-* [SHOW TABLES](/reference/sql/statements/show-tables.md)
-* [SHOW COLUMNS FROM](/reference/sql/statements/show-columns-from.md)
+* [CREATE TABLE](/v3.0/reference/sql/statements/create-table.md)
+* [DROP TABLE](/v3.0/reference/sql/statements/drop-table.md)
+* [SHOW TABLES](/v3.0/reference/sql/statements/show-tables.md)
+* [SHOW COLUMNS FROM](/v3.0/reference/sql/statements/show-columns-from.md)
