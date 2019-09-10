@@ -83,6 +83,18 @@ mysql> update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv
 
 如果设置该参数为 true 则导出的数据中会包含 TiDB 的隐藏列的数据，在恢复到 TiDB 的时候使用隐藏列会有数据不一致的风险，不推荐使用该参数。
 
+### Mydumper 的参数 `-h, --host` 可以使用域名吗？
+
+不可以，目前 Mydumper 会报错，推荐使用 IP 地址。
+
+### Mydumper 报错 "Error dumping table ({schema}.{table}) data: line ...... (total length ...)" 怎么解决？
+
+Mydumper 解析 SQL 时报错，可以尝试使用最新版本。如果仍然报错，可以提 issue 到 [mydumper/issues](https://github.com/pingcap/mydumper/issues)。
+
+### Mydumper 报错 "Failed to set tidb_snapshot: parsing time \"20190901-10:15:00 +0800\" as 20190901-10:15:00 +0700 MST\": cannot parse \"\" as \"MST\"" 如何解决？
+
+检查 TiDB 的版本是否低于 v2.1.11，如果是的话需要升级 TiDB 到 v2.1.11 或以上版本。
+
 ### PingCAP 的 Mydumper 的源码是否可获取？
 
 PingCAP 的 Mydumper 源码 [位于 GitHub](https://github.com/pingcap/mydumper)。
