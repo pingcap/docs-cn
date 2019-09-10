@@ -30,7 +30,9 @@ SHOW TABLE [table_name] INDEX [index_name] REGIONS [WhereClauseOptional];
 * `APPROXIMATE_SIZE(MB)`：估算的 Region 的数据量大小，单位是 MB。
 * `APPROXIMATE_KEYS`：估算的 Region 内 Key 的个数。
 
-注意，`WRITTEN_BYTES`，`READ_BYTES`，`APPROXIMATE_SIZE(MB)`，`APPROXIMATE_KEYS` 的值是 PD 根据 Region 的心跳汇报信息统计，估算出来的数据，所以不是精确的数据。
+> **注意：**
+>
+> `WRITTEN_BYTES`，`READ_BYTES`，`APPROXIMATE_SIZE(MB)`，`APPROXIMATE_KEYS` 的值是 PD 根据 Region 的心跳汇报信息统计，估算出来的数据，所以不是精确的数据。
 
 ## 示例
 
