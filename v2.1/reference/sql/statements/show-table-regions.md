@@ -11,9 +11,9 @@ category: reference
 ## 语法图
 
 ```sql
-SHOW TABLE [table_name] REGIONS;
+SHOW TABLE [table_name] REGIONS [WhereClauseOptional];
 
-SHOW TABLE [table_name] INDEX [index_name] REGIONS;
+SHOW TABLE [table_name] INDEX [index_name] REGIONS [WhereClauseOptional];
 ```
 
 `SHOW TABLE REGIONS` 会返回如下列：
@@ -88,6 +88,16 @@ test> show table t regions;
 | 68        | t_43_i_1_016d80000000000000 | t_43_r                      | 90        | 6               | 69, 90, 97    | 0          |
 +-----------+-----------------------------+-----------------------------+-----------+-----------------+---------------+------------+
 7 rows in set
+
+-- 查看表 t 在 store 1 上的 region，用 where 条件过滤。
+test> show table t regions where leader_store_id =1;
++-----------+-----------------------------+-----------------------------+-----------+-----------------+---------------+------------+
+| REGION_ID | START_KEY                   | END_KEY                     | LEADER_ID | LEADER_STORE_ID | PEERS         | SCATTERING |
++-----------+-----------------------------+-----------------------------+-----------+-----------------+---------------+------------+
+| 109       | t_43_r_40000                | t_43_r_60000                | 110       | 1               | 110, 111, 112 | 0          |
+| 2         | t_43_r_80000                |                             | 3         | 1               | 3, 91, 92     | 0          |
++-----------+-----------------------------+-----------------------------+-----------+-----------------+---------------+------------+
+2 rows in set
 ```
 
 ## 另请参阅
