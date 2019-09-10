@@ -122,7 +122,7 @@ black-white-list:
 - `ignore-dbs` 要同步的库的黑名单
 - `do-tables` 要同步的表的白名单
 - `ignore-tables` 要同步的表的黑名单
-- 上面黑白名单中 以 `~` 字符开头名称为[正则表达式](https://golang.org/pkg/regexp/syntax/#hdr-Syntax)。
+- 上面黑白名单中 以 `~` 字符开头名称为[正则表达式](https://golang.org/pkg/regexp/syntax/#hdr-syntax)。
 
 ### 过滤规则
 

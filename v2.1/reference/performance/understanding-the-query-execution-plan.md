@@ -12,12 +12,12 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 `EXPLAIN` 语句的返回结果提供了 TiDB 执行 SQL 查询的详细信息：
 
 - `EXPLAIN` 可以和 `SELECT`，`DELETE` 语句一起使用；
-- 执行 `EXPLAIN`，TiDB 会返回被 `EXPLAIN` 的 SQL 语句经过优化器后的最终物理执行计划。也就是说，`EXPLAIN` 展示了 TiDB 执行该 SQL 语句的完整信息，比如以什么样的顺序，什么方式 JOIN 两个表，表达式树长什么样等等。详见 [`EXPLAIN` 输出格式](#explain-output-format)；
+- 执行 `EXPLAIN`，TiDB 会返回被 `EXPLAIN` 的 SQL 语句经过优化器后的最终物理执行计划。也就是说，`EXPLAIN` 展示了 TiDB 执行该 SQL 语句的完整信息，比如以什么样的顺序，什么方式 JOIN 两个表，表达式树长什么样等等。详见 [`EXPLAIN` 输出格式](#explain-输出格式)；
 - TiDB 支持 `EXPLAIN [options] FOR CONNECTION connection_id`，但与 MySQL 的 `EXPLAIN FOR` 有一些区别，请参见 [`EXPLAIN FOR CONNECTION`](#explain-for-connection)。
 
 通过观察 `EXPLAIN` 的结果，你可以知道如何给数据表添加索引使得执行计划使用索引从而加速 SQL 语句的执行速度；你也可以使用 `EXPLAIN` 来检查优化器是否选择了最优的顺序来 JOIN 数据表。
 
-## <span id="explain-output-format">`EXPLAIN` 输出格式</span>
+## `EXPLAIN` 输出格式
 
 目前 TiDB 的 `EXPLAIN` 会输出 4 列，分别是：id，count，task，operator info。执行计划中每个算子都由这 4 列属性来描述，`EXPLAIN` 结果中每一行描述一个算子。每个属性的具体含义如下：
 
