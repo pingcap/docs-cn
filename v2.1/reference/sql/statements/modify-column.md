@@ -65,6 +65,7 @@ ERROR 1105 (HY000): can't run multi schema change
 
 * Making multiple changes in a single `ALTER TABLE` statement is not currently supported.
 * Only certain types of data type changes are supported. For example, an `INTEGER` to `BIGINT` is supported, but the reverse is not possible. Changing from an integer to a string format or blob is not supported.
+* Modifying precision of the `DECIMAL` data type is not supported.
 
 ## See also
 
