@@ -113,5 +113,5 @@ test> show table t regions;
 
 ## 另请参阅
 
-* [SPLIT REGION](/3.0/reference/sql/statements/split-region.md)
-* [CREATE TABLE](/3.0/reference/sql/statements/create-table.md)
+* [SPLIT REGION](v3.0/reference/sql/statements/split-region.md)
+* [CREATE TABLE](v3.0/reference/sql/statements/create-table.md)
