@@ -187,10 +187,13 @@ mysql -h <tidb_ilb_ip> -P 4000 -u root
     ```bash
     kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb
     ```
+    > **注意：**
+    >
+    > 下面这条命令使用的 `--kubeconfig` 参数至少需要 Helm 2.10.0 版本以上。
+
     {{< copyable "shell-regular" >}}
 
     ```bash
-    # --kubeconfig 参数需要 helm 2.10.0+
     helm --kubeconfig credentials/kubeconfig_<cluster_name> ls
     ```
 
