@@ -68,7 +68,7 @@ gcloud services enable cloudresourcemanager.googleapis.com \
 
 ```bash
 # 将 GCP_REGION 替换为你的 GCP Region。
-echo GCP_REGION="us-west1" >> terraform.tfvars
+echo GCP_REGION=\"us-west1\" >> terraform.tfvars
 ```
 
 {{< copyable "shell-regular" >}}
@@ -185,6 +185,11 @@ mysql -h <tidb_ilb_ip> -P 4000 -u root
 
     ```bash
     kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb
+    ```
+
+    ```bash
+    # --kubeconfig 参数需要 helm 2.10.0+
+    helm --kubeconfig credentials/kubeconfig_<cluster_name> ls
     ```
 
 - 设置 `KUBECONFIG` 环境变量：
