@@ -17,7 +17,17 @@ This document describes how to initialize a TiDB cluster in Kubernetes (K8s), sp
 
 When a cluster is created, a default account `root` is created with no password. This might cause security issues. You can set a password for the `root` account in the following steps:
 
-1. Create a `secret` object.
+1. Create the `Namespace`.
+
+    Before creating the cluster, create the [Namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/):
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl create namespace <namespace>
+    ```
+
+2. Create a `secret` object.
 
     Before creating a cluster, create a [`secret`](https://kubernetes.io/docs/concepts/configuration/secret/) to specify the password for `root`:
 
@@ -37,7 +47,7 @@ When a cluster is created, a default account `root` is created with no password.
 
     This command creates users `root` and `developer` with their passwords, which are saved in the `tidb-secret` object.
 
-2. Deploy the cluster.
+3. Deploy the cluster.
 
     After creating the `secret`, deploy the cluster using the following command:
 
