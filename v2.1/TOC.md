@@ -89,7 +89,7 @@
   + Upgrade
     - [Upgrade to TiDB 2.1](/v2.1/how-to/upgrade/from-previous-version.md)
     - [Rolling updates with Ansible](/v2.1/how-to/upgrade/rolling-updates-with-ansible.md)
-    - [Upgrade TiDB Data Migration](/v2.1/how-to/upgrade/data-migration.md)
+    - [Upgrade TiDB Data Migration](/v2.1/reference/tools/data-migration/upgrade.md)
     - [Upgrade TiDB Binlog Cluster](/v2.1/how-to/upgrade/tidb-binlog.md)
   - Troubleshoot
     - [Troubleshoot Cluster Setup](/v2.1/how-to/troubleshoot/cluster-setup.md)
@@ -126,6 +126,7 @@
       + Migrate from MySQL compatible database
         - [Migrate from Aurora](/v2.1/how-to/migrate/from-aurora.md)
       - [Troubleshoot](/v2.1/how-to/troubleshoot/data-migration.md)
+      - [Upgrade](/v2.1/reference/tools/data-migration/upgrade.md)
     + TiDB Lightning
       - [Overview](/v2.1/reference/tools/tidb-lightning/overview.md)
       - [Deployment](/v2.1/reference/tools/tidb-lightning/deployment.md)

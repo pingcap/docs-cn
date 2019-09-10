@@ -90,7 +90,7 @@
   + Upgrade
     - [Upgrade to Development Series](/dev/how-to/upgrade/from-previous-version.md)
     - [Rolling updates with Ansible](/dev/how-to/upgrade/rolling-updates-with-ansible.md)
-    - [Upgrade TiDB Data Migration](/dev/how-to/upgrade/data-migration.md)
+    - [Upgrade TiDB Data Migration](/dev/reference/tools/data-migration/upgrade.md)
     - [Upgrade TiDB Binlog Cluster](/dev/how-to/upgrade/tidb-binlog.md)
   - Troubleshoot
     - [Troubleshoot Cluster Setup](/dev/how-to/troubleshoot/cluster-setup.md)
@@ -127,6 +127,7 @@
       + Migrate from MySQL compatible database
         - [Migrate from Aurora](/dev/how-to/migrate/from-aurora.md)
       - [Troubleshoot](/dev/how-to/troubleshoot/data-migration.md)
+      - [Upgrade](/dev/reference/tools/data-migration/upgrade.md)
       - [FAQ](/dev/faq/data-migration.md)
     + TiDB Lightning
       - [Overview](/dev/reference/tools/tidb-lightning/overview.md)

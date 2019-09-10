@@ -2,6 +2,7 @@
 title: Upgrade Data Migration
 summary: Learn how to upgrade a Data Migration version to an incompatible version.
 category: how-to
+aliases: ['/docs/v2.1/how-to/upgrade/data-migration/']
 ---
 
 # Upgrade Data Migration
@@ -16,9 +17,40 @@ Assuming that V-A, V-B, V-C are three DM versions in chronological order and the
 > **Note:**
 >
 > - Unless otherwise stated, DM version upgrade means upgrading DM from the previous version with an upgrade procedure to the current version.
-> - Unless otherwise stated, all the following upgrade examples assume that you have downloaded the corresponding DM version and DM-Ansible version, and the DM binary exists in the corresponding directory of DM-Ansible. (For how to download the DM binary, see [Upgrade the component version](/dev/reference/tools/data-migration/cluster-operations.md#upgrade-the-component-version)).
+> - Unless otherwise stated, all the following upgrade examples assume that you have downloaded the corresponding DM version and DM-Ansible version, and the DM binary exists in the corresponding directory of DM-Ansible. (For how to download the DM binary, see [Upgrade the component version](/v2.1/reference/tools/data-migration/cluster-operations.md#upgrade-the-component-version)).
 > - Unless otherwise stated, all the following upgrade examples assume that all the data replication tasks have been stopped before the upgrade and all the replication tasks are restarted manually after DM upgrade is finished.
 > - The following shows the upgrade procedure of DM versions in reverse chronological order.
+
+## Upgrade to v1.0.0-10-geb2889c9 (1.0 GA)
+
+### Version information
+
+```bash
+Release Version: v1.0.0-10-geb2889c9
+Git Commit Hash: eb2889c9dcfbff6653be9c8720a32998b4627db9
+Git Branch: release-1.0
+UTC Build Time: 2019-09-06 03:18:48
+Go Version: go version go1.12 linux/amd64
+```
+
+### Main changes
+
+- Try to automatically resume the replication task in common abnormal situations
+- Improve compatibility with more DDL syntax
+- Fix the bug that data might get lost because of the upstream database connection exception
+
+### Upgrade operation example
+
+1. Download the new version of DM-Ansible, and confirm that there is `dm_version = v1.0.0` in the `inventory.ini` file.
+2. Run `ansible-playbook local_prepare.yml` to download the new DM binary file to the local disk.
+3. Run `ansible-playbook rolling_update.yml` to perform a rolling update for the DM cluster components.
+4. Run `ansible-playbook rolling_update_monitor.yml` to perform a rolling update for the DM monitoring components.
+
+> **Note:**
+>
+> When you upgrade DM to the 1.0 GA version, you must make sure that all DM cluster components (dmctl, DM-master, and DM-worker) are upgraded.
+>
+> For this particular upgrade operation, it is not supported to just upgrade a part of the components. Otherwise, an error might occur.
 
 ## Upgrade to v1.0.0-rc.1-12-gaa39ff9
 
