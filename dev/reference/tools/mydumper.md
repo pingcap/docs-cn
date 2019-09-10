@@ -59,7 +59,7 @@ Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/dev/r
 
 ### 使用 Loader 恢复 Mydumper 备份出来的数据时报错 "invalid mydumper files for there are no `-schema-create.sql` files found", 这个是什么原因，如何解决？
 
-检查使用 Mydumper 备份数据时是否使用了 `-T` 或者 `--tables-list` 配置，如果使用了这些配置 Mydumper 就不会生成保存建库 SQL 的文件。解决方法：在 Mydumper 备份数据目录下创建文件 `{schema-name}-schema-create.sql`， 在文件中写入 "CREATE DATABASE `{schema-name}`"，再运行 Loader 即可。
+检查使用 Mydumper 备份数据时是否使用了 `-T` 或者 `--tables-list` 配置，如果使用了这些配置 Mydumper 就不会生成包含建库 SQL 的文件。解决方法：在 Mydumper 备份数据目录下创建文件 `{schema-name}-schema-create.sql`，在文件中写入 "CREATE DATABASE `{schema-name}`"，再运行 Loader 即可。
 
 ### 为什么使用 Mydumper 导出来的时间类型的数据和数据库中的数据不一致？
 
