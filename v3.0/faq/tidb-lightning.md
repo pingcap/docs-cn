@@ -78,25 +78,28 @@ sql-mode = ""
 
 ## 如何正确关闭 `tikv-importer` 进程？
 
-如使用 TiDB Ansible 部署，在 Importer 的服务器上运行 `scripts/stop_importer.sh` 即可。否则，可通过 `ps aux | grep tikv-importer` 获取进程ID，然后 `kill «pid»`。
+根据您的部署方式，选择相应操作结束进程
+
+- 使用 TiDB Ansible 部署：在 Importer 的服务器上运行 `scripts/stop_importer.sh` 。
+
+- 手动部署：如果 `tikv-importer` 正在前台运行，可直接按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 退出。否则，可通过 `ps aux | grep tikv-importer` 获取进程ID，然后通过 `kill «pid»` 结束进程。
 
 ## 如何正确关闭 `tidb-lightning` 进程？
 
-如使用 TiDB Ansible 部署，在 Lightning 的服务器上运行 `scripts/stop_lightning.sh` 即可。
+根据您的部署方式，选择相应操作结束进程
 
-如果 `tidb-lightning` 正在前台运行，可直接按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 退出。
+- 使用 TiDB Ansible 部署：在 Lightning 的服务器上运行 `scripts/stop_lightning.sh` 。
+- 手动部署：如果 `tidb-lightning` 正在前台运行，可直接按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 退出。否则，可通过 `ps aux | grep tidb-lightning` 获取进程 ID，然后通过 `kill -2 «pid»` 结束进程。
 
-否则，可通过 `ps aux | grep tidb-lightning` 获取进程 ID，然后 `kill -2 «pid»`。
+## `tidb-lightning` 在服务器上运行，进程莫名其妙地退出了，是怎么回事呢？
 
-## 进程在服务器上运行，进程莫名其妙地就退出了，是怎么回事呢？
-
-这种情况可能是启动方式不正确，导致因为收到 SIGHUP 信号而退出，此时 `tidb-lightning.log` 通常有这幺一行日志：
+这种情况可能是启动方式不正确，导致收到 SIGHUP 信号而退出。此时 `tidb-lightning.log` 通常有如下日志：
 
 ```
 2018/08/10 07:29:08.310 main.go:47: [info] Got signal hangup to exit.
 ```
 
-不推荐直接在命令行中使用 `nohup` 启动进程，而应该把 `nohup` 这行命令放到一个脚本中运行。
+不推荐在命令行中直接使用 `nohup` 启动进程，推荐按照 [启动 tidb-lightning](/v3.0/reference/tools/tidb-lightning/deployment/) 使用脚本启动。
 
 ## 为什么用过 TiDB Lightning 之后，TiDB 集群变得又慢又耗 CPU？
 
