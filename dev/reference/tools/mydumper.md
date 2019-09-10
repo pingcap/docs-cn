@@ -12,11 +12,13 @@ category: reference
 
 Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/dev/reference/tools/download.md)。
 
-## 相比于普通的 Mydumper，此工具有哪些改进之处？
+### 相比于普通的 Mydumper，此工具有哪些改进之处？
 
 + 对于 TiDB 可以设置 [tidb_snapshot](/dev/how-to/get-started/read-historical-data.md#操作流程) 的值指定备份数据的时间点，从而保证备份的一致性，而不是通过 `FLUSH TABLES WITH READ LOCK` 来保证备份一致性。
 
 + 优化了 TiDB PK not handle 场景（表没有 Primary Key 或者 Primary Key 非整数）下的数据导出性能。
+
+## Mydumper 使用
 
 ### 新添参数
 
