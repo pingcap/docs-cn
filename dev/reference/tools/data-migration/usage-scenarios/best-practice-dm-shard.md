@@ -21,11 +21,11 @@ category: reference
 
 因此，当通过 `show-ddl-locks` 查看到 DM-master 上存在 shard DDL lock 时，或通过 `query-status` 查看到某些 DM-worker 有 `unresolvedGroups` 或 `blockingDDLs` 时，并不要急于使用 `unlock-ddl-lock` 或 `break-ddl-lock` 尝试去手动解除 shard DDL lock。
 
-只有在确认当前未能自动解除 shard DDL lock 文档中所列的[支持场景](/dev/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md#支持场景)之一时，才能参照该支持场景中的手动处理示例进行处理。对于其他未被支持的场景，我们建议完整重做整个数据迁移任务，即清空下游数据库中的数据以及该数据迁移任务相关的 `dm_meta` 信息后，重新执行全量数据及增量数据的迁移。
+只有在确认当前未能自动解除 shard DDL lock 是文档中所列的[支持场景](/dev/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md#支持场景)之一时，才能参照对应支持场景中的手动处理示例进行处理。对于其他未被支持的场景，我们建议完整重做整个数据迁移任务，即清空下游数据库中的数据以及该数据迁移任务相关的 `dm_meta` 信息后，重新执行全量数据及增量数据的迁移。
 
 ## 自增主键冲突处理
 
-在 DM 中，我们提供了 [Column mapping](/dev/reference/tools/data-migration/features/overview.md#column-mapping) 用于处理 bigint 类型的自增主键在合并时可能出现冲突的问题，但我们 **强烈不推荐** 使用该功能。如果业务上允许，我们推荐使用以下两种处理方式。
+在 DM 中，我们提供了 [Column mapping](/dev/reference/tools/data-migration/features/overview.md#column-mapping) 用于处理 bigint 类型的自增主键在合并时可能出现冲突的问题，但我们**强烈不推荐**使用该功能。如果业务上允许，我们推荐使用以下两种处理方式。
 
 ### 去掉自增主键的主键属性
 
@@ -61,7 +61,7 @@ mysql> SHOW CREATE TABLE `tbl_no_pk`;
    | Table       | Create Table                              |
    +-------------+-------------------------------------------+
    | tbl_no_pk_2 | CREATE TABLE `tbl_no_pk_2` (
-     `auto_pk_c1` bigint(20) DEFAULT NULL,
+     `auto_pk_c1` bigint(20) NOT NULL,
      `uk_c2` bigint(20) NOT NULL,
      `content_c3` text,
      UNIQUE KEY `uk_c2` (`uk_c2`)
@@ -83,7 +83,7 @@ mysql> SHOW CREATE TABLE `tbl_multi_pk`;
 +--------------+------------------------------------------+
 | tbl_multi_pk | CREATE TABLE `tbl_multi_pk` (
   `auto_pk_c1` bigint(20) NOT NULL,
-  `uuid_c2` bigint(20) DEFAULT NULL,
+  `uuid_c2` bigint(20) NOT NULL,
   `content_c3` text,
   PRIMARY KEY (`auto_pk_c1`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
@@ -145,4 +145,4 @@ mysql> SHOW CREATE TABLE `tbl_multi_pk`;
 
 ## 数据迁移限速/流控
 
-当将多个上游 MySQL/MariaDB 实例的数据合并迁移到下游同一个 TiDB 集群时，由于每个与上游 MySQL/MariaDB 对应的 DM-worker 都会并发地进行全量与增量数据迁移，默认的并发度（全量阶段的 `pool-size` 与增量阶段的 `worker-count`）通过多个 DM-worker 累积后，可能会给下游造成过大的压力，此时应根据 TiDB 监控及 DM 监控进行初步的性能分析后，适当地调整各并发度参数的大小。后续 DM 也将考虑支持部分自动的流控策略。
+当将多个上游 MySQL/MariaDB 实例的数据合并迁移到下游同一个 TiDB 集群时，由于每个与上游 MySQL/MariaDB 对应的 DM-worker 都会并发地进行全量与增量数据迁移，默认的并发度（全量阶段的 `pool-size` 与增量阶段的 `worker-count`）通过多个 DM-worker 累加后，可能会给下游造成过大的压力，此时应根据 TiDB 监控及 DM 监控进行初步的性能分析后，适当地调整各并发度参数的大小。后续 DM 也将考虑支持部分自动的流控策略。
