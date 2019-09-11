@@ -5,11 +5,11 @@ category: reference
 
 # TiDB Lightning 常见的错误用法
 
-本文介绍了使用 [TiDB Lightning](/dev/reference/tools/tidb-lightning/overview.md) 进行 load data 过程中常见的因为使用造成的出错场景，以及这些错误发生的原因和处理方式。
+本文介绍了 [TiDB Lightning](/dev/reference/tools/tidb-lightning/overview.md) 使用过程中常见的出错场景以及相应的处理方式。
 
 ## 报错：`checksum mismatched remote vs local`
 
-在 load data 过程中遇到下面的报错
+在数据导入过程中遇到下面的报错
 
 ```log
 Error: checksum mismatched remote vs local => (checksum: 3828723015727756136 vs 7895534721177712659) (total_kvs: 1221416844 vs 1501500000) (total_bytes:237660308510 vs 292158203078)
