@@ -11,7 +11,7 @@ category: reference
 
 在[分库分表合并同步的实现原理部分](/dev/reference/tools/data-migration/features/shard-merge.md#实现原理)，我们介绍了 shard group 的概念，简单来说可以理解为所有需要合并到同一个下游表的所有上游表即组成一个 shard group。
 
-当前的 shard DDL 算法为了能协调在不同分表执行 DDL 对 schema 变更的影响，加入了一些[使用限制](/dev/reference/tools/data-migration/features/shard-merge.md#使用限制)。而当这些使用限制由于某些异常原因被打破时，我们需要[手动处理 Sharding DDL Lock](https://pingcap.com/docs-cn/v3.0/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks/) 甚至是完整重做整个数据迁移任务。
+当前的 shard DDL 算法为了能协调在不同分表执行 DDL 对 schema 变更的影响，加入了一些[使用限制](/dev/reference/tools/data-migration/features/shard-merge.md#使用限制)。而当这些使用限制由于某些异常原因被打破时，我们需要[手动处理 Sharding DDL Lock](/dev/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md) 甚至是完整重做整个数据迁移任务。
 
 因此，为了减小异常发生时对数据迁移的影响，我们推荐将每一个 shard group 拆分成一个独立的数据迁移任务。这样当异常发生时，可能只有少部分迁移任务需要进行手动处理，其他数据迁移任务可以不受影响。
 
