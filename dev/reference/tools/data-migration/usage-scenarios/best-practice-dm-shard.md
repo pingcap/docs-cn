@@ -32,11 +32,7 @@ category: reference
 假设上游分表的表结构如下：
 
 ```sql
-mysql> SHOW CREATE TABLE `tbl_no_pk`;
-+-----------+---------------------------------------------+
-| Table     | Create Table                                |
-+-----------+---------------------------------------------+
-| tbl_no_pk | CREATE TABLE `tbl_no_pk` (
+CREATE TABLE `tbl_no_pk` (
   `auto_pk_c1` bigint(20) NOT NULL,
   `uk_c2` bigint(20) NOT NULL,
   `content_c3` text,
@@ -56,11 +52,7 @@ mysql> SHOW CREATE TABLE `tbl_no_pk`;
 1. 在开始执行全量数据迁移前，在下游数据库创建用于合表迁移的表，但不为 `auto_pk_c1` 指定 `PRIMARY KEY` 属性。
 
    ```sql
-   mysql> SHOW CREATE TABLE `tbl_no_pk`;
-   +-------------+-------------------------------------------+
-   | Table       | Create Table                              |
-   +-------------+-------------------------------------------+
-   | tbl_no_pk_2 | CREATE TABLE `tbl_no_pk_2` (
+   CREATE TABLE `tbl_no_pk_2` (
      `auto_pk_c1` bigint(20) NOT NULL,
      `uk_c2` bigint(20) NOT NULL,
      `content_c3` text,
@@ -77,11 +69,7 @@ mysql> SHOW CREATE TABLE `tbl_no_pk`;
 假设上游分表的表结构如下：
 
 ```sql
-mysql> SHOW CREATE TABLE `tbl_multi_pk`;
-+--------------+------------------------------------------+
-| Table        | Create Table                             |
-+--------------+------------------------------------------+
-| tbl_multi_pk | CREATE TABLE `tbl_multi_pk` (
+CREATE TABLE `tbl_multi_pk` (
   `auto_pk_c1` bigint(20) NOT NULL,
   `uuid_c2` bigint(20) NOT NULL,
   `content_c3` text,
@@ -101,11 +89,7 @@ mysql> SHOW CREATE TABLE `tbl_multi_pk`;
 1. 在开始执行全量数据迁移前，在下游数据库创建用于合表迁移的表，但不为 `auto_pk_c1` 指定 `PRIMARY KEY` 属性，而是将 `auto_pk_c1` 与 `uuid_c2` 一起组成 `PRIMARY KEY`。
 
    ```sql
-   mysql> SHOW CREATE TABLE `tbl_multi_pk`;
-   +-----------------+---------------------------------------+
-   | Table           | Create Table                          |
-   +-----------------+---------------------------------------+
-   | tbl_multi_pk_c2 | CREATE TABLE `tbl_multi_pk_c2` (
+   CREATE TABLE `tbl_multi_pk_c2` (
      `auto_pk_c1` bigint(20) NOT NULL,
      `uuid_c2` bigint(20) NOT NULL,
      `content_c3` text,
