@@ -5,23 +5,43 @@ category: reference
 
 # TiDB Binlog 集群运维
 
-## Pump/Drainer 状态
+本文首先介绍 Pump/Drainer 的状态及启动、退出的内部处理流程，然后说明如何通过 binlogctl 工具、执行 SQL 来维护 binlog 集群。
+
+## Pump/Drainer 的状态
 
 Pump/Drainer 中状态的定义：
 
-* online：正常运行中。
-* pausing：暂停中，当使用 kill（非 kill -9）、Ctrl+C 或者使用 binlogctl 的 pause-pump/pause-drainer 命令退出进程时，都将处于该状态。当 Pump/Drainer 安全退出了所有的内部线程后，将自己的状态切换为 paused。
-* paused：已暂停，处于该状态时 Pump 不接受写 binlog 的请求，也不继续为 Drainer 提供 binlog，Drainer 不再往下游同步数据。
-* closing：下线中，使用 binlogctl 的 offline-pump/offline-drainer 命令控制 Pump/Drainer 下线，在进程退出前都处于该状态。下线时 Pump 不再接受写 binlog 的请求，等待所有的 binlog 数据被 Drainer 消费完。
-* offline：已下线，当 Pump 已经将已保存的所有 binlog 数据全部发送给 Drainer 后，该 Pump 将状态切换为 offline。
+* online：正常运行中
+* pausing：暂停中
+* paused：已暂停
+* closing：下线中
+* offline：已下线
+
+这些状态由 Pump/Drainer 服务自身进行维护，并定时将状态信息更新到 PD 中。
+
+## Pump 的启动、退出流程
+
+* 启动：Pump 启动时会通知所有 online 状态的 Drainer，如果通知成功，则 Pump 将状态设置为 online，否则 Pump 将报错退出。
+* 退出：Pump 退出前要判断是暂停还是下线。使用 kill（非 kill -9）、Ctrl+C 或者使用 binlogctl 的 pause-pump 命令都可以暂停 Pump；仅在使用 binlogctl 的 offline-pump 命令的情况下才会下线 Pump。
+
+    * 暂停：Pump 变更状态为 pausing，并停止接受 binlog 的写请求，也停止向 Drainer 提供 binlog。安全退出所有线程后，更新状态为 paused 然后退出进程。
+    * 下线：Pump 变更状态为 closing，并停止接受 binlog 的写请求。Pump 继续向 Drainer 提供 binlog，等待所有 binlog 数据都被 Drainer 消费后再将状态设置为 offline 并退出进程。
+
+## Drainer 的启动、退出流程
+
+* 启动：Drainer 启动时将状态设置为 online，并尝试从所有非 offline 状态的 Pump 获取 binlog，如果获取 binlog 失败，会不断尝试重新获取。
+* 退出：Drainer 退出前要判断是暂停还是下线。使用 kill（非 kill -9）、Ctrl+C 或者使用 binlogctl 的 pause-drainer 命令都可以暂停 Drainer；仅在使用 binlogctl 的 offline-drainer 命令的情况下才会下线 Drainer。
+
+    * 暂停：Drainer 变更状态为 pausing，并停止从 Pump 获取 binlog。安全退出所有线程后，更新状态为 paused 然后退出进程。
+    * 下线：Drainer 变更状态为 closing，并停止从 Pump 获取 binlog。安全退出所有线程后，更新状态为 offline 然后退出进程。
 
 > **注意：**
 >
-> * 当暂停 Pump/Drainer 时，数据同步会中断。
-> * Pump/Drainer 的状态需要区分已暂停（paused）和下线（offline）。Pump 进入 offline 状态前需要将已保存的 binlog 数据全部发送到 Drainer，进入 paused 状态则不需要。如果需要较长时间退出 Pump（或不再使用该 Pump），需要使用 binlogctl 工具来下线 Pump。Drainer 同理。
+> * 当 Pump/Drainer 处于 paused 状态时，数据同步会中断。
+> * Pump/Drainer 在异常情况下退出（例如：程序 panic，或者用户执行了 kill -9 杀死进程）后，PD 中保存的状态仍然为 online，需要重启 Pump/Drainer 或者使用 binlogctl 的 update-pump/update-drainer 命令修改状态。
 > * Pump 在下线时需要确认自己的数据被所有的非 offline 状态的 Drainer 消费了，所以在下线 Pump 时需要确保所有的 Drainer 都是处于 online 状态且进程正常，否则 Pump 无法正常下线。
-> 如果 Drainer 长期不再使用，一定要保证该 Drainer 的状态为 offline，否则可能会对 Pump 的上线/下线造成影响。
-> * 不要轻易下线 Pump/Drainer，只有在永久不需要使用该服务的情况下才需要下线。
+> * 如果 Drainer 长期不再使用，一定要保证该 Drainer 的状态为 offline，否则可能会对 Pump 的上线/下线造成影响。
+> * 不要轻易下线 Pump/Drainer，只有在长期不需要使用该服务的情况下才需要下线。
 
 关于 Pump/Drainer 暂停、下线、状态查询、状态修改等具体的操作方法，参考如下 binlogctl 工具的使用方法介绍。
 
