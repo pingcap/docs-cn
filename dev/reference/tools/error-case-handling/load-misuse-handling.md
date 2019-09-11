@@ -7,7 +7,7 @@ category: reference
 
 本文介绍了使用 [loader](/dev/reference/tools/loader.md) 或者 [DM](/dev/reference/tools/data-migration/overview.md) 进行 load data 过程中常见的因为使用造成的出错场景，以及这些错误发生的原因和处理方式。
 
-## 报错：`Try adjusting the `max_allowed_packet` variable`
+## 报错：`Try adjusting the ``max_allowed_packet`` variable`
 
 在 load data 过程中遇到下面的报错
 
