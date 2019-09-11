@@ -35,6 +35,12 @@ aliases: ['/docs-cn/tools/download/']
 |:---|:---|:---|:---|
 | [dm-latest-linux-amd64.tar.gz](http://download.pingcap.org/dm-latest-linux-amd64.tar.gz) | Linux | amd64 | [dm-latest-linux-amd64.sha256](http://download.pingcap.org/dm-latest-linux-amd64.sha256) |
 
+如需下载 GA 版本的 [DM](https://github.com/pingcap/dm)，点击下表中的下载链接即可。
+
+| 安装包 | 操作系统 | 架构 | SHA256 校验和 |
+|:---|:---|:---|:---|
+| [dm-v1.0.1-linux-amd64.tar.gz](http://download.pingcap.org/dm-v1.0.1-linux-amd64.tar.gz) | Linux | amd64 | [dm-v1.0.1-linux-amd64.sha256](http://download.pingcap.org/dm-v1.0.1-linux-amd64.sha256) |
+
 ## Syncer，Loader 和 Mydumper
 
 如需下载最新版本的 [Syncer](/v3.0/reference/tools/syncer.md)，[Loader](/v3.0/reference/tools/loader.md) 或 [Mydumper](/v3.0/reference/tools/mydumper.md)，直接下载 tidb-enterprise-tools 安装包即可，因为这些工具均包含在此安装包中。
