@@ -21,7 +21,7 @@ Pump/Drainer 中状态的定义：
 
 ## Pump 的启动、退出流程
 
-* 启动：Pump 启动时会通知所有 online 状态的 Drainer，如果通知成功，则 Pump 将状态设置为 online，否则 Pump 将报错退出。
+* 启动：Pump 启动时会通知所有 online 状态的 Drainer，如果通知成功，则 Pump 将状态设置为 online，否则 Pump 将报错，然后将状态设置为 paused 并退出进程。
 * 退出：Pump 退出前要判断是暂停还是下线。使用 kill（非 kill -9）、Ctrl+C 或者使用 binlogctl 的 pause-pump 命令都可以暂停 Pump；仅在使用 binlogctl 的 offline-pump 命令的情况下才会下线 Pump。
 
     * 暂停：Pump 变更状态为 pausing，并停止接受 binlog 的写请求，也停止向 Drainer 提供 binlog。安全退出所有线程后，更新状态为 paused 然后退出进程。
