@@ -20,13 +20,14 @@ aliases: ['/docs-cn/tools/lightning/checkpoints/']
 # 若 Lightning 或其他组件异常退出，在重启时可以避免重复再导入已完成的数据。
 enable = true
 
-# 存储断点的架构名称（数据库名称）
-schema = "tidb_lightning_checkpoint"
-
 # 存储断点的方式
 #  - file：存放在本地文件系统（要求 v2.1.1 或以上）
 #  - mysql：存放在兼容 MySQL 的数据库服务器
 driver = "file"
+
+# 存储断点的架构名称（数据库名称）
+# 仅在 driver = "mysql" 时生效
+# schema = "tidb_lightning_checkpoint"
 
 # 断点的存放位置
 #
@@ -40,7 +41,7 @@ driver = "file"
 
 # 导入成功后是否保留断点。默认为删除。
 # 保留断点可用于调试，但有可能泄漏数据源的元数据。
-#keep-after-success = false
+# keep-after-success = false
 ```
 
 ## 断点的存储
