@@ -99,7 +99,7 @@
       + 使用场景
         - [简单的从库同步场景](/dev/reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
         - [分库分表合并场景](/dev/reference/tools/data-migration/usage-scenarios/shard-merge.md)
-        - [分表合并数据同步最佳实践](/dev/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md)
+        - [分表合并数据迁移最佳实践](/dev/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md)
       + [部署使用](/dev/reference/tools/data-migration/deploy.md)
       + 配置
         - [概述](/dev/reference/tools/data-migration/configure/overview.md)
