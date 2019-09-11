@@ -22,11 +22,11 @@ Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/dev/r
 
 ### 新添参数
 
-```bash
-  -z, --tidb-snapshot: 设置 tidb_snapshot 用于备份
-                       默认值：当前 TSO（SHOW MASTER STATUS 输出的 Position)
-                       此参数可设为 TSO 或有效的 datetime 时间，例如：-z "2016-10-08 16:45:26"
-```
+  ```bash
+    -z, --tidb-snapshot: 设置 tidb_snapshot 用于备份
+                         默认值：当前 TSO（SHOW MASTER STATUS 输出的 Position)
+                         此参数可设为 TSO 或有效的 datetime 时间，例如：-z "2016-10-08 16:45:26"
+  ```
 
 ### 需要的权限
 
@@ -39,9 +39,9 @@ Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/dev/r
 
 命令行参数：
 
-```bash
-./bin/mydumper -h 127.0.0.1 -u root -P 4000
-```
+  ```bash
+  ./bin/mydumper -h 127.0.0.1 -u root -P 4000
+  ```
 
 ## FAQ
 
@@ -49,15 +49,15 @@ Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/dev/r
 
 运行命令
 
-```bash
-./bin/mydumper --help
-```
+  ```bash
+  ./bin/mydumper --help
+  ```
 
 包含如下配置项的为 PingCAP 优化的版本：
 
-```bash
--z, --tidb-snapshot         Snapshot to use for TiDB
-```
+  ```bash
+  -z, --tidb-snapshot         Snapshot to use for TiDB
+  ```
 
 ### 使用 Loader 恢复 Mydumper 备份出来的数据时报错 "invalid mydumper files for there are no `-schema-create.sql` files found"，应该如何解决？
 
@@ -71,13 +71,31 @@ Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/dev/r
 
 Mydumper 在备份时会根据这个参数的值把每个表的数据划分成多个 `chunk`，每个 `chunk` 保存到一个文件中，大小约为 `chunk-filesize`。根据这个参数把数据切分到多个文件中，这样就可以利用 Loader/TiDB-Lightning 的并行处理逻辑提高导入速度。 如果后续使用 Loader 对备份文件进行恢复，建议把该参数的值设置为 64（单位 MB）；如果使用 TiDB-Lightning 恢复，则建议设置为 256（单位 MB）。
 
+### 如何配置 Mydumper 的参数 `-s --statement-size`?
+
+Mydumper 使用该参数控制 `Insert Statement` 的大小，默认值为 1M 左右。使用该参数来尽量避免在恢复数据时报以下错误：
+
+  ```log
+  packet for query is too large. Try adjusting the 'max_allowed_packet' variable
+  ```
+
+默认值在绝大部分情况下都可以满足需求，但是如果表为宽表，单行数据的大小可能超过 statement-size 的限制，Mydumper 会报如下的 WARN：
+
+  ```log
+  Row bigger than statement_size for xxx
+  ```
+
+这种情况下恢复数据时仍然会报 `packet for query is too large` 的错误日志，这个时候需要修改以下两个配置（以设置为 128M 为例）：
+     * 在 TiDB Server 执行 `set @@global.max_allowed_packet=134217728` （`134217728 = 128M`）
+     * 根据实际情况为 Loader 的配置文件或者 `DM task` 配置文件中的 db 配置增加类似 `max-allowed-packet=128M`，然后重启进程或者任务
+
 ### Mydumper 备份 TiDB 数据报错 "GC life time is shorter than transaction duration" 应该怎么解决？
 
 Mydumper 备份 TiDB 数据时为了保证数据的一致性使用了 TiDB 的 snapshot 特性，如果备份过程中 snapshot 对应的历史数据被 TiDB GC 处理了，则会报该错误。建议在备份前通过如下命令调整 TiDB 的 GC 参数：
 
-```bash
-mysql> update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_life_time';
-```
+  ```bash
+  mysql> update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_life_time';
+  ```
 
 备份完成后再将 `tikv_gc_life_time` 的值调整为原来的值。
 
