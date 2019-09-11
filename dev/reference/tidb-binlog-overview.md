@@ -28,7 +28,7 @@ Drainer 从各个 Pump 中收集 Binlog 进行归并，再将 Binlog 转化成 S
 
 ### binlogctl 工具
 
-[binlogctl](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/binlogctl) 是一个 TiDB Binlog 配套的运维工具，具有如下功能：
+[binlogctl](https://github.com/pingcap/tidb-tools/tree/release-2.1/tidb-binlog/binlogctl) 是一个 TiDB Binlog 配套的运维工具，具有如下功能：
 
 * 获取 TiDB 集群当前的 TSO
 * 查看 Pump/Drainer 状态
