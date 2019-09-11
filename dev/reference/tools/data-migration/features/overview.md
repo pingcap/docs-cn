@@ -341,6 +341,10 @@ filters:
 
 ## Column mapping
 
+> **注意：**
+>
+> 我们强烈不推荐使用 Column mapping 功能，其它解决方案请参考 [自增主键冲突处理](/dev/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md#自增主键冲突处理)。 
+
 Column mapping 提供对表的列值进行修改的功能。可以根据不同的表达式对表的指定列做不同的修改操作，目前只支持 DM 提供的内置表达式。
 
 > **注意：**
