@@ -69,7 +69,7 @@ Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/dev/r
 
 ### 如何配置 Mydumper 的参数 `-F, --chunk-filesize`?
 
-Mydumper 在备份时会根据这个参数的值把每个表的数据划分成多个 `chunk`，每个 `chunk` 保存到一个文件中，大小约为 `chunk-filesize`。TiDB-Lightning/Loader 在恢复数据时会按照文件粒度进行并行处理，推荐把该参数的值设置为 64（单位 MB）。
+Mydumper 在备份时会根据这个参数的值把每个表的数据划分成多个 `chunk`，每个 `chunk` 保存到一个文件中，大小约为 `chunk-filesize`。根据这个参数把数据切分到多个文件中，这样就可以利用 Loader/TiDB-Lightning 的并行处理逻辑提高导入速度。 如果后续使用 Loader 对备份文件进行恢复，建议把该参数的值设置为 64（单位 MB）；如果使用 TiDB-Lightning 恢复，则建议设置为 256（单位 MB）。
 
 ### Mydumper 备份 TiDB 数据报错 "GC life time is shorter than transaction duration" 应该怎么解决？
 
@@ -85,9 +85,9 @@ mysql> update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv
 
 如果设置该参数为 true 则导出的数据中会包含 TiDB 的隐藏列的数据，在恢复到 TiDB 的时候使用隐藏列会有数据不一致的风险，不推荐使用该参数。
 
-### Mydumper 的参数 `-h, --host` 可以使用域名吗？
+### Mydumper 报错 "Segmentation fault" 怎么解决？
 
-不可以，目前 Mydumper 会报错，推荐使用 IP 地址。
+是 Mydumper 的 bug 导致的，已经修复，可以尝试使用最新版本。
 
 ### Mydumper 报错 "Error dumping table ({schema}.{table}) data: line ...... (total length ...)" 怎么解决？
 
