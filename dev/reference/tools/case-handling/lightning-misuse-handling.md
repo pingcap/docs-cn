@@ -28,7 +28,9 @@ Error: checksum mismatched remote vs local => (checksum: 3828723015727756136 vs 
 
 * 删除出现 `checksum mismatch` 错误的 table 的数据
 
-  ```
+    {{< copyable "" >}}
+    
+    ```
   tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
   ```
 
