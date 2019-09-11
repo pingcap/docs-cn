@@ -87,3 +87,22 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 
 - 手动设置 GC concurrency。要使用该参数，必须将 [`tikv_gc_auto_concurrency`](#tikv-gc-auto-concurrency) 设为 `false` 。
 - 默认值：2
+
+## 关于 GC 流程的说明
+
+从 3.0 起，由于分布式 GC 模式和并行 Resolve Locks 的支持，部分配置选项的作用发生了变化。可根据下表理解不同版本中这些配置的区别：
+
+| 版本/配置          |  Resolve Locks          |  Do GC  |
+|-------------------|---------------|----------------|
+| 2.x               | 串行 | 并行 |
+| 3.0 <br/> `tikv_gc_mode = centered` <br/> `tikv_gc_auto_concurrency = false` | 并行 | 并行 |
+| 3.0 <br/> `tikv_gc_mode = centered` <br/> `tikv_gc_auto_concurrency = true` | 自动线程数并行 | 自动线程数并行 |
+| 3.0 <br/> `tikv_gc_mode = distributed` <br/> `tikv_gc_auto_concurrency = false` | 并行 | 分布式 |
+| 3.0 <br/> `tikv_gc_mode = distributed` <br/> `tikv_gc_auto_concurrency = true` <br/> （默认配置） | 自动线程数并行 | 分布式 |
+
+解释：
+
+- 串行：由 TiDB 逐个 Region 发送请求。
+- 并行：使用 `tikv_gc_concurrency` 选项所指定的线程数，逐个 Region 发送请求。
+- 自动线程数并行：使用 TiKV 节点的个数作为线程数，逐个 Region 发送请求。
+- 分布式：无需 TiDB 使用 RPC 驱动，每台 TiKV 自行工作。
