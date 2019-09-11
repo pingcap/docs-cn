@@ -30,10 +30,12 @@ category: reference
 | Pump Handle TSO | 记录 Drainer 从各个 Pump 获取到的 binlog 的最大 TSO 对应的时间 | | Pull Binlog QPS by Pump NodeID | Drainer 从每个 Pump 获取 binlog 的 QPS |
 | 95% Binlog Reach Duration By Pump | 记录 binlog 从写入 Pump 到被 Drainer 获取到这个过程的延迟时间 |
 | Error By Type | Drainer 遇到的 error 数量，按照 error 的类型进行统计 |
+| SQL Query Time| Drainer 在下游执行 SQL 的耗时 |
 | Drainer Event | 各种类型 event 的数量，event 包括 ddl、insert、delete、update、flush、savepoint |
 | Execute Time | 在下游执行 SQL 语句或写数据所消耗的时间 |
 | 95% Binlog Size | Drainer 从各个 Pump 获取到 binlog 数据的大小 |
 | DL Job Count | Drainer 处理的 DDL 的数量|
+| Query Size | Drainer 内部工作队列大小 |
 
 ## 监控告警规则
 
@@ -84,7 +86,7 @@ category: reference
 #### binlog_pump_storage_available_size_less_than_20G
 
 - 含义：Pump 剩余可用磁盘空间不足 20G
-- 监控规则：binlog_pump_storage_storage_size_bytes{type="available"} < 20 * 1024 * 1024 * 1024
+- 监控规则：binlog_pump_storage_storage_size_bytes{type="available"} < 20 \* 1024 \* 1024 \* 1024
 - 处理方法：监控确认 Pump gc_tso 正常，需要的话调整 Pump gc 时间配置或者下线对应 Pump
 
 #### binlog_drainer_checkpoint_tso_no_change_for_1m
