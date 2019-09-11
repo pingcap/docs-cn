@@ -260,7 +260,7 @@ Usage of binlogctl:
     Query OK, 0 rows affected (0.01 sec)
     ```
 
-    该 SQL 的功能和 binlogctl 中的 update-pump 和 update—drainer 命令的功能一样，因此也只有在 Pump/Drainer 异常的情况下使用。
+    该 SQL 的功能和 binlogctl 中的 update-pump 和 update-drainer 命令的功能一样，因此也只有在 Pump/Drainer 异常的情况下使用。
 
 > **注意：**
 >
