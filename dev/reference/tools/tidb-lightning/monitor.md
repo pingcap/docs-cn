@@ -10,7 +10,7 @@ Both `tidb-lightning` and `tikv-importer` supports metrics collection via [Prome
 
 ## Monitor configuration
 
-- If TiDB Lightning is installed using TiDB Ansible, simply add the servers to the `[monitored_servers]` section in the `inventory.ini`. Then the Prometheus server can collect their metrics.
+- If TiDB Lightning is installed using TiDB Ansible, simply add the servers to the `[monitored_servers]` section in the `inventory.ini` file. Then the Prometheus server can collect their metrics.
 - If TiDB Lightning is manually installed, follow the instructions below.
 
 ### `tikv-importer`
@@ -53,9 +53,102 @@ scrape_configs:
       - targets: ['192.168.20.10:8289']
 ```
 
+## Grafana dashboard
+
+[Grafana](https://grafana.com/) is a web interface to visualize Prometheus metrics as dashboards.
+
+If TiDB Lightning is installed using TiDB Ansible, its dashboard is already installed.
+Otherwise, the dashboard JSON can be imported from <https://raw.githubusercontent.com/pingcap/tidb-ansible/master/scripts/lightning.json>.
+
+### Row 1: Speed
+
+![Panels in first row](/media/lightning-grafana-row-1.png)
+
+| Panel | Series | Description |
+|:-----|:-----|:-----|
+| Import speed | write from lightning | Speed of sending KVs from TiDB Lightning to TiKV Importer, which depends on each table's complexity |
+| Import speed | upload to tikv | Total upload speed from TiKV Importer to all TiKV replicas |
+| Chunk process duration | | Average time needed to completely encode one single data file |
+
+Sometimes the import speed will drop to zero allowing other parts to catch up. This is normal.
+
+### Row 2: Progress
+
+![Panels in second row](/media/lightning-grafana-row-2.png)
+
+| Panel | Description |
+|:-----|:-----|
+| Import progress | Percentage of data files encoded so far |
+| Checksum progress | Percentage of tables are verified to be imported successfully |
+| Failures | Number of failed tables and their point of failure, normally empty |
+
+### Row 3: Resource
+
+![Panels in third row](/media/lightning-grafana-row-3.png)
+
+| Panel | Description |
+|:-----|:-----|
+| Memory usage | Amount of memory occupied by each service |
+| Number of Lightning Goroutines | Number of running goroutines used by TiDB Lightning |
+| CPU% | Number of logical CPU cores utilized by each service |
+
+### Row 4: Quota
+
+![Panels in fourth row](/media/lightning-grafana-row-4.png)
+
+| Panel | Series | Description |
+|:-----|:-----|:-----|
+| Idle workers | io | Number of unused `io-concurrency`, normally close to configured value (default 5), and close to 0 means the disk is too slow |
+| Idle workers | closed-engine | Number of engines which is closed but not yet cleaned up, normally close to index + table-concurrency (default 8), and close to 0 means TiDB Lightning is faster than TiKV Importer, which will cause TiDB Lightning to stall |
+| Idle workers | table | Number of unused `table-concurrency`, normally 0 until the end of process |
+| Idle workers | index | Number of unused `index-concurrency`, normally 0 until the end of process |
+| Idle workers | region | Number of unused `region-concurrency`, normally 0 until the end of process |
+| External resources | KV Encoder | Counts active KV encoders, normally the same as `region-concurrency` until the end of process |
+| External resources | Importer Engines | Counts opened engine files, should never exceed the `max-open-engines` setting |
+
+### Row 5: Read speed
+
+![Panels in fifth row](/media/lightning-grafana-row-5.png)
+
+| Panel | Series | Description |
+|:-----|:-----|:-----|
+| Chunk parser read block duration | read block | Time taken to read one block of bytes to prepare for parsing |
+| Chunk parser read block duration | apply worker | Time elapsed to wait for an idle io-concurrency |
+| SQL process duration | row encode | Time taken to parse and encode a single row |
+| SQL process duration | block deliver | Time taken to send a block of KV pairs to TiKV Importer |
+
+If any of the duration is too high, it indicates that the disk used by TiDB Lightning is too slow or busy with I/O.
+
+### Row 6: Storage
+
+![Panels in sixth row](/media/lightning-grafana-row-6.png)
+
+| Panel | Series | Description |
+|:-----|:-----|:-----|
+| SQL process rate | data deliver rate | Speed of delivery of data KV pairs to TiKV Importer |
+| SQL process rate | index deliver rate | Speed of delivery of index KV pairs to TiKV Importer |
+| SQL process rate | total deliver rate | The sum of two rates above |
+| Total bytes | parser read size | Number of bytes being read by TiDB Lightning |
+| Total bytes | data deliver size | Number of bytes of data KV pairs already delivered to TiKV Importer |
+| Total bytes | index deliver size | Number of bytes of index KV pairs already delivered to TiKV Importer |
+| Total bytes | storage_size / 3 | Total size occupied by the TiKV cluster, divided by 3 (the default number of replicas) |
+
+### Row 7: Import speed
+
+![Panels in seventh row](/media/lightning-grafana-row-7.png)
+
+| Panel | Series | Description |
+|:-----|:-----|:-----|
+| Delivery duration | Range delivery | Time taken to upload a range of KV pairs to the TiKV cluster |
+| Delivery duration | SST delivery | Time taken to upload an SST file to the TiKV cluster |
+| SST process duration | Split SST | Time taken to split the stream of KV pairs into SST files |
+| SST process duration | SST upload | Time taken to upload an SST file |
+| SST process duration | SST ingest | Time taken to ingest an uploaded SST file |
+| SST process duration | SST size | File size of an SST file |
+
 ## Monitoring metrics
 
-This section explains the monitoring metrics of `tikv-importer` and `tidb-lightning`.
+This section explains the monitoring metrics of `tikv-importer` and `tidb-lightning`, if you need to monitor other metrics not covered by the default Grafana dashboard.
 
 ### `tikv-importer`
 

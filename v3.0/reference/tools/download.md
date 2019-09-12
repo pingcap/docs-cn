@@ -26,7 +26,7 @@ If you want to download the v3.0 version of [TiDB Lightning](/v3.0/reference/too
 
 | Package name | OS | Architecture |  SHA256 checksum |
 |:---|:---|:---|:---|
-| [tidb-toolkit-v3.0-linux-amd64.tar.gz](http://download.pingcap.org/tidb-toolkit-v3.0-linux-amd64.tar.gz) | Linux | amd64 | [tidb-toolkit-v3.0.0-linux-amd64.sha256](http://download.pingcap.org/tidb-toolkit-v3.0.0-linux-amd64.sha256) |
+| [tidb-toolkit-v3.0.3-linux-amd64.tar.gz](http://download.pingcap.org/tidb-toolkit-v3.0.3-linux-amd64.tar.gz) | Linux | amd64 | [tidb-toolkit-v3.0.3-linux-amd64.sha256](http://download.pingcap.org/tidb-toolkit-v3.0.3-linux-amd64.sha256) |
 
 ## DM (Data Migration)
 
