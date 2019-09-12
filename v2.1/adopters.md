@@ -76,7 +76,7 @@ This is a list of TiDB adopters in various industries.
 |[Meili Finance](https://www.crunchbase.com/organization/meili-jinrong)|FinTech||
 |[Guolian Securities](https://www.crunchbase.com/organization/guolian-securities)|Financial Services||
 |[Founder Securities](https://www.linkedin.com/company/founder-securities-co-ltd-/)|Financial Services||
-|[China Telecom Shanghai](http://sh.189.cn/en/index.html)|Telecom||
+|[China Telecom Shanghai](http://www.189.cn/sh/)|Telecom||
 |[State Administration of Taxation](https://en.wikipedia.org/wiki/State_Administration_of_Taxation)|Finance||
 |[Wuhan Antian Information Technology](https://www.avlsec.com/)|Enterprise Technology||
 |[Ausnutria Dairy](https://www.crunchbase.com/organization/ausnutria-dairy)|FoodTech||
