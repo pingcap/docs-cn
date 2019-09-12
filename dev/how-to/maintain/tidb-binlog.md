@@ -5,7 +5,7 @@ category: reference
 
 # TiDB Binlog 集群运维
 
-本文首先介绍 Pump/Drainer 的状态及启动、退出的内部处理流程，然后说明如何通过 binlogctl 工具、执行 SQL 来维护 binlog 集群，最后 FAQ 会介绍一些常见问题以及处理方法。
+本文首先介绍 Pump/Drainer 的状态及启动、退出的内部处理流程，然后说明如何通过 binlogctl 工具或者直接在 TiDB 执行 SQL 来管理 binlog 集群，最后 FAQ 会介绍一些常见问题以及处理方法。
 
 ## Pump/Drainer 的状态
 
