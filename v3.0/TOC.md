@@ -258,6 +258,7 @@
       - [`SHOW TABLE STATUS`](/v3.0/reference/sql/statements/show-table-status.md)
       - [`SHOW [GLOBAL|SESSION] VARIABLES`](/v3.0/reference/sql/statements/show-variables.md)
       - [`SHOW WARNINGS`](/v3.0/reference/sql/statements/show-warnings.md)
+      - [`SHOW TABLE REGIONS`](/v3.0/reference/sql/statements/show-table-regions.md)
       - [`SPLIT REGION`](/v3.0/reference/sql/statements/split-region.md)
       - [`START TRANSACTION`](/v3.0/reference/sql/statements/start-transaction.md)
       - [`TRACE`](/v3.0/reference/sql/statements/trace.md)
@@ -338,6 +339,7 @@
     - [销毁 TiDB 集群](/v3.0/tidb-in-kubernetes/maintain/destroy-tidb-cluster.md)
     - [维护 TiDB 集群所在节点](/v3.0/tidb-in-kubernetes/maintain/kubernetes-node.md)
     - [备份与恢复](/v3.0/tidb-in-kubernetes/maintain/backup-and-restore.md)
+    - [恢复 Kubernetes 上的 TiDB 集群数据](/v3.0/tidb-in-kubernetes/maintain/lightning.md)
     - [收集日志](/v3.0/tidb-in-kubernetes/maintain/log-collecting.md)
     - [集群故障自动转移](/v3.0/tidb-in-kubernetes/maintain/auto-failover.md)
   - [扩缩容](/v3.0/tidb-in-kubernetes/scale-in-kubernetes.md)
@@ -378,6 +380,7 @@
     - [3.0.0-beta.1](/v3.0/releases/3.0.0-beta.1.md)
     - [3.0.0-beta](/v3.0/releases/3.0beta.md)
   + v2.1
+    - [2.1.17](/v3.0/releases/2.1.17.md)
     - [2.1.16](/v3.0/releases/2.1.16.md)
     - [2.1.15](/v3.0/releases/2.1.15.md)
     - [2.1.14](/v3.0/releases/2.1.14.md)

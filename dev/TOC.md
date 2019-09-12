@@ -338,6 +338,7 @@
     - [销毁 TiDB 集群](/dev/tidb-in-kubernetes/maintain/destroy-tidb-cluster.md)
     - [维护 TiDB 集群所在节点](/dev/tidb-in-kubernetes/maintain/kubernetes-node.md)
     - [备份与恢复](/dev/tidb-in-kubernetes/maintain/backup-and-restore.md)
+    - [恢复 Kubernetes 上的 TiDB 集群数据](/dev/tidb-in-kubernetes/maintain/lightning.md)
     - [收集日志](/dev/tidb-in-kubernetes/maintain/log-collecting.md)
     - [集群故障自动转移](/dev/tidb-in-kubernetes/maintain/auto-failover.md)
   - [扩缩容](/dev/tidb-in-kubernetes/scale-in-kubernetes.md)
@@ -378,6 +379,7 @@
     - [3.0.0-beta.1](/dev/releases/3.0.0-beta.1.md)
     - [3.0.0-beta](/dev/releases/3.0beta.md)
   + v2.1
+    - [2.1.17](/dev/releases/2.1.17.md)
     - [2.1.16](/dev/releases/2.1.16.md)
     - [2.1.15](/dev/releases/2.1.15.md)
     - [2.1.14](/dev/releases/2.1.14.md)
