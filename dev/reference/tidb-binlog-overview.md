@@ -20,15 +20,15 @@ TiDB Binlog 集群主要分为 Pump 和 Drainer 两个组件，以及 binlogctl 
 
 ### Pump
 
-Pump 用于实时记录 TiDB 产生的 Binlog，并将 Binlog 按照事务的提交时间进行排序，再提供给 Drainer 进行消费。
+[Pump](https://github.com/pingcap/tidb-binlog/blob/master/pump) 用于实时记录 TiDB 产生的 Binlog，并将 Binlog 按照事务的提交时间进行排序，再提供给 Drainer 进行消费。
 
 ### Drainer
 
-Drainer 从各个 Pump 中收集 Binlog 进行归并，再将 Binlog 转化成 SQL 或者指定格式的数据，最终同步到下游。
+[Drainer](https://github.com/pingcap/tidb-binlog/tree/master/drainer) 从各个 Pump 中收集 Binlog 进行归并，再将 Binlog 转化成 SQL 或者指定格式的数据，最终同步到下游。
 
 ### binlogctl 工具
 
-binlogctl 是一个 TiDB Binlog 配套的运维工具，具有如下功能：
+[`binlogctl`](https://github.com/pingcap/tidb-binlog/tree/master/binlogctl) 是一个 TiDB Binlog 配套的运维工具，具有如下功能：
 
 * 获取 TiDB 集群当前的 TSO
 * 查看 Pump/Drainer 状态
