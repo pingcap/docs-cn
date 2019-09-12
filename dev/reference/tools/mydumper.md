@@ -86,6 +86,7 @@ Mydumper 使用该参数控制 `Insert Statement` 的大小，默认值为 1M �
   ```
 
 这种情况下恢复数据时仍然会报 `packet for query is too large` 的错误日志，这个时候需要修改以下两个配置（以设置为 128M 为例）：
+
 * 在 TiDB Server 执行 `set @@global.max_allowed_packet=134217728`（`134217728 = 128M`）
 * 根据实际情况为 Loader 的配置文件或者 DM task 配置文件中的 db 配置增加类似 `max-allowed-packet=128M`，然后重启进程或者任务
 
