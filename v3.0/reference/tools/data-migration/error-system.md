@@ -43,7 +43,6 @@ DM 中所有的错误都按照固定格式输出：[错误基本信息] + 错误
 - scope=interal，表示是 DM 内部发生的错误。
 - level=high，表示这是一个高级别错误，需要用户注意，更进一步的错误信息可以通过错误 message 和错误堆栈判断。
 
-
 ### 错误 message 描述
 
 错误 message 使用描述性语言来表示错误的详细信息，对于错误调用链上每一层额外增加的错误 message，采用 [errors.Wrap](https://godoc.org/github.com/pkg/errors#hdr-Adding_context_to_an_error) 的模式进行错误 message 的叠加和保存。wrap 最外层 message 是 DM 内部该错误的描述，wrap 最内层的 message 是该错误最底层出错位置的错误描述。

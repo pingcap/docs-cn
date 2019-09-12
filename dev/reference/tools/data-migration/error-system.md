@@ -1,9 +1,9 @@
 ---
-title: DM 错误使用
+title: DM 错误含义和诊断
 category: reference
 ---
 
-# DM 错误使用
+# DM 错误含义和诊断
 
 本本介绍 DM 的错误输出的详细含义，根据错误信息诊断系统的具体方法，以及针对常见的错误的运维方法。
 
@@ -42,7 +42,6 @@ DM 中所有的错误都按照固定格式输出：[错误基本信息] + 错误
 - class=dm-master，表示错误发生在 DM-master 对外发送（请求发送至 DM-worker）的 gRPC 请求出错。
 - scope=interal，表示是 DM 内部发生的错误。
 - level=high，表示这是一个高级别错误，需要用户注意，更进一步的错误信息可以通过错误 message 和错误堆栈判断。
-
 
 ### 错误 message 描述
 
