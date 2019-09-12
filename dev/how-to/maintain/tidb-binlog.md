@@ -27,7 +27,7 @@ Pump/Drainer 中状态的定义：
 * 退出：Pump 退出前要判断是暂停还是下线。使用 kill（非 kill -9）、Ctrl+C 或者使用 binlogctl 的 pause-pump 命令都可以暂停 Pump；仅在使用 binlogctl 的 offline-pump 命令的情况下才会下线 Pump。
 
     * 暂停：Pump 变更状态为 pausing，并停止接受 binlog 的写请求，也停止向 Drainer 提供 binlog。安全退出所有线程后，更新状态为 paused 然后退出进程。Drainer 会停止数据同步，等待该 Pump 恢复服务。
-    * 下线：Pump 变更状态为 closing，并停止接受 binlog 的写请求。Pump 继续向 Drainer 提供 binlog，等待所有 binlog 数据都被 Drainer 消费后再将状态设置为 offline 并退出进程。
+    * 下线：仅在使用 binlogctl 的 offline-pump 命令的情况下才会下线 Pump。 接收到下线指令后，Pump 会变更状态为 closing，并停止接受 binlog 的写请求。Pump 继续向 Drainer 提供 binlog，等待所有 binlog 数据都被 Drainer 消费后再将状态设置为 offline 并退出进程。
 
 ### Drainer
 
