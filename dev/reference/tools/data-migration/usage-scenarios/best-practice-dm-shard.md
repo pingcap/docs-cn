@@ -38,8 +38,7 @@ CREATE TABLE `tbl_no_pk` (
   `content_c3` text,
   PRIMARY KEY (`auto_pk_c1`),
   UNIQUE KEY `uk_c2` (`uk_c2`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
-+-----------+---------------------------------------------+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
 ```
 
 如果满足下列条件：
@@ -57,8 +56,7 @@ CREATE TABLE `tbl_no_pk` (
      `uk_c2` bigint(20) NOT NULL,
      `content_c3` text,
      UNIQUE KEY `uk_c2` (`uk_c2`)
-   ) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
-   +-------------+-------------------------------------------+
+   ) ENGINE=InnoDB DEFAULT CHARSET=latin1
    ```
 
 2. 启动数据迁移任务，执行全量与增量数据迁移。
@@ -74,8 +72,7 @@ CREATE TABLE `tbl_multi_pk` (
   `uuid_c2` bigint(20) NOT NULL,
   `content_c3` text,
   PRIMARY KEY (`auto_pk_c1`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
-+--------------+------------------------------------------+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
 ```
 
 如果满足下列条件：
@@ -94,8 +91,7 @@ CREATE TABLE `tbl_multi_pk` (
      `uuid_c2` bigint(20) NOT NULL,
      `content_c3` text,
      PRIMARY KEY (`auto_pk_c1`,`uuid_c2`)
-   ) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
-   +-----------------+---------------------------------------+
+   ) ENGINE=InnoDB DEFAULT CHARSET=latin1
    ```
 
 2. 启动数据迁移任务，执行全量与增量数据迁移。
