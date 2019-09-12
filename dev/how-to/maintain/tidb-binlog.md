@@ -48,7 +48,7 @@ Pump/Drainer 中状态的定义：
 
 使用 binlogctl 的场景：
 
-* 第一次运行 Drainer，需要获取 TiDB 集群当前的 TSO
+* 需要获取 TiDB 集群当前的 TSO
 * 同步出现故障/检查运行情况，需要查看 Pump/Drainer 的状态
 * 维护集群，需要暂停/下线 Pump/Drainer
 * Pump/Drainer 异常退出，状态没有更新，对业务造成影响，可以直接使用该工具修改状态
