@@ -155,7 +155,7 @@ Usage of binlogctl:
 
     在服务正常运行以及符合流程的暂停、下线过程中，Pump/Drainer 的状态都是可以正确的。但是在一些异常情况下 Pump/Drainer 无法正确维护自己的状态，可能会影响数据同步任务，在这种情况下需要使用 binlogctl 修复状态信息。
 
-    设置 `cmd` 为 `update-pump` 或者 `update-drainer` 来更新 Pump 或者 Drainer 的状态。Pump 和 Drainer 的状态可以为：online，pausing，paused，closing 以及 offline。例如：
+    设置 `cmd` 为 `update-pump` 或者 `update-drainer` 来更新 Pump 或者 Drainer 的状态。Pump 和 Drainer 的状态可以为 paused 或者 offline。例如：
 
     {{< copyable "shell-regular" >}}
 
@@ -281,7 +281,7 @@ Usage of binlogctl:
 下线主要针对永久（或长时间）不再使用该服务的场景，例如：
 
 - Pump 缩容：不再需要那么多服务了，下线部分服务
-- 同步任务取消：不再需要同步到某个下游，需要下线对应的 Drainer
+- 同步任务取消：不再需要同步到某个下游，下线对应的 Drainer
 - 服务器迁移：服务需要迁移到其他服务器，下线服务，在新的服务器上重新部署
 
 ### 可以通过哪些方式暂停 Pump/Drainer？
@@ -290,19 +290,43 @@ Usage of binlogctl:
 - Pump/Drainer 运行在前台，则可以通过 Ctrl+C 暂停
 - 使用 binlogctl 的 pause-pump/pause-drainer
 
+### 可以使用 binlogctl 的 update-pump/update-drainer 命令来暂停 Pump/Drainer 服务吗？
+
+不可以，update-pump/update-drainer 命令直接修改 PD 中保存的状态信息，使用这个命令并不会通知 Pump/Drainer 做相应的操作，而且使用不当可能会干扰数据同步。
+
+### 什么情况下使用 binlogctl 的 update-pump 命令设置 Pump 状态为 paused？
+
+在某些异常情况下，Pump 没有正确维护自己的状态，实际上状态应该为 paused，可以使用 update-pump 对状态进行修正，例如：
+
+- Pump 异常退出（出现 panic 直接退出进程，或者误操作执行了 kill -9 进程），Pump 保存在 PD 中的状态仍然为 online。如果暂时不需要重启 Pump 恢复服务，可以使用 update-pump 把该 Pump 状态设置为 paused，避免对 TiDB 写 binlog 和 Drainer 获取 binlog 造成干扰。
+
+### 什么情况下使用 binlogctl 的 update-drainer 命令设置 Drainer 状态为 paused？
+
+在某些异常情况下，Drainer 没有正确维护自己的状态，实际上状态应该为 paused，对数据同步造成了影响，可以使用 update-drainer 对状态进行修正，例如：
+
+- Drainer 异常退出（出现 panic 直接退出进程，或者误操作执行了 kill -9 进程），Drainer 保存在 PD 中的状态仍然为 online。当 Pump 启动时通知该 Drainer 失败（报错 `notify drainer ...`），导致 Pump 无法正常运行。这个时候可以使用 update-drainer 将 Drainer 状态更新为 paused，再启动 Pump。
+
 ### 可以通过哪些方式下线 Pump/Drainer？
 
 目前只可以使用 binlogctl 的 offline-pump 和 offline-drainer 来下线 Pump 和 Drainer。
 
-### 什么情况下使用 binlogctl 的 update-pump/update-drainer 命令？这个命令和 pause-pump、offline-pump 以及 pause-drainer、offline-drainer 的区别是什么？
+### 可以使用 binlogctl 的 update-pump/update-drainer 命令来下线 Pump/Drainer 服务吗？
 
-Pump 在正常运行的过程中会维护自己的状态，并定时在 PD 中更新。在使用 pause-pump、offline-pump、pause-drainer、offline-drainer 这些命令时，binlogctl 会给 Pump/Drainer 发送相应操作的请求，Pump/Drainer 接收到请求后就会做相应的操作，并更新状态为 paused 或者 offline。可以看出，在服务正常运行以及符合流程的暂停、下线过程中，Pump/Drainer 的状态都是可以保证正确的，只有在一些异常情况下 Pump/Drainer 无法维护自身的状态导致 PD 中保存的状态为错误的，这个时候才需要使用 update-pump/update-drainer 命令直接去修正 PD 中的状态，一些常见的场景：
+不可以，update-pump/update-drainer 命令直接修改 PD 中保存的状态信息，使用这个命令并不会通知 Pump/Drainer 做相应的操作，而且使用不当可能会干扰数据同步, 某些情况下还可能会造成*数据不一致*的严重后果。例如：
 
-- Drainer 异常退出（出现 panic 直接退出进程，或者误操作执行了 kill -9 进程），这个时候 Drainer 保存在 PD 中的状态仍然为 online。当 Pump 启动时通知该 Drainer 失败（报错 `notify drainer ...`），导致 Pump 无法正常运行。这个时候可以使用 update-drainer 将 Drainer 状态更新为 paused，再启动 Pump。
-- Pump 异常退出，且无法重新启动，在这种情况下同步会中断。如果希望恢复同步且可以容忍部分 binlog 数据丢失，可以使用 update-pump 命令将该 Pump 状态设置为 offline，则 Drainer 会放弃拉取该 Pump 的 binlog 然后继续同步数据。
-- 有历史遗留的 Pump/Drainer（例如测试使用的服务），实际上不再需要使用这些服务，使用 update-pump、update-drainer 将这些服务设置为 offline。
+- Pump 正常运行中或者处于暂停状态，使用 update-pump 将该 Pump 设置为 offline，Drainer 会放弃获取 offline 状态 Pump 的 binlog 数据，导致该 Pump 最新的 binlog 数据没有同步到 Drainer，造成上下游数据不一致。
+- Drainer 正常运行中，使用 update-drainer 将该 Drainer 设置为 offline。这个时候启动一个 Pump，Pump 只会通知 online 状态的 Drainer，导致该 Drainer 没有及时获取到该 Pump 的 binlog，造成上下游数据不一致。
 
-总的来说，就是 Pump/Drainer 无法正常维护自身的状态，导致状态是错误的，并对数据同步服务造成影响，在这种情况下通过 update-pump/update-drainer 来修正状态。
+### 什么情况下使用 binlogctl 的 update-pump 命令设置 Pump 状态为 offline?
+
+- 在某些情况下，Pump 异常退出进程，且无法恢复服务，同步就会中断。如果希望恢复同步且可以容忍部分 binlog 数据丢失，可以使用 update-pump 命令将该 Pump 状态设置为 offline，则 Drainer 会放弃拉取该 Pump 的 binlog 然后继续同步数据。
+- 有历史遗留的 Pump 且进程已经退出（例如测试使用的服务），之后不再需要使用该服务，使用 update-pump 将该 Pump 设置为 offline。
+
+注意：仅在可以容忍 binlog 数据丢失、上下游数据不一致或者确认不再需要使用该 Pump 存储的 binlog 数据的情况下使用该操作，否则一定要使用 offline-pump 命令。
+
+### 什么情况下使用 binlogctl 的 update-drainer 命令设置 Drainer 状态为 offline？
+
+- 有历史遗留的 Drainer 且进程已经退出（例如测试使用的服务），之后不再需要使用该服务，使用 update-drainer 将该 Drainer 设置为 offline。
 
 ### 可以使用 SQL `change pump`、`change drainer` 来暂停或者下线 Pump/Drainer 服务吗？
 
