@@ -121,7 +121,7 @@ kubectl -n kube-system get pods -l app=helm
 
 ### 添加 Helm 仓库
 
-[Helm 仓库](https://charts.pingcap.org/)存放着 PingCAP 发布的 charts，例如 tidb-operator、tidb-cluster 和 tidb-backup 等等。可使用以下命令添加仓库：
+Helm 仓库 (`https://charts.pingcap.org/`) 存放着 PingCAP 发布的 charts，例如 tidb-operator、tidb-cluster 和 tidb-backup 等等。可使用以下命令添加仓库：
 
 {{< copyable "shell-regular" >}}
 
