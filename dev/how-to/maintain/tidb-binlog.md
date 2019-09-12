@@ -129,19 +129,31 @@ Usage of binlogctl:
     [2019/04/28 09:29:59.016 +00:00] [INFO] [nodes.go:48] ["query node"] [type=pump] [node="{NodeID: 1.1.1.1:8250, Addr: pump:8250, State: online, MaxCommitTS: 408012403141509121, UpdateTime: 2019-04-28 09:29:57 +0000 UTC}"]
     ```
 
-- 暂停/下线 Pump/Drainer
-
-    分别设置 `cmd` 为 `pause-pump`、`pause-drainer`、`offline-pump`、`offline-drainer` 来暂停 Pump、暂停 Drainer、下线 Pump、下线 Drainer。例如：
-
-    {{< copyable "shell-regular" >}}
+     {{< copyable "shell-regular" >}}
 
     ```bash
-    bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pause-pump -node-id ip-127-0-0-1:8250
+    bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd drainers
     ```
+
+    ```
+    [2019/04/28 09:29:59.016 +00:00] [INFO] [nodes.go:48] ["query node"] [type=drainer] [node="{NodeID: 1.1.1.1:8249, Addr: 1.1.1.1:8249, State: online, MaxCommitTS: 408012403141509121, UpdateTime: 2019-04-28 09:29:57 +0000 UTC}"]
+    ```
+
+- 暂停/下线 Pump/Drainer
+    binlogctl 提供以下命令暂停/下线服务：
+
+    | cmd             | 说明           | 示例                                                                                           |
+    | --------------- | ------------- | ----------------------------------------------------------------------------------------------|
+    | pause-pump      | 暂停 Pump      | bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pause-pump -node-id ip-127-0-0-1:8250       |
+    | pause-drainer   | 暂停 Drainer   | bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pause-drainer -node-id ip-127-0-0-1:8249    |
+    | offline-pump    | 下线 Pump      | bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd offline-pump -node-id ip-127-0-0-1:8250     |
+    | offline-drainer | 下线 Drainer   | bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd offline-drainer -node-id ip-127-0-0-1:8249  |
 
     binlogctl 会发送 HTTP 请求给 Pump/Drainer，Pump/Drainer 收到命令后会主动执行对应的退出流程。
 
 - 异常情况下修改 Pump/Drainer 的状态
+
+    在服务正常运行以及符合流程的暂停、下线过程中，Pump/Drainer 的状态都是可以正确的。但是在一些异常情况下 Pump/Drainer 无法正确维护自己的状态，可能会影响数据同步任务，在这种情况下需要使用 binlogctl 修复状态信息。
 
     设置 `cmd` 为 `update-pump` 或者 `update-drainer` 来更新 Pump 或者 Drainer 的状态。Pump 和 Drainer 的状态可以为：online，pausing，paused，closing 以及 offline。例如：
 
