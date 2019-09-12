@@ -44,7 +44,7 @@ Pump/Drainer 中状态的定义：
 * 获取 TiDB 集群当前的 TSO
 * 查看 Pump/Drainer 状态
 * 暂停/下线 Pump/Drainer
-* 异常情况下修改 PD 中保存的 Pump/Drainer 状态
+* Pump/Drainer 异常状态处理
 
 使用 binlogctl 的场景：
 
