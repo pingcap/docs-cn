@@ -96,7 +96,7 @@ sql-mode = ""
 这种情况可能是启动方式不正确，导致收到 SIGHUP 信号而退出。此时 `tidb-lightning.log` 通常有如下日志：
 
 ```
-2018/08/10 07:29:08.310 main.go:47: [info] Got signal hangup to exit.
+[2018/08/10 07:29:08.310 +08:00] [INFO] [main.go:41] ["got signal to exit"] [signal=hangup]
 ```
 
 不推荐在命令行中直接使用 `nohup` 启动进程，推荐按照 [启动 tidb-lightning](/dev/reference/tools/tidb-lightning/deployment.md) 使用脚本启动。
