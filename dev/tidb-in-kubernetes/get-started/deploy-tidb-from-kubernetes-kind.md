@@ -95,9 +95,9 @@ kubectl cluster-info
     standard (default)   kubernetes.io/host-path   20h
     ```
 
-> **注意：**
->
-> `<storageClass>` 在后续文档中代表当前 Kubernetes 集群的 StorageClass Name，例如 `standard` 。
+    > **注意：**
+    >
+    > `<storageClass>` 在后续文档中代表当前 Kubernetes 集群的 StorageClass Name，例如 `standard` 。
 
 3. 安装 TiDB Operator:
 
