@@ -82,7 +82,7 @@ cd tidb-binlog-kafka-linux-amd64
 
     To guarantee the integrity of data, perform the following operations 10 minutes after Pump is started:
 
-    - Use [binlogctl](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/binlogctl) of the [tidb-tools](https://github.com/pingcap/tidb-tools) project to generate the `position` for the initial start of Drainer.
+    - Use [binlogctl](https://github.com/pingcap/tidb-tools/tree/binlog-kafka/tidb_binlog/binlogctl) of the [tidb-tools](https://github.com/pingcap/tidb-tools) project to generate the `position` for the initial start of Drainer.
     - Do a full backup. For example, back up TiDB using Mydumper.
     - Import the full backup to the target system.
     - The savepoint metadata started by the Kafka version of Drainer is stored in the `checkpoint` table of the downstream database `tidb_binlog` by default. If no valid data exists in the `checkpoint` table, configure `initial-commit-ts` to make Drainer work from a specified position when it is started:
