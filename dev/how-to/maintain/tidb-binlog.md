@@ -139,7 +139,7 @@ Usage of binlogctl:
     bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pause-pump -node-id ip-127-0-0-1:8250
     ```
 
-    binlogctl 会发送 HTTP 请求给 Pump/Drainer，Pump/Drainer 收到命令后会主动退出进程，并且将自己的状态设置为 paused/offline 并上报到 PD 中。
+    binlogctl 会发送 HTTP 请求给 Pump/Drainer，Pump/Drainer 收到命令后会主动执行对应的退出流程。
 
 - 异常情况下修改 Pump/Drainer 的状态
 
