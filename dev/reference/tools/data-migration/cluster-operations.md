@@ -348,7 +348,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 3. 修改 `inventory.ini` 文件，为新 DM-worker 实例添加相关信息。
 
     修改 `inventory.ini` 文件。注释或删除旧 `dm_worker1` 实例所在行；同时为新 `dm_worker1` 实例添加相关信息。
-    
+
     如果希望从不同的 binlog position 或 GTID Sets 开始拉取 relay log，则也需要更新 `{relay_binlog_name}` 或 `{relay_binlog_gtid}`。
 
     ```ini
@@ -368,7 +368,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 5. 迁移 relay log 数据。
 
     - 如果待替换 DM-worker 实例所在机器仍能访问，则可直接将该实例的 `{dm_worker_relay_dir}` 目录下的所有数据复制到新 DM-worker 实例的对应目录。
-    
+
     - 如果待替换 DM-worker 实例所在机器已无法访问，则可能需在 step.9 中手动恢复 relay log 目录等信息。
 
 6. 启动新 DM-worker 实例。
@@ -392,25 +392,25 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 9. 启动并验证数据迁移任务。
 
     使用 `start-task` 命令启动数据迁移任务，如果任务运行正常，则表示 DM-worker 迁移顺利完成；如果报类似如下错误，则需要对 relay log 目录进行手动修复。
-    
+
     ```log
     fail to initial unit Sync of subtask test-task : UUID suffix 000002 with UUIDs [1ddbf6d3-d3b2-11e9-a4e9-0242ac140003.000001] not found
     ```
-    
+
     如果待替换 DM-worker 所连接的上游 MySQL 发生过切换，则会产生如上错误。此时可通过如下步骤手动修复。
-    
+
     1. 停止数据迁移任务。
-    
+
     2. 通过 `$ ansible-playbook stop.yml --tags=dm-worker -l dm_worker1` 停止 DM-worker 实例。
-    
+
     3. 更新 relay log 子目录的后缀，如果将 `1ddbf6d3-d3b2-11e9-a4e9-0242ac140003.000001` 重命名为 `1ddbf6d3-d3b2-11e9-a4e9-0242ac140003.000002`。
-    
+
     4. 更新 relay log 子目录索引文件 `server-uuid.index`，如将其中的内容由 `1ddbf6d3-d3b2-11e9-a4e9-0242ac140003.000001` 变更为 `1ddbf6d3-d3b2-11e9-a4e9-0242ac140003.000002`。
-    
+
     5. 通过 `$ ansible-playbook start.yml --tags=dm-worker -l dm_worker1` 启动 DM-worker 实例。
-    
+
     6. 再次启动并验证数据迁移任务。
-    
+
 
 ## 切换主从实例
 
