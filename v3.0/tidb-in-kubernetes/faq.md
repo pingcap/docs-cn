@@ -79,3 +79,8 @@ TiDB Operator 尚不支持自动编排 TiSpark。
     ```shell
     kubectl exec -it <tidb-pod-name> -c tidb -n <namespace> -- cat /etc/tidb/tidb.toml
     ```
+    
+## TiKV 启动过程中出现 'cluster ID mismatch' 是什么原因？
+TiKV 启动时候用了错误数据，可能原因：手动直接删除了 PersistentVolume (PV)，导致 volume provisioner 不能删除 PV 上的数据。
+如何处理：把直接删除的 PV 上的数据清理掉。
+如何预防：为了数据安全，任何情况下都不要直接删除 PV，除非对 volume provisioner 原理非常清楚。
