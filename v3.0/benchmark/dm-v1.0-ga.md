@@ -5,7 +5,7 @@ category: benchmark
 
 # DM 1.0-GA 性能测试报告
 
-本性能报告会记录测试目的、测试环境、测试场景和测试结果。
+本报告记录了对 1.0-GA 版本的 DM 进行性能测试的目的、环境、场景和结果。
 
 ## 测试目的
 
@@ -15,7 +15,7 @@ category: benchmark
 
 ### 测试机器信息
 
-系统信息:
+系统信息：
 
 | 机器 IP     | 操作系统                      | 内核版本                  | 文件系统类型     |
 | :---------: | :---------------------------: | :-----------------------: | :--------------: |
@@ -26,7 +26,7 @@ category: benchmark
 | 172.16.4.43 | CentOS Linux release 7.6.1810 | 3.10.0-957.1.3.el7.x86_64 | ext4             |
 | 172.16.4.44 | CentOS Linux release 7.6.1810 | 3.10.0-957.1.3.el7.x86_64 | ext4             |
 
-硬件信息:
+硬件信息：
 
 | 类别         | 指标                                                |
 | :----------: | :-------------------------------------------------: |
@@ -35,9 +35,9 @@ category: benchmark
 | 磁盘         | Intel DC P4510 4TB NVMe PCIe 3.0                    |
 | 网卡         | 万兆网卡                                            |
 
-其他:
+其他：
 
-* 服务器间网络延迟: rtt min/avg/max/mdev = 0.074/0.088/0.121/0.019 ms
+* 服务器间网络延迟：rtt min/avg/max/mdev = 0.074/0.088/0.121/0.019 ms
 
 ### 集群拓扑
 
@@ -67,6 +67,8 @@ MySQL1 (172.16.4.40) -> DM-worker1 (172.16.4.39) -> TiDB (172.16.4.41)
 
 #### 同步数据表结构
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE TABLE `sbtest` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -80,7 +82,7 @@ CREATE TABLE `sbtest` (
 
 #### 数据库配置
 
-使用 `TiDB-ansible` 部署 TiDB 测试集群，所有配置使用 `TiDB-ansible` 提供的默认配置。
+使用 TiDB Ansible 部署 TiDB 测试集群，所有配置使用 TiDB Ansible 提供的默认配置。
 
 ### 全量导入性能测试用例
 
@@ -91,6 +93,8 @@ CREATE TABLE `sbtest` (
 - 在 `full` 模式下启动 DM 同步任务
 
 `sysbench` 生成数据的命令如下所示：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 sysbench --test=oltp_insert --tables=4 --mysql-host=172.16.4.40 --mysql-port=3306 --mysql-user=root --mysql-db=dm_benchmark --db-driver=mysql --table-size=50000000 prepare
@@ -111,24 +115,26 @@ sysbench --test=oltp_insert --tables=4 --mysql-host=172.16.4.40 --mysql-port=330
 
 #### 在 load 处理单元使用不同 pool size 的性能测试对比
 
-该测试中全量导入的数据量为 3.78GB，使用以下 `sysbench` 命令生成：
+该测试中全量导入的数据量为 3.78 GB，使用以下 `sysbench` 命令生成：
 
-```
+{{< copyable "shell-regular" >}}
+
+```bash
 sysbench --test=oltp_insert --tables=4 --mysql-host=172.16.4.40 --mysql-port=3306 --mysql-user=root --mysql-db=dm_benchmark --db-driver=mysql --table-size=5000000 prepare
 ```
 
-| load 处理单元 pool size | 事务执行时间 (s) | 导入时间 (s) | 导入速度(MB/s) | TiDB 99 duration (s) |
-| :---------------------: | :--------------: | :----------: | :------------: | :------------------: |
-| 2                       | 0.250            | 425.9        | 9.1            | 0.23                 |
-| 4                       | 0.523            | 360.1        | 10.7           | 0.41                 |
-| 8                       | 0.986            | 267.0        | 14.5           | 0.93                 |
-| 16                      | 2.022            | 265.9        | 14.5           | 2.68                 |
-| 32                      | 3.778            | 262.3        | 14.7           | 6.39                 |
-| 64                      | 7.452            | 281.9        | 13.7           | 8.00                 |
+| load 处理单元 pool size | 事务执行时间 (s) | 导入时间 (s) | 导入速度 (MB/s) | TiDB 99 duration (s) |
+| :---------------------: | :--------------: | :----------: | :-------------: | :------------------: |
+| 2                       | 0.250            | 425.9        | 9.1             | 0.23                 |
+| 4                       | 0.523            | 360.1        | 10.7            | 0.41                 |
+| 8                       | 0.986            | 267.0        | 14.5            | 0.93                 |
+| 16                      | 2.022            | 265.9        | 14.5            | 2.68                 |
+| 32                      | 3.778            | 262.3        | 14.7            | 6.39                 |
+| 64                      | 7.452            | 281.9        | 13.7            | 8.00                 |
 
 #### 导入数据时每条插入语句包含行数不同的情况下的性能测试对比
 
-该测试中全量导入的数据量为 3.78GB，load 处理单元 `pool-size` 大小为32. 插入语句包含行数通过 mydumper 的 `--statement-size` 来控制。
+该测试中全量导入的数据量为 3.78 GB，load 处理单元 `pool-size` 大小为 32. 插入语句包含行数通过 mydumper 的 `--statement-size` 来控制。
 
 | 每条语句中包含的行数       | mydumper extra-args 参数  | 事务执行时间 (s)  | 导入时间 (s) | 导入速度 (MB/s) | TiDB 99 duration (s) |
 | :------------------------: | :-----------------------: | :---------------: | :----------: | :-------------: | :------------------: |
@@ -146,13 +152,15 @@ sysbench --test=oltp_insert --tables=4 --mysql-host=172.16.4.40 --mysql-port=330
 - 部署测试环境
 - 使用 `sysbench` 在上游创建测试表，并生成全量导入的测试数据
 - 在 `all` 模式下启动 DM 同步任务，等待同步任务进入 `sync` 同步阶段
-- 使用 `sysbench` 在上游持续生成增量数据，通过 `query-status` 观测 DM 的同步状态，通过 grarana 观测 DM 和 TiDB 的监控指标。
+- 使用 `sysbench` 在上游持续生成增量数据，通过 `query-status` 命令观测 DM 的同步状态，通过 Grafana 观测 DM 和 TiDB 的监控指标。
 
 #### 增量同步性能测试结果
 
 上游 `sysbench` 生成增量数据命令
 
-```
+{{< copyable "shell-regular" >}}
+
+```bash
 sysbench --test=oltp_insert --tables=4 --num-threads=32 --mysql-host=172.17.4.40 --mysql-port=3306 --mysql-user=root --mysql-db=dm_benchmark --db-driver=mysql --report-interval=10 --time=1800 run
 ```
 
