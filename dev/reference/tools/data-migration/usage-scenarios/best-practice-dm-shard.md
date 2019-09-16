@@ -17,7 +17,7 @@ category: reference
 
 ## 手动处理 shard DDL lock
 
-从[分库分表合并同步的实现原理部分](/dev/reference/tools/data-migration/features/shard-merge.md#实现原理)我们可以知道，DM 中的 shard DDL 是用于协调不同上游分表向下游执行 DDL 的一种机制，本身并不是异常。
+从[分库分表合并同步的实现原理部分](/dev/reference/tools/data-migration/features/shard-merge.md#实现原理)我们可以知道，DM 中的 shard DDL lock 是用于协调不同上游分表向下游执行 DDL 的一种机制，本身并不是异常。
 
 因此，当通过 `show-ddl-locks` 查看到 DM-master 上存在 shard DDL lock 时，或通过 `query-status` 查看到某些 DM-worker 有 `unresolvedGroups` 或 `blockingDDLs` 时，并不要急于使用 `unlock-ddl-lock` 或 `break-ddl-lock` 尝试去手动解除 shard DDL lock。
 
