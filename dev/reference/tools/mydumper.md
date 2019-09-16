@@ -79,7 +79,7 @@ Mydumper 使用该参数控制 `Insert Statement` 的大小，默认值为 1M �
   packet for query is too large. Try adjusting the 'max_allowed_packet' variable
   ```
 
-默认值在绝大部分情况下都可以满足需求，但是如果表为宽表，单行数据的大小可能超过 statement-size 的限制，Mydumper 会报如下的 WARN：
+默认值在绝大部分情况下都可以满足需求，但是**如果表为宽表，单行数据的大小可能超过 statement-size 的限制，Mydumper 会报如下的 WARN**：
 
   ```log
   Row bigger than statement_size for xxx
