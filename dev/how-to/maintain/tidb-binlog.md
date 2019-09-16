@@ -41,17 +41,19 @@ Pump/Drainer 中状态的定义：
 
 ## binlogctl 工具
 
-* 获取 TiDB 集群当前的 TSO
+支持如下这些功能：
+
 * 查看 Pump/Drainer 状态
 * 暂停/下线 Pump/Drainer
 * Pump/Drainer 异常状态处理
+* 获取 TiDB 集群当前的 TSO（已废弃，建议使用 TiDB 的 `show master status` SQL 获取当前 tso 信息）
 
 使用 binlogctl 的场景：
 
-* 需要获取 TiDB 集群当前的 TSO
 * 同步出现故障/检查运行情况，需要查看 Pump/Drainer 的状态
 * 维护集群，需要暂停/下线 Pump/Drainer
 * Pump/Drainer 异常退出，状态没有更新，或者状态不符合预期，对业务造成影响
+* Drainer 初次启动，需要获取 TiDB 集群当前的 TSO （已废弃，建议使用 TiDB 的 `show master status` SQL 获取当前 tso 信息）
 
 binlogctl 下载链接：
 
@@ -167,7 +169,7 @@ Usage of binlogctl:
     >
     > Pump/Drainer 在正常运行过程中会定期在 PD 中更新自己的状态，而这条命令是直接去修改 Pump/Drainer 保存在 PD 中的状态，所以在 Pump/Drainer 服务正常的情况下使用这些命令是没有意义的。仅在 Pump/Drainer 服务异常的情况下使用，具体哪些场景下使用这条命令可以参考 FAQ。
 
-- 生成 Drainer 启动需要的 meta 文件
+- 生成 Drainer 初次启动需要的 TSO 信息（已废弃，建议使用 TiDB 的 `show master status` SQL 获取当前 tso 信息）
 
     {{< copyable "shell-regular" >}}
 
