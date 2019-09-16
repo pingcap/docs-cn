@@ -349,7 +349,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
     修改 `inventory.ini` 文件。注释或删除旧 `dm_worker1` 实例所在行；同时为新 `dm_worker1` 实例添加相关信息。
 
-    如果希望从不同的 binlog position 或 GTID Sets 开始拉取 relay log，则也需要更新 `{relay_binlog_name}` 或 `{relay_binlog_gtid}`。
+    如果希望从不同的 binlog position 或 GTID Sets 拉取 relay log，则也需要更新对应的 `{relay_binlog_name}` 或 `{relay_binlog_gtid}`。
 
     ```ini
     [dm_worker_servers]
