@@ -63,7 +63,7 @@ TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用
 1. 客户端向 B 插入一条将 `id` 设置为 1 的语句 `insert into t values (1, 1)`，并执行成功。
 2. 客户端向 A 发送 Insert 语句 `insert into t (c) (1)`，这条语句中没有指定 `id` 的值，所以会由 A 分配，当前 A 缓存了 [1, 30000] 这段 ID，所以会分配 1 为自增 ID 的值，并把本地计数器加 1。而此时数据库中已经存在 `id` 为 1 的数据，最终返回 `Duplicated Error` 错误。
 
-另外，从 release 2.1.18 和 3.0.4 开始，TiDB 通过系统变量 `@@tidb_remove_auto_inc` 控制是否允许通过 `alter table modify` 或 `alter table change` 来移除列的 `auto_increment` 属性，默认是不允许移除。
+另外，从 TiDB 2.1.18 和 3.0.4 版本开始，TiDB 将通过系统变量 `@@tidb_remove_auto_inc` 控制是否允许通过 `alter table modify` 或 `alter table change` 来移除列的 `auto_increment` 属性，默认是不允许移除。
 
 ### Performance schema
 

@@ -637,7 +637,7 @@ select * from t, t1 where t.a=t1.a
 
 TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在建表语句执行时，同步打散刚分裂出的 Region。适用于批量建表后紧接着批量写入数据，能让刚分裂出的 Region 先在 TiKV 分散而不用等待 PD 进行调度。为了保证后续批量写入数据的稳定性，建表语句会等待打散 Region 完成后再返回建表成功，建表语句执行时间会是关闭该变量的数倍。
 
-### tidb_allow_remove_auto_inc
+### tidb_allow_remove_auto_inc <span class="version-mark">从 v2.1.8 和 v3.0.4 版本开始引入</span>
 
 作用域：SESSION
 
