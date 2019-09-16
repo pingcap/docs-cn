@@ -134,7 +134,7 @@ sysbench --test=oltp_insert --tables=4 --mysql-host=172.16.4.40 --mysql-port=330
 
 #### 导入数据时每条插入语句包含行数不同的情况下的性能测试对比
 
-该测试中全量导入的数据量为 3.78 GB，load 处理单元 `pool-size` 大小为 32. 插入语句包含行数通过 mydumper 的 `--statement-size` 来控制。
+该测试中全量导入的数据量为 3.78 GB，load 处理单元 `pool-size` 大小为 32。插入语句包含行数通过 mydumper 的 `--statement-size` 来控制。
 
 | 每条语句中包含的行数       | mydumper extra-args 参数  | 事务执行时间 (s)  | 导入时间 (s) | 导入速度 (MB/s) | TiDB 99 duration (s) |
 | :------------------------: | :-----------------------: | :---------------: | :----------: | :-------------: | :------------------: |
