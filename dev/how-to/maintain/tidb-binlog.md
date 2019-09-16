@@ -142,12 +142,12 @@ Usage of binlogctl:
 - 暂停/下线 Pump/Drainer
     binlogctl 提供以下命令暂停/下线服务：
 
-    | cmd             | 说明           | 示例                                                                                           |
-    | --------------- | ------------- | ----------------------------------------------------------------------------------------------|
-    | pause-pump      | 暂停 Pump      | bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pause-pump -node-id ip-127-0-0-1:8250       |
-    | pause-drainer   | 暂停 Drainer   | bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pause-drainer -node-id ip-127-0-0-1:8249    |
-    | offline-pump    | 下线 Pump      | bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd offline-pump -node-id ip-127-0-0-1:8250     |
-    | offline-drainer | 下线 Drainer   | bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd offline-drainer -node-id ip-127-0-0-1:8249  |
+    | cmd             | 说明           | 示例                                                                                             |
+    | --------------- | ------------- | ------------------------------------------------------------------------------------------------|
+    | pause-pump      | 暂停 Pump      | `bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pause-pump -node-id ip-127-0-0-1:8250`       |
+    | pause-drainer   | 暂停 Drainer   | `bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pause-drainer -node-id ip-127-0-0-1:8249`    |
+    | offline-pump    | 下线 Pump      | `bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd offline-pump -node-id ip-127-0-0-1:8250`     |
+    | offline-drainer | 下线 Drainer   | `bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd offline-drainer -node-id ip-127-0-0-1:8249`  |
 
     binlogctl 会发送 HTTP 请求给 Pump/Drainer，Pump/Drainer 收到命令后会主动执行对应的退出流程。
 
