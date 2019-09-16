@@ -328,7 +328,7 @@ kubectl logs -f <tidb-pod-name> -n <namespace> -c tidb
 
 ## TiDB 长连接被异常中断
 
-许多 Load Balancers 会设置连接空闲超时时间，当连接上没有数据传输超过设定值，将会主动将连接中断。若发现使用中，长查询会被异常中断，可检查客户端与 TiDB 服务端之间的中间件程序。若其连接空闲超时间较短，可尝试修改增大时间。若不可修改，可打开 TiDB `tcp-keep-alive` 选项，启用 TCP keepalive 特性。
+许多负载均衡器 (Load Balancer) 会设置连接空闲超时时间。当连接上没有数据传输的时间超过设定值，负载均衡器会主动将连接中断。若发现 TiDB 使用过程中，长查询会被异常中断，可检查客户端与 TiDB 服务端之间的中间件程序。若其连接空闲超时时间较短，可尝试增大该超时时间。若不可修改，可打开 TiDB `tcp-keep-alive` 选项，启用 TCP keepalive 特性。
 
 Linux 默认发送 keepalive 探测包等待时间为 7200s 。若需减少，可通过 `podSecurityContext` 字段配置 sysctls ，例子如下：
 
