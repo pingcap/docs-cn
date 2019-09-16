@@ -332,4 +332,4 @@ Usage of binlogctl:
 
 ### 可以使用 `change pump`、`change drainer` 等 SQL 操作来暂停或者下线 Pump/Drainer 服务吗？
 
-目前还不支持，这个 SQL 会直接修改 PD 中保存的状态，在功能上等同与 binlogctl 的 update-pump、update-drainer 命令。如果需要暂停或者下线，仍然要使用 binlogctl。
+目前还不支持，这种 SQL 操作会直接修改 PD 中保存的状态，在功能上等同与 binlogctl 的 update-pump、update-drainer 命令。如果需要暂停或者下线，仍然要使用 binlogctl。
