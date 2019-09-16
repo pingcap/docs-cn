@@ -397,7 +397,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
     fail to initial unit Sync of subtask test-task : UUID suffix 000002 with UUIDs [1ddbf6d3-d3b2-11e9-a4e9-0242ac140003.000001] not found
     ```
 
-    如果待替换 DM-worker 所连接的上游 MySQL 发生过切换，则会产生如上错误。此时可通过如下步骤手动修复。
+    如果待替换 DM-worker 所连接的上游 MySQL 已发生过切换，则会产生如上错误。此时可通过如下步骤手动修复：
 
     1. 停止数据迁移任务。
 
