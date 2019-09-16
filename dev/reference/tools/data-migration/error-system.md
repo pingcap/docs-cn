@@ -9,7 +9,7 @@ category: reference
 
 ## 错误输出内容解析
 
-在 DM 1.0.0-GA 版本中引入新的错误系统，错误系统提供了新的错误码机制、增加 class, scope, level 等错误信息、优化错误信息输出和错误调用链和调用堆栈信息，关于错误系统的详细设计和实现可以参考 [RFC 文档: Proposal: Improve Error System](https://github.com/pingcap/dm/blob/master/docs/RFCS/20190722_error_handling.md)。本文以一条实际错误输出来解析错误信息中各个字段的含义。
+在 DM 1.0.0-GA 版本中引入新的错误系统，错误系统提供了新的错误码机制、增加 class, scope, level 等错误信息、优化错误信息输出、错误调用链和调用堆栈信息，关于错误系统的详细设计和实现可以参考 [RFC 文档: Proposal: Improve Error System](https://github.com/pingcap/dm/blob/master/docs/RFCS/20190722_error_handling.md)。本文以一条实际错误输出来解析错误信息中各个字段的含义。
 
 ```
 [code=38008:class=dm-master:scope=internal:level=high] grpc request error: rpc error: code = Unavailable desc = all SubConns are in TransientFailure, latest connection error: connection error: desc = "transport: Error while dialing dial tcp 172.17.0.2:8262: connect: connection refused"
