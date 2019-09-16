@@ -328,6 +328,6 @@ Usage of binlogctl:
 
 - 有历史遗留的 Drainer 且进程已经退出（例如测试使用的服务），之后不再需要使用该服务，使用 update-drainer 将该 Drainer 设置为 offline。
 
-### 可以使用 SQL `change pump`、`change drainer` 来暂停或者下线 Pump/Drainer 服务吗？
+### 可以使用 `change pump`、`change drainer` 等 SQL 操作来暂停或者下线 Pump/Drainer 服务吗？
 
 目前还不支持，这个 SQL 会直接修改 PD 中保存的状态，在功能上等同与 binlogctl 的 update-pump、update-drainer 命令。如果需要暂停或者下线，仍然要使用 binlogctl。
