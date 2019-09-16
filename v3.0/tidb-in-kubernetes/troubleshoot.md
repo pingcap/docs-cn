@@ -326,3 +326,20 @@ kubectl logs -f <tidb-pod-name> -n <namespace> -c tidb
         ```
 
     Pod 重建后，会以在集群中注册一个新的 Store，恢复完成。
+
+## TiDB 长连接被异常中断
+
+许多 Load Balancers 会设置连接空闲超时时间，当连接上没有数据传输超过设定值，将会主动将连接中断。若发现使用中，长查询会被异常中断，可检查客户端与 TiDB 服务端之间的中间件程序。若其连接空闲超时间较短，可尝试修改增大时间。若不可修改，可打开 TiDB `tcp-keep-alive` 选项，启用 TCP keepalive 特性。
+
+Linux 默认发送 keepalive 探测包等待时间为 7200s 。若需减少，可通过 `podSecurityContext` 字段配置 sysctls ，例子如下：
+
+```
+tidb:
+  ...
+  podSecurityContext:
+    sysctls:
+    - name: net.ipv4.tcp_keepalive_time
+      value: "300"
+```
+
+注：需要 tidb-operator 1.1+ 。
