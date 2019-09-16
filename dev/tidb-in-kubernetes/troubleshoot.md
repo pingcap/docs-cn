@@ -341,4 +341,6 @@ tidb:
       value: "300"
 ```
 
-注：需要 tidb-operator 1.1+ 。
+> **注意：**
+>
+> 以上配置的环境要求：TiDB Operator 1.1 版本或以上。
