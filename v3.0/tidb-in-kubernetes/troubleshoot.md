@@ -188,9 +188,9 @@ kubectl -n <namespace> logs -p <pod-name>
 
 确认日志中的错误信息后，可以根据 [tidb-server 启动报错](/v3.0/how-to/troubleshoot/cluster-setup.md#tidb-server-启动报错)，[tikv-server 启动报错](/v3.0/how-to/troubleshoot/cluster-setup.md#tikv-server-启动报错)，[pd-server 启动报错](/v3.0/how-to/troubleshoot/cluster-setup.md#pd-server-启动报错)中的指引信息进行进一步排查解决。
 
-若是 TiKV Pod 日志中出现 "cluster id mismatch" 信息，则可能是 TiKV Pod 使用的数据可能是其他或之前的 TiKV Pod 的旧数据。在集群配置本地存储时未清楚机器上本地磁盘上的数据，或者强制删除了 PV 导致数据并没有被 local volume provisioner 程序回收，可能导致 PV 遗留旧数据，导致错误。
+若是 TiKV Pod 日志中出现 "cluster id mismatch" 信息，则 TiKV Pod 使用的数据可能是其他或之前的 TiKV Pod 的旧数据。在集群配置本地存储时未清楚机器上本地磁盘上的数据，或者强制删除了 PV 导致数据并没有被 local volume provisioner 程序回收，可能导致 PV 遗留旧数据，导致错误。
 
-在确认该 TiKV 应以新节点加入集群，并且 PV 上的数据应该删除后，可以删除该 TiKV Pod 和关联 PVC 。TiKV Pod 将重建并绑定新的 PV 来使用。集群本地存储配置中，应对机器上的本地存储删除，避免 Kubernetes 使用机器上遗留的数据。集群运维中，不可强制删除 PV ，应由 local volume provisioner 程序管理。用户通过创建、删除 PVC 以及设置 PV 的 reclaimPolicy 来管理 PV 的生命周期。
+在确认该 TiKV 应作为新节点加入集群、且 PV 上的数据应该删除后，可以删除该 TiKV Pod 和关联 PVC。TiKV Pod 将自动重建并绑定新的 PV 来使用。集群本地存储配置中，应对机器上的本地存储删除，避免 Kubernetes 使用机器上遗留的数据。集群运维中，不可强制删除 PV ，应由 local volume provisioner 程序管理。用户通过创建、删除 PVC 以及设置 PV 的 reclaimPolicy 来管理 PV 的生命周期。
 
 另外，TiKV 在 ulimit 不足时也会发生启动失败的状况，对于这种情况，可以修改 Kubernetes 节点的 `/etc/security/limits.conf` 调大 ulimit：
 
