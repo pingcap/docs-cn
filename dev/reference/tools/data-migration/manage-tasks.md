@@ -40,7 +40,7 @@ VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=
 
 ```bash
 # Enters the command line mode to interact with DM-master.
-$ ./dmctl -master-addr 172.16.30.14
+$ ./dmctl -master-addr 172.16.30.14:8261
 Welcome to dmctl
 Release Version: v1.0.0-100-g2bef6f8b
 Git Commit Hash: 2bef6f8beda34c0dff57377005c71589b48aa3c5
