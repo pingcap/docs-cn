@@ -258,6 +258,7 @@
       - [`SHOW TABLE STATUS`](/v3.0/reference/sql/statements/show-table-status.md)
       - [`SHOW [GLOBAL|SESSION] VARIABLES`](/v3.0/reference/sql/statements/show-variables.md)
       - [`SHOW WARNINGS`](/v3.0/reference/sql/statements/show-warnings.md)
+      - [`SHOW TABLE REGIONS`](/v3.0/reference/sql/statements/show-table-regions.md)
       - [`SPLIT REGION`](/v3.0/reference/sql/statements/split-region.md)
       - [`START TRANSACTION`](/v3.0/reference/sql/statements/start-transaction.md)
       - [`TRACE`](/v3.0/reference/sql/statements/trace.md)
@@ -379,6 +380,7 @@
     - [3.0.0-beta.1](/v3.0/releases/3.0.0-beta.1.md)
     - [3.0.0-beta](/v3.0/releases/3.0beta.md)
   + v2.1
+    - [2.1.17](/v3.0/releases/2.1.17.md)
     - [2.1.16](/v3.0/releases/2.1.16.md)
     - [2.1.15](/v3.0/releases/2.1.15.md)
     - [2.1.14](/v3.0/releases/2.1.14.md)

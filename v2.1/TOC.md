@@ -251,6 +251,7 @@
       - [`SHOW TABLE STATUS`](/v2.1/reference/sql/statements/show-table-status.md)
       - [`SHOW [GLOBAL|SESSION] VARIABLES`](/v2.1/reference/sql/statements/show-variables.md)
       - [`SHOW WARNINGS`](/v2.1/reference/sql/statements/show-warnings.md)
+      - [`SHOW TABLE REGIONS`](/v2.1/reference/sql/statements/show-table-regions.md)
       - [`SPLIT REGION`](/v2.1/reference/sql/statements/split-region.md)
       - [`START TRANSACTION`](/v2.1/reference/sql/statements/start-transaction.md)
       - [`TRACE`](/v2.1/reference/sql/statements/trace.md)
@@ -314,6 +315,7 @@
 - [TiDB 路线图](/v2.1/roadmap.md)
 + [版本发布历史](/v2.1/releases/rn.md)
   + v2.1
+    - [2.1.17](/v2.1/releases/2.1.17.md)
     - [2.1.16](/v2.1/releases/2.1.16.md)
     - [2.1.15](/v2.1/releases/2.1.15.md)
     - [2.1.14](/v2.1/releases/2.1.14.md)
