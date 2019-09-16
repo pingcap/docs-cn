@@ -298,13 +298,13 @@ Usage of binlogctl:
 
 在某些异常情况下，Pump 没有正确维护自己的状态，实际上状态应该为 paused，可以使用 update-pump 对状态进行修正，例如：
 
-- Pump 异常退出（出现 panic 直接退出进程，或者误操作执行了 kill -9 进程），Pump 保存在 PD 中的状态仍然为 online。如果暂时不需要重启 Pump 恢复服务，可以使用 update-pump 把该 Pump 状态设置为 paused，避免对 TiDB 写 binlog 和 Drainer 获取 binlog 造成干扰。
+- Pump 异常退出（出现 panic 直接退出进程，或者误操作执行 kill -9 直接 kill 掉进程），Pump 保存在 PD 中的状态仍然为 online。如果暂时不需要重启 Pump 恢复服务，可以使用 update-pump 把该 Pump 状态设置为 paused，避免对 TiDB 写 binlog 和 Drainer 获取 binlog 造成干扰。
 
 ### 什么情况下使用 binlogctl 的 update-drainer 命令设置 Drainer 状态为 paused？
 
 在某些异常情况下，Drainer 没有正确维护自己的状态，实际上状态应该为 paused，对数据同步造成了影响，可以使用 update-drainer 对状态进行修正，例如：
 
-- Drainer 异常退出（出现 panic 直接退出进程，或者误操作执行了 kill -9 进程），Drainer 保存在 PD 中的状态仍然为 online。当 Pump 启动时通知该 Drainer 失败（报错 `notify drainer ...`），导致 Pump 无法正常运行。这个时候可以使用 update-drainer 将 Drainer 状态更新为 paused，再启动 Pump。
+- Drainer 异常退出（出现 panic 直接退出进程，或者误操作执行 kill -9 直接 kill 掉进程），Drainer 保存在 PD 中的状态仍然为 online。当 Pump 启动时通知该 Drainer 失败（报错 `notify drainer ...`），导致 Pump 无法正常运行。这个时候可以使用 update-drainer 将 Drainer 状态更新为 paused，再启动 Pump。
 
 ### 可以通过哪些方式下线 Pump/Drainer？
 
