@@ -155,7 +155,7 @@ category: reference
 
     查看 TiKV 的监控状态。
 
-#### `TiDB_monitor_time_jump_back_error`
+#### `TiDB_monitor_time_jump_back_total`
 
 * 报警规则：
 
