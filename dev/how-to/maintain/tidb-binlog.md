@@ -271,7 +271,7 @@ Usage of binlogctl:
 
 ## FAQ
 
-### 什么情况下暂停？什么情况下下线？
+### 在什么情况下暂停和下线 Pump/Drainer？
 
 首先需要通过以上的内容来了解 Pump/Drainer 的状态定义和启动、退出的流程。
 
