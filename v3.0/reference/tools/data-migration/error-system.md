@@ -5,11 +5,11 @@ category: reference
 
 # DM 错误含义和诊断
 
-本本介绍 DM 的错误输出的详细含义，根据错误信息诊断系统的具体方法，以及针对常见的错误的运维方法。
+本文介绍了 DM 的错误输出的详细含义，根据错误信息诊断系统的具体方法，以及针对常见的错误的运维方法。
 
 ## 错误输出内容解析
 
-在 DM 1.0.0-GA 版本中引入新的错误系统，错误系统提供了新的错误码机制、增加 class, scope, level 等错误信息、优化错误信息输出、错误调用链和调用堆栈信息，关于错误系统的详细设计和实现可以参考 [RFC 文档: Proposal: Improve Error System](https://github.com/pingcap/dm/blob/master/docs/RFCS/20190722_error_handling.md)。本文以一条实际错误输出来解析错误信息中各个字段的含义。
+在 DM 1.0.0-GA 版本中引入新的错误系统，错误系统支持错误码机制，增加了 class, scope, level 等错误信息、优化错误信息输出、错误调用链和调用堆栈信息，关于错误系统的详细设计和实现可以参考 [RFC 文档: Proposal: Improve Error System](https://github.com/pingcap/dm/blob/master/docs/RFCS/20190722_error_handling.md)。本文以一条实际错误输出来解析错误信息中各个字段的含义。
 
 ```
 [code=38008:class=dm-master:scope=internal:level=high] grpc request error: rpc error: code = Unavailable desc = all SubConns are in TransientFailure, latest connection error: connection error: desc = "transport: Error while dialing dial tcp 172.17.0.2:8262: connect: connection refused"
@@ -34,22 +34,22 @@ DM 中所有的错误都按照固定格式输出：[错误基本信息] + 错误
 - code: 错误码，错误唯一标识，同一种错误具有相同的错误码，错误码在各个版本保持唯一不变，需要注意在 DM 迭代过程中可能会移除部分错误但不会移除错误码；新增加的错误会使用新的错误码，不会复用已有的错误码。
 - class: 错误分类，用于标识错误发生在哪个系统子模块，所有的错误分类名字，错误对应系统子模块和错误示例如下表所示
 
-| class 名字 | 对应错误系统子模块             | 错误样例                                                     |
-| ---------- | ------------------------------ | ------------------------------------------------------------ |
-| database   | 执行数据库操作发生错误         | [code=10003:class=database:scope=downstream:level=medium] database driver: invalid connection |
-| functional | 系统底层基础函数错误           | [code=11005:class=functional:scope=internal:level=high] not allowed operation: alter multiple tables in one statement |
-| config     | 配置错误                       | [code=20005:class=config:scope=internal:level=medium] empty source-id not valid |
-| binlog-op  | binlog 操作出现错误            | [code=22001:class=binlog-op:scope=internal:level=high] empty UUIDs not valid |
-| checkpoint | checkpoint 相关操作出现错误    | [code=24002:class=checkpoint:scope=internal:level=high] save point bin.1234 is older than current pos bin.1371 |
-| task-check | 进行任务检查时发生的错误       | [code=26002:class=dm-master:scope=upstream:level=high] fail to initial checker: failed to open DSN root:***@127.0.0.1:3306: Error 1045: Access denied for user 'root'@'127.0.0.1' |
-| relay-util | relay 模块基础功能执行发生错误 | [code=28001:class=relay-util:scope=internal:level=high] parse server-uuid.index |
-| relay-unit | relay 处理单元内发生的错误     | [code=30015:class=relay-unit:scope=upstream:level=high] TCPReader get event: ERROR 1236 (HY000): Could not open log file |
-| dump-unit  | dump 处理单元内发生的错误      | [code=32001:class=dump-unit:scope=internal:level=high] mydumper runs with error: CRITICAL **: 15:12:17.559: Error connecting to database: Access denied for user 'root'@'172.17.0.1' (using password: NO) |
-| load-unit  | load 处理单元内发生的错误      | [code=34002:class=load-unit:scope=internal:level=high] corresponding ending of sql: ')' not found |
-| sync-unit  | sync 处理单元内发生的错误      | [code=36027:class=sync-unit:scope=internal:level=high] Column count doesn't match value count: 9 (columns) vs 10 (values) |
-| dm-master  | dm-master 服务内部发生的错误   | [code=38008:class=dm-master:scope=internal:level=high] grpc request error: rpc error: code = Unavailable desc = all SubConns are in TransientFailure, latest connection error: connection error: desc = "transport: Error while dialing dial tcp 172.17.0.2:8262: connect: connection refused" |
-| dm-worker  | dm-worker 服务内部发生的错误   | [code=40066:class=dm-worker:scope=internal:level=high] ExecuteDDL timeout, try use `query-status` to query whether the DDL is still blocking |
-| dm-tracer  | dm-tracer 服务内部发生的错误   | [code=42004:class=dm-tracer:scope=internal:level=medium] trace event test.1 not found |
+| class 名字     | 对应错误系统子模块             | 错误样例                                                     |
+| -------------- | ------------------------------ | ------------------------------------------------------------ |
+| database       | 执行数据库操作发生错误         | [code=10003:class=database:scope=downstream:level=medium] database driver: invalid connection |
+| functional     | 系统底层基础函数错误           | [code=11005:class=functional:scope=internal:level=high] not allowed operation: alter multiple tables in one statement |
+| config         | 配置错误                       | [code=20005:class=config:scope=internal:level=medium] empty source-id not valid |
+| binlog-op      | binlog 操作出现错误            | [code=22001:class=binlog-op:scope=internal:level=high] empty UUIDs not valid |
+| checkpoint     | checkpoint 相关操作出现错误    | [code=24002:class=checkpoint:scope=internal:level=high] save point bin.1234 is older than current pos bin.1371 |
+| task-check     | 进行任务检查时发生的错误       | [code=26002:class=dm-master:scope=upstream:level=high] fail to initial checker: failed to open DSN root:***@127.0.0.1:3306: Error 1045: Access denied for user 'root'@'127.0.0.1' |
+| relay-event-lib| relay 模块基础功能执行发生错误 | [code=28001:class=relay-event-lib:scope=internal:level=high] parse server-uuid.index |
+| relay-unit     | relay 处理单元内发生的错误     | [code=30015:class=relay-unit:scope=upstream:level=high] TCPReader get event: ERROR 1236 (HY000): Could not open log file |
+| dump-unit      | dump 处理单元内发生的错误      | [code=32001:class=dump-unit:scope=internal:level=high] mydumper runs with error: CRITICAL **: 15:12:17.559: Error connecting to database: Access denied for user 'root'@'172.17.0.1' (using password: NO) |
+| load-unit      | load 处理单元内发生的错误      | [code=34002:class=load-unit:scope=internal:level=high] corresponding ending of sql: ')' not found |
+| sync-unit      | sync 处理单元内发生的错误      | [code=36027:class=sync-unit:scope=internal:level=high] Column count doesn't match value count: 9 (columns) vs 10 (values) |
+| dm-master      | dm-master 服务内部发生的错误   | [code=38008:class=dm-master:scope=internal:level=high] grpc request error: rpc error: code = Unavailable desc = all SubConns are in TransientFailure, latest connection error: connection error: desc = "transport: Error while dialing dial tcp 172.17.0.2:8262: connect: connection refused" |
+| dm-worker      | dm-worker 服务内部发生的错误   | [code=40066:class=dm-worker:scope=internal:level=high] ExecuteDDL timeout, try use `query-status` to query whether the DDL is still blocking |
+| dm-tracer      | dm-tracer 服务内部发生的错误   | [code=42004:class=dm-tracer:scope=internal:level=medium] trace event test.1 not found |
 
 - scope: 错误作用域，用于标识错误发生时 DM 作用对象的范围、来源，包含 未设置（not-set），上游数据库（upstream），下游数据库（downstream），内部（internal）四种类型。如果出错的逻辑直接涉及到上下游数据库请求，会设置 upstream 或 downstream，其他出错场景目前设置的作用域都为 internal。
 - level: 错误级别，错误的严重级别，包括 低级别（low），中级别（medium），高级别（high）。低级别通常是用户操作、输入错误，不影响正常同步任务；中级别通常是用户配置等错误，会影响部分新启动服务，不影响已有系统同步状态；高级别通常是用户需要关注的一些错误，可能存在同步任务中断等风险，需要用户进行处理。
@@ -88,6 +88,6 @@ DM 会根据错误的严重程度和必要性来选择是否输出错误堆栈�
 - code=10005: 数据库查询类语句出错。
 - code=10006: 数据库exexute 类型语句出错，包括 DDL，insert/update/delete 类型 DML。更详细的错误信息可以通过错误 message 获取，错误 message 中通常会包含操作数据库返回的错误码和错误信息。
 - code=11006: 该错误是 DM 内置 parser 解析不兼容的 DDL 时出错，出现此类错误时可参考 [Data Migration 故障诊断](/v3.0/how-to/troubleshoot/data-migration.md) 提供的方案解决。
-- code=20010: 处理任务配置时解密数据库密码出错。发生此错误时需要检查任务配置中提供的下游数据库密码是否有使用 dmctl 正确加密。
+- code=20010: 处理任务配置时解密数据库密码出错。发生此错误时需要检查任务配置中提供的下游数据库密码是否有[使用 dmctl 正确加密](/v3.0/how-to/deploy/data-migration-with-ansible.md#使用-dmctl-加密上游-mysql-用户密码)。
 - code=26002: 任务检查创建数据库连接失败，更详细的错误信息可以通过错误 message 获取，错误 message 中会包含操作数据库返回的错误码和错误信息。发生此错误时可以首先检查 DM-master 所在的机器是否有权限访上游。
 - code=38008: DM 组件间 gRPC 通信出错。出现此类错误时可以检查 class 定位错误发生在哪些组件交互环节，根据错误 message 判断是哪类通信错误。譬如如果时 gRPC 建立连接出错，可以检查通信服务端是否服务正常。
