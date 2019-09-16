@@ -20,7 +20,11 @@ category: reference
 
 如果 DM-worker 通过虚拟 IP (VIP) 连接上游的 MySQL 实例，且 VIP 指向的 MySQL 实例将发生变化，即在 DM-worker 对应上游连接地址不变的情况下切换 DM-worker 实际所连接的 MySQL 实例。
 
-如果不对 DM 进行相应的变更操作，对于某些 VIP 方案，可能 DM-worker 仍会继续从 VIP 切换前的上游 MySQL 实例拉取 binlog，而其他数据库相关操作则可能发送给 VIP 切换后的 MySQL 实例，并导致 DM 行为难以预期。因此，需按以下步骤执行变更操作：
+> **注意：**
+>
+> 如果不主动对 DM 执行变更，当切换 VIP 实际指向的 MySQL 实例时，可能出现在同一时刻 DM 内部不同的 connection 分别连接到 VIP 切换前后不同的 MySQL 实例的情况，并造成 DM 拉取的 binlog 与获取到的其他状态不一致而导致难以预期的异常行为甚至数据损坏。
+
+如果 DM-worker 连接的 VIP 需要指向新的 MySQL 实例，需要按以下步骤进行操作：
 
 1. 使用 `query-status` 命令获取当前 relay 处理单元已从原 MySQL 实例获取到的 binlog 对应的 GTID Sets (`relayBinlogGtid`)，记为 _gtid-W_。
 2. 在将要切换到的 MySQL 实例上使用 `SELECT @@GLOBAL.gtid_purged;` 获取已经被 purged 的 binlog 对应的 GTID Sets，记为 _gtid-P_。
