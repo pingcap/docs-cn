@@ -131,7 +131,7 @@ Warning-level alerts are a reminder for an issue or error.
 
 * Alert rule:
 
-    `increase(tidb_server_server_event{type=~"server_start|server_hang"}[15m]) > 0`
+    `increase(tidb_server_event_total{type=~"server_start|server_hang"}[15m]) > 0`
 
 * Description:
 
@@ -145,11 +145,11 @@ Warning-level alerts are a reminder for an issue or error.
     * Restart TiDB to recover the service.
     * Check whether the TiDB Binlog service is normal.
 
-#### `TiDB_tikvclient_backoff_count`
+#### `TiDB_tikvclient_backoff_total`
 
 * Alert rule:
 
-    `increase(tidb_tikvclient_backoff_count[10m]) > 10`
+    `increase(tidb_tikvclient_backoff_total[10m]) > 10`
 
 * Description:
 
