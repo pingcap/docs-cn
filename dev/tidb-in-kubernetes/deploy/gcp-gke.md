@@ -68,9 +68,9 @@ The script below shows how to configure Terraform with these variables:
 
 ```bash
 # Replace the region with your GCP region and your GCP project name.
-echo GCP_REGION=us-west1 >> terraform.tfvars
+echo GCP_REGION=\"us-west1\" >> terraform.tfvars
 # First make sure you are connected to the correct project. gcloud config set project $PROJECT
-echo "GCP_PROJECT=$(gcloud config get-value project)" >> terraform.tfvars
+echo "GCP_PROJECT=\"$(gcloud config get-value project)\"" >> terraform.tfvars
 # Create a service account for terraform with restricted permissions and set the credentails path
 ./create-service-account.sh
 ```
@@ -178,6 +178,10 @@ There are two ways to do this:
     ```bash
     kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb
     ```
+
+    > **Note:**
+    >
+    > The `--kubeconfig` parameter used by the following command requires at least Helm 2.10.0 or higher.
 
     {{< copyable "shell-regular" >}}
 
