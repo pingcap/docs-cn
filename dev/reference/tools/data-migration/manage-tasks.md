@@ -498,6 +498,8 @@ update-task [-w "127.0.0.1:8262"] ./task.yaml
 
 `check-task` 命令用于检查指定的数据同步任务配置文件（`task.yaml`）是否合法以及上下游数据库的配置、权限、表结构等是否满足同步需要，具体可参考[上游 MySQL 实例配置前置检查](/dev/reference/tools/data-migration/precheck.md)。
 
+在使用 `start-task` 启动同步任务时，DM 也会做 `check-task` 所做的全部检查。
+
 ```bash
 » help check-task
 check a task with config file
