@@ -307,7 +307,7 @@ Usage of binlogctl:
 
 > **注意：**
 >
-> 仅在可以容忍 binlog **数据丢失、上下游数据不一致**或者确认不再需要使用该 Pump 存储的 binlog 数据的情况下，才能使用 update-pump 修改 Pump 状态为 offline，否则一定要使用 offline-pump 命令。
+> 仅在可以容忍 binlog **数据丢失、上下游数据不一致**或者确认不再需要使用该 Pump 存储的 binlog 数据的情况下，才能使用 update-pump 修改 Pump 状态为 offline，例如：
 
 - 在某些情况下，Pump 异常退出进程，且无法恢复服务，同步就会中断。如果希望恢复同步且可以容忍部分 binlog 数据丢失，可以使用 update-pump 命令将该 Pump 状态设置为 offline，则 Drainer 会放弃拉取该 Pump 的 binlog 然后继续同步数据。
 - 有历史遗留的 Pump 且进程已经退出（例如测试使用的服务），之后不再需要使用该服务，使用 update-pump 将该 Pump 设置为 offline。
