@@ -332,7 +332,7 @@ resume-task [-w "127.0.0.1:8262"] task-name
 
 ### 停止数据同步任务
 
-`stop-task` 命令用于停止数据同步任务。有关 `stop-task` 与 `pause-task` 的区别，请参考 [暂停数据同步任务](#暂停数据同步任务) 中的相关说明。
+`stop-task` 命令用于停止数据同步任务。有关 `stop-task` 与 `pause-task` 的区别，请参考[暂停数据同步任务](#暂停数据同步任务)中的相关说明。
 
 ```bash
 » help stop-task
