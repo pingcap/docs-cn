@@ -1,7 +1,6 @@
 ---
 title: 备份与恢复
 category: how-to
-aliases: ['/docs-cn/op-guide/backup-restore/']
 ---
 
 # 备份与恢复
@@ -21,15 +20,29 @@ aliases: ['/docs-cn/op-guide/backup-restore/']
 
 ## 下载 TiDB 工具集 (Linux)
 
-```bash
-# 下载 tool 压缩包
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
+下载 tool 压缩包：
 
-# 检查文件完整性，返回 ok 则正确
+{{< copyable "shell-regular" >}}
+
+```bash
+wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz && \
+wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
+```
+
+检查文件完整性，返回 ok 则正确：
+
+{{< copyable "shell-regular" >}}
+
+```bash
 sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
-# 解开压缩包
-tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
+```
+
+解开压缩包：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz && \
 cd tidb-enterprise-tools-latest-linux-amd64
 ```
 
@@ -48,30 +61,21 @@ cd tidb-enterprise-tools-latest-linux-amd64
 为了快速地备份恢复数据 (特别是数据量巨大的库)，可以参考以下建议：
 
 * 使用 Mydumper 导出来的数据文件尽可能的小，最好不要超过 64M，可以将参数 `-F` 设置为 64。
-* Loader的 `-t` 参数可以根据 TiKV 的实例个数以及负载进行评估调整，例如 3 个 TiKV 实例的场景，此值可以设为 `3 *(1 ～ n)` 左右。当 TiKV 负载过高，Loader 以及 TiDB 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 时，可以适当调小该值；当 TiKV 负载不是太高的时候，可以适当调大该值。
-
-数据恢复示例及相关的配置：
-
-- Mydumper 导出后总数据量 214G，单表 8 列，20 亿行数据
-- 集群拓扑
-    - TIKV * 12
-    - TIDB * 4
-    - PD * 3
-- Mydumper `-F` 参数设置为 16，Loader `-t` 参数设置为 64
-
-结果：导入时间 11 小时左右，19.4 G/小时
+* Loader的 `-t` 参数可以根据 TiKV 的实例个数以及负载进行评估调整，推荐设置为 32。当 TiKV 负载过高，Loader 以及 TiDB 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 时，可以适当调小该值；当 TiKV 负载不是太高的时候，可以适当调大该值。
 
 ## 从 TiDB 备份数据
 
 我们使用 `mydumper` 从 TiDB 备份数据，如下:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-./bin/mydumper -h 127.0.0.1 -P 4000 -u root -t 16 -F 64 -B test -T t1,t2 --skip-tz-utc -o ./var/test
+./bin/mydumper -h 127.0.0.1 -P 4000 -u root -t 32 -F 64 -B test -T t1,t2 --skip-tz-utc -o ./var/test
 ```
 
 上面，我们使用 `-B test` 表明是对 `test` 这个 database 操作，然后用 `-T t1,t2` 表明只导出 `t1`，`t2` 两张表。
 
-`-t 16` 表明使用 16 个线程去导出数据。`-F 64` 是将实际的 table 切分成多大的 chunk，这里就是 64MB 一个 chunk。
+`-t 32` 表明使用 32 个线程去导出数据。`-F 64` 是将实际的 table 切分成多大的 chunk，这里就是 64MB 一个 chunk。
 
 `--skip-tz-utc` 添加这个参数忽略掉 TiDB 与导数据的机器之间时区设置不一致的情况，禁止自动转换。
 
@@ -109,24 +113,42 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 我们使用 `loader` 将之前导出的数据导入到 TiDB，完成恢复操作。Loader 的下载和具体的使用方法见 [Loader 使用文档](/v3.0/reference/tools/loader.md)
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./bin/loader -h 127.0.0.1 -u root -P 4000 -t 32 -d ./var/test
 ```
 
 导入成功之后，我们可以用 MySQL 官方客户端进入 TiDB，查看：
 
-```sql
-mysql -h127.0.0.1 -P4000 -uroot
+{{< copyable "shell-regular" >}}
 
-mysql> show tables;
+```bash
+mysql -h127.0.0.1 -P4000 -uroot
+```
+
+{{< copyable "sql" >}}
+
+```sql
+show tables;
+```
+
+```
 +----------------+
 | Tables_in_test |
 +----------------+
 | t1             |
 | t2             |
 +----------------+
+```
 
-mysql> select * from t1;
+{{< copyable "sql" >}}
+
+```sql
+select * from t1;
+```
+
+```
 +----+------+
 | id | age  |
 +----+------+
@@ -134,8 +156,15 @@ mysql> select * from t1;
 |  2 |    2 |
 |  3 |    3 |
 +----+------+
+```
 
-mysql> select * from t2;
+{{< copyable "sql" >}}
+
+```sql
+select * from t2;
+```
+
+```
 +----+------+
 | id | name |
 +----+------+

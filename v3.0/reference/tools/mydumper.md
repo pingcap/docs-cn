@@ -2,6 +2,7 @@
 title: Mydumper 使用文档
 summary: 使用 Mydumper 从 TiDB 导出数据。
 category: reference
+aliases: ['/docs-cn/tools/mydumper/']
 ---
 
 # Mydumper 使用文档
@@ -10,11 +11,11 @@ category: reference
 
 [Mydumper](https://github.com/pingcap/mydumper) 是一个 fork 项目，针对 TiDB 的特性进行了优化，推荐使用此工具对 TiDB 进行逻辑备份。
 
-Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/dev/reference/tools/download.md)。
+Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/v3.0/reference/tools/download.md)。
 
 ### 相比于普通的 Mydumper，此工具有哪些改进之处？
 
-+ 对于 TiDB 可以设置 [tidb_snapshot](/dev/how-to/get-started/read-historical-data.md#操作流程) 的值指定备份数据的时间点，从而保证备份的一致性，而不是通过 `FLUSH TABLES WITH READ LOCK` 来保证备份一致性。
++ 对于 TiDB 可以设置 [tidb_snapshot](/v3.0/how-to/get-started/read-historical-data.md#操作流程) 的值指定备份数据的时间点，从而保证备份的一致性，而不是通过 `FLUSH TABLES WITH READ LOCK` 来保证备份一致性。
 
 + 使用 TiDB 的隐藏列 `_tidb_rowid` 优化了单表内数据的并发导出性能。
 
@@ -152,10 +153,6 @@ Mydumper 解析 SQL 时报错，可以尝试使用最新版本。如果仍然报
 ### Mydumper 报错 "Failed to set tidb_snapshot: parsing time \"20190901-10:15:00 +0800\" as 20190901-10:15:00 +0700 MST\": cannot parse \"\" as \"MST\"" 如何解决？
 
 检查 TiDB 的版本是否低于 v2.1.11，如果是的话需要升级 TiDB 到 v2.1.11 或以上版本。
-
-### PingCAP 的 Mydumper 的源码是否可获取？
-
-PingCAP 的 Mydumper 源码 [位于 GitHub](https://github.com/pingcap/mydumper)。
 
 ### 未来是否计划让 PingCAP 对 Mydumper 的改动合并到上游？
 

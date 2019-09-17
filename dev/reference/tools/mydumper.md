@@ -153,10 +153,6 @@ Mydumper 解析 SQL 时报错，可以尝试使用最新版本。如果仍然报
 
 检查 TiDB 的版本是否低于 v2.1.11，如果是的话需要升级 TiDB 到 v2.1.11 或以上版本。
 
-### PingCAP 的 Mydumper 的源码是否可获取？
-
-PingCAP 的 Mydumper 源码 [位于 GitHub](https://github.com/pingcap/mydumper)。
-
 ### 未来是否计划让 PingCAP 对 Mydumper 的改动合并到上游？
 
 是的，PingCAP 团队计划将对 Mydumper 的改动合并到上游。参见 [PR #155](https://github.com/maxbube/mydumper/pull/155)。
