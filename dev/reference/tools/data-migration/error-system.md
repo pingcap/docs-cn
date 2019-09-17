@@ -41,7 +41,7 @@ DM 中所有的错误都按照固定格式输出：[错误基本信息] + 错误
 | config         | 配置错误                       | [code=20005:class=config:scope=internal:level=medium] empty source-id not valid |
 | binlog-op      | binlog 操作出现错误            | [code=22001:class=binlog-op:scope=internal:level=high] empty UUIDs not valid |
 | checkpoint     | checkpoint 相关操作出现错误    | [code=24002:class=checkpoint:scope=internal:level=high] save point bin.1234 is older than current pos bin.1371 |
-| task-check     | 进行任务检查时发生的错误       | [code=26002:class=dm-master:scope=upstream:level=high] fail to initial checker: failed to open DSN root:***@127.0.0.1:3306: Error 1045: Access denied for user 'root'@'127.0.0.1' |
+| task-check     | 进行任务检查时发生的错误       | [code=26003:class=task-check:scope=internal:level=medium] new table router error |
 | relay-event-lib| relay 模块基础功能执行发生错误 | [code=28001:class=relay-event-lib:scope=internal:level=high] parse server-uuid.index |
 | relay-unit     | relay 处理单元内发生的错误     | [code=30015:class=relay-unit:scope=upstream:level=high] TCPReader get event: ERROR 1236 (HY000): Could not open log file |
 | dump-unit      | dump 处理单元内发生的错误      | [code=32001:class=dump-unit:scope=internal:level=high] mydumper runs with error: CRITICAL **: 15:12:17.559: Error connecting to database: Access denied for user 'root'@'172.17.0.1' (using password: NO) |
@@ -57,7 +57,7 @@ DM 中所有的错误都按照固定格式输出：[错误基本信息] + 错误
 在上述的错误示例中
 
 - code=38008，这是一个 gRPC 通信出错的错误码。
-- class=dm-master，表示错误发生在 DM-master 对外发送（请求发送至 DM-worker）的 gRPC 请求出错。
+- class=dm-master，表示错误发生在 DM-master 对外发送的 gRPC 请求出错（请求发送至 DM-worker）。
 - scope=interal，表示是 DM 内部发生的错误。
 - level=high，表示这是一个高级别错误，需要用户注意，更进一步的错误信息可以通过错误 message 和错误堆栈判断。
 
@@ -87,7 +87,7 @@ DM 会根据错误的严重程度和必要性来选择是否输出错误堆栈�
 - code=10003: 数据库底层 invalid connection 错误，通常表示 DM 到下游 TiDB 的数据库连接出现了异常（如网络故障、TiDB 重启、TiKV busy 等）且当前请求已有部分数据发送到了 TiDB。DM 提供针对此类错误的自动恢复，如果未能正常恢复需要用户进一步检查错误信息并根据具体场景进行分析。
 - code=10005: 数据库查询类语句出错。
 - code=10006: 数据库 execute 类型语句出错，包括 DDL，insert/update/delete 类型 DML。更详细的错误信息可以通过错误 message 获取，错误 message 中通常会包含操作数据库返回的错误码和错误信息。
-- code=11006: 该错误是 DM 内置 parser 解析不兼容的 DDL 时出错，出现此类错误时可参考 [Data Migration 故障诊断](/dev/how-to/troubleshoot/data-migration.md) 提供的方案解决。
+- code=11006: 该错误是 DM 内置 parser 解析不兼容的 DDL 时出错，出现此类错误时可参考 [Data Migration 故障诊断-处理不兼容的 DDL 语句](/dev/how-to/troubleshoot/data-migration.md#处理不兼容的-ddl-语句) 提供的方案解决。
 - code=20010: 处理任务配置时解密数据库密码出错。发生此错误时需要检查任务配置中提供的下游数据库密码是否有[使用 dmctl 正确加密](/dev/how-to/deploy/data-migration-with-ansible.md#使用-dmctl-加密上游-mysql-用户密码)。
 - code=26002: 任务检查创建数据库连接失败，更详细的错误信息可以通过错误 message 获取，错误 message 中会包含操作数据库返回的错误码和错误信息。发生此错误时可以首先检查 DM-master 所在的机器是否有权限访问上游。
 - code=38008: DM 组件间 gRPC 通信出错。出现此类错误时可以检查 class 定位错误发生在哪些组件交互环节，根据错误 message 判断是哪类通信错误。譬如如果是 gRPC 建立连接出错，可以检查通信服务端是否服务正常。
