@@ -73,7 +73,7 @@ TiDB 的查询计划（`EXPLAIN`/`EXPLAIN FOR`）输出格式与 MySQL 差别较
 
 ### 内建函数
 
-TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经支持，具体请参考[语法文档](https://pingcap.github.io/sqlgram/#FunctionCallKeyword)。
+TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经支持，具体请参考[语法文档](https://pingcap.github.io/sqlgram/#functioncallkeyword)。
 
 ### DDL
 
@@ -135,7 +135,7 @@ TiDB 支持 MySQL 5.7 中 **绝大多数的 SQL 模式**，以下几种模式除
 + 默认排序规则不同：
     + TiDB 中，`utf8mb4` 的默认排序规则为 `utf8mb4_bin`
     + MySQL 5.7 中，`utf8mb4` 的默认排序规则为 `utf8mb4_general_ci`，MySQL 8.0 中修改为 `utf8mb4_0900_ai_ci`
-    + 请使用 [`SHOW CHARACTER SET`](/v2.1/reference/sql/statements/admin.md#-show-语句) 语句查看所有字符集的默认排序规则
+    + 请使用 [`SHOW CHARACTER SET`](/v2.1/reference/sql/statements/show-character-set.md) 语句查看所有字符集的默认排序规则
 + 默认 SQL mode 与 MySQL **已相同**
     + TiDB 和 MySQL 5.7 中均为 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`
 + `lower_case_table_names` 的默认值不同：

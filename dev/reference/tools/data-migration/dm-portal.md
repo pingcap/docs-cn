@@ -5,7 +5,7 @@ category: reference
 
 # DM Portal 简介
 
-当前版本的 DM 提供了丰富多样的功能特性，包括 [Table routing](/dev/reference/tools/data-migration/features/overview.md#table-routing)，[Black & white table lists](/dev/reference/tools/data-migration/features/overview.md#black-white-table-lists)，[Binlog event filter](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)，[Column mapping](/dev/reference/tools/data-migration/features/overview.md#column-mapping) 等。但这些功能特性同时也增加了用户使用 DM 的复杂度，尤其在编写 [DM 任务配置](/dev/reference/tools/data-migration/configure/task-configuration-file.md)的时候。
+当前版本的 DM 提供了丰富多样的功能特性，包括 [Table routing](/dev/reference/tools/data-migration/features/overview.md#table-routing)，[Black & white table lists](/dev/reference/tools/data-migration/features/overview.md#black--white-table-lists)，[Binlog event filter](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)，[Column mapping](/dev/reference/tools/data-migration/features/overview.md#column-mapping) 等。但这些功能特性同时也增加了用户使用 DM 的复杂度，尤其在编写 [DM 任务配置](/dev/reference/tools/data-migration/configure/task-configuration-file.md)的时候。
 
 针对这个问题，DM 提供了一个精简的网页程序 DM Portal，能够帮助用户以可视化的方式去配置需要的同步任务，并且生成可以直接让 DM 直接执行的 `task.yaml` 文件。
 
