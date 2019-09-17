@@ -13,6 +13,7 @@ category: reference
 > - 仅支持 DM-worker 在同一个主从复制集内的进行切换。
 > - 将要切换到的 MySQL 实例必须拥有 DM-worker 所需的 binlog。
 > - DM-worker 必须以 GTID Sets 模式运行，即通过 DM-Ansible 部署时必须指定 `enable_gtid=true`。
+> - DM 仅支持以下两种主从间切换的场景，且必须严格按照对应场景的步骤执行变更操作，否则可能需要针对切换后的 MySQL 实例重新搭建 DM 集群并完整重做数据迁移任务。
 
 有关 GTID sets 的概念解释，请参考 [MySQL 官方文档](https://dev.mysql.com/doc/refman/5.7/en/replication-gtids-concepts.html#replication-gtids-concepts-gtid-sets)。
 
