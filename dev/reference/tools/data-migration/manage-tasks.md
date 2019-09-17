@@ -19,7 +19,7 @@ Usage of dmctl:
  -V prints version and exit
  # 按照 DM 提供的加密方法加密数据库密码，用于 DM 的配置文件
  -config string
-     	path to config file
+       path to config file
  -encrypt string
        encrypt plaintext to ciphertext
  # DM-master 访问地址，dmctl 与 DM-master 交互以完成任务管理操作
