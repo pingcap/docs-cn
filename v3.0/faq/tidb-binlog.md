@@ -53,6 +53,7 @@ category: FAQ
 - 如果 pump 没法恢复需要考虑强制用 binlogctl 修改这个 pump 状态成 offline(丢失这个pump的数据), 或者重新部署
 
 ## drainer 故障如何重建 drainer (下游数据还在的情况下）
+
 - checkpoint 还在
     - 部署新的 drainer 启动即可，使用相同 node-id 或者把老的 drainer 直接修改状态成 offline
 - checkpoint 丢失
@@ -63,10 +64,12 @@ category: FAQ
         - 原始 drainer 日志存在可以查看最新保存 checkpoint 的 ts: `["write save point"] [ts=411222863322546177]`
 
 ## 如何用全量 + binlog 备份文件来恢复一个集群
+
 1. 清理集群数据并使用全部备份恢复数据
 2. 使用 reparo 设置 `start-tso` = {全量备份文件快照时间戳+1}, `end-ts` = 0 (或者指定时间点) 恢复到备份文件最新的数据
 
 ## 主从同步开启 `ignore-error` 触发 critical error 后如何重新部署
+
 1. 停止当前 drainer
 2. 重启全部 `tidb-server` 实例重新开始写 binlog (触发 critical error 后不会再写 binlog 到 pump)
 3. 上游做全量备份
