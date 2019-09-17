@@ -310,7 +310,7 @@ Usage of binlogctl:
 
 > **注意：**
 >
-> 仅在可以容忍 binlog 数据丢失、上下游数据不一致或者确认不再需要使用该 Pump 存储的 binlog 数据的情况下使用 update-pump 修改状态为 offline，否则一定要使用 offline-pump 命令。
+> 仅在可以容忍 binlog 数据丢失、上下游数据不一致或者确认不再需要使用该 Pump 存储的 binlog 数据的情况下，才能使用 update-pump 修改 Pump 状态为 offline，否则一定要使用 offline-pump 命令。
 
 ### Pump 进程已经退出，且状态为 paused，现在不想使用这个 Pump 了，能否用 update-pump 命令设置状态为 offline？
 
