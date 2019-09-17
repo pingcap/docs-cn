@@ -39,7 +39,7 @@ category: how-to
 
 ## 在中控机上创建 tidb 用户，并生成 ssh key
 
-参考[在中控机上创建 tidb 用户，并生成 ssh key](/v2.1/how-to/deploy/orchestrated/ansible.md#在中控机上创建-tidb-用户-并生成-ssh-key) 即可。
+参考[在中控机上创建 tidb 用户，并生成 ssh key](/v2.1/how-to/deploy/orchestrated/ansible.md#在中控机上创建-tidb-用户并生成-ssh-key) 即可。
 
 ## 在中控机器上离线安装 Ansible 及其依赖
 
@@ -136,7 +136,7 @@ category: how-to
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
-参考[分配机器资源，编辑 inventory.ini 文件](/v2.1/how-to/deploy/orchestrated/ansible.md#分配机器资源-编辑-inventory-ini-文件)即可。
+参考[分配机器资源，编辑 inventory.ini 文件](/v2.1/how-to/deploy/orchestrated/ansible.md#分配机器资源编辑-inventoryini-文件)即可。
 
 ## 部署任务
 
