@@ -46,14 +46,12 @@ Pump/Drainer 中状态的定义：
 * 查看 Pump/Drainer 状态
 * 暂停/下线 Pump/Drainer
 * Pump/Drainer 异常状态处理
-* 获取 TiDB 集群当前的 TSO（已废弃，建议使用 TiDB 的 `show master status` SQL 获取当前 tso 信息）
 
 使用 binlogctl 的场景：
 
 * 同步出现故障/检查运行情况，需要查看 Pump/Drainer 的状态
 * 维护集群，需要暂停/下线 Pump/Drainer
 * Pump/Drainer 异常退出，状态没有更新，或者状态不符合预期，对业务造成影响
-* Drainer 初次启动，需要获取 TiDB 集群当前的 TSO （已废弃，建议使用 TiDB 的 `show master status` SQL 获取当前 tso 信息）
 
 binlogctl 下载链接：
 
@@ -98,9 +96,9 @@ Usage of binlogctl:
 -V
 输出 binlogctl 的版本信息
 -cmd string
-    命令模式，包括 "generate_meta", "pumps", "drainers", "update-pump" ,"update-drainer", "pause-pump", "pause-drainer", "offline-pump", "offline-drainer"
+    命令模式，包括 "generate_meta"(已废弃), "pumps", "drainers", "update-pump" ,"update-drainer", "pause-pump", "pause-drainer", "offline-pump", "offline-drainer"
 -data-dir string
-    保存 Drainer 的 checkpoint 的文件的路径 (默认 "binlog_position")
+    保存 Drainer 的 checkpoint 的文件的路径 (默认 "binlog_position")（已废弃）
 -node-id string
     Pump/Drainer 的 ID
 -pd-urls string
@@ -169,23 +167,6 @@ Usage of binlogctl:
     > **注意：**
     >
     > Pump/Drainer 在正常运行过程中会定期在 PD 中更新自己的状态，而这条命令是直接去修改 Pump/Drainer 保存在 PD 中的状态，所以在 Pump/Drainer 服务正常的情况下使用这些命令是没有意义的。仅在 Pump/Drainer 服务异常的情况下使用，具体哪些场景下使用这条命令可以参考 FAQ。
-
-- 生成 Drainer 初次启动需要的 TSO 信息（已废弃，建议使用 TiDB 的 `show master status` SQL 获取当前 tso 信息）
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd generate_meta
-    ```
-
-    ```
-    INFO[0000] [pd] create pd client with endpoints [http://192.168.199.118:32379]
-    INFO[0000] [pd] leader switches to: http://192.168.199.118:32379, previous:
-    INFO[0000] [pd] init cluster id 6569368151110378289
-    [2019/04/28 09:33:15.950 +00:00] [INFO] [meta.go:114] ["save meta"] [meta="commitTS: 408012454863044609"]
-    ```
-
-    该命令会生成一个文件 `{data-dir}/savepoint`，该文件中保存了 Drainer 初次启动需要的 tso 信息。
 
 ## 使用 TiDB SQL 管理 Pump/Drainer
 
