@@ -85,6 +85,6 @@ SELECT /*+ hint */ FROM ...;
 
 由于 hint 包含在类似 /*+ xxx */ 的 comment 里，MySQL 客户端在 5.7.7 之前，会默认把 comment 清除掉，如果需要在旧的客户端使用 hint，需要在启动客户端时加上 --comments 选项，例如 mysql -h 127.0.0.1 -P 4000 -uroot --comments
 
-TiDB 支持的相关优化器 hint 详见[这里](/v3.0/reference/configuration/tidb-server/tidb-specific-variables.md#optimizer-hint)
+TiDB 支持的相关优化器 hint 详见[这里](/v3.0/reference/performance/optimizer-hints.md)
 
 更多[细节](https://dev.mysql.com/doc/refman/5.7/en/comments.html)。
