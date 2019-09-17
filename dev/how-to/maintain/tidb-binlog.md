@@ -131,7 +131,7 @@ Usage of binlogctl:
     [2019/04/28 09:29:59.016 +00:00] [INFO] [nodes.go:48] ["query node"] [type=pump] [node="{NodeID: 1.1.1.1:8250, Addr: pump:8250, State: online, MaxCommitTS: 408012403141509121, UpdateTime: 2019-04-28 09:29:57 +0000 UTC}"]
     ```
 
-     {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
     ```bash
     bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd drainers
