@@ -28,7 +28,7 @@ category: reference
 
 ## TiDB 数据分布原理
 
-如果要解决以上挑战，需要从 TiDB 数据切分以及调度的原理开始讲起。这里只是作简单的说明，更多细节可参阅：[说调度](https://pingcap.com/blog-cn/tidb-internal-3/)。
+如果要解决以上挑战，需要从 TiDB 数据切分以及调度的原理开始讲起。这里只是作简单的说明，详情可参阅[谈调度](https://pingcap.com/blog-cn/tidb-internal-3/)。
 
 TiDB 以 Region 为单位对数据进行切分，每个 Region 有大小限制（默认 96M）。Region 的切分方式是范围切分。每个 Region 会有多副本，每一组副本，称为一个 Raft Group。每个 Raft Group 中由 Leader 负责执行这块数据的读 & 写（TiDB 即将支持 [Follower-Read](https://zhuanlan.zhihu.com/p/78164196)）。Leader 会自动地被 PD 组件均匀调度在不同的物理节点上，用以均分读写压力。
 
@@ -67,7 +67,7 @@ INSERT INTO TEST_HOTSPOT(id, age, user_name, email) values(%v, %v, '%v', '%v');
 
 ![QPS1](/media/high-concurrency-best-practice/QPS1.png)
 
-客户端在短时间内发起了 “密集” 的写入，TiDB 收到的请求是 3K QPS。如果没有意外的话，压力应该均摊给 6 个 TiKV 节点。但是从 TiKV 节点的 CPU 使用情况上看，存在明显的写入倾斜（tikv - 3 节点是写入热点）：
+客户端在短时间内发起了 “密集” 的写入，TiDB 收到的请求是 3K QPS。理论上，压力应该均摊给 6 个 TiKV 节点。但是从 TiKV 节点的 CPU 使用情况上看，存在明显的写入倾斜（tikv - 3 节点是写入热点）：
 
 ![QPS2](/media/high-concurrency-best-practice/QPS2.png)
 
@@ -93,13 +93,13 @@ INSERT INTO TEST_HOTSPOT(id, age, user_name, email) values(%v, %v, '%v', '%v');
 
 上图简单描述了这个过程，随着数据持续写入，TiKV 会将一个 Region 切分为多个。但因为首先发起选举的是原 Leader 所在的 Store，所以新切分好的两个 Region 的 Leader 很可能还会在原 Store 上。新切分好的 Region 2，3 上，也会重复之前发生在 Region 1 上的过程。也就是压力会密集地集中在 TiKV-Node 1 上。
 
-在持续写入的过程中，PD 发现 Node 1 中产生了热点，会将 Leader 均分到其他的 Node 上。如果 TiKV 的节点数多于副本数的话，还会发生 Region 的迁移，尽量往空闲的节点上迁移。这两个操作在数据插入的过程中，也能在 PD 监控中得到印证：
+在持续写入的过程中，PD 发现 Node 1 中产生了热点，会将 Leader 均分到其他的 Node 上。如果 TiKV 的节点数多于副本数的话，TiKV 会尽可能将 Region 迁移到空闲的节点上。这两个操作在数据插入的过程中，也能在 PD 监控中得到印证：
 
 ![QPS5](/media/high-concurrency-best-practice/QPS5.png)
 
 在持续写入一段时间后，整个集群会被 PD 自动地调度成一个压力均匀的状态，到那个时候整个集群的能力才会真正被利用起来。在大多数情况下，以上热点产生的过程是没有问题的，这个阶段属于表 Region 的预热阶段。
 
-但是对于高并发批量密集写入场景来说，这个阶段却是应该避免的。
+但是对于高并发批量密集写入场景来说，应该避免这个阶段。
 
 ## 热点问题的规避方法
 
@@ -119,7 +119,7 @@ SPLIT TABLE table_name [INDEX index_name] BETWEEN (lower_value) AND (upper_value
 SPLIT TABLE table_name [INDEX index_name] BY (value_list) [, (value_list)]
 ```
 
-但是 TiDB 并不自动将这个切分动作提前完成。原因如下：
+但是 TiDB 并不自动提前完成这个切分操作。原因如下：
 
 ![Table Region Range](/media/high-concurrency-best-practice/table-Region-range.png)
 
