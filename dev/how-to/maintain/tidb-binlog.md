@@ -297,7 +297,7 @@ Usage of binlogctl:
 
 ### 可以使用 binlogctl 的 update-pump/update-drainer 命令来暂停 Pump/Drainer 服务吗？
 
-不可以，update-pump/update-drainer 命令直接修改 PD 中保存的状态信息，使用这个命令并不会通知 Pump/Drainer 做相应的操作，而且使用不当可能会干扰数据同步。
+不可以，update-pump/update-drainer 命令直接修改 PD 中保存的状态信息，使用这个命令并不会通知 Pump/Drainer 做相应的操作，**而且使用不当会使数据同步中断，甚至造成数据丢失。**
 
 ### 什么情况下使用 binlogctl 的 update-pump 命令设置 Pump 状态为 paused？
 
