@@ -111,7 +111,7 @@ TiDB 作为分布式数据库，在 TiDB 中修改用户密码建议使用 `set 
 
 #### 1.1.22 TiDB 中，为什么出现后插入数据的自增 ID 反而小？
 
-TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 tidb-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考[CREATE TABLE 语法](/dev/reference/mysql-compatibility.md#auto-increment-id)。
+TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 tidb-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考[CREATE TABLE 语法](/dev/reference/mysql-compatibility.md#自增-id)。
 
 #### 1.1.23 sql_mode 默认除了通过命令 set 修改，配置文件怎么修改？
 
@@ -362,7 +362,7 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 
 #### 3.1.4 TiDB (TiKV) 有哪些数据目录？
 
-默认在 ${[data-dir](/dev/reference/configuration/tikv-server/configuration/#data-dir}/data/ 目录下，其中包括 backup、db、raft、snap 四个目录，分别存储备份、数据、raft 数据及镜像数据。
+默认在 [`--data-dir`](/dev/reference/configuration/tikv-server/configuration.md#--data-dir) 目录下，其中包括 backup、db、raft、snap 四个目录，分别存储备份、数据、raft 数据及镜像数据。
 
 #### 3.1.5 TiDB 有哪些系统表？
 
@@ -922,7 +922,7 @@ ID 没什么规律，只要是唯一就行，不过生成的时候，是有一�
 
 #### 6.1.2 如何打散热点
 
-TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指的是 Region 的读写访问热点。而 TiDB 中对于 PK 非整数或没有 PK 的表，可以通过设置 `SHARD_ROW_ID_BITS` 来适度分解 Region 分片，以达到打散 Region 热点的效果。详情可参考官网 [TiDB 专用系统变量和语法](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#shard-row-id-bits)中 `SHARD_ROW_ID_BITS` 的介绍。
+TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指的是 Region 的读写访问热点。而 TiDB 中对于 PK 非整数或没有 PK 的表，可以通过设置 `SHARD_ROW_ID_BITS` 来适度分解 Region 分片，以达到打散 Region 热点的效果。详情可参考官网 [TiDB 专用系统变量和语法](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#shard_row_id_bits)中 `SHARD_ROW_ID_BITS` 的介绍。
 
 ### 6.2 TiKV
 

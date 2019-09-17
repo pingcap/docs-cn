@@ -14,6 +14,7 @@
     - [TPC-C 性能对比 - v3.0 对比 v2.1](/v3.0/benchmark/tpcc.md)
     - [线上负载与 Add Index 相互影响测试](/v3.0/benchmark/add-index-with-load.md)
     - [TiDB in Kubernetes Sysbench 性能测试](/v3.0/benchmark/sysbench-in-k8s.md)
+    - [DM 1.0-GA 性能测试](/v3.0/benchmark/dm-v1.0-ga.md)
 + 主要概念
   - [整体架构](/v3.0/architecture.md)
   + 核心特性
@@ -89,7 +90,7 @@
         - [使用限制](/v3.0/reference/tools/data-migration/overview.md#使用限制)
       + 核心特性
         - [Table Routing](/v3.0/reference/tools/data-migration/features/overview.md#table-routing)
-        - [Black & White Lists](/v3.0/reference/tools/data-migration/features/overview.md#black-white-table-lists)
+        - [Black & White Lists](/v3.0/reference/tools/data-migration/features/overview.md#black--white-table-lists)
         - [Binlog Event Filter](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filter)
         - [Column Mapping](/v3.0/reference/tools/data-migration/features/overview.md#column-mapping)
         - [同步延迟监控](/v3.0/reference/tools/data-migration/features/overview.md#同步延迟监控)
@@ -100,6 +101,7 @@
       + 使用场景
         - [简单的从库同步场景](/v3.0/reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
         - [分库分表合并场景](/v3.0/reference/tools/data-migration/usage-scenarios/shard-merge.md)
+        - [DM-worker 在上游 MySQL 主从间切换](/v3.0/reference/tools/data-migration/usage-scenarios/master-slave-switch.md)
       + [部署使用](/v3.0/reference/tools/data-migration/deploy.md)
       + 配置
         - [概述](/v3.0/reference/tools/data-migration/configure/overview.md)
@@ -110,6 +112,7 @@
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](/v3.0/how-to/migrate/from-aurora.md)
       - [DM Portal](/v3.0/reference/tools/data-migration/dm-portal.md)
+      - [DM 错误含义和诊断](/v3.0/reference/tools/data-migration/error-system.md)
       - [DM 故障诊断](/v3.0/how-to/troubleshoot/data-migration.md)
       - [FAQ](/v3.0/faq/data-migration.md)
     + TiDB Lightning

@@ -355,7 +355,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 这个变量不会影响自动提交的隐式事务和 TiDB 内部执行的事务，它们依旧会根据 `tidb_retry_limit` 的值来决定最大重试次数。
 
-是否需要禁用自动重试，请参考[自动重试的风险](/v3.0/reference/transactions/transaction-isolation.md#乐观事务注意事项)。
+是否需要禁用自动重试，请参考[自动重试的风险](/v3.0/reference/transactions/transaction-isolation.md#自动重试导致的事务异常)。
 
 ### tidb_backoff_weight
 
@@ -638,3 +638,11 @@ select * from t, t1 where t.a=t1.a
 默认值：0
 
 TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在建表语句执行时，同步打散刚分裂出的 Region。适用于批量建表后紧接着批量写入数据，能让刚分裂出的 Region 先在 TiKV 分散而不用等待 PD 进行调度。为了保证后续批量写入数据的稳定性，建表语句会等待打散 Region 完成后再返回建表成功，建表语句执行时间会是关闭该变量的数倍。
+
+### tidb_allow_remove_auto_inc <span class="version-mark">从 v3.0.4 版本开始引入</span>
+
+作用域：SESSION
+
+默认值：0
+
+这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `auto_increment` 属性。默认为不允许。
