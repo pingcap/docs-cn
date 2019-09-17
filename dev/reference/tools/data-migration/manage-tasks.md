@@ -589,7 +589,7 @@ pause-relay -w "127.0.0.1:8262"
 
 ### 恢复 relay 处理单元
 
-`resume-relay` 用于恢复处理 `Paused` 状态的 relay 处理单元。
+`resume-relay` 用于恢复处于 `Paused` 状态的 relay 处理单元。
 
 当需要切换 DM-worker 通过虚拟 IP 连接的上游 MySQL 时，我们需要使用 `resume-relay` 对 DM 执行变更，具体变更步骤请参考[虚拟 IP 环境下的上游主从切换](/dev/reference/tools/data-migration/usage-scenarios/master-slave-switch.md#虚拟-IP-环境下的上游主从切换)。
 
