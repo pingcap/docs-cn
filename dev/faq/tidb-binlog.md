@@ -34,7 +34,7 @@ category: FAQ
 
 - 查看 pump 状态是否正常
     - binlogctl -cmd pumps
-    - 是否全部非下线 pump 都在正常运行
+    - 是否全部非 offline 的 pump 都在正常运行
 - 查看 drainer 监控与日志
     - 是否有对应报错，看具体问题处理
 
