@@ -56,7 +56,9 @@ for version in docs_versions:
                             ## remove list format character `- `, `+ `
                             followups.append(('TOC', level, line.strip()[2:]))
                         elif fpath.endswith('.md'):
-                            fpath = version + '/' + fpath
+                            # remove first slash from the fpath
+                            fpath = fpath[1:]
+                            print('fpath, ',fpath)
                             key = ('FILE', level, fpath)
                             if key not in followups:
                                 print(key)
