@@ -13,7 +13,7 @@ category: reference
 
 当前的 shard DDL 算法为了能协调在不同分表执行 DDL 对 schema 变更的影响，加入了一些[使用限制](/dev/reference/tools/data-migration/features/shard-merge.md#使用限制)。而当这些使用限制由于某些异常原因被打破时，我们需要[手动处理 Sharding DDL Lock](/dev/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md) 甚至是完整重做整个数据迁移任务。
 
-因此，为了减小异常发生时对数据迁移的影响，我们推荐将每一个 shard group 拆分成一个独立的数据迁移任务。这样当异常发生时，可能只有少部分迁移任务需要进行手动处理，其他数据迁移任务可以不受影响。
+因此，为了减小异常发生时对数据迁移的影响，我们推荐将每一个 shard group 拆分成一个独立的数据迁移任务。**这样当异常发生时，可能只有少部分迁移任务需要进行手动处理，其他数据迁移任务可以不受影响。**
 
 ## 手动处理 shard DDL lock
 
