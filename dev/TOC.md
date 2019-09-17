@@ -89,7 +89,7 @@
         - [使用限制](/dev/reference/tools/data-migration/overview.md#使用限制)
       + 核心特性
         - [Table Routing](/dev/reference/tools/data-migration/features/overview.md#table-routing)
-        - [Black & White Lists](/dev/reference/tools/data-migration/features/overview.md#black-white-table-lists)
+        - [Black & White Lists](/dev/reference/tools/data-migration/features/overview.md#black--white-table-lists)
         - [Binlog Event Filter](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)
         - [Column Mapping](/dev/reference/tools/data-migration/features/overview.md#column-mapping)
         - [同步延迟监控](/dev/reference/tools/data-migration/features/overview.md#同步延迟监控)
@@ -111,6 +111,7 @@
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-aurora.md)
       - [DM Portal](/dev/reference/tools/data-migration/dm-portal.md)
+      - [DM 错误含义和诊断](/dev/reference/tools/data-migration/error-system.md)
       - [DM 故障诊断](/dev/how-to/troubleshoot/data-migration.md)
       - [FAQ](/dev/faq/data-migration.md)
     + TiDB Lightning
