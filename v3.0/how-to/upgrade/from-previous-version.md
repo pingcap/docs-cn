@@ -40,8 +40,8 @@ Version: 0.9.0
 > * 如果已经安装了 Ansible 及其依赖，则可以跳过该步骤。
 > * 建议使用 `pip` 安装 Ansible 及其依赖， 可参考[在中控机器上安装 Ansible 及其依赖](/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-ansible-及其依赖) 及[在中控机器上离线安装 Ansible 及其依赖](/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-ansible-及其依赖) 安装 Ansbile 及其相关依赖
 > * 请正确安装Ansible 及其依赖，否则会出现以下两种问题
->   * 如果 Jinja2 版本不正确，启动 Grafana 时会报错。
->   * 如果 jmespath 版本不正确，升级 TiKV 时会报错。
+>     * 如果 Jinja2 版本不正确，启动 Grafana 时会报错。
+>     * 如果 jmespath 版本不正确，升级 TiKV 时会报错。
 
 ## 在中控机器上下载 TiDB-Ansible 并备份老版本文件
 
@@ -59,6 +59,12 @@ $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
 ```
 
 ## 修改配置文件
+
+>**注意:**
+>
+>* 请以 `tidb` 用户登录中控机。
+>
+>* TiDB Ansible 工作目录在 `/home/tidb/tidb-ansible` 目录。
 
 ### 修改 `inventory.ini` 文件
 
