@@ -95,7 +95,7 @@ Assume that the schemas replicated to the downstream are as follows:
         target-table:  "store_shenzhen"
     ```
 
-- To satisfy the replication Requirement #1-iv, configure the [binlog filtering rules](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filtering) as follows:
+- To satisfy the replication Requirement #1-iv, configure the [binlog filtering rules](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filter) as follows:
 
     ```yaml
     filters:
@@ -111,7 +111,7 @@ Assume that the schemas replicated to the downstream are as follows:
         action: Ignore
     ```
 
-- To satisfy the replication Requirement #2-ii, configure the [binlog filtering rule](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filtering) as follows:
+- To satisfy the replication Requirement #2-ii, configure the [binlog filtering rule](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filter) as follows:
 
     ```yaml
     filters:

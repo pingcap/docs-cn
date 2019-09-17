@@ -25,7 +25,7 @@ The TiDB transaction model is implemented based on [Google's Percolator](https:/
 The Resolve Locks step rolls back or commits the locks before the safe point, depending on whether their primary key has been committed or not. If the primary key is also retained, the transaction times out and is rolled back.
 This step is required. Once GC has cleared the write record of the primary lock, you can never know whether this transaction is successful or not. Also, if the transaction contains retained secondary keys, it's important to know whether it should be rolled back or committed. As a result, data consistency cannot be guaranteed.
 
-In the Resolve Lock step, the GC leader processes requests from all Regions. From TiDB 3.0, this process runs concurrently by default, with the default concurrency identical to the number of TiKV nodes in the cluster. For more details on how to configure, see [GC Configuration](/dev/reference/garbage-collection/configuration.md#tikv-gc-auto-concurrency).
+In the Resolve Lock step, the GC leader processes requests from all Regions. From TiDB 3.0, this process runs concurrently by default, with the default concurrency identical to the number of TiKV nodes in the cluster. For more details on how to configure, see [GC Configuration](/dev/reference/garbage-collection/configuration.md#tikv_gc_auto_concurrency).
 
 ### Delete Ranges
 

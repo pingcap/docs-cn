@@ -58,7 +58,7 @@ The [black and white lists filtering rule](/v2.1/reference/tools/data-migration/
 
 ### Binlog event filtering
 
-[Binlog event filtering](/v2.1/reference/tools/data-migration/features/overview.md#binlog-event-filtering) is a more fine-grained filtering rule than the black and white lists filtering rule. You can use statements like `INSERT` or `TRUNCATE TABLE` to specify the binlog events of `schema/table` that you need to replicate or filter out.
+[Binlog event filtering](/v2.1/reference/tools/data-migration/features/overview.md#binlog-event-filter) is a more fine-grained filtering rule than the black and white lists filtering rule. You can use statements like `INSERT` or `TRUNCATE TABLE` to specify the binlog events of `schema/table` that you need to replicate or filter out.
 
 ### Column mapping
 

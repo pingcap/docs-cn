@@ -19,7 +19,7 @@ The result of the `EXPLAIN` statement provides information about how TiDB execut
 
 The results of `EXPLAIN` shed light on how to index the data tables so that the execution plan can use the index to speed up the execution of SQL statements. You can also use `EXPLAIN` to check if the optimizer chooses the optimal order to join tables.
 
-## <span id="explain-output-format">`EXPLAIN` output format</span>
+## `EXPLAIN` output format
 
 Currently, the `EXPLAIN` statement returns the following four columns: id, count, task, operator info. Each operator in the execution plan is described by the four properties. In the results returned by `EXPLAIN`, each row describes an operator. See the following table for details:
 
@@ -69,7 +69,7 @@ mysql> EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 0
 
 In the revisited `EXPLAIN` you can see the count of rows scanned has reduced via the use of an index. On a reference system, the query execution time reduced from 50.41 seconds to 0.00 seconds!
 
-## <span id="explain-analyze-output-format">`EXPLAIN ANALYZE` output format</span>
+## `EXPLAIN ANALYZE` output format
 
 As an extension to `EXPLAIN`, `EXPLAIN ANALYZE` will execute the query and provide additional execution statistics in the `execution info` column as follows:
 

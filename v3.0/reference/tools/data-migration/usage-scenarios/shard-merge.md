@@ -84,7 +84,7 @@ Assume that the downstream schema after replication is as follows:
         target-table:  "sale"
     ```
 
-- To satisfy the replication Requirements #4 and #5, configure the [binlog event filtering rule](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filtering) as follows:
+- To satisfy the replication Requirements #4 and #5, configure the [binlog event filtering rule](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filter) as follows:
 
     ```yaml
     filters:

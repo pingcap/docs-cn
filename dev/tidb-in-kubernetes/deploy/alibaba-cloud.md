@@ -16,7 +16,7 @@ This document describes how to deploy a TiDB cluster on Alibaba Cloud Kubernetes
     >
     > The access key must be granted permissions to control the corresponding resources.
 
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.12
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) >= 1.12
 - [helm](https://github.com/helm/helm/blob/master/docs/install.md#installing-the-helm-client) >= 2.9.1 and <= 2.11.0
 - [jq](https://stedolan.github.io/jq/download/) >= 1.6
 - [terraform](https://learn.hashicorp.com/terraform/getting-started/install.html) 0.11.*

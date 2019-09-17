@@ -120,7 +120,7 @@ black-white-list:
 - `ignore-dbs`: black lists of the schemas to be replicated
 - `do-tables`: white lists of the tables to be replicated
 - `ignore-tables`: black lists of the tables to be replicated
-- In black and white lists, starting with the "~" character indicates it is a [regular expression](https://golang.org/pkg/regexp/syntax/#hdr-Syntax).
+- In black and white lists, starting with the "~" character indicates it is a [regular expression](https://golang.org/pkg/regexp/syntax/#hdr-syntax).
 
 ### Filtering process
 

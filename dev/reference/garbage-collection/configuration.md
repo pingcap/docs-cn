@@ -81,9 +81,9 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
     When `tikv_gc_mode` is set to `"distributed"`, GC concurrency works in the [Resolve Locks](/dev/reference/garbage-collection/overview.md#resolve-locks) step. When `tikv_gc_mode` is set to `"central"`, it is applied to both the Resolve Locks and [Do GC](/dev/reference/garbage-collection/overview.md#do-gc) steps.
 
     - `true`(default): Automatically use the number of TiKV nodes in the cluster as the GC concurrency
-    - `false`: Use the value of [`tikv_gc_concurrency`](#tikv-gc-concurrency) as the GC concurrency
+    - `false`: Use the value of [`tikv_gc_concurrency`](#tikv_gc_concurrency) as the GC concurrency
 
 ## `tikv_gc_concurrency`
 
-- Specifies the GC concurrency manually. This parameter works only when you set [`tikv_gc_auto_concurrency`](#tikv-gc-auto-concurrency) to `false`.
+- Specifies the GC concurrency manually. This parameter works only when you set [`tikv_gc_auto_concurrency`](#tikv_gc_auto_concurrency) to `false`.
 - Default: 2

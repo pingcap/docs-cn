@@ -59,7 +59,7 @@ The [black and white lists filtering rule](/v3.0/reference/tools/data-migration/
 
 ### Binlog event filtering
 
-[Binlog event filtering](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filtering) is a more fine-grained filtering rule than the black and white lists filtering rule. You can use statements like `INSERT` or `TRUNCATE TABLE` to specify the binlog events of `schema/table` that you need to replicate or filter out.
+[Binlog event filtering](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filter) is a more fine-grained filtering rule than the black and white lists filtering rule. You can use statements like `INSERT` or `TRUNCATE TABLE` to specify the binlog events of `schema/table` that you need to replicate or filter out.
 
 ### Column mapping
 
@@ -91,7 +91,7 @@ Before using the DM tool, note the following restrictions:
 
     - Currently, TiDB is not compatible with all the DDL statements that MySQL supports. Because DM uses the TiDB parser to process DDL statements, it only supports the DDL syntax supported by the TiDB parser. For details, see [MySQL Compatibility](/v3.0/reference/mysql-compatibility.md#ddl).
 
-    - DM reports an error when it encounters an incompatible DDL statement. To solve this error, you need to manually handle it using dmctl, either skipping this DDL statement or replacing it with a specified DDL statement(s). For details, see [Skip or replace abnormal SQL statements](/v3.0/how-to/troubleshoot/data-migration.md#skip-or-replace-abnormal-sql-statements).
+    - DM reports an error when it encounters an incompatible DDL statement. To solve this error, you need to manually handle it using dmctl, either skipping this DDL statement or replacing it with a specified DDL statement(s). For details, see [Skip or replace abnormal SQL statements](/v3.0/how-to/troubleshoot/data-migration.md#incompatible-ddl-statements).
 
 + Sharding
 

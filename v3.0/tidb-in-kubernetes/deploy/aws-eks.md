@@ -37,7 +37,7 @@ Before deploying a TiDB cluster on AWS EKS, make sure the following requirements
     > The access key must have at least permissions to: create VPC, create EBS, create EC2 and create role.
 
 * [terraform](https://learn.hashicorp.com/terraform/getting-started/install.html)
-* [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.11
+* [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) >= 1.11
 * [helm](https://github.com/helm/helm/blob/master/docs/install.md#installing-the-helm-client) >= 2.9.0 and < 3.0.0
 * [jq](https://stedolan.github.io/jq/download/)
 * [aws-iam-authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html) installed in `PATH`, to authenticate with AWS

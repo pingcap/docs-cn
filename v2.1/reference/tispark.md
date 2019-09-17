@@ -37,7 +37,7 @@ This section describes the configuration of independent deployment of TiKV and T
 For independent deployment of TiKV and TiSpark, it is recommended to refer to the following recommendations:
 
 + Hardware configuration
-    - For general purposes, please refer to the TiDB and TiKV hardware configuration [recommendations](/v2.1/how-to/deploy/hardware-recommendations.md#deployment-recommendations).
+    - For general purposes, please refer to the TiDB and TiKV hardware configuration [recommendations](/v2.1/how-to/deploy/hardware-recommendations.md#development-and-test-environments).
     - If the usage is more focused on the analysis scenarios, you can increase the memory of the TiKV nodes to at least 64G.
 
 ### Configuration of independent deployment of Spark and TiSpark

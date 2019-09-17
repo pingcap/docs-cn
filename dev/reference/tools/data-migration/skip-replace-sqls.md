@@ -217,7 +217,7 @@ sql-skip <--worker=127.0.0.1:8262> [--binlog-pos=mysql-bin|000001.000003:3270] [
     - You must specify `--sql-pattern` or `binlog-pos`, and you must not specify both.
     - If it is specified, the skip operation is executed when `sql-pattern` matches with the DDL statement (converted by the optional router-rule) of the binlog event. The format is a regular expression prefixed with `~`, for example, ```~(?i)ALTER\s+TABLE\s+`db1`.`tbl1`\s+ADD\s+COLUMN\s+col1\s+INT```.
         - Common spaces are not supported in the regular expression temporarily. You can replace the space with `\s` or `\s+` if it is needed.
-        - The regular expression must be prefixed with `~`. For details, see [regular expression syntax](https://golang.org/pkg/regexp/syntax/#hdr-Syntax).
+        - The regular expression must be prefixed with `~`. For details, see [regular expression syntax](https://golang.org/pkg/regexp/syntax/#hdr-syntax).
         - The schema/table name in the regular expression must be converted by the optional router-rule, so the converted name is consistent with the target schema/table name in the downstream. For example, if there are ``` `shard_db_1`.`shard_tbl_1` ``` in the upstream and ``` `shard_db`.`shard_tbl` ``` in the downstream, then you should match ``` `shard_db`.`shard_tbl` ```.
         - The schema/table/column name in the regular expression should be marked by ``` ` ```, for example, ``` `db1`.`tbl1` ```.
 

@@ -51,7 +51,7 @@ TiDB Operator uses `Helm` to deploy and manage TiDB clusters. The configuration 
 | `pd.resources.requests.cpu` | The CPU resource requests of each PD Pod | `nil` |
 | `pd.resources.requests.memory` | The memory resource requests of each PD Pod | `nil` |
 | `pd.resources.requests.storage` | The storage requests of each PD Pod | `1Gi` |
-| `pd.affinity` | Defines PD's scheduling rules and preferences. Detailed reference: [affinity-and-anti-affinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity) | `{}` |
+| `pd.affinity` | Defines PD's scheduling rules and preferences. Detailed reference: [affinity-and-anti-affinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-affinity) | `{}` |
 | `pd.nodeSelector` | Ensures that PD Pods are only scheduled to the node with the specific key-value pair as the label. Detailed reference: [nodeselector](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#nodeselector) | `{}` |
 | `pd.tolerations` | Applies to PD Pods, allowing the Pods to be scheduled to the nodes with specified taints. Detailed reference: [taint-and-toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration) | `{}` |
 | `pd.annotations` | Adds a specific `annotations` for PD Pods. | `{}` |
@@ -69,7 +69,7 @@ TiDB Operator uses `Helm` to deploy and manage TiDB clusters. The configuration 
 | `tikv.resources.requests.cpu` | The CPU resource requests of each TiKV Pod | `nil` |
 | `tikv.resources.requests.memory` | The memory resource requests of each TiKV Pod | `nil` |
 | `tikv.resources.requests.storage` | The storage requests of each TiKV Pod | `10Gi` |
-| `tikv.affinity` | Defines TiKV's scheduling rules and preferences. Detailed reference:[affinity-and-anti-affinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity) | `{}` |
+| `tikv.affinity` | Defines TiKV's scheduling rules and preferences. Detailed reference:[affinity-and-anti-affinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-affinity) | `{}` |
 | `tikv.nodeSelector` | Ensures that TiKV Pods are only scheduled to the node with the specific key-value pair as the label. Detailed reference: [nodeselector](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#nodeselector) | `{}` |
 | `tikv.tolerations` | Applies to TiKV Pods, allowing TiKV Pods to be scheduled to the nodes with specified taints. Detailed reference: [taint-and-toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration) | `{}` |
 | `tikv.annotations` | Adds a specific `annotations` for TiKV Pods. | `{}` |
@@ -89,7 +89,7 @@ TiDB Operator uses `Helm` to deploy and manage TiDB clusters. The configuration 
 | `tidb.resources.requests.memory` | The memory resource requests of each TiDB Pod | `nil` |
 | `tidb.passwordSecretName`| The name of the `Secret` that stores the TiDB username and password. The `Secret` can create a secret with this command: `kubectl create secret generic tidb secret--from literal=root=<root password>--namespace=<namespace>`. If the parameter is unset, TiDB root password is empty. | `nil` |
 | `tidb.initSql`| The initialization script that will be executed after a TiDB cluster is successfully started. | `nil` |
-| `tidb.affinity` | Defines TiDB's scheduling rules and preferences. Detailed reference: [affinity-and-anti-affinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity) | `{}` |
+| `tidb.affinity` | Defines TiDB's scheduling rules and preferences. Detailed reference: [affinity-and-anti-affinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-affinity) | `{}` |
 | `tidb.nodeSelector` | Ensures that TiDB Pods are only scheduled to the node with the specific key-value pair as the label. Detailed reference: [nodeselector](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#nodeselector) | `{}` |
 | `tidb.tolerations` | Applies to TiDB Pods, allowing TiDB Pods to be scheduled to nodes with specified taints. Detailed reference: [taint-and-toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration) | `{}` |
 | `tidb.annotations` | Adds a specific `annotations` for TiDB Pods. | `{}` |
@@ -139,7 +139,7 @@ TiDB is a distributed database and its disaster recovery must ensure that when a
 
 The disaster recovery of TiDB service is essentially based on Kubernetes' scheduling capabilities. To optimize scheduling, TiDB Operator provides a custom scheduler that guarantees the disaster recovery of TiDB service at the host level through the specified scheduling algorithm. Currently, the TiDB cluster uses this scheduler as the default scheduler, which is configured through the item `schedulerName` in the above table.
 
-Disaster recovery at other levels (such as rack, zone, region) are guaranteed by Affinity's `PodAntiAffinity`. `PodAntiAffinity` can avoid the situation where different instances of the same component are deployed on the same physical topology node. In this way, disaster recovery is achieved. Detailed user guide for Affinity: [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-baffinity).
+Disaster recovery at other levels (such as rack, zone, region) are guaranteed by Affinity's `PodAntiAffinity`. `PodAntiAffinity` can avoid the situation where different instances of the same component are deployed on the same physical topology node. In this way, disaster recovery is achieved. Detailed user guide for Affinity: [Affinity & AntiAffinity](https://kubernetes.io/docs/concepts/configuration/assign-Pod-node/#affinity-and-anti-affinity).
 
 The following is an example of a typical disaster recovery setup:
 

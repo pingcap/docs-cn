@@ -762,7 +762,7 @@ Create Table: CREATE TABLE `TIDB_INDEXES` (
 
 `INDEX_ID` is the unique ID that TiDB allocates for each index. It can be used to do a join operation with `INDEX_ID` obtained from another table or API.
 
-For example, you can obtain `TABLE_ID` and `INDEX_ID` that are involved in some slow query in the [`SLOW_QUERY` table](#slow-query-table) and then obtain the specific index information using the following SQL statements:
+For example, you can obtain `TABLE_ID` and `INDEX_ID` that are involved in some slow query in the [`SLOW_QUERY` table](#slow_query-table) and then obtain the specific index information using the following SQL statements:
 
 ```sql
 select

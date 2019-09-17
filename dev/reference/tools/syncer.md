@@ -22,7 +22,7 @@ You can deploy Syncer to any of the machines that can connect to MySQL or the Ti
 
 ## Use Syncer to import data incrementally
 
-Before importing data, read [Check before importing data using Syncer](#check-before-importing-data-using-syncer).
+Before importing data, read [Check before importing data using Syncer](#check-before-replicating-data-using-syncer).
 
 ### 1. Set the position to replicate
 

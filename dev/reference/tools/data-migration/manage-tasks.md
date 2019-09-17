@@ -95,7 +95,7 @@ This section describes how to use the task management commands to execute the fo
 
 ### Create the data replication task
 
-You can use the task management command to create the data replication task. Data Migration [prechecks the corresponding privileges and configuration automatically](#precheck-the-upstream-mysql-instance-configuration) while starting the data replication.
+You can use the task management command to create the data replication task. Data Migration [prechecks the corresponding privileges and configuration automatically](/dev/reference/tools/data-migration/precheck.md) while starting the data replication.
 
 ```bash
 » help start-task
