@@ -77,7 +77,7 @@ Available Commands:
   stop-task            stop a task with name
   switch-relay-master  switch master server of dm-worker's relay unit
   unlock-ddl-lock      force to unlock DDL lock
-  update-master-config update configure of dm-master
+  update-master-config update configure of DM-master
   update-relay         update dm-worker's relay unit configure
   update-task          update a task's config for routes, filters, column-mappings, black-white-list
 
@@ -157,7 +157,7 @@ start-task [ -w "172.16.30.15:8262"] ./task.yaml
 query task's status
 
 Usage:
- dmctl query-status [-w worker ...] [task_name] [flags]
+ dmctl query-status [-w worker ...] [task-name] [flags]
 
 Flags:
  -h, --help   help for query-status
@@ -177,7 +177,7 @@ query-status
 - `-w`：
     - 可选
     - 查询在指定的一组 DM-workers 上运行的数据同步任务的子任务
-- `task_name`：
+- `task-name`：
     - 可选
     - 指定任务名称
     - 如果未设置，则返回全部数据同步任务的查询结果
@@ -209,7 +209,7 @@ query-status
 pause a running task with name
 
 Usage:
- dmctl pause-task [-w worker ...] <task_name> [flags]
+ dmctl pause-task [-w worker ...] <task-name> [flags]
 
 Flags:
  -h, --help   help for pause-task
@@ -230,7 +230,7 @@ pause-task [-w "127.0.0.1:8262"] task-name
     - 可选
     - 指定在特定的一组 DM-workers 上暂停数据同步任务的子任务
     - 如果设置，则只暂停该任务在指定 DM-workers 上的子任务
-- `task_name`：
+- `task-name`：
     - 必选
     - 指定任务名称
 
@@ -274,7 +274,7 @@ pause-task [-w "127.0.0.1:8262"] task-name
 resume a paused task with name
 
 Usage:
- dmctl resume-task [-w worker ...] <task_name> [flags]
+ dmctl resume-task [-w worker ...] <task-name> [flags]
 
 Flags:
  -h, --help   help for resume-task
@@ -295,7 +295,7 @@ resume-task [-w "127.0.0.1:8262"] task-name
     - 可选
     - 指定在特定的一组 DM-workers 上恢复数据同步任务的子任务
     - 如果设置，则只恢复该任务在指定 DM-workers 上的子任务
-- `task_name`：
+- `task-name`：
     - 必选
     - 指定任务名称
 
@@ -339,7 +339,7 @@ resume-task [-w "127.0.0.1:8262"] task-name
 stop a task with name
 
 Usage:
- dmctl stop-task [-w worker ...] <task_name> [flags]
+ dmctl stop-task [-w worker ...] <task-name> [flags]
 
 Flags:
  -h, --help   help for stop-task
@@ -360,7 +360,7 @@ stop-task [-w "127.0.0.1:8262"]  task-name
     - 可选
     - 指定在特定的一组 DM-workers 上停止数据同步任务的子任务
     - 如果设置，则只停止该任务在指定 DM-workers 上的子任务
-- `task_name`：
+- `task-name`：
     - 必选
     - 指定任务名称
 
@@ -439,7 +439,7 @@ stop-task [-w "127.0.0.1:8262"]  task-name
 update a task's config for routes, filters, column-mappings, black-white-list
 
 Usage:
-  dmctl update-task [-w worker ...] <config_file> [flags]
+  dmctl update-task [-w worker ...] <config-file> [flags]
 
 Flags:
   -h, --help   help for update-task
@@ -460,7 +460,7 @@ update-task [-w "127.0.0.1:8262"] ./task.yaml
     - 可选
     - 指定在特定的一组 DM-workers 上更新数据同步任务的子任务
     - 如果设置，则只更新指定 DM-workers 上的子任务配置
-- `config_file`：
+- `config-file`：
     - 必选
     - 指定 `task.yaml` 的文件路径
 
@@ -505,7 +505,7 @@ update-task [-w "127.0.0.1:8262"] ./task.yaml
 check a task with config file
 
 Usage:
- dmctl check-task <config_file> [flags]
+ dmctl check-task <config-file> [flags]
 
 Flags:
  -h, --help   help for check-task
@@ -522,7 +522,7 @@ check-task task.yaml
 
 #### 参数解释
 
-+ `config_file`：
++ `config-file`：
     - 必选
     - 指定 `task.yaml` 的文件路径
 
