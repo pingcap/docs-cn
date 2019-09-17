@@ -87,7 +87,7 @@
         - [使用限制](/v2.1/reference/tools/data-migration/overview.md#使用限制)
       + 核心特性
         - [Table Routing](/v2.1/reference/tools/data-migration/features/overview.md#table-routing)
-        - [Black & White Lists](/v2.1/reference/tools/data-migration/features/overview.md#black-white-table-lists)
+        - [Black & White Lists](/v2.1/reference/tools/data-migration/features/overview.md#black--white-table-lists)
         - [Binlog Event Filter](/v2.1/reference/tools/data-migration/features/overview.md#binlog-event-filter)
         - [Column Mapping](/v2.1/reference/tools/data-migration/features/overview.md#column-mapping)
         - [同步延迟监控](/v2.1/reference/tools/data-migration/features/overview.md#同步延迟监控)
@@ -98,6 +98,7 @@
       + 使用场景
         - [简单的从库同步场景](/v2.1/reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
         - [分库分表合并场景](/v2.1/reference/tools/data-migration/usage-scenarios/shard-merge.md)
+        - [DM-worker 在上游 MySQL 主从间切换](/v2.1/reference/tools/data-migration/usage-scenarios/master-slave-switch.md)
       + [部署使用](/v2.1/reference/tools/data-migration/deploy.md)
       + 配置
         - [概述](/v2.1/reference/tools/data-migration/configure/overview.md)
@@ -315,6 +316,7 @@
 - [TiDB 路线图](/v2.1/roadmap.md)
 + [版本发布历史](/v2.1/releases/rn.md)
   + v2.1
+    - [2.1.17](/v2.1/releases/2.1.17.md)
     - [2.1.16](/v2.1/releases/2.1.16.md)
     - [2.1.15](/v2.1/releases/2.1.15.md)
     - [2.1.14](/v2.1/releases/2.1.14.md)
