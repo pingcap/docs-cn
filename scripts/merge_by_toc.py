@@ -53,7 +53,8 @@ for version in docs_versions:
                     for match in matches:
                         fpath = match[2]
                         if fpath.endswith('.md'):
-                            fpath = version + '/' + fpath
+                            # remove the first slash in the relative path
+                            fpath = fpath[1:]
                             key = ('FILE', level, fpath)
                             if key not in followups:
                                 print(key)
