@@ -51,3 +51,25 @@ category: FAQ
 - drainer 会因为获取不到这个 pump 的数据没法同步数据到下游
 - 如果这个 pump 能恢复 drainer 就能恢复同步
 - 如果 pump 没法恢复需要考虑强制用 binlogctl 修改这个 pump 状态成 offline(丢失这个pump的数据), 或者重新部署
+
+## drainer 故障如何重建 drainer (下游数据还在的情况下）
+- checkpoint 还在
+    - 部署新的 drainer 启动即可，使用相同 node-id 或者把老的 drainer 直接修改状态成 offline
+- checkpoint 丢失
+    - 获取写到下游的最新的 commit-ts 做为 initial-commit-ts 部署新的 drainer 启动即可，使用相同 node-id 或者把老的 drainer 直接修改状态成 offline
+    - checkpoint 保存与获取
+        - 下游 MySQL/TiDB 保存在 `tidb_binlog.checkpoint` 表, 表丢失无法获取下到下游的最新 commit-ts
+        - 下游 kafka/file 保存在对应配置目录里的文件, 文件丢失可以消费下游最新的一条数据看写到下游数据的最新 commit-ts
+        - 原始 drainer 日志存在可以查看最新保存 checkpoint 的 ts: `["write save point"] [ts=411222863322546177]`
+
+## 如何用全量 + binlog 备份文件来恢复一个集群
+1. 清理集群数据并使用全部备份恢复数据
+2. 使用 reparo 设置 `start-tso` = {全量备份文件快照时间戳+1}, `end-ts` = 0 (或者指定时间点) 恢复到备份文件最新的数据
+
+## 主从同步开启 `ignore-error` 触发 critical error 后如何重新部署
+1. 停止当前 drainer
+2. 重启全部 `tidb-server` 实例重新开始写 binlog (触发 critical error 后不会再写 binlog 到 pump)
+3. 上游做全量备份
+4. 清理掉下游数据包括 checkpoint 表 `tidb_binlog.checkpoint`
+5. 使用上游的全量备份恢复下游
+6. 部署 drainer, 使用 `initialCommitTs`= {从全量备份获取快照的时间戳}
