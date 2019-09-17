@@ -184,8 +184,8 @@ You can find deployment instructions in [TiDB Quick Start Guide](https://pingcap
 
 Follow the link to download the TiDB Lightning package (choose the same version as that of the TiDB cluster):
 
-- [**v3.0**](/v3.0/reference/tools/download.md#tidb-lightning)
-- [**v2.1**](/v2.1/reference/tools/download.md#tidb-binlog-and-tidb-lightning)
+- [**v3.0**](https://pingcap.com/docs/v3.0/reference/tools/download/#tidb-lightning)
+- [**v2.1**](https://pingcap.com/docs/v2.1/reference/tools/download/#tidb-lightning)
 - [Latest unstable version](/dev/reference/tools/download.md#tidb-lightning)
 
 #### Step 3: Start `tikv-importer`
