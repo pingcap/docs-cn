@@ -193,6 +193,12 @@ query-status
 
 有关查询结果中各参数的意义，详见[查询状态结果](/dev/reference/tools/data-migration/query-status.md#查询结果)。
 
+### 查询运行错误
+
+`query-error` 可用于查询数据同步任务与 relay 处理单元的错误信息。相比于 `query-status`，`query-error` 一般不用于获取除错误信息之外的其他信息。
+
+`query-error` 常用于获取 `sql-skip`/`sql-replace` 所需的 binlog position 信息，有关 `query-error` 的参数与结果解释，请参考 [跳过 (skip) 或替代执行 (replace) 异常的 SQL 语句 文档中的 query-error](/dev/reference/tools/data-migration/skip-replace-sqls.md#query-error)。
+
 ### 暂停数据同步任务
 
 `pause-task` 命令用于暂停数据同步任务。
@@ -491,10 +497,278 @@ update-task [-w "127.0.0.1:8262"] ./task.yaml
 
 目前与 DDL lock 相关的命令主要包括 `show-ddl-locks`、`unlock-ddl-lock`、`break-ddl-lock` 等。有关它们的功能、用法以及适用场景等，请参考[手动处理 sharding DDL lock](/dev/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)。
 
-## 强制刷新 `task => DM-workers` 映射关系
+## 其他任务与集群管理命令
+
+除上述常用的任务管理命令外，DM 还提供了其他一些命令用于管理数据同步任务或 DM 集群本身。
+
+### 检查任务配置文件
+
+`check-task` 命令用于检查指定的数据同步任务配置文件（`task.yaml`）是否合法以及上下游数据库的配置、权限、表结构等是否满足同步需要，具体可参考[上游 MySQL 实例配置前置检查](/dev/reference/tools/data-migration/precheck.md)。
+
+```bash
+» help check-task
+check a task with config file
+
+Usage:
+ dmctl check-task <config_file> [flags]
+
+Flags:
+ -h, --help   help for check-task
+
+Global Flags:
+ -w, --worker strings   dm-worker ID
+```
+
+#### 命令用法示例
+
+```bash
+check-task task.yaml
+```
+
+#### 参数解释
+
++ `config_file`：
+    - 必选
+    - 指定 `task.yaml` 的文件路径
+
+#### 返回结果示例
+
+```bash
+» check-task task-test.yaml
+{
+    "result": true,
+    "msg": "check pass!!!"
+}
+```
+
+### 暂停 relay 处理单元
+
+relay 处理单元在 DM-worker 进程启动后即开始自动运行，通过使用 `pause-relay` 命令，我们可以暂停 relay 处理单元的运行。
+
+当需要切换 DM-worker 通过虚拟 IP 连接的上游 MySQL 时，我们需要使用 `pause-relay` 对 DM 执行变更，具体变更步骤请参考[虚拟 IP 环境下的上游主从切换](/dev/reference/tools/data-migration/usage-scenarios/master-slave-switch.md#虚拟-IP-环境下的上游主从切换)。
+
+```bash
+» help pause-relay
+pause dm-worker's relay unit
+
+Usage:
+  dmctl pause-relay <-w worker ...> [flags]
+
+Flags:
+  -h, --help   help for pause-relay
+
+Global Flags:
+  -w, --worker strings   dm-worker ID
+```
+
+#### 命令用法示例
+
+```bash
+pause-relay -w "127.0.0.1:8262"
+```
+
+#### 参数解释
+
+- `-w`：
+    - 必选
+    - 指定在特定的一个 DM-worker 上暂停 relay 处理单元
+
+#### 返回结果示例
+
+```bash
+» pause-relay -w "172.16.30.15:8262"
+{
+    "op": "InvalidRelayOp",
+    "result": true,
+    "msg": "",
+    "workers": [
+        {
+            "op": "PauseRelay",
+            "result": true,
+            "worker": "172.16.30.15:8262",
+            "msg": ""
+        }
+    ]
+}
+```
+
+### 恢复 relay 处理单元
+
+`resume-relay` 用于恢复处理 `Paused` 状态的 relay 处理单元。
+
+当需要切换 DM-worker 通过虚拟 IP 连接的上游 MySQL 时，我们需要使用 `resume-relay` 对 DM 执行变更，具体变更步骤请参考[虚拟 IP 环境下的上游主从切换](/dev/reference/tools/data-migration/usage-scenarios/master-slave-switch.md#虚拟-IP-环境下的上游主从切换)。
+
+```bash
+» help resume-relay
+resume dm-worker's relay unit
+
+Usage:
+  dmctl resume-relay <-w worker ...> [flags]
+
+Flags:
+  -h, --help   help for resume-relay
+
+Global Flags:
+  -w, --worker strings   dm-worker ID
+```
+
+#### 命令用法示例
+
+```bash
+resume-relay -w "127.0.0.1:8262"
+```
+
+#### 参数解释
+
+- `-w`：
+    - 必选
+    - 指定在特定的一个 DM-worker 上恢复 relay 处理单元
+
+#### 返回结果示例
+
+```bash
+» resume-relay -w "172.16.30.15:8262"
+{
+    "op": "InvalidRelayOp",
+    "result": true,
+    "msg": "",
+    "workers": [
+        {
+            "op": "ResumeRelay",
+            "result": true,
+            "worker": "172.16.30.15:8262",
+            "msg": ""
+        }
+    ]
+}
+```
+
+### 切换 relay log 到新的子目录
+
+relay 处理单元通过使用不同的子目录来存储来自上游不同 MySQL 实例的 binlog 数据，通过使用 `switch-relay-master` 命令我们可以变更 relay 处理单元以开始使用一个新的子目录。
+
+当需要切换 DM-worker 通过虚拟 IP 连接的上游 MySQL 时，我们需要使用 `switch-relay-master` 对 DM 执行变更，具体变更步骤请参考[虚拟 IP 环境下的上游主从切换](/dev/reference/tools/data-migration/usage-scenarios/master-slave-switch.md#虚拟-IP-环境下的上游主从切换)。
+
+```bash
+» help switch-relay-master
+switch master server of dm-worker's relay unit
+
+Usage:
+  dmctl switch-relay-master <-w worker ...> [flags]
+
+Flags:
+  -h, --help   help for switch-relay-master
+
+Global Flags:
+  -w, --worker strings   dm-worker ID
+```
+
+#### 命令用法示例
+
+```bash
+switch-relay-master -w "127.0.0.1:8262"
+```
+
+#### 参数解释
+
+- `-w`：
+    - 必选
+    - 指定在特定的一个 DM-worker 上切换 relay 处理单元所使用的子目录
+
+#### 返回结果示例
+
+```bash
+» switch-relay-master -w "172.16.30.15:8262"
+{
+    "result": true,
+    "msg": "",
+    "workers": [
+        {
+            "result": true,
+            "worker": "172.16.30.15:8262",
+            "msg": ""
+        }
+    ]
+}
+```
+
+### 手动清理 relay log
+
+DM 支持[自动清理 relay log](/dev/reference/tools/data-migration/relay-log.md#自动数据清理)，但同时 DM 也支持使用 `purge-relay` 命令[手动清理 relay log](/dev/reference/tools/data-migration/relay-log.md#手动数据清理)。
+
+```bash
+» help purge-relay
+purge dm-worker's relay log files according to specified filename
+
+Usage:
+  dmctl purge-relay <-w worker> [--filename] [--sub-dir] [flags]
+
+Flags:
+  -f, --filename string   whether try to purge relay log files before this filename, the format is "mysql-bin.000006"
+  -h, --help              help for purge-relay
+  -s, --sub-dir string    specify relay sub directory for --filename, if not specified, the latest one will be used, the format is "2ae76434-f79f-11e8-bde2-0242ac130008.000001"
+
+Global Flags:
+  -w, --worker strings   dm-worker ID
+```
+
+#### 命令用法示例
+
+```bash
+purge-relay -w "127.0.0.1:8262" --filename "mysql-bin.000003"
+```
+
+#### 参数解释
+
+- `-w`：
+    - 必选
+    - 指定在特定的一个 DM-worker 上执行 relay log 清理操作
+- `--filename`：
+    - 必选
+    - 指定 relay log 将要停止清理的文件名，如指定为 `mysql-bin.000100`，则只尝试清理到 `mysql-bin.000099`
+- `--sub-dir`：
+    - 可选
+    - 指定 `--filename` 对应的 relay log 子目录，如果不指定则会使用当前最新的子目录
+
+#### 返回结果示例
+
+```bash
+» purge-relay -w "127.0.0.1:8262" --filename "mysql-bin.000003"
+[warn] no --sub-dir specify for --filename, the latest one will be used
+{
+    "result": true,
+    "msg": "",
+    "workers": [
+        {
+            "result": true,
+            "worker": "127.0.0.1:8262",
+            "msg": ""
+        }
+    ]
+}
+```
+
+### 预设跳过 DDL 操作
+
+`sql-skip` 命令用于预设一个跳过操作，当 binlog event 的 position 或 SQL 语句与指定的 `binlog-pos` 或 `sql-pattern` 匹配时，执行该跳过操作。有关 `sql-skip` 的参数与结果解释，请参考 [跳过 (skip) 或替代执行 (replace) 异常的 SQL 语句 文档中的 sql-skip](/dev/reference/tools/data-migration/skip-replace-sqls.md#sql-skip)。
+
+### 预设替换 DDL 操作
+
+`sql-replace` 命令用于预设一个替代执行操作，当 binlog event 的 position 或 SQL 语句与指定的 `binlog-pos` 或 `sql-pattern` 匹配时，执行该替代执行操作。有关 `sql-replace` 的参数与结果解释，请参考 [跳过 (skip) 或替代执行 (replace) 异常的 SQL 语句 文档中的 sql-replace](/dev/reference/tools/data-migration/skip-replace-sqls.md#sql-replace)。
+
+### 强制刷新 `task => DM-workers` 映射关系
 
 `refresh-worker-tasks` 命令用于强制刷新 DM-master 内存中维护的 `task => DM-workers` 映射关系。
 
 > **注意：**
 >
 > 一般不需要使用此命令。仅当已确定 `task => DM-workers` 映射关系存在，但执行其它命令时仍提示必须刷新它时，你才需要使用此命令。
+
+## 废弃或不推荐使用的命令
+
+以下命令已经被废弃或仅用于 debug，在接下来的版本中可能会被移除或修改其语义，**强烈不推荐使用**。
+
+- `migrate-relay`
+- `sql-inject`
+- `update-master-config`
+- `update-relay`
