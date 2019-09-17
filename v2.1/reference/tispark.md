@@ -267,3 +267,7 @@ TiSpark 可以使用 TiDB 的统计信息：
 - Q. Spark 执行中报 java.sql.BatchUpdateException: Data Truncated
 
     A. 写入的数据长度超过了数据库定义的数据类型的长度，可以确认 target table 的字段长度，进行调整。
+
+- Q. tispark 任务默认去连 hive 的元数据?
+
+    A. 现在设计行为是会先读取 hive-site 里的 meta 来找 hive 的库，如果找不到就去 tidb meta 找 tidb 库。如果不需要该行为，hive site 不要配置 hive 的 meta 即可。  
