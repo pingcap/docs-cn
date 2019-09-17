@@ -298,7 +298,7 @@ Usage of binlogctl:
 
 ### 可以使用 binlogctl 的 update-pump/update-drainer 命令来下线 Pump/Drainer 服务吗？
 
-不可以，update-pump/update-drainer 命令直接修改 PD 中保存的状态信息，使用这个命令并不会通知 Pump/Drainer 做相应的操作，而且使用不当可能会干扰数据同步, 某些情况下还可能会造成*数据不一致*的严重后果。例如：
+不可以，使用 update-pump/update-drainer 命令会直接修改 PD 中保存的状态信息，并且不会通知 Pump/Drainer 做相应的操作。使用不当时，可能会干扰数据同步，某些情况下还可能会造成*数据不一致*的严重后果。例如：
 
 - 当 Pump 正常运行或者处于暂停状态时，使用 update-pump 将该 Pump 设置为 offline，Drainer 会放弃获取处于 offline 状态的 Pump 的 binlog 数据，导致该 Pump 最新的 binlog 数据没有同步到 Drainer，造成上下游数据不一致。
 - 当 Drainer 正常运行时，使用 update-drainer 将该 Drainer 设置为 offline。这个时候启动一个 Pump，Pump 只会通知 online 状态的 Drainer，导致该 Drainer 没有及时获取到该 Pump 的 binlog 数据，造成上下游数据不一致。
