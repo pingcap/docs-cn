@@ -30,7 +30,7 @@ category: reference
 
 如果要解决以上挑战，需要从 TiDB 数据切分以及调度的原理开始讲起。这里只是作简单的说明，更多细节可参阅：[说调度](https://pingcap.com/blog-cn/tidb-internal-3/)。
 
-TiDB 以 Region 为单位对数据进行切分，每个 Region 有大小限制（默认 96M）。 Region 的切分方式是范围切分。每个 Region 会有多副本，每一组副本，称为一个 Raft-Group。每个 Raft-Group 中由 Leader 负责执行这块数据的读 & 写（TiDB 即将支持 [Follower-Read](https://zhuanlan.zhihu.com/p/78164196)）。Leader 会自动地被 PD 组件均匀调度在不同的物理节点上，用以均分读写压力。
+TiDB 以 Region 为单位对数据进行切分，每个 Region 有大小限制（默认 96M）。Region 的切分方式是范围切分。每个 Region 会有多副本，每一组副本，称为一个 Raft Group。每个 Raft Group 中由 Leader 负责执行这块数据的读 & 写（TiDB 即将支持 [Follower-Read](https://zhuanlan.zhihu.com/p/78164196)）。Leader 会自动地被 PD 组件均匀调度在不同的物理节点上，用以均分读写压力。
 
 ![TiDB 数据概览](/media/high-concurrency-best-practice/tidb-data-overview.png)
 
@@ -73,7 +73,7 @@ INSERT INTO TEST_HOTSPOT(id, age, user_name, email) values(%v, %v, '%v', '%v');
 
 ![QPS3](/media/high-concurrency-best-practice/QPS3.png)
 
-[Raft store CPU](https://pingcap.com/docs-cn/v3.0/reference/key-monitoring-metrics/tikv-dashboard/) 为 `raftstore` 线程的 CPU 使用率，通常代表写入的负载。在这个场景下 tikv-3 为 Raft Leader，tikv-0 和 tikv-1 是 Raft 的 Follower，其他的 TiKV 节点的负载几乎为空。
+[Raft store CPU](/dev/reference/key-monitoring-metrics/tikv-dashboard.md) 为 `raftstore` 线程的 CPU 使用率，通常代表写入的负载。在这个场景下 tikv-3 为 Raft Leader，tikv-0 和 tikv-1 是 Raft 的 Follower，其他的 TiKV 节点的负载几乎为空。
 
 从 PD 的监控中也可以证明热点的产生：
 
@@ -81,7 +81,7 @@ INSERT INTO TEST_HOTSPOT(id, age, user_name, email) values(%v, %v, '%v', '%v');
 
 ## 热点问题产生的原因
 
-以上测试并未达到理论场景中最佳实践，因为刚创建表的时候，这个表在 TiKV 中只会对应为一个 Region, 范围是:
+以上测试并未达到理论场景中最佳实践，因为刚创建表的时候，这个表在 TiKV 中只会对应为一个 Region，范围是：
 
 ```
 [CommonPrefix + TableID, CommonPrefix + TableID + 1)
@@ -93,7 +93,7 @@ INSERT INTO TEST_HOTSPOT(id, age, user_name, email) values(%v, %v, '%v', '%v');
 
 上图简单描述了这个过程，随着数据持续写入，TiKV 会将一个 Region 切分为多个。但因为首先发起选举的是原 Leader 所在的 Store，所以新切分好的两个 Region 的 Leader 很可能还会在原 Store 上。新切分好的 Region 2，3 上，也会重复之前发生在 Region 1 上的过程。也就是压力会密集地集中在 TiKV-Node 1 上。
 
-在持续写入的过程中， PD 发现 Node 1 中产生了热点，会将 Leader 均分到其他的 Node 上。如果 TiKV 的节点数多于副本数的话，还会发生 Region 的迁移，尽量往空闲的节点上迁移。这两个操作在数据插入的过程中，也能在 PD 监控中得到印证：
+在持续写入的过程中，PD 发现 Node 1 中产生了热点，会将 Leader 均分到其他的 Node 上。如果 TiKV 的节点数多于副本数的话，还会发生 Region 的迁移，尽量往空闲的节点上迁移。这两个操作在数据插入的过程中，也能在 PD 监控中得到印证：
 
 ![QPS5](/media/high-concurrency-best-practice/QPS5.png)
 
@@ -105,7 +105,7 @@ INSERT INTO TEST_HOTSPOT(id, age, user_name, email) values(%v, %v, '%v', '%v');
 
 为了达到场景理论中的最佳性能，一种方法是跳过这个预热阶段，直接将 Region 切分为预期的数量，提前调度到集群的各个节点中。
 
-TiDB 在 v3.0.x 以及 v2.1.13 后支持一个叫 [Split Region](https://pingcap.com/docs-cn/v3.0/reference/sql/statements/split-region/#split-region-%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3) 的新特性。这个特性提供了新的语法：
+TiDB 在 v3.0.x 以及 v2.1.13 后支持一个叫 [Split Region](/dev/reference/sql/statements/split-region.md) 的新特性。这个特性提供了新的语法：
 
 {{< copyable "sql" >}}
 
@@ -123,19 +123,19 @@ SPLIT TABLE table_name [INDEX index_name] BY (value_list) [, (value_list)]
 
 ![Table Region Range](/media/high-concurrency-best-practice/table-Region-range.png)
 
-从图 3 可知，Table 行数据 key 的编码中，行数据唯一可变的是行 ID （rowID）。在 TiDB 中 rowID 是一个 Int64 整形。但是用户不一定能将 Int64 整形范围均匀切分成需要的份数，然后均匀分布在不同的节点上，还需要结合实际情况。
+从图 3 可知，Table 行数据 key 的编码中，行数据唯一可变的是行 ID (rowID)。在 TiDB 中，rowID 是一个 Int64 整形。但是用户不一定能将 Int64 整形范围均匀切分成需要的份数，然后均匀分布在不同的节点上，还需要结合实际情况。
 
 如果行 ID 的写入是完全离散的，那么上述方式是可行的。如果行 ID 或者索引有固定的范围或者前缀（例如，只在 `[2000w, 5000w)` 的范围内离散插入数据），这种写入依然在业务上不产生热点，但是如果按上面的方式进行切分，那么有可能一开始数据仍只写入到某个 Region 上。
 
 作为一款通用数据库，TiDB 并不对数据的分布作假设，所以开始只用一个 Region 来对应一个表。等到真实数据插入进来以后，TiDB 自动根据数据的分布来作切分。这种方式是较通用的。
 
-所以 TiDB 提供了 Split Region 语法，专门针对短时批量写入场景作优化。基于以上案例，下面尝试用 Split Region 语法提前切散 Region，再观察负载情况。
+所以 TiDB 提供了 `Split Region` 语法，专门针对短时批量写入场景作优化。基于以上案例，下面尝试用 `Split Region` 语法提前切散 Region，再观察负载情况。
 
 由于测试的写入数据在正数范围内完全离散，所以用以下语句，在 Int64 空间内提前将表切分为 128 个 Region：
 
 {{< copyable "sql" >}}
 
-```
+```sql
 SPLIT TABLE TEST_HOTSPOT BETWEEN (0) AND (9223372036854775807) REGIONS 128;
 ```
 
@@ -165,13 +165,13 @@ SPLIT TABLE TEST_HOTSPOT BETWEEN (0) AND (9223372036854775807) REGIONS 128;
 
 可以看到已经消除了明显的热点问题了。
 
-本示例仅为一个简单的表，还有索引热点的问题需要考虑。读者可参阅[Split Region](https://pingcap.com/docs-cn/v3.0/reference/sql/statements/split-region/#split-region-%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3) 文档来了解如何预先切散索引相关的 Region。
+本示例仅为一个简单的表，还有索引热点的问题需要考虑。读者可参阅 [Split Region](/dev/reference/sql/statements/split-region.md) 文档来了解如何预先切散索引相关的 Region。
 
 ### 更复杂的热点问题
 
-如果表没有主键或者主键不是 Int 类型，而且用户也不想自己生成一个随机分布的主键 ID 的话，TiDB 内部有一个隐式的 `_tidb_rowid` 列作为行 ID。在不使用 `SHARD_ROW_ID_BITS` 的情况下，`_tidb_rowid` 列的值基本也为单调递增，此时也会有写热点存在。（`SHARD_ROW_ID_BITS` 的详细说明可参阅[这里](https://pingcap.com/docs-cn/v3.0/reference/configuration/tidb-server/tidb-specific-variables/#shard-row-id-bits)）
+如果表没有主键或者主键不是 Int 类型，而且用户也不想自己生成一个随机分布的主键 ID 的话，TiDB 内部有一个隐式的 `_tidb_rowid` 列作为行 ID。在不使用 `SHARD_ROW_ID_BITS` 的情况下，`_tidb_rowid` 列的值基本也为单调递增，此时也会有写热点存在。（参阅 [`SHARD_ROW_ID_BITS` 的详细说明](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#shard_row_id_bits)）
 
-要避免由 `_tidb_rowid` 带来的写入热点问题，可以在建表时，使用 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 这两个建表选项（`PRE_SPLIT_REGIONS` 的详细说明可参阅[这里](https://pingcap.com/docs-cn/v3.0/reference/sql/statements/split-region/#pre-split-regions)）。
+要避免由 `_tidb_rowid` 带来的写入热点问题，可以在建表时，使用 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 这两个建表选项（参阅 [`PRE_SPLIT_REGIONS` 的详细说明](/dev/reference/sql/statements/split-region.md#pre_split_regions)）。
 
 `SHARD_ROW_ID_BITS` 用于将 `_tidb_rowid` 列生成的行 ID 随机打散。`pre_split_regions` 用于在建完表后预先进行 Split region。
 
@@ -196,7 +196,7 @@ create table t (a int, b int) shard_row_id_bits = 4 pre_split_regions=·3;
 
 ### 关闭 TiDB 的 Latch 机制
 
-TiDB 2.1 版本中在 SQL 层引入了 [latch 机制](https://pingcap.com/docs-cn/v3.0/reference/configuration/tidb-server/configuration-file/#txn-local-latches)，用于在写入冲突比较频繁的场景中提前发现事务冲突，减少 TiDB 和 TiKV 事务提交时写写冲突导致的重试。跑批场景通常用到存量数据，所以并不存在事务的写入冲突。可以把 TiDB 的 latch 功能关闭，以减少细小内存对象的分配：
+TiDB 2.1 版本中在 SQL 层引入了 [latch 机制](/dev/reference/configuration/tidb-server/configuration-file.md#txn-local-latches)，用于在写入冲突比较频繁的场景中提前发现事务冲突，减少 TiDB 和 TiKV 事务提交时写写冲突导致的重试。跑批场景通常用到存量数据，所以并不存在事务的写入冲突。可以把 TiDB 的 latch 功能关闭，以减少细小内存对象的分配：
 
 ```
 [txn-local-latches]
