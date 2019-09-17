@@ -142,6 +142,7 @@ Usage of binlogctl:
     ```
 
 - 暂停/下线 Pump/Drainer
+
     binlogctl 提供以下命令暂停/下线服务：
 
     | cmd             | 说明           | 示例                                                                                             |
