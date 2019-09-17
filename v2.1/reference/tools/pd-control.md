@@ -578,7 +578,7 @@ Encoding 格式示例：
 示例：
 
 ```bash
->> region miss-peer
+>> region check miss-peer
 {
   "count": 2,
   "regions": [......],

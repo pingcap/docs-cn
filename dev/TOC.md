@@ -14,6 +14,7 @@
     - [TPC-C 性能对比 - v3.0 对比 v2.1](/dev/benchmark/tpcc.md)
     - [线上负载与 Add Index 相互影响测试](/dev/benchmark/add-index-with-load.md)
     - [TiDB in Kubernetes Sysbench 性能测试](/dev/benchmark/sysbench-in-k8s.md)
+    - [DM 1.0-GA 性能测试](/dev/benchmark/dm-v1.0-ga.md)
 + 主要概念
   - [整体架构](/dev/architecture.md)
   + 核心特性
@@ -88,7 +89,7 @@
         - [使用限制](/dev/reference/tools/data-migration/overview.md#使用限制)
       + 核心特性
         - [Table Routing](/dev/reference/tools/data-migration/features/overview.md#table-routing)
-        - [Black & White Lists](/dev/reference/tools/data-migration/features/overview.md#black-white-table-lists)
+        - [Black & White Lists](/dev/reference/tools/data-migration/features/overview.md#black--white-table-lists)
         - [Binlog Event Filter](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)
         - [Column Mapping](/dev/reference/tools/data-migration/features/overview.md#column-mapping)
         - [同步延迟监控](/dev/reference/tools/data-migration/features/overview.md#同步延迟监控)
@@ -379,6 +380,7 @@
     - [3.0.0-beta.1](/dev/releases/3.0.0-beta.1.md)
     - [3.0.0-beta](/dev/releases/3.0beta.md)
   + v2.1
+    - [2.1.17](/dev/releases/2.1.17.md)
     - [2.1.16](/dev/releases/2.1.16.md)
     - [2.1.15](/dev/releases/2.1.15.md)
     - [2.1.14](/dev/releases/2.1.14.md)
