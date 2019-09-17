@@ -8,7 +8,7 @@ aliases: ['/docs-cn/op-guide/tidb-v3.0-upgrade-guide/','/docs-cn/v3.0/how-to/upg
 
 本文档仅适用于从 TiDB 2.0.1 版本或者 TiDB 2.1 RC1 版本升级到 TiDB 3.0.x 版本。如果版本早于 TiDB 2.0.1 请选择如下两个方案：
 
-1. 停机升级，从当前版本直接升级到 TiDB 3.0.x。 
+1. 停机升级，从当前版本直接升级到 TiDB 3.0.x。
 2. 先从当前版本滚动升级到 TiDB 2.0.1， 再按照本文档滚动升级到 TiDB 3.0.x。
 
 ## 注意事项
@@ -48,15 +48,15 @@ Version: 0.9.0
 1. 以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录
 2. 备份当前版本的 tidb-ansible ，命令如下：
 
-```
-$ mv tidb-ansible tidb-ansible-bak
-```
+    ```
+    $ mv tidb-ansible tidb-ansible-bak
+    ```
 
 3. 根据 TiDB 3.0 版本对应 tag  [**下载 TiDB-Ansible**](/how-to/deploy/orchestrated/ansible.md#在中控机器上下载-tidb-ansible)，默认下载的文件夹名称为 `tidb-ansible`，命令如下：
 
-```
-$ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
-```
+    ```
+    $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
+    ```
 
 ## 修改配置文件
 
@@ -83,35 +83,35 @@ $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
 1. 从备份的 Ansible 文件中拷贝集群的配置信息到新的配置文件，配置文件名称是`/home/tidb/tidb-ansible/conf`
 2. TiKV 配置中 `end-point-concurrency` 变更为 `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数：
 
-```
-readpool:
-  coprocessor:
-    # Notice: if CPU_NUM > 8, default thread pool size for coprocessors
-    # will be set to CPU_NUM * 0.8.
-    # high-concurrency: 8
-    # normal-concurrency: 8
-    # low-concurrency: 8
-```
+    ```
+    readpool:
+      coprocessor:
+        # Notice: if CPU_NUM > 8, default thread pool size for coprocessors
+        # will be set to CPU_NUM * 0.8.
+        # high-concurrency: 8
+        # normal-concurrency: 8
+        # low-concurrency: 8
+    ```
 
-> **注意：**
->
-> 单机多 TiKV 实例（进程）情况下，需要修改这三个参数。
->
-> 推荐设置：TiKV 实例数量 \* 参数值 = CPU 核心数量 \* 0.8
+    > **注意：**
+    >
+    > 单机多 TiKV 实例（进程）情况下，需要修改这三个参数。
+    >
+    > 推荐设置：TiKV 实例数量 \* 参数值 = CPU 核心数量 \* 0.8
 
 3. TiKV 配置中不同 CF 中的 `block-cache-size` 参数变更为 `block-cache`
 
-```
-storage:
-  block-cache:
-    capacity: "1GB"
-```
+    ```
+    storage:
+      block-cache:
+        capacity: "1GB"
+    ```
 
-> **注意：**
->
-> 单机多 TiKV 实例（进程）情况下，需要修改 `capacity` 参数。
->
-> 推荐设置：`capacity` = (MEM_TOTAL * 0.5 / TiKV 实例数量)
+    > **注意：**
+    >
+    > 单机多 TiKV 实例（进程）情况下，需要修改 `capacity` 参数。
+    >
+    > 推荐设置：`capacity` = (MEM_TOTAL * 0.5 / TiKV 实例数量)
 
 ## 下载 TiDB 3.0 binary 到中控机
 
