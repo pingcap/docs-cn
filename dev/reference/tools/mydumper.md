@@ -92,6 +92,14 @@ Mydumper 使用该参数控制 `Insert Statement` 的大小，默认值为 1M �
 * 在 TiDB Server 执行 `set @@global.max_allowed_packet=134217728`（`134217728 = 128M`）
 * 根据实际情况为 Loader 的配置文件或者 DM task 配置文件中的 db 配置增加类似 `max-allowed-packet=128M`，然后重启进程或者任务
 
+### 如何设置 Mydumper 的参数 `-l, --long-query-guard`?
+
+把该参数设置为预估备份需要消耗的时间，如果 Mydumper 运行时间超过该参数的值，就会报错退出。推荐初次备份设置为 7200（单位秒），之后根据具体备份时间进行调整。
+
+### 如何设置 Mydumper 的参数 `--tidb-force-priority`?
+
+仅当备份 TiDB 的数据时才可以设置该参数，值可以为 `LOW_PRIORITY`, `DELAYED` 或者 `HIGH_PRIORITY`。如果不希望数据备份对线上业务造成影响，推荐将该参数设置为 `LOW_PRIORITY`；如果备份的优先级更高，则可以设置为 `HIGH_PRIORITY`。
+
 ### Mydumper 备份 TiDB 数据报错 "GC life time is shorter than transaction duration" 应该怎么解决？
 
 Mydumper 备份 TiDB 数据时为了保证数据的一致性使用了 TiDB 的 snapshot 特性，如果备份过程中 snapshot 对应的历史数据被 TiDB GC 处理了，则会报该错误。建议在备份前使用 MySQL 客户端查询 TiDB 集群的 GC 值并将其调整为合适的值：
