@@ -53,12 +53,12 @@ category: FAQ
 - 如果这个 pump 能恢复 drainer 就能恢复同步
 - 如果 pump 没法恢复
     - 使用 [binlogctl 修改这个 pump 状态成 offline](/dev/how-to/maintain/tidb-binlog.md)(丢失这个pump的数据)
-	- drainer 获取到的数据会丢失这个 pump 上的数据，下游跟上游数据会不一致，需要重新全量 + 增量
-	    1. 停止当前 drainer
-		2. 上游做全量备份
-		3. 清理掉下游数据包括 checkpoint 表 `tidb_binlog.checkpoint`
-		4. 使用上游的全量备份恢复下游
-		5. 部署 drainer, 使用 `initialCommitTs`= {从全量备份获取快照的时间戳}
+    - drainer 获取到的数据会丢失这个 pump 上的数据，下游跟上游数据会不一致，需要重新全量 + 增量
+        1. 停止当前 drainer
+        2. 上游做全量备份
+        3. 清理掉下游数据包括 checkpoint 表 `tidb_binlog.checkpoint`
+        4. 使用上游的全量备份恢复下游
+        5. 部署 drainer, 使用 `initialCommitTs`= {从全量备份获取快照的时间戳}
 
 ## drainer 故障如何重建 drainer (下游数据还在的情况下）
 
