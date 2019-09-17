@@ -131,9 +131,11 @@ update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_lif
 
 备份完成后再将 `tikv_gc_life_time` 的值调整为原来的值：
 
-  ```sql
-    mysql> update mysql.tidb set VARIABLE_VALUE = '10m0s' where VARIABLE_NAME = 'tikv_gc_life_time';
-  ```
+{{< copyable "sql" >}}
+
+```sql
+update mysql.tidb set VARIABLE_VALUE = '10m0s' where VARIABLE_NAME = 'tikv_gc_life_time';
+```
 
 ### Mydumper 的参数 `--tidb-rowid` 是否需要配置？
 
