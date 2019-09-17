@@ -14,6 +14,7 @@
     - [TPC-C 性能对比 - v3.0 对比 v2.1](/v3.0/benchmark/tpcc.md)
     - [线上负载与 Add Index 相互影响测试](/v3.0/benchmark/add-index-with-load.md)
     - [TiDB in Kubernetes Sysbench 性能测试](/v3.0/benchmark/sysbench-in-k8s.md)
+    - [DM 1.0-GA 性能测试](/v3.0/benchmark/dm-v1.0-ga.md)
 + 主要概念
   - [整体架构](/v3.0/architecture.md)
   + 核心特性
@@ -380,6 +381,7 @@
     - [3.0.0-beta.1](/v3.0/releases/3.0.0-beta.1.md)
     - [3.0.0-beta](/v3.0/releases/3.0beta.md)
   + v2.1
+    - [2.1.17](/v3.0/releases/2.1.17.md)
     - [2.1.16](/v3.0/releases/2.1.16.md)
     - [2.1.15](/v3.0/releases/2.1.15.md)
     - [2.1.14](/v3.0/releases/2.1.14.md)

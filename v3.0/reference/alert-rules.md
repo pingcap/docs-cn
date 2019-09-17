@@ -127,7 +127,7 @@ category: reference
 
 * 报警规则：
 
-    `increase(tidb_server_server_event{type=~"server_start|server_hang"}[15m]) > 0`
+    `increase(tidb_server_event_total{type=~"server_start|server_hang"}[15m]) > 0`
 
 * 规则描述：
 
@@ -141,11 +141,11 @@ category: reference
     * 重启 TiDB 以恢复服务。
     * 检查 TiDB Binlog 服务是否正常。
 
-#### `TiDB_tikvclient_backoff_count`
+#### `TiDB_tikvclient_backoff_total`
 
 * 报警规则：
 
-    `increase(tidb_tikvclient_backoff_count[10m]) > 10`
+    `increase(tidb_tikvclient_backoff_total[10m]) > 10`
 
 * 规则描述：
 

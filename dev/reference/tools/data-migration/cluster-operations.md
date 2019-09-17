@@ -247,7 +247,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
     $ ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
-## 替换 DM-master 实例
+## 替换/迁移 DM-master 实例
 
 假设机器 `172.16.10.71` 需要进行维护或者已崩溃，需要将 DM-master 实例从 `172.16.10.71` 迁移至 `172.16.10.80`。按以下步骤操作：
 
@@ -309,7 +309,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
     ansible-playbook rolling_update.yml --tags=dmctl
     ```
 
-## 替换 DM-worker 实例
+## 替换/迁移 DM-worker 实例
 
 假设机器 `172.16.10.72` 需要进行维护或者已崩溃，您需要将 `dm_worker1` 实例从 `172.16.10.72` 迁移至 `172.16.10.75`。按以下步骤操作：
 
@@ -349,10 +349,12 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
     修改 `inventory.ini` 文件。注释或删除旧 `dm_worker1` 实例所在行；同时为新 `dm_worker1` 实例添加相关信息。
 
+    如果希望从不同的 binlog position 或 GTID Sets 拉取 relay log，则也需要更新对应的 `{relay_binlog_name}` 或 `{relay_binlog_gtid}`。
+
     ```ini
     [dm_worker_servers]
     dm_worker1 source_id="mysql-replica-01" ansible_host=172.16.10.75 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
-    # dm_worker1 ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    # dm_worker1 source_id="mysql-replica-01" ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
     dm_worker2 source_id="mysql-replica-02" ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
     ```
@@ -363,23 +365,51 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
     $ ansible-playbook deploy.yml --tags=dm-worker -l dm_worker1
     ```
 
-5. 启动新 DM-worker 实例。
+5. 迁移 relay log 数据。
+
+    - 如果待替换 DM-worker 实例所在机器仍能访问，则可直接将该实例的 `{dm_worker_relay_dir}` 目录下的所有数据复制到新 DM-worker 实例的对应目录。
+
+    - 如果待替换 DM-worker 实例所在机器已无法访问，可能需在第 9 步中手动恢复 relay log 目录等信息。
+
+6. 启动新 DM-worker 实例。
 
     ```bash
     $ ansible-playbook start.yml --tags=dm-worker -l dm_worker1
     ```
 
-6. 配置并重启 DM-master 服务。
+7. 配置并重启 DM-master 服务。
 
     ```bash
     $ ansible-playbook rolling_update.yml --tags=dm-master
     ```
 
-7. 配置并重启 Prometheus 服务。
+8. 配置并重启 Prometheus 服务。
 
     ```bash
     $ ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
+
+9. 启动并验证数据迁移任务。
+
+    使用 `start-task` 命令启动数据迁移任务，如果任务运行正常，则表示 DM-worker 迁移顺利完成；如果报类似如下错误，则需要对 relay log 目录进行手动修复。
+
+    ```log
+    fail to initial unit Sync of subtask test-task : UUID suffix 000002 with UUIDs [1ddbf6d3-d3b2-11e9-a4e9-0242ac140003.000001] not found
+    ```
+
+    如果待替换 DM-worker 所连接的上游 MySQL 已发生过切换，则会产生如上错误。此时可通过如下步骤手动修复：
+
+    1. 使用 `stop-task` 命令停止数据迁移任务。
+
+    2. 通过 `$ ansible-playbook stop.yml --tags=dm-worker -l dm_worker1` 停止 DM-worker 实例。
+
+    3. 更新 relay log 子目录的后缀，例如将 `1ddbf6d3-d3b2-11e9-a4e9-0242ac140003.000001` 重命名为 `1ddbf6d3-d3b2-11e9-a4e9-0242ac140003.000002`。
+
+    4. 更新 relay log 子目录索引文件 `server-uuid.index`，例如将其中的内容由 `1ddbf6d3-d3b2-11e9-a4e9-0242ac140003.000001` 变更为 `1ddbf6d3-d3b2-11e9-a4e9-0242ac140003.000002`。
+
+    5. 通过 `$ ansible-playbook start.yml --tags=dm-worker -l dm_worker1` 启动 DM-worker 实例。
+
+    6. 再次启动并验证数据迁移任务。
 
 ## 切换主从实例
 
