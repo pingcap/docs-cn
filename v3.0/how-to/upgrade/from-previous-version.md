@@ -13,7 +13,7 @@ aliases: ['/docs-cn/op-guide/tidb-v3.0-upgrade-guide/','/docs-cn/v3.0/how-to/upg
 
 ## 注意事项
 
-1. TiDB 3.0.x 版本兼容 [Kafka 版本的 TiDB Binlog](/reference/tools/tidb-binlog/tidb-binlog-kafka.md) 以及[TiDB Binlog Cluster 版本](/reference/tidb-binlog-overview.md)。
+1. TiDB 3.0.x 版本兼容 [Kafka 版本的 TiDB Binlog](/v3.0/reference/tools/tidb-binlog/tidb-binlog-kafka.md) 以及[TiDB Binlog Cluster 版本](/v3.0/reference/tidb-binlog-overview.md)。
 2. 不支持在升级后版本的回退。
 3. 如果版本早于 TiDB 2.0.6 升级到 TiDB 3.0.x ，在升级之前请确保集群中的所有 DDL 都执行完成之后再执行升级操作，否则会有行为未定义的异常。
 4. 在升级过程中，请不要执行任何 DDL，否则会有行为未定义的异常。
@@ -38,7 +38,7 @@ Version: 0.9.0
 > **注意：**
 >
 > * 如果已经安装了 Ansible 及其依赖，则可以跳过该步骤。
-> * 建议使用 `pip` 安装 Ansible 及其依赖， 可参考[在中控机器上安装 Ansible 及其依赖](/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-ansible-及其依赖) 及[在中控机器上离线安装 Ansible 及其依赖](/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-ansible-及其依赖) 安装 Ansbile 及其相关依赖
+> * 建议使用 `pip` 安装 Ansible 及其依赖， 可参考[在中控机器上安装 Ansible 及其依赖](/v3.0/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-ansible-及其依赖) 及[在中控机器上离线安装 Ansible 及其依赖](/v3.0/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-ansible-及其依赖) 安装 Ansbile 及其相关依赖
 > * 请正确安装Ansible 及其依赖，否则会出现以下两种问题
 >     * 如果 Jinja2 版本不正确，启动 Grafana 时会报错。
 >     * 如果 jmespath 版本不正确，升级 TiKV 时会报错。
@@ -52,7 +52,7 @@ Version: 0.9.0
     $ mv tidb-ansible tidb-ansible-bak
     ```
 
-3. 根据 TiDB 3.0 版本对应 tag  [**下载 TiDB-Ansible**](/how-to/deploy/orchestrated/ansible.md#在中控机器上下载-tidb-ansible)，默认下载的文件夹名称为 `tidb-ansible`，命令如下：
+3. 根据 TiDB 3.0 版本对应 tag  [**下载 TiDB-Ansible**](/v3.0/how-to/deploy/orchestrated/ansible.md#在中控机器上下载-tidb-ansible)，默认下载的文件夹名称为 `tidb-ansible`，命令如下：
 
     ```
     $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
@@ -69,8 +69,8 @@ Version: 0.9.0
 ### 修改 `inventory.ini` 文件
 
 1. 从备份的 Ansible 文件中的 inventory.ini 文件拷贝 IP 信息到新的 inventory.ini。
-2. 请确认 `ansible_user`  变量的值是普通用户，例如： `tidb` 。TiDB Ansible 默认使用 `tidb` 用户作为 SSH 远程用户及程序运行用户，如果主机之间互信未建立，请参考[如何配置 ssh 互信及 sudo 规则](/how-to/deploy/orchestrated/ansible.md#在中控机上配置部署机器-ssh-互信及-sudo-规则)。
-3. 请确认`process_supervision` 变量与之前版本保持一致，如果要变更请参考 [如何调整进程监管方式从 supervise 到 systemd](/how-to/deploy/orchestrated/ansible.md#如何调整进程监管方式从-supervise-到-systemd)，请变更完成后再升级版本。
+2. 请确认 `ansible_user`  变量的值是普通用户，例如： `tidb` 。TiDB Ansible 默认使用 `tidb` 用户作为 SSH 远程用户及程序运行用户，如果主机之间互信未建立，请参考[如何配置 ssh 互信及 sudo 规则](/v3.0/how-to/deploy/orchestrated/ansible.md#在中控机上配置部署机器-ssh-互信及-sudo-规则)。
+3. 请确认`process_supervision` 变量与之前版本保持一致，如果要变更请参考 [如何调整进程监管方式从 supervise 到 systemd](/v3.0/how-to/deploy/orchestrated/ansible.md#如何调整进程监管方式从-supervise-到-systemd)，请变更完成后再升级版本。
 
 >**注意：**
 >
