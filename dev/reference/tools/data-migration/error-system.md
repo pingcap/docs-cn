@@ -51,7 +51,7 @@ DM 中所有的错误都按照固定格式输出：[错误基本信息] + 错误
 | dm-worker      | dm-worker 服务内部发生的错误   | [code=40066:class=dm-worker:scope=internal:level=high] ExecuteDDL timeout, try use `query-status` to query whether the DDL is still blocking |
 | dm-tracer      | dm-tracer 服务内部发生的错误   | [code=42004:class=dm-tracer:scope=internal:level=medium] trace event test.1 not found |
 
-- scope: 错误作用域，用于标识错误发生时 DM 作用对象的范围、来源，包含 未设置（not-set），上游数据库（upstream），下游数据库（downstream），内部（internal）四种类型。如果出错的逻辑直接涉及到上下游数据库请求，会设置 upstream 或 downstream，其他出错场景目前设置的作用域都为 internal。
+- scope: 错误作用域，用于标识错误发生时 DM 作用对象的范围、来源，包含 未设置（not-set）、上游数据库（upstream）、下游数据库（downstream）、内部（internal）四种类型。如果出错的逻辑直接涉及到上下游数据库请求，会设置 upstream 或 downstream，其他出错场景目前设置的作用域都为 internal。
 - level: 错误级别，错误的严重级别，包括 低级别（low），中级别（medium），高级别（high）。低级别通常是用户操作、输入错误，不影响正常同步任务；中级别通常是用户配置等错误，会影响部分新启动服务，不影响已有系统同步状态；高级别通常是用户需要关注的一些错误，可能存在同步任务中断等风险，需要用户进行处理。
 
 在上述的错误示例中
