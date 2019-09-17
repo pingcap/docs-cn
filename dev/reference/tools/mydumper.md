@@ -102,7 +102,7 @@ Mydumper 备份 TiDB 数据时为了保证数据的一致性使用了 TiDB 的 s
 
 ### Mydumper 的参数 `--tidb-rowid` 是否需要配置？
 
-如果设置该参数为 true 则导出的数据中会包含 TiDB 的隐藏列的数据，在恢复到 TiDB 的时候使用隐藏列会有数据不一致的风险，不推荐使用该参数。
+如果设置该参数为 true 则导出的数据中会包含 TiDB 的隐藏列的数据，在恢复到 TiDB 的时候使用隐藏列会有数据不一致的风险，目前不推荐使用该参数。
 
 ### Mydumper 报错 "Segmentation fault" 怎么解决？
 
