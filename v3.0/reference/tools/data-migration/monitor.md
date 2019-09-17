@@ -27,7 +27,7 @@ overview 下包含运行当前选定 task 的所有 DM-worker instance 的部分
 | storage capacity | relay log 占有的磁盘的总容量  | N/A |
 | storage remain | relay log 占有的磁盘的剩余可用容量  | N/A |
 | binlog file gap between master and relay | relay 与上游 master 相比落后的 binlog file 个数 | N/A |
-| load progress | loader 导入过程的进度百分比，值变化范围为：0% - 100%  | N/A |
+| load progress | load unit 导入过程的进度百分比，值变化范围为：0% - 100%  | N/A |
 | binlog file gap between master and syncer | 与上游 master 相比 binlog replication 落后的 binlog file 个数 | N/A |
 | shard lock resolving | 当前子任务是否正在等待 shard DDL 同步，大于 0 表示正在等待同步 | N/A |
 
@@ -54,27 +54,20 @@ overview 下包含运行当前选定 task 的所有 DM-worker instance 的部分
 | write relay log duration | relay log 每次写 binlog 到磁盘的时延，单位：秒| N/A |
 | binlog size | relay log 写到磁盘的单条 binlog 的大小 | N/A |
 
-### Dumper
+### Dump/Load unit
 
 下面 metrics 仅在 `task-mode` 为 `full` 或者 `all` 模式下会有值。
 
 | metric 名称 | 说明 | 告警说明 |
 |:----|:------------|:----|
-| dump process exits with error | dumper 在 DM-worker 内部遇到错误并且退出了 | 立即告警 |
-
-### Loader
-
-下面 metrics 仅在 `task-mode` 为 `full` 或者 `all` 模式下会有值。
-
-| metric 名称 | 说明 | 告警说明 |
-|:----|:------------|:----|
-| load progress | loader 导入过程的进度百分比，值变化范围为：0% - 100%  | N/A |
-| data file size | loader 导入的全量数据中数据文件（内含 `INSERT INTO` 语句）的总大小 | N/A |
-| load process exits with error | loader 在 DM-worker 内部遇到错误并且退出了  | 立即告警 |
-| table count | loader 导入的全量数据中 table 的数量总和  | N/A |
-| data file count | loader 导入的全量数据中数据文件（内含 `INSERT INTO` 语句）的数量总和| N/A |
-| latency of execute transaction | loader 在执行事务的时延，单位：秒 | N/A |
-| latency of query | loader 执行 query 的耗时，单位：秒 | N/A |
+| load progress | load unit 导入过程的进度百分比，值变化范围为：0% - 100%  | N/A |
+| data file size | load unit 导入的全量数据中数据文件（内含 `INSERT INTO` 语句）的总大小 | N/A |
+| dump process exits with error | dump unit 在 DM-worker 内部遇到错误并且退出了 | 立即告警 |
+| load process exits with error | load unit 在 DM-worker 内部遇到错误并且退出了  | 立即告警 |
+| table count | load unit 导入的全量数据中 table 的数量总和  | N/A |
+| data file count | load unit 导入的全量数据中数据文件（内含 `INSERT INTO` 语句）的数量总和| N/A |
+| latency of execute transaction | load unit 在执行事务的时延，单位：秒 | N/A |
+| latency of query | load unit 执行 query 的耗时，单位：秒 | N/A |
 
 ### Binlog replication
 
@@ -122,6 +115,6 @@ overview 下包含运行当前选定 task 的所有 DM-worker instance 的部分
 | metric 名称 | 说明 | 告警说明 |
 |:----|:------------|:----|
 | task state | 同步子任务的状态 | 当子任务状态处于 paused 超过 10 分钟时 |
-| load progress | loader 导入过程的进度百分比，值变化范围为：0% - 100%  | N/A |
+| load progress | load unit 导入过程的进度百分比，值变化范围为：0% - 100%  | N/A |
 | binlog file gap between master and syncer | 与上游 master 相比 binlog replication 落后的 binlog file 个数 | N/A |
 | shard lock resolving | 当前子任务是否正在等待 shard DDL 同步，大于 0 表示正在等待同步 | N/A |
