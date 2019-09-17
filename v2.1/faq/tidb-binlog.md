@@ -28,6 +28,7 @@ drainer 同步帐号需要有如下权限：
 ## pump 磁盘快满了怎么办
 
 确认 gc 正常:
+
 - 确认 pump 监控面板 **gc_tso** 时间是否与配置一致。
 
 如 gc 正常以下调整可以降低单个 pump 需要的空间大小：
@@ -89,10 +90,12 @@ drainer 启动的时候会去读取 checkpoint, 读取不到的话就会使用�
 因为下游数据还在我们只要保证能从对应 checkpoint 接着同步就可以了。
 
 假如 checkpoint 还在可以如下处理：
+
 1. 部署新的 drainer 启动即可(参考 `checkpoint 介绍`, drainer 可以读取 checkpoint 接着同步)
 2. 使用 [binlogctl 修改老的 drainer 状态成 offline](/v2.1/how-to/maintain/tidb-binlog.md)
 
 假如 checkpoint 不在，可以如下处理：
+
 1. 获取 之前 drainer 的 checkpoint `commit-ts` 做为新部署 drainer 的 `initial-commit-ts` 配置部署新的 drainer
 2. 使用 [binlogctl 修改老的 drainer 状态成 offline](/v2.1/how-to/maintain/tidb-binlog.md)
 
