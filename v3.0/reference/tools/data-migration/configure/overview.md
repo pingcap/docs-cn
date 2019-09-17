@@ -10,7 +10,7 @@ aliases: ['/docs-cn/tools/dm/dm-configuration-file-overview/']
 
 ## 配置文件
 
-- `inventory.ini`：使用 DM-Ansible 部署 DM 集群的配置文件。需要根据所选用的集群拓扑来进行编辑。详见[编辑 `inventory.ini` 配置文件](/v3.0/how-to/deploy/data-migration-with-ansible.md#第-7-步-编辑-inventory-ini-配置文件)。
+- `inventory.ini`：使用 DM-Ansible 部署 DM 集群的配置文件。需要根据所选用的集群拓扑来进行编辑。详见[编辑 `inventory.ini` 配置文件](/v3.0/how-to/deploy/data-migration-with-ansible.md#第-7-步编辑-inventoryini-配置文件)。
 - `dm-master.toml`：DM-master 进程的配置文件，包括 DM 集群的拓扑信息、MySQL 实例与 DM-worker 之间的关系（必须为一对一的关系）。使用 DM-Ansible 部署 DM 集群时，会自动生成 `dm-master.toml` 文件。
 - `dm-worker.toml`：DM-worker 进程的配置文件，包括上游 MySQL 实例的配置和 relay log 的配置。使用 DM-Ansible 部署 DM 集群时，会自动生成 `dm-worker.toml` 文件。
 
