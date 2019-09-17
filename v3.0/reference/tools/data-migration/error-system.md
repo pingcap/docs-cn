@@ -9,7 +9,7 @@ category: reference
 
 ## 错误输出内容解析
 
-在 DM 1.0.0-GA 版本中引入新的错误系统，错误系统支持错误码机制，增加了 class、scope、level 等错误信息、优化错误信息输出、错误调用链和调用堆栈信息，关于错误系统的详细设计和实现可以参考 [RFC 文档: Proposal: Improve Error System](https://github.com/pingcap/dm/blob/master/docs/RFCS/20190722_error_handling.md)。本文以一条实际错误输出来解析错误信息中各个字段的含义。
+在 DM 1.0.0-GA 版本中引入新的错误系统。该错误系统增加错误码机制；增加了 class、scope、level 等错误信息；优化了错误描述内容、错误调用链信息和调用堆栈信息。关于错误系统的详细设计和实现可以参考 [RFC 文档: Proposal: Improve Error System](https://github.com/pingcap/dm/blob/master/docs/RFCS/20190722_error_handling.md)。本文以一条实际错误输出来解析错误信息中各个字段的含义。
 
 ```
 [code=38008:class=dm-master:scope=internal:level=high] grpc request error: rpc error: code = Unavailable desc = all SubConns are in TransientFailure, latest connection error: connection error: desc = "transport: Error while dialing dial tcp 172.17.0.2:8262: connect: connection refused"
@@ -52,7 +52,7 @@ DM 中所有的错误都按照固定格式输出：[错误基本信息] + 错误
 | dm-tracer      | dm-tracer 服务内部发生的错误   | [code=42004:class=dm-tracer:scope=internal:level=medium] trace event test.1 not found |
 
 - scope: 错误作用域，用于标识错误发生时 DM 作用对象的范围、来源，包含 未设置（not-set）、上游数据库（upstream）、下游数据库（downstream）、内部（internal）四种类型。如果出错的逻辑直接涉及到上下游数据库请求，会设置 upstream 或 downstream，其他出错场景目前设置的作用域都为 internal。
-- level: 错误级别，错误的严重级别，包括 低级别（low），中级别（medium），高级别（high）。低级别通常是用户操作、输入错误，不影响正常同步任务；中级别通常是用户配置等错误，会影响部分新启动服务，不影响已有系统同步状态；高级别通常是用户需要关注的一些错误，可能存在同步任务中断等风险，需要用户进行处理。
+- level: 错误级别，错误的严重级别，包括 低级别（low）、中级别（medium）、高级别（high）。低级别通常是用户操作、输入错误，不影响正常同步任务；中级别通常是用户配置等错误，会影响部分新启动服务，不影响已有系统同步状态；高级别通常是用户需要关注的一些错误，可能存在同步任务中断等风险，需要用户进行处理。
 
 在上述的错误示例中
 
@@ -87,7 +87,7 @@ DM 会根据错误的严重程度和必要性来选择是否输出错误堆栈�
 - code=10003: 数据库底层 invalid connection 错误，通常表示 DM 到下游 TiDB 的数据库连接出现了异常（如网络故障、TiDB 重启、TiKV busy 等）且当前请求已有部分数据发送到了 TiDB。DM 提供针对此类错误的自动恢复，如果未能正常恢复需要用户进一步检查错误信息并根据具体场景进行分析。
 - code=10005: 数据库查询类语句出错。
 - code=10006: 数据库 execute 类型语句出错，包括 DDL，insert/update/delete 类型 DML。更详细的错误信息可以通过错误 message 获取，错误 message 中通常会包含操作数据库返回的错误码和错误信息。
-- code=11006: 该错误是 DM 内置 parser 解析不兼容的 DDL 时出错，出现此类错误时可参考 [Data Migration 故障诊断-处理不兼容的 DDL 语句](/dev/how-to/troubleshoot/data-migration.md#处理不兼容的-ddl-语句) 提供的方案解决。
-- code=20010: 处理任务配置时解密数据库密码出错。发生此错误时需要检查任务配置中提供的下游数据库密码是否有[使用 dmctl 正确加密](/dev/how-to/deploy/data-migration-with-ansible.md#使用-dmctl-加密上游-mysql-用户密码)。
+- code=11006: 该错误是 DM 内置 parser 解析不兼容的 DDL 时出错，出现此类错误时可参考 [Data Migration 故障诊断-处理不兼容的 DDL 语句](/v3.0/how-to/troubleshoot/data-migration.md#处理不兼容的-ddl-语句) 提供的方案解决。
+- code=20010: 处理任务配置时解密数据库密码出错。发生此错误时需要检查任务配置中提供的下游数据库密码是否有[使用 dmctl 正确加密](/v3.0/how-to/deploy/data-migration-with-ansible.md#使用-dmctl-加密上游-mysql-用户密码)。
 - code=26002: 任务检查创建数据库连接失败，更详细的错误信息可以通过错误 message 获取，错误 message 中会包含操作数据库返回的错误码和错误信息。发生此错误时可以首先检查 DM-master 所在的机器是否有权限访问上游。
 - code=38008: DM 组件间 gRPC 通信出错。出现此类错误时可以检查 class 定位错误发生在哪些组件交互环节，根据错误 message 判断是哪类通信错误。譬如如果是 gRPC 建立连接出错，可以检查通信服务端是否服务正常。

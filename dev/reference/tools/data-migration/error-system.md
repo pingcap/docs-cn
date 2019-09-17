@@ -9,7 +9,7 @@ category: reference
 
 ## 错误输出内容解析
 
-在 DM 1.0.0-GA 版本中引入新的错误系统，错误系统支持错误码机制，增加了 class、scope、level 等错误信息、优化错误信息输出、错误调用链和调用堆栈信息，关于错误系统的详细设计和实现可以参考 [RFC 文档: Proposal: Improve Error System](https://github.com/pingcap/dm/blob/master/docs/RFCS/20190722_error_handling.md)。本文以一条实际错误输出来解析错误信息中各个字段的含义。
+在 DM 1.0.0-GA 版本中引入新的错误系统。该错误系统增加错误码机制；增加了 class、scope、level 等错误信息；优化了错误描述内容、错误调用链信息和调用堆栈信息。关于错误系统的详细设计和实现可以参考 [RFC 文档: Proposal: Improve Error System](https://github.com/pingcap/dm/blob/master/docs/RFCS/20190722_error_handling.md)。本文以一条实际错误输出来解析错误信息中各个字段的含义。
 
 ```
 [code=38008:class=dm-master:scope=internal:level=high] grpc request error: rpc error: code = Unavailable desc = all SubConns are in TransientFailure, latest connection error: connection error: desc = "transport: Error while dialing dial tcp 172.17.0.2:8262: connect: connection refused"
@@ -52,7 +52,7 @@ DM 中所有的错误都按照固定格式输出：[错误基本信息] + 错误
 | dm-tracer      | dm-tracer 服务内部发生的错误   | [code=42004:class=dm-tracer:scope=internal:level=medium] trace event test.1 not found |
 
 - scope: 错误作用域，用于标识错误发生时 DM 作用对象的范围、来源，包含 未设置（not-set）、上游数据库（upstream）、下游数据库（downstream）、内部（internal）四种类型。如果出错的逻辑直接涉及到上下游数据库请求，会设置 upstream 或 downstream，其他出错场景目前设置的作用域都为 internal。
-- level: 错误级别，错误的严重级别，包括 低级别（low），中级别（medium），高级别（high）。低级别通常是用户操作、输入错误，不影响正常同步任务；中级别通常是用户配置等错误，会影响部分新启动服务，不影响已有系统同步状态；高级别通常是用户需要关注的一些错误，可能存在同步任务中断等风险，需要用户进行处理。
+- level: 错误级别，错误的严重级别，包括 低级别（low）、中级别（medium）、高级别（high）。低级别通常是用户操作、输入错误，不影响正常同步任务；中级别通常是用户配置等错误，会影响部分新启动服务，不影响已有系统同步状态；高级别通常是用户需要关注的一些错误，可能存在同步任务中断等风险，需要用户进行处理。
 
 在上述的错误示例中
 
