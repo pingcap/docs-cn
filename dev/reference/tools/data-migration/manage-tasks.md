@@ -113,7 +113,7 @@ Global Flags:
 #### 命令用法示例
 
 ```bash
-start-task [ -w "172.16.30.15:10081"] ./task.yaml
+start-task [ -w "172.16.30.15:8262"] ./task.yaml
 ```
 
 #### 参数解释
@@ -136,12 +136,12 @@ start-task [ -w "172.16.30.15:10081"] ./task.yaml
      "workers": [
          {
              "result": true,
-             "worker": "172.16.30.15:10081",
+             "worker": "172.16.30.15:8262",
              "msg": ""
          },
          {
              "result": true,
-             "worker": "172.16.30.16:10081",
+             "worker": "172.16.30.16:8262",
              "msg": ""
          }
      ]
@@ -186,90 +186,6 @@ query-status
 
 有关查询结果中各参数的意义，详见[查询状态结果](/dev/reference/tools/data-migration/query-status.md#查询结果)。
 
-```bash
-» query-status
-{
-     "result": true,
-     "msg": "",
-     "workers": [
-         {
-             "result": true,
-             "worker": "172.16.30.15:10081",
-             "msg": "",
-             "subTaskStatus": [
-                 {
-                     "name": "test",
-                     "stage": "Running",
-                     "unit": "Sync",
-                     "result": null,
-                     "unresolvedDDLLockID": "",
-                     "sync": {
-                         "TotalEvents": "0",
-                         "TotalTps": "0",
-                         "RecentTps": "0",
-                         "MasterBinlog": "(mysql-bin.000004, 484)",
-                         "MasterBinlogGtid": "",
-                         "SyncerBinlog": "(mysql-bin.000004, 484)",
-                         "SyncerBinlogGtid": "",
-                        "blockingDDLs": [
-                        ],
-                        "unresolvedGroups": [
-                        ]
-                     }
-                 }
-             ],
-             "relayStatus": {
-                 "MasterBinlog": "(mysql-bin.000004, 484)",
-                 "MasterBinlogGtid": "",
-                "relaySubDir": "0-1.000001",
-                 "RelayBinlog": "(mysql-bin.000004, 484)",
-                 "RelayBinlogGtid": "",
-                "relayCatchUpMaster": true,
-                "stage": "Running",
-                "result": null
-             }
-         },
-         {
-             "result": true,
-             "worker": "172.16.30.16:10081",
-             "msg": "",
-             "subTaskStatus": [
-                 {
-                     "name": "test",
-                     "stage": "Running",
-                     "unit": "Sync",
-                     "result": null,
-                     "unresolvedDDLLockID": "",
-                     "sync": {
-                         "TotalEvents": "0",
-                         "TotalTps": "0",
-                         "RecentTps": "0",
-                         "MasterBinlog": "(mysql-bin.000004, 4809)",
-                         "MasterBinlogGtid": "",
-                         "SyncerBinlog": "(mysql-bin.000004, 4809)",
-                         "SyncerBinlogGtid": "",
-                        "blockingDDLs": [
-                        ],
-                        "unresolvedGroups": [
-                        ]
-                     }
-                 }
-             ],
-             "relayStatus": {
-                 "MasterBinlog": "(mysql-bin.000004, 4809)",
-                 "MasterBinlogGtid": "",
-                "relaySubDir": "0-1.000001",
-                 "RelayBinlog": "(mysql-bin.000004, 4809)",
-                 "RelayBinlogGtid": "",
-                "relayCatchUpMaster": true,
-                "stage": "Running",
-                "result": null
-             }
-         }
-     ]
-}
-```
-
 ### 暂停数据同步任务
 
 `pause-task` 命令用于暂停数据同步任务。
@@ -291,7 +207,7 @@ Global Flags:
 #### 命令用法示例
 
 ```bash
-pause-task [-w "127.0.0.1:10181"] task-name
+pause-task [-w "127.0.0.1:8262"] task-name
 ```
 
 #### 参数解释
@@ -314,16 +230,22 @@ pause-task [-w "127.0.0.1:10181"] task-name
      "msg": "",
      "workers": [
          {
-             "op": "Pause",
-             "result": true,
-             "worker": "172.16.30.15:10081",
-             "msg": ""
+            "meta": {
+                "result": true,
+                "worker": "172.16.30.15:8262",
+                "msg": ""
+            },
+            "op": "Pause",
+            "logID": "2"
          },
          {
-             "op": "Pause",
-             "result": true,
-             "worker": "172.16.30.16:10081",
-             "msg": ""
+            "meta": {
+                "result": true,
+                "worker": "172.16.30.16:8262",
+                "msg": ""
+            },
+            "op": "Pause",
+            "logID": "2"
          }
      ]
 }
@@ -350,7 +272,7 @@ Global Flags:
 #### 命令用法示例
 
 ```bash
-resume-task [-w "127.0.0.1:10181"] task-name
+resume-task [-w "127.0.0.1:8262"] task-name
 ```
 
 #### 参数解释
@@ -373,16 +295,22 @@ resume-task [-w "127.0.0.1:10181"] task-name
      "msg": "",
      "workers": [
          {
+             "meta": {
+                 "result": true,
+                 "worker": "172.16.30.15:8262",
+                 "msg": ""
+             },
              "op": "Resume",
-             "result": true,
-             "worker": "172.16.30.15:10081",
-             "msg": ""
+             "logID": "3"
          },
          {
+             "meta": {
+                 "result": true,
+                 "worker": "172.16.30.16:8262",
+                 "msg": ""
+             },
              "op": "Resume",
-             "result": true,
-             "worker": "172.16.30.16:10081",
-             "msg": ""
+             "logID": "3"
          }
      ]
 }
@@ -409,7 +337,7 @@ Global Flags:
 #### 命令用法示例
 
 ```bash
-stop-task [-w "127.0.0.1:10181"]  task-name
+stop-task [-w "127.0.0.1:8262"]  task-name
 ```
 
 #### 参数解释
@@ -432,16 +360,22 @@ stop-task [-w "127.0.0.1:10181"]  task-name
      "msg": "",
      "workers": [
          {
+             "meta": {
+                 "result": true,
+                 "worker": "172.16.30.15:8262",
+                 "msg": ""
+             },
              "op": "Stop",
-             "result": true,
-             "worker": "172.16.30.15:10081",
-             "msg": ""
+             "logID": "4"
          },
          {
+             "meta": {
+                 "result": true,
+                 "worker": "172.16.30.16:8262",
+                 "msg": ""
+             },
              "op": "Stop",
-             "result": true,
-             "worker": "172.16.30.16:10081",
-             "msg": ""
+             "logID": "4"
          }
      ]
 }
@@ -453,10 +387,10 @@ stop-task [-w "127.0.0.1:10181"]  task-name
 
 支持的更新项包括：
 
-- 表路由规则
-- 表黑白名单规则
-- binlog 过滤规则
-- 列值转换规则
+- Table routing 规则
+- Black & white table lists 规则
+- Binlog event filter 规则
+- Column mapping 规则
 
 其余项均不支持更新。
 
@@ -480,7 +414,7 @@ stop-task [-w "127.0.0.1:10181"]  task-name
 
 2. 在 `task.yaml` 文件中更新需要修改的自定义配置或者错误配置。
 
-3. 使用 `start-task <task-name>` 恢复任务。
+3. 使用 `start-task <task-name>` 重启恢复任务。
 
 ```bash
 » help update-task
@@ -499,7 +433,7 @@ Global Flags:
 #### 命令用法示例
 
 ```bash
-update-task [-w "127.0.0.1:10181"] ./task.yaml
+update-task [-w "127.0.0.1:8262"] ./task.yaml
 ```
 
 #### 参数解释
@@ -522,12 +456,12 @@ update-task [-w "127.0.0.1:10181"] ./task.yaml
      "workers": [
          {
              "result": true,
-             "worker": "172.16.30.15:10081",
+             "worker": "172.16.30.15:8262",
              "msg": ""
          },
          {
              "result": true,
-             "worker": "172.16.30.16:10081",
+             "worker": "172.16.30.16:8262",
              "msg": ""
          }
      ]

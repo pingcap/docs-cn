@@ -17,7 +17,7 @@ category: reference
     "workers": [                            # DM-worker 列表。
         {
             "result": true,
-            "worker": "172.17.0.2:10081",   # DM-worker ID。
+            "worker": "172.17.0.2:8262",   # DM-worker ID。
             "msg": "",
             "subTaskStatus": [              # DM-worker 所有子任务的信息。
                 {
@@ -66,11 +66,12 @@ category: reference
                 "relayCatchUpMaster": true,     # 本地 relay log 同步进度是否与上游一致。
                 "stage": "Running",             # relay 处理单元状态
                 "result": null
-            }
+            },
+            "sourceID": "172.17.0.2:3306"        # 上游实例或者复制组 ID
         },
         {
             "result": true,
-            "worker": "172.17.0.3:10081",
+            "worker": "172.17.0.3:8262",
             "msg": "",
             "subTaskStatus": [
                 {
@@ -95,11 +96,12 @@ category: reference
                 "relayCatchUpMaster": true,
                 "stage": "Running",
                 "result": null
-            }
+            },
+            "sourceID": "172.17.0.3:3306"
         },
         {
             "result": true,
-            "worker": "172.17.0.6:10081",
+            "worker": "172.17.0.6:8262",
             "msg": "",
             "subTaskStatus": [
                 {
@@ -133,7 +135,8 @@ category: reference
                 "relayCatchUpMaster": true,
                 "stage": "Running",
                 "result": null
-            }
+            },
+            "sourceID": "172.17.0.6:3306"
         }
     ]
 }
