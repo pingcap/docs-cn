@@ -42,6 +42,7 @@ category: FAQ
 
 - drainer 监控 **drainer event** 可以看到 drainer 当前每秒同步 Insert/Update/Delete 时间到下游的速度
 - drainer 监控 **sql query time** 可以看到 drainer 在下游执行 sql 的响应时间
+- 同步的数据库是否有包含没有主键或者唯一索引的表
 - 下游负载不高的情况下可以尝试调大 drainer **worker-count** 参数
     - 会加大并发写下游
     - drainer 跟下游之间延迟大的情况下需要调大并发数(跨机房同步建议 drainer 部署在下游)
@@ -50,7 +51,14 @@ category: FAQ
 
 - drainer 会因为获取不到这个 pump 的数据没法同步数据到下游
 - 如果这个 pump 能恢复 drainer 就能恢复同步
-- 如果 pump 没法恢复需要考虑强制用 binlogctl 修改这个 pump 状态成 offline(丢失这个pump的数据), 或者重新部署
+- 如果 pump 没法恢复
+    - 使用 [binlogctl 修改这个 pump 状态成 offline](/v2.1/how-to/maintain/tidb-binlog.md)(丢失这个pump的数据)
+	- drainer 获取到的数据会丢失这个 pump 上的数据，下游跟上游数据会不一致，需要重新全量 + 增量
+	    1. 停止当前 drainer
+		2. 上游做全量备份
+		3. 清理掉下游数据包括 checkpoint 表 `tidb_binlog.checkpoint`
+		4. 使用上游的全量备份恢复下游
+		5. 部署 drainer, 使用 `initialCommitTs`= {从全量备份获取快照的时间戳}
 
 ## drainer 故障如何重建 drainer (下游数据还在的情况下）
 
