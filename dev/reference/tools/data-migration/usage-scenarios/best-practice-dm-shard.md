@@ -7,7 +7,7 @@ category: reference
 
 本文目的是阐述在使用 DM 对分库分表进行合并迁移的场景中，DM 相关功能的支持限制，旨在给出一个业务的最佳实践。
 
-## 数据迁移任务
+## 独立的数据迁移任务
 
 在[分库分表合并同步的实现原理部分](/dev/reference/tools/data-migration/features/shard-merge.md#实现原理)，我们介绍了 shard group 的概念，简单来说可以理解为所有需要合并到同一个下游表的所有上游表即组成一个 shard group。
 
