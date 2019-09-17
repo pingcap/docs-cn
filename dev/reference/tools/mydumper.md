@@ -50,14 +50,16 @@ Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/dev/r
 运行命令
 
   ```bash
-  ./bin/mydumper --help
+  ./bin/mydumper -V
   ```
 
-包含如下配置项的为 PingCAP 优化的版本：
+输出如下：
 
-  ```bash
-  -z, --tidb-snapshot         Snapshot to use for TiDB
   ```
+  mydumper 0.9.5 (d3e6fec8b069daee772d0dbaa47579f67a5947e7), built against MySQL 5.7.24
+  ```
+
+包含 githash（示例输出中的 `d3e6fec8b069daee772d0dbaa47579f67a5947e7`）内容的即为 PingCAP 优化的版本。
 
 ### 使用 Loader 恢复 Mydumper 备份出来的数据时报错 "invalid mydumper files for there are no `-schema-create.sql` files found"，应该如何解决？
 
@@ -92,13 +94,25 @@ Mydumper 使用该参数控制 `Insert Statement` 的大小，默认值为 1M �
 
 ### Mydumper 备份 TiDB 数据报错 "GC life time is shorter than transaction duration" 应该怎么解决？
 
-Mydumper 备份 TiDB 数据时为了保证数据的一致性使用了 TiDB 的 snapshot 特性，如果备份过程中 snapshot 对应的历史数据被 TiDB GC 处理了，则会报该错误。建议在备份前通过如下命令调整 TiDB 的 GC 参数：
+Mydumper 备份 TiDB 数据时为了保证数据的一致性使用了 TiDB 的 snapshot 特性，如果备份过程中 snapshot 对应的历史数据被 TiDB GC 处理了，则会报该错误。建议在备份前使用 MySQL 客户端查询 TiDB 集群的 GC 值并将其调整为合适的值：
 
-  ```bash
-  mysql> update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_life_time';
+  ```sql
+    mysql> SELECT * FROM mysql.tidb WHERE VARIABLE_NAME = 'tikv_gc_life_time';
+    +-----------------------+------------------------------------------------------------------------------------------------+
+    | VARIABLE_NAME         | VARIABLE_VALUE                                                                                 |
+    +-----------------------+------------------------------------------------------------------------------------------------+
+    | tikv_gc_life_time     | 10m0s                                                                                          |
+    +-----------------------+------------------------------------------------------------------------------------------------+
+    1 rows in set (0.02 sec)
+
+    mysql> update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_life_time';
   ```
 
-备份完成后再将 `tikv_gc_life_time` 的值调整为原来的值。
+备份完成后再将 `tikv_gc_life_time` 的值调整为原来的值：
+
+  ```sql
+    mysql> update mysql.tidb set VARIABLE_VALUE = '10m0s' where VARIABLE_NAME = 'tikv_gc_life_time';
+  ```
 
 ### Mydumper 的参数 `--tidb-rowid` 是否需要配置？
 
