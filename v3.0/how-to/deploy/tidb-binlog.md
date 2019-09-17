@@ -172,6 +172,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
         > **注意：**
         >
         > 配置文件名命名规则为 `别名_drainer.toml`，否则部署时无法找到自定义配置文件。
+        > v3.0.2 及以后版本 ansible 不再支持 binlog kafka 模式，请勿将 drainer.toml 更名为 drainer_mysql_drainer-cluster.toml
 
         db-type 设置为 "mysql"， 配置下游 MySQL 信息。
 
