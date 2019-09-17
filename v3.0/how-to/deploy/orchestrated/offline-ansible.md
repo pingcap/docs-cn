@@ -40,7 +40,7 @@ aliases: ['/docs-cn/op-guide/offline-ansible-deployment/']
 
 ## 在中控机上创建 tidb 用户，并生成 ssh key
 
-参考[在中控机上创建 tidb 用户，并生成 ssh key](/v3.0/how-to/deploy/orchestrated/ansible.md#在中控机上创建-tidb-用户-并生成-ssh-key) 即可。
+参考[在中控机上创建 tidb 用户，并生成 ssh key](/v3.0/how-to/deploy/orchestrated/ansible.md#在中控机上创建-tidb-用户并生成-ssh-key) 即可。
 
 ## 在中控机器上离线安装 Ansible 及其依赖
 
@@ -137,7 +137,7 @@ aliases: ['/docs-cn/op-guide/offline-ansible-deployment/']
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
-参考[分配机器资源，编辑 inventory.ini 文件](/v3.0/how-to/deploy/orchestrated/ansible.md#分配机器资源-编辑-inventory-ini-文件)即可。
+参考[分配机器资源，编辑 inventory.ini 文件](/v3.0/how-to/deploy/orchestrated/ansible.md#分配机器资源编辑-inventoryini-文件)即可。
 
 ## 部署任务
 
