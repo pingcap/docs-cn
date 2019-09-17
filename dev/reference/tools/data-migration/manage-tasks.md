@@ -749,7 +749,7 @@ purge-relay -w "127.0.0.1:8262" --filename "mysql-bin.000003"
 
 ### 预设替代 DDL 操作
 
-`sql-replace` 命令用于预设一个替代执行操作，当 binlog event 的 position 或 SQL 语句与指定的 `binlog-pos` 或 `sql-pattern` 匹配时，执行该替代执行操作。有关 `sql-replace` 的参数与结果解释，请参考[跳过 (skip) 或替代执行 (replace) 异常的 SQL 语句 文档中的 sql-replace](/dev/reference/tools/data-migration/skip-replace-sqls.md#sql-replace)。
+`sql-replace` 命令用于预设一个替代执行操作，当 binlog event 的 position 或 SQL 语句与指定的 `binlog-pos` 或 `sql-pattern` 匹配时，执行该替代执行操作。有关 `sql-replace` 的参数与结果解释，请参考[跳过 (skip) 或替代执行 (replace) 异常的 SQL 语句文档中的 sql-replace](/dev/reference/tools/data-migration/skip-replace-sqls.md#sql-replace)。
 
 ### 强制刷新 `task => DM-workers` 映射关系
 
