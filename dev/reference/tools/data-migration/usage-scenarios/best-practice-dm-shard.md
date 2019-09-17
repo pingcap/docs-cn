@@ -117,11 +117,13 @@ CREATE TABLE `tbl_multi_pk` (
 
 如果需要在上游删除原有的分表，推荐按以下顺序执行操作：
 
-1. 通过 `stop-task` 停止任务。
-2. 在上游删除原有的分表。
-3. 确保 `task.yaml` 配置能忽略上游已删除的分表。
-4. 通过 `start-task` 启动任务。
-5. 通过 `query-status` 验证数据迁移任务是否正常，在下游数据库中验证合表中是否已经存在了来自上游的数据。
+1. 在上游删除原有的分表，并通过 [`SHOW BINLOG EVENTS`](https://dev.mysql.com/doc/refman/5.7/en/show-binlog-events.html) 获取该 `DROP TABLE` 语句在 binlog 中对应的 `End_log_pos`，记为 _Pos-M_。
+2. 通过 `query-status` 获取当前 DM 已经处理完成的 binlog event 对应的 position（`syncerBinlog`），记为 _Pos-S_。
+3. 当 _Pos-S_ 比 _Pos-M_ 更大后，则说明 DM 已经处理完 `DROP TABLE` 语句，且该表在被删除前的数据都已经同步到下游，可以进行后续操作；否则，继续等待 DM 进行数据同步。
+4. 通过 `stop-task` 停止任务。
+5. 确保 `task.yaml` 配置能忽略上游已删除的分表。
+6. 通过 `start-task` 启动任务。
+7. 通过 `query-status` 验证数据迁移任务是否正常。
 
 ## 数据迁移限速/流控
 
