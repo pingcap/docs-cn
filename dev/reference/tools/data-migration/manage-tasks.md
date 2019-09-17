@@ -16,14 +16,17 @@ category: reference
 ```bash
 $ ./dmctl --help
 Usage of dmctl:
- # 打印版本信息
  -V prints version and exit
  # 按照 DM 提供的加密方法加密数据库密码，用于 DM 的配置文件
+ -config string
+     	path to config file
  -encrypt string
        encrypt plaintext to ciphertext
  # DM-master 访问地址，dmctl 与 DM-master 交互以完成任务管理操作
  -master-addr string
        master API server addr
+ -rpc-timeout string
+       rpc timeout, default is 10m (default "10m")
 ```
 
 ### 加密数据库密码
@@ -41,11 +44,11 @@ VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=
 # 进入命令行模式，与 DM-master 进行交互
 $ ./dmctl -master-addr 172.16.30.14:8261
 Welcome to dmctl
-Release Version: v1.0.0-100-g2bef6f8b
-Git Commit Hash: 2bef6f8beda34c0dff57377005c71589b48aa3c5
-Git Branch: dm-master
-UTC Build Time: 2018-11-02 10:03:18
-Go Version: go version go1.11 linux/amd64
+Release Version: v1.0.1
+Git Commit Hash: e63c6cdebea0edcf2ef8c91d84cff4aaa5fc2df7
+Git Branch: release-1.0
+UTC Build Time: 2019-09-10 06:15:05
+Go Version: go version go1.12 linux/amd64
 
 » help
 DM control
@@ -54,29 +57,33 @@ Usage:
   dmctl [command]
 
 Available Commands:
-  break-ddl-lock       force to break DM-worker's DDL lock
-  generate-task-config generate a task config with config file
+  break-ddl-lock       force to break dm-worker's DDL lock
+  check-task           check a task with config file
   help                 Help about any command
-  pause-relay          pause DM-worker's relay unit
+  migrate-relay        migrate dm-worker's relay unit
+  pause-relay          pause dm-worker's relay unit
   pause-task           pause a running task with name
+  purge-relay          purge dm-worker's relay log files according to specified filename
+  query-error          query task's error
   query-status         query task's status
   refresh-worker-tasks refresh worker -> tasks mapper
-  resume-relay         resume DM-worker's relay unit
+  resume-relay         resume dm-worker's relay unit
   resume-task          resume a paused task with name
   show-ddl-locks       show un-resolved DDL locks
   sql-inject           sql-inject injects (limited) sqls into syncer as binlog event
-  sql-replace          sql-replace replaces sql in specific binlog_pos with other sqls, each sql must ends with semicolon;
-  sql-skip             sql-skip skips specified binlog position
+  sql-replace          sql-replace replaces SQL in specific binlog-pos or sql-pattern matched with other SQLs, each SQL must ends with semicolon;
+  sql-skip             sql-skip skips binlog event in specific binlog-pos or sql-pattern matched
   start-task           start a task with config file
   stop-task            stop a task with name
-  switch-relay-master  switch master server of DM-worker's relay unit
+  switch-relay-master  switch master server of dm-worker's relay unit
   unlock-ddl-lock      force to unlock DDL lock
-  update-master-config update configure of DM-master
+  update-master-config update configure of dm-master
+  update-relay         update dm-worker's relay unit configure
   update-task          update a task's config for routes, filters, column-mappings, black-white-list
 
 Flags:
   -h, --help             help for dmctl
-  -w, --worker strings   DM-worker ID
+  -w, --worker strings   dm-worker ID
 
 # 使用 `dmctl [command] --help` 来获取某个命令的更多信息
 ```
