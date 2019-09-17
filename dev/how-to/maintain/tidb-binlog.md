@@ -5,7 +5,7 @@ category: reference
 
 # TiDB Binlog 集群运维
 
-本文首先介绍 Pump/Drainer 的状态及启动、退出的内部处理流程，然后说明如何通过 binlogctl 工具或者直接在 TiDB 执行 SQL 来管理 binlog 集群，最后 FAQ 会介绍一些常见问题以及处理方法。
+本文首先介绍 Pump 和 Drainer 的状态及启动、退出的内部处理流程，然后说明如何通过 binlogctl 工具或者直接在 TiDB 执行 SQL 操作来管理 binlog 集群，最后的 FAQ 部分会介绍一些常见问题以及处理方法。
 
 ## Pump/Drainer 的状态
 
@@ -300,14 +300,14 @@ Usage of binlogctl:
 
 不可以，update-pump/update-drainer 命令直接修改 PD 中保存的状态信息，使用这个命令并不会通知 Pump/Drainer 做相应的操作，而且使用不当可能会干扰数据同步, 某些情况下还可能会造成*数据不一致*的严重后果。例如：
 
-- Pump 正常运行中或者处于暂停状态，使用 update-pump 将该 Pump 设置为 offline，Drainer 会放弃获取 offline 状态 Pump 的 binlog 数据，导致该 Pump 最新的 binlog 数据没有同步到 Drainer，造成上下游数据不一致。
+- 当 Pump 正常运行或者处于暂停状态时，使用 update-pump 将该 Pump 设置为 offline，Drainer 会放弃获取处于 offline 状态的 Pump 的 binlog 数据，导致该 Pump 最新的 binlog 数据没有同步到 Drainer，造成上下游数据不一致。
 - 当 Drainer 正常运行时，使用 update-drainer 将该 Drainer 设置为 offline。这个时候启动一个 Pump，Pump 只会通知 online 状态的 Drainer，导致该 Drainer 没有及时获取到该 Pump 的 binlog 数据，造成上下游数据不一致。
 
 ### 什么情况下使用 binlogctl 的 update-pump 命令设置 Pump 状态为 offline?
 
 > **注意：**
 >
-> 仅在可以容忍 binlog **数据丢失、上下游数据不一致**或者确认不再需要使用该 Pump 存储的 binlog 数据的情况下使用 update-pump 修改状态为 offline，例如：
+> 仅在可以容忍 binlog **数据丢失、上下游数据不一致**或者确认不再需要使用该 Pump 存储的 binlog 数据的情况下，才能使用 update-pump 修改 Pump 状态为 offline，否则一定要使用 offline-pump 命令。
 
 - 在某些情况下，Pump 异常退出进程，且无法恢复服务，同步就会中断。如果希望恢复同步且可以容忍部分 binlog 数据丢失，可以使用 update-pump 命令将该 Pump 状态设置为 offline，则 Drainer 会放弃拉取该 Pump 的 binlog 然后继续同步数据。
 - 有历史遗留的 Pump 且进程已经退出（例如测试使用的服务），之后不再需要使用该服务，使用 update-pump 将该 Pump 设置为 offline。
