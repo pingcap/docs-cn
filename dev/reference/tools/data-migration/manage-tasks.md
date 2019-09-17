@@ -190,6 +190,12 @@ query-status
 
 `pause-task` 命令用于暂停数据同步任务。
 
+有关 `pause-task` 与 `stop-task` 的区别如下：
+
+- 使用 `pause-task` 仅暂停同步任务的执行，但仍然会在内存中保留任务的状态信息等，且可通过 `query-status` 进行查询；使用 `stop-task` 会停止同步任务的执行，并移除内存中与该任务相关的信息，且不可再通过 `query-status` 进行查询，但不会移除已经写入到下游数据库中的数据以及其中的 checkpoint 等 `dm_meta` 信息。
+- 使用 `pause-task` 暂停同步任务期间，由于任务本身仍然存在，因此不能再启动同名的新任务，且会阻止对该任务所需 relay log 的清理；使用 `stop-task` 停止任务后，由于任务不再存在，因此可以再启动同名的新任务，且不会阻止对 relay log 的清理。
+- `pause-task` 一般用于临时暂停同步任务以排查问题等；`stop-task` 一般用于永久删除同步任务或通过与 `start-task` 配合以更新配置信息。
+
 ```bash
 » help pause-task
 pause a running task with name
@@ -253,7 +259,7 @@ pause-task [-w "127.0.0.1:8262"] task-name
 
 ### 恢复数据同步任务
 
-`resume-task` 命令用于恢复数据同步任务。
+`resume-task` 命令用于恢复处于 `Paused` 状态的数据同步任务，通常用于在人为处理完造成同步任务暂停的故障后手动恢复同步任务。
 
 ```bash
 » help resume-task
@@ -318,7 +324,7 @@ resume-task [-w "127.0.0.1:8262"] task-name
 
 ### 停止数据同步任务
 
-`stop-task` 命令用于停止数据同步任务。
+`stop-task` 命令用于停止数据同步任务。有关 `stop-task` 与 `pause-task` 的区别，请参考 [暂停数据同步任务](#暂停数据同步任务) 中的相关说明。
 
 ```bash
 » help stop-task
@@ -393,6 +399,10 @@ stop-task [-w "127.0.0.1:8262"]  task-name
 - Column mapping 规则
 
 其余项均不支持更新。
+
+> **注意：**
+>
+> 如果能确保同步任务所需的 relay log 不会被清理，则推荐使用[不支持更新项的更新步骤](#不支持更新项的更新步骤)来以统一的方式更新任务配置信息。
 
 #### 支持更新项的更新步骤
 
@@ -470,7 +480,7 @@ update-task [-w "127.0.0.1:8262"] ./task.yaml
 
 ## 管理 DDL lock
 
-详见[手动处理 sharding DDL lock](/dev/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)。
+目前与 DDL lock 相关的命令主要包括 `show-ddl-locks`、`unlock-ddl-lock`、`break-ddl-lock` 等。有关它们的功能、用法以及适用场景等，请参考[手动处理 sharding DDL lock](/dev/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)。
 
 ## 强制刷新 `task => DM-workers` 映射关系
 
