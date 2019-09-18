@@ -36,6 +36,15 @@ sha256sum -c dm-{version}-linux-amd64.sha256
 
 ### DM-worker 的部署
 
+DM-worker 需要链接上游 MySQL，且为了安全，强制用户必须配置加密后的密码。首先需要使用 dmctl 对 MySQL 的密码进行加密，以密码为 "123456" 为例：
+
+```
+./bin/dmctl --encrypt "123456"
+fCxfQ9XKCezSzuCD0Wf5dUD+LsKegSg=
+```
+
+记录下加密后的值，用于下面部署 DM-worker 的配置。
+
 DM-worker 提供命令行参数和配置文件两种配置方式。
 
 DM-worker 的命令行参数说明：
@@ -105,7 +114,7 @@ enable-gtid = false
 [from]
 host = "192.168.0.1"
 user = "root"
-password = "Up8156jArvIPymkVC+5LxkAT6rek"
+password = "fCxfQ9XKCezSzuCD0Wf5dUD+LsKegSg="
 port = 3306
 
 # relay log 的删除规则
