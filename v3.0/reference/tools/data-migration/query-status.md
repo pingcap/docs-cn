@@ -10,8 +10,13 @@ aliases: ['/docs-cn/tools/dm/query-status/']
 
 ## 查询结果
 
-```
+{{< copyable "" >}}
+
+```bash
 » query-status
+```
+
+```
 {
     "result": true,     # 查询是否成功。
     "msg": "",          # 查询失败原因描述。
@@ -138,7 +143,6 @@ aliases: ['/docs-cn/tools/dm/query-status/']
         }
     ]
 }
-
 ```
 
 关于 `workers` 下 `subTaskStatus` 中 `stage` 状态和状态转换关系的详细信息，请参阅[子任务状态](#子任务状态)。
