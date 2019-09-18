@@ -42,14 +42,23 @@ Relay-log 本地存储的目录结构示例如下：
 
 - `relay.meta`：存储每个 `subdir` 中已同步的 binlog 信息。例如，
 
+    ```bash
+    cat c0149e17-dff1-11e8-b6a8-0242ac110004.000001/relay.meta
     ```
-    $ cat c0149e17-dff1-11e8-b6a8-0242ac110004.000001/relay.meta
+
+    ```
     binlog-name = "mysql-bin.000010"    # 当前同步的 binlog 名
     binlog-pos = 63083620               # 当前同步的 binlog 位置
     binlog-gtid = "c0149e17-dff1-11e8-b6a8-0242ac110004:1-3328" # 当前同步的 binlog GTID
+    ```
 
-    # 可能包含多个 GTID
-    $ cat 92acbd8a-c844-11e7-94a1-1866daf8accc.000001/relay.meta
+    也可能包含多个 GTID：
+
+    ```bash
+    cat 92acbd8a-c844-11e7-94a1-1866daf8accc.000001/relay.meta
+    ```
+
+    ```
     binlog-name = "mysql-bin.018393"
     binlog-pos = 277987307
     binlog-gtid = "3ccc475b-2343-11e7-be21-6c0b84d59f30:1-14,406a3f61-690d-11e7-87c5-6c92bf46f384:1-94321383,53bfca22-690d-11e7-8a62-18ded7a37b78:1-495,686e1ab6-c47e-11e7-a42c-6c92bf46f384:1-34981190,03fc0263-28c7-11e7-a653-6c0b84d59f30:1-7041423,05474d3c-28c7-11e7-8352-203db246dd3d:1-170,10b039fc-c843-11e7-8f6a-1866daf8d810:1-308290454"
@@ -104,8 +113,13 @@ Relay log 的数据清理包括自动清理和手动清理这两种方法。
 
 假设当前 relay log 的目录结构如下：
 
+{{< copyable "shell-regular" >}}
+
+```bash
+tree .
 ```
-$ tree .
+
+```
 .
 |-- deb76a2b-09cc-11e9-9129-5242cf3bb246.000001
 |   |-- mysql-bin.000001
@@ -119,23 +133,34 @@ $ tree .
 |   |-- mysql-bin.000001
 |   `-- relay.meta
 `-- server-uuid.index
+```
 
-$ cat server-uuid.index
+{{< copyable "shell-regular" >}}
+
+```bash
+cat server-uuid.index
+```
+
+```
 deb76a2b-09cc-11e9-9129-5242cf3bb246.000001
 e4e0e8ab-09cc-11e9-9220-82cc35207219.000002
 deb76a2b-09cc-11e9-9129-5242cf3bb246.000003
 ```
 
-若使用 dmctl 来执行以下命令，可得到如下相应的结果：
+若使用 dmctl 来执行以下命令，可得到如下相应的结果。
 
-```
-# 执行该命令会清空 `deb76a2b-09cc-11e9-9129-5242cf3bb246.000001` 目录
-# `e4e0e8ab-09cc-11e9-9220-82cc35207219.000002` 和 `deb76a2b-09cc-11e9-9129-5242cf3bb246.000003` 目录保留
+执行该命令会清空 `deb76a2b-09cc-11e9-9129-5242cf3bb246.000001` 目录，保留 `e4e0e8ab-09cc-11e9-9220-82cc35207219.000002` 和 `deb76a2b-09cc-11e9-9129-5242cf3bb246.000003` 目录：
 
+{{< copyable "" >}}
+
+```bash
 » purge-relay -w 10.128.16.223:10081 --filename mysql-bin.000001 --sub-dir e4e0e8ab-09cc-11e9-9220-82cc35207219.000002
+```
 
-# 执行该命令会清空 `deb76a2b-09cc-11es9-9129-5242cf3bb246.000001、e4e0e8ab-09cc-11e9-9220-82cc35207219.000002` 目录
-# `deb76a2b-09cc-11e9-9129-5242cf3bb246.000003` 目录保留
+执行该命令会清空 `deb76a2b-09cc-11es9-9129-5242cf3bb246.000001` 和 `e4e0e8ab-09cc-11e9-9220-82cc35207219.000002` 目录，保留 `deb76a2b-09cc-11e9-9129-5242cf3bb246.000003` 目录：
 
+{{< copyable "" >}}
+
+```bash
 » purge-relay -w 10.128.16.223:10081 --filename mysql-bin.000001
 ```
