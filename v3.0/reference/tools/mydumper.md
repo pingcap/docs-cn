@@ -37,6 +37,8 @@ Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/v3.0/
 
 命令行参数：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./bin/mydumper -h 127.0.0.1 -u root -P 4000
 ```

@@ -12,19 +12,37 @@ aliases: ['/docs-cn/sql/user-defined-variables/']
 
 用 `SET` 语句可以设置用户自定义变量：
 
+{{< copyable "sql" >}}
+
 ```sql
-SET @var_name = expr [, @var_name = expr] ...
+SET @var_name = expr [, @var_name = expr] ...;
+```
+
 或
-SET @var_name := expr
+
+{{< copyable "sql" >}}
+
+```sql
+SET @var_name := expr;
 ```
 
 对于 `SET` 语句，赋值操作符可以是 `=` 也可以是 `:=`
 
 例：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SET @a1=1, @a2=2, @a3:=4;
-mysql> SELECT @a1, @a2, @t3, @a4 := @a1+@a2+@a3;
+SET @a1=1, @a2=2, @a3:=4;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT @a1, @a2, @t3, @a4 := @a1+@a2+@a3;
+```
+
+```
 +------+------+------+--------------------+
 | @a1  | @a2  | @a3  | @a4 := @a1+@a2+@a3 |
 +------+------+------+--------------------+
@@ -34,25 +52,58 @@ mysql> SELECT @a1, @a2, @t3, @a4 := @a1+@a2+@a3;
 
 如果设置用户变量用了 `HEX` 或者 `BIT` 值，TiDB会把它当成二进制字符串。如果你要将其设置成数字，那么需要手动加上 `CAST转换`: `CAST(.. AS UNSIGNED)`：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SELECT @v1, @v2, @v3;
+SELECT @v1, @v2, @v3;
+```
+
+```
 +------+------+------+
 | @v1  | @v2  | @v3  |
 +------+------+------+
 | A    | 65   | 65   |
 +------+------+------+
 1 row in set (0.00 sec)
+```
 
-mysql> SET @v1 = b'1000001';
+{{< copyable "sql" >}}
+
+```sql
+SET @v1 = b'1000001';
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> SET @v2 = b'1000001'+0;
+{{< copyable "sql" >}}
+
+```sql
+SET @v2 = b'1000001'+0;
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> SET @v3 = CAST(b'1000001' AS UNSIGNED);
+{{< copyable "sql" >}}
+
+```sql
+SET @v3 = CAST(b'1000001' AS UNSIGNED);
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> SELECT @v1, @v2, @v3;
+{{< copyable "sql" >}}
+
+```sql
+SELECT @v1, @v2, @v3;
+```
+
+```
 +------+------+------+
 | @v1  | @v2  | @v3  |
 +------+------+------+
@@ -63,8 +114,13 @@ mysql> SELECT @v1, @v2, @v3;
 
 如果获取一个没有设置过的变量，会返回一个 NULL：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> select @not_exist;
+select @not_exist;
+```
+
+```
 +------------+
 | @not_exist |
 +------------+
@@ -75,33 +131,73 @@ mysql> select @not_exist;
 
 用户自定义变量不能直接在 SQL 语句中被当成 identifier，例：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> select * from t;
+select * from t;
+```
+
+```
 +------+
 | a    |
 +------+
 |    1 |
 +------+
 1 row in set (0.00 sec)
+```
 
-mysql> SET @col = "a";
+{{< copyable "sql" >}}
+
+```sql
+SET @col = "a";
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> SELECT @col FROM t;
+{{< copyable "sql" >}}
+
+```sql
+SELECT @col FROM t;
+```
+
+```
 +------+
 | @col |
 +------+
 | a    |
 +------+
 1 row in set (0.00 sec)
+```
 
-mysql> SELECT `@col` FROM t;
+{{< copyable "sql" >}}
+
+```sql
+SELECT `@col` FROM t;
+```
+
+```
 ERROR 1054 (42S22): Unknown column '@col' in 'field list'
+```
 
-mysql> SET @col = "`a`";
+{{< copyable "sql" >}}
+
+```sql
+SET @col = "`a`";
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> SELECT @col FROM t;
+{{< copyable "sql" >}}
+
+```sql
+SELECT @col FROM t;
+```
+
+```
 +------+
 | @col |
 +------+
@@ -112,19 +208,38 @@ mysql> SELECT @col FROM t;
 
 但是有一个例外是如果你在 PREPARE 语句中使用它，是可以的：
 
-```sql
-mysql> PREPARE stmt FROM "SELECT @c FROM t";
-Query OK, 0 rows affected (0.00 sec)
+{{< copyable "sql" >}}
 
-mysql> EXECUTE stmt;
+```sql
+PREPARE stmt FROM "SELECT @c FROM t";
+```
+
+```
+Query OK, 0 rows affected (0.00 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+EXECUTE stmt;
+```
+
+```
 +------+
 | @c   |
 +------+
 | a    |
 +------+
 1 row in set (0.01 sec)
+```
 
-mysql> DEALLOCATE PREPARE stmt;
+{{< copyable "sql" >}}
+
+```sql
+DEALLOCATE PREPARE stmt;
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
 ```
 
