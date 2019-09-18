@@ -132,7 +132,7 @@ bin/dm-worker -config dm-worker1.toml
 
 ### DM-master 的部署
 
-DM-worker 提供命令行参数和配置文件两种配置方式。
+DM-master 提供命令行参数和配置文件两种配置方式。
 
 DM-master 的命令行参数说明：
 
