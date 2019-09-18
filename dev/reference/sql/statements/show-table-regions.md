@@ -115,5 +115,5 @@ test> show table t regions;
 
 ## 另请参阅
 
-* [SPLIT REGION](dev/reference/sql/statements/split-region.md)
-* [CREATE TABLE](dev/reference/sql/statements/create-table.md)
+* [SPLIT REGION](/dev/reference/sql/statements/split-region.md)
+* [CREATE TABLE](/dev/reference/sql/statements/create-table.md)
