@@ -113,7 +113,7 @@ Usage : haproxy [-f <cfgfile|cfgdir>]* [ -vdVD ] [ -n <maxconn> ] [ -N <maxpconn
 |-dS|disables splice usage (broken on old kernels)|禁止使用 speculative epoll，epoll 仅在 Linux 2.6 和某些定制的 Linux 2.4 系统上可用。|
 |-dR|disables SO_REUSEPORT usage|禁止使用 SO_REUSEPORT|
 |-dr|ignores server address resolution failures|忽略失败的 server|
-|-dV|disables SSL verify on servers side|禁止使用 SSL 在 servers 端|
+|-dV|disables SSL verify on servers side|禁止在 servers 端使用 SSL|
 |-sf/-st|\<unix_socket> get listening sockets from a unix socket|在启动后，在pidlist中发送FINISH信号给pid。收到此信号的进程将等待所有会话在退出之前完成。此选项必须最后指定，后跟任意数量的PID。 从技术上讲，SIGTTOU和SIGUSR1都被发送。|
 |-x|\<unix_socket>[,<bind options>...] new stats socket for the master|获取 socket 信息|
 |-S|\<unix_socket>[,\<bind options>...] new stats socket for the master|分配新的 socket|
