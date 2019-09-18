@@ -22,14 +22,14 @@ As a command line tool of PD, PD Control obtains the state information of the cl
 
 Single-command mode:
 
-```
-./pd-ctl store -d -u http://127.0.0.1:2379
+```bash
+./pd-ctl store -u http://127.0.0.1:2379
 ```
 
 Interactive mode:
 
-```
-./pd-ctl -u http://127.0.0.1:2379
+```bash
+./pd-ctl -i -u http://127.0.0.1:2379
 ```
 
 Use environment variables:
@@ -50,13 +50,13 @@ Use TLS to encrypt:
 ### \-\-pd,-u
 
 + PD address
-+ Default address: `http://127.0.0.1:2379`
++ Default address: <http://127.0.0.1:2379>
 + Environment variable: PD_ADDR
 
 ### \-\-detach,-d
 
 + Use single command line mode (not entering readline)
-+ Default: false
++ Default: true
 
 ### --cacert
 
@@ -156,13 +156,13 @@ Usage:
 "2.0.0"
 ```
 
-- `max-snapshot-count` controls the maximum number of snapshots that a single store receives or sends out at the same time. The scheduler is restricted by this configuration to avoid taking up normal application resources. When you need to improve the speed of adding replicas or balancing, increase this value.
++ `max-snapshot-count` controls the maximum number of snapshots that a single store receives or sends out at the same time. The scheduler is restricted by this configuration to avoid taking up normal application resources. When you need to improve the speed of adding replicas or balancing, increase this value.
 
     ```bash
     >> config set max-snapshot-count 16  // Set the maximum number of snapshots to 16
     ```
 
-- `max-pending-peer-count` controls the maximum number of pending peers in a single store. The scheduler is restricted by this configuration to avoid producing a large number of Regions without the latest log in some nodes. When you need to improve the speed of adding replicas or balancing, increase this value. Setting it to 0 indicates no limit.
++ `max-pending-peer-count` controls the maximum number of pending peers in a single store. The scheduler is restricted by this configuration to avoid producing a large number of Regions without the latest log in some nodes. When you need to improve the speed of adding replicas or balancing, increase this value. Setting it to 0 indicates no limit.
 
     ```bash
     >> config set max-pending-peer-count 64  // Set the maximum number of pending peers to 64
@@ -227,11 +227,11 @@ The configuration above is global. You can also tune the configuration by config
 > **Note:**
 >
 > The configuration of the namespace only supports editing `leader-schedule-limit`, `region-schedule-limit`, `replica-schedule-limit` and `max-replicas`.
-
-```bash
->> config set namespace ts1 leader-schedule-limit 4 // 4 tasks of leader scheduling at the same time at most for the namespace named ts1
->> config set namespace ts2 region-schedule-limit 2 // 2 tasks of region scheduling at the same time at most for the namespace named ts2
-```
+>
+> ```bash
+> >> config set namespace ts1 leader-schedule-limit 4 // 4 tasks of leader scheduling at the same time at most for the namespace named ts1
+> >> config set namespace ts2 region-schedule-limit 2 // 2 tasks of region scheduling at the same time at most for the namespace named ts2
+> ```
 
 - `tolerant-size-ratio` controls the size of the balance buffer area. When the score difference between the leader or Region of the two stores is less than specified multiple times of the Region size, it is considered in balance by PD.
 
