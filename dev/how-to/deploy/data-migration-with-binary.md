@@ -42,6 +42,7 @@ DM-worker 提供命令行参数和配置文件两种配置方式。
 DM-worker 的命令行参数说明：
 
 ```bash
+./bin/dm-worker --help
 Usage of worker:
   -L string
         日志等级，值可以为 "debug"，"info"，"warn"，"error" 或者 "fatal"（默认值："info"）
@@ -135,7 +136,8 @@ DM-worker 提供命令行参数和配置文件两种配置方式。
 
 DM-master 的命令行参数说明：
 
-```
+```bash
+./bin/dm-master --help
 Usage of dm-master:
   -L string
         日志等级，值可以为 "debug"，"info"，"warn"，"error" 或者 "fatal"（默认值为 "info"）
