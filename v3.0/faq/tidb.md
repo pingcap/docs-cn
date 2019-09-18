@@ -286,11 +286,15 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 - 随机读测试：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randread -size=10G -filename=fio_randread_test.txt -name='fio randread test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_result.json
     ```
 
 - 顺序写和随机读混合测试：
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randread_write_test.txt -name='fio mixed randread and sequential write test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_write_test.json
@@ -534,6 +538,8 @@ TiDB 支持改变 [per-session](/v3.0/reference/configuration/tidb-server/tidb-s
 
 1. 通过在数据库中写 SQL 的方式来调整优先级：
 
+    {{< copyable "sql" >}}
+
     ```sql
     select HIGH_PRIORITY | LOW_PRIORITY count(*) from table_name;
     insert HIGH_PRIORITY | LOW_PRIORITY into table_name insert_values;
@@ -737,16 +743,18 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 - 在 Sqoop 中，`--batch` 是指每个批次提交 100 条 statement，但是默认每个 statement 包含 100 条 SQL 语句，所以此时 100 * 100 = 10000 条 SQL 语句，超出了 TiDB 的事务限制 5000 条，可以增加选项 `-Dsqoop.export.records.per.statement=10` 来解决这个问题，完整的用法如下：
 
-```bash
-sqoop export \
-    -Dsqoop.export.records.per.statement=10 \
-    --connect jdbc:mysql://mysql.example.com/sqoop \
-    --username sqoop ${user} \
-    --password ${passwd} \
-    --table ${tab_name} \
-    --export-dir ${dir} \
-    --batch
-```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    sqoop export \
+        -Dsqoop.export.records.per.statement=10 \
+        --connect jdbc:mysql://mysql.example.com/sqoop \
+        --username sqoop ${user} \
+        --password ${passwd} \
+        --table ${tab_name} \
+        --export-dir ${dir} \
+        --batch
+    ```
 
 - 也可以选择增大 tidb 的单个事物语句数量限制，不过这个会导致内存上涨。
 
@@ -884,8 +892,13 @@ Count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 
 通过 `admin show ddl` 查看当前 job 进度。操作如下：
 
+{{< copyable "sql" >}}
+
 ```sql
-tidb> admin show ddl\G;
+admin show ddl;
+```
+
+```
 *************************** 1. row ***************************
   SCHEMA_VER: 140
        OWNER: 1a1c4174-0fcd-4ba0-add9-12d08c4077dc
@@ -1011,6 +1024,8 @@ TiKV 操作繁忙，一般出现在数据库负载比较高时，请检查 TiKV 
 #### 9.1.7 ERROR 9006 (HY000) : GC life time is shorter than transaction duration
 
 `GC Life Time` 间隔时间过短，长事务本应读到的数据可能被清理了，可使用如下命令增加 `GC Life Time`：
+
+{{< copyable "sql" >}}
 
 ```sql
 update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_time';
