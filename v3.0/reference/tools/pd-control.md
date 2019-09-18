@@ -65,7 +65,6 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 + 使用单命令行模式(不进入 readline)
 + 默认值: true
 
-
 ### \-\-interact,-i
 
 + 使用交互模式(进入 readline)
