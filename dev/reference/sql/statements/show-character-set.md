@@ -24,8 +24,13 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW CHARACTER SET;
+SHOW CHARACTER SET;
+```
+
+```
 +---------+---------------+-------------------+--------+
 | Charset | Description   | Default collation | Maxlen |
 +---------+---------------+-------------------+--------+

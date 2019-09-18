@@ -50,6 +50,8 @@ TiDB 中，自增列只保证自增且唯一，并不保证连续分配。TiDB �
 
 假设有这样一个带有自增 ID 的表：
 
+{{< copyable "sql" >}}
+
 ```sql
 create table t(id int unique key auto_increment, c int);
 ```
@@ -61,6 +63,8 @@ TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用
 1. 客户端向 B 插入一条将 `id` 设置为 1 的语句 `insert into t values (1, 1)`，并执行成功。
 2. 客户端向 A 发送 Insert 语句 `insert into t (c) (1)`，这条语句中没有指定 `id` 的值，所以会由 A 分配，当前 A 缓存了 [1, 30000] 这段 ID，所以会分配 1 为自增 ID 的值，并把本地计数器加 1。而此时数据库中已经存在 `id` 为 1 的数据，最终返回 `Duplicated Error` 错误。
 
+另外，从 TiDB 3.0.4 版本开始，TiDB 将通过系统变量 `@@tidb_remove_auto_inc` 控制是否允许通过 `alter table modify` 或 `alter table change` 来移除列的 `auto_increment` 属性，默认是不允许移除。
+
 ### Performance schema
 
 Performance schema 表在 TiDB 中返回结果为空。TiDB 使用 [Prometheus 和 Grafana](/v3.0/how-to/monitor/monitor-a-cluster.md) 来监测性能指标。
@@ -71,7 +75,7 @@ TiDB 的查询计划（`EXPLAIN`/`EXPLAIN FOR`）输出格式与 MySQL 差别较
 
 ### 内建函数
 
-TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经支持，具体请参考[语法文档](https://pingcap.github.io/sqlgram/#FunctionCallKeyword)。
+TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经支持，具体请参考[语法文档](https://pingcap.github.io/sqlgram/#functioncallkeyword)。
 
 ### DDL
 
@@ -102,10 +106,23 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 
 出于兼容性原因，TiDB 支持使用备用存储引擎创建表的语法。元数据命令将表描述为 InnoDB 存储引擎：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE TABLE t1 (a INT) ENGINE=MyISAM;
+CREATE TABLE t1 (a INT) ENGINE=MyISAM;
+```
+
+```
 Query OK, 0 rows affected (0.14 sec)
- mysql> SHOW CREATE TABLE t1\G
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW CREATE TABLE t1;
+```
+
+```
 *************************** 1. row ***************************
        Table: t1
 Create Table: CREATE TABLE `t1` (
