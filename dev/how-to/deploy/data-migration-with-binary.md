@@ -7,17 +7,9 @@ category: how-to
 
 ## 准备工作
 
-首先需要下载官方 binary：
+首先需要下载官方 binary，链接地址：[tools 工具下载](/dev/reference/tools/download/#tidb-dm-(data-migration))。
 
-```
-wget https://download.pingcap.org/dm-{version}-linux-amd64.tar.gz
-wget https://download.pingcap.org/dm-{version}-linux-amd64.sha256
-
-# 检查文件完整性，返回 ok 则正确
-sha256sum -c dm-{version}-linux-amd64.sha256
-```
-
-其中 `version` 为 DM 的版本号，例如 `v1.0.1`，也可以使用最新的未发布版本 `latest`。下载的文件中包含 dm-master、dm-worker、dmctl 以及 mydumper。
+下载的文件中包含 dm-master、dm-worker、dmctl 以及 mydumper。
 
 ## 使用样例
 
