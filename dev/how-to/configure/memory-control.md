@@ -7,6 +7,8 @@ category: how-to
 
 目前 TiDB 已经能够做到追踪单条 SQL 查询过程中的内存使用情况，当内存使用超过一定阈值后也能采取一些操作来预防 OOM 或者排查 OOM 原因。在 TiDB 的配置文件中，我们可以使用如下配置来控制内存使用超阈值时 TiDB 的行为：
 
+{{< copyable "" >}}
+
 ```
 # Valid options: ["log", "cancel"]
 oom-action = "log"
@@ -18,6 +20,8 @@ oom-action = "log"
 ## 如何配置一条 SQL 执行过程中的内存使用阈值
 
 可以在配置文件中设置每个 Query 默认的 Memory Quota，例如将其设置为 32GB：
+
+{{< copyable "" >}}
 
 ```
 mem-quota-query = 34359738368
@@ -38,13 +42,26 @@ mem-quota-query = 34359738368
 
 几个使用例子：
 
+配置整条 SQL 的内存使用阈值为 8GB：
+
+{{< copyable "sql" >}}
+
 ```sql
--- 配置整条 SQL 的内存使用阈值为 8GB：
 set @@tidb_mem_quota_query = 8 << 30;
+```
 
--- 配置整条 SQL 的内存使用阈值为 8MB：
+配置整条 SQL 的内存使用阈值为 8MB：
+
+{{< copyable "sql" >}}
+
+```sql
 set @@tidb_mem_quota_query = 8 << 20;
+```
 
--- 配置整条 SQL 的内存使用阈值为 8KB：
+配置整条 SQL 的内存使用阈值为 8KB：
+
+{{< copyable "sql" >}}
+
+```sql
 set @@tidb_mem_quota_query = 8 << 10;
 ```
