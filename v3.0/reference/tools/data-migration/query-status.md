@@ -18,7 +18,7 @@ aliases: ['/docs-cn/tools/dm/query-status/']
     "workers": [                            # DM-worker 列表。
         {
             "result": true,
-            "worker": "172.17.0.2:10081",   # DM-worker ID。
+            "worker": "172.17.0.2:8262",   # DM-worker ID。
             "msg": "",
             "subTaskStatus": [              # DM-worker 所有子任务的信息。
                 {
@@ -71,7 +71,7 @@ aliases: ['/docs-cn/tools/dm/query-status/']
         },
         {
             "result": true,
-            "worker": "172.17.0.3:10081",
+            "worker": "172.17.0.3:8262",
             "msg": "",
             "subTaskStatus": [
                 {
@@ -100,7 +100,7 @@ aliases: ['/docs-cn/tools/dm/query-status/']
         },
         {
             "result": true,
-            "worker": "172.17.0.6:10081",
+            "worker": "172.17.0.6:8262",
             "msg": "",
             "subTaskStatus": [
                 {
