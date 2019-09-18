@@ -18,8 +18,13 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW PROCESSLIST;
+SHOW PROCESSLIST;
+```
+
+```
 +------+------+-----------+------+---------+------+-------+------------------+
 | Id   | User | Host      | db   | Command | Time | State | Info             |
 +------+------+-----------+------+---------+------+-------+------------------+
@@ -27,8 +32,15 @@ mysql> SHOW PROCESSLIST;
 |    2 | root | 127.0.0.1 |      | Sleep   |    4 | 2     |                  |
 +------+------+-----------+------+---------+------+-------+------------------+
 2 rows in set (0.00 sec)
+```
 
-mysql> KILL TIDB 2;
+{{< copyable "sql" >}}
+
+```sql
+KILL TIDB 2;
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
 ```
 
