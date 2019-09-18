@@ -10,6 +10,8 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
 ALTER {DATABASE | SCHEMA} [db_name]
     alter_specification ...

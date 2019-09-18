@@ -30,20 +30,26 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
     - 下载 2.0 版本：
 
+        {{< copyable "shell-regular" >}}
+
         ```bash
-        $ git clone -b release-2.0-new-binlog https://github.com/pingcap/tidb-ansible.git
+        git clone -b release-2.0-new-binlog https://github.com/pingcap/tidb-ansible.git
         ```
 
     - 下载 2.1 版本：
 
+        {{< copyable "shell-regular" >}}
+
         ```bash
-        $ git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
+        git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
         ```
 
     - 下载 master 版本：
 
+        {{< copyable "shell-regular" >}}
+
         ```bash
-        $ git clone https://github.com/pingcap/tidb-ansible.git
+        git clone https://github.com/pingcap/tidb-ansible.git
         ```
 
 ### 第 2 步：部署 Pump
@@ -68,6 +74,8 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
         ```
 
         默认 Pump 保留 7 天数据，如需修改可修改 `tidb-ansible/conf/pump.yml` 文件中 `gc` 变量值，并取消注释。
+
+        {{< copyable "" >}}
 
         ```yaml
         global:
@@ -94,8 +102,10 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
     1. 部署 pump_servers 和 node_exporters
 
-        ```
-        ansible-playbook deploy.yml -l ${pump1_ip},${pump2_ip},[${alias1_name},${alias2_name}]
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook deploy.yml --tags=pump -l ${pump1_ip},${pump2_ip},[${alias1_name},${alias2_name}]
         ```
 
         > **注意：**
@@ -104,19 +114,25 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
     2. 启动 pump_servers
 
-        ```
+        {{< copyable "shell-regular" >}}
+
+        ```bash
         ansible-playbook start.yml --tags=pump
         ```
 
     3. 更新并重启 tidb_servers
 
-        ```
+        {{< copyable "shell-regular" >}}
+
+        ```bash
         ansible-playbook rolling_update.yml --tags=tidb
         ```
 
     4. 更新监控信息
 
-        ```
+        {{< copyable "shell-regular" >}}
+
+        ```bash
         ansible-playbook rolling_update_monitor.yml --tags=prometheus
         ```
 
@@ -128,10 +144,14 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
     使用 binlogctl 查看 Pump 服务状态，pd-urls 参数请替换为集群 PD 地址，结果 State 为 online 表示 Pump 启动成功。
 
-    ```bash
-    $ cd /home/tidb/tidb-ansible
-    $ resources/bin/binlogctl -pd-urls=http://172.16.10.72:2379 -cmd pumps
+    {{< copyable "shell-regular" >}}
 
+    ```bash
+    cd /home/tidb/tidb-ansible &&
+    resources/bin/binlogctl -pd-urls=http://172.16.10.72:2379 -cmd pumps
+    ```
+
+    ```
     INFO[0000] pump: {NodeID: ip-172-16-10-72:8250, Addr: 172.16.10.72:8250, State: online, MaxCommitTS: 403051525690884099, UpdateTime: 2018-12-25 14:23:37 +0800 CST}
     INFO[0000] pump: {NodeID: ip-172-16-10-73:8250, Addr: 172.16.10.73:8250, State: online, MaxCommitTS: 403051525703991299, UpdateTime: 2018-12-25 14:23:36 +0800 CST}
     INFO[0000] pump: {NodeID: ip-172-16-10-74:8250, Addr: 172.16.10.74:8250, State: online, MaxCommitTS: 403051525717360643, UpdateTime: 2018-12-25 14:23:35 +0800 CST}
@@ -143,9 +163,14 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
     使用 binlogctl 工具生成 Drainer 初次启动所需的 tso 信息，命令：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ cd /home/tidb/tidb-ansible
-    $ resources/bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd generate_meta
+    cd /home/tidb/tidb-ansible &&
+    resources/bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd generate_meta
+    ```
+
+    ```
     INFO[0000] [pd] create pd client with endpoints [http://192.168.199.118:32379]
     INFO[0000] [pd] leader switches to: http://192.168.199.118:32379, previous:
     INFO[0000] [pd] init cluster id 6569368151110378289
@@ -176,10 +201,12 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
     - 以下游为 MySQL 为例
 
+        {{< copyable "shell-regular" >}}
+
         ```bash
-        $ cd /home/tidb/tidb-ansible/conf
-        $ cp drainer.toml drainer_mysql_drainer.toml
-        $ vi drainer_mysql_drainer.toml
+        cd /home/tidb/tidb-ansible/conf &&
+        cp drainer.toml drainer_mysql_drainer.toml &&
+        vi drainer_mysql_drainer.toml
         ```
 
         > **注意：**
@@ -187,6 +214,8 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
         > 配置文件名命名规则为 `别名_drainer.toml`，否则部署时无法找到自定义配置文件。
 
         db-type 设置为 "mysql"， 配置下游 MySQL 信息。
+
+        {{< copyable "" >}}
 
         ```toml
         [syncer]
@@ -206,13 +235,17 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
     - 以下游为增量备份文件为例
 
+        {{< copyable "shell-regular" >}}
+
         ```bash
-        $ cd /home/tidb/tidb-ansible/conf
-        $ cp drainer.toml drainer_file_drainer.toml
-        $ vi drainer_file_drainer.toml
+        cd /home/tidb/tidb-ansible/conf &&
+        cp drainer.toml drainer_file_drainer.toml &&
+        vi drainer_file_drainer.toml
         ```
 
         db-type 设置为 "file"。
+
+        {{< copyable "" >}}
 
         ```toml
         [syncer]
@@ -229,35 +262,53 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
 4. 部署 Drainer
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ ansible-playbook deploy_drainer.yml
+    ansible-playbook deploy_drainer.yml
     ```
 
 5. 启动 Drainer
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ ansible-playbook start_drainer.yml
+    ansible-playbook start_drainer.yml
     ```
 
 ## 使用 Binary 部署 TiDB Binlog
 
 ### 下载官方 Binary
 
-```bash
-wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz
-wget https://download.pingcap.org/tidb-{version}-linux-amd64.sha256
+{{< copyable "shell-regular" >}}
 
-# 检查文件完整性，返回 ok 则正确
+```bash
+wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz &&
+wget https://download.pingcap.org/tidb-{version}-linux-amd64.sha256
+```
+
+检查文件完整性，返回 ok 则正确：
+
+{{< copyable "shell-regular" >}}
+
+```bash
 sha256sum -c tidb-{version}-linux-amd64.sha256
 ```
 
 对于 v2.1.0 GA 及以上版本，Pump 和 Drainer 已经包含在 TiDB 的下载包中，其他版本需要单独下载 Pump 和 Drainer:
 
-```bash
-wget https://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz
-wget https://download.pingcap.org/tidb-binlog-latest-linux-amd64.sha256
+{{< copyable "shell-regular" >}}
 
-# 检查文件完整性，返回 ok 则正确
+```bash
+wget https://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz &&
+wget https://download.pingcap.org/tidb-binlog-latest-linux-amd64.sha256
+```
+
+检查文件完整性，返回 ok 则正确：
+
+{{< copyable "shell-regular" >}}
+
+```bash
 sha256sum -c tidb-binlog-latest-linux-amd64.sha256
 ```
 
@@ -370,6 +421,8 @@ Drainer="192.168.0.13"
         ```
 
     - 启动示例
+
+        {{< copyable "shell-regular" >}}
 
         ```bash
         ./bin/pump -config pump.toml
@@ -537,6 +590,8 @@ Drainer="192.168.0.13"
         > 如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取 `initial-commit-ts` 的值，并进行全量数据的备份与恢复。详细信息参见[部署 Drainer](#第-3-步部署-drainer)。
 
         初次启动时使用参数 `initial-commit-ts`， 命令如下：
+
+        {{< copyable "shell-regular" >}}
 
         ```bash
         ./bin/drainer -config drainer.toml -initial-commit-ts {initial-commit-ts}
