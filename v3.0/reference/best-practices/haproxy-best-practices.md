@@ -110,7 +110,7 @@ Usage : haproxy [-f <cfgfile|cfgdir>]* [ -vdVD ] [ -n <maxconn> ] [ -N <maxpconn
 |-p|writes pids of all children to this file|haproxy 进程 pid 信息写入 file |
 |-de|disables epoll() usage even when available|禁止使用speculative epoll。epoll仅在Linux 2.6和某些定制的Linux 2.4系统上可用。|
 |-dp|disables poll() usage even when available|禁止使用epoll。epoll仅在Linux 2.6和某些定制的Linux 2.4系统上可用。|
-|-dS|disables splice usage (broken on old kernels)|禁止使用speculativeepoll。epoll仅在Linux 2.6和某些定制的Linux 2.4系统上可用。|
+|-dS|disables splice usage (broken on old kernels)|禁止使用 speculative epoll，epoll 仅在 Linux 2.6 和某些定制的 Linux 2.4 系统上可用。|
 |-dR|disables SO_REUSEPORT usage|禁止使用 SO_REUSEPORT|
 |-dr|ignores server address resolution failures|忽略失败的 server|
 |-dV|disables SSL verify on servers side|禁止使用 SSL 在 servers 端|
