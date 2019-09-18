@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tools/dm/manage-task/']
 
 # 管理数据同步任务
 
-本文介绍了如何使用 [dmctl](/reference/tools/data-migration/overview.md#dmctl) 组件来进行数据同步任务的管理和维护。对于用 DM-Ansible 部署的 DM 集群，dmctl 二进制文件路径为 `dm-ansible/dmctl`。
+本文介绍了如何使用 [dmctl](/v3.0/reference/tools/data-migration/overview.md#dmctl) 组件来进行数据同步任务的管理和维护。对于用 DM-Ansible 部署的 DM 集群，dmctl 二进制文件路径为 `dm-ansible/dmctl`。
 
 ## dmctl 基本用法
 
@@ -40,7 +40,7 @@ VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=
 
 ```bash
 # 进入命令行模式，与 DM-master 进行交互
-$ ./dmctl -master-addr 172.16.30.14
+$ ./dmctl -master-addr 172.16.30.14:8261
 Welcome to dmctl
 Release Version: v1.0.0-100-g2bef6f8b
 Git Commit Hash: 2bef6f8beda34c0dff57377005c71589b48aa3c5
@@ -95,7 +95,7 @@ Flags:
 
 ### 创建数据同步任务
 
-`start-task` 命令用于创建数据同步任务。 当数据同步任务启动时，DM 将[自动对相应权限和配置进行前置检查](/reference/tools/data-migration/precheck.md)。
+`start-task` 命令用于创建数据同步任务。 当数据同步任务启动时，DM 将[自动对相应权限和配置进行前置检查](/v3.0/reference/tools/data-migration/precheck.md)。
 
 ```bash
 » help start-task
@@ -151,7 +151,7 @@ start-task [ -w "172.16.30.15:10081"] ./task.yaml
 
 ### 查询数据同步任务状态
 
-`query-status` 命令用于查询数据同步任务状态。有关查询结果及子任务状态，详见[查询状态](/reference/tools/data-migration/query-status.md)。
+`query-status` 命令用于查询数据同步任务状态。有关查询结果及子任务状态，详见[查询状态](/v3.0/reference/tools/data-migration/query-status.md)。
 
 ```bash
 » help query-status
@@ -185,7 +185,7 @@ query-status
 
 #### 返回结果示例
 
-有关查询结果中各参数的意义，详见[查询状态结果](/reference/tools/data-migration/query-status.md#查询结果)。
+有关查询结果中各参数的意义，详见[查询状态结果](/v3.0/reference/tools/data-migration/query-status.md#查询结果)。
 
 ```bash
 » query-status
@@ -537,7 +537,7 @@ update-task [-w "127.0.0.1:10181"] ./task.yaml
 
 ## 管理 DDL lock
 
-详见[手动处理 sharding DDL lock](/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)。
+详见[手动处理 sharding DDL lock](/v3.0/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)。
 
 ## 强制刷新 `task => DM-workers` 映射关系
 

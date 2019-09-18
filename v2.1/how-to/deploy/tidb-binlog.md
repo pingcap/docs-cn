@@ -5,6 +5,15 @@ category: reference
 
 # TiDB Binlog 集群部署
 
+## 服务器要求
+
+Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台上。在开发、测试和生产环境下，对服务器硬件配置的要求和建议如下：
+
+| 服务     | 部署数量       | CPU   | 磁盘          | 内存   |
+| :-------- | :-------- | :--------| :--------------- | :------ |
+| Pump | 3 | 8核+   | SSD, 200 GB+ | 16G |
+| Drainer | 1 | 8核+ | SAS, 100 GB+ （如果输出 binlog 为本地文件，磁盘大小视保留数据天数而定） | 16G |
+
 ## 使用 TiDB Ansible 部署 TiDB Binlog
 
 ### 第 1 步：下载 TiDB Ansible
@@ -67,7 +76,7 @@ category: reference
           # gc: 7
         ```
 
-        请确保部署目录有足够空间存储 binlog，详见：[部署目录调整](/how-to/deploy/orchestrated/ansible.md#部署目录调整)，也可为 Pump 设置单独的部署目录。
+        请确保部署目录有足够空间存储 binlog，详见：[部署目录调整](/v2.1/how-to/deploy/orchestrated/ansible.md#部署目录调整)，也可为 Pump 设置单独的部署目录。
 
         ```ini
         ## Binlog Part
@@ -86,7 +95,7 @@ category: reference
     1. 部署 pump_servers 和 node_exporters
 
         ```
-        ansible-playbook deploy.yml -l ${pump1_ip},${pump2_ip},[${alias1_name},${alias2_name}]
+        ansible-playbook deploy.yml --tags=pump -l ${pump1_ip},${pump2_ip},[${alias1_name},${alias2_name}]
         ```
 
         > **注意：**
@@ -113,7 +122,7 @@ category: reference
 
     **方式二**：从零开始部署含 Pump 组件的 TiDB 集群
 
-    使用 Ansible 部署 TiDB 集群，方法参考 [TiDB Ansible 部署方案](/how-to/deploy/orchestrated/ansible.md)。
+    使用 Ansible 部署 TiDB 集群，方法参考 [使用 TiDB Ansible 部署 TiDB 集群](/v2.1/how-to/deploy/orchestrated/ansible.md)。
 
 3. 查看 Pump 服务状态
 
@@ -520,7 +529,7 @@ Drainer="192.168.0.13"
 
         > **注意：**
         >
-        > 如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取 `initial-commit-ts` 的值，并进行全量数据的备份与恢复。详细信息参见[部署 Drainer](#第-3-步-部署-drainer)。
+        > 如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取 `initial-commit-ts` 的值，并进行全量数据的备份与恢复。详细信息参见[部署 Drainer](#第-3-步部署-drainer)。
 
         初次启动时使用参数 `initial-commit-ts`， 命令如下：
 

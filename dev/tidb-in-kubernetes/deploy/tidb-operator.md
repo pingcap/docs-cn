@@ -27,9 +27,9 @@ TiDB Operator 部署前，请确认以下软件需求：
 
 TiDB Operator 运行在 Kubernetes 集群，你可以使用[这里](https://kubernetes.io/docs/setup/)列出的任何一种方法搭建一套 Kubernetes 集群。只要保证 Kubernetes 版本大于等于 v1.12。如果你使用 AWS、GKE 或者本机，下面是快速上手教程：
 
-* [Local DinD 教程](/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
-* [Google GKE 教程](/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
-* [AWS EKS 教程](/tidb-in-kubernetes/deploy/aws-eks.md)
+* [Local DinD 教程](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
+* [Google GKE 教程](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
+* [AWS EKS 教程](/dev/tidb-in-kubernetes/deploy/aws-eks.md)
 
 如果你要使用不同环境，必须在 Kubernetes 集群中安装 DNS 插件。可以根据[官方文档](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/)搭建 DNS 插件。
 
@@ -61,34 +61,13 @@ TiDB 默认会使用很多文件描述符，工作节点和上面的 Docker 进�
 
 ## 安装 Helm
 
-参考 [使用 Helm](/tidb-in-kubernetes/reference/tools/in-kubernetes.md#使用-helm) 安装 Helm 并配置 PingCAP 官方 chart 仓库。
+参考 [使用 Helm](/dev/tidb-in-kubernetes/reference/tools/in-kubernetes.md#使用-helm) 安装 Helm 并配置 PingCAP 官方 chart 仓库。
 
 ## 配置本地持久化卷
 
 ### 准备本地卷
 
-参考[本地 PV 配置](/tidb-in-kubernetes/reference/configuration/storage-class.md#本地-pv-配置)在你的 Kubernetes 集群中配置本地持久化卷。
-
-### 部署 local-static-provisioner
-
-在 Kubernetes 节点上挂载所有磁盘后，部署 [local-volume-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner)，它会自动将这些挂载的磁盘配置为本地持久化卷。
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml
-```
-
-通过下面命令查看 Pod 和 PV 状态：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl get po -n kube-system -l app=local-volume-provisioner && \
-kubectl get pv | grep local-storage
-```
-
-local-volume-provisioner 为每一块挂载的磁盘创建一个卷。注意，在 GKE 上，默认只能创建大小为 375GiB 的本地卷，你需要手动操作创建更大的磁盘。
+参考[本地 PV 配置](/dev/tidb-in-kubernetes/reference/configuration/storage-class.md#本地-pv-配置)在你的 Kubernetes 集群中配置本地持久化卷。
 
 ## 安装 TiDB Operator
 

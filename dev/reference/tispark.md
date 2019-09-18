@@ -38,7 +38,7 @@ TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
 + 硬件配置建议
 
-    普通场景可以参考 [TiDB 和 TiKV 硬件配置建议](/how-to/deploy/hardware-recommendations.md)，但是如果是偏重分析的场景，可以将 TiKV 节点增加到至少 64G 内存。
+    普通场景可以参考 [TiDB 和 TiKV 硬件配置建议](/dev/how-to/deploy/hardware-recommendations.md)，但是如果是偏重分析的场景，可以将 TiKV 节点增加到至少 64G 内存。
 
 ### Spark 与 TiSpark 集群独立部署的配置
 
@@ -115,7 +115,7 @@ cd $SPARKPATH
 ./sbin/start-master.sh
 ```
 
-在这步完成以后，屏幕上会打印出一个 log 文件。检查 log 文件确认 Spark-Master 是否启动成功。你可以打开 [http://spark-master-hostname:8080](http://whereever-the-ip-is:8080`c) 查看集群信息（如果你没有改动 Spark-Master 默认 Port Numebr）。在启动 Spark-Slave 的时候，也可以通过这个面板来确认 Slave 是否已经加入集群。
+在这步完成以后，屏幕上会打印出一个 log 文件。检查 log 文件确认 Spark-Master 是否启动成功。你可以打开 <http://spark-master-hostname:8080> 查看集群信息（如果你没有改动 Spark-Master 默认 Port Numebr）。在启动 Spark-Slave 的时候，也可以通过这个面板来确认 Slave 是否已经加入集群。
 
 #### 启动 Slave
 
