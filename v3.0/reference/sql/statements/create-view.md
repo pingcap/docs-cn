@@ -155,6 +155,6 @@ ERROR 1105 (HY000): insert into view v1 is not supported now.
 
 ## 另请参阅
 
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
-* [DROP TABLE](/reference/sql/statements/drop-table.md)
+* [CREATE TABLE](/v3.0/reference/sql/statements/create-table.md)
+* [SHOW CREATE TABLE](/v3.0/reference/sql/statements/show-create-table.md)
+* [DROP TABLE](/v3.0/reference/sql/statements/drop-table.md)

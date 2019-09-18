@@ -865,7 +865,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> region miss-peer
+>> region check miss-peer
 ```
 
 ```

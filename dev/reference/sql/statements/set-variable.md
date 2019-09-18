@@ -113,8 +113,8 @@ SHOW SESSION VARIABLES LIKE 'sql_mode';
 
 ## MySQL 兼容性
 
-`SET [GLOBAL|SESSION]` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SET [GLOBAL|SESSION]` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/dev/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW \[GLOBAL|SESSION\] VARIABLES](/reference/sql/statements/show-variables.md)
+* [SHOW \[GLOBAL|SESSION\] VARIABLES](/dev/reference/sql/statements/show-variables.md)

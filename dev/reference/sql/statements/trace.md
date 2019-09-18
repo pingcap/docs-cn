@@ -166,4 +166,4 @@ operation: [
 
 ## 另请参阅
 
-* [EXPLAIN ANALYZE](/reference/sql/statements/explain-analyze.md)
+* [EXPLAIN ANALYZE](/dev/reference/sql/statements/explain-analyze.md)

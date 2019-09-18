@@ -105,5 +105,5 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 ## 另请参阅
 
-* [EXPLAIN](/reference/sql/statements/explain.md)
-* [EXPLAIN ANALYZE](/reference/sql/statements/explain-analyze.md)
+* [EXPLAIN](/v3.0/reference/sql/statements/explain.md)
+* [EXPLAIN ANALYZE](/v3.0/reference/sql/statements/explain-analyze.md)

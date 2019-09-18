@@ -240,7 +240,7 @@ dm_worker1 ansible_host=172.16.10.72 server_id=101 source_id="mysql-replica-01" 
 - [单节点上单个 DM-worker 实例的集群拓扑](#选项-1使用单节点上单个-dm-worker-实例的集群拓扑)
 - [单节点上多个 DM-worker 实例的集群拓扑](#选项-2使用单节点上多个-dm-worker-实例的集群拓扑)
 
-通常情况下，我们推荐每个节点上部署单个 DM-Worker 实例。但如果您的机器拥有性能远超 [TiDB 软件和硬件环境要求](/how-to/deploy/hardware-recommendations.md)中推荐配置的 CPU 和内存，并且每个节点配置 2 块以上的硬盘或大于 2T 的 SSD，您可以在单个节点上部署不超过 2 个 DM-Worker 实例。
+通常情况下，我们推荐每个节点上部署单个 DM-Worker 实例。但如果您的机器拥有性能远超 [TiDB 软件和硬件环境要求](/v3.0/how-to/deploy/hardware-recommendations.md)中推荐配置的 CPU 和内存，并且每个节点配置 2 块以上的硬盘或大于 2T 的 SSD，您可以在单个节点上部署不超过 2 个 DM-Worker 实例。
 
 ### 选项 1：使用单节点上单个 DM-Worker 实例的集群拓扑
 

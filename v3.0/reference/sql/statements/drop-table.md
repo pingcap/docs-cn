@@ -92,7 +92,7 @@ Query OK, 0 rows affected (0.23 sec)
 
 ## 另请参阅
 
-* [DROP VIEW](/reference/sql/statements/drop-view.md)
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
-* [SHOW TABLES](/reference/sql/statements/show-tables.md)
+* [DROP VIEW](/v3.0/reference/sql/statements/drop-view.md)
+* [CREATE TABLE](/v3.0/reference/sql/statements/create-table.md)
+* [SHOW CREATE TABLE](/v3.0/reference/sql/statements/show-create-table.md)
+* [SHOW TABLES](/v3.0/reference/sql/statements/show-tables.md)

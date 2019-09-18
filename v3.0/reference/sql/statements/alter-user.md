@@ -78,7 +78,7 @@ SHOW CREATE USER 'newuser';
 
 ## 另请参阅
 
-* [Security Compatibility with MySQL](/reference/security/compatibility.md)
-* [CREATE USER](/reference/sql/statements/create-user.md)
-* [DROP USER](/reference/sql/statements/drop-user.md)
-* [SHOW CREATE USER](/reference/sql/statements/show-create-user.md)
+* [Security Compatibility with MySQL](/v3.0/reference/security/compatibility.md)
+* [CREATE USER](/v3.0/reference/sql/statements/create-user.md)
+* [DROP USER](/v3.0/reference/sql/statements/drop-user.md)
+* [SHOW CREATE USER](/v3.0/reference/sql/statements/show-create-user.md)

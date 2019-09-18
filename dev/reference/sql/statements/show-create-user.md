@@ -48,6 +48,6 @@ mysql> SHOW GRANTS FOR 'root';
 
 ## 另请参阅
 
-* [CREATE USER](/reference/sql/statements/create-user.md)
-* [SHOW GRANTS](/reference/sql/statements/show-grants.md)
-* [DROP USER](/reference/sql/statements/drop-user.md)
+* [CREATE USER](/dev/reference/sql/statements/create-user.md)
+* [SHOW GRANTS](/dev/reference/sql/statements/show-grants.md)
+* [DROP USER](/dev/reference/sql/statements/drop-user.md)

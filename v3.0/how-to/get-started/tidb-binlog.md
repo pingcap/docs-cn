@@ -7,7 +7,7 @@ category: how-to
 
 本文档主要介绍如何使用 TiDB Binlog 将数据从 TiDB 推送到 MariaDB 实例。文中的 TiDB Binlog 集群包含 Pump 和 Drainer 的单个节点，TiDB 集群包含 TiDB、TiKV 和 Placement Driver (PD) 各组件的单个节点。
 
-希望上手实践 TiDB Binlog 工具的用户需要对 [TiDB 架构](/architecture.md)有一定的了解，最好有创建过 TiDB 集群的经验。该文档也有助于简单快速了解 TiDB Binlog 架构以及相关概念。
+希望上手实践 TiDB Binlog 工具的用户需要对 [TiDB 架构](/v3.0/architecture.md)有一定的了解，最好有创建过 TiDB 集群的经验。该文档也有助于简单快速了解 TiDB Binlog 架构以及相关概念。
 
 > **警告：**
 >
@@ -24,7 +24,7 @@ TiDB Binlog 支持以下功能场景：
 - 增量备份，将 TiDB 集群中的数据增量同步到另一个集群，或通过 Kafka 增量同步到选择的下游。
 - 当使用 TiDB DM (Data Migration) 将数据从上游 MySQL 或者 MariaDB 迁移到 TiDB 集群时，可使用 TiDB Binlog 保持 TiDB 集群与其一个独立下游 MySQL 或 MariaDB 实例或集群同步。当 TiDB 集群上游数据迁移过程中出现问题，下游数据同步过程中可使用 TiDB Binlog 恢复数据到原先的状态。
 
-更多信息参考 [TiDB Binlog Cluster 版本用户文档](/reference/tidb-binlog-overview.md)。
+更多信息参考 [TiDB Binlog Cluster 版本用户文档](/v3.0/reference/tidb-binlog-overview.md)。
 
 ## 架构
 
@@ -417,7 +417,7 @@ Check Table Before Drop: false
 
 ## binlogctl
 
-加入到集群的 Pump 和 Drainer 的数据存储在 Placement Driver (PD) 中。binlogctl 可用于查询和修改状态信息。更多信息请参考 [binlogctl guide](/how-to/maintain/tidb-binlog.md#binlogctl-工具)。
+加入到集群的 Pump 和 Drainer 的数据存储在 Placement Driver (PD) 中。binlogctl 可用于查询和修改状态信息。更多信息请参考 [binlogctl guide](/v3.0/how-to/maintain/tidb-binlog.md#binlogctl-工具)。
 
 使用 `binlogctl` 查看集群中 Pump 和 Drainer 的当前状态：
 

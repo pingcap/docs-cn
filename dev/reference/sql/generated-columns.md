@@ -99,4 +99,4 @@ CREATE TABLE person (
 
 - 不能通过 `ALTER TABLE` 增加 `STORED` 存储方式的 generated column；
 - 不能通过 `ALTER TABLE` 在 generated column 上增加索引；
-- 并未支持所有的 [JSON 函数](/reference/sql/functions-and-operators/json-functions.md)。
+- 并未支持所有的 [JSON 函数](/dev/reference/sql/functions-and-operators/json-functions.md)。

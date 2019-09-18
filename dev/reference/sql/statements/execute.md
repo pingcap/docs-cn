@@ -67,9 +67,9 @@ Query OK, 0 rows affected (0.00 sec)
 
 ## MySQL 兼容性
 
-`EXECUTE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`EXECUTE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/dev/report-issue.md)。
 
 ## 另请参阅
 
-* [PREPARE](/reference/sql/statements/prepare.md)
-* [DEALLOCATE](/reference/sql/statements/deallocate.md)
+* [PREPARE](/dev/reference/sql/statements/prepare.md)
+* [DEALLOCATE](/dev/reference/sql/statements/deallocate.md)

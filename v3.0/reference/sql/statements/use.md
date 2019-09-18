@@ -120,9 +120,9 @@ SHOW TABLES;
 
 ## MySQL 兼容性
 
-`USE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`USE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [CREATE DATABASE](/reference/sql/statements/create-database.md)
-* [SHOW TABLES](/reference/sql/statements/show-tables.md)
+* [CREATE DATABASE](/v3.0/reference/sql/statements/create-database.md)
+* [SHOW TABLES](/v3.0/reference/sql/statements/show-tables.md)

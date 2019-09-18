@@ -261,4 +261,4 @@ TiDB 不支持二进制以外的排序规则。`SHOW COLLATION` 语句仅用于�
 
 ## 另请参阅
 
-* [SHOW CHARACTER SET](/reference/sql/statements/show-character-set.md)
+* [SHOW CHARACTER SET](/dev/reference/sql/statements/show-character-set.md)

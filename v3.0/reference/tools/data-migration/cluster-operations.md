@@ -64,7 +64,7 @@ ansible-playbook stop.yml
 
       此时 DM 会再次尝试同步这些未跳过执行的 DDL 语句。然而，由于未重启的 DM-worker 实例已经执行到了此 DDL 对应的 binlog event 之后，重启的 DM-worker 实例会被阻滞在重启前 DDL binlog event 对应的位置。
 
-      要解决这个问题，请按照[手动处理 Sharding DDL Lock](/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md#场景二unlock-过程中部分-dm-worker-重启) 中描述的步骤操作。
+      要解决这个问题，请按照[手动处理 Sharding DDL Lock](/v3.0/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md#场景二unlock-过程中部分-dm-worker-重启) 中描述的步骤操作。
 
 **总结**：尽量避免在 sharding DDL 同步过程中重启 DM-worker。
 
@@ -184,7 +184,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
 1. 为中控机设置 SSH 互信以及 sudo 规则。
 
-    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/how-to/deploy/data-migration-with-ansible.md#第-5-步-在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 用户登录至中控机，并将 `172.16.10.74` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。
+    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/v3.0/how-to/deploy/data-migration-with-ansible.md#第-5-步在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 用户登录至中控机，并将 `172.16.10.74` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。
 
         {{< copyable "shell-regular" >}}
 
@@ -293,13 +293,13 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
     ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
-## 替换 DM-master 实例
+## 替换/迁移 DM-master 实例
 
 假设机器 `172.16.10.71` 需要进行维护或者已崩溃，需要将 DM-master 实例从 `172.16.10.71` 迁移至 `172.16.10.80`。按以下步骤操作：
 
 1. 为中控机设置 SSH 互信以及 sudo 规则。
 
-    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/how-to/deploy/data-migration-with-ansible.md#第-5-步-在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 账户登录至中控机，并将 `172.16.10.80` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。
+    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/v3.0/how-to/deploy/data-migration-with-ansible.md#第-5-步在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 账户登录至中控机，并将 `172.16.10.80` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。
 
         {{< copyable "shell-regular" >}}
 
@@ -370,13 +370,13 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
     ansible-playbook rolling_update.yml --tags=dmctl
     ```
 
-## 替换 DM-worker 实例
+## 替换/迁移 DM-worker 实例
 
 假设机器 `172.16.10.72` 需要进行维护或者已崩溃，您需要将 `dm_worker1` 实例从 `172.16.10.72` 迁移至 `172.16.10.75`。按以下步骤操作：
 
 1. 为中控机设置 SSH 互信以及 sudo 规则。
 
-    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/how-to/deploy/data-migration-with-ansible.md#第-5-步-在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 账户登录至中控机，并将 `172.16.10.75` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。
+    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/v3.0/how-to/deploy/data-migration-with-ansible.md#第-5-步在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 账户登录至中控机，并将 `172.16.10.75` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。
 
         {{< copyable "shell-regular" >}}
 
@@ -419,10 +419,12 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
     修改 `inventory.ini` 文件。注释或删除旧 `dm_worker1` 实例所在行；同时为新 `dm_worker1` 实例添加相关信息。
 
+    如果希望从不同的 binlog position 或 GTID Sets 拉取 relay log，则也需要更新对应的 `{relay_binlog_name}` 或 `{relay_binlog_gtid}`。
+
     ```ini
     [dm_worker_servers]
     dm_worker1 source_id="mysql-replica-01" ansible_host=172.16.10.75 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
-    # dm_worker1 ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+    # dm_worker1 source_id="mysql-replica-01" ansible_host=172.16.10.72 server_id=101 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
     dm_worker2 source_id="mysql-replica-02" ansible_host=172.16.10.73 server_id=102 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
     ```
@@ -435,7 +437,13 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
     ansible-playbook deploy.yml --tags=dm-worker -l dm_worker1
     ```
 
-5. 启动新 DM-worker 实例。
+5. 迁移 relay log 数据。
+
+    - 如果待替换 DM-worker 实例所在机器仍能访问，则可直接将该实例的 `{dm_worker_relay_dir}` 目录下的所有数据复制到新 DM-worker 实例的对应目录。
+
+    - 如果待替换 DM-worker 实例所在机器已无法访问，可能需在第 9 步中手动恢复 relay log 目录等信息。
+
+6. 启动新 DM-worker 实例。
 
     {{< copyable "shell-regular" >}}
 
@@ -443,7 +451,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
     ansible-playbook start.yml --tags=dm-worker -l dm_worker1
     ```
 
-6. 配置并重启 DM-master 服务。
+7. 配置并重启 DM-master 服务。
 
     {{< copyable "shell-regular" >}}
 
@@ -451,7 +459,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
     ansible-playbook rolling_update.yml --tags=dm-master
     ```
 
-7. 配置并重启 Prometheus 服务。
+8. 配置并重启 Prometheus 服务。
 
     {{< copyable "shell-regular" >}}
 
@@ -459,23 +467,24 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
     ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
-## 切换主从实例
+9. 启动并验证数据迁移任务。
 
-该部分分两种情况描述如何使用 dmctl 完成主从实例切换。
+    使用 `start-task` 命令启动数据迁移任务，如果任务运行正常，则表示 DM-worker 迁移顺利完成；如果报类似如下错误，则需要对 relay log 目录进行手动修复。
 
-### 虚拟 IP 环境下的上游主从切换
+    ```log
+    fail to initial unit Sync of subtask test-task : UUID suffix 000002 with UUIDs [1ddbf6d3-d3b2-11e9-a4e9-0242ac140003.000001] not found
+    ```
 
-1. 使用 `query-status` 命令确认 relay 处理单元已获取主从切换前 master 实例的所有 binlog（`relayCatchUpMaster`）。
-2. 使用 `pause-relay` 命令暂停 relay 处理。
-3. 使用 `pause-task` 命令暂停所有运行任务。
-4. 虚拟 IP 环境下的上游主从实例执行切换。
-5. 使用 `switch-relay-master` 命令通知 relay 处理单元进行主从切换。
-6. 使用 `resume-relay` 命令恢复 relay 处理，从新 master 实例读取 binlog。
-7. 使用 `resume-task` 命令恢复之前的同步任务。
+    如果待替换 DM-worker 所连接的上游 MySQL 已发生过切换，则会产生如上错误。此时可通过如下步骤手动修复：
 
-### 变更 IP 后的主从切换
+    1. 使用 `stop-task` 命令停止数据迁移任务。
 
-1. 使用 `query-status` 命令确认 relay 处理单元已获取主从切换前 master 实例的所有 binlog（`relayCatchUpMaster`）。
-2. 使用 `stop-task` 停止所有运行任务。
-3. 修改 DM-worker 配置，并使用 DM-Ansible 对 DM-worker 进行滚动升级操作。
-4. 使用 `start-task` 命令重新启动同步任务。
+    2. 通过 `$ ansible-playbook stop.yml --tags=dm-worker -l dm_worker1` 停止 DM-worker 实例。
+
+    3. 更新 relay log 子目录的后缀，例如将 `1ddbf6d3-d3b2-11e9-a4e9-0242ac140003.000001` 重命名为 `1ddbf6d3-d3b2-11e9-a4e9-0242ac140003.000002`。
+
+    4. 更新 relay log 子目录索引文件 `server-uuid.index`，例如将其中的内容由 `1ddbf6d3-d3b2-11e9-a4e9-0242ac140003.000001` 变更为 `1ddbf6d3-d3b2-11e9-a4e9-0242ac140003.000002`。
+
+    5. 通过 `$ ansible-playbook start.yml --tags=dm-worker -l dm_worker1` 启动 DM-worker 实例。
+
+    6. 再次启动并验证数据迁移任务。

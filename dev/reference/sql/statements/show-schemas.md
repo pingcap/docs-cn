@@ -6,4 +6,4 @@ category: reference
 
 # SHOW SCHEMAS
 
-`SHOW SCHEMAS` 语句是 [`SHOW DATABASES`](/reference/sql/statements/show-databases.md) 的别名。包含该语句提供了 MySQL 兼容性。
+`SHOW SCHEMAS` 语句是 [`SHOW DATABASES`](/dev/reference/sql/statements/show-databases.md) 的别名。包含该语句提供了 MySQL 兼容性。。

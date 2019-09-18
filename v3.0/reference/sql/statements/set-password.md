@@ -102,9 +102,9 @@ SHOW CREATE USER newuser;
 
 ## MySQL 兼容性
 
-`SET PASSWORD` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SET PASSWORD` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [CREATE USER](/reference/sql/statements/create-user.md)
-* [Privilege Management](/reference/security/privilege-system.md)
+* [CREATE USER](/v3.0/reference/sql/statements/create-user.md)
+* [Privilege Management](/v3.0/reference/security/privilege-system.md)

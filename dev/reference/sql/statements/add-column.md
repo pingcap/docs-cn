@@ -125,5 +125,5 @@ SELECT * FROM t1;
 
 ## 另请参阅
 
-* [ADD INDEX](/reference/sql/statements/add-index.md)
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
+* [ADD INDEX](/dev/reference/sql/statements/add-index.md)
+* [CREATE TABLE](/dev/reference/sql/statements/create-table.md)

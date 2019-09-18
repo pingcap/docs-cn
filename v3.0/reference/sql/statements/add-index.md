@@ -105,9 +105,9 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 ## 另请参阅
 
-* [CREATE INDEX](/reference/sql/statements/create-index.md)
-* [DROP INDEX](/reference/sql/statements/drop-index.md)
-* [RENAME INDEX](/reference/sql/statements/rename-index.md)
-* [ADD COLUMN](/reference/sql/statements/add-column.md)
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [EXPLAIN](/reference/sql/statements/explain.md)
+* [CREATE INDEX](/v3.0/reference/sql/statements/create-index.md)
+* [DROP INDEX](/v3.0/reference/sql/statements/drop-index.md)
+* [RENAME INDEX](/v3.0/reference/sql/statements/rename-index.md)
+* [ADD COLUMN](/v3.0/reference/sql/statements/add-column.md)
+* [CREATE TABLE](/v3.0/reference/sql/statements/create-table.md)
+* [EXPLAIN](/v3.0/reference/sql/statements/explain.md)

@@ -150,7 +150,7 @@ data_type:
   | JSON
 ```
 
-`data_type` 请参考[数据类型](/reference/sql/data-types/overview.md)章节。
+`data_type` 请参考[数据类型](/dev/reference/sql/data-types/overview.md)章节。
 
 ```sql
 index_col_name:
@@ -210,13 +210,13 @@ table_option:
   | STATS_PERSISTENT [=] {DEFAULT|0|1}
 ```
 
-`table_option` 目前支持的只有 `AUTO_INCREMENT`、`SHARD_ROW_ID_BITS`（详情介绍请参考 [TiDB 专用系统变量和语法](/reference/configuration/tidb-server/tidb-specific-variables.md#shard-row-id-bits)）、`PRE_SPLIT_REGIONS`、`CHARACTER SET`、`COLLATE` 和 `COMMENT`，其它只是语法上支持。具体内容参考下表，各个子句之间用逗号隔开。
+`table_option` 目前支持的只有 `AUTO_INCREMENT`、`SHARD_ROW_ID_BITS`（详情介绍请参考 [TiDB 专用系统变量和语法](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#shard_row_id_bits)）、`PRE_SPLIT_REGIONS`、`CHARACTER SET`、`COLLATE` 和 `COMMENT`，其它只是语法上支持。具体内容参考下表，各个子句之间用逗号隔开。
 
 | 参数           |含义                                  |举例                      |
 |----------------|--------------------------------------|----------------------------|
 |`AUTO_INCREMENT`|自增字段初始值                        |`AUTO_INCREMENT` = 5|
 |`SHARD_ROW_ID_BITS`|用来设置隐式 _tidb_rowid 的分片数量的 bit 位数 |`SHARD_ROW_ID_BITS` = 4|
-|`PRE_SPLIT_REGIONS`|用来在建表时预先均匀切分 2^(PRE_SPLIT_REGIONS-1) 个 Region |`PRE_SPLIT_REGIONS` = 4|
+|`PRE_SPLIT_REGIONS`|用来在建表时预先均匀切分 `2^(PRE_SPLIT_REGIONS)` 个 Region |`PRE_SPLIT_REGIONS` = 4|
 |`CHARACTER SET` |指定该表所使用的字符集                | `CHARACTER SET` = 'utf8mb4'|
 |`COLLATE`       |指定该表所使用的字符集排序规则        | `COLLATE` = 'utf8mb4_bin'|
 |`COMMENT`       |注释信息                              | `COMMENT` = 'comment info'|
@@ -298,6 +298,6 @@ SELECT * FROM t1;
 
 ## 另请参阅
 
-* [DROP TABLE](/reference/sql/statements/drop-table.md)
-* [CREATE TABLE LIKE](/reference/sql/statements/create-table-like.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
+* [DROP TABLE](/dev/reference/sql/statements/drop-table.md)
+* [CREATE TABLE LIKE](/dev/reference/sql/statements/create-table-like.md)
+* [SHOW CREATE TABLE](/dev/reference/sql/statements/show-create-table.md)

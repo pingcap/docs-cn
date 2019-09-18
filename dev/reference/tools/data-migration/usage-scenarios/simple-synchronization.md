@@ -68,7 +68,7 @@ category: reference
 
 ## 同步方案
 
-- 为了满足[同步要求](#同步要求)中第一点的前三条要求，需要配置以下 [table routing 规则](/reference/tools/data-migration/features/overview.md#table-routing)：
+- 为了满足[同步要求](#同步要求)中第一点的前三条要求，需要配置以下 [table routing 规则](/dev/reference/tools/data-migration/features/overview.md#table-routing)：
 
     {{< copyable "" >}}
 
@@ -86,7 +86,7 @@ category: reference
         target-schema: "user_south"
     ```
 
-- 为了满足[同步要求](#同步要求)中第二点的第一条要求，需要配置以下 [table routing 规则](/reference/tools/data-migration/features/overview.md#table-routing)：
+- 为了满足[同步要求](#同步要求)中第二点的第一条要求，需要配置以下 [table routing 规则](/dev/reference/tools/data-migration/features/overview.md#table-routing)：
 
     {{< copyable "" >}}
 
@@ -105,7 +105,7 @@ category: reference
         target-table:  "store_shenzhen"
     ```
 
-- 为了满足[同步要求](#同步要求)中第一点的第四条要求，需要配置以下 [binlog event filter 规则](/reference/tools/data-migration/features/overview.md#binlog-event-filter)：
+- 为了满足[同步要求](#同步要求)中第一点的第四条要求，需要配置以下 [binlog event filter 规则](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)：
 
     {{< copyable "" >}}
 
@@ -123,7 +123,7 @@ category: reference
         action: Ignore
     ```
 
-- 为了满足[同步要求](#同步要求)中第二点的第二条要求，需要配置以下 [binlog event filter 规则](/reference/tools/data-migration/features/overview.md#binlog-event-filter)：
+- 为了满足[同步要求](#同步要求)中第二点的第二条要求，需要配置以下 [binlog event filter 规则](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)：
 
     {{< copyable "" >}}
 
@@ -140,7 +140,7 @@ category: reference
     >
     > `store-filter-rule` 不同于 `log-filter-rule` 和 `user-filter-rule`。`store-filter-rule` 是针对整个 `store` 库的规则，而 `log-filter-rule` 和 `user-filter-rule` 是针对 `user` 库中 `log` 表的规则。
 
-- 为了满足[同步要求](#同步要求)中的第三点要求，需要配置以下 [black & white table lists 规则](/reference/tools/data-migration/features/overview.md#black-white-table-lists)：
+- 为了满足[同步要求](#同步要求)中的第三点要求，需要配置以下 [black & white table lists 规则](/dev/reference/tools/data-migration/features/overview.md#black--white-table-lists)：
 
     {{< copyable "" >}}
 
@@ -152,7 +152,7 @@ category: reference
 
 ## 同步任务配置
 
-以下是完整的同步任务配置，详见[配置介绍](/reference/tools/data-migration/configure/task-configuration-file.md)。
+以下是完整的同步任务配置，详见[配置介绍](/dev/reference/tools/data-migration/configure/task-configuration-file.md)。
 
 {{< copyable "" >}}
 

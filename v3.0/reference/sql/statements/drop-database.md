@@ -75,9 +75,9 @@ SHOW DATABASES;
 
 ## MySQL 兼容性
 
-`DROP DATABASE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`DROP DATABASE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [CREATE DATABASE](/reference/sql/statements/create-database.md)
-* [ALTER DATABASE](/reference/sql/statements/alter-database.md)
+* [CREATE DATABASE](/v3.0/reference/sql/statements/create-database.md)
+* [ALTER DATABASE](/v3.0/reference/sql/statements/alter-database.md)

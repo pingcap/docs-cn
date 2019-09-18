@@ -100,11 +100,11 @@ SELECT * FROM t1;
 
 ## MySQL 兼容性
 
-`UPDATE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`UPDATE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/dev/report-issue.md)。
 
 ## 另请参阅
 
-* [INSERT](/reference/sql/statements/insert.md)
-* [SELECT](/reference/sql/statements/select.md)
-* [DELETE](/reference/sql/statements/delete.md)
-* [REPLACE](/reference/sql/statements/replace.md)
+* [INSERT](/dev/reference/sql/statements/insert.md)
+* [SELECT](/dev/reference/sql/statements/select.md)
+* [DELETE](/dev/reference/sql/statements/delete.md)
+* [REPLACE](/dev/reference/sql/statements/replace.md)

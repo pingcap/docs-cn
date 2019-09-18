@@ -1,10 +1,10 @@
 ---
-title: 使用 TiDB-Ansible 扩容缩容 TiDB 集群
+title: 使用 TiDB Ansible 扩容缩容 TiDB 集群
 category: how-to
 aliases: ['/docs-cn/op-guide/ansible-deployment-scale/']
 ---
 
-# 使用 TiDB-Ansible 扩容缩容 TiDB 集群
+# 使用 TiDB Ansible 扩容缩容 TiDB 集群
 
 TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以下缩容示例中，被移除的节点没有混合部署其他服务；如果混合部署了其他服务，不能按如下操作。
 
