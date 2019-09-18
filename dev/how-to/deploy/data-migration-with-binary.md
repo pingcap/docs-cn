@@ -68,7 +68,6 @@ Usage of worker:
         存储 relay log 的路径（默认值："./relay_log"）
   -worker-addr string
         worker 的 地址
-        worker API server and status addr
 ```
 
 DM-worker 的配置文件：
@@ -128,7 +127,7 @@ port = 3306
 bin/dm-worker -config dm-worker1.toml
 ```
 
-对于 DM-worker2，修改配置文件中的 source-id 为 "mysql-replica-01"，并且修改 `from` 配置部分修改为 MySQL2 的地址即可。
+对于 DM-worker2，修改配置文件中的 source-id 为 "mysql-replica-02"，并且修改 `from` 配置部分修改为 MySQL2 的地址即可。
 
 ### DM-master 的部署
 
@@ -235,9 +234,9 @@ syncers:
     batch: 100
 ```
 
-将以上配置内容写入到文件 task1.yaml 中。使用 dmctl 创建任务：
+将以上配置内容写入到文件 task1.yaml 中，使用 dmctl 创建任务：
 
-```
+```bash
 $ dmctl -master-addr 192.168.0.4:8261
 Welcome to dmctl
 Release Version: v1.0.0-69-g5134ad1
