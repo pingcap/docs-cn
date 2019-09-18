@@ -137,6 +137,7 @@ mysql -h127.0.0.1 -P4000 -uroot
 ```
 
 {{< copyable "sql" >}}
+
 ```sql
 show tables;
 ```
