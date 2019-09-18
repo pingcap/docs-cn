@@ -117,7 +117,11 @@ standard (default)   kubernetes.io/host-path        8m29s
 
 参考[查看监控面板](https://pingcap.com/docs-cn/v3.0/tidb-in-kubernetes/monitor/tidb-in-kubernetes/#%E6%9F%A5%E7%9C%8B%E7%9B%91%E6%8E%A7%E9%9D%A2%E6%9D%BF)
 
-## 删除 kind Kubernetes 集群
+## 删除 TiDB 集群 与 kind Kubernetes 集群
+
+删除本地 TiDB 集群
+
+参考[销毁 TiDB 集群](https://pingcap.com/docs-cn/v3.0/tidb-in-kubernetes/maintain/destroy-tidb-cluster/)
 
 通过下面命令删除 kind Kubernetes 集群:
 
