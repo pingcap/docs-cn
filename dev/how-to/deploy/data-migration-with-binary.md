@@ -73,7 +73,7 @@ Usage of worker:
 
 DM-worker 的配置文件：
 
-```
+```toml
 # Worker Configuration.
 
 # 日志配置
