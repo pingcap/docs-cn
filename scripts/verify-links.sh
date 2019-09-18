@@ -5,9 +5,8 @@
 # - External links are ignored in CI because these links may go down out of our contorl.
 # - Anchors are ignored
 # - Internal links conventions
-#   - Links starting with '/media/' are relative to site root
-#   - Links starting with one or two dots are relative to the directory in which files reside
-#   - Other links are relative to the root of the version directory (e.g. v1.0, v2.0, v3.0)
+#   - Must be absolute and start from repo root
+#   - Only files in current directory and /media are allowed
 # - When a file was moved, all other references are required to be updated for now, even if alias are given
 #   - This is recommended because of less redirects and better anchors support.
 #
@@ -48,7 +47,7 @@ for d in dev $(ls -d v[0-9]*); do
     echo "info: checking links under $d directory..."
     sed \
         -e "s#<ROOT>#$ROOT#g" \
-        -e "s#<DOC_ROOT>#$ROOT#g" \
+        -e "s#<VERSION>#$d#g" \
         scripts/markdown-link-check.tpl > $CONFIG_TMP
     if [ -n "$VERBOSE" ]; then
         cat $CONFIG_TMP
