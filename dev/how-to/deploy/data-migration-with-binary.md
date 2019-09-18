@@ -17,17 +17,7 @@ wget https://download.pingcap.org/dm-{version}-linux-amd64.sha256
 sha256sum -c dm-{version}-linux-amd64.sha256
 ```
 
-其中 `version` 为 DM 的版本号，例如 `v1.0.1`, 也可以使用最新的未发布版本 `latest`。
-
-另外 DM 同步全量数据需要使用 Mydumper，下载方法：
-
-```
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
-
-# 检查文件完整性，返回 ok 则正确
-sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
-```
+其中 `version` 为 DM 的版本号，例如 `v1.0.1`，也可以使用最新的未发布版本 `latest`。下载的文件中包含 dm-master、dm-worker、dmctl 以及 mydumper。
 
 ## 使用样例
 
@@ -46,20 +36,21 @@ sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
 
 ### DM-worker 的部署
 
+DM-worker 提供命令行参数和配置文件两种配置方式。
+
 DM-worker 的命令行参数说明：
 
 ```bash
 Usage of worker:
   -L string
-        日志等级，值可以为 "debug"，"info"，"warn"，"error" 或者 "fatal"（默认值为 "info"）
+        日志等级，值可以为 "debug"，"info"，"warn"，"error" 或者 "fatal"（默认值："info"）
   -V    输出版本信息
   -checker-backoff-max duration
-        任务状态检查最长间隔时间（默认 5m0s）
-        task status checker backoff max delay duration (default 5m0s)
+        任务检查模块中，检查到出错等待自动恢复的最大时间间隔（默认值："5m0s"，一般情况下不需要修改，如果对该参数的作用没有深入的了解，不建议修改该参数）
   -checker-backoff-rollback duration
-        task status checker backoff rollback interval (default 5m0s)
+      任务检查模块中，定时调整恢复等待时间的间隔（默认值："5m0s"，一般情况下不需要修改，如果对该参数的作用没有深入的了解，不建议修改该参数）
   -checker-check-enable
-        是否开启任务状态检查，开启后 DM 会尝试自动恢复因错误暂停的数据同步任务（默认值为 true）
+        是否开启任务状态检查，开启后 DM 会尝试自动恢复因错误暂停的数据同步任务（默认值：true）
   -config string
         配置文件的路径
   -log-file string
@@ -70,19 +61,10 @@ Usage of worker:
         relay log 的过期时间，DM-worker 会删除更新时间超过了过期时间的 relay log（单位：小时）
   -purge-interval int
         定期检查 relay log 是否过期的间隔时间（默认值：3600）（单位：秒）
-        interval (seconds) try to check whether needing to purge relay log files (default 3600)
   -purge-remain-space int
         设置最小可用磁盘空间，当磁盘可用空间小于这个值时删除 relay log（默认值：15）（单位：GB）
   -relay-dir string
         存储 relay log 的路径（默认值："./relay_log"）
-  -tracer-batch-size int
-        upload to tracing service batch size (default 20)
-  -tracer-checksum
-        whether to calculate checksum of some data
-  -tracer-enable
-        是否开启 tracing 功能
-  -tracer-server-addr string
-        tracing 服务的 rpc 地址
   -worker-addr string
         worker 的 地址
         worker API server and status addr
@@ -100,7 +82,7 @@ log-file = "dm-worker.log"
 # dm-worker 的地址
 worker-addr = ":8262"
 
-# 作为 MySQL slave 的 server id，用于获取 MySQL 的 binlog。
+# 作为 MySQL slave 的 server id，用于获取 MySQL 的 binlog
 # 在一个 replication group 中，每个实例（master 和 slave）都应该有唯一的 server id
 server-id = 101
 
@@ -148,6 +130,8 @@ bin/dm-worker -config dm-worker1.toml
 对于 DM-worker2，修改配置文件中的 source-id 为 "mysql-replica-01"，并且修改 `from` 配置部分修改为 MySQL2 的地址即可。
 
 ### DM-master 的部署
+
+DM-worker 提供命令行参数和配置文件两种配置方式。
 
 DM-master 的命令行参数说明：
 
@@ -198,9 +182,11 @@ dm-worker = "192.168.0.6:8262"
 bin/dm-master -config dm-master.toml
 ```
 
+这样 DM 集群就部署成功了，下面创建简单的数据同步任务来使用 DM 集群。
+
 ### 创建数据同步任务
 
-需要将 MySQL1 实例中的 test1 和 MySQL2 实例中的 test2 同步到 TiDB 中。首先创建任务的配置文件：
+假设需要将 MySQL1 实例中的 test1 和 MySQL2 实例中的 test2 同步到 TiDB 中。首先创建任务的配置文件：
 
 ```
 ---
@@ -248,7 +234,7 @@ syncers:
     batch: 100
 ```
 
-将配置文件内容写入到文件 task1.yaml 中。使用 dmctl 创建任务：
+将以上配置内容写入到文件 task1.yaml 中。使用 dmctl 创建任务：
 
 ```
 $ dmctl -master-addr 192.168.0.4:8261
@@ -273,5 +259,4 @@ Go Version: go version go1.12 linux/amd64
 }
 ```
 
-这样同步 MySQL1 实例中 test1 到 TiDB 的任务就创建成功了。对于同步 MySQL2 实例中的 test2 到 TiDB 使用类似的方式创建即可。
-
+这样同步 MySQL1 实例中 test1 到 TiDB 的任务就创建成功了。对于同步 MySQL2 实例中的 test2 到 TiDB 使用类似的方式创建任务即可。
