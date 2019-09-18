@@ -13,8 +13,13 @@ category: reference
 
 ### dmctl 使用帮助
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-$ ./dmctl --help
+./dmctl --help
+```
+
+```
 Usage of dmctl:
  # 打印版本信息
  -V prints version and exit
@@ -30,16 +35,27 @@ Usage of dmctl:
 
 在 DM 相关配置文件中，要求必须使用经 dmctl 加密后的密码，否则会报错。对于同一个原始密码，每次加密后密码不同。
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-$ ./dmctl -encrypt 123456
+./dmctl -encrypt 123456
+```
+
+```
 VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=
 ```
 
 ### 任务管理概览
 
+进入命令行模式，与 DM-master 进行交互：
+
+{{< copyable "shell-regular" >}}
+
 ```bash
-# 进入命令行模式，与 DM-master 进行交互
-$ ./dmctl -master-addr 172.16.30.14:8261
+./dmctl -master-addr 172.16.30.14:8261
+```
+
+```
 Welcome to dmctl
 Release Version: v1.0.0-100-g2bef6f8b
 Git Commit Hash: 2bef6f8beda34c0dff57377005c71589b48aa3c5
@@ -96,8 +112,13 @@ Flags:
 
 `start-task` 命令用于创建数据同步任务。 当数据同步任务启动时，DM 将[自动对相应权限和配置进行前置检查](/dev/reference/tools/data-migration/precheck.md)。
 
+{{< copyable "" >}}
+
 ```bash
 » help start-task
+```
+
+```
 start a task with config file
 
 Usage:
@@ -112,8 +133,10 @@ Global Flags:
 
 #### 命令用法示例
 
+{{< copyable "" >}}
+
 ```bash
-start-task [ -w "172.16.30.15:10081"] ./task.yaml
+» start-task [ -w "172.16.30.15:10081"] ./task.yaml
 ```
 
 #### 参数解释
@@ -128,8 +151,13 @@ start-task [ -w "172.16.30.15:10081"] ./task.yaml
 
 #### 返回结果示例
 
+{{< copyable "" >}}
+
 ```bash
 » start-task task.yaml
+```
+
+```
 {
      "result": true,
      "msg": "",
@@ -152,8 +180,13 @@ start-task [ -w "172.16.30.15:10081"] ./task.yaml
 
 `query-status` 命令用于查询数据同步任务状态。有关查询结果及子任务状态，详见[查询状态](/dev/reference/tools/data-migration/query-status.md)。
 
+{{< copyable "" >}}
+
 ```bash
 » help query-status
+```
+
+```
 query task's status
 
 Usage:
@@ -168,8 +201,10 @@ Global Flags:
 
 #### 命令用法示例
 
+{{< copyable "" >}}
+
 ```bash
-query-status
+» query-status
 ```
 
 #### 参数解释
@@ -186,8 +221,13 @@ query-status
 
 有关查询结果中各参数的意义，详见[查询状态结果](/dev/reference/tools/data-migration/query-status.md#查询结果)。
 
+{{< copyable "" >}}
+
 ```bash
 » query-status
+```
+
+```
 {
      "result": true,
      "msg": "",
@@ -274,8 +314,13 @@ query-status
 
 `pause-task` 命令用于暂停数据同步任务。
 
+{{< copyable "" >}}
+
 ```bash
 » help pause-task
+```
+
+```
 pause a running task with name
 
 Usage:
@@ -289,6 +334,8 @@ Global Flags:
 ```
 
 #### 命令用法示例
+
+{{< copyable "" >}}
 
 ```bash
 pause-task [-w "127.0.0.1:10181"] task-name
@@ -306,8 +353,13 @@ pause-task [-w "127.0.0.1:10181"] task-name
 
 #### 返回结果示例
 
+{{< copyable "" >}}
+
 ```bash
 » pause-task test
+```
+
+```
 {
      "op": "Pause",
      "result": true,
@@ -333,8 +385,13 @@ pause-task [-w "127.0.0.1:10181"] task-name
 
 `resume-task` 命令用于恢复数据同步任务。
 
+{{< copyable "" >}}
+
 ```bash
 » help resume-task
+```
+
+```
 resume a paused task with name
 
 Usage:
@@ -348,6 +405,8 @@ Global Flags:
 ```
 
 #### 命令用法示例
+
+{{< copyable "" >}}
 
 ```bash
 resume-task [-w "127.0.0.1:10181"] task-name
@@ -365,8 +424,13 @@ resume-task [-w "127.0.0.1:10181"] task-name
 
 #### 返回结果示例
 
+{{< copyable "" >}}
+
 ```bash
 » resume-task test
+```
+
+```
 {
      "op": "Resume",
      "result": true,
@@ -392,8 +456,13 @@ resume-task [-w "127.0.0.1:10181"] task-name
 
 `stop-task` 命令用于停止数据同步任务。
 
+{{< copyable "" >}}
+
 ```bash
 » help stop-task
+```
+
+```
 stop a task with name
 
 Usage:
@@ -408,8 +477,10 @@ Global Flags:
 
 #### 命令用法示例
 
+{{< copyable "" >}}
+
 ```bash
-stop-task [-w "127.0.0.1:10181"]  task-name
+» stop-task [-w "127.0.0.1:10181"]  task-name
 ```
 
 #### 参数解释
@@ -424,8 +495,13 @@ stop-task [-w "127.0.0.1:10181"]  task-name
 
 #### 返回结果示例
 
+{{< copyable "" >}}
+
 ```bash
 » stop-task test
+```
+
+```
 {
      "op": "Stop",
      "result": true,
@@ -482,8 +558,13 @@ stop-task [-w "127.0.0.1:10181"]  task-name
 
 3. 使用 `start-task <task-name>` 恢复任务。
 
+{{< copyable "" >}}
+
 ```bash
 » help update-task
+```
+
+```
 update a task's config for routes, filters, column-mappings, black-white-list
 
 Usage:
@@ -498,8 +579,10 @@ Global Flags:
 
 #### 命令用法示例
 
+{{< copyable "" >}}
+
 ```bash
-update-task [-w "127.0.0.1:10181"] ./task.yaml
+» update-task [-w "127.0.0.1:10181"] ./task.yaml
 ```
 
 #### 参数解释
@@ -514,8 +597,13 @@ update-task [-w "127.0.0.1:10181"] ./task.yaml
 
 #### 返回结果示例
 
+{{< copyable "" >}}
+
 ```bash
 » update-task task_all_black.yaml
+```
+
+```
 {
      "result": true,
      "msg": "",
