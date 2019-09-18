@@ -14,6 +14,8 @@ category: reference
 - TiDB Lightning 运行后，TiDB 集群将无法正常对外提供服务。
 - 若 `tidb-lightning` 崩溃，集群会留在“导入模式”。若忘记转回“普通模式”，集群会产生大量未压缩的文件，继而消耗 CPU 并导致迟延 (stall)。此时，需要使用 `tidb-lightning-ctl` 手动将集群转回“普通模式”：
 
+    {{< copyable "shell-regular" >}}
+
     ```sh
     bin/tidb-lightning-ctl -switch-mode=normal
     ```
@@ -67,6 +69,8 @@ category: reference
 ## 导出数据
 
 我们使用 [`mydumper`](/dev/reference/tools/mydumper.md) 从 MySQL 导出数据，如下：
+
+{{< copyable "shell-regular" >}}
 
 ```sh
 ./bin/mydumper -h 127.0.0.1 -P 3306 -u root -t 16 -F 256 -B test -T t1,t2 --skip-tz-utc -o /data/my_database/
@@ -140,8 +144,10 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/o
 
 3. 开始部署。
 
+    {{< copyable "shell-regular" >}}
+
     ```sh
-    ansible-playbook bootstrap.yml
+    ansible-playbook bootstrap.yml &&
     ansible-playbook deploy.yml
     ```
 
@@ -149,11 +155,15 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/o
 
 5. 登录 `tikv-importer` 的服务器，并执行以下命令来启动 Importer。
 
+    {{< copyable "shell-regular" >}}
+
     ```sh
     scripts/start_importer.sh
     ```
 
 6. 登录 `tidb-lightning` 的服务器，并执行以下命令来启动 Lightning，开始导入过程。
+
+    {{< copyable "shell-regular" >}}
 
     ```sh
     scripts/start_lightning.sh
@@ -246,6 +256,8 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/o
     ```
 
 3. 运行 `tikv-importer`。
+
+    {{< copyable "shell-regular" >}}
 
     ```sh
     nohup ./tikv-importer -C tikv-importer.toml > nohup.out &
@@ -423,10 +435,11 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/o
     # 表库过滤设置。详情见《TiDB Lightning 表库过滤》。
     #[black-white-list]
     # ...
-
     ```
 
 4. 运行 `tidb-lightning`。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
+
+    {{< copyable "shell-regular" >}}
 
     ```sh
     #!/bin/bash

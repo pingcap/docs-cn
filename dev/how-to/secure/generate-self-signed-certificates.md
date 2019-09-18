@@ -24,11 +24,13 @@ category: how-to
 
 假设使用 x86_64 Linux 主机：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-mkdir ~/bin
-curl -s -L -o ~/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
-curl -s -L -o ~/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
-chmod +x ~/bin/{cfssl,cfssljson}
+mkdir ~/bin &&
+curl -s -L -o ~/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 &&
+curl -s -L -o ~/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64 &&
+chmod +x ~/bin/{cfssl,cfssljson} &&
 export PATH=$PATH:~/bin
 ```
 
@@ -37,9 +39,9 @@ export PATH=$PATH:~/bin
 生成 cfssl 的默认配置，以便于之后修改：
 
 ```bash
-mkdir ~/cfssl
-cd ~/cfssl
-cfssl print-defaults config > ca-config.json
+mkdir ~/cfssl &&
+cd ~/cfssl &&
+cfssl print-defaults config > ca-config.json &&
 cfssl print-defaults csr > ca-csr.json
 ```
 
@@ -107,13 +109,15 @@ cfssl print-defaults csr > ca-csr.json
 
 ### 生成 CA 证书
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 cfssl gencert -initca ca-csr.json | cfssljson -bare ca -
 ```
 
 将会生成以下几个文件：
 
-```bash
+```
 ca-key.pem
 ca.csr
 ca.pem
@@ -123,17 +127,19 @@ ca.pem
 
 `hostname` 中为各组件的 IP 地址，以及 `127.0.0.1`
 
-```bash
-echo '{"CN":"tidb-server","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server -hostname="172.16.10.1,172.16.10.2,127.0.0.1" - | cfssljson -bare tidb-server
+{{< copyable "shell-regular" >}}
 
-echo '{"CN":"tikv-server","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server -hostname="172.16.10.4,172.16.10.5,172.16.10.6,127.0.0.1" - | cfssljson -bare tikv-server
+```bash
+echo '{"CN":"tidb-server","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server -hostname="172.16.10.1,172.16.10.2,127.0.0.1" - | cfssljson -bare tidb-server &&
+
+echo '{"CN":"tikv-server","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server -hostname="172.16.10.4,172.16.10.5,172.16.10.6,127.0.0.1" - | cfssljson -bare tikv-server &&
 
 echo '{"CN":"pd-server","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server -hostname="172.16.10.1,172.16.10.2,172.16.10.3,127.0.0.1" - | cfssljson -bare pd-server
 ```
 
 将会生成以下几个文件：
 
-```Bash
+```
 tidb-server-key.pem     tikv-server-key.pem      pd-server-key.pem
 tidb-server.csr         tikv-server.csr          pd-server.csr
 tidb-server.pem         tikv-server.pem          pd-server.pem
@@ -141,13 +147,15 @@ tidb-server.pem         tikv-server.pem          pd-server.pem
 
 ### 生成客户端证书
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 echo '{"CN":"client","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=client -hostname="" - | cfssljson -bare client
 ```
 
 将会生成以下几个文件：
 
-```bash
+```
 client-key.pem
 client.csr
 client.pem
