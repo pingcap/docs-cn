@@ -18,6 +18,8 @@ aliases: ['/docs-cn/tools/dm/troubleshooting/']
 
 4. 一般情况下，错误处理完成后，只需使用 dmctl 重启任务即可。
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     resume-task ${task name}
     ```
@@ -52,7 +54,7 @@ aliases: ['/docs-cn/tools/dm/troubleshooting/']
 
 1. 使用 `stop-task` 命令停止当前正在运行的所有同步任务。
 
-2. 使用 Ansible [停止整个 DM 集群](/v3.0/how-to/deploy/data-migration-with-ansible.md#第-10-步-关闭-dm-集群)。
+2. 使用 Ansible [停止整个 DM 集群](/v3.0/how-to/deploy/data-migration-with-ansible.md#第-10-步关闭-dm-集群)。
 
 3. 手动清理掉与 binlog event 被重置的 MySQL master 相对应的 DM-worker 的 relay log 目录。
 
@@ -61,6 +63,6 @@ aliases: ['/docs-cn/tools/dm/troubleshooting/']
 
 4. 清理掉下游已同步的数据。
 
-5. 使用 Ansible [启动整个 DM 集群](/v3.0/how-to/deploy/data-migration-with-ansible.md#第-9-步-部署-dm-集群)。
+5. 使用 Ansible [启动整个 DM 集群](/v3.0/how-to/deploy/data-migration-with-ansible.md#第-9-步部署-dm-集群)。
 
 6. 以新的任务名重启数据同步任务，或设置 `remove-meta` 为 `true` 且 `task-mode` 为 `all`。

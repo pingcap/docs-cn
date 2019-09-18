@@ -43,6 +43,8 @@ TiDB Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的
 
 1. 使用 `tidb-lightning-ctl` 把出错的表删除，然后重启 Lightning 重新导入那些表。
 
+    {{< copyable "shell-regular" >}}
+
     ```sh
     tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
     ```
@@ -51,13 +53,15 @@ TiDB Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的
 
 ## Checkpoint for … has invalid status:（错误码）
 
-**原因**：[断点续传](/v3.0/reference/tools/tidb-lightning/checkpoints.md)已启用。Lightning 或 Importer 之前发生了异常退出。为了防止数据意外损坏，Lighting 在错误解决以前不会启动。
+**原因**：[断点续传](/v3.0/reference/tools/tidb-lightning/checkpoints.md)已启用。Lightning 或 Importer 之前发生了异常退出。为了防止数据意外损坏，Lightning 在错误解决以前不会启动。
 
 错误码是小于 25 的整数，可能的取值是 0、3、6、9、12、14、15、17、18、20、21。整数越大，表示异常退出所发生的步骤在导入流程中越晚。
 
 **解决办法**：
 
 如果错误原因是非法数据源，使用 `tidb-lightning-ctl` 删除已导入数据，并重启 Lightning。
+
+{{< copyable "shell-regular" >}}
 
 ```sh
 tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
@@ -78,6 +82,8 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 2. 降低 `table-concurrency` + `index-concurrency`，使之低于 `max-open-engines`。
 
 3. 重启 `tikv-importer` 来强制移除所有引擎文件 (默认值为 `./data.import/`)。这样也会丢弃导入了一半的表，所以启动 Lightning 前必须清除过期的断点记录：
+
+    {{< copyable "shell-regular" >}}
 
     ```sh
     tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
@@ -111,8 +117,11 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 
     * 手动部署的话，通过设定 `$TZ` 环境变量强制时区设定。
 
+        强制使用 Asia/Shanghai 时区：
+
+        {{< copyable "shell-regular" >}}
+
         ```sh
-        # 强制使用 Asia/Shanghai 时区
         TZ='Asia/Shanghai' bin/tidb-lightning -config tidb-lightning.toml
         ```
 
