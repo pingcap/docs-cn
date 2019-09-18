@@ -159,7 +159,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
 1. 为中控机设置 SSH 互信以及 sudo 规则。
 
-    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/v2.1/how-to/deploy/data-migration-with-ansible.md#第-5-步-在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 用户登录至中控机，并将 `172.16.10.74` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。
+    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/v2.1/how-to/deploy/data-migration-with-ansible.md#第-5-步在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 用户登录至中控机，并将 `172.16.10.74` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。
 
         ```
         $ cd /home/tidb/dm-ansible
@@ -253,7 +253,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
 1. 为中控机设置 SSH 互信以及 sudo 规则。
 
-    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/v2.1/how-to/deploy/data-migration-with-ansible.md#第-5-步-在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 账户登录至中控机，并将 `172.16.10.80` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。
+    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/v2.1/how-to/deploy/data-migration-with-ansible.md#第-5-步在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 账户登录至中控机，并将 `172.16.10.80` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。
 
         ```
         $ cd /home/tidb/dm-ansible
@@ -315,7 +315,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
 
 1. 为中控机设置 SSH 互信以及 sudo 规则。
 
-    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/v2.1/how-to/deploy/data-migration-with-ansible.md#第-5-步-在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 账户登录至中控机，并将 `172.16.10.75` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。
+    1. 参考[在中控机上配置 SSH 互信和 sudo 规则](/v2.1/how-to/deploy/data-migration-with-ansible.md#第-5-步在中控机上配置-ssh-互信和-sudo-规则)，使用 `tidb` 账户登录至中控机，并将 `172.16.10.75` 添加至 `hosts.ini` 文件中的 `[servers]` 部分。
 
         ```
         $ cd /home/tidb/dm-ansible
@@ -410,24 +410,3 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
     5. 通过 `$ ansible-playbook start.yml --tags=dm-worker -l dm_worker1` 启动 DM-worker 实例。
 
     6. 再次启动并验证数据迁移任务。
-
-## 切换主从实例
-
-该部分分两种情况描述如何使用 dmctl 完成主从实例切换。
-
-### 虚拟 IP 环境下的上游主从切换
-
-1. 使用 `query-status` 命令确认 relay 处理单元已获取主从切换前 master 实例的所有 binlog（`relayCatchUpMaster`）。
-2. 使用 `pause-relay` 命令暂停 relay 处理。
-3. 使用 `pause-task` 命令暂停所有运行任务。
-4. 虚拟 IP 环境下的上游主从实例执行切换。
-5. 使用 `switch-relay-master` 命令通知 relay 处理单元进行主从切换。
-6. 使用 `resume-relay` 命令恢复 relay 处理，从新 master 实例读取 binlog。
-7. 使用 `resume-task` 命令恢复之前的同步任务。
-
-### 变更 IP 后的主从切换
-
-1. 使用 `query-status` 命令确认 relay 处理单元已获取主从切换前 master 实例的所有 binlog（`relayCatchUpMaster`）。
-2. 使用 `stop-task` 停止所有运行任务。
-3. 修改 DM-worker 配置，并使用 DM-Ansible 对 DM-worker 进行滚动升级操作。
-4. 使用 `start-task` 命令重新启动同步任务。
