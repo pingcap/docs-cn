@@ -55,11 +55,6 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 + 默认地址: `http://127.0.0.1:2379`
 + 环境变量: PD_ADDR
 
-### \-\-detach,-d
-
-+ 使用单命令行模式(不进入 readline)
-+ 默认值: true
-
 ### --cacert
 
 - 指定 PEM 格式的受信任 CA 的证书文件路径
@@ -69,6 +64,21 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 - 指定 PEM 格式的 SSL 证书文件路径
 - 默认值: ""
+
+### \-\-detach,-d
+
++ 使用单命令行模式(不进入 readline)
++ 默认值: true
+
+### \-\-help,-h
+
++ 输出帮助信息
++ 默认值: false
+
+### \-\-interact,-i
+
++ 使用交互模式(进入 readline)
++ 默认值: false
 
 ### --key
 
