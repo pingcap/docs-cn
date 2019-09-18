@@ -96,6 +96,9 @@ flavor = "mysql"
 # 存储 relay log 的路径
 relay-dir = "./relay_log"
 
+# 存储 dm-worker 元信息的路径
+meta-dir = "dm_worker_meta"
+
 # relay log 处理单元是否开启 gtid
 enable-gtid = false
 
@@ -192,13 +195,13 @@ bin/dm-master -config dm-master.toml
 
 ### 创建数据同步任务
 
-假设需要将 MySQL1 实例中的 test1 和 MySQL2 实例中的 test2 同步到 TiDB 中。首先创建任务的配置文件：
+假设在 MySQL1 和 MySQL2 实例中有若干个分表，这些分表的结构相同，所在的库名称都以 "sharding" 开头，表名称都以 "t" 开头，并且主键/唯一键不存在冲突，现在需要把这些分表同步到 TiDB 中的 db_target.t_target 表中。首先创建任务的配置文件：
 
 ```yaml
 ---
-name: test1
+name: test
 task-mode: all
-is-sharding: false
+is-sharding: true
 meta-schema: "dm_meta"
 remove-meta: false
 enable-heartbeat: true
@@ -208,42 +211,65 @@ target-database:
   host: "192.168.0.3"
   port: 4000
   user: "root"
-  password: ""
+  password: "" # 如果密码不为空，也需要配置 dmctl 加密后的密码
 
 mysql-instances:
   - source-id: "mysql-replica-01"
     black-white-list:  "instance"
+    route-rules: ["sharding-route-rules-table", "sharding-route-rules-schema"]
+    mydumper-config-name: "global"
+    loader-config-name: "global"
+    syncer-config-name: "global"
+
+  - source-id: "mysql-replica-02"
+    black-white-list:  "instance"
+    route-rules: ["sharding-route-rules-table", "sharding-route-rules-schema"]
     mydumper-config-name: "global"
     loader-config-name: "global"
     syncer-config-name: "global"
 
 black-white-list:
   instance:
-    do-dbs: ["test1"]
+    do-dbs: ["~^sharding[\\d]+"]
+    do-tables:
+    -  db-name: "~^sharding[\\d]+"
+       tbl-name: "~^t[\\d]+"
+
+routes:
+  sharding-route-rules-table:
+    schema-pattern: sharding*
+    table-pattern: t*
+    target-schema: db_target
+    target-table: t_target
+
+  sharding-route-rules-schema:
+    schema-pattern: sharding*
+    target-schema: db_target
 
 mydumpers:
   global:
     mydumper-path: "./bin/mydumper"
     threads: 4
-    chunk-filesize: 0
+    chunk-filesize: 64
     skip-tz-utc: true
-    extra-args: "-B test1 --statement-size=100"
+    extra-args: "--regex '^sharding.*'"
 
 loaders:
   global:
     pool-size: 16
-    dir: "./dumped_data_test1"
+    dir: "./dumped_data"
 
 syncers:
   global:
     worker-count: 16
     batch: 100
+
 ```
 
 将以上配置内容写入到文件 task1.yaml 中，使用 dmctl 创建任务：
 
 ```bash
-$ dmctl -master-addr 192.168.0.4:8261
+$ bin/dmctl -master-addr 192.168.0.4:8261
 Welcome to dmctl
 Release Version: v1.0.0-69-g5134ad1
 Git Commit Hash: 5134ad19fbf6c57da0c7af548f5ca2a890bddbe4
@@ -265,4 +291,4 @@ Go Version: go version go1.12 linux/amd64
 }
 ```
 
-这样同步 MySQL1 实例中 test1 到 TiDB 的任务就创建成功了。对于同步 MySQL2 实例中的 test2 到 TiDB 使用类似的方式创建任务即可。
+这样同步 MySQL1 和 MySQL2 实例中分表数据的同步任务就创建成功了。
