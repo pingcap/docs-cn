@@ -12,15 +12,29 @@ aliases: ['/docs-cn/op-guide/migration/']
 
 ## 下载 TiDB 企业版工具集 (Linux)
 
-```bash
-# 下载 tool 压缩包
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
+下载 tool 压缩包：
 
-# 检查文件完整性，返回 ok 则正确
+{{< copyable "shell-regular" >}}
+
+```bash
+wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz &&
+wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
+```
+
+检查文件完整性，返回 ok 则正确：
+
+{{< copyable "shell-regular" >}}
+
+```bash
 sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
-# 解开压缩包
-tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
+```
+
+解开压缩包：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz &&
 cd tidb-enterprise-tools-latest-linux-amd64
 ```
 
@@ -30,7 +44,7 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 如上文所提，Mydumper 导出的数据目录里面有一个 `metadata` 文件，里面就包含了我们所需的 position 信息。
 
-medadata 文件信息内容举例：
+`metadata` 文件信息内容举例：
 
 ```
 Started dump at: 2017-04-28 10:48:10
@@ -44,8 +58,13 @@ Finished dump at: 2017-04-28 10:48:11
 
 我们将 position 相关的信息保存到一个 `syncer.meta` 文件里面，用于 `syncer` 的同步:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-# cat syncer.meta
+cat syncer.meta
+```
+
+```
 binlog-name = "mysql-bin.000003"
 binlog-pos = 930143241
 binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e-487b6bd31bf7:1-4"
@@ -169,9 +188,13 @@ port = 4000
 
 启动 `syncer`:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./bin/syncer -config config.toml
+```
 
+```
 2016/10/27 15:22:01 binlogsyncer.go:226: [info] begin to sync binlog from position (mysql-bin.000003, 1280)
 2016/10/27 15:22:01 binlogsyncer.go:130: [info] register slave for master server 127.0.0.1:3306
 2016/10/27 15:22:01 binlogsyncer.go:552: [info] rotate to (mysql-bin.000003, 1280)
@@ -180,15 +203,27 @@ port = 4000
 
 ## 在 MySQL 插入新的数据
 
+{{< copyable "sql" >}}
+
 ```sql
 INSERT INTO t1 VALUES (4, 4), (5, 5);
 ```
 
 登录到 TiDB 查看：
 
-```sql
+{{< copyable "shell-regular" >}}
+
+```bash
 mysql -h127.0.0.1 -P4000 -uroot -p
-mysql> select * from t1;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+select * from t1;
+```
+
+```
 +----+------+
 | id | age  |
 +----+------+
@@ -202,7 +237,7 @@ mysql> select * from t1;
 
 `syncer` 每隔 30s 会输出当前的同步统计，如下
 
-```bash
+```
 2017/06/08 01:18:51 syncer.go:934: [info] [syncer]total events = 15, total tps = 130, recent tps = 4,
 master-binlog = (ON.000001, 11992), master-binlog-gtid=53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-74,
 syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-17

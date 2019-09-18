@@ -24,15 +24,34 @@ category: reference
 
 ## 示例
 
-```sql
-mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
-Query OK, 0 rows affected (0.11 sec)
+{{< copyable "sql" >}}
 
-mysql> INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
+```sql
+CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
+```
+
+```
+Query OK, 0 rows affected (0.11 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
+```
+
+```
 Query OK, 5 rows affected (0.02 sec)
 Records: 5  Duplicates: 0  Warnings: 0
+```
 
-mysql> SHOW TABLE STATUS LIKE 't1'\G
+{{< copyable "sql" >}}
+
+```sql
+SHOW TABLE STATUS LIKE 't1';
+```
+
+```
 *************************** 1. row ***************************
            Name: t1
          Engine: InnoDB
@@ -53,11 +72,25 @@ Max_data_length: 0
  Create_options:
         Comment:
 1 row in set (0.00 sec)
+```
 
-mysql> analyze table t1;
+{{< copyable "sql" >}}
+
+```sql
+analyze table t1;
+```
+
+```
 Query OK, 0 rows affected (0.12 sec)
+```
 
-mysql> SHOW TABLE STATUS LIKE 't1'\G
+{{< copyable "sql" >}}
+
+```sql
+SHOW TABLE STATUS LIKE 't1';
+```
+
+```
 *************************** 1. row ***************************
            Name: t1
          Engine: InnoDB
