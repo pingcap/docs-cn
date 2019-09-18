@@ -34,6 +34,8 @@ kind 通过 Docker 容器模拟出一个单点的 Kubernetes 集群。 kind 的�
 
 - [kind](https://kind.sigs.k8s.io/docs/user/quick-start/): 版本 >= 0.4.0
 
+- [net.ipv4.ip_forward](https://linuxconfig.org/how-to-turn-on-off-ip-forwarding-in-linux) 需要被设置为 1
+
 ## 第 1 步: 通过 kind 部署 Kubernetes 集群
 
 首先，请确认 Docker 进程正常运行。然后你可以通过脚本命令快速启动一个本地的单点 Kubernetes 集群。
