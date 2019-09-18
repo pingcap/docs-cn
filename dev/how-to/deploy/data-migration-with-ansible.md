@@ -33,15 +33,19 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
 - CentOS 7：
 
-    ```
-    # yum -y install epel-release git curl sshpass
-    # yum -y install python-pip
+    {{< copyable "shell-root" >}}
+
+    ```bash
+    yum -y install epel-release git curl sshpass &&
+    yum -y install python-pip
     ```
 
 - Ubuntu：
 
-    ```
-    # apt-get -y install git curl sshpass python-pip
+    {{< copyable "shell-root" >}}
+
+    ```bash
+    apt-get -y install git curl sshpass python-pip
     ```
 
 ## 第 2 步：在中控机上创建 `tidb` 用户，并生成 SSH 密钥
@@ -52,20 +56,29 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
 1. 创建 `tidb` 用户。
 
-    ```
-    # useradd -m -d /home/tidb tidb
+    {{< copyable "shell-root" >}}
+
+    ```bash
+    useradd -m -d /home/tidb tidb
     ```
 
 2. 为 `tidb` 用户设置密码。
 
-    ```
-    # passwd tidb
+    {{< copyable "shell-root" >}}
+
+    ```bash
+    passwd tidb
     ```
 
 3. 在 sudo 文件尾部加上 `tidb ALL=(ALL) NOPASSWD: ALL`，为 `tidb` 用户设置免密使用 sudo。
 
+    {{< copyable "shell-root" >}}
+
+    ```bash
+    visudo
     ```
-    # visudo
+
+    ```
     tidb ALL=(ALL) NOPASSWD: ALL
     ```
 
@@ -73,14 +86,21 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
     执行以下 `su` 命令，将登录用户从 `root` 切换至 `tidb`。
 
-    ```
-    # su - tidb
+    {{< copyable "shell-root" >}}
+
+    ```bash
+    su - tidb
     ```
 
     为 `tidb` 用户创建 SSH 密钥。当提示 `Enter passphrase` 时，按 <kbd>Enter</kbd> 键。命令成功执行后，生成的 SSH 私钥文件为 `/home/tidb/.ssh/id_rsa`，SSH 公钥文件为`/home/tidb/.ssh/id_rsa.pub`。
 
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ssh-keygen -t rsa
     ```
-    $ ssh-keygen -t rsa
+
+    ```
     Generating public/private rsa key pair.
     Enter file in which to save the key (/home/tidb/.ssh/id_rsa):
     Created directory '/home/tidb/.ssh'.
@@ -113,8 +133,10 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 1. 打开 `/home/tidb` 目录。
 2. 执行以下命令下载 DM-Ansible。
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ wget http://download.pingcap.org/dm-ansible-{version}.tar.gz
+    wget http://download.pingcap.org/dm-ansible-{version}.tar.gz
     ```
 
     `{version}` 为期望下载的 DM 版本，如 `v1.0.0-alpha`、`latest` 等。
@@ -128,19 +150,26 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
 1. 在中控机上安装 DM-Ansible 及其依赖包：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ tar -xzvf dm-ansible-latest.tar.gz
-    $ mv dm-ansible-latest dm-ansible
-    $ cd /home/tidb/dm-ansible
-    $ sudo pip install -r ./requirements.txt
+    tar -xzvf dm-ansible-latest.tar.gz &&
+    mv dm-ansible-latest dm-ansible &&
+    cd /home/tidb/dm-ansible &&
+    sudo pip install -r ./requirements.txt
     ```
 
     Ansible 和相关依赖包含于 `dm-ansible/requirements.txt` 文件中。
 
 2. 查看 Ansible 版本：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ ansible --version
+    ansible --version
+    ```
+
+    ```
     ansible 2.5.0
     ```
 
@@ -152,9 +181,14 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
 1. 将您部署的目标机器的 IP 地址加至 `hosts.ini` 文件中的 `[servers]` 部分。
 
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cd /home/tidb/dm-ansible &&
+    vi hosts.ini
     ```
-    $ cd /home/tidb/dm-ansible
-    $ vi hosts.ini
+
+    ```
     [servers]
     172.16.10.71
     172.16.10.72
@@ -166,8 +200,10 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
 2. 运行如下命令，然后输入部署目标机器的 `root` 用户密码。
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ ansible-playbook -i hosts.ini create_users.yml -u root -k
+    ansible-playbook -i hosts.ini create_users.yml -u root -k
     ```
 
    该步骤将在部署目标机器上创建 `tidb` 用户，创建 sudo 规则，并为中控机和部署目标机器之间配置 SSH 互信。
@@ -179,6 +215,8 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 > 请确保中控机接入互联网。
 
 在中控机上，运行如下命令：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 ansible-playbook local_prepare.yml
@@ -322,9 +360,14 @@ grafana_admin_password = "admin"
 
 假定上游 MySQL 的用户密码为 `123456`，运行以下命令，并将生成的字符串添加至 DM-worker 的 `mysql_password` 变量。
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-$ cd /home/tidb/dm-ansible/resources/bin
-$ ./dmctl -encrypt 123456
+cd /home/tidb/dm-ansible/resources/bin &&
+./dmctl -encrypt 123456
+```
+
+```
 VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=
 ```
 
@@ -411,11 +454,15 @@ dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 
 
     运行以下命令。如果所有服务都返回 `tidb`，则 SSH 互信配置成功。
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     ansible -i inventory.ini all -m shell -a 'whoami'
     ```
 
     运行以下命令。如果所有服务都返回 `root`，则 `tidb` 用户免密 sudo 操作配置成功。
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     ansible -i inventory.ini all -m shell -a 'whoami' -b
@@ -423,11 +470,15 @@ dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 
 
 2. 修改内核参数，并部署 DM 集群组件和监控组件。
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     ansible-playbook deploy.yml
     ```
 
 3. 启动 DM 集群。
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     ansible-playbook start.yml
@@ -439,8 +490,10 @@ dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 
 
 如果您需要关闭一个 DM 集群，运行以下命令：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-$ ansible-playbook stop.yml
+ansible-playbook stop.yml
 ```
 
 该操作会按顺序关闭整个 DM 集群中的所有组件，包括 DM-master，DM-worker，以及监控组件。
@@ -469,36 +522,46 @@ dm_master ansible_host=172.16.10.71 dm_master_port=18261
 
 1. 使用 `tidb` 账户登录至中控机，进入 `/home/tidb` 目录，然后备份`dm-ansible` 文件夹。
 
-    ```
-    $ cd /home/tidb
-    $ mv dm-ansible dm-ansible-bak
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cd /home/tidb && \
+    mv dm-ansible dm-ansible-bak
     ```
 
 2. 下载指定版本 DM-Ansible，解压。
 
-    ```
-    $ cd /home/tidb
-    $ wget http://download.pingcap.org/dm-ansible-{version}.tar.gz
-    $ tar -xzvf dm-ansible-latest.tar.gz
-    $ mv dm-ansible-latest dm-ansible
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cd /home/tidb && \
+    wget http://download.pingcap.org/dm-ansible-{version}.tar.gz && \
+    tar -xzvf dm-ansible-latest.tar.gz && \
+    mv dm-ansible-latest dm-ansible
     ```
 
 3. 迁移 `inventory.ini` 配置文件。
 
-    ```
-    $ cd /home/tidb
-    $ cp dm-ansible-bak/inventory.ini dm-ansible/inventory.ini
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cd /home/tidb && \
+    cp dm-ansible-bak/inventory.ini dm-ansible/inventory.ini
     ```
 
 4. 迁移 `dmctl` 配置。
 
-    ```
-    $ cd /home/tidb/dm-ansible-bak/dmctl
-    $ cp * /home/tidb/dm-ansible/dmctl/
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cd /home/tidb/dm-ansible-bak/dmctl && \
+    cp * /home/tidb/dm-ansible/dmctl/
     ```
 
 5. 用 Playbook 下载最新的 DM 二进制文件。此文件会自动替换 `/home/tidb/dm-ansible/resource/bin/` 目录下的二进制文件。
 
-    ```
-    $ ansible-playbook local_prepare.yml
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ansible-playbook local_prepare.yml
     ```

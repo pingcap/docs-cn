@@ -135,14 +135,17 @@ mydumpers:
 
 2. 执行以下命令启动 dmctl
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     ./dmctl --master-addr 172.16.10.71:8261
     ```
 
-3. 执行以下命令启动数据同步任务
+3. 执行以下命令启动数据同步任务（`task.yaml` 是之前编辑的配置文件）
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
-    # `task.yaml` 是之前编辑的配置文件
     start-task ./task.yaml
     ```
 
@@ -171,6 +174,7 @@ mydumpers:
         ```
 
         此时可以选择以下两种处理方法中的任意一种进行处理后，再使用 `start-task` 尝试重新启动任务：
+
         1. 为用于进行数据迁移的 Aurora 用户移除不被 TiDB 支持的不必要的权限
         2. 如果能确保 Aurora 用户拥有 DM 所需要的权限，可以在 `task.yaml` 配置文件中添加如下顶级配置项以跳过启用任务时的前置权限检查
 
@@ -182,6 +186,8 @@ mydumpers:
 
 如需了解 DM 集群中是否存在正在运行的同步任务及任务状态等信息，可在 dmctl 内使用以下命令进行查询：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 query-status
 ```
@@ -190,9 +196,9 @@ query-status
 >
 > 如果查询命令的返回结果中包含以下错误信息，则表明在全量同步的 dump 阶段不能获得相应的 lock：
 >
->   ```bash
->   Couldn't acquire global lock, snapshots will not be consistent: Access denied for user 'root'@'%' (using password: YES)
->   ```
+> ```
+> Couldn't acquire global lock, snapshots will not be consistent: Access denied for user 'root'@'%' (using password: YES)
+> ```
 >
 > 此时如果能接受不使用 FTWL 来确保 dump 文件与 metadata 的一致或上游能暂时停止写入，可以通过为 `mydumpers` 下的 `extra-args` 添加 `--no-locks` 参数来进行绕过，具体方法为：
 >

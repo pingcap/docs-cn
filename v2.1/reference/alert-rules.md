@@ -56,7 +56,7 @@ category: reference
 
 * 处理方法：
 
-    参考 [`TiDB_schema_error`](#tidb-schema-error) 的处理方法。
+    参考 [`TiDB_schema_error`](#tidb_schema_error) 的处理方法。
 
 #### `TiDB_monitor_keep_alive`
 
@@ -127,7 +127,7 @@ category: reference
 
 * 报警规则：
 
-    `increase(tidb_server_server_event{type=~"server_start|server_hang"}[15m]) > 0`
+    `increase(tidb_server_event_total{type=~"server_start|server_hang"}[15m]) > 0`
 
 * 规则描述：
 
@@ -141,11 +141,11 @@ category: reference
     * 重启 TiDB 以恢复服务。
     * 检查 TiDB Binlog 服务是否正常。
 
-#### `TiDB_tikvclient_backoff_count`
+#### `TiDB_tikvclient_backoff_total`
 
 * 报警规则：
 
-    `increase(tidb_tikvclient_backoff_count[10m]) > 10`
+    `increase(tidb_tikvclient_backoff_total[10m]) > 10`
 
 * 规则描述：
 
@@ -459,7 +459,7 @@ category: reference
 
     1. 检查网络是否通畅。
     2. 检查远端 TiKV 是否挂掉。
-    3. 如果远端 TiKV 没有挂掉，检查压力是否太大，参考 [`TiKV_channel_full_total`](#tikv-channel-full-total) 处理方法。
+    3. 如果远端 TiKV 没有挂掉，检查压力是否太大，参考 [`TiKV_channel_full_total`](#tikv_channel_full_total) 处理方法。
 
 #### `TiKV_channel_full_total`
 
@@ -515,7 +515,7 @@ category: reference
 
 * 处理方法：
 
-    参考 [`TiKV_channel_full_total`](#tikv-channel-full-total) 的处理方法。
+    参考 [`TiKV_channel_full_total`](#tikv_channel_full_total) 的处理方法。
 
 #### `TiKV_async_request_write_duration_seconds`
 
@@ -529,7 +529,7 @@ category: reference
 
 * 处理方法：
 
-    1. 检查 Raftstore 上的压力，参考 [`TiKV_channel_full_total`](#tikv-channel-full-total) 的处理方法。
+    1. 检查 Raftstore 上的压力，参考 [`TiKV_channel_full_total`](#tikv_channel_full_total) 的处理方法。
     2. 检查 apply worker 线程的压力。
 
 #### `TiKV_coprocessor_request_wait_seconds`
@@ -560,7 +560,7 @@ category: reference
 
 * 处理方法：
 
-    参考 [`TiKV_channel_full_total`](#tikv-channel-full-total) 的处理方法。
+    参考 [`TiKV_channel_full_total`](#tikv_channel_full_total) 的处理方法。
 
 #### `TiKV_raft_append_log_duration_secs`
 
@@ -639,7 +639,7 @@ category: reference
 
 * 处理方法：
 
-    1. 参考 [`TiKV_channel_full_total`](#tikv-channel-full-total) 的处理方法。
+    1. 参考 [`TiKV_channel_full_total`](#tikv_channel_full_total) 的处理方法。
     2. 如果 TiKV 压力很小，考虑 PD 的调度是否太频繁。可以查看 PD 页面的 Operator Create 面板，排查 PD 产生调度的类型和数量。
 
 #### `TiKV_raft_process_ready_duration_secs`
@@ -679,7 +679,7 @@ category: reference
 
 * 处理方法：
 
-    参考 [`TiKV_scheduler_latch_wait_duration_seconds`](#tikv-scheduler-latch-wait-duration-seconds) 的处理方法。
+    参考 [`TiKV_scheduler_latch_wait_duration_seconds`](#tikv_scheduler_latch_wait_duration_seconds) 的处理方法。
 
 #### `TiKV_scheduler_command_duration_seconds`
 
@@ -693,7 +693,7 @@ category: reference
 
 * 处理方法：
 
-    参考 [`TiKV_scheduler_latch_wait_duration_seconds`](#tikv-scheduler-latch-wait-duration-seconds) 的处理方法。
+    参考 [`TiKV_scheduler_latch_wait_duration_seconds`](#tikv_scheduler_latch_wait_duration_seconds) 的处理方法。
 
 #### `TiKV_thread_storage_scheduler_cpu_seconds`
 
@@ -722,7 +722,7 @@ category: reference
 
 * 处理方法：
 
-    参考 [`TiKV_coprocessor_request_wait_seconds`](#tikv-coprocessor-request-wait-seconds) 的处理方法。
+    参考 [`TiKV_coprocessor_request_wait_seconds`](#tikv_coprocessor_request_wait_seconds) 的处理方法。
 
 #### `TiKV_coprocessor_request_error`
 
@@ -764,7 +764,7 @@ category: reference
 
 * 处理方法：
 
-    参考 [`TiKV_coprocessor_request_wait_seconds`](#tikv-coprocessor-request-wait-seconds) 的处理方法。
+    参考 [`TiKV_coprocessor_request_wait_seconds`](#tikv_coprocessor_request_wait_seconds) 的处理方法。
 
 #### `TiKV_batch_request_snapshot_nums`
 
