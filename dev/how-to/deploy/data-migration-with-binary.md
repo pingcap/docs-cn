@@ -7,7 +7,7 @@ category: how-to
 
 ## 准备工作
 
-首先需要下载官方 binary，链接地址：[tools 工具下载](/dev/reference/tools/download/#tidb-dm-(data-migration))。
+首先需要下载官方 binary，链接地址：[tools 工具下载](/dev/reference/tools/download.md)。
 
 下载的文件中包含 dm-master、dm-worker、dmctl 以及 mydumper。
 
