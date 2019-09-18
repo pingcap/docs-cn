@@ -87,7 +87,7 @@ worker-addr = ":8262"
 # 在一个 replication group 中，每个实例（master 和 slave）都应该有唯一的 server id
 server-id = 101
 
-# 用于标识 replication group 中的 MySQL 或者 MariaDB 实例
+# 用于标识一个 replication group 或者 MySQL/MariaDB 实例
 source-id = "mysql-replica-01"
 
 # 上游实例类型，值可以为 mysql 或者 mariadb
@@ -170,11 +170,15 @@ master-addr = ":8261"
 
 # replication group <-> dm-Worker 的配置
 [[deploy]]
+# 对应 DM-worker1 配置文件中的 source-id
 source-id = "mysql-replica-01"
+# DM-worker1 的服务地址
 dm-worker = "192.168.0.5:8262"
 
 [[deploy]]
+# 对应 DM-worker2 配置文件中的 source-id
 source-id = "mysql-replica-02"
+# DM-worker2 的服务地址
 dm-worker = "192.168.0.6:8262"
 ```
 
