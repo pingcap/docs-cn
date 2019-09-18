@@ -64,7 +64,7 @@ Usage of worker:
   -purge-interval int
         定期检查 relay log 是否过期的间隔时间（默认值：3600）（单位：秒）
   -purge-remain-space int
-        设置最小可用磁盘空间，当磁盘可用空间小于这个值时删除 relay log（默认值：15）（单位：GB）
+        设置最小可用磁盘空间，当磁盘可用空间小于这个值时会尝试删除 relay log（默认值：15）（单位：GB）
   -relay-dir string
         存储 relay log 的路径（默认值："./relay_log"）
   -worker-addr string
