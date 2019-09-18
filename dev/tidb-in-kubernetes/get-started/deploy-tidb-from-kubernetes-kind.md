@@ -32,22 +32,39 @@ kind 通过 Docker 容器模拟出一个单点的 Kubernetes 集群。 kind 的�
     >
     > 不同版本 `kubectl` 输出可能略有不同。
 
-- [kind](https://kind.sigs.k8s.io/docs/user/quick-start/): 版本 >= 0.5.1
+- [kind](https://kind.sigs.k8s.io/docs/user/quick-start/): 版本 >= 0.4.0
 
 ## 第 1 步: 通过 kind 部署 Kubernetes 集群
 
-首先，请确认 Docker 进程正常运行。然后你可以通过 kind 命令快速启动一个本地的单点 Kubernetes 集群( kind 0.5.1 默认为 1.15.3 版本）。
+首先，请确认 Docker 进程正常运行。然后你可以通过脚本命令快速启动一个本地的单点 Kubernetes 集群。
 
-创建集群,这里我们先手动指定为 1.14.6 版本:
+Clone 代码：
+
+{{< copyable "shell-regular" >}}
+
+``` shell
+git clone --depth=1 https://github.com/pingcap/tidb-operator && \
+cd tidb-operator
+```
+
+创建集群：
+
+{{< copyable "shell-regular" >}}
+
+``` shell
+hack/kind-cluster-build.sh
+```
 
 > **注意：**
 >
-> 了解使用 kind 的更多细节，请参考 [kind 官方文档](https://kind.sigs.k8s.io/docs/user/quick-start/)
+> 通过脚本启动的 kind 集群默认为 6 个集群节点，kubernetes 版本默认为 v1.12.8，每个节点默认挂载数为 9。
+> 你可以通过启动参数去修改这些参数:
+
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-kind create cluster --image kindest/node:v1.14.6
+hack/kind-cluster-build.sh --nodeNum 2 --k8sVersion v1.14.6 --volumeNum 3
 ```
 
 等待集群创建完毕以后，我们切换 kube-config 文件来连接到本地 Kubernetes 集群:
@@ -56,240 +73,55 @@ kind create cluster --image kindest/node:v1.14.6
 
 ```shell
 export KUBECONFIG="$(kind get kubeconfig-path)"
+```
+
+查看本地 kind kubernetes 集群信息:
+
+{{< copyable "shell-regular" >}}
+
+``` shell
 kubectl cluster-info
+```
+
+输出如下类似信息:
+
+``` shell
+Kubernetes master is running at https://127.0.0.1:50295
+KubeDNS is running at https://127.0.0.1:50295/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+```
+
+查看本地 kind kubernetes storageClass:
+
+{{< copyable "shell-regular" >}}
+
+``` shell
+kubectl get storageClass
+```
+
+输出如下类似信息:
+
+``` shell
+NAME                 PROVISIONER                    AGE
+local-storage        kubernetes.io/no-provisioner   7m50s
+standard (default)   kubernetes.io/host-path        8m29s
 ```
 
 ## 第 2 步: 在 kind Kubernetes 集群上部署 TiDB Operator
 
-> **注意：**
->
-> `<chartVersion>` 在后续文档中代表 chart 版本，例如 `v1.0.0`。
+参考[部署 TiDB Operator](https://pingcap.com/docs-cn/v3.0/tidb-in-kubernetes/deploy/tidb-operator/#%E5%AE%89%E8%A3%85-tidb-operator)
 
-如果 K8s 集群启动并正常运行，可以通过 `helm` 添加 chart 仓库并安装 TiDB Operator。
-
-1. 添加 Helm chart 仓库：
-
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    helm repo add pingcap https://charts.pingcap.org/ && \
-    helm repo list && \
-    helm repo update && \
-    helm search tidb-cluster -l && \
-    helm search tidb-operator -l
-    ```
-
-2. 查看 kind Kubernetes 集群的 StorageClass
-
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    kubectl get storageClass
-    ```
-
-    输出类似如下内容：
-
-    ```
-    $ kubectl get storageClass
-    NAME                 PROVISIONER               AGE
-    standard (default)   kubernetes.io/host-path   20h
-    ```
-
-    > **注意：**
-    >
-    > `<storageClass>` 在后续文档中代表当前 Kubernetes 集群的 StorageClass Name，例如 `standard` 。
-
-3. 安装 TiDB Operator:
-
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    helm install pingcap/tidb-operator --name=tidb-operator --namespace=tidb-admin --set scheduler.kubeSchedulerImageName=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler --set defaultStorageClassName=<storageClass> --version=<chartVersion>
-    ```
-
-    然后等待几分钟确保 TiDB Operator 正常运行：
-
-    {{< copyable "shell-regular" >}}
-
-    ``` shell
-    kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=tidb-operator
-    ```
-
-    输出类似如下内容：
-
-    ```
-    NAME                                       READY     STATUS    RESTARTS   AGE
-    tidb-controller-manager-5cd94748c7-jlvfs   1/1       Running   0          1m
-    tidb-scheduler-56757c896c-clzdg            2/2       Running   0          1m
-    ```
 
 ## 第 3 步: 在 kind Kubernetes 集群中部署 TiDB 集群
 
-通过 `helm` 和 TiDB Operator，我们可以很轻松的部署一套 TiDB 集群：
+参考[标准 Kubernetes上的 TiDB 集群](https://pingcap.com/docs-cn/v3.0/tidb-in-kubernetes/deploy/general-kubernetes/#%E9%83%A8%E7%BD%B2-tidb-%E9%9B%86%E7%BE%A4)
 
-{{< copyable "shell-regular" >}}
-
-``` shell
-helm install pingcap/tidb-cluster --name=demo --namespace=tidb --set pd.storageClassName=<storageClass> --set tikv.storageClassName=<storageClass> --version=<chartVersion>
-```
-
-等待几分钟，确保 TiDB 所有组件正常创建并进入 `ready` 状态，可以通过下面命令持续观察：
-
-{{< copyable "shell-regular" >}}
-
-``` shell
-kubectl get pods --namespace tidb -l app.kubernetes.io/instance=demo -o wide --watch
-```
-
-当所有 Pod 状态为 `Running`，<kbd>Ctrl</kbd>+<kbd>C</kbd>  停止 watch。
-
-通过下面步骤获取集群信息：
-
-{{< copyable "shell-regular" >}}
-
-``` shell
-kubectl get tidbcluster -n tidb
-```
-
-输出类似如下信息：
-
-```
-NAME   PD                       STORAGE   READY   DESIRE   TIKV                       STORAGE   READY   DESIRE   TIDB                       READY   DESIRE
-demo   pingcap/pd:v3.0.0-rc.1   1Gi       3       3        pingcap/tikv:v3.0.0-rc.1   10Gi      3       3        pingcap/tidb:v3.0.0-rc.1   2       2
-```
-
-{{< copyable "shell-regular" >}}
-
-``` shell
-kubectl get statefulset -n tidb
-```
-
-输出类似如下信息：
-
-```
-NAME        DESIRED   CURRENT   AGE
-demo-pd     3         3         1m
-demo-tidb   2         2         1m
-demo-tikv   3         3         1m
-```
-
-{{< copyable "shell-regular" >}}
-
-``` shell
-kubectl get service -n tidb
-```
-
-输出类似如下信息：
-
-```
-NAME              TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                          AGE
-demo-discovery    ClusterIP   10.96.146.139    <none>        10261/TCP                        1m
-demo-grafana      NodePort    10.111.80.73     <none>        3000:32503/TCP                   1m
-demo-pd           ClusterIP   10.110.192.154   <none>        2379/TCP                         1m
-demo-pd-peer      ClusterIP   None             <none>        2380/TCP                         1m
-demo-prometheus   NodePort    10.104.97.84     <none>        9090:32448/TCP                   1m
-demo-tidb         NodePort    10.102.165.13    <none>        4000:32714/TCP,10080:32680/TCP   1m
-demo-tidb-peer    ClusterIP   None             <none>        10080/TCP                        1m
-demo-tikv-peer    ClusterIP   None             <none>        20160/TCP                        1m
-```
-
-{{< copyable "shell-regular" >}}
-
-``` shell
-kubectl get configmap -n tidb
-```
-
-输出类似如下信息：
-
-```
-NAME                              DATA   AGE
-demo-monitor                      5      1m
-demo-monitor-dashboard-extra-v3   2      1m
-demo-monitor-dashboard-v2         5      1m
-demo-monitor-dashboard-v3         5      1m
-demo-pd                           2      1m
-demo-tidb                         2      1m
-demo-tikv                         2      1m
-```
-
-{{< copyable "shell-regular" >}}
-
-``` shell
-kubectl get pod -n tidb
-```
-
-输出类似如下信息：
-
-```
-NAME                              READY     STATUS      RESTARTS   AGE
-demo-discovery-649c7bcbdc-t5r2k   1/1       Running     0          1m
-demo-monitor-58745cf54f-gb8kd     2/2       Running     0          1m
-demo-pd-0                         1/1       Running     0          1m
-demo-pd-1                         1/1       Running     0          1m
-demo-pd-2                         1/1       Running     0          1m
-demo-tidb-0                       1/1       Running     0          1m
-demo-tidb-1                       1/1       Running     0          1m
-demo-tikv-0                       1/1       Running     0          1m
-demo-tikv-1                       1/1       Running     0          1m
-demo-tikv-2                       1/1       Running     0          1m
-```
 
 ## 访问数据库和监控面板
 
-通过 `kubectl port-forward` 暴露服务到主机，可以访问 TiDB 集群。命令中的端口格式为：`<主机端口>:<k8s 服务端口>`。
+参考[查看监控面板](https://pingcap.com/docs-cn/v3.0/tidb-in-kubernetes/monitor/tidb-in-kubernetes/#%E6%9F%A5%E7%9C%8B%E7%9B%91%E6%8E%A7%E9%9D%A2%E6%9D%BF)
 
-- 通过 MySQL 客户端访问 TiDB
 
-    在访问 TiDB 集群之前，请确保已安装 MySQL client。
-
-    1. 使用 `kubectl` 暴露 TiDB 服务端口：
-
-        {{< copyable "shell-regular" >}}
-
-        ``` shell
-        kubectl port-forward svc/demo-tidb 4000:4000 --namespace=tidb
-        ```
-
-        > **注意：**
-        >
-        > 如果代理建立成功，会打印类似输出：`Forwarding from 0.0.0.0:4000 -> 4000`。测试完成后按 `Ctrl + C` 停止代理并退出。
-
-    2. 然后，通过 MySQL 客户端访问 TiDB，打开一个新终端标签或者一个新终端窗口，执行下面命令：
-
-        {{< copyable "shell-regular" >}}
-
-        ``` shell
-        mysql -h 127.0.0.1 -P 4000 -u root
-        ```
-
-- 查看监控面板
-
-    1. 使用 `kubectl` 暴露 Grafana 服务端口：
-
-        {{< copyable "shell-regular" >}}
-
-        ``` shell
-        kubectl port-forward svc/demo-grafana 3000:3000 --namespace=tidb
-        ```
-
-        > **注意：**
-        >
-        > 如果代理建立成功，会打印类似输出：`Forwarding from 0.0.0.0:3000 -> 3000`。测试完成后按 `Ctrl + C` 停止代理并退出。
-
-    2. 然后，在浏览器中打开 `http://localhost:3000` 访问 Grafana 监控面板：
-
-        * 默认用户名：admin
-        * 默认密码：admin
-
-## 删除 TiDB 或 kind Kubernetes 集群
-
-通过下面命令删除 demo 集群：
-
-{{< copyable "shell-regular" >}}
-
-``` shell
-helm delete --purge demo
-```
+## 删除 kind Kubernetes 集群
 
 通过下面命令删除 kind Kubernetes 集群:
 
