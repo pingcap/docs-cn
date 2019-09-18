@@ -63,20 +63,20 @@ DM 中的错误信息均按以下固定格式输出：
 
     | `class` 名字     | 出现错误的系统子模块             | 错误样例                                                     |
     | -------------- | ------------------------------ | ------------------------------------------------------------ |
-    | `database`       | 执行数据库操作出现错误         | [code=10003:class=database:scope=downstream:level=medium] database driver: invalid connection |
-    | `functional`     | 系统底层的基础函数错误           | [code=11005:class=functional:scope=internal:level=high] not allowed operation: alter multiple tables in one statement |
-    | `config`         | 配置错误                       | [code=20005:class=config:scope=internal:level=medium] empty source-id not valid |
-    | `binlog-op`      | binlog 操作出现错误            | [code=22001:class=binlog-op:scope=internal:level=high] empty UUIDs not valid |
-    | `checkpoint`     | checkpoint 相关操作出现错误    | [code=24002:class=checkpoint:scope=internal:level=high] save point bin.1234 is older than current pos bin.1371 |
-    | `task-check`     | 进行任务检查时出现错误       | [code=26003:class=task-check:scope=internal:level=medium] new table router error |
-    | `relay-event-lib`| 执行 relay 模块基础功能时出现错误 | [code=28001:class=relay-event-lib:scope=internal:level=high] parse server-uuid.index |
-    | `relay-unit`     | relay 处理单元内出现错误     | [code=30015:class=relay-unit:scope=upstream:level=high] TCPReader get event: ERROR 1236 (HY000): Could not open log file |
-    | `dump-unit`      | dump 处理单元内出现错误      | [code=32001:class=dump-unit:scope=internal:level=high] mydumper runs with error: CRITICAL **: 15:12:17.559: Error connecting to database: Access denied for user 'root'@'172.17.0.1' (using password: NO) |
-    | `load-unit`      | load 处理单元内出现错误      | [code=34002:class=load-unit:scope=internal:level=high] corresponding ending of sql: ')' not found |
-    | `sync-unit`      | sync 处理单元内出现错误      | [code=36027:class=sync-unit:scope=internal:level=high] Column count doesn't match value count: 9 (columns) vs 10 (values) |
-    | `dm-master`      | dm-master 服务内部出现错误   | [code=38008:class=dm-master:scope=internal:level=high] grpc request error: rpc error: code = Unavailable desc = all SubConns are in TransientFailure, latest connection error: connection error: desc = "transport: Error while dialing dial tcp 172.17.0.2:8262: connect: connection refused" |
-    | `dm-worker`      | dm-worker 服务内部出现错误   | [code=40066:class=dm-worker:scope=internal:level=high] ExecuteDDL timeout, try use `query-status` to query whether the DDL is still blocking |
-    | `dm-tracer`      | dm-tracer 服务内部出现错误   | [code=42004:class=dm-tracer:scope=internal:level=medium] trace event test.1 not found |
+    | `database`       | 执行数据库操作出现错误         | `[code=10003:class=database:scope=downstream:level=medium] database driver: invalid connection` |
+    | `functional`     | 系统底层的基础函数错误           | `[code=11005:class=functional:scope=internal:level=high] not allowed operation: alter multiple tables in one statement` |
+    | `config`         | 配置错误                       | `[code=20005:class=config:scope=internal:level=medium] empty source-id not valid` |
+    | `binlog-op`      | binlog 操作出现错误            | `[code=22001:class=binlog-op:scope=internal:level=high] empty UUIDs not valid` |
+    | `checkpoint`     | checkpoint 相关操作出现错误    | `[code=24002:class=checkpoint:scope=internal:level=high] save point bin.1234 is older than current pos bin.1371` |
+    | `task-check`     | 进行任务检查时出现错误       | `[code=26003:class=task-check:scope=internal:level=medium] new table router error` |
+    | `relay-event-lib`| 执行 relay 模块基础功能时出现错误 | `[code=28001:class=relay-event-lib:scope=internal:level=high] parse server-uuid.index` |
+    | `relay-unit`     | relay 处理单元内出现错误     | `[code=30015:class=relay-unit:scope=upstream:level=high] TCPReader get event: ERROR 1236 (HY000): Could not open log file` |
+    | `dump-unit`      | dump 处理单元内出现错误      | `[code=32001:class=dump-unit:scope=internal:level=high] mydumper runs with error: CRITICAL **: 15:12:17.559: Error connecting to database: Access denied for user 'root'@'172.17.0.1' (using password: NO)` |
+    | `load-unit`      | load 处理单元内出现错误      | `[code=34002:class=load-unit:scope=internal:level=high] corresponding ending of sql: ')' not found` |
+    | `sync-unit`      | sync 处理单元内出现错误      | `[code=36027:class=sync-unit:scope=internal:level=high] Column count doesn't match value count: 9 (columns) vs 10 (values)` |
+    | `dm-master`      | dm-master 服务内部出现错误   | `[code=38008:class=dm-master:scope=internal:level=high] grpc request error: rpc error: code = Unavailable desc = all SubConns are in TransientFailure, latest connection error: connection error: desc = "transport: Error while dialing dial tcp 172.17.0.2:8262: connect: connection refused"` |
+    | `dm-worker`      | dm-worker 服务内部出现错误   | `[code=40066:class=dm-worker:scope=internal:level=high] ExecuteDDL timeout, try use query-status to query whether the DDL is still blocking` |
+    | `dm-tracer`      | dm-tracer 服务内部出现错误   | `[code=42004:class=dm-tracer:scope=internal:level=medium] trace event test.1 not found` |
 
 - `scope`：错误作用域。
 
