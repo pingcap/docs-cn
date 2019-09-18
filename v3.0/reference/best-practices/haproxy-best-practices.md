@@ -176,7 +176,7 @@ listen tidb-cluster                        # 配置 database 负载均衡
    systemctl start haproxy.service
    ```
 
-### systemd 停止 HAProxy
+### 使用 `systemd` 停止 HAProxy
 
 - 方法一：执行 `kill -9`
 
