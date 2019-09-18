@@ -60,7 +60,6 @@ hack/kind-cluster-build.sh
 > 通过脚本启动的 kind 集群默认为 6 个集群节点，kubernetes 版本默认为 v1.12.8，每个节点默认挂载数为 9。
 > 你可以通过启动参数去修改这些参数:
 
-
 {{< copyable "shell-regular" >}}
 
 ```shell
@@ -110,16 +109,13 @@ standard (default)   kubernetes.io/host-path        8m29s
 
 参考[部署 TiDB Operator](https://pingcap.com/docs-cn/v3.0/tidb-in-kubernetes/deploy/tidb-operator/#%E5%AE%89%E8%A3%85-tidb-operator)
 
-
 ## 第 3 步: 在 kind Kubernetes 集群中部署 TiDB 集群
 
 参考[标准 Kubernetes上的 TiDB 集群](https://pingcap.com/docs-cn/v3.0/tidb-in-kubernetes/deploy/general-kubernetes/#%E9%83%A8%E7%BD%B2-tidb-%E9%9B%86%E7%BE%A4)
 
-
 ## 访问数据库和监控面板
 
 参考[查看监控面板](https://pingcap.com/docs-cn/v3.0/tidb-in-kubernetes/monitor/tidb-in-kubernetes/#%E6%9F%A5%E7%9C%8B%E7%9B%91%E6%8E%A7%E9%9D%A2%E6%9D%BF)
-
 
 ## 删除 kind Kubernetes 集群
 
