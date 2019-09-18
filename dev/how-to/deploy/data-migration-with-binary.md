@@ -189,7 +189,7 @@ bin/dm-master -config dm-master.toml
 
 假设需要将 MySQL1 实例中的 test1 和 MySQL2 实例中的 test2 同步到 TiDB 中。首先创建任务的配置文件：
 
-```
+```yaml
 ---
 name: test1
 task-mode: all
