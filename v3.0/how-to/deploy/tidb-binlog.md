@@ -172,7 +172,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
         > **注意：**
         >
         > 配置文件名命名规则为 `别名_drainer.toml`，否则部署时无法找到自定义配置文件。
-        > 但是需要注意 v3.0.0，v3.0.1 的配置文件命名规则与其余版本略有不同，为 `别名_drainer_cluster.toml`。
+        > 但是需要注意 v3.0.0，v3.0.1 的配置文件命名规则与其余版本略有不同，为 `别名_drainer-cluster.toml`。
 
         db-type 设置为 "mysql"， 配置下游 MySQL 信息。
 
