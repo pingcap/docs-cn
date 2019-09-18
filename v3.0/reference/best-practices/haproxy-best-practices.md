@@ -170,7 +170,7 @@ listen tidb-cluster                        # 配置 database 负载均衡
    haproxy -f /etc/haproxy/haproxy.cfg
    ```
 
-- 方法二：使用 systemd 启动 HAProxy，默认读取 `/etc/haproxy/haproxy.cfg`（推荐）
+- 方法二：使用 `systemd` 启动 HAProxy，默认读取 `/etc/haproxy/haproxy.cfg`（推荐）
 
    ```bash
    systemctl start haproxy.service
