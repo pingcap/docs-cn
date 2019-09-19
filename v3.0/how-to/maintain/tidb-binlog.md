@@ -131,6 +131,8 @@ Usage of binlogctl:
 
     {{< copyable "shell-regular" >}}
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd drainers
     ```
