@@ -16,7 +16,17 @@ aliases: ['/docs-cn/v3.0/how-to/configure/initialize-cluster/']
 
 集群创建时默认会创建 `root` 账号，但是密码为空，这会带来一些安全性问题。可以通过如下步骤为 `root` 账号设置初始密码：
 
-1. 创建 `Secret`
+1. 创建 `Namespace`
+
+    在部署集群前通过下面命令创建 [Namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl create namespace <namespace>
+    ```
+
+2. 创建 `Secret`
 
     在部署集群前通过下面命令创建 [Secret](https://kubernetes.io/docs/concepts/configuration/secret/) 指定 root 账号密码：
 

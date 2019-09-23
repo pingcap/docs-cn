@@ -5,9 +5,8 @@
 # - External links are ignored in CI because these links may go down out of our contorl.
 # - Anchors are ignored
 # - Internal links conventions
-#   - Links starting with '/media/' are relative to site root
-#   - Links starting with one or two dots are relative to the directory in which files reside
-#   - Other links are relative to the root of the version directory (e.g. v1.0, v2.0, v3.0)
+#   - Must be absolute and start from repo root
+#   - Only files in current directory and /media are allowed
 # - When a file was moved, all other references are required to be updated for now, even if alias are given
 #   - This is recommended because of less redirects and better anchors support.
 #
@@ -19,6 +18,7 @@ if ! which markdown-link-check &>/dev/null; then
     sudo npm install -g markdown-link-check@3.7.3
 fi
 
+VERBOSE=${VERBOSE:-}
 CONFIG_TMP=$(mktemp)
 ERROR_REPORT=$(mktemp)
 
@@ -47,19 +47,22 @@ for d in dev $(ls -d v[0-9]*); do
     echo "info: checking links under $d directory..."
     sed \
         -e "s#<ROOT>#$ROOT#g" \
-        -e "s#<DOC_ROOT>#$ROOT#g" \
+        -e "s#<VERSION>#$d#g" \
         scripts/markdown-link-check.tpl > $CONFIG_TMP
-    cat $CONFIG_TMP
+    if [ -n "$VERBOSE" ]; then
+        cat $CONFIG_TMP
+    fi
     # TODO simplify this if markdown-link-check can process multiple files together
     while read -r tasks; do
         for task in $tasks; do
             (
-                echo markdown-link-check --config "$CONFIG_TMP" "$task" -q
                 output=$(markdown-link-check --color --config "$CONFIG_TMP" "$task" -q)
                 if [ $? -ne 0 ]; then
                     printf "$output" >> $ERROR_REPORT
                 fi
-                echo "$output"
+                if [ -n "$VERBOSE" ]; then
+                    echo "$output"
+                fi
             ) &
         done
         wait
