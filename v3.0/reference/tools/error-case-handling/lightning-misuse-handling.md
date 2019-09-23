@@ -5,7 +5,7 @@ category: reference
 
 # TiDB Lightning 常见的错误用法
 
-本文介绍了 [TiDB Lightning](../tidb-lightning/overview.md) 使用过程中常见的出错场景以及相应的处理方式。
+本文介绍了 [TiDB Lightning](/v3.0/reference/tools/tidb-lightning/overview.md) 使用过程中常见的出错场景以及相应的处理方式。
 
 ## 报错：`checksum mismatched remote vs local`
 
@@ -17,7 +17,7 @@ Error: checksum mismatched remote vs local => (checksum: 3828723015727756136 vs 
 
 ### 原因
 
-* 先前使用过 TiDB Lightning 进行数据导入，但是对应的 [checkpoint](../tidb-lightning/checkpoints.md) 的数据没有被清理，存在残留的数据。可以通过查看 TiDB Lightning 第一次启动 log 来确认：
+* 先前使用过 TiDB Lightning 进行数据导入，但是对应的 [checkpoint](/v3.0/reference/tools/tidb-lightning/checkpoints.md) 的数据没有被清理，存在残留的数据。可以通过查看 TiDB Lightning 第一次启动 log 来确认：
     * `[checkpoint] driver = file`，如果对应 TiDB Lightning 导入时间点的 log 存在 `open checkpoint file failed, going to create a new one`，那么 `checkpoint` 已经被正确清理，否则存在残留数据可能导致导入数据缺失；
     * `[checkpoint] driver = mysql`，可以通过使用 TiDB API `curl http://{TiDBIP}:10080/schema/{checkpoint.schema}/{checkpoint.table}` 来查询对应 `checkpoint table` 的创建时间，从而判断是否正确清理了 `checkpoint`。
 

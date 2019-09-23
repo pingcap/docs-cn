@@ -5,7 +5,7 @@ category: reference
 
 # 全量数据导入过程常见报错处理
 
-本文介绍了使用 [Loader](../loader.md) 或者 [TiDB Data Migration](../data-migration/overview.md)（以下简称为 DM）进行全量数据导入过程中常见的因为使用造成的出错场景，以及这些错误发生的原因和处理方式。
+本文介绍了使用 [Loader](/dev/reference/tools/loader.md) 或者 [TiDB Data Migration](/dev/reference/tools/data-migration/overview.md)（以下简称为 DM）进行全量数据导入过程中常见的因为使用造成的出错场景，以及这些错误发生的原因和处理方式。
 
 ## 报错：```Try adjusting the `max_allowed_packet` variable```
 
@@ -18,7 +18,7 @@ packet for query is too large. Try adjusting the 'max_allowed_packet' variable
 ### 原因
 
 * MySQL client 和 MySQL/TiDB Server 都有 `max_allowed_packet` 配额的限制，如果在使用过程中违反其中任何一个 `max_allowed_packet` 配额，客户端程序就会收到对应的报错。目前最新版本的 Syncer、Loader、DM 和 TiDB Server 的默认 `max_allowed_packet` 配额都为 `64M`。
-    * 请使用最新版本，或者最新稳定版本的工具。[下载页面](../download.md)。
+    * 请使用最新版本，或者最新稳定版本的工具。[下载页面](/dev/reference/tools/download.md)。
 * Loader 或 DM 的全量数据导入处理模块不支持对 dump sqls 文件进行切分，原因是 Mydumper 采用了最简单的编码实现，正如 Mydumper 代码注释 `/* Poor man's data dump code */` 所言。如果在 Loader 或 DM 实现文件切分，那么需要在 `TiDB parser` 基础上实现一个完备的解析器才能正确的处理数据切分，但是随之会带来以下的问题：
     * 工作量大
     * 复杂度高，不容易保证正确性
