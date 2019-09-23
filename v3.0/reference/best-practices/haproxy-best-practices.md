@@ -11,7 +11,7 @@ category: reference
 
 [HAProxy](https://github.com/haproxy/haproxy) 是由 C 语言编写的自由开放源码的软件。为基于 TCP 和 HTTP 协议的应用程序提供高可用性、负载均衡和代理服务。它在对 CPU 和内存的快速及高效使用方面的特点，获得诸如：GitHub、Bitbucket、Stack Overflow、Reddit、Tumblr、Twitter 和 Tuenti 在内的知名网站，及亚马逊网络服务系统的广泛使用。
 
-HAProxy 是由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，并仍然负责该项目的维护，该在开源社区提供免费和版本迭代。最新的稳定版本 2.0.0 于 2019 年 8 月 16 日发布，并带来更多的[优秀的特性](https://www.haproxy.com/blog/haproxy-2-0-and-beyond/)。
+HAProxy 是由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，他现在仍然负责该项目的维护，并在开源社区免费提供版本迭代。最新的稳定版本 2.0.0 于 2019 年 8 月 16 日发布，带来更多[优秀的特性](https://www.haproxy.com/blog/haproxy-2-0-and-beyond/)。
 
 ## HAProxy 部分核心功能介绍
 
@@ -126,8 +126,8 @@ yum 安装过程中会生成配置模版。
 global                                     # 全局配置
    log         127.0.0.1 local2            # 定义全局的 syslog 服务器，最多可以定义两个
    chroot      /var/lib/haproxy            # 将当前目录为指定目录，设置超级用户权限启动进程，提高安全性
-   pidfile     /var/run/haproxy.pid        # 将 haproxy 进程写入 pid 文件
-   maxconn     4000                        # 设置每个 haproxy 进程锁接受的最大并发连接数
+   pidfile     /var/run/haproxy.pid        # 将 HAproxy 进程写入 pid 文件
+   maxconn     4000                        # 设置每个 HAproxy 进程锁接受的最大并发连接数
    user        haproxy                     # 同 uid 参数，使用是用户名
    group       haproxy                     # 同 gid 参数，建议专用用户组
    nbproc      40                          # 启动多个进程来转发请求，需要调整到足够大的值来保证 haproxy 本身不会成为瓶颈
@@ -138,8 +138,8 @@ defaults                                   # 默认配置
    log global                              # 日志继承全局配置段的设置
    retries 2                               # 向上游服务器尝试连接的最大次数，超过此值就认为后端服务器不可用
    timeout connect  2s                     # HAProxy 与后端服务器连接超时时间，如果在同一个局域网内可设置成较短的时间
-   timeout client 30000s                   # 定义客户端与haproxy连接后，数据传输完毕，不再有数据传输，即非活动连接的超时时间
-   timeout server 30000s                   # 定义haproxy与上游服务器非活动连接的超时时间
+   timeout client 30000s                   # 定义客户端与 HAproxy 连接后，数据传输完毕，不再有数据传输，即非活动连接的超时时间
+   timeout server 30000s                   # 定义 HAproxy 与上游服务器非活动连接的超时时间
 
 listen admin_stats                         # frontend 和 backend 的组合体，监控组的名称，按需自定义名称
    bind 0.0.0.0:8080                       # 配置监听端口
