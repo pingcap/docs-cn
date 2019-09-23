@@ -87,6 +87,8 @@ TiDB 默认不会进行事务重试，因为重试事务可能会导致更新丢
 
 通过配置 `tidb_disable_txn_auto_retry = on` 变量可以关掉显示事务的重试。
 
+{{< copyable "sql" >}}
+
 ```sql
 SET GLOBAL tidb_disable_txn_auto_retry = on;
 ```
@@ -103,20 +105,24 @@ SET GLOBAL tidb_disable_txn_auto_retry = on;
 
 在事务内部执行一个语句，遇到错误时，该语句不会生效。
 
+{{< copyable "sql" >}}
+
 ```sql
 begin;
 insert into test values (1);
-insert into tset values (2);  // tset 拼写错了，这条语句出错。
+insert into tset values (2);  -- tset 拼写错了，这条语句出错。
 insert into test values (3);
 commit;
 ```
 
 上面的例子里面，第二个语句失败，其它插入 1 和 3 仍然能正常提交。
 
+{{< copyable "sql" >}}
+
 ```sql
 begin;
 insert into test values (1);
-insert into tset values (2);  // tset 拼写错了，这条语句出错。
+insert into tset values (2);  -- tset 拼写错了，这条语句出错。
 insert into test values (3);
 rollback;
 ```
