@@ -1,20 +1,20 @@
 ---
-title: Add Index Benchmark 以及调参对比测试
-category: best-practices
+title: Add Index Benchmark
+category: benchmark
 ---
 
-# Add Index Benchmark 以及调参对比测试
+# Add Index Benchmark
 
 ## 测试目的
 
-对比 TiDB 3.0 版本和 2.0 版本 `add Index` 的速度以及调参对比和建议。
+对比 TiDB 3.0 版本和 2.0 版本 `add Index` 的速度。
 
 ## 测试版本、时间、地点
 
 TiDB 版本：
 
-    - Release 3.0: `6e2d6c7aa7eba3ac4f3a5201f1a36bf534fa6298`
-    - v2.0.6
+- Release 3.0：`6e2d6c7aa7eba3ac4f3a5201f1a36bf534fa6298`
+- v2.0.6
 
 时间：2018 年 12 月 11 日
 
@@ -45,8 +45,8 @@ $ dd if=test.dbf bs=8k count=500000 of=/dev/null
 
 一共对 2 张表进行测试，每张表 2000 万行数据：
 
-    - 表 1 是宽表：`t_wide`，200 列， c0 ~ c65 是 `int` 类型， c66 ~ c132 是 `varchar(200)` 类型， c133 ~ c199 是 `timestamp` 类型。
-    - 表 2 是窄表：`t_slim`， 10 列，c0 ~ c2 是 `int` 类型， c3 ~ c5 是 `varchar(200)` 类型， c6 ~ c9 是 `timestamp` 类型。
+- 表 1 是宽表：`t_wide`，200 列，c0 ~ c65 是 `int` 类型，c66 ~ c132 是 `varchar(200)` 类型，c133 ~ c199 是 `timestamp` 类型。
+- 表 2 是窄表：`t_slim`，10 列，c0 ~ c2 是 `int` 类型，c3 ~ c5 是 `varchar(200)` 类型，c6 ~ c9 是 `timestamp` 类型。
 
 ### 版本信息
 
