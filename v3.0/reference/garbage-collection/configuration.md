@@ -7,8 +7,13 @@ category: reference
 
 TiDB 的 GC 相关的配置存储于 `mysql.tidb` 系统表中，可以通过 SQL 语句对这些参数进行查询和更改：
 
-```plain
-mysql> select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb;
+{{< copyable "sql" >}}
+
+```sql
+select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb;
+```
+
+```
 +--------------------------+----------------------------------------------------------------------------------------------------+
 | VARIABLE_NAME            | VARIABLE_VALUE                                                                                     |
 +--------------------------+----------------------------------------------------------------------------------------------------+
@@ -30,6 +35,8 @@ mysql> select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb;
 ```
 
 例如，如果需要将 GC 调整为保留最近一天以内的数据，只需执行下列语句即可：
+
+{{< copyable "sql" >}}
 
 ```sql
 update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_time";

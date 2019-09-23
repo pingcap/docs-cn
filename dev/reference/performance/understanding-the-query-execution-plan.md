@@ -40,8 +40,13 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 
 使用 [bikeshare example database](https://github.com/pingcap/docs/blob/master/dev/how-to/get-started/import-example-database.md):
 
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59';
 ```
-mysql> EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59';
+
+```
 +--------------------------+-------------+------+------------------------------------------------------------------------------------------------------------------------+
 | id                       | count       | task | operator info                                                                                                          |
 +--------------------------+-------------+------+------------------------------------------------------------------------------------------------------------------------+
@@ -58,10 +63,19 @@ mysql> EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 0
 
 上述查询中，虽然大部分计算逻辑都下推到了 TiKV 的 coprocessor 上，但是其执行效率还是不够高，可以添加适当的索引来消除 `TableScan_18` 对 `trips` 的全表扫，进一步加速查询的执行：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> ALTER TABLE trips ADD INDEX (start_date);
-..
-mysql> EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59';
+ALTER TABLE trips ADD INDEX (start_date);
+```
+
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59';
+```
+
+```
 +------------------------+---------+------+--------------------------------------------------------------------------------------------------+
 | id                     | count   | task | operator info                                                                                    |
 +------------------------+---------+------+--------------------------------------------------------------------------------------------------+
