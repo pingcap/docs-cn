@@ -94,7 +94,7 @@ It is recommended to deploy TiDB Binlog using TiDB Ansible. If you just want to 
     1. Deploy `pump_servers` and `node_exporters`.
 
         ```
-        ansible-playbook deploy.yml -l ${pump1_ip},${pump2_ip},[${alias1_name},${alias2_name}]
+        ansible-playbook deploy.yml --tags=pump -l ${pump1_ip},${pump2_ip},[${alias1_name},${alias2_name}]
         ```
 
         > **Note:**
