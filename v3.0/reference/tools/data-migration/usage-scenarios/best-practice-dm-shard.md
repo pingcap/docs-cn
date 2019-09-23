@@ -5,23 +5,23 @@ category: reference
 ---
 # 分表合并数据迁移最佳实践
 
-本文目的是阐述在使用 DM 对分库分表进行合并迁移的场景中，DM 相关功能的支持限制，旨在给出一个业务的最佳实践。
+本文阐述了使用 TiDB Data Migration（以下简称 DM）对分库分表进行合并迁移的场景中，DM 相关功能的支持和限制，旨在给出一个业务的最佳实践。
 
 ## 独立的数据迁移任务
 
-在[分库分表合并同步的实现原理部分](/v3.0/reference/tools/data-migration/features/shard-merge.md#实现原理)，我们介绍了 shard group 的概念，简单来说可以理解为所有需要合并到同一个下游表的所有上游表即组成一个 shard group。
+在[分库分表合并同步的实现原理部分](/v3.0/reference/tools/data-migration/features/shard-merge.md#实现原理)，我们介绍了 sharding group 的概念，简单来说可以理解为需要合并到下游同一个表的所有上游表即组成一个 sharding group。
 
-当前的 shard DDL 算法为了能协调在不同分表执行 DDL 对 schema 变更的影响，加入了一些[使用限制](/v3.0/reference/tools/data-migration/features/shard-merge.md#使用限制)。而当这些使用限制由于某些异常原因被打破时，我们需要[手动处理 Sharding DDL Lock](/v3.0/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md) 甚至是完整重做整个数据迁移任务。
+当前的 sharding DDL 算法为了能协调在不同分表执行 DDL 对 schema 变更的影响，加入了一些[使用限制](/v3.0/reference/tools/data-migration/features/shard-merge.md#使用限制)。而当这些使用限制由于某些异常原因被打破时，我们需要[手动处理 Sharding DDL Lock](/v3.0/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md) 甚至是完整重做整个数据迁移任务。
 
-因此，为了减小异常发生时对数据迁移的影响，我们推荐将每一个 shard group 拆分成一个独立的数据迁移任务。**这样当异常发生时，可能只有少部分迁移任务需要进行手动处理，其他数据迁移任务可以不受影响。**
+因此，为了减小异常发生时对数据迁移的影响，我们推荐将每一个 sharding group 拆分成一个独立的数据迁移任务。**这样当异常发生时，可能只有少部分迁移任务需要进行手动处理，其他数据迁移任务可以不受影响。**
 
-## 手动处理 shard DDL lock
+## 手动处理 sharding DDL lock
 
-从[分库分表合并同步的实现原理部分](/v3.0/reference/tools/data-migration/features/shard-merge.md#实现原理)我们可以知道，DM 中的 shard DDL lock 是用于协调不同上游分表向下游执行 DDL 的一种机制，本身并不是异常。
+从[分库分表合并同步的实现原理部分](/v3.0/reference/tools/data-migration/features/shard-merge.md#实现原理)我们可以知道，DM 中的 sharding DDL lock 是用于协调不同上游分表向下游执行 DDL 的一种机制，本身并不是异常。
 
-因此，当通过 `show-ddl-locks` 查看到 DM-master 上存在 shard DDL lock 时，或通过 `query-status` 查看到某些 DM-worker 有 `unresolvedGroups` 或 `blockingDDLs` 时，并不要急于使用 `unlock-ddl-lock` 或 `break-ddl-lock` 尝试去手动解除 shard DDL lock。
+因此，当通过 `show-ddl-locks` 查看到 DM-master 上存在 sharding DDL lock 时，或通过 `query-status` 查看到某些 DM-worker 有 `unresolvedGroups` 或 `blockingDDLs` 时，并不要急于使用 `unlock-ddl-lock` 或 `break-ddl-lock` 尝试去手动解除 sharding DDL lock。
 
-只有在确认当前未能自动解除 shard DDL lock 是文档中所列的[支持场景](/v3.0/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md#支持场景)之一时，才能参照对应支持场景中的手动处理示例进行处理。对于其他未被支持的场景，我们建议完整重做整个数据迁移任务，即清空下游数据库中的数据以及该数据迁移任务相关的 `dm_meta` 信息后，重新执行全量数据及增量数据的迁移。
+只有在确认当前未能自动解除 sharding DDL lock 是文档中所列的[支持场景](/v3.0/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md#支持场景)之一时，才能参照对应支持场景中的手动处理示例进行处理。对于其他未被支持的场景，我们建议完整重做整个数据迁移任务，即清空下游数据库中的数据以及该数据迁移任务相关的 `dm_meta` 信息后，重新执行全量数据及增量数据的迁移。
 
 ## 自增主键冲突处理
 
@@ -100,13 +100,13 @@ CREATE TABLE `tbl_multi_pk` (
 
 ## 合表迁移过程中在上游增/删表
 
-从[分库分表合并同步的实现原理部分](/v3.0/reference/tools/data-migration/features/shard-merge.md#实现原理)我们可以知道，shard DDL lock 的协调依赖于是否已收到上游已有各分表对应的 DDL，且当前 DM 在合表迁移过程中暂时**不支持**在上游动态增加或删除分表。如果需要在合表迁移过程中，对上游执行增、删分表操作，推荐按以下方式进行处理。
+从[分库分表合并同步的实现原理部分](/v3.0/reference/tools/data-migration/features/shard-merge.md#实现原理)我们可以知道，sharding DDL lock 的协调依赖于是否已收到上游已有各分表对应的 DDL，且当前 DM 在合表迁移过程中暂时**不支持**在上游动态增加或删除分表。如果需要在合表迁移过程中，对上游执行增、删分表操作，推荐按以下方式进行处理。
 
 ### 在上游增加分表
 
 如果需要在上游增加新的分表，推荐按以下顺序执行操作：
 
-1. 等待在上游分表上执行过的所有 shard DDL 协调同步完成。
+1. 等待在上游分表上执行过的所有 sharding DDL 协调同步完成。
 2. 通过 `stop-task` 停止任务。
 3. 在上游添加新的分表。
 4. 确保 `task.yaml` 配置能使新添加的分表与其他已有的分表能合并到同一个下游表。

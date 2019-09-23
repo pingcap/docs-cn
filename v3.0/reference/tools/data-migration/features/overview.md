@@ -395,7 +395,7 @@ column-mappings:
     - 支持最多 16 个 MySQL/MariaDB 实例，且需要满足 0 <= instance ID <= 15。
     - 每个实例支持最多 128 个 schema，且需要满足 0 <= schema ID  <= 127。
     - 每个实例的每个 schema 支持最多 256 个 table，且需要满足 0 <= table ID <= 255。
-    - 进行列值映射的列的范围需要满足 0 <= ID <= 17592186044415。
+    - 进行 Column mapping 的列的范围需要满足 0 <= ID <= 17592186044415。
     - `{instance ID, schema ID, table ID}` 组合需要保持唯一。
 - 目前该功能是定制功能，如果需要调整请联系相关开发人员进行调整
 
