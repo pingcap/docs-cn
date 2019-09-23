@@ -13,8 +13,13 @@ aliases: ['/docs-cn/sql/character-set-support/']
 
 目前 `TiDB` 支持以下字符集：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW CHARACTER SET;
+SHOW CHARACTER SET;
+```
+
+```
 +---------|---------------|-------------------|--------+
 | Charset | Description   | Default collation | Maxlen |
 +---------|---------------|-------------------|--------+
@@ -34,8 +39,13 @@ mysql> SHOW CHARACTER SET;
 
 对于字符集来说，至少会有一个 Collation（排序规则）与之对应。而大部分字符集实际上会有多个 Collation。利用以下的语句可以查看：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW COLLATION WHERE Charset = 'latin1';
+SHOW COLLATION WHERE Charset = 'latin1';
+```
+
+```
 +-------------------|---------|------|---------|----------|---------+
 | Collation         | Charset | Id   | Default | Compiled | Sortlen |
 +-------------------|---------|------|---------|----------|---------+
@@ -114,26 +124,68 @@ ALTER DATABASE db_name
 
 通过系统变量 `character_set_database` 和 `collation_database` 可以查看到当前数据库的字符集以及排序规则：
 
-```sql
-mysql> create schema test1 character set utf8 COLLATE uft8_general_ci;
-Query OK, 0 rows affected (0.09 sec)
+{{< copyable "sql" >}}
 
-mysql> use test1;
+```sql
+create schema test1 character set utf8 COLLATE uft8_general_ci;
+```
+
+```
+Query OK, 0 rows affected (0.09 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+use test1;
+```
+
+```
 Database changed
-mysql> SELECT @@character_set_database, @@collation_database;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT @@character_set_database, @@collation_database;
+```
+
+```
 +--------------------------|----------------------+
 | @@character_set_database | @@collation_database |
 +--------------------------|----------------------+
 | utf8                     | uft8_general_ci      |
 +--------------------------|----------------------+
 1 row in set (0.00 sec)
+```
 
-mysql> create schema test2 character set latin1 COLLATE latin1_general_ci;
+{{< copyable "sql" >}}
+
+```sql
+create schema test2 character set latin1 COLLATE latin1_general_ci;
+```
+
+```
 Query OK, 0 rows affected (0.09 sec)
+```
 
-mysql> use test2;
+{{< copyable "sql" >}}
+
+```sql
+use test2;
+```
+
+```
 Database changed
-mysql> SELECT @@character_set_database, @@collation_database;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT @@character_set_database, @@collation_database;
+```
+
+```
 +--------------------------|----------------------+
 | @@character_set_database | @@collation_database |
 +--------------------------|----------------------+
@@ -143,6 +195,8 @@ mysql> SELECT @@character_set_database, @@collation_database;
 ```
 
 在 INFORMATION_SCHEMA 中也可以查看到这两个值：
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME
@@ -165,8 +219,13 @@ ALTER TABLE tbl_name
 
 例如：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE TABLE t1(a int) CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE TABLE t1(a int) CHARACTER SET utf8 COLLATE utf8_general_ci;
+```
+
+```
 Query OK, 0 rows affected (0.08 sec)
 ```
 
@@ -198,7 +257,9 @@ col_name {ENUM | SET} (val_list)
 
 示例，如下：
 
-```
+{{< copyable "sql" >}}
+
+```sql
 SELECT 'string';
 SELECT _latin1'string';
 SELECT _latin1'string' COLLATE latin1_danish_ci;
@@ -226,7 +287,9 @@ SELECT _latin1'string' COLLATE latin1_danish_ci;
 `SET NAMES` 用来设定客户端会在之后的请求中使用的字符集。`SET NAMES utf8` 表示客户端会在接下来的请求中，都使用 utf8 字符集。服务端也会在之后返回结果的时候使用 utf8 字符集。
 `SET NAMES 'charset_name'` 语句其实等于下面语句的组合：
 
-```
+{{< copyable "sql" >}}
+
+```sql
 SET character_set_client = charset_name;
 SET character_set_results = charset_name;
 SET character_set_connection = charset_name;
@@ -238,7 +301,9 @@ SET character_set_connection = charset_name;
 
 跟 `SET NAMES` 类似，等价于下面语句的组合：
 
-```
+{{< copyable "sql" >}}
+
+```sql
 SET character_set_client = charset_name;
 SET character_set_results = charset_name;
 SET collation_connection = @@collation_database;

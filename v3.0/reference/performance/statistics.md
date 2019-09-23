@@ -31,7 +31,7 @@ TiDB 优化器会根据统计信息来选择最优的执行计划。统计信息
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableNameList [WITH NUM BUCKETS]
+ANALYZE TABLE TableNameList [WITH NUM BUCKETS];
 ```
 
 WITH NUM BUCKETS 可以用来指定生成直方图的桶数量上限。
@@ -41,7 +41,7 @@ WITH NUM BUCKETS 可以用来指定生成直方图的桶数量上限。
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS]
+ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS];
 ```
 
 IndexNameList 为空时会收集所有索引列的统计信息。
@@ -51,7 +51,7 @@ IndexNameList 为空时会收集所有索引列的统计信息。
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS]
+ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS];
 ```
 
 收集 TableName 中所有的 PartitionNameList 中分区的索引列统计信息：
@@ -59,7 +59,7 @@ ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS]
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableName PARTITION PartitionNameList [IndexNameList] [WITH NUM BUCKETS]
+ANALYZE TABLE TableName PARTITION PartitionNameList [IndexNameList] [WITH NUM BUCKETS];
 ```
 
 #### 增量收集
@@ -78,7 +78,7 @@ ANALYZE TABLE TableName PARTITION PartitionNameList [IndexNameList] [WITH NUM BU
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS]
+ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS];
 ```
 
 增量收集 TableName 中所有的 PartitionNameList 中分区的索引列统计信息：
@@ -86,7 +86,7 @@ ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS]
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS]
+ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS];
 ```
 
 ### 自动更新
@@ -131,7 +131,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 {{< copyable "sql" >}}
 
 ```sql
-SHOW ANALYZE STATUS [ShowLikeOrWhere]
+SHOW ANALYZE STATUS [ShowLikeOrWhere];
 ```
 
 该语句会输出 `ANALYZE` 的状态，可以通过使用 `ShowLikeOrWhere` 来筛选需要的信息。
@@ -161,7 +161,7 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere]
 {{< copyable "sql" >}}
 
 ```sql
-SHOW STATS_META [ShowLikeOrWhere]
+SHOW STATS_META [ShowLikeOrWhere];
 ```
 
 该语句会输出所有表的总行数以及修改行数等信息，你可以通过 ShowLikeOrWhere 来筛选需要的信息。
@@ -186,7 +186,7 @@ SHOW STATS_META [ShowLikeOrWhere]
 {{< copyable "sql" >}}
 
 ```sql
-SHOW STATS_HISTOGRAMS [ShowLikeOrWhere]
+SHOW STATS_HISTOGRAMS [ShowLikeOrWhere];
 ```
 
 该语句会输出所有列的不同值数量以及 NULL 数量等信息，你可以通过 ShowLikeOrWhere 来筛选需要的信息。
@@ -214,7 +214,7 @@ SHOW STATS_HISTOGRAMS [ShowLikeOrWhere]
 {{< copyable "sql" >}}
 
 ```sql
-SHOW STATS_BUCKETS [ShowLikeOrWhere]
+SHOW STATS_BUCKETS [ShowLikeOrWhere];
 ```
 
 该语句会输出所有桶的信息，你可以通过 ShowLikeOrWhere 来筛选需要的信息。
@@ -243,7 +243,7 @@ SHOW STATS_BUCKETS [ShowLikeOrWhere]
 {{< copyable "sql" >}}
 
 ```sql
-DROP STATS TableName
+DROP STATS TableName;
 ```
 
 该语句会删除 TableName 中所有的统计信息。
@@ -287,7 +287,7 @@ http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${tabl
 {{< copyable "sql" >}}
 
 ```sql
-LOAD STATS 'file_name'
+LOAD STATS 'file_name';
 ```
 
 `file_name` 为要导入的统计信息的文件名。

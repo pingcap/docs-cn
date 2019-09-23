@@ -14,8 +14,14 @@ aliases: ['/docs-cn/tools/dm/manage-task/']
 
 ### dmctl 使用帮助
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-$ ./dmctl --help
+./dmctl --help
+./dmctl --help
+```
+
+```
 Usage of dmctl:
  -V prints version and exit
  -config string
@@ -34,16 +40,27 @@ Usage of dmctl:
 
 在 DM 相关配置文件中，要求必须使用经 dmctl 加密后的密码，否则会报错。对于同一个原始密码，每次加密后密码不同。
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-$ ./dmctl -encrypt 123456
+./dmctl -encrypt 123456
+```
+
+```
 VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=
 ```
 
 ### 任务管理概览
 
+进入命令行模式，与 DM-master 进行交互：
+
+{{< copyable "shell-regular" >}}
+
 ```bash
-# 进入命令行模式，与 DM-master 进行交互
-$ ./dmctl -master-addr 172.16.30.14:8261
+./dmctl -master-addr 172.16.30.14:8261
+```
+
+```
 Welcome to dmctl
 Release Version: v1.0.1
 Git Commit Hash: e63c6cdebea0edcf2ef8c91d84cff4aaa5fc2df7
@@ -97,8 +114,13 @@ Flags:
 
 `start-task` 命令用于创建数据同步任务。 当数据同步任务启动时，DM 将[自动对相应权限和配置进行前置检查](/v3.0/reference/tools/data-migration/precheck.md)。
 
+{{< copyable "" >}}
+
 ```bash
-» help start-task
+help start-task
+```
+
+```
 start a task with config file
 
 Usage:
@@ -112,6 +134,8 @@ Global Flags:
 ```
 
 #### 命令用法示例
+
+{{< copyable "" >}}
 
 ```bash
 start-task [ -w "172.16.30.15:8262"] ./task.yaml
@@ -129,8 +153,13 @@ start-task [ -w "172.16.30.15:8262"] ./task.yaml
 
 #### 返回结果示例
 
+{{< copyable "" >}}
+
 ```bash
-» start-task task.yaml
+start-task task.yaml
+```
+
+```
 {
      "result": true,
      "msg": "",
@@ -153,8 +182,13 @@ start-task [ -w "172.16.30.15:8262"] ./task.yaml
 
 `query-status` 命令用于查询数据同步任务状态。有关查询结果及子任务状态，详见[查询状态](/v3.0/reference/tools/data-migration/query-status.md)。
 
+{{< copyable "" >}}
+
 ```bash
-» help query-status
+help query-status
+```
+
+```
 query task's status
 
 Usage:
@@ -168,6 +202,8 @@ Global Flags:
 ```
 
 #### 命令用法示例
+
+{{< copyable "" >}}
 
 ```bash
 query-status
@@ -205,8 +241,13 @@ query-status
 > - 使用 `pause-task` 暂停同步任务期间，由于任务本身仍然存在，因此不能再启动同名的新任务，且会阻止对该任务所需 relay log 的清理；使用 `stop-task` 停止任务后，由于任务不再存在，因此可以再启动同名的新任务，且不会阻止对 relay log 的清理。
 > - `pause-task` 一般用于临时暂停同步任务以排查问题等；`stop-task` 一般用于永久删除同步任务或通过与 `start-task` 配合以更新配置信息。
 
+{{< copyable "" >}}
+
 ```bash
-» help pause-task
+help pause-task
+```
+
+```
 pause a running task with name
 
 Usage:
@@ -220,6 +261,8 @@ Global Flags:
 ```
 
 #### 命令用法示例
+
+{{< copyable "" >}}
 
 ```bash
 pause-task [-w "127.0.0.1:8262"] task-name
@@ -237,8 +280,13 @@ pause-task [-w "127.0.0.1:8262"] task-name
 
 #### 返回结果示例
 
+{{< copyable "" >}}
+
 ```bash
-» pause-task test
+pause-task test
+```
+
+```
 {
      "op": "Pause",
      "result": true,
@@ -270,8 +318,13 @@ pause-task [-w "127.0.0.1:8262"] task-name
 
 `resume-task` 命令用于恢复处于 `Paused` 状态的数据同步任务，通常用于在人为处理完造成同步任务暂停的故障后手动恢复同步任务。
 
+{{< copyable "" >}}
+
 ```bash
-» help resume-task
+help resume-task
+```
+
+```
 resume a paused task with name
 
 Usage:
@@ -285,6 +338,8 @@ Global Flags:
 ```
 
 #### 命令用法示例
+
+{{< copyable "" >}}
 
 ```bash
 resume-task [-w "127.0.0.1:8262"] task-name
@@ -302,8 +357,13 @@ resume-task [-w "127.0.0.1:8262"] task-name
 
 #### 返回结果示例
 
+{{< copyable "" >}}
+
 ```bash
-» resume-task test
+resume-task test
+```
+
+```
 {
      "op": "Resume",
      "result": true,
@@ -335,8 +395,13 @@ resume-task [-w "127.0.0.1:8262"] task-name
 
 `stop-task` 命令用于停止数据同步任务。有关 `stop-task` 与 `pause-task` 的区别，请参考[暂停数据同步任务](#暂停数据同步任务)中的相关说明。
 
+{{< copyable "" >}}
+
 ```bash
-» help stop-task
+help stop-task
+```
+
+```
 stop a task with name
 
 Usage:
@@ -350,6 +415,8 @@ Global Flags:
 ```
 
 #### 命令用法示例
+
+{{< copyable "" >}}
 
 ```bash
 stop-task [-w "127.0.0.1:8262"]  task-name
@@ -367,8 +434,13 @@ stop-task [-w "127.0.0.1:8262"]  task-name
 
 #### 返回结果示例
 
+{{< copyable "" >}}
+
 ```bash
-» stop-task test
+stop-task test
+```
+
+```
 {
      "op": "Stop",
      "result": true,
@@ -435,8 +507,13 @@ stop-task [-w "127.0.0.1:8262"]  task-name
 
 3. 使用 `start-task <task-name>` 重启恢复任务。
 
+{{< copyable "" >}}
+
 ```bash
-» help update-task
+help update-task
+```
+
+```
 update a task's config for routes, filters, column-mappings, black-white-list
 
 Usage:
@@ -450,6 +527,8 @@ Global Flags:
 ```
 
 #### 命令用法示例
+
+{{< copyable "" >}}
 
 ```bash
 update-task [-w "127.0.0.1:8262"] ./task.yaml
@@ -467,8 +546,13 @@ update-task [-w "127.0.0.1:8262"] ./task.yaml
 
 #### 返回结果示例
 
+{{< copyable "" >}}
+
 ```bash
-» update-task task_all_black.yaml
+update-task task_all_black.yaml
+```
+
+```
 {
      "result": true,
      "msg": "",
@@ -501,8 +585,13 @@ update-task [-w "127.0.0.1:8262"] ./task.yaml
 
 在使用 `start-task` 启动同步任务时，DM 也会做 `check-task` 所做的全部检查。
 
+{{< copyable "" >}}
+
 ```bash
-» help check-task
+help check-task
+```
+
+```
 check a task with config file
 
 Usage:
@@ -517,6 +606,8 @@ Global Flags:
 
 #### 命令用法示例
 
+{{< copyable "" >}}
+
 ```bash
 check-task task.yaml
 ```
@@ -529,8 +620,13 @@ check-task task.yaml
 
 #### 返回结果示例
 
+{{< copyable "" >}}
+
 ```bash
-» check-task task-test.yaml
+check-task task-test.yaml
+```
+
+```
 {
     "result": true,
     "msg": "check pass!!!"
@@ -543,8 +639,13 @@ relay 处理单元在 DM-worker 进程启动后即开始自动运行，通过使
 
 当需要切换 DM-worker 通过虚拟 IP 连接的上游 MySQL 时，我们需要使用 `pause-relay` 对 DM 执行变更，具体变更步骤请参考[虚拟 IP 环境下的上游主从切换](/v3.0/reference/tools/data-migration/usage-scenarios/master-slave-switch.md#虚拟-IP-环境下的上游主从切换)。
 
+{{< copyable "" >}}
+
 ```bash
-» help pause-relay
+help pause-relay
+```
+
+```
 pause dm-worker's relay unit
 
 Usage:
@@ -559,6 +660,8 @@ Global Flags:
 
 #### 命令用法示例
 
+{{< copyable "" >}}
+
 ```bash
 pause-relay -w "127.0.0.1:8262"
 ```
@@ -571,8 +674,13 @@ pause-relay -w "127.0.0.1:8262"
 
 #### 返回结果示例
 
+{{< copyable "" >}}
+
 ```bash
-» pause-relay -w "172.16.30.15:8262"
+pause-relay -w "172.16.30.15:8262"
+```
+
+```
 {
     "op": "InvalidRelayOp",
     "result": true,
@@ -594,8 +702,13 @@ pause-relay -w "127.0.0.1:8262"
 
 当需要切换 DM-worker 通过虚拟 IP 连接的上游 MySQL 时，我们需要使用 `resume-relay` 对 DM 执行变更，具体变更步骤请参考[虚拟 IP 环境下的上游主从切换](/v3.0/reference/tools/data-migration/usage-scenarios/master-slave-switch.md#虚拟-IP-环境下的上游主从切换)。
 
+{{< copyable "" >}}
+
 ```bash
-» help resume-relay
+help resume-relay
+```
+
+```
 resume dm-worker's relay unit
 
 Usage:
@@ -610,6 +723,8 @@ Global Flags:
 
 #### 命令用法示例
 
+{{< copyable "" >}}
+
 ```bash
 resume-relay -w "127.0.0.1:8262"
 ```
@@ -622,8 +737,13 @@ resume-relay -w "127.0.0.1:8262"
 
 #### 返回结果示例
 
+{{< copyable "" >}}
+
 ```bash
-» resume-relay -w "172.16.30.15:8262"
+resume-relay -w "172.16.30.15:8262"
+```
+
+```
 {
     "op": "InvalidRelayOp",
     "result": true,
@@ -645,8 +765,13 @@ relay 处理单元通过使用不同的子目录来存储来自上游不同 MySQ
 
 当需要切换 DM-worker 通过虚拟 IP 连接的上游 MySQL 时，我们需要使用 `switch-relay-master` 对 DM 执行变更，具体变更步骤请参考[虚拟 IP 环境下的上游主从切换](/v3.0/reference/tools/data-migration/usage-scenarios/master-slave-switch.md#虚拟-IP-环境下的上游主从切换)。
 
+{{< copyable "" >}}
+
 ```bash
-» help switch-relay-master
+help switch-relay-master
+```
+
+```
 switch master server of dm-worker's relay unit
 
 Usage:
@@ -661,6 +786,8 @@ Global Flags:
 
 #### 命令用法示例
 
+{{< copyable "" >}}
+
 ```bash
 switch-relay-master -w "127.0.0.1:8262"
 ```
@@ -673,8 +800,13 @@ switch-relay-master -w "127.0.0.1:8262"
 
 #### 返回结果示例
 
+{{< copyable "" >}}
+
 ```bash
-» switch-relay-master -w "172.16.30.15:8262"
+switch-relay-master -w "172.16.30.15:8262"
+```
+
+```
 {
     "result": true,
     "msg": "",
@@ -692,8 +824,13 @@ switch-relay-master -w "127.0.0.1:8262"
 
 DM 支持[自动清理 relay log](/v3.0/reference/tools/data-migration/relay-log.md#自动数据清理)，但同时 DM 也支持使用 `purge-relay` 命令[手动清理 relay log](/v3.0/reference/tools/data-migration/relay-log.md#手动数据清理)。
 
+{{< copyable "" >}}
+
 ```bash
-» help purge-relay
+help purge-relay
+```
+
+```
 purge dm-worker's relay log files according to specified filename
 
 Usage:
@@ -709,6 +846,8 @@ Global Flags:
 ```
 
 #### 命令用法示例
+
+{{< copyable "" >}}
 
 ```bash
 purge-relay -w "127.0.0.1:8262" --filename "mysql-bin.000003"
@@ -728,8 +867,13 @@ purge-relay -w "127.0.0.1:8262" --filename "mysql-bin.000003"
 
 #### 返回结果示例
 
+{{< copyable "" >}}
+
 ```bash
-» purge-relay -w "127.0.0.1:8262" --filename "mysql-bin.000003"
+purge-relay -w "127.0.0.1:8262" --filename "mysql-bin.000003"
+```
+
+```
 [warn] no --sub-dir specify for --filename, the latest one will be used
 {
     "result": true,
