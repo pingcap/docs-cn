@@ -34,7 +34,7 @@ HAProxy 是由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写�
 |---|---|
 |CPU|2 cores，3.5 GHz|
 |Memory| 16 GB|
-|Storage| 50 GB（SATA）|
+|Storage| 50 GB (SATA)|
 |Network Interface Card| 万兆网卡|
 
 ### 依赖软件
