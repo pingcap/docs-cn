@@ -70,6 +70,8 @@ DECIMAL 列不允许插入大于列定义的隐含范围的值. 例如, DECIMAL(
 
 向一个数值类型列插入数据的具体行为会受到 SQL 模式的影响。接下来的讨论将围绕严格模式以及 `ERROR_FOR_DIVISION_BY_ZERO` 模式展开，如果要打开所有的限制，可以简单的使用 `TRADITIONAL` 模式，这个模式将同时使用严格模式以及 `ERROR_FOR_DIVISION_BY_ZERO`  模式：
 
+{{< copyable "sql" >}}
+
 ```sql
 SET sql_mode = 'TRADITIONAL';
 ```
@@ -93,6 +95,8 @@ SET sql_mode = 'TRADITIONAL';
 
 假设我们有如下的 SQL 语句：
 
+{{< copyable "sql" >}}
+
 ```sql
 INSERT INTO t SET i = 1/0;
 ```
@@ -113,8 +117,13 @@ INSERT INTO t SET i = 1/0;
 * 如果参数是精确值，`round()` 函数将使用四舍五入的规则
 * 如果参数是一个近似值，`round()` 表达式的结果可能和 MySQL 不太一样
 
+{{< copyable "sql" >}}
+
 ```sql
-TiDB > SELECT ROUND(2.5), ROUND(25E-1);
+SELECT ROUND(2.5), ROUND(25E-1);
+```
+
+```
 +------------+--------------+
 | ROUND(2.5) | ROUND(25E-1) |
 +------------+--------------+
@@ -125,14 +134,33 @@ TiDB > SELECT ROUND(2.5), ROUND(25E-1);
 
 向一个 `DECIMAL` 或者整数类型列插入数据时，round 的规则将采用 [round half away from zero](https://en.wikipedia.org/wiki/Rounding#Round_half_away_from_zero) 的方式：
 
+{{< copyable "sql" >}}
+
 ```sql
-TiDB > CREATE TABLE t (d DECIMAL(10,0));
+CREATE TABLE t (d DECIMAL(10,0));
+```
+
+```
 Query OK, 0 rows affected (0.01 sec)
+```
 
-TiDB > INSERT INTO t VALUES(2.5),(2.5E0);
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t VALUES(2.5),(2.5E0);
+```
+
+```
 Query OK, 2 rows affected, 2 warnings (0.00 sec)
+```
 
-TiDB > SELECT d FROM t;
+{{< copyable "sql" >}}
+
+```sql
+SELECT d FROM t;
+```
+
+```
 +------+
 | d    |
 +------+
