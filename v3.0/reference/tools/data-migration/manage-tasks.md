@@ -77,7 +77,7 @@ Usage:
 Available Commands:
   break-ddl-lock       forcefully break DM-worker's DDL lock
   check-task           check the config file of the task
-  help                 Help about any command
+  help                 help about any command
   migrate-relay        migrate DM-worker's relay unit
   pause-relay          pause DM-worker's relay unit
   pause-task           pause a specified running task
@@ -88,13 +88,13 @@ Available Commands:
   resume-relay         resume DM-worker's relay unit
   resume-task          resume a specified paused task
   show-ddl-locks       show un-resolved DDL locks
-  sql-inject           sql-inject injects (limited) sqls into syncer as binlog event
+  sql-inject           inject (limited) SQLs into binlog replication unit as binlog events
   sql-replace          replace SQLs matched by a specific binlog position (binlog-pos) or a SQL pattern (sql-pattern); each SQL must end with a semicolon
-  sql-skip             skip the binlog event matched by a specific binlog position (binlog-pos) or SQL pattern (sql-pattern)
-  start-task           start a task with config file
+  sql-skip             skip the binlog event matched by a specific binlog position (binlog-pos) or a SQL pattern (sql-pattern)
+  start-task           start a task as defined in the config file
   stop-task            stop a specified task
   switch-relay-master  switch the master server of the DM-worker's relay unit
-  unlock-ddl-lock      forcefully to unlock DDL lock
+  unlock-ddl-lock      forcefully unlock DDL lock
   update-master-config update the config of the DM-master
   update-relay         update the relay unit config of the DM-worker
   update-task          update a task's config for routes, filters, column-mappings, or black-white-list
@@ -121,7 +121,7 @@ help start-task
 ```
 
 ```
-start a task with config file
+start a task as defined in the config file
 
 Usage:
  dmctl start-task [-w worker ...] <config_file> [flags]
@@ -581,9 +581,9 @@ update-task task_all_black.yaml
 
 ### 检查任务配置文件
 
-`check-task` 命令用于检查指定的数据同步任务配置文件（`task.yaml`）是否合法以及上下游数据库的配置、权限、表结构等是否满足同步需要，具体可参考[上游 MySQL 实例配置前置检查](/v3.0/reference/tools/data-migration/precheck.md)。
+`check-task` 命令用于检查指定的数据同步任务配置文件（`task.yaml`）是否合法以及上下游数据库的配置、权限、表结构等是否满足同步需要。具体可参考[上游 MySQL 实例配置前置检查](/v3.0/reference/tools/data-migration/precheck.md)。
 
-在使用 `start-task` 启动同步任务时，DM 也会做 `check-task` 所做的全部检查。
+在使用 `start-task` 启动同步任务时，DM 也会执行 `check-task` 所做的全部检查。
 
 {{< copyable "" >}}
 
@@ -637,7 +637,7 @@ check-task task-test.yaml
 
 relay 处理单元在 DM-worker 进程启动后即开始自动运行。通过使用 `pause-relay` 命令，我们可以暂停 relay 处理单元的运行。
 
-当需要切换 DM-worker 通过虚拟 IP 连接的上游 MySQL 时，我们需要使用 `pause-relay` 对 DM 执行变更，具体变更步骤请参考[虚拟 IP 环境下的上游主从切换](/v3.0/reference/tools/data-migration/usage-scenarios/master-slave-switch.md#虚拟-IP-环境下的上游主从切换)。
+当需要切换 DM-worker 通过虚拟 IP 连接的上游 MySQL 时，我们需要使用 `pause-relay` 对 DM 执行变更。具体变更步骤请参考[虚拟 IP 环境下的上游主从切换](/v3.0/reference/tools/data-migration/usage-scenarios/master-slave-switch.md#虚拟-IP-环境下的上游主从切换)。
 
 {{< copyable "" >}}
 
@@ -700,7 +700,7 @@ pause-relay -w "172.16.30.15:8262"
 
 `resume-relay` 用于恢复处于 `Paused` 状态的 relay 处理单元。
 
-当需要切换 DM-worker 通过虚拟 IP 连接的上游 MySQL 时，我们需要使用 `resume-relay` 对 DM 执行变更，具体变更步骤请参考[虚拟 IP 环境下的上游主从切换](/v3.0/reference/tools/data-migration/usage-scenarios/master-slave-switch.md#虚拟-IP-环境下的上游主从切换)。
+当需要切换 DM-worker 通过虚拟 IP 连接的上游 MySQL 时，我们需要使用 `resume-relay` 对 DM 执行变更。具体变更步骤请参考[虚拟 IP 环境下的上游主从切换](/v3.0/reference/tools/data-migration/usage-scenarios/master-slave-switch.md#虚拟-IP-环境下的上游主从切换)。
 
 {{< copyable "" >}}
 
@@ -761,9 +761,9 @@ resume-relay -w "172.16.30.15:8262"
 
 ### 切换 relay log 到新的子目录
 
-relay 处理单元通过使用不同的子目录来存储来自上游不同 MySQL 实例的 binlog 数据，通过使用 `switch-relay-master` 命令，我们可以变更 relay 处理单元以开始使用一个新的子目录。
+relay 处理单元通过使用不同的子目录来存储来自上游不同 MySQL 实例的 binlog 数据。通过使用 `switch-relay-master` 命令，我们可以变更 relay 处理单元以开始使用一个新的子目录。
 
-当需要切换 DM-worker 通过虚拟 IP 连接的上游 MySQL 时，我们需要使用 `switch-relay-master` 对 DM 执行变更，具体变更步骤请参考[虚拟 IP 环境下的上游主从切换](/v3.0/reference/tools/data-migration/usage-scenarios/master-slave-switch.md#虚拟-IP-环境下的上游主从切换)。
+当需要切换 DM-worker 通过虚拟 IP 连接的上游 MySQL 时，我们需要使用 `switch-relay-master` 对 DM 执行变更。具体变更步骤请参考[虚拟 IP 环境下的上游主从切换](/v3.0/reference/tools/data-migration/usage-scenarios/master-slave-switch.md#虚拟-IP-环境下的上游主从切换)。
 
 {{< copyable "" >}}
 
