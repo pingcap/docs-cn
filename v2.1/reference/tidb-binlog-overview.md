@@ -73,3 +73,13 @@ The server hardware requirements for development, testing, and the production en
     - If your TiDB version is 2.1.9 or later, set `db-type="file"` or `db-type="pb"`.
 
 * If the downstream is MySQL, MariaDB, or another TiDB cluster, you can use [sync-diff-inspector](/v2.1/reference/tools/sync-diff-inspector.md) to verify the data after data replication.
+
+## TiDB Binlog Instructions
+
+Once you grasp the basics from the above, you can refer to the following documents to use TiDB Binlog:
+
+- [TiDB Binlog Tutorial](/v2.1/how-to/get-started/tidb-binlog.md)
+- [TiDB Binlog Cluster Deployment](/v2.1/how-to/deploy/tidb-binlog.md)
+- [TiDB Binlog Monitoring](/v2.1/how-to/monitor/tidb-binlog.md)
+- [TiDB Binlog Cluster Operations](/v2.1/how-to/maintain/tidb-binlog.md)
+- [Upgrade TiDB Binlog Cluster](/v2.1/how-to/upgrade/tidb-binlog.md)
