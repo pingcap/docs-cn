@@ -50,14 +50,14 @@ CREATE TABLE `tbl_no_pk` (
 
 1. 在开始执行全量数据迁移前，在下游数据库创建用于合表迁移的表，但不为 `auto_pk_c1` 指定 `PRIMARY KEY` 属性。
 
-   ```sql
-   CREATE TABLE `tbl_no_pk_2` (
-     `auto_pk_c1` bigint(20) NOT NULL,
-     `uk_c2` bigint(20) NOT NULL,
-     `content_c3` text,
-     UNIQUE KEY `uk_c2` (`uk_c2`)
-   ) ENGINE=InnoDB DEFAULT CHARSET=latin1
-   ```
+    ```sql
+    CREATE TABLE `tbl_no_pk_2` (
+      `auto_pk_c1` bigint(20) NOT NULL,
+      `uk_c2` bigint(20) NOT NULL,
+      `content_c3` text,
+      UNIQUE KEY `uk_c2` (`uk_c2`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=latin1
+    ```
 
 2. 启动数据迁移任务，执行全量与增量数据迁移。
 3. 通过 `query-status` 验证数据迁移任务是否正常，在下游数据库中验证合表中是否已经存在了来自上游的数据。
@@ -85,14 +85,14 @@ CREATE TABLE `tbl_multi_pk` (
 
 1. 在开始执行全量数据迁移前，在下游数据库创建用于合表迁移的表，但不为 `auto_pk_c1` 指定 `PRIMARY KEY` 属性，而是将 `auto_pk_c1` 与 `uuid_c2` 一起组成 `PRIMARY KEY`。
 
-   ```sql
-   CREATE TABLE `tbl_multi_pk_c2` (
-     `auto_pk_c1` bigint(20) NOT NULL,
-     `uuid_c2` bigint(20) NOT NULL,
-     `content_c3` text,
-     PRIMARY KEY (`auto_pk_c1`,`uuid_c2`)
-   ) ENGINE=InnoDB DEFAULT CHARSET=latin1
-   ```
+    ```sql
+    CREATE TABLE `tbl_multi_pk_c2` (
+      `auto_pk_c1` bigint(20) NOT NULL,
+      `uuid_c2` bigint(20) NOT NULL,
+      `content_c3` text,
+      PRIMARY KEY (`auto_pk_c1`,`uuid_c2`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=latin1
+    ```
 
 2. 启动数据迁移任务，执行全量与增量数据迁移。
 

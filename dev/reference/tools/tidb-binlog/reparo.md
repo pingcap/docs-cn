@@ -34,7 +34,6 @@ Usage of Reparo:
     用于指定结束恢复的时间点，格式同上。如果不设置该参数则恢复到最后一个 binlog 文件。
 -safe-mode bool
     指定是否开启安全模式，开启后可支持反复同步。
-
 ```
 
 ### 配置文件说明
@@ -85,7 +84,9 @@ password = ""
 
 ### 启动示例
 
-```
+{{< copyable "shell-regular" >}}
+
+```bash
 ./bin/reparo -config reparo.toml
 ```
 
