@@ -127,6 +127,7 @@
         - [Migrate from Aurora](/v2.1/how-to/migrate/from-aurora.md)
       - [Troubleshoot](/v2.1/how-to/troubleshoot/data-migration.md)
       - [Upgrade](/v2.1/reference/tools/data-migration/upgrade.md)
+      - [FAQ](/v2.1/faq/data-migration.md)
     + TiDB Lightning
       - [Overview](/v2.1/reference/tools/tidb-lightning/overview.md)
       - [Deployment](/v2.1/reference/tools/tidb-lightning/deployment.md)
