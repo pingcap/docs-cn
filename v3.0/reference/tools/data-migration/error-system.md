@@ -9,7 +9,7 @@ category: reference
 
 + Data Migration (DM) 输出错误信息的详细含义。
 + 根据错误信息进行诊断的具体方法。
-+ 常见的错误的运维方法。
++ 常见错误的运维方法。
 
 ## DM 错误系统
 
@@ -53,7 +53,7 @@ DM 中的错误信息均按以下固定格式输出：
 
     同一种错误都使用相同的错误码。错误码不随 DM 版本改变。
 
-    在 DM 迭代过程中，移除部分错误可能会被移除，但错误码不会。新增的错误会使用新的错误码，不会复用已有的错误码。
+    在 DM 迭代过程中，部分错误可能会被移除，但错误码不会。新增的错误会使用新的错误码，不会复用已有的错误码。
 
 - `class`：错误分类。
 
@@ -62,7 +62,7 @@ DM 中的错误信息均按以下固定格式输出：
     下表展示所有的错误分类名、出现错误的系统子模块、错误样例：
 
     | `class` 名字     | 出现错误的系统子模块             | 错误样例                                                     |
-    | -------------- | ------------------------------ | ------------------------------------------------------------ |
+    | :-------------- | :------------------------------ | :------------------------------------------------------------ |
     | `database`       | 执行数据库操作出现错误         | `[code=10003:class=database:scope=downstream:level=medium] database driver: invalid connection` |
     | `functional`     | 系统底层的基础函数错误           | `[code=11005:class=functional:scope=internal:level=high] not allowed operation: alter multiple tables in one statement` |
     | `config`         | 配置错误                       | `[code=20005:class=config:scope=internal:level=medium] empty source-id not valid` |
@@ -95,24 +95,24 @@ DM 中的错误信息均按以下固定格式输出：
 - `code=38008` 表示 gRPC 通信出错的错误码。
 - `class=dm-master`，表示 DM-master 对外发送 gRPC 请求时出错（请求发送至 DM-worker）。
 - `scope=interal` 表示 DM 内部出现错误。
-- `level=high`，表示这是一个高级别错误，需要用户注意。更进一步的错误信息可以根据错误 message 和错误堆栈判断。
+- `level=high`，表示这是一个高级别错误，需要用户注意。可根据错误 message 和错误堆栈判断出更多错误信息。
 
 ### 错误 message 描述
 
-错误 message 使用描述性语言来表示错误的详细信息。对于错误调用链上每一层额外增加的错误 message，采用 [errors.Wrap](https://godoc.org/github.com/pkg/errors#hdr-Adding_context_to_an_error) 的模式进行错误 message 的叠加和保存。wrap 最外层的 message 是 DM 内部对该错误的描述，wrap 最内层的 message 是该错误最底层出错位置的错误描述。
+错误 message 使用描述性语言来表示错误的详细信息。对于错误调用链上每一层额外增加的错误 message，采用 [errors.Wrap](https://godoc.org/github.com/pkg/errors#hdr-Adding_context_to_an_error) 的模式来叠加和保存错误 message。wrap 最外层的 message 是 DM 内部对该错误的描述，wrap 最内层的 message 是该错误最底层出错位置的错误描述。
 
 以上述样例错误的 message 为例：
 
 - wrap 最外层 message，`grpc request error` 是 DM 对该错误的描述。
 - wrap 最内层 message，`connection error: desc = "transport: Error while dialing dial tcp 172.17.0.2:8262: connect: connection refused"`， 是 gRPC 底层建立连接失败时返回的错误。
 
-通过对基本错误信息和错误 message 进行分析，用户可以诊断出错误是在 DM-master 向 DM-worker 发送 gRPC 请求建立连接失败时出现的。DM-worker 未正常运行，通常是导致该错误的原因 。
+通过对基本错误信息和错误 message 进行分析，用户可以诊断出错误是在 DM-master 向 DM-worker 发送 gRPC 请求建立连接失败时出现的。DM-worker 未正常运行常常导致该错误出现。
 
 ### 错误堆栈信息
 
 DM 根据错误的严重程度和必要性来选择是否输出错误堆栈。错误堆栈记录了错误发生时完整的堆栈调用信息。
 
-如果通过错误基本信息和错误 message 描述不能完全诊断出错误发生的原因，可以通过错误堆栈进一步跟进出错时代码的运行路径。
+如果用户通过错误基本信息和错误 message 描述不能完全诊断出错误发生的原因，可以通过错误堆栈进一步跟进出错时代码的运行路径。
 
 ## 错误码列表
 
@@ -124,10 +124,10 @@ DM 根据错误的严重程度和必要性来选择是否输出错误堆栈。�
 | :----------- | :------------------------------------------------------------ | :----------------------------------------------------------- |
 | `code=10001` | 数据库操作异常                                               | 进一步分析错误信息和错误堆栈                                 |
 | `code=10002` | 数据库底层的 `bad connection` 错误，通常表示 DM 到下游 TiDB 的数据库连接出现了异常（如网络故障、TiDB 重启等）且当前请求的数据暂时未能发送到 TiDB。 | DM 提供针对此类错误的自动恢复。如果长时间未恢复，需要用户检查网络或 TiDB 状态。 |
-| `code=10003` | 数据库底层 `invalid connection` 错误，通常表示 DM 到下游 TiDB 的数据库连接出现了异常（如网络故障、TiDB 重启、TiKV busy 等）且当前请求已有部分数据发送到了 TiDB | DM 提供针对此类错误的自动恢复。如果未能正常恢复，需要用户进一步检查错误信息并根据具体场景进行分析。 |
+| `code=10003` | 数据库底层 `invalid connection` 错误，通常表示 DM 到下游 TiDB 的数据库连接出现了异常（如网络故障、TiDB 重启、TiKV busy 等）且当前请求已有部分数据发送到了 TiDB。 | DM 提供针对此类错误的自动恢复。如果未能正常恢复，需要用户进一步检查错误信息并根据具体场景进行分析。 |
 | `code=10005` | 数据库查询类语句出错                                         |                                                              |
 | `code=10006` | 数据库 `EXECUTE` 类型语句出错，包括 DDL 和 `INSERT`/`UPDATE`/`DELETE` 类型的 DML。更详细的错误信息可通过错误 message 获取。错误 message 中通常包含操作数据库所返回的错误码和错误信息。 |                                                              |
 | `code=11006` |  DM 内置的 parser 解析不兼容的 DDL 时出错              |  可参考 [Data Migration 故障诊断-处理不兼容的 DDL 语句](/v3.0/how-to/troubleshoot/data-migration.md#处理不兼容的-ddl-语句) 提供的解决方案 |
 | `code=20010` | 处理任务配置时，解密数据库的密码出错                             |  检查任务配置中提供的下游数据库密码是否有[使用 dmctl 正确加密](/v3.0/how-to/deploy/data-migration-with-ansible.md#使用-dmctl-加密上游-mysql-用户密码) |
 | `code=26002` | 任务检查创建数据库连接失败。更详细的错误信息可通过错误 message 获取。错误 message 中包含操作数据库所返回的错误码和错误信息。 |  检查 DM-master 所在的机器是否有权限访问上游 |
-| `code=38008` | DM 组件间的 gRPC 通信出错                                      |  检查 class， 定位错误发生在哪些组件的交互环节，根据错误 message 判断是哪类通信错误。如果是 gRPC 建立连接出错，可检查通信服务端是否运行正常。 |
+| `code=38008` | DM 组件间的 gRPC 通信出错                                      |  检查 `class`， 定位错误发生在哪些组件的交互环节，根据错误 message 判断是哪类通信错误。如果是 gRPC 建立连接出错，可检查通信服务端是否运行正常。 |
