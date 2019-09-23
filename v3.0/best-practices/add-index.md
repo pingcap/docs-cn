@@ -12,8 +12,9 @@ category: best-practices
 ## 测试版本、时间、地点
 
 TiDB 版本：
- * Release 3.0: 6e2d6c7aa7eba3ac4f3a5201f1a36bf534fa6298
- * v2.0.6
+
+    - Release 3.0: 6e2d6c7aa7eba3ac4f3a5201f1a36bf534fa6298
+    - v2.0.6
 
 时间：2018 年 12 月 11 日
 
@@ -43,8 +44,9 @@ $ dd if=test.dbf bs=8k count=500000 of=/dev/null
 ### 测试数据
 
 一共对 2 张表进行测试，每张表 2000 万行数据：
-* 表 1 是宽表：`t_wide`，200 列， c0 ~ c65 是 `int` 类型， c66~c132 是 `varchar(200)` 类型， c133~c199 是 `timestamp` 类型。
-* 表 2 是窄表：`t_slim`， 10 列，c0 ~ c2 是 `int` 类型， c3~c5 是 `varchar(200)` 类型， c6~c9 是 `timestamp` 类型。
+
+    - 表 1 是宽表：`t_wide`，200 列， c0 ~ c65 是 `int` 类型， c66~c132 是 `varchar(200)` 类型， c133~c199 是 `timestamp` 类型。
+    - 表 2 是窄表：`t_slim`， 10 列，c0 ~ c2 是 `int` 类型， c3~c5 是 `varchar(200)` 类型， c6~c9 是 `timestamp` 类型。
 
 ### 版本信息
 
@@ -55,7 +57,6 @@ Release 3.0
 | TiDB  | `6e2d6c7aa7eba3ac4f3a5201f1a36bf534fa6298` |
 | TiKV  | `d6a1def0c924af9751c46d5b77663f753c64c562` |
 |  PD   | `6ebba48d8ce14307171e097ca782838e1d73e4bd` |
-
 
 V2.0.6
 
@@ -73,10 +74,10 @@ V2.0.6
 
 | 机器 IP       | 部署实例                |
 | :------------ | :---------------------- |
-| 172.31.25.68  | 1 * TiDB,  1 * PD, 监控 |
-| 172.31.30.195 | 1 * TiKV                |
-| 172.31.29.199 | 1 * TiKV                |
-| 172.31.23.149 | 1 * TiKV                |
+| 172.31.25.68  | 1 TiDB,  1 PD, 监控 |
+| 172.31.30.195 | 1 TiKV                |
+| 172.31.29.199 | 1 TiKV                |
+| 172.31.23.149 | 1 TiKV                |
 
 ## Benchmark 对比
 
@@ -84,7 +85,7 @@ V2.0.6
 
 对比测试 `alter table t_xx add index idx_(c0)` 的时间。
 
-注： `alter table t add index idx_(c_int, c_timestamp)`  联合索引测试和  `alter table t add index idx_(c_varchar(100))` `varchar` 索引测试结果类似， `varchar (100)` 索引会稍微慢几秒。
+注：`alter table t add index idx_(c_int, c_timestamp)`  联合索引测试和  `alter table t add index idx_(c_varchar(100))` `varchar` 索引测试结果类似， `varchar (100)` 索引会稍微慢几秒。
 
 TiDB V3.0 的 `tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batch_size` 参数分别是 16，4096。
 
@@ -109,7 +110,7 @@ add index 时间计算：在相同的表结构下，测试 200W 数据数据的 
 * `tidb_ddl_reorg_worker_cnt` ：add index 的并发度，默认是 4
 * `tidb_ddl_reorg_batch_size` ：每次 add index 时的 batch 大小，默认是 256
 
-注：3.0.2 以及 2.0.16 之前，` tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batch_size` 的默认值分别是 16 ，1024。
+注：3.0.2 以及 2.0.16 之前，`tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batch_size` 的默认值分别是 16 ，1024。
 
 以下测试是对各个参数单独设置 看其对 `add index` 的影响。
 
@@ -161,4 +162,3 @@ add index 时间计算：在相同的表结构下，测试 200W 数据数据的 
 在有其他负载情况下，想让 add index 尽量不影响其他业务，可以将 `tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batch_size` 适当调小，比如 4, 256。
 
 另外，在 `add index` 的同时，如果有对该表有比较频繁的 `Update` 操作，建议调小 `tidb_ddl_reorg_batch_size` ，比如 `128`，否则可能导致 `add index` 和 `update` 的事务冲突导致重试。
-
