@@ -13,7 +13,7 @@ category: best-practices
 
 TiDB 版本：
 
-    - Release 3.0: 6e2d6c7aa7eba3ac4f3a5201f1a36bf534fa6298
+    - Release 3.0: `6e2d6c7aa7eba3ac4f3a5201f1a36bf534fa6298`
     - v2.0.6
 
 时间：2018 年 12 月 11 日
@@ -45,8 +45,8 @@ $ dd if=test.dbf bs=8k count=500000 of=/dev/null
 
 一共对 2 张表进行测试，每张表 2000 万行数据：
 
-    - 表 1 是宽表：`t_wide`，200 列， c0 ~ c65 是 `int` 类型， c66~c132 是 `varchar(200)` 类型， c133~c199 是 `timestamp` 类型。
-    - 表 2 是窄表：`t_slim`， 10 列，c0 ~ c2 是 `int` 类型， c3~c5 是 `varchar(200)` 类型， c6~c9 是 `timestamp` 类型。
+    - 表 1 是宽表：`t_wide`，200 列， c0 ~ c65 是 `int` 类型， c66 ~ c132 是 `varchar(200)` 类型， c133 ~ c199 是 `timestamp` 类型。
+    - 表 2 是窄表：`t_slim`， 10 列，c0 ~ c2 是 `int` 类型， c3 ~ c5 是 `varchar(200)` 类型， c6 ~ c9 是 `timestamp` 类型。
 
 ### 版本信息
 
@@ -81,7 +81,7 @@ V2.0.6
 
 ## Benchmark 对比
 
-### add index 
+### add index
 
 对比测试 `alter table t_xx add index idx_(c0)` 的时间。
 
@@ -93,7 +93,7 @@ TiDB V2.0.6 不支持设置 `tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batc
 
 ![add-index-best-practices-01](/media/add-index-best-practices-01.png)
 
-### add unique index 
+### add unique index
 
 `alter table t add unique index idx_(c0)`
 
