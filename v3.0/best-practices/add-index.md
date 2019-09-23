@@ -14,7 +14,7 @@ category: best-practices
 TiDB 版本：
 
 - Release 3.0：`6e2d6c7aa7eba3ac4f3a5201f1a36bf534fa6298`
-    - v2.0.6
+- v2.0.6
 
 时间：2018 年 12 月 11 日
 
