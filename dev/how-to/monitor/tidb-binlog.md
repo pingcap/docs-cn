@@ -38,10 +38,12 @@ To understand the Drainer monitoring metrics, check the following table:
 | Pull Binlog QPS by Pump NodeID | Shows the QPS when Drainer obtains binlog from each Pump node |
 | 95% Binlog Reach Duration By Pump | Records the delay from the time when binlog is written into Pump to the time when the binlog is obtained by Drainer |
 | Error By Type | Shows the number of errors encountered by Drainer, counted based on the type of error |
+| SQL Query Time | Records the time it takes Drainer to execute the SQL statement in the downstream |
 | Drainer Event | Shows the number of various types of events, including "ddl", "insert", "delete", "update", "flush", and "savepoint" |
-| Execute Time | Records the time it takes to execute the SQL statement in the downstream, or the time it takes to write data into downstream |
+| Execute Time | Records the time it takes to write binlog into the downstream syncing module |
 | 95% Binlog Size | Shows the size of the binlog data that Drainer obtains from each Pump node |
-| DDL Job Count | Records the number of DDL statements handled by Drainer|
+| DDL Job Count | Records the number of DDL statements handled by Drainer |
+| Queue Size | Records the work queue size in Drainer |
 
 ## Alert rules
 
