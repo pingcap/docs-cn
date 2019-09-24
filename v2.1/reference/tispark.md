@@ -270,4 +270,4 @@ TiSpark 可以使用 TiDB 的统计信息：
 
 - Q. TiSpark 任务是否默认读取 Hive 的元数据？
 
-    A. 现在设计行为是会先读取 hive-site 里的 meta 来找 hive 的库，如果找不到就去 tidb meta 找 tidb 库。如果不需要该行为，hive site 不要配置 hive 的 meta 即可。  
+    A. TiSpark 通过读取 hive-site 里的 meta 来搜寻 hive 的库。如果搜寻不到，就通过读取 tidb meta 搜寻 tidb 库。如果不需要该行为，可不在 hive site 中配置 hive 的 meta。  
