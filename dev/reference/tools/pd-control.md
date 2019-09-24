@@ -67,7 +67,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ### \-\-help,-h
 
 + 输出帮助信息
-+ 默认值: false
++ 默认值：false
 
 ### \-\-interact,-i
 
