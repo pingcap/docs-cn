@@ -150,7 +150,7 @@ Usage of dm-master:
   -log-file string
         日志文件的路径
   -master-addr string
-        master 的地址
+        DM-master 的地址
   -print-sample-config
         打印出 dm-master 的示例配置
 ```
