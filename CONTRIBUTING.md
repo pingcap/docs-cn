@@ -21,6 +21,12 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 
 我们为 docs-cn 仓库设置了检测 markdown 文件规范的 CI check，如果您提交的 PR 不符合规范，很可能**无法通过 markdownlint check**，最终导致无法合并 PR。
 
+您也可以在本地进行markdownlint check：
+
+``` bash
+./scripts/markdownlint [FILE...]
+```
+
 以下是我们为 TiDB 中文文档提前设置的 26 条 [markdownlint 规则](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md)：
 
 1. [MD001 - Heading levels should only increment by one level at a time](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md001---heading-levels-should-only-increment-by-one-level-at-a-time)
