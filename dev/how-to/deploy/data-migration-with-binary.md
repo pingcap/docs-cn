@@ -68,7 +68,7 @@ Usage of worker:
   -relay-dir string
         存储 relay log 的路径（默认值："./relay_log"）
   -worker-addr string
-        worker 的 地址
+        DM-worker 的 地址
 ```
 
 DM-worker 的配置文件：
