@@ -286,6 +286,10 @@ Go Version: go version go1.12 linux/amd64
             "result": true,
             "worker": "192.168.0.5:8262",
             "msg": ""
+        },{
+            "result": true,
+            "worker": "192.168.0.6:8262",
+            "msg": ""
         },
     ]
 }
