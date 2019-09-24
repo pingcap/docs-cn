@@ -24,7 +24,7 @@ category: how-to
 | DM-worker1 | 192.168.0.5 |
 | DM-worker2 | 192.168.0.6 |
 
-其中 DM-worker1 同步 MySQL1 的数据，DM-worker2 同步 MySQL2 的数据。下面以此为例，说明 DM 的部署。
+MySQL1 和 MySQL2 需要开启 binlog，DM-worker1 同步 MySQL1 的数据，DM-worker2 同步 MySQL2 的数据。下面以此为例，说明 DM 的部署。
 
 ### DM-worker 的部署
 
@@ -125,10 +125,10 @@ port = 3306
 #backoff-max = 5m
 ```
 
-推荐统一使用配置文件，把以上配置内容写入到 dm-worker1.toml 中，在终端中使用下面的命令运行 dm-worker：
+推荐统一使用配置文件，把以上配置内容写入到 conf/dm-worker1.toml 中，在终端中使用下面的命令运行 dm-worker：
 
 ```
-bin/dm-worker -config dm-worker1.toml
+bin/dm-worker -config conf/dm-worker1.toml
 ```
 
 对于 DM-worker2，修改配置文件中的 source-id 为 "mysql-replica-02"，并且修改 `from` 配置部分修改为 MySQL2 的地址即可。
@@ -185,10 +185,10 @@ source-id = "mysql-replica-02"
 dm-worker = "192.168.0.6:8262"
 ```
 
-推荐统一使用配置文件，把以上配置内容写入到 dm-master.toml 中，在终端中使用下面的命令运行 dm-master：
+推荐统一使用配置文件，把以上配置内容写入到 conf/dm-master.toml 中，在终端中使用下面的命令运行 dm-master：
 
 ```
-bin/dm-master -config dm-master.toml
+bin/dm-master -config conf/dm-master.toml
 ```
 
 这样 DM 集群就部署成功了，下面创建简单的数据同步任务来使用 DM 集群。
@@ -266,7 +266,7 @@ syncers:
 
 ```
 
-将以上配置内容写入到文件 task1.yaml 中，使用 dmctl 创建任务：
+将以上配置内容写入到文件 conf/task.yaml 中，使用 dmctl 创建任务：
 
 ```bash
 $ bin/dmctl -master-addr 192.168.0.4:8261
@@ -277,7 +277,7 @@ Git Branch: master
 UTC Build Time: 2019-04-29 09:36:42
 Go Version: go version go1.12 linux/amd64
 »
-» start-task task1.yaml
+» start-task conf/task.yaml
 {
     "result": true,
     "msg": "",
