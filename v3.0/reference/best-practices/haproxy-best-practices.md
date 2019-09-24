@@ -98,7 +98,7 @@ Usage : haproxy [-f <cfgfile|cfgdir>]* [ -vdVD ] [ -n <maxconn> ] [ -N <maxpconn
 |-C|changes to \<dir> before loading files.||
 |-W|master-worker mode.|主从模式|
 |-q|quiet mode: don't display messages|静默模式，不输出信息|
-|-c|check mode: only checks config files and exits|检查配置信息文件|
+|-c|check mode: only checks config files and exits|只检查配置文件并尝试绑定之前退出|
 |-n|sets the maximum total # of connections (2000)|设置最大总连接数为 2000 |
 |-m|limits the usable amount of memory (in MB)|限制最大可用内存（单位：MB）|
 |-N|sets the default, per-proxy maximum # of connections (2000)|设置单点最大连接数，默认为 2000 |
