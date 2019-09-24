@@ -211,15 +211,15 @@ MyBatis 的 Mapper 中支持 2 种 Parameters：
 
 ```
 <insert id="insertTestBatch" parameterType="java.util.List" fetchSize="1">
-	insert into test
-		(id, v1, v2)
-	values
-	<foreach item="item" index="index" collection="list" separator=",">
-		(
-		#{item.id}, #{item.v1}, #{item.v2}
-		)
-	</foreach>
-	on duplicate key update v2 = v1 + values(v1)
+  insert into test
+   (id, v1, v2)
+  values
+  <foreach item="item" index="index" collection="list" separator=",">
+  (
+   #{item.id}, #{item.v1}, #{item.v2}
+  )
+  </foreach>
+  on duplicate key update v2 = v1 + values(v1)
 </insert>
 ```
 
