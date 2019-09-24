@@ -83,7 +83,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 + 指定 PD 的地址
 + 默认地址: `http://127.0.0.1:2379`
-+ 环境变量: PD_ADDR
++ 环境变量：`PD_ADDR`
 
 ### --version,-V
 
