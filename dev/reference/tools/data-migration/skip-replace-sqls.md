@@ -16,11 +16,12 @@ category: reference
 如果提前预知将要同步 TiDB 不支持的 SQL 语句，也可以使用 dmctl 来手动预设跳过/替代执行操作。当 DM 尝试将该 SQL 语句对应的 binlog event 同步到下游时，该预设的操作将自动执行，从而避免同步过程被中断。
 
 <!-- markdownlint-disable MD001 -->
+
 #### 使用限制
 
 - 跳过/替代执行操作只适合用于一次性跳过/替代执行**下游 TiDB 不支持执行的 SQL 语句**，其它同步错误请不要使用此方式进行处理。
 
-    - 其它同步错误可尝试使用 [black & white table lists](/dev/reference/tools/data-migration/features/overview.md#black-white-table-lists) 或 [binlog event filter](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)。
+    - 其它同步错误可尝试使用 [black & white table lists](/dev/reference/tools/data-migration/features/overview.md#black--white-table-lists) 或 [binlog event filter](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)。
 
 - 如果业务不能接受下游 TiDB 跳过异常的 DDL 语句，也不接受使用其他 DDL 语句作为替代，则不适合使用此方式进行处理。
 
@@ -155,8 +156,13 @@ query-error [--worker=127.0.0.1:8262] [task-name]
 
 ##### 结果示例
 
+{{< copyable "" >}}
+
 ```bash
 » query-error test
+```
+
+```
 {
     "result": true,                              # query-error 操作本身是否成功
     "msg": "",                                   # query-error 操作失败的说明信息
@@ -220,7 +226,7 @@ sql-skip <--worker=127.0.0.1:8262> [--binlog-pos=mysql-bin|000001.000003:3270] [
     - `--sql-pattern` 与 `binlog-pos` 必须指定其中一个，且只能指定其中一个。
     - 在指定时表示操作将在 `sql-pattern` 与 binlog event 对应的（经过可选的 router-rule 转换后的）DDL 语句匹配时生效。格式为以 `~` 为前缀的正则表达式，如 ```~(?i)ALTER\s+TABLE\s+`db1`.`tbl1`\s+ADD\s+COLUMN\s+col1\s+INT```。
         - 暂时不支持正则表达式中包含原始空格，需要使用 `\s` 或 `\s+` 替代空格。
-        - 正则表达式必须以 `~` 为前缀，详见[正则表达式语法](https://golang.org/pkg/regexp/syntax/#hdr-Syntax)。
+        - 正则表达式必须以 `~` 为前缀，详见[正则表达式语法](https://golang.org/pkg/regexp/syntax/#hdr-syntax)。
         - 正则表达式中的库名和表名必须是经过可选的 router-rule 转换后的名字，即对应下游的目标库名和表名。如上游为 ``` `shard_db_1`.`shard_tbl_1` ```，下游为 ``` `shard_db`.`shard_tbl` ```，则应该尝试匹配 ``` `shard_db`.`shard_tbl` ```。
         - 正则表达式中的库名、表名及列名需要使用 ``` ` ``` 标记，如 ``` `db1`.`tbl1` ```。
 
@@ -272,8 +278,13 @@ sql-replace <--worker=127.0.0.1:8262> [--binlog-pos=mysql-bin|000001.000003:3270
 
 假设现在需要将上游的 `db1.tbl1` 表同步到下游 TiDB（非合库合表同步场景），初始时表结构为：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW CREATE TABLE db1.tbl1;
+SHOW CREATE TABLE db1.tbl1;
+```
+
+```
 +-------+--------------------------------------------------+
 | Table | Create Table                                     |
 +-------+--------------------------------------------------+
@@ -287,13 +298,15 @@ mysql> SHOW CREATE TABLE db1.tbl1;
 
 此时，上游执行以下 DDL 操作修改表结构（将列的 DECIMAL(11, 3) 修改为 DECIMAL(10, 3)）：
 
+{{< copyable "sql" >}}
+
 ```sql
 ALTER TABLE db1.tbl1 CHANGE c2 c2 DECIMAL (10, 3);
 ```
 
 则会由于 TiDB 不支持该 DDL 语句而导致 DM 同步任务中断且报如下错误：
 
-```bash
+```
 exec sqls[[USE `db1`; ALTER TABLE `db1`.`tbl1` CHANGE COLUMN `c2` `c2` decimal(10,3);]] failed,
 err:Error 1105: unsupported modify column length 10 is less than origin 11
 ```
@@ -312,8 +325,13 @@ err:Error 1105: unsupported modify column length 10 is less than origin 11
 
 2. 使用 `sql-skip` 预设一个 binlog event 跳过操作，该操作将在使用 `resume-task` 后同步该 binlog event 到下游时生效。
 
+    {{< copyable "" >}}
+
     ```bash
     » sql-skip --worker=127.0.0.1:8262 --binlog-pos=mysql-bin|000001.000003:34642 test
+    ```
+
+    ```
     {
         "result": true,
         "msg": "",
@@ -329,7 +347,7 @@ err:Error 1105: unsupported modify column length 10 is less than origin 11
 
     对应 DM-worker 节点中也可以看到类似如下日志：
 
-    ```bash
+    ```
     2018/12/28 11:17:51 operator.go:121: [info] [sql-operator] set a new operator
     uuid: 6bfcf30f-2841-4d70-9a34-28d7082bdbd7, pos: (mysql-bin|000001.000003, 34642), op: SKIP, args:
     on replication unit
@@ -337,8 +355,13 @@ err:Error 1105: unsupported modify column length 10 is less than origin 11
 
 3. 使用 `resume-task` 恢复之前出错中断的同步任务。
 
+    {{< copyable "" >}}
+
     ```bash
     » resume-task --worker=127.0.0.1:8262 test
+    ```
+
+    ```
     {
         "op": "Resume",
         "result": true,
@@ -356,7 +379,7 @@ err:Error 1105: unsupported modify column length 10 is less than origin 11
 
     对应 DM-worker 节点中也可以看到类似如下日志：
 
-    ```bash
+    ```
     2018/12/28 11:27:46 operator.go:158: [info] [sql-operator] binlog-pos (mysql-bin|000001.000003, 34642) matched,
     applying operator uuid: 6bfcf30f-2841-4d70-9a34-28d7082bdbd7, pos: (mysql-bin|000001.000003, 34642), op: SKIP, args:
     ```
@@ -371,8 +394,13 @@ err:Error 1105: unsupported modify column length 10 is less than origin 11
 
 假设现在需要将上游的 `db2.tbl2` 表同步到下游 TiDB（非合库合表同步场景），初始时表结构为：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW CREATE TABLE db2.tbl2;
+SHOW CREATE TABLE db2.tbl2;
+```
+
+```
 +-------+--------------------------------------------------+
 | Table | Create Table                                     |
 +-------+--------------------------------------------------+
@@ -387,13 +415,15 @@ mysql> SHOW CREATE TABLE db2.tbl2;
 
 此时，上游执行以下 DDL 操作修改表结构（即 DROP 列 c2）：
 
+{{< copyable "sql" >}}
+
 ```sql
 ALTER TABLE db2.tbl2 DROP COLUMN c2;
 ```
 
 当同步该 DDL 语句对应的 binlog event 到下游时，会由于 TiDB 不支持该 DDL 语句而导致 DM 同步任务中断且报如下错误：
 
-```bash
+```
 exec sqls[[USE `db2`; ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2`;]] failed,
 err:Error 1105: can't drop column c2 with index covered now
 ```
@@ -408,20 +438,27 @@ err:Error 1105: can't drop column c2 with index covered now
     - 上游将执行的 DDL 语句为 `ALTER TABLE db2.tbl2 DROP COLUMN c2;`。
     - 由于该 DDL 语句不存在 router-rule 转换，可设计如下正则表达式：
 
-        ```sql
+        ```
         ~(?i)ALTER\s+TABLE\s+`db2`.`tbl2`\s+DROP\s+COLUMN\s+`c2`
         ```
 
 2. 为该 DDL 语句设计将用于替代执行的新的 DDL 语句：
 
+    {{< copyable "sql" >}}
+
     ```sql
-    ALTER TABLE `db2`.`tbl2` DROP INDEX idx_c2;ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2`
+    ALTER TABLE `db2`.`tbl2` DROP INDEX idx_c2;ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2`;
     ```
 
 3. 使用 `sql-replace` 预设一个 binlog event 替代执行操作，该操作将在同步该 binlog event 到下游时生效。
 
+    {{< copyable "" >}}
+
     ```bash
     » sql-replace --worker=127.0.0.1:8262 --sql-pattern=~(?i)ALTER\s+TABLE\s+`db2`.`tbl2`\s+DROP\s+COLUMN\s+`c2` test ALTER TABLE `db2`.`tbl2` DROP INDEX idx_c2;ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2`
+    ```
+
+    ```
     {
         "result": true,
         "msg": "",
@@ -437,7 +474,7 @@ err:Error 1105: can't drop column c2 with index covered now
 
     对应 DM-worker 节点中也可以看到类似如下日志：
 
-    ```bash
+    ```
     2018/12/28 15:33:13 operator.go:121: [info] [sql-operator] set a new operator
     uuid: c699a18a-8e75-47eb-8e7e-0e5abde2053c, pattern: ~(?i)ALTER\s+TABLE\s+`db2`.`tbl2`\s+DROP\s+COLUMN\s+`c2`,
     op: REPLACE, args: ALTER TABLE `db2`.`tbl2` DROP INDEX idx_c2; ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2`
@@ -448,7 +485,7 @@ err:Error 1105: can't drop column c2 with index covered now
 
 5. 观察下游表结构是否变更成功，对应 DM-worker 节点中也可以看到类似如下日志：
 
-    ```bash
+    ```
     2018/12/28 15:33:45 operator.go:158: [info] [sql-operator]
     sql-pattern ~(?i)ALTER\s+TABLE\s+`db2`.`tbl2`\s+DROP\s+COLUMN\s+`c2` matched SQL
     USE `db2`; ALTER TABLE `db2`.`tbl2` DROP COLUMN `c2`;,
@@ -490,8 +527,13 @@ DM-master 通过 DDL lock 协调 DDL 同步、并请求 DDL lock owner 向下游
 
 初始时表结构为：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW CREATE TABLE shard_db_1.shard_table_1;
+SHOW CREATE TABLE shard_db_1.shard_table_1;
+```
+
+```
 +---------------+------------------------------------------+
 | Table         | Create Table                             |
 +---------------+------------------------------------------+
@@ -506,13 +548,15 @@ mysql> SHOW CREATE TABLE shard_db_1.shard_table_1;
 
 此时，在上游所有分表上都执行以下 DDL 操作修改表结构（即 DROP 列 c2）：
 
+{{< copyable "sql" >}}
+
 ```sql
 ALTER TABLE shard_db_*.shard_table_* DROP COLUMN c2;
 ```
 
 则当 DM 通过 sharding DDL lock 协调两个 DM-worker 同步该 DDL 语句、并请求 DDL lock owner 向下游执行该 DDL 语句时，会由于 TiDB 不支持该 DDL 语句而导致同步任务中断且报如下错误：
 
-```bash
+```
 exec sqls[[USE `shard_db`; ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`;]] failed,
 err:Error 1105: can't drop column c2 with index covered now
 ```
@@ -527,22 +571,29 @@ err:Error 1105: can't drop column c2 with index covered now
     - 上游将执行的 DDL 语句为 `ALTER TABLE shard_db_*.shard_table_* DROP COLUMN c2`。
     - 由于存在 router-rule 会将表名转换为 ``` `shard_db`.`shard_table` ```，可设计如下正则表达式：
 
-        ```sql
+        ```
         ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2`
         ```
 
 2. 为该 DDL 语句设计将用于替代执行的新的 DDL 语句：
 
+    {{< copyable "sql" >}}
+
     ```sql
-    ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2;ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`
+    ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2;ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`;
     ```
 
 3. 由于这是合库合表场景，因此使用 `--sharding` 参数来由 DM 自动确定替代执行操作只发生在 DDL lock owner 上。
 
 4. 使用 `sql-replace` 预设一个 binlog event 替代执行操作，该操作将在同步该 binlog event 到下游时生效。
 
+    {{< copyable "" >}}
+
     ```bash
     » sql-replace --sharding --sql-pattern=~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2` test ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2;ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`
+    ```
+
+    ```
      {
          "result": true,
          "msg": "request with --sharding saved and will be sent to DDL lock's owner when resolving DDL lock",
@@ -553,7 +604,7 @@ err:Error 1105: can't drop column c2 with index covered now
 
     **DM-master** 节点中也可以看到类似如下日志：
 
-    ```bash
+    ```
     2018/12/28 16:53:33 operator.go:105: [info] [sql-operator] set a new operator
     uuid: eba35acd-6c5e-4bc3-b0b0-ae8bd1232351, request: name:"test"
     op:REPLACE args:"ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2;"
@@ -566,7 +617,7 @@ err:Error 1105: can't drop column c2 with index covered now
 
 6. 观察下游表结构是否变更成功，对应的 DDL lock **owner** 节点中也可以看到类似如下日志：
 
-    ```bash
+    ```
     2018/12/28 16:54:35 operator.go:121: [info] [sql-operator] set a new operator
     uuid: c959f2fb-f1c2-40c7-a1fa-e73cd51736dd,
     pattern: ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2`,
@@ -574,7 +625,7 @@ err:Error 1105: can't drop column c2 with index covered now
     on replication unit
     ```
 
-    ```bash
+    ```
     2018/12/28 16:54:35 operator.go:158: [info] [sql-operator]
     sql-pattern ~(?i)ALTER\s+TABLE\s+`shard_db`.`shard_table`\s+DROP\s+COLUMN\s+`c2` matched SQL
     USE `shard_db`; ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`;,
@@ -585,7 +636,7 @@ err:Error 1105: can't drop column c2 with index covered now
 
     另外，**DM-master** 节点中也可以看到类似如下日志：
 
-    ```bash
+    ```
     2018/12/28 16:54:35 operator.go:122: [info] [sql-operator] get an operator
     uuid: eba35acd-6c5e-4bc3-b0b0-ae8bd1232351, request: name:"test" op:REPLACE
     args:"ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2;"
@@ -596,7 +647,7 @@ err:Error 1105: can't drop column c2 with index covered now
     USE `shard_db`; ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`;
     ```
 
-    ```bash
+    ```
     2018/12/28 16:54:36 operator.go:145: [info] [sql-operator] remove an operator
     uuid: eba35acd-6c5e-4bc3-b0b0-ae8bd1232351, request: name:"test" op:REPLACE
     args:"ALTER TABLE `shard_db`.`shard_table` DROP INDEX idx_c2;"

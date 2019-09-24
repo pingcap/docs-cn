@@ -15,11 +15,13 @@ aliases: ['/docs-cn/tools/lightning/deployment/']
 - TiDB Lightning 运行后，TiDB 集群将无法正常对外提供服务。
 - 若 `tidb-lightning` 崩溃，集群会留在“导入模式”。若忘记转回“普通模式”，集群会产生大量未压缩的文件，继而消耗 CPU 并导致迟延 (stall)。此时，需要使用 `tidb-lightning-ctl` 手动将集群转回“普通模式”：
 
+    {{< copyable "shell-regular" >}}
+
     ```sh
     bin/tidb-lightning-ctl -switch-mode=normal
     ```
 
-- TiDB Lightning 需要下游 TiDB 的权限：
+- TiDB Lightning 需要下游 TiDB 有如下权限：
 
     | 权限 | 作用域 |
     |----:|:------|
@@ -63,11 +65,13 @@ aliases: ['/docs-cn/tools/lightning/deployment/']
 >
 > - `tikv-importer` 将中间数据存储缓存到内存上以加速导入过程。占用内存大小可以通过 **(`max-open-engines` × `write-buffer-size` × 2) + (`num-import-jobs` × `region-split-size` × 2)** 计算得来。如果磁盘写入速度慢，缓存可能会带来更大的内存占用。
 
-此外，目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](/v3.0/how-to/deploy/hardware-recommendations.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 × [副本数量](/v3.0/faq/tidb.md#3-2-6-每个-region-的-replica-数量可配置吗-调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。
+此外，目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](/v3.0/how-to/deploy/hardware-recommendations.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 × [副本数量](/v3.0/faq/tidb.md#326-每个-region-的-replica-数量可配置吗调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。
 
 ## 导出数据
 
 我们使用 [`mydumper`](/v3.0/reference/tools/mydumper.md) 从 MySQL 导出数据，如下：
+
+{{< copyable "shell-regular" >}}
 
 ```sh
 ./bin/mydumper -h 127.0.0.1 -P 3306 -u root -t 16 -F 256 -B test -T t1,t2 --skip-tz-utc -o /data/my_database/
@@ -141,8 +145,10 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/v3.0/how-to/deploy/
 
 3. 开始部署。
 
+    {{< copyable "shell-regular" >}}
+
     ```sh
-    ansible-playbook bootstrap.yml
+    ansible-playbook bootstrap.yml &&
     ansible-playbook deploy.yml
     ```
 
@@ -150,11 +156,15 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/v3.0/how-to/deploy/
 
 5. 登录 `tikv-importer` 的服务器，并执行以下命令来启动 Importer。
 
+    {{< copyable "shell-regular" >}}
+
     ```sh
     scripts/start_importer.sh
     ```
 
 6. 登录 `tidb-lightning` 的服务器，并执行以下命令来启动 Lightning，开始导入过程。
+
+    {{< copyable "shell-regular" >}}
 
     ```sh
     scripts/start_lightning.sh
@@ -247,6 +257,8 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/v3.0/how-to/deploy/
     ```
 
 3. 运行 `tikv-importer`。
+
+    {{< copyable "shell-regular" >}}
 
     ```sh
     nohup ./tikv-importer -C tikv-importer.toml > nohup.out &
@@ -424,10 +436,11 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/v3.0/how-to/deploy/
     # 表库过滤设置。详情见《TiDB Lightning 表库过滤》。
     #[black-white-list]
     # ...
-
     ```
 
 4. 运行 `tidb-lightning`。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
+
+    {{< copyable "shell-regular" >}}
 
     ```sh
     #!/bin/bash

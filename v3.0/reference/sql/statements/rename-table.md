@@ -20,22 +20,48 @@ category: reference
 
 ## 示例
 
-```sql
-mysql> CREATE TABLE t1 (a int);
-Query OK, 0 rows affected (0.12 sec)
+{{< copyable "sql" >}}
 
-mysql> SHOW TABLES;
+```sql
+CREATE TABLE t1 (a int);
+```
+
+```
+Query OK, 0 rows affected (0.12 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW TABLES;
+```
+
+```
 +----------------+
 | Tables_in_test |
 +----------------+
 | t1             |
 +----------------+
 1 row in set (0.00 sec)
+```
 
-mysql> RENAME TABLE t1 TO t2;
+{{< copyable "sql" >}}
+
+```sql
+RENAME TABLE t1 TO t2;
+```
+
+```
 Query OK, 0 rows affected (0.08 sec)
+```
 
-mysql> SHOW TABLES;
+{{< copyable "sql" >}}
+
+```sql
+SHOW TABLES;
+```
+
+```
 +----------------+
 | Tables_in_test |
 +----------------+
