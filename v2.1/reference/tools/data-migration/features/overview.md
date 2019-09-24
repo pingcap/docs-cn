@@ -117,10 +117,10 @@ black-white-list:
 
 ### 参数解释
 
-- `do-dbs` 要同步的库的白名单，类似 MySQL 中的 [`replicate-do-db`](https://dev.mysql.com/doc/refman/5.7/en/replication-options-slave.html#option_mysqld_replicate-do-db)
-- `ignore-dbs` 要同步的库的黑名单，类似 MySQL 中的 [`replicate-ignore-db`](https://dev.mysql.com/doc/refman/5.7/en/replication-options-slave.html#option_mysqld_replicate-ignore-db)
-- `do-tables` 要同步的表的白名单，类似 MySQL 中的 [`replicate-do-table`](https://dev.mysql.com/doc/refman/5.7/en/replication-options-slave.html#option_mysqld_replicate-do-table)
-- `ignore-tables` 要同步的表的黑名单，类似 MySQL 中的 [`replicate-ignore-table`](https://dev.mysql.com/doc/refman/5.7/en/replication-options-slave.html#option_mysqld_replicate-ignore-table)
+- `do-dbs` 要同步的库的白名单，类似于 MySQL 中的 [`replicate-do-db`](https://dev.mysql.com/doc/refman/5.7/en/replication-options-slave.html#option_mysqld_replicate-do-db)
+- `ignore-dbs` 要同步的库的黑名单，类似于 MySQL 中的 [`replicate-ignore-db`](https://dev.mysql.com/doc/refman/5.7/en/replication-options-slave.html#option_mysqld_replicate-ignore-db)
+- `do-tables` 要同步的表的白名单，类似于 MySQL 中的 [`replicate-do-table`](https://dev.mysql.com/doc/refman/5.7/en/replication-options-slave.html#option_mysqld_replicate-do-table)
+- `ignore-tables` 要同步的表的黑名单，类似于 MySQL 中的 [`replicate-ignore-table`](https://dev.mysql.com/doc/refman/5.7/en/replication-options-slave.html#option_mysqld_replicate-ignore-table)
 - 上面黑白名单中 以 `~` 字符开头名称为[正则表达式](https://golang.org/pkg/regexp/syntax/#hdr-syntax)。
 
 ### 过滤规则
