@@ -56,7 +56,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 ### --cert
 
-- 指定 PEM 格式的 SSL 证书文件路径
+- 指定 PEM 格式的 SSL 证书的文件路径
 - 默认值：""
 
 ### \-\-detach,-d
