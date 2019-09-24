@@ -5,11 +5,7 @@ category: reference
 
 # Data Migration 错误说明和诊断
 
-本文介绍了：
-
-+ Data Migration (DM) 输出错误信息的详细含义。
-+ 根据错误信息进行诊断的具体方法。
-+ 常见错误的运维方法。
+本文介绍了 Data Migration (DM) 输出错误信息的详细含义、根据错误信息进行诊断的具体方法、常见错误的运维方法。
 
 ## DM 错误系统
 
@@ -59,9 +55,9 @@ DM 中的错误信息均按以下固定格式输出：
 
     用于标记出现错误的系统子模块。
 
-    下表展示所有的错误分类名、出现错误的系统子模块、错误样例：
+    下表展示所有的错误类别、错误对应的系统子模块、错误样例：
 
-    | `class` 名字     | 出现错误的系统子模块             | 错误样例                                                     |
+    |  错误类别    | 错误对应的系统子模块             | 错误样例                                                     |
     | :-------------- | :------------------------------ | :------------------------------------------------------------ |
     | `database`       | 执行数据库操作出现错误         | `[code=10003:class=database:scope=downstream:level=medium] database driver: invalid connection` |
     | `functional`     | 系统底层的基础函数错误           | `[code=11005:class=functional:scope=internal:level=high] not allowed operation: alter multiple tables in one statement` |
@@ -82,11 +78,11 @@ DM 中的错误信息均按以下固定格式输出：
 
     用于标识错误发生时 DM 作用对象的范围和来源，包括未设置 (not-set)、上游数据库 (upstream)、下游数据库 (downstream)、内部 (internal) 四种类型。
 
-    如果出错的逻辑直接涉及到上下游数据库请求，会设置 upstream 或 downstream，其他出错场景目前设置的作用域都为 internal。
+    如果错误发生的逻辑直接涉及到上下游数据库请求，作用域会设置为 upstream 或 downstream，其他出错场景目前都设置为 internal。
 
 - `level`：错误级别。
 
-    错误的严重级别，包括 低级别 (low)、中级别 (medium)、高级别 (high)。
+    错误的严重级别，包括低级别 (low)、中级别 (medium)、高级别 (high) 三种。
 
     低级别通常是用户操作、输入错误，不影响正常同步任务；中级别通常是用户配置等错误，会影响部分新启动服务，不影响已有系统同步状态；高级别通常是用户需要关注的一些错误，可能存在同步任务中断等风险，需要用户进行处理。
 
@@ -104,17 +100,15 @@ DM 中的错误信息均按以下固定格式输出：
 以上述样例错误的 message 为例：
 
 - wrap 最外层 message，`grpc request error` 是 DM 对该错误的描述。
-- wrap 最内层 message，`connection error: desc = "transport: Error while dialing dial tcp 172.17.0.2:8262: connect: connection refused"`， 是 gRPC 底层建立连接失败时返回的错误。
+- wrap 最内层 message，`connection error: desc = "transport: Error while dialing dial tcp 172.17.0.2:8262: connect: connection refused"`，是 gRPC 底层建立连接失败时返回的错误。
 
-通过对基本错误信息和错误 message 进行分析，用户可以诊断出错误是在 DM-master 向 DM-worker 发送 gRPC 请求建立连接失败时出现的。未正常运行常常导致该错误出现。
+通过对基本错误信息和错误 message 进行分析，可以诊断出错误是在 DM-master 向 DM-worker 发送 gRPC 请求建立连接失败时出现的。该错误通常是由 DM-worker 未正常运行引起。
 
 ### 错误堆栈信息
 
-DM 根据错误的严重程度和必要性来选择是否输出错误堆栈。错误堆栈记录了错误发生时完整的堆栈调用信息。
+DM 根据错误的严重程度和必要性来选择是否输出错误堆栈。错误堆栈记录了错误发生时完整的堆栈调用信息。如果用户通过错误基本信息和错误 message 描述不能完全诊断出错误发生的原因，可以通过错误堆栈进一步跟进出错时代码的运行路径。
 
-如果用户通过错误基本信息和错误 message 描述不能完全诊断出错误发生的原因，可以通过错误堆栈进一步跟进出错时代码的运行路径。
-
-## 错误码列表
+## 常见错误码描述及处理
 
 可在 DM 代码仓库[已发布的错误码](https://github.com/pingcap/dm/blob/master/_utils/terror_gen/errors_release.txt) 中查询完整的错误码列表。
 
