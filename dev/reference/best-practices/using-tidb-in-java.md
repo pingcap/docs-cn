@@ -32,13 +32,13 @@ Java 应用尽管可能在选择多样的框架封装，但多数情况在最底
 
 另外需要注意 MySQL Connector/J 实现中默认只会做 client prepare， 会将 `?` 在客户端替换后用文本发送到客户端，所以除了使用 Prepare API 后还需要注意需要在 JDBC 连接参数中配置 `useServerPrepStmts = true` 才能让 prepare 在 TiDB 服务器端进行(下面参数配置章节有详细介绍)。
 
- #### 批量插入更新推荐使用 Batch
- 
- 对于批量插入和更新如果插入批次较大可以选择使用 [addBatch/executeBatch API](https://www.tutorialspoint.com/jdbc/jdbc-batch-processing), 通过 addBatch 的方式让 SQL 在客户端将多条插入更新记录在客户端先缓存， 然后在 executeBatch 时一起发送到数据库服务器。
- 
- 同样需要注意对于 MySQL Connector/J 实现默认 Batch 只是将多次 addBatch 的 SQL 发送时机延迟到调用 executeBatch 的时候， 但实际网络发送还是会一条条的发送, 通常不会降低和 Server 的网络交互次数，如果希望 Batch 网络发送需要在 JDBC 连接参数中配置 `rewriteBatchedStatements=true` (下面参数配置章节有更详细介绍)。 
- 
- #### 超大结果集流式获取
+#### 批量插入更新推荐使用 Batch
+
+对于批量插入和更新如果插入批次较大可以选择使用 [addBatch/executeBatch API](https://www.tutorialspoint.com/jdbc/jdbc-batch-processing), 通过 addBatch 的方式让 SQL 在客户端将多条插入更新记录在客户端先缓存， 然后在 executeBatch 时一起发送到数据库服务器。
+
+同样需要注意对于 MySQL Connector/J 实现默认 Batch 只是将多次 addBatch 的 SQL 发送时机延迟到调用 executeBatch 的时候， 但实际网络发送还是会一条条的发送, 通常不会降低和 Server 的网络交互次数，如果希望 Batch 网络发送需要在 JDBC 连接参数中配置 `rewriteBatchedStatements=true` (下面参数配置章节有更详细介绍)。
+
+#### 超大结果集流式获取
 
 默认 JDBC 会提前将查询结果获取并保存在客户端内存中，多数场景下这样能提升执行效率，但在查询返回超大结果集的场景，client 会希望 server 减少向客户端一次返回的记录数，等客户端在有限内存处理完一部分后再去向 server 要下一批。
 
@@ -54,7 +54,7 @@ TiDB 中同时支持两种方式，但更推荐使用第一种设置 FetchSize �
 向包含自增列的表中批量插入数据后，再通过 `Statement.getGeneratedKeys()` 可以返回插入的自增列的值, 例如表 t 中 id 是自增列：
 
 ```
-pstmt = connection.prepareStatement(“insert into t (a) values(?)”, Statement.RETURN_GENERATED_KEYS);	
+pstmt = connection.prepareStatement(“insert into t (a) values(?)”, Statement.RETURN_GENERATED_KEYS);
 pstmt.setInt(1, 10);
 pstmt.addBatch();
 pstmt.setInt(1, 11);
@@ -73,7 +73,7 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
 #### Prepare 相关参数
 
-##### 1. useServerPrepStmts 
+##### 1. useServerPrepStmts
 
 默认 `useServerPrepStmts` 为 `false`, 默认情况即使使用了 prepare api， 只会在客户端做 “prepare”， 所以为了避免 server 重复 parse 的开销， 建议只要 SQL 能被多运行都建议使用 Prepare API 则建议设置该选项为 true。
 
@@ -87,18 +87,18 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
 另外， 通过 `useConfigs=maxPerformance` 配置会同时配置多个参数，其中也包括 `cachePrepStmts=true`。
 
-##### 3. prepStmtCacheSqlLimit 
+##### 3. prepStmtCacheSqlLimit
 
 在配置后 `cachePrepStmts` 后还需要注意 `prepStmtCacheSqlLimit` 配置(默认 256), 该配置控制能被客户端 Prepare 缓存的最大语句长度。
 
-在一些场景可能会运行 SQL 的长度会超过该配置， 导致 prepared stmt 不能复用，建议根据应用 SQL 长度情况决定是否需要调大该值。 
+在一些场景可能会运行 SQL 的长度会超过该配置， 导致 prepared stmt 不能复用，建议根据应用 SQL 长度情况决定是否需要调大该值。
 
 在 TiDB 监控中看到 “Query Summary” - “QPS by Instance” 查看请求命令类型， 如果已经配置了 `cachePrepStmts=true` 但 `COM_STMT_PREPARE` 还是和 `COM_STMT_EXECUTE` 基本相等且有 `COM_STMT_CLOSE` 可以检查下这个配置配置是否过小。
 
 ##### 4. prepStmtCacheSize
-      
+
 `prepStmtCacheSize` 控制缓存的 Prepare 语句数目(默认 25)， 如果应用需要 prepare 的 SQL 种类很多且希望复用 Prepare 可以调大该值。
-      
+
 和上一条类似目的是在监控中通过 “Query Summary” - “QPS by Instance” 查看请求中 `COM_STMT_EXECUTE` 数目远远多于 `COM_STMT_PREPARE` 来确认是否正常。
 
 #### Batch 相关参数
@@ -135,7 +135,7 @@ insert into t(a) values(10),(11),(12);
 update t set a = 10 where id = 1; update t set a = 11 where id = 2; update t set a = 12 where id = 3;
 ```
 
-另外因为一个[客户端 bug](https://bugs.mysql.com/bug.php?id=96623) 如果批量 update 希望同时 `rewriteBatchedStatements=true` 和 `useServerPrepStmts=true` 推荐同时配置 `allowMultiQueries=true` 参数来避免 
+另外因为一个[客户端 bug](https://bugs.mysql.com/bug.php?id=96623) 如果批量 update 希望同时 `rewriteBatchedStatements=true` 和 `useServerPrepStmts=true` 推荐同时配置 `allowMultiQueries=true` 参数来避免。
 
 #### 执行前检查参数
 
@@ -192,10 +192,9 @@ The last packet sent successfully to the server was 3600000 milliseconds ago. Th
 
 ### MyBatis
 
-http://www.mybatis.org/mybatis-3/
+[http://www.mybatis.org/mybatis-3/](http://www.mybatis.org/mybatis-3/)
 
 MyBatis 是目前比较流行的 Java 数据访问框架, 主要用于管理 SQL 并完成结果集和 Java 对象的来回映射工作和 TiDB 兼容性很好从历史 issue 看很少有 mybatis 问题, 不过有几个配置可能需要关注：
-
 
 #### Parameters
 
@@ -206,7 +205,7 @@ MyBatis 的 Mapper 中支持 2 种 Parameters：
 
 #### Dynamic SQL Batch
 
-http://www.mybatis.org/mybatis-3/dynamic-sql.html#foreach
+[http://www.mybatis.org/mybatis-3/dynamic-sql.html#foreach](http://www.mybatis.org/mybatis-3/dynamic-sql.html#foreach)
 
 除了前面 JDBC 配置 `rewriteBatchedStatements=true` 后支持自动将一个个执行的 insert 重写为 `insert values` 后跟很多 value 的外，mybatis 也可以使用 mybatis 的 dynamic 来半自动生成 batch insert 比如下面的 mapper:
 
@@ -258,7 +257,7 @@ http://www.mybatis.org/mybatis-3/dynamic-sql.html#foreach
 
 #### jstack
 
-https://docs.oracle.com/javase/7/docs/technotes/tools/share/jstack.html
+[https://docs.oracle.com/javase/7/docs/technotes/tools/share/jstack.html](https://docs.oracle.com/javase/7/docs/technotes/tools/share/jstack.html)
 
 对应于 Go 中的 pprof/goroutine, 可以比较方便的解决卡死问题
 
@@ -270,8 +269,8 @@ https://docs.oracle.com/javase/7/docs/technotes/tools/share/jstack.html
 
 #### jmap & mat
 
-https://docs.oracle.com/javase/7/docs/technotes/tools/share/jmap.html
-https://www.eclipse.org/mat/
+[https://docs.oracle.com/javase/7/docs/technotes/tools/share/jmap.html](https://docs.oracle.com/javase/7/docs/technotes/tools/share/jmap.html)
+[https://www.eclipse.org/mat/](https://www.eclipse.org/mat/)
 
 和 Go 中的 pprof/heap 不同 jmap 会将整个进程的内存快照 dump 下来(go 是分配器的采样), 然后可以通过另一个工具 mat 做分析。
 
@@ -279,7 +278,7 @@ https://www.eclipse.org/mat/
 
 #### trace
 
-最后在无法修改在线代码的情况下希望在 java 中做动态插桩定位问题通常会推荐使用 btrace 或 arthas trace, 可以在不重启进程的情况下动态插入 trace 代码。 
+最后在无法修改在线代码的情况下希望在 java 中做动态插桩定位问题通常会推荐使用 btrace 或 arthas trace, 可以在不重启进程的情况下动态插入 trace 代码。
 
 #### flamegraph
 
