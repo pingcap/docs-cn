@@ -17,7 +17,6 @@ category: reference
 
 ```bash
 ./dmctl --help
-./dmctl --help
 ```
 
 ```

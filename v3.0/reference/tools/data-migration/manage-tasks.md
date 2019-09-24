@@ -18,7 +18,6 @@ aliases: ['/docs-cn/tools/dm/manage-task/']
 
 ```bash
 ./dmctl --help
-./dmctl --help
 ```
 
 ```
