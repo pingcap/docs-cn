@@ -9,7 +9,7 @@ category: reference
 
 ## HAProxy 简介
 
-[HAProxy](https://github.com/haproxy/haproxy) 是由 C 语言编写的自由开放源码的软件。为基于 TCP 和 HTTP 协议的应用程序提供高可用性、负载均衡和代理服务。它在对 CPU 和内存的快速及高效使用方面的特点，获得诸如：GitHub、Bitbucket、Stack Overflow、Reddit、Tumblr、Twitter 和 Tuenti 在内的知名网站，及亚马逊网络服务系统的广泛使用。
+[HAProxy](https://github.com/haproxy/haproxy) 是由 C 语言编写的自由开放源码的软件，为基于 TCP 和 HTTP 协议的应用程序提供高可用性、负载均衡和代理服务。因为 HAProxy 能够快速、高效使用 CPU 和内存，所以目前使用非常广泛，许多知名网站诸如 GitHub、Bitbucket、Stack Overflow、Reddit、Tumblr、Twitter 和 Tuenti 以及亚马逊网络服务系统都在使用 HAProxy。
 
 HAProxy 是由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，他现在仍然负责该项目的维护，并在开源社区免费提供版本迭代。最新的稳定版本 2.0.0 于 2019 年 8 月 16 日发布，带来更多[优秀的特性](https://www.haproxy.com/blog/haproxy-2-0-and-beyond/)。
 
@@ -41,7 +41,7 @@ HAProxy 是由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写�
 
 根据官方文档，对操作系统和依赖包有以下建议，如果通过 yum 源部署安装 HAProxy 软件，依赖包无需单独安装。
 
-### 操作系统
+#### 操作系统
 
 - Linux 2.4 on x86, x86_64, Alpha, Sparc, MIPS, PARISC
 - Linux 2.6 / 3.x on x86, x86_64, ARM, Sparc, PPC64
@@ -51,7 +51,7 @@ HAProxy 是由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写�
 - OpenBSD 3.1 to -current on i386, amd64, macppc, alpha, sparc64 and VAX (check the ports)
 - AIX 5.1 - 5.3 on Power™ architecture
 
-### 依赖包
+#### 依赖包
 
 - epel-release
 - gcc
@@ -99,16 +99,16 @@ Usage : haproxy [-f <cfgfile|cfgdir>]* [ -vdVD ] [ -n <maxconn> ] [ -N <maxpconn
 |-W|master-worker mode.|主从模式|
 |-q|quiet mode: don't display messages|静默模式，不输出信息|
 |-c|check mode: only checks config files and exits|检查配置信息文件|
-|-n|sets the maximum total # of connections (2000)|最大总连接数|
-|-m|limits the usable amount of memory (in MB)|最大使用内存|
-|-N|sets the default, per-proxy maximum # of connections (2000)|单点最大连接数|
+|-n|sets the maximum total # of connections (2000)|设置最大总连接数为 2000 |
+|-m|limits the usable amount of memory (in MB)|限制最大可用内存（单位：MB）|
+|-N|sets the default, per-proxy maximum # of connections (2000)|设置单点最大连接数，默认为 2000 |
 |-L|sets local peer name (default to hostname)|本地实例对等名称|
-|-p|writes pids of all children to this file|HAProxy 进程 pid 信息写入 file |
+|-p|writes pids of all children to this file|将 HAProxy 所有子进程的 PID 信息写入该文件 |
 |-de|disables epoll() usage even when available|禁止使用 speculative epoll，epoll 仅在 Linux 2.6 和某些定制的 Linux 2.4 系统上可用。|
-|-dp|disables poll() usage even when available|禁止使用 epoll, epoll 仅在 Linux 2.6 和某些定制的 Linux 2.4 系统上可用。|
+|-dp|disables poll() usage even when available|禁止使用 epoll，epoll 仅在 Linux 2.6 和某些定制的 Linux 2.4 系统上可用。|
 |-dS|disables splice usage (broken on old kernels)|禁止使用 speculative epoll，epoll 仅在 Linux 2.6 和某些定制的 Linux 2.4 系统上可用。|
 |-dR|disables SO_REUSEPORT usage|禁止使用 SO_REUSEPORT|
-|-dr|ignores server address resolution failures|忽略失败的 server|
+|-dr|ignores server address resolution failures|忽略服务器地址解析失败|
 |-dV|disables SSL verify on servers side|禁止在 servers 端使用 SSL|
 |-sf/-st|\<unix_socket> get listening sockets from a Unix socket|在启动后，在 pidlist 中发送 FINISH 信号给 pid 。收到此信号的进程将等待所有会话在退出之前完成，即优雅停止服务。此选项必须最后指定，后跟任意数量的 pid，SIGTTOU 和 SIGUSR1 都被发送。|
 |-x|\<unix_socket>[,<bind options>...] new stats socket for the master|获取 socket 信息|
