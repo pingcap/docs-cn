@@ -332,9 +332,9 @@ Pump 以 paused 状态退出进程时，不保证所有 binlog 数据被下游 D
 
 ### 同步时出现上游数据库支持但是下游数据库执行会出错的 DDL，应该怎么办？
 
-1. 查看 drainer.log 日志，查找 `exec failed` 找到 drainer 退出前最后一条执行失败的 DDL。
+1. 查看 drainer.log 日志，查找 `exec failed` 找到 Drainer 退出前最后一条执行失败的 DDL。
 2. 将 DDL 改为下游兼容支持的版本，在下游数据库中手动执行。
 3. 查看 drainer.log 日志，查找 `执行失败的DDL语句`，可以查询到该 DDL 的 commit-ts。
-4. 编辑 drainer.toml 配置文件，在 ignore-txn-commit-ts 项中添加改 commit-ts，重启 drainer。
+4. 编辑 drainer.toml 配置文件，在 ignore-txn-commit-ts 项中添加该 commit-ts，重启 Drainer。
 
-- 在绝大部分情况下，TiDB 和 MySQL 的语句都是兼容的。用户需要注意的是上下游的 sql_mode 应当保持一致。
+在绝大部分情况下，TiDB 和 MySQL 的语句都是兼容的。用户需要注意的是上下游的 sql_mode 应当保持一致。
