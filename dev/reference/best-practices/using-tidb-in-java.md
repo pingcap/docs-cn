@@ -53,7 +53,7 @@ TiDB 中同时支持两种方式，但更推荐使用第一种设置 FetchSize �
 
 向包含自增列的表中批量插入数据后，再通过 `Statement.getGeneratedKeys()` 可以返回插入的自增列的值, 例如表 t 中 id 是自增列：
 
-```
+```java
 pstmt = connection.prepareStatement(“insert into t (a) values(?)”, Statement.RETURN_GENERATED_KEYS);
 pstmt.setInt(1, 10);
 pstmt.addBatch();
@@ -83,7 +83,9 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
 默认 `cachePrepStmts` 也是为 `false`, 默认情况虽然 `useServerPrepStmts=true` 能让 prepare 在 server 端执行，但每次执行完后就会 close prepared 的语句不会复用，在不能复用的情况下 prepare 效率甚至不如文本执行， 所以建议开启 `useServerPrepStmts=true` 后同时配置 `useServerPrepStmts=true`。
 
-在 TiDB 监控中可以通过 “Query Summary” - “QPS by Instance” 查看请求命令类型，如果请求中 `COM_STMT_EXECUTE` 数目远远多于 `COM_STMT_PREPARE` 即生效。
+在 TiDB 监控中可以通过 “Query Summary” - “QPS by Instance” 查看请求命令类型，如果类似下图，请求中 `COM_STMT_EXECUTE` 数目远远多于 `COM_STMT_PREPARE` 即生效。
+
+![QPS By Instance](/media/java-practice-2.png)
 
 另外， 通过 `useConfigs=maxPerformance` 配置会同时配置多个参数，其中也包括 `cachePrepStmts=true`。
 
@@ -105,7 +107,7 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
 在进行 batch 写入处理时推荐配置 `rewriteBatchedStatements=true`， 在已经使用 `addBatch`/`executeBatch` 后默认 JDBC 还是会一条条 SQL 发送， 例如：
 
-```
+```java
 pstmt = prepare(“insert into t (a) values(?)”);
 pstmt.setInt(1, 10);
 pstmt.addBatch();
@@ -117,7 +119,7 @@ pstmt.executeBatch();
 
 虽然使用了 batch 但发送到 TiDB 语句还是单独的多条 insert：
 
-```
+```mysql
 insert into t(a) values(10);
 insert into t(a) values(11);
 insert into t(a) values(12);
@@ -125,13 +127,13 @@ insert into t(a) values(12);
 
 如果设置 `rewriteBatchedStatements=true` 后发送到 TiDB 的 SQL 将是：
 
-```
+```mysql
 insert into t(a) values(10),(11),(12);
 ```
 
 如果是批量更新如果超过 3 个以上 update 则会改写为 multiple-querys 的进行发送，这样可以有效减少 client 到 server 的请求开销，但副作用是会产生较大的 sql 语句, 例如这样：
 
-```
+```mysql
 update t set a = 10 where id = 1; update t set a = 11 where id = 2; update t set a = 12 where id = 3;
 ```
 
@@ -143,7 +145,7 @@ update t set a = 10 where id = 1; update t set a = 11 where id = 2; update t set
 
 `useConfigs=maxPerformance` 会包含一组配置：
 
-```
+```ini
 cacheServerConfiguration=true
 useLocalSessionState=true
 elideSetAutoCommits=true
@@ -209,7 +211,7 @@ MyBatis 的 Mapper 中支持 2 种 Parameters：
 
 除了前面 JDBC 配置 `rewriteBatchedStatements=true` 后支持自动将一个个执行的 insert 重写为 `insert values` 后跟很多 value 的外，mybatis 也可以使用 mybatis 的 dynamic 来半自动生成 batch insert 比如下面的 mapper:
 
-```
+```xml
 <insert id="insertTestBatch" parameterType="java.util.List" fetchSize="1">
   insert into test
    (id, v1, v2)
