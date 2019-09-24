@@ -22,11 +22,13 @@ TiDB 集群可以在不影响线上服务的情况下动态进行扩容和缩容
 
 |Name|ClientUrls|PeerUrls|
 |----|----------|--------|
-|pd1|`http://host1:2379|http://host1:2380`|
-|pd2|`http://host2:2379|http://host2:2380`|
-|pd3|`http://host3:2379|http://host3:2380`|
+|pd1|`http://host1:2379`|`http://host1:2380`|
+|pd2|`http://host2:2379`|`http://host2:2380`|
+|pd3|`http://host3:2379`|`http://host3:2380`|
 
 我们可以通过 pd-ctl 来查看当前所有 PD 节点的信息：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 ./pd-ctl -u http://host1:2379
@@ -38,6 +40,8 @@ TiDB 集群可以在不影响线上服务的情况下动态进行扩容和缩容
 我们可以使用 `join` 参数，将一个新的 PD 服务加入到现有的 PD 集群里面。
 如果我们需要添加 `pd4`，只需要在 `--join` 参数里面填入当前 PD 集群任意一个 PD 服务的 client url，比如：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./bin/pd-server --name=pd4 \
                 --client-urls="http://host4:2379" \
@@ -48,6 +52,8 @@ TiDB 集群可以在不影响线上服务的情况下动态进行扩容和缩容
 ### 动态删除节点
 
 如果我们需要删除 `pd4`，可以通过 pd-ctl 来完成：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 ./pd-ctl -u http://host1:2379
@@ -61,6 +67,8 @@ TiDB 集群可以在不影响线上服务的情况下动态进行扩容和缩容
 ## TiKV
 
 我们可以通过 pd-ctl 来查看当前所有 TiKV 节点的信息：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 ./pd-ctl -u http://host1:2379
@@ -78,6 +86,8 @@ TiDB 集群可以在不影响线上服务的情况下动态进行扩容和缩容
 
 假设我们需要删除 store id 为 1 的 TiKV 服务，可以通过 pd-ctl 来完成：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./pd-ctl -u http://host1:2379
 >> store delete 1
@@ -85,9 +95,14 @@ TiDB 集群可以在不影响线上服务的情况下动态进行扩容和缩容
 
 然后可以查看这个 TiKV 服务的状态：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./pd-ctl -u http://host1:2379
 >> store 1
+```
+
+```
 {
   "store": {
     "id": 1,

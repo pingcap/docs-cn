@@ -10,15 +10,20 @@ aliases: ['/docs-cn/tools/dm/query-status/']
 
 ## 查询结果
 
-```
+{{< copyable "" >}}
+
+```bash
 » query-status
+```
+
+```
 {
     "result": true,     # 查询是否成功。
     "msg": "",          # 查询失败原因描述。
     "workers": [                            # DM-worker 列表。
         {
             "result": true,
-            "worker": "172.17.0.2:10081",   # DM-worker ID。
+            "worker": "172.17.0.2:8262",   # DM-worker ID。
             "msg": "",
             "subTaskStatus": [              # DM-worker 所有子任务的信息。
                 {
@@ -71,7 +76,7 @@ aliases: ['/docs-cn/tools/dm/query-status/']
         },
         {
             "result": true,
-            "worker": "172.17.0.3:10081",
+            "worker": "172.17.0.3:8262",
             "msg": "",
             "subTaskStatus": [
                 {
@@ -100,7 +105,7 @@ aliases: ['/docs-cn/tools/dm/query-status/']
         },
         {
             "result": true,
-            "worker": "172.17.0.6:10081",
+            "worker": "172.17.0.6:8262",
             "msg": "",
             "subTaskStatus": [
                 {
@@ -138,7 +143,6 @@ aliases: ['/docs-cn/tools/dm/query-status/']
         }
     ]
 }
-
 ```
 
 关于 `workers` 下 `subTaskStatus` 中 `stage` 状态和状态转换关系的详细信息，请参阅[子任务状态](#子任务状态)。
