@@ -117,15 +117,18 @@ mydumpers:
 
 2. 执行以下命令启动 dmctl。
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     ./dmctl --master-addr 172.16.10.71:8261
     ```
 
-3. 执行以下命令启动数据同步任务。
+3. 执行以下命令启动数据同步任务。其中，`task.yaml` 是之前编辑的配置文件。
+
+    {{< copyable "" >}}
 
     ```bash
-    # `task.yaml` 是之前编辑的配置文件。
-    start-task ./task.yaml
+    » start-task ./task.yaml
     ```
 
     - 如果执行该命令后返回的结果如下，则表明任务已成功启动。
@@ -155,18 +158,23 @@ mydumpers:
 
 如需了解 DM 集群中是否存在正在运行的同步任务及任务状态等信息，可在 dmctl 内使用以下命令进行查询：
 
+{{< copyable "" >}}
+
 ```bash
-query-status
+» query-status
 ```
 
 ## 第 6 步：停止任务
 
 如果不再需要进行数据同步，可以在 dmctl 内使用以下命令停止同步任务：
 
+{{< copyable "" >}}
+
 ```bash
-# 其中的 `test` 是 `task.yaml` 配置文件中 `name` 配置项设置的任务名。
-stop-task test
+» stop-task test
 ```
+
+其中的 `test` 是 `task.yaml` 配置文件中 `name` 配置项设置的任务名。
 
 ## 第 7 步：监控任务与查看日志
 
