@@ -1,16 +1,16 @@
 # Java 使用 TiDB 的最佳实践
 
-本文主要介绍基于 TiDB 开发 Java 应用程序可能需要关注的问题。 
+本文主要介绍基于 TiDB 开发 Java 应用程序可能需要关注的问题。
 
 ## Overview
 
 通常 Java 应用中和数据库相关的常用组件有：
 
 - 网络协议：客户端通过标准 [MySQL 协议](https://dev.mysql.com/doc/internals/en/client-server-protocol.html) 和 TiDB 进行网络交互
-- JDBC API & 实现： Java 应用通常使用 [JDBC](https://docs.oracle.com/javase/8/docs/technotes/guides/jdbc/) 来访问数据库， JDBC 定义了访问数据库 API，而 JDBC 实现完成标准 API 到 MySQL 协议的转换，常见的 JDBC 实现是 [MySQL Connector/J](https://github.com/mysql/mysql-connector-j)，此外有些用户可能使用 [MariaDB Connector/J](https://mariadb.com/kb/en/library/about-mariadb-connector-j/#about-mariadb-connectorj)
-- 数据库连接池： 为了避免每次创建连接，通常应用会选择使用数据库连接池来复用连接，JDBC [DataSource](https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html) 定义了连接池 API，开发者会根据自己选择使用某种开源连接池实现
-- 数据访问框架： 应用通常选择通过数据访问框架([MyBatis](http://www.mybatis.org/mybatis-3/zh/index.html), [Hibernate](https://hibernate.org/))的封装来进一步简化和管理数据库访问操作
-- 业务实现： 业务逻辑控制着何时发送和发送什么指令到数据库，其中有些业务会使用 [Spring Transaction](https://docs.spring.io/spring/docs/4.2.x/spring-framework-reference/html/transaction.html) 切面来控制管理事务的开始和提交逻辑
+- JDBC API & 实现：Java 应用通常使用 [JDBC](https://docs.oracle.com/javase/8/docs/technotes/guides/jdbc/) 来访问数据库， JDBC 定义了访问数据库 API，而 JDBC 实现完成标准 API 到 MySQL 协议的转换，常见的 JDBC 实现是 [MySQL Connector/J](https://github.com/mysql/mysql-connector-j)，此外有些用户可能使用 [MariaDB Connector/J](https://mariadb.com/kb/en/library/about-mariadb-connector-j/#about-mariadb-connectorj)
+- 数据库连接池：为了避免每次创建连接，通常应用会选择使用数据库连接池来复用连接，JDBC [DataSource](https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html) 定义了连接池 API，开发者会根据自己选择使用某种开源连接池实现
+- 数据访问框架：应用通常选择通过数据访问框架([MyBatis](http://www.mybatis.org/mybatis-3/zh/index.html), [Hibernate](https://hibernate.org/))的封装来进一步简化和管理数据库访问操作
+- 业务实现：业务逻辑控制着何时发送和发送什么指令到数据库，其中有些业务会使用 [Spring Transaction](https://docs.spring.io/spring/docs/4.2.x/spring-framework-reference/html/transaction.html) 切面来控制管理事务的开始和提交逻辑
 
 ![Java Component](/media/java-practice-1.png)
 
@@ -18,7 +18,7 @@
 
 ## JDBC
 
-Java 应用尽管可能在选择多样的框架封装，但多数情况在最底层会通过调用 JDBC 来向数据库服务器进行交互。对于 JDBC 我们需要关注的主要有: API 的使用选择和 API 实现者参数配置。
+Java 应用尽管可能在选择多样的框架封装，但多数情况在最底层会通过调用 JDBC 来向数据库服务器进行交互。对于 JDBC 我们需要关注的主要有：API 的使用选择和 API 实现者参数配置。
 
 ### JDBC API
 
@@ -32,19 +32,17 @@ Java 应用尽管可能在选择多样的框架封装，但多数情况在最底
 
 另外需要注意 MySQL Connector/J 实现中默认只会做 client prepare， 会将 `?` 在客户端替换后用文本发送到客户端，所以除了使用 Prepare API 后还需要注意需要在 JDBC 连接参数中配置 `useServerPrepStmts = true` 才能让 prepare 在 TiDB 服务器端进行(下面参数配置章节有详细介绍)。
 
-
  #### 批量插入更新推荐使用 Batch
  
  对于批量插入和更新如果插入批次较大可以选择使用 [addBatch/executeBatch API](https://www.tutorialspoint.com/jdbc/jdbc-batch-processing), 通过 addBatch 的方式让 SQL 在客户端将多条插入更新记录在客户端先缓存， 然后在 executeBatch 时一起发送到数据库服务器。
  
- 同样需要注意对于 MySQL Connector/J 实现默认 Batch 只是将多次 addBatch 的 SQL 发送时机延迟到调用 executeBatch 的时候， 但实际网络发送还是会一条条的发送, 通常不会降低和 Server 的网络交互次数，如果希望 Batch 网络发送需要在 JDBC 连接参数中配置 `rewriteBatchedStatements=true` (下面参数配置章节有更详细介绍)。
- 
+ 同样需要注意对于 MySQL Connector/J 实现默认 Batch 只是将多次 addBatch 的 SQL 发送时机延迟到调用 executeBatch 的时候， 但实际网络发送还是会一条条的发送, 通常不会降低和 Server 的网络交互次数，如果希望 Batch 网络发送需要在 JDBC 连接参数中配置 `rewriteBatchedStatements=true` (下面参数配置章节有更详细介绍)。 
  
  #### 超大结果集流式获取
 
 默认 JDBC 会提前将查询结果获取并保存在客户端内存中，多数场景下这样能提升执行效率，但在查询返回超大结果集的场景，client 会希望 server 减少向客户端一次返回的记录数，等客户端在有限内存处理完一部分后再去向 server 要下一批。
 
-在 JDBC 中通常有两种处理方式:
+在 JDBC 中通常有两种处理方式：
 
 - 设置 [FetchSize 为 Integer.MIN_VALUE](https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-implementation-notes.html#ResultSet) 让客户端不缓存，客户端通过 streaming 的方式从网络连接上读取
 - 使用 Cursor Fetch 首先需[设置 FetchSize](http://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数且在 JDBC URL 中配置 `useCursorFetch=true`
@@ -89,7 +87,6 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
 另外， 通过 `useConfigs=maxPerformance` 配置会同时配置多个参数，其中也包括 `cachePrepStmts=true`。
 
-
 ##### 3. prepStmtCacheSqlLimit 
 
 在配置后 `cachePrepStmts` 后还需要注意 `prepStmtCacheSqlLimit` 配置(默认 256), 该配置控制能被客户端 Prepare 缓存的最大语句长度。
@@ -97,7 +94,6 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 在一些场景可能会运行 SQL 的长度会超过该配置， 导致 prepared stmt 不能复用，建议根据应用 SQL 长度情况决定是否需要调大该值。 
 
 在 TiDB 监控中看到 “Query Summary” - “QPS by Instance” 查看请求命令类型， 如果已经配置了 `cachePrepStmts=true` 但 `COM_STMT_PREPARE` 还是和 `COM_STMT_EXECUTE` 基本相等且有 `COM_STMT_CLOSE` 可以检查下这个配置配置是否过小。
-
 
 ##### 4. prepStmtCacheSize
       
@@ -107,7 +103,7 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
 #### Batch 相关参数
 
-在进行 batch 写入处理时推荐配置 `rewriteBatchedStatements=true`， 在已经使用 `addBatch`/`executeBatch` 后默认 JDBC 还是会一条条 SQL 发送， 例如:
+在进行 batch 写入处理时推荐配置 `rewriteBatchedStatements=true`， 在已经使用 `addBatch`/`executeBatch` 后默认 JDBC 还是会一条条 SQL 发送， 例如：
 
 ```
 pstmt = prepare(“insert into t (a) values(?)”);
@@ -119,7 +115,7 @@ pstmt.setInt(1, 12);
 pstmt.executeBatch();
 ```
 
-虽然使用了 batch 但发送到 TiDB 语句还是单独的多条 insert:
+虽然使用了 batch 但发送到 TiDB 语句还是单独的多条 insert：
 
 ```
 insert into t(a) values(10);
@@ -127,13 +123,13 @@ insert into t(a) values(11);
 insert into t(a) values(12);
 ```
 
-如果设置 `rewriteBatchedStatements=true` 后发送到 TiDB 的 SQL 将是:
+如果设置 `rewriteBatchedStatements=true` 后发送到 TiDB 的 SQL 将是：
 
 ```
 insert into t(a) values(10),(11),(12);
 ```
 
-如果是批量更新如果超过 3 个以上 update 则会改写为 multiple-querys 的进行发送，这样可以有效减少 client 到 server 的请求开销，但副作用是会产生较大的 sql 语句, 例如这样:
+如果是批量更新如果超过 3 个以上 update 则会改写为 multiple-querys 的进行发送，这样可以有效减少 client 到 server 的请求开销，但副作用是会产生较大的 sql 语句, 例如这样：
 
 ```
 update t set a = 10 where id = 1; update t set a = 11 where id = 2; update t set a = 12 where id = 3;
@@ -141,12 +137,11 @@ update t set a = 10 where id = 1; update t set a = 11 where id = 2; update t set
 
 另外因为一个[客户端 bug](https://bugs.mysql.com/bug.php?id=96623) 如果批量 update 希望同时 `rewriteBatchedStatements=true` 和 `useServerPrepStmts=true` 推荐同时配置 `allowMultiQueries=true` 参数来避免 
 
-
 #### 执行前检查参数
 
 通过监控可能会发现"虽然业务只向集群进行 insert 操作却看到有很多非 internal 的 select 语句", 通常是因为 JDBC 会在发一些查询设置 SQL(e.g. `select @@session.transaction_read_only` 对 TiDB 无用), 对于 TiDB 推荐配置 `useConfigs=maxPerformance` 来避免开销。
 
-`useConfigs=maxPerformance` 会包含一组配置:
+`useConfigs=maxPerformance` 会包含一组配置：
 
 ```
 cacheServerConfiguration=true
@@ -166,10 +161,10 @@ Java 的连接池实现很多([HikariCP](https://github.com/brettwooldridge/Hika
 
 ### 连接数配置
 
-比较常见的是应用需要根据自身情况配置合适的连接池大小，以 HikariCP 为例:
+比较常见的是应用需要根据自身情况配置合适的连接池大小，以 HikariCP 为例：
 
-- `maximumPoolSize`: 连接池最大连接数，配置过大会导致 TiDB 消耗资源维护无用连接，配置过小则会导致应用获取连接变慢, 所以需根据应用自身特点配置合适的值, 可以看下[这篇文章](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)
-- `minimumIdle`: 连接池最大空闲连接数，主要用于在应用空闲时存留一些连接以应对突发请求，同样是需要根据业务请情况配置。
+- `maximumPoolSize`：连接池最大连接数，配置过大会导致 TiDB 消耗资源维护无用连接，配置过小则会导致应用获取连接变慢, 所以需根据应用自身特点配置合适的值, 可以看下[这篇文章](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)
+- `minimumIdle`：连接池最大空闲连接数，主要用于在应用空闲时存留一些连接以应对突发请求，同样是需要根据业务请情况配置。
 
 应用在使用连接池同样需要注意连接使用完成后归还连接，推荐应用对应连接池相关监控(e.g. `metricRegistry`)，通过监控能及时定位连接池大小问题。
 
@@ -183,7 +178,7 @@ Java 的连接池实现很多([HikariCP](https://github.com/brettwooldridge/Hika
 The last packet sent successfully to the server was 3600000 milliseconds ago. The driver has not received any packets from the server. com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
 ```
 
-如果 `n milliseconds ago` 中的 `n` 如果是 0 或很小的值，则通常是执行的 SQL 导致 TiDB 异常退出引起的报错，推荐查看 TiDB stderr 日志; 如果 n 是一个非常大的值(比如这里的 3600000) 非常大概率是因为这个连接很久没人用到然后被中间 proxy 给关闭了， 通常解决方式除了调大 proxy idle 配置还可以让连接池:
+如果 `n milliseconds ago` 中的 `n` 如果是 0 或很小的值，则通常是执行的 SQL 导致 TiDB 异常退出引起的报错，推荐查看 TiDB stderr 日志; 如果 n 是一个非常大的值(比如这里的 3600000) 非常大概率是因为这个连接很久没人用到然后被中间 proxy 给关闭了， 通常解决方式除了调大 proxy idle 配置还可以让连接池：
 
 - 每次使用连接前检查连接是否可用
 - 单独线程定期检查连接是否可用
@@ -199,12 +194,12 @@ The last packet sent successfully to the server was 3600000 milliseconds ago. Th
 
 http://www.mybatis.org/mybatis-3/
 
-MyBatis 是目前比较流行的 Java 数据访问框架, 主要用于管理 SQL 并完成结果集和 Java 对象的来回映射工作和 TiDB 兼容性很好从历史 issue 看很少有 mybatis 问题, 不过有几个配置可能需要关注:
+MyBatis 是目前比较流行的 Java 数据访问框架, 主要用于管理 SQL 并完成结果集和 Java 对象的来回映射工作和 TiDB 兼容性很好从历史 issue 看很少有 mybatis 问题, 不过有几个配置可能需要关注：
 
 
 #### Parameters
 
-MyBatis 的 Mapper 中支持 2 种 Parameters:
+MyBatis 的 Mapper 中支持 2 种 Parameters：
 
 - `select 1 from t where id = #{param1}` 会作为 prepare 转换为 `select 1 from t where id = ?` 进行 prepare， 并将用实际参数去复用执行, 通过配合前面的 Prepare 连接参数能获得最佳性能
 - `select 1 from t where id = ${param2}` 会做文本替换为 `select 1 from t where id = 1` 执行，如果这条语句被 prepare 不同参数可能会导致大量的 prepare 语句在 TiDB 被cache，并且这种方式执行 SQL 有注入安全风险
@@ -231,23 +226,21 @@ http://www.mybatis.org/mybatis-3/dynamic-sql.html#foreach
 
 会生成一个 `insert on duplicate key update` 语句 values 后面的 `(?, ?, ?)` 数目是根据传入的 list 个数决定，最终效果和使用 `rewriteBatchStatements=true` 类似, 可以有效减少客户端和 TiDB 的网络交互次数，同样需要注意 prepare 后超过 `prepStmtCacheSqlLimit` 限制导致不被缓存频繁 prepare 的问题。
 
-
 #### Streaming Result
 
-前面介绍了在 JDBC 中如何使用流式读取结果，除了 JDBC 相应的配置外在 MyBatis 中如果希望读取超大结果集合也需要注意:
+前面介绍了在 JDBC 中如何使用流式读取结果，除了 JDBC 相应的配置外在 MyBatis 中如果希望读取超大结果集合也需要注意：
 
 - 可以通过在 mapper 配置中对单独一条 sql 设置 `fetchSize`(见上一段代码段)， 效果等同于调用 JDBC `setFetchSize`
 - 可以使用带 `ResultHandler` 的查询接口来避免一次获取整个结果 List
 - 可以使用 `Cursor` 类来进行流式读取
 
-
 ### ExecutorType
 
-在 `openSession` 的时候可以选择 `ExecutorType`， MyBatis 支持三种 executor:
+在 `openSession` 的时候可以选择 `ExecutorType`， MyBatis 支持三种 executor：
 
-- Simple: 每次执行都会向 JDBC 进行 prepare 调用(重复的 prepare 调用如果 JDBC 配置有开启 `cachePrepStmts` 也会复用)
-- Reuse: 在 `executor` 中缓存 statement， 这样不用 JDBC 的 `cachePrepStmts` 也能减少重复 prepare 调用
-- Batch: 每次更新只会 `addBatch` 直到 query 或 commit 才会调用 `executeBatch` 执行, 如果 jdbc 层有开 `rewriteBatchStatements` 会尝试改写，没有则一条条发送
+- Simple：每次执行都会向 JDBC 进行 prepare 调用(重复的 prepare 调用如果 JDBC 配置有开启 `cachePrepStmts` 也会复用)
+- Reuse：在 `executor` 中缓存 statement， 这样不用 JDBC 的 `cachePrepStmts` 也能减少重复 prepare 调用
+- Batch：每次更新只会 `addBatch` 直到 query 或 commit 才会调用 `executeBatch` 执行, 如果 jdbc 层有开 `rewriteBatchStatements` 会尝试改写，没有则一条条发送
 
 通常默认值是 Simple 且没有配置可以修改，除非主动在调用 openSession 代码时改变 executorType，如果是 Batch 会遇到情况是事务中前面的 update insert 都非常快，当遇到读或 commit 时因为实际将之前代码执行从客户端看会比较慢实际正常，但排查定位慢 SQL 时需注意。
 
@@ -261,7 +254,7 @@ http://www.mybatis.org/mybatis-3/dynamic-sql.html#foreach
 
 ### Troubleshooting Tool
 
-在 Java 应用发生问题希望进程排查在短期不知道业务逻辑情况下使用 JVM 强大的排查工具会比较有用， 这里简单介绍几个常用工具:
+在 Java 应用发生问题希望进程排查在短期不知道业务逻辑情况下使用 JVM 强大的排查工具会比较有用， 这里简单介绍几个常用工具：
 
 #### jstack
 
@@ -271,7 +264,7 @@ https://docs.oracle.com/javase/7/docs/technotes/tools/share/jstack.html
 
 使用方法是 `jstack pid` 即可会输出进程中所有线程的堆栈信息和线程 id 到标准输出，默认只有 java 堆栈如果希望将 jvm 中 c++ 堆栈打印可以加 `-m`
 
-通过多次 jstack 可以方便发现卡死问题(比如:都通过 Mybatis BatchExecutor flush 调用 update) 或死锁问题(比如: 测试程序都在抢占应用中某把 lock 没发 SQL)
+通过多次 jstack 可以方便发现卡死问题(比如：都通过 Mybatis BatchExecutor flush 调用 update) 或死锁问题(比如：测试程序都在抢占应用中某把 lock 没发 SQL)
 
 另外，比较常用是 `top -p $PID -H` 或者 java swiss knife 可以看到线程 ID, 通过一个转换为 16 进制(`printf "%x\n" pid`) 后去 jstack 中找对应线程的栈信息来定位”某个线程 cpu 比较高不知道做什么”的问题
 
@@ -282,12 +275,11 @@ https://www.eclipse.org/mat/
 
 和 Go 中的 pprof/heap 不同 jmap 会将整个进程的内存快照 dump 下来(go 是分配器的采样), 然后可以通过另一个工具 mat 做分析。
 
-因为是快照通过 mat 可以看到进程中所有对象的关联信息和属性通常通过 mat 可以很好的观察运行中程序的状态， 比如: 我们可以通过 mat 找到当前应用中有多少 mysql 连接对象，每个连接对象的地址和状态信息是什么，在有些情况下有用；需要注意 mat 默认只会处理 reachable objects，如果排查 young gc 问题可以在软件配置中设置查看 unreachable，另外对于调查 young gc 问题（或者大量生命周期较短的对象）的内存分配用 Java Flight Recorder 比较方便。
+因为是快照通过 mat 可以看到进程中所有对象的关联信息和属性通常通过 mat 可以很好的观察运行中程序的状态， 比如：我们可以通过 mat 找到当前应用中有多少 mysql 连接对象，每个连接对象的地址和状态信息是什么，在有些情况下有用；需要注意 mat 默认只会处理 reachable objects，如果排查 young gc 问题可以在软件配置中设置查看 unreachable，另外对于调查 young gc 问题（或者大量生命周期较短的对象）的内存分配用 Java Flight Recorder 比较方便。
 
 #### trace
 
 最后在无法修改在线代码的情况下希望在 java 中做动态插桩定位问题通常会推荐使用 btrace 或 arthas trace, 可以在不重启进程的情况下动态插入 trace 代码。 
-
 
 #### flamegraph
 
