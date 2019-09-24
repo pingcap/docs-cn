@@ -61,11 +61,7 @@ HAProxy 是由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写�
 
 HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具有普遍性，不具有特殊性，建议根据实际场景，个性化配置相关的[配置文件](http://cbonte.github.io/haproxy-dconv/1.9/configuration.html)。
 
-> **注意：**
->
-> 官方目前建议使用 HAProxy 稳定版本 2.0，其特性参见 [2.0 特性](https://www.haproxy.com/blog/haproxy-2-0-and-beyond/)。
-
-![HAProxy](/media/Haproxy.jpg)
+![HAProxy](/media/haproxy.jpg)
 
 ### 安装 HAproxy
 
