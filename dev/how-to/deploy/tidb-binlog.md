@@ -427,7 +427,7 @@ Drainer="192.168.0.13"
             同步下游的并发数，该值设置越高同步的吞吐性能越好 (default 1)
         -cache-binlog-count int
             缓存中的 binlog 数目限制（默认 512）
-            如果上游的单个 binlog 较大 drainer 出现 OOM 时可尝试调小该值减少内存使用
+            如果上游的单个 binlog 较大导致 Drainer 出现 OOM 时，可尝试调小该值减少内存使用
         -config string
             配置文件路径，Drainer 会首先读取配置文件的配置；
             如果对应的配置在命令行参数里面也存在，Drainer 就会使用命令行参数的配置来覆盖配置文件里面的配置

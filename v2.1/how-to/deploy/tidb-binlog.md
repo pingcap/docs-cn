@@ -29,7 +29,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
     - 下载 2.1 版本：
 
         ```bash
-        $ git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
+        git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
         ```
 
 ### 第 2 步：部署 Pump
