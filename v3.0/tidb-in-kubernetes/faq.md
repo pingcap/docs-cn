@@ -79,7 +79,7 @@ TiDB Operator 尚不支持自动编排 TiSpark。
     ```shell
     kubectl exec -it <tidb-pod-name> -c tidb -n <namespace> -- cat /etc/tidb/tidb.toml
     ```
-    
+
 ## 部署 TiDB 集群时调度失败是什么原因？
 
 TiDB Operator 调度 Pod 失败的原因可能有三种情况：
