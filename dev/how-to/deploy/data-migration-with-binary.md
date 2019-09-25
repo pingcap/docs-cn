@@ -30,19 +30,29 @@ MySQL1 和 MySQL2 需要开启 binlog，DM-worker1 同步 MySQL1 的数据，DM-
 
 DM-worker 需要链接上游 MySQL，且为了安全，强制用户必须配置加密后的密码。首先需要使用 dmctl 对 MySQL 的密码进行加密，以密码为 "123456" 为例：
 
-```
+{{< copyable "shell-regular" >}}
+
+```bash
 ./bin/dmctl --encrypt "123456"
+```
+
+```
 fCxfQ9XKCezSzuCD0Wf5dUD+LsKegSg=
 ```
 
-记录下加密后的值，用于下面部署 DM-worker 的配置。
+记录该加密后的值，用于下面部署 DM-worker 时的配置。
 
 DM-worker 提供命令行参数和配置文件两种配置方式。
 
-DM-worker 的命令行参数说明：
+查看 DM-worker 的命令行参数说明：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 ./bin/dm-worker --help
+```
+
+```
 Usage of worker:
   -L string
         日志等级，值可以为 "debug"，"info"，"warn"，"error" 或者 "fatal"（默认值："info"）
@@ -50,7 +60,7 @@ Usage of worker:
   -checker-backoff-max duration
         任务检查模块中，检查到出错等待自动恢复的最大时间间隔（默认值："5m0s"，一般情况下不需要修改，如果对该参数的作用没有深入的了解，不建议修改该参数）
   -checker-backoff-rollback duration
-      任务检查模块中，定时调整恢复等待时间的间隔（默认值："5m0s"，一般情况下不需要修改，如果对该参数的作用没有深入的了解，不建议修改该参数）
+        任务检查模块中，定时调整恢复等待时间的间隔（默认值："5m0s"，一般情况下不需要修改，如果对该参数的作用没有深入的了解，不建议修改该参数）
   -checker-check-enable
         是否开启任务状态检查，开启后 DM 会尝试自动恢复因错误暂停的数据同步任务（默认值：true）
   -config string
@@ -68,7 +78,7 @@ Usage of worker:
   -relay-dir string
         存储 relay log 的路径（默认值："./relay_log"）
   -worker-addr string
-        DM-worker 的 地址
+        DM-worker 的地址
 ```
 
 DM-worker 的配置文件：
@@ -125,9 +135,11 @@ port = 3306
 #backoff-max = 5m
 ```
 
-推荐统一使用配置文件，把以上配置内容写入到 conf/dm-worker1.toml 中，在终端中使用下面的命令运行 dm-worker：
+推荐统一使用配置文件，把以上配置内容写入到 `conf/dm-worker1.toml` 中，在终端中使用下面的命令运行 DM-worker：
 
-```
+{{< copyable "shell-regular" >}}
+
+```bash
 bin/dm-worker -config conf/dm-worker1.toml
 ```
 
@@ -141,6 +153,9 @@ DM-master 的命令行参数说明：
 
 ```bash
 ./bin/dm-master --help
+```
+
+```
 Usage of dm-master:
   -L string
         日志等级，值可以为 "debug"，"info"，"warn"，"error" 或者 "fatal"（默认值为 "info"）
@@ -157,7 +172,7 @@ Usage of dm-master:
 
 DM-master 的配置文件：
 
-```
+```toml
 # Master Configuration.
 
 # rpc 相关配置
@@ -185,9 +200,11 @@ source-id = "mysql-replica-02"
 dm-worker = "192.168.0.6:8262"
 ```
 
-推荐统一使用配置文件，把以上配置内容写入到 conf/dm-master.toml 中，在终端中使用下面的命令运行 dm-master：
+推荐统一使用配置文件，把以上配置内容写入到 `conf/dm-master.toml` 中，在终端中使用下面的命令运行 DM-master：
 
-```
+{{< copyable "shell-regular" >}}
+
+```bash
 bin/dm-master -config conf/dm-master.toml
 ```
 
@@ -196,6 +213,8 @@ bin/dm-master -config conf/dm-master.toml
 ### 创建数据同步任务
 
 假设在 MySQL1 和 MySQL2 实例中有若干个分表，这些分表的结构相同，所在的库名称都以 "sharding" 开头，表名称都以 "t" 开头，并且主键/唯一键不存在冲突，现在需要把这些分表同步到 TiDB 中的 db_target.t_target 表中。首先创建任务的配置文件：
+
+{{< copyable "" >}}
 
 ```yaml
 ---
@@ -266,10 +285,15 @@ syncers:
 
 ```
 
-将以上配置内容写入到文件 conf/task.yaml 中，使用 dmctl 创建任务：
+将以上配置内容写入到文件 `conf/task.yaml` 中，并使用 dmctl 创建任务：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
-$ bin/dmctl -master-addr 192.168.0.4:8261
+bin/dmctl -master-addr 192.168.0.4:8261
+```
+
+```
 Welcome to dmctl
 Release Version: v1.0.0-69-g5134ad1
 Git Commit Hash: 5134ad19fbf6c57da0c7af548f5ca2a890bddbe4
@@ -277,7 +301,15 @@ Git Branch: master
 UTC Build Time: 2019-04-29 09:36:42
 Go Version: go version go1.12 linux/amd64
 »
+```
+
+{{< copyable "" >}}
+
+```bash
 » start-task conf/task.yaml
+```
+
+```
 {
     "result": true,
     "msg": "",
