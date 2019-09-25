@@ -321,7 +321,7 @@
   + [TiSpark 使用指南](/dev/reference/tispark.md)
   + [TiDB Binlog 简介](/dev/reference/tidb-binlog-overview.md)
   + 最佳实践
-    - [TiDB 高并发写入常见热点问题及规避方法](/dev/reference/best-practices/avoid-hotspot-in-high-concurrency.md)
+    - [TiDB 高并发写入场景最佳实践](/dev/reference/best-practices/in-high-concurrency.md)
 + TiDB in Kubernetes
   - [TiDB Operator 简介](/dev/tidb-in-kubernetes/tidb-operator-overview.md)
   + 快速上手
