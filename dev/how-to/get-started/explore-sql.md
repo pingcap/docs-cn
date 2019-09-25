@@ -13,11 +13,15 @@ category: how-to
 
 使用 `CREATE DATABASE` 语句创建数据库。语法如下：
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE DATABASE db_name [options];
 ```
 
 例如，要创建一个名为 `samp_db` 的数据库，可使用以下语句：
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE DATABASE IF NOT EXISTS samp_db;
@@ -25,11 +29,15 @@ CREATE DATABASE IF NOT EXISTS samp_db;
 
 使用 `SHOW DATABASES` 语句查看数据库：
 
+{{< copyable "sql" >}}
+
 ```sql
 SHOW DATABASES;
 ```
 
 使用 `DROP DATABASE` 语句删除数据库，例如：
+
+{{< copyable "sql" >}}
 
 ```sql
 DROP DATABASE samp_db;
@@ -39,11 +47,15 @@ DROP DATABASE samp_db;
 
 使用 `CREATE TABLE` 语句创建表。语法如下：
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE TABLE table_name column_name data_type constraint;
 ```
 
 例如：
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE person (
@@ -55,6 +67,8 @@ CREATE TABLE person (
 
 如果表已存在，添加 `IF NOT EXISTS` 可防止发生错误：
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE TABLE IF NOT EXISTS person (
       number INT(11),
@@ -65,11 +79,15 @@ CREATE TABLE IF NOT EXISTS person (
 
 使用 `SHOW CREATE` 语句查看建表语句。例如：
 
+{{< copyable "sql" >}}
+
 ```sql
 SHOW CREATE table person;
 ```
 
 使用 `SHOW FULL COLUMNS` 语句查看表的列。 例如：
+
+{{< copyable "sql" >}}
 
 ```sql
 SHOW FULL COLUMNS FROM person;
@@ -77,17 +95,23 @@ SHOW FULL COLUMNS FROM person;
 
 使用 `DROP TABLE` 语句删除表。例如：
 
+{{< copyable "sql" >}}
+
 ```sql
 DROP TABLE person;
 ```
 
 或者
 
+{{< copyable "sql" >}}
+
 ```sql
 DROP TABLE IF EXISTS person;
 ```
 
 使用 `SHOW TABLES` 语句查看数据库中的所有表。例如：
+
+{{< copyable "sql" >}}
 
 ```sql
 SHOW TABLES FROM samp_db;
@@ -97,11 +121,15 @@ SHOW TABLES FROM samp_db;
 
 对于值不唯一的列，可使用 `CREATE INDEX` 或 `ALTER TABLE` 语句。例如：
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE INDEX person_num ON person (number);
 ```
 
 或者
+
+{{< copyable "sql" >}}
 
 ```sql
 ALTER TABLE person ADD INDEX person_num (number);
@@ -109,11 +137,15 @@ ALTER TABLE person ADD INDEX person_num (number);
 
 对于值唯一的列，可以创建唯一索引。例如：
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE UNIQUE INDEX person_num ON person (number);
 ```
 
 或者
+
+{{< copyable "sql" >}}
 
 ```sql
 ALTER TABLE person ADD UNIQUE person_num (number);
@@ -121,14 +153,23 @@ ALTER TABLE person ADD UNIQUE person_num (number);
 
 使用 `SHOW INDEX` 语句查看表内所有索引：
 
+{{< copyable "sql" >}}
+
 ```sql
 SHOW INDEX from person;
 ```
 
 使用 `ALTER TABLE` 或 `DROP INDEX` 语句来删除索引。与 `CREATE INDEX` 语句类似，`DROP INDEX` 也可以嵌入 `ALTER TABLE` 语句。例如：
 
+{{< copyable "sql" >}}
+
 ```sql
 DROP INDEX person_num ON person;
+```
+
+{{< copyable "sql" >}}
+
+```sql
 ALTER TABLE person DROP INDEX person_num;
 ```
 
@@ -136,14 +177,21 @@ ALTER TABLE person DROP INDEX person_num;
 
 使用 `INSERT` 语句向表内插入数据。例如：
 
+{{< copyable "sql" >}}
+
 ```sql
 INSERT INTO person VALUES("1","tom","20170912");
 ```
 
 使用 `SELECT` 语句检索表内数据。例如：
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT * FROM person;
+```
+
+```
 +--------+------+------------+
 | number | name | birthday   |
 +--------+------+------------+
@@ -153,10 +201,19 @@ SELECT * FROM person;
 
 使用 `UPDATE` 语句修改表内数据。例如：
 
+{{< copyable "sql" >}}
+
 ```sql
 UPDATE person SET birthday='20171010' WHERE name='tom';
+```
 
+{{< copyable "sql" >}}
+
+```sql
 SELECT * FROM person;
+```
+
+```
 +--------+------+------------+
 | number | name | birthday   |
 +--------+------+------------+
@@ -166,9 +223,19 @@ SELECT * FROM person;
 
 使用 `DELETE` 语句删除表内数据：
 
+{{< copyable "sql" >}}
+
 ```sql
 DELETE FROM person WHERE number=1;
+```
+
+{{< copyable "sql" >}}
+
+```sql
 SELECT * FROM person;
+```
+
+```
 Empty set (0.00 sec)
 ```
 
@@ -176,11 +243,15 @@ Empty set (0.00 sec)
 
 使用 `CREATE USER` 语句创建一个用户 `tiuser`，密码为 `123456`：
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE USER 'tiuser'@'localhost' IDENTIFIED BY '123456';
 ```
 
 授权用户 `tiuser` 可检索数据库 `samp_db` 内的表：
+
+{{< copyable "sql" >}}
 
 ```sql
 GRANT SELECT ON samp_db.* TO 'tiuser'@'localhost';
@@ -188,11 +259,15 @@ GRANT SELECT ON samp_db.* TO 'tiuser'@'localhost';
 
 查询用户 `tiuser` 的权限：
 
+{{< copyable "sql" >}}
+
 ```sql
 SHOW GRANTS for tiuser@localhost;
 ```
 
 删除用户 `tiuser`：
+
+{{< copyable "sql" >}}
 
 ```sql
 DROP USER 'tiuser'@'localhost';
