@@ -101,6 +101,7 @@
       + 使用场景
         - [简单的从库同步场景](/v3.0/reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
         - [分库分表合并场景](/v3.0/reference/tools/data-migration/usage-scenarios/shard-merge.md)
+        - [分表合并数据迁移最佳实践](/v3.0/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md)
         - [DM-worker 在上游 MySQL 主从间切换](/v3.0/reference/tools/data-migration/usage-scenarios/master-slave-switch.md)
       + [部署使用](/v3.0/reference/tools/data-migration/deploy.md)
       + 配置
