@@ -65,7 +65,7 @@ HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具�
 
 ### 安装 HAProxy
 
-1. 使用 yum 安装 HAProxy。
+1. 使用 yum 安装 HAProxy
 
     {{< copyable "shell-regular" >}}
 
@@ -101,11 +101,11 @@ Usage : haproxy [-f <cfgfile|cfgdir>]* [ -vdVD ] [ -n <maxconn> ] [ -N <maxpconn
 |-vv|shows known build options|显示详细的版本信息|
 |-d|enters debug mode|debug 模式开启|
 | -db|only disables background mode.|仅禁止后台模式|
-|-dM|[\<byte>] poisons memory with \<byte> (defaults to 0x50)|执行分配内存|
-|-V|enters verbose mode (disables quiet mode)|启动过程显示配置和轮询信息
-|-D|goes daemon|开启守护进程模式||
-|-C|changes to \<dir> before loading files.||
-|-W|master-worker mode.|主从模式|
+|-dM\[<byte>]| poisons memory with \<byte> (defaults to 0x50)|执行分配内存|
+|-V|enters verbose mode (disables quiet mode)|启动过程显示配置和轮询信息|
+|-D|goes daemon|开启守护进程模式|
+|-C\<dir>|changes to \<dir> before loading files|
+|-W|master-worker mode|主从模式|
 |-q|quiet mode: don't display messages|静默模式，不输出信息|
 |-c|check mode: only checks config files and exits|只检查配置文件并在尝试绑定之前退出|
 |-n|sets the maximum total # of connections (2000)|设置最大总连接数为 2000 |
@@ -118,9 +118,9 @@ Usage : haproxy [-f <cfgfile|cfgdir>]* [ -vdVD ] [ -n <maxconn> ] [ -N <maxpconn
 |-dS|disables splice usage (broken on old kernels)|禁止使用 speculative epoll，epoll 仅在 Linux 2.6 和某些定制的 Linux 2.4 系统上可用。|
 |-dR|disables SO_REUSEPORT usage|禁止使用 SO_REUSEPORT|
 |-dr|ignores server address resolution failures|忽略服务器地址解析失败|
-|-dV|disables SSL verify on servers side|禁止在 servers 端使用 SSL|
-|-sf/-st|\<unix_socket> get listening sockets from a Unix socket|在启动后，在 pidlist 中发送 FINISH 信号给 PID 。收到此信号的进程将等待所有会话在退出之前完成，即优雅停止服务。此选项必须最后指定，后跟任意数量的 pid，SIGTTOU 和 SIGUSR1 都被发送。|
-|-x|\<unix_socket>[,<bind options>...] new stats socket for the master|获取 socket 信息|
+|-dV|disables SSL verify on servers side|禁止在服务器端使用 SSL|
+|-sf/-st|\<unix_socket> get listening sockets from a Unix socket|在启动后，在 pidlist 中发送 FINISH 信号给 PID。收到此信号的进程将等待所有会话在退出之前完成，即优雅停止服务。此选项必须最后指定，后跟任意数量的 PID，SIGTTOU 和 SIGUSR1 都被发送。|
+|-x|\<unix_socket>[,\<bind options>...] new stats socket for the master|获取 socket 信息|
 |-S|\<unix_socket>[,\<bind options>...] new stats socket for the master|分配新的 socket|
 
 ### 配置 HAProxy
@@ -153,8 +153,8 @@ listen admin_stats                         # frontend 和 backend 的组合体�
    maxconn 10                              # 最大并发连接数
    stats refresh 30s                       # 配置每隔 30 秒自动刷新监控页面
    stats uri /haproxy                      # 配置监控页面的 URL
-   stats realm Haproxy                     # 配置监控页面的提示信息
-   stats auth admin:pingcap123             # 配置监控页面的用户和密码 admin,可以设置多个用户名
+   stats realm HAProxy                     # 配置监控页面的提示信息
+   stats auth admin:pingcap123             # 配置监控页面的用户和密码 admin，可以设置多个用户名
    stats hide-version                      # 配置隐藏统计页面上的 HAProxy 版本信息
    stats  admin if TRUE                    # 配置手工启用/禁用，后端服务器（HAProxy-1.4.9 以后版本）
 
@@ -195,7 +195,9 @@ listen tidb-cluster                        # 配置 database 负载均衡
     ps -ef | grep haproxy
     ```
 
-    终止 HAProxy 相关的 PID 进程:
+    终止 HAProxy 相关的 PID 进程：
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     kill -9 ${haproxy.pid}
