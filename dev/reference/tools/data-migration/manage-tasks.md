@@ -95,7 +95,7 @@ Available Commands:
   unlock-ddl-lock      forcefully unlock DDL lock
   update-master-config update the config of the DM-master
   update-relay         update the relay unit config of the DM-worker
-  update-task          update a task's config for routes, filters, column-mappings, or black-white-list
+  update-task          update a task's config for routes, filters, or black-white-list
 
 Flags:
   -h, --help             help for dmctl
@@ -511,7 +511,7 @@ help update-task
 ```
 
 ```
-update a task's config for routes, filters, column-mappings, or black-white-list
+update a task's config for routes, filters, or black-white-list
 
 Usage:
   dmctl update-task [-w worker ...] <config-file> [flags]
