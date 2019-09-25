@@ -5,7 +5,7 @@ category: reference
 
 # HAProxy 最佳实践
 
-本文介绍 HAProxy 在 TiDB 中的最佳实践。
+在线上使用 TiDB 数据库的时候，会遇到业务方希望 TiDB Server 层具有负载均衡能力。HAProxy 提供 TCP 协议下的负载均衡功能，TiDB 客户端可以通过连接 HAProxy 提供的浮动 IP 到 TiDB 数据库中进行数据的操作。本文介绍 HAProxy 在 TiDB 中的最佳实践配置和使用方法。
 
 ## HAProxy 简介
 
@@ -31,11 +31,11 @@ HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，�
 根据官方文档，对 HAProxy 的服务器硬件配置有以下建议，也可以根据负载均衡环境进行推算，在此基础上提高服务器配置。
 
 |硬件资源|最低配置|
-|---|---|
-|CPU|2 cores, 3.5 GHz|
-|Memory| 16 GB|
-|Storage| 50 GB (SATA)|
-|Network Interface Card| 万兆网卡|
+|:---|:---|
+|处理器|2 cores, 3.5 GHz|
+|内存| 16 GB|
+|存储容量| 50 GB (SATA)|
+|网卡| 万兆网卡|
 
 ### 依赖软件
 
@@ -43,19 +43,25 @@ HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，�
 
 #### 操作系统
 
-- Linux 2.4 on x86, x86_64, Alpha, Sparc, MIPS, PARISC
-- Linux 2.6 / 3.x on x86, x86_64, ARM, Sparc, PPC64
-- Solaris 8/9 on UltraSPARC 2 and 3
-- Solaris 10 on Opteron and UltraSPARC
-- FreeBSD 4.10 - 10 on x86
-- OpenBSD 3.1 to -current on i386, amd64, macppc, alpha, sparc64 and VAX (check the ports)
-- AIX 5.1 - 5.3 on Power™ architecture
+- Linux 2.4 操作系统，x86, x86_64, Alpha, Sparc, MIPS, PARISC 架构。
+- Linux 2.6 / 3.x 操作系统，x86, x86_64, ARM, Sparc, PPC64 架构。
+- Solaris 8/9 操作系统，UltraSPARC 2 and 3 架构。
+- Solaris 10 操作系统，Opteron and UltraSPARC 架构。
+- FreeBSD 4.10 - 10 操作系统，x86 架构。
+- OpenBSD 3.1 to -current 操作系统，i386, amd64, macppc, alpha, sparc64 and VAX (check the ports) 架构。
+- AIX 5.1 - 5.3 操作系统， Power™ architecture 架构。
 
 #### 依赖包
 
 - epel-release
 - gcc
 - systemd-devel
+
+{{< copyable "shell-regular" >}}
+
+```bash
+yum -y install epel-release gcc systemd-devel
+```
 
 ## 部署 HAProxy
 
@@ -89,39 +95,33 @@ HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具�
 haproxy --help
 ```
 
-```
-HA-Proxy version 1.9.0 2018/12/19 - https://haproxy.org/
-Usage : haproxy [-f <cfgfile|cfgdir>]* [ -vdVD ] [ -n <maxconn> ] [ -N <maxpconn> ]
-        [ -p <pidfile> ] [ -m <max megs> ] [ -C <dir> ] [-- <cfgfile>*]
-```
-
-|参数|描述|详情|
-|:-----|:---|:---|
-|-v|displays version|显示简略的版本信息|
-|-vv|shows known build options|显示详细的版本信息|
-|-d|enters debug mode|debug 模式开启|
-| -db|only disables background mode.|仅禁止后台模式|
-|-dM\[<byte>]| poisons memory with \<byte> (defaults to 0x50)|执行分配内存|
-|-V|enters verbose mode (disables quiet mode)|启动过程显示配置和轮询信息|
-|-D|goes daemon|开启守护进程模式|
-|-C\<dir>|changes to \<dir> before loading files|
-|-W|master-worker mode|主从模式|
-|-q|quiet mode: don't display messages|静默模式，不输出信息|
-|-c|check mode: only checks config files and exits|只检查配置文件并在尝试绑定之前退出|
-|-n|sets the maximum total # of connections (2000)|设置最大总连接数为 2000 |
-|-m|limits the usable amount of memory (in MB)|限制最大可用内存（单位：MB）|
-|-N|sets the default, per-proxy maximum # of connections (2000)|设置单点最大连接数，默认为 2000 |
-|-L|sets local peer name (default to hostname)|本地实例对等名称|
-|-p|writes pids of all children to this file|将 HAProxy 所有子进程的 PID 信息写入该文件 |
-|-de|disables epoll() usage even when available|禁止使用 speculative epoll，epoll 仅在 Linux 2.6 和某些定制的 Linux 2.4 系统上可用。|
-|-dp|disables poll() usage even when available|禁止使用 epoll，epoll 仅在 Linux 2.6 和某些定制的 Linux 2.4 系统上可用。|
-|-dS|disables splice usage (broken on old kernels)|禁止使用 speculative epoll，epoll 仅在 Linux 2.6 和某些定制的 Linux 2.4 系统上可用。|
-|-dR|disables SO_REUSEPORT usage|禁止使用 SO_REUSEPORT|
-|-dr|ignores server address resolution failures|忽略服务器地址解析失败|
-|-dV|disables SSL verify on servers side|禁止在服务器端使用 SSL|
-|-sf/-st|\<unix_socket> get listening sockets from a Unix socket|在启动后，在 pidlist 中发送 FINISH 信号给 PID。收到此信号的进程将等待所有会话在退出之前完成，即优雅停止服务。此选项必须最后指定，后跟任意数量的 PID，SIGTTOU 和 SIGUSR1 都被发送。|
-|-x|\<unix_socket>[,\<bind options>...] new stats socket for the master|获取 socket 信息|
-|-S|\<unix_socket>[,\<bind options>...] new stats socket for the master|分配新的 socket|
+|参数|描述|
+|:-----|:---|
+|-v|显示简略的版本信息|
+|-vv|显示详细的版本信息|
+|-d|debug 模式开启|
+| -db|仅禁止后台模式|
+|-dM [\<byte>]|执行分配内存|
+|-V|启动过程显示配置和轮询信息|
+|-D|开启守护进程模式|
+|-C \<dir>|在加载配置文件之前更改目录位置|
+|-W|主从模式|
+|-q|静默模式，不输出信息|
+|-c|只检查配置文件并在尝试绑定之前退出|
+|-n|设置最大总连接数为 2000 |
+|-m|限制最大可用内存（单位：MB）|
+|-N|设置单点最大连接数，默认为 2000 |
+|-L|本地实例对等名称|
+|-p|将 HAProxy 所有子进程的 PID 信息写入该文件 |
+|-de|禁止使用 speculative epoll，epoll 仅在 Linux 2.6 和某些定制的 Linux 2.4 系统上可用。|
+|-dp|禁止使用 epoll，epoll 仅在 Linux 2.6 和某些定制的 Linux 2.4 系统上可用。|
+|-dS|禁止使用 speculative epoll，epoll 仅在 Linux 2.6 和某些定制的 Linux 2.4 系统上可用。|
+|-dR|禁止使用 SO_REUSEPORT|
+|-dr|忽略服务器地址解析失败|
+|-dV|禁止在服务器端使用 SSL|
+|-sf/-st \<unix_socket> |在启动后，在 pidlist 中发送 FINISH 信号给 PID。收到此信号的进程将等待所有会话在退出之前完成，即优雅停止服务。此选项必须最后指定，后跟任意数量的 PID，SIGTTOU 和 SIGUSR1 都被发送。|
+|-x \<unix_socket>,[\<bind options>...]|获取 socket 信息|
+|-S \<unix_socket>,[\<bind options>...]|分配新的 socket|
 
 ### 配置 HAProxy
 
