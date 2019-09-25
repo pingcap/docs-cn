@@ -83,15 +83,17 @@ HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具�
 
 #### HAProxy 命令介绍
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```bash
-    haproxy --help
-    ```
+```bash
+haproxy --help
+```
 
+```
 HA-Proxy version 1.9.0 2018/12/19 - https://haproxy.org/
 Usage : haproxy [-f <cfgfile|cfgdir>]* [ -vdVD ] [ -n <maxconn> ] [ -N <maxpconn> ]
         [ -p <pidfile> ] [ -m <max megs> ] [ -C <dir> ] [-- <cfgfile>*]
+```
 
 |参数|描述|详情|
 |:-----|:---|:---|
@@ -177,7 +179,7 @@ listen tidb-cluster                        # 配置 database 负载均衡
 
 - 方法二：使用 `systemd` 启动 HAProxy，默认读取 `/etc/haproxy/haproxy.cfg`（推荐）
 
-     {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
     ```bash
     systemctl start haproxy.service
