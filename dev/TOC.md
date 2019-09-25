@@ -91,7 +91,6 @@
         - [Table Routing](/dev/reference/tools/data-migration/features/overview.md#table-routing)
         - [Black & White Lists](/dev/reference/tools/data-migration/features/overview.md#black--white-table-lists)
         - [Binlog Event Filter](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)
-        - [Column Mapping](/dev/reference/tools/data-migration/features/overview.md#column-mapping)
         - [同步延迟监控](/dev/reference/tools/data-migration/features/overview.md#同步延迟监控)
         + Shard Support
           - [简介](/dev/reference/tools/data-migration/features/shard-merge.md)

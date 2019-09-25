@@ -44,7 +44,6 @@ category: reference
 5. 过滤掉三个实例的 `user`.`information` 表的所有删除操作。
 6. 过滤掉三个实例的 `store_{01|02}`.`sale_{01|02}` 表的所有删除操作。
 7. 过滤掉三个实例的 `user`.`log_bak` 表。
-8. 因为 `store_{01|02}`.`sale_{01|02}` 表带有 bigint 型的自增主键，将其合并至 TiDB 时会引发冲突。您需要有方案修改相应自增主键以避免冲突。
 
 ## 下游实例
 
@@ -133,35 +132,6 @@ category: reference
           tbl-name: "log_bak"
     ```
 
-- 要满足同步需求 #8，配置 [column mapping 规则](/dev/reference/tools/data-migration/features/overview.md#column-mapping) 如下：
-
-    {{< copyable "" >}}
-
-    ```yaml
-    column-mappings:
-      instance-1-sale:
-        schema-pattern: "store_*"
-        table-pattern: "sale_*"
-        expression: "partition id"
-        source-column: "id"
-        target-column: "id"
-        arguments: ["1", "store", "sale", "_"]
-      instance-2-sale:
-        schema-pattern: "store_*"
-        table-pattern: "sale_*"
-        expression: "partition id"
-        source-column: "id"
-        target-column: "id"
-        arguments: ["2", "store", "sale", "_"]
-      instance-3-sale:
-        schema-pattern: "store_*"
-        table-pattern: "sale_*"
-        expression: "partition id"
-        source-column: "id"
-        target-column: "id"
-        arguments: ["3", "store", "sale", "_"]
-    ```
-
 ## 同步任务配置
 
 同步任务的完整配置如下。详情请参阅 [Data Migration 任务配置文件](/dev/reference/tools/data-migration/configure/task-configuration-file.md)。
@@ -185,7 +155,6 @@ mysql-instances:
     source-id: "instance-1"
     route-rules: ["user-route-rule", "store-route-rule", "sale-route-rule"]
     filter-rules: ["user-filter-rule", "store-filter-rule", "sale-filter-rule"]
-    column-mapping-rules: ["instance-1-sale"]
     black-white-list:  "log-bak-ignored"
     mydumper-config-name: "global"
     loader-config-name: "global"
@@ -195,7 +164,6 @@ mysql-instances:
     source-id: "instance-2"
     route-rules: ["user-route-rule", "store-route-rule", "sale-route-rule"]
     filter-rules: ["user-filter-rule", "store-filter-rule", "sale-filter-rule"]
-    column-mapping-rules: ["instance-2-sale"]
     black-white-list:  "log-bak-ignored"
     mydumper-config-name: "global"
     loader-config-name: "global"
@@ -204,7 +172,6 @@ mysql-instances:
     source-id: "instance-3"
     route-rules: ["user-route-rule", "store-route-rule", "sale-route-rule"]
     filter-rules: ["user-filter-rule", "store-filter-rule", "sale-filter-rule"]
-    column-mapping-rules: ["instance-3-sale"]
     black-white-list:  "log-bak-ignored"
     mydumper-config-name: "global"
     loader-config-name: "global"
@@ -245,29 +212,6 @@ black-white-list:
     ignore-tables:
     - db-name: "user"
       tbl-name: "log_bak"
-
-column-mappings:
-  instance-1-sale:
-    schema-pattern: "store_*"
-    table-pattern: "sale_*"
-    expression: "partition id"
-    source-column: "id"
-    target-column: "id"
-    arguments: ["1", "store", "sale", "_"]
-  instance-2-sale:
-    schema-pattern: "store_*"
-    table-pattern: "sale_*"
-    expression: "partition id"
-    source-column: "id"
-    target-column: "id"
-    arguments: ["2", "store", "sale", "_"]
-  instance-3-sale:
-    schema-pattern: "store_*"
-    table-pattern: "sale_*"
-    expression: "partition id"
-    source-column: "id"
-    target-column: "id"
-    arguments: ["3", "store", "sale", "_"]
 
 mydumpers:
   global:

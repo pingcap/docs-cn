@@ -475,7 +475,6 @@ stop-task test
 - Table routing 规则
 - Black & white table lists 规则
 - Binlog event filter 规则
-- Column mapping 规则
 
 其余项均不支持更新。
 
