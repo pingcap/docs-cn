@@ -5,8 +5,7 @@ category: reference
 
 # HAProxy 最佳实践
 
-在线上使用 TiDB 数据库的时候，会遇到业务方希望 TiDB Server 层具有负载均衡能力。HAProxy 提供 TCP 协议下的负载均衡功能，TiDB 客户端可以通过连接 HAProxy 提供的浮动 IP 到 TiDB 数据库中进行数据的操作。本文介绍 HAProxy 在 TiDB 中的最佳实践配置和使用方法。
-
+本文介绍 HAProxy 在 TiDB 中的最佳配置和使用方法。HAProxy 提供 TCP 协议下的负载均衡能力，TiDB 客户端通过连接 HAProxy 提供的浮动 IP 即可对数据进行操作，实现 TiDB Server 层的负载均衡。
 ## HAProxy 简介
 
 [HAProxy](https://github.com/haproxy/haproxy) 是由 C 语言编写的自由开放源码的软件，为基于 TCP 和 HTTP 协议的应用程序提供高可用性、负载均衡和代理服务。因为 HAProxy 能够快速、高效使用 CPU 和内存，所以目前使用非常广泛，许多知名网站诸如 GitHub、Bitbucket、Stack Overflow、Reddit、Tumblr、Twitter 和 Tuenti 以及亚马逊网络服务系统都在使用 HAProxy。
