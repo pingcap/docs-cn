@@ -26,11 +26,11 @@ category: how-to
 | DM-worker1 | 192.168.0.5 |
 | DM-worker2 | 192.168.0.6 |
 
-MySQL1 和 MySQL2 需要开启 binlog。DM-worker1 负责同步 MySQL1 的数据，DM-worker2 负责同步 MySQL2 的数据。下面以此为例，说明如何部署 DM。
+MySQL1 和 MySQL2 中需要开启 binlog。DM-worker1 负责同步 MySQL1 的数据，DM-worker2 负责同步 MySQL2 的数据。下面以此为例，说明如何部署 DM。
 
 ### DM-worker 的部署
 
-DM-worker 需要连接上游 MySQL，且为了安全，强制用户必须配置加密后的密码。首先需要使用 dmctl 对 MySQL 的密码进行加密，以密码为 "123456" 为例：
+DM-worker 需要连接上游 MySQL，且为了安全，强制用户配置加密后的密码。首先使用 dmctl 对 MySQL 的密码进行加密，以密码为 "123456" 为例：
 
 {{< copyable "shell-regular" >}}
 
@@ -289,7 +289,7 @@ syncers:
 
 ```
 
-将以上配置内容写入到文件 `conf/task.yaml` 中，并使用 dmctl 创建任务：
+将以上配置内容写入到 `conf/task.yaml` 文件中，并使用 dmctl 创建任务：
 
 {{< copyable "shell-regular" >}}
 
