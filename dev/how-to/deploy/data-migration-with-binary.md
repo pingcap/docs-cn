@@ -102,7 +102,7 @@ server-id = 101
 # 用于标识一个 replication group 或者 MySQL/MariaDB 实例
 source-id = "mysql-replica-01"
 
-# 上游实例类型，值可以为 mysql 或者 mariadb
+# 上游实例类型，值可为 "mysql" 或者 "mariadb"
 flavor = "mysql"
 
 # 存储 relay log 的路径
