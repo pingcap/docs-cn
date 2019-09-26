@@ -55,10 +55,9 @@ binlogctl -cmd pumps
 
 可能同步慢的原因与调整:
 
-- 同步的数据库是否有包含没有主键或者唯一索引的表
-- 下游负载不高的情况下可以尝试调大 drainer **worker-count** 参数
-    - 会加大并发写下游
-    - drainer 跟下游之间延迟大的情况下需要调大并发数(跨机房同步建议 drainer 部署在下游)
+- 同步的数据库包含没有主键或者唯一索引的表, 需要给表加上主键。
+- drainer 跟下游之间延迟大, 可以调大 drainer **worker-count** 参数(跨机房同步建议 drainer 部署在下游)。
+- 下游负载不高, 可以尝试调大 drainer **worker-count** 参数。
 
 ## 假如有一个 pump crash 了会怎样
 
@@ -73,19 +72,21 @@ drainer 会因为获取不到这个 pump 的数据没法同步数据到下游,�
         4. 使用上游的全量备份恢复下游
         5. 部署 drainer, 使用 `initialCommitTs`= {从全量备份获取快照的时间戳}
 
-## checkpoint 介绍
+## 什么是 checkpoint
 
 checkpoint 记录了 drainer 同步到下游的 commit-ts, 重启的时候可以读取 checkpoint 接着从对应 commit-ts 同步数据到下游
 drainer 日志 `["write save point"] [ts=411222863322546177]` 表示保存对应时间戳的 checkpoint。
 
 下游类型不同，checkpoint 的保存方式也不同:
 
-- 下游 MySQL/TiDB 保存在 `tidb_binlog.checkpoint` 表, 表丢失无法获取写到下游的最新 commit-ts
-- 下游 kafka/file 保存在对应配置目录里的文件, 文件丢失可以消费下游最新的一条数据看写到下游数据的最新 commit-ts
+- 下游 MySQL/TiDB 保存在 `tidb_binlog.checkpoint` 表
+- 下游 kafka/file 保存在对应配置目录里的文件
+
+因为 kafka/file 的数据内容包含了 commit-ts, 所以如果 checkpoint 丢失我们可以消费下游最新的一条数据看写到下游数据的最新 commit-ts。
 
 drainer 启动的时候会去读取 checkpoint, 读取不到的话就会使用配置的 `initial-commit-ts` 做为初次启动开始的同步时间点。
 
-## drainer 故障如何重建 drainer (下游数据还在的情况下）
+## drainer 机器故障如何在新机器重新部署 drainer (下游数据还在的情况下）
 
 因为下游数据还在我们只要保证能从对应 checkpoint 接着同步就可以了。
 
@@ -107,7 +108,7 @@ drainer 启动的时候会去读取 checkpoint, 读取不到的话就会使用�
 ## 主从同步开启 `ignore-error` 触发 critical error 后如何重新部署
 
 1. 停止当前 drainer
-2. 重启全部 `tidb-server` 实例重新开始写 binlog (触发 critical error 后不会再写 binlog 到 pump)
+2. 重启触发 critical error 的 `tidb-server` 实例重新开始写 binlog (触发 critical error 后不会再写 binlog 到 pump)
 3. 上游做全量备份
 4. 清理掉下游数据包括 checkpoint 表 `tidb_binlog.checkpoint`
 5. 使用上游的全量备份恢复下游
