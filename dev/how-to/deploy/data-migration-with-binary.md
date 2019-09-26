@@ -15,7 +15,7 @@ category: how-to
 
 ## 使用样例
 
-假设有两台服务器部署 MySQL，一台服务器部署 TiDB（mocktikv 模式），另外有三台服务器部署两个 DM-worker 实例和一个 DM-master 实例。各个节点信息如下：
+假设在两台服务器上部署 MySQL，在一台服务器上部署 TiDB（mocktikv 模式），另外在三台服务器上部署两个 DM-worker 实例和一个 DM-master 实例。各个节点的信息如下：
 
 | 实例        | 服务器地址   |
 | ---------- | ----------- |
