@@ -114,7 +114,7 @@ meta-dir = "dm_worker_meta"
 # relay log 处理单元是否开启 gtid
 enable-gtid = false
 
-# 链接 MySQL/Mariadb 的 DSN 中的 charset 配置
+# 连接 MySQL/Mariadb 的 DSN 中的 charset 配置
 # charset= ""
 
 # MySQL 的连接地址
