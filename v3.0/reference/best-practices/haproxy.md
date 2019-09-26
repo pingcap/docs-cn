@@ -5,7 +5,7 @@ category: reference
 
 # HAProxy 最佳实践
 
-在线上使用 TiDB 数据库的时候，会遇到业务方希望 TiDB Server 层具有负载均衡能力。HAProxy 提供 TCP 协议下的负载均衡功能，TiDB 客户端可以通过连接 HAProxy 提供的浮动 IP 到 TiDB 数据库中进行数据的操作。本文介绍 HAProxy 在 TiDB 中的最佳实践配置和使用方法。
+本文介绍 HAProxy 在 TiDB 中的最佳配置和使用方法。HAProxy 提供 TCP 协议下的负载均衡能力，TiDB 客户端通过连接 HAProxy 提供的浮动 IP 即可对数据进行操作，实现 TiDB Server 层的负载均衡。
 
 ## HAProxy 简介
 
@@ -33,9 +33,9 @@ HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，�
 |硬件资源|最低配置|
 |:---|:---|
 |CPU|2 核，3.5 GHz|
-|内存| 16 GB|
-|存储容量| 50 GB (SATA)|
-|网卡| 万兆网卡|
+|内存|16 GB|
+|存储容量|50 GB（SATA 盘）|
+|网卡|万兆网卡|
 
 ### 依赖软件
 
@@ -43,13 +43,13 @@ HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，�
 
 #### 操作系统
 
-- Linux 2.4 操作系统，x86, x86_64, Alpha, Sparc, MIPS, PARISC 架构。
-- Linux 2.6/3.x 操作系统，x86, x86_64, ARM, Sparc, PPC64 架构。
-- Solaris 8/9 操作系统，UltraSPARC 2/3 架构。
-- Solaris 10 操作系统，Opteron/UltraSPARC 架构。
-- FreeBSD 4.10~10 操作系统，x86 架构。
-- OpenBSD 3.1~latest 操作系统，i386, amd64, macppc, alpha, sparc64 and VAX (check the ports) 架构。
-- AIX 5.1~5.3 操作系统， Power™ 架构。
+- Linux 2.4 操作系统，支持 x86、x86_64、Alpha、Sparc、MIPS 和 PARISC 架构。
+- Linux 2.6/3.x 操作系统，支持 x86、x86_64、ARM、Sparc 和 PPC64 架构。
+- Solaris 8/9 操作系统，支持 UltraSPARC 2/3 架构。
+- Solaris 10 操作系统，支持 Opteron/UltraSPARC 架构。
+- FreeBSD 4.10~10 操作系统，支持 x86 架构。
+- OpenBSD 3.1到最新版操作系统，支持 i386、amd64、macppc、alpha、sparc64 和 VAX 架构。
+- AIX 5.1~5.3 操作系统，支持 Power™ 架构。
 
 #### 依赖包
 
@@ -67,7 +67,7 @@ yum -y install epel-release gcc systemd-devel
 
 HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具有普遍性，不具有特殊性，建议根据实际场景，个性化配置相关的[配置文件](http://cbonte.github.io/haproxy-dconv/1.9/configuration.html)。
 
-![HAProxy](/media/haproxy.jpg)
+![HAProxy 在 TiDB 中的使用方法](/media/haproxy.jpg)
 
 ### 安装 HAProxy
 
