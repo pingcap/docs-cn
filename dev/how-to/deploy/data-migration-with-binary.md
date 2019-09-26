@@ -96,7 +96,7 @@ log-file = "dm-worker.log"
 worker-addr = ":8262"
 
 # 作为 MySQL slave 的 server id，用于获取 MySQL 的 binlog
-# 在一个 replication group 中，每个实例（master 和 slave）都应该有唯一的 server id
+# 在一个 replication group 中，每个实例（master 和 slave）都应该有唯一的 server ID
 server-id = 101
 
 # 用于标识一个 replication group 或者 MySQL/MariaDB 实例
