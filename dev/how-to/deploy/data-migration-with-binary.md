@@ -95,7 +95,7 @@ log-file = "dm-worker.log"
 # dm-worker 的地址
 worker-addr = ":8262"
 
-# 作为 MySQL slave 的 server id，用于获取 MySQL 的 binlog
+# 作为 MySQL slave 的 server ID，用于获取 MySQL 的 binlog
 # 在一个 replication group 中，每个实例（master 和 slave）都应该有唯一的 server ID
 server-id = 101
 
