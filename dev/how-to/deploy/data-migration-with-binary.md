@@ -145,7 +145,7 @@ port = 3306
 bin/dm-worker -config conf/dm-worker1.toml
 ```
 
-对于 DM-worker2，修改配置文件中的 source-id 为 "mysql-replica-02"，并且修改 `from` 配置部分修改为 MySQL2 的地址即可。
+对于 DM-worker2，修改配置文件中的 `source-id` 为 `mysql-replica-02`，并将 `from` 配置部分修改为 MySQL2 的地址即可。
 
 ### DM-master 的部署
 
@@ -169,7 +169,7 @@ Usage of dm-master:
   -master-addr string
         DM-master 的地址
   -print-sample-config
-        打印出 dm-master 的示例配置
+        打印出 DM-master 的示例配置
 ```
 
 DM-master 的配置文件：
@@ -177,7 +177,7 @@ DM-master 的配置文件：
 ```toml
 # Master Configuration.
 
-# rpc 相关配置
+# RPC 相关配置
 rpc-rate-limit = 10.0
 rpc-rate-burst = 40
 
@@ -185,7 +185,7 @@ rpc-rate-burst = 40
 log-level = "info"
 log-file = "dm-master.log"
 
-# dm-master 监听地址
+# DM-master 监听地址
 master-addr = ":8261"
 
 # replication group <-> dm-Worker 的配置
@@ -289,7 +289,7 @@ syncers:
 
 ```
 
-将以上配置内容写入到 `conf/task.yaml` 文件中，并使用 dmctl 创建任务：
+将以上配置内容写入到 `conf/task.yaml` 文件中，使用 dmctl 创建任务：
 
 {{< copyable "shell-regular" >}}
 
