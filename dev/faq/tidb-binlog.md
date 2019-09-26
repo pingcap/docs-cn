@@ -62,7 +62,7 @@ binlogctl -cmd pumps
 
 ## 假如有一个 pump crash 了会怎样
 
-drainer 会因为获取不到这个 pump 的数据没法同步数据到下游,如果这个 pump 能恢复 drainer 就能恢复同步
+drainer 会因为获取不到这个 pump 的数据没法同步数据到下游，如果这个 pump 能恢复 drainer 就能恢复同步
 
 如果 pump 没法恢复, 可以如下处理:
     1. 使用 [binlogctl 修改这个 pump 状态成 offline](/dev/how-to/maintain/tidb-binlog.md)(丢失这个pump的数据)
