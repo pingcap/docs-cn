@@ -64,7 +64,7 @@ Usage of worker:
   -checker-backoff-rollback duration
         任务检查模块中，定时调整恢复等待时间的间隔（默认值："5m0s"，一般情况下不需要修改，如果对该参数的作用没有深入的了解，不建议修改该参数）
   -checker-check-enable
-        是否开启任务状态检查，开启后 DM 会尝试自动恢复因错误暂停的数据同步任务（默认值：true）
+        是否开启任务状态检查。开启后 DM 会尝试自动恢复因错误而暂停的数据同步任务（默认值：true）
   -config string
         配置文件的路径
   -log-file string
