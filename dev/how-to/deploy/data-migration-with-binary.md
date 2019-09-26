@@ -72,7 +72,7 @@ Usage of worker:
   -print-sample-config
         打印示例配置
   -purge-expires int
-        relay log 的过期时间，DM-worker 会尝试自动删除最后修改时间超过了过期时间的 relay log（单位：小时）
+        relay log 的过期时间。DM-worker 会尝试自动删除最后修改时间超过了过期时间的 relay log（单位：小时）
   -purge-interval int
         定期检查 relay log 是否过期的间隔时间（默认值：3600）（单位：秒）
   -purge-remain-space int
