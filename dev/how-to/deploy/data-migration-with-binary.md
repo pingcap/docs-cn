@@ -125,16 +125,16 @@ password = "fCxfQ9XKCezSzuCD0Wf5dUD+LsKegSg="
 port = 3306
 
 # relay log 的删除规则
-#[purge]
-#interval = 3600
-#expires = 24
-#remain-space = 15
+# [purge]
+# interval = 3600
+# expires = 24
+# remain-space = 15
 
 # 任务状态检查相关配置
-#[checker]
-#check-enable = true
-#backoff-rollback = 5m
-#backoff-max = 5m
+# [checker]
+# check-enable = true
+# backoff-rollback = 5m
+# backoff-max = 5m
 ```
 
 推荐统一使用配置文件，把以上配置内容写入到 `conf/dm-worker1.toml` 中，在终端中使用下面的命令运行 DM-worker：
