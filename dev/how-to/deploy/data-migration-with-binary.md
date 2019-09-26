@@ -330,4 +330,4 @@ Go Version: go version go1.12 linux/amd64
 }
 ```
 
-这样同步 MySQL1 和 MySQL2 实例中分表数据的同步任务就创建成功了。
+这样就成功创建了一个将 MySQL1 和 MySQL2 实例中的分表数据同步到 TiDB 的任务。
