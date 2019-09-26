@@ -28,7 +28,7 @@ MySQL1 和 MySQL2 需要开启 binlog，DM-worker1 同步 MySQL1 的数据，DM-
 
 ### DM-worker 的部署
 
-DM-worker 需要链接上游 MySQL，且为了安全，强制用户必须配置加密后的密码。首先需要使用 dmctl 对 MySQL 的密码进行加密，以密码为 "123456" 为例：
+DM-worker 需要连接上游 MySQL，且为了安全，强制用户必须配置加密后的密码。首先需要使用 dmctl 对 MySQL 的密码进行加密，以密码为 "123456" 为例：
 
 {{< copyable "shell-regular" >}}
 
