@@ -214,7 +214,9 @@ bin/dm-master -config conf/dm-master.toml
 
 ### 创建数据同步任务
 
-假设在 MySQL1 和 MySQL2 实例中有若干个分表，这些分表的结构相同，所在的库名称都以 "sharding" 开头，表名称都以 "t" 开头，并且主键/唯一键不存在冲突，现在需要把这些分表同步到 TiDB 中的 db_target.t_target 表中。首先创建任务的配置文件：
+假设在 MySQL1 和 MySQL2 实例中有若干个分表，这些分表的结构相同，所在库的名称都以 "sharding" 开头，表名称都以 "t" 开头，并且主键或唯一键不存在冲突。现在需要把这些分表同步到 TiDB 中的 `db_target.t_target` 表中。
+
+首先创建任务的配置文件：
 
 {{< copyable "" >}}
 
