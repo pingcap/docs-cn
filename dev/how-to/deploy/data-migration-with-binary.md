@@ -188,7 +188,7 @@ log-file = "dm-master.log"
 # dm-master 监听地址
 master-addr = ":8261"
 
-# replication group <-> dm-Worker 的配置
+# replication group <-> DM-Worker 的配置
 [[deploy]]
 # 对应 DM-worker1 配置文件中的 source-id
 source-id = "mysql-replica-01"
