@@ -26,7 +26,7 @@ category: how-to
 | DM-worker1 | 192.168.0.5 |
 | DM-worker2 | 192.168.0.6 |
 
-MySQL1 和 MySQL2 需要开启 binlog，DM-worker1 同步 MySQL1 的数据，DM-worker2 同步 MySQL2 的数据。下面以此为例，说明 DM 的部署。
+MySQL1 和 MySQL2 需要开启 binlog。DM-worker1 负责同步 MySQL1 的数据，DM-worker2 负责同步 MySQL2 的数据。下面以此为例，说明如何部署 DM。
 
 ### DM-worker 的部署
 
