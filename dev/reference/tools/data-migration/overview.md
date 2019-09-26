@@ -100,3 +100,7 @@ DM 支持对原分库分表进行合库合表操作，但需要满足一些[使�
 
     - DM-worker 重启后不能自动恢复数据同步任务，需要使用 dmctl 手动执行 `start-task`。详见[管理数据同步任务](/dev/reference/tools/data-migration/manage-tasks.md)。
     - 在一些情况下，DM-worker 重启后不能自动恢复 DDL lock 同步，需要手动处理。详见[手动处理 Sharding DDL Lock](/dev/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)。
+
++ DM-worker 切换 MySQL
+
+    - 当 DM-worker 通过虚拟 IP（VIP）连接到 MySQL 且 VIP 实际指向的 MySQL 发生切换时，可能出现在同一时刻 DM 内部不同的 connection 分别连接到 VIP 切换前后不同的 MySQL 实例的情况，并造成 DM 拉取的 binlog 与获取到的其他状态不一致而导致难以预期的异常行为甚至数据损坏。如需切换 VIP 连接的 MySQL，请参考 [虚拟 IP 环境下的上游主从切换](/dev/reference/tools/data-migration/usage-scenarios/master-slave-switch.md#虚拟-IP-环境下的上游主从切换) 对 DM 手动执行变更。

@@ -100,6 +100,8 @@
       + 使用场景
         - [简单的从库同步场景](/dev/reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
         - [分库分表合并场景](/dev/reference/tools/data-migration/usage-scenarios/shard-merge.md)
+        - [分表合并数据迁移最佳实践](/dev/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md)
+        - [DM-worker 在上游 MySQL 主从间切换](/dev/reference/tools/data-migration/usage-scenarios/master-slave-switch.md)
       + [部署使用](/dev/reference/tools/data-migration/deploy.md)
       + 配置
         - [概述](/dev/reference/tools/data-migration/configure/overview.md)
@@ -110,6 +112,7 @@
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-aurora.md)
       - [DM Portal](/dev/reference/tools/data-migration/dm-portal.md)
+      - [DM 错误含义和诊断](/dev/reference/tools/data-migration/error-system.md)
       - [DM 故障诊断](/dev/how-to/troubleshoot/data-migration.md)
       - [FAQ](/dev/faq/data-migration.md)
     + TiDB Lightning

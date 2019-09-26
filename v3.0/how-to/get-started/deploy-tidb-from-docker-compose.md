@@ -24,18 +24,31 @@ aliases: ['/docs-cn/v3.0/how-to/get-started/local-cluster/install-from-docker-co
 
 1. 下载 `tidb-docker-compose`
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     git clone https://github.com/pingcap/tidb-docker-compose.git
     ```
 
 2. 创建并启动集群
 
+    获取最新 Docker 镜像：
+
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    cd tidb-docker-compose && docker-compose pull # Get the latest Docker images
+    cd tidb-docker-compose && docker-compose pull &&
+    ```
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     docker-compose up -d
     ```
 
 3. 访问集群
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     mysql -h 127.0.0.1 -P 4000 -u root
@@ -55,17 +68,23 @@ aliases: ['/docs-cn/v3.0/how-to/get-started/local-cluster/install-from-docker-co
 
     [Helm](https://helm.sh) 可以用作模板渲染引擎，只需要下载其 binary 文件即可以使用。
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
     ```
 
     如果是 Mac 系统，也可以通过 Homebrew 安装：
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     brew install kubernetes-helm
     ```
 
 2. 下载 `tidb-docker-compose`
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     git clone https://github.com/pingcap/tidb-docker-compose.git
@@ -73,9 +92,11 @@ aliases: ['/docs-cn/v3.0/how-to/get-started/local-cluster/install-from-docker-co
 
 3. 自定义集群
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    cd tidb-docker-compose
-    cp compose/values.yaml values.yaml
+    cd tidb-docker-compose &&
+    cp compose/values.yaml values.yaml &&
     vim values.yaml
     ```
 
@@ -91,18 +112,31 @@ aliases: ['/docs-cn/v3.0/how-to/get-started/local-cluster/install-from-docker-co
 
 4. 生成 `docker-compose.yml` 文件
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     helm template -f values.yaml compose > generated-docker-compose.yml
     ```
 
 5. 使用生成的 `docker-compose.yml` 创建并启动集群
 
+    获取最新 Docker 镜像：
+
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    docker-compose -f generated-docker-compose.yml pull # Get the latest Docker images
+    docker-compose -f generated-docker-compose.yml pull
+    ```
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     docker-compose -f generated-docker-compose.yml up -d
     ```
 
 6. 访问集群
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     mysql -h 127.0.0.1 -P 4000 -u root
@@ -116,16 +150,23 @@ aliases: ['/docs-cn/v3.0/how-to/get-started/local-cluster/install-from-docker-co
 
 向 TiDB 集群中插入一些样本数据：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-$ docker-compose exec tispark-master bash
-$ cd /opt/spark/data/tispark-sample-data
-$ mysql -h tidb -P 4000 -u root < dss.ddl
+docker-compose exec tispark-master bash &&
+cd /opt/spark/data/tispark-sample-data &&
+mysql -h tidb -P 4000 -u root < dss.ddl
 ```
 
 当样本数据加载到 TiDB 集群之后，可以使用 `docker-compose exec tispark-master /opt/spark/bin/spark-shell` 来访问 Spark shell。
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-$ docker-compose exec tispark-master /opt/spark/bin/spark-shell
+docker-compose exec tispark-master /opt/spark/bin/spark-shell
+```
+
+```
 ...
 Spark context available as 'sc' (master = local[*], app id = local-1527045927617).
 Spark session available as 'spark'.
@@ -139,7 +180,9 @@ Welcome to
 Using Scala version 2.11.8 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_172)
 Type in expressions to have them evaluated.
 Type :help for more information.
+```
 
+```shell
 scala> import org.apache.spark.sql.TiContext
 ...
 scala> val ti = new TiContext(spark)
@@ -147,6 +190,9 @@ scala> val ti = new TiContext(spark)
 scala> ti.tidbMapDatabase("TPCH_001")
 ...
 scala> spark.sql("select count(*) from lineitem").show
+```
+
+```
 +--------+
 |count(1)|
 +--------+
@@ -156,8 +202,10 @@ scala> spark.sql("select count(*) from lineitem").show
 
 你也可以通过 Python 或 R 来访问 Spark：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-docker-compose exec tispark-master /opt/spark/bin/pyspark
+docker-compose exec tispark-master /opt/spark/bin/pyspark &&
 docker-compose exec tispark-master /opt/spark/bin/sparkR
 ```
 
