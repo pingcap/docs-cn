@@ -50,7 +50,7 @@ binlogctl -cmd pumps
 
 一些特别需要关注的监控项:
 
-- drainer 监控 **drainer event** 可以看到 drainer 当前每秒同步 Insert/Update/Delete 时间到下游的速度
+- drainer 监控 **drainer event** 可以看到 drainer 当前每秒同步 Insert/Update/Delete 事件到下游的速度
 - drainer 监控 **sql query time** 可以看到 drainer 在下游执行 sql 的响应时间
 
 可能同步慢的原因与调整:
