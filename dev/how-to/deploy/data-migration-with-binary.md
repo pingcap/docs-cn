@@ -5,6 +5,8 @@ category: how-to
 
 # 使用 DM binary 部署 DM 集群
 
+本文将介绍如何使用 DM binary 快速部署 DM 集群。
+
 ## 准备工作
 
 首先需要下载官方 binary，链接地址：[DM 下载](/dev/reference/tools/download.md#tidb-dm-data-migration)。
