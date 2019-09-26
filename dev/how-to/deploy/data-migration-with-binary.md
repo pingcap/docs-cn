@@ -117,7 +117,7 @@ enable-gtid = false
 # 链接 MySQL/Mariadb 的 DSN 中的 charset 配置
 # charset= ""
 
-# MySQL 的链接地址
+# MySQL 的连接地址
 [from]
 host = "192.168.0.1"
 user = "root"
