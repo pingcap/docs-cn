@@ -92,7 +92,7 @@ DM-worker 的配置文件：
 log-level = "info"
 log-file = "dm-worker.log"
 
-# dm-worker 的地址
+# DM-worker 的地址
 worker-addr = ":8262"
 
 # 作为 MySQL slave 的 server ID，用于获取 MySQL 的 binlog
@@ -108,7 +108,7 @@ flavor = "mysql"
 # 存储 relay log 的路径
 relay-dir = "./relay_log"
 
-# 存储 dm-worker 元信息的路径
+# 存储 DM-worker 元信息的路径
 meta-dir = "dm_worker_meta"
 
 # relay log 处理单元是否开启 gtid
