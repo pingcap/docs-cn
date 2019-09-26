@@ -32,7 +32,7 @@ HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，�
 
 |硬件资源|最低配置|
 |:---|:---|
-|处理器|2 cores, 3.5 GHz|
+|CPU|2 核，3.5 GHz|
 |内存| 16 GB|
 |存储容量| 50 GB (SATA)|
 |网卡| 万兆网卡|
@@ -44,12 +44,12 @@ HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，�
 #### 操作系统
 
 - Linux 2.4 操作系统，x86, x86_64, Alpha, Sparc, MIPS, PARISC 架构。
-- Linux 2.6 / 3.x 操作系统，x86, x86_64, ARM, Sparc, PPC64 架构。
-- Solaris 8/9 操作系统，UltraSPARC 2 and 3 架构。
-- Solaris 10 操作系统，Opteron and UltraSPARC 架构。
-- FreeBSD 4.10 - 10 操作系统，x86 架构。
-- OpenBSD 3.1 to -current 操作系统，i386, amd64, macppc, alpha, sparc64 and VAX (check the ports) 架构。
-- AIX 5.1 - 5.3 操作系统， Power™ architecture 架构。
+- Linux 2.6/3.x 操作系统，x86, x86_64, ARM, Sparc, PPC64 架构。
+- Solaris 8/9 操作系统，UltraSPARC 2/3 架构。
+- Solaris 10 操作系统，Opteron/UltraSPARC 架构。
+- FreeBSD 4.10~10 操作系统，x86 架构。
+- OpenBSD 3.1~latest 操作系统，i386, amd64, macppc, alpha, sparc64 and VAX (check the ports) 架构。
+- AIX 5.1~5.3 操作系统， Power™ 架构。
 
 #### 依赖包
 
@@ -125,7 +125,7 @@ haproxy --help
 
 ### 配置 HAProxy
 
-yum 安装过程中会生成配置模版。
+yum 安装过程中会生成配置模版，你也可以根据实际场景自定义配置如下配置项。
 
 ```yaml
 global                                     # 全局配置
