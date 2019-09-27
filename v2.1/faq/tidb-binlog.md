@@ -29,7 +29,7 @@ drainer 同步帐号需要有如下权限：
 
 确认 gc 正常:
 
-- 确认 pump 监控面板 **gc_tso** 时间是否与配置一致。
+- 确认 pump 监控面板 **gc_tso** 时间是否与配置一致，版本 <= 2.1.14 的 pump 会保证非 offline 状态 drainer 消费了数据才会 gc，如果有不再使用的 drainer 需要使用 binlogctl 下线。
 
 如 gc 正常以下调整可以降低单个 pump 需要的空间大小：
 
@@ -106,6 +106,8 @@ drainer 启动的时候会去读取 checkpoint, 读取不到的话就会使用�
 2. 使用 reparo 设置 `start-tso` = {全量备份文件快照时间戳+1}, `end-ts` = 0 (或者指定时间点) 恢复到备份文件最新的数据
 
 ## 主从同步开启 `ignore-error` 触发 critical error 后如何重新部署
+
+TiDB 配置开启 `ignore-error` 写 binlog 失败后触发 critical error 告警， 后续都不会再写 binlog, 所以会有 binlog 数据丢失, 如果要恢复同步需要如下处理：
 
 1. 停止当前 drainer
 2. 重启触发 critical error 的 `tidb-server` 实例重新开始写 binlog (触发 critical error 后不会再写 binlog 到 pump)
