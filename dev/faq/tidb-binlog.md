@@ -9,7 +9,7 @@ category: FAQ
 
 ## 开启 binog 对 TiDB 的性能有何影响？
 
-对于查询无影响。
+- 对于查询无影响。
 
 对于有写入或更新数据的事务有一点性能影响，延迟上在 Prewrite 阶段要并发写一条 p-binlog 成功后才可以提交事务，一般写 binlog 比 KV Prewrite 快所以不会增加延迟，写 binlog 的响应时间可以在 pump 的监控面板看到。
 
