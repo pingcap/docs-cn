@@ -612,7 +612,7 @@ TiDB 使用 Raft 在多个副本之间做数据同步（默认为每个 Region 3
 
 #### 3.4.12 Region 是如何进行分裂的？
 
-Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 的大小超过参数 `region-split-size` 或 `region-split-keys` 的值时，就会触发分裂，分裂后的信息会汇报给 PD。
+Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 的大小超过参数 `region-max-size` 或 `region-max-keys` 的值时，就会触发分裂，分裂后的信息会汇报给 PD。
 
 #### 3.4.13 TiKV 是否有类似 MySQL 的 `innodb_flush_log_trx_commit` 参数，来保证提交数据不丢失？
 
