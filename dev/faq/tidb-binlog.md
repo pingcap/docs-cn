@@ -7,7 +7,7 @@ category: FAQ
 
 本文介绍 TiDB Binlog 使用过程中的常见问题及解决方案。
 
-## 开启 binog 对 TiDB 的性能影响
+## 开启 binog 对 TiDB 的性能有何影响？
 
 对于查询无影响。
 
