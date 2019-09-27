@@ -45,8 +45,8 @@ cd tidb-operator/deploy/gcp
 
 ```bash
 gcloud services enable cloudresourcemanager.googleapis.com \
-    cloudbilling.googleapis.com cloud services enable iam.googleapis.com \
-    compute.googleapis.com container.googleapis.com
+cloudbilling.googleapis.com iam.googleapis.com \
+compute.googleapis.com container.googleapis.com
 ```
 
 ### 配置 Terraform
@@ -62,30 +62,41 @@ gcloud services enable cloudresourcemanager.googleapis.com \
 + `GCP_REGION`：创建资源所在的区域，例如：`us-west1`。
 + `GCP_PROJECT`：GCP 项目的名称。
 
-要使用上述 3 个环境变量配置 Terraform，可执行以下脚本：
+要使用上述 3 个环境变量配置 Terraform，可执行以下步骤：
+
+将 GCP_REGION 替换为你的 GCP Region。
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-# 将 GCP_REGION 替换为你的 GCP Region。
 echo GCP_REGION=\"us-west1\" >> terraform.tfvars
 ```
 
+将 GCP_PROJECT 替换为你的 GCP 项目名称，确保连接的是正确的 GCP 项目。
+
 {{< copyable "shell-regular" >}}
 
 ```bash
-# 将 GCP_PROJECT 替换为你的 GCP 项目名称，确保连接的是正确的 GCP 项目。
 echo "GCP_PROJECT=\"$(gcloud config get-value project)\"" >> terraform.tfvars
 ```
 
+初始化 Terraform：
+
 {{< copyable "shell-regular" >}}
 
 ```bash
-# 为 Terraform 创建一个有限权限的服务账号，并设置证书路径。
+terraform init
+```
+
+为 Terraform 创建一个有限权限的服务账号，并设置证书路径。
+
+{{< copyable "shell-regular" >}}
+
+```bash
 ./create-service-account.sh
 ```
 
-Terraform 自动加载和填充匹配 `terraform.tfvars` 或 `*.auto.tfvars` 文件的变量。相关详细信息，请参阅 [Terraform 文档](https://learn.hashicorp.com/terraform/getting-started/variables.html)。上述脚本会使用 `GCP_REGION` 和 `GCP_PROJECT` 填充 `terraform.tfvars` 文件，使用 `GCP_CREDENTIALS_PATH` 填充 `credentials.auto.tfvars` 文件。
+Terraform 自动加载和填充匹配 `terraform.tfvars` 或 `*.auto.tfvars` 文件的变量。相关详细信息，请参阅 [Terraform 文档](https://learn.hashicorp.com/terraform/getting-started/variables.html)。上述步骤会使用 `GCP_REGION` 和 `GCP_PROJECT` 填充 `terraform.tfvars` 文件，使用 `GCP_CREDENTIALS_PATH` 填充 `credentials.auto.tfvars` 文件。
 
 ## 部署集群
 
@@ -121,12 +132,6 @@ Terraform 自动加载和填充匹配 `terraform.tfvars` 或 `*.auto.tfvars` 文
 如上所述，生产环境的部署需要 91 个 CPU，超过了 GCP 项目的默认配额。可以参考[配额](https://cloud.google.com/compute/quotas)来增加项目配额。扩容同样需要更多 CPU。
 
 所有配置现已完成，可以启动脚本来部署 TiDB 集群：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-terraform init
-```
 
 {{< copyable "shell-regular" >}}
 
@@ -177,14 +182,14 @@ mysql -h <tidb_ilb_ip> -P 4000 -u root
 
 ## 与集群交互
 
-你可以通过 `kubectl` 和 `helm` 使用 kubeconfig 文件 `credentials/kubeconfig_<cluster_name>` 和 GKE 集群交互。交互方式主要有以下两种：
+你可以通过 `kubectl` 和 `helm` 使用 kubeconfig 文件 `credentials/kubeconfig_<gke_cluster_name>` 和 GKE 集群交互。交互方式主要有以下两种：
 
 - 指定 `--kubeconfig` 参数：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb
+    kubectl --kubeconfig credentials/kubeconfig_<gke_cluster_name> get po -n <tidb_cluster_name>
     ```
 
     > **注意：**
@@ -194,7 +199,7 @@ mysql -h <tidb_ilb_ip> -P 4000 -u root
     {{< copyable "shell-regular" >}}
 
     ```bash
-    helm --kubeconfig credentials/kubeconfig_<cluster_name> ls
+    helm --kubeconfig credentials/kubeconfig_<gke_cluster_name> ls
     ```
 
 - 设置 `KUBECONFIG` 环境变量：
@@ -202,13 +207,13 @@ mysql -h <tidb_ilb_ip> -P 4000 -u root
     {{< copyable "shell-regular" >}}
 
     ```bash
-    export KUBECONFIG=$PWD/credentials/kubeconfig_<cluster_name>
+    export KUBECONFIG=$PWD/credentials/kubeconfig_<gke_cluster_name>
     ```
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    kubectl get po -n tidb
+    kubectl get po -n <tidb_cluster_name>
     ```
 
     {{< copyable "shell-regular" >}}
@@ -219,7 +224,7 @@ mysql -h <tidb_ilb_ip> -P 4000 -u root
 
 > **注意：**
 >
-> `cluster_name` 默认为 `my-cluster`，可以通过 `variables.tf` 修改。
+> `gke_cluster_name` 默认为 `tidb-cluster`，可以通过 `variables.tf` 中 `gke_name` 修改。
 
 ## 升级 TiDB 集群
 
@@ -239,7 +244,7 @@ variable "tidb_version" {
 {{< copyable "shell-regular" >}}
 
 ```bash
-kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb --watch
+kubectl --kubeconfig credentials/kubeconfig_<gke_cluster_name> get po -n <tidb_cluster_name> --watch
 ```
 
 然后你可以[访问数据库](#访问数据库)并通过 `tidb_version()` 确认集群是否升级成功：
@@ -265,7 +270,7 @@ Check Table Before Drop: false
 
 ## 管理多个 TiDB 集群
 
-一个 `tidb-cluster` 模块的实例对应一个 GKE 集群中的 TiDB 集群。要添加一个新的 TiDB 集群，可以编辑 `tidbclusters.tf` 文件来添加一个 `tidb-cluster` 模块的新实例。例如：
+一个 `tidb-cluster` 模块的实例对应一个 GKE 集群中的 TiDB 集群。要添加一个新的 TiDB 集群，可以编辑 `tidbclusters.tf` 文件来添加一个 `tidb-cluster` 模块。例如：
 
 {{< copyable "" >}}
 
@@ -275,12 +280,14 @@ module "example-tidb-cluster" {
     helm = "helm.gke"
   }
   source                     = "../modules/gcp/tidb-cluster"
-  gcp_project                = "gcp-project-name"
-  gke_cluster_location       = "us-west1"
-  gke_cluster_name           = "gke-cluster-name"
-  cluster_name               = "example-tidb-cluster"
+  cluster_id                 = module.tidb-operator.cluster_id
+  tidb_operator_id           = module.tidb-operator.tidb_operator_id
+  gcp_project                = var.GCP_PROJECT
+  gke_cluster_location       = local.location
+  gke_cluster_name           = <gke-cluster-name>
+  cluster_name               = <example-tidb-cluster>
   cluster_version            = "v3.0.1"
-  kubeconfig_path            = module.tidb-operator.kubeconfig_path
+  kubeconfig_path            = local.kubeconfig
   tidb_cluster_chart_version = "v1.0.0"
   pd_instance_type           = "n1-standard-1"
   tikv_instance_type         = "n1-standard-4"
@@ -290,6 +297,7 @@ module "example-tidb-cluster" {
   tikv_node_count            = 2
   tidb_node_count            = 1
   monitor_node_count         = 1
+  override_values            = file("./example-cluster.yaml")
 }
 ```
 
@@ -308,7 +316,9 @@ output "how_to_connect_to_example_tidb_cluster_from_bastion" {
 }
 ```
 
-上述配置可使该脚本打印出用于连接 TiDB 集群的命令，该集群即刚刚从堡垒机实例创建的集群。
+上述配置可使该脚本打印出用于连接 TiDB 集群的命令。
+
+修改完成后，执行 `terraform init` 和 `terraform apply` 创建集群。
 
 ## 扩容
 
@@ -349,21 +359,46 @@ GCP 允许 `n1-standard-1` 或者更大的实例类型挂载本地 SSD，这提�
 
 ### 自定义 TiDB 参数配置
 
-Terraform 脚本为 GKE 中的 TiDB 集群提供了默认设置。你也可以在 `tidbclusters.tf` 中为每个 TiDB 集群指定一个覆盖文件 - `values.yaml`。此文件中的值会覆盖默认设置。
+Terraform 脚本为 GKE 中的 TiDB 集群提供了默认设置。你也可以在 `tidbclusters.tf` 中为每个 TiDB 集群指定一个覆盖文件 - `override_values`。此文件中的值会覆盖默认设置。
 
-例如，集群默认使用 `gcp/tidb-cluster` 模块中的 `default.yaml` 作为覆盖文件，并在此文件中启用了 ConfigMap rollout 功能。
+例如，集群默认使用 `deploy/modules/gcp/tidb-cluster` 模块中的 `values/default.yaml` 作为覆盖文件。
 
-在 GKE 中，某些值不支持在 `values.yaml` 中自定义，例如群集版本、副本、节点选择器和 taints。这些变量由 Terraform 控制，以确保基础架构和 TiDB 集群一致。如果要自定义这些变量，可以直接在 `tidbclusters.tf` 文件中编辑每个 `tidb-cluster` 模块的变量。
+在 GKE 中，某些值不支持在 `values.yaml` 中自定义，包括集群版本、副本数、`NodeSelector` 以及 `Tolerations`。`NodeSelector` 和 `Tolerations` 由 Terraform 直接管理以确保基础设施与 TiDB 集群之间的一致性。集群版本和副本数可以通过 `tidbclusters.tf` 文件中编辑每个 `tidb-cluster` module 参数来修改。
+
+> **注意：**
+>
+> 自定义 `values.yaml` 配置文件中，不建议包含如下配置（`tidb-cluster` module 默认固定配置）：
+>
+> ```
+> pd:
+>   storageClassName: pd-ssd
+> tikv:
+>   stroageClassName: local-storage
+> tidb:
+>   service:
+>     type: LoadBalancer
+>     annotations:
+>       cloud.google.com/load-balancer-type: "Internal"
+>   separateSlowLog: true
+> monitor:
+>   storageClassName: pd-ssd
+>   persistent: true
+>   grafana:
+>     config:
+>       GF_AUTH_ANONYMOUS_ENABLED: "true"
+>     service:
+>       type: LoadBalancer
+> ```
 
 ### 自定义 TiDB Operator
 
-如果要自定义 TiDB Operator，可以使用 `override_values` 变量来指定 Helm `values.yaml` 文件。该变量可以传递给 `tidb-cluster` 模块。
+如果要自定义 TiDB Operator，可以使用 `operator_helm_values` 变量来指定 Helm `values.yaml` 文件。该变量可以传递给 `tidb-operator` 模块。
 
 {{< copyable "" >}}
 
 ```
-variable "override_values" {
-  value = file("/path/to/values_file.yaml")
+variable "operator_helm_values" {
+  default = "relative/path/to/values_file.yaml"
 }
 ```
 
@@ -456,9 +491,9 @@ terraform destroy
     kubectl --kubeconfig /path/to/kubeconfig/file get pvc -n namespace-of-tidb-cluster -o jsonpath='{.items[*].spec.volumeName}'|fmt -1 | xargs -I {} kubectl --kubeconfig /path/to/kubeconfig/file patch pv {} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
     ```
 
-    上述命令将获取 TiDB 集群命名空间中的 PVC (Persistent Volume Claim)，并将 PV 的回收策略设置为 `Delete`。在执行 `terraform destroy` 过程中删除 PVC 时，也会将磁盘删除。
+    上述命令将获取 TiDB 集群命名空间中的 PVC (Persistent Volume Claim)，并将绑定的 PV 的回收策略设置为 `Delete`。在执行 `terraform destroy` 过程中删除 PVC 时，也会将磁盘删除。
 
-    下面是一个名为 `change-pv-reclaimpolicy.sh` 的脚本。相对于仓库根目录来说，它在 `deploy/gcp` 中简化了上述过程。
+    下面是一个名为 `change-pv-reclaimpolicy.sh` 的脚本。相对于仓库根目录来说，它在 `deploy/gcp` 中，简化了上述过程。
 
     {{< copyable "shell-regular" >}}
 
@@ -483,11 +518,12 @@ terraform destroy
 
 如果采用了最佳实践，集群中的 Terraform 状态不会相互干扰，并且扩展起来很方便。示例如下：
 
+假设已在项目根目录：
+
 {{< copyable "shell-regular" >}}
 
 ```shell
-# 假设已在项目根目录
-mkdir -p deploy/gcp-staging
+mkdir -p deploy/gcp-staging && \
 vim deploy/gcp-staging/main.tf
 ```
 
@@ -618,7 +654,7 @@ output "connect_to_tidb_cluster_b_from_bastion" {
 
 ```
 
-如上述代码所示，你可以在每个模块调用中省略几个参数，因为有合理的默认值，并且可以轻松地自定义配置。例如，如果你不需要调用堡垒模块，将其删除即可。
+如上述代码所示，你可以在每个模块调用中省略几个参数，因为有合理的默认值，并且可以轻松地自定义配置。例如，如果你不需要调用堡垒机模块，将其删除即可。
 
 如果要自定义每个字段，可使用以下三种方法中的一种：
 
