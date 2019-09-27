@@ -35,7 +35,7 @@ Besides the operation of the Kubernetes cluster itself, there are the following 
 
 ## What is the recommended deployment topology when I use TiDB Operator to orchestrate a TiDB cluster on a public cloud?
 
-To achieve high availability and data security, it is recommended that you deploy the TiDB cluster in at least three availability zones in a production environment.
+To achieve high availability and data safety, it is recommended that you deploy the TiDB cluster in at least three availability zones in a production environment.
 
 In terms of the deployment topology relationship between the TiDB cluster and TiDB services, TiDB Operator supports the following three deployment modes. Each mode has its own merits and demerits, so your choice must be based on actual application needs.
 

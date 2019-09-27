@@ -60,7 +60,7 @@ enabled = true
 
 Higher log level also means better performance for TiKV.
 
-As TiKV is deployed in clusters, the Raft algorithm can guarantee that data is written into most of the nodes. Therefore, except the scenarios where data security is extremely sensitive, `sync-log` can be disabled in raftstore.
+As TiKV is deployed in clusters, the Raft algorithm can guarantee that data is written into most of the nodes. Therefore, except the scenarios where data safety is extremely important, `sync-log` can be disabled in raftstore.
 
 There are 2 Column Families (Default CF and Write CF) on TiKV cluster which are mainly used to store different types of data. For the Sysbench test, the Column Family that is used to import data has a constant proportion among TiDB clusters:
 

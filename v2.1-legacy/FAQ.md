@@ -608,7 +608,7 @@ TiKV implements the Column Family (CF) feature of RocksDB. By default, the KV da
 
 #### If a node is down, will the service be affected? How long?
 
-TiDB uses Raft to replicate data among multiple replicas and guarantees the strong consistency of data. If one replica goes wrong, the other replicas can guarantee data security. The default number of replicas in each Region is 3. Based on the Raft protocol, a leader is elected in each Region, and if a single leader fails, a follower is soon elected as Region leader after a maximum of 2 * lease time (lease time is 10 seconds).
+TiDB uses Raft to replicate data among multiple replicas and guarantees the strong consistency of data. If one replica goes wrong, the other replicas can guarantee data safety. The default number of replicas in each Region is 3. Based on the Raft protocol, a leader is elected in each Region, and if a single leader fails, a follower is soon elected as Region leader after a maximum of 2 * lease time (lease time is 10 seconds).
 
 #### What are the TiKV scenarios that take up high I/O, memory, CPU, and exceed the parameter configuration?
 
@@ -644,9 +644,9 @@ WAL belongs to ordered writing, and currently, we do not apply a unique configur
 
 Generally, enabling `sync-log` reduces about 30% of the performance. For the test about `sync-log = false`, see [Performance test result for TiDB using Sysbench](benchmark/sysbench.md).
 
-#### Can the Raft + multiple replicas in the upper layer implement complete data security? Is it required to apply the most strict mode to standalone storage?
+#### Can the Raft + multiple replicas in the upper layer implement complete data safety? Is it required to apply the most strict mode to standalone storage?
 
-Raft uses strong consistency, and only when the data has been written into more than 50% of the nodes, the application returns ACK (two out of three nodes). In this case, data consistency is guaranteed. However, theoretically, two nodes might crash. Therefore, for scenarios that have a strict requirement on data security, such as scenarios in financial industry, you need to enable the `sync-log`.
+Raft uses strong consistency, and only when the data has been written into more than 50% of the nodes, the application returns ACK (two out of three nodes). In this case, data consistency is guaranteed. However, theoretically, two nodes might crash. Therefore, for scenarios that have a strict requirement on data safety, such as scenarios in financial industry, you need to enable the `sync-log`.
 
 #### In data writing using the Raft protocol, multiple network roundtrips occur. What is the actual write delay?
 
