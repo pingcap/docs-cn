@@ -233,7 +233,7 @@ TiSpark uses TiDB statistic information for the following items:
 1. Determining which index to ues in your query plan with the estimated lowest cost.
 2. Small table broadcasting, which enables efficient broadcast join.
 
-If you would like TiSpark to use statistic information, first you need to make sure that concerning tables have already been analyzed. Read more about how to analyze tables [here](/dev/reference/performance/statistics.md).
+If you would like TiSpark to use statistic information, first you need to make sure that concerning tables have already been analyzed. Read more about [how to analyze tables](/dev/reference/performance/statistics.md).
 
 Starting from TiSpark 2.0, statistics information is default to auto load.
 

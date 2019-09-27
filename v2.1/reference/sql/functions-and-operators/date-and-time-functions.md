@@ -6,7 +6,7 @@ category: reference
 
 # Date and Time Functions
 
-The usage of date and time functions is similar to MySQL. For more information, see [here](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-types.html).
+The usage of date and time functions is similar to MySQL. For more information, see [Date and Time Types](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-types.html).
 
 **Date/Time functions**
 
@@ -73,4 +73,4 @@ The usage of date and time functions is similar to MySQL. For more information, 
 | [`YEAR()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_year) | Return the year                          |
 | [`YEARWEEK()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_yearweek) | Return the year and week                 |
 
-For details, see [here](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html).
+For details, see [Date and Time Functions](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html).

@@ -57,8 +57,8 @@ gcloud services enable cloudresourcemanager.googleapis.com \
 The terraform script expects three variables to be provided by the user. You can let Terraform prompt you for them, or define them in a `.tfvars` file of your choice. The three variables are:
 
 * `GCP_CREDENTIALS_PATH`: Path to a valid GCP credentials file.
-    - It is recommended for you to create a separate service account to be used by Terraform. See [this page](https://cloud.google.com/iam/docs/creating-managing-service-accounts) for more information. `./create-service-account.sh` will create such a service account with minimal permissions.
-    - See [this page](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) for information on creating service account keys. The steps in the script below detail how to do this using a script provided in the `deploy/gcp` directory, alternatively if creating the service account and key yourself, choose `JSON` key type during creation. The downloaded `JSON` file that contains the private key is the credentials file you need.
+    - It is recommended for you to create a separate service account to be used by Terraform. See [Creating and managing service accounts](https://cloud.google.com/iam/docs/creating-managing-service-accounts) for more information. `./create-service-account.sh` will create such a service account with minimal permissions.
+    - See [Creating and managing service account keys](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) for information on creating service account keys. The steps in the script below detail how to do this using a script provided in the `deploy/gcp` directory, alternatively if creating the service account and key yourself, choose `JSON` key type during creation. The downloaded `JSON` file that contains the private key is the credentials file you need.
 * `GCP_REGION`: The region in which to create the resources, for example: `us-west1`.
 * `GCP_PROJECT`: The GCP project in which everything will be created.
 
@@ -110,7 +110,7 @@ The `prod.tfvars` setup creates a new VPC, two subnetworks, and an f1-micro inst
 >
 > The number of nodes created depends on how many availability zones there are in the chosen region. Most have 3 zones, but us-central1 has 4. See [Regions and Zones](https://cloud.google.com/compute/docs/regions-zones/) for more information and see the [Customize](#customize) section on how to customize node pools in a regional cluster.
 
-The production setup, as listed above, requires at least 91 CPUs which exceed the default CPU quota of a GCP project. To increase your project's quota, follow the instructions [here](https://cloud.google.com/compute/quotas). You need more CPUs if you need to scale out.
+The production setup, as listed above, requires at least 91 CPUs which exceed the default CPU quota of a GCP project. To increase your project's quota, follow the [instructions here](https://cloud.google.com/compute/quotas). You need more CPUs if you need to scale out.
 
 Now that you have configured everything needed, you can launch the script to deploy the TiDB cluster:
 
@@ -295,7 +295,7 @@ Currently, scaling in is not supported since we cannot determine which node to r
 
 > **Note:**
 >
-> Scaling in by modifying `tikv_count` can lead to data loss due to deleting the underlying instance before rebalancing. See [this page](https://pingcap.com/docs/v3.0/tidb-in-kubernetes/scale-in-kubernetes/) for more information.
+> Scaling in by modifying `tikv_count` can lead to data loss due to deleting the underlying instance before rebalancing. See [Scale TiDB in Kubernetes](https://pingcap.com/docs/v3.0/tidb-in-kubernetes/scale-in-kubernetes/) for more information.
 
 ```bash
 kubectl --kubeconfig credentials/kubeconfig_<gke_cluster_name> get po -n <tidb_cluster_name> --watch

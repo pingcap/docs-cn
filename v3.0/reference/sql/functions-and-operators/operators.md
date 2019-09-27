@@ -83,7 +83,7 @@ OR, ||
 = (assignment), :=
 ```
 
-For details, see [here](https://dev.mysql.com/doc/refman/5.7/en/operator-precedence.html).
+For details, see [Operator Precedence](https://dev.mysql.com/doc/refman/5.7/en/operator-precedence.html).
 
 ## Comparison functions and operators
 
@@ -113,7 +113,7 @@ For details, see [here](https://dev.mysql.com/doc/refman/5.7/en/operator-precede
 | [NOT LIKE](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#operator_not-like) | Negation of simple pattern matching |
 | [STRCMP()](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#function_strcmp) | Compare two strings |
 
-For details, see [here](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html).
+For details, see [Comparison Functions and Operators](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html).
 
 ## Logical operators
 
@@ -124,7 +124,7 @@ For details, see [here](https://dev.mysql.com/doc/refman/5.7/en/comparison-opera
 | [\|\|, OR](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_or) | Logical OR |
 | [XOR](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_xor) | Logical XOR |
 
-For details, see [here](https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html).
+For details, see [MySQL Handling of GROUP BY](https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html).
 
 ## Assignment operators
 
@@ -133,4 +133,4 @@ For details, see [here](https://dev.mysql.com/doc/refman/5.7/en/group-by-handlin
 | [=](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-equal) | Assign a value (as part of a [`SET`](https://dev.mysql.com/doc/refman/5.7/en/set-variable.html) statement, or as part of the `SET` clause in an [`UPDATE`](https://dev.mysql.com/doc/refman/5.7/en/update.html) statement) |
 | [:=](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-value) | Assign a value |
 
-For details, see [here](https://dev.mysql.com/doc/refman/5.7/en/group-by-functional-dependence.html).
+For details, see [Detection of Functional Dependence](https://dev.mysql.com/doc/refman/5.7/en/group-by-functional-dependence.html).

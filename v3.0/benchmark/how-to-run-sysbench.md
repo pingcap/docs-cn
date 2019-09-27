@@ -6,7 +6,7 @@ aliases: ['/docs/benchmark/how-to-run-sysbench/']
 
 # How to Test TiDB Using Sysbench
 
-In this test, Sysbench 1.0.14 and TiDB 3.0 Beta are used. It is recommended to use Sysbench 1.0 or later, which can be downloaded [here](https://github.com/akopytov/sysbench/releases/tag/1.0.14).
+In this test, Sysbench 1.0.14 and TiDB 3.0 Beta are used. It is recommended to use Sysbench 1.0 or later, which can be [downloaded here](https://github.com/akopytov/sysbench/releases/tag/1.0.14).
 
 ## Test environment
 

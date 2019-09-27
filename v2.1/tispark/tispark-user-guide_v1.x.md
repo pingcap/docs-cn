@@ -237,11 +237,11 @@ select count(*) from account;
 
 ## TiSparkR
 
-TiSparkR is a thin layer built to support the R language with TiSpark. Refer to [this document](https://github.com/pingcap/tispark/blob/master/R/README.md) for usage.
+TiSparkR is a thin layer built to support the R language with TiSpark. Refer to [TiSparkR](https://github.com/pingcap/tispark/blob/master/R/README.md) for usage.
 
 ## TiSpark on PySpark
 
-TiSpark on PySpark is a Python package build to support the Python language with TiSpark. Refer to [this document](https://github.com/pingcap/tispark/blob/master/python/README.md) for usage.
+TiSpark on PySpark is a Python package build to support the Python language with TiSpark. Refer to [TiSpark (version >= 2.0) on PySpark](https://github.com/pingcap/tispark/blob/master/python/README.md) for usage.
 
 ## FAQ
 

@@ -73,4 +73,4 @@ TiDB supports all of the [date and time functions](https://dev.mysql.com/doc/ref
 | [`YEAR()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_year) | Return the year                          |
 | [`YEARWEEK()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_yearweek) | Return the year and week                 |
 
-For details, see [here](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html).
+For details, see [Date and Time Functions](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html).
