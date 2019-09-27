@@ -46,7 +46,7 @@ binlogctl -cmd pumps
 
 查看 drainer 监控与日志, 是否有对应报错，看具体问题处理。
 
-## drainer 同步下游 TiDB/Mysql 慢怎么办
+## drainer 同步下游 TiDB/MySQL 慢怎么办
 
 一些特别需要关注的监控项:
 
