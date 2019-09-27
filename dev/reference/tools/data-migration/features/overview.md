@@ -373,6 +373,10 @@ filters:
 
 ## Column mapping
 
+> **注意：**
+>
+> 由于 Column mapping 的使用限制较多，我们不推荐使用 Column mapping 功能作为首选方案。我们优先推荐的方案请参考 [自增主键冲突处理](/dev/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md#自增主键冲突处理)。
+
 Column mapping 提供对表的列值进行修改的功能。可以根据不同的表达式对表的指定列做不同的修改操作，目前只支持 DM 提供的内置表达式。
 
 > **注意：**
@@ -421,11 +425,11 @@ column-mappings:
 - 如果 `table 前缀` 不为空，则表名的组成必须为 `table 前缀` 或者 `table 前缀 + 分隔符 + 数字（即 table ID）`
 - 如果库名/表名不包含 `… + 分隔符 + 数字` 部分，则对应的 ID 默认为 0
 - 对分库分表的规模支持限制如下
-    - 支持最多 16 个 MySQL/MariaDB 实例（0 <= instance ID <= 15）
-    - 每个实例支持最多 128 个 schema（0 <= schema ID  <= 127）
-    - 每个实例的每个 schema 支持最多 256 个 table（0 <= table ID <= 255）
-    - 进行列值映射的列的范围 (0 <= ID <= 17592186044415)
-    - `{instance ID, schema ID, table ID}` 组合需要保持唯一
+    - 支持最多 16 个 MySQL/MariaDB 实例，且需要满足 0 <= instance ID <= 15。
+    - 每个实例支持最多 128 个 schema，且需要满足 0 <= schema ID  <= 127。
+    - 每个实例的每个 schema 支持最多 256 个 table，且需要满足 0 <= table ID <= 255。
+    - 进行 Column mapping 的列的范围需要满足 0 <= ID <= 17592186044415。
+    - `{instance ID, schema ID, table ID}` 组合需要保持唯一。
 - 目前该功能是定制功能，如果需要调整请联系相关开发人员进行调整
 
 **`partition id` 参数配置**
