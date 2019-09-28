@@ -22,7 +22,7 @@ Java 应用尽管可能在选择多样的框架封装，但多数情况在最底
 
 ### JDBC API
 
-对于基本的 JDBC API 使用可以参考 [JDBC 官方教程](https://docs.oracle.com/javase/tutorial/jdbc/),  这里主要强调几个可能可能响应性能的 API 选择。
+对于基本的 JDBC API 使用可以参考 [JDBC 官方教程](https://docs.oracle.com/javase/tutorial/jdbc/),  这里主要强调几个比较重要的 API 选择。
 
 #### 推荐使用 Prepare
 
@@ -67,6 +67,8 @@ while (rs.next()) {
 }
 ```
 
+注意，在存在并发插入时，TiDB 不保证 batch insert 后 `getGeneratedKeys()` 返回的自增值是正确的。
+
 ### MySQL JDBC Parameter
 
 JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置， 这里我们以 MySQL 官方的 Connector/J 来看下[参数配置](https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-configuration-properties.html)(如使用的是 MariaDB 可以参考 [MariaDB 的类似配置](https://mariadb.com/kb/en/library/about-mariadb-connector-j/#optional-url-parameters))， 因为配置项较多，这里主要关注几个可能影响到性能的参数。
@@ -75,13 +77,13 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
 ##### 1. useServerPrepStmts
 
-默认 `useServerPrepStmts` 为 `false`, 默认情况即使使用了 prepare api， 只会在客户端做 “prepare”， 所以为了避免 server 重复 parse 的开销， 建议只要 SQL 能被多运行都建议使用 Prepare API 则建议设置该选项为 true。
+默认 `useServerPrepStmts` 为 `false`, 默认情况即使使用了 prepare api， 只会在客户端做 “prepare”， 所以为了避免 server 重复 parse 的开销， 只要同一条 SQL 多次使用 Prepare API 则建议设置该选项为 true。
 
 在 TiDB 监控中可以通过 “Query Summary” - “QPS by Instance” 查看请求命令类型，如果请求中 `COM_QUERY` 被 `COM_STMT_EXECUTE`/`COM_STMT_PREPARE` 代替即生效。
 
 ##### 2. cachePrepStmts
 
-默认 `cachePrepStmts` 也是为 `false`, 默认情况虽然 `useServerPrepStmts=true` 能让 prepare 在 server 端执行，但每次执行完后就会 close prepared 的语句不会复用，在不能复用的情况下 prepare 效率甚至不如文本执行， 所以建议开启 `useServerPrepStmts=true` 后同时配置 `useServerPrepStmts=true`。
+虽然 `useServerPrepStmts=true` 能让服务端执行 prepare 语句，但默认情况下客户端每次执行完后会 close prepared 的语句，不会复用，这样 prepare 效率甚至不如文本执行。 所以建议开启 `useServerPrepStmts=true` 后同时配置 `cachePrepStmts=true`，它会让客户端缓存 prepare 语句。
 
 在 TiDB 监控中可以通过 “Query Summary” - “QPS by Instance” 查看请求命令类型，如果类似下图，请求中 `COM_STMT_EXECUTE` 数目远远多于 `COM_STMT_PREPARE` 即生效。
 
@@ -91,7 +93,7 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
 ##### 3. prepStmtCacheSqlLimit
 
-在配置后 `cachePrepStmts` 后还需要注意 `prepStmtCacheSqlLimit` 配置(默认 256), 该配置控制能被客户端 Prepare 缓存的最大语句长度。
+在配置 `cachePrepStmts` 后还需要注意 `prepStmtCacheSqlLimit` 配置(默认 256), 该配置控制客户端缓存 prepare 语句的最大长度，超过该长度将不会被缓存。
 
 在一些场景可能会运行 SQL 的长度会超过该配置， 导致 prepared stmt 不能复用，建议根据应用 SQL 长度情况决定是否需要调大该值。
 
@@ -131,7 +133,7 @@ insert into t(a) values(12);
 insert into t(a) values(10),(11),(12);
 ```
 
-如果是批量更新如果超过 3 个以上 update 则会改写为 multiple-querys 的进行发送，这样可以有效减少 client 到 server 的请求开销，但副作用是会产生较大的 sql 语句, 例如这样：
+批量更新如果超过 3 个以上 update 则会改写为 multiple-queries 的形式发送，这样可以有效减少 client 到 server 的请求开销，但副作用是会产生较大的 sql 语句, 例如这样：
 
 ```mysql
 update t set a = 10 where id = 1; update t set a = 11 where id = 2; update t set a = 12 where id = 3;
@@ -209,7 +211,7 @@ MyBatis 的 Mapper 中支持 2 种 Parameters：
 
 [http://www.mybatis.org/mybatis-3/dynamic-sql.html#foreach](http://www.mybatis.org/mybatis-3/dynamic-sql.html#foreach)
 
-除了前面 JDBC 配置 `rewriteBatchedStatements=true` 后支持自动将一个个执行的 insert 重写为 `insert values` 后跟很多 value 的外，mybatis 也可以使用 mybatis 的 dynamic 来半自动生成 batch insert 比如下面的 mapper:
+除了前面 JDBC 配置 `rewriteBatchedStatements=true` 后支持自动将一个个执行的 insert 重写为 `insert values` 后跟很多 value 的外，mybatis 也可以使用 mybatis 的 dynamic 来半自动生成 batch insert。比如下面的 mapper:
 
 ```xml
 <insert id="insertTestBatch" parameterType="java.util.List" fetchSize="1">
@@ -225,7 +227,7 @@ MyBatis 的 Mapper 中支持 2 种 Parameters：
 </insert>
 ```
 
-会生成一个 `insert on duplicate key update` 语句 values 后面的 `(?, ?, ?)` 数目是根据传入的 list 个数决定，最终效果和使用 `rewriteBatchStatements=true` 类似, 可以有效减少客户端和 TiDB 的网络交互次数，同样需要注意 prepare 后超过 `prepStmtCacheSqlLimit` 限制导致不被缓存频繁 prepare 的问题。
+会生成一个 `insert on duplicate key update` 语句，values 后面的 `(?, ?, ?)` 数目是根据传入的 list 个数决定，最终效果和使用 `rewriteBatchStatements=true` 类似, 可以有效减少客户端和 TiDB 的网络交互次数，同样需要注意 prepare 后超过 `prepStmtCacheSqlLimit` 限制导致不缓存 prepare 语句的问题。
 
 #### Streaming Result
 
@@ -239,7 +241,7 @@ MyBatis 的 Mapper 中支持 2 种 Parameters：
 
 在 `openSession` 的时候可以选择 `ExecutorType`， MyBatis 支持三种 executor：
 
-- Simple：每次执行都会向 JDBC 进行 prepare 调用(重复的 prepare 调用如果 JDBC 配置有开启 `cachePrepStmts` 也会复用)
+- Simple：每次执行都会向 JDBC 进行 prepare 调用(如果 JDBC 配置有开启 cachePrepStmts, 重复的 prepare 会复用)
 - Reuse：在 `executor` 中缓存 statement， 这样不用 JDBC 的 `cachePrepStmts` 也能减少重复 prepare 调用
 - Batch：每次更新只会 `addBatch` 直到 query 或 commit 才会调用 `executeBatch` 执行, 如果 jdbc 层有开 `rewriteBatchStatements` 会尝试改写，没有则一条条发送
 
