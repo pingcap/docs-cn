@@ -36,7 +36,7 @@ Java 应用尽管可能在选择多样的框架封装，但多数情况在最底
 
 对于批量插入和更新如果插入批次较大可以选择使用 [addBatch/executeBatch API](https://www.tutorialspoint.com/jdbc/jdbc-batch-processing), 通过 addBatch 的方式让 SQL 在客户端将多条插入更新记录在客户端先缓存， 然后在 executeBatch 时一起发送到数据库服务器。
 
-同样需要注意对于 MySQL Connector/J 实现默认 Batch 只是将多次 addBatch 的 SQL 发送时机延迟到调用 executeBatch 的时候， 但实际网络发送还是会一条条的发送, 通常不会降低和 Server 的网络交互次数，如果希望 Batch 网络发送需要在 JDBC 连接参数中配置 `rewriteBatchedStatements=true` (下面参数配置章节有更详细介绍)。
+同样需要注意对于 MySQL Connector/J 实现，默认 Batch 只是将多次 addBatch 的 SQL 发送时机延迟到调用 executeBatch 的时候， 但实际网络发送还是会一条条的发送, 通常不会降低和 Server 的网络交互次数。如果希望 Batch 网络发送，需要在 JDBC 连接参数中配置 `rewriteBatchedStatements=true` (下面参数配置章节有更详细介绍)。
 
 #### 超大结果集流式获取
 
@@ -95,15 +95,15 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
 在配置 `cachePrepStmts` 后还需要注意 `prepStmtCacheSqlLimit` 配置(默认 256), 该配置控制客户端缓存 prepare 语句的最大长度，超过该长度将不会被缓存。
 
-在一些场景可能会运行 SQL 的长度会超过该配置， 导致 prepared stmt 不能复用，建议根据应用 SQL 长度情况决定是否需要调大该值。
+在一些场景 SQL 的长度可能超过该配置， 导致 prepared SQL 不能复用，建议根据应用 SQL 长度情况决定是否需要调大该值。
 
-在 TiDB 监控中看到 “Query Summary” - “QPS by Instance” 查看请求命令类型， 如果已经配置了 `cachePrepStmts=true` 但 `COM_STMT_PREPARE` 还是和 `COM_STMT_EXECUTE` 基本相等且有 `COM_STMT_CLOSE` 可以检查下这个配置配置是否过小。
+在 TiDB 监控中通过 “Query Summary” - “QPS by Instance” 查看请求命令类型， 如果已经配置了 `cachePrepStmts=true`，但 `COM_STMT_PREPARE` 还是和 `COM_STMT_EXECUTE` 基本相等且有 `COM_STMT_CLOSE`，需要检查这个配置项是否设置得太小。
 
 ##### 4. prepStmtCacheSize
 
 `prepStmtCacheSize` 控制缓存的 Prepare 语句数目(默认 25)， 如果应用需要 prepare 的 SQL 种类很多且希望复用 Prepare 可以调大该值。
 
-和上一条类似目的是在监控中通过 “Query Summary” - “QPS by Instance” 查看请求中 `COM_STMT_EXECUTE` 数目远远多于 `COM_STMT_PREPARE` 来确认是否正常。
+和上一条类似，在监控中通过 “Query Summary” - “QPS by Instance” 查看请求中 `COM_STMT_EXECUTE` 数目是否远远多于 `COM_STMT_PREPARE` 来确认是否正常。
 
 #### Batch 相关参数
 
@@ -139,11 +139,11 @@ insert into t(a) values(10),(11),(12);
 update t set a = 10 where id = 1; update t set a = 11 where id = 2; update t set a = 12 where id = 3;
 ```
 
-另外因为一个[客户端 bug](https://bugs.mysql.com/bug.php?id=96623) 如果批量 update 希望同时 `rewriteBatchedStatements=true` 和 `useServerPrepStmts=true` 推荐同时配置 `allowMultiQueries=true` 参数来避免。
+另外因为一个[客户端 bug](https://bugs.mysql.com/bug.php?id=96623)，批量 update 时如果要配置 `rewriteBatchedStatements=true` 和 `useServerPrepStmts=true` ，推荐同时配置 `allowMultiQueries=true` 参数来避免这个 bug。
 
 #### 执行前检查参数
 
-通过监控可能会发现"虽然业务只向集群进行 insert 操作却看到有很多非 internal 的 select 语句", 通常是因为 JDBC 会在发一些查询设置 SQL(e.g. `select @@session.transaction_read_only` 对 TiDB 无用), 对于 TiDB 推荐配置 `useConfigs=maxPerformance` 来避免开销。
+通过监控可能会发现，虽然业务只向集群进行 insert 操作，却看到有很多多余的 select 语句。通常这是因为 JDBC 发了一些查询设置类的 SQL（例如 `select @@session.transaction_read_only`）。这些 SQL 对 TiDB 无用，推荐配置 `useConfigs=maxPerformance` 来避免额外开销。
 
 `useConfigs=maxPerformance` 会包含一组配置：
 
@@ -159,7 +159,7 @@ enableQueryTimeouts=false
 
 ## Connection Pool
 
-TiDB(MySQL) 连接建立是比较昂贵的操作(至少对于 OLTP)， 除了 TCP 建立连接外还需要进行连接鉴权操作， 所以客户端段通常会对 TiDB(MySQL) 连接保存到连接池中进行复用。
+TiDB(MySQL) 连接建立是比较昂贵的操作(至少对于 OLTP)， 除了建立 TCP 连接外还需要进行连接鉴权操作，所以客户端通常会把 TiDB(MySQL) 连接保存到连接池中进行复用。
 
 Java 的连接池实现很多([HikariCP](https://github.com/brettwooldridge/HikariCP), [tomcat-jdbc](https://tomcat.apache.org/tomcat-7.0-doc/jdbc-pool.html), [durid](https://github.com/alibaba/druid), [c3p0](https://www.mchange.com/projects/c3p0/), [dbcp](https://commons.apache.org/proper/commons-dbcp/)), TiDB 不会限定使用的连接池， 应用可以根据根据业务特点自己选择连接池实现。
 
@@ -167,14 +167,14 @@ Java 的连接池实现很多([HikariCP](https://github.com/brettwooldridge/Hika
 
 比较常见的是应用需要根据自身情况配置合适的连接池大小，以 HikariCP 为例：
 
-- `maximumPoolSize`：连接池最大连接数，配置过大会导致 TiDB 消耗资源维护无用连接，配置过小则会导致应用获取连接变慢, 所以需根据应用自身特点配置合适的值, 可以看下[这篇文章](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)
+- `maximumPoolSize`：连接池最大连接数，配置过大会导致 TiDB 消耗资源维护无用连接，配置过小则会导致应用获取连接变慢，所以需根据应用自身特点配置合适的值，可以看下[这篇文章](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)
 - `minimumIdle`：连接池最大空闲连接数，主要用于在应用空闲时存留一些连接以应对突发请求，同样是需要根据业务请情况配置。
 
-应用在使用连接池同样需要注意连接使用完成后归还连接，推荐应用对应连接池相关监控(e.g. `metricRegistry`)，通过监控能及时定位连接池大小问题。
+应用在使用连接池同样需要注意连接使用完成后归还连接，推荐应用使用对应的连接池相关监控(e.g. `metricRegistry`)，通过监控能及时定位连接池问题。
 
 ### 探活配置
 
-连接池维护长连接到 TiDB， TiDB 默认不会主动关闭客户端连接(除非报错)，但一般客户端到 TiDB 之间还会有 LVS 或 haproxy 之类的网络代理通常会在一定空闲后主动在 proxy 上清理连接，所以除了注意 proxy idle 配置外，连接池需要进行保活或探测连接。
+连接池维护到 TiDB 的长连接，TiDB 默认不会主动关闭客户端连接（除非报错），但一般客户端到 TiDB 之间还会有 LVS 或 HAProxy 之类的网络代理，它们通常会在连接空闲一定时间后主动清理连接。除了注意代理的 idle 配置外，连接池还需要进行保活或探测连接。
 
 如果我们常在 java 应用中看到这个错误
 
