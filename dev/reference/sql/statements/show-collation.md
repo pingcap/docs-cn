@@ -22,8 +22,13 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW COLLATION;
+SHOW COLLATION;
+```
+
+```
 +--------------------------+----------+------+---------+----------+---------+
 | Collation                | Charset  | Id   | Default | Compiled | Sortlen |
 +--------------------------+----------+------+---------+----------+---------+
@@ -256,4 +261,4 @@ TiDB 不支持二进制以外的排序规则。`SHOW COLLATION` 语句仅用于�
 
 ## 另请参阅
 
-* [SHOW CHARACTER SET](/reference/sql/statements/show-character-set.md)
+* [SHOW CHARACTER SET](/dev/reference/sql/statements/show-character-set.md)

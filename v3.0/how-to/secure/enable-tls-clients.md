@@ -27,13 +27,15 @@ TiDB 的加密连接支持默认是关闭的，必须在 TiDB 服务端通过配
 
 在启动 TiDB 时，至少需要在配置文件中同时指定 `ssl-cert` 和 `ssl-key` 参数，才能使 TiDB 服务端接受加密连接。还可以指定 `ssl-ca` 参数进行客户端身份验证（请参见[配置启用身份验证](#配置启用身份验证)章节）。
 
-- [`ssl-cert`](/reference/configuration/tidb-server/configuration-file.md#ssl-cert)：指定 SSL 证书文件路径
-- [`ssl-key`](/reference/configuration/tidb-server/configuration-file.md#ssl-key)：指定证书文件对应的私钥
-- [`ssl-ca`](/reference/configuration/tidb-server/configuration-file.md#ssl-ca)：可选，指定受信任的 CA 证书文件路径
+- [`ssl-cert`](/v3.0/reference/configuration/tidb-server/configuration-file.md#ssl-cert)：指定 SSL 证书文件路径
+- [`ssl-key`](/v3.0/reference/configuration/tidb-server/configuration-file.md#ssl-key)：指定证书文件对应的私钥
+- [`ssl-ca`](/v3.0/reference/configuration/tidb-server/configuration-file.md#ssl-ca)：可选，指定受信任的 CA 证书文件路径
 
 参数指定的文件都为 PEM 格式。另外目前 TiDB 尚不支持加载有密码保护的私钥，因此必须提供一个没有密码的私钥文件。若提供的证书或私钥无效，则 TiDB 服务端将照常启动，但并不支持客户端加密连接到 TiDB 服务端。
 
 上述证书及密钥可以使用 OpenSSL 签发和生成，也可以使用 MySQL 自带的工具 `mysql_ssl_rsa_setup` 快捷生成：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 mysql_ssl_rsa_setup --datadir=./certs
@@ -93,8 +95,13 @@ MySQL 5.7 及以上版本自带的客户端默认尝试使用安全连接，若�
 
 以下是一个安全连接中执行该语句的结果。由于客户端支持的 TLS 版本号和加密协议会有所不同，执行结果相应地也会有所变化。
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW STATUS LIKE "%Ssl%";
+SHOW STATUS LIKE "%Ssl%";
+```
+
+```
 ......
 | Ssl_verify_mode | 5                            |
 | Ssl_version     | TLSv1.2                      |
@@ -104,8 +111,13 @@ mysql> SHOW STATUS LIKE "%Ssl%";
 
 除此以外，对于 MySQL 自带客户端，还可以使用 `STATUS` 或 `\s` 语句查看连接情况：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> \s
+\s
+```
+
+```
 ...
 SSL: Cipher in use is ECDHE-RSA-AES128-GCM-SHA256
 ...

@@ -24,17 +24,22 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> FLUSH PRIVILEGES;
+FLUSH PRIVILEGES;
+```
+
+```
 Query OK, 0 rows affected (0.01 sec)
 ```
 
 ## MySQL 兼容性
 
-`FLUSH PRIVILEGES` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`FLUSH PRIVILEGES` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [GRANT <privileges>](/reference/sql/statements/grant-privileges.md)
-* [REVOKE](/reference/sql/statements/revoke-privileges.md)
-* [Privilege Management](/reference/security/privilege-system.md)
+* [GRANT <privileges>](/v3.0/reference/sql/statements/grant-privileges.md)
+* [REVOKE](/v3.0/reference/sql/statements/revoke-privileges.md)
+* [Privilege Management](/v3.0/reference/security/privilege-system.md)

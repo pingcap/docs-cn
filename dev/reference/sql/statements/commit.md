@@ -18,17 +18,43 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE TABLE t1 (a int NOT NULL PRIMARY KEY);
+CREATE TABLE t1 (a int NOT NULL PRIMARY KEY);
+```
+
+```
 Query OK, 0 rows affected (0.12 sec)
+```
 
-mysql> START TRANSACTION;
+{{< copyable "sql" >}}
+
+```sql
+START TRANSACTION;
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> INSERT INTO t1 VALUES (1);
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 VALUES (1);
+```
+
+```
 Query OK, 1 row affected (0.00 sec)
+```
 
-mysql> COMMIT;
+{{< copyable "sql" >}}
+
+```sql
+COMMIT;
+```
+
+```
 Query OK, 0 rows affected (0.01 sec)
 ```
 
@@ -39,7 +65,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 ## 另请参阅
 
-* [START TRANSACTION](/reference/sql/statements/start-transaction.md)
-* [ROLLBACK](/reference/sql/statements/rollback.md)
-* [BEGIN](/reference/sql/statements/begin.md)
-* [事务的惰性检查](/reference/transactions/overview.md#事务的惰性检查)
+* [START TRANSACTION](/dev/reference/sql/statements/start-transaction.md)
+* [ROLLBACK](/dev/reference/sql/statements/rollback.md)
+* [BEGIN](/dev/reference/sql/statements/begin.md)
+* [事务的惰性检查](/dev/reference/transactions/overview.md#事务的惰性检查)

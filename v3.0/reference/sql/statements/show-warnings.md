@@ -20,54 +20,123 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE TABLE t1 (a INT UNSIGNED);
+CREATE TABLE t1 (a INT UNSIGNED);
+```
+
+```
 Query OK, 0 rows affected (0.11 sec)
+```
 
-mysql> INSERT INTO t1 VALUES (0);
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 VALUES (0);
+```
+
+```
 Query OK, 1 row affected (0.02 sec)
+```
 
-mysql> SELECT 1/a FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SELECT 1/a FROM t1;
+```
+
+```
 +------+
 | 1/a  |
 +------+
 | NULL |
 +------+
 1 row in set, 1 warning (0.00 sec)
+```
 
-mysql> SHOW WARNINGS;
+{{< copyable "sql" >}}
+
+```sql
+SHOW WARNINGS;
+```
+
+```
 +---------+------+---------------+
 | Level   | Code | Message       |
 +---------+------+---------------+
 | Warning | 1365 | Division by 0 |
 +---------+------+---------------+
 1 row in set (0.00 sec)
+```
 
-mysql> INSERT INTO t1 VALUES (-1);
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 VALUES (-1);
+```
+
+```
 ERROR 1264 (22003): Out of range value for column 'a' at row 1
-mysql> SELECT * FROM t1;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t1;
+```
+
+```
 +------+
 | a    |
 +------+
 |    0 |
 +------+
 1 row in set (0.00 sec)
+```
 
-mysql> SET sql_mode='';
+{{< copyable "sql" >}}
+
+```sql
+SET sql_mode='';
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> INSERT INTO t1 VALUES (-1);
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 VALUES (-1);
+```
+
+```
 Query OK, 1 row affected, 1 warning (0.01 sec)
+```
 
-mysql> SHOW WARNINGS;
+{{< copyable "sql" >}}
+
+```sql
+SHOW WARNINGS;
+```
+
+```
 +---------+------+---------------------------+
 | Level   | Code | Message                   |
 +---------+------+---------------------------+
 | Warning | 1690 | constant -1 overflows int |
 +---------+------+---------------------------+
 1 row in set (0.00 sec)
+```
 
-mysql> SELECT * FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t1;
+```
+
+```
 +------+
 | a    |
 +------+
@@ -75,13 +144,12 @@ mysql> SELECT * FROM t1;
 |    0 |
 +------+
 2 rows in set (0.00 sec)
-
 ```
 
 ## MySQL 兼容性
 
-`SHOW WARNINGS` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW WARNINGS` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW ERRORS](/reference/sql/statements/show-errors.md)
+* [SHOW ERRORS](/v3.0/reference/sql/statements/show-errors.md)

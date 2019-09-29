@@ -6,7 +6,7 @@ category: reference
 
 # SHOW TABLE STATUS
 
-`SHOW TABLE STATUS` 语句用于显示 TiDB 中表的各种统计信息。如果显示统计信息过期，建议运行 [`ANALYZE TABLE`](/reference/sql/statements/analyze-table.md)。
+`SHOW TABLE STATUS` 语句用于显示 TiDB 中表的各种统计信息。如果显示统计信息过期，建议运行 [`ANALYZE TABLE`](/dev/reference/sql/statements/analyze-table.md)。
 
 ## 语法图
 
@@ -24,15 +24,34 @@ category: reference
 
 ## 示例
 
-```sql
-mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
-Query OK, 0 rows affected (0.11 sec)
+{{< copyable "sql" >}}
 
-mysql> INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
+```sql
+CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
+```
+
+```
+Query OK, 0 rows affected (0.11 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
+```
+
+```
 Query OK, 5 rows affected (0.02 sec)
 Records: 5  Duplicates: 0  Warnings: 0
+```
 
-mysql> SHOW TABLE STATUS LIKE 't1'\G
+{{< copyable "sql" >}}
+
+```sql
+SHOW TABLE STATUS LIKE 't1';
+```
+
+```
 *************************** 1. row ***************************
            Name: t1
          Engine: InnoDB
@@ -53,11 +72,25 @@ Max_data_length: 0
  Create_options:
         Comment:
 1 row in set (0.00 sec)
+```
 
-mysql> analyze table t1;
+{{< copyable "sql" >}}
+
+```sql
+analyze table t1;
+```
+
+```
 Query OK, 0 rows affected (0.12 sec)
+```
 
-mysql> SHOW TABLE STATUS LIKE 't1'\G
+{{< copyable "sql" >}}
+
+```sql
+SHOW TABLE STATUS LIKE 't1';
+```
+
+```
 *************************** 1. row ***************************
            Name: t1
          Engine: InnoDB
@@ -82,11 +115,11 @@ Max_data_length: 0
 
 ## MySQL 兼容性
 
-`SHOW TABLE STATUS` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW TABLE STATUS` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/dev/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW TABLES](/reference/sql/statements/show-tables.md)
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [DROP TABLE](/reference/sql/statements/drop-table.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
+* [SHOW TABLES](/dev/reference/sql/statements/show-tables.md)
+* [CREATE TABLE](/dev/reference/sql/statements/create-table.md)
+* [DROP TABLE](/dev/reference/sql/statements/drop-table.md)
+* [SHOW CREATE TABLE](/dev/reference/sql/statements/show-create-table.md)

@@ -9,33 +9,61 @@ category: reference
 
 在 TiDB 中，identifier可以被反引号 (\`) 包裹，为了阐述方便，我们叫这种情况为 `被引用`。identifier 也可以不被 \` 包裹。但是如果一个 identifier 存在一个特殊符号或者是一个保留关键字，那么你必须要 `引用` 它。
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SELECT * FROM `table` WHERE `table`.id = 20;
+SELECT * FROM `table` WHERE `table`.id = 20;
 ```
 
 如果`ANSI_QUOTES` sql mode 被设置了，那么我们认为被双引号 `"` 包裹的字符串为 identifier。
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE TABLE "test" (a varchar(10));
+CREATE TABLE "test" (a varchar(10));
+```
+
+```
 ERROR 1105 (HY000): line 0 column 19 near " (a varchar(10))" (total length 35)
+```
 
-mysql> SET SESSION sql_mode='ANSI_QUOTES';
+{{< copyable "sql" >}}
+
+```sql
+SET SESSION sql_mode='ANSI_QUOTES';
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> CREATE TABLE "test" (a varchar(10));
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE "test" (a varchar(10));
+```
+
+```
 Query OK, 0 rows affected (0.09 sec)
 ```
 
 如果你需要在被引用的 identifier 中使用反引号这个字符，那你需要重复两次，例如你需要创建一个表为 a`b：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE TABLE `a``b` (a int);
+CREATE TABLE `a``b` (a int);
 ```
 
 在 select 语句中，alias 语句可以用 identifier 或者字符串：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SELECT 1 AS `identifier`, 2 AS 'string';
+SELECT 1 AS `identifier`, 2 AS 'string';
+```
+
+```
 +------------+--------+
 | identifier | string |
 +------------+--------+
@@ -50,11 +78,15 @@ mysql> SELECT 1 AS `identifier`, 2 AS 'string';
 
 Object Names (对象名字) 可以被限定也可以不用。例如你可以在创建表的时候不指定 database names：
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE TABLE t (i int);
 ```
 
 但是如果你之前没有设定过默认的数据库，会报 `ERROR 1046 (3D000): No database selected` 错误。当然你也可以指定数据库限定名：
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE test.t (i int);

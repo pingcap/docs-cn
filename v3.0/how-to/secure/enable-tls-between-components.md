@@ -23,9 +23,9 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
 
     推荐为 TiDB、TiKV、PD 分别准备一个 server 证书，并保证可以相互验证，而它们的各种客户端共用 client 证书。
 
-    有多种工具可以生成自签名证书，如 `openssl`，`easy-rsa `，`cfssl`。
+    有多种工具可以生成自签名证书，如 `openssl`，`easy-rsa`，`cfssl`。
 
-    这里提供一个使用 `cfssl` 生成证书的示例：[生成自签名证书](/how-to/secure/generate-self-signed-certificates.md)。
+    这里提供一个使用 `cfssl` 生成证书的示例：[生成自签名证书](/v3.0/how-to/secure/generate-self-signed-certificates.md)。
 
 2. 配置证书。
 
@@ -71,19 +71,25 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
 
     此时 TiDB 集群各个组件间已开启双向验证。
 
-> **注意：**
->
-> 若 TiDB 集群各个组件间已开启 TLS，在使用 tikv-ctl 或 pd-ctl 工具连接集群时，需要指定 client 证书，示例：
+    > **注意：**
+    >
+    > 若 TiDB 集群各个组件间已开启 TLS，在使用 tikv-ctl 或 pd-ctl 工具连接集群时，需要指定 client 证书，示例：
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     ./pd-ctl -u https://127.0.0.1:2379 --cacert /path/to/ca.pem --cert /path/to/client.pem --key /path/to/client-key.pem
+    ```
 
-    ./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/client.pem" --key-path="/path/to/clinet-key.pem"
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/client.pem" --key-path="/path/to/client-key.pem"
     ```
 
 ### MySQL 与 TiDB 间开启 TLS
 
-请参考 [使用加密连接](/how-to/secure/enable-tls-clients.md)。
+请参考 [使用加密连接](/v3.0/how-to/secure/enable-tls-clients.md)。
 
 ## 开启数据加密存储
 
@@ -94,6 +100,8 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
 1. 生成 token 文件。
 
     token 文件存储的是密钥，用于对用户数据进行加密，以及对已加密的数据进行解密。
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     ./tikv-ctl random-hex --len 256 > cipher-file-256
@@ -113,7 +121,7 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
 
 > **注意：**
 >
-> 若使用 [Lightning](/reference/tools/tidb-lightning/overview.md) 向集群导入数据，如果目标集群开启了加密功能，Lightning 生成的 sst 文件也必须是加密的格式。
+> 若使用 [Lightning](/v3.0/reference/tools/tidb-lightning/overview.md) 向集群导入数据，如果目标集群开启了加密功能，Lightning 生成的 sst 文件也必须是加密的格式。
 
 ### 使用限制
 

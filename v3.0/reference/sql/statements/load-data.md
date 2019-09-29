@@ -16,8 +16,10 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE TABLE trips (
+CREATE TABLE trips (
     ->  trip_id bigint NOT NULL PRIMARY KEY auto_increment,
     ->  duration integer not null,
     ->  start_date datetime,
@@ -29,10 +31,19 @@ mysql> CREATE TABLE trips (
     ->  bike_number varchar(255),
     ->  member_type varchar(255)
     -> );
+```
+
+```
 Query OK, 0 rows affected (0.14 sec)
+```
 
-mysql> LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikeshare-tripdata.csv' INTO TABLE trips FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES (duration, start_date, end_date, start_station_number, start_station, end_station_number, end_station, bike_number, member_type);
+{{< copyable "sql" >}}
 
+```sql
+LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikeshare-tripdata.csv' INTO TABLE trips FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES (duration, start_date, end_date, start_station_number, start_station, end_station_number, end_station, bike_number, member_type);
+```
+
+```
 Query OK, 815264 rows affected (39.63 sec)
 Records: 815264  Deleted: 0  Skipped: 0  Warnings: 0
 ```
@@ -47,5 +58,5 @@ Records: 815264  Deleted: 0  Skipped: 0  Warnings: 0
 
 ## 另请参阅
 
-* [INSERT](/reference/sql/statements/insert.md)
-* [Transaction Model](/reference/transactions/transaction-model.md)
+* [INSERT](/v3.0/reference/sql/statements/insert.md)
+* [Transaction Model](/v3.0/reference/transactions/transaction-model.md)

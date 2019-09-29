@@ -44,18 +44,44 @@ category: reference
 
 ## 示例
 
-```sql
-mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
-Query OK, 0 rows affected (0.11 sec)
+{{< copyable "sql" >}}
 
-mysql> INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
+```sql
+CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
+```
+
+```
+Query OK, 0 rows affected (0.11 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
+```
+
+```
 Query OK, 5 rows affected (0.03 sec)
 Records: 5  Duplicates: 0  Warnings: 0
+```
 
-mysql> CREATE VIEW v1 AS SELECT * FROM t1 WHERE c1 > 2;
+{{< copyable "sql" >}}
+
+```sql
+CREATE VIEW v1 AS SELECT * FROM t1 WHERE c1 > 2;
+```
+
+```
 Query OK, 0 rows affected (0.11 sec)
+```
 
-mysql> SELECT * FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t1;
+```
+
+```
 +----+----+
 | id | c1 |
 +----+----+
@@ -66,8 +92,15 @@ mysql> SELECT * FROM t1;
 |  5 |  5 |
 +----+----+
 5 rows in set (0.00 sec)
+```
 
-mysql> SELECT * FROM v1;
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM v1;
+```
+
+```
 +----+----+
 | id | c1 |
 +----+----+
@@ -76,11 +109,25 @@ mysql> SELECT * FROM v1;
 |  5 |  5 |
 +----+----+
 3 rows in set (0.00 sec)
+```
 
-mysql> INSERT INTO t1 (c1) VALUES (6);
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 (c1) VALUES (6);
+```
+
+```
 Query OK, 1 row affected (0.01 sec)
+```
 
-mysql> SELECT * FROM v1;
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM v1;
+```
+
+```
 +----+----+
 | id | c1 |
 +----+----+
@@ -90,8 +137,15 @@ mysql> SELECT * FROM v1;
 |  6 |  6 |
 +----+----+
 4 rows in set (0.00 sec)
+```
 
-mysql> INSERT INTO v1 (c1) VALUES (7);
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO v1 (c1) VALUES (7);
+```
+
+```
 ERROR 1105 (HY000): insert into view v1 is not supported now.
 ```
 
@@ -101,6 +155,6 @@ ERROR 1105 (HY000): insert into view v1 is not supported now.
 
 ## 另请参阅
 
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
-* [DROP TABLE](/reference/sql/statements/drop-table.md)
+* [CREATE TABLE](/v3.0/reference/sql/statements/create-table.md)
+* [SHOW CREATE TABLE](/v3.0/reference/sql/statements/show-create-table.md)
+* [DROP TABLE](/v3.0/reference/sql/statements/drop-table.md)

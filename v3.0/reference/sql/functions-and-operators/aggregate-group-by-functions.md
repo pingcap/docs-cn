@@ -35,12 +35,21 @@ TiDB 目前不支持 `GROUP BY` 修饰符，例如 `WITH ROLLUP`，将来会提�
 
 TiDB 支持 SQL 模式 `ONLY_FULL_GROUP_BY`，当启用该模式时，TiDB 拒绝不明确的非聚合列的查询。例如，以下查询在启用 `ONLY_FULL_GROUP_BY` 时是不合规的，因为 `SELECT` 列表中的非聚合列 "b" 在 `GROUP BY` 语句中不显示：
 
+{{< copyable "sql" >}}
+
 ```sql
 drop table if exists t;
 create table t(a bigint, b bigint, c bigint);
 insert into t values(1, 2, 3), (2, 2, 3), (3, 2, 3);
+```
 
-mysql> select a, b, sum(c) from t group by a;
+{{< copyable "sql" >}}
+
+```sql
+select a, b, sum(c) from t group by a;
+```
+
+```
 +------+------+--------+
 | a    | b    | sum(c) |
 +------+------+--------+
@@ -49,19 +58,35 @@ mysql> select a, b, sum(c) from t group by a;
 |    3 |    2 |      3 |
 +------+------+--------+
 3 rows in set (0.01 sec)
+```
 
-mysql> set sql_mode = 'ONLY_FULL_GROUP_BY';
+{{< copyable "sql" >}}
+
+```sql
+set sql_mode = 'ONLY_FULL_GROUP_BY';
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> select a, b, sum(c) from t group by a;
+{{< copyable "sql" >}}
+
+```sql
+select a, b, sum(c) from t group by a;
+```
+
+```
 ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'b' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
 ```
 
-目前，TiDB 默认不开启 SQL 模式 [`ONLY_FULL_GROUP_BY`](/reference/mysql-compatibility.md#默认设置的区别)。
+目前，TiDB 默认开启 SQL 模式 [`ONLY_FULL_GROUP_BY`](/v3.0/reference/mysql-compatibility.md#默认设置的区别)。
 
 ### 与 MySQL 的区别
 
 TiDB 目前实现的 `ONLY_FULL_GROUP_BY` 没有 MySQL 5.7 严格。例如，假设我们执行以下查询，希望结果按 "c" 排序：
+
+{{< copyable "sql" >}}
 
 ```sql
 drop table if exists t;
@@ -81,6 +106,8 @@ select distinct a, b from t order by c;
 
 TiDB 中另一个标准 SQL 的扩展允许 `HAVING` 子句中的引用使用 `SELECT` 列表中的别名表达式。例如：以下查询返回在 `orders` 中只出现一次的 `name` 值：
 
+{{< copyable "sql" >}}
+
 ```sql
 select name, count(name) from orders
 group by name
@@ -89,6 +116,8 @@ having count(name) = 1;
 
 这个 TiDB 扩展允许在聚合列的 `HAVING` 子句中使用别名：
 
+{{< copyable "sql" >}}
+
 ```sql
 select name, count(name) as c from orders
 group by name
@@ -96,6 +125,8 @@ having c = 1;
 ```
 
 标准 SQL 只支持 `GROUP BY` 子句中的列表达式，以下语句不合规，因为 `FLOOR(value/100)` 是一个非列表达式：
+
+{{< copyable "sql" >}}
 
 ```sql
 select id, floor(value/100)
@@ -106,6 +137,8 @@ group by id, floor(value/100);
 TiDB 对标准 SQL 的扩展支持 `GROUP BY` 子句中非列表达式，认为上述语句合规。
 
 标准 SQL 也不支持 `GROUP BY` 子句中使用别名。TiDB 对标准 SQL 的扩展支持使用别名，查询的另一种写法如下：
+
+{{< copyable "sql" >}}
 
 ```sql
 select id, floor(value/100) as val

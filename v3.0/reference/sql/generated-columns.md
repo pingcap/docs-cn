@@ -12,6 +12,8 @@ aliases: ['/docs-cn/sql/generated-columns/']
 
 MySQL 5.7 及 TiDB 都不能直接为 JSON 类型的列添加索引，即**不支持**如下表结构：
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE TABLE person (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -29,6 +31,8 @@ CREATE TABLE person (
 
 以 `city` generated stored column 为例，你可以添加索引：
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE TABLE person (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -43,11 +47,15 @@ CREATE TABLE person (
 
 可使用 generated stored column 的索引，以提高如下语句的执行速度：
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT name, id FROM person WHERE city = 'Beijing';
 ```
 
 如果 `$.city` 路径中无数据，则 `JSON_EXTRACT` 返回 `NULL`。如果想增加约束，`city` 列必须是 `NOT NULL`，则可按照以下方式定义 virtual column：
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE person (
@@ -61,14 +69,21 @@ CREATE TABLE person (
 
 `INSERT` 和 `UPDATE` 语句都会检查 virtual column 的定义。未通过有效性检测的行会返回错误：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> INSERT INTO person (name, address_info) VALUES ('Morgan', JSON_OBJECT('Country', 'Canada'));
+INSERT INTO person (name, address_info) VALUES ('Morgan', JSON_OBJECT('Country', 'Canada'));
+```
+
+```
 ERROR 1048 (23000): Column 'city' cannot be null
 ```
 
 ## 使用 generated virtual column
 
 TiDB 也支持 generated virtual column，和 generated store column 不同的是，此列按需生成，并不存储在数据库中，也不占用内存空间，因而是**虚拟的**。TiDB 虽然支持在 generated virtual column 上建立索引，优化器目前将无法使用这个索引，所以这个索引将没有意义，会在后续版本中改进（ISSUE [#5189](https://github.com/pingcap/tidb/issues/5189)）。
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE person (
@@ -85,4 +100,4 @@ CREATE TABLE person (
 
 - 不能通过 `ALTER TABLE` 增加 `STORED` 存储方式的 generated column；
 - 不能通过 `ALTER TABLE` 在 generated column 上增加索引；
-- 并未支持所有的 [JSON 函数](/reference/sql/functions-and-operators/json-functions.md)。
+- 并未支持所有的 [JSON 函数](/v3.0/reference/sql/functions-and-operators/json-functions.md)。

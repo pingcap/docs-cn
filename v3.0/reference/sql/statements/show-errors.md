@@ -22,12 +22,33 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> select invalid;
+select invalid;
+```
+
+```
 ERROR 1054 (42S22): Unknown column 'invalid' in 'field list'
-mysql> create invalid;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+create invalid;
+```
+
+```
 ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 14 near "invalid"
-mysql> SHOW ERRORS;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW ERRORS;
+```
+
+```
 +-------+------+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Level | Code | Message                                                                                                                                                   |
 +-------+------+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -35,25 +56,47 @@ mysql> SHOW ERRORS;
 | Error | 1064 | You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 14 near "invalid"  |
 +-------+------+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
 2 rows in set (0.00 sec)
+```
 
-mysql> CREATE invalid2;
+{{< copyable "sql" >}}
+
+```sql
+CREATE invalid2;
+```
+
+```
 ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 15 near "invalid2"
-mysql> SELECT 1;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT 1;
+```
+
+```
 +------+
 | 1    |
 +------+
 |    1 |
 +------+
 1 row in set (0.00 sec)
+```
 
-mysql> SHOW ERRORS;
+{{< copyable "sql" >}}
+
+```sql
+SHOW ERRORS;
+```
+
+```
 Empty set (0.00 sec)
 ```
 
 ## MySQL 兼容性
 
-`SHOW ERRORS` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW ERRORS` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW WARNINGS](/reference/sql/statements/show-warnings.md)
+* [SHOW WARNINGS](/v3.0/reference/sql/statements/show-warnings.md)

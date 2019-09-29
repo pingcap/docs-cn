@@ -20,30 +20,56 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> PREPARE mystmt FROM 'SELECT ? as num FROM DUAL';
-Query OK, 0 rows affected (0.00 sec)
+PREPARE mystmt FROM 'SELECT ? as num FROM DUAL';
+```
 
-mysql> SET @number = 5;
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> EXECUTE mystmt USING @number;
+{{< copyable "sql" >}}
+
+```sql
+SET @number = 5;
+```
+
+```
+Query OK, 0 rows affected (0.00 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+EXECUTE mystmt USING @number;
+```
+
+```
 +------+
 | num  |
 +------+
 | 5    |
 +------+
 1 row in set (0.00 sec)
+```
 
-mysql> DEALLOCATE PREPARE mystmt;
+{{< copyable "sql" >}}
+
+```sql
+DEALLOCATE PREPARE mystmt;
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
 ```
 
 ## MySQL 兼容性
 
-`EXECUTE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`EXECUTE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [PREPARE](/reference/sql/statements/prepare.md)
-* [DEALLOCATE](/reference/sql/statements/deallocate.md)
+* [PREPARE](/v3.0/reference/sql/statements/prepare.md)
+* [DEALLOCATE](/v3.0/reference/sql/statements/deallocate.md)

@@ -10,7 +10,7 @@ DM (Data Migration) 使用 sharding DDL lock 来确保分库分表的 DDL 操作
 > **注意：**
 >
 > - 不要轻易使用 `unlock-ddl-lock`/`break-ddl-lock` 命令，除非完全明确当前场景下使用这些命令可能会造成的影响，并能接受这些影响。
-> - 在手动处理异常的 DDL lock 前，请确保已经了解 DM 的[分库分表合并同步原理](/reference/tools/data-migration/usage-scenarios/shard-merge.md#实现原理)。
+> - 在手动处理异常的 DDL lock 前，请确保已经了解 DM 的[分库分表合并同步原理](/dev/reference/tools/data-migration/usage-scenarios/shard-merge.md#实现原理)。
 
 ## 命令介绍
 
@@ -19,6 +19,8 @@ DM (Data Migration) 使用 sharding DDL lock 来确保分库分表的 DDL 操作
 该命令用于查询当前 DM-master 上存在的 DDL lock 信息。
 
 #### 命令示例
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 show-ddl-locks [--worker=127.0.0.1:8262] [task-name]
@@ -36,8 +38,13 @@ show-ddl-locks [--worker=127.0.0.1:8262] [task-name]
 
 #### 返回结果示例
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-» show-ddl-locks test
+show-ddl-locks test
+```
+
+```
 {
     "result": true,                                        # 查询 lock 操作本身是否成功
     "msg": "",                                             # 查询 lock 操作失败时的原因或其它描述信息（如不存在任务 lock）
@@ -66,6 +73,8 @@ show-ddl-locks [--worker=127.0.0.1:8262] [task-name]
 
 #### 命令示例
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 unlock-ddl-lock [--worker=127.0.0.1:8262] [--owner] [--force-remove] <lock-ID>
 ```
@@ -90,8 +99,13 @@ unlock-ddl-lock [--worker=127.0.0.1:8262] [--owner] [--force-remove] <lock-ID>
 
 #### 返回结果示例
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-» unlock-ddl-lock test-`shard_db`.`shard_table`
+unlock-ddl-lock test-`shard_db`.`shard_table`
+```
+
+```
 {
     "result": true,                                        # unlock lock 操作是否成功
     "msg": "",                                             # unlock lock 操作失败时的原因
@@ -110,6 +124,8 @@ unlock-ddl-lock [--worker=127.0.0.1:8262] [--owner] [--force-remove] <lock-ID>
 该命令用于主动请求 DM-worker 强制打破当前正在等待 unlock 的 DDL lock，包括请求 DM-worker 执行或跳过 DDL 操作、移除该 DM-worker 上的 DDL lock 信息。
 
 #### 命令示例
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 break-ddl-lock <--worker=127.0.0.1:8262> [--remove-id] [--exec] [--skip] <task-name>
@@ -135,12 +151,17 @@ break-ddl-lock <--worker=127.0.0.1:8262> [--remove-id] [--exec] [--skip] <task-n
 
 + `task-name`：
     - 非 flag 参数，string，必选
-    - 指定要执行 break 操作的 lock 所在的 task 名称（要查看各 task 上是否存在 lock，可通过 [query-status](/reference/tools/data-migration/query-status.md) 获得）
+    - 指定要执行 break 操作的 lock 所在的 task 名称（要查看各 task 上是否存在 lock，可通过 [query-status](/dev/reference/tools/data-migration/query-status.md) 获得）
 
 #### 返回结果示例
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-» break-ddl-lock -w 127.0.0.1:8262 --exec test
+break-ddl-lock -w 127.0.0.1:8262 --exec test
+```
+
+```
 {
     "result": true,                                        # break lock 操作是否成功
     "msg": "",                                             # break lock 操作失败时的原因
@@ -162,7 +183,7 @@ break-ddl-lock <--worker=127.0.0.1:8262> [--remove-id] [--exec] [--skip] <task-n
 
 #### Lock 异常原因
 
-在 DM-master 尝试自动 unlock sharding DDL lock 之前，需要等待所有 DM-worker 的 sharding DDL events 全部到达（详见[分库分表合并同步原理](/reference/tools/data-migration/usage-scenarios/shard-merge.md#实现原理)）。如果 sharding DDL 已经在同步过程中，且有部分 DM-worker 下线，并且不再计划重启它们（按业务需求移除了这部分 DM-worker），则会由于永远无法等齐所有的 DDL 而造成 lock 无法自动 unlock。
+在 DM-master 尝试自动 unlock sharding DDL lock 之前，需要等待所有 DM-worker 的 sharding DDL events 全部到达（详见[分库分表合并同步原理](/dev/reference/tools/data-migration/usage-scenarios/shard-merge.md#实现原理)）。如果 sharding DDL 已经在同步过程中，且有部分 DM-worker 下线，并且不再计划重启它们（按业务需求移除了这部分 DM-worker），则会由于永远无法等齐所有的 DDL 而造成 lock 无法自动 unlock。
 
 #### 手动处理示例
 
@@ -170,8 +191,13 @@ break-ddl-lock <--worker=127.0.0.1:8262> [--remove-id] [--exec] [--skip] <task-n
 
 初始表结构如下：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW CREATE TABLE shard_db_1.shard_table_1;
+SHOW CREATE TABLE shard_db_1.shard_table_1;
+```
+
+```
 +---------------+------------------------------------------+
 | Table         | Create Table                             |
 +---------------+------------------------------------------+
@@ -184,6 +210,8 @@ mysql> SHOW CREATE TABLE shard_db_1.shard_table_1;
 
 上游分表将执行以下 DDL 语句变更表结构：
 
+{{< copyable "sql" >}}
+
 ```sql
 ALTER TABLE shard_db_*.shard_table_* ADD COLUMN c2 INT;
 ```
@@ -192,9 +220,13 @@ MySQL 及 DM 操作与处理流程如下：
 
 1. MySQL-1 对应的 DM-worker-1 的两个分表执行了对应的 DDL 操作进行表结构变更。
 
+    {{< copyable "sql" >}}
+
     ```sql
     ALTER TABLE shard_db_1.shard_table_1 ADD COLUMN c2 INT;
     ```
+
+    {{< copyable "sql" >}}
 
     ```sql
     ALTER TABLE shard_db_1.shard_table_2 ADD COLUMN c2 INT;
@@ -203,8 +235,13 @@ MySQL 及 DM 操作与处理流程如下：
 2. DM-worker-1 接受到两个分表的 DDL 之后，将对应 MySQL-1 相关的 DDL 信息发送给 DM-master，DM-master 创建相应的 DDL lock。
 3. 使用 `show-ddl-lock` 查看当前的 DDL lock 信息。
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    » show-ddl-locks test
+    show-ddl-locks test
+    ```
+
+    ```
     {
         "result": true,
         "msg": "",
@@ -239,8 +276,13 @@ MySQL 及 DM 操作与处理流程如下：
         - 已下线的 DM-worker 会返回 `rpc error: code = Unavailable` 错误属于预期行为，可以忽略。
         - 如果其它未下线的 DM-worker 返回错误，则需要根据情况额外处理。
 
+        {{< copyable "shell-regular" >}}
+
         ```bash
-        » unlock-ddl-lock test-`shard_db`.`shard_table`
+        unlock-ddl-lock test-`shard_db`.`shard_table`
+        ```
+
+        ```
         {
             "result": false,
            "msg": "github.com/pingcap/tidb-enterprise-tools/dm/master/server.go:1472: DDL lock test-`shard_db`.`shard_table` owner ExecuteDDL successfully, so DDL lock removed. but some dm-workers ExecuteDDL fail, you should to handle dm-worker directly",
@@ -262,7 +304,10 @@ MySQL 及 DM 操作与处理流程如下：
 7. 使用 `show-dd-locks` 确认 DDL lock 是否被成功 unlock。
 
     ```bash
-    » show-ddl-locks test
+    show-ddl-locks test
+    ```
+
+    ```
     {
         "result": true,
         "msg": "no DDL lock exists",
@@ -273,8 +318,13 @@ MySQL 及 DM 操作与处理流程如下：
 
 8. 查看下游 TiDB 中的表结构是否变更成功。
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> SHOW CREATE TABLE shard_db.shard_table;
+    SHOW CREATE TABLE shard_db.shard_table;
+    ```
+
+    ```
     +-------------+--------------------------------------------------+
     | Table       | Create Table                                     |
     +-------------+--------------------------------------------------+
@@ -330,8 +380,13 @@ DM-worker-2 重启后，将尝试重新同步重启前已经在等待的 DDL loc
 
     应该仅有该重启的 DM-worker（`127.0.0.1:8263`）处于 `syned` 状态：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    » show-ddl-locks
+    show-ddl-locks
+    ```
+
+    ```
     {
         "result": true,
         "msg": "",
@@ -359,8 +414,13 @@ DM-worker-2 重启后，将尝试重新同步重启前已经在等待的 DDL loc
     - 使用 `--worker` 参数限定操作仅针对该重启的 DM-worker（`127.0.0.1:8263`）。
     - Lock 过程中该 DM-worker 会尝试再次向下游执行该 DDL 操作（重启前的原 owner 已向下游执行过该 DDL 操作），需要确保该 DDL 操作可被多次执行。
 
+        {{< copyable "shell-regular" >}}
+
         ```bash
-        » unlock-ddl-lock --worker=127.0.0.1:8263 test-`shard_db`.`shard_table`
+        unlock-ddl-lock --worker=127.0.0.1:8263 test-`shard_db`.`shard_table`
+        ```
+
+        ```
         {
             "result": true,
             "msg": "",
@@ -400,8 +460,13 @@ DM-worker-2 重启后，将尝试重新同步重启前已经在等待的 DDL loc
 1. 使用 `show-ddl-locks` 确认 DM-master 上不再存在该 DDL 操作对应的 lock。
 2. 使用 `query-status` 确认 DM-worker 仍在等待 lock 同步。
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    » query-status test
+    query-status test
+    ```
+
+    ```
     {
         "result": true,
         "msg": "",
@@ -448,8 +513,13 @@ DM-worker-2 重启后，将尝试重新同步重启前已经在等待的 DDL loc
 
     由于 owner 已经向下游执行了 DDL 操作，因此在 break 时使用 `--skip` 参数。
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    » break-ddl-lock --worker=127.0.0.1:8263 --skip test
+    break-ddl-lock --worker=127.0.0.1:8263 --skip test
+    ```
+
+    ```
     {
         "result": true,
         "msg": "",

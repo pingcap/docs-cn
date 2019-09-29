@@ -14,6 +14,8 @@ category: reference
 - TiDB Lightning 运行后，TiDB 集群将无法正常对外提供服务。
 - 若 `tidb-lightning` 崩溃，集群会留在“导入模式”。若忘记转回“普通模式”，集群会产生大量未压缩的文件，继而消耗 CPU 并导致迟延 (stall)。此时，需要使用 `tidb-lightning-ctl` 手动将集群转回“普通模式”：
 
+    {{< copyable "shell-regular" >}}
+
     ```sh
     bin/tidb-lightning-ctl -switch-mode=normal
     ```
@@ -62,11 +64,13 @@ category: reference
 >
 > - `tikv-importer` 将中间数据存储缓存到内存上以加速导入过程。占用内存大小可以通过 **(`max-open-engines` × `write-buffer-size` × 2) + (`num-import-jobs` × `region-split-size` × 2)** 计算得来。如果磁盘写入速度慢，缓存可能会带来更大的内存占用。
 
-此外，目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](/how-to/deploy/hardware-recommendations.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 × [副本数量](/faq/tidb.md#3-2-6-每个-region-的-replica-数量可配置吗-调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。
+此外，目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](/dev/how-to/deploy/hardware-recommendations.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 × [副本数量](/dev/faq/tidb.md#326-每个-region-的-replica-数量可配置吗调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。
 
 ## 导出数据
 
-我们使用 [`mydumper`](/reference/tools/mydumper.md) 从 MySQL 导出数据，如下：
+我们使用 [`mydumper`](/dev/reference/tools/mydumper.md) 从 MySQL 导出数据，如下：
+
+{{< copyable "shell-regular" >}}
 
 ```sh
 ./bin/mydumper -h 127.0.0.1 -P 3306 -u root -t 16 -F 256 -B test -T t1,t2 --skip-tz-utc -o /data/my_database/
@@ -80,7 +84,7 @@ category: reference
 - `-F 256`：将每张表切分成多个文件，每个文件大小约为 256 MB。
 - `--skip-tz-utc`：添加这个参数则会忽略掉 TiDB 与导数据的机器之间时区设置不一致的情况，禁止自动转换。
 
-如果数据源是 CSV 文件，请参考 [CSV 支持](/reference/tools/tidb-lightning/csv.md)获取配置信息。
+如果数据源是 CSV 文件，请参考 [CSV 支持](/dev/reference/tools/tidb-lightning/csv.md)获取配置信息。
 
 ## 部署 TiDB Lightning
 
@@ -88,7 +92,7 @@ category: reference
 
 ### 使用 Ansible 部署 TiDB Lightning
 
-TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orchestrated/ansible.md)。
+TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/orchestrated/ansible.md)。
 
 1. 编辑 `inventory.ini`，分别配置一个 IP 来部署 `tidb-lightning` 和 `tikv-importer`。
 
@@ -124,7 +128,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
         # 提供监控告警的端口。需对监控服务器 (monitoring_server) 开放。
         tidb_lightning_pprof_port: 8289
 
-        # 获取数据源（mydumper SQL dump 或 CSV）的路径。
+        # 获取数据源（Mydumper SQL dump 或 CSV）的路径。
         data_source_dir: "{{ deploy_dir }}/mydumper"
         ```
 
@@ -140,8 +144,10 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
 
 3. 开始部署。
 
+    {{< copyable "shell-regular" >}}
+
     ```sh
-    ansible-playbook bootstrap.yml
+    ansible-playbook bootstrap.yml &&
     ansible-playbook deploy.yml
     ```
 
@@ -149,11 +155,15 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
 
 5. 登录 `tikv-importer` 的服务器，并执行以下命令来启动 Importer。
 
+    {{< copyable "shell-regular" >}}
+
     ```sh
     scripts/start_importer.sh
     ```
 
 6. 登录 `tidb-lightning` 的服务器，并执行以下命令来启动 Lightning，开始导入过程。
+
+    {{< copyable "shell-regular" >}}
 
     ```sh
     scripts/start_lightning.sh
@@ -165,7 +175,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
 
 #### 第 1 步：部署 TiDB 集群
 
-在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群 (版本要求 2.0.9 以上)，建议使用最新版。部署方法可参考 [TiDB 快速入门指南](/overview.md#部署方式)。
+在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群 (版本要求 2.0.9 以上)，建议使用最新版。部署方法可参考 [TiDB 快速入门指南](/dev/overview.md#部署方式)。
 
 #### 第 2 步：下载 TiDB Lightning 安装包
 
@@ -247,6 +257,8 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
 
 3. 运行 `tikv-importer`。
 
+    {{< copyable "shell-regular" >}}
+
     ```sh
     nohup ./tikv-importer -C tikv-importer.toml > nohup.out &
     ```
@@ -260,7 +272,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
 3. 配置 `tidb-lightning.toml`。对于没有出现在下述模版中的配置，TiDB Lightning 给出配置错误的提醒并退出。
 
     ```toml
-    # TiDB-Lightning 配置文件模版
+    # TiDB Lightning 配置文件模版
 
     [lightning]
     # 用于调试和 Prometheus 监控的 HTTP 端口。输入 0 关闭。
@@ -339,7 +351,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     # 是一致的。取值范围是（0 <= batch-import-ratio < 1）。
     batch-import-ratio = 0.75
 
-    # mydumper 源数据目录。
+    # Mydumper 源数据目录。
     data-source-dir = "/data/my_database"
     # 如果 no-schema 设置为 true，tidb-lightning 将直接去 tidb-server 获取表结构信息，
     # 而不是根据 data-source-dir 的 schema 文件来创建库/表，
@@ -420,13 +432,14 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orche
     # 每经过这段时间，在日志打印当前进度。
     log-progress = "5m"
 
-    # 表库过滤设置。详情见《TiDB-Lightning 表库过滤》。
+    # 表库过滤设置。详情见《TiDB Lightning 表库过滤》。
     #[black-white-list]
     # ...
-
     ```
 
 4. 运行 `tidb-lightning`。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
+
+    {{< copyable "shell-regular" >}}
 
     ```sh
     #!/bin/bash

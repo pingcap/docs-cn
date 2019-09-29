@@ -9,7 +9,7 @@ category: how-to
 
 PD 能够根据 TiKV 集群的拓扑结构进行调度，使得 TiKV 的容灾能力最大化。
 
-阅读本章前，请先确保阅读 [Ansible 部署方案](/how-to/deploy/orchestrated/ansible.md) 和 [Docker 部署方案](/how-to/deploy/orchestrated/docker.md)。
+阅读本章前，请先确保阅读 [Ansible 部署方案](/dev/how-to/deploy/orchestrated/ansible.md) 和 [Docker 部署方案](/dev/how-to/deploy/orchestrated/docker.md)。
 
 ## TiKV 上报拓扑信息
 
@@ -25,6 +25,8 @@ tikv-server --labels zone=<zone>,rack=<rack>,host=<host>
 
 配置文件：
 
+{{< copyable "" >}}
+
 ```toml
 [server]
 labels = "zone=<zone>,rack=<rack>,host=<host>"
@@ -33,6 +35,8 @@ labels = "zone=<zone>,rack=<rack>,host=<host>"
 ## PD 理解 TiKV 拓扑结构
 
 可以通过 PD 的配置文件让 PD 理解 TiKV 集群的拓扑结构。
+
+{{< copyable "" >}}
 
 ```toml
 [replication]

@@ -5,13 +5,13 @@ category: how-to
 
 # TiSpark 快速入门指南
 
-为了让大家快速体验 [TiSpark](/reference/tispark.md)，通过 TiDB-Ansible 安装的 TiDB 集群中默认已集成 Spark、TiSpark jar 包及 TiSpark sample data。
+为了让大家快速体验 [TiSpark](/dev/reference/tispark.md)，通过 TiDB Ansible 安装的 TiDB 集群中默认已集成 Spark、TiSpark jar 包及 TiSpark sample data。
 
 ## 部署信息
 
 - Spark 默认部署在 TiDB 实例部署目录下 spark 目录中
 - TiSpark jar 包默认部署在 Spark 部署目录 jars 文件夹下：`spark/jars/tispark-${name_with_version}.jar`
-- TiSpark sample data 及导入脚本默认部署在 TiDB-Ansible 目录下：`tidb-ansible/resources/bin/tispark-sample-data`
+- TiSpark sample data 及导入脚本默认部署在 TiDB Ansible 目录下：`tidb-ansible/resources/bin/tispark-sample-data`
 
 ## 环境准备
 
@@ -19,18 +19,22 @@ category: how-to
 
 在 [Oracle JDK 官方下载页面](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-javase8-2177648.html) 下载 JDK 1.8 当前最新版，本示例中下载的版本为 `jdk-8u141-linux-x64.tar.gz`。
 
-解压并根据您的 JDK 部署目录设置环境变量，
-编辑 `~/.bashrc` 文件，比如：
+解压并根据您的 JDK 部署目录设置环境变量，编辑 `~/.bashrc` 文件，比如：
 
-```bashrc
-export JAVA_HOME=/home/pingcap/jdk1.8.0_144
+{{< copyable "shell-regular" >}}
+
+```bash
+export JAVA_HOME=/home/pingcap/jdk1.8.0_144 &&
 export PATH=$JAVA_HOME/bin:$PATH
 ```
 
 验证 JDK 有效性：
 
+```bash
+java -version
 ```
-$ java -version
+
+```
 java version "1.8.0_144"
 Java(TM) SE Runtime Environment (build 1.8.0_144-b01)
 Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
@@ -40,29 +44,47 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 
 假设 TiDB 集群已启动，其中一台 TiDB 实例服务 IP 为 192.168.0.2，端口为 4000，用户名为 root, 密码为空。
 
-```
+{{< copyable "shell-regular" >}}
+
+```bash
 cd tidb-ansible/resources/bin/tispark-sample-data
 ```
 
 修改 `sample_data.sh` 中 TiDB 登录信息，比如：
 
-```
+{{< copyable "shell-regular" >}}
+
+```bash
 mysql --local-infile=1 -h 192.168.0.2 -P 4000 -u root < dss.ddl
 ```
 
 执行脚本
 
-```
+{{< copyable "shell-regular" >}}
+
+```bash
 ./sample_data.sh
 ```
 
+> **注意：**
+>
 > 执行脚本的机器上需要安装 MySQL client，CentOS 用户可通过 `yum -y install mysql`来安装。
 
 登录 TiDB 并验证数据包含 `TPCH_001` 库及以下表：
 
+{{< copyable "shell-regular" >}}
+
+```bash
+mysql -uroot -P4000 -h192.168.0.2
 ```
-$ mysql -uroot -P4000 -h192.168.0.2
-MySQL [(none)]> show databases;
+
+{{< copyable "sql" >}}
+
+```sql
+show databases;
+```
+
+```
 +--------------------+
 | Database           |
 +--------------------+
@@ -73,13 +95,28 @@ MySQL [(none)]> show databases;
 | test               |
 +--------------------+
 5 rows in set (0.00 sec)
+```
 
-MySQL [(none)]> use TPCH_001
+{{< copyable "sql" >}}
+
+```sql
+use TPCH_001;
+```
+
+```
 Reading table information for completion of table and column names
 You can turn off this feature to get a quicker startup with -A
 
 Database changed
-MySQL [TPCH_001]> show tables;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+show tables;
+```
+
+```
 +--------------------+
 | Tables_in_TPCH_001 |
 +--------------------+
@@ -99,14 +136,16 @@ MySQL [TPCH_001]> show tables;
 
 进入 spark 部署目录启动 spark-shell:
 
-```
-$ cd spark
-$ bin/spark-shell
+{{< copyable "shell-regular" >}}
+
+```bash
+cd spark &&
+bin/spark-shell
 ```
 
 然后像使用原生 Spark 一样查询 TiDB 表：
 
-```scala
+```shell
 scala> spark.sql("select count(*) from lineitem").show
 ```
 
@@ -122,7 +161,7 @@ scala> spark.sql("select count(*) from lineitem").show
 
 下面执行另一个复杂一点的 Spark SQL:
 
-```scala
+```shell
 scala> spark.sql(
       """select
         |   l_returnflag,

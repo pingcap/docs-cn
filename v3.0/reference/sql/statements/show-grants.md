@@ -20,24 +20,58 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW GRANTS;
+SHOW GRANTS;
+```
+
+```
 +-------------------------------------------+
 | Grants for User                           |
 +-------------------------------------------+
 | GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' |
 +-------------------------------------------+
 1 row in set (0.00 sec)
+```
 
-mysql> SHOW GRANTS FOR 'u1';
+{{< copyable "sql" >}}
+
+```sql
+SHOW GRANTS FOR 'u1';
+```
+
+```
 ERROR 1141 (42000): There is no such grant defined for user 'u1' on host '%'
-mysql> CREATE USER u1;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER u1;
+```
+
+```
 Query OK, 1 row affected (0.04 sec)
+```
 
-mysql> GRANT SELECT ON test.* TO u1;
+{{< copyable "sql" >}}
+
+```sql
+GRANT SELECT ON test.* TO u1;
+```
+
+```
 Query OK, 0 rows affected (0.04 sec)
+```
 
-mysql> SHOW GRANTS FOR u1;
+{{< copyable "sql" >}}
+
+```sql
+SHOW GRANTS FOR u1;
+```
+
+```
 +------------------------------------+
 | Grants for u1@%                    |
 +------------------------------------+
@@ -49,9 +83,9 @@ mysql> SHOW GRANTS FOR u1;
 
 ## MySQL 兼容性
 
-`SHOW GRANTS` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW GRANTS` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW CREATE USER](/reference/sql/statements/show-create-user.md)
-* [GRANT](/reference/sql/statements/grant-privileges.md)
+* [SHOW CREATE USER](/v3.0/reference/sql/statements/show-create-user.md)
+* [GRANT](/v3.0/reference/sql/statements/grant-privileges.md)

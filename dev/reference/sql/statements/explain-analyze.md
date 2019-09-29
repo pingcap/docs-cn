@@ -24,23 +24,49 @@ category: reference
 
 ## 示例
 
-```sql
-mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
-Query OK, 0 rows affected (0.12 sec)
+{{< copyable "sql" >}}
 
-mysql> INSERT INTO t1 (c1) VALUES (1), (2), (3);
+```sql
+CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
+```
+
+```
+Query OK, 0 rows affected (0.12 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 (c1) VALUES (1), (2), (3);
+```
+
+```
 Query OK, 3 rows affected (0.02 sec)
 Records: 3  Duplicates: 0  Warnings: 0
+```
 
-mysql> EXPLAIN ANALYZE SELECT * FROM t1 WHERE id = 1;
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN ANALYZE SELECT * FROM t1 WHERE id = 1;
+```
+
+```
 +-------------+-------+------+--------------------+---------------------------+
 | id          | count | task | operator info      | execution info            |
 +-------------+-------+------+--------------------+---------------------------+
 | Point_Get_1 | 1.00  | root | table:t1, handle:1 | time:0ns, loops:0, rows:0 |
 +-------------+-------+------+--------------------+---------------------------+
 1 row in set (0.01 sec)
+```
 
-mysql> EXPLAIN ANALYZE SELECT * FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN ANALYZE SELECT * FROM t1;
+```
+
+```
 +-------------------+----------+------+-------------------------------------------------------------+----------------------------------+
 | id                | count    | task | operator info                                               | execution info                   |
 +-------------------+----------+------+-------------------------------------------------------------+----------------------------------+
@@ -56,7 +82,7 @@ mysql> EXPLAIN ANALYZE SELECT * FROM t1;
 
 ## 另请参阅
 
-* [Understanding the Query Execution Plan](/reference/performance/understanding-the-query-execution-plan.md)
-* [EXPLAIN](/reference/sql/statements/explain.md)
-* [ANALYZE TABLE](/reference/sql/statements/analyze-table.md)
-* [TRACE](/reference/sql/statements/trace.md)
+* [Understanding the Query Execution Plan](/dev/reference/performance/understanding-the-query-execution-plan.md)
+* [EXPLAIN](/dev/reference/sql/statements/explain.md)
+* [ANALYZE TABLE](/dev/reference/sql/statements/analyze-table.md)
+* [TRACE](/dev/reference/sql/statements/trace.md)

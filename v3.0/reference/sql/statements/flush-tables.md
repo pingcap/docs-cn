@@ -36,11 +36,23 @@ category: reference
 
 ## 示例
 
-```sql
-mysql> FLUSH TABLES;
-Query OK, 0 rows affected (0.00 sec)
+{{< copyable "sql" >}}
 
-mysql> FLUSH TABLES WITH READ LOCK;
+```sql
+FLUSH TABLES;
+```
+
+```
+Query OK, 0 rows affected (0.00 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+FLUSH TABLES WITH READ LOCK;
+```
+
+```
 ERROR 1105 (HY000): FLUSH TABLES WITH READ LOCK is not supported.  Please use @@tidb_snapshot
 ```
 
@@ -51,4 +63,4 @@ ERROR 1105 (HY000): FLUSH TABLES WITH READ LOCK is not supported.  Please use @@
 
 ## 另请参阅
 
-* [Read historical data](/how-to/get-started/read-historical-data.md)
+* [Read historical data](/v3.0/how-to/get-started/read-historical-data.md)

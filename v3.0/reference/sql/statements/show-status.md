@@ -24,8 +24,13 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> show status;
+show status;
+```
+
+```
 +--------------------+--------------------------------------+
 | Variable_name      | Value                                |
 +--------------------+--------------------------------------+
@@ -37,8 +42,15 @@ mysql> show status;
 | Ssl_cipher         |                                      |
 +--------------------+--------------------------------------+
 6 rows in set (0.01 sec)
+```
 
-mysql> show global status;
+{{< copyable "sql" >}}
+
+```sql
+show global status;
+```
+
+```
 +--------------------+--------------------------------------+
 | Variable_name      | Value                                |
 +--------------------+--------------------------------------+
@@ -58,4 +70,4 @@ mysql> show global status;
 
 ## 另请参阅
 
-* [FLUSH STATUS](/reference/sql/statements/flush-status.md)
+* [FLUSH STATUS](/v3.0/reference/sql/statements/flush-status.md)

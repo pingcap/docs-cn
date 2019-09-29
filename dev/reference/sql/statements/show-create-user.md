@@ -20,9 +20,13 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW CREATE USER 'root';
-+--------------------------------------------------------------------------------------------------------------------------+
+SHOW CREATE USER 'root';
+```
+
+```+--------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER for root@%                                                                                                   |
 +--------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER 'root'@'%' IDENTIFIED WITH 'mysql_native_password' AS '' REQUIRE NONE PASSWORD EXPIRE DEFAULT ACCOUNT UNLOCK |
@@ -44,6 +48,6 @@ mysql> SHOW GRANTS FOR 'root';
 
 ## 另请参阅
 
-* [CREATE USER](/reference/sql/statements/create-user.md)
-* [SHOW GRANTS](/reference/sql/statements/show-grants.md)
-* [DROP USER](/reference/sql/statements/drop-user.md)
+* [CREATE USER](/dev/reference/sql/statements/create-user.md)
+* [SHOW GRANTS](/dev/reference/sql/statements/show-grants.md)
+* [DROP USER](/dev/reference/sql/statements/drop-user.md)

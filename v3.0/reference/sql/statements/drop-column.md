@@ -28,15 +28,34 @@ category: reference
 
 ## 示例
 
-```sql
-mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, col1 INT NOT NULL, col2 INT NOT NULL);
-Query OK, 0 rows affected (0.12 sec)
+{{< copyable "sql" >}}
 
-mysql> INSERT INTO t1 (col1,col2) VALUES (1,1),(2,2),(3,3),(4,4),(5,5);
+```sql
+CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, col1 INT NOT NULL, col2 INT NOT NULL);
+```
+
+```
+Query OK, 0 rows affected (0.12 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 (col1,col2) VALUES (1,1),(2,2),(3,3),(4,4),(5,5);
+```
+
+```
 Query OK, 5 rows affected (0.02 sec)
 Records: 5  Duplicates: 0  Warnings: 0
+```
 
-mysql> SELECT * FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t1;
+```
+
+```
 +----+------+------+
 | id | col1 | col2 |
 +----+------+------+
@@ -47,10 +66,25 @@ mysql> SELECT * FROM t1;
 |  5 |    5 |    5 |
 +----+------+------+
 5 rows in set (0.01 sec)
+```
 
-mysql> ALTER TABLE t1 DROP COLUMN col1, DROP COLUMN col2;
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 DROP COLUMN col1, DROP COLUMN col2;
+```
+
+```
 ERROR 1105 (HY000): can't run multi schema change
-mysql> SELECT * FROM t1;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t1;
+```
+
+```
 +----+------+------+
 | id | col1 | col2 |
 +----+------+------+
@@ -61,11 +95,25 @@ mysql> SELECT * FROM t1;
 |  5 |    5 |    5 |
 +----+------+------+
 5 rows in set (0.00 sec)
+```
 
-mysql> ALTER TABLE t1 DROP COLUMN col1;
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 DROP COLUMN col1;
+```
+
+```
 Query OK, 0 rows affected (0.27 sec)
+```
 
-mysql> SELECT * FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t1;
+```
+
+```
 +----+------+
 | id | col2 |
 +----+------+
@@ -84,6 +132,6 @@ mysql> SELECT * FROM t1;
 
 ## 另请参阅
 
-* [ADD COLUMN](/reference/sql/statements/add-column.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
+* [ADD COLUMN](/v3.0/reference/sql/statements/add-column.md)
+* [SHOW CREATE TABLE](/v3.0/reference/sql/statements/show-create-table.md)
+* [CREATE TABLE](/v3.0/reference/sql/statements/create-table.md)
