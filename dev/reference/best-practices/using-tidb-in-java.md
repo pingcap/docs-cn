@@ -205,13 +205,13 @@ MyBatis 是目前比较流行的 Java 数据访问框架，主要用于管理 SQ
 MyBatis 的 Mapper 中支持 2 种 Parameters：
 
 - `select 1 from t where id = #{param1}` 会作为 prepare 转换为 `select 1 from t where id = ?` 进行 prepare， 并将用实际参数去复用执行, 通过配合前面的 Prepare 连接参数能获得最佳性能
-- `select 1 from t where id = ${param2}` 会做文本替换为 `select 1 from t where id = 1` 执行，如果这条语句被 prepare 不同参数可能会导致大量的 prepare 语句在 TiDB 被cache，并且这种方式执行 SQL 有注入安全风险
+- `select 1 from t where id = ${param2}` 会做文本替换为 `select 1 from t where id = 1` 执行，如果这条语句被 prepare 了不同参数，可能会导致 TiDB 缓存大量的 prepare 语句，并且这种方式执行 SQL 有注入安全风险
 
 #### Dynamic SQL Batch
 
 [http://www.mybatis.org/mybatis-3/dynamic-sql.html#foreach](http://www.mybatis.org/mybatis-3/dynamic-sql.html#foreach)
 
-除了前面 JDBC 配置 `rewriteBatchedStatements=true` 后支持自动将一个个执行的 insert 重写为 `insert values` 后跟很多 value 的外，mybatis 也可以使用 mybatis 的 dynamic 来半自动生成 batch insert。比如下面的 mapper:
+要支持将多条 insert 语句自动重写为 `insert ... values(...), (...), ...` 的形式，除了前面所说的在 JDBC 配置 `rewriteBatchedStatements=true` 外，MyBatis 还可以使用 dynamic 来半自动生成 batch insert。比如下面的 mapper:
 
 ```xml
 <insert id="insertTestBatch" parameterType="java.util.List" fetchSize="1">
@@ -245,49 +245,51 @@ MyBatis 的 Mapper 中支持 2 种 Parameters：
 - Reuse：在 `executor` 中缓存 statement， 这样不用 JDBC 的 `cachePrepStmts` 也能减少重复 prepare 调用
 - Batch：每次更新只会 `addBatch` 直到 query 或 commit 才会调用 `executeBatch` 执行, 如果 jdbc 层有开 `rewriteBatchStatements` 会尝试改写，没有则一条条发送
 
-通常默认值是 Simple 且没有配置可以修改，除非主动在调用 openSession 代码时改变 executorType，如果是 Batch 会遇到情况是事务中前面的 update insert 都非常快，当遇到读或 commit 时因为实际将之前代码执行从客户端看会比较慢实际正常，但排查定位慢 SQL 时需注意。
+通常默认值是 Simple，需要在调用 `openSession` 时改变 `ExecutorType`。如果是 Batch 执行，会遇到事务中前面的 update 或 insert 都非常快，而在读数据或 commit 事务时比较慢的情况，这实际上是正常的，在排查慢 SQL 时需要注意。
 
 ## Spring Transaction
 
 在应用代码中业务可能会通过使用 [Spring Transaction](https://docs.spring.io/spring/docs/4.2.x/spring-framework-reference/html/transaction.html) 来并通过 AOP 切面的方式来启停事务。
 
-通过在方法定义上添加 @Transactional 注解标记方法，AOP 将会在方法前开启事务， 方法 return 前 commit 事务， 如果遇到类似业务可以通过查找代码 @Transactional  来确定事开启和关闭范围, 需要特别注意有内嵌的情况, 如果发生内嵌 Spring 会根据 [Propagation](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Propagation.html) 配置使用不同的行为，因为 TiDB 未支持 savepoint 所以需要注意 NESTED 嵌套事务不支持使用。
+通过在方法定义上添加 @Transactional 注解标记方法，AOP 将会在方法前开启事务，方法 return 前 commit 事务。如果遇到类似业务，可以通过查找代码 @Transactional  来确定事务的开启和关闭时机。需要特别注意有内嵌的情况，如果发生内嵌，Spring 会根据 [Propagation](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Propagation.html) 配置使用不同的行为，因为 TiDB 未支持 savepoint，所以需要注意不支持嵌套事务。
 
 ## Misc
 
 ### Troubleshooting Tool
 
-在 Java 应用发生问题希望进程排查在短期不知道业务逻辑情况下使用 JVM 强大的排查工具会比较有用， 这里简单介绍几个常用工具：
+在 Java 应用发生问题并且不知道业务逻辑情况下，使用 JVM 强大的排查工具会比较有用。这里简单介绍几个常用工具：
 
 #### jstack
 
 [https://docs.oracle.com/javase/7/docs/technotes/tools/share/jstack.html](https://docs.oracle.com/javase/7/docs/technotes/tools/share/jstack.html)
 
-对应于 Go 中的 pprof/goroutine, 可以比较方便的解决卡死问题
+jstack 对应于 Go 中的 pprof/goroutine，可以比较方便地排查进程卡死的问题。
 
-使用方法是 `jstack pid` 即可会输出进程中所有线程的堆栈信息和线程 id 到标准输出，默认只有 java 堆栈如果希望将 jvm 中 c++ 堆栈打印可以加 `-m`
+通过执行 `jstack pid`，即可输出目标进程中所有线程的线程 id 和堆栈信息。输出中默认只有 Java 堆栈，如果希望同时输出 JVM 中的 C++ 堆栈，需要加 `-m` 选项。
 
 通过多次 jstack 可以方便发现卡死问题(比如：都通过 Mybatis BatchExecutor flush 调用 update) 或死锁问题(比如：测试程序都在抢占应用中某把 lock 没发 SQL)
 
-另外，比较常用是 `top -p $PID -H` 或者 java swiss knife 可以看到线程 ID, 通过一个转换为 16 进制(`printf "%x\n" pid`) 后去 jstack 中找对应线程的栈信息来定位”某个线程 cpu 比较高不知道做什么”的问题
+另外，`top -p $PID -H` 或者 java swiss knife 都是常用的查看线程 ID 的方法。通过`printf "%x\n" pid` 把线程 ID 转换成 16进制，然后去 jstack 输出结果中找对应线程的栈信息，可以定位”某个线程占用 CPU 比较高，不知道它在执行什么”的问题。
 
 #### jmap & mat
 
 [https://docs.oracle.com/javase/7/docs/technotes/tools/share/jmap.html](https://docs.oracle.com/javase/7/docs/technotes/tools/share/jmap.html)
 [https://www.eclipse.org/mat/](https://www.eclipse.org/mat/)
 
-和 Go 中的 pprof/heap 不同 jmap 会将整个进程的内存快照 dump 下来(go 是分配器的采样), 然后可以通过另一个工具 mat 做分析。
+和 Go 中的 pprof/heap 不同，jmap 会将整个进程的内存快照 dump 下来（go 是分配器的采样），然后可以通过另一个工具 mat 做分析。
 
-因为是快照通过 mat 可以看到进程中所有对象的关联信息和属性通常通过 mat 可以很好的观察运行中程序的状态， 比如：我们可以通过 mat 找到当前应用中有多少 mysql 连接对象，每个连接对象的地址和状态信息是什么，在有些情况下有用；需要注意 mat 默认只会处理 reachable objects，如果排查 young gc 问题可以在软件配置中设置查看 unreachable，另外对于调查 young gc 问题（或者大量生命周期较短的对象）的内存分配用 Java Flight Recorder 比较方便。
+通过 mat 可以看到进程中所有对象的关联信息和属性，还可以观察线程运行的状态。比如：我们可以通过 mat 找到当前应用中有多少 mysql 连接对象，每个连接对象的地址和状态信息是什么。需要注意 mat 默认只会处理 reachable objects，如果要排查 young gc 问题可以在 mat 配置中设置查看 unreachable objects。另外对于调查 young gc 问题（或者大量生命周期较短的对象）的内存分配，用 Java Flight Recorder 比较方便。
 
 #### trace
 
-最后在无法修改在线代码的情况下希望在 java 中做动态插桩定位问题通常会推荐使用 btrace 或 arthas trace, 可以在不重启进程的情况下动态插入 trace 代码。
+线上应用通常无法修改代码，又希望在 Java 中做动态插桩来定位问题，推荐使用 btrace 或 arthas trace。它们可以在不重启进程的情况下动态插入 trace 代码。
 
 #### flamegraph
 
-Java 中获取火焰图稍微繁琐可以通过[这样](http://psy-lob-saw.blogspot.com/2017/02/flamegraphs-intro-fire-for-everyone.html)手工获取
+Java 应用中获取火焰图稍微繁琐，可以通过[这样](http://psy-lob-saw.blogspot.com/2017/02/flamegraphs-intro-fire-for-everyone.html)手工获取。
 
 ## 总结
 
-本文我们从常用和数据库交互的 Java 组件使用角度看了下在基于 TiDB 开发 Java 应用时需要注意的常见问题， TiDB 是高度兼容 MySQL 协议的数据库，通常基于 MySQL 开发 Java 应用的最佳实践也多适用于 TiDB， 欢迎大家通过 [ASKTUG](https://asktug.com/) 和我们分享讨论自己 Java 编写 TiDB 应用时发现的其他实践技巧或遇到的问题。
+本文我们从常用的和数据库交互的 Java 组件的使用角度，阐述了在基于 TiDB 开发 Java 应用时需要注意的常见问题。TiDB 是高度兼容 MySQL 协议的数据库，基于 MySQL 开发的 Java 应用的最佳实践也多适用于 TiDB。
+
+欢迎大家通过 [ASKTUG](https://asktug.com/) 和我们分享讨论自己用 Java 编写 TiDB 应用时发现的其他实践技巧或遇到的问题。
