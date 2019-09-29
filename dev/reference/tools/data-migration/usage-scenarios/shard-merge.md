@@ -44,6 +44,7 @@ category: reference
 5. 过滤掉三个实例的 `user`.`information` 表的所有删除操作。
 6. 过滤掉三个实例的 `store_{01|02}`.`sale_{01|02}` 表的所有删除操作。
 7. 过滤掉三个实例的 `user`.`log_bak` 表。
+8. 因为 `store_{01|02}`.`sale_{01|02}` 表带有 bigint 型的自增主键，将其合并至 TiDB 时会引发冲突。您需要有方案避免冲突。
 
 ## 下游实例
 
@@ -132,6 +133,14 @@ category: reference
           tbl-name: "log_bak"
     ```
 
+- 要满足同步需求 #8，首先需要参考[自增主键冲突处理](/dev/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md#自增主键冲突处理)来解决，保证在同步到下游时不会因为分表中有相同的主键值导致同步到下游出现异常；然后需要配置 `ignore-checking-items` 忽略自增主键冲突的检查：
+
+    {{< copyable "" >}}
+
+    ```yaml
+    ignore-checking-items: ["auto_increment_ID"]
+    ```
+
 ## 同步任务配置
 
 同步任务的完整配置如下。详情请参阅 [Data Migration 任务配置文件](/dev/reference/tools/data-migration/configure/task-configuration-file.md)。
@@ -143,6 +152,7 @@ name: "shard_merge"
 task-mode: all
 meta-schema: "dm_meta"
 remove-meta: false
+ignore-checking-items: ["auto_increment_ID"]
 
 target-database:
   host: "192.168.0.1"
