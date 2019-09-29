@@ -97,6 +97,14 @@ user = "root"
 password = ""
 port = 4000
 
+# `sql_mode` used when loading data. If the `sql-mode` value is not provided or set to "@DownstreamDefault", downstream global `sql_mode` will be used
+# sql-mode = ""
+
+# max-allowed-packet sets `max_allowed_packet` for database connection.
+# `max-allowed-packet=0` can be used to automatically fetch the
+# `max_allowed_packet` variable from server on every connection.
+max-allowed-packet = 67108864
+
 # The sharding replicating rules support wildcharacter.
 # 1. The asterisk character (*, also called "star") matches zero or more characters,
 #    for example, "doc*" matches "doc" and "document" but not "dodo";
