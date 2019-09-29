@@ -198,7 +198,7 @@ The last packet sent successfully to the server was 3600000 milliseconds ago. Th
 
 [http://www.mybatis.org/mybatis-3/](http://www.mybatis.org/mybatis-3/)
 
-MyBatis 是目前比较流行的 Java 数据访问框架, 主要用于管理 SQL 并完成结果集和 Java 对象的来回映射工作和 TiDB 兼容性很好从历史 issue 看很少有 mybatis 问题, 不过有几个配置可能需要关注：
+MyBatis 是目前比较流行的 Java 数据访问框架，主要用于管理 SQL 并完成结果集和 Java 对象的来回映射工作。它和 TiDB 兼容性很好，从历史 issue 看很少有 mybatis 问题。不过有几个配置可能需要关注：
 
 #### Parameters
 
