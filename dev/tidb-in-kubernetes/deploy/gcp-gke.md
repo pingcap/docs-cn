@@ -5,6 +5,8 @@ category: how-to
 
 # 在 GCP GKE 上部署 TiDB 集群
 
+<!-- markdownlint-disable MD029 -->
+
 本文介绍了如何使用个人电脑（Linux 或 macOS 系统）在 GCP GKE 上部署 TiDB 集群。
 
 > **警告：**
