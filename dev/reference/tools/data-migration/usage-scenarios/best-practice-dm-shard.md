@@ -48,7 +48,7 @@ CREATE TABLE `tbl_no_pk` (
 
 则可以用以下步骤处理合表时可能由 `auto_pk_c1` 导致的 `ERROR 1062 (23000): Duplicate entry '***' for key 'PRIMARY'` 问题：
 
-1. 在开始执行全量数据迁移前，在下游数据库创建用于合表迁移的表，但修改 `auto_pk_c1` 的 `PRIMARY KEY` 属性为普通索引。
+1. 在开始执行全量数据迁移前，在下游数据库创建用于合表迁移的表，但将 `auto_pk_c1` 的 `PRIMARY KEY` 属性修改为普通索引。
 
     ```sql
     CREATE TABLE `tbl_no_pk_2` (
