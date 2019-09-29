@@ -196,7 +196,7 @@ create table t (a int, b int) shard_row_id_bits = 4 pre_split_regions=·3;
 
 ### 关闭 TiDB 的 Latch 机制
 
-TiDB 2.1 版本中在 SQL 层引入了 [latch 机制](/dev/reference/configuration/tidb-server/configuration-file.md#txn-local-latches)，用于在写入冲突比较频繁的场景中提前发现事务冲突，减少 TiDB 和 TiKV 事务提交时写写冲突导致的重试。跑批场景通常用到存量数据，所以并不存在事务的写入冲突。可以把 TiDB 的 latch 功能关闭，以减少细小内存对象的分配：
+TiDB 2.1 版本中在 SQL 层引入了 [latch 机制](/dev/reference/configuration/tidb-server/configuration-file.md#txn-local-latches)，用于在写入冲突比较频繁的场景中提前发现事务冲突，减少 TiDB 和 TiKV 事务提交时写写冲突导致的重试。在多数情况下，跑批场景全部使用存量数据，所以并不存在事务的写入冲突。可以把 TiDB 的 latch 功能关闭，以减少细小内存对象的分配：
 
 ```
 [txn-local-latches]
