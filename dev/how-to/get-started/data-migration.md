@@ -514,6 +514,6 @@ mysql -h 127.0.0.1 -P 4000 -u root -e 'select * from t1' dmtest1 | tail
 
 ## 结论
 
-本教程完成了上游 3 个 MySQL Server 实例的分片迁移，介绍了分片迁移中，DM 如何在集群中导入初始数据，以及 DM 读取 binlog，从而使下游 TiDB 集群与上游实例保持同步。
+本教程完成了上游 3 个 MySQL Server 实例的分片迁移，介绍了分片迁移中，DM 如何在集群中导入初始数据，以及如何读取 MySQL 的 binlog 同步增量数据，从而使下游 TiDB 集群与上游实例保持同步。
 
 关于 DM 的更多详情，请参考 [Data Migration 简介](/dev/reference/tools/data-migration/overview.md)，或加入 [TiDB Community Slack](https://pingcap.com/tidbslack/) channel 参与讨论。
