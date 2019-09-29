@@ -84,8 +84,8 @@ Drainer 日志 `["write save point"] [ts=411222863322546177]` 表示保存对应
 
 下游类型不同，checkpoint 的保存方式也不同：
 
-- 下游 MySQL/TiDB 保存在 `tidb_binlog.checkpoint` 表
-- 下游 kafka/file 保存在对应配置目录里的文件
+- 下游 MySQL/TiDB 保存在 `tidb_binlog.checkpoint` 表。
+- 下游 kafka/file 保存在对应配置目录里的文件。
 
 因为 kafka/file 的数据内容包含了 commit-ts，所以如果 checkpoint 丢失，可以消费下游最新的一条数据看写到下游数据的最新 commit-ts。
 
@@ -114,9 +114,9 @@ Drainer 启动的时候会去读取 checkpoint，如果读取不到，就会使�
 
 TiDB 配置开启 `ignore-error` 写 binlog 失败后触发 critical error 告警，后续都不会再写 binlog，所以会有 binlog 数据丢失。如果要恢复同步，需要如下处理：
 
-1. 停止当前 drainer
-2. 重启触发 critical error 的 `tidb-server` 实例重新开始写 binlog (触发 critical error 后不会再写 binlog 到 pump)
-3. 上游做全量备份
-4. 清理掉下游数据包括 checkpoint 表 `tidb_binlog.checkpoint`
-5. 使用上游的全量备份恢复下游
+1. 停止当前 drainer。
+2. 重启触发 critical error 的 `tidb-server` 实例重新开始写 binlog (触发 critical error 后不会再写 binlog 到 pump)。
+3. 上游做全量备份。
+4. 清理掉下游数据包括 checkpoint 表 `tidb_binlog.checkpoint`。
+5. 使用上游的全量备份恢复下游。
 6. 部署 drainer，使用 `initialCommitTs`= {从全量备份获取快照的时间戳}。
