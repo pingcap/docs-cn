@@ -2,7 +2,6 @@
 title: PD Configuration Flags
 summary: Learn some configuration flags of PD.
 category: reference
-aliases: ['/docs/op-guide/pd-configuration/','/docs/op-guide/pd-api-v1/']
 ---
 
 # PD Configuration Flags
@@ -14,26 +13,26 @@ PD is configurable using command-line flags and environment variables.
 - The advertise URL list for client traffic from outside
 - Default: ${client-urls}
 - If the client cannot connect to PD through the default listening client URLs, you must manually set the advertise client URLs explicitly.
-- For example, the internal IP address of Docker is 172.17.0.1, while the IP address of the host is 192.168.100.113 and the port mapping is set to `-p 2379:2379`. In this case, you can set `--advertise-client-urls` to "http://192.168.100.113:2379". The client can find this service through "http://192.168.100.113:2379".
+- For example, the internal IP address of Docker is 172.17.0.1, while the IP address of the host is 192.168.100.113 and the port mapping is set to `-p 2379:2379`. In this case, you can set `--advertise-client-urls` to `http://192.168.100.113:2379`. The client can find this service through `http://192.168.100.113:2379`.
 
 ## `--advertise-peer-urls`
 
 - The advertise URL list for peer traffic from outside
 - Default: ${peer-urls}
 - If the peer cannot connect to PD through the default listening peer URLs, you must manually set the advertise peer URLs explicitly.
-- For example, the internal IP address of Docker is 172.17.0.1, while the IP address of the host is 192.168.100.113 and the port mapping is set to `-p 2380:2380`. In this case, you can set `--advertise-peer-urls` to "http://192.168.100.113:2380". The other PD nodes can find this service through "http://192.168.100.113:2380".
+- For example, the internal IP address of Docker is 172.17.0.1, while the IP address of the host is 192.168.100.113 and the port mapping is set to `-p 2380:2380`. In this case, you can set `--advertise-peer-urls` to `http://192.168.100.113:2380`. The other PD nodes can find this service through `http://192.168.100.113:2380`.
 
 ## `--client-urls`
 
 - The listening URL list for client traffic
-- Default: "http://127.0.0.1:2379"
-- To deploy a cluster, you must use `--client-urls` to specify the IP address of the current host, such as "http://192.168.100.113:2379". If the cluster runs on Docker, specify the IP address of Docker as "http://0.0.0.0:2379".
+- Default: `http://127.0.0.1:2379`
+- To deploy a cluster, you must use `--client-urls` to specify the IP address of the current host, such as `http://192.168.100.113:2379`. If the cluster runs on Docker, specify the IP address of Docker as `http://0.0.0.0:2379`.
 
 ## `--peer-urls`
 
 - The listening URL list for peer traffic
-- Default: "http://127.0.0.1:2380"
-- To deploy a cluster, you must use `--peer-urls` to specify the IP address of the current host, such as "http://192.168.100.113:2380". If the cluster runs on Docker, specify the IP address of Docker as "http://0.0.0.0:2380".
+- Default: `http://127.0.0.1:2380`
+- To deploy a cluster, you must use `--peer-urls` to specify the IP address of the current host, such as `http://192.168.100.113:2380`. If the cluster runs on Docker, specify the IP address of Docker as `http://0.0.0.0:2380`.
 
 ## `--config`
 
@@ -49,8 +48,8 @@ PD is configurable using command-line flags and environment variables.
 ## `--initial-cluster`
 
 - The initial cluster configuration for bootstrapping
-- Default: "{name}=http://{advertise-peer-url}"
-- For example, if `name` is "pd", and `advertise-peer-urls` is "http://192.168.100.113:2380", the `initial-cluster` is "pd=http://192.168.100.113:2380".
+- Default: `"{name}=http://{advertise-peer-url}"`
+- For example, if `name` is "pd", and `advertise-peer-urls` is `"http://192.168.100.113:2380"`, the `initial-cluster` is `"pd=http://192.168.100.113:2380"`.
 - If you need to start three PD servers, the `initial-cluster` might be:
 
     ```
@@ -107,3 +106,8 @@ PD is configurable using command-line flags and environment variables.
 - To specify the namespace classifier used by PD
 - Default: "table"
 - If you use TiKV separately, not in the entire TiDB cluster, it is recommended to configure the value to 'default'.
+
+## `--metrics-addr`
+
+- The address of Prometheus Pushgateway, which does not push data to Promethus by default.
+- Default: ""

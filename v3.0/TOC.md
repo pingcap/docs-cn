@@ -283,6 +283,7 @@
     - [Generated Columns](/v3.0/reference/sql/generated-columns.md)
     - [Partitioning](/v3.0/reference/sql/partitioning.md)
     - [Character Set](/v3.0/reference/sql/character-set.md)
+    - [SQL Mode](/v3.0/reference/sql/sql-mode.md)
     - [Views](/v3.0/reference/sql/views.md)
   + Configuration
     + tidb-server
@@ -292,8 +293,10 @@
       - [Configuration File](/v3.0/reference/configuration/tidb-server/configuration-file.md)
     + pd-server
       - [Configuration Flags](/v3.0/reference/configuration/pd-server/configuration.md)
+      - [Configuration File](/v3.0/reference/configuration/pd-server/configuration-file.md)
     + tikv-server
       - [Configuration Flags](/v3.0/reference/configuration/tikv-server/configuration.md)
+      - [Configuration File](/v3.0/reference/configuration/tikv-server/configuration-file.md)
   + Key Monitoring Metrics
     - [Overview](/v3.0/reference/key-monitoring-metrics/overview-dashboard.md)
     - [TiDB](/v3.0/reference/key-monitoring-metrics/tidb-dashboard.md)

@@ -45,7 +45,7 @@ select count(1) from t_slim, t_wide where t_slim.c0>t_wide.c0 and t_slim.c1>t_wi
 * `Digest`: The fingerprint of the SQL statement.
 * `Memory_max`: The maximum memory space used during the execution period of this SQL statement (the unit is byte).
 * `Query_time`: Indicates the execution time of this statement. Only the statement whose execution time exceeds slow-threshold outputs this log (the unit is second). The unit of all the following time fields is second.
-* `Process_time`: The total processing time of this SQL statement in TiKV. Because the data is sent to TiKV concurrently, this value may exceed `Query_time`.
+* `Process_time`: The total processing time of this SQL statement in TiKV. Because the data is sent to TiKV concurrently, this value might exceed `Query_time`.
 * `Wait_time`: The total waiting time of this statement in TiKV. Because the Coprocessor of TiKV runs a limited number of threads, requests might queue up when all threads of Coprocessor are working. When a request in the queue takes a long time to process, the waiting time of the subsequent requests will increase.
 * `Backoff_time`: The waiting time before retry when this statement encounters errors that require a retry. The common errors as such include: `lock occurs`, `Region split`, and `tikv server is busy`.
 * `Request_count`: The number of Coprocessor requests that this statement sends.
@@ -252,4 +252,22 @@ admin show slow top internal 3
 admin show slow top all 5
 ```
 
-Due to the memory footprint restriction, the stored slow query records count is limited. If the specified `N` is greater than the records count, the returned records count may be smaller than `N`.
+TiDB stores only a limited number of slow query records because of the limited memory. If the value of `N` in the query command is greater than the records count, the number of returned records is smaller than `N`.
+
+The following table shows output details:
+
+| Column name | Description |
+|:------|:---- |
+| start | The starting time of the SQL execution |
+| duration | The duration of the SQL execution |
+| details | The details of the SQL execution |
+| succ | Whether the SQL statement is executed successfully. `1` means success and `0` means failure. |
+| conn_id | The connection ID for the session |
+| transcation_ts | The `commit ts` for a transaction commit |
+| user | The user name for the execution of the statement |
+| db | The database involved when the statement is executed |
+| table_ids | The ID of the table involved when the SQL statement is executed |
+| index_ids | The ID of the index involved when the SQL statement is executed |
+| internal | This is a TiDB internal SQL statement |
+| digest | The fingerprint of the SQL statement |
+| sql | The SQL statement that is being executed or has been executed |

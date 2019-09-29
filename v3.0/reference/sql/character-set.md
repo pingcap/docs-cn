@@ -25,6 +25,11 @@ mysql> SHOW CHARACTER SET;
 5 rows in set (0.00 sec)
 ```
 
+> **Note:**
+>
+> + In `TiDB`, `utf8` is treated as `utf8mb4`.
+> + Each character set corresponds to only one default collation.
+
 ## Collation support
 
 TiDB only supports binary collations. This means that unlike MySQL, in TiDB string comparisons are both case sensitive and accent sensitive:
@@ -81,6 +86,10 @@ Create Table: CREATE TABLE `t1` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci AUTO_INCREMENT=30002
 1 row in set (0.00 sec)
 ```
+
+## Cluster character set and collation
+
+Not supported yet.
 
 ## Database character set and collation
 
@@ -174,17 +183,39 @@ col_name {ENUM | SET} (val_list)
 
 The table character set and collation are used as the default values for column definitions if the column character set and collation are not specified in individual column definitions.
 
+## String character sets and collation
+
+Each character literal in a string has a character set and a collation. When you use a string, this option is available:
+
+{{< copyable "sql" >}}
+
+```sql
+[_charset_name]'string' [COLLATE collation_name]
+```
+
+Example:
+
+```sql
+SELECT 'string';
+SELECT _latin1'string';
+SELECT _latin1'string' COLLATE latin1_danish_ci;
+```
+
+Rules:
+
++ Rule 1: If you specify `CHARACTER SET charset_name` and `COLLATE collation_name`, then `CHARACTER SET charset_name` and `COLLATE collation_name` are used directly.
++ Rule 2: If you specify `CHARACTER SET charset_name` but do not specify `COLLATE collation_name`, `CHARACTER SET charset_name` and the default collation of `CHARACTER SET charset_name` are used.
++ Rule 3: If you specify neither `CHARACTER SET charset_name` nor `COLLATE collation_name`, the character set and collation given by the system variables `character_set_connection` and `collation_connection` are used.
+
 ## Connection character sets and collations
 
-- The server character set and collation are the values of the `character_set_server` and `collation_server` system variables.
++ The server character set and collation are the values of the `character_set_server` and `collation_server` system variables.
 
-- The character set and collation of the default database are the values of the `character_set_database` and `collation_database` system variables.
-    You can use `character_set_connection` and `collation_connection` to specify the character set and collation for each connection.
-    The `character_set_client` variable is to set the client character set. Before returning the result, the `character_set_results` system variable indicates the character set in which the server returns query results to the client, including the metadata of the result.
++ The character set and collation of the default database are the values of the `character_set_database` and `collation_database` system variables. You can use `character_set_connection` and `collation_connection` to specify the character set and collation for each connection. The `character_set_client` variable is to set the client character set. Before returning the result, the `character_set_results` system variable indicates the character set in which the server returns query results to the client, including the metadata of the result.
 
 You can use the following statement to specify a particular collation that is related to the client:
 
-- `SET NAMES 'charset_name' [COLLATE 'collation_name']`
++ `SET NAMES 'charset_name' [COLLATE 'collation_name']`
 
     `SET NAMES` indicates what character set the client will use to send SQL statements to the server. `SET NAMES utf8` indicates that all the requests from the client use utf8, as well as the results from the server.
 
@@ -198,7 +229,7 @@ You can use the following statement to specify a particular collation that is re
 
     `COLLATE` is optional, if absent, the default collation of the `charset_name` is used.
 
-- `SET CHARACTER SET 'charset_name'`
++ `SET CHARACTER SET 'charset_name'`
 
     Similar to `SET NAMES`, the `SET NAMES 'charset_name'` statement is equivalent to the following statement combination:
 
@@ -207,5 +238,15 @@ You can use the following statement to specify a particular collation that is re
     SET character_set_results = charset_name;
     SET collation_connection = @@collation_database;
     ```
+
+## Optimization levels of character sets and collations
+
+String => Column => Table => Database => Server => Cluster
+
+## General rules on selecting character sets and collation
+
++ Rule 1: If you specify `CHARACTER SET charset_name` and `COLLATE collation_name`, then `CHARACTER SET charset_name` and `COLLATE collation_name` are used directly.
++ Rule 2: If you specify `CHARACTER SET charset_name` and do not specify `COLLATE collation_name`, then `CHARACTER SET charset_name` and the default comparison collation of `CHARACTER SET charset_name` are used.
++ Rule 3: If you specify neither `CHARACTER SET charset_name` nor `COLLATE collation_name`, the character set and collation with higher optimization levels are used.
 
 For more information, see [Connection Character Sets and Collations in MySQL](https://dev.mysql.com/doc/refman/5.7/en/charset-connection.html).

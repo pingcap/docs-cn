@@ -51,16 +51,17 @@ TiDB is configurable using command-line flags and environment variables. The def
 - Default: ""
 - If this flag is not set, logs are written to the file specified by `--log-file` by default.
 
+## `--status-host`
+
+- The `HOST` used to monitor the status of TiDB service
+- Default: `0.0.0.0`
+
 ## `--metrics-addr`
 
 - The Prometheus Pushgateway address
 - Default: ""
 - Leaving it empty stops the Prometheus client from pushing.
-- The format is:
-
-    ```
-    --metrics-addr=192.168.100.115:9091
-    ```
+- The format is `--metrics-addr=192.168.100.115:9091`.
 
 ## `--metrics-interval`
 
@@ -92,25 +93,33 @@ TiDB is configurable using command-line flags and environment variables. The def
 
 - Timeout for the PROXY protocol header read
 - Default: 5 (seconds)
-- Generally use the default value and do not set its value to 0. The unit is second.
+
+    > **Note:**
+    >
+    > Do not set the value to `0`. Use the default value except for special situations.
+
+## `--cors`
+
+- Specifies the `Access-Control-Allow-Origin` value for Cross-Origin Request Sharing (CORS) request of the TiDB HTTP status service
+- Default: ""
 
 ## `--report-status`
 
-- To enable(true) or disable(false) the status report and pprof tool
-- Default: true
-- The value can be (true) or (false). (true) is to enable metrics and pprof. (false) is to disable metrics and pprof.
+- Enables (`true`) or disables (`false`) the status report and pprof tool
+- Default: `true`
+- When set to `true`, this parameter enables metrics and pprof. When set to `false`, this parameter disables metrics and pprof.
 
 ## `--run-ddl`
 
 - To see whether the `tidb-server` runs DDL statements, and set when the number of `tidb-server` is over two in the cluster
-- Default: true
+- Default: `true`
 - The value can be (true) or (false). (true) indicates the `tidb-server` runs DDL itself. (false) indicates the `tidb-server` does not run DDL itself.
 
 ## `--socket string`
 
 - The TiDB services use the unix socket file for external connections.
 - Default: ""
-- You can use “/tmp/tidb.sock” to open the unix socket file.
+- Use `/tmp/tidb.sock` to open the unix socket file.
 
 ## `--status`
 
@@ -122,7 +131,7 @@ TiDB is configurable using command-line flags and environment variables. The def
 
 ## `--store`
 
-- To specify the storage engine used by TiDB in the bottom layer
+- Specifies the storage engine used by TiDB in the bottom layer
 - Default: "mocktikv"
 - You can choose "mocktikv" or "tikv". ("mocktikv" is the local storage engine; "tikv" is a distributed storage engine)
 
@@ -130,10 +139,9 @@ TiDB is configurable using command-line flags and environment variables. The def
 
 - The number of sessions allowed to run concurrently in TiDB. It is used for traffic control.
 - Default: 1000
-- If the number of the concurrent sessions is larger than `token-limit`, the request is blocked and waiting for the operations which have been finished to
-release tokens.
+- If the number of the concurrent sessions is larger than `token-limit`, the request is blocked and waiting for the operations which have been finished to release tokens.
 
 ## `-V`
 
-- Output the version of TiDB
+- Outputs the version of TiDB
 - Default: ""
