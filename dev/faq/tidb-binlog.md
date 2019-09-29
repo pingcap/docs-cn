@@ -54,7 +54,7 @@ binlogctl -cmd pumps
 
 特别关注以下监控项：
 
--  通过 Drainer 监控 **drainer event**，可以看到 Drainer 当前每秒同步 Insert/Update/Delete 事件到下游的速度。
+- 通过 Drainer 监控 **drainer event**，可以看到 Drainer 当前每秒同步 Insert/Update/Delete 事件到下游的速度。
 - 通过 Drainer 监控 **sql query time**，可以看到 Drainer 在下游执行 SQL 的响应时间。
 
 同步慢的可能原因与解决方案：
@@ -68,6 +68,7 @@ binlogctl -cmd pumps
 Drainer 会因为获取不到这个 Pump 的数据没法同步数据到下游。如果这个 Pump 能恢复，Drainer 就能恢复同步。
 
 如果 Pump 没法恢复，可采用以下方式进行处理：
+
 1. 使用 [binlogctl 将该 Pump 状态修改为 offline](/dev/how-to/maintain/tidb-binlog.md)（丢失这个 Pump 的数据）
 2. Drainer 获取到的数据会丢失这个 Pump 上的数据，下游跟上游数据会不一致，需要重新做全量 + 增量同步。具体步骤如下：
     1. 停止当前 Drainer。
