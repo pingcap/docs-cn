@@ -1,335 +1,504 @@
 ---
-title: 使用 DM binary 部署 DM 集群
+title: 使用 DM-Ansible 部署 DM 集群
 category: how-to
 ---
 
-# 使用 DM binary 部署 DM 集群
+# 使用 DM-Ansible 部署 DM 集群
 
-本文将介绍如何使用 DM binary 快速部署 DM 集群。
+DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/index.html) 的 [Playbooks](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html#about-playbooks) 研发的 DM (Data Migration) 集群部署工具。本文将介绍如何使用 DM-Ansible 快速部署 DM 集群。
 
 ## 准备工作
 
-下载官方 binary，链接地址：[DM 下载](/v2.1/reference/tools/download.md#tidb-dm-data-migration)。
+在开始之前，先确保您准备好了以下配置的机器：
 
-下载的文件中包括子目录 bin 和 conf。bin 目录下包含 dm-master、dm-worker、dmctl 以及 Mydumper 的二进制文件。conf 目录下有相关的示例配置文件。
+1. 部署目标机器若干，配置如下：
 
-## 使用样例
+    - CentOS 7.3 (64-bit) 或更高版本，x86_64 架构（AMD64）
+    - 机器之间内网互通
+    - 关闭防火墙，或开放服务端口
 
-假设在两台服务器上部署 MySQL，在一台服务器上部署 TiDB（mocktikv 模式），另外在三台服务器上部署两个 DM-worker 实例和一个 DM-master 实例。各个节点的信息如下：
+2. 一台中控机，配置如下：
 
-| 实例        | 服务器地址   |
-| :---------- | :----------- |
-| MySQL1     | 192.168.0.1 |
-| MySQL2     | 192.168.0.2 |
-| TiDB       | 192.168.0.3 |
-| DM-master  | 192.168.0.4 |
-| DM-worker1 | 192.168.0.5 |
-| DM-worker2 | 192.168.0.6 |
+    - 包含 Python 2.7 的 CentOS 7.3（64-bit）或更高版本
+    - Ansible 2.5 或更高版本
+    - 互联网访问
 
-MySQL1 和 MySQL2 中需要开启 binlog。DM-worker1 负责同步 MySQL1 的数据，DM-worker2 负责同步 MySQL2 的数据。下面以此为例，说明如何部署 DM。
+## 第 1 步：在中控机上安装依赖包
 
-### DM-worker 的部署
+> **注意：**
+>
+> 请确保使用 `root` 账户登录中控机。
 
-DM-worker 需要连接上游 MySQL，且为了安全，强制用户配置加密后的密码。首先使用 dmctl 对 MySQL 的密码进行加密，以密码为 "123456" 为例：
+根据中控机的操作系统版本，运行相应命令如下：
 
-{{< copyable "shell-regular" >}}
+- CentOS 7：
 
-```bash
-./bin/dmctl --encrypt "123456"
-```
+    ```
+    # yum -y install epel-release git curl sshpass
+    # yum -y install python-pip
+    ```
 
-```
-fCxfQ9XKCezSzuCD0Wf5dUD+LsKegSg=
-```
+- Ubuntu：
 
-记录该加密后的值，用于下面部署 DM-worker 时的配置。
+    ```
+    # apt-get -y install git curl sshpass python-pip
+    ```
 
-DM-worker 提供命令行参数和配置文件两种配置方式。
+## 第 2 步：在中控机上创建 `tidb` 用户，并生成 SSH 密钥
 
-查看 DM-worker 的命令行参数说明：
+> **注意：**
+>
+> 请确保使用 `root` 账户登录中控机。
 
-{{< copyable "shell-regular" >}}
+1. 创建 `tidb` 用户。
 
-```bash
-./bin/dm-worker --help
-```
+    ```
+    # useradd -m -d /home/tidb tidb
+    ```
 
-```
-Usage of worker:
-  -L string
-        日志等级，值可以为 "debug"，"info"，"warn"，"error" 或者 "fatal"（默认值："info"）
-  -V    输出版本信息
-  -checker-backoff-max duration
-        任务检查模块中，检查出错误后等待自动恢复的最长时间间隔（默认值："5m0s"，一般情况下不需要修改。如果对该参数的作用没有深入的了解，不建议修改该参数）
-  -checker-backoff-rollback duration
-        任务检查模块中，定时调整恢复等待时间的间隔（默认值："5m0s"，一般情况下不需要修改，如果对该参数的作用没有深入的了解，不建议修改该参数）
-  -checker-check-enable
-        是否开启任务状态检查。开启后 DM 会尝试自动恢复因错误而暂停的数据同步任务（默认值：true）
-  -config string
-        配置文件的路径
-  -log-file string
-        日志文件的路径
-  -print-sample-config
-        打印示例配置
-  -purge-expires int
-        relay log 的过期时间。DM-worker 会尝试自动删除最后修改时间超过了过期时间的 relay log（单位：小时）
-  -purge-interval int
-        定期检查 relay log 是否过期的间隔时间（默认值：3600）（单位：秒）
-  -purge-remain-space int
-        设置最小的可用磁盘空间。当磁盘可用空间小于这个值时，DM-worker 会尝试删除 relay log（默认值：15）（单位：GB）
-  -relay-dir string
-        存储 relay log 的路径（默认值："./relay_log"）
-  -worker-addr string
-        DM-worker 的地址
-```
+2. 为 `tidb` 用户设置密码。
 
-DM-worker 的配置文件：
+    ```
+    # passwd tidb
+    ```
 
-```toml
-# Worker Configuration.
+3. 在 sudo 文件尾部加上 `tidb ALL=(ALL) NOPASSWD: ALL`，为 `tidb` 用户设置免密使用 sudo。
 
-# 日志配置
-log-level = "info"
-log-file = "dm-worker.log"
+    ```
+    # visudo
+    tidb ALL=(ALL) NOPASSWD: ALL
+    ```
 
-# DM-worker 的地址
-worker-addr = ":8262"
+4. 生成 SSH 密钥。
 
-# 作为 MySQL slave 的 server ID，用于获取 MySQL 的 binlog
-# 在一个 replication group 中，每个实例（master 和 slave）都应该有唯一的 server ID
-server-id = 101
+    执行以下 `su` 命令，将登录用户从 `root` 切换至 `tidb`。
 
-# 用于标识一个 replication group 或者 MySQL/MariaDB 实例
-source-id = "mysql-replica-01"
+    ```
+    # su - tidb
+    ```
 
-# 上游实例类型，值可为 "mysql" 或者 "mariadb"
-flavor = "mysql"
+    为 `tidb` 用户创建 SSH 密钥。当提示 `Enter passphrase` 时，按 <kbd>Enter</kbd> 键。命令成功执行后，生成的 SSH 私钥文件为 `/home/tidb/.ssh/id_rsa`，SSH 公钥文件为`/home/tidb/.ssh/id_rsa.pub`。
 
-# 存储 relay log 的路径
-relay-dir = "./relay_log"
+    ```
+    $ ssh-keygen -t rsa
+    Generating public/private rsa key pair.
+    Enter file in which to save the key (/home/tidb/.ssh/id_rsa):
+    Created directory '/home/tidb/.ssh'.
+    Enter passphrase (empty for no passphrase):
+    Enter same passphrase again:
+    Your identification has been saved in /home/tidb/.ssh/id_rsa.
+    Your public key has been saved in /home/tidb/.ssh/id_rsa.pub.
+    The key fingerprint is:
+    SHA256:eIBykszR1KyECA/h0d7PRKz4fhAeli7IrVphhte7/So tidb@172.16.10.49
+    The key's randomart image is:
+    +---[RSA 2048]----+
+    |=+o+.o.          |
+    |o=o+o.oo         |
+    | .O.=.=          |
+    | . B.B +         |
+    |o B * B S        |
+    | * + * +         |
+    |  o + .          |
+    | o  E+ .         |
+    |o   ..+o.        |
+    +----[SHA256]-----+
+    ```
 
-# 存储 DM-worker 元信息的路径
-meta-dir = "dm_worker_meta"
+## 第 3 步：下载 DM-Ansible 至中控机
 
-# relay log 处理单元是否开启 gtid
-enable-gtid = false
+> **注意：**
+>
+> 请确保使用 `tidb` 账户登录中控机。
 
-# 连接 MySQL/Mariadb 的 DSN 中的 charset 配置
-# charset= ""
+1. 打开 `/home/tidb` 目录。
+2. 执行以下命令下载 DM-Ansible。
 
-# MySQL 的连接地址
-[from]
-host = "192.168.0.1"
-user = "root"
-password = "fCxfQ9XKCezSzuCD0Wf5dUD+LsKegSg="
-port = 3306
+    ```bash
+    $ wget http://download.pingcap.org/dm-ansible-{version}.tar.gz
+    ```
 
-# relay log 的删除规则
-# [purge]
-# interval = 3600
-# expires = 24
-# remain-space = 15
+    `{version}` 为期望下载的 DM 版本，如 `v1.0.0-alpha`、`latest` 等。
 
-# 任务状态检查相关配置
-# [checker]
-# check-enable = true
-# backoff-rollback = 5m
-# backoff-max = 5m
-```
+## 第 4 步：安装 DM-Ansible 及其依赖至中控机
 
-推荐统一使用配置文件，把以上配置内容写入到 `conf/dm-worker1.toml` 中，在终端中使用下面的命令运行 DM-worker：
+> **注意：**
+>
+> - 请确保使用 `tidb` 账户登录中控机。
+> - 您需要使用 `pip` 方式下载安装 Ansible 及其依赖，否则可能会遇到兼容性问题。 DM-Ansible 当前与 Ansible 2.5 或更高版本兼容。
 
-{{< copyable "shell-regular" >}}
+1. 在中控机上安装 DM-Ansible 及其依赖包：
 
-```bash
-bin/dm-worker -config conf/dm-worker1.toml
-```
+    ```bash
+    $ tar -xzvf dm-ansible-latest.tar.gz
+    $ mv dm-ansible-latest dm-ansible
+    $ cd /home/tidb/dm-ansible
+    $ sudo pip install -r ./requirements.txt
+    ```
 
-对于 DM-worker2，修改配置文件中的 `source-id` 为 `mysql-replica-02`，并将 `from` 配置部分修改为 MySQL2 的地址即可。
+    Ansible 和相关依赖包含于 `dm-ansible/requirements.txt` 文件中。
 
-### DM-master 的部署
+2. 查看 Ansible 版本：
 
-DM-master 提供命令行参数和配置文件两种配置方式。
+    ```bash
+    $ ansible --version
+    ansible 2.5.0
+    ```
 
-DM-master 的命令行参数说明：
+## 第 5 步：在中控机上配置 SSH 互信和 sudo 规则
 
-```bash
-./bin/dm-master --help
-```
+> **注意：**
+>
+> 请确保使用 `tidb` 账户登录至中控机。
 
-```
-Usage of dm-master:
-  -L string
-        日志等级，值可以为 "debug"，"info"，"warn"，"error" 或者 "fatal"（默认值为 "info"）
-  -V    输出版本信息
-  -config string
-        配置文件的路径
-  -log-file string
-        日志文件的路径
-  -master-addr string
-        DM-master 的地址
-  -print-sample-config
-        打印出 DM-master 的示例配置
-```
+1. 将您部署的目标机器的 IP 地址加至 `hosts.ini` 文件中的 `[servers]` 部分。
 
-DM-master 的配置文件：
+    ```
+    $ cd /home/tidb/dm-ansible
+    $ vi hosts.ini
+    [servers]
+    172.16.10.71
+    172.16.10.72
+    172.16.10.73
 
-```toml
-# Master Configuration.
+    [all:vars]
+    username = tidb
+    ```
 
-# RPC 相关配置
-rpc-rate-limit = 10.0
-rpc-rate-burst = 40
+2. 运行如下命令，然后输入部署目标机器的 `root` 用户密码。
 
-# 日志配置
-log-level = "info"
-log-file = "dm-master.log"
+    ```bash
+    $ ansible-playbook -i hosts.ini create_users.yml -u root -k
+    ```
 
-# DM-master 监听地址
-master-addr = ":8261"
+   该步骤将在部署目标机器上创建 `tidb` 用户，创建 sudo 规则，并为中控机和部署目标机器之间配置 SSH 互信。
 
-# replication group <-> DM-Worker 的配置
-[[deploy]]
-# 对应 DM-worker1 配置文件中的 source-id
-source-id = "mysql-replica-01"
-# DM-worker1 的服务地址
-dm-worker = "192.168.0.5:8262"
+## 第 6 步：下载 DM 及监控组件安装包至中控机
 
-[[deploy]]
-# 对应 DM-worker2 配置文件中的 source-id
-source-id = "mysql-replica-02"
-# DM-worker2 的服务地址
-dm-worker = "192.168.0.6:8262"
-```
+> **注意：**
+>
+> 请确保中控机接入互联网。
 
-推荐统一使用配置文件，把以上配置内容写入到 `conf/dm-master.toml` 中，在终端中使用下面的命令运行 DM-master：
-
-{{< copyable "shell-regular" >}}
+在中控机上，运行如下命令：
 
 ```bash
-bin/dm-master -config conf/dm-master.toml
+ansible-playbook local_prepare.yml
 ```
 
-这样，DM 集群就部署成功了。下面创建简单的数据同步任务来使用 DM 集群。
+## 第 7 步：编辑 `inventory.ini` 配置文件
 
-### 创建数据同步任务
+> **注意：**
+>
+> 请确保使用 `tidb` 账户登录中控机。
 
-假设在 MySQL1 和 MySQL2 实例中有若干个分表，这些分表的结构相同，所在库的名称都以 "sharding" 开头，表名称都以 "t" 开头，并且主键或唯一键不存在冲突。现在需要把这些分表同步到 TiDB 中的 `db_target.t_target` 表中。
+打开并编辑 `/home/tidb/dm-ansible/inventory.ini` 文件如下，以管控 DM 集群。
 
-首先创建任务的配置文件：
+```ini
+dm_worker1 ansible_host=172.16.10.72 server_id=101 source_id="mysql-replica-01" mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+```
 
-{{< copyable "" >}}
+根据场景需要，您可以在以下两种集群拓扑中任选一种：
+
+- [单节点上单个 DM-worker 实例的集群拓扑](#选项-1使用单节点上单个-dm-worker-实例的集群拓扑)
+- [单节点上多个 DM-worker 实例的集群拓扑](#选项-2使用单节点上多个-dm-worker-实例的集群拓扑)
+
+通常情况下，我们推荐每个节点上部署单个 DM-Worker 实例。但如果您的机器拥有性能远超 [TiDB 软件和硬件环境要求](/v2.1/how-to/deploy/hardware-recommendations.md)中推荐配置的 CPU 和内存，并且每个节点配置 2 块以上的硬盘或大于 2T 的 SSD，您可以在单个节点上部署不超过 2 个 DM-Worker 实例。
+
+### 选项 1：使用单节点上单个 DM-Worker 实例的集群拓扑
+
+| 节点 | 主机 IP | 服务 |
+| ---- | ------- | -------- |
+| node1 | 172.16.10.71 | DM-master, Prometheus, Grafana, Alertmanager, DM Portal |
+| node2 | 172.16.10.72 | DM-worker1 |
+| node3 | 172.16.10.73 | DM-worker2 |
+| mysql-replica-01| 172.16.10.81 | MySQL |
+| mysql-replica-02| 172.16.10.82 | MySQL |
+
+```ini
+# DM 模块
+[dm_master_servers]
+dm_master ansible_host=172.16.10.71
+
+[dm_worker_servers]
+dm_worker1 ansible_host=172.16.10.72 server_id=101 source_id="mysql-replica-01" mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+
+dm_worker2 ansible_host=172.16.10.73 server_id=102 source_id="mysql-replica-02" mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+
+[dm_portal_servers]
+dm_portal ansible_host=172.16.10.71
+
+# 监控模块
+[prometheus_servers]
+prometheus ansible_host=172.16.10.71
+
+[grafana_servers]
+grafana ansible_host=172.16.10.71
+
+[alertmanager_servers]
+alertmanager ansible_host=172.16.10.71
+
+# 全局变量
+[all:vars]
+cluster_name = test-cluster
+
+ansible_user = tidb
+
+dm_version = latest
+
+deploy_dir = /data1/dm
+
+grafana_admin_user = "admin"
+grafana_admin_password = "admin"
+```
+
+关于 DM-worker 参数的更多信息，请参考 [DM-worker 配置及参数描述](#dm-worker-配置及参数描述)。
+
+### 选项 2：使用单节点上多个 DM-worker 实例的集群拓扑
+
+| 节点 | 主机 IP | 服务 |
+| ---- | ------- | -------- |
+| node1 | 172.16.10.71 | DM-master, Prometheus, Grafana, Alertmanager, DM Portal |
+| node2 | 172.16.10.72 | DM-worker1-1, DM-worker1-2 |
+| node3 | 172.16.10.73 | DM-worker2-1, DM-worker2-2 |
+
+编辑 `inventory.ini` 文件时，请注意区分这些变量：`server_id`，`deploy_dir`，和 `dm_worker_port`。
+
+```ini
+# DM 模块
+[dm_master_servers]
+dm_master ansible_host=172.16.10.71
+
+[dm_worker_servers]
+dm_worker1_1 ansible_host=172.16.10.72 server_id=101 deploy_dir=/data1/dm_worker dm_worker_port=8262 mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+dm_worker1_2 ansible_host=172.16.10.72 server_id=102 deploy_dir=/data2/dm_worker dm_worker_port=8263 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+
+dm_worker2_1 ansible_host=172.16.10.73 server_id=103 deploy_dir=/data1/dm_worker dm_worker_port=8262 mysql_host=172.16.10.83 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+dm_worker2_2 ansible_host=172.16.10.73 server_id=104 deploy_dir=/data2/dm_worker dm_worker_port=8263 mysql_host=172.16.10.84 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+
+[dm_portal_servers]
+dm_portal ansible_host=172.16.10.71
+
+# 监控模块
+[prometheus_servers]
+prometheus ansible_host=172.16.10.71
+
+[grafana_servers]
+grafana ansible_host=172.16.10.71
+
+[alertmanager_servers]
+alertmanager ansible_host=172.16.10.71
+
+# 全局变量
+[all:vars]
+cluster_name = test-cluster
+
+ansible_user = tidb
+
+dm_version = latest
+
+deploy_dir = /data1/dm
+
+grafana_admin_user = "admin"
+grafana_admin_password = "admin"
+```
+
+### DM-worker 配置及参数描述
+
+| 变量名称 | 描述 |
+| ------------- | -------
+| source_id | DM-worker 绑定到的一个数据库实例或是具有主从架构的复制组。当发生主从切换的时候，只需要更新 `mysql_host` 或 `mysql_port` 而不用更改该 ID 标识。 |
+| server_id | DM-worker 伪装成一个 MySQL slave，该变量即为这个 slave 的 server ID，在 MySQL 集群中需保持全局唯一。取值范围 0 ~ 4294967295。|
+| mysql_host | 上游 MySQL 主机 |
+| mysql_user | 上游 MySQL 用户名，默认值为 “root”。|
+| mysql_password | 上游 MySQL 用户密码，需使用 `dmctl` 工具加密。请参考[使用 dmctl 加密上游 MySQL 用户密码](#使用-dmctl-加密上游-mysql-用户密码)。 |
+| mysql_port | 上游 MySQL 端口， 默认 3306。 |
+| enable_gtid | DM-worker 是否使用全局事务标识符（GTID）拉取 binlog。使用前提是在上游 MySQL 已开启 GTID 模式。 |
+| relay_binlog_name | DM-worker 是否从指定 binlog 文件位置开始拉取 binlog。仅适用于本地无有效 relay log 的情况。|
+| relay_binlog_gtid | DM-worker 是否从指定 GTID 位置开始拉取 binlog。仅适用于本地无有效 relay log，且 `enable_gtid` 设置为 true 的情况。 |
+| flavor | 代表 MySQL 的版本发布类型。 如果是官方版本，Percona 版，或 Cloud MySQL 版，其值为 “mysql”。 如果是 MariaDB，其值为 "mariadb"。默认值是 "mysql"。 |
+
+关于 `deploy_dir` 配置的更多信息，请参考[配置部署目录](#配置部署目录)。
+
+### 使用 dmctl 加密上游 MySQL 用户密码
+
+假定上游 MySQL 的用户密码为 `123456`，运行以下命令，并将生成的字符串添加至 DM-worker 的 `mysql_password` 变量。
+
+```bash
+$ cd /home/tidb/dm-ansible/resources/bin
+$ ./dmctl -encrypt 123456
+VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=
+```
+
+## 第 8 步：编辑 `inventory.ini` 文件中的变量
+
+此步介绍如何编辑部署目录中的变量，如何配置 relay log 同步位置以及 relay log GTID 的同步模式。此外，还会描述 `inventory.ini` 中的全局变量。
+
+### 配置部署目录
+
+编辑 `deploy_dir` 变量以配置部署目录。
+
+- 全局变量默认设为 `/home/tidb/deploy`，适用于所有服务。如果数据盘挂载于 `/data1` 目录，您可以通过以下修改将其变更至 `/data1/dm`。
+
+    ```ini
+    ## Global variables.
+    [all:vars]
+    deploy_dir = /data1/dm
+    ```
+
+- 如果需要为某个服务创建单独的部署目录，您可以在 `inventory.ini` 中配置服务主机列表的同时设置 host 变量。此操作需要您添加第一列别名，以避免在混合服务部署场景下产生混淆。
+
+    ```ini
+    dm-master ansible_host=172.16.10.71 deploy_dir=/data1/deploy
+    ```
+
+### 配置 relay log 同步位置
+
+首次启动 DM-worker 时，您需要配置 `relay_binlog_name` 变量以指定 DM-worker 拉取上游 MySQL 或 MariaDB binlog 的起始位置。
 
 ```yaml
----
-name: test
-task-mode: all
-is-sharding: true
-meta-schema: "dm_meta"
-remove-meta: false
-enable-heartbeat: true
-timezone: "Asia/Shanghai"
+[dm_worker_servers]
+dm-worker1 ansible_host=172.16.10.72 source_id="mysql-replica-01" server_id=101 relay_binlog_name="binlog.000011" mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
-target-database:
-  host: "192.168.0.3"
-  port: 4000
-  user: "root"
-  password: "" # 如果密码不为空，也需要配置 dmctl 加密后的密码
-
-mysql-instances:
-  - source-id: "mysql-replica-01"
-    black-white-list:  "instance"
-    route-rules: ["sharding-route-rules-table", "sharding-route-rules-schema"]
-    mydumper-config-name: "global"
-    loader-config-name: "global"
-    syncer-config-name: "global"
-
-  - source-id: "mysql-replica-02"
-    black-white-list:  "instance"
-    route-rules: ["sharding-route-rules-table", "sharding-route-rules-schema"]
-    mydumper-config-name: "global"
-    loader-config-name: "global"
-    syncer-config-name: "global"
-
-black-white-list:
-  instance:
-    do-dbs: ["~^sharding[\\d]+"]
-    do-tables:
-    -  db-name: "~^sharding[\\d]+"
-       tbl-name: "~^t[\\d]+"
-
-routes:
-  sharding-route-rules-table:
-    schema-pattern: sharding*
-    table-pattern: t*
-    target-schema: db_target
-    target-table: t_target
-
-  sharding-route-rules-schema:
-    schema-pattern: sharding*
-    target-schema: db_target
-
-mydumpers:
-  global:
-    mydumper-path: "./bin/mydumper"
-    threads: 4
-    chunk-filesize: 64
-    skip-tz-utc: true
-    extra-args: "--regex '^sharding.*'"
-
-loaders:
-  global:
-    pool-size: 16
-    dir: "./dumped_data"
-
-syncers:
-  global:
-    worker-count: 16
-    batch: 100
-
+dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 relay_binlog_name="binlog.000002" mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 ```
 
-将以上配置内容写入到 `conf/task.yaml` 文件中，使用 dmctl 创建任务：
+> **注意：**
+>
+> 如未设定 `relay_binlog_name`，DM-worker 将从上游 MySQL 或 MariaDB 现有最早时间点的 binlog 文件开始拉取 binlog。拉取到数据同步任务需要的最新 binlog 可能需要很长时间。
 
-{{< copyable "shell-regular" >}}
+### 开启 relay log GTID 同步模式
+
+在 DM 集群中，DM-worker 的 relay log 处理单元负责与上游 MySQL 或 MariaDB 通信，从而将 binlog 拉取至本地文件系统。
+
+DM 目前支持 MySQL GTID 和 MariaDB GTID。您可以通过配置以下项目开启 relay log GTID 同步模式：
+
+- `enable_gtid`：打开 relay log GTID 同步模式以处理 master 和 slave 易位的场景
+
+- `relay_binlog_gtid`：指定 DM-worker 开始拉取对应上游 MySQL 或 MariaDB binlog 的起始位置
+
+示例配置如下：
+
+```yaml
+[dm_worker_servers]
+dm-worker1 ansible_host=172.16.10.72 source_id="mysql-replica-01" server_id=101 enable_gtid=true relay_binlog_gtid="aae3683d-f77b-11e7-9e3b-02a495f8993c:1-282967971,cc97fa93-f5cf-11e7-ae19-02915c68ee2e:1-284361339" mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+
+dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 relay_binlog_name=binlog.000002 mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+```
+
+### 全局变量
+
+| 变量名称             | 描述                                |
+| --------------- | ---------------------------------------------------------- |
+| cluster_name | 集群名称，可调整 |
+| dm_version | DM 版本，默认已配置 |
+| grafana_admin_user | Grafana 管理员用户名称，默认值 `admin` |
+| grafana_admin_password | Grafana 管理员账户的密码，用于通过 Ansible 导入 Dashboard。默认值为 `admin`。如果您在 Grafana 网页端修改了密码，请更新此变量。 |
+
+## 第 9 步：部署 DM 集群
+
+使用 `ansible-playbook` 运行 Playbook，默认并发数量是 5。如果部署目标机器较多，您可以使用 `-f` 参数增加并发数量，例如，`ansible-playbook deploy.yml -f 10`。
+
+以下部署操作示例使用中运行服务的用户为 `tidb`：
+
+1. 编辑 `dm-ansible/inventory.ini` 文件，确保 `ansible_user = tidb`。
+
+    ```ini
+    ansible_user = tidb
+    ```
+
+   > **注意：**
+   >
+   > 请勿将 `ansible_user` 设为 `root`，因为 `tidb-ansible` 限制服务需以普通用户运行。
+
+    运行以下命令。如果所有服务都返回 `tidb`，则 SSH 互信配置成功。
+
+    ```bash
+    ansible -i inventory.ini all -m shell -a 'whoami'
+    ```
+
+    运行以下命令。如果所有服务都返回 `root`，则 `tidb` 用户免密 sudo 操作配置成功。
+
+    ```bash
+    ansible -i inventory.ini all -m shell -a 'whoami' -b
+    ```
+
+2. 修改内核参数，并部署 DM 集群组件和监控组件。
+
+    ```bash
+    ansible-playbook deploy.yml
+    ```
+
+3. 启动 DM 集群。
+
+    ```bash
+    ansible-playbook start.yml
+    ```
+
+    此操作会按顺序启动 DM 集群的所有组件，包括 DM-master，DM-worker，以及监控组件。当一个 DM 集群被关闭后，您可以使用该命令将其开启。
+
+## 第 10 步：关闭 DM 集群
+
+如果您需要关闭一个 DM 集群，运行以下命令：
 
 ```bash
-bin/dmctl -master-addr 192.168.0.4:8261
+$ ansible-playbook stop.yml
 ```
 
-```
-Welcome to dmctl
-Release Version: v1.0.0-69-g5134ad1
-Git Commit Hash: 5134ad19fbf6c57da0c7af548f5ca2a890bddbe4
-Git Branch: master
-UTC Build Time: 2019-04-29 09:36:42
-Go Version: go version go1.12 linux/amd64
-»
+该操作会按顺序关闭整个 DM 集群中的所有组件，包括 DM-master，DM-worker，以及监控组件。
+
+## 常见部署问题
+
+### 默认服务端口
+
+| 组件 | 端口变量 | 默认端口 | 描述 |
+| :-- | :-- | :-- | :-- |
+| DM-master | `dm_master_port` | 8261  | DM-master 服务交流端口  |
+| DM-worker | `dm_worker_port` | 8262  | DM-worker 服务交流端口 |
+| Prometheus | `prometheus_port` | 9090 | Prometheus 服务交流端口 |
+| Grafana | `grafana_port` |  3000 | 外部 Web 监控服务及客户端（浏览器）访问端口 |
+| Alertmanager | `alertmanager_port` |  9093 | Alertmanager 服务交流端口 |
+
+### 自定义端口
+
+编辑 `inventory.ini` 文件，将服务端口的相关主机变量添加在对应服务 IP 地址后：
+
+```ini
+dm_master ansible_host=172.16.10.71 dm_master_port=18261
 ```
 
-{{< copyable "" >}}
+### 更新 DM-Ansible
 
-```bash
-» start-task conf/task.yaml
-```
+1. 使用 `tidb` 账户登录至中控机，进入 `/home/tidb` 目录，然后备份`dm-ansible` 文件夹。
 
-```
-{
-    "result": true,
-    "msg": "",
-    "workers": [
-        {
-            "result": true,
-            "worker": "192.168.0.5:8262",
-            "msg": ""
-        },
-        {
-            "result": true,
-            "worker": "192.168.0.6:8262",
-            "msg": ""
-        }
-    ]
-}
-```
+    ```
+    $ cd /home/tidb
+    $ mv dm-ansible dm-ansible-bak
+    ```
 
-这样就成功创建了一个将 MySQL1 和 MySQL2 实例中的分表数据同步到 TiDB 的任务。
+2. 下载指定版本 DM-Ansible，解压。
+
+    ```
+    $ cd /home/tidb
+    $ wget http://download.pingcap.org/dm-ansible-{version}.tar.gz
+    $ tar -xzvf dm-ansible-latest.tar.gz
+    $ mv dm-ansible-latest dm-ansible
+    ```
+
+3. 迁移 `inventory.ini` 配置文件。
+
+    ```
+    $ cd /home/tidb
+    $ cp dm-ansible-bak/inventory.ini dm-ansible/inventory.ini
+    ```
+
+4. 迁移 `dmctl` 配置。
+
+    ```
+    $ cd /home/tidb/dm-ansible-bak/dmctl
+    $ cp * /home/tidb/dm-ansible/dmctl/
+    ```
+
+5. 用 Playbook 下载最新的 DM 二进制文件。此文件会自动替换 `/home/tidb/dm-ansible/resource/bin/` 目录下的二进制文件。
+
+    ```
+    $ ansible-playbook local_prepare.yml
+    ```
