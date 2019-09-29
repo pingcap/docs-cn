@@ -130,6 +130,8 @@
     - [TiKV Control](/dev/reference/tools/tikv-control.md)
     - [TiDB Controller](/dev/reference/tools/tidb-control.md)
     - [工具下载](/dev/reference/tools/download.md)
+  + 最佳实践
+    - [TiDB 高并发写入场景最佳实践](/dev/reference/best-practices/high-concurrency.md)
   + [与 MySQL 兼容性对比](/dev/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
@@ -321,8 +323,6 @@
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + [TiSpark 使用指南](/dev/reference/tispark.md)
   + [TiDB Binlog 简介](/dev/reference/tidb-binlog-overview.md)
-  + 最佳实践
-    - [TiDB 高并发写入场景最佳实践](/dev/reference/best-practices/in-high-concurrency.md)
 + TiDB in Kubernetes
   - [TiDB Operator 简介](/dev/tidb-in-kubernetes/tidb-operator-overview.md)
   + 快速上手
