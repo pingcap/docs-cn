@@ -63,9 +63,9 @@ compute.googleapis.com container.googleapis.com
 + `GCP_REGION`：创建资源所在的区域，例如：`us-west1`。
 + `GCP_PROJECT`：GCP 项目的名称。
 
-要使用上述 3 个环境变量配置 Terraform，可执行以下步骤：
+若要使用以上 3 个环境变量来配置 Terraform，可执行以下步骤：
 
-将 GCP_REGION 替换为你的 GCP Region。
+1. 将 `GCP_REGION` 替换为你的 GCP Region。
 
 {{< copyable "shell-regular" >}}
 
@@ -73,7 +73,7 @@ compute.googleapis.com container.googleapis.com
 echo GCP_REGION=\"us-west1\" >> terraform.tfvars
 ```
 
-将 GCP_PROJECT 替换为你的 GCP 项目名称，确保连接的是正确的 GCP 项目。
+2. 将 `GCP_PROJECT` 替换为你的 GCP 项目名称，确保连接的是正确的 GCP 项目。
 
 {{< copyable "shell-regular" >}}
 
@@ -81,7 +81,7 @@ echo GCP_REGION=\"us-west1\" >> terraform.tfvars
 echo "GCP_PROJECT=\"$(gcloud config get-value project)\"" >> terraform.tfvars
 ```
 
-初始化 Terraform：
+3. 初始化 Terraform：
 
 {{< copyable "shell-regular" >}}
 
@@ -89,7 +89,7 @@ echo "GCP_PROJECT=\"$(gcloud config get-value project)\"" >> terraform.tfvars
 terraform init
 ```
 
-为 Terraform 创建一个有限权限的服务账号，并设置证书路径。
+4. 为 Terraform 创建一个有限权限的服务账号，并设置证书路径。
 
 {{< copyable "shell-regular" >}}
 
@@ -298,7 +298,6 @@ module "example-tidb-cluster" {
   tikv_node_count            = 2
   tidb_node_count            = 1
   monitor_node_count         = 1
-  override_values            = file("./example-cluster.yaml")
 }
 ```
 
@@ -360,15 +359,38 @@ GCP 允许 `n1-standard-1` 或者更大的实例类型挂载本地 SSD，这提�
 
 ### 自定义 TiDB 参数配置
 
-Terraform 脚本为 GKE 中的 TiDB 集群提供了默认设置。你也可以在 `tidbclusters.tf` 中为每个 TiDB 集群指定一个覆盖文件 - `override_values`。此文件中的值会覆盖默认设置。
+Terraform 脚本为 GKE 中的 TiDB 集群提供了默认设置。你也可以在 `tidbclusters.tf` 中为每个 TiDB 集群指定一个覆盖配置 `override_values` 或者覆盖配置文件 `override_values_file`。如果同时配置两个变量，`override_values` 配置生效，自定义配置会覆盖默认设置，示例如下：
 
-例如，集群默认使用 `deploy/modules/gcp/tidb-cluster` 模块中的 `values/default.yaml` 作为覆盖文件。
+{{< copyable "" >}}
 
-在 GKE 中，某些值不支持在 `values.yaml` 中自定义，包括集群版本、副本数、`NodeSelector` 以及 `Tolerations`。`NodeSelector` 和 `Tolerations` 由 Terraform 直接管理以确保基础设施与 TiDB 集群之间的一致性。集群版本和副本数可以通过 `tidbclusters.tf` 文件中编辑每个 `tidb-cluster` module 参数来修改。
+```
+override_values = <<EOF
+discovery:
+  image: pingcap/tidb-operator:v1.0.1
+  imagePullPolicy: IfNotPresent
+  resources:
+    limits:
+      cpu: 250m
+      memory: 150Mi
+    requests:
+      cpu: 30m
+      memory: 30Mi
+EOF
+```
+
+{{< copyable "" >}}
+
+```
+override_values_file = "./test-cluster.yaml"
+```
+
+集群默认使用 `deploy/modules/gcp/tidb-cluster` 模块中的 `values/default.yaml` 作为覆盖配置文件。
+
+在 GKE 中，某些值不支持在 `values.yaml` 中自定义，包括集群版本、副本数、`NodeSelector` 以及 `Tolerations`。`NodeSelector` 和 `Tolerations` 由 Terraform 直接管理以确保基础设施与 TiDB 集群之间的一致性。若要自定义集群版本和副本数，可以修改 `tidbclusters.tf` 文件中每个 `tidb-cluster` module 的参数。
 
 > **注意：**
 >
-> 自定义 `values.yaml` 配置文件中，不建议包含如下配置（`tidb-cluster` module 默认固定配置）：
+> 自定义配置中，不建议包含以下配置（`tidb-cluster` module 默认固定配置）：
 >
 > ```
 > pd:
@@ -393,14 +415,27 @@ Terraform 脚本为 GKE 中的 TiDB 集群提供了默认设置。你也可以�
 
 ### 自定义 TiDB Operator
 
-如果要自定义 TiDB Operator，可以使用 `operator_helm_values` 变量来指定 Helm `values.yaml` 文件。该变量可以传递给 `tidb-operator` 模块。
+如果要自定义 TiDB Operator，可以使用 `operator_helm_values` 变量来指定覆盖配置或者使用 `operator_helm_values_file` 变量来指定覆盖配置文件。如果同时配置两个变量，`operator_helm_values` 配置生效，自定义配置会传递给 `tidb-operator` 模块，示例如下：
 
 {{< copyable "" >}}
 
 ```
-variable "operator_helm_values" {
-  default = "relative/path/to/values_file.yaml"
-}
+operator_helm_values = <<EOF
+controllerManager:
+  resources:
+    limits:
+      cpu: 250m
+      memory: 150Mi
+    requests:
+      cpu: 30m
+      memory: 30Mi
+EOF
+```
+
+{{< copyable "" >}}
+
+```
+operator_helm_values_file = "./test-operator.yaml"
 ```
 
 ### 自定义节点池
@@ -494,7 +529,7 @@ terraform destroy
 
     上述命令将获取 TiDB 集群命名空间中的 PVC (Persistent Volume Claim)，并将绑定的 PV 的回收策略设置为 `Delete`。在执行 `terraform destroy` 过程中删除 PVC 时，也会将磁盘删除。
 
-    下面是一个名为 `change-pv-reclaimpolicy.sh` 的脚本。相对于仓库根目录来说，它在 `deploy/gcp` 中，简化了上述过程。
+    下面是一个名为 `change-pv-reclaimpolicy.sh` 的脚本。相对于仓库根目录来说，它在 `deploy/gcp` 目录，简化了上述过程。
 
     {{< copyable "shell-regular" >}}
 
@@ -517,9 +552,7 @@ terraform destroy
 1. 为每个 Kubernetes 集群创建一个新目录；
 2. 根据具体需求，使用 Terraform 脚本将上述模块进行组合。
 
-如果采用了最佳实践，集群中的 Terraform 状态不会相互干扰，并且扩展起来很方便。示例如下：
-
-假设已在项目根目录：
+如果采用了最佳实践，集群中的 Terraform 状态不会相互干扰，并且扩展起来很方便。示例如下（假设已在项目根目录）：
 
 {{< copyable "shell-regular" >}}
 
