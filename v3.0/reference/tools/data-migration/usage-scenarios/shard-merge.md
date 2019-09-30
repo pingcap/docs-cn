@@ -134,7 +134,7 @@ aliases: ['/docs-cn/tools/dm/shard-merge-scenario/']
           tbl-name: "log_bak"
     ```
 
-- 要满足同步需求 #8，首先参考[自增主键冲突处理](/v3.0/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md#自增主键冲突处理) 来解决冲突，保证在同步到下游时不会因为分表中有相同的主键值而使同步出现异常；然后需要配置 `ignore-checking-items` 来跳过自增主键冲突的检查：
+- 要满足同步需求 #8，首先参考[自增主键冲突处理](/v3.0/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md#自增主键冲突处理)来解决冲突，保证在同步到下游时不会因为分表中有相同的主键值而使同步出现异常；然后需要配置 `ignore-checking-items` 来跳过自增主键冲突的检查：
 
     {{< copyable "" >}}
 
