@@ -96,7 +96,7 @@ user = "root"
 password = ""
 port = 4000
 
-# 导入数据时连接所使用的 session 级别的 `sql_mode`。如果 `sql-mode` 的值没有提供或者设置为 "@DownstreamDefault"，会使用下游 global 级别的 `sql_mode`。
+# 导入数据时数据库连接所使用的 session 级别的 `sql_mode`。如果 `sql-mode` 的值没有提供或者设置为 "@DownstreamDefault"，会使用下游 global 级别的 `sql_mode`。
 # sql-mode = ""
 # `max-allowed-packet` 设置数据库连接的 `max_allowed_packet` 参数。
 # 如果 `max-allowed-packet` 设置为 0，每一条数据库连接的 `max_allowed_packet` 会使用下游数据库 global 级别的 `max_allowed_packet`。
