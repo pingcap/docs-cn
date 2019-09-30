@@ -10,7 +10,7 @@ aliases: ['/docs-cn/tools/dm/practice/']
 
 ## 第 1 步：部署 DM 集群
 
-目前推荐使用 DM-Ansible 部署 DM 集群，具体部署方法参照 [使用 DM-Ansible 部署 DM 集群](/v3.0/how-to/deploy/data-migration-with-ansible.md)。
+目前推荐使用 DM-Ansible 部署 DM 集群，具体部署方法参照 [使用 DM-Ansible 部署 DM 集群](/v3.0/how-to/deploy/data-migration-with-ansible.md)；也可以使用 binary 部署 DM 集群用于体验或者测试，具体部署方法参照[使用 DM binary 部署 DM 集群](/v3.0/how-to/deploy/data-migration-with-binary.md)。
 
 > **注意：**
 >

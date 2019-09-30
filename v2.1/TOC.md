@@ -89,7 +89,6 @@
         - [Table Routing](/v2.1/reference/tools/data-migration/features/overview.md#table-routing)
         - [Black & White Lists](/v2.1/reference/tools/data-migration/features/overview.md#black--white-table-lists)
         - [Binlog Event Filter](/v2.1/reference/tools/data-migration/features/overview.md#binlog-event-filter)
-        - [Column Mapping](/v2.1/reference/tools/data-migration/features/overview.md#column-mapping)
         - [同步延迟监控](/v2.1/reference/tools/data-migration/features/overview.md#同步延迟监控)
         + Shard Support
           - [简介](/v2.1/reference/tools/data-migration/features/shard-merge.md)
