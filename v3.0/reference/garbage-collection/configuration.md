@@ -7,8 +7,13 @@ category: reference
 
 TiDB 的 GC 相关的配置存储于 `mysql.tidb` 系统表中，可以通过 SQL 语句对这些参数进行查询和更改：
 
-```plain
-mysql> select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb;
+{{< copyable "sql" >}}
+
+```sql
+select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb;
+```
+
+```
 +--------------------------+----------------------------------------------------------------------------------------------------+
 | VARIABLE_NAME            | VARIABLE_VALUE                                                                                     |
 +--------------------------+----------------------------------------------------------------------------------------------------+
@@ -30,6 +35,8 @@ mysql> select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb;
 ```
 
 例如，如果需要将 GC 调整为保留最近一天以内的数据，只需执行下列语句即可：
+
+{{< copyable "sql" >}}
 
 ```sql
 update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_time";
@@ -81,9 +88,9 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 当 `tikv_gc_mode` 设为 `"distributed"`，GC concurrency 将应用于 [Resolve Locks](/v3.0/reference/garbage-collection/overview.md#resolve-locks) 阶段。当 [`tikv_gc_mode`](#tikv_gc_mode) 设为 `"central"` 时，GC concurrency 将应用于 Resolve Locks 以及 [Do GC](/v3.0/reference/garbage-collection/overview.md#do-gc) 两个阶段。
 
 - `true`（默认）：自动以 TiKV 节点的个数作为 GC concurrency
-- `false`：使用 [`tikv_gc_concurrency`](#tikv-gc-concurrency) 的值作为 GC 并发数
+- `false`：使用 [`tikv_gc_concurrency`](#tikv_gc_concurrency) 的值作为 GC 并发数
 
 ## `tikv_gc_concurrency`
 
-- 手动设置 GC concurrency。要使用该参数，必须将 [`tikv_gc_auto_concurrency`](#tikv-gc-auto-concurrency) 设为 `false` 。
+- 手动设置 GC concurrency。要使用该参数，必须将 [`tikv_gc_auto_concurrency`](#tikv_gc_auto_concurrency) 设为 `false` 。
 - 默认值：2

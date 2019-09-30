@@ -22,7 +22,7 @@ TiSpark 是将 Spark SQL 直接运行在分布式存储引擎 TiKV 上的 OLAP �
 
 ## 环境准备
 
-现有 TiSpark 2.x 版本支持 Spark 2.3.x和Spark 2.4.x。如果你希望使用 Spark 2.1.x 版本，需使用 TiSpark 1.x。
+现有 TiSpark 2.x 版本支持 Spark 2.3.x 和 Spark 2.4.x。如果你希望使用 Spark 2.1.x 版本，需使用 TiSpark 1.x。
 
 TiSpark 需要 JDK 1.8+ 以及 Scala 2.11（Spark2.0+ 默认 Scala 版本）。
 
@@ -49,6 +49,8 @@ Spark 推荐 32G 内存以上的配额。请在配置中预留 25% 的内存给�
 Spark 推荐每台计算节点配备 CPU 累计 8 到 16 核以上。你可以初始设定分配所有 CPU 核给 Spark。
 
 Spark 的具体配置方式也请参考[官方说明](https://spark.apache.org/docs/latest/spark-standalone.html)。以下为根据 `spark-env.sh` 配置的范例：
+
+{{< copyable "" >}}
 
 ```
 SPARK_EXECUTOR_MEMORY=32g
@@ -81,9 +83,9 @@ TiSpark 的 jar 包可以在[这里](https://github.com/pingcap/tispark/releases
 
 如果在已有 Spark 集群上运行 TiSpark，无需重启集群。可以使用 Spark 的 `--jars` 参数将 TiSpark 作为依赖引入：
 
-{{< copyable "" >}}
+{{< copyable "shell-regular" >}}
 
-```
+```shell
 spark-shell --jars $TISPARK_FOLDER/tispark-${name_with_version}.jar
 ```
 
@@ -103,27 +105,27 @@ spark-shell --jars $TISPARK_FOLDER/tispark-${name_with_version}.jar
 
 在选中的 Spark Master 节点执行如下命令：
 
-{{< copyable "" >}}
+{{< copyable "shell-regular" >}}
 
-```
+```bash
 cd $SPARKPATH
 ```
 
-{{< copyable "" >}}
+{{< copyable "shell-regular" >}}
 
-```
+```bash
 ./sbin/start-master.sh
 ```
 
-在这步完成以后，屏幕上会打印出一个 log 文件。检查 log 文件确认 Spark-Master 是否启动成功。你可以打开 [http://spark-master-hostname:8080](http://whereever-the-ip-is:8080`c) 查看集群信息（如果你没有改动 Spark-Master 默认 Port Numebr）。在启动 Spark-Slave 的时候，也可以通过这个面板来确认 Slave 是否已经加入集群。
+在这步完成以后，屏幕上会打印出一个 log 文件。检查 log 文件确认 Spark-Master 是否启动成功。你可以打开 <http://spark-master-hostname:8080> 查看集群信息（如果你没有改动 Spark-Master 默认 Port Numebr）。在启动 Spark-Slave 的时候，也可以通过这个面板来确认 Slave 是否已经加入集群。
 
 #### 启动 Slave
 
 类似地，可以用如下命令启动 Spark-Slave 节点：
 
-{{< copyable "" >}}
+{{< copyable "shell-regular" >}}
 
-```
+```bash
 ./sbin/start-slave.sh spark://spark-master-hostname:7077
 ```
 
@@ -131,13 +133,13 @@ cd $SPARKPATH
 
 #### Spark SQL shell 和 JDBC 服务器
 
-当前版本的 TiSpark 可以直接使用 `spark-sql`和 Spark 的 ThriftServer JDBC 服务器。
+当前版本的 TiSpark 可以直接使用 `spark-sql` 和 Spark 的 ThriftServer JDBC 服务器。
 
 ## 一个使用范例
 
 假设你已经按照上述步骤成功启动了 TiSpark 集群，下面简单介绍如何使用 Spark SQL 来做 OLAP 分析。这里我们用名为 tpch 数据库中的 lineitem 表作为范例。
 
-假设你的 PD 节点位于 192.168.1.100，端口为 2379，在`$SPARK_HOME/conf/spark-defaults.conf`加入：
+假设你的 PD 节点位于 192.168.1.100，端口为 2379，在 `$SPARK_HOME/conf/spark-defaults.conf` 加入：
 
 {{< copyable "" >}}
 
@@ -165,6 +167,8 @@ spark.sql("use tpch")
 spark.sql("select count(*) from lineitem").show
 ```
 
+结果为：
+
 ```
 +-------------+
 | Count (1)   |
@@ -175,20 +179,20 @@ spark.sql("select count(*) from lineitem").show
 
 Spark SQL 交互 Shell 和原生 Spark 一致：
 
-{{< copyable "sql" >}}
+{{< copyable "" >}}
 
-```sql
-use tpch;
+```shell
+spark-sql> use tpch;
 ```
 
 ```
 Time taken: 0.015 seconds
 ```
 
-{{< copyable "sql" >}}
+{{< copyable "" >}}
 
-```sql
-select count(*) from lineitem;
+```shell
+spark-sql> select count(*) from lineitem;
 ```
 
 ```
@@ -209,14 +213,16 @@ SQuirreLSQL 和 hive-beeline 可以使用 JDBC 连接 Thrift 服务器。
 Beeline version 1.2.2 by Apache Hive
 ```
 
+{{< copyable "" >}}
+
 ```shell
 beeline> !connect jdbc:hive2://localhost:10000
 ```
 
-{{< copyable "sql" >}}
+{{< copyable "" >}}
 
-```sql
-use testdb;
+```shell
+1: jdbc:hive2://localhost:10000> use testdb;
 ```
 
 ```
@@ -303,11 +309,11 @@ TiSpark 可以使用 TiDB 的统计信息：
 
 - Q. 是独立部署还是和现有 Spark／Hadoop 集群共用资源？
 
-  A. 可以利用现有 Spark 集群无需单独部署，但是如果现有集群繁忙，TiSpark 将无法达到理想速度。
+    A. 可以利用现有 Spark 集群无需单独部署，但是如果现有集群繁忙，TiSpark 将无法达到理想速度。
 
 - Q. 是否可以和 TiKV 混合部署？
 
-  A. 如果 TiDB 以及 TiKV 负载较高且运行关键的线上任务，请考虑单独部署 TiSpark；并且考虑使用不同的网卡保证 OLTP 的网络资源不被侵占而影响线上业务。如果线上业务要求不高或者机器负载不大，可以考虑与 TiKV 混合部署。
+    A. 如果 TiDB 以及 TiKV 负载较高且运行关键的线上任务，请考虑单独部署 TiSpark；并且考虑使用不同的网卡保证 OLTP 的网络资源不被侵占而影响线上业务。如果线上业务要求不高或者机器负载不大，可以考虑与 TiKV 混合部署。
 
 - Q. Spark 执行中报 warning：WARN ObjectStore:568 - Failed to get database
 
@@ -316,3 +322,7 @@ TiSpark 可以使用 TiDB 的统计信息：
 - Q. Spark 执行中报 java.sql.BatchUpdateException: Data Truncated
 
     A. 写入的数据长度超过了数据库定义的数据类型的长度，可以确认 target table 的字段长度，进行调整。
+
+- Q. TiSpark 任务是否默认读取 Hive 的元数据？
+
+    A. TiSpark 通过读取 hive-site 里的 meta 来搜寻 hive 的库。如果搜寻不到，就通过读取 tidb meta 搜寻 tidb 库。如果不需要该行为，可不在 hive site 中配置 hive 的 meta。
