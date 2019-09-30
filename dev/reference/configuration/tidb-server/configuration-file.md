@@ -381,6 +381,11 @@ TiDB Binlog 相关配置。
 
 TiDB 服务状态相关配置。
 
+### `report-status`
+
++ 开启 HTTP API 服务的开关。
++ 默认值：true
+
 ### `record-db-qps`
 
 + 输与 database 相关的 QPS metrics 到 promethus的开关。
