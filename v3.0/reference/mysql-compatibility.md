@@ -24,7 +24,7 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 * 外键约束
 * 全文函数与索引
 * 空间函数与索引
-* 非 `utf8`/`utf8mb4` 字符集
+* 非 `utf8`/`utf8mb4` 的 Unicode 字符集
 * `BINARY` 之外的排序规则
 * 增加主键
 * 删除主键
@@ -102,6 +102,10 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 
 - [`ANALYZE TABLE`](/v3.0/reference/performance/statistics.md#手动收集) 语句在 TiDB 和 MySQL 中表现不同。在 MySQL/InnoDB 中，它是一个轻量级语句，执行过程较短；而在 TiDB 中，它会完全重构表的统计数据，语句执行过程较长。
 
+### 视图
+
+目前 TiDB 不支持对视图进行 `UPDATE`、`INSERT`、`DELETE` 等写入操作。
+
 ### 存储引擎
 
 出于兼容性原因，TiDB 支持使用备用存储引擎创建表的语法。元数据命令将表描述为 InnoDB 存储引擎：
@@ -150,6 +154,9 @@ TiDB 支持 MySQL 5.7 中 **绝大多数的 SQL 模式**，以下几种模式除
     + TiDB 中，`utf8mb4` 的默认排序规则为 `utf8mb4_bin`
     + MySQL 5.7 中，`utf8mb4` 的默认排序规则为 `utf8mb4_general_ci`，MySQL 8.0 中修改为 `utf8mb4_0900_ai_ci`
     + 请使用 [`SHOW CHARACTER SET`](/v3.0/reference/sql/statements/show-character-set.md) 语句查看所有字符集的默认排序规则
++ `foreign_key_checks` 的默认值不同：
+    + TiDB 中该值默认为 `OFF`，并且目前 TiDB 只支持设置该值为 `OFF`。
+    + MySQL 5.7 中该值默认为 `ON`。
 + 默认 SQL mode 与 MySQL **已相同**
     + TiDB 和 MySQL 5.7 中均为 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`
 + `lower_case_table_names` 的默认值不同：
