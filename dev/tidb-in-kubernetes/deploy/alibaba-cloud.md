@@ -109,12 +109,12 @@ category: how-to
     vpc_id = vpc-bp1v8i5rwsc7yh8dwyep5
     ```
 
-3. 用 `kubectl` 或 `helm` 对集群进行操作（其中 `cluster_name` 默认值为 `my-cluster`）：
+3. 用 `kubectl` 或 `helm` 对集群进行操作：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    export KUBECONFIG=$PWD/credentials/kubeconfig_<cluster_name>
+    export KUBECONFIG=$PWD/credentials/kubeconfig
     ```
 
     {{< copyable "shell-regular" >}}
@@ -136,25 +136,25 @@ category: how-to
 {{< copyable "shell-regular" >}}
 
 ```shell
-ssh -i credentials/<cluster_name>-bastion-key.pem root@<bastion_ip>
+ssh -i credentials/<cluster_name>-key.pem root@<bastion_ip>
 ```
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-mysql -h <tidb_slb_ip> -P <tidb_port> -u root
+mysql -h <tidb_slb_ip> -P 4000 -u root
 ```
 
 ## 监控
 
-访问 `<monitor_endpoint>` 就可以查看相关的 Grafana 大盘。相关信息可在安装完成后的输出中找到。默认帐号密码为：
+访问 `<monitor_endpoint>` 就可以查看相关的 Grafana 监控面板。相关信息可在安装完成后的输出中找到。默认帐号密码为：
 
 - 用户名：admin
 - 密码：admin
 
 > **警告：**
 >
-> 出于安全考虑，假如你已经或将要配置 VPN 用于访问 VPC，强烈建议将 `monitor_slb_network_type` 设置为 `intranet` 以禁止监控服务的公网访问。
+> 出于安全考虑，假如你已经或将要配置 VPN 用于访问 VPC，强烈建议将 `deploy/modules/aliyun/tidb-cluster/values/default.yaml` 文件里 `monitor.grafana.service.annotations` 中的`service.beta.kubernetes.io/alicloud-loadbalancer-address-type` 设置为 `intranet` 以禁止监控服务的公网访问。
 
 ## 升级 TiDB 集群
 
@@ -165,7 +165,7 @@ mysql -h <tidb_slb_ip> -P <tidb_port> -u root
 {{< copyable "shell-regular" >}}
 
 ```
-kubectl get pods --namespace tidb -o wide --watch
+kubectl get pods --namespace <tidb_cluster_name> -o wide --watch
 ```
 
 ## TiDB 集群水平伸缩
@@ -206,10 +206,16 @@ terraform state rm module.ack.alicloud_cs_managed_kubernetes.k8s
 
 通过调整 `variables.tf` 内的值来配置 TiDB Operator，大多数配置项均能按照 `variable` 的注释理解语义后进行修改。需要注意的是，`operator_helm_values` 配置项允许为 TiDB Operator 提供一个自定义的 `values.yaml` 配置文件，示例如下：
 
+- 在 `terraform.tfvars` 中设置 `operator_helm_values`：
+
 ```hcl
-variable "operator_helm_values" {
-  default = file("my-operator-values.yaml")
-}
+operator_helm_values = "./my-operator-values.yaml"
+```
+
+- 在 `main.tf` 中设置 `operator_helm_values`：
+
+```hcl
+operator_helm_values = file("./my-operator-values.yaml")
 ```
 
 同时，在默认配置下 Terraform 脚本会创建一个新的 VPC，假如要使用现有的 VPC，可以在 `variable.tf` 中设置 `vpc_id`。注意，当使用现有 VPC 时，没有设置 vswitch 的可用区将不会部署 Kubernetes 节点。
@@ -260,8 +266,8 @@ module "tidb-cluster-staging" {
 | :----- | :---- | :----- |
 | `ack` | 封装目标 Kubernetes 集群信息的结构体，必填 | `nil` |
 | `cluster_name` | TiDB 集群名，必填且必须唯一 | `nil` |
-| `tidb_version` | TiDB 集群版本 | `v3.0.0` |
-| `tidb_cluster_chart_version` | `tidb-cluster` helm chart 的版本 | `v1.0.0-beta.3` |
+| `tidb_version` | TiDB 集群版本 | `v3.0.1` |
+| `tidb_cluster_chart_version` | `tidb-cluster` helm chart 的版本 | `v1.0.1` |
 | `pd_count` | PD 节点数 | 3 |
 | `pd_instance_type` | PD 实例类型 | `ecs.g5.large` |
 | `tikv_count` | TiKV 节点数 | 3 |
