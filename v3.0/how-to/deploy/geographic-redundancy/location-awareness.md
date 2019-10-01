@@ -47,6 +47,10 @@ location-labels = ["zone", "rack", "host"]
 
 其中 `location-labels` 需要与 TiKV 的 `labels` 名字对应，这样 PD 才能知道这些 `labels` 代表了 TiKV 的拓扑结构。
 
+> **注意：**
+> 
+> PD 的 `location-labels` 配置必须和 TiKV 的 `labels` 配置一同设置，它们之间的且的关系，否则 `labels` 不会生效。 
+
 ## PD 基于 TiKV 拓扑结构进行调度
 
 PD 能够根据我们提供的拓扑信息作出最优的调度，我们只需要关心什么样的拓扑结构能够达到我们想要的效果。
