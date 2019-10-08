@@ -61,7 +61,7 @@ Currently, when you run the `ANALYZE` statement, the task is divided into multip
 
 #### `tidb_distsql_scan_concurrency`
 
-When you analyze regular columns, you can use the `tidb_distsql_scan_concurrency` parameter to control the number of Region to be read at one time. The default value is `10`.
+When you analyze regular columns, you can use the `tidb_distsql_scan_concurrency` parameter to control the number of Region to be read at one time. The default value is `15`.
 
 #### `tidb_index_serial_scan_concurrency`
 
