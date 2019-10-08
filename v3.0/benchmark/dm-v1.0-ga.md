@@ -6,7 +6,7 @@ category: benchmark
 
 # DM 1.0-GA Benchmark Report
 
-This DM benchmark report describes the test purpose, environment, scenario, and result.
+This benchmark report describes the test purpose, environment, scenario, and result for DM 1.0-GA.
 
 ## Test purpose
 
@@ -38,7 +38,7 @@ Hardware information:
 
 Others:
 
-* network rtt between servers: rtt min/avg/max/mdev = 0.074/0.088/0.121/0.019 ms
+* Network rtt between servers: rtt min/avg/max/mdev = 0.074/0.088/0.121/0.019 ms
 
 ### Cluster topology
 
@@ -68,6 +68,8 @@ MySQL1 (172.16.4.40) -> DM-worker1 (172.16.4.39) -> TiDB (172.16.4.41)
 
 #### Database table structure used for the test
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE TABLE `sbtest` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -81,7 +83,7 @@ CREATE TABLE `sbtest` (
 
 #### Database configuration
 
-We use TiDB-ansiable to deploy TiDB cluster, and use default configuration provided in TiDB-ansible.
+We use TiDB Ansible to deploy the TiDB cluster, and use default configuration provided in TiDB Ansible.
 
 ### Full import benchmark case
 
@@ -91,7 +93,9 @@ We use TiDB-ansiable to deploy TiDB cluster, and use default configuration provi
 - Use sysbench to create the table and generate the initial data in upstream MySQL
 - Start DM-task in the `full` mode
 
-sysbench test script used for preparing initial data:
+Sysbench test script used for preparing initial data:
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 sysbench --test=oltp_insert --tables=4 --mysql-host=172.16.4.40 --mysql-port=3306 --mysql-user=root --mysql-db=dm_benchmark --db-driver=mysql --table-size=50000000 prepare
@@ -110,33 +114,35 @@ sysbench --test=oltp_insert --tables=4 --mysql-host=172.16.4.40 --mysql-port=330
 
 #### Benchmark result with different pool size in load unit
 
-Full import data size in benchmark case is 3.78GB, which is generated from sysbench by the following script
+Full import data size in benchmark case is 3.78 GB, which is generated from sysbench by the following script:
 
-```
+{{< copyable "shell-regular" >}}
+
+```bash
 sysbench --test=oltp_insert --tables=4 --mysql-host=172.16.4.40 --mysql-port=3306 --mysql-user=root --mysql-db=dm_benchmark --db-driver=mysql --table-size=5000000 prepare
 ```
 
-| load pool size | latency of execution txn (s) | time (s) | speed (MB/s) | TiDB 99 duration (s) |
-| :------------: | :--------------------------: | :------: | :----------: | :------------------: |
-| 2              | 0.250                        | 425.9    | 9.1          | 0.23                 |
-| 4              | 0.523                        | 360.1    | 10.7         | 0.41                 |
-| 8              | 0.986                        | 267.0    | 14.5         | 0.93                 |
-| 16             | 2.022                        | 265.9    | 14.5         | 2.68                 |
-| 32             | 3.778                        | 262.3    | 14.7         | 6.39                 |
-| 64             | 7.452                        | 281.9    | 13.7         | 8.00                 |
+| load pool size | latency of execution txn (s) | import time (s) | import speed (MB/s) | TiDB 99 duration (s) |
+| :------------: | :--------------------------: | :-------------: | :-----------------: | :------------------: |
+| 2              | 0.250                        | 425.9           | 9.1                 | 0.23                 |
+| 4              | 0.523                        | 360.1           | 10.7                | 0.41                 |
+| 8              | 0.986                        | 267.0           | 14.5                | 0.93                 |
+| 16             | 2.022                        | 265.9           | 14.5                | 2.68                 |
+| 32             | 3.778                        | 262.3           | 14.7                | 6.39                 |
+| 64             | 7.452                        | 281.9           | 13.7                | 8.00                 |
 
 #### Benchmark result with different row count in per statement
 
-Full import data size in this benchmark case is 3.78GB, load unit pool size ueses 32. The statement count is controlled by mydumper parameters.
+Full import data size in this benchmark case is 3.78 GB, load unit pool size uses 32. The statement count is controlled by mydumper parameters.
 
-| row count in per statement | mydumper extra-args  | latency of execution txn (s) | time (s) | speed (MB/s) | TiDB 99 duration (s) |
-| :------------------------: | :------------------: | :--------------------------: | :------: | :----------: | :------------------: |
-|            7426            | -s 1500000 -r 320000 |            6.982             |  258.3   |     15.0     |        10.34         |
-|            4903            | -s 1000000 -r 320000 |            3.778             |  262.3   |     14.7     |         6.39         |
-|            2470            | -s 500000 -r 320000  |            1.962             |  271.36  |     14.3     |         2.00         |
-|            1236            | -s 250000 -r 320000  |            1.911             |  283.3   |     13.7     |         1.50         |
-|            618             | -s 125000 -r 320000  |            0.683             |  299.9   |     12.9     |         0.73         |
-|            310             |  -s 62500 -r 320000  |            0.413             |  322.6   |     12.0     |         0.49         |
+| row count in per statement | mydumper extra-args  | latency of execution txn (s) | import time (s) | import speed (MB/s) | TiDB 99 duration (s) |
+| :------------------------: | :------------------: | :--------------------------: | :-------------: | :-----------------: | :------------------: |
+|            7426            | -s 1500000 -r 320000 |            6.982             |  258.3          |     15.0            |        10.34         |
+|            4903            | -s 1000000 -r 320000 |            3.778             |  262.3          |     14.7            |         6.39         |
+|            2470            | -s 500000 -r 320000  |            1.962             |  271.36         |     14.3            |         2.00         |
+|            1236            | -s 250000 -r 320000  |            1.911             |  283.3          |     13.7            |         1.50         |
+|            618             | -s 125000 -r 320000  |            0.683             |  299.9          |     12.9            |         0.73         |
+|            310             |  -s 62500 -r 320000  |            0.413             |  322.6          |     12.0            |         0.49         |
 
 ### Increase replication benchmark case
 
@@ -144,54 +150,56 @@ Full import data size in this benchmark case is 3.78GB, load unit pool size uese
 
 - Set up environment
 - Use sysbench to create the table and generate the initial data in upstream MySQL
-- Start DM-task in the `all` mode, and wait task enters `sync` unit
-- Use sysbench to generate incremental data in upstream MySQL and observe grafana metrics and DM `query-status`
+- Start DM-task in the `all` mode, and wait until the task enters `sync` unit
+- Use sysbench to generate incremental data in upstream MySQL, use `query-status` to watch the DM replication status, and observe the monitoring metrics of DM and TiDB on Grafana
 
 #### Benchmark result for incremental replication
 
 Upstream sysbench test script:
 
-```
+{{< copyable "shell-regular" >}}
+
+```bash
 sysbench --test=oltp_insert --tables=4 --num-threads=32 --mysql-host=172.17.4.40 --mysql-port=3306 --mysql-user=root --mysql-db=dm_benchmark --db-driver=mysql --report-interval=10 --time=1800 run
 ```
 
-DM sync unit worker-count is 32, batch size is 100 in this benchmark case.
+DM sync unit `worker-count` is 32, and `batch` size is 100 in this benchmark case.
 
-| items                      | qps                                                          | tps                                                          | 95% Latency                  |
-| :------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :--------------------------: |
-| MySQL                      | 42.79k                                                       | 42.79k                                                       | 1.18ms                       |
-| DM relay log unit          | -                                                            | 11.3MB/s                                                     | 45us (read duration)         |
-| DM binlog replication unit | 22.97k (binlog event received qps, not inclued skipped events) | 45.91k (inner replication job distributed tps, read from query-status) | 20ms (txn execution latency) |
-| TiDB                       | 31.30k (Begin/Commit 3.93k Insert 22.76k)                    | 4.16k                                                        | 95%: 6.4ms 99%: 9ms          |
+| items                      | qps                                                            | tps                                                          | 95% Latency                  |
+| :------------------------: | :------------------------------------------------------------: | :----------------------------------------------------------: | :--------------------------: |
+| MySQL                      | 42.79k                                                         | 42.79k                                                       | 1.18ms                       |
+| DM relay log unit          | -                                                              | 11.3MB/s                                                     | 45us (read duration)         |
+| DM binlog replication unit | 22.97k (binlog event received qps, not including skipped events) | -                                                            | 20ms (txn execution latency) |
+| TiDB                       | 31.30k (Begin/Commit 3.93k Insert 22.76k)                      | 4.16k                                                        | 95%: 6.4ms 99%: 9ms          |
 
 #### Benchmark result with different sync unit concurrency
 
 | sync unit worker-count | DM tps | DM execution latency (ms) | TiDB qps | TiDB 99 duration (ms) |
 | :--------------------: | :----: | :-----------------------: | :------: | :-------------------: |
-| 4                      | 14149  | 63                        | 7.1k     | 3                     |
-| 8                      | 29368  | 64                        | 14.9k    | 4                     |
-| 16                     | 46972  | 56                        | 24.9k    | 6                     |
-| 32                     | 46691  | 28                        | 29.2k    | 10                    |
-| 64                     | 46605  | 30                        | 31.2k    | 16                    |
-| 1024                   | 44510  | 70                        | 56.9k    | 70                    |
+| 4                      | 7074   | 63                        | 7.1k     | 3                     |
+| 8                      | 14684  | 64                        | 14.9k    | 4                     |
+| 16                     | 23486  | 56                        | 24.9k    | 6                     |
+| 32                     | 23345  | 28                        | 29.2k    | 10                    |
+| 64                     | 23302  | 30                        | 31.2k    | 16                    |
+| 1024                   | 22225  | 70                        | 56.9k    | 70                    |
 
 #### Benchmark result with different SQL distribution
 
 | sysbench type | relay log flush speed (MB/s) | DM tps | DM execution latency (ms) | TiDB qps | TiDB 99 duration (ms) |
 | :-----------: | :--------------------------: | :----: | :-----------------------: | :------: | :-------------------: |
-| insert_only   | 11.3                         | 46691  | 28                        | 29.2k    | 10                    |
-| write_only    | 18.7                         | 66941  | 129                       | 34.6k    | 11                    |
+| insert_only   | 11.3                         | 23345  | 28                        | 29.2k    | 10                    |
+| write_only    | 18.7                         | 33470  | 129                       | 34.6k    | 11                    |
 
 ## Recommended parameters
 
 ### dump unit
 
-we recommend the statement size between 200KB and 1MB, and row count in one statement is approximately 1000-5000, which is based on the row size in your scenario.
+We recommend that the statement size be 200 KB~1 MB, and row count in each statement be approximately 1000~5000, which is based on the actual row size in your scenario.
 
 ### load unit
 
-we recommend to set `pool-size` to 16
+We recommend that you set `pool-size` to 16.
 
 ### sync unit
 
-we recommend to set `batch` size to 100 and `worker-count` between 16 and 32.
+We recommend that you set `batch` size to 100 and `worker-count` to 16~32.
