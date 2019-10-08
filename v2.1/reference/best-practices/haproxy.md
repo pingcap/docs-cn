@@ -44,11 +44,11 @@ HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，�
 #### 操作系统
 
 - Linux 2.4 操作系统，支持 x86、x86_64、Alpha、Sparc、MIPS 和 PARISC 架构。
-- Linux 2.6/3.x 操作系统，支持 x86、x86_64、ARM、Sparc 和 PPC64 架构。
-- Solaris 8/9 操作系统，支持 UltraSPARC 2/3 架构。
+- Linux 2.6 或 3.x 操作系统，支持 x86、x86_64、ARM、Sparc 和 PPC64 架构。
+- Solaris 8 或 9 操作系统，支持 UltraSPARC 2/3 架构。
 - Solaris 10 操作系统，支持 Opteron/UltraSPARC 架构。
 - FreeBSD 4.10~10 操作系统，支持 x86 架构。
-- OpenBSD 3.1 到最新版操作系统，支持 i386、amd64、macppc、alpha 和 sparc64 架构。
+- OpenBSD 3.1 及以上版本操作系统，支持 i386、amd64、macppc、alpha 和 sparc64 架构。
 - AIX 5.1~5.3 操作系统，支持 Power™ 架构。
 
 #### 依赖包
