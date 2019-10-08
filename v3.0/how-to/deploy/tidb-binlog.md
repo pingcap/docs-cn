@@ -56,7 +56,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
         172.16.10.74
         ```
 
-        默认 Pump 保留 7 天数据，如需修改可修改 `tidb-ansible/conf/pump.yml` 文件中 `gc` 变量值，并取消注释。
+        默认 Pump 保留 7 天数据，如需修改可修改 `tidb-ansible/conf/pump-cluster.yml` (旧版本为pump.yml)文件中 `gc` 变量值，并取消注释。
 
         {{< copyable "" >}}
 
