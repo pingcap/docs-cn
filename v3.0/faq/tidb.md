@@ -112,7 +112,7 @@ TiDB 作为分布式数据库，在 TiDB 中修改用户密码建议使用 `set 
 
 #### 1.1.22 TiDB 中，为什么出现后插入数据的自增 ID 反而小？
 
-TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 tidb-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考[CREATE TABLE 语法](/v3.0/reference/mysql-compatibility.md#auto-increment-id)。
+TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 tidb-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考[CREATE TABLE 语法](/v3.0/reference/mysql-compatibility.md#自增-id)。
 
 #### 1.1.23 sql_mode 默认除了通过命令 set 修改，配置文件怎么修改？
 
@@ -286,11 +286,15 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 - 随机读测试：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randread -size=10G -filename=fio_randread_test.txt -name='fio randread test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_result.json
     ```
 
 - 顺序写和随机读混合测试：
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randread_write_test.txt -name='fio mixed randread and sequential write test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_write_test.json
@@ -363,7 +367,7 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 
 #### 3.1.4 TiDB (TiKV) 有哪些数据目录？
 
-默认在 ${[data-dir](/v3.0/reference/configuration/tikv-server/configuration/#data-dir}/data/ 目录下，其中包括 backup、db、raft、snap 四个目录，分别存储备份、数据、raft 数据及镜像数据。
+默认在 [`--data-dir`](/v3.0/reference/configuration/tikv-server/configuration.md#--data-dir) 目录下，其中包括 backup、db、raft、snap 四个目录，分别存储备份、数据、raft 数据及镜像数据。
 
 #### 3.1.5 TiDB 有哪些系统表？
 
@@ -534,6 +538,8 @@ TiDB 支持改变 [per-session](/v3.0/reference/configuration/tidb-server/tidb-s
 
 1. 通过在数据库中写 SQL 的方式来调整优先级：
 
+    {{< copyable "sql" >}}
+
     ```sql
     select HIGH_PRIORITY | LOW_PRIORITY count(*) from table_name;
     insert HIGH_PRIORITY | LOW_PRIORITY into table_name insert_values;
@@ -555,7 +561,20 @@ TiDB 支持改变 [per-session](/v3.0/reference/configuration/tidb-server/tidb-s
 同 MySQL 的用法一致，例如：
 `select column_name from table_name use index（index_name）where where_condition;`
 
-#### 3.3.13 高并发执行 DDL 报错？
+#### 3.3.13 触发 Information schema is changed 错误的原因？
+
+TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语句，而且 TiDB 支持在线异步变更 DDL。那么，在执行 DML 的时候可能有 DDL 语句也在执行，而你需要确保每个 SQL 语句在同一个 `schema` 上执行。所以当执行 DML 时，遇到正在执行中的 DDL 操作就可能会报 `Information schema is changed` 的错误。为了避免太多的 DML 语句报错，已做了一些优化。现在会报此错的可能原因如下：
+
+- 执行的 DML 语句中涉及的表和集群中正在执行的 DDL 的表有相同的，那么这个 DML 语句就会报此错。
+- 与表无关的报错原因：
+    - 这个 DML 执行时间很久，而这段时间内执行了很多 DDL 语句（新版本 `lock table` 也可），导致中间 `schema` 版本变更超过 100（目前我们只缓存了 100 个版本信息）。
+    - 接受 DML 请求的 TiDB 长时间不能加载到 `schema information` (与 PD 或者 TiKV 网络问题等都会导致此问题)，而这段时间内执行了很多 DDL 语句（也包括 `lock table` 语句），导致中间 `schema` 版本变更超过 100（目前我们没有按 `schema` 版本去获取信息）。
+
+> **注意：**
+>
+> `create table` 操作会有 1 个 `schema` 版本变更，与每个 DDL 操作对应变更的 `schema state` 个数一致。例如，`add column` 操作会有 4 个版本信息。
+
+#### 3.3.14 高并发执行 DDL 报错？
 
 高并发情况下执行 DDL （比如批量建表）时，极少部分 DDL 可能会由于并发执行时 key 冲突而执行失败。
 建议 DDL 并发低于20。否则需要在应用端重试失败的 DDL 语句。
@@ -618,7 +637,7 @@ TiDB 使用 Raft 在多个副本之间做数据同步（默认为每个 Region 3
 
 #### 3.4.12 Region 是如何进行分裂的？
 
-Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 的大小超过参数 `region-split-size` 或 `region-split-keys` 的值时，就会触发分裂，分裂后的信息会汇报给 PD。
+Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 的大小超过参数 `region-max-size` 或 `region-max-keys` 的值时，就会触发分裂，分裂后的信息会汇报给 PD。
 
 #### 3.4.13 TiKV 是否有类似 MySQL 的 `innodb_flush_log_trx_commit` 参数，来保证提交数据不丢失？
 
@@ -737,16 +756,18 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 - 在 Sqoop 中，`--batch` 是指每个批次提交 100 条 statement，但是默认每个 statement 包含 100 条 SQL 语句，所以此时 100 * 100 = 10000 条 SQL 语句，超出了 TiDB 的事务限制 5000 条，可以增加选项 `-Dsqoop.export.records.per.statement=10` 来解决这个问题，完整的用法如下：
 
-```bash
-sqoop export \
-    -Dsqoop.export.records.per.statement=10 \
-    --connect jdbc:mysql://mysql.example.com/sqoop \
-    --username sqoop ${user} \
-    --password ${passwd} \
-    --table ${tab_name} \
-    --export-dir ${dir} \
-    --batch
-```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    sqoop export \
+        -Dsqoop.export.records.per.statement=10 \
+        --connect jdbc:mysql://mysql.example.com/sqoop \
+        --username sqoop ${user} \
+        --password ${passwd} \
+        --table ${tab_name} \
+        --export-dir ${dir} \
+        --batch
+    ```
 
 - 也可以选择增大 tidb 的单个事物语句数量限制，不过这个会导致内存上涨。
 
@@ -884,8 +905,13 @@ Count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 
 通过 `admin show ddl` 查看当前 job 进度。操作如下：
 
+{{< copyable "sql" >}}
+
 ```sql
-tidb> admin show ddl\G;
+admin show ddl;
+```
+
+```
 *************************** 1. row ***************************
   SCHEMA_VER: 140
        OWNER: 1a1c4174-0fcd-4ba0-add9-12d08c4077dc
@@ -928,7 +954,7 @@ ID 没什么规律，只要是唯一就行，不过生成的时候，是有一�
 
 #### 6.1.2 如何打散热点
 
-TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指的是 Region 的读写访问热点。而 TiDB 中对于 PK 非整数或没有 PK 的表，可以通过设置 `SHARD_ROW_ID_BITS` 来适度分解 Region 分片，以达到打散 Region 热点的效果。详情可参考官网 [TiDB 专用系统变量和语法](/v3.0/reference/configuration/tidb-server/tidb-specific-variables.md#shard-row-id-bits)中 `SHARD_ROW_ID_BITS` 的介绍。
+TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指的是 Region 的读写访问热点。而 TiDB 中对于 PK 非整数或没有 PK 的表，可以通过设置 `SHARD_ROW_ID_BITS` 来适度分解 Region 分片，以达到打散 Region 热点的效果。详情可参考官网 [TiDB 专用系统变量和语法](/v3.0/reference/configuration/tidb-server/tidb-specific-variables.md#shard_row_id_bits)中 `SHARD_ROW_ID_BITS` 的介绍。
 
 ### 6.2 TiKV
 
@@ -1011,6 +1037,8 @@ TiKV 操作繁忙，一般出现在数据库负载比较高时，请检查 TiKV 
 #### 9.1.7 ERROR 9006 (HY000) : GC life time is shorter than transaction duration
 
 `GC Life Time` 间隔时间过短，长事务本应读到的数据可能被清理了，可使用如下命令增加 `GC Life Time`：
+
+{{< copyable "sql" >}}
 
 ```sql
 update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_time';

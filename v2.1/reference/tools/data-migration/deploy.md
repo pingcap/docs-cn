@@ -9,7 +9,7 @@ category: reference
 
 ## 第 1 步：部署 DM 集群
 
-目前推荐使用 DM-Ansible 部署 DM 集群，具体部署方法参照 [使用 DM-Ansible 部署 DM 集群](/v2.1/how-to/deploy/data-migration-with-ansible.md)。
+目前推荐使用 DM-Ansible 部署 DM 集群，具体部署方法参照 [使用 DM-Ansible 部署 DM 集群](/v2.1/how-to/deploy/data-migration-with-ansible.md)；也可以使用 binary 部署 DM 集群用于体验或者测试，具体部署方法参照[使用 DM binary 部署 DM 集群](/v2.1/how-to/deploy/data-migration-with-binary.md)。
 
 > **注意：**
 >
@@ -120,10 +120,11 @@ mydumpers:
     ./dmctl --master-addr 172.16.10.71:8261
     ```
 
-3. 执行以下命令启动数据同步任务。
+3. 执行以下命令启动数据同步任务，其中，`task.yaml` 是之前编辑的配置文件
+
+    {{< copyable "" >}}
 
     ```bash
-    # `task.yaml` 是之前编辑的配置文件。
     start-task ./task.yaml
     ```
 
