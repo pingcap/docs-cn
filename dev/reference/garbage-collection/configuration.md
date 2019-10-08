@@ -87,3 +87,20 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 
 - Specifies the GC concurrency manually. This parameter works only when you set [`tikv_gc_auto_concurrency`](#tikv_gc_auto_concurrency) to `false`.
 - Default: 2
+
+## Notes on GC process changes
+
+Since TiDB 3.0, some configuration options have changed with support for the distributed GC mode and concurrent Resolve Locks processing. The changes are shown in the following table:
+
+| Version/Configuration          |  Resolve Locks          |  Do GC  |
+|-------------------|---------------|----------------|
+| 2.x               | Serial | Concurrent |
+| 3.0 <br/> `tikv_gc_mode = centered` <br/> `tikv_gc_auto_concurrency = false` | Concurrent | Concurrent |
+| 3.0 <br/> `tikv_gc_mode = centered` <br/> `tikv_gc_auto_concurrency = true` | Auto-concurrent | Auto-concurrent |
+| 3.0 <br/> `tikv_gc_mode = distributed` <br/> `tikv_gc_auto_concurrency = false` | Concurrent | Distributed |
+| 3.0 <br/> `tikv_gc_mode = distributed` <br/> `tikv_gc_auto_concurrency = true` <br/> (default) | Auto-concurrent | Distributed |
+
+- Serial: requests are sent from TiDB Region by Region.
+- Concurrent: requests are sent to each Region concurrently based on the number of threads specified in the `tikv_gc_concurrency`.
+- Auto-concurrent: requests are sent to each Region concurrently with the number of TiKV nodes as concurrency value.
+- Distributed: no need for TiDB to send requests to TiKV to trigger GC because each TiKV handles GC on its own.
