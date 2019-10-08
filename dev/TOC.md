@@ -129,6 +129,8 @@
     - [TiKV Control](/dev/reference/tools/tikv-control.md)
     - [TiDB Controller](/dev/reference/tools/tidb-control.md)
     - [工具下载](/dev/reference/tools/download.md)
+  + 最佳实践
+    - [HAProxy 最佳实践](/dev/reference/best-practices/haproxy.md)
   + [与 MySQL 兼容性对比](/dev/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
