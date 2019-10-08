@@ -241,11 +241,11 @@ MyBatis 的 Mapper 中支持 2 种 Parameters：
 
 ```xml
 <select id="getAll" resultMap="postResultMap" fetchSize="-2147483648">
-  select * from post;   
+ select * from post;   
 </select>
 ```
 
-而使用代码配置映射, 则可以使用 `@Options(fetchSize = Integer.MIN_VALUE)` 并返回 `Cursor` 从而让 SQL 结果能被流式读取。 
+而使用代码配置映射, 则可以使用 `@Options(fetchSize = Integer.MIN_VALUE)` 并返回 `Cursor` 从而让 SQL 结果能被流式读取。
 
 ```java
 @Select("select * from post")
