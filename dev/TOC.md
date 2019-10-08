@@ -56,9 +56,7 @@
     - [监控 TiDB Binlog 集群](/dev/how-to/monitor/tidb-binlog.md)
   + 迁移
     - [概述](/dev/how-to/migrate/overview.md)
-    + 从 MySQL 迁移
-      - [全量迁移](/dev/how-to/migrate/from-mysql.md)
-      - [增量复制](/dev/how-to/migrate/incrementally-from-mysql.md)
+    - [从 MySQL 迁移](/dev/how-to/migrate/from-mysql.md)
     - [从 Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-aurora.md)
     - [从 CSV 迁移](/dev/reference/tools/tidb-lightning/csv.md)
   + 运维
