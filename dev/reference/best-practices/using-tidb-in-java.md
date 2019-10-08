@@ -237,6 +237,22 @@ MyBatis 的 Mapper 中支持 2 种 Parameters：
 - 可以使用带 `ResultHandler` 的查询接口来避免一次获取整个结果 List
 - 可以使用 `Cursor` 类来进行流式读取
 
+对于使用 xml 配置映射，可以通过在映射 `<select>` 部分配置 `fetchSize="-2147483648"`(`Integer.MIN_VALUE`) 让结果流式读取。
+
+```xml
+<select id="getAll" resultMap="postResultMap" fetchSize="-2147483648">
+  select * from post;   
+</select>
+```
+
+而使用代码配置映射, 则可以使用 `@Options(fetchSize = Integer.MIN_VALUE)` 并返回 `Cursor` 从而让 SQL 结果能被流式读取。 
+
+```java
+@Select("select * from post")
+@Options(fetchSize = Integer.MIN_VALUE)
+Cursor<Post> queryAllPost();
+```
+
 ### ExecutorType
 
 在 `openSession` 的时候可以选择 `ExecutorType`， MyBatis 支持三种 executor：
