@@ -241,7 +241,7 @@ MyBatis 的 Mapper 中支持 2 种 Parameters：
 
 ```xml
 <select id="getAll" resultMap="postResultMap" fetchSize="-2147483648">
- select * from post;   
+  select * from post;
 </select>
 ```
 
