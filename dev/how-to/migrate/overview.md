@@ -12,7 +12,7 @@ category: how-to
 在上述数据迁移过程中会用到如下工具：
 
 - [DM (Data Migration)](/dev/reference/tools/data-migration/overview.md)：集成了 Mydumper、Loader、Syncer 的功能，支持 MySQL 数据的全量导出和到 TiDB 的全量导入，还支持 MySQL binlog 数据到 TiDB 的增量同步。
-- [TiDB Lightning](/dev/reference/tools/tidb-lightning/overview.md)：用于将全量数据高速导入到 TiDB 集群。例如，如果要导入超过 1TiB 的数据，使用 Loader 往往需花费几十个小时，而使用 TiDB-Lightning 的导入速度至少是 Loader 的三倍。
+- [TiDB Lightning](/dev/reference/tools/tidb-lightning/overview.md)：用于将全量数据高速导入到 TiDB 集群（只支持离线导入，即导入过程中 TiDB 不能提供服务）。例如，如果要导入超过 1TiB 的数据，使用 Loader 往往需花费几十个小时，而使用 TiDB-Lightning 的导入速度至少是 Loader 的三倍。
 - [Mydumper](/dev/reference/tools/mydumper.md)：用于从 MySQL 导出数据。建议使用 Mydumper，而非 mysqldump。
 - [Loader](/dev/reference/tools/loader.md)：用于将 Mydumper 导出格式的数据导入到 TiDB。
 - [Syncer](/dev/reference/tools/syncer.md)：用于将数据从 MySQL 增量同步到 TiDB。
