@@ -12,7 +12,7 @@
 - 数据访问框架：应用通常选择通过数据访问框架 ([MyBatis](http://www.mybatis.org/mybatis-3/zh/index.html), [Hibernate](https://hibernate.org/)) 的封装来进一步简化和管理数据库访问操作
 - 业务实现：业务逻辑控制着何时发送和发送什么指令到数据库，其中有些业务会使用 [Spring Transaction](https://docs.spring.io/spring/docs/4.2.x/spring-framework-reference/html/transaction.html) 切面来控制管理事务的开始和提交逻辑
 
-<img src="/media/java-practice-1.png" width="50%" alt="Java Component" align="center" />
+<img src="/media/java-practice-1.png" width="40%" alt="Java Component" align="center" />
 
 如上图所示，应用可能使用 Spring Transaction 来管理控制事务非手工启停，通过类似 MyBatis 的数据访问框架管理生成和执行 SQL，通过连接池获取已池化的长连接，最后通过 JDBC 接口调用实现通过 MySQL 协议和 TiDB 完成交互。
 
