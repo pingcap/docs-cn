@@ -384,6 +384,11 @@ Configurations related to TiDB Binlog
 
 Configuration related to the status of TiDB service
 
+### `report-status`
+
+- Enables or disables the HTTP API service
+- Default value: true
+
 ### `record-db-qps`
 
 - Determines whether to transmit the database-related QPS metrics to Prometheus

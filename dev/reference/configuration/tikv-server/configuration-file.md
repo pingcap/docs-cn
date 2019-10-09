@@ -1038,6 +1038,25 @@ Configuration items related to `raftdb`
 + The directory in which WAL files are stored
 + Default value: `/tmp/tikv/store`
 
+## security
+
+Configuration items related to security
+
+### `ca-path`
+
++ The path of the CA file
++ Default value: ""
+
+### `cert-path`
+
++ The path of the Privacy Enhanced Mail (PEM) file that contains the X509 certificate
++ Default value: ""
+
+### `key-path`
+
++ The path of the PEM file that contains the X509 key
++ Default value: ""
+
 ## `import`
 
 Configuration items related to `import`

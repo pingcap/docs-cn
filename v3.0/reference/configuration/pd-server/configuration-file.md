@@ -69,6 +69,25 @@ This document only describes parameters that are not included in command-line pa
 + Enables or disables independent Region storage
 + Default value: `false`
 
+## security
+
+Configuration items related to security
+
+### `cacert-path`
+
++ The path of the CA file
++ Default value: ""
+
+### `cert-path`
+
++ The path of the Privacy Enhanced Mail (PEM) file that contains the X509 certificate
++ Default value: ""
+
+### `key-path`
+
++ The path of the PEM file that contains the X509 key
++ Default value: ""
+
 ## `log`
 
 Configuration items related to log
