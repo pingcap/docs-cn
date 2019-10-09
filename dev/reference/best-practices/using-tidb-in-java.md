@@ -93,7 +93,7 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
 在 TiDB 监控中可以通过 “Query Summary” - “QPS by Instance” 查看请求命令类型，如果类似下图，请求中 `COM_STMT_EXECUTE` 数目远远多于 `COM_STMT_PREPARE` 即生效。
 
-![QPS By Instance](/media/java-practice-2.png)
+<img src="/media/java-practice-2.png" width="70%" alt="QPS By Instance" align="center" />
 
 另外，通过 `useConfigs=maxPerformance` 配置会同时配置多个参数，其中也包括 `cachePrepStmts=true`。
 
