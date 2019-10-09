@@ -296,7 +296,7 @@ Cursor<Post> queryAllPost();
 
 #### 火焰图
 
-Java 应用中获取火焰图较繁琐，可参阅[Java Flame Graphs Introduction: Fire For Everyone!](http://psy-lob-saw.blogspot.com/2017/02/flamegraphs-intro-fire-for-everyone.html)来手动获取。
+Java 应用中获取火焰图较繁琐，可参阅 [Java Flame Graphs Introduction: Fire For Everyone!](http://psy-lob-saw.blogspot.com/2017/02/flamegraphs-intro-fire-for-everyone.html) 来手动获取。
 
 ## 总结
 
