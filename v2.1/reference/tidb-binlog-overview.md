@@ -28,7 +28,7 @@ Drainer 从各个 Pump 中收集 Binlog 进行归并，再将 Binlog 转化成 S
 
 ### binlogctl 工具
 
-[binlogctl](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/binlogctl) 是一个 TiDB Binlog 配套的运维工具，具有如下功能：
+binlogctl 是一个 TiDB Binlog 配套的运维工具，具有如下功能：
 
 * 获取 TiDB 集群当前的 TSO
 * 查看 Pump/Drainer 状态
@@ -56,3 +56,13 @@ Drainer 从各个 Pump 中收集 Binlog 进行归并，再将 Binlog 转化成 S
     - 如果 TiDB 版本 > = 2.1.9，则 `db-type="file"` 或 `db-type="pb"`。
 
 * 如果下游为 MySQL/TiDB，数据同步后可以使用 [sync-diff-inspector](/v2.1/reference/tools/sync-diff-inspector/overview.md) 进行数据校验。
+
+## 使用 TiDB Binlog
+
+通过以上内容对 TiDB Binlog 有了基本的了解之后，可以通过以下文档使用 TiDB Binlog：
+
+- [快速上手搭建 TiDB Binlog 集群](/v2.1/how-to/get-started/tidb-binlog.md)
+- [TiDB Binlog 集群部署](/v2.1/how-to/deploy/tidb-binlog.md)
+- [TiDB Binlog 集群监控](/v2.1/how-to/monitor/tidb-binlog.md)
+- [TiDB Binlog 集群运维](/v2.1/how-to/maintain/tidb-binlog.md)
+- [TiDB Binlog 版本升级方法](/v2.1/how-to/upgrade/tidb-binlog.md)

@@ -113,11 +113,15 @@ port = 4000
 
 通过命令行参数：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./bin/loader -d ./test -h 127.0.0.1 -u root -P 4000
 ```
 
 或者使用配置文件 "config.toml":
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 ./bin/loader -c=config.toml

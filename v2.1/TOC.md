@@ -87,9 +87,8 @@
         - [使用限制](/v2.1/reference/tools/data-migration/overview.md#使用限制)
       + 核心特性
         - [Table Routing](/v2.1/reference/tools/data-migration/features/overview.md#table-routing)
-        - [Black & White Lists](/v2.1/reference/tools/data-migration/features/overview.md#black-white-table-lists)
+        - [Black & White Lists](/v2.1/reference/tools/data-migration/features/overview.md#black--white-table-lists)
         - [Binlog Event Filter](/v2.1/reference/tools/data-migration/features/overview.md#binlog-event-filter)
-        - [Column Mapping](/v2.1/reference/tools/data-migration/features/overview.md#column-mapping)
         - [同步延迟监控](/v2.1/reference/tools/data-migration/features/overview.md#同步延迟监控)
         + Shard Support
           - [简介](/v2.1/reference/tools/data-migration/features/shard-merge.md)
@@ -98,6 +97,8 @@
       + 使用场景
         - [简单的从库同步场景](/v2.1/reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
         - [分库分表合并场景](/v2.1/reference/tools/data-migration/usage-scenarios/shard-merge.md)
+        - [分表合并数据迁移最佳实践](/v2.1/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md)
+        - [DM-worker 在上游 MySQL 主从间切换](/v2.1/reference/tools/data-migration/usage-scenarios/master-slave-switch.md)
       + [部署使用](/v2.1/reference/tools/data-migration/deploy.md)
       + 配置
         - [概述](/v2.1/reference/tools/data-migration/configure/overview.md)
@@ -125,6 +126,8 @@
     - [TiKV Control](/v2.1/reference/tools/tikv-control.md)
     - [TiDB Controller](/v2.1/reference/tools/tidb-control.md)
     - [工具下载](/v2.1/reference/tools/download.md)
+  + 最佳实践
+    - [HAProxy 最佳实践](/v2.1/reference/best-practices/haproxy.md)
   + [与 MySQL 兼容性对比](/v2.1/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
@@ -251,6 +254,8 @@
       - [`SHOW TABLE STATUS`](/v2.1/reference/sql/statements/show-table-status.md)
       - [`SHOW [GLOBAL|SESSION] VARIABLES`](/v2.1/reference/sql/statements/show-variables.md)
       - [`SHOW WARNINGS`](/v2.1/reference/sql/statements/show-warnings.md)
+      - [`SHOW TABLE REGIONS`](/v2.1/reference/sql/statements/show-table-regions.md)
+      - [`SPLIT REGION`](/v2.1/reference/sql/statements/split-region.md)
       - [`START TRANSACTION`](/v2.1/reference/sql/statements/start-transaction.md)
       - [`TRACE`](/v2.1/reference/sql/statements/trace.md)
       - [`TRUNCATE`](/v2.1/reference/sql/statements/truncate.md)
@@ -313,6 +318,7 @@
 - [TiDB 路线图](/v2.1/roadmap.md)
 + [版本发布历史](/v2.1/releases/rn.md)
   + v2.1
+    - [2.1.17](/v2.1/releases/2.1.17.md)
     - [2.1.16](/v2.1/releases/2.1.16.md)
     - [2.1.15](/v2.1/releases/2.1.15.md)
     - [2.1.14](/v2.1/releases/2.1.14.md)

@@ -14,6 +14,7 @@
     - [TPC-C 性能对比 - v3.0 对比 v2.1](/v3.0/benchmark/tpcc.md)
     - [线上负载与 Add Index 相互影响测试](/v3.0/benchmark/add-index-with-load.md)
     - [TiDB in Kubernetes Sysbench 性能测试](/v3.0/benchmark/sysbench-in-k8s.md)
+    - [DM 1.0-GA 性能测试](/v3.0/benchmark/dm-v1.0-ga.md)
 + 主要概念
   - [整体架构](/v3.0/architecture.md)
   + 核心特性
@@ -89,9 +90,8 @@
         - [使用限制](/v3.0/reference/tools/data-migration/overview.md#使用限制)
       + 核心特性
         - [Table Routing](/v3.0/reference/tools/data-migration/features/overview.md#table-routing)
-        - [Black & White Lists](/v3.0/reference/tools/data-migration/features/overview.md#black-white-table-lists)
+        - [Black & White Lists](/v3.0/reference/tools/data-migration/features/overview.md#black--white-table-lists)
         - [Binlog Event Filter](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filter)
-        - [Column Mapping](/v3.0/reference/tools/data-migration/features/overview.md#column-mapping)
         - [同步延迟监控](/v3.0/reference/tools/data-migration/features/overview.md#同步延迟监控)
         + Shard Support
           - [简介](/v3.0/reference/tools/data-migration/features/shard-merge.md)
@@ -100,6 +100,8 @@
       + 使用场景
         - [简单的从库同步场景](/v3.0/reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
         - [分库分表合并场景](/v3.0/reference/tools/data-migration/usage-scenarios/shard-merge.md)
+        - [分表合并数据迁移最佳实践](/v3.0/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md)
+        - [DM-worker 在上游 MySQL 主从间切换](/v3.0/reference/tools/data-migration/usage-scenarios/master-slave-switch.md)
       + [部署使用](/v3.0/reference/tools/data-migration/deploy.md)
       + 配置
         - [概述](/v3.0/reference/tools/data-migration/configure/overview.md)
@@ -110,6 +112,7 @@
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](/v3.0/how-to/migrate/from-aurora.md)
       - [DM Portal](/v3.0/reference/tools/data-migration/dm-portal.md)
+      - [DM 错误含义和诊断](/v3.0/reference/tools/data-migration/error-system.md)
       - [DM 故障诊断](/v3.0/how-to/troubleshoot/data-migration.md)
       - [FAQ](/v3.0/faq/data-migration.md)
     + TiDB Lightning
@@ -127,6 +130,8 @@
     - [TiKV Control](/v3.0/reference/tools/tikv-control.md)
     - [TiDB Controller](/v3.0/reference/tools/tidb-control.md)
     - [工具下载](/v3.0/reference/tools/download.md)
+  + 最佳实践
+    - [HAProxy 最佳实践](/v3.0/reference/best-practices/haproxy.md)
   + [与 MySQL 兼容性对比](/v3.0/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
@@ -258,6 +263,7 @@
       - [`SHOW TABLE STATUS`](/v3.0/reference/sql/statements/show-table-status.md)
       - [`SHOW [GLOBAL|SESSION] VARIABLES`](/v3.0/reference/sql/statements/show-variables.md)
       - [`SHOW WARNINGS`](/v3.0/reference/sql/statements/show-warnings.md)
+      - [`SHOW TABLE REGIONS`](/v3.0/reference/sql/statements/show-table-regions.md)
       - [`SPLIT REGION`](/v3.0/reference/sql/statements/split-region.md)
       - [`START TRANSACTION`](/v3.0/reference/sql/statements/start-transaction.md)
       - [`TRACE`](/v3.0/reference/sql/statements/trace.md)
@@ -338,6 +344,7 @@
     - [销毁 TiDB 集群](/v3.0/tidb-in-kubernetes/maintain/destroy-tidb-cluster.md)
     - [维护 TiDB 集群所在节点](/v3.0/tidb-in-kubernetes/maintain/kubernetes-node.md)
     - [备份与恢复](/v3.0/tidb-in-kubernetes/maintain/backup-and-restore.md)
+    - [恢复 Kubernetes 上的 TiDB 集群数据](/v3.0/tidb-in-kubernetes/maintain/lightning.md)
     - [收集日志](/v3.0/tidb-in-kubernetes/maintain/log-collecting.md)
     - [集群故障自动转移](/v3.0/tidb-in-kubernetes/maintain/auto-failover.md)
   - [扩缩容](/v3.0/tidb-in-kubernetes/scale-in-kubernetes.md)
@@ -368,6 +375,7 @@
 + [TiDB 路线图](/v3.0/roadmap.md)
 + [版本发布历史](/v3.0/releases/rn.md)
   + v3.0
+    - [3.0.4](/v3.0/releases/3.0.4.md)
     - [3.0.3](/v3.0/releases/3.0.3.md)
     - [3.0.2](/v3.0/releases/3.0.2.md)
     - [3.0.1](/v3.0/releases/3.0.1.md)
@@ -378,6 +386,7 @@
     - [3.0.0-beta.1](/v3.0/releases/3.0.0-beta.1.md)
     - [3.0.0-beta](/v3.0/releases/3.0beta.md)
   + v2.1
+    - [2.1.17](/v3.0/releases/2.1.17.md)
     - [2.1.16](/v3.0/releases/2.1.16.md)
     - [2.1.15](/v3.0/releases/2.1.15.md)
     - [2.1.14](/v3.0/releases/2.1.14.md)

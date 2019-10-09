@@ -20,15 +20,15 @@ TiDB Binlog 集群主要分为 Pump 和 Drainer 两个组件，以及 binlogctl 
 
 ### Pump
 
-Pump 用于实时记录 TiDB 产生的 Binlog，并将 Binlog 按照事务的提交时间进行排序，再提供给 Drainer 进行消费。
+[Pump](https://github.com/pingcap/tidb-binlog/blob/master/pump) 用于实时记录 TiDB 产生的 Binlog，并将 Binlog 按照事务的提交时间进行排序，再提供给 Drainer 进行消费。
 
 ### Drainer
 
-Drainer 从各个 Pump 中收集 Binlog 进行归并，再将 Binlog 转化成 SQL 或者指定格式的数据，最终同步到下游。
+[Drainer](https://github.com/pingcap/tidb-binlog/tree/master/drainer) 从各个 Pump 中收集 Binlog 进行归并，再将 Binlog 转化成 SQL 或者指定格式的数据，最终同步到下游。
 
 ### binlogctl 工具
 
-[binlogctl](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/binlogctl) 是一个 TiDB Binlog 配套的运维工具，具有如下功能：
+[`binlogctl`](https://github.com/pingcap/tidb-binlog/tree/master/binlogctl) 是一个 TiDB Binlog 配套的运维工具，具有如下功能：
 
 * 获取 TiDB 集群当前的 TSO
 * 查看 Pump/Drainer 状态
@@ -56,3 +56,13 @@ Drainer 从各个 Pump 中收集 Binlog 进行归并，再将 Binlog 转化成 S
     - 如果 TiDB 版本 > = 2.1.9，则 `db-type="file"` 或 `db-type="pb"`。
 
 * 如果下游为 MySQL/TiDB，数据同步后可以使用 [sync-diff-inspector](/dev/reference/tools/sync-diff-inspector/overview.md) 进行数据校验。
+
+## 使用 TiDB Binlog
+
+通过以上内容对 TiDB Binlog 有了基本的了解之后，可以通过以下文档使用 TiDB Binlog：
+
+- [快速上手搭建 TiDB Binlog 集群](/dev/how-to/get-started/tidb-binlog.md)
+- [TiDB Binlog 集群部署](/dev/how-to/deploy/tidb-binlog.md)
+- [TiDB Binlog 集群监控](/dev/how-to/monitor/tidb-binlog.md)
+- [TiDB Binlog 集群运维](/dev/how-to/maintain/tidb-binlog.md)
+- [TiDB Binlog 版本升级方法](/dev/how-to/upgrade/tidb-binlog.md)

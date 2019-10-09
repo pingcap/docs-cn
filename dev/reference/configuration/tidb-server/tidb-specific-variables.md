@@ -11,14 +11,18 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 变量可以通过 SET 语句设置，例如
 
-```
-set @@tidb_distsql_scan_concurrency = 10
+{{< copyable "sql" >}}
+
+```sql
+set @@tidb_distsql_scan_concurrency = 10;
 ```
 
-如果需要设值全局变量，执行
+如果需要设置全局变量，执行
 
-```
-set @@global.tidb_distsql_scan_concurrency = 10
+{{< copyable "sql" >}}
+
+```sql
+set @@global.tidb_distsql_scan_concurrency = 10;
 ```
 
 ### tidb_snapshot
@@ -460,8 +464,10 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 示例：
 
+{{< copyable "sql" >}}
+
 ```sql
-set tidb_slow_log_threshold = 200
+set tidb_slow_log_threshold = 200;
 ```
 
 ### tidb_query_log_max_len
@@ -474,8 +480,10 @@ set tidb_slow_log_threshold = 200
 
 示例：
 
+{{< copyable "sql" >}}
+
 ```sql
-set tidb_query_log_max_len = 20
+set tidb_query_log_max_len = 20;
 ```
 
 ### tidb_txn_mode
@@ -500,22 +508,42 @@ TiDB 默认采用乐观事务模型，即在执行写入时，假设不存在冲
 
 默认关闭 tidb_constraint_check_in_place 时的行为：
 
+{{< copyable "sql" >}}
+
 ```sql
-tidb >create table t (i int key)
-tidb >insert into t values (1);
-tidb >begin
-tidb >insert into t values (1);
+create table t (i int key);
+insert into t values (1);
+begin;
+insert into t values (1);
+```
+
+```
 Query OK, 1 row affected
-tidb >commit; -- commit 时才去做检查
+```
+
+commit 时才去做检查：
+
+{{< copyable "sql" >}}
+
+```sql
+commit;
+```
+
+```
 ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
 ```
 
 打开 tidb_constraint_check_in_place 后：
 
+{{< copyable "sql" >}}
+
 ```sql
-tidb >set @@tidb_constraint_check_in_place=1
-tidb >begin
-tidb >insert into t values (1);
+set @@tidb_constraint_check_in_place=1;
+begin;
+insert into t values (1);
+```
+
+```
 ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
 ```
 
@@ -541,20 +569,26 @@ ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
 
 打开这个优化规则后，会将下面子查询做如下变化：
 
+{{< copyable "sql" >}}
+
 ```sql
-select * from t where t.a in (select aa from t1)
+select * from t where t.a in (select aa from t1);
 ```
 
 将子查询转成 join 如下：
 
+{{< copyable "sql" >}}
+
 ```sql
-select * from t, (select aa from t1 group by aa) tmp_t where t.a = tmp_t.aa
+select * from t, (select aa from t1 group by aa) tmp_t where t.a = tmp_t.aa;
 ```
 
 如果 t1 在列 aa 上有 unique 且 not null 的限制，可以直接改写为如下，不需要添加 aggregation。
 
+{{< copyable "sql" >}}
+
 ```sql
-select * from t, t1 where t.a=t1.a
+select * from t, t1 where t.a=t1.a;
 ```
 
 ### tidb_opt_correlation_threshold
@@ -636,3 +670,11 @@ select * from t, t1 where t.a=t1.a
 默认值：0
 
 TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在建表语句执行时，同步打散刚分裂出的 Region。适用于批量建表后紧接着批量写入数据，能让刚分裂出的 Region 先在 TiKV 分散而不用等待 PD 进行调度。为了保证后续批量写入数据的稳定性，建表语句会等待打散 Region 完成后再返回建表成功，建表语句执行时间会是关闭该变量的数倍。
+
+### tidb_allow_remove_auto_inc <span class="version-mark">从 v2.1.8 和 v3.0.4 版本开始引入</span>
+
+作用域：SESSION
+
+默认值：0
+
+这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `auto_increment` 属性。默认为不允许。

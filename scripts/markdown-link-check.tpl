@@ -5,19 +5,25 @@
         },
         {
             "pattern": "\\.\\./media/"
+        },
+        {
+            "comment": "anchors to current file are ignored",
+            "pattern": "^#.+$"
         }
     ],
     "replacementPatterns": [
         {
-            "pattern": "^(?!(\\.|/media/))",
-            "replacement": "<DOC_ROOT>/"
+            "pattern": "^(?!(/<VERSION>/|/media/))",
+            "replacement": "/ERROR:link-must-start-with-slash-and-cannot-reference-files-in-other-version-directory:"
         },
         {
-            "pattern": "^/media/",
-            "replacement": "<ROOT>/media/"
+            "comment": "prefix with repo root",
+            "pattern": "^(?!(\\.|/ERROR:.*))",
+            "replacement": "<ROOT>/"
         },
         {
-            "pattern": "#.+",
+            "comment": "remove anchor part",
+            "pattern": "#.+$",
             "replacement": ""
         }
     ]
