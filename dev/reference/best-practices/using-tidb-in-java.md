@@ -19,7 +19,7 @@ category: reference
 
 <img src="/media/java-practice-1.png" width="40%" alt="Java Component" align="center" />
 
-![Java Component](/media/java-practice-1-(4).png)
+![Java Component](/media/java-practice-3.png)
 
 如上图所示，应用可能使用 Spring Transaction 来管理控制事务非手工启停，通过类似 MyBatis 的数据访问框架管理生成和执行 SQL，通过连接池获取已池化的长连接，最后通过 JDBC 接口调用实现通过 MySQL 协议和 TiDB 完成交互。
 
