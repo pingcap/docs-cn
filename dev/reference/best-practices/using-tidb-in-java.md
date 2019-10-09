@@ -12,12 +12,14 @@ category: reference
 通常 Java 应用中和数据库相关的常用组件有：
 
 - 网络协议：客户端通过标准 [MySQL 协议](https://dev.mysql.com/doc/internals/en/client-server-protocol.html)和 TiDB 进行网络交互
-- JDBC API & 实现：Java 应用通常使用 [JDBC (Java Database Connectivity)](https://docs.oracle.com/javase/8/docs/technotes/guides/jdbc/) 来访问数据库，JDBC 定义了访问数据库 API，而 JDBC 实现完成标准 API 到 MySQL 协议的转换，常见的 JDBC 实现是 [MySQL Connector/J](https://github.com/mysql/mysql-connector-j)，此外有些用户可能使用 [MariaDB Connector/J](https://mariadb.com/kb/en/library/about-mariadb-connector-j/#about-mariadb-connectorj)
+- JDBC API 及实现：Java 应用通常使用 [JDBC (Java Database Connectivity)](https://docs.oracle.com/javase/8/docs/technotes/guides/jdbc/) 来访问数据库。JDBC 定义了访问数据库 API，而 JDBC 实现完成标准 API 到 MySQL 协议的转换，常见的 JDBC 实现是 [MySQL Connector/J](https://github.com/mysql/mysql-connector-j)，此外有些用户可能使用 [MariaDB Connector/J](https://mariadb.com/kb/en/library/about-mariadb-connector-j/#about-mariadb-connectorj)
 - 数据库连接池：为了避免每次创建连接，通常应用会选择使用数据库连接池来复用连接，JDBC [DataSource](https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html) 定义了连接池 API，开发者可根据实际需求选择使用某种开源连接池实现
 - 数据访问框架：应用通常选择通过数据访问框架 ([MyBatis](http://www.mybatis.org/mybatis-3/zh/index.html), [Hibernate](https://hibernate.org/)) 的封装来进一步简化和管理数据库访问操作
 - 业务实现：业务逻辑控制着何时发送和发送什么指令到数据库，其中有些业务会使用 [Spring Transaction](https://docs.spring.io/spring/docs/4.2.x/spring-framework-reference/html/transaction.html) 切面来控制管理事务的开始和提交逻辑
 
 <img src="/media/java-practice-1.png" width="40%" alt="Java Component" align="center" />
+
+![Java Component](/media/java-practice-1 (4).png)
 
 如上图所示，应用可能使用 Spring Transaction 来管理控制事务非手工启停，通过类似 MyBatis 的数据访问框架管理生成和执行 SQL，通过连接池获取已池化的长连接，最后通过 JDBC 接口调用实现通过 MySQL 协议和 TiDB 完成交互。
 
@@ -215,7 +217,7 @@ The last packet sent successfully to the server was 3600000 milliseconds ago. Th
 
 [MyBatis 官方介绍](http://www.mybatis.org/mybatis-3/)
 
-MyBatis 是目前比较流行的 Java 数据访问框架，主要用于管理 SQL 并完成结果集和 Java 对象的来回映射工作。MyBatis 和 TiDB 兼容性很好，从历史 issue 可以看出 MyBatis 很少出现问题。不过有几个配置可能需要关注：
+MyBatis 是目前比较流行的 Java 数据访问框架，主要用于管理 SQL 并完成结果集和 Java 对象的来回映射工作。MyBatis 和 TiDB 兼容性很好，从历史 issue 可以看出 MyBatis 很少出现问题。这里主要关注如下几个配置。
 
 #### 参数
 
@@ -307,17 +309,20 @@ jstack 对应于 Go 中的 pprof/goroutine，可以比较方便地排查进程�
 #### jmap & mat
 
 [jmap 介绍](https://docs.oracle.com/javase/7/docs/technotes/tools/share/jmap.html)
+
 [mat 介绍](https://www.eclipse.org/mat/)
 
 和 Go 中的 pprof/heap 不同，jmap 会将整个进程的内存快照 dump 下来（go 是分配器的采样），然后可以通过另一个工具 mat 做分析。
 
-通过 mat 可以看到进程中所有对象的关联信息和属性，还可以观察线程运行的状态。比如：我们可以通过 mat 找到当前应用中有多少 MySQL 连接对象，每个连接对象的地址和状态信息是什么。需要注意 mat 默认只会处理 reachable objects，如果要排查 young gc 问题可以在 mat 配置中设置查看 unreachable objects。另外对于调查 young gc 问题（或者大量生命周期较短的对象）的内存分配，用 Java Flight Recorder 比较方便。
+通过 mat 可以看到进程中所有对象的关联信息和属性，还可以观察线程运行的状态。比如：我们可以通过 mat 找到当前应用中有多少 MySQL 连接对象，每个连接对象的地址和状态信息是什么。
+
+需要注意 mat 默认只会处理 reachable objects，如果要排查 young gc 问题可以在 mat 配置中设置查看 unreachable objects。另外对于调查 young gc 问题（或者大量生命周期较短的对象）的内存分配，用 Java Flight Recorder 比较方便。
 
 #### trace
 
 线上应用通常无法修改代码，又希望在 Java 中做动态插桩来定位问题，推荐使用 btrace 或 arthas trace。它们可以在不重启进程的情况下动态插入 trace 代码。
 
-#### flamegraph
+#### 火焰图
 
 Java 应用中获取火焰图稍微繁琐，可以通过[这样](http://psy-lob-saw.blogspot.com/2017/02/flamegraphs-intro-fire-for-everyone.html)手工获取。
 
