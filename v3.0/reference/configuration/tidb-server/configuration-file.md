@@ -391,3 +391,16 @@ TiDB 服务状态相关配置。
 
 + 输与 database 相关的 QPS metrics 到 promethus的开关。
 + 默认值：false
+## stmt-summary
+
+系统表 `events_statement_summary_by_digest` 的相关配置。
+
+### max-stmt-count
+
++ `events_statement_summary_by_digest` 表中保存的 SQL 种类的最大数量。
++ 默认值：100
+
+### max-sql-length
+
++ `events_statement_summary_by_digest` 表中`DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
++ 默认值：4096
