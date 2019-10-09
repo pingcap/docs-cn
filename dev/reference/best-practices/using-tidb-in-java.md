@@ -55,7 +55,7 @@ Java 应用尽管可以选择在不同的框架中封装，但在最底层一般
 
 在 JDBC 中通常有两种处理方式：
 
-- 设置 [`FetchSize` 为 `Integer.MIN_VALUE`](https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-implementation-notes.html#ResultSet) 让客户端不缓存，客户端通过 streaming 的方式从网络连接上读取
+- 设置 [`FetchSize` 为 `Integer.MIN_VALUE`](https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-implementation-notes.html#ResultSet) 让客户端不缓存，客户端通过 StreamingResult 的方式从网络连接上流式读取执行结果
 - 使用 Cursor Fetch 首先需[设置 `FetchSize`](http://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数且在 JDBC URL 中配置 `useCursorFetch=true`
 
 TiDB 中同时支持两种方式，但更推荐使用第一种设置 `FetchSize` 为 `Integer.MIN_VALUE` 的方式，相对于第二种功能实现简单且执行效率高。
