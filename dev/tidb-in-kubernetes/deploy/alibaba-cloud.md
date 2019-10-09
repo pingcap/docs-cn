@@ -209,13 +209,13 @@ terraform state rm module.ack.alicloud_cs_managed_kubernetes.k8s
 - 在 `terraform.tfvars` 中设置 `operator_helm_values`：
 
 ```hcl
-operator_helm_values = "./my-operator-values.yaml"
+    operator_helm_values = "./my-operator-values.yaml"
 ```
 
 - 在 `main.tf` 中设置 `operator_helm_values`：
 
 ```hcl
-operator_helm_values = file("./my-operator-values.yaml")
+    operator_helm_values = file("./my-operator-values.yaml")
 ```
 
 同时，在默认配置下 Terraform 脚本会创建一个新的 VPC，假如要使用现有的 VPC，可以在 `variable.tf` 中设置 `vpc_id`。注意，当使用现有 VPC 时，没有设置 vswitch 的可用区将不会部署 Kubernetes 节点。
