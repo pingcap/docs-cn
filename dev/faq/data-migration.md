@@ -37,6 +37,7 @@ category: FAQ
 5. 重启 DM-worker。
 
 对于 binlog replication 处理单元，可通过以下步骤手动恢复：
+
 1. 在上游确认出错时对应的 binlog 文件的大小超出了 4GB。
 2. 通过 `stop-task` 停止同步任务。
 3. 将下游 `dm_meta` 数据库中 global checkpoint 与每个 table 的 checkpoint 中的 `binlog_name` 更新为出错的 binlog 文件、`binlog_pos` 更新为 4。
