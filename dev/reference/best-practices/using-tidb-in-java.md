@@ -306,6 +306,6 @@ Java 应用中获取火焰图较繁琐，可以通过[这样](http://psy-lob-saw
 
 ## 总结
 
-本文我们从常用的和数据库交互的 Java 组件的使用角度，阐述了在基于 TiDB 开发 Java 应用时需要注意的常见问题。TiDB 是高度兼容 MySQL 协议的数据库，基于 MySQL 开发的 Java 应用的最佳实践也多适用于 TiDB。
+本文从常用的和数据库交互的 Java 组件的使用角度，阐述了基于 TiDB 开发 Java 应用时需要注意的常见问题。TiDB 是高度兼容 MySQL 协议的数据库，基于 MySQL 开发的 Java 应用的最佳实践也多适用于 TiDB。
 
 欢迎大家在 [ASK TUG](https://asktug.com/) 踊跃发言，和我们一起分享讨论使用 Java 编写 TiDB 应用的实践技巧或遇到的问题。
