@@ -561,7 +561,20 @@ TiDB 支持改变 [per-session](/v3.0/reference/configuration/tidb-server/tidb-s
 同 MySQL 的用法一致，例如：
 `select column_name from table_name use index（index_name）where where_condition;`
 
-#### 3.3.13 高并发执行 DDL 报错？
+#### 3.3.13 触发 Information schema is changed 错误的原因？
+
+TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语句，而且 TiDB 支持在线异步变更 DDL。那么，在执行 DML 的时候可能有 DDL 语句也在执行，而你需要确保每个 SQL 语句在同一个 `schema` 上执行。所以当执行 DML 时，遇到正在执行中的 DDL 操作就可能会报 `Information schema is changed` 的错误。为了避免太多的 DML 语句报错，已做了一些优化。现在会报此错的可能原因如下：
+
+- 执行的 DML 语句中涉及的表和集群中正在执行的 DDL 的表有相同的，那么这个 DML 语句就会报此错。
+- 与表无关的报错原因：
+    - 这个 DML 执行时间很久，而这段时间内执行了很多 DDL 语句（新版本 `lock table` 也可），导致中间 `schema` 版本变更超过 100（目前我们只缓存了 100 个版本信息）。
+    - 接受 DML 请求的 TiDB 长时间不能加载到 `schema information` (与 PD 或者 TiKV 网络问题等都会导致此问题)，而这段时间内执行了很多 DDL 语句（也包括 `lock table` 语句），导致中间 `schema` 版本变更超过 100（目前我们没有按 `schema` 版本去获取信息）。
+
+> **注意：**
+>
+> `create table` 操作会有 1 个 `schema` 版本变更，与每个 DDL 操作对应变更的 `schema state` 个数一致。例如，`add column` 操作会有 4 个版本信息。
+
+#### 3.3.14 高并发执行 DDL 报错？
 
 高并发情况下执行 DDL （比如批量建表）时，极少部分 DDL 可能会由于并发执行时 key 冲突而执行失败。
 建议 DDL 并发低于20。否则需要在应用端重试失败的 DDL 语句。
