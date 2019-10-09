@@ -131,7 +131,7 @@
     - [工具下载](/dev/reference/tools/download.md)
   + 最佳实践
     - [HAProxy 最佳实践](/dev/reference/best-practices/haproxy.md)
-    - [Java 使用 TiDB 的最佳实践](/dev/reference/best-practices/using-tidb-in-java.md)
+    - [Java 应用使用 TiDB 的最佳实践](/dev/reference/best-practices/using-tidb-in-java.md)
   + [与 MySQL 兼容性对比](/dev/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构

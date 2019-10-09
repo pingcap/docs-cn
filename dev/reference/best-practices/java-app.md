@@ -1,11 +1,11 @@
 ---
-title: Java 使用 TiDB 的最佳实践
+title: Java 应用使用 TiDB 的最佳实践
 category: reference
 ---
 
-# Java 使用 TiDB 的最佳实践
+# Java 应用使用 TiDB 的最佳实践
 
-本文主要介绍基于 TiDB 开发 Java 应用程序时可能需要关注的问题。
+本文主要介绍开发 Java 应用程序时使用 TiDB 可能需要关注的问题。
 
 ## Java 应用中的数据库相关组件
 
@@ -25,7 +25,7 @@ category: reference
 
 ## JDBC
 
-Java 应用尽管可以选择在不同的框架中封装，但在最底层一般会通过调用 JDBC 来与数据库服务器进行交互。对于 JDBC 我们需要关注的主要有：API 的使用选择和 API 实现者参数配置。
+Java 应用尽管可以选择在不同的框架中封装，但在最底层一般会通过调用 JDBC 来与数据库服务器进行交互。对于 JDBC 我们需要关注的主要有：API 的使用选择和 API Implementer 的参数配置。
 
 ### JDBC API
 
@@ -70,13 +70,13 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
 默认情况下，`useServerPrepStmts` 为 `false`，即尽管使用了 Prepare API，也只会在客户端做 “prepare”。因此为了避免服务器重复解析的开销，如果同一条 SQL 语句需要多次使用 Prepare API，则建议设置该选项为 `true`。
 
-在 TiDB 监控中可以通过 “Query Summary” - “QPS by Instance” 查看请求命令类型，如果请求中 `COM_QUERY` 被 `COM_STMT_EXECUTE` 或 `COM_STMT_PREPARE` 代替即生效。
+在 TiDB 监控中可以通过 “Query Summary” - “QPS By Instance” 查看请求命令类型，如果请求中 `COM_QUERY` 被 `COM_STMT_EXECUTE` 或 `COM_STMT_PREPARE` 代替即生效。
 
 ##### 2. cachePrepStmts
 
 虽然 `useServerPrepStmts=true` 能让服务端执行 prepare 语句，但默认情况下客户端每次执行完后会 close prepared 的语句，并不会复用，这样 prepare 效率甚至不如文本执行。所以建议开启 `useServerPrepStmts=true` 后同时配置 `cachePrepStmts=true`，这会让客户端缓存 prepare 语句。
 
-在 TiDB 监控中可以通过 “Query Summary” - “QPS by Instance” 查看请求命令类型，如果类似下图，请求中 `COM_STMT_EXECUTE` 数目远远多于 `COM_STMT_PREPARE` 即生效。
+在 TiDB 监控中可以通过 “Query Summary” - “QPS By Instance” 查看请求命令类型，如果类似下图，请求中 `COM_STMT_EXECUTE` 数目远远多于 `COM_STMT_PREPARE` 即生效。
 
 ![QPS By Instance](/media/java-practice-2.png)
 
@@ -165,7 +165,7 @@ Java 的连接池实现很多 ([HikariCP](https://github.com/brettwooldridge/Hik
 比较常见的是应用需要根据自身情况配置合适的连接池大小，以 HikariCP 为例：
 
 - `maximumPoolSize`：连接池最大连接数，配置过大会导致 TiDB 消耗资源维护无用连接，配置过小则会导致应用获取连接变慢，所以需根据应用自身特点配置合适的值，可参考[这篇文章](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)。
-- `minimumIdle`：连接池最大空闲连接数，主要用于在应用空闲时存留一些连接以应对突发请求，同样是需要根据业务情况进行配置。。
+- `minimumIdle`：连接池最大空闲连接数，主要用于在应用空闲时存留一些连接以应对突发请求，同样是需要根据业务情况进行配置。
 
 应用在使用连接池时需要注意连接使用完成后归还连接，推荐应用使用对应的连接池相关监控（如 `metricRegistry`），通过监控能及时定位连接池问题。
 
@@ -274,9 +274,7 @@ Cursor<Post> queryAllPost();
 
 #### jstack
 
-[jstack 介绍](https://docs.oracle.com/javase/7/docs/technotes/tools/share/jstack.html)
-
-jstack 对应于 Go 中的 pprof/goroutine，可以比较方便地排查进程卡死的问题。
+[jstack](https://docs.oracle.com/javase/7/docs/technotes/tools/share/jstack.html) 对应于 Go 中的 pprof/goroutine，可以比较方便地排查进程卡死的问题。
 
 通过执行 `jstack pid`，即可输出目标进程中所有线程的线程 id 和堆栈信息。输出中默认只有 Java 堆栈，如果希望同时输出 JVM 中的 C++ 堆栈，需要加 `-m` 选项。
 
@@ -286,11 +284,7 @@ jstack 对应于 Go 中的 pprof/goroutine，可以比较方便地排查进程�
 
 #### jmap & mat
 
-[jmap 介绍](https://docs.oracle.com/javase/7/docs/technotes/tools/share/jmap.html)
-
-[mat 介绍](https://www.eclipse.org/mat/)
-
-和 Go 中的 pprof/heap 不同，jmap 会将整个进程的内存快照 dump 下来（go 是分配器的采样），然后可以通过另一个工具 mat 做分析。
+和 Go 中的 pprof/heap 不同，[jmap](https://docs.oracle.com/javase/7/docs/technotes/tools/share/jmap.html) 会将整个进程的内存快照 dump 下来（go 是分配器的采样），然后可以通过另一个工具 [mat](https://www.eclipse.org/mat/) 做分析。
 
 通过 mat 可以看到进程中所有对象的关联信息和属性，还可以观察线程运行的状态。比如：我们可以通过 mat 找到当前应用中有多少 MySQL 连接对象，每个连接对象的地址和状态信息是什么。
 
@@ -302,10 +296,10 @@ jstack 对应于 Go 中的 pprof/goroutine，可以比较方便地排查进程�
 
 #### 火焰图
 
-Java 应用中获取火焰图较繁琐，可以通过[这样](http://psy-lob-saw.blogspot.com/2017/02/flamegraphs-intro-fire-for-everyone.html)手工获取。
+Java 应用中获取火焰图较繁琐，可参阅[Java Flame Graphs Introduction: Fire For Everyone!](http://psy-lob-saw.blogspot.com/2017/02/flamegraphs-intro-fire-for-everyone.html)来手动获取。
 
 ## 总结
 
-本文从常用的和数据库交互的 Java 组件的使用角度，阐述了基于 TiDB 开发 Java 应用时需要注意的常见问题。TiDB 是高度兼容 MySQL 协议的数据库，基于 MySQL 开发的 Java 应用的最佳实践也多适用于 TiDB。
+本文从常用的和数据库交互的 Java 组件的角度，阐述了开发 Java 应用程序时使用 TiDB 的常见问题。TiDB 是高度兼容 MySQL 协议的数据库，基于 MySQL 开发的 Java 应用的最佳实践也多适用于 TiDB。
 
-欢迎大家在 [ASK TUG](https://asktug.com/) 踊跃发言，和我们一起分享讨论使用 Java 编写 TiDB 应用的实践技巧或遇到的问题。
+欢迎大家在 [ASK TUG](https://asktug.com/) 踊跃发言，和我们一起分享讨论 Java 应用使用 TiDB 的实践技巧或遇到的问题。
