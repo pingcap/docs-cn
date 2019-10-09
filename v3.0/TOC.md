@@ -319,6 +319,7 @@
     - [统计信息概述](/v3.0/reference/performance/statistics.md)
     - [Optimizer Hints](/v3.0/reference/performance/optimizer-hints.md)
     - [使用 SQL 语句检查 TiDB 集群状态](/v3.0/reference/performance/check-cluster-status-using-sql-statements.md)
+    - [Statement Summary Table](/v3.0/reference/performance/statement-summary.md)
     - [TiKV 调优](/v3.0/reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + [TiSpark 使用指南](/v3.0/reference/tispark.md)
