@@ -49,7 +49,7 @@ location-labels = ["zone", "rack", "host"]
 
 > **注意：**
 >
-> PD 的 `location-labels` 配置必须和 TiKV 的 `labels` 配置一同设置，它们之间的且的关系，否则 `labels` 不会生效。
+> 必须同时配置 PD 的 `location-labels` 和 TiKV 的 `labels` 参数，否则 `labels` 不会生效。
 
 ## PD 基于 TiKV 拓扑结构进行调度
 
