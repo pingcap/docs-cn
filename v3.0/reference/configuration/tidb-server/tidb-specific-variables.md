@@ -494,7 +494,7 @@ set tidb_query_log_max_len = 20;
 
 默认值：""
 
-这个变量用于设置事务模式，默认是乐观锁模式。TiDB 3.0 加入了悲观锁模式（实验性）。将 `tidb_txn_mode` 设置为 `'pessimistic'` 后，这个 session 执行的所有显式事务（即非 autocommit 的事务）都会进入悲观事务模式。更多关于悲观锁的细节，可以参考 [TiDB 悲观事务模式](/dev/reference/transactions/transaction-pessimistic.md)。
+这个变量用于设置事务模式，默认是乐观锁模式。TiDB 3.0 加入了悲观锁模式（实验性）。将 `tidb_txn_mode` 设置为 `'pessimistic'` 后，这个 session 执行的所有显式事务（即非 autocommit 的事务）都会进入悲观事务模式。更多关于悲观锁的细节，可以参考 [TiDB 悲观事务模式](/v3.0/reference/transactions/transaction-pessimistic.md)。
 
 自 TiDB 3.0.4 起，该变量也支持 GLOBAL 作用域，用于设定全局的事务模式。当设定全局的事务模式时，仅在修改生效之后创建的 session 会受到影响。
 
