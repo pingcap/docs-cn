@@ -143,7 +143,7 @@ insert into t(a) values(12);
 insert into t(a) values(10),(11),(12);
 ```
 
-批量更新如果超过 3 个以上 update 则会改写为 multiple-queries 的形式发送，这样可以有效减少 client 到 server 的请求开销，但副作用是会产生较大的 SQL 语句，例如这样：
+批量更新时如果有 3 处或 3 处以上更新，则 SQL 语句会改写为 multiple-queries 的形式并发送，这样可以有效减少客户端到服务器的请求开销，但副作用是会产生较大的 SQL 语句，例如这样：
 
 {{< copyable "sql" >}}
 
