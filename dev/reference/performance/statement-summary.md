@@ -36,6 +36,7 @@ select * from EMPLOYEE where ID in (4, 5) and SALARY between 3000 and 4000;
 ```
 
 规范化后都是：
+
 ```sql
 select * from employee where id in (...) and salary between ? and ?;
 ```
@@ -86,8 +87,8 @@ QUERY_SAMPLE_TEXT: select * from employee where id=3100
 例如客户端显示 employee 表的点查比较慢，那么可以按 SQL 文本来模糊查询：
 
 ```sql
-SELECT avg_latency, exec_count, query_sample_text 
-    FROM performance_schema.events_statements_summary_by_digest 
+SELECT avg_latency, exec_count, query_sample_text
+    FROM performance_schema.events_statements_summary_by_digest
     WHERE digest_text LIKE ‘select * from employee%’;
 ```
 
@@ -109,8 +110,8 @@ SELECT avg_latency, exec_count, query_sample_text
 
 ```sql
 SELECT sum_latency, avg_latency, exec_count, query_sample_text
-	FROM performance_schema.events_statements_summary_by_digest
-	ORDER BY sum_latency DESC LIMIT 3;
+    FROM performance_schema.events_statements_summary_by_digest
+    ORDER BY sum_latency DESC LIMIT 3;
 ```
 
 结果显示以下三类 SQL 的总延迟最高，所以这些 SQL 需要重点优化。
@@ -144,6 +145,7 @@ set global tidb_enable_stmt_summary = true;
 statement summary 关闭后，系统表里的数据会被清空，下次打开后重新统计。经测试，打开后对性能几乎没有影响。
 
 由于 `events_statements_summary_by_digest` 是内存表，为了防止内存问题，需要限制保存的 SQL 条数和 SQL 的最大显示长度。这两个参数都在 config.toml 的 [stmt-summary] 类别下配置：
+
 - 通过 `max-stmt-count` 更改保存的 SQL 种类数量，默认 100 条。当 SQL 种类超过 `max-stmt-count` 时，会移除最近没有使用的 SQL。
 - 通过 `max-sql-length` 更改 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 的最大显示长度，默认是 4096。
 
