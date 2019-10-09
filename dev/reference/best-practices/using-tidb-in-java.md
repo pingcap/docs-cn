@@ -2,13 +2,13 @@
 
 本文主要介绍基于 TiDB 开发 Java 应用程序时可能需要关注的问题。
 
-## Overview
+## Java 应用中的数据库相关组件
 
 通常 Java 应用中和数据库相关的常用组件有：
 
 - 网络协议：客户端通过标准 [MySQL 协议](https://dev.mysql.com/doc/internals/en/client-server-protocol.html)和 TiDB 进行网络交互
 - JDBC API & 实现：Java 应用通常使用 [JDBC (Java Database Connectivity)](https://docs.oracle.com/javase/8/docs/technotes/guides/jdbc/) 来访问数据库，JDBC 定义了访问数据库 API，而 JDBC 实现完成标准 API 到 MySQL 协议的转换，常见的 JDBC 实现是 [MySQL Connector/J](https://github.com/mysql/mysql-connector-j)，此外有些用户可能使用 [MariaDB Connector/J](https://mariadb.com/kb/en/library/about-mariadb-connector-j/#about-mariadb-connectorj)
-- 数据库连接池：为了避免每次创建连接，通常应用会选择使用数据库连接池来复用连接，JDBC [DataSource](https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html) 定义了连接池 API，开发者会根据自己选择使用某种开源连接池实现
+- 数据库连接池：为了避免每次创建连接，通常应用会选择使用数据库连接池来复用连接，JDBC [DataSource](https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html) 定义了连接池 API，开发者可根据实际需求选择使用某种开源连接池实现
 - 数据访问框架：应用通常选择通过数据访问框架 ([MyBatis](http://www.mybatis.org/mybatis-3/zh/index.html), [Hibernate](https://hibernate.org/)) 的封装来进一步简化和管理数据库访问操作
 - 业务实现：业务逻辑控制着何时发送和发送什么指令到数据库，其中有些业务会使用 [Spring Transaction](https://docs.spring.io/spring/docs/4.2.x/spring-framework-reference/html/transaction.html) 切面来控制管理事务的开始和提交逻辑
 
@@ -20,13 +20,13 @@
 
 ## JDBC
 
-Java 应用尽管可能在选择多样的框架封装，但多数情况在最底层会通过调用 JDBC 来向数据库服务器进行交互。对于 JDBC 我们需要关注的主要有：API 的使用选择和 API 实现者参数配置。
+Java 应用尽管可以选择在不同的框架中封装，但在最底层一般会通过调用 JDBC 来与数据库服务器进行交互。对于 JDBC 我们需要关注的主要有：API 的使用选择和 API 实现者参数配置。
 
 ### JDBC API
 
 对于基本的 JDBC API 使用可以参考 [JDBC 官方教程](https://docs.oracle.com/javase/tutorial/jdbc/)，这里主要强调几个比较重要的 API 选择。
 
-#### 推荐使用 Prepare
+#### 使用 Prepare API
 
 对于 OLTP 场景，程序的 SQL 在去除参数变化后都是可穷举的某几类，建议使用 [Prepared Statements](https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html) 代替普通的[文本执行](https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html#executing_queries)并复用 Prepared 直接执行，来避免 TiDB 重复进行 Parse 和 生成 Plan 的开销。
 
@@ -34,7 +34,7 @@ Java 应用尽管可能在选择多样的框架封装，但多数情况在最底
 
 另外需要注意 MySQL Connector/J 实现中默认只会做 client prepare，会将 `?` 在客户端替换后用文本发送到客户端，所以除了使用 Prepare API 后还需要注意需要在 JDBC 连接参数中配置 `useServerPrepStmts = true` 才能让 prepare 在 TiDB 服务器端进行(下面参数配置章节有详细介绍)。
 
-#### 批量插入更新推荐使用 Batch
+#### 使用 Batch 批量插入更新
 
 对于批量插入和更新如果插入批次较大可以选择使用 [addBatch/executeBatch API](https://www.tutorialspoint.com/jdbc/jdbc-batch-processing)，通过 addBatch 的方式让 SQL 在客户端将多条插入更新记录在客户端先缓存，然后在 executeBatch 时一起发送到数据库服务器。
 
@@ -42,7 +42,7 @@ Java 应用尽管可能在选择多样的框架封装，但多数情况在最底
 
 #### 超大结果集流式获取
 
-默认 JDBC 会提前将查询结果获取并保存在客户端内存中，多数场景下这样能提升执行效率，但在查询返回超大结果集的场景，client 会希望 server 减少向客户端一次返回的记录数，等客户端在有限内存处理完一部分后再去向 server 要下一批。
+一般情况下，为提升执行效率，JDBC 会默认提前获取查询结果并将其保存在客户端内存中。但在查询返回超大结果集的场景中，客户端会希望数据库服务器减少向客户端一次返回的记录数，等客户端在有限内存处理完一部分后再去向服务器要下一批。
 
 在 JDBC 中通常有两种处理方式：
 
@@ -103,7 +103,7 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
 ##### 4. prepStmtCacheSize
 
-`prepStmtCacheSize` 控制缓存的 Prepare 语句数目（默认 25），如果应用需要 prepare 的 SQL 种类很多且希望复用 Prepare 可以调大该值。
+`prepStmtCacheSize` 控制缓存的 prepare 语句数目（默认 25），如果应用需要 prepare 的 SQL 种类很多且希望复用 prepare 语句，可以调大该值。
 
 和上一条类似，在监控中通过 “Query Summary” - “QPS by Instance” 查看请求中 `COM_STMT_EXECUTE` 数目是否远远多于 `COM_STMT_PREPARE` 来确认是否正常。
 
@@ -151,7 +151,7 @@ update t set a = 10 where id = 1; update t set a = 11 where id = 2; update t set
 
 #### 执行前检查参数
 
-通过监控可能会发现，虽然业务只向集群进行 insert 操作，却看到有很多多余的 select 语句。通常这是因为 JDBC 发了一些查询设置类的 SQL（例如 `select @@session.transaction_read_only`）。这些 SQL 对 TiDB 无用，推荐配置 `useConfigs=maxPerformance` 来避免额外开销。
+通过监控可能会发现，虽然业务只向集群进行 insert 操作，却看到有很多多余的 select 语句。通常这是因为 JDBC 发送了一些查询设置类的 SQL 语句（例如 `select @@session.transaction_read_only`）。这些 SQL 对 TiDB 无用，推荐配置 `useConfigs=maxPerformance` 来避免额外开销。
 
 `useConfigs=maxPerformance` 会包含一组配置：
 
@@ -190,10 +190,10 @@ Java 的连接池实现很多 ([HikariCP](https://github.com/brettwooldridge/Hik
 The last packet sent successfully to the server was 3600000 milliseconds ago. The driver has not received any packets from the server. com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
 ```
 
-如果 `n milliseconds ago` 中的 `n` 如果是 0 或很小的值，则通常是执行的 SQL 导致 TiDB 异常退出引起的报错，推荐查看 TiDB stderr 日志；如果 n 是一个非常大的值（比如这里的 3600000）非常大概率是因为这个连接很久没人用到然后被中间 proxy 给关闭了，通常解决方式除了调大 proxy idle 配置还可以让连接池：
+如果 `n milliseconds ago` 中的 `n` 如果是 0 或很小的值，则通常是执行的 SQL 导致 TiDB 异常退出引起的报错，推荐查看 TiDB stderr 日志；如果 n 是一个非常大的值（比如这里的 3600000），很可能是因为这个连接空闲太久然后被中间 proxy 关闭了，通常解决方式除了调大 proxy 的 idle 配置，还可以让连接池：
 
 - 每次使用连接前检查连接是否可用
-- 单独线程定期检查连接是否可用
+- 使用单独线程定期检查连接是否可用
 - 定期发送 test query 保活连接
 
 不同的连接池实现可能会支持其中一种或多种方式，可以查看所使用的连接池文档来寻找对应配置。
@@ -213,13 +213,13 @@ MyBatis 是目前比较流行的 Java 数据访问框架，主要用于管理 SQ
 MyBatis 的 Mapper 中支持两种参数：
 
 - `select 1 from t where id = #{param1}` 会作为 prepare 转换为 `select 1 from t where id = ?` 进行 prepare，并将用实际参数去复用执行，通过配合前面的 Prepare 连接参数能获得最佳性能
-- `select 1 from t where id = ${param2}` 会做文本替换为 `select 1 from t where id = 1` 执行，如果这条语句被 prepare 了不同参数，可能会导致 TiDB 缓存大量的 prepare 语句，并且这种方式执行 SQL 有注入安全风险
+- `select 1 from t where id = ${param2}` 会做文本替换为 `select 1 from t where id = 1` 执行，如果这条语句被 prepare 成了不同参数，可能会导致 TiDB 缓存大量的 prepare 语句，并且这种方式执行 SQL 有注入安全风险
 
 #### 动态 SQL Batch
 
 [动态 SQL - foreach](http://www.mybatis.org/mybatis-3/dynamic-sql.html#foreach)
 
-要支持将多条 insert 语句自动重写为 `insert ... values(...), (...), ...` 的形式，除了前面所说的在 JDBC 配置 `rewriteBatchedStatements=true` 外，MyBatis 还可以使用 dynamic 来半自动生成 batch insert。比如下面的 mapper:
+要支持将多条 insert 语句自动重写为 `insert ... values(...), (...), ...` 的形式，除了前面所说的在 JDBC 配置 `rewriteBatchedStatements=true` 外，MyBatis 还可以使用动态 SQL 来半自动生成 batch insert。比如下面的 mapper:
 
 ```xml
 <insert id="insertTestBatch" parameterType="java.util.List" fetchSize="1">
@@ -265,9 +265,9 @@ Cursor<Post> queryAllPost();
 
 在 `openSession` 的时候可以选择 `ExecutorType`，MyBatis 支持三种 executor：
 
-- Simple：每次执行都会向 JDBC 进行 prepare 调用（如果 JDBC 配置有开启 cachePrepStmts，重复的 prepare 会复用）
-- Reuse：在 `executor` 中缓存 statement，这样不用 JDBC 的 `cachePrepStmts` 也能减少重复 prepare 调用
-- Batch：每次更新只会 `addBatch` 直到 query 或 commit 才会调用 `executeBatch` 执行, 如果 JDBC 层有开 `rewriteBatchStatements` 会尝试改写，没有则一条条发送
+- Simple：每次执行都会向 JDBC 进行 prepare 语句的调用（如果 JDBC 配置有开启 `cachePrepStmts`，重复的 prepare 语句会复用）
+- Reuse：在 `executor` 中缓存 prepare 语句，这样不用 JDBC 的 `cachePrepStmts` 也能减少重复 prepare 语句的调用
+- Batch：每次更新只有在 `addBatch` 到 query 或 commit 时才会调用 `executeBatch` 执行，如果 JDBC 层开启了 `rewriteBatchStatements`，则会尝试改写，没有开启则会一条条发送
 
 通常默认值是 `Simple`，需要在调用 `openSession` 时改变 `ExecutorType`。如果是 Batch 执行，会遇到事务中前面的 update 或 insert 都非常快，而在读数据或 commit 事务时比较慢的情况，这实际上是正常的，在排查慢 SQL 时需要注意。
 
@@ -275,9 +275,9 @@ Cursor<Post> queryAllPost();
 
 在应用代码中业务可能会通过使用 [Spring Transaction](https://docs.spring.io/spring/docs/4.2.x/spring-framework-reference/html/transaction.html) 来并通过 AOP 切面的方式来启停事务。
 
-通过在方法定义上添加 @Transactional 注解标记方法，AOP 将会在方法前开启事务，方法 return 前 commit 事务。如果遇到类似业务，可以通过查找代码 @Transactional 来确定事务的开启和关闭时机。需要特别注意有内嵌的情况，如果发生内嵌，Spring 会根据 [Propagation](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Propagation.html) 配置使用不同的行为，因为 TiDB 未支持 savepoint，所以需要注意不支持嵌套事务。
+通过在方法定义上添加 `@Transactional` 注解标记方法，AOP 将会在方法前开启事务，方法返回结果前 commit 事务。如果遇到类似业务，可以通过查找代码 `@Transactional` 来确定事务的开启和关闭时机。需要特别注意有内嵌的情况，如果发生内嵌，Spring 会根据 [Propagation](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Propagation.html) 配置使用不同的行为，因为 TiDB 未支持 savepoint，所以不支持嵌套事务。
 
-## Misc
+## 其他
 
 ### 排查工具
 
