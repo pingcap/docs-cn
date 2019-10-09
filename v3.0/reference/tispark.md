@@ -326,3 +326,7 @@ TiSpark 可以使用 TiDB 的统计信息：
 - Q. TiSpark 任务是否默认读取 Hive 的元数据？
 
     A. TiSpark 通过读取 hive-site 里的 meta 来搜寻 hive 的库。如果搜寻不到，就通过读取 tidb meta 搜寻 tidb 库。如果不需要该行为，可不在 hive site 中配置 hive 的 meta。
+
+- Q. TiSpark 执行 Spark 任务时报：Error：java.io.InvalidClassException: com.pingcap.tikv.region.TiRegion; local class incompatible: stream classdesc serialVersionUID ...
+
+    A. 该报错日志中显示 serialVersionUID 冲突，说明存在不同版本的的 class 和 TiRegion。因为 TiRegion 是 TiSpark 独有的，所以可能存在多个版本的 TiSpark 包。要解决该报错，请确保集群中各节点的 TiSpark 依赖包版本一致。
