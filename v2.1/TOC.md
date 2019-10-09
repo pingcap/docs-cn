@@ -126,6 +126,9 @@
     - [TiKV Control](/v2.1/reference/tools/tikv-control.md)
     - [TiDB Controller](/v2.1/reference/tools/tidb-control.md)
     - [工具下载](/v2.1/reference/tools/download.md)
+  + 最佳实践
+    - [HAProxy 最佳实践](/v2.1/reference/best-practices/haproxy.md)
+    - [Java 使用 TiDB 的最佳实践](/v2.1/reference/best-practices/using-tidb-in-java.md)
   + [与 MySQL 兼容性对比](/v2.1/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
