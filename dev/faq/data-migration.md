@@ -33,7 +33,7 @@ category: FAQ
 3. 将上游对应的 binlog 文件复制到 relay log 目录作为 relay log 文件。
 4. 更新 relay log 目录内对应的 _relay.meta_ 文件以从下一个 binlog 开始拉取。
 
-    如报错时有 `binlog-name = "mysql-bin.004451"` 与`binlog-pos = 2453`，则将其分别更新为 `binlog-name = "mysql-bin.004452"` 与`binlog-pos = 4`。
+    例如：报错时有 `binlog-name = "mysql-bin.004451"` 与`binlog-pos = 2453`，则将其分别更新为 `binlog-name = "mysql-bin.004452"` 与`binlog-pos = 4`。
 5. 重启 DM-worker。
 
 对于 binlog replication 处理单元，可通过以下步骤手动恢复：
@@ -42,7 +42,7 @@ category: FAQ
 2. 通过 `stop-task` 停止同步任务。
 3. 将下游 `dm_meta` 数据库中 global checkpoint 与每个 table 的 checkpoint 中的 `binlog_name` 更新为出错的 binlog 文件、`binlog_pos` 更新为已同步过的一个合法的 position 值，比如 4。
 
-    如出错任务名为 `dm_test`、对应的 `source-id` 为 `replica-1`，出错时对应的 binlog 文件为 `mysql-bin|000001.004451`，则执行 `UPDATE dm_test_syncer_checkpoint SET binlog_name='mysql-bin|000001.004451', binlog_pos = 4 WHERE id='replica-1';`。
-4. 在同步任务配置中为 `sync` 部分设置 `safe-mode: true` 以保证可重入执行。
+    例如：出错任务名为 `dm_test`，对应的 `source-id` 为 `replica-1`，出错时对应的 binlog 文件为 `mysql-bin|000001.004451`，则执行 `UPDATE dm_test_syncer_checkpoint SET binlog_name='mysql-bin|000001.004451', binlog_pos = 4 WHERE id='replica-1';`。
+4. 在同步任务配置中为 `syncers` 部分设置 `safe-mode: true` 以保证可重入执行。
 5. 通过 `start-task` 启动同步任务。
 6. 通过 `query-status` 观察同步任务状态，当原造成出错的 relay log 文件同步完成后，即可还原 `safe-mode` 为原始值并重启同步任务。
