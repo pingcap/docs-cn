@@ -55,10 +55,10 @@ Java 应用尽管可以选择在不同的框架中封装，但在最底层一般
 
 在 JDBC 中通常有两种处理方式：
 
-- 设置 [FetchSize 为 Integer.MIN_VALUE](https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-implementation-notes.html#ResultSet) 让客户端不缓存，客户端通过 streaming 的方式从网络连接上读取
-- 使用 Cursor Fetch 首先需[设置 FetchSize](http://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数且在 JDBC URL 中配置 `useCursorFetch=true`
+- 设置 [`FetchSize` 为 `Integer.MIN_VALUE`](https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-implementation-notes.html#ResultSet) 让客户端不缓存，客户端通过 streaming 的方式从网络连接上读取
+- 使用 Cursor Fetch 首先需[设置 `FetchSize`](http://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数且在 JDBC URL 中配置 `useCursorFetch=true`
 
-TiDB 中同时支持两种方式，但更推荐使用第一种设置 FetchSize 为 Integer.MIN_VALUE 的方式，相对于第二种功能实现简单且执行效率高。
+TiDB 中同时支持两种方式，但更推荐使用第一种设置 `FetchSize` 为 `Integer.MIN_VALUE` 的方式，相对于第二种功能实现简单且执行效率高。
 
 #### 批量插入后获取自增 ID
 
@@ -104,7 +104,7 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
 ##### 3. prepStmtCacheSqlLimit
 
-在配置 `cachePrepStmts` 后还需要注意 `prepStmtCacheSqlLimit` 配置（默认 256），该配置控制客户端缓存 prepare 语句的最大长度，超过该长度将不会被缓存。
+在配置 `cachePrepStmts` 后还需要注意 `prepStmtCacheSqlLimit` 配置（默认为 `256`），该配置控制客户端缓存 prepare 语句的最大长度，超过该长度将不会被缓存。
 
 在一些场景 SQL 的长度可能超过该配置，导致 prepared SQL 不能复用，建议根据应用 SQL 长度情况决定是否需要调大该值。
 
@@ -112,7 +112,7 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
 ##### 4. prepStmtCacheSize
 
-`prepStmtCacheSize` 控制缓存的 prepare 语句数目（默认 25），如果应用需要 prepare 的 SQL 种类很多且希望复用 prepare 语句，可以调大该值。
+`prepStmtCacheSize` 控制缓存的 prepare 语句数目（默认为 `25`），如果应用需要 prepare 的 SQL 种类很多且希望复用 prepare 语句，可以调大该值。
 
 和上一条类似，在监控中通过 “Query Summary” - “QPS by Instance” 查看请求中 `COM_STMT_EXECUTE` 数目是否远远多于 `COM_STMT_PREPARE` 来确认是否正常。
 
@@ -178,7 +178,7 @@ enableQueryTimeouts=false
 
 TiDB (MySQL) 连接建立是比较昂贵的操作（至少对于 OLTP），除了建立 TCP 连接外还需要进行连接鉴权操作，所以客户端通常会把 TiDB (MySQL) 连接保存到连接池中进行复用。
 
-Java 的连接池实现很多 ([HikariCP](https://github.com/brettwooldridge/HikariCP), [tomcat-jdbc](https://tomcat.apache.org/tomcat-7.0-doc/jdbc-pool.html), [durid](https://github.com/alibaba/druid), [c3p0](https://www.mchange.com/projects/c3p0/), [dbcp](https://commons.apache.org/proper/commons-dbcp/))，TiDB 不会限定使用的连接池，应用可以根据根据业务特点自己选择连接池实现。
+Java 的连接池实现很多 ([HikariCP](https://github.com/brettwooldridge/HikariCP), [tomcat-jdbc](https://tomcat.apache.org/tomcat-7.0-doc/jdbc-pool.html), [durid](https://github.com/alibaba/druid), [c3p0](https://www.mchange.com/projects/c3p0/), [dbcp](https://commons.apache.org/proper/commons-dbcp/))，TiDB 不会限定使用的连接池，应用可以根据业务特点自行选择连接池实现。
 
 ### 连接数配置
 
@@ -217,7 +217,7 @@ The last packet sent successfully to the server was 3600000 milliseconds ago. Th
 
 MyBatis 是目前比较流行的 Java 数据访问框架，主要用于管理 SQL 并完成结果集和 Java 对象的来回映射工作。MyBatis 和 TiDB 兼容性很好，从历史 issue 可以看出 MyBatis 很少出现问题。这里主要关注如下几个配置。
 
-#### 参数
+#### Mapper 参数
 
 MyBatis 的 Mapper 中支持两种参数：
 
@@ -270,7 +270,7 @@ MyBatis 的 Mapper 中支持两种参数：
 Cursor<Post> queryAllPost();
 ```
 
-### ExecutorType
+### `ExecutorType`
 
 在 `openSession` 的时候可以选择 `ExecutorType`，MyBatis 支持三种 executor：
 
@@ -322,7 +322,7 @@ jstack 对应于 Go 中的 pprof/goroutine，可以比较方便地排查进程�
 
 #### 火焰图
 
-Java 应用中获取火焰图稍微繁琐，可以通过[这样](http://psy-lob-saw.blogspot.com/2017/02/flamegraphs-intro-fire-for-everyone.html)手工获取。
+Java 应用中获取火焰图较繁琐，可以通过[这样](http://psy-lob-saw.blogspot.com/2017/02/flamegraphs-intro-fire-for-everyone.html)手工获取。
 
 ## 总结
 
