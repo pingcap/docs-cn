@@ -488,7 +488,7 @@ TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 labels
 172.16.10.5
 172.16.10.6
 
-# 注意：配合 labels 使用，集群部署阶段必须设置 location_labels 参数。
+# 注意：为使 TiKV 的 labels 设置生效，部署集群时必须设置 PD 的 location_labels 参数。
 [pd_servers:vars]
 location_labels = ["host"]
 ```
