@@ -28,17 +28,21 @@ Java 应用尽管可以选择在不同的框架中封装，但在最底层一般
 
 #### 使用 Prepare API
 
-对于 OLTP 场景，程序的 SQL 在去除参数变化后都是可穷举的某几类，建议使用 [Prepared Statements](https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html) 代替普通的[文本执行](https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html#executing_queries)并复用 Prepared 直接执行，来避免 TiDB 重复进行 Parse 和 生成 Plan 的开销。
+对于 OLTP 场景，程序发送给数据库的 SQL 语句在去除参数变化后都是可穷举的某几类，因此建议使用[预处理语句 (Prepared Statements)](https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html) 代替普通的[文本执行](https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html#executing_queries)，并复用 Prepared Statements 来直接执行，从而避免 TiDB 重复解析和生成 SQL 执行计划的开销。
 
 目前多数上层框架都会调用 Prepare API 进行 SQL 执行，如果直接使用 JDBC API 进行开发，注意选择使用 Prepare API。
 
-另外需要注意 MySQL Connector/J 实现中默认只会做 client prepare，会将 `?` 在客户端替换后用文本发送到客户端，所以除了使用 Prepare API 后还需要注意需要在 JDBC 连接参数中配置 `useServerPrepStmts = true` 才能让 prepare 在 TiDB 服务器端进行(下面参数配置章节有详细介绍)。
+另外需要注意 MySQL Connector/J 实现中默认只会做客户端的语句预处理，会将 `?` 在客户端替换后以文本形式发送到客户端，所以除了要使用 Prepare API，还需要在 JDBC 连接参数中配置 `useServerPrepStmts = true`，才能在 TiDB 服务器端进行语句预处理（下面参数配置章节有详细介绍）。
 
 #### 使用 Batch 批量插入更新
 
-对于批量插入和更新如果插入批次较大可以选择使用 [addBatch/executeBatch API](https://www.tutorialspoint.com/jdbc/jdbc-batch-processing)，通过 addBatch 的方式让 SQL 在客户端将多条插入更新记录在客户端先缓存，然后在 executeBatch 时一起发送到数据库服务器。
+对于批量插入更新，如果插入记录较多，可以选择使用 [addBatch/executeBatch API](https://www.tutorialspoint.com/jdbc/jdbc-batch-processing)。通过 addBatch 的方式将多条 SQL 的插入更新记录先缓存在客户端，然后在 executeBatch 时一起发送到数据库服务器。
 
-同样需要注意对于 MySQL Connector/J 实现，默认 Batch 只是将多次 addBatch 的 SQL 发送时机延迟到调用 executeBatch 的时候，但实际网络发送还是会一条条的发送，通常不会降低和 Server 的网络交互次数。如果希望 Batch 网络发送，需要在 JDBC 连接参数中配置 `rewriteBatchedStatements=true` (下面参数配置章节有更详细介绍)。
+> **注意：**
+>
+> 对于 MySQL Connector/J 实现，默认 Batch 只是将多次 addBatch 的 SQL 发送时机延迟到调用 executeBatch 的时候，但实际网络发送还是会一条条的发送，通常不会降低与数据库服务器的网络交互次数。
+>
+> 如果希望 Batch 网络发送，需要在 JDBC 连接参数中配置 `rewriteBatchedStatements=true`（下面参数配置章节有详细介绍）。
 
 #### 超大结果集流式获取
 
@@ -79,7 +83,7 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
 ##### 1. useServerPrepStmts
 
-默认 `useServerPrepStmts` 为 `false`, 默认情况即使使用了 prepare api，只会在客户端做 “prepare”，所以为了避免 server 重复 parse 的开销，只要同一条 SQL 多次使用 Prepare API 则建议设置该选项为 true。
+默认情况下，`useServerPrepStmts` 为 `false`，即尽管使用了 Prepare API，也只会在客户端做 “prepare”。因此为了避免服务器重复解析的开销，如果同一条 SQL 语句需要多次使用 Prepare API，则建议设置该选项为 `true`。
 
 在 TiDB 监控中可以通过 “Query Summary” - “QPS by Instance” 查看请求命令类型，如果请求中 `COM_QUERY` 被 `COM_STMT_EXECUTE` 或 `COM_STMT_PREPARE` 代替即生效。
 
@@ -212,7 +216,7 @@ MyBatis 是目前比较流行的 Java 数据访问框架，主要用于管理 SQ
 
 MyBatis 的 Mapper 中支持两种参数：
 
-- `select 1 from t where id = #{param1}` 会作为 prepare 转换为 `select 1 from t where id = ?` 进行 prepare，并将用实际参数去复用执行，通过配合前面的 Prepare 连接参数能获得最佳性能
+- `select 1 from t where id = #{param1}` 会作为 prepare 语句转换为 `select 1 from t where id = ?` 进行 prepare， 并使用实际参数来复用执行，通过配合前面的 Prepare 连接参数能获得最佳性能
 - `select 1 from t where id = ${param2}` 会做文本替换为 `select 1 from t where id = 1` 执行，如果这条语句被 prepare 成了不同参数，可能会导致 TiDB 缓存大量的 prepare 语句，并且这种方式执行 SQL 有注入安全风险
 
 #### 动态 SQL Batch
@@ -242,7 +246,7 @@ MyBatis 的 Mapper 中支持两种参数：
 前面介绍了在 JDBC 中如何使用流式读取结果，除了 JDBC 相应的配置外，在 MyBatis 中如果希望读取超大结果集合也需要注意：
 
 - 可以通过在 mapper 配置中对单独一条 SQL 设置 `fetchSize`（见上一段代码段），效果等同于调用 JDBC `setFetchSize`
-- 可以使用带 `ResultHandler` 的查询接口来避免一次获取整个结果 List
+- 可以使用带 `ResultHandler` 的查询接口来避免一次获取整个结果集
 - 可以使用 `Cursor` 类来进行流式读取
 
 对于使用 xml 配置映射，可以通过在映射 `<select>` 部分配置 `fetchSize="-2147483648"`(`Integer.MIN_VALUE`) 来流式读取结果。
@@ -291,7 +295,7 @@ jstack 对应于 Go 中的 pprof/goroutine，可以比较方便地排查进程�
 
 通过执行 `jstack pid`，即可输出目标进程中所有线程的线程 id 和堆栈信息。输出中默认只有 Java 堆栈，如果希望同时输出 JVM 中的 C++ 堆栈，需要加 `-m` 选项。
 
-通过多次 jstack 可以方便地发现卡死问题（比如：都通过 Mybatis BatchExecutor flush 调用 update）或死锁问题（比如：测试程序都在抢占应用中某把锁没发 SQL）
+通过多次 jstack 可以方便地发现卡死问题（比如：都通过 Mybatis BatchExecutor flush 调用 update）或死锁问题（比如：测试程序都在抢占应用中某把锁导致没发送 SQL）
 
 另外，`top -p $PID -H` 或者 Java swiss knife 都是常用的查看线程 ID 的方法。通过 `printf "%x\n" pid` 把线程 ID 转换成 16 进制，然后去 jstack 输出结果中找对应线程的栈信息，可以定位”某个线程占用 CPU 比较高，不知道它在执行什么”的问题。
 
