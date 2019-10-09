@@ -49,7 +49,7 @@ Java 应用尽管可以选择在不同的框架中封装，但在最底层一般
 >
 > 如果希望 Batch 网络发送，需要在 JDBC 连接参数中配置 `rewriteBatchedStatements=true`（下面参数配置章节有详细介绍）。
 
-#### 超大结果集流式获取
+#### 使用 StreamingResult 流式获取执行结果
 
 一般情况下，为提升执行效率，JDBC 会默认提前获取查询结果并将其保存在客户端内存中。但在查询返回超大结果集的场景中，客户端会希望数据库服务器减少向客户端一次返回的记录数，等客户端在有限内存处理完一部分后再去向服务器要下一批。
 
@@ -59,26 +59,6 @@ Java 应用尽管可以选择在不同的框架中封装，但在最底层一般
 - 使用 Cursor Fetch 首先需[设置 `FetchSize`](http://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数且在 JDBC URL 中配置 `useCursorFetch=true`
 
 TiDB 中同时支持两种方式，但更推荐使用第一种设置 `FetchSize` 为 `Integer.MIN_VALUE` 的方式，相对于第二种功能实现简单且执行效率高。
-
-#### 批量插入后获取自增 ID
-
-向包含自增列的表中批量插入数据后，再通过 `Statement.getGeneratedKeys()` 可以返回插入的自增列的值，例如表 t 中 id 是自增列：
-
-```java
-pstmt = connection.prepareStatement(“insert into t (a) values(?)”, Statement.RETURN_GENERATED_KEYS);
-pstmt.setInt(1, 10);
-pstmt.addBatch();
-pstmt.setInt(1, 11);
-pstmt.addBatch();
-pstmt.executeBatch();
-// 获取自动生成的 id 的值
-ResultSet rs = pstmt.getGeneratedKeys();
-while (rs.next()) {
-    System.out.println(rs.getLong(1));
-}
-```
-
-注意，在存在并发插入时，TiDB 不保证 batch insert 后 `getGeneratedKeys()` 返回的自增值是正确的。
 
 ### MySQL JDBC 参数
 
