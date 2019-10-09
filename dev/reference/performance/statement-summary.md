@@ -6,11 +6,14 @@ category: reference
 # Statement Summary Table
 
 ## 前言
+
 我们在排查线上 TiDB 问题时，可能有下面这样的需求：
+
 - SQL 延迟比较大，是不是服务端的问题？
 - 哪类 SQL 的总耗时最高？
 
 遇到这类需要定位 SQL 的问题，我们会首先想到两种方式来排查：
+
 - 打开 general log，但是打印 general log 对 Server 的性能会有影响。
 - `admin show slow` 显示慢查询日志，但是有问题的 SQL 可能没有被归为慢 SQL。
 
@@ -19,16 +22,19 @@ category: reference
 为此，从 3.0.4 版本开始，TiDB 也提供系统表 `events_statements_summary_by_digest`，方便用户定位 SQL 问题。
 
 ## events_statements_summary_by_digest 介绍
+
 `events_statement_summary_by_digest` 是 `performance_schema` 里的一张系统表。顾名思义，它把 SQL 按 digest 分组，统计每一组的 SQL 信息。
 
 digest 是什么呢？它与 slow log 里的 digest 一样，是把 SQL 规范化后算出的唯一标识符。
 SQL 的规范化会忽略常量、空白符、大小写的差别。也就是说，只要语法一致，就会归到同一类。
 
 例如：
+
 ```sql
 SELECT * FROM employee WHERE id IN (1, 2, 3) AND salary BETWEEN 1000 AND 2000;
 select * from EMPLOYEE where ID in (4, 5) and SALARY between 3000 and 4000;
 ```
+
 规范化后都是：
 ```sql
 select * from employee where id in (...) and salary between ? and ?;
@@ -38,6 +44,7 @@ select * from employee where id in (...) and salary between ? and ?;
 因为 TiDB 中的很多概念不同于 MySQL，所以 `events_statements_summary_by_digest` 也与 MySQL 有一些区别。
 
 查询 `events_statements_summary_by_digest` 的输出示例：
+
 ```
       SCHEMA_NAME: test
            DIGEST: 0611cc2fe792f8c146cc97d39b31d9562014cf15f8d41f23a4938ca341f54182
@@ -71,10 +78,13 @@ QUERY_SAMPLE_TEXT: select * from employee where id=3100
 | QUERY_SAMPLE_TEXT | 这类 SQL 首次出现的原 SQL 语句 |
 
 ## 排查示例
+
 对于文章开头描述的几个问题，下面来演示如何利用 statement summary 来排查。
 
 ### SQL 延迟比较大，是不是服务端的问题？
+
 例如客户端显示 employee 表的点查比较慢，那么可以按 SQL 文本来模糊查询：
+
 ```sql
 SELECT avg_latency, exec_count, query_sample_text 
     FROM performance_schema.events_statements_summary_by_digest 
@@ -82,6 +92,7 @@ SELECT avg_latency, exec_count, query_sample_text
 ```
 
 结果如下，`avg_latency` 是 1 ms 和 0.3 ms，在正常范围，所以可以判定不是服务端的问题，继而排查客户端或网络问题。
+
 ```
 +-------------+------------+------------------------------------------+
 | avg_latency | exec_count | query_sample_text                        |
@@ -93,7 +104,9 @@ SELECT avg_latency, exec_count, query_sample_text
 ```
 
 ### 哪类 SQL 的总耗时最高？
+
 如果要对系统调优，可以找出耗时最高的 3 类 SQL：
+
 ```sql
 SELECT sum_latency, avg_latency, exec_count, query_sample_text
 	FROM performance_schema.events_statements_summary_by_digest
@@ -101,6 +114,7 @@ SELECT sum_latency, avg_latency, exec_count, query_sample_text
 ```
 
 结果显示以下三类 SQL 的总延迟最高，所以这些 SQL 需要重点优化。
+
 ```
 +-------------+-------------+------------+-----------------------------------------------------------------------+
 | sum_latency | avg_latency | exec_count | query_sample_text                                                     |
@@ -113,12 +127,15 @@ SELECT sum_latency, avg_latency, exec_count, query_sample_text
 ```
 
 ## 参数配置
+
 statement summary 功能默认关闭，通过设置系统变量打开。例如：
+
 ```sql
 set global tidb_enable_stmt_summary = true;
 ```
 
 `tidb_enable_stmt_summary` 有 global 和 session 两种作用域，它们的生效方式与其他系统变量不一样：
+
 - 设置 global 变量后整个集群立即生效
 - 设置 session 变量后当前节点立即生效，这对于调试单个节点比较有用
 - 优先读 session 变量，没有设置过 session 变量才会读 global 变量
@@ -133,6 +150,7 @@ statement summary 关闭后，系统表里的数据会被清空，下次打开�
 这两个参数建议根据实际情况调整，不宜设置得过大。
 
 ## 目前的限制
+
 `events_statements_summary_by_digest` 现在还存在一起限制：
 
 - 查询 `events_statements_summary_by_digest` 时，只会显示当前节点的 statement summary，而不是整个群集的 statement summary。
