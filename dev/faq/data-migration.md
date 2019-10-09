@@ -43,6 +43,6 @@ category: FAQ
 3. 将下游 `dm_meta` 数据库中 global checkpoint 与每个 table 的 checkpoint 中的 `binlog_name` 更新为出错的 binlog 文件、`binlog_pos` 更新为已同步过的一个合法的 position 值，比如 4。
 
     例如：出错任务名为 `dm_test`，对应的 `source-id` 为 `replica-1`，出错时对应的 binlog 文件为 `mysql-bin|000001.004451`，则执行 `UPDATE dm_test_syncer_checkpoint SET binlog_name='mysql-bin|000001.004451', binlog_pos = 4 WHERE id='replica-1';`。
-4. 在同步任务配置中为 `sync` 部分设置 `safe-mode: true` 以保证可重入执行。
+4. 在同步任务配置中为 `syncers` 部分设置 `safe-mode: true` 以保证可重入执行。
 5. 通过 `start-task` 启动同步任务。
 6. 通过 `query-status` 观察同步任务状态，当原造成出错的 relay log 文件同步完成后，即可关闭 `safe-mode` 并重启同步任务。
