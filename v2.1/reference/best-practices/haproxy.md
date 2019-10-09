@@ -48,7 +48,7 @@ HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，�
 - Solaris 8 或 9 操作系统，支持 UltraSPARC II 和 UltraSPARC III 架构。
 - Solaris 10 操作系统，支持 Opteron 和 UltraSPARC 架构。
 - FreeBSD 4.10~10 操作系统，支持 x86 架构。
-- OpenBSD 3.1 及以上版本操作系统，支持 i386、AMDd64、macppc、Alpha 和 SPARC64 架构。
+- OpenBSD 3.1 及以上版本操作系统，支持 i386、AMD64、macppc、Alpha 和 SPARC64 架构。
 - AIX 5.1~5.3 操作系统，支持 Power™ 架构。
 
 #### 依赖包
