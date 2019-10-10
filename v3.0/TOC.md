@@ -92,7 +92,6 @@
         - [Table Routing](/v3.0/reference/tools/data-migration/features/overview.md#table-routing)
         - [Black & White Lists](/v3.0/reference/tools/data-migration/features/overview.md#black--white-table-lists)
         - [Binlog Event Filter](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filter)
-        - [Column Mapping](/v3.0/reference/tools/data-migration/features/overview.md#column-mapping)
         - [同步延迟监控](/v3.0/reference/tools/data-migration/features/overview.md#同步延迟监控)
         + Shard Support
           - [简介](/v3.0/reference/tools/data-migration/features/shard-merge.md)
@@ -131,6 +130,9 @@
     - [TiKV Control](/v3.0/reference/tools/tikv-control.md)
     - [TiDB Controller](/v3.0/reference/tools/tidb-control.md)
     - [工具下载](/v3.0/reference/tools/download.md)
+  + 最佳实践
+    - [HAProxy 最佳实践](/v3.0/reference/best-practices/haproxy.md)
+    - [Java 应用开发最佳实践](/v3.0/reference/best-practices/java-app.md)
   + [与 MySQL 兼容性对比](/v3.0/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
@@ -375,6 +377,7 @@
 + [TiDB 路线图](/v3.0/roadmap.md)
 + [版本发布历史](/v3.0/releases/rn.md)
   + v3.0
+    - [3.0.4](/v3.0/releases/3.0.4.md)
     - [3.0.3](/v3.0/releases/3.0.3.md)
     - [3.0.2](/v3.0/releases/3.0.2.md)
     - [3.0.1](/v3.0/releases/3.0.1.md)
