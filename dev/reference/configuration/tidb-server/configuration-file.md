@@ -344,7 +344,7 @@ prepare 语句的 Plan cache 设置。
 ### `capacity`
 
 + Hash 对应的 slot 数，会自动向上调整为 2 的指数倍。每个 slot 占 32 Bytes 内存。当写入数据的范围比较广时（如导数据），设置过小会导致变慢，性能下降。
-+ 默认值：1024000
++ 默认值：2048000
 
 ## binlog
 
@@ -380,6 +380,11 @@ TiDB Binlog 相关配置。
 ## status
 
 TiDB 服务状态相关配置。
+
+### `report-status`
+
++ 开启 HTTP API 服务的开关。
++ 默认值：true
 
 ### `record-db-qps`
 
