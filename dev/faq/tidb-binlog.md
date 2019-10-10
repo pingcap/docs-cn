@@ -40,7 +40,7 @@ Drainer 同步帐号需要有如下权限：
 
 ## Drainer 同步中断怎么办？
 
-使用 binlogctl 如下命令查看 Pump 状态是否正常，是否全部非 offline 的 Pump 都在正常运行。
+使用以下 binlogctl 命令查看 Pump 状态是否正常，以及是否全部非 offline 的 Pump 都在正常运行。
 
 {{< copyable "shell-regular" >}}
 
@@ -115,7 +115,7 @@ Drainer 启动的时候会去读取 checkpoint，如果读取不到，就会使�
 TiDB 配置开启 `ignore-error` 写 binlog 失败后触发 critical error 告警，后续都不会再写 binlog，所以会有 binlog 数据丢失。如果要恢复同步，需要如下处理：
 
 1. 停止当前 drainer。
-2. 重启触发 critical error 的 `tidb-server` 实例重新开始写 binlog (触发 critical error 后不会再写 binlog 到 pump)。
+2. 重启触发 critical error 的 `tidb-server` 实例重新开始写 binlog（触发 critical error 后不会再写 binlog 到 pump）。
 3. 上游做全量备份。
 4. 清理掉下游数据包括 checkpoint 表 `tidb_binlog.checkpoint`。
 5. 使用上游的全量备份恢复下游。
