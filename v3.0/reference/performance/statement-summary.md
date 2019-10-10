@@ -138,7 +138,7 @@ set global tidb_enable_stmt_summary = true;
 `tidb_enable_stmt_summary` 有 global 和 session 两种作用域，它们的生效方式与其他系统变量不一样：
 
 - 设置 global 变量后整个集群立即生效
-- 设置 session 变量后当前节点立即生效，这对于调试单个节点比较有用
+- 设置 session 变量后当前 TiDB-Server 立即生效，这对于调试单个 TiDB-Server 比较有用
 - 优先读 session 变量，没有设置过 session 变量才会读 global 变量
 - 把 session 变量设为空字符串，将会重新读 global 变量
 
@@ -155,6 +155,6 @@ statement summary 关闭后，系统表里的数据会被清空，下次打开�
 
 `events_statements_summary_by_digest` 现在还存在一起限制：
 
-- 查询 `events_statements_summary_by_digest` 时，只会显示当前节点的 statement summary，而不是整个群集的 statement summary。
+- 查询 `events_statements_summary_by_digest` 时，只会显示当前 TiDB-Server 的 statement summary，而不是整个群集的 statement summary。
 - statement summary 不会滚动更新。一旦 `tidb_enable_stmt_summary` 打开，SQL 信息就开始统计。随着时间的推移，statement summary 累加，所以无法查看最近一段时间内的 statement summary。所以最佳实践是，需要排查问题的时候再打开，查看一段时间内的 statement summary。
 - TiDB Server 重启后 statement summary 丢失。因为 `events_statements_summary_by_digest` 是内存表，不会持久化数据，所以一旦 Server 被重启，statement summary 随之丢失。

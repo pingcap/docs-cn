@@ -69,6 +69,8 @@ TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用
 
 Performance schema 表在 TiDB 中返回结果为空。TiDB 使用 [Prometheus 和 Grafana](/v3.0/how-to/monitor/monitor-a-cluster.md) 来监测性能指标。
 
+从 TiDB 3.0.4 版本开始，TiDB 支持表 `events_statements_summary_by_digest`，参见 [Statement Summary Table](/v3.0/reference/performance/statement-summary.md)。
+
 ### 查询计划
 
 TiDB 的查询计划（`EXPLAIN`/`EXPLAIN FOR`）输出格式与 MySQL 差别较大，同时 `EXPLAIN FOR` 的输出内容与权限设置与 MySQL 不一致，参见[理解 TiDB 执行计划](/v3.0/reference/performance/understanding-the-query-execution-plan.md)。
