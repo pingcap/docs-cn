@@ -47,7 +47,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 - Scope: GLOBAL
 - Default value: 0.5
-- This variable is used to set the threshold when TiDB automatically executes [`ANALYZE TABLE`](/v3.0/reference/sql/statements/analyze-table.md) in a background thread to update table statistics. For example, a value of 0.5 means that auto-analyze is triggered when greater than 50% of the rows in a table have been modified.  Auto-analyze can be restricted to only execute during certain hours of the day by specifying `tidb_auto_analyze_start_time` and `tidb_auto_analyze_end_time`.
+- This variable is used to set the threshold when TiDB automatically executes [`ANALYZE TABLE`](/v3.0/reference/sql/statements/analyze-table.md) in a background thread to update table statistics. For example, a value of 0.5 means that auto-analyze is triggered when greater than 50% of the rows in a table have been modified. Auto-analyze can be restricted to only execute during certain hours of the day by specifying `tidb_auto_analyze_start_time` and `tidb_auto_analyze_end_time`.
 
 > **Note:**
 >
@@ -392,9 +392,10 @@ set tidb_query_log_max_len = 20
 
 ### tidb_txn_mode
 
-- Scope: SESSION
-- Default value: "", indicating the optimistic locking mode.
-- This variable is used to set the transaction mode of the current session. TiDB 3.0 supports the pessimistic locking mode (experimental). After you set `tidb_txn_mode` to `pessimistic`, all explicit transactions (namely non-autocommit transactions) the session executes become pessimistic transactions. For details, see [TiDB Pessimistic Transaction Mode](/v3.0/reference/transactions/transaction-pessimistic.md).
+- Scope: SESSION | GLOBAL (in TiDB 3.0.4 or later)
+- Default value: ""
+- This variable is used to set the transaction mode, which by default is optimistic locking mode. TiDB 3.0 supports the pessimistic locking mode (experimental). After you set `tidb_txn_mode` to `pessimistic`, all explicit transactions (non-autocommit transactions) the session executes become pessimistic transactions.
+- Since TiDB 3.0.4, this variable also supports setting the transaction mode globally. Once set to GLOBAL, only sessions created after are affected. For details, see [TiDB Pessimistic Transaction Mode](/v3.0/reference/transactions/transaction-pessimistic.md).
 
 ### tidb_constraint_check_in_place
 
@@ -468,7 +469,7 @@ set tidb_query_log_max_len = 20
     - When the value is 0, the heuristic method is not used.
     - When the value is greater than 0:
         - A larger value indicates that an index scan will probably be used in the heuristic method.
-        - A smaller value indicates that a table scan will probably be used in the heuristic method.  
+        - A smaller value indicates that a table scan will probably be used in the heuristic method.
 
 ### tidb_enable_window_function
 
@@ -487,7 +488,7 @@ set tidb_query_log_max_len = 20
 - Scope: SESSION | GLOBAL
 - Default value: 0, indicating not enabling the statistics fast `Analyze` feature.
 - This variable is used to set whether to enable the statistics `Fast Analyze` feature.
-- If the statistics `Fast Analyze` feature is enabled, TiDB randomly samples about 10,000 rows of data as statistics. When the data is distributed unevenly or the data size is small, the statistics accuracy is low. This might lead to an unoptimal execution plan, for example, selecting a wrong index. If the execution time of the regular `Analyze` statement is acceptable, it is recommended to disable the `Fast Analyze` feature.
+- If the statistics `Fast Analyze` feature is enabled, TiDB randomly samples about 10,000 rows of data as statistics. When the data is distributed unevenly or the data size is small, the statistics accuracy is low. This might lead to a non-optimal execution plan, for example, selecting a wrong index. If the execution time of the regular `Analyze` statement is acceptable, it is recommended to disable the `Fast Analyze` feature.
 
 ### tidb_expensive_query_time_threshold
 
