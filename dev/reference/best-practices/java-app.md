@@ -1,11 +1,11 @@
 ---
-title: Java 应用使用 TiDB 的最佳实践
+title: 开发 Java 应用使用 TiDB 的最佳实践
 category: reference
 ---
 
-# Java 应用使用 TiDB 的最佳实践
+# 开发 Java 应用使用 TiDB 的最佳实践
 
-本文主要介绍开发 Java 应用程序时使用 TiDB 可能需要关注的问题。
+本文主要介绍开发 Java 应用程序来使用 TiDB 时需要关注的问题与最佳实践。
 
 ## Java 应用中的数据库相关组件
 
