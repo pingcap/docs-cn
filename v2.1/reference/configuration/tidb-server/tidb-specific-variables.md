@@ -383,6 +383,14 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 这个变量用来设置 `ADD INDEX` 操作 re-organize 阶段的执行优先级，可设置为 PRIORITY_LOW/PRIORITY_NORMAL/PRIORITY_HIGH。
 
+### tidb_max_delta_schema_count
+
+作用域：GLOBAL
+
+默认值：1024
+
+这个变量用来设置缓存 schema 版本信息（对应版本修改的相关 table IDs）的个数限制，默认值为 100，可设置的范围 100 - 16384。此变量在 2.1.18 及之后版本支持。
+
 ### tidb_force_priority
 
 作用域：SESSION
