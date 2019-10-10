@@ -128,6 +128,7 @@
     - [工具下载](/v2.1/reference/tools/download.md)
   + 最佳实践
     - [HAProxy 最佳实践](/v2.1/reference/best-practices/haproxy.md)
+    - [Java 应用开发最佳实践](/v2.1/reference/best-practices/java-app.md)
   + [与 MySQL 兼容性对比](/v2.1/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
