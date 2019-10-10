@@ -386,7 +386,7 @@ TiDB 服务状态相关配置。
 + 输与 database 相关的 QPS metrics 到 promethus的开关。
 + 默认值：false
 
-## stmt-summary
+## stmt-summary <span class="version-mark">从 v3.0.4 版本开始引入</span>
 
 系统表 `events_statement_summary_by_digest` 的相关配置。
 
