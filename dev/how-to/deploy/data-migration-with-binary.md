@@ -88,34 +88,11 @@ DM-worker 的配置文件：
 ```toml
 # Worker Configuration.
 
-# 日志配置
-log-level = "info"
-log-file = "dm-worker.log"
-
 # DM-worker 的地址
 worker-addr = ":8262"
 
-# 作为 MySQL slave 的 server ID，用于获取 MySQL 的 binlog
-# 在一个 replication group 中，每个实例（master 和 slave）都应该有唯一的 server ID
-server-id = 101
-
 # 用于标识一个 replication group 或者 MySQL/MariaDB 实例
 source-id = "mysql-replica-01"
-
-# 上游实例类型，值可为 "mysql" 或者 "mariadb"
-flavor = "mysql"
-
-# 存储 relay log 的路径
-relay-dir = "./relay_log"
-
-# 存储 DM-worker 元信息的路径
-meta-dir = "dm_worker_meta"
-
-# relay log 处理单元是否开启 gtid
-enable-gtid = false
-
-# 连接 MySQL/Mariadb 的 DSN 中的 charset 配置
-# charset= ""
 
 # MySQL 的连接地址
 [from]
@@ -123,18 +100,6 @@ host = "192.168.0.1"
 user = "root"
 password = "fCxfQ9XKCezSzuCD0Wf5dUD+LsKegSg="
 port = 3306
-
-# relay log 的删除规则
-# [purge]
-# interval = 3600
-# expires = 24
-# remain-space = 15
-
-# 任务状态检查相关配置
-# [checker]
-# check-enable = true
-# backoff-rollback = 5m
-# backoff-max = 5m
 ```
 
 推荐统一使用配置文件，把以上配置内容写入到 `conf/dm-worker1.toml` 中，在终端中使用下面的命令运行 DM-worker：
@@ -145,7 +110,7 @@ port = 3306
 bin/dm-worker -config conf/dm-worker1.toml
 ```
 
-对于 DM-worker2，修改配置文件中的 `source-id` 为 `mysql-replica-02`，并将 `from` 配置部分修改为 MySQL2 的地址即可。
+对于 DM-worker2，修改配置文件中的 `source-id` 为 `mysql-replica-02`，并将 `from` 配置部分修改为 MySQL2 的地址即可。（如果因为没有多余的机器，将 DM-worker2 与 DM-worker1 部署在一台机器上，需要把两个 DM-worker 实例部署在不同的路径下，否则保存元信息和 relay log 的默认路径会冲突）
 
 ### DM-master 的部署
 
@@ -176,14 +141,6 @@ DM-master 的配置文件：
 
 ```toml
 # Master Configuration.
-
-# RPC 相关配置
-rpc-rate-limit = 10.0
-rpc-rate-burst = 40
-
-# 日志配置
-log-level = "info"
-log-file = "dm-master.log"
 
 # DM-master 监听地址
 master-addr = ":8261"
@@ -225,10 +182,6 @@ bin/dm-master -config conf/dm-master.toml
 name: test
 task-mode: all
 is-sharding: true
-meta-schema: "dm_meta"
-remove-meta: false
-enable-heartbeat: true
-timezone: "Asia/Shanghai"
 
 target-database:
   host: "192.168.0.3"
@@ -272,20 +225,15 @@ routes:
 mydumpers:
   global:
     mydumper-path: "./bin/mydumper"
-    threads: 4
-    chunk-filesize: 64
-    skip-tz-utc: true
     extra-args: "--regex '^sharding.*'"
 
 loaders:
   global:
     pool-size: 16
-    dir: "./dumped_data"
 
 syncers:
   global:
     worker-count: 16
-    batch: 100
 
 ```
 
