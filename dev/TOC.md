@@ -131,6 +131,7 @@
     - [工具下载](/dev/reference/tools/download.md)
   + 最佳实践
     - [HAProxy 最佳实践](/dev/reference/best-practices/haproxy.md)
+    - [Java 使用 TiDB 的最佳实践](/dev/reference/best-practices/using-tidb-in-java.md)
   + [与 MySQL 兼容性对比](/dev/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
@@ -374,6 +375,7 @@
 + [TiDB 路线图](/dev/roadmap.md)
 + [版本发布历史](/dev/releases/rn.md)
   + v3.0
+    - [3.0.4](/dev/releases/3.0.4.md)
     - [3.0.3](/dev/releases/3.0.3.md)
     - [3.0.2](/dev/releases/3.0.2.md)
     - [3.0.1](/dev/releases/3.0.1.md)
