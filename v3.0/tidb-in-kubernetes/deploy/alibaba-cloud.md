@@ -117,12 +117,12 @@ All the instances except ACK mandatory workers are deployed across availability 
     >
     > You can use the `terraform output` command to get the output again.
 
-3. You can then interact with the ACK cluster using `kubectl` or `helm` (`cluster_name` is `tidb-cluster` by default):
+3. You can then interact with the ACK cluster using `kubectl` or `helm`
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    export KUBECONFIG=$PWD/credentials/kubeconfig_<cluster_name>
+    export KUBECONFIG=$PWD/credentials/kubeconfig
     ```
 
     {{< copyable "shell-regular" >}}
@@ -144,13 +144,13 @@ You can connect the TiDB cluster via the bastion instance. All necessary informa
 {{< copyable "shell-regular" >}}
 
 ```shell
-ssh -i credentials/<cluster_name>-bastion-key.pem root@<bastion_ip>
+ssh -i credentials/<cluster_name>-key.pem root@<bastion_ip>
 ```
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-mysql -h <tidb_slb_ip> -P <tidb_port> -u root
+mysql -h <tidb_slb_ip> -P 4000 -u root
 ```
 
 ## Monitor
@@ -164,7 +164,7 @@ The initial login user account and password:
 
 > **Warning:**
 >
-> It is strongly recommended to set `monitor_slb_network_type` to `intranet` in `variables.tf` for security if you already have a VPN connecting to your VPC or plan to set up one.
+> It is strongly recommended to set `deploy/modules/aliyun/tidb-cluster/values/default.yaml` - `monitor.grafana.service.annotations` - `service.beta.kubernetes.io/alicloud-loadbalancer-address-type` to `intranet` for security if you already have a VPN connecting to your VPC or plan to set up one.
 
 ## Upgrade
 
@@ -175,7 +175,7 @@ This may take a while to complete. You can watch the process using the following
 {{< copyable "shell-regular" >}}
 
 ```shell
-kubectl get pods --namespace tidb -o wide --watch
+kubectl get pods --namespace <tidb_cluster_name> -o wide --watch
 ```
 
 ## Scale
@@ -188,11 +188,17 @@ To scale the TiDB cluster, modify `tikv_count` or `tidb_count` to your desired n
 
 You can adjust the `variables.tf` settings to configure TiDB Operator. Note that the `operator_helm_values` configuration item can provide a customized `values.yaml` configuration file for TiDB Operator. For example,
 
-```hcl
-variable "operator_helm_values" {
-  default = file("my-operator-values.yaml")
-}
-```
+- Set `operator_helm_values` in `terraform.tfvars`:
+
+    ```hcl
+    operator_helm_values = "./my-operator-values.yaml"
+    ```
+
+- Set `operator_helm_values` in `main.tf`:
+
+    ```hcl
+    operator_helm_values = file("./my-operator-values.yaml")
+    ```
 
 In the default configuration, the Terraform script creates a new VPC. To use the existing VPC, set `vpc_id` in `variable.tf`. In this case, Kubernetes nodes are not deployed in AZs with vswitch not configured.
 
@@ -246,8 +252,8 @@ All the configurable parameters in `tidb-cluster` are as follows:
 | :----- | :---- | :----- |
 | `ack` | The structure that enwraps the target Kubernetes cluster information (required) | `nil` |
 | `cluster_name` | The TiDB cluster name (required and unique) | `nil` |
-| `tidb_version` | The TiDB cluster version | `v3.0.0` |
-| `tidb_cluster_chart_version` | `tidb-cluster` helm chart version | `v1.0.0` |
+| `tidb_version` | The TiDB cluster version | `v3.0.1` |
+| `tidb_cluster_chart_version` | `tidb-cluster` helm chart version | `v1.0.1` |
 | `pd_count` | The number of PD nodes | 3 |
 | `pd_instance_type` | The PD instance type | `ecs.g5.large` |
 | `tikv_count` | The number of TiKV nodes | 3 |
