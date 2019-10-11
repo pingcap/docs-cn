@@ -364,6 +364,7 @@
   - [常见问题](/v3.0/tidb-in-kubernetes/faq.md)
 + 常见问题 (FAQ)
   - [TiDB FAQ](/v3.0/faq/tidb.md)
+  - [TiDB Binlog FAQ](/v3.0/faq/tidb-binlog.md)
   - [TiDB Lightning FAQ](/v3.0/faq/tidb-lightning.md)
   - [Data Migration FAQ](/v3.0/faq/data-migration.md)
   - [升级 FAQ](/v3.0/faq/upgrade.md)
