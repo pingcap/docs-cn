@@ -24,7 +24,7 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 * 外键约束
 * 全文函数与索引
 * 空间函数与索引
-* 非 `utf8`/`utf8mb4` 的 Unicode 字符集
+* 非 `ascii`/`latin1`/`binary`/`utf8`/`utf8mb4` 的字符集
 * `BINARY` 之外的排序规则
 * 增加主键
 * 删除主键
