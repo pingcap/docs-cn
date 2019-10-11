@@ -58,3 +58,35 @@ You can change the configuration of TiDB cluster through the following steps:
 >
 > - Changing the `enableConfigMapRollout` variable against a running cluster will trigger a rolling update of PD, TiKV, TiDB servers even if there's no change to the configuration.
 > - Currently, PD's `scheduler` and `replication` configurations (the configuration key under `[scheduler]` and `[replication]` of the PD configuration file) can not be upgraded automatically.  You must upgrade them manually via `pd-ctl`. See [pd-ctl](/dev/reference/tools/pd-control.md) for reference.
+
+## Force an upgrade of TiDB cluster
+
+If the PD cluster is unavailable due to factors such as PD configuration error, PD image tag error and NodeAffinity, then [scaling the TiDB cluster](/dev/tidb-in-kubernetes/scale-in-kubernetes.md), [upgrading the TiDB cluster](#upgrade-the-version-of-tidb-cluster) and [changing the TiDB cluster configuration](#change-the-configuration-of-tidb-cluster) cannot be done successfully.
+
+In this case, you can use `force-upgrade` (the version of TiDB Operator must be later than v1.0.0-beta.3) to force an upgrade of the cluster to recover cluster functionality.
+
+First, set `annotation` for the cluster:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl annotate --overwrite tc <release-name> -n <namespace> tidb.pingcap.com/force-upgrade=true
+```
+
+Then execute the `helm upgrade` command to continue your interrupted operation:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+helm upgrade <release-name> pingcap/tidb-cluster -f values.yaml --version=<chart-version>
+```
+
+> **Warning:**
+>
+> After the PD cluster recovers, you *must* execute the following command to disable the forced upgrade, or an exception may occur in the next upgrade:
+>
+> {{< copyable "shell-regular" >}}
+>
+> ```shell
+> kubectl annotate tc <release-name> -n <namespace> tidb.pingcap.com/force-upgrade-
+> ```
