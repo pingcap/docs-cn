@@ -257,30 +257,30 @@ Terraform 脚本中为运行在 EKS 上的 TiDB 集群提供了合理的默认�
 > **注意：**
 >
 > 自定义 `values.yaml` 配置文件中，不建议包含如下配置（`tidb-cluster` module 默认固定配置）：
->
-> ```
-> pd:
->   storageClassName: ebs-gp2
-> tikv:
->   stroageClassName: local-storage
-> tidb:
->   service:
->     type: LoadBalancer
->     annotations:
->       service.beta.kubernetes.io/aws-load-balancer-internal: '0.0.0.0/0'
->       service.beta.kubernetes.io/aws-load-balancer-type: nlb
->       service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: >'true'
->   separateSlowLog: true
-> monitor:
->   storage: 100Gi
->   storageClassName: ebs-gp2
->   persistent: true
->   grafana:
->     config:
->       GF_AUTH_ANONYMOUS_ENABLED: "true"
->     service:
->       type: LoadBalancer
-> ```
+
+```
+pd:
+  storageClassName: ebs-gp2
+tikv:
+  stroageClassName: local-storage
+tidb:
+  service:
+    type: LoadBalancer
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-internal: '0.0.0.0/0'
+      service.beta.kubernetes.io/aws-load-balancer-type: nlb
+      service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: >'true'
+  separateSlowLog: true
+monitor:
+  storage: 100Gi
+  storageClassName: ebs-gp2
+  persistent: true
+  grafana:
+    config:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+    service:
+      type: LoadBalancer
+```
 
 ### 自定义 TiDB Operator
 
