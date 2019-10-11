@@ -32,7 +32,7 @@ Assume we have three PD servers with the following details:
 Get the information about the existing PD nodes through pd-ctl:
 
 ```bash
-./pd-ctl -u http://host1:2379
+./pd-ctl -u http://host1:2379 -i
 >> member
 ```
 
