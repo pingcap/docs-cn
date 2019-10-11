@@ -5,21 +5,11 @@ category: reference
 
 # Statement Summary Table
 
-## 前言
+## 简介
 
-我们在排查线上 TiDB 问题时，可能有下面这样的需求：
+针对 SQL 性能相关的问题，MySQL 在 `performance_schema` 提供了 [statement summary tables](https://dev.mysql.com/doc/refman/5.6/en/statement-summary-tables.html)，用来监控和统计 SQL。例如其中的一张表 `events_statements_summary_by_digest`，提供了丰富的字段，包括延迟、执行次数、扫描行数、全表扫描次数等，有助于用户定位 SQL 问题。
 
-- SQL 延迟比较大，是不是服务端的问题？
-- 哪类 SQL 的总耗时最高？
-
-遇到这类需要定位 SQL 的问题，我们会首先想到两种方式来排查：
-
-- 打开 general log，但是打印 general log 对 Server 的性能会有影响。
-- `admin show slow` 显示慢查询日志，但是有问题的 SQL 可能没有被归为慢 SQL。
-
-针对于这些 SQL 类的性能问题，MySQL 在 `performance_schema` 提供了 [statement summary tables](https://dev.mysql.com/doc/refman/5.6/en/statement-summary-tables.html)，用来监控和统计 SQL。例如其中的一张表 `events_statements_summary_by_digest`，提供了丰富的字段，包括延迟、执行次数、扫描行数、全表扫描次数等，有助于用户定位 SQL 问题。
-
-为此，从 3.0.4 版本开始，TiDB 也提供系统表 `events_statements_summary_by_digest`，方便用户定位 SQL 问题。
+为此，从 3.0.4 版本开始，TiDB 也提供系统表 `events_statements_summary_by_digest`。本文将详细介绍 `events_statements_summary_by_digest`，以及如何利用它来排查 SQL 性能问题。
 
 ## events_statements_summary_by_digest 介绍
 
@@ -80,7 +70,7 @@ QUERY_SAMPLE_TEXT: select * from employee where id=3100
 
 ## 排查示例
 
-对于文章开头描述的几个问题，下面来演示如何利用 statement summary 来排查。
+下面来两个示例问题演示如何利用 statement summary 来排查。
 
 ### SQL 延迟比较大，是不是服务端的问题？
 
@@ -129,7 +119,7 @@ SELECT sum_latency, avg_latency, exec_count, query_sample_text
 
 ## 参数配置
 
-statement summary 功能默认关闭，通过设置系统变量打开。例如：
+statement summary 功能默认关闭，通过设置系统变量打开，例如：
 
 ```sql
 set global tidb_enable_stmt_summary = true;
@@ -153,7 +143,7 @@ statement summary 关闭后，系统表里的数据会被清空，下次打开�
 
 ## 目前的限制
 
-`events_statements_summary_by_digest` 现在还存在一起限制：
+`events_statements_summary_by_digest` 现在还存在一些限制：
 
 - 查询 `events_statements_summary_by_digest` 时，只会显示当前 TiDB-Server 的 statement summary，而不是整个群集的 statement summary。
 - statement summary 不会滚动更新。一旦 `tidb_enable_stmt_summary` 打开，SQL 信息就开始统计。随着时间的推移，statement summary 累加，所以无法查看最近一段时间内的 statement summary。所以最佳实践是，需要排查问题的时候再打开，查看一段时间内的 statement summary。
