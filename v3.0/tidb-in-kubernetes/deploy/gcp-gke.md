@@ -393,27 +393,27 @@ override_values_file = "./test-cluster.yaml"
 > **注意：**
 >
 > 自定义配置中，不建议包含以下配置（`tidb-cluster` module 默认固定配置）：
->
-> ```
-> pd:
->   storageClassName: pd-ssd
-> tikv:
->   stroageClassName: local-storage
-> tidb:
->   service:
->     type: LoadBalancer
->     annotations:
->       cloud.google.com/load-balancer-type: "Internal"
->   separateSlowLog: true
-> monitor:
->   storageClassName: pd-ssd
->   persistent: true
->   grafana:
->     config:
->       GF_AUTH_ANONYMOUS_ENABLED: "true"
->     service:
->       type: LoadBalancer
-> ```
+
+```
+pd:
+  storageClassName: pd-ssd
+tikv:
+  stroageClassName: local-storage
+tidb:
+  service:
+    type: LoadBalancer
+    annotations:
+      cloud.google.com/load-balancer-type: "Internal"
+  separateSlowLog: true
+monitor:
+  storageClassName: pd-ssd
+  persistent: true
+  grafana:
+    config:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+    service:
+      type: LoadBalancer
+```
 
 ### 自定义 TiDB Operator
 
