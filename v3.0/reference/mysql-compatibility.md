@@ -25,7 +25,7 @@ However, TiDB does not support some of MySQL features or behaves differently fro
 + `FOREIGN KEY` constraints
 + `FULLTEXT` functions and indexes
 + `SPATIAL` functions and indexes
-+ Character sets other than `utf8mb4` and `utf8`
++ Character sets other than `utf8`, `utf8mb4`, `ascii`, `latin1` and `binary`
 + Collations other than `BINARY`
 + Add primary key
 + Drop primary key
