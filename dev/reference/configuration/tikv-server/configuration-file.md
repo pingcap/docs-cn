@@ -1028,6 +1028,25 @@ raftdb 相关配置项。
 + WAL 存储目录。
 + 默认值：/tmp/tikv/store
 
+## security
+
+安全相关配置项。
+
+### `ca-path`
+
++ CA 文件路径
++ 默认值：""
+
+### `cert-path`
+
++ 包含 X509 证书的 PEM 文件路径
++ 默认值：""
+
+### `key-path`
+
++ 包含 X509 key 的 PEM 文件路径
++ 默认值：""
+
 ## import
 
 import 相关的配置项。
