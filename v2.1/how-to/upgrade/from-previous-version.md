@@ -23,9 +23,9 @@ For details about using Ansible to perform a rolling update to each component, s
     - Roll update to 2.0.1 or later 2.0.x versions, and then roll update to the 2.1 version
 + If you upgrade from TiDB 2.0.6 or earlier to TiDB 2.1, check if there is any ongoing DDL operation, especially the time consuming `Add Index` operation, because the DDL operations slow down the upgrading process. If there is ongoing DDL operation, wait for the DDL operation finishes and then roll update.
 
-## Precaution
-
-Do not execute any DDL statements during the upgrading process, otherwise the undefined behavior error might occur.
+> **Note:**
+>
+> Do not execute any DDL statements during the upgrading process, otherwise the undefined behavior error might occur.
 
 ## Step 1: Install Ansible and dependencies on the Control Machine
 
@@ -39,13 +39,34 @@ To make it easy to manage dependencies, use `pip` to install Ansible and its dep
 
 After the installation is finished, you can view the version information using the following command:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 $ ansible --version
+```
+
+```
 ansible 2.6.8
+```
+
+{{< copyable "shell-regular" >}}
+
+```bash
 $ pip show jinja2
+```
+
+```
 Name: Jinja2
 Version: 2.10
+```
+
+{{< copyable "shell-regular" >}}
+
+```bash
 $ pip show jmespath
+```
+
+```
 Name: jmespath
 Version: 0.9.3
 ```
@@ -62,13 +83,17 @@ Version: 0.9.3
 
 2. Back up the `tidb-ansible` folders of TiDB 2.0 or TiDB 2.1 RC versions using the following command:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     $ mv tidb-ansible tidb-ansible-bak
     ```
 
 3. Download the latest tidb-ansible `release-2.1` branch using the following command. The default folder name is `tidb-ansible`.
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     $ git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
     ```
 
@@ -80,7 +105,9 @@ Log in to the Control Machine using the `tidb` user account and enter the `/home
 
 Edit the `inventory.ini` file. For IP information, see the `/home/tidb/tidb-ansible-bak/inventory.ini` backup file.
 
-Pay special attention to the following variables configuration. For variable meaning, see [Description of other variables](/v2.1/how-to/deploy/orchestrated/ansible.md#edit-other-variables-optional).
+> **Note:**
+>
+> Pay special attention to the following variables configuration. For variable meaning, see [Description of other variables](/v2.1/how-to/deploy/orchestrated/ansible.md#edit-other-variables-optional).
 
 1. Make sure that `ansible_user` is the normal user. For unified privilege management, remote installation using the root user is no longer supported. The default configuration uses the `tidb` user as the SSH remote user and the program running user.
 
@@ -143,18 +170,38 @@ If you have previously customized the configuration file of TiDB cluster compone
 
 Make sure that `tidb_version = v2.1.0` in the `tidb-ansible/inventory.ini` file, and then run the following command to download TiDB 2.1 binary to the Control Machine:
 
-```shell
+{{< copyable "shell-regular" >}}
+
+```bash
 $ ansible-playbook local_prepare.yml
 ```
 
 ## Step 5: Perform a rolling update to TiDB cluster components
 
-```shell
-$ ansible-playbook rolling_update.yml
-```
+- If the `process_supervision` variable uses the default `systemd` parameter, perform a rolling update to the TiDB cluster using `excessive_rolling_update.yml`.
 
-## Step 6: Perform a rolling update to TiDB monitoring component
+    {{< copyable "shell-regular" >}}
 
-```shell
+    ```bash
+    $ ansible-playbook excessive_rolling_update.yml
+    ```
+
+- If the `process_supervision` variable uses the `supervise` parameter, perform a rolling update to the TiDB cluster using `rolling_update.yml`.
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    $ ansible-playbook rolling_update.yml
+    ```
+
+> **Note:**
+>
+> To optimize operation and maintenance management over TiDB cluster components, the `PD service` name in the `systemd` mode is adjusted in TiDB 3.0. After upgrading the version to TiDB 3.0, you can use `rolling_update.yml` for both rolling updates and daily rolling restarts. Do not use `excessive_rolling_update.yml` any longer.
+
+## Step 6: Perform a rolling update to TiDB monitoring components
+
+{{< copyable "shell-regular" >}}
+
+```bash
 $ ansible-playbook rolling_update_monitor.yml
 ```

@@ -89,7 +89,7 @@
     - [Scale using Ansible](/dev/how-to/scale/with-ansible.md)
     - [Scale a TiDB Cluster](/dev/how-to/scale/horizontally.md)
   + Upgrade
-    - [Upgrade to Development Series](/dev/how-to/upgrade/from-previous-version.md)
+    - [Upgrade to TiDB 3.0](/dev/how-to/upgrade/from-previous-version.md)
     - [Rolling updates with Ansible](/dev/how-to/upgrade/rolling-updates-with-ansible.md)
     - [Upgrade TiDB Data Migration](/dev/reference/tools/data-migration/upgrade.md)
     - [Upgrade TiDB Binlog Cluster](/dev/how-to/upgrade/tidb-binlog.md)
