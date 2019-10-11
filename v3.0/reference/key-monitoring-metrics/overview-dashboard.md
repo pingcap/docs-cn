@@ -62,7 +62,7 @@ TiKV | scheduler pending commands | the number of commits on queue | Occasional 
 TiKV | coprocessor pending requests | the number of requests on queue | `0` or very small
 TiKV | coprocessor executor count | the number of various query operations |
 TiKV | coprocessor request duration | the time consumed by TiKV queries |
-TiKV | raft store CPU | the CPU usage ratio of the raftstore thread | Currently, it is a single thread. A value of over 80% indicates that the CPU usage ratio is very high.
+TiKV | raft store CPU | the CPU usage ratio of the raftstore thread | The default number of threads is 2 (configured by `raftstore.store-pool-size`). A value of over 80% for a single thread indicates that the CPU usage ratio is very high.|
 TiKV | Coprocessor CPU | the CPU usage ratio of the TiKV query thread, related to the application; complex queries consume a great deal of CPU |
 System Info | Vcores | the number of CPU cores |
 System Info | Memory | the total memory |
