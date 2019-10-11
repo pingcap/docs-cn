@@ -87,7 +87,7 @@ kubectl annotate --overwrite tc <release-name> -n <namespace> tidb.pingcap.com/f
 helm upgrade <release-name> pingcap/tidb-cluster -f values.yaml --version=<chart-version>
 ```
 
-> **注意：**
+> **警告：**
 >
 > PD 集群恢复后，**必须**执行下面命令禁用强制升级功能，否则下次升级过程可能会出现异常：
 >
