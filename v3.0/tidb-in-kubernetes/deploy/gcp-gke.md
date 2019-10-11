@@ -7,6 +7,8 @@ aliases: ['/docs/v3.0/how-to/deploy/tidb-in-kubernetes/gcp-gke/']
 
 # Deploy TiDB on GCP GKE
 
+<!-- markdownlint-disable MD029 -->
+
 This document describes how to deploy a TiDB cluster on GCP GKE with your laptop (Linux or macOS) for development or testing.
 
 > **Warning:**
@@ -48,13 +50,13 @@ If the GCP project is new, make sure the relevant APIs are enabled:
 
 ```bash
 gcloud services enable cloudresourcemanager.googleapis.com \
-    cloudbilling.googleapis.com cloud services enable iam.googleapis.com \
-    compute.googleapis.com container.googleapis.com
+cloudbilling.googleapis.com iam.googleapis.com \
+compute.googleapis.com container.googleapis.com
 ```
 
 ### Configure Terraform
 
-The terraform script expects three variables to be provided by the user. You can let Terraform prompt you for them, or define them in a `.tfvars` file of your choice. The three variables are:
+The Terraform script expects three variables to be provided by the user. You can let Terraform prompt you for them, or define them in a `.tfvars` file of your choice. The three variables are:
 
 * `GCP_CREDENTIALS_PATH`: Path to a valid GCP credentials file.
     - It is recommended for you to create a separate service account to be used by Terraform. See [Creating and managing service accounts](https://cloud.google.com/iam/docs/creating-managing-service-accounts) for more information. `./create-service-account.sh` will create such a service account with minimal permissions.
@@ -62,22 +64,42 @@ The terraform script expects three variables to be provided by the user. You can
 * `GCP_REGION`: The region in which to create the resources, for example: `us-west1`.
 * `GCP_PROJECT`: The GCP project in which everything will be created.
 
-The script below shows how to configure Terraform with these variables:
+To configure Terraform with the above variables:
 
-{{< copyable "shell-regular" >}}
+1. Replace the `GCP_REGION` with your GCP region.
 
-```bash
-# Replace the region with your GCP region and your GCP project name.
-echo GCP_REGION=\"us-west1\" >> terraform.tfvars
-# First make sure you are connected to the correct project. gcloud config set project $PROJECT
-echo "GCP_PROJECT=\"$(gcloud config get-value project)\"" >> terraform.tfvars
-# Create a service account for terraform with restricted permissions and set the credentails path
-./create-service-account.sh
-```
+    {{< copyable "shell-regular" >}}
 
-Terraform  automatically loads and populates variables from the files matching `terraform.tfvars` or `*.auto.tfvars`. For more information please see the [Terraform documentation](https://learn.hashicorp.com/terraform/getting-started/variables.html).
-The steps in the script above will populate `terraform.tfvars` with `GCP_REGION` and `GCP_PROJECT`, and `credentials.auto.tfvars`
-with `GCP_CREDENTIALS_PATH`.
+    ```bash
+    echo GCP_REGION=\"us-west1\" >> terraform.tfvars
+    ```
+
+2. Replace the `GCP_PROJECT` with your GCP project name. Make sure you are connected to the correct project.
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    echo "GCP_PROJECT=\"$(gcloud config get-value project)\"" >> terraform.tfvars
+    ```
+
+3. Initialize Terraform:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    terraform init
+    ```
+
+4. Create a service account for Terraform with restricted permissions and set the credentials path.
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ./create-service-account.sh
+    ```
+
+Terraform automatically loads and populates variables from the files matching `terraform.tfvars` or `*.auto.tfvars`. For more information, see the [Terraform documentation](https://learn.hashicorp.com/terraform/getting-started/variables.html).
+The steps above will populate `terraform.tfvars` with `GCP_REGION` and `GCP_PROJECT`, and `credentials.auto.tfvars` with `GCP_CREDENTIALS_PATH`.
 
 ## Deploy
 
@@ -85,19 +107,19 @@ Before deployment, you need to decide on instance types.
 
 - If you just want to get a feel for a TiDB deployment and lower your cost, you can use the small settings.
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```bash
-cat small.tfvars >> terraform.tfvars
-```
-
-{{< copyable "shell-regular" >}}
+    ```bash
+    cat small.tfvars >> terraform.tfvars
+    ```
 
 - If you want to benchmark a production deployment, run:
 
-```bash
-cat prod.tfvars >> terraform.tfvars
-```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cat prod.tfvars >> terraform.tfvars
+    ```
 
 The `prod.tfvars` setup creates a new VPC, two subnetworks, and an f1-micro instance as a bastion machine. This setup is created with the following instance types as worker nodes:
 
@@ -113,12 +135,6 @@ The `prod.tfvars` setup creates a new VPC, two subnetworks, and an f1-micro inst
 The production setup, as listed above, requires at least 91 CPUs which exceed the default CPU quota of a GCP project. To increase your project's quota, follow the [instructions here](https://cloud.google.com/compute/quotas). You need more CPUs if you need to scale out.
 
 Now that you have configured everything needed, you can launch the script to deploy the TiDB cluster:
-
-{{< copyable "shell-regular" >}}
-
-```bash
-terraform init
-```
 
 {{< copyable "shell-regular" >}}
 
@@ -167,7 +183,7 @@ mysql -h <tidb_ilb_ip> -P 4000 -u root
 
 ## Interact with the cluster
 
-You can interact with the cluster using `kubectl` and `helm` with the kubeconfig file `credentials/kubeconfig_<cluster_name>` as follows. The default `cluster_name` is `tidb-cluster`, which can be changed by overriding it, either in `terraform.tfvars` or via the method of your choice.
+You can interact with the cluster using `kubectl` and `helm` with the kubeconfig file `credentials/kubeconfig_<gke_cluster_name>` as follows. Note that the default `gke_cluster_name` is `tidb-cluster`, which can be modified by changing `gke_name` in the `variables.tf` file.
 
 There are two ways to do this:
 
@@ -176,7 +192,7 @@ There are two ways to do this:
     {{< copyable "shell-regular" >}}
 
     ```bash
-    kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb
+    kubectl --kubeconfig credentials/kubeconfig_<gke_cluster_name> get po -n <tidb_cluster_name>
     ```
 
     > **Note:**
@@ -186,7 +202,7 @@ There are two ways to do this:
     {{< copyable "shell-regular" >}}
 
     ```bash
-    helm --kubeconfig credentials/kubeconfig_<cluster_name> ls
+    helm --kubeconfig credentials/kubeconfig_<gke_cluster_name> ls
     ```
 
 - Or setting KUBECONFIG environment variable:
@@ -194,13 +210,13 @@ There are two ways to do this:
     {{< copyable "shell-regular" >}}
 
     ```bash
-    export KUBECONFIG=$PWD/credentials/kubeconfig_<cluster_name>
+    export KUBECONFIG=$PWD/credentials/kubeconfig_<gke_cluster_name>
     ```
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    kubectl get po -n tidb
+    kubectl get po -n <tidb_cluster_name>
     ```
 
     {{< copyable "shell-regular" >}}
@@ -222,7 +238,7 @@ variable "tidb_version" {
 }
 ```
 
-The upgrading does not finish immediately. You can run `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb --watch` to verify that all pods are in `Running` state. Then you can [access the database](#access-the-database) and use `tidb_version()` to see whether the cluster has been upgraded successfully:
+The upgrading does not finish immediately. You can run `kubectl --kubeconfig credentials/kubeconfig_<gke_cluster_name> get po -n <tidb_cluster_name> --watch` to verify that all pods are in `Running` state. Then you can [access the database](#access-the-database) and use `tidb_version()` to see whether the cluster has been upgraded successfully:
 
 {{< copyable "sql" >}}
 
@@ -245,7 +261,7 @@ Check Table Before Drop: false
 
 ## Manage multiple TiDB clusters
 
-An instance of a `tidb-cluster` module corresponds to a TiDB cluster in the GKE cluster. To add a new TiDB cluster, you can edit the `tidbclusters.tf` file and add a new instance of the `tidb-cluster` module. For example:
+An instance of a `tidb-cluster` module corresponds to a TiDB cluster in the GKE cluster. To add a new TiDB cluster, you can edit the `tidbclusters.tf` file and add a `tidb-cluster` module. For example:
 
 ```hcl
 module "example-tidb-cluster" {
@@ -253,12 +269,14 @@ module "example-tidb-cluster" {
     helm = "helm.gke"
   }
   source                     = "../modules/gcp/tidb-cluster"
-  gcp_project                = "gcp-project-name"
-  gke_cluster_location       = "us-west1"
-  gke_cluster_name           = "gke-cluster-name"
-  cluster_name               = "example-tidb-cluster"
+  cluster_id                 = module.tidb-operator.cluster_id
+  tidb_operator_id           = module.tidb-operator.tidb_operator_id
+  gcp_project                = var.GCP_PROJECT
+  gke_cluster_location       = "local.location
+  gke_cluster_name           = <gke-cluster-name>
+  cluster_name               = <example-tidb-cluster>
   cluster_version            = "v3.0.1"
-  kubeconfig_path            = module.tidb-operator.kubeconfig_path
+  kubeconfig_path            = local.kubeconfig
   tidb_cluster_chart_version = "v1.0.0"
   pd_instance_type           = "n1-standard-1"
   tikv_instance_type         = "n1-standard-4"
@@ -285,7 +303,9 @@ output "how_to_connect_to_example_tidb_cluster_from_bastion" {
 }
 ```
 
-This will print out the exact command to use to connect to the TiDB cluster just created from the bastion instance.
+This will print out the exact command used to connect to the TiDB cluster.
+
+Once you finish modification, execute `terraform init` and `terraform apply` statements to create the cluster.
 
 ## Scale
 
@@ -324,20 +344,83 @@ GCP allows attaching a local SSD to any instance type that is `n1-standard-1` or
 
 ### Customize TiDB parameters
 
-The terraform scripts provide proper default settings for the TiDB cluster in GKE. You can specify an overriding values file - `values.yaml` in `tidbclusters.tf` for each TiDB cluster. Values in this file override the default settings.
+TThe Terraform scripts provide proper default settings for the TiDB cluster in GKE. You can specify `override_values` or `override_values_file` variables in `tidbclusters.tf` for each TiDB cluster. If both variables are configured, then `override_values` will be enabled and override the default settings. For example:
 
-For example, the default cluster uses `default.yaml` in the `gcp/tidb-cluster` module as the overriding values file, and the ConfigMap rollout feature is enabled in this file.
+{{< copyable "" >}}
 
-In GKE, some values are not customizable in `values.yaml`, such as the cluster version, replicas, node selectors, and taints. These variables are controlled by Terraform to ensure consistency between the infrastructure and TiDB clusters. To customize these variables, you can edit the variables of each `tidb-cluster` module in the `tidbclusters.tf` file directly.
+```
+override_values = <<EOF
+discovery:
+  image: pingcap/tidb-operator:v1.0.1
+  imagePullPolicy: IfNotPresent
+  resources:
+    limits:
+      cpu: 250m
+      memory: 150Mi
+    requests:
+      cpu: 30m
+      memory: 30Mi
+EOF
+```
+
+{{< copyable "" >}}
+
+```
+override_values_file = "./test-cluster.yaml"
+```
+
+By default, the cluster uses `values/default.yaml` in the `deploy/modules/gcp/tidb-cluster` module as the overriding values file.
+
+In GKE, some configuration items are not customizable in `values.yaml`, such as the cluster version, replicas, `NodeSelector` and `Tolerations`. `NodeSelector` and `Tolerations` are controlled by Terraform to ensure consistency between the infrastructure and TiDB clusters. Cluster version and replicas can be modified in each `tidb-cluster` module in the `clusters.tf` file directly.
+
+> **Note:**
+>
+> It is not recommended to include the following configurations (default configurations of `tidb-cluster` module) in the customized `values.yaml`:
+
+```
+pd:
+  storageClassName: pd-ssd
+tikv:
+  stroageClassName: local-storage
+tidb:
+  service:
+    type: LoadBalancer
+    annotations:
+      cloud.google.com/load-balancer-type: "Internal"
+  separateSlowLog: true
+monitor:
+  storageClassName: pd-ssd
+  persistent: true
+  grafana:
+    config:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+    service:
+      type: LoadBalancer
+```
 
 ### Customize TiDB Operator
 
-You can customize the TiDB operator by specifying a Helm values file through the `override_values` variable. This variable can be passed into a `tidb-cluster` module.
+You can customize the TiDB operator by specifying overriding values through the `operator_helm_values` variable or specifying an overriding values file through the `operator_helm_values_file` variable. If both variables are configured, then `operator_helm_values` will be enabled and its value will be passed into the `tidb-cluster` module.
+
+{{< copyable "" >}}
 
 ```
-variable "override_values" {
-  value = file("/path/to/values_file.yaml")
-}
+operator_helm_values = <<EOF
+controllerManager:
+  resources:
+    limits:
+      cpu: 250m
+      memory: 150Mi
+    requests:
+      cpu: 30m
+      memory: 30Mi
+EOF
+```
+
+{{< copyable "" >}}
+
+```
+operator_helm_values_file = "./test-operator.yaml"
 ```
 
 ### Customize logging
@@ -418,15 +501,15 @@ If you no longer need the data and would like to delete the disks in use, there 
 
 - Manual deletion: do this either in Google Cloud Console or using the `gcloud` command-line tool.
 
-- Setting the Kubernetes persistent volume reclaiming policy to `Delete` prior to executing `terraform destroy`: Do this by running the following `kubectl` command before `terraform destroy`
+- Setting the Kubernetes persistent volume reclaiming policy to `Delete` prior to executing `terraform destroy`: Do this by running the following `kubectl` command before `terraform destroy`.
 
-```bash
-kubectl --kubeconfig /path/to/kubeconfig/file get pvc -n namespace-of-tidb-cluster -o jsonpath='{.items[*].spec.volumeName}'|fmt -1 | xargs -I {} kubectl --kubeconfig /path/to/kubeconfig/file patch pv {} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
-```
+   ```bash
+    kubectl --kubeconfig /path/to/kubeconfig/file get pvc -n namespace-of-tidb-cluster -o jsonpath='{.items[*].spec.volumeName}'|fmt -1 | xargs -I {} kubectl --kubeconfig /path/to/kubeconfig/file patch pv {} -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
+    ```
 
-This command will get the persistent volume claims in the TiDB cluster namespace and set the reclaiming policy of the persistent volumes to `Delete`. When the PVCs are deleted during `terraform destroy`, the disks are deleted as well.
+This command will get the persistent volume claims (PVCs) in the TiDB cluster namespace and set the reclaiming policy of the persistent volumes to `Delete`. When the PVCs are deleted during `terraform destroy`, the disks are deleted as well.
 
-Below is a script called `change-pv-reclaimpolicy.sh`.  It simplifies the above process in `deploy/gcp` relative to the root directory of the repository,
+elow is a script called `change-pv-reclaimpolicy.sh`. It simplifies the above process in `deploy/gcp` directory comparing to the root directory of the repository.
 
 ```bash
 ./change-pv-reclaimpolicy.sh /path/to/kubeconfig/file tidb-cluster-namespace
@@ -447,13 +530,13 @@ The best practices for managing multiple Kubernetes clusters are:
 - Creating a new directory for each of your Kubernetes clusters, and
 - Combining the above modules according to your needs via Terraform scripts.
 
-These are so that the Terraform states among clusters do not interfere with each other, and it is convenient to expand. Here's an example:
+In this case, the Terraform states among clusters do not interfere with each other, and it is convenient to expand. Here's an example (assume you are in the project root directory):
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 # assume we are in the project root
-mkdir -p deploy/gcp-staging
+mkdir -p deploy/gcp-staging &&
 vim deploy/gccp-staging/main.tf
 ```
 
@@ -592,8 +675,8 @@ In addition, you can easily integrate these modules into your own Terraform work
 
 > **Note:**
 >
-> * When creating a new directory, please pay attention to its relative path to Terraform modules, which affects the `source` parameter during module calls.
+> * When creating a new directory, pay attention to its relative path to Terraform modules, which affects the `source` parameter during module calls.
 > * If you want to use these modules outside the tidb-operator project, make sure you copy the whole `modules` directory and keep the relative path of each module inside the directory unchanged.
 > * Due to limitation [hashicorp/terraform#2430](https://github.com/hashicorp/terraform/issues/2430#issuecomment-370685911) of Terraform, the hack processing of Helm provider is necessary in the above example. It is recommended that you keep it in your own Terraform scripts.
 
-If you are unwilling to write Terraform code, you can also copy the `deploy/gcp` directory to create new Kubernetes clusters. But note that you cannot copy a directory that you have already run `terraform apply` against, when the Terraform state already exists in local.  In this case, it is recommended that you clone a new repository before copying the directory.
+If you are unwilling to write Terraform code, you can also copy the `deploy/gcp` directory to create new Kubernetes clusters. But note that you cannot copy a directory that you have already run `terraform apply` against, when the Terraform state already exists in local. In this case, it is recommended that you clone a new repository before copying the directory.
