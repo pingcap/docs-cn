@@ -554,6 +554,26 @@ TiDB 支持改变 [per-session](/v2.1/reference/configuration/tidb-server/tidb-s
 同 MySQL 的用法一致，例如：
 `select column_name from table_name use index（index_name）where where_condition;`
 
+#### 3.3.13 触发 Information schema is changed 错误的原因？
+
+TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语句，而且 TiDB 支持在线异步变更 DDL。那么，在执行 DML 的时候可能有 DDL 语句也在执行，而你需要确保每个 SQL 语句在同一个 `schema` 上执行。所以当执行 DML 时，遇到正在执行中的 DDL 操作就可能会报 `Information schema is changed` 的错误。为了避免太多的 DML 语句报错，已做了一些优化。现在会报此错的可能原因如下：
+
+- 执行的 DML 语句中涉及的表和集群中正在执行的 DDL 的表有相同的，那么这个 DML 语句就会报此错。
+- 与表无关的报错原因：
+    - 这个 DML 执行时间很久，而这段时间内执行了很多 DDL 语句（新版本 `lock table` 也可），导致中间 `schema` 版本变更超过 1024（v2.1.18 版本之前此值为定值 100。v2.1.18 及之后版本默认值为 1024，可以通过 `tidb_max_delta_schema_count` 变量修改)。
+    - 接受 DML 请求的 TiDB 长时间不能加载到 `schema information` (与 PD 或者 TiKV 网络问题等都会导致此问题)，而这段时间内执行了很多 DDL 语句（也包括 `lock table` 语句），导致中间 `schema` 版本变更超过 100（目前我们没有按 `schema` 版本去获取信息）。
+
+> **注意：**
+>
+> `create table` 操作会有 1 个 `schema` 版本变更，与每个 DDL 操作对应变更的 `schema state` 个数一致。例如，`add column` 操作会有 4 个版本信息。
+
+#### 3.3.14 触发 Information schema is out of date 错误的原因？
+
+当执行 DML 时，TiDB 超过一个 DDL lease 时间（默认 45s）没能加载到最新的 schema 就可能会报 `Information schema is out of date` 的错误。遇到此错的可能原因如下：
+
+- 执行此 DML 的 TiDB 被 kill 后准备退出，且此 DML 对应的事务执行时间超过一个 DDL lease，在事务提交时会报这个错误。
+- TiDB 在执行此 DML 时，有一段时间内连不上 PD 或者 TiKV，导致 TiDB 超过一个 DDL lease 时间没有 load schema，或者导致 TiDB 断开与 PD 之间带 keep alive 设置的连接。
+
 ### 3.4 TiKV 管理
 
 #### 3.4.1 TiKV 集群副本建议配置数量是多少，是不是最小高可用配置（3个）最好？
@@ -612,7 +632,7 @@ TiDB 使用 Raft 在多个副本之间做数据同步（默认为每个 Region 3
 
 #### 3.4.12 Region 是如何进行分裂的？
 
-Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 的大小超过参数 `region-split-size` 或 `region-split-keys` 的值时，就会触发分裂，分裂后的信息会汇报给 PD。
+Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 的大小超过参数 `region-max-size` 或 `region-max-keys` 的值时，就会触发分裂，分裂后的信息会汇报给 PD。
 
 #### 3.4.13 TiKV 是否有类似 MySQL 的 `innodb_flush_log_trx_commit` 参数，来保证提交数据不丢失？
 

@@ -92,7 +92,6 @@
         - [Table Routing](/v3.0/reference/tools/data-migration/features/overview.md#table-routing)
         - [Black & White Lists](/v3.0/reference/tools/data-migration/features/overview.md#black--white-table-lists)
         - [Binlog Event Filter](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filter)
-        - [Column Mapping](/v3.0/reference/tools/data-migration/features/overview.md#column-mapping)
         - [同步延迟监控](/v3.0/reference/tools/data-migration/features/overview.md#同步延迟监控)
         + Shard Support
           - [简介](/v3.0/reference/tools/data-migration/features/shard-merge.md)
@@ -101,6 +100,7 @@
       + 使用场景
         - [简单的从库同步场景](/v3.0/reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
         - [分库分表合并场景](/v3.0/reference/tools/data-migration/usage-scenarios/shard-merge.md)
+        - [分表合并数据迁移最佳实践](/v3.0/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md)
         - [DM-worker 在上游 MySQL 主从间切换](/v3.0/reference/tools/data-migration/usage-scenarios/master-slave-switch.md)
       + [部署使用](/v3.0/reference/tools/data-migration/deploy.md)
       + 配置
@@ -130,6 +130,10 @@
     - [TiKV Control](/v3.0/reference/tools/tikv-control.md)
     - [TiDB Controller](/v3.0/reference/tools/tidb-control.md)
     - [工具下载](/v3.0/reference/tools/download.md)
+  + 最佳实践
+    - [HAProxy 最佳实践](/v3.0/reference/best-practices/haproxy.md)
+    - [Java 应用开发最佳实践](/v3.0/reference/best-practices/java-app.md)
+    - [高并发写入场景最佳实践](/v3.0/reference/best-practices/high-concurrency.md)
   + [与 MySQL 兼容性对比](/v3.0/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
@@ -361,6 +365,7 @@
   - [常见问题](/v3.0/tidb-in-kubernetes/faq.md)
 + 常见问题 (FAQ)
   - [TiDB FAQ](/v3.0/faq/tidb.md)
+  - [TiDB Binlog FAQ](/v3.0/faq/tidb-binlog.md)
   - [TiDB Lightning FAQ](/v3.0/faq/tidb-lightning.md)
   - [Data Migration FAQ](/v3.0/faq/data-migration.md)
   - [升级 FAQ](/v3.0/faq/upgrade.md)
@@ -373,6 +378,7 @@
 + [TiDB 路线图](/v3.0/roadmap.md)
 + [版本发布历史](/v3.0/releases/rn.md)
   + v3.0
+    - [3.0.4](/v3.0/releases/3.0.4.md)
     - [3.0.3](/v3.0/releases/3.0.3.md)
     - [3.0.2](/v3.0/releases/3.0.2.md)
     - [3.0.1](/v3.0/releases/3.0.1.md)
