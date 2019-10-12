@@ -9,7 +9,7 @@ category: reference
 
 TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/config-template.toml](https://github.com/tikv/tikv/blob/master/etc/config-template.toml) 找到默认值的配置文件，重命名为 config.toml 即可。
 
-本文档只阐述未包含在命令行参数中的参数，命令行参数参见[这里](/reference/configuration/tikv-server/configuration.md)。
+本文档只阐述未包含在命令行参数中的参数，命令行参数参见[这里](/v3.0/reference/configuration/tikv-server/configuration.md)。
 
 ### `status-thread-pool-size`
 
@@ -1028,6 +1028,25 @@ raftdb 相关配置项。
 
 + WAL 存储目录。
 + 默认值：/tmp/tikv/store
+
+## security
+
+安全相关配置项。
+
+### `ca-path`
+
++ CA 文件路径
++ 默认：""
+
+### `cert-path`
+
++ 包含 X509 证书的 PEM 文件路径
++ 默认：""
+
+### `key-path`
+
++ 包含 X509 key 的 PEM 文件路径
++ 默认：""
 
 ## import
 

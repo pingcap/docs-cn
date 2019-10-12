@@ -47,7 +47,7 @@ tidb-server 无法启动的常见情况包括：
 
 + 启动参数错误
 
-    请参考[TiDB 命令行参数](/reference/configuration/tidb-server/configuration.md)
+    请参考 [TiDB 命令行参数](/dev/reference/configuration/tidb-server/configuration.md)。
 
 + 端口被占用：`lsof -i:port`
 
@@ -68,11 +68,11 @@ tidb-server 无法启动的常见情况包括：
 
 + 启动参数错误
 
-    请参考[TiKV 启动参数](/reference/configuration/tikv-server/configuration.md)文档。
+    请参考 [TiKV 启动参数](/dev/reference/configuration/tikv-server/configuration.md)文档。
 
 + 端口被占用：`lsof -i:port`
 
-    请确保 tikv-server 启动所需要的端口未被占用： `lsof -i:port`。
+    请确保 tikv-server 启动所需要的端口未被占用：`lsof -i:port`。
 + 无法连接 pd-server
 
     首先检查 pd-server 的进程状态和日志。确保 pd-server 成功启动，对应端口已打开：`lsof -i:port`。
@@ -88,11 +88,11 @@ tidb-server 无法启动的常见情况包括：
 
 + 启动参数错误
 
-    请参考 [PD 命令行参数](/reference/configuration/pd-server/configuration.md)文档。
+    请参考 [PD 命令行参数](/dev/reference/configuration/pd-server/configuration.md)文档。
 
 + 端口被占用：`lsof -i:port`
 
-    请确保 pd-server 启动所需要的端口未被占用： `lsof -i:port`。
+    请确保 pd-server 启动所需要的端口未被占用：`lsof -i:port`。
 
 ## TiDB/TiKV/PD 进程异常退出
 
@@ -118,7 +118,7 @@ tidb-server 无法启动的常见情况包括：
 
 ## TiDB panic
 
-请提供 panic 的 log
+请提供 panic 的 log。
 
 ## 连接被拒绝
 
@@ -132,7 +132,7 @@ tidb-server 无法启动的常见情况包括：
 
 ## 数据库访问超时，系统负载高
 
-首先检查 [SLOW-QUERY](/how-to/maintain/identify-slow-queries.md) 日志，判断是否是因为某条 SQL 语句导致。如果未能解决，请提供如下信息：
+首先检查 [SLOW-QUERY](/dev/how-to/maintain/identify-slow-queries.md) 日志，判断是否是因为某条 SQL 语句导致。如果未能解决，请提供如下信息：
 
 + 部署的拓扑结构
     - tidb-server/pd-server/tikv-server 部署了几个实例

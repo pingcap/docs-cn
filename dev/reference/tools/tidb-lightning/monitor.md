@@ -5,7 +5,7 @@ category: reference
 
 # TiDB Lightning 监控告警
 
-`tidb-lightning` 和 `tikv-importer` 都支持使用 [Prometheus](https://prometheus.io/) 采集监控指标 (metrics)。本文主要介绍 TiDB-Lightning 的监控配置与监控指标。
+`tidb-lightning` 和 `tikv-importer` 都支持使用 [Prometheus](https://prometheus.io/) 采集监控指标 (metrics)。本文主要介绍 TiDB Lightning 的监控配置与监控指标。
 
 ## 监控配置
 
@@ -44,6 +44,8 @@ pprof-port = 8289
 ```
 
 要让 Prometheus 发现 Lightning，可以将地址直接写入其配置文件，例如：
+
+{{< copyable "" >}}
 
 ```yaml
 ...

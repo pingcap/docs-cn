@@ -34,6 +34,8 @@ category: reference
 
 `CREATE DATABASE` 用于创建数据库，并可以指定数据库的默认属性（如数据库默认字符集、排序规则）。`CREATE SCHEMA` 跟 `CREATE DATABASE` 操作效果一样。
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE {DATABASE | SCHEMA} [IF NOT EXISTS] db_name
     [create_specification] ...
@@ -45,20 +47,47 @@ create_specification:
 
 当创建已存在的数据库且不指定使用 `IF NOT EXISTS` 时会报错。
 
-`create_specification` 选项用于指定数据库具体的 `CHARACTER SET` 和 `COLLATE`。目前 TiDB 只支持部分的字符集和排序规则，请参照[字符集支持](/reference/sql/character-set.md)。
+`create_specification` 选项用于指定数据库具体的 `CHARACTER SET` 和 `COLLATE`。目前 TiDB 只支持部分的字符集和排序规则，请参照[字符集支持](/dev/reference/sql/character-set.md)。
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE DATABASE mynewdatabase;
+CREATE DATABASE mynewdatabase;
+```
+
+```
 Query OK, 0 rows affected (0.09 sec)
+```
 
-mysql> USE mynewdatabase;
+{{< copyable "sql" >}}
+
+```sql
+USE mynewdatabase;
+```
+
+```
 Database changed
-mysql> CREATE TABLE t1 (a int);
-Query OK, 0 rows affected (0.11 sec)
+```
 
-mysql> SHOW TABLES;
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t1 (a int);
+```
+
+```
+Query OK, 0 rows affected (0.11 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW TABLES;
+```
+
+```
 +-------------------------+
 | Tables_in_mynewdatabase |
 +-------------------------+
@@ -69,11 +98,11 @@ mysql> SHOW TABLES;
 
 ## MySQL 兼容性
 
-`CREATE DATABASE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`CREATE DATABASE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/dev/report-issue.md)。
 
 ## 另请参阅
 
-* [USE](/reference/sql/statements/use.md)
-* [ALTER DATABASE](/reference/sql/statements/alter-database.md)
-* [DROP DATABASE](/reference/sql/statements/drop-database.md)
-* [SHOW DATABASES](/reference/sql/statements/show-databases.md)
+* [USE](/dev/reference/sql/statements/use.md)
+* [ALTER DATABASE](/dev/reference/sql/statements/alter-database.md)
+* [DROP DATABASE](/dev/reference/sql/statements/drop-database.md)
+* [SHOW DATABASES](/dev/reference/sql/statements/show-databases.md)

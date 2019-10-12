@@ -6,21 +6,35 @@ aliases: ['/docs-cn/op-guide/migration/']
 
 # 增量数据复制
 
-[全量迁移](/how-to/migrate/from-mysql.md)文档中介绍了如何使用 `mydumper`/`loader` 将 MySQL 的数据全量导入到 TiDB，但如果后续 MySQL 的数据有更新，仍然希望快速导入，就不适合使用全量的方式。因此，TiDB 提供了 `syncer` 工具，可以方便地将 MySQL 的数据增量的导入到 TiDB 里面。
+[全量迁移](/v3.0/how-to/migrate/from-mysql.md)文档中介绍了如何使用 `mydumper`/`loader` 将 MySQL 的数据全量导入到 TiDB，但如果后续 MySQL 的数据有更新，仍然希望快速导入，就不适合使用全量的方式。因此，TiDB 提供了 `syncer` 工具，可以方便地将 MySQL 的数据增量的导入到 TiDB 里面。
 
 `syncer` 属于 TiDB 企业版工具集，如何获取可以参考 [下载 TiDB 企业版工具集](#下载-tidb-企业版工具集-linux)。
 
 ## 下载 TiDB 企业版工具集 (Linux)
 
-```bash
-# 下载 tool 压缩包
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
+下载 tool 压缩包：
 
-# 检查文件完整性，返回 ok 则正确
+{{< copyable "shell-regular" >}}
+
+```bash
+wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz &&
+wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
+```
+
+检查文件完整性，返回 ok 则正确：
+
+{{< copyable "shell-regular" >}}
+
+```bash
 sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
-# 解开压缩包
-tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
+```
+
+解开压缩包：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz &&
 cd tidb-enterprise-tools-latest-linux-amd64
 ```
 
@@ -28,9 +42,9 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 ## 获取同步 position
 
-如上文所提，mydumper 导出的数据目录里面有一个 `metadata` 文件，里面就包含了我们所需的 position 信息。
+如上文所提，Mydumper 导出的数据目录里面有一个 `metadata` 文件，里面就包含了我们所需的 position 信息。
 
-medadata 文件信息内容举例：
+`metadata` 文件信息内容举例：
 
 ```
 Started dump at: 2017-04-28 10:48:10
@@ -44,8 +58,13 @@ Finished dump at: 2017-04-28 10:48:11
 
 我们将 position 相关的信息保存到一个 `syncer.meta` 文件里面，用于 `syncer` 的同步:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-# cat syncer.meta
+cat syncer.meta
+```
+
+```
 binlog-name = "mysql-bin.000003"
 binlog-pos = 930143241
 binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e-487b6bd31bf7:1-4"
@@ -54,11 +73,11 @@ binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e
 > **注意：**
 >
 > - `syncer.meta` 只需要第一次使用的时候配置，后续 `syncer` 同步新的 binlog 之后会自动将其更新到最新的 position。
-> - 如果使用 binlog position 同步则只需要配置 binlog-name binlog-pos; 使用 gtid 同步则需要设置 gtid，且启动 syncer 时带有 `--enable-gtid`。
+> - 如果使用 binlog position 同步则只需要配置 binlog-name binlog-pos; 使用 gtid 同步则需要设置 gtid，且启动 Syncer 时带有 `--enable-gtid`。
 
 ## 启动 `syncer`
 
-启动 syncer 服务之前请详细阅读 [Syncer 增量导入](/reference/tools/syncer.md )
+启动 Syncer 服务之前请详细阅读 [Syncer 增量导入](/v3.0/reference/tools/syncer.md )
 
 `syncer` 的配置文件 `config.toml`:
 
@@ -169,9 +188,13 @@ port = 4000
 
 启动 `syncer`:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./bin/syncer -config config.toml
+```
 
+```
 2016/10/27 15:22:01 binlogsyncer.go:226: [info] begin to sync binlog from position (mysql-bin.000003, 1280)
 2016/10/27 15:22:01 binlogsyncer.go:130: [info] register slave for master server 127.0.0.1:3306
 2016/10/27 15:22:01 binlogsyncer.go:552: [info] rotate to (mysql-bin.000003, 1280)
@@ -180,15 +203,27 @@ port = 4000
 
 ## 在 MySQL 插入新的数据
 
+{{< copyable "sql" >}}
+
 ```sql
 INSERT INTO t1 VALUES (4, 4), (5, 5);
 ```
 
 登录到 TiDB 查看：
 
-```sql
+{{< copyable "shell-regular" >}}
+
+```bash
 mysql -h127.0.0.1 -P4000 -uroot -p
-mysql> select * from t1;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+select * from t1;
+```
+
+```
 +----+------+
 | id | age  |
 +----+------+
@@ -202,7 +237,7 @@ mysql> select * from t1;
 
 `syncer` 每隔 30s 会输出当前的同步统计，如下
 
-```bash
+```
 2017/06/08 01:18:51 syncer.go:934: [info] [syncer]total events = 15, total tps = 130, recent tps = 4,
 master-binlog = (ON.000001, 11992), master-binlog-gtid=53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-74,
 syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-17

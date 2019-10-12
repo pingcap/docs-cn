@@ -13,13 +13,19 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 
 ## 参考资源
 
-- [PingCAP 中文技术文档风格指南](https://docs.google.com/document/d/1b6ZhZD33OoM8AacpKksGGSuxJWReLkNnSt8eSc1kTXc/edit?usp=sharing)
+- [PingCAP 中文技术文档风格指南](resources/pingcap-style-guide-zh-v1.0.pdf)
+- [TiDB 中文文档模板](resources/tidb-docs-template-zh-v1.0.pdf)
 - [Pull Request 提交流程](#pull-request-提交流程)
-- [TiDB 中文文档模板](https://docs.google.com/document/d/16ztW2Qj6zh3Ni4AGPrnoqtAI2xNOtBYX9zNuNuTi2BI/edit?usp=sharing)
 
 ## 必须遵循的 markdownlint 规则
 
 我们为 docs-cn 仓库设置了检测 markdown 文件规范的 CI check，如果您提交的 PR 不符合规范，很可能**无法通过 markdownlint check**，最终导致无法合并 PR。
+
+您也可以在本地进行 markdownlint check：
+
+``` bash
+./scripts/markdownlint [FILE...]
+```
 
 以下是我们为 TiDB 中文文档提前设置的 26 条 [markdownlint 规则](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md)：
 

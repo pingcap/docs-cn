@@ -23,8 +23,13 @@ TiDB 提供了以下两种接口来监控集群状态：
 
 以下示例中，通过访问 `http://${host}:${port}/status` 获取当前 TiDB Server 的状态，并判断该 TiDB Server 是否存活。结果以 **JSON** 格式返回：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 curl http://127.0.0.1:10080/status
+```
+
+```
 {
     connections: 0,  # 当前 TiDB Server 上的客户端连接数
     version: "5.7.25-TiDB-v3.0.0-beta-250-g778c3f4a5",  # TiDB 版本号
@@ -40,8 +45,13 @@ curl http://127.0.0.1:10080/status
 
 通过该接口可以获取当前所有 TiKV 节点的状态以及负载均衡信息。下面以一个单节点的 TiKV 集群为例，说明用户需要了解的信息：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 curl http://127.0.0.1:2379/pd/api/v1/stores
+```
+
+```
 {
   "count": 1,  # TiKV 节点数量
   "stores": [  # TiKV 节点的列表
@@ -76,7 +86,7 @@ curl http://127.0.0.1:2379/pd/api/v1/stores
 
 Metrics 接口用于监控整个集群的状态和性能。
 
-- 如果使用 TiDB-Ansible 部署 TiDB 集群，监控系统（Prometheus 和 Grafana）会同时部署。
+- 如果使用 TiDB Ansible 部署 TiDB 集群，监控系统（Prometheus 和 Grafana）会同时部署。
 - 如果使用其他方式部署 TiDB 集群，在使用 metrics 接口前，需先[部署 Prometheus 和 Grafana](#部署-prometheus-和-grafana)。
 
 成功部署 Prometheus 和 Grafana 之后，[配置 Grafana](#配置-grafana)。
@@ -96,25 +106,40 @@ Metrics 接口用于监控整个集群的状态和性能。
 
 #### 第 1 步：下载二进制包
 
-```bash
-# 下载二进制包
-$ wget https://github.com/prometheus/prometheus/releases/download/v2.2.1/prometheus-2.2.1.linux-amd64.tar.gz
-$ wget https://github.com/prometheus/node_exporter/releases/download/v0.15.2/node_exporter-0.15.2.linux-amd64.tar.gz
-$ wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-4.6.3.linux-x64.tar.gz
+下载二进制包：
 
-# 解压二进制包
-$ tar -xzf prometheus-2.2.1.linux-amd64.tar.gz
-$ tar -xzf node_exporter-0.15.2.linux-amd64.tar.gz
-$ tar -xzf grafana-4.6.3.linux-x64.tar.gz
+{{< copyable "shell-regular" >}}
+
+```bash
+wget https://github.com/prometheus/prometheus/releases/download/v2.2.1/prometheus-2.2.1.linux-amd64.tar.gz &&
+wget https://github.com/prometheus/node_exporter/releases/download/v0.15.2/node_exporter-0.15.2.linux-amd64.tar.gz &&
+wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-4.6.3.linux-x64.tar.gz
+```
+
+解压二进制包：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tar -xzf prometheus-2.2.1.linux-amd64.tar.gz &&
+tar -xzf node_exporter-0.15.2.linux-amd64.tar.gz &&
+tar -xzf grafana-4.6.3.linux-x64.tar.gz
 ```
 
 #### 第 2 步：在 Node1，Node2，Node3，Node4 上启动 `node_exporter`
 
-```bash
-$ cd node_exporter-0.15.2.linux-amd64
+{{< copyable "shell-regular" >}}
 
-# 启动 node_exporter 服务
-$ ./node_exporter --web.listen-address=":9100" \
+```bash
+cd node_exporter-0.15.2.linux-amd64
+```
+
+启动 node_exporter 服务：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+./node_exporter --web.listen-address=":9100" \
     --log.level="info" &
 ```
 
@@ -122,10 +147,14 @@ $ ./node_exporter --web.listen-address=":9100" \
 
 编辑 Prometheus 的配置文件：
 
-```yml
-$ cd prometheus-2.2.1.linux-amd64
-$ vi prometheus.yml
+{{< copyable "shell-regular" >}}
 
+```bash
+cd prometheus-2.2.1.linux-amd64 &&
+vi prometheus.yml
+```
+
+```ini
 ...
 
 global:
@@ -171,13 +200,14 @@ scrape_configs:
       - '192.168.199.118:20180'
 
 ...
-
 ```
 
 启动 Grafana 服务：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-$ ./prometheus \
+./prometheus \
     --config.file="./prometheus.yml" \
     --web.listen-address=":9090" \
     --web.external-url="http://192.168.199.113:9090/" \
@@ -191,10 +221,12 @@ $ ./prometheus \
 
 编辑 Grafana 的配置文件：
 
-```ini
-$ cd grafana-4.6.3
-$ vi conf/grafana.ini
+```bash
+cd grafana-4.6.3 &&
+vi conf/grafana.ini
+```
 
+```ini
 ...
 
 [paths]
@@ -239,8 +271,10 @@ url = https://grafana.net
 
 启动 Grafana 服务：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-$ ./bin/grafana-server \
+./bin/grafana-server \
     --config="./conf/grafana.ini" &
 ```
 
@@ -293,7 +327,7 @@ $ ./bin/grafana-server \
 
 在顶部菜单中，点击 **New dashboard**，选择要查看的面板。
 
-![view dashboard](../media/view-dashboard.png)
+![view dashboard](/media/view-dashboard.png)
 
 可查看以下集群组件信息：
 

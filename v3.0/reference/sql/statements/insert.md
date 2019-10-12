@@ -36,24 +36,64 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE TABLE t1 (a int);
-Query OK, 0 rows affected (0.11 sec)
+CREATE TABLE t1 (a int);
+```
 
-mysql> CREATE TABLE t2 LIKE t1;
+```
 Query OK, 0 rows affected (0.11 sec)
+```
 
-mysql> INSERT INTO t1 VALUES (1);
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t2 LIKE t1;
+```
+
+```
+Query OK, 0 rows affected (0.11 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 VALUES (1);
+```
+
+```
 Query OK, 1 row affected (0.02 sec)
+```
 
-mysql> INSERT INTO t1 (a) VALUES (1);
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 (a) VALUES (1);
+```
+
+```
 Query OK, 1 row affected (0.01 sec)
+```
 
-mysql> INSERT INTO t2 SELECT * FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t2 SELECT * FROM t1;
+```
+
+```
 Query OK, 2 rows affected (0.01 sec)
 Records: 2  Duplicates: 0  Warnings: 0
+```
 
-mysql> SELECT * FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t1;
+```
+
+```
 +------+
 | a    |
 +------+
@@ -61,8 +101,15 @@ mysql> SELECT * FROM t1;
 |    1 |
 +------+
 2 rows in set (0.00 sec)
+```
 
-mysql> SELECT * FROM t2;
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t2;
+```
+
+```
 +------+
 | a    |
 +------+
@@ -70,12 +117,26 @@ mysql> SELECT * FROM t2;
 |    1 |
 +------+
 2 rows in set (0.00 sec)
+```
 
-mysql> INSERT INTO t2 VALUES (2),(3),(4);
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t2 VALUES (2),(3),(4);
+```
+
+```
 Query OK, 3 rows affected (0.02 sec)
 Records: 3  Duplicates: 0  Warnings: 0
+```
 
-mysql> SELECT * FROM t2;
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t2;
+```
+
+```
 +------+
 | a    |
 +------+
@@ -90,11 +151,11 @@ mysql> SELECT * FROM t2;
 
 ## MySQL 兼容性
 
-`INSERT` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`INSERT` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [DELETE](/reference/sql/statements/delete.md)
-* [SELECT](/reference/sql/statements/select.md)
-* [UPDATE](/reference/sql/statements/update.md)
-* [REPLACE](/reference/sql/statements/replace.md)
+* [DELETE](/v3.0/reference/sql/statements/delete.md)
+* [SELECT](/v3.0/reference/sql/statements/select.md)
+* [UPDATE](/v3.0/reference/sql/statements/update.md)
+* [REPLACE](/v3.0/reference/sql/statements/replace.md)

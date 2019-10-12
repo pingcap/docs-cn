@@ -16,8 +16,13 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW VARIABLES LIKE 'character_set%';
+SHOW VARIABLES LIKE 'character_set%';
+```
+
+```
 +--------------------------+--------------------------------------------------------+
 | Variable_name            | Value                                                  |
 +--------------------------+--------------------------------------------------------+
@@ -31,11 +36,25 @@ mysql> SHOW VARIABLES LIKE 'character_set%';
 | character_set_server     | utf8mb4                                                |
 +--------------------------+--------------------------------------------------------+
 8 rows in set (0.01 sec)
+```
 
-mysql> SET NAMES utf8;
+{{< copyable "sql" >}}
+
+```sql
+SET NAMES utf8;
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> SHOW VARIABLES LIKE 'character_set%';
+{{< copyable "sql" >}}
+
+```sql
+SHOW VARIABLES LIKE 'character_set%';
+```
+
+```
 +--------------------------+--------------------------------------------------------+
 | Variable_name            | Value                                                  |
 +--------------------------+--------------------------------------------------------+
@@ -49,11 +68,25 @@ mysql> SHOW VARIABLES LIKE 'character_set%';
 | character_set_filesystem | binary                                                 |
 +--------------------------+--------------------------------------------------------+
 8 rows in set (0.00 sec)
+```
 
-mysql> SET CHARACTER SET utf8mb4;
+{{< copyable "sql" >}}
+
+```sql
+SET CHARACTER SET utf8mb4;
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> SHOW VARIABLES LIKE 'character_set%';
+{{< copyable "sql" >}}
+
+```sql
+SHOW VARIABLES LIKE 'character_set%';
+```
+
+```
 +--------------------------+--------------------------------------------------------+
 | Variable_name            | Value                                                  |
 +--------------------------+--------------------------------------------------------+
@@ -71,10 +104,10 @@ mysql> SHOW VARIABLES LIKE 'character_set%';
 
 ## MySQL 兼容性
 
-`SET [NAMES|CHARACTER SET]` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SET [NAMES|CHARACTER SET]` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/dev/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW \[GLOBAL|SESSION\] VARIABLES](/reference/sql/statements/show-variables.md)
-* [SET <variable>](/reference/sql/statements/set-variable.md)
-* [Character Set Support](/reference/sql/character-set.md)
+* [SHOW \[GLOBAL|SESSION\] VARIABLES](/dev/reference/sql/statements/show-variables.md)
+* [SET <variable>](/dev/reference/sql/statements/set-variable.md)
+* [Character Set Support](/dev/reference/sql/character-set.md)

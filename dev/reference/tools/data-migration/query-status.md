@@ -9,15 +9,20 @@ category: reference
 
 ## 查询结果
 
-```
+{{< copyable "" >}}
+
+```bash
 » query-status
+```
+
+```
 {
     "result": true,     # 查询是否成功。
     "msg": "",          # 查询失败原因描述。
     "workers": [                            # DM-worker 列表。
         {
             "result": true,
-            "worker": "172.17.0.2:10081",   # DM-worker ID。
+            "worker": "172.17.0.2:8262",   # DM-worker ID。
             "msg": "",
             "subTaskStatus": [              # DM-worker 所有子任务的信息。
                 {
@@ -66,11 +71,12 @@ category: reference
                 "relayCatchUpMaster": true,     # 本地 relay log 同步进度是否与上游一致。
                 "stage": "Running",             # relay 处理单元状态
                 "result": null
-            }
+            },
+            "sourceID": "172.17.0.2:3306"        # 上游实例或者复制组 ID
         },
         {
             "result": true,
-            "worker": "172.17.0.3:10081",
+            "worker": "172.17.0.3:8262",
             "msg": "",
             "subTaskStatus": [
                 {
@@ -95,11 +101,12 @@ category: reference
                 "relayCatchUpMaster": true,
                 "stage": "Running",
                 "result": null
-            }
+            },
+            "sourceID": "172.17.0.3:3306"
         },
         {
             "result": true,
-            "worker": "172.17.0.6:10081",
+            "worker": "172.17.0.6:8262",
             "msg": "",
             "subTaskStatus": [
                 {
@@ -133,16 +140,16 @@ category: reference
                 "relayCatchUpMaster": true,
                 "stage": "Running",
                 "result": null
-            }
+            },
+            "sourceID": "172.17.0.6:3306"
         }
     ]
 }
-
 ```
 
 关于 `workers` 下 `subTaskStatus` 中 `stage` 状态和状态转换关系的详细信息，请参阅[子任务状态](#子任务状态)。
 
-关于 `workers` 下 `subTaskStatus` 中 `unresolvedDDLLockID`的操作细节，请参阅[手动处理 Sharding DDL Lock](/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)。
+关于 `workers` 下 `subTaskStatus` 中 `unresolvedDDLLockID`的操作细节，请参阅[手动处理 Sharding DDL Lock](/dev/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)。
 
 ## 子任务状态
 

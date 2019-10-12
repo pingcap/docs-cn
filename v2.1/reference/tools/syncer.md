@@ -9,11 +9,11 @@ category: reference
 
 Syncer 是一个数据导入工具，能方便地将 MySQL 的数据增量导入到 TiDB。
 
-Syncer 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/reference/tools/download.md)。
+Syncer 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/v2.1/reference/tools/download.md)。
 
 ## Syncer 架构
 
-![syncer 架构](/media/syncer-architecture.png)
+![Syncer 架构](/media/syncer-architecture.png)
 
 ## Syncer 部署位置
 
@@ -44,23 +44,23 @@ binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e
 Syncer 的命令行参数说明：
 
 ```
-Usage of syncer:
+Usage of Syncer:
   -L string
       日志等级: debug, info, warn, error, fatal (默认为 "info")
   -V
-      输出 syncer 版本；默认 false
+      输出 Syncer 版本；默认 false
   -auto-fix-gtid
       当 mysql master/slave 切换时，自动修复 gtid 信息；默认 false
   -b int
       batch 事务大小 (默认 100)
   -c int
-      syncer 处理 batch 线程数 (默认 16)
+      Syncer 处理 batch 线程数 (默认 16)
   -config string
       指定相应配置文件启动 Sycner 服务；如 `--config config.toml`
   -enable-ansi-quotes
       使用 ANSI_QUOTES sql_mode 来解析 SQL 语句
   -enable-gtid
-      使用 gtid 模式启动 syncer；默认 false，开启前需要上游 MySQL 开启 GTID 功能
+      使用 gtid 模式启动 Syncer；默认 false，开启前需要上游 MySQL 开启 GTID 功能
   -flavor string
       上游数据库实例类型，目前支持 "mysql" 和 "mariadb"
   -log-file string
@@ -70,7 +70,7 @@ Usage of syncer:
   -max-retry int
       SQL 请求由于网络异常等原因出错时的最大重试次数（默认值为 100）
   -meta string
-      指定 syncer 上游 meta 信息文件  (默认与配置文件相同目录下 "syncer.meta")
+      指定 Syncer 上游 meta 信息文件  (默认与配置文件相同目录下 "syncer.meta")
   -persistent-dir string
       指定同步过程中历史 schema 结构的保存文件地址，如果设置为空，则不保存历史 schema 结构；如果不为空，则根据 binlog 里面包含的数据的 column 长度选择 schema 来还原 DML 语句
   -safe-mode
@@ -350,14 +350,14 @@ target-table = "order_2017"
 
     使用 `select @@version;` 命令检查数据库版本。目前，Syncer 只支持以下版本：
 
-    - 5.5 < MySQL 版本 < 5.8
+    - 5.5 < MySQL 版本 < 8.0
     - MariaDB 版本 >= 10.1.2（更早版本的 binlog 部分字段类型格式与 MySQL 不一致）
 
     > **注意：**
     >
     > 如果上游 MySQL/MariaDB server 间构成主从复制结构，则
     >
-    > - 5.7.1 < MySQL 版本 < 5.8
+    > - 5.7.1 < MySQL 版本 < 8.0
     > - MariaDB 版本 >= 10.1.3
 
 2. 检查源库 `server-id`。
@@ -414,10 +414,10 @@ target-table = "order_2017"
 
 4. 检查用户权限。
 
-    1. 全量导出的 mydumper 需要的用户权限。
+    1. 全量导出的 Mydumper 需要的用户权限。
 
-        - mydumper 导出数据至少拥有以下权限：`select, reload`。
-        - mydumper 操作对象为 RDS 时，可以添加 `--no-locks` 参数，避免申请 `reload` 权限。
+        - Mydumper 导出数据至少拥有以下权限：`select, reload`。
+        - Mydumper 操作对象为 RDS 时，可以添加 `--no-locks` 参数，避免申请 `reload` 权限。
 
     2. 增量同步 Syncer 需要的上游 MySQL/MariaDB 用户权限。
 
@@ -462,7 +462,7 @@ target-table = "order_2017"
 
 6. 检查字符集。
 
-    TiDB 和 MySQL 的字符集的兼容性不同，详见 [TiDB 支持的字符集](/reference/sql/character-set.md)。
+    TiDB 和 MySQL 的字符集的兼容性不同，详见 [TiDB 支持的字符集](/v2.1/reference/sql/character-set.md)。
 
 ## 监控方案
 

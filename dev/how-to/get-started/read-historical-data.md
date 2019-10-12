@@ -29,7 +29,7 @@ TiDB 实现了通过标准 SQL 接口读取历史数据功能，无需特殊的 
 
 TiDB 使用 MVCC 管理版本，当更新/删除数据时，不会做真正的数据删除，只会添加一个新版本数据，所以可以保留历史数据。历史数据不会全部保留，超过一定时间的历史数据会被彻底删除，以减小空间占用以及避免历史版本过多引入的性能开销。
 
-TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行清理，关于 GC 的详细介绍参见 [TiDB 垃圾回收 (GC)](/reference/garbage-collection/overview.md)。
+TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行清理，关于 GC 的详细介绍参见 [TiDB 垃圾回收 (GC)](/dev/reference/garbage-collection/overview.md)。
 
 这里需要重点关注的是 `tikv_gc_life_time` 和 `tikv_gc_safe_point` 这条。`tikv_gc_life_time` 用于配置历史版本保留时间，可以手动修改；`tikv_gc_safe_point` 记录了当前的 safePoint，用户可以安全地使用大于 safePoint 的时间戳创建 snapshot 读取历史版本。safePoint 在每次 GC 开始运行时自动更新。
 
@@ -37,18 +37,35 @@ TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行
 
 1. 初始化阶段，创建一个表，并插入几行数据：
 
-    ```sql
-    mysql> create table t (c int);
-    Query OK, 0 rows affected (0.01 sec)
+    {{< copyable "sql" >}}
 
-    mysql> insert into t values (1), (2), (3);
+    ```sql
+    create table t (c int);
+    ```
+
+    ```
+    Query OK, 0 rows affected (0.01 sec)
+    ```
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    insert into t values (1), (2), (3);
+    ```
+
+    ```
     Query OK, 3 rows affected (0.00 sec)
     ```
 
 2. 查看表中的数据：
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> select * from t;
+    select * from t;
+    ```
+
+    ```
     +------+
     | c    |
     +------+
@@ -61,8 +78,13 @@ TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行
 
 3. 查看当前时间：
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> select now();
+    select now();
+    ```
+
+    ```
     +---------------------+
     | now()               |
     +---------------------+
@@ -73,15 +95,25 @@ TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行
 
 4. 更新某一行数据：
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> update t set c=22 where c=2;
+    update t set c=22 where c=2;
+    ```
+
+    ```
     Query OK, 1 row affected (0.00 sec)
     ```
 
 5. 确认数据已经被更新：
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> select * from t;
+    select * from t;
+    ```
+
+    ```
     +------+
     | c    |
     +------+
@@ -94,8 +126,13 @@ TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行
 
 6. 设置一个特殊的环境变量，这个是一个 session scope 的变量，其意义为读取这个时间之前的最新的一个版本。
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> set @@tidb_snapshot="2016-10-08 16:45:26";
+    set @@tidb_snapshot="2016-10-08 16:45:26";
+    ```
+
+    ```
     Query OK, 0 rows affected (0.00 sec)
     ```
 
@@ -106,8 +143,13 @@ TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行
 
     这里读取到的内容即为 update 之前的内容，也就是历史版本：
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> select * from t;
+    select * from t;
+    ```
+
+    ```
     +------+
     | c    |
     +------+
@@ -120,13 +162,23 @@ TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行
 
 7. 清空这个变量后，即可读取最新版本数据：
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> set @@tidb_snapshot="";
+    set @@tidb_snapshot="";
+    ```
+
+    ```
     Query OK, 0 rows affected (0.00 sec)
     ```
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> select * from t;
+    select * from t;
+    ```
+
+    ```
     +------+
     | c    |
     +------+

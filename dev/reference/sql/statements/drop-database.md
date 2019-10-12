@@ -28,8 +28,13 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW DATABASES;
+SHOW DATABASES;
+```
+
+```
 +--------------------+
 | Database           |
 +--------------------+
@@ -39,11 +44,25 @@ mysql> SHOW DATABASES;
 | test               |
 +--------------------+
 4 rows in set (0.00 sec)
+```
 
-mysql> DROP DATABASE test;
+{{< copyable "sql" >}}
+
+```sql
+DROP DATABASE test;
+```
+
+```
 Query OK, 0 rows affected (0.25 sec)
+```
 
-mysql> SHOW DATABASES;
+{{< copyable "sql" >}}
+
+```sql
+SHOW DATABASES;
+```
+
+```
 +--------------------+
 | Database           |
 +--------------------+
@@ -56,9 +75,9 @@ mysql> SHOW DATABASES;
 
 ## MySQL 兼容性
 
-`DROP DATABASE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`DROP DATABASE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/dev/report-issue.md)。
 
 ## 另请参阅
 
-* [CREATE DATABASE](/reference/sql/statements/create-database.md)
-* [ALTER DATABASE](/reference/sql/statements/alter-database.md)
+* [CREATE DATABASE](/dev/reference/sql/statements/create-database.md)
+* [ALTER DATABASE](/dev/reference/sql/statements/alter-database.md)

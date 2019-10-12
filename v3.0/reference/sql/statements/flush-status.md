@@ -24,8 +24,13 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> show status;
+show status;
+```
+
+```
 +--------------------+--------------------------------------+
 | Variable_name      | Value                                |
 +--------------------+--------------------------------------+
@@ -37,8 +42,15 @@ mysql> show status;
 | Ssl_cipher         |                                      |
 +--------------------+--------------------------------------+
 6 rows in set (0.01 sec)
+```
 
-mysql> show global status;
+{{< copyable "sql" >}}
+
+```sql
+show global status;
+```
+
+```
 +--------------------+--------------------------------------+
 | Variable_name      | Value                                |
 +--------------------+--------------------------------------+
@@ -50,11 +62,25 @@ mysql> show global status;
 | ddl_schema_version | 141                                  |
 +--------------------+--------------------------------------+
 6 rows in set (0.00 sec)
+```
 
-mysql> flush status;
+{{< copyable "sql" >}}
+
+```sql
+flush status;
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> show status;
+{{< copyable "sql" >}}
+
+```sql
+show status;
+```
+
+```
 +--------------------+--------------------------------------+
 | Variable_name      | Value                                |
 +--------------------+--------------------------------------+
@@ -74,4 +100,4 @@ mysql> show status;
 
 ## 另请参阅
 
-* [SHOW \[GLOBAL|SESSION\] STATUS](/reference/sql/statements/show-status.md)
+* [SHOW \[GLOBAL|SESSION\] STATUS](/v3.0/reference/sql/statements/show-status.md)

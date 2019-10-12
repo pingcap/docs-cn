@@ -6,7 +6,7 @@ aliases: ['/docs-cn/sql/slow-query/']
 
 # 慢查询日志
 
-TiDB 会将执行时间超过 [slow-threshold](/reference/configuration/tidb-server/configuration-file.md#slow-threshold)（默认值为 300 毫秒）的语句输出到 [slow-query-file](/reference/configuration/tidb-server/configuration-file.md#slow-query-file)（默认值："tidb-slow.log"）日志文件中，用于帮助用户定位慢查询语句，分析和解决 SQL 执行的性能问题。
+TiDB 会将执行时间超过 [slow-threshold](/dev/reference/configuration/tidb-server/configuration-file.md#slow-threshold)（默认值为 300 毫秒）的语句输出到 [slow-query-file](/dev/reference/configuration/tidb-server/configuration-file.md#slow-query-file)（默认值："tidb-slow.log"）日志文件中，用于帮助用户定位慢查询语句，分析和解决 SQL 执行的性能问题。
 
 ## 日志示例
 
@@ -75,7 +75,7 @@ Slow Query 基础信息：
 
 ## 慢日志内存映射表
 
-用户可通过查询 `INFORMATION_SCHEMA.SLOW_QUERY` 表来查询慢查询日志中的内容，表中列名和慢日志中字段名一一对应，表结构可查看 [Information Schema](reference/system-databases/information-schema.md#information-schema) 中关于 `SLOW_QUERY` 表的介绍。
+用户可通过查询 `INFORMATION_SCHEMA.SLOW_QUERY` 表来查询慢查询日志中的内容，表中列名和慢日志中字段名一一对应，表结构可查看 [Information Schema](/dev/reference/system-databases/information-schema.md#information-schema) 中关于 `SLOW_QUERY` 表的介绍。
 
 > **注意：**
 >
@@ -265,23 +265,34 @@ pt-query-digest --report tidb-slow.log
 
 除了获取 TiDB 日志，还有一种定位慢查询的方式是通过 `admin show slow` SQL 命令：
 
+{{< copyable "sql" >}}
+
 ```sql
-admin show slow recent N
-admin show slow top [internal | all] N
+admin show slow recent N;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+admin show slow top [internal | all] N;
 ```
 
 `recent N` 会显示最近的 N 条慢查询记录，例如：
 
+{{< copyable "sql" >}}
+
 ```sql
-admin show slow recent 10
+admin show slow recent 10;
 ```
 
 `top N` 则显示最近一段时间（大约几天）内，最慢的查询记录。如果指定 `internal` 选项，则返回查询系统内部 SQL 的慢查询记录；如果指定 `all` 选项，返回系统内部和用户 SQL 汇总以后的慢查询记录；默认只返回用户 SQL 中的慢查询记录。
 
+{{< copyable "sql" >}}
+
 ```sql
-admin show slow top 3
-admin show slow top internal 3
-admin show slow top all 5
+admin show slow top 3;
+admin show slow top internal 3;
+admin show slow top all 5;
 ```
 
 由于内存限制，保留的慢查询记录的条数是有限的。当命令查询的 `N` 大于记录条数时，返回的结果记录条数会小于 `N`。

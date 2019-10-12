@@ -32,36 +32,83 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment);
+CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment);
+```
+
+```
 Query OK, 0 rows affected (0.11 sec)
+```
 
-mysql> INSERT INTO t1 VALUES (NULL);
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 VALUES (NULL);
+```
+
+```
 Query OK, 1 row affected (0.02 sec)
+```
 
-mysql> SELECT * FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t1;
+```
+
+```
 +----+
 | id |
 +----+
 |  1 |
 +----+
 1 row in set (0.00 sec)
+```
 
-mysql> ALTER TABLE t1 ADD COLUMN c1 INT NOT NULL;
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 ADD COLUMN c1 INT NOT NULL;
+```
+
+```
 Query OK, 0 rows affected (0.28 sec)
+```
 
-mysql> SELECT * FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t1;
+```
+
+```
 +----+----+
 | id | c1 |
 +----+----+
 |  1 |  0 |
 +----+----+
 1 row in set (0.00 sec)
+```
 
-mysql> ALTER TABLE t1 ADD c2 INT NOT NULL AFTER c1;
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 ADD c2 INT NOT NULL AFTER c1;
+```
+
+```
 Query OK, 0 rows affected (0.28 sec)
+```
 
-mysql> SELECT * FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t1;
+```
+
+```
 +----+----+----+
 | id | c1 | c2 |
 +----+----+----+
@@ -78,5 +125,5 @@ mysql> SELECT * FROM t1;
 
 ## 另请参阅
 
-* [ADD INDEX](/reference/sql/statements/add-index.md)
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
+* [ADD INDEX](/v3.0/reference/sql/statements/add-index.md)
+* [CREATE TABLE](/v3.0/reference/sql/statements/create-table.md)

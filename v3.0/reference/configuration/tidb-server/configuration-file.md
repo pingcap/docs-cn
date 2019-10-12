@@ -10,7 +10,7 @@ aliases: ['/docs-cn/op-guide/tidb-config-file/']
 
 TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认值的配置文件，重命名为 config.toml 即可。
 
-本文档只阐述未包含在命令行参数中的参数，命令行参数参见[这里](/reference/configuration/tidb-server/configuration.md)。
+本文档只阐述未包含在命令行参数中的参数，命令行参数参见[这里](/v3.0/reference/configuration/tidb-server/configuration.md)。
 
 ### `split-table`
 
@@ -212,12 +212,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + TiDB 在 TCP 层开启 keepalive。
 + 默认值：false
 
-### `retry-limit`
-
-+ TiDB 在提交事务的时候遇到 key 冲突或者其他错误时进行的重试次数。
-+ 默认值：10
-+ 如果 TiDB 超过 `retry-limit` 次重试还是没有成功，将会返回错误。
-
 ### `cross-join`
 
 + 默认值：true
@@ -351,7 +345,7 @@ prepare 语句的 Plan cache 设置。
 ### `capacity`
 
 + Hash 对应的 slot 数，会自动向上调整为 2 的指数倍。每个 slot 占 32 Bytes 内存。当写入数据的范围比较广时（如导数据），设置过小会导致变慢，性能下降。
-+ 默认值：1024000
++ 默认值：2048000
 
 ## binlog
 
@@ -387,6 +381,11 @@ TiDB Binlog 相关配置。
 ## status
 
 TiDB 服务状态相关配置。
+
+### `report-status`
+
++ 开启 HTTP API 服务的开关。
++ 默认值：true
 
 ### `record-db-qps`
 

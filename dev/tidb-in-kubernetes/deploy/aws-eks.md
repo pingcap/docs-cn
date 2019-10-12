@@ -1,7 +1,6 @@
 ---
 title: 在 AWS EKS 上部署 TiDB 集群
 category: how-to
-aliases: ['/docs-cn/v3.0/how-to/deploy/orchestrated/aws-eks/']
 ---
 
 # 在 AWS EKS 上部署 TiDB 集群
@@ -145,7 +144,7 @@ ssh -i credentials/<cluster_name>.pem centos@<bastion_ip>
 {{< copyable "shell-regular" >}}
 
 ```shell
-mysql -h <tidb_dns> -P <tidb_port> -u root
+mysql -h <tidb_dns> -P 4000 -u root
 ```
 
 `cluster_name` 默认为 `my-cluster`。如果 DNS 名字无法解析，请耐心等待几分钟。
@@ -157,7 +156,7 @@ mysql -h <tidb_dns> -P <tidb_port> -u root
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb
+    kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n <cluster_name>
     ```
 
     {{< copyable "shell-regular" >}}
@@ -177,7 +176,7 @@ mysql -h <tidb_dns> -P <tidb_port> -u root
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get po -n tidb
+    kubectl get po -n <cluster_name>
     ```
 
     {{< copyable "shell-regular" >}}
@@ -188,7 +187,7 @@ mysql -h <tidb_dns> -P <tidb_port> -u root
 
 ## Grafana 监控
 
-你可以通过浏览器访问 `monitor_endpoint` 地址查看 Grafana 监控指标。
+你可以通过浏览器访问 `<monitor-dns>:3000` 地址查看 Grafana 监控指标。
 
 Grafana 默认登录信息：
 
@@ -197,26 +196,25 @@ Grafana 默认登录信息：
 
 ## 升级 TiDB 集群
 
-要升级 TiDB 集群，可编辑 `variables.tf` 文件，修改 `tidb_version` 变量到更高版本，然后运行 `terraform apply`。
+要升级 TiDB 集群，可编辑 `variables.tf` 文件，修改 `default_cluster_version` 变量到更高版本，然后运行 `terraform apply`。
 
-例如，要升级 TiDB 集群到 3.0.1，则修改 `tidb_version` 为 `v3.0.1`：
+例如，要升级 TiDB 集群到 3.0.1，则修改 `default_cluster_version` 为 `v3.0.1`：
 
 ```hcl
- variable "tidb_version" {
-   description = "tidb cluster version"
-   default = "v3.0.1"
- }
+variable "default_cluster_version" {
+  default = "v3.0.1"
+}
 ```
 
 > **注意：**
 >
-> 升级过程会持续一段时间，你可以通过 `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb --watch` 命令持续观察升级进度。
+> 升级过程会持续一段时间，你可以通过 `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n <cluster_name> --watch` 命令持续观察升级进度。
 
 ## 扩容 TiDB 集群
 
-若要扩容 TiDB 集群，可按需修改 `variables.tf` 文件中的 `tikv_count` 或者 `tidb_count` 变量，然后运行 `terraform apply`。
+若要扩容 TiDB 集群，可按需修改 `variables.tf` 文件中的 `default_cluster_tikv_count` 或者 `default_cluster_tidb_count` 变量，然后运行 `terraform apply`。
 
-例如，可以将 `tidb_count` 从 2 改为 4 以扩容 TiDB：
+例如，可以将 `default_cluster_tidb_count` 从 2 改为 4 以扩容 TiDB：
 
 ```hcl
  variable "default_cluster_tidb_count" {
@@ -227,7 +225,7 @@ Grafana 默认登录信息：
 > **注意：**
 >
 > - 由于缩容过程中无法确定会缩掉哪个节点，目前还不支持 TiDB 集群的缩容。
-> - 扩容过程会持续几分钟，你可以通过 `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb --watch` 命令持续观察进度。
+> - 扩容过程会持续几分钟，你可以通过 `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n <cluster_name> --watch` 命令持续观察进度。
 
 ## 自定义
 
@@ -254,7 +252,35 @@ Terraform 脚本中为运行在 EKS 上的 TiDB 集群提供了合理的默认�
 
 作为例子，默认集群使用了 `./default-cluster.yaml` 作为 `values.yaml` 配置文件，并在配置中打开了"配置文件滚动更新"特性。
 
-值得注意的是，在 EKS 上部分配置项无法在 `values.yaml` 中进行修改，包括集群版本、副本数、`NodeSelector` 以及 `Tolerations`。这些配置项由 Terraform 直接管理以确保基础设施与 TiDB 集群之间的一致性。你可以通过修改 `cluster.tf` 文件中的 `tidb-cluster` module 参数来自定义这些配置。
+值得注意的是，在 EKS 上部分配置项无法在 `values.yaml` 中进行修改，包括集群版本、副本数、`NodeSelector` 以及 `Tolerations`。`NodeSelector` 和 `Tolerations` 由 Terraform 直接管理以确保基础设施与 TiDB 集群之间的一致性。集群版本和副本数可以通过 `cluster.tf` 文件中的 `tidb-cluster` module 参数来修改。
+
+> **注意：**
+>
+> 自定义 `values.yaml` 配置文件中，不建议包含如下配置（`tidb-cluster` module 默认固定配置）：
+
+```
+pd:
+  storageClassName: ebs-gp2
+tikv:
+  stroageClassName: local-storage
+tidb:
+  service:
+    type: LoadBalancer
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-internal: '0.0.0.0/0'
+      service.beta.kubernetes.io/aws-load-balancer-type: nlb
+      service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: >'true'
+  separateSlowLog: true
+monitor:
+  storage: 100Gi
+  storageClassName: ebs-gp2
+  persistent: true
+  grafana:
+    config:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+    service:
+      type: LoadBalancer
+```
 
 ### 自定义 TiDB Operator
 
@@ -273,10 +299,10 @@ variable "operator_values" {
 
 ```hcl
 module example-cluster {
-  source = "./tidb-cluster"
+  source = "../modules/aws/tidb-cluster"
   
   # The target EKS, required
-  eks_info = local.eks
+  eks = local.eks
   # The subnets of node pools of this TiDB cluster, required
   subnets = local.subnets
   # TiDB cluster name, required
@@ -324,6 +350,8 @@ output "example-cluster_monitor-hostname" {
 }
 ```
 
+修改完成后，执行 `terraform init` 和 `terraform apply` 创建集群。
+
 最后，只要移除 `tidb-cluster` 模块调用，对应的 TiDB 集群就会被销毁，EC2 资源也会随之释放。
 
 ## 销毁集群
@@ -347,7 +375,7 @@ terraform destroy
 
 上述文档中介绍的 Terraform 脚本组合了多个 Terraform 模块：
 
-- `tidb-operator` 模块，用于创建 EKS 集群并在 EKS 集群上安装配置 [TiDB Operator](tidb-in-kubernetes/deploy/tidb-operator.md)。
+- `tidb-operator` 模块，用于创建 EKS 集群并在 EKS 集群上安装配置 [TiDB Operator](/dev/tidb-in-kubernetes/deploy/tidb-operator.md)。
 - `tidb-cluster` 模块，用于创建 TiDB 集群所需的资源池并部署 TiDB 集群。
 - EKS 上的 TiDB 集群专用的 `vpc` 模块、`key-pair`模块和`bastion` 模块
 

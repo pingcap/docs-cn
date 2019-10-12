@@ -44,15 +44,34 @@ category: reference
 
 ## 示例
 
-```sql
-mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
-Query OK, 0 rows affected (0.10 sec)
+{{< copyable "sql" >}}
 
-mysql> INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
+```sql
+CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
+```
+
+```
+Query OK, 0 rows affected (0.10 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
+```
+
+```
 Query OK, 5 rows affected (0.02 sec)
 Records: 5  Duplicates: 0  Warnings: 0
+```
 
-mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
+```
+
+```
 +---------------------+----------+------+-------------------------------------------------------------+
 | id                  | count    | task | operator info                                               |
 +---------------------+----------+------+-------------------------------------------------------------+
@@ -61,11 +80,25 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 |   └─TableScan_5     | 10000.00 | cop  | table:t1, range:[-inf,+inf], keep order:false, stats:pseudo |
 +---------------------+----------+------+-------------------------------------------------------------+
 3 rows in set (0.00 sec)
+```
 
-mysql> CREATE INDEX c1 ON t1 (c1);
+{{< copyable "sql" >}}
+
+```sql
+CREATE INDEX c1 ON t1 (c1);
+```
+
+```
 Query OK, 0 rows affected (0.30 sec)
+```
 
-mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
+```
+
+```
 +-------------------+-------+------+-----------------------------------------------------------------+
 | id                | count | task | operator info                                                   |
 +-------------------+-------+------+-----------------------------------------------------------------+
@@ -73,17 +106,31 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 | └─IndexScan_5     | 10.00 | cop  | table:t1, index:c1, range:[3,3], keep order:false, stats:pseudo |
 +-------------------+-------+------+-----------------------------------------------------------------+
 2 rows in set (0.00 sec)
+```
 
-mysql> ALTER TABLE t1 DROP INDEX c1;
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 DROP INDEX c1;
+```
+
+```
 Query OK, 0 rows affected (0.30 sec)
+```
 
-mysql> CREATE UNIQUE INDEX c1 ON t1 (c1);
+{{< copyable "sql" >}}
+
+```sql
+CREATE UNIQUE INDEX c1 ON t1 (c1);
+```
+
+```
 Query OK, 0 rows affected (0.31 sec)
 ```
 
 ## 相关 session 变量
 
-和 `CREATE INDEX` 语句相关的全局变量有 `tidb_ddl_reorg_worker_cnt`，`tidb_ddl_reorg_batch_size` 和 `tidb_ddl_reorg_priority`，具体可以参考 [TiDB 特定系统变量](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb-ddl-reorg-worker-cnt)。
+和 `CREATE INDEX` 语句相关的全局变量有 `tidb_ddl_reorg_worker_cnt`，`tidb_ddl_reorg_batch_size` 和 `tidb_ddl_reorg_priority`，具体可以参考 [TiDB 特定系统变量](/v3.0/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_ddl_reorg_worker_cnt)。
 
 ## MySQL 兼容性
 
@@ -93,9 +140,9 @@ Query OK, 0 rows affected (0.31 sec)
 
 ## 另请参阅
 
-* [ADD INDEX](/reference/sql/statements/add-index.md)
-* [DROP INDEX](/reference/sql/statements/drop-index.md)
-* [RENAME INDEX](/reference/sql/statements/rename-index.md)
-* [ADD COLUMN](/reference/sql/statements/add-column.md)
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [EXPLAIN](/reference/sql/statements/explain.md)
+* [ADD INDEX](/v3.0/reference/sql/statements/add-index.md)
+* [DROP INDEX](/v3.0/reference/sql/statements/drop-index.md)
+* [RENAME INDEX](/v3.0/reference/sql/statements/rename-index.md)
+* [ADD COLUMN](/v3.0/reference/sql/statements/add-column.md)
+* [CREATE TABLE](/v3.0/reference/sql/statements/create-table.md)
+* [EXPLAIN](/v3.0/reference/sql/statements/explain.md)

@@ -9,18 +9,18 @@ category: reference
 
 Loader 是由 PingCAP 开发的数据导入工具，用于向 TiDB 中导入数据。
 
-Loader 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/reference/tools/download.md)。
+Loader 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/v2.1/reference/tools/download.md)。
 
 ## 为什么我们要做这个工具
 
-当数据量比较大的时候，如果用 mysqldump 这样的工具迁移数据会比较慢。我们尝试了 [mydumper/myloader 套件](https://github.com/maxbube/mydumper)，能够多线程导出和导入数据。在使用过程中，mydumper 问题不大，但是 myloader 由于缺乏出错重试、断点续传这样的功能，使用起来很不方便。所以我们开发了 loader，能够读取 mydumper 的输出数据文件，通过 MySQL protocol 向 TiDB/MySQL 中导入数据。
+当数据量比较大的时候，如果用 mysqldump 这样的工具迁移数据会比较慢。我们尝试了 [Mydumper/myloader 套件](https://github.com/maxbube/mydumper)，能够多线程导出和导入数据。在使用过程中，Mydumper 问题不大，但是 myloader 由于缺乏出错重试、断点续传这样的功能，使用起来很不方便。所以我们开发了 loader，能够读取 Mydumper 的输出数据文件，通过 MySQL protocol 向 TiDB/MySQL 中导入数据。
 
 ## Loader 有哪些优点
 
 * 多线程导入
 * 支持表级别的并发导入，分散写入热点
 * 支持对单个大表并发导入，分散写入热点
-* 支持 mydumper 数据格式
+* 支持 Mydumper 数据格式
 * 出错重试
 * 断点续导
 * 通过 system variable 优化 TiDB 导入数据速度
@@ -31,7 +31,7 @@ Loader 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/referen
 
 请勿使用 loader 导入 MySQL 实例中 `mysql` 系统数据库到下游 TiDB。
 
-如果 mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。
+如果 Mydumper 使用 -m 参数，会导出不带表结构的数据，这时 loader 无法导入数据。
 
 如果使用默认的 `checkpoint-schema` 参数，在导完一个 database 数据库后，请 `drop database tidb_loader` 后再开始导入下一个 database。
 
@@ -94,6 +94,11 @@ host = "127.0.0.1"
 user = "root"
 password = ""
 port = 4000
+
+# 导入数据时数据库连接所使用的 session 级别的 `sql_mode`。如果 `sql-mode` 的值没有提供或者设置为 "@DownstreamDefault"，会使用下游 global 级别的 `sql_mode`。
+# sql-mode = ""
+# `max-allowed-packet` 设置数据库连接允许的最大数据包大小，对应于系统参数中的 `max_allowed_packet`。 如果设置为 0，会使用下游数据库 global 级别的 `max_allowed_packet`。
+max-allowed-packet = 67108864
 
 # sharding 同步规则，采用 wildcharacter
 # 1\. 星号字符 (*) 可以匹配零个或者多个字符,

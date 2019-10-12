@@ -9,7 +9,7 @@ aliases: ['/docs-cn/sql/util/']
 
 `EXPLAIN` 语句仅用于显示查询的执行计划，而不执行查询。`EXPLAIN ANALYZE` 可执行查询，补充 `EXPLAIN` 语句。如果 `EXPLAIN` 的输出与预期结果不匹配，可考虑在查询的每个表上执行 `ANALYZE TABLE`。
 
-语句 `DESC` 和 `DESCRIBE` 是 `EXPLAIN` 的别名。`EXPLAIN <tableName>` 的替代用法记录在 [`SHOW [FULL] COLUMNS FROM`](/reference/sql/statements/show-columns-from.md) 下。
+语句 `DESC` 和 `DESCRIBE` 是 `EXPLAIN` 的别名。`EXPLAIN <tableName>` 的替代用法记录在 [`SHOW [FULL] COLUMNS FROM`](/v3.0/reference/sql/statements/show-columns-from.md) 下。
 
 ## 语法图
 
@@ -27,8 +27,13 @@ aliases: ['/docs-cn/sql/util/']
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> EXPLAIN SELECT 1;
+EXPLAIN SELECT 1;
+```
+
+```
 +-------------------+-------+------+---------------+
 | id                | count | task | operator info |
 +-------------------+-------+------+---------------+
@@ -36,42 +41,91 @@ mysql> EXPLAIN SELECT 1;
 | └─TableDual_4     | 1.00  | root | rows:1        |
 +-------------------+-------+------+---------------+
 2 rows in set (0.00 sec)
+```
 
-mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
+```
+
+```
 Query OK, 0 rows affected (0.10 sec)
+```
 
-mysql> INSERT INTO t1 (c1) VALUES (1), (2), (3);
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 (c1) VALUES (1), (2), (3);
+```
+
+```
 Query OK, 3 rows affected (0.02 sec)
 Records: 3  Duplicates: 0  Warnings: 0
+```
 
-mysql> EXPLAIN SELECT * FROM t1 WHERE id = 1;
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN SELECT * FROM t1 WHERE id = 1;
+```
+
+```
 +-------------+-------+------+--------------------+
 | id          | count | task | operator info      |
 +-------------+-------+------+--------------------+
 | Point_Get_1 | 1.00  | root | table:t1, handle:1 |
 +-------------+-------+------+--------------------+
 1 row in set (0.00 sec)
+```
 
-mysql> DESC SELECT * FROM t1 WHERE id = 1;
+{{< copyable "sql" >}}
+
+```sql
+DESC SELECT * FROM t1 WHERE id = 1;
+```
+
+```
 +-------------+-------+------+--------------------+
 | id          | count | task | operator info      |
 +-------------+-------+------+--------------------+
 | Point_Get_1 | 1.00  | root | table:t1, handle:1 |
 +-------------+-------+------+--------------------+
 1 row in set (0.00 sec)
+```
 
-mysql> DESCRIBE SELECT * FROM t1 WHERE id = 1;
+{{< copyable "sql" >}}
+
+```sql
+DESCRIBE SELECT * FROM t1 WHERE id = 1;
+```
+
+```
 +-------------+-------+------+--------------------+
 | id          | count | task | operator info      |
 +-------------+-------+------+--------------------+
 | Point_Get_1 | 1.00  | root | table:t1, handle:1 |
 +-------------+-------+------+--------------------+
 1 row in set (0.00 sec)
+```
 
-mysql> EXPLAIN INSERT INTO t1 (c1) VALUES (4);
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN INSERT INTO t1 (c1) VALUES (4);
+```
+
+```
 ERROR 1105 (HY000): Unsupported type *core.Insert
+```
 
-mysql> EXPLAIN UPDATE t1 SET c1=5 WHERE c1=3;
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN UPDATE t1 SET c1=5 WHERE c1=3;
+```
+
+```
 +---------------------+----------+------+-------------------------------------------------------------+
 | id                  | count    | task | operator info                                               |
 +---------------------+----------+------+-------------------------------------------------------------+
@@ -80,8 +134,15 @@ mysql> EXPLAIN UPDATE t1 SET c1=5 WHERE c1=3;
 |   └─TableScan_4     | 10000.00 | cop  | table:t1, range:[-inf,+inf], keep order:false, stats:pseudo |
 +---------------------+----------+------+-------------------------------------------------------------+
 3 rows in set (0.00 sec)
+```
 
-mysql> EXPLAIN DELETE FROM t1 WHERE c1=3;
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN DELETE FROM t1 WHERE c1=3;
+```
+
+```
 +---------------------+----------+------+-------------------------------------------------------------+
 | id                  | count    | task | operator info                                               |
 +---------------------+----------+------+-------------------------------------------------------------+
@@ -96,12 +157,14 @@ mysql> EXPLAIN DELETE FROM t1 WHERE c1=3;
 
 除 MySQL 标准结果格式外，TiDB 还支持 DotGraph。需按照下列所示指定 `FORMAT ="dot"`：
 
+{{< copyable "sql" >}}
+
 ```sql
 create table t(a bigint, b bigint);
 desc format = "dot" select A.a, B.b from t A join t B on A.a > B.b where A.a < 10;
+```
 
-TiDB > desc format = "dot" select A.a, B.b from t A join t B on A.a > B.b where A.a < 10;desc format = "dot" select A.a, B.b from t A join t B on A.a > B.b where A.a < 10;
-+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+```+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | dot contents                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 +--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |
@@ -135,11 +198,13 @@ label = "cop"
 
 如果你的计算机上安装了 `dot` 程序（在 `graphviz` 包中），可使用以下方法生成 PNG 文件：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 dot xx.dot -T png -O
-
-The xx.dot is the result returned by the above statement.
 ```
+
+The `xx.dot` is the result returned by the above statement.
 
 如果你的计算机上未安装 `dot` 程序，可将结果复制到 [本网站](http://www.webgraphviz.com/) 以获取树形图：
 
@@ -153,7 +218,7 @@ The xx.dot is the result returned by the above statement.
 
 ## 另请参阅
 
-* [Understanding the Query Execution Plan](/reference/performance/understanding-the-query-execution-plan.md)
-* [EXPLAIN ANALYZE](/reference/sql/statements/explain-analyze.md)
-* [ANALYZE TABLE](/reference/sql/statements/analyze-table.md)
-* [TRACE](/reference/sql/statements/trace.md)
+* [Understanding the Query Execution Plan](/v3.0/reference/performance/understanding-the-query-execution-plan.md)
+* [EXPLAIN ANALYZE](/v3.0/reference/sql/statements/explain-analyze.md)
+* [ANALYZE TABLE](/v3.0/reference/sql/statements/analyze-table.md)
+* [TRACE](/v3.0/reference/sql/statements/trace.md)

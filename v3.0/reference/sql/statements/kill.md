@@ -18,8 +18,13 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW PROCESSLIST;
+SHOW PROCESSLIST;
+```
+
+```
 +------+------+-----------+------+---------+------+-------+------------------+
 | Id   | User | Host      | db   | Command | Time | State | Info             |
 +------+------+-----------+------+---------+------+-------+------------------+
@@ -27,15 +32,22 @@ mysql> SHOW PROCESSLIST;
 |    2 | root | 127.0.0.1 |      | Sleep   |    4 | 2     |                  |
 +------+------+-----------+------+---------+------+-------+------------------+
 2 rows in set (0.00 sec)
+```
 
-mysql> KILL TIDB 2;
+{{< copyable "sql" >}}
+
+```sql
+KILL TIDB 2;
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
 ```
 
 ## MySQL 兼容性
 
-* `KILL TIDB` 语句是 TiDB 的扩展语法。如果正尝试终止的会话位于同一个 TiDB 服务器上，可在配置文件里设置 [`compatible-kill-query = true`](/reference/configuration/tidb-server/configuration-file.md#compatible-kill-query)。
+* `KILL TIDB` 语句是 TiDB 的扩展语法。如果正尝试终止的会话位于同一个 TiDB 服务器上，可在配置文件里设置 [`compatible-kill-query = true`](/v3.0/reference/configuration/tidb-server/configuration-file.md#compatible-kill-query)。
 
 ## 另请参阅
 
-* [SHOW \[FULL\] PROCESSLIST](/reference/sql/statements/show-processlist.md)
+* [SHOW \[FULL\] PROCESSLIST](/v3.0/reference/sql/statements/show-processlist.md)

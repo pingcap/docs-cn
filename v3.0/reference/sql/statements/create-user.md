@@ -36,11 +36,23 @@ category: reference
 
 ## 示例
 
-```sql
-mysql> CREATE USER 'newuser' IDENTIFIED BY 'newuserpassword';
-Query OK, 1 row affected (0.04 sec)
+{{< copyable "sql" >}}
 
-mysql> CREATE USER 'newuser2'@'192.168.1.1' IDENTIFIED BY 'newuserpassword';
+```sql
+CREATE USER 'newuser' IDENTIFIED BY 'newuserpassword';
+```
+
+```
+Query OK, 1 row affected (0.04 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER 'newuser2'@'192.168.1.1' IDENTIFIED BY 'newuserpassword';
+```
+
+```
 Query OK, 1 row affected (0.02 sec)
 ```
 
@@ -50,8 +62,8 @@ Query OK, 1 row affected (0.02 sec)
 
 ## 另请参阅
 
-* [Security Compatibility with MySQL](/reference/security/compatibility.md)
-* [DROP USER](/reference/sql/statements/drop-user.md)
-* [SHOW CREATE USER](/reference/sql/statements/show-create-user.md)
-* [ALTER USER](/reference/sql/statements/alter-user.md)
-* [Privilege Management](/reference/security/privilege-system.md)
+* [Security Compatibility with MySQL](/v3.0/reference/security/compatibility.md)
+* [DROP USER](/v3.0/reference/sql/statements/drop-user.md)
+* [SHOW CREATE USER](/v3.0/reference/sql/statements/show-create-user.md)
+* [ALTER USER](/v3.0/reference/sql/statements/alter-user.md)
+* [Privilege Management](/v3.0/reference/security/privilege-system.md)

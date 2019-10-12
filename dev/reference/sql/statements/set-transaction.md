@@ -24,30 +24,63 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW SESSION VARIABLES like 'transaction_isolation';
+SHOW SESSION VARIABLES like 'transaction_isolation';
+```
+
+```
 +-----------------------+-----------------+
 | Variable_name         | Value           |
 +-----------------------+-----------------+
 | transaction_isolation | REPEATABLE-READ |
 +-----------------------+-----------------+
 1 row in set (0.00 sec)
+```
 
-mysql> SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+{{< copyable "sql" >}}
+
+```sql
+SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> SHOW SESSION VARIABLES like 'transaction_isolation';
+{{< copyable "sql" >}}
+
+```sql
+SHOW SESSION VARIABLES like 'transaction_isolation';
+```
+
+```
 +-----------------------+----------------+
 | Variable_name         | Value          |
 +-----------------------+----------------+
 | transaction_isolation | READ-COMMITTED |
 +-----------------------+----------------+
 1 row in set (0.01 sec)
+```
 
-mysql> SET SESSION transaction_isolation = 'REPEATABLE-READ';
+{{< copyable "sql" >}}
+
+```sql
+SET SESSION transaction_isolation = 'REPEATABLE-READ';
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> SHOW SESSION VARIABLES like 'transaction_isolation';
+{{< copyable "sql" >}}
+
+```sql
+SHOW SESSION VARIABLES like 'transaction_isolation';
+```
+
+```
 +-----------------------+-----------------+
 | Variable_name         | Value           |
 +-----------------------+-----------------+
@@ -64,5 +97,5 @@ mysql> SHOW SESSION VARIABLES like 'transaction_isolation';
 
 ## 另请参阅
 
-* [SET \[GLOBAL|SESSION\] <variable>](/reference/sql/statements/set-variable.md)
-* [Isolation Levels](/reference/transactions/transaction-isolation.md)
+* [SET \[GLOBAL|SESSION\] <variable>](/dev/reference/sql/statements/set-variable.md)
+* [Isolation Levels](/dev/reference/transactions/transaction-isolation.md)
