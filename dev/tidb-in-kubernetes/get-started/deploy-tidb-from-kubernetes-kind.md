@@ -89,7 +89,7 @@ kind 通过 Docker 容器模拟出一个单点的 Kubernetes 集群。kind 的�
     KubeDNS is running at https://127.0.0.1:50295/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
     ```
 
-5. 查看本地 kind kubernetes `storageClass`:
+5. 查看该 Kubernetes 集群的 `storageClass`：
 
     {{< copyable "shell-regular" >}}
 
