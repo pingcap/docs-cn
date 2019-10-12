@@ -66,7 +66,7 @@ kind 通过 Docker 容器模拟出一个单点的 Kubernetes 集群。kind 的�
     > hack/kind-cluster-build.sh --nodeNum 2 --k8sVersion v1.14.6 --volumeNum 3
     > ```
 
-3. 等待集群创建完毕以后，我们切换 kube-config 文件来连接到本地 Kubernetes 集群:
+3. 集群创建完毕后，执行下列命令将 kubectl 的默认配置文件切换到 `kube-config`，从而连接到该本地 Kubernetes 集群：
 
     {{< copyable "shell-regular" >}}
 
