@@ -19,7 +19,7 @@ Usage of Reparo:
     日志输出信息等级设置：debug, info, warn, error, fatal (默认值：info)。
 -V 打印版本信息。
 -c int
-    同步下游的并发数，该值设置越高同步的吞吐性能越好 (默认 16)
+    同步下游的并发数，该值设置越高同步的吞吐性能越好（默认 16）。
 -config string
     配置文件路径，如果指定了配置文件，Reparo 会首先读取配置文件的配置；如果对应的配置在命令行参数里面也存在，Reparo 就会使用命令行参数的配置来覆盖配置文件里面的。
 -data-dir string
