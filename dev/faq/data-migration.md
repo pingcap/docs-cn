@@ -20,7 +20,7 @@ category: FAQ
 
 当前版本 DM 发生该类型错误时，需要先使用 `stop-task` 停止任务后再使用 `start-task` 重启任务。后续 DM 会完善对此错误类型的自动重试机制。
 
-## relay 处理单元报错 `event from * in * diff from passed-in event *` 或同步任务中断并包含 `get binlog error ERROR 1236 (HY000)`, `binlog checksum mismatch, data may be corrupted` 等 binlog 获取或解析失败错误
+## relay 处理单元报错 `event from * in * diff from passed-in event *` 或同步任务中断并包含 `get binlog error ERROR 1236 (HY000)`、`binlog checksum mismatch, data may be corrupted` 等 binlog 获取或解析失败错误
 
 在 DM 进行 relay log 拉取与增量同步过程中，如果遇到了上游超过 4GB 的 binlog 文件，就可能出现这两个错误。
 
