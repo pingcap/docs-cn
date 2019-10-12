@@ -16,7 +16,7 @@ Reparo 是 TiDB Binlog 的一个配套工具，用于增量的恢复。使用 Ti
 ```
 Usage of Reparo:
 -L string
-    日志输出信息等级设置：debug, info, warn, error, fatal (默认值：info)。
+    日志输出信息等级设置：debug, info, warn, error, fatal（默认值：info）。
 -V 打印版本信息。
 -c int
     同步下游的并发数，该值设置越高同步的吞吐性能越好（默认 16）。
