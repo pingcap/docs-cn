@@ -423,6 +423,14 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 这个变量用来控制 DDL 操作失败重试的次数。失败重试次数超过该参数的值后，会取消出错的 DDL 操作。
 
+### tidb_max_delta_schema_count
+
+作用域：GLOBAL
+
+默认值：1024
+
+这个变量用来设置缓存 schema 版本信息（对应版本修改的相关 table IDs）的个数限制，可设置的范围 100 - 16384。此变量在 2.1.18 及之后版本支持。
+
 ### tidb_force_priority
 
 作用域：SESSION
@@ -490,11 +498,13 @@ set tidb_query_log_max_len = 20;
 
 ### tidb_txn_mode
 
-作用域：SESSION
+作用域：SESSION（自 TiDB 3.0.4 起支持 GLOBAL）
 
 默认值：""
 
-这个变量用于设置当前 session 的事务模式，默认是乐观锁模式。 TiDB 3.0 加入了悲观锁模式（实验性）。将 `tidb_txn_mode` 设置为 `'pessimistic'` 后，这个 session 执行的所有显式事务（即非 autocommit 的事务）都会进入悲观事务模式。更多关于悲观锁的细节，可以参考 [TiDB 悲观事务模式](/v3.0/reference/transactions/transaction-pessimistic.md)。
+这个变量用于设置事务模式，默认是乐观锁模式。TiDB 3.0 加入了悲观锁模式（实验性）。将 `tidb_txn_mode` 设置为 `'pessimistic'` 后，这个 session 执行的所有显式事务（即非 autocommit 的事务）都会进入悲观事务模式。更多关于悲观锁的细节，可以参考 [TiDB 悲观事务模式](/v3.0/reference/transactions/transaction-pessimistic.md)。
+
+自 TiDB 3.0.4 起，该变量也支持 GLOBAL 作用域，用于设定全局的事务模式。当设定全局的事务模式时，仅在修改生效之后创建的 session 会受到影响。
 
 ### tidb_constraint_check_in_place
 
