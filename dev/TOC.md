@@ -109,10 +109,10 @@
       - [FAQ](/dev/faq/data-migration.md)
     + TiDB Binlog
       - [概述](/dev/reference/tools/tidb-binlog/tidb-binlog-overview.md)
-      - [部署](/dev/reference/tools/tidb-binlog/tidb-binlog-deploy.md)
-      - [运维](/dev/reference/tools/tidb-binlog/tidb-binlog-maintain.md)
-      - [升级](/dev/reference/tools/tidb-binlog/tidb-binlog-upgrade.md)
-      - [监控](/dev/reference/tools/tidb-binlog/tidb-binlog-monitor.md)
+      - [部署使用](/dev/reference/tools/tidb-binlog/tidb-binlog-deploy.md)
+      - [运维管理](/dev/reference/tools/tidb-binlog/tidb-binlog-maintain.md)
+      - [版本升级](/dev/reference/tools/tidb-binlog/tidb-binlog-upgrade.md)
+      - [监控告警](/dev/reference/tools/tidb-binlog/tidb-binlog-monitor.md)
     + TiDB Lightning
       - [概述](/dev/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/dev/reference/tools/tidb-lightning/deployment.md)
