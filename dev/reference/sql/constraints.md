@@ -50,13 +50,17 @@ ALTER TABLE orders DROP FOREIGN KEY fk_user_id;
 ALTER TABLE orders ADD FOREIGN KEY fk_user_id (user_id) REFERENCES users(id);
 ```
 
-Currently foreign keys are not enforced as part of DML operations. For example, in TiDB the following transaction commits successfully even though there is no `user_id` with `id=123`:
+### Notes
 
-```sql
-START TRANSACTION;
-INSERT INTO orders (user_id, doc) VALUES (123, NULL);
-COMMIT;
-```
+* TiDB supports foreign keys so that no errors are reported for this syntax when migrating data from other databases. Currently, foreign keys are not enforced as part of DML operations. For example, even though there is no such record as `id=123` in the `users` table, the following transaction commits successfully in TiDB:
+
+    ```
+    START TRANSACTION;
+    INSERT INTO orders (user_id, doc) VALUES (123, NULL);
+    COMMIT;
+    ```
+
+* In TiDB, the foreign key information is not displayed in the execution result of the `SHOW CREATE TABLE` statement.
 
 ## Not Null
 
