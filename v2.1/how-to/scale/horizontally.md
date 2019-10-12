@@ -28,7 +28,7 @@ TiDB 集群可以在不影响线上服务的情况下动态进行扩容和缩容
 我们可以通过 pd-ctl 来查看当前所有 PD 节点的信息：
 
 ```bash
-./pd-ctl -u http://host1:2379 -i
+./pd-ctl -u http://host1:2379
 >> member
 ```
 

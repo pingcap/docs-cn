@@ -68,10 +68,7 @@ aliases: ['/docs-cn/v3.0/how-to/upgrade/tidb-in-kubernetes/']
 
 ## 强制升级 TiDB 集群
 
-如果 PD 集群因为 PD 配置错误、PD 镜像 tag 错误、NodeAffinity 等原因不可用，[TiDB 集群扩缩容](/v3.0/tidb-in-kubernetes/scale-in-kubernetes.md)、[升级 TiDB 版本](#升级-tidb-版本)和[更新 TiDB 集群配置](#更新-tidb-集群配置)这三种操作都无法成功执行。
-
-这种情况下，可使用 `force-upgrade`（TiDB Operator 版本 > v1.0.0-beta.3 ）强制升级集群以恢复集群功能。
-首先为集群设置 `annotation`：
+如果 PD 集群因为 PD 配置错误，PD 镜像 tag 错误，NodeAffinity 等原因不可用，[TiDB 集群伸缩](/v3.0/tidb-in-kubernetes/scale-in-kubernetes.md)，[升级 TiDB 版本](#升级-TiDB-版本)和[更新 TiDB 集群配置](#更新-TiDB-集群配置)都无法操作。这种情况下，可使用 `force-upgrade`（TiDB Operator 版本 > v1.0.0-beta.3 ）强制升级集群以恢复集群功能。具体操作步骤如下：
 
 {{< copyable "shell-regular" >}}
 
@@ -79,15 +76,9 @@ aliases: ['/docs-cn/v3.0/how-to/upgrade/tidb-in-kubernetes/']
 kubectl annotate --overwrite tc <release-name> -n <namespace> tidb.pingcap.com/force-upgrade=true
 ```
 
-然后执行对应操作中的 `helm upgrade` 命令：
+然后执行对应操作中的 `helm upgrade` 命令。
 
-{{< copyable "shell-regular" >}}
-
-```shell
-helm upgrade <release-name> pingcap/tidb-cluster -f values.yaml --version=<chart-version>
-```
-
-> **警告：**
+> **注意：**
 >
 > PD 集群恢复后，**必须**执行下面命令禁用强制升级功能，否则下次升级过程可能会出现异常：
 >

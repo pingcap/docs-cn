@@ -37,7 +37,13 @@ aliases: ['/docs-cn/v3.0/how-to/get-started/local-cluster/install-from-docker-co
     {{< copyable "shell-regular" >}}
 
     ```bash
-    cd tidb-docker-compose && docker-compose pull && docker-compose up -d
+    cd tidb-docker-compose && docker-compose pull &&
+    ```
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    docker-compose up -d
     ```
 
 3. 访问集群

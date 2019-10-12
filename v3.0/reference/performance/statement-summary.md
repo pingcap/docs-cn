@@ -5,6 +5,8 @@ category: reference
 
 # Statement Summary Table
 
+## 简介
+
 针对 SQL 性能相关的问题，MySQL 在 `performance_schema` 提供了 [statement summary tables](https://dev.mysql.com/doc/refman/5.6/en/statement-summary-tables.html)，用来监控和统计 SQL。例如其中的一张表 `events_statements_summary_by_digest`，提供了丰富的字段，包括延迟、执行次数、扫描行数、全表扫描次数等，有助于用户定位 SQL 问题。
 
 为此，从 3.0.4 版本开始，TiDB 也提供系统表 `events_statements_summary_by_digest`。本文将详细介绍 `events_statements_summary_by_digest`，以及如何利用它来排查 SQL 性能问题。

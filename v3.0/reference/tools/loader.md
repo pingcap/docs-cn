@@ -96,11 +96,6 @@ user = "root"
 password = ""
 port = 4000
 
-# 导入数据时数据库连接所使用的 session 级别的 `sql_mode`。如果 `sql-mode` 的值没有提供或者设置为 "@DownstreamDefault"，会使用下游 global 级别的 `sql_mode`。
-# sql-mode = ""
-# `max-allowed-packet` 设置数据库连接允许的最大数据包大小，对应于系统参数中的 `max_allowed_packet`。 如果设置为 0，会使用下游数据库 global 级别的 `max_allowed_packet`。
-max-allowed-packet = 67108864
-
 # sharding 同步规则，采用 wildcharacter
 # 1\. 星号字符 (*) 可以匹配零个或者多个字符,
 #    例子, doc* 匹配 doc 和 document, 但是和 dodo 不匹配;
