@@ -88,6 +88,10 @@ DM-worker 的配置文件：
 ```toml
 # Worker Configuration.
 
+# 日志配置
+log-level = "info"
+log-file = "dm-worker.log"
+
 # DM-worker 的地址
 worker-addr = ":8262"
 
@@ -141,6 +145,10 @@ DM-master 的配置文件：
 
 ```toml
 # Master Configuration.
+
+# 日志配置
+log-level = "info"
+log-file = "dm-master.log"
 
 # DM-master 监听地址
 master-addr = ":8261"
