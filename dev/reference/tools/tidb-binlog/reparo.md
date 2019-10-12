@@ -68,7 +68,7 @@ dest-type = "mysql"
 # 输出到下游数据库一个事务的 SQL 语句数量（默认 20）。
 txn-batch = 20
 
-# 同步下游的并发数，该值设置越高同步的吞吐性能越好 (默认 16)
+# 同步下游的并发数，该值设置越高同步的吞吐性能越好（默认 16）。
 worker-count = 16
 
 # 安全模式配置。取值为 true 或 false（默认值：false）。当值为 true 时，Reparo 会将 update 语句拆分为 delete + replace 语句。
