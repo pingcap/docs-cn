@@ -271,6 +271,8 @@
       - [`SHOW TABLE STATUS`](/v2.1/reference/sql/statements/show-table-status.md)
       - [`SHOW [GLOBAL|SESSION] VARIABLES`](/v2.1/reference/sql/statements/show-variables.md)
       - [`SHOW WARNINGS`](/v2.1/reference/sql/statements/show-warnings.md)
+      - [`SHOW TABLE REGIONS`](/v2.1/reference/sql/statements/show-table-regions.md)
+      - [`SPLIT REGION`](/v2.1/reference/sql/statements/split-region.md)
       - [`START TRANSACTION`](/v2.1/reference/sql/statements/start-transaction.md)
       - [`TRACE`](/v2.1/reference/sql/statements/trace.md)
       - [`TRUNCATE`](/v2.1/reference/sql/statements/truncate.md)

@@ -50,7 +50,7 @@ Row data in the same table have the same `table_id`, but each row has its unique
 
 #### Even Split
 
-Because `row_id` is an integer, the value of the key to be split can be calculated easily according to the `lower_value`, `upper_value`, and `region_num` defined by the user. The calculation starts with the step value (`step = (upper_value - lower_value)/num`). Then split will be done evenly per each "step" between `lower_value` and `upper_value` to generate the number of Regions as specified by `num`.
+Because `row_id` is an integer, the value of the key to be split can be calculated according to the specified `lower_value`, `upper_value`, and `region_num`. TiDB first calculates the step value (`step = (upper_value - lower_value)/num`). Then split will be done evenly per each "step" between `lower_value` and `upper_value` to generate the number of Regions as specified by `num`.
 
 For example, if you want 16 evenly split Regions split from key range`minInt64`~`maxInt64` for table t, you can use this statement:
 
@@ -206,4 +206,4 @@ region4:   [ 3<<61     ,  +inf  )
 
 ## Related session variable
 
-There are two `SPLIT REGION` related session variables: `tidb_wait_split_region_finish` and `tidb_wait_split_region_timeout`. For details, see [TiDB specific system variables and syntax](/dev/reference/configuration/tidb-server/tidb-specific-variables.md).
+There are two `SPLIT REGION` related session variables: `tidb_scatter_region`, `tidb_wait_split_region_finish` and `tidb_wait_split_region_timeout`. For details, see [TiDB specific system variables and syntax](/dev/reference/configuration/tidb-server/tidb-specific-variables.md).

@@ -279,6 +279,7 @@
       - [`SHOW TABLE STATUS`](/dev/reference/sql/statements/show-table-status.md)
       - [`SHOW [GLOBAL|SESSION] VARIABLES`](/dev/reference/sql/statements/show-variables.md)
       - [`SHOW WARNINGS`](/dev/reference/sql/statements/show-warnings.md)
+      - [`SHOW TABLE REGIONS`](/dev/reference/sql/statements/show-table-regions.md)
       - [`SPLIT REGION`](/dev/reference/sql/statements/split-region.md)
       - [`START TRANSACTION`](/dev/reference/sql/statements/start-transaction.md)
       - [`TRACE`](/dev/reference/sql/statements/trace.md)
