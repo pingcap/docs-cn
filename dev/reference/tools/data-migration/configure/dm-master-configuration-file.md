@@ -29,13 +29,11 @@ dm-worker = "172.16.10.73:8262"
 
 ## 配置项说明
 
-### 日志相关配置
+### Global 配置
 
 `log-level`：日志等级，值可以为 "debug", "info", "warn", "error", "fatal"，默认值为 "info"。
 
-`log-file`：日志文件。
-
-### DM-master 服务地址配置
+`log-file`：日志文件，如果不配置日志会输出到标准输出中。
 
 `master-addr`：DM-master 服务的地址，可以省略 IP 信息，例如：":8261"。
 
