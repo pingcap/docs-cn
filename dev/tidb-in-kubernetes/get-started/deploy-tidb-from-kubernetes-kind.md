@@ -121,7 +121,7 @@ kind 通过 Docker 容器模拟出一个单点的 Kubernetes 集群。kind 的�
 
 删除本地 TiDB 集群可参考[销毁 TiDB 集群](/dev/tidb-in-kubernetes/maintain/destroy-tidb-cluster.md#销毁-kubernetes-上的-tidb-集群)。
 
-通过下面命令删除 kind Kubernetes 集群:
+通过下面命令删除该 Kubernetes 集群：
 
 {{< copyable "shell-regular" >}}
 
