@@ -39,7 +39,7 @@ kind 通过 Docker 容器模拟出一个单点的 Kubernetes 集群。kind 的�
 
 首先，请确认 Docker 进程正常运行。然后你可以通过脚本命令快速启动一个本地的单点 Kubernetes 集群。
 
-1. Clone 代码：
+1. Clone 官方提供的代码：
 
     {{< copyable "shell-regular" >}}
 
