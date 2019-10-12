@@ -68,7 +68,7 @@ QUERY_SAMPLE_TEXT: select * from employee where id=3100
 
 ## 排查示例
 
-下面来两个示例问题演示如何利用 statement summary 来排查。
+下面用两个示例问题演示如何利用 statement summary 来排查。
 
 ### SQL 延迟比较大，是不是服务端的问题？
 
