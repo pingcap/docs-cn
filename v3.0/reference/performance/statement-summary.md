@@ -15,7 +15,7 @@ category: reference
 
 `events_statement_summary_by_digest` 是 `performance_schema` 里的一张系统表。顾名思义，它把 SQL 按 digest 分组，统计每一组的 SQL 信息。
 
-digest 是什么呢？它与 slow log 里的 digest 一样，是把 SQL 规范化后算出的唯一标识符。
+此处的 digest 与 slow log 里的 digest 一样，是把 SQL 规范化后算出的唯一标识符。
 SQL 的规范化会忽略常量、空白符、大小写的差别。也就是说，只要语法一致，就会归到同一类。
 
 例如：
