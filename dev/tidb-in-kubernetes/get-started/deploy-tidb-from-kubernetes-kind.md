@@ -105,7 +105,7 @@ kind 通过 Docker 容器模拟出一个单点的 Kubernetes 集群。kind 的�
     standard (default)   kubernetes.io/host-path        8m29s
     ```
 
-## 第 2 步: 在 kind Kubernetes 集群上部署 TiDB Operator
+## 第 2 步: 在 Kubernetes 集群上部署 TiDB Operator
 
 参考[部署 TiDB Operator](/dev/tidb-in-kubernetes/deploy/tidb-operator.md#安装-tidb-operator)中的操作。
 
