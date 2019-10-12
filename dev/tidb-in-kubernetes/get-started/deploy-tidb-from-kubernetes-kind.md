@@ -48,7 +48,7 @@ kind 通过 Docker 容器模拟出一个单点的 Kubernetes 集群。kind 的�
     cd tidb-operator
     ```
 
-2. 创建集群：
+2. 运行脚本，在本地创建一个 Kubernetes 集群：
 
     {{< copyable "shell-regular" >}}
 
