@@ -130,6 +130,10 @@
     - [TiKV Control](/v3.0/reference/tools/tikv-control.md)
     - [TiDB Controller](/v3.0/reference/tools/tidb-control.md)
     - [工具下载](/v3.0/reference/tools/download.md)
+  + 最佳实践
+    - [HAProxy 最佳实践](/v3.0/reference/best-practices/haproxy.md)
+    - [Java 应用开发最佳实践](/v3.0/reference/best-practices/java-app.md)
+    - [高并发写入场景最佳实践](/v3.0/reference/best-practices/high-concurrency.md)
   + [与 MySQL 兼容性对比](/v3.0/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
@@ -361,6 +365,7 @@
   - [常见问题](/v3.0/tidb-in-kubernetes/faq.md)
 + 常见问题 (FAQ)
   - [TiDB FAQ](/v3.0/faq/tidb.md)
+  - [TiDB Binlog FAQ](/v3.0/faq/tidb-binlog.md)
   - [TiDB Lightning FAQ](/v3.0/faq/tidb-lightning.md)
   - [Data Migration FAQ](/v3.0/faq/data-migration.md)
   - [升级 FAQ](/v3.0/faq/upgrade.md)
@@ -373,6 +378,7 @@
 + [TiDB 路线图](/v3.0/roadmap.md)
 + [版本发布历史](/v3.0/releases/rn.md)
   + v3.0
+    - [3.0.4](/v3.0/releases/3.0.4.md)
     - [3.0.3](/v3.0/releases/3.0.3.md)
     - [3.0.2](/v3.0/releases/3.0.2.md)
     - [3.0.1](/v3.0/releases/3.0.1.md)
