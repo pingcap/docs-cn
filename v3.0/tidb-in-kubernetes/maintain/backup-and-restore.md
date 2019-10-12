@@ -140,11 +140,11 @@ kubectl get pvc -n <namespace> -l app.kubernetes.io/component=backup,pingcap.com
 
 ### Pump 缩容
 
-缩容 Pump 需要挨个先将 Pump 节点从集群中下线之后操作 `helm upgrade` 进行缩容。
+缩容 Pump 需要**挨个**将 Pump 节点从集群中下线，然后操作 `helm upgrade` 将对应的 Pump Pod 删除。
 
 1. 下线 Pump 节点：
 
-    假设现在有 3 个 Pump 节点，我们需要下线第 3 个 Pump 节点，将 `<ordinal-id>` 替换成 `2`，操作方式是：
+    假设现在有 3 个 Pump 节点，我们需要下线第 3 个 Pump 节点，将 `<ordinal-id>` 替换成 `2`，操作方式如下（`<version>` 为当前 TiDB 的版本）。
 
     {{< copyable "shell-regular" >}}
 
@@ -152,9 +152,7 @@ kubectl get pvc -n <namespace> -l app.kubernetes.io/component=backup,pingcap.com
     kubectl run offline-pump-<ordinal-id> --image=pingcap/tidb-binlog:<version> --namespace=<namespace> --restart=OnFailure -- /binlogctl -pd-urls=http://<release-name>-pd:2379 -cmd offline-pump -node-id <release-name>-pump-<ordinal-id>:8250
     ```
 
-    `<version>` 为当前 TiDB 的版本。
-
-    然后查看 Pump 的日志输出，确认输出 `pump offline, please delete my pod` 后即可确认该节点已经成功下线。
+    然后查看 Pump 的日志输出，输出 `pump offline, please delete my pod` 后即可确认该节点已经成功下线。
 
     {{< copyable "shell-regular" >}}
 
@@ -162,9 +160,9 @@ kubectl get pvc -n <namespace> -l app.kubernetes.io/component=backup,pingcap.com
     kubectl logs -f -n <namespace> <release-name>-pump-<ordinal-id>
     ```
 
-2. 缩容 Pump：
+2. 删除对应的 Pump Pod：
 
-    修改 `values.yaml` 文件中 `binlog.pump.replicas` 为 `2`，然后执行缩容操作：
+    修改 `values.yaml` 文件中 `binlog.pump.replicas` 为 `2`，然后执行如下命令来删除 Pump Pod：
 
     {{< copyable "shell-regular" >}}
 
