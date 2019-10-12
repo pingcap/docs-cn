@@ -132,6 +132,7 @@
   + 最佳实践
     - [HAProxy 最佳实践](/dev/reference/best-practices/haproxy.md)
     - [Java 应用开发最佳实践](/dev/reference/best-practices/java-app.md)
+    - [高并发写入场景最佳实践](/dev/reference/best-practices/high-concurrency.md)
   + [与 MySQL 兼容性对比](/dev/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
@@ -260,10 +261,10 @@
       - [`SHOW [FULL] PROCESSSLIST`](/dev/reference/sql/statements/show-processlist.md)
       - [`SHOW SCHEMAS`](/dev/reference/sql/statements/show-schemas.md)
       - [`SHOW [FULL] TABLES`](/dev/reference/sql/statements/show-tables.md)
+      - [`SHOW TABLE REGIONS`](/dev/reference/sql/statements/show-table-regions.md)
       - [`SHOW TABLE STATUS`](/dev/reference/sql/statements/show-table-status.md)
       - [`SHOW [GLOBAL|SESSION] VARIABLES`](/dev/reference/sql/statements/show-variables.md)
       - [`SHOW WARNINGS`](/dev/reference/sql/statements/show-warnings.md)
-      - [`SHOW TABLE REGIONS`](/dev/reference/sql/statements/show-table-regions.md)
       - [`SPLIT REGION`](/dev/reference/sql/statements/split-region.md)
       - [`START TRANSACTION`](/dev/reference/sql/statements/start-transaction.md)
       - [`TRACE`](/dev/reference/sql/statements/trace.md)
