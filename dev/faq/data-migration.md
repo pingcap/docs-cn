@@ -31,7 +31,7 @@ category: FAQ
 1. 在上游确认出错时对应的 binlog 文件的大小超出了 4GB。
 2. 停止 DM-worker。
 3. 将上游对应的 binlog 文件复制到 relay log 目录作为 relay log 文件。
-4. 更新 relay log 目录内对应的 _relay.meta_ 文件以从下一个 binlog 开始拉取。
+4. 更新 relay log 目录内对应的 `relay.meta` 文件以从下一个 binlog 开始拉取。
 
     例如：报错时有 `binlog-name = "mysql-bin.004451"` 与`binlog-pos = 2453`，则将其分别更新为 `binlog-name = "mysql-bin.004452"` 与`binlog-pos = 4`。
 5. 重启 DM-worker。
