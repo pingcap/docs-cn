@@ -15,9 +15,9 @@ category: reference
 
 ## `--binlog-socket`
 
-+ TiDB 服务使用 unix socket file 方式接受内部连接，如 PUMP 服务
++ TiDB 服务使用 unix socket file 方式接受内部连接，如 Pump 服务
 + 默认：""
-+ 例如，可以使用 "/tmp/pump.sock" 来接受 PUMP unix socket file 通信
++ 例如，可以使用 "/tmp/pump.sock" 来接受 Pump unix socket file 通信
 
 ## `--config`
 

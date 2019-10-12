@@ -364,7 +364,7 @@ TiDB Binlog 相关配置。
 
 + 忽略写 binlog 发生的错误时处理开关，推荐不修改该值。
 + 默认值：false
-+ "true"，发生错误时，停止写入 binlog，并且在监控项 `tidb_server_critical_error_total` 上计数加 1；"false": 写入 binlog 失败，会停止整个 TiDB 的服务。
++ 如果设置为 `true`，发生错误时，TiDB 会停止写入 binlog，并且在监控项 `tidb_server_critical_error_total` 上计数加 1；如果设置为 `false`，写入 binlog 失败，会停止整个 TiDB 的服务。
 
 ### `binlog-socket`
 
