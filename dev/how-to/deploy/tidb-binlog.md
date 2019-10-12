@@ -13,6 +13,17 @@ This document describes two methods of deploying TiDB Binlog:
 
 It is recommended to deploy TiDB Binlog using TiDB Ansible. If you just want to do a simple testing, you can deploy TiDB Binlog using a Binary package.
 
+## Hardware requirements
+
+Pump and Drainer are deployed and operate on 64-bit universal hardware server platforms with Intel x86-64 architecture.
+
+In environments of development, testing and production, the requirements on server hardware are as follows:
+
+| Service     | The Number of Servers       | CPU   | Disk          | Memory   |
+| :-------- | :-------- | :-------- | :--------------- | :------ |
+| Pump | 3 | 8 core+    | SSD, 200 GB+ | 16G |
+| Drainer | 1 | 8 core+ | SAS, 100 GB+ (If binlogs are output as local files, the disk size depends on how long these files are retained.) | 16G |
+
 ## Deploy TiDB Binlog using TiDB Ansible
 
 ### Step 1: Download TiDB Ansible
@@ -20,7 +31,7 @@ It is recommended to deploy TiDB Binlog using TiDB Ansible. If you just want to 
 1. Use the TiDB user account to log in to the central control machine and go to the `/home/tidb` directory. The information about the branch of TiDB Ansible and the corresponding TiDB version is as follows. If you have questions regarding which version to use, email to [info@pingcap.com](mailto:info@pingcap.com) for more information or [file an issue](https://github.com/pingcap/tidb-ansible/issues/new).
 
     | tidb-ansible branch | TiDB version | Note |
-    | ------------------- | ------------ | ---- |
+    | :------------------- | :------------ | :---- |
     | release-2.0 | 2.0 version | The latest 2.0 stable version. You can use it in the production environment. |
     | release-2.1 | 2.1 version | The latest 2.1 stable version. You can use it in the production environment (recommended). |
     | master | master version | This version includes the latest features with a daily update. |
@@ -263,7 +274,7 @@ sha256sum -c tidb-binlog-$version-linux-amd64.sha256
 Assuming that you have three PD nodes, one TiDB node, two Pump nodes, and one Drainer node, the information of each node is as follows:
 
 | Node     | IP           |
-| ---------|:------------:|
+| :---------|:------------ |
 | TiDB     | 192.168.0.10 |
 | PD1      | 192.168.0.16 |
 | PD2      | 192.168.0.15 |

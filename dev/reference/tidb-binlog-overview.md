@@ -47,17 +47,6 @@ The TiDB Binlog cluster is composed of Pump and Drainer.
 * Pump stores binlogs and sends the binlogs to Drainer in order
 * Drainer reads binlogs of each Pump, merges and sorts the binlogs, and sends the binlogs downstream
 
-## Hardware requirements
-
-Pump and Drainer can be deployed and run on common 64-bit hardware server platforms with the Intel x86-64 architecture.
-
-The server hardware requirements for development, testing, and the production environment are as follows:
-
-| Service     | The Number of Servers       | CPU   | Disk          | Memory   |
-| -------- | -------- | --------| --------------- | ------ |
-| Pump | 3 | 8 core+    | SSD, 200 GB+ | 16G |
-| Drainer | 1 | 8 core+ | SAS, 100 GB+ (If you need to output a local file, use SSD and increase the disk size) | 16G |
-
 ## Notes
 
 * You need to use TiDB v2.0.8-binlog, v2.1.0-rc.5 or a later version. Older versions of TiDB cluster are not compatible with the cluster version of TiDB Binlog.
