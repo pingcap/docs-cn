@@ -65,7 +65,7 @@ log-level = "info"
 # 下游服务类型。 取值为 print, mysql（默认值：print）。当值为 print 时，只做解析打印到标准输出，不执行 SQL；如果为 mysql，则需要在 [dest-db] 中配置 host、port、user、password 等信息。
 dest-type = "mysql"
 
-# 输出到下游数据库一个事务的 SQL 语句数量 (默认 20)
+# 输出到下游数据库一个事务的 SQL 语句数量（默认 20）。
 txn-batch = 20
 
 # 同步下游的并发数，该值设置越高同步的吞吐性能越好 (默认 16)
