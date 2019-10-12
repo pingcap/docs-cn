@@ -109,7 +109,7 @@ kind 通过 Docker 容器模拟出一个单点的 Kubernetes 集群。kind 的�
 
 参考[部署 TiDB Operator](/dev/tidb-in-kubernetes/deploy/tidb-operator.md#安装-tidb-operator)中的操作。
 
-## 第 3 步: 在 kind Kubernetes 集群中部署 TiDB 集群
+## 第 3 步: 在 Kubernetes 集群中部署 TiDB 集群
 
 参考[标准 Kubernetes 上的 TiDB 集群](/dev/tidb-in-kubernetes/deploy/general-kubernetes.md#部署-tidb-集群)中的操作。
 
