@@ -131,6 +131,8 @@
     - [工具下载](/dev/reference/tools/download.md)
   + 最佳实践
     - [HAProxy 最佳实践](/dev/reference/best-practices/haproxy.md)
+    - [Java 应用开发最佳实践](/dev/reference/best-practices/java-app.md)
+    - [高并发写入场景最佳实践](/dev/reference/best-practices/high-concurrency.md)
   + [与 MySQL 兼容性对比](/dev/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
@@ -362,6 +364,7 @@
   - [常见问题](/dev/tidb-in-kubernetes/faq.md)
 + 常见问题 (FAQ)
   - [TiDB FAQ](/dev/faq/tidb.md)
+  - [TiDB Binlog FAQ](/dev/faq/tidb-binlog.md)
   - [TiDB Lightning FAQ](/dev/faq/tidb-lightning.md)
   - [Data Migration FAQ](/dev/faq/data-migration.md)
   - [升级 FAQ](/dev/faq/upgrade.md)
