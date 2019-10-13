@@ -107,12 +107,6 @@
       - [DM 错误含义和诊断](/dev/reference/tools/data-migration/error-system.md)
       - [DM 故障诊断](/dev/how-to/troubleshoot/data-migration.md)
       - [FAQ](/dev/faq/data-migration.md)
-    + TiDB Binlog
-      - [概述](/dev/reference/tools/tidb-binlog/overview.md)
-      - [部署使用](/dev/reference/tools/tidb-binlog/deploy.md)
-      - [运维管理](/dev/reference/tools/tidb-binlog/maintain.md)
-      - [版本升级](/dev/reference/tools/tidb-binlog/upgrade.md)
-      - [监控告警](/dev/reference/tools/tidb-binlog/monitor.md)
     + TiDB Lightning
       - [概述](/dev/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/dev/reference/tools/tidb-lightning/deployment.md)
@@ -322,7 +316,14 @@
     - [TiKV 调优](/dev/reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + [TiSpark 使用指南](/dev/reference/tispark.md)
-  + [TiDB Binlog 简介](/dev/reference/tidb-binlog-overview.md)
+  + TiDB Binlog
+    - [概述](/dev/reference/tools/tidb-binlog/overview.md)
+    - [部署使用](/dev/reference/tools/tidb-binlog/deploy.md)
+    - [运维管理](/dev/reference/tools/tidb-binlog/maintain.md)
+    - [版本升级](/dev/reference/tools/tidb-binlog/upgrade.md)
+    - [监控告警](/dev/reference/tools/tidb-binlog/monitor.md)
+    - [Reparo](/dev/reference/tools/tidb-binlog/reparo.md)
+    - [Binlog Slave Client](/dev/reference/tools/tidb-binlog/binlog-slave-client.md)
 + TiDB in Kubernetes
   - [TiDB Operator 简介](/dev/tidb-in-kubernetes/tidb-operator-overview.md)
   + 快速上手
