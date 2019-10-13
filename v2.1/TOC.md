@@ -35,10 +35,6 @@
       - [跨数据中心部署方案](/v2.1/how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](/v2.1/how-to/deploy/geographic-redundancy/location-awareness.md)
     - [使用 Ansible 部署 DM 集群](/v2.1/how-to/deploy/data-migration-with-ansible.md)
-    + 部署使用 TiDB Binlog
-      - [部署 TiDB Binlog 集群](/v2.1/how-to/deploy/tidb-binlog.md)
-      - [Binlog Slave Client 用户文档](/v2.1/reference/tools/tidb-binlog/binlog-slave-client.md)
-      - [Reparo 使用文档](/v2.1/reference/tools/tidb-binlog/reparo.md)
   + 配置
     - [时区](/v2.1/how-to/configure/time-zone.md)
     - [内存控制](/v2.1/how-to/configure/memory-control.md)
@@ -50,7 +46,6 @@
   + 监控
     - [概述](/v2.1/how-to/monitor/overview.md)
     - [监控 TiDB 集群](/v2.1/how-to/monitor/monitor-a-cluster.md)
-    - [TiDB Binlog 集群监控](/v2.1/how-to/monitor/tidb-binlog.md)
   + 迁移
     - [概述](/v2.1/how-to/migrate/overview.md)
     + 从 MySQL 迁移
@@ -62,7 +57,6 @@
     - [Ansible 常见运维操作](/v2.1/how-to/maintain/ansible-operations.md)
     + [备份与恢复](/v2.1/how-to/maintain/backup-and-restore.md)
     - [定位慢查询](/v2.1/how-to/maintain/identify-slow-queries.md)
-    - [TiDB Binlog 集群运维](/v2.1/how-to/maintain/tidb-binlog.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/v2.1/how-to/scale/with-ansible.md)
   + 升级
@@ -70,7 +64,6 @@
     - [升级至 TiDB 2.1](/v2.1/how-to/upgrade/to-tidb-2.1.md)
     - [使用 Ansible 滚动升级](/v2.1/how-to/upgrade/rolling-updates-with-ansible.md)
     - [升级 Data Migration](/v2.1/reference/tools/data-migration/dm-upgrade.md)
-    - [升级 TiDB Binlog Cluster 版本](/v2.1/how-to/upgrade/tidb-binlog.md)
   + 故障诊断
     - [集群配置诊断](/v2.1/how-to/troubleshoot/cluster-setup.md)
     - [Data Migration 故障诊断](/v2.1/how-to/troubleshoot/data-migration.md)
@@ -304,7 +297,14 @@
     - [TiKV 调优](/v2.1/reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + [TiSpark 使用指南](/v2.1/reference/tispark.md)
-  + [TiDB Binlog 简介](/v2.1/reference/tidb-binlog-overview.md)
+  + TiDB Binlog
+    - [概述](/dev/reference/tools/tidb-binlog/overview.md)
+    - [部署使用](/dev/reference/tools/tidb-binlog/deploy.md)
+    - [运维管理](/dev/reference/tools/tidb-binlog/maintain.md)
+    - [版本升级](/dev/reference/tools/tidb-binlog/upgrade.md)
+    - [监控告警](/dev/reference/tools/tidb-binlog/monitor.md)
+    - [Reparo](/dev/reference/tools/tidb-binlog/reparo.md)
+    - [Binlog Slave Client](/dev/reference/tools/tidb-binlog/binlog-slave-client.md)
 + 常见问题 (FAQ)
   - [TiDB FAQ](/v2.1/faq/tidb.md)
   - [TiDB Binlog FAQ](/v2.1/faq/tidb-binlog.md)
