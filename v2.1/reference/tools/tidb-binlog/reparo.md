@@ -20,6 +20,8 @@ Usage of Reparo:
     The level of the output information of logs
     Value: "debug"/"info"/"warn"/"error"/"fatal" ("info" by default)
 -V Prints the version.
+-c int
+    The number of concurrencies in the downstream for the replication process (`16` by default). A higher value indicates a better throughput for the replication.
 -config string
     The path of the configuration file
     If the configuration file is specified, Reparo reads the configuration data in this file.
@@ -46,6 +48,8 @@ Usage of Reparo:
     If it is not set, the recovery process ends up with the last binlog file.
 -safe-mode bool
     Specifies whether to enable safe mode. When enabled, it supports repeated replication.
+-txn-batch int
+    The number of SQL statements in a transaction that is output to the downstream database (`20` by default).
 ```
 
 ### Description of the configuration file
@@ -82,6 +86,12 @@ log-level = "info"
 # while the SQL statement is not executed.
 # If it is set to "mysql", you need to configure `host`, `port`, `user` and `password` in [dest-db].
 dest-type = "mysql"
+
+# The number of SQL statements in a transaction that is output to the downstream database (`20` by default).
+txn-batch = 20
+
+# The number of concurrencies in the downstream for the replication process (`16` by default). A higher value indicates a better throughput for the replication.
+worker-count = 16
 
 # Safe-mode configuration
 # Value: "true"/"false" ("false" by default)
