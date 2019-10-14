@@ -107,19 +107,19 @@ kind 通过 Docker 容器模拟出一个单点的 Kubernetes 集群。kind 的�
 
 ## 第 2 步：在 Kubernetes 集群上部署 TiDB Operator
 
-参考[部署 TiDB Operator](/dev/tidb-in-kubernetes/deploy/tidb-operator.md#安装-tidb-operator)中的操作。
+参考[部署 TiDB Operator](/v3.0/tidb-in-kubernetes/deploy/tidb-operator.md#安装-tidb-operator)中的操作。
 
 ## 第 3 步：在 Kubernetes 集群中部署 TiDB 集群
 
-参考[标准 Kubernetes 上的 TiDB 集群](/dev/tidb-in-kubernetes/deploy/general-kubernetes.md#部署-tidb-集群)中的操作。
+参考[标准 Kubernetes 上的 TiDB 集群](/v3.0/tidb-in-kubernetes/deploy/general-kubernetes.md#部署-tidb-集群)中的操作。
 
 ## 访问数据库和监控面板
 
-参考[查看监控面板](/dev/tidb-in-kubernetes/monitor/tidb-in-kubernetes.md#查看监控面板)中的操作。
+参考[查看监控面板](/v3.0/tidb-in-kubernetes/monitor/tidb-in-kubernetes.md#查看监控面板)中的操作。
 
 ## 删除 TiDB 集群 与 Kubernetes 集群
 
-删除本地 TiDB 集群可参考[销毁 TiDB 集群](/dev/tidb-in-kubernetes/maintain/destroy-tidb-cluster.md#销毁-kubernetes-上的-tidb-集群)。
+删除本地 TiDB 集群可参考[销毁 TiDB 集群](/v3.0/tidb-in-kubernetes/maintain/destroy-tidb-cluster.md#销毁-kubernetes-上的-tidb-集群)。
 
 通过下面命令删除该 Kubernetes 集群：
 
