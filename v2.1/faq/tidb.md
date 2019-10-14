@@ -568,7 +568,7 @@ TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语�
 >
 > + 目前 TiDB 未缓存所有的 `schema` 版本信息。
 > + 对于每个 DDL 操作，`schema` 版本变更的数量与对应 `schema state` 变更的次数一致。
-> + 不同的 DDL 操作版本变更次数不一样。例如，`create table` 操作会有 1 次 schema 版本变更；`add column` 操作有 4 次 schema 版本变更。
+> + 不同的 DDL 操作版本变更次数不一样。例如，`create table` 操作会有 1 次 `schema` 版本变更；`add column` 操作有 4 次 `schema` 版本变更。
 
 #### 3.3.14 触发 Information schema is out of date 错误的原因？
 
