@@ -40,8 +40,9 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 
 > **Note**:
 >
-> - In the test environment, the TiDB and PD can be deployed on the same server.
+> - In the test environment, the TiDB and PD instances can be deployed on the same server.
 > - For performance-related test, do not use low-performance storage and network hardware configuration, in order to guarantee the correctness of the test result.
+> - For the TiKV server, it is recommended to use NVMe SSDs to ensure faster reads and writes.
 > - The TiDB server uses the disk to store server logs, so there are no special requirements for the disk type and capacity in the test environment.
 
 ### Production environment
@@ -56,9 +57,9 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 
 > **Note**:
 >
-> - In the production environment, you can deploy and run TiDB and PD on the same server. If you have a higher requirement for performance and reliability, try to deploy them separately.
+> - In the production environment, the TiDB and PD instances can be deployed on the same server. If you have a higher requirement for performance and reliability, try to deploy them separately.
 > - It is strongly recommended to use higher configuration in the production environment.
-> - It is recommended to keep the size of TiKV hard disk within 2 TB if you are using PCI-E SSD disks or within 1.5 TB if you are using regular SSD disks.
+> - It is recommended to keep the size of TiKV hard disk within 2 TB if you are using PCIe SSDs or within 1.5 TB if you are using regular SSDs.
 
 ## Network requirements
 
