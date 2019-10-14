@@ -8,7 +8,7 @@ category: how-to
 
 本文介绍了如何在个人电脑（Linux 或 MacOS）上采用 [kind](https://kind.sigs.k8s.io/) 方式在 Kubernetes 上部署 [TiDB Operator](https://github.com/pingcap/tidb-operator) 和 TiDB 集群。
 
-kind 通过 Docker 容器模拟出一个单点的 Kubernetes 集群。kind 的设计初衷是为了在本地进行 Kubernetes 集群的一致性测试，这意味着你可以使用 kind 模拟出你想要的 Kubernetes 版本集群，你可以在 [Docker hub](https://hub.docker.com/r/kindest/node/tags) 中找到你想要部署的 Kubernetes 版本。
+kind 通过 Docker 容器模拟出一个单点的 Kubernetes 集群。kind 的设计初衷是为了在本地进行 Kubernetes 集群的一致性测试，这意味着你可以使用 kind 模拟出你想要的 Kubernetes 版本集群。你可以在 [Docker hub](https://hub.docker.com/r/kindest/node/tags) 中找到你想要部署的 Kubernetes 版本。
 
 > **警告：**
 >
@@ -58,7 +58,7 @@ kind 通过 Docker 容器模拟出一个单点的 Kubernetes 集群。kind 的�
 
     > **注意：**
     >
-    > 通过该脚本启动的 kind 集群默认有 6 个集群节点，kubernetes 版本默认为 v1.12.8，每个节点默认挂载数为 9。你可以通过启动参数去修改这些参数：
+    > 通过该脚本启动的 Kubernetes 集群默认有 6 个节点，Kubernetes 版本默认为 v1.12.8，每个节点默认挂载数为 9。你可以通过启动参数去修改这些参数：
     >
     > {{< copyable "shell-regular" >}}
     >
@@ -74,7 +74,7 @@ kind 通过 Docker 容器模拟出一个单点的 Kubernetes 集群。kind 的�
     export KUBECONFIG="$(kind get kubeconfig-path)"
     ```
 
-4. 查看本地 kind kubernetes 集群信息:
+4. 查看该 kubernetes 集群信息:
 
     {{< copyable "shell-regular" >}}
 
