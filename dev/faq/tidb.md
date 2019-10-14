@@ -582,6 +582,22 @@ Its usage is similar to MySQL:
 SELECT column_name FROM table_name USE INDEX（index_name）WHERE where_condition;
 ```
 
+#### Why the `Information schema is changed` error is reported?
+
+TiDB handles the SQL statement using the `schema` of the time and supports online asynchronous DDL change. A DML statement and a DDL statement might be executed at the same time and you must ensure that each statement is executed using the same `schema`. Therefore, when the DML operation meets the ongoing DDL operation, the `Information schema is changed` error might be reported. Some improvements have been made to prevent too many error reportings during the DML operation.
+
+Now, there are still a few reasons for this error reporting (the latter two are unrelated to tables):
+
++ Some tables involved in the DML operation are the same tables involved in the ongoing DDL operation.
++ The DML operation goes on for a long time. During this period, many DDL statements have been executed, which causes more than 1024 `schema` version changes. You can modify this default value by modifying the `tidb_max_delta_schema_count` variable.
++ The TiDB server that accepts the DML request is not able to load `schema information` for a long time (possibly caused by the connection failure between TiDB and PD or TiKV). During this period, many DDL statements have been executed, which causes more than 100 `schema` version changes.
+
+> **Note:**
+>
+> + Currently, TiDB does not cache all the `schema` version changes.
+> + For each DDL operation, the number of `schema` version changes is the same with the number of corresponding `schema state` version changes.
+> + Different DDL operations cause different number of `schema` version changes. For example, the `CREATE TABLE` statement causes one `schema` version change while the `ADD COLUMN` statement causes four.
+
 ### Manage the TiKV server
 
 #### What is the recommended number of replicas in the TiKV cluster? Is it better to keep the minimum number for high availability?
