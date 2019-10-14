@@ -528,7 +528,7 @@ TiDB 在执行 SQL 时，预估出来每个 operator 处理了超过 10000 条�
 
 #### 3.3.10 在 TiDB 中如何控制或改变 SQL 提交的执行优先级？
 
-TiDB 支持改变 [per-session](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_force_priority)、[全局](/dev/reference/configuration/tidb-server/server-command-option.md#force-priority)或单个语句的优先级。优先级包括：
+TiDB 支持改变 [per-session](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_force_priority)、[全局](/dev/reference/configuration/tidb-server/configuration-file.md#force-priority)或单个语句的优先级。优先级包括：
 
 - HIGH_PRIORITY：该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句
 - LOW_PRIORITY：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
@@ -562,16 +562,19 @@ TiDB 支持改变 [per-session](/dev/reference/configuration/tidb-server/tidb-sp
 
 #### 3.3.13 触发 Information schema is changed 错误的原因？
 
-TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语句，而且 TiDB 支持在线异步变更 DDL。那么，在执行 DML 的时候可能有 DDL 语句也在执行，而你需要确保每个 SQL 语句在同一个 `schema` 上执行。所以当执行 DML 时，遇到正在执行中的 DDL 操作就可能会报 `Information schema is changed` 的错误。为了避免太多的 DML 语句报错，已做了一些优化。现在会报此错的可能原因如下：
+TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语句，而且 TiDB 支持在线异步变更 DDL。那么，在执行 DML 的时候可能有 DDL 语句也在执行，而你需要确保每个 SQL 语句在同一个 `schema` 上执行。所以当执行 DML 时，遇到正在执行中的 DDL 操作就可能会报 `Information schema is changed` 的错误。为了避免太多的 DML 语句报错，已做了一些优化。
+
+现在会报此错的可能原因如下（后两个报错原因与表无关）：
 
 - 执行的 DML 语句中涉及的表和集群中正在执行的 DDL 的表有相同的，那么这个 DML 语句就会报此错。
-- 与表无关的报错原因：
-    - 这个 DML 执行时间很久，而这段时间内执行了很多 DDL 语句（新版本 `lock table` 也可），导致中间 `schema` 版本变更超过 1024 (此为默认值，可以通过 `tidb_max_delta_schema_count` 变量修改)。
-    - 接受 DML 请求的 TiDB 长时间不能加载到 `schema information` (与 PD 或者 TiKV 网络问题等都会导致此问题)，而这段时间内执行了很多 DDL 语句（也包括 `lock table` 语句），导致中间 `schema` 版本变更超过 100（目前我们没有按 `schema` 版本去获取信息）。
+- 这个 DML 执行时间很久，而这段时间内执行了很多 DDL 语句，导致中间 `schema` 版本变更次数超过 1024 （此为默认值，可以通过 `tidb_max_delta_schema_count` 变量修改）。
+- 接受 DML 请求的 TiDB 长时间不能加载到 `schema information`（TiDB 与 PD 或 TiKV 之间的网络连接故障等会导致此问题），而这段时间内执行了很多 DDL 语句，导致中间 `schema` 版本变更次数超过 100。
 
 > **注意：**
 >
-> `create table` 操作会有 1 个 `schema` 版本变更，与每个 DDL 操作对应变更的 `schema state` 个数一致。例如，`add column` 操作会有 4 个版本信息。
+> + 目前 TiDB 未缓存所有的 `schema` 版本信息。
+> + 对于每个 DDL 操作，`schema` 版本变更的数量与对应 `schema state` 变更的次数一致。
+> + 不同的 DDL 操作版本变更次数不一样。例如，`create table` 操作会有 1 次 `schema` 版本变更；`add column` 操作有 4 次 `schema` 版本变更。
 
 #### 3.3.14 触发 Information schema is out of date 错误的原因？
 
