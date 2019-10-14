@@ -69,7 +69,7 @@ Drainer 会因为获取不到这个 Pump 的数据没法同步数据到下游。
 
 如果 Pump 没法恢复，可采用以下方式进行处理：
 
-1. 使用 [binlogctl 将该 Pump 状态修改为 offline](/dev/how-to/maintain/tidb-binlog.md)（丢失这个 Pump 的数据）
+1. 使用 [binlogctl 将该 Pump 状态修改为 offline](/dev/reference/tools/tidb-binlog/maintain.md)（丢失这个 Pump 的数据）
 2. Drainer 获取到的数据会丢失这个 Pump 上的数据，下游跟上游数据会不一致，需要重新做全量 + 增量同步。具体步骤如下：
     1. 停止当前 Drainer。
     2. 上游做全量备份。
@@ -98,12 +98,12 @@ Drainer 启动的时候会去读取 checkpoint，如果读取不到，就会使�
 假如 checkpoint 还在，可采用以下方式进行处理：
 
 1. 部署新的 Drainer 并启动即可（参考 checkpoint 介绍，Drainer 可以读取 checkpoint 接着同步）。
-2. 使用 [binlogctl 将老的 Drainer 状态修改成 offline](/dev/how-to/maintain/tidb-binlog.md)。
+2. 使用 [binlogctl 将老的 Drainer 状态修改成 offline](/dev/reference/tools/tidb-binlog/maintain.md)。
 
 假如 checkpoint 不在，可以如下处理：
 
 1. 获取之前 Drainer 的 checkpoint `commit-ts`，做为新部署 Drainer 的 `initial-commit-ts` 配置来部署新的 Drainer。
-2. 使用 [binlogctl 将老的 Drainer 状态 修改成 offline](/dev/how-to/maintain/tidb-binlog.md)。
+2. 使用 [binlogctl 将老的 Drainer 状态 修改成 offline](/dev/reference/tools/tidb-binlog/maintain.md)。
 
 ## 如何用全量 + binlog 备份文件来恢复一个集群？
 
