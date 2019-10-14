@@ -567,14 +567,21 @@ TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语�
 
 - 执行的 DML 语句中涉及的表和集群中正在执行的 DDL 的表有相同的，那么这个 DML 语句就会报此错。
 - 与表无关的报错原因：
-    - 这个 DML 执行时间很久，而这段时间内执行了很多 DDL 语句（新版本 `lock table` 也可），导致中间 `schema` 版本变更超过 100（目前我们只缓存了 100 个版本信息）。
+    - 这个 DML 执行时间很久，而这段时间内执行了很多 DDL 语句（新版本 `lock table` 也可），导致中间 `schema` 版本变更超过 1024（v3.0.5 版本之前此值为定值 100。v3.0.5 及之后版本默认值为 1024，可以通过 `tidb_max_delta_schema_count` 变量修改)。
     - 接受 DML 请求的 TiDB 长时间不能加载到 `schema information` (与 PD 或者 TiKV 网络问题等都会导致此问题)，而这段时间内执行了很多 DDL 语句（也包括 `lock table` 语句），导致中间 `schema` 版本变更超过 100（目前我们没有按 `schema` 版本去获取信息）。
 
 > **注意：**
 >
 > `create table` 操作会有 1 个 `schema` 版本变更，与每个 DDL 操作对应变更的 `schema state` 个数一致。例如，`add column` 操作会有 4 个版本信息。
 
-#### 3.3.14 高并发执行 DDL 报错？
+#### 3.3.14 触发 Information schema is out of date 错误的原因？
+
+当执行 DML 时，TiDB 超过一个 DDL lease 时间（默认 45s）没能加载到最新的 schema 就可能会报 `Information schema is out of date` 的错误。遇到此错的可能原因如下：
+
+- 执行此 DML 的 TiDB 被 kill 后准备退出，且此 DML 对应的事务执行时间超过一个 DDL lease，在事务提交时会报这个错误。
+- TiDB 在执行此 DML 时，有一段时间内连不上 PD 或者 TiKV，导致 TiDB 超过一个 DDL lease 时间没有 load schema，或者导致 TiDB 断开与 PD 之间带 keep alive 设置的连接。
+
+#### 3.3.15 高并发执行 DDL 报错？
 
 高并发情况下执行 DDL （比如批量建表）时，极少部分 DDL 可能会由于并发执行时 key 冲突而执行失败。
 建议 DDL 并发低于20。否则需要在应用端重试失败的 DDL 语句。
