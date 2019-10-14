@@ -8,7 +8,7 @@ category: how-to
 
 本文介绍了如何在个人电脑（Linux 或 MacOS）上采用 [kind](https://kind.sigs.k8s.io/) 方式在 Kubernetes 上部署 [TiDB Operator](https://github.com/pingcap/tidb-operator) 和 TiDB 集群。
 
-kind 通过 Docker 容器模拟出一个单点的 Kubernetes 集群。kind 的设计初衷是为了在本地进行 Kubernetes 集群的一致性测试，这意味着你可以使用 kind 模拟出你想要的 Kubernetes 版本集群。你可以在 [Docker hub](https://hub.docker.com/r/kindest/node/tags) 中找到你想要部署的 Kubernetes 版本。
+kind 通过 Docker 容器模拟出一个本地的 Kubernetes 集群。kind 的设计初衷是为了在本地进行 Kubernetes 集群的一致性测试，这意味着你可以使用 kind 模拟出你想要的 Kubernetes 版本集群。你可以在 [Docker hub](https://hub.docker.com/r/kindest/node/tags) 中找到你想要部署的 Kubernetes 版本。
 
 > **警告：**
 >
