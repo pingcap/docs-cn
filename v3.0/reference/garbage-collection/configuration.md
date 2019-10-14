@@ -109,7 +109,7 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 
 表格内容说明：
 
-- 串行：由 TiDB 逐个 Region 发送请求。
+- 串行：由 TiDB 逐个向 Region 发送请求。
 - 并行：使用 `tikv_gc_concurrency` 选项所指定的线程数，并行地向每个 Region 发送请求。
 - 自动并行：使用 TiKV 节点的个数作为线程数，并行地向每个 Region 发送请求。
 - 分布式：无需 TiDB 通过对 TiKV 发送请求的方式来驱动，而是每台 TiKV 自行工作。
