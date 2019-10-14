@@ -105,7 +105,7 @@ aliases: ['/docs-cn/op-guide/configuration/','/docs-cn/sql/server-command-option
 
 ## `--run-ddl`
 
-+ tidb-server 是否运行 DDL 语句，集群内有大于两台以上 tidb-server 时设置
++ tidb-server 是否运行 DDL 语句，集群内至少需要有一台 tidb-server 设置该参数
 + 默认：true
 + 值可以为 `true` 或者 `false`。设置为 `true` 表明自身会运行 DDL；设置为 `false` 表明自身不会运行 DDL
 

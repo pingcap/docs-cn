@@ -212,7 +212,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `cross-join`
 
 + 默认值：true
-+ 如果设置为 true，在做 join 时即便两边表没有任何条件（where 字段），默认可以执行这样的语句；如果设置为 false，则有这样的 join 语句出现时，server 会拒绝执行
++ 默认可以执行在做 join 时两边表没有任何条件（where 字段）的语句；如果设置为 false，则有这样的 join 语句出现时，server 会拒绝执行
 
 ### `stats-lease`
 
