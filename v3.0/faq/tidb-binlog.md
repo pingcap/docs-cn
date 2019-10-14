@@ -69,7 +69,7 @@ Drainer 会因为获取不到这个 Pump 的数据没法同步数据到下游。
 
 如果 Pump 没法恢复，可采用以下方式进行处理：
 
-1. 使用 [binlogctl 将该 Pump 状态修改为 offline](/v3.0/how-to/maintain/tidb-binlog.md)（丢失这个 Pump 的数据）
+1. 使用 [binlogctl 将该 Pump 状态修改为 offline](/v3.0/reference/tools/tidb-binlog/maintain.md)（丢失这个 Pump 的数据）
 2. Drainer 获取到的数据会丢失这个 Pump 上的数据，下游跟上游数据会不一致，需要重新做全量 + 增量同步。具体步骤如下：
     1. 停止当前 Drainer。
     2. 上游做全量备份。

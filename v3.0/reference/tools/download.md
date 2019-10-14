@@ -54,6 +54,6 @@ tidb-enterprise-tools 安装包包含以下工具：
 - Syncer
 - Loader
 - Mydumper
-- [binlogctl](/v3.0/reference/tools/tidb-binlog/overview.mdd#binlogctl-工具)
+- [binlogctl](/v3.0/reference/tools/tidb-binlog/overview.md#binlogctl-工具)
 - ddl_checker
 - [sync_diff_inspector](/v3.0/reference/tools/sync-diff-inspector/overview.md)
