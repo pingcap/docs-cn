@@ -123,7 +123,7 @@ kubectl get pvc -n <namespace> -l app.kubernetes.io/component=backup,pingcap.com
 
 ## 增量备份
 
-增量备份使用 [TiDB Binlog](/v3.0/reference/tidb-binlog-overview.md) 工具从 TiDB 集群收集 Binlog，并提供实时备份和向其它数据库的实时同步能力。
+增量备份使用 [TiDB Binlog](/v3.0/reference/tools/tidb-binlog/overview.md) 工具从 TiDB 集群收集 Binlog，并提供实时备份和向其它数据库的实时同步能力。
 
 增量备份是默认关闭的，你可以通过修改 `values.yaml` 中的下列配置项来开启增量备份：
 

@@ -321,7 +321,7 @@ Check Table Before Drop: false
 
 ## binlogctl
 
-加入到集群的 Pump 和 Drainer 的数据存储在 Placement Driver (PD) 中。binlogctl 可用于查询和修改状态信息。更多信息请参考 [binlogctl guide](/v2.1/reference/tools/tidb/binlog/maintain.md#binlogctl-工具)。
+加入到集群的 Pump 和 Drainer 的数据存储在 Placement Driver (PD) 中。binlogctl 可用于查询和修改状态信息。更多信息请参考 [binlogctl guide](/v2.1/reference/tools/tidb-binlog/maintain.md#binlogctl-工具)。
 
 使用 `binlogctl` 查看集群中 Pump 和 Drainer 的当前状态：
 
