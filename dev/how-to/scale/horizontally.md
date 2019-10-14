@@ -30,7 +30,7 @@ TiDB 集群可以在不影响线上服务的情况下动态进行扩容和缩容
 {{< copyable "shell-regular" >}}
 
 ```bash
-./pd-ctl -u http://host1:2379
+./pd-ctl -u http://host1:2379 -i
 >> member
 ```
 

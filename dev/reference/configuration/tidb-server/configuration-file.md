@@ -344,7 +344,7 @@ prepare 语句的 Plan cache 设置。
 ### `capacity`
 
 + Hash 对应的 slot 数，会自动向上调整为 2 的指数倍。每个 slot 占 32 Bytes 内存。当写入数据的范围比较广时（如导数据），设置过小会导致变慢，性能下降。
-+ 默认值：1024000
++ 默认值：2048000
 
 ## binlog
 
@@ -381,7 +381,26 @@ TiDB Binlog 相关配置。
 
 TiDB 服务状态相关配置。
 
+### `report-status`
+
++ 开启 HTTP API 服务的开关。
++ 默认值：true
+
 ### `record-db-qps`
 
 + 输与 database 相关的 QPS metrics 到 promethus的开关。
 + 默认值：false
+
+## stmt-summary <span class="version-mark">从 v3.0.4 版本开始引入</span>
+
+系统表 `events_statement_summary_by_digest` 的相关配置。
+
+### max-stmt-count
+
++ `events_statement_summary_by_digest` 表中保存的 SQL 种类的最大数量。
++ 默认值：100
+
+### max-sql-length
+
++ `events_statement_summary_by_digest` 表中`DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
++ 默认值：4096
