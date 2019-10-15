@@ -7,9 +7,7 @@ category: reference
 
 # TiDB 配置文件描述
 
-TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认值的配置文件，重命名为 config.toml 即可。
-
-本文档只阐述未包含在命令行参数中的参数，命令行参数参见[这里](/dev/reference/configuration/tidb-server/configuration.md)。
+TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认值的配置文件，重命名为 `config.toml` 即可。本文档只介绍未包含在[命令行参数](/dev/reference/configuration/tidb-server/configuration.md)中的参数。
 
 ### `split-table`
 
@@ -55,7 +53,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 设置 `KILL` 语句的兼容性。
 + 默认值：false
 + TiDB 中 `KILL xxx` 的行为和 MySQL 中的行为不相同。为杀死一条查询，在 TiDB 里需要加上 `TIDB` 关键词，即 `KILL TIDB xxx`。但如果把 `compatible-kill-query` 设置为 true，则不需要加上 `TIDB` 关键词。
-+ 这种区别很重要，因为当用户按下 <kbd>Ctrl</kbd>+<kbd>C</kbd> 时，MySQL 命令行客户端的默认值行为是：创建与后台的新连接，并在该新连接中执行 `KILL` 语句。如果负载均衡器或代理已将该新连接发送到与原始会话不同的 TiDB 服务器实例，则该错误会话可能被终止，从而导致使用 TiDB 集群的业务中断。只有当您确定在 `KILL` 语句中引用的连接正好位于 `KILL` 语句发送到的服务器上时，才可以启用 `compatible-kill-query`。
++ 这种区别很重要，因为当用户按下 <kbd>Ctrl</kbd>+<kbd>C</kbd> 时，MySQL 命令行客户端的默认行为是：创建与后台的新连接，并在该新连接中执行 `KILL` 语句。如果负载均衡器或代理已将该新连接发送到与原始会话不同的 TiDB 服务器实例，则该错误会话可能被终止，从而导致使用 TiDB 集群的业务中断。只有当您确定在 `KILL` 语句中引用的连接正好位于 `KILL` 语句发送到的服务器上时，才可以启用 `compatible-kill-query`。
 
 ### `check-mb4-value-in-utf8`
 
@@ -126,13 +124,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 日志最大保留的天数。
 + 默认值：0
-+ 默认值是不清理的，如果设置了，在 `max-days` 之后 TiDB 会清理过期的日志文件。
++ 默认不清理；如果设置了参数值，在 `max-days` 之后 TiDB 会清理过期的日志文件。
 
 #### `max-backups`
 
 + 保留的日志的最大数量。
 + 默认值：0
-+ 默认值全部保存，如果设置为 7，会最多保留 7 个老的日志文件。
++ 默认全部保存；如果设置为 7，会最多保留 7 个老的日志文件。
 
 #### `log-rotate`
 
@@ -192,7 +190,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + TiDB 的 CPU 使用数量。
 + 默认值：0
-+ 默认值为 0 表示使用机器上所有的 CPU，也可以设置成 n，那么 TiDB 会使用 n 个 CPU 数量。
++ 默认值为 0 表示使用机器上所有的 CPU；如果设置成 n，那么 TiDB 会使用 n 个 CPU 数量。
 
 ### `max-memory`
 
@@ -214,7 +212,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `cross-join`
 
 + 默认值：true
-+ 在做 join 的时候，两边表没有任何条件（where 字段），默认值可以执行这样的语句。但是设置为 false，则如有这样的 join 语句出现，server 会拒绝执行
++ 默认可以执行在做 join 时两边表没有任何条件（where 字段）的语句；如果设置为 false，则有这样的 join 语句出现时，server 会拒绝执行
 
 ### `stats-lease`
 
@@ -365,7 +363,7 @@ TiDB Binlog 相关配置。
 
 + 忽略写 binlog 发生的错误时处理开关，推荐不修改该值。
 + 默认值：false
-+ "true"，发生错误时，停止写入 binlog, 并且在监控项 tidb_server_critical_error_total 上计数加1；"false": 写入 binlog 失败，会停止整个 TiDB 的服务。
++ 如果设置为 `true`，发生错误时，TiDB 会停止写入 binlog，并且在监控项 `tidb_server_critical_error_total` 上计数加 1；如果设置为 `false`，写入 binlog 失败，会停止整个 TiDB 的服务。
 
 ### `binlog-socket`
 
@@ -374,7 +372,7 @@ TiDB Binlog 相关配置。
 
 ### `strategy`
 
-+ binlog 输出时选择 pump 的策略，仅支持 hash ，range 方法。
++ binlog 输出时选择 pump 的策略，仅支持 hash，range 方法。
 + 默认值："range"
 
 ## status
@@ -388,5 +386,19 @@ TiDB 服务状态相关配置。
 
 ### `record-db-qps`
 
-+ 输与 database 相关的 QPS metrics 到 promethus的开关。
++ 输与 database 相关的 QPS metrics 到 Prometheus 的开关。
 + 默认值：false
+
+## stmt-summary <span class="version-mark">从 v3.0.4 版本开始引入</span>
+
+系统表 `events_statement_summary_by_digest` 的相关配置。
+
+### max-stmt-count
+
++ `events_statement_summary_by_digest` 表中保存的 SQL 种类的最大数量。
++ 默认值：100
+
+### max-sql-length
+
++ `events_statement_summary_by_digest` 表中`DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
++ 默认值：4096
