@@ -326,6 +326,7 @@
     - [监控告警](/v3.0/reference/tools/tidb-binlog/monitor.md)
     - [Reparo](/v3.0/reference/tools/tidb-binlog/reparo.md)
     - [Binlog Slave Client](/v3.0/reference/tools/tidb-binlog/binlog-slave-client.md)
+    - [FAQ](/v3.0/reference/tools/tidb-binlog/faq.md)
   
 + TiDB in Kubernetes
   - [TiDB Operator 简介](/v3.0/tidb-in-kubernetes/tidb-operator-overview.md)
@@ -367,7 +368,6 @@
   - [常见问题](/v3.0/tidb-in-kubernetes/faq.md)
 + 常见问题 (FAQ)
   - [TiDB FAQ](/v3.0/faq/tidb.md)
-  - [TiDB Binlog FAQ](/v3.0/faq/tidb-binlog.md)
   - [TiDB Lightning FAQ](/v3.0/faq/tidb-lightning.md)
   - [Data Migration FAQ](/v3.0/faq/data-migration.md)
   - [升级 FAQ](/v3.0/faq/upgrade.md)
