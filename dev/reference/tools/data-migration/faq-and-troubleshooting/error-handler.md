@@ -1,11 +1,23 @@
 ---
-title: Data Migration 常见问题
-category: FAQ
+title: Data Migration 常见错误及修复
+category: reference
 ---
 
-# Data Migration 常见问题
+# Data Migration 常见错误及修复
 
-## 同步任务中断并包含 `invalid connection` 错误应该怎么处理？
+## 常见错误码解释和处理方法
+
+- code=10001: 数据库操作异常，需要进一步分析错误信息和错误堆栈
+- code=10002: 数据库底层 bad connection 错误，通常表示 DM 到下游 TiDB 的数据库连接出现了异常（如网络故障、TiDB 重启等）且当前请求的数据暂时未能发送到 TiDB。DM 提供针对此类错误的自动恢复，如果长期未恢复需要用户检查网络或 TiDB 状态。
+- code=10003: 数据库底层 invalid connection 错误，通常表示 DM 到下游 TiDB 的数据库连接出现了异常（如网络故障、TiDB 重启、TiKV busy 等）且当前请求已有部分数据发送到了 TiDB。DM 提供针对此类错误的自动恢复，如果未能正常恢复需要用户进一步检查错误信息并根据具体场景进行分析。
+- code=10005: 数据库查询类语句出错。
+- code=10006: 数据库 execute 类型语句出错，包括 DDL，insert/update/delete 类型 DML。更详细的错误信息可以通过错误 message 获取，错误 message 中通常会包含操作数据库返回的错误码和错误信息。
+- code=11006: 该错误是 DM 内置 parser 解析不兼容的 DDL 时出错，出现此类错误时可参考 [Data Migration 故障诊断-处理不兼容的 DDL 语句](/dev/how-to/troubleshoot/data-migration.md#处理不兼容的-ddl-语句) 提供的方案解决。
+- code=20010: 处理任务配置时解密数据库密码出错。发生此错误时需要检查任务配置中提供的下游数据库密码是否有[使用 dmctl 正确加密](/dev/how-to/deploy/data-migration-with-ansible.md#使用-dmctl-加密上游-mysql-用户密码)。
+- code=26002: 任务检查创建数据库连接失败，更详细的错误信息可以通过错误 message 获取，错误 message 中会包含操作数据库返回的错误码和错误信息。发生此错误时可以首先检查 DM-master 所在的机器是否有权限访问上游。
+- code=38008: DM 组件间 gRPC 通信出错。出现此类错误时可以检查 class 定位错误发生在哪些组件交互环节，根据错误 message 判断是哪类通信错误。譬如如果是 gRPC 建立连接出错，可以检查通信服务端是否服务正常。
+
+## 同步任务中断并包含 `invalid connection` 错误
 
 发生 `invalid connection` 错误时，通常表示 DM 到下游 TiDB 的数据库连接出现了异常（如网络故障、TiDB 重启、TiKV busy 等）且当前请求已有部分数据发送到了 TiDB。
 
@@ -14,7 +26,7 @@ category: FAQ
 - 如果错误中仅包含 `invalid connection` 类型的错误且当前处于增量复制阶段，则 DM 会自动进行重试。
 - 如果 DM 由于版本问题等未自动进行重试或自动重试未能成功，则可尝试先使用 `stop-task` 停止任务，然后再使用 `start-task` 重启任务。
 
-## 同步任务中断并包含 `driver: bad connection` 错误应该怎么处理？
+## 同步任务中断并包含 `driver: bad connection` 错误
 
 发生 `driver: bad connection` 错误时，通常表示 DM 到下游 TiDB 的数据库连接出现了异常（如网络故障、TiDB 重启等）且当前请求的数据暂时未能发送到 TiDB。
 
@@ -46,3 +58,9 @@ category: FAQ
 4. 在同步任务配置中为 `syncers` 部分设置 `safe-mode: true` 以保证可重入执行。
 5. 通过 `start-task` 启动同步任务。
 6. 通过 `query-status` 观察同步任务状态，当原造成出错的 relay log 文件同步完成后，即可还原 `safe-mode` 为原始值并重启同步任务。
+
+## 执行 `query-status` 或查看日志时出现 `Access denied for user 'root'@'172.31.43.27' (using password: YES)`
+
+在所有 DM 配置文件中，数据库相关的密码都必须使用经 dmctl 加密后的密文（若数据库密码为空，则无需加密）。有关如何使用 dmctl 加密明文密码，参见[使用 dmctl 加密上游 MySQL 用户密码](/dev/how-to/deploy/data-migration-with-ansible.md#使用-dmctl-加密上游-mysql-用户密码)。
+
+此外，在 DM 运行过程中，上下游数据库的用户必须具备相应的读写权限。在启动同步任务过程中，DM 会自动进行相应权限的前置检查，详见[上游 MySQL 实例配置前置检查](/dev/reference/tools/data-migration/precheck.md)。

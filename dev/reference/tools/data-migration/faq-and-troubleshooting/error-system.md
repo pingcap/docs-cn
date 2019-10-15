@@ -1,9 +1,9 @@
 ---
-title: DM 错误含义和诊断
+title: Data Migration 错误含义
 category: reference
 ---
 
-# DM 错误含义和诊断
+# Data Migration 错误含义
 
 本文介绍了 DM 的错误输出的详细含义，根据错误信息诊断系统的具体方法，以及针对常见的错误的运维方法。
 
@@ -79,15 +79,3 @@ DM 会根据错误的严重程度和必要性来选择是否输出错误堆栈�
 ## 错误码列表
 
 目前完整的错误码列表可以通过 DM 代码仓库 [已发布错误码](https://github.com/pingcap/dm/blob/master/_utils/terror_gen/errors_release.txt) 查询
-
-## 常见错误解释和运维方法
-
-- code=10001: 数据库操作异常，需要进一步分析错误信息和错误堆栈
-- code=10002: 数据库底层 bad connection 错误，通常表示 DM 到下游 TiDB 的数据库连接出现了异常（如网络故障、TiDB 重启等）且当前请求的数据暂时未能发送到 TiDB。DM 提供针对此类错误的自动恢复，如果长期未恢复需要用户检查网络或 TiDB 状态。
-- code=10003: 数据库底层 invalid connection 错误，通常表示 DM 到下游 TiDB 的数据库连接出现了异常（如网络故障、TiDB 重启、TiKV busy 等）且当前请求已有部分数据发送到了 TiDB。DM 提供针对此类错误的自动恢复，如果未能正常恢复需要用户进一步检查错误信息并根据具体场景进行分析。
-- code=10005: 数据库查询类语句出错。
-- code=10006: 数据库 execute 类型语句出错，包括 DDL，insert/update/delete 类型 DML。更详细的错误信息可以通过错误 message 获取，错误 message 中通常会包含操作数据库返回的错误码和错误信息。
-- code=11006: 该错误是 DM 内置 parser 解析不兼容的 DDL 时出错，出现此类错误时可参考 [Data Migration 故障诊断-处理不兼容的 DDL 语句](/dev/how-to/troubleshoot/data-migration.md#处理不兼容的-ddl-语句) 提供的方案解决。
-- code=20010: 处理任务配置时解密数据库密码出错。发生此错误时需要检查任务配置中提供的下游数据库密码是否有[使用 dmctl 正确加密](/dev/how-to/deploy/data-migration-with-ansible.md#使用-dmctl-加密上游-mysql-用户密码)。
-- code=26002: 任务检查创建数据库连接失败，更详细的错误信息可以通过错误 message 获取，错误 message 中会包含操作数据库返回的错误码和错误信息。发生此错误时可以首先检查 DM-master 所在的机器是否有权限访问上游。
-- code=38008: DM 组件间 gRPC 通信出错。出现此类错误时可以检查 class 定位错误发生在哪些组件交互环节，根据错误 message 判断是哪类通信错误。譬如如果是 gRPC 建立连接出错，可以检查通信服务端是否服务正常。

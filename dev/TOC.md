@@ -75,7 +75,6 @@
     - [升级 Data Migration](/dev/reference/tools/data-migration/dm-upgrade.md)
   + 故障诊断
     - [集群配置诊断](/dev/how-to/troubleshoot/cluster-setup.md)
-    - [Data Migration 故障诊断](/dev/how-to/troubleshoot/data-migration.md)
     - [TiDB Lightning 故障诊断](/dev/how-to/troubleshoot/tidb-lightning.md)
 + 参考手册
   + 周边工具
@@ -111,9 +110,11 @@
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-aurora.md)
       - [DM Portal](/dev/reference/tools/data-migration/dm-portal.md)
-      - [DM 错误含义和诊断](/dev/reference/tools/data-migration/error-system.md)
-      - [DM 故障诊断](/dev/how-to/troubleshoot/data-migration.md)
-      - [FAQ](/dev/faq/data-migration.md)
+      + DM 常见问题及故障诊断
+        - [FAQ](/dev/reference/tools/data-migration/faq-and-troubleshooting/faq.md)
+        - [DM 故障诊断](/dev/reference/tools/data-migration/faq-and-troubleshooting/troubleshooting.md)
+        - [DM 错误含义和诊断](/dev/reference/tools/data-migration/faq-and-troubleshooting/error-system.md)
+        - [DM 常见错误及修复方法](/dev/reference/tools/data-migration/faq-and-troubleshooting/error-handler.md)
     + TiDB Lightning
       - [概述](/dev/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/dev/reference/tools/tidb-lightning/deployment.md)
@@ -368,7 +369,6 @@
   - [TiDB FAQ](/dev/faq/tidb.md)
   - [TiDB Binlog FAQ](/dev/faq/tidb-binlog.md)
   - [TiDB Lightning FAQ](/dev/faq/tidb-lightning.md)
-  - [Data Migration FAQ](/dev/faq/data-migration.md)
   - [升级 FAQ](/dev/faq/upgrade.md)
 + 技术支持
   - [支持渠道](/dev/support-resources.md)
