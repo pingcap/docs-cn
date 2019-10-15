@@ -37,7 +37,7 @@ kind 通过 Docker 容器模拟出一个本地的 Kubernetes 集群。kind 的�
 
 ## 第 1 步：通过 kind 部署 Kubernetes 集群
 
-首先，请确认 Docker 进程正常运行。然后你可以通过脚本命令快速启动一个本地的单点 Kubernetes 集群。
+首先，请确认 Docker 进程正常运行。然后你可以通过脚本命令快速启动一个本地的 Kubernetes 集群。
 
 1. Clone 官方提供的代码：
 
