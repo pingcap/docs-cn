@@ -323,8 +323,8 @@
     - [运维管理](/dev/reference/tools/tidb-binlog/maintain.md)
     - [版本升级](/dev/reference/tools/tidb-binlog/upgrade.md)
     - [监控告警](/dev/reference/tools/tidb-binlog/monitor.md)
-    - [Reparo](/dev/reference/tools/tidb-binlog/reparo.md)
-    - [Binlog Slave Client](/dev/reference/tools/tidb-binlog/binlog-slave-client.md)
+    - [增量恢复](/dev/reference/tools/tidb-binlog/reparo.md)
+    - [Kafka 自定义开发](/dev/reference/tools/tidb-binlog/binlog-slave-client.md)
     - [FAQ](/dev/reference/tools/tidb-binlog/faq.md)
 + TiDB in Kubernetes
   - [TiDB Operator 简介](/dev/tidb-in-kubernetes/tidb-operator-overview.md)
