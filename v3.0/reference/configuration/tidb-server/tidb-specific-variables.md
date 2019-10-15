@@ -423,6 +423,14 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 这个变量用来控制 DDL 操作失败重试的次数。失败重试次数超过该参数的值后，会取消出错的 DDL 操作。
 
+### tidb_max_delta_schema_count
+
+作用域：GLOBAL
+
+默认值：1024
+
+这个变量用来设置缓存 schema 版本信息（对应版本修改的相关 table IDs）的个数限制，可设置的范围 100 - 16384。此变量在 2.1.18 及之后版本支持。
+
 ### tidb_force_priority
 
 作用域：SESSION
@@ -682,3 +690,11 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 默认值：0
 
 这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `auto_increment` 属性。默认为不允许。
+
+### tidb_enable_stmt_summary <span class="version-mark">从 v3.0.4 版本开始引入</span>
+
+作用域：SESSION | GLOBAL
+
+默认值：0
+
+这个变量用来控制是否开启 statement summary 功能。如果开启，SQL 的耗时等执行信息将被记录到系统表 `performance_schema.events_statement_summary_by_digest` 中，用于定位和排查 SQL 性能问题。
