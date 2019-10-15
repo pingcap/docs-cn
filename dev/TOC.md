@@ -261,10 +261,10 @@
       - [`SHOW [FULL] PROCESSSLIST`](/dev/reference/sql/statements/show-processlist.md)
       - [`SHOW SCHEMAS`](/dev/reference/sql/statements/show-schemas.md)
       - [`SHOW [FULL] TABLES`](/dev/reference/sql/statements/show-tables.md)
+      - [`SHOW TABLE REGIONS`](/dev/reference/sql/statements/show-table-regions.md)
       - [`SHOW TABLE STATUS`](/dev/reference/sql/statements/show-table-status.md)
       - [`SHOW [GLOBAL|SESSION] VARIABLES`](/dev/reference/sql/statements/show-variables.md)
       - [`SHOW WARNINGS`](/dev/reference/sql/statements/show-warnings.md)
-      - [`SHOW TABLE REGIONS`](/dev/reference/sql/statements/show-table-regions.md)
       - [`SPLIT REGION`](/dev/reference/sql/statements/split-region.md)
       - [`START TRANSACTION`](/dev/reference/sql/statements/start-transaction.md)
       - [`TRACE`](/dev/reference/sql/statements/trace.md)
@@ -320,6 +320,7 @@
     - [统计信息概述](/dev/reference/performance/statistics.md)
     - [Optimizer Hints](/dev/reference/performance/optimizer-hints.md)
     - [使用 SQL 语句检查 TiDB 集群状态](/dev/reference/performance/check-cluster-status-using-sql-statements.md)
+    - [Statement Summary Table](/dev/reference/performance/statement-summary.md)
     - [TiKV 调优](/dev/reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + [TiSpark 使用指南](/dev/reference/tispark.md)
@@ -327,6 +328,7 @@
 + TiDB in Kubernetes
   - [TiDB Operator 简介](/dev/tidb-in-kubernetes/tidb-operator-overview.md)
   + 快速上手
+    - [kind](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind.md)
     - [DinD](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
     - [GKE](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
     - [Minikube](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube.md)
