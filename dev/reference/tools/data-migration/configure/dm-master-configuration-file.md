@@ -11,7 +11,6 @@ DM-master 的示例配置文件如下所示：
 
 ```toml
 # log configuration
-log-level = "info"
 log-file = "dm-master.log"
 
 # dm-master listen address
@@ -30,8 +29,6 @@ dm-worker = "172.16.10.73:8262"
 ## 配置项说明
 
 ### Global 配置
-
-`log-level`：日志等级，值可以为 "debug", "info", "warn", "error", "fatal"，默认值为 "info"。
 
 `log-file`：日志文件，如果不配置日志会输出到标准输出中。
 
