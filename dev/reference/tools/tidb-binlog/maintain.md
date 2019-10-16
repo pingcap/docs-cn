@@ -1,6 +1,7 @@
 ---
 title: TiDB Binlog 集群运维
 category: reference
+aliases: ['/docs-cn/dev/how-to/maintain/tidb-binlog/']
 ---
 
 # TiDB Binlog 集群运维
@@ -58,7 +59,7 @@ binlogctl 下载链接：
 {{< copyable "shell-regular" >}}
 
 ```bash
-wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz && \
+wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz &&
 wget https://download.pingcap.org/tidb-{version}-linux-amd64.sha256
 ```
 
@@ -75,7 +76,7 @@ sha256sum -c tidb-{version}-linux-amd64.sha256
 {{< copyable "shell-regular" >}}
 
 ```bash
-wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz && \
+wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz &&
 wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
 ```
 
@@ -128,8 +129,6 @@ Usage of binlogctl:
     ```
     [2019/04/28 09:29:59.016 +00:00] [INFO] [nodes.go:48] ["query node"] [type=pump] [node="{NodeID: 1.1.1.1:8250, Addr: pump:8250, State: online, MaxCommitTS: 408012403141509121, UpdateTime: 2019-04-28 09:29:57 +0000 UTC}"]
     ```
-
-    {{< copyable "shell-regular" >}}
 
     {{< copyable "shell-regular" >}}
 
