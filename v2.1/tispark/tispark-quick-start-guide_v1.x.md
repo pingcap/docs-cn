@@ -1,6 +1,7 @@
 ---
 title: TiSpark 快速入门指南
 category: tispark
+draft: true
 ---
 
 # TiSpark 快速入门指南
