@@ -10,7 +10,7 @@ category: how-to
 Kubernetes 上的 TiDB 集群支持两种备份策略：
 
 * [全量备份](#全量备份)（定时执行或 Ad-hoc）：使用 [`mydumper`](/dev/reference/tools/mydumper.md) 获取集群的逻辑备份；
-* [增量备份](#增量备份)：使用 [`TiDB Binlog`](/dev/reference/tidb-binlog-overview.md) 将 TiDB 集群的数据实时复制到其它数据库中或实时获得增量数据备份；
+* [增量备份](#增量备份)：使用 [`TiDB Binlog`](/dev/reference/tools/tidb-binlog/overview.md) 将 TiDB 集群的数据实时复制到其它数据库中或实时获得增量数据备份；
 
 目前，Kubernetes 上的 TiDB 集群只对 `mydumper` 获取的全量备份数据提供自动化的数据恢复操作。恢复 `TiDB-Binlog` 获取的增量数据需要手动进行。
 
@@ -122,7 +122,7 @@ kubectl get pvc -n <namespace> -l app.kubernetes.io/component=backup,pingcap.com
 
 ## 增量备份
 
-增量备份使用 [TiDB Binlog](/dev/reference/tidb-binlog-overview.md) 工具从 TiDB 集群收集 Binlog，并提供实时备份和向其它数据库的实时同步能力。
+增量备份使用 [TiDB Binlog](/dev/reference/tools/tidb-binlog/overview.md) 工具从 TiDB 集群收集 Binlog，并提供实时备份和向其它数据库的实时同步能力。
 
 增量备份是默认关闭的，你可以通过修改 `values.yaml` 中的下列配置项来开启增量备份：
 

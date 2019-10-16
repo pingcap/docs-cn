@@ -1,8 +1,7 @@
 ---
 title: TiDB Binlog Cluster 版本升级方法
 category: reference
-aliases: ['/docs-cn/tools/binlog/upgrade/','/docs-cn/dev/reference/tools/tidb-binlog/upgrade/']
-
+aliases: ['/docs-cn/tools/binlog/upgrade/','/docs-cn/v3.0/how-to/upgrade/tidb-binlog/']
 ---
 
 # TiDB Binlog Cluster 版本升级方法
@@ -21,7 +20,7 @@ TiDB Binlog 版本与 TiDB 版本的对应关系如下：
 
 > **注意：**
 >
-> 如果能接受重新导全量数据，则可以直接废弃老版本，按 [TiDB Binlog 集群部署](/v3.0/how-to/deploy/tidb-binlog.md)中的步骤重新部署。
+> 如果能接受重新导全量数据，则可以直接废弃老版本，按 [TiDB Binlog 集群部署](/v3.0/reference/tools/tidb-binlog/deploy.md)中的步骤重新部署。
 
 如果想从原来的 checkpoint 继续同步，使用以下升级流程：
 
