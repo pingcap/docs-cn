@@ -126,6 +126,7 @@
     - [HAProxy 最佳实践](/dev/reference/best-practices/haproxy.md)
     - [Java 应用开发最佳实践](/dev/reference/best-practices/java-app.md)
     - [高并发写入场景最佳实践](/dev/reference/best-practices/high-concurrency.md)
+    - [Grafana 监控最佳实践](/dev/reference/best-practices/grafana-monitor.md)
   + [与 MySQL 兼容性对比](/dev/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
