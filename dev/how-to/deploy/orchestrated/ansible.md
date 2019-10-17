@@ -18,7 +18,7 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 - [变更组件配置](/dev/how-to/upgrade/rolling-updates-with-ansible.md#变更组件配置)
 - [集群扩容缩容](/dev/how-to/scale/with-ansible.md)
 - [升级组件版本](/dev/how-to/upgrade/rolling-updates-with-ansible.md#升级组件版本)
-- [集群开启 binlog](/dev/reference/tidb-binlog-overview.md)
+- [集群开启 binlog](/dev/reference/tools/tidb-binlog/overview.md)
 - [清除集群数据](/dev/how-to/maintain/ansible-operations.md#清除集群数据)
 - [销毁集群](/dev/how-to/maintain/ansible-operations.md#销毁集群)
 
