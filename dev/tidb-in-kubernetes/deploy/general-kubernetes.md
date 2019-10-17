@@ -39,7 +39,7 @@ helm inspect values pingcap/tidb-cluster --version=<chart-version> > /home/tidb/
 
 另外 TiDB 集群不同组件对磁盘的要求不一样，所以部署集群前要根据当前 Kubernetes 集群支持的存储类型以及使用场景为 TiDB 集群各组件选择合适的存储类型，通过修改 `values.yaml` 中各组件的 `storageClassName` 字段设置存储类型。关于 Kubernetes 集群支持哪些[存储类型](/dev/tidb-in-kubernetes/reference/configuration/storage-class.md)，请联系系统管理员确定。
 
-> **Note:**
+> **注意：**
 >
 > 如果创建集群时设置了集群中不存在的存储类型，则会导致集群创建处于 Pending 状态，需要[将集群彻底销毁掉](/dev/tidb-in-kubernetes/maintain/destroy-tidb-cluster.md)。
 
