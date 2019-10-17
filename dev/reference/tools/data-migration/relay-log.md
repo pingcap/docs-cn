@@ -93,7 +93,7 @@ Relay log 的数据清理包括自动清理和手动清理这两种方法。
 
 ### 自动数据清理
 
-自动数据清理需对 DM-worker 配置文件中的以下三项进行配置：
+自动数据清理需对 DM-worker 命令行配置中的以下三项进行配置：
 
 - `purge-interval`
     - 后台自动清理的时间间隔，以秒为单位。
@@ -106,6 +106,16 @@ Relay log 的数据清理包括自动清理和手动清理这两种方法。
 - `purge-remain-space`
     - 剩余磁盘空间，单位为 GB。若剩余磁盘空间小于该配置，则指定的 DM-worker 机器会在后台尝试自动清理可被安全清理的 relay-log。若这一数字被设为 "0"，则表示不按剩余磁盘空间来清理数据。
     - 默认为 "15"，表示可用磁盘空间小于 15GB 时，DM-master 会尝试安全地清理 relay log。
+
+或者在 DM-woker 的配置文件中加入 purge 配置：
+
+```toml
+# relay log purge strategy
+[purge]
+interval = 3600
+expires = 24
+remain-space = 15
+```
 
 ### 手动数据清理
 
