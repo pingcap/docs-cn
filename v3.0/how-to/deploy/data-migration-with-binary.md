@@ -91,7 +91,7 @@ Usage of worker:
 
 **配置方式 2：配置文件**
 
-推荐使用配置文件来配置 DM-worker，把以上配置内容写入到 `conf/dm-worker1.toml` 中。
+推荐使用配置文件来配置 DM-worker，把以下配置文件内容写入到 `conf/dm-worker1.toml` 中。
 
 DM-worker 的配置文件：
 
@@ -190,7 +190,7 @@ Usage of dm-master:
 
 **配置方式 2：配置文件**
 
-推荐使用配置文件，把以上配置内容写入到 `conf/dm-master.toml` 中。
+推荐使用配置文件，把以下配置文件内容写入到 `conf/dm-master.toml` 中。
 
 DM-master 的配置文件：
 
