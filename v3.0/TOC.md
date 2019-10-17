@@ -141,6 +141,7 @@
       - [Monitor](/v3.0/reference/tools/tidb-lightning/monitor.md)
       - [Troubleshoot](/v3.0/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](/v3.0/faq/tidb-lightning.md)
+    - [sync-diff-inspector](/v3.0/reference/tools/sync-diff-inspector/overview.md)
     - [PD Control](/v3.0/reference/tools/pd-control.md)
     - [PD Recover](/v3.0/reference/tools/pd-recover.md)
     - [TiKV Control](/v3.0/reference/tools/tikv-control.md)
