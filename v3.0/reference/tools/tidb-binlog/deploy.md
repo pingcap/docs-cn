@@ -1,6 +1,7 @@
 ---
 title: TiDB Binlog 集群部署
 category: reference
+aliases: ['/docs-cn/tools/binlog/deploy/','/docs-cn/v3.0/how-to/deploy/tidb-binlog/']
 ---
 
 # TiDB Binlog 集群部署
@@ -22,16 +23,16 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
     | TiDB Ansible 分支 | TiDB 版本 | 备注 |
     | ---------------- | --------- | --- |
-    | master | master 版本 | 包含最新特性，每日更新。 |
+    | release-3.0 | 3.0 版本 | 最新 3.0 稳定版本，可用于生产环境（建议）。 |
 
 2. 使用以下命令从 GitHub [TiDB Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB Ansible 相应分支，默认的文件夹名称为 `tidb-ansible`。
 
-    - 下载 master 版本：
+    - 下载 3.0 版本：
 
         {{< copyable "shell-regular" >}}
 
         ```bash
-        git clone https://github.com/pingcap/tidb-ansible.git
+        git clone -b release-3.0 https://github.com/pingcap/tidb-ansible.git
         ```
 
 ### 第 2 步：部署 Pump
@@ -66,7 +67,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
           # gc: 7
         ```
 
-        请确保部署目录有足够空间存储 binlog，详见：[部署目录调整](/dev/how-to/deploy/orchestrated/ansible.md#部署目录调整)，也可为 Pump 设置单独的部署目录。
+        请确保部署目录有足够空间存储 binlog，详见：[部署目录调整](/v3.0/how-to/deploy/orchestrated/ansible.md#部署目录调整)，也可为 Pump 设置单独的部署目录。
 
         ```ini
         ## Binlog Part
@@ -120,7 +121,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
     **方式二**：从零开始部署含 Pump 组件的 TiDB 集群
 
-    使用 Ansible 部署 TiDB 集群，方法参考 [使用 TiDB Ansible 部署 TiDB 集群](/dev/how-to/deploy/orchestrated/ansible.md)。
+    使用 Ansible 部署 TiDB 集群，方法参考 [使用 TiDB Ansible 部署 TiDB 集群](/v3.0/how-to/deploy/orchestrated/ansible.md)。
 
 3. 查看 Pump 服务状态
 
@@ -194,6 +195,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
         > **注意：**
         >
         > 配置文件名命名规则为 `别名_drainer.toml`，否则部署时无法找到自定义配置文件。
+        > 但是需要注意 v3.0.0，v3.0.1 的配置文件命名规则与其余版本略有不同，为 `别名_drainer-cluster.toml`。
 
         db-type 设置为 "mysql"， 配置下游 MySQL 信息。
 
@@ -202,7 +204,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
         ```toml
         [syncer]
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "file", "kafka", "flash".
+        # Valid values are "mysql", "file", "tidb", "kafka", "flash".
         db-type = "mysql"
 
         # the downstream MySQL protocol database
@@ -230,7 +232,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
         ```toml
         [syncer]
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "file", "kafka", "flash".
+        # Valid values are "mysql", "file", "tidb", "kafka", "flash".
         db-type = "file"
 
         # Uncomment this if you want to use "file" as "db-type".
@@ -382,7 +384,7 @@ Drainer="192.168.0.13"
         # 设置为 true（默认值）来保证可靠性，确保 binlog 数据刷新到磁盘
         # sync-log = true
 
-        # 当可用磁盘容量小于该设置值时，Pump 将停止写入数据
+        # 当可用磁盘容量小于该设置值时，Pump 将停止写入数据，v3.0.1 后支持该功能
         # 42 MB -> 42000000, 42 mib -> 44040192
         # default: 10 gib
         # stop-write-at-available-space = "10 gib"
@@ -437,8 +439,6 @@ Drainer="192.168.0.13"
             Drainer 下游服务类型 (默认为 mysql，支持 tidb、kafka、file、flash)
         -detect-interval int
             向 PD 查询在线 Pump 的时间间隔 (默认 10，单位 秒)
-        -disable-detect
-            是否禁用冲突监测
         -disable-dispatch
             是否禁用拆分单个 binlog 的 SQL 的功能，如果设置为 true，则每个 binlog
             按顺序依次还原成单个事务进行同步（下游服务类型为 MySQL，该项设置为 False）
@@ -456,7 +456,7 @@ Drainer="192.168.0.13"
         -metrics-interval int
             监控信息上报频率（默认 15，单位：秒）
         -node-id string
-            drainer 节点的唯一识别 ID，如果不指定，程序会根据主机名和监听端口自动生成
+            v3.0.2 后支持该功能，drainer 节点的唯一识别 ID，如果不指定程序会根据主机名和监听端口自动生成
         -pd-urls string
             PD 集群节点的地址 (-pd-urls="http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379")
         -safe-mode
@@ -525,7 +525,7 @@ Drainer="192.168.0.13"
         # 参数有效值为 "mysql"，"file"，"kafka"，"flash"
         db-type = "mysql"
 
-        # 事务的 commit ts 若在该列表中，则该事务将被过滤，不会同步至下游
+        # 事务的 commit ts 若在该列表中，则该事务将被过滤，不会同步至下游，v3.0.2 后支持该功能
         ignore-txn-commit-ts = []
 
         # db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test")，
@@ -576,6 +576,7 @@ Drainer="192.168.0.13"
         # 保存 binlog 数据的 Kafka 集群的 topic 名称，默认值为 <cluster-id>_obinlog
         # 如果运行多个 Drainer 同步数据到同一个 Kafka 集群，每个 Drainer 的 topic-name 需要设置不同的名称
         # topic-name = ""
+
         ```
 
     - 启动示例
@@ -601,4 +602,4 @@ Drainer="192.168.0.13"
 > - Drainer 不支持对 ignore schemas（在过滤列表中的 schemas）的 table 进行 rename DDL 操作。
 > - 在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取 savepoint，然后导入全量备份，最后启动 Drainer 从 savepoint 开始同步增量数据。
 > - 下游使用 MySQL 或 TiDB 时应当保证上下游数据库的 sql_mode 具有一致性，即下游数据库同步每条 SQL 语句时的 sql_mode 应当与上游数据库执行该条 SQL 语句时的 sql_mode 保持一致。可以在上下游分别执行 `select @@sql_mode;` 进行查询和比对。
-> - 如果存在上游 TiDB 能运行但下游 MySQL 不支持的 DDL 语句时（例如下游 MySQL 使用 InnoDB 引擎时同步语句 `CREATE TABLE t1(a INT) ROW_FORMAT=FIXED;`），Drainer 也会同步失败，此时可以在 Drainer 配置中跳过该事务，同时在下游手动执行兼容的语句，详见[跳过事务](/dev/how-to/maintain/tidb-binlog.md#同步时出现上游数据库支持但是下游数据库执行会出错的-DDL应该怎么办)。
+> - 如果存在上游 TiDB 能运行但下游 MySQL 不支持的 DDL 语句时（例如下游 MySQL 使用 InnoDB 引擎时同步语句 `CREATE TABLE t1(a INT) ROW_FORMAT=FIXED;`），Drainer 也会同步失败，此时可以在 Drainer 配置中跳过该事务，同时在下游手动执行兼容的语句，详见[跳过事务](/v3.0/reference/tools/tidb-binlog/maintain.md#同步时出现上游数据库支持但是下游数据库执行会出错的-ddl应该怎么办)。

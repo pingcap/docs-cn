@@ -9,7 +9,7 @@ category: reference
 
 ## TiDB Binlog 和 TiDB Lightning
 
-如需下载 2.1 版本的 [TiDB Binlog](/v2.1/reference/tidb-binlog-overview.md) 或 [TiDB Lightning](/v2.1/reference/tools/tidb-lightning/overview.md)，直接下载 TiDB 安装包即可，因为 TiDB Binlog 和 TiDB Lightning 均包含在 TiDB 安装包中。
+如需下载 2.1 版本的 [TiDB Binlog](/v2.1/reference/tools/tidb-binlog/overview.md) 或 [TiDB Lightning](/v2.1/reference/tools/tidb-lightning/overview.md)，直接下载 TiDB 安装包即可，因为 TiDB Binlog 和 TiDB Lightning 均包含在 TiDB 安装包中。
 
 以下表格中也提供了 Kafka 版本的 TiDB Binlog 下载链接。
 
@@ -45,6 +45,6 @@ tidb-enterprise-tools 安装包包含以下工具：
 - Syncer
 - Loader
 - Mydumper
-- [binlogctl](/v2.1/reference/tidb-binlog-overview.md#binlogctl-工具)
+- [binlogctl](/v2.1/reference/tools/tidb-binlog/overview.md#binlogctl-工具)
 - ddl_checker
 - [sync_diff_inspector](/v2.1/reference/tools/sync-diff-inspector/overview.md)
