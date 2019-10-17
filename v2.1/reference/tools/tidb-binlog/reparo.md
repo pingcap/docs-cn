@@ -16,8 +16,10 @@ Reparo 是 TiDB Binlog 的一个配套工具，用于增量的恢复。使用 Ti
 ```
 Usage of Reparo:
 -L string
-    日志输出信息等级设置：debug, info, warn, error, fatal (默认值：info)。
+    日志输出信息等级设置：debug, info, warn, error, fatal（默认值：info）。
 -V 打印版本信息。
+-c int
+    同步下游的并发数，该值设置越高同步的吞吐性能越好（默认 16）。
 -config string
     配置文件路径，如果指定了配置文件，Reparo 会首先读取配置文件的配置；如果对应的配置在命令行参数里面也存在，Reparo 就会使用命令行参数的配置来覆盖配置文件里面的。
 -data-dir string
@@ -34,6 +36,8 @@ Usage of Reparo:
     用于指定结束恢复的时间点，格式同上。如果不设置该参数则恢复到最后一个 binlog 文件。
 -safe-mode bool
     指定是否开启安全模式，开启后可支持反复同步。
+-txn-batch int
+    输出到下游数据库一个事务的 SQL 语句数量（默认 20）。
 
 ```
 
@@ -61,6 +65,12 @@ log-level = "info"
 
 # 下游服务类型。 取值为 print, mysql（默认值：print）。当值为 print 时，只做解析打印到标准输出，不执行 SQL；如果为 mysql，则需要在 [dest-db] 中配置 host、port、user、password 等信息。
 dest-type = "mysql"
+
+# 输出到下游数据库一个事务的 SQL 语句数量（默认 20）。
+txn-batch = 20
+
+# 同步下游的并发数，该值设置越高同步的吞吐性能越好（默认 16）。
+worker-count = 16
 
 # 安全模式配置。取值为 true 或 false（默认值：false）。当值为 true 时，Reparo 会将 update 语句拆分为 delete + replace 语句。
 safe-mode = false

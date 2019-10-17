@@ -1,7 +1,0 @@
-files:
-  - source: /dev/**/*.md
-    translation: /dev/%locale%/%original_file_name%
-  - source: /v3.0/**/*.md
-    translation: /v3.0/%locale%/%original_file_name%
-  - source: /v2.1/**/*.md
-    translation: /v2.1/%locale%/%original_file_name%
