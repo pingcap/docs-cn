@@ -5,7 +5,7 @@ category: reference
 
 # DM-worker 完整配置说明
 
-## DM-worker 完整配置文件示例
+## 配置文件示例
 
 ```toml
 # Worker Configuration.

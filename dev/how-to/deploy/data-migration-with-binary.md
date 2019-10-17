@@ -201,16 +201,16 @@ mysql-instances:
   - source-id: "mysql-replica-01"
     black-white-list:  "instance"
     route-rules: ["sharding-route-rules-table", "sharding-route-rules-schema"]
-    mydumper-config-name: "global"
-    loader-config-name: "global"
-    syncer-config-name: "global"
+    mydumper-thread: 4             # mydumper 用于导出数据的线程数量，在 v1.0.2 版本引入
+    loader-thread: 16              # loader 用于导入数据的线程数量，在 v1.0.2 版本引入
+    syncer-thread: 16              # syncer 用于同步增量数据的线程数量，在 v1.0.2 版本引入
 
   - source-id: "mysql-replica-02"
     black-white-list:  "instance"
     route-rules: ["sharding-route-rules-table", "sharding-route-rules-schema"]
-    mydumper-config-name: "global"
-    loader-config-name: "global"
-    syncer-config-name: "global"
+    mydumper-thread: 4             # mydumper 用于导出数据的线程数量，在 v1.0.2 版本引入
+    loader-thread: 16              # loader 用于导入数据的线程数量，在 v1.0.2 版本引入
+    syncer-thread: 16              # syncer 用于同步增量数据的线程数量，在 v1.0.2 版本引入
 
 black-white-list:
   instance:
@@ -229,20 +229,6 @@ routes:
   sharding-route-rules-schema:
     schema-pattern: sharding*
     target-schema: db_target
-
-mydumpers:
-  global:
-    mydumper-path: "./bin/mydumper"
-    extra-args: "--regex '^sharding.*'"
-
-loaders:
-  global:
-    pool-size: 16
-
-syncers:
-  global:
-    worker-count: 16
-
 ```
 
 将以上配置内容写入到 `conf/task.yaml` 文件中，使用 dmctl 创建任务：
