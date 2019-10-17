@@ -10,7 +10,7 @@ aliases: ['/docs-cn/tools/download/']
 
 ## TiDB Binlog
 
-如需下载 V3.0 版本的 [TiDB Binlog](/v3.0/reference/tidb-binlog-overview.md)，直接下载 TiDB 安装包即可，因为 TiDB Binlog 包含在 TiDB 安装包中。
+如需下载 V3.0 版本的 [TiDB Binlog](/v3.0/reference/tools/tidb-binlog/overview.md)，直接下载 TiDB 安装包即可，因为 TiDB Binlog 包含在 TiDB 安装包中。
 
 以下表格中也提供了 Kafka 版本的 TiDB Binlog 下载链接。
 
@@ -54,6 +54,6 @@ tidb-enterprise-tools 安装包包含以下工具：
 - Syncer
 - Loader
 - Mydumper
-- [binlogctl](/v3.0/reference/tidb-binlog-overview.md#binlogctl-工具)
+- [binlogctl](/v3.0/reference/tools/tidb-binlog/overview.md#binlogctl-工具)
 - ddl_checker
 - [sync_diff_inspector](/v3.0/reference/tools/sync-diff-inspector/overview.md)
