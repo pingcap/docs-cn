@@ -25,13 +25,21 @@ TiDB 使用乐观事务模型，在执行 `UPDATE`、`INSERT`、`DELETE` 等语�
 
 由于 TiDB 中的每个事务都需要跟 PD leader 进行两次 round trip，TiDB 中的小事务相比于 MySQL 中的小事务延迟更高。以如下的 query 为例，用显式事务代替 `auto_commit`，可优化该 query 的性能。
 
+使用 auto_commit 的原始版本：
+
+{{< copyable "sql" >}}
+
 ```sql
-# 使用 auto_commit 的原始版本
 UPDATE my_table SET a='new_value' WHERE id = 1;
 UPDATE my_table SET a='newer_value' WHERE id = 2;
 UPDATE my_table SET a='newest_value' WHERE id = 3;
+```
 
-# 优化后的版本
+优化后的版本：
+
+{{< copyable "sql" >}}
+
+```sql
 START TRANSACTION;
 UPDATE my_table SET a='new_value' WHERE id = 1;
 UPDATE my_table SET a='newer_value' WHERE id = 2;
@@ -46,6 +54,8 @@ COMMIT;
 ### Load data
 
 * 语法：
+
+    {{< copyable "sql" >}}
 
     ```sql
     LOAD DATA LOCAL INFILE 'file_name' INTO TABLE table_name

@@ -15,15 +15,11 @@ category: reference
 
 Split Region 有 2 种不同的语法，具体如下：
 
-{{< copyable "sql" >}}
-
 ```sql
 SPLIT TABLE table_name [INDEX index_name] BETWEEN (lower_value) AND (upper_value) REGIONS region_num
 ```
 
 `BETWEEN lower_value AND upper_value REGIONS region_num` 语法是通过指定上、下边界和 Region 数量，然后在上、下边界之间均匀切分出 `region_num` 个 Region。
-
-{{< copyable "sql" >}}
 
 ```sql
 SPLIT TABLE table_name [INDEX index_name] BY (value_list) [, (value_list)] ...

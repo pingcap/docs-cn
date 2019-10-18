@@ -45,7 +45,7 @@ aliases: ['/docs-cn/tools/dm/shard-merge-scenario/']
 5. 过滤掉三个实例的 `user`.`information` 表的所有删除操作。
 6. 过滤掉三个实例的 `store_{01|02}`.`sale_{01|02}` 表的所有删除操作。
 7. 过滤掉三个实例的 `user`.`log_bak` 表。
-8. 因为 `store_{01|02}`.`sale_{01|02}` 表带有 bigint 型的自增主键，将其合并至 TiDB 时会引发冲突。您需要有方案修改相应自增主键以避免冲突。
+8. 因为 `store_{01|02}`.`sale_{01|02}` 表带有 bigint 型的自增主键，将其合并至 TiDB 时会引发冲突。你需要有相应的方案来避免冲突。
 
 ## 下游实例
 
@@ -60,6 +60,8 @@ aliases: ['/docs-cn/tools/dm/shard-merge-scenario/']
 
 - 要满足同步需求 #1 和 #2，配置 [Table routing 规则](/v3.0/reference/tools/data-migration/features/overview.md#table-routing) 如下：
 
+    {{< copyable "" >}}
+
     ```yaml
     routes:
       ...
@@ -69,6 +71,8 @@ aliases: ['/docs-cn/tools/dm/shard-merge-scenario/']
     ```
 
 - 要满足同步需求 #3，配置 [table routing 规则](/v3.0/reference/tools/data-migration/features/overview.md#table-routing) 如下：
+
+    {{< copyable "" >}}
 
     ```yaml
     routes:
@@ -85,6 +89,8 @@ aliases: ['/docs-cn/tools/dm/shard-merge-scenario/']
 
 - 要满足同步需求 #4 和 #5，配置 [Binlog event filter 规则](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filter) 如下：
 
+    {{< copyable "" >}}
+
     ```yaml
     filters:
       ...
@@ -99,6 +105,8 @@ aliases: ['/docs-cn/tools/dm/shard-merge-scenario/']
     > 同步需求 #4、#5 和 #7 的操作意味着过滤掉所有对 `user` 库的删除操作，所以此处配置了库级别的过滤规则。但是 `user` 库以后加入表的删除操作也都会被过滤。
 
 - 要满足同步需求 #6，配置 [Binlog event filter 规则](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filter) 如下：
+
+    {{< copyable "" >}}
 
     ```yaml
     filters:
@@ -116,6 +124,8 @@ aliases: ['/docs-cn/tools/dm/shard-merge-scenario/']
 
 - 要满足同步需求 #7，配置 [Black & white table lists](/v3.0/reference/tools/data-migration/features/overview.md#black--white-table-lists) 如下：
 
+    {{< copyable "" >}}
+
     ```yaml
     black-white-list:
       log-bak-ignored:
@@ -124,42 +134,26 @@ aliases: ['/docs-cn/tools/dm/shard-merge-scenario/']
           tbl-name: "log_bak"
     ```
 
-- 要满足同步需求 #8，配置 [column mapping 规则](/v3.0/reference/tools/data-migration/features/overview.md#column-mapping) 如下：
+- 要满足同步需求 #8，首先参考[自增主键冲突处理](/v3.0/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md#自增主键冲突处理)来解决冲突，保证在同步到下游时不会因为分表中有相同的主键值而使同步出现异常；然后需要配置 `ignore-checking-items` 来跳过自增主键冲突的检查：
+
+    {{< copyable "" >}}
 
     ```yaml
-    column-mappings:
-      instance-1-sale:
-        schema-pattern: "store_*"
-        table-pattern: "sale_*"
-        expression: "partition id"
-        source-column: "id"
-        target-column: "id"
-        arguments: ["1", "store", "sale", "_"]
-      instance-2-sale:
-        schema-pattern: "store_*"
-        table-pattern: "sale_*"
-        expression: "partition id"
-        source-column: "id"
-        target-column: "id"
-        arguments: ["2", "store", "sale", "_"]
-      instance-3-sale:
-        schema-pattern: "store_*"
-        table-pattern: "sale_*"
-        expression: "partition id"
-        source-column: "id"
-        target-column: "id"
-        arguments: ["3", "store", "sale", "_"]
+    ignore-checking-items: ["auto_increment_ID"]
     ```
 
 ## 同步任务配置
 
 同步任务的完整配置如下。详情请参阅 [Data Migration 任务配置文件](/v3.0/reference/tools/data-migration/configure/task-configuration-file.md)。
 
+{{< copyable "" >}}
+
 ```yaml
 name: "shard_merge"
 task-mode: all
 meta-schema: "dm_meta"
 remove-meta: false
+ignore-checking-items: ["auto_increment_ID"]
 
 target-database:
   host: "192.168.0.1"
@@ -172,7 +166,6 @@ mysql-instances:
     source-id: "instance-1"
     route-rules: ["user-route-rule", "store-route-rule", "sale-route-rule"]
     filter-rules: ["user-filter-rule", "store-filter-rule", "sale-filter-rule"]
-    column-mapping-rules: ["instance-1-sale"]
     black-white-list:  "log-bak-ignored"
     mydumper-config-name: "global"
     loader-config-name: "global"
@@ -182,7 +175,6 @@ mysql-instances:
     source-id: "instance-2"
     route-rules: ["user-route-rule", "store-route-rule", "sale-route-rule"]
     filter-rules: ["user-filter-rule", "store-filter-rule", "sale-filter-rule"]
-    column-mapping-rules: ["instance-2-sale"]
     black-white-list:  "log-bak-ignored"
     mydumper-config-name: "global"
     loader-config-name: "global"
@@ -191,7 +183,6 @@ mysql-instances:
     source-id: "instance-3"
     route-rules: ["user-route-rule", "store-route-rule", "sale-route-rule"]
     filter-rules: ["user-filter-rule", "store-filter-rule", "sale-filter-rule"]
-    column-mapping-rules: ["instance-3-sale"]
     black-white-list:  "log-bak-ignored"
     mydumper-config-name: "global"
     loader-config-name: "global"
@@ -232,29 +223,6 @@ black-white-list:
     ignore-tables:
     - db-name: "user"
       tbl-name: "log_bak"
-
-column-mappings:
-  instance-1-sale:
-    schema-pattern: "store_*"
-    table-pattern: "sale_*"
-    expression: "partition id"
-    source-column: "id"
-    target-column: "id"
-    arguments: ["1", "store", "sale", "_"]
-  instance-2-sale:
-    schema-pattern: "store_*"
-    table-pattern: "sale_*"
-    expression: "partition id"
-    source-column: "id"
-    target-column: "id"
-    arguments: ["2", "store", "sale", "_"]
-  instance-3-sale:
-    schema-pattern: "store_*"
-    table-pattern: "sale_*"
-    expression: "partition id"
-    source-column: "id"
-    target-column: "id"
-    arguments: ["3", "store", "sale", "_"]
 
 mydumpers:
   global:

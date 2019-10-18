@@ -59,10 +59,6 @@ dmctl 是用来控制 DM 集群的命令行工具。
 
 [Binlog event filter](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter) 是比库表同步黑白名单更加细粒度的过滤规则，可以指定只同步或者过滤掉某些 `schema`/`table` 的指定类型的 binlog events，比如 `INSERT`，`TRUNCATE TABLE`。
 
-### Column mapping
-
-[Column mapping](/dev/reference/tools/data-migration/features/overview.md#column-mapping) 是指根据用户指定的内置表达式对表的列进行转换，可以用来解决分库分表合并时自增主键 ID 的冲突。
-
 ### Shard support
 
 DM 支持对原分库分表进行合库合表操作，但需要满足一些[使用限制](/dev/reference/tools/data-migration/features/shard-merge.md#使用限制)。
@@ -93,7 +89,7 @@ DM 支持对原分库分表进行合库合表操作，但需要满足一些[使�
 
 + 分库分表
 
-    - 如果业务分库分表之间存在数据冲突，冲突的列**只有自增主键列**，并且**列的类型是 bigint**，可以尝试使用 [Column mapping](/dev/reference/tools/data-migration/features/overview.md#column-mapping) 来解决；否则不推荐使用 DM 进行同步，如果进行同步则有冲突的数据会相互覆盖造成数据丢失。
+    - 如果业务分库分表之间存在数据冲突，可以参考[自增主键冲突处理](/dev/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md#自增主键冲突处理)来解决；否则不推荐使用 DM 进行同步，如果进行同步则有冲突的数据会相互覆盖造成数据丢失。
     - 关于分库分表合并场景的其它限制，参见[使用限制](/dev/reference/tools/data-migration/features/shard-merge.md#使用限制)。
 
 + 操作限制
@@ -103,4 +99,4 @@ DM 支持对原分库分表进行合库合表操作，但需要满足一些[使�
 
 + DM-worker 切换 MySQL
 
-    - 当 DM-worker 通过虚拟 IP（VIP）连接到 MySQL 且 VIP 实际指向的 MySQL 发生切换时，可能出现在同一时刻 DM 内部不同的 connection 分别连接到 VIP 切换前后不同的 MySQL 实例的情况，并造成 DM 拉取的 binlog 与获取到的其他状态不一致而导致难以预期的异常行为甚至数据损坏。如需切换 VIP 连接的 MySQL，请参考 [虚拟 IP 环境下的上游主从切换](../../../reference/tools/data-migration/usage-scenarios/master-slave-switch.md#虚拟-IP-环境下的上游主从切换) 对 DM 手动执行变更。
+    - 当 DM-worker 通过虚拟 IP（VIP）连接到 MySQL 且 VIP 实际指向的 MySQL 发生切换时，可能出现在同一时刻 DM 内部不同的 connection 分别连接到 VIP 切换前后不同的 MySQL 实例的情况，并造成 DM 拉取的 binlog 与获取到的其他状态不一致而导致难以预期的异常行为甚至数据损坏。如需切换 VIP 连接的 MySQL，请参考 [虚拟 IP 环境下的上游主从切换](/dev/reference/tools/data-migration/usage-scenarios/master-slave-switch.md#虚拟-IP-环境下的上游主从切换) 对 DM 手动执行变更。

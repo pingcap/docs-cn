@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/how-to/upgrade/to-tidb-3.0/']
 
 # TiDB 3.0 升级操作指南
 
-本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 RC 版本升级到 TiDB 3.0 版本。TiDB 3.0 版本兼容 [Kafka 版本的 TiDB Binlog](/dev/reference/tools/tidb-binlog/tidb-binlog-kafka.md) 以及[TiDB Binlog Cluster 版本](/dev/reference/tidb-binlog-overview.md)。
+本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 RC 版本升级到 TiDB 3.0 版本。TiDB 3.0 版本兼容 [Kafka 版本的 TiDB Binlog](/dev/reference/tools/tidb-binlog/tidb-binlog-kafka.md) 以及[TiDB Binlog Cluster 版本](/dev/reference/tools/tidb-binlog/overview.md)。
 
 ## 升级兼容性说明
 
@@ -30,13 +30,34 @@ TiDB Ansible release-3.0 版本依赖 Ansible 2.4.2 及以上版本（`ansible>=
 
 安装完成后，可通过以下命令查看版本：
 
+{{< copyable "shell-regular" >}}
+
+```bash
+ansible --version
 ```
-$ ansible --version
+
+```
 ansible 2.7.11
-$ pip show jinja2
+```
+
+{{< copyable "shell-regular" >}}
+
+```bash
+pip show jinja2
+```
+
+```
 Name: Jinja2
 Version: 2.10
-$ pip show jmespath
+```
+
+{{< copyable "shell-regular" >}}
+
+```bash
+pip show jmespath
+```
+
+```
 Name: jmespath
 Version: 0.9.0
 ```
@@ -49,14 +70,18 @@ Version: 0.9.0
 
 以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录，备份 TiDB 2.0 版本或 TiDB 2.1 版本的 tidb-ansible 文件夹：
 
-```
-$ mv tidb-ansible tidb-ansible-bak
+{{< copyable "shell-regular" >}}
+
+```bash
+mv tidb-ansible tidb-ansible-bak
 ```
 
 下载 TiDB 3.0 版本对应 tag 的 tidb-ansible  [**下载 TiDB Ansible**](/dev/how-to/deploy/orchestrated/ansible.md#在中控机器上下载-tidb-ansible)，默认的文件夹名称为 `tidb-ansible`。
 
-```
-$ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
+{{< copyable "shell-regular" >}}
+
+```bash
+git clone -b $tag https://github.com/pingcap/tidb-ansible.git
 ```
 
 ## 编辑 inventory.ini 文件和配置文件
@@ -108,7 +133,7 @@ $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
 
     > **注意：**
     >
-    > 单机多 TiKV 实例（进程）情况下，需要修改这三个参数。
+    > 2.0 版本升级且单机多 TiKV 实例（进程）情况下，需要修改这三个参数。
     >
     > 推荐设置：TiKV 实例数量 \* 参数值 = CPU 核心数量 \* 0.8
 
@@ -126,26 +151,50 @@ $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
     >
     > 推荐设置：`capacity` = (MEM_TOTAL * 0.5 / TiKV 实例数量)
 
+- TiKV 配置中单机多实例场景需要额外配置 `tikv_status_port` 端口:
+
+    ```
+    [tikv_servers]
+    TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv1"
+    TiKV1-2 ansible_host=172.16.10.4 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv1"
+    TiKV2-1 ansible_host=172.16.10.5 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv2"
+    TiKV2-2 ansible_host=172.16.10.5 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv2"
+    TiKV3-1 ansible_host=172.16.10.6 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv3"
+    TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv3"
+    ```
+
+    > **注意：**
+    >
+    > 3.0 版本单机多 TiKV 实例（进程）情况下，需要添加 `tikv_status_port` 参数。
+    >
+    > 注意配置端口是否有冲突
+
 ## 下载 TiDB 3.0 binary 到中控机
 
 确认 `tidb-ansible/inventory.ini` 文件中 `tidb_version = v3.0.0`，然后执行以下命令下载 TiDB 3.0 binary 到中控机。
 
-```
-$ ansible-playbook local_prepare.yml
+{{< copyable "shell-regular" >}}
+
+```bash
+ansible-playbook local_prepare.yml
 ```
 
 ## 滚动升级 TiDB 集群组件
 
 如果当前 `process_supervision` 变量使用默认的 `systemd` 参数，则通过 `excessive_rolling_update.yml` 滚动升级 TiDB 集群。
 
-```
-$ ansible-playbook excessive_rolling_update.yml
+{{< copyable "shell-regular" >}}
+
+```bash
+ansible-playbook excessive_rolling_update.yml
 ```
 
 如果当前 `process_supervision` 变量使用 `supervise` 参数，则通过 `rolling_update.yml` 滚动升级 TiDB 集群。
 
-```
-$ ansible-playbook rolling_update.yml
+{{< copyable "shell-regular" >}}
+
+```bash
+ansible-playbook rolling_update.yml
 ```
 
 > **注意：**
@@ -154,6 +203,8 @@ $ ansible-playbook rolling_update.yml
 
 ## 滚动升级 TiDB 监控组件
 
-```
-$ ansible-playbook rolling_update_monitor.yml
+{{< copyable "shell-regular" >}}
+
+```bash
+ansible-playbook rolling_update_monitor.yml
 ```
