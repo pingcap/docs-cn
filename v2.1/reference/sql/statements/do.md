@@ -6,7 +6,7 @@ category: reference
 
 # DO
 
-This statement executes an expression, without returning a result. In MySQL, a common use-case is to excecute stored programs without needing to handle the result. Since TiDB does not provide stored routines, this function has a more limited use.
+This statement executes an expression, without returning a result. In MySQL, a common use-case is to execute stored programs without needing to handle the result. Since TiDB does not provide stored routines, this function has a more limited use.
 
 ## Synopsis
 

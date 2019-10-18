@@ -11,7 +11,7 @@ This document is targeted for users who want to upgrade from TiDB 2.0 (above V2.
 ## Upgrade caveat
 
 - Rolling back to 2.1.x or earlier versions after upgrading is not supported
-- Before upgrading to 3.0 from 2.0.6 or earlier versions, verify if there are any runing DDL operations, especially time-consuming ones like `Add Index`. If there are any, wait for the DDL to finish before you upgrade.
+- Before upgrading to 3.0 from 2.0.6 or earlier versions, verify if there are any running DDL operations, especially time-consuming ones like `Add Index`. If there are any, wait for the DDL to finish before you upgrade.
 - Parallel DDL is enabled in TiDB 2.1, so the clusters with TiDB version earlier than 2.0.1 cannot upgrade to 2.1 using rolling update. You can choose either of the following two options:
 
     - Stop the cluster and upgrade to 2.1 directly

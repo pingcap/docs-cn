@@ -109,7 +109,7 @@ helm repo add pingcap https://charts.pingcap.org/
 helm repo list
 ```
 
-Then you can check the avaliable charts:
+Then you can check the available charts:
 
 ```shell
 helm repo update

@@ -27,7 +27,7 @@ TiDB supports most of the JSON functions that shipped with the GA release of MyS
 | [->][json_short_extract]  | Returns the value from a JSON column after the evaluating path; the syntactic sugar of `JSON_EXTRACT(doc, path_literal)`   |
 | [->>][json_short_extract_unquote]  | Returns the value from a JSON column after the evaluating path and unquoting the result; the syntactic sugar of `JSON_UNQUOTE(JSON_EXTRACT(doc, path_literal))` |
 | [JSON_KEYS(json_doc[, path])][json_keys] | Returns the keys from the top-level value of a JSON object as a JSON array, or, if a path argument is given, the top-level keys from the selected path |
-| [JSON_SEARCH(json_doc, one_or_all, search_string)][json_search] | Seach a JSON document for one or all matches of a string |
+| [JSON_SEARCH(json_doc, one_or_all, search_string)][json_search] | Search a JSON document for one or all matches of a string |
 
 ## Functions that modify JSON values
 

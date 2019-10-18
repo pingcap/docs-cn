@@ -10,7 +10,7 @@ This document describes how to migrate from [Amazon Aurora MySQL](https://aws.am
 
 ## Step 1: Enable binlog in the Aurora cluster
 
-Assuming that you want to migrate data from two Aurora clusters to TiDB, the information of the Aurora clusters is listed in the following table. The Aurora-1 cluster contains a seperate reader endpoint.
+Assuming that you want to migrate data from two Aurora clusters to TiDB, the information of the Aurora clusters is listed in the following table. The Aurora-1 cluster contains a separate reader endpoint.
 
 | Cluster | Endpoint | Port | Role |
 |:-------- |:--- | :--- | :--- |

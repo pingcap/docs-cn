@@ -9,7 +9,7 @@ aliases: ['/docs/op-guide/binary-local-deployment/','/docs/v3.0/how-to/get-start
 
 This guide provides installation instructions for all TiDB components on a single developer machine. It is intended for evaluation purposes, and does not match the recommended usage for production systems.
 
-See also [testing environment](/v3.0/how-to/deploy/from-tarball/testing-environment.md) and [production enviroment](/v3.0/how-to/deploy/from-tarball/production-environment.md) deployment.
+See also [testing environment](/v3.0/how-to/deploy/from-tarball/testing-environment.md) and [production environment](/v3.0/how-to/deploy/from-tarball/production-environment.md) deployment.
 
 The following local TCP ports will be used:
 
