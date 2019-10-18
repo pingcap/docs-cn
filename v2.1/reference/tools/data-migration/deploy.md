@@ -12,6 +12,8 @@ This guide shows how to replicate data using the Data Migration (DM) tool.
 
 It is recommended to deploy the DM cluster using DM-Ansible. For detailed deployment, see [Deploy Data Migration Using DM-Ansible](/v2.1/how-to/deploy/data-migration-with-ansible.md).
 
+You can also deploy the DM cluster using binary for trial or test. For detailed deployment, see [Deploy Data Migration Cluster Using DM Binary](/v2.1/how-to/deploy/data-migration-with-binary.md)
+
 > **Note:**
 >
 > - For database passwords in all the DM configuration files, use the passwords encrypted by `dmctl`. If a database password is empty, it is unnecessary to encrypt it. See [Encrypt the upstream MySQL user password using dmctl](/v2.1/how-to/deploy/data-migration-with-ansible.md#encrypt-the-upstream-mysql-user-password-using-dmctl).
