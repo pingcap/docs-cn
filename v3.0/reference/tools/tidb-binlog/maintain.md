@@ -291,7 +291,7 @@ Usage of binlogctl:
 
 在某些异常情况下，Drainer 没有正确维护自己的状态，实际上状态应该为 paused，对数据同步造成了影响，可以使用 update-drainer 对状态进行修正，例如：
 
-- Drainer 异常退出（出现 panic 直接退出进程，或者误操作执行 kill -9 直接 kill 掉进程），Drainer 保存在 PD 中的状态仍然为 online。当 Pump 启动时通知该 Drainer 失败（报错 `notify drainer ...`），导致 Pump 无法正常运行。这个时候可以使用 update-drainer 将 Drainer 状态更新为 paused，再启动 Pump。
+- Drainer 异常退出（出现 panic 直接退出进程，或者误操作执行 kill -9 直接 kill 掉进程），Drainer 保存在 PD 中的状态仍然为 online。当 Pump 启动时无法正常通知该 Drainer（报错 `notify drainer ...`），导致 Pump 无法正常运行。这个时候可以使用 update-drainer 将 Drainer 状态更新为 paused，再启动 Pump。
 
 ### 可以通过哪些方式下线 Pump/Drainer？
 
@@ -313,7 +313,7 @@ Usage of binlogctl:
 可以使用 update-pump 修改 Pump 状态为 offline 的情况有：
 
 - 在某些情况下，Pump 异常退出进程，且无法恢复服务，同步就会中断。如果希望恢复同步且可以容忍部分 binlog 数据丢失，可以使用 update-pump 命令将该 Pump 状态设置为 offline，则 Drainer 会放弃拉取该 Pump 的 binlog 然后继续同步数据。
-- 有历史遗留的 Pump 且进程已经退出（例如测试使用的服务），之后不再需要使用该服务，使用 update-pump 将该 Pump 设置为 offline。
+- 有从历史任务遗留下来且不再使用的 Pump 且进程已经退出（例如测试使用的服务），之后不再需要使用该服务，使用 update-pump 将该 Pump 设置为 offline。
 
 在其他情况下一定要使用 offline-pump 命令让 Pump 走正常的下线处理流程。
 
@@ -323,7 +323,7 @@ Pump 以 paused 状态退出进程时，不保证所有 binlog 数据被下游 D
 
 ### 什么情况下使用 binlogctl 的 update-drainer 命令设置 Drainer 状态为 offline？
 
-- 有历史遗留的 Drainer 且进程已经退出（例如测试使用的服务），之后不再需要使用该服务，使用 update-drainer 将该 Drainer 设置为 offline。
+- 有从历史任务遗留下来且不再使用的 Drainer 且进程已经退出（例如测试使用的服务），之后不再需要使用该服务，使用 update-drainer 将该 Drainer 设置为 offline。
 
 ### 可以使用 `change pump`、`change drainer` 等 SQL 操作来暂停或者下线 Pump/Drainer 服务吗？
 
@@ -333,7 +333,7 @@ Pump 以 paused 状态退出进程时，不保证所有 binlog 数据被下游 D
 
 1. 查看 drainer.log 日志，查找 `exec failed` 找到 Drainer 退出前最后一条执行失败的 DDL。
 2. 将 DDL 改为下游兼容支持的版本，在下游数据库中手动执行。
-3. 查看 drainer.log 日志，查找 `执行失败的DDL语句`，可以查询到该 DDL 的 commit-ts。
+3. 查看 drainer.log 日志，查找执行失败的 DDL 语句，可以查询到该 DDL 的 commit-ts。
 4. 编辑 drainer.toml 配置文件，在 ignore-txn-commit-ts 项中添加该 commit-ts，重启 Drainer。
 
 在绝大部分情况下，TiDB 和 MySQL 的语句都是兼容的。用户需要注意的是上下游的 sql_mode 应当保持一致。
