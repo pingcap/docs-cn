@@ -352,6 +352,7 @@
     - [恢复 Kubernetes 上的 TiDB 集群数据](/dev/tidb-in-kubernetes/maintain/lightning.md)
     - [收集日志](/dev/tidb-in-kubernetes/maintain/log-collecting.md)
     - [集群故障自动转移](/dev/tidb-in-kubernetes/maintain/auto-failover.md)
+    - [TiDB Binlog](/dev/tidb-in-kubernetes/maintain/tidb-binlog.md)
   - [扩缩容](/dev/tidb-in-kubernetes/scale-in-kubernetes.md)
   + 升级
     - [TiDB 集群](/dev/tidb-in-kubernetes/upgrade/tidb-cluster.md)
@@ -361,6 +362,7 @@
       - [集群配置](/dev/tidb-in-kubernetes/reference/configuration/tidb-cluster.md)
       - [备份配置](/dev/tidb-in-kubernetes/reference/configuration/backup.md)
       - [PV 配置](/dev/tidb-in-kubernetes/reference/configuration/storage-class.md)
+      - [TiDB Drainer](/dev/tidb-in-kubernetes/reference/configuration/tidb-drainer.md)
     + 工具
       - [tkctl](/dev/tidb-in-kubernetes/reference/tools/tkctl.md)
       - [相关工具使用](/dev/tidb-in-kubernetes/reference/tools/in-kubernetes.md)
