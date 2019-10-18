@@ -212,7 +212,7 @@ The `table_option` currently only supports `AUTO_INCREMENT`, `SHARD_ROW_ID_BITS`
 | ---------- | ---------- | ------- |
 | `AUTO_INCREMENT` | The initial value of the increment field | `AUTO_INCREMENT` = 5 |
 | `SHARD_ROW_ID_BITS` | To set the number of bits for the implicit `_tidb_rowid` shards |`SHARD_ROW_ID_BITS` = 4|
-| `PRE_SPLIT_REGIONS` | To pre-split 2^(PRE_SPLIT_REGIONS-1) Regions when creating a table |`PRE_SPLIT_REGIONS` = 4|
+| `PRE_SPLIT_REGIONS` | To pre-split `2^(PRE_SPLIT_REGIONS)` Regions when creating a table |`PRE_SPLIT_REGIONS` = 4|
 | `CHARACTER SET` | To specify the string code for the table; currently only support UTF8MB4 | `CHARACTER SET` =  'utf8mb4' |
 | `COMMENT` | The comment information | `COMMENT` = 'comment info' |
 

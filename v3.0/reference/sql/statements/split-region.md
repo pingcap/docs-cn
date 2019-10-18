@@ -175,7 +175,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
 ## pre_split_regions
 
-To have evenly split Regions when a table is created, it is recommended you use `shard_row_id_bits` together with `pre_split_regions`. When a table is created successfully, `pre_split_regions` pre-spilts tables into the number of Regions as specified by `2^(pre_split_regions-1)`.
+To have evenly split Regions when a table is created, it is recommended you use `shard_row_id_bits` together with `pre_split_regions`. When a table is created successfully, `pre_split_regions` pre-spilts tables into the number of Regions as specified by `2^(pre_split_regions)`.
 
 > **Note:**
 >
@@ -186,10 +186,10 @@ To have evenly split Regions when a table is created, it is recommended you use 
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a int, b int,index idx1(a)) shard_row_id_bits = 4 pre_split_regions=3;
+create table t (a int, b int,index idx1(a)) shard_row_id_bits = 4 pre_split_regions=2;
 ```
 
-After building the table, this statement splits 4 + 1 Regions for table t. `4 (2^(3-1))` Regions are used to save table row data, and 1 Region is for saving the index data of `idx1`.
+After building the table, this statement splits `4 + 1` Regions for table t. `4 (2^2)` Regions are used to save table row data, and 1 Region is for saving the index data of `idx1`.
 
 The ranges of the 4 table Regions are as follows:
 
@@ -199,10 +199,6 @@ region2:   [ 1<<61     ,  2<<61 )
 region3:   [ 2<<61     ,  3<<61 )
 region4:   [ 3<<61     ,  +inf  )
 ```
-
-> **Note:**
->
-> The amount of split Region is 2^(pre_split_regions-1) because when using shard_row_id_bits, only positive numbers will be assigned to `_tidb_rowid`, so there is no need to do Spilt Region for the negative range.
 
 ## Related session variable
 
