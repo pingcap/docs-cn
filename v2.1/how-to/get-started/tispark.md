@@ -2,11 +2,12 @@
 title: TiSpark Quick Start Guide
 summary: Learn how to use TiSpark quickly.
 category: how-to
+aliases: ['/docs/v2.1/how-to/deploy/tispark/']
 ---
 
 # TiSpark Quick Start Guide
 
-To make it easy to [try TiSpark](/dev/reference/tispark.md), the TiDB cluster installed using TiDB Ansible integrates Spark, TiSpark jar package and TiSpark sample data by default.
+To make it easy to [try TiSpark](/v2.1/reference/tispark.md), the TiDB cluster installed using TiDB Ansible integrates Spark, TiSpark jar package and TiSpark sample data by default.
 
 ## Deployment information
 
@@ -14,7 +15,7 @@ To make it easy to [try TiSpark](/dev/reference/tispark.md), the TiDB cluster in
 - The TiSpark jar package is deployed by default in the `jars` folder in the Spark deployment directory.
 
     ```
-    spark/jars/tispark-${name_with_version}.jar
+    spark/jars/tispark-SNAPSHOT-jar-with-dependencies.jar
     ```
 
 - TiSpark sample data and import scripts are deployed by default in the TiDB Ansible directory.
@@ -184,4 +185,4 @@ The result is:
 -----------------+---------+------------+--------+-----------+
 ```
 
-See [more examples](https://github.com/pingcap/tispark-test/tree/master/tpch/sparksql)).
+See [more examples](https://github.com/ilovesoup/tpch/tree/master/sparksql).

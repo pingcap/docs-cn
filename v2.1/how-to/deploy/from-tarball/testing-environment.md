@@ -8,7 +8,7 @@ category: how-to
 
 This guide provides installation instructions for all TiDB components across multiple nodes for testing purposes. It does not match the recommended usage for production systems.
 
-See also [local deployment](/v2.1/how-to/get-started/local-cluster/install-from-binary.md) and [production environment](/v2.1/how-to/deploy/from-tarball/production-environment.md) deployment.
+See also [local deployment](/v2.1/how-to/get-started/deploy-tidb-from-binary.md) and [production environment](/v2.1/how-to/deploy/from-tarball/production-environment.md) deployment.
 
 ## Prepare
 

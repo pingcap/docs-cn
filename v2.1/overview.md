@@ -13,8 +13,7 @@ TiDB can be deployed on-premise or in-cloud. The following deployment options ar
 - [Ansible Deployment](/v2.1/how-to/deploy/orchestrated/ansible.md): This guide describes how to deploy TiDB using Ansible. It is strongly recommended for production deployment.
 - [Ansible Offline Deployment](/v2.1/how-to/deploy/orchestrated/offline-ansible.md): If your environment has no access to the internet, you can follow this guide to see how to deploy a TiDB cluster offline using Ansible.
 - [Docker Deployment](/v2.1/how-to/deploy/orchestrated/docker.md): This guide describes how to deploy TiDB using Docker.
-- [Kubernetes Deployment (beta)](/v2.1/how-to/get-started/local-cluster/install-from-kubernetes.md): This guide describes how to deploy TiDB on Kubernetes using [TiDB Operator](https://github.com/pingcap/tidb-operator). You can follow this guide to see how to deploy TiDB on Google Kubernetes Engine or deploy TiDB locally using Docker in Docker.
-- [Binary Tarball Deployment](/v2.1/how-to/deploy/from-tarball/production-environment.md): This guide describes how to deploy TiDB from a binary tarball in production. Guides for [development](/v2.1/how-to/get-started/local-cluster/install-from-binary.md) and [testing](/v2.1/how-to/deploy/from-tarball/testing-environment.md) environments are also available.
+- [Binary Tarball Deployment](/v2.1/how-to/deploy/from-tarball/production-environment.md): This guide describes how to deploy TiDB from a binary tarball in production. Guides for [development](/v2.1/how-to/get-started/deploy-tidb-from-binary.md) and [testing](/v2.1/how-to/deploy/from-tarball/testing-environment.md) environments are also available.
 
 ## Community provided blog posts & tutorials
 

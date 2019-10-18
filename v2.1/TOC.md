@@ -35,14 +35,13 @@
 + How-to
   + Get Started
     + Start a Local Cluster
-      - [From Binary](/v2.1/how-to/get-started/local-cluster/install-from-binary.md)
-      - [In Kubernetes](/v2.1/how-to/get-started/local-cluster/install-from-kubernetes.md)
+      - [From Binary](/v2.1/how-to/get-started/deploy-tidb-from-binary.md)
     - [Explore SQL with TiDB](/v2.1/how-to/get-started/explore-sql.md)
     - [Import Example Database](/v2.1/how-to/get-started/import-example-database.md)
     - [Read Historical Data](/v2.1/how-to/get-started/read-historical-data.md)
     - [TiDB Binlog Tutorial](/v2.1/how-to/get-started/tidb-binlog.md)
     - [TiDB Data Migration Tutorial](/v2.1/how-to/get-started/data-migration.md)
-    - [TiSpark Quick Start Guide](/v2.1/how-to/deploy/tispark.md)
+    - [TiSpark Quick Start Guide](/v2.1/how-to/get-started/tispark.md)
   + Deploy
     - [Hardware Recommendations](/v2.1/how-to/deploy/hardware-recommendations.md)
     + From Binary Tarball
@@ -52,7 +51,6 @@
       - [Ansible Deployment (Recommended)](/v2.1/how-to/deploy/orchestrated/ansible.md)
       - [Ansible Offline Deployment](/v2.1/how-to/deploy/orchestrated/offline-ansible.md)
       - [Docker Deployment](/v2.1/how-to/deploy/orchestrated/docker.md)
-      - [Kubernetes Deployment](/v2.1/how-to/deploy/orchestrated/kubernetes.md)
     + Geographic Redundancy
       - [Overview](/v2.1/how-to/deploy/geographic-redundancy/overview.md)
       - [Configure Location Awareness](/v2.1/how-to/deploy/geographic-redundancy/location-awareness.md)
@@ -83,8 +81,7 @@
   + Maintain
     - [Common Ansible Operations](/v2.1/how-to/deploy/orchestrated/ansible-operations.md)
     - [Backup and Restore](/v2.1/how-to/maintain/backup-and-restore.md)
-    - [Identify Slow Queries (2.1.8+)](/v2.1/how-to/maintain/identify-slow-queries.md)
-    - [Identify Slow Queries (earlier)](/v2.1/how-to/maintain/identify-slow-queries-21.md)
+    - [Identify Slow Queries](/v2.1/how-to/maintain/identify-slow-queries.md)
     - [TiDB Binlog Cluster Operations](/v2.1/how-to/maintain/tidb-binlog.md)
   + Scale
     - [Scale using Ansible](/v2.1/how-to/scale/with-ansible.md)
