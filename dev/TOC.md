@@ -110,11 +110,11 @@
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-aurora.md)
       - [DM Portal](/dev/reference/tools/data-migration/dm-portal.md)
-      + DM 常见问题及故障诊断
-        - [FAQ](/dev/reference/tools/data-migration/faq-and-troubleshooting/faq.md)
+      + DM 故障诊断
         - [DM 故障诊断](/dev/reference/tools/data-migration/faq-and-troubleshooting/troubleshooting.md)
         - [DM 错误含义和诊断](/dev/reference/tools/data-migration/faq-and-troubleshooting/error-system.md)
         - [DM 常见错误及修复方法](/dev/reference/tools/data-migration/faq-and-troubleshooting/error-handler.md)
+      - [FAQ](/dev/reference/tools/data-migration/faq.md)
     + TiDB Lightning
       - [概述](/dev/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/dev/reference/tools/tidb-lightning/deployment.md)
