@@ -54,6 +54,7 @@ Slow Query 基础信息：
 * `Plan`：表示语句的执行计划，用 select tidb_decode_plan('xxx...') 即可查看该语句的执行计划。
 
 和事务执行相关的字段：
+
 * `Prewrite_time`：表示事务提交时 prewrite 阶段的耗时。
 * `Commit_time`：表示事务提交时 commit 阶段的耗时。
 * `Get_commit_ts_time`：表示事务提交时获取 commit tso 的耗时。
