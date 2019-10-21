@@ -16,6 +16,8 @@ TiDB 会将执行时间超过 [slow-threshold](/dev/reference/configuration/tidb
 # User: root@127.0.0.1
 # Conn_ID: 3086
 # Query_time: 1.527627037
+# Parse_time: 0.000054933
+# Compile_time: 0.000129729
 # Process_time: 0.07 Request_count: 1 Total_keys: 131073 Process_keys: 131072 Prewrite_time: 0.335415029 Commit_time: 0.032175429 Get_commit_ts_time: 0.000177098 Local_latch_wait_time: 0.106869448 Write_keys: 131072 Write_size: 3538944 Prewrite_region: 1
 # DB: test
 # Is_internal: false
@@ -25,7 +27,8 @@ TiDB 会将执行时间超过 [slow-threshold](/dev/reference/configuration/tidb
 # Cop_proc_avg: 0.07 Cop_proc_p90: 0.07 Cop_proc_max: 0.07 Cop_proc_addr: 172.16.5.87:20171
 # Cop_wait_avg: 0 Cop_wait_p90: 0 Cop_wait_max: 0 Cop_wait_addr: 172.16.5.87:20171
 # Mem_max: 525211
-# Succ: false
+# Succ: true
+# Plan: tidb_decode_plan('ZJAwCTMyXzcJMAkyMAlkYXRhOlRhYmxlU2Nhbl82CjEJMTBfNgkxAR0AdAEY1Dp0LCByYW5nZTpbLWluZiwraW5mXSwga2VlcCBvcmRlcjpmYWxzZSwgc3RhdHM6cHNldWRvCg==')
 insert into t select * from t;
 ```
 
@@ -39,6 +42,8 @@ Slow Query 基础信息：
 
 * `Time`：表示日志打印时间。
 * `Query_time`：表示执行这个语句花费的时间。
+* `Parse_time`：表示这个语句在 parse 阶段（解析 AST 语法树）花费的时间。
+* `Compile_time`：表示这个语句在 compile 阶段（生成执行计划）花费的时间。
 * `Query`：表示 SQL 语句。慢日志里面不会打印 `Query`，但映射到内存表后，对应的字段叫 `Query`。
 * `Digest`：表示 SQL 语句的指纹。
 * `Txn_start_ts`：表示事务的开始时间戳，也是事务的唯一 ID，可以用这个值在 TiDB 日志中查找事务相关的其他日志。
@@ -46,6 +51,16 @@ Slow Query 基础信息：
 * `Index_ids`：表示语句涉及到的索引的 ID。
 * `Succ`：表示语句是否执行成功。
 * `Backoff_time`：表示语句遇到需要重试的错误时在重试前等待的时间，常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、`tikv server is busy`。
+* `Plan`：表示语句的执行计划，用 select tidb_decode_plan('xxx...') 即可查看该语句的执行计划。
+
+和事务执行相关的字段：
+* `Prewrite_time`：表示事务提交时 prewrite 阶段的耗时。
+* `Commit_time`：表示事务提交时 commit 阶段的耗时。
+* `Get_commit_ts_time`：表示事务提交时获取 commit tso 的耗时。
+* `Local_latch_wait_time`：表示事务在提交前在本地等待 latch 的耗时。
+* `Write_keys`：表示事务提交时写 key 的数量。
+* `Write_size`：表示事务提交时写 key/value 的总大小。
+* `Prewrite_region`：表示事务提交时 prewrite 阶段需要给 TiKV 发送的 RPC 请求数量。
 
 和内存使用相关的字段：
 
