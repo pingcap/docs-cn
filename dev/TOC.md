@@ -38,10 +38,6 @@
       - [跨数据中心部署方案](/dev/how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](/dev/how-to/deploy/geographic-redundancy/location-awareness.md)
     - [使用 Ansible 部署 DM 集群](/dev/how-to/deploy/data-migration-with-ansible.md)
-    + 部署使用 TiDB Binlog
-      - [部署 TiDB Binlog 集群](/dev/how-to/deploy/tidb-binlog.md)
-      - [Binlog Slave Client 用户文档](/dev/reference/tools/tidb-binlog/binlog-slave-client.md)
-      - [Reparo 使用文档](/dev/reference/tools/tidb-binlog/reparo.md)
   + 配置
     - [时区](/dev/how-to/configure/time-zone.md)
     - [内存控制](/dev/how-to/configure/memory-control.md)
@@ -53,7 +49,6 @@
   + 监控
     - [概述](/dev/how-to/monitor/overview.md)
     - [监控 TiDB 集群](/dev/how-to/monitor/monitor-a-cluster.md)
-    - [监控 TiDB Binlog 集群](/dev/how-to/monitor/tidb-binlog.md)
   + 迁移
     - [概述](/dev/how-to/migrate/overview.md)
     + 从 MySQL 迁移
@@ -65,13 +60,11 @@
     - [Ansible 常见运维操作](/dev/how-to/maintain/ansible-operations.md)
     + [备份与恢复](/dev/how-to/maintain/backup-and-restore.md)
     - [定位慢查询](/dev/how-to/maintain/identify-slow-queries.md)
-    - [TiDB Binlog 集群运维](/dev/how-to/maintain/tidb-binlog.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/dev/how-to/scale/with-ansible.md)
   + 升级
     - [升级至 TiDB 3.0](/dev/how-to/upgrade/from-previous-version.md)
     - [使用 Ansible 滚动升级](/dev/how-to/upgrade/rolling-updates-with-ansible.md)
-    - [升级 TiDB Binlog Cluster 版本](/dev/how-to/upgrade/tidb-binlog.md)
     - [升级 Data Migration](/dev/reference/tools/data-migration/dm-upgrade.md)
   + 故障诊断
     - [集群配置诊断](/dev/how-to/troubleshoot/cluster-setup.md)
@@ -91,7 +84,6 @@
         - [Table Routing](/dev/reference/tools/data-migration/features/overview.md#table-routing)
         - [Black & White Lists](/dev/reference/tools/data-migration/features/overview.md#black--white-table-lists)
         - [Binlog Event Filter](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)
-        - [Column Mapping](/dev/reference/tools/data-migration/features/overview.md#column-mapping)
         - [同步延迟监控](/dev/reference/tools/data-migration/features/overview.md#同步延迟监控)
         + Shard Support
           - [简介](/dev/reference/tools/data-migration/features/shard-merge.md)
@@ -100,6 +92,7 @@
       + 使用场景
         - [简单的从库同步场景](/dev/reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
         - [分库分表合并场景](/dev/reference/tools/data-migration/usage-scenarios/shard-merge.md)
+        - [分表合并数据迁移最佳实践](/dev/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md)
         - [DM-worker 在上游 MySQL 主从间切换](/dev/reference/tools/data-migration/usage-scenarios/master-slave-switch.md)
       + [部署使用](/dev/reference/tools/data-migration/deploy.md)
       + 配置
@@ -129,6 +122,11 @@
     - [TiKV Control](/dev/reference/tools/tikv-control.md)
     - [TiDB Controller](/dev/reference/tools/tidb-control.md)
     - [工具下载](/dev/reference/tools/download.md)
+  + 最佳实践
+    - [HAProxy 最佳实践](/dev/reference/best-practices/haproxy.md)
+    - [Java 应用开发最佳实践](/dev/reference/best-practices/java-app.md)
+    - [高并发写入场景最佳实践](/dev/reference/best-practices/high-concurrency.md)
+    - [Grafana 监控最佳实践](/dev/reference/best-practices/grafana-monitor.md)
   + [与 MySQL 兼容性对比](/dev/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
@@ -257,10 +255,10 @@
       - [`SHOW [FULL] PROCESSSLIST`](/dev/reference/sql/statements/show-processlist.md)
       - [`SHOW SCHEMAS`](/dev/reference/sql/statements/show-schemas.md)
       - [`SHOW [FULL] TABLES`](/dev/reference/sql/statements/show-tables.md)
+      - [`SHOW TABLE REGIONS`](/dev/reference/sql/statements/show-table-regions.md)
       - [`SHOW TABLE STATUS`](/dev/reference/sql/statements/show-table-status.md)
       - [`SHOW [GLOBAL|SESSION] VARIABLES`](/dev/reference/sql/statements/show-variables.md)
       - [`SHOW WARNINGS`](/dev/reference/sql/statements/show-warnings.md)
-      - [`SHOW TABLE REGIONS`](/dev/reference/sql/statements/show-table-regions.md)
       - [`SPLIT REGION`](/dev/reference/sql/statements/split-region.md)
       - [`START TRANSACTION`](/dev/reference/sql/statements/start-transaction.md)
       - [`TRACE`](/dev/reference/sql/statements/trace.md)
@@ -316,13 +314,23 @@
     - [统计信息概述](/dev/reference/performance/statistics.md)
     - [Optimizer Hints](/dev/reference/performance/optimizer-hints.md)
     - [使用 SQL 语句检查 TiDB 集群状态](/dev/reference/performance/check-cluster-status-using-sql-statements.md)
+    - [Statement Summary Table](/dev/reference/performance/statement-summary.md)
     - [TiKV 调优](/dev/reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + [TiSpark 使用指南](/dev/reference/tispark.md)
-  + [TiDB Binlog 简介](/dev/reference/tidb-binlog-overview.md)
+  + TiDB Binlog
+    - [概述](/dev/reference/tools/tidb-binlog/overview.md)
+    - [部署使用](/dev/reference/tools/tidb-binlog/deploy.md)
+    - [运维管理](/dev/reference/tools/tidb-binlog/maintain.md)
+    - [版本升级](/dev/reference/tools/tidb-binlog/upgrade.md)
+    - [监控告警](/dev/reference/tools/tidb-binlog/monitor.md)
+    - [增量恢复](/dev/reference/tools/tidb-binlog/reparo.md)
+    - [Kafka 自定义开发](/dev/reference/tools/tidb-binlog/binlog-slave-client.md)
+    - [FAQ](/dev/reference/tools/tidb-binlog/faq.md)
 + TiDB in Kubernetes
   - [TiDB Operator 简介](/dev/tidb-in-kubernetes/tidb-operator-overview.md)
   + 快速上手
+    - [kind](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind.md)
     - [DinD](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
     - [GKE](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
     - [Minikube](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube.md)
@@ -372,6 +380,7 @@
 + [TiDB 路线图](/dev/roadmap.md)
 + [版本发布历史](/dev/releases/rn.md)
   + v3.0
+    - [3.0.4](/dev/releases/3.0.4.md)
     - [3.0.3](/dev/releases/3.0.3.md)
     - [3.0.2](/dev/releases/3.0.2.md)
     - [3.0.1](/dev/releases/3.0.1.md)

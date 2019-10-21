@@ -9,7 +9,7 @@ category: reference
 
 ## TiDB Binlog
 
-如需下载最新版本的 [TiDB Binlog](/dev/reference/tidb-binlog-overview.md)，直接下载 TiDB 安装包即可，因为 TiDB Binlog 包含在 TiDB 安装包中。
+如需下载最新版本的 [TiDB Binlog](/dev/reference/tools/tidb-binlog/overview.md)，直接下载 TiDB 安装包即可，因为 TiDB Binlog 包含在 TiDB 安装包中。
 
 以下表格中也提供了 Kafka 版本的 TiDB Binlog 下载链接。
 
@@ -53,6 +53,6 @@ tidb-enterprise-tools 安装包包含以下工具：
 - Syncer
 - Loader
 - Mydumper
-- [binlogctl](/dev/reference/tidb-binlog-overview.md#binlogctl-工具)
+- [binlogctl](/dev/reference/tools/tidb-binlog/overview.md#binlogctl-工具)
 - ddl_checker
 - [sync-diff-inspector](/dev/reference/tools/sync-diff-inspector/overview.md)
