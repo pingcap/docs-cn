@@ -10,7 +10,7 @@ category: how-to
 
 ## 运维准备
 
-- [部署 TiDB Operator](/dev/tidb-in-kubernetes/deploy/tidb-operator.md);
+- [部署 TiDB Operator](/dev/tidb-in-kubernetes/deploy/tidb-operator.md)；
 - [安装 Helm](/dev/tidb-in-kubernetes/reference/tools/in-kubernetes.md#使用-helm) 并配置 PingCAP 官方 chart 仓库。
 
 ## 启用 TiDB 集群的 TiDB Binlog
@@ -32,7 +32,7 @@ category: how-to
 
         * Apache Kafka：通过将 `binlog.drainer.destDBType` 设置为 `kafka` 来启用。同时，必须在 `binlog.drainer.kafka` 中配置目标集群的 zookeeper 地址和 Kafka 地址。
 
-2. 创建一个新的 TiDB 群集或更新现有的群集：
+2. 创建一个新的 TiDB 集群或更新现有的集群：
 
     * 创建一个启用 TiDB Binlog 的 TiDB 新集群：
 
@@ -101,7 +101,7 @@ category: how-to
 
     `clusterName` 和 `clusterVersion` 必须匹配所需的源 TiDB 集群。
 
-    有关完整的配置详细信息，请参阅 [Kubernetes 上的 TiDB Binlog Drainer 配置](/dev/tidb-in-kubernetes/reference/configuration/tidb-drainer.md).
+    有关完整的配置详细信息，请参阅 [Kubernetes 上的 TiDB Binlog Drainer 配置](/dev/tidb-in-kubernetes/reference/configuration/tidb-drainer.md)。
 
 4. 部署 drainer：
 
@@ -113,4 +113,4 @@ category: how-to
 
     > **注意：**
     >
-    > 该 chart 必须与源 TiDB 群集安装在相同的命名空间中。
+    > 该 chart 必须与源 TiDB 集群安装在相同的命名空间中。
