@@ -17,12 +17,12 @@ log-file = "dm-worker.log"
 # dm-worker listen address
 worker-addr = ":8262"
 
+# represents a MySQL/MariaDB instance or a replication group
+source-id = "mysql-replica-01"
+
 # server id of slave for binlog replication
 # each instance (master and slave) in replication group should have different server id
 server-id = 101
-
-# represents a MySQL/MariaDB instance or a replication group
-source-id = "mysql-replica-01"
 
 # flavor: mysql/mariadb
 flavor = "mysql"
@@ -30,11 +30,11 @@ flavor = "mysql"
 # directory that used to store relay log
 relay-dir = "./relay_log"
 
-relay-binlog-name = ""
-relay-binlog-gtid = ""
-
 # enable gtid in relay log unit
 enable-gtid = false
+
+relay-binlog-name = ""
+relay-binlog-gtid = ""
 
 [from]
 host = "127.0.0.1"
@@ -65,19 +65,19 @@ backoff-max = 5m
 
 `worker-addr`：DM-worker 服务的地址，可以省略 IP 信息，例如：":8262"。
 
-`server-id`：DM-worker 作为上游 MySQL/MariaDB slave 来获取 binlog 的 server id，该值在一个 replication group （包括 master 和 slave）中是唯一的。一般情况下不需要配置，DM 会随机生成一个 server id，如果生成的 server id 与其他 slave 服务的 server id 冲突，则可以通过该配置项设置。
-
 `source-id`：标识一个 MySQL/MariaDB 实例或者 replication group。
 
-`flavor`：上游数据库的类型，目前值可以为 "mysql" 或者 "mariadb"。一般情况下不需要配置，DM 会自动判断上游数据库的类型，如果判断的不正确，则可以通过该配置项设置。
+`server-id`：DM-worker 作为上游 MySQL/MariaDB slave 来获取 binlog 的 server id，该值在一个 replication group （包括 master 和 slave）中是唯一的。v1.0.2 及以上版本的 DM 会自动生成，不需要配置该项。
+
+`flavor`：上游数据库的类型，目前值可以为 "mysql" 或者 "mariadb"。v1.0.2 及以上版本的 DM 会自动判断上游版本，不需要配置该项。
 
 `relay-dir`：存储 relay log 的目录，默认值为 "./relay_log"。
 
-`relay-binlog-name`：拉取上游 binlog 的起始文件名，例如 "mysql-bin.000002"，该配置在 `enable-gtid` 为 false 的情况下生效。一般情况下不需要配置，DM-worker 默认从最新位置开始拉取。
-
-`relay-binlog-gtid`：拉取上游 binlog 的起始 GTID，例如 "e9a1fc22-ec08-11e9-b2ac-0242ac110003:1-7849"，该配置在 `enable-gtid` 为 true 的情况下生效。一般情况下不需要配置，DM-worker 默认从最新位置开始拉取。
-
 `enable-gtid`：是否使用 GTID 方式从上游拉取 binlog，默认值为 false。一般情况下不需要配置，如果上游数据库需要做主从切换，则将该配置项设置为 true。
+
+`relay-binlog-name`：拉取上游 binlog 的起始文件名，例如 "mysql-bin.000002"，该配置在 `enable-gtid` 为 false 的情况下生效。如果不配置该项，v1.0.2 之前版本的 DM-worker 将从上游 MySQL 或 MariaDB 现有最早时间点的 binlog 文件开始拉取 binlog，拉取到数据同步任务需要的最新 binlog 可能需要很长时间；v1.0.2 及之后版本的 DM-worker 将从最新时间点的 binlog 文件开始拉取 binlog，一般情况下不需要配置。
+
+`relay-binlog-gtid`：拉取上游 binlog 的起始 GTID，例如 "e9a1fc22-ec08-11e9-b2ac-0242ac110003:1-7849"，该配置在 `enable-gtid` 为 true 的情况下生效。如果不配置该项，v1.0.2 之前版本的 DM-worker 将从上游 MySQL 或 MariaDB 现有最早时间点的 binlog GTID 开始拉取 binlog，拉取到数据同步任务需要的最新 binlog 可能需要很长时间；v1.0.2 及之后版本的 DM-worker 将从最新时间点的 binlog GTID 开始拉取 binlog，一般情况下不需要配置。
 
 ### 数据库链接配置（from 配置项）
 

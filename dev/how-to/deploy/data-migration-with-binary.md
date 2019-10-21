@@ -95,8 +95,17 @@ log-file = "dm-worker.log"
 # DM-worker 的地址
 worker-addr = ":8262"
 
+# 作为 MySQL slave 的 server ID，用于获取 MySQL 的 binlog
+# 在一个 replication group 中，每个实例（master 和 slave）都应该有唯一的 server ID
+# v1.0.2 及以上版本的 DM 会自动生成，不需要配置
+server-id = 101
+
 # 用于标识一个 replication group 或者 MySQL/MariaDB 实例
 source-id = "mysql-replica-01"
+
+# 上游实例类型，值可为 "mysql" 或者 "mariadb"
+# v1.0.2 及以上版本的 DM 会自动识别上游实例类型，不需要配置
+flavor = "mysql"
 
 # MySQL 的连接地址
 [from]

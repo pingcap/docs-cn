@@ -23,6 +23,13 @@ worker-addr = ":8262"
 # represents a MySQL/MariaDB instance or a replication group
 source-id = "mysql-replica-01"
 
+# server id of slave for binlog replication
+# each instance (master and slave) in replication group should have different server id
+server-id = 101
+
+# flavor: mysql/mariadb
+flavor = "mysql"
+
 # directory that used to store relay log
 relay-dir = "./relay_log"
 
@@ -42,6 +49,10 @@ port = 3306
 `worker-addr`：DM-worker 服务的地址，可以省略 IP 信息，例如：":8262"。
 
 `source-id`：标识一个 MySQL/MariaDB 实例或者 replication group。
+
+`server-id`：DM-worker 作为上游 MySQL/MariaDB slave 来获取 binlog 的 server id，该值在一个 replication group （包括 master 和 slave）中是唯一的。v1.0.2 及以上版本的 DM 会自动生成，不需要配置该项。
+
+`flavor`：上游数据库的类型，目前值可以为 "mysql" 或者 "mariadb"。v1.0.2 及以上版本的 DM 会自动判断上游版本，不需要配置该项。
 
 `relay-dir`：存储 relay log 的目录，默认值为 "./relay_log"。
 
