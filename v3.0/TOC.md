@@ -328,7 +328,6 @@
     - [增量恢复](/v3.0/reference/tools/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/v3.0/reference/tools/tidb-binlog/binlog-slave-client.md)
     - [FAQ](/v3.0/reference/tools/tidb-binlog/faq.md)
-
 + TiDB in Kubernetes
   - [TiDB Operator 简介](/v3.0/tidb-in-kubernetes/tidb-operator-overview.md)
   + 快速上手
