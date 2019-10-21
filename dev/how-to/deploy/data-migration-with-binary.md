@@ -123,7 +123,7 @@ port = 3306
 bin/dm-worker -config conf/dm-worker1.toml
 ```
 
-对于 DM-worker2，修改配置文件中的 `source-id` 为 `mysql-replica-02`，并将 `from` 配置部分修改为 MySQL2 的地址即可。（如果因为没有多余的机器，将 DM-worker2 与 DM-worker1 部署在一台机器上，需要把两个 DM-worker 实例部署在不同的路径下，否则保存元信息和 relay log 的默认路径会冲突）
+对于 DM-worker2，修改配置文件中的 `source-id` 为 `mysql-replica-02`，并将 `from` 配置部分修改为 MySQL2 的地址即可。如果因为没有多余的机器，将 DM-worker2 与 DM-worker1 部署在一台机器上，需要把两个 DM-worker 实例部署在不同的路径下，否则保存元信息和 relay log 的默认路径会冲突。
 
 ### DM-master 的部署
 
