@@ -98,12 +98,9 @@ user = "root"
 password = ""
 port = 4000
 
-# `sql_mode` used when loading data. If the `sql-mode` value is not provided or set to "@DownstreamDefault", downstream global `sql_mode` will be used
+# `sql_mode` of session level used to connect to the database when loading data. If `sql-mode` is not provided or set to "@DownstreamDefault", the global `sql_mode` for downstream is used.
 # sql-mode = ""
-
-# max-allowed-packet sets `max_allowed_packet` for database connection.
-# `max-allowed-packet=0` can be used to automatically fetch the
-# `max_allowed_packet` variable from server on every connection.
+# `max-allowed-packet` sets the maximum data packet allowed for database connection, which corresponds to the `max_allowed_packet` in system parameters. If it is set to 0, the global `max_allowed_packet` for downstream is used.
 max-allowed-packet = 67108864
 
 # The sharding replicating rules support wildcharacter.
