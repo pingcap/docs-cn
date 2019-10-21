@@ -83,18 +83,16 @@ TiDB Operator 尚不支持自动编排 TiSpark。
 
 TiDB Operator 调度 Pod 失败的原因可能有三种情况：
 
-* 资源不足的问题，这时 Pod 一直阻塞在 `Pending` 状态，这块我们在集群故障诊断中有详细说明，请参考：[集群故障诊断](/dev/tidb-in-kubernetes/troubleshoot.md)
+* 资源不足，导致 Pod 一直阻塞在 `Pending` 状态。详细说明参见[集群故障诊断](/dev/tidb-in-kubernetes/troubleshoot.md)。
 
-* 部分 Node 被打了 `taint`，导致 Pod 无法调度到对应的 Node 上。请参考：[taint & toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/)
+* 部分 Node 被打了 `taint`，导致 Pod 无法调度到对应的 Node 上。详请参考 [taint & toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/)。
 
-* 调度错误，这时 Pod 一直阻塞在 `ContainerCreating` 状态。这种情况发生时请检查 Kubernetes 集群中是否部署过多个 TiDB Operator。重复的 TiDB Operator 自定义调度器的存在，会导致同一个 Pod 的调度周期不同阶段会分别被不同的调度器处理，从而产生冲突。
+* 调度错误，导致 Pod 一直阻塞在 `ContainerCreating` 状态。这种情况发生时请检查 Kubernetes 集群中是否部署过多个 TiDB Operator。重复的 TiDB Operator 自定义调度器的存在，会导致同一个 Pod 的调度周期不同阶段会分别被不同的调度器处理，从而产生冲突。
 
-    {{< copyable "shell-regular" >}}
+执行以下命令，如果有两条及以上记录，就说明 Kubernetes 集群中存在重复的 TiDB Operator，请根据实际情况删除多余的 TiDB Operator。
 
-    ```shell
-    kubectl get deployment --all-namespaces |grep tidb-scheduler
-    ```
+{{< copyable "shell-regular" >}}
 
-    执行上面命令如果有两条及以上记录，就说明 kubernetes 集群存在重复的 TiDB Operator，请根据实际情况清楚多余的 TiDB Operator。
-
-如果调度失败的原因不是上面三种情况，请联系我们。
+```shell
+kubectl get deployment --all-namespaces |grep tidb-scheduler
+```
