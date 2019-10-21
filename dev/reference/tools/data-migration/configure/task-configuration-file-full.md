@@ -148,7 +148,7 @@ mysql-instances:
 
 `loaders`：loader 处理单元运行配置参数。如果默认配置可以满足需求，则不需要配置该项，也可以只使用 `loader-thread` 对 `pool-size` 配置项单独进行配置。
 
-`syncers`：loader 处理单元运行配置参数。如果默认配置可以满足需求，则不需要配置该项，也可以只使用 `syncer-thread` 对 `worker-count` 配置项单独进行配置。
+`syncers`：syncer 处理单元运行配置参数。如果默认配置可以满足需求，则不需要配置该项，也可以只使用 `syncer-thread` 对 `worker-count` 配置项单独进行配置。
 
 各个功能配置集的参数及解释参见[完整配置文件示例](#完整配置文件示例)中的注释说明。
 
