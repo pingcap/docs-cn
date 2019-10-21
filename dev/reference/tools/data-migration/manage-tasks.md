@@ -17,7 +17,6 @@ category: reference
 
 ```bash
 ./dmctl --help
-./dmctl --help
 ```
 
 ```
@@ -96,7 +95,7 @@ Available Commands:
   unlock-ddl-lock      forcefully unlock DDL lock
   update-master-config update the config of the DM-master
   update-relay         update the relay unit config of the DM-worker
-  update-task          update a task's config for routes, filters, column-mappings, or black-white-list
+  update-task          update a task's config for routes, filters, or black-white-list
 
 Flags:
   -h, --help             help for dmctl
@@ -123,7 +122,7 @@ help start-task
 start a task as defined in the config file
 
 Usage:
- dmctl start-task [-w worker ...] <config_file> [flags]
+ dmctl start-task [-w worker ...] <config-file> [flags]
 
 Flags:
  -h, --help   help for start-task
@@ -146,7 +145,7 @@ start-task [ -w "172.16.30.15:8262"] ./task.yaml
     - 可选
     - 指定在特定的一组 DM-workers 上执行 `task.yaml`
     - 如果设置，则只启动指定任务在该组 DM-workers 上的子任务
-+ `config_file`：
++ `config-file`：
     - 必选
     - 指定 `task.yaml` 的文件路径
 
@@ -476,7 +475,6 @@ stop-task test
 - Table routing 规则
 - Black & white table lists 规则
 - Binlog event filter 规则
-- Column mapping 规则
 
 其余项均不支持更新。
 
@@ -513,7 +511,7 @@ help update-task
 ```
 
 ```
-update a task's config for routes, filters, column-mappings, or black-white-list
+update a task's config for routes, filters, or black-white-list
 
 Usage:
   dmctl update-task [-w worker ...] <config-file> [flags]

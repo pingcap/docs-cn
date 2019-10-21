@@ -6,7 +6,7 @@ aliases: ['/docs-cn/op-guide/tidb-v3.0-upgrade-guide/','/docs-cn/v3.0/how-to/upg
 
 # TiDB 3.0 升级操作指南
 
-本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 RC 版本升级到 TiDB 3.0 版本。TiDB 3.0 版本兼容 [Kafka 版本的 TiDB Binlog](/v3.0/reference/tools/tidb-binlog/tidb-binlog-kafka.md) 以及[TiDB Binlog Cluster 版本](/v3.0/reference/tidb-binlog-overview.md)。
+本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 RC 版本升级到 TiDB 3.0 版本。TiDB 3.0 版本兼容 [Kafka 版本的 TiDB Binlog](/v3.0/reference/tools/tidb-binlog/tidb-binlog-kafka.md) 以及[TiDB Binlog Cluster 版本](/v3.0/reference/tools/tidb-binlog/overview.md)。
 
 ## 升级兼容性说明
 
@@ -133,7 +133,7 @@ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
 
     > **注意：**
     >
-    > 单机多 TiKV 实例（进程）情况下，需要修改这三个参数。
+    > 2.0 版本升级且单机多 TiKV 实例（进程）情况下，需要修改这三个参数。
     >
     > 推荐设置：TiKV 实例数量 \* 参数值 = CPU 核心数量 \* 0.8
 
@@ -150,6 +150,24 @@ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
     > 单机多 TiKV 实例（进程）情况下，需要修改 `capacity` 参数。
     >
     > 推荐设置：`capacity` = (MEM_TOTAL * 0.5 / TiKV 实例数量)
+
+- TiKV 配置中单机多实例场景需要额外配置 `tikv_status_port` 端口:
+
+    ```
+    [tikv_servers]
+    TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv1"
+    TiKV1-2 ansible_host=172.16.10.4 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv1"
+    TiKV2-1 ansible_host=172.16.10.5 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv2"
+    TiKV2-2 ansible_host=172.16.10.5 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv2"
+    TiKV3-1 ansible_host=172.16.10.6 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv3"
+    TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv3"
+    ```
+
+    > **注意：**
+    >
+    > 3.0 版本单机多 TiKV 实例（进程）情况下，需要添加 `tikv_status_port` 参数。
+    >
+    > 注意配置端口是否有冲突
 
 ## 下载 TiDB 3.0 binary 到中控机
 
