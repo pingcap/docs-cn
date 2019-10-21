@@ -257,7 +257,7 @@ dm_worker1 ansible_host=172.16.10.72 server_id=101 source_id="mysql-replica-01" 
 dm_master ansible_host=172.16.10.71
 
 [dm_worker_servers]
-dm_worker1 ansible_host=172.16.10.72 server_id=101 source_id**="mysql-replica-01" mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
+dm_worker1 ansible_host=172.16.10.72 server_id=101 source_id="mysql-replica-01" mysql_host=172.16.10.81 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
 dm_worker2 ansible_host=172.16.10.73 server_id=102 source_id="mysql-replica-02" mysql_host=172.16.10.82 mysql_user=root mysql_password='VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=' mysql_port=3306
 
@@ -298,7 +298,7 @@ grafana_admin_password = "admin"
 | node2 | 172.16.10.72 | DM-worker1-1, DM-worker1-2 |
 | node3 | 172.16.10.73 | DM-worker2-1, DM-worker2-2 |
 
-编辑 `inventory.ini` 文件时，请注意区分这些变量：`server-id`，`deploy_dir`，和 `dm_worker_port`。
+编辑 `inventory.ini` 文件时，请注意区分这些变量：`server_id`，`deploy_dir`，和 `dm_worker_port`。
 
 ```ini
 # DM 模块
