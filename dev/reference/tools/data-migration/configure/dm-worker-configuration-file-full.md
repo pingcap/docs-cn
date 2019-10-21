@@ -73,7 +73,7 @@ backoff-max = 5m
 
 `relay-dir`：存储 relay log 的目录，默认值为 "./relay_log"。
 
-`enable-gtid`：是否使用 GTID 方式从上游拉取 binlog，默认值为 false。一般情况下不需要配置，如果上游数据库需要做主从切换，则将该配置项设置为 true。
+`enable-gtid`：是否使用 GTID 方式从上游拉取 binlog，默认值为 false。一般情况下不需要配置，如果上游数据库启用了 GTID 支持，且需要做主从切换，则将该配置项设置为 true。
 
 `relay-binlog-name`：拉取上游 binlog 的起始文件名，例如 "mysql-bin.000002"，该配置在 `enable-gtid` 为 false 的情况下生效。如果不配置该项，v1.0.2 之前版本的 DM-worker 将从上游 MySQL 或 MariaDB 现有最早时间点的 binlog 文件开始拉取 binlog，拉取到数据同步任务需要的最新 binlog 可能需要很长时间；v1.0.2 及之后版本的 DM-worker 将从最新时间点的 binlog 文件开始拉取 binlog，一般情况下不需要配置。
 
