@@ -3,9 +3,9 @@ title: DM 任务完整配置文件介绍
 category: reference
 ---
 
-# DM 任务配置文件介绍
+# DM 任务完整配置文件介绍
 
-本文档主要介绍 Data Migration (DM) 的任务完整的配置文件 [`task.yaml`](https://github.com/pingcap/dm/blob/master/dm/master/task.yaml)，包含[全局配置](#全局配置) 和[实例配置](#实例配置) 两部分。
+本文档主要介绍 Data Migration (DM) 的任务完整的配置文件 [`task_advanced.yaml`](https://github.com/pingcap/dm/blob/master/dm/master/task_advanced.yaml)，包含[全局配置](#全局配置) 和[实例配置](#实例配置) 两部分。
 
 关于各配置项的功能和配置，请参阅[数据同步功能](/dev/reference/tools/data-migration/features/overview.md)。
 
