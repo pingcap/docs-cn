@@ -30,14 +30,16 @@ dm-worker = "172.16.10.73:8262"
 
 ### Global 配置
 
-`log-file`：日志文件，如果不配置日志会输出到标准输出中。
-
-`master-addr`：DM-master 服务的地址，可以省略 IP 信息，例如：":8261"。
+| 配置项        | 说明                                    |
+| ------------ | --------------------------------------- |
+| `log-file` | 日志文件，如果不配置日志会输出到标准输出中。 |
+| `master-addr` | DM-master 服务的地址，可以省略 IP 信息，例如：":8261"。 |
 
 ### DM-Worker 的配置
 
 配置在 `deploy` 中，每一个 DM-worker 都需要设置一个 `deploy`。
 
-`source-id`：一个 replication group 或者 MySQL/MariaDB 实例的标识，需要和 DM-worker 中的 `source-id` 一致。
-
-`dm-worker`：DM-worker 的服务地址。
+| 配置项        | 说明                                    |
+| ------------ | --------------------------------------- |
+| `source-id` | 一个 replication group 或者 MySQL/MariaDB 实例的标识，需要和 DM-worker 中的 `source-id` 一致。 |
+| `dm-worker` | DM-worker 的服务地址。 |
