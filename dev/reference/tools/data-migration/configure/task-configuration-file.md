@@ -76,7 +76,7 @@ mysql-instances:
 
 ### 功能配置集
 
-对于一般的业务场景，只需要配置黑白名单过滤规则集，配置说明参见以上示例配置文件中 `black-white-list` 的注释。
+对于一般的业务场景，只需要配置黑白名单过滤规则集，配置说明参见以上示例配置文件中 `black-white-list` 的注释以及 [Black & white table lists](/dev/reference/tools/data-migration/features/overview.md#black--white-table-lists)
 
 ## 实例配置
 
