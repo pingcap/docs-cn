@@ -205,8 +205,12 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 
 1. 修改配置文件，在 `security` 部分添加 `skip-grant-table`：
 
-    > [security]
-    > skip-grant-table = true
+    {{< copyable "" >}}
+
+    ```
+    [security]
+    skip-grant-table = true
+    ```
 
 2. 使用修改后的配置启动 TiDB（需要 `root` 权限）：
 
