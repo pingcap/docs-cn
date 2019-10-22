@@ -344,15 +344,15 @@ grafana_admin_password = "admin"
 | 变量名称 | 描述 |
 | ------------- | -------
 | source_id | DM-worker 绑定到的一个数据库实例或是具有主从架构的复制组。当发生主从切换的时候，只需要更新 `mysql_host` 或 `mysql_port` 而不用更改该 ID 标识。 |
-| server_id | DM-worker 伪装成一个 MySQL slave，该变量即为这个 slave 的 server ID，在 MySQL 集群中需保持全局唯一。取值范围 0 ~ 4294967295。v1.0.2 及以上版本的 DM 会自动生成，不需要配置。 |
+| server_id | DM-worker 伪装成一个 MySQL slave，该变量即为这个 slave 的 server ID，在 MySQL 集群中需保持全局唯一。取值范围 0 ~ 4294967295。v1.0.2 及以上版本的 DM 会自动生成，不需要手动配置。 |
 | mysql_host | 上游 MySQL 主机。 |
 | mysql_user | 上游 MySQL 用户名，默认值为 “root”。|
 | mysql_password | 上游 MySQL 用户密码，需使用 `dmctl` 工具加密。请参考[使用 dmctl 加密上游 MySQL 用户密码](#使用-dmctl-加密上游-mysql-用户密码)。 |
 | mysql_port | 上游 MySQL 端口， 默认 3306。 |
 | enable_gtid | DM-worker 是否使用全局事务标识符（GTID）拉取 binlog。使用前提是在上游 MySQL 已开启 GTID 模式。 |
-| relay_binlog_name | DM-worker 是否从指定 binlog 文件位置开始拉取 binlog。仅适用于本地无有效 relay log 的情况。v1.0.2 及以上版本的 DM 会默认从最新位置开始拉取 binlog，一般情况下不需要配置。|
-| relay_binlog_gtid | DM-worker 是否从指定 GTID 位置开始拉取 binlog。仅适用于本地无有效 relay log，且 `enable_gtid` 设置为 true 的情况。v1.0.2 及以上版本的 DM 会默认从最新位置开始拉取 binlog，一般情况下不需要配置。 |
-| flavor | 代表 MySQL 的版本发布类型。 如果是官方版本，Percona 版，或 Cloud MySQL 版，其值为 “mysql”。 如果是 MariaDB，其值为 "mariadb"。默认值是 "mysql"。v1.0.2 及以上版本的 DM 会自动判断上游版本，不需要配置。 |
+| relay_binlog_name | DM-worker 是否从指定 binlog 文件位置开始拉取 binlog。仅适用于本地无有效 relay log 的情况。v1.0.2 及以上版本的 DM 会默认从最新位置开始拉取 binlog，一般情况下不需要手动配置。|
+| relay_binlog_gtid | DM-worker 是否从指定 GTID 位置开始拉取 binlog。仅适用于本地无有效 relay log，且 `enable_gtid` 设置为 true 的情况。v1.0.2 及以上版本的 DM 会默认从最新位置开始拉取 binlog，一般情况下不需要手动配置。 |
+| flavor | 代表 MySQL 的版本发布类型。 如果是官方版本，Percona 版，或 Cloud MySQL 版，其值为 “mysql”。 如果是 MariaDB，其值为 "mariadb"。默认值是 "mysql"。v1.0.2 及以上版本的 DM 会自动判断上游版本，不需要手动配置。 |
 
 关于 `deploy_dir` 配置的更多信息，请参考[配置部署目录](#配置部署目录)。
 
@@ -406,7 +406,7 @@ dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 
 
 > **注意：**
 >
-> 如未设定 `relay_binlog_name`，v1.0.2 之前版本的 DM-worker 将从上游 MySQL 或 MariaDB 现有最早时间点的 binlog 文件开始拉取 binlog，拉取到数据同步任务需要的最新 binlog 可能需要很长时间；v1.0.2 及之后版本的 DM-worker 将从最新时间点的 binlog 文件开始拉取 binlog，一般情况下不需要配置。
+> 如未设定 `relay_binlog_name`，v1.0.2 之前版本的 DM-worker 将从上游 MySQL 或 MariaDB 现有最早时间点的 binlog 文件开始拉取 binlog，拉取到数据同步任务需要的最新 binlog 可能需要很长时间；v1.0.2 及之后版本的 DM-worker 将从最新时间点的 binlog 文件开始拉取 binlog，一般情况下不需要手动配置。
 
 ### 开启 relay log GTID 同步模式
 

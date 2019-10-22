@@ -16,7 +16,7 @@ log-file = "dm-master.log"
 # dm-master listen address
 master-addr = ":8261"
 
-# replication group <-> dm-Worker deployment, we'll refine it when new deployment function is available
+# dm-Worker deployment, we'll refine it when new deployment function is available
 [[deploy]]
 source-id = "mysql-replica-01"
 dm-worker = "172.16.10.72:8262"
@@ -34,7 +34,7 @@ dm-worker = "172.16.10.73:8262"
 
 `master-addr`：DM-master 服务的地址，可以省略 IP 信息，例如：":8261"。
 
-### replication group <-> DM-Worker 的配置
+### DM-Worker 的配置
 
 配置在 `deploy` 中，每一个 DM-worker 都需要设置一个 `deploy`。
 
