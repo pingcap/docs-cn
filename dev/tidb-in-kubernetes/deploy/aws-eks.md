@@ -141,7 +141,7 @@ ssh -i credentials/<cluster_name>.pem centos@<bastion_ip>
 {{< copyable "shell-regular" >}}
 
 ```shell
-mysql -h <tidb_dns> -P <tidb_port> -u root
+mysql -h <tidb_dns> -P 4000 -u root
 ```
 
 The default value of `cluster_name` is `my-cluster`. If the DNS name is not resolvable, be patient and wait a few minutes.
@@ -153,7 +153,7 @@ You can interact with the EKS cluster using `kubectl` and `helm` with the kubeco
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb
+    kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n <cluster_name>
     ```
 
     {{< copyable "shell-regular" >}}
@@ -173,7 +173,7 @@ You can interact with the EKS cluster using `kubectl` and `helm` with the kubeco
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get po -n tidb
+    kubectl get po -n <cluster_name>
     ```
 
     {{< copyable "shell-regular" >}}
@@ -184,7 +184,7 @@ You can interact with the EKS cluster using `kubectl` and `helm` with the kubeco
 
 ## Monitor
 
-You can access the `monitor_endpoint` address (printed in outputs) using your web browser to view monitoring metrics.
+You can access the `<monitor-dns>:3000` address (printed in outputs) using your web browser to view monitoring metrics.
 
 The initial Grafana login credentials are:
 
@@ -193,24 +193,23 @@ The initial Grafana login credentials are:
 
 ## Upgrade
 
-To upgrade the TiDB cluster, edit the `variables.tf` file with your preferred text editor and modify the `tidb_version` variable to a higher version, and then run `terraform apply`.
+To upgrade the TiDB cluster, edit the `variables.tf` file with your preferred text editor and modify the `default_cluster_version` variable to a higher version, and then run `terraform apply`.
 
-For example, to upgrade the cluster to version 3.0.1, modify the `tidb_version` to `v3.0.1`:
+For example, to upgrade the cluster to version 3.0.1, modify the `default_cluster_version` to `v3.0.1`:
 
 ```hcl
  variable "default_cluster_version" {
-   description = "tidb cluster version"
    default = "v3.0.1"
  }
 ```
 
 > **Note:**
 >
-> The upgrading doesn't finish immediately. You can watch the upgrading process by `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb --watch`.
+> The upgrading doesn't finish immediately. You can watch the upgrading process by `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n <cluster_name> --watch`.
 
 ## Scale
 
-To scale the TiDB cluster, edit the `variables.tf` file with your preferred text editor and modify the `tikv_count` or `tidb_count` variable to your desired count, and then run `terraform apply`.
+To scale the TiDB cluster, edit the `variables.tf` file with your preferred text editor and modify the `default_cluster_tikv_count` or `default_cluster_tidb_count` variable to your desired count, and then run `terraform apply`.
 
 For example, to scale out the cluster, you can modify the number of TiDB instances from 2 to 4:
 
@@ -222,7 +221,7 @@ For example, to scale out the cluster, you can modify the number of TiDB instanc
 
 > **Note:**
 >
-> Currently, scaling in is NOT supported because we cannot determine which node to scale. Scaling out needs a few minutes to complete, you can watch the scaling out by `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n tidb --watch`.
+> Currently, scaling in is NOT supported because we cannot determine which node to scale. Scaling out needs a few minutes to complete, you can watch the scaling out by `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n <cluster_name> --watch`.
 
 ## Customize
 
@@ -239,7 +238,7 @@ By default, the terraform script will create a new VPC. You can use an existing 
 
 An Amazon EC2 instance is also created by default as the bastion machine to connect to the created TiDB cluster. This is because the TiDB service is exposed as an [Internal Elastic Load Balancer](https://aws.amazon.com/blogs/aws/internal-elastic-load-balancers/). The EC2 instance has MySQL and Sysbench pre-installed, so you can use SSH to log into the EC2 instance and connect to TiDB using the ELB endpoint. You can disable the bastion instance creation by setting `create_bastion` to `false` if you already have an EC2 instance in the VPC.
 
-The TiDB version and the number of components are also configurable in `variables.tf`.  You can customize these variables to suit your needs.
+The TiDB version and the number of components are also configurable in `variables.tf`. You can customize these variables to suit your needs.
 
 Currently, the instance type of the TiDB cluster component is not configurable because PD and TiKV depend on [NVMe SSD instance store](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html), and different instance types have different disks.
 
@@ -249,7 +248,35 @@ The terraform scripts provide proper default settings for the TiDB cluster in EK
 
 For example, the default cluster uses `./default-cluster.yaml` as the overriding values file, and the ConfigMap rollout feature is enabled in this file.
 
-In EKS, some values are not customizable in `values.yaml`, such as the cluster version, replicas, node selectors, and taints. These variables are controlled by Terraform to ensure consistency between the infrastructure and TiDB clusters. To customize these variables, you can edit the variables of each `./tidb-cluster` module in the `clusters.tf` file directly.
+In EKS, some configuration items are not customizable in `values.yaml`, such as the cluster version, replicas, `NodeSelector` and `Tolerations`. `NodeSelector` and `Tolerations` are controlled by Terraform to ensure consistency between the infrastructure and TiDB clusters. Cluster version and replicas can be modified in each `tidb-cluster` module in the `clusters.tf` file directly.
+
+> **Note:**
+>
+> It is not recommended to include the following configurations (default configurations of `tidb-cluster` module) in the customized `values.yaml`:
+
+```
+pd:
+  storageClassName: ebs-gp2
+tikv:
+  stroageClassName: local-storage
+tidb:
+  service:
+    type: LoadBalancer
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-internal: '0.0.0.0/0'
+      service.beta.kubernetes.io/aws-load-balancer-type: nlb
+      service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: >'true'
+  separateSlowLog: true
+monitor:
+  storage: 100Gi
+  storageClassName: ebs-gp2
+  persistent: true
+  grafana:
+    config:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+    service:
+      type: LoadBalancer
+```
 
 ### Customize TiDB Operator
 
@@ -264,14 +291,14 @@ variable "operator_values" {
 
 ## Manage multiple TiDB clusters
 
-An instance of `./tidb-cluster` module corresponds to a TiDB cluster in the EKS cluster. If you want to add a new TiDB cluster, you can edit `./cluster.tf` and add a new instance of `./tidb-cluster` module:
+An instance of `tidb-cluster` module corresponds to a TiDB cluster in the EKS cluster. If you want to add a new TiDB cluster, you can edit `./cluster.tf` and add a new instance of `tidb-cluster` module:
 
 ```hcl
 module example-cluster {
-  source = "./tidb-cluster"
+  source = "../modules/aws/tidb-cluster"
 
   # The target EKS, required
-  eks_info = local.eks
+  eks = local.eks
   # The subnets of node pools of this TiDB cluster, required
   subnets = local.subnets
   # TiDB cluster name, required
@@ -318,6 +345,10 @@ output "example-cluster_monitor-hostname" {
   value = module.example-cluster.monitor_hostname
 }
 ```
+
+When you finish modification, you can execute `terraform init` and `terraform apply` to create the TiDB cluster.
+
+To delete the TiDB cluster, you can remove the `tidb-cluster` module in `cluster.tf`, execute `terraform apply` and the corresponding EC2 resources will be released as well.
 
 ## Destroy clusters
 
@@ -470,4 +501,4 @@ In addition, you can easily integrate these modules into your own Terraform work
 > * If you want to use these modules outside the tidb-operator project, make sure you copy the whole `modules` directory and keep the relative path of each module inside the directory unchanged.
 > * Due to limitation [hashicorp/terraform#2430](https://github.com/hashicorp/terraform/issues/2430#issuecomment-370685911) of Terraform, the hack processing of Helm provider is necessary in the above example. It is recommended that you keep it in your own Terraform scripts.
 
-If you are unwilling to write Terraform code, you can also copy the `deploy/aws` directory to create new Kubernetes clusters. But note that you cannot copy a directory that you have already run `terraform apply` against, when the Terraform state already exists in local.  In this case, it is recommended to clone a new repository before copying the directory.
+If you are unwilling to write Terraform code, you can also copy the `deploy/aws` directory to create new Kubernetes clusters. But note that you cannot copy a directory that you have already run `terraform apply` against, when the Terraform state already exists in local. In this case, it is recommended to clone a new repository before copying the directory.
