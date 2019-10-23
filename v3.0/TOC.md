@@ -12,6 +12,7 @@
     - [How to Run TPC-C Test on TiDB](/v3.0/benchmark/how-to-run-tpcc.md)
     - [Sysbench Performance Test - v3.0 vs. v2.1](/v3.0/benchmark/sysbench-v4.md)
     - [TPC-C Performance Test - v3.0 vs. v2.1](/v3.0/benchmark/tpcc.md)
+    - [TiDB in Kubernetes Sysbench Test](/v3.0/benchmark/sysbench-in-k8s.md)
     - [DM 1.0-alpha Benchmark Report](/v3.0/benchmark/dm-v1-alpha.md)
     - [DM 1.0-GA Benchmark Report](/v3.0/benchmark/dm-v1.0-ga.md)
 + Concepts
