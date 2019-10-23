@@ -7,7 +7,7 @@ category: reference
 
 本文介绍 DM-master 的配置文件，包括配置文件示例与配置项说明。
 
-## 示例配置文件
+## 配置文件示例
 
 DM-master 的示例配置文件如下所示：
 
