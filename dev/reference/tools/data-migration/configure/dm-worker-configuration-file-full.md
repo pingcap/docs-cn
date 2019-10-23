@@ -48,7 +48,7 @@ interval = 3600
 expires = 24
 remain-space = 15
 
-# task status checker
+# Task status checker
 [checker]
 check-enable = true
 backoff-rollback = "5m"
