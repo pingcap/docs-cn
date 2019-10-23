@@ -7,6 +7,10 @@ category: reference
 
 TiDB Operator 是 Kubernetes 上的 TiDB 集群自动运维系统，提供包括部署、升级、扩缩容、备份恢复、配置变更的 TiDB 全生命周期管理。借助 TiDB Operator，TiDB 可以无缝运行在公有云或私有部署的 Kubernetes 集群上。
 
+> **注意：**
+>
+> 每个 Kubernetes 集群中只能部署一个 TiDB Operator。
+
 ## TiDB Operator 整体架构
 
 ![TiDB Operator Overview](/media/tidb-operator-overview.png)
