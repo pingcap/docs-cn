@@ -14,7 +14,7 @@ category: reference
 log-level = "info"
 log-file = "dm-worker.log"
 
-# dm-worker listen address
+# DM-worker listening address
 worker-addr = ":8262"
 
 # represents a MySQL/MariaDB instance or a replication group
