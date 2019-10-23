@@ -32,7 +32,7 @@ flavor = "mysql"
 # The directory used to store relay log
 relay-dir = "./relay_log"
 
-# enable gtid in relay log unit
+# Enables gtid in the relay log unit
 enable-gtid = false
 
 relay-binlog-name = ""
