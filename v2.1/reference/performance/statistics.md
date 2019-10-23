@@ -94,7 +94,9 @@ SHOW STATS_META [ShowLikeOrWhere]
 | modify_count | 修改的行数 |
 | row_count | 总行数 |
 
-注意，在 TiDB 根据 DML 语句自动更新总行数以及修改的行数时， `update_time` 也会被更新，因此并不能认为 `update_time` 是最近一次发生 Analyze 的时间。
+> **注意：**
+>
+> 在 TiDB 根据 DML 语句自动更新总行数以及修改的行数时，`update_time` 也会被更新，因此并不能认为 `update_time` 是最近一次发生 Analyze 的时间。
 
 ### 列的元信息
 
