@@ -146,6 +146,7 @@ Pod 处于 Pending 状态，通常都是资源不满足导致的，比如：
 
 * 使用持久化存储的 PD、TiKV、Monitor Pod 使用的 PVC 的 StorageClass 不存在或 PV 不足
 * Kubernetes 集群中没有节点能满足 Pod 申请的 CPU 或内存
+* PD 或者 TiKV Replicas 数量和集群内节点数量不满足 tidb-scheduler 高可用调度策略
 
 此时，可以通过 `kubectl describe pod` 命令查看 Pending 的具体原因：
 
@@ -157,7 +158,7 @@ kubectl describe po -n <namespace> <pod-name>
 
 如果是 CPU 或内存资源不足，可以通过降低对应组件的 CPU 或内存资源申请使其能够得到调度，或是增加新的 Kubernetes 节点。
 
-如果是 PVC 的 StorageClass 找不到，则需要将 TiDB Pod 删除，并且将对应的 PVC 也都删除，然后在 `values.yaml` 里面将 `storageClassName` 修改为集群中可用的 StorageClass 名字，可以通过以下命令获取集群中可用的 StorageClass：
+如果是 PVC 的 StorageClass 找不到，需要在 `values.yaml` 里面将 `storageClassName` 修改为集群中可用的 StorageClass 名字，执行 `helm upgrade`，然后将 Statefulset 删除，并且将对应的 PVC 也都删除，可以通过以下命令获取集群中可用的 StorageClass：
 
 {{< copyable "shell-regular" >}}
 
@@ -166,6 +167,8 @@ kubectl get storageclass
 ```
 
 如果集群中有 StorageClass，但可用的 PV 不足，则需要添加对应的 PV 资源。对于 Local PV，可以参考[本地 PV 配置](/dev/tidb-in-kubernetes/reference/configuration/storage-class.md#本地-pv-配置)进行扩充。
+
+tidb-scheduler 针对 PD 和 TiKV 定制了高可用调度策略，假设 PD 或者 TiKV 的 Replicas 数量为 N，那么每个节点针对同一个 TiDB 集群可以调度的 PD Pod 数量最多为 `M=(N-1)/2`（如果 N<3，M=1），每个节点针对同一个 TiDB 集群可以调度的 TiKV Pod 数量最多为 `M=ceil(N/3)`（ceil 表示向上取整，如果N<3，M=1）。如果 Pod 因为高可用调度策略 Pending，需要往集群内添加节点。
 
 ## Pod 处于 CrashLoopBackOff 状态
 
