@@ -20,7 +20,7 @@ worker-addr = ":8262"
 # Represents a MySQL/MariaDB instance or a replication group
 source-id = "mysql-replica-01"
 
-# server id of slave for binlog replication
+# Server id of slave for binlog replication
 # each instance (master and slave) in replication group should have different server id
 server-id = 101
 
