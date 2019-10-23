@@ -35,6 +35,7 @@ TiDB Operator 是 Kubernetes 上的 TiDB 集群自动运维系统，提供包括
 TiDB Operator 提供了多种方式来部署 Kubernetes 上的 TiDB 集群：
 
 + 测试环境：
+    - [kind](/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind.md)：采用 [kind](https://kind.sigs.k8s.io/) 方式在本地 Kubernetes 集群上部署 TiDB 集群；
     - [DinD](/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)：使用 TiDB Operator 在本地 DinD 环境部署 TiDB 集群；
     - [Minikube](/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube.md)：使用 TiDB Operator 在本地 Minikube 环境部署 TiDB 集群；
     - [GKE](/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)：使用 TiDB Operator 在 GKE 上部署 TiDB 集群。
