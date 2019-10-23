@@ -29,7 +29,7 @@ server-id = 101
 # flavor: mysql/mariadb
 flavor = "mysql"
 
-# directory that used to store relay log
+# The directory used to store relay log
 relay-dir = "./relay_log"
 
 # enable gtid in relay log unit
