@@ -79,8 +79,11 @@
     + Data Migration
       + 概述
         - [DM 架构](/v3.0/reference/tools/data-migration/overview.md#dm-架构)
+        - [DM-worker 简介](/v3.0/reference/tools/data-migration/dm-worker-intro.md)
         - [同步功能介绍](/v3.0/reference/tools/data-migration/overview.md#同步功能介绍)
         - [使用限制](/v3.0/reference/tools/data-migration/overview.md#使用限制)
+        - [DM-worker 简介](/v3.0/reference/tools/data-migration/dm-worker-intro.md)
+        - [DM Relay Log](/v3.0/reference/tools/data-migration/relay-log.md)
       + 核心特性
         - [Table Routing](/v3.0/reference/tools/data-migration/features/overview.md#table-routing)
         - [Black & White Lists](/v3.0/reference/tools/data-migration/features/overview.md#black--white-table-lists)
@@ -99,24 +102,30 @@
       + 配置
         - [概述](/v3.0/reference/tools/data-migration/configure/overview.md)
         - [任务配置](/v3.0/reference/tools/data-migration/configure/task-configuration-file.md)
+      + [DM 集群管理]
+        - [DM 集群操作](/v3.0/reference/tools/data-migration/cluster-operations.md)
+        - [DM 集群升级](/v3.0/reference/tools/data-migration/dm-upgrade.md)
+      + [DM 同步任务管理]
+      	 - [管理数据同步任务](/v3.0/reference/tools/data-migration/manage-tasks.md)
+      	 - [任务前置检查](/v3.0/reference/tools/data-migration/precheck.md)
+      	 - [任务状态查询](/v3.0/reference/tools/data-migration/query-status.md)
       - [监控 DM 集群](/v3.0/reference/tools/data-migration/monitor.md)
-      - [管理数据同步任务](/v3.0/reference/tools/data-migration/manage-tasks.md)
-      - [DM 集群操作](/v3.0/reference/tools/data-migration/cluster-operations.md)
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](/v3.0/how-to/migrate/from-aurora.md)
       - [DM Portal](/v3.0/reference/tools/data-migration/dm-portal.md)
-      - [DM 错误含义和诊断](/v3.0/reference/tools/data-migration/error-system.md)
-      - [DM 故障诊断](/v3.0/how-to/troubleshoot/data-migration.md)
+      + [故障诊断]
+        - [DM 错误含义](/v3.0/reference/tools/data-migration/error-system.md)
+        - [DM 故障诊断](/v3.0/how-to/troubleshoot/data-migration.md)
       - [FAQ](/v3.0/faq/data-migration.md)
     + TiDB Lightning
-      - [概述](/v3.0/reference/tools/tidb-lightning/overview.md)
-      - [部署执行](/v3.0/reference/tools/tidb-lightning/deployment.md)
-      - [断点续传](/v3.0/reference/tools/tidb-lightning/checkpoints.md)
-      - [表库过滤](/v3.0/reference/tools/tidb-lightning/table-filter.md)
-      - [CSV 支持](/v3.0/reference/tools/tidb-lightning/csv.md)
-      - [监控告警](/v3.0/reference/tools/tidb-lightning/monitor.md)
-      - [故障诊断](/v3.0/how-to/troubleshoot/tidb-lightning.md)
-      - [FAQ](/v3.0/faq/tidb-lightning.md)
+      - [概述](/dev/reference/tools/tidb-lightning/overview.md)
+      - [部署执行](/dev/reference/tools/tidb-lightning/deployment.md)
+      - [断点续传](/dev/reference/tools/tidb-lightning/checkpoints.md)
+      - [表库过滤](/dev/reference/tools/tidb-lightning/table-filter.md)
+      - [CSV 支持](/dev/reference/tools/tidb-lightning/csv.md)
+      - [监控告警](/dev/reference/tools/tidb-lightning/monitor.md)
+      - [故障诊断](/dev/how-to/troubleshoot/tidb-lightning.md)
+      - [FAQ](/dev/faq/tidb-lightning.md)
     - [sync-diff-inspector](/v3.0/reference/tools/sync-diff-inspector/overview.md)
     - [PD Control](/v3.0/reference/tools/pd-control.md)
     - [PD Recover](/v3.0/reference/tools/pd-recover.md)
