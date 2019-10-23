@@ -1,6 +1,7 @@
 ---
 title: 使用 Docker Compose 快速构建 TiDB 集群
 category: how-to
+aliases: ['/docs-cn/v2.1/how-to/get-started/local-cluster/install-from-docker-compose/']
 ---
 
 # 使用 Docker Compose 快速构建 TiDB 集群
