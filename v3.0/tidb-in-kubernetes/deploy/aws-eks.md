@@ -139,7 +139,7 @@ region = us-west-21
 {{< copyable "shell-regular" >}}
 
 ```shell
-ssh -i credentials/<cluster_name>.pem centos@<bastion_ip>
+ssh -i credentials/<eks_name>.pem centos@<bastion_ip>
 ```
 
 {{< copyable "shell-regular" >}}
@@ -148,22 +148,22 @@ ssh -i credentials/<cluster_name>.pem centos@<bastion_ip>
 mysql -h <tidb_dns> -P 4000 -u root
 ```
 
-`cluster_name` 默认为 `my-cluster`。如果 DNS 名字无法解析，请耐心等待几分钟。
+`eks_name` 默认为 `my-cluster`。如果 DNS 名字无法解析，请耐心等待几分钟。
 
-你还可以通过 `kubectl` 和 `helm` 命令使用 kubeconfig 文件 `credentials/kubeconfig_<cluster_name>` 和 EKS 集群交互，主要有两种方式，如下所示。
+你还可以通过 `kubectl` 和 `helm` 命令使用 kubeconfig 文件 `credentials/kubeconfig_<eks_name>` 和 EKS 集群交互，主要有两种方式，如下所示。
 
 - 指定 --kubeconfig 参数：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n <cluster_name>
+    kubectl --kubeconfig credentials/kubeconfig_<eks_name> get po -n <default_cluster_name>
     ```
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm --kubeconfig credentials/kubeconfig_<cluster_name> ls
+    helm --kubeconfig credentials/kubeconfig_<eks_name> ls
     ```
 
 - 或者，设置 KUBECONFIG 环境变量：
@@ -171,13 +171,13 @@ mysql -h <tidb_dns> -P 4000 -u root
     {{< copyable "shell-regular" >}}
 
     ```shell
-    export KUBECONFIG=$PWD/credentials/kubeconfig_<cluster_name>
+    export KUBECONFIG=$PWD/credentials/kubeconfig_<eks_name>
     ```
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get po -n <cluster_name>
+    kubectl get po -n <default_cluster_name>
     ```
 
     {{< copyable "shell-regular" >}}
@@ -209,7 +209,7 @@ variable "default_cluster_version" {
 
 > **注意：**
 >
-> 升级过程会持续一段时间，你可以通过 `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n <cluster_name> --watch` 命令持续观察升级进度。
+> 升级过程会持续一段时间，你可以通过 `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n <default_cluster_name> --watch` 命令持续观察升级进度。
 
 ## 扩容 TiDB 集群
 
@@ -226,7 +226,7 @@ variable "default_cluster_version" {
 > **注意：**
 >
 > - 由于缩容过程中无法确定会缩掉哪个节点，目前还不支持 TiDB 集群的缩容。
-> - 扩容过程会持续几分钟，你可以通过 `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n <cluster_name> --watch` 命令持续观察进度。
+> - 扩容过程会持续几分钟，你可以通过 `kubectl --kubeconfig credentials/kubeconfig_<eks_name> get po -n <default_cluster_name> --watch` 命令持续观察进度。
 
 ## 自定义
 
@@ -249,7 +249,7 @@ TiDB 版本和组件数量也可以在 `variables.tf` 中修改，你可以按�
 
 ### 自定义 TiDB 参数配置
 
-Terraform 脚本中为运行在 EKS 上的 TiDB 集群提供了合理的默认配置。有自定义需求时，你可以在 `clusters.tf` 中为每个 TiDB 集群指定一个 `values.yaml` 文件来自定义集群参数配置。
+Terraform 脚本中为运行在 EKS 上的 TiDB 集群提供了合理的默认配置。有自定义需求时，你可以在 `clusters.tf` 中通过 `override_values` 参数为每个 TiDB 集群指定一个 `values.yaml` 文件来自定义集群参数配置。
 
 作为例子，默认集群使用了 `./default-cluster.yaml` 作为 `values.yaml` 配置文件，并在配置中打开了"配置文件滚动更新"特性。
 
@@ -285,12 +285,12 @@ monitor:
 
 ### 自定义 TiDB Operator
 
-你可以通过 `variables.tf` 中的 `operator_values` 参数传入自定义的 `values.yaml` 内容来配置 TiDB Operator（推荐使用 Terraform 的 `file()` 函数从本地文件中读取内容）。示例如下：
+你可以通过 `variables.tf` 中的 `operator_values` 参数传入自定义的 `values.yaml` 内容来配置 TiDB Operator。示例如下：
 
 ```hcl
 variable "operator_values" {
-  description = "The helm values of TiDB Operator"
-  default     = file("operator_values.yaml")
+  description = "The helm values file for TiDB Operator, path is relative to current working dir"
+  default     = "./operator_values.yaml"
 }
 ```
 
@@ -376,7 +376,7 @@ terraform destroy
 
 上述文档中介绍的 Terraform 脚本组合了多个 Terraform 模块：
 
-- `tidb-operator` 模块，用于创建 EKS 集群并在 EKS 集群上安装配置 [TiDB Operator](/v3.0/tidb-in-kubernetes/deploy/tidb-operator.md)。
+- `tidb-operator` 模块，用于创建 EKS 集群并在 EKS 集群上安装配置 [TiDB Operator](/dev/tidb-in-kubernetes/deploy/tidb-operator.md)。
 - `tidb-cluster` 模块，用于创建 TiDB 集群所需的资源池并部署 TiDB 集群。
 - EKS 上的 TiDB 集群专用的 `vpc` 模块、`key-pair`模块和`bastion` 模块
 
