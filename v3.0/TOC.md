@@ -79,7 +79,6 @@
     + Data Migration
       + 概述
         - [DM 架构](/v3.0/reference/tools/data-migration/overview.md#dm-架构)
-        - [DM-worker 简介](/v3.0/reference/tools/data-migration/dm-worker-intro.md)
         - [同步功能介绍](/v3.0/reference/tools/data-migration/overview.md#同步功能介绍)
         - [使用限制](/v3.0/reference/tools/data-migration/overview.md#使用限制)
         - [DM-worker 简介](/v3.0/reference/tools/data-migration/dm-worker-intro.md)
