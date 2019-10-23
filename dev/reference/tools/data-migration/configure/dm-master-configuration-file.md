@@ -5,6 +5,8 @@ category: reference
 
 # DM-master 配置文件介绍
 
+本文介绍 DM-master 的配置文件，包括配置文件示例与配置项说明。
+
 ## 示例配置文件
 
 DM-master 的示例配置文件如下所示：
