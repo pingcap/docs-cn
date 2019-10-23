@@ -42,7 +42,7 @@ user = "root"
 password = "Up8156jArvIPymkVC+5LxkAT6rek"
 port = 3306
 
-# relay log purge strategy
+# Relay log purge strategy
 [purge]
 interval = 3600
 expires = 24
