@@ -139,7 +139,7 @@ mysql-instances:
 全局配置主要包含下列功能配置集：
 
 | 配置项        | 说明                                    |
-| ------------ | --------------------------------------- |
+| :------------ | :--------------------------------------- |
 | `routes` | 上游和下游表之间的路由 table routing 规则集。如果上游与下游的库名、表名一致，则不需要配置该项。使用场景及示例配置参见 [Table Routing](/dev/reference/tools/data-migration/features/overview.md#table-routing) |
 | `filters` | 上游数据库实例匹配的表的 binlog event filter 规则集。如果不需要对 binlog 进行过滤，则不需要配置该项。使用场景及示例配置参见 [Binlog Event Filter](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter) |
 | `black-white-list` | 该上游数据库实例匹配的表的 black & white list 过滤规则集。建议通过该项指定需要同步的库和表，否则会同步所有的库和表。使用场景及示例配置参见 [Black & White Lists](/dev/reference/tools/data-migration/features/overview.md#black--white-table-lists) |

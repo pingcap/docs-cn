@@ -14,23 +14,23 @@ category: reference
 ```toml
 # Worker Configuration.
 
-# log configuration
+# Log configuration.
 log-file = "dm-worker.log"
 
-# dm-worker listen address
+# DM-worker listen address.
 worker-addr = ":8262"
 
-# represents a MySQL/MariaDB instance or a replication group
+# Represents a MySQL/MariaDB instance or a replication group.
 source-id = "mysql-replica-01"
 
-# server id of slave for binlog replication
-# each instance (master and slave) in replication group should have different server id
+# Server id of slave for binlog replication.
+# Each instance (master and slave) in replication group should have different server id.
 server-id = 101
 
 # flavor: mysql/mariadb
 flavor = "mysql"
 
-# directory that used to store relay log
+# The directory that used to store relay log.
 relay-dir = "./relay_log"
 
 [from]
@@ -45,7 +45,7 @@ port = 3306
 ### Global 配置
 
 | 配置项        | 说明                                    |
-| ------------ | --------------------------------------- |
+| :------------ | :--------------------------------------- |
 | `log-file`   | 日志文件，如果不配置日志会输出到标准输出中。   |
 | `worker-addr` | DM-worker 服务的地址，可以省略 IP 信息，例如：":8262"。|
 | `source-id` | 标识一个 MySQL/MariaDB 实例或者 replication group。 |
@@ -56,10 +56,12 @@ port = 3306
 ### 数据库链接配置（from 配置项）
 
 | 配置项        | 说明                                    |
-| ------------ | --------------------------------------- |
+| :------------ | :--------------------------------------- |
 | `host` | 上游数据库的 host。|
 | `port` | 上游数据库的端口。 |
 | `user` | 连接数据库使用的用户名。 |
 | `password` | 连接数据库使用的密码。注意：需要使用 dmctl 加密后的密码。 |
 
-注：以上配置为部署 DM-worker 的基础配置，一般情况下使用基础配置即可，更多配置项参考 [DM-worker 完整配置说明](/dev/reference/tools/data-migration/configure/dm-worker-configuration-file-full.md)。
+> **注意：**
+>
+> 以上配置为部署 DM-worker 的基础配置，一般情况下使用基础配置即可，更多配置项参考 [DM-worker 完整配置说明](/dev/reference/tools/data-migration/configure/dm-worker-configuration-file-full.md)。

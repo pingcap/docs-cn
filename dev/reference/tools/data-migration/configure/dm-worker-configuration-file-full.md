@@ -12,24 +12,24 @@ category: reference
 ```toml
 # Worker Configuration.
 
-# log configuration
+# Log configuration.
 log-level = "info"
 log-file = "dm-worker.log"
 
-# DM-worker listening address
+# DM-worker listening address.
 worker-addr = ":8262"
 
-# Represents a MySQL/MariaDB instance or a replication group
+# Represents a MySQL/MariaDB instance or a replication group.
 source-id = "mysql-replica-01"
 
-# Server id of slave for binlog replication
-# Each instance (master and slave) in the replication group should have a different server id
+# Server id of slave for binlog replication.
+# Each instance (master and slave) in the replication group should have a different server id.
 server-id = 101
 
 # flavor: mysql/mariadb
 flavor = "mysql"
 
-# The directory used to store relay log
+# The directory used to store relay log.
 relay-dir = "./relay_log"
 
 # Enables gtid in the relay log unit
@@ -44,13 +44,13 @@ user = "root"
 password = "Up8156jArvIPymkVC+5LxkAT6rek"
 port = 3306
 
-# Relay log purge strategy
+# Relay log purge strategy.
 [purge]
 interval = 3600
 expires = 24
 remain-space = 15
 
-# Task status checker
+# Task status checker.
 [checker]
 check-enable = true
 backoff-rollback = "5m"
@@ -88,7 +88,7 @@ backoff-max = "5m"
 一般情况下不需要手动配置，如果 relay log 数据量较大，磁盘空间不足，则可以通过该配置项设置，避免 relay log 写满磁盘。
 
 | 配置项        | 说明                                    |
-| ------------ | --------------------------------------- |
+| :------------ | :--------------------------------------- |
 | `interval` | 定期检查 relay log 是否过期的间隔时间，默认值：3600，单位：秒。 |
 | `expires` | relay log 的过期时间，默认值为 0，单位：小时。超过过期时间的 relay log 会被 DM 删除。如果不设置则 DM 不会自动清理过期的 relay log。 |
 | `remain-space` | 设置最小的可用磁盘空间。当磁盘可用空间小于这个值时，DM-worker 会尝试删除 relay log，默认值：15，单位：GB。 |
@@ -100,7 +100,7 @@ backoff-max = "5m"
 ### 任务检查模块配置（checker 配置项）
 
 | 配置项        | 说明                                    |
-| ------------ | --------------------------------------- |
+| :------------ | :--------------------------------------- |
 | `check-enable` | 是否开启任务状态检查。开启后 DM 会尝试自动恢复因错误而暂停的数据同步任务，默认值：true。 |
 | `backoff-rollback` | 任务检查模块中，定时调整恢复等待时间的间隔，默认值："5m0s"。 |
 | `backoff-max` | 任务检查模块中，检查出错误后等待自动恢复的最长时间间隔，默认值："5m0s"。 |

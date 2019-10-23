@@ -15,7 +15,7 @@ DM-master 的示例配置文件如下所示：
 # log configuration
 log-file = "dm-master.log"
 
-# dm-master listening address
+# DM-master listening address
 master-addr = ":8261"
 
 # DM-worker deployment. It will be refined when the new deployment function is available.
