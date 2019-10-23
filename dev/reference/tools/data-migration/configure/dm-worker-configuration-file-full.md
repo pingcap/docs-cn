@@ -17,7 +17,7 @@ log-file = "dm-worker.log"
 # DM-worker listening address
 worker-addr = ":8262"
 
-# represents a MySQL/MariaDB instance or a replication group
+# Represents a MySQL/MariaDB instance or a replication group
 source-id = "mysql-replica-01"
 
 # server id of slave for binlog replication
