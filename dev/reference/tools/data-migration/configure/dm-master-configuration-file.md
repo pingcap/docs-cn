@@ -18,7 +18,7 @@ log-file = "dm-master.log"
 # dm-master listen address
 master-addr = ":8261"
 
-# dm-Worker deployment, we'll refine it when new deployment function is available
+# DM-worker deployment. It will be refined when the new deployment function is available.
 [[deploy]]
 source-id = "mysql-replica-01"
 dm-worker = "172.16.10.72:8262"
