@@ -21,7 +21,7 @@ worker-addr = ":8262"
 source-id = "mysql-replica-01"
 
 # Server id of slave for binlog replication
-# each instance (master and slave) in replication group should have different server id
+# Each instance (master and slave) in the replication group should have a different server id
 server-id = 101
 
 # flavor: mysql/mariadb
