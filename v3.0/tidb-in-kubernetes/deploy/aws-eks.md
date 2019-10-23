@@ -209,7 +209,7 @@ variable "default_cluster_version" {
 
 > **注意：**
 >
-> 升级过程会持续一段时间，你可以通过 `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n <default_cluster_name> --watch` 命令持续观察升级进度。
+> 升级过程会持续一段时间，你可以通过 `kubectl --kubeconfig credentials/kubeconfig_<eks_name> get po -n <default_cluster_name> --watch` 命令持续观察升级进度。
 
 ## 扩容 TiDB 集群
 
