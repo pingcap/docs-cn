@@ -65,6 +65,10 @@ TiDB Operator 部署并配置完成后，可以通过下面命令部署 TiDB 集
 helm install pingcap/tidb-cluster --name=<release-name> --namespace=<namespace> --version=<chart-version> -f /home/tidb/<release-name>/values-<release-name>.yaml
 ```
 
+> **注意：**
+>
+> `namespace` 是[命名空间](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)，你可以起一个方便记忆的名字，比如和 `release-name` 相同的名称。
+
 通过下面命令可以查看 Pod 状态：
 
 {{< copyable "shell-regular" >}}
