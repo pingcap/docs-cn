@@ -22,7 +22,7 @@ aliases: ['/docs-cn/v3.0/how-to/deploy/tidb-in-kubernetes/prerequisites/']
 | :--- | :--- |
 | net.core.somaxconn | 32768 |
 | vm.swappiness | 0 |
-| net.ipv4.tcp_syncookies | 1 |
+| net.ipv4.tcp_syncookies | 0 |
 | net.ipv4.ip_forward | 1 |
 | fs.file-max | 1000000 |
 | fs.inotify.max_user_watches | 1048576 |
