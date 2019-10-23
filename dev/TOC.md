@@ -104,9 +104,9 @@
         - [DM 集群操作](/dev/reference/tools/data-migration/cluster-operations.md)
         - [DM 集群升级](/dev/reference/tools/data-migration/dm-upgrade.md)
       + [DM 同步任务管理]
-      	 - [管理数据同步任务](/dev/reference/tools/data-migration/manage-tasks.md)
-      	 - [任务前置检查](/dev/reference/tools/data-migration/precheck.md)
-      	 - [任务状态查询](/dev/reference/tools/data-migration/query-status.md)
+        - [管理数据同步任务](/dev/reference/tools/data-migration/manage-tasks.md)
+        - [任务前置检查](/dev/reference/tools/data-migration/precheck.md)
+        - [任务状态查询](/dev/reference/tools/data-migration/query-status.md)
       - [监控 DM 集群](/dev/reference/tools/data-migration/monitor.md)
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-aurora.md)
