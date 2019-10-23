@@ -5,6 +5,8 @@ category: reference
 
 # DM-worker 完整配置说明
 
+本文完整地介绍 DM-worker 的配置，包括配置文件示例与配置项说明。
+
 ## 配置文件示例
 
 ```toml
