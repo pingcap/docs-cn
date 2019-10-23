@@ -44,6 +44,10 @@ location-labels = ["zone", "rack", "host"]
 
 `location-labels` needs to correspond to the TiKV `labels` name so that PD can understand that the `labels` represents the TiKV topology.
 
+> **Note:**
+>
+> You must configure `location-labels` for PD and `labels` for TiKV at the same time for `labels` to take effect.
+
 ## PD schedules based on the TiKV topology
 
 PD makes optimal scheduling according to the topological information. You just need to care about what kind of topology can achieve the desired effect.
