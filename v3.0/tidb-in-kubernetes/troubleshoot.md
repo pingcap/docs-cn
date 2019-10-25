@@ -169,7 +169,7 @@ kubectl get storageclass
 
 如果集群中有 StorageClass，但可用的 PV 不足，则需要添加对应的 PV 资源。对于 Local PV，可以参考[本地 PV 配置](/v3.0/tidb-in-kubernetes/reference/configuration/storage-class.md#本地-pv-配置)进行扩充。
 
-tidb-scheduler 针对 PD 和 TiKV 定制了高可用调度策略，假设 PD 或者 TiKV 的 Replicas 数量为 N，那么每个节点针对同一个 TiDB 集群可以调度的 PD Pod 数量最多为 `M=(N-1)/2`（如果 N<3，M=1），每个节点针对同一个 TiDB 集群可以调度的 TiKV Pod 数量最多为 `M=ceil(N/3)`（ceil 表示向上取整，如果N<3，M=1）。如果 Pod 因为高可用调度策略 Pending，需要往集群内添加节点。
+tidb-scheduler 针对 PD 和 TiKV 定制了高可用调度策略，假设 PD 或者 TiKV 的 Replicas 数量为 N，那么每个节点针对同一个 TiDB 集群可以调度的 PD Pod 数量最多为 `M=(N-1)/2`（如果 N<3，M=1），每个节点针对同一个 TiDB 集群可以调度的 TiKV Pod 数量最多为 `M=ceil(N/3)`（ceil 表示向上取整，如果N<3，M=1）。如果 Pod 因为不满足高可用调度策略而导致状态为 Pending，需要往集群内添加节点。
 
 ## Pod 处于 CrashLoopBackOff 状态
 
