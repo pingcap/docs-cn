@@ -29,8 +29,7 @@ Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/dev/r
   -r, --rows:          设置导出表时候拆分行数
                        此参数将覆盖 chunk-filesize 的配置
   -w, --where:         设置导出的过滤条件
-                       注意：如果过滤条件包含中文字段，需要中文字段进行 utf8 encode 后使用
-               
+                       注意：如果过滤条件包含中文字段，需要中文字段进行 utf8 encode 后使用             
 ```
 
 ### 需要的权限
