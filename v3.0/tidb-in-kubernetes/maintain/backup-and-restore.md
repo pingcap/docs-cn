@@ -140,7 +140,7 @@ kubectl get pvc -n <namespace> -l app.kubernetes.io/component=backup,pingcap.com
 
 ### Pump 缩容
 
-缩容 Pump 需要先将单个 Pump 节点从集群中下线，然后操作 helm upgrade 将对应的 Pump Pod 删除，并对每个节点重复上述步骤
+缩容 Pump 需要先将单个 Pump 节点从集群中下线，然后运行 `helm upgrade` 命令将对应的 Pump Pod 删除，并对每个节点重复上述步骤。
 
 1. 下线 Pump 节点：
 
