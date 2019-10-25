@@ -236,20 +236,29 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/o
     [import]
     # 存储引擎文档 (engine file) 的文件夹路径。
     import-dir = "/mnt/ssd/data.import/"
+    
     # 处理 gRPC 请求的线程数量。
     num-threads = 16
+    
     # 导入任务并发数。
     num-import-jobs = 24
+    
     # 预处理 Region 最长时间。
     # max-prepare-duration = "5m"
+    
     # 把要导入的数据切分为这个大小的 Region。
     # region-split-size = "512MB"
+    
     # 流管道窗口大小，管道满时会阻塞流。
     # stream-channel-window = 128
+    
     # 引擎文档同时打开的最大数量。
+    # 需要大于 tidb-lightning 中 index-concurrency 和 table-concurrency 之和。
     max-open-engines = 8
+    
     # Importer 上传至 TiKV 的最大速度 (bytes per second)。
     # upload-speed-limit = "512MB"
+    
     # 目标 store 可用空间的最小比率：store_available_space / store_capacity.
     # 如果目标存储空间的可用比率低于下值，Importer 将会暂停上传 SST 来为 PD 提供足够时间进行 regions 负载均衡。
     min-available-ratio = 0.05
