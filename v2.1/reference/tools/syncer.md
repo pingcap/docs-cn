@@ -206,6 +206,14 @@ port = 4000
 2016/10/27 15:22:01 syncer.go:549: [info] rotate binlog to (mysql-bin.000003, 1280)
 ```
 
+nohup 启动：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+nohup ./bin/syncer -config config.toml > nohup.out &
+```
+
 ### 在 MySQL 中插入新的数据
 
 ```sql
