@@ -19,6 +19,29 @@ category: reference
 > - 若无特殊说明，各升级操作示例均假定升级前已停止所有同步任务，升级完成后手动重新启动所有同步任务。
 > - 以下版本升级指引逆序展示。
 
+## 升级到 v1.0.2 (1.0 GA)
+
+### 版本信息
+
+```bash
+Release Version: 
+Git Commit Hash: 
+Git Branch: release-1.0
+UTC Build Time: 
+Go Version: go version go1.12 linux/amd64
+```
+
+### 主要变更
+
+- 增加严格的任务名称检查，配置文件中任务名称只能包含字母数字，下划线，美元符号。
+
+### 升级操作示例
+
+1. 下载新版本 DM-Ansible, 确认 `inventory.ini` 文件中 `dm_version = v1.0.0`
+2. 执行 `ansible-playbook local_prepare.yml` 下载新的 DM binary 到本地
+3. 执行 `ansible-playbook rolling_update.yml` 滚动升级 DM 集群组件
+4. 执行 `ansible-playbook rolling_update_monitor.yml` 滚动升级 DM 监控组件
+
 ## 升级到 v1.0.0-10-geb2889c9 (1.0 GA)
 
 ### 版本信息
