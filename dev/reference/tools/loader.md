@@ -131,6 +131,14 @@ max-allowed-packet = 67108864
 ./bin/loader -c=config.toml
 ```
 
+nohup 启动：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+nohup ./bin/loader -c=config.toml > nohup.out &
+```
+
 ## FAQ
 
 ### 合库合表场景案例说明
