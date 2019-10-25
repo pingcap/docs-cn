@@ -23,7 +23,7 @@ category: reference
 ### 基础信息配置
 
 ```yaml
-name: test                      # 任务名称，需要全局唯一。
+name: test                      # 任务名称，需要全局唯一。必须是 MySQL 的 identifier 支持的字符, 只能包括字母数字、下划线、美元。
 task-mode: all                  # 任务模式，可设为 "full"、"incremental"、"all"。
 is-sharding: true               # 是否为分库分表合并任务。
 meta-schema: "dm_meta"          # 下游储存 `meta` 信息的数据库。
