@@ -332,6 +332,9 @@ module example-cluster {
   monitor_instance_type         = "t2.xlarge"
   # The version of tidb-cluster helm chart
   tidb_cluster_chart_version    = "v1.0.0"
+  # Wether creating the tidb-cluster helm release, if this variable set to false, you have to
+  # install the helm release manually
+  create_tidb_cluster_release   = true
 }
 ```
 
@@ -354,6 +357,23 @@ output "example-cluster_monitor-hostname" {
 修改完成后，执行 `terraform init` 和 `terraform apply` 创建集群。
 
 最后，只要移除 `tidb-cluster` 模块调用，对应的 TiDB 集群就会被销毁，EC2 资源也会随之释放。
+
+## 仅管理基础设施
+
+假如你更希望用 Helm 来直接管理 TiDB 集群，那么你可以调整 Terraform 脚本的配置，控制 Terraform 脚本只创建 Kubernetes 集群和工作节点等基础设施。该操作可以通过修改 `clusters.tf` 中 TiDB 集群的 `create_tidb_cluster_release` 配置项实现：
+
+```hcl
+module "default-cluster" {
+  ...
+  create_tidb_cluster_release = false
+}
+```
+
+如上所示，将 `create_tidb_cluster_release` 修改为 `false` 后，Terraform 脚本就不会创建和修改 TiDB 集群对应的 helm release。此时，你需要使用 Helm 独立管理 TiDB 集群。
+
+> **注意：**
+>
+> 在已经部署的集群上将 `create_tidb_cluster_release` 调整为 `false` 会导致已安装的 Helm Release 被删除，对应的 TiDB 集群对象也会随之被删除。
 
 ## 销毁集群
 
