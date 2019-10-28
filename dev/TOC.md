@@ -382,6 +382,7 @@
 + [TiDB 路线图](/dev/roadmap.md)
 + [版本发布历史](/dev/releases/rn.md)
   + v3.0
+    - [3.0.5](/dev/releases/3.0.5.md)
     - [3.0.4](/dev/releases/3.0.4.md)
     - [3.0.3](/dev/releases/3.0.3.md)
     - [3.0.2](/dev/releases/3.0.2.md)
