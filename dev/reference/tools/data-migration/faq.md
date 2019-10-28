@@ -1,6 +1,7 @@
 ---
 title: Data Migration 常见问题
 category: reference
+aliases: ['/docs-cn/dev/faq/data-migration/']
 ---
 
 # Data Migration 常见问题
