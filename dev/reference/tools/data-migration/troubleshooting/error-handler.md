@@ -5,6 +5,8 @@ category: reference
 
 # Data Migration 常见错误及修复
 
+本文档介绍 DM 中常见的错误以及修复方法。
+
 ## 常见错误说明和处理方法
 
 | 错误码       | 错误说明                                                     | 解决方法                                                     |

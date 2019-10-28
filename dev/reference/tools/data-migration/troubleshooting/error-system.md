@@ -3,7 +3,7 @@ title: Data Migration 错误说明
 category: reference
 ---
 
-# Data Migration 错误含义
+# Data Migration 错误说明
 
 本文介绍了 Data Migration (DM) 输出错误信息的详细含义、根据错误信息进行诊断的具体方法、常见错误的运维方法。
 
