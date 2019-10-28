@@ -1,6 +1,7 @@
 ---
 title: Data Migration 故障诊断
 category: reference
+aliases: ['/docs-cn/dev/how-to/troubleshoot/data-migration/']
 ---
 
 # Data Migration 故障诊断
