@@ -46,6 +46,8 @@ fCxfQ9XKCezSzuCD0Wf5dUD+LsKegSg=
 
 DM-worker 提供命令行参数和配置文件两种配置方式。
 
+**配置方式 1：命令行参数**
+
 查看 DM-worker 的命令行参数说明：
 
 {{< copyable "shell-regular" >}}
@@ -62,7 +64,7 @@ Usage of worker:
   -checker-backoff-max duration
         任务检查模块中，检查出错误后等待自动恢复的最长时间间隔（默认值："5m0s"，一般情况下不需要修改。如果对该参数的作用没有深入的了解，不建议修改该参数）
   -checker-backoff-rollback duration
-        任务检查模块中，定时调整恢复等待时间的间隔（默认值："5m0s"，一般情况下不需要修改，如果对该参数的作用没有深入的了解，不建议修改该参数）
+        任务检查模块中，调整自动恢复等待时间的间隔（默认值："5m0s"，一般情况下不需要修改，如果对该参数的作用没有深入的了解，不建议修改该参数）
   -checker-check-enable
         是否开启任务状态检查。开启后 DM 会尝试自动恢复因错误而暂停的数据同步任务（默认值：true）
   -config string
@@ -82,6 +84,14 @@ Usage of worker:
   -worker-addr string
         DM-worker 的地址
 ```
+
+> **注意：**
+>
+> 某些情况下，无法使用命令行参数的方法来配置 DM-worker，因为有的配置并未暴露给命令行。
+
+**配置方式 2：配置文件**
+
+推荐使用配置文件来配置 DM-worker，把以下配置文件内容写入到 `conf/dm-worker1.toml` 中。
 
 DM-worker 的配置文件：
 
@@ -137,7 +147,7 @@ port = 3306
 # backoff-max = 5m
 ```
 
-推荐统一使用配置文件，把以上配置内容写入到 `conf/dm-worker1.toml` 中，在终端中使用下面的命令运行 DM-worker：
+在终端中使用下面的命令运行 DM-worker：
 
 {{< copyable "shell-regular" >}}
 
@@ -150,6 +160,8 @@ bin/dm-worker -config conf/dm-worker1.toml
 ### DM-master 的部署
 
 DM-master 提供命令行参数和配置文件两种配置方式。
+
+**配置方式 1：命令行参数**
 
 DM-master 的命令行参数说明：
 
@@ -171,6 +183,14 @@ Usage of dm-master:
   -print-sample-config
         打印出 DM-master 的示例配置
 ```
+
+> **注意：**
+>
+> 某些情况下，无法使用命令行参数的方法来配置 DM-worker，因为有的配置并未暴露给命令行。
+
+**配置方式 2：配置文件**
+
+推荐使用配置文件，把以下配置文件内容写入到 `conf/dm-master.toml` 中。
 
 DM-master 的配置文件：
 
@@ -202,7 +222,7 @@ source-id = "mysql-replica-02"
 dm-worker = "192.168.0.6:8262"
 ```
 
-推荐统一使用配置文件，把以上配置内容写入到 `conf/dm-master.toml` 中，在终端中使用下面的命令运行 DM-master：
+在终端中使用下面的命令运行 DM-master：
 
 {{< copyable "shell-regular" >}}
 
@@ -214,7 +234,7 @@ bin/dm-master -config conf/dm-master.toml
 
 ### 创建数据同步任务
 
-假设在 MySQL1 和 MySQL2 实例中有若干个分表，这些分表的结构相同，所在库的名称都以 "sharding" 开头，表名称都以 "t" 开头，并且主键或唯一键不存在冲突。现在需要把这些分表同步到 TiDB 中的 `db_target.t_target` 表中。
+假设在 MySQL1 和 MySQL2 实例中有若干个分表，这些分表的结构相同，所在库的名称都以 "sharding" 开头，表名称都以 "t" 开头，并且主键或唯一键不存在冲突（即每张分表的主键或唯一键各不相同）。现在需要把这些分表同步到 TiDB 中的 `db_target.t_target` 表中。
 
 首先创建任务的配置文件：
 

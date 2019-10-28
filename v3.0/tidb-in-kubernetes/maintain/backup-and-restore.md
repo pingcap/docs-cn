@@ -125,18 +125,7 @@ kubectl get pvc -n <namespace> -l app.kubernetes.io/component=backup,pingcap.com
 
 增量备份使用 [TiDB Binlog](/v3.0/reference/tools/tidb-binlog/overview.md) 工具从 TiDB 集群收集 Binlog，并提供实时备份和向其它数据库的实时同步能力。
 
-增量备份是默认关闭的，你可以通过修改 `values.yaml` 中的下列配置项来开启增量备份：
-
-* 将 `binlog.pump.create` 设置为 `true`；
-* 将 `binlog.drainer.create` 设置为 `true`；
-* 将 `binlog.pump.storageClassName` 和 `binlog.drainer.storageClassName` 设置为你的 Kubernetes 集群中可用的 `storageClass`；
-* 根据需求将 `binlog.drainer.destDBType` 设置为合适的下游存储，下面将详细叙述。
-
-增量备份支持三种下游存储：
-
-* PV：默认的下游存储，这种情况下，你可以考虑为 `drainer` 配置更大的 PV 空间（通过修改 `binlog.drainer.storage` 配置）；
-* 兼容 MySQL 协议的数据库：通过设置 `binlog.drainer.destDBType` 为 `mysql` 来开启，你必须同时在 `binlog.drainer.mysql` 中配置目标数据库的地址和认证信息；
-* Apache Kafka：通过设置 `binlog.drainer.destDBType` 为 `kafka` 来开启，你必须同时在 `binlog.drainer.kafka` 中配置目标集群的 Zookeeper 地址和 Kafka 地址。
+有关 Kubernetes 上运维 TiDB Binlog 的详细指南，可参阅 [TiDB Binlog](/v3.0/tidb-in-kubernetes/maintain/tidb-binlog.md)。
 
 ### Pump 缩容
 

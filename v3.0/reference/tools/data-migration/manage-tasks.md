@@ -123,7 +123,7 @@ help start-task
 start a task as defined in the config file
 
 Usage:
- dmctl start-task [-w worker ...] <config_file> [flags]
+ dmctl start-task [-w worker ...] <config-file> [flags]
 
 Flags:
  -h, --help   help for start-task
@@ -146,7 +146,7 @@ start-task [ -w "172.16.30.15:8262"] ./task.yaml
     - 可选
     - 指定在特定的一组 DM-workers 上执行 `task.yaml`
     - 如果设置，则只启动指定任务在该组 DM-workers 上的子任务
-+ `config_file`：
++ `config-file`：
     - 必选
     - 指定 `task.yaml` 的文件路径
 
