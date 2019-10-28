@@ -9,8 +9,7 @@ TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comm
 
 > **注意：**
 >
-> MySQL 命令行客户端在 5.7.7 版本之前默认清除了 Optimizer Hints。如果需要在这些早期版本的客户端中使用 `Hint` 
-语法，需要在启动客户端时加上 `--comments` 选项，例如 `mysql -h 127.0.0.1 -P 4000 -uroot --comments`。
+> MySQL 命令行客户端在 5.7.7 版本之前默认清除了 Optimizer Hints。如果需要在这些早期版本的客户端中使用`Hint`语法，需要在启动客户端时加上 `--comments` 选项，例如 `mysql -h 127.0.0.1 -P 4000 -uroot --comments`。
 
 ## 语法
 
@@ -24,13 +23,13 @@ select /*+ USE_INDEX(t1, idx1), HASH_AGG(), HASH_JOIN(t1) */ count(*) from t t1,
 
 TiDB 目前支持两类 Hint，具体用法上有一些差别。其中一类 Hint 是跟优化器直接相关的，例如 `/+ HASH_AGG() */`。另一类是对单条查询设置一些运行参数，例如 `/*+ MEMORY_QUOTA(1 G)*/`。
 
-
 ## 优化器相关 Hint 语法
 
 优化器相关的 Hint 可以以注释的形式写在**任意**一个`SELECT`后面。Hint 的生效范围以及指定表的生效范围可通过下面要介绍的 Query Block 来指定。若不指定 Query Block，默认生效范围为当前所在`SELECT`的 Query Block 内。
 
 ### Query Block
 
+一条语句中每一个查询和子查询都对应着一个不同的 Query Block，每个 Query Block 有自己对应的 QB_NAME。
 以下面这条语句为例：
 
 {{< copyable "sql" >}}
@@ -39,7 +38,7 @@ TiDB 目前支持两类 Hint，具体用法上有一些差别。其中一类 Hin
 select * from (SELECT * from t) t1, (SELECT * from t) t2;
 ```
 
-该查询语句有 3 个 Query Block，每个 Query Block 有自己所对应的 QB_NAME。最外面一层`SELECT`所在的 QB_NAME 为`sel_1`，里面两个子查询的 QB_NAME 按照顺序为`sel_2`和`sel_3`。
+该查询语句有 3 个 Query Block，最外面一层`SELECT`所在的 Query Block 的 QB_NAME 为`sel_1`，里面两个子查询的 QB_NAME 依次为`sel_2`和`sel_3`。
 
 ### QB_NAME
 
@@ -49,7 +48,7 @@ select * from (SELECT * from t) t1, (SELECT * from t) t2;
 select /*+ QB_NAME(QB1) */ * from t;
 ```
 
-将当前 Query Block 的 QB_NAME 设为指定值，同时原本的 QB_NAME（在该例子中是 sel_1）仍然有效的。但是如果指定的 QB_NAME 为 sel_2，并且不给原本的 sel_2 指定新的 QB_NAME 的话，将不再能正确地指向原本的 sel_2。
+将当前 Query Block 的 QB_NAME 设为指定值，同时原本的 QB_NAME（在该例子中是 sel_1）仍然有效的。但是如果指定的 QB_NAME 为 sel_2，并且不给原本的 sel_2 指定新的 QB_NAME，将不再能正确地指向原本的 sel_2。
 
 ### 参数
 
@@ -177,7 +176,7 @@ select /*+ READ_FROM_STORAGE() */ t1.a from t t1;
 select /*+ MAX_EXECUTION_TIME(1000) */ * from t1 inner join t2 where t1.id = t2.id;
 ```
 
-除了 Hint 之外，环境变量 `max_execution_time` 也能对语句执行时间进行限制。
+除了 Hint 之外，环境变量 `global.max_execution_time` 也能对语句执行时间进行限制。
 
 ### MEMORY_QUOTA(1024 MB)
 
@@ -191,7 +190,7 @@ select /*+ MAX_EXECUTION_TIME(1000) */ * from t1 inner join t2 where t1.id = t2.
 select /*+ MEMORY_QUOTA(1024 MB) */ * from t;
 ```
 
-除了 Hint 外，环境变量 ` ` 也能限制语句执行的内存使用。
+除了 Hint 外，环境变量 `tidb_mem_quota_query` 也能限制语句执行的内存使用。
 
 ### READ_FROM_REPLICA()
 
@@ -205,7 +204,7 @@ select /*+ MEMORY_QUOTA(1024 MB) */ * from t;
 select /*+ READ_FROM_REPLICA() */ * from t;
 ```
 
-除了 Hint 外，环境变量 ` ` 也能决定是否开启该特性。
+除了 Hint 外，环境变量 `tidb_replica_read` 设为 `'follower'` 或者 `'leader'`也能决定是否开启该特性。
 
 ### NO_INDEX_MERGE()
 
@@ -219,7 +218,7 @@ select /*+ READ_FROM_REPLICA() */ * from t;
 select /*+ NO_INDEX_MERGE() */ * from t where t.a > 0 or t.b > 0;
 ```
 
-除了 Hint 外，环境变量 ` ` 也能决定是否开启该功能。
+除了 Hint 外，环境变量 `tidb_enable_index_merge` 也能决定是否开启该功能。
 
 ### USE_TOJA()
 
@@ -233,4 +232,4 @@ select /*+ NO_INDEX_MERGE() */ * from t where t.a > 0 or t.b > 0;
 select /*+ USE_TOJA() */ t1.a, t1.b from t1 where t1.a in (select t2.a from t2) subq;
 ```
 
-除了 Hint 外，环境变量 ` ` 也能决定是否开启该功能。
+除了 Hint 外，环境变量 `tidb_opt_insubq_to_join_and_agg` 也能决定是否开启该功能。
