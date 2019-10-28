@@ -359,7 +359,7 @@ output "example-cluster_monitor-hostname" {
 
 ## 仅管理基础设施
 
-假如你更希望用 Helm 来直接管理 TiDB 集群，那么你可以调整 Terraform 脚本的配置，控制 Terraform 脚本只创建 Kubernetes 集群和工作节点等基础设施。该操作可以通过修改 `clusters.tf` 中 TiDB 集群的 `create_tidb_cluster_release` 配置项实现：
+假如你更希望用 Helm 来直接管理 TiDB 集群，那么你可以调整 Terraform 脚本的配置，控制 Terraform 脚本只创建 Kubernetes 集群和工作节点等基础设施以及 TiDB Operator。该操作可以通过修改 `clusters.tf` 中 TiDB 集群的 `create_tidb_cluster_release` 配置项实现：
 
 ```hcl
 module "default-cluster" {
