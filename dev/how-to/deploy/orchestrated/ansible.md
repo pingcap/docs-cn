@@ -18,7 +18,7 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 - [变更组件配置](/dev/how-to/upgrade/rolling-updates-with-ansible.md#变更组件配置)
 - [集群扩容缩容](/dev/how-to/scale/with-ansible.md)
 - [升级组件版本](/dev/how-to/upgrade/rolling-updates-with-ansible.md#升级组件版本)
-- [集群开启 binlog](/dev/reference/tidb-binlog-overview.md)
+- [集群开启 binlog](/dev/reference/tools/tidb-binlog/overview.md)
 - [清除集群数据](/dev/how-to/maintain/ansible-operations.md#清除集群数据)
 - [销毁集群](/dev/how-to/maintain/ansible-operations.md#销毁集群)
 
@@ -455,6 +455,7 @@ mount -t ext4
 172.16.10.2
 172.16.10.3
 
+# 注意：要使用 TiKV 的 labels，必须同时配置 PD 的 location_labels 参数，否则 labels 设置不生效。
 [tikv_servers]
 TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy tikv_port=20171 labels="host=tikv1"
 TiKV1-2 ansible_host=172.16.10.4 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv1"
@@ -485,6 +486,7 @@ TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 labels
 172.16.10.5
 172.16.10.6
 
+# 注意：为使 TiKV 的 labels 设置生效，部署集群时必须设置 PD 的 location_labels 参数。
 [pd_servers:vars]
 location_labels = ["host"]
 ```

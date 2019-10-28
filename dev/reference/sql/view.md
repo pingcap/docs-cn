@@ -104,5 +104,5 @@ Query OK, 0 rows affected (0.02 sec)
 
 ## 扩展阅读
 
-- [创建试图](/dev/reference/sql/statements/create-view.md)
+- [创建视图](/dev/reference/sql/statements/create-view.md)
 - [删除视图](/dev/reference/sql/statements/drop-view.md)

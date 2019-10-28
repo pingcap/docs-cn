@@ -84,22 +84,6 @@ black-white-list:                                   # 该上游数据库实例�
     - db-name: "user"
       tbl-name: "log"
 
-column-mappings:                                    # 上游数据库实例匹配的表的 column mapping 规则集。
-  cm-rule-1:
-    schema-pattern: "test_*"
-    table-pattern: "t_*"
-    expression: "partition id"
-    source-column: "id"
-    target-column: "id"
-    arguments: ["1", "test", "t", "_"]
-  cm-rule-2:
-    schema-pattern: "test_*"
-    table-pattern: "t_*"
-    expression: "partition id"
-    source-column: "id"
-    target-column: "id"
-    arguments: ["2", "test", "t", "_"]
-
 mydumpers:                                          # Mydumper 处理单元运行配置参数。
   global:
     mydumper-path: "./mydumper"                     # Mydumper binary 文件地址，这个无需设置，会由 Ansible 部署程序自动生成。
@@ -134,7 +118,6 @@ mysql-instances:
 
     route-rules: ["route-rule-1", "route-rule-2"]    # 该上游数据库实例匹配的表到下游数据库的 table routing 规则名称。
     filter-rules: ["filter-rule-1"]                  # 该上游数据库实例匹配的表的 binlog event filter 规则名称。
-    column-mapping-rules: ["cm-rule-1"]              # 该上游数据库实例匹配的表的 column mapping 规则名称。
     black-white-list:  "bw-rule-1"                   # 该上游数据库实例匹配的表的 black & white list 过滤规则名称。
 
     mydumper-config-name: "global"          # Mydumper 配置名称。
@@ -154,7 +137,6 @@ mysql-instances:
 | :------ | :------------------ |
 | `route-rules` | `routes` |
 | `filter-rules` | `filters` |
-| `column-mapping-rules` | `column-mappings` |
 | `black-white-list` | `black-white-list` |
 | `mydumper-config-name` | `mydumpers` |
 | `loader-config-name` | `loaders` |

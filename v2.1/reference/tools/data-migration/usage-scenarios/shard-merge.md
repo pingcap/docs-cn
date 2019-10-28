@@ -44,7 +44,7 @@ category: reference
 5. 过滤掉三个实例的 `user`.`information` 表的所有删除操作。
 6. 过滤掉三个实例的 `store_{01|02}`.`sale_{01|02}` 表的所有删除操作。
 7. 过滤掉三个实例的 `user`.`log_bak` 表。
-8. 因为 `store_{01|02}`.`sale_{01|02}` 表带有 bigint 型的自增主键，将其合并至 TiDB 时会引发冲突。您需要有方案修改相应自增主键以避免冲突。
+8. 因为 `store_{01|02}`.`sale_{01|02}` 表带有 bigint 型的自增主键，将其合并至 TiDB 时会引发冲突。你需要有相应的方案来避免冲突。
 
 ## 下游实例
 
@@ -123,31 +123,10 @@ category: reference
           tbl-name: "log_bak"
     ```
 
-- 要满足同步需求 #8，配置 [column mapping 规则](/v2.1/reference/tools/data-migration/features/overview.md#column-mapping) 如下：
+- 要满足同步需求 #8，首先参考[自增主键冲突处理](/v2.1/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md#自增主键冲突处理)来解决冲突，保证在同步到下游时不会因为分表中有相同的主键值而使同步出现异常；然后需要配置 `ignore-checking-items` 来跳过自增主键冲突的检查：
 
     ```yaml
-    column-mappings:
-      instance-1-sale:
-        schema-pattern: "store_*"
-        table-pattern: "sale_*"
-        expression: "partition id"
-        source-column: "id"
-        target-column: "id"
-        arguments: ["1", "store", "sale", "_"]
-      instance-2-sale:
-        schema-pattern: "store_*"
-        table-pattern: "sale_*"
-        expression: "partition id"
-        source-column: "id"
-        target-column: "id"
-        arguments: ["2", "store", "sale", "_"]
-      instance-3-sale:
-        schema-pattern: "store_*"
-        table-pattern: "sale_*"
-        expression: "partition id"
-        source-column: "id"
-        target-column: "id"
-        arguments: ["3", "store", "sale", "_"]
+    ignore-checking-items: ["auto_increment_ID"]
     ```
 
 ## 同步任务配置
@@ -159,6 +138,7 @@ name: "shard_merge"
 task-mode: all
 meta-schema: "dm_meta"
 remove-meta: false
+ignore-checking-items: ["auto_increment_ID"]
 
 target-database:
   host: "192.168.0.1"
@@ -171,7 +151,6 @@ mysql-instances:
     source-id: "instance-1"
     route-rules: ["user-route-rule", "store-route-rule", "sale-route-rule"]
     filter-rules: ["user-filter-rule", "store-filter-rule", "sale-filter-rule"]
-    column-mapping-rules: ["instance-1-sale"]
     black-white-list:  "log-bak-ignored"
     mydumper-config-name: "global"
     loader-config-name: "global"
@@ -181,7 +160,6 @@ mysql-instances:
     source-id: "instance-2"
     route-rules: ["user-route-rule", "store-route-rule", "sale-route-rule"]
     filter-rules: ["user-filter-rule", "store-filter-rule", "sale-filter-rule"]
-    column-mapping-rules: ["instance-2-sale"]
     black-white-list:  "log-bak-ignored"
     mydumper-config-name: "global"
     loader-config-name: "global"
@@ -190,7 +168,6 @@ mysql-instances:
     source-id: "instance-3"
     route-rules: ["user-route-rule", "store-route-rule", "sale-route-rule"]
     filter-rules: ["user-filter-rule", "store-filter-rule", "sale-filter-rule"]
-    column-mapping-rules: ["instance-3-sale"]
     black-white-list:  "log-bak-ignored"
     mydumper-config-name: "global"
     loader-config-name: "global"
@@ -231,29 +208,6 @@ black-white-list:
     ignore-tables:
     - db-name: "user"
       tbl-name: "log_bak"
-
-column-mappings:
-  instance-1-sale:
-    schema-pattern: "store_*"
-    table-pattern: "sale_*"
-    expression: "partition id"
-    source-column: "id"
-    target-column: "id"
-    arguments: ["1", "store", "sale", "_"]
-  instance-2-sale:
-    schema-pattern: "store_*"
-    table-pattern: "sale_*"
-    expression: "partition id"
-    source-column: "id"
-    target-column: "id"
-    arguments: ["2", "store", "sale", "_"]
-  instance-3-sale:
-    schema-pattern: "store_*"
-    table-pattern: "sale_*"
-    expression: "partition id"
-    source-column: "id"
-    target-column: "id"
-    arguments: ["3", "store", "sale", "_"]
 
 mydumpers:
   global:

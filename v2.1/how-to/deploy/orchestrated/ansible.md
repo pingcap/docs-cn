@@ -18,13 +18,13 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 - [变更组件配置](/v2.1/how-to/upgrade/rolling-updates-with-ansible.md#变更组件配置)
 - [集群扩容缩容](/v2.1/how-to/scale/with-ansible.md)
 - [升级组件版本](/v2.1/how-to/upgrade/rolling-updates-with-ansible.md#升级组件版本)
-- [集群开启 binlog](/v2.1/reference/tidb-binlog-overview.md)
+- [集群开启 binlog](/v2.1/reference/tools/tidb-binlog/overview.md)
 - [清除集群数据](/v2.1/how-to/maintain/ansible-operations.md#清除集群数据)
 - [销毁集群](/v2.1/how-to/maintain/ansible-operations.md#销毁集群)
 
 > **注意：**
 >
-> 对于生产环境，须使用 TiDB Ansible 部署 TiDB 集群。如果只是用于测试 TiDB 或体验 TiDB 的特性，建议[使用 Docker Compose 在单机上快速部署 TiDB 集群](/v2.1/how-to/get-started/local-cluster/install-from-docker-compose.md)。
+> 对于生产环境，须使用 TiDB Ansible 部署 TiDB 集群。如果只是用于测试 TiDB 或体验 TiDB 的特性，建议[使用 Docker Compose 在单机上快速部署 TiDB 集群](/v2.1/how-to/get-started/deploy-tidb-from-docker-compose.md)。
 
 ## 准备机器
 
@@ -36,7 +36,7 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 
     > **注意：**
     >
-    > 使用 Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](/v2.1/how-to/get-started/local-cluster/install-from-docker-compose.md)单机进行测试。
+    > 使用 Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](/v2.1/how-to//get-started/deploy-tidb-from-docker-compose.md)单机进行测试。
 
 2. 部署中控机一台:
 
@@ -380,6 +380,7 @@ UUID=c51eb23b-195c-4061-92a9-3fad812cc12f /data1 ext4 defaults,nodelalloc,noatim
 172.16.10.2
 172.16.10.3
 
+# 注意：要使用 TiKV 的 labels，必须同时配置 PD 的 location_labels 参数，否则 labels 设置不生效。
 [tikv_servers]
 TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy tikv_port=20171 labels="host=tikv1"
 TiKV1-2 ansible_host=172.16.10.4 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv1"
@@ -410,6 +411,7 @@ TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 labels
 172.16.10.5
 172.16.10.6
 
+# 注意：为使 TiKV 的 labels 设置生效，部署集群时必须设置 PD 的 location_labels 参数。
 [pd_servers:vars]
 location_labels = ["host"]
 ```
