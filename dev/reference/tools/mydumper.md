@@ -28,8 +28,7 @@ Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/dev/r
                        此参数可设为 TSO 或有效的 datetime 时间，例如：-z "2016-10-08 16:45:26"
   -r, --rows:          设置导出表时候拆分行数
                        此参数将覆盖 chunk-filesize 的配置
-  -w, --where:         设置导出的过滤条件
-                       注意：如果过滤条件包含中文字段，需要中文字段进行 utf8 encode 后使用             
+  -w, --where:         设置导出的过滤条件; 如果过滤条件包含中文字段，需要中文字段进行 utf8 encode 后使用             
 ```
 
 ### 需要的权限
