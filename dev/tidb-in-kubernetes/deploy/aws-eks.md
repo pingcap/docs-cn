@@ -369,7 +369,7 @@ module "default-cluster" {
 }
 ```
 
-如上所示，将 `create_tidb_cluster_release` 修改为 `false` 后，Terraform 脚本就不会创建和修改 TiDB 集群。此时，你需要使用 Helm 独立管理 TiDB 集群。
+如上所示，将 `create_tidb_cluster_release` 修改为 `false` 后，Terraform 脚本就不会创建和修改 TiDB 集群。此时，你需要使用 Helm 来独立管理 TiDB 集群。
 
 > **注意：**
 >
