@@ -146,7 +146,7 @@ select /*+ USE_INDEX(t1, idx1, idx2) */ * from t t1;
 select /*+ AGG_TO_COP() */ sum(t1.a) from t t1;
 ```
 
-提示优化器将聚合操作下推到 coprocessor。如果优化器没有下推某些适合下推的 agg 函数，建议尝试使用。
+提示优化器将聚合操作下推到 coprocessor。如果优化器没有下推某些适合下推的聚合函数，建议尝试使用。
 
 ### READ_FROM_STORAGE()
 
@@ -164,9 +164,9 @@ select /*+ READ_FROM_STORAGE() */ t1.a from t t1;
 
 其优先级高于默认设置以及环境变量。
 
-### MAX\_EXECUTION\_TIME(1000)
+### MAX\_EXECUTION\_TIME(100)
 
-`MAX_EXECUTION_TIME(1000)`会限制语句的执行时间不能超过 `1000` 毫秒，否则服务器会终止这条语句的执行。
+`MAX_EXECUTION_TIME(100)`会限制语句的执行时间不能超过 `100` 毫秒，否则服务器会终止这条语句的执行。
 
 下面例子设置了 1 秒超时：
 
