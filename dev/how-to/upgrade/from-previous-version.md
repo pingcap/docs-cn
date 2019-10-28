@@ -215,7 +215,7 @@ ansible-playbook rolling_update_monitor.yml
 
 ### 关闭集群
 
-此操作会按顺序关闭整个 TiDB 集群所有组件（包括 PD、TiDB、TiKV 等组件和监控组件）。
+执行关闭集群操作会按顺序关闭整个 TiDB 集群内的所有组件，包括 PD、TiDB、TiKV 等组件和监控组件。执行命令如下：
 
 {{< copyable "shell-regular" >}}
 
