@@ -101,29 +101,31 @@ sql-mode = ""
 
 Yes, as long as every `tidb-lightning` instance operates on different tables.
 
-## How to stop `tikv-importer`?
+## How to stop the `tikv-importer` process?
 
-If it is deployed using TiDB Ansible, run `scripts/stop_importer.sh` under the deployed folder.
+To stop the `tikv-importer` process, you can choose the corresponding operation according to your deployment method.
 
-Otherwise, obtain the process ID with `ps aux | grep tikv-importer`, and then run `kill «pid»`.
+- For deployment using TiDB Ansible: run `scripts/stop_importer.sh` on the Importer server.
 
-## How to stop `tidb-lightning`?
+- For manual deployment: if `tikv-importer` is running in foreground, press <kbd>Ctrl</kbd>+<kbd>C</kbd> to exit. Otherwise, obtain the process ID using the `ps aux | grep tikv-importer` command and then terminate the process using the `kill «pid»` command.
 
-If it is deployed using TiDB Ansible, run `scripts/stop_lightning.sh` under the deployed folder.
+## How to stop the `tidb-lightning` process?
 
-If `tidb-lightning` is running in foreground, simply press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop it.
+To stop the `tidb-lightning` process, you can choose the corresponding operation according to your deployment method.
 
-Otherwise, obtain the process ID with `ps aux | grep tidb-importer`, then run `kill -2 «pid»`.
+- For deployment using TiDB Ansible: run `scripts/stop_lightning.sh` on the Lightning server.
 
-## Why `tidb-lightning` suddenly quits while running in background?
+- For manual deployment: if `tidb-lightning` is running in foreground, press <kbd>Ctrl</kbd>+<kbd>C</kbd> to exit. Otherwise, obtain the process ID using the `ps aux | grep tidb-lighting` command and then terminate the process using the `kill -2 «pid»` command.
 
-It is potentially caused by starting `tidb-lightning` incorrectly, which causes the system to send a SIGHUP signal to stop it. If this is the case, there should be a log entry like:
+## Why the `tidb-lightning` process suddenly quits while running in background?
+
+It is potentially caused by starting `tidb-lightning` incorrectly, which causes the system to send a SIGHUP signal to stop the `tidb-lightning` process. In this situation, `tidb-lightning.log` usually outputs the following log:
 
 ```
-2018/08/10 07:29:08.310 main.go:47: [info] Got signal hangup to exit.
+[2018/08/10 07:29:08.310 +08:00] [INFO] [main.go:41] ["got signal to exit"] [signal=hangup]
 ```
 
-We do not recommend using `nohup` directly in the command line. Rather, put the `nohup` inside a script file and execute the script.
+It is not recommended to directly use `nohup` in the command line to start `tidb-lightning`. You can [start `tidb-lightning`](/dev/reference/tools/tidb-lightning/deployment.md) by executing a script.
 
 ## Why my TiDB cluster is using lots of CPU resources and running very slowly after using TiDB Lightning?
 
