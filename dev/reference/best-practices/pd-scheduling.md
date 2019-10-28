@@ -75,7 +75,7 @@ Region merge 指的是为了避免删除数据后大量小甚至空的 Region �
 
 ## 查询调度状态
 
-查看调度系统状态的手段主要包括 Metrics，pd-ctl 和日志，这里介绍 Metrics 和 pd-ctl 两种方式。更具体的信息可以参考官方文档中 [PD 监控](https://pingcap.com/docs-cn/v3.0/reference/key-monitoring-metrics/pd-dashboard)以及 [PD Control 使用](https://pingcap.com/docs-cn/v3.0/reference/key-monitoring-metrics/pd-dashboard)的章节。
+查看调度系统状态的手段主要包括 Metrics，pd-ctl 和日志，这里介绍 Metrics 和 pd-ctl 两种方式。更具体的信息可以参考官方文档中 [PD 监控](/dev/reference/key-monitoring-metrics/pd-dashboard)以及 [PD Control 使用](/dev/reference/key-monitoring-metrics/pd-dashboard)的章节。
 
 ### Operator 状态
 
@@ -92,7 +92,7 @@ Grafana PD/Operator 页面展示了 Operator 的相关统计。其中比较重�
 
 ### Balance 状态
 
-Grafana PD/Statistics - Balance 页面展示了负载均衡相关的统计信息，其中比较重要的有：
+**Grafana PD/Statistics - Balance** 页面展示了负载均衡相关的统计信息，其中比较重要的有：
 
 - Store Leader/Region score：每个 Store 的得分
 - Store Leader/Region count：每个 Store 的 Leader/Region 数量
@@ -102,7 +102,7 @@ Grafana PD/Statistics - Balance 页面展示了负载均衡相关的统计信息
 
 ### 热点调度状态
 
-Grafana PD/Statistics - hotspot 页面展示了热点 Region 的相关统计，其中比较重要的有：
+**Grafana PD/Statistics - hotspot** 页面展示了热点 Region 的相关统计，其中比较重要的有：
 
 - Hot write Region’s leader/peer distribution：写热点 Region 的 Leader/Peer 分布情况
 - Hot read Region’s leader distribution：读热点 Region 的 Leader 分布情况
@@ -117,7 +117,7 @@ Grafana PD/Statistics - hotspot 页面展示了热点 Region 的相关统计，�
 
 ### Region 健康度
 
-Grafana PD/Cluster/Region health 面板展示了异常状态 Region 数的统计，其中包括 Pending Peer，Down Peer，Offline Peer，以及副本数过多或过少的 Region。
+**Grafana PD/Cluster/Region health** 面板展示了异常状态 Region 数的统计，其中包括 Pending Peer，Down Peer，Offline Peer，以及副本数过多或过少的 Region。
 
 通过 pd-ctl 的 region check 命令可以查看具体异常的 Region 列表：
 
@@ -128,7 +128,7 @@ Grafana PD/Cluster/Region health 面板展示了异常状态 Region 数的统计
 
 ## 调度策略控制
 
-在线调整调度策略主要使用 pd-ctl 工具来完成，可以通过以下三个方面来控制 PD 的调度行为。更具体的信息可以参考 [PD Control](https://pingcap.com/docs-cn/dev/reference/tools/pd-control)。
+在线调整调度策略主要使用 pd-ctl 工具来完成，可以通过以下三个方面来控制 PD 的调度行为。更具体的信息可以参考 [PD Control](/dev/reference/tools/pd-control)。
 
 ### 启停调度器
 
@@ -149,7 +149,7 @@ PD 还支持绕过调度器，直接通过 pd-ctl 来创建或删除 Operator，
 
 ### 调度参数调整
 
-使用 pd-ctl 执行 `config show` 命令可以查看所有的调度参数，执行 `config set {key} {value}` 可以调整对应参数的值。常见调整如下： 
+使用 pd-ctl 执行 `config show` 命令可以查看所有的调度参数，执行 `config set {key} {value}` 可以调整对应参数的值。常见调整如下：
 
 - `leader-schedule-limit`：控制 Transfer Leader 调度的并发数
 - `region-schedule-limit`：控制增删 Peer 调度的并发数
