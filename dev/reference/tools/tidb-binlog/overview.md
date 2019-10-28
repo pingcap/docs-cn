@@ -1,6 +1,7 @@
 ---
 title: TiDB Binlog 简介
 category: reference
+aliases: ['/docs-cn/dev/reference/tidb-binlog-overview/']
 ---
 
 # TiDB Binlog 简介
@@ -56,13 +57,3 @@ TiDB Binlog 集群主要分为 Pump 和 Drainer 两个组件，以及 binlogctl 
     - 如果 TiDB 版本 > = 2.1.9，则 `db-type="file"` 或 `db-type="pb"`。
 
 * 如果下游为 MySQL/TiDB，数据同步后可以使用 [sync-diff-inspector](/dev/reference/tools/sync-diff-inspector/overview.md) 进行数据校验。
-
-## 使用 TiDB Binlog
-
-通过以上内容对 TiDB Binlog 有了基本的了解之后，可以通过以下文档使用 TiDB Binlog：
-
-- [快速上手搭建 TiDB Binlog 集群](/dev/how-to/get-started/tidb-binlog.md)
-- [TiDB Binlog 集群部署](/dev/how-to/deploy/tidb-binlog.md)
-- [TiDB Binlog 集群监控](/dev/how-to/monitor/tidb-binlog.md)
-- [TiDB Binlog 集群运维](/dev/how-to/maintain/tidb-binlog.md)
-- [TiDB Binlog 版本升级方法](/dev/how-to/upgrade/tidb-binlog.md)

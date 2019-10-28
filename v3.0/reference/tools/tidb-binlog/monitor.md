@@ -1,7 +1,7 @@
 ---
 title: TiDB Binlog 集群监控
 category: reference
-aliases: ['/docs-cn/tools/binlog/monitor/','/docs-cn/dev/reference/tools/tidb-binlog/monitor/']
+aliases: ['/docs-cn/tools/binlog/monitor/','/docs-cn/v3.0/how-to/monitor/tidb-binlog/']
 ---
 
 # TiDB Binlog 集群监控
