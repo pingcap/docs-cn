@@ -249,10 +249,8 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/o
     # 引擎文档同时打开的最大数量。
     # 需要大于 tidb-lightning 中 index-concurrency 和 table-concurrency 之和。
     max-open-engines = 8
-    
     # Importer 上传至 TiKV 的最大速度 (bytes per second)。
     # upload-speed-limit = "512MB"
-    
     # 目标 store 可用空间的最小比率：store_available_space / store_capacity.
     # 如果目标存储空间的可用比率低于下值，Importer 将会暂停上传 SST 来为 PD 提供足够时间进行 regions 负载均衡。
     min-available-ratio = 0.05
