@@ -225,7 +225,7 @@ ansible-playbook stop.yml
 
 ### 离线升级集群
 
-重新部署 TiDB 集群软件
+执行以下命令来重新部署 TiDB 集群软件：
 
 {{< copyable "shell-regular" >}}
 
