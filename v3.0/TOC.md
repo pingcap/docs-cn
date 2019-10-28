@@ -328,7 +328,6 @@
     - [增量恢复](/v3.0/reference/tools/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/v3.0/reference/tools/tidb-binlog/binlog-slave-client.md)
     - [FAQ](/v3.0/reference/tools/tidb-binlog/faq.md)
-  
 + TiDB in Kubernetes
   - [TiDB Operator 简介](/v3.0/tidb-in-kubernetes/tidb-operator-overview.md)
   + 快速上手
@@ -354,6 +353,7 @@
     - [恢复 Kubernetes 上的 TiDB 集群数据](/v3.0/tidb-in-kubernetes/maintain/lightning.md)
     - [收集日志](/v3.0/tidb-in-kubernetes/maintain/log-collecting.md)
     - [集群故障自动转移](/v3.0/tidb-in-kubernetes/maintain/auto-failover.md)
+    - [TiDB Binlog](/v3.0/tidb-in-kubernetes/maintain/tidb-binlog.md)
   - [扩缩容](/v3.0/tidb-in-kubernetes/scale-in-kubernetes.md)
   + 升级
     - [TiDB 集群](/v3.0/tidb-in-kubernetes/upgrade/tidb-cluster.md)
@@ -363,6 +363,7 @@
       - [集群配置](/v3.0/tidb-in-kubernetes/reference/configuration/tidb-cluster.md)
       - [备份配置](/v3.0/tidb-in-kubernetes/reference/configuration/backup.md)
       - [PV 配置](/v3.0/tidb-in-kubernetes/reference/configuration/storage-class.md)
+      - [TiDB Drainer](/v3.0/tidb-in-kubernetes/reference/configuration/tidb-drainer.md)
     + 工具
       - [tkctl](/v3.0/tidb-in-kubernetes/reference/tools/tkctl.md)
       - [相关工具使用](/v3.0/tidb-in-kubernetes/reference/tools/in-kubernetes.md)
@@ -382,6 +383,7 @@
 + [TiDB 路线图](/v3.0/roadmap.md)
 + [版本发布历史](/v3.0/releases/rn.md)
   + v3.0
+    - [3.0.5](/v3.0/releases/3.0.5.md)
     - [3.0.4](/v3.0/releases/3.0.4.md)
     - [3.0.3](/v3.0/releases/3.0.3.md)
     - [3.0.2](/v3.0/releases/3.0.2.md)
