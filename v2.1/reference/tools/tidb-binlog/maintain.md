@@ -111,7 +111,9 @@ Usage of binlogctl:
 -ssl-key string
         PEM 格式的 X509 key 文件的路径
 -time-zone string
-    如果设置时区，在 "generate_meta" 模式下会打印出获取到的 tso 对应的时间。例如"Asia/Shanghai" 为 CST 时区，"Local" 为本地时区
+    如果设置时区，在 "generate_meta" 模式下会打印出获取到的 tso 对应的时间。例如 "Asia/Shanghai" 为 CST 时区，"Local" 为本地时区
+-show-offline-nodes
+    在用 `-cmd pumps` 或 `-cmd drainers` 命令时使用，这两个命令默认不显示 offline 的节点，仅当明确指定 `-show-offline-nodes` 时会显示
 ```
 
 命令示例：
