@@ -522,3 +522,9 @@ set tidb_query_log_max_len = 20
 - Scope: SESSION
 - Default value: 0
 - This variable is used to set whether the `auto_increment` property of a column is allowed to be removed by executing `ALTER TABLE MODIFY` or `ALTER TABLE CHANGE` statements. It is not allowed by default.
+
+### tidb_enable_stmt_summary <span class="version-mark">New in v3.0.4</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: 0
+- This variable is used to enable or disable the statement summary feature. If enabled, SQL execution information like time consumption is recorded to the `performance_schema.events_statement_summary_by_digest` table to identify and troubleshoot SQL performance issues.

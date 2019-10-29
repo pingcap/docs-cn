@@ -338,6 +338,7 @@
     - [Optimizer Hints](/dev/reference/performance/optimizer-hints.md)
     - [Check the TiDB Cluster Status Using SQL Statements](/dev/reference/performance/check-cluster-status-using-sql-statements.md)
     - [Execution Plan Binding](/dev/reference/performance/execution-plan-bind.md)
+    - [Statement Summary Table](/dev/reference/performance/statement-summary.md)
     - [Tune TiKV](/dev/reference/performance/tune-tikv.md)
   - [Best Practices](https://pingcap.com/blog/2017-07-24-tidbbestpractice/)
   - [TiSpark](/dev/reference/tispark.md)

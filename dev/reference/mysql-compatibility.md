@@ -73,6 +73,8 @@ Also, starting from TiDB 2.1.18 and 3.0.4, TiDB supports using the system variab
 
 Performance schema tables return empty results in TiDB. TiDB uses a combination of [Prometheus and Grafana](/dev/how-to/monitor/monitor-a-cluster.md) for performance metrics instead.
 
+TiDB supports the `events_statements_summary_by_digest` table from TiDB 3.0.4. For more information, see [Statement Summary Table](/dev/reference/performance/statement-summary.md).
+
 ### Query Execution Plan
 
 The output format of Query Execution Plan (`EXPLAIN`/`EXPLAIN FOR`) in TiDB is greatly different from that in MySQL. Besides, the output content and the privileges setting of `EXPLAIN FOR` are not the same as those of MySQL. See [Understand the Query Execution Plan](/dev/reference/performance/understanding-the-query-execution-plan.md) for more details.
