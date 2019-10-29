@@ -43,9 +43,19 @@ category: how-to
     kubectl create secret generic tidb-secret --from-literal=root=<root-password> --from-literal=developer=<developer-passowrd> --namespace=<namespace>
     ```
 
-    该命令会创建 `root` 和 `developer` 两个用户的密码，存到 `tidb-secret` 的 Secret 里面。
+    该命令会创建 `root` 和 `developer` 两个用户的密码，存到 `tidb-secret` 的 Secret 里面。并且创建的普通用户 `developer` 默认只有 `USAGE` 权限，其他权限请在 `tidb.initSql` 中设置。
 
-3. 部署集群
+3. 设置允许访问 TiDB 的主机
+
+    在部署集群前可以通过 `tidb.permitHost` 配置项来设置允许访问 TiDB 的主机 **host_name**。如果不设置，则允许所有主机访问。详情请参考 [Mysql GRANT host name](https://dev.mysql.com/doc/refman/5.7/en/grant.html)。
+
+    ```
+    tidb:
+      passwordSecretName: tidb-secret
+      permitHost: <mysql-client-host-name>
+    ```
+
+4. 部署集群
 
     创建 Secret 之后，通过下面命令部署集群：
 
