@@ -37,7 +37,7 @@ category: reference
 
 3. 执行调度
 
-    生成的 Operator 不会立即开始执行，而是首先会进入一个由 `OperatorController` 管理的一个等待队列。OperatorController 会根据配置以一定的并发量从等待队列中取出 Operator 并执行。执行的过程就是依次把每个 Operator Step 下发给对应 Region 的 Leader。最终 Operator 执行完毕会被标记为 finish 状态或者超时被标记为 timeout，并被从执行列表中移除。
+    生成的 Operator 不会立即开始执行，而是首先会进入一个由 OperatorController 管理的一个等待队列。OperatorController 会根据配置以一定的并发量从等待队列中取出 Operator 并执行。执行的过程就是依次把每个 Operator Step 下发给对应 Region 的 Leader。最终 Operator 执行完毕会被标记为 finish 状态或者超时被标记为 timeout，并被从执行列表中移除。
 
 ### 负载均衡
 
@@ -61,7 +61,7 @@ Region 负载均衡调度主要依赖 `balance-leader` 和 `balance-region` 这�
 
 让 PD 感知不同节点分布的拓扑是为了通过调度使不同 Region 的各个副本尽可能分散，保证高可用和容灾。PD 会在后台不断扫描所有 Region，当发现 Region 的分布不是当前的最优化状态时，会生成调度以替换 Peer，将 Region 调整至最佳状态。
 
-负责这个检查的组件叫 `replicaChecker`（跟 Scheduler 类似，但是不可关闭）。它依赖于 `location-labels` 配置项来进行调度。比如配置 ‘[zone, rack, host]’ 定义了三层的拓扑结构：集群分为多个 zone（可用区），每个 zone 下有多个 rack（机架），每个 rack 下有多个 host（主机）。PD 在调度时首先会尝试将 Region 的 Peer 放置在不同的 zone，假如无法满足（比如配置 3 副本但总共只有 2 个 zone）则退而求其次保证放置在不同的 rack，假如 rack 的数量也不足以保证隔离，那么再尝试 host 级别的隔离，以此类推。
+负责这个检查的组件叫 `replicaChecker`（跟 Scheduler 类似，但是不可关闭）。它依赖于 `location-labels` 配置项来进行调度。比如配置 `[zone, rack, host]` 定义了三层的拓扑结构：集群分为多个 zone（可用区），每个 zone 下有多个 rack（机架），每个 rack 下有多个 host（主机）。PD 在调度时首先会尝试将 Region 的 Peer 放置在不同的 zone，假如无法满足（比如配置 3 副本但总共只有 2 个 zone）则保证放置在不同的 rack；假如 rack 的数量也不足以保证隔离，那么再尝试 host 级别的隔离，以此类推。
 
 ### 缩容及故障恢复
 
@@ -79,7 +79,7 @@ Region merge 指的是为了避免删除数据后大量小甚至空的 Region �
 
 ### Operator 状态
 
-Grafana PD/Operator 页面展示了 Operator 的相关统计。其中比较重要的有：
+**Grafana PD/Operator** 页面展示了 Operator 的相关统计。其中比较重要的有：
 
 - Schedule Operator Create：Operator 的创建情况。从名称可以知道 Operator 创建的目标调度器以及创建原因。
 - Operator finish duration：Operator 执行耗时的情况
@@ -134,9 +134,9 @@ Grafana PD/Operator 页面展示了 Operator 的相关统计。其中比较重�
 
 pd-ctl 支持动态创建和删除 Scheduler 的功能，我们可以通过这些操作来控制 PD 的调度行为，如下所示：
 
-`scheduler show`：显示当前系统中的 Scheduler
-`scheduler remove balance-leader-scheduler`：删除（停用）balance leader 调度器
-`scheduler add evict-leader-scheduler-1`：添加移除 Store 1 的所有 Leader 的调度器
+- `scheduler show`：显示当前系统中的 Scheduler
+- `scheduler remove balance-leader-scheduler`：删除（停用）balance leader 调度器
+- `scheduler add evict-leader-scheduler-1`：添加移除 Store 1 的所有 Leader 的调度器
 
 ### 手动添加 Operator
 
