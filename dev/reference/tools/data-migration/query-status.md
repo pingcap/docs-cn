@@ -29,7 +29,7 @@ category: reference
         },
         {
             "taskName": "test-2",
-            "taskStatus": "Error - Some error occurred in subtask", # 该任务的子任务存在运行错误并终止的现象
+            "taskStatus": "Error - Some error occurred in subtask", # 该任务的子任务存在运行错误并暂停的现象
             "workers": [
                 "127.0.0.1:8262",
                 "127.0.0.1:8263"
@@ -69,6 +69,8 @@ DM 的迁移任务状态取决于其分配到 DM-worker 上的[子任务状态](
 | 其他情况 | Running |
 
 ## 详情查询结果
+
+{{< copyable "" >}}
 
 ```bash
 » query-status test
