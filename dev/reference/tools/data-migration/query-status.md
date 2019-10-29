@@ -5,7 +5,7 @@ category: reference
 
 # DM 查询状态
 
-本文介绍 DM（Data Migration）`query-status` 命令的查询结果，任务状态与子任务状态。
+本文介绍 DM（Data Migration）`query-status` 命令的查询结果、任务状态与子任务状态。
 
 ## 查询结果
 
@@ -22,7 +22,7 @@ category: reference
     "tasks": [      # 迁移 task 列表
         {
             "taskName": "test-1",           # 任务名称
-            "taskStatus": "Running",        # 任务运行状态，包括 “New”，“Running”，“Paused”，“Stopped”，“Finished”以及“Error”。
+            "taskStatus": "Running",        # 任务运行状态，包括 “New”，“Running”，“Paused”，“Stopped”，“Finished” 以及 “Error”。
             "workers": [                    # 该任务所使用的 DM-workers 列表
                 "127.0.0.1:8262"
             ]
@@ -37,7 +37,7 @@ category: reference
         },
         {
             "taskName": "test-3",
-            "taskStatus": "Error - Relay status is Error",  # 该任务的某个 Sync 类型的子任务在同步时 Relay 插件出错
+            "taskStatus": "Error - Relay status is Error",  # 该任务的某个处于 Sync 阶段的子任务对应的 Relay 处理单元出错
             "workers": [
                 "127.0.0.1:8263",
                 "127.0.0.1:8264"
@@ -49,10 +49,10 @@ category: reference
 
 关于 tasks 下的 taskStatus 状态的详细定义，请参阅[任务状态](#任务状态)。
 
-较为推荐的 query-status 使用方法是：
+较为推荐的 `query-status` 使用方法是：
 
 1. 首先使用 query-status 查看各个 task 的运行状态是否正常。
-2. 如果发现其中某一 task 状态有问题，通过 query-status `出错任务的 taskName` 来得到更详细的错误信息。
+2. 如果发现其中某一 task 状态有问题，通过 `query-status <出错任务的 taskName>` 来得到更详细的错误信息。
 
 ## 任务状态
 
@@ -61,7 +61,7 @@ DM 的迁移任务状态取决于其分配到 DM-worker 上的[子任务状态](
 | 任务对应的所有子任务的状态 | 任务状态 |
 | :---: | :---: |
 | 任一子任务处于 “Paused” 状态且返回结果有错误信息 | Error - Some error occurred in subtask |
-| 任一 Sync 类型子任务处于 “Running” 状态但其 Relay 插件已停止运行（处于 Error/Paused/Stopped 状态） | Error - Relay status is Error/Paused/Stopped |
+| 任一处于 Sync 阶段的子任务处于 “Running” 状态但其 Relay 处理单元未运行（处于 Error/Paused/Stopped 状态） | Error - Relay status is Error/Paused/Stopped |
 | 任一子任务处于 “Paused” 状态且返回结果没有错误信息 | Paused |
 | 所有子任务处于 “New” 状态 | New |
 | 所有子任务处于 “Finished” 状态 | Finished |
