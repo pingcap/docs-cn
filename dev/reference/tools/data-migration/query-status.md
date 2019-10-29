@@ -50,6 +50,7 @@ category: reference
 关于 tasks 下的 taskStatus 状态的详细定义，请参阅[任务状态](#任务状态)。
 
 较为推荐的 query-status 使用方法是：
+
 1. 首先使用 query-status 查看各个 task 的运行状态是否正常。
 2. 如果发现其中某一 task 状态有问题，通过 query-status `出错任务的 taskName` 来得到更详细的错误信息。
 
