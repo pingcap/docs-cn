@@ -1,6 +1,7 @@
 ---
 title: 全量数据迁移
 category: how-to
+aliases: ['/docs-cn/dev/how-to/migrate/from-mysql/']
 ---
 
 # 全量数据迁移
