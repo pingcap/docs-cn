@@ -111,7 +111,7 @@
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-aurora.md)
       - [DM Portal](/dev/reference/tools/data-migration/dm-portal.md)
-      + [故障诊断]
+      + 故障诊断
         - [DM 错误含义](/dev/reference/tools/data-migration/error-system.md)
         - [DM 故障诊断](/dev/how-to/troubleshoot/data-migration.md)
       - [FAQ](/dev/faq/data-migration.md)
