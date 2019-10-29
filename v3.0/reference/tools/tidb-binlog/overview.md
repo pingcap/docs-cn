@@ -1,7 +1,7 @@
 ---
 title: TiDB Binlog 简介
 category: reference
-aliases: ['/docs-cn/tools/binlog/overview/','docs-cn/tools/tidb-binlog-cluster/','/docs-cn/v3.0/reference/tidb-binlog-overview/']
+aliases: ['/docs-cn/tools/binlog/overview/','/docs-cn/tools/tidb-binlog-cluster/','/docs-cn/v3.0/reference/tidb-binlog-overview/']
 ---
 
 # TiDB Binlog 简介
