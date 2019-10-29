@@ -915,7 +915,6 @@ As distributed transactions need to conduct two-phase commit and the bottom laye
 
 - A transaction is limited to 5000 SQL statements (by default)
 - Each Key-Value entry is no more than 6MB
-- The total number of Key-Value entry is no more than 300,000 rows
 - The total size of Key-Value entry is no more than 100MB
 
 There are [similar limits](https://cloud.google.com/spanner/docs/limits) on Google Cloud Spanner.

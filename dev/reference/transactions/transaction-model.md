@@ -26,7 +26,6 @@ Due to the distributed, 2-phase commit requirement of TiDB, large transactions t
 
 * A transaction is limited to 5000 SQL statements (by default)
 * Each Key-Value entry is no more than 6MB
-* The total number of Key-Value entries is no more than 300,000
 * The total size of Key-Value entries is no more than 100MB
 
 ### Small transactions
