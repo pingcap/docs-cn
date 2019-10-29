@@ -19,7 +19,7 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 - [变更组件配置](/v3.0/how-to/upgrade/rolling-updates-with-ansible.md#变更组件配置)
 - [集群扩容缩容](/v3.0/how-to/scale/with-ansible.md)
 - [升级组件版本](/v3.0/how-to/upgrade/rolling-updates-with-ansible.md#升级组件版本)
-- [集群开启 binlog](/v3.0/reference/tidb-binlog-overview.md)
+- [集群开启 binlog](/v3.0/reference/tools/tidb-binlog/overview.md)
 - [清除集群数据](/v3.0/how-to/maintain/ansible-operations.md#清除集群数据)
 - [销毁集群](/v3.0/how-to/maintain/ansible-operations.md#销毁集群)
 
@@ -293,7 +293,7 @@ ansible -i hosts.ini all -m shell -a "cpupower frequency-set --governor performa
 {{< copyable "shell-root" >}}
 
 ```bash
-umount /dev/nvme0n1
+umount /dev/nvme0n1p1
 ```
 
 下面以 /dev/nvme0n1 数据盘为例：
@@ -318,15 +318,19 @@ Disk /dev/nvme0n1: 1000 GB
 parted -s -a optimal /dev/nvme0n1 mklabel gpt -- mkpart primary ext4 1 -1
 ```
 
+> **注意:**
+>
+> 使用 `lsblk` 命令查看分区的设备号：对于 nvme 磁盘，一般生成的分区设备号为 nvme0n1p1；对于普通磁盘（例如 /dev/sdb），一般生成的的分区设备号为 sdb1。
+
 格式化文件系统
 
 {{< copyable "shell-root" >}}
 
 ```bash
-mkfs.ext4 /dev/nvme0n1
+mkfs.ext4 /dev/nvme0n1p1
 ```
 
-查看数据盘分区 UUID，本例中 nvme0n1 的 UUID 为 c51eb23b-195c-4061-92a9-3fad812cc12f。
+查看数据盘分区 UUID，本例中 nvme0n1p1 的 UUID 为 c51eb23b-195c-4061-92a9-3fad812cc12f。
 
 {{< copyable "shell-root" >}}
 
@@ -341,7 +345,8 @@ sda
 ├─sda2  swap         f414c5c0-f823-4bb1-8fdf-e531173a72ed
 └─sda3  ext4         547909c1-398d-4696-94c6-03e43e317b60 /
 sr0
-nvme0n1 ext4         c51eb23b-195c-4061-92a9-3fad812cc12f
+nvme0n1
+└─nvme0n1p1 ext4         c51eb23b-195c-4061-92a9-3fad812cc12f
 ```
 
 编辑 `/etc/fstab` 文件，添加 `nodelalloc` 挂载参数
@@ -374,7 +379,7 @@ mount -t ext4
 ```
 
 ```
-/dev/nvme0n1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
+/dev/nvme0n1p1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
 ```
 
 ## 分配机器资源，编辑 inventory.ini 文件
@@ -457,6 +462,7 @@ mount -t ext4
 172.16.10.2
 172.16.10.3
 
+# 注意：要使用 TiKV 的 labels，必须同时配置 PD 的 location_labels 参数，否则 labels 设置不生效。
 [tikv_servers]
 TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy tikv_port=20171 labels="host=tikv1"
 TiKV1-2 ansible_host=172.16.10.4 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv1"
@@ -487,6 +493,7 @@ TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 labels
 172.16.10.5
 172.16.10.6
 
+# 注意：为使 TiKV 的 labels 设置生效，部署集群时必须设置 PD 的 location_labels 参数。
 [pd_servers:vars]
 location_labels = ["host"]
 ```

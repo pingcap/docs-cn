@@ -67,6 +67,25 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 开启独立的 region 存储。
 + 默认：false
 
+## security
+
+安全相关配置项。
+
+### `cacert-path`
+
++ CA 文件路径
++ 默认：""
+
+### `cert-path`
+
++ 包含 X509 证书的 PEM 文件路径
++ 默认：""
+
+### `key-path`
+
++ 包含 X509 key 的 PEM 文件路径
++ 默认：""
+
 ## log
 
 日志相关的配置项。
