@@ -2,7 +2,7 @@
 title: sync-diff-inspector User Guide
 summary: Use sync-diff-inspector to compare data and repair inconsistent data.
 category: tools
-aliases: ['/docs-cn/v3.0/reference/tools/sync-diff-inspector/']
+aliases: ['/docs/v3.0/reference/tools/sync-diff-inspector/']
 ---
 
 # sync-diff-inspector User Guide

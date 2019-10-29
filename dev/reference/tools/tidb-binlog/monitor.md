@@ -2,6 +2,7 @@
 title: TiDB Binlog Monitoring
 summary: Learn how to monitor the cluster version of TiDB Binlog.
 category: reference
+aliases: ['/docs/dev/how-to/monitor/tidb-binlog/']
 ---
 
 # TiDB Binlog Monitoring
@@ -100,7 +101,7 @@ Currently, TiDB Binlog monitoring metrics are divided into the following three t
 #### binlog_pump_storage_available_size_less_than_20G
 
 - Description: The available disk space of Pump is less than 20G
-- Monitoring rule: `binlog_pump_storage_storage_size_bytes{type="available"}` < 20 \* 1024 \* 1024 \* 1024
+- Monitoring rule: `binlog_pump_storage_storage_size_bytes{type="available"}` < 20 \* 1024 \* 1024 * 1024
 - Solution: Check whether Pump `gc_tso` is normal. If not, adjust the GC time configuration of Pump or get the corresponding Pump offline
 
 #### binlog_drainer_checkpoint_tso_no_change_for_1m

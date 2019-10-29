@@ -10,7 +10,7 @@ This document collects the frequently asked questions (FAQs) about TiDB Binlog.
 
 ## When can I pause or close a Pump or Drainer node?
 
-Refer to [TiDB Binlog Cluster Operations](/v2.1/how-to/maintain/tidb-binlog.md) to learn the description of the Pump or Drainer state and how to start and exit the process.
+Refer to [TiDB Binlog Cluster Operations](/v2.1/reference/tools/tidb-binlog/maintain.md) to learn the description of the Pump or Drainer state and how to start and exit the process.
 
 Pause a Pump or Drainer node when you need to temporarily stop the service. For example:
 
@@ -97,6 +97,6 @@ Some stale Drainer nodes are left over from historical tasks. Their processes ha
 
 ## Can I use SQL operations such as `change pump` and `change drainer` to pause or close the Pump or Drainer service?
 
-No. For more details on these SQL operations, refer to [Use SQL statements to manage Pump or Drainer](/v2.1/how-to/maintain/tidb-binlog.md#use-sql-statements-to-manage-pump-or-drainer).
+No. For more details on these SQL operations, refer to [Use SQL statements to manage Pump or Drainer](/v2.1/reference/tools/tidb-binlog/maintain.md#use-sql-statements-to-manage-pump-or-drainer).
 
 These SQL operations directly modifies the state information saved in PD and are functionally equivalent to the `update-pump` and `update-drainer` commands in binlogctl. To pause or close the Pump or Drainer service, use the binlogctl tool.

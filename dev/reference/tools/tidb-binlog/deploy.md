@@ -2,7 +2,7 @@
 title: TiDB Binlog Cluster Deployment
 summary: Learn how to deploy TiDB Binlog cluster.
 category: reference
-aliases: ['/docs/tools/binlog/deploy/','/docs/dev/reference/tools/tidb-binlog/deploy/']
+aliases: ['/docs/dev/how-to/deploy/tidb-binlog/']
 ---
 
 # TiDB Binlog Cluster Deployment
@@ -33,18 +33,25 @@ In environments of development, testing and production, the requirements on serv
 
     | tidb-ansible branch | TiDB version | Note |
     | :------------------- | :------------ | :---- |
-    | release-3.0 | 3.0 stable | The latest 3.0 stable version. For use in production environments (recommended). |
-    | master | 3.0 unstable | This version includes the latest features with a daily update. |
+    | release-2.0 | 2.0 version | The latest 2.0 stable version. You can use it in the production environment. |
+    | release-2.1 | 2.1 version | The latest 2.1 stable version. You can use it in the production environment (recommended). |
+    | master | master version | This version includes the latest features with a daily update. |
 
 2. Use the following command to download the corresponding branch of TiDB Ansible from the [TiDB Ansible project](https://github.com/pingcap/tidb-ansible) on GitHub. The default folder name is `tidb-ansible`.
 
-    - Download the 3.0 branch:
+    - Download the 2.0 version:
 
         ```bash
-        $ git clone -b release-3.0 https://github.com/pingcap/tidb-ansible.git
+        $ git clone -b release-2.0-new-binlog https://github.com/pingcap/tidb-ansible.git
         ```
 
-    - Download the master branch:
+    - Download the 2.1 version:
+
+        ```bash
+        $ git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
+        ```
+
+    - Download the master version:
 
         ```bash
         $ git clone https://github.com/pingcap/tidb-ansible.git
@@ -80,7 +87,7 @@ In environments of development, testing and production, the requirements on serv
           # gc: 7
         ```
 
-        Make sure the space of the deployment directory is sufficient for storing Binlog. For more details, see [Configure the deployment directory](/v3.0/how-to/deploy/orchestrated/ansible.md#configure-the-deployment-directory). You can also set a separate deployment directory for Pump.
+        Make sure the space of the deployment directory is sufficient for storing Binlog. For more details, see [Configure the deployment directory](/dev/how-to/deploy/orchestrated/ansible.md#configure-the-deployment-directory). You can also set a separate deployment directory for Pump.
 
         ```ini
         ## Binlog Part
@@ -126,7 +133,7 @@ In environments of development, testing and production, the requirements on serv
 
     **Method #2**: Deploy a TiDB cluster containing Pump from scratch.
 
-    For how to use Ansible to deploy the TiDB cluster, see [Deploy TiDB Using Ansible](/v3.0/how-to/deploy/orchestrated/ansible.md).
+    For how to use Ansible to deploy the TiDB cluster, see [Deploy TiDB Using Ansible](/dev/how-to/deploy/orchestrated/ansible.md).
 
 3. Check the Pump status.
 
@@ -247,14 +254,6 @@ In environments of development, testing and production, the requirements on serv
 Run the following commands to download the packages:
 
 ```bash
-version="v3.0" for latest stable release of TiDB 3.0
-wget https://download.pingcap.org/tidb-v3.0-linux-amd64.{tar.gz,sha256}
-
-# Check the file integrity. If the result is OK, the file is correct.
-sha256sum -c tidb-v3.0-linux-amd64.sha256
-```
-
-```bash
 version="latest" for nightly builds
 wget https://download.pingcap.org/tidb-latest-linux-amd64.{tar.gz,sha256}
 
@@ -262,12 +261,21 @@ wget https://download.pingcap.org/tidb-latest-linux-amd64.{tar.gz,sha256}
 sha256sum -c tidb-latest-linux-amd64.sha256
 ```
 
+For TiDB v2.1.0 GA or later versions, Pump and Drainer are already included in the TiDB download package. For other TiDB versions, you need to download Pump and Drainer separately using the following command:
+
+```bash
+wget https://download.pingcap.org/tidb-binlog-$version-linux-amd64.{tar.gz,sha256}
+
+# Check the file integrity. If the result is OK, the file is correct.
+sha256sum -c tidb-binlog-$version-linux-amd64.sha256
+```
+
 ### The usage example
 
 Assuming that you have three PD nodes, one TiDB node, two Pump nodes, and one Drainer node, the information of each node is as follows:
 
 | Node     | IP           |
-| :--------- |:------------ |
+| :---------|:------------ |
 | TiDB     | 192.168.0.10 |
 | PD1      | 192.168.0.16 |
 | PD2      | 192.168.0.15 |
@@ -347,7 +355,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         # ssl-key = "/path/to/drainer-key.pem"
 
         # [storage]
-        # Set to true (by default) to guarantee reliability by ensuring binlog data is flushed to the disk.
+        # Set to true (by default) to guarantee reliability by ensuring binlog data is flushed to the disk
         # sync-log = true
 
         # When the available disk capacity is less than the set value, Pump stops writing data.
@@ -520,7 +528,8 @@ The following part shows how to use Pump and Drainer based on the nodes above.
 
         # the Kafka configuration when `db-type` is set to "kafka"
         # [syncer.to]
-        # only one of kafka-addrs and zookeeper-addrs is needed. If both are present, the program gives priority to the kafka address in zookeeper.
+        # only one of kafka-addrs and zookeeper-addrs is needed. If both are present, the program gives priority
+        # to the kafka address in zookeeper
         # zookeeper-addrs = "127.0.0.1:2181"
         # kafka-addrs = "127.0.0.1:9092"
         # kafka-version = "0.8.2.0"
@@ -531,7 +540,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         # topic-name = ""
 
         [syncer.to.checkpoint]
-        # When the downstream is MySQL or TiDB, this option can be enabled to change the database that holds the checkpoint.
+        # When the downstream is MySQL or TiDB, this option can be enabled to change the database that holds the checkpoint
         # schema = "tidb_binlog"
         ```
 

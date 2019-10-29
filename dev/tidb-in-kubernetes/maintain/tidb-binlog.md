@@ -6,7 +6,7 @@ category: how-to
 
 # Maintain TiDB Binlog
 
-This document describes how to maintain [TiDB Binlog](/dev/reference/tidb-binlog-overview.md) of a TiDB cluster in Kubernetes.
+This document describes how to maintain [TiDB Binlog](/dev/reference/tools/tidb-binlog/overview.md) of a TiDB cluster in Kubernetes.
 
 ## Prerequisites
 
