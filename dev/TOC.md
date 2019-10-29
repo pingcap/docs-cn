@@ -107,6 +107,9 @@
       - [DM 错误含义和诊断](/dev/reference/tools/data-migration/error-system.md)
       - [DM 故障诊断](/dev/how-to/troubleshoot/data-migration.md)
       - [FAQ](/dev/faq/data-migration.md)
+      + 版本发布历史
+        + v1.0
+          - [1.0.2](/dev/reference/tools/data-migration/releases/1.0.2.md)
     + TiDB Lightning
       - [概述](/dev/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/dev/reference/tools/tidb-lightning/deployment.md)
