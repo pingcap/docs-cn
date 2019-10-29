@@ -100,7 +100,7 @@
       + 配置
         - [概述](/dev/reference/tools/data-migration/configure/overview.md)
         - [任务配置](/dev/reference/tools/data-migration/configure/task-configuration-file.md)
-      + [DM 集群管理]
+      + DM 集群管理
         - [DM 集群操作](/dev/reference/tools/data-migration/cluster-operations.md)
         - [DM 集群升级](/dev/reference/tools/data-migration/dm-upgrade.md)
       + [DM 同步任务管理]
