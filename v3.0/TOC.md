@@ -101,10 +101,10 @@
       + 配置
         - [概述](/v3.0/reference/tools/data-migration/configure/overview.md)
         - [任务配置](/v3.0/reference/tools/data-migration/configure/task-configuration-file.md)
-      + [DM 集群管理]
+      + DM 集群管理
         - [DM 集群操作](/v3.0/reference/tools/data-migration/cluster-operations.md)
         - [DM 集群升级](/v3.0/reference/tools/data-migration/dm-upgrade.md)
-      + [DM 同步任务管理]
+      + DM 同步任务管理
         - [管理数据同步任务](/v3.0/reference/tools/data-migration/manage-tasks.md)
         - [任务前置检查](/v3.0/reference/tools/data-migration/precheck.md)
         - [任务状态查询](/v3.0/reference/tools/data-migration/query-status.md)
@@ -112,7 +112,7 @@
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](/v3.0/how-to/migrate/from-aurora.md)
       - [DM Portal](/v3.0/reference/tools/data-migration/dm-portal.md)
-      + [故障诊断]
+      + 故障诊断
         - [DM 错误含义](/v3.0/reference/tools/data-migration/error-system.md)
         - [DM 故障诊断](/v3.0/how-to/troubleshoot/data-migration.md)
       - [FAQ](/v3.0/faq/data-migration.md)
