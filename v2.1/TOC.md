@@ -107,7 +107,7 @@
         - [管理数据同步任务](/v2.1/reference/tools/data-migration/manage-tasks.md)
         - [任务前置检查](/v2.1/reference/tools/data-migration/precheck.md)
         - [任务状态查询](/v2.1/reference/tools/data-migration/query-status.md)
-        - [跳过或替代执行异常的 SQL 语句](/dev/reference/tools/data-migration/skip-replace-sqls.md)
+        - [跳过或替代执行异常的 SQL 语句](/v2.1/reference/tools/data-migration/skip-replace-sqls.md)
       - [监控 DM 集群](/v2.1/reference/tools/data-migration/monitor.md)
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](/v2.1/how-to/migrate/from-aurora.md)
