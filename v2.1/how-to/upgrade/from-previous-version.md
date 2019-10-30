@@ -138,13 +138,13 @@ $ ansible-playbook local_prepare.yml
 
 ### 滚动升级 TiDB 集群组件
 
-如果当前 `process_supervision` 变量使用默认的 `systemd` 参数，则通过 `excessive_rolling_update.yml` 滚动升级 TiDB 集群。
+如果当前 `process_supervision` 变量使用默认的 `systemd` 参数，则通过 `excessive_rolling_update.yml` 命令滚动升级 TiDB 集群。
 
 ```
 $ ansible-playbook excessive_rolling_update.yml
 ```
 
-如果当前 `process_supervision` 变量使用 `supervise` 参数，则通过 `rolling_update.yml` 滚动升级 TiDB 集群。
+如果当前 `process_supervision` 变量使用 `supervise` 参数，则通过 `rolling_update.yml` 命令滚动升级 TiDB 集群。
 
 ```
 $ ansible-playbook rolling_update.yml
@@ -156,6 +156,8 @@ $ ansible-playbook rolling_update.yml
 
 ### 滚动升级 TiDB 监控组件
 
+执行以下命令来滚动更新集群监控组件：
+
 ```
 $ ansible-playbook rolling_update_monitor.yml
 ```
@@ -164,7 +166,7 @@ $ ansible-playbook rolling_update_monitor.yml
 
 ### 关闭集群
 
-此操作会按顺序关闭整个 TiDB 集群所有组件（包括 PD、TiDB、TiKV 等组件和监控组件）。
+执行关闭集群操作会按顺序关闭整个 TiDB 集群内的所有组件，包括 PD、TiDB、TiKV 等组件和监控组件。执行命令如下：
 
 {{< copyable "shell-regular" >}}
 
@@ -174,7 +176,7 @@ ansible-playbook stop.yml
 
 ### 离线升级集群
 
-重新部署 TiDB 集群软件
+执行以下命令来重新部署 TiDB 集群软件：
 
 {{< copyable "shell-regular" >}}
 
