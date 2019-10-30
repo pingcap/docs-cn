@@ -110,6 +110,9 @@
       - [DM 错误含义和诊断](/v3.0/reference/tools/data-migration/error-system.md)
       - [DM 故障诊断](/v3.0/how-to/troubleshoot/data-migration.md)
       - [FAQ](/v3.0/faq/data-migration.md)
+      + 版本发布历史
+        + v1.0
+          - [1.0.2](/v3.0/reference/tools/data-migration/releases/1.0.2.md)
     + TiDB Lightning
       - [概述](/v3.0/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/v3.0/reference/tools/tidb-lightning/deployment.md)
