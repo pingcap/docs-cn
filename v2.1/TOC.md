@@ -35,10 +35,6 @@
       - [跨数据中心部署方案](/v2.1/how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](/v2.1/how-to/deploy/geographic-redundancy/location-awareness.md)
     - [使用 Ansible 部署 DM 集群](/v2.1/how-to/deploy/data-migration-with-ansible.md)
-    + 部署使用 TiDB Binlog
-      - [部署 TiDB Binlog 集群](/v2.1/how-to/deploy/tidb-binlog.md)
-      - [Binlog Slave Client 用户文档](/v2.1/reference/tools/tidb-binlog/binlog-slave-client.md)
-      - [Reparo 使用文档](/v2.1/reference/tools/tidb-binlog/reparo.md)
   + 配置
     - [时区](/v2.1/how-to/configure/time-zone.md)
     - [内存控制](/v2.1/how-to/configure/memory-control.md)
@@ -50,7 +46,6 @@
   + 监控
     - [概述](/v2.1/how-to/monitor/overview.md)
     - [监控 TiDB 集群](/v2.1/how-to/monitor/monitor-a-cluster.md)
-    - [TiDB Binlog 集群监控](/v2.1/how-to/monitor/tidb-binlog.md)
   + 迁移
     - [概述](/v2.1/how-to/migrate/overview.md)
     + 从 MySQL 迁移
@@ -62,7 +57,6 @@
     - [Ansible 常见运维操作](/v2.1/how-to/maintain/ansible-operations.md)
     + [备份与恢复](/v2.1/how-to/maintain/backup-and-restore.md)
     - [定位慢查询](/v2.1/how-to/maintain/identify-slow-queries.md)
-    - [TiDB Binlog 集群运维](/v2.1/how-to/maintain/tidb-binlog.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/v2.1/how-to/scale/with-ansible.md)
   + 升级
@@ -70,7 +64,6 @@
     - [升级至 TiDB 2.1](/v2.1/how-to/upgrade/to-tidb-2.1.md)
     - [使用 Ansible 滚动升级](/v2.1/how-to/upgrade/rolling-updates-with-ansible.md)
     - [升级 Data Migration](/v2.1/reference/tools/data-migration/dm-upgrade.md)
-    - [升级 TiDB Binlog Cluster 版本](/v2.1/how-to/upgrade/tidb-binlog.md)
   + 故障诊断
     - [集群配置诊断](/v2.1/how-to/troubleshoot/cluster-setup.md)
     - [Data Migration 故障诊断](/v2.1/how-to/troubleshoot/data-migration.md)
@@ -85,6 +78,8 @@
         - [DM 架构](/v2.1/reference/tools/data-migration/overview.md#dm-架构)
         - [同步功能介绍](/v2.1/reference/tools/data-migration/overview.md#同步功能介绍)
         - [使用限制](/v2.1/reference/tools/data-migration/overview.md#使用限制)
+        - [DM-worker 简介](/v2.1/reference/tools/data-migration/dm-worker-intro.md)
+        - [DM Relay Log](/v2.1/reference/tools/data-migration/relay-log.md)
       + 核心特性
         - [Table Routing](/v2.1/reference/tools/data-migration/features/overview.md#table-routing)
         - [Black & White Lists](/v2.1/reference/tools/data-migration/features/overview.md#black--white-table-lists)
@@ -102,15 +97,25 @@
       + [部署使用](/v2.1/reference/tools/data-migration/deploy.md)
       + 配置
         - [概述](/v2.1/reference/tools/data-migration/configure/overview.md)
+        - [DM-master 配置](/v2.1/reference/tools/data-migration/configure/dm-master-configuration-file.md)
+        - [DM-worker 配置](/v2.1/reference/tools/data-migration/configure/dm-worker-configuration-file.md)
         - [任务配置](/v2.1/reference/tools/data-migration/configure/task-configuration-file.md)
+      + DM 集群管理
+        - [DM 集群操作](/v2.1/reference/tools/data-migration/cluster-operations.md)
+        - [DM 集群升级](/v2.1/reference/tools/data-migration/dm-upgrade.md)
+      + DM 同步任务管理
+        - [管理数据同步任务](/v2.1/reference/tools/data-migration/manage-tasks.md)
+        - [任务前置检查](/v2.1/reference/tools/data-migration/precheck.md)
+        - [任务状态查询](/v2.1/reference/tools/data-migration/query-status.md)
       - [监控 DM 集群](/v2.1/reference/tools/data-migration/monitor.md)
-      - [管理数据同步任务](/v2.1/reference/tools/data-migration/manage-tasks.md)
-      - [DM 集群操作](/v2.1/reference/tools/data-migration/cluster-operations.md)
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](/v2.1/how-to/migrate/from-aurora.md)
       - [DM Portal](/v2.1/reference/tools/data-migration/dm-portal.md)
       - [DM 故障诊断](/v2.1/how-to/troubleshoot/data-migration.md)
       - [FAQ](/v2.1/faq/data-migration.md)
+      + 版本发布历史
+        + v1.0
+          - [1.0.2](/v2.1/reference/tools/data-migration/releases/1.0.2.md)
     + TiDB Lightning
       - [概述](/v2.1/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/v2.1/reference/tools/tidb-lightning/deployment.md)
@@ -129,6 +134,7 @@
   + 最佳实践
     - [HAProxy 最佳实践](/v2.1/reference/best-practices/haproxy.md)
     - [Java 应用开发最佳实践](/v2.1/reference/best-practices/java-app.md)
+    - [Grafana 监控最佳实践](/v2.1/reference/best-practices/grafana-monitor.md)
   + [与 MySQL 兼容性对比](/v2.1/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
@@ -304,10 +310,17 @@
     - [TiKV 调优](/v2.1/reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + [TiSpark 使用指南](/v2.1/reference/tispark.md)
-  + [TiDB Binlog 简介](/v2.1/reference/tidb-binlog-overview.md)
+  + TiDB Binlog
+    - [概述](/v2.1/reference/tools/tidb-binlog/overview.md)
+    - [部署使用](/v2.1/reference/tools/tidb-binlog/deploy.md)
+    - [运维管理](/v2.1/reference/tools/tidb-binlog/maintain.md)
+    - [版本升级](/v2.1/reference/tools/tidb-binlog/upgrade.md)
+    - [监控告警](/v2.1/reference/tools/tidb-binlog/monitor.md)
+    - [增量恢复](/v2.1/reference/tools/tidb-binlog/reparo.md)
+    - [Kafka 自定义开发](/v2.1/reference/tools/tidb-binlog/binlog-slave-client.md)
+    - [FAQ](/v2.1/reference/tools/tidb-binlog/faq.md)
 + 常见问题 (FAQ)
   - [TiDB FAQ](/v2.1/faq/tidb.md)
-  - [TiDB Binlog FAQ](/v2.1/faq/tidb-binlog.md)
   - [TiDB Lightning FAQ](/v2.1/faq/tidb-lightning.md)
   - [Data Migration FAQ](/v2.1/faq/data-migration.md)
   - [升级 FAQ](/v2.1/faq/upgrade.md)

@@ -204,20 +204,14 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 
 1. 修改配置文件，在 `security` 部分添加 `skip-grant-table`：
 
-    > [security]
-    > skip-grant-table = true
+    {{< copyable "" >}}
 
-2. 使用修改后的配置启动 TiDB（需要 `root` 权限）：
-
-    {{< copyable "shell-root" >}}
-
-    ```bash
-    sudo ./tidb-server -skip-grant-table=true -store=tikv -path=...
+    ```
+    [security]
+    skip-grant-table = true
     ```
 
-    这个配置参数会让 TiDB 跳过权限系统。
-
-3. 然后使用 `root` 登录后修改密码：
+2. 然后使用 `root` 登录后修改密码：
 
     {{< copyable "shell-regular" >}}
 

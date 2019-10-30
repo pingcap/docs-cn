@@ -38,10 +38,6 @@
       - [跨数据中心部署方案](/dev/how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](/dev/how-to/deploy/geographic-redundancy/location-awareness.md)
     - [使用 Ansible 部署 DM 集群](/dev/how-to/deploy/data-migration-with-ansible.md)
-    + 部署使用 TiDB Binlog
-      - [部署 TiDB Binlog 集群](/dev/how-to/deploy/tidb-binlog.md)
-      - [Binlog Slave Client 用户文档](/dev/reference/tools/tidb-binlog/binlog-slave-client.md)
-      - [Reparo 使用文档](/dev/reference/tools/tidb-binlog/reparo.md)
   + 配置
     - [时区](/dev/how-to/configure/time-zone.md)
     - [内存控制](/dev/how-to/configure/memory-control.md)
@@ -53,7 +49,6 @@
   + 监控
     - [概述](/dev/how-to/monitor/overview.md)
     - [监控 TiDB 集群](/dev/how-to/monitor/monitor-a-cluster.md)
-    - [监控 TiDB Binlog 集群](/dev/how-to/monitor/tidb-binlog.md)
   + 迁移
     - [概述](/dev/how-to/migrate/overview.md)
     + 从 MySQL 迁移
@@ -65,13 +60,11 @@
     - [Ansible 常见运维操作](/dev/how-to/maintain/ansible-operations.md)
     + [备份与恢复](/dev/how-to/maintain/backup-and-restore.md)
     - [定位慢查询](/dev/how-to/maintain/identify-slow-queries.md)
-    - [TiDB Binlog 集群运维](/dev/how-to/maintain/tidb-binlog.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/dev/how-to/scale/with-ansible.md)
   + 升级
     - [升级至 TiDB 3.0](/dev/how-to/upgrade/from-previous-version.md)
     - [使用 Ansible 滚动升级](/dev/how-to/upgrade/rolling-updates-with-ansible.md)
-    - [升级 TiDB Binlog Cluster 版本](/dev/how-to/upgrade/tidb-binlog.md)
     - [升级 Data Migration](/dev/reference/tools/data-migration/dm-upgrade.md)
   + 故障诊断
     - [集群配置诊断](/dev/how-to/troubleshoot/cluster-setup.md)
@@ -87,6 +80,8 @@
         - [DM 架构](/dev/reference/tools/data-migration/overview.md#dm-架构)
         - [同步功能介绍](/dev/reference/tools/data-migration/overview.md#同步功能介绍)
         - [使用限制](/dev/reference/tools/data-migration/overview.md#使用限制)
+        - [DM-worker 简介](/dev/reference/tools/data-migration/dm-worker-intro.md)
+        - [DM Relay Log](/dev/reference/tools/data-migration/relay-log.md)
       + 核心特性
         - [Table Routing](/dev/reference/tools/data-migration/features/overview.md#table-routing)
         - [Black & White Lists](/dev/reference/tools/data-migration/features/overview.md#black--white-table-lists)
@@ -104,16 +99,27 @@
       + [部署使用](/dev/reference/tools/data-migration/deploy.md)
       + 配置
         - [概述](/dev/reference/tools/data-migration/configure/overview.md)
+        - [DM-master 配置](/dev/reference/tools/data-migration/configure/dm-master-configuration-file.md)
+        - [DM-worker 配置](/dev/reference/tools/data-migration/configure/dm-worker-configuration-file.md)
         - [任务配置](/dev/reference/tools/data-migration/configure/task-configuration-file.md)
+      + DM 集群管理
+        - [DM 集群操作](/dev/reference/tools/data-migration/cluster-operations.md)
+        - [DM 集群升级](/dev/reference/tools/data-migration/dm-upgrade.md)
+      + DM 同步任务管理
+        - [管理数据同步任务](/dev/reference/tools/data-migration/manage-tasks.md)
+        - [任务前置检查](/dev/reference/tools/data-migration/precheck.md)
+        - [任务状态查询](/dev/reference/tools/data-migration/query-status.md)
       - [监控 DM 集群](/dev/reference/tools/data-migration/monitor.md)
-      - [管理数据同步任务](/dev/reference/tools/data-migration/manage-tasks.md)
-      - [DM 集群操作](/dev/reference/tools/data-migration/cluster-operations.md)
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-aurora.md)
       - [DM Portal](/dev/reference/tools/data-migration/dm-portal.md)
-      - [DM 错误含义和诊断](/dev/reference/tools/data-migration/error-system.md)
-      - [DM 故障诊断](/dev/how-to/troubleshoot/data-migration.md)
+      + 故障诊断
+        - [DM 错误含义](/dev/reference/tools/data-migration/error-system.md)
+        - [DM 故障诊断](/dev/how-to/troubleshoot/data-migration.md)
       - [FAQ](/dev/faq/data-migration.md)
+      + 版本发布历史
+        + v1.0
+          - [1.0.2](/dev/reference/tools/data-migration/releases/1.0.2.md)
     + TiDB Lightning
       - [概述](/dev/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/dev/reference/tools/tidb-lightning/deployment.md)
@@ -133,6 +139,7 @@
     - [HAProxy 最佳实践](/dev/reference/best-practices/haproxy.md)
     - [Java 应用开发最佳实践](/dev/reference/best-practices/java-app.md)
     - [高并发写入场景最佳实践](/dev/reference/best-practices/high-concurrency.md)
+    - [Grafana 监控最佳实践](/dev/reference/best-practices/grafana-monitor.md)
   + [与 MySQL 兼容性对比](/dev/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
@@ -320,13 +327,23 @@
     - [统计信息概述](/dev/reference/performance/statistics.md)
     - [Optimizer Hints](/dev/reference/performance/optimizer-hints.md)
     - [使用 SQL 语句检查 TiDB 集群状态](/dev/reference/performance/check-cluster-status-using-sql-statements.md)
+    - [Statement Summary Table](/dev/reference/performance/statement-summary.md)
     - [TiKV 调优](/dev/reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + [TiSpark 使用指南](/dev/reference/tispark.md)
-  + [TiDB Binlog 简介](/dev/reference/tidb-binlog-overview.md)
+  + TiDB Binlog
+    - [概述](/dev/reference/tools/tidb-binlog/overview.md)
+    - [部署使用](/dev/reference/tools/tidb-binlog/deploy.md)
+    - [运维管理](/dev/reference/tools/tidb-binlog/maintain.md)
+    - [版本升级](/dev/reference/tools/tidb-binlog/upgrade.md)
+    - [监控告警](/dev/reference/tools/tidb-binlog/monitor.md)
+    - [增量恢复](/dev/reference/tools/tidb-binlog/reparo.md)
+    - [Kafka 自定义开发](/dev/reference/tools/tidb-binlog/binlog-slave-client.md)
+    - [FAQ](/dev/reference/tools/tidb-binlog/faq.md)
 + TiDB in Kubernetes
   - [TiDB Operator 简介](/dev/tidb-in-kubernetes/tidb-operator-overview.md)
   + 快速上手
+    - [kind](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind.md)
     - [DinD](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
     - [GKE](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
     - [Minikube](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube.md)
@@ -348,6 +365,7 @@
     - [恢复 Kubernetes 上的 TiDB 集群数据](/dev/tidb-in-kubernetes/maintain/lightning.md)
     - [收集日志](/dev/tidb-in-kubernetes/maintain/log-collecting.md)
     - [集群故障自动转移](/dev/tidb-in-kubernetes/maintain/auto-failover.md)
+    - [TiDB Binlog](/dev/tidb-in-kubernetes/maintain/tidb-binlog.md)
   - [扩缩容](/dev/tidb-in-kubernetes/scale-in-kubernetes.md)
   + 升级
     - [TiDB 集群](/dev/tidb-in-kubernetes/upgrade/tidb-cluster.md)
@@ -357,6 +375,7 @@
       - [集群配置](/dev/tidb-in-kubernetes/reference/configuration/tidb-cluster.md)
       - [备份配置](/dev/tidb-in-kubernetes/reference/configuration/backup.md)
       - [PV 配置](/dev/tidb-in-kubernetes/reference/configuration/storage-class.md)
+      - [TiDB Drainer](/dev/tidb-in-kubernetes/reference/configuration/tidb-drainer.md)
     + 工具
       - [tkctl](/dev/tidb-in-kubernetes/reference/tools/tkctl.md)
       - [相关工具使用](/dev/tidb-in-kubernetes/reference/tools/in-kubernetes.md)
@@ -364,7 +383,6 @@
   - [常见问题](/dev/tidb-in-kubernetes/faq.md)
 + 常见问题 (FAQ)
   - [TiDB FAQ](/dev/faq/tidb.md)
-  - [TiDB Binlog FAQ](/dev/faq/tidb-binlog.md)
   - [TiDB Lightning FAQ](/dev/faq/tidb-lightning.md)
   - [Data Migration FAQ](/dev/faq/data-migration.md)
   - [升级 FAQ](/dev/faq/upgrade.md)
@@ -377,6 +395,7 @@
 + [TiDB 路线图](/dev/roadmap.md)
 + [版本发布历史](/dev/releases/rn.md)
   + v3.0
+    - [3.0.5](/dev/releases/3.0.5.md)
     - [3.0.4](/dev/releases/3.0.4.md)
     - [3.0.3](/dev/releases/3.0.3.md)
     - [3.0.2](/dev/releases/3.0.2.md)

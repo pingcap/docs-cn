@@ -90,7 +90,7 @@ helm init
 {{< copyable "shell-regular" >}}
 
 ``` shell
-helm init --upgrade --tiller-image registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:$(helm version --client --short | grep -P -o 'v\d+\.\d+\.\d')
+helm init --upgrade --tiller-image registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:$(helm version --client --short | grep -Eo 'v[0-9]\.[0-9]+\.[0-9]+')
 ```
 
 安装完成后，执行 `helm version` 会同时显示客户端和服务端组件版本：

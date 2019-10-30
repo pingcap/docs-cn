@@ -247,6 +247,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/o
     # 流管道窗口大小，管道满时会阻塞流。
     # stream-channel-window = 128
     # 引擎文档同时打开的最大数量。
+    # 需要大于 tidb-lightning 中 index-concurrency 和 table-concurrency 之和。
     max-open-engines = 8
     # Importer 上传至 TiKV 的最大速度 (bytes per second)。
     # upload-speed-limit = "512MB"
