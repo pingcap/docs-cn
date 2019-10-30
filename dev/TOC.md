@@ -97,6 +97,8 @@
       + [部署使用](/dev/reference/tools/data-migration/deploy.md)
       + 配置
         - [概述](/dev/reference/tools/data-migration/configure/overview.md)
+        - [DM-master 配置](/dev/reference/tools/data-migration/configure/dm-master-configuration-file.md)
+        - [DM-worker 配置](/dev/reference/tools/data-migration/configure/dm-worker-configuration-file.md)
         - [任务配置](/dev/reference/tools/data-migration/configure/task-configuration-file.md)
       - [监控 DM 集群](/dev/reference/tools/data-migration/monitor.md)
       - [管理数据同步任务](/dev/reference/tools/data-migration/manage-tasks.md)
@@ -107,6 +109,9 @@
       - [DM 错误含义和诊断](/dev/reference/tools/data-migration/error-system.md)
       - [DM 故障诊断](/dev/how-to/troubleshoot/data-migration.md)
       - [FAQ](/dev/faq/data-migration.md)
+      + 版本发布历史
+        + v1.0
+          - [1.0.2](/dev/reference/tools/data-migration/releases/1.0.2.md)
     + TiDB Lightning
       - [概述](/dev/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/dev/reference/tools/tidb-lightning/deployment.md)
