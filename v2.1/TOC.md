@@ -95,6 +95,8 @@
       + [部署使用](/v2.1/reference/tools/data-migration/deploy.md)
       + 配置
         - [概述](/v2.1/reference/tools/data-migration/configure/overview.md)
+        - [DM-master 配置](/v2.1/reference/tools/data-migration/configure/dm-master-configuration-file.md)
+        - [DM-worker 配置](/v2.1/reference/tools/data-migration/configure/dm-worker-configuration-file.md)
         - [任务配置](/v2.1/reference/tools/data-migration/configure/task-configuration-file.md)
       - [监控 DM 集群](/v2.1/reference/tools/data-migration/monitor.md)
       - [管理数据同步任务](/v2.1/reference/tools/data-migration/manage-tasks.md)
