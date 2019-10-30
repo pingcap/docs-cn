@@ -49,7 +49,7 @@ category: reference
 
 关于 tasks 下的 taskStatus 状态的详细定义，请参阅[任务状态](#任务状态)。
 
-较为推荐的 `query-status` 使用方法是：
+推荐的 `query-status` 使用方法是：
 
 1. 首先使用 query-status 查看各个 task 的运行状态是否正常。
 2. 如果发现其中某一 task 状态有问题，通过 `query-status <出错任务的 taskName>` 来得到更详细的错误信息。
@@ -59,7 +59,7 @@ category: reference
 DM 的迁移任务状态取决于其分配到 DM-worker 上的[子任务状态](#子任务状态)，定义见下表：
 
 | 任务对应的所有子任务的状态 | 任务状态 |
-| :---: | :---: |
+| :--- | :--- |
 | 任一子任务处于 “Paused” 状态且返回结果有错误信息 | Error - Some error occurred in subtask |
 | 任一处于 Sync 阶段的子任务处于 “Running” 状态但其 Relay 处理单元未运行（处于 Error/Paused/Stopped 状态） | Error - Relay status is Error/Paused/Stopped |
 | 任一子任务处于 “Paused” 状态且返回结果没有错误信息 | Paused |
