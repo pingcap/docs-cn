@@ -19,6 +19,68 @@ category: reference
 > - 若无特殊说明，各升级操作示例均假定升级前已停止所有同步任务，升级完成后手动重新启动所有同步任务。
 > - 以下版本升级指引逆序展示。
 
+## 升级到 v1.0.2
+
+### 版本信息
+
+```bash
+Release Version: v1.0.2
+Git Commit Hash: affc6546c0d9810b0630e85502d60ed5c800bf25
+Git Branch: release-1.0
+UTC Build Time: 2019-10-30 05:08:50
+Go Version: go version go1.12 linux/amd64
+```
+
+### 主要变更
+
+- 支持自动为 DM-worker 生成部分配置项，减少人工配置成本
+- 支持自动生成 mydumper 库表参数，减少人工配置成本
+- 优化 `query-status` 默认输出，突出重点信息
+- 直接管理到下游的 DB 连接而不是使用内置连接池，优化 SQL 错误处理与重试
+- 修复 DM-worker 进程启动时、执行 DML 失败时可能 panic 的 bug
+- 修复执行 shard DDL（如 ADD INDEX）超时后可能造成后续 shard DDL 无法正确协调的 bug
+- 修复了有部分 DM-worker 不可访问时无法 `start-task` 的 bug
+- 完善了对 1105 错误的自动重试策略
+
+### 升级操作示例
+
+1. 下载新版本 DM-Ansible, 确认 `inventory.ini` 文件中 `dm_version = v1.0.2`
+2. 执行 `ansible-playbook local_prepare.yml` 下载新的 DM binary 到本地
+3. 执行 `ansible-playbook rolling_update.yml` 滚动升级 DM 集群组件
+4. 执行 `ansible-playbook rolling_update_monitor.yml` 滚动升级 DM 监控组件
+
+> **注意：**
+>
+> 更新至 DM 1.0.2 版本时，需要确保 DM 所有组件 (dmctl/DM-master/DM-worker) 同时升级。不支持部分组件升级使用。
+
+## 升级到 v1.0.1
+
+### 版本信息
+
+```bash
+Release Version: v1.0.1
+Git Commit Hash: e63c6cdebea0edcf2ef8c91d84cff4aaa5fc2df7
+Git Branch: release-1.0
+UTC Build Time: 2019-09-10 06:15:05
+Go Version: go version go1.12 linux/amd64
+```
+
+### 主要变更
+
+- 修复 DM 有时对数据库连接频繁重建的问题
+- 修复使用 `query-status` 时潜在的 panic 问题
+
+### 升级操作示例
+
+1. 下载新版本 DM-Ansible, 确认 `inventory.ini` 文件中 `dm_version = v1.0.1`
+2. 执行 `ansible-playbook local_prepare.yml` 下载新的 DM binary 到本地
+3. 执行 `ansible-playbook rolling_update.yml` 滚动升级 DM 集群组件
+4. 执行 `ansible-playbook rolling_update_monitor.yml` 滚动升级 DM 监控组件
+
+> **注意：**
+>
+> 更新至 DM 1.0.1 版本时，需要确保 DM 所有组件 (dmctl/DM-master/DM-worker) 同时升级。不支持部分组件升级使用。
+
 ## 升级到 v1.0.0-10-geb2889c9 (1.0 GA)
 
 ### 版本信息
