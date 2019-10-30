@@ -135,7 +135,7 @@ To access the deployed TiDB cluster, use the following commands to first `ssh` i
 {{< copyable "shell-regular" >}}
 
 ```shell
-ssh -i credentials/<cluster_name>.pem centos@<bastion_ip>
+ssh -i credentials/<eks_name>.pem centos@<bastion_ip>
 ```
 
 {{< copyable "shell-regular" >}}
@@ -144,22 +144,22 @@ ssh -i credentials/<cluster_name>.pem centos@<bastion_ip>
 mysql -h <tidb_dns> -P 4000 -u root
 ```
 
-The default value of `cluster_name` is `my-cluster`. If the DNS name is not resolvable, be patient and wait a few minutes.
+The default value of `eks_name` is `my-cluster`. If the DNS name is not resolvable, be patient and wait a few minutes.
 
-You can interact with the EKS cluster using `kubectl` and `helm` with the kubeconfig file `credentials/kubeconfig_<cluster_name>` in the following two ways.
+You can interact with the EKS cluster using `kubectl` and `helm` with the kubeconfig file `credentials/kubeconfig_<eks_name>` in the following two ways.
 
 - By specifying `--kubeconfig` argument:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n <cluster_name>
+    kubectl --kubeconfig credentials/kubeconfig_<eks_name> get po -n <default_cluster_name>
     ```
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm --kubeconfig credentials/kubeconfig_<cluster_name> ls
+    helm --kubeconfig credentials/kubeconfig_<eks_name> ls
     ```
 
 - Or by setting the `KUBECONFIG` environment variable:
@@ -167,13 +167,13 @@ You can interact with the EKS cluster using `kubectl` and `helm` with the kubeco
     {{< copyable "shell-regular" >}}
 
     ```shell
-    export KUBECONFIG=$PWD/credentials/kubeconfig_<cluster_name>
+    export KUBECONFIG=$PWD/credentials/kubeconfig_<eks_name>
     ```
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl get po -n <cluster_name>
+    kubectl get po -n <default_cluster_name>
     ```
 
     {{< copyable "shell-regular" >}}
@@ -205,7 +205,7 @@ For example, to upgrade the cluster to version 3.0.1, modify the `default_cluste
 
 > **Note:**
 >
-> The upgrading doesn't finish immediately. You can watch the upgrading process by `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n <cluster_name> --watch`.
+> The upgrading doesn't finish immediately. You can watch the upgrading process by `kubectl --kubeconfig credentials/kubeconfig_<eks_name> get po -n <default_cluster_name> --watch`.
 
 ## Scale
 
@@ -221,7 +221,7 @@ For example, to scale out the cluster, you can modify the number of TiDB instanc
 
 > **Note:**
 >
-> Currently, scaling in is NOT supported because we cannot determine which node to scale. Scaling out needs a few minutes to complete, you can watch the scaling out by `kubectl --kubeconfig credentials/kubeconfig_<cluster_name> get po -n <cluster_name> --watch`.
+> Currently, scaling in is NOT supported because we cannot determine which node to scale. Scaling out needs a few minutes to complete, you can watch the scaling out by `kubectl --kubeconfig credentials/kubeconfig_<eks_name> get po -n <default_cluster_name> --watch`.
 
 ## Customize
 
@@ -244,7 +244,7 @@ Currently, the instance type of the TiDB cluster component is not configurable b
 
 ### Customize a TiDB cluster
 
-The terraform scripts provide proper default settings for the TiDB cluster in EKS. You can specify an overriding values file - `values.yaml` in `clusters.tf` for each TiDB cluster. Values of this file will override the default settings.
+The terraform scripts provide proper default settings for the TiDB cluster in EKS. You can specify an overriding values file - `values.yaml` through the `override_values` parameter in `clusters.tf` for each TiDB cluster. Values of this file will override the default settings.
 
 For example, the default cluster uses `./default-cluster.yaml` as the overriding values file, and the ConfigMap rollout feature is enabled in this file.
 
@@ -284,8 +284,8 @@ You can customize the TiDB Operator by specifying a Helm values file through the
 
 ```hcl
 variable "operator_values" {
-  description = "The helm values of TiDB Operator"
-  default     = file("operator_values.yaml")
+  description = "The helm values file for TiDB Operator, path is relative to current working dir"
+  default     = "./operator_values.yaml"
 }
 ```
 
