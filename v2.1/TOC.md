@@ -97,6 +97,8 @@
       + [部署使用](/v2.1/reference/tools/data-migration/deploy.md)
       + 配置
         - [概述](/v2.1/reference/tools/data-migration/configure/overview.md)
+        - [DM-master 配置](/v2.1/reference/tools/data-migration/configure/dm-master-configuration-file.md)
+        - [DM-worker 配置](/v2.1/reference/tools/data-migration/configure/dm-worker-configuration-file.md)
         - [任务配置](/v2.1/reference/tools/data-migration/configure/task-configuration-file.md)
       + DM 集群管理
         - [DM 集群操作](/v2.1/reference/tools/data-migration/cluster-operations.md)
@@ -111,6 +113,9 @@
       - [DM Portal](/v2.1/reference/tools/data-migration/dm-portal.md)
       - [DM 故障诊断](/v2.1/how-to/troubleshoot/data-migration.md)
       - [FAQ](/v2.1/faq/data-migration.md)
+      + 版本发布历史
+        + v1.0
+          - [1.0.2](/v2.1/reference/tools/data-migration/releases/1.0.2.md)
     + TiDB Lightning
       - [概述](/v2.1/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/v2.1/reference/tools/tidb-lightning/deployment.md)

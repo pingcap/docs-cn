@@ -100,6 +100,8 @@
       + [部署使用](/v3.0/reference/tools/data-migration/deploy.md)
       + 配置
         - [概述](/v3.0/reference/tools/data-migration/configure/overview.md)
+        - [DM-master 配置](/v3.0/reference/tools/data-migration/configure/dm-master-configuration-file.md)
+        - [DM-worker 配置](/v3.0/reference/tools/data-migration/configure/dm-worker-configuration-file.md)
         - [任务配置](/v3.0/reference/tools/data-migration/configure/task-configuration-file.md)
       + DM 集群管理
         - [DM 集群操作](/v3.0/reference/tools/data-migration/cluster-operations.md)
@@ -116,6 +118,9 @@
         - [DM 错误含义](/v3.0/reference/tools/data-migration/error-system.md)
         - [DM 故障诊断](/v3.0/how-to/troubleshoot/data-migration.md)
       - [FAQ](/v3.0/faq/data-migration.md)
+      + 版本发布历史
+        + v1.0
+          - [1.0.2](/v3.0/reference/tools/data-migration/releases/1.0.2.md)
     + TiDB Lightning
       - [概述](/v3.0/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/v3.0/reference/tools/tidb-lightning/deployment.md)
@@ -391,6 +396,7 @@
 + [TiDB 路线图](/v3.0/roadmap.md)
 + [版本发布历史](/v3.0/releases/rn.md)
   + v3.0
+    - [3.0.5](/v3.0/releases/3.0.5.md)
     - [3.0.4](/v3.0/releases/3.0.4.md)
     - [3.0.3](/v3.0/releases/3.0.3.md)
     - [3.0.2](/v3.0/releases/3.0.2.md)
