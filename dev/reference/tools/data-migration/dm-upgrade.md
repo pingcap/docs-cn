@@ -38,7 +38,7 @@ Go Version: go version go1.12 linux/amd64
 - 优化 `query-status` 默认输出，突出重点信息
 - 直接管理到下游的 DB 连接而不是使用内置连接池，优化 SQL 错误处理与重试
 - 修复 DM-worker 进程启动时、执行 DML 失败时可能 panic 的 bug
-- 修复执行 shard DDL（如 ADD INDEX）超时后可能造成后续 shard DDL 无法正确协调的 bug
+- 修复执行 sharding DDL（如 `ADD INDEX`）超时后可能造成后续 sharding DDL 无法正确协调的 bug
 - 修复了有部分 DM-worker 不可访问时无法 `start-task` 的 bug
 - 完善了对 1105 错误的自动重试策略
 
