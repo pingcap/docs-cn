@@ -209,4 +209,4 @@ scala> spark.sql(
 -----------------+---------+------------+--------+-----------+
 ```
 
-更多样例请参考 [https://github.com/pingcap/tispark-test/tree/master/tpch/sparksql](https://github.com/pingcap/tispark-test/tree/master/tpch/sparksql)
+更多样例请参考 [`pingcap/tispark-test`](https://github.com/pingcap/tispark-test/tree/master/tpch/sparksql)
