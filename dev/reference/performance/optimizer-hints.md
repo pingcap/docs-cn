@@ -13,7 +13,7 @@ TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comm
 
 ## 语法
 
-Optimizer Hints 通过注释的形式加在 `SELECT`/`UPDATE`/`DELETE` 等关键字的后面。Hint 不区分大小写，多个不同的 Hint 之间需用逗号隔开。
+Optimizer Hints 通过注释的形式写在 `SELECT`/`UPDATE`/`DELETE` 关键字的后面。Hint 不区分大小写，多个不同的 Hint 之间需用逗号隔开。
 
 {{< copyable "sql" >}}
 
@@ -25,7 +25,7 @@ TiDB 目前支持两类 Hint，具体用法上有一些差别。第一类 Hint �
 
 ## 优化器相关 Hint 语法
 
-Hint 以注释的形式写在 [支持 Hint 的语句](path-to-supported-statements) 中。Hint 的生效范围以及 Hint 中使用的表的生效范围可通过下文介绍 **Query Block** 来指定，若不显式地指定 Query Block， Hint 的默认生效范围为当前 Query Block。
+用于控制优化器行为的 Hint 以注释的形式写在语句中**任意** `SELECT`/`UPDATE`/`DELETE` 关键字的后面。Hint 的生效范围以及 Hint 中使用的表的生效范围可通过下文介绍 **Query Block** 来指定，若不显式地指定 Query Block， Hint 的默认生效范围为当前 Query Block。
 
 ### Query Block
 
@@ -57,7 +57,7 @@ select /*+ QB_NAME(QB1) */ * from t;
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ HASH_JOIN(@sel_1 t1@sel_1, t2) */ * from t t1, t t2 where t1.a = t2.a;
+select /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * from (select t1.a, t1.b from t t1, t t2 where t1.a = t2.a) t1, t t3 where t1.b = t3.b;
 ```
 
 优化器相关的 Hint 中除 `QB_NAME` 外都可以通过可选参数 @QB_NAME 来指定生效范围。该参数需写在最前面，与其他参数用空格隔开。
@@ -172,7 +172,7 @@ select /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * from t t1 where t1.a > 
 
 ## 运行参数相关 Hint 语法
 
-运行参数相关的 Hint 只能跟在查询中第一个 `SELECT` 的后面，对当前的这条查询的相关运行参数进行修改。
+运行参数相关的 Hint 只能跟在语句中**第一个** `SELECT`/`UPDATE`/`DELETE` 关键字的后面，对当前的这条查询的相关运行参数进行修改。
 
 其优先级高于默认设置以及环境变量。
 
