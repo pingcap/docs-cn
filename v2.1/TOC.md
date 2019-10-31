@@ -245,7 +245,6 @@
       - [`SHOW COLLATION`](/v2.1/reference/sql/statements/show-collation.md)
       - [`SHOW [FULL] COLUMNS FROM`](/v2.1/reference/sql/statements/show-columns-from.md)
       - [`SHOW CREATE TABLE`](/v2.1/reference/sql/statements/show-create-table.md)
-      - [`SHOW CREATE USER`](/v2.1/reference/sql/statements/show-create-user.md)
       - [`SHOW DATABASES`](/v2.1/reference/sql/statements/show-databases.md)
       - [`SHOW ENGINES`](/v2.1/reference/sql/statements/show-engines.md)
       - [`SHOW ERRORS`](/v2.1/reference/sql/statements/show-errors.md)
