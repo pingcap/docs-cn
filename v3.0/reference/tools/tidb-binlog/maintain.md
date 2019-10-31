@@ -119,6 +119,8 @@ Usage of binlogctl:
     the file path of X509 key file of the PEM format
 -time-zone string
     If a time zone is set, the corresponding time of the obtained `tso` is printed in the "generate_meta" mode. For example, "Asia/Shanghai" is the CST time zone and "Local" is the local time zone
+-show-offline-nodes
+    used with the `-cmd pumps` or `-cmd drainers` command. The two commands do not show the offline node by default unless this parameter is explicitly specified
 ```
 
 Command example:
