@@ -63,7 +63,7 @@ yum -y install python2-pip
 {{< copyable "shell-root" >}}
 
 ```bash
-apt-get -y install git curl sshpass python2-pip
+apt-get -y install git curl sshpass python-pip
 ```
 
 ## 在中控机上创建 tidb 用户，并生成 ssh key
