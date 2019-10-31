@@ -1,6 +1,7 @@
 ---
 title: Data Migration 常见问题
 category: FAQ
+aliases: ['/docs-cn/v3.0/faq/data-migration/']
 ---
 
 # Data Migration 常见问题
