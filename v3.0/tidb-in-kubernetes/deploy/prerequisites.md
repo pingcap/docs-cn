@@ -81,6 +81,8 @@ cat /proc/interrupts|grep <iface-name>|awk '{print $1,$NF}'
 
 上面命令输出的第一列是中断号，第二列是设备名称，如果是多队列网卡上面的命令会显示有多行信息，网卡的每个队列对应一个中断号。通过如下的命令可以得知此中断号被绑定到具体哪个 cpu 上。
 
+{{< copyable "shell-regular" >}}
+
 ```shell
 ## 这个值展示的是对应的 cpu 序号的十六进制，不是很直观，具体计算方法见上面给出的官方文档 SMP IRQ Affinity
 cat /proc/irq/<ir_num>/smp_affinity
@@ -89,7 +91,15 @@ cat /proc/irq/<ir_num>/smp_affinity
 cat /proc/irq/<ir_num>/smp_affinity_list
 ```
 
-如果多队列网卡对应的所有中断号都被绑定到不同的 cpu 上，那么这个配置就是没问题的。如果都落在一个 cpu 上那需要调整，调整的方式有两种，一种是通过开启 irqbalance 服务来达到目的。还有一种方式是禁掉 irqbalance，自定义中断号和 cpu 的绑定关系，详情参见脚本 [set_irq_affinity.sh](https://gist.githubusercontent.com/SaveTheRbtz/8875474/raw/0c6e500e81e161505d9111ac77115a2367180d12/set_irq_affinity.sh)
+如果多队列网卡对应的所有中断号都被绑定到不同的 cpu 上，那么这个配置就是没问题的。如果都落在一个 cpu 上那需要调整，调整的方式有两种，一种是通过开启 [irqbalance](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/performance_tuning_guide/sect-red_hat_enterprise_linux-performance_tuning_guide-tool_reference-irqbalance) 服务来达到目的。在 centos7 上开启命令如下:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+systemctl start irqbalance
+```
+
+还有一种方式是禁掉 irqbalance，自定义中断号和 cpu 的绑定关系，详情参见脚本 [set_irq_affinity.sh](https://gist.githubusercontent.com/SaveTheRbtz/8875474/raw/0c6e500e81e161505d9111ac77115a2367180d12/set_irq_affinity.sh)
 
 上面说的是处理多队列网卡和多核心的情形，如果是单队列网卡和多核的情况则有所不同。对于这个情况我们可以使用 [RPS/RFS](https://www.kernel.org/doc/Documentation/networking/scaling.txt) 在软件层面模拟实现硬件的网卡多队列功能(RSS)，这种情况下不能使用 irqbalance 来达到目的，可以通过使用上面贴出的脚本来设置 RPS，至于 RFS 的配置可以参考网上的配置即可。
 
