@@ -13,7 +13,7 @@ TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comm
 
 ## 语法
 
-Optimizer Hints 通过注释的形式写在 `SELECT`/`UPDATE`/`DELETE` 关键字的后面。Hint 不区分大小写，多个不同的 Hint 之间需用逗号隔开。
+Optimizer Hints 通过注释的形式跟在 `SELECT`/`UPDATE`/`DELETE` 关键字的后面。Hint 不区分大小写，多个不同的 Hint 之间需用逗号隔开。
 
 {{< copyable "sql" >}}
 
@@ -25,7 +25,7 @@ TiDB 目前支持两类 Hint，具体用法上有一些差别。第一类 Hint �
 
 ## 优化器相关 Hint 语法
 
-用于控制优化器行为的 Hint 以注释的形式写在语句中**任意** `SELECT`/`UPDATE`/`DELETE` 关键字的后面。Hint 的生效范围以及 Hint 中使用的表的生效范围可通过下文介绍 **Query Block** 来指定，若不显式地指定 Query Block， Hint 的默认生效范围为当前 Query Block。
+用于控制优化器行为的 Hint 以注释的形式跟在语句中**任意** `SELECT`/`UPDATE`/`DELETE` 关键字的后面。Hint 的生效范围以及 Hint 中使用的表的生效范围可通过下文介绍 **Query Block** 来指定，若不显式地指定 Query Block， Hint 的默认生效范围为当前 Query Block。
 
 ### Query Block
 
