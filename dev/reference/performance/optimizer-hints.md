@@ -232,9 +232,9 @@ select /*+ NO_INDEX_MERGE() */ * from t where t.a > 0 or t.b > 0;
 
 除了 Hint 外，环境变量 `tidb_enable_index_merge` 也能决定是否开启该功能。
 
-### USE_TOJA()
+### USE_TOJA(TRUE)
 
-`USE_TOJA()`会开启优化器尝试将 in (subquery) 条件转换为 join 和 aggregation 的功能。
+`USE_TOJA(TRUE)`会开启优化器尝试将 in (subquery) 条件转换为 join 和 aggregation 的功能。相对地，`USE_TOJA(FALSE)` 会关闭该功能。
 
 下面的例子可能会将 `in (select t2.a from t2) subq` 转换为等价的 join 和 aggregation：
 
