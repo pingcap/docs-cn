@@ -28,7 +28,7 @@ category: reference
 mysql> CREATE USER 'newuser' IDENTIFIED BY 'newuserpassword';
 Query OK, 1 row affected (0.01 sec)
 
-mysql> SELECT USER, HOST, PASSWORD FROM `user`  WHERE USER = 'newuser';
+mysql> SELECT USER, HOST, PASSWORD FROM mysql.`user`  WHERE USER = 'newuser';
 +---------+------+-------------------------------------------+
 | USER    | HOST | PASSWORD                                  |
 +---------+------+-------------------------------------------+
@@ -39,7 +39,7 @@ mysql> SELECT USER, HOST, PASSWORD FROM `user`  WHERE USER = 'newuser';
 mysql> ALTER USER 'newuser' IDENTIFIED BY 'newnewpassword';
 Query OK, 0 rows affected (0.02 sec)
 
-mysql> SELECT USER, HOST, PASSWORD FROM `user`  WHERE USER = 'newuser';
+mysql> SELECT USER, HOST, PASSWORD FROM mysql.`user`  WHERE USER = 'newuser';
 +---------+------+-------------------------------------------+
 | USER    | HOST | PASSWORD                                  |
 +---------+------+-------------------------------------------+

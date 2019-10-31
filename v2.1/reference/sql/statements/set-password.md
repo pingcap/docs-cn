@@ -23,7 +23,7 @@ Query OK, 0 rows affected (0.01 sec)
 mysql> CREATE USER 'newuser' IDENTIFIED BY 'test';
 Query OK, 1 row affected (0.00 sec)
 
-mysql> SELECT USER, HOST, PASSWORD FROM `user`  WHERE USER = 'newuser';
+mysql> SELECT USER, HOST, PASSWORD FROM mysql.`user`  WHERE USER = 'newuser';
 +---------+------+-------------------------------------------+
 | USER    | HOST | PASSWORD                                  |
 +---------+------+-------------------------------------------+
@@ -34,7 +34,7 @@ mysql> SELECT USER, HOST, PASSWORD FROM `user`  WHERE USER = 'newuser';
 mysql> SET PASSWORD FOR newuser = 'test';
 Query OK, 0 rows affected (0.01 sec)
 
-mysql> SELECT USER, HOST, PASSWORD FROM `user`  WHERE USER = 'newuser';
+mysql> SELECT USER, HOST, PASSWORD FROM mysql.`user`  WHERE USER = 'newuser';
 +---------+------+-------------------------------------------+
 | USER    | HOST | PASSWORD                                  |
 +---------+------+-------------------------------------------+
@@ -45,7 +45,7 @@ mysql> SELECT USER, HOST, PASSWORD FROM `user`  WHERE USER = 'newuser';
 mysql> SET PASSWORD FOR newuser = PASSWORD('test'); -- deprecated syntax from earlier MySQL releases
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> SELECT USER, HOST, PASSWORD FROM `user`  WHERE USER = 'newuser';
+mysql> SELECT USER, HOST, PASSWORD FROM mysql.`user`  WHERE USER = 'newuser';
 +---------+------+-------------------------------------------+
 | USER    | HOST | PASSWORD                                  |
 +---------+------+-------------------------------------------+
