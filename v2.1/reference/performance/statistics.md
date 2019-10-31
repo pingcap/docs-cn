@@ -93,6 +93,10 @@ Currently, the `SHOW STATS_META` statement returns the following 6 columns:
 | `modify_count` | the number of modified rows |
 | `row_count` | the total number of rows |
 
+> **Note:**
+>
+> When TiDB automatically updates the total number of rows and the number of modified rows according to DML statements, `update_time` is also updated. Therefore, `update_time` does not necessarily indicate the last time when the `ANALYZE` statement is executed.
+
 ### Metadata of columns
 
 You can use the `SHOW STATS_HISTOGRAMS` statement to view the number of different values and the number of `NULL` in all the columns.
