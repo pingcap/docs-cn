@@ -379,7 +379,7 @@
     + Configuration
       - [TiDB Cluster](/dev/tidb-in-kubernetes/reference/configuration/tidb-cluster.md)
       - [Backup](/dev/tidb-in-kubernetes/reference/configuration/backup.md)
-      - [Local PV](/dev/tidb-in-kubernetes/reference/configuration/local-pv.md)
+      - [PV](/dev/tidb-in-kubernetes/reference/configuration/storage-class.md)
       - [TiDB Drainer](/dev/tidb-in-kubernetes/reference/configuration/tidb-drainer.md)
     + Tools
       - [tkctl](/dev/tidb-in-kubernetes/reference/tools/tkctl.md)

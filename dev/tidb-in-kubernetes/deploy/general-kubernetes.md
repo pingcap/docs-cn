@@ -38,7 +38,7 @@ The TiDB cluster uses `local-storage` by default.
 - For the production environment, local storage is recommended. The actual local storage in Kubernetes clusters might be sorted by disk types, such as `nvme-disks` and `sas-disks`.
 - For the demonstration environment or functional verification, you can use network storage, such as `ebs` and `nfs`.
 
-Different components of a TiDB cluster have different disk requirements. Before deploying a TiDB cluster, select the appropriate storage class for each component according to the storage classes supported by the current Kubernetes cluster and usage scenario. You can set the storage class by modifying `storageClassName` of each component in `values.yaml`. For the [storage classes](/dev/tidb-in-kubernetes/reference/configuration/local-pv.md) supported by the Kubernetes cluster, check with your system administrator.
+Different components of a TiDB cluster have different disk requirements. Before deploying a TiDB cluster, select the appropriate storage class for each component according to the storage classes supported by the current Kubernetes cluster and usage scenario. You can set the storage class by modifying `storageClassName` of each component in `values.yaml`. For the [storage classes](/dev/tidb-in-kubernetes/reference/configuration/storage-class.md) supported by the Kubernetes cluster, check with your system administrator.
 
 > **Note:**
 >

@@ -172,7 +172,7 @@ kubectl describe po -n <namespace> <pod-name>
     kubectl get storageclass
     ```
 
-- If a `StorageClass` exists in the cluster but the available PV is insufficient, you need to add PV resources correspondingly. For Local PV, you can expand it by referring to [Local PV Configuration](/dev/tidb-in-kubernetes/reference/configuration/local-pv.md).
+- If a `StorageClass` exists in the cluster but the available PV is insufficient, you need to add PV resources correspondingly. For Local PV, you can expand it by referring to [Local PV Configuration](/dev/tidb-in-kubernetes/reference/configuration/storage-class.md#local-pv-configuration).
 
 ## The Pod is in the `CrashLoopBackOff` state
 
