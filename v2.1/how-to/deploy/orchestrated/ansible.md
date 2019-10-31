@@ -58,7 +58,7 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 如果是中控机是 Ubuntu 系统，执行以下命令：
 
 ```
-# apt-get -y install git curl sshpass python2-pip
+# apt-get -y install git curl sshpass python-pip
 ```
 
 ## 在中控机上创建 tidb 用户，并生成 ssh key
