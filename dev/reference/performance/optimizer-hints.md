@@ -241,7 +241,7 @@ select /*+ NO_INDEX_MERGE() */ * from t where t.a > 0 or t.b > 0;
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ USE_TOJA() */ t1.a, t1.b from t1 where t1.a in (select t2.a from t2) subq;
+select /*+ USE_TOJA(TRUE) */ t1.a, t1.b from t1 where t1.a in (select t2.a from t2) subq;
 ```
 
 除了 Hint 外，环境变量 `tidb_opt_insubq_to_join_and_agg` 也能决定是否开启该功能。
