@@ -5,7 +5,7 @@ category: reference
 
 # Data Migration 错误说明
 
-本文介绍了 Data Migration (DM) 输出错误信息的详细含义、根据错误信息进行诊断的具体方法、常见错误的运维方法。
+本文介绍了 Data Migration (DM) 的错误系统，以及各种错误信息的详细含义。
 
 ## DM 错误系统
 
@@ -17,7 +17,7 @@ DM 1.0.0-GA 版本中引入了新的错误系统。该系统：
 
 错误系统的详细设计和实现，可参阅 [RFC 文档: Proposal: Improve Error System](https://github.com/pingcap/dm/blob/master/docs/RFCS/20190722_error_handling.md)。
 
-## 错误消息说明
+## 错误信息示例
 
 以下是 DM 实际输出的一条错误信息。本文根据这条信息，对各个字段作详细说明。
 
@@ -110,4 +110,4 @@ DM 根据错误的严重程度和必要性来选择是否输出错误堆栈。�
 
 ## 常见错误码描述及处理
 
-可在 DM 代码仓库[已发布的错误码](https://github.com/pingcap/dm/blob/master/_utils/terror_gen/errors_release.txt) 中查询完整的错误码列表。
+可在 DM 代码仓库[已发布的错误码](https://github.com/pingcap/dm/blob/master/_utils/terror_gen/errors_release.txt)中查询完整的错误码列表。

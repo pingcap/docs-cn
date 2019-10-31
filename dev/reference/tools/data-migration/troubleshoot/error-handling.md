@@ -1,9 +1,9 @@
 ---
-title: Data Migration 常见错误及修复
+title: Data Migration 常见错误修复
 category: reference
 ---
 
-# Data Migration 常见错误及修复
+# Data Migration 常见错误修复
 
 本文档介绍 DM 中常见的错误以及修复方法。
 
