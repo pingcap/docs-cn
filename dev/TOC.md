@@ -115,7 +115,7 @@
         - [故障诊断](/dev/reference/tools/data-migration/troubleshoot/dm.md)
         - [错误含义](/dev/reference/tools/data-migration/troubleshoot/error-system.md)
         - [常见错误修复](/dev/reference/tools/data-migration/troubleshoot/error-handling.md)
-      - [FAQ](/dev/faq/data-migration.md)
+      - [DM FAQ](/dev/reference/tools/data-migration/faq.md)
       + 版本发布历史
         + v1.0
           - [1.0.2](/dev/reference/tools/data-migration/releases/1.0.2.md)
