@@ -103,15 +103,7 @@ TiDB stores passwords in the `mysql.user` system database. Operations that assig
     skip-grant-table = true
     ```
 
-2. Restart TiDB using the modified configuration (the `root` privilege is required):
-
-    ```bash
-    sudo ./tidb-server -skip-grant-table=true -store=tikv -path=...
-    ```
-
-    By using the `skip-grant-table` configuration parameter, TiDB skips the privilege system.
-
-3. Use `root` to log in and then modify the password:
+2. Use `root` to log in and then modify the password:
 
     ```bash
     mysql -h 127.0.0.1 -P 4000 -u root
