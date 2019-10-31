@@ -78,6 +78,8 @@
         - [DM 架构](/v2.1/reference/tools/data-migration/overview.md#dm-架构)
         - [同步功能介绍](/v2.1/reference/tools/data-migration/overview.md#同步功能介绍)
         - [使用限制](/v2.1/reference/tools/data-migration/overview.md#使用限制)
+        - [DM-worker 简介](/v2.1/reference/tools/data-migration/dm-worker-intro.md)
+        - [DM Relay Log](/v2.1/reference/tools/data-migration/relay-log.md)
       + 核心特性
         - [Table Routing](/v2.1/reference/tools/data-migration/features/overview.md#table-routing)
         - [Black & White Lists](/v2.1/reference/tools/data-migration/features/overview.md#black--white-table-lists)
@@ -95,15 +97,25 @@
       + [部署使用](/v2.1/reference/tools/data-migration/deploy.md)
       + 配置
         - [概述](/v2.1/reference/tools/data-migration/configure/overview.md)
+        - [DM-master 配置](/v2.1/reference/tools/data-migration/configure/dm-master-configuration-file.md)
+        - [DM-worker 配置](/v2.1/reference/tools/data-migration/configure/dm-worker-configuration-file.md)
         - [任务配置](/v2.1/reference/tools/data-migration/configure/task-configuration-file.md)
+      + DM 集群管理
+        - [DM 集群操作](/v2.1/reference/tools/data-migration/cluster-operations.md)
+        - [DM 集群升级](/v2.1/reference/tools/data-migration/dm-upgrade.md)
+      + DM 同步任务管理
+        - [管理数据同步任务](/v2.1/reference/tools/data-migration/manage-tasks.md)
+        - [任务前置检查](/v2.1/reference/tools/data-migration/precheck.md)
+        - [任务状态查询](/v2.1/reference/tools/data-migration/query-status.md)
       - [监控 DM 集群](/v2.1/reference/tools/data-migration/monitor.md)
-      - [管理数据同步任务](/v2.1/reference/tools/data-migration/manage-tasks.md)
-      - [DM 集群操作](/v2.1/reference/tools/data-migration/cluster-operations.md)
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](/v2.1/how-to/migrate/from-aurora.md)
       - [DM Portal](/v2.1/reference/tools/data-migration/dm-portal.md)
       - [DM 故障诊断](/v2.1/how-to/troubleshoot/data-migration.md)
       - [FAQ](/v2.1/faq/data-migration.md)
+      + 版本发布历史
+        + v1.0
+          - [1.0.2](/v2.1/reference/tools/data-migration/releases/1.0.2.md)
     + TiDB Lightning
       - [概述](/v2.1/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/v2.1/reference/tools/tidb-lightning/deployment.md)
