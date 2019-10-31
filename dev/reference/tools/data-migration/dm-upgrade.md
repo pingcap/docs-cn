@@ -67,7 +67,7 @@ Go Version: go version go1.12 linux/amd64
 
 ### 主要变更
 
-- 修复 DM 有时对数据库连接频繁重建的问题
+- 修复某些情况下 DM 会频繁重建数据库连接的问题
 - 修复使用 `query-status` 时潜在的 panic 问题
 
 ### 升级操作示例
