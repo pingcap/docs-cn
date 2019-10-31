@@ -1,13 +1,12 @@
 ---
 title: TiDB 2.1 Upgrade Guide
-summary: Learn how to upgrade from TiDB 2.0 (TiDB 2.0.1 or later) or TiDB 2.1 RC version to TiDB 2.1 GA version.
+summary: Learn how to upgrade from TiDB 2.0 (TiDB 2.0.1 or later versions) or TiDB 2.1 RC version to TiDB 2.1 GA version.
 category: how-to
-aliases: ['/docs/v2.1/how-to/upgrade/to-tidb-3.0/']
 ---
 
 # TiDB 2.1 Upgrade Guide
 
-This document describes how to upgrade from TiDB 2.0 (TiDB 2.0.1 or later) or TiDB 2.1 RC version to TiDB 2.1 GA version.
+This document describes how to upgrade from TiDB 2.0 (TiDB 2.0.1 or later versions) or TiDB 2.1 RC version to TiDB 2.1 GA version.
 
 > **Note:**
 >
@@ -17,11 +16,13 @@ For details about using Ansible to perform a rolling update to each component, s
 
 ## Upgrade caveat
 
-+ TiDB 2.1 does not support downgrading to v2.0.x or earlier due to the adoption of the new storage engine
-+ Parallel DDL is enabled in TiDB 2.1, so the clusters with TiDB version earlier than 2.0.1 cannot upgrade to 2.1 using rolling update. You can choose either of the following two options:
-    - Stop the cluster and upgrade to 2.1 directly
-    - Roll update to 2.0.1 or later 2.0.x versions, and then roll update to the 2.1 version
-+ If you upgrade from TiDB 2.0.6 or earlier to TiDB 2.1, check if there is any ongoing DDL operation, especially the time consuming `Add Index` operation, because the DDL operations slow down the upgrading process. If there is ongoing DDL operation, wait for the DDL operation finishes and then roll update.
+- TiDB 2.1 does not support downgrading to v2.0.x or earlier versions due to the adoption of the new storage engine.
+- Parallel DDL is supported in TiDB 2.1 and later versions. Therefore, for clusters with a TiDB version earlier than 2.0.1, rolling update to TiDB 2.1 is not supported. To upgrade, you can choose either of the following two options:
+
+    - Stop the cluster and upgrade to 2.1 directly.
+    - Roll update to 2.0.1 or later 2.0.x versions, and then roll update to the 2.1 version.
+
+- If you upgrade from TiDB 2.0.6 or earlier to TiDB 2.1, check if there is any ongoing DDL operation, especially the time consuming `Add Index` operation, because the DDL operations slow down the upgrading process. If there is ongoing DDL operation, wait for the DDL operation to finish and then roll update.
 
 > **Note:**
 >
@@ -33,7 +34,7 @@ For details about using Ansible to perform a rolling update to each component, s
 >
 > If you have installed Ansible and its dependencies, you can skip this step.
 
-TiDB Ansible release-3.0 depends on Ansible 2.4.2 and the later versions (`ansible>=2.4.2`) and the Python module `jinja2>=2.9.6` and `jmespath>=0.9.0`.
+TiDB Ansible release-3.0 depends on Ansible 2.4.2 and later versions (`ansible>=2.4.2`) and the Python modules of `jinja2>=2.9.6` and `jmespath>=0.9.0`.
 
 To make it easy to manage dependencies, use `pip` to install Ansible and its dependencies. For details, see [Install Ansible and its dependencies on the Control Machine](/v2.1/how-to/deploy/orchestrated/ansible.md#step-4-install-ansible-and-its-dependencies-on-the-control-machine). For offline environment, see [Install Ansible and its dependencies offline on the Control Machine](/v2.1/how-to/deploy/orchestrated/offline-ansible.md#step-3-install-ansible-and-its-dependencies-offline-on-the-control-machine).
 
@@ -42,7 +43,7 @@ After the installation is finished, you can view the version information using t
 {{< copyable "shell-regular" >}}
 
 ```bash
-$ ansible --version
+ansible --version
 ```
 
 ```
@@ -52,7 +53,7 @@ ansible 2.6.8
 {{< copyable "shell-regular" >}}
 
 ```bash
-$ pip show jinja2
+pip show jinja2
 ```
 
 ```
@@ -63,7 +64,7 @@ Version: 2.10
 {{< copyable "shell-regular" >}}
 
 ```bash
-$ pip show jmespath
+pip show jmespath
 ```
 
 ```
@@ -75,7 +76,7 @@ Version: 0.9.3
 >
 > - You must install Ansible and its dependencies following the above procedures.
 > - Make sure that the Jinja2 version is correct, otherwise an error occurs when you start Grafana.
-> - Make sure that the jmespath version is correct, otherwise an error occurs when you perform a rolling update for TiKV.
+> - Make sure that the jmespath version is correct, otherwise an error occurs when you perform a rolling update to TiKV.
 
 ## Step 2: Download TiDB Ansible to the Control Machine
 
@@ -86,7 +87,7 @@ Version: 0.9.3
     {{< copyable "shell-regular" >}}
 
     ```bash
-    $ mv tidb-ansible tidb-ansible-bak
+    mv tidb-ansible tidb-ansible-bak
     ```
 
 3. Download the latest tidb-ansible `release-2.1` branch using the following command. The default folder name is `tidb-ansible`.
@@ -94,7 +95,7 @@ Version: 0.9.3
     {{< copyable "shell-regular" >}}
 
     ```bash
-    $ git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
+    git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
     ```
 
 ## Step 3: Edit the `inventory.ini` file and the configuration file
@@ -130,11 +131,11 @@ Edit the `inventory.ini` file. For IP information, see the `/home/tidb/tidb-ansi
 
 ### Edit the configuration file of TiDB cluster components
 
-If you have previously customized the configuration file of TiDB cluster components, refer to the backup file to modify the corresponding configuration file in `/home/tidb/tidb-ansible/conf`.
+If you have previously customized the configuration file of TiDB cluster components, refer to the backup file to modify the corresponding configuration file in the `/home/tidb/tidb-ansible/conf` directory.
 
 **Note the following parameter changes:**
 
-- In TiKV configuration, `end-point-concurrency` is changed to three parameters: `high-concurrency`, `normal-concurrency` and `low-concurrency`.
+- In the TiKV configuration, `end-point-concurrency` is changed to three parameters: `high-concurrency`, `normal-concurrency` and `low-concurrency`.
 
     ```yaml
     readpool:
@@ -173,35 +174,21 @@ Make sure that `tidb_version = v2.1.0` in the `tidb-ansible/inventory.ini` file,
 {{< copyable "shell-regular" >}}
 
 ```bash
-$ ansible-playbook local_prepare.yml
+ansible-playbook local_prepare.yml
 ```
 
 ## Step 5: Perform a rolling update to TiDB cluster components
 
-- If the `process_supervision` variable uses the default `systemd` parameter, perform a rolling update to the TiDB cluster using `excessive_rolling_update.yml`.
+{{< copyable "shell-regular" >}}
 
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    $ ansible-playbook excessive_rolling_update.yml
-    ```
-
-- If the `process_supervision` variable uses the `supervise` parameter, perform a rolling update to the TiDB cluster using `rolling_update.yml`.
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    $ ansible-playbook rolling_update.yml
-    ```
-
-> **Note:**
->
-> To optimize operation and maintenance management over TiDB cluster components, the `PD service` name in the `systemd` mode is adjusted in TiDB 3.0. After upgrading the version to TiDB 3.0, you can use `rolling_update.yml` for both rolling updates and daily rolling restarts. Do not use `excessive_rolling_update.yml` any longer.
+```bash
+ansible-playbook rolling_update.yml
+```
 
 ## Step 6: Perform a rolling update to TiDB monitoring components
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-$ ansible-playbook rolling_update_monitor.yml
+ansible-playbook rolling_update_monitor.yml
 ```
