@@ -17,7 +17,7 @@ category: reference
 - [Scheduler](/dev/glossary.md#scheduler)
 - [Store](/dev/glossary.md#store)
 
-> **Note:**
+> **注意：**
 >
 > 本文内容基于 TiDB 3.0 版本，更早的版本（2.x）缺少部分功能的支持，但是基本原理类似，也可以以本文作为参考。
 
