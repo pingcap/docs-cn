@@ -16,7 +16,7 @@ category: glossary
 
 ### Operator
 
-Operator 是应用于一个 Region 的，服务于某个调度目的的一系列操作的集合。例如“将 Region 2 的 Leader 迁移至 Store 5”，“将 Region 2 的副本迁移到 Store 1, 4, 5” 等。
+Operator 是应用于一个 Region 的，服务于某个调度目的的一系列操作的集合。例如“将 Region 2 的 Leader 迁移至 Store 5”，“将 Region 2 的副本迁移到 Store 1, 4, 5”等。
 
 Operator 可以是由 Scheduler 通过计算生成的，也可以是由外部 API 创建的。
 
@@ -26,12 +26,12 @@ Operator Step 是 Operator 执行过程的一个步骤，一个 Operator 常常�
 
 目前 PD 可生成的 Step 包括：
 
-- TransferLeader：将 Region Leader 迁移至指定 Peer
-- AddPeer：在指定 Store 添加 Follower
-- RemovePeer：删除一个 Region Peer
-- AddLearner：在指定 Store 添加 Region Learner
-- PromoteLearner：将指定 Learner 提升为 Follower
-- SplitRegion：将指定 Region 一分为二
+- `TransferLeader`：将 Region Leader 迁移至指定 Peer
+- `AddPeer`：在指定 Store 添加 Follower
+- `RemovePeer`：删除一个 Region Peer
+- `AddLearner`：在指定 Store 添加 Region Learner
+- `PromoteLearner`：将指定 Learner 提升为 Follower
+- `SplitRegion`：将指定 Region 一分为二
 
 ## P
 
@@ -57,11 +57,11 @@ TiKV 集群中的 Region 不是一开始就划分好的，而是随着数据写�
 
 Scheduler（调度器）是 PD 中生成调度的组件。PD 中每个调度器是独立运行的，分别服务于不同的调度目的。常用的调度器及其调用目标有：
 
-- balance-leader-scheduler：保持不同节点的 Leader 均衡。
-- balance-region-scheduler：保持不同节点的 Peer 均衡。
-- hot-region-scheduler：保持不同节点的读写热点 Region 均衡。
-- evict-leader-{store-id}：驱逐某个节点的所有 Leader。（常用于滚动升级）
+- `balance-leader-scheduler`：保持不同节点的 Leader 均衡。
+- `balance-region-scheduler`：保持不同节点的 Peer 均衡。
+- `hot-region-scheduler`：保持不同节点的读写热点 Region 均衡。
+- `evict-leader-{store-id}`：驱逐某个节点的所有 Leader。（常用于滚动升级）
 
 ### Store
 
-PD 中的 Store 指的是集群中的存储节点，也就是 tikv-server 实例。 Store 与 TiKV 实例是严格一一对应的，即使在同一主机甚至同一块磁盘部署多个 TiKV 实例，这些实例也对会对应不同的 Store。
+PD 中的 Store 指的是集群中的存储节点，也就是 tikv-server 实例。Store 与 TiKV 实例是严格一一对应的，即使在同一主机甚至同一块磁盘部署多个 TiKV 实例，这些实例也对会对应不同的 Store。
