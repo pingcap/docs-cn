@@ -140,6 +140,7 @@
     - [Java 应用开发最佳实践](/dev/reference/best-practices/java-app.md)
     - [高并发写入场景最佳实践](/dev/reference/best-practices/high-concurrency.md)
     - [Grafana 监控最佳实践](/dev/reference/best-practices/grafana-monitor.md)
+    - [PD 调度策略最佳实践](/dev/reference/best-practices/pd-scheduling.md)
   + [与 MySQL 兼容性对比](/dev/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
@@ -457,3 +458,4 @@
     - [RC3](/dev/releases/rc3.md)
     - [RC2](/dev/releases/rc2.md)
     - [RC1](/dev/releases/rc1.md)
++ [术语表](/dev/glossary.md)
