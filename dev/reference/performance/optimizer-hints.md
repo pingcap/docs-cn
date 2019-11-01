@@ -13,7 +13,7 @@ TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comm
 
 ## 语法
 
-Optimizer Hints 通过注释的形式跟在 `SELECT`/`UPDATE`/`DELETE` 关键字的后面。Hint 不区分大小写，多个不同的 Hint 之间需用逗号隔开。
+Optimizer Hints 通过注释的形式跟在 `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面。Hint 不区分大小写，多个不同的 Hint 之间需用逗号隔开。
 
 {{< copyable "sql" >}}
 
@@ -25,11 +25,11 @@ TiDB 目前支持两类 Hint，具体用法上有一些差别。第一类 Hint �
 
 ## 优化器相关 Hint 语法
 
-用于控制优化器行为的 Hint 以注释的形式跟在语句中**任意** `SELECT`/`UPDATE`/`DELETE` 关键字的后面。Hint 的生效范围以及 Hint 中使用的表的生效范围可通过下文介绍 **Query Block** 来指定，若不显式地指定 Query Block， Hint 的默认生效范围为当前 Query Block。
+用于控制优化器行为的 Hint 以注释的形式跟在语句中**任意** `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面。Hint 的生效范围以及 Hint 中使用的表的生效范围可通过下文介绍 **Query Block** 来指定，若不显式地指定 Query Block， Hint 的默认生效范围为当前 Query Block。
 
 ### Query Block
 
-一条语句中每一个查询和子查询都对应着一个不同的 Query Block，每个 Query Block 有自己对应的 QB_NAME。
+一条语句中每一个查询和子查询都对应着一个不同的 Query Block，每个 Query Block 有自己对应的 `QB_NAME`。
 以下面这条语句为例：
 
 {{< copyable "sql" >}}
@@ -38,7 +38,7 @@ TiDB 目前支持两类 Hint，具体用法上有一些差别。第一类 Hint �
 select * from (select * from t) t1, (select * from t) t2;
 ```
 
-该查询语句有 3 个 Query Block，最外面一层 `SELECT` 所在的 Query Block 的 QB_NAME 为 `sel_1`，两个子查询的 QB_NAME 依次为 `sel_2` 和 `sel_3`。其中数字序号根据 `SELECT` 出现的位置从左到右计数。对于 `DELETE` 和 `UPDATE` 为 `del_1` 和 `upd_1`。
+该查询语句有 3 个 Query Block，最外面一层 `SELECT` 所在的 Query Block 的 `QB_NAME` 为 `sel_1`，两个子查询的 `QB_NAME` 依次为 `sel_2` 和 `sel_3`。其中数字序号根据 `SELECT` 出现的位置从左到右计数。对于 `DELETE` 和 `UPDATE` 为 `del_1` 和 `upd_1`。
 
 ### QB_NAME
 
@@ -48,9 +48,9 @@ select * from (select * from t) t1, (select * from t) t2;
 select /*+ QB_NAME(QB1) */ * from t;
 ```
 
-将当前 Query Block 的 QB_NAME 设为指定值，同时原本的 QB_NAME（在该例子中是 sel_1）仍然有效的。
+将当前 Query Block 的 `QB_NAME` 设为指定值，同时原本的 `QB_NAME`（在该例子中是 sel_1）仍然有效的。
 
-注意：如果指定的 QB_NAME 为 sel_2，并且不给原本的 sel_2 指定新的 QB_NAME，将不再能正确地指向原本的 sel_2。
+注意：如果指定的 `QB_NAME` 为 sel_2，并且不给原本的 sel_2 指定新的 `QB_NAME`，将不再能正确地指向原本的 sel_2。
 
 ### 参数
 
@@ -60,9 +60,9 @@ select /*+ QB_NAME(QB1) */ * from t;
 select /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * from (select t1.a, t1.b from t t1, t t2 where t1.a = t2.a) t1, t t3 where t1.b = t3.b;
 ```
 
-优化器相关的 Hint 中除 `QB_NAME` 外都可以通过可选参数 @QB_NAME 来指定生效范围。该参数需写在最前面，与其他参数用空格隔开。
+优化器相关的 Hint 中除 `QB_NAME` 外都可以通过可选参数 `@QB_NAME` 来指定生效范围。该参数需写在最前面，与其他参数用空格隔开。
 
-参数中的每一个表名都可以在后面加 @QB_NAME 来指定是哪个 Query Block 中的表。
+参数中的每一个表名都可以在后面加 `@QB_NAME` 来指定是哪个 Query Block 中的表。
 
 ### SM_JOIN(t1, t2)
 
@@ -172,7 +172,7 @@ select /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * from t t1 where t1.a > 
 
 ## 运行参数相关 Hint 语法
 
-运行参数相关的 Hint 只能跟在语句中**第一个** `SELECT`/`UPDATE`/`DELETE` 关键字的后面，对当前的这条查询的相关运行参数进行修改。
+运行参数相关的 Hint 只能跟在语句中**第一个** `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面，对当前的这条查询的相关运行参数进行修改。
 
 其优先级高于默认设置以及环境变量。
 
@@ -216,7 +216,7 @@ select /*+ MEMORY_QUOTA(1024 MB) */ * from t;
 select /*+ READ_FROM_REPLICA() */ * from t;
 ```
 
-除了 Hint 外，环境变量 `tidb_replica_read` 设为 `'follower'` 或者 `'leader'`也能决定是否开启该特性。
+除了 Hint 外，环境变量 `tidb_replica_read` 设为 `'follower'` 或者 `'leader'` 也能决定是否开启该特性。
 
 ### NO_INDEX_MERGE()
 
