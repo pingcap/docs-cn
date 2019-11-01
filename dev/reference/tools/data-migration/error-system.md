@@ -124,5 +124,5 @@ DM 根据错误的严重程度和必要性来选择是否输出错误堆栈。�
 | `code=11006` |  DM 内置的 parser 解析不兼容的 DDL 时出错              |  可参考 [Data Migration 故障诊断-处理不兼容的 DDL 语句](/dev/how-to/troubleshoot/data-migration.md#处理不兼容的-ddl-语句) 提供的解决方案 |
 | `code=20010` | 处理任务配置时，解密数据库的密码出错                             |  检查任务配置中提供的下游数据库密码是否有[使用 dmctl 正确加密](/dev/how-to/deploy/data-migration-with-ansible.md#使用-dmctl-加密上游-mysql-用户密码) |
 | `code=26002` | 任务检查创建数据库连接失败。更详细的错误信息可通过错误 message 获取。错误 message 中包含操作数据库所返回的错误码和错误信息。 |  检查 DM-master 所在的机器是否有权限访问上游 |
-| `code=32001` | Dump 部件异常                                              | 如果报错 `msg` 包含 `mydumper: argument list too long.`，则需要用户根据 black-white list 手动在 task.yaml 的 mydumper extra-args 参数中配置 -x 正则表达式设置要导出的库表；例如要导出所有库中表名字为 hello 的表 `--regex '~*.hello'`；如果要导出所有表，可使用 `--regex '~*.*'` 语句。 |
+| `code=32001` | Dump 部件异常                                              | 如果报错 `msg` 包含 `mydumper: argument list too long.`，则需要用户根据 black-white list 手动在 task.yaml 的 mydumper extra-args 参数中配置 -x 正则表达式设置要导出的库表；例如要导出所有库中表名字为 hello 的表 `--regex '.*\\.hello'`；如果要导出所有表，可使用 `--regex '.*'` 语句。 |
 | `code=38008` | DM 组件间的 gRPC 通信出错                                      |  检查 `class`， 定位错误发生在哪些组件的交互环节，根据错误 message 判断是哪类通信错误。如果是 gRPC 建立连接出错，可检查通信服务端是否运行正常。 |
