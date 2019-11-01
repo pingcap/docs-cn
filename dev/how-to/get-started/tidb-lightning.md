@@ -53,7 +53,7 @@ TiDB Lightning 主要包含两个部分:
 
 通过以下链接获取 TiDB Lightning 安装包（选择与 TiDB 集群相同的版本）：
 
-- **v3.0.4**: [https://download.pingcap.org/tidb-v3.0.4-linux-amd64.tar.gz](https://download.pingcap.org/tidb-v3.0.4-linux-amd64.tar.gz)
+- **v3.0.4**: [tidb-toolkit-v3.0.4-linux-amd64.tar.gz](tidb-toolkit-v3.0.4-linux-amd64.tar.gz)
 
 ### 第 3 步：启动 `tikv-importer`
 
@@ -90,9 +90,9 @@ TiDB Lightning 主要包含两个部分:
 
 1. 将安装包里的 `bin/tidb-lightning` 及 `bin/tidb-lightning-ctl` 上传服务器。
 
-2. 将数据源写入到同样的机器。
+2. 将数据源上传到部署 `tidb-lightning` 的服务器。
 
-3. 配置合适的参数、运行 `tidb-lightning`。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
+3. 配置合适的参数运行 `tidb-lightning`。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
 
     {{< copyable "shell-regular" >}}
 
