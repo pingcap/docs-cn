@@ -7,7 +7,7 @@ category: reference
 # Data Migration Task Configuration File
 
 This document introduces the task configuration file of Data Migration --
-[`task.yaml`](https://github.com/pingcap/dm/blob/master/dm/master/task.yaml), including [Global configuration](#global-configuration) and [Instance configuration](#instance-configuration).
+[`task.yaml`](https://github.com/pingcap/dm/blob/master/dm/master/task_advanced.yaml), including [Global configuration](#global-configuration) and [Instance configuration](#instance-configuration).
 
 For the feature and configuration of each configuration item, see [Data replication features](/dev/reference/tools/data-migration/features/overview.md).
 

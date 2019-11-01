@@ -10,7 +10,6 @@ Database Connectors provide connectivity to the TiDB server for client programs.
 
 TiDB is compatible with all Connectors and APIs of MySQL (5.6, 5.7), including:
 
-- [MySQL Connector/C](https://dev.mysql.com/doc/refman/5.7/en/connector-c-info.html)
 - [MySQL Connector/C++](https://dev.mysql.com/doc/refman/5.7/en/connector-cpp-info.html)
 - [MySQL Connector/J](https://dev.mysql.com/doc/refman/5.7/en/connector-j-info.html)
 - [MySQL Connector/Net](https://dev.mysql.com/doc/refman/5.7/en/connector-net-info.html)
@@ -29,7 +28,6 @@ TiDB is compatible with all Connectors and APIs of MySQL (5.6, 5.7), including:
 
 Oracle develops the following APIs and TiDB is compatible with all of them:
 
-- [MySQL Connector/C](https://dev.mysql.com/doc/refman/5.7/en/connector-c-info.html): a standalone replacement for the `libmysqlclient`, to be used for C applications
 - [MySQL Connector/C++](https://dev.mysql.com/doc/refman/5.7/en/connector-cpp-info.html)：to enable C++ applications to connect to MySQL
 - [MySQL Connector/J](https://dev.mysql.com/doc/refman/5.7/en/connector-j-info.html)：to enable Java applications to connect to MySQL using the standard JDBC API
 - [MySQL Connector/Net](https://dev.mysql.com/doc/refman/5.7/en/connector-net-info.html)：to enable .Net applications to connect to MySQL; [MySQL for Visual Studio](https://dev.mysql.com/doc/visual-studio/en/) uses this; support Microsoft Visual Studio 2012, 2013, 2015 and 2017 versions
@@ -48,7 +46,6 @@ The third-party APIs are not developed by Oracle. The following table lists the 
 | -------------- | ---------------------------------------- | -------------------------------- | ---------------------------------------- |
 | Ada            | GNU Ada MySQL Bindings                   | `libmysqlclient`                 | See [MySQL Bindings for GNU Ada](http://gnade.sourceforge.net/) |
 | C              | C API                                    | `libmysqlclient`                 | See [Section 27.8, “MySQL C API”](https://dev.mysql.com/doc/refman/5.7/en/c-api.html) |
-| C              | Connector/C                              | Replacement for `libmysqlclient` | See [MySQL Connector/C Developer Guide](https://dev.mysql.com/doc/connector-c/en/) |
 | C++            | Connector/C++                            | `libmysqlclient`                 | See [MySQL Connector/C++ Developer Guide](https://dev.mysql.com/doc/connector-cpp/en/) |
 |                | MySQL++                                  | `libmysqlclient`                 | See [MySQL++ Web site](http://tangentsoft.net/mysql++/doc/) |
 |                | MySQL wrapped                            | `libmysqlclient`                 | See [MySQL wrapped](http://www.alhem.net/project/mysql/) |

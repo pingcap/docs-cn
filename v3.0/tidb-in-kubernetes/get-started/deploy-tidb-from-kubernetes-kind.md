@@ -26,7 +26,7 @@ Before deployment, make sure the following requirements are satisfied:
 
 - [Docker](https://docs.docker.com/install/): version >= 17.03
 
-- [Helm Client](https://github.com/helm/helm/blob/master/docs/install.md#installing-the-helm-client): version >= 2.9.0 and < 3.0.0
+- [Helm Client](https://helm.sh/docs/using_helm/#installing-the-helm-client): version >= 2.9.0 and < 3.0.0
 
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl): version >= 1.10 (1.13 or later recommended)
 
