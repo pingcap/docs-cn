@@ -5,7 +5,7 @@ category: how-to
 
 # TiDB Lightning 教程
 
-TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，有以下两个主要的使用场景：一是大量新数据的快速导入；二是全量数据的备份恢复。目前，支持 Mydumper 或 CSV 输出格式的数据源。您可以在以下两种场景下使用 Lightning：
+TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，目前支持 Mydumper 或 CSV 输出格式的数据源。你可以在以下两种场景下使用 Lightning：
 
 - **迅速**导入**大量新**数据。
 - 备份恢复所有数据。
@@ -15,9 +15,9 @@ TiDB Lightning 主要包含两个部分:
 - **`tidb-lightning`**（“前端”）：主要完成适配工作，通过读取数据源，在下游 TiDB 集群建表、将数据转换成键/值对 (KV 对) 发送到 `tikv-importer`、检查数据完整性等。
 - **`tikv-importer`**（“后端”）：主要完成将数据导入 TiKV 集群的工作，把 `tidb-lightning` 写入的 KV 对缓存、排序、切分并导入到 TiKV 集群。
 
-![TiDB Lightning 其整体架构](/media/tidb-lightning-architecture.png)
+![TiDB Lightning 整体架构](/media/tidb-lightning-architecture.png)
 
-本教程假设目前使用的是若干新的、纯净版 CentOS 7 实例，你能（使用 VMware、VirtualBox 及其他工具）在本地虚拟化或在供应商提供的平台上部署一台小型的云虚拟主机。因为 TiDB Lightning 对计算机资源消耗较高，建议内存在 4 GB 以上。
+本教程假设使用的是若干新的、纯净版 CentOS 7 实例，你可以（使用 VMware、VirtualBox 及其他工具）在本地虚拟化或在供应商提供的平台上部署一台小型的云虚拟主机。因为 TiDB Lightning 对计算机资源消耗较高，建议分配 4 GB 以上的内存。
 
 > **警告：**
 >
@@ -43,11 +43,11 @@ TiDB Lightning 主要包含两个部分:
 
 这样全量备份数据就导出到了 `/data/my_database` 目录中。
 
-## TiDB Lightning 的部署
+## 部署 TiDB Lightning
 
 ### 第 1 步：部署 TiDB 集群
 
-在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群 (版本要求 2.0.9 以上)，本教程使用 TiDB v3.0.4 版本。部署方法可参考 [TiDB 快速入门指南](/dev/overview.md#部署方式)。
+在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群（版本要求 2.0.9 以上），本教程使用 TiDB 3.0.4 版本。部署方法可参考 [TiDB 快速入门指南](/dev/overview.md#部署方式)。
 
 ### 第 2 步：下载 TiDB Lightning 安装包
 
@@ -57,7 +57,7 @@ TiDB Lightning 主要包含两个部分:
 
 ### 第 3 步：启动 `tikv-importer`
 
-1. 从安装包上传 `bin/tikv-importer`。
+1. 将安装包里的 `bin/tikv-importer` 上传服务器。
 
 2. 配置 `tikv-importer.toml`。
 
@@ -88,7 +88,7 @@ TiDB Lightning 主要包含两个部分:
 
 ### 第 4 步：启动 `tidb-lightning`
 
-1. 从安装包上传 `bin/tidb-lightning` 及 `bin/tidb-lightning-ctl`。
+1. 将安装包里的 `bin/tidb-lightning` 及 `bin/tidb-lightning-ctl` 上传服务器。
 
 2. 将数据源写入到同样的机器。
 
@@ -115,6 +115,6 @@ TiDB Lightning 主要包含两个部分:
 
 ## 总结
 
-本教程对 TiDB Lightning 进行了简单的介绍，并快速部署一套简单的 TiDB Lightning 集群将全量备份数据进行导入到 TiDB 集群中。
+本教程对 TiDB Lightning 进行了简单的介绍，并快速部署了一套简单的 TiDB Lightning 集群，将全量备份数据导入到 TiDB 集群中。
 
-对于 TiDB Lightning 的详细功能使用参见 [TiDB Lightning 简介](/dev/reference/tools/tidb-lightning/overview.md)。
+关于 TiDB Lightning 的详细功能和使用，参见 [TiDB Lightning 简介](/dev/reference/tools/tidb-lightning/overview.md)。
