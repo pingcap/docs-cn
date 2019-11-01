@@ -63,10 +63,8 @@
     - [升级至 TiDB 3.0](/v2.1/how-to/upgrade/from-previous-version.md)
     - [升级至 TiDB 2.1](/v2.1/how-to/upgrade/to-tidb-2.1.md)
     - [使用 Ansible 滚动升级](/v2.1/how-to/upgrade/rolling-updates-with-ansible.md)
-    - [升级 Data Migration](/v2.1/reference/tools/data-migration/dm-upgrade.md)
   + 故障诊断
     - [集群配置诊断](/v2.1/how-to/troubleshoot/cluster-setup.md)
-    - [Data Migration 故障诊断](/v2.1/how-to/troubleshoot/data-migration.md)
     - [TiDB Lightning 故障诊断](/v2.1/how-to/troubleshoot/tidb-lightning.md)
 + 参考手册
   + 周边工具
@@ -101,8 +99,8 @@
         - [DM-worker 配置](/v2.1/reference/tools/data-migration/configure/dm-worker-configuration-file.md)
         - [任务配置](/v2.1/reference/tools/data-migration/configure/task-configuration-file.md)
       + DM 集群管理
-        - [DM 集群操作](/v2.1/reference/tools/data-migration/cluster-operations.md)
-        - [DM 集群升级](/v2.1/reference/tools/data-migration/dm-upgrade.md)
+        - [集群操作](/v2.1/reference/tools/data-migration/cluster-operations.md)
+        - [集群升级](/v2.1/reference/tools/data-migration/dm-upgrade.md)
       + DM 同步任务管理
         - [管理数据同步任务](/v2.1/reference/tools/data-migration/manage-tasks.md)
         - [任务前置检查](/v2.1/reference/tools/data-migration/precheck.md)
@@ -111,8 +109,11 @@
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](/v2.1/how-to/migrate/from-aurora.md)
       - [DM Portal](/v2.1/reference/tools/data-migration/dm-portal.md)
-      - [DM 故障诊断](/v2.1/how-to/troubleshoot/data-migration.md)
-      - [FAQ](/v2.1/faq/data-migration.md)
+      + DM 故障诊断
+        - [故障诊断](/v2.1/reference/tools/data-migration/troubleshoot/dm.md)
+        - [错误含义](/v2.1/reference/tools/data-migration/troubleshoot/error-system.md)
+        - [常见错误修复](/v2.1/reference/tools/data-migration/troubleshoot/error-handling.md)
+      - [DM FAQ](/v2.1/reference/tools/data-migration/faq.md)
       + 版本发布历史
         + v1.0
           - [1.0.2](/v2.1/reference/tools/data-migration/releases/1.0.2.md)
@@ -322,7 +323,6 @@
 + 常见问题 (FAQ)
   - [TiDB FAQ](/v2.1/faq/tidb.md)
   - [TiDB Lightning FAQ](/v2.1/faq/tidb-lightning.md)
-  - [Data Migration FAQ](/v2.1/faq/data-migration.md)
   - [升级 FAQ](/v2.1/faq/upgrade.md)
 + 技术支持
   - [支持渠道](/v2.1/support-resources.md)
@@ -383,3 +383,4 @@
     - [RC3](/v2.1/releases/rc3.md)
     - [RC2](/v2.1/releases/rc2.md)
     - [RC1](/v2.1/releases/rc1.md)
++ [术语表](/v2.1/glossary.md)
