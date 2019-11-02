@@ -6,12 +6,7 @@ aliases: ['/docs-cn/tools/dm/dm-upgrade/']
 
 # DM 版本升级
 
-本文档主要介绍各不完全兼容的 DM (Data Migration) 版本间的升级操作步骤。
-
-假设依时间先后顺序存在 V-A、V-B、V-C 3 个互不兼容的版本，现在需要从 V-A 升级到 V-C。定义从 V-A 升级到 V-B 的操作为 Upgrade-A-B，从 V-B 升级到 V-C 的操作为 Upgrade-B-C。
-
-- 如果 Upgrade-A-B 与 Upgrade-B-C 之间存在交叠（如同一个配置项的不同变更），则推荐先执行 Upgrade-A-B 升级到 V-B，升级完成后再执行 Upgrade-B-C 升级到 V-C。
-- 如果 Upgrade-A-B 与 Upgrade-B-C 之间不存在交叠，则可将 Upgrade-A-B 与 Upgrade-B-C 的操作合并为 Upgrade-A-C，执行后直接从 V-A 升级到 V-C。
+本文档主要介绍各 DM (Data Migration) 版本间的升级操作步骤。
 
 > **注意：**
 >
@@ -39,7 +34,7 @@ Go Version: go version go1.12 linux/amd64
 - 优化 `query-status` 默认输出，突出重点信息
 - 直接管理到下游的 DB 连接而不是使用内置连接池，优化 SQL 错误处理与重试
 - 修复 DM-worker 进程启动时、执行 DML 失败时可能 panic 的 bug
-- 修复执行 shard DDL（如 ADD INDEX）超时后可能造成后续 shard DDL 无法正确协调的 bug
+- 修复执行 sharding DDL（如 ADD INDEX）超时后可能造成后续 sharding DDL 无法正确协调的 bug
 - 修复了有部分 DM-worker 不可访问时无法 `start-task` 的 bug
 - 完善了对 1105 错误的自动重试策略
 
@@ -68,7 +63,7 @@ Go Version: go version go1.12 linux/amd64
 
 ### 主要变更
 
-- 修复 DM 有时对数据库连接频繁重建的问题
+- 修复某些情况下 DM 会频繁重建数据库连接的问题
 - 修复使用 `query-status` 时潜在的 panic 问题
 
 ### 升级操作示例
@@ -125,12 +120,12 @@ Go Version: go version go1.11.2 linux/amd64
 
 ### 主要变更
 
-从此版本开始，将对所有的配置进行严格检查，遇到不识别的配置会报错，以确保用户始终准确地了解自己的配置。
+从此版本开始，将对所有的配置进行严格检查，遇到无法识别的配置会报错，以确保用户始终准确地了解自己的配置。
 
 ### 升级操作示例
 
 启动 DM-master 或 DM-worker 前，必须确保已经删除废弃的配置信息，且没有多余的配置项，否则会启动失败。可根据失败信息删除多余的配置。
-可能遗留的废弃配置:
+可能遗留的废弃配置：
 
 - `dm-worker.toml` 中的 `meta-file`
 - `task.yaml` 中的 `mysql-instances` 中的 `server-id`
