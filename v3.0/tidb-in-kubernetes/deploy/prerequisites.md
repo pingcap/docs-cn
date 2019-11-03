@@ -84,22 +84,28 @@ cat /proc/interrupts|grep <iface-name>|awk '{print $1,$NF}'
 {{< copyable "shell-regular" >}}
 
 ```shell
-## 这个值展示的是对应的 cpu 序号的十六进制，不是很直观，具体计算方法见上面给出的官方文档 SMP IRQ Affinity
 cat /proc/irq/<ir_num>/smp_affinity
+```
 
-## 下面这个值展示的是 cpu 序号对应的十进制数字，比较直观
+上面命令输出对应 CPU 序号的十六进制值，不是很直观，具体计算方法见上面给出的官方文档 SMP IRQ Affinity
+
+{{< copyable "shell-regular" >}}
+
+```shell
 cat /proc/irq/<ir_num>/smp_affinity_list
 ```
+
+上面命令输出对应 CPU 序号的十进制值，比较直观。
 
 如果多队列网卡对应的所有中断号都已被绑定到不同的 CPU 上，那么该机器的 SMP IRQ Affinity 配置是正确的。如果中断号都落在同一个 CPU 上，则需要进行调整。调整的方式有以下两种：
 
 + 方法一：开启 [irqbalance](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/performance_tuning_guide/sect-red_hat_enterprise_linux-performance_tuning_guide-tool_reference-irqbalance) 服务。在 centos7 系统上的开启命令如下:
 
-    {{< copyable "shell-regular" >}}
+	{{< copyable "shell-regular" >}}
 
-```shell
-systemctl start irqbalance
-```
+	```shell
+	systemctl start irqbalance
+	```
 
 还有一种方式是禁掉 irqbalance，自定义中断号和 cpu 的绑定关系，详情参见脚本 [set_irq_affinity.sh](https://gist.githubusercontent.com/SaveTheRbtz/8875474/raw/0c6e500e81e161505d9111ac77115a2367180d12/set_irq_affinity.sh)
 
