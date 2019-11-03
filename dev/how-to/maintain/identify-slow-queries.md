@@ -51,7 +51,7 @@ Slow Query 基础信息：
 * `Index_ids`：表示语句涉及到的索引的 ID。
 * `Succ`：表示语句是否执行成功。
 * `Backoff_time`：表示语句遇到需要重试的错误时在重试前等待的时间，常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、`tikv server is busy`。
-* `Plan`：表示语句的执行计划，用 select tidb_decode_plan('xxx...') 即可查看该语句的执行计划。
+* `Plan`：表示语句的执行计划，用 `select tidb_decode_plan('xxx...')` 命令即可查看该语句的执行计划。
 
 和事务执行相关的字段：
 
