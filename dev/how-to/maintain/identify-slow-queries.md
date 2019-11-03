@@ -51,17 +51,17 @@ Slow Query 基础信息：
 * `Index_ids`：表示语句涉及到的索引的 ID。
 * `Succ`：表示语句是否执行成功。
 * `Backoff_time`：表示语句遇到需要重试的错误时在重试前等待的时间，常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、`tikv server is busy`。
-* `Plan`：表示语句的执行计划，用 `select tidb_decode_plan('xxx...')` 命令即可查看该语句的执行计划。
+* `Plan`：表示语句的执行计划，用 `select tidb_decode_plan('xxx...')` SQL 语句可以解析出具体的执行计划。
 
 和事务执行相关的字段：
 
 * `Prewrite_time`：表示事务两阶段提交中第一阶段（prewrite 阶段）的耗时。
 * `Commit_time`：表示事务两阶段提交中第二阶段（commit 阶段）的耗时。
 * `Get_commit_ts_time`：表示事务两阶段提交中第二阶段（commit 阶段）获取 commit 时间戳的耗时。
-* `Local_latch_wait_time`：表示事务提交前在本地等待 latch 的耗时。
+* `Local_latch_wait_time`：表示事务两阶段提交中第二阶段（commit 阶段）发起前在 TiDB 侧等锁的耗时。
 * `Write_keys`：表示该事务向 TiKV 的 Write CF 写入 Key 的数量。
 * `Write_size`：表示事务提交时写 key 或 value 的总大小。
-* `Prewrite_region`：表示事务提交时在 prewrite 阶段需要给 TiKV 发送的 RPC 请求数量。
+* `Prewrite_region`：表示事务两阶段提交中第一阶段（prewrite 阶段）涉及的 TiKV Region 数量。注：每个 Region 会触发一次远程过程调用。
 
 和内存使用相关的字段：
 
