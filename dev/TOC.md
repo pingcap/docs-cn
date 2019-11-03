@@ -65,10 +65,8 @@
   + 升级
     - [升级至 TiDB 3.0](/dev/how-to/upgrade/from-previous-version.md)
     - [使用 Ansible 滚动升级](/dev/how-to/upgrade/rolling-updates-with-ansible.md)
-    - [升级 Data Migration](/dev/reference/tools/data-migration/dm-upgrade.md)
   + 故障诊断
     - [集群配置诊断](/dev/how-to/troubleshoot/cluster-setup.md)
-    - [Data Migration 故障诊断](/dev/how-to/troubleshoot/data-migration.md)
     - [TiDB Lightning 故障诊断](/dev/how-to/troubleshoot/tidb-lightning.md)
 + 参考手册
   + SQL
@@ -384,7 +382,6 @@
 + 常见问题 (FAQ)
   - [TiDB FAQ](/dev/faq/tidb.md)
   - [TiDB Lightning FAQ](/dev/faq/tidb-lightning.md)
-  - [Data Migration FAQ](/dev/faq/data-migration.md)
   - [升级 FAQ](/dev/faq/upgrade.md)
 + 技术支持
   - [支持渠道](/dev/support-resources.md)
@@ -457,3 +454,4 @@
     - [RC3](/dev/releases/rc3.md)
     - [RC2](/dev/releases/rc2.md)
     - [RC1](/dev/releases/rc1.md)
++ [术语表](/dev/glossary.md)

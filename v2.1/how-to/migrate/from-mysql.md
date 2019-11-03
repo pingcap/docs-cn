@@ -5,7 +5,7 @@ category: how-to
 
 # 全量数据迁移
 
-`mydumper` 是一个强大的数据迁移工具，具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)。你可以使用 `mydumper` 从 MySQL 导出数据，然后用 `loader` 将其导入到 TiDB。
+`mydumper` 是一个强大的数据迁移工具，具体可以参考 [`maxbube/mydumper`](https://github.com/maxbube/mydumper)。你可以使用 `mydumper` 从 MySQL 导出数据，然后用 `loader` 将其导入到 TiDB。
 
 > **注意：**
 >
