@@ -59,7 +59,7 @@ Slow Query 基础信息：
 * `Commit_time`：表示事务两阶段提交中第二阶段（commit 阶段）的耗时。
 * `Get_commit_ts_time`：表示事务提交时获取 commit tso 的耗时。
 * `Local_latch_wait_time`：表示事务提交前在本地等待 latch 的耗时。
-* `Write_keys`：表示事务提交时写 key 的数量。
+* `Write_keys`：表示该事务向 TiKV 的 Write CF 写入 Key 的数量。
 * `Write_size`：表示事务提交时写 key 或 value 的总大小。
 * `Prewrite_region`：表示事务提交时在 prewrite 阶段需要给 TiKV 发送的 RPC 请求数量。
 
