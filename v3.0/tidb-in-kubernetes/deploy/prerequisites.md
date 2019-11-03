@@ -103,7 +103,7 @@ systemctl start irqbalance
 
 还有一种方式是禁掉 irqbalance，自定义中断号和 cpu 的绑定关系，详情参见脚本 [set_irq_affinity.sh](https://gist.githubusercontent.com/SaveTheRbtz/8875474/raw/0c6e500e81e161505d9111ac77115a2367180d12/set_irq_affinity.sh)
 
-上面说的是处理多队列网卡和多核心的情形，如果是单队列网卡和多核的情况则有所不同。对于这个情况我们可以使用 [RPS/RFS](https://www.kernel.org/doc/Documentation/networking/scaling.txt) 在软件层面模拟实现硬件的网卡多队列功能(RSS)，这种情况下不能使用 irqbalance 来达到目的，可以通过使用上面贴出的脚本来设置 RPS，至于 RFS 的配置可以参考网上的配置即可。
+上文所描述的是处理多队列网卡和多核心的场景。单队列网卡和多核的场景则有不同的处理方式。在这种场景下，可以使用 [RPS/RFS](https://www.kernel.org/doc/Documentation/networking/scaling.txt) 在软件层面模拟实现硬件的网卡多队列功能 (RSS)。此时不能使用方法一所述的 irqbalance 服务，而是通过使用方法二提供的脚本来设置 RPS。RFS 的配置可以参考网上的配置。
 
 ## 硬件和部署要求
 
