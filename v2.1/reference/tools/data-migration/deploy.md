@@ -98,7 +98,7 @@ black-white-list:
 mydumpers:
   global:
     mydumper-path: "./bin/mydumper"   # Mydumper 二进制文件的路径。
-    extra-args: "-B test_db -T test_table"  # 只导出 `test_db` 库中的 `test_table` 表，可设置 Mydumper 的任何参数。
+    extra-args: "-B test_db -T test_table"  # mydumper 的其他参数，从 DM 1.0.2 版本开始，DM 会自动生成 table-list 配置，在其之前的版本仍然需要人工配置。
 ```
 
 ## 第 4 步：启动任务
