@@ -61,7 +61,7 @@ Slow Query 基础信息：
 * `Local_latch_wait_time`：表示事务在提交前在本地等待 latch 的耗时。
 * `Write_keys`：表示事务提交时写 key 的数量。
 * `Write_size`：表示事务提交时写 key 或 value 的总大小。
-* `Prewrite_region`：表示事务提交时 prewrite 阶段需要给 TiKV 发送的 RPC 请求数量。
+* `Prewrite_region`：表示事务提交时在 prewrite 阶段需要给 TiKV 发送的 RPC 请求数量。
 
 和内存使用相关的字段：
 
