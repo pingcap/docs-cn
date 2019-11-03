@@ -129,6 +129,35 @@ insert into t(a) values(12);
 insert into t(a) values(10),(11),(12);
 ```
 
+需要注意的是，insert 语句的改写，只能将多个 values 后的值拼接成一整条 SQL，insert 语句如果有其他差异将无法被改写。
+例如：
+
+{{< copyable "sql" >}}
+
+```sql
+insert into t (a) values (10) on duplicate key update a = 10;
+insert into t (a) values (11) on duplicate key update a = 11;
+insert into t (a) values (12) on duplicate key update a = 12;
+```
+
+将无法被改写成一条语句。该例子中，如果将 SQL 改写成如下形式：
+
+{{< copyable "sql" >}}
+
+```sql
+insert into t (a) values (10) on duplicate key update a = values(a);
+insert into t (a) values (11) on duplicate key update a = values(a);
+insert into t (a) values (12) on duplicate key update a = values(a);
+```
+
+即可满足改写条件，最终被改写成：
+
+{{< copyable "sql" >}}
+
+```sql
+insert into t (a) values (10), (11), (12) on duplicate key update a = values(a);
+```
+
 批量更新时如果有 3 处或 3 处以上更新，则 SQL 语句会改写为 multiple-queries 的形式并发送，这样可以有效减少客户端到服务器的请求开销，但副作用是会产生较大的 SQL 语句，例如这样：
 
 {{< copyable "sql" >}}
