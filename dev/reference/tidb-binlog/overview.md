@@ -56,4 +56,4 @@ TiDB Binlog 集群主要分为 Pump 和 Drainer 两个组件，以及 binlogctl 
     - 如果 TiDB 版本 < 2.1.9，则 `db-type="pb"`。
     - 如果 TiDB 版本 > = 2.1.9，则 `db-type="file"` 或 `db-type="pb"`。
 
-* 如果下游为 MySQL/TiDB，数据同步后可以使用 [sync-diff-inspector](/dev/reference/sync-diff-inspector/overview.md) 进行数据校验。
+* 如果下游为 MySQL/TiDB，数据同步后可以使用 [sync-diff-inspector](/dev/reference/tools/sync-diff-inspector/overview.md) 进行数据校验。
