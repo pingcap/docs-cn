@@ -95,7 +95,7 @@ cat /proc/irq/<ir_num>/smp_affinity_list
 
 + 方法一：开启 [irqbalance](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/performance_tuning_guide/sect-red_hat_enterprise_linux-performance_tuning_guide-tool_reference-irqbalance) 服务。在 centos7 系统上的开启命令如下:
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
 ```shell
 systemctl start irqbalance
