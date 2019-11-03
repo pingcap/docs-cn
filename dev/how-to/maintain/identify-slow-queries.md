@@ -56,7 +56,7 @@ Slow Query 基础信息：
 和事务执行相关的字段：
 
 * `Prewrite_time`：表示事务两阶段提交中第一阶段（prewrite 阶段）的耗时。
-* `Commit_time`：表示事务提交时 commit 阶段的耗时。
+* `Commit_time`：表示事务两阶段提交中第二阶段（commit 阶段）的耗时。
 * `Get_commit_ts_time`：表示事务提交时获取 commit tso 的耗时。
 * `Local_latch_wait_time`：表示事务提交前在本地等待 latch 的耗时。
 * `Write_keys`：表示事务提交时写 key 的数量。
