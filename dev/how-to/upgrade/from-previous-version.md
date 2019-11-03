@@ -208,4 +208,3 @@ ansible-playbook rolling_update.yml
 ```bash
 ansible-playbook rolling_update_monitor.yml
 ```
-binlog

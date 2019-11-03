@@ -182,4 +182,3 @@ select * from t2;
 |  3 | c    |
 +----+------+
 ```
-binlog
