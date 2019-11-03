@@ -91,7 +91,9 @@ cat /proc/irq/<ir_num>/smp_affinity
 cat /proc/irq/<ir_num>/smp_affinity_list
 ```
 
-如果多队列网卡对应的所有中断号都被绑定到不同的 cpu 上，那么这个配置就是没问题的。如果都落在一个 cpu 上那需要调整，调整的方式有两种，一种是通过开启 [irqbalance](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/performance_tuning_guide/sect-red_hat_enterprise_linux-performance_tuning_guide-tool_reference-irqbalance) 服务来达到目的。在 centos7 上开启命令如下:
+如果多队列网卡对应的所有中断号都已被绑定到不同的 CPU 上，那么该机器的 SMP IRQ Affinity 配置是正确的。如果中断号都落在同一个 CPU 上，则需要进行调整。调整的方式有以下两种：
+
++ 方法一：开启 [irqbalance](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/performance_tuning_guide/sect-red_hat_enterprise_linux-performance_tuning_guide-tool_reference-irqbalance) 服务。在 centos7 系统上的开启命令如下:
 
 {{< copyable "shell-regular" >}}
 
