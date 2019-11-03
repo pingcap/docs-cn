@@ -332,14 +332,14 @@
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + [TiSpark 使用指南](/dev/reference/tispark.md)
   + TiDB Binlog
-    - [概述](/dev/reference/tools/tidb-binlog/overview.md)
-    - [部署使用](/dev/reference/tools/tidb-binlog/deploy.md)
-    - [运维管理](/dev/reference/tools/tidb-binlog/maintain.md)
-    - [版本升级](/dev/reference/tools/tidb-binlog/upgrade.md)
-    - [监控告警](/dev/reference/tools/tidb-binlog/monitor.md)
-    - [增量恢复](/dev/reference/tools/tidb-binlog/reparo.md)
-    - [Kafka 自定义开发](/dev/reference/tools/tidb-binlog/binlog-slave-client.md)
-    - [FAQ](/dev/reference/tools/tidb-binlog/faq.md)
+    - [概述](/dev/reference/tidb-binlog/overview.md)
+    - [部署使用](/dev/reference/tidb-binlog/deploy.md)
+    - [运维管理](/dev/reference/tidb-binlog/maintain.md)
+    - [版本升级](/dev/reference/tidb-binlog/upgrade.md)
+    - [监控告警](/dev/reference/tidb-binlog/monitor.md)
+    - [增量恢复](/dev/reference/tidb-binlog/reparo.md)
+    - [Kafka 自定义开发](/dev/reference/tidb-binlog/binlog-slave-client.md)
+    - [FAQ](/dev/reference/tidb-binlog/faq.md)
 + TiDB in Kubernetes
   - [TiDB Operator 简介](/dev/tidb-in-kubernetes/tidb-operator-overview.md)
   + 快速上手
