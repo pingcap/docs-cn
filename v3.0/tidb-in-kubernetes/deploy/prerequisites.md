@@ -71,7 +71,7 @@ free -m
 
 此外，为了永久性地关闭 swap，还需要将 `/etc/fstab` 中 swap 相关的条目全部删除。
 
-在上述内容都设置完成后，还需要检查是否给机器配置了[SMP IRQ Affinity](https://cs.uwaterloo.ca/~brecht/servers/apic/SMP-affinity.txt)，也就是将各个设备对应的中断号分别绑定到不同的 cpu 上，防止所有中断请求都落在一个 cpu 上而引发性能瓶颈。对于 tidb 集群来说网卡处理包的速度对集群的吞吐率影响很大，因此这里我们主要说一下怎么将网卡中断绑定到特定的 cpu 上，充分利用多核的优势提高集群的吞吐率，首先我们可以通过如下命令查看网卡对应的中断号：
+在上述内容都设置完成后，还需要检查是否给机器配置了 [SMP IRQ Affinity](https://cs.uwaterloo.ca/~brecht/servers/apic/SMP-affinity.txt)，也就是将各个设备对应的中断号分别绑定到不同的 CPU 上，以防止所有中断请求都落在同一个 CPU 上而引发性能瓶颈。对于 TiDB 集群来说，网卡处理包的速度对集群的吞吐率影响很大。因此下文主要描述如何将网卡中断号绑定到特定的 CPU 上，充分利用多核的优势来提高集群的吞吐率。首先可以通过以下命令来查看网卡对应的中断号：
 
 {{< copyable "shell-regular" >}}
 
