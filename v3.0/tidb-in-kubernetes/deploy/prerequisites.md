@@ -101,11 +101,11 @@ cat /proc/irq/<ir_num>/smp_affinity_list
 
 + 方法一：开启 [irqbalance](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/performance_tuning_guide/sect-red_hat_enterprise_linux-performance_tuning_guide-tool_reference-irqbalance) 服务。在 centos7 系统上的开启命令如下:
 
-	{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-	```shell
-	systemctl start irqbalance
-	```
+    ```shell
+    systemctl start irqbalance
+    ```
 
 + 方法二：禁用 irqbalance，自定义中断号和 CPU 的绑定关系。详情参见脚本 [set_irq_affinity.sh](https://gist.githubusercontent.com/SaveTheRbtz/8875474/raw/0c6e500e81e161505d9111ac77115a2367180d12/set_irq_affinity.sh)。
 
