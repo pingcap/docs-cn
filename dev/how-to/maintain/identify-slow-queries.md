@@ -42,8 +42,8 @@ Slow Query 基础信息：
 
 * `Time`：表示日志打印时间。
 * `Query_time`：表示执行这个语句花费的时间。
-* `Parse_time`：表示这个语句在 parse 阶段（解析 AST 语法树）花费的时间。
-* `Compile_time`：表示这个语句在 compile 阶段（生成执行计划）花费的时间。
+* `Parse_time`：表示这个语句在语法解析阶段花费的时间。
+* `Compile_time`：表示这个语句在查询优化阶段花费的时间。
 * `Query`：表示 SQL 语句。慢日志里面不会打印 `Query`，但映射到内存表后，对应的字段叫 `Query`。
 * `Digest`：表示 SQL 语句的指纹。
 * `Txn_start_ts`：表示事务的开始时间戳，也是事务的唯一 ID，可以用这个值在 TiDB 日志中查找事务相关的其他日志。
