@@ -122,7 +122,7 @@ kubectl get pvc -n <namespace> -l app.kubernetes.io/component=backup,pingcap.com
 
 ## 增量备份
 
-增量备份使用 [TiDB Binlog](/dev/reference/tools/tidb-binlog/overview.md) 工具从 TiDB 集群收集 Binlog，并提供实时备份和向其它数据库的实时同步能力。
+增量备份使用 [TiDB Binlog](/dev/reference/tidb-binlog/overview.md) 工具从 TiDB 集群收集 Binlog，并提供实时备份和向其它数据库的实时同步能力。
 
 有关 Kubernetes 上运维 TiDB Binlog 的详细指南，可参阅 [TiDB Binlog](/dev/tidb-in-kubernetes/maintain/tidb-binlog.md)。
 
