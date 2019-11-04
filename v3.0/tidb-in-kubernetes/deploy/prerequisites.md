@@ -95,7 +95,7 @@ cat /proc/irq/<ir_num>/smp_affinity
 cat /proc/irq/<ir_num>/smp_affinity_list
 ```
 
-上面命令输出对应 CPU 序号的十进制值，比较直观。
+上面命令输出 CPU 序号对应的十进制值，输出结果较为直观。
 
 如果多队列网卡对应的所有中断号都已被绑定到不同的 CPU 上，那么该机器的 SMP IRQ Affinity 配置是正确的。如果中断号都落在同一个 CPU 上，则需要进行调整。调整的方式有以下两种：
 
