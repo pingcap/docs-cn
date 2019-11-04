@@ -108,7 +108,7 @@ cat /proc/irq/<ir_num>/smp_affinity_list
 
 + 方法二：禁用 irqbalance，自定义中断号和 CPU 的绑定关系。详情参见脚本 [set_irq_affinity.sh](https://gist.githubusercontent.com/SaveTheRbtz/8875474/raw/0c6e500e81e161505d9111ac77115a2367180d12/set_irq_affinity.sh)。
 
-上文所描述的是处理多队列网卡和多核心的场景。单队列网卡和多核的场景则有不同的处理方式。在这种场景下，可以使用 [RPS/RFS](https://www.kernel.org/doc/Documentation/networking/scaling.txt) 在软件层面模拟实现硬件的网卡多队列功能 (RSS)。此时不能使用方法一所述的 irqbalance 服务，而是通过使用方法二提供的脚本来设置 RPS。RFS 的配置可以参考网上的配置。
+上文所描述的是处理多队列网卡和多核心的场景。单队列网卡和多核的场景则有不同的处理方式。在这种场景下，可以使用 [RPS/RFS](https://www.kernel.org/doc/Documentation/networking/scaling.txt) 在软件层面模拟实现硬件的网卡多队列功能 (RSS)。此时不能使用方法一所述的 irqbalance 服务，而是通过使用方法二提供的脚本来设置 RPS。RFS 的配置可以参考[这里](https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/performance_tuning_guide/sect-red_hat_enterprise_linux-performance_tuning_guide-networking-configuration_tools#sect-Red_Hat_Enterprise_Linux-Performance_Tuning_Guide-Configuration_tools-Configuring_Receive_Flow_Steering_RFS)。
 
 ## 硬件和部署要求
 
