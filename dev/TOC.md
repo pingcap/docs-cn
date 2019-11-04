@@ -27,6 +27,7 @@
     - [读取历史数据](/dev/how-to/get-started/read-historical-data.md)
     - [TiDB Binlog 教程](/dev/how-to/get-started/tidb-binlog.md)
     - [TiDB Data Migration 教程](/dev/how-to/get-started/data-migration.md)
+    - [TiDB Lightning 教程](/dev/how-to/get-started/tidb-lightning.md)
     - [TiSpark 教程](/dev/how-to/get-started/tispark.md)
   + 部署
     - [软硬件环境需求](/dev/how-to/deploy/hardware-recommendations.md)
@@ -313,6 +314,7 @@
         - [管理数据同步任务](/dev/reference/tools/data-migration/manage-tasks.md)
         - [任务前置检查](/dev/reference/tools/data-migration/precheck.md)
         - [任务状态查询](/dev/reference/tools/data-migration/query-status.md)
+        - [跳过或替代执行异常的 SQL 语句](/dev/reference/tools/data-migration/skip-replace-sqls.md)
       - [监控 DM 集群](/dev/reference/tools/data-migration/monitor.md)
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-aurora.md)
