@@ -27,6 +27,7 @@
     - [读取历史数据](/dev/how-to/get-started/read-historical-data.md)
     - [TiDB Binlog 教程](/dev/how-to/get-started/tidb-binlog.md)
     - [TiDB Data Migration 教程](/dev/how-to/get-started/data-migration.md)
+    - [TiDB Lightning 教程](/dev/how-to/get-started/tidb-lightning.md)
     - [TiSpark 教程](/dev/how-to/get-started/tispark.md)
   + 部署
     - [软硬件环境需求](/dev/how-to/deploy/hardware-recommendations.md)
