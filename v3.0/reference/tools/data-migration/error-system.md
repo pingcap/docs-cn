@@ -1,11 +1,11 @@
 ---
-title: Data Migration 错误说明
+title: Data Migration 错误说明和诊断
 category: reference
 ---
 
-# Data Migration 错误说明
+# Data Migration 错误说明和诊断
 
-本文介绍了 Data Migration (DM) 的错误系统，以及各种错误信息的详细含义。
+本文介绍了 Data Migration (DM) 输出错误信息的详细含义、根据错误信息进行诊断的具体方法、常见错误的运维方法。
 
 ## DM 错误系统
 
@@ -17,7 +17,7 @@ DM 1.0.0-GA 版本中引入了新的错误系统。该系统：
 
 错误系统的详细设计和实现，可参阅 [RFC 文档: Proposal: Improve Error System](https://github.com/pingcap/dm/blob/master/docs/RFCS/20190722_error_handling.md)。
 
-## 错误信息示例
+## 错误消息说明
 
 以下是 DM 实际输出的一条错误信息。本文根据这条信息，对各个字段作详细说明。
 
@@ -57,7 +57,7 @@ DM 中的错误信息均按以下固定格式输出：
 
     下表展示所有的错误类别、错误对应的系统子模块、错误样例：
 
-    |  错误类别    | 错误对应的系统子模块             | 错误样例                                                     |
+    | 错误类别     | 错误对应的系统子模块             | 错误样例                                                     |
     | :-------------- | :------------------------------ | :------------------------------------------------------------ |
     | `database`       | 执行数据库操作出现错误         | `[code=10003:class=database:scope=downstream:level=medium] database driver: invalid connection` |
     | `functional`     | 系统底层的基础函数错误           | `[code=11005:class=functional:scope=internal:level=high] not allowed operation: alter multiple tables in one statement` |
@@ -110,4 +110,18 @@ DM 根据错误的严重程度和必要性来选择是否输出错误堆栈。�
 
 ## 常见错误码描述及处理
 
-可在 DM 代码仓库[已发布的错误码](https://github.com/pingcap/dm/blob/master/_utils/terror_gen/errors_release.txt)中查询完整的错误码列表。
+可在 DM 代码仓库[已发布的错误码](https://github.com/pingcap/dm/blob/master/_utils/terror_gen/errors_release.txt) 中查询完整的错误码列表。
+
+## 常见错误说明和解决方法
+
+| 错误码       | 错误说明                                                     | 解决方法                                                     |
+| :----------- | :------------------------------------------------------------ | :----------------------------------------------------------- |
+| `code=10001` | 数据库操作异常                                               | 进一步分析错误信息和错误堆栈                                 |
+| `code=10002` | 数据库底层的 `bad connection` 错误，通常表示 DM 到下游 TiDB 的数据库连接出现了异常（如网络故障、TiDB 重启等）且当前请求的数据暂时未能发送到 TiDB。 | DM 提供针对此类错误的自动恢复。如果长时间未恢复，需要用户检查网络或 TiDB 状态。 |
+| `code=10003` | 数据库底层 `invalid connection` 错误，通常表示 DM 到下游 TiDB 的数据库连接出现了异常（如网络故障、TiDB 重启、TiKV busy 等）且当前请求已有部分数据发送到了 TiDB。 | DM 提供针对此类错误的自动恢复。如果未能正常恢复，需要用户进一步检查错误信息并根据具体场景进行分析。 |
+| `code=10005` | 数据库查询类语句出错                                         |                                                              |
+| `code=10006` | 数据库 `EXECUTE` 类型语句出错，包括 DDL 和 `INSERT`/`UPDATE`/`DELETE` 类型的 DML。更详细的错误信息可通过错误 message 获取。错误 message 中通常包含操作数据库所返回的错误码和错误信息。 |                                                              |
+| `code=11006` |  DM 内置的 parser 解析不兼容的 DDL 时出错              |  可参考 [Data Migration 故障诊断-处理不兼容的 DDL 语句](/v3.0/how-to/troubleshoot/data-migration.md#处理不兼容的-ddl-语句) 提供的解决方案 |
+| `code=20010` | 处理任务配置时，解密数据库的密码出错                             |  检查任务配置中提供的下游数据库密码是否有[使用 dmctl 正确加密](/v3.0/how-to/deploy/data-migration-with-ansible.md#使用-dmctl-加密上游-mysql-用户密码) |
+| `code=26002` | 任务检查创建数据库连接失败。更详细的错误信息可通过错误 message 获取。错误 message 中包含操作数据库所返回的错误码和错误信息。 |  检查 DM-master 所在的机器是否有权限访问上游 |
+| `code=38008` | DM 组件间的 gRPC 通信出错                                      |  检查 `class`， 定位错误发生在哪些组件的交互环节，根据错误 message 判断是哪类通信错误。如果是 gRPC 建立连接出错，可检查通信服务端是否运行正常。 |

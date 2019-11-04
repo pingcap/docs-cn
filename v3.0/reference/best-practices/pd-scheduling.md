@@ -6,18 +6,9 @@ category: reference
 
 # PD 调度策略最佳实践
 
-本文将详细介绍 PD 调度系统的原理，并通过几个典型场景的分析和处理方式，分享调度策略的最佳实践和调优方式，帮助大家在使用过程中快速定位问题。本文假定你对 TiDB，TiKV 以及 PD 已经有一定的了解，相关核心概念如下：
+本文将详细介绍 PD 调度系统的原理，并通过几个典型场景的分析和处理方式，分享调度策略的最佳实践和调优方式，帮助大家在使用过程中快速定位问题。本文假定你对 TiDB，TiKV 以及 PD 已经有一定的了解，相关概念请参考 [PD 相关术语](/v3.0/glossary.md)。
 
-- [Leader/Follower/Learner](/v3.0/glossary.md#leaderfollowerlearner)
-- [Operator](/v3.0/glossary.md#operator)
-- [Operator Step](/v3.0/glossary.md#operator-step)
-- [Pending/Down](/v3.0/glossary.md#pendingdown)
-- [Region/Peer/Raft Group](/v3.0/glossary.md#regionpeerraft-group)
-- [Region Split](/v3.0/glossary.md#region-split)
-- [Scheduler](/v3.0/glossary.md#scheduler)
-- [Store](/v3.0/glossary.md#store)
-
-> **注意：**
+> **Note:**
 >
 > 本文内容基于 TiDB 3.0 版本，更早的版本（2.x）缺少部分功能的支持，但是基本原理类似，也可以以本文作为参考。
 

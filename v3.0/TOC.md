@@ -66,8 +66,10 @@
   + 升级
     - [升级至 TiDB 3.0](/v3.0/how-to/upgrade/from-previous-version.md)
     - [使用 Ansible 滚动升级](/v3.0/how-to/upgrade/rolling-updates-with-ansible.md)
+    - [升级 Data Migration](/v3.0/reference/tools/data-migration/dm-upgrade.md)
   + 故障诊断
     - [集群配置诊断](/v3.0/how-to/troubleshoot/cluster-setup.md)
+    - [Data Migration 故障诊断](/v3.0/how-to/troubleshoot/data-migration.md)
     - [TiDB Lightning 故障诊断](/v3.0/how-to/troubleshoot/tidb-lightning.md)
 + 参考手册
   + 周边工具
@@ -102,8 +104,8 @@
         - [DM-worker 配置](/v3.0/reference/tools/data-migration/configure/dm-worker-configuration-file.md)
         - [任务配置](/v3.0/reference/tools/data-migration/configure/task-configuration-file.md)
       + DM 集群管理
-        - [集群操作](/v3.0/reference/tools/data-migration/cluster-operations.md)
-        - [集群升级](/v3.0/reference/tools/data-migration/dm-upgrade.md)
+        - [DM 集群操作](/v3.0/reference/tools/data-migration/cluster-operations.md)
+        - [DM 集群升级](/v3.0/reference/tools/data-migration/dm-upgrade.md)
       + DM 同步任务管理
         - [管理数据同步任务](/v3.0/reference/tools/data-migration/manage-tasks.md)
         - [任务前置检查](/v3.0/reference/tools/data-migration/precheck.md)
@@ -112,11 +114,10 @@
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](/v3.0/how-to/migrate/from-aurora.md)
       - [DM Portal](/v3.0/reference/tools/data-migration/dm-portal.md)
-      + DM 故障诊断
-        - [故障诊断](/v3.0/reference/tools/data-migration/troubleshoot/dm.md)
-        - [错误含义](/v3.0/reference/tools/data-migration/troubleshoot/error-system.md)
-        - [常见错误修复](/v3.0/reference/tools/data-migration/troubleshoot/error-handling.md)
-      - [DM FAQ](/v3.0/reference/tools/data-migration/faq.md)
+      + 故障诊断
+        - [DM 错误含义](/v3.0/reference/tools/data-migration/error-system.md)
+        - [DM 故障诊断](/v3.0/how-to/troubleshoot/data-migration.md)
+      - [FAQ](/v3.0/faq/data-migration.md)
       + 版本发布历史
         + v1.0
           - [1.0.2](/v3.0/reference/tools/data-migration/releases/1.0.2.md)
@@ -140,7 +141,6 @@
     - [Java 应用开发最佳实践](/v3.0/reference/best-practices/java-app.md)
     - [高并发写入场景最佳实践](/v3.0/reference/best-practices/high-concurrency.md)
     - [Grafana 监控最佳实践](/v3.0/reference/best-practices/grafana-monitor.md)
-    - [PD 调度策略最佳实践](/v3.0/reference/best-practices/pd-scheduling.md)
   + [与 MySQL 兼容性对比](/v3.0/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
@@ -385,6 +385,7 @@
 + 常见问题 (FAQ)
   - [TiDB FAQ](/v3.0/faq/tidb.md)
   - [TiDB Lightning FAQ](/v3.0/faq/tidb-lightning.md)
+  - [Data Migration FAQ](/v3.0/faq/data-migration.md)
   - [升级 FAQ](/v3.0/faq/upgrade.md)
 + 技术支持
   - [支持渠道](/v3.0/support-resources.md)
