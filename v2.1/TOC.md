@@ -333,7 +333,6 @@
 - [TiDB 路线图](/v2.1/roadmap.md)
 + [版本发布历史](/v2.1/releases/rn.md)
   + v2.1
-    - [2.1.18](/v2.1/releases/2.1.18.md)
     - [2.1.17](/v2.1/releases/2.1.17.md)
     - [2.1.16](/v2.1/releases/2.1.16.md)
     - [2.1.15](/v2.1/releases/2.1.15.md)
