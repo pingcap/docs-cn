@@ -24,6 +24,7 @@
     - [读取历史数据](/v2.1/how-to/get-started/read-historical-data.md)
     - [TiDB Binlog 教程](/v2.1/how-to/get-started/tidb-binlog.md)
     - [TiDB Data Migration 教程](/v2.1/how-to/get-started/data-migration.md)
+    - [TiDB Lightning 教程](/v2.1/how-to/get-started/tidb-lightning.md)
     - [TiSpark 教程](/v2.1/how-to/get-started/tispark.md)
   + 部署
     - [软硬件环境需求](/v2.1/how-to/deploy/hardware-recommendations.md)
@@ -105,6 +106,7 @@
         - [管理数据同步任务](/v2.1/reference/tools/data-migration/manage-tasks.md)
         - [任务前置检查](/v2.1/reference/tools/data-migration/precheck.md)
         - [任务状态查询](/v2.1/reference/tools/data-migration/query-status.md)
+        - [跳过或替代执行异常的 SQL 语句](/v2.1/reference/tools/data-migration/skip-replace-sqls.md)
       - [监控 DM 集群](/v2.1/reference/tools/data-migration/monitor.md)
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](/v2.1/how-to/migrate/from-aurora.md)
@@ -136,6 +138,7 @@
     - [HAProxy 最佳实践](/v2.1/reference/best-practices/haproxy.md)
     - [Java 应用开发最佳实践](/v2.1/reference/best-practices/java-app.md)
     - [Grafana 监控最佳实践](/v2.1/reference/best-practices/grafana-monitor.md)
+    - [PD 调度策略最佳实践](/v2.1/reference/best-practices/pd-scheduling.md)
   + [与 MySQL 兼容性对比](/v2.1/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
