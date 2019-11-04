@@ -69,6 +69,10 @@ After you deploy and configure TiDB Operator, deploy the TiDB cluster using the 
 helm install pingcap/tidb-cluster --name=<release-name> --namespace=<namespace> --version=<chart-version> -f /home/tidb/<release-name>/values-<release-name>.yaml
 ```
 
+> **Note:**
+>
+> A [`namespace`](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) is a virtual cluster backed by the same physical cluster. You can give it a name that is easy to memorize, such as the same name as `release-name`.
+
 You can view the Pod status using the following command:
 
 {{< copyable "shell-regular" >}}
