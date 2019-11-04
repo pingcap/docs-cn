@@ -27,6 +27,7 @@
     - [读取历史数据](/dev/how-to/get-started/read-historical-data.md)
     - [TiDB Binlog 教程](/dev/how-to/get-started/tidb-binlog.md)
     - [TiDB Data Migration 教程](/dev/how-to/get-started/data-migration.md)
+    - [TiDB Lightning 教程](/dev/how-to/get-started/tidb-lightning.md)
     - [TiSpark 教程](/dev/how-to/get-started/tispark.md)
   + 部署
     - [软硬件环境需求](/dev/how-to/deploy/hardware-recommendations.md)
@@ -65,10 +66,8 @@
   + 升级
     - [升级至 TiDB 3.0](/dev/how-to/upgrade/from-previous-version.md)
     - [使用 Ansible 滚动升级](/dev/how-to/upgrade/rolling-updates-with-ansible.md)
-    - [升级 Data Migration](/dev/reference/tools/data-migration/dm-upgrade.md)
   + 故障诊断
     - [集群配置诊断](/dev/how-to/troubleshoot/cluster-setup.md)
-    - [Data Migration 故障诊断](/dev/how-to/troubleshoot/data-migration.md)
     - [TiDB Lightning 故障诊断](/dev/how-to/troubleshoot/tidb-lightning.md)
 + 参考手册
   + 周边工具
@@ -103,8 +102,8 @@
         - [DM-worker 配置](/dev/reference/tools/data-migration/configure/dm-worker-configuration-file.md)
         - [任务配置](/dev/reference/tools/data-migration/configure/task-configuration-file.md)
       + DM 集群管理
-        - [DM 集群操作](/dev/reference/tools/data-migration/cluster-operations.md)
-        - [DM 集群升级](/dev/reference/tools/data-migration/dm-upgrade.md)
+        - [集群操作](/dev/reference/tools/data-migration/cluster-operations.md)
+        - [集群升级](/dev/reference/tools/data-migration/dm-upgrade.md)
       + DM 同步任务管理
         - [管理数据同步任务](/dev/reference/tools/data-migration/manage-tasks.md)
         - [任务前置检查](/dev/reference/tools/data-migration/precheck.md)
@@ -114,10 +113,11 @@
       + 从与 MySQL 兼容的数据库迁移数据
         - [从 Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-aurora.md)
       - [DM Portal](/dev/reference/tools/data-migration/dm-portal.md)
-      + 故障诊断
-        - [DM 错误含义](/dev/reference/tools/data-migration/error-system.md)
-        - [DM 故障诊断](/dev/how-to/troubleshoot/data-migration.md)
-      - [FAQ](/dev/faq/data-migration.md)
+      + DM 故障诊断
+        - [故障诊断](/dev/reference/tools/data-migration/troubleshoot/dm.md)
+        - [错误含义](/dev/reference/tools/data-migration/troubleshoot/error-system.md)
+        - [常见错误修复](/dev/reference/tools/data-migration/troubleshoot/error-handling.md)
+      - [DM FAQ](/dev/reference/tools/data-migration/faq.md)
       + 版本发布历史
         + v1.0
           - [1.0.2](/dev/reference/tools/data-migration/releases/1.0.2.md)
@@ -141,6 +141,7 @@
     - [Java 应用开发最佳实践](/dev/reference/best-practices/java-app.md)
     - [高并发写入场景最佳实践](/dev/reference/best-practices/high-concurrency.md)
     - [Grafana 监控最佳实践](/dev/reference/best-practices/grafana-monitor.md)
+    - [PD 调度策略最佳实践](/dev/reference/best-practices/pd-scheduling.md)
   + [与 MySQL 兼容性对比](/dev/reference/mysql-compatibility.md)
   + SQL
     + SQL 语言结构
@@ -385,7 +386,6 @@
 + 常见问题 (FAQ)
   - [TiDB FAQ](/dev/faq/tidb.md)
   - [TiDB Lightning FAQ](/dev/faq/tidb-lightning.md)
-  - [Data Migration FAQ](/dev/faq/data-migration.md)
   - [升级 FAQ](/dev/faq/upgrade.md)
 + 技术支持
   - [支持渠道](/dev/support-resources.md)
@@ -458,3 +458,4 @@
     - [RC3](/dev/releases/rc3.md)
     - [RC2](/dev/releases/rc2.md)
     - [RC1](/dev/releases/rc1.md)
++ [术语表](/dev/glossary.md)
