@@ -77,7 +77,7 @@ spark.sql.extensions org.apache.spark.sql.TiExtensions
 
 ## 部署 TiSpark
 
-TiSpark 的 jar 包可以在[这里](https://github.com/pingcap/tispark/releases)下载对应版本的 jar 包并拷贝到合适的目录。
+TiSpark 的 jar 包可以在 [TiSpark Releases 页面](https://github.com/pingcap/tispark/releases)下载对应版本的 jar 包并拷贝到合适的目录。
 
 ### 已有 Spark 集群的部署方式
 
@@ -95,7 +95,7 @@ spark-shell --jars $TISPARK_FOLDER/tispark-${name_with_version}.jar
 
 #### 下载安装包并安装
 
-你可以在[这里](https://spark.apache.org/downloads.html)下载 Apache Spark。
+你可以在 [Download Apache Spark™ 页面](https://spark.apache.org/downloads.html)下载 Apache Spark。
 
 对于 Standalone 模式且无需 Hadoop 支持，则选择 Spark 2.3.x 或者 Spark 2.4.x 且带有 Hadoop 依赖的 Pre-build with Apache Hadoop 2.x 任意版本。如有需要配合使用的 Hadoop 集群，则选择对应的 Hadoop 版本号。你也可以选择从源代码[自行构建](https://spark.apache.org/docs/latest/building-spark.html)以配合官方 Hadoop 2.x 之前的版本。
 
@@ -329,4 +329,4 @@ TiSpark 可以使用 TiDB 的统计信息：
 
 - Q. TiSpark 执行 Spark 任务时报：Error：java.io.InvalidClassException: com.pingcap.tikv.region.TiRegion; local class incompatible: stream classdesc serialVersionUID ...
 
-    A. 该报错日志中显示 serialVersionUID 冲突，说明存在不同版本的的 class 和 TiRegion。因为 TiRegion 是 TiSpark 独有的，所以可能存在多个版本的 TiSpark 包。要解决该报错，请确保集群中各节点的 TiSpark 依赖包版本一致。
+    A. 该报错日志中显示 serialVersionUID 冲突，说明存在不同版本的 class 和 TiRegion。因为 TiRegion 是 TiSpark 独有的，所以可能存在多个版本的 TiSpark 包。要解决该报错，请确保集群中各节点的 TiSpark 依赖包版本一致。

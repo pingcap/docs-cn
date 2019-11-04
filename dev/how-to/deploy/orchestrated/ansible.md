@@ -18,7 +18,7 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 - [变更组件配置](/dev/how-to/upgrade/rolling-updates-with-ansible.md#变更组件配置)
 - [集群扩容缩容](/dev/how-to/scale/with-ansible.md)
 - [升级组件版本](/dev/how-to/upgrade/rolling-updates-with-ansible.md#升级组件版本)
-- [集群开启 binlog](/dev/reference/tidb-binlog-overview.md)
+- [集群开启 binlog](/dev/reference/tools/tidb-binlog/overview.md)
 - [清除集群数据](/dev/how-to/maintain/ansible-operations.md#清除集群数据)
 - [销毁集群](/dev/how-to/maintain/ansible-operations.md#销毁集群)
 
@@ -62,7 +62,7 @@ yum -y install python2-pip
 {{< copyable "shell-root" >}}
 
 ```bash
-apt-get -y install git curl sshpass python2-pip
+apt-get -y install git curl sshpass python-pip
 ```
 
 ## 在中控机上创建 tidb 用户，并生成 ssh key
@@ -291,7 +291,7 @@ ansible -i hosts.ini all -m shell -a "cpupower frequency-set --governor performa
 {{< copyable "shell-root" >}}
 
 ```bash
-umount /dev/nvme0n1
+umount /dev/nvme0n1p1
 ```
 
 下面以 /dev/nvme0n1 数据盘为例：
@@ -316,12 +316,16 @@ Disk /dev/nvme0n1: 1000 GB
 parted -s -a optimal /dev/nvme0n1 mklabel gpt -- mkpart primary ext4 1 -1
 ```
 
+> **注意:**
+>
+> 使用 `lsblk` 命令查看分区的设备号：对于 nvme 磁盘，一般生成的分区设备号为 nvme0n1p1；对于普通磁盘（例如 /dev/sdb），一般生成的的分区设备号为 sdb1。
+
 格式化文件系统
 
 {{< copyable "shell-root" >}}
 
 ```bash
-mkfs.ext4 /dev/nvme0n1
+mkfs.ext4 /dev/nvme0n1p1
 ```
 
 查看数据盘分区 UUID，本例中 nvme0n1 的 UUID 为 c51eb23b-195c-4061-92a9-3fad812cc12f。
@@ -339,7 +343,8 @@ sda
 ├─sda2  swap         f414c5c0-f823-4bb1-8fdf-e531173a72ed
 └─sda3  ext4         547909c1-398d-4696-94c6-03e43e317b60 /
 sr0
-nvme0n1 ext4         c51eb23b-195c-4061-92a9-3fad812cc12f
+nvme0n1
+└─nvme0n1p1 ext4         c51eb23b-195c-4061-92a9-3fad812cc12f
 ```
 
 编辑 `/etc/fstab` 文件，添加 `nodelalloc` 挂载参数
@@ -372,7 +377,7 @@ mount -t ext4
 ```
 
 ```
-/dev/nvme0n1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
+/dev/nvme0n1p1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
 ```
 
 ## 分配机器资源，编辑 inventory.ini 文件

@@ -71,7 +71,7 @@ OR, ||
 = (assignment), :=
 ```
 
-详情参见 [这里](https://dev.mysql.com/doc/refman/5.7/en/operator-precedence.html).
+详情参见 [Operator Precedence](https://dev.mysql.com/doc/refman/5.7/en/operator-precedence.html)。
 
 ## 比较方法和操作符
 

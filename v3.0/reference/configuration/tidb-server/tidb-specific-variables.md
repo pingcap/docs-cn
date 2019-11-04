@@ -218,7 +218,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：0
 
-这个变量用来设置是否自动切分待删除的数据。仅在 autocommit 开启，并且是单表删除的 SQL 时有效。关于单表删除的 SQL 的定义，详见[这里](https://dev.mysql.com/doc/refman/8.0/en/delete.html)。
+这个变量用来设置是否自动切分待删除的数据。仅在 autocommit 开启，并且是单表删除的 SQL 时有效。关于单表删除的 SQL 的定义，详见 [`DELETE` Syntax](https://dev.mysql.com/doc/refman/8.0/en/delete.html)。
 当删除大量数据时，可以将其设置为 1，这样待删除数据会被自动切分为多个 batch，每个 batch 使用一个单独的事务进行删除。
 该用法破坏了事务的原子性和隔离性，使用该特性时，使用者需要保证没有其他对正在处理的表的**任何**操作，并且在出现报错时，需要及时**人工介入，检查数据的一致性和完整性**。因此，不建议在生产环境中使用。
 
@@ -690,3 +690,11 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 默认值：0
 
 这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `auto_increment` 属性。默认为不允许。
+
+### tidb_enable_stmt_summary <span class="version-mark">从 v3.0.4 版本开始引入</span>
+
+作用域：SESSION | GLOBAL
+
+默认值：0
+
+这个变量用来控制是否开启 statement summary 功能。如果开启，SQL 的耗时等执行信息将被记录到系统表 `performance_schema.events_statement_summary_by_digest` 中，用于定位和排查 SQL 性能问题。
