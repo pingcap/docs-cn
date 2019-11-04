@@ -87,7 +87,7 @@ cat /proc/interrupts|grep <iface-name>|awk '{print $1,$NF}'
 cat /proc/irq/<ir_num>/smp_affinity
 ```
 
-上面命令输出对应 CPU 序号的十六进制值，不是很直观，具体计算方法见上面给出的官方文档 SMP IRQ Affinity
+上面命令输出 CPU 序号对应的十六进制值。输出结果欠直观。具体计算方法可参见 [SMP IRQ Affinity](https://cs.uwaterloo.ca/~brecht/servers/apic/SMP-affinity.txt) 文档。
 
 {{< copyable "shell-regular" >}}
 
