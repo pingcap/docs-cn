@@ -57,7 +57,7 @@ TiDB Lightning 主要包含两个部分:
 
 ### 第 3 步：启动 `tikv-importer`
 
-1. 将安装包里的 `bin/tikv-importer` 上传服务器。
+1. 将安装包里的 `bin/tikv-importer` 上传至部署 TiDB Lightning 的服务器。
 
 2. 配置 `tikv-importer.toml`。
 
@@ -88,9 +88,9 @@ TiDB Lightning 主要包含两个部分:
 
 ### 第 4 步：启动 `tidb-lightning`
 
-1. 将安装包里的 `bin/tidb-lightning` 及 `bin/tidb-lightning-ctl` 上传服务器。
+1. 将安装包里的 `bin/tidb-lightning` 及 `bin/tidb-lightning-ctl` 上传至部署 TiDB Lightning 的服务器。
 
-2. 将数据源上传到部署 `tidb-lightning` 的服务器。
+2. 将数据源也上传到同样的服务器。
 
 3. 配置合适的参数运行 `tidb-lightning`。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
 
