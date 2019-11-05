@@ -261,9 +261,9 @@ min-available-ratio = 0.05
 
 使用 `tidb-lightning` 可以对下列参数进行配置：
 
-| 参数 | 解释 | 对应配置 |
+| 参数 | 描述 | 对应配置项 |
 |:----|:----|:----|
-| --config *file* | 从 *file* 读取全局设置。如果没有指定则使用默认设置。R | |
+| --config *file* | 从 *file* 读取全局设置。如果没有指定则使用默认设置。 | |
 | -V | 输出程序的版本 | |
 | -d *directory* | 读取数据的目录 | `mydumper.data-source-dir` |
 | -L *level* | 日志的等级： debug, info, warn, error, fatal (默认为 info) | `lightning.log-level` |
@@ -282,7 +282,7 @@ min-available-ratio = 0.05
 
 使用 `tidb-lightning-ctl` 可以对下列参数进行配置：
 
-| 参数 | 解释 |
+| 参数 | 描述 |
 |:----|:----|
 | --compact | 执行 full compact |
 | --switch-mode *mode* | 将每个 TiKV 存储切换到指定模式（normal 或 import） |
@@ -301,7 +301,7 @@ min-available-ratio = 0.05
 
 使用 `tikv-importer` 可以对下列参数进行配置：
 
-| 参数 | 说明 | 对应设置 |
+| 参数 | 描述 | 对应配置项 |
 |:----|:----|:----|
 | -C, --config *file* | 从 *file* 读取配置。如果没有指定，则使用默认设置。| |
 | -V, --version | 输出程序的版本 | |

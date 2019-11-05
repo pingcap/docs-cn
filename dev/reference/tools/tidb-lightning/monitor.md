@@ -69,7 +69,7 @@ scrape_configs:
 
 第一行的面板显示速度，具体为：
 
-| 面板名称 | 序列 | 描述 |
+| 面板名称 | 功能 | 描述 |
 |:-----|:-----|:-----|
 | Import speed | write from lightning | 从 TiDB Lightning 向 TiKV Importer 发送键值对的速度，取决于每个表的复杂性 |
 | Import speed | upload to tikv | TiKV Importer 上传所有 TiKV replicas 的总体速度 |
@@ -107,7 +107,7 @@ scrape_configs:
 
 第四行的面板显示配额使用情况，具体为：
 
-| 面板名称 | 序列 | 描述 |
+| 面板名称 | 功能 | 描述 |
 |:-----|:-----|:-----|
 | Idle workers | io | 未使用的 `io-concurrency` 的数量，通常接近配置值（默认为5），接近 0 时表示磁盘太慢 |
 | Idle workers | closed-engine | 已关闭但未清理的引擎数量，通常接近 `index-concurrency` 与`table-concurrency` 的和（默认为 8），接近 0 时表示 TiDB Lightning 比 TiKV Importer 快，这会导致 TiDB Lightning 延迟 |
@@ -123,7 +123,7 @@ scrape_configs:
 
 第五行面板显示读取速度，具体为：
 
-| 面板 | 序列 | 描述 |
+| 面板名称 | 功能 | 描述 |
 |:-----|:-----|:-----|
 | Chunk parser read block duration | read block | 读取一个字节块以准备解析所消耗的时间 |
 | Chunk parser read block duration | apply worker | 等待 `io-concurrency` 空闲所消耗的时间 |
@@ -138,7 +138,7 @@ scrape_configs:
 
 第六行面板显示存储空间使用情况，具体为：
 
-| 面板 | 序列 | 描述 |
+| 面板名称 | 功能 | 描述 |
 |:-----|:-----|:-----|
 | SQL process rate | data deliver rate | 向 TiKV Importer 发送键值对 data 的速度 |
 | SQL process rate | index deliver rate | 向 TiKV Importer 发送键值对 index 的速度 |
@@ -154,7 +154,7 @@ scrape_configs:
 
 第七行面板显示导入速度，具体为：
 
-| 面板 | 序列 | 描述 |
+| 面板名称 | 功能 | 描述 |
 |:-----|:-----|:-----|
 | Delivery duration | Range delivery | 将一系列键值对上传到 TiKV 集群所消耗的时间  |
 | Delivery duration | SST delivery | 将单个 SST 文件上传到 TiKV 集群所消耗的时间 |
@@ -165,7 +165,7 @@ scrape_configs:
 
 ## 监控指标
 
-本节中将详细描述 Grafana 仪表盘支持的其他 `tikv-importer` 和 `tidb-lightning` 的监控指标。
+本节将详细描述 `tikv-importer` 和 `tidb-lightning` 的监控指标。
 
 ### `tikv-importer`
 
