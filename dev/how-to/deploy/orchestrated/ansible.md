@@ -278,7 +278,7 @@ Format your data disks to the ext4 filesystem and mount the filesystem with the 
 
 > **Note:**
 >
-> If your data disks have been formatted to ext4 and have mounted the options, you can uninstall it by running the `# umount /dev/nvme0n1` command, follow the steps starting from editing the `/etc/fstab` file, and remount the filesystem with options.
+> If your data disks have been formatted to ext4 and have mounted the options, you can uninstall it by running the `umount /dev/nvme0n1p1` command, follow the steps starting from editing the `/etc/fstab` file, and remount the filesystem with options.
 
 Take the `/dev/nvme0n1` data disk as an example:
 
@@ -295,15 +295,19 @@ Take the `/dev/nvme0n1` data disk as an example:
     # parted -s -a optimal /dev/nvme0n1 mklabel gpt -- mkpart primary ext4 1 -1
     ```
 
+    > **Note:**
+    >
+    > Use the `lsblk` command to view the device number of the partition: for a nvme disk, the generated device number is usually `nvme0n1p1`; for a regular disk (for example, `/dev/sdb`), the generated device number is usually `sdb1`.
+
 3. Format the data disk to the ext4 filesystem.
 
     ```
-    # mkfs.ext4 /dev/nvme0n1
+    # mkfs.ext4 /dev/nvme0n1p1
     ```
 
 4. View the partition UUID of the data disk.
 
-    In this example, the UUID of `nvme0n1` is `c51eb23b-195c-4061-92a9-3fad812cc12f`.
+    In this example, the UUID of `nvme0n1p1` is `c51eb23b-195c-4061-92a9-3fad812cc12f`.
 
     ```
     # lsblk -f
@@ -313,7 +317,8 @@ Take the `/dev/nvme0n1` data disk as an example:
     ├─sda2  swap         f414c5c0-f823-4bb1-8fdf-e531173a72ed
     └─sda3  ext4         547909c1-398d-4696-94c6-03e43e317b60 /
     sr0
-    nvme0n1 ext4         c51eb23b-195c-4061-92a9-3fad812cc12f
+    nvme0n1
+    └─nvme0n1p1 ext4         c51eb23b-195c-4061-92a9-3fad812cc12f
     ```
 
 5. Edit the `/etc/fstab` file and add the mount options.
@@ -334,7 +339,7 @@ Take the `/dev/nvme0n1` data disk as an example:
 
     ```
     # mount -t ext4
-    /dev/nvme0n1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
+    /dev/nvme0n1p1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
     ```
 
     If the filesystem is ext4 and `nodelalloc` is included in the mount options, you have successfully mount the data disk ext4 filesystem with options on the target machines.
