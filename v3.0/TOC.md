@@ -318,7 +318,7 @@
         - [跳过或替代执行异常的 SQL 语句](/v3.0/reference/tools/data-migration/skip-replace-sqls.md)
       - [监控 DM 集群](/v3.0/reference/tools/data-migration/monitor.md)
       + 从与 MySQL 兼容的数据库迁移数据
-        - [从 Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-aurora.md)
+        - [从 Amazon Aurora MySQL 迁移数据](/v3.0/how-to/migrate/from-aurora.md)
       - [DM Portal](/v3.0/reference/tools/data-migration/dm-portal.md)
       + DM 故障诊断
         - [故障诊断](/v3.0/reference/tools/data-migration/troubleshoot/dm.md)
@@ -335,8 +335,8 @@
       - [表库过滤](/v3.0/reference/tools/tidb-lightning/table-filter.md)
       - [CSV 支持](/v3.0/reference/tools/tidb-lightning/csv.md)
       - [监控告警](/v3.0/reference/tools/tidb-lightning/monitor.md)
-      - [故障诊断](/dev/how-to/troubleshoot/tidb-lightning.md)
-      - [FAQ](/dev/faq/tidb-lightning.md)
+      - [故障诊断](/v3.0/how-to/troubleshoot/tidb-lightning.md)
+      - [FAQ](/v3.0/faq/tidb-lightning.md)
     - [sync-diff-inspector](/v3.0/reference/tools/sync-diff-inspector/overview.md)
     - [PD Control](/v3.0/reference/tools/pd-control.md)
     - [PD Recover](/v3.0/reference/tools/pd-recover.md)
