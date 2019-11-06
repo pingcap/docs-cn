@@ -328,7 +328,7 @@ parted -s -a optimal /dev/nvme0n1 mklabel gpt -- mkpart primary ext4 1 -1
 mkfs.ext4 /dev/nvme0n1p1
 ```
 
-查看数据盘分区 UUID，本例中 nvme0n1 的 UUID 为 c51eb23b-195c-4061-92a9-3fad812cc12f。
+查看数据盘分区 UUID，本例中 nvme0n1p1 的 UUID 为 c51eb23b-195c-4061-92a9-3fad812cc12f。
 
 {{< copyable "shell-root" >}}
 
