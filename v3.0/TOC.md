@@ -124,6 +124,7 @@
       - [Cluster Operations](/v3.0/reference/tools/data-migration/cluster-operations.md)
       + Migrate from MySQL compatible database
         - [Migrate from Aurora](/v3.0/how-to/migrate/from-aurora.md)
+      - [Error Message Description](/v3.0/reference/tools/data-migration/error-system.md)
       - [Troubleshoot](/v3.0/how-to/troubleshoot/data-migration.md)
       - [Upgrade](/v3.0/reference/tools/data-migration/upgrade.md)
       - [FAQ](/v3.0/faq/data-migration.md)
