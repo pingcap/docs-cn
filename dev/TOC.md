@@ -70,80 +70,8 @@
     - [集群配置诊断](/dev/how-to/troubleshoot/cluster-setup.md)
     - [TiDB Lightning 故障诊断](/dev/how-to/troubleshoot/tidb-lightning.md)
 + 参考手册
-  + 周边工具
-    - [Mydumper](/dev/reference/tools/mydumper.md)
-    - [Loader](/dev/reference/tools/loader.md)
-    - [Syncer](/dev/reference/tools/syncer.md)
-    + Data Migration
-      + 概述
-        - [DM 架构](/dev/reference/tools/data-migration/overview.md#dm-架构)
-        - [同步功能介绍](/dev/reference/tools/data-migration/overview.md#同步功能介绍)
-        - [使用限制](/dev/reference/tools/data-migration/overview.md#使用限制)
-        - [DM-worker 简介](/dev/reference/tools/data-migration/dm-worker-intro.md)
-        - [DM Relay Log](/dev/reference/tools/data-migration/relay-log.md)
-      + 核心特性
-        - [Table Routing](/dev/reference/tools/data-migration/features/overview.md#table-routing)
-        - [Black & White Lists](/dev/reference/tools/data-migration/features/overview.md#black--white-table-lists)
-        - [Binlog Event Filter](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)
-        - [同步延迟监控](/dev/reference/tools/data-migration/features/overview.md#同步延迟监控)
-        + Shard Support
-          - [简介](/dev/reference/tools/data-migration/features/shard-merge.md)
-          - [使用限制](/dev/reference/tools/data-migration/features/shard-merge.md#使用限制)
-          - [手动处理 Sharding DDL Lock](/dev/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)
-      + 使用场景
-        - [简单的从库同步场景](/dev/reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
-        - [分库分表合并场景](/dev/reference/tools/data-migration/usage-scenarios/shard-merge.md)
-        - [分表合并数据迁移最佳实践](/dev/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md)
-        - [DM-worker 在上游 MySQL 主从间切换](/dev/reference/tools/data-migration/usage-scenarios/master-slave-switch.md)
-      + [部署使用](/dev/reference/tools/data-migration/deploy.md)
-      + 配置
-        - [概述](/dev/reference/tools/data-migration/configure/overview.md)
-        - [DM-master 配置](/dev/reference/tools/data-migration/configure/dm-master-configuration-file.md)
-        - [DM-worker 配置](/dev/reference/tools/data-migration/configure/dm-worker-configuration-file.md)
-        - [任务配置](/dev/reference/tools/data-migration/configure/task-configuration-file.md)
-      + DM 集群管理
-        - [集群操作](/dev/reference/tools/data-migration/cluster-operations.md)
-        - [集群升级](/dev/reference/tools/data-migration/dm-upgrade.md)
-      + DM 同步任务管理
-        - [管理数据同步任务](/dev/reference/tools/data-migration/manage-tasks.md)
-        - [任务前置检查](/dev/reference/tools/data-migration/precheck.md)
-        - [任务状态查询](/dev/reference/tools/data-migration/query-status.md)
-        - [跳过或替代执行异常的 SQL 语句](/dev/reference/tools/data-migration/skip-replace-sqls.md)
-      - [监控 DM 集群](/dev/reference/tools/data-migration/monitor.md)
-      + 从与 MySQL 兼容的数据库迁移数据
-        - [从 Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-aurora.md)
-      - [DM Portal](/dev/reference/tools/data-migration/dm-portal.md)
-      + DM 故障诊断
-        - [故障诊断](/dev/reference/tools/data-migration/troubleshoot/dm.md)
-        - [错误含义](/dev/reference/tools/data-migration/troubleshoot/error-system.md)
-        - [常见错误修复](/dev/reference/tools/data-migration/troubleshoot/error-handling.md)
-      - [DM FAQ](/dev/reference/tools/data-migration/faq.md)
-      + 版本发布历史
-        + v1.0
-          - [1.0.2](/dev/reference/tools/data-migration/releases/1.0.2.md)
-    + TiDB Lightning
-      - [概述](/dev/reference/tools/tidb-lightning/overview.md)
-      - [部署执行](/dev/reference/tools/tidb-lightning/deployment.md)
-      - [断点续传](/dev/reference/tools/tidb-lightning/checkpoints.md)
-      - [表库过滤](/dev/reference/tools/tidb-lightning/table-filter.md)
-      - [CSV 支持](/dev/reference/tools/tidb-lightning/csv.md)
-      - [监控告警](/dev/reference/tools/tidb-lightning/monitor.md)
-      - [故障诊断](/dev/how-to/troubleshoot/tidb-lightning.md)
-      - [FAQ](/dev/faq/tidb-lightning.md)
-    - [sync-diff-inspector](/dev/reference/tools/sync-diff-inspector/overview.md)
-    - [PD Control](/dev/reference/tools/pd-control.md)
-    - [PD Recover](/dev/reference/tools/pd-recover.md)
-    - [TiKV Control](/dev/reference/tools/tikv-control.md)
-    - [TiDB Controller](/dev/reference/tools/tidb-control.md)
-    - [工具下载](/dev/reference/tools/download.md)
-  + 最佳实践
-    - [HAProxy 最佳实践](/dev/reference/best-practices/haproxy.md)
-    - [Java 应用开发最佳实践](/dev/reference/best-practices/java-app.md)
-    - [高并发写入场景最佳实践](/dev/reference/best-practices/high-concurrency.md)
-    - [Grafana 监控最佳实践](/dev/reference/best-practices/grafana-monitor.md)
-    - [PD 调度策略最佳实践](/dev/reference/best-practices/pd-scheduling.md)
-  + [与 MySQL 兼容性对比](/dev/reference/mysql-compatibility.md)
   + SQL
+    - [与 MySQL 兼容性对比](/dev/reference/mysql-compatibility.md)
     + SQL 语言结构
       - [字面值](/dev/reference/sql/language-structure/literal-values.md)
       - [Schema 对象名](/dev/reference/sql/language-structure/schema-object-names.md)
@@ -298,12 +226,6 @@
     + tikv-server
       - [配置参数](/dev/reference/configuration/tikv-server/configuration.md)
       - [配置文件描述](/dev/reference/configuration/tikv-server/configuration-file.md)
-  + 监控指标
-    - [Overview 面板](/dev/reference/key-monitoring-metrics/overview-dashboard.md)
-    - [TiDB 面板](/dev/reference/key-monitoring-metrics/tidb-dashboard.md)
-    - [PD 面板](/dev/reference/key-monitoring-metrics/pd-dashboard.md)
-    - [TiKV 面板](/dev/reference/key-monitoring-metrics/tikv-dashboard.md)
-  - [报警规则](/dev/reference/alert-rules.md)
   + 安全
     - [与 MySQL 的安全特性差异](/dev/reference/security/compatibility.md)
     - [TiDB 数据库权限管理](/dev/reference/security/privilege-system.md)
@@ -332,16 +254,94 @@
     - [Statement Summary Table](/dev/reference/performance/statement-summary.md)
     - [TiKV 调优](/dev/reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
+  + 监控指标
+    - [Overview 面板](/dev/reference/key-monitoring-metrics/overview-dashboard.md)
+    - [TiDB 面板](/dev/reference/key-monitoring-metrics/tidb-dashboard.md)
+    - [PD 面板](/dev/reference/key-monitoring-metrics/pd-dashboard.md)
+    - [TiKV 面板](/dev/reference/key-monitoring-metrics/tikv-dashboard.md)
+  - [报警规则](/dev/reference/alert-rules.md)
+  + 最佳实践
+    - [HAProxy 最佳实践](/dev/reference/best-practices/haproxy.md)
+    - [Java 应用开发最佳实践](/dev/reference/best-practices/java-app.md)
+    - [高并发写入场景最佳实践](/dev/reference/best-practices/high-concurrency.md)
+    - [Grafana 监控最佳实践](/dev/reference/best-practices/grafana-monitor.md)
+    - [PD 调度策略最佳实践](/dev/reference/best-practices/pd-scheduling.md)
   + [TiSpark 使用指南](/dev/reference/tispark.md)
   + TiDB Binlog
-    - [概述](/dev/reference/tools/tidb-binlog/overview.md)
-    - [部署使用](/dev/reference/tools/tidb-binlog/deploy.md)
-    - [运维管理](/dev/reference/tools/tidb-binlog/maintain.md)
-    - [版本升级](/dev/reference/tools/tidb-binlog/upgrade.md)
-    - [监控告警](/dev/reference/tools/tidb-binlog/monitor.md)
-    - [增量恢复](/dev/reference/tools/tidb-binlog/reparo.md)
-    - [Kafka 自定义开发](/dev/reference/tools/tidb-binlog/binlog-slave-client.md)
-    - [FAQ](/dev/reference/tools/tidb-binlog/faq.md)
+    - [概述](/dev/reference/tidb-binlog/overview.md)
+    - [部署使用](/dev/reference/tidb-binlog/deploy.md)
+    - [运维管理](/dev/reference/tidb-binlog/maintain.md)
+    - [版本升级](/dev/reference/tidb-binlog/upgrade.md)
+    - [监控告警](/dev/reference/tidb-binlog/monitor.md)
+    - [增量恢复](/dev/reference/tidb-binlog/reparo.md)
+    - [Kafka 自定义开发](/dev/reference/tidb-binlog/binlog-slave-client.md)
+    - [FAQ](/dev/reference/tidb-binlog/faq.md)
+  + 周边工具
+    - [Mydumper](/dev/reference/tools/mydumper.md)
+    - [Loader](/dev/reference/tools/loader.md)
+    - [Syncer](/dev/reference/tools/syncer.md)
+    + Data Migration
+      + 概述
+        - [DM 架构](/dev/reference/tools/data-migration/overview.md#dm-架构)
+        - [同步功能介绍](/dev/reference/tools/data-migration/overview.md#同步功能介绍)
+        - [使用限制](/dev/reference/tools/data-migration/overview.md#使用限制)
+        - [DM-worker 简介](/dev/reference/tools/data-migration/dm-worker-intro.md)
+        - [DM Relay Log](/dev/reference/tools/data-migration/relay-log.md)
+      + 核心特性
+        - [Table Routing](/dev/reference/tools/data-migration/features/overview.md#table-routing)
+        - [Black & White Lists](/dev/reference/tools/data-migration/features/overview.md#black--white-table-lists)
+        - [Binlog Event Filter](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)
+        - [同步延迟监控](/dev/reference/tools/data-migration/features/overview.md#同步延迟监控)
+        + Shard Support
+          - [简介](/dev/reference/tools/data-migration/features/shard-merge.md)
+          - [使用限制](/dev/reference/tools/data-migration/features/shard-merge.md#使用限制)
+          - [手动处理 Sharding DDL Lock](/dev/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)
+      + 使用场景
+        - [简单的从库同步场景](/dev/reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
+        - [分库分表合并场景](/dev/reference/tools/data-migration/usage-scenarios/shard-merge.md)
+        - [分表合并数据迁移最佳实践](/dev/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md)
+        - [DM-worker 在上游 MySQL 主从间切换](/dev/reference/tools/data-migration/usage-scenarios/master-slave-switch.md)
+      + [部署使用](/dev/reference/tools/data-migration/deploy.md)
+      + 配置
+        - [概述](/dev/reference/tools/data-migration/configure/overview.md)
+        - [DM-master 配置](/dev/reference/tools/data-migration/configure/dm-master-configuration-file.md)
+        - [DM-worker 配置](/dev/reference/tools/data-migration/configure/dm-worker-configuration-file.md)
+        - [任务配置](/dev/reference/tools/data-migration/configure/task-configuration-file.md)
+      + DM 集群管理
+        - [集群操作](/dev/reference/tools/data-migration/cluster-operations.md)
+        - [集群升级](/dev/reference/tools/data-migration/dm-upgrade.md)
+      + DM 同步任务管理
+        - [管理数据同步任务](/dev/reference/tools/data-migration/manage-tasks.md)
+        - [任务前置检查](/dev/reference/tools/data-migration/precheck.md)
+        - [任务状态查询](/dev/reference/tools/data-migration/query-status.md)
+        - [跳过或替代执行异常的 SQL 语句](/dev/reference/tools/data-migration/skip-replace-sqls.md)
+      - [监控 DM 集群](/dev/reference/tools/data-migration/monitor.md)
+      + 从与 MySQL 兼容的数据库迁移数据
+        - [从 Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-aurora.md)
+      - [DM Portal](/dev/reference/tools/data-migration/dm-portal.md)
+      + DM 故障诊断
+        - [故障诊断](/dev/reference/tools/data-migration/troubleshoot/dm.md)
+        - [错误含义](/dev/reference/tools/data-migration/troubleshoot/error-system.md)
+        - [常见错误修复](/dev/reference/tools/data-migration/troubleshoot/error-handling.md)
+      - [DM FAQ](/dev/reference/tools/data-migration/faq.md)
+      + 版本发布历史
+        + v1.0
+          - [1.0.2](/dev/reference/tools/data-migration/releases/1.0.2.md)
+    + TiDB Lightning
+      - [概述](/dev/reference/tools/tidb-lightning/overview.md)
+      - [部署执行](/dev/reference/tools/tidb-lightning/deployment.md)
+      - [断点续传](/dev/reference/tools/tidb-lightning/checkpoints.md)
+      - [表库过滤](/dev/reference/tools/tidb-lightning/table-filter.md)
+      - [CSV 支持](/dev/reference/tools/tidb-lightning/csv.md)
+      - [监控告警](/dev/reference/tools/tidb-lightning/monitor.md)
+      - [故障诊断](/dev/how-to/troubleshoot/tidb-lightning.md)
+      - [FAQ](/dev/faq/tidb-lightning.md)
+    - [sync-diff-inspector](/dev/reference/tools/sync-diff-inspector/overview.md)
+    - [PD Control](/dev/reference/tools/pd-control.md)
+    - [PD Recover](/dev/reference/tools/pd-recover.md)
+    - [TiKV Control](/dev/reference/tools/tikv-control.md)
+    - [TiDB Controller](/dev/reference/tools/tidb-control.md)
+    - [工具下载](/dev/reference/tools/download.md)
 + TiDB in Kubernetes
   - [TiDB Operator 简介](/dev/tidb-in-kubernetes/tidb-operator-overview.md)
   + 快速上手
