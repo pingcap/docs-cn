@@ -1,7 +1,7 @@
 ---
 title: TiDB Binlog Cluster 版本升级方法
 category: reference
-aliases: ['/docs-cn/dev/how-to/upgrade/tidb-binlog/']
+aliases: ['/docs-cn/dev/how-to/upgrade/tidb-binlog/','/docs-cn/dev/reference/tools/tidb-binlog/upgrade/']
 ---
 
 # TiDB Binlog Cluster 版本升级方法
