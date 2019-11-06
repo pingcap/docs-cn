@@ -71,6 +71,7 @@
     - [TiDB Lightning 故障诊断](/dev/how-to/troubleshoot/tidb-lightning.md)
 + 参考手册
   + SQL
+    - [与 MySQL 兼容性对比](/dev/reference/mysql-compatibility.md)
     + SQL 语言结构
       - [字面值](/dev/reference/sql/language-structure/literal-values.md)
       - [Schema 对象名](/dev/reference/sql/language-structure/schema-object-names.md)
@@ -265,7 +266,6 @@
     - [高并发写入场景最佳实践](/dev/reference/best-practices/high-concurrency.md)
     - [Grafana 监控最佳实践](/dev/reference/best-practices/grafana-monitor.md)
     - [PD 调度策略最佳实践](/dev/reference/best-practices/pd-scheduling.md)
-  - [与 MySQL 兼容性对比](/dev/reference/mysql-compatibility.md)
   + [TiSpark 使用指南](/dev/reference/tispark.md)
   + TiDB Binlog
     - [概述](/dev/reference/tidb-binlog/overview.md)
