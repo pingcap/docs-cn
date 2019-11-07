@@ -24,7 +24,7 @@ category: how-to
 
 ## 选择一个项目
 
-本教程会启动一个包含 3 个 `n1-standard-1` 类型节点的 Kubernetes 集群。价格信息可以参考[这里](https://cloud.google.com/compute/pricing)。
+本教程会启动一个包含 3 个 `n1-standard-1` 类型节点的 Kubernetes 集群。价格信息可以参考 [All pricing](https://cloud.google.com/compute/pricing)。
 
 继续之前请选择一个项目：
 
