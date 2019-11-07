@@ -150,21 +150,21 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
     如何获取一个最新的时间戳:
 
-        使用 binlogctl 工具生成 Drainer 初次启动所需的 tso 信息，命令：
+    使用 binlogctl 工具生成 Drainer 初次启动所需的 tso 信息，命令：
 
-        {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-        ```bash
-        cd /home/tidb/tidb-ansible &&
-        resources/bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd generate_meta
-        ```
+    ```bash
+    cd /home/tidb/tidb-ansible &&
+    resources/bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd generate_meta
+    ```
 
-        ```
-        INFO[0000] [pd] create pd client with endpoints [http://192.168.199.118:32379]
-        INFO[0000] [pd] leader switches to: http://192.168.199.118:32379, previous:
-        INFO[0000] [pd] init cluster id 6569368151110378289
-        2018/06/21 11:24:47 meta.go:117: [info] meta: &{CommitTS:400962745252184065}
-        ```
+    ```
+    INFO[0000] [pd] create pd client with endpoints [http://192.168.199.118:32379]
+    INFO[0000] [pd] leader switches to: http://192.168.199.118:32379, previous:
+    INFO[0000] [pd] init cluster id 6569368151110378289
+    2018/06/21 11:24:47 meta.go:117: [info] meta: &{CommitTS:400962745252184065}
+    ```
 
         该命令会输出 `meta: &{CommitTS:400962745252184065}`，CommitTS 的值作为 Drainer 初次启动使用的 `initial-commit-ts` 参数的值。
 
