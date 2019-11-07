@@ -100,8 +100,11 @@
     - [Syncer](/v3.0/reference/tools/syncer.md)
     - [Loader](/v3.0/reference/tools/loader.md)
     + TiDB Data Migration
-      - [Overview](/v3.0/reference/tools/data-migration/overview.md)
-      - [Restrictions](/v3.0/reference/tools/data-migration/overview.md#usage-restrictions)
+      + Overview
+        - [DM Overview](/v3.0/reference/tools/data-migration/overview.md)
+        - [Restrictions](/v3.0/reference/tools/data-migration/overview.md#usage-restrictions)
+        - [DM-worker](/v3.0/reference/tools/data-migration/dm-worker-intro.md)
+        - [DM Relay Log](/v3.0/reference/tools/data-migration/dm-worker-intro.md)
       + Features
         - [Table Routing](/v3.0/reference/tools/data-migration/features/overview.md#table-routing)
         - [Black and White Lists](/v3.0/reference/tools/data-migration/features/overview.md#black-and-white-table-lists)
@@ -119,14 +122,19 @@
       + Configure
         - [Overview](/v3.0/reference/tools/data-migration/configure/overview.md)
         - [Task Configuration](/v3.0/reference/tools/data-migration/configure/task-configuration-file.md)
+      + Manage the DM Cluster
+        - [Cluster Operations](/v3.0/reference/tools/data-migration/cluster-operations.md)
+        - [Cluster Upgrade](/v3.0/reference/tools/data-migration/upgrade.md)
+      + Manage Replication Tasks
+        - [Manage Tasks](/v3.0/reference/tools/data-migration/manage-tasks.md)
+        - [Precheck Tasks](/v3.0/reference/tools/data-migration/precheck.md)
+        - [Query Task Status](/v3.0/reference/tools/data-migration/query-status.md)
       - [Monitor](/v3.0/reference/tools/data-migration/monitor.md)
-      - [Manage the Task](/v3.0/reference/tools/data-migration/manage-tasks.md)
-      - [Cluster Operations](/v3.0/reference/tools/data-migration/cluster-operations.md)
       + Migrate from MySQL compatible database
         - [Migrate from Aurora](/v3.0/how-to/migrate/from-aurora.md)
-      - [Error Message Description](/v3.0/reference/tools/data-migration/error-system.md)
-      - [Troubleshoot](/v3.0/how-to/troubleshoot/data-migration.md)
-      - [Upgrade](/v3.0/reference/tools/data-migration/upgrade.md)
+      + Troubleshoot
+        - [Troubleshooting](/v3.0/how-to/troubleshoot/data-migration.md)
+        - [Error Description](/v3.0/reference/tools/data-migration/error-system.md)
       - [FAQ](/v3.0/faq/data-migration.md)
     + TiDB Lightning
       - [Overview](/v3.0/reference/tools/tidb-lightning/overview.md)

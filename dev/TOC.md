@@ -101,8 +101,11 @@
     - [Syncer](/dev/reference/tools/syncer.md)
     - [Loader](/dev/reference/tools/loader.md)
     + TiDB Data Migration
-      - [Overview](/dev/reference/tools/data-migration/overview.md)
-      - [Restrictions](/dev/reference/tools/data-migration/overview.md#usage-restrictions)
+      + Overview
+        - [DM Overview](/dev/reference/tools/data-migration/overview.md)
+        - [Restrictions](/dev/reference/tools/data-migration/overview.md#usage-restrictions)
+        - [DM-worker](/dev/reference/tools/data-migration/dm-worker-intro.md)
+        - [DM Relay Log](/dev/reference/tools/data-migration/dm-worker-intro.md)
       + Features
         - [Table Routing](/dev/reference/tools/data-migration/features/overview.md#table-routing)
         - [Black and White Lists](/dev/reference/tools/data-migration/features/overview.md#black-and-white-table-lists)
@@ -120,14 +123,19 @@
       + Configure
         - [Overview](/dev/reference/tools/data-migration/configure/overview.md)
         - [Task Configuration](/dev/reference/tools/data-migration/configure/task-configuration-file.md)
+      + Manage the DM Cluster
+        - [Cluster Operations](/dev/reference/tools/data-migration/cluster-operations.md)
+        - [Cluster Upgrade](/dev/reference/tools/data-migration/upgrade.md)
+      + Manage Replication Tasks
+        - [Manage Tasks](/dev/reference/tools/data-migration/manage-tasks.md)
+        - [Precheck Tasks](/dev/reference/tools/data-migration/precheck.md)
+        - [Query Task Status](/dev/reference/tools/data-migration/query-status.md)
       - [Monitor](/dev/reference/tools/data-migration/monitor.md)
-      - [Manage the Task](/dev/reference/tools/data-migration/manage-tasks.md)
-      - [Cluster Operations](/dev/reference/tools/data-migration/cluster-operations.md)
       + Migrate from MySQL compatible database
         - [Migrate from Aurora](/dev/how-to/migrate/from-aurora.md)
-      - [Error Message Description](/dev/reference/tools/data-migration/error-system.md)
-      - [Troubleshoot](/dev/how-to/troubleshoot/data-migration.md)
-      - [Upgrade](/dev/reference/tools/data-migration/upgrade.md)
+      + Troubleshoot
+        - [Troubleshooting](/dev/how-to/troubleshoot/data-migration.md)
+        - [Error Description](/dev/reference/tools/data-migration/error-system.md)
       - [FAQ](/dev/faq/data-migration.md)
     + TiDB Lightning
       - [Overview](/dev/reference/tools/tidb-lightning/overview.md)

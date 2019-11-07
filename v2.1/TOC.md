@@ -94,8 +94,11 @@
     - [Syncer](/v2.1/reference/tools/syncer.md)
     - [Loader](/v2.1/reference/tools/loader.md)
     + TiDB Data Migration
-      - [Overview](/v2.1/reference/tools/data-migration/overview.md)
-      - [Restrictions](/v2.1/reference/tools/data-migration/overview.md#usage-restrictions)
+      + Overview
+        - [DM Overview](/v2.1/reference/tools/data-migration/overview.md)
+        - [Restrictions](/v2.1/reference/tools/data-migration/overview.md#usage-restrictions)
+        - [DM-worker](/v2.1/reference/tools/data-migration/dm-worker-intro.md)
+        - [DM Relay Log](/v2.1/reference/tools/data-migration/dm-worker-intro.md)
       + Features
         - [Table Routing](/v2.1/reference/tools/data-migration/features/overview.md#table-routing)
         - [Black and White Lists](/v2.1/reference/tools/data-migration/features/overview.md#black-and-white-table-lists)
@@ -113,13 +116,17 @@
       + Configure
         - [Overview](/v2.1/reference/tools/data-migration/configure/overview.md)
         - [Task Configuration](/v2.1/reference/tools/data-migration/configure/task-configuration-file.md)
+      + Manage the DM Cluster
+        - [Cluster Operations](/v2.1/reference/tools/data-migration/cluster-operations.md)
+        - [Cluster Upgrade](/v2.1/reference/tools/data-migration/upgrade.md)
+      + Manage Replication Tasks
+        - [Manage Tasks](/v2.1/reference/tools/data-migration/manage-tasks.md)
+        - [Precheck Tasks](/v2.1/reference/tools/data-migration/precheck.md)
+        - [Query Task Status](/v2.1/reference/tools/data-migration/query-status.md)
       - [Monitor](/v2.1/reference/tools/data-migration/monitor.md)
-      - [Manage the Task](/v2.1/reference/tools/data-migration/manage-tasks.md)
-      - [Cluster Operations](/v2.1/reference/tools/data-migration/cluster-operations.md)
       + Migrate from MySQL compatible database
         - [Migrate from Aurora](/v2.1/how-to/migrate/from-aurora.md)
       - [Troubleshoot](/v2.1/how-to/troubleshoot/data-migration.md)
-      - [Upgrade](/v2.1/reference/tools/data-migration/upgrade.md)
       - [FAQ](/v2.1/faq/data-migration.md)
     + TiDB Lightning
       - [Overview](/v2.1/reference/tools/tidb-lightning/overview.md)
