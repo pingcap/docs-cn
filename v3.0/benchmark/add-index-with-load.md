@@ -46,7 +46,7 @@ TiDB、TiKV 和 PD 均使用 [TiDB Operator](https://github.com/pingcap/tidb-ope
 
 ### 使用 Sysbench 模拟线上负载
 
-使用 Sysbench 向集群导入 **1 张表，数据 200 万**。
+使用 Sysbench 向集群导入 **1 张表，200 万行数据**。
 
 执行如下命令导入数据：
 
