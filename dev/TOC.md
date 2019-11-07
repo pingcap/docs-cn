@@ -43,7 +43,7 @@
       - [From Homebrew](/dev/how-to/get-started/deploy-tidb-from-homebrew.md)
       - [From DBdeployer](/dev/how-to/get-started/deploy-tidb-from-dbdeployer.md)
       - [In Docker Compose](/dev/how-to/get-started/deploy-tidb-from-docker-compose.md)
-    - [Explore SQL with TiDB](/dev/how-to/get-started/explore-sql.md)
+    - [Explore SQL with TiDB](https://tour.tidb.io/)
     - [Import Example Database](/dev/how-to/get-started/import-example-database.md)
     - [Read Historical Data](/dev/how-to/get-started/read-historical-data.md)
     - [TiDB Binlog Tutorial](/dev/how-to/get-started/tidb-binlog.md)
