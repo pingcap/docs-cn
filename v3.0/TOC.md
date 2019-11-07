@@ -42,7 +42,7 @@
       - [From Binary](/v3.0/how-to/get-started/deploy-tidb-from-binary.md)
       - [From Homebrew](/v3.0/how-to/get-started/deploy-tidb-from-homebrew.md)
       - [From DBdeployer](/v3.0/how-to/get-started/deploy-tidb-from-dbdeployer.md)
-    - [Explore SQL with TiDB](https://tour.tidb.io/)
+    - [Explore SQL with TiDB](/v3.0/how-to/get-started/explore-sql.md)
     - [Import Example Database](/v3.0/how-to/get-started/import-example-database.md)
     - [Read Historical Data](/v3.0/how-to/get-started/read-historical-data.md)
     - [TiDB Binlog Tutorial](/v3.0/how-to/get-started/tidb-binlog.md)

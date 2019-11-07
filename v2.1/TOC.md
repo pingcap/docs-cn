@@ -36,7 +36,7 @@
   + Get Started
     + Start a Local Cluster
       - [From Binary](/v2.1/how-to/get-started/deploy-tidb-from-binary.md)
-    - [Explore SQL with TiDB](https://tour.tidb.io/)
+    - [Explore SQL with TiDB](/v2.1/how-to/get-started/explore-sql.md)
     - [Import Example Database](/v2.1/how-to/get-started/import-example-database.md)
     - [Read Historical Data](/v2.1/how-to/get-started/read-historical-data.md)
     - [TiDB Binlog Tutorial](/v2.1/how-to/get-started/tidb-binlog.md)
