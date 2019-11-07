@@ -57,9 +57,11 @@ Try the latest version! Maybe there is new speed improvement.
 
 3. If TiDB Lightning was improperly restarted, see also the "[How to properly restart TiDB Lightning](/dev/faq/tidb-lightning.md#how-to-properly-restart-tidb-lightning)" section in the FAQ.
 
-## Checkpoint for … has invalid status: …
+## Checkpoint for … has invalid status: (error code)
 
 **Cause**: [Checkpoint](/dev/reference/tools/tidb-lightning/checkpoints.md) is enabled, and Lightning or Importer has previously abnormally exited. To prevent accidental data corruption, Lightning will not start until the error is addressed.
+
+The error code is an integer less than 25, with possible values of 0, 3, 6, 9, 12, 14, 15, 17, 18, 20 and 21. The integer indicates the step where the unexpected exit occurs in the import process. The larger the integer is, the later step where the exit occurs.
 
 **Solutions**:
 
