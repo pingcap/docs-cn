@@ -152,7 +152,8 @@ When you find some network connection issues between Pods from the log or monito
 The Pending state of a Pod is usually caused by conditions of insufficient resources, such as:
 
 - The `StorageClass` of the PVC used by PD, TiKV, Monitor Pod does not exist or the PV is insufficient.
-- No nodes in the Kubernetes cluster can satisfy the CPU or memory applied by the Pod
+- No nodes in the Kubernetes cluster can satisfy the CPU or memory resources requested by the Pod
+- The number of TiKV or PD replicas and the number of nodes in the cluster do not satisfy the high availability scheduling policy of tidb-scheduler
 
 You can check the specific reason for Pending by using the `kubectl describe pod` command:
 
@@ -164,7 +165,7 @@ kubectl describe po -n <namespace> <pod-name>
 
 - If the CPU or memory resources are insufficient, you can lower the CPU or memory resources requested by the corresponding component for scheduling, or add a new Kubernetes node.
 
-- If the `StorageClass` of the PVC cannot be found, delete the TiDB Pod and the corresponding PVC. Then, in the `values.yaml` file, change `storageClassName` to the name of the `StorageClass` available in the cluster. Run the following command to get the `StorageClass` available in the cluster:
+- If the `StorageClass` of the PVC cannot be found, change `storageClassName` in the `values.yaml` file to the name of the `StorageClass` available in the cluster; run `helm upgrade`; and delete Statefulset and the corresponding PVCs. Run the following command to get the `StorageClass` available in the cluster:
 
     {{< copyable "shell-regular" >}}
 
@@ -173,6 +174,8 @@ kubectl describe po -n <namespace> <pod-name>
     ```
 
 - If a `StorageClass` exists in the cluster but the available PV is insufficient, you need to add PV resources correspondingly. For Local PV, you can expand it by referring to [Local PV Configuration](/dev/tidb-in-kubernetes/reference/configuration/storage-class.md#local-pv-configuration).
+
+- tidb-scheduler has a high availability scheduling policy for TiKV and PD. For the same TiDB cluster, if there are N replicas of TiKV or PD, then the number of PD Pods that can be scheduled to each node is `M=(N-1)/2` (if N<3, then M=1) at most, and the number of TiKV Pods that can be scheduled to each node is `M=ceil(N/3)` (if N<3, then M=1; `ceil` means rounding up) at most. If the Pod's state becomes `Pending` because the high availability scheduling policy is not satisfied, you need to add more nodes in the cluster.
 
 ## The Pod is in the `CrashLoopBackOff` state
 
