@@ -5,6 +5,8 @@ category: reference
 
 # 数值函数与操作符
 
+TiDB 支持使用 MySQL 5.7 中提供的所有[数值函数与操作符](https://dev.mysql.com/doc/refman/5.7/en/numeric-functions.html)。
+
 ## 算术操作符
 
 | 操作符名     | 功能描述                       |

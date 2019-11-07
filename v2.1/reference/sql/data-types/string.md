@@ -46,7 +46,7 @@ TEXT[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
 {{< copyable "sql" >}}
 
 ```sql
-TINYTEXT[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
+TINYTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
 ```
 
 ### `MEDIUMTEXT` 类型

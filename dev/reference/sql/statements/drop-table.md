@@ -26,22 +26,63 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE TABLE t1 (a INT);
+CREATE TABLE t1 (a INT);
+```
+
+```
 Query OK, 0 rows affected (0.11 sec)
+```
 
-mysql> DROP TABLE t1;
+{{< copyable "sql" >}}
+
+```sql
+DROP TABLE t1;
+```
+
+```
 Query OK, 0 rows affected (0.22 sec)
+```
 
-mysql> DROP TABLE table_not_exists;
+{{< copyable "sql" >}}
+
+```sql
+DROP TABLE table_not_exists;
+```
+
+```
 ERROR 1051 (42S02): Unknown table 'test.table_not_exists'
-mysql> DROP TABLE IF EXISTS table_not_exists;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+DROP TABLE IF EXISTS table_not_exists;
+```
+
+```
 Query OK, 0 rows affected (0.01 sec)
+```
 
-mysql> CREATE VIEW v1 AS SELECT 1;
+{{< copyable "sql" >}}
+
+```sql
+CREATE VIEW v1 AS SELECT 1;
+```
+
+```
 Query OK, 0 rows affected (0.10 sec)
+```
 
-mysql> DROP TABLE v1;
+{{< copyable "sql" >}}
+
+```sql
+DROP TABLE v1;
+```
+
+```
 Query OK, 0 rows affected (0.23 sec)
 ```
 
@@ -51,7 +92,7 @@ Query OK, 0 rows affected (0.23 sec)
 
 ## 另请参阅
 
-* [DROP VIEW](/reference/sql/statements/drop-view.md)
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
-* [SHOW TABLES](/reference/sql/statements/show-tables.md)
+* [DROP VIEW](/dev/reference/sql/statements/drop-view.md)
+* [CREATE TABLE](/dev/reference/sql/statements/create-table.md)
+* [SHOW CREATE TABLE](/dev/reference/sql/statements/show-create-table.md)
+* [SHOW TABLES](/dev/reference/sql/statements/show-tables.md)

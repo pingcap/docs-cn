@@ -12,6 +12,7 @@ category: deployment
 ## 环境准备
 
 ### 安装 Docker
+
 Docker 可以方便地在 Linux / Mac OS / Windows 平台安装，安装方法请参考 [Docker 官方文档](https://www.docker.com/products/docker)。
 
 ### 拉取 TiDB 的 Docker 镜像
@@ -42,7 +43,6 @@ docker pull pingcap/pd:latest
 | host4 | 192.168.1.104 | TiKV1      | /data |
 | host5 | 192.168.1.105 | TiKV2      | /data |
 | host6 | 192.168.1.106 | TiKV3      | /data |
-
 
 ### 启动 PD
 

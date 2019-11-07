@@ -4,11 +4,11 @@ category: reference
 aliases: ['/docs-cn/op-guide/tidb-config-file/']
 ---
 
+<!-- markdownlint-disable MD001 -->
+
 # TiDB 配置文件描述
 
-TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认值的配置文件，重命名为 config.toml 即可。
-
-本文档只阐述未包含在命令行参数中的参数，命令行参数参见[这里](/reference/configuration/tidb-server/configuration.md)。
+TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/release-3.0/config/config.toml.example) 找到默认值的配置文件，重命名为 `config.toml` 即可。本文档只介绍未包含在[命令行参数](https://pingcap.com/docs-cn/v3.0/reference/configuration/tidb-server/configuration)中的参数。
 
 ### `split-table`
 
@@ -23,6 +23,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 现在合法的选项是 ["log", "cancel"]，如果为 "log"，仅仅是打印日志，不作实质处理。如果为 "cancel"，我们会取消执行这个操作，并且输出日志。
 
 ### `mem-quota-query`
+
 + 单条 SQL 语句可以占用的最大内存阈值。
 + 默认值：34359738368
 + 超过该值的请求会被 `oom-action` 定义的行为所处理。
@@ -53,7 +54,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 设置 `KILL` 语句的兼容性。
 + 默认值：false
 + TiDB 中 `KILL xxx` 的行为和 MySQL 中的行为不相同。为杀死一条查询，在 TiDB 里需要加上 `TIDB` 关键词，即 `KILL TIDB xxx`。但如果把 `compatible-kill-query` 设置为 true，则不需要加上 `TIDB` 关键词。
-+ 这种区别很重要，因为当用户按下 <kbd>Ctrl</kbd>+<kbd>C</kbd> 时，MySQL 命令行客户端的默认值行为是：创建与后台的新连接，并在该新连接中执行 `KILL` 语句。如果负载均衡器或代理已将该新连接发送到与原始会话不同的 TiDB 服务器实例，则该错误会话可能被终止，从而导致使用 TiDB 集群的业务中断。只有当您确定在 `KILL` 语句中引用的连接正好位于 `KILL` 语句发送到的服务器上时，才可以启用 `compatible-kill-query`。
++ 这种区别很重要，因为当用户按下 <kbd>Ctrl</kbd>+<kbd>C</kbd> 时，MySQL 命令行客户端的默认行为是：创建与后台的新连接，并在该新连接中执行 `KILL` 语句。如果负载均衡器或代理已将该新连接发送到与原始会话不同的 TiDB 服务器实例，则该错误会话可能被终止，从而导致使用 TiDB 集群的业务中断。只有当您确定在 `KILL` 语句中引用的连接正好位于 `KILL` 语句发送到的服务器上时，才可以启用 `compatible-kill-query`。
 
 ### `check-mb4-value-in-utf8`
 
@@ -65,7 +66,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 将旧表中的 utf8 字符集当成 utf8mb4的开关。
 + 默认值：true
 
-## log 
+## log
 
 日志相关的配置项。
 
@@ -124,13 +125,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 日志最大保留的天数。
 + 默认值：0
-+ 默认值是不清理的，如果设置了，在 `max-days` 之后 TiDB 会清理过期的日志文件。
++ 默认不清理；如果设置了参数值，在 `max-days` 之后 TiDB 会清理过期的日志文件。
 
 #### `max-backups`
 
 + 保留的日志的最大数量。
 + 默认值：0
-+ 默认值全部保存，如果设置为 7，会最多保留 7 个老的日志文件。
++ 默认全部保存；如果设置为 7，会最多保留 7 个老的日志文件。
 
 #### `log-rotate`
 
@@ -190,11 +191,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + TiDB 的 CPU 使用数量。
 + 默认值：0
-+ 默认值为 0 表示使用机器上所有的 CPU，也可以设置成 n，那么 TiDB 会使用 n 个 CPU 数量。
++ 默认值为 0 表示使用机器上所有的 CPU；如果设置成 n，那么 TiDB 会使用 n 个 CPU 数量。
 
 ### `max-memory`
 
-+ Prepare cache LRU 使用的最大内存限制，超过 performance.max-memory * (1 - prepared-plan-cache.memory-guard-ratio)会 剔除 LRU 中的元素。 
++ Prepare cache LRU 使用的最大内存限制，超过 performance.max-memory * (1 - prepared-plan-cache.memory-guard-ratio)会 剔除 LRU 中的元素。
 + 默认值：0
 + 这个配置只有在 prepared-plan-cache.enabled 为 true 的情况才会生效。在 LRU 的 size 大于 prepared-plan-cache.capacity 的情况下，也会剔除 LRU 中的元素。
 
@@ -209,25 +210,25 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + TiDB 在 TCP 层开启 keepalive。
 + 默认值：false
 
-### `retry-limit`
-
-+ TiDB 在提交事务的时候遇到 key 冲突或者其他错误时进行的重试次数。
-+ 默认值：10
-+ 如果 TiDB 超过 `retry-limit` 次重试还是没有成功，将会返回错误。
-
 ### `cross-join`
 
 + 默认值：true
-+ 在做 join 的时候，两边表没有任何条件（where 字段），默认值可以执行这样的语句。但是设置为 false，则如有这样的 join 语句出现，server 会拒绝执行
++ 默认可以执行在做 join 时两边表没有任何条件（where 字段）的语句；如果设置为 false，则有这样的 join 语句出现时，server 会拒绝执行
 
 ### `stats-lease`
 
-+ TiDB 重载统计信息，更新表行数，检查是否需要自动 analyze 以及加载列的统计信息的时间间隔。
++ TiDB 重载统计信息，更新表行数，检查是否需要自动 analyze，利用 feedback 更新统计信息以及加载列的统计信息的时间间隔。
 + 默认值：3s
     - 每隔 `stats-lease` 时间，TiDB 会检查统计信息是否有更新，如果有会将其更新到内存中
-    - 每隔 `5 * stats-lease` 时间，TiDB 会将 DML 产生的总行数以及修改的行数变化持久化下来
+    - 每隔 `20 * stats-lease` 时间，TiDB 会将 DML 产生的总行数以及修改的行数变化更新到系统表中
     - 每隔 `stats-lease` 时间，TiDB 会检查是否有表或者索引需要自动 analyze
     - 每隔 `stats-lease` 时间，TiDB 会检查是否有列的统计信息需要被加载到内存中
+    - 每隔 `200 * stats-lease` 时间，TiDB 会将内存中缓存的 feedback 写入系统表中
+    - 每隔 `5 * stats-lease` 时间，TiDB 会读取系统表中的 feedback，更新内存中缓存的统计信息
++ 当 `stats-lease` 为 0 时，TiDB 会以 3s 的时间间隔周期性的读取系统表中的统计信息并更新内存中缓存的统计信息。但不会自动修改统计信息相关系统表，具体来说，TiDB 不再自动修改这些表：
+    - `mysql.stats_meta`：TiDB 不再自动记录事务中对某张表的修改行数，也不会更新到这个系统表中
+    - `mysql.stats_histograms`/`mysql.stats_buckets` 和 `mysql.stats_top_n`：TiDB 不再自动 analyze 和主动更新统计信息
+    - `mysql.stats_feedback`：TiDB 不再根据被查询的数据反馈的部分统计信息更新表和索引的统计信息，analyze 以及 feedback 等操作都不会再进行。
 
 ### `run-auto-analyze`
 
@@ -237,7 +238,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `feedback-probability`
 
 + TiDB 对查询收集统计信息反馈的概率。
-+ 默认值：0.0
++ 默认值：0.05
 + 对于每一个查询，TiDB 会以 `feedback-probability` 的概率收集查询的反馈，用于更新统计信息。
 
 ### `query-feedback-limit`
@@ -342,7 +343,7 @@ prepare 语句的 Plan cache 设置。
 ### `capacity`
 
 + Hash 对应的 slot 数，会自动向上调整为 2 的指数倍。每个 slot 占 32 Bytes 内存。当写入数据的范围比较广时（如导数据），设置过小会导致变慢，性能下降。
-+ 默认值：1024000
++ 默认值：2048000
 
 ## binlog
 
@@ -363,7 +364,7 @@ TiDB Binlog 相关配置。
 
 + 忽略写 binlog 发生的错误时处理开关，推荐不修改该值。
 + 默认值：false
-+ "true"，发生错误时，停止写入 binlog, 并且在监控项 tidb_server_critical_error_total 上计数加1；"false": 写入 binlog 失败，会停止整个 TiDB 的服务。
++ 如果设置为 `true`，发生错误时，TiDB 会停止写入 binlog，并且在监控项 `tidb_server_critical_error_total` 上计数加 1；如果设置为 `false`，写入 binlog 失败，会停止整个 TiDB 的服务。
 
 ### `binlog-socket`
 
@@ -379,7 +380,26 @@ TiDB Binlog 相关配置。
 
 TiDB 服务状态相关配置。
 
+### `report-status`
+
++ 开启 HTTP API 服务的开关。
++ 默认值：true
+
 ### `record-db-qps`
 
-+ 输与 database 相关的 QPS metrics 到 promethus的开关。
++ 输与 database 相关的 QPS metrics 到 Prometheus 的开关。
 + 默认值：false
+
+## stmt-summary <span class="version-mark">从 v3.0.4 版本开始引入</span>
+
+系统表 `events_statement_summary_by_digest` 的相关配置。
+
+### max-stmt-count
+
++ `events_statement_summary_by_digest` 表中保存的 SQL 种类的最大数量。
++ 默认值：100
+
+### max-sql-length
+
++ `events_statement_summary_by_digest` 表中`DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
++ 默认值：4096

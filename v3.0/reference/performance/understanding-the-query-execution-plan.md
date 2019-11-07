@@ -13,12 +13,12 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 `EXPLAIN` 语句的返回结果提供了 TiDB 执行 SQL 查询的详细信息：
 
 - `EXPLAIN` 可以和 `SELECT`，`DELETE` 语句一起使用；
-- 执行 `EXPLAIN`，TiDB 会返回被 `EXPLAIN` 的 SQL 语句经过优化器后的最终物理执行计划。也就是说，`EXPLAIN` 展示了 TiDB 执行该 SQL 语句的完整信息，比如以什么样的顺序，什么方式 JOIN 两个表，表达式树长什么样等等。详见 [`EXPLAIN` 输出格式](#explain-output-format)；
+- 执行 `EXPLAIN`，TiDB 会返回被 `EXPLAIN` 的 SQL 语句经过优化器后的最终物理执行计划。也就是说，`EXPLAIN` 展示了 TiDB 执行该 SQL 语句的完整信息，比如以什么样的顺序，什么方式 JOIN 两个表，表达式树长什么样等等。详见 [`EXPLAIN` 输出格式](#explain-输出格式)；
 - TiDB 支持 `EXPLAIN [options] FOR CONNECTION connection_id`，但与 MySQL 的 `EXPLAIN FOR` 有一些区别，请参见 [`EXPLAIN FOR CONNECTION`](#explain-for-connection)。
 
 通过观察 `EXPLAIN` 的结果，你可以知道如何给数据表添加索引使得执行计划使用索引从而加速 SQL 语句的执行速度；你也可以使用 `EXPLAIN` 来检查优化器是否选择了最优的顺序来 JOIN 数据表。
 
-## <span id="explain-output-format">`EXPLAIN` 输出格式</span>
+## `EXPLAIN` 输出格式
 
 目前 TiDB 的 `EXPLAIN` 会输出 4 列，分别是：id，count，task，operator info。执行计划中每个算子都由这 4 列属性来描述，`EXPLAIN` 结果中每一行描述一个算子。每个属性的具体含义如下：
 
@@ -29,7 +29,7 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 | task          | 当前这个算子属于什么 task。目前的执行计划分成为两种 task，一种叫 **root** task，在 tidb-server 上执行，一种叫 **cop** task，并行的在 TiKV 上执行。当前的执行计划在 task 级别的拓扑关系是一个 root task 后面可以跟许多 cop task，root task 使用 cop task 的输出结果作为输入。cop task 中执行的也即是 TiDB 下推到 TiKV 上的任务，每个 cop task 分散在 TiKV 集群中，由多个进程共同执行。 |
 | operator info | 每个算子的详细信息。各个算子的 operator info 各有不同，详见 [Operator Info](#operator-info)。                   |
 
-## <span id="explain-analyze-output-format">`EXPLAIN ANALYZE` 输出格式</span>
+## `EXPLAIN ANALYZE` 输出格式
 
 作为 `EXPLAIN` 语句的扩展，`EXPLAIN ANALYZE` 语句执行查询并在 `execution info` 列中提供额外的执行统计信息。具体如下：
 
@@ -41,8 +41,13 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 
 使用 [bikeshare example database](https://github.com/pingcap/docs/blob/master/dev/how-to/get-started/import-example-database.md):
 
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59';
 ```
-mysql> EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59';
+
+```
 +--------------------------+-------------+------+------------------------------------------------------------------------------------------------------------------------+
 | id                       | count       | task | operator info                                                                                                          |
 +--------------------------+-------------+------+------------------------------------------------------------------------------------------------------------------------+
@@ -59,10 +64,19 @@ mysql> EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 0
 
 上述查询中，虽然大部分计算逻辑都下推到了 TiKV 的 coprocessor 上，但是其执行效率还是不够高，可以添加适当的索引来消除 `TableScan_18` 对 `trips` 的全表扫，进一步加速查询的执行：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> ALTER TABLE trips ADD INDEX (start_date);
-..
-mysql> EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59';
+ALTER TABLE trips ADD INDEX (start_date);
+```
+
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59';
+```
+
+```
 +------------------------+---------+------+--------------------------------------------------------------------------------------------------+
 | id                     | count   | task | operator info                                                                                    |
 +------------------------+---------+------+--------------------------------------------------------------------------------------------------+

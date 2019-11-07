@@ -6,4 +6,4 @@ category: reference
 
 # DESC
 
-`DESC` 语句是 [`EXPLAIN`](/reference/sql/statements/explain.md) 的别名。包含该语句提供了 MySQL 兼容性。
+`DESC` 语句是 [`EXPLAIN`](/dev/reference/sql/statements/explain.md) 的别名。包含该语句提供了 MySQL 兼容性。

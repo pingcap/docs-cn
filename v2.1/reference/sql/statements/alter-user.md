@@ -50,11 +50,11 @@ mysql> SHOW CREATE USER 'newuser';
 
 ## MySQL 兼容性
 
-* 在 MySQL 中，`ALTER` 语句用于更改属性，例如使密码失效。但 TiDB 尚不支持此功能。
+* 在 MySQL 中，`ALTER` 语句用于更改属性，例如使密码失效。但 TiDB 尚未支持此功能。
 
 ## 另请参阅
 
-* [Security Compatibility with MySQL](/reference/security/compatibility.md)
-* [CREATE USER](/reference/sql/statements/create-user.md)
-* [DROP USER](/reference/sql/statements/drop-user.md)
-* [SHOW CREATE USER](/reference/sql/statements/show-create-user.md)
+* [Security Compatibility with MySQL](/v2.1/reference/security/compatibility.md)
+* [CREATE USER](/v2.1/reference/sql/statements/create-user.md)
+* [DROP USER](/v2.1/reference/sql/statements/drop-user.md)
+* [SHOW CREATE USER](/v2.1/reference/sql/statements/show-create-user.md)

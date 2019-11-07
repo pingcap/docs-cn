@@ -6,7 +6,7 @@ about: Usage question that isn't answered in docs or discussion
 ## Question
 
 **This repository is ONLY used to solve problems related to DOCS-CN.
-For other issues (TiDB, TiKV, etc), please move to [other repositories](https://github.com/pingcap/).**  
+For other issues (TiDB, TiKV, etc), please move to [other repositories](https://github.com/pingcap/).**
 <!-- 本仓库仅用于解决与中文文档相关的问题，
 其他方面问题（如 TiDB、TiKV 等），请移步其他[相关仓库](https://github.com/pingcap/)。 -->
 
@@ -19,6 +19,6 @@ Before asking a question, make sure you have:
 - Searched open and closed [GitHub issues](https://github.com/pingcap/docs-cn/issues?utf8=%E2%9C%93&q=is%3Aissue).
 <!-- - 查阅了相关的 issues。 -->
 - Read the documentation:
+    - [TiDB Docs](https://github.com/pingcap/docs)
+    - [TiDB Docs-cn](https://github.com/pingcap/docs-cn)
 <!-- - 阅读了相关文档。 -->
-  - [TiDB Doc](https://github.com/pingcap/docs)
-  - [TiDB Doc-cn](https://github.com/pingcap/docs-cn)

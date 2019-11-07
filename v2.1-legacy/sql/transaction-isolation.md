@@ -94,7 +94,7 @@ retry-limit = 10
 通过配置全局变量 `tidb_disable_txn_auto_retry` 可以关掉显式事务的重试。
 
 ```
-set @@global.tidb_disable_txn_auto_retry = 1;
+set @@global.tidb_disable_txn_auto_retry = on;
 ```
 
 这个变量不会影响 `auto_commit = 1` 的单语句的隐式事务，仍然会自动重试。

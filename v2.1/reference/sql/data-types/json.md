@@ -18,8 +18,8 @@ JSON 字段本身上，并不能创建索引。相反，可以对 JSON 文档中
 CREATE TABLE city (
     id INT PRIMARY KEY,
     detail JSON,
-    population INT AS (JSON_EXTRACT(detail, '$.population')
+    population INT AS (JSON_EXTRACT(detail, '$.population'))
 );
-INSERT INTO city VALUES (1, '{"name": "Beijing", "population": 100}');
+INSERT INTO city (id,detail) VALUES (1, '{"name": "Beijing", "population": 100}');
 SELECT id FROM city WHERE population >= 100;
 ```

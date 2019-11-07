@@ -14,21 +14,19 @@ category: deployment
 
 MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用另外一套证书。
 
-
-
 ## TiDB 集群组件间开启 TLS（双向认证）
 
 ### 准备证书
 
 推荐为 TiDB、TiKV、PD 分别准备一个 server 证书，并保证可以相互验证，而它们的各种客户端共用 client 证书。
 
-有多种工具可以生成自签名证书，如 `openssl`，`easy-rsa `，`cfssl`。
+有多种工具可以生成自签名证书，如 `openssl`，`easy-rsa`，`cfssl`。
 
 这里提供一个使用 `cfssl` 生成证书的示例：[生成自签名证书](generate-self-signed-certificates.md)。
 
 ### 配置证书
 
-##### TiDB
+#### TiDB
 
 在 config 文件或命令行参数中设置：
 
@@ -42,7 +40,7 @@ cluster-ssl-cert = "/path/to/tidb-server.pem"
 cluster-ssl-key = "/path/to/tidb-server-key.pem"
 ```
 
-##### TiKV
+#### TiKV
 
 在 config 文件或命令行参数中设置，并设置相应 url 为 https：
 
@@ -54,7 +52,7 @@ cert-path = "/path/to/client.pem"
 key-path = "/path/to/client-key.pem"
 ```
 
-##### PD
+#### PD
 
 在 config 文件或命令行参数中设置，并设置相应 url 为 https：
 
@@ -77,8 +75,6 @@ key-path = "/path/to/server-key.pem"
 
 ./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/client.pem" --key-path="/path/to/clinet-key.pem"
 ```
-
-
 
 ## MySQL 与 TiDB 间开启 TLS
 
@@ -127,6 +123,3 @@ ssl-key = "/path/to/certs/server-key.pem"
 ```bash
 mysql -u root --host 127.0.0.1 --port 4000 --ssl-cert=/path/to/certs/client-cert.pem --ssl-key=/path/to/certs/client-key.pem --ssl-ca=/path/to/certs/ca.pem --ssl-mode=VERIFY_IDENTITY
 ```
-
-
-

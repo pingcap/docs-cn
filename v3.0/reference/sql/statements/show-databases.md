@@ -22,8 +22,13 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW DATABASES;
+SHOW DATABASES;
+```
+
+```
 +--------------------+
 | Database           |
 +--------------------+
@@ -33,11 +38,25 @@ mysql> SHOW DATABASES;
 | test               |
 +--------------------+
 4 rows in set (0.00 sec)
+```
 
-mysql> CREATE DATABASE mynewdb;
+{{< copyable "sql" >}}
+
+```sql
+CREATE DATABASE mynewdb;
+```
+
+```
 Query OK, 0 rows affected (0.10 sec)
+```
 
-mysql> SHOW DATABASES;
+{{< copyable "sql" >}}
+
+```sql
+SHOW DATABASES;
+```
+
+```
 +--------------------+
 | Database           |
 +--------------------+
@@ -52,10 +71,10 @@ mysql> SHOW DATABASES;
 
 ## MySQL 兼容性
 
-`SHOW DATABASES` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW DATABASES` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW SCHEMAS](/reference/sql/statements/show-schemas.md)
-* [DROP DATABASE](/reference/sql/statements/drop-database.md)
-* [CREATE DATABASE](/reference/sql/statements/create-database.md)
+* [SHOW SCHEMAS](/v3.0/reference/sql/statements/show-schemas.md)
+* [DROP DATABASE](/v3.0/reference/sql/statements/drop-database.md)
+* [CREATE DATABASE](/v3.0/reference/sql/statements/create-database.md)

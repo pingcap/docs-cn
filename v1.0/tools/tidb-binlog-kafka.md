@@ -24,15 +24,15 @@ TiDB-Binlog 支持以下功能场景:
 
 TiDB-Binlog 集群主要分为三个组件：
 
-#### Pump
+### Pump
 
 Pump 是一个守护进程，在每个 TiDB 主机的后台运行。其主要功能是实时记录 TiDB 产生的 Binlog 并顺序写入 Kafka 中。
 
-#### Drainer
+### Drainer
 
 Drainer 从 Kafka 中收集 Binlog，并按照 TiDB 中事务的提交顺序转化为指定数据库兼容的 SQL 语句，最后同步到目的数据库或者写到顺序文件。
 
-#### Kafka & ZooKeeper
+### Kafka & ZooKeeper
 
 Kafka 集群用来存储由 Pump 写入的 Binlog 数据，并提供给 Drainer 进行读取。
 
@@ -73,10 +73,10 @@ cd tidb-binlog-latest-linux-amd64
 
     为了保证数据的完整性，在 Pump 运行 10 分钟左右后按顺序进行如下操作：
 
-    *  使用 [tidb-tools](https://github.com/pingcap/tidb-tools) 项目中的 generate_binlog_position 工具生成 Drainer 启动需要的 savepoint 文件中，make generate_binlog_position 编译该工具。具体使用参考工具的 README 说明，也可以直接下载获取该工具：[generate_binlog_position](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.tar.gz)， 并使用sha256sum验证该文件 [sha256](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.sha256)。
-    *  全量备份，例如 mydumper 备份 TiDB
-    *  全量导入备份到目标系统
-    *  Kafka 版本 Drainer 启动的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，如果 checkpoint 表中没有效的数据，可以通过设置 `initial-commit-ts` 启动 Drainer 从指定位置开始消费 - `bin/drainer --config=conf/drainer.toml --initial-commit-ts=${commitTS}`
+    * 使用 [tidb-tools](https://github.com/pingcap/tidb-tools) 项目中的 generate_binlog_position 工具生成 Drainer 启动需要的 savepoint 文件中，make generate_binlog_position 编译该工具。具体使用参考工具的 README 说明，也可以直接下载获取该工具：[generate_binlog_position](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.tar.gz)， 并使用sha256sum验证该文件 [sha256](https://download.pingcap.org/generate_binlog_position-latest-linux-amd64.sha256)。
+    * 全量备份，例如 mydumper 备份 TiDB
+    * 全量导入备份到目标系统
+    * Kafka 版本 Drainer 启动的 savepoint 默认保存在下游 database tidb_binlog 下的 checkpoint 表中，如果 checkpoint 表中没有效的数据，可以通过设置 `initial-commit-ts` 启动 Drainer 从指定位置开始消费 - `bin/drainer --config=conf/drainer.toml --initial-commit-ts=${commitTS}`
 
 * Drainer 输出的 pb，要在配置文件中设置如下参数：
 
@@ -188,22 +188,22 @@ ZK3="192.168.0.11"
 
     # Pump 对外提供服务的 RPC 地址("192.168.0.10:8250")
     advertise-addr = ""
-    
+
     # binlog 最大保留天数 (默认 7)，设置为 0 可永久保存
     gc = 7
- 
+
     # Pump 数据存储位置路径
     data-dir = "data.pump"
- 
+
     # ZooKeeper 地址，设置该选项从 ZooKeeper 中获取 Kafka 地址
     # ZooKeeper-addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
 
     # Pump 向 PD 发送心跳的间隔 (单位 秒)
     heartbeat-interval = 3
-   
+
     # PD 集群节点的地址
     pd-urls = "http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379"
- 
+
     # unix socket 模式服务监听地址 (默认 unix:///tmp/pump.sock)
     socket = "unix:///tmp/pump.sock"
     ```
@@ -378,9 +378,9 @@ PbReader 使用示例
 + 进入 Grafana Web 界面（默认地址: `http://localhost:3000`，默认账号：admin，密码：admin）
 
     点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息
-    
+
     > **注：**Type 选 Prometheus，URL 为 Prometheus 地址，根据实际情况添加/填写。
 
 + 导入 dashboard 配置文件
 
-    点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 [dashboard 配置文件](https://github.com/pingcap/docs/tree/master/etc)上传 -> 选择对应的 data source
+    点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 [dashboard 配置文件](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json)上传 -> 选择对应的 data source

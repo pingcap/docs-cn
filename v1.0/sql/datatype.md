@@ -31,6 +31,7 @@ TiDB 支持 MySQL 所有的数值类型，按照精度可以分为:
 TiDB 支持 MySQL 所有的整数类型，包括 INTEGER/INT、TINYINT、SMALLINT、MEDIUMINT 以及 BIGINT，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/numeric-type-overview.html)文档。
 
 #### 类型定义
+
 语法：
 
 ```sql
@@ -93,7 +94,7 @@ FLOAT[(M,D)] [UNSIGNED] [ZEROFILL]
 
 DOUBLE[(M,D)] [UNSIGNED] [ZEROFILL]
 > 双精度浮点数。允许的值范围为：-2^1024 ~ +2^1024，也即是 -1.7976931348623157E+308 到 -2.2250738585072014E-308、0 和 2.2250738585072014E-308 到 1.7976931348623157E+308。这些是理论限制，基于 IEEE 标准。实际的范围根据硬件或操作系统的不同可能稍微小些。
- 
+
 DOUBLE PRECISION [(M,D)] [UNSIGNED] [ZEROFILL], REAL[(M,D)] [UNSIGNED] [ZEROFILL]
 > 为 DOUBLE 的同义词。
 
@@ -120,7 +121,6 @@ FLOAT(p) [UNSIGNED] [ZEROFILL]
 | `FLOAT(p)`  | 如果 0 <= p <= 24 为 4 个字节, 如果 25 <= p <= 53 为 8 个字节|
 | `DOUBLE`    | 8        |
 
-
 ### 定点类型
 
 TiDB 支持 MySQL 所有的浮点类型，包括 DECIMAL、NUMERIC，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/fixed-point-types.html)文档。
@@ -146,9 +146,6 @@ NUMERIC[(M[,D])] [UNSIGNED] [ZEROFILL]
 | UNSIGNED | 无符号数，如果不加这个标识，则为有符号数 |
 | ZEROFILL | 补零标识，如果有这个标识，TiDB 会自动给类型增加 UNSIGNED 标识 |
 
-
-
-
 ## 日期时间类型
 
 ### 概述
@@ -158,6 +155,7 @@ TiDB 支持 MySQL 所有的日期时间类型，包括 DATE、DATETIME、TIMESTA
 ### 类型定义
 
 语法：
+
 ```sql
 DATE
 > 日期。支持的范围为`1000-01-01`到`9999-12-31`。以`YYYY-MM-DD`格式显示 DATE 值。
@@ -188,6 +186,7 @@ TiDB 支持 MySQL 所有的字符串类型，包括 CHAR、VARCHAR、BINARY、VA
 ### 类型定义
 
 语法：
+
 ```sql
 [NATIONAL] CHAR[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
 > 定长字符串。CHAR 列的长度固定为创建表时声明的长度。长度可以为从 0 到 255 的任何值。当保存 CHAR 值时，在它们的右边填充空格以达到指定的长度。
@@ -240,6 +239,7 @@ Json 类型可以存储 Json 这种半结构化的数据，相比于直接将 Js
 2. 多了 Json 合法性验证的步骤，只有合法的 Json 文档才可以放入这个字段中；
 
 Json 字段本身上，并不能创建索引。相反，可以对 Json 文档中的某个子字段创建索引。例如：
+
 ```sql
 CREATE TABLE city (
     id INT PRIMARY KEY,
@@ -253,6 +253,7 @@ SELECT id FROM city WHERE population >= 100;
 ## 枚举类型
 
 集合类型是一个字符串，其值必须是从一个固定集合中选取，这个固定集合在创建表的时候定义，语法是：
+
 ```sql
 ENUM('value1','value2',...) [CHARACTER SET charset_name] [COLLATE collation_name]
 
@@ -284,6 +285,7 @@ SET('1', '2') NOT NULL
 ```
 
 上面的例子中，这列的有效值可以是：
+
 ```
 ''
 '1'
@@ -304,8 +306,8 @@ SET('1', '2') NOT NULL
 
 更多信息参考 [MySQL 集合文档](https://dev.mysql.com/doc/refman/5.7/en/set.html)。
 
-
 ## 数据类型的默认值
+
 在一个数据类型描述中的 `DEFAULT value` 段描述了一个列的默认值。这个默认值必须是常量，不可以是一个函数或者是表达式。但是对于时间类型，可以例外的使用 `NOW`、`CURRENT_TIMESTAMP`、`LOCALTIME`、`LOCALTIMESTAMP` 等函数作为 `DATETIME` 或者 `TIMESTAMP` 的默认值。
 
 `BLOB`、`TEXT` 以及 `JSON` 不可以设置默认值。

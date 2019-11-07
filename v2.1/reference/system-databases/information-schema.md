@@ -5,11 +5,11 @@ category: reference
 
 # Information Schema
 
-为了和 MySQL 保持兼容，TiDB 支持很多 `INFORMATION\_SCHEMA` 表，其中有不少表都支持相应的 `SHOW` 命令。查询 `INFORMATION_SCHEMA` 表也为表的连接操作提供了可能。
+为了和 MySQL 保持兼容，TiDB 支持很多 `INFORMATION_SCHEMA` 表，其中有不少表都支持相应的 `SHOW` 命令。查询 `INFORMATION_SCHEMA` 表也为表的连接操作提供了可能。
 
 ## CHARACTER\_SETS Table
 
- `CHARACTER_SETS` 表提供[字符集](/reference/sql/character-set.md)相关的信息。TiDB 目前仅支持部分字符集。
+ `CHARACTER_SETS` 表提供[字符集](/v2.1/reference/sql/character-set.md)相关的信息。TiDB 目前仅支持部分字符集。
 
 ```sql
 mysql> SELECT * FROM character_sets;
@@ -128,11 +128,11 @@ CHARACTER_MAXIMUM_LENGTH: NULL
       CHARACTER_SET_NAME: NULL
           COLLATION_NAME: NULL
              COLUMN_TYPE: int(11)
-              COLUMN_KEY: 
-                   EXTRA: 
+              COLUMN_KEY:
+                   EXTRA:
               PRIVILEGES: select,insert,update,references
-          COLUMN_COMMENT: 
-   GENERATION_EXPRESSION: 
+          COLUMN_COMMENT:
+   GENERATION_EXPRESSION:
 1 row in set (0.01 sec)
 ```
 
@@ -204,16 +204,16 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 SCHEMATA 表提供了关于数据库的信息。表中的数据与 `SHOW DATABASES` 语句的执行结果等价。
 
 ```sql
-mysql> SELECT * FROM schemata; 
-+--------------+--------------------+----------------------------+------------------------+----------+ 
-| CATALOG_NAME | SCHEMA_NAME        | DEFAULT_CHARACTER_SET_NAME | DEFAULT_COLLATION_NAME | SQL_PATH | 
-+--------------+--------------------+----------------------------+------------------------+----------+ 
-| def          | INFORMATION_SCHEMA | utf8mb4                    | utf8mb4_bin            | NULL     | 
+mysql> SELECT * FROM schemata;
++--------------+--------------------+----------------------------+------------------------+----------+
+| CATALOG_NAME | SCHEMA_NAME        | DEFAULT_CHARACTER_SET_NAME | DEFAULT_COLLATION_NAME | SQL_PATH |
++--------------+--------------------+----------------------------+------------------------+----------+
+| def          | INFORMATION_SCHEMA | utf8mb4                    | utf8mb4_bin            | NULL     |
 | def          | mynewdb            | utf8mb4                    | utf8mb4_bin            | NULL     |
-| def          | mysql              | utf8mb4                    | utf8mb4_bin            | NULL     | 
-| def          | PERFORMANCE_SCHEMA | utf8mb4                    | utf8mb4_bin            | NULL     | 
-| def          | test               | utf8mb4                    | utf8mb4_bin            | NULL     | 
-+--------------+--------------------+----------------------------+------------------------+----------+ 
+| def          | mysql              | utf8mb4                    | utf8mb4_bin            | NULL     |
+| def          | PERFORMANCE_SCHEMA | utf8mb4                    | utf8mb4_bin            | NULL     |
+| def          | test               | utf8mb4                    | utf8mb4_bin            | NULL     |
++--------------+--------------------+----------------------------+------------------------+----------+
 5 rows in set (0.00 sec)
 ```
 
@@ -238,6 +238,46 @@ mysql> SELECT * FROM session_variables LIMIT 10;
 | max_binlog_cache_size            | 18446744073709547520 |
 +----------------------------------+----------------------+
 10 rows in set (0.00 sec)
+```
+
+## SLOW_QUERY 表
+
+`SLOW_QUERY` 表中提供了慢查询相关的信息，其内容通过解析 TiDB 慢查询日志而来，列名和慢日志中的字段名是一一对应。关于如何使用该表调查和改善慢查询请参考[慢查询日志文档](/v2.1/how-to/maintain/identify-slow-queries.md)。
+
+```sql
+mysql> desc information_schema.slow_query;
++---------------+---------------------+------+------+---------+-------+
+| Field         | Type                | Null | Key  | Default | Extra |
++---------------+---------------------+------+------+---------+-------+
+| Time          | timestamp unsigned  | YES  |      | NULL    |       |
+| Txn_start_ts  | bigint(20) unsigned | YES  |      | NULL    |       |
+| User          | varchar(64)         | YES  |      | NULL    |       |
+| Host          | varchar(64)         | YES  |      | NULL    |       |
+| Conn_ID       | bigint(20) unsigned | YES  |      | NULL    |       |
+| Query_time    | double unsigned     | YES  |      | NULL    |       |
+| Process_time  | double unsigned     | YES  |      | NULL    |       |
+| Wait_time     | double unsigned     | YES  |      | NULL    |       |
+| Backoff_time  | double unsigned     | YES  |      | NULL    |       |
+| Request_count | bigint(20) unsigned | YES  |      | NULL    |       |
+| Total_keys    | bigint(20) unsigned | YES  |      | NULL    |       |
+| Process_keys  | bigint(20) unsigned | YES  |      | NULL    |       |
+| DB            | varchar(64)         | YES  |      | NULL    |       |
+| Index_ids     | varchar(100)        | YES  |      | NULL    |       |
+| Is_internal   | tinyint(1) unsigned | YES  |      | NULL    |       |
+| Digest        | varchar(64)         | YES  |      | NULL    |       |
+| Stats         | varchar(512)        | YES  |      | NULL    |       |
+| Cop_proc_avg  | double unsigned     | YES  |      | NULL    |       |
+| Cop_proc_p90  | double unsigned     | YES  |      | NULL    |       |
+| Cop_proc_max  | double unsigned     | YES  |      | NULL    |       |
+| Cop_proc_addr | varchar(64)         | YES  |      | NULL    |       |
+| Cop_wait_avg  | double unsigned     | YES  |      | NULL    |       |
+| Cop_wait_p90  | double unsigned     | YES  |      | NULL    |       |
+| Cop_wait_max  | double unsigned     | YES  |      | NULL    |       |
+| Cop_wait_addr | varchar(64)         | YES  |      | NULL    |       |
+| Mem_max       | bigint(20) unsigned | YES  |      | NULL    |       |
+| Succ          | tinyint(1) unsigned | YES  |      | NULL    |       |
+| Query         | longblob unsigned   | YES  |      | NULL    |       |
++---------------+---------------------+------+------+---------+-------+
 ```
 
 ## STATISTICS Table
@@ -306,8 +346,8 @@ MAX_DATA_LENGTH: 0
      CHECK_TIME: NULL
 TABLE_COLLATION: utf8mb4_bin
        CHECKSUM: NULL
- CREATE_OPTIONS: 
-  TABLE_COMMENT: 
+ CREATE_OPTIONS:
+  TABLE_COMMENT:
   TIDB_TABLE_ID: 5
 1 row in set (0.00 sec)
 ```
@@ -397,28 +437,6 @@ mysql> desc USER_PRIVILEGES;
 4 rows in set (0.00 sec)
 ```
 
-## VIEWS Table
-
-`VIEWS` 表提供了关于 SQL 视图的信息。
-
-```
-mysql> create view test.v1 as select 1;
-Query OK, 0 rows affected (0.00 sec)
-mysql> select * from views\G
-*************************** 1. row ***************************
-       TABLE_CATALOG: def
-        TABLE_SCHEMA: test
-          TABLE_NAME: v1
-     VIEW_DEFINITION: select 1
-        CHECK_OPTION: CASCADED
-        IS_UPDATABLE: NO
-             DEFINER: root@127.0.0.1
-       SECURITY_TYPE: DEFINER
-CHARACTER_SET_CLIENT: utf8
-COLLATION_CONNECTION: utf8_general_ci
-1 row in set (0.00 sec)
-```
-
 ## 不支持的 Information Schema 表
 
 TiDB 包含以下 `INFORMATION_SCHEMA` 表，但仅会返回空行：
@@ -440,3 +458,4 @@ TiDB 包含以下 `INFORMATION_SCHEMA` 表，但仅会返回空行：
 * `TABLESPACES`
 * `TABLE_PRIVILEGES`
 * `TRIGGERS`
+* `VIEWS`

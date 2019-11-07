@@ -16,37 +16,83 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SET PASSWORD='test'; -- change my password
-Query OK, 0 rows affected (0.01 sec)
+SET PASSWORD='test';
+```
 
-mysql> CREATE USER 'newuser' IDENTIFIED BY 'test';
+```
+Query OK, 0 rows affected (0.01 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER 'newuser' IDENTIFIED BY 'test';
+```
+
+```
 Query OK, 1 row affected (0.00 sec)
+```
 
-mysql> SHOW CREATE USER newuser;
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+{{< copyable "sql" >}}
+
+```sql
+SHOW CREATE USER newuser;
+```
+
+```+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER for newuser@%                                                                                                                                            |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER 'newuser'@'%' IDENTIFIED WITH 'mysql_native_password' AS '*94BDCEBE19083CE2A1F959FD02F964C7AF4CFC29' REQUIRE NONE PASSWORD EXPIRE DEFAULT ACCOUNT UNLOCK |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
+```
 
-mysql> SET PASSWORD FOR newuser = 'test';
+{{< copyable "sql" >}}
+
+```sql
+SET PASSWORD FOR newuser = 'test';
+```
+
+```
 Query OK, 0 rows affected (0.01 sec)
+```
 
-mysql> SHOW CREATE USER newuser;
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+{{< copyable "sql" >}}
+
+```sql
+SHOW CREATE USER newuser;
+```
+
+```+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER for newuser@%                                                                                                                                            |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER 'newuser'@'%' IDENTIFIED WITH 'mysql_native_password' AS '*94BDCEBE19083CE2A1F959FD02F964C7AF4CFC29' REQUIRE NONE PASSWORD EXPIRE DEFAULT ACCOUNT UNLOCK |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
+```
 
-mysql> SET PASSWORD FOR newuser = PASSWORD('test'); -- deprecated syntax from earlier MySQL releases
+{{< copyable "sql" >}}
+
+```sql
+SET PASSWORD FOR newuser = PASSWORD('test');
+```
+
+上述语法是早期 MySQL 版本的过时语法。
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> SHOW CREATE USER newuser;
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+{{< copyable "sql" >}}
+
+```sql
+SHOW CREATE USER newuser;
+```
+
+```+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER for newuser@%                                                                                                                                            |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER 'newuser'@'%' IDENTIFIED WITH 'mysql_native_password' AS '*94BDCEBE19083CE2A1F959FD02F964C7AF4CFC29' REQUIRE NONE PASSWORD EXPIRE DEFAULT ACCOUNT UNLOCK |
@@ -56,9 +102,9 @@ mysql> SHOW CREATE USER newuser;
 
 ## MySQL 兼容性
 
-`SET PASSWORD` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SET PASSWORD` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/dev/report-issue.md)。
 
 ## 另请参阅
 
-* [CREATE USER](/reference/sql/statements/create-user.md)
-* [Privilege Management](/reference/security/privilege-system.md)
+* [CREATE USER](/dev/reference/sql/statements/create-user.md)
+* [Privilege Management](/dev/reference/security/privilege-system.md)

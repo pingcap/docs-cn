@@ -32,11 +32,23 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE TABLE t1 (id int not null primary key auto_increment, col1 INT, INDEX(col1));
+CREATE TABLE t1 (id int not null primary key auto_increment, col1 INT, INDEX(col1));
+```
+
+```
 Query OK, 0 rows affected (0.12 sec)
+```
 
-mysql> SHOW INDEXES FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SHOW INDEXES FROM t1;
+```
+
+```
 +-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
 | Table | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
 +-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
@@ -44,8 +56,15 @@ mysql> SHOW INDEXES FROM t1;
 | t1    |          1 | col1     |            1 | col1        | A         |           0 |     NULL | NULL   | YES  | BTREE      |         |               |
 +-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
 2 rows in set (0.00 sec)
+```
 
-mysql> SHOW INDEX FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SHOW INDEX FROM t1;
+```
+
+```
 +-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
 | Table | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
 +-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
@@ -53,8 +72,15 @@ mysql> SHOW INDEX FROM t1;
 | t1    |          1 | col1     |            1 | col1        | A         |           0 |     NULL | NULL   | YES  | BTREE      |         |               |
 +-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
 2 rows in set (0.00 sec)
+```
 
-mysql> SHOW KEYS FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SHOW KEYS FROM t1;
+```
+
+```
 +-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
 | Table | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
 +-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
@@ -66,10 +92,10 @@ mysql> SHOW KEYS FROM t1;
 
 ## MySQL 兼容性
 
-`SHOW INDEXES [FROM|IN]` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW INDEXES [FROM|IN]` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
-* [DROP INDEX](/reference/sql/statements/drop-index.md)
-* [CREATE INDEX](/reference/sql/statements/create-index.md)
+* [SHOW CREATE TABLE](/v3.0/reference/sql/statements/show-create-table.md)
+* [DROP INDEX](/v3.0/reference/sql/statements/drop-index.md)
+* [CREATE INDEX](/v3.0/reference/sql/statements/create-index.md)

@@ -16,6 +16,3 @@ Prometheus 提供了多个组件供用户使用。目前，我们使用 Promethe
 Grafana 是一个开源的 metric 分析及可视化系统。我们使用 Grafana 来展示 TiDB 的各项性能指标 。如下图所示:
 
 ![Grafana Screeshot](../media/grafana-screenshot.png)
-
-
-

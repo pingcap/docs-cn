@@ -5,6 +5,8 @@ category: reference
 
 # 控制流程函数
 
+TiDB 支持使用 MySQL 5.7 中提供的所有[控制流程函数](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html)。
+
 | 函数名                                                                                            | 功能描述                       |
 |:--------------------------------------------------------------------------------------------------|:----------------------------------|
 | [`CASE`](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html#operator_case)       | Case 操作符                     |

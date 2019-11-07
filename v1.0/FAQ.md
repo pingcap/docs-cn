@@ -508,11 +508,11 @@ loader的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调�
 
 ### 4.1.1 Mydumper 工具
 
-具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)
+具体可以参考 <https://github.com/maxbube/mydumper>。
 
 ### 4.1.2 Loader 工具
 
-具体可以参考 [https://www.pingcap.com/docs-cn/tools/loader/](https://www.pingcap.com/docs-cn/tools/loader/)
+具体可以参考 <https://pingcap.com/docs-cn/tools/loader/>。
 
 ### 4.1.3 如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？
 
@@ -549,7 +549,7 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 #### 4.2.1.2 如何配置监控 Syncer 运行情况？
 
-下载 [Syncer Json](https://github.com/pingcap/docs/blob/master/etc/Syncer.json) 导入到 Grafana，修改 Prometheus 配置文件，添加以下内容：
+下载 [Syncer Json](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json) 导入到 Grafana，修改 Prometheus 配置文件，添加以下内容：
 
 - job_name: &#39;syncer_ops&#39; // 任务名字
     static_configs:

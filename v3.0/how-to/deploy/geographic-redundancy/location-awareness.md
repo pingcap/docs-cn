@@ -10,7 +10,7 @@ aliases: ['/docs-cn/op-guide/location-awareness/']
 
 PD 能够根据 TiKV 集群的拓扑结构进行调度，使得 TiKV 的容灾能力最大化。
 
-阅读本章前，请先确保阅读 [Ansible 部署方案](/how-to/deploy/orchestrated/ansible.md) 和 [Docker 部署方案](/how-to/deploy/orchestrated/docker.md)。
+阅读本章前，请先确保阅读 [Ansible 部署方案](/v3.0/how-to/deploy/orchestrated/ansible.md) 和 [Docker 部署方案](/v3.0/how-to/deploy/orchestrated/docker.md)。
 
 ## TiKV 上报拓扑信息
 
@@ -26,6 +26,8 @@ tikv-server --labels zone=<zone>,rack=<rack>,host=<host>
 
 配置文件：
 
+{{< copyable "" >}}
+
 ```toml
 [server]
 labels = "zone=<zone>,rack=<rack>,host=<host>"
@@ -35,6 +37,8 @@ labels = "zone=<zone>,rack=<rack>,host=<host>"
 
 可以通过 PD 的配置文件让 PD 理解 TiKV 集群的拓扑结构。
 
+{{< copyable "" >}}
+
 ```toml
 [replication]
 max-replicas = 3
@@ -42,6 +46,10 @@ location-labels = ["zone", "rack", "host"]
 ```
 
 其中 `location-labels` 需要与 TiKV 的 `labels` 名字对应，这样 PD 才能知道这些 `labels` 代表了 TiKV 的拓扑结构。
+
+> **注意：**
+>
+> 必须同时配置 PD 的 `location-labels` 和 TiKV 的 `labels` 参数，否则 `labels` 不会生效。
 
 ## PD 基于 TiKV 拓扑结构进行调度
 

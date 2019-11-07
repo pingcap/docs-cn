@@ -6,8 +6,6 @@ aliases: ['/docs-cn/op-guide/recommendation/']
 
 # TiDB 软件和硬件环境建议配置
 
-## 概述
-
 TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运行在 Intel 架构服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络。作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境。
 
 ## Linux 操作系统版本要求
@@ -41,7 +39,8 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 >
 > - 验证测试环境中的 TiDB 和 PD 可以部署在同一台服务器上。
 > - 如进行性能相关的测试，避免采用低性能存储和网络硬件配置，防止对测试结果的正确性产生干扰。
-> - 如果仅验证功能，建议使用 [Docker Compose 部署方案](/how-to/get-started/local-cluster/install-from-docker-compose.md)单机进行测试。
+> - TiKV 的 SSD 盘推荐使用 NVME 接口以保证读写更快。
+> - 如果仅验证功能，建议使用 [Docker Compose 部署方案](/v3.0/how-to/get-started/deploy-tidb-from-docker-compose.md)单机进行测试。
 > - TiDB 对于磁盘的使用以存放日志为主，因此在测试环境中对于磁盘类型和容量并无特殊要求。
 
 ### 生产环境

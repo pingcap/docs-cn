@@ -26,7 +26,7 @@ IDC 机器
 | OS | Linux (CentOS 7.3.1611) |
 | CPU | 40 vCPUs, Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz |
 | RAM | 128GB |
-| DISK | Optane 500GB SSD * 1 |   
+| DISK | Optane 500GB SSD * 1 |
 
 ## 测试方案
 
@@ -55,15 +55,15 @@ IDC 机器
     ```
     sync-log = false
     grpc-concurrency = 8
-    grpc-raft-conn-num = 24 
+    grpc-raft-conn-num = 24
     ```
 
 * v2.0.0-rc6
 
-    ``` 
+    ```
     sync-log = false
     grpc-concurrency = 8
-    grpc-raft-conn-num = 24 
+    grpc-raft-conn-num = 24
     use-delete-range: false
     ```
 
@@ -83,7 +83,7 @@ IDC 机器
 
 ## 测试结果
 
-### 标准 Select 测试 
+### 标准 Select 测试
 
 | 版本 | table count | table size | sysbench threads |qps | latency(avg / .95) |
 | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -98,7 +98,7 @@ IDC 机器
 
 GA2.0 比 GA1.0 在 Select 查询性能上，最高提升了 10% 左右。
 
-### 标准 OLTP 测试 
+### 标准 OLTP 测试
 
 | 版本 | table count | table size | sysbench threads | tps | qps | latency(avg / .95) |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---:|
@@ -113,7 +113,7 @@ GA2.0 比 GA1.0 在 Select 查询性能上，最高提升了 10% 左右。
 
 GA2.0 比 GA1.0 在 OLTP 性能上，性能基本一致。
 
-### 标准 Insert 测试 
+### 标准 Insert 测试
 
 | 版本 | table count | table size | sysbench threads |qps | latency(avg / .95) |
 | :---: | :---: | :---: | :---: | :---: | :---: |

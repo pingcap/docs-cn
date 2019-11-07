@@ -26,15 +26,34 @@ category: reference
 
 ## 示例
 
-```sql
-mysql> CREATE TABLE t1 (a INT NOT NULL PRIMARY KEY);
-Query OK, 0 rows affected (0.11 sec)
+{{< copyable "sql" >}}
 
-mysql> INSERT INTO t1 VALUES (1),(2),(3),(4),(5);
+```sql
+CREATE TABLE t1 (a INT NOT NULL PRIMARY KEY);
+```
+
+```
+Query OK, 0 rows affected (0.11 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 VALUES (1),(2),(3),(4),(5);
+```
+
+```
 Query OK, 5 rows affected (0.01 sec)
 Records: 5  Duplicates: 0  Warnings: 0
+```
 
-mysql> SELECT * FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t1;
+```
+
+```
 +---+
 | a |
 +---+
@@ -45,28 +64,56 @@ mysql> SELECT * FROM t1;
 | 5 |
 +---+
 5 rows in set (0.00 sec)
+```
 
-mysql> TRUNCATE t1;
+{{< copyable "sql" >}}
+
+```sql
+TRUNCATE t1;
+```
+
+```
 Query OK, 0 rows affected (0.11 sec)
+```
 
-mysql> SELECT * FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t1;
+```
+
+```
 Empty set (0.00 sec)
+```
 
-mysql> INSERT INTO t1 VALUES (1),(2),(3),(4),(5);
+{{< copyable "sql" >}}
+
+```sqlS
+INSERT INTO t1 VALUES (1),(2),(3),(4),(5);
+```
+
+```
 Query OK, 5 rows affected (0.01 sec)
 Records: 5  Duplicates: 0  Warnings: 0
+```
 
-mysql> TRUNCATE TABLE t1;
+{{< copyable "sql" >}}
+
+```sql
+TRUNCATE TABLE t1;
+```
+
+```
 Query OK, 0 rows affected (0.11 sec)
 ```
 
 ## MySQL 兼容性
 
-`TRUNCATE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`TRUNCATE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/dev/report-issue.md)。
 
 ## 另请参阅
 
-* [DROP TABLE](/reference/sql/statements/drop-table.md)
-* [DELETE](/reference/sql/statements/delete.md)
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
+* [DROP TABLE](/dev/reference/sql/statements/drop-table.md)
+* [DELETE](/dev/reference/sql/statements/delete.md)
+* [CREATE TABLE](/dev/reference/sql/statements/create-table.md)
+* [SHOW CREATE TABLE](/dev/reference/sql/statements/show-create-table.md)

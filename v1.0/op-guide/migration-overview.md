@@ -28,18 +28,16 @@ category: advanced
 - 第一种场景：只全量导入历史数据 （需要 checker + mydumper + loader）；
 - 第二种场景：全量导入历史数据后，通过增量的方式同步新的数据 （需要 checker + mydumper + loader + syncer）。该场景需要提前开启 binlog 且格式必须为 ROW。
 
-
 ## MySQL 开启 binlog
 
 **注意： 只有上文提到的第二种场景才需要在 dump 数据之前先开启 binlog**
 
-+   MySQL 开启 binlog 功能，参考 [Setting the Replication Master Configuration](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
-+   Binlog 格式必须使用 `ROW` format，这也是 MySQL 5.7 之后推荐的 binlog 格式，可以使用如下语句打开:
++ MySQL 开启 binlog 功能，参考 [Setting the Replication Master Configuration](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)
++ Binlog 格式必须使用 `ROW` format，这也是 MySQL 5.7 之后推荐的 binlog 格式，可以使用如下语句打开:
 
     ```sql
     SET GLOBAL binlog_format = ROW;
     ```
-
 
 ## 使用 checker 进行 Schema 检查
 
@@ -61,7 +59,7 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 ### 使用 checker 检查的一个示范
 
-+   在 MySQL 的 test database 里面创建几张表，并插入数据:
++ 在 MySQL 的 test database 里面创建几张表，并插入数据:
 
     ```sql
     USE test;
@@ -72,7 +70,7 @@ cd tidb-enterprise-tools-latest-linux-amd64
     INSERT INTO t2 VALUES (1, "a"), (2, "b"), (3, "c");
     ```
 
-+   使用 checker 检查 test database 里面所有的 table
++ 使用 checker 检查 test database 里面所有的 table
 
     ```bash
     ./bin/checker -host 127.0.0.1 -port 3306 -user root test
@@ -84,7 +82,7 @@ cd tidb-enterprise-tools-latest-linux-amd64
     2016/10/27 13:11:49 checker.go:69: [info] Check table t2 succ
     ```
 
-+   使用 checker 检查 test database 里面某一个 table
++ 使用 checker 检查 test database 里面某一个 table
 
     这里，假设我们只需要迁移 table `t1`。
 
