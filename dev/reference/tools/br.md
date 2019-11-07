@@ -231,7 +231,6 @@ br --pd ${PDIP}:2379 restore db \
 
 上述命令 `--table` 指定了需要恢复的表名字，其余参数含义与 retore db 一致。
 
-
 ### 查看备份元信息举例
 
 通过 `br meta -h` 可以获取这个子命令的使用帮助。meta 有一个子命令，checksum 用来
