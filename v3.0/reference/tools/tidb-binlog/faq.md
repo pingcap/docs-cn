@@ -100,3 +100,12 @@ Some stale Drainer nodes are left over from historical tasks. Their processes ha
 No. For more details on these SQL operations, refer to [Use SQL statements to manage Pump or Drainer](/v3.0/reference/tools/tidb-binlog/maintain.md#use-sql-statements-to-manage-pump-or-drainer).
 
 These SQL operations directly modifies the state information saved in PD and are functionally equivalent to the `update-pump` and `update-drainer` commands in binlogctl. To pause or close the Pump or Drainer service, use the binlogctl tool.
+
+## What can I do when some DDL statements supported by the upstream database cause error when executed in the downstream database?
+
+To solve the problem, follow these steps:
+
+1. Check `drainer.log`. Search `exec failed` for the last failed DDL operation before the Drainer process is exited.
+2. Change the DDL version to the one compatible to the downstream. Perform this step manually in the downstream database.
+3. Check `drainer.log`. Search for the failed DDL operation and find the `commit-ts` of this operation.
+4. Modify the `drainer.toml` configuration file. Add the `commit-ts` in the `ignore-txn-commit-ts` item and restart the Drainer node.
