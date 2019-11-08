@@ -78,3 +78,21 @@ To check the configuration of the PD, TiKV, and TiDB components of the current c
     ```shell
     kubectl exec -it <tidb-pod-name> -c tidb -n <namespace> -- cat /etc/tidb/tidb.toml
     ```
+
+## Why does TiDB Operator fail to schedule Pods when I deploy the TiDB clusters?
+
+Three possible reasons:
+
+* Insufficient resource or HA Policy causes the Pod stuck in the `Pending` state. Refer to [Troubleshoot TiDB in Kubernetes](/v3.0/tidb-in-kubernetes/troubleshoot.md#the-pod-is-in-the-pending-state) for more details.
+
+* `taint` is applied to some nodes, which prevents the Pod from being scheduled to these nodes unless the Pod has the matching `toleration`. Refer to [taint & toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) for more details.
+
+* Scheduling conflict, which causes the Pod stuck in the `ContainerCreating` state. In such case, you can check if there is more than one TiDB Operator deployed in the Kubernetes cluster. Conflicts occur when custom schedulers in multiple TiDB Operators schedule the same Pod in different phases.
+
+    You can execute the following command to verify whether there is more than one TiDB Operator deployed. If more than one record is returned, delete the extra TiDB Operator to resolve the scheduling conflict.
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl get deployment --all-namespaces |grep tidb-scheduler
+    ```

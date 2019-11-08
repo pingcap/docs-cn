@@ -9,6 +9,10 @@ aliases: ['/docs/v3.0/reference/tidb-operator-overview/']
 
 TiDB Operator is an automatic operation system for TiDB clusters in Kubernetes. It provides a full management life-cycle for TiDB including deployment, upgrades, scaling, backup, fail-over, and configuration changes. With TiDB Operator, TiDB can run seamlessly in the Kubernetes clusters deployed on a public or private cloud.
 
+> **Note:**
+>
+> You can only deploy one TiDB Operator in a Kubernetes cluster.
+
 ## Architecture of TiDB Operator
 
 ![TiDB Operator Overview](/media/tidb-operator-overview.png)
