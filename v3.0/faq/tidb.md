@@ -545,7 +545,7 @@ When TiDB is executing a SQL statement, the query will be `EXPENSIVE_QUERY` if e
 
 #### How to control or change the execution priority of SQL commits?
 
-TiDB supports changing the priority on a [per-session](/v3.0/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_force_priority), [global](/v3.0/reference/configuration/tidb-server/server-command-option.md#force-priority) or individual statement basis. Priority has the following meaning:
+TiDB supports changing the priority on a [per-session](/v3.0/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_force_priority), [global](/v3.0/reference/configuration/tidb-server/configuration-file.md#force-priority) or individual statement basis. Priority has the following meaning:
 
 - `HIGH_PRIORITY`: this statement has a high priority, that is, TiDB gives priority to this statement and executes it first.
 

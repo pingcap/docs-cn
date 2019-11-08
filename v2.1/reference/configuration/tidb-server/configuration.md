@@ -1,18 +1,19 @@
 ---
-title: Configuration Flags
-summary: Learn some configuration flags for TiDB
+title: Configuration Options
+summary: Learn the configuration options in TiDB.
 category: reference
+aliases: ['/docs/v2.1/reference/configuration/tidb-server/server-command-option/']
 ---
 
-# Configuration Flags
+# Configuration Options
 
-TiDB is configurable using command-line flags and environment variables. The default TiDB ports are 4000 for client requests and 10080 for status report.
+When you start the TiDB cluster, you can use command-line options or environment variables to configure it. This document introduces TiDB's command options. The default TiDB ports are `4000` for client requests and `10080` for status report.
 
 ## `--advertise-address`
 
-- The IP address on which to advertise the apiserver to the TiDB server
+- The IP address through which to log into the TiDB server
 - Default: ""
-- This address must be reachable by the rest of the TiDB cluster and the user.
+- This address must be accessible by the rest of the TiDB cluster and the user.
 
 ## `--binlog-socket`
 
@@ -24,7 +25,7 @@ TiDB is configurable using command-line flags and environment variables. The def
 
 - The configuration file
 - Default: ""
-- If you have specified the configuration file, TiDB reads the configuration file. If the corresponding configuration also exists in the command line flags, TiDB uses the configuration in the command line flags to overwrite that in the configuration file. For detailed configuration information, see [TiDB Configuration File Description](/v2.1/reference/configuration/tidb-server/configuration-file.md).
+- If you have specified the configuration file, TiDB reads the configuration file. If the corresponding configuration also exists in the command line options, TiDB uses the configuration in the command line options to overwrite that in the configuration file. For detailed configuration information, see [TiDB Configuration File Description](/v2.1/reference/configuration/tidb-server/configuration-file.md).
 
 ## `--host`
 
@@ -43,13 +44,13 @@ TiDB is configurable using command-line flags and environment variables. The def
 
 - The log file
 - Default: ""
-- If this flag is not set, logs are output to "stderr". If this flag is set, logs are output to the corresponding file, which is automatically rotated in the early morning every day, and the previous file is renamed as a backup.
+- If this option is not set, logs are output to "stderr". If this option is set, logs are output to the corresponding file, which is automatically rotated in the early morning every day, and the previous file is renamed as a backup.
 
 ## `--log-slow-query`
 
 - The directory for the slow query log
 - Default: ""
-- If this flag is not set, logs are written to the file specified by `--log-file` by default.
+- If this option is not set, logs are written to the file specified by `--log-file` by default.
 
 ## `--metrics-addr`
 

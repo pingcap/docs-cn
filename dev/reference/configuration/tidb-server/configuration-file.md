@@ -4,13 +4,11 @@ summary: Learn the TiDB configuration file options that are not involved in comm
 category: deployment
 ---
 
-# TiDB Configuration File
-
 <!-- markdownlint-disable MD001 -->
 
-The TiDB configuration file supports more options than command-line parameters. You can find the default configuration file in [here](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) and rename it to `config.toml`.
+# TiDB Configuration File
 
-This document describes the options that are not involved in command line options. For command line options, see [Configuration Flags](/dev/reference/configuration/tidb-server/configuration.md).
+The TiDB configuration file supports more options than command-line parameters. You can download the default configuration file [`config.toml.example`](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) and rename it to `config.toml`. This document describes only the options that are not involved in [command line options](/dev/reference/configuration/tidb-server/configuration.md).
 
 ### `split-table`
 
@@ -56,7 +54,7 @@ This document describes the options that are not involved in command line option
 + Determines whether to set the `KILL` statement to be MySQL compatible
 + Default value: `false`
 + The behavior of `KILL xxx` in TiDB differs from the behavior in MySQL. TiDB requires the `TIDB` keyword, namely, `KILL TIDB xxx`. If `compatible-kill-query` is set to `true`, the `TIDB` keyword is not needed.
-+ This distinction is important because the default behavior of the MySQL command-line client, when the user hits `Ctrl + C`, is to create a new connection to the backend and execute the `KILL` statement in that new connection. If a load balancer or proxy has sent the new connection to a different TiDB server instance than the original session, the wrong session could be terminated, which could cause interruption to applications using the cluster. Enable `compatible-kill-query` only if you are certain that the connection you refer to in your `KILL` statement is on the same server to which you send the `KILL` statement.
++ This distinction is important because the default behavior of the MySQL command-line client, when the user hits <kbd>Ctrl</kbd>+<kbd>C</kbd>, is to create a new connection to the backend and execute the `KILL` statement in that new connection. If a load balancer or proxy has sent the new connection to a different TiDB server instance than the original session, the wrong session could be terminated, which could cause interruption to applications using the cluster. Enable `compatible-kill-query` only if you are certain that the connection you refer to in your `KILL` statement is on the same server to which you send the `KILL` statement.
 
 ### `check-mb4-value-in-utf8`
 
@@ -195,7 +193,7 @@ Configuration items related to performance
 
 - The number of CPUs used by TiDB
 - Default value: `0`
-- The default `0` indicates using all the CPUs on the machine. You can also set it to `n`, and then TiDB uses `n` CPUs.
+- The default `0` indicates using all the CPUs on the machine. You can also set it to n, and then TiDB uses n CPUs.
 
 ### `max-memory`
 
@@ -217,7 +215,7 @@ Configuration items related to performance
 ### `cross-join`
 
 - Default value: `true`
-- TiDB supports executing the `JOIN` statement without any condition (the `WHERE` field) of both sides tables by default; if you set the value to `false`, the server refuses to execute when such a `JOIN` statement appears
+- TiDB supports executing the `JOIN` statement without any condition (the `WHERE` field) of both sides tables by default; if you set the value to `false`, the server refuses to execute when such a `JOIN` statement appears.
 
 ### `stats-lease`
 
@@ -360,15 +358,15 @@ Configurations related to TiDB Binlog
 
 ### `write-timeout`
 
-- The timeout of writing binlog into Pump. It is recommended not to modify this value.
+- The timeout of writing binlog into Pump. It is not recommended to modify this value.
 - Default: `15s`
 - unit: second
 
 ### `ignore-error`
 
-- Determines whether to ignore errors occurred in the process of writing binlog into Pump. It is recommended not to modify this value.
+- Determines whether to ignore errors occurred in the process of writing binlog into Pump. It is not recommended to modify this value.
 - Default value: `false`
-- When the value is set to `true` and an error occurs, the writing is stopped and `1` is summed to the monitoring item `tidb_server_critical_error_total`. When the value is `false`, the writing fails and the entire TiDB service is stopped.
+- When the value is set to `true` and an error occurs, TiDB stops writing binlog and add `1` to the count of the `tidb_server_critical_error_total` monitoring item. When the value is set to `false`, the binlog writing fails and the entire TiDB service is stopped.
 
 ### `binlog-socket`
 

@@ -1,18 +1,19 @@
 ---
-title: Configuration Flags
-summary: Learn some configuration flags for TiDB
+title: Configuration Options
+summary: Learn the configuration options in TiDB.
 category: reference
+aliases: ['/docs/dev/reference/configuration/tidb-server/server-command-option/']
 ---
 
-# Configuration Flags
+# Configuration Options
 
-TiDB is configurable using command-line flags and environment variables. The default TiDB ports are 4000 for client requests and 10080 for status report.
+When you start the TiDB cluster, you can use command-line options or environment variables to configure it. This document introduces TiDB's command options. The default TiDB ports are `4000` for client requests and `10080` for status report.
 
 ## `--advertise-address`
 
-- The IP address on which to advertise the apiserver to the TiDB server
+- The IP address through which to log into the TiDB server
 - Default: ""
-- This address must be reachable by the rest of the TiDB cluster and the user.
+- This address must be accessible by the rest of the TiDB cluster and the user.
 
 ## `--binlog-socket`
 
@@ -24,14 +25,19 @@ TiDB is configurable using command-line flags and environment variables. The def
 
 - The configuration file
 - Default: ""
-- If you have specified the configuration file, TiDB reads the configuration file. If the corresponding configuration also exists in the command line flags, TiDB uses the configuration in the command line flags to overwrite that in the configuration file. For detailed configuration information, see [TiDB Configuration File Description](/dev/reference/configuration/tidb-server/configuration-file.md).
+- If you have specified the configuration file, TiDB reads the configuration file. If the corresponding configuration also exists in the command line options, TiDB uses the configuration in the command line options to overwrite that in the configuration file. For detailed configuration information, see [TiDB Configuration File Description](/dev/reference/configuration/tidb-server/configuration-file.md).
+
+## `--cors`
+
+- Specifies the `Access-Control-Allow-Origin` value for Cross-Origin Request Sharing (CORS) request of the TiDB HTTP status service
+- Default: ""
 
 ## `--host`
 
 - The host address that the TiDB server monitors
 - Default: "0.0.0.0"
 - The TiDB server monitors this address.
-- The "0.0.0.0" monitors all network cards by default. If you have multiple network cards, specify the network card that provides service, such as 192.168.100.113.
+- The "0.0.0.0" address monitors all network cards by default. If you have multiple network cards, specify the network card that provides service, such as `192.168.100.113`.
 
 ## `-L`
 
@@ -43,18 +49,13 @@ TiDB is configurable using command-line flags and environment variables. The def
 
 - The log file
 - Default: ""
-- If this flag is not set, logs are output to "stderr". If this flag is set, logs are output to the corresponding file, which is automatically rotated in the early morning every day, and the previous file is renamed as a backup.
+- If this option is not set, logs are output to "stderr". If this option is set, logs are output to the corresponding file, which is automatically rotated in the early morning every day, and the previous file is renamed as a backup.
 
 ## `--log-slow-query`
 
 - The directory for the slow query log
 - Default: ""
-- If this flag is not set, logs are written to the file specified by `--log-file` by default.
-
-## `--status-host`
-
-- The `HOST` used to monitor the status of TiDB service
-- Default: `0.0.0.0`
+- If this option is not set, logs are output to the file specified by `--log-file` by default.
 
 ## `--metrics-addr`
 
@@ -98,11 +99,6 @@ TiDB is configurable using command-line flags and environment variables. The def
     >
     > Do not set the value to `0`. Use the default value except for special situations.
 
-## `--cors`
-
-- Specifies the `Access-Control-Allow-Origin` value for Cross-Origin Request Sharing (CORS) request of the TiDB HTTP status service
-- Default: ""
-
 ## `--report-status`
 
 - Enables (`true`) or disables (`false`) the status report and pprof tool
@@ -125,9 +121,14 @@ TiDB is configurable using command-line flags and environment variables. The def
 
 - The status report port for TiDB server
 - Default: "10080"
-- This is used to get server internal data. The data includes [Prometheus metrics](https://prometheus.io/) and [pprof](https://golang.org/pkg/net/http/pprof/).
-- Prometheus metrics can be got through `"http://host:status_port/metrics"`.
-- Pprof data can be got through `"http://host:status_port/debug/pprof"`.
+- This port is used to get server internal data. The data includes [Prometheus metrics](https://prometheus.io/) and [pprof](https://golang.org/pkg/net/http/pprof/).
+- Prometheus metrics can be accessed by `"http://host:status_port/metrics"`.
+- pprof data can be accessed by `"http://host:status_port/debug/pprof"`.
+
+## `--status-host`
+
+- The `HOST` used to monitor the status of TiDB service
+- Default: `0.0.0.0`
 
 ## `--store`
 
