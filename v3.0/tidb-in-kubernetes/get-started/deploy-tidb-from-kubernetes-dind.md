@@ -32,7 +32,7 @@ Before deployment, make sure the following requirements are satisfied:
     > - [Legacy Docker Toolbox](https://docs.docker.com/toolbox/toolbox_install_mac/) users must migrate to [Docker for Mac](https://store.docker.com/editions/community/docker-ce-desktop-mac) by uninstalling Legacy Docker Toolbox and installing Docker for Mac, because DinD cannot run on Docker Toolbox or Docker Machine.
     > - `kubeadm` validates the installed Docker version during installation. If you are using Docker later than 18.06, there will be warning messages in installation. The cluster might still be able to work normally, but it is recommended to use a Docker version between 17.03 and 18.06 for better compatibility. You can find older versions of docker [here](https://download.docker.com/).
 
-- [Helm Client](https://github.com/helm/helm/blob/master/docs/install.md#installing-the-helm-client): version >= 2.9.0 and < 3.0.0
+- [Helm Client](https://helm.sh/docs/using_helm/#installing-the-helm-client): version >= 2.9.0 and < 3.0.0
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl): 1.10 at least, 1.13 or later recommended
 
     > **Note:**
