@@ -1,0 +1,14 @@
+master-addr = ":8261"
+log-file = "logs/master.log"
+
+[[deploy]]
+source-id = "mysql1"
+dm-worker = "127.0.0.1:8262"
+
+[[deploy]]
+source-id = "mysql2"
+dm-worker = "127.0.0.1:8263"
+
+[[deploy]]
+source-id = "mysql3"
+dm-worker = "127.0.0.1:8264"

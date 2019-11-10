@@ -1,0 +1,63 @@
+name: dmtask2
+task-mode: all
+is-sharding: true
+enable-heartbeat: true
+
+column-mappings:
+  mysql1:
+    schema-pattern: "dmtest2"
+    table-pattern: "t1"
+    expression: "partition id"
+    arguments: ["1", "", ""]
+    source-column: "id"
+    target-column: "id"
+  mysql2:
+    schema-pattern: "dmtest2"
+    table-pattern: "t1"
+    expression: "partition id"
+    arguments: ["2", "", ""]
+    source-column: "id"
+    target-column: "id"
+  mysql3:
+    schema-pattern: "dmtest2"
+    table-pattern: "t1"
+    expression: "partition id"
+    arguments: ["3", "", ""]
+    source-column: "id"
+    target-column: "id"
+
+mysql-instances:
+  - source-id: "mysql1"
+    server-id: 1
+    black-white-list: "dmtest2"
+    column-mapping-rules: ["mysql1"]
+    loader-config-name: "loader1"
+  - source-id: "mysql2"
+    server-id: 2
+    black-white-list: "dmtest2"
+    column-mapping-rules: ["mysql2"]
+    loader-config-name: "loader2"
+  - source-id: "mysql3"
+    server-id: 3
+    black-white-list: "dmtest2"
+    column-mapping-rules: ["mysql3"]
+    loader-config-name: "loader3"
+
+# The column-mappings section tells TiDB-DM how we want it to combine
+black-white-list:
+  dmtest2:
+    do-dbs: ["dmtest2"]
+
+loaders:
+  loader1:
+    dir: "data/dump1"
+  loader2:
+    dir: "data/dump2"
+  loader3:
+    dir: "data/dump3"
+
+target-database:
+  host: "127.0.0.1"
+  port: 4000
+  user: "root"
+  password: ""
