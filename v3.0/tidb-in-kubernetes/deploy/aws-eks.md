@@ -37,7 +37,7 @@ aliases: ['/docs-cn/v3.0/how-to/deploy/tidb-in-kubernetes/aws-eks/','/docs-cn/v3
 
 * [terraform](https://learn.hashicorp.com/terraform/getting-started/install.html)
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.11
-* [helm](https://github.com/helm/helm/blob/master/docs/install.md#installing-the-helm-client) >= 2.9.0 且 < 3.0.0
+* [helm](https://helm.sh/docs/using_helm/#installing-the-helm-client) >= 2.9.0 且 < 3.0.0
 * [jq](https://stedolan.github.io/jq/download/)
 * [aws-iam-authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)，AWS 权限鉴定工具，确保安装在 `PATH` 路径下。
 
