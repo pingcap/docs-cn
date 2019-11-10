@@ -6,7 +6,7 @@ category: how-to
 
 # TiDB Binlog 运维
 
-本文档介绍如何在 Kubernetes 上运维 TiDB 集群的 [TiDB Binlog](/v3.0/reference/tools/tidb-binlog/overview.md)。
+本文档介绍如何在 Kubernetes 上运维 TiDB 集群的 [TiDB Binlog](/v3.0/reference/tidb-binlog/overview.md)。
 
 ## 运维准备
 
