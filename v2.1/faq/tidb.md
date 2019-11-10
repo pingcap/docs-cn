@@ -600,6 +600,12 @@ Now, there are still a few reasons for this error reporting (the latter two are 
 > + For each DDL operation, the number of `schema` version changes is the same with the number of corresponding `schema state` version changes.
 > + Different DDL operations cause different number of `schema` version changes. For example, the `CREATE TABLE` statement causes one `schema` version change while the `ADD COLUMN` statement causes four.
 
+#### Error is reported when executing DDL statements under high concurrency?
+
+When you execute DDL statements (such as creating tables in batches) under high concurrency, a very few of these statements might fail because of key conflicts during the concurrent execution.
+
+It is recommended to keep the number of concurrent DDL statements under 20. Otherwise, you need to retry the failed statements from the client.
+
 ### Manage the TiKV server
 
 #### What is the recommended number of replicas in the TiKV cluster? Is it better to keep the minimum number for high availability?
