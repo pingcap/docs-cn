@@ -1,7 +1,6 @@
 ---
 title: DM 集群操作
 category: reference
-aliases: ['/docs-cn/tools/dm/cluster-operations/']
 ---
 
 # DM 集群操作

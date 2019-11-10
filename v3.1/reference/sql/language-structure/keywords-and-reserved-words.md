@@ -1,7 +1,6 @@
 ---
 title: 关键字和保留字
 category: reference
-aliases: ['/docs-cn/sql/keywords-and-reserved-words/']
 ---
 
 # 关键字和保留字

@@ -1,7 +1,6 @@
 ---
 title: 升级后常见问题
 category: FAQ
-aliases: ['/docs-cn/op-guide/upgrade-faq/','/docs-cn/faq/upgrade/']
 ---
 
 # 升级后常见问题

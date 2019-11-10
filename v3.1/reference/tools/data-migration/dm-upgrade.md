@@ -1,7 +1,6 @@
 ---
 title: DM 版本升级
 category: reference
-aliases: ['/docs-cn/tools/dm/dm-upgrade/']
 ---
 
 # DM 版本升级

@@ -1,7 +1,6 @@
 ---
 title: TiDB 2.1 升级操作指南
 category: how-to
-aliases: ['/docs-cn/op-guide/tidb-v2.1-upgrade-guide/']
 ---
 
 # TiDB 2.1 升级操作指南

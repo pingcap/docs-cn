@@ -1,7 +1,6 @@
 ---
 title: 表达式求值的类型转换
 category: reference
-aliases: ['/docs-cn/sql/type-conversion-in-expression-evaluation/']
 ---
 
 # 表达式求值的类型转换

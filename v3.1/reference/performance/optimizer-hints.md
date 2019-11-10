@@ -1,7 +1,6 @@
 ---
 title: Optimizer Hints
 category: reference
-aliases: ['/docs-cn/sql/optimizer-hints/']
 ---
 
 # Optimizer Hints

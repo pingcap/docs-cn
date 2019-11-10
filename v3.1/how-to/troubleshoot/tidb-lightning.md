@@ -1,7 +1,6 @@
 ---
 title: TiDB Lightning 错误排解
 category: reference
-aliases: ['/docs-cn/tools/lightning/errors/']
 ---
 
 # TiDB Lightning 错误排解

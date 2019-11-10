@@ -1,7 +1,6 @@
 ---
 title: 精度数学
 category: reference
-aliases: ['/docs-cn/sql/precision-math/']
 ---
 
 # 精度数学

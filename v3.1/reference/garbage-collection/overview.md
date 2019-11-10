@@ -1,7 +1,6 @@
 ---
 title: GC 机制简介
 category: reference
-aliases: ['/docs-cn/op-guide/gc/']
 ---
 
 # GC 机制简介

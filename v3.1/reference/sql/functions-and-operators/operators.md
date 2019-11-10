@@ -1,7 +1,6 @@
 ---
 title: 操作符
 category: reference
-aliases: ['/docs-cn/sql/operators/']
 ---
 
 # 操作符

@@ -1,7 +1,6 @@
 ---
 title: 上游 MySQL 实例配置前置检查
 category: reference
-aliases: ['/docs-cn/tools/dm/precheck/']
 ---
 
 # 上游 MySQL 实例配置前置检查

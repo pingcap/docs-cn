@@ -1,7 +1,6 @@
 ---
 title: 为 TiDB 组件间开启 TLS 和数据加密存储
 category: how-to
-aliases: ['/docs-cn/op-guide/security/']
 ---
 
 # 为 TiDB 组件间开启 TLS 和数据加密存储

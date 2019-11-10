@@ -1,7 +1,6 @@
 ---
 title: 增量数据复制
 category: how-to
-aliases: ['/docs-cn/op-guide/migration/']
 ---
 
 # 增量数据复制

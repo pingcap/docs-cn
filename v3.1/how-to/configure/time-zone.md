@@ -1,7 +1,6 @@
 ---
 title: 时区支持
 category: how-to
-aliases: ['/docs-cn/sql/time-zone/']
 ---
 
 # 时区支持

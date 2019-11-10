@@ -1,7 +1,6 @@
 ---
 title: 管理数据同步任务
 category: reference
-aliases: ['/docs-cn/tools/dm/manage-task/']
 ---
 
 # 管理数据同步任务

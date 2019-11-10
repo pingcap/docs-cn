@@ -1,7 +1,6 @@
 ---
 title: DM-worker 简介
 category: reference
-aliases: ['/docs-cn/tools/dm/dm-worker-intro/']
 ---
 
 # DM-worker 简介

@@ -1,7 +1,6 @@
 ---
 title: Kubernetes 上的 TiDB 集群监控
 category: how-to
-aliases: ['/docs-cn/v3.1/how-to/monitor/tidb-in-kubernetes/']
 ---
 
 # Kubernetes 上的 TiDB 集群监控

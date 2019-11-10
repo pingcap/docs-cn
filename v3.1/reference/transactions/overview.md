@@ -1,7 +1,6 @@
 ---
 title: TiDB 事务语句
 category: reference
-aliases: ['/docs-cn/sql/transaction/','/docs-cn/v3.1/reference/sql/statements/transaction/']
 ---
 
 # TiDB 事务语句

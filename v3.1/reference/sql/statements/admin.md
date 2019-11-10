@@ -1,7 +1,6 @@
 ---
 title: ADMIN
 category: reference
-aliases: ['/docs-cn/sql/admin/']
 ---
 
 # ADMIN

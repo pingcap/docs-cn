@@ -1,7 +1,6 @@
 ---
 title: DM 查询状态
 category: reference
-aliases: ['/docs-cn/tools/dm/query-status/']
 ---
 
 # DM 查询状态

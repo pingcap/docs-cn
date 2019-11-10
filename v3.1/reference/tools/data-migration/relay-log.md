@@ -2,7 +2,6 @@
 title: DM Relay Log
 summary: 了解目录结构、初始同步规则和 DM relay log 的数据清理。
 category: reference
-aliases: ['/docs-cn/tools/dm/relay-log/']
 ---
 
 # DM Relay Log

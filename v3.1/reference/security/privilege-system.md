@@ -1,7 +1,6 @@
 ---
 title: 权限管理
 category: reference
-aliases: ['/docs-cn/sql/privilege/']
 ---
 
 # 权限管理

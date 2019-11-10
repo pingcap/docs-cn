@@ -2,7 +2,6 @@
 title: Table Selector
 summary: 介绍 DM 的 Table Selector
 category: reference
-aliases: ['/docs-cn/tools/dm/table-selector/']
 ---
 
 # Table Selector

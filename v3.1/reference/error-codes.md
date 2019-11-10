@@ -1,7 +1,6 @@
 ---
 title: 错误码与故障诊断
 category: reference
-aliases: ['/docs-cn/sql/error/']
 ---
 
 # 错误码与故障诊断

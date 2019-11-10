@@ -1,7 +1,6 @@
 ---
 title: Data Migration 简介
 category: reference
-aliases: ['/docs-cn/tools/dm/overview/','/docs-cn/tools/data-migration-overview/']
 ---
 
 # Data Migration 简介

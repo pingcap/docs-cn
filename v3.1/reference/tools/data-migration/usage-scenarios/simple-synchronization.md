@@ -1,7 +1,6 @@
 ---
 title: Data Migration 简单使用场景
 category: reference
-aliases: ['/docs-cn/tools/dm/simple-synchronization-scenario/']
 ---
 
 # Data Migration 简单使用场景

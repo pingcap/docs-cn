@@ -1,7 +1,6 @@
 ---
 title: Kubernetes 上的集群初始化配置
 category: how-to
-aliases: ['/docs-cn/v3.1/how-to/configure/initialize-cluster/']
 ---
 
 # Kubernetes 上的集群初始化配置

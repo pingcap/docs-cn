@@ -1,7 +1,6 @@
 ---
 title: TiDB Operator 简介
 category: reference
-aliases: ['/docs-cn/v3.1/reference/tidb-operator-overview/']
 ---
 
 # TiDB Operator 简介

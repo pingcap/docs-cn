@@ -1,7 +1,6 @@
 ---
 title: TiDB Binlog 集群运维
 category: reference
-aliases: ['/docs-cn/v3.1/how-to/maintain/tidb-binlog/','/docs-cn/v3.1/reference/tools/tidb-binlog/maintain/']
 ---
 
 # TiDB Binlog 集群运维

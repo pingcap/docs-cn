@@ -1,7 +1,6 @@
 ---
 title: DM 配置简介
 category: reference
-aliases: ['/docs-cn/tools/dm/dm-configuration-file-overview/']
 ---
 
 # DM 配置简介

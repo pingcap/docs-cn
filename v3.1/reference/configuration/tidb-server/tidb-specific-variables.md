@@ -1,7 +1,6 @@
 ---
 title: TiDB 专用系统变量和语法
 category: reference
-aliases: ['/docs-cn/sql/tidb-specific/']
 
 ---
 

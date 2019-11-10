@@ -1,7 +1,6 @@
 ---
 title: TiDB Lightning 常见问题
 category: FAQ
-aliases: ['/docs-cn/tools/lightning/faq/','/docs-cn/faq/tidb-lightning/']
 ---
 
 # TiDB Lightning 常见问题

@@ -2,7 +2,6 @@
 title: 使用 DinD 在 Kubernetes 上部署 TiDB 集群
 summary: 使用 DinD 在 Kubernetes 上部署 TiDB 集群
 category: how-to
-aliases: ['/docs-cn/v3.1/how-to/get-started/deploy-tidb-from-kubernetes-dind/']
 ---
 
 # 使用 DinD 在 Kubernetes 上部署 TiDB 集群

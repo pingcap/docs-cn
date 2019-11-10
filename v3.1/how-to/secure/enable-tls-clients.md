@@ -1,7 +1,6 @@
 ---
 title: 使用加密连接
 category: how-to
-aliases: ['/docs-cn/sql/encrypted-connections/']
 ---
 
 # 使用加密连接

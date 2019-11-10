@@ -1,7 +1,6 @@
 ---
 title: 数据迁移概述
 category: how-to
-aliases: ['/docs-cn/op-guide/migration-overview/']
 ---
 
 # 数据迁移概述

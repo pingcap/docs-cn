@@ -1,7 +1,6 @@
 ---
 title: 连接器和 API
 category: reference
-aliases: ['/docs-cn/sql/connection-and-APIs/']
 ---
 
 # 连接器和 API

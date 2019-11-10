@@ -1,7 +1,6 @@
 ---
 title: Overview 面板重要监控指标详解
 category: reference
-aliases: ['/docs-cn/op-guide/dashboard-overview-info/']
 ---
 
 # Overview 面板重要监控指标详解

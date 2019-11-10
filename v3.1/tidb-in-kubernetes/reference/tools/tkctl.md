@@ -1,7 +1,6 @@
 ---
 title: tkctl 使用指南
 category: reference
-aliases: ['/docs-cn/v3.1/reference/tools/tkctl/']
 ---
 
 # tkctl 使用指南

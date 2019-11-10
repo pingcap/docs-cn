@@ -1,7 +1,6 @@
 ---
 title: TiDB 核心特性
 category: introduction
-aliases: ['/docs-cn/features/','/docs-cn/key-features/']
 ---
 
 # TiDB 核心特性

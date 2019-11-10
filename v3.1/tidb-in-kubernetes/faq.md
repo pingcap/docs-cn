@@ -1,7 +1,6 @@
 ---
 title: Kubernetes 上的 TiDB 集群常见问题
 category: FAQ
-aliases: ['/docs-cn/v3.1/faq/tidb-in-kubernetes/']
 ---
 
 # Kubernetes 上的 TiDB 集群常见问题

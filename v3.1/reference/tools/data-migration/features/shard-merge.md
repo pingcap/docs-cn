@@ -1,7 +1,6 @@
 ---
 title: 分库分表合并同步
 category: reference
-aliases: ['/docs-cn/tools/dm/shard-merge/']
 ---
 
 # 分库分表合并同步

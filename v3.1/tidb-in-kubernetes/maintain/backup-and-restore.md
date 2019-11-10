@@ -1,7 +1,6 @@
 ---
 title: Kubernetes 上的 TiDB 集群备份恢复
 category: how-to
-aliases: ['/docs-cn/v3.1/how-to/maintain/tidb-in-kubernetes/backup-and-restore/']
 ---
 
 # Kubernetes 上的 TiDB 集群备份与恢复

@@ -1,7 +1,6 @@
 ---
 title: DM 任务配置文件介绍
 category: reference
-aliases: ['/docs-cn/tools/dm/task-configuration-file-intro/']
 ---
 
 # DM 任务配置文件介绍

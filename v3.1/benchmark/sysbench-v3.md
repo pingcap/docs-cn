@@ -1,7 +1,6 @@
 ---
 title: TiDB Sysbench 性能对比测试报告 - v2.1 对比 v2.0
 category: benchmark
-aliases: ['/docs-cn/benchmark/sysbench-v3/']
 ---
 
 # TiDB Sysbench 性能对比测试报告 - v2.1 对比 v2.0

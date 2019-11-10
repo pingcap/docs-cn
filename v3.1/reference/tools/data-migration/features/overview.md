@@ -2,7 +2,6 @@
 title: 数据同步功能
 summary: DM 提供的功能及其配置介绍
 category: reference
-aliases: ['/docs-cn/tools/dm/data-synchronization-features/']
 ---
 
 # 数据同步功能

@@ -1,7 +1,6 @@
 ---
 title: 日志收集
 category: how-to
-aliases: ['/docs-cn/v3.1/how-to/maintain/tidb-in-kubernetes/log-collecting/']
 ---
 
 # 日志收集

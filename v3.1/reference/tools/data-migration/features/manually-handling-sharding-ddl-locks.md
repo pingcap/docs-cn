@@ -1,7 +1,6 @@
 ---
 title: 手动处理 Sharding DDL Lock
 category: reference
-aliases: ['/docs-cn/tools/dm/manually-handling-sharding-ddl-locks/']
 ---
 
 # 手动处理 Sharding DDL Lock

@@ -1,7 +1,6 @@
 ---
 title: 集群拓扑信息配置
 category: how-to
-aliases: ['/docs-cn/op-guide/location-awareness/']
 ---
 
 # 集群拓扑信息配置

@@ -1,7 +1,6 @@
 ---
 title: TiDB Binlog 常见问题
 category: FAQ
-aliases: ['/docs-cn/v3.1/faq/tidb-binlog/','/docs-cn/v3.1/reference/tools/tidb-binlog/faq/']
 ---
 
 # TiDB Binlog 常见问题

@@ -1,7 +1,6 @@
 ---
 title: Syncer 使用文档
 category: reference
-aliases: ['/docs-cn/tools/syncer/']
 ---
 
 # Syncer 使用文档

@@ -1,7 +1,6 @@
 ---
 title: 与 MySQL 安全特性差异
 category: reference
-aliases: ['/docs-cn/sql/security-compatibility/']
 ---
 
 # 与 MySQL 安全特性差异

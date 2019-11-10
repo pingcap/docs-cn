@@ -1,7 +1,6 @@
 ---
 title: 使用 DM 同步数据
 category: reference
-aliases: ['/docs-cn/tools/dm/practice/']
 ---
 
 # 使用 DM 同步数据

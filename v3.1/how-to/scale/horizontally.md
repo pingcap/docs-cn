@@ -1,7 +1,6 @@
 ---
 title: TiDB 集群扩容缩容方案
 category: how-to
-aliases: ['/docs-cn/op-guide/horizontal-scale/']
 ---
 
 # TiDB 集群扩容缩容方案

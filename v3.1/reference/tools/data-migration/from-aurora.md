@@ -2,7 +2,6 @@
 title: 从 AWS Aurora MySQL 迁移数据
 summary: 使用 DM 从 AWS Aurora MySQL 迁移数据。
 category: reference
-aliases: ['/docs-cn/tools/dm/from-aurora/']
 ---
 
 # 从 AWS Aurora MySQL 迁移数据

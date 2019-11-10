@@ -1,7 +1,6 @@
 ---
 title: 全量数据迁移
 category: how-to
-aliases: ['/docs-cn/op-guide/migration/']
 ---
 
 # 全量数据迁移
