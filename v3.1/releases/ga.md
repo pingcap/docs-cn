@@ -34,7 +34,7 @@ aliases: ['/docs-cn/releases/ga/']
 + 提升性能和稳定性
 + 增加 Debug API，方便调试
 
-## TiSpark Beta Release:
+## TiSpark Beta Release
 
 + 支持可配置框架
 + 支持 ThriftSever/JDBC 和 Spark SQL 脚本入口
