@@ -50,7 +50,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 ### tidb_opt_insubquery_unfold
 
-作用域: SESSION
+作用域: SESSION | GLOBAL
 
 默认值: 0
 

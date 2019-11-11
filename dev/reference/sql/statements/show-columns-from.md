@@ -26,59 +26,113 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> create view v1 as select 1;
+create view v1 as select 1;
+```
+
+```
 Query OK, 0 rows affected (0.11 sec)
+```
 
-mysql> show columns from v1;
+{{< copyable "sql" >}}
+
+```sql
+show columns from v1;
+```
+
+```
 +-------+-----------+------+------+---------+-------+
 | Field | Type      | Null | Key  | Default | Extra |
 +-------+-----------+------+------+---------+-------+
 | 1     | bigint(1) | YES  |      | NULL    |       |
 +-------+-----------+------+------+---------+-------+
 1 row in set (0.00 sec)
+```
 
-mysql> desc v1;
+{{< copyable "sql" >}}
+
+```sql
+desc v1;
+```
+
+```
 +-------+-----------+------+------+---------+-------+
 | Field | Type      | Null | Key  | Default | Extra |
 +-------+-----------+------+------+---------+-------+
 | 1     | bigint(1) | YES  |      | NULL    |       |
 +-------+-----------+------+------+---------+-------+
 1 row in set (0.00 sec)
+```
 
-mysql> describe v1;
+{{< copyable "sql" >}}
+
+```sql
+describe v1;
+```
+
+```
 +-------+-----------+------+------+---------+-------+
 | Field | Type      | Null | Key  | Default | Extra |
 +-------+-----------+------+------+---------+-------+
 | 1     | bigint(1) | YES  |      | NULL    |       |
 +-------+-----------+------+------+---------+-------+
 1 row in set (0.00 sec)
+```
 
-mysql> explain v1;
+{{< copyable "sql" >}}
+
+```sql
+explain v1;
+```
+
+```
 +-------+-----------+------+------+---------+-------+
 | Field | Type      | Null | Key  | Default | Extra |
 +-------+-----------+------+------+---------+-------+
 | 1     | bigint(1) | YES  |      | NULL    |       |
 +-------+-----------+------+------+---------+-------+
 1 row in set (0.00 sec)
+```
 
-mysql> show fields from v1;
+{{< copyable "sql" >}}
+
+```sql
+show fields from v1;
+```
+
+```
 +-------+-----------+------+------+---------+-------+
 | Field | Type      | Null | Key  | Default | Extra |
 +-------+-----------+------+------+---------+-------+
 | 1     | bigint(1) | YES  |      | NULL    |       |
 +-------+-----------+------+------+---------+-------+
 1 row in set (0.00 sec)
+```
 
-mysql> show full columns from v1;
+{{< copyable "sql" >}}
+
+```sql
+show full columns from v1;
+```
+
+```
 +-------+-----------+-----------+------+------+---------+-------+---------------------------------+---------+
 | Field | Type      | Collation | Null | Key  | Default | Extra | Privileges                      | Comment |
 +-------+-----------+-----------+------+------+---------+-------+---------------------------------+---------+
 | 1     | bigint(1) | NULL      | YES  |      | NULL    |       | select,insert,update,references |         |
 +-------+-----------+-----------+------+------+---------+-------+---------------------------------+---------+
 1 row in set (0.00 sec)
+```
 
-mysql> show full columns from mysql.user;
+{{< copyable "sql" >}}
+
+```sql
+show full columns from mysql.user;
+```
+
+```
 +-----------------------+---------------+-------------+------+------+---------+-------+---------------------------------+---------+
 | Field                 | Type          | Collation   | Null | Key  | Default | Extra | Privileges                      | Comment |
 +-----------------------+---------------+-------------+------+------+---------+-------+---------------------------------+---------+
@@ -117,8 +171,8 @@ mysql> show full columns from mysql.user;
 
 ## MySQL 兼容性
 
-`SHOW [FULL] COLUMNS FROM` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW [FULL] COLUMNS FROM` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/dev/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
+* [SHOW CREATE TABLE](/dev/reference/sql/statements/show-create-table.md)

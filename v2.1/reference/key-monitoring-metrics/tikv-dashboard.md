@@ -5,7 +5,7 @@ category: reference
 
 # TiKV 重要监控指标详解
 
-使用 Ansible 部署 TiDB 集群时，一键部署监控系统 (Prometheus/Grafana)，监控架构请看 [TiDB 监控框架概述](/how-to/monitor/overview.md)。
+使用 Ansible 部署 TiDB 集群时，一键部署监控系统 (Prometheus/Grafana)，监控架构请看 [TiDB 监控框架概述](/v2.1/how-to/monitor/overview.md)。
 
 目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview 等。
 
@@ -357,7 +357,7 @@ category: reference
 - Write stall duration：由于 write stall 造成的时间开销，正常情况下应为 0
 - Memtable size：每个 CF 的 memtable 的大小
 - Memtable hit：memtable 的命中率
-- Block cache size：block cache 的大小。如果将 `shared block cache` 禁用，即为每个 CF 的 block cache 的大小
+- Block cache size：block cache 的大小
 - Block cache hit：block cache 的命中率
 - Block cache flow：不同 block cache 操作的流量
 - Block cache operations 不同 block cache 操作的个数
@@ -393,7 +393,7 @@ category: reference
 - Write stall duration：由于 write stall 造成的时间开销，正常情况下应为 0
 - Memtable size：每个 CF 的 memtable 的大小
 - Memtable hit：memtable 的命中率
-- Block cache size：block cache 的大小。如果将 `shared block cache` 禁用，即为每个 CF 的 block cache 的大小
+- Block cache size：block cache 的大小
 - Block cache hit：block cache 的命中率
 - Block cache flow：不同 block cache 操作的流量
 - Block cache operations 不同 block cache 操作的个数

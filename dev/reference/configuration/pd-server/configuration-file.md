@@ -5,11 +5,12 @@ category: reference
 
 # PD 配置文件描述
 
+<!-- markdownlint-disable MD001 -->
+
 PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/config.toml](https://github.com/pingcap/pd/blob/master/conf/config.toml) 找到默认的配置文件。
 
-本文档只阐述未包含在命令行参数中的参数，命令行参数参见[这里](/reference/configuration/pd/configuration.md)。
+本文档只阐述未包含在命令行参数中的参数，命令行参数参见 [PD 配置参数](/dev/reference/configuration/pd-server/configuration.md)。
 
-<!-- markdownlint-disable MD001 -->
 ### `lease`
 
 + PD Leader Key 租约超时时间，超时系统重新选举 Leader。
@@ -65,6 +66,25 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + 开启独立的 region 存储。
 + 默认：false
+
+## security
+
+安全相关配置项。
+
+### `cacert-path`
+
++ CA 文件路径
++ 默认：""
+
+### `cert-path`
+
++ 包含 X509 证书的 PEM 文件路径
++ 默认：""
+
+### `key-path`
+
++ 包含 X509 key 的 PEM 文件路径
++ 默认：""
 
 ## log
 
@@ -183,7 +203,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 设置 store 空间不足的阈值。
 + 默认：0.8
 + 最小值：大于 0
-+ 最大值：小于
++ 最大值：小于 1
 
 ### `tolerant-size-ratio`
 

@@ -85,10 +85,10 @@ TiDB 2.1 默认会进行事务重试，但需注意重试事务可能会导致�
 
 因为 TiDB 自动重试机制会把事务第一次执行的所有语句重新执行一遍，当一个事务里的后续语句是否执行取决于前面语句执行结果的时候，自动重试会违反快照隔离，导致更新丢失。这种情况下，需要在应用层重试整个事务。
 
-通过配置 `tidb_disable_txn_auto_retry = 1` 变量可以关掉显示事务的重试。
+通过配置 `tidb_disable_txn_auto_retry = on` 变量可以关掉显示事务的重试。
 
 ```sql
-SET GLOBAL tidb_disable_txn_auto_retry = 1;
+SET GLOBAL tidb_disable_txn_auto_retry = on;
 ```
 
 改变 `tidb_disable_txn_auto_retry` 变量不会影响 `auto_commit = 1` 的单语句的隐式事务，因为该语句的自动重试，不会造成丢失更新等异常，即不会破坏事务的隔离性。

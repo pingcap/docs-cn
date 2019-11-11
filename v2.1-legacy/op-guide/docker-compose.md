@@ -59,7 +59,7 @@ category: deployment
     ```
 
     如果是 Mac 系统，也可以通过 Homebrew 安装：
-    
+
     ```
     brew install kubernetes-helm
     ```

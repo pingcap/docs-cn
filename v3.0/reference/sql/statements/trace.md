@@ -9,6 +9,7 @@ category: reference
 `TRACE` 语句用于提供查询执行的详细信息，可通过 TiDB 服务器状态端口所公开的图形界面进行查看。
 
 ## 语法图
+
 **TraceStmt:**
 
 ![TraceStmt](/media/sqlgram/TraceStmt.png)
@@ -19,8 +20,13 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> trace format='row' select * from mysql.user;
+trace format='row' select * from mysql.user;
+```
+
+```
 +---------------------------+-----------------+------------+
 | operation                 | startTS         | duration   |
 +---------------------------+-----------------+------------+
@@ -36,15 +42,36 @@ mysql> trace format='row' select * from mysql.user;
 |   └─tableReader.Next      | 10:33:34.648575 | 1.783µs    |
 +---------------------------+-----------------+------------+
 10 rows in set (0.00 sec)
+```
 
-mysql> CREATE TABLE t1 (id int not null primary key auto_increment);
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t1 (id int not null primary key auto_increment);
+```
+
+```
 Query OK, 0 rows affected (0.11 sec)
+```
 
-mysql> INSERT INTO t1 VALUES (1),(2),(3),(4),(5);
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 VALUES (1),(2),(3),(4),(5);
+```
+
+```
 Query OK, 5 rows affected (0.02 sec)
 Records: 5  Duplicates: 0  Warnings: 0
+```
 
-mysql> TRACE FORMAT='json' SELECT * FROM t1 WHERE id = 2\G
+{{< copyable "sql" >}}
+
+```sql
+TRACE FORMAT='json' SELECT * FROM t1 WHERE id = 2;
+```
+
+```
 operation: [
     {"ID":{"Trace":"60d20d005593de87","Span":"44e5b309242ffe2f","Parent":"79d146dac9a29a7e"},
         "Annotations":[
@@ -139,4 +166,4 @@ operation: [
 
 ## 另请参阅
 
-* [EXPLAIN ANALYZE](/reference/sql/statements/explain-analyze.md)
+* [EXPLAIN ANALYZE](/v3.0/reference/sql/statements/explain-analyze.md)

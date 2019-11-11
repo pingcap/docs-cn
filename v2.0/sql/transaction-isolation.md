@@ -3,7 +3,6 @@ title: TiDB 事务隔离级别
 category: user guide
 ---
 
-
 # TiDB 事务隔离级别
 
 事务隔离级别是数据库事务处理的基础，ACID 中 I，即 Isolation，指的就是事务的隔离性。
@@ -24,7 +23,6 @@ TiDB 使用[percolator事务模型](https://research.google.com/pubs/pub36726.ht
 可以通过以下命令设置事务的隔离级别：
 
 ```SET SESSION TRANSACTION ISOLATION LEVEL [read committed|repeatable read]```
-
 
 ## 可重复读
 
@@ -72,4 +70,3 @@ MySQL 的可重复读隔离级别并非 snapshot 隔离级别，MySQL 可重复�
 # The maximum number of retries when commit a transaction.
 retry-limit = 10
 ```
-

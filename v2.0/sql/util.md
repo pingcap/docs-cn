@@ -74,6 +74,7 @@ label = "cop"
 ```
 
 如果电脑上安装了 `dot` 程序 (包含在 graphviz 软件包中)，可以通过如下方式生成 PNG 文件：
+
 ```bash
 dot xx.dot -T png -O
 
@@ -83,7 +84,6 @@ dot xx.dot -T png -O
 如果没有安装 `dot`，可以将结果拷贝到[这个网站](http://www.webgraphviz.com/)，可以得到一个树状图：
 
 ![Explain Dot](../media/explain_dot.png)
-
 
 ## `USE` 语句
 

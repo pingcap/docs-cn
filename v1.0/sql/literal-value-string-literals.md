@@ -50,8 +50,8 @@ SELECT _utf8'some text';
 
 转义字符：
 
-| 转义序列  |  意义  | 
-| :-------: | :-------:| 
+| 转义序列  |  意义  |
+| :-------: | :-------:|
 | \0  | ASCII NUL (X'00') 字符 |
 | \'  | 单引号 |
 | \"  | 双引号 |
@@ -72,5 +72,3 @@ SELECT _utf8'some text';
 * 在 `'` 中表示 `"` 或者在 `"` 中表示 `'` 都不需要特别的处理。
 
 更多[细节](https://dev.mysql.com/doc/refman/5.7/en/string-literals.html)。
-
-

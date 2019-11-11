@@ -6,7 +6,7 @@ category: reference
 
 # MODIFY COLUMN
 
-`ALTER TABLE .. MODIFY COLUMN` 语句用于修改已有表上的列，包括列的数据类型和属性。若要同时重命名，可改用 [`CHANGE COLUMN`](/reference/sql/statements/change-column.md) 语句。
+`ALTER TABLE .. MODIFY COLUMN` 语句用于修改已有表上的列，包括列的数据类型和属性。若要同时重命名，可改用 [`CHANGE COLUMN`](/v2.1/reference/sql/statements/change-column.md) 语句。
 
 ## 语法图
 
@@ -65,11 +65,12 @@ ERROR 1105 (HY000): can't run multi schema change
 
 * 目前不支持使用单个 `ALTER TABLE` 语句进行多个修改。
 * 仅支持特定类型的数据类型更改。例如，支持将 `INTEGER` 改为 `BIGINT`，但不支持将 `BIGINT` 改为 `INTEGER`。不支持将整数改为字符串格式或 BLOB 格式。
+* 不支持修改 decimal 类型的精度。
 
 ## 另请参阅
 
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
-* [ADD COLUMN](/reference/sql/statements/add-column.md)
-* [DROP COLUMN](/reference/sql/statements/drop-column.md)
-* [CHANGE COLUMN](/reference/sql/statements/change-column.md)
+* [CREATE TABLE](/v2.1/reference/sql/statements/create-table.md)
+* [SHOW CREATE TABLE](/v2.1/reference/sql/statements/show-create-table.md)
+* [ADD COLUMN](/v2.1/reference/sql/statements/add-column.md)
+* [DROP COLUMN](/v2.1/reference/sql/statements/drop-column.md)
+* [CHANGE COLUMN](/v2.1/reference/sql/statements/change-column.md)

@@ -24,8 +24,13 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW CHARACTER SET;
+SHOW CHARACTER SET;
+```
+
+```
 +---------+---------------+-------------------+--------+
 | Charset | Description   | Default collation | Maxlen |
 +---------+---------------+-------------------+--------+
@@ -40,8 +45,8 @@ mysql> SHOW CHARACTER SET;
 
 ## MySQL 兼容性
 
-`SHOW CHARACTER SET` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW CHARACTER SET` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW COLLATION](/reference/sql/statements/show-collation.md)
+* [SHOW COLLATION](/v3.0/reference/sql/statements/show-collation.md)

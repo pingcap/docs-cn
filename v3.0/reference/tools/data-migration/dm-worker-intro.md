@@ -54,6 +54,8 @@ Binlog replication/Syncer 读取 relay log 处理单元的 binlog event，将这
 
 如果要同步 `db1` 的数据到 TiDB，可执行如下的 `GRANT` 语句：
 
+{{< copyable "sql" >}}
+
 ```sql
 GRANT RELOAD,REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'your_user'@'your_wildcard_of_host'
 GRANT SELECT ON db1.* TO 'your_user'@'your_wildcard_of_host';
@@ -77,6 +79,8 @@ GRANT SELECT ON db1.* TO 'your_user'@'your_wildcard_of_host';
 | `INDEX` | Tables |
 
 对要执行同步操作的数据库或表执行下面的 `GRANT` 语句：
+
+{{< copyable "sql" >}}
 
 ```sql
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX  ON db.table TO 'your_user'@'your_wildcard_of_host';

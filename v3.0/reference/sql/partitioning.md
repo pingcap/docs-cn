@@ -493,7 +493,7 @@ SELECT fname, lname, region_code, dob
     WHERE region_code > 125 AND region_code < 130;
 ```
 
-很显然，结果必然是在分区 `p0` 或者 `p3` 里面，也就是说，我们只需要在 `p0` 和 `p3` 里面去搜索匹配的行。去掉不必要的分区就是所谓的裁剪。优化器如果能裁剪掉一部分的分区，则执行会快于处理整个不做分区的表的相同查询。
+很显然，结果必然是在分区 `p1` 或者 `p2` 里面，也就是说，我们只需要在 `p1` 和 `p2` 里面去搜索匹配的行。去掉不必要的分区就是所谓的裁剪。优化器如果能裁剪掉一部分的分区，则执行会快于处理整个不做分区的表的相同查询。
 
 优化器可以通过 where 条件裁剪的两个场景：
 
@@ -625,7 +625,7 @@ SELECT store_id, COUNT(department_id) AS c
 
 本节讨论分区键，主键和唯一键之间的关系。一句话总结它们之间的关系要满足的规则：**分区表的每个唯一列，必须包含分区表达式中用到的所有列**。
 
->  every unique key on the table must use every column in the table's partitioning expression.
+> every unique key on the table must use every column in the table's partitioning expression.
 
 这里所指的唯一也包含了主键，因为根据主键的定义，主键必须是唯一的。例如，下面这些建表语句就是无效的：
 

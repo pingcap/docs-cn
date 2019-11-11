@@ -5,7 +5,7 @@ category: reference
 
 # 数据类型概述
 
-TiDB 支持除空间类型 (`SPATIAL`) 之外的所有 MySQL 数据类型，包括[数值型类型](/reference/sql/data-types/numeric.md)、[字符串类型](/reference/sql/data-types/string.md)、[时间和日期类型](/reference/sql/data-types/date-and-time.md)、[JSON 类型](/reference/sql/data-types/json.md)。
+TiDB 支持除空间类型 (`SPATIAL`) 之外的所有 MySQL 数据类型，包括[数值型类型](/dev/reference/sql/data-types/numeric.md)、[字符串类型](/dev/reference/sql/data-types/string.md)、[时间和日期类型](/dev/reference/sql/data-types/date-and-time.md)、[JSON 类型](/dev/reference/sql/data-types/json.md)。
 
 数据类型定义一般为 `T(M[, D])`，其中：
 

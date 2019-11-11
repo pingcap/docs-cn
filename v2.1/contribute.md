@@ -20,7 +20,7 @@ category: contribute
 3. 如果您的更改建议被接受，您需要先签署 [CLA](https://cla-assistant.io/pingcap/tidb?pullRequest=5567)，便可以在您的克隆仓库 (fork) 里开始工作了。
 4. 在测试过所做的更改后，您便可以提交[包含更改的 PR](https://github.com/pingcap/tidb/pull/3113) 了。
 
-我们欢迎并非常感谢您的贡献。有关提交补丁和贡献流程的详细信息，请参阅[贡献者指南](https://github.com/pingcap/community/blob/master/CONTRIBUTING.md)。
+我们欢迎并非常感谢您的贡献。有关提交补丁和贡献流程的详细信息，请参阅[贡献者指南](https://github.com/pingcap/tidb/blob/master/CONTRIBUTING.md)。
 
 ## 改进文档
 

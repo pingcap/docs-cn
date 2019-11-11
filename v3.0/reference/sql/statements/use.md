@@ -20,13 +20,26 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> USE mysql;
+USE mysql;
+```
+
+```
 Reading table information for completion of table and column names
 You can turn off this feature to get a quicker startup with -A
 
 Database changed
-mysql> SHOW TABLES;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW TABLES;
+```
+
+```
 +----------------------+
 | Tables_in_mysql      |
 +----------------------+
@@ -48,19 +61,55 @@ mysql> SHOW TABLES;
 | user                 |
 +----------------------+
 16 rows in set (0.00 sec)
+```
 
-mysql> CREATE DATABASE newtest;
+{{< copyable "sql" >}}
+
+```sql
+CREATE DATABASE newtest;
+```
+
+```
 Query OK, 0 rows affected (0.10 sec)
+```
 
-mysql> USE newtest;
+{{< copyable "sql" >}}
+
+```sql
+USE newtest;
+```
+
+```
 Database changed
-mysql> SHOW TABLES;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW TABLES;
+```
+
+```
 Empty set (0.00 sec)
+```
 
-mysql> CREATE TABLE t1 (a int);
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t1 (a int);
+```
+
+```
 Query OK, 0 rows affected (0.10 sec)
+```
 
-mysql> SHOW TABLES;
+{{< copyable "sql" >}}
+
+```sql
+SHOW TABLES;
+```
+
+```
 +-------------------+
 | Tables_in_newtest |
 +-------------------+
@@ -71,9 +120,9 @@ mysql> SHOW TABLES;
 
 ## MySQL 兼容性
 
-`USE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`USE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/v3.0/report-issue.md)。
 
 ## 另请参阅
 
-* [CREATE DATABASE](/reference/sql/statements/create-database.md)
-* [SHOW TABLES](/reference/sql/statements/show-tables.md)
+* [CREATE DATABASE](/v3.0/reference/sql/statements/create-database.md)
+* [SHOW TABLES](/v3.0/reference/sql/statements/show-tables.md)

@@ -10,7 +10,7 @@ category: reference
 {{< copyable "sql" >}}
 
 ```sql
-ADMIN SHOW DDL
+ADMIN SHOW DDL;
 ```
 
 `ADMIN SHOW DDL` 用于查看当前正在执行的 DDL 作业。
@@ -18,7 +18,7 @@ ADMIN SHOW DDL
 {{< copyable "sql" >}}
 
 ```sql
-ADMIN SHOW DDL JOBS
+ADMIN SHOW DDL JOBS;
 ```
 
 `ADMIN SHOW DDL JOBS` 用于查看当前 DDL 作业队列中的所有结果（包括正在运行以及等待运行的任务）以及已执行完成的 DDL 作业队列中的最近十条结果。
@@ -26,19 +26,19 @@ ADMIN SHOW DDL JOBS
 {{< copyable "sql" >}}
 
 ```sql
-ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...
+ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...;
 ```
 
 {{< copyable "sql" >}}
 
 ```sql
-ADMIN CANCEL DDL JOBS job_id [, job_id] ...
+ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
 ```
 
 {{< copyable "sql" >}}
 
 ```sql
-ADMIN CHECK TABLE tbl_name [, tbl_name] ...
+ADMIN CHECK TABLE tbl_name [, tbl_name] ...;
 ```
 
 ## 语句概览
@@ -98,6 +98,7 @@ admin show ddl jobs;
 
     > **注意：**
     >
+    > - 只有该操作可以取消 DDL 作业，其他所有的操作和环境变更（例如机器重启、集群重启）都不会取消 DDL 作业。
     > - 该操作可以同时取消多个 DDL 作业。可以通过 `ADMIN SHOW DDL JOBS` 语句来获取 DDL 作业的 ID。
     > - 如果希望取消的作业已经完成，则取消操作将会失败。
 

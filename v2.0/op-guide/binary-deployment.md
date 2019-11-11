@@ -5,7 +5,6 @@ category: deployment
 
 # TiDB Binary 部署指导
 
-
 ## 概述
 
 一个完整的 TiDB 集群包括 PD，TiKV 以及 TiDB。启动顺序依次是 PD，TiKV 以及 TiDB。在关闭数据库服务时，请按照启动的相反顺序进行逐一关闭服务。
@@ -33,7 +32,6 @@ category: deployment
 | PD | 2379 | TCP | 提供 TiDB 和 PD 通信端口 |
 | PD | 2380 | TCP | PD 集群节点间通信端口 |
 
-
 ### 2. TiDB 数据库组件（选装）
 
 | 组件 | 默认端口 | 协议 | 说明 |
@@ -60,7 +58,6 @@ category: deployment
 | 配置| 描述 |
 | :-- | :---------------------------- |
 | 防火墙 / 端口 | 请查看 TiDB 所需端口在各个节点之间是否能正常访问 |
-
 
 ### 操作系统参数
 
@@ -178,6 +175,7 @@ cd tidb-latest-linux-amd64
                   --path="127.0.0.1:2379" \
                   --log-file=tidb.log
 ```
+
 步骤四. 使用 MySQL 客户端连接 TiDB:
 
 ```
@@ -238,6 +236,7 @@ mysql -h 127.0.0.1 -P 4000 -u root -D test
                   --path="192.168.199.113:2379" \
                   --log-file=tidb.log
 ```
+
 步骤四. 使用 MySQL 客户端连接 TiDB：
 
 ```
@@ -360,7 +359,7 @@ tar -xzf pushgateway-0.3.1.linux-amd64.tar.gz
 
 ### 启动监控服务
 
-### 在 node1，node2，node3，node4 启动 `node_exporter`：
+### 在 node1，node2，node3，node4 启动 `node_exporter`
 
 ```
 $cd node_exporter-0.14.0-rc.1.linux-amd64
@@ -370,7 +369,7 @@ $cd node_exporter-0.14.0-rc.1.linux-amd64
     --log.level="info"
 ```
 
-### 在 node1 启动 pushgateway:
+### 在 node1 启动 pushgateway
 
 ```
 $cd pushgateway-0.3.1.linux-amd64
@@ -381,7 +380,7 @@ $cd pushgateway-0.3.1.linux-amd64
     --web.listen-address=":9091"
 ```
 
-### 在 node1 启动 Prometheus:
+### 在 node1 启动 Prometheus
 
 ```
 $cd prometheus-1.5.2.linux-amd64
@@ -426,7 +425,7 @@ scrape_configs:
     --storage.local.retention="360h0m0s"
 ```
 
-### 在 node1 启动 Grafana:
+### 在 node1 启动 Grafana
 
 ```
 cd grafana-4.1.2-1486989747.linux-x64

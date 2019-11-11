@@ -27,7 +27,7 @@ IDC 机器：
 | OS | Linux (CentOS 7.3.1611) |
 | CPU | 40 vCPUs, Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz |
 | RAM | 128GB |
-| DISK | Optane 500GB SSD \* 1 |  
+| DISK | Optane 500GB SSD \* 1 |
 
 Sysbench 版本：1.1.0
 

@@ -20,11 +20,23 @@ category: reference
 
 ## 示例
 
-```sql
-mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL, INDEX col1 (c1));
-Query OK, 0 rows affected (0.11 sec)
+{{< copyable "sql" >}}
 
-mysql> SHOW CREATE TABLE t1\G
+```sql
+CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL, INDEX col1 (c1));
+```
+
+```
+Query OK, 0 rows affected (0.11 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW CREATE TABLE t1;
+```
+
+```
 *************************** 1. row ***************************
        Table: t1
 Create Table: CREATE TABLE `t1` (
@@ -34,11 +46,25 @@ Create Table: CREATE TABLE `t1` (
   KEY `col1` (`c1`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
 1 row in set (0.00 sec)
+```
 
-mysql> ALTER TABLE t1 RENAME INDEX col1 TO c1;
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 RENAME INDEX col1 TO c1;
+```
+
+```
 Query OK, 0 rows affected (0.09 sec)
+```
 
-mysql> SHOW CREATE TABLE t1\G
+{{< copyable "sql" >}}
+
+```sql
+SHOW CREATE TABLE t1;
+```
+
+```
 *************************** 1. row ***************************
        Table: t1
 Create Table: CREATE TABLE `t1` (
@@ -52,11 +78,11 @@ Create Table: CREATE TABLE `t1` (
 
 ## MySQL 兼容性
 
-`RENAME INDEX` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`RENAME INDEX` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/dev/report-issue.md)。
 
 ## 另请参阅
 
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
-* [CREATE INDEX](/reference/sql/statements/create-index.md)
-* [DROP INDEX](/reference/sql/statements/drop-index.md)
-* [SHOW INDEX](/reference/sql/statements/show-index.md)
+* [SHOW CREATE TABLE](/dev/reference/sql/statements/show-create-table.md)
+* [CREATE INDEX](/dev/reference/sql/statements/create-index.md)
+* [DROP INDEX](/dev/reference/sql/statements/drop-index.md)
+* [SHOW INDEX](/dev/reference/sql/statements/show-index.md)

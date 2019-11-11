@@ -205,18 +205,14 @@ $ tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
 
 使用 `modify-tikv-config` 命令可以动态修改配置参数，暂时仅支持对于 RocksDB 相关参数的动态更改。
 
-- `-m` 用于指定要修改的模块，有 `storage`、`kvdb` 和 `raftdb` 三个值可以选择。
-- `-n` 用于指定配置名。配置名可以参考 [TiKV 配置模版](https://github.com/pingcap/tikv/blob/master/etc/config-template.toml#L213-L500)中 `[storage]`、`[rocksdb]` 和 `[raftdb]` 下的参数，分别对应 `storage`、`kvdb` 和 `raftdb`。同时，还可以通过 `default|write|lock + . + 参数名` 的形式来指定的不同 CF 的配置。对于 `kvdb` 有 `default`、`write` 和 `lock` 可以选择，对于 `raftdb` 仅有 `default` 可以选择。
+- `-m` 用于指定要修改的 RocksDB，有 `kvdb` 和 `raftdb` 两个值可以选择。
+- `-n` 用于指定配置名。配置名可以参考 [TiKV 配置模版](https://github.com/pingcap/tikv/blob/master/etc/config-template.toml#L213-L500)中 `[rocksdb]` 和 `[raftdb]` 下的参数，分别对应 `kvdb` 和 `raftdb`。同时，还可以通过 `default|write|lock + . + 参数名` 的形式来指定的不同 CF 的配置。对于 `kvdb` 有 `default`、`write` 和 `lock` 可以选择，对于 `raftdb` 仅有 `default` 可以选择。
 - `-v` 用于指定配置值。
 
 ```bash
-# 设置 `shared block cache` 的大小。
-$ tikv-ctl modify-tikv-config -m storage -n block_cache.capacity -v 10GB
-success!
-# 当禁用 `shared block cache` 时，为 `write` CF 设置 `block cache size`。
-$ tikv-ctl modify-tikv-config -m kvdb -n write.block_cache_size -v 256MB
-success!
 $ tikv-ctl modify-tikv-config -m kvdb -n max_background_jobs -v 8
+success!
+$ tikv-ctl modify-tikv-config -m kvdb -n write.block-cache-size -v 256MB
 success!
 $ tikv-ctl modify-tikv-config -m raftdb -n default.disable_auto_compactions -v true
 success!
@@ -260,7 +256,6 @@ success!
 > - `-p` 选项指定 PD 的 endpoint，不使用 `http` 前缀，用于查询指定的 `region_id` 是否有效。
 > - 对于指定 Region 的 peers 所在的每个 store，均须执行该命令。
 
-
 ### Ldb 命令
 
 ldb 命令行工具提供多种数据访问以及数据库管理命令。下方列出了一些示例用法。详细信息请在运行 `tikv-ctl ldb` 命令时查看帮助消息或查阅 RocksDB 文档。
@@ -282,4 +277,3 @@ $ tikv-ctl ldb --hex manifest_dump --path=/tmp/db/MANIFEST-000001
 您可以通过 `--column_family=<string>` 指定查询的目标列族。
 
 通过 `--try_load_options` 命令加载数据库选项文件以打开数据库。在数据库运行时，建议您保持该命令为开启的状态。如果您使用默认配置打开数据库，LSM-tree 存储组织可能会出现混乱，且无法自动恢复。
-

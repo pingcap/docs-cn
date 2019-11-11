@@ -38,9 +38,9 @@ TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
 对于 TiKV 与 TiSpark 分开部署的场景，可以参考如下建议配置：
 
-+   硬件配置建议
++ 硬件配置建议
 
-    普通场景可以参考 [TiDB 和 TiKV 硬件配置建议](/how-to/deploy/hardware-recommendations.md)，但是如果是偏重分析的场景，可以将 TiKV 节点增加到至少 64G 内存。
+    普通场景可以参考 [TiDB 和 TiKV 硬件配置建议](/v2.1/how-to/deploy/hardware-recommendations.md)，但是如果是偏重分析的场景，可以将 TiKV 节点增加到至少 64G 内存。
 
 ### Spark 与 TiSpark 集群独立部署的配置
 
@@ -69,7 +69,6 @@ spark.sql.extensions org.apache.spark.sql.TiExtensions
 
 例如你有一组 PD 在`10.16.20.1`，`10.16.20.2`，`10.16.20.3`，那么 PD 配置格式是`10.16.20.1:2379,10.16.20.2:2379,10.16.20.3:2379`。
 
-
 ### TiSpark 与 TiKV 集群混合部署的配置
 
 对于 TiKV 与 TiSpark 混合部署的场景，需在原有 TiKV 预留资源之外累加 Spark 所需部分，并分配 25% 的内存作为系统本身占用。
@@ -92,7 +91,7 @@ spark-shell --jars $TISPARK_FOLDER/tispark-core-${version}-SNAPSHOT-jar-with-dep
 
 #### 下载安装包并安装
 
-你可以在[这里](https://spark.apache.org/downloads.html)下载 Apache Spark。
+你可以在 [Download Apache Spark™ 页面](https://spark.apache.org/downloads.html)下载 Apache Spark。
 
 对于 Standalone 模式且无需 Hadoop 支持，则选择 Spark 2.3.x 且带有 Hadoop 依赖的 Pre-build with Apache Hadoop 2.x 任意版本。如有需要配合使用的 Hadoop 集群，则选择对应的 Hadoop 版本号。你也可以选择从源代码[自行构建](https://spark.apache.org/docs/2.3.0/building-spark.html)以配合官方 Hadoop 2.x 之前的版本。
 
@@ -107,13 +106,15 @@ cd $SPARKPATH
 ./sbin/start-master.sh
 ```
 
-在这步完成以后，屏幕上会打印出一个 log 文件。检查 log 文件确认 Spark-Master 是否启动成功。你可以打开 [http://spark-master-hostname:8080](http://whereever-the-ip-is:8080`c) 查看集群信息（如果你没有改动 Spark-Master 默认 Port Numebr）。在启动 Spark-Slave 的时候，也可以通过这个面板来确认 Slave 是否已经加入集群。
+在这步完成以后，屏幕上会打印出一个 log 文件。检查 log 文件确认 Spark-Master 是否启动成功。你可以打开 <http://spark-master-hostname:8080> 查看集群信息（如果你没有改动 Spark-Master 默认 Port Numebr）。在启动 Spark-Slave 的时候，也可以通过这个面板来确认 Slave 是否已经加入集群。
 
 #### 启动 Slave
 
 类似地，可以用如下命令启动 Spark-Slave 节点：
 
-    ./sbin/start-slave.sh spark://spark-master-hostname:7077
+```bash
+./sbin/start-slave.sh spark://spark-master-hostname:7077
+```
 
 命令返回以后，即可通过刚才的面板查看这个 Slave 是否已经正确地加入了 Spark 集群。在所有 Slave 节点重复刚才的命令。确认所有的 Slave 都可以正确连接 Master，这样你就拥有了一个 Standalone 模式的 Spark 集群。
 
@@ -227,7 +228,7 @@ df.write
 .option("isolationLevel", "NONE") // recommended to set isolationLevel to NONE if you have a large DF to load.
 .option("user", "root") // TiDB user here
 .save()
-``` 
+```
 
 推荐将 `isolationLevel` 设置为 `NONE`，否则单一大事务有可能造成 TiDB 服务器内存溢出。
 
@@ -244,19 +245,29 @@ TiSpark 可以使用 TiDB 的统计信息：
 
 统计信息将在 Spark Driver 进行缓存，请确定 Driver 内存足够缓存统计信息。
 可以在`spark-defaults.conf`中开启或关闭统计信息读取：
-  
+
 | Property Name | Default | Description
 | --------   | -----:   | :----: |
 | spark.tispark.statistics.auto_load | true | 是否默认进行统计信息读取 |
 
-
-
 ## TiSpark FAQ
 
--   Q. 是独立部署还是和现有 Spark／Hadoop 集群共用资源？
+- Q. 是独立部署还是和现有 Spark／Hadoop 集群共用资源？
 
     A. 可以利用现有 Spark 集群无需单独部署，但是如果现有集群繁忙，TiSpark 将无法达到理想速度。
 
--   Q. 是否可以和 TiKV 混合部署？
+- Q. 是否可以和 TiKV 混合部署？
 
     A. 如果 TiDB 以及 TiKV 负载较高且运行关键的线上任务，请考虑单独部署 TiSpark；并且考虑使用不同的网卡保证 OLTP 的网络资源不被侵占而影响线上业务。如果线上业务要求不高或者机器负载不大，可以考虑与 TiKV 混合部署。
+
+- Q. Spark 执行中报 warning：WARN ObjectStore:568 - Failed to get database
+
+    A. Warning 忽略即可，原因是 Spark 找不到对应的 hive 库，因为这个库是在 TIKV 中，而不是在 hive 中。可以考虑调整 [log4j 日志](https://github.com/pingcap/tidb-docker-compose/blob/master/tispark/conf/log4j.properties#L43)，将该参数添加到 spark 下 conf 里 log4j 文件(如果后缀是 template 那先 mv 成后缀 properties)。
+
+- Q. Spark 执行中报 java.sql.BatchUpdateException: Data Truncated
+
+    A. 写入的数据长度超过了数据库定义的数据类型的长度，可以确认 target table 的字段长度，进行调整。
+
+- Q. TiSpark 任务是否默认读取 Hive 的元数据？
+
+    A. TiSpark 通过读取 hive-site 里的 meta 来搜寻 hive 的库。如果搜寻不到，就通过读取 tidb meta 搜寻 tidb 库。如果不需要该行为，可不在 hive site 中配置 hive 的 meta。

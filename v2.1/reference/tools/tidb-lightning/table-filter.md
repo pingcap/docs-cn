@@ -1,12 +1,12 @@
 ---
-title: TiDB-Lightning 表库过滤
+title: TiDB Lightning 表库过滤
 summary: 使用黑白名单把一些表剔出要导入的范围。
 category: reference
 ---
 
-# TiDB-Lightning 表库过滤
+# TiDB Lightning 表库过滤
 
-TiDB-Lightning 支持使用黑名单和白名单来过滤掉某些数据库和表。这可以用来跳过一些用作暂存、毋须迁移的表，或用来手动切分数据源，让多机同时导入。
+TiDB Lightning 支持使用黑名单和白名单来过滤掉某些数据库和表。这可以用来跳过一些用作暂存、毋须迁移的表，或用来手动切分数据源，让多机同时导入。
 
 这些过滤规则与 MySQL 的 `replication-rules-db`/`replication-rules-table` 类似。
 
@@ -24,7 +24,7 @@ ignore-dbs = ["pattern4", "pattern5"]
 * 否则，如果数据库名称匹配 `ignore-dbs` 列表中**任何**一项，数据库会被略过。
 * 如果数据库名称**同时**匹配 `do-dbs` 和 `ignore-dbs` 列表，数据库会被导入。
 
-如果匹配项首字符为 `~`，它会被解析为 [Go 语言的正则表达式](https://golang.org/pkg/regexp/syntax/#hdr-Syntax)。否则会视为普通的字串来匹配数据库名称。
+如果匹配项首字符为 `~`，它会被解析为 [Go 语言的正则表达式](https://golang.org/pkg/regexp/syntax/#hdr-syntax)。否则会视为普通的字串来匹配数据库名称。
 
 ## 过滤表
 
