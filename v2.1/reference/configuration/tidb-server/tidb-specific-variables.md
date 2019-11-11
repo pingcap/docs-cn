@@ -306,6 +306,12 @@ set @@global.tidb_distsql_scan_concurrency = 10
 - This variable is used to set the priority of executing the `ADD INDEX` operation in the `re-organize` phase.
 - You can set the value of this variable to `PRIORITY_LOW`, `PRIORITY_NORMAL` or `PRIORITY_HIGH`.
 
+### tidb_max_delta_schema_count <span class="version-mark">New in v2.1.18</span>
+
+- Scope: GLOBAL
+- Default value: 1024
+- This variable is used to set the maximum number of schema versions (the table IDs modified for corresponding versions) allowed to be cached. The value range is 100-16384. This variable is supported in TiDB 2.1.18 and later versions.
+
 ### tidb_force_priority
 
 - Scope: SESSION

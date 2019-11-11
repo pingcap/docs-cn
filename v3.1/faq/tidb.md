@@ -598,6 +598,13 @@ Now, there are still a few reasons for this error reporting (the latter two are 
 > + For each DDL operation, the number of `schema` version changes is the same with the number of corresponding `schema state` version changes.
 > + Different DDL operations cause different number of `schema` version changes. For example, the `CREATE TABLE` statement causes one `schema` version change while the `ADD COLUMN` statement causes four.
 
+#### What are the causes of the "Information schema is out of date" error
+
+When executing a DML statement, if TiDB fails to load the latest schema within a DDL lease (45s by default), the `Information schema is out of date` error might occur. Possible causes are:
+
+- The TiDB instance that executed this DML was killed, and the transaction execution corresponding to this DML statement took longer than a DDL lease. When the transaction was committed, the error occurred.
+- TiDB failed to connect to PD or TiKV while executing this DML statement. As a result, TiDB failed to load schema within a DDL lease or disconnected from PD due to the keepalive setting.
+
 #### Error is reported when executing DDL statements under high concurrency?
 
 When you execute DDL statements (such as creating tables in batches) under high concurrency, a very few of these statements might fail because of key conflicts during the concurrent execution.

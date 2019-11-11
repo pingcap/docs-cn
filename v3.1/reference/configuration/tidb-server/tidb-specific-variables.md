@@ -338,6 +338,12 @@ set @@global.tidb_distsql_scan_concurrency = 10
 - Default value: 512
 - This variable is used to set the number of retries when the DDL operation fails. When the number of retries exceeds the parameter value, the wrong DDL operation is canceled.
 
+### tidb_max_delta_schema_count
+
+- Scope: GLOBAL
+- Default value: 1024
+- This variable is used to set the maximum number of schema versions (the table IDs modified for corresponding versions) allowed to be cached. The value range is 100 ~ 16384.
+
 ### tidb_force_priority
 
 - Scope: SESSION
@@ -517,13 +523,13 @@ set tidb_query_log_max_len = 20
 - Default value: 0
 - By default, Regions are split for a new table when it is being created in TiDB. After this variable is enabled, the newly split Regions are scattered immediately during the execution of the `CREATE TABLE` statement. This applies to the scenario where data need to be written in batches right after the tables are created in batches, because the newly split Regions can be scattered in TiKV beforehand and do not have to wait to be scheduled by PD. To ensure the continuous stability of writing data in batches, the `CREATE TABLE` statement returns success only after the Regions are successfully scattered. This makes the statement's execution time multiple times longer than that when you disable this variable.
 
-### tidb_allow_remove_auto_inc <span class="version-mark">New in v3.0.4</span>
+### tidb_allow_remove_auto_inc
 
 - Scope: SESSION
 - Default value: 0
 - This variable is used to set whether the `auto_increment` property of a column is allowed to be removed by executing `ALTER TABLE MODIFY` or `ALTER TABLE CHANGE` statements. It is not allowed by default.
 
-### tidb_enable_stmt_summary <span class="version-mark">New in v3.0.4</span>
+### tidb_enable_stmt_summary
 
 - Scope: SESSION | GLOBAL
 - Default value: 0
