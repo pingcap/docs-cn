@@ -6,7 +6,7 @@ aliases: ['/docs-cn/benchmark/how-to-run-sysbench']
 
 # 如何用 Sysbench 测试 TiDB
 
-本次测试使用的是 TiDB 3.0 Beta 和 Sysbench 1.0.14。建议使用 Sysbench 1.0 或之后的更新版本，可在[此处](https://github.com/akopytov/sysbench/releases/tag/1.0.14)下载。
+本次测试使用的是 TiDB 3.0 Beta 和 Sysbench 1.0.14。建议使用 Sysbench 1.0 或之后的更新版本，可在 [Sysbench Release 1.0.14 页面](https://github.com/akopytov/sysbench/releases/tag/1.0.14)下载。
 
 ## 测试环境
 
@@ -103,6 +103,7 @@ capacity = "30GB"
 mysql-host={TIDB_HOST}
 mysql-port=4000
 mysql-user=root
+mysql-password=password
 mysql-db=sbtest
 time=600
 threads={8, 16, 32, 64, 128, 256}
@@ -118,6 +119,7 @@ db-driver=mysql
 mysql-host=172.16.30.33
 mysql-port=4000
 mysql-user=root
+mysql-password=password
 mysql-db=sbtest
 time=600
 threads=16
