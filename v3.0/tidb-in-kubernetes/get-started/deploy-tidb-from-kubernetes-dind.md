@@ -32,7 +32,7 @@ DinD 将 Docker 容器作为虚拟机运行，并在第一层 Docker 容器中�
     > - 由于 DinD 不能在 Docker Toolbox 或者 Docker Machine 上运行，[Legacy Docker Toolbox](https://docs.docker.com/toolbox/toolbox_install_mac/) 用户必须卸载 Legacy Docker Toolbox 并安装 [Docker for Mac](https://store.docker.com/editions/community/docker-ce-desktop-mac)。
     > - 安装过程中，`kubeadm` 会检查 Docker 版本。如果 Docker 版本比 18.06 更新，安装过程会打印警告信息。集群可能仍然能正常工作，但是为保证更好的兼容性，建议 Docker 版本在 17.03 和 18.06 之间。你可以在[此处](https://download.docker.com/)下载旧版本 Docker。
 
-- [Helm Client](https://github.com/helm/helm/blob/master/docs/install.md#installing-the-helm-client): 版本 >= 2.9.0 并且 < 3.0.0
+- [Helm Client](https://helm.sh/docs/using_helm/#installing-the-helm-client): 版本 >= 2.9.0 并且 < 3.0.0
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl): 至少 1.10，建议 1.13 或更高版本
 
     > **注意：**
