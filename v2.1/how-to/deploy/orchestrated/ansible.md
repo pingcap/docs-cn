@@ -18,7 +18,7 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 - [变更组件配置](/v2.1/how-to/upgrade/rolling-updates-with-ansible.md#变更组件配置)
 - [集群扩容缩容](/v2.1/how-to/scale/with-ansible.md)
 - [升级组件版本](/v2.1/how-to/upgrade/rolling-updates-with-ansible.md#升级组件版本)
-- [集群开启 binlog](/v2.1/reference/tools/tidb-binlog/overview.md)
+- [集群开启 binlog](/v2.1/reference/tidb-binlog/overview.md)
 - [清除集群数据](/v2.1/how-to/maintain/ansible-operations.md#清除集群数据)
 - [销毁集群](/v2.1/how-to/maintain/ansible-operations.md#销毁集群)
 
@@ -58,7 +58,7 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 如果是中控机是 Ubuntu 系统，执行以下命令：
 
 ```
-# apt-get -y install git curl sshpass python2-pip
+# apt-get -y install git curl sshpass python-pip
 ```
 
 ## 在中控机上创建 tidb 用户，并生成 ssh key

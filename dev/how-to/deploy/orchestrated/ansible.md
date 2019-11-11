@@ -18,7 +18,7 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 - [变更组件配置](/dev/how-to/upgrade/rolling-updates-with-ansible.md#变更组件配置)
 - [集群扩容缩容](/dev/how-to/scale/with-ansible.md)
 - [升级组件版本](/dev/how-to/upgrade/rolling-updates-with-ansible.md#升级组件版本)
-- [集群开启 binlog](/dev/reference/tools/tidb-binlog/overview.md)
+- [集群开启 binlog](/dev/reference/tidb-binlog/overview.md)
 - [清除集群数据](/dev/how-to/maintain/ansible-operations.md#清除集群数据)
 - [销毁集群](/dev/how-to/maintain/ansible-operations.md#销毁集群)
 
@@ -62,7 +62,7 @@ yum -y install python2-pip
 {{< copyable "shell-root" >}}
 
 ```bash
-apt-get -y install git curl sshpass python2-pip
+apt-get -y install git curl sshpass python-pip
 ```
 
 ## 在中控机上创建 tidb 用户，并生成 ssh key
@@ -328,7 +328,7 @@ parted -s -a optimal /dev/nvme0n1 mklabel gpt -- mkpart primary ext4 1 -1
 mkfs.ext4 /dev/nvme0n1p1
 ```
 
-查看数据盘分区 UUID，本例中 nvme0n1 的 UUID 为 c51eb23b-195c-4061-92a9-3fad812cc12f。
+查看数据盘分区 UUID，本例中 nvme0n1p1 的 UUID 为 c51eb23b-195c-4061-92a9-3fad812cc12f。
 
 {{< copyable "shell-root" >}}
 
