@@ -13,8 +13,8 @@ BR 是分布式备份恢复的命令行工具，用于管理分布式备份恢�
 
 ## 原理介绍
 
-BR 是管理分布式备份恢复的工具，它将备份和恢复操作下发到各个 TiKV 节点，TiKV 收到命令后
-执行真正的备份和恢复。在一次备份或恢复中各个 TiKV 都会有个项目的备份路径，TiKV 备份时产生的
+BR 是分布式备份恢复的工具，它将备份和恢复操作下发到各个 TiKV 节点，TiKV 收到命令后
+执行相应的备份和恢复。在一次备份或恢复中各个 TiKV 都会有个项目的备份路径，TiKV 备份时产生的
 备份文件将会保存在该路径下，恢复时也会从该路径读取的相应的备份文件。
 
 ![br-arch](/media/br-arch.png)
@@ -24,30 +24,30 @@ BR 是管理分布式备份恢复的工具，它将备份和恢复操作下发�
 `br` 的使用由命令（包括子命令）、选项和参数组成。命令即不带 `-` 或者 `--` 的字符，
 选项即带有 `-` 或者 `--` 的字符，参数即命令或选项字符后紧跟的传递给命令和选项的字符。
 
-如：`br --pd "$IP:2379" backup full -s "local:///tmp/backup"`
-如：`br schema in mysql -n db`
+如：`br --pd "${PDIP}:2379" backup full -s "local:///tmp/backup"`
 
 * backup: 命令
 * full: backup 的子命令
 * -s/--storage: 备份保存的路径
 * `"local:///tmp/backup"`: -s 的参数，保存的路径为本地磁盘的 `/tmp/backup`。
 * --pd: PD 服务地址
-* `"$IP:2379"`: --pd 的参数
+* `"${PDIP}:2379"`: --pd 的参数
 
 ### 获取帮助
 
-`br -h/--help` 用于获取帮助信息。br 由多层命令组成，br 及其所有子命令都可以通过
-`-h/--help` 来获取使用帮助。
+br 由多层命令组成，br 及其所有子命令都可以通过 `-h/--help` 来获取使用帮助，例如
+`br backup --help`。
 
 ### 连接
 
 `br` 与连接相关的参数有 2 个，分别为：
 
-- `--pd` PD 服务地址
-- `--connect` TiDB 服务地址
+- `--pd` PD 服务地址，例如 `"${PDIP}:2379"``"${PDIP}:2379"`
+- `--connect` TiDB 服务地址，例如 `"root:@tcp(${TiDBIP}:4000)/"`
 
-其中 `--connect` 用于 `restore` 子命令，例如：`br restore table`。
-使用 br 备份恢复功能时必须指定这两个参数，否则会报错退出。
+其中 `--connect` 只适用于 `restore` 子命令，使用 br 恢复功能时必须指定这个参数，
+否则会报错退出。
+例如：`br restore table --connect "root:@tcp(${TiDBIP}:4000)/"`。
 
 ### 其他全局参数
 
@@ -233,8 +233,8 @@ br --pd ${PDIP}:2379 restore db \
 
 ### 查看备份元信息举例
 
-通过 `br meta -h` 可以获取这个子命令的使用帮助。meta 有一个子命令，checksum 用来
-校验备份数据是否完整。
+通过 `br meta -h` 可以获取这个子命令的使用帮助。目前只支持一个子命令 `checksum`,
+用来校验备份数据是否完整。
 
 #### checksum 命令
 
