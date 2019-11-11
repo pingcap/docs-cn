@@ -47,6 +47,7 @@ sysbench oltp_common \
     --mysql-host=$tidb_host \
     --mysql-port=$tidb_port \
     --mysql-user=root \
+    --mysql-password=password \
     prepare --tables=16 --table-size=10000000
 ```
 
@@ -66,6 +67,7 @@ sysbench $testname \
     --mysql-host=$tidb_host \
     --mysql-port=$tidb_port \
     --mysql-user=root \
+    --mysql-password=password \
     run --tables=16 --table-size=10000000
 ```
 
