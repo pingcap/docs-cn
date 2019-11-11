@@ -169,11 +169,12 @@ full 的使用帮助。
 br --pd ${PDIP}:2379 restore full \
     --storage "local:///tmp/backup" \
     --connect "root:@tcp(${TiDBIP}:4000)/" \
+    --concurrency 128 \
     --log-file restorefull.log
 ```
 
-上述命令 `--connect` 指定了需要恢复的集群地址，同时把 BR 的 log 写到 `restorefull.log`
-文件中。
+上述命令 `--connect` 指定了需要恢复的集群地址，`--concurrency` 指定了这个恢复任务内部的
+子任务的并发数，同时把 BR 的 log 写到 `restorefull.log` 文件中。
 
 恢复期间还有进度条会在终端中显示，当进度条前进到 100% 时，说明恢复已完成。在完成恢复后，
 BR 为了确保数据安全性，还会校验恢复数据。
