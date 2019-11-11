@@ -373,7 +373,7 @@ module "default-cluster" {
 
 > **注意：**
 >
-> 在已经部署的集群上将 `create_tidb_cluster_release` 调整为 `false` 会导致已安装的 TiDB 集群被删除，对应的 TiDB 集群对象也会随之被删除。
+> 在已经部署的集群上将 `create_tidb_cluster_release` 调整为 `false` 会导致已安装的 TiDB 集群被删除。
 
 ## 销毁集群
 
