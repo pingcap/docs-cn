@@ -7,8 +7,13 @@ category: reference
 
 TiDB 的 GC 相关的配置存储于 `mysql.tidb` 系统表中，可以通过 SQL 语句对这些参数进行查询和更改：
 
-```plain
-mysql> select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb;
+{{< copyable "sql" >}}
+
+```sql
+select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb;
+```
+
+```
 +--------------------------+----------------------------------------------------------------------------------------------------+
 | VARIABLE_NAME            | VARIABLE_VALUE                                                                                     |
 +--------------------------+----------------------------------------------------------------------------------------------------+
@@ -30,6 +35,8 @@ mysql> select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb;
 ```
 
 例如，如果需要将 GC 调整为保留最近一天以内的数据，只需执行下列语句即可：
+
+{{< copyable "sql" >}}
 
 ```sql
 update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_time";
@@ -87,3 +94,22 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 
 - 手动设置 GC concurrency。要使用该参数，必须将 [`tikv_gc_auto_concurrency`](#tikv_gc_auto_concurrency) 设为 `false` 。
 - 默认值：2
+
+## 关于 GC 流程的说明
+
+从 TiDB 3.0 版本起，由于对分布式 GC 模式和并行 Resolve Locks 的支持，部分配置选项的作用发生了变化。可根据下表理解不同版本中这些配置的区别：
+
+| 版本/配置          |  Resolve Locks          |  Do GC  |
+|-------------------|---------------|----------------|
+| 2.x               | 串行 | 并行 |
+| 3.0 <br/> `tikv_gc_mode = centered` <br/> `tikv_gc_auto_concurrency = false` | 并行 | 并行 |
+| 3.0 <br/> `tikv_gc_mode = centered` <br/> `tikv_gc_auto_concurrency = true` | 自动并行 | 自动并行 |
+| 3.0 <br/> `tikv_gc_mode = distributed` <br/> `tikv_gc_auto_concurrency = false` | 并行 | 分布式 |
+| 3.0 <br/> `tikv_gc_mode = distributed` <br/> `tikv_gc_auto_concurrency = true` <br/> （默认配置） | 自动并行 | 分布式 |
+
+表格内容说明：
+
+- 串行：由 TiDB 逐个向 Region 发送请求。
+- 并行：使用 `tikv_gc_concurrency` 选项所指定的线程数，并行地向每个 Region 发送请求。
+- 自动并行：使用 TiKV 节点的个数作为线程数，并行地向每个 Region 发送请求。
+- 分布式：无需 TiDB 通过对 TiKV 发送请求的方式来驱动，而是每台 TiKV 自行工作。

@@ -91,7 +91,7 @@ spark-shell --jars $TISPARK_FOLDER/tispark-core-${version}-SNAPSHOT-jar-with-dep
 
 #### 下载安装包并安装
 
-你可以在[这里](https://spark.apache.org/downloads.html)下载 Apache Spark。
+你可以在 [Download Apache Spark™ 页面](https://spark.apache.org/downloads.html)下载 Apache Spark。
 
 对于 Standalone 模式且无需 Hadoop 支持，则选择 Spark 2.3.x 且带有 Hadoop 依赖的 Pre-build with Apache Hadoop 2.x 任意版本。如有需要配合使用的 Hadoop 集群，则选择对应的 Hadoop 版本号。你也可以选择从源代码[自行构建](https://spark.apache.org/docs/2.3.0/building-spark.html)以配合官方 Hadoop 2.x 之前的版本。
 
@@ -267,3 +267,7 @@ TiSpark 可以使用 TiDB 的统计信息：
 - Q. Spark 执行中报 java.sql.BatchUpdateException: Data Truncated
 
     A. 写入的数据长度超过了数据库定义的数据类型的长度，可以确认 target table 的字段长度，进行调整。
+
+- Q. TiSpark 任务是否默认读取 Hive 的元数据？
+
+    A. TiSpark 通过读取 hive-site 里的 meta 来搜寻 hive 的库。如果搜寻不到，就通过读取 tidb meta 搜寻 tidb 库。如果不需要该行为，可不在 hive site 中配置 hive 的 meta。

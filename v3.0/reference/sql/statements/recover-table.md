@@ -5,7 +5,7 @@ category: reference
 
 # RECOVER TABLE
 
-`RECOVER TABLE` 的功能是恢复被删除的表及其数据。在 `DROP TABLE` 后，在 GC lifetime 时间内，可以用 `RECOVER TABLE` 语句恢复被删除的表以及其数据。
+`RECOVER TABLE` 的功能是恢复被删除的表及其数据。在 `DROP TABLE` 后，在 GC life time 时间内，可以用 `RECOVER TABLE` 语句恢复被删除的表以及其数据。
 
 ## 语法
 

@@ -16,20 +16,53 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE TABLE t1 (a int NOT NULL PRIMARY KEY);
+CREATE TABLE t1 (a int NOT NULL PRIMARY KEY);
+```
+
+```
 Query OK, 0 rows affected (0.12 sec)
+```
 
-mysql> BEGIN;
+{{< copyable "sql" >}}
+
+```sql
+BEGIN;
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> INSERT INTO t1 VALUES (1);
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 VALUES (1);
+```
+
+```
 Query OK, 1 row affected (0.00 sec)
+```
 
-mysql> ROLLBACK;
+{{< copyable "sql" >}}
+
+```sql
+ROLLBACK;
+```
+
+```
 Query OK, 0 rows affected (0.01 sec)
+```
 
-mysql> SELECT * FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t1;
+```
+
+```
 Empty set (0.01 sec)
 ```
 

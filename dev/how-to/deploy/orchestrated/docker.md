@@ -27,9 +27,21 @@ Docker 可以方便地在 Linux / Mac OS / Windows 平台安装，安装方法�
 
 对应的最新 Docker 镜像可以通过 [Docker 官方镜像仓库](https://hub.docker.com) 获取：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 docker pull pingcap/tidb:latest
+```
+
+{{< copyable "shell-regular" >}}
+
+```bash
 docker pull pingcap/tikv:latest
+```
+
+{{< copyable "shell-regular" >}}
+
+```bash
 docker pull pingcap/pd:latest
 ```
 
@@ -50,6 +62,8 @@ docker pull pingcap/pd:latest
 
 登录 **host1** 执行：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 docker run -d --name pd1 \
   -p 2379:2379 \
@@ -68,6 +82,8 @@ docker run -d --name pd1 \
 
 登录 **host2** 执行：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 docker run -d --name pd2 \
   -p 2379:2379 \
@@ -85,6 +101,8 @@ docker run -d --name pd2 \
 ```
 
 登录 **host3** 执行：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 docker run -d --name pd3 \
@@ -106,6 +124,8 @@ docker run -d --name pd3 \
 
 登录 **host4** 执行：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 docker run -d --name tikv1 \
   -p 20160:20160 \
@@ -121,6 +141,8 @@ docker run -d --name tikv1 \
 
 登录 **host5** 执行：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 docker run -d --name tikv2 \
   -p 20160:20160 \
@@ -135,6 +157,8 @@ docker run -d --name tikv2 \
 ```
 
 登录 **host6** 执行：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 docker run -d --name tikv3 \
@@ -153,6 +177,8 @@ docker run -d --name tikv3 \
 
 登录 **host1** 执行：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 docker run -d --name tidb \
   -p 4000:4000 \
@@ -167,9 +193,19 @@ docker run -d --name tidb \
 
 登录 **host1** 并确保已安装 [MySQL 命令行客户端](http://dev.mysql.com/downloads/mysql/)，执行：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-$ mysql -h 127.0.0.1 -P 4000 -u root -D test
-mysql> show databases;
+mysql -h 127.0.0.1 -P 4000 -u root -D test
+```
+
+{{< copyable "sql" >}}
+
+```sql
+show databases;
+```
+
+```
 +--------------------+
 | Database           |
 +--------------------+
@@ -187,6 +223,8 @@ TiKV 和 PD 可以通过指定配置文件的方式来加载更加丰富的启�
 
 假定配置文件在宿主机上的存放路径 `/path/to/config/pd.toml` 和 `/path/to/config/tikv.toml`。启动 Docker 时需要调整相应的启动参数，以 tikv1 和 pd1 为例：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 docker run -d --name tikv1 \
   -p 20160:20160 \
@@ -200,6 +238,8 @@ docker run -d --name tikv1 \
   --pd="192.168.1.101:2379,192.168.1.102:2379,192.168.1.103:2379" \
   --config="/tikv.toml"
 ```
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 docker run -d --name pd1 \

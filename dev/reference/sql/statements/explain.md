@@ -26,8 +26,13 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> EXPLAIN SELECT 1;
+EXPLAIN SELECT 1;
+```
+
+```
 +-------------------+-------+------+---------------+
 | id                | count | task | operator info |
 +-------------------+-------+------+---------------+
@@ -35,42 +40,91 @@ mysql> EXPLAIN SELECT 1;
 | └─TableDual_4     | 1.00  | root | rows:1        |
 +-------------------+-------+------+---------------+
 2 rows in set (0.00 sec)
+```
 
-mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
+```
+
+```
 Query OK, 0 rows affected (0.10 sec)
+```
 
-mysql> INSERT INTO t1 (c1) VALUES (1), (2), (3);
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 (c1) VALUES (1), (2), (3);
+```
+
+```
 Query OK, 3 rows affected (0.02 sec)
 Records: 3  Duplicates: 0  Warnings: 0
+```
 
-mysql> EXPLAIN SELECT * FROM t1 WHERE id = 1;
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN SELECT * FROM t1 WHERE id = 1;
+```
+
+```
 +-------------+-------+------+--------------------+
 | id          | count | task | operator info      |
 +-------------+-------+------+--------------------+
 | Point_Get_1 | 1.00  | root | table:t1, handle:1 |
 +-------------+-------+------+--------------------+
 1 row in set (0.00 sec)
+```
 
-mysql> DESC SELECT * FROM t1 WHERE id = 1;
+{{< copyable "sql" >}}
+
+```sql
+DESC SELECT * FROM t1 WHERE id = 1;
+```
+
+```
 +-------------+-------+------+--------------------+
 | id          | count | task | operator info      |
 +-------------+-------+------+--------------------+
 | Point_Get_1 | 1.00  | root | table:t1, handle:1 |
 +-------------+-------+------+--------------------+
 1 row in set (0.00 sec)
+```
 
-mysql> DESCRIBE SELECT * FROM t1 WHERE id = 1;
+{{< copyable "sql" >}}
+
+```sql
+DESCRIBE SELECT * FROM t1 WHERE id = 1;
+```
+
+```
 +-------------+-------+------+--------------------+
 | id          | count | task | operator info      |
 +-------------+-------+------+--------------------+
 | Point_Get_1 | 1.00  | root | table:t1, handle:1 |
 +-------------+-------+------+--------------------+
 1 row in set (0.00 sec)
+```
 
-mysql> EXPLAIN INSERT INTO t1 (c1) VALUES (4);
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN INSERT INTO t1 (c1) VALUES (4);
+```
+
+```
 ERROR 1105 (HY000): Unsupported type *core.Insert
+```
 
-mysql> EXPLAIN UPDATE t1 SET c1=5 WHERE c1=3;
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN UPDATE t1 SET c1=5 WHERE c1=3;
+```
+
+```
 +---------------------+----------+------+-------------------------------------------------------------+
 | id                  | count    | task | operator info                                               |
 +---------------------+----------+------+-------------------------------------------------------------+
@@ -79,8 +133,15 @@ mysql> EXPLAIN UPDATE t1 SET c1=5 WHERE c1=3;
 |   └─TableScan_4     | 10000.00 | cop  | table:t1, range:[-inf,+inf], keep order:false, stats:pseudo |
 +---------------------+----------+------+-------------------------------------------------------------+
 3 rows in set (0.00 sec)
+```
 
-mysql> EXPLAIN DELETE FROM t1 WHERE c1=3;
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN DELETE FROM t1 WHERE c1=3;
+```
+
+```
 +---------------------+----------+------+-------------------------------------------------------------+
 | id                  | count    | task | operator info                                               |
 +---------------------+----------+------+-------------------------------------------------------------+
@@ -95,12 +156,14 @@ mysql> EXPLAIN DELETE FROM t1 WHERE c1=3;
 
 除 MySQL 标准结果格式外，TiDB 还支持 DotGraph。需按照下列所示指定 `FORMAT ="dot"`：
 
+{{< copyable "sql" >}}
+
 ```sql
 create table t(a bigint, b bigint);
 desc format = "dot" select A.a, B.b from t A join t B on A.a > B.b where A.a < 10;
+```
 
-TiDB > desc format = "dot" select A.a, B.b from t A join t B on A.a > B.b where A.a < 10;desc format = "dot" select A.a, B.b from t A join t B on A.a > B.b where A.a < 10;
-+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+```+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | dot contents                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 +--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |
@@ -134,11 +197,13 @@ label = "cop"
 
 如果你的计算机上安装了 `dot` 程序（在 `graphviz` 包中），可使用以下方法生成 PNG 文件：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 dot xx.dot -T png -O
-
-The xx.dot is the result returned by the above statement.
 ```
+
+The `xx.dot` is the result returned by the above statement.
 
 如果你的计算机上未安装 `dot` 程序，可将结果复制到 [本网站](http://www.webgraphviz.com/) 以获取树形图：
 

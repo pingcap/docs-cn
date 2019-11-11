@@ -62,7 +62,7 @@ ANALYZE TABLE TableName PARTITION PartitionNameList [IndexNameList] [WITH NUM BU
 
 #### tidb_distsql_scan_concurrency
 
-在执行分析普通列任务的时候，`tidb_distsql_scan_concurrency` 可以用于控制一次读取的 Region 数量，其默认值是 10。
+在执行分析普通列任务的时候，`tidb_distsql_scan_concurrency` 可以用于控制一次读取的 Region 数量，其默认值是 15。
 
 #### tidb_index_serial_scan_concurrency
 
@@ -93,6 +93,10 @@ SHOW STATS_META [ShowLikeOrWhere]
 | update_time | 更新时间 |
 | modify_count | 修改的行数 |
 | row_count | 总行数 |
+
+> **注意：**
+>
+> 在 TiDB 根据 DML 语句自动更新总行数以及修改的行数时，`update_time` 也会被更新，因此并不能认为 `update_time` 是最近一次发生 Analyze 的时间。
 
 ### 列的元信息
 

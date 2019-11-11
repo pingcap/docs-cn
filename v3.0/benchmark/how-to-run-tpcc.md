@@ -31,17 +31,23 @@ TPC-C 使用 tpmC 值（Transactions per Minute）来衡量系统最大有效吞
 
 本文使用开源的 BenchmarkSQL 5.0 作为 TPC-C 测试实现并添加了对 MySQL 协议的支持，可以通过以下命令下载测试程序:
 
+{{< copyable "shell-regular" >}}
+
 ```shell
 git clone -b 5.0-mysql-support-opt-2.1 https://github.com/pingcap/benchmarksql.git
 ```
 
 安装 java 和 ant，以 CentOS 为例，可以执行以下命令进行安装
 
+{{< copyable "shell-regular" >}}
+
 ```shell
 sudo yum install -y java ant
 ```
 
 进入 benchmarksql 目录并执行 ant 构建
+
+{{< copyable "shell-regular" >}}
 
 ```shell
 cd benchmarksql
@@ -72,8 +78,10 @@ NUMA node1 CPU(s):     1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39
 
 之后可以通过下面的命令来启动 TiDB：
 
+{{< copyable "shell-regular" >}}
+
 ```shell
-nohup taskset -c 0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38 bin/tidb-server
+nohup taskset -c 0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38 bin/tidb-server && \
 nohup taskset -c 1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39 bin/tidb-server
 ```
 
@@ -115,19 +123,25 @@ loadWorkers=32  # 导入数据的并发数
 
 首先用 MySQL 客户端连接到 TiDB-Server 并执行：
 
+{{< copyable "sql" >}}
+
 ```sql
 create database tpcc
 ```
 
 之后在 shell 中运行 BenchmarkSQL 建表脚本：
 
+{{< copyable "shell-regular" >}}
+
 ```shell
-cd run
-./runSQL.sh props.mysql sql.mysql/tableCreates.sql
+cd run && \
+./runSQL.sh props.mysql sql.mysql/tableCreates.sql && \
 ./runSQL.sh props.mysql sql.mysql/indexCreates.sql
 ```
 
 运行导入数据脚本：
+
+{{< copyable "shell-regular" >}}
 
 ```shell
 ./runLoader.sh props.mysql
@@ -140,6 +154,8 @@ cd run
 ## 运行测试
 
 执行 BenchmarkSQL 测试脚本：
+
+{{< copyable "shell-regular" >}}
 
 ```shell
 nohup ./runBenchmark.sh props.mysql &> test.log &
@@ -157,4 +173,4 @@ nohup ./runBenchmark.sh props.mysql &> test.log &
 
 tpmC 部分即为测试结果。
 
-测试完成之后，也可以运行 `sql.common/test.sql` 进行数据正确性验证，如果所有 SQL 语句都返回结果为空，即为数据测试过程正确。
+测试完成之后，也可以运行 `sql.common/test.sql` 进行数据正确性验证，如果所有 SQL 语句的返回结果都为空，即为数据测试过程正确。

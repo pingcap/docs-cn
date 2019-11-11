@@ -36,11 +36,23 @@ category: reference
 
 ## 示例
 
-```sql
-mysql> CREATE USER 'newuser' IDENTIFIED BY 'newuserpassword';
-Query OK, 1 row affected (0.04 sec)
+{{< copyable "sql" >}}
 
-mysql> CREATE USER 'newuser2'@'192.168.1.1' IDENTIFIED BY 'newuserpassword';
+```sql
+CREATE USER 'newuser' IDENTIFIED BY 'newuserpassword';
+```
+
+```
+Query OK, 1 row affected (0.04 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER 'newuser2'@'192.168.1.1' IDENTIFIED BY 'newuserpassword';
+```
+
+```
 Query OK, 1 row affected (0.02 sec)
 ```
 

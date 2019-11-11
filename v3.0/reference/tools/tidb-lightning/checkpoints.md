@@ -60,6 +60,8 @@ TiDB Lightning 支持两种存储方式：本地文件或 MySQL 数据库。
 
 ### `--checkpoint-error-destroy`
 
+{{< copyable "shell-regular" >}}
+
 ```sh
 tidb-lightning-ctl --checkpoint-error-destroy='`schema`.`table`'
 ```
@@ -75,14 +77,18 @@ tidb-lightning-ctl --checkpoint-error-destroy='`schema`.`table`'
 
 传入 "all" 会对所有表进行上述操作。这是最方便、安全但保守的断点错误解决方法：
 
+{{< copyable "shell-regular" >}}
+
 ```sh
 tidb-lightning-ctl --checkpoint-error-destroy=all
 ```
 
 ### `--checkpoint-error-ignore`
 
+{{< copyable "shell-regular" >}}
+
 ```sh
-tidb-lightning-ctl --checkpoint-error-ignore='`schema`.`table`'
+tidb-lightning-ctl --checkpoint-error-ignore='`schema`.`table`' &&
 tidb-lightning-ctl --checkpoint-error-ignore=all
 ```
 
@@ -94,14 +100,18 @@ tidb-lightning-ctl --checkpoint-error-ignore=all
 
 ### `--checkpoint-remove`
 
+{{< copyable "shell-regular" >}}
+
 ```sh
-tidb-lightning-ctl --checkpoint-remove='`schema`.`table`'
+tidb-lightning-ctl --checkpoint-remove='`schema`.`table`' &&
 tidb-lightning-ctl --checkpoint-remove=all
 ```
 
 无论是否有出错，把表的断点清除。
 
 ### `--checkpoint-dump`
+
+{{< copyable "shell-regular" >}}
 
 ```sh
 tidb-lightning-ctl --checkpoint-dump=output/directory

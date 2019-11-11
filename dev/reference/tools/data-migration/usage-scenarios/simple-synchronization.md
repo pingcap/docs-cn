@@ -70,6 +70,8 @@ category: reference
 
 - 为了满足[同步要求](#同步要求)中第一点的前三条要求，需要配置以下 [table routing 规则](/dev/reference/tools/data-migration/features/overview.md#table-routing)：
 
+    {{< copyable "" >}}
+
     ```yaml
     routes:
       ...
@@ -85,6 +87,8 @@ category: reference
     ```
 
 - 为了满足[同步要求](#同步要求)中第二点的第一条要求，需要配置以下 [table routing 规则](/dev/reference/tools/data-migration/features/overview.md#table-routing)：
+
+    {{< copyable "" >}}
 
     ```yaml
     routes:
@@ -103,6 +107,8 @@ category: reference
 
 - 为了满足[同步要求](#同步要求)中第一点的第四条要求，需要配置以下 [binlog event filter 规则](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)：
 
+    {{< copyable "" >}}
+
     ```yaml
     filters:
       ...
@@ -119,6 +125,8 @@ category: reference
 
 - 为了满足[同步要求](#同步要求)中第二点的第二条要求，需要配置以下 [binlog event filter 规则](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)：
 
+    {{< copyable "" >}}
+
     ```yaml
     filters:
       ...
@@ -134,6 +142,8 @@ category: reference
 
 - 为了满足[同步要求](#同步要求)中的第三点要求，需要配置以下 [black & white table lists 规则](/dev/reference/tools/data-migration/features/overview.md#black--white-table-lists)：
 
+    {{< copyable "" >}}
+
     ```yaml
     black-white-list:
       log-ignored:
@@ -143,6 +153,8 @@ category: reference
 ## 同步任务配置
 
 以下是完整的同步任务配置，详见[配置介绍](/dev/reference/tools/data-migration/configure/task-configuration-file.md)。
+
+{{< copyable "" >}}
 
 ```yaml
 name: "one-tidb-slave"

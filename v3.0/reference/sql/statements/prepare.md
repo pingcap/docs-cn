@@ -17,22 +17,48 @@ aliases: ['/docs-cn/sql/prepare/']
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> PREPARE mystmt FROM 'SELECT ? as num FROM DUAL';
-Query OK, 0 rows affected (0.00 sec)
+PREPARE mystmt FROM 'SELECT ? as num FROM DUAL';
+```
 
-mysql> SET @number = 5;
+```
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> EXECUTE mystmt USING @number;
+{{< copyable "sql" >}}
+
+```sql
+SET @number = 5;
+```
+
+```
+Query OK, 0 rows affected (0.00 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+EXECUTE mystmt USING @number;
+```
+
+```
 +------+
 | num  |
 +------+
 | 5    |
 +------+
 1 row in set (0.00 sec)
+```
 
-mysql> DEALLOCATE PREPARE mystmt;
+{{< copyable "sql" >}}
+
+```sql
+DEALLOCATE PREPARE mystmt;
+```
+
+```
 Query OK, 0 rows affected (0.00 sec)
 ```
 

@@ -11,7 +11,7 @@ category: FAQ
 
 #### 1.1.1 TiDB 整体架构
 
-[https://pingcap.com/docs-cn/dev/overview/](/dev/overview.md#tidb-简介)
+[TiDB 简介](/dev/overview.md#tidb-简介)
 
 #### 1.1.2 TiDB 是什么？
 
@@ -137,19 +137,19 @@ TiDB 的 sql_mode 与 MySQL 的 sql_mode 设置方法有一些差别，TiDB 不�
 
 ##### 1.2.1.1 TiKV 详细解读
 
-[http://t.cn/RTKRRWv](http://t.cn/RTKRRWv)
+[三篇文章了解 TiDB 技术内幕 - 说存储](http://t.cn/RTKRRWv)
 
 #### 1.2.2 计算 TiDB
 
 ##### 1.2.2.1 TiDB 详细解读
 
-[http://t.cn/RTKRkBh](http://t.cn/RTKRkBh)
+[三篇文章了解 TiDB 技术内幕 - 说计算](http://t.cn/RTKRkBh)
 
 #### 1.2.3 调度 PD
 
 ##### 1.2.3.1 PD 详细解读
 
-[http://t.cn/RTKEZ0U](http://t.cn/RTKEZ0U)
+[三篇文章了解 TiDB 技术内幕 - 谈调度](http://t.cn/RTKEZ0U)
 
 ## 二、安装部署升级
 
@@ -214,7 +214,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ##### 2.2.1.1 为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？
 
-这种情况一般是因为没有使用 `--config` 参数来指定配置文件（目前只会出现在 binary 部署的场景），TiKV/PD 会按默认值来设置。如果要使用配置文件，请设置 TiKV/PD 的 `--config` 参数。对于 TiKV 组件，修改配置后重启服务即可；对于 PD 组件，只会在第一次启动时读取配置文件，之后可以使用 pd-ctl 的方式来修改配置，详情可参考[这里](/dev/reference/configuration/pd-server/configuration.md)。
+这种情况一般是因为没有使用 `--config` 参数来指定配置文件（目前只会出现在 binary 部署的场景），TiKV/PD 会按默认值来设置。如果要使用配置文件，请设置 TiKV/PD 的 `--config` 参数。对于 TiKV 组件，修改配置后重启服务即可；对于 PD 组件，只会在第一次启动时读取配置文件，之后可以使用 pd-ctl 的方式来修改配置，详情可参考 [PD 配置参数](/dev/reference/configuration/pd-server/configuration.md)。
 
 ##### 2.2.1.2 TiDB 监控框架 Prometheus + Grafana 监控机器建议单独还是多台部署？
 
@@ -252,7 +252,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 #### 2.2.2 TiDB 离线 Ansible 部署方案
 
-首先这不是我们建议的方式，如果中控机没有外网，也可以通过离线 Ansible 部署方式，详情可参考[这里](/dev/how-to/deploy/orchestrated/offline-ansible.md)。
+首先这不是我们建议的方式，如果中控机没有外网，也可以通过离线 Ansible 部署方式，详情可参考[离线 TiDB Ansible 部署方案](/dev/how-to/deploy/orchestrated/offline-ansible.md)。
 
 #### 2.2.3 Docker Compose 快速构建集群（单机部署）
 
@@ -285,11 +285,15 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 - 随机读测试：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randread -size=10G -filename=fio_randread_test.txt -name='fio randread test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_result.json
     ```
 
 - 顺序写和随机读混合测试：
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randread_write_test.txt -name='fio mixed randread and sequential write test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_write_test.json
@@ -416,7 +420,7 @@ TiDB 目前社区非常活跃，在 1.0 GA 版本发布后，还在不断的优�
 
 #### 3.1.14 Percolator 用了分布式锁，crash 的客户端会保持锁，会造成锁没有 release？
 
-详细可参考 [https://pingcap.com/blog-cn/percolator-and-txn/](https://pingcap.com/blog-cn/percolator-and-txn/)。
+详细可参考 [Percolator 和 TiDB 事务算法](https://pingcap.com/blog-cn/percolator-and-txn/)。
 
 #### 3.1.15 TiDB 为什么选用 gRPC 而不选用 Thrift，是因为 Google 在用吗？
 
@@ -524,7 +528,7 @@ TiDB 在执行 SQL 时，预估出来每个 operator 处理了超过 10000 条�
 
 #### 3.3.10 在 TiDB 中如何控制或改变 SQL 提交的执行优先级？
 
-TiDB 支持改变 [per-session](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_force_priority)、[全局](/dev/reference/configuration/tidb-server/server-command-option.md#force-priority)或单个语句的优先级。优先级包括：
+TiDB 支持改变 [per-session](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_force_priority)、[全局](/dev/reference/configuration/tidb-server/configuration-file.md#force-priority)或单个语句的优先级。优先级包括：
 
 - HIGH_PRIORITY：该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句
 - LOW_PRIORITY：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
@@ -532,6 +536,8 @@ TiDB 支持改变 [per-session](/dev/reference/configuration/tidb-server/tidb-sp
 以上两种参数可以结合 TiDB 的 DML 语言进行使用，使用方法举例如下：
 
 1. 通过在数据库中写 SQL 的方式来调整优先级：
+
+    {{< copyable "sql" >}}
 
     ```sql
     select HIGH_PRIORITY | LOW_PRIORITY count(*) from table_name;
@@ -553,6 +559,35 @@ TiDB 支持改变 [per-session](/dev/reference/configuration/tidb-server/tidb-sp
 
 同 MySQL 的用法一致，例如：
 `select column_name from table_name use index（index_name）where where_condition;`
+
+#### 3.3.13 触发 Information schema is changed 错误的原因？
+
+TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语句，而且 TiDB 支持在线异步变更 DDL。那么，在执行 DML 的时候可能有 DDL 语句也在执行，而你需要确保每个 SQL 语句在同一个 `schema` 上执行。所以当执行 DML 时，遇到正在执行中的 DDL 操作就可能会报 `Information schema is changed` 的错误。为了避免太多的 DML 语句报错，已做了一些优化。
+
+现在会报此错的可能原因如下（后两个报错原因与表无关）：
+
+- 执行的 DML 语句中涉及的表和集群中正在执行的 DDL 的表有相同的，那么这个 DML 语句就会报此错。
+- 这个 DML 执行时间很久，而这段时间内执行了很多 DDL 语句，导致中间 `schema` 版本变更次数超过 1024 （此为默认值，可以通过 `tidb_max_delta_schema_count` 变量修改）。
+- 接受 DML 请求的 TiDB 长时间不能加载到 `schema information`（TiDB 与 PD 或 TiKV 之间的网络连接故障等会导致此问题），而这段时间内执行了很多 DDL 语句，导致中间 `schema` 版本变更次数超过 100。
+
+> **注意：**
+>
+> + 目前 TiDB 未缓存所有的 `schema` 版本信息。
+> + 对于每个 DDL 操作，`schema` 版本变更的数量与对应 `schema state` 变更的次数一致。
+> + 不同的 DDL 操作版本变更次数不一样。例如，`create table` 操作会有 1 次 `schema` 版本变更；`add column` 操作有 4 次 `schema` 版本变更。
+
+#### 3.3.14 触发 Information schema is out of date 错误的原因？
+
+当执行 DML 时，TiDB 超过一个 DDL lease 时间（默认 45s）没能加载到最新的 schema 就可能会报 `Information schema is out of date` 的错误。遇到此错的可能原因如下：
+
+- 执行此 DML 的 TiDB 被 kill 后准备退出，且此 DML 对应的事务执行时间超过一个 DDL lease，在事务提交时会报这个错误。
+- TiDB 在执行此 DML 时，有一段时间内连不上 PD 或者 TiKV，导致 TiDB 超过一个 DDL lease 时间没有 load schema，或者导致 TiDB 断开与 PD 之间带 keep alive 设置的连接。
+
+#### 3.3.15 高并发情况下执行 DDL 时报错的原因？
+
+高并发情况下执行 DDL（比如批量建表）时，极少部分 DDL 可能会由于并发执行时 key 冲突而执行失败。
+
+并发执行 DDL 时，建议将 DDL 数量保持在 20 以下，否则你需要在应用端重试失败的 DDL 语句。
 
 ### 3.4 TiKV 管理
 
@@ -612,7 +647,7 @@ TiDB 使用 Raft 在多个副本之间做数据同步（默认为每个 Region 3
 
 #### 3.4.12 Region 是如何进行分裂的？
 
-Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 的大小超过参数 `region-split-size` 或 `region-split-keys` 的值时，就会触发分裂，分裂后的信息会汇报给 PD。
+Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 的大小超过参数 `region-max-size` 或 `region-max-keys` 的值时，就会触发分裂，分裂后的信息会汇报给 PD。
 
 #### 3.4.13 TiKV 是否有类似 MySQL 的 `innodb_flush_log_trx_commit` 参数，来保证提交数据不丢失？
 
@@ -671,7 +706,7 @@ TiKV 的内存占用主要来自于 RocksDB 的 block-cache，默认为系统总
 #### 3.5.2 TiDB 集群容量 QPS 与节点数之间关系如何，和 MySQL 对比如何？
 
 - 在 10 节点内，TiDB 写入能力（Insert TPS）和节点数量基本成 40% 线性递增，MySQL 由于是单节点写入，所以不具备写入扩展能力。
-- MySQL 读扩容可以通过添加从库进行扩展，但写流量无法扩展，只能通过分库分表，而分库分表有很多问题，具体参考 [http://t.cn/RTD18qV](http://t.cn/RTD18qV)。
+- MySQL 读扩容可以通过添加从库进行扩展，但写流量无法扩展，只能通过分库分表，而分库分表有很多问题，具体参考[方案虽好，成本先行：数据库 Sharding+Proxy 实践解析](http://t.cn/RTD18qV)。
 - TiDB 不管是读流量、还是写流量都可以通过添加节点快速方便的进行扩展。
 
 #### 3.5.3 我们的 DBA 测试过 MySQL 性能，单台 TiDB 的性能没有 MySQL 性能那么好？
@@ -731,16 +766,18 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 - 在 Sqoop 中，`--batch` 是指每个批次提交 100 条 statement，但是默认每个 statement 包含 100 条 SQL 语句，所以此时 100 * 100 = 10000 条 SQL 语句，超出了 TiDB 的事务限制 5000 条，可以增加选项 `-Dsqoop.export.records.per.statement=10` 来解决这个问题，完整的用法如下：
 
-```bash
-sqoop export \
-    -Dsqoop.export.records.per.statement=10 \
-    --connect jdbc:mysql://mysql.example.com/sqoop \
-    --username sqoop ${user} \
-    --password ${passwd} \
-    --table ${tab_name} \
-    --export-dir ${dir} \
-    --batch
-```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    sqoop export \
+        -Dsqoop.export.records.per.statement=10 \
+        --connect jdbc:mysql://mysql.example.com/sqoop \
+        --username sqoop ${user} \
+        --password ${passwd} \
+        --table ${tab_name} \
+        --export-dir ${dir} \
+        --batch
+    ```
 
 - 也可以选择增大 tidb 的单个事物语句数量限制，不过这个会导致内存上涨。
 
@@ -809,7 +846,6 @@ TiDB 读流量可以通过增加 TiDB server 进行扩展，总读容量无限�
 
 - 单个事务包含的 SQL 语句不超过 5000 条（默认）
 - 单条 KV entry 不超过 6MB
-- KV entry 的总条数不超过 30w
 - KV entry 的总大小不超过 100MB
 
 在 Google 的 Cloud Spanner 上面，也有类似的[限制](https://cloud.google.com/spanner/docs/limits)。
@@ -878,8 +914,13 @@ Count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 
 通过 `admin show ddl` 查看当前 job 进度。操作如下：
 
+{{< copyable "sql" >}}
+
 ```sql
-tidb> admin show ddl\G;
+admin show ddl;
+```
+
+```
 *************************** 1. row ***************************
   SCHEMA_VER: 140
        OWNER: 1a1c4174-0fcd-4ba0-add9-12d08c4077dc
@@ -1005,6 +1046,8 @@ TiKV 操作繁忙，一般出现在数据库负载比较高时，请检查 TiKV 
 #### 9.1.7 ERROR 9006 (HY000) : GC life time is shorter than transaction duration
 
 `GC Life Time` 间隔时间过短，长事务本应读到的数据可能被清理了，可使用如下命令增加 `GC Life Time`：
+
+{{< copyable "sql" >}}
 
 ```sql
 update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_time';

@@ -32,53 +32,67 @@ category: how-to
 
 2. 删除原有的 downloads 目录 `/home/tidb/tidb-ansible/downloads/`
 
-    ```
-    $ cd /home/tidb/tidb-ansible
-    $ rm -rf downloads
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cd /home/tidb/tidb-ansible &&
+    rm -rf downloads
     ```
 
 3. 使用 playbook 下载 TiDB binary，自动替换 binary 到 `/home/tidb/tidb-ansible/resource/bin/`
 
-    ```
-    $ ansible-playbook local_prepare.yml
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ansible-playbook local_prepare.yml
     ```
 
 ### 手动下载 binary
 
 除 “自动下载 binary” 中描述的方法之外，也可以手动下载 binary，解压后手动替换 binary 到 `/home/tidb/tidb-ansible/resource/bin/`，需注意替换链接中的版本号。
 
-```
-$ wget http://download.pingcap.org/tidb-v2.0.7-linux-amd64.tar.gz
+{{< copyable "shell-regular" >}}
+
+```bash
+wget http://download.pingcap.org/tidb-v2.0.7-linux-amd64.tar.gz
 ```
 
 如果使用 master 分支的 tidb-ansible，使用以下命令下载 binary：
 
-```
-$ wget http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz
+{{< copyable "shell-regular" >}}
+
+```bash
+wget http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz
 ```
 
 ### 使用 Ansible 滚动升级
 
 - 滚动升级 PD 节点（只升级单独 PD 服务）
 
-    ```
-    $ ansible-playbook rolling_update.yml --tags=pd
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ansible-playbook rolling_update.yml --tags=pd
     ```
 
     如果 PD 实例数大于等于 3，滚动升级 PD leader 实例时，Ansible 会先迁移 PD leader 到其他节点再关闭该实例。
 
 - 滚动升级 TiKV 节点（只升级 TiKV 服务）
 
-    ```
-    $ ansible-playbook rolling_update.yml --tags=tikv
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ansible-playbook rolling_update.yml --tags=tikv
     ```
 
     滚动升级 TiKV 实例时，Ansible 会迁移 region leader 到其他节点。具体逻辑为：调用 PD API 添加 evict leader scheduler，每 10 秒探测一次该 TiKV 实例 leader_count， 等待 leader_count 降到 1 以下或探测超 18 次后，即三分钟超时后，开始关闭 TiKV 升级，启动成功后再去除 evict leader scheduler，串行操作。
 
     如中途升级失败，请登录 pd-ctl 执行 `scheduler show`，查看是否有 evict-leader-scheduler, 如有需手工清除。`{PD_IP}` 和 `{STORE_ID}` 请替换为你的 PD IP 及 TiKV 实例的 store_id。
 
-    ```
-    $ /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://{PD_IP}:2379"
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://{PD_IP}:2379"
     » scheduler show
     [
       "label-scheduler",
@@ -92,20 +106,26 @@ $ wget http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz
 
 - 滚动升级 TiDB 节点（只升级单独 TiDB 服务，如果 TiDB 集群开启了 binlog，升级 TiDB 服务时会升级 pump）
 
-    ```
-    $ ansible-playbook rolling_update.yml --tags=tidb
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ansible-playbook rolling_update.yml --tags=tidb
     ```
 
 - 滚动升级所有服务（依次升级 PD，TiKV，TiDB 服务，如果 TiDB 集群开启了 binlog，升级 TiDB 服务时会升级 pump）
 
-    ```
-    $ ansible-playbook rolling_update.yml
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ansible-playbook rolling_update.yml
     ```
 
 - 滚动升级监控组件
 
-    ```
-    $ ansible-playbook rolling_update_monitor.yml
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ansible-playbook rolling_update_monitor.yml
     ```
 
 ## 变更组件配置

@@ -32,15 +32,34 @@ category: reference
 
 ## 示例
 
-```sql
-mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
-Query OK, 0 rows affected (0.11 sec)
+{{< copyable "sql" >}}
 
-mysql> INSERT INTO t1 (c1) VALUES (1), (2), (3);
+```sql
+CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
+```
+
+```
+Query OK, 0 rows affected (0.11 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 (c1) VALUES (1), (2), (3);
+```
+
+```
 Query OK, 3 rows affected (0.02 sec)
 Records: 3  Duplicates: 0  Warnings: 0
+```
 
-mysql> SELECT * FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t1;
+```
+
+```
 +----+----+
 | id | c1 |
 +----+----+
@@ -49,12 +68,26 @@ mysql> SELECT * FROM t1;
 |  3 |  3 |
 +----+----+
 3 rows in set (0.00 sec)
+```
 
-mysql> UPDATE t1 SET c1=5 WHERE c1=3;
+{{< copyable "sql" >}}
+
+```sql
+UPDATE t1 SET c1=5 WHERE c1=3;
+```
+
+```
 Query OK, 1 row affected (0.01 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
+```
 
-mysql> SELECT * FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t1;
+```
+
+```
 +----+----+
 | id | c1 |
 +----+----+

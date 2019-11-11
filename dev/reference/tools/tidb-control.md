@@ -62,7 +62,7 @@ TiDB Controller 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，�
 
 #### in 命令
 
-同样可以通过 `tidb-ctl schema in -h/--help` 来获取子命令 in 的使用帮助。
+同样可以通过 `tidb-ctl schema in -h` 或 `tidb-ctl schema in --help` 来获取子命令 in 的使用帮助。
 
 ##### 基本用法
 
@@ -110,7 +110,7 @@ TiDB Controller 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，�
 
 #### base64decode 子命令
 
-`base64decode`  用来解码 base64 数据。
+`base64decode` 用来解码 base64 数据。
 
 ```shell
 tidb-ctl base64decode [base64_data]
@@ -118,7 +118,9 @@ tidb-ctl base64decode [db_name.table_name] [base64_data]
 tidb-ctl base64decode [table_id] [base64_data]
 ```
 
-1. 准备环境，执行以下SQL
+1. 准备环境，执行以下 SQL
+
+    {{< copyable "sql" >}}
 
     ```sql
     use test;
@@ -127,10 +129,15 @@ tidb-ctl base64decode [table_id] [base64_data]
     alter table t add column e varchar(20);
     ```
 
-2. 用 http api 接口获取 mvcc 数据
+2. 用 HTTP API 接口获取 MVCC 数据
+
+    {{< copyable "shell-regular" >}}
 
     ```shell
-    ▶ curl "http://$IP:10080/mvcc/index/test/t/a/1?a=1"
+    curl "http://$IP:10080/mvcc/index/test/t/a/1?a=1"
+    ```
+
+    ```
     {
      "info": {
       "writes": [
@@ -142,8 +149,15 @@ tidb-ctl base64decode [table_id] [base64_data]
       ]
      }
     }%
+    ```
 
-    ▶ curl "http://$IP:10080/mvcc/key/test/t/1"
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    curl "http://$IP:10080/mvcc/key/test/t/1"
+    ```
+
+    ```
     {
      "info": {
       "writes": [
@@ -159,24 +173,42 @@ tidb-ctl base64decode [table_id] [base64_data]
 
 3. 用 `base64decode` 解码 handle id (uint64).
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
-    ▶ tidb-ctl base64decode AAAAAAAAAAE=
+    tidb-ctl base64decode AAAAAAAAAAE=
+    ```
+
+    ```
     hex: 0000000000000001
     uint64: 1
     ```
 
 4. 用 `base64decode` 解码行数据。
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
-    ▶ ./tidb-ctl base64decode test.t CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgIDwjYuu0Rk=
+    ./tidb-ctl base64decode test.t CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgIDwjYuu0Rk=
+    ```
+
+    ```
     a:      1
     b:      哈哈 hello
     c is NULL
     d:      2019-03-28 05:35:30
     e not found in data
+    ```
 
-    # if the table id of test.t is 60, you can also use below command to do the same thing.
-    ▶ ./tidb-ctl base64decode 60 CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgIDwjYuu0Rk=
+    如果 `test.t` 的 table id 是 60，你也可以使用下列命令获得同样结果：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    ./tidb-ctl base64decode 60 CAIIAggEAhjlk4jlk4ggaGVsbG8IBgAICAmAgIDwjYuu0Rk=
+    ```
+
+    ```
     a:      1
     b:      哈哈 hello
     c is NULL
@@ -188,16 +220,26 @@ tidb-ctl base64decode [table_id] [base64_data]
 
 * 以下示例解码 row key，index key 类似。
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
-    ▶ ./tidb-ctl decoder -f table_row -k "t\x00\x00\x00\x00\x00\x00\x00\x1c_r\x00\x00\x00\x00\x00\x00\x00\xfa"
+    ./tidb-ctl decoder -f table_row -k "t\x00\x00\x00\x00\x00\x00\x00\x1c_r\x00\x00\x00\x00\x00\x00\x00\xfa"
+    ```
+
+    ```
     table_id: -9223372036854775780
     row_id: -9223372036854775558
     ```
 
 * 以下示例解码 value
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
-    ▶ ./tidb-ctl decoder -f value -k AhZoZWxsbyB3b3JsZAiAEA==
+    ./tidb-ctl decoder -f value -k AhZoZWxsbyB3b3JsZAiAEA==
+    ```
+
+    ```
     type: bytes, value: hello world
     type: bigint, value: 1024
     ```
@@ -207,6 +249,8 @@ tidb-ctl base64decode [table_id] [base64_data]
 * `tidb-ctl etcd ddlinfo` 获取 DDL 信息。
 * `tidb-ctl etcd putkey KEY VALUE` 添加 KEY VALUE 到 etcd (所有的 KEY 会添加到 `/tidb/ddl/all_schema_versions/` 之下)。
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
     tidb-ctl etcd putkey "foo" "bar"
     ```
@@ -215,8 +259,10 @@ tidb-ctl base64decode [table_id] [base64_data]
 
 * `tidb-ctl etcd delkey` 删除 etcd 中的 KEY，只有前缀以 `/tidb/ddl/fg/owner/` 和 `/tidb/ddl/all_schema_versions/` 开头才允许被删除。
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
-    tidb-ctl etcd delkey "/tidb/ddl/fg/owner/foo"
+    tidb-ctl etcd delkey "/tidb/ddl/fg/owner/foo" &&
     tidb-ctl etcd delkey "/tidb/ddl/all_schema_versions/bar"
     ```
 

@@ -36,6 +36,8 @@ Sysbench 版本：1.0.17
 
 准备数据命令：
 
+{{< copyable "shell-regular" >}}
+
 ```sh
 sysbench oltp_common \
     --threads=16 \
@@ -49,6 +51,8 @@ sysbench oltp_common \
 ```
 
 执行测试命令：
+
+{{< copyable "shell-regular" >}}
 
 ```sh
 sysbench $testname \
@@ -93,6 +97,8 @@ enabled = true
 ```
 
 并设置全局变量：
+
+{{< copyable "sql" >}}
 
 ```sql
 set global tidb_hashagg_final_concurrency=1;

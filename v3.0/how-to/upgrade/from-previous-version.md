@@ -24,13 +24,34 @@ aliases: ['/docs-cn/op-guide/tidb-v3.0-upgrade-guide/','/docs-cn/v3.0/how-to/upg
 2. 安装 Python 模块，要求 `jinja2 >= 2.9.6`和 `jmespath>=0.9.0`。
 3. 安装完成后，请检查版本号是否符合要求，命令如下：
 
+{{< copyable "shell-regular" >}}
+
+```bash
+ansible --version
 ```
-$ ansible --version
+
+```
 ansible 2.7.11
-$ pip show jinja2
+```
+
+{{< copyable "shell-regular" >}}
+
+```bash
+pip show jinja2
+```
+
+```
 Name: Jinja2
 Version: 2.10
-$ pip show jmespath
+```
+
+{{< copyable "shell-regular" >}}
+
+```bash
+pip show jmespath
+```
+
+```
 Name: jmespath
 Version: 0.9.0
 ```
@@ -48,23 +69,27 @@ Version: 0.9.0
 1. 以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录
 2. 备份当前版本的 tidb-ansible ，命令如下：
 
-    ```
-    $ mv tidb-ansible tidb-ansible-bak
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    mv tidb-ansible tidb-ansible-bak
     ```
 
 3. 根据 TiDB 3.0 版本对应 tag  [**下载 TiDB-Ansible**](/v3.0/how-to/deploy/orchestrated/ansible.md#在中控机器上下载-tidb-ansible)，默认下载的文件夹名称为 `tidb-ansible`，命令如下：
 
-    ```
-    $ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    git clone -b $tag https://github.com/pingcap/tidb-ansible.git
     ```
 
 ## 修改配置文件
 
->**注意:**
+> **注意：**
 >
->* 请以 `tidb` 用户登录中控机。
+> * 请以 `tidb` 用户登录中控机。
 >
->* TiDB Ansible 工作目录在 `/home/tidb/tidb-ansible` 目录。
+> * TiDB Ansible 工作目录在 `/home/tidb/tidb-ansible` 目录。
 
 ### 修改 `inventory.ini` 文件
 
@@ -72,11 +97,11 @@ Version: 0.9.0
 2. 请确认 `ansible_user`  变量的值是普通用户，例如： `tidb` 。TiDB Ansible 默认使用 `tidb` 用户作为 SSH 远程用户及程序运行用户，如果主机之间互信未建立，请参考[如何配置 ssh 互信及 sudo 规则](/v3.0/how-to/deploy/orchestrated/ansible.md#在中控机上配置部署机器-ssh-互信及-sudo-规则)。
 3. 请确认`process_supervision` 变量与之前版本保持一致，如果要变更请参考 [如何调整进程监管方式从 supervise 到 systemd](/v3.0/how-to/deploy/orchestrated/ansible.md#如何调整进程监管方式从-supervise-到-systemd)，请变更完成后再升级版本。
 
->**注意：**
+> **注意：**
 >
->* 请以 `tidb` 用户登录中控机
+> * 请以 `tidb` 用户登录中控机
 >
->* TiDB Ansible 配置文件在 `/home/tidb/tidb-ansible` 目录
+> * TiDB Ansible 配置文件在 `/home/tidb/tidb-ansible` 目录
 
 ### 修改 TiDB 集群组件配置文件
 
@@ -95,7 +120,7 @@ Version: 0.9.0
 
     > **注意：**
     >
-    > 单机多 TiKV 实例（进程）情况下，需要修改这三个参数。
+    > 2.0 版本升级且单机多 TiKV 实例（进程）情况下，需要修改这三个参数。
     >
     > 推荐设置：TiKV 实例数量 \* 参数值 = CPU 核心数量 \* 0.8
 
@@ -113,13 +138,33 @@ Version: 0.9.0
     >
     > 推荐设置：`capacity` = (MEM_TOTAL * 0.5 / TiKV 实例数量)
 
+    TiKV 配置中单机多实例场景需要额外配置 `tikv_status_port` 端口：
+
+    ```
+    [tikv_servers]
+    TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv1"
+    TiKV1-2 ansible_host=172.16.10.4 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv1"
+    TiKV2-1 ansible_host=172.16.10.5 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv2"
+    TiKV2-2 ansible_host=172.16.10.5 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv2"
+    TiKV3-1 ansible_host=172.16.10.6 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv3"
+    TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv3"
+    ```
+
+    > **注意：**
+    >
+    > 3.0 版本单机多 TiKV 实例（进程）情况下，需要添加 `tikv_status_port` 参数。
+    >
+    > 注意配置端口是否有冲突
+
 ## 下载 TiDB 3.0 binary 到中控机
 
 1. 请确认 `tidb-ansible/inventory.ini` 文件中 `tidb_version = v3.0.x`。
 2. 执行以下命令下载 TiDB 3.0 binary 到中控机。
 
-```
-$ ansible-playbook local_prepare.yml
+{{< copyable "shell-regular" >}}
+
+```bash
+ansible-playbook local_prepare.yml
 ```
 
 ## 滚动升级 TiDB 集群组件
@@ -128,14 +173,18 @@ $ ansible-playbook local_prepare.yml
 
    如果变量的值是 `systemd` ，则执行：
 
-```
-$ ansible-playbook excessive_rolling_update.yml
+{{< copyable "shell-regular" >}}
+
+```bash
+ansible-playbook excessive_rolling_update.yml
 ```
 
    如果变量的值是 `systemd` ，则执行：
 
-```
-$ ansible-playbook rolling_update.yml
+{{< copyable "shell-regular" >}}
+
+```bash
+ansible-playbook rolling_update.yml
 ```
 
 > **注意：**
@@ -146,6 +195,8 @@ $ ansible-playbook rolling_update.yml
 
 1. 滚动升级 TiDB 集群监控组件，命令如下：
 
-```
-$ ansible-playbook rolling_update_monitor.yml
+{{< copyable "shell-regular" >}}
+
+```bash
+ansible-playbook rolling_update_monitor.yml
 ```

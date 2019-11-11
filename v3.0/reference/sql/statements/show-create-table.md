@@ -20,11 +20,23 @@ category: reference
 
 ## 示例
 
-```sql
-mysql> CREATE TABLE t1 (a INT);
-Query OK, 0 rows affected (0.12 sec)
+{{< copyable "sql" >}}
 
-mysql> SHOW CREATE TABLE t1;
+```sql
+CREATE TABLE t1 (a INT);
+```
+
+```
+Query OK, 0 rows affected (0.12 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW CREATE TABLE t1;
+```
+
+```
 +-------+------------------------------------------------------------------------------------------------------------+
 | Table | Create Table                                                                                               |
 +-------+------------------------------------------------------------------------------------------------------------+

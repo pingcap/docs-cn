@@ -32,11 +32,23 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE TABLE t1 (id int not null primary key auto_increment, col1 INT, INDEX(col1));
+CREATE TABLE t1 (id int not null primary key auto_increment, col1 INT, INDEX(col1));
+```
+
+```
 Query OK, 0 rows affected (0.12 sec)
+```
 
-mysql> SHOW INDEXES FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SHOW INDEXES FROM t1;
+```
+
+```
 +-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
 | Table | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
 +-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
@@ -44,8 +56,15 @@ mysql> SHOW INDEXES FROM t1;
 | t1    |          1 | col1     |            1 | col1        | A         |           0 |     NULL | NULL   | YES  | BTREE      |         |               |
 +-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
 2 rows in set (0.00 sec)
+```
 
-mysql> SHOW INDEX FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SHOW INDEX FROM t1;
+```
+
+```
 +-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
 | Table | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
 +-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
@@ -53,8 +72,15 @@ mysql> SHOW INDEX FROM t1;
 | t1    |          1 | col1     |            1 | col1        | A         |           0 |     NULL | NULL   | YES  | BTREE      |         |               |
 +-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
 2 rows in set (0.00 sec)
+```
 
-mysql> SHOW KEYS FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SHOW KEYS FROM t1;
+```
+
+```
 +-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
 | Table | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
 +-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+

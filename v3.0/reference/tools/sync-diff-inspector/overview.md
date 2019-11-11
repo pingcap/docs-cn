@@ -68,7 +68,7 @@ sync-diff-inspector 的配置总共分为三个部分：
 
 下面是一个完整配置文件的说明：
 
-``` toml
+```toml
 # Diff Configuration.
 
 ######################### Global config #########################
@@ -200,7 +200,9 @@ fix-sql-file = "fix.sql"
 
 执行如下命令：
 
-``` bash
+{{< copyable "shell-regular" >}}
+
+```bash
 ./bin/sync_diff_inspector --config=./config.toml
 ```
 

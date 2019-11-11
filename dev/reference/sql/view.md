@@ -15,25 +15,65 @@ TiDB 支持视图，视图是一张虚拟表，该虚拟表的结构由创建视
 
 以下例子将创建一个视图，并在该视图上进行查询，最后删除该视图。
 
-```sql
-tidb> create table t(a int, b int);
-Query OK, 0 rows affected (0.01 sec)
+{{< copyable "sql" >}}
 
-tidb> insert into t values(1, 1),(2,2),(3,3);
+```sql
+create table t(a int, b int);
+```
+
+```
+Query OK, 0 rows affected (0.01 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+insert into t values(1, 1),(2,2),(3,3);
+```
+
+```
 Query OK, 3 rows affected (0.00 sec)
 Records: 3  Duplicates: 0  Warnings: 0
+```
 
-tidb> create table s(a int);
+{{< copyable "sql" >}}
+
+```sql
+create table s(a int);
+```
+
+```
 Query OK, 0 rows affected (0.01 sec)
+```
 
-tidb> insert into s values(2),(3);
+{{< copyable "sql" >}}
+
+```sql
+insert into s values(2),(3);
+```
+
+```
 Query OK, 2 rows affected (0.01 sec)
 Records: 2  Duplicates: 0  Warnings: 0
+```
 
-tidb> create view v as select s.a from t left join s on t.a = s.a;
+{{< copyable "sql" >}}
+
+```sql
+create view v as select s.a from t left join s on t.a = s.a;
+```
+
+```
 Query OK, 0 rows affected (0.01 sec)
+```
 
-tidb> select * from v;
+{{< copyable "sql" >}}
+
+```sql
+select * from v;
+```
+
+```
 +------+
 | a    |
 +------+
@@ -42,8 +82,15 @@ tidb> select * from v;
 |    3 |
 +------+
 3 rows in set (0.00 sec)
+```
 
-tidb> drop view v;
+{{< copyable "sql" >}}
+
+```sql
+drop view v;
+```
+
+```
 Query OK, 0 rows affected (0.02 sec)
 ```
 
@@ -57,5 +104,5 @@ Query OK, 0 rows affected (0.02 sec)
 
 ## 扩展阅读
 
-- [创建试图](/dev/reference/sql/statements/create-view.md)
+- [创建视图](/dev/reference/sql/statements/create-view.md)
 - [删除视图](/dev/reference/sql/statements/drop-view.md)

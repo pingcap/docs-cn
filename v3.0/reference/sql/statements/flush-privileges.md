@@ -24,8 +24,13 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> FLUSH PRIVILEGES;
+FLUSH PRIVILEGES;
+```
+
+```
 Query OK, 0 rows affected (0.01 sec)
 ```
 
