@@ -351,6 +351,7 @@ tidb:
 > **注意：**
 >
 > - 以上配置需要 [kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) 配置 `--allowed-unsafe-sysctls=net.*`，如果集群无法配置这个参数，需要在配置 `podSecurityContext` 的同时配置 `annotations`：
+>
 >     ```
 >     tidb:
 >       annotations:
