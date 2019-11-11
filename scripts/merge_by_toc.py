@@ -14,7 +14,7 @@ import os
 followups = []
 in_toc = False
 contents = []
-docs_versions = ['dev', 'v3.0', 'v2.1']
+docs_versions = ['dev', 'v3.0', 'v2.1', 'v3.1']
 
 hyper_link_pattern = re.compile(r'\[(.*?)\]\((.*?)(#.*?)?\)')
 toc_line_pattern = re.compile(r'([\-\+]+)\s\[(.*?)\]\((.*?)(#.*?)?\)')
