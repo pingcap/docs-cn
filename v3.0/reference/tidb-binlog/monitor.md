@@ -38,69 +38,127 @@ aliases: ['/docs-cn/tools/binlog/monitor/','/docs-cn/v3.0/how-to/monitor/tidb-bi
 | DL Job Count | Drainer 处理的 DDL 的数量|
 | Queue Size | Drainer 内部工作队列大小 |
 
-## 监控告警规则
+## 监控报警规则
 
-### Emergency
+本节介绍了 TiDB Binlog 组件的报警项及相应的报警规则。根据严重级别，报警项可分为三类，按照严重程度由高到低依次为：紧急级别 (Emergency)、重要级别 (Critical)、警告级别 (Warning)。
 
-#### binlog_pump_storage_error_count
+### 紧急级别报警项
 
-- 含义：Pump 写 binlog 到本地存储时失败
-- 监控规则：changes(binlog_pump_storage_error_count[1m]) > 0
-- 处理方法：先确认 pump_storage_error 监控是否存在错误，查看 Pump 日志确认原因
+紧急级别的报警通常由于服务停止或节点故障导致，此时需要马上进行人工干预操作。
 
-### Critical
+#### `binlog_pump_storage_error_count`
 
-#### binlog_drainer_checkpoint_high_delay
+* 报警规则：
 
-- 含义：Drainer 同步落后延迟超过 1 个小时
-- 监控规则：(time() - binlog_drainer_checkpoint_tso / 1000) > 3600
-- 处理方法：
+    `changes(binlog_pump_storage_error_count[1m]) > 0`
 
-    - 判断从 Pump 获取数据是否太慢：
+* 规则描述：
 
-        监控 Pump handle tso 可以看每个 Pump 最近一条消息的时间，是不是有延迟特别大的 Pump，确认对应 Pump 正常运行
+    Pump 写 binlog 到本地存储时失败。
 
-    - 根据 Drainer event 和 Drainer execute latency 来判断是否下游同步太慢：
+* 处理方法：
 
-        - 如果 Drainer execute time 过大，则检查到目标库网络带宽和延迟，以及目标库状态
-        - 如果 Drainer execute time 不大，Drainer event 过小，则增加 work count 和 batch 进行重试
+    确认 `pump_storage_error` 监控是否存在错误，查看 Pump 日志确认原因。
 
-    - 上面都不满足或者操作后没有改观，则报备开发 support@pingcap.com 进行处理
+### 重要级别报警项
 
-### Warning
+对于重要级别的报警，需要密切关注异常指标。
 
-#### binlog_pump_write_binlog_rpc_duration_seconds_bucket
+#### `binlog_drainer_checkpoint_high_delay`
 
-- 含义：Pump 处理 TiDB 写 Binlog 请求耗时过大
-- 监控规则：histogram_quantile(0.9, rate(binlog_pump_rpc_duration_seconds_bucket{method="WriteBinlog"}[5m])) > 1
-- 处理方法：
+* 报警规则：
 
-    - 确认磁盘性能压力，通过 node exported 查看 disk performance 监控
-    - 如果 disk latency 和 util 都很低，那么报备研发 support@pingcap.com 处理
+    `(time() - binlog_drainer_checkpoint_tso / 1000) > 3600`
 
-#### binlog_pump_storage_write_binlog_duration_time_bucket
+* 规则描述：
 
-- 含义：Pump 写本地 binlog 到本地盘的耗时
-- 监控规则：histogram_quantile(0.9, rate(binlog_pump_storage_write_binlog_duration_time_bucket{type="batch"}[5m])) > 1
-- 处理方法：确认 Pump 本地盘情况，进行修复
+    Drainer 同步落后延迟超过 1 个小时。
 
-#### binlog_pump_storage_available_size_less_than_20G
+* 处理方法：
 
-- 含义：Pump 剩余可用磁盘空间不足 20G
-- 监控规则：binlog_pump_storage_storage_size_bytes{type="available"} < 20 \* 1024 \* 1024 \* 1024
-- 处理方法：监控确认 Pump gc_tso 正常，需要的话调整 Pump gc 时间配置或者下线对应 Pump
+    * 判断从 Pump 获取数据是否太慢：
 
-#### binlog_drainer_checkpoint_tso_no_change_for_1m
+        监控 Pump handle tso 可以看每个 Pump 最近一条消息的时间，是不是有延迟特别大的 Pump，确认对应 Pump 正常运行。
 
-- 含义：Drainer checkpoint 一分钟没有更新
-- 监控规则：changes(binlog_drainer_checkpoint_tso[1m]) < 1
-- 处理方法：确认是否所有非下线 Pump 正常运行
+    * 根据 Drainer event 和 Drainer execute latency 来判断是否下游同步太慢：
 
-#### binlog_drainer_execute_duration_time_more_than_10s
+        * 如果 Drainer execute time 过大，则检查到目标库网络带宽和延迟，以及目标库状态。
+        * 如果 Drainer execute time 不大，Drainer event 过小，则增加 work count 和 batch 进行重试。
 
-- 含义：Drainer 同步到 TiDB 的 transaction 耗时，如果过大则影响 Drainer 同步
-- 监控规则：histogram_quantile(0.9, rate(binlog_drainer_execute_duration_time_bucket[1m])) > 10
-- 处理方法：
+    * 如果上面都不满足或者操作后没有改观，则报备开发人员 [support@pingcap.com](mailto:support@pingcap.com) 进行处理。
 
-    - 查看 TiDB cluster 状态情况
-    - 查看 Drainer 日志或监控，如果是 DDL 则忽略
+### 警告级别报警项
+
+警告级别的报警是对某一问题或错误的提醒。
+
+#### `binlog_pump_write_binlog_rpc_duration_seconds_bucket`
+
+* 报警规则：
+
+    `histogram_quantile(0.9, rate(binlog_pump_rpc_duration_seconds_bucket{method="WriteBinlog"}[5m])) > 1`
+
+* 规则描述：
+
+    Pump 处理 TiDB 写 Binlog 请求耗时过大。
+
+* 处理方法：
+
+    * 确认磁盘性能压力，通过 `node exported` 查看 disk performance 监控。
+    * 如果 `disk latency` 和 `util` 都很低，那么报备开发人员 [support@pingcap.com](mailto:support@pingcap.com) 进行处理。
+
+#### `binlog_pump_storage_write_binlog_duration_time_bucket`
+
+* 报警规则：
+
+    `histogram_quantile(0.9, rate(binlog_pump_storage_write_binlog_duration_time_bucket{type="batch"}[5m])) > 1`
+
+* 规则描述：
+
+    Pump 写本地 binlog 到本地盘的耗时。
+
+* 处理方法：
+
+    确认 Pump 本地盘情况，进行修复。
+
+#### `binlog_pump_storage_available_size_less_than_20G`
+
+* 报警规则：
+
+    `binlog_pump_storage_storage_size_bytes{type="available"} < 20 * 1024 * 1024 * 1024`
+
+* 规则描述：
+
+    Pump 剩余可用磁盘空间不足 20 G。
+
+* 处理方法：
+
+    监控确认 Pump 的 `gc_tso` 是否正常。如果不正常，调整 Pump 的 GC 时间配置或者下线对应 Pump。
+
+#### `binlog_drainer_checkpoint_tso_no_change_for_1m`
+
+* 报警规则：
+
+    `changes(binlog_drainer_checkpoint_tso[1m]) < 1`
+
+* 规则描述：
+
+    Drainer 的 `checkpoint` 在 1 分钟内没有更新。
+
+* 处理方法：
+
+    确认所有非下线的 Pump 是否正常运行。
+
+#### `binlog_drainer_execute_duration_time_more_than_10s`
+
+* 报警规则：
+
+    `histogram_quantile(0.9, rate(binlog_drainer_execute_duration_time_bucket[1m])) > 10`
+
+* 规则描述：
+
+    Drainer 同步到 TiDB 的事务耗时。如果这个值过大，会影响 Drainer 同步。
+
+* 处理方法：
+
+    * 查看 TiDB 集群的状态。
+    * 查看 Drainer 日志或监控，如果是 DDL 操作导致了该问题，则忽略。
