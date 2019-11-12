@@ -17,16 +17,13 @@ Backup and Restore（以下简称 BR）是 TiDB 分布式备份恢复的命令�
 
 ## 原理介绍
 
-BR 是分布式备份恢复的工具，它将备份和恢复操作下发到各个 TiKV 节点，TiKV 收到命令后
-执行相应的备份和恢复。在一次备份或恢复中各个 TiKV 都会有个项目的备份路径，TiKV 备份时产生的
-备份文件将会保存在该路径下，恢复时也会从该路径读取相应的备份文件。
+BR 是分布式备份恢复的工具，它将备份和恢复操作下发到各个 TiKV 节点，TiKV 收到命令后执行相应的备份和恢复。在一次备份或恢复中各个 TiKV 都会有个项目的备份路径，TiKV 备份时产生的备份文件将会保存在该路径下，恢复时也会从该路径读取相应的备份文件。
 
 ![br-arch](/media/br-arch.png)
 
 ## 使用介绍
 
-`br` 的使用由命令（包括子命令）、选项和参数组成。命令即不带 `-` 或者 `--` 的字符，
-选项即带有 `-` 或者 `--` 的字符，参数即命令或选项字符后紧跟的传递给命令和选项的字符。
+`br` 的使用由命令（包括子命令）、选项和参数组成。命令即不带 `-` 或者 `--` 的字符，选项即带有 `-` 或者 `--` 的字符，参数即命令或选项字符后紧跟的传递给命令和选项的字符。
 
 如：`br --pd "${PDIP}:2379" backup full -s "local:///tmp/backup"`
 
@@ -39,8 +36,7 @@ BR 是分布式备份恢复的工具，它将备份和恢复操作下发到各�
 
 ### 获取帮助
 
-br 由多层命令组成，br 及其所有子命令都可以通过 `-h/--help` 来获取使用帮助，例如
-`br backup --help`。
+br 由多层命令组成，br 及其所有子命令都可以通过 `-h/--help` 来获取使用帮助，例如 `br backup --help`。
 
 ### 连接
 
@@ -49,9 +45,7 @@ br 由多层命令组成，br 及其所有子命令都可以通过 `-h/--help` �
 - `--pd` PD 服务地址，例如 `"${PDIP}:2379"``"${PDIP}:2379"`
 - `--connect` TiDB 服务地址，例如 `"root:@tcp(${TiDBIP}:4000)/"`
 
-其中 `--connect` 只适用于 `restore` 子命令，使用 br 恢复功能时必须指定这个参数，
-否则会报错退出。
-例如：`br restore table --connect "root:@tcp(${TiDBIP}:4000)/"`。
+其中 `--connect` 只适用于 `restore` 子命令，使用 br 恢复功能时必须指定这个参数，否则会报错退出。例如：`br restore table --connect "root:@tcp(${TiDBIP}:4000)/"`。
 
 ### 其他全局参数
 
@@ -62,17 +56,15 @@ br 由多层命令组成，br 及其所有子命令都可以通过 `-h/--help` �
 
 ### 备份使用举例
 
-我们可以用 `br backup` 命令来备份 TiDB 集群。backup 有两个子命令，full 和 table。
-full 用来备份整个数据库，table 用来备份指定的单个表。
+我们可以用 `br backup` 命令来备份 TiDB 集群。backup 有两个子命令，full 和 table。full 用来备份整个数据库，table 用来备份指定的单个表。
 
 #### full 子命令
 
-我们可以通过 `br backup full -h` 或 `br backup full --help` 来获取子命令
-full 的使用帮助。
+我们可以通过 `br backup full -h` 或 `br backup full --help` 来获取子命令 full 的使用帮助。
 
 ##### 基本用法
 
-例：将集群数据备份到各个 tikv 节点的 `/tmp/backup` 路径，
+例：将集群数据备份到各个 tikv 节点的 `/tmp/backup` 路径
 
 {{< copyable "shell-regular" >}}
 
@@ -84,11 +76,9 @@ br --pd ${PDIP}:2379 backup full \
     --log-file backupfull.log
 ```
 
-上述命令限制了 **每个 TiKV** 执行备份任务的并发数上限和速度上限，同时把 BR 的 log 写到
-`backupfull.log` 文件中。
+上述命令限制了 **每个 TiKV** 执行备份任务的并发数上限和速度上限，同时把 BR 的 log 写到 `backupfull.log` 文件中。
 
-备份期间还有进度条会在终端中显示，当进度条前进到 100% 时，说明备份已完成。在完成备份后，
-BR 为了确保数据安全性，还会校验备份数据。
+备份期间还有进度条会在终端中显示，当进度条前进到 100% 时，说明备份已完成。在完成备份后，BR 为了确保数据安全性，还会校验备份数据。
 
 进度条效果如下，
 
@@ -103,12 +93,11 @@ Full Backup <---------↖................................................> 17.12
 
 #### table 子命令
 
-同样可以通过 `br backup table -h` 或 `br backup table --help` 来获取子命令
-table 的使用帮助。
+同样可以通过 `br backup table -h` 或 `br backup table --help` 来获取子命令 table 的使用帮助。
 
 ##### 基本用法
 
-例：将表 `test.usertable` 备份到各个 tikv 节点的 `/tmp/backup` 路径，
+例：将表 `test.usertable` 备份到各个 tikv 节点的 `/tmp/backup` 路径
 
 {{< copyable "shell-regular" >}}
 
@@ -122,25 +111,21 @@ br --pd ${PDIP}:2379 backup table \
     --log-file backuptable.log
 ```
 
-table 命令与 full 命令相比，多了 `--db` 和 `--table`，分别用来指定数据库名和表名，
-其余参数含义一致。
+table 命令与 full 命令相比，多了 `--db` 和 `--table`，分别用来指定数据库名和表名，其余参数含义一致。
 
-备份期间还有进度条会在终端中显示，当进度条前进到 100% 时，说明备份已完成。在完成备份后，
-BR 为了确保数据安全性，还会校验备份数据。
+备份期间还有进度条会在终端中显示，当进度条前进到 100% 时，说明备份已完成。在完成备份后，BR 为了确保数据安全性，还会校验备份数据。
 
 ### 恢复使用举例
 
-我们可以用 `br restore` 命令来恢复 TiDB 集群。restore 有三个子命令，
-full，db 和 table。full 用来恢复整个数据库，db 用来恢复指定的数据库，table 用来恢复指定的单个表。
+我们可以用 `br restore` 命令来恢复 TiDB 集群。restore 有三个子命令，full，db 和 table。full 用来恢复整个数据库，db 用来恢复指定的数据库，table 用来恢复指定的单个表。
 
 #### full 子命令
 
-同样可以通过 `br restore full -h` 或 `br restore full --help` 来获取子命令
-full 的使用帮助。
+同样可以通过 `br restore full -h` 或 `br restore full --help` 来获取子命令 full 的使用帮助。
 
 ##### 基本用法
 
-例：将 `/tmp/backup` 路径中备份数据 **全部** 恢复到集群中 ，
+例：将 `/tmp/backup` 路径中备份数据 **全部** 恢复到集群中
 
 {{< copyable "shell-regular" >}}
 
@@ -152,13 +137,11 @@ br --pd ${PDIP}:2379 restore full \
     --log-file restorefull.log
 ```
 
-上述命令 `--connect` 指定了需要恢复的集群地址，`--concurrency` 指定了这个恢复任务内部的
-子任务的并发数，同时把 BR 的 log 写到 `restorefull.log` 文件中。
+上述命令 `--connect` 指定了需要恢复的集群地址，`--concurrency` 指定了这个恢复任务内部的子任务的并发数，同时把 BR 的 log 写到 `restorefull.log` 文件中。
 
-恢复期间还有进度条会在终端中显示，当进度条前进到 100% 时，说明恢复已完成。在完成恢复后，
-BR 为了确保数据安全性，还会校验恢复数据。
+恢复期间还有进度条会在终端中显示，当进度条前进到 100% 时，说明恢复已完成。在完成恢复后，BR 为了确保数据安全性，还会校验恢复数据。
 
-进度条效果如下，
+进度条效果如下：
 
 ```shell
 br --pd ${PDIP}:2379 restore full \
@@ -170,12 +153,11 @@ Full Restore <---------↖...............................................> 17.12
 
 #### db 子命令
 
-同样可以通过 `br restore db -h` 或 `br restore db --help` 来获取子命令
-db 的使用帮助。
+同样可以通过 `br restore db -h` 或 `br restore db --help` 来获取子命令 db 的使用帮助。
 
 ##### 基本用法
 
-例：将 `/tmp/backup` 路径中备份数据中的 **某个数据库** 恢复到集群中 ，
+例：将 `/tmp/backup` 路径中备份数据中的 **某个数据库** 恢复到集群中
 
 {{< copyable "shell-regular" >}}
 
@@ -191,12 +173,11 @@ br --pd ${PDIP}:2379 restore db \
 
 #### table 子命令
 
-同样可以通过 `br restore table -h` 或 `br restore table --help` 来获取子命令
-table 的使用帮助。
+同样可以通过 `br restore table -h` 或 `br restore table --help` 来获取子命令 table 的使用帮助。
 
 ##### 基本用法
 
-例：将 `/tmp/backup` 路径中备份数据中的 **某个数据表** 恢复到集群中 ，
+例：将 `/tmp/backup` 路径中备份数据中的 **某个数据表** 恢复到集群中
 
 {{< copyable "shell-regular" >}}
 
@@ -213,17 +194,15 @@ br --pd ${PDIP}:2379 restore table \
 
 ### 查看备份元信息举例
 
-通过 `br meta -h` 可以获取这个子命令的使用帮助。目前只支持一个子命令 `checksum`,
-用来校验备份数据是否完整。
+通过 `br meta -h` 可以获取这个子命令的使用帮助。目前只支持一个子命令 `checksum`，用来校验备份数据是否完整。
 
 #### checksum 子命令
 
-同样可以通过 `br meta checksum -h` 或 `br meta checksum --help` 来获取子命令
-checksum 的使用帮助。
+同样可以通过 `br meta checksum -h` 或 `br meta checksum --help` 来获取子命令 checksum 的使用帮助。
 
 ##### 基本用法
 
-例：校验 `/tmp/backup` 路径中备份数据是否完整，
+例：校验 `/tmp/backup` 路径中备份数据是否完整
 
 {{< copyable "shell-regular" >}}
 
@@ -233,8 +212,7 @@ br --pd ${PDIP}:2379 meta checksum \
     --log-file checksum.log
 ```
 
-上述命令 `--storage` 指定了需要校验的备份数据地址，同时把 BR 的 log 写到 `checksum.log`
-文件中。
+上述命令 `--storage` 指定了需要校验的备份数据地址，同时把 BR 的 log 写到 `checksum.log` 文件中。
 
 ## 最佳实践
 
@@ -257,14 +235,21 @@ br --pd ${PDIP}:2379 meta checksum \
 
 - 为了加快恢复速度，可以在恢复前，使用 pd-ctl 关闭相关的 scheduler。在恢复完成后，需要将 这些 scheduler 加回来。
 
+    关闭 scheduler：
+
     {{< copyable "shell-regular" >}}
 
     ```shell
-    # Remove scheduler
     ./pd-ctl -u ${PDIP}:2379 scheduler remove balance-hot-region-scheduler
     ./pd-ctl -u ${PDIP}:2379 scheduler remove balance-leader-scheduler
     ./pd-ctl -u ${PDIP}:2379 scheduler remove balance-region-scheduler
-    # Add scheduler
+    ```
+
+    添加 scheduler：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
     ./pd-ctl -u ${PDIP}:2379 scheduler add balance-hot-region-scheduler
     ./pd-ctl -u ${PDIP}:2379 scheduler add balance-leader-scheduler
     ./pd-ctl -u ${PDIP}:2379 scheduler add balance-region-scheduler
