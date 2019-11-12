@@ -5,7 +5,7 @@ category: reference
 
 # DM 任务配置文件介绍
 
-本文档主要介绍 Data Migration (DM) 的任务基础配置文件 [`task_basic.yaml`](https://github.com/pingcap/dm/blob/master/dm/master/task_basic.yaml)，包含[全局配置](#全局配置) 和[实例配置](#实例配置) 两部分。
+本文档主要介绍 Data Migration (DM) 的任务基础配置文件 [`task_basic.yaml`](https://github.com/pingcap/dm/blob/master/dm/master/task_basic.yaml)，包含[全局配置](#全局配置)和[实例配置](#实例配置)两部分。
 
 完整的任务配置参见 [DM 任务完整配置文件介绍](/dev/reference/tools/data-migration/configure/task-configuration-file-full.md)
 
