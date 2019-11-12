@@ -22,4 +22,6 @@ set @@tidb_replica_read = 'follower';
 
 默认值：leader
 
-这个变量用来设置当前会话期待的数据读取方式。设定为默认值 leader 或者空字符串时 TiDB 会维持原有行为方式将所有的读取操作都发送给 leader 副本处理。当设置为 follower 时，TiDB 会选择 follower 副本完成所有的数据读取操作。
+该变量用于设置当前会话期待的数据读取方式。
+    - 当设定为默认值 `leader` 或者空字符串时，TiDB 会维持原有行为方式，将所有的读取操作都发送给 leader 副本处理。
+    - 当设置为 `follower` 时，TiDB 会选择 follower 副本完成所有的数据读取操作。
