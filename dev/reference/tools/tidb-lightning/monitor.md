@@ -128,7 +128,7 @@ scrape_configs:
 | Chunk parser read block duration | read block | 读取一个字节块以准备解析所消耗的时间 |
 | Chunk parser read block duration | apply worker | 等待 `io-concurrency` 空闲所消耗的时间 |
 | SQL process duration | row encode | 解析和编码单行所消耗的时间 |
-| SQL process duration | block deliver | 将一组键/值对发送到 TiKV Importer 所消耗的时间 |
+| SQL process duration | block deliver | 将一组键值对发送到 TiKV Importer 所消耗的时间 |
 
 如果上述项的持续时间过长，则表示 TiDB Lightning 使用的磁盘太慢或 I/O 太忙。
 
@@ -180,11 +180,11 @@ scrape_configs:
 
 - **`tikv_import_write_chunk_bytes`**（直方图）
 
-    从 Lightning 接收的 KV 对区块大小（未压缩）的直方图。
+    从 Lightning 接收的键值对区块大小（未压缩）的直方图。
 
 - **`tikv_import_write_chunk_duration`**（直方图）
 
-    从 `tidb-lightning` 接收每个 KV 对区块需时直方图。
+    从 `tidb-lightning` 接收每个键值对区块需时直方图。
 
 - **`tikv_import_upload_chunk_bytes`**（直方图）
 
@@ -192,7 +192,7 @@ scrape_configs:
 
 - **`tikv_import_range_delivery_duration`** (直方图)
 
-    将一个 range 的 KV 对发送至 `dispatch-job` 任务需时的直方图。
+    将一个 range 的键值对发送至 `dispatch-job` 任务需时的直方图。
 
 - **`tikv_import_split_sst_duration`** (直方图)
 
@@ -252,7 +252,7 @@ scrape_configs:
 
 - **`lightning_kv_encoder`**（计数器）
 
-    计算已开启及关闭的 KV 编码器。KV 编码器是运行于内存的 TiDB 实例，用于将 SQL 的 `INSERT` 语句转换成 KV 对。此度量的净值（开启减掉关闭）在正常情况下不应持续增长。标签：
+    计算已开启及关闭的 KV 编码器。KV 编码器是运行于内存的 TiDB 实例，用于将 SQL 的 `INSERT` 语句转换成键值对。此度量的净值（开启减掉关闭）在正常情况下不应持续增长。标签：
 
     - **type**：`open` / `closed`
 
@@ -286,19 +286,19 @@ scrape_configs:
 
 - **`lightning_row_encode_seconds`**（直方图）
 
-    解码单行 SQL 数据到 KV 对需时的直方图。
+    解码单行 SQL 数据到键值对需时的直方图。
 
 - **`lightning_row_kv_deliver_seconds`**（直方图）
 
-    发送一组与单行 SQL 数据对应的 KV 对需时的直方图。
+    发送一组与单行 SQL 数据对应的键值对需时的直方图。
 
 - **`lightning_block_deliver_seconds`**（直方图）
 
-    每个 KV 对中的区块传送到 `tikv-importer` 需时的直方图。
+    每个键值对中的区块传送到 `tikv-importer` 需时的直方图。
 
 - **`lightning_block_deliver_bytes`**（直方图）
 
-    发送到 Importer 的 KV 对中区块（未压缩）的大小的直方图。
+    发送到 Importer 的键值对中区块（未压缩）的大小的直方图。
 
 - **`lightning_chunk_parser_read_block_seconds`**（直方图）
 
