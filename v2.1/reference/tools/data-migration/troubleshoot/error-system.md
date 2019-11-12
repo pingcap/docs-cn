@@ -6,7 +6,7 @@ category: reference
 
 # Data Migration Error Message Description
 
-This document describes the error messages in Data Migration (DM) and offers solutions to some common error messages.
+This document introduces the error system of TiDB Data Migration and describes the meaning of various error messages.
 
 ## DM error system
 
@@ -112,19 +112,3 @@ DM decides whether to output the error stack information according to the severi
 ## Published error code
 
 You can find out a complete list of error codes from the [published error codes](https://github.com/pingcap/dm/blob/master/_utils/terror_gen/errors_release.txt) in the DM code warehouse.
-
-## Common error description and handling method
-
-| Error code       | Error description                                                     |  Handling method                                                    |
-| :----------- | :------------------------------------------------------------ | :----------------------------------------------------------- |
-| `code=10001` |  Abnormal database operation.                                              |  Further analyze the error message and error stack.                                |
-| `code=10002` | The `bad connection` error from the underlying database. It usually indicates that the connection between DM and the downstream TiDB instance is abnormal (possibly caused by network failure, TiDB restart and so on) and the currently requested data is not sent to TiDB. |  DM provides automatic recovery for such error. If the recovery is not successful for a long time, check the network or TiDB status. |
-| `code=10003` | The `invalid connection` error from the underlying database. It usually indicates that the connection between DM and the downstream TiDB instance is abnormal (possibly caused by network failure, TiDB restart and so on) and the currently requested data is partly sent to TiDB.  | DM provides automatic recovery for such error. If the recovery is not successful for a long time, further check the error message and analyze the information based on the actual situation. |
-| `code=10005` |  Occurs when performing the `QUERY` type SQL statements.                                         |                                                              |
-| `code=10006` |  Occurs when performing the `EXECUTE` type SQL statements, including DDL statements and DML statements of the `INSERT`, `UPDATE`or `DELETE` type. For more detailed error information, check the error message which usually includes the error code and error information returned for database operations.
-|                                                              |
-| `code=11006` |  Occurs when the built-in parser of DM parses the incompatible DDL statements.          |  Refer to [Data Migration - incompatible DDL statements](/v3.0/how-to/troubleshoot/data-migration.md#incompatible-ddl-statements) for solution. |
-| `code=20010` |   Occurs when decrypting the database password that is provided in task configuration.                   |  Check whether the downstream database password provided in the configuration task is [correctly encrypted using dmctl](/v3.0/how-to/deploy/data-migration-with-ansible.md#encrypt-the-upstream-mysql-user-password-using-dmctl). |
-| `code=26002` |  The task check fails to establish database connection. For more detailed error information, check the error message which usually includes the error code and error information returned for database operations. |  Check whether the machine where DM-master is located has permission to access the upstream. |
-| `code=32001` |   Abnormal dump processing unit                                            |  If the error message contains `mydumper: argument list too long.`, configure the table to be exported by manually adding the `--regex` regular expression in the Mydumper argument `extra-args` in the `task.yaml` file according to the black-white list. For example, to export all tables named `hello`, add `--regex '.*\\.hello$'`; to export all tables, add `--regex '.*'`. |
-| `code=38008` |  An error occurs in the gRPC communication among DM components.                                     |   Check `class`. Find out the error occurs in the interaction of which components. Determine the type of communication error. If the error occurs when establishing gRPC connection, check whether the communication server is working normally. |

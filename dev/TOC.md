@@ -90,10 +90,8 @@
   + Upgrade
     - [Upgrade to TiDB 3.0](/dev/how-to/upgrade/from-previous-version.md)
     - [Rolling updates with Ansible](/dev/how-to/upgrade/rolling-updates-with-ansible.md)
-    - [Upgrade TiDB Data Migration](/dev/reference/tools/data-migration/upgrade.md)
   - Troubleshoot
     - [Troubleshoot Cluster Setup](/dev/how-to/troubleshoot/cluster-setup.md)
-    - [Troubleshoot TiDB Data Migration](/dev/how-to/troubleshoot/data-migration.md)
     - [Troubleshoot TiDB Lightning](/dev/how-to/troubleshoot/tidb-lightning.md)
 + Reference
   + Tools
@@ -134,9 +132,10 @@
       + Migrate from MySQL compatible database
         - [Migrate from Aurora](/dev/how-to/migrate/from-aurora.md)
       + Troubleshoot
-        - [Troubleshooting](/dev/how-to/troubleshoot/data-migration.md)
-        - [Error Description](/dev/reference/tools/data-migration/error-system.md)
-      - [FAQ](/dev/faq/data-migration.md)
+        - [DM Troubleshooting](/dev/reference/tools/data-migration/troubleshoot/dm.md)
+        - [Error Description](/dev/reference/tools/data-migration/troubleshoot/error-system.md)
+        - [Error Handling](/dev/reference/tools/data-migration/troubleshoot/error-handling.md)
+      - [FAQ](/dev/reference/tools/data-migration/faq.md)
     + TiDB Lightning
       - [Overview](/dev/reference/tools/tidb-lightning/overview.md)
       - [Deployment](/dev/reference/tools/tidb-lightning/deployment.md)
@@ -398,7 +397,6 @@
 + FAQs
   - [TiDB FAQs](/dev/faq/tidb.md)
   - [TiDB Lightning FAQs](/dev/faq/tidb-lightning.md)
-  - [Data Migration FAQ](/dev/faq/data-migration.md)
   - [Upgrade FAQs](/dev/faq/upgrade.md)
 + Support
   - [Support Resources](/dev/support-resources.md)
