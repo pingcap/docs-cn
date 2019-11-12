@@ -217,12 +217,12 @@ table 的使用帮助。
 
 ##### 基本用法
 
-例：将 `/tmp/backup` 路径中备份数据中的 **某个数据库** 恢复到集群中 ，
+例：将 `/tmp/backup` 路径中备份数据中的 **某个数据表** 恢复到集群中 ，
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-br --pd ${PDIP}:2379 restore db \
+br --pd ${PDIP}:2379 restore table \
     --db "test" \
     --table "usertable" \
     --storage "local:///tmp/backup" \
