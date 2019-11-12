@@ -20,7 +20,7 @@ aliases: ['/docs-cn/op-guide/offline-ansible-deployment/']
 
 ## 在中控机上安装系统依赖包
 
-> 下载[系统依赖离线安装包](https://download.pingcap.org/ansible-system-rpms.el7.tar.gz)，上传至中控机。该离线包仅支持 CentOS 7 系统，包含 `pip` 及 `sshpass`。
+下载[系统依赖离线安装包](https://download.pingcap.org/ansible-system-rpms.el7.tar.gz)，上传至中控机。该离线包仅支持 CentOS 7 系统，包含 `pip` 及 `sshpass`。
 
 {{< copyable "shell-root" >}}
 
@@ -43,6 +43,8 @@ pip -V
 pip 8.1.2 from /usr/lib/python2.7/site-packages (python 2.7)
 ```
 
+> **注意：**
+>
 > 如果你的系统已安装 pip，请确认版本 >= 8.1.2，否则离线安装 ansible 及其依赖时，会有兼容问题。
 
 ## 在中控机上创建 tidb 用户，并生成 ssh key
@@ -53,9 +55,7 @@ pip 8.1.2 from /usr/lib/python2.7/site-packages (python 2.7)
 
 以下是 CentOS 7 系统 Ansible 离线安装方式：
 
-目前 release-2.0 及 master 版本兼容 Ansible 2.5 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中，请下载 Ansible 2.5 离线安装包上传至中控机。
-
-> 下载 [Ansible 2.5 离线安装包](https://download.pingcap.org/ansible-2.5.0-pip.tar.gz)
+目前 release-2.0 及 master 版本兼容 Ansible 2.5 版本，Ansible 及相关依赖版本记录在 `tidb-ansible/requirements.txt` 文件中，请下载 [Ansible 2.5 离线安装包](https://download.pingcap.org/ansible-2.5.0-pip.tar.gz)上传至中控机。
 
 下面以安装 Ansible 2.5 为例：
 
@@ -110,7 +110,7 @@ ansible 2.5.0
 
     > **注意：**
     >
-    > - `$tag` 替换为选定的 TAG 版本的值，例如 `v3.0.2`。
+    > - 将 `$tag` 替换为选定的 TAG 版本的值，例如 `v3.0.2`。
     > - 部署和升级 TiDB 集群需使用对应的 tidb-ansible 版本，通过改 `inventory.ini` 文件中的版本来混用可能会产生一些错误。
 
 3. 执行 `local_prepare.yml` playbook，联网下载 TiDB binary 到下载机
@@ -130,7 +130,7 @@ ansible 2.5.0
 
 ## 在部署目标机器上安装 NTP 服务
 
-> 如果你的部署目标机器时间、时区设置一致，已开启 NTP 服务且在正常同步时间，此步骤可忽略，可参考[如何检测 NTP 服务是否正常](/v3.0/how-to/deploy/orchestrated/ansible.md#如何检测-ntp-服务是否正常)。
+如果你的部署目标机器时间、时区设置一致，已开启 NTP 服务且在正常同步时间，此步骤可忽略，可参考[如何检测 NTP 服务是否正常](/v3.0/how-to/deploy/orchestrated/ansible.md#如何检测-ntp-服务是否正常)。
 
 参考[在部署目标机器上安装 NTP 服务](/v3.0/how-to/deploy/orchestrated/ansible.md#在部署目标机器上安装-ntp-服务)即可。
 
