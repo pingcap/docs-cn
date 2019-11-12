@@ -10,7 +10,7 @@ TiDB 3.1 新增了 follower read 功能在不牺牲强一致性读的前提下�
 
 ## 使用方式
 
-TiDB follower read 可以通过设定 SESSION 变量 tidb_replica_read 为 follower 的方式开启
+要开启 TiDB 的 follower read 功能，将 SESSION 变量 `tidb_replica_read` 的值设置为 `follower` 即可：
 
 {{< copyable "sql" >}}
 
