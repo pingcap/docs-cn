@@ -13,7 +13,6 @@ Backup and Restore（以下简称 BR）是 TiDB 分布式备份恢复的命令�
 
 * `br backup` 备份 TiDB 集群
 * `br restore` 恢复 TiDB 集群
-* `br meta` 查看备份数据的元信息
 
 ## 原理介绍
 
@@ -40,14 +39,14 @@ br 由多层命令组成，br 及其所有子命令都可以通过 `-h/--help` �
 
 ### 连接
 
-`br` 与连接相关的参数有 2 个，分别为：
+`br` 与连接相关的选项有 2 个，分别为：
 
 - `--pd` PD 服务地址，例如 `"${PDIP}:2379"``"${PDIP}:2379"`
 - `--connect` TiDB 服务地址，例如 `"root:@tcp(${TiDBIP}:4000)/"`
 
-其中 `--connect` 只适用于 `restore` 子命令，使用 br 恢复功能时必须指定这个参数，否则会报错退出。例如：`br restore table --connect "root:@tcp(${TiDBIP}:4000)/"`。
+其中 `--connect` 只适用于 `restore` 子命令，使用 br 恢复功能时必须指定这个选项，否则会报错退出。例如：`br restore table --connect "root:@tcp(${TiDBIP}:4000)/"`。
 
-### 其他全局参数
+### 其他全局选项
 
 - `--ca` 指定 PEM 格式的受信任 CA 的证书文件路径。
 - `--cert` 指定 PEM 格式的 SSL 证书文件路径。
@@ -111,7 +110,7 @@ br --pd ${PDIP}:2379 backup table \
     --log-file backuptable.log
 ```
 
-table 命令与 full 命令相比，多了 `--db` 和 `--table`，分别用来指定数据库名和表名，其余参数含义一致。
+table 命令与 full 命令相比，多了 `--db` 和 `--table`，分别用来指定数据库名和表名，其余选项含义一致。
 
 备份期间还有进度条会在终端中显示，当进度条前进到 100% 时，说明备份已完成。在完成备份后，BR 为了确保数据安全性，还会校验备份数据。
 
@@ -169,7 +168,7 @@ br --pd ${PDIP}:2379 restore db \
     --log-file restorefull.log
 ```
 
-上述命令 `--db` 指定了需要恢复的数据库名字，其余参数含义与 retstore full 一致。
+上述命令 `--db` 指定了需要恢复的数据库名字，其余选项含义与 retstore full 一致。
 
 #### table 子命令
 
@@ -190,29 +189,7 @@ br --pd ${PDIP}:2379 restore table \
     --log-file restorefull.log
 ```
 
-上述命令 `--table` 指定了需要恢复的表名字，其余参数含义与 retore db 一致。
-
-### 查看备份元信息举例
-
-通过 `br meta -h` 可以获取这个子命令的使用帮助。目前只支持一个子命令 `checksum`，用来校验备份数据是否完整。
-
-#### checksum 子命令
-
-同样可以通过 `br meta checksum -h` 或 `br meta checksum --help` 来获取子命令 checksum 的使用帮助。
-
-##### 基本用法
-
-例：校验 `/tmp/backup` 路径中备份数据是否完整
-
-{{< copyable "shell-regular" >}}
-
-```shell
-br --pd ${PDIP}:2379 meta checksum \
-    --storage "local:///tmp/backup" \
-    --log-file checksum.log
-```
-
-上述命令 `--storage` 指定了需要校验的备份数据地址，同时把 BR 的 log 写到 `checksum.log` 文件中。
+上述命令 `--table` 指定了需要恢复的表名字，其余选项含义与 retore db 一致。
 
 ## 最佳实践
 
