@@ -16,7 +16,7 @@ category: reference
 
 ![图 1 Raftstore 处理流程示意图](/media/best-practices/raft-process.png)
 
-> **Note:**
+> **注意：**
 >
 > 该图仅为示意，不代表代码层面的实际结构。
 
