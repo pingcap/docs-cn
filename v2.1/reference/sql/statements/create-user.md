@@ -52,6 +52,5 @@ Query OK, 1 row affected (0.02 sec)
 
 * [Security Compatibility with MySQL](/v2.1/reference/security/compatibility.md)
 * [DROP USER](/v2.1/reference/sql/statements/drop-user.md)
-* [SHOW CREATE USER](/v2.1/reference/sql/statements/show-create-user.md)
 * [ALTER USER](/v2.1/reference/sql/statements/alter-user.md)
 * [Privilege Management](/v2.1/reference/security/privilege-system.md)
