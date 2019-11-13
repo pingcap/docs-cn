@@ -53,5 +53,4 @@ mysql> SHOW GRANTS FOR u1;
 
 ## 另请参阅
 
-* [SHOW CREATE USER](/v2.1/reference/sql/statements/show-create-user.md)
 * [GRANT](/v2.1/reference/sql/statements/grant-privileges.md)
