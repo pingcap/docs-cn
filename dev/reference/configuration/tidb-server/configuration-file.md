@@ -74,11 +74,15 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 指定日志输出的格式，可选项为 [json, text, console]。
 + 默认值："text"
 
-### `disable-timestamp`
+### `enable-timestamp`
 
-+ 是否禁止在日志中输出时间戳。
-+ 默认值：false
-+ 如果设置为 true，那么日志里面将不会输出时间戳。
++ 是否在日志中输出时间戳。
++ 默认值：true
++ 如果设置为 false，那么日志里面将不会输出时间戳。
+
+> **注意：**
+>
+> 考虑后向兼容性，原来的配置项 `disable-timestamp` 仍然有效，但如果和 `enable-timestamp` 配置的值在语义上冲突（例如在配置中把 `enable-timestamp` 和 `disable-timestamp` 同时设置为 `true`），则 TiDB 会报错并拒绝启动。请废弃 `disable-timestamp` 的用法，使用语义上更易于理解的 `enable-timestamp`。
 
 ### `slow-query-file`
 
