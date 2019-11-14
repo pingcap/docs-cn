@@ -116,7 +116,7 @@ TiKV 默认将 `raftstore.store-pool-size` 配置为 `2`。如果 Raftstore 出�
 >> pd-ctl config set merge-schedule-limit 8
 ```
 
-详情请参考[如何配置 Region Merge](https://github.com/tikv/tikv/blob/master/docs/how-to/configure/region-merge.md) 和 [PD 配置文件描述](/v3.1/reference/configuration/pd-server/configuration-file.md#schedule) 。
+详情请参考[如何配置 Region Merge](https://github.com/tikv/tikv/blob/master/docs/how-to/configure/region-merge.md) 和 [PD 配置文件描述](/v3.0/reference/configuration/pd-server/configuration-file.md#schedule) 。
 
 同时，默认配置的 `Region Merge` 的参数设置较为保守，可以根据需求参考 [TiDB 最佳实践系列（二）PD 调度策略](https://pingcap.com/blog-cn/best-practice-pd/#5-region-merge-%E9%80%9F%E5%BA%A6%E6%85%A2) 中提供的方法加快 `Region Merge` 过程的速度。
 
