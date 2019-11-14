@@ -1,5 +1,5 @@
 ---
-title: BR 使用说明
+title: 使用 BR 进行备份与恢复
 category: reference
 ---
 
@@ -41,7 +41,7 @@ br 由多层命令组成，br 及其所有子命令都可以通过 `-h/--help` �
 
 `br` 与连接相关的选项有 2 个，分别为：
 
-- `--pd` PD 服务地址，例如 `"${PDIP}:2379"`
+- `--pd` PD 服务地址，例如 `"${PDIP}:2379"``"${PDIP}:2379"`
 - `--connect` TiDB 服务地址，例如 `"root:@tcp(${TiDBIP}:4000)/"`
 
 其中 `--connect` 只适用于 `restore` 子命令，使用 br 恢复功能时必须指定这个选项，否则会报错退出。例如：`br restore table --connect "root:@tcp(${TiDBIP}:4000)/"`。
@@ -200,7 +200,7 @@ br --pd ${PDIP}:2379 restore table \
 ## 注意事项
 
 - TiDB 执行 DDL 期间不能执行备份。
-- 目前只支持在空集群上执行恢复。
+- 目前只支持在全新的集群上执行。
 - 当备份时间可能超过 10 分钟时，我们需要调整 GC lifetime。在备份完成后，需要将 GC lifetime 调整为默认值 10 分钟。
 
     {{< copyable "sql" >}}
