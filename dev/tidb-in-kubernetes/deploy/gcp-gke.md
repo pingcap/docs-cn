@@ -540,11 +540,11 @@ terraform destroy
 
 ## 管理多个 Kubernetes 集群
 
-本节介绍管理多个 Kubernetes 集群的最佳实践，其中每个 Kubernetes 集群都安装了一个或多个 TiDB 集群。
+本节介绍管理多个 Kubernetes 集群的最佳实践，其中每个 Kubernetes 集群都可以部署一个或多个 TiDB 集群。
 
 在 TiDB 的案例中，Terraform 模块通常结合了几个子模块：
 
-- `tidb-operator`：为 TiDB 集群提供 [Kubernetes Control Plane](https://kubernetes.io/docs/concepts/#kubernetes-control-plane)。
+- `tidb-operator`：为 TiDB 集群提供 [Kubernetes Control Plane](https://kubernetes.io/docs/concepts/#kubernetes-control-plane) 并部署 TiDB Operator。
 - `tidb-cluster`：在目标 Kubernetes 集群中创建资源池并部署 TiDB 集群。
 - 一个 `vpc` 模块，一个 `bastion` 模块和一个 `project-credentials` 模块：专门用于 GKE 上的 TiDB 集群。
 
@@ -553,7 +553,7 @@ terraform destroy
 1. 为每个 Kubernetes 集群创建一个新目录；
 2. 根据具体需求，使用 Terraform 脚本将上述模块进行组合。
 
-如果采用了最佳实践，集群中的 Terraform 状态不会相互干扰，并且扩展起来很方便。示例如下（假设已在项目根目录）：
+如果采用了最佳实践，集群中的 Terraform 状态不会相互干扰，并且可以很方便地管理多个 Kubernetes 集群。示例如下（假设已在项目根目录）：
 
 {{< copyable "shell-regular" >}}
 
@@ -691,16 +691,15 @@ output "connect_to_tidb_cluster_b_from_bastion" {
 
 如上述代码所示，你可以在每个模块调用中省略几个参数，因为有合理的默认值，并且可以轻松地自定义配置。例如，如果你不需要调用堡垒机模块，将其删除即可。
 
-如果要自定义每个字段，可使用以下三种方法中的一种：
+如果要自定义每个字段，可使用以下两种方法中的一种：
 
-- 参考默认的 Terraform 模块。
-- 参考每个模块的 `variables.tf` 文件来了解所有可用参数。
-- 将这些模块集成到自己的 Terraform 工作流中。如果你熟悉 Terraform，这是推荐的做法。
+- 直接修改 `*.tf` 文件中 `module` 的参数配置。
+- 参考每个模块的 `variables.tf` 文件，了解所有可修改的参数，并在 terraform.tfvars 中设置自定义值。
 
 > **注意：**
 >
 > - 创建新目录时，请注意其与 Terraform 模块的相对路径，这会影响模块调用期间的 `source` 参数。
 > - 如果要在 tidb-operator 项目之外使用这些模块，务必确保复制整个 `modules` 目录并保持目录中每个模块的相对路径不变。
-> - 由于 Terraform 的限制[（参见 hashicorp/terraform＃2430）](https://github.com/hashicorp/terraform/issues/2430#issuecomment-370685911)，上面的示例需要手动编写代码对 Helm provider 进行处理。建议将其保存在自己的 Terraform 脚本中。
->
->     如果你不愿意编写 Terraform 代码，还可以复制 `deploy/gcp` 目录来创建新的 Kubernetes 集群。但需要注意，当 Terraform 状态已存在于本地时，无法复制已被执行 `terraform apply` 命令的目录。在这种情况下，建议在复制目录之前克隆新的仓库。
+> - 由于 Terraform 的限制[（参见 hashicorp/terraform＃2430）](https://github.com/hashicorp/terraform/issues/2430#issuecomment-370685911)，上面示例中添加了**# HACK: 强制使 Helm 依赖 GKE 集群**部分对 Helm provider 进行处理。如果自己编写 tf 文件，需要包含这部分内容。
+
+如果你不愿意编写 Terraform 代码，还可以复制 `deploy/gcp` 目录来创建新的 Kubernetes 集群。但需要注意，不能复制已被执行 `terraform apply` 命令的目录。在这种情况下，建议先克隆新的仓库再复制目录。
