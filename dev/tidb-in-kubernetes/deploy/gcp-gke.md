@@ -166,7 +166,7 @@ Terraform 自动加载和填充匹配 `terraform.tfvars` 或 `*.auto.tfvars` 文
 
 ## 访问 TiDB 数据库
 
-`terraform apply` 运行完成后，可执行以下步骤来访问 TiDB 数据库。注意用[部署 TiDB 集群](部署-tidb-集群)小节的输出信息替换 `<>` 部分的内容。
+`terraform apply` 运行完成后，可执行以下步骤来访问 TiDB 数据库。注意用[部署 TiDB 集群](#部署-tidb-集群)小节的输出信息替换 `<>` 部分的内容。
 
 1. 通过 `ssh` 远程连接到堡垒机。
 
