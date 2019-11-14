@@ -37,7 +37,7 @@ aliases: ['/docs-cn/v3.0/how-to/deploy/tidb-in-kubernetes/aws-eks/','/docs-cn/v3
 
 * [terraform](https://learn.hashicorp.com/terraform/getting-started/install.html)
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.11
-* [helm](https://github.com/helm/helm/blob/master/docs/install.md#installing-the-helm-client) >= 2.9.0 且 < 3.0.0
+* [helm](https://helm.sh/docs/using_helm/#installing-the-helm-client) >= 2.9.0 且 < 3.0.0
 * [jq](https://stedolan.github.io/jq/download/)
 * [aws-iam-authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)，AWS 权限鉴定工具，确保安装在 `PATH` 路径下。
 
@@ -332,6 +332,10 @@ module example-cluster {
   monitor_instance_type         = "t2.xlarge"
   # The version of tidb-cluster helm chart
   tidb_cluster_chart_version    = "v1.0.0"
+  # Decides whether or not to create the tidb-cluster helm release.
+  # If this variable set to false, you have to
+  # install the helm release manually
+  create_tidb_cluster_release   = true
 }
 ```
 
@@ -354,6 +358,25 @@ output "example-cluster_monitor-hostname" {
 修改完成后，执行 `terraform init` 和 `terraform apply` 创建集群。
 
 最后，只要移除 `tidb-cluster` 模块调用，对应的 TiDB 集群就会被销毁，EC2 资源也会随之释放。
+
+## 仅管理基础设施
+
+通过调整配置，你可以控制 Terraform 脚本只创建 Kubernetes 集群和 TiDB Operator。操作步骤如下：
+
+* 修改 `clusters.tf` 中 TiDB 集群的 `create_tidb_cluster_release` 配置项：
+
+  ```hcl
+  module "default-cluster" {
+    ...
+    create_tidb_cluster_release = false
+  }
+  ```
+
+  如上所示，当 `create_tidb_cluster_release` 设置为 `false` 时，Terraform 脚本不会创建和修改 TiDB 集群，但仍会创建 TiDB 集群所需的计算和存储资源。此时，你可以使用 Helm 等工具来独立管理集群。
+
+> **注意：**
+>
+> 在已经部署的集群上将 `create_tidb_cluster_release` 调整为 `false` 会导致已安装的 TiDB 集群被删除，对应的 TiDB 集群对象也会随之被删除。
 
 ## 销毁集群
 

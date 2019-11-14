@@ -22,7 +22,7 @@ aliases: ['/docs-cn/v3.0/how-to/deploy/tidb-in-kubernetes/gcp-gke/']
 * [Google Cloud SDK](https://cloud.google.com/sdk/install)
 * [Terraform](https://www.terraform.io/downloads.html) >= 0.12
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.14
-* [Helm](https://github.com/helm/helm/blob/master/docs/install.md#installing-the-helm-client) >= 2.9.0 且 < 3.0.0
+* [Helm](https://helm.sh/docs/using_helm/#installing-the-helm-client) >= 2.9.0 且 < 3.0.0
 * [jq](https://stedolan.github.io/jq/download/)
 
 ## 配置
