@@ -700,6 +700,6 @@ output "connect_to_tidb_cluster_b_from_bastion" {
 >
 > - 创建新目录时，请注意其与 Terraform 模块的相对路径，这会影响模块调用期间的 `source` 参数。
 > - 如果要在 tidb-operator 项目之外使用这些模块，务必确保复制整个 `modules` 目录并保持目录中每个模块的相对路径不变。
-> - 由于 Terraform 的限制[（参见 hashicorp/terraform＃2430）](https://github.com/hashicorp/terraform/issues/2430#issuecomment-370685911)，上面示例中添加了**# HACK: 强制使 Helm 依赖 GKE 集群**部分对 Helm provider 进行处理。如果自己编写 tf 文件，需要包含这部分内容。
+> - 由于 Terraform 的限制[（参见 hashicorp/terraform＃2430）](https://github.com/hashicorp/terraform/issues/2430#issuecomment-370685911)，上面示例中添加了 **HACK: 强制使 Helm 依赖 GKE 集群**部分对 Helm provider 进行处理。如果自己编写 tf 文件，需要包含这部分内容。
 
 如果你不愿意编写 Terraform 代码，还可以复制 `deploy/gcp` 目录来创建新的 Kubernetes 集群。但需要注意，不能复制已被执行 `terraform apply` 命令的目录。在这种情况下，建议先克隆新的仓库再复制目录。
