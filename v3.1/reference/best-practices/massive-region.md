@@ -98,6 +98,28 @@ TiKV 默认将 `raftstore.store-pool-size` 配置为 `2`。如果 Raftstore 出�
 
 截止 TiDB v3.0.5，Hibernate Region 仍是一个实验功能，在 [TiKV master](https://github.com/tikv/tikv/tree/master) 分支上已经默认开启。可根据实际情况和需求来开启该功能。Hibernate Region 的配置说明请参考[配置 Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region)。
 
+### 方法五：开启 `Region Merge`
+
+> **注意：**
+>
+> `Region Merge` 已在 TiDB v3.0 中默认开启。本方法仅供用户在 v3.0 及以上版本中自行关闭 `Region Merge` 后参考。
+
+开启 `Region Merge` 也能减少 Region 的个数。与 `Region Split` 相反，`Region Merge` 是通过调度把相邻的小 Region 合并的过程。在集群中删除数据或者执行 `Drop Table`/`Truncate Table` 语句后，可以将小 Region 甚至空 Region 进行合并以减少资源的消耗。
+
+通过 pd-ctl 设置以下参数即可开启 `Region Merge`:
+
+{{< copyable "" >}}
+
+```
+>> pd-ctl config set max-merge-region-size 20
+>> pd-ctl config set max-merge-region-keys 200000
+>> pd-ctl config set merge-schedule-limit 8
+```
+
+详情请参考[如何配置 Region Merge](https://github.com/tikv/tikv/blob/master/docs/how-to/configure/region-merge.md) 和 [PD 配置文件描述](/v3.1/reference/configuration/pd-server/configuration-file.md#schedule) 。
+
+同时，默认配置的 `Region Merge` 的参数设置较为保守，可以根据需求参考 [TiDB 最佳实践系列（二）PD 调度策略](https://pingcap.com/blog-cn/best-practice-pd/#5-region-merge-%E9%80%9F%E5%BA%A6%E6%85%A2) 中提供的方法加快 `Region Merge` 过程的速度。
+
 ## 其他问题和解决方案
 
 ### 切换 PD Leader 的速度慢
