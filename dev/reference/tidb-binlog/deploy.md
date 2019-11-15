@@ -2,7 +2,7 @@
 title: TiDB Binlog Cluster Deployment
 summary: Learn how to deploy TiDB Binlog cluster.
 category: reference
-aliases: ['/docs/tools/binlog/deploy/','/docs/v3.0/how-to/deploy/tidb-binlog/']
+aliases: ['/docs/dev/how-to/deploy/tidb-binlog/']
 ---
 
 # TiDB Binlog Cluster Deployment
@@ -33,16 +33,16 @@ In environments of development, testing and production, the requirements on serv
 
     | tidb-ansible branch | TiDB version | Note |
     | :------------------- | :------------ | :---- |
-    | release-3.0 | 3.0 stable | The latest 3.0 stable version. For use in production environments (recommended). |
+    | master | master version | This version includes the latest features with a daily update. |
 
 2. Use the following command to download the corresponding branch of TiDB Ansible from the [TiDB Ansible project](https://github.com/pingcap/tidb-ansible) on GitHub. The default folder name is `tidb-ansible`.
 
-    - Download the 3.0 branch:
+    - Download the master version:
 
         {{< copyable "shell-regular" >}}
 
         ```bash
-        git clone -b release-3.0 https://github.com/pingcap/tidb-ansible.git
+        git clone https://github.com/pingcap/tidb-ansible.git
         ```
 
 ### Step 2: Deploy Pump
@@ -66,7 +66,7 @@ In environments of development, testing and production, the requirements on serv
         172.16.10.74
         ```
 
-        Pump retains the data of the latest 7 days by default. You can modify the value of the `gc` variable in the `tidb-ansible/conf/pump.yml` file (or `tidb-ansible/conf/pump-cluster.yml` in TiDB 3.0.2 or earlier versions) and remove the related comments:
+        Pump retains the data of the latest 7 days by default. You can modify the value of the `gc` variable in the `tidb-ansible/conf/pump.yml` file (or `tidb-ansible/conf/pump-cluster.yml` in TiDB 3.0.0~3.0.2) and remove the related comments:
 
         {{< copyable "" >}}
 
@@ -77,7 +77,7 @@ In environments of development, testing and production, the requirements on serv
           # gc: 7
         ```
 
-        Make sure the space of the deployment directory is sufficient for storing Binlog. For more details, see [Configure the deployment directory](/v3.0/how-to/deploy/orchestrated/ansible.md#configure-the-deployment-directory). You can also set a separate deployment directory for Pump.
+        Make sure the space of the deployment directory is sufficient for storing Binlog. For more details, see [Configure the deployment directory](/dev/how-to/deploy/orchestrated/ansible.md#configure-the-deployment-directory). You can also set a separate deployment directory for Pump.
 
         ```ini
         ## Binlog Part
@@ -131,7 +131,7 @@ In environments of development, testing and production, the requirements on serv
 
     **Method #2**: Deploy a TiDB cluster containing Pump from scratch.
 
-    For how to use Ansible to deploy the TiDB cluster, see [Deploy TiDB Using Ansible](/v3.0/how-to/deploy/orchestrated/ansible.md).
+    For how to use Ansible to deploy the TiDB cluster, see [Deploy TiDB Using Ansible](/dev/how-to/deploy/orchestrated/ansible.md).
 
 3. Check the Pump status.
 
@@ -205,7 +205,6 @@ In environments of development, testing and production, the requirements on serv
         > **Note:**
         >
         > Name the configuration file as `alias_drainer.toml`. Otherwise, the customized configuration file cannot be found during the deployment process.
-        > Note that in v3.0.0 and v3.0.1, you should name the configuration file as `alias_drainer-cluster.toml`.
 
         Set `db-type` to `mysql` and configure the downstream MySQL information:
 
@@ -213,7 +212,7 @@ In environments of development, testing and production, the requirements on serv
 
         ```toml
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "file", "tidb", "kafka", and "flash".
+        # Valid values are "mysql", "file", "kafka", and "flash".
         db-type = "mysql"
 
         # the downstream MySQL protocol database
@@ -222,7 +221,6 @@ In environments of development, testing and production, the requirements on serv
         user = "root"
         password = "123456"
         port = 3306
-        # Time and size limits for flash batch write
         ```
 
     - Assume that the downstream is incremental backup data:
@@ -241,7 +239,7 @@ In environments of development, testing and production, the requirements on serv
 
         ```toml
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "file", "tidb", "kafka", and "flash".
+        # Valid values are "mysql", "file", "kafka", and "flash".
         db-type = "file"
 
         # Uncomment this if you want to use "file" as "db-type".
@@ -275,23 +273,6 @@ Run the following commands to download the packages:
 {{< copyable "shell-regular" >}}
 
 ```bash
-version="v3.0" for latest stable release of TiDB 3.0
-wget https://download.pingcap.org/tidb-v3.0-linux-amd64.{tar.gz,sha256}
-```
-
-Check the file integrity. If the result is OK, the file is correct.
-
-{{< copyable "shell-regular" >}}
-
-```bash
-sha256sum -c tidb-v3.0-linux-amd64.sha256
-```
-
-For TiDB v2.1.0 GA or later versions, Pump and Drainer are already included in the TiDB download package. For other TiDB versions, you need to download Pump and Drainer separately using the following command:
-
-{{< copyable "shell-regular" >}}
-
-```bash
 version="latest" for nightly builds &&
 wget https://download.pingcap.org/tidb-latest-linux-amd64.{tar.gz,sha256}
 ```
@@ -304,12 +285,28 @@ Check the file integrity. If the result is OK, the file is correct.
 sha256sum -c tidb-latest-linux-amd64.sha256
 ```
 
+For TiDB v2.1.0 GA or later versions, Pump and Drainer are already included in the TiDB download package. For other TiDB versions, you need to download Pump and Drainer separately using the following command:
+
+{{< copyable "shell-regular" >}}
+
+```bash
+wget https://download.pingcap.org/tidb-binlog-$version-linux-amd64.{tar.gz,sha256}
+```
+
+Check the file integrity. If the result is OK, the file is correct.
+
+{{< copyable "shell-regular" >}}
+
+```bash
+sha256sum -c tidb-binlog-$version-linux-amd64.sha256
+```
+
 ### The usage example
 
 Assuming that you have three PD nodes, one TiDB node, two Pump nodes, and one Drainer node, the information of each node is as follows:
 
 | Node     | IP           |
-| :--------- |:------------ |
+| :---------|:------------ |
 | TiDB     | 192.168.0.10 |
 | PD1      | 192.168.0.16 |
 | PD2      | 192.168.0.15 |
@@ -391,7 +388,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         # ssl-key = "/path/to/drainer-key.pem"
 
         # [storage]
-        # Set to true (by default) to guarantee reliability by ensuring binlog data is flushed to the disk.
+        # Set to true (by default) to guarantee reliability by ensuring binlog data is flushed to the disk
         # sync-log = true
 
         # When the available disk capacity is less than the set value, Pump stops writing data.
@@ -458,7 +455,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
             the db filter list ("INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test" by default)
             It does not support the Rename DDL operation on tables of `ignore schemas`.
         -initial-commit-ts
-            If Drainer does not have the related breakpoint information, you can configure the related breakpoint information using this parameter. ("0" by default)
+            If Drainer does not have the related breakpoint information, you can configure the related breakpoint information using this parameter.("0" by default)
         -log-file string
             the path of the log file
         -log-rotate string
@@ -575,7 +572,8 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         port = 3306
 
         [syncer.to.checkpoint]
-        # When the downstream is MySQL or TiDB, this option can be enabled to change the database that holds the checkpoint
+        # When the downstream database is MySQL or TiDB, this option can be
+        # enabled to change the database that holds the checkpoint
         # schema = "tidb_binlog"
 
         # the directory where the binlog file is stored when `db-type` is set to `file`
@@ -584,7 +582,8 @@ The following part shows how to use Pump and Drainer based on the nodes above.
 
         # the Kafka configuration when `db-type` is set to "kafka"
         # [syncer.to]
-        # only one of kafka-addrs and zookeeper-addrs is needed. If both are present, the program gives priority to the kafka address in zookeeper.
+        # only one of kafka-addrs and zookeeper-addrs is needed. If both are present, the program gives priority
+        # to the kafka address in zookeeper
         # zookeeper-addrs = "127.0.0.1:2181"
         # kafka-addrs = "127.0.0.1:9092"
         # kafka-version = "0.8.2.0"
@@ -630,4 +629,4 @@ The following part shows how to use Pump and Drainer based on the nodes above.
 > - Drainer does not support the `rename` DDL operation on the table of `ignore schemas` (the schemas in the filter list).
 > - If you want to start Drainer in an existing TiDB cluster, generally you need to make a full backup of the cluster data, obtain `savepoint`, import the data to the target database, and then start Drainer to replicate the incremental data from `savepoint`.
 > - When the downstream database is TiDB or MySQL, ensure that the `sql_mode` in the upstream and downstream databases are consistent. In other words, the `sql_mode` should be the same when each SQL statement is executed in the upstream and replicated to the downstream. You can execute the `select @@sql_mode;` statement in the upstream and downstream respectively to compare `sql_mode`.
-> - When a DDL statement is supported in the upstream but incompatible with the downstream, Drainer fails to replicate data. An example is to replicate the `CREATE TABLE t1(a INT) ROW_FORMAT=FIXED;` statement when the downstream database MySQL uses the InnoDB engine. In this case, you can configure [skipping transactions](/v3.0/reference/tools/tidb-binlog/faq.md#what-can-i-do-when-some-ddl-statements-supported-by-the-upstream-database-cause-error-when-executed-in-the-downstream-database) in Drainer, and manually execute compatible statements in the downstream database.
+> - When a DDL statement is supported in the upstream but incompatible with the downstream, Drainer fails to replicate data. An example is to replicate the `CREATE TABLE t1(a INT) ROW_FORMAT=FIXED;` statement when the downstream database MySQL uses the InnoDB engine. In this case, you can configure [skipping transactions](/dev/reference/tidb-binlog/faq.md#what-can-i-do-when-some-ddl-statements-supported-by-the-upstream-database-cause-error-when-executed-in-the-downstream-database) in Drainer, and manually execute compatible statements in the downstream database.

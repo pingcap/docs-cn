@@ -94,67 +94,8 @@
     - [Troubleshoot Cluster Setup](/dev/how-to/troubleshoot/cluster-setup.md)
     - [Troubleshoot TiDB Lightning](/dev/how-to/troubleshoot/tidb-lightning.md)
 + Reference
-  + Tools
-    - [Mydumper](/dev/reference/tools/mydumper.md)
-    - [Syncer](/dev/reference/tools/syncer.md)
-    - [Loader](/dev/reference/tools/loader.md)
-    + TiDB Data Migration
-      + Overview
-        - [DM Overview](/dev/reference/tools/data-migration/overview.md)
-        - [Restrictions](/dev/reference/tools/data-migration/overview.md#usage-restrictions)
-        - [DM-worker](/dev/reference/tools/data-migration/dm-worker-intro.md)
-        - [DM Relay Log](/dev/reference/tools/data-migration/dm-worker-intro.md)
-      + Features
-        - [Table Routing](/dev/reference/tools/data-migration/features/overview.md#table-routing)
-        - [Black and White Lists](/dev/reference/tools/data-migration/features/overview.md#black-and-white-table-lists)
-        - [Binlog Event Filter](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)
-        - [Column Mapping](/dev/reference/tools/data-migration/features/overview.md#column-mapping)
-        - [Replication Delay Monitoring](/dev/reference/tools/data-migration/features/overview.md#replication-delay-monitoring)
-        + Sharding Support
-          - [Introduction](/dev/reference/tools/data-migration/features/shard-merge.md)
-          - [Restrictions](/dev/reference/tools/data-migration/features/shard-merge.md#restrictions)
-          - [Handle Sharding DDL Locks Manually](/dev/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)
-      + Usage Scenarios
-        - [Simple Scenario](/dev/reference/tools/data-migration/usage-scenarios/simple-replication.md)
-        - [Shard Merge Scenario](/dev/reference/tools/data-migration/usage-scenarios/shard-merge.md)
-      - [Deploy](/dev/reference/tools/data-migration/deploy.md)
-      + Configure
-        - [Overview](/dev/reference/tools/data-migration/configure/overview.md)
-        - [Task Configuration](/dev/reference/tools/data-migration/configure/task-configuration-file.md)
-      + Manage the DM Cluster
-        - [Cluster Operations](/dev/reference/tools/data-migration/cluster-operations.md)
-        - [Cluster Upgrade](/dev/reference/tools/data-migration/upgrade.md)
-      + Manage Replication Tasks
-        - [Manage Tasks](/dev/reference/tools/data-migration/manage-tasks.md)
-        - [Precheck Tasks](/dev/reference/tools/data-migration/precheck.md)
-        - [Query Task Status](/dev/reference/tools/data-migration/query-status.md)
-      - [Monitor](/dev/reference/tools/data-migration/monitor.md)
-      + Migrate from MySQL compatible database
-        - [Migrate from Aurora](/dev/how-to/migrate/from-aurora.md)
-      + Troubleshoot
-        - [DM Troubleshooting](/dev/reference/tools/data-migration/troubleshoot/dm.md)
-        - [Error Description](/dev/reference/tools/data-migration/troubleshoot/error-system.md)
-        - [Error Handling](/dev/reference/tools/data-migration/troubleshoot/error-handling.md)
-      - [FAQ](/dev/reference/tools/data-migration/faq.md)
-    + TiDB Lightning
-      - [Overview](/dev/reference/tools/tidb-lightning/overview.md)
-      - [Deployment](/dev/reference/tools/tidb-lightning/deployment.md)
-      - [Configuration](/dev/reference/tools/tidb-lightning/config.md)
-      - [Checkpoints](/dev/reference/tools/tidb-lightning/checkpoints.md)
-      - [Table Filter](/dev/reference/tools/tidb-lightning/table-filter.md)
-      - [CSV Support](/dev/reference/tools/tidb-lightning/csv.md)
-      - [Web Interface](/dev/reference/tools/tidb-lightning/web.md)
-      - [Monitor](/dev/reference/tools/tidb-lightning/monitor.md)
-      - [Troubleshoot](/dev/how-to/troubleshoot/tidb-lightning.md)
-      - [FAQ](/dev/faq/tidb-lightning.md)
-    - [sync-diff-inspector](/dev/reference/tools/sync-diff-inspector/overview.md)
-    - [PD Control](/dev/reference/tools/pd-control.md)
-    - [PD Recover](/dev/reference/tools/pd-recover.md)
-    - [TiKV Control](/dev/reference/tools/tikv-control.md)
-    - [TiDB Control](/dev/reference/tools/tidb-control.md)
-    - [Download](/dev/reference/tools/download.md)
-  - [MySQL Compatibility](/dev/reference/mysql-compatibility.md)
   + SQL
+    - [MySQL Compatibility](/dev/reference/mysql-compatibility.md)
     + SQL Language Structure
       - [Literal Values](/dev/reference/sql/language-structure/literal-values.md)
       - [Schema Object Names](/dev/reference/sql/language-structure/schema-object-names.md)
@@ -308,12 +249,6 @@
     + tikv-server
       - [Configuration Flags](/dev/reference/configuration/tikv-server/configuration.md)
       - [Configuration File](/dev/reference/configuration/tikv-server/configuration-file.md)
-  + Key Monitoring Metrics
-    - [Overview](/dev/reference/key-monitoring-metrics/overview-dashboard.md)
-    - [TiDB](/dev/reference/key-monitoring-metrics/tidb-dashboard.md)
-    - [PD](/dev/reference/key-monitoring-metrics/pd-dashboard.md)
-    - [TiKV](/dev/reference/key-monitoring-metrics/tikv-dashboard.md)
-  - [Alert Rules](/dev/reference/alert-rules.md)
   + Security
     - [Security Compatibility with MySQL](/dev/reference/security/compatibility.md)
     - [The TiDB Access Privilege System](/dev/reference/security/privilege-system.md)
@@ -341,18 +276,82 @@
     - [Execution Plan Binding](/dev/reference/performance/execution-plan-bind.md)
     - [Statement Summary Table](/dev/reference/performance/statement-summary.md)
     - [Tune TiKV](/dev/reference/performance/tune-tikv.md)
+  + Key Monitoring Metrics
+    - [Overview](/dev/reference/key-monitoring-metrics/overview-dashboard.md)
+    - [TiDB](/dev/reference/key-monitoring-metrics/tidb-dashboard.md)
+    - [PD](/dev/reference/key-monitoring-metrics/pd-dashboard.md)
+    - [TiKV](/dev/reference/key-monitoring-metrics/tikv-dashboard.md)
+  - [Alert Rules](/dev/reference/alert-rules.md)
   - [Best Practices](https://pingcap.com/blog/2017-07-24-tidbbestpractice/)
   - [TiSpark](/dev/reference/tispark.md)
   + TiDB Binlog
-    - [Overview](/dev/reference/tools/tidb-binlog/overview.md)
-    - [Deploy](/dev/reference/tools/tidb-binlog/deploy.md)
-    - [Maintain](/dev/reference/tools/tidb-binlog/maintain.md)
-    - [Monitor](/dev/reference/tools/tidb-binlog/monitor.md)
-    - [Upgrade](/dev/reference/tools/tidb-binlog/upgrade.md)
-    - [Reparo](/dev/reference/tools/tidb-binlog/reparo.md)
-    - [Binlog Slave Client](/dev/reference/tools/tidb-binlog/binlog-slave-client.md)
-    - [FAQ](/dev/reference/tools/tidb-binlog/faq.md)
-  - [Adopters](/dev/adopters.md)
+    - [Overview](/dev/reference/tidb-binlog/overview.md)
+    - [Deploy](/dev/reference/tidb-binlog/deploy.md)
+    - [Maintain](/dev/reference/tidb-binlog/maintain.md)
+    - [Monitor](/dev/reference/tidb-binlog/monitor.md)
+    - [Upgrade](/dev/reference/tidb-binlog/upgrade.md)
+    - [Reparo](/dev/reference/tidb-binlog/reparo.md)
+    - [Binlog Slave Client](/dev/reference/tidb-binlog/binlog-slave-client.md)
+    - [FAQ](/dev/reference/tidb-binlog/faq.md)
+  + Tools
+    - [Mydumper](/dev/reference/tools/mydumper.md)
+    - [Syncer](/dev/reference/tools/syncer.md)
+    - [Loader](/dev/reference/tools/loader.md)
+    + TiDB Data Migration
+      + Overview
+        - [DM Overview](/dev/reference/tools/data-migration/overview.md)
+        - [Restrictions](/dev/reference/tools/data-migration/overview.md#usage-restrictions)
+        - [DM-worker](/dev/reference/tools/data-migration/dm-worker-intro.md)
+        - [DM Relay Log](/dev/reference/tools/data-migration/dm-worker-intro.md)
+      + Features
+        - [Table Routing](/dev/reference/tools/data-migration/features/overview.md#table-routing)
+        - [Black and White Lists](/dev/reference/tools/data-migration/features/overview.md#black-and-white-table-lists)
+        - [Binlog Event Filter](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)
+        - [Column Mapping](/dev/reference/tools/data-migration/features/overview.md#column-mapping)
+        - [Replication Delay Monitoring](/dev/reference/tools/data-migration/features/overview.md#replication-delay-monitoring)
+        + Sharding Support
+          - [Introduction](/dev/reference/tools/data-migration/features/shard-merge.md)
+          - [Restrictions](/dev/reference/tools/data-migration/features/shard-merge.md#restrictions)
+          - [Handle Sharding DDL Locks Manually](/dev/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)
+      + Usage Scenarios
+        - [Simple Scenario](/dev/reference/tools/data-migration/usage-scenarios/simple-replication.md)
+        - [Shard Merge Scenario](/dev/reference/tools/data-migration/usage-scenarios/shard-merge.md)
+      - [Deploy](/dev/reference/tools/data-migration/deploy.md)
+      + Configure
+        - [Overview](/dev/reference/tools/data-migration/configure/overview.md)
+        - [Task Configuration](/dev/reference/tools/data-migration/configure/task-configuration-file.md)
+      + Manage the DM Cluster
+        - [Cluster Operations](/dev/reference/tools/data-migration/cluster-operations.md)
+        - [Cluster Upgrade](/dev/reference/tools/data-migration/upgrade.md)
+      + Manage Replication Tasks
+        - [Manage Tasks](/dev/reference/tools/data-migration/manage-tasks.md)
+        - [Precheck Tasks](/dev/reference/tools/data-migration/precheck.md)
+        - [Query Task Status](/dev/reference/tools/data-migration/query-status.md)
+      - [Monitor](/dev/reference/tools/data-migration/monitor.md)
+      + Migrate from MySQL compatible database
+        - [Migrate from Aurora](/dev/how-to/migrate/from-aurora.md)
+      + Troubleshoot
+        - [DM Troubleshooting](/dev/reference/tools/data-migration/troubleshoot/dm.md)
+        - [Error Description](/dev/reference/tools/data-migration/troubleshoot/error-system.md)
+        - [Error Handling](/dev/reference/tools/data-migration/troubleshoot/error-handling.md)
+      - [FAQ](/dev/reference/tools/data-migration/faq.md)
+    + TiDB Lightning
+      - [Overview](/dev/reference/tools/tidb-lightning/overview.md)
+      - [Deployment](/dev/reference/tools/tidb-lightning/deployment.md)
+      - [Configuration](/dev/reference/tools/tidb-lightning/config.md)
+      - [Checkpoints](/dev/reference/tools/tidb-lightning/checkpoints.md)
+      - [Table Filter](/dev/reference/tools/tidb-lightning/table-filter.md)
+      - [CSV Support](/dev/reference/tools/tidb-lightning/csv.md)
+      - [Web Interface](/dev/reference/tools/tidb-lightning/web.md)
+      - [Monitor](/dev/reference/tools/tidb-lightning/monitor.md)
+      - [Troubleshoot](/dev/how-to/troubleshoot/tidb-lightning.md)
+      - [FAQ](/dev/faq/tidb-lightning.md)
+    - [sync-diff-inspector](/dev/reference/tools/sync-diff-inspector/overview.md)
+    - [PD Control](/dev/reference/tools/pd-control.md)
+    - [PD Recover](/dev/reference/tools/pd-recover.md)
+    - [TiKV Control](/dev/reference/tools/tikv-control.md)
+    - [TiDB Control](/dev/reference/tools/tidb-control.md)
+    - [Download](/dev/reference/tools/download.md)
 + TiDB in Kubernetes
   - [About TiDB Operator](/dev/tidb-in-kubernetes/tidb-operator-overview.md)
   + Get Started
@@ -404,6 +403,7 @@
 + Contribute
   - [Contribute to TiDB](/dev/contribute.md#contribute-to-tidb)
   - [Improve the Docs](/dev/contribute.md#improve-the-docs)
+- [Adopters](/dev/adopters.md)
 - [Roadmap](/dev/roadmap.md)
 + [Releases](/dev/releases/rn.md)
   + v3.0

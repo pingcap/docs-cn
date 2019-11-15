@@ -2,6 +2,7 @@
 title: TiDB Binlog Cluster Operations
 summary: Learn how to operate the cluster version of TiDB Binlog.
 category: reference
+aliases: ['/docs/tools/binlog/operation/','/docs/dev/reference/tidb-binlog/operation/','/docs/v3.0/how-to/maintain/tidb-binlog/']
 ---
 
 # TiDB Binlog Cluster Operations
@@ -175,7 +176,7 @@ Command example:
 
     > **Note:**
     >
-    > When a Pump or Drainer node runs normally, it regularly updates its state to PD. But the above command is used to directly modify the Pump or Drainer state saved in PD, so do not use the command when the Pump or Drainer node runs normally. Refer to [TiDB Binlog FAQ](/v3.1/reference/tools/tidb-binlog/faq.md) to see in what situation you need to use it.
+    > When a Pump or Drainer node runs normally, it regularly updates its state to PD. But the above command is used to directly modify the Pump or Drainer state saved in PD, so do not use the command when the Pump or Drainer node runs normally. Refer to [TiDB Binlog FAQ](/v3.0/reference/tidb-binlog/faq.md) to see in what situation you need to use it.
 
 ## Use SQL statements to manage Pump or Drainer
 

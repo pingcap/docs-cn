@@ -2,7 +2,7 @@
 title: TiDB Binlog Cluster Operations
 summary: Learn how to operate the cluster version of TiDB Binlog.
 category: reference
-aliases: ['/docs/v2.1/how-to/maintain/tidb-binlog/']
+aliases: ['/docs/dev/how-to/maintain/tidb-binlog/']
 ---
 
 # TiDB Binlog Cluster Operations
@@ -176,7 +176,7 @@ Command example:
 
     > **Note:**
     >
-    > When a Pump or Drainer node runs normally, it regularly updates its state to PD. But the above command is used to directly modify the Pump or Drainer state saved in PD, so do not use the command when the Pump or Drainer node runs normally. Refer to [TiDB Binlog FAQ](/v2.1/reference/tools/tidb-binlog/faq.md) to see in what situation you need to use it.
+    > When a Pump or Drainer node runs normally, it regularly updates its state to PD. But the above command is used to directly modify the Pump or Drainer state saved in PD, so do not use the command when the Pump or Drainer node runs normally. Refer to [TiDB Binlog FAQ](/dev/reference/tidb-binlog/faq.md) to see in what situation you need to use it.
 
 ## Use SQL statements to manage Pump or Drainer
 
@@ -234,7 +234,7 @@ To view or modify binlog related states, execute corresponding SQL statements in
     +----------|----------------|--------|--------------------|---------------------|
     ```
 
-- Modify the states of a Pump or Drainer node in abnormal situations:
+- Modify the state of a Pump or Drainer node in abnormal situations
 
     {{< copyable "sql" >}}
 
@@ -261,4 +261,4 @@ To view or modify binlog related states, execute corresponding SQL statements in
 > **Note:**
 >
 > - Checking whether binlog is enabled and the running status of Pump or Drainer is supported in TiDB v2.1.7 and later versions.
-> - Modifying the status of Pump or Drainer is supported in TiDB v3.0.0-rc.1 and later versions. This feature only supports modifying the status of Pump or Drainer nodes stored in the Placement Driver (PD). To pause or close the node, use the `binlogctl` tool.
+> - Modifying the status of Pump or Drainer is supported in TiDB v3.0.0-rc.1 and later versions. This feature only supports modifying the status of Pump or Drainer nodes stored in PD. To pause or close the node, use the `binlogctl` tool.

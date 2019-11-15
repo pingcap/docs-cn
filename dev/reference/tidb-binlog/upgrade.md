@@ -2,12 +2,12 @@
 title: Upgrade TiDB Binlog Cluster
 summary: Learn how to upgrade the cluster version of TiDB Binlog.
 category: reference
-aliases: ['/docs/tools/binlog/upgrade/','/docs/v3.0/how-to/upgrade/tidb-binlog/']
+aliases: ['/docs/dev/how-to/upgrade/tidb-binlog/']
 ---
 
 # Upgrade TiDB Binlog Cluster
 
-The new TiDB versions (v2.0.8-binlog, v2.1.0-rc.5 or later) are not compatible with the [Kafka version](/v3.0/reference/tools/tidb-binlog/tidb-binlog-kafka.md) or [Local version](/v3.0/reference/tools/tidb-binlog/tidb-binlog-local.md) of TiDB Binlog. If TiDB is upgraded to one of the new versions, it is required to use the cluster version of TiDB Binlog. If the Kafka or local version of TiDB Binlog is used before upgrading, you need to upgrade your TiDB Binlog to the cluster version.
+The new TiDB versions (v2.0.8-binlog, v2.1.0-rc.5 or later) are not compatible with the [Kafka version](/dev/reference/tidb-binlog/tidb-binlog-kafka.md) or [Local version](/dev/reference/tidb-binlog/tidb-binlog-local.md) of TiDB Binlog. If TiDB is upgraded to one of the new versions, it is required to use the cluster version of TiDB Binlog. If the Kafka or local version of TiDB Binlog is used before upgrading, you need to upgrade your TiDB Binlog to the cluster version.
 
 The corresponding relationship between TiDB Binlog versions and TiDB versions is shown in the following table:
 
@@ -21,7 +21,7 @@ The corresponding relationship between TiDB Binlog versions and TiDB versions is
 
 > **Note:**
 >
-> If importing the full data is acceptable, you can abandon the old version and deploy TiDB Binlog following [TiDB Binlog Cluster Deployment](/v3.0/reference/tools/tidb-binlog/upgrade.md).
+> If importing the full data is acceptable, you can abandon the old version and deploy TiDB Binlog following [TiDB Binlog Cluster Deployment](/dev/reference/tidb-binlog/deploy.md).
 
 If you want to resume replication from the original checkpoint, perform the following steps to upgrade TiDB Binlog:
 

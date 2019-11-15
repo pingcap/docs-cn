@@ -2,6 +2,7 @@
 title: TiDB Binlog Overview
 summary: Learn overview of the cluster version of TiDB Binlog.
 category: reference
+aliases: ['/docs/dev/reference/tidb-binlog-overview/']
 ---
 
 # TiDB Binlog Cluster Overview
@@ -51,13 +52,13 @@ The TiDB Binlog cluster is composed of Pump and Drainer.
 
 * You need to use TiDB v2.0.8-binlog, v2.1.0-rc.5 or a later version. Older versions of TiDB cluster are not compatible with the cluster version of TiDB Binlog.
 
-* Drainer supports replicating binlogs to MySQL, TiDB, Kafka or local files. If you need to replicate binlogs to other Drainer unsuppored destinations, you can set Drainer to replicate the binlog to Kafka and read the data in Kafka for customized processing according to binlog slave protocol. See [Binlog Slave Client User Guide](/v3.1/reference/tools/tidb-binlog/binlog-slave-client.md).
+* Drainer supports replicating binlogs to MySQL, TiDB, Kafka or local files. If you need to replicate binlogs to other Drainer unsuppored destinations, you can set Drainer to replicate the binlog to Kafka and read the data in Kafka for customized processing according to binlog slave protocol. See [Binlog Slave Client User Guide](/dev/reference/tidb-binlog/binlog-slave-client.md).
 
-* To use TiDB Binlog for recovering incremental data, set the config `db-type` to `file` (local files in the proto buffer format). Drainer converts the binlog to data in the specified [proto buffer format](https://github.com/pingcap/tidb-binlog/blob/master/proto/binlog.proto) and writes the data to local files. In this way, you can use [Reparo](/v3.1/reference/tools/tidb-binlog/reparo.md) to recover data incrementally.
+* To use TiDB Binlog for recovering incremental data, set the config `db-type` to `file` (local files in the proto buffer format). Drainer converts the binlog to data in the specified [proto buffer format](https://github.com/pingcap/tidb-binlog/blob/master/proto/binlog.proto) and writes the data to local files. In this way, you can use [Reparo](/dev/reference/tidb-binlog/reparo.md) to recover data incrementally.
 
     Pay attention to the value of `db-type`:
 
     - If your TiDB version is earlier than 2.1.9, set `db-type="pb"`.
     - If your TiDB version is 2.1.9 or later, set `db-type="file"` or `db-type="pb"`.
 
-* If the downstream is MySQL, MariaDB, or another TiDB cluster, you can use [sync-diff-inspector](/v3.1/reference/tools/sync-diff-inspector/overview.md) to verify the data after data replication.
+* If the downstream is MySQL, MariaDB, or another TiDB cluster, you can use [sync-diff-inspector](/dev/reference/tools/sync-diff-inspector/overview.md) to verify the data after data replication.

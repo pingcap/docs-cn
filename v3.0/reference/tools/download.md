@@ -11,7 +11,7 @@ This document collects the available downloads for most officially maintained ve
 
 ## TiDB Binlog
 
-If you want to download the 3.0 version of [TiDB Binlog](/v3.0/reference/tools/tidb-binlog/overview.md), directly download the TiDB package, because TiDB Binlog is included in the TiDB package.
+If you want to download the 3.0 version of [TiDB Binlog](/v3.0/reference/tidb-binlog/overview.md), directly download the TiDB package, because TiDB Binlog is included in the TiDB package.
 
 In addition, the Kafka version of TiDB Binlog is also provided.
 
@@ -55,6 +55,6 @@ This enterprise tools package includes all the following tools:
 - Syncer
 - Loader
 - Mydumper
-- [binlogctl](/v3.0/reference/tools/tidb-binlog/overview.md#binlogctl-guide)
+- [binlogctl](/v3.0/reference/tidb-binlog/overview.md#binlogctl-guide)
 - ddl_checker
 - [sync_diff_inspector](/v3.0/reference/tools/sync-diff-inspector/overview.md)
