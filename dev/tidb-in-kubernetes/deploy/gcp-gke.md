@@ -554,7 +554,7 @@ terraform destroy
 
 - 手动删除：在 Google Cloud Console 中删除磁盘，或使用 `gcloud` 命令行工具执行删除操作。
 
-- 在执行 `terraform destroy` 之前将 Kubernetes 的 PV (Persistent Volume) 回收策略设置为 `Delete`：具体操作为在 `terraform destroy` 之前运行以下 `kubectl` 命令：
+- 自动删除：在执行 `terraform destroy` 之前将 Kubernetes 的 PV (Persistent Volume) 回收策略设置为 `Delete`，具体操作为在 `terraform destroy` 之前运行以下 `kubectl` 命令：
 
     {{< copyable "shell-regular" >}}
 
@@ -584,8 +584,8 @@ terraform destroy
 
 管理多个 Kubernetes 集群的最佳实践有以下两点：
 
-- 为每个 Kubernetes 集群创建一个新目录；
-- 根据具体需求，使用 Terraform 脚本将上述模块进行组合。
+1. 为每个 Kubernetes 集群创建一个新目录。
+2. 根据具体需求，使用 Terraform 脚本将上述模块进行组合。
 
 如果采用了最佳实践，集群中的 Terraform 状态不会相互干扰，并且扩展起来很方便。示例如下（假设已在项目根目录）：
 
