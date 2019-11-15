@@ -8,7 +8,7 @@ category: reference
 
 在 TiDB 的架构中，所有数据以一定 key range 被切分成若干 Region 分布在多个 TiKV 实例上。随着数据的写入，一个集群中会产生上百万个甚至千万个 Region。单个 TiKV 实例上产生过多的 Region 会给集群带来较大的负担，影响整个集群的性能表现。
 
-本文先介绍 TiKV 核心模块 Raftstore 的工作流程，海量 Region 导致性能问题的原因，以及优化性能的方法。
+本文将介绍 TiKV 核心模块 Raftstore 的工作流程，海量 Region 导致性能问题的原因，以及优化性能的方法。
 
 ## Raftstore 的工作流程
 
@@ -24,18 +24,18 @@ category: reference
 
 ## 性能问题
 
-如上图所示，Region 依次逐个处理消息。那么在 Region 数量较多的情况下，Raftstore 会需要花费一些时间去处理大量 Region 的心跳，使一些读写请求得不到及时的处理而产生延迟。如果读写压力较大，Raftstore 线程的 CPU 使用率容易达到瓶颈，而这个延迟会进一步增加，进而影响性能表现。
+从 Raftstore 处理流程示意图可以看出，众多 Region 消息需要一个接一个地依次处理。那么在 Region 数量较多的情况下，Raftstore 需要花费一些时间去处理大量 Region 的心跳，从而带来一些延迟，导致某些读写请求得不到及时处理。如果读写压力较大，Raftstore 线程的 CPU 使用率容易达到瓶颈，导致延迟进一步增加，进而影响性能表现。
 
-通常在有负载的情况下，如果 Raftstore 的 CPU 使用率达到了 85% 以上，即可视为达到繁忙状态且成为了瓶颈，同时 `propose wait duration` 可能会高达数百毫秒。
+通常在有负载的情况下，如果 Raftstore 的 CPU 使用率达到了 85% 以上，即可视为达到繁忙状态且成为了瓶颈，同时 `propose wait duration` 可能会高达百毫秒级别。
 
 > **注意：**
 >
 > + Raftstore 的 CPU 使用率是指单线程的情况。如果是多线程 Raftstore，可等比例放大使用率。
-> + 由于 Raftstore 线程中有 IO 操作，所以 CPU 使用率不可能达到 100%。
+> + 由于 Raftstore 线程中有 I/O 操作，所以 CPU 使用率不可能达到 100%。
 
 ### 性能监控
 
-这一监控 metrics 可在 TiKV Grafana 面板下查看：
+可在 Grafana 的 TiKV 面板下查看相关的监控 metrics：
 
 + Thread-CPU 下的 `Raft store CPU`
 
@@ -62,13 +62,13 @@ v2.1 版本中的 Raftstore 为单线程。因此 Region 数超过 10 万后，R
 
 ### 方法一：增加 TiKV 实例
 
-如果 IO 资源和 CPU 资源都有较多盈余，可在单台机器上部署多个 TiKV 实例，以减少单个 TiKV 实例上的 Region 个数；或者增加扩容 TiKV 集群的机器数。
+如果 I/O 资源和 CPU 资源都比较充足，可在单台机器上部署多个 TiKV 实例，以减少单个 TiKV 实例上的 Region 个数；或者增加 TiKV 集群的机器数。
 
 ### 方法二：开启 `Region Merge`
 
 开启 `Region Merge` 也能减少 Region 的个数。与 `Region Split` 相反，`Region Merge` 是通过调度把相邻的小 Region 合并的过程。在集群中删除数据或者执行 `Drop Table`/`Truncate Table` 语句后，可以将小 Region 甚至空 Region 进行合并以减少资源的消耗。
 
-通过 pd-ctl 设置以下参数即可开启 `Region Merge`:
+通过 pd-ctl 设置以下参数即可开启 `Region Merge`：
 
 {{< copyable "" >}}
 
@@ -84,7 +84,8 @@ v2.1 版本中的 Raftstore 为单线程。因此 Region 数超过 10 万后，R
 
 详情请参考[如何配置 Region Merge](https://github.com/tikv/tikv/blob/master/docs/how-to/configure/region-merge.md)。
 
-同时，默认配置的 `Region Merge` 的参数设置较为保守，可以根据需求参考 [TiDB 最佳实践系列（二）PD 调度策略](https://pingcap.com/blog-cn/best-practice-pd/#5-region-merge-%E9%80%9F%E5%BA%A6%E6%85%A2) 中提供的方法加快 `Region Merge` 过程的速度。
+同时，默认配置的 `Region Merge` 的参数设置较为保守，可以根据需求参考 [TiDB 最佳实践系列（二）PD 调度策略](/v2.1/reference/best-practices/pd-scheduling.md#region-merge-速度慢) 中提供的方法加快 `Region Merge` 过程的速度。
+
 
 #### 方法三：调整 `raft-base-tick-interval`
 
