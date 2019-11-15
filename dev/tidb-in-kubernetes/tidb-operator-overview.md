@@ -41,7 +41,6 @@ TiDB Operator provides several ways to deploy TiDB clusters in Kubernetes:
 + For test environment:
 
     - [kind](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind.md): Deploy TiDB clusters in local Kubernetes using kind
-    - [DinD](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md): Deploy TiDB clusters in a local DinD environment using TiDB Operator
     - [Minikube](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube.md): Deploy TiDB clusters in a local Minikube environment using TiDB Operator
     - [GKE](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md): Deploy TiDB clusters on GKE using TiDB Operator
 

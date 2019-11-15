@@ -2,6 +2,7 @@
 title: Deploy TiDB in Kubernetes Using kind
 summary: Learn how to deploy a TiDB cluster in Kubernetes using kind.
 category: how-to
+aliases: ['/docs/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind/']
 ---
 
 # Deploy TiDB in Kubernetes Using kind
