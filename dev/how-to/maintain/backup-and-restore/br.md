@@ -33,11 +33,11 @@ BR 是分布式备份恢复的工具，它将备份和恢复操作命令下发�
 
 ### 命令和子命令
 
-BR 由多层命令组成。目前，BR 包含 `backup`，`restore` 和 `meta` 三个命令。
+BR 由多层命令组成。目前，BR 包含 `backup`，`restore` 和 `version` 三个命令。
 
 * `br backup` 用于备份 TiDB 集群
 * `br restore` 用于恢复 TiDB 集群
-* `br meta` 用于查看备份集群的元信息
+* `br version` 用于查看 BR 工具版本信息
 
 BR 还包含以下三个子命令：
 
@@ -189,8 +189,10 @@ br --pd ${PDIP}:2379 restore table \
 ## 注意事项
 
 - TiDB 执行 DDL 期间不能执行备份操作。
-- 目前只支持在全新的集群上执行备份和恢复操作。
-- 如果备份时间可能超过 10 分钟时，需要调整 GC lifetime。备份完成后，需要将 GC lifetime 调整为默认值 10 分钟。
+- 目前只支持在全新的集群上执行恢复操作。
+- 如果备份时间可能超过设定的 GC lifetime（默认 10 分钟），则需要将 GC lifetime 调大。
+
+    例如，将 GC lifetime 调整为 720 小时。
 
     {{< copyable "sql" >}}
 
