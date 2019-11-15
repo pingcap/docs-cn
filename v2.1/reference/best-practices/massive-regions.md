@@ -86,7 +86,6 @@ v2.1 版本中的 Raftstore 为单线程。因此 Region 数超过 10 万后，R
 
 同时，默认配置的 `Region Merge` 的参数设置较为保守，可以根据需求参考 [TiDB 最佳实践系列（二）PD 调度策略](/v2.1/reference/best-practices/pd-scheduling.md#region-merge-速度慢) 中提供的方法加快 `Region Merge` 过程的速度。
 
-
 #### 方法三：调整 `raft-base-tick-interval`
 
 除了减少 Region 个数外，还可以通过减少 Region 单位时间内的消息数量来减小 Raftstore 的压力。例如，在 TiKV 配置中适当调大 `raft-base-tick-interval`：
