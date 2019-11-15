@@ -694,7 +694,7 @@ output "connect_to_tidb_cluster_b_from_bastion" {
 如果要自定义每个字段，可使用以下两种方法中的一种：
 
 - 直接修改 `*.tf` 文件中 `module` 的参数配置。
-- 参考每个模块的 `variables.tf` 文件，了解所有可修改的参数，并在 terraform.tfvars 中设置自定义值。
+- 参考每个模块的 `variables.tf` 文件，了解所有可修改的参数，并在 `terraform.tfvars` 中设置自定义值。
 
 > **注意：**
 >
