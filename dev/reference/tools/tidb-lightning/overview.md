@@ -40,3 +40,5 @@ The complete import process is as follows:
     The auto-increment ID of a table is computed by the estimated *upper bound* of the number of rows, which is proportional to the total file size of the data files of the table. Therefore, the final auto-increment ID is often much larger than the actual number of rows. This is expected since in TiDB auto-increment is [not necessarily allocated sequentially](/dev/reference/mysql-compatibility.md#auto-increment-id).
 
 7. Finally, `tidb-lightning` switches the TiKV cluster back to "normal mode", so the cluster resumes normal services.
+
+TiDB Lightning also supports using "TiDB" instead of "Importer" as the back end. In this configuration, `tidb-lightning` transforms data into SQL `INSERT` statements and directly executes them on the target cluster, similar to Loader. See [TiDB Lightning "TiDB" Back End](/dev/reference/tools/tidb-lightning/tidb-backend.md) for details.

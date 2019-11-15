@@ -25,7 +25,7 @@ If you want to download the latest version of [TiDB Lightning](/dev/reference/to
 
 | Package name | OS | Architecture |  SHA256 checksum |
 |:---|:---|:---|:---|
-| [tidb-toolkit-latest-linux-amd64.tar.gz](http://download.pingcap.org/tidb-toolkit-latest-linux-amd64.tar.gz) | Linux | amd64 | [tidb-toolkit-latest-linux-amd64.sha256](http://download.pingcap.org/tidb-toolkit-latest-linux-amd64.sha256) |
+| [tidb-toolkit-latest-linux-amd64.tar.gz](https://download.pingcap.org/tidb-toolkit-latest-linux-amd64.tar.gz) | Linux | amd64 | [tidb-toolkit-latest-linux-amd64.sha256](https://download.pingcap.org/tidb-toolkit-latest-linux-amd64.sha256) |
 
 ## DM (Data Migration)
 

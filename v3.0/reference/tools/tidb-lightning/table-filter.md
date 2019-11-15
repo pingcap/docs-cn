@@ -27,6 +27,10 @@ ignore-dbs = ["pattern4", "pattern5"]
 
 The pattern can either be a simple name, or a regular expression in [Go dialect](https://golang.org/pkg/regexp/syntax/#hdr-syntax) if it starts with a `~` character.
 
+> **Note:**
+>
+> The system databases `INFORMATION_SCHEMA`, `PERFORMANCE_SCHEMA`, `mysql` and `sys` are always black-listed regardless of the table filter settings.
+
 ## Filtering tables
 
 ```toml

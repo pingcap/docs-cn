@@ -89,8 +89,15 @@ driver = "file"
 #keep-after-success = false
 
 [tikv-importer]
-# The listening address of tikv-importer. Change it to the actual address.
+# Delivery back end, can be "importer" or "tidb".
+# backend = "importer"
+# The listening address of tikv-importer when back end is "importer". Change it to the actual address.
 addr = "172.16.31.10:8287"
+# Action to do when trying to insert a duplicated entry in the "tidb" back end.
+#  - replace: new entry replaces existing entry
+#  - ignore:  keep existing entry, ignore new entry
+#  - error:   report error and quit the program
+#on-duplicate = "replace"
 
 [mydumper]
 # Block size for file reading. Keep it longer than the longest string of
@@ -288,6 +295,7 @@ min-available-ratio = 0.05
 | -V | Prints program version | |
 | -d *directory* | Directory of the data dump to read from | `mydumper.data-source-dir` |
 | -L *level* | Log level: debug, info, warn, error, fatal (default = info) | `lightning.log-level` |
+| --backend *backend* | [Delivery back end](/dev/reference/tools/tidb-lightning/tidb-backend.md) (`importer` or `tidb`) | `tikv-importer.backend` |
 | --log-file *file* | Log file path | `lightning.log-file` |
 | --status-addr *ip:port* | Listening address of the TiDB Lightning server | `lightning.status-port` |
 | --importer *host:port* | Address of TiKV Importer | `tikv-importer.addr` |

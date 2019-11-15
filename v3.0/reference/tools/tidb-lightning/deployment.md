@@ -6,7 +6,9 @@ category: reference
 
 # TiDB Lightning Deployment
 
-This document describes the hardware requirements of TiDB Lightning on separate deployment and mixed deployment, and how to deploy it using Ansible or manually.
+This document describes the hardware requirements of TiDB Lightning using the default "Importer" back end, and how to deploy it using Ansible or manually.
+
+If you wish to use the "TiDB" back end, also read [TiDB Lightning "TiDB" Back End](/v3.0/reference/tools/tidb-lightning/tidb-backend.md) for the changes to the deployment steps.
 
 ## Notes
 
@@ -343,8 +345,15 @@ Follow the link to download the TiDB Lightning package (choose the same version 
     # keep-after-success = false
 
     [tikv-importer]
-    # The listening address of tikv-importer. Change it to the actual address.
+    # Delivery back end, can be "importer" or "tidb".
+    # backend = "importer"
+    # The listening address of tikv-importer when back end is "importer". Change it to the actual address.
     addr = "172.16.31.10:8287"
+    # Action to do when trying to insert a duplicated entry in the "tidb" back end.
+    #  - replace: new entry replaces existing entry
+    #  - ignore:  keep existing entry, ignore new entry
+    #  - error:   report error and quit the program
+    # on-duplicate = "replace"
 
     [mydumper]
     # Block size for file reading. Keep it longer than the longest string of
