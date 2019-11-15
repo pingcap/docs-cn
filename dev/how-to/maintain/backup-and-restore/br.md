@@ -60,14 +60,9 @@ BR 还包含以下三个子命令：
 * `--key`：指定 PEM 格式的 SSL 证书密钥文件路径。
 * `--status-addr`：指定 BR metric 信息。
 
-## 使用说明
+## 备份集群数据
 
-+ 如果使用 Ansible 部署 TiDB 集群，则对应的 tidb-ansible/resources/bin 目录下会存在 br 二进制文件。
-+ 如果使用二进制文件部署 TiDB 集群，bin 目录下会包含 br 文件及 tidb-server、 pd-server、以及 tikv-server 等其他文件。
-
-### 备份集群
-
-#### 备份全部集群数据
+### 备份全部集群数据
 
 要备份全部集群数据，可使用 `br backup full` 命令。该命令的使用帮助可以通过 `br backup full -h` 或 `br backup full --help` 来获取。
 
@@ -96,7 +91,7 @@ br --pd ${PDIP}:2379 backup full
 Full Backup <---------↖................................................> 17.12%.
 ```
 
-#### 备份单张表的数据
+### 备份单张表的数据
 
 要备份集群中指定单张表的数据，可使用 `br backup table` 命令。同样可通过 `br backup table -h` 或 `br backup table --help` 来获取子命令 `table` 的使用帮助。
 
@@ -118,9 +113,9 @@ br --pd ${PDIP}:2379 backup table \
 
 备份期间有进度条在终端中显示。当进度条前进到 100% 时，说明备份已完成。在完成备份后，BR 为了确保数据安全性，还会校验备份数据。
 
-### 恢复集群
+## 恢复集群数据
 
-#### 恢复全部备份数据
+### 恢复全部备份数据
 
 要将全部备份数据恢复到集群中来，可使用 `br restore full` 命令。该命令的使用帮助可以通过 `br restore full -h` 或 `br restore full --help` 来获取。
 
@@ -148,7 +143,7 @@ br --pd ${PDIP}:2379 restore full \
 Full Restore <---------↖...............................................> 17.12%.
 ```
 
-#### 恢复某个数据库
+### 恢复某个数据库
 
 要将备份数据中的某个数据库恢复到集群中，可以使用 `br restore db` 命令。该命令的使用帮助可以通过 `br restore db -h` 或 `br restore db --help` 来获取。
 
@@ -166,7 +161,7 @@ br --pd ${PDIP}:2379 restore db \
 
 以上命令中 `--db` 选项指定了需要恢复的数据库名字，其余选项含义与 `restore full` 一致。
 
-#### 恢复某张数据表
+### 恢复某张数据表
 
 要将备份数据中的某张数据表恢复到集群中，可以使用 `br restore table` 命令。该命令的使用帮助可以通过同样可以通过 `br restore table -h` 或 `br restore table --help` 来获取。
 
