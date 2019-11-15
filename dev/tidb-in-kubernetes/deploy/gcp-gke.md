@@ -1,5 +1,6 @@
 ---
 title: 在 GCP GKE 上部署 TiDB 集群
+summary: 了解如何在 GCP GKE 上部署 TiDB 集群。
 category: how-to
 ---
 
