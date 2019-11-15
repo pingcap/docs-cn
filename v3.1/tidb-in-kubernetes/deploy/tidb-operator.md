@@ -27,7 +27,7 @@ TiDB Operator 部署前，请确认以下软件需求：
 
 TiDB Operator 运行在 Kubernetes 集群，你可以使用 [Getting started 页面](https://kubernetes.io/docs/setup/)列出的任何一种方法搭建一套 Kubernetes 集群。只要保证 Kubernetes 版本大于等于 v1.12。如果你使用 AWS、GKE 或者本机，下面是快速上手教程：
 
-* [Local DinD 教程](/v3.1/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
+* [kind 教程](/v3.1/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind.md)
 * [Google GKE 教程](/v3.1/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
 * [AWS EKS 教程](/v3.1/tidb-in-kubernetes/deploy/aws-eks.md)
 
