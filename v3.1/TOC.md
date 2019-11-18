@@ -347,7 +347,6 @@
   - [TiDB Operator 简介](/v3.1/tidb-in-kubernetes/tidb-operator-overview.md)
   + 快速上手
     - [kind](/v3.1/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind.md)
-    - [DinD](/v3.1/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
     - [GKE](/v3.1/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
     - [Minikube](/v3.1/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube.md)
   + 部署
