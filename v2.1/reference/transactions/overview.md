@@ -1,48 +1,42 @@
 ---
-title: TiDB 事务语句
+title: TiDB 事务概览
 category: reference
 ---
 
-# TiDB 事务语句
+# TiDB 事务概览
 
-TiDB 支持分布式事务。涉及到事务的语句包括 `autocommit` 变量、`[BEGIN|START TRANSACTION]`、`COMMIT` 以及 `ROLLBACK`。
+TiDB 支持完整分布式事务。涉及到事务的语句包括，`[BEGIN|START TRANSACTION]`、`COMMIT` 以及 `ROLLBACK`。
+常用的变量包括，`autocommit`、`tidb_disable_txn_auto_retry` 以及 `tidb_retry_limit`。
 
-## 自动提交
-
-语法：
-
-```sql
-SET autocommit = {0 | 1}
-```
-
-通过设置 `autocommit` 的值为 1，可以将当前 Session 设置为自动提交状态，0 则表示当前 Session 为非自动提交状态。默认情况下，`autocommit` 的值为 1。
-
-在自动提交状态，每条语句运行后，会将其修改自动提交到数据库中。否则，会等到运行 `COMMIT` 语句或者是某些会造成隐式提交的情况，详见 [implicit commit](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html)。比如，执行 `[BEGIN|START TRANCATION]` 语句的时候会试图提交上一个事务，并开启一个新的事务。
-
-另外 `autocommit` 也是一个 System Variable，所以可以通过变量赋值语句修改当前 Session 或者是 Global 的值。
-
-```sql
-SET @@SESSION.autocommit = {0 | 1};
-SET @@GLOBAL.autocommit = {0 | 1};
-```
-
-## START TRANSACTION, BEGIN
+## BEGIN, START TRANSACTION
 
 语法:
 
+{{< copyable "sql" >}}
+
 ```sql
 BEGIN;
+```
 
+{{< copyable "sql" >}}
+
+```sql
 START TRANSACTION;
+```
 
+{{< copyable "sql" >}}
+
+```sql
 START TRANSACTION WITH CONSISTENT SNAPSHOT;
 ```
 
-上述三条语句都是事务开始语句，效果相同。通过事务开始语句可以显式地开始一个新的事务，如果这个时候当前 Session 正在一个事务中间过程中，会将当前事务提交后，开启一个新的事务。
+上述三条语句都是开启事务语句，效果相同。通过开启事务语句可以显式地开始一个新的事务，如果这个时候当前 Session 正在一个事务中间过程中，会自动将当前事务提交后，开启一个新的事务。
 
 ## COMMIT
 
 语法：
+
+{{< copyable "sql" >}}
 
 ```sql
 COMMIT;
@@ -54,11 +48,41 @@ COMMIT;
 
 语法：
 
+{{< copyable "sql" >}}
+
 ```sql
 ROLLBACK;
 ```
 
 回滚当前事务，撤销从 `[BEGIN|START TRANSACTION]` 到 `ROLLBACK` 之间的所有修改。
+
+## 自动提交
+
+语法：
+
+{{< copyable "sql" >}}
+
+```sql
+SET autocommit = {0 | 1}
+```
+
+通过设置 `autocommit` 的值为 1，可以将当前 Session 设置为自动提交状态，0 则表示当前 Session 为非自动提交状态。默认情况下，`autocommit` 的值为 1。
+
+在自动提交状态，每条语句运行后，会将其修改自动提交到数据库中。否则，会等到运行 `COMMIT` 语句或者是某些会造成隐式提交的情况，详见 [implicit commit](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html)。比如，执行 `[BEGIN|START TRANCATION]` 语句的时候会试图提交上一个事务，并开启一个新的事务。
+
+另外 `autocommit` 也是一个 System Variable，所以可以通过变量赋值语句修改当前 Session 或者是 Global 的值。
+
+{{< copyable "sql" >}}
+
+```sql
+SET @@SESSION.autocommit = {0 | 1};
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SET @@GLOBAL.autocommit = {0 | 1};
+```
 
 ## 显式事务和隐式事务
 
@@ -66,11 +90,13 @@ TiDB 可以显式地使用事务（`[BEGIN|START TRANSACTION]`/`COMMIT`）或者
 
 如果在 `autocommit = 1` 的状态下，通过 `[BEGIN|START TRANSACTION]` 语句开启一个新的事务，那么在 `COMMIT`/`ROLLBACK` 之前，会禁用 autocommit，也就是变成显式事务。
 
-对于 DDL 语句，会自动提交并且不能回滚。如果运行 DDL 的时候，正在一个事务的中间过程中，会先将当前的事务提交，再执行 DDL。
+对于 DDL 语句，会自动提交并且不能回滚。如果运行 DDL 的时候，正在一个事务的中间过程中，会先自动将当前的事务提交，再执行 DDL。
 
 ## 事务隔离级别
 
 TiDB **只支持** `SNAPSHOT ISOLATION`，可以通过下面的语句将当前 Session 的隔离级别设置为 `READ COMMITTED`，这只是语法上的兼容，事务依旧是以 `SNAPSHOT ISOLATION` 来执行。
+
+{{< copyable "sql" >}}
 
 ```sql
 SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
@@ -81,6 +107,8 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
 TiDB 中，对于普通的 `INSERT` 语句写入的值，会进行惰性检查。惰性检查的含义是，不在 `INSERT` 语句执行时进行唯一约束的检查，而在事务提交时进行唯一约束的检查。
 
 举例：
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE T (I INT KEY);
@@ -97,3 +125,31 @@ SELECT * FROM T; -- MySQL 返回 1 2；TiDB 返回 1
 > **注意：**
 >
 > 本优化对于 `INSERT IGNORE` 和 `INSERT ON DUPLICATE KEY UPDATE` 不会生效，仅对与普通的 `INSERT` 语句生效。
+
+## 语句回滚
+
+TiDB 支持语句执行的原子性回滚，在事务内部执行一个语句，遇到错误时，该语句整体不会生效。
+
+{{< copyable "sql" >}}
+
+```sql
+begin;
+insert into test values (1);
+insert into tset values (2);  -- tset 拼写错了，这条语句出错。
+insert into test values (3);
+commit;
+```
+
+上面的例子里面，第二个语句失败，其它插入 1 和 3 仍然能正常提交。
+
+{{< copyable "sql" >}}
+
+```sql
+begin;
+insert into test values (1);
+insert into tset values (2);  -- tset 拼写错了，这条语句出错。
+insert into test values (3);
+rollback;
+```
+
+这个例子中，第二个语句失败，最后由于调用了 rollback，事务不会将任何数据写入数据库。

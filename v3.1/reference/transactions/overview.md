@@ -1,11 +1,60 @@
 ---
-title: TiDB 事务语句
+title: TiDB 事务概览
 category: reference
 ---
 
-# TiDB 事务语句
+# TiDB 事务概览
 
-TiDB 支持分布式事务。涉及到事务的语句包括 `autocommit` 变量、`[BEGIN|START TRANSACTION]`、`COMMIT` 以及 `ROLLBACK`。
+TiDB 支持完整分布式事务。涉及到事务的语句包括，`[BEGIN|START TRANSACTION]`、`COMMIT` 以及 `ROLLBACK`。
+常用的变量包括，`autocommit`、`tidb_disable_txn_auto_retry` 以及 `tidb_retry_limit`。
+
+## BEGIN, START TRANSACTION
+
+语法:
+
+{{< copyable "sql" >}}
+
+```sql
+BEGIN;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+START TRANSACTION;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+START TRANSACTION WITH CONSISTENT SNAPSHOT;
+```
+
+上述三条语句都是开启事务语句，效果相同。通过开启事务语句可以显式地开始一个新的事务，如果这个时候当前 Session 正在一个事务中间过程中，会自动将当前事务提交后，开启一个新的事务。
+
+## COMMIT
+
+语法：
+
+{{< copyable "sql" >}}
+
+```sql
+COMMIT;
+```
+
+提交当前事务，包括从 `[BEGIN|START TRANSACTION]` 到 `COMMIT` 之间的所有修改。
+
+## ROLLBACK
+
+语法：
+
+{{< copyable "sql" >}}
+
+```sql
+ROLLBACK;
+```
+
+回滚当前事务，撤销从 `[BEGIN|START TRANSACTION]` 到 `ROLLBACK` 之间的所有修改。
 
 ## 自动提交
 
@@ -35,61 +84,13 @@ SET @@SESSION.autocommit = {0 | 1};
 SET @@GLOBAL.autocommit = {0 | 1};
 ```
 
-## START TRANSACTION, BEGIN
-
-语法:
-
-{{< copyable "sql" >}}
-
-```sql
-BEGIN;
-```
-
-{{< copyable "sql" >}}
-
-```sql
-START TRANSACTION;
-```
-
-{{< copyable "sql" >}}
-
-```sql
-START TRANSACTION WITH CONSISTENT SNAPSHOT;
-```
-
-上述三条语句都是事务开始语句，效果相同。通过事务开始语句可以显式地开始一个新的事务，如果这个时候当前 Session 正在一个事务中间过程中，会将当前事务提交后，开启一个新的事务。
-
-## COMMIT
-
-语法：
-
-{{< copyable "sql" >}}
-
-```sql
-COMMIT;
-```
-
-提交当前事务，包括从 `[BEGIN|START TRANSACTION]` 到 `COMMIT` 之间的所有修改。
-
-## ROLLBACK
-
-语法：
-
-{{< copyable "sql" >}}
-
-```sql
-ROLLBACK;
-```
-
-回滚当前事务，撤销从 `[BEGIN|START TRANSACTION]` 到 `ROLLBACK` 之间的所有修改。
-
 ## 显式事务和隐式事务
 
 TiDB 可以显式地使用事务（`[BEGIN|START TRANSACTION]`/`COMMIT`）或者隐式的使用事务（`SET autocommit = 1`）。
 
 如果在 `autocommit = 1` 的状态下，通过 `[BEGIN|START TRANSACTION]` 语句开启一个新的事务，那么在 `COMMIT`/`ROLLBACK` 之前，会禁用 autocommit，也就是变成显式事务。
 
-对于 DDL 语句，会自动提交并且不能回滚。如果运行 DDL 的时候，正在一个事务的中间过程中，会先将当前的事务提交，再执行 DDL。
+对于 DDL 语句，会自动提交并且不能回滚。如果运行 DDL 的时候，正在一个事务的中间过程中，会先自动将当前的事务提交，再执行 DDL。
 
 ## 事务隔离级别
 
@@ -124,3 +125,31 @@ SELECT * FROM T; -- MySQL 返回 1 2；TiDB 返回 1
 > **注意：**
 >
 > 本优化对于 `INSERT IGNORE` 和 `INSERT ON DUPLICATE KEY UPDATE` 不会生效，仅对与普通的 `INSERT` 语句生效。
+
+## 语句回滚
+
+TiDB 支持语句执行的原子性回滚，在事务内部执行一个语句，遇到错误时，该语句整体不会生效。
+
+{{< copyable "sql" >}}
+
+```sql
+begin;
+insert into test values (1);
+insert into tset values (2);  -- tset 拼写错了，这条语句出错。
+insert into test values (3);
+commit;
+```
+
+上面的例子里面，第二个语句失败，其它插入 1 和 3 仍然能正常提交。
+
+{{< copyable "sql" >}}
+
+```sql
+begin;
+insert into test values (1);
+insert into tset values (2);  -- tset 拼写错了，这条语句出错。
+insert into test values (3);
+rollback;
+```
+
+这个例子中，第二个语句失败，最后由于调用了 rollback，事务不会将任何数据写入数据库。
