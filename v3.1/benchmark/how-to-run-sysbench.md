@@ -103,6 +103,7 @@ This is an example of the Sysbench configuration file:
 mysql-host={TIDB_HOST}
 mysql-port=4000
 mysql-user=root
+mysql-password=password
 mysql-db=sbtest
 time=600
 threads={8, 16, 32, 64, 128, 256}
@@ -118,6 +119,7 @@ See the following as a sample **config** file:
 mysql-host=172.16.30.33
 mysql-port=4000
 mysql-user=root
+mysql-password=password
 mysql-db=sbtest
 time=600
 threads=16
