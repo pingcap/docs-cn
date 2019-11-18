@@ -115,8 +115,11 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 - 分布式：无需 TiDB 通过对 TiKV 发送请求的方式来驱动，而是每台 TiKV 自行工作。
 
 ## 流控
-TiKV 在 3.0.6 版本开始支持 GC 流控，可通过配置 `gc.max-write-bytes-per-sec` 限制 GC worker 每秒数据写入量，降低对正常请求的影响, `0` 为关闭该功能。该配置可通过 tikv-ctl 动态修改:
+
+TiKV 在 3.0.6 版本开始支持 GC 流控，可通过配置 `gc.max-write-bytes-per-sec` 限制 GC worker 每秒数据写入量，降低对正常请求的影响, `0` 为关闭该功能。该配置可通过 tikv-ctl 动态修改：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
-$ tikv-ctl --host=ip:port modify-tikv-config -m server -n gc.max_write_bytes_per_sec -v 10MB
+tikv-ctl --host=ip:port modify-tikv-config -m server -n gc.max_write_bytes_per_sec -v 10MB
 ```
