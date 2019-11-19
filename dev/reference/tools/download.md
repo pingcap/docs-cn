@@ -18,7 +18,7 @@ category: reference
 | `http://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (TiDB Binlog) | Linux | amd64 | `http://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
 | `http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.tar.gz`（Kafka 版本的 TiDB Binlog）| Linux | amd64 | `http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.sha256` |
 
-> **注意：**
+> **注：**
 >
 > 下载链接中的 `{version}` 为 TiDB 的版本号。例如，`v3.0.5` 版本的下载链接为 `http://download.pingcap.org/tidb-v3.0.5-linux-amd64.tar.gz`。也可以使用 `latest` 替代 `{version}` 来下载最新的未发布版本。
 
