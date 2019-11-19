@@ -28,7 +28,7 @@ category: reference
 |:---|:---|:---|:---|
 | `http://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.tar.gz` | Linux | amd64 | `http://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.sha256` |
 
-注：下载链接中的 `{version}` 使用 TiDB Lightning 的版本号替代，如 v3.0.5 版本的下载链接为 `http://download.pingcap.org/tidb-toolkit-v3.0.5-linux-amd64.tar.gz`。也可以使用 `latest` 替代 `{version}` 下载最新的未发布版本。
+注：下载链接中的 `{version}` 为 TiDB Lightning 的版本号，如 v3.0.5 版本的下载链接为 `http://download.pingcap.org/tidb-toolkit-v3.0.5-linux-amd64.tar.gz`。也可以使用 `latest` 替代 `{version}` 下载最新的未发布版本。
 
 ## TiDB DM (Data Migration)
 
