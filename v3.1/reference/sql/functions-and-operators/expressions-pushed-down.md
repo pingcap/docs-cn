@@ -21,25 +21,25 @@ category: reference
 
 ## 禁止特定表达式下推
 
-当函数的计算过程由于下推而出现不被期待的行为时，可通过将其拉入黑名单禁止下推来快速恢复业务。具体来讲，可以将上述支持下推的表达式拉入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止其下推。
+当函数的计算过程由于下推而出现异常时，可通过黑名单功能禁止其下推来快速恢复业务。具体而言，你可以将上述支持的函数或运算符名加入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止特定表达式下推。
 
 ### 加入黑名单
 
-执行以下步骤，可将一个或多个函数加入黑名单：
+执行以下步骤，可将一个或多个函数或运算符加入黑名单：
 
-1. 向 `mysql.expr_pushdown_blacklist` 插入对应的函数名。
+1. 向 `mysql.expr_pushdown_blacklist` 插入对应的函数名或运算符名。
 2. 执行 `admin reload expr_pushdown_blacklist;`。
 
 ### 移出黑名单
 
-执行以下步骤，可以将一个或多个函数移出黑名单：
+执行以下步骤，可将一个或多个函数及运算符移出黑名单：
 
-1. 从 `mysql.expr_pushdown_blacklist` 表中删除对应的函数名。
+1. 从 `mysql.expr_pushdown_blacklist` 表中删除对应的函数名或运算符名。
 2. 执行 `admin reload expr_pushdown_blacklist;`。
 
-### 表达式下推黑名单用法示例
+### 黑名单用法示例
 
-以下示例首先将表达式 `<` 及 `>` 拉入黑名单，然后将表达式 `>` 从黑名单中挪出。
+以下示例首先将运算符 `<` 及 `>` 加入黑名单，然后将运算符 `>` 从黑名单中移出。
 
 黑名单是否生效可以从 `explain` 结果中进行观察（参见[如何理解 `explain` 结果](/v3.1/reference/performance/understanding-the-query-execution-plan.md)）。
 
@@ -94,11 +94,11 @@ tidb> explain select * from t where a < 2 and a > 2;
 
 > **注意：**
 >
-> - `admin reload expr_pushdown_blacklist` 只对执行该 SQL 的 TiDB server 生效，若需要集群中所有 TiDB server 生效，需要在每台 TiDB server 上执行该 SQL 语句。
+> - `admin reload expr_pushdown_blacklist` 只对执行该 SQL 语句的 TiDB server 生效。若需要集群中所有 TiDB server 生效，需要在每台 TiDB server 上执行该 SQL 语句。
 > - 表达式黑名单功能在 v3.0.0 及以上版本中支持。
-> - 在 v3.0.3 及以下版本中，不完全支持使用表达式原始名称文本（如 ">"，"+"，"is null"）添加黑名单，部分表达式在黑名单中使用别名。已支持下推的表达式中，表达式别名与原始名不同的，对应关系见下表（不区分大小写）。
+> - 在 v3.0.3 及以下版本中，不完全支持将运算符的原始名称文本（如 ">"、"+" 和 "is null"）加入黑名单中，部分运算符在黑名单中需使用别名。已支持下推的表达式中，别名与原始名不同的运算符见下表（不区分大小写）。
 
-| 表达式原始名称 | 表达式别名 |
+| 运算符原始名称 | 运算符别名 |
 | :-------- | :---------- |
 | < | LT |
 | > | GT |
@@ -108,7 +108,7 @@ tidb> explain select * from t where a < 2 and a > 2;
 | != | NE |
 | <> | NE |
 | <=> | NullEQ |
-|  | bitor |
+| &#124; | bitor |
 | && | bitand|
 | &#124;&#124; | or |
 | ! | not |
