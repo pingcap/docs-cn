@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/how-to/troubleshoot/tidb-binlog/']
 
 1. 查看各个监控指标是否异常，参见[TiDB Binlog 集群监控](/dev/reference/tidb-binlog/monitor.md)。
 
-2. 使用 binlogctl 查看各个 Pump、Drainer 的状态是否有异常，参见 [binlogctl 工具](/dev/reference/tidb-binlog/maintain.md#binlogctl-工具)。
+2. 使用 [binlogctl 工具](/dev/reference/tidb-binlog/maintain.md#binlogctl-工具)查看各个 Pump、Drainer 的状态是否有异常。
 
 3. 查看 Pump、Drainer 日志中是否有 `ERROR`、`WARN`，并根据详细的日志信息初步判断问题原因。
 
