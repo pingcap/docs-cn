@@ -19,7 +19,7 @@ TiDB 默认使用乐观事务模型，在执行 `UPDATE`、`INSERT`、`DELETE` �
 
 由于 TiDB 中的每个事务都需要跟 PD leader 进行两次 round trip，TiDB 中的事务相比于 MySQL 中的事务延迟更高。以如下的 query 为例，用显式事务代替 `auto_commit`，可优化该 query 的性能。
 
-使用 auto_commit 的原始版本：
+使用 `auto_commit` 的原始版本：
 
 {{< copyable "sql" >}}
 
@@ -43,4 +43,4 @@ COMMIT;
 
 > **注意：**
 >
-> 由于 TiDB 中的资源是分布式的，TiDB 中单线程 workload 可能不会很好的利用分布式资源，因此，性能相比于单实例部署的 MySQL 较低。这与 TiDB 中的事务延迟较高的情況类似。
+> 由于 TiDB 中的资源是分布式的，TiDB 中单线程 workload 可能不会很好地利用分布式资源，因此性能相比于单实例部署的 MySQL 较低。这与 TiDB 中的事务延迟较高的情況类似。

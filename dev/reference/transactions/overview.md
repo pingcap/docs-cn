@@ -5,12 +5,13 @@ category: reference
 
 # TiDB 事务概览
 
-TiDB 支持完整分布式事务。涉及到事务的语句包括，`[BEGIN|START TRANSACTION]`、`COMMIT` 以及 `ROLLBACK`。
-常用的变量包括，`autocommit`、`tidb_disable_txn_auto_retry` 以及 `tidb_retry_limit`。
+TiDB 支持完整的分布式事务。涉及到事务的语句包括 `[BEGIN|START TRANSACTION]`、`COMMIT` 以及 `ROLLBACK`。
 
-## BEGIN, START TRANSACTION
+常用的变量包括 `autocommit`、`tidb_disable_txn_auto_retry` 以及 `tidb_retry_limit`。
 
-语法:
+## `BEGIN` 和 `START TRANSACTION`
+
+语法：
 
 {{< copyable "sql" >}}
 
@@ -30,9 +31,9 @@ START TRANSACTION;
 START TRANSACTION WITH CONSISTENT SNAPSHOT;
 ```
 
-上述三条语句都是开启事务语句，效果相同。通过开启事务语句可以显式地开始一个新的事务，如果这个时候当前 Session 正在一个事务中间过程中，会自动将当前事务提交后，开启一个新的事务。
+以上三条语句都用于开启事务，效果相同。执行开启事务语句可以显式地开启一个新的事务。如果执行以上语句时，当前 Session 正处于一个事务的中间过程，那么系统会自动将当前事务提交后，再开启一个新的事务。
 
-## COMMIT
+## `COMMIT`
 
 语法：
 
@@ -42,9 +43,9 @@ START TRANSACTION WITH CONSISTENT SNAPSHOT;
 COMMIT;
 ```
 
-提交当前事务，包括从 `[BEGIN|START TRANSACTION]` 到 `COMMIT` 之间的所有修改。
+该语句用于提交当前的事务，包括从 `[BEGIN|START TRANSACTION]` 到 `COMMIT` 之间的所有修改。
 
-## ROLLBACK
+## `ROLLBACK`
 
 语法：
 
@@ -54,7 +55,7 @@ COMMIT;
 ROLLBACK;
 ```
 
-回滚当前事务，撤销从 `[BEGIN|START TRANSACTION]` 到 `ROLLBACK` 之间的所有修改。
+该语句用于回滚当前事务，撤销从 `[BEGIN|START TRANSACTION]` 到 `ROLLBACK` 之间的所有修改。
 
 ## 自动提交
 
@@ -66,11 +67,11 @@ ROLLBACK;
 SET autocommit = {0 | 1}
 ```
 
-通过设置 `autocommit` 的值为 1，可以将当前 Session 设置为自动提交状态，0 则表示当前 Session 为非自动提交状态。默认情况下，`autocommit` 的值为 1。
+通过设置 `autocommit` 的值为 `1`，可以将当前的 Session 设置为自动提交状态。`0` 则表示当前 Session 为非自动提交状态。默认情况下，`autocommit` 的值为 `1`。
 
-在自动提交状态，每条语句运行后，会将其修改自动提交到数据库中。否则，会等到运行 `COMMIT` 语句或者是某些会造成隐式提交的情况，详见 [implicit commit](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html)。比如，执行 `[BEGIN|START TRANCATION]` 语句的时候会试图提交上一个事务，并开启一个新的事务。
+在自动提交状态下，每条语句运行后，TiDB 会自动将修改提交到数据库中。否则，修改不会被提交，直到运行 `COMMIT` 语句或者出现某些会造成隐式提交的情况，详见 [implicit commit](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html)。例如，执行 `[BEGIN|START TRANCATION]` 语句的时候，TiDB 会试图提交上一个事务，并开启一个新的事务。
 
-另外 `autocommit` 也是一个 System Variable，所以可以通过变量赋值语句修改当前 Session 或者是 Global 的值。
+另外，`autocommit` 也是一个 System Variable，所以可以通过变量赋值语句修改当前 Session 或是 Global 的值。
 
 {{< copyable "sql" >}}
 
@@ -128,14 +129,14 @@ SELECT * FROM T; -- MySQL 返回 1 2；TiDB 返回 1
 
 ## 语句回滚
 
-TiDB 支持语句执行的原子性回滚，在事务内部执行一个语句，遇到错误时，该语句整体不会生效。
+TiDB 支持语句执行的原子性回滚。在事务内部执行一个语句，遇到错误时，该语句整体不会生效。
 
 {{< copyable "sql" >}}
 
 ```sql
 begin;
 insert into test values (1);
-insert into tset values (2);  -- tset 拼写错了，这条语句出错。
+insert into tset values (2);  -- tset 拼写错误，使该语句执行出错。
 insert into test values (3);
 commit;
 ```
@@ -147,9 +148,9 @@ commit;
 ```sql
 begin;
 insert into test values (1);
-insert into tset values (2);  -- tset 拼写错了，这条语句出错。
+insert into tset values (2);  -- tset 拼写错误，使该语句执行出错。
 insert into test values (3);
 rollback;
 ```
 
-这个例子中，第二个语句失败，最后由于调用了 rollback，事务不会将任何数据写入数据库。
+以上例子中，第二条语句执行失败。由于调用了 `rollback`，因此事务不会将任何数据写入数据库。
