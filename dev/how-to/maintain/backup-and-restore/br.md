@@ -20,7 +20,7 @@ BR 是分布式备份恢复的工具，它将备份和恢复操作命令下发�
 
 以下是一条完整的 `br` 命令行：
 
-`br --pd "${PDIP}:2379" backup full -s "local:///tmp/backup"`
+`br backup full --pd "${PDIP}:2379" -s "local:///tmp/backup"`
 
 命令行各部分的解释如下：
 
@@ -33,7 +33,7 @@ BR 是分布式备份恢复的工具，它将备份和恢复操作命令下发�
 
 ### 命令和子命令
 
-BR 由多层命令组成。目前，BR 包含 `backup`，`restore` 和 `version` 三个命令。
+BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version` 三个命令。
 
 * `br backup` 用于备份 TiDB 集群
 * `br restore` 用于恢复 TiDB 集群
@@ -54,11 +54,11 @@ BR 还包含以下三个子命令：
     >
     > 该选项只可用在 `restore` 命令中。使用 BR 恢复集群时必须指定该选项，否则 BR 会报错退出。用例：`br restore table --connect "root:@tcp(${TiDBIP}:4000)/"`。
 
-* `-h/--help`：获取所有命令和子命令的使用帮助。例如 `br backup --help`。
+* `-h`/`--help`：获取所有命令和子命令的使用帮助。例如 `br backup --help`。
 * `--ca`：指定 PEM 格式的受信任 CA 的证书文件路径。
 * `--cert`：指定 PEM 格式的 SSL 证书文件路径。
 * `--key`：指定 PEM 格式的 SSL 证书密钥文件路径。
-* `--status-addr`：指定 BR metric 信息。
+* `--status-addr`：指定 BR 提供 Prometheus 统计的监听地址。
 
 ## 备份集群数据
 
@@ -83,7 +83,7 @@ br --pd ${PDIP}:2379 backup full \
 备份期间有进度条在终端中显示。当进度条前进到 100% 时，说明备份已完成。在完成备份后，BR 为了确保数据安全性，还会校验备份数据。进度条效果如下：
 
 ```shell
-br --pd ${PDIP}:2379 backup full
+br --pd ${PDIP}:2379 backup full \
     --storage "local:///tmp/backup" \
     --ratelimit 120 \
     --concurrency 4 \
@@ -188,11 +188,13 @@ br --pd ${PDIP}:2379 restore table \
 
 ## 注意事项
 
+- BR 只支持 TiDB 3.1 版本及以上。
+- 如果在没有网络存储的集群上备份，在恢复前需要将所有备份下来的 SST 文件拷贝到各个 TiKV 节点上。
 - TiDB 执行 DDL 期间不能执行备份操作。
 - 目前只支持在全新的集群上执行恢复操作。
 - 如果备份时间可能超过设定的 GC lifetime（默认 10 分钟），则需要将 GC lifetime 调大。
 
-    例如，将 GC lifetime 调整为 720 小时。
+    例如，将 GC lifetime 调整为 720 小时:
 
     {{< copyable "sql" >}}
 
@@ -201,7 +203,7 @@ br --pd ${PDIP}:2379 restore table \
         "update mysql.tidb set variable_value='720h' where variable_name='tikv_gc_life_time'";
     ```
 
-- 为了加快数据恢复速度，可以在恢复操作前，使用 pd-ctl 关闭相关的 scheduler。恢复完成后，再重新添加这些 scheduler。
+- 为了加快数据恢复速度，可以在恢复操作前，使用 pd-ctl 关闭与调度相关的 schedulers。恢复完成后，再重新添加这些 schedulers。
 
     关闭 scheduler：
 
