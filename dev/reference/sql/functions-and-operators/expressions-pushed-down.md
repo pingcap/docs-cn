@@ -21,11 +21,11 @@ category: reference
 
 ## 禁止特定表达式下推
 
-当函数的计算过程由于下推而出现异常时，可通过黑名单功能禁止其下推来快速恢复业务。具体而言，你可以将函数或运算符名加入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止特定表达式下推。
+当函数的计算过程由于下推而出现异常时，可通过黑名单功能禁止其下推来快速恢复业务。具体而言，你可以将上述支持的函数或运算符名加入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止特定表达式下推。
 
 ### 加入黑名单
 
-执行以下步骤，可将多个函数或运算符同时加入黑名单：
+执行以下步骤，可将一个或多个函数或运算符加入黑名单：
 
 1. 向 `mysql.expr_pushdown_blacklist` 插入对应的函数名或运算符名。
 2. 执行 `admin reload expr_pushdown_blacklist;`。
@@ -94,9 +94,9 @@ tidb> explain select * from t where a < 2 and a > 2;
 
 > **注意：**
 >
-> - `admin reload expr_pushdown_blacklist` 只对执行该 SQL 语句的 TiDB server 生效，若需要集群中所有 TiDB server 生效，需要在每台 TiDB server 上执行该 SQL 语句。
+> - `admin reload expr_pushdown_blacklist` 只对执行该 SQL 语句的 TiDB server 生效。若需要集群中所有 TiDB server 生效，需要在每台 TiDB server 上执行该 SQL 语句。
 > - 表达式黑名单功能在 v3.0.0 及以上版本中支持。
-> - 在 v3.0.3 及以下版本中，黑名单功能不完全支持运算符原始名称文本（如 ">"，"+"，"is null"），部分运算符在黑名单中需使用别名。已支持下推的表达式中，别名与原始名不同的运算符见下表（不区分大小写）。
+> - 在 v3.0.3 及以下版本中，不完全支持将运算符的原始名称文本（如 ">"、"+" 和 "is null"）加入黑名单中，部分运算符在黑名单中需使用别名。已支持下推的表达式中，别名与原始名不同的运算符见下表（不区分大小写）。
 
 | 运算符原始名称 | 运算符别名 |
 | :-------- | :---------- |
