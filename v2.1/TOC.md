@@ -303,6 +303,7 @@
         - [Manage Tasks](/v2.1/reference/tools/data-migration/manage-tasks.md)
         - [Precheck Tasks](/v2.1/reference/tools/data-migration/precheck.md)
         - [Query Task Status](/v2.1/reference/tools/data-migration/query-status.md)
+        - [Skip or Replace Abnormal SQL Statements](/v2.1/reference/tools/data-migration/skip-replace-sqls.md)
       - [Monitor](/v2.1/reference/tools/data-migration/monitor.md)
       + Migrate from MySQL compatible database
         - [Migrate from Aurora](/v2.1/how-to/migrate/from-aurora.md)
