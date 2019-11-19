@@ -15,30 +15,30 @@ category: reference
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
-| [tidb-latest-linux-amd64.tar.gz](http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz) (TiDB Binlog) | Linux | amd64 |[tidb-latest-linux-amd64.sha256](http://download.pingcap.org/tidb-latest-linux-amd64.sha256)|
-| [tidb-binlog-kafka-linux-amd64.tar.gz](http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.tar.gz)（Kafka 版本的 TiDB Binlog）| Linux | amd64 |[tidb-binlog-kafka-linux-amd64.sha256](http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.sha256)|
+| `http://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (TiDB Binlog) | Linux | amd64 | `http://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
+| `http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.tar.gz`（Kafka 版本的 TiDB Binlog）| Linux | amd64 | `http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.sha256` |
+
+注：下载链接中的 `{version}` 为 TiDB 的版本号，如 `v3.0.5` 版本的下载链接为 `http://download.pingcap.org/tidb-v3.0.5-linux-amd64.tar.gz`。也可以使用 `latest` 替代 `{version}` 下载最新的未发布版本。
 
 ## TiDB Lightning
 
-如需下载最新版本的 [TiDB Lightning](/dev/reference/tools/tidb-lightning/overview.md)，点击下表中的下载链接即可。
+使用下表中的链接下载 [TiDB Lightning](/dev/reference/tools/tidb-lightning/overview.md)：
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
-| [tidb-toolkit-latest-linux-amd64.tar.gz](http://download.pingcap.org/tidb-toolkit-latest-linux-amd64.tar.gz) | Linux | amd64 | [tidb-toolkit-latest-linux-amd64.sha256](http://download.pingcap.org/tidb-toolkit-latest-linux-amd64.sha256) |
+| `http://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.tar.gz` | Linux | amd64 | `http://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.sha256` |
+
+注：下载链接中的 `{version}` 使用 TiDB Lightning 的版本号替代，如 v3.0.5 版本的下载链接为 `http://download.pingcap.org/tidb-toolkit-v3.0.5-linux-amd64.tar.gz`。也可以使用 `latest` 替代 `{version}` 下载最新的未发布版本。
 
 ## TiDB DM (Data Migration)
 
-如需下载 1.0 GA 版本的 [DM](https://github.com/pingcap/dm)，点击下表中的下载链接即可。
+使用下表中的链接下载 [DM](/dev/reference/tools/data-migration/overview.md):
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
-| [dm-v1.0.1-linux-amd64.tar.gz](http://download.pingcap.org/dm-v1.0.1-linux-amd64.tar.gz) | Linux | amd64 | [dm-v1.0.1-linux-amd64.sha256](http://download.pingcap.org/dm-v1.0.1-linux-amd64.sha256) |
+| `http://download.pingcap.org/dm-{version}-linux-amd64.tar.gz` | Linux | amd64 | `http://download.pingcap.org/dm-{version}-linux-amd64.sha256` |
 
-如需下载最新版本的 [DM](https://github.com/pingcap/dm)，点击下表中的下载链接即可。你也可以参考 [DM Release](https://github.com/pingcap/dm/releases) 页面。
-
-| 安装包 | 操作系统 | 架构 | SHA256 校验和 |
-|:---|:---|:---|:---|
-| [dm-latest-linux-amd64.tar.gz](http://download.pingcap.org/dm-latest-linux-amd64.tar.gz) | Linux | amd64 | [dm-latest-linux-amd64.sha256](http://download.pingcap.org/dm-latest-linux-amd64.sha256) |
+注：下载链接中的 `{version}` 为 DM 的版本号，如 `v1.0.1` 版本的下载链接为 `http://download.pingcap.org/dm-v1.0.1-linux-amd64.tar.gz`，可以通过 [DM Release](https://github.com/pingcap/dm/releases) 查看目前的已发布版本。也可以使用 `latest` 替代 `{version}` 下载最新的未发布版本。
 
 ## Syncer，Loader 和 Mydumper
 
