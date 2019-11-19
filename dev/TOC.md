@@ -275,6 +275,9 @@
     - [监控告警](/dev/reference/tidb-binlog/monitor.md)
     - [增量恢复](/dev/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/dev/reference/tidb-binlog/binlog-slave-client.md)
+    + 故障诊断
+      - [故障诊断](/dev/reference/tidb-binlog/troubleshoot/binlog.md)
+      - [常见错误修复](/dev/reference/tidb-binlog/troubleshoot/error-handling.md)
     - [FAQ](/dev/reference/tidb-binlog/faq.md)
   + 周边工具
     - [Mydumper](/dev/reference/tools/mydumper.md)
@@ -346,7 +349,6 @@
   - [TiDB Operator 简介](/dev/tidb-in-kubernetes/tidb-operator-overview.md)
   + 快速上手
     - [kind](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind.md)
-    - [DinD](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
     - [GKE](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
     - [Minikube](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube.md)
   + 部署
