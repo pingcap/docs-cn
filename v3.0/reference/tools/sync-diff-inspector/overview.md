@@ -185,6 +185,8 @@ fix-sql-file = "fix.sql"
     instance-id = "source-1"
     # 使用 TiDB 的 snapshot 功能，如果开启的话会使用历史数据进行对比
     # snapshot = "2016-10-08 16:45:26"
+    # 设置数据库的 sql-mode，用于解析表结构
+    # sql-mode = ""
 
 # 目标数据库实例的配置
 [target-db]
@@ -194,6 +196,8 @@ fix-sql-file = "fix.sql"
     password = "123456"
     # 使用 TiDB 的 snapshot 功能，如果开启的话会使用历史数据进行对比
     # snapshot = "2016-10-08 16:45:26"
+    # 设置数据库的 sql-mode，用于解析表结构
+    # sql-mode = ""
 ```
 
 ### 运行 sync-diff-inspector
