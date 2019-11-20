@@ -251,6 +251,7 @@
     - [执行计划绑定](/v3.1/reference/performance/execution-plan-bind.md)
     - [统计信息概述](/v3.1/reference/performance/statistics.md)
     - [Optimizer Hints](/v3.1/reference/performance/optimizer-hints.md)
+    - [Follower Read](/v3.1/reference/performance/follower-read.md)
     - [使用 SQL 语句检查 TiDB 集群状态](/v3.1/reference/performance/check-cluster-status-using-sql-statements.md)
     - [Statement Summary Table](/v3.1/reference/performance/statement-summary.md)
     - [TiKV 调优](/v3.1/reference/performance/tune-tikv.md)
