@@ -68,7 +68,7 @@ Ad-hoc 全量备份用过创建一个自定义的 `Backup` CR 对象来描述一
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-literal=secret_key=yyy --namespace=test
+    kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-literal=secret_key=yyy --namespace=test1
     ```
 3. 创建 `backup-demo1-tidb-secret` secret, 里面存放用来访问 TiDB 集群的 root 账号和密钥
 
@@ -188,6 +188,17 @@ Amazon S3 支持的 storageClass 类型有如下几种：
 `.spec.storageClassName`: 备份时需要指定使用的 PV 类型，如果不指定则默认使用 tidb-operator 启动参数中 `default-backup-storage-class-name` 指定的值，这个值默认为 `standard`
 
 `.spec.storageSize`: 备份时指定备份使用的 PV 大小，这个大小要大于备份 TiDB 数据的大小
+
+支持的其余 S3 兼容 provider 如下：
+
+* alibaba(Alibaba Cloud Object Storage System (OSS) formerly Aliyun)
+* digitalocean(Digital Ocean Spaces)
+* dreamhost(Dreamhost DreamObjects)
+* ibmcos(IBM COS S3)
+* minio(Minio Object Storage)
+* netease(Netease Object Storage (NOS))
+* wasabi(Wasabi Object Storage)
+* other(Any other S3 compatible provider)
 
 ## 定时全量备份
 

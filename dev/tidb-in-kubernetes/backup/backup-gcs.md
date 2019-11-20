@@ -180,42 +180,42 @@ gcs 支持的 bucket ACL 策略有如下几种：
 
 ### 定时全部备份数据到 S3 兼容存储
 
-1. 创建 backupSchedule CR 开启 TiDB 集群的定时全量备份，将数据备份到 gcs。
+创建 backupSchedule CR 开启 TiDB 集群的定时全量备份，将数据备份到 gcs。
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```shell
-    kubectl apply -f backup-schedule-gcs.yaml
-    ```
+```shell
+kubectl apply -f backup-schedule-gcs.yaml
+```
 
-    backup-schedule-gcs.yaml 文件内容如下：
+backup-schedule-gcs.yaml 文件内容如下：
 
-    ```yaml
-    ---
-    apiVersion: pingcap.com/v1alpha1
-    kind: BackupSchedule
-    metadata:
-      name: demo1-backup-schedule-gcs
-      namespace: test1
-    spec:
-      #maxBackups: 5
-      #pause: true
-      maxReservedTime: "3h"
-      schedule: "*/2 * * * *"
-      backupTemplate:
-        gcs:
-          secretName: s3-secret
-          projectId: <your-project-id>
-          # location: us-east1
-          # storageClass: STANDARD_IA
-          # objectAcl: private
-          # bucketAcl: private
-        storageType: gcs
-        cluster: demo1
-        tidbSecretName: backup-demo1-tidb-secret
-        storageClassName: local-storage
-        storageSize: 10Gi
-    ```
+```yaml
+---
+apiVersion: pingcap.com/v1alpha1
+kind: BackupSchedule
+metadata:
+  name: demo1-backup-schedule-gcs
+  namespace: test1
+spec:
+  #maxBackups: 5
+  #pause: true
+  maxReservedTime: "3h"
+  schedule: "*/2 * * * *"
+  backupTemplate:
+    gcs:
+      secretName: s3-secret
+      projectId: <your-project-id>
+      # location: us-east1
+      # storageClass: STANDARD_IA
+      # objectAcl: private
+      # bucketAcl: private
+    storageType: gcs
+    cluster: demo1
+    tidbSecretName: backup-demo1-tidb-secret
+    storageClassName: local-storage
+    storageSize: 10Gi
+```
 
 当定时全量备份创建完成后，我们可以通过如下命令查看定时全量备份状态：
 
