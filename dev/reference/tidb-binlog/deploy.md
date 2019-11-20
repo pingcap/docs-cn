@@ -231,7 +231,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
         ```toml
         [syncer]
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "file", "kafka".
+        # Valid values are "mysql", "file", "tidb", "kafka".
         db-type = "file"
 
         # Uncomment this if you want to use "file" as "db-type".
