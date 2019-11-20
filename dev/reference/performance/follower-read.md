@@ -45,7 +45,7 @@ set @@tidb_replica_read = 'follower';
 
 ### Follower 强一致读
 
-TiKV follower 节点处理读取请求时，首先使用 Raft `ReadIndex` 协议与 Region 当前的 leader 进行一次交互，来获取当前 Raft group 最新的 commit index。获取成功后，本地 apply 到所获取的 leader 最新 commit index，便可以开始正常的读取请求处理流程。
+TiKV follower 节点处理读取请求时，首先使用 Raft `ReadIndex` 协议与 Region 当前的 leader 进行一次交互，来获取当前 Raft group 最新的 commit index。本地 apply 到所获取的 leader 最新 commit index 后，便可以开始正常的读取请求处理流程。
 
 ### Follower 副本选择策略
 
