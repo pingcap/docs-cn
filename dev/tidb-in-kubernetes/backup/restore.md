@@ -11,52 +11,12 @@ category: how-to
 
 ## 备份恢复环境准备
 
-1. 在需要恢复的 `test2` 这个 namespace 中创建备份恢复需要的 RBAC 相关资源
+1. 在需要恢复的 `test2` 这个 namespace 中创建备份恢复需要的 RBAC 相关资源，下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)
 
     {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl apply -f backup-rbac.yaml -n test2
-    ```
-
-    backup-rbac.yaml 文件内容如下:
-
-    ```yaml
-    ---
-    kind: Role
-    apiVersion: rbac.authorization.k8s.io/v1beta1
-    metadata:
-      name: tidb-backup-manager
-      labels:
-        app.kubernetes.io/component: tidb-backup-manager
-    rules:
-    - apiGroups: [""]
-      resources: ["events"]
-      verbs: ["*"]
-    - apiGroups: ["pingcap.com"]
-      resources: ["backups", "restores"]
-      verbs: ["get", "watch", "list", "update"]
-
-    ---
-    kind: ServiceAccount
-    apiVersion: v1
-    metadata:
-      name: tidb-backup-manager
-
-    ---
-    kind: RoleBinding
-    apiVersion: rbac.authorization.k8s.io/v1beta1
-    metadata:
-      name: tidb-backup-manager
-      labels:
-        app.kubernetes.io/component: tidb-backup-manager
-    subjects:
-    - kind: ServiceAccount
-      name: tidb-backup-manager
-    roleRef:
-      apiGroup: rbac.authorization.k8s.io
-      kind: Role
-      name: tidb-backup-manager
     ```
 
 2. 创建 `restore-demo2-tidb-secret` secret, 里面存放用来访问 TiDB 集群的 root 账号和密钥

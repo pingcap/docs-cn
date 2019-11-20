@@ -15,52 +15,12 @@ Ad-hoc 全量备份用过创建一个自定义的 `Backup` CR 对象来描述一
 
 ### Ad-hoc 全量备份环境准备
 
-1. 在 `test1` 这个 namespace 中创建备份需要的 RBAC 相关资源
+1. 在 `test1` 这个 namespace 中创建备份需要的 RBAC 相关资源，下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)
 
     {{< copyable "shell-regular" >}}
 
     ```shell
     kubectl apply -f backup-rbac.yaml -n test1
-    ```
-
-    backup-rbac.yaml 文件内容如下:
-
-    ```yaml
-    ---
-    kind: Role
-    apiVersion: rbac.authorization.k8s.io/v1beta1
-    metadata:
-      name: tidb-backup-manager
-      labels:
-        app.kubernetes.io/component: tidb-backup-manager
-    rules:
-    - apiGroups: [""]
-      resources: ["events"]
-      verbs: ["*"]
-    - apiGroups: ["pingcap.com"]
-      resources: ["backups", "restores"]
-      verbs: ["get", "watch", "list", "update"]
-
-    ---
-    kind: ServiceAccount
-    apiVersion: v1
-    metadata:
-      name: tidb-backup-manager
-
-    ---
-    kind: RoleBinding
-    apiVersion: rbac.authorization.k8s.io/v1beta1
-    metadata:
-      name: tidb-backup-manager
-      labels:
-        app.kubernetes.io/component: tidb-backup-manager
-    subjects:
-    - kind: ServiceAccount
-      name: tidb-backup-manager
-    roleRef:
-      apiGroup: rbac.authorization.k8s.io
-      kind: Role
-      name: tidb-backup-manager
     ```
 
 2. 创建 `s3-secret` secret，里面存放了用来访问 S3 兼容存储的凭证
