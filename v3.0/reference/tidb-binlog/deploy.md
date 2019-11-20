@@ -522,7 +522,7 @@ Drainer="192.168.0.13"
         safe-mode = false
 
         # Drainer 下游服务类型（默认为 mysql）
-        # 参数有效值为 "mysql"，"file"，"kafka"
+        # 参数有效值为 "mysql"，"tidb"，"file"，"kafka"
         db-type = "mysql"
 
         # 事务的 commit ts 若在该列表中，则该事务将被过滤，不会同步至下游，v3.0.2 后支持该功能
