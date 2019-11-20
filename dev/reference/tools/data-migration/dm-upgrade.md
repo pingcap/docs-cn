@@ -37,7 +37,7 @@ Go Version: go version go1.12 linux/amd64
 3. 执行 `ansible-playbook rolling_update.yml` 滚动升级 DM 集群组件
 4. 执行 `ansible-playbook rolling_update_monitor.yml` 滚动升级 DM 监控组件
 
-## 升级到 v1.0.0-10-geb2889c9 (1.0 GA)
+## 升级到 v1.0.2
 
 ### 版本信息
 
