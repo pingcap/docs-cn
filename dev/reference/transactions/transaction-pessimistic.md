@@ -54,7 +54,7 @@ TiDB 默认使用乐观事务模式，存在事务提交时因为冲突而失败
 
 ## 和 MySQL innoDB 的差异
 
-- TiDB 在使用范围做为 WHERE 条件，执行 DML 和 SELECT FOR UPDATE 语句时不会阻塞范围内并发的 INSERT 语句的执行。 
+- TiDB 使用 range 作为 WHERE 条件，执行 DML 和 SELECT FOR UPDATE 语句时不会阻塞范围内并发的 INSERT 语句的执行。 
 
 innoDB 通过实现 gap lock，支持了阻塞范围内并发的 INSERT 语句的执行，主要目的是为了支持 statement based binlog。
 
