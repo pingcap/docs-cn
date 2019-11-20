@@ -5,7 +5,7 @@ category: how-to
 
 # Kubernetes 上备份 TiDB 集群到 S3 兼容后端存储
 
-这篇文档详细描述了如何将 Kubernetes 上的 TiDB 集群数据备份到 S3 兼容的存储上, 这里说到的备份均是指全量备份(定时备份和 Ad-hoc 备份), 底层通过使用 [`mydumper`](/dev/reference/tools/mydumper.md) 获取集群的逻辑备份，然后在将备份数据上传到远端 S3 兼容的存储上
+这篇文档详细描述了如何将 Kubernetes 上的 TiDB 集群数据备份到 S3 兼容的存储上, 这里说到的备份均是指全量备份(定时全量备份和 Ad-hoc 全量备份), 底层通过使用 [`mydumper`](/dev/reference/tools/mydumper.md) 获取集群的逻辑备份，然后在将备份数据上传到远端 S3 兼容的存储上。
 
 ## Ad-hoc 全量备份
 
@@ -13,7 +13,7 @@ Ad-hoc 全量备份用过创建一个自定义的 `Backup` CR 对象来描述一
 
 为了更好的说明备份的使用方式，我们假设需要对部署在 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1` 进行数据备份，下面是具体操作过程：
 
-### 备份环境准备
+### Ad-hoc 全量备份环境准备
 
 1. 在 `test1` 这个 namespace 中创建备份需要的 RBAC 相关资源
 
@@ -70,14 +70,13 @@ Ad-hoc 全量备份用过创建一个自定义的 `Backup` CR 对象来描述一
     ```shell
     kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-literal=secret_key=yyy --namespace=test1
     ```
-3. 创建 `backup-demo1-tidb-secret` secret, 里面存放用来访问 TiDB 集群的 root 账号和密钥
 
- kubectl create secret generic backup-demo1-tidb-secret --from-literal=user=root --from-literal=password=12345678 --namespace=test1
+3. 创建 `backup-demo1-tidb-secret` secret, 里面存放用来访问 TiDB 集群的 root 账号和密钥
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl create secret generic backup-demo1-tidb-secret --from-literal=user=root --from-literal=password=xxx --namespace=test1
+    kubectl create secret generic backup-demo1-tidb-secret --from-literal=user=root --from-literal=password=<password> --namespace=test1
     ```
 
 ### 备份数据到 S3 兼容存储
@@ -202,15 +201,15 @@ Amazon S3 支持的 storageClass 类型有如下几种：
 
 ## 定时全量备份
 
-通过用户设置的备份策略定时备份 TiDB 集群，同时可配置备份的保留策略，定时全量备份通过自定义的 `BackupSchedule` CR 对象来描述，每次到备份时间点会触发一次全量备份，定时全量备份底层是通过 Ad-hoc 全量备份来实现. 下面是创建定期全量备份的具体步骤：
+通过用户设置的备份策略定时备份 TiDB 集群，同时可配置备份的保留策略，定时全量备份通过自定义的 `BackupSchedule` CR 对象来描述，每次到备份时间点会触发一次全量备份，定时全量备份底层是通过 Ad-hoc 全量备份来实现。下面是创建定期全量备份的具体步骤：
 
-### 备份环境准备
+### 定时全量备份环境准备
 
 这里和 Ad-hoc 全量备份操作一致
 
 ### 定时全部备份数据到 S3 兼容存储
 
-1. 创建 backupSchedule CR 开启 TiDB 集群的定时全量备份，将数据备份到 Amazon S3。
+1. 创建 backupSchedule CR 开启 TiDB 集群的定时全量备份，将数据备份到 Amazon S3
 
     {{< copyable "shell-regular" >}}
 
@@ -246,8 +245,8 @@ Amazon S3 支持的 storageClass 类型有如下几种：
         storageClassName: local-storage
         storageSize: 10Gi
     ```
-      
-2. 创建 backupSchedule CR 开启 TiDB 集群的定时全量备份，将数据备份到 ceph。
+
+2. 创建 backupSchedule CR 开启 TiDB 集群的定时全量备份，将数据备份到 ceph
 
     {{< copyable "shell-regular" >}}
 
@@ -307,4 +306,4 @@ kubectl get bks -n test1 -owide
 
  `.spec.schedule`：cron 时间调度格式，具体格式参考[这里](https://en.wikipedia.org/wiki/Cron)。
 
- `.spec.pause`：这个值默认为 false，如果设置为 true，代表暂停定时调度，此时即使到了调度点，也不会进行备份。在定时备份暂停期间，备份 GC 仍然正常进行。从 true 改为 false 则重新开启定时备份。
+ `.spec.pause`：这个值默认为 false，如果设置为 true，代表暂停定时调度，此时即使到了调度点，也不会进行备份。在定时备份暂停期间，备份 GC 仍然正常进行。从 true 改为 false 则重新开启定时全量备份。
