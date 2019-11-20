@@ -259,7 +259,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 
         ```toml
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "pb", "kafka".
+        # Valid values are "mysql", "tidb", "file", "kafka".
         db-type = "pb"
 
         # Uncomment this if you want to use `pb` or `sql` as `db-type`.
