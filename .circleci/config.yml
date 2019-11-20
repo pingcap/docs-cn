@@ -58,11 +58,13 @@ jobs:
               python3 scripts/upload.py dev/output.pdf tidb-manual-en-dev.pdf;
               python3 scripts/upload.py v3.0/output.pdf tidb-manual-en-v3.0.pdf;
               python3 scripts/upload.py v2.1/output.pdf tidb-manual-en-v2.1.pdf;
+              python3 scripts/upload.py v3.1/output.pdf tidb-manual-en-v3.1.pdf;
             fi
             if [ "${CIRCLE_BRANCH}" == "website-preview" ]; then
-              python3 scripts/upload.py dev/output.pdf tidb-manual-en-preview-dev-test.pdf;
-              python3 scripts/upload.py v3.0/output.pdf tidb-manual-en-preview-v3.0-test.pdf;
-              python3 scripts/upload.py v2.1/output.pdf tidb-manual-en-preview-v2.1-test.pdf;
+              python3 scripts/upload.py dev/output.pdf tidb-manual-en-preview-dev.pdf;
+              python3 scripts/upload.py v3.0/output.pdf tidb-manual-en-preview-v3.0.pdf;
+              python3 scripts/upload.py v2.1/output.pdf tidb-manual-en-preview-v2.1.pdf;
+              python3 scripts/upload.py v3.1/output.pdf tidb-manual-en-preview-v3.1.pdf;
             fi
 
       - run:
