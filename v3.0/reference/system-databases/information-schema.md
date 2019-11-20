@@ -274,7 +274,7 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 
 `PROCESSLIST`, just like `show processlist`, is used to view the requests that are being handled.
 
-The `PROCESSLIST` table has a `MEM` column that `show processlist` does not have. `MEM` means the occupied memory of the requests being handled, and its unit is `byte`.
+The `PROCESSLIST` table has a `MEM` column <span class="version-mark">New in v3.0.5</span> that `show processlist` does not have. `MEM` means the occupied memory of the requests being handled, and its unit is `byte`.
 
 ```
 +----+------+------+--------------------+---------+------+-------+---------------------------+-----+
