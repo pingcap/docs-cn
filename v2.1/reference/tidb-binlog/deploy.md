@@ -469,7 +469,7 @@ Drainer="192.168.0.13"
         safe-mode = false
 
         # Drainer 下游服务类型（默认为 mysql）
-        # 参数有效值为 "mysql"，"file"，"kafka"
+        # 参数有效值为 "mysql"，"tidb"，"file"，"kafka"
         db-type = "mysql"
 
         # db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test")，
