@@ -10,7 +10,7 @@ TiDB 默认使用乐观事务模式，存在事务提交时因为冲突而失败
 
 ## 悲观事务模式的行为
 
-悲观事务的行为和 MySQL 基本一致（不一致的地方详见[和 MySQL innoDB 的差异](#和 MySQL innoDB 的差异)）：
+悲观事务的行为和 MySQL 基本一致（不一致的地方详见[和 MySQL innoDB 的差异](#和-mysql-innodb-的差异)）：
 
 - `SELECT FOR UPDATE` 会读取已提交的最新数据，并对读取到的数据加悲观锁。
 
