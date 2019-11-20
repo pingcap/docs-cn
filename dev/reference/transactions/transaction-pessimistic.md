@@ -60,7 +60,7 @@ innoDB 通过实现 gap lock，支持了阻塞范围内并发的 INSERT 语句�
 
 有些业务通过降低隔离级别到 READ COMMITTED 来避免 gap lock 导致的并发性能问题。
 
-TiDB 不支持 gap lock，也就不需要付出相应的并发性能的代价。
+innoDB 通过实现 gap lock，支持阻塞 range 内并发的 INSERT 语句的执行，其主要目的是为了支持 statement based binlog，因此有些业务会通过降低隔离级别到 READ COMMITTED 来避免 gap lock 导致的并发性能问题。TiDB 不支持 gap lock，也就不需要付出相应的并发性能的代价。
 
 - TiDB 不支持 SELECT LOCK IN SHARE MODE。
 
