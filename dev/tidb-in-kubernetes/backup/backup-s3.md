@@ -175,7 +175,7 @@ Amazon S3 支持的 storageClass 类型有如下几种：
  kubectl get bk -n test1 -owide
  ```
 
-最后是对 backup CR 其余字段的详细介绍:
+最后是对 backup CR 其余字段的详细解释:
 
 `.spec.metadata.namespace`: 备份 TiDB 集群所在的 namespace
 
@@ -187,7 +187,7 @@ Amazon S3 支持的 storageClass 类型有如下几种：
 
 `.spec.storageClassName`: 备份时需要指定使用的 PV 类型，如果不指定则默认使用 tidb-operator 启动参数中 `default-backup-storage-class-name` 指定的值，这个值默认为 `standard`
 
-`.spec.storageSize`: 备份时指定备份使用的 PV 大小，这个大小要大于备份 TiDB 数据的大小
+`.spec.storageSize`: 备份时指定需要使用的 PV 大小，这个值要大于备份 TiDB 集群的数据大小
 
 支持的其余 S3 兼容 provider 如下：
 
