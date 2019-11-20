@@ -12,7 +12,7 @@ aliases: ['/docs-cn/FAQ/','/docs-cn/faq/tidb/']
 
 #### 1.1.1 TiDB 整体架构
 
-[https://pingcap.com/docs-cn/dev/overview/](/v3.0/overview.md#tidb-简介)
+[TiDB 简介](/v3.0/overview.md#tidb-简介)
 
 #### 1.1.2 TiDB 是什么？
 
@@ -138,19 +138,19 @@ TiDB 的 sql_mode 与 MySQL 的 sql_mode 设置方法有一些差别，TiDB 不�
 
 ##### 1.2.1.1 TiKV 详细解读
 
-[http://t.cn/RTKRRWv](http://t.cn/RTKRRWv)
+[三篇文章了解 TiDB 技术内幕 - 说存储](http://t.cn/RTKRRWv)
 
 #### 1.2.2 计算 TiDB
 
 ##### 1.2.2.1 TiDB 详细解读
 
-[http://t.cn/RTKRkBh](http://t.cn/RTKRkBh)
+[三篇文章了解 TiDB 技术内幕 - 说计算](http://t.cn/RTKRkBh)
 
 #### 1.2.3 调度 PD
 
 ##### 1.2.3.1 PD 详细解读
 
-[http://t.cn/RTKEZ0U](http://t.cn/RTKEZ0U)
+[三篇文章了解 TiDB 技术内幕 - 谈调度](http://t.cn/RTKEZ0U)
 
 ## 二、安装部署升级
 
@@ -215,7 +215,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ##### 2.2.1.1 为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？
 
-这种情况一般是因为没有使用 `--config` 参数来指定配置文件（目前只会出现在 binary 部署的场景），TiKV/PD 会按默认值来设置。如果要使用配置文件，请设置 TiKV/PD 的 `--config` 参数。对于 TiKV 组件，修改配置后重启服务即可；对于 PD 组件，只会在第一次启动时读取配置文件，之后可以使用 pd-ctl 的方式来修改配置，详情可参考[这里](/v3.0/reference/configuration/pd-server/configuration.md)。
+这种情况一般是因为没有使用 `--config` 参数来指定配置文件（目前只会出现在 binary 部署的场景），TiKV/PD 会按默认值来设置。如果要使用配置文件，请设置 TiKV/PD 的 `--config` 参数。对于 TiKV 组件，修改配置后重启服务即可；对于 PD 组件，只会在第一次启动时读取配置文件，之后可以使用 pd-ctl 的方式来修改配置，详情可参考 [PD 配置参数](/v3.0/reference/configuration/pd-server/configuration.md)。
 
 ##### 2.2.1.2 TiDB 监控框架 Prometheus + Grafana 监控机器建议单独还是多台部署？
 
@@ -253,7 +253,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 #### 2.2.2 TiDB 离线 Ansible 部署方案
 
-首先这不是我们建议的方式，如果中控机没有外网，也可以通过离线 Ansible 部署方式，详情可参考[这里](/v3.0/how-to/deploy/orchestrated/offline-ansible.md)。
+首先这不是我们建议的方式，如果中控机没有外网，也可以通过离线 Ansible 部署方式，详情可参考[离线 TiDB Ansible 部署方案](/v3.0/how-to/deploy/orchestrated/offline-ansible.md)。
 
 #### 2.2.3 Docker Compose 快速构建集群（单机部署）
 
@@ -421,7 +421,7 @@ TiDB 目前社区非常活跃，在 1.0 GA 版本发布后，还在不断的优�
 
 #### 3.1.14 Percolator 用了分布式锁，crash 的客户端会保持锁，会造成锁没有 release？
 
-详细可参考 [https://pingcap.com/blog-cn/percolator-and-txn/](https://pingcap.com/blog-cn/percolator-and-txn/)。
+详细可参考 [Percolator 和 TiDB 事务算法](https://pingcap.com/blog-cn/percolator-and-txn/)。
 
 #### 3.1.15 TiDB 为什么选用 gRPC 而不选用 Thrift，是因为 Google 在用吗？
 
@@ -584,10 +584,11 @@ TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语�
 - 执行此 DML 的 TiDB 被 kill 后准备退出，且此 DML 对应的事务执行时间超过一个 DDL lease，在事务提交时会报这个错误。
 - TiDB 在执行此 DML 时，有一段时间内连不上 PD 或者 TiKV，导致 TiDB 超过一个 DDL lease 时间没有 load schema，或者导致 TiDB 断开与 PD 之间带 keep alive 设置的连接。
 
-#### 3.3.15 高并发执行 DDL 报错？
+#### 3.3.15 高并发情况下执行 DDL 时报错的原因？
 
-高并发情况下执行 DDL （比如批量建表）时，极少部分 DDL 可能会由于并发执行时 key 冲突而执行失败。
-建议 DDL 并发低于20。否则需要在应用端重试失败的 DDL 语句。
+高并发情况下执行 DDL（比如批量建表）时，极少部分 DDL 可能会由于并发执行时 key 冲突而执行失败。
+
+并发执行 DDL 时，建议将 DDL 数量保持在 20 以下，否则你需要在应用端重试失败的 DDL 语句。
 
 ### 3.4 TiKV 管理
 
@@ -706,7 +707,7 @@ TiKV 的内存占用主要来自于 RocksDB 的 block-cache，默认为系统总
 #### 3.5.2 TiDB 集群容量 QPS 与节点数之间关系如何，和 MySQL 对比如何？
 
 - 在 10 节点内，TiDB 写入能力（Insert TPS）和节点数量基本成 40% 线性递增，MySQL 由于是单节点写入，所以不具备写入扩展能力。
-- MySQL 读扩容可以通过添加从库进行扩展，但写流量无法扩展，只能通过分库分表，而分库分表有很多问题，具体参考 [http://t.cn/RTD18qV](http://t.cn/RTD18qV)。
+- MySQL 读扩容可以通过添加从库进行扩展，但写流量无法扩展，只能通过分库分表，而分库分表有很多问题，具体参考[方案虽好，成本先行：数据库 Sharding+Proxy 实践解析](http://t.cn/RTD18qV)。
 - TiDB 不管是读流量、还是写流量都可以通过添加节点快速方便的进行扩展。
 
 #### 3.5.3 我们的 DBA 测试过 MySQL 性能，单台 TiDB 的性能没有 MySQL 性能那么好？

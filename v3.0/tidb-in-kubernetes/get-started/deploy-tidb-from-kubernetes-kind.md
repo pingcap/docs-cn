@@ -2,6 +2,7 @@
 title: 使用 kind 在 Kubernetes 上部署 TiDB 集群
 summary: 使用 kind 在 Kubernetes 上部署 TiDB 集群。
 category: how-to
+aliases: ['/docs-cn/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind/']
 ---
 
 # 使用 kind 在 Kubernetes 上部署 TiDB 集群
@@ -25,7 +26,7 @@ kind 通过 Docker 容器模拟出一个本地的 Kubernetes 集群。kind 的�
     > 对于 macOS 系统，需要给 Docker 分配 2 核+ CPU 和 4G+ 内存。详情请参考 [Mac 上配置 Docker](https://docs.docker.com/docker-for-mac/#advanced)。
 
 - [Docker](https://docs.docker.com/install/)：版本 >= 17.03
-- [Helm Client](https://github.com/helm/helm/blob/master/docs/install.md#installing-the-helm-client)：版本 >= 2.9.0 并且 < 3.0.0
+- [Helm Client](https://helm.sh/docs/using_helm/#installing-the-helm-client)：版本 >= 2.9.0 并且 < 3.0.0
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl)：版本 >= 1.10，建议 1.13 或更高版本
 
     > **注意：**

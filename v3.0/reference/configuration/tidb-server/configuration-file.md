@@ -8,7 +8,7 @@ aliases: ['/docs-cn/op-guide/tidb-config-file/']
 
 # TiDB 配置文件描述
 
-TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/release-3.0/config/config.toml.example) 找到默认值的配置文件，重命名为 `config.toml` 即可。本文档只介绍未包含在[命令行参数](/v3.0/reference/configuration/tidb-server/configuration.md)中的参数。
+TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/release-3.0/config/config.toml.example) 找到默认值的配置文件，重命名为 `config.toml` 即可。本文档只介绍未包含在[命令行参数](https://pingcap.com/docs-cn/v3.0/reference/configuration/tidb-server/configuration)中的参数。
 
 ### `split-table`
 
@@ -84,7 +84,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `slow-query-file`
 
 + 慢查询日志的文件名。
-+ 默认值："tidb-slow.log"，注：由于 TiDB V2.1.8 更新了慢日志格式，所以将慢日志单独输出到了慢日志文件。V2.1.8 之前的版本，该变量的默认值值是 ""。
++ 默认值："tidb-slow.log"，注：由于 TiDB V2.1.8 更新了慢日志格式，所以将慢日志单独输出到了慢日志文件。V2.1.8 之前的版本，该变量的默认值是 ""。
 + 设置后，慢查询日志会单独输出到该文件。
 
 ### `slow-threshold`

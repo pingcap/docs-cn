@@ -38,7 +38,7 @@ Java 应用尽管可以选择在不同的框架中封装，但在最底层一般
 
 目前多数上层框架都会调用 Prepare API 进行 SQL 执行，如果直接使用 JDBC API 进行开发，注意选择使用 Prepare API。
 
-另外需要注意 MySQL Connector/J 实现中默认只会做客户端的语句预处理，会将 `?` 在客户端替换后以文本形式发送到客户端，所以除了要使用 Prepare API，还需要在 JDBC 连接参数中配置 `useServerPrepStmts = true`，才能在 TiDB 服务器端进行语句预处理（下面参数配置章节有详细介绍）。
+另外需要注意 MySQL Connector/J 实现中默认只会做客户端的语句预处理，会将 `?` 在客户端替换后以文本形式发送到服务端，所以除了要使用 Prepare API，还需要在 JDBC 连接参数中配置 `useServerPrepStmts = true`，才能在 TiDB 服务器端进行语句预处理（下面参数配置章节有详细介绍）。
 
 #### 使用 Batch 批量插入更新
 
@@ -129,6 +129,35 @@ insert into t(a) values(12);
 insert into t(a) values(10),(11),(12);
 ```
 
+需要注意的是，insert 语句的改写，只能将多个 values 后的值拼接成一整条 SQL，insert 语句如果有其他差异将无法被改写。
+例如：
+
+{{< copyable "sql" >}}
+
+```sql
+insert into t (a) values (10) on duplicate key update a = 10;
+insert into t (a) values (11) on duplicate key update a = 11;
+insert into t (a) values (12) on duplicate key update a = 12;
+```
+
+将无法被改写成一条语句。该例子中，如果将 SQL 改写成如下形式：
+
+{{< copyable "sql" >}}
+
+```sql
+insert into t (a) values (10) on duplicate key update a = values(a);
+insert into t (a) values (11) on duplicate key update a = values(a);
+insert into t (a) values (12) on duplicate key update a = values(a);
+```
+
+即可满足改写条件，最终被改写成：
+
+{{< copyable "sql" >}}
+
+```sql
+insert into t (a) values (10), (11), (12) on duplicate key update a = values(a);
+```
+
 批量更新时如果有 3 处或 3 处以上更新，则 SQL 语句会改写为 multiple-queries 的形式并发送，这样可以有效减少客户端到服务器的请求开销，但副作用是会产生较大的 SQL 语句，例如这样：
 
 {{< copyable "sql" >}}
@@ -166,7 +195,7 @@ Java 的连接池实现很多 ([HikariCP](https://github.com/brettwooldridge/Hik
 比较常见的是应用需要根据自身情况配置合适的连接池大小，以 HikariCP 为例：
 
 - `maximumPoolSize`：连接池最大连接数，配置过大会导致 TiDB 消耗资源维护无用连接，配置过小则会导致应用获取连接变慢，所以需根据应用自身特点配置合适的值，可参考[这篇文章](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)。
-- `minimumIdle`：连接池最大空闲连接数，主要用于在应用空闲时存留一些连接以应对突发请求，同样是需要根据业务情况进行配置。
+- `minimumIdle`：连接池最小空闲连接数，主要用于在应用空闲时存留一些连接以应对突发请求，同样是需要根据业务情况进行配置。
 
 应用在使用连接池时需要注意连接使用完成后归还连接，推荐应用使用对应的连接池相关监控（如 `metricRegistry`），通过监控能及时定位连接池问题。
 
