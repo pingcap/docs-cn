@@ -10,13 +10,11 @@ category: reference
 
 ## 概述
 
-Follower read 功能是指在强一致性读的前提下使用 Region 的 follower 副本来承载数据读取的任务，从而提升 TiDB 集群的吞吐能力并降低 leader 负载。
-
-Follower read 包含一系列将 TiKV 读取负载从 Region 的 leader 副本上 offload 到 follower 副本的负载均衡机制。TiKV 的 follower read 实现可以保证单行数据读取的线性一致性，配合 TiDB Snapshot Isolation 事务隔离级别，可以为用户提供强一致的数据读取能力。
+Follower read 功能是指在强一致性读的前提下使用 Region 的 follower 副本来承载数据读取的任务，从而提升 TiDB 集群的吞吐能力并降低 leader 负载。Follower read 包含一系列将 TiKV 读取负载从 Region 的 leader 副本上 offload 到 follower 副本的负载均衡机制。TiKV 的 follower read 实现可以保证单行数据读取的线性一致性，配合 TiDB Snapshot Isolation 事务隔离级别，可以为用户提供强一致的数据读取能力。
 
 > **注意：**
 >
-> 为了获得强一致读取的能力，在当前的实现中，follower 节点需要额外付出 read index 开销。因此目前 follower read 的主要益处是隔离集群的读写请求以及提升整体读取吞吐。从单个请求的 latency 角度看，会比传统的 leader 读取多付出一次 read index Raft 交互开销。
+> 为了获得强一致读取的能力，在当前的实现中，follower 节点需要额外付出 `ReadIndex` 开销。因此目前 follower read 的主要益处是隔离集群的读写请求以及提升整体读取吞吐。从单个请求的 latency 角度看，会比传统的 leader 读取多付出一次与 Raft `ReadIndex` 的交互开销。
 
 ## 使用方式
 
