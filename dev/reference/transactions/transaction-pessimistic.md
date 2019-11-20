@@ -62,6 +62,6 @@ innoDB 通过实现 gap lock，支持了阻塞范围内并发的 INSERT 语句�
 
 TiDB 不支持 gap lock，也就不需要付出相应的并发性能的代价。
 
-- 不支持 SELECT LOCK IN SHARE MODE。
+- TiDB 不支持 SELECT LOCK IN SHARE MODE。
 
 当前版本暂时没有支持。使用这个语句执行的时候，效果和没有加锁是一样的，不会阻塞其他事务的读写。
