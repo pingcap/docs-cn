@@ -236,7 +236,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 
         ```toml
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "pb", "kafka", "flash".
+        # Valid values are "mysql", "pb", "kafka".
         db-type = "mysql"
 
         # the downstream MySQL protocol database
@@ -245,9 +245,6 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
         user = "root"
         password = "123456"
         port = 3306
-        # Time and size limits for flash batch write
-        # time-limit = "30s"
-        # size-limit = "100000"
         ```
 
     - 以下游为 proto buffer（pb）格式的本地文件为例
@@ -262,7 +259,7 @@ Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用
 
         ```toml
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "pb", "kafka", "flash".
+        # Valid values are "mysql", "pb", "kafka".
         db-type = "pb"
 
         # Uncomment this if you want to use `pb` or `sql` as `db-type`.
@@ -417,7 +414,7 @@ Drainer="192.168.0.13"
         -data-dir string
             Drainer 数据存储位置路径 (默认 "data.drainer")
         -dest-db-type string
-            Drainer 下游服务类型 (默认为 mysql，支持 kafka、pb、flash)
+            Drainer 下游服务类型 (默认为 mysql，支持 kafka、pb)
         -detect-interval int
             向 PD 查询在线 Pump 的时间间隔 (默认 10，单位 秒)
         -disable-detect
@@ -485,7 +482,7 @@ Drainer="192.168.0.13"
         disable-dispatch = false
 
         # Drainer 下游服务类型（默认为 mysql）
-        # 参数有效值为 "mysql"，"pb"，"kafka"，"flash"
+        # 参数有效值为 "mysql"，"pb"，"kafka"
         db-type = "mysql"
 
         # db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test")，
