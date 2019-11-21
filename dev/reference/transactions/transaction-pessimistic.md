@@ -54,14 +54,10 @@ TiDB 默认使用乐观事务模式，存在事务提交时因为冲突而失败
 
 ## 和 MySQL innoDB 的差异
 
-- TiDB 使用 range 作为 WHERE 条件，执行 DML 和 SELECT FOR UPDATE 语句时不会阻塞范围内并发的 INSERT 语句的执行。 
+1. TiDB 使用 range 作为 WHERE 条件，执行 DML 和 SELECT FOR UPDATE 语句时不会阻塞范围内并发的 INSERT 语句的执行。
 
-innoDB 通过实现 gap lock，支持了阻塞范围内并发的 INSERT 语句的执行，主要目的是为了支持 statement based binlog。
+    innoDB 通过实现 gap lock，支持阻塞 range 内并发的 INSERT 语句的执行，其主要目的是为了支持 statement based binlog，因此有些业务会通过降低隔离级别到 READ COMMITTED 来避免 gap lock 导致的并发性能问题。TiDB 不支持 gap lock，也就不需要付出相应的并发性能的代价。
 
-有些业务通过降低隔离级别到 READ COMMITTED 来避免 gap lock 导致的并发性能问题。
+2. TiDB 不支持 SELECT LOCK IN SHARE MODE。
 
-innoDB 通过实现 gap lock，支持阻塞 range 内并发的 INSERT 语句的执行，其主要目的是为了支持 statement based binlog，因此有些业务会通过降低隔离级别到 READ COMMITTED 来避免 gap lock 导致的并发性能问题。TiDB 不支持 gap lock，也就不需要付出相应的并发性能的代价。
-
-- TiDB 不支持 SELECT LOCK IN SHARE MODE。
-
-当前版本暂时没有支持。使用这个语句执行的时候，效果和没有加锁是一样的，不会阻塞其他事务的读写。
+    当前版本暂时没有支持。使用这个语句执行的时候，效果和没有加锁是一样的，不会阻塞其他事务的读写。
