@@ -26,7 +26,7 @@ TiDB 默认使用乐观事务模式，存在事务提交时因为冲突而失败
 
 - 乐观事务和悲观事务可以共存，事务可以任意指定使用乐观模式或悲观模式来执行。
 
-- 通过设置 `innodb_wait_timeout` 变量，设置等锁超时时间，等锁超时后返回兼容 MySQL 的错误码 `1205`。 <span class="version-mark">New in v3.0.6</span>
+- 通过设置 `innodb_wait_timeout` 变量 <span class="version-mark">从 v3.0.6 开始引入</span>，设置等锁超时时间，等锁超时后返回兼容 MySQL 的错误码 `1205`。
 
 ## 悲观事务的使用方法
 
