@@ -80,7 +80,7 @@ category: how-to
 kubectl get bk -n test1
 ```
 
-`.spec.secretName`：访问备份恢复目标 TiDB 集群所需密码的 secret
+`.spec.secretName`：访问备份恢复目标 TiDB 集群所需访问凭证的 secret
 
 `.spec.storageClassName`：备份恢复时需要指定使用的 PV 类型，如果不指定则默认使用 tidb-operator 启动参数中 `default-backup-storage-class-name` 指定的值，这个值默认为 `standard`
 

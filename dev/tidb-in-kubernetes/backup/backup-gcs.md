@@ -9,7 +9,7 @@ category: how-to
 
 ## Ad-hoc 全量备份
 
-Ad-hoc 全量备份用过创建一个自定义的 `Backup` CR 对象来描述一次备份，tidb-operator 根据这个 `Backup` 对象来完成具体的备份过程，如果备份过程中出现错误程序不会自动重试，此时需要人工介入处理。
+Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一次备份，tidb-operator 根据这个 `Backup` 对象来完成具体的备份过程，如果备份过程中出现错误程序不会自动重试，此时需要人工介入处理。
 
 为了更好的说明备份的使用方式，我们假设需要对部署在 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1` 进行数据备份，下面是具体操作过程：
 
@@ -23,7 +23,7 @@ Ad-hoc 全量备份用过创建一个自定义的 `Backup` CR 对象来描述一
     kubectl apply -f backup-rbac.yaml -n test1
     ```
 
-2. 创建 `gcs-secret` secret，里面存放了用来访问 gcs 的凭证，文件 google-credentials.json 中存放的是你从 GCP console 上下载的 service account key，具体操作参考 GCP [官方文档](https://cloud.google.com/docs/authentication/getting-started)
+2. 创建 `gcs-secret` secret，里面存放了用来访问 gcs 的凭证，文件 google-credentials.json 中存放的是用户从 GCP console 上下载的 service account key，具体操作参考 GCP [官方文档](https://cloud.google.com/docs/authentication/getting-started)
 
     {{< copyable "shell-regular" >}}
 
@@ -132,7 +132,7 @@ gcs 支持的 bucket ACL 策略有如下几种：
 
 ## 定时全量备份
 
-通过用户设置的备份策略定时备份 TiDB 集群，同时可配置备份的保留策略，定时全量备份通过自定义的 `BackupSchedule` CR 对象来描述，每次到备份时间点会触发一次全量备份，定时全量备份底层是通过 Ad-hoc 全量备份来实现。下面是创建定期全量备份的具体步骤：
+用户通过设置备份策略定时备份 TiDB 集群，同时可配置备份的保留策略避免产生过多的备份。定时全量备份通过自定义的 `BackupSchedule` CR 对象来描述，每次到备份时间点会触发一次全量备份，定时全量备份底层通过 Ad-hoc 全量备份来实现。下面是创建定期全量备份的具体步骤：
 
 ### 定时全量备份环境准备
 
@@ -197,7 +197,7 @@ kubectl get bks -n test1 -owide
 
  `.spec.maxBackups`: 一种备份保留策略，定时备份最多保留的备份个数，超过这个数目，就会将过时的备份删除，如果将这个最大备份保留格式设置为0，则表示保留所有备份。
 
- `.spec.maxReservedTime`：这个和上面的参数一样，也是种一种备份保留策略，这个是按时间保留，比如设置为 `24h`, 代表只保留最近 24 小时内的备份条目，超过这个时间的备份都会被清除。如果最大备份保留个数和最大备份保留时间两者都被设置了，则以最大备份保留时间为准。
+ `.spec.maxReservedTime`：这个和上面的参数一样，也是种一种备份保留策略，这个是按时间保留，比如设置为 `24h`, 代表只保留最近 24 小时内的备份条目，超过这个时间的备份都会被清除，时间设置格式参考[这里](https://golang.org/pkg/time/#ParseDuration)。如果最大备份保留个数和最大备份保留时间两者被同时设置，则以最大备份保留时间为准。
 
  `.spec.schedule`：cron 时间调度格式，具体格式参考[这里](https://en.wikipedia.org/wiki/Cron)。
 
