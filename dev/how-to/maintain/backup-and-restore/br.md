@@ -48,12 +48,6 @@ BR 还包含以下三个子命令：
 ### 常用选项
 
 * `--pd`：用于连接的选项，表示 PD 服务地址，例如 `"${PDIP}:2379"`。
-* `--connect`：用于连接的选项，表示 TiDB 服务地址，例如 `"root:@tcp(${TiDBIP}:4000)/"`。
-
-    > **注意：**
-    >
-    > 该选项只可用在 `restore` 命令中。使用 BR 恢复集群时必须指定该选项，否则 BR 会报错退出。用例：`br restore table --connect "root:@tcp(${TiDBIP}:4000)/"`。
-
 * `-h`/`--help`：获取所有命令和子命令的使用帮助。例如 `br backup --help`。
 * `--ca`：指定 PEM 格式的受信任 CA 的证书文件路径。
 * `--cert`：指定 PEM 格式的 SSL 证书文件路径。
@@ -71,7 +65,8 @@ BR 还包含以下三个子命令：
 {{< copyable "shell-regular" >}}
 
 ```shell
-br --pd ${PDIP}:2379 backup full \
+br backup full \
+    --pd ${PDIP}:2379 \
     --storage "local:///tmp/backup" \
     --ratelimit 120 \
     --concurrency 4 \
@@ -83,12 +78,13 @@ br --pd ${PDIP}:2379 backup full \
 备份期间有进度条在终端中显示。当进度条前进到 100% 时，说明备份已完成。在完成备份后，BR 为了确保数据安全性，还会校验备份数据。进度条效果如下：
 
 ```shell
-br --pd ${PDIP}:2379 backup full \
+br backup full \
+    --pd ${PDIP}:2379 \
     --storage "local:///tmp/backup" \
     --ratelimit 120 \
     --concurrency 4 \
     --log-file backupfull.log
-Full Backup <---------↖................................................> 17.12%.
+Full Backup <---------/................................................> 17.12%.
 ```
 
 ### 备份单张表的数据
@@ -100,7 +96,8 @@ Full Backup <---------↖................................................> 17.12
 {{< copyable "shell-regular" >}}
 
 ```shell
-br --pd ${PDIP}:2379 backup table \
+br backup table \
+    --pd ${PDIP}:2379 \
     --db test \
     --table usertable \
     --storage "local:///tmp/backup" \
@@ -124,23 +121,23 @@ br --pd ${PDIP}:2379 backup table \
 {{< copyable "shell-regular" >}}
 
 ```shell
-br --pd ${PDIP}:2379 restore full \
+br restore full \
+    --pd ${PDIP}:2379 \
     --storage "local:///tmp/backup" \
-    --connect "root:@tcp(${TiDBIP}:4000)/" \
     --concurrency 128 \
     --log-file restorefull.log
 ```
 
-以上命令中 `--connect` 选项指定了需要恢复的集群地址。`--concurrency` 指定了该恢复任务内部的子任务的并发数，同时把 BR 的 log 写到 `restorefull.log` 文件中。
+`--concurrency` 指定了该恢复任务内部的子任务的并发数，同时把 BR 的 log 写到 `restorefull.log` 文件中。
 
 恢复期间还有进度条会在终端中显示，当进度条前进到 100% 时，说明恢复已完成。在完成恢复后，BR 为了确保数据安全性，还会校验恢复数据。进度条效果如下：
 
 ```shell
-br --pd ${PDIP}:2379 restore full \
+br restore full \
+    --pd ${PDIP}:2379 \
     --storage "local:///tmp/backup" \
-    --connect "root:@tcp(${TiDBIP}:4000)/" \
     --log-file restorefull.log
-Full Restore <---------↖...............................................> 17.12%.
+Full Restore <---------/...............................................> 17.12%.
 ```
 
 ### 恢复某个数据库
@@ -152,10 +149,10 @@ Full Restore <---------↖...............................................> 17.12
 {{< copyable "shell-regular" >}}
 
 ```shell
-br --pd ${PDIP}:2379 restore db \
+br restore db \
+    --pd ${PDIP}:2379 \
     --db "test" \
     --storage "local:///tmp/backup" \
-    --connect "root:@tcp(${TiDBIP}:4000)/" \
     --log-file restorefull.log
 ```
 
@@ -170,11 +167,11 @@ br --pd ${PDIP}:2379 restore db \
 {{< copyable "shell-regular" >}}
 
 ```shell
-br --pd ${PDIP}:2379 restore table \
+br restore table \
+    --pd ${PDIP}:2379 \
     --db "test" \
     --table "usertable" \
     --storage "local:///tmp/backup" \
-    --connect "root:@tcp(${TiDBIP}:4000)/" \
     --log-file restorefull.log
 ```
 
