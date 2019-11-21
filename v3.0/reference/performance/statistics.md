@@ -202,7 +202,7 @@ SHOW STATS_HISTOGRAMS [ShowLikeOrWhere];
 | db_name  |  数据库名    |
 | table_name | 表名 |
 | partition_name | 分区名 |
-| column_name | 列名 |
+| column_name | 根据 is_index 来变化：is_index 为 0 时是列名，为 1 时是索引名 |
 | is_index | 是否是索引列 |
 | update_time | 更新时间 |
 | distinct_count | 不同值数量 |
