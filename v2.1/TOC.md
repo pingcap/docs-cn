@@ -256,6 +256,9 @@
     - [监控告警](/v2.1/reference/tidb-binlog/monitor.md)
     - [增量恢复](/v2.1/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/v2.1/reference/tidb-binlog/binlog-slave-client.md)
+    + 故障诊断
+      - [故障诊断](/v2.1/reference/tidb-binlog/troubleshoot/binlog.md)
+      - [常见错误修复](/v2.1/reference/tidb-binlog/troubleshoot/error-handling.md)
     - [FAQ](/v2.1/reference/tidb-binlog/faq.md)
   + 周边工具
     - [Mydumper](/v2.1/reference/tools/mydumper.md)

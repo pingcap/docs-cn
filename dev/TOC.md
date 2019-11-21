@@ -250,6 +250,7 @@
     - [执行计划绑定](/dev/reference/performance/execution-plan-bind.md)
     - [统计信息概述](/dev/reference/performance/statistics.md)
     - [Optimizer Hints](/dev/reference/performance/optimizer-hints.md)
+    - [Follower Read](/dev/reference/performance/follower-read.md)
     - [使用 SQL 语句检查 TiDB 集群状态](/dev/reference/performance/check-cluster-status-using-sql-statements.md)
     - [Statement Summary Table](/dev/reference/performance/statement-summary.md)
     - [TiKV 调优](/dev/reference/performance/tune-tikv.md)
@@ -276,6 +277,9 @@
     - [监控告警](/dev/reference/tidb-binlog/monitor.md)
     - [增量恢复](/dev/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/dev/reference/tidb-binlog/binlog-slave-client.md)
+    + 故障诊断
+      - [故障诊断](/dev/reference/tidb-binlog/troubleshoot/binlog.md)
+      - [常见错误修复](/dev/reference/tidb-binlog/troubleshoot/error-handling.md)
     - [FAQ](/dev/reference/tidb-binlog/faq.md)
   + 周边工具
     - [Mydumper](/dev/reference/tools/mydumper.md)
