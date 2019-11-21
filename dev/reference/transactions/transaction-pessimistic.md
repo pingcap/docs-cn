@@ -10,7 +10,7 @@ TiDB 默认使用乐观事务模式，存在事务提交时因为冲突而失败
 
 ## 悲观事务模式的行为
 
-悲观事务的行为和 MySQL 基本一致（不一致的地方详见[和 MySQL innoDB 的差异](#和-mysql-innodb-的差异)）：
+悲观事务的行为和 MySQL 基本一致（不一致之处详见[和 MySQL InnoDB 的差异](#和-mysql-innodb-的差异)）：
 
 - `SELECT FOR UPDATE` 会读取已提交的最新数据，并对读取到的数据加悲观锁。
 
@@ -26,9 +26,9 @@ TiDB 默认使用乐观事务模式，存在事务提交时因为冲突而失败
 
 - 乐观事务和悲观事务可以共存，事务可以任意指定使用乐观模式或悲观模式来执行。
 
-- 通过设置 @@innodb_wait_timeout 变量，设置等锁超时时间，等锁超时后返回兼容 MySQL 的错误码 1205。
+- 通过设置 `innodb_wait_timeout` 变量，设置等锁超时时间，等锁超时后返回兼容 MySQL 的错误码 1205。
 
-- 支持 FOR UPDATE NOWAIT 语法，遇到锁时不会阻塞等锁，而是返回兼容 MySQL 的错误码 3572。
+- 支持 `FOR UPDATE NOWAIT` 语法，遇到锁时不会阻塞等锁，而是返回兼容 MySQL 的错误码 3572。
 
 ## 悲观事务的使用方法
 
@@ -52,12 +52,12 @@ TiDB 默认使用乐观事务模式，存在事务提交时因为冲突而失败
 
 如果想要禁用悲观事务特性，可以修改配置文件，在 `[pessimistic-txn]` 类别下添加 `enable = false`.
 
-## 和 MySQL innoDB 的差异
+## 和 MySQL InnoDB 的差异
 
-1. TiDB 使用 range 作为 WHERE 条件，执行 DML 和 SELECT FOR UPDATE 语句时不会阻塞范围内并发的 INSERT 语句的执行。
+1. TiDB 使用 range 作为 WHERE 条件，执行 DML 和 `SELECT FOR UPDATE` 语句时不会阻塞范围内并发的 `INSERT` 语句的执行。
 
-    innoDB 通过实现 gap lock，支持阻塞 range 内并发的 INSERT 语句的执行，其主要目的是为了支持 statement based binlog，因此有些业务会通过降低隔离级别到 READ COMMITTED 来避免 gap lock 导致的并发性能问题。TiDB 不支持 gap lock，也就不需要付出相应的并发性能的代价。
+    InnoDB 通过实现 gap lock，支持阻塞 range 内并发的 `INSERT` 语句的执行，其主要目的是为了支持 statement based binlog，因此有些业务会通过将隔离级别降低至 READ COMMITTED 来避免 gap lock 导致的并发性能问题。TiDB 不支持 gap lock，也就不需要付出相应的并发性能的代价。
 
-2. TiDB 不支持 SELECT LOCK IN SHARE MODE。
+2. TiDB 不支持 `SELECT LOCK IN SHARE MODE`。
 
     当前版本暂时没有支持。使用这个语句执行的时候，效果和没有加锁是一样的，不会阻塞其他事务的读写。
