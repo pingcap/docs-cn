@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernet
 
 本文介绍了如何在个人电脑（Linux 或 MacOS）上采用 [kind](https://kind.sigs.k8s.io/) 方式在 Kubernetes 上部署 [TiDB Operator](https://github.com/pingcap/tidb-operator) 和 TiDB 集群。
 
-kind 通过 Docker 容器模拟出一个本地的 Kubernetes 集群。kind 的设计初衷是为了在本地进行 Kubernetes 集群的一致性测试，这意味着你可以使用 kind 模拟出你想要的 Kubernetes 版本集群。你可以在 [Docker hub](https://hub.docker.com/r/kindest/node/tags) 中找到你想要部署的 Kubernetes 版本。
+kind 通过使用 Docker 容器作为集群节点模拟出一个本地的 Kubernetes 集群。kind 的设计初衷是为了在本地进行 Kubernetes 集群的一致性测试。Kubernetes 集群版本取决于 kind 使用的镜像，你可以指定任一镜像版本用于集群节点，并在 [Docker hub](https://hub.docker.com/r/kindest/node/tags) 中找到想要部署的 Kubernetes 版本。
 
 > **警告：**
 >
@@ -26,19 +26,19 @@ kind 通过 Docker 容器模拟出一个本地的 Kubernetes 集群。kind 的�
     > 对于 macOS 系统，需要给 Docker 分配 2 核+ CPU 和 4G+ 内存。详情请参考 [Mac 上配置 Docker](https://docs.docker.com/docker-for-mac/#advanced)。
 
 - [Docker](https://docs.docker.com/install/)：版本 >= 17.03
-- [Helm Client](https://helm.sh/docs/using_helm/#installing-the-helm-client)：版本 >= 2.9.0 并且 < 3.0.0
+- [Helm Client](https://helm.sh/docs/intro/install/)：版本 >= 2.9.0 并且 < 3.0.0
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl)：版本 >= 1.10，建议 1.13 或更高版本
 
     > **注意：**
     >
-    > 不同版本 `kubectl` 输出可能略有不同。
+    > 不同 kubectl 版本，输出可能略有不同。
 
 - [kind](https://kind.sigs.k8s.io/docs/user/quick-start/)：版本 >= 0.4.0
-- [net.ipv4.ip_forward](https://linuxconfig.org/how-to-turn-on-off-ip-forwarding-in-linux) 需要被设置为 1
+- [net.ipv4.ip_forward](https://linuxconfig.org/how-to-turn-on-off-ip-forwarding-in-linux) 需要被设置为 `1`
 
 ## 第 1 步：通过 kind 部署 Kubernetes 集群
 
-首先，请确认 Docker 进程正常运行。然后你可以通过脚本命令快速启动一个本地的 Kubernetes 集群。
+首先确认 Docker 进程正常运行，然后你可以通过脚本命令快速启动一个本地的 Kubernetes 集群。
 
 1. Clone 官方提供的代码：
 
@@ -108,15 +108,69 @@ kind 通过 Docker 容器模拟出一个本地的 Kubernetes 集群。kind 的�
 
 ## 第 2 步：在 Kubernetes 集群上部署 TiDB Operator
 
-参考[部署 TiDB Operator](/dev/tidb-in-kubernetes/deploy/tidb-operator.md#安装-tidb-operator)中的操作。
+1. 安装 Helm 并配置 PingCAP 官方 chart 仓库，参考 [使用 Helm](/dev/tidb-in-kubernetes/reference/tools/in-kubernetes.md#使用-helm) 小节中的操作。
+2. 部署 TiDB Operator，参考 [安装 TiDB Operator](/dev/tidb-in-kubernetes/deploy/tidb-operator.md#安装-tidb-operator) 小节中的操作。
 
 ## 第 3 步：在 Kubernetes 集群中部署 TiDB 集群
 
-参考[标准 Kubernetes 上的 TiDB 集群](/dev/tidb-in-kubernetes/deploy/general-kubernetes.md#部署-tidb-集群)中的操作。
+参考[在标准 Kubernetes 上部署 TiDB 集群](/dev/tidb-in-kubernetes/deploy/general-kubernetes.md#部署-tidb-集群)中的操作。
 
 ## 访问数据库和监控面板
 
-参考[查看监控面板](/dev/tidb-in-kubernetes/monitor/tidb-in-kubernetes.md#查看监控面板)中的操作。
+通过 `kubectl port-forward` 暴露服务到主机，可以访问 TiDB 集群。命令中的端口格式为：`<主机端口>:<k8s 服务端口>`。
+
+> **注意：**
+>
+> 如果你不是在本地 PC 而是在远程主机上部署的 kind 环境，可能无法通过 localhost 访问远程主机的服务。如果使用 kubectl 1.13 或者更高版本，可以在执行 `kubectl port-forward` 命令时添加 `--address 0.0.0.0` 选项，在 `0.0.0.0` 暴露端口而不是默认的 `127.0.0.1`：
+>
+> {{< copyable "shell-regular" >}}
+>
+> ```shell
+> kubectl port-forward --address 0.0.0.0 -n tidb svc/<release-name>-grafana 3000:3000
+> ```
+
+- 通过 MySQL 客户端访问 TiDB
+
+    在访问 TiDB 集群之前，请确保已安装 MySQL client。
+
+    1. 使用 kubectl 暴露 TiDB 服务端口：
+
+        {{< copyable "shell-regular" >}}
+
+        ``` shell
+        kubectl port-forward svc/<release-name>-tidb 4000:4000 --namespace=<namespace>
+        ```
+
+        > **注意：**
+        >
+        > 如果代理建立成功，会打印类似输出：`Forwarding from 0.0.0.0:4000 -> 4000`。测试完成后按 `Ctrl + C` 停止代理并退出。
+
+    2. 然后，通过 MySQL 客户端访问 TiDB，打开一个**新**终端标签或者一个**新**终端窗口，执行下面的命令：
+
+        {{< copyable "shell-regular" >}}
+
+        ``` shell
+        mysql -h 127.0.0.1 -P 4000 -u root
+        ```
+
+- 查看监控面板
+
+    1. 使用 kubectl 暴露 Grafana 服务端口：
+
+        {{< copyable "shell-regular" >}}
+
+        ``` shell
+        kubectl port-forward svc/<release-name>-grafana 3000:3000 --namespace=<namespace>
+        ```
+
+        > **注意：**
+        >
+        > 如果代理建立成功，会打印类似输出：`Forwarding from 0.0.0.0:3000 -> 3000`。测试完成后按 `Ctrl + C` 停止代理并退出。
+
+    2. 然后，在浏览器中打开 `http://localhost:3000` 访问 Grafana 监控面板：
+
+        * 默认用户名：admin
+        * 默认密码：admin
 
 ## 删除 TiDB 集群 与 Kubernetes 集群
 
