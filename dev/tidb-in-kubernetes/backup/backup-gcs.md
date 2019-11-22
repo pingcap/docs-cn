@@ -15,7 +15,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一
 
 ### Ad-hoc 全量备份环境准备
 
-1. 在 `test1` 这个 namespace 中创建备份需要的 RBAC 相关资源，下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)
+1. 在 `test1` 这个 namespace 中创建备份需要的 RBAC 相关资源。下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)
 
     {{< copyable "shell-regular" >}}
 
