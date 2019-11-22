@@ -202,7 +202,7 @@ Currently, the `SHOW STATS_HISTOGRAMS` statement returns the following 8 columns
 | `db_name`  |  The database name    |
 | `table_name` | The table name |
 | `partition_name` | The partition name |
-| `column_name` | The column name |
+| `column_name` | The column name (when `is_index` is `0`) or the index name (when `is_index` is `1`) |
 | `is_index` | Whether it is an index column or not |
 | `update_time` | The time of the update |
 | `distinct_count` | The number of different values |
@@ -230,7 +230,7 @@ Currently, the `SHOW STATS_BUCKETS` statement returns the following 10 columns:
 | `db_name`  |  The database name    |
 | `table_name` | The table name |
 | `partition_name` | The partition name |
-| `column_name` | The column name |
+| `column_name` | The column name (when `is_index` is `0`) or the index name (when `is_index` is `1`) |
 | `is_index` | Whether it is an index column or not |
 | `bucket_id` | The ID of a bucket |
 | `count` | The number of all the values that falls on the bucket and the previous buckets |
