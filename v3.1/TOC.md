@@ -268,6 +268,7 @@
     - [高并发写入场景最佳实践](/v3.1/reference/best-practices/high-concurrency.md)
     - [Grafana 监控最佳实践](/v3.1/reference/best-practices/grafana-monitor.md)
     - [PD 调度策略最佳实践](/v3.1/reference/best-practices/pd-scheduling.md)
+    - [海量 Region 集群调优最佳实践](/v3.1/reference/best-practices/massive-regions.md)
   + [TiSpark 使用指南](/v3.1/reference/tispark.md)
   + TiDB Binlog
     - [概述](/v3.1/reference/tidb-binlog/overview.md)
