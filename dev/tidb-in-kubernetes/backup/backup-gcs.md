@@ -23,7 +23,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一
     kubectl apply -f backup-rbac.yaml -n test1
     ```
 
-2. 创建 `gcs-secret` secret，里面存放了用来访问 gcs 的凭证，文件 google-credentials.json 中存放的是用户从 GCP console 上下载的 service account key，具体操作参考 GCP [官方文档](https://cloud.google.com/docs/authentication/getting-started)
+2. 创建 `gcs-secret` secret。该 secret 存放用于访问 GCS 的凭证。`google-credentials.json` 文件存放用户从 GCP console 上下载的 service account key。具体操作参考 [GCP 官方文档](https://cloud.google.com/docs/authentication/getting-started)。
 
     {{< copyable "shell-regular" >}}
 
