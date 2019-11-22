@@ -464,6 +464,10 @@ Before replicating data using Syncer, check the following items:
 
     TiDB differs from MySQL in [Character Set](/v2.1/reference/sql/character-set.md).
 
+7. Check whether the table to be replicated has a primary key or a unique index.
+
+    If the table does not have a primary key or a unique index, idempotent operations cannot be achieved. In this situation, a full table scan is performed every time an entry of data is updated in the downstream, which might slow down the replication task. Therefore, it is recommended that you add a primary key to every table to be replicated.
+
 ## Syncer monitoring solution
 
 The `syncer` monitoring solution contains the following components:
