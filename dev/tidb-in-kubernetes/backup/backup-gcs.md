@@ -9,7 +9,7 @@ category: how-to
 
 ## Ad-hoc 全量备份
 
-Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一次备份，tidb-operator 根据这个 `Backup` 对象来完成具体的备份过程，如果备份过程中出现错误程序不会自动重试，此时需要人工介入处理。
+Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一次备份。TiDB Operator 根据这个 `Backup` 对象来完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。
 
 为了更好的说明备份的使用方式，我们假设需要对部署在 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1` 进行数据备份，下面是具体操作过程：
 
