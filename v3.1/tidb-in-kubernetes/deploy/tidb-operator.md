@@ -70,27 +70,6 @@ Refer to [Use Helm](/v3.1/tidb-in-kubernetes/reference/tools/in-kubernetes.md#us
 
 Refer to [Local PV Configuration](/v3.1/tidb-in-kubernetes/reference/configuration/storage-class.md#local-pv-configuration) to set up local persistent volumes in your Kubernetes cluster.
 
-### Deploy local-static-provisioner
-
-After mounting all data disks on Kubernetes nodes, you can deploy [local-volume-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner) that can automatically provision the mounted disks as Local PersistentVolumes.
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml
-```
-
-Check the Pod and PV status with the following commands:
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl get po -n kube-system -l app=local-volume-provisioner && \
-kubectl get pv | grep local-storage
-```
-
-The local-volume-provisioner creates a volume for each mounted disk. Note that on GKE, this will create local volumes of only 375GiB in size and that you need to manually alter the setup to create larger disks.
-
 ## Install TiDB Operator
 
 TiDB Operator uses [CRD (Custom Resource Definition)](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/) to extend Kubernetes. Therefore, to use TiDB Operator, you must first create the `TidbCluster` custom resource type, which is a one-time job in your Kubernetes cluster.
