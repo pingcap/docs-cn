@@ -88,7 +88,7 @@ DM-worker 内部用于从上游拉取 Binlog 并写入数据到 Relay log 的处
 
 ### Subtask Status
 
-数据迁移子任务所处的状态，目前包括 `New`、`Running`、`Paused`、`Stopped` 及 `Finished` 5 种状态。有关数据迁移任务、子任务状态的更多信息可参考[任务状态](/dev/reference/tools/data-migration/query-status.md#任务状态)。 
+数据迁移子任务所处的状态，目前包括 `New`、`Running`、`Paused`、`Stopped` 及 `Finished` 5 种状态。有关数据迁移任务、子任务状态的更多信息可参考[任务状态](/dev/reference/tools/data-migration/query-status.md#任务状态)。
 
 ## T
 
