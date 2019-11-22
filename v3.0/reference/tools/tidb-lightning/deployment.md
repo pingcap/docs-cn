@@ -252,6 +252,8 @@ Follow the link to download the TiDB Lightning package (choose the same version 
     # Stream channel window size. The stream will be blocked on channel full.
     # stream-channel-window = 128
     # Maximum number of open engines.
+    # Must be greater than the sum of the `index-concurrency` value and
+    # the `table-concurrency` value in `tidb-lightning`.
     max-open-engines = 8
     # Maximum upload speed (bytes per second) from Importer to TiKV.
     # upload-speed-limit = "512MB"
