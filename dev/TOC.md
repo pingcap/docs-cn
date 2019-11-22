@@ -282,7 +282,8 @@
     - [PD](/dev/reference/key-monitoring-metrics/pd-dashboard.md)
     - [TiKV](/dev/reference/key-monitoring-metrics/tikv-dashboard.md)
   - [Alert Rules](/dev/reference/alert-rules.md)
-  - [Best Practices](https://pingcap.com/blog/2017-07-24-tidbbestpractice/)
+  + Best Practices
+    - [Highly Concurrent Write Best Practices](/dev/reference/best-practices/high-concurrency.md)
   - [TiSpark](/dev/reference/tispark.md)
   + TiDB Binlog
     - [Overview](/dev/reference/tidb-binlog/overview.md)
