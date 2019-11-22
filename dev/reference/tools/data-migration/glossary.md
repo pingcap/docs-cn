@@ -16,21 +16,21 @@ category: glossary
 
 MySQL/MariaDB 生成的 Binlog 文件中的数据变更信息，具体请参考 [MySQL Binlog Event](https://dev.mysql.com/doc/internals/en/binlog-event.html) 与 [MariaDB Binlog Event](https://mariadb.com/kb/en/library/1-binlog-events/)。
 
-### Binlog Position
-
-特定 Binlog Event 在 Binlog 文件中的位置偏移信息，具体请参考 [MySQL SHOW BINLOG EVENTS](https://dev.mysql.com/doc/refman/8.0/en/show-binlog-events.html) 与 [MariaDB SHOW BINLOG EVENTS](https://mariadb.com/kb/en/library/show-binlog-events/)。
-
-### Black & white table lists
-
-针对上游数据库实例表的黑白名单过滤功能，具体可参考 [Black & white table lists](/dev/reference/tools/data-migration/overview.md#black--white-table-lists)。该功能与 [MySQL Replication Filtering](https://dev.mysql.com/doc/refman/5.6/en/replication-rules.html)/[MariaDB Replication Filters](https://mariadb.com/kb/en/library/replication-filters/) 类似。
-
 ### Binlog event filter
 
 比 Black & white table lists 更加细粒度的过滤功能，具体可参考 [Binlog event filter](/dev/reference/tools/data-migration/overview.md#binlog-event-filter)。
 
+### Binlog Position
+
+特定 Binlog Event 在 Binlog 文件中的位置偏移信息，具体请参考 [MySQL SHOW BINLOG EVENTS](https://dev.mysql.com/doc/refman/8.0/en/show-binlog-events.html) 与 [MariaDB SHOW BINLOG EVENTS](https://mariadb.com/kb/en/library/show-binlog-events/)。
+
 ### Binlog Replication 处理单元
 
 DM-worker 内部用于读取上游 Binlog 或本地 Relay Log 并迁移到下游的处理单元，每个 Subtask 对应一个 Binlog Replication 处理单元。在当前文档中，有时也称作 Sync 处理单元。
+
+### Black & white table lists
+
+针对上游数据库实例表的黑白名单过滤功能，具体可参考 [Black & white table lists](/dev/reference/tools/data-migration/overview.md#black--white-table-lists)。该功能与 [MySQL Replication Filtering](https://dev.mysql.com/doc/refman/5.6/en/replication-rules.html)/[MariaDB Replication Filters](https://mariadb.com/kb/en/library/replication-filters/) 类似。
 
 ## D
 
