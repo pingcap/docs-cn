@@ -5,7 +5,7 @@ category: how-to
 
 # 在 Kubernetes 上备份 TiDB 集群到 GCS
 
-这篇文档详细描述了如何将 Kubernetes 上的 TiDB 集群数据备份到 [gcs](https://cloud.google.com/storage/docs/) 上, 这里说到的备份均是指全量备份(定时全量备份和 Ad-hoc 全量备份), 底层通过使用 [`mydumper`](/dev/reference/tools/mydumper.md) 获取集群的逻辑备份，然后在将备份数据上传到远端 gcs。
+本文档详细描述了如何将 Kubernetes 上 TiDB 集群的数据备份到 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上。本文档中的“备份”，均是指全量备份（Ad-hoc 全量备份和定时全量备份），底层通过使用 [`mydumper`](/dev/reference/tools/mydumper.md) 获取集群的逻辑备份，然后再将备份数据上传到远端 GCS。
 
 ## Ad-hoc 全量备份
 
