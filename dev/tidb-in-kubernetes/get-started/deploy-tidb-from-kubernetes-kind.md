@@ -169,8 +169,8 @@ kind 通过使用 Docker 容器作为集群节点模拟出一个本地的 Kubern
 
     2. 然后，在浏览器中打开 `http://localhost:3000` 访问 Grafana 监控面板：
 
-        * 默认用户名：admin
-        * 默认密码：admin
+        - 默认用户名：admin
+        - 默认密码：admin
 
 ## 删除 TiDB 集群 与 Kubernetes 集群
 
