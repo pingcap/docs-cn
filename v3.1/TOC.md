@@ -251,6 +251,7 @@
     - [执行计划绑定](/v3.1/reference/performance/execution-plan-bind.md)
     - [统计信息概述](/v3.1/reference/performance/statistics.md)
     - [Optimizer Hints](/v3.1/reference/performance/optimizer-hints.md)
+    - [Follower Read](/v3.1/reference/performance/follower-read.md)
     - [使用 SQL 语句检查 TiDB 集群状态](/v3.1/reference/performance/check-cluster-status-using-sql-statements.md)
     - [Statement Summary Table](/v3.1/reference/performance/statement-summary.md)
     - [TiKV 调优](/v3.1/reference/performance/tune-tikv.md)
@@ -267,6 +268,7 @@
     - [高并发写入场景最佳实践](/v3.1/reference/best-practices/high-concurrency.md)
     - [Grafana 监控最佳实践](/v3.1/reference/best-practices/grafana-monitor.md)
     - [PD 调度策略最佳实践](/v3.1/reference/best-practices/pd-scheduling.md)
+    - [海量 Region 集群调优最佳实践](/v3.1/reference/best-practices/massive-regions.md)
   + [TiSpark 使用指南](/v3.1/reference/tispark.md)
   + TiDB Binlog
     - [概述](/v3.1/reference/tidb-binlog/overview.md)
@@ -276,6 +278,9 @@
     - [监控告警](/v3.1/reference/tidb-binlog/monitor.md)
     - [增量恢复](/v3.1/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/v3.1/reference/tidb-binlog/binlog-slave-client.md)
+    + 故障诊断
+      - [故障诊断](/v3.1/reference/tidb-binlog/troubleshoot/binlog.md)
+      - [常见错误修复](/v3.1/reference/tidb-binlog/troubleshoot/error-handling.md)
     - [FAQ](/v3.1/reference/tidb-binlog/faq.md)
   + 周边工具
     - [Mydumper](/v3.1/reference/tools/mydumper.md)
@@ -347,7 +352,6 @@
   - [TiDB Operator 简介](/v3.1/tidb-in-kubernetes/tidb-operator-overview.md)
   + 快速上手
     - [kind](/v3.1/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind.md)
-    - [DinD](/v3.1/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
     - [GKE](/v3.1/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
     - [Minikube](/v3.1/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube.md)
   + 部署

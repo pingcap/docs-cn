@@ -178,7 +178,6 @@
       - [`SHOW COLLATION`](/v2.1/reference/sql/statements/show-collation.md)
       - [`SHOW [FULL] COLUMNS FROM`](/v2.1/reference/sql/statements/show-columns-from.md)
       - [`SHOW CREATE TABLE`](/v2.1/reference/sql/statements/show-create-table.md)
-      - [`SHOW CREATE USER`](/v2.1/reference/sql/statements/show-create-user.md)
       - [`SHOW DATABASES`](/v2.1/reference/sql/statements/show-databases.md)
       - [`SHOW ENGINES`](/v2.1/reference/sql/statements/show-engines.md)
       - [`SHOW ERRORS`](/v2.1/reference/sql/statements/show-errors.md)
@@ -247,6 +246,7 @@
     - [Java 应用开发最佳实践](/v2.1/reference/best-practices/java-app.md)
     - [Grafana 监控最佳实践](/v2.1/reference/best-practices/grafana-monitor.md)
     - [PD 调度策略最佳实践](/v2.1/reference/best-practices/pd-scheduling.md)
+    - [海量 Region 集群调优最佳实践](/v2.1/reference/best-practices/massive-regions.md)
   + [TiSpark 使用指南](/v2.1/reference/tispark.md)
   + TiDB Binlog
     - [概述](/v2.1/reference/tidb-binlog/overview.md)
@@ -256,6 +256,9 @@
     - [监控告警](/v2.1/reference/tidb-binlog/monitor.md)
     - [增量恢复](/v2.1/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/v2.1/reference/tidb-binlog/binlog-slave-client.md)
+    + 故障诊断
+      - [故障诊断](/v2.1/reference/tidb-binlog/troubleshoot/binlog.md)
+      - [常见错误修复](/v2.1/reference/tidb-binlog/troubleshoot/error-handling.md)
     - [FAQ](/v2.1/reference/tidb-binlog/faq.md)
   + 周边工具
     - [Mydumper](/v2.1/reference/tools/mydumper.md)
