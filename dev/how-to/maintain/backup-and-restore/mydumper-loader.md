@@ -1,6 +1,7 @@
 ---
 title: 使用 Mydumper/Loader 进行备份与恢复
 category: how-to
+aliases: ['/docs-cn/dev/how-to/maintain/backup-and-restore/']
 ---
 
 # 备份与恢复
