@@ -84,7 +84,7 @@ v2.1 版本中的 Raftstore 为单线程。因此 Region 数超过 10 万后，R
 
 详情请参考[如何配置 Region Merge](https://github.com/tikv/tikv/blob/master/docs/how-to/configure/region-merge.md)。
 
-同时，默认配置的 `Region Merge` 的参数设置较为保守，可以根据需求参考 [TiDB 最佳实践系列（二）PD 调度策略](/v2.1/reference/best-practices/pd-scheduling.md#region-merge-速度慢) 中提供的方法加快 `Region Merge` 过程的速度。
+同时，默认配置的 `Region Merge` 的参数设置较为保守，可以根据需求参考 [PD 调度策略最佳实践](/v2.1/reference/best-practices/pd-scheduling.md#region-merge-速度慢) 中提供的方法加快 `Region Merge` 过程的速度。
 
 #### 方法三：调整 `raft-base-tick-interval`
 
@@ -130,4 +130,4 @@ PD 需要将 Region Meta 信息持久化在 etcd 上，以保证切换 PD Leader
 
 ### Prometheus 查询 metrics 的速度慢
 
-在大规模集群中，随着 TiKV 实例数的增加，Prometheus 的查询 metrics 时的计算压力较大，导致 Grafana 查看 metrics 时速度较慢。v3.0 版本中设置了一些 metrics 的预计算，让这个问题有所缓解。
+在大规模集群中，随着 TiKV 实例数的增加，Prometheus 查询 metrics 时的计算压力较大，导致 Grafana 查看 metrics 的速度较慢。v3.0 版本中设置了一些 metrics 的预计算，让这个问题有所缓解。
