@@ -29,7 +29,7 @@ category: how-to
 
 ## 将指定备份恢复到 TiDB 集群
 
-1. 创建 restore CR, 从指定备份数据恢复 TiDB 集群
+1. 创建 restore CR，将指定的备份数据恢复至 TiDB 集群：
 
     {{< copyable "shell-regular" >}}
 
