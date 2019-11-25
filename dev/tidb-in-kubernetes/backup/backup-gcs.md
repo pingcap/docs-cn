@@ -138,7 +138,7 @@ GCS 支持以下几种 bucket ACL 策略：
 
 同 [Ad-hoc 全量备份环境准备](#ad-hoc-全量备份环境准备)。
 
-### 定时全部备份数据到 S3 兼容存储
+### 定时全量备份数据到 S3 兼容存储
 
 创建 backupSchedule CR 开启 TiDB 集群的定时全量备份，将数据备份到 gcs。
 
