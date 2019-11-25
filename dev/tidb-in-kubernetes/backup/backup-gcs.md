@@ -108,7 +108,7 @@ GCS 支持以下几种 bucket ACL 策略：
 
 如果不设置 bucket ACL 策略，则默认策略为 `private`。这几种访问控制策略的详细介绍可参考 [GCS 官方文档](https://cloud.google.com/storage/docs/access-control/lists)。
 
-创建好 `Backup` CR 后我们可以通过如下命令查看备份状态：
+创建好 `Backup` CR 后，可通过以下命令查看备份状态：
 
 {{< copyable "shell-regular" >}}
 
