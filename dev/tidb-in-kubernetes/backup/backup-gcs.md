@@ -87,7 +87,7 @@ GCS 支持以下几种 `storageClass` 类型：
 
 如果不设置 `storageClass`，则默认使用 `COLDLINE`。这几种存储类型的详细介绍可参考 [GCS 官方文档](https://cloud.google.com/storage/docs/storage-classes)。
 
-gcs 支持的 object ACL 策略有如下几种：
+GCS 支持以下几种 object ACL 策略：
 
 * authenticatedRead
 * bucketOwnerFullControl
