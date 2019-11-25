@@ -148,7 +148,7 @@ GCS 支持以下几种 bucket ACL 策略：
 kubectl apply -f backup-schedule-gcs.yaml
 ```
 
-backup-schedule-gcs.yaml 文件内容如下：
+`backup-schedule-gcs.yaml` 文件内容如下：
 
 ```yaml
 ---

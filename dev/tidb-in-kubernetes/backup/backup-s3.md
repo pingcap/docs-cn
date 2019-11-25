@@ -81,7 +81,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一
     kubectl apply -f backup-s3.yaml
     ```
 
-    backup-s3.yaml 文件内容如下：
+    `backup-s3.yaml` 文件内容如下：
 
     ```yaml
     ---
@@ -214,7 +214,7 @@ Amazon S3 支持的 storageClass 类型有如下几种：
     kubectl apply -f backup-schedule-s3.yaml
     ```
 
-    backup-schedule-s3.yaml 文件内容如下：
+    `backup-schedule-s3.yaml` 文件内容如下：
 
     ```yaml
     ---
