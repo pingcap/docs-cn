@@ -79,7 +79,7 @@ spec:
 
 GCS 支持以下几种 `storageClass` 类型：
 
-* MULTI_REGIONAL
+* `MULTI_REGIONAL`
 * REGIONAL
 * `NEARLINE`
 * COLDLINE
