@@ -37,7 +37,7 @@ category: how-to
     kubectl apply -f restore.yaml
     ```
 
-    restore.yaml 文件内容如下：
+    `restore.yaml` 文件内容如下：
 
     ```yaml
     ---
