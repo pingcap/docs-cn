@@ -49,7 +49,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一
 kubectl apply -f backup-gcs.yaml
 ```
 
-backup-gcs.yaml 文件内容如下：
+`backup-gcs.yaml` 文件内容如下：
 
 ```yaml
 ---
