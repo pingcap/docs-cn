@@ -19,7 +19,7 @@ category: how-to
     kubectl apply -f backup-rbac.yaml -n test2
     ```
 
-2. 创建 `restore-demo2-tidb-secret` secret, 里面存放用来访问 TiDB 集群的 root 账号和密钥
+2. 创建 `restore-demo2-tidb-secret` secret。该 secret 存放用来访问 TiDB 集群的 root 账号和密钥。
 
     {{< copyable "shell-regular" >}}
 
