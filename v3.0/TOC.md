@@ -153,6 +153,7 @@
       - [Window Functions](/v3.0/reference/sql/functions-and-operators/window-functions.md)
       - [Miscellaneous Functions](/v3.0/reference/sql/functions-and-operators/miscellaneous-functions.md)
       - [Precision Math](/v3.0/reference/sql/functions-and-operators/precision-math.md)
+      - [List of Expressions for Pushdown](/v3.0/reference/sql/functions-and-operators/expressions-pushed-down.md)
     + SQL Statements
       - [`ADD COLUMN`](/v3.0/reference/sql/statements/add-column.md)
       - [`ADD INDEX`](/v3.0/reference/sql/statements/add-index.md)

@@ -154,6 +154,7 @@
       - [Window Functions](/dev/reference/sql/functions-and-operators/window-functions.md)
       - [Miscellaneous Functions](/dev/reference/sql/functions-and-operators/miscellaneous-functions.md)
       - [Precision Math](/dev/reference/sql/functions-and-operators/precision-math.md)
+      - [List of Expressions for Pushdown](/dev/reference/sql/functions-and-operators/expressions-pushed-down.md)
     + SQL Statements
       - [`ADD COLUMN`](/dev/reference/sql/statements/add-column.md)
       - [`ADD INDEX`](/dev/reference/sql/statements/add-index.md)
