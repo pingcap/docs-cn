@@ -9,7 +9,7 @@ category: how-to
 
 为了更好地说明如何进行恢复，本文档提供了以下示例。示例假设备份数据来源于 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1`，并将其中的一个备份数据恢复到 Kubernetes `test2` 这个 namespace 中的 TiDB 集群 `demo2`。下面是具体的操作过程：
 
-## 备份恢复环境准备
+## 恢复备份的环境准备
 
 1. 在需要恢复的 `test2` 这个 namespace 中创建备份恢复需要的 RBAC 相关资源，下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)
 
