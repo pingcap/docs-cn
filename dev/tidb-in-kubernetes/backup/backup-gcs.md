@@ -197,7 +197,7 @@ kubectl get bks -n test1 -owide
 
 `.spec.maxBackups`：一种备份保留策略，决定定时备份最多可保留的备份个数。超过该数目，就会将过时的备份删除。如果将该项设置为 `0`，则表示保留所有备份。
 
- `.spec.maxReservedTime`：这个和上面的参数一样，也是种一种备份保留策略，这个是按时间保留，比如设置为 `24h`, 代表只保留最近 24 小时内的备份条目，超过这个时间的备份都会被清除，时间设置格式参考[这里](https://golang.org/pkg/time/#ParseDuration)。如果最大备份保留个数和最大备份保留时间两者被同时设置，则以最大备份保留时间为准。
+`.spec.maxReservedTime`：一种备份保留策略，按时间保留备份。比如将该参数设置为 `24h`，表示只保留最近 24 小时内的备份条目。超过这个时间的备份都会被清除。时间设置格式参考[`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)。如果同时设置最大备份保留个数和最长备份保留时间，则以最长备份保留时间为准。
 
  `.spec.schedule`：cron 时间调度格式，具体格式参考[这里](https://en.wikipedia.org/wiki/Cron)。
 
