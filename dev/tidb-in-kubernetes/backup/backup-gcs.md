@@ -126,7 +126,7 @@ GCS 支持以下几种 bucket ACL 策略：
 
 `.spec.tidbSecretName`：访问 TiDB 集群所需密码的 secret。
 
-`.spec.storageClassName`: 备份时需要指定使用的 PV 类型，如果不指定则默认使用 tidb-operator 启动参数中 `default-backup-storage-class-name` 指定的值，这个值默认为 `standard`
+`.spec.storageClassName`：备份时指定所需的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值，这个值默认为 `standard`。
 
 `.spec.storageSize`: 备份时指定需要使用的 PV 大小，这个值要大于备份 TiDB 集群数据的大小
 
