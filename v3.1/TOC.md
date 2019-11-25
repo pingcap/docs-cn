@@ -251,6 +251,7 @@
     - [执行计划绑定](/v3.1/reference/performance/execution-plan-bind.md)
     - [统计信息概述](/v3.1/reference/performance/statistics.md)
     - [Optimizer Hints](/v3.1/reference/performance/optimizer-hints.md)
+    - [Follower Read](/v3.1/reference/performance/follower-read.md)
     - [使用 SQL 语句检查 TiDB 集群状态](/v3.1/reference/performance/check-cluster-status-using-sql-statements.md)
     - [Statement Summary Table](/v3.1/reference/performance/statement-summary.md)
     - [TiKV 调优](/v3.1/reference/performance/tune-tikv.md)
@@ -267,6 +268,7 @@
     - [高并发写入场景最佳实践](/v3.1/reference/best-practices/high-concurrency.md)
     - [Grafana 监控最佳实践](/v3.1/reference/best-practices/grafana-monitor.md)
     - [PD 调度策略最佳实践](/v3.1/reference/best-practices/pd-scheduling.md)
+    - [海量 Region 集群调优最佳实践](/v3.1/reference/best-practices/massive-regions.md)
   + [TiSpark 使用指南](/v3.1/reference/tispark.md)
   + TiDB Binlog
     - [概述](/v3.1/reference/tidb-binlog/overview.md)
