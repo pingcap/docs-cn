@@ -258,7 +258,7 @@ kubectl get bks -n test1 -owide
  kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n test1
  ```
 
-从以上两个示例可知，`backupSchedule` 的配置由两部分组成。一部分是 `backupSchedule` 独有的配置，另一部分是 `backupTemplate`。`backupTemplate` 指定 S3 兼容存储相关的配置，该配置与 Ad-hoc 全量备份到 S3 兼容存储的配置完全一样，可参考[备份数据到 S3 兼容存储](#定时全量备份数据到 S3 兼容存储)。下面介绍 `backupSchedule` 独有的配置项：
+从以上两个示例可知，`backupSchedule` 的配置由两部分组成。一部分是 `backupSchedule` 独有的配置，另一部分是 `backupTemplate`。`backupTemplate` 指定 S3 兼容存储相关的配置，该配置与 Ad-hoc 全量备份到 S3 兼容存储的配置完全一样，可参考[备份数据到 S3 兼容存储](#备份数据到-s3-兼容存储)。下面介绍 `backupSchedule` 独有的配置项：
 
 `.spec.maxBackups`：一种备份保留策略，决定定时备份最多可保留的备份个数。超过该数目，就会将过时的备份删除。如果将该项设置为 `0`，则表示保留所有备份。
 
