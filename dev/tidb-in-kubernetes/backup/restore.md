@@ -27,7 +27,7 @@ category: how-to
     kubectl create secret generic restore-demo2-tidb-secret --from-literal=user=root --from-literal=password=<password> --namespace=test2
     ```
 
-## 从指定备份恢复 TiDB 集群
+## 将指定备份恢复到 TiDB 集群
 
 1. 创建 restore CR, 从指定备份数据恢复 TiDB 集群
 
