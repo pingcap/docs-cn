@@ -185,7 +185,7 @@ spec:
 kubectl get bks -n test1 -owide
 ```
 
-查看此定时全量备份下面的所有备份条目：
+查看定时全量备份下面所有的备份条目：
 
 {{< copyable "shell-regular" >}}
 
