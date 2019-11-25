@@ -5,7 +5,7 @@ category: how-to
 
 # Kubernetes 上从备份数据恢复 TiDB 集群
 
-这篇文档详细描述了如何将 Kubernetes 上通过 tidb-operator 备份的 TiDB 集群数据恢复的具体操作过程, 底层通过使用 [`loader`](/dev/reference/tools/loader.md) 来进行集群恢复。
+本文档详细描述了如何将 Kubernetes 上通过 TiDB Operator 备份的 TiDB 集群数据恢复的具体操作过程。底层通过使用 [`loader`](/dev/reference/tools/loader.md) 来进行集群恢复。
 
 为了更好的说明备份恢复的使用方式，我们假设备份数据来源于 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1`，然后将其中的一个备份数据恢复到  Kubernetes `test2` 这个 namespace 中的 TiDB 集群 `demo2`, 下面是具体操作过程：
 
