@@ -64,7 +64,7 @@ category: how-to
      kubectl get rt -n test2 -owide
      ```
 
-下面是对 restore CR 各个字段的详细解释:
+restore CR 各个字段的详细解释：
 
 `.spec.metadata.namespace`： 备份恢复目标 TiDB 集群所在的 namespace
 
