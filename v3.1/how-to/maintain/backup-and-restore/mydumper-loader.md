@@ -2,8 +2,9 @@
 title: 使用 Mydumper/Loader 进行备份与恢复
 category: how-to
 aliases: ['/docs-cn/v3.1/how-to/maintain/backup-and-restore/']
+---
 
-# 备份与恢复
+# 使用 Mydumper/Loader 进行备份与恢复
 
 本文档将详细介绍如何使用 Mydumper/Loader 对 TiDB 进行全量备份与恢复。增量备份与恢复可使用 [TiDB Binlog](/v3.1/reference/tidb-binlog/overview.md)。
 
