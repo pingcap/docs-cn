@@ -73,7 +73,7 @@ spec:
   storageSize: 10Gi
 ```
 
-上面例子中分别将 TiDB 集群的数据全量导出备份到 gcs，gcs 配置中的 `location`、`objectAcl`、`bucketAcl`、`storageClass` 均可以省略。
+以上示例将 TiDB 集群的数据全量导出备份到 GCS。GCS 配置中的 `location`、`objectAcl`、`bucketAcl`、`storageClass` 项均可以省略。
 
 其中配置里面的 `projectId` 代表你 GCP 上项目的唯一标识，具体的获取办法参考 GCP [官方文档](https://cloud.google.com/resource-manager/docs/creating-managing-projects)。
 
