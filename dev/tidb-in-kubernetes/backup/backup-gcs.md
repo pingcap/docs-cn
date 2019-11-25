@@ -89,22 +89,22 @@ GCS 支持以下几种 `storageClass` 类型：
 
 GCS 支持以下几种 object ACL 策略：
 
-* authenticatedRead
-* bucketOwnerFullControl
-* bucketOwnerRead
-* private
-* projectPrivate
-* publicRead
+* `authenticatedRead`
+* `bucketOwnerFullControl`
+* `bucketOwnerRead`
+* `private`
+* `projectPrivate`
+* `publicRead`
 
 如果不设置 object ACL 策略，则默认使用 `private` 策略。这几种访问控制策略的详细介绍可参考 [GCS 官方文档](https://cloud.google.com/storage/docs/access-control/lists)。
 
 GCS 支持以下几种 bucket ACL 策略：
 
-* authenticatedRead
-* private
-* projectPrivate
-* publicRead
-* publicReadWrite
+* `authenticatedRead`
+* `private`
+* `projectPrivate`
+* `publicRead`
+* `publicReadWrite`
 
 如果不设置 bucket ACL 策略，则默认策略为 `private`。这几种访问控制策略的详细介绍可参考 [GCS 官方文档](https://cloud.google.com/storage/docs/access-control/lists)。
 

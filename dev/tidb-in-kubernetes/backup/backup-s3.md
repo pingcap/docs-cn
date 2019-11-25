@@ -23,7 +23,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一
     kubectl apply -f backup-rbac.yaml -n test1
     ```
 
-2. 创建 `s3-secret` secret，里面存放了用来访问 S3 兼容存储的凭证
+2. 创建 `s3-secret` secret，改 secret 存放了用来访问 S3 兼容存储的凭证
 
     {{< copyable "shell-regular" >}}
 
@@ -41,7 +41,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一
 
 ### 备份数据到 S3 兼容存储
 
-1. 创建 backup CR, 备份数据到 Amazon S3
+1. 创建 backup CR, 备份数据到 Amazon S3：
 
     {{< copyable "shell-regular" >}}
 
@@ -49,7 +49,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一
     kubectl apply -f backup-s3.yaml
     ```
 
-    backup-s3.yaml 文件内容如下：
+    `backup-s3.yaml` 文件内容如下：
 
     ```yaml
     ---
@@ -73,7 +73,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一
       storageSize: 10Gi
     ```
 
-2. 创建 backup CR, 备份数据到 ceph
+2. 创建 backup CR, 备份数据到 ceph：
 
     {{< copyable "shell-regular" >}}
 
@@ -106,25 +106,25 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一
 
 Amazon S3 支持的 ACL 策略有如下几种：
 
-* private
-* public-read
-* public-read-write
-* authenticated-read
-* bucket-owner-read
-* bucket-owner-full-control
+* `private`
+* `public-read`
+* `public-read-write`
+* `authenticated-read`
+* `bucket-owner-read`
+* `bucket-owner-full-control`
 
-如果不设置，程序里面默认会将其设置为 `private`, 这几种访问控制策略的详细介绍参考 AWS [官方文档](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html)。
+如果不设置 ACL 策略，则默认使用 `private` 策略, 这几种访问控制策略的详细介绍参考 AWS [官方文档](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html)。
 
 Amazon S3 支持的 storageClass 类型有如下几种：
 
-* STANDARD
-* REDUCED_REDUNDANCY
-* STANDARD_IA
-* ONEZONE_IA
-* GLACIER
-* DEEP_ARCHIVE
+* `STANDARD`
+* `REDUCED_REDUNDANCY`
+* `STANDARD_IA`
+* `ONEZONE_IA`
+* `GLACIER`
+* `DEEP_ARCHIVE`
 
-如果不设置，默认使用 `STANDARD_IA`, 这几种存储类型的详细介绍参考 AWS [官方文档](https://docs.aws.amazon.com/AmazonS3/latest/dev/storage-class-intro.html)。
+如果不设置 `storageClass`，则默认使用 `STANDARD_IA`, 这几种存储类型的详细介绍参考 AWS [官方文档](https://docs.aws.amazon.com/AmazonS3/latest/dev/storage-class-intro.html)。
 
 创建好 `Backup` CR 后我们可以通过如下命令查看备份状态：
 
@@ -150,14 +150,14 @@ Amazon S3 支持的 storageClass 类型有如下几种：
 
 支持的其余 S3 兼容 provider 如下：
 
-* alibaba(Alibaba Cloud Object Storage System (OSS) formerly Aliyun)
-* digitalocean(Digital Ocean Spaces)
-* dreamhost(Dreamhost DreamObjects)
-* ibmcos(IBM COS S3)
-* minio(Minio Object Storage)
-* netease(Netease Object Storage (NOS))
-* wasabi(Wasabi Object Storage)
-* other(Any other S3 compatible provider)
+* `alibaba`(Alibaba Cloud Object Storage System (OSS) formerly Aliyun)
+* `digitalocean`(Digital Ocean Spaces)
+* `dreamhost`(Dreamhost DreamObjects)
+* `ibmcos`(IBM COS S3)
+* `minio`(Minio Object Storage)
+* `netease`(Netease Object Storage (NOS))
+* `wasabi`(Wasabi Object Storage)
+* `other`(Any other S3 compatible provider)
 
 ## 定时全量备份
 
@@ -169,7 +169,7 @@ Amazon S3 支持的 storageClass 类型有如下几种：
 
 ### 定时全部备份数据到 S3 兼容存储
 
-1. 创建 backupSchedule CR 开启 TiDB 集群的定时全量备份，将数据备份到 Amazon S3
+1. 创建 backupSchedule CR 开启 TiDB 集群的定时全量备份，将数据备份到 Amazon S3：
 
     {{< copyable "shell-regular" >}}
 
@@ -206,7 +206,7 @@ Amazon S3 支持的 storageClass 类型有如下几种：
         storageSize: 10Gi
     ```
 
-2. 创建 backupSchedule CR 开启 TiDB 集群的定时全量备份，将数据备份到 ceph
+2. 创建 backupSchedule CR 开启 TiDB 集群的定时全量备份，将数据备份到 ceph：
 
     {{< copyable "shell-regular" >}}
 
