@@ -41,7 +41,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一
 
 ### 备份数据到 GCS
 
-创建 backup CR, 备份数据到 gcs
+创建 backup CR，并将数据备份到 GCS：
 
 {{< copyable "shell-regular" >}}
 
