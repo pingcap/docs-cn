@@ -90,7 +90,7 @@ raft-heartbeat-interval = raft-base-tick-interval * raft-heartbeat-ticks
 
 v3.0 版本中的 Raftstore 已经扩展为多线程，极大降低了 Raftstore 线程成为瓶颈的可能性。
 
-TiKV 默认将 `raftstore.store-pool-size` 配置为 `2`。如果 Raftstore 出现瓶颈，可以根据实际情况适当调高该参数值，但不建议设置过大以免引入不必要的线程切换开销。
+TiKV 默认将 `raftstore.store-pool-size` 配置为 `2`。如果 Raftstore 出现瓶颈，可以根据实际情况适当调高该参数值，但不建议设置过高以免引入不必要的线程切换开销。
 
 ### 方法四：开启 Hibernate Region 功能
 
@@ -118,7 +118,7 @@ TiKV 默认将 `raftstore.store-pool-size` 配置为 `2`。如果 Raftstore 出�
 
 详情请参考[如何配置 Region Merge](https://github.com/tikv/tikv/blob/master/docs/how-to/configure/region-merge.md) 和 [PD 配置文件描述](/dev/reference/configuration/pd-server/configuration-file.md#schedule)。
 
-同时，默认配置的 `Region Merge` 的参数设置较为保守，可以根据需求参考 [TiDB 最佳实践系列（二）PD 调度策略](/dev/reference/best-practices/pd-scheduling.md#region-merge-速度慢) 中提供的方法加快 `Region Merge` 过程的速度。
+同时，默认配置的 `Region Merge` 的参数设置较为保守，可以根据需求参考 [PD 调度策略最佳实践](/dev/reference/best-practices/pd-scheduling.md#region-merge-速度慢) 中提供的方法加快 `Region Merge` 过程的速度。
 
 ## 其他问题和解决方案
 
@@ -140,4 +140,4 @@ PD 需要将 Region Meta 信息持久化在 etcd 上，以保证切换 PD Leader
 
 ### Prometheus 查询 metrics 的速度慢
 
-在大规模集群中，随着 TiKV 实例数的增加，Prometheus 的查询 metrics 时的计算压力较大，导致 Grafana 查看 metrics 时速度较慢。v3.0 版本中设置了一些 metrics 的预计算，让这个问题有所缓解。
+在大规模集群中，随着 TiKV 实例数的增加，Prometheus 查询 metrics 时的计算压力较大，导致 Grafana 查看 metrics 的速度较慢。v3.0 版本中设置了一些 metrics 的预计算，让这个问题有所缓解。
