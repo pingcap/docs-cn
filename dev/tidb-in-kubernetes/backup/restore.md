@@ -72,7 +72,7 @@ category: how-to
 
 `.spec.backupNamespace`：备份集群所在的 namespace。因为当前的 restore 所需的远端存储的访问信息是通过源备份信息获取的，所以进行恢复时需要知道备份源来自哪个 namespace。
 
-`.spec.backup`： 备份源的一个 backup CR 名字，我们可以通过下面的命令获取备份集群下面有哪些备份条目，然后从中选择一个要恢复的 backup 进行恢复即可
+`.spec.backup`：备份源的一个 backup CR 名。可以通过以下命令获取备份集群下的备份条目，然后从中选择一个要恢复的 `backup` 进行恢复即可。
 
 {{< copyable "shell-regular" >}}
 
