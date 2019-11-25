@@ -1,5 +1,5 @@
 ---
-title: 使用 mydumper/loader 进行备份与恢复
+title: 使用 Mydumper/Loader 进行备份与恢复
 category: how-to
 ---
 

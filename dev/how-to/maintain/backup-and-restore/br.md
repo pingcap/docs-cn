@@ -62,26 +62,26 @@ BR 还包含以下三个子命令：
 
 要备份全部集群数据，可使用 `br backup full` 命令。该命令的使用帮助可以通过 `br backup full -h` 或 `br backup full --help` 来获取。
 
-用例：将所有集群数据备份到各个 TiKV 节点的 `/tmp/backup` 路径
+用例：将所有集群数据备份到各个 TiKV 节点的 `/tmp/backup` 路径，同时也会将备份的元信息文件 `backupmeta` 写到该路径下
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 br backup full \
-    --pd ${PDIP}:2379 \
+    --pd "${PDIP}:2379" \
     --storage "local:///tmp/backup" \
     --ratelimit 120 \
     --concurrency 4 \
     --log-file backupfull.log
 ```
 
-以上命令通过 `--ratelimit` 和 `--concurrency` 选项限制了 **每个 TiKV** 执行备份任务的速度上限和并发数上限，同时把 BR 的 log 写到 `backupfull.log` 文件中。
+以上命令通过 `--ratelimit` 和 `--concurrency` 选项限制了 **每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）和并发数上限，同时把 BR 的 log 写到 `backupfull.log` 文件中。
 
 备份期间有进度条在终端中显示。当进度条前进到 100% 时，说明备份已完成。在完成备份后，BR 为了确保数据安全性，还会校验备份数据。进度条效果如下：
 
 ```shell
 br backup full \
-    --pd ${PDIP}:2379 \
+    --pd "${PDIP}:2379" \
     --storage "local:///tmp/backup" \
     --ratelimit 120 \
     --concurrency 4 \
@@ -93,13 +93,13 @@ Full Backup <---------/................................................> 17.12%.
 
 要备份集群中指定单张表的数据，可使用 `br backup table` 命令。同样可通过 `br backup table -h` 或 `br backup table --help` 来获取子命令 `table` 的使用帮助。
 
-用例：将表 `test.usertable` 备份到各个 TiKV 节点的 `/tmp/backup` 路径
+用例：将表 `test.usertable` 备份到各个 TiKV 节点的 `/tmp/backup` 路径，同时也会将备份的元信息文件 `backupmeta` 写到该路径下。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 br backup table \
-    --pd ${PDIP}:2379 \
+    --pd "${PDIP}:2379" \
     --db test \
     --table usertable \
     --storage "local:///tmp/backup" \
@@ -126,7 +126,7 @@ br backup table \
 
 ```shell
 br restore full \
-    --pd ${PDIP}:2379 \
+    --pd "${PDIP}:2379" \
     --storage "local:///tmp/backup" \
     --concurrency 128 \
     --log-file restorefull.log
@@ -138,7 +138,7 @@ br restore full \
 
 ```shell
 br restore full \
-    --pd ${PDIP}:2379 \
+    --pd "${PDIP}:2379" \
     --storage "local:///tmp/backup" \
     --log-file restorefull.log
 Full Restore <---------/...............................................> 17.12%.
@@ -154,7 +154,7 @@ Full Restore <---------/...............................................> 17.12%.
 
 ```shell
 br restore db \
-    --pd ${PDIP}:2379 \
+    --pd "${PDIP}:2379" \
     --db "test" \
     --storage "local:///tmp/backup" \
     --log-file restorefull.log
@@ -172,7 +172,7 @@ br restore db \
 
 ```shell
 br restore table \
-    --pd ${PDIP}:2379 \
+    --pd "${PDIP}:2379" \
     --db "test" \
     --table "usertable" \
     --storage "local:///tmp/backup" \
