@@ -195,7 +195,7 @@ kubectl get bks -n test1 -owide
 
 从以上示例可知，`backupSchedule` 的配置由两部分组成。一部分是 `backupSchedule` 独有的配置，另一部分是 `backupTemplate`。`backupTemplate` 指定 GCS 存储相关的配置，该配置与 Ad-hoc 全量备份到 GCS 的配置完全一样，可参考[备份数据到 GCS](#备份数据到-gcs)。下面介绍 `backupSchedule` 独有的配置项：
 
- `.spec.maxBackups`: 一种备份保留策略，定时备份最多保留的备份个数，超过这个数目，就会将过时的备份删除，如果将这个最大备份保留格式设置为0，则表示保留所有备份。
+`.spec.maxBackups`：一种备份保留策略，决定定时备份最多可保留的备份个数。超过该数目，就会将过时的备份删除。如果将该项设置为 `0`，则表示保留所有备份。
 
  `.spec.maxReservedTime`：这个和上面的参数一样，也是种一种备份保留策略，这个是按时间保留，比如设置为 `24h`, 代表只保留最近 24 小时内的备份条目，超过这个时间的备份都会被清除，时间设置格式参考[这里](https://golang.org/pkg/time/#ParseDuration)。如果最大备份保留个数和最大备份保留时间两者被同时设置，则以最大备份保留时间为准。
 
