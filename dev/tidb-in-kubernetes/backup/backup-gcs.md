@@ -11,11 +11,11 @@ category: how-to
 
 Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一次备份。TiDB Operator 根据这个 `Backup` 对象来完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。
 
-为了更好地描述备份的使用方式，本文档提供如下备份示例。示例假设对部署在 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1` 进行数据备份，下面是具体操作过程：
+为了更好的描述备份的使用方式，我们假设需要对部署在 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1` 进行数据备份，下面是具体操作过程：
 
 ### Ad-hoc 全量备份环境准备
 
-1. 在 `test1` 这个 namespace 中创建备份需要的 RBAC 相关资源。下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)
+1. 在 `test1` 这个 namespace 中创建备份需要的 RBAC 相关资源。下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)：
 
     {{< copyable "shell-regular" >}}
 
@@ -23,7 +23,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一
     kubectl apply -f backup-rbac.yaml -n test1
     ```
 
-2. 创建 `gcs-secret` secret。该 secret 存放用于访问 GCS 的凭证。`google-credentials.json` 文件存放用户从 GCP console 上下载的 service account key。具体操作参考 [GCP 官方文档](https://cloud.google.com/docs/authentication/getting-started)。
+2. 创建 `gcs-secret` secret。该 secret 存放用于访问 GCS 的凭证。`google-credentials.json` 文件存放用户从 GCP console 上下载的 service account key。具体操作参考 [GCP 官方文档](https://cloud.google.com/docs/authentication/getting-started)：
 
     {{< copyable "shell-regular" >}}
 
@@ -31,7 +31,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一
     kubectl create secret generic gcs-secret --from-file=credentials=./google-credentials.json -n test1
     ```
 
-3. 创建 `backup-demo1-tidb-secret` secret。该 secret 存放用于访问 TiDB 集群的 root 账号和密钥。
+3. 创建 `backup-demo1-tidb-secret` secret。该 secret 存放用于访问 TiDB 集群的 root 账号和密钥：
 
     {{< copyable "shell-regular" >}}
 
@@ -124,7 +124,7 @@ GCS 支持以下几种 bucket ACL 策略：
 
 `.spec.cluster`：备份 TiDB 集群的名字。
 
-`.spec.tidbSecretName`：访问 TiDB 集群所需密码的 secret。
+`.spec.tidbSecretName`：访问 TiDB 集群所需凭证的 secret。
 
 `.spec.storageClassName`：备份时指定所需的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值，这个值默认为 `standard`。
 
@@ -132,13 +132,13 @@ GCS 支持以下几种 bucket ACL 策略：
 
 ## 定时全量备份
 
-用户通过设置备份策略来对 TiDB 集群进行定时备份，同时设置备份的保留策略以避免产生过多的备份。定时全量备份通过自定义的 `BackupSchedule` CR 对象来描述。每到备份时间点会触发一次全量备份。定时全量备份的底层通过 Ad-hoc 全量备份来实现。下面是创建定时全量备份的具体步骤：
+用户通过设置备份策略来对 TiDB 集群进行定时备份，同时设置备份的保留策略以避免产生过多的备份。定时全量备份通过自定义的 `BackupSchedule` CR 对象来描述。每到备份时间点会触发一次全量备份，定时全量备份底层通过 Ad-hoc 全量备份来实现。下面是创建定期全量备份的具体步骤：
 
 ### 定时全量备份环境准备
 
 同 [Ad-hoc 全量备份环境准备](#ad-hoc-全量备份环境准备)。
 
-### 定时全量备份数据到 S3 兼容存储
+### 定时全量备份数据到 GCS
 
 创建 backupSchedule CR 开启 TiDB 集群的定时全量备份，将数据备份到 GCS：
 

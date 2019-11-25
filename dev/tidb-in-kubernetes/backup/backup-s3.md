@@ -9,13 +9,13 @@ category: how-to
 
 ## Ad-hoc 全量备份
 
-Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一次备份，tidb-operator 根据这个 `Backup` 对象来完成具体的备份过程，如果备份过程中出现错误程序不会自动重试，此时需要人工介入处理。目前 S3 兼容的存储中我们只对 `Ceph`、`Amazon S3` 这两种存储做过测试，因此下面我们主要针对 `Ceph` 和 `Amazon S3` 这两种存储的使用来说明。理论上来说其余 S3 兼容的存储也可以正常的工作。
+Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一次备份。TiDB Operator 根据这个 `Backup` 对象来完成具体的备份过程，如果备份过程中出现错误程序不会自动重试，此时需要人工介入处理。目前 S3 兼容的存储中我们只对 `Ceph`、`Amazon S3` 这两种存储做过测试，因此下面我们主要针对 `Ceph` 和 `Amazon S3` 这两种存储的使用来说明。理论上来说其余 S3 兼容的存储也可以正常的工作。
 
-为了更好的说明备份的使用方式，我们假设需要对部署在 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1` 进行数据备份，下面是具体操作过程：
+为了更好的描述备份的使用方式，我们假设需要对部署在 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1` 进行数据备份，下面是具体操作过程：
 
 ### Ad-hoc 全量备份环境准备
 
-1. 在 `test1` 这个 namespace 中创建备份需要的 RBAC 相关资源，下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)
+1. 在 `test1` 这个 namespace 中创建备份需要的 RBAC 相关资源。下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)：
 
     {{< copyable "shell-regular" >}}
 
@@ -23,7 +23,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一
     kubectl apply -f backup-rbac.yaml -n test1
     ```
 
-2. 创建 `s3-secret` secret，改 secret 存放了用来访问 S3 兼容存储的凭证
+2. 创建 `s3-secret` secret，该 secret 存放用于访问 S3 兼容存储的凭证：
 
     {{< copyable "shell-regular" >}}
 
@@ -31,7 +31,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一
     kubectl create secret generic s3-secret --from-literal=access_key=xxx --from-literal=secret_key=yyy --namespace=test1
     ```
 
-3. 创建 `backup-demo1-tidb-secret` secret, 里面存放用来访问 TiDB 集群的 root 账号和密钥
+3. 创建 `backup-demo1-tidb-secret` secret。该 secret 存放用于访问 TiDB 集群的 root 账号和密钥：
 
     {{< copyable "shell-regular" >}}
 
@@ -113,7 +113,7 @@ Amazon S3 支持的 ACL 策略有如下几种：
 * `bucket-owner-read`
 * `bucket-owner-full-control`
 
-如果不设置 ACL 策略，则默认使用 `private` 策略, 这几种访问控制策略的详细介绍参考 AWS [官方文档](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html)。
+如果不设置 ACL 策略，则默认使用 `private` 策略。这几种访问控制策略的详细介绍参考 AWS [官方文档](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html)。
 
 Amazon S3 支持的 storageClass 类型有如下几种：
 
@@ -126,7 +126,7 @@ Amazon S3 支持的 storageClass 类型有如下几种：
 
 如果不设置 `storageClass`，则默认使用 `STANDARD_IA`, 这几种存储类型的详细介绍参考 AWS [官方文档](https://docs.aws.amazon.com/AmazonS3/latest/dev/storage-class-intro.html)。
 
-创建好 `Backup` CR 后我们可以通过如下命令查看备份状态：
+创建好 `Backup` CR 后，可通过如下命令查看备份状态：
 
 {{< copyable "shell-regular" >}}
 
@@ -134,21 +134,21 @@ Amazon S3 支持的 storageClass 类型有如下几种：
  kubectl get bk -n test1 -owide
  ```
 
-最后是对 backup CR 其余字段的详细解释:
+更多 backup CR 字段的详细解释:
 
-`.spec.metadata.namespace`: 备份 TiDB 集群所在的 namespace
+`.spec.metadata.namespace`: 备份 TiDB 集群所在的 namespace。
 
-`.spec.storageType`: 代表备份的存储类型，目前主要有 s3 和 gcs
+`.spec.storageType`: 代表备份的存储类型，目前主要有 S3 和 GCS。
 
-`.spec.cluster`: 备份 TiDB 集群的名字
+`.spec.cluster`: 备份 TiDB 集群的名字。
 
-`.spec.tidbSecretName`: 访问 TiDB 集群所需密码的 secret
+`.spec.tidbSecretName`: 访问 TiDB 集群所需密码的 secret。
 
-`.spec.storageClassName`: 备份时需要指定使用的 PV 类型，如果不指定则默认使用 tidb-operator 启动参数中 `default-backup-storage-class-name` 指定的值，这个值默认为 `standard`
+`.spec.storageClassName`: 备份时需的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值，这个值默认为 `standard`。
 
-`.spec.storageSize`: 备份时指定需要使用的 PV 大小，这个值要大于备份 TiDB 集群的数据大小
+`.spec.storageSize`: 备份时指定所需的 PV 大小。这个值要大于备份 TiDB 集群的数据大小。
 
-支持的其余 S3 兼容 provider 如下：
+更多支持的 S3 兼容 provider 如下：
 
 * `alibaba`(Alibaba Cloud Object Storage System (OSS) formerly Aliyun)
 * `digitalocean`(Digital Ocean Spaces)
@@ -161,13 +161,13 @@ Amazon S3 支持的 storageClass 类型有如下几种：
 
 ## 定时全量备份
 
-用户通过设置备份策略定时备份 TiDB 集群，同时可配置备份的保留策略避免产生过多的备份，定时全量备份通过自定义的 `BackupSchedule` CR 对象来描述，每次到备份时间点会触发一次全量备份，定时全量备份底层通过 Ad-hoc 全量备份来实现。下面是创建定期全量备份的具体步骤：
+用户通过设置备份策略来对 TiDB 集群进行定时备份，同时设置备份的保留策略以避免产生过多的备份。定时全量备份通过自定义的 `BackupSchedule` CR 对象来描述。每到备份时间点会触发一次全量备份，定时全量备份底层通过 Ad-hoc 全量备份来实现。下面是创建定期全量备份的具体步骤：
 
 ### 定时全量备份环境准备
 
-这里和 Ad-hoc 全量备份操作一致
+同 [Ad-hoc 全量备份环境准备](#ad-hoc-全量备份环境准备)。
 
-### 定时全部备份数据到 S3 兼容存储
+### 定时全量备份数据到 S3 兼容存储
 
 1. 创建 backupSchedule CR 开启 TiDB 集群的定时全量备份，将数据备份到 Amazon S3：
 
@@ -242,7 +242,7 @@ Amazon S3 支持的 storageClass 类型有如下几种：
 
 上面分别列出了两种备份方式，一种备份到 Amazon S3，一种备份到 ceph，如果想定时全量备份到其它的 S3 兼容的存储上，只需要在 `spec.backupTemplate` 指定相应的存储配置即可，这块的配置和 Ad-hoc 全量备份的配置完全一样。
 
-当定时全量备份创建完成后，我们可以通过如下命令查看定时全量备份状态：
+定时全量备份创建完成后，可以通过以下命令查看定时全量备份的状态：
 
 {{< copyable "shell-regular" >}}
 
@@ -250,7 +250,7 @@ Amazon S3 支持的 storageClass 类型有如下几种：
 kubectl get bks -n test1 -owide
 ```
 
-查看此定时全量备份下面的所有备份条目：
+查看定时全量备份下面所有的备份条目：
 
 {{< copyable "shell-regular" >}}
 
@@ -258,12 +258,12 @@ kubectl get bks -n test1 -owide
  kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n test1
  ```
 
-从上面的两个例子中我们可以看出 `backupSchedule` 的配置主要由两部分组成，一部分是 backupSchedule 独有的配置，还有一部分就是 backupTemplate，这个配置上面也提到了，和 Ad-hoc 的配置是完全一样的，因此这里我们就不对这块进行过多的解释。下面主要针对 backupSchedule 独有的一些配置项进行详细介绍：
+从以上两个示例可知，`backupSchedule` 的配置由两部分组成。一部分是 `backupSchedule` 独有的配置，另一部分是 `backupTemplate`。`backupTemplate` 指定 S3 兼容存储相关的配置，该配置与 Ad-hoc 全量备份到 S3 兼容存储的配置完全一样，可参考[备份数据到 S3 兼容存储](#定时全量备份数据到 S3 兼容存储)。下面介绍 `backupSchedule` 独有的配置项：
 
- `.spec.maxBackups`: 一种备份保留策略，定时备份最多保留的备份个数，超过这个数目，就会将过时的备份删除，如果将这个最大备份保留格式设置为0，则表示保留所有备份。
+`.spec.maxBackups`：一种备份保留策略，决定定时备份最多可保留的备份个数。超过该数目，就会将过时的备份删除。如果将该项设置为 `0`，则表示保留所有备份。
 
- `.spec.maxReservedTime`：这个和上面的参数一样，也是种一种备份保留策略，这个是按时间保留，比如设置为 `24h`, 代表只保留最近 24 小时内的备份条目，超过这个时间的备份都会被清除，时间设置格式参考[这里](https://golang.org/pkg/time/#ParseDuration)。如果最大备份保留个数和最大备份保留时间两者都被设置了，则以最大备份保留时间为准。
+`.spec.maxReservedTime`：一种备份保留策略，按时间保留备份。比如将该参数设置为 `24h`，表示只保留最近 24 小时内的备份条目。超过这个时间的备份都会被清除。时间设置格式参考[`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)。如果同时设置最大备份保留个数和最长备份保留时间，则以最长备份保留时间为准。
 
- `.spec.schedule`：cron 时间调度格式，具体格式参考[这里](https://en.wikipedia.org/wiki/Cron)。
+`.spec.schedule`：Cron 的时间调度格式。具体格式可参考 [Cron](https://en.wikipedia.org/wiki/Cron)。
 
- `.spec.pause`：这个值默认为 false，如果设置为 true，代表暂停定时调度，此时即使到了调度点，也不会进行备份。在定时备份暂停期间，备份 GC 仍然正常进行。从 true 改为 false 则重新开启定时全量备份。
+`.spec.pause`：该值默认为 `false`。如果将该值设置为 `true`，表示暂停定时调度。此时即使到了调度时间点，也不会进行备份。在定时备份暂停期间，备份 Garbage Collection (GC) 仍然正常进行。将 `true` 改为 `false` 则重新开启定时全量备份。

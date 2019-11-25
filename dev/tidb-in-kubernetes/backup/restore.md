@@ -19,7 +19,7 @@ category: how-to
     kubectl apply -f backup-rbac.yaml -n test2
     ```
 
-2. 创建 `restore-demo2-tidb-secret` secret。该 secret 存放用来访问 TiDB 集群的 root 账号和密钥。
+2. 创建 `restore-demo2-tidb-secret` secret，该 secret 存放用来访问 TiDB 集群的 root 账号和密钥：
 
     {{< copyable "shell-regular" >}}
 
@@ -66,9 +66,9 @@ category: how-to
 
 restore CR 各个字段的详细解释：
 
-`.spec.metadata.namespace`： 备份恢复目标 TiDB 集群所在的 namespace
+`.spec.metadata.namespace`： 需要恢复的目标 TiDB 集群所在的 namespace。
 
-`.spec.cluster`：备份恢复目标 TiDB 集群的名字。
+`.spec.cluster`：需要恢复的目标 TiDB 集群的名字。
 
 `.spec.backupNamespace`：备份集群所在的 namespace。因为当前的 restore 所需的远端存储的访问信息是通过源备份信息获取的，所以进行恢复时需要知道备份源来自哪个 namespace。
 
@@ -80,8 +80,8 @@ restore CR 各个字段的详细解释：
 kubectl get bk -n test1
 ```
 
-`.spec.secretName`：访问备份恢复目标 TiDB 集群所需访问凭证的 secret
+`.spec.secretName`：访问需恢复的目标 TiDB 集群所需凭证的 secret。
 
 `.spec.storageClassName`：备份恢复时需要指定使用的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 所指定的值，这个值默认为 `standard`。
 
-`.spec.storageSize`：备份恢复时指定所需的 PV 大小。这个值应大于备份恢复 TiDB 集群数据的大小。
+`.spec.storageSize`：恢复集群时指定所需的 PV 大小。这个值应大于备份恢复 TiDB 集群数据的大小。
