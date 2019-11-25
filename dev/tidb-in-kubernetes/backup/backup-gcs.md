@@ -120,7 +120,7 @@ GCS 支持以下几种 bucket ACL 策略：
 
 `.spec.metadata.namespace`：备份 TiDB 集群所在的 namespace。
 
-`.spec.storageType`: 代表备份的存储类型，目前主要有 s3 和 gcs
+`.spec.storageType`：备份的存储类型。目前主要有 S3 和 GCS 两种。
 
 `.spec.cluster`: 备份 TiDB 集群的名字
 
