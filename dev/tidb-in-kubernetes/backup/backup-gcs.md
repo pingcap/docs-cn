@@ -77,7 +77,7 @@ spec:
 
 其中配置里面的 `projectId` 代表你 GCP 上项目的唯一标识，具体的获取办法参考 GCP [官方文档](https://cloud.google.com/resource-manager/docs/creating-managing-projects)。
 
-gcs 支持的 storageClass 类型有如下几种：
+GCS 支持以下几种 `storageClass` 类型：
 
 * MULTI_REGIONAL
 * REGIONAL
