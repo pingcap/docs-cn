@@ -56,7 +56,7 @@ category: how-to
       storageSize: 10Gi
     ```
 
-2. 创建好 `Restore` CR 后我们可以通过如下命令查看备份恢复状态：
+2. 创建好 `Restore` CR 后可通过以下命令查看恢复的状态：
 
     {{< copyable "shell-regular" >}}
 
