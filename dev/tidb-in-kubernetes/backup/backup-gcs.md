@@ -116,7 +116,7 @@ GCS 支持以下几种 bucket ACL 策略：
  kubectl get bk -n test1 -owide
  ```
 
-最后是对 backup CR 其余字段的详细解释:
+更多 backup CR 字段的详细解释：
 
 `.spec.metadata.namespace`: 备份 TiDB 集群所在的 namespace
 
