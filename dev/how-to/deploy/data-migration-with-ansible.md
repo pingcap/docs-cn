@@ -154,8 +154,8 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tar -xzvf dm-ansible-latest.tar.gz &&
-    mv dm-ansible-latest dm-ansible &&
+    tar -xzvf dm-ansible-{version}.tar.gz &&
+    mv dm-ansible-{version} dm-ansible &&
     cd /home/tidb/dm-ansible &&
     sudo pip install -r ./requirements.txt
     ```
@@ -537,8 +537,8 @@ dm_master ansible_host=172.16.10.71 dm_master_port=18261
     ```bash
     cd /home/tidb && \
     wget http://download.pingcap.org/dm-ansible-{version}.tar.gz && \
-    tar -xzvf dm-ansible-latest.tar.gz && \
-    mv dm-ansible-latest dm-ansible
+    tar -xzvf dm-ansible-{version}.tar.gz && \
+    mv dm-ansible-{version} dm-ansible
     ```
 
 3. 迁移 `inventory.ini` 配置文件。
