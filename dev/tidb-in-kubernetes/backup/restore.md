@@ -1,5 +1,5 @@
 ---
-title: Kubernetes 上从备份数据恢复 TiDB 集群
+title: 恢复备份数据到 Kubernetes 上的 TiDB 集群
 category: how-to
 ---
 
