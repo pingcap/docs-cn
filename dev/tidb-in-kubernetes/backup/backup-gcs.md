@@ -193,7 +193,7 @@ kubectl get bks -n test1 -owide
  kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-gcs -n test1
  ```
 
-从上面的例子中我们可以看出 `backupSchedule` 的配置主要由两部分组成，一部分是 backupSchedule 独有的配置，还有一部分就是 backupTemplate，backupTemplate 指定 gcs 存储相关的配置，这块的配置和 Ad-hoc 全量备份到 gcs 的配置完全一样，因此这里我们不对这块进行过多的解释。下面主要针对 backupSchedule 独有的一些配置项进行详细介绍：
+从以上示例可知，`backupSchedule` 的配置由两部分组成。一部分是 `backupSchedule` 独有的配置，另一部分是 `backupTemplate`。`backupTemplate` 指定 GCS 存储相关的配置，该配置与 Ad-hoc 全量备份到 GCS 的配置完全一样，可参考[备份数据到 GCS](#备份数据到-gcs)。下面介绍 `backupSchedule` 独有的配置项：
 
  `.spec.maxBackups`: 一种备份保留策略，定时备份最多保留的备份个数，超过这个数目，就会将过时的备份删除，如果将这个最大备份保留格式设置为0，则表示保留所有备份。
 
