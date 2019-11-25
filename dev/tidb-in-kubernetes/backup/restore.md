@@ -68,7 +68,7 @@ restore CR 各个字段的详细解释：
 
 `.spec.metadata.namespace`： 备份恢复目标 TiDB 集群所在的 namespace
 
-`.spec.cluster`： 备份恢复目标 TiDB 集群的名字
+`.spec.cluster`：备份恢复目标 TiDB 集群的名字。
 
 `.spec.backupNamespace`：备份集群所在的 namespace。因为当前的 restore 所需的远端存储的访问信息是通过源备份信息获取的，所以进行恢复时需要知道备份源来自哪个 namespace。
 
