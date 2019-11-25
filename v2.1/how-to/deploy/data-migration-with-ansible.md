@@ -251,7 +251,7 @@ grafana_admin_user = "admin"
 grafana_admin_password = "admin"
 ```
 
-`{version}` 为下载的 DM-Ansible 对应的版本号。关于 DM-worker 参数的更多信息，请参考 [DM-worker 配置及参数描述](#dm-worker-配置及参数描述)。
+`{version}` 为当前 DM-Ansible 对应的版本号。关于 DM-worker 参数的更多信息，请参考 [DM-worker 配置及参数描述](#dm-worker-配置及参数描述)。
 
 ### 选项 2：使用单节点上多个 DM-worker 实例的集群拓扑
 
@@ -302,7 +302,7 @@ grafana_admin_user = "admin"
 grafana_admin_password = "admin"
 ```
 
-`{version}` 为下载的 DM-Ansible 对应的版本号。
+`{version}` 为当前 DM-Ansible 对应的版本号。
 
 ### DM-worker 配置及参数描述
 
