@@ -31,7 +31,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一
     kubectl create secret generic gcs-secret --from-file=credentials=./google-credentials.json -n test1
     ```
 
-3. 创建 `backup-demo1-tidb-secret` secret, 里面存放用来访问 TiDB 集群的 root 账号和密钥
+3. 创建 `backup-demo1-tidb-secret` secret。该 secret 存放用于访问 TiDB 集群的 root 账号和密钥。
 
     {{< copyable "shell-regular" >}}
 
