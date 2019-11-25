@@ -3,7 +3,7 @@ title: 恢复备份数据到 Kubernetes 上的 TiDB 集群
 category: how-to
 ---
 
-# Kubernetes 上从备份数据恢复 TiDB 集群
+# 恢复备份数据到 Kubernetes 上的 TiDB 集群
 
 本文档详细描述了如何将 Kubernetes 上通过 TiDB Operator 备份的 TiDB 集群数据恢复的具体操作过程。底层通过使用 [`loader`](/dev/reference/tools/loader.md) 来进行集群恢复。
 
