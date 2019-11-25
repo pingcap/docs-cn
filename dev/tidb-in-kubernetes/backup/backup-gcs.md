@@ -96,7 +96,7 @@ gcs 支持的 object ACL 策略有如下几种：
 * projectPrivate
 * publicRead
 
-如果不设置，默认策略为 `private`, 这几种访问控制策略的详细介绍参考 gcs [官方文档](https://cloud.google.com/storage/docs/access-control/lists)。
+如果不设置 object ACL 策略，则默认使用 `private` 策略。这几种访问控制策略的详细介绍可参考 [GCS 官方文档](https://cloud.google.com/storage/docs/access-control/lists)。
 
 gcs 支持的 bucket ACL 策略有如下几种：
 
