@@ -6,7 +6,7 @@ aliases: ['/docs-cn/op-guide/tidb-v3.0-upgrade-guide/','/docs-cn/v3.0/how-to/upg
 
 # TiDB 3.0 升级操作指南
 
-本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 版本（v2.1 RC1 及之后版本）升级到 TiDB 3.0 或 master 版本。目前，TiDB 3.0 和 master 版本兼容 [TiDB Binlog Cluster 版本](/v3.0/reference/tidb-binlog/overview.md)。
+本文档适用于从 TiDB 2.0 或 2.1 版本升级到 TiDB 3.0 版本以及 TiDB 3.0 低版本升级到 TiDB 3.0 高版本。目前，TiDB 3.0 版本兼容 [TiDB Binlog Cluster 版本](/v3.0/reference/tidb-binlog/overview.md)。
 
 ## 升级兼容性说明
 
@@ -26,7 +26,7 @@ aliases: ['/docs-cn/op-guide/tidb-v3.0-upgrade-guide/','/docs-cn/v3.0/how-to/upg
 >
 > 如果已经安装了 Ansible 及其依赖，可跳过该步骤。
 
-TiDB Ansible release-3.0 版本依赖 Ansible 2.4.2 及以上版本（`ansible>=2.4.2`，最好是 2.7.11 版本），另依赖 Python 模块：`jinja2>=2.9.6` 和 `jmespath>=0.9.0`。为方便管理依赖，建议使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](/v3.0/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](/v3.0/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-ansible-及其依赖)。
+TiDB Ansible release-3.0 版本依赖 2.4.2 及以上但不高于 2.7.11 的 Ansible 版本（`ansible>=2.4.2, ansible<=2.7.11`，建议 2.7.11 版本），另依赖 Python 模块：`jinja2>=2.9.6` 和 `jmespath>=0.9.0`。为方便管理依赖，建议使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](/v3.0/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](/v3.0/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-ansible-及其依赖)。
 
 安装完成后，可通过以下命令查看版本：
 
@@ -68,7 +68,7 @@ Version: 0.9.0
 
 ## 在中控机器上下载 TiDB Ansible
 
-以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录，备份 TiDB 2.0 版本或 TiDB 2.1 版本的 tidb-ansible 文件夹：
+以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录，备份 TiDB 2.0 版本或 TiDB 2.1 版本或 TiDB 3.0 低版本的 tidb-ansible 文件夹：
 
 {{< copyable "shell-regular" >}}
 
@@ -171,7 +171,7 @@ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
 
 ## 下载 TiDB 3.0 binary 到中控机
 
-确认 `tidb-ansible/inventory.ini` 文件中 `tidb_version = v3.0.0`，然后执行以下命令下载 TiDB 3.0 binary 到中控机。
+确认 `tidb-ansible/inventory.ini` 文件中 `tidb_version = v3.0.x`，然后执行以下命令下载 TiDB 3.0 binary 到中控机。
 
 {{< copyable "shell-regular" >}}
 
@@ -199,7 +199,7 @@ ansible-playbook rolling_update.yml
 
 > **注意：**
 >
-> 为优化 TiDB 集群组件的运维管理，TiDB 3.0 版本对 `systemd` 模式下的 `PD service` 名称进行了调整。在升级到 TiDB 3.0 版本后，滚动升级及日常滚动重启 TiDB 集群统一使用 `rolling_update.yml` 操作，不再使用 `excessive_rolling_update.yml`。
+> 为优化 TiDB 集群组件的运维管理，从TiDB 3.0 版本开始对 `systemd` 模式下的 `PD service` 名称进行了调整，如果从 3.0 以前的版本升级需要使用 `excessive_rolling_update.yml` 来过渡。在升级到 TiDB 3.0 版本后，滚动升级及日常滚动重启 TiDB 集群仍旧统一使用 `rolling_update.yml` 操作。
 
 ## 滚动升级 TiDB 监控组件
 
