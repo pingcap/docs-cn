@@ -104,3 +104,17 @@ Since TiDB 3.0, some configuration options have changed with support for the dis
 - Concurrent: requests are sent to each Region concurrently based on the number of threads specified in the `tikv_gc_concurrency`.
 - Auto-concurrent: requests are sent to each Region concurrently with the number of TiKV nodes as concurrency value.
 - Distributed: no need for TiDB to send requests to TiKV to trigger GC because each TiKV handles GC on its own.
+
+## GC I/O limit
+
+TiKV supports the GC I/O limit <span class="version-mark">New in v3.0.6</span>. You can configure `gc.max-write-bytes-per-sec` to limit writes of a GC worker per second, and thus to reduce the impact on normal requests.
+
+`0` indicates disabling this feature.
+
+You can dynamically modify this configuration using tikv-ctl:
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tikv-ctl --host=ip:port modify-tikv-config -m server -n gc.max_write_bytes_per_sec -v 10MB
+```
