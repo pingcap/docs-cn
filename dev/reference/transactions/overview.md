@@ -9,7 +9,9 @@ TiDB 支持完整的分布式事务。本文主要介绍涉及到事务的语句
 
 常用的变量包括 `autocommit`、`tidb_disable_txn_auto_retry` 以及 `tidb_retry_limit`。
 
-## `BEGIN` 和 `START TRANSACTION`
+## 事务常用语句
+
+### `BEGIN` 和 `START TRANSACTION`
 
 语法：
 
@@ -33,7 +35,7 @@ START TRANSACTION WITH CONSISTENT SNAPSHOT;
 
 以上三条语句都用于开启事务，效果相同。执行开启事务语句可以显式地开启一个新的事务。如果执行以上语句时，当前 Session 正处于一个事务的中间过程，那么系统会先自动提交当前事务，再开启一个新的事务。
 
-## `COMMIT`
+### `COMMIT`
 
 语法：
 
@@ -45,7 +47,7 @@ COMMIT;
 
 该语句用于提交当前的事务，包括从 `[BEGIN|START TRANSACTION]` 到 `COMMIT` 之间的所有修改。
 
-## `ROLLBACK`
+### `ROLLBACK`
 
 语法：
 
