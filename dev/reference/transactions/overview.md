@@ -7,7 +7,7 @@ category: reference
 
 TiDB 支持完整的分布式事务。本文主要介绍涉及到事务的语句、显式/隐式事务以及事务的隔离级别和惰性检查。
 
-常用的变量包括 `autocommit`、`tidb_disable_txn_auto_retry` 以及 `tidb_retry_limit`。
+常用的变量包括 `autocommit`、[`tidb_disable_txn_auto_retry`](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_disable_txn_auto_retry) 以及 [`tidb_retry_limit`](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_retry_limit)。
 
 ## 事务常用语句
 
@@ -71,7 +71,11 @@ SET autocommit = {0 | 1}
 
  当 `autocommit = 1` 时（默认），当前的 Session 为自动提交状态。设置 `autocommit = 0` 时将更改当前 Session 为非自动提交状态。
 
-自动提交状态下，每条语句运行后，TiDB 会自动将修改提交到数据库中。非自动提交状态下，通过执行 `COMMIT` 语句来手动提交事务。注意某些语句执行后会导致隐式提交，详见 [implicit commit](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html)。例如，执行 `[BEGIN|START TRANCATION]` 语句的时候，TiDB 会试图提交上一个事务，并开启一个新的事务。
+自动提交状态下，每条语句运行后，TiDB 会自动将修改提交到数据库中。非自动提交状态下，通过执行 `COMMIT` 语句来手动提交事务。
+
+> **注意：**
+>
+> 某些语句执行后会导致隐式提交。例如，执行 `[BEGIN|START TRANCATION]` 语句的时候，TiDB 会试图提交上一个事务，并开启一个新的事务。详情参见 [implicit commit](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html)。
 
 另外，`autocommit` 也是一个系统变量，你可以通过变量赋值语句修改当前 Session 或 Global 的值。
 
