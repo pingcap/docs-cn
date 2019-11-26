@@ -60,7 +60,9 @@
     - [从 CSV 迁移](/v3.1/reference/tools/tidb-lightning/csv.md)
   + 运维
     - [Ansible 常见运维操作](/v3.1/how-to/maintain/ansible-operations.md)
-    + [备份与恢复](/v3.1/how-to/maintain/backup-and-restore.md)
+    + 备份与恢复
+      - [使用 Mydumper/Loader 进行备份与恢复](/v3.1/how-to/maintain/backup-and-restore/mydumper-loader.md)
+      - [使用 BR 进行备份与恢复](/v3.1/how-to/maintain/backup-and-restore/br.md)
     - [定位慢查询](/v3.1/how-to/maintain/identify-slow-queries.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/v3.1/how-to/scale/with-ansible.md)
@@ -251,6 +253,7 @@
     - [执行计划绑定](/v3.1/reference/performance/execution-plan-bind.md)
     - [统计信息概述](/v3.1/reference/performance/statistics.md)
     - [Optimizer Hints](/v3.1/reference/performance/optimizer-hints.md)
+    - [Follower Read](/v3.1/reference/performance/follower-read.md)
     - [使用 SQL 语句检查 TiDB 集群状态](/v3.1/reference/performance/check-cluster-status-using-sql-statements.md)
     - [Statement Summary Table](/v3.1/reference/performance/statement-summary.md)
     - [TiKV 调优](/v3.1/reference/performance/tune-tikv.md)
@@ -267,6 +270,7 @@
     - [高并发写入场景最佳实践](/v3.1/reference/best-practices/high-concurrency.md)
     - [Grafana 监控最佳实践](/v3.1/reference/best-practices/grafana-monitor.md)
     - [PD 调度策略最佳实践](/v3.1/reference/best-practices/pd-scheduling.md)
+    - [海量 Region 集群调优最佳实践](/v3.1/reference/best-practices/massive-regions.md)
   + [TiSpark 使用指南](/v3.1/reference/tispark.md)
   + TiDB Binlog
     - [概述](/v3.1/reference/tidb-binlog/overview.md)
@@ -276,6 +280,9 @@
     - [监控告警](/v3.1/reference/tidb-binlog/monitor.md)
     - [增量恢复](/v3.1/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/v3.1/reference/tidb-binlog/binlog-slave-client.md)
+    + 故障诊断
+      - [故障诊断](/v3.1/reference/tidb-binlog/troubleshoot/binlog.md)
+      - [常见错误修复](/v3.1/reference/tidb-binlog/troubleshoot/error-handling.md)
     - [FAQ](/v3.1/reference/tidb-binlog/faq.md)
   + 周边工具
     - [Mydumper](/v3.1/reference/tools/mydumper.md)
