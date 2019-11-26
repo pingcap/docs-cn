@@ -67,9 +67,9 @@ ROLLBACK;
 SET autocommit = {0 | 1}
 ```
 
- 当 `autocommit = 1` 时（默认），当前的 Session 为自动提交状态。 设置 `autocommit = 0` 时将更改当前 Session 为非自动提交状态。
+ 当 `autocommit = 1` 时（默认），当前的 Session 为自动提交状态。设置 `autocommit = 0` 时将更改当前 Session 为非自动提交状态。
 
-自动提交状态下，每条语句运行后，TiDB 会自动将修改提交到数据库中。非自动提交状态下，通过执行 `COMMIT` 语句来手动提交事务。注意某些语句执行后会导致隐式提交，详见[implicit commit](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html)。例如，执行 `[BEGIN|START TRANCATION]` 语句的时候，TiDB 会试图提交上一个事务，并开启一个新的事务。
+自动提交状态下，每条语句运行后，TiDB 会自动将修改提交到数据库中。非自动提交状态下，通过执行 `COMMIT` 语句来手动提交事务。注意某些语句执行后会导致隐式提交，详见 [implicit commit](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html)。例如，执行 `[BEGIN|START TRANCATION]` 语句的时候，TiDB 会试图提交上一个事务，并开启一个新的事务。
 
 另外，`autocommit` 也是一个系统变量，你可以通过变量赋值语句修改当前 Session 或 Global 的值。
 
@@ -87,7 +87,7 @@ SET @@GLOBAL.autocommit = {0 | 1};
 
 ## 显式事务和隐式事务
 
-TiDB 可以显式地使用事务（`[BEGIN|START TRANSACTION]`/`COMMIT`）或者隐式地使用事务（`SET autocommit = 1`）。
+TiDB 可以显式地使用事务 (`[BEGIN|START TRANSACTION]`/`COMMIT`) 或者隐式地使用事务 (`SET autocommit = 1`)。
 
 自动提交状态下，使用 `[BEGIN|START TRANSACTION]` 语句始终显式开启一个事务。当前会禁用自动提交，即隐式事务变成显式事务，直到执行 `COMMIT` 或 `ROLLBACK` 语句时才会恢复到默认的自动提交状态。
 
