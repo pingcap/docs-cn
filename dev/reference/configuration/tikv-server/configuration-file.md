@@ -315,6 +315,16 @@ raftstore 相关的配置项。
 + 默认值：3s
 + 最小值：0
 
+### `raftstore.hibernate-regions` (**实验特性**)
+
++ 打开或关闭静默 Region。打开后，如果 Region 长时间处于非活跃状态，即被置为静默状态。静默状态的 Region 可以降低 Leader 和 Follower 之间心跳信息的系统开销。可以通过 `raftstore.peer-stale-state-check-interval` 调整 Leader 和 Follower 之间的心跳间隔。
++ 默认值：false
+
+### `raftstore.peer-stale-state-check-interval`
+
++ 修改对静默 Region 的状态检查间隔时间，同时该值也决定了静默 Regions 中 Leader 和 Follower 之间的心跳间隔。
++ 默认值：5 min
+
 ### `split-region-check-tick-interval`
 
 + 检查 region 是否需要分裂的时间间隔，0 表示不启用。
