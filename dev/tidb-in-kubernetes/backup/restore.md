@@ -29,7 +29,7 @@ category: how-to
 
 ## 将指定备份恢复到 TiDB 集群
 
-1. 创建 restore CR，将指定的备份数据恢复至 TiDB 集群：
+1. 创建 restore custom resource (CR)，将指定的备份数据恢复至 TiDB 集群：
 
     {{< copyable "shell-regular" >}}
 
@@ -82,6 +82,6 @@ kubectl get bk -n test1
 
 `.spec.secretName`：访问需恢复的目标 TiDB 集群所需凭证的 secret。
 
-`.spec.storageClassName`：备份恢复时需要指定使用的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 所指定的值，这个值默认为 `standard`。
+`.spec.storageClassName`：恢复备份数据时需要指定使用的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 所指定的值，这个值默认为 `standard`。
 
 `.spec.storageSize`：恢复集群时指定所需的 PV 大小。这个值应大于备份恢复 TiDB 集群数据的大小。

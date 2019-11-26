@@ -9,9 +9,9 @@ category: how-to
 
 ## Ad-hoc 全量备份
 
-Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一次备份。TiDB Operator 根据这个 `Backup` 对象来完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。
+Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 对象来描述一次备份。TiDB Operator 根据这个 `Backup` 对象来完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。
 
-为了更好地描述备份的使用方式，本文档提供如下备份示例。示例假设对部署在 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1` 进行数据备份，下面是具体操作过程：
+为了更好地描述备份的使用方式，本文档提供如下备份示例。示例假设对部署在 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1` 进行数据备份，下面是具体操作过程。
 
 ### Ad-hoc 全量备份环境准备
 
@@ -23,7 +23,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一
     kubectl apply -f backup-rbac.yaml -n test1
     ```
 
-2. 创建 `gcs-secret` secret。该 secret 存放用于访问 GCS 的凭证。`google-credentials.json` 文件存放用户从 GCP console 上下载的 service account key。具体操作参考 [GCP 官方文档](https://cloud.google.com/docs/authentication/getting-started)：
+2. 创建 `gcs-secret` secret。该 secret 存放用于访问 GCS 的凭证。`google-credentials.json` 文件存放用户从 GCP console 上下载的 service account key。具体操作参考 [GCP 官方文档](https://cloud.google.com/docs/authentication/getting-started)。
 
     {{< copyable "shell-regular" >}}
 
@@ -31,7 +31,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` CR 对象来描述一
     kubectl create secret generic gcs-secret --from-file=credentials=./google-credentials.json -n test1
     ```
 
-3. 创建 `backup-demo1-tidb-secret` secret。该 secret 存放用于访问 TiDB 集群的 root 账号和密钥：
+3. 创建 `backup-demo1-tidb-secret` secret。该 secret 存放用于访问 TiDB 集群的 root 账号和密钥。
 
     {{< copyable "shell-regular" >}}
 
