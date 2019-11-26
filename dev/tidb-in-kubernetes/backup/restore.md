@@ -70,9 +70,9 @@ restore CR 各个字段的详细解释：
 
 `.spec.cluster`：需要恢复的目标 TiDB 集群的名字。
 
-`.spec.backupNamespace`：备份集群所在的 namespace。因为当前的 restore 所需的远端存储的访问信息是通过源备份信息获取的，所以进行恢复时需要知道备份源来自哪个 namespace。
+`.spec.backupNamespace`：备份集群所在的 namespace。因为目前实现的 restore 逻辑中所需的远端存储访问信息是通过源备份信息 backup CR 获取的，所以进行恢复时需要知道备份源来自哪个 namespace。
 
-`.spec.backup`：备份源的一个 backup CR 名。可以通过以下命令获取备份集群下的备份条目，然后从中选择一个要恢复的 `backup` 进行恢复即可。
+`.spec.backup`：备份源的一个 backup CR 名字。可以通过以下命令获取备份集群下的备份条目，然后从中选择一个要恢复的 `backup` 进行恢复即可。
 
 {{< copyable "shell-regular" >}}
 
@@ -84,4 +84,4 @@ kubectl get bk -n test1
 
 `.spec.storageClassName`：恢复备份数据时需要指定使用的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 所指定的值，这个值默认为 `standard`。
 
-`.spec.storageSize`：恢复集群时指定所需的 PV 大小。这个值应大于备份恢复 TiDB 集群数据的大小。
+`.spec.storageSize`：恢复集群时指定所需的 PV 大小。这个值应大于备份 TiDB 集群数据的大小。
