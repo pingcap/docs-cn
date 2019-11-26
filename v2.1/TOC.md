@@ -61,8 +61,7 @@
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/v2.1/how-to/scale/with-ansible.md)
   + 升级
-    - [升级至 TiDB 3.0](/v2.1/how-to/upgrade/from-previous-version.md)
-    - [升级至 TiDB 2.1](/v2.1/how-to/upgrade/to-tidb-2.1.md)
+    - [升级至 TiDB 2.1](/v2.1/how-to/upgrade/from-previous-version.md)
     - [使用 Ansible 滚动升级](/v2.1/how-to/upgrade/rolling-updates-with-ansible.md)
   + 故障诊断
     - [集群配置诊断](/v2.1/how-to/troubleshoot/cluster-setup.md)
@@ -230,7 +229,6 @@
   + 性能调优
     - [SQL 优化流程](/v2.1/reference/performance/sql-optimizer-overview.md)
     - [理解 TiDB 执行计划](/v2.1/reference/performance/understanding-the-query-execution-plan.md)
-    - [执行计划绑定](/v2.1/reference/performance/execution-plan-bind.md)
     - [统计信息概述](/v2.1/reference/performance/statistics.md)
     - [Optimizer Hints](/v2.1/reference/performance/optimizer-hints.md)
     - [TiKV 调优](/v2.1/reference/performance/tune-tikv.md)
@@ -246,6 +244,7 @@
     - [Java 应用开发最佳实践](/v2.1/reference/best-practices/java-app.md)
     - [Grafana 监控最佳实践](/v2.1/reference/best-practices/grafana-monitor.md)
     - [PD 调度策略最佳实践](/v2.1/reference/best-practices/pd-scheduling.md)
+    - [海量 Region 集群调优最佳实践](/v2.1/reference/best-practices/massive-regions.md)
   + [TiSpark 使用指南](/v2.1/reference/tispark.md)
   + TiDB Binlog
     - [概述](/v2.1/reference/tidb-binlog/overview.md)

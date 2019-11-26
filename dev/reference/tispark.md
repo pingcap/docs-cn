@@ -53,9 +53,10 @@ Spark 的具体配置方式也请参考[官方说明](https://spark.apache.org/d
 {{< copyable "" >}}
 
 ```
-SPARK_EXECUTOR_MEMORY=32g
-SPARK_WORKER_MEMORY=32g
-SPARK_WORKER_CORES=8
+SPARK_EXECUTOR_CORES: 5
+SPARK_EXECUTOR_MEMORY: 10g
+SPARK_WORKER_CORES: 5
+SPARK_WORKER_MEMORY: 10g
 ```
 
 在 `spark-defaults.conf` 中，增加如下配置：
