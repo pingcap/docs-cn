@@ -135,7 +135,7 @@ kind 通过使用 Docker 容器作为集群节点模拟出一个本地的 Kubern
         >
         > 如果代理建立成功，会打印类似输出：`Forwarding from 0.0.0.0:4000 -> 4000`。测试完成后按 `Ctrl + C` 停止代理并退出。
 
-    2. 然后，通过 MySQL 客户端访问 TiDB，打开一个**新**终端标签或者一个**新**终端窗口，执行下面的命令：
+    2. 然后，通过 MySQL 客户端访问 TiDB，打开一个**新**终端标签或窗口，执行下面的命令：
 
         {{< copyable "shell-regular" >}}
 
@@ -157,7 +157,7 @@ kind 通过使用 Docker 容器作为集群节点模拟出一个本地的 Kubern
         >
         > 如果代理建立成功，会打印类似输出：`Forwarding from 0.0.0.0:3000 -> 3000`。测试完成后按 `Ctrl + C` 停止代理并退出。
 
-    2. 然后，在浏览器中打开 `http://localhost:3000` 访问 Grafana 监控面板：
+    2. 然后，在浏览器中打开 <http://localhost:3000> 访问 Grafana 监控面板：
 
         - 默认用户名：admin
         - 默认密码：admin
@@ -174,7 +174,7 @@ kind 通过使用 Docker 容器作为集群节点模拟出一个本地的 Kubern
     > kubectl port-forward --address 0.0.0.0 -n tidb svc/<release-name>-grafana 3000:3000
     > ```
     >
-    > 然后，在浏览器中打开 `http://vmip:3000` 访问 Grafana 监控面板。
+    > 然后，在浏览器中打开 <http://vmip:3000> 访问 Grafana 监控面板。
 
 ## 删除 TiDB 集群 与 Kubernetes 集群
 
