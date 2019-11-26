@@ -129,7 +129,7 @@ readpool:
 
 ## 下载 TiDB 2.1 binary 到中控机
 
-确认 `tidb-ansible/inventory.ini` 文件中 `tidb_version = v2.1.0`，然后执行以下命令下载 TiDB 2.1 binary 到中控机。
+确认 `tidb-ansible/inventory.ini` 文件中 `tidb_version = v2.1.x`，然后执行以下命令下载 TiDB 2.1 binary 到中控机。
 
 {{< copyable "shell-regular" >}}
 
