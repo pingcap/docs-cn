@@ -318,6 +318,7 @@
       + Usage Scenarios
         - [Simple Scenario](/dev/reference/tools/data-migration/usage-scenarios/simple-replication.md)
         - [Shard Merge Scenario](/dev/reference/tools/data-migration/usage-scenarios/shard-merge.md)
+        - [Shard Merge Best Practices](/dev/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md)
       - [Deploy](/dev/reference/tools/data-migration/deploy.md)
       + Configure
         - [Overview](/dev/reference/tools/data-migration/configure/overview.md)

@@ -333,7 +333,7 @@ filters:
     action: Ignore
 ```
 
-`filter-procedure-rule`  filters out the `^CREATE\\s+PROCEDURE` and `^DROP\\s+PROCEDURE` statements of all tables that match the `test_*`.`t_*` pattern.
+`filter-procedure-rule` filters out the `^CREATE\\s+PROCEDURE` and `^DROP\\s+PROCEDURE` statements of all tables that match the `test_*`.`t_*` pattern.
 
 #### Filter out the SQL statements that the TiDB parser does not support
 
@@ -354,6 +354,10 @@ filters:
 ```
 
 ## Column mapping
+
+> **Note:**
+>
+> The column mapping is not recommended as the primary solution due to its usage restrictions. The preferable solution is [handling conflicts of auto-increment primary key](/dev/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md#handle-conflicts-of-auto-increment-primary-key).
 
 The column mapping feature supports modifying the value of table columns. You can execute different modification operations on the specified column according to different expressions. Currently, only the built-in expressions provided by DM are supported.
 
@@ -401,10 +405,10 @@ Note the following restrictions:
 - If the `table prefix` is not empty, the table name format must be `table prefix` or `table prefix + separator + number (the table ID)`.
 - If the schema/table name does not contain the `… + separator + number` part, the corresponding ID is considered as 0.
 - Restrictions on sharding size:
-    - It supports 16 MySQL or MariaDB instances at most (0 <= instance ID <= 15).
-    - Each instance supports 128 schemas at most (0 <= schema ID  <= 127).
-    - Each schema of each instance supports 256 tables at most (0 <= table ID <= 255).
-    - The ID range of the auto-increment primary key is "0 <= ID <= 17592186044415".
+    - It supports 16 MySQL or MariaDB instances at most (Requirement: 0 <= instance ID <= 15).
+    - Each instance supports 128 schemas at most (Requirement: 0 <= schema ID <= 127).
+    - Each schema of each instance supports 256 tables at most (Requirement: 0 <= table ID <= 255).
+    - The range of the mapped column should meet the requirement: 0 <= ID <= 17592186044415.
     - The `{instance ID, schema ID, table ID}` group must be unique.
 - Currently, the `partition id` expression is a customized feature. If you want to modify this feature, contact the corresponding developers.
 
