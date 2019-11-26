@@ -562,7 +562,7 @@ The best practices for managing multiple Kubernetes clusters are as follows:
 - Creating a new directory for each of your Kubernetes clusters.
 - Combining the above modules according to your needs via Terraform scripts.
 
-If you use the best practices, the Terraform states among clusters do not interfere with each other, and it is convenient to manage more clusters. Here's an example (assume you are in the project root directory):
+If you use the best practices, the Terraform states among clusters do not interfere with each other, and it is convenient to manage multiple Kubernetes clusters. Here's an example (assume you are in the project root directory):
 
 {{< copyable "shell-regular" >}}
 
@@ -700,14 +700,15 @@ output "connect_to_tidb_cluster_b_from_bastion" {
 
 As shown in the code above, you can omit several parameters in each of the module calls because there are reasonable defaults, and it is easy to customize the configuration. For example, just delete the bastion module call if you do not need it.
 
-To customize each field, you can refer to the default Terraform module. Also, you can always refer to the `variables.tf` file of each module to learn about all available parameters.
+To customize a field, use one of the following two methods:
 
-In addition, you can easily integrate these modules into your own Terraform workflow. If you are familiar with Terraform, this is our recommended way of use.
+- Modify the parameter configuration of `module` in the `*.tf` file directly.
+- Refer to the `variables.tf` file of each module for all the modifiable parameters and set custom values in `terraform.tfvars`.
 
 > **Note:**
 >
 > * When creating a new directory, pay attention to its relative path to Terraform modules, which affects the `source` parameter during module calls.
 > * If you want to use these modules outside the tidb-operator project, make sure you copy the whole `modules` directory and keep the relative path of each module inside the directory unchanged.
-> * Due to limitation [hashicorp/terraform#2430](https://github.com/hashicorp/terraform/issues/2430#issuecomment-370685911) of Terraform, the hack processing of Helm provider is necessary in the above example. It is recommended that you keep it in your own Terraform scripts.
->
->     If you are unwilling to write Terraform code, you can also copy the `deploy/gcp` directory to create new Kubernetes clusters. But note that you cannot copy a directory that you have already run `terraform apply` against, when the Terraform state already exists in local. In this case, it is recommended that you clone a new repository before copying the directory.
+> * Due to limitation [hashicorp/terraform#2430](https://github.com/hashicorp/terraform/issues/2430#issuecomment-370685911) of Terraform, the `# HACK: enforces Helm to depend on the GKE cluster` section is added in the above example to deal with the Helm provider. If you write your own `tf` file, you need to include this section.
+
+If you are unwilling to write Terraform code, you can also copy the `deploy/gcp` directory to create new Kubernetes clusters. But note that do not copy a directory that you have already run `terraform apply` against. In this case, it is recommended that you re-clone the tidb-operator repository before copying the directory.
