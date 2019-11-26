@@ -119,16 +119,6 @@ kind 通过使用 Docker 容器作为集群节点模拟出一个本地的 Kubern
 
 通过 `kubectl port-forward` 暴露服务到主机，可以访问 TiDB 集群。命令中的端口格式为：`<主机端口>:<k8s 服务端口>`。
 
-> **注意：**
->
-> 如果你不是在本地 PC 而是在远程主机上部署的 kind 环境，可能无法通过 localhost 访问远程主机的服务。如果使用 kubectl 1.13 或者更高版本，可以在执行 `kubectl port-forward` 命令时添加 `--address 0.0.0.0` 选项，在 `0.0.0.0` 暴露端口而不是默认的 `127.0.0.1`：
->
-> {{< copyable "shell-regular" >}}
->
-> ```shell
-> kubectl port-forward --address 0.0.0.0 -n tidb svc/<release-name>-grafana 3000:3000
-> ```
-
 - 通过 MySQL 客户端访问 TiDB
 
     在访问 TiDB 集群之前，请确保已安装 MySQL client。
@@ -171,6 +161,20 @@ kind 通过使用 Docker 容器作为集群节点模拟出一个本地的 Kubern
 
         - 默认用户名：admin
         - 默认密码：admin
+
+    > **注意：**
+    >
+    > 如果你不是在本地 PC 而是在远程主机上部署的 kind 环境，可能无法通过 localhost 访问远程主机的服务。
+    >
+    > 如果使用 kubectl 1.13 或者更高版本，可以在执行 `kubectl port-forward` 命令时添加 `--address 0.0.0.0` 选项，在 `0.0.0.0` 暴露端口而不是默认的 `127.0.0.1`：
+    >
+    > {{< copyable "shell-regular" >}}
+    >
+    > ```
+    > kubectl port-forward --address 0.0.0.0 -n tidb svc/<release-name>-grafana 3000:3000
+    > ```
+    >
+    > 然后，在浏览器中打开 http://vmip:3000 访问 Grafana 监控面板。
 
 ## 删除 TiDB 集群 与 Kubernetes 集群
 
