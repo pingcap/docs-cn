@@ -154,9 +154,9 @@ TiDB 中默认使用乐观事务模式，因而在高冲突率的场景中，事
 
 换言之，MySQL 在执行 SQL 语句的过程中进行冲突检测，所以提交时很难出现异常。由于 TiDB 使用乐观锁机制造成了两边行为不一致，要兼容 MySQL 的悲观事务行为，需要在客户端修改大量的代码来进行业务改造。为了便于广大 MySQL 用户使用，TiDB 提供了内部默认重试机制。也就是当事务 A 提交后，如果发现冲突，TiDB 内部重新执行包含写操作的 SQL 语句。为此，TiDB 提供了以下参数：
 
-```
+```toml
 # 用于设置是否禁用自动重试，默认值为 “on”，即不重试。
-tidb_disable_txn_auto_retry = on 
+tidb_disable_txn_auto_retry = on
 # 用来控制重试次数。只有自动重试启用时该参数才会生效。
 # 当 “tidb_retry_limit= 0” 时，也会自动禁用自动重试。
 tidb_retry_limit = 10
@@ -260,4 +260,3 @@ scheduler-concurrency = 2048000
 ![Scheduler latch wait duration](/media/best-practices/optimistic-transaction-metric.png)
 
 当 `Scheduler latch wait duration` 的值特别高时，说明大量时间消耗在等待锁的请求上。如果不存在底层写入慢的问题，基本上可以判断该段时间内冲突比较多。
-
