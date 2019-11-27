@@ -17,9 +17,9 @@ TiDB 默认使用乐观事务模型，在执行 `UPDATE`、`INSERT`、`DELETE` �
 
 ## 基于事务模型的优化实践
 
-由于 TiDB 中的每个事务都需要跟 PD leader 进行两次 round trip，TiDB 中的事务相比于 MySQL 中的事务延迟更高。以如下的 query 为例，用显式事务代替 `auto_commit`，可优化该 query 的性能。
+由于 TiDB 中的每个事务都需要跟 PD leader 进行两次 round trip，TiDB 中的事务相比于 MySQL 中的事务延迟更高。以如下的 query 为例，用显式事务代替 `autocommit`，可优化该 query 的性能。
 
-使用 auto_commit 的原始版本：
+使用 autocommit 的原始版本：
 
 {{< copyable "sql" >}}
 
