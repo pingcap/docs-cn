@@ -43,7 +43,7 @@ TiDB Data Migration 平台由 3 部分组成：DM-master、DM-worker 和 dmctl�
 
 本部分介绍如何部署 3 个 MySQL Server 实例及 `pd-server`、`tikv-server` 和 `tidb-server` 实例各 1 个，以及如何启动 1 个 DM-master 和 3 个 DM-worker 实例。
 
-1. 安装 MySQL 5.7，下载或提取 TiDB 安装包：
+1. 安装 MySQL 5.7，下载或提取 TiDB v3.0 以及 DM v1.0.2 安装包：
 
     {{< copyable "shell-regular" >}}
 
@@ -51,7 +51,7 @@ TiDB Data Migration 平台由 3 部分组成：DM-master、DM-worker 和 dmctl�
     sudo yum install -y http://repo.mysql.com/yum/mysql-5.7-community/el/7/x86_64/mysql57-community-release-el7-10.noarch.rpm &&
     sudo yum install -y mysql-community-server &&
     curl http://download.pingcap.org/tidb-v3.0-linux-amd64.tar.gz | tar xzf - &&
-    curl http://download.pingcap.org/dm-latest-linux-amd64.tar.gz | tar xzf - &&
+    curl http://download.pingcap.org/dm-v1.0.2-linux-amd64.tar.gz | tar xzf - &&
     curl -L https://github.com/pingcap/docs/raw/master/dev/how-to/get-started/dm-cnf/dm-cnf.tgz | tar xvzf -
     ```
 
