@@ -17,7 +17,7 @@ TiDB 使用 Percolator 事务模型，实现了标准的 [ACID](https://en.wikip
 * Isolation（隔离性）：隔离性主要用于处理并发场景。TiDB 目前只支持一种隔离级别，即[可重复读](/dev/reference/transactions/transaction-isolation.md)。
 * Durability（持久性）：事务一旦提交成功，数据全部持久化存储到 TiKV，此时即使 TiDB 服务器宕机也不会出现数据丢失。
 
-目前 TiDB 一共提供了两种事务模式：乐观事务和悲观事务。两者最本质的区别在于检测冲突的时间点不同：
+目前 TiDB 支持两种事务模式：乐观事务和悲观事务。两者最本质的区别在于检测冲突的时间点不同：
 
 * 悲观事务：每一条 SQL 执行后都会检测冲突。
 * 乐观事务：只有在事务最终提交时才会检测冲突。
@@ -56,7 +56,7 @@ TiDB 中事务使用两阶段提交，流程如下：
 
     e. TiDB 向 PD 获取第二个全局唯一递增版本号，定义为本次事务的 `commit_ts`。
 
-    f. TiDB 向 Primary Key 所在 TiKV 发起第两阶段提交。TiKV 收到 commit 操作后，检查数据合法性，清理 prewrite 阶段留下的锁。
+    f. TiDB 向 Primary Key 所在 TiKV 发起第二阶段提交。TiKV 收到 commit 操作后，检查数据合法性，清理 prewrite 阶段留下的锁。
 
     g. TiDB 收到 f 成功信息。
 
@@ -86,21 +86,21 @@ TiDB 中事务使用两阶段提交，流程如下：
 
 在自动提交状态 (`autocommit = 1`) 下，下面三条语句各为一个事务：
 
-```mysql
+```sql
 # 使用自动提交的原始版本。
-UPDATE my_table SET a='new_value' WHERE id = 1;
-UPDATE my_table SET a='newer_value' WHERE id = 2;
-UPDATE my_table SET a='newest_value' WHERE id = 3;
+UPDATE my_table SET a ='new_value' WHERE id = 1;
+UPDATE my_table SET a ='newer_value' WHERE id = 2;
+UPDATE my_table SET a ='newest_value' WHERE id = 3;
 ```
 
 此时每一条语句都需要经过两阶段提交，频繁的网络交互致使小事务延迟率高。为提升事务执行效率，可以选择使用显示事务，即在一个事务内执行三条语句：
 
-```mysql
+```sql
 # 优化后版本。
 START TRANSACTION;
-UPDATE my_table SET a='new_value' WHERE id = 1;
-UPDATE my_table SET a='newer_value' WHERE id = 2;
-UPDATE my_table SET a='newest_value' WHERE id = 3;
+UPDATE my_table SET a ='new_value' WHERE id = 1;
+UPDATE my_table SET a ='newer_value' WHERE id = 2;
+UPDATE my_table SET a ='newest_value' WHERE id = 3;
 COMMIT;
 ```
 
@@ -125,7 +125,7 @@ COMMIT;
 
 ## 事务冲突
 
-事务的冲突，主要指事务并发执行时对相同的 Key 进行了读写操作。冲突主要分成两种：
+事务的冲突，主要指事务并发执行时对相同的 Key 进行了读写操作。冲突主要有两种形式：
 
 * 读写冲突：部分事务进行读操作时，有事务在同一时间对相同的 Key 进行写操作。
 * 写写冲突：不同事务同时对相同的 Key 进行写操作。
@@ -152,13 +152,13 @@ COMMIT;
 
 TiDB 中默认使用乐观事务模式，因而在高冲突率的场景中，事务很容易提交失败。而 MySQL 内部使用的是悲观事务模式，对应到上面的实例中，事务 A 在 `t4` 时就会返回错误，提示客户端根据需求去重试。
 
-换言之，MySQL 在执行 SQL 语句的过程中进行冲突检测，所以提交时很难出现异常。由于 TiDB 使用乐观锁机制造成了两边行为不一致，要兼容 MySQL 的悲观事务行为，需要在客户端修改大量的代码来进行业务改造。为了便于广大 MySQL 用户使用，TiDB 提供了内部默认重试机制。也就是当事务 A 提交后，如果发现冲突，TiDB 内部重新执行包含写操作的 SQL 语句。为此，TiDB 提供了以下参数：
+换言之，MySQL 在执行 SQL 语句的过程中进行冲突检测，所以提交时很难出现异常。由于 TiDB 使用乐观锁机制造成了两边行为不一致，要兼容 MySQL 的悲观事务行为，需要在客户端修改大量的代码。为了便于广大 MySQL 用户使用，TiDB 提供了重试机制。当事务提交后，如果发现冲突，TiDB 内部重新执行包含写操作的 SQL 语句。你可以通过设置 `tidb_disable_txn_auto_retry` 和 `tidb_retry_limit` 开启自动重试：
 
 ```toml
-# 用于设置是否禁用自动重试，默认值为 “on”，即不重试。
+# 用于设置是否禁用自动重试，默认不重试。
 tidb_disable_txn_auto_retry = on
 # 用来控制重试次数。只有自动重试启用时该参数才会生效。
-# 当 “tidb_retry_limit= 0” 时，也会自动禁用自动重试。
+# 当 “tidb_retry_limit= 0” 时，也会禁用自动重试。
 tidb_retry_limit = 10
 ```
 
@@ -166,15 +166,19 @@ tidb_retry_limit = 10
 
 1. Session 级别设置：
 
-    ```
-    set @@tidb_disable_txn_auto_retry = 0;
+    {{< copyable "sql" >}}
+
+    ```sql
+    set @@tidb_disable_txn_auto_retry = off;
     set @@tidb_retry_limit = 10;
     ```
 
 2. Global 级别设置：
 
-    ```
-    set @@global.tidb_disable_txn_auto_retry = 0;
+    {{< copyable "sql" >}}
+
+    ```sql
+    set @@global.tidb_disable_txn_auto_retry = off;
     set @@global.tidb_retry_limit = 10;
     ```
 
