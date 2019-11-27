@@ -1,11 +1,11 @@
 ---
-title: Kubernetes 上备份 TiDB 集群到兼容 S3 的存储
+title: 在 Kubernetes 上备份 TiDB 集群到兼容 S3 的存储
 category: how-to
 ---
 
-# Kubernetes 上备份 TiDB 集群到兼容 S3 的存储
+# 在 Kubernetes 上备份 TiDB 集群到兼容 S3 的存储
 
-这篇文档详细描述了如何将 Kubernetes 上的 TiDB 集群数据备份到兼容 S3 的存储上。本文档中的“备份”，均是指全量备份（Ad-hoc 全量备份和定时全量备份），底层通过使用 [`mydumper`](/dev/reference/tools/mydumper.md) 获取集群的逻辑备份，然后在将备份数据上传到兼容 S3 的存储上。
+这篇文档详细描述了如何将 Kubernetes 上的 TiDB 集群数据备份到兼容 S3 的存储上。本文档中的“备份”，均是指全量备份（Ad-hoc 全量备份和定时全量备份）。底层通过使用 [`mydumper`](/dev/reference/tools/mydumper.md) 获取集群的逻辑备份，然后在将备份数据上传到兼容 S3 的存储上。
 
 ## Ad-hoc 全量备份
 
@@ -15,7 +15,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 
 ### Ad-hoc 全量备份环境准备
 
-1. 在 `test1` 这个 namespace 中创建备份需要的 RBAC 相关资源。下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)。
+1. 下载文件 [backup-rbac.yaml](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test1` 这个 namespace 中创建备份需要的 RBAC 相关资源：
 
     {{< copyable "shell-regular" >}}
 
@@ -23,7 +23,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
     kubectl apply -f backup-rbac.yaml -n test1
     ```
 
-2. 创建 `s3-secret` secret，该 secret 存放用于访问 S3 兼容存储的凭证。
+2. 创建 `s3-secret` secret。该 secret 存放用于访问 S3 兼容存储的凭证。
 
     {{< copyable "shell-regular" >}}
 
@@ -41,7 +41,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 
 ### 备份数据到兼容 S3 的存储
 
-1. 创建 backup CR, 备份数据到 Amazon S3。
+1. 创建 backup CR，并将数据备份到 Amazon S3。
 
     {{< copyable "shell-regular" >}}
 
@@ -73,7 +73,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
       storageSize: 10Gi
     ```
 
-2. 创建 backup CR, 备份数据到 ceph。
+2. 创建 backup CR，并将数据备份到 Ceph。
 
     {{< copyable "shell-regular" >}}
 
@@ -102,9 +102,9 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
       storageSize: 10Gi
     ```
 
-上面两个例子中分别将 TiDB 集群的数据全量导出备份到 Amazon S3 和 ceph，Amazon S3 的 `region`、`acl`、`enpoint`、`storageClass` 均可以省略，其余非 Amazon S3 的但是兼容 S3 的存储均可使用和 Amazon S3 类似的配置，不需要配置的字段跳过即可，参考上面例子中 ceph 的配置。
+以上两个示例分别将 TiDB 集群的数据全量导出备份到 Amazon S3 和 Ceph 上。Amazon S3 的 `region`、`acl`、`enpoint`、`storageClass` 配置项均可以省略。其余非 Amazon S3 的但是兼容 S3 的存储均可使用和 Amazon S3 类似的配置。可参考上面例子中 Ceph 的配置，省略不需要配置的字段。
 
-Amazon S3 支持的 ACL 策略有如下几种：
+Amazon S3 支持以下几种 ACL 策略：
 
 * `private`
 * `public-read`
@@ -144,7 +144,7 @@ Amazon S3 支持的 storageClass 类型有如下几种：
 
 `.spec.tidbSecretName`: 访问 TiDB 集群所需密码的 secret。
 
-`.spec.storageClassName`: 备份时需的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值，这个值默认为 `standard`。
+`.spec.storageClassName`: 备份时所需的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值，这个值默认为 `standard`。
 
 `.spec.storageSize`: 备份时指定所需的 PV 大小。这个值要大于备份 TiDB 集群的数据大小。
 
@@ -206,7 +206,7 @@ Amazon S3 支持的 storageClass 类型有如下几种：
         storageSize: 10Gi
     ```
 
-2. 创建 backupSchedule CR 开启 TiDB 集群的定时全量备份，将数据备份到 ceph。
+2. 创建 backupSchedule CR 开启 TiDB 集群的定时全量备份，将数据备份到 Ceph。
 
     {{< copyable "shell-regular" >}}
 
@@ -260,7 +260,7 @@ kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n t
 
 `.spec.maxBackups`：一种备份保留策略，决定定时备份最多可保留的备份个数。超过该数目，就会将过时的备份删除。如果将该项设置为 `0`，则表示保留所有备份。
 
-`.spec.maxReservedTime`：一种备份保留策略，按时间保留备份。比如将该参数设置为 `24h`，表示只保留最近 24 小时内的备份条目。超过这个时间的备份都会被清除。时间设置格式参考[`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)。如果同时设置最大备份保留个数和最长备份保留时间，则以最长备份保留时间为准。
+`.spec.maxReservedTime`：一种备份保留策略，按时间保留备份。例如将该参数设置为 `24h`，表示只保留最近 24 小时内的备份条目。超过这个时间的备份都会被清除。时间设置格式参考 [`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)。如果同时设置最大备份保留个数和最长备份保留时间，则以最长备份保留时间为准。
 
 `.spec.schedule`：Cron 的时间调度格式。具体格式可参考 [Cron](https://en.wikipedia.org/wiki/Cron)。
 
