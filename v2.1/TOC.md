@@ -229,7 +229,6 @@
   + 性能调优
     - [SQL 优化流程](/v2.1/reference/performance/sql-optimizer-overview.md)
     - [理解 TiDB 执行计划](/v2.1/reference/performance/understanding-the-query-execution-plan.md)
-    - [执行计划绑定](/v2.1/reference/performance/execution-plan-bind.md)
     - [统计信息概述](/v2.1/reference/performance/statistics.md)
     - [Optimizer Hints](/v2.1/reference/performance/optimizer-hints.md)
     - [TiKV 调优](/v2.1/reference/performance/tune-tikv.md)

@@ -198,13 +198,13 @@ success!
 {{< copyable "" >}}
 
 ```shell
-pd-ctl>> operator add remove-peer <region_id> <peer_id>
+pd-ctl>> operator add remove-peer <region_id> <store_id>
 ```
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl --db /path/to/tikv/db tombstone -p 127.0.0.1:2379 -r 2
+tikv-ctl --db /path/to/tikv/db tombstone -p 127.0.0.1:2379 -r <region_id>
 ```
 
 ```
