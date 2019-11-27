@@ -148,16 +148,16 @@ Amazon S3 支持以下几种 storageClass 类型：
 
 `.spec.storageSize`: 备份时指定所需的 PV 大小。这个值要大于备份 TiDB 集群的数据大小。
 
-更多支持的兼容 S3 的 provider 如下：
+更多支持的兼容 S3 的 `provider` 如下：
 
-* `alibaba`(Alibaba Cloud Object Storage System (OSS) formerly Aliyun)
-* `digitalocean`(Digital Ocean Spaces)
-* `dreamhost`(Dreamhost DreamObjects)
-* `ibmcos`(IBM COS S3)
-* `minio`(Minio Object Storage)
-* `netease`(Netease Object Storage (NOS))
-* `wasabi`(Wasabi Object Storage)
-* `other`(Any other S3 compatible provider)
+* `alibaba`：Alibaba Cloud Object Storage System (OSS) formerly Aliyun
+* `digitalocean`：Digital Ocean Spaces
+* `dreamhost`：Dreamhost DreamObjects
+* `ibmcos`：IBM COS S3
+* `minio`：Minio Object Storage
+* `netease`：Netease Object Storage (NOS)
+* `wasabi`：Wasabi Object Storage
+* `other`：Any other S3 compatible provider
 
 ## 定时全量备份
 
