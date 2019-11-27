@@ -70,7 +70,7 @@ restore CR 各个字段的详细解释：
 
 `.spec.cluster`：需要恢复的目标 TiDB 集群的名字。
 
-`.spec.backupNamespace`：备份集群所在的 namespace。因为目前实现的 restore 逻辑中所需的远端存储访问信息是通过源备份信息 backup CR 获取的，所以进行恢复时需要知道备份源来自哪个 namespace。
+`.spec.backupNamespace`：备份集群所在的 namespace。因为目前需通过备份源 backup CR 来获取恢复逻辑中所需的远端存储访问信息，所以恢复操作中需要备份源所在的 namespace 信息。
 
 `.spec.backup`：备份源的一个 backup CR 名字。可以通过以下命令获取备份集群下的备份条目，然后从中选择一个要恢复的 `backup` 进行恢复即可。
 
