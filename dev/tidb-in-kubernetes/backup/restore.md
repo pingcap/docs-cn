@@ -11,7 +11,7 @@ category: how-to
 
 ## 恢复备份的环境准备
 
-1. 在需要恢复的 `test2` 这个 namespace 中创建恢复备份所需的 RBAC 相关资源，下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)：
+1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复备份所需的 RBAC 相关资源：
 
     {{< copyable "shell-regular" >}}
 
