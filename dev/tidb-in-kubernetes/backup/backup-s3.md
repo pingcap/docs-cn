@@ -9,7 +9,7 @@ category: how-to
 
 ## Ad-hoc 全量备份
 
-Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 对象来描述一次备份。TiDB Operator 根据这个 `Backup` 对象来完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。目前兼容 S3 的存储中我们只对 `Ceph`、`Amazon S3` 这两种存储做过测试，因此下面我们主要针对 `Ceph` 和 `Amazon S3` 这两种存储的使用来说明。理论上来说其余兼容 S3 的存储也可以正常的工作。
+Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 对象来描述一次备份。TiDB Operator 根据这个 `Backup` 对象来完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。目前兼容 S3 的存储中，Ceph 和 Amazon S3 经测试可正常工作。因此下文对 Ceph 和 Amazon S3 这两种存储的使用进行描述。理论上来说，其余兼容 S3 的存储也可以正常的工作。
 
 为了更好地描述备份的使用方式，本文档提供如下备份示例。示例假设对部署在 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1` 进行数据备份，下面是具体操作过程。
 
@@ -41,7 +41,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 
 ### 备份数据到兼容 S3 的存储
 
-1. 创建 backup CR，并将数据备份到 Amazon S3。
+1. 创建 `Backup` CR，并将数据备份到 Amazon S3。
 
     {{< copyable "shell-regular" >}}
 
@@ -73,7 +73,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
       storageSize: 10Gi
     ```
 
-2. 创建 backup CR，并将数据备份到 Ceph。
+2. 创建 `Backup` CR，并将数据备份到 Ceph。
 
     {{< copyable "shell-regular" >}}
 
@@ -115,7 +115,7 @@ Amazon S3 支持以下几种 ACL 策略：
 
 如果不设置 ACL 策略，则默认使用 `private` 策略。这几种访问控制策略的详细介绍参考 AWS [官方文档](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html)。
 
-Amazon S3 支持的 storageClass 类型有如下几种：
+Amazon S3 支持以下几种 storageClass 类型：
 
 * `STANDARD`
 * `REDUCED_REDUNDANCY`
@@ -134,7 +134,7 @@ Amazon S3 支持的 storageClass 类型有如下几种：
  kubectl get bk -n test1 -owide
  ```
 
-更多 backup CR 字段的详细解释:
+更多 `Backup` CR 字段的详细解释:
 
 `.spec.metadata.namespace`: 备份 TiDB 集群所在的 namespace。
 
@@ -169,7 +169,7 @@ Amazon S3 支持的 storageClass 类型有如下几种：
 
 ### 定时全量备份数据到 S3 兼容存储
 
-1. 创建 backupSchedule CR 开启 TiDB 集群的定时全量备份，将数据备份到 Amazon S3。
+1. 创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，将数据备份到 Amazon S3。
 
     {{< copyable "shell-regular" >}}
 
@@ -177,7 +177,7 @@ Amazon S3 支持的 storageClass 类型有如下几种：
     kubectl apply -f backup-schedule-s3.yaml
     ```
 
-    backup-schedule-s3.yaml 文件内容如下：
+    `backup-schedule-s3.yaml` 文件内容如下：
 
     ```yaml
     ---
@@ -206,7 +206,7 @@ Amazon S3 支持的 storageClass 类型有如下几种：
         storageSize: 10Gi
     ```
 
-2. 创建 backupSchedule CR 开启 TiDB 集群的定时全量备份，将数据备份到 Ceph。
+2. 创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，将数据备份到 Ceph。
 
     {{< copyable "shell-regular" >}}
 

@@ -64,15 +64,15 @@ category: how-to
      kubectl get rt -n test2 -owide
      ```
 
-restore CR 各个字段的详细解释：
+`Restore` CR 各个字段的详细解释：
 
 `.spec.metadata.namespace`： 需要恢复的目标 TiDB 集群所在的 namespace。
 
 `.spec.cluster`：需要恢复的目标 TiDB 集群的名字。
 
-`.spec.backupNamespace`：备份集群所在的 namespace。因为目前需通过备份源 backup CR 来获取恢复逻辑中所需的远端存储访问信息，所以恢复操作中需要备份源所在的 namespace 信息。
+`.spec.backupNamespace`：备份集群所在的 namespace。因为目前需通过备份源 `Backup` CR 来获取恢复逻辑中所需的远端存储访问信息，所以恢复操作中需要备份源所在的 namespace 信息。
 
-`.spec.backup`：备份源的一个 backup CR 名字。可以通过以下命令获取备份集群下的备份条目，然后从中选择一个要恢复的 `backup` 进行恢复即可。
+`.spec.backup`：备份源的一个 `Backup` CR 名字。可以通过以下命令获取备份集群下的备份条目，然后从中选择一个要恢复的 `backup` 进行恢复即可。
 
 {{< copyable "shell-regular" >}}
 

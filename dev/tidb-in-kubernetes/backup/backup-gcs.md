@@ -41,7 +41,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 
 ### 备份数据到 GCS
 
-创建 backup CR，并将数据备份到 GCS。
+创建 `Backup` CR，并将数据备份到 GCS。
 
 {{< copyable "shell-regular" >}}
 
@@ -116,7 +116,7 @@ GCS 支持以下几种 bucket ACL 策略：
  kubectl get bk -n test1 -owide
  ```
 
-更多 backup CR 字段的详细解释：
+更多 `Backup` CR 字段的详细解释：
 
 `.spec.metadata.namespace`：备份 TiDB 集群所在的 namespace。
 
@@ -140,7 +140,7 @@ GCS 支持以下几种 bucket ACL 策略：
 
 ### 定时全量备份数据到 GCS
 
-创建 backupSchedule CR 开启 TiDB 集群的定时全量备份，将数据备份到 GCS：
+创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，将数据备份到 GCS：
 
 {{< copyable "shell-regular" >}}
 
