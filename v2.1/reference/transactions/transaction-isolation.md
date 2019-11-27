@@ -20,7 +20,7 @@ TiDB 实现了快照隔离 (Snapshot Isolation) 级别的一致性。为与 MySQ
 
 > **注意：**
 >
-> 在 TiDB 2.1 中，事务的自动重试默认开启。关于该项功能的补充信息，请参考[事务自动重试及带来的异常](#事务自动重试及带来的异常)
+> 在 2.1 默认设置中，事务的自动重试功能默认开启。关于该项功能对隔离级别的影响以及如何开启该项功能，请参考[事务自动重试及带来的异常](#事务自动重试及带来的异常)。
 
 TiDB 使用 [Percolator 事务模型](https://research.google.com/pubs/pub36726.html)，当事务启动时会获取全局读时间戳，事务提交时也会获取全局提交时间戳，并以此确定事务的执行顺序，如果想了解 TiDB 事务模型的实现可以详细阅读以下两篇文章：[TiKV 的 MVCC (Multi-Version Concurrency Control) 机制](https://pingcap.com/blog-cn/mvcc-in-tikv/)，[Percolator 和 TiDB 事务算法](https://pingcap.com/blog-cn/percolator-and-txn/)。
 
@@ -53,9 +53,9 @@ MySQL 可重复读隔离级别在更新时并不检验当前版本是否可见�
 
 ## 事务自动重试及带来的异常
 
-TiDB 2.1 默认会进行事务重试，但需注意重试事务可能会导致更新丢失。如果业务可以容忍事务重试导致的异常，或者说并不关注事务是否以 SI 隔离级别来执行，可以保持自动重试为开启状态。通过设置 `tidb_disable_txn_auto_retry = on` 可关闭自动重试。如果 `tidb_retry_limit` 的值为 0，也会禁用自动重试。开启自动重试时，事务遇到提交出错的可能性会降低。
+TiDB 默认进行事务自动重试，重试事务可能会导致更新丢失，从而破坏快照隔离。如果业务可以容忍事务重试导致的异常，或并不关注事务是否以快照隔离级别来执行，则可以开启自动重试。通过设置 `tidb_disable_txn_auto_retry = off` 可开启该项功能。需注意 `tidb_retry_limit` 的值不能为 `0`，否则会禁用自动重试。开启自动重试以后，事务遇到提交出错的可能性会降低。
 
-因为 TiDB 默认自动重试事务，开启自动重试时，显式的事务在遇到冲突后，可能会导致最终结果不符合预期。
+开启自动重试后，显式事务遇到冲突可能会导致最终结果不符合预期。比如下面这两个例子：
 
 比如下面这两个例子:
 
@@ -85,6 +85,8 @@ TiDB 2.1 默认会进行事务重试，但需注意重试事务可能会导致�
 
 通过配置 `tidb_disable_txn_auto_retry = on` 变量可以关掉显示事务的重试。
 
+{{< copyable "sql" >}}
+
 ```sql
 SET GLOBAL tidb_disable_txn_auto_retry = on;
 ```
@@ -96,27 +98,3 @@ SET GLOBAL tidb_disable_txn_auto_retry = on;
 如果事务执行过程中包含了应用层的逻辑，建议在应用层添加显式事务的重试，并关闭自动重试。
 
 `tidb_retry_limit` 变量决定了事务重试的最大次数，默认值为 10，当它被设置为 0 时，所有事务都不会自动重试，包括自动提交的单语句隐式事务。这是彻底禁用 TiDB 中自动重试机制的方法。当用户相比于事务隔离性，更关心事务执行的延迟时，可以将它设置为 0，所有冲突的事务都会以最快的方式上报失败给应用层。
-
-## 语句回滚
-
-在事务内部执行一个语句，遇到错误时，该语句不会生效。
-
-```sql
-begin;
-insert into test values (1);
-insert into tset values (2);  // tset 拼写错了，这条语句出错。
-insert into test values (3);
-commit;
-```
-
-上面的例子里面，第二个语句失败，其它插入 1 和 3 仍然能正常提交。
-
-```sql
-begin;
-insert into test values (1);
-insert into tset values (2);  // tset 拼写错了，这条语句出错。
-insert into test values (3);
-rollback;
-```
-
-这个例子中，第二个语句失败，最后由于调用了 rollback，事务不会将任何数据写入数据库。
