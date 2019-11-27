@@ -292,7 +292,7 @@ port = 3307
 - 如果从 MySQL Server、Percona Server、Percona XtraDB Cluster、Amazon Aurora 或 RDS 迁移数据，则 `flavor` 配置项应设为 "mysql"（默认值，支持 5.5 < MySQL 版本 < 8.0）。
 - 如果从 MariaDB Server 或 MariaDB (Galera) Cluster 迁移数据，则设置 `flavor = "mariadb"`（仅支持 10.1.2 以上 MariaDB 版本）。
 - 从 DM 1.0.2 版本开始，`flavor`、`server-id` 项均会由 DM 自动生成，一般情况下不需要手动配置。
-- `from` 中的 `password` 如果不为空，则需要使用 dmctl 进行加密，参见 [使用 dmctl 加密上游 MySQL 用户密码](/v3.0/how-to/deploy/data-migration-with-ansible.md#使用-dmctl-加密上游-mysql-用户密码)。
+- `from` 中的 `password` 如果不为空，则需要使用 dmctl 进行加密，参见[使用 dmctl 加密上游 MySQL 用户密码](/v3.0/how-to/deploy/data-migration-with-ansible.md#使用-dmctl-加密上游-mysql-用户密码)。
 
 任务在 YAML 文件中定义。以下为一个 `dmtask1.yaml` 文件示例：
 

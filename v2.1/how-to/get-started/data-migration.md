@@ -306,7 +306,7 @@ loaders:
 
 * `loaders`：定义由各个 DM-worker 实例执行的每个 mydumper 实例的输出地址。
 
-* `target-database`：定义目标数据库的链接信息，其中的 `password` 如果不为空，则需要使用 dmctl 进行加密，参见 [使用 dmctl 加密上游 MySQL 用户密码](/v2.1/how-to/deploy/data-migration-with-ansible.md#使用-dmctl-加密上游-mysql-用户密码)。
+* `target-database`：定义目标数据库的链接信息，其中的 `password` 如果不为空，则需要使用 dmctl 进行加密，参见[使用 dmctl 加密上游 MySQL 用户密码](/v2.1/how-to/deploy/data-migration-with-ansible.md#使用-dmctl-加密上游-mysql-用户密码)。
 
 `dmctl` 是控制 DM 集群的命令行工具，用于启动任务、查询任务状态。执行 `dmctl -master-addr :8261` 获取如下交互提示，从而启动该工具：
 
