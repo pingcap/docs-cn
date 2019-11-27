@@ -60,10 +60,6 @@ The [black and white lists filtering rule](/v2.1/reference/tools/data-migration/
 
 [Binlog event filtering](/v2.1/reference/tools/data-migration/features/overview.md#binlog-event-filter) is a more fine-grained filtering rule than the black and white lists filtering rule. You can use statements like `INSERT` or `TRUNCATE TABLE` to specify the binlog events of `schema/table` that you need to replicate or filter out.
 
-### Column mapping
-
-The [column mapping](/v2.1/reference/tools/data-migration/features/overview.md#column-mapping) feature means that the table column value can be modified according to the built-in expression specified by the user, which can be used to resolve the conflicts of the sharding auto-increment primary key IDs.
-
 ### Sharding support
 
 DM supports merging the original sharded instances and tables into TiDB, but with [some restrictions](/v2.1/reference/tools/data-migration/features/shard-merge.md#restrictions).
@@ -94,7 +90,7 @@ Before using the DM tool, note the following restrictions:
 
 + Sharding
 
-    - If conflict exists between sharded tables, *only columns with the auto increment primary key* encounter the conflict, and the *column type is bigint*, solve the conflict using [column mapping](/v2.1/reference/tools/data-migration/features/overview.md#column-mapping). Otherwise, data replication is not supported. Conflicting data can cover each other and cause data loss.
+    - If conflict exists between sharded tables, solve the conflict by referring to [handling conflicts of auto-increment primary key](/v2.1/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md#handle-conflicts-of-auto-increment-primary-key). Otherwise, data replication is not supported. Conflicting data can cover each other and cause data loss.
 
     - For other sharding restrictions, see [Sharding DDL usage restrictions](/v2.1/reference/tools/data-migration/features/shard-merge.md#restrictions).
 

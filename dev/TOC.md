@@ -309,7 +309,6 @@
         - [Table Routing](/dev/reference/tools/data-migration/features/overview.md#table-routing)
         - [Black and White Lists](/dev/reference/tools/data-migration/features/overview.md#black-and-white-table-lists)
         - [Binlog Event Filter](/dev/reference/tools/data-migration/features/overview.md#binlog-event-filter)
-        - [Column Mapping](/dev/reference/tools/data-migration/features/overview.md#column-mapping)
         - [Replication Delay Monitoring](/dev/reference/tools/data-migration/features/overview.md#replication-delay-monitoring)
         + Sharding Support
           - [Introduction](/dev/reference/tools/data-migration/features/shard-merge.md)

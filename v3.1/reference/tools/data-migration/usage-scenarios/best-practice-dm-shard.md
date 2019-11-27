@@ -51,13 +51,14 @@ If the following requirements are satisfied:
 
 Then you can perform the following steps to fix the `ERROR 1062 (23000): Duplicate entry '***' for key 'PRIMARY'` error that is possibly caused by the `auto_pk_c1` column when you merge sharded tables.
 
-1. Before the full data migration, create a table in the downstream database for merging and replicating data. Do not specify the `PRIMARY KEY` attribute for the `auto_pk_c1` column.
+1. Before the full data migration, create a table in the downstream database for merging and replicating data, and modify the `PRIMARY KEY` attribute of the `auto_pk_c1` column to normal index.
 
     ```sql
     CREATE TABLE `tbl_no_pk_2` (
       `auto_pk_c1` bigint(20) NOT NULL,
       `uk_c2` bigint(20) NOT NULL,
       `content_c3` text,
+      INDEX (`auto_pk_c1`),
       UNIQUE KEY `uk_c2` (`uk_c2`)
     ) ENGINE=InnoDB DEFAULT CHARSET=latin1
     ```

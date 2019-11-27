@@ -82,7 +82,7 @@ Available Commands:
   unlock-ddl-lock      forcefully unlock DDL lock
   update-master-config update the config of the DM-master
   update-relay         update the relay unit config of the DM-worker
-  update-task          update a task's config for routes, filters, column-mappings, or black-white-list
+  update-task          update a task's config for routes, filters, or black-white-list
 
 Flags:
   -h, --help             help for dmctl
@@ -409,7 +409,6 @@ You can use the `update-task` command to update the data replication task. The f
 - table route rules
 - black white list
 - binlog filter rules
-- column mapping rules
 
 > **Note:**
 >
@@ -444,7 +443,7 @@ help update-task
 ```
 
 ```
-update a task's config for routes, filters, column-mappings, black-white-list
+update a task's config for routes, filters, black-white-list
 
 Usage:
   dmctl update-task [-w worker ...] <config-file> [flags]

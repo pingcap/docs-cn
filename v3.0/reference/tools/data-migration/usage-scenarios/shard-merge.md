@@ -46,7 +46,7 @@ Assume that the upstream schemas are as follows:
 5. Filter out all the deletion operations in the `user`.`information` table of three upstream instances.
 6. Filter out all the deletion operations in the `store_{01|02}`.`sale_{01|02}` table of three upstream instances.
 7. Filter out the `user`.`log_bak` table of three upstream instances.
-8. Because the `store_{01|02}`.`sale_{01|02}` tables have auto-increment primary keys of the bigint type, the conflict occurs when these tables are merged into TiDB. So you need to modify the auto-increment primary keys to avoid the conflict.
+8. Because the `store_{01|02}`.`sale_{01|02}` tables have auto-increment primary keys of the bigint type, the conflict occurs when these tables are merged into TiDB. The following text will show you solutions to resolve and avoid the conflict.
 
 ## Downstream instances
 
@@ -125,31 +125,12 @@ Assume that the downstream schema after replication is as follows:
           tbl-name: "log_bak"
     ```
 
-- To satisfy the replication Requirement #8, configure the [column mapping rule](/v3.0/reference/tools/data-migration/features/overview.md#column-mapping) as follows:
+- To satisfy the replication Requirement #8, first refer to [handling conflicts of auto-increment primary key](/v3.0/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md#handle-conflicts-of-auto-increment-primary-key) to solve conflicts. This guarantees that data is successfully replicated to the downstream when the primary key value of one sharded table is duplicate with that of another sharded table. Then, configure `ignore-checking-items` to skip checking the conflict of auto-increment primary key:
+
+    {{< copyable "" >}}
 
     ```yaml
-    column-mappings:
-      instance-1-sale:
-        schema-pattern: "store_*"
-        table-pattern: "sale_*"
-        expression: "partition id"
-        source-column: "id"
-        target-column: "id"
-        arguments: ["1", "store", "sale", "_"]
-      instance-2-sale:
-        schema-pattern: "store_*"
-        table-pattern: "sale_*"
-        expression: "partition id"
-        source-column: "id"
-        target-column: "id"
-        arguments: ["2", "store", "sale", "_"]
-      instance-3-sale:
-        schema-pattern: "store_*"
-        table-pattern: "sale_*"
-        expression: "partition id"
-        source-column: "id"
-        target-column: "id"
-        arguments: ["3", "store", "sale", "_"]
+    ignore-checking-items: ["auto_increment_ID"]
     ```
 
 ## Replication task configuration
@@ -161,6 +142,7 @@ name: "shard_merge"
 task-mode: all
 meta-schema: "dm_meta"
 remove-meta: false
+ignore-checking-items: ["auto_increment_ID"]
 
 target-database:
   host: "192.168.0.1"
@@ -173,7 +155,6 @@ mysql-instances:
     source-id: "instance-1"
     route-rules: ["user-route-rule", "store-route-rule", "sale-route-rule"]
     filter-rules: ["user-filter-rule", "store-filter-rule" , "sale-filter-rule"]
-    column-mapping-rules: ["instance-1-sale"]
     black-white-list:  "log-bak-ignored"
     mydumper-config-name: "global"
     loader-config-name: "global"
@@ -183,7 +164,6 @@ mysql-instances:
     source-id: "instance-2"
     route-rules: ["user-route-rule", "store-route-rule", "sale-route-rule"]
     filter-rules: ["user-filter-rule", "store-filter-rule" , "sale-filter-rule"]
-    column-mapping-rules: ["instance-2-sale"]
     black-white-list:  "log-bak-ignored"
     mydumper-config-name: "global"
     loader-config-name: "global"
@@ -192,7 +172,6 @@ mysql-instances:
     source-id: "instance-3"
     route-rules: ["user-route-rule", "store-route-rule", "sale-route-rule"]
     filter-rules: ["user-filter-rule", "store-filter-rule" , "sale-filter-rule"]
-    column-mapping-rules: ["instance-3-sale"]
     black-white-list:  "log-bak-ignored"
     mydumper-config-name: "global"
     loader-config-name: "global"
@@ -233,29 +212,6 @@ black-white-list:
     ignore-tales:
     - db-name: "user"
       tbl-name: "log_bak"
-
-column-mappings:
-  instance-1-sale:
-    schema-pattern: "store_*"
-    table-pattern: "sale_*"
-    expression: "partition id"
-    source-column: "id"
-    target-column: "id"
-    arguments: ["1", "store", "sale", "_"]
-  instance-2-sale:
-    schema-pattern: "store_*"
-    table-pattern: "sale_*"
-    expression: "partition id"
-    source-column: "id"
-    target-column: "id"
-    arguments: ["2", "store", "sale", "_"]
-  instance-3-sale:
-    schema-pattern: "store_*"
-    table-pattern: "sale_*"
-    expression: "partition id"
-    source-column: "id"
-    target-column: "id"
-    arguments: ["3", "store", "sale", "_"]
 
 mydumpers:
   global:

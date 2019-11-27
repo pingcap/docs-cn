@@ -91,23 +91,6 @@ black-white-list:
     - db-name: "user"
       tbl-name: "log"
 
-# The column mapping rule set of the matched table of the upstream database instance.
-column-mappings:
-  cm-rule-1:
-    schema-pattern: "test_*"
-    table-pattern: "t_*"
-    expression: "partition id"
-    source-column: "id"
-    target-column: "id"
-    arguments: ["1", "test", "t", "_"]
-  cm-rule-2:
-    schema-pattern: "test_*"
-    table-pattern: "t_*"
-    expression: "partition id"
-    source-column: "id"
-    target-column: "id"
-    arguments: ["2", "test", "t", "_"]
-
 # Configuration arguments of running Mydumper.
 mydumpers:
   global:
@@ -154,7 +137,6 @@ mysql-instances:
 
     route-rules: ["route-rule-1", "route-rule-2"]                      # The name of the mapping rule between the table matching the upstream database instance and the downstream database.
     filter-rules: ["filter-rule-1"]                                    # The name of the binlog filtering rule of the table matching the upstream database instance.
-    column-mapping-rules: ["cm-rule-1"]                                # The name of the column mapping rule of the table matching the upstream database instance.
     black-white-list:  "bw-rule-1"                                     # The name of the black and white lists filtering rule of the table matching the upstream database instance.
 
     mydumper-config-name: "global"                                     # The Mydumper configuration name.
@@ -174,7 +156,6 @@ For the configuration details of the above options, see the corresponding part i
 | :------ | :------------------ |
 | `route-rules` | `routes` |
 | `filter-rules` | `filters` |
-| `column-mapping-rules` | `column-mappings` |
 | `black-white-list` | `black-white-list` |
 | `mydumper-config-name` | `mydumpers` |
 | `loader-config-name` | `loaders` |
