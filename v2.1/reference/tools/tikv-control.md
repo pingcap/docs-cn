@@ -150,16 +150,32 @@ The `tombstone` command is usually used in circumstances where the sync-log is n
 
 In a TiKV instance, you can use this command to set the status of some Regions to Tombstone. Then when you restart the instance, those Regions are skipped. Those Regions need to have enough healthy replicas in other TiKV instances to be able to continue writing and reading through the Raft mechanism.
 
-```bash
-pd-ctl>> operator add remove-peer <region_id> <peer_id>
-$ tikv-ctl --db /path/to/tikv/db tombstone -p 127.0.0.1:2379 -r 2
-success!
-```
+Follow the two steps to set a Region to Tombstone:
+
+1. Remove the corresponding Peer of this Region on the machine in `pd-ctl`:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    pd-ctl operator add remove-peer <region_id> <store_id>
+    ```
+
+2. Use the `tombstone` command to set a Region to Tombstone:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tikv-ctl --db /path/to/tikv/db tombstone -p 127.0.0.1:2379 -r <region_id>
+    ```
+
+    ```
+    success!
+    ```
 
 > **Note:**
 >
-> - This command only supports the local mode.
-> - The argument of the `-p` option specifies the PD endpoints without the `http` prefix. Specifying the PD endpoints is to query whether PD can securely switch to Tombstone. Therefore, before setting a PD instance to Tombstone, you need to take off the corresponding Peer of this Region on the machine in `pd-ctl`.
+> - The `tombstone` command only supports the local mode.
+> - The argument of the `-p` option specifies the PD endpoints without the `http` prefix. Specifying the PD endpoints is to query whether PD can safely switch to Tombstone.
 
 ### Send a `consistency-check` request to TiKV
 
