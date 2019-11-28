@@ -89,7 +89,7 @@ Version: 0.9.0
 >
 > * 请以 `tidb` 用户登录中控机。
 >
-> * TiDB Ansible 工作目录在 `/home/tidb/tidb-ansible` 目录。
+> * TiDB Ansible 工作目录是 `/home/tidb/tidb-ansible`。
 
 ### 修改 `inventory.ini` 文件
 
@@ -106,7 +106,7 @@ Version: 0.9.0
 ### 修改 TiDB 集群组件配置文件
 
 1. 从备份的 Ansible 文件中拷贝集群的配置信息到新的配置文件，配置文件名称是`/home/tidb/tidb-ansible/conf`
-2. TiKV 配置中 `end-point-concurrency` 变更为 `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数：
+2. 如果 TiKV 原配置中设置了 `end-point-concurrency` ，则变更为 `high-concurrency`、`normal-concurrency` 和 `low-concurrency` 三个参数：
 
     ```
     readpool:
