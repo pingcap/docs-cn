@@ -37,7 +37,7 @@ category: how-to
     > **注意：**
     >
     > 如果在生产环境中开启 Binlog，那么推荐为 TiDB 与 Pump 组件设置亲和性和反亲和性。如果在内网测试环境中尝试使用开启 Binlog，此步可以跳过。
-    
+
     默认情况下， TiDB 的 affinity 亲和性设置为 `{}`，当启用 TiDB Binlog 时，由于目前 Pump 组件与 TiDB 组件默认并不是一一对应的，如果当 Pump 与 TiDB 组件分开部署并出现网络隔离时并且 TiDB Binlog 还开启了 `ignore-error` 时，将会导致 TiDB 丢失 Binlog 。推荐通过亲和性特性将 TiDB 与 Pump 部署在同一台 Node 上，同时通过反亲和性特性将 Pump 分散在不同的 Node 上，每台 Node 上至多仅需一个 Pump 实例即可。
 
     * 将 `tidb.affinity` 按照如下设置:
@@ -98,7 +98,6 @@ category: how-to
         > **注意：**
         >
         > 如果设置了 TiDB 组件的亲和性，那么更新现有的 TiDB 集群将引起 TiDB 集群中的 TiDB 组件滚动更新。
-    
 
         {{< copyable "shell-regular" >}}
 
