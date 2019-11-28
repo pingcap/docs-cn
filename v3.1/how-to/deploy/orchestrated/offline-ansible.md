@@ -153,18 +153,7 @@ category: how-to
 
 1. `ansible-playbook local_prepare.yml` 该 playbook 不需要再执行。
 
-2. Grafana Dashboard 上的 Report 按钮可用来生成 PDF 文件，此功能依赖 `fontconfig` 包及英文字体，如需使用该功能，请下载 [font 离线安装包](https://download.pingcap.org/grafana-font-rpms.el7.tar.gz)上传至 **grafana_servers** 机器上安装。该离线包仅支持 CentOS 7 系统，包含 `fontconfig` 及 `open-sans-fonts`。
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    tar -xzvf grafana-font-rpms.el7.tar.gz &&
-    cd grafana-font-rpms.el7 &&
-    chmod u+x install_grafana_font_rpms.sh &&
-    ./install_grafana_font_rpms.sh
-    ```
-
-3. 参考[部署任务](/v3.1/how-to/deploy/orchestrated/ansible.md#部署任务)即可。
+2. 参考[部署任务](/v3.1/how-to/deploy/orchestrated/ansible.md#部署任务)即可。
 
 ## 测试集群
 
