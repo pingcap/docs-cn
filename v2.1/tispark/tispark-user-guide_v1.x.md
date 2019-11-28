@@ -73,9 +73,10 @@ Spark 推荐每台计算节点配备 CPU 累计 8 到 16 核以上。你可以�
 Spark 的具体配置方式也请参考[官方说明](https://spark.apache.org/docs/latest/spark-standalone.html)。以下为根据 `spark-env.sh` 配置的范例：
 
 ```
-SPARK_EXECUTOR_MEMORY=32g
-SPARK_WORKER_MEMORY=32g
-SPARK_WORKER_CORES=8
+SPARK_EXECUTOR_CORES: 5
+SPARK_EXECUTOR_MEMORY: 10g
+SPARK_WORKER_CORES: 5
+SPARK_WORKER_MEMORY: 10g
 ```
 
 ### TiSpark 与 TiKV 集群混合部署的配置
