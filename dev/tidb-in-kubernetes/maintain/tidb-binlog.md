@@ -68,7 +68,7 @@ category: how-to
               topologyKey: kubernetes.io/hostname
     ```
 
-    * 将 `binlog.pump.affinity` 按照如下设置:
+    * 将 `binlog.pump.affinity` 按照如下设置：
 
     ```yaml
     binlog:
