@@ -57,6 +57,10 @@ category: how-to
                     operator: In
                     values:
                       - "tidb-operator"
+                  - key: "app.kubernetes.io/instance"
+                    operator: In
+                    values:
+                      - <release-name>
               topologyKey: kubernetes.io/hostname
     ```
 
@@ -80,6 +84,10 @@ category: how-to
                         operator: In
                         values:
                           - "tidb-operator"
+                      - key: "app.kubernetes.io/instance"
+                        operator: In
+                        values:
+                          - <release-name>
                   topologyKey: kubernetes.io/hostname
     ```
 
