@@ -116,7 +116,9 @@ Make sure you have logged in to the Control Machine using the `tidb` user accoun
     $ wget http://download.pingcap.org/dm-ansible-{version}.tar.gz
     ```
 
-    `{version}` is the DM version that you expect to download, like `v1.0.0-alpha` and `latest`.
+    `{version}` is the DM version that you expect to download, like `v1.0.1` and `v1.0.2`.
+
+    You can check out DM's published versions on [DM Release page](https://github.com/pingcap/dm/releases). You can also replace `{version}` with `latest` to download the latest development version that has not been published.
 
 ## Step 4: Install DM-Ansible and its dependencies on the Control Machine
 
@@ -127,8 +129,8 @@ It is required to use `pip` to install Ansible and its dependencies, otherwise a
 1. Install DM-Ansible and the dependencies on the Control Machine:
 
     ```bash
-    $ tar -xzvf dm-ansible-latest.tar.gz
-    $ mv dm-ansible-latest dm-ansible
+    $ tar -xzvf dm-ansible-{version}.tar.gz
+    $ mv dm-ansible-{version} dm-ansible
     $ cd /home/tidb/dm-ansible
     $ sudo pip install -r ./requirements.txt
     ```
@@ -232,7 +234,7 @@ cluster_name = test-cluster
 
 ansible_user = tidb
 
-dm_version = latest
+dm_version = {version}
 
 deploy_dir = /data1/dm
 
@@ -240,7 +242,7 @@ grafana_admin_user = "admin"
 grafana_admin_password = "admin"
 ```
 
-For details about DM-worker parameters, see [DM-worker configuration parameters description](#dm-worker-configuration-parameters-description).
+`{version}` is the version number of the DM-Ansible you use. For details about DM-worker parameters, see [DM-worker configuration parameters description](#dm-worker-configuration-parameters-description).
 
 ### Option 2: Use the cluster topology of multiple DM-worker instances on each node
 
@@ -280,13 +282,15 @@ cluster_name = test-cluster
 
 ansible_user = tidb
 
-dm_version = latest
+dm_version = {version}
 
 deploy_dir = /data1/dm
 
 grafana_admin_user = "admin"
 grafana_admin_password = "admin"
 ```
+
+`{version}` is the version number of the DM-Ansible you use.
 
 ### DM-worker configuration parameters description
 
@@ -463,8 +467,8 @@ dm_master ansible_host=172.16.10.71 dm_master_port=18261
     ```
     $ cd /home/tidb
     $ wget http://download.pingcap.org/dm-ansible-{version}.tar.gz
-    $ tar -xzvf dm-ansible-latest.tar.gz
-    $ mv dm-ansible-latest dm-ansible
+    $ tar -xzvf dm-ansible-{version}.tar.gz
+    $ mv dm-ansible-{version} dm-ansible
     ```
 
 3. Migrate the `inventory.ini` configuration file.
