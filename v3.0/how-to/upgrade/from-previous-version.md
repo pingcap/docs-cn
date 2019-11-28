@@ -6,16 +6,16 @@ aliases: ['/docs-cn/op-guide/tidb-v3.0-upgrade-guide/','/docs-cn/v3.0/how-to/upg
 
 # TiDB 3.0 升级操作指南
 
-本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 版本（v2.1 RC1 及之后版本）升级到 TiDB 3.0.x 或 master 版本。如果版本早于 TiDB 2.0.1 请选择如下两个方案：
+本文档仅适用于从 TiDB 2.0.1 版本或者 TiDB 2.1 RC1 版本升级到 TiDB 3.0.x 版本。如果版本早于 TiDB 2.0.1 请选择如下两个方案：
 
 1. 停机升级，从当前版本直接升级到 TiDB 3.0.x。
-2. 先从当前版本滚动升级到 TiDB 2.0.1，再按照本文档滚动升级到 TiDB 3.0.x。
+2. 先从当前版本滚动升级到 TiDB 2.0.1， 再按照本文档滚动升级到 TiDB 3.0.x。
 
 ## 注意事项
 
-1. TiDB 3.0.x 版本和 master 版本兼容 [Kafka 版本的 TiDB Binlog](/v3.0/reference/tools/tidb-binlog/tidb-binlog-kafka.md) 以及 [TiDB Binlog Cluster 版本](/v3.0/reference/tidb-binlog-overview.md)。
+1. TiDB 3.0.x 版本兼容 [Kafka 版本的 TiDB Binlog](/v3.0/reference/tools/tidb-binlog/tidb-binlog-kafka.md) 以及[TiDB Binlog Cluster 版本](/v3.0/reference/tidb-binlog-overview.md)。
 2. 不支持在升级后版本的回退。
-3. 如果版本早于 TiDB 2.0.6，在升级到 TiDB 3.0.x 之前请确保集群中的所有 DDL 都执行完成之后再执行升级操作，否则会有行为未定义的异常。
+3. 如果版本早于 TiDB 2.0.6 升级到 TiDB 3.0.x ，在升级之前请确保集群中的所有 DDL 都执行完成之后再执行升级操作，否则会有行为未定义的异常。
 4. 在升级过程中，请不要执行任何 DDL，否则会有行为未定义的异常。
 
 ## 在中控机器上安装 Ansible 及其依赖
