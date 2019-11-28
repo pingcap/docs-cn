@@ -57,6 +57,10 @@ category: how-to
                     operator: In
                     values:
                       - "tidb-operator"
+                  - key: "app.kubernetes.io/name"
+                    operator: In
+                    values:
+                      - "tidb-cluster"
                   - key: "app.kubernetes.io/instance"
                     operator: In
                     values:
@@ -84,6 +88,10 @@ category: how-to
                         operator: In
                         values:
                           - "tidb-operator"
+                      - key: "app.kubernetes.io/name"
+                        operator: In
+                        values:
+                          - "tidb-cluster"
                       - key: "app.kubernetes.io/instance"
                         operator: In
                         values:
