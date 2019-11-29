@@ -66,7 +66,7 @@ category: how-to
                       values:
                         - <release-name>
                 topologyKey: kubernetes.io/hostname
-    ```
+      ```
 
     * 将 `binlog.pump.affinity` 按照如下设置：
 
