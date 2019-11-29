@@ -41,6 +41,7 @@
     - [Read Historical Data](/v2.1/how-to/get-started/read-historical-data.md)
     - [TiDB Binlog Tutorial](/v2.1/how-to/get-started/tidb-binlog.md)
     - [TiDB Data Migration Tutorial](/v2.1/how-to/get-started/data-migration.md)
+    - [TiDB Lightning Tutorial](/v2.1/how-to/get-started/tidb-lightning.md)
     - [TiSpark Quick Start Guide](/v2.1/how-to/get-started/tispark.md)
   + Deploy
     - [Hardware Recommendations](/v2.1/how-to/deploy/hardware-recommendations.md)
