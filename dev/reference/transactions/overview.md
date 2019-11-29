@@ -69,7 +69,7 @@ ROLLBACK;
 SET autocommit = {0 | 1}
 ```
 
- 当 `autocommit = 1` 时（默认），当前的 Session 为自动提交状态。设置 `autocommit = 0` 时将更改当前 Session 为非自动提交状态。
+当 `autocommit = 1` 时（默认），当前的 Session 为自动提交状态。设置 `autocommit = 0` 时将更改当前 Session 为非自动提交状态。
 
 自动提交状态下，每条语句运行后，TiDB 会自动将修改提交到数据库中。非自动提交状态下，通过执行 `COMMIT` 语句来手动提交事务。
 
