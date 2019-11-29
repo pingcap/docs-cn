@@ -95,7 +95,7 @@ SET @@GLOBAL.autocommit = {0 | 1};
 
 TiDB 可以显式地使用事务 (`[BEGIN|START TRANSACTION]`/`COMMIT`) 或者隐式地使用事务 (`SET autocommit = 1`)。
 
-自动提交状态下，使用 `[BEGIN|START TRANSACTION]` 语句始终显式开启一个事务。当前会禁用自动提交，即隐式事务变成显式事务，直到执行 `COMMIT` 或 `ROLLBACK` 语句时才会恢复到默认的自动提交状态。
+在自动提交状态下，使用 `[BEGIN|START TRANSACTION]` 语句会显式地开启一个事务，同时也会禁用自动提交，使隐式事务变成显式事务。直到执行 `COMMIT` 或 `ROLLBACK` 语句时才会恢复到此前默认的自动提交状态。
 
 对于 DDL 语句，会自动提交并且不能回滚。如果运行 DDL 的时候，正在一个事务的中间过程中，会先自动提交当前事务，再执行 DDL。
 
