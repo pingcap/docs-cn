@@ -192,6 +192,7 @@ br restore table \
 - BR 只支持 TiDB 3.1 及以上版本。
 - 如果在没有网络存储的集群上备份，在恢复前需要将所有备份下来的 SST 文件拷贝到各个 TiKV 节点上 `--storage` 指定的目录下。
 - TiDB 执行 DDL 期间不能执行备份操作。
+- 目前不支持 Partition Table 的备份恢复。
 - 目前只支持在全新的集群上执行恢复操作。
 - 如果备份时间可能超过设定的 GC lifetime（默认 10 分钟），则需要将 GC lifetime 调大。
 
@@ -225,3 +226,78 @@ br restore table \
     ./pd-ctl -u ${PDIP}:2379 scheduler add balance-leader-scheduler
     ./pd-ctl -u ${PDIP}:2379 scheduler add balance-region-scheduler
     ```
+
+## 备份恢复事例
+
+### 数据准备
+
+```
+十张表，每张表 500W 行数据，一共35GB
+MySQL [sbtest]> show tables;
++------------------+
+| Tables_in_sbtest |
++------------------+
+| sbtest1          |
+| sbtest10         |
+| sbtest2          |
+| sbtest3          |
+| sbtest4          |
+| sbtest5          |
+| sbtest6          |
+| sbtest7          |
+| sbtest8          |
+| sbtest9          |
++------------------+
+
+MySQL [sbtest]> select count(*) from sbtest1;
++----------+
+| count(*) |
++----------+
+|  5000000 |
++----------+
+1 row in set (1.04 sec)
+
+表结构：
+CREATE TABLE `sbtest1` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `k` int(11) NOT NULL DEFAULT '0',
+  `c` char(120) NOT NULL DEFAULT '',
+  `pad` char(60) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `k_1` (`k`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin AUTO_INCREMENT=5138499
+
+```
+
+### 机器配置
+
+```
+4 tikv (16 Core，32GB MEM，SSD), 3 副本
+```
+
+### 执行备份
+
+- 备份前需确认 GC 时间调长, 确保备份期间不会因为数据丢失导致中断
+- 备份前需确认 TiDB 集群没有执行 DDL
+
+```
+bin/br backup full -s local:///tmp/backup --pd "${PDIP}:2379" --log-file backup.log
+```
+
+```
+[INFO] [client.go:288] ["Backup Ranges"] [take=2m25.801322134s]
+[INFO] [schema.go:114] ["backup checksum finished"] [take=4.842154366s]
+```
+
+### 执行恢复
+
+- 恢复前需确认恢复集群是全新集群
+
+```
+bin/br restore full -s local:///tmp/backup --pd "${PDIP}:2379" --log-file restore.log
+```
+
+```
+[INFO] [client.go:345] [RestoreAll] [take=2m8.907369337s]
+[INFO] [client.go:435] ["Restore Checksum"] [take=6.385818026s]
+```
