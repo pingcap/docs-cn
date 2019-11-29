@@ -20,7 +20,7 @@ TiDB 实现了快照隔离 (Snapshot Isolation) 级别的一致性。为与 MySQ
 
 > **注意：**
 >
-> 在 3.0 默认设置中，事务的自动重试功能已经默认关闭。关于该项功能对隔离级别的影响以及如何开启该项功能，请参考[事务自动重试及带来的异常](#事务自动重试及带来的异常)。
+> 在 TiDB v3.0 的默认设置中，事务的自动重试功能已经关闭。关于该项功能对隔离级别的影响以及如何开启该项功能，请参考[事务自动重试及带来的异常](#事务自动重试及带来的异常)。
 
 TiDB 使用 [Percolator 事务模型](https://research.google.com/pubs/pub36726.html)，当事务启动时会获取全局读时间戳，事务提交时也会获取全局提交时间戳，并以此确定事务的执行顺序，如果想了解 TiDB 事务模型的实现可以详细阅读以下两篇文章：[TiKV 的 MVCC (Multi-Version Concurrency Control) 机制](https://pingcap.com/blog-cn/mvcc-in-tikv/)，[Percolator 和 TiDB 事务算法](https://pingcap.com/blog-cn/percolator-and-txn/)。
 
