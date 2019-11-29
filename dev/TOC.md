@@ -285,6 +285,7 @@
   - [Alert Rules](/dev/reference/alert-rules.md)
   + Best Practices
     - [Highly Concurrent Write Best Practices](/dev/reference/best-practices/high-concurrency.md)
+    - [HAProxy Best Practices](/dev/reference/best-practices/haproxy.md)
   - [TiSpark](/dev/reference/tispark.md)
   + TiDB Binlog
     - [Overview](/dev/reference/tidb-binlog/overview.md)

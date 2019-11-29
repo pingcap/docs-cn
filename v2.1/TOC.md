@@ -258,7 +258,8 @@
     - [PD](/v2.1/reference/key-monitoring-metrics/pd-dashboard.md)
     - [TiKV](/v2.1/reference/key-monitoring-metrics/tikv-dashboard.md)
   - [Alert Rules](/v2.1/reference/alert-rules.md)
-  - [Best Practices](https://pingcap.com/blog/2017-07-24-tidbbestpractice/)
+  + Best Practices
+    - [HAProxy Best Practices](/v2.1/reference/best-practices/haproxy.md)
   - [TiSpark](/v2.1/reference/tispark.md)
   + TiDB Binlog
     - [Overview](/v2.1/reference/tidb-binlog/overview.md)
