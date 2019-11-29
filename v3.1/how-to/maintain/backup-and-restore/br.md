@@ -16,7 +16,7 @@ BR 是分布式备份恢复的工具，它将备份和恢复操作命令下发�
 
 ## BR 命令行描述
 
-`br` 命令行是由命令（包括子命令）、选项和参数组成的。命令即不带 `-` 或者 `--` 的字符。选项即带有 `-` 或者 `--` 的字符。参数即命令或选项字符后紧跟的、传递给命令和选项的字符。
+一条 `br` 命令是由子命令、选项和参数组成的。子命令即不带 `-` 或者 `--` 的字符。选项即以 `-` 或者 `--` 开头的字符。参数即字命令或选项字符后紧跟的、并传递给命令和选项的字符。
 
 以下是一条完整的 `br` 命令行：
 
@@ -24,7 +24,7 @@ BR 是分布式备份恢复的工具，它将备份和恢复操作命令下发�
 
 命令行各部分的解释如下：
 
-* `backup`：命令
+* `backup`：`br` 的子命令
 * `full`：`backup` 的子命令
 * `-s` 或 `--storage`：备份保存的路径
 * `"local:///tmp/backup"`：`-s` 的参数，保存的路径为本地磁盘的 `/tmp/backup`
@@ -33,13 +33,13 @@ BR 是分布式备份恢复的工具，它将备份和恢复操作命令下发�
 
 ### 命令和子命令
 
-BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version` 三个命令:
+BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version` 三个子命令:
 
 * `br backup` 用于备份 TiDB 集群
 * `br restore` 用于恢复 TiDB 集群
 * `br version` 用于查看 BR 工具版本信息
 
-BR 还包含以下三个子命令：
+以上三个子命令可能还包含这些子命令：
 
 * `full`：可用于备份或恢复全部数据。
 * `db`：可用于恢复集群中的指定数据库。
@@ -52,11 +52,11 @@ BR 还包含以下三个子命令：
 * `--ca`：指定 PEM 格式的受信任 CA 的证书文件路径。
 * `--cert`：指定 PEM 格式的 SSL 证书文件路径。
 * `--key`：指定 PEM 格式的 SSL 证书密钥文件路径。
-* `--status-addr`：指定 BR 提供 Prometheus 统计的监听地址。
+* `--status-addr`：BR 向 Prometheus 提供统计数据的监听地址，
 
 ## 备份集群数据
 
-使用 `br backup` 命令来备份集群数据。可选择添加 `full` 或 `table` 子命令来备份全部集群数据或单张表的数据。
+使用 `br backup` 命令来备份集群数据。可选择添加 `full` 或 `table` 子命令来指定备份的范围：全部集群数据或单张表的数据。
 
 ### 备份全部集群数据
 
@@ -75,7 +75,7 @@ br backup full \
     --log-file backupfull.log
 ```
 
-以上命令通过 `--ratelimit` 和 `--concurrency` 选项限制了 **每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）和并发数上限，同时把 BR 的 log 写到 `backupfull.log` 文件中。
+以上命令中，`--ratelimit` 和 `--concurrency` 选项限制了 **每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）和并发数上限。`--log-file` 选项指定把 BR 的 log 写到 `backupfull.log` 文件中。
 
 备份期间有进度条在终端中显示。当进度条前进到 100% 时，说明备份已完成。在完成备份后，BR 为了确保数据安全性，还会校验备份数据。进度条效果如下：
 
@@ -108,13 +108,13 @@ br backup table \
     --log-file backuptable.log
 ```
 
-`table` 子命令有 `--db` 和 `--table` 两个选项，分别用来指定数据库名和表名，其余选项含义一致。
+`table` 子命令有 `--db` 和 `--table` 两个选项，分别用来指定数据库名和表名。其他选项的含义与[备份全部集群数据](#备份全部集群数据)相同。
 
 备份期间有进度条在终端中显示。当进度条前进到 100% 时，说明备份已完成。在完成备份后，BR 为了确保数据安全性，还会校验备份数据。
 
 ## 恢复集群数据
 
-使用 `br restore` 命令来恢复集群数据。可选择添加 `full`、`db` 或 `table` 子命令来恢复全部集群数据、某个数据库或某张数据表。
+使用 `br restore` 命令来恢复集群数据。可选择添加 `full`、`db` 或 `table` 子命令来指定恢复操作的范围：全部备份数据、某个数据库或某张数据表。
 
 ### 恢复全部备份数据
 
@@ -132,7 +132,7 @@ br restore full \
     --log-file restorefull.log
 ```
 
-`--concurrency` 指定了该恢复任务内部的子任务的并发数，同时把 BR 的 log 写到 `restorefull.log` 文件中。
+`--concurrency` 指定了该恢复任务内部的子任务的并发数。`--log-file` 选项指定把 BR 的 log 写到 `backupfull.log` 文件中。
 
 恢复期间还有进度条会在终端中显示，当进度条前进到 100% 时，说明恢复已完成。在完成恢复后，BR 为了确保数据安全性，还会校验恢复数据。进度条效果如下：
 
@@ -160,7 +160,7 @@ br restore db \
     --log-file restorefull.log
 ```
 
-以上命令中 `--db` 选项指定了需要恢复的数据库名字，其余选项含义与 `restore full` 一致。
+以上命令中 `--db` 选项指定了需要恢复的数据库名字。其余选项的含义与[恢复全部备份数据](#恢复全部备份数据)相同。
 
 ### 恢复某张数据表
 
@@ -179,7 +179,7 @@ br restore table \
     --log-file restorefull.log
 ```
 
-以上命令中 `--table` 选项指定了需要恢复的表名，其余选项含义与 `restore db` 一致。
+以上命令中 `--table` 选项指定了需要恢复的表名。其余选项的含义与[恢复某个数据库](#恢复某个数据库)相同。
 
 ## 最佳实践
 
@@ -189,13 +189,14 @@ br restore table \
 
 ## 注意事项
 
-- BR 只支持 TiDB 3.1 及以上版本。
-- 如果在没有网络存储的集群上备份，在恢复前需要将所有备份下来的 SST 文件拷贝到各个 TiKV 节点上 `--storage` 指定的目录下。
+- BR 只支持 TiDB v3.1 及以上版本。
+- 如果备份的集群没有网络存储，在恢复前需要将所有备份的 SST 文件拷贝到各个 TiKV 节点上 `--storage` 指定的目录下。
 - TiDB 执行 DDL 期间不能执行备份操作。
+- 目前不支持 Partition Table 的备份恢复。
 - 目前只支持在全新的集群上执行恢复操作。
-- 如果备份时间可能超过设定的 GC lifetime（默认 10 分钟），则需要将 GC lifetime 调大。
+- 如果备份时间可能超过设定的 [`tikv_gc_life_time`](/v3.1/reference/garbage-collection/configuration.md#tikv_gc_life_time)（默认 `10m0s`），则需要将该参数调大。
 
-    例如，将 GC lifetime 调整为 720 小时:
+    例如，将 `tikv_gc_life_time` 调整为 `720h`:
 
     {{< copyable "sql" >}}
 
@@ -225,3 +226,89 @@ br restore table \
     ./pd-ctl -u ${PDIP}:2379 scheduler add balance-leader-scheduler
     ./pd-ctl -u ${PDIP}:2379 scheduler add balance-region-scheduler
     ```
+
+## 备份和恢复示例
+
+本示例展示如何对已有的集群数据进行备份和恢复操作。
+
+### 数据说明和机器配置
+
+假设对 TiKV 集群中的 10 张表进行备份和恢复。每张表有 500 万行数据，数据总量为 35GB。
+
+```sql
+MySQL [sbtest]> show tables;
++------------------+
+| Tables_in_sbtest |
++------------------+
+| sbtest1          |
+| sbtest10         |
+| sbtest2          |
+| sbtest3          |
+| sbtest4          |
+| sbtest5          |
+| sbtest6          |
+| sbtest7          |
+| sbtest8          |
+| sbtest9          |
++------------------+
+
+MySQL [sbtest]> select count(*) from sbtest1;
++----------+
+| count(*) |
++----------+
+|  5000000 |
++----------+
+1 row in set (1.04 sec)
+```
+
+表的结构如下：
+
+```sql
+CREATE TABLE `sbtest1` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `k` int(11) NOT NULL DEFAULT '0',
+  `c` char(120) NOT NULL DEFAULT '',
+  `pad` char(60) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `k_1` (`k`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin AUTO_INCREMENT=5138499
+```
+
+示例假设有 4 个 TiKV 节点，每个节点配置如下：
+
+16 Core，32GB MEM，SSD, 3 副本
+
+### 备份示例
+
+- 备份前需确认 GC 时间调长, 确保备份期间不会因为数据丢失导致中断
+- 备份前需确认 TiDB 集群没有执行 DDL
+
+执行以下命令对集群中的全部数据进行备份：
+
+{{< copyable "shell-regular" >}}
+
+```
+bin/br backup full -s local:///tmp/backup --pd "${PDIP}:2379" --log-file backup.log
+```
+
+```
+[INFO] [client.go:288] ["Backup Ranges"] [take=2m25.801322134s]
+[INFO] [schema.go:114] ["backup checksum finished"] [take=4.842154366s]
+```
+
+### 恢复示例
+
+恢复操作前，需确认待恢复的 TiKV 集群是全新的集群。
+
+执行以下命令对全部数据进行恢复：
+
+{{< copyable "shell-regular" >}}
+
+```
+bin/br restore full -s local:///tmp/backup --pd "${PDIP}:2379" --log-file restore.log
+```
+
+```
+[INFO] [client.go:345] [RestoreAll] [take=2m8.907369337s]
+[INFO] [client.go:435] ["Restore Checksum"] [take=6.385818026s]
+```
