@@ -6,13 +6,13 @@ category: reference
 
 # 乐观锁事务最佳实践
 
-本文介绍 TiDB 乐观锁机制的实现原理，并通过分析乐观锁在多种场景下的应用为业务提供最佳实践。本文假定你对 [TiDB 的整体架构](/dev/architecture.md#tidb-整体架构)和 [Percolator](https://www.usenix.org/legacy/event/osdi10/tech/full_papers/Peng.pdf) 事务模型都有一定了解，相关核心概念如下：
+本文介绍 TiDB 乐观锁机制的实现原理，并通过分析乐观锁在多种场景下的应用为业务提供最佳实践。本文假定你对 [TiDB 的整体架构](/v2.1/architecture.md#tidb-整体架构)和 [Percolator](https://www.usenix.org/legacy/event/osdi10/tech/full_papers/Peng.pdf) 事务模型都有一定了解，相关核心概念如下：
 
-- [ACID](/dev/glossary.md#ACID)
-- [事务](/dev/glossary.md#事务)
-- [乐观事务](/dev/glossary.md#乐观事务)
-- [悲观事务](/dev/glossary.md#悲观事务)
-- [显式事务/隐式事务](/dev/glossary.md#显式事务隐式事务)
+- [ACID](/v2.1/glossary.md#ACID)
+- [事务](/v2.1/glossary.md#事务)
+- [乐观事务](/v2.1/glossary.md#乐观事务)
+- [悲观事务](/v2.1/glossary.md#悲观事务)
+- [显式事务/隐式事务](/v2.1/glossary.md#显式事务隐式事务)
 
 ## 乐观事务原理
 
