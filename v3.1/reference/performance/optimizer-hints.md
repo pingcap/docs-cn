@@ -13,7 +13,7 @@ TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comm
 
 ## 语法
 
-Optimizer Hints 通过注释的形式跟在 `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面。Hint 不区分大小写，多个不同的 Hint 之间需用逗号隔开。
+Optimizer Hints 通过 `/*+ ... */` 注释的形式跟在 `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面。Hint 不区分大小写，多个不同的 Hint 之间需用逗号隔开。例如：
 
 {{< copyable "sql" >}}
 
@@ -21,11 +21,11 @@ Optimizer Hints 通过注释的形式跟在 `SELECT`、`UPDATE` 或 `DELETE` 关
 select /*+ USE_INDEX(t1, idx1), HASH_AGG(), HASH_JOIN(t1) */ count(*) from t t1, t t2 where t1.a = t2.b;
 ```
 
-TiDB 目前支持两类 Hint，具体用法上有一些差别。第一类 Hint 用于控制优化器的行为，例如 `/+ HASH_AGG() */`。第二类 Hint 用于对单条查询设置一些运行参数，例如 `/*+ MEMORY_QUOTA(1 G)*/`。
+TiDB 目前支持两类 Hint，具体用法上有一些差别。第一类 Hint 用于控制优化器的行为，例如 [`/*+ HASH_AGG() */`](#hash_agg)。第二类 Hint 用于对单条查询设置一些运行参数，例如 [`/*+ MEMORY_QUOTA(1024 MB)*/`](#memory_quota1024-mb)。
 
 ## 优化器相关 Hint 语法
 
-用于控制优化器行为的 Hint 以注释的形式跟在语句中**任意** `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面。Hint 的生效范围以及 Hint 中使用的表的生效范围可通过下文介绍 **Query Block** 来指定，若不显式地指定 Query Block， Hint 的默认生效范围为当前 Query Block。
+用于控制优化器行为的 Hint 跟在语句中**任意** `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面。Hint 的生效范围以及 Hint 中使用的表的生效范围可通过下文介绍 **Query Block** 来指定，若不显式地指定 Query Block， Hint 的默认生效范围为当前 Query Block。
 
 ### Query Block
 
@@ -84,7 +84,7 @@ select /*+ SM_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 select /*+ INL_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 ```
 
-提示优化器使用 Index Nested Loop Join 算法。这个算法可能会在某些场景更快，消耗更少系统资源，有的场景会更慢，消耗更多系统资源。对于外表经过 WHERE 条件过滤后结果集较小（小于 1 万行）的场景，可以尝试使用。`TIDB_INLJ()` 中的参数是建立查询计划时，内表的候选表。即 `TIDB_INLJ(t1)` 只会考虑使用 t1 作为内表构建查询计划。
+提示优化器使用 Index Nested Loop Join 算法。这个算法可能会在某些场景更快，消耗更少系统资源，有的场景会更慢，消耗更多系统资源。对于外表经过 WHERE 条件过滤后结果集较小（小于 1 万行）的场景，可以尝试使用。`INL_JOIN()` 中的参数是建立查询计划时，内表的候选表。即 `INL_JOIN(t1)` 只会考虑使用 t1 作为内表构建查询计划。
 
 别名：TIDB_INLJ (3.0 及以下版本仅支持使用该别名)
 
@@ -236,7 +236,7 @@ select /*+ NO_INDEX_MERGE() */ * from t where t.a > 0 or t.b > 0;
 
 `USE_TOJA(TRUE)`会开启优化器尝试将 in (subquery) 条件转换为 join 和 aggregation 的功能。相对地，`USE_TOJA(FALSE)` 会关闭该功能。
 
-下面的例子可能会将 `in (select t2.a from t2) subq` 转换为等价的 join 和 aggregation：
+下面的例子会将 `in (select t2.a from t2) subq` 转换为等价的 join 和 aggregation：
 
 {{< copyable "sql" >}}
 
