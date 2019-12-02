@@ -441,6 +441,10 @@ category: reference
     2. 查看该 `tidb-server` 的日志，grep gc_worker tidb.log；
     3. 如果发现这段时间一直在 resolve locks（最后一条日志是 `start resolve locks`）或者 delete ranges（最后一条日志是 `start delete {number} ranges`），说明 GC 进程是正常的。否则需要报备开发人员 [support@pingcap.com](mailto:support@pingcap.com) 进行处理。
 
+* 注意：
+
+    `tidb_tikvclient_gc_action_result` 指标虽然在 3.* 版本中存在，但是不会有值。
+
 ### 重要级别报警项
 
 对于重要级别的报警，需要密切关注异常指标。
@@ -622,6 +626,10 @@ category: reference
 
     1. 一般是因为并行 GC 开的太高了，可以适当降低 GC 并行度。你需要先确认 GC 失败是由于服务器繁忙导致的。
     2. 通过执行 `update set VARIABLE_VALUE=”{number}” where VARIABLE_NAME=”tikv_gc_concurrency”` 适当降低并行度。
+
+* 注意：
+
+    `tidb_tikvclient_gc_action_result` 指标虽然在 3.* 版本中存在，但是不会有值。
 
 ### 警告级别报警项
 
