@@ -97,7 +97,7 @@ retry-limit = 10
 set @@global.tidb_disable_txn_auto_retry = on;
 ```
 
-这个变量不会影响 `auto_commit = 1` 的单语句的隐式事务，仍然会自动重试。
+这个变量不会影响 `autocommit = 1` 的单语句的隐式事务，仍然会自动重试。
 
 关掉显式事务重试后，如果出现事务冲突，commit 语句会返回错误，错误信息会包含 `try again later` 这个字符串，应用层可以用来判断遇到的错误是否是可以重试的。
 
