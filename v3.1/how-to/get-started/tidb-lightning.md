@@ -71,7 +71,7 @@ TiDB Lightning 主要包含两个部分:
 
     [server]
     # tikv-importer 监听的地址，tidb-lightning 需要连到这个地址进行数据写入。
-    addr = "0.0.0.0:8287"
+    addr = "127.0.0.1:8287"
 
     [import]
     # 存储引擎文档 (engine file) 的文件夹路径。
