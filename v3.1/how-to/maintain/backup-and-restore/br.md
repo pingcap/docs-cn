@@ -16,7 +16,7 @@ BR 是分布式备份恢复的工具，它将备份和恢复操作命令下发�
 
 ## BR 命令行描述
 
-一条 `br` 命令是由子命令、选项和参数组成的。子命令即不带 `-` 或者 `--` 的字符。选项即以 `-` 或者 `--` 开头的字符。参数即字命令或选项字符后紧跟的、并传递给命令和选项的字符。
+一条 `br` 命令是由子命令、选项和参数组成的。子命令即不带 `-` 或者 `--` 的字符。选项即以 `-` 或者 `--` 开头的字符。参数即子命令或选项字符后紧跟的、并传递给命令和选项的字符。
 
 以下是一条完整的 `br` 命令行：
 
@@ -52,7 +52,7 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 * `--ca`：指定 PEM 格式的受信任 CA 的证书文件路径。
 * `--cert`：指定 PEM 格式的 SSL 证书文件路径。
 * `--key`：指定 PEM 格式的 SSL 证书密钥文件路径。
-* `--status-addr`：BR 向 Prometheus 提供统计数据的监听地址，
+* `--status-addr`：BR 向 Prometheus 提供统计数据的监听地址。
 
 ## 备份集群数据
 
@@ -75,7 +75,7 @@ br backup full \
     --log-file backupfull.log
 ```
 
-以上命令中，`--ratelimit` 和 `--concurrency` 选项限制了 **每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）和并发数上限。`--log-file` 选项指定把 BR 的 log 写到 `backupfull.log` 文件中。
+以上命令中，`--ratelimit` 和 `--concurrency` 选项限制了**每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）和并发数上限。`--log-file` 选项指定把 BR 的 log 写到 `backupfull.log` 文件中。
 
 备份期间有进度条在终端中显示。当进度条前进到 100% 时，说明备份已完成。在完成备份后，BR 为了确保数据安全性，还会校验备份数据。进度条效果如下：
 
@@ -196,7 +196,7 @@ br restore table \
 - 目前只支持在全新的集群上执行恢复操作。
 - 如果备份时间可能超过设定的 [`tikv_gc_life_time`](/v3.1/reference/garbage-collection/configuration.md#tikv_gc_life_time)（默认 `10m0s`），则需要将该参数调大。
 
-    例如，将 `tikv_gc_life_time` 调整为 `720h`:
+    例如，将 `tikv_gc_life_time` 调整为 `720h`：
 
     {{< copyable "sql" >}}
 
@@ -261,7 +261,7 @@ MySQL [sbtest]> select count(*) from sbtest1;
 1 row in set (1.04 sec)
 ```
 
-表的结构如下：
+表结构如下：
 
 ```sql
 CREATE TABLE `sbtest1` (
@@ -276,12 +276,12 @@ CREATE TABLE `sbtest1` (
 
 示例假设有 4 个 TiKV 节点，每个节点配置如下：
 
-16 Core，32GB MEM，SSD, 3 副本
+16 Core，32GB MEM，SSD，3 副本
 
 ### 备份示例
 
-- 备份前需确认 GC 时间调长, 确保备份期间不会因为数据丢失导致中断
-- 备份前需确认 TiDB 集群没有执行 DDL
+- 备份前需确认已将 GC 时间调长，确保备份期间不会因为数据丢失导致中断
+- 备份前需确认 TiDB 集群没有执行 DDL 操作
 
 执行以下命令对集群中的全部数据进行备份：
 
