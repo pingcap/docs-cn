@@ -67,7 +67,7 @@ To install the dependencies above, run the following command:
 {{< copyable "shell-regular" >}}
 
 ```bash
-Yum-y install epel-release gcc systemd-devel
+yum -y install epel-release gcc systemd-devel
 ```
 
 ## Deploy HAProxy
@@ -112,28 +112,28 @@ haproxy --help
 | `-vv` | Displays the version, build options, libraries versions and usable pollers. |
 | `-d` | Enables debug mode. |
 | `-db` | Disables background mode and multi-process mode. |
-| `-dM [\<byte>]` | Forces memory poisoning, which means that each and every memory region allocated with malloc() or pool_alloc2() will be filled with <byte> before being passed to the caller. |
+| `-dM [<byte>]` | Forces memory poisoning, which means that each and every memory region allocated with malloc() or pool_alloc2() will be filled with \<byte> before being passed to the caller. |
 | `-V` | Enables verbose mode (disables quiet mode). |
 | `-D` | Starts as a daemon.|
-| `-C \<dir>` | Changes to directory <dir> before loading configuration files. |
+| `-C <dir>` | Changes to directory \<dir> before loading configuration files. |
 | `-W` | Master-worker mode. |
 | `-q` | Sets "quiet" mode: This disables some messages during the configuration parsing and during startup. |
 | `-c` | Only performs a check of the configuration files and exits before trying to bind. |
-| `-n \<limit>` | Limits the per-process connection limit to <limit>. |
-| `-m \<limit>` | Limits the total allocatable memory to <limit> megabytes across all processes. |
-| `-N \<limit>` | Sets the default per-proxy maxconn to <limit> instead of the builtin default value (usually 2000). |
-| `-L \<name>` | Changes the local peer name to <name>, which defaults to the local hostname. |
-| `-p \<file>` | Writes all processes' PIDs into <file> during startup. |
+| `-n <limit>` | Limits the per-process connection limit to \<limit>. |
+| `-m <limit>` | Limits the total allocatable memory to \<limit> megabytes across all processes. |
+| `-N <limit>` | Sets the default per-proxy maxconn to \<limit> instead of the builtin default value (usually 2000). |
+| `-L <name>` | Changes the local peer name to \<name>, which defaults to the local hostname. |
+| `-p <file>` | Writes all processes' PIDs into \<file> during startup. |
 | `-de` | Disables the use of epoll(7). epoll(7) is available only on Linux 2.6 and some custom Linux 2.4 systems. |
 | `-dp` | Disables the use of poll(2). select(2) might be used instead. |
 | `-dS` | Disables the use of splice(2), which is broken on older kernels. |
 | `-dR` | Disables SO_REUSEPORT usage. |
 | `-dr` | Ignores server address resolution failures. |
 | `-dV` | Disables SSL verify on the server side. |
-| `-sf \<pidlist>` | Sends the "finish" signal to the PIDs in pidlist after startup. The processes which receive this signal wait for all sessions to finish before exiting. This option must be specified last, followed by any number of PIDs. Technically speaking, SIGTTOU and SIGUSR1 are sent. |
-| `-st \<pidlist>` | Sends the "terminate" signal to the PIDs in pidlist after startup. The processes which receive this signal will terminate immediately, closing all active sessions. This option must be specified last, followed by any number of PIDs. Technically speaking, SIGTTOU and SIGTERM are sent. |
-| `-x \<unix_socket>` | Connects to the specified socket and retrieve all the listening sockets from the old process. Then, these sockets are used instead of binding new ones. |
-| `-S \<bind>[,<bind_options>...]` | In master-worker mode, creates a master CLI. This CLI enables access to the CLI of every worker. Useful for debugging, it's a convenient way of accessing a leaving process. |
+| `-sf <pidlist>` | Sends the "finish" signal to the PIDs in pidlist after startup. The processes which receive this signal wait for all sessions to finish before exiting. This option must be specified last, followed by any number of PIDs. Technically speaking, SIGTTOU and SIGUSR1 are sent. |
+| `-st <pidlist>` | Sends the "terminate" signal to the PIDs in pidlist after startup. The processes which receive this signal terminate immediately, closing all active sessions. This option must be specified last, followed by any number of PIDs. Technically speaking, SIGTTOU and SIGTERM are sent. |
+| `-x <unix_socket>` | Connects to the specified socket and retrieves all the listening sockets from the old process. Then, these sockets are used instead of binding new ones. |
+| `-S <bind>[,<bind_options>...]` | In master-worker mode, creates a master CLI. This CLI enables access to the CLI of every worker. Useful for debugging, it's a convenient way of accessing a leaving process. |
 
 For more details on HAProxy command line options, refer to [Management Guide of HAProxy](http://cbonte.github.io/haproxy-dconv/1.9/management.html) and [General Commands Manual of HAProxy](https://manpages.debian.org/buster-backports/haproxy/haproxy.1.en.html).
 
@@ -151,7 +151,7 @@ global                                     # Global configuration.
    group       haproxy                     # Same with the GID parameter. A dedicated user group is recommended.
    nbproc      40                          # The number of processes created when going daemon. When starting multiple processes to forward requests, make sure the value is large enough so that HAProxy does not block processes.
    daemon                                  # Makes the process fork into background. It is equivalent to the command line "-D" argument. It can be disabled by the command line "-db" argument.
-   stats socket /var/lib/haproxy/stats     # The directory where statistics outputs are saved.
+   stats socket /var/lib/haproxy/stats     # The directory where statistics output is saved.
 
 defaults                                   # Default configuration.
    log global                              # Inherits the settings of the global configuration.
@@ -170,10 +170,10 @@ listen admin_stats                         # The name of the Stats page reportin
    stats realm HAProxy                     # The authentication realm of the Stats page.
    stats auth admin:pingcap123             # User name and password in the Stats page. You can have multiple user names.
    stats hide-version                      # Hides the version information of HAProxy on the Stats page.
-   stats admin if TRUE                     # Manually enables or disables the backend server. <span class="version-mark">New in HAProxy 1.4.9 or later versions</span>
+   stats admin if TRUE                     # Manually enables or disables the backend server (supported in HAProxy 1.4.9 or later versions).
 
 listen tidb-cluster                        # Database load balancing.
-   bind 0.0.0.0:3390                       # Floating IP addresses and listening ports.
+   bind 0.0.0.0:3390                       # The Floating IP address and listening port.
    mode tcp                                # HAProxy uses layer 4, the transport layer.
    balance leastconn                       # The server with the smallest number of connections receives the connection. `leastconn' is recommended where long sessions are expected, such as LDAP, SQL and TSE, rather than protocols using short sessions, such as HTTP. The algorithm is dynamic, which means that server weights might be adjusted on the fly for slow starts for instance.
    server tidb-1 10.9.18.229:4000 check inter 2000 rise 2 fall 3       # Detects port 4000 at a frequency of once every 2000 milliseconds. If it is detected as successful twice, the server is considered available; if it is detected as failed three times, the server is considered unavailable.
