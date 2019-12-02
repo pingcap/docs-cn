@@ -444,7 +444,7 @@ category: reference
 * 注意：
 
     `tidb_tikvclient_gc_action_result` 指标虽然在 3.* 版本中存在，但是不会有值。
-    
+
 ### 重要级别报警项
 
 对于重要级别的报警，需要密切关注异常指标。
@@ -630,7 +630,7 @@ category: reference
 * 注意：
 
     `tidb_tikvclient_gc_action_result` 指标虽然在 3.* 版本中存在，但是不会有值。
-    
+
 ### 警告级别报警项
 
 警告级别的报警是对某一问题或错误的提醒。
