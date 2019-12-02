@@ -443,7 +443,7 @@ category: reference
 
 * 注意：
 
-    `tidb_tikvclient_gc_action_result` 指标虽然在 3.* 版本中存在，但是不会有值。
+    `tidb_tikvclient_gc_action_result` 指标虽然在 3.* 以上版本中存在，但是不会有值。
 
 ### 重要级别报警项
 
@@ -629,7 +629,7 @@ category: reference
 
 * 注意：
 
-    `tidb_tikvclient_gc_action_result` 指标虽然在 3.* 版本中存在，但是不会有值。
+    `tidb_tikvclient_gc_action_result` 指标虽然在 3.* 以上版本中存在，但是不会有值。
 
 ### 警告级别报警项
 
