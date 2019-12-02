@@ -19,7 +19,7 @@ BR 执行备份时，会先从 PD 获取到
 - 当前的 TS 作为备份快照的时间点
 - 当前集群的 TiKV 节点信息
 
-然后根据上述信息，在 BR 内部启动一个 TiDB，获取对应 TS 的数据库／表信息。同时过滤掉系统库（`information_schema`，`performance_schema`，`mysql`)，
+然后根据上述信息，在 BR 内部调用 TiDB 相关接口，获取对应 TS 的数据库／表信息。同时过滤掉系统库（`information_schema`，`performance_schema`，`mysql`)，
 如果是全量备份，会遍历全部库表，并且根据每一张表构建需要备份的 KV Range，
 如果是单表备份，会根据该表构建需要备份的 KV Range，
 最后，BR 将需要备份的 KV Range 收集后，构造完整请求分发给集群内的 TiKV 节点。
