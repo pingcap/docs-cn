@@ -6,13 +6,13 @@ category: reference
 
 # 乐观锁事务最佳实践
 
-本文介绍 TiDB 乐观锁机制的实现原理，并通过分析乐观锁在多种场景下的应用为业务提供最佳实践。本文假定你对 [TiDB 的整体架构](/v3.1/architecture.md#tidb-整体架构)和 [Percolator](https://www.usenix.org/legacy/event/osdi10/tech/full_papers/Peng.pdf) 事务模型都有一定了解，相关核心概念如下：
+本文介绍 TiDB 乐观锁机制的实现原理，并通过分析乐观锁在多种场景下的应用为业务提供最佳实践。本文假定你对 [TiDB 的整体架构](/v2.1/architecture.md#tidb-整体架构)和 [Percolator](https://www.usenix.org/legacy/event/osdi10/tech/full_papers/Peng.pdf) 事务模型都有一定了解，相关核心概念如下：
 
-- [ACID](/v3.1/glossary.md#ACID)
-- [事务](/v3.1/glossary.md#事务)
-- [乐观事务](/v3.1/glossary.md#乐观事务)
-- [悲观事务](/v3.1/glossary.md#悲观事务)
-- [显式事务/隐式事务](/v3.1/glossary.md#显式事务隐式事务)
+- [ACID](/v2.1/glossary.md#ACID)
+- [事务](/v2.1/glossary.md#事务)
+- [乐观事务](/v2.1/glossary.md#乐观事务)
+- [悲观事务](/v2.1/glossary.md#悲观事务)
+- [显式事务/隐式事务](/v2.1/glossary.md#显式事务隐式事务)
 
 ## 乐观事务原理
 
@@ -240,8 +240,8 @@ tidb_retry_limit = 10
 enabled = false
 # Hash 对应的 slot 数，会自动向上调整为 2 的指数倍。
 # 每个 slot 占 32 Bytes 内存。当写入数据的范围比较广时（如导数据），
-# 设置过小会导致变慢，性能下降。（默认为 1024000）
-capacity = 1024000
+# 设置过小会导致变慢，性能下降。（默认为 2048000）
+capacity = 2048000
 ```
 
 配置项 `capacity` 主要影响到冲突判断的正确性。在实现冲突检测时，不可能把所有的 Key 都存到内存里，所以真正存下来的是每个 Key 的 Hash 值。有 Hash 算法就有碰撞也就是误判的概率，这里可以通过配置 `capacity` 来控制 Hash 取模的值：
