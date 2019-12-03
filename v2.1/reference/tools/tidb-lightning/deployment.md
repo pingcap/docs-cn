@@ -172,7 +172,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/v2.1/how-to/deploy/
 通过以下链接获取 TiDB Lightning 安装包（需选择与集群相同的版本）：
 
 - [v2.1](/v2.1/reference/tools/download.md#tidb-lightning)
-- [最新 unstable 版本](https://pingcap.com/docs-cn/dev/reference/tools/download/#tidb-lightning)
+- [最新开发版本 (unstable)](https://pingcap.com/docs-cn/dev/reference/tools/download/#tidb-lightning)
 
 #### 第 3 步：启动 `tikv-importer`
 
