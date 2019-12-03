@@ -430,7 +430,7 @@ category: reference
 * 报警规则：
 
     `sum(increase(tidb_tikvclient_gc_action_result{type="success"}[6h])) < 1`
-    
+
     > **注意：**
     >
     > 由于 3.0 中引入了分布式 GC 且 GC 不会在 TiDB 执行，因此 `tidb_tikvclient_gc_action_result` 指标虽然在 3.* 以上版本中存在，但是不会有值。
