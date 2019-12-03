@@ -14,14 +14,14 @@ BR 是分布式备份恢复的工具，它将备份和恢复操作命令下发�
 
 ### 备份原理
 
-BR 执行备份时，会先从 PD 获取到
+BR 执行备份时，会先从 PD 获取到：
 
 - 当前的 TS 作为备份快照的时间点。
 - 当前集群的 TikV 节点信息。
 
-然后根据上述信息，在 BR 内部启动一个 TiDB，获取对应 TS 的数据库／表信息。同时过滤掉系统库（`information_schema`，`performance_schema`，`mysql`)，
+然后根据上述信息，在 BR 内部启动一个 TiDB，获取对应 TS 的数据库／表信息。同时过滤掉系统库（`information_schema`，`performance_schema`，`mysql`)；
 
-如果是全量备份，会遍历全部库表，并且根据每一张表构建需要备份的 KV Range，
+如果是全量备份，会遍历全部库表，并且根据每一张表构建需要备份的 KV Range；
 
 如果是单表备份，会根据该表构建需要备份的 KV Range。
 
@@ -50,7 +50,7 @@ TiKV 节点在备份完对应 Region Leader 的数据后将元信息返回给 BR
 
 ### 恢复原理
 
-BR 执行恢复时，首先解析备份路径下的 backupMeta 文件
+BR 执行恢复时，首先解析备份路径下的 backupMeta 文件：
 
 - 根据解析出来的库表信息，在自己内部启动一个 TiDB 实例在新集群创建对应的库表。
 - 把解析出来的 SST 文件，根据表进行 GroupBy 聚合。
