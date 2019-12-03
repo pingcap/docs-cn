@@ -201,7 +201,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/o
 
     [server]
     # tikv-importer 监听的地址，tidb-lightning 需要连到这个地址进行数据写入。
-    addr = "127.0.0.1:8287"
+    addr = "192.168.20.10:8287"
     # gRPC 服务器的线程池大小。
     grpc-concurrency = 16
 
