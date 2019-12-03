@@ -16,13 +16,17 @@ BR 是分布式备份恢复的工具，它将备份和恢复操作命令下发�
 
 BR 执行备份时，会先从 PD 获取到
 
-- 当前的 TS 作为备份快照的时间点
-- 当前集群的 TiKV 节点信息
+- 当前的 TS 作为备份快照的时间点。
+- 当前集群的 TikV 节点信息。
 
-然后根据上述信息，在 BR 内部调用 TiDB 相关接口，获取对应 TS snapshot 的数据库／表信息。同时过滤掉系统库（`information_schema`，`performance_schema`，`mysql`)，
+然后根据上述信息，在 BR 内部启动一个 TiDB，获取对应 TS 的数据库／表信息。同时过滤掉系统库（`information_schema`，`performance_schema`，`mysql`)，
+
 如果是全量备份，会遍历全部库表，并且根据每一张表构建需要备份的 KV Range，
-如果是单表备份，会根据该表构建需要备份的 KV Range，
+
+如果是单表备份，会根据该表构建需要备份的 KV Range。
+
 最后，BR 将需要备份的 KV Range 收集后，构造完整请求分发给集群内的 TiKV 节点。
+
 请求主要结构如下
 
 ```
@@ -39,19 +43,24 @@ backup.BackupRequest{
 ```
 
 TiKV 节点收到备份请求后，会遍历自己的全部 Region Leader，找到和请求中 KV Range 有重叠的范围的 region，将该范围下的部分或者全部数据进行备份，在备份路径下生成对应的 SST 文件（命名格式是 storeID_regionID_regionEpoch_tableID)。
+
 TiKV 节点在备份完对应 Region Leader 的数据后将元信息返回给 BR，BR 将这些元信息收集存储进 backupMeta 文件中，等待恢复时使用。
+
 如果执行命令时开启了 checksum，那么 BR 在最后会对备份的每一张表计算 checksum 用于校验。
 
 ### 恢复原理
 
 BR 执行恢复时，首先解析备份路径下的 backupMeta 文件
 
-- 根据解析出来的库表信息，在自己内部启动一个 TiDB 实例在新集群创建对应的库表
+- 根据解析出来的库表信息，在自己内部启动一个 TiDB 实例在新集群创建对应的库表。
 - 把解析出来的 SST 文件，根据表进行 GroupBy 聚合。
 
-根据 SST 文件的 Key Range，进行预切分 Region，使得每个 Region 对应一个 SST 文件
+根据 SST 文件的 Key Range，进行预切分 Region，使得每个 Region 对应一个 SST 文件。
+
 遍历要恢复的每一张表，以及这个表对应的 SST 文件，找到该文件对应的 Region，发送下载文件的请求对应 TiKV，并在下载成功后，发送加载请求。
+
 TiKV 收到加载 SST 文件的请求后, 利用 Raft 机制保证加载 SST 数据的强一致性，在加载成功后，下载下来的 SST 文件会被异步删除。
+
 在恢复执行完之后，会对恢复后的数据进行 checksum 计算，用于和备份下来的数据进行对比。
 
 ![br-arch](/media/br-arch.png)
