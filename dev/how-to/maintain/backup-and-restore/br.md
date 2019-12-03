@@ -39,7 +39,7 @@ backup.BackupRequest{
 ```
 
 TiKV 节点收到备份请求后，会遍历自己的全部 Region Leader，找到和请求中 KV Range 有重叠的范围的 region，将该范围下的部分或者全部数据进行备份，在备份路径下生成对应的 SST 文件（命名格式是 storeID_regionID_regionEpoch_tableID)。
-TiKV 节点在备份完每一个 Region Leader 后将元信息返回给 BR，BR 将这些元信息收集存储进 backupMeta 文件中，等待恢复时使用。
+TiKV 节点在备份完对应 Region Leader 的数据后将元信息返回给 BR，BR 将这些元信息收集存储进 backupMeta 文件中，等待恢复时使用。
 如果执行命令时开启了 checksum，那么 BR 在最后会对备份的每一张表计算 checksum 用于校验。
 
 ### 恢复原理
