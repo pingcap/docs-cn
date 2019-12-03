@@ -46,7 +46,7 @@ TiKV 节点在备份完每一个 Region Leader 后将元信息返回给 BR，BR 
 
 BR 执行恢复时，首先解析备份路径下的 backupMeta 文件
 
-- 根据解析出来的库表信息，启动一个 TiDB 实例在新集群创建对应的库表
+- 根据解析出来的库表信息，在自己内部启动一个 TiDB 实例在新集群创建对应的库表
 - 把解析出来的 SST 文件，根据表进行 GroupBy 聚合。
 
 根据 SST 文件的 Key Range，进行预切分 Region，使得每个 Region 对应一个 SST 文件
