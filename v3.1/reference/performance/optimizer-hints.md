@@ -46,7 +46,7 @@ select * from (select * from t) t1, (select * from t) t2;
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ QB_NAME(QB1) */ * from t;
+select /*+ QB_NAME(QB1) */ * from (select * from t) t1, (select * from t) t2;
 ```
 
 这条 Hint 将 `SELECT` 查询的 `QB_NAME` 设为 `QB1`，此时 `QB1` 和默认名称 `sel_1` 对于这个 Query Block 来说都是有效的。
