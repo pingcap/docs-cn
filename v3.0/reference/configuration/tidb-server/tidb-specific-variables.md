@@ -218,7 +218,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：0
 
-这个变量用来设置是否自动切分待删除的数据。仅在 autocommit 开启，并且是单表删除的 SQL 时有效。关于单表删除的 SQL 的定义，详见[这里](https://dev.mysql.com/doc/refman/8.0/en/delete.html)。
+这个变量用来设置是否自动切分待删除的数据。仅在 autocommit 开启，并且是单表删除的 SQL 时有效。关于单表删除的 SQL 的定义，详见 [`DELETE` Syntax](https://dev.mysql.com/doc/refman/8.0/en/delete.html)。
 当删除大量数据时，可以将其设置为 1，这样待删除数据会被自动切分为多个 batch，每个 batch 使用一个单独的事务进行删除。
 该用法破坏了事务的原子性和隔离性，使用该特性时，使用者需要保证没有其他对正在处理的表的**任何**操作，并且在出现报错时，需要及时**人工介入，检查数据的一致性和完整性**。因此，不建议在生产环境中使用。
 
@@ -359,7 +359,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 这个变量不会影响自动提交的隐式事务和 TiDB 内部执行的事务，它们依旧会根据 `tidb_retry_limit` 的值来决定最大重试次数。
 
-是否需要禁用自动重试，请参考[自动重试的风险](/v3.0/reference/transactions/transaction-isolation.md#自动重试导致的事务异常)。
+是否需要禁用自动重试，请参考[事务自动重试及带来的异常](/v3.0/reference/transactions/transaction-isolation.md#事务自动重试及带来的异常)。
 
 ### tidb_backoff_weight
 
@@ -422,6 +422,14 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 默认值：512
 
 这个变量用来控制 DDL 操作失败重试的次数。失败重试次数超过该参数的值后，会取消出错的 DDL 操作。
+
+### tidb_max_delta_schema_count
+
+作用域：GLOBAL
+
+默认值：1024
+
+这个变量用来设置缓存 schema 版本信息（对应版本修改的相关 table IDs）的个数限制，可设置的范围 100 - 16384。此变量在 2.1.18 及之后版本支持。
 
 ### tidb_force_priority
 
@@ -490,11 +498,13 @@ set tidb_query_log_max_len = 20;
 
 ### tidb_txn_mode
 
-作用域：SESSION
+作用域：SESSION（自 TiDB 3.0.4 起支持 GLOBAL）
 
 默认值：""
 
-这个变量用于设置当前 session 的事务模式，默认是乐观锁模式。 TiDB 3.0 加入了悲观锁模式（实验性）。将 `tidb_txn_mode` 设置为 `'pessimistic'` 后，这个 session 执行的所有显式事务（即非 autocommit 的事务）都会进入悲观事务模式。更多关于悲观锁的细节，可以参考 [TiDB 悲观事务模式](/v3.0/reference/transactions/transaction-pessimistic.md)。
+这个变量用于设置事务模式，默认是乐观锁模式。TiDB 3.0 加入了悲观锁模式（实验性）。将 `tidb_txn_mode` 设置为 `'pessimistic'` 后，这个 session 执行的所有显式事务（即非 autocommit 的事务）都会进入悲观事务模式。更多关于悲观锁的细节，可以参考 [TiDB 悲观事务模式](/v3.0/reference/transactions/transaction-pessimistic.md)。
+
+自 TiDB 3.0.4 起，该变量也支持 GLOBAL 作用域，用于设定全局的事务模式。当设定全局的事务模式时，仅在修改生效之后创建的 session 会受到影响。
 
 ### tidb_constraint_check_in_place
 
@@ -680,3 +690,11 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 默认值：0
 
 这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `auto_increment` 属性。默认为不允许。
+
+### tidb_enable_stmt_summary <span class="version-mark">从 v3.0.4 版本开始引入</span>
+
+作用域：SESSION | GLOBAL
+
+默认值：0
+
+这个变量用来控制是否开启 statement summary 功能。如果开启，SQL 的耗时等执行信息将被记录到系统表 `performance_schema.events_statement_summary_by_digest` 中，用于定位和排查 SQL 性能问题。

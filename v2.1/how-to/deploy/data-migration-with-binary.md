@@ -46,6 +46,8 @@ fCxfQ9XKCezSzuCD0Wf5dUD+LsKegSg=
 
 DM-worker 提供命令行参数和配置文件两种配置方式。
 
+**配置方式 1：命令行参数**
+
 查看 DM-worker 的命令行参数说明：
 
 {{< copyable "shell-regular" >}}
@@ -62,7 +64,7 @@ Usage of worker:
   -checker-backoff-max duration
         任务检查模块中，检查出错误后等待自动恢复的最长时间间隔（默认值："5m0s"，一般情况下不需要修改。如果对该参数的作用没有深入的了解，不建议修改该参数）
   -checker-backoff-rollback duration
-        任务检查模块中，定时调整恢复等待时间的间隔（默认值："5m0s"，一般情况下不需要修改，如果对该参数的作用没有深入的了解，不建议修改该参数）
+        任务检查模块中，调整自动恢复等待时间的间隔（默认值："5m0s"，一般情况下不需要修改，如果对该参数的作用没有深入的了解，不建议修改该参数）
   -checker-check-enable
         是否开启任务状态检查。开启后 DM 会尝试自动恢复因错误而暂停的数据同步任务（默认值：true）
   -config string
@@ -83,6 +85,14 @@ Usage of worker:
         DM-worker 的地址
 ```
 
+> **注意：**
+>
+> 某些情况下，无法使用命令行参数的方法来配置 DM-worker，因为有的配置并未暴露给命令行。
+
+**配置方式 2：配置文件**
+
+推荐使用配置文件来配置 DM-worker，把以下配置文件内容写入到 `conf/dm-worker1.toml` 中。
+
 DM-worker 的配置文件：
 
 ```toml
@@ -97,25 +107,15 @@ worker-addr = ":8262"
 
 # 作为 MySQL slave 的 server ID，用于获取 MySQL 的 binlog
 # 在一个 replication group 中，每个实例（master 和 slave）都应该有唯一的 server ID
+# v1.0.2 及以上版本的 DM 会自动生成，不需要手动配置
 server-id = 101
 
 # 用于标识一个 replication group 或者 MySQL/MariaDB 实例
 source-id = "mysql-replica-01"
 
 # 上游实例类型，值可为 "mysql" 或者 "mariadb"
+# v1.0.2 及以上版本的 DM 会自动识别上游实例类型，不需要手动配置
 flavor = "mysql"
-
-# 存储 relay log 的路径
-relay-dir = "./relay_log"
-
-# 存储 DM-worker 元信息的路径
-meta-dir = "dm_worker_meta"
-
-# relay log 处理单元是否开启 gtid
-enable-gtid = false
-
-# 连接 MySQL/Mariadb 的 DSN 中的 charset 配置
-# charset= ""
 
 # MySQL 的连接地址
 [from]
@@ -123,21 +123,9 @@ host = "192.168.0.1"
 user = "root"
 password = "fCxfQ9XKCezSzuCD0Wf5dUD+LsKegSg="
 port = 3306
-
-# relay log 的删除规则
-# [purge]
-# interval = 3600
-# expires = 24
-# remain-space = 15
-
-# 任务状态检查相关配置
-# [checker]
-# check-enable = true
-# backoff-rollback = 5m
-# backoff-max = 5m
 ```
 
-推荐统一使用配置文件，把以上配置内容写入到 `conf/dm-worker1.toml` 中，在终端中使用下面的命令运行 DM-worker：
+在终端中使用下面的命令运行 DM-worker：
 
 {{< copyable "shell-regular" >}}
 
@@ -145,11 +133,13 @@ port = 3306
 bin/dm-worker -config conf/dm-worker1.toml
 ```
 
-对于 DM-worker2，修改配置文件中的 `source-id` 为 `mysql-replica-02`，并将 `from` 配置部分修改为 MySQL2 的地址即可。
+对于 DM-worker2，修改配置文件中的 `source-id` 为 `mysql-replica-02`，并将 `from` 配置部分修改为 MySQL2 的地址即可。如果因为没有多余的机器，将 DM-worker2 与 DM-worker1 部署在一台机器上，需要把两个 DM-worker 实例部署在不同的路径下，否则保存元信息和 relay log 的默认路径会冲突。
 
 ### DM-master 的部署
 
 DM-master 提供命令行参数和配置文件两种配置方式。
+
+**配置方式 1：命令行参数**
 
 DM-master 的命令行参数说明：
 
@@ -172,14 +162,18 @@ Usage of dm-master:
         打印出 DM-master 的示例配置
 ```
 
+> **注意：**
+>
+> 某些情况下，无法使用命令行参数的方法来配置 DM-worker，因为有的配置并未暴露给命令行。
+
+**配置方式 2：配置文件**
+
+推荐使用配置文件，把以下配置文件内容写入到 `conf/dm-master.toml` 中。
+
 DM-master 的配置文件：
 
 ```toml
 # Master Configuration.
-
-# RPC 相关配置
-rpc-rate-limit = 10.0
-rpc-rate-burst = 40
 
 # 日志配置
 log-level = "info"
@@ -188,7 +182,7 @@ log-file = "dm-master.log"
 # DM-master 监听地址
 master-addr = ":8261"
 
-# replication group <-> DM-Worker 的配置
+# DM-Worker 的配置
 [[deploy]]
 # 对应 DM-worker1 配置文件中的 source-id
 source-id = "mysql-replica-01"
@@ -202,7 +196,7 @@ source-id = "mysql-replica-02"
 dm-worker = "192.168.0.6:8262"
 ```
 
-推荐统一使用配置文件，把以上配置内容写入到 `conf/dm-master.toml` 中，在终端中使用下面的命令运行 DM-master：
+在终端中使用下面的命令运行 DM-master：
 
 {{< copyable "shell-regular" >}}
 
@@ -214,7 +208,7 @@ bin/dm-master -config conf/dm-master.toml
 
 ### 创建数据同步任务
 
-假设在 MySQL1 和 MySQL2 实例中有若干个分表，这些分表的结构相同，所在库的名称都以 "sharding" 开头，表名称都以 "t" 开头，并且主键或唯一键不存在冲突。现在需要把这些分表同步到 TiDB 中的 `db_target.t_target` 表中。
+假设在 MySQL1 和 MySQL2 实例中有若干个分表，这些分表的结构相同，所在库的名称都以 "sharding" 开头，表名称都以 "t" 开头，并且主键或唯一键不存在冲突（即每张分表的主键或唯一键各不相同）。现在需要把这些分表同步到 TiDB 中的 `db_target.t_target` 表中。
 
 首先创建任务的配置文件：
 
@@ -225,10 +219,6 @@ bin/dm-master -config conf/dm-master.toml
 name: test
 task-mode: all
 is-sharding: true
-meta-schema: "dm_meta"
-remove-meta: false
-enable-heartbeat: true
-timezone: "Asia/Shanghai"
 
 target-database:
   host: "192.168.0.3"
@@ -240,16 +230,16 @@ mysql-instances:
   - source-id: "mysql-replica-01"
     black-white-list:  "instance"
     route-rules: ["sharding-route-rules-table", "sharding-route-rules-schema"]
-    mydumper-config-name: "global"
-    loader-config-name: "global"
-    syncer-config-name: "global"
+    mydumper-thread: 4             # mydumper 用于导出数据的线程数量，在 v1.0.2 版本引入
+    loader-thread: 16              # loader 用于导入数据的线程数量，在 v1.0.2 版本引入
+    syncer-thread: 16              # syncer 用于同步增量数据的线程数量，在 v1.0.2 版本引入
 
   - source-id: "mysql-replica-02"
     black-white-list:  "instance"
     route-rules: ["sharding-route-rules-table", "sharding-route-rules-schema"]
-    mydumper-config-name: "global"
-    loader-config-name: "global"
-    syncer-config-name: "global"
+    mydumper-thread: 4             # mydumper 用于导出数据的线程数量，在 v1.0.2 版本引入
+    loader-thread: 16              # loader 用于导入数据的线程数量，在 v1.0.2 版本引入
+    syncer-thread: 16              # syncer 用于同步增量数据的线程数量，在 v1.0.2 版本引入
 
 black-white-list:
   instance:
@@ -268,25 +258,6 @@ routes:
   sharding-route-rules-schema:
     schema-pattern: sharding*
     target-schema: db_target
-
-mydumpers:
-  global:
-    mydumper-path: "./bin/mydumper"
-    threads: 4
-    chunk-filesize: 64
-    skip-tz-utc: true
-    extra-args: "--regex '^sharding.*'"
-
-loaders:
-  global:
-    pool-size: 16
-    dir: "./dumped_data"
-
-syncers:
-  global:
-    worker-count: 16
-    batch: 100
-
 ```
 
 将以上配置内容写入到 `conf/task.yaml` 文件中，使用 dmctl 创建任务：

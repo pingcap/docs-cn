@@ -36,13 +36,7 @@ category: how-to
     {{< copyable "shell-regular" >}}
 
     ```bash
-    cd tidb-docker-compose && docker-compose pull &&
-    ```
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    docker-compose up -d
+    cd tidb-docker-compose && docker-compose pull && docker-compose up -d
     ```
 
 3. 访问集群

@@ -5,7 +5,7 @@ category: how-to
 
 # 备份与恢复
 
-本文档将详细介绍如何对 TiDB 进行全量备份与恢复。增量备份与恢复可使用 [TiDB Binlog](/v2.1/reference/tidb-binlog-overview.md)。
+本文档将详细介绍如何对 TiDB 进行全量备份与恢复。增量备份与恢复可使用 [TiDB Binlog](/v2.1/reference/tidb-binlog/overview.md)。
 
 这里我们假定 TiDB 服务信息如下：
 
@@ -48,7 +48,7 @@ cd tidb-enterprise-tools-latest-linux-amd64
 
 ## 使用 `mydumper`/`loader` 全量备份恢复数据
 
-`mydumper` 是一个强大的数据备份工具，具体可以参考 [https://github.com/maxbube/mydumper](https://github.com/maxbube/mydumper)。
+`mydumper` 是一个强大的数据备份工具，具体可以参考 [`maxbube/mydumper`](https://github.com/maxbube/mydumper)。
 
 可使用 [`mydumper`](/v2.1/reference/tools/mydumper.md) 从 TiDB 导出数据进行备份，然后用 [`loader`](/v2.1/reference/tools/loader.md) 将其导入到 TiDB 里面进行恢复。
 

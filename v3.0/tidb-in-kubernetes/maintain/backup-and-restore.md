@@ -11,7 +11,7 @@ aliases: ['/docs-cn/v3.0/how-to/maintain/tidb-in-kubernetes/backup-and-restore/'
 Kubernetes 上的 TiDB 集群支持两种备份策略：
 
 * [全量备份](#全量备份)（定时执行或 Ad-hoc）：使用 [`mydumper`](/v3.0/reference/tools/mydumper.md) 获取集群的逻辑备份；
-* [增量备份](#增量备份)：使用 [`TiDB Binlog`](/v3.0/reference/tidb-binlog-overview.md) 将 TiDB 集群的数据实时复制到其它数据库中或实时获得增量数据备份；
+* [增量备份](#增量备份)：使用 [`TiDB Binlog`](/v3.0/reference/tidb-binlog/overview.md) 将 TiDB 集群的数据实时复制到其它数据库中或实时获得增量数据备份；
 
 目前，Kubernetes 上的 TiDB 集群只对 `mydumper` 获取的全量备份数据提供自动化的数据恢复操作。恢复 `TiDB-Binlog` 获取的增量数据需要手动进行。
 
@@ -123,28 +123,17 @@ kubectl get pvc -n <namespace> -l app.kubernetes.io/component=backup,pingcap.com
 
 ## 增量备份
 
-增量备份使用 [TiDB Binlog](/v3.0/reference/tidb-binlog-overview.md) 工具从 TiDB 集群收集 Binlog，并提供实时备份和向其它数据库的实时同步能力。
+增量备份使用 [TiDB Binlog](/v3.0/reference/tidb-binlog/overview.md) 工具从 TiDB 集群收集 Binlog，并提供实时备份和向其它数据库的实时同步能力。
 
-增量备份是默认关闭的，你可以通过修改 `values.yaml` 中的下列配置项来开启增量备份：
-
-* 将 `binlog.pump.create` 设置为 `true`；
-* 将 `binlog.drainer.create` 设置为 `true`；
-* 将 `binlog.pump.storageClassName` 和 `binlog.drainer.storageClassName` 设置为你的 Kubernetes 集群中可用的 `storageClass`；
-* 根据需求将 `binlog.drainer.destDBType` 设置为合适的下游存储，下面将详细叙述。
-
-增量备份支持三种下游存储：
-
-* PV：默认的下游存储，这种情况下，你可以考虑为 `drainer` 配置更大的 PV 空间（通过修改 `binlog.drainer.storage` 配置）；
-* 兼容 MySQL 协议的数据库：通过设置 `binlog.drainer.destDBType` 为 `mysql` 来开启，你必须同时在 `binlog.drainer.mysql` 中配置目标数据库的地址和认证信息；
-* Apache Kafka：通过设置 `binlog.drainer.destDBType` 为 `kafka` 来开启，你必须同时在 `binlog.drainer.kafka` 中配置目标集群的 Zookeeper 地址和 Kafka 地址。
+有关 Kubernetes 上运维 TiDB Binlog 的详细指南，可参阅 [TiDB Binlog](/v3.0/tidb-in-kubernetes/maintain/tidb-binlog.md)。
 
 ### Pump 缩容
 
-缩容 Pump 需要挨个先将 Pump 节点从集群中下线之后操作 `helm upgrade` 进行缩容。
+缩容 Pump 需要先将单个 Pump 节点从集群中下线，然后运行 `helm upgrade` 命令将对应的 Pump Pod 删除，并对每个节点重复上述步骤。
 
 1. 下线 Pump 节点：
 
-    假设现在有 3 个 Pump 节点，我们需要下线第 3 个 Pump 节点，将 `<ordinal-id>` 替换成 `2`，操作方式是：
+    假设现在有 3 个 Pump 节点，我们需要下线第 3 个 Pump 节点，将 `<ordinal-id>` 替换成 `2`，操作方式如下（`<version>` 为当前 TiDB 的版本）。
 
     {{< copyable "shell-regular" >}}
 
@@ -152,9 +141,7 @@ kubectl get pvc -n <namespace> -l app.kubernetes.io/component=backup,pingcap.com
     kubectl run offline-pump-<ordinal-id> --image=pingcap/tidb-binlog:<version> --namespace=<namespace> --restart=OnFailure -- /binlogctl -pd-urls=http://<release-name>-pd:2379 -cmd offline-pump -node-id <release-name>-pump-<ordinal-id>:8250
     ```
 
-    `<version>` 为当前 TiDB 的版本。
-
-    然后查看 Pump 的日志输出，确认输出 `pump offline, please delete my pod` 后即可确认该节点已经成功下线。
+    然后查看 Pump 的日志输出，输出 `pump offline, please delete my pod` 后即可确认该节点已经成功下线。
 
     {{< copyable "shell-regular" >}}
 
@@ -162,9 +149,9 @@ kubectl get pvc -n <namespace> -l app.kubernetes.io/component=backup,pingcap.com
     kubectl logs -f -n <namespace> <release-name>-pump-<ordinal-id>
     ```
 
-2. 缩容 Pump：
+2. 删除对应的 Pump Pod：
 
-    修改 `values.yaml` 文件中 `binlog.pump.replicas` 为 `2`，然后执行缩容操作：
+    修改 `values.yaml` 文件中 `binlog.pump.replicas` 为 `2`，然后执行如下命令来删除 Pump Pod：
 
     {{< copyable "shell-regular" >}}
 

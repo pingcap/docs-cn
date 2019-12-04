@@ -1,12 +1,12 @@
 ---
 title: TiDB 3.0 升级操作指南
 category: how-to
-aliases: ['/docs-cn/op-guide/tidb-v3.0-upgrade-guide/','/docs-cn/v3.0/how-to/upgrade/to-tidb-3.0']
+aliases: ['/docs-cn/op-guide/tidb-v3.0-upgrade-guide/','/docs-cn/v3.0/how-to/upgrade/to-tidb-3.0','/docs-cn/v2.1/how-to/upgrade/to-tidb-3.0/']
 ---
 
 # TiDB 3.0 升级操作指南
 
-本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 RC 版本升级到 TiDB 3.0 版本。TiDB 3.0 版本兼容 [Kafka 版本的 TiDB Binlog](/v3.0/reference/tools/tidb-binlog/tidb-binlog-kafka.md) 以及[TiDB Binlog Cluster 版本](/v3.0/reference/tidb-binlog-overview.md)。
+本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 版本（v2.1 RC1 及之后版本）升级到 TiDB 3.0 或 master 版本。目前，TiDB 3.0 和 master 版本兼容 [TiDB Binlog Cluster 版本](/v3.0/reference/tidb-binlog/overview.md)。
 
 ## 升级兼容性说明
 
@@ -137,7 +137,7 @@ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
     >
     > 推荐设置：TiKV 实例数量 \* 参数值 = CPU 核心数量 \* 0.8
 
-- TiKV 配置中不同 CF 中的 `block-cache-size` 参数变更为 `block-cache`
+- TiKV 配置中不同 CF 中的 `block-cache-size` 参数变更为 `block-cache`：
 
     ```
     storage:
@@ -151,7 +151,7 @@ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
     >
     > 推荐设置：`capacity` = (MEM_TOTAL * 0.5 / TiKV 实例数量)
 
-- TiKV 配置中单机多实例场景需要额外配置 `tikv_status_port` 端口:
+- TiKV 配置中单机多实例场景需要额外配置 `tikv_status_port` 端口：
 
     ```
     [tikv_servers]
@@ -167,7 +167,7 @@ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
     >
     > 3.0 版本单机多 TiKV 实例（进程）情况下，需要添加 `tikv_status_port` 参数。
     >
-    > 注意配置端口是否有冲突
+    > 配置前，注意检查端口是否有冲突。
 
 ## 下载 TiDB 3.0 binary 到中控机
 

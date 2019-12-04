@@ -12,6 +12,18 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 1. [Go](https://golang.org/) Version 1.9 以上
 2. 在 PD 项目根目录使用 `make` 命令进行编译，生成 bin/pd-ctl
 
+## 下载安装包
+
+如需下载最新版本的 `pd-ctl`，直接下载 TiDB 安装包即可，因为 `pd-ctl` 包含在 TiDB 安装包中。
+
+| 安装包 | 操作系统 | 架构 | SHA256 校验和 |
+|:---|:---|:---|:---|
+| `http://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux | amd64 | `http://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
+
+> **注意：**
+>
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v2.1.17` 版本的下载链接为 `http://download.pingcap.org/tidb-v2.1.17-linux-amd64.tar.gz`。也可以使用 `latest` 替代 `{version}` 来下载最新的未发布版本。
+
 ## 简单例子
 
 单命令模式：
@@ -41,17 +53,6 @@ export PD_ADDR=http://127.0.0.1:2379
 
 ## 命令行参数(flags)
 
-### \-\-pd,-u
-
-+ 指定 PD 的地址
-+ 默认地址: `http://127.0.0.1:2379`
-+ 环境变量: PD_ADDR
-
-### \-\-detach,-d
-
-+ 使用单命令行模式(不进入 readline)
-+ 默认值: false
-
 ### --cacert
 
 - 指定 PEM 格式的受信任 CA 的证书文件路径
@@ -62,10 +63,21 @@ export PD_ADDR=http://127.0.0.1:2379
 - 指定 PEM 格式的 SSL 证书文件路径
 - 默认值: ""
 
+### \-\-detach,-d
+
++ 使用单命令行模式（不进入 readline）
++ 默认值：false
+
 ### --key
 
 - 指定 PEM 格式的 SSL 证书密钥文件路径，即 `--cert` 所指定的证书的私钥
 - 默认值: ""
+
+### \-\-pd,-u
+
++ 指定 PD 的地址
++ 默认地址：`http://127.0.0.1:2379`
++ 环境变量：`PD_ADDR`
 
 ### --version,-V
 

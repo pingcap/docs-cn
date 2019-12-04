@@ -182,9 +182,9 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/v3.0/how-to/deploy/
 
 通过以下链接获取 TiDB Lightning 安装包（需选择与集群相同的版本）：
 
-- **v2.1.9**: `https://download.pingcap.org/tidb-v2.1.9-linux-amd64.tar.gz`
-- **v2.0.9**: `https://download.pingcap.org/tidb-lightning-v2.0.9-linux-amd64.tar.gz`
-- 最新 unstable 版本：`https://download.pingcap.org/tidb-lightning-test-xx-latest-linux-amd64.tar.gz`
+- [v2.1](https://pingcap.com/docs-cn/v2.1/reference/tools/download/#tidb-lightning)
+- [v3.0](/v3.0/reference/tools/download.md#tidb-lightning)
+- [最新开发版本 (unstable)](https://pingcap.com/docs-cn/dev/reference/tools/download/#tidb-lightning)
 
 #### 第 3 步：启动 `tikv-importer`
 
@@ -202,7 +202,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/v3.0/how-to/deploy/
 
     [server]
     # tikv-importer 监听的地址，tidb-lightning 需要连到这个地址进行数据写入。
-    addr = "0.0.0.0:8287"
+    addr = "192.168.20.10:8287"
     # gRPC 服务器的线程池大小。
     grpc-concurrency = 16
 
@@ -248,6 +248,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/v3.0/how-to/deploy/
     # 流管道窗口大小，管道满时会阻塞流。
     # stream-channel-window = 128
     # 引擎文档同时打开的最大数量。
+    # 需要大于 tidb-lightning 中 index-concurrency 和 table-concurrency 之和。
     max-open-engines = 8
     # Importer 上传至 TiKV 的最大速度 (bytes per second)。
     # upload-speed-limit = "512MB"
