@@ -62,7 +62,6 @@
     - [使用 Ansible 扩容缩容](/v2.1/how-to/scale/with-ansible.md)
   + 升级
     - [升级至 TiDB 2.1](/v2.1/how-to/upgrade/from-previous-version.md)
-    - [使用 Ansible 滚动升级](/v2.1/how-to/upgrade/rolling-updates-with-ansible.md)
   + 故障诊断
     - [集群配置诊断](/v2.1/how-to/troubleshoot/cluster-setup.md)
     - [TiDB Lightning 故障诊断](/v2.1/how-to/troubleshoot/tidb-lightning.md)
