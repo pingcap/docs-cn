@@ -268,6 +268,7 @@
     - [Grafana 监控最佳实践](/v3.0/reference/best-practices/grafana-monitor.md)
     - [PD 调度策略最佳实践](/v3.0/reference/best-practices/pd-scheduling.md)
     - [海量 Region 集群调优最佳实践](/v3.0/reference/best-practices/massive-regions.md)
+    - [乐观锁事务最佳实践](/v3.0/reference/best-practices/optimistic-transaction.md)
   + [TiSpark 使用指南](/v3.0/reference/tispark.md)
   + TiDB Binlog
     - [概述](/v3.0/reference/tidb-binlog/overview.md)
@@ -332,6 +333,7 @@
       + 版本发布历史
         + v1.0
           - [1.0.2](/v3.0/reference/tools/data-migration/releases/1.0.2.md)
+      - [TiDB DM 术语表](/v3.0/reference/tools/data-migration/glossary.md)
     + TiDB Lightning
       - [概述](/v3.0/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/v3.0/reference/tools/tidb-lightning/deployment.md)
@@ -400,6 +402,7 @@
 + [TiDB 路线图](/v3.0/roadmap.md)
 + [版本发布历史](/v3.0/releases/rn.md)
   + v3.0
+    - [3.0.6](/v3.0/releases/3.0.6.md)
     - [3.0.5](/v3.0/releases/3.0.5.md)
     - [3.0.4](/v3.0/releases/3.0.4.md)
     - [3.0.3](/v3.0/releases/3.0.3.md)
