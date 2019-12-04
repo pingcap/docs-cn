@@ -218,7 +218,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：0
 
-这个变量用来设置是否自动切分待删除的数据。仅在 autocommit 开启，并且是单表删除的 SQL 时有效。关于单表删除的 SQL 的定义，详见[这里](https://dev.mysql.com/doc/refman/8.0/en/delete.html)。
+这个变量用来设置是否自动切分待删除的数据。仅在 autocommit 开启，并且是单表删除的 SQL 时有效。关于单表删除的 SQL 的定义，详见 [`DELETE` Syntax](https://dev.mysql.com/doc/refman/8.0/en/delete.html)。
 当删除大量数据时，可以将其设置为 1，这样待删除数据会被自动切分为多个 batch，每个 batch 使用一个单独的事务进行删除。
 该用法破坏了事务的原子性和隔离性，使用该特性时，使用者需要保证没有其他对正在处理的表的**任何**操作，并且在出现报错时，需要及时**人工介入，检查数据的一致性和完整性**。因此，不建议在生产环境中使用。
 
@@ -359,7 +359,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 这个变量不会影响自动提交的隐式事务和 TiDB 内部执行的事务，它们依旧会根据 `tidb_retry_limit` 的值来决定最大重试次数。
 
-是否需要禁用自动重试，请参考[自动重试的风险](/v3.0/reference/transactions/transaction-isolation.md#自动重试导致的事务异常)。
+是否需要禁用自动重试，请参考[事务自动重试及带来的异常](/v3.0/reference/transactions/transaction-isolation.md#事务自动重试及带来的异常)。
 
 ### tidb_backoff_weight
 

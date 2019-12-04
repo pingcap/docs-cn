@@ -53,9 +53,10 @@ Spark 的具体配置方式也请参考[官方说明](https://spark.apache.org/d
 {{< copyable "" >}}
 
 ```
-SPARK_EXECUTOR_MEMORY=32g
-SPARK_WORKER_MEMORY=32g
-SPARK_WORKER_CORES=8
+SPARK_EXECUTOR_CORES: 5
+SPARK_EXECUTOR_MEMORY: 10g
+SPARK_WORKER_CORES: 5
+SPARK_WORKER_MEMORY: 10g
 ```
 
 在 `spark-defaults.conf` 中，增加如下配置：
@@ -77,7 +78,7 @@ spark.sql.extensions org.apache.spark.sql.TiExtensions
 
 ## 部署 TiSpark
 
-TiSpark 的 jar 包可以在[这里](https://github.com/pingcap/tispark/releases)下载对应版本的 jar 包并拷贝到合适的目录。
+TiSpark 的 jar 包可以在 [TiSpark Releases 页面](https://github.com/pingcap/tispark/releases)下载对应版本的 jar 包并拷贝到合适的目录。
 
 ### 已有 Spark 集群的部署方式
 
@@ -95,7 +96,7 @@ spark-shell --jars $TISPARK_FOLDER/tispark-${name_with_version}.jar
 
 #### 下载安装包并安装
 
-你可以在[这里](https://spark.apache.org/downloads.html)下载 Apache Spark。
+你可以在 [Apache Spark™ 下载页面](https://spark.apache.org/downloads.html)下载 Apache Spark。
 
 对于 Standalone 模式且无需 Hadoop 支持，则选择 Spark 2.3.x 或者 Spark 2.4.x 且带有 Hadoop 依赖的 Pre-build with Apache Hadoop 2.x 任意版本。如有需要配合使用的 Hadoop 集群，则选择对应的 Hadoop 版本号。你也可以选择从源代码[自行构建](https://spark.apache.org/docs/latest/building-spark.html)以配合官方 Hadoop 2.x 之前的版本。
 
@@ -294,7 +295,7 @@ TiSpark 可以使用 TiDB 的统计信息：
 1. 选择代价最低的索引或扫表访问
 2. 估算数据大小以决定是否进行广播优化
 
-如果希望使用统计信息支持，需要确保所涉及的表已经被分析。请阅读[这份文档](https://pingcap.com/docs-cn/dev/reference/performance/statistics/)了解如何进行表分析。
+如果希望使用统计信息支持，需要确保所涉及的表已经被分析。请阅读[这份文档](https://pingcap.com/docs-cn/v3.0/reference/performance/statistics/)了解如何进行表分析。
 
 从 TiSpark 2.0 开始，统计信息将会默认被读取。
 

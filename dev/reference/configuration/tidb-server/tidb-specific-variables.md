@@ -216,7 +216,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：0
 
-这个变量用来设置是否自动切分待删除的数据。仅在 autocommit 开启，并且是单表删除的 SQL 时有效。关于单表删除的 SQL 的定义，详见[这里](https://dev.mysql.com/doc/refman/8.0/en/delete.html)。
+这个变量用来设置是否自动切分待删除的数据。仅在 autocommit 开启，并且是单表删除的 SQL 时有效。关于单表删除的 SQL 的定义，详见 [`DELETE` Syntax](https://dev.mysql.com/doc/refman/8.0/en/delete.html)。
 当删除大量数据时，可以将其设置为 1，这样待删除数据会被自动切分为多个 batch，每个 batch 使用一个单独的事务进行删除。
 该用法破坏了事务的原子性和隔离性，使用该特性时，使用者需要保证没有其他对正在处理的表的**任何**操作，并且在出现报错时，需要及时**人工介入，检查数据的一致性和完整性**。因此，不建议在生产环境中使用。
 
@@ -357,7 +357,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 这个变量不会影响自动提交的隐式事务和 TiDB 内部执行的事务，它们依旧会根据 `tidb_retry_limit` 的值来决定最大重试次数。
 
-是否需要禁用自动重试，请参考[自动重试的风险](/dev/reference/transactions/transaction-isolation.md#乐观事务注意事项)。
+是否需要禁用自动重试，请参考[事务自动重试及带来的异常](/dev/reference/transactions/transaction-isolation.md#事务自动重试及带来的异常)。
 
 ### tidb_backoff_weight
 
@@ -681,7 +681,7 @@ select * from t, t1 where t.a=t1.a;
 
 TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在建表语句执行时，同步打散刚分裂出的 Region。适用于批量建表后紧接着批量写入数据，能让刚分裂出的 Region 先在 TiKV 分散而不用等待 PD 进行调度。为了保证后续批量写入数据的稳定性，建表语句会等待打散 Region 完成后再返回建表成功，建表语句执行时间会是关闭该变量的数倍。
 
-### tidb_allow_remove_auto_inc <span class="version-mark">从 v2.1.8 和 v3.0.4 版本开始引入</span>
+### tidb_allow_remove_auto_inc <span class="version-mark">从 v2.1.18 和 v3.0.4 版本开始引入</span>
 
 作用域：SESSION
 
