@@ -77,7 +77,9 @@ select /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * from (select t1.a, t1.b from t t1
 select /*+ SM_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 ```
 
-SM_JOIN 的别名是 TIDB_SMJ，在 3.0 及以下版本仅支持使用该别名；在之后的版本同时支持使用这两种名称。
+> **注意：**
+>
+> SM_JOIN 的别名是 TIDB_SMJ，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称。
 
 ### INL_JOIN(t1_name [, tl_name ...])
 
@@ -91,7 +93,9 @@ select /*+ INL_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 
 `INL_JOIN()` 中的参数是建立查询计划时，内表的候选表。比如 `INL_JOIN(t1)` 只会考虑使用 t1 作为内表构建查询计划。
 
-INL_JOIN 的别名是 TIDB_INLJ，在 3.0 及以下版本仅支持使用该别名；在之后的版本同时支持使用这两种名称。
+> **注意：**
+>
+> INL_JOIN 的别名是 TIDB_INLJ，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称。
 
 ### HASH_JOIN(t1_name [, tl_name ...])
 
@@ -103,7 +107,9 @@ INL_JOIN 的别名是 TIDB_INLJ，在 3.0 及以下版本仅支持使用该别�
 select /*+ HASH_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 ```
 
-HASH_JOIN 的别名是 TIDB_HJ，在 3.0 及以下版本仅支持使用该别名；在之后的版本同时支持使用这两种名称。
+> **注意：**
+>
+> HASH_JOIN 的别名是 TIDB_HJ，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称。
 
 ### HASH_AGG()
 
