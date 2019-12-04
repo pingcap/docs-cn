@@ -37,7 +37,7 @@ TiDB 目前支持两类 Hint，具体用法上有一些差别。第一类 Hint �
 select * from (select * from t) t1, (select * from t) t2;
 ```
 
-该查询语句有 3 个 Query Block，最外面一层 `SELECT` 所在的 Query Block 的 `QB_NAME` 为 `sel_1`，两个子查询的 `QB_NAME` 依次为 `sel_2` 和 `sel_3`。其中数字序号根据 `SELECT` 出现的位置从左到右计数。对于 `DELETE` 和 `UPDATE` 为 `del_1` 和 `upd_1`。
+该查询语句有 3 个 Query Block，最外面一层 `SELECT` 所在的 Query Block 的 `QB_NAME` 为 `sel_1`，两个 `SELECT` 子查询的 `QB_NAME` 依次为 `sel_2` 和 `sel_3`。其中数字序号根据 `SELECT` 出现的位置从左到右计数。如果两个 `SELECT` 子查询分别用 `DELETE` 和 `UPDATE` 查询替代，则对应的 `QB_NAME` 分别为 `del_1` 和 `upd_1`。
 
 ### QB_NAME
 
@@ -49,11 +49,11 @@ select * from (select * from t) t1, (select * from t) t2;
 select /*+ QB_NAME(QB1) */ * from t;
 ```
 
-这条 Hint 将 `SELECT` 查询的 `QB_NAME` 设为了 `QB1`，此时 `QB1` 和默认名称 `sel_1` 对于这个 Query Block 来说都是有效的。
+这条 Hint 将 `SELECT` 查询的 `QB_NAME` 设为 `QB1`，此时 `QB1` 和默认名称 `sel_1` 对于这个 Query Block 来说都是有效的。
 
 > **注意：**
 >
-> 上述例子中，如果指定的 `QB_NAME` 为 `sel_2`，并且不给原本 `sel_2` 对应的第二个 Query Block 指定新的 `QB_NAME`，则第二个 Query Block 的 `QB_NAME` 默认值 `sel_2` 失效。
+> 上述例子中，如果指定的 `QB_NAME` 为 `sel_2`，并且不给原本 `sel_2` 对应的第二个 Query Block 指定新的 `QB_NAME`，则第二个 Query Block 的 `QB_NAME` 默认值 `sel_2` 会失效。
 
 ### `@QB_NAME` 参数
 
@@ -67,9 +67,9 @@ select /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * from (select t1.a, t1.b from t t1
 
 同时，你也可以在参数中的每一个表名后面加 `@QB_NAME` 来指定是哪个 Query Block 中的表。
 
-### SM_JOIN(t1_name, t2_name [, tl_name ...])
+### SM_JOIN(t1_name [, tl_name ...])
 
-`SM_JOIN(t1_name, t2_name [, tl_name ...])` 提示优化器对指定表使用 Sort Merge Join 算法。这个算法通常会占用更少的内存，但执行时间会更久。当数据量太大，或系统内存不足时，建议尝试使用。例如：
+`SM_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Sort Merge Join 算法。这个算法通常会占用更少的内存，但执行时间会更久。当数据量太大，或系统内存不足时，建议尝试使用。例如：
 
 {{< copyable "sql" >}}
 
@@ -79,11 +79,9 @@ select /*+ SM_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 
 别名：TIDB_SMJ (3.0 及以下版本仅支持使用该别名)
 
-### INL_JOIN(t1_name, t2_name [, tl_name ...])
+### INL_JOIN(t1_name [, tl_name ...])
 
-`INL_JOIN(t1_name, t2_name [, tl_name ...])` 提示优化器对指定表使用 Index Nested Loop Join 算法。这个算法可能会在某些场景更快，消耗更少系统资源，有的场景会更慢，消耗更多系统资源。对于外表经过 WHERE 条件过滤后结果集较小（小于 1 万行）的场景，可以尝试使用。
-
-`INL_JOIN()` 中的参数是建立查询计划时，内表的候选表。即 `INL_JOIN(t1)` 只会考虑使用 t1 作为内表构建查询计划。例如：
+`INL_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Index Nested Loop Join 算法。这个算法可能会在某些场景更快，消耗更少系统资源，有的场景会更慢，消耗更多系统资源。对于外表经过 WHERE 条件过滤后结果集较小（小于 1 万行）的场景，可以尝试使用。例如：
 
 {{< copyable "sql" >}}
 
@@ -91,11 +89,13 @@ select /*+ SM_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 select /*+ INL_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 ```
 
+`INL_JOIN()` 中的参数是建立查询计划时，内表的候选表。比如 `INL_JOIN(t1)` 只会考虑使用 t1 作为内表构建查询计划。
+
 别名：TIDB_INLJ (3.0 及以下版本仅支持使用该别名)
 
-### HASH_JOIN(t1_name, t2_name [, tl_name ...])
+### HASH_JOIN(t1_name [, tl_name ...])
 
-`HASH_JOIN(t1_name, t2_name [, tl_name ...])` 提示优化器对指定表使用 Hash Join 算法。这个算法多线程并发执行，执行速度较快，但会消耗较多内存。例如：
+`HASH_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Hash Join 算法。这个算法多线程并发执行，执行速度较快，但会消耗较多内存。例如：
 
 {{< copyable "sql" >}}
 
@@ -129,7 +129,7 @@ select /*+ STREAM_AGG() */ count(*) from t1，t2 where t1.a > 10 group by t1.id;
 
 `USE_INDEX(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引。
 
-下面的例子的效果等价于 `select * from t t1 use index(idx1, idx2);`：
+下面例子的效果等价于 `select * from t t1 use index(idx1, idx2);`：
 
 {{< copyable "sql" >}}
 
@@ -141,7 +141,7 @@ select /*+ USE_INDEX(t1, idx1, idx2) */ * from t t1;
 
 `IGNORE_INDEX(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表忽略给出的索引。
 
-下面的例子的效果等价于 `select * from t t1 ignore index(idx1, idx2);`：
+下面例子的效果等价于 `select * from t t1 ignore index(idx1, idx2);`：
 
 {{< copyable "sql" >}}
 
@@ -215,9 +215,9 @@ select /*+ MEMORY_QUOTA(1024 MB) */ * from t;
 
 ### READ_FROM_REPLICA()
 
-`READ_FROM_REPLICA()` 会开启 TiKV 从数据一致的 follower 读取数据的特性。
+`READ_FROM_REPLICA()` 会开启 TiKV 从数据一致的 follower 节点读取数据的特性。
 
-下面的例子可能会从 follower 读取数据：
+下面的例子会从 follower 节点读取数据：
 
 {{< copyable "sql" >}}
 
@@ -243,7 +243,7 @@ select /*+ NO_INDEX_MERGE() */ * from t where t.a > 0 or t.b > 0;
 
 ### USE_TOJA(boolean_value)
 
-`USE_TOJA(TRUE)`会开启优化器尝试将 in (subquery) 条件转换为 join 和 aggregation 的功能。相对地，`USE_TOJA(FALSE)` 会关闭该功能。
+参数 `boolean_value` 可以是 `TRUE` 或者 `FALSE`。`USE_TOJA(TRUE)` 会开启优化器尝试将 in (subquery) 条件转换为 join 和 aggregation 的功能。相对地，`USE_TOJA(FALSE)` 会关闭该功能。
 
 下面的例子会将 `in (select t2.a from t2) subq` 转换为等价的 join 和 aggregation：
 
