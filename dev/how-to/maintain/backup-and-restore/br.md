@@ -141,7 +141,7 @@ br restore full \
     --log-file restorefull.log
 ```
 
-`--concurrency` 指定了该恢复任务内部的子任务的并发数。`--log-file` 选项指定把 BR 的 log 写到 `backupfull.log` 文件中。
+`--concurrency` 指定了该恢复任务内部的子任务的并发数。`--log-file` 选项指定把 BR 的 log 写到 `restorefull.log` 文件中。
 
 恢复期间还有进度条会在终端中显示，当进度条前进到 100% 时，说明恢复已完成。在完成恢复后，BR 为了确保数据安全性，还会校验恢复数据。进度条效果如下：
 
