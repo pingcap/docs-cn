@@ -166,7 +166,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
     2018/06/21 11:24:47 meta.go:117: [info] meta: &{CommitTS:400962745252184065}
     ```
 
-        该命令会输出 `meta: &{CommitTS:400962745252184065}`，CommitTS 的值作为 Drainer 初次启动使用的 `initial-commit-ts` 参数的值。
+    该命令会输出 `meta: &{CommitTS:400962745252184065}`，CommitTS 的值作为 Drainer 初次启动使用的 `initial-commit-ts` 参数的值。
 
 2. 修改 `tidb-ansible/inventory.ini` 文件
 
