@@ -2,17 +2,18 @@
 title: TiDB 2.1 Upgrade Guide
 summary: Learn how to upgrade from TiDB 2.0 (TiDB 2.0.1 or later versions) or TiDB 2.1 RC version to TiDB 2.1 GA version.
 category: how-to
+aliases: ['/docs/v2.1/how-to/upgrade/rolling-updates-with-ansible/']
 ---
 
 # TiDB 2.1 Upgrade Guide
 
-This document describes how to upgrade from TiDB 2.0 (TiDB 2.0.1 or later versions) or TiDB 2.1 RC version to TiDB 2.1 GA version.
+This document describes how to upgrade from TiDB 2.0 to 2.1 versions, or from an earlier 2.1 version to later 2.1 versions.
 
 > **Note:**
 >
 > TiDB 2.1 is not compatible with the Kafka version of TiDB Binlog. If your current TiDB cluster has already been using the [Kafka version of TiDB Binlog](/v2.1/reference/tidb-binlog/tidb-binlog-kafka.md), you need to [upgrade it to the cluster version of TiDB Binlog](/v2.1/reference/tidb-binlog/upgrade.md).
 
-For details about using Ansible to perform a rolling update to each component, see [Perform a rolling update using Ansible](/v2.1/how-to/upgrade/rolling-updates-with-ansible.md#perform-a-rolling-update-using-ansible).
+For details about using Ansible to perform a rolling update to components, see [Perform a rolling update to TiDB cluster components](/v2.1/how-to/upgrade/from-previous-version.md#step-5-perform-a-rolling-update-to-tidb-cluster-components).
 
 ## Upgrade caveat
 
@@ -34,7 +35,7 @@ For details about using Ansible to perform a rolling update to each component, s
 >
 > If you have installed Ansible and its dependencies, you can skip this step.
 
-TiDB Ansible release-3.0 depends on Ansible 2.4.2 and later versions (`ansible>=2.4.2`) and the Python modules of `jinja2>=2.9.6` and `jmespath>=0.9.0`.
+TiDB Ansible release-2.1 depends on Ansible 2.4.2 ~ 2.7.11 (`2.4.2 ≦ ansible < 2.7.11`) and the Python modules of `jinja2 ≧ 2.9.6` and `jmespath ≧ 0.9.0`.
 
 To make it easy to manage dependencies, use `pip` to install Ansible and its dependencies. For details, see [Install Ansible and its dependencies on the Control Machine](/v2.1/how-to/deploy/orchestrated/ansible.md#step-4-install-ansible-and-its-dependencies-on-the-control-machine). For offline environment, see [Install Ansible and its dependencies offline on the Control Machine](/v2.1/how-to/deploy/orchestrated/offline-ansible.md#step-3-install-ansible-and-its-dependencies-offline-on-the-control-machine).
 
@@ -82,7 +83,7 @@ Version: 0.9.3
 
 1. Log in to the Control Machine using the `tidb` user account and enter the `/home/tidb` directory.
 
-2. Back up the `tidb-ansible` folders of TiDB 2.0 or TiDB 2.1 RC versions using the following command:
+2. Back up the `tidb-ansible` folders of TiDB 2.0 or an earlier 2.1 version using the following command:
 
     {{< copyable "shell-regular" >}}
 
@@ -169,7 +170,7 @@ If you have previously customized the configuration file of TiDB cluster compone
 
 ## Step 4: Download TiDB 2.1 binary to the Control Machine
 
-Make sure that `tidb_version = v2.1.0` in the `tidb-ansible/inventory.ini` file, and then run the following command to download TiDB 2.1 binary to the Control Machine:
+Make sure that `tidb_version = v2.1.x` in the `tidb-ansible/inventory.ini` file, and then run the following command to download TiDB 2.1 binary to the Control Machine:
 
 {{< copyable "shell-regular" >}}
 
