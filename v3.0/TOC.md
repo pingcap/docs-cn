@@ -12,7 +12,7 @@
     - [如何对 TiDB 进行 TPC-C 测试](/v3.0/benchmark/how-to-run-tpcc.md)
     - [Sysbench 性能对比 - v3.0 对比 v2.1](/v3.0/benchmark/sysbench-v4.md)
     - [TPC-C 性能对比 - v3.0 对比 v2.1](/v3.0/benchmark/tpcc.md)
-    - [线上负载与 Add Index 相互影响测试](/v3.0/benchmark/add-index-with-load.md)
+    - [线上负载与 `Add Index` 相互影响测试](/v3.0/benchmark/add-index-with-load.md)
     - [TiDB in Kubernetes Sysbench 性能测试](/v3.0/benchmark/sysbench-in-k8s.md)
     - [DM 1.0-GA 性能测试](/v3.0/benchmark/dm-v1.0-ga.md)
 + 主要概念
@@ -66,7 +66,6 @@
     - [使用 Ansible 扩容缩容](/v3.0/how-to/scale/with-ansible.md)
   + 升级
     - [升级至 TiDB 3.0](/v3.0/how-to/upgrade/from-previous-version.md)
-    - [使用 Ansible 滚动升级](/v3.0/how-to/upgrade/rolling-updates-with-ansible.md)
   + 故障诊断
     - [集群配置诊断](/v3.0/how-to/troubleshoot/cluster-setup.md)
     - [TiDB Lightning 故障诊断](/v3.0/how-to/troubleshoot/tidb-lightning.md)
@@ -267,6 +266,8 @@
     - [高并发写入场景最佳实践](/v3.0/reference/best-practices/high-concurrency.md)
     - [Grafana 监控最佳实践](/v3.0/reference/best-practices/grafana-monitor.md)
     - [PD 调度策略最佳实践](/v3.0/reference/best-practices/pd-scheduling.md)
+    - [海量 Region 集群调优最佳实践](/v3.0/reference/best-practices/massive-regions.md)
+    - [乐观锁事务最佳实践](/v3.0/reference/best-practices/optimistic-transaction.md)
   + [TiSpark 使用指南](/v3.0/reference/tispark.md)
   + TiDB Binlog
     - [概述](/v3.0/reference/tidb-binlog/overview.md)
@@ -276,6 +277,9 @@
     - [监控告警](/v3.0/reference/tidb-binlog/monitor.md)
     - [增量恢复](/v3.0/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/v3.0/reference/tidb-binlog/binlog-slave-client.md)
+    + 故障诊断
+      - [故障诊断](/v3.0/reference/tidb-binlog/troubleshoot/binlog.md)
+      - [常见错误修复](/v3.0/reference/tidb-binlog/troubleshoot/error-handling.md)
     - [FAQ](/v3.0/reference/tidb-binlog/faq.md)
   + 周边工具
     - [Mydumper](/v3.0/reference/tools/mydumper.md)
@@ -328,6 +332,7 @@
       + 版本发布历史
         + v1.0
           - [1.0.2](/v3.0/reference/tools/data-migration/releases/1.0.2.md)
+      - [TiDB DM 术语表](/v3.0/reference/tools/data-migration/glossary.md)
     + TiDB Lightning
       - [概述](/v3.0/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/v3.0/reference/tools/tidb-lightning/deployment.md)
@@ -347,7 +352,6 @@
   - [TiDB Operator 简介](/v3.0/tidb-in-kubernetes/tidb-operator-overview.md)
   + 快速上手
     - [kind](/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind.md)
-    - [DinD](/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
     - [GKE](/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
     - [Minikube](/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube.md)
   + 部署
@@ -397,6 +401,8 @@
 + [TiDB 路线图](/v3.0/roadmap.md)
 + [版本发布历史](/v3.0/releases/rn.md)
   + v3.0
+    - [3.0.7](/v3.0/releases/3.0.7.md)
+    - [3.0.6](/v3.0/releases/3.0.6.md)
     - [3.0.5](/v3.0/releases/3.0.5.md)
     - [3.0.4](/v3.0/releases/3.0.4.md)
     - [3.0.3](/v3.0/releases/3.0.3.md)

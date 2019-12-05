@@ -27,7 +27,7 @@ TiDB Operator 部署前，请确认以下软件需求：
 
 TiDB Operator 运行在 Kubernetes 集群，你可以使用 [Getting started 页面](https://kubernetes.io/docs/setup/)列出的任何一种方法搭建一套 Kubernetes 集群。只要保证 Kubernetes 版本大于等于 v1.12。如果你使用 AWS、GKE 或者本机，下面是快速上手教程：
 
-* [Local DinD 教程](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
+* [kind 教程](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind.md)
 * [Google GKE 教程](/dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
 * [AWS EKS 教程](/dev/tidb-in-kubernetes/deploy/aws-eks.md)
 
@@ -97,7 +97,7 @@ kubectl get crd tidbclusters.pingcap.com
 
 2. 配置 TiDB Operator
 
-    TiDB Operator 里面会用到 `k8s.gcr.io/kube-scheduler` 镜像，如果下载不了该镜像，可以修改 `/home/tidb/tidb-operator/values-tidb-operator.yaml` 文件中的 `scheduler.kubeSchedulerImage` 为 `registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler`。
+    TiDB Operator 里面会用到 `k8s.gcr.io/kube-scheduler` 镜像，如果下载不了该镜像，可以修改 `/home/tidb/tidb-operator/values-tidb-operator.yaml` 文件中的 `scheduler.kubeSchedulerImageName` 为 `registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler`。
 
 3. 安装 TiDB Operator
 
