@@ -79,7 +79,7 @@ select /*+ SM_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 
 > **注意：**
 >
-> SM_JOIN 的别名是 TIDB_SMJ，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称。
+> `SM_JOIN` 的别名是 `TIDB_SMJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称。
 
 ### INL_JOIN(t1_name [, tl_name ...])
 
@@ -91,11 +91,11 @@ select /*+ SM_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 select /*+ INL_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 ```
 
-`INL_JOIN()` 中的参数是建立查询计划时，内表的候选表。比如 `INL_JOIN(t1)` 只会考虑使用 t1 作为内表构建查询计划。
+`INL_JOIN()` 中的参数是建立查询计划时内表的候选表，比如 `INL_JOIN(t1)` 只会考虑使用 t1 作为内表构建查询计划。表如果指定了别名，就只能使用表的别名作为 `INL_JOIN()` 的参数；如果没有指定别名，则用表的本名作为其参数。比如在 `select /*+ INL_JOIN(t1) */ * from t t1, t t2 where t1.a = t2.b;` 中，INL_JOIN(t1) 的参数只能使用 t 的别名 t1 或 t2，不能用 t。
 
 > **注意：**
 >
-> INL_JOIN 的别名是 TIDB_INLJ，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称。
+> `INL_JOIN` 的别名是 `TIDB_INLJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称。
 
 ### HASH_JOIN(t1_name [, tl_name ...])
 
@@ -109,7 +109,7 @@ select /*+ HASH_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 
 > **注意：**
 >
-> HASH_JOIN 的别名是 TIDB_HJ，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称。
+> `HASH_JOIN` 的别名是 `TIDB_HJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称。
 
 ### HASH_AGG()
 
@@ -177,7 +177,7 @@ select /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a from t t1, t t2 wher
 
 ### USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])
 
-`USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])` 提示优化器通过 index merge 的方式来访问指定的表，其中索引列表为可选参数。若显式地指出索引列表，会尝试在索引列表里的索引中选取索引来构建 index merge。若不给出索引列表，会尝试在所有可用的索引中选取索引来构建 index merge。例如：
+`USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])` 提示优化器通过 index merge 的方式来访问指定的表，其中索引列表为可选参数。若显式地指出索引列表，会尝试在索引列表中选取索引来构建 index merge。若不给出索引列表，会尝试在所有可用的索引中选取索引来构建 index merge。例如：
 
 {{< copyable "sql" >}}
 
@@ -207,7 +207,7 @@ select /*+ MAX_EXECUTION_TIME(1000) */ * from t1 inner join t2 where t1.id = t2.
 
 ### MEMORY_QUOTA(N)
 
-`MEMORY_QUOTA(N)` 用于限制语句执行时的内存使用，该限制会对优化器选取的执行计划产生影响。该 Hint 支持 MB 和 GB 两种单位。内存使用超过该限制时会根据当前设置的内存超限行为来打出一条 log 或者终止语句的执行。
+`MEMORY_QUOTA(N)` 用于限制语句执行时的内存使用。该 Hint 支持 MB 和 GB 两种单位。内存使用超过该限制时会根据当前设置的内存超限行为来打出一条 log 或者终止语句的执行。
 
 下面的 Hint 设置了 1024 MB 的内存限制：
 
@@ -221,7 +221,7 @@ select /*+ MEMORY_QUOTA(1024 MB) */ * from t;
 
 ### READ_FROM_REPLICA()
 
-`READ_FROM_REPLICA()` 会开启 TiKV 从数据一致的 follower 节点读取数据的特性。
+`READ_FROM_REPLICA()` 会开启从数据一致的 TiKV follower 节点读取数据的特性。
 
 下面的例子会从 follower 节点读取数据：
 
