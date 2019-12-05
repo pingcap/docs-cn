@@ -8,19 +8,19 @@ category: glossary
 
 本文档介绍 TiDB Binlog 相关术语。
 
-### Binlog
+## Binlog
 
 在 TiDB Binlog 中，Binlog 通常 TiDB 写的 Binlog 数据，注意 TiDB Binlog 的格式跟 MySQL 不同，也指 Drainer 写到 Kafka 或者文件的 Binlog 数据，但他们的格式不一样。
 
-### Binlog event
+## Binlog event
 
 TiDB 写的 DML Binlog 有 3 种 event, 分别是 Insert, Update, Delete, Drainer 监控面板 可以看到对应同步数据不同 event 的个数。
 
-### Checkpoint
+## Checkpoint
 
 Checkpoint 指保存的断点信息，记录了 Drainer 同步到下游的 commit-ts，Drainer 重启时可以读取 checkpoint 接着从对应 commit-ts 同步数据到下游。
 
-### Safe mode
+## Safe mode
 
 指增量复制过程中，用于支持在表结构中存在主键或唯一索引的条件下可重复导入 DML 的模式。
 
