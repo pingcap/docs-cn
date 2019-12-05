@@ -30,7 +30,7 @@ aliases: ['/docs-cn/dev/how-to/upgrade/to-tidb-3.0/','/docs-cn/dev/how-to/upgrad
 >
 > 如果已经安装了 Ansible 及其依赖，可跳过该步骤。
 
-TiDB Ansible master 版本依赖 2.4.2 及以上但不高于 2.7.11 的 Ansible 版本（`2.4.2 ≦ ansible ≦ 2.7.11`，建议 2.7.11 版本），另依赖 Python 模块：`jinja2 ≧ 2.9.6` 和 `jmespath ≧ 0.9.0`。为方便管理依赖，建议使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](/dev/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](/dev/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-ansible-及其依赖)。
+TiDB Ansible 最新开发版依赖 2.4.2 及以上但不高于 2.7.11 的 Ansible 版本（`2.4.2 ≦ ansible ≦ 2.7.11`，建议 2.7.11 版本），另依赖 Python 模块：`jinja2 ≧ 2.9.6` 和 `jmespath ≧ 0.9.0`。为方便管理依赖，建议使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](/dev/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](/dev/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-ansible-及其依赖)。
 
 安装完成后，可通过以下命令查看版本：
 
@@ -169,7 +169,7 @@ git clone  https://github.com/pingcap/tidb-ansible.git
 
     > **注意：**
     >
-    > 最新 latest 版本单机多 TiKV 实例（进程）情况下，需要添加 `tikv_status_port` 参数。
+    > 最新开发版单机多 TiKV 实例（进程）情况下，需要添加 `tikv_status_port` 参数。
     >
     > 配置前，注意检查端口是否有冲突。
 
@@ -185,28 +185,33 @@ ansible-playbook local_prepare.yml
 
 ## 滚动升级 TiDB 集群组件
 
-- 如果当前集群版本 < 3.0 并且 `process_supervision` 变量使用默认的 `systemd` 参数，则通过 `excessive_rolling_update.yml` 滚动升级 TiDB 集群。
+为优化 TiDB 集群组件的运维管理，从 TiDB 3.0.0 版本开始对 `systemd` 模式下的 `PD service` 名称进行了调整。
 
-    {{< copyable "shell-regular" >}}
+1. 如果 `process_supervision` 变量使用默认的 `systemd` 参数：
 
-    ```bash
-    ansible-playbook excessive_rolling_update.yml
-    ```
+    - 当前集群版本 < 3.0，则通过 `excessive_rolling_update.yml` 滚动升级 TiDB 集群。
 
-- 如果 `process_supervision` 变量使用的是 `supervise` 参数，无论当前集群为哪个版本，均通过 `rolling_update.yml` 来滚动升级 TiDB 集群。
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook excessive_rolling_update.yml
+        ```
+
+    - 当前集群版本 ≥ 3.0.0，滚动升级及日常滚动重启 TiDB 集群，使用 `rolling_update.yml`。
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook rolling_update.yml
+        ```
+
+2. 如果 `process_supervision` 变量使用的是 `supervise` 参数，无论当前集群为哪个版本，均通过 `rolling_update.yml` 来滚动升级 TiDB 集群。
 
     {{< copyable "shell-regular" >}}
 
     ```bash
     ansible-playbook rolling_update.yml
     ```
-
-> **注意：**
->
-> 为优化 TiDB 集群组件的运维管理，从 TiDB 3.0.0 版本开始对 `systemd` 模式下的 `PD service` 名称进行了调整：
->
-> - 如果从 3.0.0 以前的版本升级，需要使用 `excessive_rolling_update.yml` 来过渡。
-> - 对于 TiDB 3.0.0 及之后版本的集群，滚动升级及日常滚动重启 TiDB 集群，仍旧统一使用 `rolling_update.yml` 操作。
 
 ## 滚动升级 TiDB 监控组件
 
