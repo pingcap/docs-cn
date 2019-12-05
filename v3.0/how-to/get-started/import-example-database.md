@@ -55,11 +55,15 @@ end_station_number, end_station, bike_number, member_type);
 
 ### Import all files
 
+> **Note:**
+>
+> When you start the MySQL client, use the `--local-infile=1` option.
+
 To import all `*.csv` files into TiDB in a bash loop:
 
 ```bash
 for FILE in `ls *.csv`; do
  echo "== $FILE =="
- mysql bikeshare -e "LOAD DATA LOCAL INFILE '${FILE}' INTO TABLE trips FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES (duration, start_date, end_date, start_station_number, start_station, end_station_number, end_station, bike_number, member_type);"
+ mysql bikeshare --local-infile=1 -e "LOAD DATA LOCAL INFILE '${FILE}' INTO TABLE trips FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES (duration, start_date, end_date, start_station_number, start_station, end_station_number, end_station, bike_number, member_type);"
 done;
 ```
