@@ -323,7 +323,7 @@ raftstore 相关的配置项。
 
 ### `raftstore.peer-stale-state-check-interval`
 
-+ 修改对静默 Region 的状态检查间隔时间，同时该值也决定了静默 Region 中 Leader 和 Follower 之间的心跳间隔。该配置项仅在静默 Region 打开后才可生效。
++ 修改对 Region 的状态检查间隔时间。
 + 默认值：5 min
 
 ### `split-region-check-tick-interval`
