@@ -91,7 +91,7 @@ select /*+ SM_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 select /*+ INL_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 ```
 
-`INL_JOIN()` 中的参数是建立查询计划时内表的候选表，比如 `INL_JOIN(t1)` 只会考虑使用 t1 作为内表构建查询计划。表如果指定了别名，就只能使用表的别名作为 `INL_JOIN()` 的参数；如果没有指定别名，则用表的本名作为其参数。比如在 `select /*+ INL_JOIN(t1) */ * from t t1, t t2 where t1.a = t2.b;` 中，INL_JOIN(t1) 的参数只能使用 t 的别名 t1 或 t2，不能用 t。
+`INL_JOIN()` 中的参数是建立查询计划时内表的候选表，比如 `INL_JOIN(t1)` 只会考虑使用 t1 作为内表构建查询计划。表如果指定了别名，就只能使用表的别名作为 `INL_JOIN()` 的参数；如果没有指定别名，则用表的本名作为其参数。比如在 `select /*+ INL_JOIN(t1) */ * from t t1, t t2 where t1.a = t2.b;` 中，`INL_JOIN()` 的参数只能使用 t 的别名 t1 或 t2，不能用 t。
 
 > **注意：**
 >
