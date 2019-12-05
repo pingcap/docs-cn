@@ -66,8 +66,7 @@
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/dev/how-to/scale/with-ansible.md)
   + 升级
-    - [升级至 TiDB 3.0](/dev/how-to/upgrade/from-previous-version.md)
-    - [使用 Ansible 滚动升级](/dev/how-to/upgrade/rolling-updates-with-ansible.md)
+    - [升级至最新开发版](/dev/how-to/upgrade/from-previous-version.md)
   + 故障诊断
     - [集群配置诊断](/dev/how-to/troubleshoot/cluster-setup.md)
     - [TiDB Lightning 故障诊断](/dev/how-to/troubleshoot/tidb-lightning.md)
@@ -404,6 +403,7 @@
 + [TiDB 路线图](/dev/roadmap.md)
 + [版本发布历史](/dev/releases/rn.md)
   + v3.0
+    - [3.0.7](/dev/releases/3.0.7.md)
     - [3.0.6](/dev/releases/3.0.6.md)
     - [3.0.5](/dev/releases/3.0.5.md)
     - [3.0.4](/dev/releases/3.0.4.md)
