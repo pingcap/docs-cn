@@ -37,7 +37,7 @@ TiDB 目前支持两类 Hint，具体用法上有一些差别。第一类 Hint �
 select * from (select * from t) t1, (select * from t) t2;
 ```
 
-该查询语句有 3 个 Query Block，最外面一层 `SELECT` 所在的 Query Block 的 `QB_NAME` 为 `sel_1`，两个 `SELECT` 子查询的 `QB_NAME` 依次为 `sel_2` 和 `sel_3`。其中数字序号根据 `SELECT` 出现的位置从左到右计数。如果两个 `SELECT` 子查询分别用 `DELETE` 和 `UPDATE` 查询替代，则对应的 `QB_NAME` 分别为 `del_1` 和 `upd_1`。
+该查询语句有 3 个 Query Block，最外面一层 `SELECT` 所在的 Query Block 的 `QB_NAME` 为 `sel_1`，两个 `SELECT` 子查询的 `QB_NAME` 依次为 `sel_2` 和 `sel_3`。其中数字序号根据 `SELECT` 出现的位置从左到右计数。如果分别用 `DELETE` 和 `UPDATE` 查询替代第一个 `SELECT` 查询，则对应的 `QB_NAME` 分别为 `del_1` 和 `upd_1`。
 
 ### QB_NAME
 
