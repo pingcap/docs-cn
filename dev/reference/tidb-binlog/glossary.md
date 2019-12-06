@@ -10,7 +10,7 @@ category: glossary
 
 ## Binlog
 
-在 TiDB Binlog 中，Binlog 通常 TiDB 写的 Binlog 数据，注意 TiDB Binlog 的格式跟 MySQL 不同，也指 Drainer 写到 Kafka 或者文件的 Binlog 数据，但他们的格式不一样。
+在 TiDB Binlog 中，Binlog 通常指 TiDB 写的 Binlog 数据，注意 TiDB Binlog 的格式跟 MySQL 不同，也指 Drainer 写到 Kafka 或者文件的 Binlog 数据，但他们的格式不一样。
 
 ## Binlog event
 
