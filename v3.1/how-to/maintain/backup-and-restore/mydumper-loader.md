@@ -33,7 +33,7 @@ Use the following tools for data backup and restoration:
 
 2. Check the file integrity. If the result is fine, the file is correct.
 
-    {{< copyable "shell-regular" >}
+    {{< copyable "shell-regular" >}}
 
     ```bash
     sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
@@ -41,7 +41,7 @@ Use the following tools for data backup and restoration:
 
 3. Extract the package:
 
-    {{< copyable "shell-regular" >}
+    {{< copyable "shell-regular" >}} 
 
     ```bash
     tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
