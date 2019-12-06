@@ -192,8 +192,6 @@ SHOW STATS_META [ShowLikeOrWhere];
 SHOW STATS_HEALTHY [ShowLikeOrWhere];
 ```
 
-该语句会输出所有表的健康度信息，可以通过 ShowLikeOrWhere 来筛选需要的信息。
-
 目前，`SHOW STATS_HEALTHY` 会输出以下 4 项内容：
 
 | 语法元素 | 说明            |

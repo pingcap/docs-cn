@@ -100,9 +100,9 @@ SHOW STATS_META [ShowLikeOrWhere]
 
 ### 表的健康度信息
 
-通过 `SHOW STATS_HEALTHY` 可以查看表的统计信息健康度信息，并粗略估计表上统计信息的准确度。当 `modify_count` >= `row_count` 时，健康度为 0，当 `modify_count` < `row_count` 时，健康度为 (1 - `modify_count`/`row_count`) * 100.
+通过 `SHOW STATS_HEALTHY` 可以查看表的统计信息健康度，并粗略估计表上统计信息的准确度。当 `modify_count` >= `row_count` 时，健康度为 0，当 `modify_count` < `row_count` 时，健康度为 (1 - `modify_count`/`row_count`) * 100。
 
-语法如下：
+通过以下命令来查看表的统计信息健康度，你可以通过 `ShowLikeOrWhere` 来筛选需要的信息：
 
 {{< copyable "sql" >}}
 
@@ -110,12 +110,10 @@ SHOW STATS_META [ShowLikeOrWhere]
 SHOW STATS_HEALTHY [ShowLikeOrWhere];
 ```
 
-该语句会输出所有表的健康度信息，可以通过 ShowLikeOrWhere 来筛选需要的信息。
-
-目前 `SHOW STATS_HEALTHY` 会输出 3 列，具体如下：
+目前，`SHOW STATS_HEALTHY` 会输出以下 3 项内容：
 
 | 语法元素 | 说明            |
-| -------- | ------------- |
+| :-------- | :------------- |
 | db_name  |  数据库名    |
 | table_name | 表名 |
 | healthy | 健康度 |
