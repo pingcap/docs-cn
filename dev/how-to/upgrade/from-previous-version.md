@@ -185,9 +185,7 @@ ansible-playbook local_prepare.yml
 
 ## 滚动升级 TiDB 集群组件
 
-为优化 TiDB 集群组件的运维管理，从 TiDB 3.0.0 版本开始对 `systemd` 模式下的 `PD service` 名称进行了调整。
-
-1. 如果 `process_supervision` 变量使用默认的 `systemd` 参数：
+- 如果 `process_supervision` 变量使用默认的 `systemd` 参数：
 
     - 当前集群版本 < 3.0，则通过 `excessive_rolling_update.yml` 滚动升级 TiDB 集群。
 
@@ -205,7 +203,7 @@ ansible-playbook local_prepare.yml
         ansible-playbook rolling_update.yml
         ```
 
-2. 如果 `process_supervision` 变量使用的是 `supervise` 参数，无论当前集群为哪个版本，均通过 `rolling_update.yml` 来滚动升级 TiDB 集群。
+- 如果 `process_supervision` 变量使用的是 `supervise` 参数，无论当前集群为哪个版本，均通过 `rolling_update.yml` 来滚动升级 TiDB 集群。
 
     {{< copyable "shell-regular" >}}
 
