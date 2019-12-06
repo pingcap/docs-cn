@@ -82,7 +82,9 @@
     - [Migrate from CSV](/v3.1/reference/tools/tidb-lightning/csv.md)
   + Maintain
     - [Common Ansible Operations](/v3.1/how-to/deploy/orchestrated/ansible-operations.md)
-    - [Backup and Restore](/v3.1/how-to/maintain/backup-and-restore.md)
+    + Backup and Restore
+      - [Use `mydumper` and `loader`](/v3.1/how-to/maintain/backup-and-restore/mydumper-loader.md)
+      - [Use BR](/v3.1/how-to/maintain/backup-and-restore/br.md)
     - [Identify Slow Queries](/v3.1/how-to/maintain/identify-slow-queries.md)
   + Scale
     - [Scale using Ansible](/v3.1/how-to/scale/with-ansible.md)
