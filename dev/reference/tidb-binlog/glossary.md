@@ -14,7 +14,7 @@ category: glossary
 
 ## Binlog event
 
-TiDB 写的 DML Binlog 有 3 种 event, 分别是 Insert, Update, Delete, Drainer 监控面板 可以看到对应同步数据不同 event 的个数。
+TiDB 写的 DML Binlog 有 3 种 event, 分别是 Insert、Update 和 Delete, Drainer 监控面板可以看到对应同步数据不同 event 的个数。
 
 ## Checkpoint
 
