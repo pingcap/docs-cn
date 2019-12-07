@@ -259,7 +259,7 @@ You can use Docker Compose to build a TiDB cluster locally, including the cluste
 
 #### How to add the `label` configuration if `label` of TiKV was not configured when I deployed the TiDB cluster for the first time?
 
-The configuration of TiDB `label` is related to the cluster deployment architecture. It is important and is the basis for PD to execute global management and scheduling. If you did not configure `label` when deploying the cluster previously, you should adjust the deployment structure by manually adding the `location-labels` information using the PD management tool `pd-ctl`, for example, `config set location-labels "zone, rack, host"` (you should configure it based on the practical `label` level name). 
+The configuration of TiDB `label` is related to the cluster deployment architecture. It is important and is the basis for PD to execute global management and scheduling. If you did not configure `label` when deploying the cluster previously, you should adjust the deployment structure by manually adding the `location-labels` information using the PD management tool `pd-ctl`, for example, `config set location-labels "zone,rack,host"` (you should configure it based on the practical `label` level name). 
 
 For the usage of `pd-ctl`, see [PD Control Instruction](tools/pd-control.md).
 
