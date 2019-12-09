@@ -110,7 +110,7 @@ SHOW STATS_META [ShowLikeOrWhere]
 SHOW STATS_HEALTHY [ShowLikeOrWhere];
 ```
 
-目前，`SHOW STATS_HEALTHY` 会输出以下 3 项内容：
+目前，`SHOW STATS_HEALTHY` 会输出 3 列，具体如下：
 
 | 语法元素 | 说明            |
 | :-------- | :------------- |
