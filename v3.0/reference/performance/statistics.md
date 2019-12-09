@@ -183,7 +183,7 @@ SHOW STATS_META [ShowLikeOrWhere];
 
 ### 表的健康度信息
 
-通过 `SHOW STATS_HEALTHY` 可以查看表的统计信息健康度，并粗略估计表上统计信息的准确度。当 `modify_count` >= `row_count` 时，健康度为 0，当 `modify_count` < `row_count` 时，健康度为 (1 - `modify_count`/`row_count`) * 100。
+通过 `SHOW STATS_HEALTHY` 可以查看表的统计信息健康度，并粗略估计表上统计信息的准确度。当 `modify_count` >= `row_count` 时，健康度为 0；当 `modify_count` < `row_count` 时，健康度为 (1 - `modify_count`/`row_count`) * 100。
 
 通过以下命令来查看表的统计信息健康度，你可以通过 `ShowLikeOrWhere` 来筛选需要的信息：
 
