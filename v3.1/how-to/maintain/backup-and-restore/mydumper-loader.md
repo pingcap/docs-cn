@@ -27,7 +27,7 @@ Use the following tools for data backup and restoration:
     {{< copyable "shell-regular" >}}
 
     ```bash
-    wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
+    wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz && \
     wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
     ```
 
@@ -41,16 +41,16 @@ Use the following tools for data backup and restoration:
 
 3. Extract the package:
 
-    {{< copyable "shell-regular" >}} 
+    {{< copyable "shell-regular" >}}
 
     ```bash
-    tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz
+    tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz && \
     cd tidb-enterprise-tools-latest-linux-amd64
     ```
 
 ## Full backup and restoration using `mydumper`/`loader`
 
-Use [`mydumper`](/v3.1/reference/tools/mydumper.md) to export data from TiDB and [`loader`](/v3.1/reference/tools/loader.md) to import the data into TiDB.
+Use [`mydumper`](/v3.1/reference/tools/mydumper.md) to export data from TiDB and [`loader`](/v3.1/reference/tools/loader.md) to import data into TiDB.
 
 > **Note:**
 >
@@ -63,23 +63,6 @@ To quickly backup and restore data (especially large amounts of data), refer to 
 - Keep the exported data file as small as possible and it is recommended to keep it smaller than 64M. Use the `-F` parameter to set the value.
 - Adjust the `-t` parameter of `loader` based on the number and the load of TiKV instances. For example, if there are three TiKV instances, `-t` can be set to around `3 * (1 ~ n)`. If the load of TiKV is too high and the `backoffer.maxSleep 15000ms is exceeded` log is displayed many times, decrease the value of `-t`; otherwise, increase the value.
 
-#### An example of restoring data and related configurations
-
-- The total size of the exported files is 214G. A single table has 8 columns and 2 billion rows.
-- The cluster topology:
-    - 12 TiKV instances: 4 nodes, 3 TiKV instances per node
-    - 4 TiDB instances
-    - 3 PD instances
-- The configuration of each node:
-    - CPU: Intel Xeon E5-2670 v3 @ 2.30GHz
-    - 48 vCPU [2 x 12 physical cores]
-    - Memory: 128G
-    - Disk: sda [raid 10, 300G] sdb[RAID 5, 2T]
-    - Operating System: CentOS 7.3
-- The `-F` parameter of `mydumper` is set to `16` and the `-t` parameter of `loader` is set to `64`.
-
-Results: It takes 11 hours to import all the data, which is 19.4G/hour.
-
 ### Backup data from TiDB
 
 Use `mydumper` to backup data from TiDB.
@@ -87,14 +70,14 @@ Use `mydumper` to backup data from TiDB.
 {{< copyable "shell-regular" >}}
 
 ```bash
-./bin/mydumper -h 127.0.0.1 -P 4000 -u root -t 16 -F 64 -B test -T t1,t2 --skip-tz-utc -o ./var/test
+./bin/mydumper -h 127.0.0.1 -P 4000 -u root -t 32 -F 64 -B test -T t1,t2 --skip-tz-utc -o ./var/test
 ```
 
 In this command,
 
 - `-B test` means that the data is exported from the `test` database.
 - `-T t1,t2` means that only the `t1` and `t2` tables are exported.
-- `-t 16` means that 16 threads are used to export the data.
+- `-t 32` means that 32 threads are used to export the data.
 - `-F 64` means that a table is partitioned into chunks and one chunk is 64MB.
 - `--skip-tz-utc` means to ignore the inconsistency of time zone setting between MySQL and the data exporting machine and to disable automatic conversion.
 
@@ -140,18 +123,34 @@ To restore data into TiDB, use `loader` to import the previously exported data. 
 
 After the data is imported, you can view the data in TiDB using the MySQL client:
 
-```sql
-mysql -h127.0.0.1 -P4000 -uroot
+{{< copyable "shell-regular" >}}
 
-mysql> show tables;
+```bash
+mysql -h127.0.0.1 -P4000 -uroot
+```
+
+{{< copyable "sql" >}}
+
+```sql
+show tables;
+```
+
+```
 +----------------+
 | Tables_in_test |
 +----------------+
 | t1             |
 | t2             |
 +----------------+
+```
 
-mysql> select * from t1;
+{{< copyable "sql" >}}
+
+```sql
+select * from t1;
+```
+
+```
 +----+------+
 | id | age  |
 +----+------+
@@ -159,8 +158,15 @@ mysql> select * from t1;
 |  2 |    2 |
 |  3 |    3 |
 +----+------+
+```
 
-mysql> select * from t2;
+{{< copyable "sql" >}}
+
+```sql
+select * from t2;
+```
+
+```
 +----+------+
 | id | name |
 +----+------+
