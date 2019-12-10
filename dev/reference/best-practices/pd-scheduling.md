@@ -74,7 +74,7 @@ Region 负载均衡调度主要依赖 `balance-leader` 和 `balance-region` 两�
 - 当空间不足时由使用剩余空间计算得分（使不同节点剩余空间基本均衡）
 - 处于中间态时则同时考虑两个因素做加权和当作得分
 
-此外，为了应对不同节点可能在性能等方面存在差异的问题，还可为 Store 设置负载均衡的权重。`leader-weight` 和 `region-weight` 分别用于控制 Leader 权重以及 Region 权重（默认值都为 “1”）。假如把某个 Store 的 `leader-weight` 设为 “2”，调度稳定后，则该节点的 leader 数量约为普通节点的 2 倍；假如把某个 Store 的 `region-weight` 设为 “0.5”，那么调度稳定后该节点的 Region 数量约为其他节点的一半。
+此外，为了应对不同节点可能在性能等方面存在差异的问题，还可为 Store 设置负载均衡的权重。`leader-weight` 和 `region-weight` 分别用于控制 Leader 权重以及 Region 权重（默认值都为 “1”）。假如把某个 Store 的 `leader-weight` 设为 “2”，调度稳定后，则该节点的 Leader 数量约为普通节点的 2 倍；假如把某个 Store 的 `region-weight` 设为 “0.5”，那么调度稳定后该节点的 Region 数量约为其他节点的一半。
 
 ### 热点调度
 
@@ -109,7 +109,7 @@ Region merge 指的是为了避免删除数据后大量小甚至空的 Region �
 
 ### Operator 状态
 
-**Grafana PD/Operator** 页面展示了 Operator 的相关数据。其中比较重要的有：
+**Grafana PD/Operator** 页面展示了 Operator 的相关统计信息。其中比较重要的有：
 
 - Schedule Operator Create：Operator 的创建情况
 - Operator finish duration：Operator 执行耗时的情况
@@ -122,7 +122,7 @@ Region merge 指的是为了避免删除数据后大量小甚至空的 Region �
 
 ### Balance 状态
 
-**Grafana PD/Statistics - Balance** 页面展示了负载均衡的相关数据，其中比较重要的有：
+**Grafana PD/Statistics - Balance** 页面展示了负载均衡的相关统计信息，其中比较重要的有：
 
 - Store Leader/Region score：每个 Store 的得分
 - Store Leader/Region count：每个 Store 的 Leader/Region 数量
@@ -132,7 +132,7 @@ Region merge 指的是为了避免删除数据后大量小甚至空的 Region �
 
 ### 热点调度状态
 
-**Grafana PD/Statistics - hotspot** 页面展示了热点 Region 的相关数据，其中比较重要的有：
+**Grafana PD/Statistics - hotspot** 页面展示了热点 Region 的相关统计信息，其中比较重要的有：
 
 - Hot write Region’s leader/peer distribution：写热点 Region 的 Leader/Peer 分布情况
 - Hot read Region’s leader distribution：读热点 Region 的 Leader 分布情况
@@ -147,7 +147,7 @@ Region merge 指的是为了避免删除数据后大量小甚至空的 Region �
 
 ### Region 健康度
 
-**Grafana PD/Cluster/Region health** 面板展示了异常 Region 的相关数据，其中包括 Pending Peer、Down Peer、Offline Peer，以及副本数过多或过少的 Region。
+**Grafana PD/Cluster/Region health** 面板展示了异常 Region 的相关统计信息，包括 Pending Peer、Down Peer、Offline Peer，以及副本数过多或过少的 Region。
 
 通过 pd-ctl 的 `region check` 命令可以查看具体异常的 Region 列表：
 
