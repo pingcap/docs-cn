@@ -27,13 +27,13 @@ Before deployment, make sure the following requirements are satisfied:
 
 - [Docker](https://docs.docker.com/install/): version >= 17.03
 
-- [Helm Client](https://helm.sh/docs/using_helm/#installing-the-helm-client): version >= 2.9.0 and < 3.0.0
+- [Helm Client](https://helm.sh/docs/intro/install/): version >= 2.9.0 and < 3.0.0
 
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl): version >= 1.10 (1.13 or later recommended)
 
     > **Note:**
     >
-    > The output might vary slightly among different versions of `kubectl`.
+    > The output might vary slightly among different versions of kubectl.
 
 - [kind](https://kind.sigs.k8s.io/docs/user/quick-start/): version >= 0.4.0
 - The value of [net.ipv4.ip_forward](https://linuxconfig.org/how-to-turn-on-off-ip-forwarding-in-linux) should be set to `1`
@@ -110,7 +110,9 @@ First, make sure that Docker is running. Then, you can create a local Kubernetes
 
 ## Step 2: Deploy TiDB Operator in the Kubernetes cluster
 
-Refer to the steps in [Deploy TiDB Operator](/v3.0/tidb-in-kubernetes/deploy/tidb-operator.md#install-tidb-operator).
+1. Install Helm and add the official PingCAP chart repository to it. Refer to the steps in [Use Helm](/v3.0/tidb-in-kubernetes/reference/tools/in-kubernetes.md#use-helm).
+
+2. Deploy TiDB Operator. Refer to the steps in [Deploy TiDB Operator](/v3.0/tidb-in-kubernetes/deploy/tidb-operator.md#install-tidb-operator)
 
 ## Step 3: Deploy a TiDB cluster in the Kubernetes cluster
 
@@ -118,7 +120,64 @@ Refer to the steps in [Deploy TiDB on General Kubernetes](/v3.0/tidb-in-kubernet
 
 ## Access the database and monitoring dashboards
 
-Refer to the steps in [View the monitoring dashboard](/v3.0/tidb-in-kubernetes/monitor/tidb-in-kubernetes.md#view-the-monitoring-dashboard).
+To access the TiDB cluster, use the `kubectl port-forward` command to expose services to the host. The ports in the command are in `<host machine port>:<k8s service port>` format.
+
+- Access TiDB using the MySQL client
+
+    Before you start testing your TiDB cluster, make sure you have installed a MySQL client.
+
+    1. Use kubectl to forward the host machine port to the TiDB service port:
+
+        {{< copyable "shell-regular" >}}
+
+        ``` shell
+        kubectl port-forward svc/<release-name>-tidb 4000:4000 --namespace=<namespace>
+        ```
+
+        If results like `Forwarding from 0.0.0.0:4000 -> 4000` is returned, it means the proxy is set up.
+
+    2. To access TiDB using the MySQL client, open a **new** terminal tab or window and run the following command:
+
+        {{< copyable "shell-regular" >}}
+
+        ``` shell
+        mysql -h 127.0.0.1 -P 4000 -u root
+        ```
+
+        When the testing finishes, press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop the proxy and exit.
+
+- View the monitoring dashboard
+
+    1. Use kubectl to forward the host machine port to the Grafana service port:
+
+        {{< copyable "shell-regular" >}}
+
+        ``` shell
+        kubectl port-forward svc/<release-name>-grafana 3000:3000 --namespace=<namespace>
+        ```
+
+        If results like `Forwarding from 0.0.0.0:4000 -> 4000` is returned, it means the proxy is set up.
+
+    2. Open your web browser at <http://localhost:3000> to access the Grafana monitoring dashboard.
+
+        - default username: admin
+        - default password: admin
+
+        When the testing finishes, press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop the proxy and exit.
+
+    > **Note:**
+    >
+    > If you are deploying kind on a remote machine rather than a local PC, there might be problems accessing the monitoring dashboard of the remote system through "localhost".
+    >
+    > When you use kubectl 1.13 or later versions, you can expose the port on `0.0.0.0` instead of the default `127.0.0.1` by adding `--address 0.0.0.0` to the `kubectl port-forward` command.
+    >
+    > {{< copyable "shell-regular" >}}
+    >
+    > ```
+    > kubectl port-forward --address 0.0.0.0 -n tidb svc/<release-name>-grafana 3000:3000
+    > ```
+    >
+    > Then, open your browser at `http://<VM's IP address>:3000` to access the Grafana monitoring dashboard.
 
 ## Destroy the TiDB and Kubernetes cluster
 
