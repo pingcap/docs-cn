@@ -84,7 +84,7 @@ sysbench $testname \
     run --tables=1 --table-size=2000000
 ```
 
-## Test plan 1: frequently perform write operations to the target column of the `ADD INDEX` statement
+## Test plan 1: Frequently perform write operations to the target column of the `ADD INDEX` statement
 
 1. Start the `oltp_read_write` test.
 2. Perform at the same time with step 1: use `alter table sbtest1 add index c_idx(c)` to add an index.
@@ -219,7 +219,7 @@ When you perform frequent write operations (this test involves `UPDATE`, `INSERT
 - As the value of `tidb_ddl_reorg_worker_cnt` and `tidb_ddl_reorg_batch_size` parameters increase, the value of `TiKV_prewrite_latch_wait_duration` increases significantly, slowing down the write speed.
 - When the value of `tidb_ddl_reorg_worker_cnt` and `tidb_ddl_reorg_batch_size` are very large, you can execute the `admin show ddl` command to see multiple retry attempts of the DDL job, such as `Write conflict, txnStartTS 410327455965380624 is stale [try again later], ErrCount:38, SnapshotVersion: 410327228136030220`. In this situation, the `ADD INDEX` operation takes a very long time to complete.
 
-## Test plan 2: do not perform write operations to the target column of the `ADD INDEX` statement (query-only)
+## Test plan 2: Do not perform write operations to the target column of the `ADD INDEX` statement (query-only)
 
 1. Start the `oltp_read_only` test.
 2. Perform at the same time with step 1: use `alter table sbtest1 add index c_idx(c)` to add an index.
@@ -281,7 +281,7 @@ When you perform frequent write operations (this test involves `UPDATE`, `INSERT
 
 When you only perform query operations to the target column of the `ADD INDEX` statement, the effect of `ADD INDEX` operations on online workloads is not obvious.
 
-## Test plan 3: the target column of the `ADD INDEX` statement is irrelevant to online workloads
+## Test plan 3: The target column of the `ADD INDEX` statement is irrelevant to online workloads
 
 1. Start the `oltp_read_write` test.
 2. Perform at the same time with step 1: use `alter table test add index pad_idx(pad)` to add an index.
