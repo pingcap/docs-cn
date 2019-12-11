@@ -59,15 +59,19 @@ Log in to the Control Machine using the `root` user account, and run the corresp
 
 - If you use a Control Machine installed with CentOS 7, run the following command:
 
-    ```
-    # yum -y install epel-release git curl sshpass
-    # yum -y install python-pip
+    {{< copyable "shell-root" >}}
+
+    ```shell
+    yum -y install epel-release git curl sshpass && \
+    yum -y install python2-pip
     ```
 
 - If you use a Control Machine installed with Ubuntu, run the following command:
 
-    ```
-    # apt-get -y install git curl sshpass python-pip
+    {{< copyable "shell-root" >}}
+
+    ```shell
+    apt-get -y install git curl sshpass python-pip
     ```
 
 ## Step 2: Create the `tidb` user on the Control Machine and generate the SSH key
@@ -76,20 +80,29 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
 
 1. Create the `tidb` user.
 
-    ```
-    # useradd -m -d /home/tidb tidb
+    {{< copyable "shell-root" >}}
+
+    ```shell
+    useradd -m -d /home/tidb tidb
     ```
 
 2. Set a password for the `tidb` user account.
 
-    ```
-    # passwd tidb
+    {{< copyable "shell-root" >}}
+
+    ```shell
+    passwd tidb
     ```
 
 3. Configure sudo without password for the `tidb` user account by adding `tidb ALL=(ALL) NOPASSWD: ALL` to the end of the sudo file:
 
+    {{< copyable "shell-root" >}}
+
+    ```shell
+    visudo
     ```
-    # visudo
+
+    ```
     tidb ALL=(ALL) NOPASSWD: ALL
     ```
 
@@ -97,14 +110,21 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
 
     Execute the `su` command to switch the user from `root` to `tidb`.
 
-    ```
-    # su - tidb
+    {{< copyable "shell-root" >}}
+
+    ```shell
+    su - tidb
     ```
 
     Create the SSH key for the `tidb` user account and hit the Enter key when `Enter passphrase` is prompted. After successful execution, the SSH private key file is `/home/tidb/.ssh/id_rsa`, and the SSH public key file is `/home/tidb/.ssh/id_rsa.pub`.
 
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    ssh-keygen -t rsa
     ```
-    $ ssh-keygen -t rsa
+
+    ```
     Generating public/private rsa key pair.
     Enter file in which to save the key (/home/tidb/.ssh/id_rsa):
     Created directory '/home/tidb/.ssh'.
@@ -132,8 +152,10 @@ Make sure you have logged in to the Control Machine using the `root` user accoun
 
 Log in to the Control Machine using the `tidb` user account and enter the `/home/tidb` directory. Run the following command to download TiDB Ansible from the master branch of the [TiDB Ansible project](https://github.com/pingcap/tidb-ansible). The default folder name is `tidb-ansible`.
 
-```
-$ git clone https://github.com/pingcap/tidb-ansible.git
+{{< copyable "shell-regular" >}}
+
+```shell
+git clone https://github.com/pingcap/tidb-ansible.git
 ```
 
 > **Note:**
@@ -151,17 +173,24 @@ It is required to use `pip` to install Ansible and its dependencies, otherwise a
 
 1. Install Ansible and the dependencies on the Control Machine:
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ cd /home/tidb/tidb-ansible
-    $ sudo pip install -r ./requirements.txt
+    cd /home/tidb/tidb-ansible && \
+    sudo pip install -r ./requirements.txt
     ```
 
     Ansible and the related dependencies are in the `tidb-ansible/requirements.txt` file.
 
 2. View the version of Ansible:
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ ansible --version
+    ansible --version
+    ```
+
+    ```
     ansible 2.5.0
     ```
 
@@ -171,9 +200,14 @@ Make sure you have logged in to the Control Machine using the `tidb` user accoun
 
 1. Add the IPs of your target machines to the `[servers]` section of the `hosts.ini` file.
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ cd /home/tidb/tidb-ansible
-    $ vi hosts.ini
+    cd /home/tidb/tidb-ansible && \
+    vi hosts.ini
+    ```
+
+    ```
     [servers]
     172.16.10.1
     172.16.10.2
@@ -189,13 +223,15 @@ Make sure you have logged in to the Control Machine using the `tidb` user accoun
 
 2. Run the following command and input the `root` user account password of your target machines.
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ ansible-playbook -i hosts.ini create_users.yml -u root -k
+    ansible-playbook -i hosts.ini create_users.yml -u root -k
     ```
 
     This step creates the `tidb` user account on the target machines, configures the sudo rules and the SSH mutual trust between the Control Machine and the target machines.
 
-> To configure the SSH mutual trust and sudo without password manually, see [How to manually configure the SSH mutual trust and sudo without password](#how-to-manually-configure-the-ssh-mutual-trust-and-sudo-without-password)
+To configure the SSH mutual trust and sudo without password manually, see [How to manually configure the SSH mutual trust and sudo without password](#how-to-manually-configure-the-ssh-mutual-trust-and-sudo-without-password).
 
 ## Step 6: Install the NTP service on the target machines
 
@@ -205,9 +241,11 @@ Make sure you have logged in to the Control Machine using the `tidb` user accoun
 
 Make sure you have logged in to the Control Machine using the `tidb` user account, run the following command:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-$ cd /home/tidb/tidb-ansible
-$ ansible-playbook -i hosts.ini deploy_ntp.yml -u tidb -b
+cd /home/tidb/tidb-ansible && \
+ansible-playbook -i hosts.ini deploy_ntp.yml -u tidb -b
 ```
 
 The NTP service is installed and started using the software repository that comes with the system on the target machines. The default NTP server list in the installation package is used. The related `server` parameter is in the `/etc/ntp.conf` configuration file.
@@ -224,8 +262,13 @@ Set the CPUfreq governor mode to `performance` to make full use of CPU performan
 
 You can run the `cpupower frequency-info --governors` command to check the governor modes which the system supports:
 
+{{< copyable "shell-root" >}}
+
+```bash
+cpupower frequency-info --governors
 ```
-# cpupower frequency-info --governors
+
+```
 analyzing CPU 0:
   available cpufreq governors: performance powersave
 ```
@@ -236,8 +279,13 @@ Taking the above code for example, the system supports the `performance` and `po
 >
 > As the following shows, if it returns "Not Available", it means that the current system does not support CPUfreq configuration and you can skip this step.
 
+{{< copyable "shell-root" >}}
+
+```bash
+cpupower frequency-info --governors
 ```
-# cpupower frequency-info --governors
+
+```
 analyzing CPU 0:
    available cpufreq governors: Not Available
 ```
@@ -246,8 +294,13 @@ analyzing CPU 0:
 
 You can run the `cpupower frequency-info --policy` command to check the current CPUfreq governor mode:
 
+{{< copyable "shell-root" >}}
+
+```bash
+cpupower frequency-info --policy
 ```
-# cpupower frequency-info --policy
+
+```
 analyzing CPU 0:
   current policy: frequency should be within 1.20 GHz and 3.20 GHz.
                   The governor "powersave" may decide which speed to use
@@ -258,16 +311,22 @@ As the above code shows, the current mode is `powersave` in this example.
 
 ### Change the governor mode
 
-- You can run the following command to change the current mode to `performance`:
+You can use either of the following two methods to change the governor mode:
 
-    ```
-    # cpupower frequency-set --governor performance
+- Use the `cpupower frequency-set --governor` command to change the current mode. The current governor mode is `powersave` in the above example and the following command changes it to `performance`:
+
+    {{< copyable "shell-root" >}}
+
+    ```shell
+    cpupower frequency-set --governor performance
     ```
 
-- You can also run the following command to set the mode on the target machine in batches:
+- Run the following command to set the mode on the target machine in batches:
 
-    ```
-    $ ansible -i hosts.ini all -m shell -a "cpupower frequency-set --governor performance" -u tidb -b
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    ansible -i hosts.ini all -m shell -a "cpupower frequency-set --governor performance" -u tidb -b
     ```
 
 ## Step 8: Mount the data disk ext4 filesystem with options on the target machines
@@ -284,15 +343,22 @@ Take the `/dev/nvme0n1` data disk as an example:
 
 1. View the data disk.
 
+    {{< copyable "shell-root" >}}
+
+    ```shell
+    fdisk -l
     ```
-    # fdisk -l
+
+    ```
     Disk /dev/nvme0n1: 1000 GB
     ```
 
 2. Create the partition table.
 
-    ```
-    # parted -s -a optimal /dev/nvme0n1 mklabel gpt -- mkpart primary ext4 1 -1
+    {{< copyable "shell-root" >}}
+
+    ```shell
+    parted -s -a optimal /dev/nvme0n1 mklabel gpt -- mkpart primary ext4 1 -1
     ```
 
     > **Note:**
@@ -301,16 +367,23 @@ Take the `/dev/nvme0n1` data disk as an example:
 
 3. Format the data disk to the ext4 filesystem.
 
-    ```
-    # mkfs.ext4 /dev/nvme0n1p1
+    {{< copyable "shell-root" >}}
+
+    ```shell
+    mkfs.ext4 /dev/nvme0n1p1
     ```
 
 4. View the partition UUID of the data disk.
 
     In this example, the UUID of `nvme0n1p1` is `c51eb23b-195c-4061-92a9-3fad812cc12f`.
 
+    {{< copyable "shell-root" >}}
+
+    ```shell
+    lsblk -f
     ```
-    # lsblk -f
+
+    ```
     NAME    FSTYPE LABEL UUID                                 MOUNTPOINT
     sda
     ├─sda1  ext4         237b634b-a565-477b-8371-6dff0c41f5ab /boot
@@ -323,22 +396,34 @@ Take the `/dev/nvme0n1` data disk as an example:
 
 5. Edit the `/etc/fstab` file and add the mount options.
 
+    {{< copyable "shell-root" >}}
+
+    ```shell
+    vi /etc/fstab
     ```
-    # vi /etc/fstab
+
+    ```
     UUID=c51eb23b-195c-4061-92a9-3fad812cc12f /data1 ext4 defaults,nodelalloc,noatime 0 2
     ```
 
 6. Mount the data disk.
 
-    ```
-    # mkdir /data1
-    # mount -a
+    {{< copyable "shell-root" >}}
+
+    ```shell
+    mkdir /data1 && \
+    mount -a
     ```
 
 7. Check using the following command.
 
+    {{< copyable "shell-root" >}}
+
+    ```shell
+    mount -t ext4
     ```
-    # mount -t ext4
+
+    ```
     /dev/nvme0n1p1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
     ```
 
@@ -470,7 +555,7 @@ location_labels = ["host"]
 
 1. For the cluster topology of multiple TiKV instances on each TiKV node, you need to edit the `capacity` parameter under `block-cache-size` in `tidb-ansible/conf/tikv.yml`:
 
-    ```
+    ```yaml
     storage:
       block-cache:
         capacity: "1GB"
@@ -483,7 +568,7 @@ location_labels = ["host"]
 
 2. For the cluster topology of multiple TiKV instances on each TiKV node, you need to edit the `high-concurrency`, `normal-concurrency` and `low-concurrency` parameters in the `tidb-ansible/conf/tikv.yml` file:
 
-    ```
+    ```yaml
     readpool:
     coprocessor:
         # Notice: if CPU_NUM > 8, default thread pool size for coprocessors
@@ -499,7 +584,7 @@ location_labels = ["host"]
 
 3. If multiple TiKV instances are deployed on a same physical disk, edit the `capacity` parameter in `conf/tikv.yml`:
 
-    ```
+    ```yaml
     raftstore:
       capacity: 0
     ```
@@ -518,7 +603,7 @@ Edit the `deploy_dir` variable to configure the deployment directory.
 
 The global variable is set to `/home/tidb/deploy` by default, and it applies to all services. If the data disk is mounted on the `/data1` directory, you can set it to `/data1/deploy`. For example:
 
-```bash
+```ini
 ## Global variables
 [all:vars]
 deploy_dir = /data1/deploy
@@ -528,7 +613,7 @@ deploy_dir = /data1/deploy
 >
 > To separately set the deployment directory for a service, you can configure the host variable while configuring the service host list in the `inventory.ini` file. It is required to add the first column alias, to avoid confusion in scenarios of mixed services deployment.
 
-```bash
+```ini
 TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 ```
 
@@ -565,7 +650,7 @@ The following example uses `tidb` as the user who runs the service.
 
 1. Edit the `tidb-ansible/inventory.ini` file to make sure `ansible_user = tidb`.
 
-    ```
+    ```ini
     ## Connection
     # ssh via normal user
     ansible_user = tidb
@@ -577,31 +662,41 @@ The following example uses `tidb` as the user who runs the service.
 
     Run the following command and if all servers return `tidb`, then the SSH mutual trust is successfully configured:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```shell
     ansible -i inventory.ini all -m shell -a 'whoami'
     ```
 
     Run the following command and if all servers return `root`, then sudo without password of the `tidb` user is successfully configured:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```shell
     ansible -i inventory.ini all -m shell -a 'whoami' -b
     ```
 
 2. Run the `local_prepare.yml` playbook and download TiDB binary to the Control Machine.
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```shell
     ansible-playbook local_prepare.yml
     ```
 
 3. Initialize the system environment and modify the kernel parameters.
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```shell
     ansible-playbook bootstrap.yml
     ```
 
 4. Deploy the TiDB cluster software.
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```shell
     ansible-playbook deploy.yml
     ```
 
@@ -609,13 +704,17 @@ The following example uses `tidb` as the user who runs the service.
     >
     > You can use the `Report` button on the Grafana Dashboard to generate the PDF file. This function depends on the `fontconfig` package and English fonts. To use this function, log in to the `grafana_servers` machine and install it using the following command:
     >
-    > ```
-    > $ sudo yum install fontconfig open-sans-fonts
+    > {{< copyable "shell-regular" >}}
+    >
+    > ```bash
+    > sudo yum install fontconfig open-sans-fonts
     > ```
 
 5. Start the TiDB cluster.
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook start.yml
     ```
 
@@ -625,25 +724,20 @@ Because TiDB is compatible with MySQL, you must use the MySQL client to connect 
 
 1. Connect to the TiDB cluster using the MySQL client.
 
-    {{< copyable "sql" >}}
+    {{< copyable "shell-regular" >}}
 
-    ```sql
+    ```shell
     mysql -u root -h 172.16.10.1 -P 4000
     ```
 
     > **Note:**
     >
-    > The default port of TiDB service is 4000.
+    > The default port of TiDB service is `4000`.
 
 2. Access the monitoring platform using a web browser.
 
-    ```
-    http://172.16.10.1:3000
-    ```
-
-    > **Note:**
-    >
-    > The default account and password: `admin`/`admin`.
+    - Address: <http://172.16.10.1:3000>
+    - Default account and password: `admin`; `admin`
 
 ## Deployment FAQs
 
@@ -765,8 +859,8 @@ Edit the `inventory.ini` file and add the following host variable after the IP o
     {{< copyable "shell-regular" >}}
 
     ```shell
-    sudo yum install ntp ntpdate
-    sudo systemctl start ntpd.service
+    sudo yum install ntp ntpdate && \
+    sudo systemctl start ntpd.service && \
     sudo systemctl enable ntpd.service
     ```
 
@@ -774,100 +868,121 @@ Edit the `inventory.ini` file and add the following host variable after the IP o
 
 Run the following command:
 
+{{< copyable "shell-root" >}}
+
 ```shell
-# process supervision, [systemd, supervise]
+process supervision, [systemd, supervise]
+```
+
+```
 process_supervision = systemd
 ```
 
 For versions earlier than TiDB 1.0.4, the TiDB Ansible supervision method of a process is `supervise` by default. The previously installed cluster can remain the same. If you need to change the supervision method to `systemd`, stop the cluster and run the following command:
 
+{{< copyable "shell-regular" >}}
+
 ```shell
-ansible-playbook stop.yml
-ansible-playbook deploy.yml -D
+ansible-playbook stop.yml && \
+ansible-playbook deploy.yml -D && \
 ansible-playbook start.yml
 ```
 
 ### How to manually configure the SSH mutual trust and sudo without password?
 
-Log in to the deployment target machine using the `root` user account, create the `tidb` user and set the login password.
+1. Log in to the deployment target machine respectively using the `root` user account, create the `tidb` user and set the login password.
 
-{{< copyable "shell-root" >}}
+    {{< copyable "shell-root" >}}
 
-```shell
-useradd tidb
-```
+    ```shell
+    useradd tidb && \
+    passwd tidb
+    ```
 
-{{< copyable "shell-root" >}}
+2. To configure sudo without password, run the following command, and add `tidb ALL=(ALL) NOPASSWD: ALL` to the end of the file:
 
-```shell
-passwd tidb
-```
+    {{< copyable "shell-root" >}}
 
-To configure sudo without password, run the following command, and add `tidb ALL=(ALL) NOPASSWD: ALL` to the end of the file:
+    ```shell
+    visudo
+    ```
 
-{{< copyable "shell-root" >}}
+    ```
+    tidb ALL=(ALL) NOPASSWD: ALL
+    ```
 
-```shell
-visudo
-```
+3. Use the `tidb` user to log in to the Control Machine, and run the following command. Replace `172.16.10.61` with the IP of your deployment target machine, and enter the `tidb` user password of the deployment target machine as prompted. Successful execution indicates that SSH mutual trust is already created. This applies to other machines as well.
 
-```
-tidb ALL=(ALL) NOPASSWD: ALL
-```
+    {{< copyable "shell-regular" >}}
 
-Use the `tidb` user to log in to the Control Machine, and run the following command. Replace `172.16.10.61` with the IP of your deployment target machine, and enter the `tidb` user password of the deployment target machine as prompted. Successful execution indicates that SSH mutual trust is already created. This applies to other machines as well.
+    ```shell
+    ssh-copy-id -i ~/.ssh/id_rsa.pub 172.16.10.61
+    ```
 
-```shell
-ssh-copy-id -i ~/.ssh/id_rsa.pub 172.16.10.61
-```
+4. Log in to the Control Machine using the `tidb` user account, and log in to the IP of the target machine using SSH. If you do not need to enter the password and can successfully log in, then the SSH mutual trust is successfully configured.
 
-Log in to the Control Machine using the `tidb` user account, and log in to the IP of the target machine using SSH. If you do not need to enter the password and can successfully log in, then the SSH mutual trust is successfully configured.
+    {{< copyable "shell-regular" >}}
 
-```shell
-ssh 172.16.10.61
-```
+    ```shell
+    ssh 172.16.10.61
+    ```
 
-```
-[tidb@172.16.10.61 ~]$
-```
+    ```
+    [tidb@172.16.10.61 ~]$
+    ```
 
-After you login to the deployment target machine using the `tidb` user, run the following command. If you do not need to enter the password and can switch to the `root` user, then sudo without password of the `tidb` user is successfully configured.
+5. After you login to the deployment target machine using the `tidb` user, run the following command. If you do not need to enter the password and can switch to the `root` user, then sudo without password of the `tidb` user is successfully configured.
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-sudo -su root
-```
+    ```shell
+    sudo -su root
+    ```
 
-```
-[root@172.16.10.61 tidb]#
-```
+    ```
+    [root@172.16.10.61 tidb]#
+    ```
 
 ### Error: You need to install jmespath prior to running json_query filter
 
-See [Install Ansible and its dependencies on the Control Machine](#step-4-install-ansible-and-its-dependencies-on-the-control-machine) and use `pip` to install Ansible and the related specific dependencies in the Control Machine. The `jmespath` dependent package is installed by default.
+1. See [Install Ansible and its dependencies on the Control Machine](#step-4-install-ansible-and-its-dependencies-on-the-control-machine) and use `pip` to install Ansible and the corresponding dependencies in the Control Machine. The `jmespath` dependent package is installed by default.
 
-Enter `import jmespath` in the Python interactive window of the Control Machine.
+2. Run the following command to check whether `jmespath` is successfully installed:
 
-- If no error displays, the dependency is successfully installed.
-- If the `ImportError: No module named jmespath` error displays, the Python `jmespath` module is not successfully installed.
+    {{< copyable "shell-regular" >}}
 
-```shell
-python
-```
+    ```bash
+    pip show jmespath
+    ```
 
-```
-Python 2.7.5 (default, Nov  6 2016, 00:28:07)
-[GCC 4.8.5 20150623 (Red Hat 4.8.5-11)] on linux2
-Type "help", "copyright", "credits" or "license" for more information.
->>> import jmespath
-```
+3. Enter `import jmespath` in the Python interactive window of the Control Machine.
+
+    - If no error displays, the dependency is successfully installed.
+    - If the `ImportError: No module named jmespath` error displays, the Python `jmespath` module is not successfully installed.
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    python
+    ```
+
+    ```
+    Python 2.7.5 (default, Nov  6 2016, 00:28:07)
+    [GCC 4.8.5 20150623 (Red Hat 4.8.5-11)] on linux2
+    Type "help", "copyright", "credits" or "license" for more information.
+    ```
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    import jmespath
+    ```
 
 ### The `zk: node does not exist` error when starting Pump/Drainer
 
 Check whether the `zookeeper_addrs` configuration in `inventory.ini` is the same with the configuration in the Kafka cluster, and whether the namespace is filled in. The description about namespace configuration is as follows:
 
-```
+```ini
 # ZooKeeper connection string (see ZooKeeper docs for details).
 # ZooKeeper address of the Kafka cluster. Example:
 # zookeeper_addrs = "192.168.0.11:2181,192.168.0.12:2181,192.168.0.13:2181"
