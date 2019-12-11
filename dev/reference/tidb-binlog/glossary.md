@@ -22,7 +22,7 @@ Checkpoint 指保存的断点信息，记录了 Drainer 同步到下游的 commi
 
 ## Safe mode
 
-指增量复制过程中，用于支持在表结构中存在主键或唯一索引的条件下可重复导入 DML 的模式。
+Safe mode 指增量复制过程中，当表结构中存在主键或唯一索引时，用于支持幂等导入 DML 的模式。```
 
 该模式将来自上游的 `INSERT` 改写为 `REPLACE`，将 `UPDATE` 改写为 `DELETE` 与 `REPLACE` 后再向下游执行。在 Drainer 启动的前 5 分钟，会自动启动 Safe mode；另外也可以在配置文件中通过 `safe-mode` 参数手动开启，但该配置仅在下游是 MySQL 或 TiDB 时有效。
 
