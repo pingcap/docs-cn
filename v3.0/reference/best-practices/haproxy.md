@@ -123,14 +123,14 @@ haproxy --help
 | `-N <limit>` | 设置单点最大连接数为 \<limit>，默认为 2000。 |
 | `-L <name>` | 将本地实例对等名称改为 \<name>，默认为本地主机名。 |
 | `-p <file>` | 将 HAProxy 所有子进程的 PID 信息写入 \<file>。 |
-| `-de` | 禁止使用 epoll(7)，epoll(7)仅在 Linux 2.6 和某些定制的 Linux 2.4 系统上可用。 |
+| `-de` | 禁止使用 epoll(7)，epoll(7) 仅在 Linux 2.6 和某些定制的 Linux 2.4 系统上可用。 |
 | `-dp` | 禁止使用 epoll(2)，可改用 select(2)。 |
-| `-dS` | 禁止使用 splice(2)，splice(2)在一些旧版 Linux 内核上不可用。 |
+| `-dS` | 禁止使用 splice(2)，splice(2) 在一些旧版 Linux 内核上不可用。 |
 | `-dR` | 禁止使用 SO_REUSEPORT。 |
 | `-dr` | 忽略服务器地址解析失败。 |
 | `-dV` | 禁止在服务器端使用 SSL。 |
-| `-sf <pidlist>` | 启动后，向 pidlist 中的 PID 发送"finish"信号，收到此信号的进程在退出之前将等待所有会话完成，即优雅停止服务。此选项必须最后指定，后跟任意数量的 PID。从技术上讲，SIGTTOU 和 SIGUSR1 都被发送。 |
-| `-st <pidlist>` | 启动后，向 pidlist 中的 PID 发送"terminate"信号，收到此信号的进程将立即终止，关闭所有活动会话。此选项必须最后指定，后跟任意数量的 PID。从技术上讲，SIGTTOU 和 SIGTERM 都被发送。 |
+| `-sf <pidlist>` | 启动后，向 pidlist 中的 PID 发送 `finish` 信号，收到此信号的进程在退出之前将等待所有会话完成，即优雅停止服务。此选项必须最后指定，后跟任意数量的 PID。从技术上讲，SIGTTOU 和 SIGUSR1 都被发送。 |
+| `-st <pidlist>` | 启动后，向 pidlist 中的 PID 发送 `terminate` 信号，收到此信号的进程将立即终止，关闭所有活动会话。此选项必须最后指定，后跟任意数量的 PID。从技术上讲，SIGTTOU 和 SIGTERM 都被发送。 |
 | `-x <unix_socket>` | 连接指定的 socket 并从旧进程中获取所有 listening socket，然后，使用这些 socket 而不是绑定新的。 |
 | `-S <bind>[,<bind_options>...]` | 主从模式下，创建绑定到主进程的 socket，此 socket 可访问每个子进程的 socket。 |
 
