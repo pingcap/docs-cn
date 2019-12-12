@@ -322,7 +322,7 @@ raftstore 相关的配置项。
 
 ### `raftstore.peer-stale-state-check-interval`
 
-+ 修改对 Region 的状态检查间隔时间
++ 修改对 Region 的状态检查间隔时间。
 + 默认值：5 min
 
 ### `split-region-check-tick-interval`
