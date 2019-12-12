@@ -8,7 +8,7 @@ category: reference
 
 本文介绍 TiDB 乐观锁机制的实现原理，并通过分析乐观锁在多种场景下的应用为业务提供最佳实践。本文假定你对 [TiDB 的整体架构](/v2.1/architecture.md#tidb-整体架构)和 [Percolator](https://www.usenix.org/legacy/event/osdi10/tech/full_papers/Peng.pdf) 事务模型都有一定了解，相关核心概念如下：
 
-- [ACID](/v2.1/glossary.md#ACID)
+- [ACID](/v2.1/glossary.md#acid)
 - [事务](/v2.1/glossary.md#事务)
 - [乐观事务](/v2.1/glossary.md#乐观事务)
 - [悲观事务](/v2.1/glossary.md#悲观事务)
@@ -134,7 +134,7 @@ COMMIT;
 
 ![并发事务冲突逻辑](/media/best-practices/optimistic-transaction-case1.png)
 
-1. 如上图，事务 A 在时间点 `t1` 开始事务，事务 B 在 `t2` 开始事务。
+1. 如上图，事务 A 在时间点 `t1` 开始，事务 B 在 `t2` 开始。
 
 2. 事务 A、事务 B 同时更新同一行数据。
 
@@ -202,21 +202,19 @@ tidb_retry_limit = 10
 
 ![自动重试逻辑](/media/best-practices/optimistic-transaction-case2.png)
 
-1. 如图，Session B 在 `t2` 时开始事务 2，`t5` 时提交成功。Session A 的事务 1 在事务 2 之前开始，在事务 n2 提交完成后提交。
+1. 如图，Session B 在 `t2` 时开始事务 2，`t5` 时提交成功。Session A 的事务 1 在事务 2 之前开始，在事务 2 提交完成后提交。
 
 2. 事务 1、事务 2 同时更新同一行数据。
 
 3. Session A 提交事务 1 时发现冲突，TiDB 内部重试事务 1。
-    a. 重新取得新的 `start_ts` 为 `t8’`。
-    b. 重新执行更新语句 `update tidb set name='pd' where id =1 and status=1`。
+    1. 重新取得新的 `start_ts` 为 `t8’`。
+    2. 重新执行更新语句 `update tidb set name='pd' where id =1 and status=1`。
+        1. 发现当前版本 `t8’` 下并不存在符合条件的语句，不需要更新。
+        2. 没有数据更新，返回上层成功。
 
-4. 发现当前版本 `t8’` 下并不存在符合条件的语句，不需要更新。
+4. TiDB 认为事务 1 重试成功，返回客户端成功。
 
-5. 没有数据更新，返回上层成功。
-
-6. TiDB 认为事务 1 重试成功，返回客户端成功。
-
-7. Session A 认为事务执行成功。如果在不存在其他更新，此时查询结果会发现数据与预想的不一致。
+5. Session A 认为事务执行成功。如果在不存在其他更新，此时查询结果会发现数据与预想的不一致。
 
 由上述分析可知，对于重试事务，当事务中更新语句需要依赖查询结果时，会重新取版本号作为 `start_ts`，所以无法保证事务原本可重复读的隔离级别，最终可能导致结果与预期出现不一致。
 
@@ -251,7 +249,7 @@ capacity = 2048000
 
 实际应用时，如果业务场景能够预判断写入不存在冲突（如导入数据操作），建议关闭冲突检测。
 
-相应地，在 TiKV 层检测内存中是否存在冲突也有类似的机制。不同的是，TiKV 层的检测会更严格且不允许关闭，仅支持对 Hash 取膜值进行配置：
+相应地，在 TiKV 层检测内存中是否存在冲突也有类似的机制。不同的是，TiKV 层的检测会更严格且不允许关闭，仅支持对 Hash 取模值进行配置：
 
 ```toml
 # scheduler 内置一个内存锁机制，防止同时对一个 Key 进行操作。
@@ -259,7 +257,7 @@ capacity = 2048000
 scheduler-concurrency = 2048000
 ```
 
-此外，TiKV 支持监控消耗在 latch 上的等待的时间：
+此外，TiKV 支持监控等待 latch 的时间：
 
 ![Scheduler latch wait duration](/media/best-practices/optimistic-transaction-metric.png)
 
