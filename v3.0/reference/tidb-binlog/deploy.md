@@ -453,7 +453,7 @@ Drainer="192.168.0.13"
             不支持对 ignore schemas 的 table 进行 rename DDL 操作
         -initial-commit-ts（默认为 `0`，v3.0.6 开始默认值为 `-1`）
             如果 Drainer 没有相关的断点信息，可以通过该项来设置相关的断点信息
-            该参数值为 -1 时，Drainer 会自动从 PD 获取一个最新的时间戳。
+            该参数值为 -1 时，Drainer 会自动从 PD 获取一个最新的时间戳
         -log-file string
             log 文件路径
         -log-rotate string
