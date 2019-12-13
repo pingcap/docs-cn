@@ -32,12 +32,12 @@ Go Version: go version go1.13 linux/amd64
 - dmctl 支持命令式使用
 - 支持同步 `ALTER DATABASE` DDL 语句
 - 优化 DM 错误提示信息
-- 修复全量导入模块在暂停或退出时 Data Race 导致 panic 的问题
+- 修复全量导入模块在暂停或退出时 data race 导致 panic 的问题
 - 修复对下游进行重试操作时，`stop-task` 和 `pause-task` 可能不生效的问题
 
 ### 升级操作示例
 
-1. 下载新版本 DM-Ansible, 确认 `inventory.ini` 文件中 `dm_version = v1.0.3`
+1. 下载新版本 DM-Ansible，确认 `inventory.ini` 文件中 `dm_version = v1.0.3`
 2. 执行 `ansible-playbook local_prepare.yml` 下载新的 DM binary 到本地
 3. 执行 `ansible-playbook rolling_update.yml` 滚动升级 DM 集群组件
 4. 执行 `ansible-playbook rolling_update_monitor.yml` 滚动升级 DM 监控组件
