@@ -103,7 +103,7 @@ curl http://127.0.0.1:2379/pd/api/v1/stores
 + Raft 执行命令失败的总次数
 + Raft 处理 ready 状态的总次数
 
-## 使用 Prometheus+Grafana
+## 使用 Prometheus + Grafana
 
 ### 部署架构
 
@@ -137,7 +137,7 @@ curl http://127.0.0.1:2379/pd/api/v1/stores
     address = "host:port"
     ```
 
-+   TiKV
++ TiKV
 
     修改 toml 配置文件，填写 Push Gateway 的地址和推送频率，job 字段一般设为“tikv”。
 
