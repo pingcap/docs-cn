@@ -50,7 +50,7 @@ category: how-to
 
 ## 在中控机上创建 tidb 用户，并生成 ssh key
 
-参考[在中控机上创建 tidb 用户，并生成 ssh key](/dev/how-to/deploy/orchestrated/ansible.md#在中控机上创建-tidb-用户并生成-ssh-key) 即可。
+参考[在中控机上创建 tidb 用户，并生成 ssh key](/dev/how-to/deploy/orchestrated/ansible.md#第-2-步在中控机上创建-tidb-用户并生成-ssh-key) 即可。
 
 ## 在中控机器上离线安装 Ansible 及其依赖
 
@@ -128,25 +128,25 @@ category: how-to
 
 ## 在中控机上配置部署机器 ssh 互信及 sudo 规则
 
-参考[在中控机上配置部署机器 ssh 互信及 sudo 规则](/dev/how-to/deploy/orchestrated/ansible.md#在中控机上配置部署机器-ssh-互信及-sudo-规则)即可。
+参考[在中控机上配置部署机器 ssh 互信及 sudo 规则](/dev/how-to/deploy/orchestrated/ansible.md#第-5-步在中控机上配置部署机器-ssh-互信及-sudo-规则)即可。
 
 ## 在部署目标机器上安装 NTP 服务
 
 如果你的部署目标机器时间、时区设置一致，已开启 NTP 服务且在正常同步时间，此步骤可忽略，可参考[如何检测 NTP 服务是否正常](/dev/how-to/deploy/orchestrated/ansible.md#如何检测-ntp-服务是否正常)。
 
-参考[在部署目标机器上安装 NTP 服务](/dev/how-to/deploy/orchestrated/ansible.md#在部署目标机器上安装-ntp-服务)即可。
+参考[在部署目标机器上安装 NTP 服务](/dev/how-to/deploy/orchestrated/ansible.md#第-6-步在部署目标机器上安装-ntp-服务)即可。
 
 ## 在部署目标机器上配置 CPUfreq 调节器模式
 
-参考[在部署目标机器上配置 CPUfreq 调节器模式](/dev/how-to/deploy/orchestrated/ansible.md#在部署目标机器上配置-cpufreq-调节器模式)即可。
+参考[在部署目标机器上配置 CPUfreq 调节器模式](/dev/how-to/deploy/orchestrated/ansible.md#第-7-步在部署目标机器上配置-cpufreq-调节器模式)即可。
 
 ## 在部署目标机器上添加数据盘 ext4 文件系统挂载参数
 
-参考[在部署目标机器上添加数据盘 ext4 文件系统挂载参数](/dev/how-to/deploy/orchestrated/ansible.md#在部署目标机器上添加数据盘-ext4-文件系统挂载参数)即可。
+参考[在部署目标机器上添加数据盘 ext4 文件系统挂载参数](/dev/how-to/deploy/orchestrated/ansible.md#第-8-步在部署目标机器上添加数据盘-ext4-文件系统挂载参数)即可。
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
-参考[分配机器资源，编辑 inventory.ini 文件](/dev/how-to/deploy/orchestrated/ansible.md#分配机器资源编辑-inventoryini-文件)即可。
+参考[分配机器资源，编辑 inventory.ini 文件](/dev/how-to/deploy/orchestrated/ansible.md#第-9-步编辑-inventoryini-文件分配机器资源)即可。
 
 ## 部署任务
 
