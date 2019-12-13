@@ -126,9 +126,9 @@ category: how-to
 
 4. 将执行完以上命令之后的 `tidb-ansible` 文件夹拷贝到中控机 `/home/tidb` 目录下，文件属主权限需是 `tidb` 用户。
 
-## 在中控机上配置部署机器 ssh 互信及 sudo 规则
+## 在中控机上配置部署机器 SSH 互信及 sudo 规则
 
-参考[在中控机上配置部署机器 ssh 互信及 sudo 规则](/dev/how-to/deploy/orchestrated/ansible.md#第-5-步在中控机上配置部署机器-ssh-互信及-sudo-规则)即可。
+参考[在中控机上配置部署机器 SSH 互信及 sudo 规则](/dev/how-to/deploy/orchestrated/ansible.md#第-5-步在中控机上配置部署机器-ssh-互信及-sudo-规则)即可。
 
 ## 在部署目标机器上安装 NTP 服务
 

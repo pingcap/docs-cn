@@ -65,7 +65,7 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
     apt-get -y install git curl sshpass python-pip
     ```
 
-## 第 2 步：在中控机上创建 `tidb` 用户，并生成 ssh key
+## 第 2 步：在中控机上创建 `tidb` 用户，并生成 SSH key
 
 以 `root` 用户登录中控机，执行以下步骤：
 
@@ -181,9 +181,9 @@ git clone https://github.com/pingcap/tidb-ansible.git
     ansible 2.5.0
     ```
 
-## 第 5 步：在中控机上配置部署机器 ssh 互信及 sudo 规则
+## 第 5 步：在中控机上配置部署机器 SSH 互信及 sudo 规则
 
-确保以 `tidb` 用户登录中控机，然后执行以下步骤：
+以 `tidb` 用户登录中控机，然后执行以下步骤：
 
 1. 将你的部署目标机器 IP 添加到 `hosts.ini` 文件的 `[servers]` 区块下。
 
@@ -216,7 +216,7 @@ git clone https://github.com/pingcap/tidb-ansible.git
     ansible-playbook -i hosts.ini create_users.yml -u root -k
     ```
 
-    该步骤将在部署目标机器上创建 `tidb` 用户，并配置 sudo 规则，配置中控机与部署目标机器之间的 ssh 互信。
+    该步骤将在部署目标机器上创建 `tidb` 用户，并配置 sudo 规则，配置中控机与部署目标机器之间的 SSH 互信。
 
 如果要手工配置 SSH 互信及 sudo 免密码，可参考[如何手工配置 ssh 互信及 sudo 免密码](#如何手工配置-ssh-互信及-sudo-免密码)。
 
@@ -318,7 +318,7 @@ analyzing CPU 0:
 
 > **注意：**
 >
-> 如果你的数据盘已经格式化成 ext4 并添加了挂载参数，可先执行 `umount /dev/nvme0n1p1` 命令卸载，从编辑 `/etc/fstab` 文件步骤开始执行，添加挂载参数重新挂载即可。
+> 如果你的数据盘已经格式化成 ext4 并挂载了磁盘，可先执行 `umount /dev/nvme0n1p1` 命令卸载，从编辑 `/etc/fstab` 文件步骤开始执行，添加挂载参数重新挂载即可。
 
 以 `/dev/nvme0n1` 数据盘为例，具体操作步骤如下：
 
@@ -396,7 +396,7 @@ analyzing CPU 0:
     mount -a
     ```
 
-7. 执行以下命令，如果文件系统为 ext4，并且挂载参数中包含 `nodelalloc` 表示已生效。
+7. 执行以下命令，如果文件系统为 ext4，并且挂载参数中包含 `nodelalloc`，则表示已生效。
 
     {{< copyable "shell-root" >}}
 
@@ -410,7 +410,7 @@ analyzing CPU 0:
 
 ## 第 9 步：编辑 `inventory.ini` 文件，分配机器资源
 
-以 `tidb` 用户登录中控机，编辑 `/home/tidb/tidb-ansible/inventory.ini` 文件来编排 TiDB 集群。一个标准的 TiDB 集群需要 6 台机器：2 个 TiDB 实例，3 个 PD 实例，3 个 TiKV 实例。
+以 `tidb` 用户登录中控机，编辑 `/home/tidb/tidb-ansible/inventory.ini` 文件为 TiDB 集群分配机器资源。一个标准的 TiDB 集群需要 6 台机器：2 个 TiDB 实例，3 个 PD 实例，3 个 TiKV 实例。
 
 - 至少需部署 3 个 TiKV 实例。
 - 不要将 TiKV 实例与 TiDB 或 PD 实例混合部署在同一台机器上。
@@ -424,7 +424,7 @@ analyzing CPU 0:
 
 - [单机单 TiKV 实例集群拓扑](#单机单-tikv-实例集群拓扑)
 
-    默认情况下，建议在每个 TiKV 节点上仅部署一个 TiKV 实例，以提高性能。但是，如果你的 TiKV 部署机器的 CPU 和内存配置是[部署建议](/dev//how-to/deploy/hardware-recommendations.md)的两倍或以上，并且一个节点拥有两块 SSD 硬盘或者单块 SSD 硬盘的容量大于 2 TB，则可以考虑部署两实例，但不建议部署两个以上实例。
+    默认情况下，建议在每个 TiKV 节点上仅部署一个 TiKV 实例，以提高性能。但是，如果你的 TiKV 部署机器的 CPU 和内存配置是[部署建议](/dev/how-to/deploy/hardware-recommendations.md)的两倍或以上，并且一个节点拥有两块 SSD 硬盘或者单块 SSD 硬盘的容量大于 2 TB，则可以考虑部署两实例，但不建议部署两个以上实例。
 
 - [单机多 TiKV 实例集群拓扑](#单机多-tikv-实例集群拓扑)
 
@@ -600,23 +600,23 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 > 以下控制变量开启请使用首字母大写 `True`，关闭请使用首字母大写 `False`。
 
 | 变量            | 含义                                                        |
-| --------------- | ---------------------------------------------------------- |
+| :--------------- | :-------------------------------------------------------- |
 | `cluster_name` | 集群名称，可调整 |
 | `tidb_version` | TiDB 版本，TiDB Ansible 各分支默认已配置 |
 | `process_supervision` | 进程监管方式，默认为 `systemd`，可选 `supervise` |
 | `timezone` | 新安装 TiDB 集群第一次启动 bootstrap（初始化）时，将 TiDB 全局默认时区设置为该值。TiDB 使用的时区后续可通过 `time_zone` 全局变量和 session 变量来修改，参考[时区支持](/dev/how-to/configure/time-zone.md)。默认为 `Asia/Shanghai`，可选值参考 [timzone 列表](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)。 |
 | `enable_firewalld` | 开启防火墙，默认不开启，如需开启，请将[部署建议-网络要求](/dev/how-to/deploy/hardware-recommendations.md#网络要求) 中的端口加入白名单 |
-| `enable_ntpd` | 检测部署目标机器 NTP 服务，默认为 True，请勿关闭 |
-| `set_hostname` | 根据 IP 修改部署目标机器主机名，默认为 False |
-| `enable_binlog` | 是否部署 pump 并开启 binlog，默认为 False，依赖 Kafka 集群，参见 `zookeeper_addrs` 变量 |
+| `enable_ntpd` | 检测部署目标机器 NTP 服务，默认为 `True`，请勿关闭 |
+| `set_hostname` | 根据 IP 修改部署目标机器主机名，默认为 `False` |
+| `enable_binlog` | 是否部署 pump 并开启 binlog，默认为 `False`，依赖 Kafka 集群，参见 `zookeeper_addrs` 变量 |
 | `zookeeper_addrs` | binlog Kafka 集群的 zookeeper 地址 |
 | `enable_slow_query_log` | TiDB 慢查询日志记录到单独文件 `{{ deploy_dir }}/log/tidb_slow_query.log`，默认为 False，记录到 TiDB 日志 |
-| `deploy_without_tidb` | KV 模式，不部署 TiDB 服务，仅部署 PD、TiKV 及监控服务，请将 `inventory.ini` 文件中 tidb_servers 主机组 IP 设置为空。|
+| `deploy_without_tidb` | KV 模式，不部署 TiDB 服务，仅部署 PD、TiKV 及监控服务，请将 `inventory.ini` 文件中 `tidb_servers` 主机组 IP 设置为空。|
 | `alertmanager_target` | 可选：如果你已单独部署 alertmanager，可配置该变量，格式：`alertmanager_host:alertmanager_port` |
 | `grafana_admin_user` | Grafana 管理员帐号用户名，默认为 admin |
 | `grafana_admin_password` | Grafana 管理员帐号密码，默认为 admin，用于 Ansible 导入 Dashboard 和创建 API Key，如后期通过 grafana web 修改了密码，请更新此变量 |
 | `collect_log_recent_hours` | 采集日志时，采集最近几个小时的日志，默认为 2 小时 |
-| `enable_bandwidth_limit` | 在中控机上从部署目标机器拉取诊断数据时，是否限速，默认为 True，与 `collect_bandwidth_limit` 变量结合使用 |
+| `enable_bandwidth_limit` | 在中控机上从部署目标机器拉取诊断数据时，是否限速，默认为 `True`，与 `collect_bandwidth_limit` 变量结合使用 |
 | `collect_bandwidth_limit` | 在中控机上从部署目标机器拉取诊断数据时限速多少，单位: Kbit/s，默认 10000，即 10Mb/s，如果是单机多 TiKV 实例部署方式，需除以单机实例个数 |
 | `prometheus_storage_retention` | Prometheus 监控数据的保留时间（默认为 30 天）；2.1.7、3.0 以及之后的 tidb-ansible 版本中，`group_vars/monitoring_servers.yml` 文件里新增的配置 |
 
@@ -929,7 +929,7 @@ ansible-playbook start.yml
     Version: 0.9.0
     ```
 
-3. 在中控机上 python 交互窗口里执行 `import jmespath`。
+3. 在中控机上 Python 交互窗口里执行 `import jmespath`。
 
     - 如果没有报错，表示依赖安装成功。
     - 如果有 `ImportError: No module named jmespath` 报错，表示未成功安装 Python `jmespath` 模块。
@@ -944,7 +944,12 @@ ansible-playbook start.yml
     Python 2.7.5 (default, Nov  6 2016, 00:28:07)
     [GCC 4.8.5 20150623 (Red Hat 4.8.5-11)] on linux2
     Type "help", "copyright", "credits" or "license" for more information.
-    >>> import jmespath
+    ```
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    import jmespath
     ```
 
 ### 启动 Pump/Drainer 报 `zk: node does not exist` 错误
