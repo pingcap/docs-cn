@@ -181,25 +181,31 @@ ansible-playbook local_prepare.yml
 
 ## 滚动升级 TiDB 集群组件
 
-如果当前集群是 3.0 之前版本并且 `process_supervision` 变量使用默认的 `systemd` 参数，则通过 `excessive_rolling_update.yml` 滚动升级 TiDB 集群。
+- 如果 `process_supervision` 变量使用默认的 `systemd` 参数：
 
-{{< copyable "shell-regular" >}}
+    - 当前集群版本 < 3.0，则通过 `excessive_rolling_update.yml` 滚动升级 TiDB 集群。
 
-```bash
-ansible-playbook excessive_rolling_update.yml
-```
+        {{< copyable "shell-regular" >}}
 
-如果当前 `process_supervision` 变量使用 `supervise` 参数，则通过 `rolling_update.yml` 滚动升级 TiDB 集群。
+        ```bash
+        ansible-playbook excessive_rolling_update.yml
+        ```
 
-{{< copyable "shell-regular" >}}
+    - 当前集群版本 ≥ 3.0.0，滚动升级及日常滚动重启 TiDB 集群，使用 `rolling_update.yml`。
 
-```bash
-ansible-playbook rolling_update.yml
-```
+        {{< copyable "shell-regular" >}}
 
-> **注意：**
->
-> 为优化 TiDB 集群组件的运维管理，从 TiDB 3.0 版本开始对 `systemd` 模式下的 `PD service` 名称进行了调整，如果从 3.0 以前的版本升级需要使用 `excessive_rolling_update.yml` 来过渡。TiDB 3.0 版本及之后版本的集群，滚动升级及日常滚动重启 TiDB 集群仍旧统一使用 `rolling_update.yml` 操作。
+        ```bash
+        ansible-playbook rolling_update.yml
+        ```
+
+- 如果 `process_supervision` 变量使用的是 `supervise` 参数，无论当前集群为哪个版本，均通过 `rolling_update.yml` 来滚动升级 TiDB 集群。
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ansible-playbook rolling_update.yml
+    ```
 
 ## 滚动升级 TiDB 监控组件
 

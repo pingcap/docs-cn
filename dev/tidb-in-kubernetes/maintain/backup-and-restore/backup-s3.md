@@ -250,7 +250,7 @@ kubectl get bks -n test1 -owide
 
 查看定时全量备份下面所有的备份条目：
 
-{{< copyable "shell-regular" >}
+{{< copyable "shell-regular" >}}
 
 ```shell
 kubectl get bk -l tidb.pingcap.com/backup-schedule=demo1-backup-schedule-s3 -n test1
