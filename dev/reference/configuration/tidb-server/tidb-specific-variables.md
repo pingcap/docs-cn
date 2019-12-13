@@ -695,4 +695,4 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 默认值：0
 
-这个变量用来控制是否开启 statement summary 功能。如果开启，SQL 的耗时等执行信息将被记录到系统表 `performance_schema.events_statement_summary_by_digest` 中，用于定位和排查 SQL 性能问题。
+这个变量用来控制是否开启 statement summary 功能。如果开启，SQL 的耗时等执行信息将被记录到系统表 `performance_schema.events_statements_summary_by_digest` 中，用于定位和排查 SQL 性能问题。
