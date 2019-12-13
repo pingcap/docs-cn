@@ -110,7 +110,7 @@ remain-space = 15
 
 ### 手动数据清理
 
-手动数据清理是指使用 dmctl 提供的 `purge-relay` 命令，通过指定 `subdir` 和 binlog 文件名，来清理掉**指定 binlog 之前**的所有 relay log。若在命令中不填 `-subdir` 选项，则默认清理**最新 binlog 之前**的所有 relay log。
+手动数据清理是指使用 dmctl 提供的 `purge-relay` 命令，通过指定 `subdir` 和 binlog 文件名，来清理掉**指定 binlog 之前**的所有 relay log。若在命令中不填 `-subdir` 选项，则默认清理**最新 relay log 子目录之前**的所有 relay log。
 
 假设当前 relay log 的目录结构如下：
 
