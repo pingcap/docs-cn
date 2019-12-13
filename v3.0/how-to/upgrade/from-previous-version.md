@@ -92,7 +92,7 @@ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
 
 编辑 `inventory.ini` 文件，IP 信息参照备份文件 `/home/tidb/tidb-ansible-bak/inventory.ini`。
 
-以下变量配置，需要重点确认，变量含义可参考 [inventory.ini 变量调整](/v3.0/how-to/deploy/orchestrated/ansible.md#其他变量调整)。
+以下变量配置，需要重点确认，变量含义可参考 [inventory.ini 变量调整](/v3.0/how-to/deploy/orchestrated/ansible.md#调整其它变量可选)。
 
 1. 请确认 `ansible_user` 配置的是普通用户。为统一权限管理，不再支持使用 root 用户远程安装。默认配置中使用 `tidb` 用户作为 SSH 远程用户及程序运行用户。
 
@@ -102,7 +102,7 @@ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
     ansible_user = tidb
     ```
 
-    可参考[如何配置 ssh 互信及 sudo 规则](/v3.0/how-to/deploy/orchestrated/ansible.md#在中控机上配置部署机器-ssh-互信及-sudo-规则)自动配置主机间互信。
+    可参考[如何配置 ssh 互信及 sudo 规则](/v3.0/how-to/deploy/orchestrated/ansible.md#第-5-步在中控机上配置部署机器-ssh-互信及-sudo-规则)自动配置主机间互信。
 
 2. `process_supervision` 变量请与之前版本保持一致，默认推荐使用 `systemd`。
 
