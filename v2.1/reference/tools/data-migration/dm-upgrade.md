@@ -31,8 +31,8 @@ Go Version: go version go1.13 linux/amd64
 - dmctl 支持命令式使用
 - 支持同步 `ALTER DATABASE` DDL 语句
 - 优化 DM 错误提示信息
-- 修复全量导入模块在暂停或退出时 Data Race 导致 panic 的问题 
-- 修复对下游进行重试操作时，`stop-task` 和 `pause-task` 可能不生效的问题 
+- 修复全量导入模块在暂停或退出时 Data Race 导致 panic 的问题
+- 修复对下游进行重试操作时，`stop-task` 和 `pause-task` 可能不生效的问题
 
 ### 升级操作示例
 
