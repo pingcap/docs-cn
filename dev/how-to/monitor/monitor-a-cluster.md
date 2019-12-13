@@ -201,7 +201,7 @@ scrape_configs:
 ...
 ```
 
-启动 Grafana 服务：
+启动 Prometheus 服务：
 
 {{< copyable "shell-regular" >}}
 
