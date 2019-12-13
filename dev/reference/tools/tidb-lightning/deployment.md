@@ -5,14 +5,14 @@ category: reference
 
 # TiDB Lightning 部署与执行
 
-本文主要介绍 TiDB Lightning 单独部署与混合部署的硬件需求，Ansible 部署与手动部署这两种部署方式，以及启动与执行。
+本文主要介绍 TiDB Lightning 单独部署与混合部署的硬件需求，以及使用 Ansible 部署与手动部署这两种部署方式。
 
 ## 注意事项
 
 在使用 TiDB Lightning 前，需注意以下事项：
 
 - TiDB Lightning 运行后，TiDB 集群将无法正常对外提供服务。
-- 若 `tidb-lightning` 崩溃，集群会留在“导入模式”。若忘记转回“普通模式”，集群会产生大量未压缩的文件，继而消耗 CPU 并导致迟延 (stall)。此时，需要使用 `tidb-lightning-ctl` 手动将集群转回“普通模式”：
+- 若 `tidb-lightning` 崩溃，集群会留在“导入模式”。若忘记转回“普通模式”，集群会产生大量未压缩的文件，继而消耗 CPU 并导致延迟。此时，需要使用 `tidb-lightning-ctl` 手动将集群转回“普通模式”：
 
     {{< copyable "shell-regular" >}}
 
@@ -23,7 +23,7 @@ category: reference
 - TiDB Lightning 需要下游 TiDB 有如下权限：
 
     | 权限 | 作用域 |
-    |----:|:------|
+    |:----|:------|
     | SELECT | Tables |
     | INSERT | Tables |
     | UPDATE | Tables |
@@ -32,7 +32,7 @@ category: reference
     | DROP | Databases, tables |
     | ALTER | Tables |
 
-  如果 TiDB Lightning 配置项 `checksum = true`，则 TiDB Lightning 需要有下游 TiDB admin 用户权限。
+  如果配置项 `checksum = true`，则 TiDB Lightning 需要有下游 TiDB admin 用户权限。
 
 ## 硬件需求
 
@@ -45,7 +45,7 @@ category: reference
     - 32+ 逻辑核 CPU
     - 足够储存整个数据源的 SSD 硬盘，读取速度越快越好
     - 使用万兆网卡，带宽需 300 MB/s 以上
-    - 运行过程默认会打满 CPU，建议单独部署。条件不允许的情况下可以和其他组件 (比如 `tidb-server`) 部署在同一台机器上，然后通过配置 `region-concurrency` 限制 `tidb-lightning` 的 CPU 使用。
+    - 运行过程默认会占满 CPU，建议单独部署。条件不允许的情况下可以和其他组件（比如 `tidb-server`）部署在同一台机器上，然后通过配置 `region-concurrency` 限制 `tidb-lightning` 使用 CPU 资源。
 
 - `tikv-importer`
 
@@ -54,13 +54,13 @@ category: reference
     - 1 TB+ SSD 硬盘，IOPS 越高越好（要求 ≥8000）
         * 硬盘必须大于最大的 N 个表的大小总和，其中 N = max(index-concurrency, table-concurrency)。
     - 使用万兆网卡，带宽需 300 MB/s 以上
-    - 运行过程中 CPU、I/O 和网络带宽都可能打满，建议单独部署。
+    - 运行过程中 CPU、I/O 和网络带宽都可能占满，建议单独部署。
 
 如果机器充裕的话，可以部署多套 `tidb-lightning` + `tikv-importer`，然后将源数据以表为粒度进行切分，并发导入。
 
 > **注意：**
 >
-> - `tidb-lightning` 是 CPU 密集型程序，如果和其它程序混合部署，需要通过 `region-concurrency` 限制 `tidb-lightning` 的 CPU 实际占用核数，否则会影响其他程序的正常运行。建议将混合部署机器上 75% 的 CPU 分配给 `tidb-lightning`。例如，机器为 32 核，则 `tidb-lightning` 的 `region-concurrency` 可设为 24。
+> - `tidb-lightning` 是 CPU 密集型程序，如果和其它程序混合部署，需要通过 `region-concurrency` 限制 `tidb-lightning` 的 CPU 实际占用核数，否则会影响其他程序的正常运行。建议将混合部署机器上 75% 的 CPU 资源分配给 `tidb-lightning`。例如，机器为 32 核，则 `tidb-lightning` 的 `region-concurrency` 可设为 “24”。
 >
 > - `tikv-importer` 将中间数据存储缓存到内存上以加速导入过程。占用内存大小可以通过 **(`max-open-engines` × `write-buffer-size` × 2) + (`num-import-jobs` × `region-split-size` × 2)** 计算得来。如果磁盘写入速度慢，缓存可能会带来更大的内存占用。
 
@@ -68,7 +68,7 @@ category: reference
 
 ## 导出数据
 
-我们使用 [`mydumper`](/dev/reference/tools/mydumper.md) 从 MySQL 导出数据，如下：
+使用 [`mydumper`](/dev/reference/tools/mydumper.md) 从 MySQL 导出数据，如下：
 
 {{< copyable "shell-regular" >}}
 
@@ -179,7 +179,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/o
 
 #### 第 2 步：下载 TiDB Lightning 安装包
 
-通过以下链接获取 TiDB Lightning 安装包（需选择与集群相同的版本）：
+通过以下链接获取 TiDB Lightning 安装包：
 
 - [v2.1](https://pingcap.com/docs-cn/v2.1/reference/tools/download/#tidb-lightning)
 - [v3.0](https://pingcap.com/docs-cn/v3.0/reference/tools/download/#tidb-lightning)
@@ -232,7 +232,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/o
 
 2. 将数据源写入到同样的机器。
 
-3. 配置 `tidb-lightning.toml`。对于文档中未提及的配置，TiDB Lightning 会提示配置错误并退出。
+3. 配置 `tidb-lightning.toml`。对于没有出现在下述模版中的配置，TiDB Lightning 给出配置错误的提醒并退出。
 
     ```toml
     [lightning]
@@ -263,7 +263,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/o
     status-port = 10080
     ```
 
-    上面仅列出了 `tidb-lightning` 的基本配置。完整配置请参考[`tidb-lightning` 配置说明](/dev/reference/tools/tidb-lightning/config.md#tidb-lightning-全局配置参数)。
+    上面仅列出了 `tidb-lightning` 的基本配置信息。完整配置信息请参考[`tidb-lightning` 配置说明](/dev/reference/tools/tidb-lightning/config.md#tidb-lightning-全局配置参数)。
 
 4. 运行 `tidb-lightning`。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
 

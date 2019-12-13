@@ -1,16 +1,16 @@
 ---
 title: TiDB Lightning 配置参数
-summary: 使用配置文件或命令行参数配置 TiDB Lightning。
+summary: 使用配置文件或命令行配置 TiDB Lightning。
 category: reference
 ---
 
 # TiDB Lightning 配置参数
 
-配置 TiDB Lightning 时，你可以使用配置文件或命令行参数。本文主要介绍 TiDB Lightning 的全局配置、任务配置和 TiKV Importer 配置，以及如何使用命令行配置参数。
+你可以使用配置文件或命令行配置 TiDB Lightning。本文主要介绍 TiDB Lightning 的全局配置、任务配置和 TiKV Importer 的配置，以及如何使用命令行进行参数配置。
 
 ## 配置文件
 
-TiDB Lightning 的配置文件分为“全局”和“任务”两个属性，两者配置互相兼容。当[服务器模式](/dev/reference/tools/tidb-lightning/web.md)为禁用状态（默认）时，TiDB Lightning 只会执行一个任务，且全局和任务配置使用同一配置文件。
+TiDB Lightning 的配置文件分为“全局”和“任务”两个属性，两者互相兼容。当[服务器模式](/dev/reference/tools/tidb-lightning/web.md)为禁用状态（默认）时，TiDB Lightning 只会执行一个任务，且全局和任务配置使用同一配置文件。
 
 ### TiDB Lightning 全局配置参数
 
@@ -194,7 +194,7 @@ log-progress = "5m"
 
 # 日志文件
 log-file = "tikv-importer.log"
-# 日志等级：trace, debug, info, warn, error, off
+# 日志等级：trace, debug, info, warn, error 和 off
 log-level = "info"
 
 [server]
@@ -283,29 +283,29 @@ min-available-ratio = 0.05
 使用 `tidb-lightning-ctl` 可以对下列参数进行配置：
 
 | 参数 | 描述 |
-|:----|:----|
+|:----|:----------|
 | --compact | 执行 full compact |
-| --switch-mode *mode* | 将每个 TiKV 存储切换到指定模式（normal 或 import） |
+| --switch-mode *mode* | 将每个 TiKV Store 切换到指定模式（normal 或 import） |
 | --import-engine *uuid* | 将 TiKV Importer 上关闭的引擎文件导入到 TiKV 集群 |
 | --cleanup-engine *uuid* | 删除 TiKV Importer 上的引擎文件 |
-| --checkpoint-dump *folder* | 将当前的断点作为 CSV 格式文件存储到文件夹中 |
+| --checkpoint-dump *folder* | 将当前的断点以 CSV 格式存储到文件夹中 |
 | --checkpoint-error-destroy *tablename* | 删除断点，如果报错则删除该表 |
 | --checkpoint-error-ignore *tablename* | 忽略指定表中断点的报错 |
 | --checkpoint-remove *tablename* | 无条件删除表的断点 |
 
-*tablename* 必须是`` `db`.`tbl` `` 中的限定表名（包括反引号），或关键词“all”。
+*tablename* 必须是`` `db`.`tbl` `` 中的限定表名（包括反引号），或关键词 `all`。
 
-此外，上述部分中描述的 `tidb-lightning` 参数也适用于 `tidb-lightning-ctl`。
+此外，上表中所有 `tidb-lightning` 的参数也适用于 `tidb-lightning-ctl`。
 
 ### `tikv-importer`
 
 使用 `tikv-importer` 可以对下列参数进行配置：
 
 | 参数 | 描述 | 对应配置项 |
-|:----|:----|:----|
-| -C, --config *file* | 从 *file* 读取配置。如果没有指定，则使用默认设置。| |
+|:----|:----|:-------|
+| -C, --config *file* | 从 *file* 读取配置。如果没有指定，则使用默认设置| |
 | -V, --version | 输出程序的版本 | |
 | -A, --addr *ip:port* | TiKV Importer 服务器的监听地址 | `server.addr` |
-| --import-dir *dir* | 存储引擎文件的目录 | `import.import-dir` |
-| --log-level *level* | 日志的等级： trace, debug, info, warn, error, off | `log-level` |
+| --import-dir *dir* | 引擎文件的存储目录 | `import.import-dir` |
+| --log-level *level* | 日志的等级： trace, debug, info, warn, error 和 off | `log-level` |
 | --log-file *file* | 日志文件路径 | `log-file` |

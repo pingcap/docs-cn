@@ -1,6 +1,6 @@
 ---
 title: TiDB Lightning Web 界面
-summary: 在网页上管理 TiDB Lightning。
+summary: 了解 TiDB Lightning 的服务器模式。
 category: reference
 ---
 
@@ -55,13 +55,9 @@ TiDB Lightning 启动后，请访问 `http://127.0.0.1:8289` 来管理程序（�
 
 ![提交任务对话框](/media/lightning-web-submit.png)
 
-任务 (task) 为 TOML 格式的文件，具体参考[TiDB Lightning 任务配置](/dev/reference/tools/tidb-lightning/config.md#tidb-lightning-任务配置参数)。
+任务 (task) 为 TOML 格式的文件，具体参考[TiDB Lightning 任务配置](/dev/reference/tools/tidb-lightning/config.md#tidb-lightning-任务配置参数)。你也可以点击 **UPLOAD** 上传一个本地的 TOML 文件。
 
-你也可以点击 **UPLOAD** 上传一个本地的 TOML 文件。
-
-点击 **SUBMIT** 运行任务。
-
-如果当前有任务正在运行，新增任务会加入队列并在当前任务结束后执行。
+点击 **SUBMIT** 运行任务。如果当前有任务正在运行，新增任务会加入队列并在当前任务结束后执行。
 
 ## 查看导入进度
 
@@ -69,7 +65,7 @@ TiDB Lightning 启动后，请访问 `http://127.0.0.1:8289` 来管理程序（�
 
 ![表格导入进度](/media/lightning-web-table.png)
 
-该页显示与每张表的引擎文件的导入过程。
+该页显示每张表的引擎文件的导入过程。
 
 点击标题栏上的 **TiDB Lightning** 返回首页。
 
@@ -79,10 +75,6 @@ TiDB Lightning 启动后，请访问 `http://127.0.0.1:8289` 来管理程序（�
 
 ![任务管理页面](/media/lightning-web-queue.png)
 
-每个任务都是依据提交时间来标记。
+每个任务都是依据提交时间来标记。点击该任务将显示 JSON 格式的配置文件。
 
-点击该任务将显示 JSON 格式的配置文件。
-
-点击任务上的 **⋮** 可以对该任务进行管理。
-
-你可以立即停止任务，或重新排序队列中的任务。
+点击任务上的 **⋮** 可以对该任务进行管理。你可以立即停止任务，或重新排序队列中的任务。
