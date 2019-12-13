@@ -76,7 +76,7 @@ curl http://127.0.0.1:2379/pd/api/v1/stores
 
 ## Metrics 监控
 
-这部分主要对整个集群的状态、性能做监控，通过 Prometheus+Grafana 展现 metrics 数据，在下面一节会介绍如何搭建监控系统。
+这部分主要对整个集群的状态、性能做监控，通过 Prometheus + Grafana 展现 metrics 数据，在下面一节会介绍如何搭建监控系统。
 
 ### TiDB Server
 
@@ -113,9 +113,9 @@ curl http://127.0.0.1:2379/pd/api/v1/stores
 
 ### 搭建监控系统
 
-- Prometheus Push Gateway 参考：https://github.com/prometheus/pushgateway
-- Prometheus Server 参考：https://github.com/prometheus/prometheus#install
-- Grafana 参考：http://docs.grafana.org
+- Prometheus Push Gateway 参考：<https://github.com/prometheus/pushgateway>
+- Prometheus Server 参考：<https://github.com/prometheus/prometheus#install>
+- Grafana 参考：<http://docs.grafana.org>
 
 ### 配置
 
@@ -177,10 +177,10 @@ labels:
 
 #### Grafana 配置
 
-+   进入 Grafana Web 界面（默认地址: http://localhost:3000 ，默认账号: admin 密码: admin）
++ 进入 Grafana Web 界面（默认地址：<http://localhost:3000>，默认账号: admin 密码: admin）
 
-    点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息 ( 注: Type 选 Prometheus，Url 为 Prometheus 地址，其他根据实际情况填写 ）
+    点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息（注: Type 选 Prometheus，Url 为 Prometheus 地址，其他根据实际情况填写）
 
-+   导入 dashboard 配置文件
++ 导入 dashboard 配置文件
 
     点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 Dashboard [配置文件](https://grafana.com/tidb)上传 -> 选择对应的 data source
