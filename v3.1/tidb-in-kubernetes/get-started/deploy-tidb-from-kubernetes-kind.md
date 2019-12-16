@@ -134,7 +134,7 @@ To access the TiDB cluster, use the `kubectl port-forward` command to expose ser
         kubectl port-forward svc/<release-name>-tidb 4000:4000 --namespace=<namespace>
         ```
 
-        If results like `Forwarding from 0.0.0.0:4000 -> 4000` is returned, it means the proxy is set up.
+        If the output is similar to `Forwarding from 0.0.0.0:4000 -> 4000`, then the proxy is set up.
 
     2. To access TiDB using the MySQL client, open a **new** terminal tab or window and run the following command:
 
@@ -156,7 +156,7 @@ To access the TiDB cluster, use the `kubectl port-forward` command to expose ser
         kubectl port-forward svc/<release-name>-grafana 3000:3000 --namespace=<namespace>
         ```
 
-        If results like `Forwarding from 0.0.0.0:4000 -> 4000` is returned, it means the proxy is set up.
+        If the output is similar to `Forwarding from 0.0.0.0:4000 -> 4000`, then the proxy is set up.
 
     2. Open your web browser at <http://localhost:3000> to access the Grafana monitoring dashboard.
 
