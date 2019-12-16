@@ -42,7 +42,7 @@ category: how-to
 
     > **注意：**
     >
-    > <release-name> 需要替换为目标 `tidb-cluster`的 helm release name
+    > `<release-name>` 需要替换为目标 `tidb-cluster` 的 Helm release name。
 
     * 将 `tidb.affinity` 按照如下设置：
 
