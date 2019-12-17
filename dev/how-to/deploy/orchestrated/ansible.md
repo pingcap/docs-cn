@@ -38,7 +38,7 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
     >
     > 使用 Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](/dev/how-to/get-started/deploy-tidb-from-docker-compose.md)单机进行测试。
 
-2. 部署中控机一台:
+2. 部署中控机一台
 
     - 中控机可以是部署目标机器中的某一台。
     - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统（默认包含 Python 2.7）。
@@ -194,7 +194,7 @@ git clone https://github.com/pingcap/tidb-ansible.git
     vi hosts.ini
     ```
 
-    ```
+    ```ini
     [servers]
     172.16.10.1
     172.16.10.2
@@ -431,7 +431,7 @@ analyzing CPU 0:
 ### 单机单 TiKV 实例集群拓扑
 
 | Name | Host IP | Services |
-| ---- | ------- | -------- |
+| :---- | :------- | :-------- |
 | node1 | 172.16.10.1 | PD1, TiDB1 |
 | node2 | 172.16.10.2 | PD2, TiDB2 |
 | node3 | 172.16.10.3 | PD3 |
@@ -474,7 +474,7 @@ analyzing CPU 0:
 以两实例为例：
 
 | Name | Host IP | Services |
-| ---- | ------- | -------- |
+| :---- | :------- | :-------- |
 | node1 | 172.16.10.1 | PD1, TiDB1 |
 | node2 | 172.16.10.2 | PD2, TiDB2 |
 | node3 | 172.16.10.3 | PD3 |
@@ -608,7 +608,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | `enable_firewalld` | 开启防火墙，默认不开启，如需开启，请将[部署建议-网络要求](/dev/how-to/deploy/hardware-recommendations.md#网络要求) 中的端口加入白名单 |
 | `enable_ntpd` | 检测部署目标机器 NTP 服务，默认为 `True`，请勿关闭 |
 | `set_hostname` | 根据 IP 修改部署目标机器主机名，默认为 `False` |
-| `enable_binlog` | 是否部署 pump 并开启 binlog，默认为 `False`，依赖 Kafka 集群，参见 `zookeeper_addrs` 变量 |
+| `enable_binlog` | 是否部署 Pump 并开启 binlog，默认为 `False`，依赖 Kafka 集群，参见 `zookeeper_addrs` 变量 |
 | `zookeeper_addrs` | binlog Kafka 集群的 zookeeper 地址 |
 | `enable_slow_query_log` | TiDB 慢查询日志记录到单独文件 `{{ deploy_dir }}/log/tidb_slow_query.log`，默认为 False，记录到 TiDB 日志 |
 | `deploy_without_tidb` | KV 模式，不部署 TiDB 服务，仅部署 PD、TiKV 及监控服务，请将 `inventory.ini` 文件中 `tidb_servers` 主机组 IP 设置为空。|
@@ -622,7 +622,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 
 ## 第 11 步：部署 TiDB 集群
 
-`ansible-playbook` 执行 Playbook 时，默认并发为 5。部署目标机器较多时，可添加 `-f` 参数指定并发数，例如 `ansible-playbook deploy.yml -f 10`。以下示例本使用 `tidb` 用户作为服务运行用户：
+`ansible-playbook` 执行 Playbook 时，默认并发为 5。部署目标机器较多时，可添加 `-f` 参数指定并发数，例如 `ansible-playbook deploy.yml -f 10`。以下示例使用 `tidb` 用户作为服务运行用户：
 
 1. 在 `tidb-ansible/inventory.ini` 文件中，确认 `ansible_user = tidb`。
 
@@ -849,11 +849,13 @@ process supervision, [systemd, supervise]
 process_supervision = systemd
 ```
 
-TiDB Anisble 在 TiDB v1.0.4 版本之前进程监管方式默认为 `supervise`。之前安装的集群可保持不变，如需更新为 `systemd`，需关闭集群，然后按以下方式变更：
+TiDB Anisble 在 TiDB v1.0.4 版本之前进程监管方式默认为 `supervise`。之前安装的集群可保持不变，如需更新为 `systemd`，需关闭集群，按以下方式变更：
 
-```
-ansible-playbook stop.yml
-ansible-playbook deploy.yml -D
+{{< copyable "shell-regular" >}}
+
+```bash
+ansible-playbook stop.yml && \
+ansible-playbook deploy.yml -D && \
 ansible-playbook start.yml
 ```
 
@@ -914,7 +916,7 @@ ansible-playbook start.yml
 
 ### You need to install jmespath prior to running json_query filter 报错
 
-1. 请参照 [在中控机器上安装 Ansible 及其依赖](#在中控机器上安装-ansible-及其依赖) 在中控机上通过 `pip` 安装 Ansible 及相关依赖的指定版本，默认会安装 `jmespath`。
+1. 请参照[在中控机器上安装 Ansible 及其依赖](#在中控机器上安装-ansible-及其依赖) 在中控机上通过 `pip` 安装 Ansible 及相关依赖的指定版本，默认会安装 `jmespath`。
 
 2. 执行以下命令，验证 `jmespath` 是否安装成功：
 

@@ -152,7 +152,7 @@ category: how-to
 
 1. `ansible-playbook local_prepare.yml` 该 playbook 不需要再执行。
 
-2. 参考[部署任务](/dev/how-to/deploy/orchestrated/ansible.md#部署任务)即可。
+2. 参考[部署任务](/dev/how-to/deploy/orchestrated/ansible.md#第-11-步部署-tidb-集群)即可。
 
 ## 测试集群
 

@@ -106,7 +106,7 @@ git clone  https://github.com/pingcap/tidb-ansible.git
     ansible_user = tidb
     ```
 
-    可参考[如何配置 ssh 互信及 sudo 规则](/dev/how-to/deploy/orchestrated/ansible.md#第-5-步在中控机上配置部署机器-ssh-互信及-sudo-规则)自动配置主机间互信。
+    可参考[如何配置 SSH 互信及 sudo 规则](/dev/how-to/deploy/orchestrated/ansible.md#第-5-步在中控机上配置部署机器-ssh-互信及-sudo-规则)自动配置主机间互信。
 
 2. `process_supervision` 变量请与之前版本保持一致，默认推荐使用 `systemd`。
 
@@ -115,7 +115,7 @@ git clone  https://github.com/pingcap/tidb-ansible.git
     process_supervision = systemd
     ```
 
-    如需变更，可参考 [如何调整进程监管方式从 supervise 到 systemd](/dev/how-to/deploy/orchestrated/ansible.md#如何调整进程监管方式从-supervise-到-systemd)，先使用备份 `/home/tidb/tidb-ansible-bak/` 分支变更进程监管方式再升级。
+    如需变更，可参考[如何调整进程监管方式从 supervise 到 systemd](/dev/how-to/deploy/orchestrated/ansible.md#如何调整进程监管方式从-supervise-到-systemd)，先使用备份 `/home/tidb/tidb-ansible-bak/` 分支变更进程监管方式再升级。
 
 ### 编辑 TiDB 集群组件配置文件
 
