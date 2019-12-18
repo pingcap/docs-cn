@@ -434,7 +434,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         -c int
             the number of the concurrency of the downstream for replication. The bigger the value, the better throughput performance of the concurrency ("1" by default).
         -cache-binlog-count int
-            the limit on the number of binlog items in the cache ("512" by default)
+            the limit on the number of binlog items in the cache ("8" by default)
             If a large single binlog item in the upstream causes OOM in Drainer, try to lower the value of this parameter to reduce memory usage.
         -config string
             the directory of the configuration file. Drainer reads the configuration file first.
