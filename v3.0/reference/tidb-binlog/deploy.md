@@ -144,6 +144,12 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
 1. 获取 initial_commit_ts
 
+    如果从最近的时间点开始同步，从 v3.0.6 开始 inital_commit_ts 使用 `-1` 即可，否则参考下文方法获取一个最新的时间戳。
+
+    如果下游为 MySQL 或 TiDB，为了保证数据的完整性，需要进行全量数据的备份与恢复，必需使用全量备份的时间戳。
+
+    获取一个最新时间戳的方法：
+
     使用 binlogctl 工具生成 Drainer 初次启动所需的 tso 信息，命令：
 
     {{< copyable "shell-regular" >}}
@@ -428,7 +434,7 @@ Drainer="192.168.0.13"
         -c int
             同步下游的并发数，该值设置越高同步的吞吐性能越好 (default 1)
         -cache-binlog-count int
-            缓存中的 binlog 数目限制（默认 512）
+            缓存中的 binlog 数目限制（默认 8）
             如果上游的单个 binlog 较大导致 Drainer 出现 OOM 时，可尝试调小该值减少内存使用
         -config string
             配置文件路径，Drainer 会首先读取配置文件的配置；
@@ -445,8 +451,9 @@ Drainer="192.168.0.13"
         -ignore-schemas string
             db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test")，
             不支持对 ignore schemas 的 table 进行 rename DDL 操作
-        -initial-commit-ts (默认为 0)
+        -initial-commit-ts（默认为 `0`，v3.0.6 开始默认值为 `-1`）
             如果 Drainer 没有相关的断点信息，可以通过该项来设置相关的断点信息
+            该参数值为 -1 时，Drainer 会自动从 PD 获取一个最新的时间戳
         -log-file string
             log 文件路径
         -log-rotate string
@@ -558,8 +565,18 @@ Drainer="192.168.0.13"
         port = 3306
 
         [syncer.to.checkpoint]
-        # 当下游是 MySQL 或 TiDB 时可以开启该选项，以改变保存 checkpoint 的数据库
+        # 当 checkpoint type 是 mysql 或 tidb 时可以开启该选项，以改变保存 checkpoint 的数据库
         # schema = "tidb_binlog"
+        # v3.0.6 开始支持配置 checkpoint 的保存类型。
+        # 目前只支持 mysql 或者 tidb 类型。可以去掉注释来控制 checkpoint 保存的位置。
+        # db-type 默认的 checkpoint 保存方式是:
+        # mysql/tidb -> 对应的下游 mysql/tidb
+        # file/kafka -> file in `data-dir`
+        # type = "mysql"
+        # host = "127.0.0.1"
+        # user = "root"
+        # password = ""
+        # port = 3306
 
         # db-type 设置为 file 时，存放 binlog 文件的目录
         # [syncer.to]
