@@ -212,7 +212,7 @@ In environments of development, testing and production, the requirements on serv
 
         ```toml
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "file", "kafka", and "flash".
+        # Valid values are "mysql", "file", "tidb", and "kafka".
         db-type = "mysql"
 
         # the downstream MySQL protocol database
@@ -239,7 +239,7 @@ In environments of development, testing and production, the requirements on serv
 
         ```toml
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "file", "kafka", and "flash".
+        # Valid values are "mysql", "file", "tidb", and "kafka".
         db-type = "file"
 
         # Uncomment this if you want to use "file" as "db-type".
@@ -443,7 +443,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
             the directory where the Drainer data is stored ("data.drainer" by default)
         -dest-db-type string
             the downstream service type of Drainer
-            The value can be "mysql", "tidb", "kafka", "file", and "flash". ("mysql" by default)
+            The value can be "mysql", "tidb", "kafka", and "file". ("mysql" by default)
         -detect-interval int
             the interval of checking the online Pump in PD ("10" by default, in seconds)
         -disable-detect
@@ -535,7 +535,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         safe-mode = false
 
         # the downstream service type of Drainer ("mysql" by default)
-        # Valid value: "mysql", "kafka", "file", "flash"
+        # Valid value: "mysql", "tidb", "file", and "kafka".
         db-type = "mysql"
 
         # If `commit ts` of the transaction is in the list, the transaction is filtered and not replicated to the downstream.

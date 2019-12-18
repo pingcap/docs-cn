@@ -241,12 +241,12 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
         > **Note:**
         >
         > Name the configuration file as `alias_drainer.toml`. Otherwise, the customized configuration file cannot be found during the deployment process.
-        
+
         Set `db-type` to `mysql` and configure the downstream MySQL information:
 
         ```toml
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "pb", "kafka", and "flash".
+        # Valid values are "mysql", "file", "tidb", and "kafka".
         db-type = "mysql"
 
         # the downstream MySQL protocol database
@@ -255,9 +255,6 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
         user = "root"
         password = "123456"
         port = 3306
-        # Time and size limits for flash batch write
-        # time-limit = "30s"
-        # size-limit = "100000"
         ```
 
     - Assume that the downstream is `pb`:
@@ -272,12 +269,12 @@ It is recommended to deploy TiDB-Binlog using TiDB-Ansible. If you just want to 
 
         ```toml
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "pb", "kafka", and "flash".
+        # Valid values are "mysql", "tidb", "file", and "kafka".
         db-type = "pb"
 
         # Uncomment this if you want to use `pb` or `sql` as `db-type`.
-        # `Compress` compresses the output file, like the `pb` and `sql` file. Now it supports the `gzip` algorithm only. 
-        # The value can be `gzip`. Leave it empty to disable compression. 
+        # `Compress` compresses the output file, like the `pb` and `sql` file. Now it supports the `gzip` algorithm only.
+        # The value can be `gzip`. Leave it empty to disable compression.
         [syncer.to]
         compression = ""
         # default data directory: "{{ deploy_dir }}/data.drainer"
@@ -429,13 +426,13 @@ The following part shows how to use Pump and Drainer based on the nodes above.
             the directory where the Drainer data is stored ("data.drainer" by default)
         -dest-db-type string
             the downstream service type of Drainer
-            The value can be "mysql", "kafka", "pb", and "flash". ("mysql" by default)
+            The value can be "mysql", "tidb", "kafka", and "file". ("mysql" by default)
         -detect-interval int
             the interval of checking the online Pump in PD (10 by default, in seconds)
         -disable-detect
             whether to disable the conflict monitoring
         -disable-dispatch
-            whether to disable the SQL feature of splitting a single binlog file. If it is set to "true", each binlog file is restored to a single transaction for replication based on the order of binlogs. 
+            whether to disable the SQL feature of splitting a single binlog file. If it is set to "true", each binlog file is restored to a single transaction for replication based on the order of binlogs.
             It is set to "False", when the downstream is MySQL.
         -ignore-schemas string
             the db filter list ("INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test" by default)
@@ -501,7 +498,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         disable-dispatch = false
 
         # the downstream service type of Drainer ("mysql" by default)
-        # Valid value: "mysql", "kafka", "pb", "flash"
+        # Valid value: "mysql", "tidb", "file", and "kafka".
         db-type = "mysql"
 
         # the db filter list ("INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test" by default)
