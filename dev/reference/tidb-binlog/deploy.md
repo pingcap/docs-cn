@@ -189,7 +189,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
         ```toml
         [syncer]
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "file", "kafka", "flash".
+        # Valid values are "mysql", "file", "tidb", "kafka".
         db-type = "mysql"
 
         # the downstream MySQL protocol database
@@ -217,7 +217,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
         ```toml
         [syncer]
         # downstream storage, equal to --dest-db-type
-        # Valid values are "mysql", "file", "kafka", "flash".
+        # Valid values are "mysql", "file", "tidb", "kafka".
         db-type = "file"
 
         # Uncomment this if you want to use "file" as "db-type".
@@ -421,7 +421,7 @@ Drainer="192.168.0.13"
         -data-dir string
             Drainer 数据存储位置路径 (默认 "data.drainer")
         -dest-db-type string
-            Drainer 下游服务类型 (默认为 mysql，支持 tidb、kafka、file、flash)
+            Drainer 下游服务类型 (默认为 mysql，支持 tidb、kafka、file)
         -detect-interval int
             向 PD 查询在线 Pump 的时间间隔 (默认 10，单位 秒)
         -disable-detect
@@ -510,7 +510,7 @@ Drainer="192.168.0.13"
         safe-mode = false
 
         # Drainer 下游服务类型（默认为 mysql）
-        # 参数有效值为 "mysql"，"file"，"kafka"，"flash"
+        # 参数有效值为 "mysql"，"tidb"，"file"，"kafka"
         db-type = "mysql"
 
         # 事务的 commit ts 若在该列表中，则该事务将被过滤，不会同步至下游
