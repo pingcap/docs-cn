@@ -26,7 +26,7 @@ aliases: ['/docs-cn/dev/how-to/maintain/backup-and-restore/']
 {{< copyable "shell-regular" >}}
 
 ```bash
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz &&
+wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz && \
 wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
 ```
 
@@ -43,7 +43,7 @@ sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
 {{< copyable "shell-regular" >}}
 
 ```bash
-tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz &&
+tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz && \
 cd tidb-enterprise-tools-latest-linux-amd64
 ```
 
