@@ -156,7 +156,7 @@ git clone https://github.com/pingcap/tidb-ansible.git
 
 ## 第 4 步：在中控机器上安装 Ansible 及其依赖
 
-以 `tidb` 用户登录中控机，请务必按以下方式通过 `pip` 安装 Ansible 及其相关依赖的指定版本，否则会有兼容问题。目前，TiDB release-2.0、release-2.1、release-3.0 以及最新开发版本兼容 Ansible 2.4 及 Ansible 2.5。
+以 `tidb` 用户登录中控机，请务必按以下方式通过 `pip` 安装 Ansible 及其相关依赖的指定版本，否则会有兼容问题。目前，TiDB release-2.0、release-2.1、release-3.0 以及最新开发版本兼容 Ansible 2.4 ~ 2.7.11 (2.4 ≤ Ansible ≤ 2.7.11)。
 
 1. 在中控机器上安装 Ansible 及其依赖。
 
@@ -237,7 +237,7 @@ ansible-playbook -i hosts.ini deploy_ntp.yml -u tidb -b
 
 该步骤将在部署目标机器上使用系统自带软件源联网安装并启动 NTP 服务，服务使用安装包默认的 NTP server 列表，见配置文件 `/etc/ntp.conf` 中 server 参数。如果使用默认的 NTP server，你的机器需要连接外网。
 
-为了让 NTP 尽快开始同步，启动 NTP 服务前，系统会执行 `ntpdate` 命令，通过轮询一次 `hosts.ini` 文件中的 `ntp_server` 来设置本地日期与时间。默认的服务器为 `pool.ntp.org`，也可替换为你的 NTP server。
+为了让 NTP 尽快开始同步，启动 NTP 服务前，系统会执行 `ntpdate` 命令，与用户在 `hosts.ini` 文件中指定的 `ntp_server` 同步日期与时间。默认的服务器为 `pool.ntp.org`，也可替换为你的 NTP server。
 
 ## 第 7 步：在部署目标机器上配置 CPUfreq 调节器模式
 
