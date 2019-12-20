@@ -623,7 +623,7 @@ SELECT store_id, COUNT(department_id) AS c
 
 ### 分区键，主键和唯一键
 
-本节讨论分区键，主键和唯一键之间的关系。一句话总结它们之间的关系要满足的规则：**分区表的每个唯一列，必须包含分区表达式中用到的所有列**。
+本节讨论分区键，主键和唯一键之间的关系。一句话总结它们之间的关系要满足的规则：**分区表的每个唯一键，必须包含分区表达式中用到的所有列**。
 
 > every unique key on the table must use every column in the table's partitioning expression.
 

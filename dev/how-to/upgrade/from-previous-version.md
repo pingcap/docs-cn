@@ -30,7 +30,7 @@ aliases: ['/docs-cn/dev/how-to/upgrade/to-tidb-3.0/','/docs-cn/dev/how-to/upgrad
 >
 > 如果已经安装了 Ansible 及其依赖，可跳过该步骤。
 
-TiDB Ansible master 版本依赖 2.4.2 及以上但不高于 2.7.11 的 Ansible 版本（`2.4.2 ≦ ansible ≦ 2.7.11`，建议 2.7.11 版本），另依赖 Python 模块：`jinja2 ≧ 2.9.6` 和 `jmespath ≧ 0.9.0`。为方便管理依赖，建议使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](/dev/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](/dev/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-ansible-及其依赖)。
+TiDB Ansible 最新开发版依赖 2.4.2 及以上但不高于 2.7.11 的 Ansible 版本（`2.4.2 ≦ ansible ≦ 2.7.11`，建议 2.7.11 版本），另依赖 Python 模块：`jinja2 ≧ 2.9.6` 和 `jmespath ≧ 0.9.0`。为方便管理依赖，建议使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](/dev/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](/dev/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-ansible-及其依赖)。
 
 安装完成后，可通过以下命令查看版本：
 
@@ -96,7 +96,7 @@ git clone  https://github.com/pingcap/tidb-ansible.git
 
 编辑 `inventory.ini` 文件，IP 信息参照备份文件 `/home/tidb/tidb-ansible-bak/inventory.ini`。
 
-以下变量配置，需要重点确认，变量含义可参考 [inventory.ini 变量调整](/dev/how-to/deploy/orchestrated/ansible.md#其他变量调整)。
+以下变量配置，需要重点确认，变量含义可参考 [inventory.ini 变量调整](/dev/how-to/deploy/orchestrated/ansible.md#调整其它变量可选)。
 
 1. 请确认 `ansible_user` 配置的是普通用户。为统一权限管理，不再支持使用 root 用户远程安装。默认配置中使用 `tidb` 用户作为 SSH 远程用户及程序运行用户。
 
@@ -106,7 +106,7 @@ git clone  https://github.com/pingcap/tidb-ansible.git
     ansible_user = tidb
     ```
 
-    可参考[如何配置 ssh 互信及 sudo 规则](/dev/how-to/deploy/orchestrated/ansible.md#在中控机上配置部署机器-ssh-互信及-sudo-规则)自动配置主机间互信。
+    可参考[如何配置 SSH 互信及 sudo 规则](/dev/how-to/deploy/orchestrated/ansible.md#第-5-步在中控机上配置部署机器-ssh-互信及-sudo-规则)自动配置主机间互信。
 
 2. `process_supervision` 变量请与之前版本保持一致，默认推荐使用 `systemd`。
 
@@ -115,7 +115,7 @@ git clone  https://github.com/pingcap/tidb-ansible.git
     process_supervision = systemd
     ```
 
-    如需变更，可参考 [如何调整进程监管方式从 supervise 到 systemd](/dev/how-to/deploy/orchestrated/ansible.md#如何调整进程监管方式从-supervise-到-systemd)，先使用备份 `/home/tidb/tidb-ansible-bak/` 分支变更进程监管方式再升级。
+    如需变更，可参考[如何调整进程监管方式从 supervise 到 systemd](/dev/how-to/deploy/orchestrated/ansible.md#如何调整进程监管方式从-supervise-到-systemd)，先使用备份 `/home/tidb/tidb-ansible-bak/` 分支变更进程监管方式再升级。
 
 ### 编辑 TiDB 集群组件配置文件
 
@@ -169,7 +169,7 @@ git clone  https://github.com/pingcap/tidb-ansible.git
 
     > **注意：**
     >
-    > 最新 latest 版本单机多 TiKV 实例（进程）情况下，需要添加 `tikv_status_port` 参数。
+    > 最新开发版单机多 TiKV 实例（进程）情况下，需要添加 `tikv_status_port` 参数。
     >
     > 配置前，注意检查端口是否有冲突。
 
@@ -185,13 +185,23 @@ ansible-playbook local_prepare.yml
 
 ## 滚动升级 TiDB 集群组件
 
-- 如果当前集群版本 < 3.0 并且 `process_supervision` 变量使用默认的 `systemd` 参数，则通过 `excessive_rolling_update.yml` 滚动升级 TiDB 集群。
+- 如果 `process_supervision` 变量使用默认的 `systemd` 参数：
 
-    {{< copyable "shell-regular" >}}
+    - 当前集群版本 < 3.0，则通过 `excessive_rolling_update.yml` 滚动升级 TiDB 集群。
 
-    ```bash
-    ansible-playbook excessive_rolling_update.yml
-    ```
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook excessive_rolling_update.yml
+        ```
+
+    - 当前集群版本 ≥ 3.0.0，滚动升级及日常滚动重启 TiDB 集群，使用 `rolling_update.yml`。
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook rolling_update.yml
+        ```
 
 - 如果 `process_supervision` 变量使用的是 `supervise` 参数，无论当前集群为哪个版本，均通过 `rolling_update.yml` 来滚动升级 TiDB 集群。
 
@@ -200,13 +210,6 @@ ansible-playbook local_prepare.yml
     ```bash
     ansible-playbook rolling_update.yml
     ```
-
-> **注意：**
->
-> 为优化 TiDB 集群组件的运维管理，从 TiDB 3.0.0 版本开始对 `systemd` 模式下的 `PD service` 名称进行了调整：
->
-> - 如果从 3.0.0 以前的版本升级，需要使用 `excessive_rolling_update.yml` 来过渡。
-> - 对于 TiDB 3.0.0 及之后版本的集群，滚动升级及日常滚动重启 TiDB 集群，仍旧统一使用 `rolling_update.yml` 操作。
 
 ## 滚动升级 TiDB 监控组件
 
