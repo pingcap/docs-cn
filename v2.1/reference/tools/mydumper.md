@@ -18,15 +18,11 @@ Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/v2.1/
 
 + 使用 TiDB 的隐藏列 `_tidb_rowid` 优化了单表内数据的并发导出性能。
 
-## Mydumper 使用
+## 基本用法
 
 ### 新添参数
 
-```bash
-  -z, --tidb-snapshot: 设置 tidb_snapshot 用于备份
-                       默认值：当前 TSO（SHOW MASTER STATUS 输出的 Position 字段)
-                       此参数可设为 TSO 或有效的 datetime 时间，例如：-z "2016-10-08 16:45:26"
-```
+- `-z` 或 `--tidb-snapshot`：设置 `tidb_snapshot` 用于备份。默认值为当前 TSO（`SHOW MASTER STATUS` 输出的 `Position` 字段）。此参数可设为 TSO 或有效的 `datetime` 时间，例如：`-z "2016-10-08 16:45:26"`。
 
 ### 需要的权限
 
@@ -44,6 +40,39 @@ Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/v2.1/
 ```bash
 ./bin/mydumper -h 127.0.0.1 -u root -P 4000
 ```
+
+## 表内并发 Dump
+
+### 原理
+
+Mydumper 首先计算 `min(_tidb_rowid)` 和 `max(_tidb_rowid)`，然后按照 `-r` 设定的值对表划分 chunks，将 chunks 分配到不同线程并发导出。
+
+### 并发 Dump 相关参数
+
+- `-t` 或 `--threads`：并发线程数，默认值为 `4`。
+- `-r` 或 `--rows`：每个 chunks 包含的最大行数。设置该值后，Mydumper 将会忽略 `--chunk-filesize` 值。
+
+### 示例
+
+以下是一条完整的 Mydumper 命令：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+./bin/mydumper -h 127.0.0.1 -u root -P 4000 -r 10000 -t 4
+```
+
+### 支持 `_tidb_rowid` 索引的 TiDB 版本
+
+由于表内并发使用 TiDB 的隐藏列 `_tidb_rowid`，数据库需要支持 `_tidb_rowid` 索引才能发挥并发导出的优势。
+
+以下 TiDB 版本支持 `_tidb_rowid` 索引：
+
+- v2.1.3 及以上
+
+### 性能评估
+
+在 Dump 操作前需要进行性能评估。由于并发 Scan 操作对 TiDB、TiKV 集群都会产生一定压力，所以需要评估与测试 Dump 操作对数据库集群和业务的影响。
 
 ## FAQ
 
