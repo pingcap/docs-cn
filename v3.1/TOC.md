@@ -410,6 +410,8 @@
 - [Adopters](/v3.1/adopters.md)
 - [Roadmap](/v3.1/roadmap.md)
 + [Releases](/v3.1/releases/rn.md)
+  + v3.1
+    - [3.1.0-beta](/v3.1/releases/3.1.0-beta.md)
   + v3.0
     - [3.0.7](/v3.1/releases/3.0.7.md)
     - [3.0.6](/v3.1/releases/3.0.6.md)
