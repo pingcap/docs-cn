@@ -63,7 +63,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
           # gc: 7
         ```
 
-        请确保部署目录有足够空间存储 binlog，详见：[部署目录调整](/v2.1/how-to/deploy/orchestrated/ansible.md#部署目录调整)，也可为 Pump 设置单独的部署目录。
+        请确保部署目录有足够空间存储 binlog，详见[调整部署目录](/v2.1/how-to/deploy/orchestrated/ansible.md#调整部署目录)，也可为 Pump 设置单独的部署目录。
 
         ```ini
         ## Binlog Part
