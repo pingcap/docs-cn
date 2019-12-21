@@ -7,7 +7,7 @@ aliases: ['/docs/dev/how-to/upgrade/rolling-updates-with-ansible/']
 
 # TiDB Latest Development Version Upgrade Guide
 
-This document is targeted for users who want to upgrade from TiDB 2.0, 2.1, or 3.0 versions to the latest development version (`latest`), or from an earlier development version to the latest development version. The latest development version is compatible with [TiDB Binlog of the cluster version](/dev/reference/tidb-binlog/overview.md).
+This document is targeted for users who want to upgrade from TiDB 2.0, 2.1, 3.0, or 3.1 versions to the latest development version (`latest`), or from an earlier development version to the latest development version. The latest development version is compatible with [TiDB Binlog of the cluster version](/dev/reference/tidb-binlog/overview.md).
 
 > **Warning:**
 >
