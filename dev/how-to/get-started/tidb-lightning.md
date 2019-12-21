@@ -79,7 +79,7 @@ Download the TiDB Lightning installation package from the following link:
 
     [server]
     # The listening address of tikv-importer. tidb-lightning connects to this address for data write.
-    addr = "0.0.0.0:8287"
+    addr = "192.168.20.10:8287"
 
     [import]
     # The directory of the engine file.

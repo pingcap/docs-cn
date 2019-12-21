@@ -186,8 +186,10 @@ You can find deployment instructions in [TiDB Quick Start Guide](https://pingcap
 
 Follow the link to download the TiDB Lightning package (choose the same version as that of the TiDB cluster):
 
-- [**v3.0**](/v3.1/reference/tools/download.md#tidb-lightning)
-- [Latest unstable version](https://pingcap.com/docs/dev/reference/tools/download/#tidb-lightning)
+- [v2.1](https://pingcap.com/docs-cn/v2.1/reference/tools/download/#tidb-lightning)
+- [v3.0](https://pingcap.com/docs-cn/v3.0/reference/tools/download/#tidb-lightning)
+- [v3.1](/v3.1/reference/tools/download.md#tidb-lightning)
+- [Latest development version (unstable)](https://pingcap.com/docs/dev/reference/tools/download/#tidb-lightning)
 
 #### Step 3: Start `tikv-importer`
 
@@ -206,7 +208,7 @@ Follow the link to download the TiDB Lightning package (choose the same version 
     [server]
     # The listening address of tikv-importer. tidb-lightning needs to connect to
     # this address to write data.
-    addr = "0.0.0.0:8287"
+    addr = "192.168.20.10:8287"
     # Size of the thread pool for the gRPC server.
     grpc-concurrency = 16
 

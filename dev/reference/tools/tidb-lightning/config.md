@@ -230,7 +230,7 @@ log-level = "info"
 [server]
 # The listening address of tikv-importer. tidb-lightning needs to connect to
 # this address to write data.
-addr = "0.0.0.0:8287"
+addr = "192.168.20.10:8287"
 # Size of the thread pool for the gRPC server.
 grpc-concurrency = 16
 
