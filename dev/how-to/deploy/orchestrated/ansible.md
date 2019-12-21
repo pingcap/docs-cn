@@ -156,7 +156,7 @@ git clone https://github.com/pingcap/tidb-ansible.git
 
 ## 第 4 步：在中控机器上安装 Ansible 及其依赖
 
-以 `tidb` 用户登录中控机，请务必按以下方式通过 `pip` 安装 Ansible 及其相关依赖的指定版本，否则会有兼容问题。目前，TiDB release-2.0、release-2.1、release-3.0 以及最新开发版本兼容 Ansible 2.4 ~ 2.7.11 (2.4 ≤ Ansible ≤ 2.7.11)。
+以 `tidb` 用户登录中控机，请务必按以下方式通过 `pip` 安装 Ansible 及其相关依赖的指定版本，否则会有兼容问题。目前，TiDB release-2.0、release-2.1、release-3.0、release-3.1 以及最新开发版本兼容 Ansible 2.4 ~ 2.7.11 (2.4 ≤ Ansible ≤ 2.7.11)。
 
 1. 在中控机器上安装 Ansible 及其依赖。
 
