@@ -100,7 +100,7 @@ security 分组包含 `ssl-ca`, `ssl-cert`, `ssl-key` 三个配置，分别为�
 
 #### stop-write-at-available-space
 
-可用存储空间低于指定值时不再接收 Binlog 写入请求，可以用形如 `900 MB`，`5 GB` 的格式指定大小。
+可用存储空间低于指定值时不再接收 Binlog 写入请求，可以用形如 `900 MB`，`5 GB`，`12 GiB` 的格式指定大小。
 如果集群中 Pump 节点多于一个，那么在一个 Pump 因为空间不足而拒绝写入时，TiDB 端会自动写入到其他 Pump 实例。
 
 默认：`10 GiB`
