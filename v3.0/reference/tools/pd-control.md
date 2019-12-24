@@ -9,7 +9,7 @@ aliases: ['/docs/tools/pd-control/']
 
 As a command line tool of PD, PD Control obtains the state information of the cluster and tunes the cluster.
 
-## Source code compiling
+## Compile from source code
 
 1. [Go](https://golang.org/) Version 1.9 or later
 2. In the root directory of the [PD project](https://github.com/pingcap/pd), use the `make` command to compile and generate `bin/pd-ctl`
@@ -17,6 +17,18 @@ As a command line tool of PD, PD Control obtains the state information of the cl
 > **Note:**
 >
 > Generally, you don't need to compile source code as the PD Control tool already exists in the released Binary or Docker. However, dev users can refer to the above instruction for compiling source code.
+
+## Download TiDB installation package
+
+If you want to download the latest version of `pd-ctl`, directly download the TiDB package, because `pd-ctl` is included in the TiDB package.
+
+| Package download link | OS | Architecture | SHA256 checksum |
+|:---|:---|:---|:---|
+| `http://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux | amd64 | `http://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
+
+> **Note:**
+>
+> `{version}` indicates the version number of TiDB. For example, if `{version}` is `v3.0.7`, the package download link is `http://download.pingcap.org/tidb-v3.0.7-linux-amd64.tar.gz`. You can also download the latest unpublished version by replacing `{version}` with `latest`.
 
 ## Usage
 
