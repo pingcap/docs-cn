@@ -156,7 +156,7 @@ git clone https://github.com/pingcap/tidb-ansible.git
 
 ## 第 4 步：在中控机器上安装 Ansible 及其依赖
 
-以 `tidb` 用户登录中控机，请务必按以下方式通过 `pip` 安装 Ansible 及其相关依赖的指定版本，否则会有兼容问题。目前，TiDB release-2.0、release-2.1、release-3.0 以及最新开发版本兼容 Ansible 2.4 ~ 2.7.11 (2.4 ≤ Ansible ≤ 2.7.11)。
+以 `tidb` 用户登录中控机，请务必按以下方式通过 `pip` 安装 Ansible 及其相关依赖的指定版本，否则会有兼容问题。目前，TiDB release-2.0、release-2.1、release-3.0、release-3.1 以及最新开发版本兼容 Ansible 2.4 ~ 2.7.11 (2.4 ≤ Ansible ≤ 2.7.11)。
 
 1. 在中控机器上安装 Ansible 及其依赖。
 
@@ -342,7 +342,7 @@ analyzing CPU 0:
     parted -s -a optimal /dev/nvme0n1 mklabel gpt -- mkpart primary ext4 1 -1
     ```
 
-    > **注意:**
+    > **注意：**
     >
     > 使用 `lsblk` 命令查看分区的设备号：对于 nvme 磁盘，生成的分区设备号一般为 `nvme0n1p1`；对于普通磁盘（例如 `/dev/sdb`），生成的的分区设备号一般为 `sdb1`。
 
