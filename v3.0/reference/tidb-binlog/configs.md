@@ -76,7 +76,23 @@ Pump 节点 ID，用于在集群中识别这个进程。
 
 ### security
 
-security 分组包含 `ssl-ca`, `ssl-cert`, `ssl-key` 三个配置，分别为三个文件路径，用于加密 Pump 与 PD 之间的连接。
+#### ssl-ca
+
+包含可信 SSL CA 列表的文件路径，例如 `/path/to/ca.pem`。
+
+默认：`""`
+
+#### ssl-cert
+
+包含 PEM 格式编码的 X509 证书文件路径，例如 `/path/to/pump.pem`。
+
+默认：`""`
+
+#### ssl-key
+
+包含 PEM 格式编码的 X509 Key 文件路径，例如 `/path/to/pump-key.pem`。
+
+默认：`""`
 
 ### storage
 
@@ -195,7 +211,23 @@ Pump 与 Drainer 间的数据传输用何种压缩算法，目前仅支持一种
 
 ### security
 
-security 分组包含 `ssl-ca`, `ssl-cert`, `ssl-key` 三个配置，分别为三个文件路径，用于加密 Drainer 与 PD 之间的连接。
+#### ssl-ca
+
+包含可信 SSL CA 列表的文件路径，例如 `/path/to/ca.pem`。
+
+默认：`""`
+
+#### ssl-cert
+
+包含 PEM 格式编码的 X509 证书文件路径，例如 `/path/to/drainer.pem`。
+
+默认：`""`
+
+#### ssl-key
+
+包含 PEM 格式编码的 X509 Key 文件路径，例如 `/path/to/drainer-key.pem`。
+
+默认：`""`
 
 ### syncer
 
