@@ -16,6 +16,37 @@ This document introduces how to upgrade your Data Migration (DM) version to an i
 > - Unless otherwise stated, all the following upgrade examples assume that all the data replication tasks have been stopped before the upgrade and all the replication tasks are restarted manually after DM upgrade is finished.
 > - The following shows the upgrade procedure of DM versions in reverse chronological order.
 
+## Upgrade to v1.0.3
+
+### Version information
+
+```bash
+Release Version: v1.0.3
+Git Commit Hash: 41426af6cffcff9a325697a3bdebeadc9baa8aa6
+Git Branch: release-1.0
+UTC Build Time: 2019-12-13 07:04:53
+Go Version: go version go1.13 linux/amd64
+```
+
+### Main changes
+
+- Add the command mode in dmctl
+- Support replicating the `ALTER DATABASE` DDL statement
+- Optimize the error message output
+- Fix the panic-causing data race issue occurred when the full import unit pauses or exits
+- Fix the issue that `stop-task` and `pause-task` might not take effect when retrying SQL operations to the downstream
+
+### Upgrade operation example
+
+1. Download the new version of DM-Ansible, and confirm that there is `dm_version = v1.0.3` in the `inventory.ini` file.
+2. Run `ansible-playbook local_prepare.yml` to download the new DM binary file to the local disk.
+3. Run `ansible-playbook rolling_update.yml` to perform a rolling update for the DM cluster components.
+4. Run `ansible-playbook rolling_update_monitor.yml` to perform a rolling update for the DM monitoring components.
+
+> **Note:**
+>
+> When you upgrade DM to the 1.0.3 version, you must make sure that all DM cluster components (dmctl, DM-master, and DM-worker) are upgraded. Do not upgrade only a part of the components. Otherwise, an error might occur.
+
 ## Upgrade to v1.0.2
 
 ### Version information
