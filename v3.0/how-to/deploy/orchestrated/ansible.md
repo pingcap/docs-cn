@@ -180,7 +180,7 @@ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
     ```
 
     ```
-    ansible 2.5.0
+    ansible 2.7.11
     ```
 
 ## 第 5 步：在中控机上配置部署机器 SSH 互信及 sudo 规则
