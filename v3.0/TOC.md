@@ -332,6 +332,7 @@
       + 版本发布历史
         + v1.0
           - [1.0.2](/v3.0/reference/tools/data-migration/releases/1.0.2.md)
+          - [1.0.3](/v3.0/reference/tools/data-migration/releases/1.0.3.md)
       - [TiDB DM 术语表](/v3.0/reference/tools/data-migration/glossary.md)
     + TiDB Lightning
       - [概述](/v3.0/reference/tools/tidb-lightning/overview.md)
