@@ -66,7 +66,7 @@ mysql> EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 0
 4 rows in set (0.01 sec)
 ```
 
-In the revisited `EXPLAIN` you can see the count of rows scanned has reduced via the use of an index. On a reference system, the query execution time reduced from 50.41 seconds to 0.00 seconds!
+In the revisited `EXPLAIN` you can see the count of rows scanned has reduced via the use of an index. On a reference system, the query execution time reduced from 50.41 seconds to 0.01 seconds!
 
 ## <span id="explain-analyze-output-format">`EXPLAIN ANALYZE` output format</span>
 
