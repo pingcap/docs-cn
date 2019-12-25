@@ -45,7 +45,7 @@ TiDB 集群有 PD、TiKV 和 TiDB 三个组件，它们的故障转移策略有�
 
 ### TiKV 故障转移策略
 
-当一个 TiKV 节点无法正常工作后，该节点的状态会变为 `Disconnected`，30 分钟（通过配置 `pd.config` [schedule] max-store-down-time = "30m"来配置）后会变成 `Down` 状态，TiDB Operator 会在此基础上再等待 5 分钟（`tikvFailoverPeriod` 可配置），如果该 TiKV 节点仍不能恢复，就会新起一个 TiKV 节点。待挂掉的 TiKV 节点恢复后，TiDB Operator 不会自动删除新起的节点，用户需要手动减少 TiKV 节点，恢复成原来的节点数。操作方法是将该 TiKV 节点从 `TidbCluster` 对象的 `status.tikv.failureStores` 字段中删除：
+当一个 TiKV 节点无法正常工作后，该节点的状态会变为 `Disconnected`，30 分钟（通过 `pd.config` 文件中 `[schedule]` 部分的 `max-store-down-time = "30m"` 来配置）后会变成 `Down` 状态，TiDB Operator 会在此基础上再等待 5 分钟（`tikvFailoverPeriod` 可配置），如果该 TiKV 节点仍不能恢复，就会新起一个 TiKV 节点。待挂掉的 TiKV 节点恢复后，TiDB Operator 不会自动删除新起的节点，用户需要手动减少 TiKV 节点，恢复成原来的节点数。操作方法是将该 TiKV 节点从 `TidbCluster` 对象的 `status.tikv.failureStores` 字段中删除：
 
 {{< copyable "shell-regular" >}}
 
