@@ -133,9 +133,9 @@ global:
   scrape_interval:     15s  # By default, scrape targets every 15 seconds.
   evaluation_interval: 15s  # By default, scrape targets every 15 seconds.
   # scrape_timeout is set to the global default value (10s).
-    external_labels:
-      cluster: 'test-cluster'
-      monitor: "prometheus"
+  external_labels:
+    cluster: 'test-cluster'
+    monitor: "prometheus"
 
 scrape_configs:
   - job_name: 'overwritten-nodes'
