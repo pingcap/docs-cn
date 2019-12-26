@@ -213,6 +213,10 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
         {deploy_dir}/scripts/start_pd.sh
         ```
 
+        > **注意：**
+        >
+        > 启动前，需要通过 [PD Control](/v3.0/reference/tools/pd-control.md) 工具确认当前 PD `health` 状态均为 "true"，否则启动新 PD 会失败，同时日志中会报错 `["join meet error"] [error="etcdserver: unhealthy cluster"]`。
+
     4. 使用 `pd-ctl` 检查新节点是否添加成功：
 
         {{< copyable "shell-regular" >}}
