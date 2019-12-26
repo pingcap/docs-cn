@@ -66,6 +66,9 @@ QUERY_SAMPLE_TEXT: select * from employee where id=3100
 | LAST_SEEN         | 这类 SQL 最后一次执行的时间 |
 | QUERY_SAMPLE_TEXT | 这类 SQL 首次出现的原 SQL 语句 |
 
+> **注意：**
+> 在 TiDB 中，该表中字段的时间单位是 ns，而 MySQL 中的时间单位是 ps，这一点不一致。
+
 ## 排查示例
 
 下面用两个示例问题演示如何利用 statement summary 来排查。
