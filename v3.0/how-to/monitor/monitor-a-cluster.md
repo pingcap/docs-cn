@@ -161,9 +161,9 @@ global:
   scrape_interval:     15s
   evaluation_interval: 15s
   # scrape_timeout 设置为全局默认值 (10s)
-    external_labels:
-      cluster: 'test-cluster'
-      monitor: "prometheus"
+  external_labels:
+    cluster: 'test-cluster'
+    monitor: "prometheus"
 
 scrape_configs:
   - job_name: 'overwritten-nodes'
