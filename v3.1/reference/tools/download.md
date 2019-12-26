@@ -24,7 +24,7 @@ category: reference
 
 ##  快速备份和恢复（BR）和 TiDB Lightning
 
-使用下表中的链接下载 [TiDB Lightning](/v3.1/reference/tools/tidb-lightning/overview.md) 和 [BR](/v3.1/how-to/maintain/backup-and-restore/br.md)：
+使用下表中的链接下载 [TiDB Lightning](/v3.1/reference/tools/tidb-lightning/overview.md) 和 [快速备份和恢复（BR）](/v3.1/how-to/maintain/backup-and-restore/br.md)：
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
