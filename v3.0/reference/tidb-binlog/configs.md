@@ -8,6 +8,8 @@ aliases: ['/docs-cn/tools/binlog/overview/','/docs-cn/tools/tidb-binlog-cluster/
 
 ## Pump
 
+本节将逐个介绍 Pump 的配置项，完整的配置文件示例可以在[这里](https://github.com/pingcap/tidb-binlog/blob/release-3.0/cmd/pump/pump.toml)看到。
+
 ### addr
 
 HTTP API 监听的地址，格式为 `host:port`。
@@ -139,6 +141,8 @@ Pump 节点 ID，用于在集群中识别这个进程。
 配置具体含义可在 [GoLevelDB 文档](https://godoc.org/github.com/syndtr/goleveldb/leveldb/opt#Options)中查看，这里不再重复。
 
 ## Drainer
+
+本节将逐个介绍 Drainer 的配置项，完整的配置文件示例可以在[这里](https://github.com/pingcap/tidb-binlog/blob/release-3.0/cmd/drainer/drainer.toml)看到。
 
 ### addr
 
