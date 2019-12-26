@@ -22,9 +22,9 @@ category: reference
 >
 > 下载链接中的 `{version}` 为 TiDB 的版本号。例如，`v3.0.5` 版本的下载链接为 `http://download.pingcap.org/tidb-v3.0.5-linux-amd64.tar.gz`。也可以使用 `latest` 替代 `{version}` 来下载最新的未发布版本。
 
-## TiDB Lightning
+## TiDB Lightning 和 BR
 
-使用下表中的链接下载 [TiDB Lightning](/v3.1/reference/tools/tidb-lightning/overview.md)：
+使用下表中的链接下载 [TiDB Lightning](/v3.1/reference/tools/tidb-lightning/overview.md) 和 [BR](/v3.1/how-to/maintain/backup-and-restore/br.md)：
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
@@ -33,6 +33,8 @@ category: reference
 > **注意：**
 >
 > 下载链接中的 `{version}` 为 TiDB Lightning 的版本号。例如，`v3.0.5` 版本的下载链接为 `http://download.pingcap.org/tidb-toolkit-v3.0.5-linux-amd64.tar.gz`。也可以使用 `latest` 替代 `{version}` 来下载最新的未发布版本。
+>
+> 下载包在 v3.1.0-beta 以及之后的版本里包含 BR。
 
 ## TiDB DM (Data Migration)
 
