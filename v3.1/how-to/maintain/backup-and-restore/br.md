@@ -6,7 +6,7 @@ category: how-to
 
 # 使用 BR 进行备份与恢复
 
-Backup & Restore（以下简称 BR）是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 Mydumper/Loader，BR 更适合大数据量的场景。本文档介绍了 BR 的命令行描述、详细的备份恢复用例、最佳实践、使用限制以及工作原理。
+Backup & Restore（以下简称 BR）是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 [`mydumper`/`loader`](/v3.1/how-to/maintain/backup-and-restore/mydumper-loader.md)，BR 更适合大数据量的场景。本文档介绍了 BR 的使用限制、工作原理、命令行描述、备份恢复用例以及最佳实践。
 
 ## 使用限制
 
@@ -21,7 +21,7 @@ Backup & Restore（以下简称 BR）是 TiDB 分布式备份恢复的命令行�
 
 ## 工作原理
 
-BR 是分布式备份恢复的工具，它将备份和恢复操作命令下发到各个 TiKV 节点。TiKV 收到命令后执行相应的备份和恢复操作。在一次备份或恢复中，各个 TiKV 节点都会有一个项目的备份路径，TiKV 备份时产生的备份文件将会保存在该路径下，恢复时也会从该路径读取相应的备份文件。
+BR 是分布式备份恢复的工具，它将备份或恢复操作命令下发到各个 TiKV 节点。TiKV 收到命令后执行相应的备份或恢复操作。在一次备份或恢复中，各个 TiKV 节点都会有一个对应的备份路径，TiKV 备份时产生的备份文件将会保存在该路径下，恢复时也会从该路径读取相应的备份文件。
 
 ### 备份原理
 
@@ -54,32 +54,28 @@ backup.BackupRequest{
 }
 ```
 
-TiKV 节点收到备份请求后，会遍历节点上所有的 Region Leader，找到和请求中 KV Range 有重叠范围的 Region，将该范围下的部分或者全部数据进行备份，在备份路径下生成对应的 SST 文件，
+TiKV 节点收到备份请求后，会遍历节点上所有的 Region Leader，找到和请求中 KV Range 有重叠范围的 Region，将该范围下的部分或者全部数据进行备份，在备份路径下生成对应的 SST 文件。
 
-TiKV 节点在备份完对应 Region Leader 的数据后将元信息返回给 BR。BR 将这些元信息收集并存储进 backupMeta 文件中，等待恢复时使用。
+TiKV 节点在备份完对应 Region Leader 的数据后将元信息返回给 BR。BR 将这些元信息收集并存储进 `backupMeta` 文件中，等待恢复时使用。
 
 如果执行命令时开启了 checksum，那么 BR 在最后会对备份的每一张表计算 checksum 用于校验。
 
-#### 备份文件结构
+#### 备份文件类型
 
-备份路径下会生成两种类型文件，sst 后缀文件和 backupmeta 文件，其中
+备份路径下会生成以下两种类型文件：
 
-```
-sst 文件：TiKV 备份下来的数据信息
-backupmeta 文件：本次备份的元信息，包括备份文件数，备份文件的 Key 区间，备份文件大小和备份文件 Hash(sha256) 值。
-```
+- SST 文件：存储 TiKV 备份下来的数据信息
+- `backupMeta` 文件：存储本次备份的元信息，包括备份文件数、备份文件的 Key 区间、备份文件大小和备份文件 Hash (sha256) 值
 
-#### 备份 SST 文件命名格式
+#### SST 文件命名格式
 
-文件按照 storeID_regionID_regionEpoch_keyHash_cf.sst 命名，其中
+SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式名的解释如下：
 
-```
-storeID：TiKV 节点编号
-regionID：Region 编号
-regionEpoch：Region 版本号
-keyHash：Range startKey 的 Hash(sha256) 值，确保唯一性
-cf： RocksDB 的 columnFamily（默认 default 和 write）
-```
+- storeID：TiKV 节点编号
+- regionID：Region 编号
+- regionEpoch：Region 版本号
+- keyHash：Range startKey 的 Hash (sha256) 值，确保唯一性
+- cf：RocksDB 的 ColumnFamily（默认为 `default` 或 `write`）
 
 ### 恢复原理
 
@@ -160,7 +156,7 @@ mysql -h${TiDBIP} -P4000 -u${TIDB_USER} ${password_str} -Nse \
 
 要备份全部集群数据，可使用 `br backup full` 命令。该命令的使用帮助可以通过 `br backup full -h` 或 `br backup full --help` 来获取。
 
-用例：将所有集群数据备份到各个 TiKV 节点的 `/tmp/backup` 路径，同时也会将备份的元信息文件 `backupmeta` 写到该路径下。
+用例：将所有集群数据备份到各个 TiKV 节点的 `/tmp/backup` 路径，同时也会将备份的元信息文件 `backupMeta` 写到该路径下。
 
 {{< copyable "shell-regular" >}}
 
@@ -191,7 +187,7 @@ Full Backup <---------/................................................> 17.12%.
 
 要备份集群中指定单张表的数据，可使用 `br backup table` 命令。同样可通过 `br backup table -h` 或 `br backup table --help` 来获取子命令 `table` 的使用帮助。
 
-用例：将表 `test.usertable` 备份到各个 TiKV 节点的 `/tmp/backup` 路径，同时也会将备份的元信息文件 `backupmeta` 写到该路径下。
+用例：将表 `test.usertable` 备份到各个 TiKV 节点的 `/tmp/backup` 路径，同时也会将备份的元信息文件 `backupMeta` 写到该路径下。
 
 {{< copyable "shell-regular" >}}
 
@@ -316,7 +312,7 @@ br restore table \
 
 ### 数据规模和机器配置
 
-假设对 TiKV 集群中的 10 张表进行备份和恢复。每张表有 500 万行数据，数据总量为 35GB。
+假设对 TiKV 集群中的 10 张表进行备份和恢复。每张表有 500 万行数据，数据总量为 35 GB。
 
 ```sql
 MySQL [sbtest]> show tables;
