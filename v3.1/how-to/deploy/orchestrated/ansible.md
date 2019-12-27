@@ -192,7 +192,7 @@ It is required to use `pip` to install Ansible and its dependencies, otherwise a
     ```
 
     ```
-    ansible 2.5.0
+    ansible 2.7.11
     ```
 
 ## Step 5: Configure the SSH mutual trust and sudo rules on the Control Machine
