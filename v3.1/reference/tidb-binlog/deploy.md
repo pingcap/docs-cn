@@ -143,7 +143,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
 1. 获取 initial_commit_ts
 
-    如果从最近的时间点开始同步，inital_commit_ts 使用 `-1` 即可。
+    如果从最近的时间点开始同步，initial_commit_ts 使用 `-1` 即可。
 
     如果下游为 MySQL 或 TiDB，为了保证数据的完整性，需要进行全量数据的备份与恢复，必需使用全量备份的时间戳。
 
