@@ -6,7 +6,7 @@ category: how-to
 
 # 使用 BR 进行备份与恢复
 
-Backup & Restore（以下简称 BR）是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 [`Mydumper`/`Loader`](/v3.1/how-to/maintain/backup-and-restore/mydumper-loader.md)，BR 更适合大数据量的场景。本文档介绍了 BR 的使用限制、工作原理、命令行描述、备份恢复用例以及最佳实践。
+Backup & Restore（以下简称 BR）是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 [`mydumper`/`loader`](/v3.1/how-to/maintain/backup-and-restore/mydumper-loader.md)，BR 更适合大数据量的场景。本文档介绍了 BR 的使用限制、工作原理、命令行描述、备份恢复用例以及最佳实践。
 
 ## 使用限制
 
@@ -62,20 +62,20 @@ TiKV 节点在备份完对应 Region Leader 的数据后将元信息返回给 BR
 
 #### 备份文件类型
 
-备份路径下会生成两种类型文件，SST 文件和 `backupMeta` 文件，其中
+备份路径下会生成以下两种类型文件：
 
-- SST 文件：存储TiKV 备份下来的数据信息
+- SST 文件：存储 TiKV 备份下来的数据信息
 - `backupMeta` 文件：存储本次备份的元信息，包括备份文件数、备份文件的 Key 区间、备份文件大小和备份文件 Hash (sha256) 值
 
 #### SST 文件命名格式
 
-SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名，其中：
+SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式名的解释如下：
 
 - storeID：TiKV 节点编号
 - regionID：Region 编号
 - regionEpoch：Region 版本号
 - keyHash：Range startKey 的 Hash (sha256) 值，确保唯一性
-- cf： RocksDB 的 ColumnFamily（默认为 `default` 或 `write`）
+- cf：RocksDB 的 ColumnFamily（默认为 `default` 或 `write`）
 
 ### 恢复原理
 
