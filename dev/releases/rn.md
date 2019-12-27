@@ -27,6 +27,7 @@ category: release
 
 ## 2.1
 
+- [2.1.19](/dev/releases/2.1.19.md)
 - [2.1.18](/dev/releases/2.1.18.md)
 - [2.1.17](/dev/releases/2.1.17.md)
 - [2.1.16](/dev/releases/2.1.16.md)
