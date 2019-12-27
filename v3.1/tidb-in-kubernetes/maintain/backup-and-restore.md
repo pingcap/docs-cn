@@ -123,7 +123,7 @@ The `pingcap/tidb-backup` helm chart helps restore a TiDB cluster using backup d
 
 ## Incremental backup
 
-Incremental backup uses [TiDB Binlog](/v3.1/reference/tidb-binlog/overview.md) to collect binlog data from TiDB and provide real-time backup and replication to downstream platforms.
+Incremental backup uses [TiDB Binlog](/v3.1/reference/tidb-binlog/overview.md) to collect binlog data from TiDB and provide near real-time backup and replication to downstream platforms.
 
 For the detailed guide of maintaining TiDB Binlog in Kubernetes, refer to [TiDB Binlog](/v3.1/tidb-in-kubernetes/maintain/tidb-binlog.md).
 

@@ -8,7 +8,7 @@ category: tools
 
 This document introduces the architecture and the deployment of TiDB-Binlog of the cluster version.
 
-TiDB-Binlog is an enterprise tool used to collect the binlog data of TiDB and provide real-time backup and replication.
+TiDB-Binlog is an enterprise tool used to collect the binlog data of TiDB and provide near real-time backup and replication.
 
 TiDB-Binlog has the following features:
 

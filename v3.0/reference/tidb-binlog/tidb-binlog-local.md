@@ -9,7 +9,7 @@ aliases: ['/docs/tools/binlog/tidb-binlog-local/']
 
 ## About TiDB Binlog Local
 
-TiDB Binlog is a tool for enterprise users to collect binlog files for TiDB and provide real-time backup and replication.
+TiDB Binlog is a tool for enterprise users to collect binlog files for TiDB and provide near real-time backup and replication.
 
 TiDB Binlog supports the following scenarios:
 

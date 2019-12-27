@@ -9,7 +9,7 @@ aliases: ['/docs/dev/reference/tidb-binlog-overview/']
 
 This document introduces the architecture and the deployment of the cluster version of TiDB Binlog.
 
-TiDB Binlog is tool used to collect binlog data from TiDB and provide real-time backup and replication to downstream platforms.
+TiDB Binlog is a tool used to collect binlog data from TiDB and provide near real-time backup and replication to downstream platforms.
 
 TiDB Binlog has the following features:
 
