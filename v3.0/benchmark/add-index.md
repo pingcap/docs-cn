@@ -24,7 +24,7 @@ TiDB 版本：
 
 4 台AWS 机器，1 台机器部署 TiDB，PD, 监控，另外 3 台部署 TiKV，机器配置均为 E5-2686 v4 @ 2.30GHz，8核 59G，1.7T 本地 SSD。
 
-磁盘： ansible 部署时报磁盘写入慢，忽略并跳过警告后。用 dd 命令测试了下磁盘速度如下：
+磁盘：用 `dd` 命令测试了磁盘速度如下：
 
 ```shell
 $ time dd if=/dev/zero of=test.dbf bs=8k count=500000
