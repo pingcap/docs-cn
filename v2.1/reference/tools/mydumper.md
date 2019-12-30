@@ -137,7 +137,7 @@ Row bigger than statement_size for xxx
 
 Mydumper 备份 TiDB 数据时为了保证数据的一致性使用了 TiDB 的 snapshot 特性，如果备份过程中 snapshot 对应的历史数据被 TiDB GC 处理了，则会报该错误。解决步骤如下：
 
-1. 在备份前，使用 MySQL 客户端查询 TiDB 集群 `tikv_gc_life_time` 的值并将其调整到一个合适的值：
+1. 在备份前，使用 MySQL 客户端查询 TiDB 集群的 `tikv_gc_life_time` 的值，并将其调整为一个合适的值：
 
     {{< copyable "sql" >}}
 
@@ -160,7 +160,7 @@ Mydumper 备份 TiDB 数据时为了保证数据的一致性使用了 TiDB 的 s
     update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_life_time';
     ```
 
-2. 备份完成后，将 `tikv_gc_life_time` 的值调整为原来的值：
+2. 备份完成后，将 `tikv_gc_life_time` 调整为原来的值：
 
     {{< copyable "sql" >}}
 
