@@ -119,4 +119,4 @@ V2.0.6
 
 在有其他负载情况下，想让 add index 尽量不影响其他业务，可以将 `tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batch_size` 适当调小，比如 4, 256。
 
-另外，在 `add index` 的同时，如果有对该表有比较频繁的 `Update` 操作，建议调小 `tidb_ddl_reorg_batch_size` ，比如 `128`，否则可能导致 `add index` 和 `update` 的事务冲突导致重试。
+另外，在 `add index` 的同时，如果有对该表有比较频繁的 `update` 操作，建议调小 `tidb_ddl_reorg_batch_size` ，比如 `128`，否则可能导致 `add index` 和 `update` 的事务冲突导致重试。
