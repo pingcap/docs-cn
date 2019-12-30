@@ -316,10 +316,15 @@ Current user:        root@127.0.0.1
 SSL:                 Cipher in use is TLS_AES_256_GCM_SHA384
 ```
 
-{{< copyable "shell-regular" >}}
+连接 MySQL 客户端并执行：
 
-```bash
-MySQL [test]> show variables like '%ssl%';
+{{< copyable "sql" >}}
+
+```sql
+show variables like '%ssl%';
+```
+
+```
 +---------------+----------------------------------+
 | Variable_name | Value                            |
 +---------------+----------------------------------+
@@ -393,17 +398,12 @@ CA 证书是客户端和服务端相互校验的依据，所以如果需要替�
 
     ```bash
     sudo openssl req -newkey rsa:2048 -days 365000 -nodes -keyout client-key.new.pem -out client-req.new.pem
+    sudo openssl rsa -in client-key.new.pem -out client-key.new.pem
     ```
 
     > **注意：**
     >
     > 以上命令是为了替换密钥和证书，保证在线用户不受影响，所以以上命令中填写的附加信息必须与已配置的 `require subject` 信息一致。
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    sudo openssl rsa -in client-key.new.pem -out client-key.new.pem
-    ```
 
 2. 使用新的组合 CA 证书和新 CA 密钥生成新客户端证书：
 
