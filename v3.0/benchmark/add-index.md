@@ -103,4 +103,4 @@ TiDB V2.0.6 不支持设置 `tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batc
 
 在相同的表结构下，测试 200W 数据数据的 add index 时间，基本和 2000W 数据的 add index 的时间成 10 倍的关系。
 
-以此类推， TiDB v3.0 版本 1亿 数据在类似的硬件，且无其他负载情况下， add index 消耗的时间大致为 344 * 5 = 1720 s = 29 min。有其他负载情况下 add index 操作会更慢一些，因为 add index 是低优先级操作。
+以此类推，TiDB v3.0 版本 1 亿数据在类似的硬件，且无其他负载情况下，add index 消耗的时间大致为 344s * 5 = 1720s = 29 min。考虑到 add index 是低优先级操作，有其他负载情况下 add index 操作会更慢一些。
