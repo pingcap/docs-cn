@@ -160,7 +160,6 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
     Finished dump at: 2019-12-30 13:25:41
     ```
 
-
 2. 修改 `tidb-ansible/inventory.ini` 文件
 
     为 `drainer_servers` 主机组添加部署机器 IP，initial_commit_ts 请设置为获取的 initial_commit_ts，仅用于 Drainer 第一次启动。
