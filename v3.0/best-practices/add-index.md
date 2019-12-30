@@ -115,7 +115,7 @@ V2.0.6
 
 ### 测试结论
 
-在无其他负载情况下，想让 add index 尽快完成，可以将 `tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batch_size` 适当调大，比如 16，1024, 甚至 20，2048等。
+在无其他负载情况下，想让 add index 尽快完成，可以将 `tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batch_size` 适当调大，比如 16 和 1024。
 
 在有其他负载情况下，想让 add index 尽量不影响其他业务，可以将 `tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batch_size` 适当调小，比如 4, 256。
 
