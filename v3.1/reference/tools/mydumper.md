@@ -87,7 +87,7 @@ Mydumper 首先计算 `min(_tidb_rowid)` 和 `max(_tidb_rowid)`，然后按照 `
 ./bin/mydumper -V
 ```
 
-输出结果中包含 `githash`（示例输出中的 `d3e6fec8b069daee772d0dbaa47579f67a5947e7`）的即为 PingCAP 优化的版本：
+如果输出结果中包含 `githash`（如下列示例输出中的 `d3e6fec8b069daee772d0dbaa47579f67a5947e7`），则使用的 Mydumper 为 PingCAP 优化的版本。
 
 ```
 mydumper 0.9.5 (d3e6fec8b069daee772d0dbaa47579f67a5947e7), built against MySQL 5.7.24
@@ -109,7 +109,7 @@ Mydumper 在备份时会根据这个参数的值把每个表的数据划分成�
 
 ### 如何配置 Mydumper 的参数 `-s --statement-size`？
 
-Mydumper 使用该参数控制 `Insert Statement` 的大小，默认值为 `10000000`(约 1 MB）。使用该参数来尽量避免在恢复数据时报以下错误：
+Mydumper 使用该参数控制 `Insert Statement` 的大小，默认值为 `10000000` (约 1 MB）。使用该参数来尽量避免在恢复数据时报以下错误：
 
 ```log
 packet for query is too large. Try adjusting the 'max_allowed_packet' variable
