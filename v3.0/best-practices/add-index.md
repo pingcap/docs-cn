@@ -70,7 +70,7 @@ V2.0.6
 
 注：3.0.2 以及 2.0.16 之前，`tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batch_size` 的默认值分别是 16 ，1024。
 
-以下测试是对各个参数单独设置 看其对 `add index` 的影响。
+以下测试是对各个参数单独设置看其对 `add index` 的影响。
 
 注：为加速测试，下面测试的数据量为 200 万。
 
