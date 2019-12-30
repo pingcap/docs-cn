@@ -85,7 +85,7 @@ V2.0.6
 
 对比测试 `alter table t_xx add index idx_(c0)` 的时间。
 
-注：`alter table t add index idx_(c_int, c_timestamp)`  联合索引测试和  `alter table t add index idx_(c_varchar(100))` `varchar` 索引测试结果类似， `varchar (100)` 索引会稍微慢几秒。
+注：`alter table t add index idx_(c_int, c_timestamp)` 联合索引测试和 `alter table t add index idx_(c_varchar(100))` `varchar` 索引测试结果类似，`varchar (100)` 索引会稍微慢几秒。
 
 TiDB V3.0 的 `tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batch_size` 参数分别是 16，4096。
 
