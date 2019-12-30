@@ -60,13 +60,14 @@
     - [从 CSV 迁移](/v3.1/reference/tools/tidb-lightning/csv.md)
   + 运维
     - [Ansible 常见运维操作](/v3.1/how-to/maintain/ansible-operations.md)
-    + [备份与恢复](/v3.1/how-to/maintain/backup-and-restore.md)
+    + 备份与恢复
+      - [使用 Mydumper/Loader 进行备份与恢复](/v3.1/how-to/maintain/backup-and-restore/mydumper-loader.md)
+      - [使用 BR 进行备份与恢复](/v3.1/how-to/maintain/backup-and-restore/br.md)
     - [定位慢查询](/v3.1/how-to/maintain/identify-slow-queries.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/v3.1/how-to/scale/with-ansible.md)
   + 升级
-    - [升级至 TiDB 3.0](/v3.1/how-to/upgrade/from-previous-version.md)
-    - [使用 Ansible 滚动升级](/v3.1/how-to/upgrade/rolling-updates-with-ansible.md)
+    - [升级至 TiDB 3.1](/v3.1/how-to/upgrade/from-previous-version.md)
   + 故障诊断
     - [集群配置诊断](/v3.1/how-to/troubleshoot/cluster-setup.md)
     - [TiDB Lightning 故障诊断](/v3.1/how-to/troubleshoot/tidb-lightning.md)
@@ -269,6 +270,7 @@
     - [Grafana 监控最佳实践](/v3.1/reference/best-practices/grafana-monitor.md)
     - [PD 调度策略最佳实践](/v3.1/reference/best-practices/pd-scheduling.md)
     - [海量 Region 集群调优最佳实践](/v3.1/reference/best-practices/massive-regions.md)
+    - [乐观锁事务最佳实践](/v3.1/reference/best-practices/optimistic-transaction.md)
   + [TiSpark 使用指南](/v3.1/reference/tispark.md)
   + TiDB Binlog
     - [概述](/v3.1/reference/tidb-binlog/overview.md)
@@ -333,6 +335,8 @@
       + 版本发布历史
         + v1.0
           - [1.0.2](/v3.1/reference/tools/data-migration/releases/1.0.2.md)
+          - [1.0.3](/v3.1/reference/tools/data-migration/releases/1.0.3.md)
+      - [TiDB DM 术语表](/v3.1/reference/tools/data-migration/glossary.md)
     + TiDB Lightning
       - [概述](/v3.1/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/v3.1/reference/tools/tidb-lightning/deployment.md)
@@ -400,7 +404,11 @@
   - [改进文档](/v3.1/contribute.md#改进文档)
 + [TiDB 路线图](/v3.1/roadmap.md)
 + [版本发布历史](/v3.1/releases/rn.md)
+  + v3.1
+    - [3.1.0-beta](/v3.1/releases/3.1.0-beta.md)
   + v3.0
+    - [3.0.7](/v3.1/releases/3.0.7.md)
+    - [3.0.6](/v3.1/releases/3.0.6.md)
     - [3.0.5](/v3.1/releases/3.0.5.md)
     - [3.0.4](/v3.1/releases/3.0.4.md)
     - [3.0.3](/v3.1/releases/3.0.3.md)
@@ -413,6 +421,7 @@
     - [3.0.0-beta.1](/v3.1/releases/3.0.0-beta.1.md)
     - [3.0.0-beta](/v3.1/releases/3.0beta.md)
   + v2.1
+    - [2.1.19](/v3.1/releases/2.1.19.md)
     - [2.1.18](/v3.1/releases/2.1.18.md)
     - [2.1.17](/v3.1/releases/2.1.17.md)
     - [2.1.16](/v3.1/releases/2.1.16.md)

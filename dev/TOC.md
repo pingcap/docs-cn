@@ -59,13 +59,14 @@
     - [从 CSV 迁移](/dev/reference/tools/tidb-lightning/csv.md)
   + 运维
     - [Ansible 常见运维操作](/dev/how-to/maintain/ansible-operations.md)
-    + [备份与恢复](/dev/how-to/maintain/backup-and-restore.md)
+    + 备份与恢复
+      - [使用 Mydumper/Loader 进行备份与恢复](/dev/how-to/maintain/backup-and-restore/mydumper-loader.md)
+      - [使用 BR 进行备份与恢复](/dev/how-to/maintain/backup-and-restore/br.md)
     - [定位慢查询](/dev/how-to/maintain/identify-slow-queries.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/dev/how-to/scale/with-ansible.md)
   + 升级
-    - [升级至 TiDB 3.0](/dev/how-to/upgrade/from-previous-version.md)
-    - [使用 Ansible 滚动升级](/dev/how-to/upgrade/rolling-updates-with-ansible.md)
+    - [升级至最新开发版](/dev/how-to/upgrade/from-previous-version.md)
   + 故障诊断
     - [集群配置诊断](/dev/how-to/troubleshoot/cluster-setup.md)
     - [TiDB Lightning 故障诊断](/dev/how-to/troubleshoot/tidb-lightning.md)
@@ -268,6 +269,7 @@
     - [Grafana 监控最佳实践](/dev/reference/best-practices/grafana-monitor.md)
     - [PD 调度策略最佳实践](/dev/reference/best-practices/pd-scheduling.md)
     - [海量 Region 集群调优最佳实践](/dev/reference/best-practices/massive-regions.md)
+    - [乐观锁事务最佳实践](/dev/reference/best-practices/optimistic-transaction.md)
   + [TiSpark 使用指南](/dev/reference/tispark.md)
   + TiDB Binlog
     - [概述](/dev/reference/tidb-binlog/overview.md)
@@ -332,6 +334,8 @@
       + 版本发布历史
         + v1.0
           - [1.0.2](/dev/reference/tools/data-migration/releases/1.0.2.md)
+          - [1.0.3](/dev/reference/tools/data-migration/releases/1.0.3.md)
+      - [TiDB DM 术语表](/dev/reference/tools/data-migration/glossary.md)
     + TiDB Lightning
       - [概述](/dev/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/dev/reference/tools/tidb-lightning/deployment.md)
@@ -399,7 +403,11 @@
   - [改进文档](/dev/contribute.md#改进文档)
 + [TiDB 路线图](/dev/roadmap.md)
 + [版本发布历史](/dev/releases/rn.md)
+  + v3.1
+    - [3.1.0-beta](/dev/releases/3.1.0-beta.md)
   + v3.0
+    - [3.0.7](/dev/releases/3.0.7.md)
+    - [3.0.6](/dev/releases/3.0.6.md)
     - [3.0.5](/dev/releases/3.0.5.md)
     - [3.0.4](/dev/releases/3.0.4.md)
     - [3.0.3](/dev/releases/3.0.3.md)
@@ -412,6 +420,7 @@
     - [3.0.0-beta.1](/dev/releases/3.0.0-beta.1.md)
     - [3.0.0-beta](/dev/releases/3.0beta.md)
   + v2.1
+    - [2.1.19](/dev/releases/2.1.19.md)
     - [2.1.18](/dev/releases/2.1.18.md)
     - [2.1.17](/dev/releases/2.1.17.md)
     - [2.1.16](/dev/releases/2.1.16.md)

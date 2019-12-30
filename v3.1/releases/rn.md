@@ -7,8 +7,14 @@ category: release
 
 TiDB 历史版本发布声明如下：
 
+## 3.1
+
+- [3.1.0-beta](/v3.1/releases/3.1.0-beta.md)
+
 ## 3.0
 
+- [3.0.7](/v3.1/releases/3.0.7.md)
+- [3.0.6](/v3.1/releases/3.0.6.md)
 - [3.0.5](/v3.1/releases/3.0.5.md)
 - [3.0.4](/v3.1/releases/3.0.4.md)
 - [3.0.3](/v3.1/releases/3.0.3.md)
@@ -23,6 +29,7 @@ TiDB 历史版本发布声明如下：
 
 ## 2.1
 
+- [2.1.19](/v3.1/releases/2.1.19.md)
 - [2.1.18](/v3.1/releases/2.1.18.md)
 - [2.1.17](/v3.1/releases/2.1.17.md)
 - [2.1.16](/v3.1/releases/2.1.16.md)
