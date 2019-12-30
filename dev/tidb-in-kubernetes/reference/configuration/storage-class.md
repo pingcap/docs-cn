@@ -259,7 +259,17 @@ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/
 >
 > TiDB Operator 默认会自动将 PD 和 TiKV 的 PV 保留策略修改为 `Retain` 以确保数据安全。
 
-PV 保留策略是 `Retain` 时，如果确认某个 PV 的数据可以被删除，则需要额外设置其保留策略为 `Delete`，此时，只要对应 PVC 被删除，其 PV 会被自动删除并回收。
+PV 保留策略是 `Retain` 时，如果确认某个 PV 的数据可以被删除，需要通过下面的操作来删除 PV 以及对应的数据：
+
+* 首先删除 PV 对应的 PVC 对象：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl delete pvc <pvc-name> --namespace=<namespace>
+```
+
+* 然后，设置 PV 的保留策略为 `Delete`，PV 会被自动删除并回收：
 
 {{< copyable "shell-regular" >}}
 
