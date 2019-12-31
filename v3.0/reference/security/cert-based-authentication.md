@@ -6,9 +6,9 @@ category: reference
 
 # TiDB 证书鉴权使用指南 <span class="version-mark">从 v3.0.8 版本开始引入</span>
 
-从 TiDB 3.0.8 版本开始，TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不同用户签发证书，使用加密链接来传输数据，并在用户登录时验证证书。相比 MySQL 用户常用的用户名密码验证方式，与 MySQL 相兼容的证书鉴权方式更安全，因此越来越多的用户使用证书鉴权来代替用户名密码验证。
+从 TiDB 3.0.8 版本开始，TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不同用户签发证书，使用加密连接来传输数据，并在用户登录时验证证书。相比 MySQL 用户常用的用户名密码验证方式，与 MySQL 相兼容的证书鉴权方式更安全，因此越来越多的用户使用证书鉴权来代替用户名密码验证。
 
-在 TiDB 上使用证书鉴权，需要进行以下操作：
+在 TiDB 上使用证书鉴权的登录方法，可能需要进行以下操作：
 
 + 创建安全密钥和证书
 + 配置 TiDB 和客户端使用的证书
@@ -58,7 +58,7 @@ sudo apt-get install openssl
     sudo openssl req -new -x509 -nodes -days 365000 -key ca-key.pem -out ca-cert.pem
     ```
 
-3. 输入用户信息，示例如下：
+3. 输入证书细节信息，示例如下：
 
     {{< copyable "shell-regular" >}}
 
@@ -74,7 +74,7 @@ sudo apt-get install openssl
 
     > **注意：**
     >
-    > 以上用户信息中，`:` 后的文字为用户输入的信息。
+    > 以上信息中，`:` 后的文字为用户输入的信息。
 
 ### 生成服务端密钥和证书
 
@@ -86,7 +86,7 @@ sudo apt-get install openssl
     sudo openssl req -newkey rsa:2048 -days 365000 -nodes -keyout server-key.pem -out server-req.pem
     ```
 
-2. 输入用户信息，示例如下：
+2. 输入证书细节信息，示例如下：
 
     {{< copyable "shell-regular" >}}
 
@@ -155,7 +155,7 @@ sudo apt-get install openssl
     sudo openssl req -newkey rsa:2048 -days 365000 -nodes -keyout client-key.pem -out client-req.pem
     ```
 
-2. 输入用户信息，示例如下：
+2. 输入证书细节信息，示例如下：
 
     {{< copyable "shell-regular" >}}
 
@@ -220,6 +220,11 @@ sudo apt-get install openssl
 
 ```bash
 openssl verify -CAfile ca-cert.pem server-cert.pem client-cert.pem
+```
+
+如果验证通过，会显示以下信息：
+
+```
 server-cert.pem: OK
 client-cert.pem: OK
 ```
@@ -292,7 +297,9 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 以上 3 个语句中分别通过指定 `require subject`、`require issuer` 和 `require cipher` 来指定检查 X.509 certificate attributes。用户可以选择配置其中一项或多项，使用空格或 `and` 分隔。
 
 + `require subject`：指定用户在连接时需要提供客户端证书的 `subject` 内容。指定该选项后，不需要再配置 `require ssl` 或 x509。配置内容对应[生成客户端密钥和证书](#生成客户端密钥和证书) 中的录入信息，可以使用命令 `openssl x509 -noout -subject -in client-cert.pem | sed 's/.\{8\}//'  | sed 's/, /\//g' | sed 's/ = /=/g' | sed 's/^/\//'` 来获取对应 `client-cert` 可以用于该配置的配置值。
+
 + `require issuer`：指定签发用户证书的 CA 证书的 `subject` 内容。配置内容对应[生成 CA 密钥和证书](#生成-ca-密钥和证书) 中的录入信息，可以使用命令 `openssl x509 -noout -subject -in ca-cert.pem | sed 's/.\{8\}//'  | sed 's/, /\//g' | sed 's/ = /=/g' | sed 's/^/\//'` 来获取对应 `ca-cert` 可用于该配置的配置值。
+
 + `require cipher`：配置该项检查客户端支持的 cipher method。可以使用 `SHOW SESSION STATUS LIKE 'Ssl_cipher_list'` 语句查看支持的列表。
 
 配置完成后，用户在登录时 TiDB 会验证以下内容：
@@ -341,7 +348,7 @@ show variables like '%ssl%';
 
 证书和密钥通常会周期性更新。下文介绍更新密钥和证书的流程。
 
-CA 证书是客户端和服务端相互校验的依据，所以如果需要替换 CA 证书，则需要生成一个组合证书来在滚动期间同时支持新旧客户端和服务器的验证，并优先替换客户端和服务端的 CA 证书，再替换其他客户端和服务端的密钥和证书。
+CA 证书是客户端和服务端相互校验的依据，所以如果需要替换 CA 证书，则需要生成一个组合证书来在替换期间同时支持客户端和服务器上新旧证书的验证，并优先替换客户端和服务端的 CA 证书，再替换客户端和服务端的密钥和证书。
 
 ### 更新 CA 密钥和证书
 
