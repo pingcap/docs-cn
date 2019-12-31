@@ -4,24 +4,24 @@ summary: 了解使用 TiDB 的证书鉴权功能。
 category: reference
 ---
 
-# TiDB 证书鉴权使用指南 <span class="version-mark">从v3.0.8 版本开始引入</span>
+# TiDB 证书鉴权使用指南 <span class="version-mark">从 v3.0.8 版本开始引入</span>
 
-在 v3.0.8 中，TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不同用户签发证书，使用加密链接来传输数据，并在用户登录时验证证书。相比 MySQL 用户常用的用户名密码验证方式，证书鉴权方式更安全，因此越来越多的用户使用证书鉴权来代替用户名密码验证。
+从 TiDB 3.0.8 版本开始，TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不同用户签发证书，使用加密链接来传输数据，并在用户登录时验证证书。相比 MySQL 用户常用的用户名密码验证方式，与 MySQL 相兼容的证书鉴权方式更安全，因此越来越多的用户使用证书鉴权来代替用户名密码验证。
 
-TiDB 的证书鉴权方式和 [MySQL](https://dev.mysql.com/doc/refman/8.0/en/create-user.html#create-user-tls) 高度兼容。在 TiDB 上使用证书鉴权，需要进行以下操作：
+在 TiDB 上使用证书鉴权，需要进行以下操作：
 
 + 创建安全密钥和证书
 + 配置 TiDB 和客户端使用的证书
 + 配置登陆时需要校验的用户证书信息
 + 更新和替换证书
 
-本文档描述了使用证书鉴权的以上各个操作。
+本文介绍了如何进行证书鉴权的上述几个操作。
 
 ## 创建安全密钥和证书
 
 ### 安装 OpenSS
 
-目前推荐使用 [OpenSSL](https://www.openssl.org/) 来生成密钥和证书。以 Debain 操作系统为例，先执行以下命令来安装 OpenSSL：
+目前推荐使用 [OpenSSL](https://www.openssl.org/) 来生成密钥和证书。以 Debian 操作系统为例，先执行以下命令来安装 OpenSSL：
 
 {{< copyable "shell-regular" >}}
 
