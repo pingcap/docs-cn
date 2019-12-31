@@ -257,6 +257,7 @@
     - [The TiDB Access Privilege System](/dev/reference/security/privilege-system.md)
     - [TiDB User Account Management](/dev/reference/security/user-account-management.md)
     - [Role-Based Access Control](/dev/reference/security/role-based-access-control.md)
+    - [Certificate-Based Authentication](/dev/reference/security/cert-based-authentication.md)
   + Transactions
     - [Overview](/dev/reference/transactions/overview.md)
     - [Transaction Model](/dev/reference/transactions/transaction-model.md)
