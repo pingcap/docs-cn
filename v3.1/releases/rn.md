@@ -11,6 +11,7 @@ category: release
 
 ## 3.0
 
+- [3.0.8](/v3.1/releases/3.0.8.md)
 - [3.0.7](/v3.1/releases/3.0.7.md)
 - [3.0.6](/v3.1/releases/3.0.6.md)
 - [3.0.5](/v3.1/releases/3.0.5.md)

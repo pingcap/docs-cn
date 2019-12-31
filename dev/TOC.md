@@ -421,6 +421,7 @@
   + v3.1
     - [3.1.0-beta](/dev/releases/3.1.0-beta.md)
   + v3.0
+    - [3.0.8](/dev/releases/3.0.8.md)
     - [3.0.7](/dev/releases/3.0.7.md)
     - [3.0.6](/dev/releases/3.0.6.md)
     - [3.0.5](/dev/releases/3.0.5.md)
