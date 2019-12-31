@@ -19,7 +19,7 @@ The rest of the document introduces in detail how to perform these operations.
 
 ## Create security keys and certificates
 
-### Install OpenSS
+### Install OpenSSL
 
 It is recommended that you use [OpenSSL](https://www.openssl.org/) to create keys and certificates. Taking the Debian operating system as an example, execute the following command to install OpenSSL:
 
