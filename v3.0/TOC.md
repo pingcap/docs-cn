@@ -231,6 +231,7 @@
     - [TiDB 数据库权限管理](/v3.0/reference/security/privilege-system.md)
     - [TiDB 用户账户管理](/v3.0/reference/security/user-account-management.md)
     - [基于角色的访问控制](/v3.0/reference/security/role-based-access-control.md)
+    - [TiDB 证书鉴权使用指南](/v3.0/reference/security/cert-based-authentication.md)
   + 事务
     - [事务语句](/v3.0/reference/transactions/overview.md)
     - [事务模型](/v3.0/reference/transactions/transaction-model.md)
