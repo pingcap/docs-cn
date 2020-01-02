@@ -6,7 +6,7 @@ category: reference
 
 # Certificate-Based Authentication for Login <span class="version-mark">New in v3.0.8</span>
 
-Starting from v3.0.8, TiDB supports a certificate-based authentication method for users to log into TiDB. With this method, TiDB issues certificates to different users, uses encrypted connections to transfer data, and verifies certificates when users log in. Compared with the user name and password authentication method commonly used by MySQL users, the MySQL compatible certificate-based authentication method is securer, and is thus adopted by an increasing number of users.
+Starting from v3.0.8, TiDB supports a certificate-based authentication method for users to log into TiDB. With this method, TiDB issues certificates to different users, uses encrypted connections to transfer data, and verifies certificates when users log in. Compared with the password-based authentication method commonly used by MySQL users, the MySQL compatible certificate-based authentication method is securer, and is thus adopted by an increasing number of users.
 
 To use certificate-based authentication, you might need to perform the following operations:
 
@@ -21,7 +21,7 @@ The rest of the document introduces in detail how to perform these operations.
 
 ### Install OpenSSL
 
-It is recommended that you use [OpenSSL](https://www.openssl.org/) to create keys and certificates. Taking the Debian operating system as an example, execute the following command to install OpenSSL:
+It is recommended that you use [OpenSSL](https://www.openssl.org/) to create keys and certificates. Taking the Debian operation system as an example, execute the following command to install OpenSSL:
 
 {{< copyable "shell-regular" >}}
 
@@ -41,9 +41,7 @@ sudo apt-get install openssl
 
     The output of the above command:
 
-    {{< copyable "shell-regular" >}}
-
-    ```bash
+    ```
     Generating RSA private key, 2048 bit long modulus (2 primes)
     ....................+++++
     ...............................................+++++
@@ -115,13 +113,11 @@ sudo apt-get install openssl
 
     The output of the above command:
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     writing RSA key
     ```
 
-4. Use the CA certificate signature to generate the server certificate:
+4. Use the CA certificate signature to generate the signed server certificate:
 
     {{< copyable "shell-regular" >}}
 
@@ -130,8 +126,6 @@ sudo apt-get install openssl
     ```
 
     The output of the above command (for example):
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     Signature ok
@@ -184,8 +178,6 @@ After generating the server key and certificate, you need to generate the key an
 
     The output of the above command:
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     writing RSA key
     ```
@@ -199,8 +191,6 @@ After generating the server key and certificate, you need to generate the key an
     ```
 
     The output of the above command (for example):
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     Signature ok
@@ -235,7 +225,7 @@ After generating the certificates, you need to configure the TiDB server and the
 
 ### Configure TiDB to use server certificate
 
-Modify the `security` section in the TiDB configuration file:
+Modify the `[security]` section in the TiDB configuration file. This step specifies the directory in which the CA certificate, the server key, and the server certificate are stored. You can replace `path/to/server-cert.pem`, `path/to/server-key.pem`, `path/to/ca-cert.pem` with your own directory.
 
 {{< copyable "" >}}
 
@@ -264,43 +254,75 @@ Taking the MySQL client as an example, you can use the newly created client cert
 mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key /path/to/client-key.new.pem --ssl-ca /path/to/ca-cert.pem
 ```
 
+> **Note:**
+>
+> `/path/to/client-cert.new.pem`, `/path/to/client-key.new.pem`, and `/path/to/ca-cert.pem` are the directory of the CA certificate, client key, and client certificate. You can replace them with your own directory.
+
 ## Configure the user certificate information for login verification
 
-First, connect TiDB using the client to configure the login verification. Then, configure the user certificate information to be verified with the following methods:
+First, connect TiDB using the client to configure the login verification. Then, you can get and configure the user certificate information to be verified.
 
-+ Configure the certificate information to be verified when creating a user (`create user`):
+### Get user certificate information
+
+The user certificate information can be specified by `require subject`, `require issuer`, and `require cipher`, which are used to check the X509 certificate attributes.
+
++ `require subject`: Specifies the `subject` information of the client certificate when you log in. With this option specified, you do not need to configure `require ssl` or x509. The information to be specified is consistent with the entered `subject` information in [Generate client keys and certificates](#generate-client-keys-and-certificates).
+
+    To get this option, execute the following command:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    openssl x509 -noout -subject -in client-cert.pem | sed 's/.\{8\}//'  | sed 's/, /\//g' | sed 's/ = /=/g' | sed 's/^/\//'
+    ```
+
++ `require issuer`: Specifies the `subject` information of the CA certificate that issues the user certificate. The information to be specified is consistent with the entered `subject` information in [Generate CA key and certificate](#generate-ca-key-and-certificate).
+
+    To get this option, execute the following command:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    openssl x509 -noout -subject -in ca-cert.pem | sed 's/.\{8\}//'  | sed 's/, /\//g' | sed 's/ = /=/g' | sed 's/^/\//'
+    ```
+
++ `require cipher`: Checks the cipher method supported by the client. Use the following statement to check the list of supported cipher methods:
 
     {{< copyable "sql" >}}
 
     ```sql
-    create user 'u1'@'%'  require issuer '/C=US/ST=California/L=San Francisco/O=PingCAP Inc./OU=TiDB/CN=TiDB admin/emailAddress=s@pingcap.com' subject '/C=US/ST=California/L=San Francisco/O=PingCAP Inc./OU=TiDB/CN=tpch-user1/emailAddress=zz@pingcap.com' cipher 'TLS_AES_256_GCM_SHA384';
-    grant all on *.* to 'u1'@'%';
+    SHOW SESSION STATUS LIKE 'Ssl_cipher_list'
     ```
 
-+ Configure the certificate information to be verified when granting privileges:
+### Configure user certificate information
+
+After getting the user certificate information (`require subject`, `require issuer`, `require cipher`), configure these information to be verified when creating a user, granting privileges, or altering a user. Replace `<replaceable>` with the corresponding information in the following statements.
+
+You can configure one option or multiple options using the space or `and` as the separator.
+
++ Configure user certificate when creating a user (`create user`):
 
     {{< copyable "sql" >}}
 
     ```sql
-    create user 'u1'@'%';
-    grant all on *.* to 'u1'@'%' require issuer '/C=US/ST=California/L=San Francisco/O=PingCAP Inc./OU=TiDB/CN=TiDB admin/emailAddress=s@pingcap.com' subject '/C=US/ST=California/L=San Francisco/O=PingCAP Inc./OU=TiDB/CN=tpch-user1/emailAddress=zz@pingcap.com' cipher 'TLS_AES_256_GCM_SHA384';
+    create user 'u1'@'%' require issuer '<replaceable>' subject '<replaceable>' cipher '<replaceable>';
     ```
 
-+ Configure the certificate information to be verified when altering a user:
++ Configure user certificate when granting privileges:
 
     {{< copyable "sql" >}}
 
     ```sql
-    alter user 'u1'@'%' require issuer '/C=US/ST=California/L=San Francisco/O=PingCAP Inc./OU=TiDB/CN=TiDB admin/emailAddress=s@pingcap.com' subject '/C=US/ST=California/L=San Francisco/O=PingCAP Inc./OU=TiDB/CN=tpch-user1/emailAddress=zz@pingcap.com' cipher 'TLS_AES_256_GCM_SHA384';
+    grant all on *.* to 'u1'@'%' require issuer '<replaceable>' subject '<replaceable>' cipher '<replaceable>';
     ```
 
-In the above three methods, `require subject`, `require issuer`, and `require cipher` are used to check the X509 certificate attributes. You can configure one item or multiple items using the space or `and` as the separator.
++ Configure user certificate when altering a user:
 
-+ `require subject`: Specifies the `subject` information of the client certificate when you log in. With this option specified, you do not need to configure `require ssl` or x509. The information to be specified is consistent with the entered `subject` information in [Generate client keys and certificates](#generate-client-keys-and-certificates). You can execute `openssl x509 -noout -subject -in client-cert.pem | sed 's/.\{8\}//'  | sed 's/, /\//g' | sed 's/ = /=/g' | sed 's/^/\//'` to configure this item.
+    {{< copyable "sql" >}}
 
-+ `require issuer`: Specifies the `subject` information of the CA certificate that issues the user certificate. The information to be specified is consistent with the entered `subject` information in [Generate CA key and certificate](#generate-ca-key-and-certificate). You can execute `openssl x509 -noout -subject -in ca-cert.pem | sed 's/.\{8\}//'  | sed 's/, /\//g' | sed 's/ = /=/g' | sed 's/^/\//'` to configure this item.
-
-+ `require cipher`: Checks the cipher method supported by the client. Use the `SHOW SESSION STATUS LIKE 'Ssl_cipher_list'` statement to check the list of supported cipher methods.
+    ```sql
+    alter user 'u1'@'%' require issuer 'replaceable' subject 'replaceable' cipher 'replaceable';
+    ```
 
 After the above configuration, the following items will be verified when you log in:
 
@@ -310,10 +332,17 @@ After the above configuration, the following items will be verified when you log
 
 You can log into TiDB only after all the above items are verified. Otherwise, the `ERROR 1045 (28000): Access denied` error is returned. You can use the following command to check the TLS version, the cipher algorithm and whether the current connection uses the certificate for the login.
 
-{{< copyable "shell-regular" >}}
+Connect the MySQL client and execute the following statement:
 
-```bash
-MySQL [test]> \s
+{{< copyable "sql" >}}
+
+```sql
+\s
+```
+
+The output:
+
+```
 --------------
 mysql  Ver 15.1 Distrib 10.4.10-MariaDB, for Linux (x86_64) using readline 5.1
 
@@ -323,13 +352,15 @@ Current user:        root@127.0.0.1
 SSL:                 Cipher in use is TLS_AES_256_GCM_SHA384
 ```
 
-Connect the MySQL client and execute the following statement:
+Then execute the following statement:
 
 {{< copyable "sql" >}}
 
 ```sql
 show variables like '%ssl%';
 ```
+
+The output:
 
 ```
 +---------------+----------------------------------+
@@ -357,7 +388,7 @@ The CA certificate is the basis for mutual verification between the client and s
     {{< copyable "shell-regular" >}}
 
     ```bash
-    mv ca-key.pem ca-key.old.pem
+    mv ca-key.pem ca-key.old.pem && \
     mv ca-cert.pem ca-cert.old.pem
     ```
 
@@ -404,7 +435,7 @@ Also replace the old CA certificate with the combined certificate so that the cl
     {{< copyable "shell-regular" >}}
 
     ```bash
-    sudo openssl req -newkey rsa:2048 -days 365000 -nodes -keyout client-key.new.pem -out client-req.new.pem
+    sudo openssl req -newkey rsa:2048 -days 365000 -nodes -keyout client-key.new.pem -out client-req.new.pem && \
     sudo openssl rsa -in client-key.new.pem -out client-key.new.pem
     ```
 
@@ -428,6 +459,10 @@ Also replace the old CA certificate with the combined certificate so that the cl
     mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key /path/to/client-key.new.pem --ssl-ca /path/to/ca-cert.pem
     ```
 
+    > **Note:**
+    >
+    > `/path/to/client-cert.new.pem`, `/path/to/client-key.new.pem`, and `/path/to/ca-cert.pem` specify the directory of the CA certificate, client key, and client certificate. You can replace them with your own directory.
+
 ### Update the server key and certificate
 
 1. Generate the new RSA key of the server:
@@ -435,7 +470,7 @@ Also replace the old CA certificate with the combined certificate so that the cl
     {{< copyable "shell-regular" >}}
 
     ```bash
-    sudo openssl req -newkey rsa:2048 -days 365000 -nodes -keyout server-key.new.pem -out server-req.new.pem
+    sudo openssl req -newkey rsa:2048 -days 365000 -nodes -keyout server-key.new.pem -out server-req.new.pem && \
     sudo openssl rsa -in server-key.new.pem -out server-key.new.pem
     ```
 
