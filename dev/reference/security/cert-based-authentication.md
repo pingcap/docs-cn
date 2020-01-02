@@ -115,8 +115,6 @@ sudo apt-get install openssl
 
     输出结果如下：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     writing RSA key
     ```
@@ -130,8 +128,6 @@ sudo apt-get install openssl
     ```
 
     输出结果示例如下：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     Signature ok
@@ -184,8 +180,6 @@ sudo apt-get install openssl
 
     以上命令的输出结果如下：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     writing RSA key
     ```
@@ -199,8 +193,6 @@ sudo apt-get install openssl
     ```
 
     输出结果示例如下：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     Signature ok
@@ -235,7 +227,7 @@ client-cert.pem: OK
 
 ### 配置 TiDB 服务端
 
-修改 TiDB 配置文件中的 `security` 段：
+修改 TiDB 配置文件中的 `[security]` 段。这一步指定 CA 证书、服务端密钥和服务端证书存放的路径。可将 `path/to/server-cert.pem`、`path/to/server-key.pem` 和 `path/to/ca-cert.pem` 替换成实际的路径。
 
 {{< copyable "" >}}
 
@@ -264,17 +256,54 @@ ssl-ca="path/to/ca-cert.pem"
 mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key /path/to/client-key.new.pem --ssl-ca /path/to/ca-cert.pem
 ```
 
+> **注意：**
+>
+> `/path/to/client-cert.new.pem`、`/path/to/client-key.new.pem` 和 `/path/to/ca-cert.pem` 是 CA 证书、客户端密钥和客户端存放的路径。可将以上命令中的这些部分替换为实际的路径。
+
 ## 配置登陆时需要校验的用户证书信息
 
-使用客户端连接 TiDB 进行授权配置。
+使用客户端连接 TiDB 进行授权配置。先获取需要验证的用户证书信息，再对这些信息进行配置。
+
+### 获取用户证书信息
+
+用户证书信息可由 `require subject`、`require issuer` 和 `require cipher` 来指定，用于检查 X.509 certificate attributes。
+
++ `require subject`：指定用户在连接时需要提供客户端证书的 `subject` 内容。指定该选项后，不需要再配置 `require ssl` 或 x509。配置内容对应[生成客户端密钥和证书](#生成客户端密钥和证书) 中的录入信息。
+
+    可以执行以下命令来获取该项的信息：
+
+    {{< copyable "shell-regular" >}}
+
+    ```
+    openssl x509 -noout -subject -in client-cert.pem | sed 's/.\{8\}//'  | sed 's/, /\//g' | sed 's/ = /=/g' | sed 's/^/\//'
+    ```
+
++ `require issuer`：指定签发用户证书的 CA 证书的 `subject` 内容。配置内容对应[生成 CA 密钥和证书](#生成-ca-密钥和证书) 中的录入信息。
+
+    可以执行以下命令来获取该项的信息：
+
+    ```
+    openssl x509 -noout -subject -in ca-cert.pem | sed 's/.\{8\}//'  | sed 's/, /\//g' | sed 's/ = /=/g' | sed 's/^/\//'
+    ```
+
++ `require cipher`：配置该项检查客户端支持的 cipher method。可以使用以下语句来查看支持的列表：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SHOW SESSION STATUS LIKE 'Ssl_cipher_list'
+    ```
+
+### 配置用户证书信息
+
+获取用户证书信息（`require subject`, `require issuer` 和 `require cipher`）后，可在创建用户、赋予权限或更改用户时配置用户证书信息。将以下命令中的 `<replaceable>` 替换为对应的信息。可以选择配置其中一项或多项，使用空格或 `and` 分隔。
 
 + 可以在创建用户 (`create user`) 时配置登陆时需要校验的证书信息：
 
     {{< copyable "sql" >}}
 
     ```sql
-    create user 'u1'@'%'  require issuer '/C=US/ST=California/L=San Francisco/O=PingCAP Inc./OU=TiDB/CN=TiDB admin/emailAddress=s@pingcap.com' subject '/C=US/ST=California/L=San Francisco/O=PingCAP Inc./OU=TiDB/CN=tpch-user1/emailAddress=zz@pingcap.com' cipher 'TLS_AES_256_GCM_SHA384';
-    grant all on *.* to 'u1'@'%';
+    create user 'u1'@'%'  require issuer '<replaceable>' subject '<replaceable>' cipher '<replaceable>';
     ```
 
 + 可以在赋予权限 (`grant`) 时配置登陆时需要校验的证书信息：
@@ -282,8 +311,7 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
     {{< copyable "sql" >}}
 
     ```sql
-    create user 'u1'@'%';
-    grant all on *.* to 'u1'@'%' require issuer '/C=US/ST=California/L=San Francisco/O=PingCAP Inc./OU=TiDB/CN=TiDB admin/emailAddress=s@pingcap.com' subject '/C=US/ST=California/L=San Francisco/O=PingCAP Inc./OU=TiDB/CN=tpch-user1/emailAddress=zz@pingcap.com' cipher 'TLS_AES_256_GCM_SHA384';
+    grant all on *.* to 'u1'@'%' require issuer '<replaceable>' subject '<replaceable>' cipher '<replaceable>';
     ```
 
 + 还可以在修改已有用户 (alter user) 时配置登陆时需要校验的证书信息：
@@ -291,16 +319,8 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
     {{< copyable "sql" >}}
 
     ```sql
-    alter user 'u1'@'%' require issuer '/C=US/ST=California/L=San Francisco/O=PingCAP Inc./OU=TiDB/CN=TiDB admin/emailAddress=s@pingcap.com' subject '/C=US/ST=California/L=San Francisco/O=PingCAP Inc./OU=TiDB/CN=tpch-user1/emailAddress=zz@pingcap.com' cipher 'TLS_AES_256_GCM_SHA384';
+    alter user 'u1'@'%' require issuer '<replaceable>' subject '<replaceable>' cipher '<replaceable>';
     ```
-
-以上 3 个语句中分别通过指定 `require subject`、`require issuer` 和 `require cipher` 来指定检查 X.509 certificate attributes。用户可以选择配置其中一项或多项，使用空格或 `and` 分隔。
-
-+ `require subject`：指定用户在连接时需要提供客户端证书的 `subject` 内容。指定该选项后，不需要再配置 `require ssl` 或 x509。配置内容对应[生成客户端密钥和证书](#生成客户端密钥和证书) 中的录入信息，可以使用命令 `openssl x509 -noout -subject -in client-cert.pem | sed 's/.\{8\}//'  | sed 's/, /\//g' | sed 's/ = /=/g' | sed 's/^/\//'` 来获取对应 `client-cert` 可以用于该配置的配置值。
-
-+ `require issuer`：指定签发用户证书的 CA 证书的 `subject` 内容。配置内容对应[生成 CA 密钥和证书](#生成-ca-密钥和证书) 中的录入信息，可以使用命令 `openssl x509 -noout -subject -in ca-cert.pem | sed 's/.\{8\}//'  | sed 's/, /\//g' | sed 's/ = /=/g' | sed 's/^/\//'` 来获取对应 `ca-cert` 可用于该配置的配置值。
-
-+ `require cipher`：配置该项检查客户端支持的 cipher method。可以使用 `SHOW SESSION STATUS LIKE 'Ssl_cipher_list'` 语句查看支持的列表。
 
 配置完成后，用户在登录时 TiDB 会验证以下内容：
 
@@ -310,10 +330,17 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 
 全部验证通过后用户才能登录，否则会报 `ERROR 1045 (28000): Access denied` 错误。登录后，可以通过以下命令来查看当前链接是否使用证书登录、TLS 版本和 Cipher 算法。
 
-{{< copyable "shell-regular" >}}
+连接 MySQL 客户端并执行：
 
-```bash
-MySQL [test]> \s
+{{< copyable "sql" >}}
+
+```sql
+\s
+```
+
+返回结果如下：
+
+```
 --------------
 mysql  Ver 15.1 Distrib 10.4.10-MariaDB, for Linux (x86_64) using readline 5.1
 
@@ -323,13 +350,15 @@ Current user:        root@127.0.0.1
 SSL:                 Cipher in use is TLS_AES_256_GCM_SHA384
 ```
 
-连接 MySQL 客户端并执行：
+然后执行：
 
 {{< copyable "sql" >}}
 
 ```sql
 show variables like '%ssl%';
 ```
+
+返回结果如下：
 
 ```
 +---------------+----------------------------------+
@@ -357,7 +386,7 @@ CA 证书是客户端和服务端相互校验的依据，所以如果需要替�
     {{< copyable "shell-regular" >}}
 
     ```bash
-    mv ca-key.pem ca-key.old.pem
+    mv ca-key.pem ca-key.old.pem && \
     mv ca-cert.pem ca-cert.old.pem
     ```
 
@@ -404,7 +433,7 @@ CA 证书是客户端和服务端相互校验的依据，所以如果需要替�
     {{< copyable "shell-regular" >}}
 
     ```bash
-    sudo openssl req -newkey rsa:2048 -days 365000 -nodes -keyout client-key.new.pem -out client-req.new.pem
+    sudo openssl req -newkey rsa:2048 -days 365000 -nodes -keyout client-key.new.pem -out client-req.new.pem && \
     sudo openssl rsa -in client-key.new.pem -out client-key.new.pem
     ```
 
@@ -428,6 +457,10 @@ CA 证书是客户端和服务端相互校验的依据，所以如果需要替�
     mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key /path/to/client-key.new.pem --ssl-ca /path/to/ca-cert.pem
     ```
 
+    > **注意：**
+    >
+    > `/path/to/client-cert.new.pem`、`/path/to/client-key.new.pem` 和 `/path/to/ca-cert.pem` 是 CA 证书、客户端密钥和客户端存放的路径。可将以上命令中的这些部分替换为实际的路径。
+
 ### 更新服务端密钥和证书
 
 1. 生成新的服务端 RSA 密钥：
@@ -435,7 +468,7 @@ CA 证书是客户端和服务端相互校验的依据，所以如果需要替�
     {{< copyable "shell-regular" >}}
 
     ```bash
-    sudo openssl req -newkey rsa:2048 -days 365000 -nodes -keyout server-key.new.pem -out server-req.new.pem
+    sudo openssl req -newkey rsa:2048 -days 365000 -nodes -keyout server-key.new.pem -out server-req.new.pem && \
     sudo openssl rsa -in server-key.new.pem -out server-key.new.pem
     ```
 
