@@ -19,7 +19,7 @@ category: reference
 
 ## 创建安全密钥和证书
 
-### 安装 OpenSS
+### 安装 OpenSSL
 
 目前推荐使用 [OpenSSL](https://www.openssl.org/) 来生成密钥和证书。以 Debian 操作系统为例，先执行以下命令来安装 OpenSSL：
 
