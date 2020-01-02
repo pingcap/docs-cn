@@ -25,19 +25,19 @@ kubectl delete pod -n <namespace> <pod-name>
 
 1. 登录 PD 集群 Pod。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl exec -it -n <namespace> <tidb-cluster-name>-pd-0 sh
-```
+    ```shell
+    kubectl exec -it -n <namespace> <tidb-cluster-name>-pd-0 sh
+    ```
 
 2. 进入 PD Pod 后，执行如下命令，进入 pd-ctl 交互界面。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-./pd-ctl -i -u http://127.0.0.1:2379
-```
+    ```shell
+    ./pd-ctl -i -u http://127.0.0.1:2379
+    ```
 
 3. 在 pd-ctl 交互界面，通过 `member` 命令找到当前 PD 集群都有哪些 member，通过 `member leader show` 命令找到当前 leader，具体操作步骤请参考[链接](https://pingcap.com/docs-cn/stable/reference/tools/pd-control/#member-delete--leader_priority--leader-show--resign--transfer-member_name)。
 
@@ -51,19 +51,19 @@ kubectl exec -it -n <namespace> <tidb-cluster-name>-pd-0 sh
 
 1. 登录 PD 集群 Pod。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl exec -it -n <namespace> <tidb-cluster-name>-pd-0 sh
-```
+    ```shell
+    kubectl exec -it -n <namespace> <tidb-cluster-name>-pd-0 sh
+    ```
 
 2. 进入 PD Pod 后，执行如下命令，进入 pd-ctl 交互界面。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-./pd-ctl -i -u http://127.0.0.1:2379
-```
+    ```shell
+    ./pd-ctl -i -u http://127.0.0.1:2379
+    ```
 
 3. 在 pd-ctl 交互界面，通过 `store` 命令可以看到当前 TiKV 集群都有哪些 store 及其对应的 id 和 address，通过 `store <id>` 命令输出中的 `leader_count` 可以看到当前 store 中有多少 leader，具体操作步骤请参考[链接](https://pingcap.com/docs-cn/stable/reference/tools/pd-control/#store-delete--label--weight-store_id--jqquery-string)。
 
@@ -104,19 +104,19 @@ kubectl delete pod -n <namespace> -l app.kubernetes.io/component=<component-name
 
 1. 登录 PD 集群 Pod。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-kubectl exec -it -n <namespace> <tidb-cluster-name>-pd-0 sh
-```
+    ```shell
+    kubectl exec -it -n <namespace> <tidb-cluster-name>-pd-0 sh
+    ```
 
 2. 进入 PD Pod 后，执行如下命令，进入 pd-ctl 交互界面。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-./pd-ctl -i -u http://127.0.0.1:2379
-```
+    ```shell
+    ./pd-ctl -i -u http://127.0.0.1:2379
+    ```
 
 3. 在 pd-ctl 交互界面，通过 `member`、`member leader show` 命令找到当前 PD 集群都有哪些 member，并找到当前 leader，具体操作步骤请参考[链接](https://pingcap.com/docs-cn/stable/reference/tools/pd-control/#member-delete--leader_priority--leader-show--resign--transfer-member_name)。
 
