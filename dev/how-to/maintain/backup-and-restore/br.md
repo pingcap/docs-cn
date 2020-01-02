@@ -42,21 +42,20 @@ BR 执行备份操作时，会先从 PD 获取到以下信息：
 该请求的主要结构如下：
 
 ```
-backup.BackupRequest{
-    ClusterId:    clusterID,   // 集群 ID
-    StartKey:     startKey,    // 备份起始点，startKey 会被备份
-    EndKey:       endKey,      // 备份结束点，endKey 不会被备份
-    StartVersion: backupTS,    // 备份快照时间点
-    ...
-    Path:         path,        // 备份文件的存储路径
-    RateLimit:    rateLimit,   // 备份速度 (MB/s)
-    Concurrency:  concurrency, // 执行备份操作的线程数（默认为 4）
+BackupRequest{
+    ClusterId,      // 集群 ID
+    StartKey,       // 备份起始点，startKey 会被备份
+    EndKey,         // 备份结束点，endKey 不会被备份
+    EndVersion,     // 备份快照时间点
+    StorageBackend, // 备份文件存储地址
+    RateLimit,      // 备份速度 (MB/s)
+    Concurrency,    // 执行备份操作的线程数（默认为 4）
 }
 ```
 
 TiKV 节点收到备份请求后，会遍历节点上所有的 Region Leader，找到和请求中 KV Range 有重叠范围的 Region，将该范围下的部分或者全部数据进行备份，在备份路径下生成对应的 SST 文件。
 
-TiKV 节点在备份完对应 Region Leader 的数据后将元信息返回给 BR。BR 将这些元信息收集并存储进 `backupMeta` 文件中，等待恢复时使用。
+TiKV 节点在备份完对应 Region Leader 的数据后将元信息返回给 BR。BR 将这些元信息收集并存储进 `backupmeta` 文件中，等待恢复时使用。
 
 如果执行命令时开启了 checksum，那么 BR 在最后会对备份的每一张表计算 checksum 用于校验。
 
@@ -65,7 +64,7 @@ TiKV 节点在备份完对应 Region Leader 的数据后将元信息返回给 BR
 备份路径下会生成以下两种类型文件：
 
 - SST 文件：存储 TiKV 备份下来的数据信息
-- `backupMeta` 文件：存储本次备份的元信息，包括备份文件数、备份文件的 Key 区间、备份文件大小和备份文件 Hash (sha256) 值
+- `backupmeta` 文件：存储本次备份的元信息，包括备份文件数、备份文件的 Key 区间、备份文件大小和备份文件 Hash (sha256) 值
 
 #### SST 文件命名格式
 
@@ -83,7 +82,7 @@ BR 执行恢复操作时，会按顺序执行以下任务：
 
 1. 解析备份路径下的 backupMeta 文件，根据解析出来的库表信息，在内部启动一个 TiDB 实例在新集群创建对应的库表。
 
-2. 把解析出来的 SST 文件，根据表进行 `GroupBy` 聚合。
+2. 把解析出来的 SST 文件，根据表进行聚合。
 
 3. 根据 SST 文件的 Key Range 进行预切分 Region，使得每个 Region 至少对应一个 SST 文件。
 
@@ -125,7 +124,7 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 以上三个子命令可能还包含这些子命令：
 
 * `full`：可用于备份或恢复全部数据。
-* `db`：可用于恢复集群中的指定数据库。
+* `db`：可用于备份或恢复集群中的指定数据库。
 * `table`：可用于备份或恢复集群指定数据库中的单张表。
 
 ### 常用选项
@@ -156,7 +155,7 @@ mysql -h${TiDBIP} -P4000 -u${TIDB_USER} ${password_str} -Nse \
 
 要备份全部集群数据，可使用 `br backup full` 命令。该命令的使用帮助可以通过 `br backup full -h` 或 `br backup full --help` 来获取。
 
-用例：将所有集群数据备份到各个 TiKV 节点的 `/tmp/backup` 路径，同时也会将备份的元信息文件 `backupMeta` 写到该路径下。
+用例：将所有集群数据备份到各个 TiKV 节点的 `/tmp/backup` 路径，同时也会将备份的元信息文件 `backupmeta` 写到该路径下。
 
 {{< copyable "shell-regular" >}}
 
@@ -183,11 +182,33 @@ br backup full \
 Full Backup <---------/................................................> 17.12%.
 ```
 
+### 备份单个数据库的数据
+
+要备份集群中指定单张表的数据，可使用 `br backup db` 命令。同样可通过 `br backup db -h` 或 `br backup db --help` 来获取子命令 `db` 的使用帮助。
+
+用例：将数据库 `test` 备份到各个 TiKV 节点的 `/tmp/backup` 路径，同时也会将备份的元信息文件 `backupmeta` 写到该路径下。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br backup db \
+    --pd "${PDIP}:2379" \
+    --db test \
+    --storage "local:///tmp/backup" \
+    --ratelimit 120 \
+    --concurrency 4 \
+    --log-file backuptable.log
+```
+
+`db` 子命令的选项为 `--db`，用来指定数据库名。其他选项的含义与[备份全部集群数据](#备份全部集群数据)相同。
+
+备份期间有进度条在终端中显示。当进度条前进到 100% 时，说明备份已完成。在完成备份后，BR 为了确保数据安全性，还会校验备份数据。
+
 ### 备份单张表的数据
 
 要备份集群中指定单张表的数据，可使用 `br backup table` 命令。同样可通过 `br backup table -h` 或 `br backup table --help` 来获取子命令 `table` 的使用帮助。
 
-用例：将表 `test.usertable` 备份到各个 TiKV 节点的 `/tmp/backup` 路径，同时也会将备份的元信息文件 `backupMeta` 写到该路径下。
+用例：将表 `test.usertable` 备份到各个 TiKV 节点的 `/tmp/backup` 路径，同时也会将备份的元信息文件 `backupmeta` 写到该路径下。
 
 {{< copyable "shell-regular" >}}
 
@@ -284,27 +305,6 @@ br restore table \
 - 推荐在 `-s` 指定的备份路径上挂载一个共享存储，例如 NFS。这样能方便收集和管理备份文件。
 - 在使用共享存储时，推荐使用高吞吐的存储硬件，因为存储的吞吐会限制备份或恢复的速度。
 - 推荐在业务低峰时执行备份操作，这样能最大程度地减少对业务的影响。
-- 为了加快数据恢复速度，可以在恢复操作前，使用 pd-ctl 关闭与调度相关的 scheduler。恢复完成后，再重新添加这些 scheduler。
-
-    关闭 scheduler：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    ./pd-ctl -u ${PDIP}:2379 scheduler remove balance-hot-region-scheduler
-    ./pd-ctl -u ${PDIP}:2379 scheduler remove balance-leader-scheduler
-    ./pd-ctl -u ${PDIP}:2379 scheduler remove balance-region-scheduler
-    ```
-
-    添加 scheduler：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    ./pd-ctl -u ${PDIP}:2379 scheduler add balance-hot-region-scheduler
-    ./pd-ctl -u ${PDIP}:2379 scheduler add balance-leader-scheduler
-    ./pd-ctl -u ${PDIP}:2379 scheduler add balance-region-scheduler
-    ```
 
 ## 备份和恢复示例
 
@@ -373,8 +373,7 @@ bin/br backup full -s local:///tmp/backup --pd "${PDIP}:2379" --log-file backup.
 ```
 
 ```
-[INFO] [client.go:288] ["Backup Ranges"] [take=2m25.801322134s]
-[INFO] [schema.go:114] ["backup checksum finished"] [take=4.842154366s]
+[INFO] [collector.go:165] ["Full backup summary: total backup ranges: 2, total success: 2, total failed: 0, total take(s): 0.00, total kv: 4, total size(Byte): 133, avg speed(Byte/s): 27293.78"] ["backup total regions"=2] ["backup checksum"=1.640969ms] ["backup fast checksum"=227.885µs]
 ```
 
 ### 恢复示例
@@ -390,6 +389,5 @@ bin/br restore full -s local:///tmp/backup --pd "${PDIP}:2379" --log-file restor
 ```
 
 ```
-[INFO] [client.go:345] [RestoreAll] [take=2m8.907369337s]
-[INFO] [client.go:435] ["Restore Checksum"] [take=6.385818026s]
+[INFO] [collector.go:165] ["Full Restore summary: total restore tables: 1, total success: 1, total failed: 0, total take(s): 0.26, total kv: 20000, total size(MB): 10.98, avg speed(MB/s): 41.95"] ["restore files"=3] ["restore ranges"=2] ["split region"=0.562369381s] ["restore checksum"=36.072769ms]
 ```
