@@ -321,7 +321,7 @@ You can configure one option or multiple options using the space or `and` as the
     {{< copyable "sql" >}}
 
     ```sql
-    alter user 'u1'@'%' require issuer 'replaceable' subject 'replaceable' cipher 'replaceable';
+    alter user 'u1'@'%' require issuer '<replaceable>' subject '<replaceable>' cipher '<replaceable>';
     ```
 
 After the above configuration, the following items will be verified when you log in:
