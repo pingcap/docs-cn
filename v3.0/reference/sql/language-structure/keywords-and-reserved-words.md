@@ -52,7 +52,7 @@ CREATE TABLE test.select (BEGIN int, END int);
 Query OK, 0 rows affected (0.08 sec)
 ```
 
-下表列出了在 TiDB 中的关键字跟保留字，保留字用 (R) 来标识：
+下表列出了在 TiDB 中的关键字跟保留字，保留字用 (R) 来标识，[窗口函数](/v3.0/reference/sql/functions-and-operators/window-functions.md)保留字用 (R-Window) 来标示：
 
 {{< tabs-panel "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" >}}
 
@@ -122,6 +122,7 @@ Query OK, 0 rows affected (0.08 sec)
 - COUNT
 - CREATE (R)
 - CROSS (R)
+- CUME_DIST (R-Window)
 - CURRENT_DATE (R)
 - CURRENT_TIME (R)
 - CURRENT_TIMESTAMP (R)
@@ -150,6 +151,7 @@ Query OK, 0 rows affected (0.08 sec)
 - DELAY_KEY_WRITE
 - DELAYED (R)
 - DELETE (R)
+- DENSE_RANK (R-Window)
 - DESC (R)
 - DESCRIBE (R)
 - DISABLE
@@ -186,6 +188,7 @@ Query OK, 0 rows affected (0.08 sec)
 - FALSE (R)
 - FIELDS
 - FIRST
+- FIRST_VALUE (R-Window)
 - FIXED
 - FLOAT (R)
 - FLUSH
@@ -207,6 +210,7 @@ Query OK, 0 rows affected (0.08 sec)
 - GRANTS
 - GROUP (R)
 - GROUP_CONCAT
+- GROUPS (R-Window)
 
 <a name="H" class="letter" href="#H">H</a>
 
@@ -251,6 +255,9 @@ Query OK, 0 rows affected (0.08 sec)
 
 <a name="L" class="letter" href="#L">L</a>
 
+- LAG (R-Window)
+- LAST_VALUE (R-Window)
+- LEAD (R-Window)
 - LEADING (R)
 - LEFT (R)
 - LESS
@@ -301,6 +308,8 @@ Query OK, 0 rows affected (0.08 sec)
 - NONE
 - NOT (R)
 - NOW
+- NTH_VALUE (R-Window)
+- NTILE (R-Window)
 - NULL (R)
 - NUMERIC (R)
 - NVARCHAR (R)
@@ -314,12 +323,14 @@ Query OK, 0 rows affected (0.08 sec)
 - OR (R)
 - ORDER (R)
 - OUTER (R)
+- OVER (R-Window)
 
 <a name="P" class="letter" href="#P">P</a>
 
 - PARTITION (R)
 - PARTITIONS
 - PASSWORD
+- PERCENT_RANK (R-Window)
 - PLUGINS
 - POSITION
 - PRECISION (R)
@@ -339,6 +350,7 @@ Query OK, 0 rows affected (0.08 sec)
 <a name="R" class="letter" href="#R">R</a>
 
 - RANGE (R)
+- RANK (R-Window)
 - READ (R)
 - REAL (R)
 - REDUNDANT
@@ -357,7 +369,8 @@ Query OK, 0 rows affected (0.08 sec)
 - ROW
 - ROW_COUNT
 - ROW_FORMAT
-- ROWS (R)
+- ROW_NUMBER (R-Window)
+- ROWS (R-Window)
 
 <a name="S" class="letter" href="#S">S</a>
 
@@ -453,6 +466,7 @@ Query OK, 0 rows affected (0.08 sec)
 - WEEK
 - WHEN (R)
 - WHERE (R)
+- WINDOW (R-Window)
 - WITH (R)
 - WRITE (R)
 
