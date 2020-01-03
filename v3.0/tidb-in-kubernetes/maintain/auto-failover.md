@@ -47,7 +47,7 @@ Assume that there are 3 nodes in a PD cluster. If a PD node is down for over 5 m
 
 ### Failover with TiKV
 
-When a TiKV node fails, its status turns to `Disconnected`. After 30 minutes (configurable by modifying `pd.maxStoreDownTime` when deploying the cluster), it turns to `Down`. After waiting for 5 minutes (configurable by modifying `tikvFailoverPeriod`), TiDB Operator creates a new TiKV node if this TiKV node is still down. If the failed TiKV node gets back online, TiDB Operator does not automatically delete the newly created node, and you need to manually drop it and restore the original number of nodes. To do this, you can delete the TiKV node from the `status.tikv.failureStores` field of the `TidbCluster` object:
+When a TiKV node fails, its status turns to `Disconnected`. After 30 minutes (configurable by modifying [`max-store-down-time`](/v3.0/reference/configuration/pd-server/configuration-file.md#max-store-down-time) in PD's [configuration file](https://github.com/pingcap/pd/blob/master/conf/config.toml)), it turns to `Down`. After waiting for 5 minutes (configurable by modifying `tikvFailoverPeriod`), TiDB Operator creates a new TiKV node if this TiKV node is still down. If the failed TiKV node gets back online, TiDB Operator does not automatically delete the newly created node, and you need to manually drop it and restore the original number of nodes. To do this, you can delete the TiKV node from the `status.tikv.failureStores` field of the `TidbCluster` object:
 
 {{< copyable "shell-regular" >}}
 
