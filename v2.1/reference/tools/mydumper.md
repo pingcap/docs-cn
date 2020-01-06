@@ -94,17 +94,17 @@ mydumper 0.9.5 (d3e6fec8b069daee772d0dbaa47579f67a5947e7), built against MySQL 5
 
 ### 使用 Loader 恢复 Mydumper 备份出来的数据时报错 "invalid mydumper files for there are no `-schema-create.sql` files found"，应该如何解决？
 
-检查使用 Mydumper 备份数据时是否使用了 `-T` 或者 `--tables-list` 配置，如果使用了这些配置 Mydumper 就不会生成包含建库 SQL 的文件。
+检查使用 Mydumper 备份数据时是否使用了 `-T` 或者 `--tables-list` 配置，如果使用了这些配置，Mydumper 就不会生成包含建库 SQL 的文件。
 
 **解决方法**：在 Mydumper 备份数据目录下创建文件 `{schema-name}-schema-create.sql`，在文件中写入 "CREATE DATABASE `{schema-name}`"，再运行 Loader 即可。
 
 ### 为什么使用 Mydumper 导出来的 TIMESTAMP 类型的数据和数据库中的数据不一致？
 
-检查一下运行 Mydumper 的服务器的时区与数据库的时区是否一致，Mydumper 会根据运行所在服务器的时区对 TIMESTAMP 类型数据进行转化，可以给 Mydumper 加上 `--skip-tz-utc` 参数忽略这种转化。
+检查一下运行 Mydumper 的服务器的时区与数据库的时区是否一致，Mydumper 会根据运行所在服务器的时区对 TIMESTAMP 类型的数据进行转化，可以给 Mydumper 加上 `--skip-tz-utc` 参数禁止这种转化。
 
 ### 如何配置 Mydumper 的参数 `-F, --chunk-filesize`？
 
-Mydumper 在备份时会根据这个参数的值把每个表的数据划分成多个 `chunk`，每个 `chunk` 保存到一个文件中，大小约为 `chunk-filesize`。根据这个参数把数据切分到多个文件中，这样就可以利用 Loader/TiDB-Lightning 的并行处理逻辑提高导入速度。如果后续使用 Loader 对备份文件进行恢复，建议把该参数的值设置为 `64`（单位 MB）；如果使用 TiDB-Lightning 恢复，则建议设置为 `256`（单位 MB）。
+Mydumper 在备份时会根据这个参数的值把每个表的数据划分成多个 chunk，每个 chunk 保存到一个文件中，大小约为 `chunk-filesize`。根据这个参数把数据切分到多个文件中，这样就可以利用 Loader/TiDB Lightning 的并行处理逻辑提高导入速度。如果后续使用 Loader 对备份文件进行恢复，建议把该参数的值设置为 `64`（单位 MB）；如果使用 TiDB Lightning 恢复，则建议设置为 `256`（单位 MB）。
 
 ### 如何配置 Mydumper 的参数 `-s --statement-size`？
 
