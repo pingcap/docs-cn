@@ -335,6 +335,7 @@
       + 版本发布历史
         + v1.0
           - [1.0.2](/v3.1/reference/tools/data-migration/releases/1.0.2.md)
+          - [1.0.3](/v3.1/reference/tools/data-migration/releases/1.0.3.md)
       - [TiDB DM 术语表](/v3.1/reference/tools/data-migration/glossary.md)
     + TiDB Lightning
       - [概述](/v3.1/reference/tools/tidb-lightning/overview.md)
@@ -403,7 +404,10 @@
   - [改进文档](/v3.1/contribute.md#改进文档)
 + [TiDB 路线图](/v3.1/roadmap.md)
 + [版本发布历史](/v3.1/releases/rn.md)
+  + v3.1
+    - [3.1.0-beta](/v3.1/releases/3.1.0-beta.md)
   + v3.0
+    - [3.0.8](/v3.1/releases/3.0.8.md)
     - [3.0.7](/v3.1/releases/3.0.7.md)
     - [3.0.6](/v3.1/releases/3.0.6.md)
     - [3.0.5](/v3.1/releases/3.0.5.md)
@@ -418,6 +422,7 @@
     - [3.0.0-beta.1](/v3.1/releases/3.0.0-beta.1.md)
     - [3.0.0-beta](/v3.1/releases/3.0beta.md)
   + v2.1
+    - [2.1.19](/v3.1/releases/2.1.19.md)
     - [2.1.18](/v3.1/releases/2.1.18.md)
     - [2.1.17](/v3.1/releases/2.1.17.md)
     - [2.1.16](/v3.1/releases/2.1.16.md)

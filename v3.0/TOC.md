@@ -231,6 +231,7 @@
     - [TiDB 数据库权限管理](/v3.0/reference/security/privilege-system.md)
     - [TiDB 用户账户管理](/v3.0/reference/security/user-account-management.md)
     - [基于角色的访问控制](/v3.0/reference/security/role-based-access-control.md)
+    - [TiDB 证书鉴权使用指南](/v3.0/reference/security/cert-based-authentication.md)
   + 事务
     - [事务语句](/v3.0/reference/transactions/overview.md)
     - [事务模型](/v3.0/reference/transactions/transaction-model.md)
@@ -332,6 +333,7 @@
       + 版本发布历史
         + v1.0
           - [1.0.2](/v3.0/reference/tools/data-migration/releases/1.0.2.md)
+          - [1.0.3](/v3.0/reference/tools/data-migration/releases/1.0.3.md)
       - [TiDB DM 术语表](/v3.0/reference/tools/data-migration/glossary.md)
     + TiDB Lightning
       - [概述](/v3.0/reference/tools/tidb-lightning/overview.md)
@@ -401,6 +403,7 @@
 + [TiDB 路线图](/v3.0/roadmap.md)
 + [版本发布历史](/v3.0/releases/rn.md)
   + v3.0
+    - [3.0.8](/v3.0/releases/3.0.8.md)
     - [3.0.7](/v3.0/releases/3.0.7.md)
     - [3.0.6](/v3.0/releases/3.0.6.md)
     - [3.0.5](/v3.0/releases/3.0.5.md)
@@ -415,6 +418,7 @@
     - [3.0.0-beta.1](/v3.0/releases/3.0.0-beta.1.md)
     - [3.0.0-beta](/v3.0/releases/3.0beta.md)
   + v2.1
+    - [2.1.19](/v3.0/releases/2.1.19.md)
     - [2.1.18](/v3.0/releases/2.1.18.md)
     - [2.1.17](/v3.0/releases/2.1.17.md)
     - [2.1.16](/v3.0/releases/2.1.16.md)

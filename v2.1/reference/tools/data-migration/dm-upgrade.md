@@ -14,6 +14,37 @@ category: reference
 > - 若无特殊说明，各升级操作示例均假定升级前已停止所有同步任务，升级完成后手动重新启动所有同步任务。
 > - 以下版本升级指引逆序展示。
 
+## 升级到 v1.0.3
+
+### 版本信息
+
+```bash
+Release Version: v1.0.3
+Git Commit Hash: 41426af6cffcff9a325697a3bdebeadc9baa8aa6
+Git Branch: release-1.0
+UTC Build Time: 2019-12-13 07:04:53
+Go Version: go version go1.13 linux/amd64
+```
+
+### 主要变更
+
+- dmctl 支持命令式使用
+- 支持同步 `ALTER DATABASE` DDL 语句
+- 优化 DM 错误提示信息
+- 修复全量导入模块在暂停或退出时 data race 导致 panic 的问题
+- 修复对下游进行重试操作时，`stop-task` 和 `pause-task` 可能不生效的问题
+
+### 升级操作示例
+
+1. 下载新版本 DM-Ansible，确认 `inventory.ini` 文件中 `dm_version = v1.0.3`
+2. 执行 `ansible-playbook local_prepare.yml` 下载新的 DM binary 到本地
+3. 执行 `ansible-playbook rolling_update.yml` 滚动升级 DM 集群组件
+4. 执行 `ansible-playbook rolling_update_monitor.yml` 滚动升级 DM 监控组件
+
+> **注意：**
+>
+> 更新至 DM 1.0.3 版本时，需要确保 DM 所有组件 (dmctl/DM-master/DM-worker) 同时升级。不支持部分组件升级使用。
+
 ## 升级到 v1.0.2
 
 ### 版本信息
@@ -39,7 +70,7 @@ Go Version: go version go1.12 linux/amd64
 
 ### 升级操作示例
 
-1. 下载新版本 DM-Ansible, 确认 `inventory.ini` 文件中 `dm_version = v1.0.2`
+1. 下载新版本 DM-Ansible，确认 `inventory.ini` 文件中 `dm_version = v1.0.2`
 2. 执行 `ansible-playbook local_prepare.yml` 下载新的 DM binary 到本地
 3. 执行 `ansible-playbook rolling_update.yml` 滚动升级 DM 集群组件
 4. 执行 `ansible-playbook rolling_update_monitor.yml` 滚动升级 DM 监控组件
