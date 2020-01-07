@@ -45,7 +45,7 @@ sudo yum install -y mariadb-server
 预期输出：
 
 ```
-[kolbe@localhost ~]$ curl -LO http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz | tar xzf -
+[kolbe@localhost ~]$ curl -LO https://download.pingcap.org/tidb-latest-linux-amd64.tar.gz | tar xzf -
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100  368M  100  368M    0     0  8394k      0  0:00:44  0:00:44 --:--:-- 11.1M
