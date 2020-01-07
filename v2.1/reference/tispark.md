@@ -76,7 +76,7 @@ spark.sql.extensions org.apache.spark.sql.TiExtensions
 
 ## 部署 TiSpark
 
-TiSpark 的 jar 包可以在[这里](http://download.pingcap.org/tispark-latest-linux-amd64.tar.gz)下载，解压并拷贝到合适的目录。
+TiSpark 的 jar 包可以在[这里](https://download.pingcap.org/tispark-latest-linux-amd64.tar.gz)下载，解压并拷贝到合适的目录。
 
 ### 已有 Spark 集群的部署方式
 

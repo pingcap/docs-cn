@@ -104,8 +104,8 @@ TiDB 提供 `syncer` 工具能方便的将 MySQL 的数据增量的导入到 TiD
 
 ```bash
 # 下载 tool 压缩包
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
+wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
+wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
 
 # 检查文件完整性，返回 ok 则正确
 sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256

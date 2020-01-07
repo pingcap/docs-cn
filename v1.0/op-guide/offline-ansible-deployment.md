@@ -21,7 +21,7 @@ category: deployment
 
 1. CentOS 7 系统 Ansible 离线安装方式：
 
-    > 下载 [Ansible](http://download.pingcap.org/ansible-2.4-rpms.el7.tar.gz) 离线安装包，上传至中控机。
+    > 下载 [Ansible](https://download.pingcap.org/ansible-2.4-rpms.el7.tar.gz) 离线安装包，上传至中控机。
 
     ```bash
     # tar -xzvf ansible-2.4-rpms.el7.tar.gz

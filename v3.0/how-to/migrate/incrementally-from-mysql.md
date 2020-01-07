@@ -17,8 +17,8 @@ aliases: ['/docs-cn/op-guide/migration/']
 {{< copyable "shell-regular" >}}
 
 ```bash
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz &&
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
+wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz &&
+wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
 ```
 
 检查文件完整性，返回 ok 则正确：
