@@ -216,7 +216,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/o
     import-dir = "/mnt/ssd/data.import/"
     ```
 
-    上面仅列出了 `tikv-importer` 的基本配置。完整配置请参考[`tikv-importer` 配置说明](/dev/reference/tools/tidb-lightning/config.md#tikv-importer-配置参数)。
+    上面仅列出了 `tikv-importer` 的基本配置。完整配置请参考[`tikv-importer` 配置说明](/dev/reference/tools/tidb-lightning/config.md#tikv-importer)。
 
 3. 运行 `tikv-importer`。
 
@@ -263,7 +263,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/o
     status-port = 10080
     ```
 
-    上面仅列出了 `tidb-lightning` 的基本配置信息。完整配置信息请参考[`tidb-lightning` 配置说明](/dev/reference/tools/tidb-lightning/config.md#tidb-lightning-全局配置参数)。
+    上面仅列出了 `tidb-lightning` 的基本配置信息。完整配置信息请参考[`tidb-lightning` 配置说明](/dev/reference/tools/tidb-lightning/config.md#tidb-lightning-全局配置)。
 
 4. 运行 `tidb-lightning`。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
 

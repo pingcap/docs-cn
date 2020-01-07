@@ -12,17 +12,17 @@ TiDB Lightning 支持在网页上查看导入进度或执行一些简单任务�
 
 1. 在启动 `tidb-lightning` 时加上命令行参数 `--server-mode`。
 
-```sh
-./tidb-lightning --server-mode --status-addr :8289
-```
+    ```sh
+    ./tidb-lightning --server-mode --status-addr :8289
+    ```
 
 2. 在配置文件中设置 `lightning.server-mode`。
 
-```toml
-[lightning]
-server-mode = true
-status-addr = ':8289'
-```
+    ```toml
+    [lightning]
+    server-mode = true
+    status-addr = ':8289'
+    ```
 
 TiDB Lightning 启动后，可以访问 `http://127.0.0.1:8289` 来管理程序（实际的 URL 取决于你的 `status-addr` 设置）。
 

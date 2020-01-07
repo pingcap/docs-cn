@@ -61,16 +61,16 @@ scrape_configs:
 
 使用 TiDB Ansible 部署 TiDB 集群时，会同时部署一套 Grafana + Prometheus 的监控系统。
 
-如果使用其他方式部署 TiDB Lightning，需先[导入面板的 JSON 文件](https://raw.githubusercontent.com/pingcap/tidb-ansible/master/scripts/lightning.json)。
+如果使用其他方式部署 TiDB Lightning，需先导入[面板的 JSON 文件](https://raw.githubusercontent.com/pingcap/tidb-ansible/master/scripts/lightning.json)。
 
 ### 第一行：速度面板
 
 ![第一行速度面板](/media/lightning-grafana-row-1.png)
 
-| 面板名称 | 描述 |
-|:-----|:-----|
-| Import speed - write from lightning | 从 TiDB Lightning 向 TiKV Importer 发送键值对的速度，取决于每个表的复杂性 |
-| Import speed - upload to tikv | TiKV Importer 上传所有 TiKV 副本的总体速度 |
+| 面板名称 | 序列 | 描述 |
+|:-----|:-----|:-----|
+| Import speed | write from lightning | 从 TiDB Lightning 向 TiKV Importer 发送键值对的速度，取决于每个表的复杂性 |
+| Import speed | upload to tikv | 从 TiKV Importer 上传 SST 文件到所有 TiKV 副本的总体速度 |
 | Chunk process duration | | 完全编码单个数据文件所需的平均时间 |
 
 有时导入速度会降到 0，这是为了平衡其他部分的速度，属于正常现象。
@@ -99,26 +99,26 @@ scrape_configs:
 
 ![第四行配额使用面板](/media/lightning-grafana-row-4.png)
 
-| 面板名称 | 描述 |
-|:-----|:-----|
-| Idle workers - io | 未使用的 `io-concurrency` 的数量，通常接近配置值（默认为 5），接近 0 时表示磁盘运行太慢 |
-| Idle workers - closed-engine | 已关闭但未清理的引擎数量，通常接近 `index-concurrency` 与`table-concurrency` 的和（默认为 8），接近 0 时表示 TiDB Lightning 比 TiKV Importer 快，导致 TiDB Lightning 延迟 |
-| Idle workers - table | 未使用的 `table-concurrency` 的数量，通常为 0，直到进程结束 |
-| Idle workers - index | 未使用的 `index-concurrency` 的数量，通常为 0，直到进程结束 |
-| Idle workers - region | 未使用的 `region-concurrency` 的数量，通常为 0，直到进程结束 |
-| External resources - KV Encoder | 已激活的 KV encoder 的数量，通常与 `region-concurrency` 的数量相同，直到进程结束 |
-| External resources - Importer Engines | 打开的引擎文件数量，不应超过 `max-open-engines` 的设置 |
+| 面板名称 | 序列 | 描述 |
+|:-----|:-----|:-----|
+| Idle workers | io | 未使用的 `io-concurrency` 的数量，通常接近配置值（默认为 5），接近 0 时表示磁盘运行太慢 |
+| Idle workers | closed-engine | 已关闭但未清理的引擎数量，通常接近 `index-concurrency` 与`table-concurrency` 的和（默认为 8），接近 0 时表示 TiDB Lightning 比 TiKV Importer 快，导致 TiDB Lightning 延迟 |
+| Idle workers | table | 未使用的 `table-concurrency` 的数量，通常为 0，直到进程结束 |
+| Idle workers | index | 未使用的 `index-concurrency` 的数量，通常为 0，直到进程结束 |
+| Idle workers | region | 未使用的 `region-concurrency` 的数量，通常为 0，直到进程结束 |
+| External resources | KV Encoder | 已激活的 KV encoder 的数量，通常与 `region-concurrency` 的数量相同，直到进程结束 |
+| External resources | Importer Engines | 打开的引擎文件数量，不应超过 `max-open-engines` 的设置 |
 
 ### 第五行：读取速度面板
 
 ![第五行读取速度面板](/media/lightning-grafana-row-5.png)
 
-| 面板名称| 描述 |
-|:-----|:-----|
-| Chunk parser read block duration - read block | 读取一个字节块来准备解析时所消耗的时间 |
-| Chunk parser read block duration - apply worker | 等待 `io-concurrency` 空闲所消耗的时间 |
-| SQL process duration - row encode | 解析和编码单行所消耗的时间 |
-| SQL process duration - block deliver | 将一组键值对发送到 TiKV Importer 所消耗的时间 |
+| 面板名称 | 序列 | 描述 |
+|:-----|:-----|:-----|
+| Chunk parser read block duration | read block | 读取一个字节块来准备解析时所消耗的时间 |
+| Chunk parser read block duration | apply worker | 等待 `io-concurrency` 空闲所消耗的时间 |
+| SQL process duration | row encode | 解析和编码单行所消耗的时间 |
+| SQL process duration | block deliver | 将一组键值对发送到 TiKV Importer 所消耗的时间 |
 
 如果上述项的持续时间过长，则表示 TiDB Lightning 使用的磁盘运行太慢或 I/O 太忙。
 
@@ -126,28 +126,28 @@ scrape_configs:
 
 ![第六行存储空间面板](/media/lightning-grafana-row-6.png)
 
-| 面板名称 | 描述 |
-|:-----|:-----|
-| SQL process rate - data deliver rate | 向 TiKV Importer 发送数据键值对的速度 |
-| SQL process rate - index deliver rate | 向 TiKV Importer 发送索引键值对的速度 |
-| SQL process rate - total deliver rate | 发送数据键值对及索引键值对的速度之和 |
-| Total bytes - parser read size | TiDB Lightning 正在读取的字节数 |
-| Total bytes - data deliver size | 已发送到 TiKV Importer 的数据键值对的字节数 |
-| Total bytes - index deliver size | 已发送到 TiKV Importer 的索引键值对的字节数 |
-| Total bytes - storage_size/3 | TiKV 集群占用的存储空间大小的 1/3（3 为默认的副本数量）|
+| 面板名称 | 序列 |描述 |
+|:-----|:-----|:-----|
+| SQL process rate | data deliver rate  | 向 TiKV Importer 发送数据键值对的速度 |
+| SQL process rate | index deliver rate | 向 TiKV Importer 发送索引键值对的速度 |
+| SQL process rate | total deliver rate | 发送数据键值对及索引键值对的速度之和 |
+| Total bytes | parser read size | TiDB Lightning 正在读取的字节数 |
+| Total bytes | data deliver size | 已发送到 TiKV Importer 的数据键值对的字节数 |
+| Total bytes | index deliver size | 已发送到 TiKV Importer 的索引键值对的字节数 |
+| Total bytes | storage_size/3 | TiKV 集群占用的存储空间大小的 1/3（3 为默认的副本数量）|
 
 ### 第七行：导入速度面板
 
 ![第七行导入速度面板](/media/lightning-grafana-row-7.png)
 
-| 面板名称 | 描述 |
-|:-----|:-----|
-| Delivery duration - Range delivery | 将一个 range 的键值对上传到 TiKV 集群所消耗的时间  |
-| Delivery duration - SST delivery | 将单个 SST 文件上传到 TiKV 集群所消耗的时间 |
-| SST process duration - Split SST | 将键值对流切分成若干 SST 文件所消耗的时间 |
-| SST process duration - SST upload | 上传单个 SST 文件所消耗的时间 |
-| SST process duration - SST ingest | ingest 单个 SST 文件所消耗的时间 |
-| SST process duration - SST size | 单个 SST 文件的大小 |
+| 面板名称 | 序列 | 描述 |
+|:-----|:-----|:-----|
+| Delivery duration |  Range delivery | 将一个 range 的键值对上传到 TiKV 集群所消耗的时间 |
+| Delivery duration | SST delivery | 将单个 SST 文件上传到 TiKV 集群所消耗的时间 |
+| SST process duration | Split SST | 将键值对流切分成若干 SST 文件所消耗的时间 |
+| SST process duration | SST upload | 上传单个 SST 文件所消耗的时间 |
+| SST process duration  | SST ingest | ingest 单个 SST 文件所消耗的时间 |
+| SST process duration | SST size | 单个 SST 文件的大小 |
 
 ## 监控指标
 

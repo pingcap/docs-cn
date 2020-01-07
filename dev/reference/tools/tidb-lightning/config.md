@@ -40,7 +40,7 @@ max-backups = 14
 
 [lightning]
 # 启动之前检查集群是否满足最低需求。
-#check-requirements = true
+# check-requirements = true
 
 # 引擎文件的最大并行数。
 # 每张表被切分成一个用于存储索引的“索引引擎”和若干存储行数据的“数据引擎”。
@@ -184,7 +184,7 @@ switch-mode = "5m"
 # 在日志中打印导入进度的持续时间。
 log-progress = "5m"
 
-# 设置表库过滤。详情参见“TiDB Lightning 表库过滤”文档 (https://pingcap.com/docs-cn/stable/reference/tools/tidb-lightning/table-filter/#tidb-lightning-表库过滤)。
+# 设置表库过滤。详情参见“TiDB Lightning 表库过滤”文档。
 # [black-white-list]
 # ...
 ```
@@ -278,7 +278,7 @@ min-available-ratio = 0.05
 | --tidb-status *port* | TiDB Server 的状态端口的（默认为10080） | `tidb.status-port` |
 | --tidb-user *user* | 连接到 TiDB 的用户名 | `tidb.user` |
 
-如果同时对命令行参数和配置文件中的对应参数进行更改，命令行参数将优先生效。例如，在 `cfg.toml` 文件中，不管对日志等级作出什么修改，运行`./tidb-lightning -L debug --config cfg.toml`命令总是将日志级别设置为“debug”。
+如果同时对命令行参数和配置文件中的对应参数进行更改，命令行参数将优先生效。例如，在 `cfg.toml` 文件中，不管对日志等级做出什么修改，运行 `./tidb-lightning -L debug --config cfg.toml` 命令总是将日志级别设置为 “debug”。
 
 ### `tidb-lightning-ctl`
 
