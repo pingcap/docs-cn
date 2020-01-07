@@ -119,7 +119,7 @@ BR restore 命令的详细使用方法请参考[文档](/v3.1/how-to/maintain/ba
 
 ![img](/media/br/total-data.png)
 
-备份前，调 GC 可以参考 [备份准备工作](#备份准备工作)
+备份前，调 GC 可以参考[备份准备工作](#备份准备工作)
 
 运行 BR backup 命令
 
@@ -127,7 +127,7 @@ BR restore 命令的详细使用方法请参考[文档](/v3.1/how-to/maintain/ba
 bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 172.16.4.217:2379 --log-file backup-nfs.log --concurrency 16
 ```
 
-##### 运行指标
+#### 运行指标
 
 Backup CPU Utilization  - 参与备份的 TiKV 节点（backup-worker）和 br 节点（backup-endpoint）CPU 使用率）
 
@@ -348,7 +348,7 @@ bin/br restore table --db batchmark --table order_line -s local:///home/tidb/bac
 
 #### 运行指标
 
-指标介绍可以参考(运行指标)[#运行指标]
+指标介绍可以参考(运行指标)[#单表数据备份到网络盘（推荐）#运行指标]
 
 #### 结果解读
 
@@ -389,7 +389,7 @@ bin/br restore table --db batchmark --table order_line -s local:///home/tidb/bac
 
 #### Table backup 一直进度 100%
 
-`v3.1.0 beta 及之前版本的 bug，已经在最新版本中修复`
+* `v3.1.0 beta 及之前版本的 bug，已经在最新版本中修复`
 
 #### 备份耗时太久
 
