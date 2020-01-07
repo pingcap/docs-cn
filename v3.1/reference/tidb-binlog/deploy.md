@@ -153,23 +153,9 @@ In environments of development, testing and production, the requirements on serv
 
 1. Obtain `initial_commit_ts`.
 
-    Run the following command to use `binlogctl` to generate the `tso` information which is needed for the initial start of Drainer:
+    If the replication is started from the latest time point, you just need to set `initial_commit_ts` to `-1`.
 
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    cd /home/tidb/tidb-ansible &&
-    resources/bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd generate_meta
-    ```
-
-    ```
-    INFO[0000] [pd] create pd client with endpoints [http://192.168.199.118:32379]
-    INFO[0000] [pd] leader switches to: http://192.168.199.118:32379, previous:
-    INFO[0000] [pd] init cluster id 6569368151110378289
-    2018/06/21 11:24:47 meta.go:117: [info] meta: &{CommitTS:400962745252184065}
-    ```
-
-    This command outputs `meta: &{CommitTS:400962745252184065}`, and the value of `CommitTS` is used as the value of the `initial-commit-ts` parameter needed for the initial start of Drainer.
+    If the downstream database is MySQL or TiDB, to ensure data integrity, you need to perform full data backup and recovery and must use the timestamp of the full backup.
 
 2. Modify the `tidb-ansible/inventory.ini` file.
 
@@ -457,7 +443,8 @@ The following part shows how to use Pump and Drainer based on the nodes above.
             the db filter list ("INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test" by default)
             It does not support the Rename DDL operation on tables of `ignore schemas`.
         -initial-commit-ts
-            If Drainer does not have the related breakpoint information, you can configure the related breakpoint information using this parameter. ("0" by default)
+            If Drainer does not have the related breakpoint information, you can configure the related breakpoint information using this parameter. ("-1" by default)
+            If the value of this parameter is `-1`, Drainer automatically obtains the latest timestamp from PD.
         -log-file string
             the path of the log file
         -log-rotate string
@@ -574,8 +561,18 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         port = 3306
 
         [syncer.to.checkpoint]
-        # When the downstream is MySQL or TiDB, this option can be enabled to change the database that holds the checkpoint
+        # When the checkpoint type is "mysql" or "tidb", this option can be enabled to change the database that saves the checkpoint
         # schema = "tidb_binlog"
+        # Currently only the "mysql" and "tidb" checkpoint types are supported
+        # You can remove the comment tag to control where to save the checkpoint
+        # The default method of saving the checkpoint for the downstream db-type:
+        # mysql/tidb -> in the downstream MySQL or TiDB database
+        # file/kafka -> file in `data-dir`
+        # type = "mysql"
+        # host = "127.0.0.1"
+        # user = "root"
+        # password = ""
+        # port = 3306
 
         # the directory where the binlog file is stored when `db-type` is set to `file`
         # [syncer.to]
