@@ -179,7 +179,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/o
 
 #### 第 2 步：下载 TiDB Lightning 安装包
 
-通过以下链接获取 TiDB Lightning 安装包：
+通过以下链接获取 TiDB Lightning 安装包（需选择与 TiDB 集群相同的版本）：
 
 - [v2.1](https://pingcap.com/docs-cn/v2.1/reference/tools/download/#tidb-lightning)
 - [v3.0](https://pingcap.com/docs-cn/v3.0/reference/tools/download/#tidb-lightning)

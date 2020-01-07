@@ -10,19 +10,19 @@ category: reference
 
 ## 配置文件
 
-TiDB Lightning 的配置文件分为“全局”和“任务”两个属性，两者互相兼容。当[服务器模式](/dev/reference/tools/tidb-lightning/web.md)为禁用状态（默认）时，TiDB Lightning 只会执行一个任务，且全局和任务配置使用同一配置文件。
+TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，二者在结构上兼容。只有当[服务器模式](/dev/reference/tools/tidb-lightning/web.md)开启时，全局配置和任务配置才会有区别；默认情况下，服务器模式为禁用状态，此时 TiDB Lightning 只会执行一个任务，且全局和任务配置使用同一配置文件。
 
-### TiDB Lightning 全局配置参数
+### TiDB Lightning 全局配置
 
 ```toml
 ### tidb-lightning 全局配置
 
 [lightning]
-# 用于调试和 Prometheus 监控的 HTTP 端口（0 为禁用）。
+# 用于拉取 web 界面和 Prometheus 监控项的 HTTP 端口。设置为 0 时为禁用状态。
 status-addr = ':8289'
 
 # 切换为服务器模式并使用 web 界面
-# 详情参见《TiDB Lightning web 界面》
+# 详情参见“TiDB Lightning web 界面”文档
 server-mode = false
 
 # 日志
@@ -33,7 +33,7 @@ max-days = 28
 max-backups = 14
 ```
 
-### TiDB Lightning 任务配置参数
+### TiDB Lightning 任务配置
 
 ```toml
 ### tidb-lightning 任务配置
@@ -45,13 +45,13 @@ max-backups = 14
 # 引擎文件的最大并行数。
 # 每张表被切分成一个用于存储索引的“索引引擎”和若干存储行数据的“数据引擎”。
 # 这两项设置控制两种引擎文件的最大并发数。
-# 设置后会影响 tikv-importer 的内存和磁盘用量。
+# 这两项设置的值会影响 tikv-importer 的内存和磁盘用量。
 # 两项数值之和不能超过 tikv-importer 的 max-open-engines 的设定。
 index-concurrency = 2
 table-concurrency = 6
 
-# 数据的并发数默认与逻辑 CPU 的数量相同。
-# 混合部署的情况下可以配置为逻辑 CPU 的 75% 大小。
+# 数据的并发数。默认与逻辑 CPU 的数量相同。
+# 混合部署的情况下可以将其大小配置为逻辑 CPU 数的 75%，以限制 CPU 的使用。
 # region-concurrency =
 
 # I/O 最大并发数。I/O 并发量太高时，会因硬盘内部缓存频繁被刷新
@@ -60,9 +60,9 @@ table-concurrency = 6
 io-concurrency = 5
 
 [checkpoint]
-# 启用断点续传。
-# 导入时，Lightning 会记录当前进度。
-# 若 Lightning 或其他组件异常退出，在重启时可以避免重复再导入已完成的数据。
+# 是否启用断点续传。
+# 导入数据时，TiDB Lightning 会记录当前表导入的进度。
+# 所以即使 Lightning 或其他组件异常退出，在重启时也可以避免重复再导入已完成的数据。
 enable = true
 # 存储断点的数据库名称。
 schema = "tidb_lightning_checkpoint"
@@ -70,14 +70,16 @@ schema = "tidb_lightning_checkpoint"
 #  - file：存放在本地文件系统。
 #  - mysql：存放在兼容 MySQL 的数据库服务器。
 driver = "file"
-# 断点的存放位置。
-# 若 driver = "file"，此参数为断点信息存放的文件路径。
-# 如果不设置该参数则默认存储路径为“/tmp/CHECKPOINT_SCHEMA.pb”。
-# 若 driver = "mysql"，此参数为“用户:密码@tcp(地址:端口)/”格式的 URL。
-# 默认会重用 [tidb] 设置目标数据库来存储断点。
-# 为减少目标集群的压力，建议使用另一个兼容 MySQL 的数据库服务器。
+
+# dsn 是数据源名称 (data source name)，表示断点的存放位置。
+# 若 driver = "file"，则 dsn 为断点信息存放的文件路径。
+#若不设置该路径，则默认存储路径为“/tmp/CHECKPOINT_SCHEMA.pb”。
+# 若 driver = "mysql"，则 dsn 为“用户:密码@tcp(地址:端口)/”格式的 URL。
+# 若不设置该 URL，则默认会使用 [tidb] 部分指定的 TiDB 服务器来存储断点。
+# 为减少目标 TiDB 集群的压力，建议指定另一台兼容 MySQL 的数据库服务器来存储断点。
 # dsn = "/tmp/tidb_lightning_checkpoint.pb"
-# 导入成功后是否保留断点（默认为删除）。
+
+# 所有数据导入成功后是否保留断点。设置为 false 时为删除断点。
 # 保留断点有利于进行调试，但会泄漏关于数据源的元数据。
 # keep-after-success = false
 
@@ -93,10 +95,10 @@ read-block-size = 65536 # Byte (默认为 64 KB)
 # Lightning 根据该值将一张大表分割为多个数据引擎文件。
 batch-size = 107_374_182_400 # Byte (默认为 100 GB)
 
-# 引擎文件需按顺序导入。由于并行处理将同时导入多个数据引擎，
+# 引擎文件需按顺序导入。由于并行处理，多个数据引擎几乎在同时被导入，
 # 这样形成的处理队列会造成资源浪费。因此，为了合理分配资源，Lightning
-# 稍微增大了前几个区块的大小。该参数也决定了比例因数，即在完全并发下
-# “导入”和“写入”过程的持续时间比。这个值可以通过计算 1 GB 大小
+# 稍微增大了前几个区块的大小。该参数也决定了比例系数，即在完全并发下
+# “导入”和“写入”过程的持续时间比。这个值可以通过计算 1 GB 大小的
 # 单张表的（导入时长/写入时长）得到。在日志文件中可以看到精确的时间。
 # 如果“导入”更块，区块大小的差异就会更小；比值为 0 时则说明区块大小一致。
 # 取值范围为（0 <= batch-import-ratio < 1）。
@@ -149,7 +151,7 @@ pd-addr = "172.16.31.4:2379"
 log-level = "error"
 
 # 设置 TiDB 会话变量，提升 Checksum 和 Analyze 的速度。
-# 各参数定义可参阅《控制 Analyze 并发度》
+# 各参数定义可参阅”控制 Analyze 并发度“文档 (https://pingcap.com/docs/dev/reference/performance/statistics/#control-analyze-concurrency)
 build-stats-concurrency = 20
 distsql-scan-concurrency = 100
 index-serial-scan-concurrency = 20
@@ -182,7 +184,7 @@ switch-mode = "5m"
 # 在日志中打印导入进度的持续时间。
 log-progress = "5m"
 
-# 设置表库过滤。详情参见《TiDB Lightning 表库过滤》。
+# 设置表库过滤。详情参见“TiDB Lightning 表库过滤”文档 (https://pingcap.com/docs-cn/stable/reference/tools/tidb-lightning/table-filter/#tidb-lightning-表库过滤)。
 # [black-white-list]
 # ...
 ```

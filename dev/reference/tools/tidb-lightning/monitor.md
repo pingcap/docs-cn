@@ -55,13 +55,13 @@ scrape_configs:
       - targets: ['192.168.20.10:8289']
 ```
 
-## Grafana 仪表盘
+## Grafana 面板
 
-[Grafana](https://grafana.com/) 的可视化仪表盘可以让你在网页上监控 Prometheus metrics。
+[Grafana](https://grafana.com/) 的可视化面板可以让你在网页上监控 Prometheus 指标。
 
 使用 TiDB Ansible 部署 TiDB 集群时，会同时部署一套 Grafana + Prometheus 的监控系统。
 
-如果使用其他方式部署 TiDB Lightning，需先[导入仪表盘（JSON 文件）](https://raw.githubusercontent.com/pingcap/tidb-ansible/master/scripts/lightning.json)。
+如果使用其他方式部署 TiDB Lightning，需先[导入面板的 JSON 文件](https://raw.githubusercontent.com/pingcap/tidb-ansible/master/scripts/lightning.json)。
 
 ### 第一行：速度面板
 
@@ -87,12 +87,12 @@ scrape_configs:
 
 ### 第三行：资源使用面板
 
-![第三行资源面板](/media/lightning-grafana-row-3.png)
+![第三行资源使用面板](/media/lightning-grafana-row-3.png)
 
 | 面板名称 | 描述 |
 |:-----|:-----|
 | Memory usage | 每个服务占用的内存 |
-| Number of Lightning Goroutines | TiDB Lightning 正在使用的 goroutines 数量 |
+| Number of Lightning Goroutines | TiDB Lightning 使用的运行中的 goroutines 数量 |
 | CPU% | 每个服务使用的逻辑 CPU 数量 |
 
 ### 第四行：配额使用面板
@@ -101,7 +101,7 @@ scrape_configs:
 
 | 面板名称 | 描述 |
 |:-----|:-----|
-| Idle workers - io | 未使用的 `io-concurrency` 的数量，通常接近配置值（默认为 5），接近 0 时表示磁盘运转太慢 |
+| Idle workers - io | 未使用的 `io-concurrency` 的数量，通常接近配置值（默认为 5），接近 0 时表示磁盘运行太慢 |
 | Idle workers - closed-engine | 已关闭但未清理的引擎数量，通常接近 `index-concurrency` 与`table-concurrency` 的和（默认为 8），接近 0 时表示 TiDB Lightning 比 TiKV Importer 快，导致 TiDB Lightning 延迟 |
 | Idle workers - table | 未使用的 `table-concurrency` 的数量，通常为 0，直到进程结束 |
 | Idle workers - index | 未使用的 `index-concurrency` 的数量，通常为 0，直到进程结束 |
@@ -115,12 +115,12 @@ scrape_configs:
 
 | 面板名称| 描述 |
 |:-----|:-----|
-| Chunk parser read block duration - read block | 读取一个字节块准备解析所消耗的时间 |
+| Chunk parser read block duration - read block | 读取一个字节块来准备解析时所消耗的时间 |
 | Chunk parser read block duration - apply worker | 等待 `io-concurrency` 空闲所消耗的时间 |
 | SQL process duration - row encode | 解析和编码单行所消耗的时间 |
 | SQL process duration - block deliver | 将一组键值对发送到 TiKV Importer 所消耗的时间 |
 
-如果上述项的持续时间过长，则表示 TiDB Lightning 使用的磁盘运转太慢或 I/O 太忙。
+如果上述项的持续时间过长，则表示 TiDB Lightning 使用的磁盘运行太慢或 I/O 太忙。
 
 ### 第六行：存储空间面板
 
@@ -128,13 +128,13 @@ scrape_configs:
 
 | 面板名称 | 描述 |
 |:-----|:-----|
-| SQL process rate - data deliver rate | 向 TiKV Importer 发送键值对 data 的速度 |
-| SQL process rate - index deliver rate | 向 TiKV Importer 发送键值对 index 的速度 |
-| SQL process rate - total deliver rate | 键值对上传的总速度 |
+| SQL process rate - data deliver rate | 向 TiKV Importer 发送数据键值对的速度 |
+| SQL process rate - index deliver rate | 向 TiKV Importer 发送索引键值对的速度 |
+| SQL process rate - total deliver rate | 发送数据键值对及索引键值对的速度之和 |
 | Total bytes - parser read size | TiDB Lightning 正在读取的字节数 |
-| Total bytes - data deliver size | 已发送到 TiKV Importer 的键值对 data 的字节数 |
-| Total bytes - index deliver size | 已发送到 TiKV Importer 的键值对 index 的字节数 |
-| Total bytes - storage_size/3 | TiKV 集群的占用大小的三分之一（3 为默认的副本数量）|
+| Total bytes - data deliver size | 已发送到 TiKV Importer 的数据键值对的字节数 |
+| Total bytes - index deliver size | 已发送到 TiKV Importer 的索引键值对的字节数 |
+| Total bytes - storage_size/3 | TiKV 集群占用的存储空间大小的 1/3（3 为默认的副本数量）|
 
 ### 第七行：导入速度面板
 
