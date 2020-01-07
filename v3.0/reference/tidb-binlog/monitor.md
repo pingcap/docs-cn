@@ -48,73 +48,125 @@ To understand the Drainer monitoring metrics, check the following table:
 
 ## Alert rules
 
-Currently, TiDB Binlog monitoring metrics are divided into the following three types based on the level of importance:
+This section gives the alert rules for TiDB Binlog. According to the severity level, TiDB Binlog alert rules are divided into three categories (from high to low): emergency-level, critical-level and warning-level.
 
-- [Emergency](#emergency)
-- [Critical](#critical)
-- [Warning](#warning)
+### Emergency-level alerts
 
-### Emergency
+Emergency-level alerts are often caused by a service or node failure. Manual intervention is required immediately.
 
-#### binlog_pump_storage_error_count
+#### `binlog_pump_storage_error_count`
 
-- Description: Pump fails to write the binlog data to the local storage
-- Monitoring rule: `changes(binlog_pump_storage_error_count[1m])` > 0
-- Solution: Check whether an error exists in the `pump_storage_error` monitoring and check the Pump log to find the causes
+* Alert rule:
 
-### Critical
+    `changes(binlog_pump_storage_error_count[1m]) > 0`
 
-#### binlog_drainer_checkpoint_high_delay
+* Description:
 
-- Description: The delay of Drainer replication exceeds one hour
-- Monitoring rule: `(time() - binlog_drainer_checkpoint_tso / 1000)` > 3600
-- Solutions:
+    Pump fails to write the binlog data to the local storage.
+
+* Solution:
+
+    Check whether an error exists in the `pump_storage_error` monitoring and check the Pump log to find the causes.
+
+### Critical-level alerts
+
+For the critical-level alerts, a close watch on the abnormal metrics is required.
+
+#### `binlog_drainer_checkpoint_high_delay`
+
+* Alert rule:
+
+    `(time() - binlog_drainer_checkpoint_tso / 1000) > 3600`
+
+* Description:
+
+    The delay of Drainer replication exceeds one hour.
+
+* Solution:
 
     - Check whether it is too slow to obtain the data from Pump:
 
-        You can check `handle tso` of Pump to get the time for the latest message of each Pump. Check whether a high latency exists for Pump and make sure the corresponding Pump is running normally
+        You can check `handle tso` of Pump to get the time for the latest message of each Pump. Check whether a high latency exists for Pump and make sure the corresponding Pump is running normally.
 
     - Check whether it is too slow to replicate data in the downstream based on Drainer `event` and Drainer `execute latency`:
 
-        - If Drainer `execute time` is too large, check the network bandwidth and latency between the machine with Drainer deployed and the machine with the target database deployed, and the state of the target database
-        - If Drainer `execute time` is not too large and Drainer `event` is too small, add `work count` and `batch` and retry
+        - If Drainer `execute time` is too large, check the network bandwidth and latency between the machine with Drainer deployed and the machine with the target database deployed, and the state of the target database.
+        - If Drainer `execute time` is not too large and Drainer `event` is too small, add `work count` and `batch` and retry.
 
-    - If the two solutions above cannot work, contact [support@pingcap.com](mailto:support@pingcap.com)
+    - If the two solutions above cannot work, contact [support@pingcap.com](mailto:support@pingcap.com).
 
-### Warning
+### Warning-level alerts
 
-#### binlog_pump_write_binlog_rpc_duration_seconds_bucket
+Warning-level alerts are a reminder for an issue or error.
 
-- Description: It takes too much time for Pump to handle the TiDB request of writing binlog
-- Monitoring rule: `histogram_quantile(0.9, rate(binlog_pump_rpc_duration_seconds_bucket{method="WriteBinlog"}[5m]))` > 1
-- Solution:
+#### `binlog_pump_write_binlog_rpc_duration_seconds_bucket`
 
-    - Verify the disk performance pressure and check the disk performance monitoring via `node exported`
-    - If both `disk latency` and `util` are low, contact [support@pingcap.com](mailto:support@pingcap.com)
+* Alert rule:
 
-#### binlog_pump_storage_write_binlog_duration_time_bucket
+    `histogram_quantile(0.9, rate(binlog_pump_rpc_duration_seconds_bucket{method="WriteBinlog"}[5m])) > 1`
 
-- Description: The time it takes for Pump to write the local binlog to the local disk
-- Monitoring rule: `histogram_quantile(0.9, rate(binlog_pump_storage_write_binlog_duration_time_bucket{type="batch"}[5m]))` > 1
-- Solution: Check the state of the local disk of Pump and fix the problem
+* Description:
 
-#### binlog_pump_storage_available_size_less_than_20G
+    It takes too much time for Pump to handle the TiDB request of writing binlog.
 
-- Description: The available disk space of Pump is less than 20G
-- Monitoring rule: `binlog_pump_storage_storage_size_bytes{type="available"}` < 20 \* 1024 \* 1024 \* 1024
-- Solution: Check whether Pump `gc_tso` is normal. If not, adjust the GC time configuration of Pump or get the corresponding Pump offline
+* Solution:
 
-#### binlog_drainer_checkpoint_tso_no_change_for_1m
+    - Verify the disk performance pressure and check the disk performance monitoring via `node exported`.
+    - If both `disk latency` and `util` are low, contact [support@pingcap.com](mailto:support@pingcap.com).
 
-- Description: Drainer `checkpoint` has not been updated for one minute
-- Monitoring rule: `changes(binlog_drainer_checkpoint_tso[1m])` < 1
-- Solution: Check whether all the Pumps that are not offline are running normally
+#### `binlog_pump_storage_write_binlog_duration_time_bucket`
 
-#### binlog_drainer_execute_duration_time_more_than_10s
+* Alert rule:
 
-- Description: The transaction time it takes Drainer to replicate data to TiDB. If it is too large, the Drainer replication of data is affected
-- Monitoring rule: `histogram_quantile(0.9, rate(binlog_drainer_execute_duration_time_bucket[1m]))` > 10
-- Solutions:
+    `histogram_quantile(0.9, rate(binlog_pump_storage_write_binlog_duration_time_bucket{type="batch"}[5m])) > 1`
 
-    - Check the TiDB cluster state
-    - Check the Drainer log or monitor. If a DDL operation causes this problem, you can ignore it
+* Description:
+
+    The time it takes for Pump to write the local binlog to the local disk.
+
+* Solution:
+
+    Check the state of the local disk of Pump and fix the problem.
+
+#### `binlog_pump_storage_available_size_less_than_20G`
+
+* Alert rule:
+
+    `binlog_pump_storage_storage_size_bytes{type="available"} < 20 * 1024 * 1024 * 1024`
+
+* Description:
+
+    The available disk space of Pump is less than 20 GB.
+
+* Solution:
+
+    Check whether Pump `gc_tso` is normal. If not, adjust the GC time configuration of Pump or get the corresponding Pump offline.
+
+#### `binlog_drainer_checkpoint_tso_no_change_for_1m`
+
+* Alert rule:
+
+    `changes(binlog_drainer_checkpoint_tso[1m]) < 1`
+
+* Description:
+
+    Drainer `checkpoint` has not been updated for one minute.
+
+* Solution:
+
+    Check whether all the Pumps that are not offline are running normally.
+
+#### `binlog_drainer_execute_duration_time_more_than_10s`
+
+* Alert rule:
+
+    `histogram_quantile(0.9, rate(binlog_drainer_execute_duration_time_bucket[1m])) > 10`
+
+* Description:
+
+    The transaction time it takes Drainer to replicate data to TiDB. If it is too large, the Drainer replication of data is affected.
+
+* Solution:
+
+    - Check the TiDB cluster state.
+    - Check the Drainer log or monitor. If a DDL operation causes this problem, you can ignore it.
