@@ -127,7 +127,7 @@ BR restore 命令的详细使用方法请参考[文档](/v3.1/how-to/maintain/ba
 bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 172.16.4.217:2379 --log-file backup-nfs.log --concurrency 16
 ```
 
-#### 运行指标
+#### <span id="backup-status">运行指标</span>
 
 Backup CPU Utilization  - 参与备份的 TiKV 节点（backup-worker）和 br 节点（backup-endpoint）CPU 使用率）
 
@@ -209,7 +209,7 @@ Checksum Request duration - 对备份集群执行 admin checksum 的耗时统计
 bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 172.16.5.198:2379 --log-file restore-nfs.log --concurrency 2048
 ```
 
-#### 运行指标
+#### <span id="restore-status">运行指标</span>
 
 Region 分布，Region 分布越均匀，说明恢复资源利用越充分!
 
@@ -274,7 +274,7 @@ bin/br backup table --db batchmark --table order_line -s local:///home/tidb/back
 
 #### 运行指标
 
-指标介绍可以参考(运行指标)[#运行指标]
+指标介绍可以参考[运行指标](#backup-status)
 
 #### 结果解读
 
@@ -308,7 +308,7 @@ bin/br backup table --db batchmark --table order_line -s local:///home/tidb/back
 
 #### 性能调优
 
-如果 TiKV 资源使用没有明显的瓶颈，比如上面指标中的 Backup CPU Utilization 400% 和 IO Utilization 60%，可以尝试调大 br backup concurrency（对大量的小表 case 无用）， 例如 `bin/br backup table --db batchmark --table order_line -s local:///home/tidb/backup_restore_benchmark/backup-2020-01-01/ --pd 172.16.5.198:2379 --log-file backup-2020-01-01.log --concurrency 16`
+如果 TiKV 资源使用没有明显的瓶颈，比如上面[指标](#backup-status)中的 Backup CPU Utilization 400% 和 IO Utilization 60%，可以尝试调大 br backup concurrency（对大量的小表 case 无用）， 例如 `bin/br backup table --db batchmark --table order_line -s local:///home/tidb/backup_restore_benchmark/backup-2020-01-01/ --pd 172.16.5.198:2379 --log-file backup-2020-01-01.log --concurrency 16`
 
 ![img](/media/br/backup-diff.png)
 
@@ -348,7 +348,7 @@ bin/br restore table --db batchmark --table order_line -s local:///home/tidb/bac
 
 #### 运行指标
 
-指标介绍可以参考(运行指标)[#单表数据备份到网络盘（推荐）#运行指标]
+指标介绍可以参考[运行指标](#restore-status)
 
 #### 结果解读
 
