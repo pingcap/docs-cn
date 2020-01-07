@@ -128,6 +128,24 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
 1. 获取 initial_commit_ts
 
+    如果从最近的时间点开始同步，可以参考下文使用 binlogctl 获取一个最新的时间戳。
+
+    如果下游为 MySQL 或 TiDB，为了保证数据的完整性，需要进行全量数据的备份与恢复，必需使用全量备份的时间戳。
+
+    如果使用 mydumper 可以在导出目录的 metadata 文件的 Pos 字段获取对应时间戳, metadata 文件如下:
+
+    ```
+    Started dump at: 2019-12-30 13:25:41
+    SHOW MASTER STATUS:
+            Log: tidb-binlog
+            Pos: 413580274257362947
+            GTID:
+
+    Finished dump at: 2019-12-30 13:25:41
+    ```
+
+    获取一个最新时间戳的方法：
+
     使用 binlogctl 工具生成 Drainer 初次启动所需的 tso 信息，命令：
 
     ```bash
@@ -542,6 +560,6 @@ Drainer="192.168.0.13"
 > - 在运行 TiDB 时，需要保证至少一个 Pump 正常运行。
 > - 通过给 TiDB 增加启动参数 `enable-binlog` 来开启 binlog 服务。尽量保证同一集群的所有 TiDB 都开启了 binlog 服务，否则在同步数据时可能会导致上下游数据不一致。如果要临时运行一个不开启 binlog 服务的 TiDB 实例，需要在 TiDB 的配置文件中设置 `run_ddl= false`。
 > - Drainer 不支持对 ignore schemas（在过滤列表中的 schemas）的 table 进行 rename DDL 操作。
-> - 在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取 savepoint，然后导入全量备份，最后启动 Drainer 从 savepoint 开始同步增量数据。
+> - 在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取 快照时间戳，然后导入全量备份，最后启动 Drainer 从对应快照时间戳开始同步增量数据。
 > - 下游使用 MySQL 或 TiDB 时应当保证上下游数据库的 sql_mode 具有一致性，即下游数据库同步每条 SQL 语句时的 sql_mode 应当与上游数据库执行该条 SQL 语句时的 sql_mode 保持一致。可以在上下游分别执行 `select @@sql_mode;` 进行查询和比对。
 > - 如果存在上游 TiDB 能运行但下游 MySQL 不支持的 DDL 语句时（例如下游 MySQL 使用 InnoDB 引擎时同步语句 `CREATE TABLE t1(a INT) ROW_FORMAT=FIXED;`），Drainer 也会同步失败，此时可以在 Drainer 配置中跳过该事务，同时在下游手动执行兼容的语句，详见[跳过事务](/v2.1/reference/tidb-binlog/faq.md#同步时出现上游数据库支持但是下游数据库执行会出错的-ddl应该怎么办)。
