@@ -183,13 +183,13 @@ fileLocation=/home/user/csv/tpcc.  # 存储 csv 文件的目录绝对路径 + �
 
 #### 通过 Lightning 导入
 
-通过 Lightning 导入数据请参考 [Lightning 部署执行](dev/reference/tools/tidb-lightning/deployment.md)章节。这里我们介绍下通过 tidb-ansible 部署 Lightning 导入数据的方法。
+通过 Lightning 导入数据请参考 [Lightning 部署执行](/dev/reference/tools/tidb-lightning/deployment.md)章节。这里我们介绍下通过 tidb-ansible 部署 Lightning 导入数据的方法。
 
 ##### 修改 inventory.ini
 
 这里最好手动指定清楚部署的 IP、端口、目录，避免各种冲突问题带来的异常，其中 import_dir 的磁盘空间参考 [Lightning 部署执行](/dev/reference/tools/tidb-lightning/deployment.md)，data_source_dir 就是存储上一节 csv 数据的目录。
 
-```text
+```ini
 [importer_server]
 IS1 ansible_host=172.16.5.34 deploy_dir=/data2/is1 tikv_importer_port=13323 import_dir=/data2/import
 
@@ -199,7 +199,7 @@ LS1 ansible_host=172.16.5.34 deploy_dir=/data2/ls1 tidb_lightning_pprof_port=233
 
 ##### 修改 conf/tidb-lightning.yml
 
-```text
+```yaml
 tikv_importer:
     addr: "172.16.5.34:13323" # 这里指向 importer 的地址，需要将上面 inventory.ini 里指定的再写一次
 mydumper:
