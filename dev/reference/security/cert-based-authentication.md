@@ -6,7 +6,7 @@ category: reference
 
 # Certificate-Based Authentication for Login <span class="version-mark">New in v3.0.8</span>
 
-Starting from v3.0.8, TiDB supports a certificate-based authentication method for users to log into TiDB. With this method, TiDB issues certificates to different users, uses encrypted connections to transfer data, and verifies certificates when users log in. Compared with the password-based authentication method commonly used by MySQL users, the MySQL compatible certificate-based authentication method is securer, and is thus adopted by an increasing number of users.
+Starting from v3.0.8, TiDB supports a certificate-based authentication method for users to log into TiDB. With this method, TiDB issues certificates to different users, uses encrypted connections to transfer data, and verifies certificates when users log in. This approach is more secure than the traditional password-based authentication method commonly used by MySQL users and is thus adopted by an increasing number of users.
 
 To use certificate-based authentication, you might need to perform the following operations:
 
