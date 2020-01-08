@@ -38,7 +38,7 @@ The auto-increment ID feature in TiDB is only guaranteed to be automatically inc
 > In a cluster of two TiDB servers, namely TiDB A and TiDB B, TiDB A caches [1,5000] auto-increment ID, while TiDB B caches [5001,10000] auto-increment ID. Use the following statement to create a table with auto-increment ID:
 > 
 > ```
-> create table t(id int unique key auto_increment, c int);
+> create table t(id int unique key AUTO_INCREMENT, c int);
 > ```
 >
 > The statement is executed as follows:
@@ -62,7 +62,7 @@ TiDB implements the asynchronous schema changes algorithm in F1. The Data Manipu
 + Drop Index
 + Add Column:
     - Does not support creating multiple columns at the same time.
-    - Does not support setting a column as the primary key, or creating a unique index, or specifying auto_increment while adding it.
+    - Does not support setting a column as the primary key, or creating a unique index, or specifying AUTO_INCREMENT while adding it.
 + Drop Column: Does not support dropping the primary key column or index column.
 + Alter Column
 + Change/Modify Column

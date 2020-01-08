@@ -128,7 +128,7 @@ We achieve that by having set `auto-increment-increment=5` and `auto-increment-o
     do
         mysql -h 127.0.0.1 -P "$((3306+i))" -u root <<EoSQL
             create database dmtest1;
-            create table dmtest1.t1 (id bigint unsigned not null auto_increment primary key, c char(32), port int);
+            create table dmtest1.t1 (id bigint unsigned not null AUTO_INCREMENT primary key, c char(32), port int);
     EoSQL
     done
     ```

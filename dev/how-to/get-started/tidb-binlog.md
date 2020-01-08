@@ -254,7 +254,7 @@ mysql -h 127.0.0.1 -P 4000 --prompt='TiDB [\d]> ' -u root
 ```sql
 create database tidbtest;
 use tidbtest;
-create table t1 (id int unsigned not null auto_increment primary key);
+create table t1 (id int unsigned not null AUTO_INCREMENT primary key);
 insert into t1 () values (),(),(),(),();
 select * from t1;
 ```
@@ -267,7 +267,7 @@ Query OK, 0 rows affected (0.12 sec)
 
 TiDB [(none)]> use tidbtest;
 Database changed
-TiDB [tidbtest]> create table t1 (id int unsigned not null auto_increment primary key);
+TiDB [tidbtest]> create table t1 (id int unsigned not null AUTO_INCREMENT primary key);
 Query OK, 0 rows affected (0.11 sec)
 
 TiDB [tidbtest]> insert into t1 () values (),(),(),(),();

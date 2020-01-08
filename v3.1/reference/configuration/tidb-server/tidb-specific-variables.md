@@ -527,7 +527,7 @@ set tidb_query_log_max_len = 20
 
 - Scope: SESSION
 - Default value: 0
-- This variable is used to set whether the `auto_increment` property of a column is allowed to be removed by executing `ALTER TABLE MODIFY` or `ALTER TABLE CHANGE` statements. It is not allowed by default.
+- This variable is used to set whether the `AUTO_INCREMENT` property of a column is allowed to be removed by executing `ALTER TABLE MODIFY` or `ALTER TABLE CHANGE` statements. It is not allowed by default.
 
 ### tidb_enable_stmt_summary
 

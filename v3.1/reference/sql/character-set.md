@@ -58,7 +58,7 @@ mysql> SHOW COLLATION WHERE Charset = 'utf8mb4';
 For compatibility with MySQL, TiDB will allow other collation names to be used:
 
 ```sql
-mysql> CREATE TABLE t1 (a INT NOT NULL PRIMARY KEY auto_increment, b VARCHAR(10)) COLLATE utf8mb4_unicode_520_ci;
+mysql> CREATE TABLE t1 (a INT NOT NULL PRIMARY KEY AUTO_INCREMENT, b VARCHAR(10)) COLLATE utf8mb4_unicode_520_ci;
 Query OK, 0 rows affected (0.00 sec)
 
 mysql> INSERT INTO t1 VALUES (1, 'a');

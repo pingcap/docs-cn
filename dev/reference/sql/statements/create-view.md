@@ -45,7 +45,7 @@ The `CREATE VIEW` statement saves a `SELECT` statement as a queryable object, si
 ## Examples
 
 ```sql
-mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
+mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
 Query OK, 0 rows affected (0.11 sec)
 
 mysql> INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);

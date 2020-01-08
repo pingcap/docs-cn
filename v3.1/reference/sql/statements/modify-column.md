@@ -33,7 +33,7 @@ The `ALTER TABLE.. MODIFY COLUMN` statement modifies a column on an existing tab
 ## Examples
 
 ```sql
-mysql> CREATE TABLE t1 (id int not null primary key auto_increment, col1 INT);
+mysql> CREATE TABLE t1 (id int not null primary key AUTO_INCREMENT, col1 INT);
 Query OK, 0 rows affected (0.11 sec)
 
 mysql> INSERT INTO t1 (col1) VALUES (1),(2),(3),(4),(5);

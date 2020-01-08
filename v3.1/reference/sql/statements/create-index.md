@@ -45,7 +45,7 @@ This statement adds a new index to an existing table. It is an alternative synta
 ## Examples
 
 ```sql
-mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
+mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
 Query OK, 0 rows affected (0.10 sec)
 
 mysql> INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);

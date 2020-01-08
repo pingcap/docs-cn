@@ -20,12 +20,12 @@ TiDB currently only supports `FOREIGN KEY` creation in DDL commands. For example
 
 ```sql
 CREATE TABLE users (
- id INT NOT NULL PRIMARY KEY auto_increment,
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
  doc JSON
 );
 
 CREATE TABLE orders (
- id INT NOT NULL PRIMARY KEY auto_increment,
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
  user_id INT NOT NULL,
  doc JSON,
  FOREIGN KEY fk_user_id (user_id) REFERENCES users(id)
@@ -68,7 +68,7 @@ TiDB supports the `NOT NULL` constraint with identical semantics to MySQL. For e
 
 ```sql
 CREATE TABLE users (
- id INT NOT NULL PRIMARY KEY auto_increment,
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
  age INT NOT NULL,
  last_login TIMESTAMP
 );
@@ -83,7 +83,7 @@ mysql> INSERT INTO users (id,age,last_login) VALUES (NULL,123,NULL);
 Query OK, 1 row affected (0.03 sec)
 ```
 
-* The first `INSERT` statement succeeded because `NULL` is permitted as a special value for columns defined as `auto_increment`. This results in the next auto-value being allocated.
+* The first `INSERT` statement succeeded because `NULL` is permitted as a special value for columns defined as `AUTO_INCREMENT`. This results in the next auto-value being allocated.
 
 * The second `INSERT` statement fails because the `age` column was defined as `NOT NULL`.
 
@@ -142,7 +142,7 @@ In TiDB, `UNIQUE` constraints are checked lazily by default. By batching checks 
 ```sql
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
- id INT NOT NULL PRIMARY KEY auto_increment,
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
  username VARCHAR(60) NOT NULL,
  UNIQUE KEY (username)
 );
@@ -170,7 +170,7 @@ By changing `tidb_constraint_check_in_place` to `TRUE`, `UNIQUE` constraints wil
 ```sql
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
- id INT NOT NULL PRIMARY KEY auto_increment,
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
  username VARCHAR(60) NOT NULL,
  UNIQUE KEY (username)
 );

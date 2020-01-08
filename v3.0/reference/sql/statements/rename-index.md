@@ -21,7 +21,7 @@ The statement `ALTER TABLE .. RENAME INDEX` renames an existing index to a new n
 ## Examples
 
 ```sql
-mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL, INDEX col1 (c1));
+mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL, INDEX col1 (c1));
 Query OK, 0 rows affected (0.11 sec)
 
 mysql> SHOW CREATE TABLE t1\G
