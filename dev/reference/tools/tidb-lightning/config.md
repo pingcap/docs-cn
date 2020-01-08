@@ -277,6 +277,7 @@ min-available-ratio = 0.05
 | --tidb-port *port* | TiDB Server 的端口（默认为 4000） | `tidb.port` |
 | --tidb-status *port* | TiDB Server 的状态端口的（默认为 10080） | `tidb.status-port` |
 | --tidb-user *user* | 连接到 TiDB 的用户名 | `tidb.user` |
+| --tidb-password *password* | 连接到 TiDB 的密码 | `tidb.password` |
 
 如果同时对命令行参数和配置文件中的对应参数进行更改，命令行参数将优先生效。例如，在 `cfg.toml` 文件中，不管对日志等级做出什么修改，运行 `./tidb-lightning -L debug --config cfg.toml` 命令总是将日志级别设置为 “debug”。
 
