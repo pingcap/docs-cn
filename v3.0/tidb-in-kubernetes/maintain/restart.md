@@ -16,7 +16,7 @@ category: how-to
 > - 在强制重启 TiKV Pod 过程中，不会自动迁移 TiKV 的 Region Leader，会导致访问对应数据的请求异常。
 > - 在强制重启 TiDB Pod 过程中，会导致访问对应 TiDB 的请求失败。
 
-### 强制重启某个 Pod
+## 强制重启某个 Pod
 
 要强制重启某个 Pod，执行以下命令：
 
@@ -26,7 +26,7 @@ category: how-to
 kubectl delete pod -n <namespace> <pod-name>
 ```
 
-### 强制重启某个组件的所有 Pod
+## 强制重启某个组件的所有 Pod
 
 通过以下命令可以列出组件目前有哪些 Pod：
 
