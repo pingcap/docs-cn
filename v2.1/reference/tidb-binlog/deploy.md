@@ -132,7 +132,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
     如果下游为 MySQL 或 TiDB，为了保证数据的完整性，需要进行全量数据的备份与恢复，必需使用全量备份的时间戳。
 
-    如果使用 mydumper，可以在导出目录的 metadata 文件的 `Pos` 字段获取对应时间戳，metadata 文件如下:
+    如果使用 mydumper，可以在导出目录的 metadata 文件的 `Pos` 字段获取对应时间戳，metadata 文件如下：
 
     ```
     Started dump at: 2019-12-30 13:25:41
