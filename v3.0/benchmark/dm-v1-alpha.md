@@ -85,6 +85,8 @@ sysbench --test=oltp_insert --tables=2 --num-threads=1024 --mysql-host=192.168.0
 
 The structure of the table used for the test:
 
+{{< copyable "sql" >}}
+
 ``` sql
 CREATE TABLE `sbtest` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

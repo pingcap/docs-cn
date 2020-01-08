@@ -122,6 +122,8 @@ GKE supports two operating systems: COS (Container Optimized OS) and Ubuntu. The
 
 The core is configured as below:
 
+{{< copyable "shell-regular" >}}
+
 ```shell
 sysctl net.core.somaxconn=32768
 sysctl vm.swappiness=0
@@ -137,6 +139,8 @@ In this test, the version of sysbench is 1.0.17.
 Before the test, the `prewarm` command of `oltp_common` is used to warm up data.
 
 #### Initialization
+
+{{< copyable "shell-regular" >}}
 
 ```shell
 sysbench \
@@ -160,6 +164,8 @@ sysbench \
 
 #### Warming-up
 
+{{< copyable "shell-regular" >}}
+
 ```shell
 sysbench \
   --mysql-host=<tidb-host> \
@@ -179,6 +185,8 @@ sysbench \
 ```
 
 #### Pressure test
+
+{{< copyable "shell-regular" >}}
 
 ```shell
 sysbench \

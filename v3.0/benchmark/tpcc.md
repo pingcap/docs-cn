@@ -30,6 +30,8 @@ IDC machine:
 
 This test uses the open-source BenchmarkSQL 5.0 as the TPC-C testing tool and adds the support for the MySQL protocol. You can download the testing program by using the following command:
 
+{{< copyable "shell-regular" >}}
+
 ```shell
 git clone -b 5.0-mysql-support-opt https://github.com/pingcap/benchmarksql.git
 ```

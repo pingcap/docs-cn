@@ -35,6 +35,8 @@ Use Sysbench to import **16 tables, with 10,000,000 pieces of data in each table
 
 Prepare data using the following command:
 
+{{< copyable "shell-regular" >}}
+
 ```sh
 sysbench oltp_common \
     --threads=16 \
@@ -49,6 +51,8 @@ sysbench oltp_common \
 ```
 
 Then test TiDB using the following command:
+
+{{< copyable "shell-regular" >}}
 
 ```sh
 sysbench $testname \

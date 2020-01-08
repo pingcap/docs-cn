@@ -158,6 +158,8 @@ Adjust the order in which Sysbench scripts create indexes. Sysbench imports data
 
 At the command line, enter the following command to start importing data. The config file is the one configured in the previous step:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 prepare
 ```
@@ -186,17 +188,23 @@ ANALYZE TABLE sbtest7;
 
 ### Point select test command
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 run
 ```
 
 ### Update index test command
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 sysbench --config-file=config oltp_update_index --tables=32 --table-size=10000000 run
 ```
 
 ### Read-only test command
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 run

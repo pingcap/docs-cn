@@ -43,6 +43,8 @@ Place: Beijing
 
 The structure of the table used for the test:
 
+{{< copyable "sql" >}}
+
 ``` sql
 CREATE TABLE `sbtest` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,

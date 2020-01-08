@@ -132,6 +132,8 @@ db-driver=mysql
 
 Before importing the data, it is necessary to make some settings to TiDB. Execute the following command in MySQL client:
 
+{{< copyable "sql" >}}
+
 ```sql
 set global tidb_disable_txn_auto_retry = off;
 ```
@@ -139,6 +141,8 @@ set global tidb_disable_txn_auto_retry = off;
 Then exit the client. TiDB uses an optimistic transaction model that rolls back transactions when a concurrency conflict is found. Setting `tidb_disable_txn_auto_retry` to `off` turns on the automatic retry mechanism after meeting a transaction conflict, which can prevent Sysbench from quitting because of the transaction conflict error.
 
 Restart MySQL client and execute the following SQL statement to create a database `sbtest`:
+
+{{< copyable "sql" >}}
 
 ```
 create database sbtest;
@@ -155,6 +159,8 @@ Adjust the order in which Sysbench scripts create indexes. Sysbench imports data
 
 At the command line, enter the following command to start importing data. The config file is the one configured in the previous step:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 prepare
 ```
@@ -167,11 +173,15 @@ Sysbench 1.0.14 does not provide data warming, so it must be done manually. If y
 
 Take a table sbtest7 in Sysbench as an example. Execute the following SQL to warming up data:
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT COUNT(pad) FROM sbtest7 USE INDEX (k_7);
 ```
 
 Collecting statistics helps the optimizer choose a more accurate execution plan. The `analyze` command can be used to collect statistics on the table sbtest. Each table needs statistics.
+
+{{< copyable "sql" >}}
 
 ```sql
 ANALYZE TABLE sbtest7;
@@ -179,17 +189,23 @@ ANALYZE TABLE sbtest7;
 
 ### Point select test command
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 run
 ```
 
 ### Update index test command
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 sysbench --config-file=config oltp_update_index --tables=32 --table-size=10000000 run
 ```
 
 ### Read-only test command
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 run

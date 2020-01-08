@@ -31,11 +31,15 @@ TPC-C uses tpmC (transactions per minute) to measure the maximum qualified throu
 
 This testing uses the open-source BenchmarkSQL 5.0 as the TPC-C testing tool and adds the support for the MySQL protocol. You can download the testing program by using the following command:
 
+{{< copyable "shell-regular" >}}
+
 ```shell
 git clone -b 5.0-mysql-support-opt-2.1 https://github.com/pingcap/benchmarksql.git
 ```
 
 To install Java and Ant, run the following command (take CentOS as an example):
+
+{{< copyable "shell-regular" >}}
 
 ```shell
 sudo yum install -y java ant
@@ -43,8 +47,10 @@ sudo yum install -y java ant
 
 Enter the `benchmarksql` directory and run `ant` to build:
 
+{{< copyable "shell-regular" >}}
+
 ```shell
-cd benchmarksql
+cd benchmarksql &&
 ant
 ```
 
@@ -70,8 +76,10 @@ For example, the hardware configuration is as follows:
 
 2. Start TiDB using the following command:
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
-    nohup taskset -c 0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38 bin/tidb-server
+    nohup taskset -c 0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38 bin/tidb-server &&
     nohup taskset -c 1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39 bin/tidb-server
     ```
 
@@ -113,19 +121,25 @@ loadWorkers=32  # The number of concurrent workers that load data.
 
 1. Use a MySQL client to connect to the TiDB server and run the following command:
 
+    {{< copyable "sql" >}}
+
     ```sql
     create database tpcc
     ```
 
 2. Run the following BenchmarkSQL script in shell to create tables:
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
-    cd run
-    ./runSQL.sh props.mysql sql.mysql/tableCreates.sql
+    cd run &&
+    ./runSQL.sh props.mysql sql.mysql/tableCreates.sql &&
     ./runSQL.sh props.mysql sql.mysql/indexCreates.sql
     ```
 
 3. Run the following script to load data:
+
+    {{< copyable "shell-regular" >}}
 
     ```shell
     ./runLoader.sh props.mysql
@@ -138,6 +152,8 @@ After importing data, you can run `sql.common/test.sql` to validate the correctn
 ## Run the test
 
 Run the following BenchmarkSQL test script:
+
+{{< copyable "shell-regular" >}}
 
 ```shell
 nohup ./runBenchmark.sh props.mysql &> test.log &

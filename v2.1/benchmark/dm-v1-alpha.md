@@ -78,13 +78,17 @@ MySQL1 (192.168.0.8) -> DM-worker1 (192.168.0.6) -> TiDB (192.168.0.9)
 
 Upstream sysbench test script:
 
-```
+{{< copyable "shell-regular" >}}
+
+```bash
 sysbench --test=oltp_insert --tables=2 --num-threads=1024 --mysql-host=192.168.0.8 --mysql-port=3306 --mysql-user=root --mysql-db=dm_poc --db-driver=mysql --report-interval=10 --time=900 run
 ```
 
 The structure of the table used for the test:
 
-``` sql
+{{< copyable "sql" >}}
+
+```sql
 CREATE TABLE `sbtest` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `k` int(11) NOT NULL DEFAULT '0',
