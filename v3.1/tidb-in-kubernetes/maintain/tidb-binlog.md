@@ -80,48 +80,50 @@ category: how-to
             affinity:
               podAffinity:
                 preferredDuringSchedulingIgnoredDuringExecution:
-                - labelSelector:
-                    matchExpressions:
+                - weight: 100
+                  podAffinityTerm:
+                    labelSelector:
+                      matchExpressions:
                       - key: "app.kubernetes.io/component"
                         operator: In
                         values:
-                          - "tidb"
+                        - "tidb"
                       - key: "app.kubernetes.io/managed-by"
                         operator: In
                         values:
-                          - "tidb-operator"
+                        - "tidb-operator"
                       - key: "app.kubernetes.io/name"
                         operator: In
                         values:
-                          - "tidb-cluster"
+                        - "tidb-cluster"
                       - key: "app.kubernetes.io/instance"
                         operator: In
                         values:
-                          - <release-name>
-                  topologyKey: kubernetes.io/hostname
+                        - <release-name>
+                    topologyKey: kubernetes.io/hostname
               podAntiAffinity:
                 preferredDuringSchedulingIgnoredDuringExecution:
-                  - weight: 100
-                    podAffinityTerm:
-                      labelSelector:
-                        matchExpressions:
-                          - key: "app.kubernetes.io/component"
-                            operator: In
-                            values:
-                              - "pump"
-                          - key: "app.kubernetes.io/managed-by"
-                            operator: In
-                            values:
-                              - "tidb-operator"
-                          - key: "app.kubernetes.io/name"
-                            operator: In
-                            values:
-                              - "tidb-cluster"
-                          - key: "app.kubernetes.io/instance"
-                            operator: In
-                            values:
-                              - <release-name>
-                      topologyKey: kubernetes.io/hostname
+                - weight: 100
+                  podAffinityTerm:
+                    labelSelector:
+                      matchExpressions:
+                      - key: "app.kubernetes.io/component"
+                        operator: In
+                        values:
+                        - "pump"
+                      - key: "app.kubernetes.io/managed-by"
+                        operator: In
+                        values:
+                        - "tidb-operator"
+                      - key: "app.kubernetes.io/name"
+                        operator: In
+                        values:
+                        - "tidb-cluster"
+                      - key: "app.kubernetes.io/instance"
+                        operator: In
+                        values:
+                        - <release-name>
+                    topologyKey: kubernetes.io/hostname
         ```
 
 3. 创建一个新的 TiDB 集群或更新现有的集群：

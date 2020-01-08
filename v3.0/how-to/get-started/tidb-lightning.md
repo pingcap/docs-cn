@@ -53,7 +53,7 @@ TiDB Lightning 主要包含两个部分:
 
 通过以下链接获取 TiDB Lightning 安装包（选择与 TiDB 集群相同的版本）：
 
-- **v3.0.4**: [tidb-toolkit-v3.0.4-linux-amd64.tar.gz](http://download.pingcap.org/tidb-toolkit-v3.0.0-linux-amd64.tar.gz)
+- **v3.0.4**: [tidb-toolkit-v3.0.4-linux-amd64.tar.gz](https://download.pingcap.org/tidb-toolkit-v3.0.0-linux-amd64.tar.gz)
 
 ### 第 3 步：启动 `tikv-importer`
 
