@@ -338,9 +338,11 @@
     + TiDB Lightning
       - [概述](/v3.0/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/v3.0/reference/tools/tidb-lightning/deployment.md)
+      - [参数说明](/v3.0/reference/tools/tidb-lightning/config.md)
       - [断点续传](/v3.0/reference/tools/tidb-lightning/checkpoints.md)
       - [表库过滤](/v3.0/reference/tools/tidb-lightning/table-filter.md)
       - [CSV 支持](/v3.0/reference/tools/tidb-lightning/csv.md)
+      - [Web 界面](/v3.0/reference/tools/tidb-lightning/web.md)
       - [监控告警](/v3.0/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](/v3.0/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](/v3.0/faq/tidb-lightning.md)
