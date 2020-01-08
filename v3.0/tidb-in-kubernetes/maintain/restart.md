@@ -6,7 +6,7 @@ category: how-to
 
 # 重启 TiDB 集群
 
-本文描述了如何重启 Kubernetes 集群上的 TiDB 集群，包括重启某个 Pod，重启某个组件的所有 Pod 和重启 TiDB 集群的所有 Pod。
+本文描述了如何强制重启 Kubernetes 集群上的 TiDB 集群，包括重启某个 Pod，重启某个组件的所有 Pod 和重启 TiDB 集群的所有 Pod。
 
 > **注意：**
 >
@@ -15,15 +15,6 @@ category: how-to
 > - 在强制重启 PD Pod 过程中，如果被重启的 PD Pod 是 Leader，重启过程不会自动迁移 Leader，这会导致 PD 服务短时间中断。
 > - 在强制重启 TiKV Pod 过程中，不会自动迁移 TiKV 的 Region Leader，会导致访问对应数据的请求异常。
 > - 在强制重启 TiDB Pod 过程中，会导致访问对应 TiDB 的请求失败。
-
-## 重启某个 Pod
-
-本小节介绍如何重启某个 Pod，包括以下四种重启场景：
-
-- [强制重启某个 Pod](#强制重启某个-pod)
-- [优雅重启 PD Pod](#优雅重启-pd-pod)
-- [优雅重启 TiKV Pod](#优雅重启-tikv-pod)
-- [优雅重启 TiDB Pod](#优雅重启-tidb-pod)
 
 ### 强制重启某个 Pod
 
@@ -34,15 +25,6 @@ category: how-to
 ```shell
 kubectl delete pod -n <namespace> <pod-name>
 ```
-
-## 重启某个组件的所有 Pod
-
-本小节介绍如何重启某个组件的所有 Pod，包括以下四种重启场景：
-
-- [强制重启某个组件的所有 Pod](#强制重启某个组件的所有-pod)
-- [优雅重启 PD 组件所有 Pod](#优雅重启-pd-组件所有-pod)
-- [优雅重启 TiKV 组件所有 Pod](#优雅重启-tikv-组件所有-pod)
-- [优雅重启 TiDB 组件所有 Pod](#优雅重启-tidb-组件所有-pod)
 
 ### 强制重启某个组件的所有 Pod
 
