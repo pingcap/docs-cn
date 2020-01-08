@@ -379,6 +379,7 @@
     - [收集日志](/dev/tidb-in-kubernetes/maintain/log-collecting.md)
     - [集群故障自动转移](/dev/tidb-in-kubernetes/maintain/auto-failover.md)
     - [TiDB Binlog](/dev/tidb-in-kubernetes/maintain/tidb-binlog.md)
+    - [重启 TiDB 集群](/dev/tidb-in-kubernetes/maintain/restart.md)
   - [扩缩容](/dev/tidb-in-kubernetes/scale-in-kubernetes.md)
   + 升级
     - [TiDB 集群](/dev/tidb-in-kubernetes/upgrade/tidb-cluster.md)
