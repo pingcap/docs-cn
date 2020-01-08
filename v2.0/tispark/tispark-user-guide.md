@@ -91,7 +91,7 @@ For the hybrid deployment of TiKV and TiSpark, add TiSpark required resources to
 
 ## Deploy the TiSpark cluster
 
-Download TiSpark's jar package [here](http://download.pingcap.org/tispark-0.1.0-SNAPSHOT-jar-with-dependencies.jar).
+Download TiSpark's jar package [here](https://download.pingcap.org/tispark-0.1.0-SNAPSHOT-jar-with-dependencies.jar).
 
 ### Deploy TiSpark on the existing Spark cluster
 

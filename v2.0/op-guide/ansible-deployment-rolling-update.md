@@ -46,7 +46,7 @@ When you perform a rolling update for a TiDB cluster, the service is shut down s
 You can also download the binary manually. Use `wget` to download the binary and replace the existing binary in `/home/tidb/tidb-ansible/resource/bin/` with it manually.
 
 ```
-wget http://download.pingcap.org/tidb-v2.0.3-linux-amd64-unportable.tar.gz
+wget https://download.pingcap.org/tidb-v2.0.3-linux-amd64-unportable.tar.gz
 ```
 
 > **Note:**

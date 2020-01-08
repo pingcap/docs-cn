@@ -10,7 +10,7 @@ category: tools
 
 `mydumper` is a fork of the [mydumper](https://github.com/maxbube/mydumper) project with additional functionality specific to TiDB. It is the recommended method to use for logical backups of TiDB.
 
-[Download the Binary](http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz).
+[Download the Binary](https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz).
 
 ## What enhancements does this contain over regular mydumper?
 

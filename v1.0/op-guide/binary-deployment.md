@@ -138,8 +138,8 @@ TiDB provides the official binary installation package that supports Linux. For 
 
 ```
 # Download the package.
-wget http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-latest-linux-amd64.sha256
+wget https://download.pingcap.org/tidb-latest-linux-amd64.tar.gz
+wget https://download.pingcap.org/tidb-latest-linux-amd64.sha256
 
 # Check the file integrity. If the result is OK, the file is correct.
 sha256sum -c tidb-latest-linux-amd64.sha256

@@ -23,7 +23,7 @@ Before you start, make sure that you have:
 
 1. Install Ansible offline on the CentOS 7 system:
 
-    > Download the [Ansible](http://download.pingcap.org/ansible-2.4-rpms.el7.tar.gz) offline installation package to the Control Machine.
+    > Download the [Ansible](https://download.pingcap.org/ansible-2.4-rpms.el7.tar.gz) offline installation package to the Control Machine.
   
     ```bash
     # tar -xzvf ansible-2.4-rpms.el7.tar.gz

@@ -110,8 +110,8 @@ See [Download the TiDB enterprise toolset](#download-the-tidb-enterprise-toolset
 
 ```bash
 # Download the enterprise tool package.
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
+wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
+wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
 
 # Check the file integrity. If the result is OK, the file is correct.
 sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256

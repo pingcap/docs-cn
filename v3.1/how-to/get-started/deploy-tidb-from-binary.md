@@ -56,7 +56,7 @@ See the [production deployment](/v3.1/how-to/deploy/from-tarball/production-envi
 
 ```
 # Download the package.
-$ wget http://download.pingcap.org/tidb-v3.0-linux-amd64.tar.gz http://download.pingcap.org/tidb-v3.0-linux-amd64.sha256
+$ wget https://download.pingcap.org/tidb-v3.0-linux-amd64.tar.gz https://download.pingcap.org/tidb-v3.0-linux-amd64.sha256
 
 # Check the file integrity. If the result is OK, the file is correct.
 $ sha256sum -c tidb-v3.0-linux-amd64.sha256

@@ -17,8 +17,8 @@ Syncer is a tool used to import data incrementally. It is a part of the TiDB ent
 
 ```bash
 # Download the tool package.
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
+wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz
+wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
 
 # Check the file integrity. If the result is OK, the file is correct.
 sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256

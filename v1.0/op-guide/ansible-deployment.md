@@ -366,7 +366,7 @@ It is recommended to configure load balancing to provide uniform SQL interface.
 You can also download the binary manually. Use `wget` to download the binary and replace the existing binary in `tidb-ansible/resource/bin/` manually.
 
 ```
-wget http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz
+wget https://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz
 ```
 
 > **Note:**

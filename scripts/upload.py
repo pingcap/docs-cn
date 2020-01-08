@@ -44,4 +44,4 @@ if __name__ == "__main__":
     print(local_file, remote_name)
     upload(local_file, remote_name)
 
-    print("http://download.pingcap.org/{}".format(remote_name))
+    print("https://download.pingcap.org/{}".format(remote_name))

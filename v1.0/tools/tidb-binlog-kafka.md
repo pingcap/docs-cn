@@ -46,8 +46,8 @@ The Kafka cluster stores the binlog data written by Pump and provides the binlog
 
 ```bash
 # Download the tool package.
-wget http://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-binlog-latest-linux-amd64.sha256
+wget https://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz
+wget https://download.pingcap.org/tidb-binlog-latest-linux-amd64.sha256
 
 # Check the file integrity. If the result is OK, the file is correct. 
 sha256sum -c tidb-binlog-latest-linux-amd64.sha256
@@ -351,8 +351,8 @@ CentOS 7+
 
 ```bash
 # Download PbReader package
-wget http://download.pingcap.org/pb_reader-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/pb_reader-latest-linux-amd64.sha256
+wget https://download.pingcap.org/pb_reader-latest-linux-amd64.tar.gz
+wget https://download.pingcap.org/pb_reader-latest-linux-amd64.sha256
 
 # Check the file integrity. If the result is OK, the file is correct.
 sha256sum -c pb_reader-latest-linux-amd64.sha256

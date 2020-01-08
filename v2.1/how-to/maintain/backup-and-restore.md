@@ -26,8 +26,8 @@ Use the following tools for data backup and restoration:
     {{< copyable "shell-regular" >}}
 
     ```bash
-    wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz && \
-    wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
+    wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz && \
+    wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
     ```
 
 2. Check the file integrity. If the result is fine, the file is correct.

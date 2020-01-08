@@ -45,14 +45,14 @@ sudo yum install -y mariadb-server
 Even if you've already started a TiDB cluster, it will be easier to follow along with this tutorial where we will set up a new, simple cluster. We will install from a tarball, using a simplified form of the [Local Deployment](/v2.1/how-to/get-started/deploy-tidb-from-binary.md) guide. You may also wish to refer to [Testing Deployment from Binary Tarball](/v2.1/how-to/deploy/from-tarball/testing-environment.md) for best practices of establishing a real testing deployment, but that goes beyond the scope of this tutorial.
 
 ```bash
-curl -L http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz | tar xzf -
+curl -L https://download.pingcap.org/tidb-latest-linux-amd64.tar.gz | tar xzf -
 cd tidb-latest-linux-amd64
 ```
 
 Expected output:
 
 ```
-[kolbe@localhost ~]$ curl -LO http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz | tar xzf -
+[kolbe@localhost ~]$ curl -LO https://download.pingcap.org/tidb-latest-linux-amd64.tar.gz | tar xzf -
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100  368M  100  368M    0     0  8394k      0  0:00:44  0:00:44 --:--:-- 11.1M

@@ -36,8 +36,8 @@ Drainer collects binlog files from each Pump node, converts them into specified 
 
 ```bash
 # Download the tool package.
-wget http://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-binlog-latest-linux-amd64.sha256
+wget https://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz
+wget https://download.pingcap.org/tidb-binlog-latest-linux-amd64.sha256
 
 # Check the file integrity. If the result is OK, the file is correct. 
 sha256sum -c tidb-binlog-latest-linux-amd64.sha256
