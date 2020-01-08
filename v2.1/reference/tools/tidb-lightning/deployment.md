@@ -179,10 +179,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/v2.1/how-to/deploy/
 
 #### 第 2 步：下载 TiDB Lightning 安装包
 
-通过以下链接获取 TiDB Lightning 安装包：
-
-- [v2.1](/v2.1/reference/tools/download.md#tidb-lightning)
-- [最新开发版本 (unstable)](https://pingcap.com/docs-cn/dev/reference/tools/download/#tidb-lightning)
+在[工具下载](/v2.1/reference/tools/download.md#tidb-lightning)页面下载 TiDB Lightning 安装包（需选择与 TiDB 集群相同的版本）。
 
 #### 第 3 步：启动 `tikv-importer`
 
@@ -200,7 +197,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/v2.1/how-to/deploy/
 
     [server]
     # tikv-importer 监听的地址，tidb-lightning 需要连到这个地址进行数据写入。
-    addr = "0.0.0.0:8287"
+    addr = "192.168.20.10:8287"
 
     [metric]
     # 给 Prometheus 客户端的推送任务名称。
