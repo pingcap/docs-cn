@@ -101,7 +101,7 @@ To disable the automatic retry of explicit transactions, configure `tidb_disable
 set @@global.tidb_disable_txn_auto_retry = on;
 ```
 
-This variable does not affect the implicit single statement with `auto_commit = 1`, so this type of statement still automatically retries.
+This variable does not affect the implicit single statement with `autocommit = 1`, so this type of statement still automatically retries.
 
 After the automatic retry of explicit transactions is disabled, if a transaction conflict occurs, the `commit` statement returns an error that includes the `try again later` string. The application layer uses this string to judge whether the error can be retried.
 

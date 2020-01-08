@@ -22,7 +22,7 @@ TiDB implements Snapshot Isolation consistency, which it advertises as `REPEATAB
 
 > **Note:**
 >
-> In the default configuration of TiDB 3.0, the automatic transaction retry is disabled. For additional context on this feature and how to enable it, see [Transactional anomalies caused by automatic retries](#transactional-anomalies-caused-by-automatic-retries) and [Transaction Retry](#transaction-retry).
+> In the default configuration of TiDB v3.0, the automatic transaction retry is disabled. For how this feature influences the isolation level and how to enable it, see [automatic retry and transactional anomalies caused by automatic retry](#automatic-retry-and-transactional-anomalies-caused-by-automatic-retry).
 
 TiDB uses the [Percolator transaction model](https://research.google.com/pubs/pub36726.html). A global read timestamp is obtained when the transaction is started, and a global commit timestamp is obtained when the transaction is committed. The execution order of transactions is confirmed based on the timestamps. To know more about the implementation of TiDB transaction model, see [MVCC in TiKV](https://pingcap.com/blog/2016-11-17-mvcc-in-tikv/).
 
@@ -55,15 +55,11 @@ The Repeatable Read isolation level in TiDB differs from that in MySQL. The MySQ
 
 The MySQL Repeatable Read isolation level is not the snapshot isolation level. The consistency of MySQL Repeatable Read isolation level is weaker than both the snapshot isolation level and TiDB Repeatable Read isolation level.
 
-## Transaction retry
+## Automatic retry and transactional anomalies caused by automatic retry
 
-By default TiDB will not retry transactions because this might lead to lost updates. If your application can tolerate lost updates, and does not require Snapshot Isolation consistency, you can enable **this feature** by setting `tidb_disable_txn_auto_retry = off`. This has the benefit of fewer `COMMIT` statements generating errors.
+By default TiDB will not retry transactions because this might lead to lost updates and damaged Snapshot Isolation. If your application can tolerate lost updates, and does not require Snapshot Isolation consistency, you can enable **this feature** by setting `tidb_disable_txn_auto_retry = off`. This has the benefit of fewer `COMMIT` statements generating errors. The value of `tidb_retry_limit` cannot be `0`. Otherwise, the automatic retry is also disabled.
 
-The value of `tidb_retry_limit` cannot be 0. Otherwise, the automatic retry is also disabled.
-
-## Transactional anomalies caused by automatic retries
-
-By default TiDB will not retry transactions because this might lead to lost updates. If your application can tolerate lost updates, and does not require Snapshot Isolation consistency, you can enable **this feature** by setting `tidb_disable_txn_auto_retry = 0`. This has the benefit of fewer `COMMIT` statements generating errors.
+When automatic retry is enabled, conflicts in an explicit transaction might lead to unexpected result.
 
 Example 1:
 
@@ -95,38 +91,16 @@ Under the automatic retry mechanism of TiDB, all the executed statements for the
 
 To disable the automatic retry of explicit transactions, configure `tidb_disable_txn_auto_retry = on`:
 
+{{< copyable "sql" >}}
+
 ```sql
 SET GLOBAL tidb_disable_txn_auto_retry = on;
 ```
 
-Changing the variable `tidb_disable_txn_auto_retry` does not affect the implicit single statement with `auto_commit = 1`, because the automatic retry of this statement does not cause anomalies like update loss and does not break the isolation of a transaction.
+Changing the variable `tidb_disable_txn_auto_retry` does not affect the implicit single statement with `autocommit = 1`, because the automatic retry of this statement does not cause anomalies like update loss and does not break the isolation of a transaction.
 
 After the automatic retry of explicit transactions is disabled, if a transaction conflict occurs, the `commit` statement returns an error that includes the `try again later` string. The application layer uses this string to judge whether the error can be retried.
 
 If the application layer logic is included in the process of transaction execution, it is recommended to add the retry of explicit transactions at the application layer and disable automatic retry.
 
 The `tidb_retry_limit` variable determines the maximum number of transaction retries. The default value is 10. When this variable is set to 0, none of the transactions automatically retries, including the implicit single statement transactions that are automatically committed. This is the way to completely disable the automatic retry mechanism in TiDB. If you are more concerned with the latency of transaction execution than transaction isolation, you can set it to 0. Then all conflicting transactions report failures to the application layer in the fastest way.
-
-## Statement rollback
-
-If you execute a statement within a transaction, the statement does not take effect when an error occurs.
-
-```sql
-begin;
-insert into test values (1);
-insert into tset values (2);  // This statement does not take effect because "test" is misspelled as "tset".
-insert into test values (3);
-commit;
-```
-
-In the above example, the second `insert` statement fails, while the other two `insert` statements (1 & 3) can be successfully committed.
-
-```sql
-begin;
-insert into test values (1);
-insert into tset values (2);  // This statement does not take effect because "test" is misspelled as "tset".
-insert into test values (3);
-rollback;
-```
-
-In the above example, the second `insert` statement fails, and this transaction does not insert any data into the database because `rollback` is called.

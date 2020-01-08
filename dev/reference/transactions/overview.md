@@ -6,72 +6,103 @@ category: reference
 
 # Transactions
 
-TiDB supports distributed transactions. The statements that relate to transactions include the `Autocommit` variable, `START TRANSACTION`/`BEGIN`, `COMMIT` and `ROLLBACK`.
+TiDB supports complete distributed transactions. This document introduces transaction-related statements, explicit and implicit transactions, isolation levels, and laziness checks for transactions.
 
-## Autocommit
+The common variables include `autocommit`, [`tidb_disable_txn_auto_retry`](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_disable_txn_auto_retry), and [`tidb_retry_limit`](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_retry_limit).
 
-Syntax:
+## Common syntax
 
-```sql
-SET autocommit = {0 | 1}
-```
-
-If you set the value of `autocommit` to 1, the status of the current Session is autocommit. If you set the value of `autocommit` to 0, the status of the current Session is non-autocommit. The value of `autocommit` is 1 by default.
-
-When autocommit is enabled, statements are automatically committed immediately following their execution. When autocommit is disabled, statements are only committed when you execute `COMMIT` or as part of an [implicit commit](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html). For example, executing `[BEGIN|START TRANSACTION]` implicitly commits the last transaction and starts a new transaction. This behavior is required for MySQL compatibility.
-
-`autocommit` is also a System Variable. You can update the current Session or the Global value using the following variable assignment statement:
-
-```sql
-SET @@SESSION.autocommit = {0 | 1};
-SET @@GLOBAL.autocommit = {0 | 1};
-```
-
-## START TRANSACTION, BEGIN
+### `BEGIN`, `START TRANSACTION` and `START TRANSACTION WITH CONSISTENT SNAPSHOT`
 
 Syntax:
+
+{{< copyable "sql" >}}
 
 ```sql
 BEGIN;
+```
 
+{{< copyable "sql" >}}
+
+```sql
 START TRANSACTION;
+```
 
+{{< copyable "sql" >}}
+
+```sql
 START TRANSACTION WITH CONSISTENT SNAPSHOT;
 ```
 
-The three statements above are all statements that transactions start with, through which you can explicitly start a new transaction. If at this time, the current Session is in the process of a transaction, a new transaction is started after the current transaction is committed.
+All of the above three statements are used to start a transaction with the same effect. You can explicitly start a new transaction by executing one of these statements. If the current session is in the process of a transaction when one of these statements is executed, TiDB automatically commits the current transaction before starting a new transaction.
 
-## COMMIT
+### `COMMIT`
 
 Syntax:
+
+{{< copyable "sql" >}}
 
 ```sql
 COMMIT;
 ```
 
-This statement is used to commit the current transaction, including all the updates between `BEGIN` and `COMMIT`.
+You can use this statement to commit the current transaction, including all updates between `[BEGIN|START TRANSACTION]` and `COMMIT`.
 
-## ROLLBACK
+### `ROLLBACK`
 
 Syntax:
+
+{{< copyable "sql" >}}
 
 ```sql
 ROLLBACK;
 ```
 
-This statement is used to roll back the current transaction and cancels all the updates between `BEGIN` and `COMMIT`.
+You can use this statement to roll back the current transaction and cancels all updates between `[BEGIN | START TRANSACTION]` and `ROLLBACK`.
+
+## Autocommit
+
+Syntax:
+
+{{< copyable "sql" >}}
+
+```sql
+SET autocommit = {0 | 1}
+```
+
+If you set the value of `autocommit` to `1`, the status of the current session is autocommit. If you set the value of `autocommit` to `0`, the status of the current session is non-autocommit. The value of `autocommit` is `1` by default.
+
+When autocommit is enabled, statements are automatically committed immediately following their execution. When autocommit is disabled, statements are only committed when you execute the `COMMIT` statement.
+
+> **Note:**
+>
+> Some statements are committed implicitly. For example, executing `[BEGIN|START TRANSACTION]` implicitly commits the last transaction and starts a new transaction. This behavior is required for MySQL compatibility. Refer to [implicit commit](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html) for more details.
+
+`autocommit` is also a system variable. You can update the current session or the Global value using the following variable assignment statement:
+
+{{< copyable "sql" >}}
+
+```sql
+SET @@SESSION.autocommit = {0 | 1};
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SET @@GLOBAL.autocommit = {0 | 1};
+```
 
 ## Explicit and implicit transaction
 
-TiDB supports explicit transactions (`BEGIN/COMMIT`) and implicit transactions (`SET autocommit = 1`).
+TiDB supports explicit transactions (`[BEGIN|START TRANSACTION]` and `COMMIT`) and implicit transactions (`SET autocommit = 1`).
 
-If you set the value of `autocommit` to 1 and start a new transaction through the `[BEGIN|START TRANSACTION]` statement, the autocommit is disabled before `COMMIT`/`ROLLBACK` which makes the transaction becomes explicit.
+If you set the value of `autocommit` to `1` and start a new transaction through the `[BEGIN|START TRANSACTION]` statement, the autocommit is disabled before `COMMIT` or `ROLLBACK` which makes the transaction becomes explicit.
 
-For DDL statements, the transaction is committed automatically and does not support rollback. If you run the DDL statement while the current Session is in the process of a transaction, the DDL statement is executed after the current transaction is committed.
+For DDL statements, the transaction is committed automatically and does not support rollback. If you run the DDL statement while the current session is in the process of a transaction, the DDL statement is executed after the current transaction is committed.
 
 ## Transaction isolation level
 
-TiDB **only supports** `SNAPSHOT ISOLATION`. You can set the isolation level of the current Session to `READ COMMITTED` using the following statement. However, TiDB is only compatible with the `READ COMMITTED` isolation level in syntax and transactions are still executed at the `SNAPSHOT ISOLATION` level.
+TiDB **only supports** `SNAPSHOT ISOLATION`. You can set the isolation level of the current session to `READ COMMITTED` using the following statement. However, TiDB is only compatible with the `READ COMMITTED` isolation level in syntax and transactions are still executed at the `SNAPSHOT ISOLATION` level.
 
 ```sql
 SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
@@ -98,3 +129,27 @@ The lazy check is important because if you perform a unique constraint check on 
 > **Note:**
 >
 > This optimization does not take effect for `INSERT IGNORE` and `INSERT ON DUPLICATE KEY UPDATE`, only for normal `INSERT` statements. The behavior can also be disabled by setting `tidb_constraint_check_in_place=TRUE`.
+
+## Statement rollback
+
+If you execute a statement within a transaction, the statement does not take effect when an error occurs.
+
+```sql
+begin;
+insert into test values (1);
+insert into tset values (2);  // This statement does not take effect because "test" is misspelled as "tset".
+insert into test values (3);
+commit;
+```
+
+In the above example, the second `insert` statement fails, while the other two `insert` statements (1 & 3) can be successfully committed.
+
+```sql
+begin;
+insert into test values (1);
+insert into tset values (2);  // This statement does not take effect because "test" is misspelled as "tset".
+insert into test values (3);
+rollback;
+```
+
+In the above example, the second `insert` statement fails, and this transaction does not insert any data into the database because `rollback` is called.
