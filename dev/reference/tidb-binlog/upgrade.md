@@ -1,10 +1,46 @@
 ---
-title: TiDB Binlog Cluster 版本升级方法
+title: TiDB Binlog 版本升级方法
 category: reference
 aliases: ['/docs-cn/dev/how-to/upgrade/tidb-binlog/','/docs-cn/dev/reference/tools/tidb-binlog/upgrade/']
 ---
 
-# TiDB Binlog Cluster 版本升级方法
+# TiDB Binlog 版本升级方法
+
+如未特别指明，文中出现的 TiDB Binlog 均指最新的 [Cluster](https://pingcap.com/docs-cn/stable/reference/tidb-binlog/overview/) 版本。
+
+本文会分 Ansible 部署和手动部署两种情况介绍 TiDB Binlog 版本升级的方法，
+另外有一小节介绍如何从更早的不兼容版本（Kafka/Local 版本）升级到最新版本。
+
+## Ansible 部署
+
+本节适用于使用 [TiDB Ansible Playbook](https://github.com/pingcap/tidb-ansible) 部署的情况。
+
+### Pump
+
+1. 将新版本的二进制文件 `pump` 放到 `{{ resources_dir }}/bin` 目录中
+2. 滚动升级： `ansible-playbook rolling_update.yml --tags=pump`
+
+### Drainer
+
+1. 将新版本的二进制文件 `drainer` 放到 `{{ resources_dir }}/bin` 目录中
+2. `ansible-playbook stop_drainer.yml --tags=drainer`
+3. `ansible-playbook start_drainer.yml --tags=drainer`
+
+## 手动部署
+
+### Pump
+
+对集群里的每个 Pump 逐一升级，确保集群中总有 Pump 可以接收 TiDB 发来的 Binlog。
+
+1. 用新版本的 `pump` 替换原来的文件
+2. 重启 Pump 进程
+
+### Drainer
+
+1. 用新版本的 `drainer` 替换原来的文件
+2. 重启 Drainer 进程
+
+## 从 Kafka/Local 版本升级到 Cluster 版本
 
 新版本的 TiDB（v2.0.8-binlog、v2.1.0-rc.5 及以上版本）不兼容 [Kafka 版本](/dev/reference/tidb-binlog/tidb-binlog-kafka.md)以及 [Local 版本](/dev/reference/tidb-binlog/tidb-binlog-local.md)的 TiDB Binlog，集群升级到新版本后只能使用 Cluster 版本的 TiDB Binlog。如果在升级前已经使用了 Kafka／Local 版本的 TiDB Binlog，必须将其升级到 Cluster 版本。
 
@@ -16,7 +52,7 @@ TiDB Binlog 版本与 TiDB 版本的对应关系如下：
 | Kafka | TiDB 1.0 ~ TiDB 2.1 RC5 | TiDB 1.0 支持 local 版本和 Kafka 版本的 TiDB Binlog。 |
 | Cluster | TiDB v2.0.8-binlog，TiDB 2.1 RC5 及更高版本 | TiDB v2.0.8-binlog 是一个支持 Cluster 版本 TiDB Binlog 的 2.0 特殊版本。 |
 
-## 升级流程
+### 升级流程
 
 > **注意：**
 >
