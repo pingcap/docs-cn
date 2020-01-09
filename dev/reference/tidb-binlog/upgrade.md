@@ -22,7 +22,7 @@ aliases: ['/docs-cn/dev/how-to/upgrade/tidb-binlog/','/docs-cn/dev/reference/too
 
 ### Drainer
 
-1. 将新版本的二进制文件 `drainer` 放到 `{{ resources_dir }}/bin` 目录中
+1. 将新版本的二进制文件 `drainer` 复制到 `{{ resources_dir }}/bin` 目录中
 2. `ansible-playbook stop_drainer.yml --tags=drainer`
 3. `ansible-playbook start_drainer.yml --tags=drainer`
 
