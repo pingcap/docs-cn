@@ -35,6 +35,18 @@ Download [TiDB Lightning](/dev/reference/tools/tidb-lightning/overview.md) by us
 >
 > `{version}` in the above download link indicates the version number of TiDB Lightning. For example, the download link for `v3.0.5` is `https://download.pingcap.org/tidb-toolkit-v3.0.5-linux-amd64.tar.gz`. You can also download the latest unpublished version by replacing `{version}` with `latest`.
 
+## BR (backup and restore)
+
+Download [BR](/dev/how-to/maintain/backup-and-restore/br.md) by using the download link in the following table:
+
+| Package name | OS | Architecure | SHA256 checksum |
+|:---|:---|:---|:---|
+| `http://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.tar.gz` | Linux | amd64 | `http://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.sha256` |
+
+> **Note:**
+>
+> `{version}` in the above download link indicates the version number of BR. For example, the download link for `v3.1.0-beta` is `http://download.pingcap.org/tidb-toolkit-v3.1.0-beta-linux-amd64.tar.gz`. You can also download the latest unpublished version by replacing `{version}` with `latest`.
+
 ## TiDB DM (Data Migration)
 
 Download [DM](/dev/reference/tools/data-migration/overview.md) by using the download link in the following table:
