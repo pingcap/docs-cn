@@ -121,7 +121,7 @@ Query OK, 0 rows affected (0.14 sec)
 
 {{< copyable "sql" >}}
 
-```
+```sql
 SHOW CREATE TABLE t1;
 ```
 
