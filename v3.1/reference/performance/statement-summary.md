@@ -11,7 +11,7 @@ category: reference
 
 ## events_statements_summary_by_digest 介绍
 
-`events_statements_summary_by_digest` 是 `performance_schema` 里的一张系统表，它把 SQL 按 digest 和 plan 共同分组，统计每一组的 SQL 信息。
+`events_statements_summary_by_digest` 是 `performance_schema` 里的一张系统表，它把 SQL 按 digest 分组，统计每一组的 SQL 信息。
 
 此处的 digest 与 slow log 里的 digest 一样，是把 SQL 规范化后算出的唯一标识符。
 SQL 的规范化会忽略常量、空白符、大小写的差别。也就是说，只要语法一致，最终的 digest 就相同。
@@ -217,7 +217,7 @@ SQL 的基础信息：
 
 ## 排查示例
 
-下面用几个示例问题演示如何利用 statement summary 来排查。
+下面用两个示例问题演示如何利用 statement summary 来排查。
 
 ### SQL 延迟比较大，是不是服务端的问题？
 
@@ -277,8 +277,8 @@ statement summary 关闭后，系统表里的数据会被清空，下次打开�
 
 还有两个控制 statement summary 的系统变量：
 
-- `tidb_stmt_summary_refresh_interval`：`events_statements_summary_by_digest` 的清空周期，单位是秒。
-- `tidb_stmt_summary_history_size`：`events_statements_summary_by_digest_history` 保存每种 SQL 的历史的数量。
+- `tidb_stmt_summary_refresh_interval`：`events_statements_summary_by_digest` 的清空周期，单位是秒，默认值是 1800。
+- `tidb_stmt_summary_history_size`：`events_statements_summary_by_digest_history` 保存每种 SQL 的历史的数量，默认值是 24。
 
 例如，如下设置：
 
