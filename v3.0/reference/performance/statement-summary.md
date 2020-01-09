@@ -1,5 +1,5 @@
 ---
-title: Statement Summary Table
+title: Statement Summary Tables
 category: reference
 ---
 
