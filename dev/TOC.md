@@ -340,9 +340,11 @@
     + TiDB Lightning
       - [概述](/dev/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/dev/reference/tools/tidb-lightning/deployment.md)
+      - [参数说明](/dev/reference/tools/tidb-lightning/config.md)
       - [断点续传](/dev/reference/tools/tidb-lightning/checkpoints.md)
       - [表库过滤](/dev/reference/tools/tidb-lightning/table-filter.md)
       - [CSV 支持](/dev/reference/tools/tidb-lightning/csv.md)
+      - [Web 界面](/dev/reference/tools/tidb-lightning/web.md)
       - [监控告警](/dev/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](/dev/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](/dev/faq/tidb-lightning.md)
@@ -377,6 +379,7 @@
     - [收集日志](/dev/tidb-in-kubernetes/maintain/log-collecting.md)
     - [集群故障自动转移](/dev/tidb-in-kubernetes/maintain/auto-failover.md)
     - [TiDB Binlog](/dev/tidb-in-kubernetes/maintain/tidb-binlog.md)
+    - [重启 TiDB 集群](/dev/tidb-in-kubernetes/maintain/restart.md)
   - [扩缩容](/dev/tidb-in-kubernetes/scale-in-kubernetes.md)
   + 升级
     - [TiDB 集群](/dev/tidb-in-kubernetes/upgrade/tidb-cluster.md)
