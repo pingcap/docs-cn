@@ -829,7 +829,7 @@ TiDB can provide services while Loader is running because Loader inserts the dat
 
 Currently, TiDB does not support `select into outfile`. You can use the following methods to export the data in TiDB:
 
-- See [MySQL uses mysqldump to export part of the table data](http://blog.csdn.net/xin_yu_xin/article/details/7574662) in Chinese and export data using mysqldump and the WHERE condition.
+- See [MySQL uses mysqldump to export part of the table data](https://blog.csdn.net/xin_yu_xin/article/details/7574662) in Chinese and export data using mysqldump and the WHERE condition.
 - Use the MySQL client to export the results of `select` to a file.
 
 #### How to migrate from DB2 or Oracle to TiDB?
