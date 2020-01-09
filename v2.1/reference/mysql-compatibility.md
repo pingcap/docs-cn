@@ -122,7 +122,7 @@ Query OK, 0 rows affected (0.14 sec)
 {{< copyable "sql" >}}
 
 ```
-SHOW CREATE TABLE t1\G;
+SHOW CREATE TABLE t1;
 ```
 
 ```
