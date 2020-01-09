@@ -6,15 +6,15 @@ category: how-to
 
 # TiDB Lightning Troubleshooting
 
-When Lightning encounters an unrecoverable error, it exits with nonzero exit code and leaves the reason in the log file. Errors are typically printed at the end of the log. You can also search for the string `[error]` to look for non-fatal errors.
+When TiDB Lightning encounters an unrecoverable error, it exits with nonzero exit code and leaves the reason in the log file. Errors are typically printed at the end of the log. You can also search for the string `[error]` to look for non-fatal errors.
 
 This document summarizes some commonly encountered errors in the `tidb-lightning` log file and their solutions.
 
 ## Import speed is too slow
 
-Normally it takes Lightning 2 minutes per thread to import a 256 MB data file. It is an error if the speed is much slower than this. The time taken for each data file can be checked from the log mentioning `restore chunk … takes`. This can also be observed from metrics on Grafana.
+Normally it takes TiDB Lightning 2 minutes per thread to import a 256 MB data file. It is an error if the speed is much slower than this. The time taken for each data file can be checked from the log mentioning `restore chunk … takes`. This can also be observed from metrics on Grafana.
 
-There are several reasons why Lightning becomes slow:
+There are several reasons why TiDB Lightning becomes slow:
 
 **Cause 1**: `region-concurrency` is too high, which causes thread contention and reduces performance.
 
@@ -26,7 +26,7 @@ There are several reasons why Lightning becomes slow:
 
 Every additional index will introduce a new KV pair for each row. If there are N indices, the actual size to be imported would be approximately (N+1) times the size of the Mydumper output. If the indices are negligible, you may first remove them from the schema, and add them back via `CREATE INDEX` after import is complete.
 
-**Cause 3**: Lightning is too old.
+**Cause 3**: TiDB Lightning is too old.
 
 Try the latest version! Maybe there is new speed improvement.
 
@@ -43,6 +43,8 @@ Try the latest version! Maybe there is new speed improvement.
     * `AUTO_INCREMENT` columns need to be positive, and do not contain the value "0".
     * The UNIQUE and PRIMARY KEYs must have no duplicated entries.
 
+4. If TiDB Lightning has failed before and was not properly restarted, a checksum mismatch may happen due to data being out-of-sync.
+
 **Solutions**:
 
 1. Delete the corrupted data with via `tidb-lightning-ctl`, and restart Lightning to import the affected tables again.
@@ -52,6 +54,8 @@ Try the latest version! Maybe there is new speed improvement.
     ```
 
 2. Consider using an external database to store the checkpoints (change `[checkpoint] dsn`) to reduce the target database's load.
+
+3. If TiDB Lightning was improperly restarted, see also the "[How to properly restart TiDB Lightning](/v3.0/faq/tidb-lightning.md#how-to-properly-restart-tidb-lightning)" section in the FAQ.
 
 ## Checkpoint for … has invalid status: (error code)
 
@@ -69,9 +73,9 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 
 See the [Checkpoints control](/v3.0/reference/tools/tidb-lightning/checkpoints.md#checkpoints-control) section for other options.
 
-## ResourceTemporarilyUnavailable("Too many open engines …: 8")
+## ResourceTemporarilyUnavailable("Too many open engines …: …")
 
-**Cause**: The number of concurrent engine files exceeds the limit imposed by `tikv-importer`. This could be caused by misconfiguration. Additionally, if `tidb-lightning` exited abnormally, an engine file might be left at a dangling open state, which could cause this error as well.
+**Cause**: The number of concurrent engine files exceeds the limit specified by `tikv-importer`. This could be caused by misconfiguration. Additionally, if `tidb-lightning` exited abnormally, an engine file might be left at a dangling open state, which could cause this error as well.
 
 **Solutions**:
 
@@ -89,7 +93,7 @@ See the [Checkpoints control](/v3.0/reference/tools/tidb-lightning/checkpoints.m
 
 ## cannot guess encoding for input file, please convert to UTF-8 manually
 
-**Cause**: Lightning only recognizes the UTF-8 and GB-18030 encodings for the table schemas. This error is emitted if the file isn't in any of these encodings. It is also possible that the file has mixed encoding, such as containing a string in UTF-8 and another string in GB-18030, due to historical `ALTER TABLE` executions.
+**Cause**: TiDB Lightning only recognizes the UTF-8 and GB-18030 encodings for the table schemas. This error is emitted if the file isn't in any of these encodings. It is also possible that the file has mixed encoding, such as containing a string in UTF-8 and another string in GB-18030, due to historical `ALTER TABLE` executions.
 
 **Solutions**:
 
@@ -99,7 +103,7 @@ See the [Checkpoints control](/v3.0/reference/tools/tidb-lightning/checkpoints.m
 
 3. Set `[mydumper] character-set = "binary"` to skip the check. Note that this might introduce mojibake into the target database.
 
-## [sql2kv] sql encode error = [types:1292]invalid time format: '{1970 1 1 0 45 0 0}'
+## [sql2kv] sql encode error = [types:1292]invalid time format: '{1970 1 1 …}'
 
 **Cause**: A table contains a column with the `timestamp` type, but the time value itself does not exist. This is either because of DST changes or the time value has exceeded the supported range (1970 Jan 1st to 2038 Jan 19th).
 
@@ -121,3 +125,7 @@ See the [Checkpoints control](/v3.0/reference/tools/tidb-lightning/checkpoints.m
     ```
 
 2. When exporting data using Mydumper, make sure to include the `--skip-tz-utc` flag.
+
+3. Ensure the entire cluster is using the same and latest version of `tzdata` (version 2018i or above).
+
+    On CentOS, run `yum info tzdata` to check the installed version and whether there is an update. Run `yum upgrade tzdata` to upgrade the package.
