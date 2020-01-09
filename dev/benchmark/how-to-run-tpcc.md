@@ -121,7 +121,7 @@ loadWorkers=32  # 导入数据的并发数
 
 ## 导入数据
 
-**导入数据通常是整个 TPC-C 测试中最耗时，也是最容易出问题的阶段**
+**导入数据通常是整个 TPC-C 测试中最耗时，也是最容易出问题的阶段。**
 
 首先用 MySQL 客户端连接到 TiDB-Server 并执行：
 
@@ -153,25 +153,25 @@ cd run && \
 
 根据机器配置这个过程可能会持续几个小时。
 
-### 通过 Lightning 导入
+### 通过 TiDB Lightning 导入
 
-由于导入数据量随着 warehouse 的增加而增加，当需要导入 1000 warehouse 以上数据时，可以使用先用 BenchmarkSQL 生成 csv 文件，再将文件通过 Ligtning 导入的方式来快速导入。生成的 csv 文件也可以多次复用，节省每次生成所需要的时间。
+由于导入数据量随着 warehouse 的增加而增加，当需要导入 1000 warehouse 以上数据时，可以先用 BenchmarkSQL 生成 csv 文件，再将文件通过 TiDB Lightning（以下简称 Lightning）导入的方式来快速导入。生成的 csv 文件也可以多次复用，节省每次生成所需要的时间。
 
 #### 修改 BenchmarkSQL 的配置文件
 
-1 warehouse 的 csv 文件需要 77 MB 磁盘空间，在生成之前要根据需要分配足够的磁盘空间来保存 csv 文件。修改 `benchmarksql/run/props.mysql`，增加一行：
+1 warehouse 的 csv 文件需要 77 MB 磁盘空间，在生成之前要根据需要分配足够的磁盘空间来保存 csv 文件。可以在 `benchmarksql/run/props.mysql` 文件中增加一行：
 
 ```text
 fileLocation=/home/user/csv/  # 存储 csv 文件的目录绝对路径，需保证有足够的空间
 ```
 
-因为最终要使用 Lightning 导入数据，因此，csv 文件名最好符合 Lightning 要求，即 {database}.{table}.csv 的命名法。所以，这里可以使用略 trick 的方法将以上配置改为：
+因为最终要使用 Lightning 导入数据，所以 csv 文件名最好符合 Lightning 要求，即 `{database}.{table}.csv` 的命名法。这里可以将以上配置改为：
 
 ```text
 fileLocation=/home/user/csv/tpcc.  # 存储 csv 文件的目录绝对路径 + 文件名前缀（database）
 ```
 
-这样生成的 csv 文件将会是 tpcc.bmsql_warehouse.csv 的符合 Lightning 样式。
+这样生成的 csv 文件名将会是类似 `tpcc.bmsql_warehouse.csv` 的样式，符合 Lightning 的要求。
 
 #### 生成 csv 文件
 
