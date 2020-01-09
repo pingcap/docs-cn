@@ -17,7 +17,7 @@ aliases: ['/docs-cn/dev/how-to/upgrade/tidb-binlog/','/docs-cn/dev/reference/too
 
 ### Pump
 
-1. 将新版本的二进制文件 `pump` 放到 `{{ resources_dir }}/bin` 目录中
+1. 将新版本的二进制文件 `pump` 复制到 `{{ resources_dir }}/bin` 目录中
 2. 滚动升级： `ansible-playbook rolling_update.yml --tags=pump`
 
 ### Drainer
