@@ -13,7 +13,7 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 
 ## 参考资源
 
-- [PingCAP 中文技术文档风格指南](resources/pingcap-style-guide-zh-v1.0.pdf)
+- [PingCAP 中文技术文档风格指南](resources/pingcap-style-guide-zh-v1.1.pdf)
 - [TiDB 中文文档模板](resources/tidb-docs-template-zh-v1.0.pdf)
 - [Pull Request 提交流程](#pull-request-提交流程)
 
