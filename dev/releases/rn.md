@@ -7,6 +7,7 @@ category: release
 
 ## 3.1
 
+- [3.1.0-beta.1](/dev/releases/3.1.0-beta.1.md)
 - [3.1.0-beta](/dev/releases/3.1.0-beta.md)
 
 ## 3.0
