@@ -200,8 +200,6 @@ LS1 ansible_host=172.16.5.34 deploy_dir=/data2/ls1 tidb_lightning_pprof_port=233
 ##### 修改 conf/tidb-lightning.yml
 
 ```yaml
-tikv_importer:
-    addr: "172.16.5.34:13323" # 这里指向 importer 的地址，需要将上面 inventory.ini 里指定的再写一次
 mydumper:
     no-schema: true
     csv:
@@ -226,9 +224,7 @@ ansible-playbook deploy.yml --tags=lightning
 
 * 登录到部署 Lightning 和 Importer 的服务器
 * 进入部署目录
-* 在 Importer 目录下创建一个 log 文件夹
 * 在 Importer 目录下执行 `scripts/start_importer.sh`，启动 Importer
-* 在 Lightning 目录下创建一个 log 文件夹
 * 在 Lightning 目录下执行 `scripts/start_lightning.sh`，开始导入数据
 
 由于是用 ansible 进行部署的，可以在监控页面看到 Lightning 的导入进度，或者通过日志查看导入是否结束。
