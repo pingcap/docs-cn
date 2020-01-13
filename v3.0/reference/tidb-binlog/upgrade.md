@@ -8,34 +8,33 @@ aliases: ['/docs-cn/v3.0/how-to/upgrade/tidb-binlog/','/docs-cn/v3.0/reference/t
 
 如未特别指明，文中出现的 TiDB Binlog 均指最新的 [Cluster](/v3.0/reference/tidb-binlog/overview/) 版本。
 
-本文会分 Ansible 部署和手动部署两种情况介绍 TiDB Binlog 版本升级的方法，
-另外有一小节介绍如何从更早的不兼容版本（Kafka/Local 版本）升级到最新版本。
+本文会分 Ansible 部署和手动部署两种情况介绍 TiDB Binlog 版本升级的方法，另外有一小节介绍如何从更早的不兼容版本（Kafka/Local 版本）升级到最新版本。
 
 ## Ansible 部署
 
 本节适用于使用 [TiDB Ansible Playbook](https://github.com/pingcap/tidb-ansible) 部署的情况。
 
-### Pump
+### 升级 Pump
 
 1. 将新版本的二进制文件 `pump` 复制到 `{{ resources_dir }}/bin` 目录中
-2. 滚动升级： `ansible-playbook rolling_update.yml --tags=pump`
+2. 执行 `ansible-playbook rolling_update.yml --tags=pump` 命令来滚动升级 Pump
 
-### Drainer
+### 升级 Drainer
 
 1. 将新版本的二进制文件 `drainer` 复制到 `{{ resources_dir }}/bin` 目录中
-2. `ansible-playbook stop_drainer.yml --tags=drainer`
-3. `ansible-playbook start_drainer.yml --tags=drainer`
+2. 执行 `ansible-playbook stop_drainer.yml --tags=drainer` 命令
+3. 执行 `ansible-playbook start_drainer.yml --tags=drainer` 命令
 
 ## 手动部署
 
-### Pump
+### 升级 Pump
 
 对集群里的每个 Pump 逐一升级，确保集群中总有 Pump 可以接收 TiDB 发来的 Binlog。
 
 1. 用新版本的 `pump` 替换原来的文件
 2. 重启 Pump 进程
 
-### Drainer
+### 升级 Drainer
 
 1. 用新版本的 `drainer` 替换原来的文件
 2. 重启 Drainer 进程
