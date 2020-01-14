@@ -138,7 +138,7 @@ category: reference
     {{< copyable "" >}}
 
     ```yaml
-    ignore-checking-items: ["auto_increment_ID"]
+    ignore-checking-items: ["AUTO_INCREMENT_ID"]
     ```
 
 ## 同步任务配置
@@ -152,7 +152,7 @@ name: "shard_merge"
 task-mode: all
 meta-schema: "dm_meta"
 remove-meta: false
-ignore-checking-items: ["auto_increment_ID"]
+ignore-checking-items: ["AUTO_INCREMENT_ID"]
 
 target-database:
   host: "192.168.0.1"
