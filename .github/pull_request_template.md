@@ -11,3 +11,4 @@
 ### Which version does your change affect? <!--Required; write "N/A" if it is not applicable-->
 
 <!--Specify the version or versions that your change affect by adding a label at the right-hand side of this page. "dev" indicates the latest development version. "v3.0"/"v3.1"/"v2.1" indicates the documentation of TiDB 3.0/3.1-beta/2.1. If your change affects multiple versions, please update the documents for ALL the necessary versions.-->
+- [ ] Updated one version first. Will update other versions after I get two LGTMs.
