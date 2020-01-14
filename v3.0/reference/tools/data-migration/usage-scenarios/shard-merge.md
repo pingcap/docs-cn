@@ -139,7 +139,7 @@ aliases: ['/docs-cn/tools/dm/shard-merge-scenario/']
     {{< copyable "" >}}
 
     ```yaml
-    ignore-checking-items: ["AUTO_INCREMENT_ID"]
+    ignore-checking-items: ["auto_increment_ID"]
     ```
 
 ## 同步任务配置
@@ -153,7 +153,7 @@ name: "shard_merge"
 task-mode: all
 meta-schema: "dm_meta"
 remove-meta: false
-ignore-checking-items: ["AUTO_INCREMENT_ID"]
+ignore-checking-items: ["auto_increment_ID"]
 
 target-database:
   host: "192.168.0.1"

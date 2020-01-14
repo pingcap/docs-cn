@@ -36,7 +36,7 @@ mysql> EXPLAIN SELECT 1;
 +-------------------+-------+------+---------------+
 2 rows in set (0.00 sec)
 
-mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
+mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
 Query OK, 0 rows affected (0.10 sec)
 
 mysql> INSERT INTO t1 (c1) VALUES (1), (2), (3);

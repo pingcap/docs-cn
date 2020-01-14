@@ -18,7 +18,7 @@ TiDB 支持视图，视图是一张虚拟表，该虚拟表的结构由创建视
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t(a INT, b INT);
+create table t(a int, b int);
 ```
 
 ```
@@ -28,7 +28,7 @@ Query OK, 0 rows affected (0.01 sec)
 {{< copyable "sql" >}}
 
 ```sql
-INSERT INTO t VALUES(1, 1),(2,2),(3,3);
+insert into t values(1, 1),(2,2),(3,3);
 ```
 
 ```
@@ -39,7 +39,7 @@ Records: 3  Duplicates: 0  Warnings: 0
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE s(a INT);
+create table s(a int);
 ```
 
 ```
@@ -49,7 +49,7 @@ Query OK, 0 rows affected (0.01 sec)
 {{< copyable "sql" >}}
 
 ```sql
-INSERT INTO s VALUES(2),(3);
+insert into s values(2),(3);
 ```
 
 ```
@@ -60,7 +60,7 @@ Records: 2  Duplicates: 0  Warnings: 0
 {{< copyable "sql" >}}
 
 ```sql
-CREATE VIEW v AS SELECT s.a FROM t LEFT JOIN s ON t.a = s.a;
+create view v as select s.a from t left join s on t.a = s.a;
 ```
 
 ```
@@ -70,7 +70,7 @@ Query OK, 0 rows affected (0.01 sec)
 {{< copyable "sql" >}}
 
 ```sql
-SELECT * FROM v;
+select * from v;
 ```
 
 ```
@@ -87,7 +87,7 @@ SELECT * FROM v;
 {{< copyable "sql" >}}
 
 ```sql
-DROP VIEW v;
+drop view v;
 ```
 
 ```

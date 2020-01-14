@@ -274,7 +274,7 @@ Check Table Before Drop: false
     {{< copyable "sql" >}}
 
     ```sql
-    USE tidb_binlog;
+    use tidb_binlog;
     ```
 
     ```
@@ -284,7 +284,7 @@ Check Table Before Drop: false
     {{< copyable "sql" >}}
 
     ```sql
-    SELECT * FROM checkpoint;
+    select * from checkpoint;
     ```
 
     ```
@@ -307,7 +307,7 @@ Check Table Before Drop: false
     {{< copyable "sql" >}}
 
     ```sql
-    CREATE DATABASE tidbtest;
+    create database tidbtest;
     ```
 
     ```
@@ -317,7 +317,7 @@ Check Table Before Drop: false
     {{< copyable "sql" >}}
 
     ```sql
-    USE tidbtest;
+    use tidbtest;
     ```
 
     ```
@@ -327,7 +327,7 @@ Check Table Before Drop: false
     {{< copyable "sql" >}}
 
     ```sql
-    CREATE TABLE t1 (id INT unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY);
+    create table t1 (id int unsigned not null auto_increment primary key);
     ```
 
     ```
@@ -337,7 +337,7 @@ Check Table Before Drop: false
     {{< copyable "sql" >}}
 
     ```sql
-    INSERT INTO t1 () VALUES (),(),(),(),();
+    insert into t1 () values (),(),(),(),();
     ```
 
     ```
@@ -348,7 +348,7 @@ Check Table Before Drop: false
     {{< copyable "sql" >}}
 
     ```sql
-    SELECT * FROM t1;
+    select * from t1;
     ```
 
     ```
@@ -369,7 +369,7 @@ Check Table Before Drop: false
     {{< copyable "sql" >}}
 
     ```sql
-    USE tidbtest;
+    use tidbtest;
     ```
 
     ```
@@ -382,7 +382,7 @@ Check Table Before Drop: false
     {{< copyable "sql" >}}
 
     ```sql
-    SHOW TABLES;
+    show tables;
     ```
 
     ```
@@ -397,7 +397,7 @@ Check Table Before Drop: false
     {{< copyable "sql" >}}
 
     ```sql
-    SELECT * FROM t1;
+    select * from t1;
     ```
 
     ```

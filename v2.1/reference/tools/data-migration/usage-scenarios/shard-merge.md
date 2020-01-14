@@ -126,7 +126,7 @@ category: reference
 - 要满足同步需求 #8，首先参考[自增主键冲突处理](/v2.1/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md#自增主键冲突处理)来解决冲突，保证在同步到下游时不会因为分表中有相同的主键值而使同步出现异常；然后需要配置 `ignore-checking-items` 来跳过自增主键冲突的检查：
 
     ```yaml
-    ignore-checking-items: ["AUTO_INCREMENT_ID"]
+    ignore-checking-items: ["auto_increment_ID"]
     ```
 
 ## 同步任务配置
@@ -138,7 +138,7 @@ name: "shard_merge"
 task-mode: all
 meta-schema: "dm_meta"
 remove-meta: false
-ignore-checking-items: ["AUTO_INCREMENT_ID"]
+ignore-checking-items: ["auto_increment_ID"]
 
 target-database:
   host: "192.168.0.1"

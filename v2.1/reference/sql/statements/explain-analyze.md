@@ -25,7 +25,7 @@ category: reference
 ## 示例
 
 ```sql
-mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
+mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
 Query OK, 0 rows affected (0.12 sec)
 
 mysql> INSERT INTO t1 (c1) VALUES (1), (2), (3);
