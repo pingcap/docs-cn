@@ -26,7 +26,7 @@ Docker 可以方便地在 Linux / Mac OS / Windows 平台安装，安装方法�
 - TiKV
 - PD
 
-对应的最新 Docker 镜像可以通过 [Docker 官方镜像仓库](https://hub.docker.com) 获取：
+对应的最新 Docker 镜像可以通过 [Docker 官方镜像仓库](https://hub.docker.com/u/pingcap) 获取：
 
 {{< copyable "shell-regular" >}}
 

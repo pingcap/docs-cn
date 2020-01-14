@@ -19,11 +19,11 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
-| `http://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux | amd64 | `http://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
+| `https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux | amd64 | `https://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v3.0.5` 版本的下载链接为 `http://download.pingcap.org/tidb-v3.0.5-linux-amd64.tar.gz`。也可以使用 `latest` 替代 `{version}` 来下载最新的未发布版本。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v3.0.5` 版本的下载链接为 `https://download.pingcap.org/tidb-v3.0.5-linux-amd64.tar.gz`。也可以使用 `latest` 替代 `{version}` 来下载最新的未发布版本。
 
 ## 简单例子
 

@@ -232,6 +232,7 @@
     - [TiDB 数据库权限管理](/dev/reference/security/privilege-system.md)
     - [TiDB 用户账户管理](/dev/reference/security/user-account-management.md)
     - [基于角色的访问控制](/dev/reference/security/role-based-access-control.md)
+    - [TiDB 证书鉴权使用指南](/dev/reference/security/cert-based-authentication.md)
   + 事务
     - [事务语句](/dev/reference/transactions/overview.md)
     - [事务模型](/dev/reference/transactions/transaction-model.md)
@@ -335,13 +336,16 @@
       + 版本发布历史
         + v1.0
           - [1.0.2](/dev/reference/tools/data-migration/releases/1.0.2.md)
+          - [1.0.3](/dev/reference/tools/data-migration/releases/1.0.3.md)
       - [TiDB DM 术语表](/dev/reference/tools/data-migration/glossary.md)
     + TiDB Lightning
       - [概述](/dev/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/dev/reference/tools/tidb-lightning/deployment.md)
+      - [参数说明](/dev/reference/tools/tidb-lightning/config.md)
       - [断点续传](/dev/reference/tools/tidb-lightning/checkpoints.md)
       - [表库过滤](/dev/reference/tools/tidb-lightning/table-filter.md)
       - [CSV 支持](/dev/reference/tools/tidb-lightning/csv.md)
+      - [Web 界面](/dev/reference/tools/tidb-lightning/web.md)
       - [监控告警](/dev/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](/dev/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](/dev/faq/tidb-lightning.md)
@@ -376,6 +380,7 @@
     - [收集日志](/dev/tidb-in-kubernetes/maintain/log-collecting.md)
     - [集群故障自动转移](/dev/tidb-in-kubernetes/maintain/auto-failover.md)
     - [TiDB Binlog](/dev/tidb-in-kubernetes/maintain/tidb-binlog.md)
+    - [重启 TiDB 集群](/dev/tidb-in-kubernetes/maintain/restart.md)
   - [扩缩容](/dev/tidb-in-kubernetes/scale-in-kubernetes.md)
   + 升级
     - [TiDB 集群](/dev/tidb-in-kubernetes/upgrade/tidb-cluster.md)
@@ -403,7 +408,11 @@
   - [改进文档](/dev/contribute.md#改进文档)
 + [TiDB 路线图](/dev/roadmap.md)
 + [版本发布历史](/dev/releases/rn.md)
+  + v3.1
+    - [3.1.0-beta.1](/dev/releases/3.1.0-beta.1.md)
+    - [3.1.0-beta](/dev/releases/3.1.0-beta.md)
   + v3.0
+    - [3.0.8](/dev/releases/3.0.8.md)
     - [3.0.7](/dev/releases/3.0.7.md)
     - [3.0.6](/dev/releases/3.0.6.md)
     - [3.0.5](/dev/releases/3.0.5.md)
@@ -418,6 +427,7 @@
     - [3.0.0-beta.1](/dev/releases/3.0.0-beta.1.md)
     - [3.0.0-beta](/dev/releases/3.0beta.md)
   + v2.1
+    - [2.1.19](/dev/releases/2.1.19.md)
     - [2.1.18](/dev/releases/2.1.18.md)
     - [2.1.17](/dev/releases/2.1.17.md)
     - [2.1.16](/dev/releases/2.1.16.md)

@@ -310,12 +310,15 @@
       + 版本发布历史
         + v1.0
           - [1.0.2](/v2.1/reference/tools/data-migration/releases/1.0.2.md)
+          - [1.0.3](/v2.1/reference/tools/data-migration/releases/1.0.3.md)
     + TiDB Lightning
       - [概述](/v2.1/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/v2.1/reference/tools/tidb-lightning/deployment.md)
+      - [参数说明](/v2.1/reference/tools/tidb-lightning/config.md)
       - [断点续传](/v2.1/reference/tools/tidb-lightning/checkpoints.md)
       - [表库过滤](/v2.1/reference/tools/tidb-lightning/table-filter.md)
       - [CSV 支持](/v2.1/reference/tools/tidb-lightning/csv.md)
+      - [Web 界面](/v2.1/reference/tools/tidb-lightning/web.md)
       - [监控告警](/v2.1/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](/v2.1/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](/v2.1/faq/tidb-lightning.md)
@@ -338,6 +341,7 @@
 - [TiDB 路线图](/v2.1/roadmap.md)
 + [版本发布历史](/v2.1/releases/rn.md)
   + v2.1
+    - [2.1.19](/v2.1/releases/2.1.19.md)
     - [2.1.18](/v2.1/releases/2.1.18.md)
     - [2.1.17](/v2.1/releases/2.1.17.md)
     - [2.1.16](/v2.1/releases/2.1.16.md)
