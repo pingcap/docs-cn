@@ -348,16 +348,35 @@ Load balancers often set the idle connection timeout. If no data is sent over a 
 If a long query is interrupted when you use TiDB, check the middleware program between the client and the TiDB server.
 If the idle timeout is not long enough for your query, try to set the timeout to a larger value. If you cannot reset it, enable the `tcp-keep-alive` option in TiDB.
 
-In Linux, the keepalive probe packet is sent every 7,200 seconds by default. To shorten the interval, configure `sysctls` via the `podSecurityContext` field. Here is an example:
+In Linux, the keepalive probe packet is sent every 7,200 seconds by default. To shorten the interval, configure `sysctls` via the `podSecurityContext` field.
 
-```
-tidb:
-  ...
-  podSecurityContext:
-    sysctls:
-    - name: net.ipv4.tcp_keepalive_time
-      value: "300"
-```
+- If `--allowed-unsafe-sysctls=net.*` can be configured for [kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) in the Kubernetes cluster, configure this parameter for kubelet and configure TiDB in the following way:
+
+    {{< copyable "" >}}
+
+    ```yaml
+    tidb:
+      ...
+      podSecurityContext:
+        sysctls:
+        - name: net.ipv4.tcp_keepalive_time
+          value: "300"
+    ```
+
+- If `--allowed-unsafe-sysctls=net.*` cannot be configured for kubelet, configure TiDB in the following way:
+
+    {{< copyable "" >}}
+
+    ```yaml
+    tidb:
+      annotations:
+        tidb.pingcap.com/sysctl-init: "true"
+      podSecurityContext:
+        sysctls:
+        - name: net.ipv4.tcp_keepalive_time
+          value: "300"
+      ...
+    ```
 
 > **Note:**
 >
