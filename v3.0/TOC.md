@@ -278,6 +278,7 @@
     - [监控告警](/v3.0/reference/tidb-binlog/monitor.md)
     - [增量恢复](/v3.0/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/v3.0/reference/tidb-binlog/binlog-slave-client.md)
+    - [术语表](/v3.0/reference/tidb-binlog/glossary.md)
     + 故障诊断
       - [故障诊断](/v3.0/reference/tidb-binlog/troubleshoot/binlog.md)
       - [常见错误修复](/v3.0/reference/tidb-binlog/troubleshoot/error-handling.md)
