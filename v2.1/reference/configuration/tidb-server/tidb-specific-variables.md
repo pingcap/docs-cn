@@ -458,4 +458,4 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 默认值：0
 
-这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `auto_increment` 属性。默认为不允许。
+这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `AUTO_INCREMENT` 属性。默认为不允许。
