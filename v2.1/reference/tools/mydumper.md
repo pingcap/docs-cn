@@ -18,15 +18,11 @@ It can be [downloaded](/v2.1/reference/tools/download.md) as part of the Enterpr
 
 + This tool uses the hidden `_tidb_rowid` column of TiDB to optimize the performance of concurrently exporting data from a single table.
 
-## How to use Mydumper?
+## Usage
 
 ### New parameter description
 
-```
-  -z, --tidb-snapshot: Set the tidb_snapshot to be used for the backup.
-                       Default: The current TSO (Position field from SHOW MASTER STATUS).
-                       Accepts either a TSO or valid datetime. For example: -z "2016-10-08 16:45:26"
-```
+`-z` or `--tidb-snapshot`: sets the `tidb_snapshot` to be used for the backup. The default value is the current TSO (the `Position` field output from `SHOW MASTER STATUS`). Set this parameter to the TSO or a valid `datetime` such as `-z "2016-10-08 16:45:26"`.
 
 ### Required privileges
 
@@ -44,6 +40,41 @@ Execute the following command to back up data from TiDB. You can add command lin
 ```bash
 ./bin/mydumper -h 127.0.0.1 -u root -P 4000
 ```
+
+## Dump table data concurrently
+
+This section introduces the working principle and parameters of Mydumper. This section also gives an example of Mydumper command, and explains the performance evaluation and the TiDB versions that support the `_tidb_rowid` index.
+
+### Working principle
+
+Mydumper first calculates `min(_tidb_rowid)` and `max(_tidb_rowid)`, and segments the table into chunks according to the value specified by `-r`. Then, Mydumper assigns these chunks to different threads and dumps these chunks concurrently.
+
+### Parameters
+
+- `-t` or `--threads`: specifies the number of concurrent threads (`4` by default).
+- `-r` or `--rows`: specifies the maximum number of rows in a chunk. If this parameter is specified, Mydumper ignores the value of `--chunk-filesize`.
+
+### Example
+
+The following is a complete Mydumper command:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+./bin/mydumper -h 127.0.0.1 -u root -P 4000 -r 10000 -t 4
+```
+
+### Performance evaluation
+
+Do a performance evaluation before you perform the dump operation. Because the concurrent scanning brings pressure on the TiDB and TiKV clusters, you need to evaluate and test the impact that the dump operation might have on the database clusters and applications.
+
+### TiDB versions that support the `_tidb_rowid` index
+
+Because concurrent table data dump uses the implicit `_tidb_rowid` row of TiDB, TiDB versions that support the `_tidb_rowid` index can fully take advantage of the concurrent dump.
+
+The following TiDB versions supports the `_tidb_rowid` index:
+
+- v2.1.3 and later v2.1 versions
 
 ## FAQ
 
