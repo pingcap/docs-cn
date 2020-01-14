@@ -126,38 +126,41 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
 ### 第 3 步：部署 Drainer
 
-1. 获取 initial_commit_ts
+1. 获取 initial_commit_ts 的值
 
-    如果从最近的时间点开始同步，可以参考下文使用 binlogctl 获取一个最新的时间戳。
+    Drainer 初次启动时需要获取 initial_commit_ts 这个时间戳信息。
 
-    如果下游为 MySQL 或 TiDB，为了保证数据的完整性，需要进行全量数据的备份与恢复，必需使用全量备份的时间戳。
+    - 如果从最近的时间点开始同步，需要使用 binlogctl 工具获取一个最新的时间戳，来作为 initial_commit_ts 的值。获取最新时间戳的方法如下：
 
-    如果使用 mydumper，可以在导出目录的 metadata 文件的 `Pos` 字段获取对应时间戳，metadata 文件如下：
+        {{< copyable "shell-regular" >}}
 
-    ```
-    Started dump at: 2019-12-30 13:25:41
-    SHOW MASTER STATUS:
-            Log: tidb-binlog
-            Pos: 413580274257362947
-            GTID:
+        ```bash
+        cd /home/tidb/tidb-ansible
+        resources/bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd generate_meta
+        ```
 
-    Finished dump at: 2019-12-30 13:25:41
-    ```
+        ```
+        INFO[0000] [pd] create pd client with endpoints [http://192.168.199.118:32379]
+        INFO[0000] [pd] leader switches to: http://192.168.199.118:32379, previous:
+        INFO[0000] [pd] init cluster id 6569368151110378289
+        2018/06/21 11:24:47 meta.go:117: [info] meta: &{CommitTS:400962745252184065}
+        ```
 
-    获取一个最新时间戳的方法：
+        该命令会输出 `meta: &{CommitTS:400962745252184065}`，其中 CommitTS 的值即所需的最新的时间戳。
 
-    使用 binlogctl 工具生成 Drainer 初次启动所需的 tso 信息，命令：
+    - 如果下游为 MySQL 或 TiDB，为了保证数据的完整性，需要进行全量数据的备份与恢复。此时 initial_commit_ts 的值必须是全量备份的时间戳。
 
-    ```bash
-    $ cd /home/tidb/tidb-ansible
-    $ resources/bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd generate_meta
-    INFO[0000] [pd] create pd client with endpoints [http://192.168.199.118:32379]
-    INFO[0000] [pd] leader switches to: http://192.168.199.118:32379, previous:
-    INFO[0000] [pd] init cluster id 6569368151110378289
-    2018/06/21 11:24:47 meta.go:117: [info] meta: &{CommitTS:400962745252184065}
-    ```
+        如果使用 mydumper 进行全量备份，可以在导出目录中找到 metadata 文件，其中的 `Pos` 字段值即全量备份的时间戳。metadata 文件示例如下：
 
-    该命令会输出 `meta: &{CommitTS:400962745252184065}`，CommitTS 的值作为 Drainer 初次启动使用的 `initial-commit-ts` 参数的值。
+        ```
+        Started dump at: 2019-12-30 13:25:41
+        SHOW MASTER STATUS:
+                Log: tidb-binlog
+                Pos: 413580274257362947
+                GTID:
+
+        Finished dump at: 2019-12-30 13:25:41
+        ```
 
 2. 修改 `tidb-ansible/inventory.ini` 文件
 
