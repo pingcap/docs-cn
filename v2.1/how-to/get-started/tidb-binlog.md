@@ -247,7 +247,7 @@ Check Table Before Drop: false
     ```sql
     create database tidbtest;
     use tidbtest;
-    create table t1 (id int unsigned not null auto_increment primary   key);
+    create table t1 (id int unsigned not null AUTO_INCREMENT primary   key);
     insert into t1 () values (),(),(),(),();
     select * from t1;
     ```
@@ -260,7 +260,7 @@ Check Table Before Drop: false
 
     TiDB [(none)]> use tidbtest;
     Database changed
-    TiDB [tidbtest]> create table t1 (id int unsigned not null auto_increment primary key);
+    TiDB [tidbtest]> create table t1 (id int unsigned not null AUTO_INCREMENT primary key);
     Query OK, 0 rows affected (0.11 sec)
 
     TiDB [tidbtest]> insert into t1 () values (),(),(),(),();
