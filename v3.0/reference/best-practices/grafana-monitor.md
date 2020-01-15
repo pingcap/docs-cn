@@ -10,7 +10,7 @@ category: reference
 
 ## 监控架构
 
-Prometheus 是一个拥有多维度数据模型和灵活的查询语句的时序数据库。Grafana 是一个开源的 metric 分析及可视化系统。
+Prometheus 是一个拥有多维度数据模型和灵活查询语句的时序数据库。Grafana 是一个开源的 metric 分析及可视化系统。
 
 ![TiDB 监控整体架构](/media/prometheus-in-tidb.png)
 
@@ -22,7 +22,7 @@ Prometheus 是一个拥有多维度数据模型和灵活的查询语句的时序
 
 ## 监控数据的来源与展示
 
-TiDB 的 3 个核心组件（TiDB server、TiKV server 和 PD server）可以通过 HTTP 接口来获取 metric 数据。这些数据均是从程序代码中统计上传的，端口如下：
+TiDB 的 3 个核心组件（TiDB server、TiKV server 和 PD server）可以通过 HTTP 接口来获取 metric 数据。这些 metric 均是从程序代码中上传的，端口如下：
 
 | 组件        | 端口    |
 |:------------|:-------|
@@ -39,7 +39,7 @@ curl http://__tidb_ip__:10080/metrics |grep tidb_executor_statement_total
 ```
 
 ```
-# 可以看到实时 QPS 数据，并以不同 type 的 SQL 语句进行区分，value 是 counter 类型的累计值（科学计数法）。
+# 可以看到实时 QPS 数据，并以不同 type 的 SQL 语句进行了区分，value 是 counter 类型的累计值（科学计数法）。
 tidb_executor_statement_total{type="Delete"} 520197
 tidb_executor_statement_total{type="Explain"} 1
 tidb_executor_statement_total{type="Insert"} 7.20799402e+08
@@ -49,11 +49,11 @@ tidb_executor_statement_total{type="Show"} 500531
 tidb_executor_statement_total{type="Use"} 466016
 ```
 
-这些数据会存储在 Prometheus 中，然后在 Grafana 上进行展示。在面板上用右键点击 **Edit** 按钮（或直接按 <kbd>E</kbd> 键），如下图所示：
+这些数据会存储在 Prometheus 中，然后在 Grafana 上进行展示。在面板上点击鼠标右键会出现 **Edit** 按钮（或直接按 <kbd>E</kbd> 键），如下图所示：
 
 ![Metrics 面板的编辑入口](/media/best-practices/metric-board-edit-entry.png)
 
-在 Metrics 面板上，可以看到利用该 metric 的 query 表达式。面板上一些细节的含义如下：
+点击 **Edit** 按钮之后，在 Metrics 面板上可以看到利用该 metric 的 query 表达式。面板上一些细节的含义如下：
 
 - `rate[1m]`：表示 1 分钟的增长速率，只能用于 counter 类型的数据。
 - `sum`：表示 value 求和。
@@ -61,7 +61,7 @@ tidb_executor_statement_total{type="Use"} 466016
 - `Legend format`：表示指标名称的格式。
 - `Resolution`：默认打点步长是 15s，Resolution 表示是否将多个样本数据合并成一个点。
 
-**Metrics** 面板中的表达式如下：
+Metrics 面板中的表达式如下：
 
 ![Metric 面板中的表达式](/media/best-practices/metric-board-expression.jpeg)
 
@@ -73,17 +73,17 @@ Prometheus 支持很多表达式与函数，更多表达式请参考 [Prometheus
 
 ### 技巧 1：查看所有维度并编辑表达式
 
-在[监控数据的来源与展示](#监控数据的来源与展示)一节的示例中，是按照 type 进行分组。如果你想知道是否还能按其它维度分组，并快速得知还有哪些维度，可采用以下技巧：**在 query 的表达式上只保留指标名称，不做任何计算，format 也留空**。这样就能显示出原始的 metric 数据。比如，下图能看到有 3 个维度（`instance`、`job` 和 `type`）：
+在[监控数据的来源与展示](#监控数据的来源与展示)一节的示例中，数据是按照 type 进行分组的。如果你想知道是否还能按其它维度分组，并快速查看还有哪些维度，可采用以下技巧：**在 query 的表达式上只保留指标名称，不做任何计算，`Legend format` 也留空**。这样就能显示出原始的 metric 数据。比如，下图能看到有 3 个维度（`instance`、`job` 和 `type`）：
 
 ![编辑表达式并查看所有维度](/media/best-practices/edit-expression-check-dimensions.jpg)
 
-然后调整表达式，在原有的 `type` 后面加上 `instance` 这个维度，在 `legend format` 处增加 `{{instance}}`，就可以看到每个 TiDB server 上执行的不同类型 SQL 语句的 QPS 了。如下图所示：
+然后调整表达式，在原有的 `type` 后面加上 `instance` 这个维度，在 `Legend format` 处增加 `{{instance}}`，就可以看到每个 TiDB server 上执行的不同类型 SQL 语句的 QPS 了。如下图所示：
 
 ![给表达式增加一个 instance 维度](/media/best-practices/add-instance-dimension.jpeg)
 
 ### 技巧 2：调整 Y 轴标尺的计算方式
 
-以 Query **Duration** 指标为例，默认的比例尺采用 2 的对数计算，显示上会将差距缩小。为了观察到明显的变化，可以将比例尺改为线性，从下面两张图中可以看到显示上的区别，明显发现那个时刻有个 SQL 语句运行较慢。
+以 Query Duration 指标为例，默认的比例尺采用 2 的对数计算，显示上会将差距缩小。为了观察到明显的变化，可以将比例尺改为线性，从下面两张图中可以看到显示上的区别，明显发现那个时刻有个 SQL 语句运行较慢。
 
 当然也不是所有场景都适合用线性，比如观察 1 个月的性能趋势，用线性可能就会有很多噪点，不好观察。
 
@@ -117,7 +117,7 @@ Prometheus 支持很多表达式与函数，更多表达式请参考 [Prometheus
 
 ![图形展示工具](/media/best-practices/graph-tooltip.jpeg)
 
-下面将图形展示工具分别调整为 **Shared crosshair** 和 **Shared Tooltip** 看看效果。可以看到标尺可以联动展示了，方便排查问题时确认 2 个指标的关联性。
+下面将图形展示工具分别调整为 **Shared crosshair** 和 **Shared Tooltip** 看看效果。可以看到标尺能联动展示了，方便排查问题时确认 2 个指标的关联性。
 
 将图形展示工具调整为 **Shared crosshair**：
 
@@ -129,7 +129,7 @@ Prometheus 支持很多表达式与函数，更多表达式请参考 [Prometheus
 
 ### 技巧 5：手动输入 `ip:端口号` 查看历史信息
 
-PD 的 dashboard 只展示当前 leader 的 metric 信息，而有时想看历史上 pd-leader 当时的状况，但是 `instance` 下拉列表中已不存在这个成员了。此时，可以手动输入 `ip:2379` 来查看当时的数据。
+PD 的 dashboard 只展示当前 leader 的 metric 信息，而有时想看历史上 PD leader 当时的状况，但是 `instance` 下拉列表中已不存在这个成员了。此时，可以手动输入 `ip:2379` 来查看当时的数据。
 
 ![查看历史 metric 信息](/media/best-practices/manually-input-check-metric.jpeg)
 
@@ -203,4 +203,4 @@ curl -u user:pass 'http://__grafana_ip__:3000/api/datasources/proxy/1/api/v1/que
 
 ## 总结
 
-Grafana + Prometheus 是一套非常强大的组合，用好它们可以为分析节省很多时间，提高效率，更重要的是能帮助我们更容易发现问题。在运维 TiDB 集群，尤其数据量大的时候，这套工具能派上大用场。
+Grafana + Prometheus 监控平台是一套非常强大的组合工具，用好这套工具可以为分析节省很多时间，提高效率，更重要的是，我们可以更容易发现问题。在运维 TiDB 集群，尤其是数据量大的情况下，这套工具能派上大用场。
