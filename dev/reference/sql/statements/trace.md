@@ -47,7 +47,7 @@ trace format='row' select * from mysql.user;
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t1 (id int not null primary key auto_increment);
+CREATE TABLE t1 (id int not null primary key AUTO_INCREMENT);
 ```
 
 ```
