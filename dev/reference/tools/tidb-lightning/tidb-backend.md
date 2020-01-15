@@ -28,7 +28,7 @@ category: reference
 
 ### 硬件需求
 
-使用 TiDB-backend 时， TiBD Lightning 的速度仅受限于 TiDB 执行 SQL 语句时的速度。因此，即使是低配的机器也可能发挥出最佳性能。推荐的硬件配置如下：
+使用 TiDB-backend 时， TiDB Lightning 的速度仅受限于 TiDB 执行 SQL 语句时的速度。因此，即使是低配的机器也可能发挥出最佳性能。推荐的硬件配置如下：
 
 * 16 逻辑核 CPU
 * 足够储存整个数据源的 SSD 硬盘，读取速度越快越好
@@ -59,7 +59,7 @@ category: reference
     ...
     ```
 
-3. 引导、部署集群。Bootstrap and deploy the cluster as usual.
+3. 启动、部署集群。
 
 4. 为 TiDB Lightning 挂载数据源。
 
