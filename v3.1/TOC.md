@@ -353,9 +353,11 @@
     + TiDB Lightning
       - [Overview](/v3.1/reference/tools/tidb-lightning/overview.md)
       - [Deployment](/v3.1/reference/tools/tidb-lightning/deployment.md)
+      - [Configuration](/v3.1/reference/tools/tidb-lightning/config.md)
       - [Checkpoints](/v3.1/reference/tools/tidb-lightning/checkpoints.md)
       - [Table Filter](/v3.1/reference/tools/tidb-lightning/table-filter.md)
       - [CSV Support](/v3.1/reference/tools/tidb-lightning/csv.md)
+      - [Web Interface](/v3.1/reference/tools/tidb-lightning/web.md)
       - [Monitor](/v3.1/reference/tools/tidb-lightning/monitor.md)
       - [Troubleshoot](/v3.1/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](/v3.1/faq/tidb-lightning.md)
@@ -498,3 +500,4 @@
     - [RC3](/v3.1/releases/rc3.md)
     - [RC2](/v3.1/releases/rc2.md)
     - [RC1](/v3.1/releases/rc1.md)
++ [Glossary](/v3.1/glossary.md)
