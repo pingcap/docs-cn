@@ -257,7 +257,7 @@ name: dmtask1
 task-mode: all
 is-sharding: true
 enable-heartbeat: true
-ignore-checking-items: ["AUTO_INCREMENT_ID"]
+ignore-checking-items: ["auto_increment_ID"]
 
 target-database:
   host: "127.0.0.1"
@@ -300,7 +300,7 @@ loaders:
 
 * `is-sharding: true`：多个 DM-worker 实例进行同一个任务，这些实例将上游的若干分片合并到一个下游的表中。
 
-* `ignore-checking-items: ["AUTO_INCREMENT_ID"]`：关闭 DM 对上游实例中潜在的自增 ID 冲突的检测。DM 能检测出上游表结构相同、并包含自增列的分片间潜在的列值冲突。通过配置 `auto-increment-increment` 和 `auto-increment-offset` 可使每个 MySQL Server 的 ID 都不重叠，从而避免不同表之间冲突的产生。因此，可以让 DM 关闭对自增 ID 冲突的检测。
+* `ignore-checking-items: ["auto_increment_ID"]`：关闭 DM 对上游实例中潜在的自增 ID 冲突的检测。DM 能检测出上游表结构相同、并包含自增列的分片间潜在的列值冲突。通过配置 `auto-increment-increment` 和 `auto-increment-offset` 可使每个 MySQL Server 的 ID 都不重叠，从而避免不同表之间冲突的产生。因此，可以让 DM 关闭对自增 ID 冲突的检测。
 
 * `black-white-list`：将一个任务限制在数据库 `dmtest` 中。
 
