@@ -573,6 +573,7 @@ Drainer="192.168.0.13"
         # password = ""
         # 使用 `./binlogctl -cmd encrypt -text string` 加密的密码
         # encrypted_password 非空时 password 会被忽略
+        # encrypted_password = ""
         # port = 3306
 
 
