@@ -38,7 +38,7 @@ mysql> trace format='row' select * from mysql.user;
 +---------------------------+-----------------+------------+
 10 rows in set (0.00 sec)
 
-mysql> CREATE TABLE t1 (id int not null primary key auto_increment);
+mysql> CREATE TABLE t1 (id int not null primary key AUTO_INCREMENT);
 Query OK, 0 rows affected (0.11 sec)
 
 mysql> INSERT INTO t1 VALUES (1),(2),(3),(4),(5);
