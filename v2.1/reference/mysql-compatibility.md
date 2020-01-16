@@ -10,6 +10,8 @@ TiDB supports both the MySQL wire protocol and the majority of its syntax. This 
 
 Currently TiDB Server advertises itself as MySQL 5.7 and works with most MySQL database tools such as PHPMyAdmin, Navicat, MySQL Workbench, mysqldump, and Mydumper/myloader.
 
+However, TiDB does not support some of MySQL features or behaves differently from MySQL because these features cannot be easily implemented in a distributed system. For some MySQL syntax, TiDB can parse but does not process it. For example, the `ENGINE` table option and the `PARTITION BY` clause in the `CREATE TABLE` statement can be parsed but are ignored.
+
 > **Note:**
 >
 > This page refers to general differences between MySQL and TiDB. Please also see the dedicated pages for [Security](/v2.1/reference/security/compatibility.md) and [Transaction Model](/v2.1/reference/transactions/transaction-model.md) compatibility.
@@ -53,6 +55,8 @@ In TiDB, auto-increment columns are only guaranteed to be incremental and unique
 > If you use auto-increment IDs in a cluster with multiple tidb-server instances, do not mix default values and custom values. Otherwise, an error might occur in the following situation.
 
 Assume that you have a table with the auto-increment ID:
+
+{{< copyable "sql" >}}
 
 ```sql
 create table t(id int unique key AUTO_INCREMENT, c int);
@@ -111,11 +115,23 @@ For more information, see [Online Schema Changes](/v2.1/key-features.md#online-s
 
 For compatibility reasons, TiDB supports the syntax to create tables with alternative storage engines. Metadata commands describe tables as being of engine InnoDB:
 
-```sql
-mysql> CREATE TABLE t1 (a INT) ENGINE=MyISAM;
-Query OK, 0 rows affected (0.14 sec)
+{{< copyable "sql" >}}
 
-mysql> SHOW CREATE TABLE t1\G
+```sql
+CREATE TABLE t1 (a INT) ENGINE=MyISAM;
+```
+
+```
+Query OK, 0 rows affected (0.14 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW CREATE TABLE t1;
+```
+
+```
 *************************** 1. row ***************************
        Table: t1
 Create Table: CREATE TABLE `t1` (
@@ -159,12 +175,17 @@ tidb> SELECT /*!90000 "I should not run", */ "I should run" FROM dual;
 ### Default differences
 
 - Default character set:
-    - The default value in TiDB is `utf8` which is equivalent to `utf8mb4` in MySQL.
+    - The default value in TiDB is `utf8mb4`.
     - The default value in MySQL 5.7 is `latin1`, but changes to `utf8mb4` in MySQL 8.0.
-- Default collation: `latin1_swedish_ci` in MySQL 5.7, while `binary` in TiDB.
+- Default collation:
+    - The default collation of `utf8mb4` in TiDB is `utf8mb4_bin`.
+    - The default collation of `utf8mb4` in MySQL 5.7 is `utf8mb4_general_ci`, but changes to `utf8mb4_0900_ai_ci` in MySQL 8.0.
+    - You can use the [`SHOW CHARACTER SET`](/v2.1/reference/sql/statements/show-character-set.md) statement to check the default collations of all character sets.
 - Default SQL mode:
-    - The default value in TiDB is `STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION`.
-    - The default value in MySQL 5.7 is `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`.
+    - The default SQL mode in TiDB includes these modes: `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`.
+    - The default SQL mode in MySQL:
+        - The default SQL mode in MySQL 5.7 is the same as TiDB.
+        - The default SQL mode in MySQL 8.0 includes these modes: `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION`.
 - Default value of `lower_case_table_names`:
     - The default value in TiDB is 2 and currently TiDB only supports 2.
     - The default value in MySQL:
