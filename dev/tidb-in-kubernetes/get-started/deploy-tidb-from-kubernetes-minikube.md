@@ -258,7 +258,7 @@ kubectl get svc --watch
 
     上述命令会自动搭建代理并在浏览器中打开 Grafana。
 
-### 删除 TiDB 集群
+## 删除 TiDB 集群
 
 通过下面命令删除 demo 集群：
 

@@ -28,15 +28,19 @@ category: how-to
 
 继续之前请选择一个项目：
 
+```
 <walkthrough-project-billing-setup key="project-id">
 </walkthrough-project-billing-setup>
+```
 
 ## 启用 API
 
 本教程需要使用计算和容器 API。继续之前请启用：
 
+```
 <walkthrough-enable-apis apis="container.googleapis.com,compute.googleapis.com">
 </walkthrough-enable-apis>
+```
 
 ## 配置 gcloud
 
@@ -118,7 +122,7 @@ helm init --service-account tiller --upgrade
 watch "kubectl get pods --namespace kube-system | grep tiller"
 ```
 
-当 Pod 状态为 `Running`，<kbd>Ctrl</kbd>+<kbd>C</kbd>  停止并继续下一步。
+当 Pod 状态为 `Running`，按 <kbd>Ctrl</kbd>+<kbd>C</kbd>  停止并继续下一步。
 
 ## 添加 Helm 仓库
 
@@ -141,7 +145,7 @@ helm search tidb-cluster -l && \
 helm search tidb-operator -l
 ```
 
-## 部署 TiDB 集群
+## 部署 TiDB Operator
 
 > **注意：**
 >
@@ -165,11 +169,11 @@ helm install pingcap/tidb-operator -n tidb-admin --namespace=tidb-admin --versio
 kubectl get pods --namespace tidb-admin -o wide --watch
 ```
 
-如果 tidb-scheduler 和 tidb-controller-manager 状态都为 `Running`，<kbd>Ctrl</kbd>+<kbd>C</kbd> 停止并继续下一步部署一个 TiDB 集群！
+如果 tidb-scheduler 和 tidb-controller-manager 状态都为 `Running`，按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 停止并继续下一步。
 
-## 部署你的第一个 TiDB 集群
+## 部署 TiDB 集群
 
-我们可以一键部署一个 TiDB 集群：
+你可以一键部署一个 TiDB 集群：
 
 {{< copyable "shell-regular" >}}
 
@@ -185,7 +189,7 @@ helm install pingcap/tidb-cluster -n demo --namespace=tidb --set pd.storageClass
 kubectl get pods --namespace tidb -o wide --watch
 ```
 
-TiDB 集群包含 2 个 TiDB pod，3 个 TiKV pod 和 3 个 PD pod。如果所有 pod 状态都为 `Running`，<kbd>Ctrl</kbd>+<kbd>C</kbd> 停止并继续！
+TiDB 集群包含 2 个 TiDB pod，3 个 TiKV pod 和 3 个 PD pod。如果所有 pod 状态都为 `Running`，按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 停止并继续！
 
 ## 访问 TiDB 集群
 

@@ -108,9 +108,9 @@ kind 通过使用 Docker 容器作为集群节点模拟出一个本地的 Kubern
 
 ## 第 2 步：在 Kubernetes 集群上部署 TiDB Operator
 
-1. 安装 Helm 并配置 PingCAP 官方 chart 仓库，参考 [使用 Helm](/dev/tidb-in-kubernetes/reference/tools/in-kubernetes.md#使用-helm) 小节中的操作。
+1. 安装 Helm 并配置 PingCAP 官方 chart 仓库，参考[使用 Helm](/dev/tidb-in-kubernetes/reference/tools/in-kubernetes.md#使用-helm) 小节中的操作。
 
-2. 部署 TiDB Operator，参考 [安装 TiDB Operator](/dev/tidb-in-kubernetes/deploy/tidb-operator.md#安装-tidb-operator) 小节中的操作。
+2. 部署 TiDB Operator，参考[安装 TiDB Operator](/dev/tidb-in-kubernetes/deploy/tidb-operator.md#安装-tidb-operator) 小节中的操作。
 
 ## 第 3 步：在 Kubernetes 集群中部署 TiDB 集群
 
