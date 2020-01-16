@@ -272,7 +272,7 @@ Checksum Request duration - 对备份集群执行 admin checksum 的耗时统计
 
 ### 单表数据备份到本地磁盘
 
-通过 BR backup 命令，将单表数据 --db batchmark --table order_line 备份到指定的本地磁盘路径下 local:///home/tidb/backup_local
+通过 BR backup 命令，将单表数据 --db batchmark --table order_line 备份到指定的本地磁盘路径下 `local:///home/tidb/backup_local`
 
 #### 前置要求
 
@@ -296,7 +296,9 @@ Checksum Request duration - 对备份集群执行 admin checksum 的耗时统计
 
 运行 BR backup 命令
 
+```
 bin/br backup table --db batchmark --table order_line -s local:///home/tidb/backup_local/ --pd 172.16.5.198:2379 --log-file backup_local.log
+```
 
 #### 运行指标
 
