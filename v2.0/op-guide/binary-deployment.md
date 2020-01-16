@@ -136,8 +136,8 @@ TiDB 官方提供了支持 Linux 版本的二进制安装包，官方推荐使�
 ```
 # 下载压缩包
 
-wget http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz
-wget http://download.pingcap.org/tidb-latest-linux-amd64.sha256
+wget https://download.pingcap.org/tidb-latest-linux-amd64.tar.gz
+wget https://download.pingcap.org/tidb-latest-linux-amd64.sha256
 
 # 检查文件完整性，返回 ok 则正确
 sha256sum -c tidb-latest-linux-amd64.sha256

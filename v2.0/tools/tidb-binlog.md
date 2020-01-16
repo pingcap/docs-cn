@@ -38,8 +38,8 @@ Drainer 从各个 Pump 节点收集 Binlog，并按照在 TiDB 中事务的提�
 
     ```bash
     # 下载压缩包
-    wget http://download.pingcap.org/tidb-binlog-local-linux-amd64.tar.gz
-    wget http://download.pingcap.org/tidb-binlog-local-linux-amd64.sha256
+    wget https://download.pingcap.org/tidb-binlog-local-linux-amd64.tar.gz
+    wget https://download.pingcap.org/tidb-binlog-local-linux-amd64.sha256
 
     # 检查文件完整性，返回 ok 则正确
     sha256sum -c tidb-binlog-local-linux-amd64.sha256
