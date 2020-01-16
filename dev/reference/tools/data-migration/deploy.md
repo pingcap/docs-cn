@@ -105,7 +105,7 @@ black-white-list:
 mydumpers:
   global:
     mydumper-path: "./bin/mydumper"   # The file path of the Mydumper binary.
-    extra-args: "-B test_db -T test_table"  # Only dumps the "test_table" table of the "test_db" database. It can configure any Mydumper argument.
+    extra-args: "-B test_db -T test_table"  # The extra Mydumper argument. Since DM 1.0.2, DM automatically generates the "--tables-list" configuration. For versions earlier than 1.0.2, you need to configure this option manually.
 ```
 
 ## Step 4: Start the data replication task

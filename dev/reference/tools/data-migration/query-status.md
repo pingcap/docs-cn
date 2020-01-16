@@ -6,9 +6,76 @@ category: reference
 
 # Data Migration Query Status
 
-This document introduces the query result and subtask status of Data Migration (DM).
+This document introduces the query result, task status, and subtask status of Data Migration (DM).
 
 ## Query result
+
+{{< copyable "" >}}
+
+```bash
+» query-status
+```
+
+```
+{
+    "result": true, # Whether the query is successful.
+    "msg": "",      # Describes the cause of the unsuccessful query.
+    "tasks": [      # Migration task list.
+        {
+            "taskName": "test-1",           # The task name
+            "taskStatus": "Running",        # The status of the task, including "New", "Running", "Paused", "Stopped", "Finished", and "Error".
+            "workers": [                    # The list of DM-workers that are used by the task.
+                "127.0.0.1:8262"
+            ]
+        },
+        {
+            "taskName": "test-2",
+            "taskStatus": "Error - Some error occurred in subtask", # A subtask encounters an error and is paused.
+            "workers": [
+                "127.0.0.1:8262",
+                "127.0.0.1:8263"
+            ]
+        },
+        {
+            "taskName": "test-3",
+            "taskStatus": "Error - Relay status is Error",  # An error occurs in the Relay processing unit corresponding to a subtask that is in the Sync phase.
+            "workers": [
+                "127.0.0.1:8263",
+                "127.0.0.1:8264"
+            ]
+        }
+    ]
+}
+```
+
+For detailed descriptions of `taskStatus` under the `tasks` section, refer to [Task status](#task-status).
+
+It is recommended that you use `query-status` by the following steps:
+
+1. Use `query-status` to check whether each on-going task is in the normal state.
+2. If any error occurs in a task, use the `query-status <taskName>` command to see detailed error information. `<taskName>` in this command indicates the name of the task that encounters the error.
+
+## Task status
+
+The status of a DM migration task depends on the status of each subtask assigned to DM-worker. For detailed descriptions of subtask status, see [Subtask status](#subtask-status). The table below shows how the subtask status is related to task status.
+
+|  Subtask status in a task | Task status |
+| :--- | :--- |
+| One subtask is in the `paused` state and error information is returned. | `Error - Some error occurred in subtask` |
+| One subtask in the Sync phase is in the `Running` state but its Relay processing unit is not running (in the `Error`/`Paused`/`Stopped` state). | `Error - Relay status is Error/Paused/Stopped` |
+| One subtask is in the `Paused` state and no error information is returned. | `Paused` |
+| All subtasks are in the `New` state. | `New` |
+| All subtasks are in the `Finished` state. | `Finished` |
+| All subtasks are in the `Stopped` state. | `Stopped` |
+| Other situations | `Running` |
+
+## Detailed query result
+
+{{< copyable "" >}}
+
+```bash
+» query-status test
+```
 
 ```
 » query-status
