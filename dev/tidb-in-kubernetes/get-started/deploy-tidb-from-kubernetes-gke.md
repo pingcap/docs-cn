@@ -6,9 +6,9 @@ category: how-to
 
 # Deploy TiDB on Google Cloud
 
-This tutorial is designed to directly [run in Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/pingcap/tidb-operator&tutorial=docs/google-kubernetes-tutorial.md).
+This tutorial is designed to be directly [run in Google Cloud Shell](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/pingcap/docs&tutorial=dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md).
 
-<a href="https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/pingcap/tidb-operator&tutorial=docs/google-kubernetes-tutorial.md"><img src="https://gstatic.com/cloudssh/images/open-btn.png"/></a>
+<a href="https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/pingcap/docs&tutorial=dev/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md"><img src="https://gstatic.com/cloudssh/images/open-btn.png"/></a>
 
 It takes you through the following steps:
 
@@ -30,19 +30,15 @@ This tutorial launches a 3-node Kubernetes cluster of `n1-standard-1` machines. 
 
 Please select a project before proceeding:
 
-```
 <walkthrough-project-billing-setup key="project-id">
 </walkthrough-project-billing-setup>
-```
 
 ## Enable API access
 
 This tutorial requires use of the Compute and Container APIs. Please enable them before proceeding:
 
-```
 <walkthrough-enable-apis apis="container.googleapis.com,compute.googleapis.com">
 </walkthrough-enable-apis>
-```
 
 ## Configure gcloud defaults
 
