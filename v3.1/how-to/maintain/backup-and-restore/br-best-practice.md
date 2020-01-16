@@ -266,9 +266,9 @@ Checksum Request duration - 对备份集群执行 admin checksum 的耗时统计
 
 |           | 数据                                    |
 | --------- | :------------------------------------ |
-| 恢复耗时      | total take(s): 961.37 -> xxx ↓     |
-| 恢复吞吐      | avg speed(MB/s): 367.42 -> xxx ↑   |
-| 单 TiKV 吞吐 | avg speed(MB/s)/tikv_count：91.8 ->  ↑ |
+| 恢复耗时      | total take(s): 961.37 -> 443.49 ↓     |
+| 恢复吞吐      | avg speed(MB/s): 367.42 -> 796.47 ↑   |
+| 单 TiKV 吞吐 | avg speed(MB/s)/tikv_count：91.8 -> 199.1 ↑ |
 
 ### 单表数据备份到本地磁盘
 
