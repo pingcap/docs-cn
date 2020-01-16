@@ -15,8 +15,6 @@ category: how-to
 
 * BR 只支持 TiDB v3.1 及以上版本。
 
-* 目前不支持分区表的备份恢复。
-
 * 目前只支持在全新的集群上执行恢复操作。
 
 * BR 备份必须串行执行
@@ -27,17 +25,17 @@ Tips：BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，�
 
 ## 部署
 
-* 通过官方推荐的 tidb-ansible 部署 TiDB 集群
+* 通过官方推荐的 [tidb-ansible](/v3.1/how-to/deploy/orchestrated/ansible) 部署 TiDB 集群
 
-* 通过下载 tidb-toolkit 获取 br 应用
+* 通过下载 [tidb-toolkit](/v3.1/reference/tools/download/#快速备份和恢复br) 获取 br 应用
 
 ## 版本
 
-* TiKV: v3.1.0-beta
+* TiKV: v3.1.0-beta.1
 
-* PD: v3.1.0-beta
+* PD: v3.1.0-beta.1
 
-* br: v3.1.0-beta
+* br: v3.1.0-beta.1
 
 ## TiKV 集群硬件信息
 
@@ -83,21 +81,6 @@ BR restore 命令的详细使用方法请参考[文档](/v3.1/how-to/maintain/ba
 #### 恢复准备工作
 
 1. 运行 BR restore 前检查新集群没有同名 table。
-2. （可选， only recommended for ≤3.1.0-beta）运行 BR restore 前关闭 pd leader schedulers 提升恢复性能。
-
-   ```
-   ./pd-ctl -u 172.16.5.198:2379 scheduler remove balance-leader-scheduler
-   ./pd-ctl -u 172.16.5.198:2379 scheduler remove balance-hot-region-scheduler
-   ./pd-ctl -u 172.16.5.198:2379 scheduler remove balance-region-scheduler
-   ```
-
-   同时在恢复数据后，要将删除的 scheduler 添加回来
-
-   ```
-   ./pd-ctl -u 172.16.5.198:2379 scheduler add balance-leader-scheduler
-   ./pd-ctl -u 172.16.5.198:2379 scheduler add balance-hot-region-scheduler
-   ./pd-ctl -u 172.16.5.198:2379 scheduler add balance-region-scheduler
-   ```
 
 ### 单表数据备份到网络盘（推荐）
 
@@ -124,12 +107,12 @@ BR restore 命令的详细使用方法请参考[文档](/v3.1/how-to/maintain/ba
 运行 BR backup 命令
 
 ```
-bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 172.16.4.217:2379 --log-file backup-nfs.log --concurrency 16
+bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 172.16.5.198:2379 --log-file backup-nfs.log
 ```
 
 #### <span id="backup-status">运行指标</span>
 
-Backup CPU Utilization  - 参与备份的 TiKV 节点（backup-worker）和 br 节点（backup-endpoint）CPU 使用率）
+Backup CPU Utilization  - 参与备份的 TiKV 节点（backup-worker）和（backup-endpoint）CPU 使用率
 
 ![img](/media/br/backup-cpu.png)
 
@@ -162,30 +145,36 @@ Checksum Request duration - 对备份集群执行 admin checksum 的耗时统计
 备份耗时
 
 ```
-["Table backup summary: total backup ranges: 4, total success: 4, total failed: 0, total take(s): 529.53, total kv: 5659888624, total size(MB): 353227.18, avg speed(MB/s): 667.06"]["backup total regions"=4] ["backup checksum"=48.856817ms]
+["Table backup summary: total backup ranges: 4, total success: 4, total failed: 0, total take(s): 986.43, total kv: 5659888624, total size(MB): 353227.18, avg speed(MB/s): 358.09"] ["backup total regions"=7196] ["backup checksum"=6m28.291772955s] ["backup fast checksum"=24.950298ms]
 ```
 
 |      | 数据                        |
 | ---- | :------------------------ |
-| 备份耗时 | total take(s): 529.53     |
+| 备份耗时 | total take(s): 986.43     |
 | 数据大小 | total size(MB): 353227.18 |
-| 备份吞吐 | avg speed(MB/s): 667.06   |
+| 备份吞吐 | avg speed(MB/s): 358.09   |
+| 校验耗时 | take=6m28.29s   |
 
 根据上述数据可以得到：
 
 |             | 数据                                |
 | ----------- | :-------------------------------- |
-| 单 TiKV 实例吞吐 | avg speed(MB/s)/tikv_count：166.77 |
+| 单 TiKV 实例吞吐 | avg speed(MB/s)/tikv_count：89 |
 
-校验耗时
+#### 性能调优
 
-```
-["table checksum finished"][table=`batchmark`.`order_line`] [Crc64Xor=10912722838344822475][TotalKvs=5659888624] [TotalBytes=370385538778][take=9m18.482090425s]
-```
+如果 TiKV 资源使用没有明显的瓶颈，比如上面[指标](#backup-status)中的 Backup CPU Utilization 1500% 和 IO Utilization 30%，可以尝试调大 br backup concurrency（对大量的小表 case 无用）, 例如 bin/br backup table --db batchmark --table order_line -s local:///br_data/ --pd 172.16.5.198:2379 --log-file backup-nfs.log --concurrency 16
 
-|      | 数据                   |
-| ---- | :------------------- |
-| 校验耗时 | take=9m18.482090425s |
+![img](/media/br/backup-diff.png)
+
+![img](/media/br/backup-diff2.png)
+
+|             | 数据                                      |
+| ----------- | :--------------------------------------- |
+| 备份耗时        | total take(s): 986.43 -> 535.53 ↓     |
+| 数据大小        | total size(MB): 353227.18             |
+| 备份吞吐        | avg speed(MB/s): 358.09 -> 659.59 ↑    |
+| 单 TiKV 实例吞吐 | avg speed(MB/s)/tikv_count：89 -> 164.89 ↑ |
 
 ### 从网络盘进行备份恢复
 
@@ -206,47 +195,75 @@ Checksum Request duration - 对备份集群执行 admin checksum 的耗时统计
 运行 BR restore 命令
 
 ```
-bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 172.16.5.198:2379 --log-file restore-nfs.log --concurrency 2048
+bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 172.16.5.198:2379 --log-file restore-nfs.log
 ```
 
 #### <span id="restore-status">运行指标</span>
 
-Region 分布，Region 分布越均匀，说明恢复资源利用越充分!
+CPU - 参与恢复的 TiKV 节点 CPU 使用率
 
-![img](/media/br/restore-region.png)
+![img](/media/br/restore-cpu.png)
 
 IO Utilization - 参与恢复的 TiKV 节点的 IO 使用率
 
 ![img](/media/br/restore-io.png)
+
+Region 分布 - Region 分布越均匀，说明恢复资源利用越充分!
+
+![img](/media/br/restore-region.png)
+
+Process SST Duration - 处理 SST 文件的延迟，对于一张表来说，在恢复时，tableID 如果发生了变化，需要进行 rewrite，否则会进行 rename, 通常 rewrite 延迟要高于 rename
+
+![img](/media/br/restore-process-sst.png)
+
+DownLoad SST Throughput - 从 External Storage 下载 SST 文件的吞吐
+
+![img](/media/br/restore-download-sst.png)
+
+Restore Errors - 恢复过程中的错误
+
+![img](/media/br/restore-errors.png)
+
+Checksum Request duration - 对备份集群执行 admin checksum 的耗时统计（此时 checksum 会进行 undo rewrite，会比备份时 checksum  延迟高)
+
+![img](/media/br/restore-checksu.png)
 
 #### 结果解读
 
 恢复耗时
 
 ```
-["Restore table summary: total restore tables: 1, total success: 1, total failed: 0, total take(s): 1253.17, total kv: 5659888624, total size(MB): 353227.18, avg speed(MB/s): 281.87"]["restore files"=14013] ["restore ranges"=9230]["split region"=5m41.332778455s] ["restore checksum"=11m13.276398441s]
+["Table Restore summary: total restore tables: 1, total success: 1, total failed: 0, total take(s): 961.37, total kv: 5659888624, total size(MB): 353227.18, avg speed(MB/s): 367.42"] ["restore files"=9263] ["restore ranges"=6888] ["split region"=49.049182743s] ["restore checksum"=6m34.879439498s]
 ```
 
 |                  | 数据                        |
 | ---------------- | :------------------------ |
-| 恢复耗时             | total take(s):1253.17     |
+| 恢复耗时             | total take(s):961.37 |
 | 数据大小             | total size(MB): 353227.18 |
-| 恢复吞吐             | avg speed(MB/s):281.87    |
-| region spilit 耗时 | take=5m41.332778455s      |
+| 恢复吞吐             | avg speed(MB/s): 367.42 |
+| region spilit 耗时 | take=49.049182743s |
+| 校验耗时 | take=6m34.879439498s |
+
+根据上述数据可以得到：
 
 |           | 数据                            |
 | --------- | :---------------------------- |
-| 单 TiKV 吞吐 | avg speed(MB/s)/tikv_count：70 |
+| 单 TiKV 吞吐 | avg speed(MB/s)/tikv_count：91.8 |
 
-校验耗时
+#### 性能调优
 
-|      | 数据                    |
-| ---- | :-------------------- |
-| 校验耗时 | take=11m13.276398441s |
+如果 TiKV 资源使用没有明显的瓶颈，可以尝试调大 Restore concurrency 参数(默认 128)， 例如 `bin/br restore table --db batchmark --table order_line -s local:///br_data/ --pd 172.16.5.198:2379 --log-file restore-concurrency.log --concurrency 1024`
+
+|           | 数据                                    |
+| --------- | :------------------------------------ |
+| 恢复耗时      | total take(s): 961.37 -> xxx ↓     |
+| 恢复吞吐      | avg speed(MB/s): 367.42 -> xxx ↑   |
+| 单 TiKV 吞吐 | avg speed(MB/s)/tikv_count：91.8 ->  ↑ |
+
 
 ### 单表数据备份到本地磁盘
 
-通过 BR backup 命令，将单表数据 --db batchmark --table order_line 备份到指定的本地磁盘路径下 local:///home/tidb/backup_restore_benchmark/backup-2020-01-01/
+通过 BR backup 命令，将单表数据 --db batchmark --table order_line 备份到指定的本地磁盘路径下 local:///home/tidb/backup_local
 
 #### 前置要求
 
@@ -254,7 +271,7 @@ IO Utilization - 参与恢复的 TiKV 节点的 IO 使用率
 
 * backup_endpoint 节点有单独的磁盘用来存放备份的 backupmeta 文件
 
-* TiKV 和 backup_endpoint 节点需要有相同的备份目录，例如/home/tidb/backup_restore_benchmark/backup-2020-01-01/
+* TiKV 和 backup_endpoint 节点需要有相同的备份目录，例如/home/tidb/backup_local
 
 #### 部署拓扑
 
@@ -264,13 +281,13 @@ IO Utilization - 参与恢复的 TiKV 节点的 IO 使用率
 
 备份前在 TiDB 里通过 `admin checksum table order_line` 获得备份的目标表 --db batchmark --table order_line 统计信息如下
 
-![img](/media/br/test-data.png)
+![img](/media/br/total-data.png)
 
 备份前，调 GC 可以参考[备份准备工作](#备份准备工作)
 
 运行 BR backup 命令
 
-bin/br backup table --db batchmark --table order_line -s local:///home/tidb/backup_restore_benchmark/backup-2020-01-01/ --pd 172.16.4.217:2379 --log-file backup-2020-01-01.log
+bin/br backup table --db batchmark --table order_line -s local:///home/tidb/backup_local/ --pd 172.16.5.198:2379 --log-file backup_local.log
 
 #### 运行指标
 
@@ -281,43 +298,22 @@ bin/br backup table --db batchmark --table order_line -s local:///home/tidb/back
 备份耗时
 
 ```
-["Table backup summary: total backup ranges: 1, total success: 1, total failed: 0, total take(s): 487.82, total kv: 1414972156, total size(MB): 138668.98, avg speed(MB/s): 284.26"]["backup total regions"=1] ["backup checksum"=25.108352ms]
+["Table backup summary: total backup ranges: 4, total success: 4, total failed: 0, total take(s): 551.31, total kv: 5659888624, total size(MB): 353227.18, avg speed(MB/s): 640.71"] ["backup total regions"=6795] ["backup checksum"=6m33.962719217s] ["backup fast checksum"=22.995552ms]
 ```
 
 |      | 数据                        |
 | ---- | :------------------------ |
-| 备份耗时 | total take(s): 487.82     |
-| 数据大小 | total size(MB): 138668.98 |
-| 备份吞吐 | avg speed(MB/s): 284.26   |
+| 备份耗时 | total take(s): 551.31     |
+| 数据大小 | total size(MB): 353227.18 |
+| 备份吞吐 | avg speed(MB/s): 640.71   |
+| 校验耗时 | take=6m33.962719217s |
 
 根据上述数据可以得到：
 
 |             | 数据                            |
 | ----------- | :---------------------------- |
-| 单 TiKV 实例吞吐 | avg speed(MB/s)/tikv_count：71 |
+| 单 TiKV 实例吞吐 | avg speed(MB/s)/tikv_count：160 |
 
-校验耗时
-
-```
-["table checksum finished"][table=`batchmark`.`order_line`] [Crc64Xor=16518250710662763892][TotalKvs=1414972156] [TotalBytes=145404965974][take=3m27.782808253s]
-```
-
-|      | 数据                   |
-| ---- | :------------------- |
-| 校验耗时 | take=3m27.782808253s |
-
-#### 性能调优
-
-如果 TiKV 资源使用没有明显的瓶颈，比如上面[指标](#backup-status)中的 Backup CPU Utilization 400% 和 IO Utilization 60%，可以尝试调大 br backup concurrency（对大量的小表 case 无用）， 例如 `bin/br backup table --db batchmark --table order_line -s local:///home/tidb/backup_restore_benchmark/backup-2020-01-01/ --pd 172.16.5.198:2379 --log-file backup-2020-01-01.log --concurrency 16`
-
-![img](/media/br/backup-diff.png)
-
-|             | 数据                                       |
-| ----------- | :--------------------------------------- |
-| 备份耗时        | total take(s): 487.82 ->  207.73 ↓       |
-| 数据大小        | total size(MB): 138668.98                |
-| 备份吞吐        | avg speed(MB/s): 284.26 -> 667.55 ↑      |
-| 单 TiKV 实例吞吐 | avg speed(MB/s)/tikv_count：71 -> 166.89 ↑ |
 
 ### 从本地磁盘进行备份恢复
 
@@ -328,7 +324,7 @@ bin/br backup table --db batchmark --table order_line -s local:///home/tidb/back
 * 确认 restore cluster 中没有与备份数据相同的库表，目前 br 不支持 table route
 * restore cluster  的各个 TiKV 节点有单独的磁盘用来存放要恢复的 backupSST 数据
 * restore_endpoint 节点有单独的磁盘用来存放要恢复的 backupmeta 数据
-* restore cluster  的 TiKV 和 restore_endpoint 节点需要有相同的备份目录，例如 /home/tidb/backup_restore_benchmark/backup-2020-01-01/
+* restore cluster  的 TiKV 和 restore_endpoint 节点需要有相同的备份目录，例如 /home/tidb/backup_local/
 * 如果你备份来的数据在本地磁盘，那么需要执行下面的操作
     1. 汇总所有 backupSST 文件到一个统一的目录下 all backupSST
     2. copy 汇总后的 all backupSST 到 restore cluster 的所有 TiKV 节点下
@@ -343,7 +339,7 @@ bin/br backup table --db batchmark --table order_line -s local:///home/tidb/back
 运行 BR restore 命令
 
 ```
-bin/br restore table --db batchmark --table order_line -s local:///home/tidb/backup_restore_benchmark/backup-2020-01-01/ --pd 172.16.5.198:2379 --log-file restore-2020-01-01.log
+bin/br restore table --db batchmark --table order_line -s local:///home/tidb/backup_local/ --pd 172.16.5.198:2379 --log-file restore_local.log
 ```
 
 #### 运行指标
@@ -355,49 +351,31 @@ bin/br restore table --db batchmark --table order_line -s local:///home/tidb/bac
 恢复耗时
 
 ```
-["Restore table summary: total restore tables: 1, total success: 1, total failed: 0, total take(s): 598.43, total kv: 1414972156, total size(MB): 138668.98, avg speed(MB/s): 231.72"]["restore files"=4578] ["restore ranges"=2289]["split region"=1m23.848547477s] ["restore checksum"=5m28.487069032s]
+["Table Restore summary: total restore tables: 1, total success: 1, total failed: 0, total take(s): 908.42, total kv: 5659888624, total size(MB): 353227.18, avg speed(MB/s): 388.84"] ["restore files"=9263] ["restore ranges"=6888] ["split region"=58.7885518s] ["restore checksum"=6m19.349067937s]
 ```
 
 |                  | 数据                           |
 | ---------------- | :--------------------------- |
-| 恢复耗时             | total take(s): 598.43        |
-| 数据大小             | total size(MB): 138668.98.18 |
-| 恢复吞吐             | avg speed(MB/s): 231.72      |
-| region spilit 耗时 | take=1m23.848547477s         |
+| 恢复耗时             | total take(s): 908.42 |
+| 数据大小             | total size(MB): 353227.18 |
+| 恢复吞吐             | avg speed(MB/s):  388.84     |
+| region spilit 耗时 | take=58.7885518s         |
+| 校验耗时 | take=6m19.349067937s |
 
 |           | 数据                            |
 | --------- | :---------------------------- |
-| 单 TiKV 吞吐 | avg speed(MB/s)/tikv_count：58 |
-
-校验耗时
-
-|      | 数据                   |
-| ---- | :------------------- |
-| 校验耗时 | take=5m28.487069032s |
-
-#### 性能调优
-
-如果 TiKV 资源使用没有明显的瓶颈，可以尝试调大 Restore concurrency 参数(默认 128)， 例如 `bin/br restore table --db batchmark --table order_line -s local:///home/tidb/backup_restore_benchmark/backup-2020-01-01/ --pd 172.16.5.198:2379 --log-file restore-2020-01-01.log --concurrency 1024`
-
-|           | 数据                                    |
-| --------- | :------------------------------------ |
-| 恢复耗时      | total take(s): 598.43 -> 510.08 ↓     |
-| 恢复吞吐      | avg speed(MB/s): 231.72 -> 271.86 ↑   |
-| 单 TiKV 吞吐 | avg speed(MB/s)/tikv_count：58 -> 68 ↑ |
+| 单 TiKV 吞吐 | avg speed(MB/s)/tikv_count：97.2 |
 
 ### 异常处理
 
-#### Table backup 一直进度 100%
-
-* `v3.1.0 beta 及之前版本的 bug，已经在最新版本中修复`
-
-#### 备份耗时太久
+#### 备份日志中出现 key locked Error
 
 * `log - ["backup occur kv error"][error="{\"KvError\":{\"locked\":`
-    * 目前备份必须串行执行，因为 key locked 错误现在 TiKV 处理起来确实很慢，一是没有 batch，二是 lock 有 ttl，只能等待 TiKV 处理完
+    * 目前备份中遇到 lock 会重试尝试清锁，少量报错不会影响正确性
+
 
 #### 备份失败重来
 
-* `log - Error: msg:"Io(Custom { kind: AlreadyExists, error: \"[5_5359_42_123_default.sst] is already exists in /dir/backup-2020-01-01/\" })"`
-    * 更换备份数据目录，例如 /dir/backup-2020-01-01/ -> /dir/backup-2020-01-01.v1/
-    * 删除所有 TiKV 和 br 节点的备份目录 /dir/backup-2020-01-01/
+* `log - Error: msg:"Io(Custom { kind: AlreadyExists, error: \"[5_5359_42_123_default.sst] is already exists in /dir/backup_local/\" })"`
+    * 更换备份数据目录, 例如 /dir/backup-2020-01-01/ -> /dir/backup_local.v1/
+    * 删除所有 TiKV 和 br 节点的备份目录 /dir/backup_local/
