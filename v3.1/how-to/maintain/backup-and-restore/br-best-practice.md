@@ -260,7 +260,6 @@ Checksum Request duration - 对备份集群执行 admin checksum 的耗时统计
 | 恢复吞吐      | avg speed(MB/s): 367.42 -> xxx ↑   |
 | 单 TiKV 吞吐 | avg speed(MB/s)/tikv_count：91.8 ->  ↑ |
 
-
 ### 单表数据备份到本地磁盘
 
 通过 BR backup 命令，将单表数据 --db batchmark --table order_line 备份到指定的本地磁盘路径下 local:///home/tidb/backup_local
@@ -313,7 +312,6 @@ bin/br backup table --db batchmark --table order_line -s local:///home/tidb/back
 |             | 数据                            |
 | ----------- | :---------------------------- |
 | 单 TiKV 实例吞吐 | avg speed(MB/s)/tikv_count：160 |
-
 
 ### 从本地磁盘进行备份恢复
 
@@ -372,7 +370,6 @@ bin/br restore table --db batchmark --table order_line -s local:///home/tidb/bac
 
 * `log - ["backup occur kv error"][error="{\"KvError\":{\"locked\":`
     * 目前备份中遇到 lock 会重试尝试清锁，少量报错不会影响正确性
-
 
 #### 备份失败重来
 
