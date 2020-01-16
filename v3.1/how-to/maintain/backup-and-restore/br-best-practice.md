@@ -25,9 +25,9 @@ Tips：BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，�
 
 ## 部署
 
-* 通过官方推荐的 [tidb-ansible](/v3.1/how-to/deploy/orchestrated/ansible) 部署 TiDB 集群
+* 通过官方推荐的 [tidb-ansible](/v3.1/how-to/deploy/orchestrated/ansible.md) 部署 TiDB 集群
 
-* 通过下载 [tidb-toolkit](/v3.1/reference/tools/download/#快速备份和恢复br) 获取 br 应用
+* 通过下载 [tidb-toolkit](/v3.1/reference/tools/download.md/#快速备份和恢复br) 获取 br 应用
 
 ## 版本
 
@@ -226,7 +226,7 @@ Restore Errors - 恢复过程中的错误
 
 Checksum Request duration - 对备份集群执行 admin checksum 的耗时统计（此时 checksum 会进行 undo rewrite，会比备份时 checksum  延迟高)
 
-![img](/media/br/restore-checksu.png)
+![img](/media/br/restore-checksum.png)
 
 #### 结果解读
 
