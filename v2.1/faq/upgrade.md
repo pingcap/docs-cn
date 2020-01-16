@@ -24,11 +24,24 @@ To avoid this issue, you need to pay attention to:
 
 - Before upgrading, the following operations are executed in v2.1.0 and earlier versions.
 
+    {{< copyable "sql" >}}
+
     ```sql
-    tidb > create table t(a varchar(10)) charset=utf8;
+    create table t(a varchar(10)) charset=utf8;
+    ```
+
+    ```
     Query OK, 0 rows affected
     Time: 0.106s
-    tidb > show create table t
+    ```
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    show create table t;
+    ```
+
+    ```
     +-------+-------------------------------------------------------+
     | Table | Create Table                                          |
     +-------+-------------------------------------------------------+
@@ -42,14 +55,21 @@ To avoid this issue, you need to pay attention to:
 
 - After upgrading, the following error is reported in v2.1.1 and v2.1.2 but there is no such error in v2.1.3 and the later versions.
 
+    {{< copyable "sql" >}}
+
     ```sql
-    tidb > alter table t change column a a varchar(20);
+    alter table t change column a a varchar(20);
+    ```
+
+    ```
     ERROR 1105 (HY000): unsupported modify column charset utf8mb4 not match origin utf8
     ```
 
 Solution:
 
 You can explicitly specify the column charset as the same with the original charset.
+
+{{< copyable "sql" >}}
 
 ```sql
 alter table t change column a a varchar(22) character set utf8;
@@ -59,8 +79,15 @@ alter table t change column a a varchar(22) character set utf8;
 
 - According to Point #2, you can obtain the metadata of the table through the HTTP API, and find the column charset by searching the column name and the keyword "Charset".
 
+    {{< copyable "shell-regular" >}}
+
     ```sh
-    ▶ curl "http://$IP:10080/schema/test/t" | python -m json.tool  # A python tool is used here to format JSON, which is not required and only for the convenience to add comments.
+    curl "http://$IP:10080/schema/test/t" | python -m json.tool
+    ```
+
+    Here the python tool is used to format JSON, which is not required and only for the convenience to add comments.
+
+    ```json
     {
         "ShardRowIDBits": 0,
         "auto_inc_id": 0,
@@ -96,11 +123,24 @@ alter table t change column a a varchar(22) character set utf8;
 
 - Before upgrading, the following operations are executed in v2.1.1 and v2.1.2.
 
+    {{< copyable "sql" >}}
+
     ```sql
-    tidb > create table t(a varchar(10)) charset=utf8;
+    create table t(a varchar(10)) charset=utf8;
+    ```
+
+    ```
     Query OK, 0 rows affected
     Time: 0.109s
-    tidb > show create table t
+    ```
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    show create table t;
+    ```
+
+    ```
     +-------+-------------------------------------------------------+
     | Table | Create Table                                          |
     +-------+-------------------------------------------------------+
@@ -114,8 +154,13 @@ alter table t change column a a varchar(22) character set utf8;
 
 - After upgrading, the following operations are executed in v2.1.3 and the later versions.
 
+    {{< copyable "sql" >}}
+
     ```sql
-    tidb > show create table t
+    show create table t;
+    ```
+
+    ```
     +-------+--------------------------------------------------------------------+
     | Table | Create Table                                                       |
     +-------+--------------------------------------------------------------------+
@@ -125,7 +170,15 @@ alter table t change column a a varchar(22) character set utf8;
     +-------+--------------------------------------------------------------------+
     1 row in set
     Time: 0.007s
-    tidb > alter table t change column a a varchar(20);
+    ```
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    alter table t change column a a varchar(20);
+    ```
+
+    ```
     ERROR 1105 (HY000): unsupported modify charset from utf8mb4 to utf8
     ```
 
@@ -133,11 +186,15 @@ Solution:
 
 - Starting from v2.1.3, TiDB supports modifying the charsets of the column and the table, so it is recommended to modify the table charset into UTF8MB4.
 
+    {{< copyable "sql" >}}
+
     ```sql
     alter table t convert to character set utf8mb4;
     ```
 
 - You can also specify the column charset as done in Issue #1, making it stay consistent with the original column charset (UTF8MB4).
+
+    {{< copyable "sql" >}}
 
     ```sql
     alter table t change column a a varchar(20) character set utf8mb4;
@@ -149,17 +206,35 @@ In TiDB v2.1.1 and earlier versions, if the charset is UTF-8, there is no UTF-8 
 
 - Before upgrading, the following operations are executed in v2.1.1 and earlier versions.
 
+    {{< copyable "sql" >}}
+
     ```sql
-    tidb> create table t(a varchar(100) charset utf8);
+    create table t(a varchar(100) charset utf8);
+    ```
+
+    ```
     Query OK, 0 rows affected
-    tidb> insert t values (unhex('f09f8c80'));
+    ```
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    insert t values (unhex('f09f8c80'));
+    ```
+
+    ```
     Query OK, 1 row affected
     ```
 
 - After upgrading, the following error is reported in v2.1.2 and the later versions.
 
+    {{< copyable "sql" >}}
+
     ```sql
-    tidb> insert t values (unhex('f09f8c80'));
+    insert t values (unhex('f09f8c80'));
+    ```
+
+    ```
     ERROR 1366 (HY000): incorrect utf8 value f09f8c80(🌀) for column a
     ```
 
@@ -167,19 +242,45 @@ Solution:
 
 - In v2.1.2: this version does not support modifying the column charset, so you have to skip the UTF-8 check.
 
+    {{< copyable "sql" >}}
+
     ```sql
-    tidb > set @@session.tidb_skip_utf8_check=1;
+    set @@session.tidb_skip_utf8_check=1;
+    ```
+
+    ```
     Query OK, 0 rows affected
-    tidb > insert t values (unhex('f09f8c80'));
+    ```
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    insert t values (unhex('f09f8c80'));
+    ```
+
+    ```
     Query OK, 1 row affected
     ```
 
 - In v2.1.3 and the later versions: it is recommended to modify the column charset into UTF8MB4. Or you can set `tidb_skip_utf8_check` to skip the UTF-8 check. But if you skip the check, you might fail to replicate data from TiDB to MySQL because MySQL executes the check.
 
+    {{< copyable "sql" >}}
+
     ```sql
-    tidb > alter table t change column a a varchar(100) character set utf8mb4;
+    alter table t change column a a varchar(100) character set utf8mb4;
+    ```
+
+    ```
     Query OK, 0 rows affected
-    tidb > insert t values (unhex('f09f8c80'));
+    ```
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    insert t values (unhex('f09f8c80'));
+    ```
+
+    ```
     Query OK, 1 row affected
     ```
 
@@ -191,18 +292,36 @@ Solution:
 
     * HTTP API（the HTTP API can be enabled only on a single server）
 
-        ```sh
-        # Enabled.
-        curl -X POST -d "check_mb4_value_in_utf8=1" http://{TiDBIP}:10080/settings
-        # Disabled.
-        curl -X POST -d "check_mb4_value_in_utf8=0" http://{TiDBIP}:10080/settings
-        ```
+        * To enable HTTP API:
+
+            {{< copyable "shell-regular" >}}
+
+            ```sh
+            curl -X POST -d "check_mb4_value_in_utf8=1" http://{TiDBIP}:10080/settings
+            ```
+
+        * To disable HTTP API:
+
+            {{< copyable "shell-regular" >}}
+
+            ```sh
+            curl -X POST -d "check_mb4_value_in_utf8=0" http://{TiDBIP}:10080/settings
+            ```
 
     * Session variable
 
-        ```sql
-        # Enabled.
-        set @@session.tidb_check_mb4_value_in_utf8 = 1;
-        # Disabled.
-        set @@session.tidb_check_mb4_value_in_utf8 = 0;
-        ```
+        * To enable session variable:
+
+            {{< copyable "sql" >}}
+
+            ```sql
+            set @@session.tidb_check_mb4_value_in_utf8 = 1;
+            ```
+
+        * To disable session variable:
+
+            {{< copyable "sql" >}}
+
+            ```sql
+            set @@session.tidb_check_mb4_value_in_utf8 = 0;
+            ```

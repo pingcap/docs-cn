@@ -279,11 +279,15 @@ The Direct mode wraps the Write request into the I/O command and sends this comm
 
 - Random Read test:
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randread -size=10G -filename=fio_randread_test.txt -name='fio randread test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_result.json
     ```
 
 - The mix test of sequential Write and random Read:
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randread_write_test.txt -name='fio mixed randread and sequential write test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_write_test.json
@@ -302,13 +306,13 @@ Two possible reasons and solutions:
 
 - Apply rolling updates to the TiKV node (only update the TiKV service).
 
-    ```
+    ```bash
     ansible-playbook rolling_update.yml --tags=tikv
     ```
 
 - Apply rolling updates to all services.
 
-    ```
+    ```bash
     ansible-playbook rolling_update.yml
     ```
 
@@ -359,7 +363,7 @@ Solution:
 
 You can log into TiDB like logging into MySQL. For example:
 
-```
+```bash
 mysql -h 127.0.0.1 -uroot -P4000
 ```
 
@@ -850,6 +854,8 @@ In Sqoop, `--batch` means committing 100 `statement`s in each batch, but by defa
 Two solutions:
 
 - Add the `-Dsqoop.export.records.per.statement=10` option as follows:
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     sqoop export \

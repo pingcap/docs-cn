@@ -41,8 +41,11 @@ TiDB Lightning by default performs checksum on the local data source and the imp
 
 You could also execute the `ADMIN CHECKSUM TABLE` SQL command on the target table to recompute the checksum of the imported data.
 
-```text
-mysql> ADMIN CHECKSUM TABLE `schema`.`table`;
+```sql
+ADMIN CHECKSUM TABLE `schema`.`table`;
+```
+
+```
 +---------+------------+---------------------+-----------+-------------+
 | Db_name | Table_name | Checksum_crc64_xor  | Total_kvs | Total_bytes |
 +---------+------------+---------------------+-----------+-------------+
@@ -106,6 +109,8 @@ It is not recommended to directly use `nohup` in the command line to start `tidb
 ## Why my TiDB cluster is using lots of CPU resources and running very slowly after using TiDB Lightning?
 
 If `tidb-lightning` abnormally exited, the cluster might be stuck in the "import mode", which is not suitable for production. You can force the cluster back to "normal mode" using the following command:
+
+{{< copyable "shell-regular" >}}
 
 ```sh
 tidb-lightning-ctl --switch-mode=normal

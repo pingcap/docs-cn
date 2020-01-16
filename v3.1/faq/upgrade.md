@@ -79,6 +79,8 @@ alter table t change column a a varchar(22) character set utf8;
 
 - According to Point #2, you can obtain the metadata of the table through the HTTP API, and find the column charset by searching the column name and the keyword "Charset".
 
+    {{< copyable "shell-regular" >}}
+
     ```sh
     curl "http://$IP:10080/schema/test/t" | python -m json.tool  # A python tool is used here to format JSON, which is not required and only for the convenience to add comments.
     {
@@ -285,25 +287,36 @@ Solution:
 
     * HTTP API（the HTTP API can be enabled only on a single server）
 
-        ```sh
-        # Enabled.
-        curl -X POST -d "check_mb4_value_in_utf8=1" http://{TiDBIP}:10080/settings
-        # Disabled.
-        curl -X POST -d "check_mb4_value_in_utf8=0" http://{TiDBIP}:10080/settings
-        ```
+        * To enable HTTP API:
+
+            {{< copyable "shell-regular" >}}
+
+            ```sh
+            curl -X POST -d "check_mb4_value_in_utf8=1" http://{TiDBIP}:10080/settings
+            ```
+
+        * To disable HTTP API:
+
+            {{< copyable "shell-regular" >}}
+
+            ```sh
+            curl -X POST -d "check_mb4_value_in_utf8=0" http://{TiDBIP}:10080/settings
+            ```
 
     * Session variable
 
-        {{< copyable "sql" >}}
+        * To enable session variable:
 
-        ```sql
-        -- Enabled.
-        set @@session.tidb_check_mb4_value_in_utf8 = 1;
-        ```
+            {{< copyable "sql" >}}
 
-        {{< copyable "sql" >}}
+            ```sql
+            set @@session.tidb_check_mb4_value_in_utf8 = 1;
+            ```
 
-        ```sql
-        -- Disabled.
-        set @@session.tidb_check_mb4_value_in_utf8 = 0;
-        ```
+        * To disable session variable:
+
+            {{< copyable "sql" >}}
+
+            ```sql
+            set @@session.tidb_check_mb4_value_in_utf8 = 0;
+            ```

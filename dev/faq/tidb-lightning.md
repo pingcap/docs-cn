@@ -67,8 +67,11 @@ TiDB Lightning by default performs checksum on the local data source and the imp
 
 You could also execute the `ADMIN CHECKSUM TABLE` SQL command on the target table to recompute the checksum of the imported data.
 
-```text
-mysql> ADMIN CHECKSUM TABLE `schema`.`table`;
+```sql
+ADMIN CHECKSUM TABLE `schema`.`table`;
+```
+
+```
 +---------+------------+---------------------+-----------+-------------+
 | Db_name | Table_name | Checksum_crc64_xor  | Total_kvs | Total_bytes |
 +---------+------------+---------------------+-----------+-------------+
@@ -131,6 +134,8 @@ It is not recommended to directly use `nohup` in the command line to start `tidb
 
 If `tidb-lightning` abnormally exited, the cluster might be stuck in the "import mode", which is not suitable for production. You can force the cluster back to "normal mode" using the following command:
 
+{{< copyable "shell-regular" >}}
+
 ```sh
 tidb-lightning-ctl --switch-mode=normal
 ```
@@ -163,6 +168,8 @@ See also [How to properly restart TiDB Lightning?](#how-to-properly-restart-tidb
 ## How to completely destroy all intermediate data associated with TiDB Lightning?
 
 1. Delete the checkpoint file.
+
+    {{< copyable "shell-regular" >}}
 
     ```sh
     tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-remove=all
