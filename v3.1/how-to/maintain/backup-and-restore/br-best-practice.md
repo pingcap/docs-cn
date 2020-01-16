@@ -33,13 +33,13 @@ category: how-to
 
 Tips：BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需要依赖 tidb-server 组件。
 
-## 部署
+### 部署
 
 * 通过官方推荐的 [tidb-ansible](/v3.1/how-to/deploy/orchestrated/ansible.md) 部署 TiDB 集群
 
 * 通过下载 [tidb-toolkit](/v3.1/reference/tools/download.md#快速备份和恢复br) 获取 br 应用
 
-## 版本
+### 版本
 
 * TiKV: v3.1.0-beta.1
 
@@ -47,7 +47,7 @@ Tips：BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，�
 
 * br: v3.1.0-beta.1
 
-## TiKV 集群硬件信息
+### TiKV 集群硬件信息
 
 | 类别   | 名称                                   |
 | ---- | :----------------------------------- |
@@ -57,7 +57,7 @@ Tips：BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，�
 | DISK | 500G SSD * 2                         |
 | NIC  | 10000Mb/s                            |
 
-## 配置
+### 配置
 
 * TiKV Configurations: Default
 
