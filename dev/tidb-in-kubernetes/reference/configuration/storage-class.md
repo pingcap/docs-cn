@@ -265,7 +265,7 @@ PV 保留策略是 `Retain` 时，如果确认某个 PV 的数据可以被删除
 
     {{< copyable "shell-regular" >}}
 
-  ```shell
+    ```shell
   kubectl delete pvc <pvc-name> --namespace=<namespace>
   ```
 
