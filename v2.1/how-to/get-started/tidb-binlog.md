@@ -45,7 +45,7 @@ sudo yum install -y mariadb-server
 预期输出：
 
 ```
-[kolbe@localhost ~]$ curl -LO http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz | tar xzf -
+[kolbe@localhost ~]$ curl -LO https://download.pingcap.org/tidb-latest-linux-amd64.tar.gz | tar xzf -
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100  368M  100  368M    0     0  8394k      0  0:00:44  0:00:44 --:--:-- 11.1M
@@ -247,7 +247,7 @@ Check Table Before Drop: false
     ```sql
     create database tidbtest;
     use tidbtest;
-    create table t1 (id int unsigned not null auto_increment primary   key);
+    create table t1 (id int unsigned not null AUTO_INCREMENT primary   key);
     insert into t1 () values (),(),(),(),();
     select * from t1;
     ```
@@ -260,7 +260,7 @@ Check Table Before Drop: false
 
     TiDB [(none)]> use tidbtest;
     Database changed
-    TiDB [tidbtest]> create table t1 (id int unsigned not null auto_increment primary key);
+    TiDB [tidbtest]> create table t1 (id int unsigned not null AUTO_INCREMENT primary key);
     Query OK, 0 rows affected (0.11 sec)
 
     TiDB [tidbtest]> insert into t1 () values (),(),(),(),();

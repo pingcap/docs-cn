@@ -17,11 +17,11 @@ TiDB 支持的基本约束与 MySQL 的基本相同，但有以下区别：
 
 ```sql
 CREATE TABLE users (
- id INT NOT NULL PRIMARY KEY auto_increment,
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
  doc JSON
 );
 CREATE TABLE orders (
- id INT NOT NULL PRIMARY KEY auto_increment,
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
  user_id INT NOT NULL,
  doc JSON,
  FOREIGN KEY fk_user_id (user_id) REFERENCES users(id)
@@ -75,7 +75,7 @@ TiDB 支持的非空约束规则与 MySQL 支持的一致。例如：
 
 ```sql
 CREATE TABLE users (
- id INT NOT NULL PRIMARY KEY auto_increment,
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
  age INT NOT NULL,
  last_login TIMESTAMP
 );
@@ -111,7 +111,7 @@ INSERT INTO users (id,age,last_login) VALUES (NULL,123,NULL);
 Query OK, 1 row affected (0.03 sec)
 ```
 
-* 第一条 `INSERT` 语句成功，因为对于定义为 `auto_increment` 的列，允许 `NULL` 作为其特殊值。TiDB 将为其分配下一个自动值。
+* 第一条 `INSERT` 语句成功，因为对于定义为 `AUTO_INCREMENT` 的列，允许 `NULL` 作为其特殊值。TiDB 将为其分配下一个自动值。
 
 * 第二条 `INSERT` 语句失败，因为 `age` 列被定义为 `NOT NULL`。
 
@@ -176,7 +176,7 @@ Query OK, 0 rows affected (0.10 sec)
 ```sql
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
- id INT NOT NULL PRIMARY KEY auto_increment,
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
  username VARCHAR(60) NOT NULL,
  UNIQUE KEY (username)
 );
@@ -232,7 +232,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ```sql
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
- id INT NOT NULL PRIMARY KEY auto_increment,
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
  username VARCHAR(60) NOT NULL,
  UNIQUE KEY (username)
 );
