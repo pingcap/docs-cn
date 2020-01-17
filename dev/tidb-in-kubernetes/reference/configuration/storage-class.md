@@ -269,7 +269,7 @@ PV 保留策略是 `Retain` 时，如果确认某个 PV 的数据可以被删除
     kubectl delete pvc <pvc-name> --namespace=<namespace>
     ```
 
-* 然后，设置 PV 的保留策略为 `Delete`，PV 会被自动删除并回收：
+2. 设置 PV 的保留策略为 `Delete`，PV 会被自动删除并回收：
 
   {{< copyable "shell-regular" >}}
 
