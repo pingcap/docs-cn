@@ -274,7 +274,7 @@ PV 保留策略是 `Retain` 时，如果确认某个 PV 的数据可以被删除
     {{< copyable "shell-regular" >}}
 
     ```shell
-  kubectl patch pv <pv-name> -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
+    kubectl patch pv <pv-name> -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
   ```
 
 要了解更多关于 PV 的保留策略可参考[修改 PV 保留策略](https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy/)。
