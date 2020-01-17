@@ -261,20 +261,20 @@ kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/
 
 PV 保留策略是 `Retain` 时，如果确认某个 PV 的数据可以被删除，需要通过下面的操作来删除 PV 以及对应的数据：
 
-* 首先删除 PV 对应的 PVC 对象：
+1. 删除 PV 对应的 PVC 对象：
 
-  {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-  ```shell
-  kubectl delete pvc <pvc-name> --namespace=<namespace>
-  ```
+    ```shell
+    kubectl delete pvc <pvc-name> --namespace=<namespace>
+    ```
 
-* 然后，设置 PV 的保留策略为 `Delete`，PV 会被自动删除并回收：
+2. 设置 PV 的保留策略为 `Delete`，PV 会被自动删除并回收：
 
-  {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-  ```shell
-  kubectl patch pv <pv-name> -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
-  ```
+    ```shell
+    kubectl patch pv <pv-name> -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
+    ```
 
 要了解更多关于 PV 的保留策略可参考[修改 PV 保留策略](https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy/)。
