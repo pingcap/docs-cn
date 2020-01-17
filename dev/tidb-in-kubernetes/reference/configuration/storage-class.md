@@ -263,7 +263,7 @@ PV 保留策略是 `Retain` 时，如果确认某个 PV 的数据可以被删除
 
 1. 删除 PV 对应的 PVC 对象：
 
-  {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
   ```shell
   kubectl delete pvc <pvc-name> --namespace=<namespace>
