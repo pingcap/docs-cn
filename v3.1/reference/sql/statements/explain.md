@@ -45,7 +45,7 @@ EXPLAIN SELECT 1;
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
+CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
 ```
 
 ```

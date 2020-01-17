@@ -327,7 +327,7 @@ Check Table Before Drop: false
     {{< copyable "sql" >}}
 
     ```sql
-    create table t1 (id int unsigned not null auto_increment primary key);
+    create table t1 (id int unsigned not null AUTO_INCREMENT primary key);
     ```
 
     ```
