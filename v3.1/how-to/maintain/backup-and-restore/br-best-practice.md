@@ -23,9 +23,9 @@ category: how-to
 
 ## 使用限制
 
-* BR 只支持 TiDB v3.1 及以上版本。
+* BR 只支持 TiDB v3.1 及以上版本
 
-* 目前只支持在全新的集群上执行恢复操作。
+* 目前只支持在全新的集群上执行恢复操作
 
 * BR 备份必须串行执行
 
@@ -65,9 +65,9 @@ Tips：BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，�
 
 ## 准备工作
 
-BR backup 命令的详细使用方法请参考[文档](/v3.1/how-to/maintain/backup-and-restore/br.md#BR命令行描述)。
-
 ### 备份准备工作
+
+BR backup 命令的详细使用方法请参考[文档](/v3.1/how-to/maintain/backup-and-restore/br.md#BR命令行描述)。
 
 1. 运行 BR backup 命令前，查询 TiDB 集群的 GC 值并使用 MySQL 客户端将其调整为合适的值，确保备份期间不会发生 GC。
 
@@ -82,9 +82,9 @@ BR backup 命令的详细使用方法请参考[文档](/v3.1/how-to/maintain/bac
     update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
     ```
 
-BR restore 命令的详细使用方法请参考[文档](/v3.1/how-to/maintain/backup-and-restore/br.md#BR命令行描述)。
-
 ### 恢复准备工作
+
+BR restore 命令的详细使用方法请参考[文档](/v3.1/how-to/maintain/backup-and-restore/br.md#BR命令行描述)。
 
 1. 运行 BR restore 前检查新集群没有同名 table。
 
@@ -259,6 +259,7 @@ Checksum Request duration - 对备份集群执行 admin checksum 的耗时统计
 |           | 数据                            |
 | --------- | :---------------------------- |
 | 单 TiKV 吞吐 | avg speed(MB/s)/tikv_count：91.8 |
+| 单 TiKV 平均恢复速度 | total size(MB)/(split time + restore time)/tikv_count：87.4 |
 
 #### 性能调优
 
@@ -269,6 +270,7 @@ Checksum Request duration - 对备份集群执行 admin checksum 的耗时统计
 | 恢复耗时      | total take(s): 961.37 -> 443.49 ↓     |
 | 恢复吞吐      | avg speed(MB/s): 367.42 -> 796.47 ↑   |
 | 单 TiKV 吞吐 | avg speed(MB/s)/tikv_count：91.8 -> 199.1 ↑ |
+| 单 TiKV 平均恢复速度 | total size(MB)/(split time + restore time)/tikv_count：87.4 -> 162.3 ↑ |
 
 ### 单表数据备份到本地磁盘
 
@@ -375,6 +377,7 @@ bin/br restore table --db batchmark --table order_line -s local:///home/tidb/bac
 |           | 数据                            |
 | --------- | :---------------------------- |
 | 单 TiKV 吞吐 | avg speed(MB/s)/tikv_count：97.2 |
+| 单 TiKV 平均恢复速度 | total size(MB)/(split time + restore time)/tikv_count：92.4 |
 
 ### 异常处理
 
