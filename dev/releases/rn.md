@@ -7,6 +7,10 @@ category: release
 
 TiDB 历史版本发布声明如下：
 
+## 4.0
+
+- [4.0.0-beta](/dev/releases/4.0.0-beta.md)
+
 ## 3.1
 
 - [3.1.0-beta.1](/dev/releases/3.1.0-beta.1.md)
