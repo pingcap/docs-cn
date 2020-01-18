@@ -421,6 +421,8 @@
 - [Adopters](/dev/adopters.md)
 - [Roadmap](/dev/roadmap.md)
 + [Releases](/dev/releases/rn.md)
+  + v4.0
+    - [4.0.0-beta](/dev/releases/4.0.0-beta.md)
   + v3.1
     - [3.1.0-beta.1](/dev/releases/3.1.0-beta.1.md)
     - [3.1.0-beta](/dev/releases/3.1.0-beta.md)
