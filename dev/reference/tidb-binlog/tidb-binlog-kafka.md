@@ -58,8 +58,8 @@ Kafka 集群用来存储由 Pump 写入的 Binlog 数据，并提供给 Drainer 
 {{< copyable "shell-regular" >}}
 
 ```bash
-wget http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.tar.gz &&
-wget http://download.pingcap.org/tidb-binlog-kafka-linux-amd64.sha256
+wget https://download.pingcap.org/tidb-binlog-kafka-linux-amd64.tar.gz &&
+wget https://download.pingcap.org/tidb-binlog-kafka-linux-amd64.sha256
 ```
 
 检查文件完整性，返回 ok 则正确：
@@ -403,8 +403,8 @@ PbReader 用于解析 Drainer 生成的 Pb 文件，并翻译成对应的 SQL �
 {{< copyable "shell-regular" >}}
 
 ```bash
-wget http://download.pingcap.org/pb_reader-latest-linux-amd64.tar.gz &&
-wget http://download.pingcap.org/pb_reader-latest-linux-amd64.sha256
+wget https://download.pingcap.org/pb_reader-latest-linux-amd64.tar.gz &&
+wget https://download.pingcap.org/pb_reader-latest-linux-amd64.sha256
 ```
 
 检查文件完整性，返回 ok 则正确：

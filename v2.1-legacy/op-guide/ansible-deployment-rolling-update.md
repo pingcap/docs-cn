@@ -45,13 +45,13 @@ category: deployment
 除 “自动下载 binary” 中描述的方法之外，也可以手动下载 binary，解压后手动替换 binary 到 `/home/tidb/tidb-ansible/resource/bin/`，需注意替换链接中的版本号。
 
 ```
-$ wget http://download.pingcap.org/tidb-v2.0.7-linux-amd64.tar.gz
+$ wget https://download.pingcap.org/tidb-v2.0.7-linux-amd64.tar.gz
 ```
 
 如果使用 master 分支的 tidb-ansible，使用以下命令下载 binary：
 
 ```
-$ wget http://download.pingcap.org/tidb-latest-linux-amd64.tar.gz
+$ wget https://download.pingcap.org/tidb-latest-linux-amd64.tar.gz
 ```
 
 ### 使用 Ansible 滚动升级

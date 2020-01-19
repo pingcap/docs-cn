@@ -26,8 +26,8 @@ aliases: ['/docs-cn/v3.1/how-to/maintain/backup-and-restore/']
 {{< copyable "shell-regular" >}}
 
 ```bash
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz && \
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
+wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz && \
+wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
 ```
 
 检查文件完整性，返回 ok 则正确：

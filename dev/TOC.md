@@ -280,6 +280,7 @@
     - [监控告警](/dev/reference/tidb-binlog/monitor.md)
     - [增量恢复](/dev/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/dev/reference/tidb-binlog/binlog-slave-client.md)
+    - [术语表](/dev/reference/tidb-binlog/glossary.md)
     + 故障诊断
       - [故障诊断](/dev/reference/tidb-binlog/troubleshoot/binlog.md)
       - [常见错误修复](/dev/reference/tidb-binlog/troubleshoot/error-handling.md)
@@ -340,9 +341,11 @@
     + TiDB Lightning
       - [概述](/dev/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/dev/reference/tools/tidb-lightning/deployment.md)
+      - [参数说明](/dev/reference/tools/tidb-lightning/config.md)
       - [断点续传](/dev/reference/tools/tidb-lightning/checkpoints.md)
       - [表库过滤](/dev/reference/tools/tidb-lightning/table-filter.md)
       - [CSV 支持](/dev/reference/tools/tidb-lightning/csv.md)
+      - [Web 界面](/dev/reference/tools/tidb-lightning/web.md)
       - [监控告警](/dev/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](/dev/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](/dev/faq/tidb-lightning.md)
@@ -377,6 +380,7 @@
     - [收集日志](/dev/tidb-in-kubernetes/maintain/log-collecting.md)
     - [集群故障自动转移](/dev/tidb-in-kubernetes/maintain/auto-failover.md)
     - [TiDB Binlog](/dev/tidb-in-kubernetes/maintain/tidb-binlog.md)
+    - [重启 TiDB 集群](/dev/tidb-in-kubernetes/maintain/restart.md)
   - [扩缩容](/dev/tidb-in-kubernetes/scale-in-kubernetes.md)
   + 升级
     - [TiDB 集群](/dev/tidb-in-kubernetes/upgrade/tidb-cluster.md)
@@ -404,9 +408,13 @@
   - [改进文档](/dev/contribute.md#改进文档)
 + [TiDB 路线图](/dev/roadmap.md)
 + [版本发布历史](/dev/releases/rn.md)
+  + v4.0
+    - [4.0.0-beta](/dev/releases/4.0.0-beta.md)
   + v3.1
+    - [3.1.0-beta.1](/dev/releases/3.1.0-beta.1.md)
     - [3.1.0-beta](/dev/releases/3.1.0-beta.md)
   + v3.0
+    - [3.0.9](/dev/releases/3.0.9.md)
     - [3.0.8](/dev/releases/3.0.8.md)
     - [3.0.7](/dev/releases/3.0.7.md)
     - [3.0.6](/dev/releases/3.0.6.md)

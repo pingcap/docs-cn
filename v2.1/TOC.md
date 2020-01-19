@@ -254,6 +254,7 @@
     - [监控告警](/v2.1/reference/tidb-binlog/monitor.md)
     - [增量恢复](/v2.1/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/v2.1/reference/tidb-binlog/binlog-slave-client.md)
+    - [术语表](/v2.1/reference/tidb-binlog/glossary.md)
     + 故障诊断
       - [故障诊断](/v2.1/reference/tidb-binlog/troubleshoot/binlog.md)
       - [常见错误修复](/v2.1/reference/tidb-binlog/troubleshoot/error-handling.md)
@@ -313,9 +314,11 @@
     + TiDB Lightning
       - [概述](/v2.1/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/v2.1/reference/tools/tidb-lightning/deployment.md)
+      - [参数说明](/v2.1/reference/tools/tidb-lightning/config.md)
       - [断点续传](/v2.1/reference/tools/tidb-lightning/checkpoints.md)
       - [表库过滤](/v2.1/reference/tools/tidb-lightning/table-filter.md)
       - [CSV 支持](/v2.1/reference/tools/tidb-lightning/csv.md)
+      - [Web 界面](/v2.1/reference/tools/tidb-lightning/web.md)
       - [监控告警](/v2.1/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](/v2.1/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](/v2.1/faq/tidb-lightning.md)

@@ -114,7 +114,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 2. 执行以下命令下载 DM-Ansible。
 
     ```bash
-    $ wget http://download.pingcap.org/dm-ansible-{version}.tar.gz
+    $ wget https://download.pingcap.org/dm-ansible-{version}.tar.gz
     ```
 
     `{version}` 为期望下载的 DM 版本，如 `v1.0.1`、`v1.0.2` 等，
@@ -495,7 +495,7 @@ dm_master ansible_host=172.16.10.71 dm_master_port=18261
 
     ```bash
     cd /home/tidb && \
-    wget http://download.pingcap.org/dm-ansible-{version}.tar.gz && \
+    wget https://download.pingcap.org/dm-ansible-{version}.tar.gz && \
     tar -xzvf dm-ansible-{version}.tar.gz && \
     mv dm-ansible-{version} dm-ansible
     ```
