@@ -236,9 +236,9 @@
     - [基于角色的访问控制](/v3.1/reference/security/role-based-access-control.md)
     - [TiDB 证书鉴权使用指南](/v3.1/reference/security/cert-based-authentication.md)
   + 事务
-    - [事务语句](/v3.1/reference/transactions/overview.md)
-    - [事务模型](/v3.1/reference/transactions/transaction-model.md)
+    - [事务概览](/v3.1/reference/transactions/overview.md)
     - [隔离级别](/v3.1/reference/transactions/transaction-isolation.md)
+    - [乐观事务](/v3.1/reference/transactions/transaction-optimistic.md)
     - [悲观事务](/v3.1/reference/transactions/transaction-pessimistic.md)
   + 系统数据库
     - [`mysql`](/v3.1/reference/system-databases/mysql.md)

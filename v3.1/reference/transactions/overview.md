@@ -5,9 +5,9 @@ category: reference
 
 # TiDB 事务概览
 
-TiDB 支持完整的分布式事务。本文主要介绍涉及到事务的语句、显式/隐式事务以及事务的隔离级别和惰性检查。
+TiDB 支持完整的分布式事务，默认使用[乐观事务模型](/v3.1/reference/transactions/transaction-optimistic/)。事务提交时假定不会发生并发冲突，只有在事务最终提交时才会检测冲突。同时，TiDB V3.0 版本也加入了[悲观事务](v3.1/reference/transactions/transaction-pessimistic.md)的支持。本文主要介绍涉及到事务的语句、显式/隐式事务以及事务的隔离级别和惰性检查，以及事务大小的限制。
 
-常用的变量包括 `autocommit`、[`tidb_disable_txn_auto_retry`](/v3.1/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_disable_txn_auto_retry) 以及 [`tidb_retry_limit`](/v3.1/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_retry_limit)。
+常用的变量包括 [`autocommit`](#自动提交)、[`tidb_disable_txn_auto_retry`](/v3.1/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_disable_txn_auto_retry) 以及 [`tidb_retry_limit`](/v3.1/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_retry_limit)。
 
 ## 事务常用语句
 
@@ -160,3 +160,48 @@ rollback;
 ```
 
 以上例子中，第二条语句执行失败。由于调用了 `rollback`，因此事务不会将任何数据写入数据库。
+
+## 事务大小
+
+对于 TiDB 事务而言，事务太大或者太小，都会影响事务性能。为了克服上述事务在处理过程中的不足，在实际应用中可以根据事务大小进行针对性处理。
+
+### 小事务
+
+在自动提交状态 (`autocommit = 1`) 下，下面三条语句各为一个事务：
+
+```sql
+# 使用自动提交的原始版本。
+UPDATE my_table SET a ='new_value' WHERE id = 1;
+UPDATE my_table SET a ='newer_value' WHERE id = 2;
+UPDATE my_table SET a ='newest_value' WHERE id = 3;
+```
+
+此时每一条语句都需要经过两阶段提交，频繁的网络交互致使小事务延迟率高。为提升事务执行效率，可以选择使用显式事务，即在一个事务内执行三条语句：
+
+```sql
+# 优化后版本。
+START TRANSACTION;
+UPDATE my_table SET a ='new_value' WHERE id = 1;
+UPDATE my_table SET a ='newer_value' WHERE id = 2;
+UPDATE my_table SET a ='newest_value' WHERE id = 3;
+COMMIT;
+```
+
+同理，执行 `INSERT` 语句时，建议使用显式事务。
+
+### 大事务
+
+通过分析两阶段提交的过程，可以发现单个事务过大时会存在以下问题：
+
+* 客户端在提交之前，数据都写在内存中，而数据量过多时易导致 OOM (Out of Memory) 错误。
+* 在第一阶段写入数据时，与其他事务出现冲突的概率会指数级增长，使事务之间相互阻塞影响。
+* 最终导致事务完成提交的耗时增加。
+
+因此，TiDB 特意对事务的大小做了一些限制：
+
+* 单个事务包含的 SQL 语句不超过 5000 条（默认）
+* 每个键值对不超过 6 MB
+* 键值对的总数不超过 300000
+* 键值对的总大小不超过 100 MB
+
+为了使性能达到最优，建议每 100～500 行写入一个事务。
