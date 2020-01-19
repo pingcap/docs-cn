@@ -152,7 +152,7 @@ Checksum Request duration - 对备份集群执行 admin checksum 的耗时统计
 
 #### 结果解读
 
-备份耗时
+从日志中可以获取此次备份的相关统计信息，在日志中搜关键字 "summary"，可以看到下述信息：
 
 ```
 ["Table backup summary: total backup ranges: 4, total success: 4, total failed: 0, total take(s): 986.43, total kv: 5659888624, total size(MB): 353227.18, avg speed(MB/s): 358.09"] ["backup total regions"=7196] ["backup checksum"=6m28.291772955s] ["backup fast checksum"=24.950298ms]
@@ -240,7 +240,7 @@ Checksum Request duration - 对备份集群执行 admin checksum 的耗时统计
 
 #### 结果解读
 
-恢复耗时
+从日志中可以获取此次恢复的相关统计信息，在日志中搜关键字 "summary"，可以看到下述信息：
 
 ```
 ["Table Restore summary: total restore tables: 1, total success: 1, total failed: 0, total take(s): 961.37, total kv: 5659888624, total size(MB): 353227.18, avg speed(MB/s): 367.42"] ["restore files"=9263] ["restore ranges"=6888] ["split region"=49.049182743s] ["restore checksum"=6m34.879439498s]
