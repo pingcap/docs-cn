@@ -291,6 +291,7 @@
     - [Highly Concurrent Write Best Practices](/dev/reference/best-practices/high-concurrency.md)
     - [HAProxy Best Practices](/dev/reference/best-practices/haproxy.md)
     - [PD Scheduling Best Practices](/dev/reference/best-practices/pd-scheduling.md)
+    - [Grafana Best Practices](/dev/reference/best-practices/grafana-monitor.md)
   - [TiSpark](/dev/reference/tispark.md)
   + TiDB Binlog
     - [Overview](/dev/reference/tidb-binlog/overview.md)
