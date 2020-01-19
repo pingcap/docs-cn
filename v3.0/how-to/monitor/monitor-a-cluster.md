@@ -24,8 +24,13 @@ The state interface monitors the basic information of a specific component in th
 
 The following example uses `http://${host}:${port}/status` to get the current state of the TiDB server and to determine whether the server is alive. The result is returned in JSON format.
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 curl http://127.0.0.1:10080/status
+```
+
+```
 {
     connections: 0,  # The current number of clients connected to the TiDB server.
     version: "5.7.25-TiDB-v3.0.0-beta-250-g778c3f4a5",  # The TiDB version number.
@@ -41,8 +46,13 @@ curl http://127.0.0.1:10080/status
 
 The PD interface provides the state of all the TiKV servers and the information about load balancing. See the following example for the information about a single-node TiKV cluster:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 curl http://127.0.0.1:2379/pd/api/v1/stores
+```
+
+```
 {
   "count": 1,  # The number of TiKV nodes.
   "stores": [  # The list of TiKV nodes.
@@ -97,153 +107,181 @@ Assume that the TiDB cluster topology is as follows:
 
 #### Step 1: Download the binary package
 
-```bash
-# Downloads the package.
-$ wget https://github.com/prometheus/prometheus/releases/download/v2.2.1/prometheus-2.2.1.linux-amd64.tar.gz
-$ wget https://github.com/prometheus/node_exporter/releases/download/v0.15.2/node_exporter-0.15.2.linux-amd64.tar.gz
-$ wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-4.6.3.linux-x64.tar.gz
+1. Download the package.
 
-# Extracts the package.
-$ tar -xzf prometheus-2.2.1.linux-amd64.tar.gz
-$ tar -xzf node_exporter-0.15.2.linux-amd64.tar.gz
-$ tar -xzf grafana-4.6.3.linux-x64.tar.gz
-```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    wget https://github.com/prometheus/prometheus/releases/download/v2.2.1/prometheus-2.2.1.linux-amd64.tar.gz &&
+    wget https://github.com/prometheus/node_exporter/releases/download/v0.15.2/node_exporter-0.15.2.linux-amd64.tar.gz &&
+    wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-4.6.3.linux-x64.tar.gz
+    ```
+
+2. Extract the package.
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tar -xzf prometheus-2.2.1.linux-amd64.tar.gz &&
+    tar -xzf node_exporter-0.15.2.linux-amd64.tar.gz &&
+    tar -xzf grafana-4.6.3.linux-x64.tar.gz
+    ```
 
 #### Step 2: Start `node_exporter` on Node1, Node2, Node3, and Node4
 
-```bash
-$ cd node_exporter-0.15.2.linux-amd64
+1. Enter the corresponding directory:
 
-# Starts the node_exporter service.
-$ ./node_exporter --web.listen-address=":9100" \
-    --log.level="info" &
-```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cd node_exporter-0.15.2.linux-amd64
+    ```
+
+2. Start the node_exporter service.
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ./node_exporter --web.listen-address=":9100" \
+        --log.level="info" &
+    ```
 
 #### Step 3: Start Prometheus on Node1
 
-Edit the Prometheus configuration file:
+1. Edit the Prometheus configuration file:
 
-```yml
-$ cd prometheus-2.2.1.linux-amd64
-$ vi prometheus.yml
+    {{< copyable "shell-regular" >}}
 
-...
+    ```bash
+    cd prometheus-2.2.1.linux-amd64 &&
+    vi prometheus.yml
+    ```
 
-global:
-  scrape_interval:     15s  # By default, scrape targets every 15 seconds.
-  evaluation_interval: 15s  # By default, scrape targets every 15 seconds.
-  # scrape_timeout is set to the global default value (10s).
-  external_labels:
-    cluster: 'test-cluster'
-    monitor: "prometheus"
+    ```ini
+    ...
 
-scrape_configs:
-  - job_name: 'overwritten-nodes'
-    honor_labels: true  # Do not overwrite job & instance labels.
-    static_configs:
-    - targets:
-      - '192.168.199.113:9100'
-      - '192.168.199.114:9100'
-      - '192.168.199.115:9100'
-      - '192.168.199.116:9100'
-      - '192.168.199.117:9100'
-      - '192.168.199.118:9100'
+    global:
+      scrape_interval:     15s  # By default, scrape targets every 15 seconds.
+      evaluation_interval: 15s  # By default, scrape targets every 15 seconds.
+      # scrape_timeout is set to the global default value (10s).
+      external_labels:
+        cluster: 'test-cluster'
+        monitor: "prometheus"
 
-  - job_name: 'tidb'
-    honor_labels: true  # Do not overwrite job & instance labels.
-    static_configs:
-    - targets:
-      - '192.168.199.113:10080'
+    scrape_configs:
+      - job_name: 'overwritten-nodes'
+        honor_labels: true  # Do not overwrite job & instance labels.
+        static_configs:
+        - targets:
+          - '192.168.199.113:9100'
+          - '192.168.199.114:9100'
+          - '192.168.199.115:9100'
+          - '192.168.199.116:9100'
+          - '192.168.199.117:9100'
+          - '192.168.199.118:9100'
 
-  - job_name: 'pd'
-    honor_labels: true  # Do not overwrite job & instance labels.
-    static_configs:
-    - targets:
-      - '192.168.199.113:2379'
-      - '192.168.199.114:2379'
-      - '192.168.199.115:2379'
+      - job_name: 'tidb'
+        honor_labels: true  # Do not overwrite job & instance labels.
+        static_configs:
+        - targets:
+          - '192.168.199.113:10080'
 
-  - job_name: 'tikv'
-    honor_labels: true  # Do not overwrite job & instance labels.
-    static_configs:
-    - targets:
-      - '192.168.199.116:20180'
-      - '192.168.199.117:20180'
-      - '192.168.199.118:20180'
+      - job_name: 'pd'
+        honor_labels: true  # Do not overwrite job & instance labels.
+        static_configs:
+        - targets:
+          - '192.168.199.113:2379'
+          - '192.168.199.114:2379'
+          - '192.168.199.115:2379'
 
-...
+      - job_name: 'tikv'
+        honor_labels: true  # Do not overwrite job & instance labels.
+        static_configs:
+        - targets:
+          - '192.168.199.116:20180'
+          - '192.168.199.117:20180'
+          - '192.168.199.118:20180'
 
-```
+    ...
 
-Start the Prometheus service:
+    ```
 
-```bash
-$ ./prometheus \
-    --config.file="./prometheus.yml" \
-    --web.listen-address=":9090" \
-    --web.external-url="http://192.168.199.113:9090/" \
-    --web.enable-admin-api \
-    --log.level="info" \
-    --storage.tsdb.path="./data.metrics" \
-    --storage.tsdb.retention="15d" &
-```
+2. Start the Prometheus service:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ./prometheus \
+        --config.file="./prometheus.yml" \
+        --web.listen-address=":9090" \
+        --web.external-url="http://192.168.199.113:9090/" \
+        --web.enable-admin-api \
+        --log.level="info" \
+        --storage.tsdb.path="./data.metrics" \
+        --storage.tsdb.retention="15d" &
+    ```
 
 #### Step 4: Start Grafana on Node1
 
-Edit the Grafana configuration file:
+1. Edit the Grafana configuration file:
 
-```ini
-$ cd grafana-4.6.3
-$ vi conf/grafana.ini
+    {{< copyable "shell-regular" >}}
 
-...
+    ```bash
+    cd grafana-4.6.3 &&
+    vi conf/grafana.ini
+    ```
 
-[paths]
-data = ./data
-logs = ./data/log
-plugins = ./data/plugins
-[server]
-http_port = 3000
-domain = 192.168.199.113
-[database]
-[session]
-[analytics]
-check_for_updates = true
-[security]
-admin_user = admin
-admin_password = admin
-[snapshots]
-[users]
-[auth.anonymous]
-[auth.basic]
-[auth.ldap]
-[smtp]
-[emails]
-[log]
-mode = file
-[log.console]
-[log.file]
-level = info
-format = text
-[log.syslog]
-[event_publisher]
-[dashboards.json]
-enabled = false
-path = ./data/dashboards
-[metrics]
-[grafana_net]
-url = https://grafana.net
+    ```ini
+    ...
 
-...
+    [paths]
+    data = ./data
+    logs = ./data/log
+    plugins = ./data/plugins
+    [server]
+    http_port = 3000
+    domain = 192.168.199.113
+    [database]
+    [session]
+    [analytics]
+    check_for_updates = true
+    [security]
+    admin_user = admin
+    admin_password = admin
+    [snapshots]
+    [users]
+    [auth.anonymous]
+    [auth.basic]
+    [auth.ldap]
+    [smtp]
+    [emails]
+    [log]
+    mode = file
+    [log.console]
+    [log.file]
+    level = info
+    format = text
+    [log.syslog]
+    [event_publisher]
+    [dashboards.json]
+    enabled = false
+    path = ./data/dashboards
+    [metrics]
+    [grafana_net]
+    url = https://grafana.net
 
-```
+    ...
+    ```
 
-Start the Grafana service:
+2. Start the Grafana service:
 
-```bash
-$ ./bin/grafana-server \
-    --config="./conf/grafana.ini" &
-```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ./bin/grafana-server \
+        --config="./conf/grafana.ini" &
+    ```
 
 ### Configure Grafana
 

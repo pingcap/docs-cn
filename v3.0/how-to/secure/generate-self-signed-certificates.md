@@ -26,11 +26,13 @@ Assume that the topology of the instance cluster is as follows:
 
 Assume that the host is x86_64 Linux:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-mkdir ~/bin
-curl -s -L -o ~/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
-curl -s -L -o ~/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
-chmod +x ~/bin/{cfssl,cfssljson}
+mkdir ~/bin &&
+curl -s -L -o ~/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 &&
+curl -s -L -o ~/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64 &&
+chmod +x ~/bin/{cfssl,cfssljson} &&
 export PATH=$PATH:~/bin
 ```
 
@@ -38,10 +40,12 @@ export PATH=$PATH:~/bin
 
 To make it easy for modification later, generate the default configuration of `cfssl`:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-mkdir ~/cfssl
-cd ~/cfssl
-cfssl print-defaults config > ca-config.json
+mkdir ~/cfssl &&
+cd ~/cfssl &&
+cfssl print-defaults config > ca-config.json &&
 cfssl print-defaults csr > ca-csr.json
 ```
 
@@ -109,13 +113,15 @@ Edit `ca-csr.json` according to your need:
 
 ### Generate the CA certificate
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 cfssl gencert -initca ca-csr.json | cfssljson -bare ca -
 ```
 
 The command above generates the following files:
 
-```bash
+```
 ca-key.pem
 ca.csr
 ca.pem
@@ -125,17 +131,19 @@ ca.pem
 
 The IP address of all components and `127.0.0.1` are included in `hostname`.
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 echo '{"CN":"tidb-server","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server -hostname="172.16.10.1,172.16.10.2,127.0.0.1" - | cfssljson -bare tidb-server
-
+&&
 echo '{"CN":"tikv-server","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server -hostname="172.16.10.4,172.16.10.5,172.16.10.6,127.0.0.1" - | cfssljson -bare tikv-server
-
+&&
 echo '{"CN":"pd-server","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server -hostname="172.16.10.1,172.16.10.2,172.16.10.3,127.0.0.1" - | cfssljson -bare pd-server
 ```
 
 The command above generates the following files:
 
-```Bash
+```
 tidb-server-key.pem     tikv-server-key.pem      pd-server-key.pem
 tidb-server.csr         tikv-server.csr          pd-server.csr
 tidb-server.pem         tikv-server.pem          pd-server.pem
@@ -143,13 +151,15 @@ tidb-server.pem         tikv-server.pem          pd-server.pem
 
 ### Generate the client certificate
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 echo '{"CN":"client","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=client -hostname="" - | cfssljson -bare client
 ```
 
 The command above generates the following files:
 
-```bash
+```
 client-key.pem
 client.csr
 client.pem

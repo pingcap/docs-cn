@@ -27,7 +27,7 @@ Use the following tools for data backup and restoration:
     {{< copyable "shell-regular" >}}
 
     ```bash
-    wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz && \
+    wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz &&
     wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
     ```
 
@@ -44,7 +44,7 @@ Use the following tools for data backup and restoration:
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz && \
+    tar -xzf tidb-enterprise-tools-latest-linux-amd64.tar.gz &&
     cd tidb-enterprise-tools-latest-linux-amd64
     ```
 
@@ -89,16 +89,25 @@ Then execute two more commands:
 
 - Step 1: before executing the `mydumper` command, query the GC values of the TiDB cluster and adjust it to a suitable value using the MySQL client.
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> SELECT * FROM mysql.tidb WHERE VARIABLE_NAME = 'tikv_gc_life_time';
+    SELECT * FROM mysql.tidb WHERE VARIABLE_NAME = 'tikv_gc_life_time';
+    ```
+
+    ```
     +-----------------------+------------------------------------------------------------------------------------------------+
     | VARIABLE_NAME         | VARIABLE_VALUE                                                                                 |
     +-----------------------+------------------------------------------------------------------------------------------------+
     | tikv_gc_life_time     | 10m0s                                                                                          |
     +-----------------------+------------------------------------------------------------------------------------------------+
     1 rows in set (0.02 sec)
+    ```
 
-    mysql> update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_life_time';
+    {{< copyable "sql" >}}
+
+    ```sql
+    update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_life_time';
     ```
 
 - Step 2: after you finish running the `mydumper` command, restore the GC value of the TiDB cluster to its original value in step 1.

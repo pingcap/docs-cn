@@ -38,14 +38,18 @@ The clustered architecture of Pump ensures that updates won't be lost as new TiD
 
 We're using MariaDB Server in this case instead of MySQL Server because RHEL/CentOS 7 includes MariaDB Server in their default package repositories. We'll need the client as well as the server for later use. Let's install them now:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 sudo yum install -y mariadb-server
 ```
 
 Even if you've already started a TiDB cluster, it will be easier to follow along with this tutorial where we will set up a new, simple cluster. We will install from a tarball, using a simplified form of the [Local Deployment](/v3.0/how-to/get-started/deploy-tidb-from-binary.md) guide. You may also wish to refer to [Testing Deployment from Binary Tarball](/v3.0/how-to/deploy/from-tarball/testing-environment.md) for best practices of establishing a real testing deployment, but that goes beyond the scope of this tutorial.
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-curl -L https://download.pingcap.org/tidb-v3.0-linux-amd64.tar.gz | tar xzf -
+curl -L https://download.pingcap.org/tidb-v3.0-linux-amd64.tar.gz | tar xzf - &&
 cd tidb-v3.0-linux-amd64/
 ```
 
@@ -66,15 +70,19 @@ Now we'll start a simple TiDB cluster, with a single instance for each of `pd-se
 
 Populate the config files using:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-printf > pd.toml %s\\n 'log-file="pd.log"' 'data-dir="pd.data"'
-printf > tikv.toml %s\\n 'log-file="tikv.log"' '[storage]' 'data-dir="tikv.data"' '[pd]' 'endpoints=["127.0.0.1:2379"]' '[rocksdb]' max-open-files=1024 '[raftdb]' max-open-files=1024
-printf > pump.toml %s\\n 'log-file="pump.log"' 'data-dir="pump.data"' 'addr="127.0.0.1:8250"' 'advertise-addr="127.0.0.1:8250"' 'pd-urls="http://127.0.0.1:2379"'
-printf > tidb.toml %s\\n 'store="tikv"' 'path="127.0.0.1:2379"' '[log.file]' 'filename="tidb.log"' '[binlog]' 'enable=true'
+printf > pd.toml %s\\n 'log-file="pd.log"' 'data-dir="pd.data"' &&
+printf > tikv.toml %s\\n 'log-file="tikv.log"' '[storage]' 'data-dir="tikv.data"' '[pd]' 'endpoints=["127.0.0.1:2379"]' '[rocksdb]' max-open-files=1024 '[raftdb]' max-open-files=1024 &&
+printf > pump.toml %s\\n 'log-file="pump.log"' 'data-dir="pump.data"' 'addr="127.0.0.1:8250"' 'advertise-addr="127.0.0.1:8250"' 'pd-urls="http://127.0.0.1:2379"' &&
+printf > tidb.toml %s\\n 'store="tikv"' 'path="127.0.0.1:2379"' '[log.file]' 'filename="tidb.log"' '[binlog]' 'enable=true' &&
 printf > drainer.toml %s\\n 'log-file="drainer.log"' '[syncer]' 'db-type="mysql"' '[syncer.to]' 'host="127.0.0.1"' 'user="root"' 'password=""' 'port=3306'
 ```
 
 Use the following commands to see the configuration details:
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 for f in *.toml; do echo "$f:"; cat "$f"; echo; done
@@ -130,6 +138,8 @@ Now we can start each component. This is best done in a specific order - firstly
 
 Start all the services using:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./bin/pd-server --config=pd.toml &>pd.out &
 ./bin/tikv-server --config=tikv.toml &>tikv.out &
@@ -154,8 +164,13 @@ Expected output:
 
 If you execute `jobs`, you should see a list of running daemons:
 
+{{< copyable "shell-regular" >}}
+
+```bash
+jobs
 ```
-[kolbe@localhost tidb-v3.0-linux-amd64]$ jobs
+
+```
 [1]   Running                 ./bin/pd-server --config=pd.toml &>pd.out &
 [2]   Running                 ./bin/tikv-server --config=tikv.toml &>tikv.out &
 [3]-  Running                 ./bin/pump --config=pump.toml &>pump.out &
@@ -168,14 +183,15 @@ If one of the services has failed to start (if you see "`Exit 1`" instead of "`R
 
 You should have all 4 components of our TiDB Cluster running now, and you can now connect to the TiDB Server on port 4000 using the MariaDB/MySQL command-line client:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-mysql -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
+mysql -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version();'
 ```
 
 Expected output:
 
 ```
-[kolbe@localhost tidb-v3.0-linux-amd64]$ mysql -h 127.0.0.1 -P 4000 -u root -e 'select tidb_version()\G'
 *************************** 1. row ***************************
 tidb_version(): Release Version: v3.0.0
 Git Commit Hash: 60965b006877ca7234adaced7890d7b029ed1306
@@ -191,25 +207,24 @@ At this point we have a TiDB Cluster running, and we have `pump` reading binary 
 
 Start `drainer` using:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-sudo systemctl start mariadb
+sudo systemctl start mariadb &&
 ./bin/drainer --config=drainer.toml &>drainer.out &
 ```
 
 If you are using an operating system that makes it easier to install MySQL server, that's also OK. Just make sure it's listening on port 3306 and that you can either connect to it as user "root" with an empty password, or adjust drainer.toml as necessary.
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 mysql -h 127.0.0.1 -P 3306 -u root
-```
-
-```sql
-show databases;
 ```
 
 Expected output:
 
 ```
-[kolbe@localhost ~]$ mysql -h 127.0.0.1 -P 3306 -u root
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MariaDB connection id is 20
 Server version: 5.5.60-MariaDB MariaDB Server
@@ -218,7 +233,16 @@ Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-MariaDB [(none)]> show databases;
+MariaDB [(none)]>
+```
+
+{{< copyable "sql" >}}
+
+```sql
+show databases;
+```
+
+```
 +--------------------+
 | Database           |
 +--------------------+
@@ -233,10 +257,23 @@ MariaDB [(none)]> show databases;
 
 Here we can already see the `tidb_binlog` database, which contains the `checkpoint` table used by `drainer` to record up to what point binary logs from the TiDB cluster have been applied.
 
+{{< copyable "sql" >}}
+
 ```sql
-MariaDB [tidb_binlog]> use tidb_binlog;
+use tidb_binlog;
+```
+
+```
 Database changed
-MariaDB [tidb_binlog]> select * from checkpoint;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+select * from checkpoint;
+```
+
+```
 +---------------------+---------------------------------------------+
 | clusterID           | checkPoint                                  |
 +---------------------+---------------------------------------------+
@@ -247,9 +284,13 @@ MariaDB [tidb_binlog]> select * from checkpoint;
 
 Now, let's open another client connection to the TiDB server, so that we can create a table and insert some rows into it. (It's recommended that you do this under a GNU screen so you can keep multiple clients open at the same time.)
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 mysql -h 127.0.0.1 -P 4000 --prompt='TiDB [\d]> ' -u root
 ```
+
+{{< copyable "sql" >}}
 
 ```sql
 create database tidbtest;
@@ -288,6 +329,8 @@ TiDB [tidbtest]> select * from t1;
 ```
 
 Switching back to the MariaDB client, we should find the new database, new table, and the newly inserted rows:
+
+{{< copyable "sql" >}}
 
 ```sql
 use tidbtest;
@@ -332,8 +375,10 @@ Information about Pumps and Drainers that have joined the cluster is stored in P
 
 Use `binlogctl` to get a view of the current status of Pumps and Drainers in the cluster:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-./bin/binlogctl -cmd drainers
+./bin/binlogctl -cmd drainers &&
 ./bin/binlogctl -cmd pumps
 ```
 
@@ -349,8 +394,10 @@ Expected output:
 
 If you kill a Drainer, the cluster puts it in the "paused" state, which means that the cluster expects it to rejoin:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-pkill drainer
+pkill drainer &&
 ./bin/binlogctl -cmd drainers
 ```
 
@@ -370,21 +417,27 @@ There are 3 solutions to this issue:
 
 - Stop Drainer using `binlogctl` instead of killing the process:
 
-    ```
-    ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=drainers
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=drainers &&
     ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=offline-drainer --node-id=localhost.localdomain:8249
     ```
 
 - Start Drainer _before_ starting Pump.
 - Use `binlogctl` after starting PD (but before starting Drainer and Pump) to update the state of the paused Drainer:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=update-drainer --node-id=localhost.localdomain:8249 --state=offline
     ```
 
 ## Cleanup
 
 To stop the TiDB cluster and TiDB Binlog processes, you can execute `pkill -P $$` in the shell where you started all the processes that form the cluster (pd-server, tikv-server, pump, tidb-server, drainer). To give each component enough time to shut down cleanly, it's helpful to stop them in a particular order:
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 for p in tidb-server drainer pump tikv-server pd-server; do pkill "$p"; sleep 1; done
@@ -402,6 +455,8 @@ kolbe@localhost tidb-v3.0-linux-amd64]$ for p in tidb-server drainer pump tikv-s
 ```
 
 If you wish to restart the cluster after all services exit, use the same commands you ran originally to start the services. As discussed in the [`binlogctl`](#binlogctl) section above, you'll need to start `drainer` before `pump`, and `pump` before `tidb-server`.
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 ./bin/pd-server --config=pd.toml &>pd.out &

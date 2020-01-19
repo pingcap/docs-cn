@@ -13,16 +13,20 @@ Examples used in the TiDB manual use [System Data](https://www.capitalbikeshare.
 
 The system data is available [for download in .zip files](https://s3.amazonaws.com/capitalbikeshare-data/index.html) organized per year. Downloading and extracting all files requires approximately 3GB of disk space. To download all files for years 2010-2017 using a bash script:
 
-```bash
-mkdir -p bikeshare-data && cd bikeshare-data
+{{< copyable "shell-regular" >}}
 
-curl -L --remote-name-all https://s3.amazonaws.com/capitalbikeshare-data/{2010..2017}-capitalbikeshare-tripdata.zip
+```bash
+mkdir -p bikeshare-data &&
+cd bikeshare-data &&
+curl -L --remote-name-all https://s3.amazonaws.com/capitalbikeshare-data/{2010..2017}-capitalbikeshare-tripdata.zip &&
 unzip \*-tripdata.zip
 ```
 
 ## Load data into TiDB
 
 The system data can be imported into TiDB using the following schema:
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE DATABASE bikeshare;
@@ -44,6 +48,8 @@ CREATE TABLE trips (
 
 You can import files individually using the example `LOAD DATA` command here, or import all files using the bash loop below:
 
+{{< copyable "sql" >}}
+
 ```sql
 LOAD DATA LOCAL INFILE '2017Q1-capitalbikeshare-tripdata.csv' INTO TABLE trips
   FIELDS TERMINATED BY ',' ENCLOSED BY '"'
@@ -60,6 +66,8 @@ end_station_number, end_station, bike_number, member_type);
 > When you start the MySQL client, use the `--local-infile=1` option.
 
 To import all `*.csv` files into TiDB in a bash loop:
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 for FILE in `ls *.csv`; do

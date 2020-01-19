@@ -11,32 +11,40 @@ This guide describes the common operations when you administer a TiDB cluster us
 
 ## Start a cluster
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-$ ansible-playbook start.yml
+ansible-playbook start.yml
 ```
 
 This operation starts all the components in the entire TiDB cluster in order, which include PD, TiDB, TiKV, and the monitoring components.
 
 ## Stop a cluster
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-$ ansible-playbook stop.yml
+ansible-playbook stop.yml
 ```
 
 This operation stops all the components in the entire TiDB cluster in order, which include PD, TiDB, TiKV, and the monitoring components.
 
 ## Clean up cluster data
 
-```
-$ ansible-playbook unsafe_cleanup_data.yml
+{{< copyable "shell-regular" >}}
+
+```bash
+ansible-playbook unsafe_cleanup_data.yml
 ```
 
 This operation stops the TiDB, Pump, TiKV and PD services, and cleans up the data directory of Pump, TiKV and PD.
 
 ## Destroy a cluster
 
-```
-$ ansible-playbook unsafe_cleanup.yml
+{{< copyable "shell-regular" >}}
+
+```bash
+ansible-playbook unsafe_cleanup.yml
 ```
 
 This operation stops the cluster and cleans up the data directory.

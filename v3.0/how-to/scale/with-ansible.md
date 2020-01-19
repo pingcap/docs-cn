@@ -89,7 +89,9 @@ For example, if you want to add two TiDB nodes (node101, node102) with the IP ad
 
 2. Initialize the newly added node:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook bootstrap.yml -l 172.16.10.101,172.16.10.102
     ```
 
@@ -99,19 +101,25 @@ For example, if you want to add two TiDB nodes (node101, node102) with the IP ad
 
 3. Deploy the newly added node:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook deploy.yml -l 172.16.10.101,172.16.10.102
     ```
 
 4. Start the newly added node:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook start.yml -l 172.16.10.101,172.16.10.102
     ```
 
 5. Update the Prometheus configuration and restart the cluster:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
@@ -178,19 +186,25 @@ For example, if you want to add a PD node (node103) with the IP address `172.16.
 
 2. Initialize the newly added node:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook bootstrap.yml -l 172.16.10.103
     ```
 
 3. Deploy the newly added node:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook deploy.yml -l 172.16.10.103
     ```
 
 4. Login the newly added PD node and edit the starting script:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     {deploy_dir}/scripts/run_pd.sh
     ```
 
@@ -203,7 +217,9 @@ For example, if you want to add a PD node (node103) with the IP address `172.16.
     2. Add `--join="http://172.16.10.1:2379" \`. The IP address (`172.16.10.1`) can be any of the existing PD IP address in the cluster.
     3. Manually start the PD service in the newly added PD node:
 
-        ```
+        {{< copyable "shell-regular" >}}
+
+        ```bash
         {deploy_dir}/scripts/start_pd.sh
         ```
 
@@ -213,7 +229,9 @@ For example, if you want to add a PD node (node103) with the IP address `172.16.
 
     4. Use `pd-ctl` to check whether the new node is added successfully:
 
-        ```
+        {{< copyable "shell-regular" >}}
+
+        ```bash
         ./pd-ctl -u "http://172.16.10.1:2379"
         ```
 
@@ -223,19 +241,25 @@ For example, if you want to add a PD node (node103) with the IP address `172.16.
 
 5. Apply a rolling update to the entire cluster:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook rolling_update.yml
     ```
 
 6. Start the monitor service:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook start.yml -l 172.16.10.103
     ```
 
 7. Update the Prometheus configuration and restart the cluster:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
@@ -247,7 +271,9 @@ For example, if you want to remove a TiDB node (node5) with the IP address `172.
 
 1. Stop all services on node5:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook stop.yml -l 172.16.10.5
     ```
 
@@ -303,7 +329,9 @@ For example, if you want to remove a TiDB node (node5) with the IP address `172.
 
 3. Update the Prometheus configuration and restart the cluster:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
@@ -317,19 +345,25 @@ For example, if you want to remove a TiKV node (node9) with the IP address `172.
 
     1. View the store ID of node9:
 
-        ```
+        {{< copyable "shell-regular" >}}
+
+        ```bash
         ./pd-ctl -u "http://172.16.10.1:2379" -d store
         ```
 
     2. Remove node9 from the cluster, assuming that the store ID is 10:
 
-        ```
+        {{< copyable "shell-regular" >}}
+
+        ```bash
         ./pd-ctl -u "http://172.16.10.1:2379" -d store delete 10
         ```
 
 2. Use `pd-ctl` to check whether the node is successfully removed:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ./pd-ctl -u "http://172.16.10.1:2379" -d store 10
     ```
 
@@ -339,7 +373,9 @@ For example, if you want to remove a TiKV node (node9) with the IP address `172.
 
 3. After the node is successfully removed, stop the services on node9:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook stop.yml -l 172.16.10.9
     ```
 
@@ -395,7 +431,9 @@ For example, if you want to remove a TiKV node (node9) with the IP address `172.
 
 5. Update the Prometheus configuration and restart the cluster:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
@@ -409,25 +447,33 @@ For example, if you want to remove a PD node (node2) with the IP address `172.16
 
     1. View the name of node2:
 
-        ```
+        {{< copyable "shell-regular" >}}
+
+        ```bash
         ./pd-ctl -u "http://172.16.10.1:2379" -d member
         ```
 
     2. Remove node2 from the cluster, assuming that the name is pd2:
 
-        ```
+        {{< copyable "shell-regular" >}}
+
+        ```bash
         ./pd-ctl -u "http://172.16.10.1:2379" -d member delete name pd2
         ```
 
 2. Use Grafana or `pd-ctl` to check whether the node is successfully removed:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ./pd-ctl -u "http://172.16.10.1:2379" -d member
     ```
 
 3. After the node is successfully removed, stop the services on node2:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook stop.yml -l 172.16.10.2
     ```
 
@@ -483,13 +529,17 @@ For example, if you want to remove a PD node (node2) with the IP address `172.16
 
 5. Perform a rolling update to the entire TiDB cluster:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook rolling_update.yml
     ```
 
 6. Update the Prometheus configuration and restart the cluster:
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 

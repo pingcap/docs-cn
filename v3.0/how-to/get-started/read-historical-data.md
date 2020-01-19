@@ -47,18 +47,35 @@ Pay special attention to the following two variables:
 
 1. At the initial stage, create a table and insert several rows of data:
 
-    ```sql
-    mysql> create table t (c int);
-    Query OK, 0 rows affected (0.01 sec)
+    {{< copyable "sql" >}}
 
-    mysql> insert into t values (1), (2), (3);
+    ```sql
+    create table t (c int);
+    ```
+
+    ```
+    Query OK, 0 rows affected (0.01 sec)
+    ```
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    insert into t values (1), (2), (3);
+    ```
+
+    ```
     Query OK, 3 rows affected (0.00 sec)
     ```
 
 2. View the data in the table:
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> select * from t;
+    select * from t;
+    ```
+
+    ```
     +------+
     | c    |
     +------+
@@ -71,8 +88,13 @@ Pay special attention to the following two variables:
 
 3. View the timestamp of the table:
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> select now();
+    select now();
+    ```
+
+    ```
     +---------------------+
     | now()               |
     +---------------------+
@@ -83,15 +105,25 @@ Pay special attention to the following two variables:
 
 4. Update the data in one row:
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> update t set c=22 where c=2;
+    update t set c=22 where c=2;
+    ```
+
+    ```
     Query OK, 1 row affected (0.00 sec)
     ```
 
 5. Make sure the data is updated:
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> select * from t;
+    select * from t;
+    ```
+
+    ```
     +------+
     | c    |
     +------+
@@ -108,8 +140,13 @@ Pay special attention to the following two variables:
     >
     > In this example, the value is set to be the time before the update operation.
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> set @@tidb_snapshot="2016-10-08 16:45:26";
+    set @@tidb_snapshot="2016-10-08 16:45:26";
+    ```
+
+    ```
     Query OK, 0 rows affected (0.00 sec)
     ```
 
@@ -119,8 +156,13 @@ Pay special attention to the following two variables:
 
     **Result:** The read from the following statement is the data before the update operation, which is the history data.
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> select * from t;
+    select * from t;
+    ```
+
+    ```
     +------+
     | c    |
     +------+
@@ -133,13 +175,23 @@ Pay special attention to the following two variables:
 
 7. Set the  `tidb_snapshot` variable to be "" (empty string) and you can read the data from the latest version:
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> set @@tidb_snapshot="";
+    set @@tidb_snapshot="";
+    ```
+
+    ```
     Query OK, 0 rows affected (0.00 sec)
     ```
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> select * from t;
+    select * from t;
+    ```
+
+    ```
     +------+
     | c    |
     +------+

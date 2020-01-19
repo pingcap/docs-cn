@@ -31,8 +31,15 @@ Assume we have three PD servers with the following details:
 
 Get the information about the existing PD nodes through pd-ctl:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./pd-ctl -u http://host1:2379 -i
+```
+
+{{< copyable "" >}}
+
+```
 >> member
 ```
 
@@ -40,6 +47,8 @@ Get the information about the existing PD nodes through pd-ctl:
 
 Add a new PD server to the current PD cluster by using the parameter `join`.
 To add `pd4`, you just need to specify the client url of any PD server in the PD cluster in the parameter `--join`, like:
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 ./bin/pd-server --name=pd4 \
@@ -52,8 +61,15 @@ To add `pd4`, you just need to specify the client url of any PD server in the PD
 
 Delete `pd4` through pd-ctl:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./pd-ctl -u http://host1:2379
+```
+
+{{< copyable "" >}}
+
+```
 >> member delete name pd4
 ```
 
@@ -66,8 +82,15 @@ As you can just migrate one node at a time, if you want to migrate multiple node
 
 Get the information about the existing TiKV nodes through pd-ctl:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./pd-ctl -u http://host1:2379
+```
+
+{{< copyable "" >}}
+
+```
 >> store
 ```
 
@@ -82,16 +105,33 @@ To delete (make it offline) a TiKV server safely, you need to inform PD in advan
 
 Assume that you need to delete the TiKV server with a store id 1, you can complete this through pd-ctl:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./pd-ctl -u http://host1:2379
+```
+
+{{< copyable "" >}}
+
+```
 >> store delete 1
 ```
 
 Then you can check the state of this TiKV:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./pd-ctl -u http://host1:2379
+```
+
+{{< copyable "" >}}
+
+```
 >> store 1
+```
+
+```
 {
   "store": {
     "id": 1,

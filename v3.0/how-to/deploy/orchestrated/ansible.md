@@ -63,7 +63,7 @@ Log in to the Control Machine using the `root` user account, and run the corresp
     {{< copyable "shell-root" >}}
 
     ```shell
-    yum -y install epel-release git curl sshpass && \
+    yum -y install epel-release git curl sshpass &&
     yum -y install python2-pip
     ```
 
@@ -178,7 +178,7 @@ It is required to use `pip` to install Ansible and its dependencies, otherwise a
     {{< copyable "shell-regular" >}}
 
     ```bash
-    cd /home/tidb/tidb-ansible && \
+    cd /home/tidb/tidb-ansible &&
     sudo pip install -r ./requirements.txt
     ```
 
@@ -205,7 +205,7 @@ Make sure you have logged in to the Control Machine using the `tidb` user accoun
     {{< copyable "shell-regular" >}}
 
     ```bash
-    cd /home/tidb/tidb-ansible && \
+    cd /home/tidb/tidb-ansible &&
     vi hosts.ini
     ```
 
@@ -246,7 +246,7 @@ Make sure you have logged in to the Control Machine using the `tidb` user accoun
 {{< copyable "shell-regular" >}}
 
 ```bash
-cd /home/tidb/tidb-ansible && \
+cd /home/tidb/tidb-ansible &&
 ansible-playbook -i hosts.ini deploy_ntp.yml -u tidb -b
 ```
 
@@ -413,7 +413,7 @@ Take the `/dev/nvme0n1` data disk as an example:
     {{< copyable "shell-root" >}}
 
     ```shell
-    mkdir /data1 && \
+    mkdir /data1 &&
     mount -a
     ```
 
@@ -850,8 +850,8 @@ Edit the `inventory.ini` file and add the following host variable after the IP o
     {{< copyable "shell-regular" >}}
 
     ```shell
-    sudo systemctl stop ntpd.service && \
-    sudo ntpdate pool.ntp.org && \
+    sudo systemctl stop ntpd.service &&
+    sudo ntpdate pool.ntp.org &&
     sudo systemctl start ntpd.service
     ```
 
@@ -860,8 +860,8 @@ Edit the `inventory.ini` file and add the following host variable after the IP o
     {{< copyable "shell-regular" >}}
 
     ```shell
-    sudo yum install ntp ntpdate && \
-    sudo systemctl start ntpd.service && \
+    sudo yum install ntp ntpdate &&
+    sudo systemctl start ntpd.service &&
     sudo systemctl enable ntpd.service
     ```
 
@@ -884,8 +884,8 @@ For versions earlier than TiDB 1.0.4, the process supervision method of TiDB Ans
 {{< copyable "shell-regular" >}}
 
 ```shell
-ansible-playbook stop.yml && \
-ansible-playbook deploy.yml -D && \
+ansible-playbook stop.yml
+ansible-playbook deploy.yml -D &&
 ansible-playbook start.yml
 ```
 
@@ -896,7 +896,7 @@ ansible-playbook start.yml
     {{< copyable "shell-root" >}}
 
     ```shell
-    useradd tidb && \
+    useradd tidb &&
     passwd tidb
     ```
 

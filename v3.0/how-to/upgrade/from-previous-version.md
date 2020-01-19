@@ -81,7 +81,7 @@ Version: 0.9.0
     {{< copyable "shell-regular" >}}
 
     ```bash
-    $ mv tidb-ansible tidb-ansible-bak
+    mv tidb-ansible tidb-ansible-bak
     ```
 
 3. Download the tidb-ansible with the tag corresponding to TiDB 3.0. For more details, See [Download TiDB Ansible to the Control Machine](/v3.0/how-to/deploy/orchestrated/ansible.md#step-3-download-tidb-ansible-to-the-control-machine). The default folder name is `tidb-ansible`.

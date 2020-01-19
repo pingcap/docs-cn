@@ -19,24 +19,35 @@ This installation method is supported on macOS, Linux and Windows (via [WSL](htt
 
 After first [installing Homebrew](https://brew.sh/), TiDB can be installed with:
 
-```bash
-brew tap pingcap/brew
-brew install tidb-server
+{{< copyable "shell-regular" >}}
 
-# start the tidb-server
+```bash
+brew tap pingcap/brew &&
+brew install tidb-server
+```
+
+To start the tidb-server:
+
+{{< copyable "shell-regular" >}}
+
+```bash
 tidb-server
 ```
 
 The tidb-server does not bundle any clients.  To use with the MySQL client:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-brew install mysql-client
+brew install mysql-client &&
 mysql -h 127.0.0.1 -P4000 -uroot
 ```
 
 ## Startup item
 
 TiDB can start automatically on login. This is currently only supported on macOS:
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 brew services start tidb-server

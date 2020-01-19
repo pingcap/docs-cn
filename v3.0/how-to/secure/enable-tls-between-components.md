@@ -76,9 +76,11 @@ Now mutual authentication among TiDB components is enabled.
 
 When you connect the server using the client, it is required to specify the client certificate. For example:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./pd-ctl -u https://127.0.0.1:2379 --cacert /path/to/ca.pem --cert /path/to/client.pem --key /path/to/client-key.pem
-
+&&
 ./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/client.pem" --key-path="/path/to/clinet-key.pem"
 ```
 

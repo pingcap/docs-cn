@@ -38,6 +38,8 @@ All the files specified by the parameters are in PEM (Privacy Enhanced Mail) for
 
 The certificate or key is signed and generated using OpenSSL, or quickly generated using the `mysql_ssl_rsa_setup` tool in MySQL:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 mysql_ssl_rsa_setup --datadir=./certs
 ```
@@ -105,8 +107,13 @@ Use the `SHOW STATUS LIKE "%Ssl%";` statement to get the details of the current 
 
 See the following example of the result in an encrypted connection. The results change according to different TLS versions or encryption protocols supported by the client.
 
+{{< copyable "sql" >}}
+
+```sql
+SHOW STATUS LIKE "%Ssl%";
 ```
-mysql> SHOW STATUS LIKE "%Ssl%";
+
+```
 ......
 | Ssl_verify_mode | 5                            |
 | Ssl_version     | TLSv1.2                      |
@@ -116,8 +123,13 @@ mysql> SHOW STATUS LIKE "%Ssl%";
 
 For the official MySQL client, you can also use the `STATUS` or `\s` statement to view the connection status:
 
+{{< copyable "sql" >}}
+
+```sql
+\s
 ```
-mysql> \s
+
+```
 ...
 SSL: Cipher in use is ECDHE-RSA-AES128-GCM-SHA256
 ...

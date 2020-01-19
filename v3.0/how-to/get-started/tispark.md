@@ -34,15 +34,22 @@ Extract the package and set the environment variables based on your JDK deployme
 
 Edit the `~/.bashrc` file. For example:
 
-```bashrc
-export JAVA_HOME=/home/pingcap/jdk1.8.0_144
+{{< copyable "shell-regular" >}}
+
+```bash
+export JAVA_HOME=/home/pingcap/jdk1.8.0_144 &&
 export PATH=$JAVA_HOME/bin:$PATH
 ```
 
 Verify the validity of JDK:
 
+{{< copyable "shell-regular" >}}
+
+```bash
+java -version
 ```
-$ java -version
+
+```
 java version "1.8.0_144"
 Java(TM) SE Runtime Environment (build 1.8.0_144-b01)
 Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
@@ -52,19 +59,25 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 
 Assume that the TiDB cluster is started. The service IP of one TiDB instance is `192.168.0.2`, the port is `4000`, the user name is `root`, and the password is null.
 
-```
+{{< copyable "shell-regular" >}}
+
+```bash
 cd tidb-ansible/resources/bin/tispark-sample-data
 ```
 
 Edit the TiDB login information in `sample_data.sh`. For example:
 
-```
+{{< copyable "shell-regular" >}}
+
+```bash
 mysql --local-infile=1 -h 192.168.0.2 -P 4000 -u root < dss.ddl
 ```
 
 Run the script:
 
-```
+{{< copyable "shell-regular" >}}
+
+```bash
 ./sample_data.sh
 ```
 
@@ -74,9 +87,19 @@ Run the script:
 
 Log into TiDB and verify that the `TPCH_001` database and the following tables are included.
 
+{{< copyable "shell-regular" >}}
+
+```bash
+mysql -uroot -P4000 -h192.168.0.2
 ```
-$ mysql -uroot -P4000 -h192.168.0.2
-MySQL [(none)]> show databases;
+
+{{< copyable "sql" >}}
+
+```sql
+show databases;
+```
+
+```
 +--------------------+
 | Database           |
 +--------------------+
@@ -87,13 +110,28 @@ MySQL [(none)]> show databases;
 | test               |
 +--------------------+
 5 rows in set (0.00 sec)
+```
 
-MySQL [(none)]> use TPCH_001
+{{< copyable "sql" >}}
+
+```sql
+use TPCH_001;
+```
+
+```
 Reading table information for completion of table and column names
 You can turn off this feature to get a quicker startup with -A
 
 Database changed
-MySQL [TPCH_001]> show tables;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+show tables;
+```
+
+```
 +--------------------+
 | Tables_in_TPCH_001 |
 +--------------------+
@@ -113,9 +151,11 @@ MySQL [TPCH_001]> show tables;
 
 First start the spark-shell:
 
-```
-$ cd spark
-$ bin/spark-shell
+{{< copyable "shell-regular" >}}
+
+```bash
+cd spark &&
+bin/spark-shell
 ```
 
 Then query the TiDB table as you are using the native Spark SQL:

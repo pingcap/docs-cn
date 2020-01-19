@@ -29,8 +29,13 @@ Finished dump at: 2017-04-28 10:48:11
 
 The position information (`Pos: 930143241`) needs to be stored in the `syncer.meta` file for `syncer` to replicate:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-# cat syncer.meta
+cat syncer.meta
+```
+
+```
 binlog-name = "mysql-bin.000003"
 binlog-pos = 930143241
 ```
@@ -149,8 +154,13 @@ port = 4000
 
 Start `syncer`:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./bin/syncer -config config.toml
+```
+
+```
 2016/10/27 15:22:01 binlogsyncer.go:226: [info] begin to sync binlog from position (mysql-bin.000003, 1280)
 2016/10/27 15:22:01 binlogsyncer.go:130: [info] register slave for master server 127.0.0.1:3306
 2016/10/27 15:22:01 binlogsyncer.go:552: [info] rotate to (mysql-bin.000003, 1280)
@@ -159,15 +169,27 @@ Start `syncer`:
 
 ## Insert data into MySQL
 
-```bash
+{{< copyable "sql" >}}
+
+```sql
 INSERT INTO t1 VALUES (4, 4), (5, 5);
 ```
 
 ## Log in TiDB and view the data
 
+{{< copyable "shell-regular" >}}
+
+```bash
+mysql -h 127.0.0.1 -P 4000 -u root -p
+```
+
+{{< copyable "sql" >}}
+
 ```sql
-mysql -h127.0.0.1 -P4000 -uroot -p
-mysql> select * from t1;
+select * from t1;
+```
+
+```
 +----+------+
 | id | age  |
 +----+------+
@@ -181,7 +203,7 @@ mysql> select * from t1;
 
 `syncer` outputs the current replicated data statistics every 30 seconds:
 
-```bash
+```
 2017/06/08 01:18:51 syncer.go:934: [info] [syncer]total events = 15, total tps = 130, recent tps = 4,
 master-binlog = (ON.000001, 11992), master-binlog-gtid=53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-74,
 syncer-binlog = (ON.000001, 2504), syncer-binlog-gtid = 53ea0ed1-9bf8-11e6-8bea-64006a897c73:1-17

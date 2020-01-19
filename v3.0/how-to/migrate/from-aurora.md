@@ -135,16 +135,21 @@ mydumpers:
 
 2. Start dmctl using the following command:
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     ./dmctl --master-addr 172.16.10.71:8261
     ```
 
 3. Start data replication task using the following command:
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    # `task.yaml` is the previously edited configuration file.
     start-task ./task.yaml
     ```
+
+    Note that `task.yaml` is the previously edited configuration file.
 
     - If the returned results do not contain any error, it indicates the task is successfully started.
     - If the returned results contain the following error information, it indicates the upstream Aurora user might have privileges unsupported by TiDB:
@@ -182,6 +187,8 @@ mydumpers:
 
 To view the on-going data replication task(s) in the DM cluster or the task status, run the following command in dmctl to query:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 query-status
 ```
@@ -190,7 +197,7 @@ query-status
 >
 > If the following error message is in the returned results of the above query command, it indicates the corresponding lock cannot be obtained during the phase of the full data migration.
 >
->   ```bash
+>   ```
 >   Couldn't acquire global lock, snapshots will not be consistent: Access denied for user 'root'@'%' (using password: YES)
 >   ```
 >

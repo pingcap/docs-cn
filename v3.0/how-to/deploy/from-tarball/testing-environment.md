@@ -93,29 +93,46 @@ See the following table for the default ports for the optional TiDB components:
 
 1. Log in to the machine using the `root` user account and create a database running user account (`tidb`) using the following command:
 
+    {{< copyable "shell-root" >}}
+
     ```bash
-    # useradd tidb -m
+    useradd tidb -m
     ```
 
 2. Switch the user from `root` to `tidb` by using the following command. You can use this `tidb` user account to deploy your TiDB cluster.
 
+    {{< copyable "shell-root" >}}
+
     ```bash
-    # su - tidb
+    su - tidb
     ```
 
 ## Download the official binary package
 
-```
-# Download the package.
-$ wget https://download.pingcap.org/tidb-v3.0-linux-amd64.tar.gz https://download.pingcap.org/tidb-v3.0-linux-amd64.sha256
+1. Download the package.
 
-# Check the file integrity. If the result is OK, the file is correct.
-$ sha256sum -c tidb-v3.0-linux-amd64.sha256
+    {{< copyable "shell-regular" >}}
 
-# Extract the package.
-$ tar -xzf tidb-v3.0-linux-amd64.tar.gz
-$ cd tidb-v3.0-linux-amd64
-```
+    ```bash
+    wget https://download.pingcap.org/tidb-v3.0-linux-amd64.tar.gz https://download.pingcap.org/tidb-v3.0-linux-amd64.sha256
+    ```
+
+2. Check the file integrity. If the result is OK, the file is correct.
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    sha256sum -c tidb-v3.0-linux-amd64.sha256
+    ```
+
+3. Extract the package.
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tar -xzf tidb-v3.0-linux-amd64.tar.gz &&
+    cd tidb-v3.0-linux-amd64
+    ```
 
 ## Multiple nodes cluster deployment for test
 
@@ -134,8 +151,10 @@ Follow the steps below to start PD, TiKV and TiDB:
 
 1. Start PD on Node1.
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ ./bin/pd-server --name=pd1 \
+    ./bin/pd-server --name=pd1 \
                     --data-dir=pd \
                     --client-urls="http://192.168.199.113:2379" \
                     --peer-urls="http://192.168.199.113:2380" \
@@ -145,18 +164,20 @@ Follow the steps below to start PD, TiKV and TiDB:
 
 2. Start TiKV on Node2, Node3 and Node4.
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ ./bin/tikv-server --pd="192.168.199.113:2379" \
+    ./bin/tikv-server --pd="192.168.199.113:2379" \
                       --addr="192.168.199.114:20160" \
                       --data-dir=tikv \
                       --log-file=tikv.log &
 
-    $ ./bin/tikv-server --pd="192.168.199.113:2379" \
+    ./bin/tikv-server --pd="192.168.199.113:2379" \
                       --addr="192.168.199.115:20160" \
                       --data-dir=tikv \
                       --log-file=tikv.log &
 
-    $ ./bin/tikv-server --pd="192.168.199.113:2379" \
+    ./bin/tikv-server --pd="192.168.199.113:2379" \
                       --addr="192.168.199.116:20160" \
                       --data-dir=tikv \
                       --log-file=tikv.log &
@@ -164,14 +185,18 @@ Follow the steps below to start PD, TiKV and TiDB:
 
 3. Start TiDB on Node1.
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ ./bin/tidb-server --store=tikv \
+    ./bin/tidb-server --store=tikv \
                       --path="192.168.199.113:2379" \
                       --log-file=tidb.log
     ```
 
 4. Use the MySQL client to connect to TiDB.
 
+    {{< copyable "shell-regular" >}}
+
     ```sh
-    $ mysql -h 192.168.199.113 -P 4000 -u root -D test
+    mysql -h 192.168.199.113 -P 4000 -u root -D test
     ```

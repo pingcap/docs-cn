@@ -22,9 +22,21 @@ Before you start, make sure that you have:
 + Installed the latest version of [Docker](https://www.docker.com/products/docker)
 + Pulled the latest images of TiDB, TiKV and PD from [Docker Hub](https://hub.docker.com). If not, pull the images using the following commands:
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     docker pull pingcap/tidb:latest
+    ```
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     docker pull pingcap/tikv:latest
+    ```
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     docker pull pingcap/pd:latest
     ```
 
@@ -45,6 +57,8 @@ Assume we have 6 machines with the following details:
 
 Start PD1 on the **host1**
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 docker run -d --name pd1 \
   -p 2379:2379 \
@@ -63,6 +77,8 @@ docker run -d --name pd1 \
 
 Start PD2 on the **host2**
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 docker run -d --name pd2 \
   -p 2379:2379 \
@@ -80,6 +96,8 @@ docker run -d --name pd2 \
 ```
 
 Start PD3 on the **host3**
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 docker run -d --name pd3 \
@@ -101,6 +119,8 @@ docker run -d --name pd3 \
 
 Start TiKV1 on the **host4**
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 docker run -d --name tikv1 \
   -p 20160:20160 \
@@ -115,6 +135,8 @@ docker run -d --name tikv1 \
 
 Start TiKV2 on the **host5**
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 docker run -d --name tikv2 \
   -p 20160:20160 \
@@ -128,6 +150,8 @@ docker run -d --name tikv2 \
 ```
 
 Start TiKV3 on the **host6**
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 docker run -d --name tikv3 \
@@ -145,6 +169,8 @@ docker run -d --name tikv3 \
 
 Start TiDB on the **host1**
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 docker run -d --name tidb \
   -p 4000:4000 \
@@ -159,9 +185,19 @@ docker run -d --name tidb \
 
 Install the [MySQL client](http://dev.mysql.com/downloads/mysql/) on **host1** and run:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-$ mysql -h 127.0.0.1 -P 4000 -u root -D test
-mysql> show databases;
+mysql -h 127.0.0.1 -P 4000 -u root -D test
+```
+
+{{< copyable "sql" >}}
+
+```sql
+show databases;
+```
+
+```
 +--------------------+
 | Database           |
 +--------------------+
@@ -181,6 +217,8 @@ Assume that the path to configuration file of PD and TiKV on the host is `/path/
 
 You can start TiKV and PD as follows:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 docker run -d --name tikv1 \
   -p 20160:20160 \
@@ -194,6 +232,8 @@ docker run -d --name tikv1 \
   --pd="192.168.1.101:2379,192.168.1.102:2379,192.168.1.103:2379" \
   --config="/tikv.toml"
 ```
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 docker run -d --name pd1 \

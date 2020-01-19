@@ -25,15 +25,17 @@ The following local TCP ports will be used:
 
 This guide is for deployment on Linux only. It is recommended to use RHEL/CentOS 7.3 or higher. TiKV requires you to raise the open files limit:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 tidbuser="tidb"
-
+&&
 cat << EOF > /tmp/tidb.conf
 $tidbuser        soft        nofile        1000000
 $tidbuser        hard        nofile        1000000
 EOF
-
-sudo cp /tmp/tidb.conf /etc/security/limits.d/
+&&
+sudo cp /tmp/tidb.conf /etc/security/limits.d/ &&
 sudo sysctl -w fs.file-max=1000000
 ```
 
@@ -43,29 +45,46 @@ See the [production deployment](/v3.0/how-to/deploy/from-tarball/production-envi
 
 1. Log in to the machine using the `root` user account and create a database running user account (`tidb`) using the following command:
 
+    {{< copyable "shell-root" >}}
+
     ```bash
-    # useradd tidb -m
+    useradd tidb -m
     ```
 
 2. Switch the user from `root` to `tidb` by using the following command. You can use this `tidb` user account to deploy your TiDB cluster.
 
+    {{< copyable "shell-root" >}}
+
     ```bash
-    # su - tidb
+    su - tidb
     ```
 
 ## Download the official binary package
 
-```
-# Download the package.
-$ wget https://download.pingcap.org/tidb-v3.0-linux-amd64.tar.gz https://download.pingcap.org/tidb-v3.0-linux-amd64.sha256
+1. Download the package.
 
-# Check the file integrity. If the result is OK, the file is correct.
-$ sha256sum -c tidb-v3.0-linux-amd64.sha256
+    {{< copyable "shell-regular" >}}
 
-# Extract the package.
-$ tar -xzf tidb-v3.0-linux-amd64.tar.gz
-$ cd tidb-v3.0-linux-amd64
-```
+    ```bash
+    wget https://download.pingcap.org/tidb-v3.0-linux-amd64.tar.gz https://download.pingcap.org/tidb-v3.0-linux-amd64.sha256
+    ```
+
+2. Check the file integrity. If the result is OK, the file is correct.
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    sha256sum -c tidb-v3.0-linux-amd64.sha256
+    ```
+
+3. Extract the package.
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tar -xzf tidb-v3.0-linux-amd64.tar.gz &&
+    cd tidb-v3.0-linux-amd64
+    ```
 
 ## Start
 
@@ -73,29 +92,37 @@ Follow the steps below to start PD, TiKV and TiDB:
 
 1. Start PD.
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ ./bin/pd-server --data-dir=pd \
+    ./bin/pd-server --data-dir=pd \
                     --log-file=pd.log &
     ```
 
 2. Start TiKV.
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ ./bin/tikv-server --pd="127.0.0.1:2379" \
+    ./bin/tikv-server --pd="127.0.0.1:2379" \
                       --data-dir=tikv \
                       --log-file=tikv.log &
     ```
 
 3. Start TiDB.
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ ./bin/tidb-server --store=tikv \
+    ./bin/tidb-server --store=tikv \
                       --path="127.0.0.1:2379" \
                       --log-file=tidb.log &
     ```
 
 4. Use the MySQL client to connect to TiDB.
 
+    {{< copyable "shell-regular" >}}
+
     ```sh
-    $ mysql -h 127.0.0.1 -P 4000 -u root -D test
+    mysql -h 127.0.0.1 -P 4000 -u root -D test
     ```

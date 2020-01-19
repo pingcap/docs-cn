@@ -21,6 +21,8 @@ You can use `mydumper` to export data from MySQL and `loader` to import the data
 
 Use the `mydumper` tool to export data from MySQL by using the following command:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./bin/mydumper -h 127.0.0.1 -P 3306 -u root -t 16 -F 64 -B test -T t1,t2 --skip-tz-utc -o ./var/test
 ```
@@ -41,24 +43,42 @@ In this command,
 
 Use `loader` to import the data from MySQL to TiDB. See [Loader instructions](/v3.0/reference/tools/loader.md) for more information.
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 ./bin/loader -h 127.0.0.1 -u root -P 4000 -t 32 -d ./var/test
 ```
 
 After the data is imported, you can view the data in TiDB using the MySQL client:
 
-```sql
-mysql -h127.0.0.1 -P4000 -uroot
+{{< copyable "shell-regular" >}}
 
-mysql> show tables;
+```bash
+mysql -h 127.0.0.1 -P 4000 -u root
+```
+
+{{< copyable "sql" >}}
+
+```sql
+show tables;
+```
+
+```
 +----------------+
 | Tables_in_test |
 +----------------+
 | t1             |
 | t2             |
 +----------------+
+```
 
-mysql> select * from t1;
+{{< copyable "sql" >}}
+
+```sql
+select * from t1;
+```
+
+```
 +----+------+
 | id | age  |
 +----+------+
@@ -66,8 +86,15 @@ mysql> select * from t1;
 |  2 |    2 |
 |  3 |    3 |
 +----+------+
+```
 
-mysql> select * from t2;
+{{< copyable "sql" >}}
+
+```sql
+select * from t2;
+```
+
+```
 +----+------+
 | id | name |
 +----+------+

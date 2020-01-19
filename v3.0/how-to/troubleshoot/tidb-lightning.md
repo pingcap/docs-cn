@@ -49,6 +49,8 @@ Try the latest version! Maybe there is new speed improvement.
 
 1. Delete the corrupted data with via `tidb-lightning-ctl`, and restart Lightning to import the affected tables again.
 
+    {{< copyable "shell-regular" >}}
+
     ```sh
     tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
     ```
@@ -66,6 +68,8 @@ The error code is an integer less than 25, with possible values of 0, 3, 6, 9, 1
 **Solutions**:
 
 If the error was caused by invalid data source, delete the imported data using `tidb-lightning-ctl` and start Lightning again.
+
+{{< copyable "shell-regular" >}}
 
 ```sh
 tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
@@ -86,6 +90,8 @@ See the [Checkpoints control](/v3.0/reference/tools/tidb-lightning/checkpoints.m
 2. Decrease the value of `table-concurrency` + `index-concurrency` so it is less than `max-open-engines`.
 
 3. Restart `tikv-importer` to forcefully remove all engine files (default to `./data.import/`). This also removes all partially imported tables, which requires Lightning to clear the outdated checkpoints.
+
+    {{< copyable "shell-regular" >}}
 
     ```sh
     tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
@@ -119,8 +125,11 @@ See the [Checkpoints control](/v3.0/reference/tools/tidb-lightning/checkpoints.m
 
     When executing Lightning directly, the time zone can be forced using the `$TZ` environment variable.
 
+    For instance, manual deployment and force Asia/Shanghai:
+
+    {{< copyable "shell-regular" >}}
+
     ```sh
-    # Manual deployment, and force Asia/Shanghai.
     TZ='Asia/Shanghai' bin/tidb-lightning -config tidb-lightning.toml
     ```
 
