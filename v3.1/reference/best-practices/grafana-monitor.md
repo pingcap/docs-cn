@@ -39,7 +39,7 @@ curl http://__tidb_ip__:10080/metrics |grep tidb_executor_statement_total
 ```
 
 ```
-# 可以看到实时 QPS 数据，并以不同 type 的 SQL 语句进行了区分，value 是 counter 类型的累计值（科学计数法）。
+# 可以看到实时 QPS 数据，并根据不同 type 对 SQL 语句进行了区分，value 是 counter 类型的累计值（科学计数法）。
 tidb_executor_statement_total{type="Delete"} 520197
 tidb_executor_statement_total{type="Explain"} 1
 tidb_executor_statement_total{type="Insert"} 7.20799402e+08
