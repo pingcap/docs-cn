@@ -557,6 +557,9 @@ Drainer="192.168.0.13"
         host = "192.168.0.13"
         user = "root"
         password = ""
+        # 使用 `./binlogctl -cmd encrypt -text string` 加密的密码
+        # encrypted_password 非空时 password 会被忽略
+        encrypted_password = ""
         port = 3306
 
         [syncer.to.checkpoint]
@@ -570,6 +573,9 @@ Drainer="192.168.0.13"
         # host = "127.0.0.1"
         # user = "root"
         # password = ""
+        # 使用 `./binlogctl -cmd encrypt -text string` 加密的密码
+        # encrypted_password 非空时 password 会被忽略
+        # encrypted_password = ""
         # port = 3306
 
 
