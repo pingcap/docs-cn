@@ -142,23 +142,25 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
 ### 第 3 步：部署 Drainer
 
-1. 获取 initial_commit_ts
+1. 获取 initial_commit_ts 的值
 
-    如果从最近的时间点开始同步，initial_commit_ts 使用 `-1` 即可。
+    Drainer 初次启动时需要获取 initial_commit_ts 这个时间戳信息。
 
-    如果下游为 MySQL 或 TiDB，为了保证数据的完整性，需要进行全量数据的备份与恢复，必需使用全量备份的时间戳。
+    - 如果从最近的时间点开始同步，initial_commit_ts 使用 `-1` 即可。
 
-    如果使用 mydumper，可以在导出目录的 metadata 文件的 `Pos` 字段获取对应时间戳，metadata 文件如下：
+    - 如果下游为 MySQL 或 TiDB，为了保证数据的完整性，需要进行全量数据的备份与恢复。此时 initial_commit_ts 的值必须是全量备份的时间戳。
 
-    ```
-    Started dump at: 2019-12-30 13:25:41
-    SHOW MASTER STATUS:
-            Log: tidb-binlog
-            Pos: 413580274257362947
-            GTID:
+        如果使用 mydumper 进行全量备份，可以在导出目录中找到 metadata 文件，其中的 `Pos` 字段值即全量备份的时间戳。metadata 文件示例如下：
 
-    Finished dump at: 2019-12-30 13:25:41
-    ```
+        ```
+        Started dump at: 2019-12-30 13:25:41
+        SHOW MASTER STATUS:
+                Log: tidb-binlog
+                Pos: 413580274257362947
+                GTID:
+
+        Finished dump at: 2019-12-30 13:25:41
+        ```
 
 2. 修改 `tidb-ansible/inventory.ini` 文件
 
@@ -555,6 +557,9 @@ Drainer="192.168.0.13"
         host = "192.168.0.13"
         user = "root"
         password = ""
+        # 使用 `./binlogctl -cmd encrypt -text string` 加密的密码
+        # encrypted_password 非空时 password 会被忽略
+        encrypted_password = ""
         port = 3306
 
         [syncer.to.checkpoint]
@@ -568,6 +573,9 @@ Drainer="192.168.0.13"
         # host = "127.0.0.1"
         # user = "root"
         # password = ""
+        # 使用 `./binlogctl -cmd encrypt -text string` 加密的密码
+        # encrypted_password 非空时 password 会被忽略
+        # encrypted_password = ""
         # port = 3306
 
 
