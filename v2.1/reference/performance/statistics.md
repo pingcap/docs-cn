@@ -201,5 +201,3 @@ http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${tabl
 LOAD STATS 'file_name'
 > `file_name` 为要导入的统计信息的文件名。
 ```
-
-
