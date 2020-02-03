@@ -7,7 +7,7 @@ category: how-to
 
 [Backup & Restore](/v3.1/how-to/maintain/backup-and-restore/br.md)（下文简称 BR）是 PingCAP 新推出的分布式快速备份和恢复工具。本文描述了 BR 在备份和恢复场景下的操作过程，以及操作过程中的注意事项供用户参考，以达到 BR 的最佳实践。
 
-## 面向对象
+## 目标读者
 
 本文面向所有 BR 的用户，并且最好对 TiDB 和 TiKV 有一定的了解。在阅读本文前推荐通过 BR 使用手册了解基本的备份恢复原理。
 
