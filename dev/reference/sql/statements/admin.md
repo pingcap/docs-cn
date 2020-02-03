@@ -55,7 +55,7 @@ ADMIN CHECK TABLE tbl_name [, tbl_name] ...;
 {{< copyable "sql" >}}
 
 ```sql
--- 查看正在执行的 DDL 任务已经最近 10 条已经完成的 DDL 任务。未指定 `NUM` 时，默认只显示最近 10 条已经执行完的 DDL 任务。
+-- 查看正在执行的 DDL 任务中最近 10 条已经完成的 DDL 任务。未指定 `NUM` 时，默认只显示最近 10 条已经执行完的 DDL 任务。
 admin show ddl jobs;
 ```
 
