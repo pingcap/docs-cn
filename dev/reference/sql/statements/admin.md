@@ -42,6 +42,7 @@ ADMIN CHECK TABLE tbl_name [, tbl_name] ...;
 ```
 
 {{< copyable "sql" >}}
+
 ```sql
 ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT;
 ```
