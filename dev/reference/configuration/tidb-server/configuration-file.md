@@ -114,6 +114,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：2048
 + 当语句的长度大于 `query-log-max-len`，将会被截断输出。
 
+### `max-server-connections`
+
++ TiDB 中同时允许的最大客户端连接数，用于资源控制。
++ 默认值：4096
++ 当客户端连接数到达 `max-server-connections` 时，TiDB 服务端将会拒绝新的客户端连接。
+
 ## log.file
 
 日志文件相关的配置项。
