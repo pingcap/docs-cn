@@ -66,7 +66,7 @@ Tips：BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，�
 
 ### 备份准备工作
 
-BR backup 命令的详细使用方法请参考[文档](/v3.1/how-to/maintain/backup-and-restore/br.md#br-命令行描述)。
+`br backup` 命令的详细使用方法请参考 [BR 命令行描述](/v3.1/how-to/maintain/backup-and-restore/br.md#br-命令行描述)。
 
 1. 运行 BR backup 命令前，查询 TiDB 集群的 GC 值并使用 MySQL 客户端将其调整为合适的值，确保备份期间不会发生 GC。
 
