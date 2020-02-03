@@ -14,7 +14,7 @@ category: reference
 
 ## 高并发批量插入场景
 
-高并发批量插入的场景通常产出现在业务系统中的批量任务中，例如清算以及结算等业务。此类场景存在以下特点：
+高并发批量插入的场景通常出现在业务系统的批量任务中，例如清算以及结算等业务。此类场景存在以下特点：
 
 - 数据量大
 - 需要短时间内将历史数据入库
@@ -104,7 +104,7 @@ INSERT INTO TEST_HOTSPOT(id, age, user_name, email) values(%v, %v, '%v', '%v');
 
 ## 热点问题的规避方法
 
-为了达到场景理论中的最佳性能，一种方法是跳过这个预热阶段，直接将 Region 切分为预期的数量，提前调度到集群的各个节点中。
+为了达到场景理论中的最佳性能，可以跳过这个预热阶段，直接将 Region 切分为预期的数量，提前调度到集群的各个节点中。
 
 TiDB 在 v3.0.x 以及 v2.1.13 后支持一个叫 [Split Region](/v3.1/reference/sql/statements/split-region.md) 的新特性。这个特性提供了新的语法：
 
@@ -124,7 +124,7 @@ SPLIT TABLE table_name [INDEX index_name] BY (value_list) [, (value_list)]
 
 ![Table Region Range](/media/best-practices/table-Region-range.png)
 
-从图 3 可知，Table 行数据 key 的编码中，行数据唯一可变的是行 ID (rowID)。在 TiDB 中，rowID 是一个 Int64 整形。但是用户不一定能将 Int64 整形范围均匀切分成需要的份数，然后均匀分布在不同的节点上，还需要结合实际情况。
+从上图可知，根据行数据 key 的编码规则，行 ID (rowID) 是行数据中唯一可变的部分。在 TiDB 中，rowID 是一个 Int64 整形。但是用户不一定能将 Int64 整形范围均匀切分成需要的份数，然后均匀分布在不同的节点上，还需要结合实际情况。
 
 如果行 ID 的写入是完全离散的，那么上述方式是可行的。如果行 ID 或者索引有固定的范围或者前缀（例如，只在 `[2000w, 5000w)` 的范围内离散插入数据），这种写入依然在业务上不产生热点，但是如果按上面的方式进行切分，那么有可能一开始数据仍只写入到某个 Region 上。
 
@@ -195,7 +195,7 @@ create table t (a int, b int) shard_row_id_bits = 4 pre_split_regions=·3;
 
 ## 参数配置
 
-TiDB 2.1 版本中在 SQL 层引入了 [latch 机制](/v3.1/reference/configuration/tidb-server/configuration-file.md#txn-local-latches)，用于在写入冲突比较频繁的场景中提前发现事务冲突，减少 TiDB 和 TiKV 事务提交时写写冲突导致的重试。通常，跑批场景使用的是存量数据，所以并不存在事务的写入冲突。可以把 TiDB 的 latch 功能关闭，以减少细小内存对象的分配：
+TiDB 2.1 版本中在 SQL 层引入了 [latch 机制](/v3.1/reference/configuration/tidb-server/configuration-file.md#txn-local-latches)，用于在写入冲突比较频繁的场景中提前发现事务冲突，减少 TiDB 和 TiKV 事务提交时写写冲突导致的重试。通常，跑批场景使用的是存量数据，所以并不存在事务的写入冲突。可以把 TiDB 的 latch 功能关闭，以减少为细小对象分配内存：
 
 ```
 [txn-local-latches]

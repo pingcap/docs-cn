@@ -33,11 +33,11 @@ Java 应用尽管可以选择在不同的框架中封装，但在最底层一般
 
 #### 使用 Prepare API
 
-对于 OLTP 场景，程序发送给数据库的 SQL 语句在去除参数变化后都是可穷举的某几类，因此建议使用[预处理语句 (Prepared Statements)](https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html) 代替普通的[文本执行](https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html#executing_queries)，并复用 Prepared Statements 来直接执行，从而避免 TiDB 重复解析和生成 SQL 执行计划的开销。
+对于 OLTP 场景，程序发送给数据库的 SQL 语句在去除参数变化后都是可穷举的某几类，因此建议使用[预处理语句 (Prepared Statements)](https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html) 代替普通的[文本执行](https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html#executing_queries)，并复用预处理语句来直接执行，从而避免 TiDB 重复解析和生成 SQL 执行计划的开销。
 
 目前多数上层框架都会调用 Prepare API 进行 SQL 执行，如果直接使用 JDBC API 进行开发，注意选择使用 Prepare API。
 
-另外需要注意 MySQL Connector/J 实现中默认只会做客户端的语句预处理，会将 `?` 在客户端替换后以文本形式发送服务端，所以除了要使用 Prepare API，还需要在 JDBC 连接参数中配置 `useServerPrepStmts = true`，才能在 TiDB 服务器端进行语句预处理（下面参数配置章节有详细介绍）。
+另外需要注意 MySQL Connector/J 实现中默认只会做客户端的语句预处理，会将 `?` 在客户端替换后以文本形式发送到服务端，所以除了要使用 Prepare API，还需要在 JDBC 连接参数中配置 `useServerPrepStmts = true`，才能在 TiDB 服务器端进行语句预处理（下面参数配置章节有详细介绍）。
 
 #### 使用 Batch 批量插入更新
 
@@ -47,7 +47,7 @@ Java 应用尽管可以选择在不同的框架中封装，但在最底层一般
 >
 > 对于 MySQL Connector/J 实现，默认 Batch 只是将多次 addBatch 的 SQL 发送时机延迟到调用 executeBatch 的时候，但实际网络发送还是会一条条的发送，通常不会降低与数据库服务器的网络交互次数。
 >
-> 如果希望 Batch 网络发送，需要在 JDBC 连接参数中配置 `rewriteBatchedStatements=true`（下面参数配置章节有详细介绍）。
+> 如果希望 Batch 网络发送，需要在 JDBC 连接参数中配置 `rewriteBatchedStatements = true`（下面参数配置章节有详细介绍）。
 
 #### 使用 StreamingResult 流式获取执行结果
 
@@ -56,7 +56,7 @@ Java 应用尽管可以选择在不同的框架中封装，但在最底层一般
 在 JDBC 中通常有以下两种处理方式：
 
 - 设置 [`FetchSize` 为 `Integer.MIN_VALUE`](https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-implementation-notes.html#ResultSet) 让客户端不缓存，客户端通过 StreamingResult 的方式从网络连接上流式读取执行结果。
-- 使用 Cursor Fetch 首先需[设置 `FetchSize`](http://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数且在 JDBC URL 中配置 `useCursorFetch=true`。
+- 使用 Cursor Fetch，首先需[设置 `FetchSize`](http://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数，且在 JDBC URL 中配置 `useCursorFetch = true`。
 
 TiDB 中同时支持两种方式，但更推荐使用第一种将 `FetchSize` 设置为 `Integer.MIN_VALUE` 的方式，比第二种功能实现更简单且执行效率更高。
 
@@ -68,37 +68,37 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
 ##### `useServerPrepStmts`
 
-默认情况下，`useServerPrepStmts` 为 `false`，即尽管使用了 Prepare API，也只会在客户端做 “prepare”。因此为了避免服务器重复解析的开销，如果同一条 SQL 语句需要多次使用 Prepare API，则建议设置该选项为 `true`。
+默认情况下，`useServerPrepStmts` 的值为 `false`，即尽管使用了 Prepare API，也只会在客户端做 “prepare”。因此为了避免服务器重复解析的开销，如果同一条 SQL 语句需要多次使用 Prepare API，则建议设置该选项为 `true`。
 
 在 TiDB 监控中可以通过 **Query Summary** > **QPS By Instance** 查看请求命令类型，如果请求中 `COM_QUERY` 被 `COM_STMT_EXECUTE` 或 `COM_STMT_PREPARE` 代替即生效。
 
 ##### `cachePrepStmts`
 
-虽然 `useServerPrepStmts=true` 能让服务端执行 prepare 语句，但默认情况下客户端每次执行完后会 close prepared 的语句，并不会复用，这样 prepare 效率甚至不如文本执行。所以建议开启 `useServerPrepStmts=true` 后同时配置 `cachePrepStmts=true`，这会让客户端缓存 prepare 语句。
+虽然 `useServerPrepStmts = true` 能让服务端执行预处理语句，但默认情况下客户端每次执行完后会 close 预处理语句，并不会复用，这样预处理的效率甚至不如文本执行。所以建议开启 `useServerPrepStmts = true` 后同时配置 `cachePrepStmts = true`，这会让客户端缓存预处理语句。
 
 在 TiDB 监控中可以通过 **Query Summary** > **QPS By Instance** 查看请求命令类型，如果类似下图，请求中 `COM_STMT_EXECUTE` 数目远远多于 `COM_STMT_PREPARE` 即生效。
 
 ![QPS By Instance](/media/java-practice-2.png)
 
-另外，通过 `useConfigs=maxPerformance` 配置会同时配置多个参数，其中也包括 `cachePrepStmts=true`。
+另外，通过 `useConfigs = maxPerformance` 配置会同时配置多个参数，其中也包括 `cachePrepStmts = true`。
 
 ##### `prepStmtCacheSqlLimit`
 
-在配置 `cachePrepStmts` 后还需要注意 `prepStmtCacheSqlLimit` 配置（默认为 `256`），该配置控制客户端缓存 prepare 语句的最大长度，超过该长度将不会被缓存。
+在配置 `cachePrepStmts` 后还需要注意 `prepStmtCacheSqlLimit` 配置（默认为 `256`），该配置控制客户端缓存预处理语句的最大长度，超过该长度将不会被缓存。
 
-在一些场景 SQL 的长度可能超过该配置，导致 prepared SQL 不能复用，建议根据应用 SQL 长度情况决定是否需要调大该值。
+在一些场景 SQL 的长度可能超过该配置，导致预处理 SQL 不能复用，建议根据应用 SQL 长度情况决定是否需要调大该值。
 
-在 TiDB 监控中通过 **Query Summary** > **QPS by Instance** 查看请求命令类型，如果已经配置了 `cachePrepStmts=true`，但 `COM_STMT_PREPARE` 还是和 `COM_STMT_EXECUTE` 基本相等且有 `COM_STMT_CLOSE`，需要检查这个配置项是否设置得太小。
+在 TiDB 监控中通过 **Query Summary** > **QPS by Instance** 查看请求命令类型，如果已经配置了 `cachePrepStmts = true`，但 `COM_STMT_PREPARE` 还是和 `COM_STMT_EXECUTE` 基本相等且有 `COM_STMT_CLOSE`，需要检查这个配置项是否设置得太小。
 
 ##### `prepStmtCacheSize`
 
-`prepStmtCacheSize` 控制缓存的 prepare 语句数目（默认为 `25`），如果应用需要 prepare 的 SQL 种类很多且希望复用 prepare 语句，可以调大该值。
+`prepStmtCacheSize` 控制缓存的预处理语句数目（默认为 `25`），如果应用需要预处理的 SQL 种类很多且希望复用预处理语句，可以调大该值。
 
 和上一条类似，在监控中通过 **Query Summary** > **QPS by Instance** 查看请求中 `COM_STMT_EXECUTE` 数目是否远远多于 `COM_STMT_PREPARE` 来确认是否正常。
 
 #### Batch 相关参数
 
-在进行 batch 写入处理时推荐配置 `rewriteBatchedStatements=true`，在已经使用 `addBatch` 或 `executeBatch` 后默认 JDBC 还是会一条条 SQL 发送，例如：
+在进行 batch 写入处理时推荐配置 `rewriteBatchedStatements = true`，在已经使用 `addBatch` 或 `executeBatch` 后默认 JDBC 还是会一条条 SQL 发送，例如：
 
 ```java
 pstmt = prepare(“insert into t (a) values(?)”);
@@ -120,7 +120,7 @@ insert into t(a) values(11);
 insert into t(a) values(12);
 ```
 
-如果设置 `rewriteBatchedStatements=true`，发送到 TiDB 的 SQL 将是：
+如果设置 `rewriteBatchedStatements = true`，发送到 TiDB 的 SQL 将是：
 
 {{< copyable "sql" >}}
 
@@ -139,7 +139,7 @@ insert into t (a) values (11) on duplicate key update a = 11;
 insert into t (a) values (12) on duplicate key update a = 12;
 ```
 
-将无法被改写成一条语句。该例子中，如果将 SQL 改写成如下形式：
+上述 insert 语句将无法被改写成一条语句。该例子中，如果将 SQL 改写成如下形式：
 
 {{< copyable "sql" >}}
 
@@ -165,23 +165,23 @@ insert into t (a) values (10), (11), (12) on duplicate key update a = values(a);
 update t set a = 10 where id = 1; update t set a = 11 where id = 2; update t set a = 12 where id = 3;
 ```
 
-另外因为一个[客户端 bug](https://bugs.mysql.com/bug.php?id=96623)，批量更新时如果要配置 `rewriteBatchedStatements=true` 和 `useServerPrepStmts=true`，推荐同时配置 `allowMultiQueries=true` 参数来避免这个 bug。
+另外，因为一个[客户端 bug](https://bugs.mysql.com/bug.php?id=96623)，批量更新时如果要配置 `rewriteBatchedStatements = true` 和 `useServerPrepStmts = true`，推荐同时配置 `allowMultiQueries = true` 参数来避免这个 bug。
 
 #### 执行前检查参数
 
-通过监控可能会发现，虽然业务只向集群进行 insert 操作，却看到有很多多余的 select 语句。通常这是因为 JDBC 发送了一些查询设置类的 SQL 语句（例如 `select @@session.transaction_read_only`）。这些 SQL 对 TiDB 无用，推荐配置 `useConfigs=maxPerformance` 来避免额外开销。
+通过监控可能会发现，虽然业务只向集群进行 insert 操作，却看到有很多多余的 select 语句。通常这是因为 JDBC 发送了一些查询设置类的 SQL 语句（例如 `select @@session.transaction_read_only`）。这些 SQL 对 TiDB 无用，推荐配置 `useConfigs = maxPerformance` 来避免额外开销。
 
-`useConfigs=maxPerformance` 会包含一组配置：
+`useConfigs = maxPerformance` 会包含一组配置：
 
 ```ini
-cacheServerConfiguration=true
-useLocalSessionState=true
-elideSetAutoCommits=true
-alwaysSendSetIsolation=false
-enableQueryTimeouts=false
+cacheServerConfiguration = true
+useLocalSessionState = true
+elideSetAutoCommits = true
+alwaysSendSetIsolation = false
+enableQueryTimeouts = false
 ```
 
-配置后查看监控可以看到多余语句减少。
+配置后查看监控，可以看到多余语句减少。
 
 ## 连接池
 
@@ -196,7 +196,7 @@ Java 的连接池实现很多 ([HikariCP](https://github.com/brettwooldridge/Hik
 - `maximumPoolSize`：连接池最大连接数，配置过大会导致 TiDB 消耗资源维护无用连接，配置过小则会导致应用获取连接变慢，所以需根据应用自身特点配置合适的值，可参考[这篇文章](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)。
 - `minimumIdle`：连接池最小空闲连接数，主要用于在应用空闲时存留一些连接以应对突发请求，同样是需要根据业务情况进行配置。
 
-应用在使用连接池时需要注意连接使用完成后归还连接，推荐应用使用对应的连接池相关监控（如 `metricRegistry`），通过监控能及时定位连接池问题。
+应用在使用连接池时，需要注意连接使用完成后归还连接，推荐应用使用对应的连接池相关监控（如 `metricRegistry`），通过监控能及时定位连接池问题。
 
 ### 探活配置
 
@@ -208,11 +208,11 @@ Java 的连接池实现很多 ([HikariCP](https://github.com/brettwooldridge/Hik
 The last packet sent successfully to the server was 3600000 milliseconds ago. The driver has not received any packets from the server. com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
 ```
 
-如果 `n milliseconds ago` 中的 `n` 如果是 0 或很小的值，则通常是执行的 SQL 导致 TiDB 异常退出引起的报错，推荐查看 TiDB stderr 日志；如果 n 是一个非常大的值（比如这里的 3600000），很可能是因为这个连接空闲太久然后被中间 proxy 关闭了，通常解决方式除了调大 proxy 的 idle 配置，还可以让连接池：
+如果 `n milliseconds ago` 中的 `n` 如果是 0 或很小的值，则通常是执行的 SQL 导致 TiDB 异常退出引起的报错，推荐查看 TiDB stderr 日志；如果 n 是一个非常大的值（比如这里的 3600000），很可能是因为这个连接空闲太久然后被中间 proxy 关闭了，通常解决方式除了调大 proxy 的 idle 配置，还可以让连接池执行以下操作：
 
-- 每次使用连接前检查连接是否可用
-- 使用单独线程定期检查连接是否可用
-- 定期发送 test query 保活连接
+- 每次使用连接前检查连接是否可用。
+- 使用单独线程定期检查连接是否可用。
+- 定期发送 test query 保活连接。
 
 不同的连接池实现可能会支持其中一种或多种方式，可以查看所使用的连接池文档来寻找对应配置。
 
@@ -228,14 +228,14 @@ The last packet sent successfully to the server was 3600000 milliseconds ago. Th
 
 MyBatis 的 Mapper 中支持两种参数：
 
-- `select 1 from t where id = #{param1}` 会作为 prepare 语句转换为 `select 1 from t where id = ?` 进行 prepare， 并使用实际参数来复用执行，通过配合前面的 Prepare 连接参数能获得最佳性能
-- `select 1 from t where id = ${param2}` 会做文本替换为 `select 1 from t where id = 1` 执行，如果这条语句被 prepare 成了不同参数，可能会导致 TiDB 缓存大量的 prepare 语句，并且这种方式执行 SQL 有注入安全风险
+- `select 1 from t where id = #{param1}` 会作为预处理语句，被转换为 `select 1 from t where id = ?` 进行预处理，并使用实际参数来复用执行，通过配合前面的 Prepare 连接参数能获得最佳性能。
+- `select 1 from t where id = ${param2}` 会做文本替换为 `select 1 from t where id = 1` 执行，如果这条语句被预处理为不同参数，可能会导致 TiDB 缓存大量的预处理语句，并且以这种方式执行 SQL 有注入安全风险。
 
 #### 动态 SQL Batch
 
 [动态 SQL - foreach](http://www.mybatis.org/mybatis-3/dynamic-sql.html#foreach)
 
-要支持将多条 insert 语句自动重写为 `insert ... values(...), (...), ...` 的形式，除了前面所说的在 JDBC 配置 `rewriteBatchedStatements=true` 外，MyBatis 还可以使用动态 SQL 来半自动生成 batch insert。比如下面的 mapper:
+要支持将多条 insert 语句自动重写为 `insert ... values(...), (...), ...` 的形式，除了前面所说的在 JDBC 配置 `rewriteBatchedStatements = true` 外，MyBatis 还可以使用动态 SQL 来半自动生成 batch insert。比如下面的 mapper:
 
 ```xml
 <insert id="insertTestBatch" parameterType="java.util.List" fetchSize="1">
@@ -251,7 +251,7 @@ MyBatis 的 Mapper 中支持两种参数：
 </insert>
 ```
 
-会生成一个 `insert on duplicate key update` 语句，values 后面的 `(?, ?, ?)` 数目是根据传入的 list 个数决定，最终效果和使用 `rewriteBatchStatements=true` 类似，可以有效减少客户端和 TiDB 的网络交互次数，同样需要注意 prepare 后超过 `prepStmtCacheSqlLimit` 限制导致不缓存 prepare 语句的问题。
+会生成一个 `insert on duplicate key update` 语句，values 后面的 `(?, ?, ?)` 数目是根据传入的 list 个数决定，最终效果和使用 `rewriteBatchStatements = true` 类似，可以有效减少客户端和 TiDB 的网络交互次数，同样需要注意预处理后超过 `prepStmtCacheSqlLimit` 限制导致不缓存预处理语句的问题。
 
 #### Streaming 结果
 
@@ -281,9 +281,9 @@ Cursor<Post> queryAllPost();
 
 在 `openSession` 的时候可以选择 `ExecutorType`，MyBatis 支持三种 executor：
 
-- Simple：每次执行都会向 JDBC 进行 prepare 语句的调用（如果 JDBC 配置有开启 `cachePrepStmts`，重复的 prepare 语句会复用）
-- Reuse：在 `executor` 中缓存 prepare 语句，这样不用 JDBC 的 `cachePrepStmts` 也能减少重复 prepare 语句的调用
-- Batch：每次更新只有在 `addBatch` 到 query 或 commit 时才会调用 `executeBatch` 执行，如果 JDBC 层开启了 `rewriteBatchStatements`，则会尝试改写，没有开启则会一条条发送
+- Simple：每次执行都会向 JDBC 进行预处理语句的调用（如果 JDBC 配置有开启 `cachePrepStmts`，重复的预处理语句会复用）。
+- Reuse：在 `executor` 中缓存预处理语句，这样不用 JDBC 的 `cachePrepStmts` 也能减少重复预处理语句的调用。
+- Batch：每次更新只有在 `addBatch` 到 query 或 commit 时才会调用 `executeBatch` 执行，如果 JDBC 层开启了 `rewriteBatchStatements`，则会尝试改写，没有开启则会一条条发送。
 
 通常默认值是 `Simple`，需要在调用 `openSession` 时改变 `ExecutorType`。如果是 Batch 执行，会遇到事务中前面的 update 或 insert 都非常快，而在读数据或 commit 事务时比较慢的情况，这实际上是正常的，在排查慢 SQL 时需要注意。
 

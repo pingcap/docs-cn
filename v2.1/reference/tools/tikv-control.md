@@ -146,8 +146,8 @@ success!
 `tombstone` 命令常用于没有开启 sync-log，因为机器掉电导致 Raft 状态机丢失部分写入的情况。它可以在一个 TiKV 实例上将一些 Region 设置为 Tombstone 状态，从而在重启时跳过这些 Region。这些 Region 应该在其他 TiKV 上有足够多的健康的副本以便能够继续通过 Raft 机制进行读写。
 
 ```bash
-pd-ctl>> operator add remove-peer <region_id> <peer_id>
-$ tikv-ctl --db /path/to/tikv/db tombstone -p 127.0.0.1:2379 -r 2
+pd-ctl>> operator add remove-peer <region_id> <store_id>
+$ tikv-ctl --db /path/to/tikv/db tombstone -p 127.0.0.1:2379 -r <region_id>
 success!
 ```
 
