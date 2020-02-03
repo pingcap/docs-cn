@@ -48,7 +48,7 @@ TiDB Lightning 需要以下权限：
 
 1. [结束 `tidb-lightning` 进程](#如何正确结束-tidb-lightning-进程)。
 2. 执行修改操作（如修复数据源、更改设置、更换硬件等）。
-3. 如果之前的修改更改了任何表，[清除对应的断点](/dev/reference/tools/tidb-lightning/checkpoints.md#--checkpoint-remove)。
+3. 如果上面的修改操作更改了任何表，你还需要[清除对应的断点](/dev/reference/tools/tidb-lightning/checkpoints.md#--checkpoint-remove)。
 4. 重启 `tidb-lightning`。
 
 如果 `tikv-importer` 需要重启：
@@ -85,7 +85,10 @@ ADMIN CHECKSUM TABLE `schema`.`table`;
 
 ## TiDB Lightning 支持哪些格式的数据源？
 
-TiDB Lightning 只支持 [Mydumper](/dev/reference/tools/mydumper.md) 生成的 SQL dump 或本地 [CSV](/dev/reference/tools/tidb-lightning/csv.md) 格式的数据源。
+TiDB Lightning 只支持两种格式的数据源：
+
+1. [Mydumper](/dev/reference/tools/mydumper.md) 生成的 SQL dump
+2. 储存在本地文件系统的 [CSV](/dev/reference/tools/tidb-lightning/csv.md) 文件
 
 ## 我已经在下游创建好库和表了，TiDB Lightning 可以忽略建库建表操作吗？
 
@@ -153,6 +156,7 @@ tidb-lightning-ctl --switch-mode=normal
 ```toml
 [import]
 # Importer 上传至 TiKV 的最大速度（字节/秒）。
+# 建议将该速度设为 100 MB/s 或更小。
 upload-speed-limit = "100MB"
 ```
 
@@ -181,4 +185,4 @@ upload-speed-limit = "100MB"
 
 2. 删除 `tikv-importer` 所在机器上的整个 “import” 文件目录。
 
-3. 如果需要的话，删除 TiDB 集群上创建的所有表和数据。
+3. 如果需要的话，删除 TiDB 集群上创建的所有表和库。

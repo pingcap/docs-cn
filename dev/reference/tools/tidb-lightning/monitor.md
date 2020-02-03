@@ -274,7 +274,7 @@ scrape_configs:
         * `imported` — 所有引擎文件已上传到目标集群
         * `altered_auto_inc` — 自增 ID 已改
         * `checksum` — 已计算校验和
-        * `analyzed` — 已进行分析
+        * `analyzed` — 已进行统计信息分析
         * `completed` — 表格已完全导入并通过验证
     - **result**：当前操作的执行结果
         * `success` — 成功
@@ -298,8 +298,8 @@ scrape_configs:
 
     计算处理过的 Chunks 及其状态。标签：
 
-    - **state**: 单个 Chunk 的状态，表明当前所处的阶段
-        * `estimated` — （非状态）当前任务中 chunk 的数量
+    - **state**: 单个 Chunk 的状态，表明该 Chunk 当前所处的阶段
+        * `estimated` — （非状态）当前任务中 Chunk 的数量
         * `pending` — 已载入但未执行
         * `running` — 正在编码和发送数据
         * `finished` — 该 Chunk 已处理完毕

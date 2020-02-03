@@ -37,7 +37,7 @@ TiDB Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的
 
     * 自增 (AUTO_INCREMENT) 的列需要为正数，不能为 0。
     * 唯一键和主键 (UNIQUE and PRIMARY KEYs) 不能有重复的值。
-4. 如果 TiDB Lightning 启动失败后没有正确重启，可能会因为数据不同步而出现校验和不一致。
+4. 如果 TiDB Lightning 之前失败停机过，但没有正确重启，可能会因为数据不同步而出现校验和不一致。
 
 **解决办法**：
 
@@ -131,4 +131,4 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 
 3. 确保整个集群使用的是同一最新版本的 `tzdata` (2018i 或更高版本)。
 
-    在 CentOS 上运行 `yun info tzdata` 命令查看 `tzdata` 的版本及是否有更新。运行 `yum upgrade tzdata` 命令升级 `tzdata`。
+    如果你使用的是 CentOS 机器，你可以运行 `yun info tzdata` 命令查看 `tzdata` 的版本及是否有更新。然后运行 `yum upgrade tzdata` 命令升级 `tzdata`。
