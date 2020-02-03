@@ -101,7 +101,7 @@ Tips：BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，�
 
 ### 单表数据备份到网络盘（推荐）
 
-操作目的：通过 `br backup` 命令，将单表数据 `--db batchmark --table order_line` 备份到指定的网络盘路径 `local:///br_data` 下。
+使用 `br backup` 命令，将单表数据 `--db batchmark --table order_line` 备份到指定的网络盘路径 `local:///br_data` 下。
 
 #### 前置要求
 
