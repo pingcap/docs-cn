@@ -59,11 +59,11 @@ Tips：BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，�
 
 ### 配置
 
-* TiKV Configurations: Default
+* TiKV Configurations: 默认配置
 
-* PD Configurations: Default
+* PD Configurations: 默认配置
 
-## 准备工作
+## 使用场景
 
 ### 备份准备工作
 
@@ -89,8 +89,6 @@ Tips：BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，�
 > **注意：**
 >
 > 运行 `br restore` 前检查新集群确保没有同名的表。
-
-## 使用场景
 
 本文描述以下四种使用场景：
 
