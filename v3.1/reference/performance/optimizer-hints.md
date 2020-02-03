@@ -174,16 +174,6 @@ The `READ_FROM_STORAGE(TIFLASH[t1_name [, tl_name ...]], TIKV[t2_name [, tl_name
 select /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a from t t1, t t2 where t1.a = t2.a;
 ```
 
-### USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])
-
-The `USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])` hint tells the optimizer to access a specific table with the index merge method. The given list of indexes are optional parameters. If you explicitly specify the list, TiDB selects indexes from the list to build index merge; if you do not give the list of indexes, TiDB selects indexes from all available indexes to build index merge. For example:
-
-{{< copyable "sql" >}}
-
-```sql
-select /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * from t t1 where t1.a > 10 or t1.b > 10;
-```
-
 ## Hints for setting operation parameters
 
 A hint for setting operation parameters follows behind **the first** `SELECT`, `UPDATE` or `DELETE` keyword in a SQL statement. A hint of this category modifies the operation parameter of the query to which this hint applies.
@@ -227,20 +217,6 @@ select /*+ READ_FROM_REPLICA() */ * from t;
 ```
 
 In addition to this hint, setting the `tidb_replica_read` environment variable to `'follower'` or `'leader'` also controls whether to enable this feature.
-
-### NO_INDEX_MERGE()
-
-The `NO_INDEX_MERGE()` hint disables the index merge feature of the optimizer.
-
-For example, the following query will not use index merge:
-
-{{< copyable "sql" >}}
-
-```sql
-select /*+ NO_INDEX_MERGE() */ * from t where t.a > 0 or t.b > 0;
-```
-
-In addition to this hint, setting the `tidb_enable_index_merge` environment variable also controls whether to enable this feature.
 
 ### USE_TOJA(boolean_value)
 
