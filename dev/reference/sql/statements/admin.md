@@ -78,7 +78,7 @@ admin show ddl jobs;
 ```
 
 ```sql
--- 查看正在执行的 DDL 任务已经最近 5 条已经执行完的 DDL 任务。
+-- 查看正在执行的 DDL 任务中最近 5 条已经执行完的 DDL 任务。
 admin show ddl jobs 5;
 ```
 
