@@ -33,7 +33,7 @@ category: reference
 ## 示例
 
 ```sql
-mysql> CREATE TABLE t1 (id int not null primary key auto_increment, col1 INT, INDEX(col1));
+mysql> CREATE TABLE t1 (id int not null primary key AUTO_INCREMENT, col1 INT, INDEX(col1));
 Query OK, 0 rows affected (0.12 sec)
 
 mysql> SHOW INDEXES FROM t1;

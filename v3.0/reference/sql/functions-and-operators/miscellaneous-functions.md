@@ -16,7 +16,7 @@ TiDB 支持使用 MySQL 5.7 中提供的大部分[其他函数](https://dev.mysq
 | [`DEFAULT()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_default)  | 返回表的某一列的默认值 |
 | [`INET_ATON()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_inet-aton)  | 将 IP 地址转换为数值   |
 | [`INET_NTOA()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_inet-ntoa)  | 将数值转换为 IP 地址   |
-| [`INET6_ATON()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_inet6-aton)  | 将 IPv6 地址转换为数值    |
+| [`INET6_ATON()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_inet6-aton)  | 将 IPv6 地址转换为数值  |
 | [`INET6_NTOA()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_inet6-ntoa)  | 将数值转换为 IPv6 地址  |
 | [`IS_IPV4()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_is-ipv4)   | 判断参数是否为 IPv4 地址   |
 | [`IS_IPV4_COMPAT()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_is-ipv4-compat)    | 判断参数是否为兼容 IPv4 的地址   |
@@ -29,6 +29,8 @@ TiDB 支持使用 MySQL 5.7 中提供的大部分[其他函数](https://dev.mysq
 
 ## 不支持的函数
 
+| 函数名 | 功能描述  |
+|:------|:-----------|
 | [`GET_LOCK()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_get-lock)  | 获取命名锁，详见 [TiDB #10929](https://github.com/pingcap/tidb/issues/10929) |
 | [`RELEASE_LOCK()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_release-lock)  | 释放命名锁，详见 [TiDB #10929](https://github.com/pingcap/tidb/issues/10929)  |
 | [`UUID_SHORT()`](https://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_uuid-short)  | 基于特定假设提供唯一的 UUID，目前这些假设在 TiDB 中不存在，详见 [TiDB #4620](https://github.com/pingcap/tidb/issues/4620) |

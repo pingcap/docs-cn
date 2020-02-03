@@ -31,7 +31,7 @@ category: reference
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
+CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
 ```
 
 ```
@@ -104,7 +104,7 @@ Query OK, 0 rows affected (0.30 sec)
 
 ## MySQL 兼容性
 
-* 不支持删除 `PRIMARY KEY`。
+* 默认不支持删除 `PRIMARY KEY`，在开启 `alter-primary-key` 配置项后可支持此功能，详情参考：[alter-primary-key](/v3.0/reference/configuration/tidb-server/configuration-file.md#alter-primary-key)。
 
 ## 另请参阅
 

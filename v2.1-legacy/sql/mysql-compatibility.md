@@ -48,7 +48,7 @@ TiDB 的自增 ID (Auto Increment ID) 只保证自增且唯一，并不保证连
 假设有这样一个带有自增 ID 的表：
 
 ```sql
-create table t(id int unique key auto_increment, c int);
+create table t(id int unique key AUTO_INCREMENT, c int);
 ```
 
 TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用于分配（目前会缓存 30000 个 ID），用完这段值再去取下一段。
@@ -90,7 +90,7 @@ TiDB 实现了 F1 的异步 Schema 变更算法，DDL 执行过程中不会阻�
 + Add/Drop primary key 操作目前不支持。
 + Add Index/Column 操作不支持同时创建多个索引或列。
 + Drop Column 操作不支持删除的列为主键列或索引列。
-+ Add Column 操作不支持同时将新添加的列设为主键或唯一索引，也不支持将此列设成 auto_increment 属性。
++ Add Column 操作不支持同时将新添加的列设为主键或唯一索引，也不支持将此列设成 AUTO_INCREMENT 属性。
 + Change/Modify Column 操作目前支持部分语法，细节如下：
     - 在修改类型方面，只支持整数类型之间修改，字符串类型之间修改和 Blob 类型之间的修改，且只能使原类型长度变长。此外，不能改变列的 unsigned/charset/collate 属性。这里的类型分类如下：
         * 具体支持的整型类型有：TinyInt，SmallInt，MediumInt，Int，BigInt。
@@ -114,10 +114,10 @@ TiDB 使用乐观事务模型，在执行 `Update`、`Insert`、`Delete` 等语�
 
 ### 小事务
 
-由于 TiDB 中的每个事务都需要跟 PD leader 进行两次 round trip，TiDB 中的小事务相比于 MySQL 中的小事务延迟更高。以如下的 query 为例，用显式事务代替 `auto_commit`，可优化该 query 的性能。
+由于 TiDB 中的每个事务都需要跟 PD leader 进行两次 round trip，TiDB 中的小事务相比于 MySQL 中的小事务延迟更高。以如下的 query 为例，用显式事务代替 `autocommit`，可优化该 query 的性能。
 
 ```sql
-# 使用 auto_commit 的原始版本
+# 使用 autocommit 的原始版本
 UPDATE my_table SET a='new_value' WHERE id = 1; 
 UPDATE my_table SET a='newer_value' WHERE id = 2;
 UPDATE my_table SET a='newest_value' WHERE id = 3;

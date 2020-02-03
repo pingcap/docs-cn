@@ -137,10 +137,11 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
     {{< copyable "shell-regular" >}}
 
     ```bash
-    wget http://download.pingcap.org/dm-ansible-{version}.tar.gz
+    wget https://download.pingcap.org/dm-ansible-{version}.tar.gz
     ```
 
-    `{version}` 为期望下载的 DM 版本，如 `v1.0.0-alpha`、`latest` 等。
+    `{version}` 为期望下载的 DM 版本，如 `v1.0.1`、`v1.0.2` 等，
+    可以通过 [DM Release](https://github.com/pingcap/dm/releases) 查看当前已发布版本。也可以使用 `latest` 替代 `{version}` 来下载最新的未发布版本。
 
 ## 第 4 步：安装 DM-Ansible 及其依赖至中控机
 
@@ -154,8 +155,8 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tar -xzvf dm-ansible-latest.tar.gz && \
-    mv dm-ansible-latest dm-ansible && \
+    tar -xzvf dm-ansible-{version}.tar.gz && \
+    mv dm-ansible-{version} dm-ansible && \
     cd /home/tidb/dm-ansible && \
     sudo pip install -r ./requirements.txt
     ```
@@ -281,7 +282,7 @@ cluster_name = test-cluster
 
 ansible_user = tidb
 
-dm_version = latest
+dm_version = {version}
 
 deploy_dir = /data1/dm
 
@@ -289,7 +290,7 @@ grafana_admin_user = "admin"
 grafana_admin_password = "admin"
 ```
 
-关于 DM-worker 参数的更多信息，请参考 [DM-worker 配置及参数描述](#dm-worker-配置及参数描述)。
+`{version}` 为当前 DM-Ansible 对应的版本号。关于 DM-worker 参数的更多信息，请参考 [DM-worker 配置及参数描述](#dm-worker-配置及参数描述)。
 
 ### 选项 2：使用单节点上多个 DM-worker 实例的集群拓扑
 
@@ -332,13 +333,15 @@ cluster_name = test-cluster
 
 ansible_user = tidb
 
-dm_version = latest
+dm_version = {version}
 
 deploy_dir = /data1/dm
 
 grafana_admin_user = "admin"
 grafana_admin_password = "admin"
 ```
+
+`{version}` 为当前 DM-Ansible 对应的版本号。
 
 ### DM-worker 配置及参数描述
 
@@ -536,9 +539,9 @@ dm_master ansible_host=172.16.10.71 dm_master_port=18261
 
     ```bash
     cd /home/tidb && \
-    wget http://download.pingcap.org/dm-ansible-{version}.tar.gz && \
-    tar -xzvf dm-ansible-latest.tar.gz && \
-    mv dm-ansible-latest dm-ansible
+    wget https://download.pingcap.org/dm-ansible-{version}.tar.gz && \
+    tar -xzvf dm-ansible-{version}.tar.gz && \
+    mv dm-ansible-{version} dm-ansible
     ```
 
 3. 迁移 `inventory.ini` 配置文件。
