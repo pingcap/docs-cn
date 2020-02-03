@@ -71,14 +71,14 @@ Tips：BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，�
 
 1. 运行 `br backup` 命令前，查询 TiDB 集群的 [`tikv_gc_life_time`](/v3.1/reference/garbage-collection/configuration.md#tikv_gc_life_time) 配置项的值，并使用 MySQL 客户端将该项调整至合适的值，确保备份期间不会发生 [GC](/v3.1/reference/garbage-collection/overview.md)。
 
-    ```
+    ```sql
     SELECT * FROM mysql.tidb WHERE VARIABLE_NAME = 'tikv_gc_life_time';
     UPDATE mysql.tidb SET VARIABLE_VALUE = '720h' WHERE VARIABLE_NAME = 'tikv_gc_life_time';
     ```
 
 2. 在备份完成后，将该参数调回原来的值。
 
-    ```
+    ```sql
     update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
     ```
 
