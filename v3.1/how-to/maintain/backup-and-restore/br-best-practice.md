@@ -85,7 +85,9 @@ Tips：BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，�
 
 BR restore 命令的详细使用方法请参考 [BR 命令行描述](/v3.1/how-to/maintain/backup-and-restore/br.md#br-命令行描述)。
 
-1. 运行 BR restore 前检查新集群没有同名 table。
+> **注意：**
+>
+> 运行 `br restore` 前检查新集群确保没有同名的表。
 
 ## 使用场景
 
