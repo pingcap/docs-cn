@@ -83,7 +83,7 @@ BR backup 命令的详细使用方法请参考[文档](/v3.1/how-to/maintain/bac
 
 ### 恢复准备工作
 
-BR restore 命令的详细使用方法请参考[文档](/v3.1/how-to/maintain/backup-and-restore/br.md#br-命令行描述)。
+BR restore 命令的详细使用方法请参考 [BR 命令行描述](/v3.1/how-to/maintain/backup-and-restore/br.md#br-命令行描述)。
 
 1. 运行 BR restore 前检查新集群没有同名 table。
 
