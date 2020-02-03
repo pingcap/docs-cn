@@ -1,12 +1,12 @@
 ---
 title: TiDB 2.1 升级操作指南
 category: how-to
-aliases: ['/docs-cn/op-guide/tidb-v2.1-upgrade-guide/','/docs-cn/v2.1/how-to/upgrade/to-tidb-2.1/','/docs-cn/dev/how-to/upgrade/to-tidb-2.1/','/docs-cn/v3.0/how-to/upgrade/to-tidb-2.1/',/docs-cn/v3.1/how-to/upgrade/to-tidb-2.1/]
+aliases: ['/docs-cn/op-guide/tidb-v2.1-upgrade-guide/','/docs-cn/v2.1/how-to/upgrade/to-tidb-2.1/','/docs-cn/dev/how-to/upgrade/to-tidb-2.1/','/docs-cn/v3.0/how-to/upgrade/to-tidb-2.1/',/docs-cn/v3.1/how-to/upgrade/to-tidb-2.1/,'/docs-cn/v2.1/how-to/upgrade/rolling-updates-with-ansible/']
 ---
 
 # TiDB 2.1 升级操作指南
 
-本文档适用于从 TiDB 2.0 版本（v2.0.1 及之后版本）或 TiDB 2.1 RC 版本升级到 TiDB 2.1 GA 版本。TiDB 2.1 版本不兼容 Kafka 版本的 TiDB Binlog，如果当前集群已经使用 [Kafka 版本的 TiDB Binlog](/v2.1/reference/tidb-binlog/tidb-binlog-kafka.md)，须参考 [TiDB Binlog Cluster 版本升级方法](/v2.1/reference/tidb-binlog/upgrade.md) 升级到 Cluster 版本。
+本文档适用于从 TiDB 2.0 版本升级至 TiDB 2.1 版本以及 TiDB 2.1 低版本升级至 TiDB 2.1 高版本。TiDB 2.1 版本不兼容 Kafka 版本的 TiDB Binlog，如果当前集群已经使用 [Kafka 版本的 TiDB Binlog](/v2.1/reference/tidb-binlog/tidb-binlog-kafka.md)，须参考 [TiDB Binlog Cluster 版本升级方法](/v2.1/reference/tidb-binlog/upgrade.md) 升级到 Cluster 版本。
 
 ## 升级兼容性说明
 
@@ -22,7 +22,7 @@ aliases: ['/docs-cn/op-guide/tidb-v2.1-upgrade-guide/','/docs-cn/v2.1/how-to/upg
 
 ## 在中控机器上安装 Ansible 及其依赖
 
-TiDB Ansible release-2.1 版本依赖 2.4.2 及以上但不高于 2.7.0 的 Ansible 版本（`ansible>=2.4.2,<2.7.0`），另依赖 Python 模块：`jinja2>=2.9.6` 和 `jmespath>=0.9.0`。为方便管理依赖，新版本使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](/v2.1/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](/v2.1/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-ansible-及其依赖)。
+TiDB Ansible release-2.1 版本依赖 2.4.2 及以上但不高于 2.7.11 的 Ansible 版本（`2.4.2 ≦ ansible < 2.7.11`），另依赖 Python 模块：`jinja2 ≧ 2.9.6` 和 `jmespath ≧ 0.9.0`。为方便管理依赖，新版本使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](/v2.1/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](/v2.1/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-ansible-及其依赖)。
 
 安装完成后，可通过以下命令查看版本：
 
@@ -88,7 +88,7 @@ git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
 
 编辑 `inventory.ini` 文件，IP 信息参照备份文件 `/home/tidb/tidb-ansible-bak/inventory.ini`。
 
-以下变量配置，需要重点确认，变量含义可参考 [inventory.ini 变量调整](/v2.1/how-to/deploy/orchestrated/ansible.md#其他变量调整)。
+以下变量配置，需要重点确认，变量含义可参考 [inventory.ini 变量调整](/v2.1/how-to/deploy/orchestrated/ansible.md#调整其它变量可选)。
 
 1. 请确认 `ansible_user` 配置的是普通用户。为统一权限管理，不再支持使用 root 用户远程安装。默认配置中使用 `tidb` 用户作为 SSH 远程用户及程序运行用户。
 
@@ -98,7 +98,7 @@ git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git
     ansible_user = tidb
     ```
 
-    可参考[如何配置 ssh 互信及 sudo 规则](/v2.1/how-to/deploy/orchestrated/ansible.md#在中控机上配置部署机器-ssh-互信及-sudo-规则) 自动配置主机间互信。
+    可参考[如何配置 SSH 互信及 sudo 规则](/v2.1/how-to/deploy/orchestrated/ansible.md#第-5-步在中控机上配置部署机器-ssh-互信及-sudo-规则)自动配置主机间互信。
 
 2. `process_supervision` 变量请与之前版本保持一致，默认推荐使用 `systemd`。
 
@@ -129,7 +129,7 @@ readpool:
 
 ## 下载 TiDB 2.1 binary 到中控机
 
-确认 `tidb-ansible/inventory.ini` 文件中 `tidb_version = v2.1.0`，然后执行以下命令下载 TiDB 2.1 binary 到中控机。
+确认 `tidb-ansible/inventory.ini` 文件中 `tidb_version = v2.1.x`，然后执行以下命令下载 TiDB 2.1 binary 到中控机。
 
 {{< copyable "shell-regular" >}}
 

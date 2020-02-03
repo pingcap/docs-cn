@@ -62,7 +62,6 @@
     - [使用 Ansible 扩容缩容](/v2.1/how-to/scale/with-ansible.md)
   + 升级
     - [升级至 TiDB 2.1](/v2.1/how-to/upgrade/from-previous-version.md)
-    - [使用 Ansible 滚动升级](/v2.1/how-to/upgrade/rolling-updates-with-ansible.md)
   + 故障诊断
     - [集群配置诊断](/v2.1/how-to/troubleshoot/cluster-setup.md)
     - [TiDB Lightning 故障诊断](/v2.1/how-to/troubleshoot/tidb-lightning.md)
@@ -245,6 +244,7 @@
     - [Grafana 监控最佳实践](/v2.1/reference/best-practices/grafana-monitor.md)
     - [PD 调度策略最佳实践](/v2.1/reference/best-practices/pd-scheduling.md)
     - [海量 Region 集群调优最佳实践](/v2.1/reference/best-practices/massive-regions.md)
+    - [乐观锁事务最佳实践](/v2.1/reference/best-practices/optimistic-transaction.md)
   + [TiSpark 使用指南](/v2.1/reference/tispark.md)
   + TiDB Binlog
     - [概述](/v2.1/reference/tidb-binlog/overview.md)
@@ -254,6 +254,7 @@
     - [监控告警](/v2.1/reference/tidb-binlog/monitor.md)
     - [增量恢复](/v2.1/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/v2.1/reference/tidb-binlog/binlog-slave-client.md)
+    - [术语表](/v2.1/reference/tidb-binlog/glossary.md)
     + 故障诊断
       - [故障诊断](/v2.1/reference/tidb-binlog/troubleshoot/binlog.md)
       - [常见错误修复](/v2.1/reference/tidb-binlog/troubleshoot/error-handling.md)
@@ -309,12 +310,16 @@
       + 版本发布历史
         + v1.0
           - [1.0.2](/v2.1/reference/tools/data-migration/releases/1.0.2.md)
+          - [1.0.3](/v2.1/reference/tools/data-migration/releases/1.0.3.md)
+      - [TiDB DM 术语表](/v2.1/reference/tools/data-migration/glossary.md)
     + TiDB Lightning
       - [概述](/v2.1/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/v2.1/reference/tools/tidb-lightning/deployment.md)
+      - [参数说明](/v2.1/reference/tools/tidb-lightning/config.md)
       - [断点续传](/v2.1/reference/tools/tidb-lightning/checkpoints.md)
       - [表库过滤](/v2.1/reference/tools/tidb-lightning/table-filter.md)
       - [CSV 支持](/v2.1/reference/tools/tidb-lightning/csv.md)
+      - [Web 界面](/v2.1/reference/tools/tidb-lightning/web.md)
       - [监控告警](/v2.1/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](/v2.1/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](/v2.1/faq/tidb-lightning.md)
@@ -337,6 +342,7 @@
 - [TiDB 路线图](/v2.1/roadmap.md)
 + [版本发布历史](/v2.1/releases/rn.md)
   + v2.1
+    - [2.1.19](/v2.1/releases/2.1.19.md)
     - [2.1.18](/v2.1/releases/2.1.18.md)
     - [2.1.17](/v2.1/releases/2.1.17.md)
     - [2.1.16](/v2.1/releases/2.1.16.md)

@@ -524,7 +524,7 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。我们提�
 
 ### 4.1.5 如何导出 TiDB 数据？
 
-TiDB 目前暂时不支持 `select into outfile`，可以通过以下方式导出 TiDB 数据：参考 [MySQL使用mysqldump导出某个表的部分数据](http://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出，使用 MySQL client 将 select 的结果输出到一个文件。
+TiDB 目前暂时不支持 `select into outfile`，可以通过以下方式导出 TiDB 数据：参考 [MySQL使用mysqldump导出某个表的部分数据](https://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出，使用 MySQL client 将 select 的结果输出到一个文件。
 
 ### 4.1.6 DB2、Oracle 数据库如何迁移到 TiDB？
 
@@ -587,10 +587,6 @@ TiDB 读流量可以通过增加 TiDB server 进行扩展，总读容量无限�
 ### 4.3.4 如何批量导入?
 
 导入数据的时候，可以分批插入，每批最好不要超过 1w 行。
-
-对于 insert 和 select，可以开启 `set @@session.tidb_batch_insert=1;` 隐藏参数，insert 会把大事务分批执行。这样不会因为事务太大而超时，但是可能会导致事务原子性的丢失。如果事务执行过程中报错，会导致只完成一部分事务的插入。所以建议只有在需要的时候，在 session 中使用，这样不会影响其他语句。事务完成以后，可以用 `set @@session.tidb_batch_insert=0` 关闭。
-
-对 delete 和 update 语句，可以使用 limit 加循环的方式进行操作。
 
 ### 4.3.5 TiDB 中删除数据后会立即释放空间吗？
 

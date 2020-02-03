@@ -121,6 +121,8 @@ loadWorkers=32  # 导入数据的并发数
 
 ## 导入数据
 
+**导入数据通常是整个 TPC-C 测试中最耗时，也是最容易出问题的阶段。**
+
 首先用 MySQL 客户端连接到 TiDB-Server 并执行：
 
 {{< copyable "sql" >}}
@@ -139,6 +141,8 @@ cd run && \
 ./runSQL.sh props.mysql sql.mysql/indexCreates.sql
 ```
 
+### 直接使用 BenchmarkSQL 导入
+
 运行导入数据脚本：
 
 {{< copyable "shell-regular" >}}
@@ -148,6 +152,84 @@ cd run && \
 ```
 
 根据机器配置这个过程可能会持续几个小时。
+
+### 通过 TiDB Lightning 导入
+
+由于导入数据量随着 warehouse 的增加而增加，当需要导入 1000 warehouse 以上数据时，可以先用 BenchmarkSQL 生成 csv 文件，再将文件通过 TiDB Lightning（以下简称 Lightning）导入的方式来快速导入。生成的 csv 文件也可以多次复用，节省每次生成所需要的时间。
+
+#### 修改 BenchmarkSQL 的配置文件
+
+1 warehouse 的 csv 文件需要 77 MB 磁盘空间，在生成之前要根据需要分配足够的磁盘空间来保存 csv 文件。可以在 `benchmarksql/run/props.mysql` 文件中增加一行：
+
+```text
+fileLocation=/home/user/csv/  # 存储 csv 文件的目录绝对路径，需保证有足够的空间
+```
+
+因为最终要使用 Lightning 导入数据，所以 csv 文件名最好符合 Lightning 要求，即 `{database}.{table}.csv` 的命名法。这里可以将以上配置改为：
+
+```text
+fileLocation=/home/user/csv/tpcc.  # 存储 csv 文件的目录绝对路径 + 文件名前缀（database）
+```
+
+这样生成的 csv 文件名将会是类似 `tpcc.bmsql_warehouse.csv` 的样式，符合 Lightning 的要求。
+
+#### 生成 csv 文件
+
+{{< copyable "shell-regular" >}}
+
+```shell
+./runLoader.sh props.mysql
+```
+
+#### 通过 Lightning 导入
+
+通过 Lightning 导入数据请参考 [Lightning 部署执行](/dev/reference/tools/tidb-lightning/deployment.md)章节。这里我们介绍下通过 tidb-ansible 部署 Lightning 导入数据的方法。
+
+##### 修改 inventory.ini
+
+这里最好手动指定清楚部署的 IP、端口、目录，避免各种冲突问题带来的异常，其中 import_dir 的磁盘空间参考 [Lightning 部署执行](/dev/reference/tools/tidb-lightning/deployment.md)，data_source_dir 就是存储上一节 csv 数据的目录。
+
+```ini
+[importer_server]
+IS1 ansible_host=172.16.5.34 deploy_dir=/data2/is1 tikv_importer_port=13323 import_dir=/data2/import
+
+[lightning_server]
+LS1 ansible_host=172.16.5.34 deploy_dir=/data2/ls1 tidb_lightning_pprof_port=23323 data_source_dir=/home/user/csv
+```
+
+##### 修改 conf/tidb-lightning.yml
+
+```yaml
+mydumper:
+    no-schema: true
+    csv:
+        separator: ','
+        delimiter: ''
+        header: false
+        not-null: false
+        'null': 'NULL'
+        backslash-escape: true
+        trim-last-separator: false
+```
+
+##### 部署 Lightning 和 Importer
+
+{{< copyable "shell-regular" >}}
+
+```shell
+ansible-playbook deploy.yml --tags=lightning
+```
+
+##### 启动
+
+* 登录到部署 Lightning 和 Importer 的服务器
+* 进入部署目录
+* 在 Importer 目录下执行 `scripts/start_importer.sh`，启动 Importer
+* 在 Lightning 目录下执行 `scripts/start_lightning.sh`，开始导入数据
+
+由于是用 ansible 进行部署的，可以在监控页面看到 Lightning 的导入进度，或者通过日志查看导入是否结束。
+
+### 导入完成后
 
 数据导入完成之后，可以运行 `sql.common/test.sql` 进行数据正确性验证，如果所有 SQL 语句都返回结果为空，即为数据导入正确。
 
