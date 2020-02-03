@@ -100,7 +100,7 @@ BR restore 命令的详细使用方法请参考 [BR 命令行描述](/v3.1/how-t
 
 ### 单表数据备份到网络盘（推荐）
 
-通过 BR backup 命令，将单表数据 --db batchmark --table order_line 备份到指定的网络盘路径下 local:///br_data
+操作目的：通过 `br backup` 命令，将单表数据 `--db batchmark --table order_line` 备份到指定的网络盘路径 `local:///br_data` 下。
 
 #### 前置要求
 
