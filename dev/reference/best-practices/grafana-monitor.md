@@ -22,7 +22,7 @@ Prometheus 是一个拥有多维度数据模型和灵活查询语句的时序数
 
 ## 监控数据的来源与展示
 
-TiDB 的 3 个核心组件（TiDB server、TiKV server 和 PD server）可以通过 HTTP 接口来获取 metric 数据。这些 metric 均是从程序代码中上传的，端口如下：
+TiDB 的 3 个核心组件（TiDB server、TiKV server 和 PD server）可以通过 HTTP 接口来获取 metric 数据。这些 metric 均是从程序代码中上传的，默认端口如下：
 
 | 组件        | 端口    |
 |:------------|:-------|
