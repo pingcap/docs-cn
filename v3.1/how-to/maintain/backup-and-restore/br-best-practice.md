@@ -35,7 +35,7 @@ Tips：BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，�
 
 ### 部署
 
-* 通过官方推荐的 [tidb-ansible](/v3.1/how-to/deploy/orchestrated/ansible.md) 部署 TiDB 集群
+要部署 BR，首先通过官方推荐的 [tidb-ansible](/v3.1/how-to/deploy/orchestrated/ansible.md) 部署 TiDB 集群，再下载 [tidb-toolkit](/v3.1/reference/tools/download.md#快速备份和恢复br) 获取 BR 应用。
 
 * 通过下载 [tidb-toolkit](/v3.1/reference/tools/download.md#快速备份和恢复br) 获取 br 应用
 
