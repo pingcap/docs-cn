@@ -5,7 +5,7 @@ category: how-to
 
 # BR 快速备份恢复最佳实践
 
-本文介绍了 PingCAP 新推出的分布式快速备份和恢复工具（下文简称 BR） 的原理和使用场景，并且总结了一些场景下的使用经验。
+[Backup & Restore](/v3.1/how-to/maintain/backup-and-restore/br.md)（下文简称 BR）是 PingCAP 新推出的分布式快速备份和恢复工具。本文描述了 BR 在备份和恢复场景下的操作过程，以及操作过程中的注意事项供用户参考，以达到 BR 的最佳实践。
 
 ## 面向对象
 
