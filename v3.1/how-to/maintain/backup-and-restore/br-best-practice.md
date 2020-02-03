@@ -9,7 +9,7 @@ category: how-to
 
 ## 目标读者
 
-本文面向所有 BR 的用户，并且最好对 TiDB 和 TiKV 有一定的了解。在阅读本文前推荐通过 BR 使用手册了解基本的备份恢复原理。
+本文为 BR 用户提供操作参考，因此读者需要对 TiDB 和 TiKV 有一定的了解。在阅读本文前，推荐先阅读 [使用 BR 进行备份与恢复](/v3.1/how-to/maintain/backup-and-restore/br.md)。
 
 ## 目标
 
