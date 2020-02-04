@@ -29,6 +29,8 @@ category: how-to
 
 ## 环境准备
 
+本部分介绍本文操作示例中 TiDB 的部署方式、集群版本、TiKV 集群硬件信息和集群配置，仅供参考。读者可根据自己的硬件和配置来预估备份恢复的性能。
+
 BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需要依赖 tidb-server 组件。
 
 ### 部署方式
@@ -163,7 +165,7 @@ bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 1
 
 #### 结果解读
 
-从日志中可以获取此次备份的相关统计信息，在日志中搜关键字 "summary"，可以看到下述信息：
+使用 BR 前已设置日志的存放路径。从该日志中可以获取此次备份的相关统计信息。在日志中搜关键字 "summary"，可以看到以下信息：
 
 ```
 ["Table backup summary: total backup ranges: 4, total success: 4, total failed: 0, total take(s): 986.43, total kv: 5659888624, total size(MB): 353227.18, avg speed(MB/s): 358.09"] ["backup total regions"=7196] ["backup checksum"=6m28.291772955s] ["backup fast checksum"=24.950298ms]
@@ -171,7 +173,7 @@ bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 1
 
 以上日志中的内容条目对应的解读如下：
 
-|   运行结果   | 日志内容                        |
+|   运行指标   | 日志数据                        |
 | :---- | :------------------------ |
 | 备份耗时 | `total take(s): 986.43`     |
 | 数据大小 | `total size(MB): 353227.18` |
@@ -209,7 +211,7 @@ bin/br backup table --db batchmark --table order_line -s local:///br_data/ --pd 
 
 ### 从网络盘进行备份恢复
 
-使用 `br restore` 命令，将一份完整的备份数据恢复的一个离线集群（暂不支持恢复到在线集群）。
+使用 `br restore` 命令，将一份完整的备份数据恢复到一个离线集群。暂不支持恢复到在线集群。
 
 #### 前置要求
 
@@ -225,7 +227,7 @@ bin/br backup table --db batchmark --table order_line -s local:///br_data/ --pd 
 
 恢复前，可以参考[恢复准备工作](#恢复准备工作)
 
-运行 BR restore 命令
+运行 `br restore` 命令
 
 ```shell
 bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 172.16.5.198:2379 --log-file restore-nfs.log
