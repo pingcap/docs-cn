@@ -30,7 +30,7 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
   
 > **注意：**
 >
-> 在分布式 TiDB 中，`GLOBAL` 变量的设置都会持久化到存储层中，单个 TiDB 实例每 2s 会主动进行一次全变量的获取并形成 `gvc` (global variables cache) 缓存, 该缓存有效时间最多可持续 2 秒。在设置 `GLOBAL` 变量之后为了保证新会话能够有效，请确保两个操作之间的间隔大于 2 秒。相关细节可以查看 Issue [#14531](https://github.com/pingcap/tidb/issues/14531)。
+> 在分布式 TiDB 中，`GLOBAL` 变量的设置会持久化到存储层中，单个 TiDB 实例每 2 秒会主动进行一次全变量的获取并形成 `gvc` (global variables cache) 缓存，该缓存有效时间最多可持续 2 秒。在设置 `GLOBAL` 变量之后，为了保证新会话的有效性，请确保两个操作之间的间隔大于 2 秒。相关细节可以查看 [Issue #14531](https://github.com/pingcap/tidb/issues/14531)。
 
 ### 会话范围值
 
