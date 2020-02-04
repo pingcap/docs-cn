@@ -113,6 +113,12 @@ Configuration items related to log.
 - Default value: `2048`
 - When the length of the statement is longer than `query-log-max-len`, the statement is truncated to output.
 
+### `max-server-connections`
+
+- The maximum number of concurrent client connections allowed in TiDB. It is used to control resources.
+- Default value: `4096`
+- When the number of actual client connections is equal to the value of `max-server-connections`, the TiDB server rejects new client connections.
+
 ## log.file
 
 Configuration items related to log files.
