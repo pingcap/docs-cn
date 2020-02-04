@@ -1,5 +1,5 @@
 ---
-title: TiDB Lightning 错误排解
+title: TiDB Lightning 故障诊断
 category: reference
 ---
 
@@ -131,4 +131,4 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 
 3. 确保整个集群使用的是同一最新版本的 `tzdata` (2018i 或更高版本)。
 
-    如果你使用的是 CentOS 机器，你可以运行 `yun info tzdata` 命令查看 `tzdata` 的版本及是否有更新。然后运行 `yum upgrade tzdata` 命令升级 `tzdata`。
+    如果你使用的是 CentOS 机器，你可以运行 `yum info tzdata` 命令查看 `tzdata` 的版本及是否有更新。然后运行 `yum upgrade tzdata` 命令升级 `tzdata`。
