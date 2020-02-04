@@ -82,7 +82,7 @@ create table t (a int primary key auto_random)
 - 不支持与 default 指定在同一列上。
 - 插入数据时，不建议自行显式指定含有 auto_random 列的值。原因是 rebase 仅针对除 shard_bits 以外的位进行。如果没有考虑到这一点，可能会导致提前耗尽用于自动分配的数值。
 
-## 关于 alter-primary-key 配置项的说明：
+## 关于 alter-primary-key 配置项的说明
 
 - 当 alter-primary-key = true 时，不支持使用 auto_random。
 - 配置文件中的 alter-primary-key 和 allow-auto-random 两个配置项的值不允许同时为 true。
