@@ -257,12 +257,22 @@ In general, after a PVC is no longer used and deleted, the PV bound to it is rec
 >
 > By default, to ensure data safety, TiDB Operator automatically changes the reclaim policy of the PVs of PD and TiKV to `Retain`.
 
-When the reclaim policy of PVs is set to `Retain`, if the data of a PV can be deleted, you need to set the reclaim policy of the PV to `Delete`. In this case, as long as the corresponding PVC is deleted, the PV is automatically deleted and reclaimed.
+When the reclaim policy of PVs is set to `Retain`, if the data of a PV can be deleted, delete this PV and the corresponding data according to the following steps:
 
-{{< copyable "shell-regular" >}}
+1. Delete the PVC object corresponding to the PV:
 
-```shell
-kubectl patch pv <pv-name> -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
-```
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl delete pvc <pvc-name> --namespace=<namespace>
+    ```
+
+2. Set the reclaim policy of the PV to `Delete`. Then the PV is automatically deleted and reclaimed.
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    kubectl patch pv <pv-name> -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
+    ```
 
 For more details, refer to [Change the Reclaim Policy of a PersistentVolume](https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy/).
