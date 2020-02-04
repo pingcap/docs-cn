@@ -133,7 +133,7 @@ bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 1
 
 在 BR 备份过程中，需关注以下监控面版中的运行指标。
 
-**Backup CPU Utilization** 面版：参与备份的 TiKV 节点 (backup-worker) 和 (backup-endpoint) CPU 使用率。
+**Backup CPU Utilization**：参与备份的 TiKV 节点 (backup-worker) 和 (backup-endpoint) CPU 使用率。
 
 ![img](/media/br/backup-cpu.png)
 
@@ -233,31 +233,31 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 
 
 #### <span id="restore-status">运行指标</span>
 
-CPU - 参与恢复的 TiKV 节点 CPU 使用率
+**CPU Utilization**：参与恢复的 TiKV 节点 CPU 使用率
 
 ![img](/media/br/restore-cpu.png)
 
-IO Utilization - 参与恢复的 TiKV 节点的 IO 使用率
+**IO Utilization**：参与恢复的 TiKV 节点的 IO 使用率
 
 ![img](/media/br/restore-io.png)
 
-Region 分布 - Region 分布越均匀，说明恢复资源利用越充分!
+**Region 分布**：Region 分布越均匀，说明恢复资源利用越充分!
 
 ![img](/media/br/restore-region.png)
 
-Process SST Duration - 处理 SST 文件的延迟，对于一张表来说，在恢复时，tableID 如果发生了变化，需要进行 rewrite，否则会进行 rename, 通常 rewrite 延迟要高于 rename
+**Process SST Duration**：处理 SST 文件的延迟，对于一张表来说，在恢复时，tableID 如果发生了变化，需要进行 rewrite，否则会进行 rename, 通常 rewrite 延迟要高于 rename
 
 ![img](/media/br/restore-process-sst.png)
 
-DownLoad SST Throughput - 从 External Storage 下载 SST 文件的吞吐
+**DownLoad SST Throughput**：从 External Storage 下载 SST 文件的吞吐
 
 ![img](/media/br/restore-download-sst.png)
 
-Restore Errors - 恢复过程中的错误
+**Restore Errors**：恢复过程中的错误
 
 ![img](/media/br/restore-errors.png)
 
-Checksum Request duration - 对备份集群执行 admin checksum 的耗时统计（此时 checksum 会进行 undo rewrite，会比备份时 checksum  延迟高)
+**Checksum Request duration**：对备份集群执行 admin checksum 的耗时统计（此时 checksum 会进行 undo rewrite，会比备份时 checksum  延迟高)
 
 ![img](/media/br/restore-checksum.png)
 
