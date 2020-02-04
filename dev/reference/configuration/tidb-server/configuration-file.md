@@ -430,3 +430,11 @@ TiDB 服务状态相关配置。
 
 + `events_statement_summary_by_digest` 表中`DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
 + 默认值：4096
+
+## experimental <span class="version-mark">从 v4.0.0 版本开始引入</span>
+
+### `allow-auto-random`
+
++ 用于控制是否允许使用 `AUTO_RANDOM`。
++ 默认值：false
++ 默认情况下，不支持增删主键。将此变量被设置为 true 后，支持增删主键功能。不过对在此开关开启前已经存在的表，且主键是整型类型时，即使之后开启此开关也不支持对此列表删除主键。

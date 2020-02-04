@@ -107,7 +107,7 @@ TiDB 也跟 MySQL 保持一致，支持一种 C 风格注释的变体：
 
 在 TiDB 中，这种写法等价于 `SELECT STRAIGHT_JOIN col1 FROM table1,table2 WHERE ...`
 
-如果注释中指定了 Server 版本号，例如 `/*!50110 KEY_BLOCK_SIZE=1024 */`，在 MySQL 中表示只有 MySQL 的版本大于等于 5.1.10 才会处理这个 comment 中的内容。但是在 TiDB 中，这个版本号不会起作用，所有的 comment 都会处理。
+如果注释中指定了 Server 版本号，例如 `/*!50110 KEY_BLOCK_SIZE=1024 */`，在 MySQL 中表示只有 MySQL 的版本大于等于 5.1.10 才会处理这个 comment 中的内容。但是在 TiDB 中，这个版本号不会起作用，所有的 comment 都会处理。TiDB 有自己的版本化注释语法，格式为 `/*T!40000 XXX */`。
 
 还有一种注释会被当做是优化器 Hint 特殊对待：
 
