@@ -5,7 +5,7 @@ category: benchmark
 
 # 如何用 Sysbench 测试 TiDB
 
-本次测试使用的是 TiDB 3.0 Beta 和 Sysbench 1.0.14。建议使用 Sysbench 1.0 或之后的更新版本，可在[此处](https://github.com/akopytov/sysbench/releases/tag/1.0.14)下载。
+本次测试使用的是 TiDB 3.0 Beta 和 Sysbench 1.0.14。建议使用 Sysbench 1.0 或之后的更新版本，可在 [Sysbench Release 1.0.14 页面](https://github.com/akopytov/sysbench/releases/tag/1.0.14)下载。
 
 ## 测试环境
 
@@ -102,6 +102,7 @@ capacity = "30GB"
 mysql-host={TIDB_HOST}
 mysql-port=4000
 mysql-user=root
+mysql-password=password
 mysql-db=sbtest
 time=600
 threads={8, 16, 32, 64, 128, 256}
@@ -117,6 +118,7 @@ db-driver=mysql
 mysql-host=172.16.30.33
 mysql-port=4000
 mysql-user=root
+mysql-password=password
 mysql-db=sbtest
 time=600
 threads=16
@@ -128,6 +130,8 @@ db-driver=mysql
 
 在数据导入前，需要对 TiDB 进行简单设置。在 MySQL 客户端中执行如下命令：
 
+{{< copyable "sql" >}}
+
 ```sql
 set global tidb_disable_txn_auto_retry = off;
 ```
@@ -135,6 +139,8 @@ set global tidb_disable_txn_auto_retry = off;
 然后退出客户端。TiDB 使用乐观事务模型，当发现并发冲突时，会回滚事务。将 `tidb_disable_txn_auto_retry` 设置为 `off` 会开启事务冲突后的自动重试机制，可以尽可能避免事务冲突报错导致 Sysbench 程序退出的问题。
 
 重新启动 MySQL 客户端执行以下 SQL 语句，创建数据库 `sbtest`：
+
+{{< copyable "sql" >}}
 
 ```sql
 create database sbtest;
@@ -153,6 +159,8 @@ create database sbtest;
 
 命令行输入以下命令，开始导入数据，config 文件为上一步中配置的文件：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 prepare
 ```
@@ -165,11 +173,15 @@ Sysbench 1.0.14 没有提供数据预热的功能，因此需要手动进行数�
 
 以 Sysbench 中某张表 sbtest7 为例，执行如下 SQL 语句 进行数据预热：
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT COUNT(pad) FROM sbtest7 USE INDEX (k_7);
 ```
 
 统计信息收集有助于优化器选择更为准确的执行计划，可以通过 `analyze` 命令来收集表 sbtest 的统计信息，每个表都需要统计。
+
+{{< copyable "sql" >}}
 
 ```sql
 ANALYZE TABLE sbtest7;
@@ -177,17 +189,23 @@ ANALYZE TABLE sbtest7;
 
 ### Point select 测试命令
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 run
 ```
 
 ### Update index 测试命令
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 sysbench --config-file=config oltp_update_index --tables=32 --table-size=10000000 run
 ```
 
 ### Read-only 测试命令
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 run

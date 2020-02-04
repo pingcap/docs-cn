@@ -11,8 +11,10 @@ category: reference
 
 ### 创建绑定
 
+{{< copyable "sql" >}}
+
 ```sql
-CREATE [GLOBAL | SESSION] BINDING FOR SelectStmt USING SelectStmt
+CREATE [GLOBAL | SESSION] BINDING FOR SelectStmt USING SelectStmt;
 ```
 
 该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。在不指定作用域时，隐式作用域为 SESSION。被绑定的 SQL 会被参数化后存储到系统表中。在处理 SQL 查询时，只要参数化后的 SQL 和系统表中某个被绑定的 SQL 一致即可使用相应的优化器 Hint。
@@ -27,30 +29,38 @@ select * from t where a > ？
 
 需要注意的是原始 SQL 和绑定 SQL 在参数化以及去掉 Hint 后文本必须相同，否则创建会失败，例如：
 
+{{< copyable "sql" >}}
+
 ```sql
-CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(idx) WHERE a > 2
+CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(idx) WHERE a > 2;
 ```
 
 可以创建成功，因为原始 SQL 和绑定 SQL 在参数化以及去掉 Hint 后文本都是 `select * from t where a > ?`，而
 
+{{< copyable "sql" >}}
+
 ```sql
-CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(idx) WHERE b > 2
+CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(idx) WHERE b > 2;
 ```
 
 则不可以创建成功，因为原始 SQL 在经过处理后是 `select * from t where a > ?`，而绑定 SQL 在经过处理后是 `select * from t where b > ?`。
 
 ### 删除绑定
 
+{{< copyable "sql" >}}
+
 ```sql
-DROP [GLOBAL | SESSION] BINDING FOR SelectStmt
+DROP [GLOBAL | SESSION] BINDING FOR SelectStmt;
 ```
 
 该语句可以在 GLOBAL 或者 SESSION 作用域内删除指定的执行计划绑定，在不指定作用域时默认作用域为 SESSION。
 
 ### 查看绑定
 
+{{< copyable "sql" >}}
+
 ```sql
-SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere]
+SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 ```
 
 该语句会输出 GLOBAL 或者 SESSION 作用域内的执行计划绑定，在不指定作用域时默认作用域为 SESSION。目前 `SHOW BINDINGS` 会输出 8 列，具体如下：

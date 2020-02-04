@@ -59,5 +59,4 @@ category: tools
     #table-pattern = ""
     target-schema = "test_2"
     #target-table = ""
-
 ```

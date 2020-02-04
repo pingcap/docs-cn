@@ -8,24 +8,47 @@ aliases: ['/docs-cn/sql/keywords-and-reserved-words/']
 
 关键字在 SQL 中有特殊的意义， 例如 `SELECT`，`UPDATE`，`DELETE`，在作为表名跟函数名的时候，需要特殊对待，例如作为表名，保留字需要被反引号包住：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE TABLE select (a INT);
+CREATE TABLE select (a INT);
+```
+
+```
 ERROR 1105 (HY000): line 0 column 19 near " (a INT)" (total length 27)
-mysql> CREATE TABLE `select` (a INT);
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE `select` (a INT);
+```
+
+```
 Query OK, 0 rows affected (0.09 sec)
 ```
 
 `BEGIN` 和 `END` 是关键字， 但不是保留字，所以不需要反引号：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE TABLE `select` (BEGIN int, END int);
+CREATE TABLE `select` (BEGIN int, END int);
+```
+
+```
 Query OK, 0 rows affected (0.09 sec)
 ```
 
 有一种特殊情况， 如果使用了限定符 `.`，那么也不需要用反引号：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE TABLE test.select (BEGIN int, END int);
+CREATE TABLE test.select (BEGIN int, END int);
+```
+
+```
 Query OK, 0 rows affected (0.08 sec)
 ```
 
@@ -33,7 +56,7 @@ Query OK, 0 rows affected (0.08 sec)
 
 {{< tabs-panel "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" >}}
 
-<a name="A" class="letter">A</a>
+<a name="A" class="letter" href="#A">A</a>
 
 - ACTION
 - ADD (R)
@@ -53,7 +76,7 @@ Query OK, 0 rows affected (0.08 sec)
 - AVG
 - AVG_ROW_LENGTH
 
-<a name="B" class="letter">B</a>
+<a name="B" class="letter" href="#B">B</a>
 
 - BEGIN
 - BETWEEN (R)
@@ -70,7 +93,7 @@ Query OK, 0 rows affected (0.08 sec)
 - BY (R)
 - BYTE
 
-<a name="C" class="letter">C</a>
+<a name="C" class="letter" href="#C">C</a>
 
 - CASCADE (R)
 - CASE (R)
@@ -105,7 +128,7 @@ Query OK, 0 rows affected (0.08 sec)
 - CURRENT_USER (R)
 - CURTIME
 
-<a name="D" class="letter">D</a>
+<a name="D" class="letter" href="#D">D</a>
 
 - DATA
 - DATABASE (R)
@@ -140,7 +163,7 @@ Query OK, 0 rows affected (0.08 sec)
 - DUPLICATE
 - DYNAMIC
 
-<a name="E" class="letter">E</a>
+<a name="E" class="letter" href="#E">E</a>
 
 - ELSE (R)
 - ENABLE
@@ -158,7 +181,7 @@ Query OK, 0 rows affected (0.08 sec)
 - EXPLAIN (R)
 - EXTRACT
 
-<a name="F" class="letter">F</a>
+<a name="F" class="letter" href="#F">F</a>
 
 - FALSE (R)
 - FIELDS
@@ -175,7 +198,7 @@ Query OK, 0 rows affected (0.08 sec)
 - FULLTEXT (R)
 - FUNCTION
 
-<a name="G" class="letter">G</a>
+<a name="G" class="letter" href="#G">G</a>
 
 - GENERATED (R)
 - GET_FORMAT
@@ -185,7 +208,7 @@ Query OK, 0 rows affected (0.08 sec)
 - GROUP (R)
 - GROUP_CONCAT
 
-<a name="H" class="letter">H</a>
+<a name="H" class="letter" href="#H">H</a>
 
 - HASH
 - HAVING (R)
@@ -195,7 +218,7 @@ Query OK, 0 rows affected (0.08 sec)
 - HOUR_MINUTE (R)
 - HOUR_SECOND (R)
 
-<a name="I" class="letter">I</a>
+<a name="I" class="letter" href="#I">I</a>
 
 - IDENTIFIED
 - IF (R)
@@ -213,20 +236,20 @@ Query OK, 0 rows affected (0.08 sec)
 - IS (R)
 - ISOLATION
 
-<a name="J" class="letter">J</a>
+<a name="J" class="letter" href="#J">J</a>
 
 - JOBS
 - JOIN (R)
 - JSON
 
-<a name="K" class="letter">K</a>
+<a name="K" class="letter" href="#K">K</a>
 
 - KEY (R)
 - KEY_BLOCK_SIZE
 - KEYS (R)
 - KILL (R)
 
-<a name="L" class="letter">L</a>
+<a name="L" class="letter" href="#L">L</a>
 
 - LEADING (R)
 - LEFT (R)
@@ -244,7 +267,7 @@ Query OK, 0 rows affected (0.08 sec)
 - LONGTEXT (R)
 - LOW_PRIORITY (R)
 
-<a name="M" class="letter">M</a>
+<a name="M" class="letter" href="#M">M</a>
 
 - MAX
 - MAX_ROWS
@@ -268,7 +291,7 @@ Query OK, 0 rows affected (0.08 sec)
 - MODIRY
 - MONTH
 
-<a name="N" class="letter">N</a>
+<a name="N" class="letter" href="#N">N</a>
 
 - NAMES
 - NATIONAL
@@ -282,7 +305,7 @@ Query OK, 0 rows affected (0.08 sec)
 - NUMERIC (R)
 - NVARCHAR (R)
 
-<a name="O" class="letter">O</a>
+<a name="O" class="letter" href="#O">O</a>
 
 - OFFSET
 - ON (R)
@@ -292,7 +315,7 @@ Query OK, 0 rows affected (0.08 sec)
 - ORDER (R)
 - OUTER (R)
 
-<a name="P" class="letter">P</a>
+<a name="P" class="letter" href="#P">P</a>
 
 - PARTITION (R)
 - PARTITIONS
@@ -307,13 +330,13 @@ Query OK, 0 rows affected (0.08 sec)
 - PROCESS
 - PROCESSLIST
 
-<a name="Q" class="letter">Q</a>
+<a name="Q" class="letter" href="#Q">Q</a>
 
 - QUARTER
 - QUERY
 - QUICK
 
-<a name="R" class="letter">R</a>
+<a name="R" class="letter" href="#R">R</a>
 
 - RANGE (R)
 - READ (R)
@@ -336,7 +359,7 @@ Query OK, 0 rows affected (0.08 sec)
 - ROW_FORMAT
 - ROWS (R)
 
-<a name="S" class="letter">S</a>
+<a name="S" class="letter" href="#S">S</a>
 
 - SCHEMA
 - SCHEMAS
@@ -371,7 +394,7 @@ Query OK, 0 rows affected (0.08 sec)
 - SUM
 - SUPER
 
-<a name="T" class="letter">T</a>
+<a name="T" class="letter" href="#T">T</a>
 
 - TABLE (R)
 - TABLES
@@ -398,7 +421,7 @@ Query OK, 0 rows affected (0.08 sec)
 - TRUE (R)
 - TRUNCATE
 
-<a name="U" class="letter">U</a>
+<a name="U" class="letter" href="#U">U</a>
 
 - UNCOMMITTED
 - UNION (R)
@@ -414,7 +437,7 @@ Query OK, 0 rows affected (0.08 sec)
 - UTC_TIME (R)
 - UTC_TIMESTAMP (R)
 
-<a name="V" class="letter">V</a>
+<a name="V" class="letter" href="#V">V</a>
 
 - VALUE
 - VALUES (R)
@@ -424,7 +447,7 @@ Query OK, 0 rows affected (0.08 sec)
 - VIEW
 - VIRTUAL (R)
 
-<a name="W" class="letter">W</a>
+<a name="W" class="letter" href="#W">W</a>
 
 - WARNINGS
 - WEEK
@@ -433,15 +456,15 @@ Query OK, 0 rows affected (0.08 sec)
 - WITH (R)
 - WRITE (R)
 
-<a name="X" class="letter">X</a>
+<a name="X" class="letter" href="#X">X</a>
 
 - XOR (R)
 
-<a name="Y" class="letter">Y</a>
+<a name="Y" class="letter" href="#Y">Y</a>
 
 - YEAR
 - YEAR_MONTH (R)
 
-<a name="Z" class="letter">Z</a>
+<a name="Z" class="letter" href="#Z">Z</a>
 
 - ZEROFILL (R)

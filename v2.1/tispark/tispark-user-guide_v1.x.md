@@ -73,9 +73,10 @@ Spark 推荐每台计算节点配备 CPU 累计 8 到 16 核以上。你可以�
 Spark 的具体配置方式也请参考[官方说明](https://spark.apache.org/docs/latest/spark-standalone.html)。以下为根据 `spark-env.sh` 配置的范例：
 
 ```
-SPARK_EXECUTOR_MEMORY=32g
-SPARK_WORKER_MEMORY=32g
-SPARK_WORKER_CORES=8
+SPARK_EXECUTOR_CORES: 5
+SPARK_EXECUTOR_MEMORY: 10g
+SPARK_WORKER_CORES: 5
+SPARK_WORKER_MEMORY: 10g
 ```
 
 ### TiSpark 与 TiKV 集群混合部署的配置
@@ -84,7 +85,7 @@ SPARK_WORKER_CORES=8
 
 ## 部署 TiSpark
 
-TiSpark 的 jar 包可以在[这里](http://download.pingcap.org/tispark-0.1.0-SNAPSHOT-jar-with-dependencies.jar)下载。
+TiSpark 的 jar 包可以在[这里](https://download.pingcap.org/tispark-0.1.0-SNAPSHOT-jar-with-dependencies.jar)下载。
 
 ### 已有 Spark 集群的部署方式
 
@@ -108,7 +109,7 @@ ${SPARK_INSTALL_PATH}/jars
 
 #### 下载安装包并安装
 
-你可以在[这里](https://spark.apache.org/downloads.html)下载 Apache Spark。
+你可以在 [Download Apache Spark™ 页面](https://spark.apache.org/downloads.html)下载 Apache Spark。
 
 对于 Standalone 模式且无需 Hadoop 支持，则选择 Spark 2.1.x 且带有 Hadoop 依赖的 Pre-build with Apache Hadoop 2.x 任意版本。如有需要配合使用的 Hadoop 集群，则选择对应的 Hadoop 版本号。你也可以选择从源代码[自行构建](https://spark.apache.org/docs/2.1.0/building-spark.html)以配合官方 Hadoop 2.6 之前的版本。
 
@@ -127,7 +128,7 @@ cd $SPARKPATH
 ./sbin/start-master.sh
 ```
 
-在这步完成以后，屏幕上会打印出一个 log 文件。检查 log 文件确认 Spark-Master 是否启动成功。你可以打开 [http://spark-master-hostname:8080](http://whereever-the-ip-is:8080`c) 查看集群信息（如果你没有改动 Spark-Master 默认 Port Numebr）。在启动 Spark-Slave 的时候，也可以通过这个面板来确认 Slave 是否已经加入集群。
+在这步完成以后，屏幕上会打印出一个 log 文件。检查 log 文件确认 Spark-Master 是否启动成功。你可以打开 <http://spark-master-hostname:8080> 查看集群信息（如果你没有改动 Spark-Master 默认 Port Number）。在启动 Spark-Slave 的时候，也可以通过这个面板来确认 Slave 是否已经加入集群。
 
 #### 启动 Slave
 

@@ -7,7 +7,7 @@ category: reference
 
 TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/config-template.toml](https://github.com/tikv/tikv/blob/master/etc/config-template.toml) 找到默认值的配置文件，重命名为 config.toml 即可。
 
-本文档只阐述未包含在命令行参数中的参数，命令行参数参见[这里](/dev/reference/configuration/tikv-server/configuration.md)。
+本文档只阐述未包含在命令行参数中的参数，命令行参数参见 [TiKV 配置参数](/dev/reference/configuration/tikv-server/configuration.md)。
 
 <!-- markdownlint-disable MD001 -->
 ### `status-thread-pool-size`
@@ -314,6 +314,16 @@ raftstore 相关的配置项。
 + 新节点保护时间，控制迁移 leader 到新加节点的最小时间，设置过小容易导致迁移 leader 失败。
 + 默认值：3s
 + 最小值：0
+
+### `raftstore.hibernate-regions` (**实验特性**)
+
++ 打开或关闭静默 Region。打开后，如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。静默状态的 Region 可以降低 Leader 和 Follower 之间心跳信息的系统开销。可以通过 `raftstore.peer-stale-state-check-interval` 调整 Leader 和 Follower 之间的心跳间隔。
++ 默认值：true
+
+### `raftstore.peer-stale-state-check-interval`
+
++ 修改对 Region 的状态检查间隔时间。
++ 默认值：5 min
 
 ### `split-region-check-tick-interval`
 
@@ -1027,6 +1037,25 @@ raftdb 相关配置项。
 
 + WAL 存储目录。
 + 默认值：/tmp/tikv/store
+
+## security
+
+安全相关配置项。
+
+### `ca-path`
+
++ CA 文件路径
++ 默认值：""
+
+### `cert-path`
+
++ 包含 X509 证书的 PEM 文件路径
++ 默认值：""
+
+### `key-path`
+
++ 包含 X509 key 的 PEM 文件路径
++ 默认值：""
 
 ## import
 

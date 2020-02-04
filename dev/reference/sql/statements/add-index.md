@@ -32,15 +32,34 @@ category: reference
 
 ## 示例
 
-```sql
-mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
-Query OK, 0 rows affected (0.11 sec)
+{{< copyable "sql" >}}
 
-mysql> INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
+```sql
+CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
+```
+
+```
+Query OK, 0 rows affected (0.11 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
+```
+
+```
 Query OK, 5 rows affected (0.03 sec)
 Records: 5  Duplicates: 0  Warnings: 0
+```
 
-mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
+```
+
+```
 +---------------------+----------+------+-------------------------------------------------------------+
 | id                  | count    | task | operator info                                               |
 +---------------------+----------+------+-------------------------------------------------------------+
@@ -49,11 +68,25 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 |   └─TableScan_5     | 10000.00 | cop  | table:t1, range:[-inf,+inf], keep order:false, stats:pseudo |
 +---------------------+----------+------+-------------------------------------------------------------+
 3 rows in set (0.00 sec)
+```
 
-mysql> ALTER TABLE t1 ADD INDEX (c1);
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 ADD INDEX (c1);
+```
+
+```
 Query OK, 0 rows affected (0.30 sec)
+```
 
-mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
+```
+
+```
 +-------------------+-------+------+-----------------------------------------------------------------+
 | id                | count | task | operator info                                                   |
 +-------------------+-------+------+-----------------------------------------------------------------+
@@ -68,7 +101,7 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 * 不支持 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
 * 不支持降序索引（类似于 MySQL 5.7）。
 * 目前尚不支持同时添加多个索引。
-* 无法向表中添加 `PRIMARY KEY`。
+* 默认无法向表中添加 `PRIMARY KEY`，在开启 `alter-primary-key` 配置项后可支持此功能，详情参考：[alter-primary-key](/dev/reference/configuration/tidb-server/configuration-file.md#alter-primary-key)。
 
 ## 另请参阅
 

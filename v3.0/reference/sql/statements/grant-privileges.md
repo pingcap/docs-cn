@@ -40,14 +40,33 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE USER newuser IDENTIFIED BY 'mypassword';
+CREATE USER newuser IDENTIFIED BY 'mypassword';
+```
+
+```
 Query OK, 1 row affected (0.02 sec)
+```
 
-mysql> GRANT ALL ON test.* TO 'newuser';
+{{< copyable "sql" >}}
+
+```sql
+GRANT ALL ON test.* TO 'newuser';
+```
+
+```
 Query OK, 0 rows affected (0.03 sec)
+```
 
-mysql> SHOW GRANTS FOR 'newuser';
+{{< copyable "sql" >}}
+
+```sql
+SHOW GRANTS FOR 'newuser';
+```
+
+```
 +-------------------------------------------------+
 | Grants for newuser@%                            |
 +-------------------------------------------------+

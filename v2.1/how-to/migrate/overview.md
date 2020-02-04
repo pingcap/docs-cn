@@ -15,7 +15,7 @@ category: how-to
 - [Loader](/v2.1/reference/tools/loader.md)：用于将 Mydumper 导出格式的数据导入到 TiDB。
 - [Syncer](/v2.1/reference/tools/syncer.md)：用于将数据从 MySQL 增量同步到 TiDB。
 - [DM (Data Migration)](/v2.1/reference/tools/data-migration/overview.md)：集成了 Mydumper、Loader、Syncer 的功能，支持 MySQL 数据的全量导出和到 TiDB 的全量导入，还支持 MySQL binlog 数据到 TiDB 的增量同步。
-- [TiDB Lightning](/v2.1/reference/tools/tidb-lightning/overview.md)：用于将全量数据高速导入到 TiDB 集群。例如，如果要导入超过 1TiB 的数据，使用 Loader 往往需花费几十个小时，而使用 TiDB-Lighting 的导入速度至少是 Loader 的三倍。
+- [TiDB Lightning](/v2.1/reference/tools/tidb-lightning/overview.md)：用于将全量数据高速导入到 TiDB 集群。例如，如果要导入超过 1TiB 的数据，使用 Loader 往往需花费几十个小时，而使用 TiDB-Lightning 的导入速度至少是 Loader 的三倍。
 
 ## 迁移场景
 

@@ -24,19 +24,38 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SELECT SLEEP(5);
+SELECT SLEEP(5);
+```
+
+```
 +----------+
 | SLEEP(5) |
 +----------+
 |        0 |
 +----------+
 1 row in set (5.00 sec)
+```
 
-mysql> DO SLEEP(5);
+{{< copyable "sql" >}}
+
+```sql
+DO SLEEP(5);
+```
+
+```
 Query OK, 0 rows affected (5.00 sec)
+```
 
-mysql> DO SLEEP(1), SLEEP(1.5);
+{{< copyable "sql" >}}
+
+```sql
+DO SLEEP(1), SLEEP(1.5);
+```
+
+```
 Query OK, 0 rows affected (2.50 sec)
 ```
 

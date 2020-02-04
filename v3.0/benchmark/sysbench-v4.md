@@ -36,6 +36,8 @@ Sysbench 版本：1.0.17
 
 准备数据命令：
 
+{{< copyable "shell-regular" >}}
+
 ```sh
 sysbench oltp_common \
     --threads=16 \
@@ -45,10 +47,13 @@ sysbench oltp_common \
     --mysql-host=$tidb_host \
     --mysql-port=$tidb_port \
     --mysql-user=root \
+    --mysql-password=password \
     prepare --tables=16 --table-size=10000000
 ```
 
 执行测试命令：
+
+{{< copyable "shell-regular" >}}
 
 ```sh
 sysbench $testname \
@@ -62,6 +67,7 @@ sysbench $testname \
     --mysql-host=$tidb_host \
     --mysql-port=$tidb_port \
     --mysql-user=root \
+    --mysql-password=password \
     run --tables=16 --table-size=10000000
 ```
 
@@ -93,6 +99,8 @@ enabled = true
 ```
 
 并设置全局变量：
+
+{{< copyable "sql" >}}
 
 ```sql
 set global tidb_hashagg_final_concurrency=1;

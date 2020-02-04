@@ -22,7 +22,7 @@ aliases: ['/docs-cn/v3.0/how-to/deploy/tidb-in-kubernetes/prerequisites/']
 | :--- | :--- |
 | net.core.somaxconn | 32768 |
 | vm.swappiness | 0 |
-| net.ipv4.tcp_syncookies | 1 |
+| net.ipv4.tcp_syncookies | 0 |
 | net.ipv4.ip_forward | 1 |
 | fs.file-max | 1000000 |
 | fs.inotify.max_user_watches | 1048576 |
@@ -71,9 +71,49 @@ free -m
 
 此外，为了永久性地关闭 swap，还需要将 `/etc/fstab` 中 swap 相关的条目全部删除。
 
+在上述内容都设置完成后，还需要检查是否给机器配置了 [SMP IRQ Affinity](https://cs.uwaterloo.ca/~brecht/servers/apic/SMP-affinity.txt)，也就是将各个设备对应的中断号分别绑定到不同的 CPU 上，以防止所有中断请求都落在同一个 CPU 上而引发性能瓶颈。对于 TiDB 集群来说，网卡处理包的速度对集群的吞吐率影响很大。因此下文主要描述如何将网卡中断号绑定到特定的 CPU 上，充分利用多核的优势来提高集群的吞吐率。首先可以通过以下命令来查看网卡对应的中断号：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cat /proc/interrupts|grep <iface-name>|awk '{print $1,$NF}'
+```
+
+以上命令输出的第一列是中断号，第二列是设备名称。如果是多队列网卡，上面的命令会显示多行信息，网卡的每个队列对应一个中断号。通过以下命令可以查看该中断号被绑定到哪个 CPU 上：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cat /proc/irq/<ir_num>/smp_affinity
+```
+
+上面命令输出 CPU 序号对应的十六进制值。输出结果欠直观。具体计算方法可参见 [SMP IRQ Affinity](https://cs.uwaterloo.ca/~brecht/servers/apic/SMP-affinity.txt) 文档。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cat /proc/irq/<ir_num>/smp_affinity_list
+```
+
+上面命令输出 CPU 序号对应的十进制值，输出结果较为直观。
+
+如果多队列网卡对应的所有中断号都已被绑定到不同的 CPU 上，那么该机器的 SMP IRQ Affinity 配置是正确的。如果中断号都落在同一个 CPU 上，则需要进行调整。调整的方式有以下两种：
+
++ 方法一：开启 [irqbalance](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/performance_tuning_guide/sect-red_hat_enterprise_linux-performance_tuning_guide-tool_reference-irqbalance) 服务。在 centos7 系统上的开启命令如下:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    systemctl start irqbalance
+    ```
+
++ 方法二：禁用 irqbalance，自定义中断号和 CPU 的绑定关系。详情参见脚本 [set_irq_affinity.sh](https://gist.githubusercontent.com/SaveTheRbtz/8875474/raw/0c6e500e81e161505d9111ac77115a2367180d12/set_irq_affinity.sh)。
+
+上文所描述的是处理多队列网卡和多核心的场景。单队列网卡和多核的场景则有不同的处理方式。在这种场景下，可以使用 [RPS/RFS](https://www.kernel.org/doc/Documentation/networking/scaling.txt) 在软件层面模拟实现硬件的网卡多队列功能 (RSS)。此时不能使用方法一所述的 irqbalance 服务，而是通过使用方法二提供的脚本来设置 RPS。RFS 的配置可以参考[这里](https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/performance_tuning_guide/sect-red_hat_enterprise_linux-performance_tuning_guide-networking-configuration_tools#sect-Red_Hat_Enterprise_Linux-Performance_Tuning_Guide-Configuration_tools-Configuring_Receive_Flow_Steering_RFS)。
+
 ## 硬件和部署要求
 
-与使用 binary 方式部署 TiDB 集群一致，要求选用 Intel x86-64 架构的 64 位通用硬件服务器，使用万兆网卡。关于 TiDB 集群在物理机上的具体部署需求，参考[这里](/v3.0/how-to/deploy/hardware-recommendations.md)。
+与使用 binary 方式部署 TiDB 集群一致，要求选用 Intel x86-64 架构的 64 位通用硬件服务器，使用万兆网卡。关于 TiDB 集群在物理机上的具体部署需求，参考 [TiDB 软件和硬件环境建议配置](/v3.0/how-to/deploy/hardware-recommendations.md)。
 
 对于服务器 disk、memory、CPU 的选择要根据对集群的容量规划以及部署拓扑来定。线上 Kubernetes 集群部署为了保证高可用，一般需要部署三个 master 节点、三个 etcd 节点以及若干个 worker 节点。同时，为了充分利用机器资源，master 节点一般也充当 worker 节点（也就是 master 节点上也可以调度负载）。通过 kubelet 设置[预留资源](https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/)来保证机器上的系统进程以及 Kubernetes 的核心进程在工作负载很高的情况下仍然有足够的资源来运行，从而保证整个系统的稳定。
 
@@ -97,7 +137,7 @@ TiDB 集群由 PD、TiKV、TiDB 三个组件组成，在做容量规划的时候
 
 - PD 组件：PD 占用资源较少，这种集群规模下分配 2C 4GB 即可，占用少量本地盘。
 
-    为了便于管理，可以将所有集群的 PD 都放在 master 节点，比如需要支持 5 套 TiDB 集群，则可以规划 3 个 master 节点，每个节点支持部署 5 个 PD 实例，5 个 PD 实例使用同一块 SSD 盘即可（两三百 GB 的盘即可）。通过 bind mount 的方式在这块 SSD 上创建 5 个目录作为挂载点，操作方式见[文档](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)。
+    为了便于管理，可以将所有集群的 PD 都放在 master 节点，比如需要支持 5 套 TiDB 集群，则可以规划 3 个 master 节点，每个节点支持部署 5 个 PD 实例，5 个 PD 实例使用同一块 SSD 盘即可（两三百 GB 的盘即可）。通过 bind mount 的方式在这块 SSD 上创建 5 个目录作为挂载点，操作方式见 [Sharing a disk filesystem by multiple filesystem PVs](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)。
 
     如果后续要添加更多机器支持更多的 TiDB 集群，可以在 master 上用这种方式继续增加 PD 实例。如果 master 上资源耗尽，可以找其它的 worker 节点机器用同样的方式添加 PD 实例。这种方式的好处就是方便规划和管理 PD 实例，坏处就是由于 PD 实例过于集中，这些机器中如果有两台宕机会导致所有的 TiDB 集群不可用。
 

@@ -6,7 +6,7 @@ aliases: ['/docs-cn/sql/json-functions/']
 
 # JSON 函数及语法糖
 
-TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。MySQL 5.7 发布后，又增加了更多 JSON 函数，TiDB 并未支持所有这些函数（参见[未支持的函数](#unsupported-functions)）。
+TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。MySQL 5.7 发布后，又增加了更多 JSON 函数，TiDB 并未支持所有这些函数（参见[未支持的函数](#未支持的函数)）。
 
 ## 创建 JSON 值的函数
 

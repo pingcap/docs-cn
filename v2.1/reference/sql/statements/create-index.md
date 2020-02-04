@@ -45,7 +45,7 @@ category: reference
 ## 示例
 
 ```sql
-mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
+mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
 Query OK, 0 rows affected (0.10 sec)
 
 mysql> INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
@@ -83,7 +83,7 @@ Query OK, 0 rows affected (0.31 sec)
 
 ## 相关 session 变量
 
-和 `CREATE INDEX` 语句相关的全局变量有 `tidb_ddl_reorg_worker_cnt`，`tidb_ddl_reorg_batch_size` 和 `tidb_ddl_reorg_priority`，具体可以参考 [TiDB 特定系统变量](/v2.1/reference/configuration/tidb-server/tidb-specific-variables.md#tidb-ddl-reorg-worker-cnt)。
+和 `CREATE INDEX` 语句相关的全局变量有 `tidb_ddl_reorg_worker_cnt`，`tidb_ddl_reorg_batch_size` 和 `tidb_ddl_reorg_priority`，具体可以参考 [TiDB 特定系统变量](/v2.1/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_ddl_reorg_worker_cnt)。
 
 ## MySQL 兼容性
 

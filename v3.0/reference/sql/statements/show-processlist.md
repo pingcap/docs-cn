@@ -20,8 +20,13 @@ category: reference
 
 ## 示例
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SHOW PROCESSLIST;
+SHOW PROCESSLIST;
+```
+
+```
 +------+------+-----------+------+---------+------+-------+------------------+
 | Id   | User | Host      | db   | Command | Time | State | Info             |
 +------+------+-----------+------+---------+------+-------+------------------+

@@ -14,7 +14,7 @@ import os
 followups = []
 in_toc = False
 contents = []
-docs_versions = ['dev', 'v3.0', 'v2.1']
+docs_versions = ['dev', 'v3.0', 'v2.1', 'v3.1']
 
 hyper_link_pattern = re.compile(r'\[(.*?)\]\((.*?)(#.*?)?\)')
 toc_line_pattern = re.compile(r'([\-\+]+)\s\[(.*?)\]\((.*?)(#.*?)?\)')
@@ -53,7 +53,8 @@ for version in docs_versions:
                     for match in matches:
                         fpath = match[2]
                         if fpath.endswith('.md'):
-                            fpath = version + '/' + fpath
+                            # remove the first slash in the relative path
+                            fpath = fpath[1:]
                             key = ('FILE', level, fpath)
                             if key not in followups:
                                 print(key)

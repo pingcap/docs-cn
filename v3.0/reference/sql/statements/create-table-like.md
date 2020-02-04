@@ -24,15 +24,34 @@ category: reference
 
 ## 示例
 
-```sql
-mysql> CREATE TABLE t1 (a INT NOT NULL);
-Query OK, 0 rows affected (0.13 sec)
+{{< copyable "sql" >}}
 
-mysql> INSERT INTO t1 VALUES (1),(2),(3),(4),(5);
+```sql
+CREATE TABLE t1 (a INT NOT NULL);
+```
+
+```
+Query OK, 0 rows affected (0.13 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 VALUES (1),(2),(3),(4),(5);
+```
+
+```
 Query OK, 5 rows affected (0.02 sec)
 Records: 5  Duplicates: 0  Warnings: 0
+```
 
-mysql> SELECT * FROM t1;
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t1;
+```
+
+```
 +---+
 | a |
 +---+
@@ -43,11 +62,25 @@ mysql> SELECT * FROM t1;
 | 5 |
 +---+
 5 rows in set (0.00 sec)
+```
 
-mysql> CREATE TABLE t2 LIKE t1;
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t2 LIKE t1;
+```
+
+```
 Query OK, 0 rows affected (0.10 sec)
+```
 
-mysql> SELECT * FROM t2;
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t2;
+```
+
+```
 Empty set (0.00 sec)
 ```
 

@@ -7,8 +7,23 @@ category: release
 
 TiDB 历史版本发布声明如下：
 
+## 4.0
+
+- [4.0.0-beta](/dev/releases/4.0.0-beta.md)
+
+## 3.1
+
+- [3.1.0-beta.1](/dev/releases/3.1.0-beta.1.md)
+- [3.1.0-beta](/dev/releases/3.1.0-beta.md)
+
 ## 3.0
 
+- [3.0.9](/dev/releases/3.0.9.md)
+- [3.0.8](/dev/releases/3.0.8.md)
+- [3.0.7](/dev/releases/3.0.7.md)
+- [3.0.6](/dev/releases/3.0.6.md)
+- [3.0.5](/dev/releases/3.0.5.md)
+- [3.0.4](/dev/releases/3.0.4.md)
 - [3.0.3](/dev/releases/3.0.3.md)
 - [3.0.2](/dev/releases/3.0.2.md)
 - [3.0.1](/dev/releases/3.0.1.md)
@@ -21,6 +36,9 @@ TiDB 历史版本发布声明如下：
 
 ## 2.1
 
+- [2.1.19](/dev/releases/2.1.19.md)
+- [2.1.18](/dev/releases/2.1.18.md)
+- [2.1.17](/dev/releases/2.1.17.md)
 - [2.1.16](/dev/releases/2.1.16.md)
 - [2.1.15](/dev/releases/2.1.15.md)
 - [2.1.14](/dev/releases/2.1.14.md)

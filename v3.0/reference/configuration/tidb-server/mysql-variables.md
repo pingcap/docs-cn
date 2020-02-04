@@ -11,14 +11,21 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
 
 ## 设置系统变量
 
-通过 [`SET` 语句](/v3.0/reference/sql/statements/admin.md#set-语句)可以修改系统变量的值。进行修改时，还要考虑变量可修改的范围，不是所有的变量都能在全局/会话范围内进行修改。具体的可修改范围参考 [MySQL 动态变量文档](https://dev.mysql.com/doc/refman/5.7/en/dynamic-system-variables.html)。
+通过 [`SET` 语句](/v3.0/reference/sql/statements/set-variable.md) 可以修改系统变量的值。进行修改时，还要考虑变量可修改的范围，不是所有的变量都能在全局/会话范围内进行修改。具体的可修改范围参考 [MySQL 动态变量文档](https://dev.mysql.com/doc/refman/5.7/en/dynamic-system-variables.html)。
 
 ### 全局范围值
 
 * 在变量名前加 `GLOBAL` 关键词或者是使用 `@@global.` 作为修饰符:
 
+    {{< copyable "sql" >}}
+
     ```sql
     SET GLOBAL autocommit = 1;
+    ```
+
+    {{< copyable "sql" >}}
+
+    ```sql
     SET @@global.autocommit = 1;
     ```
 
@@ -26,9 +33,21 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
 
 * 在变量名前加 `SESSION` 关键词或者是使用 `@@session.` 作为修饰符，或者是不加任何修饰符:
 
+    {{< copyable "sql" >}}
+
     ```sql
     SET SESSION autocommit = 1;
+    ```
+
+    {{< copyable "sql" >}}
+
+    ```sql
     SET @@session.autocommit = 1;
+    ```
+
+    {{< copyable "sql" >}}
+
+    ```sql
     SET @@autocommit = 1;
     ```
 
@@ -38,45 +57,95 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
 
 * 会话范围的系统变量仅仅会在创建会话时才会根据全局范围系统变量初始化自己的值。更改全局范围的系统变量不会改变已经创建的会话正在使用的系统变量的值。
 
+    {{< copyable "sql" >}}
+
     ```sql
-    mysql> SELECT @@GLOBAL.autocommit;
+    SELECT @@GLOBAL.autocommit;
+    ```
+
+    ```
     +---------------------+
     | @@GLOBAL.autocommit |
     +---------------------+
     | ON                  |
     +---------------------+
     1 row in set (0.00 sec)
+    ```
 
-    mysql> SELECT @@SESSION.autocommit;
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT @@SESSION.autocommit;
+    ```
+
+    ```
     +----------------------+
     | @@SESSION.autocommit |
     +----------------------+
     | ON                   |
     +----------------------+
     1 row in set (0.00 sec)
+    ```
 
-    mysql> SET GLOBAL autocommit = OFF;
+    {{< copyable "sql" >}}
+
+    ```sql
+    SET GLOBAL autocommit = OFF;
+    ```
+
+    ```
     Query OK, 0 rows affected (0.01 sec)
+    ```
 
-    mysql> SELECT @@SESSION.autocommit; -- 会话范围的系统变量不会改变，会话中执行的事务依旧是以自动提交的形式来进行。
+    会话范围的系统变量不会改变，会话中执行的事务依旧是以自动提交的形式来进行：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT @@SESSION.autocommit;
+    ```
+
+    ```
     +----------------------+
     | @@SESSION.autocommit |
     +----------------------+
     | ON                   |
     +----------------------+
     1 row in set (0.00 sec)
+    ```
 
-    mysql> SELECT @@GLOBAL.autocommit;
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT @@GLOBAL.autocommit;
+    ```
+
+    ```
     +---------------------+
     | @@GLOBAL.autocommit |
     +---------------------+
     | OFF                 |
     +---------------------+
     1 row in set (0.00 sec)
+    ```
 
-    mysql> exit
+    {{< copyable "sql" >}}
+
+    ```sql
+    exit
+    ```
+
+    ```
     Bye
-    $ mysql -h127.0.0.1 -P4000 -uroot -D test
+    ```
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    mysql -h 127.0.0.1 -P 4000 -u root -D test
+    ```
+
+    ```
     Welcome to the MySQL monitor.  Commands end with ; or \g.
     Your MySQL connection id is 3
     Server version: 5.7.25-TiDB-None MySQL Community Server (Apache License 2.0)
@@ -89,7 +158,16 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
 
     Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-    mysql> SELECT @@SESSION.autocommit; -- 新建的会话会使用新的全局变量。
+    mysql>
+    ```
+
+    新建的会话会使用新的全局变量：
+
+    ```sql
+    SELECT @@SESSION.autocommit;
+    ```
+
+    ```
     +----------------------+
     | @@SESSION.autocommit |
     +----------------------+

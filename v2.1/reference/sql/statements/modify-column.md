@@ -33,7 +33,7 @@ category: reference
 ## 示例
 
 ```sql
-mysql> CREATE TABLE t1 (id int not null primary key auto_increment, col1 INT);
+mysql> CREATE TABLE t1 (id int not null primary key AUTO_INCREMENT, col1 INT);
 Query OK, 0 rows affected (0.11 sec)
 
 mysql> INSERT INTO t1 (col1) VALUES (1),(2),(3),(4),(5);
@@ -65,6 +65,7 @@ ERROR 1105 (HY000): can't run multi schema change
 
 * 目前不支持使用单个 `ALTER TABLE` 语句进行多个修改。
 * 仅支持特定类型的数据类型更改。例如，支持将 `INTEGER` 改为 `BIGINT`，但不支持将 `BIGINT` 改为 `INTEGER`。不支持将整数改为字符串格式或 BLOB 格式。
+* 不支持修改 decimal 类型的精度。
 
 ## 另请参阅
 

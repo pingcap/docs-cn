@@ -17,7 +17,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 | 8001 | 请求使用的内存超过 TiDB 内存使用的阈值限制 |
 | 8002 | 带有 `SELECT FOR UPDATE` 语句的事务，在遇到写入冲突时，为保证一致性无法进行重试，事务将进行回滚并返回该错误 |
 | 8003 | `ADMIN CHECK TABLE` 命令在遇到行数据跟索引不一致的时候返回该错误 |
-| 8004 | 单个事务过大，原因及解决方法请参考[这里](/v3.0/faq/tidb.md#出现-transaction-too-large-报错怎么办) |
+| 8004 | 单个事务过大，原因及解决方法请参考[这里](/v3.0/faq/tidb.md#433-transaction-too-large-是什么原因怎么解决) |
 | 8005 | 事务在 TiDB 中遇到了写入冲突，原因及解决方法请参考[这里](/v3.0/faq/tidb.md#九故障排除) |
 | 9001 | 请求 PD 超时，请检查 PD Server 状态/监控/日志以及 TiDB Server 与 PD Server 之间的网络 |
 | 9002 | 请求 TiKV 超时，请检查 TiKV Server 状态/监控/日志以及 TiDB Server 与 TiKV Server 之间的网络 |

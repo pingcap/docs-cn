@@ -83,7 +83,7 @@ set global tidb_disable_txn_auto_retry=0;
 | TiDB     | c2-standard-16 | 3     |
 | Sysbench | c2-standard-30 | 1     |
 
-在多可用区相对单可用区性能对比中，因为测试时 (2019.08) GCP 的 Region 均没有 3 个可用区可同时提供 c2 机器，我们选择了如下机器型号进行测试：
+分别在多可用区和单可用区中对 TiDB 进行性能测试，并将结果相对比。在测试时 (2019.08)，一个 GCP 区域 (Region) 下不存在三个能同时提供 c2 机器的可用区，所以我们选择了如下机器型号进行测试：
 
 | 组件     | 实例类型       | 数量  |
 | :---     | :---------     | :---- |
@@ -112,11 +112,11 @@ GKE 网络模式使用具备更好扩展性以及功能强大的 [VPC-Native](ht
 
 #### CPU
 
-在单可用集群测试中，我们为 TiDB/TiKV 选择 c2-standard-16 机型测试。在单可用与多可用集群的对比测试中，因为 GCP 没有区域可以同时在 3 个可用区里申请 c2-standard-16 机型。我们选择了 n1-standard-16 机型测试。
+在单可用集群测试中，我们为 TiDB/TiKV 选择 c2-standard-16 机型测试。在单可用与多可用集群的对比测试中，因为 GCP 区域 (Region) 下不存在三个能同时申请 c2-standard-16 机型的可用区，所以我们选择了 n1-standard-16 机型测试。
 
 ### 操作系统及参数
 
-GKE 支持两种操作系统：COS (Container Optimized OS) 和 Ubuntu 。在 Point Select 测试中进行了对比测试。其余测试中，统一使用 Ubuntu 系统进行测试。
+GKE 支持两种操作系统：COS (Container Optimized OS) 和 Ubuntu 。Point Select 测试在两种操作系统中进行，并将结果进行了对比。其余测试中，统一使用 Ubuntu 系统进行测试。
 
 内核统一做了如下配置:
 
@@ -152,7 +152,7 @@ sysbench \
   prepare
 ```
 
-`<tidb-host`> 为 TiDB 的数据库地址，根据不同测试需求选择不同的地址，比如 Pod IP、Service 域名、Host IP 以及 Load Balancer IP（下同）。
+`<tidb-host>` 为 TiDB 的数据库地址，根据不同测试需求选择不同的地址，比如 Pod IP、Service 域名、Host IP 以及 Load Balancer IP（下同）。
 
 #### 预热
 
@@ -202,7 +202,7 @@ sysbench \
 
 #### Pod Network vs Host Network
 
-Kubernetes 可以允许 Pod 运行在 Host 网络模式下，在 TiDB 实例独占机器没有端口冲突的情况下，此部署方式适用。我们分别对两种网络模式下分别做了 Point Select 测试。
+Kubernetes 允许 Pod 运行在 Host 网络模式下。此部署方式适用于 TiDB 实例独占机器且没有端口冲突的情况。我们分别在两种网络模式下做了 Point Select 测试。
 
 此次测试中，操作系统为 COS。
 
@@ -240,7 +240,7 @@ Latency 对比：
 
 #### Ubuntu vs COS
 
-GKE 平台可以为节点选择 [Ubuntu 和 COS 两种操作系统](https://cloud.google.com/kubernetes-engine/docs/concepts/node-images)。本次测试中，分别对两种操作系统进行 Point Select 测试。
+GKE 平台可以为节点选择 [Ubuntu 和 COS 两种操作系统](https://cloud.google.com/kubernetes-engine/docs/concepts/node-images)。本次测试中，分别在两种操作系统中进行了 Point Select 测试。
 
 此次测试中 Pod 网络模式为 Host。
 
@@ -274,16 +274,15 @@ Latency 对比：
 
 ![COS vs Ubuntu](/media/sysbench-in-k8s/cos-vs-ubuntu-latency.png)
 
-从图中可以看到 Host 模式下，Ubuntu 系统在单纯的 Point Select 测试是中表现比 COS 系统要好。
+从图中可以看到 Host 模式下，在单纯的 Point Select 测试中，TiDB 在 Ubuntu 系统中的表现比在 COS 系统中的表现要好。
 
 > **注意：**
 >
-> 此测试只针对单一测试集进行了测试，表明操作系统不同、不同的优化与默认设置，都有可能影响性能，不构成推荐建议。COS 系统专为容器优化，在安全性、磁盘性能做了许多工作，在 GKE 是官方推荐系统。
+> 此测试只针对单一测试集进行了测试，表明不同的操作系统、不同的优化与默认设置，都有可能影响性能，所以我们在此不对操作系统做推荐。COS 系统专为容器优化，在安全性、磁盘性能做了优化，在 GKE 是官方推荐系统。
 
 #### K8S Service vs GCP LoadBalancer
 
-在通过 Kubernetes 部署 TiDB 集群后，访问 TiDB 集群有两种场景：集群内通过
-Service 访问和集群外通过 Load Balancer IP 访问。本次测试中分别对这两种情况进行了对比测试。
+通过 Kubernetes 部署 TiDB 集群后，有两种访问 TiDB 集群的场景：集群内通过 Service 访问或集群外通过 Load Balancer IP 访问。本次测试中分别对这两种情况进行了对比测试。
 
 此次测试中操作系统为 Ubuntu，Pod 为 Host 网络。
 
@@ -317,13 +316,11 @@ Latency 对比：
 
 ![Service vs Load Balancer](/media/sysbench-in-k8s/service-vs-load-balancer-latency.png)
 
-从图中可以看到 K8S Service 在单纯的 Point Select 测试是中表现比 GCP LoadBalancer 要好。
+从图中可以看到在单纯的 Point Select 测试中，使用 Kubernetes Service 访问 TiDB 时的表现比使用 GCP Load Balancer 访问时要好。
 
 #### n1-standard-16 vs c2-standard-16
 
-在 Point Select 读测试中，TiDB 的 CPU 占用首先达到 1400% (16 cores) 以上，此时 TiKV
-CPU 占用约 1000% (16 cores) 。我们对比了普通型和计算优化型机器下 TiDB
-的不同表现。其中 n1-stadnard-16 主频约 2.3G，c2-standard-16 主频约 3.1G。
+在 Point Select 读测试中，TiDB 的 CPU 占用首先达到 1400% (16 cores) 以上，此时 TiKV CPU 占用约 1000% (16 cores) 。我们对比了普通型和计算优化型机器下 TiDB 的不同表现。其中 n1-stadnard-16 主频约 2.3G，c2-standard-16 主频约 3.1G。
 
 此次测试中操作系统为 Ubuntu，Pod 为 Host 网络，使用 Service 访问 TiDB。
 
@@ -359,7 +356,7 @@ Latency 对比：
 
 ### OLTP 其他测试
 
-在使用 Point Select 测试针对不同操作系统、不同网络情况做了对比测试后，对 OLTP 测试集其他测试分别做了测试。这些测试统一使用 Ubuntu 系统、Host 模式并在集群使用 Service 访问 TiDB 集群。
+使用 Point Select 测试针对不同操作系统、不同网络情况做了对比测试后，也进行了 OLTP 测试集中的其他测试。这些测试统一使用 Ubuntu 系统、Host 模式并在集群使用 Service 访问 TiDB 集群。
 
 #### OLTP Update Index
 
@@ -405,7 +402,7 @@ Latency 对比：
 
 ### 单可用区与多可用区对比
 
-GCP 多可用区，涉及跨 Zone 通信，网络延迟相比同 Zone 会少许增加。我们使用同样机器配置，对两种部署方案进行同一标准下的性能测试，了解多可用区延迟增加带来的影响。
+GCP 多可用区涉及跨 Zone 通信，网络延迟相比同 Zone 会少许增加。我们使用同样机器配置，对两种部署方案进行同一标准下的性能测试，了解多可用区延迟增加带来的影响。
 
 单可用区：
 
@@ -437,7 +434,7 @@ Latency 对比：
 
 ![Single Zonal vs Regional](/media/sysbench-in-k8s/single-zonal-vs-regional-latency.png)
 
-从图中可以看到在增大并发压力下，网络额外延迟产生的影响越来越小，额外的网络延迟将不是主要的性能瓶颈。
+从图中可以看到并发压力增大后，网络额外延迟产生的影响越来越小，额外的网络延迟将不再是主要的性能瓶颈。
 
 ## 结语
 
@@ -449,4 +446,4 @@ Latency 对比：
 - 多可用区下节点之间延迟增加，会对 TiDB 性能产生一定的影响（30% ~ 6%，随并发数增加而下降）
 - Point Select 读测试主要消耗 CPU ，计算型机型相对普通型机器带来了很大 QPS 提升 (50% ~ 60%)
 
-但要注意的是，这些因素可能随着时间变化，不同公有云下的表现可能会略有不同。在未来，我们将带来更多维度的测试。同时，sysbench 测试用例并不能完全代表实际业务场景，在做选择前建议模拟实际业务测试，并综合不同选择背后的代价（机器成本、操作系统差异、Host 网络的限制等）。
+但要注意的是，这些因素可能随着时间变化，不同公有云下的表现可能会略有不同。在未来，我们将带来更多维度的测试。同时，sysbench 测试用例并不能完全代表实际业务场景，在做选择前建议模拟实际业务测试，并综合不同选择成本进行选择（机器成本、操作系统差异、Host 网络的限制等）。

@@ -5,7 +5,7 @@ category: reference
 
 # DM Portal 简介
 
-当前版本的 DM 提供了丰富多样的功能特性，包括 [Table routing](/v3.0/reference/tools/data-migration/features/overview.md#table-routing)，[Black & white table lists](/v3.0/reference/tools/data-migration/features/overview.md#black-white-table-lists)，[Binlog event filter](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filter)，[Column mapping](/v3.0/reference/tools/data-migration/features/overview.md#column-mapping) 等。但这些功能特性同时也增加了用户使用 DM 的复杂度，尤其在编写 [DM 任务配置](/v3.0/reference/tools/data-migration/configure/task-configuration-file.md)的时候。
+当前版本的 DM 提供了丰富多样的功能特性，包括 [Table routing](/v3.0/reference/tools/data-migration/features/overview.md#table-routing)，[Black & white table lists](/v3.0/reference/tools/data-migration/features/overview.md#black--white-table-lists)，[Binlog event filter](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filter) 等。但这些功能特性同时也增加了用户使用 DM 的复杂度，尤其在编写 [DM 任务配置](/v3.0/reference/tools/data-migration/configure/task-configuration-file.md)的时候。
 
 针对这个问题，DM 提供了一个精简的网页程序 DM Portal，能够帮助用户以可视化的方式去配置需要的同步任务，并且生成可以直接让 DM 直接执行的 `task.yaml` 文件。
 
@@ -35,7 +35,6 @@ category: reference
 
 当前的 DM 配置可视化生成页面能够覆盖绝大部分的 DM 配置场景，但也有一定的使用限制：
 
-- 不支持 [Column mapping](/v3.0/reference/tools/data-migration/features/overview.md#column-mapping)
 - 不支持 [Binlog event filter](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filter) 的 SQL pattern 方式
 - 编辑功能不支持解析用户之前写的 `task.yaml` 文件，页面只能编辑由页面生成的 `task.yaml` 文件
 - 编辑功能不支持修改实例配置信息，如果用户需要调整实例配置，需要重新生成 `task.yaml` 文件

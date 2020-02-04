@@ -5,7 +5,11 @@ category: how-to
 
 # 使用 TiDB Ansible 扩容缩容 TiDB 集群
 
-TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以下缩容示例中，被移除的节点没有混合部署其他服务；如果混合部署了其他服务，不能按如下操作。
+TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
+
+> **注意：**
+>
+> 以下缩容示例中，被移除的节点没有混合部署其他服务；如果混合部署了其他服务，不能按如下操作。
 
 假设拓扑结构如下所示：
 
@@ -83,7 +87,9 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 2. 初始化新增节点：
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook bootstrap.yml -l 172.16.10.101,172.16.10.102
     ```
 
@@ -93,19 +99,25 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 3. 部署新增节点：
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook deploy.yml -l 172.16.10.101,172.16.10.102
     ```
 
 4. 启动新节点服务：
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook start.yml -l 172.16.10.101,172.16.10.102
     ```
 
 5. 更新 Prometheus 配置并重启：
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
@@ -172,13 +184,17 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 2. 初始化新增节点：
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook bootstrap.yml -l 172.16.10.103
     ```
 
 3. 部署新增节点：
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook deploy.yml -l 172.16.10.103
     ```
 
@@ -190,31 +206,45 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
     3. 在新增 PD 节点中手动启动 PD 服务：
 
-        ```
+        {{< copyable "shell-regular" >}}
+
+        ```bash
         {deploy_dir}/scripts/start_pd.sh
         ```
 
+        > **注意：**
+        >
+        > 启动前，需要通过 [PD Control](/dev/reference/tools/pd-control.md) 工具确认当前 PD 节点的 `health` 状态均为 "true"，否则 PD 服务会启动失败，同时日志中报错 `["join meet error"] [error="etcdserver: unhealthy cluster"]`。
+
     4. 使用 `pd-ctl` 检查新节点是否添加成功：
 
-        ```
+        {{< copyable "shell-regular" >}}
+
+        ```bash
         /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member
         ```
 
 5. 滚动升级整个集群：
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook rolling_update.yml
     ```
 
 6. 启动监控服务：
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook start.yml -l 172.16.10.103
     ```
 
 7. 更新 Prometheus 配置并重启：
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
@@ -226,7 +256,9 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 1. 停止 node5 节点上的服务：
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook stop.yml -l 172.16.10.5
     ```
 
@@ -282,7 +314,9 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 3. 更新 Prometheus 配置并重启：
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
@@ -296,25 +330,33 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
     1. 查看 node9 节点的 store id：
 
-        ```
+        {{< copyable "shell-regular" >}}
+
+        ```bash
         /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d store
         ```
 
     2. 从集群中移除 node9，假如 store id 为 10：
 
-        ```
+        {{< copyable "shell-regular" >}}
+
+        ```bash
         /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d store delete 10
         ```
 
 2. 使用 Grafana 或者 `pd-ctl` 检查节点是否下线成功（下线需要一定时间，下线节点的状态变为 Tombstone 就说明下线成功了）：
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d store 10
     ```
 
 3. 下线成功后，停止 node9 上的服务：
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook stop.yml -l 172.16.10.9
     ```
 
@@ -370,7 +412,9 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 5. 更新 Prometheus 配置并重启：
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 
@@ -384,25 +428,33 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
     1. 查看 node2 节点的 name：
 
-        ```
+        {{< copyable "shell-regular" >}}
+
+        ```bash
         /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member
         ```
 
     2. 从集群中移除 node2，假如 name 为 pd2：
 
-        ```
+        {{< copyable "shell-regular" >}}
+
+        ```bash
         /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member delete name pd2
         ```
 
 2. 使用 `pd-ctl` 检查节点是否下线成功（PD 下线会很快，结果中没有 node2 节点信息即为下线成功）：
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member
     ```
 
 3. 下线成功后，停止 node2 上的服务：
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook stop.yml -l 172.16.10.2
     ```
 
@@ -458,13 +510,17 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。以
 
 5. 滚动升级整个集群：
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook rolling_update.yml
     ```
 
 6. 更新 Prometheus 配置并重启：
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
     ansible-playbook rolling_update_monitor.yml --tags=prometheus
     ```
 

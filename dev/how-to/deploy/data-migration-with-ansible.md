@@ -33,15 +33,19 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
 - CentOS 7：
 
-    ```
-    # yum -y install epel-release git curl sshpass
-    # yum -y install python-pip
+    {{< copyable "shell-root" >}}
+
+    ```bash
+    yum -y install epel-release git curl sshpass &&
+    yum -y install python-pip
     ```
 
 - Ubuntu：
 
-    ```
-    # apt-get -y install git curl sshpass python-pip
+    {{< copyable "shell-root" >}}
+
+    ```bash
+    apt-get -y install git curl sshpass python-pip
     ```
 
 ## 第 2 步：在中控机上创建 `tidb` 用户，并生成 SSH 密钥
@@ -52,20 +56,29 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
 1. 创建 `tidb` 用户。
 
-    ```
-    # useradd -m -d /home/tidb tidb
+    {{< copyable "shell-root" >}}
+
+    ```bash
+    useradd -m -d /home/tidb tidb
     ```
 
 2. 为 `tidb` 用户设置密码。
 
-    ```
-    # passwd tidb
+    {{< copyable "shell-root" >}}
+
+    ```bash
+    passwd tidb
     ```
 
 3. 在 sudo 文件尾部加上 `tidb ALL=(ALL) NOPASSWD: ALL`，为 `tidb` 用户设置免密使用 sudo。
 
+    {{< copyable "shell-root" >}}
+
+    ```bash
+    visudo
     ```
-    # visudo
+
+    ```
     tidb ALL=(ALL) NOPASSWD: ALL
     ```
 
@@ -73,14 +86,21 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
     执行以下 `su` 命令，将登录用户从 `root` 切换至 `tidb`。
 
-    ```
-    # su - tidb
+    {{< copyable "shell-root" >}}
+
+    ```bash
+    su - tidb
     ```
 
     为 `tidb` 用户创建 SSH 密钥。当提示 `Enter passphrase` 时，按 <kbd>Enter</kbd> 键。命令成功执行后，生成的 SSH 私钥文件为 `/home/tidb/.ssh/id_rsa`，SSH 公钥文件为`/home/tidb/.ssh/id_rsa.pub`。
 
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ssh-keygen -t rsa
     ```
-    $ ssh-keygen -t rsa
+
+    ```
     Generating public/private rsa key pair.
     Enter file in which to save the key (/home/tidb/.ssh/id_rsa):
     Created directory '/home/tidb/.ssh'.
@@ -113,11 +133,14 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 1. 打开 `/home/tidb` 目录。
 2. 执行以下命令下载 DM-Ansible。
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ wget http://download.pingcap.org/dm-ansible-{version}.tar.gz
+    wget https://download.pingcap.org/dm-ansible-{version}.tar.gz
     ```
 
-    `{version}` 为期望下载的 DM 版本，如 `v1.0.0-alpha`、`latest` 等。
+    `{version}` 为期望下载的 DM 版本，如 `v1.0.1`、`v1.0.2` 等，
+    可以通过 [DM Release](https://github.com/pingcap/dm/releases) 查看当前已发布版本。也可以使用 `latest` 替代 `{version}` 来下载最新的未发布版本。
 
 ## 第 4 步：安装 DM-Ansible 及其依赖至中控机
 
@@ -128,19 +151,26 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
 1. 在中控机上安装 DM-Ansible 及其依赖包：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ tar -xzvf dm-ansible-latest.tar.gz
-    $ mv dm-ansible-latest dm-ansible
-    $ cd /home/tidb/dm-ansible
-    $ sudo pip install -r ./requirements.txt
+    tar -xzvf dm-ansible-{version}.tar.gz &&
+    mv dm-ansible-{version} dm-ansible &&
+    cd /home/tidb/dm-ansible &&
+    sudo pip install -r ./requirements.txt
     ```
 
     Ansible 和相关依赖包含于 `dm-ansible/requirements.txt` 文件中。
 
 2. 查看 Ansible 版本：
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ ansible --version
+    ansible --version
+    ```
+
+    ```
     ansible 2.5.0
     ```
 
@@ -152,9 +182,14 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
 1. 将您部署的目标机器的 IP 地址加至 `hosts.ini` 文件中的 `[servers]` 部分。
 
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cd /home/tidb/dm-ansible &&
+    vi hosts.ini
     ```
-    $ cd /home/tidb/dm-ansible
-    $ vi hosts.ini
+
+    ```
     [servers]
     172.16.10.71
     172.16.10.72
@@ -166,8 +201,10 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 
 2. 运行如下命令，然后输入部署目标机器的 `root` 用户密码。
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
-    $ ansible-playbook -i hosts.ini create_users.yml -u root -k
+    ansible-playbook -i hosts.ini create_users.yml -u root -k
     ```
 
    该步骤将在部署目标机器上创建 `tidb` 用户，创建 sudo 规则，并为中控机和部署目标机器之间配置 SSH 互信。
@@ -179,6 +216,8 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 > 请确保中控机接入互联网。
 
 在中控机上，运行如下命令：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 ansible-playbook local_prepare.yml
@@ -242,7 +281,7 @@ cluster_name = test-cluster
 
 ansible_user = tidb
 
-dm_version = latest
+dm_version = {version}
 
 deploy_dir = /data1/dm
 
@@ -250,7 +289,7 @@ grafana_admin_user = "admin"
 grafana_admin_password = "admin"
 ```
 
-关于 DM-worker 参数的更多信息，请参考 [DM-worker 配置及参数描述](#dm-worker-配置及参数描述)。
+`{version}` 为当前 DM-Ansible 对应的版本号。关于 DM-worker 参数的更多信息，请参考 [DM-worker 配置及参数描述](#dm-worker-配置及参数描述)。
 
 ### 选项 2：使用单节点上多个 DM-worker 实例的集群拓扑
 
@@ -293,7 +332,7 @@ cluster_name = test-cluster
 
 ansible_user = tidb
 
-dm_version = latest
+dm_version = {version}
 
 deploy_dir = /data1/dm
 
@@ -301,20 +340,22 @@ grafana_admin_user = "admin"
 grafana_admin_password = "admin"
 ```
 
+`{version}` 为当前 DM-Ansible 对应的版本号。
+
 ### DM-worker 配置及参数描述
 
 | 变量名称 | 描述 |
 | ------------- | -------
 | source_id | DM-worker 绑定到的一个数据库实例或是具有主从架构的复制组。当发生主从切换的时候，只需要更新 `mysql_host` 或 `mysql_port` 而不用更改该 ID 标识。 |
-| server_id | DM-worker 伪装成一个 MySQL slave，该变量即为这个 slave 的 server ID，在 MySQL 集群中需保持全局唯一。取值范围 0 ~ 4294967295。|
-| mysql_host | 上游 MySQL 主机 |
+| server_id | DM-worker 伪装成一个 MySQL slave，该变量即为这个 slave 的 server ID，在 MySQL 集群中需保持全局唯一。取值范围 0 ~ 4294967295。v1.0.2 及以上版本的 DM 会自动生成，不需要手动配置。 |
+| mysql_host | 上游 MySQL 主机。 |
 | mysql_user | 上游 MySQL 用户名，默认值为 “root”。|
 | mysql_password | 上游 MySQL 用户密码，需使用 `dmctl` 工具加密。请参考[使用 dmctl 加密上游 MySQL 用户密码](#使用-dmctl-加密上游-mysql-用户密码)。 |
 | mysql_port | 上游 MySQL 端口， 默认 3306。 |
 | enable_gtid | DM-worker 是否使用全局事务标识符（GTID）拉取 binlog。使用前提是在上游 MySQL 已开启 GTID 模式。 |
-| relay_binlog_name | DM-worker 是否从指定 binlog 文件位置开始拉取 binlog。仅适用于本地无有效 relay log 的情况。|
-| relay_binlog_gtid | DM-worker 是否从指定 GTID 位置开始拉取 binlog。仅适用于本地无有效 relay log，且 `enable_gtid` 设置为 true 的情况。 |
-| flavor | 代表 MySQL 的版本发布类型。 如果是官方版本，Percona 版，或 Cloud MySQL 版，其值为 “mysql”。 如果是 MariaDB，其值为 "mariadb"。默认值是 "mysql"。 |
+| relay_binlog_name | DM-worker 是否从指定 binlog 文件位置开始拉取 binlog。仅适用于本地无有效 relay log 的情况。v1.0.2 及以上版本的 DM 会默认从最新位置开始拉取 binlog，一般情况下不需要手动配置。|
+| relay_binlog_gtid | DM-worker 是否从指定 GTID 位置开始拉取 binlog。仅适用于本地无有效 relay log，且 `enable_gtid` 设置为 true 的情况。v1.0.2 及以上版本的 DM 会默认从最新位置开始拉取 binlog，一般情况下不需要手动配置。 |
+| flavor | 代表 MySQL 的版本发布类型。 如果是官方版本，Percona 版，或 Cloud MySQL 版，其值为 “mysql”。 如果是 MariaDB，其值为 "mariadb"。默认值是 "mysql"。v1.0.2 及以上版本的 DM 会自动判断上游版本，不需要手动配置。 |
 
 关于 `deploy_dir` 配置的更多信息，请参考[配置部署目录](#配置部署目录)。
 
@@ -322,9 +363,14 @@ grafana_admin_password = "admin"
 
 假定上游 MySQL 的用户密码为 `123456`，运行以下命令，并将生成的字符串添加至 DM-worker 的 `mysql_password` 变量。
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-$ cd /home/tidb/dm-ansible/resources/bin
-$ ./dmctl -encrypt 123456
+cd /home/tidb/dm-ansible/resources/bin &&
+./dmctl -encrypt 123456
+```
+
+```
 VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=
 ```
 
@@ -363,7 +409,7 @@ dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 
 
 > **注意：**
 >
-> 如未设定 `relay_binlog_name`，DM-worker 将从上游 MySQL 或 MariaDB 现有最早时间点的 binlog 文件开始拉取 binlog。拉取到数据同步任务需要的最新 binlog 可能需要很长时间。
+> 如未设定 `relay_binlog_name`，v1.0.2 之前版本的 DM-worker 将从上游 MySQL 或 MariaDB 现有最早时间点的 binlog 文件开始拉取 binlog，拉取到数据同步任务需要的最新 binlog 可能需要很长时间；v1.0.2 及之后版本的 DM-worker 将从最新时间点的 binlog 文件开始拉取 binlog，一般情况下不需要手动配置。
 
 ### 开启 relay log GTID 同步模式
 
@@ -405,11 +451,13 @@ dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 
     ansible_user = tidb
     ```
 
-   > **注意：**
-   >
-   > 请勿将 `ansible_user` 设为 `root`，因为 `tidb-ansible` 限制服务需以普通用户运行。
+    > **注意：**
+    >
+    > 请勿将 `ansible_user` 设为 `root`，因为 `tidb-ansible` 限制服务需以普通用户运行。
 
     运行以下命令。如果所有服务都返回 `tidb`，则 SSH 互信配置成功。
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     ansible -i inventory.ini all -m shell -a 'whoami'
@@ -417,17 +465,23 @@ dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 
 
     运行以下命令。如果所有服务都返回 `root`，则 `tidb` 用户免密 sudo 操作配置成功。
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     ansible -i inventory.ini all -m shell -a 'whoami' -b
     ```
 
 2. 修改内核参数，并部署 DM 集群组件和监控组件。
 
+    {{< copyable "shell-regular" >}}
+
     ```bash
     ansible-playbook deploy.yml
     ```
 
 3. 启动 DM 集群。
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     ansible-playbook start.yml
@@ -439,8 +493,10 @@ dm-worker2 ansible_host=172.16.10.73 source_id="mysql-replica-02" server_id=102 
 
 如果您需要关闭一个 DM 集群，运行以下命令：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-$ ansible-playbook stop.yml
+ansible-playbook stop.yml
 ```
 
 该操作会按顺序关闭整个 DM 集群中的所有组件，包括 DM-master，DM-worker，以及监控组件。
@@ -469,36 +525,46 @@ dm_master ansible_host=172.16.10.71 dm_master_port=18261
 
 1. 使用 `tidb` 账户登录至中控机，进入 `/home/tidb` 目录，然后备份`dm-ansible` 文件夹。
 
-    ```
-    $ cd /home/tidb
-    $ mv dm-ansible dm-ansible-bak
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cd /home/tidb && \
+    mv dm-ansible dm-ansible-bak
     ```
 
 2. 下载指定版本 DM-Ansible，解压。
 
-    ```
-    $ cd /home/tidb
-    $ wget http://download.pingcap.org/dm-ansible-{version}.tar.gz
-    $ tar -xzvf dm-ansible-latest.tar.gz
-    $ mv dm-ansible-latest dm-ansible
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cd /home/tidb && \
+    wget https://download.pingcap.org/dm-ansible-{version}.tar.gz && \
+    tar -xzvf dm-ansible-{version}.tar.gz && \
+    mv dm-ansible-{version} dm-ansible
     ```
 
 3. 迁移 `inventory.ini` 配置文件。
 
-    ```
-    $ cd /home/tidb
-    $ cp dm-ansible-bak/inventory.ini dm-ansible/inventory.ini
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cd /home/tidb && \
+    cp dm-ansible-bak/inventory.ini dm-ansible/inventory.ini
     ```
 
 4. 迁移 `dmctl` 配置。
 
-    ```
-    $ cd /home/tidb/dm-ansible-bak/dmctl
-    $ cp * /home/tidb/dm-ansible/dmctl/
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cd /home/tidb/dm-ansible-bak/dmctl && \
+    cp * /home/tidb/dm-ansible/dmctl/
     ```
 
 5. 用 Playbook 下载最新的 DM 二进制文件。此文件会自动替换 `/home/tidb/dm-ansible/resource/bin/` 目录下的二进制文件。
 
-    ```
-    $ ansible-playbook local_prepare.yml
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ansible-playbook local_prepare.yml
     ```

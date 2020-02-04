@@ -11,8 +11,7 @@ jobs:
       - run:
           name: "Install markdownlint"
           command: |
-            sudo npm install -g markdownlint-cli
-            markdownlint --version
+            sudo npm install -g markdownlint-cli@0.17.0
 
       - run:
           name: "Lint dev"
@@ -63,11 +62,13 @@ jobs:
               python3 scripts/upload.py dev/output.pdf tidb-manual-cn-dev.pdf;
               python3 scripts/upload.py v3.0/output.pdf tidb-manual-cn-v3.0.pdf;
               python3 scripts/upload.py v2.1/output.pdf tidb-manual-cn-v2.1.pdf;
+              python3 scripts/upload.py v3.1/output.pdf tidb-manual-cn-v3.1.pdf;
             fi
             if [ "${CIRCLE_BRANCH}" == "website-preview" ]; then
               python3 scripts/upload.py dev/output.pdf tidb-manual-cn-preview-dev.pdf;
               python3 scripts/upload.py v3.0/output.pdf tidb-manual-cn-preview-v3.0.pdf;
               python3 scripts/upload.py v2.1/output.pdf tidb-manual-cn-preview-v2.1.pdf;
+              python3 scripts/upload.py v3.1/output.pdf tidb-manual-cn-preview-v3.1.pdf;
             fi
 
       - run:

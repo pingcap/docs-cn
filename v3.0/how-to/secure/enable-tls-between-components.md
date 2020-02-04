@@ -71,15 +71,21 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
 
     此时 TiDB 集群各个组件间已开启双向验证。
 
-> **注意：**
->
-> 若 TiDB 集群各个组件间已开启 TLS，在使用 tikv-ctl 或 pd-ctl 工具连接集群时，需要指定 client 证书，示例：
+    > **注意：**
+    >
+    > 若 TiDB 集群各个组件间已开启 TLS，在使用 tikv-ctl 或 pd-ctl 工具连接集群时，需要指定 client 证书，示例：
 
-```bash
-./pd-ctl -u https://127.0.0.1:2379 --cacert /path/to/ca.pem --cert /path/to/client.pem --key /path/to/client-key.pem
+    {{< copyable "shell-regular" >}}
 
-./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/client.pem" --key-path="/path/to/clinet-key.pem"
-```
+    ```bash
+    ./pd-ctl -u https://127.0.0.1:2379 --cacert /path/to/ca.pem --cert /path/to/client.pem --key /path/to/client-key.pem
+    ```
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/client.pem" --key-path="/path/to/client-key.pem"
+    ```
 
 ### MySQL 与 TiDB 间开启 TLS
 
@@ -94,6 +100,8 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
 1. 生成 token 文件。
 
     token 文件存储的是密钥，用于对用户数据进行加密，以及对已加密的数据进行解密。
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
     ./tikv-ctl random-hex --len 256 > cipher-file-256

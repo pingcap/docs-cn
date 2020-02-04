@@ -9,21 +9,17 @@ category: reference
 
 上述情况中，如果在新建的表上发生大批量写入，则会造成热点，因为开始只有一个 Region，所有的写请求都发生在该 Region 所在的那台 TiKV 上。
 
-为解决上述场景中的热点问题，TiDB 引入了预切分 Region 的功能，即可以根据用户指定的参数，预先为某个表切分出多个 Region，并打散到各个 TiKV 上去。
+为解决上述场景中的热点问题，TiDB 引入了预切分 Region 的功能，即可以根据指定的参数，预先为某个表切分出多个 Region，并打散到各个 TiKV 上去。
 
 ## Split Region 的使用
 
 Split Region 有 2 种不同的语法，具体如下：
-
-{{< copyable "sql" >}}
 
 ```sql
 SPLIT TABLE table_name [INDEX index_name] BETWEEN (lower_value) AND (upper_value) REGIONS region_num
 ```
 
 `BETWEEN lower_value AND upper_value REGIONS region_num` 语法是通过指定上、下边界和 Region 数量，然后在上、下边界之间均匀切分出 `region_num` 个 Region。
-
-{{< copyable "sql" >}}
 
 ```sql
 SPLIT TABLE table_name [INDEX index_name] BY (value_list) [, (value_list)] ...
@@ -49,7 +45,7 @@ t22_r11
 
 #### 均匀切分
 
-由于 `row_id` 是整数，所以根据用户指定的 `lower_value`、`upper_value` 以及 `region_num`，可以很容易地计算出需要切分的 key。先计算出 step（`step = (upper_value - lower_value)/num`），然后在 `lower_value` 和 `upper_value` 之间每隔 step 区间切一次，最终切出 `num` 个 Region。
+由于 `row_id` 是整数，所以根据指定的 `lower_value`、`upper_value` 以及 `region_num`，可以推算出需要切分的 key。TiDB 先计算 step（`step = (upper_value - lower_value)/num`），然后在 `lower_value` 和 `upper_value` 之间每隔 step 区间切一次，最终切出 `num` 个 Region。
 
 例如，对于表 t，如果想要从 `minInt64`~`maxInt64` 之间均匀切割出 16 个 Region，可以用以下语句：
 
@@ -174,25 +170,24 @@ region4  [("c", "")                    , maxIndexValue               )
 
 ## pre_split_regions
 
-对于带有 `shard_row_id_bits` 的表，如果希望建表时就均匀预切分好 Region，可以使用 `pre_split_regions` 配置。
+使用带有 `shard_row_id_bits` 的表时，如果希望建表时就均匀切分 Region，可以考虑配合 `pre_split_regions` 一起使用，用来在建表成功后就开始预均匀切分 `2^(pre_split_regions)` 个 Region。
 
 > **注意：**
 >
 > `pre_split_regions` 必须小于等于 `shard_row_id_bits`。
-
-这样在建表成功后, 该表的行数据会均匀切分成 `2^(pre_split_regions-1)` 个 Region。
 
 ### 示例
 
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a int, b int,index idx1(a)) shard_row_id_bits = 4 pre_split_regions=3;
+create table t (a int, b int,index idx1(a)) shard_row_id_bits = 4 pre_split_regions=2;
 ```
 
 `pre_split_regions` = 3 则 Region ＝ 2^(3-1) = 4
 
 所以该语句在建表后，会生成 4 个 Region 来存行数据，同时还有 1 个 Region 存 idx1 索引的数据。
+
 
 4 个行数据 Region 的范围区间如下：
 
@@ -209,4 +204,4 @@ Region4:  [6917529027641081856 , 9223372036854775807) ( (4 << 61) - 1 )
 
 ## 相关 session 变量
 
-和 `SPLIT REGION` 语句相关的 session 变量有 `tidb_wait_split_region_finish` 和 `tidb_wait_split_region_timeout`，具体可参考 [TiDB 专用系统变量和语法](/v3.0/reference/configuration/tidb-server/tidb-specific-variables.md)。
+和 `SPLIT REGION` 语句相关的 session 变量有 `tidb_scatter_region`，`tidb_wait_split_region_finish` 和 `tidb_wait_split_region_timeout`，具体可参考 [TiDB 专用系统变量和语法](/v3.0/reference/configuration/tidb-server/tidb-specific-variables.md)。

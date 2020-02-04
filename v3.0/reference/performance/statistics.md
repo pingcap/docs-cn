@@ -31,7 +31,7 @@ TiDB 优化器会根据统计信息来选择最优的执行计划。统计信息
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableNameList [WITH NUM BUCKETS]
+ANALYZE TABLE TableNameList [WITH NUM BUCKETS];
 ```
 
 WITH NUM BUCKETS 可以用来指定生成直方图的桶数量上限。
@@ -41,7 +41,7 @@ WITH NUM BUCKETS 可以用来指定生成直方图的桶数量上限。
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS]
+ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS];
 ```
 
 IndexNameList 为空时会收集所有索引列的统计信息。
@@ -51,7 +51,7 @@ IndexNameList 为空时会收集所有索引列的统计信息。
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS]
+ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS];
 ```
 
 收集 TableName 中所有的 PartitionNameList 中分区的索引列统计信息：
@@ -59,7 +59,7 @@ ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS]
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableName PARTITION PartitionNameList [IndexNameList] [WITH NUM BUCKETS]
+ANALYZE TABLE TableName PARTITION PartitionNameList [IndexNameList] [WITH NUM BUCKETS];
 ```
 
 #### 增量收集
@@ -78,7 +78,7 @@ ANALYZE TABLE TableName PARTITION PartitionNameList [IndexNameList] [WITH NUM BU
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS]
+ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS];
 ```
 
 增量收集 TableName 中所有的 PartitionNameList 中分区的索引列统计信息：
@@ -86,13 +86,13 @@ ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS]
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS]
+ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS];
 ```
 
 ### 自动更新
 
 在发生增加，删除以及修改语句时，TiDB 会自动更新表的总行数以及修改的行数。这些信息会定期持久化下来，
-更新的周期是 5 * `stats-lease`，`stats-lease` 的默认值是 3s，如果将其指定为 0，那么将不会自动更新。
+更新的周期是 20 * `stats-lease`，`stats-lease` 的默认值是 3s，如果将其指定为 0，那么将不会自动更新。
 
 和统计信息自动更新相关的三个系统变量如下：
 
@@ -116,7 +116,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 #### tidb_distsql_scan_concurrency
 
-在执行分析普通列任务的时候，`tidb_distsql_scan_concurrency` 可以用于控制一次读取的 Region 数量，其默认值是 10。
+在执行分析普通列任务的时候，`tidb_distsql_scan_concurrency` 可以用于控制一次读取的 Region 数量，其默认值是 15。
 
 #### tidb_index_serial_scan_concurrency
 
@@ -131,7 +131,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 {{< copyable "sql" >}}
 
 ```sql
-SHOW ANALYZE STATUS [ShowLikeOrWhere]
+SHOW ANALYZE STATUS [ShowLikeOrWhere];
 ```
 
 该语句会输出 `ANALYZE` 的状态，可以通过使用 `ShowLikeOrWhere` 来筛选需要的信息。
@@ -161,7 +161,7 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere]
 {{< copyable "sql" >}}
 
 ```sql
-SHOW STATS_META [ShowLikeOrWhere]
+SHOW STATS_META [ShowLikeOrWhere];
 ```
 
 该语句会输出所有表的总行数以及修改行数等信息，你可以通过 ShowLikeOrWhere 来筛选需要的信息。
@@ -177,6 +177,31 @@ SHOW STATS_META [ShowLikeOrWhere]
 | modify_count | 修改的行数 |
 | row_count | 总行数 |
 
+> **注意：**
+>
+> 在 TiDB 根据 DML 语句自动更新总行数以及修改的行数时，`update_time` 也会被更新，因此并不能认为 `update_time` 是最近一次发生 Analyze 的时间。
+
+### 表的健康度信息
+
+通过 `SHOW STATS_HEALTHY` 可以查看表的统计信息健康度，并粗略估计表上统计信息的准确度。当 `modify_count` >= `row_count` 时，健康度为 0；当 `modify_count` < `row_count` 时，健康度为 (1 - `modify_count`/`row_count`) * 100。
+
+通过以下命令来查看表的统计信息健康度，你可以通过 `ShowLikeOrWhere` 来筛选需要的信息：
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW STATS_HEALTHY [ShowLikeOrWhere];
+```
+
+目前，`SHOW STATS_HEALTHY` 会输出 4 列，具体如下：
+
+| 语法元素 | 说明            |
+| :-------- | :------------- |
+| db_name  |  数据库名    |
+| table_name | 表名 |
+| partition_name| 分区名 |
+| healthy | 健康度 |
+
 ### 列的元信息
 
 你可以通过 `SHOW STATS_HISTOGRAMS` 来查看列的不同值数量以及 NULL 数量等信息。
@@ -186,7 +211,7 @@ SHOW STATS_META [ShowLikeOrWhere]
 {{< copyable "sql" >}}
 
 ```sql
-SHOW STATS_HISTOGRAMS [ShowLikeOrWhere]
+SHOW STATS_HISTOGRAMS [ShowLikeOrWhere];
 ```
 
 该语句会输出所有列的不同值数量以及 NULL 数量等信息，你可以通过 ShowLikeOrWhere 来筛选需要的信息。
@@ -198,7 +223,7 @@ SHOW STATS_HISTOGRAMS [ShowLikeOrWhere]
 | db_name  |  数据库名    |
 | table_name | 表名 |
 | partition_name | 分区名 |
-| column_name | 列名 |
+| column_name | 根据 is_index 来变化：is_index 为 0 时是列名，为 1 时是索引名 |
 | is_index | 是否是索引列 |
 | update_time | 更新时间 |
 | distinct_count | 不同值数量 |
@@ -214,7 +239,7 @@ SHOW STATS_HISTOGRAMS [ShowLikeOrWhere]
 {{< copyable "sql" >}}
 
 ```sql
-SHOW STATS_BUCKETS [ShowLikeOrWhere]
+SHOW STATS_BUCKETS [ShowLikeOrWhere];
 ```
 
 该语句会输出所有桶的信息，你可以通过 ShowLikeOrWhere 来筛选需要的信息。
@@ -226,7 +251,7 @@ SHOW STATS_BUCKETS [ShowLikeOrWhere]
 | db_name  |  数据库名    |
 | table_name | 表名 |
 | partition_name | 分区名 |
-| column_name | 列名 |
+| column_name | 根据 is_index 来变化：is_index 为 0 时是列名，为 1 时是索引名 |
 | is_index | 是否是索引列 |
 | bucket_id | 桶的编号 |
 | count | 所有落在这个桶及之前桶中值的数量 |
@@ -243,7 +268,7 @@ SHOW STATS_BUCKETS [ShowLikeOrWhere]
 {{< copyable "sql" >}}
 
 ```sql
-DROP STATS TableName
+DROP STATS TableName;
 ```
 
 该语句会删除 TableName 中所有的统计信息。
@@ -287,7 +312,7 @@ http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${tabl
 {{< copyable "sql" >}}
 
 ```sql
-LOAD STATS 'file_name'
+LOAD STATS 'file_name';
 ```
 
 `file_name` 为要导入的统计信息的文件名。

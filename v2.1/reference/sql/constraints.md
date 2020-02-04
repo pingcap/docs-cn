@@ -17,11 +17,11 @@ TiDB 支持的基本约束与 MySQL 的基本相同，但有以下区别：
 
 ```
 CREATE TABLE users (
- id INT NOT NULL PRIMARY KEY auto_increment,
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
  doc JSON
 );
 CREATE TABLE orders (
- id INT NOT NULL PRIMARY KEY auto_increment,
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
  user_id INT NOT NULL,
  doc JSON,
  FOREIGN KEY fk_user_id (user_id) REFERENCES users(id)
@@ -45,13 +45,17 @@ ALTER TABLE orders DROP FOREIGN KEY fk_user_id;
 ALTER TABLE orders ADD FOREIGN KEY fk_user_id (user_id) REFERENCES users(id);
 ```
 
-然而，TiDB 不会在 DML 语句中对外键进行约束。例如，即使 `users` 表中不存在 `id=123` 的记录，下列事务也能提交成功：
+### 注意
 
-```
-START TRANSACTION;
-INSERT INTO orders (user_id, doc) VALUES (123, NULL);
-COMMIT;
-```
+* TiDB 支持外键是为了在将其他数据库迁移到 TiDB 时，不会因为此语法报错。但是，TiDB 不会在 DML 语句中对外键进行约束。例如，即使 `users` 表中不存在 `id=123` 的记录，下列事务也能提交成功：
+
+    ```
+    START TRANSACTION;
+    INSERT INTO orders (user_id, doc) VALUES (123, NULL);
+    COMMIT;
+    ```
+
+* TiDB 在执行 `SHOW CREATE TABLE` 语句的结果中不显示外键信息。
 
 ## 非空约束
 
@@ -59,7 +63,7 @@ TiDB 支持的非空约束规则与 MySQL 支持的一致。例如：
 
 ```
 CREATE TABLE users (
- id INT NOT NULL PRIMARY KEY auto_increment,
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
  age INT NOT NULL,
  last_login TIMESTAMP
 );
@@ -71,7 +75,7 @@ mysql> INSERT INTO users (id,age,last_login) VALUES (NULL,123,NULL);
 Query OK, 1 row affected (0.03 sec)
 ```
 
-* 第一条 `INSERT` 语句成功，因为对于定义为 `auto_increment` 的列，允许 `NULL` 作为其特殊值。TiDB 将为其分配下一个自动值。
+* 第一条 `INSERT` 语句成功，因为对于定义为 `AUTO_INCREMENT` 的列，允许 `NULL` 作为其特殊值。TiDB 将为其分配下一个自动值。
 
 * 第二条 `INSERT` 语句失败，因为 `age` 列被定义为 `NOT NULL`。
 
@@ -105,7 +109,7 @@ Query OK, 0 rows affected (0.10 sec)
 ```
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
- id INT NOT NULL PRIMARY KEY auto_increment,
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
  username VARCHAR(60) NOT NULL,
  UNIQUE KEY (username)
 );
@@ -129,7 +133,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ```
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
- id INT NOT NULL PRIMARY KEY auto_increment,
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
  username VARCHAR(60) NOT NULL,
  UNIQUE KEY (username)
 );

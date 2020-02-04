@@ -56,7 +56,7 @@ category: reference
 
 * 处理方法：
 
-    参考 [`TiDB_schema_error`](#tidb-schema-error) 的处理方法。
+    参考 [`TiDB_schema_error`](#tidb_schema_error) 的处理方法。
 
 #### `TiDB_monitor_keep_alive`
 
@@ -127,7 +127,7 @@ category: reference
 
 * 报警规则：
 
-    `increase(tidb_server_server_event{type=~"server_start|server_hang"}[15m]) > 0`
+    `increase(tidb_server_event_total{type=~"server_start|server_hang"}[15m]) > 0`
 
 * 规则描述：
 
@@ -141,11 +141,11 @@ category: reference
     * 重启 TiDB 以恢复服务。
     * 检查 TiDB Binlog 服务是否正常。
 
-#### `TiDB_tikvclient_backoff_count`
+#### `TiDB_tikvclient_backoff_total`
 
 * 报警规则：
 
-    `increase(tidb_tikvclient_backoff_count[10m]) > 10`
+    `increase(tidb_tikvclient_backoff_total[10m]) > 10`
 
 * 规则描述：
 
@@ -431,6 +431,10 @@ category: reference
 
     `sum(increase(tidb_tikvclient_gc_action_result{type="success"}[6h])) < 1`
 
+    > **注意：**
+    >
+    > 由于 3.0 中引入了分布式 GC 且 GC 不会在 TiDB 执行，因此 `tidb_tikvclient_gc_action_result` 指标虽然在 3.* 以上版本中存在，但是不会有值。
+
 * 规则描述：
 
     在 6 小时内 Region 上没有成功执行 GC，说明 GC 不能正常工作了。短期内 GC 不运行不会造成太大的影响，但如果 GC 一直不运行，版本会越来越多，从而导致查询变慢。
@@ -459,7 +463,7 @@ category: reference
 
     1. 检查网络是否通畅。
     2. 检查远端 TiKV 是否挂掉。
-    3. 如果远端 TiKV 没有挂掉，检查压力是否太大，参考 [`TiKV_channel_full_total`](#tikv-channel-full-total) 处理方法。
+    3. 如果远端 TiKV 没有挂掉，检查压力是否太大，参考 [`TiKV_channel_full_total`](#tikv_channel_full_total) 处理方法。
 
 #### `TiKV_channel_full_total`
 
@@ -515,7 +519,7 @@ category: reference
 
 * 处理方法：
 
-    参考 [`TiKV_channel_full_total`](#tikv-channel-full-total) 的处理方法。
+    参考 [`TiKV_channel_full_total`](#tikv_channel_full_total) 的处理方法。
 
 #### `TiKV_async_request_write_duration_seconds`
 
@@ -529,7 +533,7 @@ category: reference
 
 * 处理方法：
 
-    1. 检查 Raftstore 上的压力，参考 [`TiKV_channel_full_total`](#tikv-channel-full-total) 的处理方法。
+    1. 检查 Raftstore 上的压力，参考 [`TiKV_channel_full_total`](#tikv_channel_full_total) 的处理方法。
     2. 检查 apply worker 线程的压力。
 
 #### `TiKV_coprocessor_request_wait_seconds`
@@ -560,7 +564,7 @@ category: reference
 
 * 处理方法：
 
-    参考 [`TiKV_channel_full_total`](#tikv-channel-full-total) 的处理方法。
+    参考 [`TiKV_channel_full_total`](#tikv_channel_full_total) 的处理方法。
 
 #### `TiKV_raft_append_log_duration_secs`
 
@@ -614,6 +618,10 @@ category: reference
 
     `sum(increase(tidb_tikvclient_gc_action_result{type="fail”}[1m])) > 10`
 
+    > **注意：**
+    >
+    > 由于 3.0 中引入了分布式 GC 且 GC 不会在 TiDB 执行，因此 `tidb_tikvclient_gc_action_result` 指标虽然在 3.* 以上版本中存在，但是不会有值。
+
 * 规则描述：
 
     GC 失败的 Region 较多。
@@ -639,7 +647,7 @@ category: reference
 
 * 处理方法：
 
-    1. 参考 [`TiKV_channel_full_total`](#tikv-channel-full-total) 的处理方法。
+    1. 参考 [`TiKV_channel_full_total`](#tikv_channel_full_total) 的处理方法。
     2. 如果 TiKV 压力很小，考虑 PD 的调度是否太频繁。可以查看 PD 页面的 Operator Create 面板，排查 PD 产生调度的类型和数量。
 
 #### `TiKV_raft_process_ready_duration_secs`
@@ -679,7 +687,7 @@ category: reference
 
 * 处理方法：
 
-    参考 [`TiKV_scheduler_latch_wait_duration_seconds`](#tikv-scheduler-latch-wait-duration-seconds) 的处理方法。
+    参考 [`TiKV_scheduler_latch_wait_duration_seconds`](#tikv_scheduler_latch_wait_duration_seconds) 的处理方法。
 
 #### `TiKV_scheduler_command_duration_seconds`
 
@@ -693,7 +701,7 @@ category: reference
 
 * 处理方法：
 
-    参考 [`TiKV_scheduler_latch_wait_duration_seconds`](#tikv-scheduler-latch-wait-duration-seconds) 的处理方法。
+    参考 [`TiKV_scheduler_latch_wait_duration_seconds`](#tikv_scheduler_latch_wait_duration_seconds) 的处理方法。
 
 #### `TiKV_coprocessor_outdated_request_wait_seconds`
 
@@ -707,7 +715,7 @@ category: reference
 
 * 处理方法：
 
-    参考 [`TiKV_coprocessor_request_wait_seconds`](#tikv-coprocessor-request-wait-seconds) 的处理方法。
+    参考 [`TiKV_coprocessor_request_wait_seconds`](#tikv_coprocessor_request_wait_seconds) 的处理方法。
 
 #### `TiKV_coprocessor_request_error`
 
@@ -749,7 +757,7 @@ category: reference
 
 * 处理方法：
 
-    参考 [`TiKV_coprocessor_request_wait_seconds`](#tikv-coprocessor-request-wait-seconds) 的处理方法。
+    参考 [`TiKV_coprocessor_request_wait_seconds`](#tikv_coprocessor_request_wait_seconds) 的处理方法。
 
 #### `TiKV_batch_request_snapshot_nums`
 
@@ -797,128 +805,7 @@ category: reference
 
 ## TiDB Binlog 报警规则
 
-本节介绍了 TiDB Binlog 组件的报警项。根据严重级别，报警项可分为三类，按照严重程度由高到低依次为：紧急级别、重要级别、警告级别。
-
-### 紧急级别报警项
-
-紧急级别的报警通常由于服务停止或节点故障导致，此时需要马上进行人工干预操作。
-
-#### `binlog_pump_storage_error_count`
-
-* 报警规则：
-
-    `changes(binlog_pump_storage_error_count[1m]) > 0`
-
-* 规则描述：
-
-    Pump 写 binlog 到本地存储时失败。
-
-* 处理方法：
-
-    确认 `pump_storage_error` 监控是否存在错误，查看 Pump 日志确认原因。
-
-### 重要级别报警项
-
-对于重要级别的报警，需要密切关注异常指标。
-
-#### `binlog_drainer_checkpoint_high_delay`
-
-* 报警规则：
-
-    `(time() - binlog_drainer_checkpoint_tso / 1000) > 3600`
-
-* 规则描述：
-
-    Drainer 同步落后延迟超过 1 个小时。
-
-* 处理方法：
-
-    * 判断从 Pump 获取数据是否太慢：
-
-        监控 Pump handle tso 可以看每个 Pump 最近一条消息的时间，是不是有延迟特别大的 Pump，确认对应 Pump 正常运行。
-
-    * 根据 Drainer event 和 Drainer execute latency 来判断是否下游同步太慢：
-
-        * 如果 Drainer execute time 过大，则检查到目标库网络带宽和延迟，以及目标库状态。
-        * 如果 Drainer execute time 不大，Drainer event 过小，则增加 work count 和 batch 进行重试。
-
-    * 如果上面都不满足或者操作后没有改观，则报备开发人员 [support@pingcap.com](mailto:support@pingcap.com) 进行处理。
-
-### 警告级别报警项
-
-警告级别的报警是对某一问题或错误的提醒。
-
-#### `binlog_pump_write_binlog_rpc_duration_seconds_bucket`
-
-* 报警规则：
-
-    `histogram_quantile(0.9, rate(binlog_pump_rpc_duration_seconds_bucket{method="WriteBinlog"}[5m])) > 1`
-
-* 规则描述：
-
-    Pump 处理 TiDB 写 Binlog 请求耗时过大。
-
-* 处理方法：
-
-    * 确认磁盘性能压力，通过 `node exported` 查看 disk performance 监控。
-    * 如果 `disk latency` 和 `util` 都很低，那么报备开发人员 [support@pingcap.com](mailto:support@pingcap.com) 进行处理。
-
-#### `binlog_pump_storage_write_binlog_duration_time_bucket`
-
-* 报警规则：
-
-    `histogram_quantile(0.9, rate(binlog_pump_storage_write_binlog_duration_time_bucket{type="batch"}[5m])) > 1`
-
-* 规则描述：
-
-    Pump 写本地 binlog 到本地盘的耗时。
-
-* 处理方法：
-
-    确认 Pump 本地盘情况，进行修复。
-
-#### `binlog_pump_storage_available_size_less_than_20G`
-
-* 报警规则：
-
-    `binlog_pump_storage_storage_size_bytes{type="available"} < 20 * 1024 * 1024 * 1024`
-
-* 规则描述：
-
-    Pump 剩余可用磁盘空间不足 20 G。
-
-* 处理方法：
-
-    监控确认 Pump 的 `gc_tso` 是否正常。如果不正常，调整 Pump 的 GC 时间配置或者下线对应 Pump。
-
-#### `binlog_drainer_checkpoint_tso_no_change_for_1m`
-
-* 报警规则：
-
-    `changes(binlog_drainer_checkpoint_tso[1m]) < 1`
-
-* 规则描述：
-
-    Drainer 的 `checkpoint` 在 1 分钟内没有更新。
-
-* 处理方法：
-
-    确认所有非下线的 Pump 是否正常运行。
-
-#### `binlog_drainer_execute_duration_time_more_than_10s`
-
-* 报警规则：
-
-    `histogram_quantile(0.9, rate(binlog_drainer_execute_duration_time_bucket[1m])) > 10`
-
-* 规则描述：
-
-    Drainer 同步到 TiDB 的事务耗时。如果这个值过大，会影响 Drainer 同步。
-
-* 处理方法：
-
-    * 查看 TiDB 集群的状态。
-    * 查看 Drainer 日志或监控，如果是 DDL 操作导致了该问题，则忽略。
+关于 TiDB Binlog 报警规则的详细描述，参见 [TiDB Binlog 集群监控报警文档](/v3.0/reference/tidb-binlog/monitor.md#监控报警规则)。
 
 ## Node_exporter 主机报警规则
 

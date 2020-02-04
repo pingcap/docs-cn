@@ -26,9 +26,9 @@ TiDB Operator 部署前，请确认以下软件需求：
 
 ## 部署 Kubernetes 集群
 
-TiDB Operator 运行在 Kubernetes 集群，你可以使用[这里](https://kubernetes.io/docs/setup/)列出的任何一种方法搭建一套 Kubernetes 集群。只要保证 Kubernetes 版本大于等于 v1.12。如果你使用 AWS、GKE 或者本机，下面是快速上手教程：
+TiDB Operator 运行在 Kubernetes 集群，你可以使用 [Getting started 页面](https://kubernetes.io/docs/setup/)列出的任何一种方法搭建一套 Kubernetes 集群。只要保证 Kubernetes 版本大于等于 v1.12。如果你使用 AWS、GKE 或者本机，下面是快速上手教程：
 
-* [Local DinD 教程](/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
+* [kind 教程](/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind.md)
 * [Google GKE 教程](/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
 * [AWS EKS 教程](/v3.0/tidb-in-kubernetes/deploy/aws-eks.md)
 
@@ -60,6 +60,10 @@ TiDB 默认会使用很多文件描述符，工作节点和上面的 Docker 进�
 
     设置 `LimitNOFILE` 大于等于 `1048576`。
 
+> **注意：**
+>
+> `LimitNOFILE` 需要显式设置为 `1048576` 或者更大，而不是默认的 `infinity`，由于 `systemd` 的 [bug](https://github.com/systemd/systemd/commit/6385cb31ef443be3e0d6da5ea62a267a49174688#diff-108b33cf1bd0765d116dd401376ca356L1186)，`infinity` 在 `systemd` 某些版本中指的是 `65536`。
+
 ## 安装 Helm
 
 参考 [使用 Helm](/v3.0/tidb-in-kubernetes/reference/tools/in-kubernetes.md#使用-helm) 安装 Helm 并配置 PingCAP 官方 chart 仓库。
@@ -69,27 +73,6 @@ TiDB 默认会使用很多文件描述符，工作节点和上面的 Docker 进�
 ### 准备本地卷
 
 参考[本地 PV 配置](/v3.0/tidb-in-kubernetes/reference/configuration/storage-class.md#本地-pv-配置)在你的 Kubernetes 集群中配置本地持久化卷。
-
-### 部署 local-static-provisioner
-
-在 Kubernetes 节点上挂载所有磁盘后，部署 [local-volume-provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner)，它会自动将这些挂载的磁盘配置为本地持久化卷。
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl apply -f https://raw.githubusercontent.com/pingcap/tidb-operator/master/manifests/local-dind/local-volume-provisioner.yaml
-```
-
-通过下面命令查看 Pod 和 PV 状态：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-kubectl get po -n kube-system -l app=local-volume-provisioner && \
-kubectl get pv | grep local-storage
-```
-
-local-volume-provisioner 为每一块挂载的磁盘创建一个卷。注意，在 GKE 上，默认只能创建大小为 375GiB 的本地卷，你需要手动操作创建更大的磁盘。
 
 ## 安装 TiDB Operator
 
@@ -119,7 +102,7 @@ kubectl get crd tidbclusters.pingcap.com
 
 2. 配置 TiDB Operator
 
-    TiDB Operator 里面会用到 `k8s.gcr.io/kube-scheduler` 镜像，如果下载不了该镜像，可以修改 `/home/tidb/tidb-operator/values-tidb-operator.yaml` 文件中的 `scheduler.kubeSchedulerImage` 为 `registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler`。
+    TiDB Operator 里面会用到 `k8s.gcr.io/kube-scheduler` 镜像，如果下载不了该镜像，可以修改 `/home/tidb/tidb-operator/values-tidb-operator.yaml` 文件中的 `scheduler.kubeSchedulerImageName` 为 `registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler`。
 
 3. 安装 TiDB Operator
 

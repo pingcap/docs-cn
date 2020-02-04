@@ -126,7 +126,7 @@ black-white-list:
 # Mydumper 全局配置，各实例通过配置项名引用。
 mydumpers:
   global:
-    extra-args: "-B test_db -T test_table"  # 只导出 `test_db` 库中的 `test_table` 表，可设置 Mydumper 的任何参数。
+    extra-args: "-B test_db -T test_table"  # mydumper 的其他参数，从 DM 1.0.2 版本开始，DM 会自动生成 table-list 配置，在其之前的版本仍然需要人工配置。
 ```
 
 ## 第 5 步：启动任务
@@ -139,10 +139,11 @@ mydumpers:
     ./dmctl --master-addr 172.16.10.71:8261
     ```
 
-3. 执行以下命令启动数据同步任务
+3. 执行以下命令启动数据同步任务，其中，`task.yaml` 是之前编辑的配置文件
+
+    {{< copyable "" >}}
 
     ```bash
-    # `task.yaml` 是之前编辑的配置文件
     start-task ./task.yaml
     ```
 

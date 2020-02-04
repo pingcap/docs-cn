@@ -147,6 +147,7 @@ Pod 处于 Pending 状态，通常都是资源不满足导致的，比如：
 
 * 使用持久化存储的 PD、TiKV、Monitor Pod 使用的 PVC 的 StorageClass 不存在或 PV 不足
 * Kubernetes 集群中没有节点能满足 Pod 申请的 CPU 或内存
+* PD 或者 TiKV Replicas 数量和集群内节点数量不满足 tidb-scheduler 高可用调度策略
 
 此时，可以通过 `kubectl describe pod` 命令查看 Pending 的具体原因：
 
@@ -158,7 +159,7 @@ kubectl describe po -n <namespace> <pod-name>
 
 如果是 CPU 或内存资源不足，可以通过降低对应组件的 CPU 或内存资源申请使其能够得到调度，或是增加新的 Kubernetes 节点。
 
-如果是 PVC 的 StorageClass 找不到，则需要将 TiDB Pod 删除，并且将对应的 PVC 也都删除，然后在 `values.yaml` 里面将 `storageClassName` 修改为集群中可用的 StorageClass 名字，可以通过以下命令获取集群中可用的 StorageClass：
+如果是 PVC 的 StorageClass 找不到，需要在 `values.yaml` 里面将 `storageClassName` 修改为集群中可用的 StorageClass 名字，执行 `helm upgrade`，然后将 Statefulset 删除，并且将对应的 PVC 也都删除，可以通过以下命令获取集群中可用的 StorageClass：
 
 {{< copyable "shell-regular" >}}
 
@@ -167,6 +168,8 @@ kubectl get storageclass
 ```
 
 如果集群中有 StorageClass，但可用的 PV 不足，则需要添加对应的 PV 资源。对于 Local PV，可以参考[本地 PV 配置](/v3.0/tidb-in-kubernetes/reference/configuration/storage-class.md#本地-pv-配置)进行扩充。
+
+tidb-scheduler 针对 PD 和 TiKV 定制了高可用调度策略。对于同一个 TiDB 集群，假设 PD 或者 TiKV 的 Replicas 数量为 N，那么可以调度到每个节点的 PD Pod 数量最多为 `M=(N-1)/2`（如果 N<3，M=1），可以调度到每个节点的 TiKV Pod 数量最多为 `M=ceil(N/3)`（ceil 表示向上取整，如果 N<3，M=1）。如果 Pod 因为不满足高可用调度策略而导致状态为 Pending，需要往集群内添加节点。
 
 ## Pod 处于 CrashLoopBackOff 状态
 
@@ -187,6 +190,10 @@ kubectl -n <namespace> logs -p <pod-name>
 ```
 
 确认日志中的错误信息后，可以根据 [tidb-server 启动报错](/v3.0/how-to/troubleshoot/cluster-setup.md#tidb-server-启动报错)，[tikv-server 启动报错](/v3.0/how-to/troubleshoot/cluster-setup.md#tikv-server-启动报错)，[pd-server 启动报错](/v3.0/how-to/troubleshoot/cluster-setup.md#pd-server-启动报错)中的指引信息进行进一步排查解决。
+
+若是 TiKV Pod 日志中出现 "cluster id mismatch" 信息，则 TiKV Pod 使用的数据可能是其他或之前的 TiKV Pod 的旧数据。在集群配置本地存储时未清除机器上本地磁盘上的数据，或者强制删除了 PV 导致数据并没有被 local volume provisioner 程序回收，可能导致 PV 遗留旧数据，导致错误。
+
+在确认该 TiKV 应作为新节点加入集群、且 PV 上的数据应该删除后，可以删除该 TiKV Pod 和关联 PVC。TiKV Pod 将自动重建并绑定新的 PV 来使用。集群本地存储配置中，应对机器上的本地存储删除，避免 Kubernetes 使用机器上遗留的数据。集群运维中，不可强制删除 PV ，应由 local volume provisioner 程序管理。用户通过创建、删除 PVC 以及设置 PV 的 reclaimPolicy 来管理 PV 的生命周期。
 
 另外，TiKV 在 ulimit 不足时也会发生启动失败的状况，对于这种情况，可以修改 Kubernetes 节点的 `/etc/security/limits.conf` 调大 ulimit：
 
@@ -326,3 +333,41 @@ kubectl logs -f <tidb-pod-name> -n <namespace> -c tidb
         ```
 
     Pod 重建后，会以在集群中注册一个新的 Store，恢复完成。
+
+## TiDB 长连接被异常中断
+
+许多负载均衡器 (Load Balancer) 会设置连接空闲超时时间。当连接上没有数据传输的时间超过设定值，负载均衡器会主动将连接中断。若发现 TiDB 使用过程中，长查询会被异常中断，可检查客户端与 TiDB 服务端之间的中间件程序。若其连接空闲超时时间较短，可尝试增大该超时时间。若不可修改，可打开 TiDB `tcp-keep-alive` 选项，启用 TCP keepalive 特性。
+
+默认情况下，Linux 发送 keepalive 探测包的等待时间为 7200 秒。若需减少该时间，可通过 `podSecurityContext` 字段配置 `sysctls`。
+
+- 如果 Kubernetes 集群内的 [kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) 允许配置 `--allowed-unsafe-sysctls=net.*`，请为 `kubelet` 配置该参数，并按如下方式配置 TiDB：
+
+    {{< copyable "" >}}
+
+    ```yaml
+    tidb:
+      ...
+      podSecurityContext:
+        sysctls:
+        - name: net.ipv4.tcp_keepalive_time
+          value: "300"
+    ```
+
+- 如果 Kubernetes 集群内的 [kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) 不允许配置 `--allowed-unsafe-sysctls=net.*`，请按如下方式配置 TiDB：
+
+    {{< copyable "" >}}
+
+    ```yaml
+    tidb:
+      annotations:
+        tidb.pingcap.com/sysctl-init: "true"
+      podSecurityContext:
+        sysctls:
+        - name: net.ipv4.tcp_keepalive_time
+          value: "300"
+      ...
+    ```
+
+> **注意：**
+>
+> 进行以上配置要求 TiDB Operator 1.1 及以上版本。
