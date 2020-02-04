@@ -5,7 +5,7 @@ category: reference
 
 # AUTO_RANDOM <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
-注意：该功能处于实验阶段，不排除后续版本修改语法或语义的可能，__不建议在生产环境直接使用__。另外，auto_random 属性必须在配置文件中添加 `[experimental] allow-auto-shard = true` 的小节后，才能正常使用。
+注意：该功能处于实验阶段，不排除后续版本修改语法或语义的可能，__不建议在生产环境直接使用__。另外，auto_random 属性必须在配置文件中设置开关 `[experimental] allow-auto-shard = true` 后，才能正常使用。
 
 ## 简介
 
