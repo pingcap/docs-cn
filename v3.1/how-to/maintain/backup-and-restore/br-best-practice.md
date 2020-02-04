@@ -27,12 +27,6 @@ category: how-to
 >
 > 使用 BR 时应注意[使用限制](/v3.1/how-to/maintain/backup-and-restore/br.md#使用限制)。
 
-* BR 只支持 TiDB v3.1 及以上版本
-
-* 目前只支持在全新的集群上执行恢复操作
-
-* BR 备份必须串行执行
-
 ## 环境准备
 
 BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需要依赖 tidb-server 组件。
@@ -131,7 +125,7 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需�
 
 运行 BR 备份命令：
 
-```
+```shell
 bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 172.16.5.198:2379 --log-file backup-nfs.log
 ```
 
@@ -196,10 +190,9 @@ bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 1
 
 使用示例如下：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 bin/br backup table --db batchmark --table order_line -s local:///br_data/ --pd 172.16.5.198:2379 --log-file backup-nfs.log --concurrency 16
+```
 
 ![img](/media/br/backup-diff.png)
 
@@ -234,7 +227,7 @@ bin/br backup table --db batchmark --table order_line -s local:///br_data/ --pd 
 
 运行 BR restore 命令
 
-```
+```shell
 bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 172.16.5.198:2379 --log-file restore-nfs.log
 ```
 
@@ -328,7 +321,7 @@ Checksum Request duration - 对备份集群执行 admin checksum 的耗时统计
 
 运行 BR backup 命令
 
-```
+```shell
 bin/br backup table --db batchmark --table order_line -s local:///home/tidb/backup_local/ --pd 172.16.5.198:2379 --log-file backup_local.log
 ```
 
@@ -380,7 +373,7 @@ bin/br backup table --db batchmark --table order_line -s local:///home/tidb/back
 
 运行 BR restore 命令
 
-```
+```shell
 bin/br restore table --db batchmark --table order_line -s local:///home/tidb/backup_local/ --pd 172.16.5.198:2379 --log-file restore_local.log
 ```
 
