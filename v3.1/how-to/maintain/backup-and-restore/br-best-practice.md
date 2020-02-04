@@ -131,7 +131,9 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需�
 bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 172.16.5.198:2379 --log-file backup-nfs.log
 ```
 
-#### <span id="backup-status">运行指标</span>
+#### 需关注的监控指标
+
+在 BR 备份过程中，需关注以下监控面版中的运行指标。
 
 **Backup CPU Utilization** 面版：参与备份的 TiKV 节点 (backup-worker) 和 (backup-endpoint) CPU 使用率。
 
@@ -186,7 +188,14 @@ bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 1
 
 #### 性能调优
 
-如果 TiKV 资源使用没有明显的瓶颈，比如上面[指标](#backup-status)中的 Backup CPU Utilization 1500% 和 IO Utilization 30%，可以尝试调大 br backup concurrency（对大量的小表 case 无用）, 例如 bin/br backup table --db batchmark --table order_line -s local:///br_data/ --pd 172.16.5.198:2379 --log-file backup-nfs.log --concurrency 16
+如果 TiKV 的资源使用没有出现明显的瓶颈（例如[需关注的监控指标](#需关注的监控指标)中的 **Backup CPU Utilization** 为 `1500%`，**IO Utilization** 为 `30%`），可以尝试调大 `br backup concurrency` 以进行性能调优。该方法不适用于存在许多小表的场景。
+
+使用示例如下：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+bin/br backup table --db batchmark --table order_line -s local:///br_data/ --pd 172.16.5.198:2379 --log-file backup-nfs.log --concurrency 16
 
 ![img](/media/br/backup-diff.png)
 
@@ -207,7 +216,7 @@ bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 1
 
 #### 前置要求
 
-* 无
+无
 
 #### 部署拓扑
 
