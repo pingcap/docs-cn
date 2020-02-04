@@ -286,7 +286,11 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 
 
 #### 性能调优
 
-如果 TiKV 资源使用没有明显的瓶颈，可以尝试调大 Restore concurrency 参数(默认 128)， 例如 `bin/br restore table --db batchmark --table order_line -s local:///br_data/ --pd 172.16.5.198:2379 --log-file restore-concurrency.log --concurrency 1024`
+如果 TiKV 资源使用没有明显的瓶颈，可以尝试调大 Restore concurrency 参数(默认 128)， 例如
+
+```shell
+bin/br restore table --db batchmark --table order_line -s local:///br_data/ --pd 172.16.5.198:2379 --log-file restore-concurrency.log --concurrency 1024
+```
 
 |           | 数据                                    |
 | --------- | :------------------------------------ |
