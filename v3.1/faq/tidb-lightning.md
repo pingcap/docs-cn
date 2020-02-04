@@ -5,9 +5,15 @@ category: FAQ
 
 # TiDB Lightning 常见问题
 
+本文列出了一些使用 TiDB Lightning 时可能会遇到的问题与解决办法。
+
+>**注意：**
+>
+> 使用 TiDB Lightning 的过程中如遇错误，参考 [TiDB Lightning 故障诊断](/v3.1/how-to/troubleshoot/tidb-lightning.md)进行排查。
+
 ## TiDB Lightning 对 TiDB/TiKV/PD 的最低版本要求是多少？
 
-最低版本要求是 2.0.9。
+TiDB Lightning 的版本应与集群相同。最低版本要求是 2.0.9，但建议使用最新的稳定版本 3.0。
 
 ## TiDB Lightning 支持导入多个库吗？
 
@@ -34,6 +40,28 @@ TiDB Lightning 需要以下权限：
 
 如果只是个别表报错，不会影响整体。报错的那个表会停止处理，继续处理其他的表。
 
+## 如何正确重启 TiDB Lightning？
+
+根据 `tikv-importer` 的状态，重启 TiDB Lightning 的基本顺序如下：
+
+如果 `tikv-importer` 仍在运行：
+
+1. [结束 `tidb-lightning` 进程](#如何正确结束-tidb-lightning-进程)。
+2. 执行修改操作（如修复数据源、更改设置、更换硬件等）。
+3. 如果上面的修改操作更改了任何表，你还需要[清除对应的断点](/v3.1/reference/tools/tidb-lightning/checkpoints.md#--checkpoint-remove)。
+4. 重启 `tidb-lightning`。
+
+如果 `tikv-importer` 需要重启：
+
+1. [结束 `tidb-lightning` 进程](#如何正确结束-tidb-lightning-进程)。
+2. [结束 `tikv-importer` 进程](#如何正确结束-tikv-importer-进程)。
+3. 执行修改操作（如修复数据源、更改设置、更换硬件等）。
+4. 重启 `tikv-importer`。
+5. 重启 `tidb-lightning` 并等待，**直到程序因校验和错误（如果有的话）而失败**。
+    * 重启 `tikv-importer` 将清除所有仍在写入的引擎文件，但是 `tidb-lightning` 并不会感知到该操作。从 v3.0 开始，最简单的方法是让 `tidb-lightning` 继续，然后再重试。
+6. [清除失败的表及断点](/v3.1/how-to/troubleshoot/tidb-lightning.md#checkpoint-for--has-invalid-status错误码)。
+7. 再次重启 `tidb-lightning`。
+
 ## 如何校验导入的数据的正确性？
 
 TiDB Lightning 默认会对导入数据计算校验和 (checksum)，如果校验和不一致就会停止导入该表。可以在日志看到相关的信息。
@@ -57,13 +85,16 @@ ADMIN CHECKSUM TABLE `schema`.`table`;
 
 ## TiDB Lightning 支持哪些格式的数据源？
 
-到 v2.1.6 版本为止，只支持本地文档形式的数据源，支持 [Mydumper](/v3.1/reference/tools/mydumper.md) 或 [CSV](/v3.1/reference/tools/tidb-lightning/csv.md) 格式。
+TiDB Lightning 只支持两种格式的数据源：
+
+1. [Mydumper](/v3.1/reference/tools/mydumper.md) 生成的 SQL dump
+2. 储存在本地文件系统的 [CSV](/v3.1/reference/tools/tidb-lightning/csv.md) 文件
 
 ## 我已经在下游创建好库和表了，TiDB Lightning 可以忽略建库建表操作吗？
 
-可以。在配置文档中的 `[mydumper]` 将 `no-schema` 设置为 `true` 即可。`no-schema=true` 会默认下游已经创建好所需的数据库和表，如果没有创建，会报错。
+可以。在配置文档中的 `[mydumper]` 部分将 `no-schema` 设置为 `true` 即可。`no-schema=true` 会默认下游已经创建好所需的数据库和表，如果没有创建，会报错。
 
-## 有些不合法的数据，能否通过关掉严格 SQL 模式 (Strict SQL MOde) 来导入？
+## 有些不合法的数据，能否通过关掉严格 SQL 模式 (Strict SQL Mode) 来导入？
 
 可以。Lightning 默认的 [`sql_mode`](https://dev.mysql.com/doc/refman/5.7/en/sql-mode.html) 为 `"STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"`。
 
@@ -76,23 +107,23 @@ sql-mode = ""
 ...
 ```
 
-## 可以起一个 `tikv-importer`，同时有多个 `tidb-lightning` 进程导入数据吗？
+## 可以启用一个 `tikv-importer`，同时有多个 `tidb-lightning` 进程导入数据吗？
 
 只要每个 Lightning 操作的表互不相同就可以。
 
-## 如何正确关闭 `tikv-importer` 进程？
+## 如何正确结束 `tikv-importer` 进程？
 
-根据您的部署方式，选择相应操作结束进程
+根据部署方式，选择相应操作结束进程
 
-- 使用 TiDB Ansible 部署：在 Importer 的服务器上运行 `scripts/stop_importer.sh` 。
+- 使用 TiDB Ansible 部署：在 Importer 的服务器上运行 `scripts/stop_importer.sh`。
 
-- 手动部署：如果 `tikv-importer` 正在前台运行，可直接按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 退出。否则，可通过 `ps aux | grep tikv-importer` 获取进程ID，然后通过 `kill «pid»` 结束进程。
+- 手动部署：如果 `tikv-importer` 正在前台运行，可直接按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 退出。否则，可通过 `ps aux | grep tikv-importer` 获取进程 ID，然后通过 `kill «pid»` 结束进程。
 
-## 如何正确关闭 `tidb-lightning` 进程？
+## 如何正确结束 `tidb-lightning` 进程？
 
-根据您的部署方式，选择相应操作结束进程
+根据部署方式，选择相应操作结束进程
 
-- 使用 TiDB Ansible 部署：在 Lightning 的服务器上运行 `scripts/stop_lightning.sh` 。
+- 使用 TiDB Ansible 部署：在 Lightning 的服务器上运行 `scripts/stop_lightning.sh`。
 
 - 手动部署：如果 `tidb-lightning` 正在前台运行，可直接按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 退出。否则，可通过 `ps aux | grep tidb-lightning` 获取进程 ID，然后通过 `kill -2 «pid»` 结束进程。
 
@@ -104,7 +135,7 @@ sql-mode = ""
 [2018/08/10 07:29:08.310 +08:00] [INFO] [main.go:41] ["got signal to exit"] [signal=hangup]
 ```
 
-不推荐在命令行中直接使用 `nohup` 启动进程，推荐按照 [启动 tidb-lightning](/v3.1/reference/tools/tidb-lightning/deployment.md) 使用脚本启动。
+不推荐在命令行中直接使用 `nohup` 启动进程，推荐[使用脚本启动 `tidb-lightning`](/v3.1/reference/tools/tidb-lightning/deployment.md)。
 
 ## 为什么用过 TiDB Lightning 之后，TiDB 集群变得又慢又耗 CPU？
 
@@ -118,7 +149,16 @@ tidb-lightning-ctl --switch-mode=normal
 
 ## TiDB Lightning 可以使用千兆网卡吗？
 
-使用 TiDB Lightning 必须配置万兆网卡。**不能使用**千兆网卡，尤其是在部署 `tikv-importer` 的机器上。千兆网卡的总带宽只有 120 MB/s，而且需要与整个 TiKV 集群共享。在使用 TiDB Lightning 导入时，极易用尽所有带宽，继而因 PD 无法联络集群使集群断连。
+使用 TiDB Lightning 建议配置万兆网卡。**不推荐**使用千兆网卡，尤其是在部署 `tikv-importer` 的机器上。
+
+千兆网卡的总带宽只有 120 MB/s，而且需要与整个 TiKV 集群共享。在使用 TiDB Lightning 导入时，极易用尽所有带宽，继而因 PD 无法联络集群使集群断连。为了避免这种情况，你可以在 [`tikv-importer` 的配置文件](/v3.1/reference/tools/tidb-lightning/config.md#tikv-importer-配置参数)中**限制上传速度**。
+
+```toml
+[import]
+# Importer 上传至 TiKV 的最大速度（字节/秒）。
+# 建议将该速度设为 100 MB/s 或更小。
+upload-speed-limit = "100MB"
+```
 
 ## 为什么 TiDB Lightning 需要在 TiKV 集群预留这么多空间？
 
@@ -129,4 +169,20 @@ tidb-lightning-ctl --switch-mode=normal
 
 ## TiDB Lightning 使用过程中是否可以重启 TiKV Importer？
 
-不能，Importer 会保存一些 Engine 的信息在内存中，Importer 重启后，Lightning 必须重启。
+不能，Importer 会在内存中存储一些引擎文件，Importer 重启后，`tidb-lightning` 会因连接失败而停止。此时，你需要[清除失败的断点](/v3.1/reference/tools/tidb-lightning/checkpoints.md#--checkpoint-error-destroy)，因为这些 Importer 特有的信息丢失了。你可以在之后[重启 Lightning](#如何正确重启-tidb-lightning)。
+
+## 如何清除所有与 TiDB Lightning 相关的中间数据？
+
+1. 删除断点文件。
+
+    {{< copyable "shell-regular" >}}
+
+    ```sh
+    tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-remove=all
+    ```
+
+    如果出于某些原因而无法运行该命令，你可以尝试手动删除 `/tmp/tidb_lightning_checkpoint.pb` 文件。
+
+2. 删除 `tikv-importer` 所在机器上的整个 “import” 文件目录。
+
+3. 如果需要的话，删除 TiDB 集群上创建的所有表和库。
