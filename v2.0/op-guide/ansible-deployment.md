@@ -320,7 +320,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 1.  除 “下载 binary” 中描述的方法之外，也可以手动下载 binary，解压后手动替换 binary 到 `tidb-ansible/resource/bin/`，请注意替换链接中的版本号
 
     ```
-    wget http://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz
+    wget https://download.pingcap.org/tidb-v1.0.0-linux-amd64-unportable.tar.gz
     ```
 
 ### 使用 Ansible 滚动升级

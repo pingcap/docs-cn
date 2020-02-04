@@ -63,7 +63,6 @@ category: how-to
 > **注意：**
 >
 > - 将 `enableConfigMapRollout` 特性从关闭状态打开时，即使没有配置变更，也会触发一次 PD、TiKV、TiDB 的滚动更新。
-> - 目前 PD 的 `scheduler` 和 `replication` 配置（`values.yaml` 中的 `maxStoreDownTime` 和 `maxReplicas` 字段）在集群安装完成后无法自动更新，需要通过 [pd-ctl](/v3.1/reference/tools/pd-control.md) 手动更新。
 
 ## 强制升级 TiDB 集群
 
