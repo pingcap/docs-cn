@@ -265,7 +265,7 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 
 
 #### 结果解读
 
-从日志中可以获取此次恢复的相关统计信息，在日志中搜关键字 "summary"，可以看到下述信息：
+使用 BR 前已设置日志的存放路径。从该日志中可以获取此次备份的相关统计信息。在日志中搜关键字 "summary"，可以看到以下信息：
 
 ```
 ["Table Restore summary: total restore tables: 1, total success: 1, total failed: 0, total take(s): 961.37, total kv: 5659888624, total size(MB): 353227.18, avg speed(MB/s): 367.42"] ["restore files"=9263] ["restore ranges"=6888] ["split region"=49.049182743s] ["restore checksum"=6m34.879439498s]
@@ -337,7 +337,7 @@ bin/br backup table --db batchmark --table order_line -s local:///home/tidb/back
 
 #### 结果解读
 
-备份耗时
+从日志中可以获取此次恢复的相关统计信息，在日志中搜关键字 "summary"，可以看到下述信息：
 
 ```
 ["Table backup summary: total backup ranges: 4, total success: 4, total failed: 0, total take(s): 551.31, total kv: 5659888624, total size(MB): 353227.18, avg speed(MB/s): 640.71"] ["backup total regions"=6795] ["backup checksum"=6m33.962719217s] ["backup fast checksum"=22.995552ms]
@@ -389,7 +389,7 @@ bin/br restore table --db batchmark --table order_line -s local:///home/tidb/bac
 
 #### 结果解读
 
-恢复耗时
+使用 BR 前已设置日志的存放路径。从该日志中可以获取此次备份的相关统计信息。在日志中搜关键字 "summary"，可以看到以下信息：
 
 ```
 ["Table Restore summary: total restore tables: 1, total success: 1, total failed: 0, total take(s): 908.42, total kv: 5659888624, total size(MB): 353227.18, avg speed(MB/s): 388.84"] ["restore files"=9263] ["restore ranges"=6888] ["split region"=58.7885518s] ["restore checksum"=6m19.349067937s]
