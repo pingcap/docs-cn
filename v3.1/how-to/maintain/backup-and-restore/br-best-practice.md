@@ -271,7 +271,7 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 
 ["Table Restore summary: total restore tables: 1, total success: 1, total failed: 0, total take(s): 961.37, total kv: 5659888624, total size(MB): 353227.18, avg speed(MB/s): 367.42"] ["restore files"=9263] ["restore ranges"=6888] ["split region"=49.049182743s] ["restore checksum"=6m34.879439498s]
 ```
 
-|                  | 数据                        |
+|   运行指标       | 日志数据                    |
 | ---------------- | :------------------------ |
 | 恢复耗时             | total take(s):961.37 |
 | 数据大小             | total size(MB): 353227.18 |
@@ -294,7 +294,7 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 
 bin/br restore table --db batchmark --table order_line -s local:///br_data/ --pd 172.16.5.198:2379 --log-file restore-concurrency.log --concurrency 1024
 ```
 
-|           | 数据                                    |
+|   运行指标| 日志数据                    |
 | --------- | :------------------------------------ |
 | 恢复耗时      | total take(s): 961.37 -> 443.49 ↓     |
 | 恢复吞吐      | avg speed(MB/s): 367.42 -> 796.47 ↑   |
@@ -343,7 +343,7 @@ bin/br backup table --db batchmark --table order_line -s local:///home/tidb/back
 ["Table backup summary: total backup ranges: 4, total success: 4, total failed: 0, total take(s): 551.31, total kv: 5659888624, total size(MB): 353227.18, avg speed(MB/s): 640.71"] ["backup total regions"=6795] ["backup checksum"=6m33.962719217s] ["backup fast checksum"=22.995552ms]
 ```
 
-|      | 数据                        |
+|   运行指标| 日志数据                    |
 | ---- | :------------------------ |
 | 备份耗时 | total take(s): 551.31     |
 | 数据大小 | total size(MB): 353227.18 |
@@ -395,7 +395,7 @@ bin/br restore table --db batchmark --table order_line -s local:///home/tidb/bac
 ["Table Restore summary: total restore tables: 1, total success: 1, total failed: 0, total take(s): 908.42, total kv: 5659888624, total size(MB): 353227.18, avg speed(MB/s): 388.84"] ["restore files"=9263] ["restore ranges"=6888] ["split region"=58.7885518s] ["restore checksum"=6m19.349067937s]
 ```
 
-|                  | 数据                           |
+|   运行指标       | 日志数据                    |
 | ---------------- | :--------------------------- |
 | 恢复耗时             | total take(s): 908.42 |
 | 数据大小             | total size(MB): 353227.18 |
