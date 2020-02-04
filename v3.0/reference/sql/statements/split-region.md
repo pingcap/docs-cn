@@ -175,6 +175,7 @@ region4  [("c", "")                    , maxIndexValue               )
 ## pre_split_regions
 
 对于带有 `shard_row_id_bits` 的表，如果希望建表时就均匀预切分好 Region，可以使用 `pre_split_regions` 配置。
+
 > **注意：**
 >
 > `pre_split_regions` 必须小于等于 `shard_row_id_bits`。
