@@ -16,11 +16,8 @@ category: how-to
 本文描述了不同场景下 BR 的操作过程，供用户参考，以期用户达到 BR 最佳实践。本文具体目标如下：
 
 * 使用网络盘或本地盘进行备份或恢复
-
 * 通过相关指标了解备份和恢复的状态
-
 * 了解在进行备份或恢复时如何调优性能
-
 * 处理备份时可能发生的异常
 
 > **注意：**
@@ -40,9 +37,7 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需�
 ### 集群版本
 
 * TiKV: v3.1.0-beta.1
-
 * PD: v3.1.0-beta.1
-
 * br: v3.1.0-beta.1
 
 ### TiKV 集群硬件信息
@@ -58,17 +53,16 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需�
 ### 配置
 
 * TiKV Configurations: 默认配置
-
 * PD Configurations: 默认配置
 
 ## 使用场景
 
 本文描述以下四种使用场景：
 
-- 将单表数据备份到网络盘（推荐）
-- 从网络盘的备份进行恢复（推荐）
-- 将单表数据备份到本地磁盘
-- 从本地磁盘的备份进行恢复
+* 将单表数据备份到网络盘（推荐）
+* 从网络盘的备份进行恢复（推荐）
+* 将单表数据备份到本地磁盘
+* 从本地磁盘的备份进行恢复
 
 推荐使用网络盘来进行备份和恢复操作，这样可以省去收集备份数据文件的繁琐步骤。尤其在 TiKV 集群规模较大的情况下，使用网络盘可以大幅提升操作效率。
 
@@ -82,12 +76,16 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需�
 
 1. 运行 `br backup` 命令前，查询 TiDB 集群的 [`tikv_gc_life_time`](/v3.1/reference/garbage-collection/configuration.md#tikv_gc_life_time) 配置项的值，并使用 MySQL 客户端将该项调整至合适的值，确保备份期间不会发生 [GC](/v3.1/reference/garbage-collection/overview.md)。
 
+    {{< copyable "sql" >}}
+
     ```sql
     SELECT * FROM mysql.tidb WHERE VARIABLE_NAME = 'tikv_gc_life_time';
     UPDATE mysql.tidb SET VARIABLE_VALUE = '720h' WHERE VARIABLE_NAME = 'tikv_gc_life_time';
     ```
 
 2. 在备份完成后，将该参数调回原来的值。
+
+    {{< copyable "sql" >}}
 
     ```sql
     update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
@@ -108,7 +106,6 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需�
 #### 前置要求
 
 * 配置一台高性能 SSD 硬盘主机为 NFS server 存储数据。其他所有 BR 节点和 TiKV 节点为 NFS client，挂载相同的路径（例如 `/br_data`）到 NFS server 上。
-
 * NFS server 和 NFS client 的传输速率至少要达到备份集群的 `TiKV 实例数 * 150MB/s`。否则网络 I/O 有可能成为性能瓶颈。
 
 #### 部署拓扑
@@ -126,6 +123,8 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需�
 备份前还需调整 GC 值。详细操作可参考[备份准备工作](#备份准备工作)。
 
 运行 BR 备份命令：
+
+{{< copyable "shell-regular" >}}
 
 ```shell
 bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 172.16.5.198:2379 --log-file backup-nfs.log
@@ -188,6 +187,8 @@ bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 1
 
 使用示例如下：
 
+{{< copyable "shell-regular" >}}
+
 ```shell
 bin/br backup table --db batchmark --table order_line -s local:///br_data/ --pd 172.16.5.198:2379 --log-file backup-nfs.log --concurrency 16
 ```
@@ -224,6 +225,8 @@ bin/br backup table --db batchmark --table order_line -s local:///br_data/ --pd 
 恢复前，可以参考[恢复准备工作](#恢复准备工作)。
 
 运行 `br restore` 命令：
+
+{{< copyable "shell-regular" >}}
 
 ```shell
 bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 172.16.5.198:2379 --log-file restore-nfs.log
@@ -281,12 +284,14 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 
 
 根据上表数据可以计算得到：
 
-- 单个 TiKV 吞吐：`avg speed(MB/s)`/`tikv_count` = `91.8`。
-- 单个 TiKV 平均恢复速度：`total size(MB)`/(`split time` + `restore time`)/`tikv_count` = `87.4`。
+* 单个 TiKV 吞吐：`avg speed(MB/s)`/`tikv_count` = `91.8`
+* 单个 TiKV 平均恢复速度：`total size(MB)`/(`split time` + `restore time`)/`tikv_count` = `87.4`
 
 #### 性能调优
 
 如果 TiKV 资源使用没有明显的瓶颈，可以尝试调大 `--concurrency` 参数（默认为 `128`），示例如下：
+
+{{< copyable "shell-regular" >}}
 
 ```shell
 bin/br restore table --db batchmark --table order_line -s local:///br_data/ --pd 172.16.5.198:2379 --log-file restore-concurrency.log --concurrency 1024
@@ -308,9 +313,7 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data/ --pd
 #### 前置要求
 
 * 各个 TiKV 节点有单独的磁盘用来存放 backupSST 数据。
-
 * `backup_endpoint` 节点有单独的磁盘用来存放备份的 `backupmeta` 文件。
-
 * TiKV 和 `backup_endpoint` 节点需要有相同的备份目录，例如 `/home/tidb/backup_local`。
 
 #### 部署拓扑
@@ -326,6 +329,8 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data/ --pd
 备份前还需调整 GC 值。详细操作可参考[备份准备工作](#备份准备工作)。
 
 运行 `br backup` 命令：
+
+{{< copyable "shell-regular" >}}
 
 ```shell
 bin/br backup table --db batchmark --table order_line -s local:///home/tidb/backup_local/ --pd 172.16.5.198:2379 --log-file backup_local.log
@@ -377,6 +382,8 @@ bin/br backup table --db batchmark --table order_line -s local:///home/tidb/back
 
 运行 `br restore` 命令：
 
+{{< copyable "shell-regular" >}}
+
 ```shell
 bin/br restore table --db batchmark --table order_line -s local:///home/tidb/backup_local/ --pd 172.16.5.198:2379 --log-file restore_local.log
 ```
@@ -405,8 +412,8 @@ bin/br restore table --db batchmark --table order_line -s local:///home/tidb/bac
 
 根据上表数据可以计算得到：
 
-|- 单 TiKV 吞吐：`avg speed(MB/s)`/`tikv_count` = `97.2`
-|- 单 TiKV 平均恢复速度：`total size(MB)`/(`split time` + `restore time`)/`tikv_count` = `92.4`
+* 单 TiKV 吞吐：`avg speed(MB/s)`/`tikv_count` = `97.2`
+* 单 TiKV 平均恢复速度：`total size(MB)`/(`split time` + `restore time`)/`tikv_count` = `92.4`
 
 ### 异常处理
 
