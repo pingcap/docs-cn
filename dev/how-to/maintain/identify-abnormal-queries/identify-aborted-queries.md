@@ -5,9 +5,9 @@ category: how-to
 
 # expensive query 日志
 
-TiDB 会将执行时间超过 tidb_expensive_query_time_threshold（默认值为 60s），或使用内存超过 [mem-quota-query](https://pingcap.com/docs-cn/stable/reference/configuration/tidb-server/configuration-file/#mem-quota-query)（默认值为 32 GB的语句输出到 [tidb-server 日志文件](https://pingcap.com/docs-cn/stable/reference/configuration/tidb-server/configuration-file/#logfile)（默认文件为：“tidb.log”）中，用于帮助用户在语句执行结束前定位由于执行时间过长或使用内存过多的语句，分析和解决语句执行的性能问题。
+TiDB 会将执行时间超过 tidb_expensive_query_time_threshold（默认值为 60s），或使用内存超过 [mem-quota-query](https://pingcap.com/docs-cn/stable/reference/configuration/tidb-server/configuration-file/#mem-quota-query)（默认值为 32 GB）的语句输出到 [tidb-server 日志文件](https://pingcap.com/docs-cn/stable/reference/configuration/tidb-server/configuration-file/#logfile)（默认文件为：“tidb.log”）中，用于帮助用户在语句执行结束前定位由于执行时间过长或使用内存过多的语句，分析和解决语句执行的性能问题。
 
-注意，expensive query 日志和[慢查询日志](https://pingcap.com/docs-cn/dev/how-to/maintain/identify-slow-queries/)的区别是，慢查询日志是在语句执行完后才打印，expensive query 日志可以将正在执行中且超过资源限制的语句及其相关信息打印出来。
+注意，expensive query 日志和[慢查询日志](https://pingcap.com/docs-cn/dev/how-to/maintain/identify-slow-queries/)的区别是，慢查询日志是在语句执行完后才打印，expensive query 日志可以将正在执行的语句其相关信息打印出来。当一条语句在执行过程中达到资源使用阈值时（执行时间/使用内存量），TiDB 会将即时的语句相关信息写入日志。
 
 ## 日志示例
 
