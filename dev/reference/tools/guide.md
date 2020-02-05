@@ -126,7 +126,7 @@ https://pingcap.com/docs/stable/tidb-in-kubernetes/reference/configuration/tidb-
 
 ### TiDB 备份与恢复
 
-- Mydumper，Loader -> BR：Mydumper 和 Loader 都是在逻辑层面进行备份和恢复，备份效率低；BR 使用 TiDB 的特性进行备份和恢复，适合数据量比较大的场景，备份效率大大提升。
+- Mydumper，Loader -> BR：Mydumper 和 Loader 都是在逻辑层面进行备份和恢复，效率较低；BR 使用 TiDB 的特性进行备份和恢复，适合数据量比较大的场景，备份效率大大提升。
 
 ### TiDB 全量恢复
 
