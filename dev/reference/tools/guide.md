@@ -16,20 +16,31 @@ category: reference
 ##### Loader (Deprecated)
 
 - 概述：轻量级的全量数据导入工具，以 SQL 的形式进行导入。目前这个工具正在逐步被 Lightning 替换掉，参见[文档](https://pingcap.com/docs/stable/reference/tools/tidb-lightning/tidb-backend/#migrating-from-loader-to-tidb-lightning-tidb-back-end)。
+
 - 输入： Mydumper 输出文件
+
 - 输出：以 SQL 形式写入 TiDB
+
 - 适用 TiDB 版本：all versions
+
 - 相关文档：[Loader](https://pingcap.com/docs/stable/reference/tools/loader/)
+
 - K8s 支持：[backup and restore](https://pingcap.com/docs/stable/tidb-in-kubernetes/maintain/backup-and-restore/)
 
 ##### TiDB-Lightning
 
 - 概述：将全量数据快速导入到一个新的 TiDB 集群的工具。注意用 TiDB-Lightning 导入数据的时候，有两种模式，默认的是以 `tikv-importer` 为后端，这种模式下导入数据过程中集群无法提供正常的服务，用于导入大量的数据（TB 级别）。第二种模式是以 `TiDB` 为后端（相当于 Loader 的功能），导入速度较慢，但是可以在线导入。
+
 - 输入
+
     - Mydumper 输出文件
+
     - CSV 格式文件
+
 - 适用 TiDB 版本：v2.1 及以上
+
 - 相关文档：[TiDB-Lightning](https://pingcap.com/docs/stable/reference/tools/tidb-lightning/overview/)
+
 - K8s 支持：[TiDB-Lightning](https://pingcap.com/docs/stable/tidb-in-kubernetes/maintain/lightning/)
 
 #### 备份和恢复
@@ -37,9 +48,13 @@ category: reference
 ##### BR
 
 - 概述：TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 Mydumper/Loader，BR 更适合大数据量的场景。
+
 - 备份输出和恢复输入：SST  + backupmeta 文件
+
 - 适用 TiDB 版本：v3.1 及 v4.0
+
 - 相关文档：[br](https://pingcap.com/docs/v3.1/how-to/maintain/backup-and-restore/br/)
+
 - K8s 支持：已支持，文档撰写中
 
 #### 增量导入
@@ -47,19 +62,29 @@ category: reference
 ##### Syncer (Deprecated)
 
 - 概述：将 MySQL/MariaDB 增量 binlog 数据实时复制导入到 TiDB 的工具。目前推荐使用 DM 替换该工具。
+
 - 输入：MySQL/MariaDB 的 binlog
+
 - 输出：以 SQL 形式写入 TiDB
+
 - 适用 TiDB 版本：all version
+
 - 相关文档：[Syncer](https://pingcap.com/docs/stable/reference/tools/syncer/)
+
 - K8s 支持：不支持
 
 ##### DM
 
 - 概述：将 MySQL/MariaDB 数据迁移到 TiDB 的工具，支持全量数据和增量数据的同步。
+
 - 输入：MySQL/MariaDB 的全量数据以及 binlog
+
 - 输出：以 SQL 形式写入 TiDB
+
 - 适用 TiDB 版本：all version
+
 - 相关文档： [Data Migration](https://pingcap.com/docs/stable/reference/tools/data-migration/overview/)
+
 - k8s 支持：开发中
 
 ### 数据导出类
@@ -69,10 +94,15 @@ category: reference
 ##### Mydumper
 
 - 概述：用于对 MySQL/TiDB 进行全量逻辑备份。
+
 - 输入：MySQL/TiDB 集群
+
 - 输出：SQL 文件
+
 - 适用 TiDB 版本：all version
+
 - 相关文档：[Mydumper](https://pingcap.com/docs/stable/reference/tools/mydumper/)
+
 - K8s 支持：[backup and restore](https://pingcap.com/docs/stable/tidb-in-kubernetes/maintain/backup-and-restore/)
 
 #### 增量导出
@@ -80,10 +110,15 @@ category: reference
 ##### TiDB-Binlog
 
 - 概述：收集 TiDB 的 binlog，并提供准实时同步和备份的工具。
+
 - 输入：TiDB 集群
+
 - 输出：MySQL、TiDB、Kafka 或者增量备份文件
+
 - 适用 TiDB 版本：v2.1 及以上
+
 - 相关文档：[TiDB-Binlog](https://pingcap.com/docs/stable/reference/tidb-binlog/overview/)
+
 - K8s 支持：[TiDB-Binlog](https://pingcap.com/docs/stable/tidb-in-kubernetes/maintain/tidb-binlog/)，[Drainer](
 https://pingcap.com/docs/stable/tidb-in-kubernetes/reference/configuration/tidb-drainer/)
 
@@ -100,6 +135,7 @@ https://pingcap.com/docs/stable/tidb-in-kubernetes/reference/configuration/tidb-
 ### MySQL 数据迁移
 
 - Mydumper，Loader，Syncer -> DM：使用 Mydumper、Loader、Syncer 将 MySQL 数据迁移到 TiDB，迁移过程比较繁琐。DM 提供了一体化的数据迁移方案，提高了易用性，而且 DM 还支持分库分表的合并。
+
 - Loader -> TiDB-Lightning：TiDB-Lightning 集成了 Loader 的逻辑导入数据功能，参见[文档](https://pingcap.com/docs/stable/reference/tools/tidb-lightning/tidb-backend/#migrating-from-loader-to-tidb-lightning-tidb-back-end) ，由 Lightning 统一提供全量数据恢复功能。
 
 ## 数据迁移解决方案
@@ -111,11 +147,15 @@ https://pingcap.com/docs/stable/tidb-in-kubernetes/reference/configuration/tidb-
 #### MySQL 数据迁移到 TiDB
 
 - MySQL 数据量在 T 级别以上
+
     - 使用 Mydumper 导出 MySQL 全量数据
+
     - 使用 TiDB-Lightning 将 MySQL 全量备份数据导入 TiDB 集群
+
     - 使用 DM 同步 MySQL 增量数据到 TiDB
 
 - MySQL 数据量在 T 级别以下
+
     - 使用 DM 迁移 MySQL 数据到 TiDB，包括全量导入和增量的恢复
 
 #### TiDB 集群数据的同步
@@ -125,6 +165,7 @@ https://pingcap.com/docs/stable/tidb-in-kubernetes/reference/configuration/tidb-
 #### TiDB 集群数据的全量备份及恢复
 
 - 使用 Mydumper 进行全量数据的备份
+
 - 使用 TiDB-Lightning 将全量数据恢复到 TiDB/MySQL
 
 ### TiDB 3.0 全链路数据迁移方案
@@ -132,11 +173,15 @@ https://pingcap.com/docs/stable/tidb-in-kubernetes/reference/configuration/tidb-
 #### MySQL 数据迁移到 TiDB
 
 - MySQL 数据量在 T 级别以上
+
     - 使用 Mydumper 导出 MySQL 全量数据
+
     - 使用 TiDB-Lightning 将 MySQL 全量备份数据导入 TiDB 集群
+
     - 使用 DM 同步 MySQL 增量数据到 TiDB
 
 - MySQL 数据量在 T 级别以下
+
     - 使用 DM 迁移 MySQL 数据到 TiDB，包括全量导入和增量的恢复
 
 #### TiDB 集群数据的同步
@@ -146,6 +191,7 @@ https://pingcap.com/docs/stable/tidb-in-kubernetes/reference/configuration/tidb-
 #### TiDB 集群数据的全量备份及恢复
 
 - 使用 Mydumper 进行全量数据的备份
+
 - 使用 TiDB-Lightning 将全量数据恢复到 TiDB/MySQL
 
 ### TiDB 3.1 全链路数据迁移方案
@@ -153,11 +199,15 @@ https://pingcap.com/docs/stable/tidb-in-kubernetes/reference/configuration/tidb-
 #### MySQL 数据迁移到 TiDB
 
 - MySQL 数据量在 T 级别以上
+
     - 使用 Mydumper 导出 MySQL 全量数据
+
     - 使用 TiDB-Lightning 将 MySQL 全量备份数据导入 TiDB 集群
+
     - 使用 DM 同步 MySQL 增量数据到 TiDB
 
 - MySQL 数据量在 T 级别以下
+
     - 使用 DM 迁移 MySQL 数据到 TiDB，包括全量导入和增量的恢复
 
 #### TiDB 集群数据的同步
@@ -167,9 +217,13 @@ https://pingcap.com/docs/stable/tidb-in-kubernetes/reference/configuration/tidb-
 #### TiDB 集群数据的全量备份及恢复
 
 - 恢复到 TiDB
+
     - 使用 BR 进行全量数据的备份
+
     - 使用 BR 进行全量数据的恢复
 
 - 恢复到 MySQL
+
     - 使用 Mydumper 进行全量数据的备份
+
     - 使用 TiDB-Lightning 进行全量数据的恢复
