@@ -15,7 +15,7 @@ category: reference
 
 ##### Loader (Deprecated)
 
-- 概述：轻量级的全量数据导入工具，以 SQL 的形式进行导入。目前这个工具正在逐步被 Lightning 替换掉，参见[文档](https://pingcap.com/docs/stable/reference/tools/tidb-lightning/tidb-backend/#migrating-from-loader-to-tidb-lightning-tidb-back-end)。
+- 概述：轻量级的全量数据导入工具，以 SQL 的形式进行导入。目前这个工具正在逐步被 TiDB-Lightning 替换掉，参见[文档](https://pingcap.com/docs/stable/reference/tools/tidb-lightning/tidb-backend/#migrating-from-loader-to-tidb-lightning-tidb-back-end)。
 
 - 输入： Mydumper 输出文件
 
@@ -136,7 +136,7 @@ https://pingcap.com/docs/stable/tidb-in-kubernetes/reference/configuration/tidb-
 
 - Mydumper，Loader，Syncer -> DM：使用 Mydumper、Loader、Syncer 将 MySQL 数据迁移到 TiDB，迁移过程比较繁琐。DM 提供了一体化的数据迁移方案，提高了易用性，而且 DM 还支持分库分表的合并。
 
-- Loader -> TiDB-Lightning：TiDB-Lightning 集成了 Loader 的逻辑导入数据功能，参见[文档](https://pingcap.com/docs/stable/reference/tools/tidb-lightning/tidb-backend/#migrating-from-loader-to-tidb-lightning-tidb-back-end) ，由 Lightning 统一提供全量数据恢复功能。
+- Loader -> TiDB-Lightning：TiDB-Lightning 集成了 Loader 的逻辑导入数据功能，参见[文档](https://pingcap.com/docs/stable/reference/tools/tidb-lightning/tidb-backend/#migrating-from-loader-to-tidb-lightning-tidb-back-end) ，由 TiDB-Lightning 统一提供全量数据恢复功能。
 
 ## 数据迁移解决方案
 
