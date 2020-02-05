@@ -166,10 +166,10 @@ https://pingcap.com/docs/stable/tidb-in-kubernetes/reference/configuration/tidb-
 
 #### TiDB 集群数据的全量备份及恢复
 
-- 恢复到 TiDB：
+- 恢复到 TiDB
     - 使用 BR 进行全量数据的备份
     - 使用 BR 进行全量数据的恢复
 
-- 恢复到 MySQL：
+- 恢复到 MySQL
     - 使用 Mydumper 进行全量数据的备份
     - 使用 TiDB-Lightning 进行全量数据的恢复
