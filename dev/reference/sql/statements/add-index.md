@@ -68,7 +68,7 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 * `FULLTEXT`, `HASH` and `SPATIAL` indexes are not supported.
 * Descending indexes are not supported (similar to MySQL 5.7).
 * Adding multiple indexes at the same time is currently not supported.
-* It is not possible to add a `PRIMARY KEY` to a table.
+* Adding the primary key constraint to a table is not supported by default. You can enable the feature by setting the `alter-primary-key` configuration item to `true`. For details, see [alter-primary-key](/dev/reference/configuration/tidb-server/configuration-file.md#alter-primary-key).
 
 ## See also
 

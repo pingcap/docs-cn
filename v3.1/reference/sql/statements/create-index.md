@@ -89,7 +89,7 @@ The global variables associated with the `CREATE INDEX` statement are `tidb_ddl_
 
 * `FULLTEXT`, `HASH` and `SPATIAL` indexes are not supported.
 * Descending indexes are not supported (similar to MySQL 5.7).
-* It is not possible to add a `PRIMARY KEY` to a table.
+* Adding the primary key constraint to a table is not supported by default. You can enable the feature by setting the `alter-primary-key` configuration item to `true`. For details, see [alter-primary-key](/v3.1/reference/configuration/tidb-server/configuration-file.md#alter-primary-key).
 
 ## See also
 
