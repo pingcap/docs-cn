@@ -142,33 +142,7 @@ https://pingcap.com/docs/stable/tidb-in-kubernetes/reference/configuration/tidb-
 
 针对 TiDB 的 2.1，3.0 以及 3.1 版本，下面给出典型业务场景下的数据迁移方案。
 
-### TiDB 2.1 全链路数据迁移方案
-
-#### MySQL 数据迁移到 TiDB
-
-- MySQL 数据量在 T 级别以上
-
-    - 使用 Mydumper 导出 MySQL 全量数据
-
-    - 使用 TiDB-Lightning 将 MySQL 全量备份数据导入 TiDB 集群
-
-    - 使用 DM 同步 MySQL 增量数据到 TiDB
-
-- MySQL 数据量在 T 级别以下
-
-    - 使用 DM 迁移 MySQL 数据到 TiDB，包括全量导入和增量的恢复
-
-#### TiDB 集群数据的同步
-
-- 使用 TiDB-Binlog 将 TiDB 数据同步到下游 TiDB/MySQL
-
-#### TiDB 集群数据的全量备份及恢复
-
-- 使用 Mydumper 进行全量数据的备份
-
-- 使用 TiDB-Lightning 将全量数据恢复到 TiDB/MySQL
-
-### TiDB 3.0 全链路数据迁移方案
+### TiDB 2.1 和 3.0 全链路数据迁移方案
 
 #### MySQL 数据迁移到 TiDB
 
