@@ -13,7 +13,7 @@ category: reference
 
 #### 全量导入
 
-##### Loader (Deprecated)
+##### Loader (停止维护，不推荐使用)
 
 - 概述：轻量级的全量数据导入工具，以 SQL 的形式进行导入。目前这个工具正在逐步被 TiDB-Lightning 替换掉，参见[文档](https://pingcap.com/docs/stable/reference/tools/tidb-lightning/tidb-backend/#migrating-from-loader-to-tidb-lightning-tidb-back-end)。
 
@@ -29,7 +29,11 @@ category: reference
 
 ##### TiDB-Lightning
 
-- 概述：将全量数据快速导入到一个新的 TiDB 集群的工具。注意用 TiDB-Lightning 导入数据的时候，有两种模式，默认的是以 `tikv-importer` 为后端，这种模式下导入数据过程中集群无法提供正常的服务，用于导入大量的数据（TB 级别）。第二种模式是以 `TiDB` 为后端（相当于 Loader 的功能），导入速度较慢，但是可以在线导入。
+- 概述：将全量数据快速导入到一个新的 TiDB 集群的工具。注意用 TiDB-Lightning 导入数据的时候，有两种模式：
+
+   - 默认模式是以 `tikv-importer` 为后端，这种模式下导入数据过程中集群无法提供正常的服务，用于导入大量的数据（TB 级别）。
+   
+   - 第二种模式是以 `TiDB` 为后端（相当于 Loader 的功能），相对默认模式导入速度较慢，但是可以在线导入。
 
 - 输入
 
@@ -47,7 +51,7 @@ category: reference
 
 ##### BR
 
-- 概述：TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 Mydumper/Loader，BR 更适合大数据量的场景。
+- 概述：TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 Mydumper/Loader，BR 更适合大数据量的场景，有更高效的备份和恢复效率。
 
 - 备份输出和恢复输入：SST  + backupmeta 文件
 
@@ -59,7 +63,7 @@ category: reference
 
 #### 增量导入
 
-##### Syncer (Deprecated)
+##### Syncer (停止维护，不推荐使用)
 
 - 概述：将 MySQL/MariaDB 增量 binlog 数据实时复制导入到 TiDB 的工具。目前推荐使用 DM 替换该工具。
 
