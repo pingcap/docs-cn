@@ -17,7 +17,7 @@ TiDB 会将执行时间超过 tidb_expensive_query_time_threshold（默认值为
 
 ## 字段含义说明
 
-Query 基础信息：
+基本字段：
 
 * `cost_time`：日志打印时语句已经花费的执行时间。
 * `stats`：语句涉及到的表或索引使用的统计信息版本。值为 pesudo 时表示无可用统计信息，需要对表或索引进行 analyze。
