@@ -1,6 +1,7 @@
 ---
 title: 慢查询日志
 category: how-to
+aliases: ['/docs-cn/v3.0/how-to/maintain/identify-slow-queries/']
 ---
 
 # 慢查询日志
