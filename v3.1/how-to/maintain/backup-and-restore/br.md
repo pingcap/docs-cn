@@ -305,7 +305,7 @@ br restore table \
 - 在使用共享存储时，推荐使用高吞吐的存储硬件，因为存储的吞吐会限制备份或恢复的速度。
 - 推荐在业务低峰时执行备份操作，这样能最大程度地减少对业务的影响。
 
-更多最佳实践内容，参见[BR 最佳实践文档](/v3.1/how-to/maintain/backup-and-restore/br.md)
+更多最佳实践内容，参见[BR 最佳实践文档](/v3.1/how-to/maintain/backup-and-restore/br-best-practice.md)
 
 ## 备份和恢复示例
 
