@@ -61,7 +61,7 @@
   + 运维
     - [Ansible 常见运维操作](/v3.0/how-to/maintain/ansible-operations.md)
     + [备份与恢复](/v3.0/how-to/maintain/backup-and-restore.md)
-    - [定位慢查询](/v3.0/how-to/maintain/identify-slow-queries.md)
+    - [定位慢查询](/v3.0/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/v3.0/how-to/scale/with-ansible.md)
   + 升级
