@@ -429,7 +429,7 @@ bin/br restore table --db batchmark --table order_line -s local:///home/tidb/bac
 
 日志中的错误消息：`log - Error: msg:"Io(Custom { kind: AlreadyExists, error: \"[5_5359_42_123_default.sst] is already exists in /dir/backup_local/\" })"`
 
-若备份失败并出现以上错误消息，采取以下其中一种后再重新备份：
+若备份失败并出现以上错误消息，采取以下其中一种操作后再重新备份：
 
 * 更换备份数据目录。例如将 `/dir/backup-2020-01-01/` 改为 `/dir/backup_local/`。
 * 删除所有 TiKV 和 BR 节点的备份目录 /dir/backup_local/
