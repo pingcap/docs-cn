@@ -32,7 +32,7 @@ Query 基础信息：
 和 SQL 执行的用户相关的字段：
 
 * `user`：执行语句的用户名。
-* `conn_id`：用户的链接 ID，可以用类似 `con:60026` 的关键字在 TiDB 日志中查找该链接相关的其他日志。
+* `conn_id`：用户的连接 ID，可以用类似 `con:60026` 的关键字在 TiDB 日志中查找该连接相关的其他日志。
 * `database`：执行语句时使用的 database。
 
 和 TiKV Coprocessor Task 相关的字段：
