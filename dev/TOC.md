@@ -286,7 +286,7 @@
       - [常见错误修复](/dev/reference/tidb-binlog/troubleshoot/error-handling.md)
     - [FAQ](/dev/reference/tidb-binlog/faq.md)
   + 周边工具
-    - [工具使用指南](/dev/reference/tools/guide.md)
+    - [工具使用指南](/dev/reference/tools/use-guide.md)
     - [Mydumper](/dev/reference/tools/mydumper.md)
     - [Loader](/dev/reference/tools/loader.md)
     - [Syncer](/dev/reference/tools/syncer.md)
