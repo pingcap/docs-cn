@@ -62,6 +62,7 @@
     + 备份与恢复
       - [使用 Mydumper/Loader 进行备份与恢复](/dev/how-to/maintain/backup-and-restore/mydumper-loader.md)
       - [使用 BR 进行备份与恢复](/dev/how-to/maintain/backup-and-restore/br.md)
+      - [BR 备份与恢复最佳实践](/dev/how-to/maintain/backup-and-restore/br-best-practices.md)
     - [定位慢查询](/dev/how-to/maintain/identify-slow-queries.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/dev/how-to/scale/with-ansible.md)
