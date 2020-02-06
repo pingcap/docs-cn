@@ -160,7 +160,7 @@ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
 
 > **Note:**
 >
-> - Replace `$tag` with the value of the chosen TAG version. For example, `v3.02`.
+> - Replace `$tag` with the value of the chosen TAG version. For example, `v3.0.2`.
 > - To deploy and upgrade TiDB clusters, use the corresponding version of `tidb-ansible`. If you only modify the version in the `inventory.ini` file, errors might occur.
 > - It is required to download `tidb-ansible` to the `/home/tidb` directory using the `tidb` user account. If you download it to the `/root` directory, a privilege issue occurs.
 
@@ -170,7 +170,7 @@ If you have questions regarding which version to use, email to info@pingcap.com 
 
 Make sure you have logged in to the Control Machine using the `tidb` user account.
 
-It is required to use `pip` to install Ansible and its dependencies, otherwise a compatibility issue occurs. Currently, the release-2.0, release-2.1, release-3.1, and master branches of TiDB Ansible are compatible with Ansible 2.4 and Ansible 2.5.
+It is required to use `pip` to install Ansible and its dependencies, otherwise a compatibility issue occurs. Currently, the release-2.0, release-2.1, release-3.1, and master branches of TiDB Ansible are compatible with Ansible 2.4 ~ 2.7.11 (2.4 ≤ Ansible ≤ 2.7.11).
 
 1. Install Ansible and the dependencies on the Control Machine:
 
@@ -181,7 +181,7 @@ It is required to use `pip` to install Ansible and its dependencies, otherwise a
     sudo pip install -r ./requirements.txt
     ```
 
-    Ansible and the related dependencies are in the `tidb-ansible/requirements.txt` file.
+    The version information of Ansible and dependencies is in the `tidb-ansible/requirements.txt` file.
 
 2. View the version of Ansible:
 
@@ -278,7 +278,7 @@ Taking the above code for example, the system supports the `performance` and `po
 
 > **Note:**
 >
-> As the following shows, if it returns "Not Available", it means that the current system does not support CPUfreq configuration and you can skip this step.
+> As the following shows, if it returns `Not Available`, it means that the current system does not support CPUfreq configuration and you can skip this step.
 
 {{< copyable "shell-root" >}}
 
@@ -312,9 +312,9 @@ As the above code shows, the current mode is `powersave` in this example.
 
 ### Change the governor mode
 
-You can use either of the following two methods to change the governor mode:
+You can use either of the following two methods to change the governor mode. In the above example, the current governor mode is `powersave` and the following commands change it to `performance`.
 
-- Use the `cpupower frequency-set --governor` command to change the current mode. The current governor mode is `powersave` in the above example and the following command changes it to `performance`:
+- Use the `cpupower frequency-set --governor` command to change the current mode:
 
     {{< copyable "shell-root" >}}
 
@@ -334,11 +334,11 @@ You can use either of the following two methods to change the governor mode:
 
 Log in to the target machines using the `root` user account.
 
-Format your data disks to the ext4 filesystem and mount the filesystem with the `nodelalloc` and `noatime` options. It is required to mount the `nodelalloc` option, or else the Ansible deployment cannot pass the test. The `noatime` option is optional.
+Format your data disks to the ext4 filesystem and add the `nodelalloc` and `noatime` mount options to the filesystem. It is required to add the `nodelalloc` option, or else the Ansible deployment cannot pass the test. The `noatime` option is optional.
 
 > **Note:**
 >
-> If your data disks have been formatted to ext4 and have mounted the options, you can uninstall it by running the `umount /dev/nvme0n1p1` command, follow the steps starting from editing the `/etc/fstab` file, and remount the filesystem with options.
+> If your data disks have been formatted to ext4 and have added the mount options, you can uninstall it by running the `umount /dev/nvme0n1p1` command, follow the steps starting from editing the `/etc/fstab` file, and add the options again to the filesystem.
 
 Take the `/dev/nvme0n1` data disk as an example:
 
@@ -432,7 +432,7 @@ Take the `/dev/nvme0n1` data disk as an example:
 
 ## Step 9: Edit the `inventory.ini` file to orchestrate the TiDB cluster
 
-Log in to the Control Machine using the `tidb` user account, and edit the `tidb-ansible/inventory.ini` file to orchestrate the TiDB cluster. The standard TiDB cluster contains 6 machines: 2 TiDB nodes, 3 PD nodes and 3 TiKV nodes.
+Log in to the Control Machine using the `tidb` user account, and edit the `tidb-ansible/inventory.ini` file to orchestrate the TiDB cluster. The standard TiDB cluster contains 6 machines: 2 TiDB instances, 3 PD instances, and 3 TiKV instances.
 
 - Deploy at least 3 instances for TiKV.
 - Do not deploy TiKV together with TiDB or PD on the same machine.
