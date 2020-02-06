@@ -40,7 +40,7 @@ TiDB 会将执行时间超过 tidb_expensive_query_time_threshold（默认值为
 * `wait_time`：该语句在 TiKV 的等待时间之和，因为 TiKV 的 Coprocessor 线程数是有限的，当所有的 Coprocessor 线程都在工作的时候，请求会排队；当队列中有某些请求耗时很长的时候，后面的请求的等待时间都会增加。
 * `request_count`：该语句发送的 Coprocessor 请求的数量。
 * `total_keys`：Coprocessor 扫过的 key 的数量。
-* `processed_keys`：Coprocessor 处理的 key 的数量。相比 total_keys，processed_keys 不包含 MVCC 的旧版本。如果 processed_keys 和 total_keys 相差很大，说明旧版本比较多。
+* `processed_keys`：Coprocessor 处理的 key 的数量。与 total_keys 相比，processed_keys 不包含 MVCC 的旧版本。如果 processed_keys 和 total_keys 相差很大，说明旧版本比较多。
 * `num_cop_tasks`：该语句发送的 Coprocessor 请求的数量。
 * `process_avg_time`：Coprocessor 执行 task 的平均执行时间。
 * `process_p90_time`：Coprocessor 执行 task 的 P90 分位执行时间。
