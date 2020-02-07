@@ -140,7 +140,7 @@ Loader 使用 SQL 的方式进行全量数据恢复，效率较低。TiDB Lightn
 2. 使用 TiDB Lightning 将 MySQL 全量备份数据导入 TiDB 集群
 3. 使用 DM 同步 MySQL 增量数据到 TiDB
 
-如果 MySQL 数据量在 TB 级别以下，推荐直接使用 DM 迁移 MySQL 数据到 TiDB（迁移的过程包括全量导入和增量的恢复）。
+如果 MySQL 数据量在 TB 级别以下，推荐直接使用 DM 迁移 MySQL 数据到 TiDB（迁移的过程包括全量导入和增量的同步）。
 
 #### TiDB 集群数据的同步
 
@@ -163,7 +163,7 @@ Loader 使用 SQL 的方式进行全量数据恢复，效率较低。TiDB Lightn
 2. 使用 TiDB Lightning 将 MySQL 全量备份数据导入 TiDB 集群
 3. 使用 DM 同步 MySQL 增量数据到 TiDB
 
-如果 MySQL 数据量在 TB 级别以下，推荐直接使用 DM 迁移 MySQL 数据到 TiDB（迁移的过程包括全量导入和增量的恢复）。
+如果 MySQL 数据量在 TB 级别以下，推荐直接使用 DM 迁移 MySQL 数据到 TiDB（迁移的过程包括全量导入和增量的同步）。
 
 #### TiDB 集群数据的同步
 
