@@ -29,7 +29,7 @@ category: reference
 ## 示例
 
 ```sql
-mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, col1 INT NOT NULL, col2 INT NOT NULL);
+mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, col1 INT NOT NULL, col2 INT NOT NULL);
 Query OK, 0 rows affected (0.12 sec)
 
 mysql> INSERT INTO t1 (col1,col2) VALUES (1,1),(2,2),(3,3),(4,4),(5,5);

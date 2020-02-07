@@ -610,7 +610,6 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | `set_hostname` | 根据 IP 修改部署目标机器主机名，默认为 `False` |
 | `enable_binlog` | 是否部署 Pump 并开启 binlog，默认为 `False`，依赖 Kafka 集群，参见 `zookeeper_addrs` 变量 |
 | `zookeeper_addrs` | binlog Kafka 集群的 zookeeper 地址 |
-| `enable_slow_query_log` | TiDB 慢查询日志记录到单独文件 `{{ deploy_dir }}/log/tidb_slow_query.log`，默认为 False，记录到 TiDB 日志 |
 | `deploy_without_tidb` | KV 模式，不部署 TiDB 服务，仅部署 PD、TiKV 及监控服务，请将 `inventory.ini` 文件中 `tidb_servers` 主机组 IP 设置为空。|
 | `alertmanager_target` | 可选：如果你已单独部署 alertmanager，可配置该变量，格式：`alertmanager_host:alertmanager_port` |
 | `grafana_admin_user` | Grafana 管理员帐号用户名，默认为 admin |

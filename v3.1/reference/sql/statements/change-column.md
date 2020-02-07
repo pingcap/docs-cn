@@ -39,7 +39,7 @@ category: reference
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t1 (id int not null primary key auto_increment, col1 INT);
+CREATE TABLE t1 (id int not null primary key AUTO_INCREMENT, col1 INT);
 ```
 
 ```
