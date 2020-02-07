@@ -22,7 +22,7 @@ ADMIN SHOW DDL JOBS [NUM] [WHERE where_condition];
 ```
 
 * `NUM`：查看已经执行完成的 DDL 作业队列中最近 `NUM` 条结果，未指定时，默认值为 10。
-* `WHERE`: `WHERE` 子句，可以添加过滤条件。
+* `WHERE`：`WHERE` 子句，可以添加过滤条件。
 
 `ADMIN SHOW DDL JOBS` 用于查看当前 DDL 作业队列中的所有结果（包括正在运行以及等待运行的任务）以及已执行完成的 DDL 作业队列中的最近十条结果。
 
