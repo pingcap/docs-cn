@@ -183,7 +183,7 @@ bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 1
 
 #### 性能调优
 
-如果 TiKV 的资源使用没有出现明显的瓶颈（例如[备份过程中的监控指标](#备份过程中的监控指标)中的 **Backup CPU Utilization** 为 `1500%`，**IO Utilization** 为 `30%`），可以尝试调大 `--concurrency` 参数以进行性能调优。该方法不适用于存在许多小表的场景。
+如果 TiKV 的资源使用没有出现明显的瓶颈（例如[备份过程中的监控指标](#备份过程中的监控指标)中的 **Backup CPU Utilization** 为 `1500%` 左右，**IO Utilization** 低于 `30%`），可以尝试调大 `--concurrency` 参数以进行性能调优。该方法不适用于存在许多小表的场景。
 
 使用示例如下：
 
