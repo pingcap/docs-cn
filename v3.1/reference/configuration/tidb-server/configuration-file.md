@@ -408,3 +408,11 @@ TiDB 服务状态相关配置。
 
 + `events_statement_summary_by_digest` 表中`DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
 + 默认值：4096
+
+## experimental <span class="version-mark">从 v4.0.0 版本开始引入</span>
+
+### `allow-auto-random`
+
++ 用于控制是否允许使用 `AUTO_RANDOM`。
++ 默认值：false
++ 默认情况下，不支持使用 `AUTO_RANDOM`。当该值为 true 时，不允许同时设置 alter-primary-key 为 true。
